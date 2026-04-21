@@ -197,7 +197,7 @@
 
   /* Suggest tags — redesigned as mode selector cards */
   .suggest-tags {
-    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; margin-bottom: 0;
+    display: flex; gap: 10px; flex-wrap: nowrap; margin-top: 28px; margin-bottom: 0;
   }
   .suggest-tag {
     display: inline-flex; align-items: center; gap: 10px;
@@ -215,7 +215,7 @@
   }
   .suggest-tag .mode-label { display: flex; flex-direction: column; gap: 1px; }
   .suggest-tag .mode-name { font-size: 14px; font-weight: 700; color: var(--black); line-height: 1.2; }
-  .suggest-tag .mode-hint { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+  .suggest-tag .mode-hint { font-size: 11px; color: var(--text-muted); font-weight: 400; white-space: nowrap; }
   .suggest-tag.active {
     background: var(--black); border-color: var(--black);
     box-shadow: 0 4px 12px rgba(10,10,15,0.15);
