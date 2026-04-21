@@ -2966,6 +2966,8 @@
 </div>
 
 <script>
+  const AI_WORKER_URL = 'https://ascend-cann.10xinyu0901.workers.dev';
+
   // Page navigation
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -3354,16 +3356,16 @@
     body.innerHTML = '<div class="floor-loading"><div class="floor-dots"><span></span><span></span><span></span></div><span>AI 正在生成解决方案…</span></div>';
     setTimeout(() => box.scrollIntoView({ behavior:'smooth', block:'nearest' }), 80);
     try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      const resp = await fetch(AI_WORKER_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514', max_tokens: 1000,
           system: '你是 CANN 技术支持专家。针对用户描述的开发问题给出解决方案。格式：先1-2句说明问题原因，再用编号列出具体步骤，必要时给出代码示例（用反引号包裹）。用中文，简洁精准。',
-          messages: [{ role: 'user', content: '问题：' + problemText }]
+          user: '问题：' + problemText,
+          max_tokens: 1000,
         })
       });
       const data = await resp.json();
-      const text = data.content?.map(i => i.text || '').join('') || '暂时无法获取解决方案。';
+      const text = data.text || '暂时无法获取解决方案。';
       title.textContent = '解决方案：' + problemText;
       body.innerHTML = formatFloorText(text);
     } catch(e) {
@@ -3428,10 +3430,9 @@
     const courseList = COURSE_DB.map((c, i) => `${i}|${c.title}|${c.tag}|${c.topics.join(',')}`).join('\n');
 
     try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      const resp = await fetch(AI_WORKER_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514', max_tokens: 600,
           system: `你是 CANN 学习路径规划专家。根据用户的学习目标，从下面的课程库中挑选5-7门最相关的课程，按学习顺序排列，组成个性化路径。
 
 课程库（格式：序号|课程名|难度|关键词）：
@@ -3440,11 +3441,12 @@ ${courseList}
 输出格式：JSON数组，每项包含 courseIndex（课程库序号）和 desc（一句话说明为什么学这门课，15字以内）。
 例：[{"courseIndex":0,"desc":"先了解CANN整体架构"},{"courseIndex":4,"desc":"动手开发第一个算子"}]
 只输出JSON，不加任何说明或代码块标记。`,
-          messages: [{ role: 'user', content: `我的学习目标：${query}` }]
+          user: `我的学习目标：${query}`,
+          max_tokens: 600,
         })
       });
       const data = await resp.json();
-      const text = data.content?.map(i => i.text || '').join('') || '[]';
+      const text = data.text || '[]';
       let picks = [];
       try { picks = JSON.parse(text.replace(/```json|```/g,'').trim()); } catch(e) {}
 
@@ -3614,16 +3616,16 @@ ${courseList}
     body.innerHTML = '<div class="floor-loading"><div class="floor-dots"><span></span><span></span><span></span></div><span>AI 正在查找资源…</span></div>';
     setTimeout(() => box.scrollIntoView({ behavior:'smooth', block:'nearest' }), 80);
     try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      const resp = await fetch(AI_WORKER_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514', max_tokens: 600,
           system: '你是 CANN 资源导航专家。帮用户找到所需资源：列出资源名称、下载/访问地址（使用 https://www.hiascend.com 域名）、简短说明。用中文，列表格式，简洁实用。',
-          messages: [{ role: 'user', content: '我需要：' + query }]
+          user: '我需要：' + query,
+          max_tokens: 600,
         })
       });
       const data = await resp.json();
-      const text = data.content?.map(i => i.text || '').join('') || '';
+      const text = data.text || '';
       title.textContent = '资源推荐：' + query;
       body.innerHTML = formatFloorText(text);
     } catch(e) {
