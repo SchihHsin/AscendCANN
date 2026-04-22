@@ -41,6 +41,10 @@
 
   html { scroll-behavior: smooth; }
 
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeInUp 0.6s ease both; }
+  .fade-in-2 { animation: fadeInUp 0.6s 0.15s ease both; }
+
   body {
     font-family: var(--font);
     background: var(--bg);
@@ -161,9 +165,9 @@
 
   /* ── HERO ── */
   .hero {
-    padding: 160px 40px 100px;
+    padding: 120px 40px 80px;
     max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
   }
   #page-home > .hero { position: relative; }
   #page-home > .hero::before {
@@ -182,22 +186,22 @@
   }
   .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--grad-start); }
   .hero h1 {
-    font-size: 56px; font-weight: 800; line-height: 1.1;
-    letter-spacing: -1.5px; margin-bottom: 24px; color: var(--black);
+    font-size: 52px; font-weight: 800; line-height: 1.1;
+    letter-spacing: -1.5px; margin-bottom: 20px; color: var(--black);
   }
   .grad-text {
     background: var(--grad-text); -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; background-clip: text;
   }
   .hero p {
-    font-size: 18px; color: var(--text-secondary); line-height: 1.7;
-    margin-bottom: 40px; max-width: 500px;
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    margin-bottom: 32px; max-width: 500px;
   }
   .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
 
   /* Suggest tags — redesigned as mode selector cards */
   .suggest-tags {
-    display: flex; gap: 10px; flex-wrap: nowrap; margin-top: 28px; margin-bottom: 0;
+    display: flex; gap: 10px; flex-wrap: nowrap; margin-top: 24px; margin-bottom: 0;
   }
   .suggest-tag {
     display: inline-flex; align-items: center; gap: 10px;
@@ -259,13 +263,14 @@
   }
   .btn-outline:hover { background: var(--black); color: white; transform: translateY(-2px); }
   .hero-stats {
-    display: flex; gap: 40px; margin-top: 56px; padding-top: 32px;
+    display: flex; gap: 32px; margin-top: 40px; padding-top: 28px;
     border-top: 1px solid var(--border);
   }
+  .stat-item { display: flex; flex-direction: column; }
   .stat-num {
-    font-size: 32px; font-weight: 800; letter-spacing: -0.5px; color: var(--black);
+    font-size: 28px; font-weight: 800; letter-spacing: -0.5px; color: var(--black);
   }
-  .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+  .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: 3px; }
 
   /* ── HERO QUICK CHIPS ── */
   .hero-quick-chips {
@@ -667,32 +672,38 @@
   @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-10px) } }
 
   /* ── FEATURES ── */
-  .section { padding: 100px 40px; max-width: 1200px; margin: 0 auto; }
+  .section { padding: 80px 40px; max-width: 1200px; margin: 0 auto; }
   .section-label {
-    font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--black); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
   }
-  .section-label::before { content: ''; width: 24px; height: 2px; background: var(--grad); border-radius: 1px; }
+  .section-label::before { content: ''; width: 20px; height: 2px; background: var(--grad); border-radius: 1px; }
   .section-title {
-    font-size: 42px; font-weight: 800; letter-spacing: -1px;
-    line-height: 1.15; margin-bottom: 16px; color: var(--black);
+    font-size: 36px; font-weight: 800; letter-spacing: -0.8px;
+    line-height: 1.2; margin-bottom: 14px; color: var(--black);
   }
-  .section-desc { font-size: 18px; color: var(--text-secondary); max-width: 600px; line-height: 1.7; }
+  .section-desc { font-size: 16px; color: var(--text-secondary); max-width: 560px; line-height: 1.7; }
 
-  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
   .feature-card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; padding: 32px;
-    transition: all 0.3s; cursor: default;
+    border-radius: 16px; padding: 28px;
+    transition: all 0.25s; cursor: default;
+    position: relative; overflow: hidden;
   }
-  .feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--black); }
+  .feature-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    background: var(--grad); opacity: 0; transition: opacity 0.25s;
+  }
+  .feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: rgba(46,83,250,0.25); }
+  .feature-card:hover::after { opacity: 1; }
   .feature-icon {
-    width: 48px; height: 48px; border-radius: 10px;
+    width: 44px; height: 44px; border-radius: 10px;
     background: var(--black); display: flex; align-items: center; justify-content: center;
-    margin-bottom: 24px; font-size: 22px; color: white;
+    margin-bottom: 20px; color: white;
   }
-  .feature-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--black); }
-  .feature-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
+  .feature-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: var(--black); }
+  .feature-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
 
   /* ── DOCS LAYOUT ── */
   .docs-layout { display: grid; grid-template-columns: 280px 1fr; gap: 0; min-height: 100vh; padding-top: 64px; }
@@ -881,76 +892,121 @@
   }
 
   /* ── BOTTOM SANDBOX DRAWER ── */
+  /* ══ HIDEVLAB NOTEBOOK DRAWER ══ */
   .sandbox-drawer {
-    position: fixed; bottom: -500px; left: 0; right: 0;
-    height: 500px; background: var(--surface); border-top: 1px solid var(--border);
-    z-index: 2000; box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
+    position: fixed; bottom: -620px; left: 0; right: 0;
+    height: 620px; background: #F8F9FB;
+    border-top: 1px solid var(--border);
+    z-index: 2000; box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
     display: flex; flex-direction: column;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: var(--font);
   }
   .sandbox-drawer.open { bottom: 0; }
-  .sandbox-drawer-header {
+  .nb-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 24px; background: var(--surface2); border-bottom: 1px solid var(--border);
+    padding: 0 16px; height: 44px; flex-shrink: 0;
+    background: white; border-bottom: 1px solid var(--border);
   }
-  .sandbox-drawer-left { display: flex; align-items: center; gap: 24px; }
-  .sandbox-resources {
-    display: flex; align-items: center; gap: 16px;
-    padding: 6px 14px; background: white; border-radius: 8px;
-    border: 1px solid var(--border); font-size: 12px;
-  }
-  .resource-item { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); }
-  .resource-item svg { width: 14px; height: 14px; color: var(--text-muted); }
-  .resource-value { font-weight: 700; color: var(--black); font-family: var(--mono); }
-  .resource-bar {
-    width: 60px; height: 4px; background: var(--surface2);
-    border-radius: 2px; overflow: hidden; margin-left: 4px;
-  }
-  .resource-bar-fill { height: 100%; border-radius: 2px; }
-  .resource-bar-fill.ram { background: linear-gradient(90deg, #10B981, #34D399); width: 45%; }
-  .resource-bar-fill.disk { background: linear-gradient(90deg, #3B82F6, #60A5FA); width: 62%; }
-  .sandbox-drawer-title {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 15px; font-weight: 700; color: var(--black);
-  }
-  .sandbox-drawer-title svg { width: 18px; height: 18px; color: var(--accent-blue); }
-  .sandbox-drawer-actions { display: flex; gap: 12px; }
-  .btn-sandbox-action {
-    display: flex; align-items: center; gap: 6px;
-    padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
-    cursor: pointer; transition: all 0.2s; border: none;
-  }
-  .btn-sandbox-run { background: var(--black); color: white; }
-  .btn-sandbox-run:hover { background: #222; transform: translateY(-1px); }
-  .btn-sandbox-close { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
-  .btn-sandbox-close:hover { background: var(--surface); color: var(--black); border-color: var(--border2); }
-  .sandbox-drawer-body {
-    flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-    overflow: hidden;
-  }
-  .sandbox-editor-panel {
-    background: #0F172A; padding: 20px; overflow-y: auto;
-    font-family: var(--mono); font-size: 13px; line-height: 1.7;
-    color: #E2E8F0; border-right: 1px solid rgba(255,255,255,0.1);
-  }
-  .sandbox-editor-panel pre { margin: 0; white-space: pre-wrap; word-break: break-all; }
-  .sandbox-output-panel {
-    background: #1E293B; padding: 20px; overflow-y: auto;
-    font-family: var(--mono); font-size: 13px; line-height: 1.7;
-    color: #94A3B8;
-  }
-  .sandbox-output-panel pre { margin: 0; }
-  .sandbox-output-header {
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: rgba(255,255,255,0.4);
-    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
-  }
-  .sandbox-output-header::before {
-    content: ''; width: 8px; height: 8px; border-radius: 50%;
-    background: #10B981;
-  }
-  .sandbox-output-header.running::before { background: #F59E0B; animation: pulse 1s infinite; }
-  .sandbox-output-header.error::before { background: #EF4444; }
+  .nb-header-left { display: flex; align-items: center; gap: 16px; }
+  .nb-brand { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: var(--black); }
+  .nb-brand svg { width: 14px; height: 14px; color: var(--accent-blue); }
+  .nb-tabs { display: flex; gap: 2px; }
+  .nb-tab { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-muted); background: none; border: none; cursor: pointer; transition: all 0.15s; }
+  .nb-tab:hover { color: var(--black); background: var(--surface2); }
+  .nb-tab.active { color: var(--black); background: var(--surface2); }
+  .nb-tab svg { width: 12px; height: 12px; }
+  .nb-header-right { display: flex; align-items: center; gap: 10px; }
+  .nb-spec-badge { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
+  .nb-spec-dot { width: 6px; height: 6px; border-radius: 50%; background: #10B981; }
+  .nb-kernel-select { display: flex; align-items: center; gap: 6px; position: relative; padding: 5px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; user-select: none; }
+  .nb-kernel-select:hover { border-color: var(--border2); background: white; }
+  .nb-kernel-select svg { width: 11px; height: 11px; }
+  .nb-kernel-menu { display: none; position: absolute; top: calc(100% + 6px); right: 0; background: white; border: 1px solid var(--border); border-radius: 8px; padding: 4px; min-width: 220px; z-index: 100; box-shadow: var(--shadow-lg); }
+  .nb-kernel-select.open .nb-kernel-menu { display: block; }
+  .nb-kernel-option { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 5px; font-size: 12px; color: var(--text-secondary); cursor: pointer; transition: all 0.12s; }
+  .nb-kernel-option:hover { background: var(--surface2); color: var(--black); }
+  .nb-kernel-option.active { color: var(--black); background: var(--surface2); font-weight: 600; }
+  .nb-kernel-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .nb-actions { display: flex; align-items: center; gap: 4px; }
+  .nb-action-btn { display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-secondary); background: none; border: none; cursor: pointer; transition: all 0.15s; }
+  .nb-action-btn:hover { background: var(--surface2); color: var(--black); }
+  .nb-action-icon { padding: 5px 8px; }
+  .nb-action-close:hover { background: #FEE2E2; color: #DC2626; }
+  .nb-monitor-bar { display: flex; align-items: center; gap: 20px; padding: 0 16px; height: 34px; flex-shrink: 0; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 11px; color: var(--text-muted); overflow-x: auto; }
+  .nb-monitor-item { display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0; }
+  .nb-monitor-bar-track { width: 60px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .nb-monitor-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+  .nb-monitor-bar-fill.npu { background: linear-gradient(90deg, #8B5CF6, #A78BFA); }
+  .nb-monitor-bar-fill.hbm { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
+  .nb-monitor-bar-fill.cpu { background: linear-gradient(90deg, #10B981, #34D399); }
+  .nb-monitor-val { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--text-secondary); }
+  .nb-monitor-sep { width: 1px; height: 16px; background: var(--border); flex-shrink: 0; }
+  .nb-monitor-status { font-size: 11px; font-weight: 600; color: #10B981; margin-left: auto; white-space: nowrap; flex-shrink: 0; }
+  .nb-monitor-status.running { color: #F59E0B; }
+  .nb-body { flex: 1; display: flex; overflow: hidden; }
+  .nb-panel { display: none; flex: 1; overflow: hidden; }
+  .nb-panel.active { display: flex; }
+  .nb-sidebar { width: 160px; flex-shrink: 0; background: white; border-right: 1px solid var(--border); padding: 12px 8px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+  .nb-sidebar-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); padding: 4px 6px; margin-bottom: 4px; }
+  .nb-file-item { display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 5px; font-size: 11px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.12s; }
+  .nb-file-item:hover { background: var(--surface2); color: var(--black); }
+  .nb-file-item.active { background: var(--blue-100); color: var(--accent-blue); }
+  .nb-sidebar-divider { height: 1px; background: var(--border); margin: 8px 0; }
+  .nb-new-file-btn { display: flex; align-items: center; gap: 5px; padding: 5px 8px; border-radius: 5px; font-size: 11px; font-weight: 600; color: var(--text-muted); background: none; border: 1px dashed var(--border2); cursor: pointer; transition: all 0.12s; margin-top: 2px; }
+  .nb-new-file-btn:hover { color: var(--black); border-color: var(--black); background: var(--surface2); }
+  .nb-cells { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: #F8F9FB; }
+  .nb-cells::-webkit-scrollbar { width: 4px; }
+  .nb-cells::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+  .nb-cell { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: border-color 0.15s; background: white; }
+  .nb-cell:hover { border-color: var(--border2); }
+  .nb-cell.active { border-color: var(--accent-blue); }
+  .nb-cell.running { border-color: #F59E0B; }
+  .nb-cell-header { display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .nb-cell-num { font-family: var(--mono); font-size: 10px; color: var(--text-muted); min-width: 20px; }
+  .nb-cell-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 3px; color: var(--text-muted); background: var(--border); }
+  .nb-cell-type.markdown { color: #7C3AED; background: #EDE9FE; }
+  .nb-cell-actions { margin-left: auto; display: flex; gap: 4px; }
+  .nb-cell-btn { display: flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; color: var(--text-muted); background: none; border: none; cursor: pointer; transition: all 0.12s; }
+  .nb-cell-btn:hover { color: var(--black); background: var(--border); }
+  .nb-cell-btn.run-btn:hover { color: #15803D; background: #DCFCE7; }
+  .nb-cell-btn.del-btn:hover { color: #DC2626; background: #FEE2E2; }
+  .nb-cell-code { padding: 14px 16px; font-family: var(--mono); font-size: 12px; line-height: 1.7; color: var(--black); outline: none; min-height: 52px; white-space: pre-wrap; word-break: break-all; }
+  .nb-cell-output { padding: 10px 16px; background: #F0FDF4; border-top: 1px solid #BBF7D0; font-family: var(--mono); font-size: 12px; line-height: 1.7; color: #166534; display: none; }
+  .nb-cell-output.visible { display: block; }
+  .nb-cell-output.error { background: #FEF2F2; border-top-color: #FECACA; color: #DC2626; }
+  .nb-cell-output.success { background: #F0FDF4; border-top-color: #BBF7D0; color: #166534; }
+  .nb-add-cell { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-muted); background: none; border: 1px dashed var(--border2); cursor: pointer; transition: all 0.15s; }
+  .nb-add-cell:hover { color: var(--black); border-color: var(--black); background: white; }
+  #nb-panel-terminal { flex-direction: column; background: #1E1E2E; }
+  .nb-terminal { flex: 1; padding: 16px; overflow-y: auto; font-family: var(--mono); font-size: 12px; line-height: 1.8; }
+  .nb-term-line { display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
+  .nb-term-prompt { color: #22D3EE; font-weight: 700; flex-shrink: 0; }
+  .nb-term-output { color: rgba(255,255,255,0.75); }
+  .nb-term-out { color: rgba(255,255,255,0.5); }
+  .nb-term-cursor { display: inline-block; width: 8px; height: 14px; background: #22D3EE; animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .nb-term-input-row { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); flex-shrink: 0; }
+  .nb-term-prompt-inline { color: #22D3EE; font-weight: 700; font-family: var(--mono); font-size: 12px; white-space: nowrap; flex-shrink: 0; }
+  .nb-term-input { flex: 1; background: none; border: none; outline: none; font-family: var(--mono); font-size: 12px; color: rgba(255,255,255,0.85); }
+  .nb-term-input::placeholder { color: rgba(255,255,255,0.2); }
+  #nb-panel-files { flex-direction: column; background: white; }
+  .nb-files-toolbar { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .nb-files-btn { display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: 600; color: var(--text-secondary); background: var(--surface2); border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .nb-files-btn:hover { color: var(--black); border-color: var(--border2); background: white; }
+  .nb-files-path { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-left: auto; }
+  .nb-files-list { flex: 1; overflow-y: auto; padding: 8px 16px; }
+  .nb-file-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; transition: all 0.12s; cursor: default; }
+  .nb-file-row:hover { background: var(--surface2); }
+  .nb-file-name { font-size: 13px; font-weight: 500; color: var(--black); flex: 1; }
+  .nb-file-meta { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+  .nb-file-actions { display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
+  .nb-file-row:hover .nb-file-actions { opacity: 1; }
+  .nb-file-actions button { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; transition: all 0.12s; }
+  .nb-file-actions button:hover { background: var(--border); color: var(--black); }
+  .nb-files-footer { padding: 8px 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+  .sandbox-editor-panel, #sandbox-editor { display: none; }
+  #sandbox-output-header, #sandbox-output { display: none; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
   .sandbox-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -1280,43 +1336,136 @@
 
   /* ── NODE DRAWER ── */
   .node-drawer {
-    position: fixed; top: 0; right: -500px; width: 500px; height: 100vh;
+    position: fixed; top: 0; right: -580px; width: 580px; height: 100vh;
     background: white; border-left: 1px solid var(--border);
-    z-index: 1000; box-shadow: var(--shadow-lg);
+    z-index: 1000; box-shadow: -4px 0 32px rgba(0,0,0,0.08);
     display: flex; flex-direction: column;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .node-drawer.open { right: 0; }
-  .drawer-header {
-    padding: 24px; border-bottom: 1px solid var(--border);
+
+  .nd-header {
     display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0;
   }
-  .drawer-title { font-size: 18px; font-weight: 700; color: var(--black); }
-  .btn-close-drawer {
-    background: transparent; border: none; cursor: pointer; color: var(--text-muted);
-    padding: 4px; border-radius: 6px; transition: all 0.2s;
+  .nd-header-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+  .nd-phase-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; background: var(--black); }
+  .nd-title { font-size: 17px; font-weight: 800; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nd-header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: 12px; }
+  .nd-complete-btn {
+    padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;
+    border: 1.5px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    cursor: pointer; transition: all 0.2s; font-family: var(--font); white-space: nowrap;
   }
-  .btn-close-drawer:hover { background: var(--surface2); color: var(--black); }
-  .drawer-content {
-    flex: 1; overflow-y: auto; padding: 24px;
-    line-height: 1.7; font-size: 15px; color: var(--text-secondary);
+  .nd-complete-btn.done { background: #10B981; border-color: #10B981; color: white; }
+  .nd-close {
+    background: none; border: none; cursor: pointer; color: var(--text-muted);
+    padding: 6px; border-radius: 6px; display: flex; align-items: center; transition: all 0.2s;
   }
-  .drawer-content h3 { font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 16px; }
-  .drawer-content p { margin-bottom: 16px; }
-  .drawer-content ul { list-style: disc; margin-left: 20px; margin-bottom: 16px; }
-  .drawer-content li { margin-bottom: 8px; }
-  .drawer-content a { color: var(--black); font-weight: 600; text-decoration: none; }
-  .drawer-content a:hover { text-decoration: underline; }
-  .drawer-actions {
-    padding: 24px; border-top: 1px solid var(--border);
-    display: flex; gap: 12px;
+  .nd-close:hover { background: var(--surface2); color: var(--black); }
+
+  .nd-tabs {
+    display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; padding: 0 8px;
   }
-  .btn-drawer-action {
-    flex: 1; padding: 12px 20px; border-radius: 10px; font-size: 15px; font-weight: 600;
-    cursor: pointer; transition: all 0.2s; border: 1px solid var(--border2);
-    background: white; color: var(--black);
+  .nd-tab {
+    padding: 11px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+    color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px;
+    background: none; border-top: none; border-left: none; border-right: none;
+    transition: all 0.2s; font-family: var(--font);
   }
-  .btn-drawer-action:hover { background: var(--black); color: white; }
+  .nd-tab.active { color: var(--black); border-bottom-color: var(--black); }
+  .nd-tab:hover:not(.active) { color: var(--black); }
+
+  .nd-body { flex: 1; overflow-y: auto; padding: 24px; }
+  .nd-body::-webkit-scrollbar { width: 4px; }
+  .nd-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .nd-summary {
+    font-size: 14px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 24px;
+    padding: 14px 18px; background: var(--surface2); border-radius: 12px;
+    border-left: 3px solid var(--black);
+  }
+  .nd-section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+  }
+  .nd-section-title::before { content:''; width:16px; height:2px; background:var(--grad); border-radius:1px; }
+  .nd-concepts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+  .nd-concept {
+    padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; transition: border-color 0.15s;
+  }
+  .nd-concept:hover { border-color: rgba(46,83,250,0.3); }
+  .nd-concept-term { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 3px; }
+  .nd-concept-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+  .nd-diagram {
+    background: #0F172A; border-radius: 12px; padding: 16px 20px;
+    font-family: var(--mono); font-size: 11px; line-height: 1.6; color: #7DD3B0;
+    overflow-x: auto; margin-bottom: 24px; white-space: pre;
+  }
+
+  .nd-code-block { background: #0F172A; border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
+  .nd-code-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 16px; background: #1E293B; border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .nd-code-lang { font-size: 10px; font-family: var(--mono); color: rgba(255,255,255,0.35); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .nd-code-actions { display: flex; gap: 6px; }
+  .nd-code-btn {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 5px; cursor: pointer; transition: all 0.2s; font-family: var(--font);
+  }
+  .nd-code-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+  .nd-code-body { padding: 18px 20px; font-family: var(--mono); font-size: 13px; line-height: 1.75; color: #E2E8F0; overflow-x: auto; }
+  .nd-code-note {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.65;
+    padding: 12px 16px; background: var(--surface2); border-radius: 8px; margin-top: 10px;
+  }
+
+  .nd-res-list { display: flex; flex-direction: column; gap: 8px; }
+  .nd-res-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    text-decoration: none; color: inherit; transition: all 0.15s;
+  }
+  .nd-res-item:hover { border-color: var(--black); transform: translateX(2px); }
+  .nd-res-icon { font-size: 16px; flex-shrink: 0; }
+  .nd-res-info { flex: 1; min-width: 0; }
+  .nd-res-title { font-size: 13px; font-weight: 600; color: var(--black); }
+  .nd-res-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .nd-res-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; background: var(--surface2); color: var(--text-secondary); border: 1px solid var(--border); flex-shrink: 0; }
+
+  .nd-ai-strip {
+    border-top: 1px solid var(--border); padding: 14px 20px; flex-shrink: 0; background: var(--surface2);
+  }
+  .nd-ai-modes { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  .nd-ai-mode {
+    padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600;
+    border: 1.5px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    cursor: pointer; transition: all 0.15s; font-family: var(--font);
+  }
+  .nd-ai-mode:hover { border-color: var(--black); color: var(--black); }
+  .nd-ai-mode.active-mode { background: var(--black); border-color: var(--black); color: white; }
+  .nd-ai-input-row { display: flex; gap: 8px; }
+  .nd-ai-input {
+    flex: 1; border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 12px;
+    font-size: 13px; font-family: var(--font); outline: none; color: var(--black);
+    background: var(--surface); transition: border-color 0.2s;
+  }
+  .nd-ai-input:focus { border-color: var(--black); }
+  .nd-ai-send {
+    background: var(--black); color: white; border: none; border-radius: 8px;
+    width: 36px; height: 36px; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .nd-ai-send:hover { background: #333; }
+  .nd-ai-response {
+    margin-top: 10px; padding: 12px 14px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px;
+    font-size: 13px; line-height: 1.65; color: var(--text-secondary);
+  }
+  .nd-ai-response.hidden { display: none; }
+  .nd-ai-response code { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--black); }
 
   /* ── QUIZ MODAL ── */
   .quiz-modal {
@@ -1366,10 +1515,18 @@
   }
   .ai-search-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   .ai-result {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 12px; padding: 20px 24px; font-size: 15px;
-    line-height: 1.7; color: var(--text-secondary);
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px; font-size: 14px;
+    line-height: 1.75; color: var(--text-secondary);
   }
+  .ai-result code {
+    background: var(--surface2); color: var(--black); padding: 2px 6px;
+    border-radius: 4px; font-family: var(--mono); font-size: 12px;
+    border: 1px solid var(--border);
+  }
+  .ai-result-link { color: var(--black); font-weight: 700; text-decoration: none; }
+  .ai-result-link:hover { text-decoration: underline; }
+  .ai-demo-search { margin-bottom: 14px; }
   
   .quiz-options label:hover { background: var(--surface2); border-color: var(--black); }
   .quiz-options input[type="radio"] { accent-color: var(--black); width: 18px; height: 18px; }
@@ -1380,13 +1537,25 @@
   .quiz-submit:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
   .quiz-feedback { margin-top: 20px; text-align: center; font-weight: 700; font-size: 14px; min-height: 20px; }
 
+  /* ── AI DEMO BANNER ── */
+  .ai-demo-banner {
+    background: var(--surface2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: 72px 40px; margin-top: 0;
+  }
+  .ai-demo-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+  }
+  .ai-demo-inner .section-title { font-size: 30px; }
+  .ai-demo-inner .section-desc { font-size: 15px; margin-bottom: 28px; }
+
   /* ── AI SEARCH ── */
   footer {
     background: var(--black); color: rgba(255,255,255,0.6);
-    padding: 80px 40px; margin-top: 100px;
+    padding: 64px 40px; margin-top: 0;
   }
   .footer-inner { max-width: 1200px; margin: 0 auto; }
-  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; margin-bottom: 64px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
   .footer-logo { font-size: 24px; font-weight: 800; color: white; margin-bottom: 16px; }
   .footer-desc { font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
   .footer-col-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: white; margin-bottom: 20px; }
@@ -1508,80 +1677,148 @@
 
 <!-- Node Detail Drawer -->
 <div class="node-drawer" id="node-drawer">
-  <div class="drawer-header">
-    <h3 class="drawer-title" id="drawer-title"></h3>
-    <button class="btn-close-drawer" onclick="closeNodeDrawer()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-    </button>
+  <div class="nd-header">
+    <div class="nd-header-left">
+      <span class="nd-phase-dot" id="nd-phase-dot"></span>
+      <span class="nd-title" id="nd-title">节点标题</span>
+    </div>
+    <div class="nd-header-right">
+      <button class="nd-complete-btn" id="nd-complete-btn" onclick="toggleNodeComplete()">标记完成</button>
+      <button class="nd-close" onclick="closeNodeDrawer()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
   </div>
-  <div class="drawer-content" id="drawer-content">
-    <!-- Content will be loaded here -->
+  <div class="nd-tabs">
+    <button class="nd-tab active" data-tab="knowledge" onclick="switchNdTab('knowledge',this)">核心知识</button>
+    <button class="nd-tab" data-tab="code" onclick="switchNdTab('code',this)">代码示例</button>
+    <button class="nd-tab" data-tab="resources" onclick="switchNdTab('resources',this)">延伸资源</button>
   </div>
-  <div class="drawer-actions">
-    <button class="btn-drawer-action" onclick="askAiAboutNode()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-        <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-      </svg>
-      Ask AI
-    </button>
-    <button class="btn-drawer-action" onclick="testKnowledge()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      Test Knowledge
-    </button>
+  <div class="nd-body" id="nd-body"></div>
+  <div class="nd-ai-strip">
+    <div class="nd-ai-modes" id="nd-ai-modes">
+      <button class="nd-ai-mode" onclick="prefillDrawerAI(this,'深入解释这个概念')">深入解释</button>
+      <button class="nd-ai-mode" onclick="prefillDrawerAI(this,'给我一个代码示例')">代码示例</button>
+      <button class="nd-ai-mode" onclick="prefillDrawerAI(this,'这在实际项目中如何应用')">实战应用</button>
+      <button class="nd-ai-mode" onclick="testNodeKnowledge()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-1px"><path d="M9 11l3 3L22 4"/></svg>
+        测验我
+      </button>
+    </div>
+    <div class="nd-ai-input-row">
+      <input type="text" id="nd-ai-input" class="nd-ai-input" placeholder="针对本节提问…" onkeydown="if(event.key==='Enter')sendDrawerAI()">
+      <button class="nd-ai-send" onclick="sendDrawerAI()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="nd-ai-response hidden" id="nd-ai-response"></div>
   </div>
 </div>
 
-<!-- Sandbox Drawer -->
+<!-- HiDevLab Notebook Drawer -->
 <div class="sandbox-overlay" id="sandbox-overlay" onclick="closeSandboxDrawer()"></div>
 <div class="sandbox-drawer" id="sandbox-drawer">
-  <div class="sandbox-drawer-header">
-    <div class="sandbox-drawer-left">
-      <div class="sandbox-drawer-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
-        </svg>
+  <div class="nb-header">
+    <div class="nb-header-left">
+      <div class="nb-brand">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         HiDevLab
-        <span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">| HiDevLab 真机环境</span>
       </div>
-      <div class="sandbox-resources">
-        <div class="resource-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
-          <span>RAM</span>
-          <span class="resource-value" id="sandbox-ram">4.2GB</span>
-          <div class="resource-bar"><div class="resource-bar-fill ram"></div></div>
-        </div>
-        <div class="resource-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          <span>磁盘</span>
-          <span class="resource-value" id="sandbox-disk">12.8GB</span>
-          <div class="resource-bar"><div class="resource-bar-fill disk"></div></div>
-        </div>
+      <div class="nb-tabs">
+        <button class="nb-tab active" onclick="switchNbTab('notebook',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Notebook
+        </button>
+        <button class="nb-tab" onclick="switchNbTab('terminal',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          Terminal
+        </button>
+        <button class="nb-tab" onclick="switchNbTab('files',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          文件管理
+        </button>
       </div>
     </div>
-    <div class="sandbox-drawer-actions">
-      <button class="btn-sandbox-action btn-sandbox-run" onclick="runSandboxCode()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
-        </svg>
-        运行代码
-      </button>
-      <button class="btn-sandbox-action btn-sandbox-close" onclick="closeSandboxDrawer()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-        关闭
-      </button>
+    <div class="nb-header-right">
+      <div class="nb-spec-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <span>Ascend 910B · 32vCPU · 64GB</span>
+        <span class="nb-spec-dot"></span>
+        <span style="color:#10B981;font-weight:700;">运行中</span>
+      </div>
+      <div class="nb-kernel-select" onclick="toggleKernelMenu(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        <span id="nb-kernel-name">Python 3 (CANN 8.0)</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="nb-kernel-menu" id="nb-kernel-menu">
+          <div class="nb-kernel-option active" onclick="selectKernel(this,'Python 3 (CANN 8.0)')"><span class="nb-kernel-dot" style="background:#3B82F6"></span>Python 3 (CANN 8.0)</div>
+          <div class="nb-kernel-option" onclick="selectKernel(this,'Python 3 (PyTorch NPU)')"><span class="nb-kernel-dot" style="background:#F59E0B"></span>Python 3 (PyTorch NPU)</div>
+          <div class="nb-kernel-option" onclick="selectKernel(this,'Python 3 (MindSpore)')"><span class="nb-kernel-dot" style="background:#10B981"></span>Python 3 (MindSpore)</div>
+          <div class="nb-kernel-option" onclick="selectKernel(this,'Bash')"><span class="nb-kernel-dot" style="background:#94A3B8"></span>Bash</div>
+        </div>
+      </div>
+      <div class="nb-actions">
+        <button class="nb-action-btn" onclick="nbRunAll()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          全部运行
+        </button>
+        <button class="nb-action-btn nb-action-icon" onclick="nbInterrupt()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></button>
+        <button class="nb-action-btn nb-action-icon" onclick="nbRestart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+        <button class="nb-action-btn nb-action-icon" onclick="nbSave()" id="btn-nb-save"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg></button>
+        <button class="nb-action-btn nb-action-icon nb-action-close" onclick="closeSandboxDrawer()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
     </div>
   </div>
-  <div class="sandbox-drawer-body">
-    <div class="sandbox-editor-panel" id="sandbox-editor">
-      <pre contenteditable="true" spellcheck="false">// 点击代码块上的"开始"按钮加载代码到这里</pre>
+  <div class="nb-monitor-bar">
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg><span>NPU 910B</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill npu" id="nb-npu-bar" style="width:0%"></div></div><span class="nb-monitor-val" id="nb-npu-val">0%</span></div>
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z"/></svg><span>HBM</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill hbm" id="nb-hbm-bar" style="width:0%"></div></div><span class="nb-monitor-val" id="nb-hbm-val">0 / 64GB</span></div>
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>CPU</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill cpu" id="nb-cpu-bar" style="width:0%"></div></div><span class="nb-monitor-val" id="nb-cpu-val">0%</span></div>
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>磁盘</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill disk-m" id="nb-disk-bar" style="width:62%"></div></div><span class="nb-monitor-val">31.2 / 50GB</span></div>
+    <div class="nb-monitor-sep"></div>
+    <div class="nb-monitor-status" id="nb-status">● 空闲</div>
+  </div>
+  <div class="nb-body">
+    <div class="nb-panel active" id="nb-panel-notebook">
+      <div class="nb-sidebar">
+        <div class="nb-sidebar-title">文件</div>
+        <div class="nb-file-item active" onclick="loadNbFile(this,'main')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>main.ipynb</div>
+        <div class="nb-file-item" onclick="loadNbFile(this,'inference')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>inference.ipynb</div>
+        <div class="nb-file-item" onclick="loadNbFile(this,'operator')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>custom_op.ipynb</div>
+        <div class="nb-sidebar-divider"></div>
+        <button class="nb-new-file-btn" onclick="nbNewCell()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>新建 Cell</button>
+        <button class="nb-new-file-btn" onclick="nbUploadFile()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>上传文件</button>
+      </div>
+      <div class="nb-cells" id="nb-cells"></div>
     </div>
-    <div class="sandbox-output-panel">
-      <div class="sandbox-output-header" id="sandbox-output-header">输出</div>
-      <pre id="sandbox-output">点击"运行代码"查看输出结果...</pre>
+    <div class="nb-panel" id="nb-panel-terminal">
+      <div class="nb-terminal" id="nb-terminal">
+        <div class="nb-term-line"><span class="nb-term-prompt">ascend@hidevlab:~$</span> <span class="nb-term-output">npu-smi info</span></div>
+        <div class="nb-term-line nb-term-out">+-------------------------------------------------------------------------------------------+</div>
+        <div class="nb-term-line nb-term-out">| npu-smi 23.0.3       Driver Version: 23.0.3      CANN Version: 8.0.RC2                   |</div>
+        <div class="nb-term-line nb-term-out">| NPU   Name      Health   Power(W)   Temp(C)   Hugepages-Usage(MB)   Chip                |</div>
+        <div class="nb-term-line nb-term-out">| 0     910B4     OK       72.4       42        0    / 0              0                   |</div>
+        <div class="nb-term-line nb-term-out">+-------------------------------------------------------------------------------------------+</div>
+        <div class="nb-term-line" style="margin-top:8px"><span class="nb-term-prompt">ascend@hidevlab:~$</span> <span id="term-cursor" class="nb-term-cursor"></span></div>
+      </div>
+      <div class="nb-term-input-row">
+        <span class="nb-term-prompt-inline">ascend@hidevlab:~$</span>
+        <input class="nb-term-input" id="nb-term-input" type="text" placeholder="输入命令…" onkeydown="handleTermInput(event)" />
+      </div>
+    </div>
+    <div class="nb-panel" id="nb-panel-files">
+      <div class="nb-files-toolbar">
+        <button class="nb-files-btn" onclick="showNbToast('上传文件（演示模式）')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>上传</button>
+        <button class="nb-files-btn" onclick="showNbToast('新建文件夹（演示模式）')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>新建文件夹</button>
+        <span class="nb-files-path">/home/ascend/workspace</span>
+      </div>
+      <div class="nb-files-list">
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="nb-file-name">data/</span><span class="nb-file-meta">目录</span></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="nb-file-name">models/</span><span class="nb-file-meta">目录</span></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nb-file-name">main.ipynb</span><span class="nb-file-meta">18.4 KB · 3分钟前</span><div class="nb-file-actions"><button>下载</button><button>删除</button></div></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nb-file-name">inference.ipynb</span><span class="nb-file-meta">24.1 KB · 1小时前</span><div class="nb-file-actions"><button>下载</button><button>删除</button></div></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nb-file-name">resnet50.om</span><span class="nb-file-meta">48.2 MB · 2天前</span><div class="nb-file-actions"><button>下载</button><button>删除</button></div></div>
+      </div>
+      <div class="nb-files-footer">共使用 31.2 GB / 50 GB 存储空间</div>
     </div>
   </div>
 </div>
@@ -1641,6 +1878,11 @@
           </div>
         </a>
       </div>
+      <!-- <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">300+</div><div class="stat-label">内置算子</div></div>
+        <div class="stat-item"><div class="stat-num">10x</div><div class="stat-label">推理加速比</div></div>
+        <div class="stat-item"><div class="stat-num">全栈</div><div class="stat-label">工具链覆盖</div></div>
+      </div> -->
     </div>
     <div class="hero-visual fade-in-2">
       <div class="code-window">
@@ -1803,7 +2045,7 @@
           <div class="floor-res-desc">完整工具链安装包，支持 Ascend 910/310 系列</div>
           <div class="floor-res-tag">下载</div>
         </a>
-        <a class="floor-res-card" href="https://www.hiascend.com/developer/hidevlab" target="_blank">
+        <a class="floor-res-card" href="#" onclick="event.preventDefault();openEmptySandbox()">
           <div class="floor-res-icon">🧪</div>
           <div class="floor-res-title">HiDevLab 真机调试</div>
           <div class="floor-res-desc">免费使用昇腾 NPU 真实环境，在线运行代码</div>
@@ -1847,70 +2089,82 @@
   </div>
 
   <!-- FEATURES -->
+  <div style="border-top: 1px solid var(--border);">
   <div class="section">
     <div class="section-label">核心能力</div>
     <div class="section-title">为 AI 开发者<br>精心设计的工具链</div>
     <p class="section-desc">从算子开发到大模型推理，CANN 提供完整的异构计算编程框架，让开发者专注于业务创新。</p>
     <div class="features-grid">
       <div class="feature-card">
-        <div class="feature-icon">⚡</div>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
         <div class="feature-title">AscendCL 编程接口</div>
         <p class="feature-desc">统一的 C/C++ 编程接口，直接调用昇腾 NPU 的计算资源，实现极致性能。</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">🔧</div>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
         <div class="feature-title">TBE 算子开发</div>
         <p class="feature-desc">Tensor Boost Engine 提供 DSL 和 TIK 两种算子开发方式，轻松实现自定义算子。</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">🤖</div>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 7h.01M11 7h6M7 11h2m2 0h4"/></svg>
+        </div>
         <div class="feature-title">MindSpore 深度集成</div>
         <p class="feature-desc">与 MindSpore 框架深度融合，同时支持 PyTorch / TensorFlow 等主流框架。</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">🚀</div>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/></svg>
+        </div>
         <div class="feature-title">模型转换与优化</div>
         <p class="feature-desc">ATC 工具将训练模型转换为昇腾离线模型（.om），自动进行算子融合与优化。</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">📊</div>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
         <div class="feature-title">性能调优工具</div>
         <p class="feature-desc">Profiling 工具链提供细粒度的 NPU 性能分析，快速定位性能瓶颈。</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">🌐</div>
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="8" x2="5" y2="16"/><line x1="12" y1="8" x2="19" y2="16"/></svg>
+        </div>
         <div class="feature-title">分布式训练支持</div>
         <p class="feature-desc">HCCL 通信库支持昇腾集群训练，助力千亿参数大模型分布式训练。</p>
       </div>
     </div>
   </div>
+  </div><!-- end features border wrapper -->
 
-  <div style="background: var(--surface2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 40px; margin-top: 60px;">
-    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
+  <div class="ai-demo-banner">
+    <div class="ai-demo-inner">
       <div>
         <div class="section-label">智能文档助手</div>
-        <div class="section-title" style="font-size: 32px;">用自然语言<br>探索 CANN 文档</div>
-        <p class="section-desc" style="margin-bottom: 24px;">内置 AI 助手，直接提问即可获得精准的 API 说明、代码示例和最佳实践。</p>
+        <div class="section-title">用自然语言<br>探索 CANN 文档</div>
+        <p class="section-desc">内置 AI 助手，直接提问即可获得精准的 API 说明、代码示例和最佳实践。</p>
         <button class="btn-lg btn-black" onclick="showPage('docs')">打开文档</button>
       </div>
       <div>
-        <div class="ai-search-bar" style="margin: 0 0 16px; border-width: 1px;">
-          <span style="font-size: 18px; color: var(--black);">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--black)"/>
-              <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z" fill="var(--black)"/>
-            </svg>
-          </span>
+        <div class="ai-search-bar ai-demo-search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--black)"/>
+            <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z" fill="var(--black)"/>
+          </svg>
           <input type="text" id="home-ai-input" placeholder="如何使用 AscendCL 初始化设备？">
           <button class="ai-search-btn" onclick="homeAiSearch()">提问</button>
         </div>
         <div id="home-ai-result" class="ai-result">
           <strong>初始化 AscendCL 设备的步骤：</strong><br><br>
-          1. 调用 <code style="background: var(--surface2); color: var(--black); padding: 2px 6px; border-radius: 4px; font-family: var(--mono); font-size: 12px; border: 1px solid var(--border);">acl.init()</code> 完成运行时初始化<br>
-          2. 调用 <code style="background: var(--surface2); color: var(--black); padding: 2px 6px; border-radius: 4px; font-family: var(--mono); font-size: 12px; border: 1px solid var(--border);">acl.rt.set_device(device_id)</code> 指定设备<br>
+          1. 调用 <code>acl.init()</code> 完成运行时初始化<br>
+          2. 调用 <code>acl.rt.set_device(device_id)</code> 指定设备<br>
           3. 创建 Context 上下文以隔离执行环境<br>
           4. 创建 Stream 流以管理异步任务队列<br><br>
-          查看 <a href="#" onclick="showPage('docs')" style="color: var(--black); font-weight: 700;">完整初始化指南 →</a>
+          查看 <a href="#" onclick="showPage('docs')" class="ai-result-link">完整初始化指南 →</a>
         </div>
       </div>
     </div>
@@ -3060,67 +3314,525 @@
     }, 1500);
   }
 
-  // Node Detail Drawer
-  function openNodeDrawer(node) {
-    const drawer = document.getElementById('node-drawer');
-    const title = document.getElementById('drawer-title');
-    const content = document.getElementById('drawer-content');
+  // ── NODE KNOWLEDGE DATA ──
+  const NODE_KNOWLEDGE = {
+    '昇腾硬件体系': {
+      summary: '昇腾 AI 处理器基于达芬奇（Da Vinci）架构，由多个 AI Core 并行工作，每个 AI Core 集成矩阵、向量和标量三种计算单元，通过 HBM 高带宽内存实现 900GB/s 的数据访问速度，是高性能 NPU 推理与训练的硬件基础。',
+      concepts: [
+        { term: 'Da Vinci 架构', desc: '昇腾专属神经网络计算架构，包含 Cube 单元（矩阵乘法加速）、Vector 单元（向量运算）和 Scalar 单元（标量控制流），三者协同实现极致 AI 算力' },
+        { term: 'AI Core', desc: '基本计算单元，每个 AI Core 独立完成一个 tile 级计算任务，多个 AI Core 并行工作。910B 有 64 个 AI Core，峰值算力达 320 TFLOPS（FP16）' },
+        { term: 'HBM 高带宽内存', desc: '位于处理器旁侧的高带宽内存（High Bandwidth Memory），提供约 900 GB/s 带宽，相比 DDR 内存高出 10 倍以上，是 AI 计算带宽密集型特点的关键匹配' },
+        { term: 'L0/L1/L2 缓存层次', desc: 'L0 Buffer 在 AI Core 内部（最快），L1 Cache 在 AI Core 间共享，L2 Cache 供全芯片共用。合理利用缓存层次是性能优化的核心手段' },
+        { term: 'Ascend 910 vs 310', desc: '910 系列面向大规模训练（服务器集群），算力强且带宽高；310 系列面向边缘推理（功耗低、体积小），常用于摄像头、车载等场景' },
+      ],
+      diagram: `          ┌────────────── 昇腾处理器（910B）──────────────┐
+          │  AI Core×64                               │
+          │  ┌──────────┐  ┌──────────┐              │
+          │  │ Cube单元  │  │ Vector   │  × 64       │
+          │  │ (矩阵乘) │  │  单元    │             │
+          │  └──────────┘  └──────────┘              │
+          │         ↕  L0 Buffer ↕                   │
+          │  ─────────── L1 Cache ───────────        │
+          │  ─────────── L2 Cache ───────────        │
+          │                                          │
+          │  AI CPU (控制调度)   HBM (~900 GB/s)      │
+          └──────────────────────────────────────────┘`,
+      resources: [
+        { icon: '📖', title: '昇腾 AI 处理器架构白皮书', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: '达芬奇架构完整技术说明' },
+        { icon: '🎬', title: '达芬奇架构深度解析', href: '#', type: '视频课程', subtitle: '约 45 分钟，华为工程师讲解' },
+        { icon: '📄', title: 'Ascend 910 规格对比表', href: '#', type: '参考资料', subtitle: '910A/910B/910C 参数对比' },
+      ]
+    },
+    'CANN 软件栈概览': {
+      summary: 'CANN 是一个完整的异构计算软件栈，从底层驱动到上层框架适配形成完整的纵向分层，开发者通常只需关注 AscendCL 编程接口层，而不必了解底层细节。',
+      concepts: [
+        { term: '驱动层（Driver）', desc: '最底层，直接与硬件交互，管理昇腾处理器的初始化、内存映射和中断。由华为提供，开发者无需修改' },
+        { term: 'CANN Runtime', desc: '运行时层，提供设备管理、内存分配、Stream/Context 管理等核心服务。AscendCL 的底层支撑' },
+        { term: 'AscendCL', desc: '主要编程接口层（C/C++ API），开发者通过它控制设备、加载模型、执行推理。类比 CUDA 之于 NVIDIA' },
+        { term: '算子库（CANN Ops）', desc: '内置高性能算子库，包含数千个 AI 算子的优化实现，ATC 转换后的模型会自动调用这些算子' },
+        { term: '框架适配层', desc: '使 PyTorch、TensorFlow、MindSpore 等框架能透明地调用昇腾 NPU，开发者可以用熟悉的框架直接跑在昇腾上' },
+        { term: 'ATC 工具', desc: '模型转换工具，将训练好的 ONNX/Caffe/TF 模型转换为昇腾专用的 .om 离线模型格式，并进行算子融合优化' },
+      ],
+      diagram: `  用户代码 / 框架（PyTorch, TF, MindSpore）
+      ↕  框架适配层（CANN Plugin）
+  ┌─────────────────────────────────────┐
+  │         AscendCL 编程接口            │  ← 主要开发层
+  ├─────────────────────────────────────┤
+  │   CANN Runtime  |  算子库(Ops)       │
+  ├─────────────────────────────────────┤
+  │         NPU 驱动（Driver）           │
+  └─────────────────────────────────────┘
+              ↕ 硬件
+         昇腾 NPU（Da Vinci）`,
+      resources: [
+        { icon: '📖', title: 'CANN 软件栈介绍', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: '完整的组件关系说明' },
+        { icon: '📖', title: 'AscendCL 编程指南', href: '#', type: '开发指南', subtitle: '从 Hello World 开始' },
+      ]
+    },
+    '环境安装与配置': {
+      summary: 'CANN 开发环境的安装分为驱动（Driver）和工具链（Toolkit）两个独立包。驱动版本须与 CANN 版本严格匹配，版本不匹配是最常见的安装报错来源。',
+      concepts: [
+        { term: 'NPU 固件 + 驱动', desc: '最底层的硬件支撑，需以 root 权限安装。每个 CANN 大版本都有严格对应的驱动版本号，混用必报错' },
+        { term: 'CANN Toolkit', desc: '包含 ATC、AscendCL 头文件/库、性能工具等的完整工具包，安装后需 source set_env.sh 激活环境变量' },
+        { term: 'set_env.sh', desc: '安装目录下的环境变量配置脚本，每次新 shell 都需执行。建议加到 ~/.bashrc 自动生效，否则 acl 库找不到' },
+        { term: 'Python 绑定（pyACL）', desc: 'Python 调用 AscendCL 的封装层，pip install acl 安装。与 Toolkit 版本绑定，请勿混用' },
+        { term: 'Docker 镜像方案', desc: '推荐开发时使用官方 ascend-toolkit Docker 镜像，已预装驱动适配层和 CANN，避免复杂的本地环境问题' },
+      ],
+      code: {
+        lang: 'bash',
+        body: `# 1. 验证驱动已安装
+npu-smi info
 
-    title.textContent = node.querySelector('.rm-node-title').textContent;
-    content.innerHTML = `
-      <p>${node.querySelector('.rm-desc').textContent}</p>
-      <h3>资源</h3>
-      <ul>
-        ${Array.from(node.querySelectorAll('.rm-resources .rm-res-item')).map(item => `
-          <li>
-            <span class="rm-res-icon">${item.querySelector('.rm-res-icon').innerHTML}</span>
-            <a href="${item.querySelector('.rm-res-link').href}" target="_blank">${item.querySelector('.rm-res-link').textContent}</a>
-            <span class="rm-res-type">${item.querySelector('.rm-res-type').textContent}</span>
-          </li>
-        `).join('')}
-      </ul>
-    `;
-    drawer.classList.add('open');
+# 2. 安装 CANN Toolkit（示例：8.0版本）
+chmod +x Ascend-cann-toolkit_8.0.0_linux-x86_64.run
+./Ascend-cann-toolkit_8.0.0_linux-x86_64.run --install
+
+# 3. 激活环境变量（每次新 shell 必须执行）
+source /usr/local/Ascend/ascend-toolkit/set_env.sh
+
+# 4. 验证安装
+python3 -c "import acl; print(acl.__version__)"`,
+        note: '注意：Driver 和 Toolkit 需分开安装，且版本号必须严格匹配。推荐查阅官方版本兼容矩阵后再安装。'
+      },
+      resources: [
+        { icon: '📖', title: 'CANN 安装指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: '含版本兼容矩阵' },
+        { icon: '🐳', title: '官方 Docker 镜像（AscendHub）', href: 'https://ascendhub.huawei.com/', type: 'Docker', subtitle: '开箱即用的开发环境' },
+        { icon: '📦', title: 'CANN Toolkit 下载', href: 'https://www.hiascend.com/developer/download', type: '下载', subtitle: '选择对应版本和硬件平台' },
+      ]
+    },
+    'AscendCL 编程基础': {
+      summary: 'AscendCL 是调用昇腾 NPU 的核心 C/C++ API，遵循"初始化 → 分配设备 → 创建上下文 → 创建流 → 执行计算 → 销毁资源"的固定生命周期，每一步的错误码返回值都必须检查。',
+      concepts: [
+        { term: 'acl.init() / aclInit()', desc: '全局初始化，进程生命周期内只需调用一次，必须最先调用。传入 None/nullptr 使用默认配置即可' },
+        { term: 'Device（设备）', desc: '物理昇腾 NPU 卡。setDevice 绑定当前线程到指定卡，多卡推理时每线程绑不同 device_id' },
+        { term: 'Context（上下文）', desc: '隔离执行环境，类似 CUDA context。每个线程通常创建独立 Context，Context 之间资源互不干扰' },
+        { term: 'Stream（流）', desc: '任务队列，Host 把 kernel/内存拷贝等任务提交到 Stream，NPU 异步执行。同 Stream 内任务串行，不同 Stream 可并行' },
+        { term: '内存管理', desc: 'aclrtMalloc 在 Device 侧分配显存，aclrtMemcpy 在 Host↔Device 间搬运数据。完成后必须 aclrtFree，否则内存泄漏' },
+      ],
+      code: {
+        lang: 'python',
+        body: `import acl
+
+# 1. 初始化
+acl.init()
+
+# 2. 指定设备（第 0 块 NPU）
+acl.rt.set_device(0)
+
+# 3. 创建 Context 和 Stream
+context, ret = acl.rt.create_context(0)
+stream, ret  = acl.rt.create_stream()
+
+# 4. 分配设备内存（1MB）
+ptr, ret = acl.rt.malloc(1024*1024, 0)
+
+# 5. Host → Device 数据拷贝
+import numpy as np
+data = np.ones((256,), dtype=np.float32)
+acl.rt.memcpy(ptr, data.nbytes, data.ctypes.data, data.nbytes, 1)
+
+# --- 在此插入推理逻辑 ---
+
+# 6. 释放资源（顺序相反）
+acl.rt.free(ptr)
+acl.rt.destroy_stream(stream)
+acl.rt.destroy_context(context)
+acl.rt.reset_device(0)
+acl.finalize()`,
+        note: '每个 AscendCL API 都返回错误码，0 表示成功。生产代码中应对每步返回值做断言检查（assert ret == 0）。'
+      },
+      resources: [
+        { icon: '📖', title: 'AscendCL Python API 参考', href: '#', type: '官方文档', subtitle: '完整 API 列表和参数说明' },
+        { icon: '💻', title: 'AscendCL 示例代码仓', href: 'https://gitee.com/ascend/samples', type: 'Gitee', subtitle: '设备初始化、内存管理完整示例' },
+      ]
+    },
+    '模型推理部署': {
+      summary: '昇腾推理的核心流程是：用 ATC 工具将 ONNX/Caffe/PB 模型转换为 .om 离线模型，再通过 AscendCL 的 Model 接口加载执行。.om 格式已内嵌算子融合优化，无需运行时再编译。',
+      concepts: [
+        { term: 'ATC 工具', desc: '离线模型转换工具，将 ONNX/Caffe/TF 等格式转为昇腾专属 .om 格式。转换时可指定输入 shape、精度（FP16/INT8）、算子融合策略' },
+        { term: '.om 模型格式', desc: '昇腾离线模型，包含算子描述、权重数据和调度信息。已内嵌 NPU 指令，运行时直接加载执行无需再编译' },
+        { term: 'aclmdlLoadFromFile', desc: '将 .om 文件从磁盘加载进显存，返回 modelId。一次加载可多次推理，避免重复加载的 I/O 开销' },
+        { term: 'Dataset / DataBuffer', desc: 'AscendCL 的数据集抽象，每次推理需构造输入 Dataset（含预处理后的 tensor），推理完读取输出 Dataset' },
+        { term: '动态 shape 推理', desc: '对可变输入尺寸（如 NLP 可变序列长度），ATC 转换时需使用 --input_shape_range，推理时每次指定实际 shape' },
+      ],
+      code: {
+        lang: 'python',
+        body: `import acl, numpy as np
+
+acl.init(); acl.rt.set_device(0)
+ctx, _ = acl.rt.create_context(0)
+
+# 加载 .om 模型
+model_id, ret = acl.mdl.load_from_file("resnet50.om")
+desc = acl.mdl.create_desc()
+acl.mdl.get_desc(desc, model_id)
+
+# 构造输入（假设单输入 1×3×224×224）
+input_data = np.random.randn(1,3,224,224).astype(np.float32)
+in_buf, _ = acl.rt.malloc(input_data.nbytes, 0)
+acl.rt.memcpy(in_buf, input_data.nbytes,
+              input_data.ctypes.data, input_data.nbytes, 1)
+
+# 执行推理
+dataset_in  = acl.mdl.create_dataset()
+dataset_out = acl.mdl.create_dataset()
+# （省略 add_dataset_buffer 步骤）
+acl.mdl.execute(model_id, dataset_in, dataset_out)
+
+# 读取结果（1000 类 logits）
+# ...
+
+acl.mdl.unload(model_id)
+acl.rt.free(in_buf)`,
+        note: '实际工程中推荐使用 MindX SDK 或 ACLite 封装，避免手动管理 Dataset/DataBuffer 的繁琐步骤。'
+      },
+      resources: [
+        { icon: '📖', title: 'ATC 模型转换指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: '含 ONNX/Caffe/TF 各格式示例' },
+        { icon: '🎬', title: 'ResNet50 推理实战', href: '#', type: '视频', subtitle: '从转换到部署完整流程' },
+        { icon: '💻', title: '推理示例代码仓', href: 'https://gitee.com/ascend/samples', type: 'Gitee', subtitle: '分类/检测/分割多任务示例' },
+      ]
+    },
+    '数据预处理 (DVPP)': {
+      summary: 'DVPP（Digital Vision Pre-Processing）是昇腾内置的硬件图像处理单元，负责高性能的图片解码/编码、缩放、裁剪等操作，绕过 CPU 直接将处理结果送入 NPU，避免 Host↔Device 反复拷贝。',
+      concepts: [
+        { term: 'DVPP 硬件单元', desc: '独立于 AI Core 的专用图像处理硬件，支持 JPEG/PNG 解码、H.264/H.265 视频解码、图像缩放/剪裁/色彩转换（RGB/YUV）' },
+        { term: 'acldvppCreateChannel', desc: '创建 DVPP 通道，类似 AscendCL 的 Stream 概念，所有 DVPP 操作提交到通道中异步执行' },
+        { term: 'VPC（Vision Process Core）', desc: 'DVPP 中负责图像缩放、格式转换的模块，常用于将任意尺寸图像 resize 到模型要求的固定尺寸' },
+        { term: '内存对齐要求', desc: 'DVPP 处理的数据有严格内存对齐要求（宽度16对齐、高度2对齐），不满足时需补 padding，是常见踩坑点' },
+        { term: 'ACL DVPP vs OpenCV', desc: 'DVPP 直接在 NPU 侧处理图像效率更高；OpenCV 在 Host CPU 上运行，需额外数据拷贝。大批量图片处理推荐 DVPP' },
+      ],
+      resources: [
+        { icon: '📖', title: 'DVPP API 文档', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: 'VPC/VENC/VDEC 完整 API' },
+        { icon: '💻', title: 'DVPP 图像处理示例', href: 'https://gitee.com/ascend/samples', type: 'Gitee', subtitle: 'JPEG 解码+resize 完整代码' },
+      ]
+    },
+    '性能调优实战': {
+      summary: '昇腾性能调优的主要工具是 Profiling，它能精确测量每个算子的耗时、NPU 利用率、内存带宽占用，找到真正的性能瓶颈，而不是凭感觉优化。常见瓶颈是数据排布不合理和访存效率低。',
+      concepts: [
+        { term: 'Profiling 工具', desc: '采集算子级执行时间、AI Core 利用率、HBM 带宽等指标。通过 msprof 命令行或 MindStudio 可视化分析，精确定位热点算子' },
+        { term: 'AI Core 利用率', desc: '目标通常是 >80%。低利用率说明算子计算量不足（shape 太小）或存在访存瓶颈，需增大 batch size 或优化数据排布' },
+        { term: '数据排布（Format）', desc: 'AI Core 最优排布是 NC1HWC0（C维分块16），而非普通 NCHW。ATC 转换时自动处理，但自定义算子需手动适配' },
+        { term: '算子融合', desc: '将多个连续算子合并成一个，减少 HBM 读写次数。ATC 自动执行基础融合，也可自定义图融合规则进一步优化' },
+        { term: 'Tiling 策略', desc: '将大 tensor 切成小块，使每块数据能完全驻留在 L1 Buffer 中，避免频繁访问 HBM。TIK 开发需要手动设计 tiling' },
+      ],
+      resources: [
+        { icon: '📖', title: '性能调优指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: 'Profiling 采集与分析全流程' },
+        { icon: '🛠️', title: 'MindStudio 性能分析工具', href: '#', type: '工具', subtitle: '图形化 profiling 报告可视化' },
+      ]
+    },
+    'TBE DSL 算子开发': {
+      summary: 'TBE DSL（Tensor Boost Engine Domain-Specific Language）是昇腾提供的高层算子开发方式，用 Python 描述计算逻辑，由编译器自动生成底层 NPU 指令。适合快速开发常规算子，无需了解 AI Core 底层细节。',
+      concepts: [
+        { term: 'compute 函数', desc: '描述算子的计算逻辑，使用 tvm.compute 定义 tensor 操作（add/mul/matmul 等），编译器据此生成 NPU 代码' },
+        { term: 'schedule 策略', desc: '指定计算的调度方式（tiling、并行、流水线），直接影响性能。CANN 提供 auto_schedule 可自动选取最优调度' },
+        { term: '算子注册', desc: '算子开发完成后需注册到 CANN 算子库，之后 ATC 模型转换和 AscendCL 推理均可自动调用' },
+        { term: 'op_select_format', desc: '指定算子支持的输入/输出数据格式和数据类型，框架根据此信息选择合适的格式做数据预处理' },
+        { term: 'UT/ST 测试', desc: 'Unit Test（单元测试）验证算子计算正确性；System Test（系统测试）在真实昇腾硬件上验证性能' },
+      ],
+      code: {
+        lang: 'python',
+        body: `# TBE DSL 示例：自定义 LeakyReLU 算子
+import tbe
+from tbe import tvm
+from tbe.common.utils import para_check
+
+@para_check.check_op_params(para_check.REQUIRED_INPUT,
+                             para_check.REQUIRED_OUTPUT,
+                             para_check.OPTION_ATTR_FLOAT,
+                             para_check.KERNEL_NAME)
+def leaky_relu(x, y, negative_slope=0.2, kernel_name="leaky_relu"):
+    shape = x.get("shape")
+    dtype = x.get("dtype").lower()
+
+    data = tvm.placeholder(shape, name="data", dtype=dtype)
+
+    # 计算逻辑：x > 0 ? x : slope * x
+    res = tbe.vsub(data, tbe.vmuls(tbe.vmin(data,
+                   tvm.const(0, dtype)), negative_slope))
+
+    with tvm.target.cce():
+        sch = tbe.auto_schedule(res)
+
+    config = {"name": kernel_name, "tensor_list": [data, res]}
+    tbe.build(sch, config)`,
+        note: 'DSL 开发完成后通过 op_ut.py 进行单元测试，验证通过后 ATC 模型转换时可自动调用该算子。'
+      },
+      resources: [
+        { icon: '📖', title: 'TBE DSL 算子开发指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: '完整 API 和开发流程' },
+        { icon: '💻', title: '算子开发示例仓', href: 'https://gitee.com/ascend/samples', type: 'Gitee', subtitle: '各类 DSL 算子参考实现' },
+      ]
+    },
+    'TIK 底层算子开发': {
+      summary: 'TIK（Tensor Iterator Kernel）是 TBE 的底层接口，允许开发者精细控制 AI Core 内的数据搬移（DMA）和计算指令（矩阵乘/向量运算），可达到理论峰值性能的 95% 以上，但开发难度也相应更高。',
+      concepts: [
+        { term: 'TIK Instance', desc: 'tik.Tik() 创建的编程对象，所有 TIK 操作均通过它发出。相当于一个 AI Core 的"汇编器"' },
+        { term: 'Tensor 声明', desc: '显式声明各级存储（HBM/L1/UB）上的 tensor，开发者完全控制数据在存储层次间的移动' },
+        { term: 'data_move（DMA 搬移）', desc: '将数据从 HBM 搬到 L1/UB（称为 load），或从 UB 写回 HBM（称为 store）。DMA 传输是 TIK 性能优化的核心' },
+        { term: 'vec_add/vec_mul/mmad', desc: 'TIK 的向量运算和矩阵乘法原语，直接映射到 AI Core 的 Vector/Cube 单元指令，无编译器抽象层' },
+        { term: 'Tiling 设计', desc: '手动将输入 tensor 切分成能装入 L1 Buffer（512KB）的小块（tile），设计循环结构使数据流水不中断，是 TIK 开发最核心的工作' },
+      ],
+      code: {
+        lang: 'python',
+        body: `from te import tik
+
+def vector_add_tik(shape, dtype, kernel_name):
+    tik_inst = tik.Tik()
+
+    # 声明输入/输出 tensor（在 HBM 上）
+    a = tik_inst.Tensor(dtype, shape, tik.scope_gm, "a")
+    b = tik_inst.Tensor(dtype, shape, tik.scope_gm, "b")
+    c = tik_inst.Tensor(dtype, shape, tik.scope_gm, "c")
+
+    # 声明 UB（Unified Buffer）上的临时 tensor
+    a_ub = tik_inst.Tensor(dtype, shape, tik.scope_ubuf, "a_ub")
+    b_ub = tik_inst.Tensor(dtype, shape, tik.scope_ubuf, "b_ub")
+    c_ub = tik_inst.Tensor(dtype, shape, tik.scope_ubuf, "c_ub")
+
+    # DMA：HBM → UB
+    tik_inst.data_move(a_ub, a, 0, 1, shape[0]//8, 0, 0)
+    tik_inst.data_move(b_ub, b, 0, 1, shape[0]//8, 0, 0)
+
+    # 向量加法
+    tik_inst.vec_add(64, c_ub, a_ub, b_ub, shape[0]//64, 8, 8, 8)
+
+    # DMA：UB → HBM
+    tik_inst.data_move(c, c_ub, 0, 1, shape[0]//8, 0, 0)
+
+    tik_inst.BuildCCE(kernel_name=kernel_name,
+                      inputs=[a, b], outputs=[c])`,
+        note: 'TIK 开发需要熟悉 AI Core 的存储层次（HBM→L1→UB）和各单元的处理宽度（如 vec_add 每次处理64个 float16）。'
+      },
+      resources: [
+        { icon: '📖', title: 'TIK 算子开发指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: 'data_move 和计算原语完整参考' },
+        { icon: '📖', title: 'AI Core 编程模型', href: '#', type: '技术文章', subtitle: '存储层次与计算单元详解' },
+      ]
+    },
+    'HCCL 分布式通信': {
+      summary: 'HCCL（Huawei Collective Communication Library）是昇腾的集合通信库，基于物理网络（NVLink 级别的 HCCS 高速互联）提供 AllReduce、AllGather 等分布式训练必需的通信原语，接口与 NCCL 基本兼容。',
+      concepts: [
+        { term: 'Rank / WorldSize', desc: 'Rank 是分布式训练中每个进程的唯一编号（0 到 N-1），WorldSize 是总进程数（通常 = NPU 卡数）' },
+        { term: 'AllReduce', desc: '将所有 Rank 的梯度张量求和（或取平均）后广播给所有 Rank，是数据并行训练的核心通信操作' },
+        { term: 'AllGather', desc: '将每个 Rank 的局部 tensor 拼接成完整 tensor 并广播给所有 Rank，常用于张量并行（模型并行）' },
+        { term: 'ReduceScatter', desc: 'AllReduce = ReduceScatter + AllGather，分开使用可配合 ZeRO 优化器减少单卡显存占用' },
+        { term: 'rank_table_file', desc: 'JSON 格式的集群配置文件，描述每张卡的 IP、port、device_id，HCCL 据此建立通信拓扑，配错是分布式训练起不来的首要原因' },
+      ],
+      resources: [
+        { icon: '📖', title: 'HCCL 配置与使用指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: 'rank_table 格式和 API 说明' },
+        { icon: '💻', title: 'HCCL 分布式训练示例', href: 'https://gitee.com/ascend/samples', type: 'Gitee', subtitle: '2卡/8卡 AllReduce 完整示例' },
+      ]
+    },
+    '大模型训练实战': {
+      summary: '在昇腾集群上训练千亿参数大模型，需要同时使用数据并行（DP）、张量并行（TP）和流水线并行（PP）三种并行策略，并借助 MindSpore Transformers（MindFormers）框架简化工程实现。',
+      concepts: [
+        { term: '数据并行（DP）', desc: '每卡持有模型完整副本，处理不同数据 batch，梯度通过 HCCL AllReduce 聚合。最简单的并行方式，适合模型能放进单卡显存时' },
+        { term: '张量并行（TP）', desc: '将模型的权重矩阵按列/行切分到多卡，适合超大 Linear 层。昇腾上使用 HCCL AllGather/ReduceScatter 实现，通信量与层宽度成正比' },
+        { term: '流水线并行（PP）', desc: '将模型按层切分到多卡（如每8层一个 stage），不同 stage 流水处理不同 micro-batch，通过 send/recv 传递激活值' },
+        { term: 'MindFormers', desc: 'MindSpore 的大模型训练框架，内置 LLaMA/GPT/Baichuan 等主流架构，支持 LoRA/P-Tuning 微调，配置式启动减少工程代码' },
+        { term: 'ZeRO 优化器', desc: '将优化器状态、梯度、权重分片存储到不同卡，显著降低单卡显存占用，配合 TP+PP 可训练万亿参数模型' },
+      ],
+      resources: [
+        { icon: '🎬', title: '昇腾大模型训练系列课程', href: '#', type: '视频课程', subtitle: '约 6 小时，从理论到实战' },
+        { icon: '💻', title: 'MindSpore Transformers', href: 'https://gitee.com/mindspore/mindformers', type: 'Gitee', subtitle: 'LLaMA/GPT 等开箱即用配置' },
+        { icon: '📖', title: '昇腾大模型开发指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: '并行策略配置详解' },
+      ]
+    }
+  };
+
+  // ── DRAWER STATE ──
+  let _currentDrawerNode = null;
+  let _currentDrawerTab = 'knowledge';
+
+  // Node Detail Drawer
+  function openNodeDrawer(nodeEl) {
+    const title = nodeEl.querySelector('.rm-node-title').textContent.trim();
+    const isCompleted = nodeEl.classList.contains('completed');
+    const phaseColor = { beginner: '#10B981', developer: '#F59E0B', operator: '#8B5CF6', distributed: '#EF4444' };
+    const cat = nodeEl.dataset.category || 'beginner';
+
+    _currentDrawerNode = { title, el: nodeEl, category: cat };
+
+    document.getElementById('nd-title').textContent = title;
+    document.getElementById('nd-phase-dot').style.background = phaseColor[cat] || '#10B981';
+    const completeBtn = document.getElementById('nd-complete-btn');
+    completeBtn.textContent = isCompleted ? '已完成 ✓' : '标记完成';
+    completeBtn.className = 'nd-complete-btn' + (isCompleted ? ' done' : '');
+
+    // Reset AI strip
+    document.getElementById('nd-ai-input').value = '';
+    document.getElementById('nd-ai-response').classList.add('hidden');
+    document.querySelectorAll('.nd-ai-mode').forEach(b => b.classList.remove('active-mode'));
+
+    // Load first tab
+    _currentDrawerTab = 'knowledge';
+    document.querySelectorAll('.nd-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab === 'knowledge');
+    });
+    renderNdTab('knowledge', title);
+
+    document.getElementById('node-drawer').classList.add('open');
   }
 
   function closeNodeDrawer() {
     document.getElementById('node-drawer').classList.remove('open');
+    _currentDrawerNode = null;
   }
 
-  function askAiAboutNode() {
-    const nodeTitle = document.getElementById('drawer-title').textContent;
-    toggleAiChat();
-    sendAiMessage(`告诉我关于 "${nodeTitle}" 的信息`);
-    closeNodeDrawer();
+  function toggleNodeComplete() {
+    if (!_currentDrawerNode) return;
+    const el = _currentDrawerNode.el;
+    const isNowComplete = !el.classList.contains('completed');
+    el.classList.toggle('completed', isNowComplete);
+    const statusEl = el.querySelector('.rm-status');
+    if (statusEl) { statusEl.className = 'rm-status' + (isNowComplete ? ' done' : ''); statusEl.textContent = isNowComplete ? '✓' : ''; }
+    const btn = document.getElementById('nd-complete-btn');
+    btn.textContent = isNowComplete ? '已完成 ✓' : '标记完成';
+    btn.className = 'nd-complete-btn' + (isNowComplete ? ' done' : '');
   }
 
-  // Quiz Data (Example)
-  const quizData = [
-    {
-      question: "以下哪项是昇腾 AI 处理器的核心架构？",
-      options: ["GPU", "FPGA", "Da Vinci", "ARM"],
-      answer: "Da Vinci"
-    },
-    {
-      question: "CANN 软件栈中，负责模型转换的工具是？",
-      options: ["MsProf", "ATC", "HCCL", "DVPP"],
-      answer: "ATC"
-    },
-    {
-      question: "AscendCL 中，用于管理异步任务队列的机制是？",
-      options: ["Context", "Stream", "Event", "Device"],
-      answer: "Stream"
-    },
-    {
-      question: "在 TBE 开发中，TIK 接口的主要优势是？",
-      options: ["自动调度", "极致性能控制", "简单易用", "跨平台兼容"],
-      answer: "极致性能控制"
-    },
-    {
-      question: "昇腾 310 AI 处理器主要面向以下哪种场景？",
-      options: ["大模型训练", "边缘推理", "通用计算", "图形渲染"],
-      answer: "边缘推理"
+  function switchNdTab(tab, btn) {
+    _currentDrawerTab = tab;
+    document.querySelectorAll('.nd-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderNdTab(tab, _currentDrawerNode?.title);
+  }
+
+  function renderNdTab(tab, title) {
+    const body = document.getElementById('nd-body');
+    const k = NODE_KNOWLEDGE[title];
+    if (!k) {
+      body.innerHTML = `<p class="nd-summary">${_currentDrawerNode?.el?.querySelector('.rm-desc')?.textContent || '暂无内容'}</p>`;
+      return;
     }
+    if (tab === 'knowledge') {
+      const diagramHtml = k.diagram ? `<div class="nd-section-title">架构示意</div><div class="nd-diagram">${k.diagram}</div>` : '';
+      body.innerHTML = `
+        <div class="nd-summary">${k.summary}</div>
+        <div class="nd-section-title">核心概念</div>
+        <div class="nd-concepts">
+          ${k.concepts.map(c => `<div class="nd-concept"><div class="nd-concept-term">${c.term}</div><div class="nd-concept-desc">${c.desc}</div></div>`).join('')}
+        </div>
+        ${diagramHtml}`;
+    } else if (tab === 'code') {
+      if (k.code) {
+        body.innerHTML = `
+          <div class="nd-code-block">
+            <div class="nd-code-header">
+              <span class="nd-code-lang">${k.code.lang}</span>
+              <div class="nd-code-actions">
+                <button class="nd-code-btn" onclick="openEmptySandbox()">▶ 在 HiDevLab 运行</button>
+                <button class="nd-code-btn" onclick="ndCopyCode(this)">复制</button>
+              </div>
+            </div>
+            <div class="nd-code-body"><pre style="margin:0;white-space:pre-wrap;word-break:break-all;">${escHtml(k.code.body)}</pre></div>
+          </div>
+          <div class="nd-code-note">${k.code.note}</div>`;
+      } else {
+        body.innerHTML = `<div class="nd-summary" style="text-align:center;padding:40px 20px;color:var(--text-muted);">本节以概念理论为主，暂无独立代码示例。<br>可点击下方「代码示例」按钮让 AI 即时生成。</div>`;
+      }
+    } else if (tab === 'resources') {
+      const resList = (k.resources || []).map(r => `
+        <a class="nd-res-item" href="${r.href}" target="_blank">
+          <span class="nd-res-icon">${r.icon}</span>
+          <div class="nd-res-info">
+            <div class="nd-res-title">${r.title}</div>
+            ${r.subtitle ? `<div class="nd-res-subtitle">${r.subtitle}</div>` : ''}
+          </div>
+          <span class="nd-res-badge">${r.type}</span>
+        </a>`).join('');
+      body.innerHTML = `<div class="nd-res-list">${resList || '<p style="color:var(--text-muted);font-size:13px">暂无资源</p>'}</div>`;
+    }
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function ndCopyCode(btn) {
+    const code = btn.closest('.nd-code-block').querySelector('.nd-code-body pre').textContent;
+    navigator.clipboard.writeText(code).then(() => { btn.textContent = '已复制'; setTimeout(() => btn.textContent = '复制', 1500); });
+  }
+
+  // ── DRAWER AI ──
+  function prefillDrawerAI(btn, text) {
+    document.querySelectorAll('.nd-ai-mode').forEach(b => b.classList.remove('active-mode'));
+    btn.classList.add('active-mode');
+    const input = document.getElementById('nd-ai-input');
+    input.value = text;
+    input.focus();
+  }
+
+  async function sendDrawerAI() {
+    if (!_currentDrawerNode) return;
+    const input = document.getElementById('nd-ai-input');
+    const q = input.value.trim();
+    if (!q) return;
+    const resp = document.getElementById('nd-ai-response');
+    resp.classList.remove('hidden');
+    resp.innerHTML = '<div style="color:var(--text-muted);font-size:12px">AI 思考中…</div>';
+    input.value = '';
+    try {
+      const r = await fetch(AI_WORKER_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: `你是 CANN / 昇腾 AI 开发专家。用户正在学习"${_currentDrawerNode.title}"这个知识点，请针对这个具体主题回答他的问题。回答要简洁、有深度，用中文，不超过250字，代码用\`inline\`格式。`,
+          user: q, max_tokens: 400
+        })
+      });
+      const data = await r.json();
+      resp.innerHTML = formatFloorText(data.text || '暂时无法获取回答，请稍后重试。');
+    } catch(e) {
+      resp.innerHTML = '<span style="color:#EF4444">连接失败，请稍后重试</span>';
+    }
+  }
+
+  async function testNodeKnowledge() {
+    if (!_currentDrawerNode) return;
+    const title = _currentDrawerNode.title;
+    const k = NODE_KNOWLEDGE[title];
+    const concepts = k ? k.concepts.map(c => c.term).join('、') : title;
+
+    const quizModal = document.getElementById('quiz-modal');
+    const quizQuestion = document.getElementById('quiz-question');
+    const quizOptions = document.getElementById('quiz-options');
+    const quizFeedback = document.getElementById('quiz-feedback');
+    quizFeedback.textContent = '';
+    quizQuestion.textContent = 'AI 正在生成题目…';
+    quizOptions.innerHTML = '';
+    quizModal.classList.add('open');
+
+    try {
+      const r = await fetch(AI_WORKER_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: `出一道关于"${title}"的单选题，涉及这些概念：${concepts}。
+格式（严格JSON）：{"question":"题目","options":["A选项","B选项","C选项","D选项"],"answer":"正确选项文字"}
+只输出JSON，不加任何其他内容。`,
+          user: `请出一道难度适中的测验题`, max_tokens: 250
+        })
+      });
+      const data = await r.json();
+      let quiz;
+      try { quiz = JSON.parse(data.text.replace(/```json|```/g,'').trim()); } catch(e) { throw new Error('解析失败'); }
+      currentQuizNode = quiz;
+      quizQuestion.textContent = quiz.question;
+      quizOptions.innerHTML = '';
+      quiz.options.forEach(opt => {
+        const label = document.createElement('label');
+        label.innerHTML = `<input type="radio" name="quiz-option" value="${opt}"> ${opt}`;
+        quizOptions.appendChild(label);
+      });
+    } catch(e) {
+      // Fallback to static quiz
+      testKnowledge();
+    }
+  }
+
+  // Fallback static quiz
+  const quizData = [
+    { question: "以下哪项是昇腾 AI 处理器的核心架构？", options: ["GPU", "FPGA", "Da Vinci", "ARM"], answer: "Da Vinci" },
+    { question: "CANN 软件栈中，负责模型转换的工具是？", options: ["MsProf", "ATC", "HCCL", "DVPP"], answer: "ATC" },
+    { question: "AscendCL 中，用于管理异步任务队列的机制是？", options: ["Context", "Stream", "Event", "Device"], answer: "Stream" },
+    { question: "在 TBE 开发中，TIK 接口的主要优势是？", options: ["自动调度", "极致性能控制", "简单易用", "跨平台兼容"], answer: "极致性能控制" },
+    { question: "昇腾 310 AI 处理器主要面向以下哪种场景？", options: ["大模型训练", "边缘推理", "通用计算", "图形渲染"], answer: "边缘推理" }
   ];
   let currentQuizNode = null;
 
@@ -3129,8 +3841,7 @@
     const quizQuestion = document.getElementById('quiz-question');
     const quizOptions = document.getElementById('quiz-options');
     const quizFeedback = document.getElementById('quiz-feedback');
-
-    currentQuizNode = quizData[Math.floor(Math.random() * quizData.length)]; // Select a random quiz
+    currentQuizNode = quizData[Math.floor(Math.random() * quizData.length)];
     quizQuestion.textContent = currentQuizNode.question;
     quizOptions.innerHTML = '';
     currentQuizNode.options.forEach(option => {
@@ -3150,23 +3861,16 @@
     const selectedOption = document.querySelector('input[name="quiz-option"]:checked');
     const quizFeedback = document.getElementById('quiz-feedback');
     const submitBtn = document.getElementById('quiz-submit');
-    
     if (selectedOption) {
       if (selectedOption.value === currentQuizNode.answer) {
         quizFeedback.textContent = '🎉 回答正确！太棒了！';
         quizFeedback.style.color = '#16A34A';
         submitBtn.style.background = '#16A34A';
         submitBtn.textContent = '完成';
-        setTimeout(() => {
-          closeQuizModal();
-          // Reset button for next time
-          submitBtn.style.background = '';
-          submitBtn.textContent = '提交';
-        }, 2000);
+        setTimeout(() => { closeQuizModal(); submitBtn.style.background = ''; submitBtn.textContent = '提交'; }, 2000);
       } else {
         quizFeedback.textContent = `❌ 回答错误。正确答案是：${currentQuizNode.answer}`;
         quizFeedback.style.color = '#EF4444';
-        // Add a small shake effect to the modal content if possible, but keep it simple for now
       }
     } else {
       quizFeedback.textContent = '⚠️ 请选择一个选项后再提交。';
@@ -3634,17 +4338,57 @@ ${courseList}
   }
 
   // ── TEXT FORMATTER ──
+  function copyBlockCode(btn) {
+    const code = btn.closest('.ai-code-block').querySelector('code').innerText;
+    navigator.clipboard.writeText(code).then(() => { btn.textContent = '已复制'; setTimeout(() => btn.textContent = '复制', 1500); });
+  }
+
+  function runInSandbox(btn) {
+    const code = btn.closest('.ai-code-block').querySelector('code').innerText;
+    const form = document.createElement('form');
+    form.method = 'POST'; form.action = 'https://tio.run/#python3'; form.target = '_blank';
+    const input = document.createElement('input');
+    input.type = 'hidden'; input.name = 'code'; input.value = code;
+    form.appendChild(input); document.body.appendChild(form); form.submit();
+    document.body.removeChild(form);
+  }
+
   function formatFloorText(text) {
-    return '<div style="line-height:1.8">' +
-      text
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-        .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+    const escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+    // detect fenced code blocks ```lang\n...\n```
+    const parts = escaped.split(/(```[\s\S]*?```)/g);
+    const processed = parts.map(part => {
+      if (part.startsWith('```')) {
+        const match = part.match(/```(\w*)\n?([\s\S]*?)```/);
+        if (!match) return part;
+        const lang = (match[1] || '').toLowerCase();
+        const code = match[2].trimEnd();
+        const isShell = ['bash','sh','shell','zsh',''].includes(lang) || /^(pip|python|atc|apt|cd |ls |cat |export |chmod |\.\/|npx|npm|conda)/.test(code.trim());
+        const isRunnable = ['python','py','python3'].includes(lang);
+        const termStyle = isShell ? 'background:#1a1a2e;color:#a8ff78;' : 'background:#1e1e1e;color:#f8f8f2;';
+        const langLabel = lang || (isShell ? 'shell' : 'code');
+        return `<div class="ai-code-block" style="margin:10px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border)">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:#111;color:#aaa;font-size:11px;font-family:var(--mono)">
+            <span>${isShell ? '⬛ ' : ''}${langLabel}</span>
+            <span style="display:flex;gap:6px">
+              ${isRunnable ? `<button onclick="runInSandbox(this)" style="background:#2563eb;color:white;border:none;border-radius:5px;padding:2px 9px;cursor:pointer;font-size:11px">▶ 运行</button>` : ''}
+              <button onclick="copyBlockCode(this)" style="background:#333;color:#ddd;border:none;border-radius:5px;padding:2px 9px;cursor:pointer;font-size:11px">复制</button>
+            </span>
+          </div>
+          <pre style="${termStyle}margin:0;padding:12px 14px;overflow-x:auto;font-size:13px;font-family:var(--mono);line-height:1.6"><code>${code}</code></pre>
+        </div>`;
+      }
+      return part
+        .replace(/`([^`\n]+)`/g, '<code style="font-family:var(--mono);background:var(--surface2);padding:1px 5px;border-radius:4px;font-size:13px">$1</code>')
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
         .replace(/^(\d+)\.\s+/gm, (_, n) => `<br><strong>${n}.</strong> `)
         .replace(/^[-•]\s+/gm, '<br>• ')
         .replace(/\n\n/g, '<br><br>')
-        .replace(/\n/g, '<br>')
-      + '</div>';
+        .replace(/\n/g, '<br>');
+    }).join('');
+
+    return `<div style="line-height:1.8">${processed}</div>`;
   }
 
   // Compat: old selectSuggestTag calls
@@ -3947,137 +4691,194 @@ ${courseList}
     document.body.style.overflow = 'hidden';
   }
 
+  // ── HIDEVLAB NOTEBOOK ──
+  const NB_FILES = {
+    main: [
+      { id: 1, type: 'markdown', code: '# CANN 开发环境验证\n\n快速验证昇腾 NPU 环境是否就绪。', output: '' },
+      { id: 2, type: 'code', code: '# 检查 CANN 环境\nimport acl\n\nret = acl.init()\nassert ret == 0, f"ACL init failed: {ret}"\nret = acl.rt.set_device(0)\nprint("✓ ACL 初始化成功")\nprint(f"设备 0 已绑定")', output: '' },
+      { id: 3, type: 'code', code: '# 检查 NPU 信息\nimport subprocess\nresult = subprocess.run(["npu-smi", "info"], capture_output=True, text=True)\nprint(result.stdout)', output: '' },
+    ],
+    inference: [
+      { id: 1, type: 'markdown', code: '# AscendCL 推理示例\n\n使用 `.om` 离线模型执行 ResNet50 推理。', output: '' },
+      { id: 2, type: 'code', code: 'import acl\nimport numpy as np\n\nret = acl.init()\nret = acl.rt.set_device(0)\nctx, ret = acl.rt.create_context(0)\nprint("✓ 运行时环境就绪")', output: '' },
+      { id: 3, type: 'code', code: '# 加载离线模型\nmodel_id, ret = acl.mdl.load_from_file("./models/resnet50.om")\ndesc = acl.mdl.create_desc()\nret = acl.mdl.get_desc(desc, model_id)\nprint(f"模型输入数量: {acl.mdl.get_num_inputs(desc)}")\nprint(f"模型输出数量: {acl.mdl.get_num_outputs(desc)}")', output: '' },
+    ],
+    operator: [
+      { id: 1, type: 'markdown', code: '# Ascend C 自定义算子开发\n\n使用 TBE DSL 开发一个 Add 算子。', output: '' },
+      { id: 2, type: 'code', code: 'import tbe\nfrom tbe import dsl\nprint("✓ TBE DSL 环境就绪")\nprint(f"TBE 版本: {tbe.__version__}")', output: '' },
+      { id: 3, type: 'code', code: '@op_info_register(add_op_info)\ndef add_compute(x, y, kernel_name="add"):\n    """Compute add"""\n    res = te.lang.cce.vadd(x["shape"], y["shape"])\n    return res\n\nprint("算子原型已注册")', output: '' },
+    ]
+  };
+  let nbCellCounter = 10;
+  let nbCurrentFile = 'main';
+  let nbMonitorInterval = null;
+
+  function simulateOutput(code) {
+    if (code.includes('acl.init')) return { out: '✓ ACL 初始化成功\n设备 0 已绑定\nDevice: Ascend 910B · CANN 8.0.RC2', type: 'success' };
+    if (code.includes('npu-smi')) return { out: '+------------------------+\n| NPU  910B4  OK  72.4W  42°C |\n+------------------------+', type: 'success' };
+    if (code.includes('pip install')) return { out: 'Collecting package...\nSuccessfully installed ✓', type: 'success' };
+    if (code.includes('load_from_file') || code.includes('.om')) return { out: '模型加载成功\n输入 shape: (1, 3, 224, 224)\n✓ 推理模型就绪', type: 'success' };
+    if (code.includes('tbe') || code.includes('dsl')) return { out: '✓ TBE DSL 环境就绪\nTBE 版本: 8.0.0', type: 'success' };
+    if (code.includes('print')) { const m = code.match(/print\(["'](.+?)["']\)/); return { out: m ? m[1] : '代码执行完成', type: 'success' }; }
+    return { out: '✓ Cell 执行完成  [' + new Date().toLocaleTimeString() + ']', type: 'success' };
+  }
+
+  function renderNbCells() {
+    const container = document.getElementById('nb-cells');
+    if (!container) return;
+    const cells = NB_FILES[nbCurrentFile] || [];
+    container.innerHTML = cells.map(cell => buildCellHtml(cell)).join('') + `<button class="nb-add-cell" onclick="nbNewCell()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>添加 Cell</button>`;
+  }
+
+  function buildCellHtml(cell) {
+    return `<div class="nb-cell" id="nb-cell-${cell.id}" onclick="activateCell(this)">
+      <div class="nb-cell-header">
+        <span class="nb-cell-num">[${cell.id}]</span>
+        <span class="nb-cell-type ${cell.type === 'markdown' ? 'markdown' : ''}">${cell.type === 'markdown' ? 'Markdown' : 'Code'}</span>
+        <div class="nb-cell-actions">
+          ${cell.type === 'code' ? `<button class="nb-cell-btn run-btn" onclick="runCell(event,${cell.id})">▶ 运行</button>` : ''}
+          <button class="nb-cell-btn" onclick="toggleCellType(event,${cell.id})">切换类型</button>
+          <button class="nb-cell-btn del-btn" onclick="deleteCell(event,${cell.id})">✕</button>
+        </div>
+      </div>
+      <div class="nb-cell-code" contenteditable="true" spellcheck="false" onkeydown="handleCellKey(event,${cell.id})">${escNb(cell.code)}</div>
+      ${cell.output ? `<div class="nb-cell-output visible ${cell.outputType || ''}">${escNb(cell.output)}</div>` : `<div class="nb-cell-output" id="nb-out-${cell.id}"></div>`}
+    </div>`;
+  }
+
+  function escNb(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function activateCell(el) {
+    document.querySelectorAll('.nb-cell').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function runCell(e, id) {
+    e.stopPropagation();
+    const cell = document.getElementById('nb-cell-' + id);
+    const outEl = cell.querySelector('.nb-cell-output');
+    const code = cell.querySelector('.nb-cell-code').innerText;
+    cell.classList.add('running');
+    outEl.textContent = '▶ 正在执行...'; outEl.className = 'nb-cell-output visible';
+    setNbStatus('running', '● 执行中'); animateMonitor(true);
+    setTimeout(() => {
+      const result = simulateOutput(code);
+      outEl.textContent = result.out; outEl.className = 'nb-cell-output visible ' + (result.type || '');
+      cell.classList.remove('running'); setNbStatus('idle', '● 空闲'); animateMonitor(false);
+    }, 800 + Math.random() * 600);
+  }
+
+  function nbRunAll() {
+    const cells = NB_FILES[nbCurrentFile] || [];
+    let delay = 0;
+    cells.forEach(cell => { if (cell.type === 'code') { setTimeout(() => runCell({ stopPropagation: () => {} }, cell.id), delay); delay += 1000; } });
+  }
+
+  function nbInterrupt() { setNbStatus('idle', '● 空闲（已中断）'); animateMonitor(false); document.querySelectorAll('.nb-cell.running').forEach(c => c.classList.remove('running')); showNbToast('内核已中断'); }
+
+  function nbRestart() {
+    if (!confirm('重启内核将清除所有变量，是否继续？')) return;
+    document.querySelectorAll('.nb-cell-output').forEach(o => { o.textContent = ''; o.className = 'nb-cell-output'; });
+    setNbStatus('idle', '● 空闲'); animateMonitor(false); showNbToast('内核已重启');
+  }
+
+  function nbSave() { const btn = document.getElementById('btn-nb-save'); btn.style.color = '#86EFAC'; showNbToast('已保存 ' + nbCurrentFile + '.ipynb'); setTimeout(() => { btn.style.color = ''; }, 1500); }
+
+  function nbNewCell() {
+    nbCellCounter++;
+    const cells = NB_FILES[nbCurrentFile] = NB_FILES[nbCurrentFile] || [];
+    cells.push({ id: nbCellCounter, type: 'code', code: '# 新 Cell\n', output: '' });
+    renderNbCells();
+    setTimeout(() => { const c = document.getElementById('nb-cell-' + nbCellCounter); if (c) { c.scrollIntoView({ behavior:'smooth', block:'nearest' }); activateCell(c); } }, 50);
+  }
+
+  function toggleCellType(e, id) { e.stopPropagation(); const cell = (NB_FILES[nbCurrentFile] || []).find(c => c.id === id); if (cell) { cell.type = cell.type === 'code' ? 'markdown' : 'code'; renderNbCells(); } }
+  function deleteCell(e, id) { e.stopPropagation(); NB_FILES[nbCurrentFile] = (NB_FILES[nbCurrentFile] || []).filter(c => c.id !== id); renderNbCells(); }
+  function handleCellKey(e, id) { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); runCell(e, id); } const cell = (NB_FILES[nbCurrentFile] || []).find(c => c.id === id); if (cell) cell.code = e.target.innerText; }
+  function loadNbFile(el, name) { document.querySelectorAll('.nb-file-item').forEach(f => f.classList.remove('active')); el.classList.add('active'); nbCurrentFile = name; renderNbCells(); }
+  function nbUploadFile() { showNbToast('上传文件（演示模式）'); }
+  function switchNbTab(tab, btn) { document.querySelectorAll('.nb-tab').forEach(t => t.classList.remove('active')); btn.classList.add('active'); document.querySelectorAll('.nb-panel').forEach(p => p.classList.remove('active')); document.getElementById('nb-panel-' + tab).classList.add('active'); }
+  function toggleKernelMenu(el) { el.classList.toggle('open'); document.addEventListener('click', function h(e) { if (!el.contains(e.target)) { el.classList.remove('open'); document.removeEventListener('click', h); } }); }
+  function selectKernel(el, name) { document.querySelectorAll('.nb-kernel-option').forEach(o => o.classList.remove('active')); el.classList.add('active'); document.getElementById('nb-kernel-name').textContent = name; document.querySelector('.nb-kernel-select').classList.remove('open'); showNbToast('已切换内核：' + name); }
+
+  function animateMonitor(active) {
+    if (active) {
+      if (nbMonitorInterval) return;
+      nbMonitorInterval = setInterval(() => {
+        const npu = 40 + Math.random() * 50, hbm = 20 + Math.random() * 30, cpu = 10 + Math.random() * 40;
+        setMonitorVal('npu', npu, npu.toFixed(0) + '%'); setMonitorVal('hbm', hbm, (hbm * 64 / 100).toFixed(1) + ' / 64GB'); setMonitorVal('cpu', cpu, cpu.toFixed(0) + '%');
+      }, 600);
+    } else { clearInterval(nbMonitorInterval); nbMonitorInterval = null; setMonitorVal('npu', 0, '0%'); setMonitorVal('hbm', 0, '0 / 64GB'); setMonitorVal('cpu', 0, '0%'); }
+  }
+
+  function setMonitorVal(id, pct, label) { const bar = document.getElementById('nb-' + id + '-bar'), val = document.getElementById('nb-' + id + '-val'); if (bar) bar.style.width = pct + '%'; if (val) val.textContent = label; }
+  function setNbStatus(state, text) { const el = document.getElementById('nb-status'); if (!el) return; el.textContent = text; el.className = 'nb-monitor-status' + (state === 'running' ? ' running' : ''); }
+
+  function showNbToast(msg) {
+    let t = document.getElementById('nb-toast');
+    if (!t) { t = document.createElement('div'); t.id = 'nb-toast'; t.style.cssText = 'position:fixed;bottom:640px;left:50%;transform:translateX(-50%);background:#1E293B;color:white;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;z-index:3000;border:1px solid rgba(255,255,255,0.1);pointer-events:none;transition:opacity 0.3s;'; document.body.appendChild(t); }
+    t.textContent = msg; t.style.opacity = '1'; clearTimeout(t._to); t._to = setTimeout(() => { t.style.opacity = '0'; }, 2000);
+  }
+
+  function handleTermInput(e) {
+    if (e.key !== 'Enter') return;
+    const input = document.getElementById('nb-term-input'), cmd = input.value.trim(); if (!cmd) return; input.value = '';
+    const terminal = document.getElementById('nb-terminal'), cursor = document.getElementById('term-cursor'), cursorLine = cursor?.closest('.nb-term-line');
+    const cmdLine = document.createElement('div'); cmdLine.className = 'nb-term-line'; cmdLine.innerHTML = `<span class="nb-term-prompt">ascend@hidevlab:~$</span> <span class="nb-term-output">${cmd.replace(/</g,'&lt;')}</span>`;
+    if (cursorLine) terminal.insertBefore(cmdLine, cursorLine); else terminal.appendChild(cmdLine);
+    const outputs = getTermOutput(cmd);
+    outputs.forEach(line => { const l = document.createElement('div'); l.className = 'nb-term-line nb-term-out'; l.textContent = line; if (cursorLine) terminal.insertBefore(l, cursorLine); else terminal.appendChild(l); });
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+
+  function getTermOutput(cmd) {
+    if (cmd === 'ls' || cmd === 'ls -la') return ['total 48','drwxr-xr-x  data/','drwxr-xr-x  models/','- rw-r--r--  main.ipynb','- rw-r--r--  inference.ipynb','- rw-r--r--  custom_op.ipynb','- rw-r--r--  resnet50.om'];
+    if (cmd.startsWith('npu-smi')) return ['+------------------------+','| NPU  910B4  OK  72.4W  42°C |','+------------------------+'];
+    if (cmd.includes('python') && cmd.includes('torch_npu')) return ['1'];
+    if (cmd.startsWith('pip install')) return [`Collecting ${cmd.split(' ')[2] || 'package'}...`,'Successfully installed ✓'];
+    if (cmd === 'pwd') return ['/home/ascend/workspace']; if (cmd === 'whoami') return ['ascend']; if (cmd.startsWith('cd')) return [];
+    if (cmd === 'clear') { document.getElementById('nb-terminal').innerHTML = '<div class="nb-term-line"><span class="nb-term-prompt">ascend@hidevlab:~$</span> <span id="term-cursor" class="nb-term-cursor"></span></div>'; return []; }
+    return [`bash: ${cmd}: command not found`];
+  }
+
   function openSandbox(btn) {
     const block = btn.closest('.code-block');
-    const langTag = block.querySelector('.lang-tag')?.textContent || 'CODE';
-    
-    // Extract code content - get all text except buttons
-    let codeHtml = '';
-    let codeText = '';
-    
-    // Get all child nodes except the buttons and lang tag
-    const childNodes = block.childNodes;
-    for (let node of childNodes) {
-      if (node.nodeType === Node.ELEMENT_NODE) {
-        // Skip buttons, lang-tag, and sandbox wrapper
-        if (node.classList && (
-          node.classList.contains('copy-btn') || 
-          node.classList.contains('lang-tag') ||
-          node.classList.contains('sandbox-btn-wrapper')
-        )) {
-          continue;
-        }
-        codeHtml += node.outerHTML;
-        codeText += node.textContent;
-      } else if (node.nodeType === Node.TEXT_NODE) {
-        codeHtml += node.textContent;
-        codeText += node.textContent;
-      }
-    }
-    
-    currentSandboxCode = codeText.trim();
-    
-    // Update editor content
-    const editor = document.getElementById('sandbox-editor');
-    editor.innerHTML = '<pre contenteditable="true" spellcheck="false">' + codeHtml + '</pre>';
-    
-    // Update title with language
-    const title = document.querySelector('.sandbox-drawer-title');
-    const langSpan = title.querySelector('span');
-    if (langSpan) {
-      langSpan.textContent = '| ' + langTag + ' Playground';
-    }
-    
-    // Reset output
-    document.getElementById('sandbox-output').textContent = '点击"运行代码"查看输出结果...';
-    document.getElementById('sandbox-output-header').className = 'sandbox-output-header';
-    document.getElementById('sandbox-output-header').textContent = '输出';
-    
-    // Open drawer
+    const codeText = block.innerText.replace(/开始/g,'').replace(/复制/g,'').replace(/在 HiDevLab 运行/g,'').replace(/^[A-Z]+\n/,'').trim();
+    nbCellCounter++;
+    NB_FILES.main.unshift({ id: nbCellCounter, type: 'code', code: codeText, output: '' });
+    nbCurrentFile = 'main';
     document.getElementById('sandbox-drawer').classList.add('open');
     document.getElementById('sandbox-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
+    renderNbCells();
+    document.querySelectorAll('.nb-file-item').forEach((f, i) => f.classList.toggle('active', i === 0));
+    document.querySelectorAll('.nb-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+    document.querySelectorAll('.nb-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('nb-panel-notebook').classList.add('active');
+    setTimeout(() => { const c = document.getElementById('nb-cell-' + nbCellCounter); if (c) { c.scrollIntoView({ behavior:'smooth', block:'nearest' }); activateCell(c); } }, 100);
+  }
+
+  function openEmptySandbox() {
+    document.getElementById('sandbox-drawer').classList.add('open');
+    document.getElementById('sandbox-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderNbCells();
   }
 
   function closeSandboxDrawer() {
     document.getElementById('sandbox-drawer').classList.remove('open');
     document.getElementById('sandbox-overlay').classList.remove('open');
     document.body.style.overflow = '';
+    animateMonitor(false);
   }
 
-  function runSandboxCode() {
-    const editor = document.querySelector('#sandbox-editor pre');
-    const output = document.getElementById('sandbox-output');
-    const outputHeader = document.getElementById('sandbox-output-header');
-    const code = editor.innerText;
-    
-    outputHeader.className = 'sandbox-output-header running';
-    outputHeader.textContent = '运行中...';
-    output.textContent = '';
-    
-    // Simulate code execution with progressive output
-    setTimeout(() => {
-      output.textContent = '正在初始化 CANN 环境...\n';
-      
-      setTimeout(() => {
-        output.textContent += '加载依赖库...\n';
-        
-        setTimeout(() => {
-          // Parse the code to generate contextual output
-          let result = '';
-          
-          if (code.includes('acl.init')) {
-            result = 'Initializing ACL...\nACL initialized successfully!\n\n';
-            result += 'Device: Ascend 910B\n';
-            result += 'Driver Version: 23.0.3\n';
-            result += 'CANN Version: 8.0.RC2\n';
-          } else if (code.includes('pip install')) {
-            result = 'Collecting cann-toolkit\n';
-            result += '  Downloading cann-toolkit-8.0.0-py3-none-any.whl (2.1 MB)\n';
-            result += '     |████████████████████████████████| 2.1 MB 12.5 MB/s\n';
-            result += 'Successfully installed cann-toolkit-8.0.0\n\n';
-            result += 'Collecting torch-npu\n';
-            result += '  Downloading torch_npu-2.1.0-cp39-cp39-manylinux_2_17_x86_64.whl (156 MB)\n';
-            result += '     |████████████████████████████████| 156 MB 45.2 MB/s\n';
-            result += 'Successfully installed torch-npu-2.1.0\n';
-          } else if (code.includes('docker')) {
-            result = 'latest: Pulling from ascendhub/ascend-toolkit\n';
-            result += 'Digest: sha256:a1b2c3d4e5f6...\n';
-            result += 'Status: Downloaded newer image for ascendhub/ascend-toolkit:latest\n\n';
-            result += 'root@container:/workspace# ';
-          } else if (code.includes('cmake')) {
-            result = '-- The C compiler identification is GNU 9.4.0\n';
-            result += '-- The CXX compiler identification is GNU 9.4.0\n';
-            result += '-- Found ACL: /usr/local/Ascend/ascend-toolkit/latest/acllib\n';
-            result += '-- Configuring done\n';
-            result += '-- Generating done\n';
-            result += '-- Build files have been written to: /build\n';
-          } else {
-            result = '代码执行成功！\n\n';
-            result += '[模拟输出] 在实际部署中，此处将通过后端服务执行真实代码。\n';
-          }
-          
-          result += '\n✓ 执行完成 (' + new Date().toLocaleTimeString() + ')';
-          
-          output.textContent = result;
-          outputHeader.className = 'sandbox-output-header';
-          outputHeader.textContent = '输出';
-        }, 800);
-      }, 600);
-    }, 400);
-  }
+  function runSandboxCode() {}
 
-  // Close drawer on Escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeSandboxDrawer();
-    }
-  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSandboxDrawer(); });
 
-
-  // Initialize docs sandbox bar visibility on page load
   document.addEventListener('DOMContentLoaded', () => {
     updateDocsSandboxBar();
+    renderNbCells();
   });
 </script>
 </body>
