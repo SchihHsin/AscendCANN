@@ -135,9 +135,37 @@
     flex: 1; overflow-y: auto; padding: 24px;
     display: flex; flex-direction: column; gap: 20px;
   }
-  .ai-msg { max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
-  .ai-msg.bot { background: var(--surface2); align-self: flex-start; border-bottom-left-radius: 2px; color: var(--text-primary); }
-  .ai-msg.user { background: var(--black); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+  .ai-msg {
+    max-width: 85%; padding: 12px 16px; border-radius: 12px;
+    font-size: 14px; line-height: 1.6;
+  }
+  .ai-msg.bot {
+    background: var(--surface2); align-self: flex-start;
+    border-bottom-left-radius: 2px; color: var(--text-primary);
+  }
+  .ai-msg.user {
+    background: var(--black); color: white; align-self: flex-end;
+    border-bottom-right-radius: 2px;
+  }
+  .ai-msg pre::-webkit-scrollbar {
+    height: 6px;
+  }
+  .ai-msg pre::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+  }
+  .ai-msg pre::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.3);
+    border-radius: 3px;
+  }
+  .ai-msg pre::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.5);
+  }
+  /* Firefox scrollbar styling */
+  .ai-msg pre {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.3) rgba(0,0,0,0.1);
+  }
   
   .ai-input-area { padding: 24px; border-top: 1px solid var(--border); }
   .ai-input-wrap {
@@ -816,7 +844,7 @@
     border-radius: 100px; background: var(--black); color: white;
   }
 
-  .docs-content { padding: 60px 80px 100px; max-width: 860px; margin: 0 auto; }
+  .docs-content { padding: 60px 80px 100px; max-width: 860px; margin: 0 auto; position: relative; }
 
   /* Docs Search */
   .docs-search {
@@ -858,24 +886,99 @@
   .tab-content.active { display: block; }
 
   .code-block {
-    background: #0F172A; border-radius: 12px; padding: 24px 28px;
-    font-family: var(--mono); font-size: 14px; line-height: 1.75;
-    margin: 24px 0; overflow-x: auto; position: relative;
-    border: 1px solid rgba(255,255,255,0.05); color: #E2E8F0;
+    background: #0F172A; border-radius: 12px;
+    margin: 24px 0; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+  }
+  /* Code Block Header Bar */
+  .code-block-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px;
+    background: rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
   .code-block .lang-tag {
-    position: absolute; top: 14px; right: 18px;
-    font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
+    font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 5px;
   }
-  .code-block .copy-btn {
-    position: absolute; top: 10px; right: 60px;
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 600;
-    padding: 4px 10px; border-radius: 6px; cursor: pointer;
-    transition: all 0.2s;
+  .code-block .code-block-actions {
+    display: flex; gap: 4px; align-items: center;
   }
-  .code-block .copy-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+  /* Icon + Text buttons (代码解释, 运行) */
+  .code-block .explain-btn,
+  .code-block .sandbox-btn {
+    background: transparent; border: none;
+    color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 600;
+    padding: 4px 8px; border-radius: 4px; cursor: pointer;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .code-block .explain-btn svg,
+  .code-block .sandbox-btn svg {
+    width: 14px; height: 14px;
+  }
+  .code-block .explain-btn:hover,
+  .code-block .sandbox-btn:hover {
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9);
+  }
+  /* Pure Icon buttons (下载, 复制) - No background */
+  .code-block .download-btn,
+  .code-block .copy-icon-btn {
+    background: transparent; border: none;
+    color: rgba(255,255,255,0.5); padding: 4px; border-radius: 4px; cursor: pointer;
+    transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center;
+  }
+  .code-block .download-btn svg,
+  .code-block .copy-icon-btn svg {
+    width: 14px; height: 14px;
+  }
+  .code-block .download-btn:hover,
+  .code-block .copy-icon-btn:hover {
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9);
+  }
+  .code-block .copy-icon-btn.copied { color: #16A34A; }
+  /* Code Block Content */
+  .code-block-content {
+    padding: 20px 24px;
+    font-family: var(--mono); font-size: 14px; line-height: 1.75;
+    overflow-x: auto; color: #E2E8F0;
+  }
+
+  .code-block .sandbox-btn-wrapper {
+    position: static;
+  }
+
+  .code-block .explain-btn {
+    min-width: 82px;
+  }
+
+  /* AI code block header */
+  .ai-code-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 14px; background: #161b22;
+    color: #8b949e; font-size: 11px; font-family: var(--mono); font-weight: 600; letter-spacing: 0.04em;
+  }
+  .ai-code-lang {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .ai-code-actions {
+    display: flex; gap: 4px; align-items: center;
+  }
+  .ai-run-btn {
+    background: transparent; border: none; color: rgba(255,255,255,0.6);
+    font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 4px;
+    cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px;
+    font-family: var(--font);
+  }
+  .ai-run-btn:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+  .ai-copy-btn {
+    background: transparent; border: none; color: rgba(255,255,255,0.5);
+    padding: 4px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .ai-copy-btn:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+  .ai-copy-btn.copied { color: #16A34A; }
 
   .callout {
     border-left: 4px solid var(--black); background: var(--surface2);
@@ -926,34 +1029,21 @@
   .api-card.open .api-body { display: block; }
   .api-card.open .api-header { background: var(--surface2); border-bottom-color: var(--border2); }
 
-  /* Code Copy Button Position Fix */
-  .code-block { position: relative; }
-  .code-block .copy-btn {
-    position: absolute; top: 12px; right: 64px;
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 700;
-    padding: 4px 12px; border-radius: 6px; cursor: pointer;
-    transition: all 0.2s; text-transform: uppercase;
+  .selection-ai-btn {
+    position: absolute; z-index: 1200; display: inline-flex; align-items: center; justify-content: center;
+    padding: 6px 12px; border-radius: 999px; border: none;
+    background: linear-gradient(135deg, #2e53fa, #7b25f4); color: #fff;
+    font-size: 12px; font-weight: 700; box-shadow: 0 16px 40px rgba(46,83,250,0.22);
+    cursor: pointer; opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translate(-50%, -10px); transition: opacity 0.18s ease, transform 0.18s ease;
   }
-  .code-block .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; border-color: rgba(255,255,255,0.3); }
-  .code-block .copy-btn.copied { background: #16A34A; color: white; border-color: #16A34A; }
-
-  /* ── CODE BLOCK SANDBOX BUTTON ── */
-  .code-block .sandbox-btn {
-    position: absolute; top: 12px; right: 118px;
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 700;
-    padding: 4px 10px; border-radius: 6px; cursor: pointer;
-    transition: all 0.2s; display: flex; align-items: center; gap: 4px;
+  .selection-ai-btn.visible {
+    opacity: 1; visibility: visible; pointer-events: auto; transform: translate(-50%, -100%);
   }
-  .code-block .sandbox-btn:hover { 
-    background: rgba(255,255,255,0.2); color: white; border-color: rgba(255,255,255,0.3); 
-  }
-  .code-block .sandbox-btn svg { width: 12px; height: 12px; }
 
   /* Tooltip for sandbox button */
   .sandbox-btn-wrapper {
-    position: absolute; top: 12px; right: 118px;
+    position: static;
   }
   .sandbox-btn-wrapper .sandbox-btn { position: static; }
   .sandbox-tooltip {
@@ -2619,18 +2709,36 @@
             <h2 class="doc-h2">1. 安装 CANN Toolkit</h2>
             <p class="doc-p">下载并安装适用于您硬件的 CANN 软件包。推荐使用 pip 安装 Python 绑定：</p>
             <div class="code-block">
-              <span class="lang-tag">BASH</span>
-              <div class="sandbox-btn-wrapper">
-                <button class="sandbox-btn" onclick="openSandbox(this)">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                  运行
-                </button>
-                <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+              <div class="code-block-header">
+                <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>BASH</span>
+                <div class="code-block-actions">
+                  <button class="explain-btn" onclick="explainCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                      <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                    </svg>
+                    代码解释
+                  </button>
+                  <div class="sandbox-btn-wrapper">
+                    <button class="sandbox-btn" onclick="openSandbox(this)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      运行
+                    </button>
+                    <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                  </div>
+                  <button class="download-btn" onclick="downloadCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                  <button class="copy-icon-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
               </div>
-              <button class="copy-btn" onclick="copyCode(this)">复制</button>
-              <span style="color:#6B6480;"># 安装 CANN Python 包</span><br>
-              <span style="color:#A8FF60;">pip install cann-toolkit</span><br>
-              <span style="color:#A8FF60;">pip install torch-npu  </span><span style="color:#6B6480;"># PyTorch 适配</span>
+              <div class="code-block-content">
+                <span style="color:#6B6480;"># 安装 CANN Python 包</span><br>
+                <span style="color:#A8FF60;">pip install cann-toolkit</span><br>
+                <span style="color:#A8FF60;">pip install torch-npu  </span><span style="color:#6B6480;"># PyTorch 适配</span>
+              </div>
             </div>
             <div class="callout">
               <strong>注意：</strong>需要提前在宿主机安装昇腾驱动（driver）和固件（firmware），版本需与 CANN Toolkit 匹配。
@@ -2641,16 +2749,33 @@
             <h2 class="doc-h2">2. 第一个推理程序</h2>
             <p class="doc-p">以下示例演示如何使用 AscendCL 在昇腾 NPU 上运行 ResNet-50 推理：</p>
             <div class="code-block">
-              <span class="lang-tag">PYTHON</span>
-              <div class="sandbox-btn-wrapper">
-                <button class="sandbox-btn" onclick="openSandbox(this)">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                  运行
-                </button>
-                <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+              <div class="code-block-header">
+                <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>PYTHON</span>
+                <div class="code-block-actions">
+                  <button class="explain-btn" onclick="explainCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                      <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                    </svg>
+                    代码解释
+                  </button>
+                  <div class="sandbox-btn-wrapper">
+                    <button class="sandbox-btn" onclick="openSandbox(this)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      运行
+                    </button>
+                    <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                  </div>
+                  <button class="download-btn" onclick="downloadCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                  <button class="copy-icon-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
               </div>
-              <button class="copy-btn" onclick="copyCode(this)">复制</button>
-              <span style="color:#6B6480;"># inference_demo.py</span><br>
+              <div class="code-block-content">
+                <span style="color:#6B6480;"># inference_demo.py</span><br>
               <span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">acl</span><br>
               <span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">numpy as np</span><br><br>
               <span style="color:#6B6480;"># Step 1: 初始化运行时</span><br>
@@ -2669,6 +2794,7 @@
               <span style="color:#82AAFF;">acl.rt.destroy_context</span>(<span style="color:#F8F8F2;">ctx</span>)<br>
               <span style="color:#82AAFF;">acl.rt.reset_device</span>(<span style="color:#FFB86C;">0</span>)
             </div>
+          </div>
             <div class="sandbox-container">
               <div class="sandbox-header">
                 <div class="sandbox-title">
@@ -2689,7 +2815,7 @@
                 <span style="color:#82AAFF;">main</span>()
               </div>
               <div class="sandbox-output">
-                <pre>点击“运行代码”查看输出...</pre>
+                <pre>点击"运行代码"查看输出...</pre>
               </div>
             </div>
           </div>
@@ -2738,16 +2864,33 @@
             <h2 class="doc-h2">C++ 快速开始</h2>
             <p class="doc-p">配置 CMake 构建环境，链接 AscendCL 静态库：</p>
             <div class="code-block">
-              <span class="lang-tag">CMAKE</span>
-              <div class="sandbox-btn-wrapper">
-                <button class="sandbox-btn" onclick="openSandbox(this)">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                  运行
-                </button>
-                <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+              <div class="code-block-header">
+                <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>CMAKE</span>
+                <div class="code-block-actions">
+                  <button class="explain-btn" onclick="explainCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                      <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                    </svg>
+                    代码解释
+                  </button>
+                  <div class="sandbox-btn-wrapper">
+                    <button class="sandbox-btn" onclick="openSandbox(this)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      运行
+                    </button>
+                    <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                  </div>
+                  <button class="download-btn" onclick="downloadCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                  <button class="copy-icon-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
               </div>
-              <button class="copy-btn" onclick="copyCode(this)">复制</button>
-              <span style="color:#BD93F9;">cmake_minimum_required</span><span style="color:#F8F8F2;">(VERSION 3.14)</span><br>
+              <div class="code-block-content">
+                <span style="color:#BD93F9;">cmake_minimum_required</span><span style="color:#F8F8F2;">(VERSION 3.14)</span><br>
               <span style="color:#BD93F9;">project</span><span style="color:#F8F8F2;">(cann_demo)</span><br><br>
               <span style="color:#BD93F9;">set</span><span style="color:#F8F8F2;">(CANN_HOME </span><span style="color:#A8FF60;">"/usr/local/Ascend/ascend-toolkit/latest"</span><span style="color:#F8F8F2;">)</span><br>
               <span style="color:#BD93F9;">include_directories</span><span style="color:#F8F8F2;">(${CANN_HOME}/acllib/include)</span><br>
@@ -2763,16 +2906,33 @@
             <h2 class="doc-h2">Docker 快速开始</h2>
             <div class="callout callout-info"><strong>推荐：</strong>使用官方 Docker 镜像可跳过驱动配置步骤，一键获得完整 CANN 环境。</div>
             <div class="code-block">
-              <span class="lang-tag">BASH</span>
-              <div class="sandbox-btn-wrapper">
-                <button class="sandbox-btn" onclick="openSandbox(this)">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                  运行
-                </button>
-                <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+              <div class="code-block-header">
+                <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>BASH</span>
+                <div class="code-block-actions">
+                  <button class="explain-btn" onclick="explainCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                      <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                    </svg>
+                    代码解释
+                  </button>
+                  <div class="sandbox-btn-wrapper">
+                    <button class="sandbox-btn" onclick="openSandbox(this)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      运行
+                    </button>
+                    <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                  </div>
+                  <button class="download-btn" onclick="downloadCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                  <button class="copy-icon-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
               </div>
-              <button class="copy-btn" onclick="copyCode(this)">复制</button>
-              <span style="color:#A8FF60;">docker pull swr.cn-south-1.myhuaweicloud.com/ascendhub/ascend-toolkit:latest</span><br><br>
+              <div class="code-block-content">
+                <span style="color:#A8FF60;">docker pull swr.cn-south-1.myhuaweicloud.com/ascendhub/ascend-toolkit:latest</span><br><br>
               <span style="color:#A8FF60;">docker run -it --device=/dev/davinci0 \</span><br>
               <span style="color:#A8FF60;">&nbsp;&nbsp;--device=/dev/davinci_manager \</span><br>
               <span style="color:#A8FF60;">&nbsp;&nbsp;ascend-toolkit:latest /bin/bash</span>
@@ -2830,9 +2990,26 @@
         <div class="doc-section">
           <h2 class="doc-h2">基本用法</h2>
           <div class="code-block">
-            <span class="lang-tag">BASH</span>
-            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-            <span style="color:#A8FF60;">atc --model=resnet50.onnx \</span><br>
+            <div class="code-block-header">
+              <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>BASH</span>
+              <div class="code-block-actions">
+                <button class="explain-btn" onclick="explainCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                    <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                  </svg>
+                  代码解释
+                </button>
+                <button class="download-btn" onclick="downloadCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+                <button class="copy-icon-btn" onclick="copyCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+              </div>
+            </div>
+            <div class="code-block-content">
+              <span style="color:#A8FF60;">atc --model=resnet50.onnx \</span><br>
             <span style="color:#A8FF60;">&nbsp;&nbsp;--framework=5 \</span><span style="color:#6B6480;">  # 5=ONNX</span><br>
             <span style="color:#A8FF60;">&nbsp;&nbsp;--output=resnet50 \</span><br>
             <span style="color:#A8FF60;">&nbsp;&nbsp;--input_format=NCHW \</span><br>
@@ -2900,9 +3077,33 @@
         <div class="doc-section">
           <h2 class="doc-h2">开启 Profiling</h2>
           <div class="code-block">
-            <span class="lang-tag">PYTHON</span>
-            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-            <span style="color:#BD93F9;">from</span> <span style="color:#F8F8F2;">torch_npu.profiler import profile, ProfilerActivity</span><br><br>
+            <div class="code-block-header">
+              <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>PYTHON</span>
+              <div class="code-block-actions">
+                <button class="explain-btn" onclick="explainCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                    <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                  </svg>
+                  代码解释
+                </button>
+                <div class="sandbox-btn-wrapper">
+                  <button class="sandbox-btn" onclick="openSandbox(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    运行
+                  </button>
+                  <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                </div>
+                <button class="download-btn" onclick="downloadCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+                <button class="copy-icon-btn" onclick="copyCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+              </div>
+            </div>
+            <div class="code-block-content">
+              <span style="color:#BD93F9;">from</span> <span style="color:#F8F8F2;">torch_npu.profiler import profile, ProfilerActivity</span><br><br>
             <span style="color:#BD93F9;">with</span> <span style="color:#82AAFF;">profile</span>(<br>
             <span style="color:#F8F8F2;">&nbsp;&nbsp;activities</span><span style="color:#FF79C6;">=</span>[<span style="color:#F8F8F2;">ProfilerActivity.NPU</span>],<br>
             <span style="color:#F8F8F2;">&nbsp;&nbsp;record_shapes</span><span style="color:#FF79C6;">=</span><span style="color:#BD93F9;">True</span>,<br>
@@ -3303,9 +3504,21 @@
             </tbody>
           </table>
           <div class="code-block" style="margin-top: 12px;">
-            <span class="lang-tag">PYTHON</span>
-            <span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">acl</span><br>
-            <span style="color:#F8F8F2;">ret </span><span style="color:#FF79C6;">=</span> <span style="color:#82AAFF;">acl.init</span>()  <span style="color:#6B6480;"># ret == 0 表示成功</span>
+            <div class="code-block-header">
+              <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>PYTHON</span>
+              <div class="code-block-actions">
+                <button class="download-btn" onclick="downloadCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+                <button class="copy-icon-btn" onclick="copyCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+              </div>
+            </div>
+            <div class="code-block-content">
+              <span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">acl</span><br>
+              <span style="color:#F8F8F2;">ret </span><span style="color:#FF79C6;">=</span> <span style="color:#82AAFF;">acl.init</span>()  <span style="color:#6B6480;"># ret == 0 表示成功</span>
+            </div>
           </div>
         </div>
       </div>
@@ -3459,6 +3672,125 @@
     sidebar.classList.toggle('open');
   }
 
+  function openAiSidebarAndSend(message) {
+    const sidebar = document.getElementById('ai-sidebar');
+    if (!sidebar.classList.contains('open')) sidebar.classList.add('open');
+    sendAiMessage(message);
+  }
+
+  function _quoteDocText(text) {
+    return text.split('\n').map(line => line.trim() ? `> ${line}` : '>').join('\n');
+  }
+
+  function explainDocSelection(text) {
+    const quoted = _quoteDocText(text);
+    const prompt = `请根据以下引用内容进行解释，指出关键点、原理和应用场景：\n\n${quoted}`;
+    openAiSidebarAndSend(prompt);
+  }
+
+  function explainCodeBlock(codeBlock) {
+    const clone = codeBlock.cloneNode(true);
+    clone.querySelectorAll('button, .sandbox-btn-wrapper, .lang-tag').forEach(el => el.remove());
+    const codeText = clone.innerText.trim();
+    if (!codeText) return;
+    const prompt = `请解释以下代码：\n\n${codeText}`;
+    openAiSidebarAndSend(prompt);
+  }
+
+  function hideSelectionButton() {
+    const btn = document.getElementById('selection-ai-button');
+    if (btn) btn.classList.remove('visible');
+  }
+
+  function getSelectedDocText() {
+    const sel = window.getSelection();
+    if (!sel || !sel.toString().trim()) return '';
+    const docsContent = document.getElementById('docs-main');
+    if (!docsContent || !docsContent.contains(sel.anchorNode) || !docsContent.contains(sel.focusNode)) return '';
+    let text = sel.toString().trim();
+    if (text.length > 500) text = text.slice(0, 500) + '...';
+    return text;
+  }
+
+  function attachDocAiHelpers() {
+    const helper = document.createElement('button');
+    helper.id = 'selection-ai-button';
+    helper.className = 'selection-ai-btn';
+    helper.type = 'button';
+    helper.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/><path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/></svg>AI 解释';
+    helper.addEventListener('click', event => {
+      event.stopPropagation();
+      const text = getSelectedDocText();
+      if (!text) return hideSelectionButton();
+      explainDocSelection(text);
+      hideSelectionButton();
+      window.getSelection().removeAllRanges();
+    });
+    document.body.appendChild(helper);
+
+    document.addEventListener('selectionchange', () => {
+      const text = getSelectedDocText();
+      const button = document.getElementById('selection-ai-button');
+      if (!button) return;
+      if (!text) {
+        return hideSelectionButton();
+      }
+      const sel = window.getSelection();
+      if (!sel.rangeCount) return hideSelectionButton();
+      const range = sel.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      if (!rect.width || !rect.height) return hideSelectionButton();
+      
+      // Determine selection direction
+      const startOffset = range.startOffset;
+      const endOffset = range.endOffset;
+      const isForward = startOffset < endOffset;
+      
+      // Position button based on selection direction
+      if (isForward) {
+        // Forward selection: button at the end
+        button.style.top = `${window.scrollY + rect.top - 10}px`;
+        button.style.left = `${window.scrollX + rect.right}px`;
+      } else {
+        // Backward selection: button at the beginning
+        button.style.top = `${window.scrollY + rect.top - 10}px`;
+        button.style.left = `${window.scrollX + rect.left}px`;
+      }
+      
+      button.classList.add('visible');
+    });
+
+    document.addEventListener('click', event => {
+      const button = document.getElementById('selection-ai-button');
+      if (!button) return;
+      if (button.contains(event.target)) return;
+      const text = getSelectedDocText();
+      if (!text) hideSelectionButton();
+    });
+
+    document.querySelectorAll('.code-block').forEach(block => {
+      if (block.querySelector('.explain-btn')) return;
+      const btn = document.createElement('button');
+      btn.className = 'explain-btn';
+      btn.type = 'button';
+      btn.textContent = '代码解释';
+      btn.addEventListener('click', () => explainCodeBlock(block));
+
+      let actions = block.querySelector('.code-block-actions');
+      if (!actions) {
+        actions = document.createElement('div');
+        actions.className = 'code-block-actions';
+        block.appendChild(actions);
+      }
+
+      const sandboxWrapper = block.querySelector('.sandbox-btn-wrapper');
+      const copyBtn = block.querySelector('.copy-btn');
+      if (sandboxWrapper && !actions.contains(sandboxWrapper)) actions.appendChild(sandboxWrapper);
+      if (copyBtn && !actions.contains(copyBtn)) actions.appendChild(copyBtn);
+      actions.appendChild(btn);
+    });
+  }
+
   // Send AI Sidebar Message
   function sendAiMessage(overrideMsg) {
     const input = document.getElementById('ai-sidebar-input');
@@ -3467,7 +3799,7 @@
 
     const container = document.getElementById('ai-messages');
     
-    // User message
+    // 1. 添加用户消息
     const userDiv = document.createElement('div');
     userDiv.className = 'ai-msg user';
     userDiv.textContent = msg;
@@ -3476,15 +3808,78 @@
     input.value = '';
     container.scrollTop = container.scrollHeight;
 
-    // Simulate bot reply
-    setTimeout(() => {
-      const botDiv = document.createElement('div');
-      botDiv.className = 'ai-msg bot';
-      botDiv.innerHTML = '正在为您查找关于 "' + msg + '" 的 CANN 文档...<br><br>在实际开发中，这里将集成 LLM 接口返回更精准的回答。';
-      container.appendChild(botDiv);
-      container.scrollTop = container.scrollHeight;
-    }, 1000);
-  }
+    // 2. 添加 loading 消息
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'ai-msg bot';
+    loadingDiv.id = 'ai-loading-' + Date.now();
+    loadingDiv.innerHTML = '<div class="floor-loading" style="display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:13px"><div class="floor-dots"><span></span><span></span><span></span></div><span>AI 正在思考…</span></div>';
+    container.appendChild(loadingDiv);
+    container.scrollTop = container.scrollHeight;
+
+    // 3. 构建上下文感知的 system prompt
+    let contextHint = '';
+    const docsPage = document.getElementById('page-docs');
+    const learnPage = document.getElementById('page-learn');
+    const apiPage = document.getElementById('page-api');
+    if (docsPage && docsPage.classList.contains('active')) {
+        contextHint = '用户当前正在浏览 CANN 文档页面。';
+    } else if (learnPage && learnPage.classList.contains('active')) {
+        contextHint = '用户当前正在浏览 CANN 学习路径页面。';
+        if (_currentDrawerNode) {
+            contextHint += ` 用户正在学习"${_currentDrawerNode.title}"这个知识点。`;
+        }
+    } else if (apiPage && apiPage.classList.contains('active')) {
+        contextHint = '用户当前正在浏览 CANN API 参考页面。';
+    }
+
+    const systemPrompt = `你是 CANN（华为昇腾 AI 异构计算架构）的智能助手。${contextHint}
+你的职责：
+- 解答关于 AscendCL 编程、TBE 算子开发、ATC 模型转换、HCCL 分布式通信等 CANN 相关问题
+- 提供清晰、准确的代码示例（使用 Python 或 C++）
+- 帮助用户理解昇腾 NPU 硬件架构和软件栈
+- 引导用户查阅相关文档和学习资源
+
+回答要求：
+- 使用中文，简洁专业，不超过 500 字
+- 如有代码示例，用三个反引号包裹并标注语言（如 \`\`\`python）
+- 如果问题超出 CANN 范围，礼貌引导用户回到 CANN 主题`;
+
+    // 4. 调用真实的 AI 接口
+    fetch(AI_WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            system: systemPrompt,
+            user: msg,
+            max_tokens: 800,
+        })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('API 响应异常: ' + response.status);
+        return response.json();
+    })
+    .then(data => {
+        const replyText = data.text || '';
+        if (!replyText || replyText.trim() === '') {
+            throw new Error('AI 返回了空内容');
+        }
+        // 移除 loading 消息
+        if (loadingDiv.parentNode) loadingDiv.remove();
+        // 添加真实的 AI 回复
+        const botDiv = document.createElement('div');
+        botDiv.className = 'ai-msg bot';
+        botDiv.innerHTML = formatFloorText(replyText);
+        container.appendChild(botDiv);
+        container.scrollTop = container.scrollHeight;
+    })
+    .catch(error => {
+        console.error('AI Sidebar Error:', error);
+        // 更新 loading 消息为错误提示
+        loadingDiv.innerHTML = '<span style="color:#EF4444;font-size:13px">⚠️ 连接失败，请稍后重试。</span><br><span style="color:var(--text-muted);font-size:11px">' + error.message + '</span>';
+        loadingDiv.id = '';
+        container.scrollTop = container.scrollHeight;
+    });
+}
 
   // Run Sandbox Code
   function runSandbox(btn) {
@@ -4845,9 +5240,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const code = btn.closest('.ai-code-block').querySelector('code').innerText;
     const orig = btn.innerHTML;
     navigator.clipboard.writeText(code).then(() => {
-      btn.innerHTML = `${_COPY_SVG} 已复制`;
-      btn.style.cssText += ';display:inline-flex;align-items:center;gap:4px;background:#16A34A;color:white;border-color:#16A34A;';
-      setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = ''; btn.style.display = ''; }, 1800);
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>`;
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 1800);
     });
   }
 
@@ -4886,12 +5281,12 @@ def vector_add_tik(shape, dtype, kernel_name):
         const termStyle = isShell ? 'background:#1a1a2e;color:#a8ff78;' : 'background:#1e1e1e;color:#f8f8f2;';
         const langLabel = lang || (isShell ? 'shell' : 'code');
         return `<div class="ai-code-block" style="margin:12px 0;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:#161b22;color:#8b949e;font-size:11px;font-family:var(--mono);font-weight:600;letter-spacing:0.04em">
-            <span style="display:flex;align-items:center;gap:6px">${isShell ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.7"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>' : '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>'}${langLabel}</span>
-            <span style="display:flex;gap:6px;align-items:center">
-              ${isRunnable ? `<button onclick="runInSandbox(this)" style="background:#1f6feb;color:white;border:none;border-radius:5px;padding:3px 10px;cursor:pointer;font-size:11px;font-family:var(--font);font-weight:600;display:flex;align-items:center;gap:4px"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>运行</button>` : ''}
-              <button onclick="copyBlockCode(this)" style="background:rgba(255,255,255,0.08);color:#8b949e;border:1px solid rgba(255,255,255,0.1);border-radius:5px;padding:3px 10px;cursor:pointer;font-size:11px;font-family:var(--font);font-weight:600">复制</button>
-            </span>
+          <div class="ai-code-header">
+            <span class="ai-code-lang">${isShell ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>' : '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>'}${langLabel}</span>
+            <div class="ai-code-actions">
+              ${isRunnable ? `<button class="ai-run-btn" onclick="runInSandbox(this)"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><polygon points="5 3 19 12 5 21 5 3"/></svg>运行</button>` : ''}
+              <button class="ai-copy-btn" onclick="copyBlockCode(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            </div>
           </div>
           <pre style="${termStyle}margin:0;padding:14px 16px;overflow-x:auto;font-size:12.5px;font-family:var(--mono);line-height:1.65"><code style="background:none;border:none;padding:0;color:inherit">${code}</code></pre>
         </div>`;
@@ -4922,6 +5317,8 @@ def vector_add_tik(shape, dtype, kernel_name):
   document.addEventListener('DOMContentLoaded', () => {
     renderFloorIssues('install');
     renderSavedPaths();
+    attachDocAiHelpers();
+    showPage('home'); // Ensure home page is shown and scrolled to top
   });
 
   // Custom paths storage
@@ -4984,6 +5381,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     customPaths.unshift(path);
     saveCustomPaths();
     renderCustomPaths();
+
+    // Show custom paths container after generating a path
+    document.getElementById('custom-paths-container').style.display = 'block';
 
     btn.classList.remove('loading');
     btn.innerHTML = svgPlay + '生成路径';
@@ -5122,6 +5522,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     });
     activePathId = null;
     document.querySelectorAll('.custom-path-item').forEach(el => el.classList.remove('active'));
+
+    // Hide custom paths container when clearing path
+    document.getElementById('custom-paths-container').style.display = 'none';
   }
 
   function jumpToPathNode(idx) {
@@ -5167,8 +5570,8 @@ def vector_add_tik(shape, dtype, kernel_name):
 
     // Show the corresponding filter bar or custom paths
     if (tabName === 'custom') {
-      document.getElementById('custom-paths-container').style.display = 'block';
-      renderCustomPaths();
+      // Don't show custom-paths-container initially, only show path generator
+      // custom-paths-container will be shown after generating a path
     } else {
       const filterBar = document.getElementById('filter-' + tabName);
       if (filterBar) {
@@ -5244,14 +5647,49 @@ def vector_add_tik(shape, dtype, kernel_name):
     const block = btn.closest('.code-block');
     // Remove button texts from copy content
     let text = block.innerText;
-    text = text.replace(/开始/g, '').replace(/复制/g, '').replace(/在 HiDevLab 运行/g, '');
+    text = text.replace(/开始/g, '').replace(/复制/g, '').replace(/在 HiDevLab 运行/g, '').replace(/代码解释/g, '').replace(/运行/g, '');
     text = text.replace(/^[A-Z]+\n/, '').trim();
     navigator.clipboard.writeText(text).catch(() => {});
     const orig = btn.innerHTML;
-    btn.innerHTML = `${_COPY_SVG} 已复制`;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
     btn.style.cssText += ';display:inline-flex;align-items:center;gap:4px;';
     btn.classList.add('copied');
     setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); btn.style.display = ''; }, 2000);
+  }
+
+  // Explain code
+  function explainCode(btn) {
+    const block = btn.closest('.code-block');
+    let text = block.innerText;
+    text = text.replace(/代码解释/g, '').replace(/运行/g, '').replace(/在 HiDevLab 运行/g, '').replace(/复制/g, '');
+    text = text.replace(/^[A-Z]+\n/, '').trim();
+    
+    const prompt = `请解释以下代码：\n\n${text}`;
+    openAiSidebarAndSend(prompt);
+  }
+
+  // Download code
+  function downloadCode(btn) {
+    const block = btn.closest('.code-block');
+    let text = block.innerText;
+    text = text.replace(/代码解释/g, '').replace(/运行/g, '').replace(/在 HiDevLab 运行/g, '').replace(/复制/g, '');
+    text = text.replace(/^[A-Z]+\n/, '').trim();
+    
+    // Get language from lang-tag
+    const langTag = block.querySelector('.lang-tag');
+    const lang = langTag ? langTag.textContent.toLowerCase() : 'txt';
+    const extension = lang === 'python' ? 'py' : lang === 'bash' ? 'sh' : lang === 'cmake' ? 'cmake' : 'txt';
+    
+    // Create and download file
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `code.${extension}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 
   // Sandbox Drawer Functions
