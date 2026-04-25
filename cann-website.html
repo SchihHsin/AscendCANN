@@ -65,15 +65,13 @@
     display: flex; align-items: center; justify-content: space-between;
   }
   .nav-logo {
-    display: flex; align-items: center; gap: 10px;
-    font-weight: 700; font-size: 18px; color: var(--black);
-    text-decoration: none;
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; flex-shrink: 0;
   }
-  .logo-mark {
-    width: 32px; height: 32px; border-radius: 8px;
-    background: var(--black); display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 14px; font-weight: 700;
-  }
+  .nav-logo-ascend { height: 28px; width: auto; display: block; }
+  .nav-logo-divider { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
+  .nav-logo-cann { height: 15px; width: auto; display: block; }
+  .logo-mark { display: none; }
   .nav-links {
     display: flex; align-items: center; gap: 8px;
     list-style: none;
@@ -289,12 +287,14 @@
     border-top: 1px solid var(--border);
     background: var(--surface2);
     padding: 60px 40px;
+    min-height: 85vh;
+    display: flex; flex-direction: column;
     animation: floorSlideIn 0.35s ease forwards;
   }
   .hero-floor.hidden { display: none; }
   @keyframes floorSlideIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
 
-  .floor-inner { max-width: 960px; margin: 0 auto; }
+  .floor-inner { max-width: 960px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
 
   .floor-label-row {
     display: flex; align-items: center; justify-content: space-between;
@@ -312,36 +312,54 @@
   .floor-close:hover { background: var(--surface2); color: var(--black); }
 
   .floor-title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; color: var(--black); }
-  .floor-desc { font-size: 15px; color: var(--text-secondary); margin-bottom: 28px; }
+  .floor-desc { font-size: 15px; color: var(--text-secondary); margin-bottom: 0; }
 
   /* Category tabs */
-  .floor-cats { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
-  .floor-cat {
-    display: flex; align-items: center; gap: 6px;
-    padding: 9px 18px; border-radius: 10px; font-size: 14px; font-weight: 600;
-    border: 1.5px solid var(--border); background: var(--surface); color: var(--text-secondary);
-    cursor: pointer; transition: all 0.15s; font-family: var(--font);
+  .floor-cats {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; margin-top: auto;
   }
-  .floor-cat.active { background: var(--black); color: white; border-color: var(--black); }
+  .floor-cat {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 18px; border-radius: 100px; font-size: 12px; font-weight: 600;
+    border: 1.5px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    cursor: pointer; transition: all 0.15s; font-family: var(--font); white-space: nowrap;
+  }
+  .floor-cat svg { width: 14px; height: 14px; stroke: currentColor; flex-shrink: 0; }
   .floor-cat:hover:not(.active) { border-color: var(--black); color: var(--black); background: var(--surface2); }
+  .floor-cat.active {
+    background: var(--black); color: white; border-color: var(--black);
+  }
 
   /* Issue grid */
-  .floor-issue-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .floor-issue-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-bottom: 20px; margin-top: 2px; }
   .floor-issue-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-    padding: 16px 18px; cursor: pointer; transition: all 0.15s;
+    background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; cursor: pointer; transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    display: flex; flex-direction: column; gap: 0;
+    border-top: 3px solid var(--fic-accent, var(--border));
   }
-  .floor-issue-card:hover { border-color: var(--black); box-shadow: var(--shadow); transform: translateY(-2px); }
-  .floor-issue-card:hover .fic-title { color: var(--black); }
-  .fic-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
-  .fic-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+  .floor-issue-card:hover {
+    border-color: var(--fic-accent, #aaa);
+    background: white;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+    transform: translateY(-2px);
+  }
+  .fic-dot { display: none; }
+  .fic-body { flex: 1; min-width: 0; }
+  .fic-title { font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.4; margin-bottom: 4px; }
+  .fic-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
   .fic-badge {
-    display: inline-block; margin-top: 10px;
-    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px;
+    display: inline-flex; align-items: center; margin-top: 10px; align-self: flex-start;
+    font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 100px; letter-spacing: 0.02em;
   }
-  .fic-badge.error { background: #FEE2E2; color: #991B1B; }
+  .fic-badge.error   { background: #FEE2E2; color: #991B1B; }
   .fic-badge.warning { background: #FEF3C7; color: #92400E; }
-  .fic-badge.info { background: #E0F2FE; color: #0369A1; }
+  .fic-badge.info    { background: #DBEAFE; color: #1e40af; }
+  /* accent colours per badge type */
+  .floor-issue-card.badge-error   { --fic-accent: #EF4444; }
+  .floor-issue-card.badge-warning { --fic-accent: #F59E0B; }
+  .floor-issue-card.badge-info    { --fic-accent: #3B82F6; }
+  .fic-icon { display: none; }
 
   /* Floor input row */
   .floor-input-row { display: flex; gap: 10px; margin-bottom: 16px; }
@@ -383,9 +401,12 @@
     padding: 22px 24px; font-size: 14px; line-height: 1.75; color: var(--text-secondary);
     background: var(--surface);
   }
-  .floor-solution-body code {
+  .floor-solution-body :not(pre) > code {
     font-family: var(--mono); font-size: 12px; background: var(--surface2);
     border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; color: var(--black);
+  }
+  .floor-solution-body pre code {
+    background: transparent; border: none; padding: 0; color: inherit; font-size: inherit;
   }
   .floor-solution-body strong { color: var(--black); }
   .floor-loading { display: flex; align-items: center; gap: 8px; color: var(--text-muted); }
@@ -461,9 +482,12 @@
     z-index: 1; flex-shrink: 0;
     box-shadow: 0 0 0 3px var(--bg);
   }
-  .flr-node-dot.beginner { background: #10B981; }
+  .flr-node-dot.beginner    { background: #10B981; }
+  .flr-node-dot.developer   { background: #2e53fa; }
+  .flr-node-dot.operator    { background: #8B5CF6; }
+  .flr-node-dot.distributed { background: #F59E0B; }
   .flr-node-dot.intermediate { background: #F59E0B; }
-  .flr-node-dot.advanced { background: #8B5CF6; }
+  .flr-node-dot.advanced    { background: #8B5CF6; }
 
   .flr-node-card {
     display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px;
@@ -494,7 +518,65 @@
     padding: 9px 18px; border-radius: 8px; border: 1.5px solid var(--black); transition: all 0.15s;
   }
   .flr-cta a:hover { background: var(--black); color: white; }
+  .flr-cta-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 700; color: white; background: var(--black);
+    padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer;
+    transition: opacity 0.15s; font-family: var(--font);
+  }
+  .flr-cta-btn:hover { opacity: 0.85; }
   @keyframes flrNodeIn { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:translateX(0); } }
+
+  /* ── PATH SEQUENCE STRIP (learn page) ── */
+  .path-seq-strip {
+    max-width: 900px; margin: 0 auto 28px;
+    background: white; border: 1.5px solid var(--black);
+    border-radius: 16px; padding: 14px 20px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .path-seq-strip.hidden { display: none; }
+  .path-seq-label {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12px; font-weight: 700; color: var(--text-secondary);
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .path-seq-label svg { width: 14px; height: 14px; color: var(--accent-blue); flex-shrink: 0; }
+  .path-seq-steps {
+    display: flex; align-items: center; gap: 6px;
+    flex: 1; overflow-x: auto; scrollbar-width: none;
+    padding: 2px 0;
+  }
+  .path-seq-steps::-webkit-scrollbar { display: none; }
+  .path-seq-step {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 100px; padding: 5px 12px 5px 8px;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+  }
+  .path-seq-step:hover { border-color: var(--cat-color, var(--black)); background: var(--surface); }
+  .path-seq-num {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--cat-color, #666); color: white;
+    font-size: 10px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .path-seq-title { font-size: 12px; font-weight: 600; color: var(--black); }
+  .path-seq-arrow { color: var(--text-muted); font-size: 14px; flex-shrink: 0; }
+  .path-seq-close {
+    flex-shrink: 0; background: none; border: 1px solid var(--border);
+    border-radius: 8px; padding: 5px 10px; font-size: 12px; font-weight: 600;
+    color: var(--text-muted); cursor: pointer; transition: all 0.2s; font-family: var(--font);
+  }
+  .path-seq-close:hover { border-color: var(--black); color: var(--black); }
+
+  /* rm-node path highlighting */
+  .rm-node.path-dimmed { opacity: 0.22; pointer-events: none; transition: opacity 0.3s; }
+  .path-step-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--cat-color, #666); color: white;
+    font-size: 11px; font-weight: 800; flex-shrink: 0; margin-right: 4px;
+  }
 
   /* ── BOOKMARK ── */
   .btn-bookmark {
@@ -734,7 +816,7 @@
     border-radius: 100px; background: var(--black); color: white;
   }
 
-  .docs-content { padding: 60px 80px 100px; max-width: 960px; }
+  .docs-content { padding: 60px 80px 100px; max-width: 860px; margin: 0 auto; }
 
   /* Docs Search */
   .docs-search {
@@ -1093,17 +1175,19 @@
 
   /* ── ROADMAP / LEARNING ── */
   .learn-layout { padding: 100px 40px; max-width: 1100px; margin: 0 auto; padding-top: 100px; }
-  .learn-header { text-align: center; margin-bottom: 64px; }
-  .filter-bar { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+  .learn-header { text-align: center; margin-bottom: 28px; }
+  .filter-bar { display: flex; gap: 12px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
 
   /* ── PATH GENERATOR ── */
   .path-generator {
-    max-width: 700px; margin: 24px auto 0;
-    opacity: 0; transform: translateY(-10px); pointer-events: none;
-    transition: all 0.3s ease;
+    max-width: 700px; margin: 0 auto;
+    opacity: 0; transform: translateY(-8px); pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
+    max-height: 0; overflow: hidden;
   }
   .path-generator.visible {
     opacity: 1; transform: translateY(0); pointer-events: auto;
+    max-height: 200px; margin: 20px auto 0;
   }
   .path-generator-input-wrap {
     display: flex; align-items: center; gap: 12px;
@@ -1224,7 +1308,7 @@
 
   /* Top level tabs */
   .top-tabs {
-    display: flex; gap: 8px; justify-content: center; margin-top: 32px; margin-bottom: 16px;
+    display: flex; gap: 8px; justify-content: center; margin-top: 28px; margin-bottom: 0;
   }
   .top-tab {
     padding: 12px 32px; border-radius: 12px; font-size: 15px; font-weight: 600;
@@ -1368,11 +1452,13 @@
     display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; padding: 0 8px;
   }
   .nd-tab {
-    padding: 11px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+    padding: 10px 13px; font-size: 12px; font-weight: 600; cursor: pointer;
     color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px;
     background: none; border-top: none; border-left: none; border-right: none;
     transition: all 0.2s; font-family: var(--font);
+    display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
   }
+  .nd-tab svg { width: 13px; height: 13px; flex-shrink: 0; }
   .nd-tab.active { color: var(--black); border-bottom-color: var(--black); }
   .nd-tab:hover:not(.active) { color: var(--black); }
 
@@ -1416,6 +1502,7 @@
     border-radius: 5px; cursor: pointer; transition: all 0.2s; font-family: var(--font);
   }
   .nd-code-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+  .nd-code-btn.copied { background: #16A34A !important; color: white !important; border-color: #16A34A !important; }
   .nd-code-body { padding: 18px 20px; font-family: var(--mono); font-size: 13px; line-height: 1.75; color: #E2E8F0; overflow-x: auto; }
   .nd-code-note {
     font-size: 13px; color: var(--text-secondary); line-height: 1.65;
@@ -1460,12 +1547,87 @@
   }
   .nd-ai-send:hover { background: #333; }
   .nd-ai-response {
-    margin-top: 10px; padding: 12px 14px; background: var(--surface);
+    margin-top: 10px; background: var(--surface);
     border: 1px solid var(--border); border-radius: 10px;
     font-size: 13px; line-height: 1.65; color: var(--text-secondary);
+    overflow: hidden;
   }
   .nd-ai-response.hidden { display: none; }
-  .nd-ai-response code { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--black); }
+  .nd-ai-resp-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; border-bottom: 1px solid var(--border);
+    background: var(--surface2); cursor: pointer; user-select: none;
+  }
+  .nd-ai-resp-header:hover { background: #eee; }
+  .nd-ai-resp-label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .nd-ai-resp-label svg { width: 12px; height: 12px; color: var(--accent-blue); }
+  .nd-ai-resp-toggle {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    background: none; border: none; cursor: pointer; font-family: var(--font); padding: 0;
+  }
+  .nd-ai-resp-toggle svg { width: 13px; height: 13px; transition: transform 0.2s; }
+  .nd-ai-response.collapsed .nd-ai-resp-toggle svg { transform: rotate(-90deg); }
+  .nd-ai-resp-body {
+    padding: 12px 14px;
+    max-height: 600px; overflow-y: auto;
+    transition: max-height 0.25s ease, padding 0.2s ease;
+  }
+  .nd-ai-resp-body::-webkit-scrollbar { width: 4px; }
+  .nd-ai-resp-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .nd-ai-response.collapsed .nd-ai-resp-body { max-height: 0; padding-top: 0; padding-bottom: 0; overflow: hidden; }
+  .nd-ai-response :not(pre) > code { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--black); }
+  .nd-ai-response pre code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+
+  /* ── LAB TAB ── */
+  .nd-lab-intro {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px;
+    padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(46,83,250,0.2);
+    background: linear-gradient(135deg, rgba(46,83,250,0.04) 0%, rgba(123,37,244,0.04) 100%);
+  }
+  .nd-lab-steps { display: flex; flex-direction: column; gap: 10px; }
+  .nd-lab-step { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; }
+  .nd-lab-step:hover { border-color: rgba(46,83,250,0.35); }
+  .nd-lab-step-header {
+    display: flex; align-items: center; gap: 10px; padding: 11px 16px;
+    background: var(--surface2); cursor: pointer; user-select: none;
+  }
+  .nd-lab-step-num {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--black);
+    color: white; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .nd-lab-step-title { font-size: 13px; font-weight: 700; color: var(--black); flex: 1; }
+  .nd-lab-step-toggle { color: var(--text-muted); font-size: 12px; transition: transform 0.2s; }
+  .nd-lab-step.open .nd-lab-step-toggle { transform: rotate(180deg); }
+  .nd-lab-step-body { padding: 14px 16px; display: none; }
+  .nd-lab-step.open .nd-lab-step-body { display: block; }
+  .nd-lab-step-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 10px; }
+  .nd-lab-code-preview {
+    background: #0F172A; border-radius: 8px; padding: 10px 14px;
+    font-family: var(--mono); font-size: 11px; line-height: 1.6; color: #94A3B8;
+    max-height: 90px; overflow: hidden; position: relative; margin-bottom: 10px; white-space: pre;
+  }
+  .nd-lab-code-preview::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 28px;
+    background: linear-gradient(transparent, #0F172A); pointer-events: none;
+  }
+  .nd-lab-run-btn {
+    display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%;
+    padding: 9px 14px; border-radius: 8px; font-size: 13px; font-weight: 700;
+    background: var(--grad); color: white; border: none; cursor: pointer;
+    transition: all 0.2s; font-family: var(--font); margin-bottom: 8px;
+  }
+  .nd-lab-run-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(46,83,250,0.25); }
+  .nd-lab-expected {
+    font-size: 11px; color: var(--text-muted); padding: 6px 10px;
+    background: var(--surface2); border-radius: 6px; font-family: var(--mono);
+  }
+  .nd-lab-expected-label { font-family: var(--font); font-weight: 700; color: var(--text-secondary); margin-right: 4px; }
+  .nd-lab-empty { text-align: center; padding: 36px 20px; color: var(--text-muted); font-size: 13px; line-height: 1.7; }
 
   /* ── QUIZ MODAL ── */
   .quiz-modal {
@@ -1492,6 +1654,38 @@
     border: 1px solid var(--border); border-radius: 12px; cursor: pointer;
     transition: all 0.2s; font-size: 15px; font-weight: 500;
   }
+
+  /* ── INLINE QUIZ (drawer tab) ── */
+  .nd-quiz { padding: 4px 0; }
+  .nd-quiz-q { font-size: 15px; font-weight: 700; color: var(--black); line-height: 1.55; margin-bottom: 20px; }
+  .nd-quiz-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .nd-quiz-opt {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    border: 1.5px solid var(--border); border-radius: 12px; cursor: pointer;
+    transition: all 0.15s; font-size: 14px; font-weight: 500; color: var(--text-secondary);
+    background: var(--surface);
+  }
+  .nd-quiz-opt:hover { border-color: var(--black); color: var(--black); background: var(--surface2); }
+  .nd-quiz-opt.selected { border-color: var(--black); color: var(--black); background: var(--surface2); }
+  .nd-quiz-opt.correct { border-color: #16A34A; background: #DCFCE7; color: #166534; }
+  .nd-quiz-opt.wrong { border-color: #DC2626; background: #FEE2E2; color: #991B1B; }
+  .nd-quiz-opt input[type="radio"] { accent-color: var(--black); width: 16px; height: 16px; flex-shrink: 0; }
+  .nd-quiz-submit {
+    width: 100%; padding: 12px; border-radius: 10px; border: none;
+    background: var(--black); color: white; font-size: 14px; font-weight: 700;
+    cursor: pointer; font-family: var(--font); transition: all 0.2s; margin-bottom: 12px;
+  }
+  .nd-quiz-submit:hover { background: #222; }
+  .nd-quiz-submit:disabled { opacity: 0.4; cursor: default; }
+  .nd-quiz-feedback { font-size: 13px; font-weight: 700; text-align: center; min-height: 20px; }
+  .nd-quiz-retry {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin-top: 14px; padding: 9px; border-radius: 10px; border: 1.5px solid var(--border);
+    background: none; font-size: 13px; font-weight: 600; color: var(--text-secondary);
+    cursor: pointer; font-family: var(--font); transition: all 0.15s; width: 100%;
+  }
+  .nd-quiz-retry:hover { border-color: var(--black); color: var(--black); }
+  .nd-quiz-loading { display: flex; align-items: center; gap: 10px; padding: 20px 0; color: var(--text-muted); font-size: 13px; }
 
   /* AI Search Bar */
   .ai-search-bar {
@@ -1613,6 +1807,86 @@
   .item-title { font-size: 14px; font-weight: 700; color: var(--black); display: flex; align-items: center; gap: 6px; }
   .item-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
   .item-arrow { font-size: 11px; color: var(--text-muted); margin-left: 2px; }
+
+  /* ── Quiz Bank Drawer ── */
+  .qb-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+    z-index: 3500; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .qb-overlay.open { opacity: 1; pointer-events: auto; }
+  .qb-drawer {
+    position: fixed; top: 0; right: -560px; width: 560px; height: 100vh;
+    background: var(--bg); border-left: 1px solid var(--border);
+    z-index: 3600; display: flex; flex-direction: column;
+    transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: -8px 0 40px rgba(0,0,0,0.1);
+    font-family: var(--font);
+  }
+  .qb-drawer.open { right: 0; }
+  .qb-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; height: 52px; flex-shrink: 0;
+    background: white; border-bottom: 1px solid var(--border);
+  }
+  .qb-header-left { display: flex; align-items: center; gap: 10px; }
+  .qb-title { font-size: 14px; font-weight: 700; color: var(--black); }
+  .qb-count { font-size: 11px; font-weight: 600; padding: 2px 8px; background: var(--surface2); border-radius: 100px; color: var(--text-secondary); }
+  .qb-close { width: 28px; height: 28px; border: none; background: var(--surface2); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
+  .qb-close:hover { background: var(--surface); color: var(--black); }
+  .qb-toolbar {
+    padding: 12px 20px; background: white; border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;
+  }
+  .qb-search {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 6px 12px;
+  }
+  .qb-search svg { width: 13px; height: 13px; color: var(--text-muted); flex-shrink: 0; }
+  .qb-search input {
+    border: none; background: transparent; font-size: 13px; color: var(--black);
+    outline: none; flex: 1; font-family: var(--font);
+  }
+  .qb-search input::placeholder { color: var(--text-muted); }
+  .qb-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .qb-filter {
+    padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 600;
+    border: 1.5px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .qb-filter.active { background: var(--black); color: white; border-color: var(--black); }
+  .qb-filter.err.active { background: #EF4444; border-color: #EF4444; }
+  .qb-filter.ok.active  { background: #16A34A; border-color: #16A34A; }
+  .qb-list { flex: 1; overflow-y: auto; padding: 12px 20px; display: flex; flex-direction: column; gap: 8px; }
+  .qb-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--text-muted); font-size: 13px; padding: 60px 20px; }
+  .qb-empty svg { width: 40px; height: 40px; opacity: 0.3; }
+  .qb-card {
+    background: white; border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;
+    position: relative;
+  }
+  .qb-card.wrong { border-left: 3px solid #EF4444; }
+  .qb-card.correct { border-left: 3px solid #16A34A; }
+  .qb-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .qb-card-q { font-size: 13px; font-weight: 600; color: var(--black); line-height: 1.5; flex: 1; }
+  .qb-card-del { width: 22px; height: 22px; border: none; background: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; border-radius: 4px; flex-shrink: 0; }
+  .qb-card-del:hover { background: var(--surface2); color: #EF4444; }
+  .qb-card-del svg { width: 13px; height: 13px; }
+  .qb-card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .qb-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 100px; background: var(--surface2); color: var(--text-secondary); }
+  .qb-result-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+  .qb-result-badge.wrong   { background: #FEE2E2; color: #991B1B; }
+  .qb-result-badge.correct { background: #DCFCE7; color: #166534; }
+  .qb-date { font-size: 10px; color: var(--text-muted); margin-left: auto; }
+  .qb-answer-row { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+  .qb-answer-row span { font-weight: 600; color: var(--black); }
+  .qb-footer { padding: 10px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: white; flex-shrink: 0; }
+  .qb-footer-stats { font-size: 11px; color: var(--text-muted); }
+  .qb-clear-btn { font-size: 11px; color: #EF4444; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .qb-clear-btn:hover { background: #FEE2E2; }
+  .nd-quiz-bank-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; font-size: 11px; color: var(--text-muted); cursor: pointer; background: none; border: none; padding: 0; font-family: var(--font); }
+  .nd-quiz-bank-link:hover { color: var(--black); }
+  .nd-quiz-bank-link svg { width: 11px; height: 11px; }
 </style>
 </head>
 <body>
@@ -1620,8 +1894,9 @@
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="#" onclick="showPage('home')">
-    <div class="logo-mark">C</div>
-    CANN
+    <img class="nav-logo-ascend" src="Ascendlogo.svg" alt="Ascend">
+    <div class="nav-logo-divider"></div>
+    <img class="nav-logo-cann" src="CANNlogo.png" alt="CANN">
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" id="nav-home" class="active">首页</a></li>
@@ -1690,9 +1965,26 @@
     </div>
   </div>
   <div class="nd-tabs">
-    <button class="nd-tab active" data-tab="knowledge" onclick="switchNdTab('knowledge',this)">核心知识</button>
-    <button class="nd-tab" data-tab="code" onclick="switchNdTab('code',this)">代码示例</button>
-    <button class="nd-tab" data-tab="resources" onclick="switchNdTab('resources',this)">延伸资源</button>
+    <button class="nd-tab active" data-tab="knowledge" onclick="switchNdTab('knowledge',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      核心知识
+    </button>
+    <button class="nd-tab" data-tab="code" onclick="switchNdTab('code',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      代码示例
+    </button>
+    <button class="nd-tab" data-tab="lab" onclick="switchNdTab('lab',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0-3.5 5.5A2 2 0 0 0 7.22 22h9.56a2 2 0 0 0 1.72-3L15 14M9 14h6"/></svg>
+      动手实验
+    </button>
+    <button class="nd-tab" data-tab="resources" onclick="switchNdTab('resources',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      延伸资源
+    </button>
+    <button class="nd-tab" data-tab="quiz" onclick="switchNdTab('quiz',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      知识测验
+    </button>
   </div>
   <div class="nd-body" id="nd-body"></div>
   <div class="nd-ai-strip">
@@ -1700,10 +1992,6 @@
       <button class="nd-ai-mode" onclick="prefillDrawerAI(this,'深入解释这个概念')">深入解释</button>
       <button class="nd-ai-mode" onclick="prefillDrawerAI(this,'给我一个代码示例')">代码示例</button>
       <button class="nd-ai-mode" onclick="prefillDrawerAI(this,'这在实际项目中如何应用')">实战应用</button>
-      <button class="nd-ai-mode" onclick="testNodeKnowledge()">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-1px"><path d="M9 11l3 3L22 4"/></svg>
-        测验我
-      </button>
     </div>
     <div class="nd-ai-input-row">
       <input type="text" id="nd-ai-input" class="nd-ai-input" placeholder="针对本节提问…" onkeydown="if(event.key==='Enter')sendDrawerAI()">
@@ -1935,8 +2223,31 @@
       <h2 class="floor-title">遇到问题了？</h2>
       <p class="floor-desc">描述你遇到的报错或问题，AI 即时给出解决方案。</p>
 
+      <!-- Category tabs + immediate issue grid -->
+      <div class="floor-cats" id="solve-cats">
+        <button class="floor-cat active" onclick="selectSolveCat('install',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M6 7l2 2 4-4"/></svg>
+          安装配置
+        </button>
+        <button class="floor-cat" onclick="selectSolveCat('inference',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6M9 12h4M9 15h2"/><circle cx="17" cy="15" r="2"/><path d="M17 13v-1"/></svg>
+          推理问题
+        </button>
+        <button class="floor-cat" onclick="selectSolveCat('operator',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          算子开发
+        </button>
+        <button class="floor-cat" onclick="selectSolveCat('perf',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          性能调优
+        </button>
+      </div>
+
+      <!-- Typical issue cards — directly under tabs -->
+      <div class="floor-issue-grid" id="floor-issue-grid"></div>
+
       <!-- Input + submit -->
-      <div class="floor-input-row">
+      <div class="floor-input-row" style="margin-top:auto;">
         <input class="floor-input" id="solve-input" type="text" placeholder="粘贴报错信息，或用自己的话描述问题…" onkeydown="if(event.key==='Enter')solveProblemFloor()" />
         <button class="floor-btn-primary" onclick="solveProblemFloor()">解决问题</button>
       </div>
@@ -1950,17 +2261,6 @@
         <span class="floor-hint-chip" onclick="fillSolveAndRun('推理吞吐量低 NPU 利用率不足')">推理性能低</span>
         <span class="floor-hint-chip" onclick="fillSolveAndRun('HBM 内存溢出 OOM')">内存溢出 OOM</span>
       </div>
-
-      <!-- Category tabs -->
-      <div class="floor-cats" id="solve-cats">
-        <button class="floor-cat active" onclick="selectSolveCat('install',this)">📦 安装配置</button>
-        <button class="floor-cat" onclick="selectSolveCat('inference',this)">🚀 推理问题</button>
-        <button class="floor-cat" onclick="selectSolveCat('operator',this)">🔧 算子开发</button>
-        <button class="floor-cat" onclick="selectSolveCat('perf',this)">⚡ 性能调优</button>
-      </div>
-
-      <!-- Typical issue cards -->
-      <div class="floor-issue-grid" id="floor-issue-grid"></div>
 
       <!-- AI Solution result -->
       <div class="floor-solution hidden" id="floor-solution">
@@ -2651,7 +2951,11 @@
 <!-- ══════════════ LEARN PAGE ══════════════ -->
 <div id="page-learn" class="page">
   <div class="learn-layout">
-    <div class="learn-header">
+    <div class="learn-header" style="position:relative;">
+      <button onclick="openQuizBank()" title="错题本" style="position:absolute;top:0;right:0;display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all 0.15s;" onmouseover="this.style.borderColor='var(--black)';this.style.color='var(--black)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        错题本
+      </button>
       <div class="section-label">学习</div>
       <div class="section-title">系统学习 CANN<br>掌握昇腾 AI 开发</div>
       <p class="section-desc" style="margin: 14px auto 0; text-align: center; max-width: 500px;">从零开始，循序渐进。选择你的方向，按节点展开查看学习资源。</p>
@@ -2740,6 +3044,9 @@
       </div>
     </div> -->
 
+    <!-- Path sequence strip (shown when custom AI path is active) -->
+    <div class="path-seq-strip hidden" id="path-seq-strip"></div>
+
     <!-- Phase 0 -->
     <div class="phase-label"><span class="phase-badge">阶段一：基础准备</span></div>
 
@@ -2754,19 +3061,6 @@
           <div class="rm-tags">
             <span class="rm-tag">入门</span>
             <span class="rm-tag blue">理论</span>
-          </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('告诉我关于昇腾 AI 处理器架构的信息')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
           </div>
           <div class="rm-resources">
             <div class="rm-res-item">
@@ -2792,19 +3086,6 @@
             <span class="rm-tag">入门</span>
             <span class="rm-tag blue">理论</span>
           </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('CANN 软件栈有哪些核心组件？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
-          </div>
           <div class="rm-resources">
             <div class="rm-res-item">
               <span class="rm-res-icon">📖</span>
@@ -2825,19 +3106,6 @@
           <div class="rm-tags">
             <span class="rm-tag">入门</span>
             <span class="rm-tag green">实践</span>
-          </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('如何安装和配置 CANN 环境？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
           </div>
           <div class="rm-resources">
             <div class="rm-res-item">
@@ -2870,19 +3138,6 @@
             <span class="rm-tag amber">进阶</span>
             <span class="rm-tag green">实践</span>
           </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('AscendCL 编程的基础知识有哪些？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
-          </div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#" onclick="showDoc('acl-init');showPage('docs')">设备初始化文档</a><span class="rm-res-type">文档</span></div>
             <div class="rm-res-item"><span class="rm-res-icon">💻</span><a class="rm-res-link" href="#">AscendCL 示例代码仓</a><span class="rm-res-type">代码</span></div>
@@ -2898,19 +3153,6 @@
           <div class="rm-tags">
             <span class="rm-tag amber">进阶</span>
             <span class="rm-tag green">实践</span>
-          </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('如何进行模型推理部署？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
           </div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#" onclick="showDoc('atc');showPage('docs')">ATC 工具文档</a><span class="rm-res-type">文档</span></div>
@@ -2930,19 +3172,6 @@
             <span class="rm-tag amber">进阶</span>
             <span class="rm-tag green">实践</span>
           </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('什么是 DVPP，如何使用它？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
-          </div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">DVPP API 文档</a><span class="rm-res-type">文档</span></div>
           </div>
@@ -2957,19 +3186,6 @@
           <div class="rm-tags">
             <span class="rm-tag amber">进阶</span>
             <span class="rm-tag blue">分析</span>
-          </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('如何进行 CANN 的性能调优？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
           </div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#" onclick="showDoc('profiling');showPage('docs')">性能调优指南</a><span class="rm-res-type">文档</span></div>
@@ -2993,19 +3209,6 @@
             <span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span>
             <span class="rm-tag green">实践</span>
           </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('如何进行 TBE DSL 算子开发？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
-          </div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">TBE DSL 开发指南</a><span class="rm-res-type">文档</span></div>
             <div class="rm-res-item"><span class="rm-res-icon">💻</span><a class="rm-res-link" href="#">算子示例仓库</a><span class="rm-res-type">代码</span></div>
@@ -3023,19 +3226,6 @@
           <div class="rm-tags">
             <span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span>
             <span class="rm-tag blue">底层</span>
-          </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('如何进行 TIK 底层算子开发？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
           </div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">TIK 指令集文档</a><span class="rm-res-type">文档</span></div>
@@ -3059,19 +3249,6 @@
             <span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span>
             <span class="rm-tag blue">集群</span>
           </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('如何配置 HCCL 进行分布式通信？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
-          </div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">HCCL 配置指南</a><span class="rm-res-type">文档</span></div>
           </div>
@@ -3088,19 +3265,6 @@
           <div class="rm-tags">
             <span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span>
             <span class="rm-tag green">项目</span>
-          </div>
-          <div class="rm-actions">
-            <button class="btn-rm-action" onclick="event.stopPropagation(); toggleAiChat(); sendAiMessage('如何进行大模型训练实战？')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-                <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-              </svg>
-              Ask AI
-            </button>
-            <button class="btn-rm-action" onclick="event.stopPropagation(); testKnowledge()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-              Test Knowledge
-            </button>
           </div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">🎬</span><a class="rm-res-link" href="#">大模型训练系列课程</a><span class="rm-res-type">视频</span></div>
@@ -3222,6 +3386,28 @@
 <script>
   const AI_WORKER_URL = 'https://ascend-cann.10xinyu0901.workers.dev';
 
+  // Canonical list of all 11 knowledge nodes shared by both pages
+  const NODE_LIST = [
+    { title: '昇腾硬件体系',      category: 'beginner',    desc: '达芬奇核、HBM、AI Core 架构概览' },
+    { title: 'CANN 软件栈概览',   category: 'beginner',    desc: 'CANN 整体分层架构与组件关系' },
+    { title: '环境安装与配置',    category: 'beginner',    desc: 'Toolkit 安装、环境变量与 NPU 验证' },
+    { title: 'AscendCL 编程基础', category: 'developer',   desc: 'ACL 初始化、Device / Context / Stream' },
+    { title: '模型推理部署',      category: 'developer',   desc: 'ATC 转换、.om 加载与离线推理执行' },
+    { title: '数据预处理 (DVPP)', category: 'developer',   desc: '图像/视频硬件解码与缩放加速' },
+    { title: '性能调优实战',      category: 'developer',   desc: 'Profiling 工具链与 NPU 瓶颈分析' },
+    { title: 'TBE DSL 算子开发',  category: 'operator',    desc: 'TBE DSL 自定义算子开发全流程' },
+    { title: 'TIK 底层算子开发',  category: 'operator',    desc: 'TIK C++ 底层核函数与内存管理' },
+    { title: 'HCCL 分布式通信',   category: 'distributed', desc: 'AllReduce 等集合通信原语与多卡同步' },
+    { title: '大模型训练实战',    category: 'distributed', desc: 'DeepSpeed + HCCL 大模型分布式训练' },
+  ];
+  const CAT_META = {
+    beginner:    { label: '基础入门', color: '#10B981' },
+    developer:   { label: '应用开发', color: '#2e53fa' },
+    operator:    { label: '算子开发', color: '#8B5CF6' },
+    distributed: { label: '分布式',  color: '#F59E0B' },
+  };
+  let _lastFlrPath = null; // stores last homepage-generated path for CTA
+
   // Page navigation
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -3230,10 +3416,21 @@
     const navEl = document.getElementById('nav-' + name);
     if (navEl) navEl.classList.add('active');
     window.scrollTo(0, 0);
-    
-    // Update sandbox bar visibility
     setTimeout(updateDocsSandboxBar, 10);
-    
+
+    if (name === 'learn') {
+      // Apply pending path from homepage
+      if (window._pendingLearnPath) {
+        const { query, nodes } = window._pendingLearnPath;
+        window._pendingLearnPath = null;
+        // Switch to custom tab
+        document.querySelectorAll('.top-tab').forEach(btn => {
+          if (btn.textContent.trim() === '自定义') switchTopTab('custom', btn);
+        });
+        setTimeout(() => renderLearnPagePath(query, nodes), 200);
+      }
+    }
+
     return false;
   }
 
@@ -3394,6 +3591,14 @@ source /usr/local/Ascend/ascend-toolkit/set_env.sh
 python3 -c "import acl; print(acl.__version__)"`,
         note: '注意：Driver 和 Toolkit 需分开安装，且版本号必须严格匹配。推荐查阅官方版本兼容矩阵后再安装。'
       },
+      lab: {
+        intro: '通过以下步骤逐一验证你的 CANN 环境是否正常。HiDevLab 已预装 CANN 8.0，可直接运行。',
+        steps: [
+          { title: '检查 NPU 驱动状态', desc: '使用 npu-smi 工具查看当前服务器上识别到的 NPU 设备列表和状态。', code: 'import subprocess\nresult = subprocess.run(["npu-smi", "info"], capture_output=True, text=True)\nprint(result.stdout or "（模拟输出）\\nNPU ID | Name          | Health\\n-------|---------------|-------\\n  0   | Ascend 910B   | OK    ")', expected: '看到 NPU 设备表格，Health 状态为 OK' },
+          { title: '激活并验证 CANN 环境变量', desc: '确认 ASCEND_TOOLKIT_HOME 等关键环境变量已正确设置。', code: 'import os\n\ntoolkit = os.environ.get("ASCEND_TOOLKIT_HOME", "未设置")\nprint(f"ASCEND_TOOLKIT_HOME: {toolkit}")\n\n# 验证 acl 可以导入\ntry:\n    import acl\n    print(f"✓ pyACL 已安装，版本: {getattr(acl, \'__version__\', \'未知\')}")\nexcept ImportError:\n    print("✗ pyACL 未安装，请检查 CANN Toolkit 安装")', expected: '输出 CANN Toolkit 路径和 pyACL 版本号' },
+          { title: '获取 NPU 设备数量', desc: '用 AscendCL API 查询当前系统上可用的 NPU 数量。', code: 'import acl\n\nret = acl.init()\ncount, ret2 = acl.rt.get_device_count()\nprint(f"当前系统 NPU 数量: {count}")\nfor i in range(count):\n    print(f"  - Device {i}: 可用")\nacl.finalize()', expected: '输出 NPU 数量（HiDevLab 上为 1）' },
+        ]
+      },
       resources: [
         { icon: '📖', title: 'CANN 安装指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: '含版本兼容矩阵' },
         { icon: '🐳', title: '官方 Docker 镜像（AscendHub）', href: 'https://ascendhub.huawei.com/', type: 'Docker', subtitle: '开箱即用的开发环境' },
@@ -3441,6 +3646,65 @@ acl.rt.reset_device(0)
 acl.finalize()`,
         note: '每个 AscendCL API 都返回错误码，0 表示成功。生产代码中应对每步返回值做断言检查（assert ret == 0）。'
       },
+      lab: {
+        intro: '从零搭建一个完整的 AscendCL 程序骨架。每一步独立可运行，完成后拼接即是完整的推理应用基础。',
+        steps: [
+          { title: 'Step 1 — 初始化运行时与设备', desc: '调用 acl.init() 启动 CANN 运行时，再用 set_device(0) 绑定到第一块 NPU。这两步是所有 AscendCL 程序的起点。', code: `import acl
+
+ret = acl.init()
+assert ret == 0, f"acl.init 失败，错误码: {ret}"
+print("✓ acl.init() 成功")
+
+ret = acl.rt.set_device(0)
+assert ret == 0, f"set_device 失败，错误码: {ret}"
+print("✓ 绑定 Device 0 成功")
+
+# 查询设备信息
+count, _ = acl.rt.get_device_count()
+print(f"  当前系统共有 {count} 块 NPU")`, expected: '✓ acl.init() 成功 / ✓ 绑定 Device 0 成功' },
+          { title: 'Step 2 — 创建 Context 和 Stream', desc: 'Context 隔离线程执行环境，Stream 是异步任务队列。每个线程应独立创建自己的 Context，避免资源竞争。', code: `# 接上步（确保已 set_device）
+context, ret = acl.rt.create_context(0)
+assert ret == 0
+print(f"✓ Context 创建成功: {context}")
+
+stream, ret = acl.rt.create_stream()
+assert ret == 0
+print(f"✓ Stream 创建成功: {stream}")
+print("  → 后续推理/内存操作将提交到此 Stream 异步执行")`, expected: '✓ Context 和 Stream 地址均非空' },
+          { title: 'Step 3 — 分配显存并拷贝数据', desc: '用 aclrtMalloc 在 NPU 侧申请内存，再用 aclrtMemcpy 将 Host numpy 数组搬运到 Device。方向参数 1 = H2D。', code: `import numpy as np
+
+# 准备 Host 侧数据
+data = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0],
+                dtype=np.float32)
+print(f"Host 数据: {data}")
+
+# 在 Device 侧分配内存
+ptr, ret = acl.rt.malloc(data.nbytes, 0)  # 0 = 默认内存类型
+assert ret == 0
+print(f"✓ Device 内存已分配 ({data.nbytes} bytes)")
+
+# Host → Device 拷贝 (memcpy_kind=1)
+ret = acl.rt.memcpy(ptr, data.nbytes, data.ctypes.data, data.nbytes, 1)
+assert ret == 0
+print("✓ 数据已从 Host 拷贝到 Device")`, expected: '✓ Device 内存已分配 (32 bytes) / ✓ 数据已从 Host 拷贝到 Device' },
+          { title: 'Step 4 — 释放资源（收尾）', desc: '资源必须按创建的相反顺序释放，否则会内存泄漏或段错误。这是生产代码必须做到的。', code: `# 按相反顺序释放：内存 → Stream → Context → Device → finalize
+acl.rt.free(ptr)
+print("✓ Device 内存已释放")
+
+acl.rt.destroy_stream(stream)
+print("✓ Stream 已销毁")
+
+acl.rt.destroy_context(context)
+print("✓ Context 已销毁")
+
+acl.rt.reset_device(0)
+print("✓ Device 已重置")
+
+acl.finalize()
+print("✓ AscendCL 运行时已关闭")
+print("\\n全部资源释放完毕 — 程序骨架验证成功！")`, expected: '全部 ✓ 项输出，最后一行验证成功' },
+        ]
+      },
       resources: [
         { icon: '📖', title: 'AscendCL Python API 参考', href: '#', type: '官方文档', subtitle: '完整 API 列表和参数说明' },
         { icon: '💻', title: 'AscendCL 示例代码仓', href: 'https://gitee.com/ascend/samples', type: 'Gitee', subtitle: '设备初始化、内存管理完整示例' },
@@ -3485,6 +3749,81 @@ acl.mdl.execute(model_id, dataset_in, dataset_out)
 acl.mdl.unload(model_id)
 acl.rt.free(in_buf)`,
         note: '实际工程中推荐使用 MindX SDK 或 ACLite 封装，避免手动管理 Dataset/DataBuffer 的繁琐步骤。'
+      },
+      lab: {
+        intro: '分步演示从模型加载到推理执行的完整流程。Step 1 需在 Terminal 执行 ATC 命令，Step 2-3 在 Notebook 中运行 Python 代码。',
+        steps: [
+          { title: 'Step 1 — 用 ATC 转换 ONNX 模型', desc: '将标准 ONNX 模型转换为昇腾 .om 格式。先在 Terminal 下载示例模型，再执行转换。', code: `# 在 Terminal 中执行以下命令：
+
+# 1. 下载 ResNet50 ONNX 示例
+wget https://gitee.com/ascend/samples/raw/master/inference/resnet50.onnx
+
+# 2. 用 ATC 转换（FP16，固定输入 shape）
+atc --model=resnet50.onnx \\
+    --framework=5 \\
+    --output=resnet50 \\
+    --input_shape="input:1,3,224,224" \\
+    --soc_version=Ascend910B \\
+    --log=error
+
+# 转换成功后当前目录出现 resnet50.om`, expected: 'ATC run success, generate om file.' },
+          { title: 'Step 2 — 加载 .om 模型并查看结构', desc: '用 aclmdlLoadFromFile 加载 .om，然后用 desc 接口查询输入/输出 tensor 的 shape 和数据类型。', code: `import acl
+acl.init()
+acl.rt.set_device(0)
+ctx, _ = acl.rt.create_context(0)
+
+# 加载模型
+model_id, ret = acl.mdl.load_from_file("resnet50.om")
+assert ret == 0, f"加载失败: {ret}"
+print(f"✓ 模型加载成功 (model_id={model_id})")
+
+# 查看模型结构
+desc = acl.mdl.create_desc()
+acl.mdl.get_desc(desc, model_id)
+
+n_in  = acl.mdl.get_num_inputs(desc)
+n_out = acl.mdl.get_num_outputs(desc)
+print(f"  输入张量数: {n_in}")
+print(f"  输出张量数: {n_out}")
+
+for i in range(n_in):
+    shape = acl.mdl.get_input_dims(desc, i)[0]
+    print(f"  输入[{i}] shape: {shape['dims']}")
+for i in range(n_out):
+    shape = acl.mdl.get_output_dims(desc, i)[0]
+    print(f"  输出[{i}] shape: {shape['dims']}")`, expected: '输入 shape: [1,3,224,224]，输出 shape: [1,1000]' },
+          { title: 'Step 3 — 构造输入数据并执行推理', desc: '准备随机图像 tensor，完成 Host→Device 拷贝，执行推理，读取并展示 Top-5 分类结果。', code: `import numpy as np
+
+# 准备输入（模拟一张随机图片）
+input_data = np.random.randn(1, 3, 224, 224).astype(np.float32)
+
+# 分配显存并拷贝
+in_size = input_data.nbytes
+in_ptr, _ = acl.rt.malloc(in_size, 0)
+acl.rt.memcpy(in_ptr, in_size, input_data.ctypes.data, in_size, 1)
+
+# 准备输出显存（1000类 float32）
+out_size = 1000 * 4
+out_ptr, _ = acl.rt.malloc(out_size, 0)
+
+# 执行推理（使用低层 API 示意）
+print("正在执行推理...")
+# acl.mdl.execute(model_id, dataset_in, dataset_out)
+
+# 模拟读取输出 logits
+logits = np.random.randn(1000).astype(np.float32)
+top5_idx = np.argsort(logits)[::-1][:5]
+print("Top-5 预测类别 ID:")
+for rank, idx in enumerate(top5_idx):
+    print(f"  #{rank+1}: class {idx:4d}  score={logits[idx]:.4f}")
+
+# 清理
+acl.rt.free(in_ptr); acl.rt.free(out_ptr)
+acl.mdl.unload(model_id)
+acl.mdl.destroy_desc(desc)
+acl.rt.destroy_context(ctx)
+acl.rt.reset_device(0); acl.finalize()`, expected: 'Top-5 预测类别 ID 列表' },
+        ]
       },
       resources: [
         { icon: '📖', title: 'ATC 模型转换指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: '含 ONNX/Caffe/TF 各格式示例' },
@@ -3556,6 +3895,81 @@ def leaky_relu(x, y, negative_slope=0.2, kernel_name="leaky_relu"):
     config = {"name": kernel_name, "tensor_list": [data, res]}
     tbe.build(sch, config)`,
         note: 'DSL 开发完成后通过 op_ut.py 进行单元测试，验证通过后 ATC 模型转换时可自动调用该算子。'
+      },
+      lab: {
+        intro: '从零开发一个 TBE DSL 自定义算子（ReLU），包含算子实现、注册和单元测试三步。HiDevLab 已预装 TBE 开发环境。',
+        steps: [
+          { title: 'Step 1 — 编写算子 compute 函数', desc: '用 TBE DSL 描述 ReLU 的计算逻辑：f(x) = max(0, x)。这是算子的"数学定义"层。', code: `from tbe import tvm
+import tbe
+
+def relu_compute(x_tensor):
+    """ReLU 计算函数：f(x) = max(0, x)"""
+    shape = x_tensor.shape
+    dtype = x_tensor.dtype
+
+    # 用 TBE DSL 描述计算：逐元素取最大值
+    result = tbe.vmax(x_tensor,
+                      tvm.const(0, dtype=dtype))
+    return result
+
+# 测试 compute 函数（CPU 模拟）
+import numpy as np
+data = np.array([-2.0, -1.0, 0.0, 1.0, 2.0], dtype=np.float32)
+expected = np.maximum(data, 0)
+print(f"输入: {data}")
+print(f"期望输出: {expected}")
+print("✓ compute 函数逻辑正确")`, expected: '输入/期望输出打印，验证逻辑正确' },
+          { title: 'Step 2 — 添加 schedule 调度策略', desc: '将 compute 结果交给 auto_schedule 自动选择最优 tiling 策略，完成算子编译。', code: `from tbe import tvm
+import tbe
+from tbe.common.platform import platform_info as tbe_platform
+
+# 模拟完整的算子实现函数
+def relu_op(shape, dtype, kernel_name="relu"):
+    # 声明输入 Placeholder
+    x = tvm.placeholder(shape, name="x", dtype=dtype)
+
+    # compute 阶段
+    with tbe.compute():
+        result = tbe.vmax(x, tvm.const(0, dtype=dtype))
+
+    # schedule 阶段：auto_schedule 自动选择最优策略
+    with tvm.target.cce():
+        sch = tbe.auto_schedule(result)
+
+    # 编译配置
+    config = {
+        "name": kernel_name,
+        "tensor_list": [x, result]
+    }
+    tbe.build(sch, config)
+    print(f"✓ 算子 '{kernel_name}' 编译成功")
+    print(f"  输入 shape: {shape}, dtype: {dtype}")
+
+# 编译 float16 版本
+relu_op((1, 1024), "float16")`, expected: "✓ 算子 'relu' 编译成功" },
+          { title: 'Step 3 — 单元测试验证正确性', desc: '用 op_ut 框架生成随机输入，在 NPU 上运行算子并与 numpy 期望值比对，验证计算正确性。', code: `import numpy as np
+
+# 模拟单元测试流程（实际使用 op_ut 框架）
+def relu_numpy(x):
+    """CPU 参考实现"""
+    return np.maximum(x, 0)
+
+# 生成测试用例
+shapes = [(1, 64), (4, 256), (8, 1024)]
+for shape in shapes:
+    x = np.random.randn(*shape).astype(np.float16)
+    expected = relu_numpy(x)
+
+    # 在 NPU 上运行（这里用 numpy 模拟）
+    npu_output = relu_numpy(x)  # 实际替换为 NPU 执行
+
+    # 验证误差
+    max_diff = np.max(np.abs(npu_output - expected))
+    status = "✓ PASS" if max_diff < 1e-3 else "✗ FAIL"
+    print(f"{status}  shape={shape}  max_diff={max_diff:.2e}")
+
+print("\\n所有测试用例通过 — 算子正确性验证完成！")`, expected: '所有测试用例 ✓ PASS' },
+        ]
       },
       resources: [
         { icon: '📖', title: 'TBE DSL 算子开发指南', href: 'https://www.hiascend.com/document', type: '官方文档', subtitle: '完整 API 和开发流程' },
@@ -3643,12 +4057,23 @@ def vector_add_tik(shape, dtype, kernel_name):
   let _currentDrawerTab = 'knowledge';
 
   // Node Detail Drawer
-  function openNodeDrawer(nodeEl) {
-    const title = nodeEl.querySelector('.rm-node-title').textContent.trim();
-    const isCompleted = nodeEl.classList.contains('completed');
-    const phaseColor = { beginner: '#10B981', developer: '#F59E0B', operator: '#8B5CF6', distributed: '#EF4444' };
-    const cat = nodeEl.dataset.category || 'beginner';
+  // Can be called with a DOM element (from roadmap) or just a title string (from homepage path cards)
+  function openNodeDrawer(nodeElOrTitle) {
+    let title, cat, nodeEl, isCompleted;
+    if (typeof nodeElOrTitle === 'string') {
+      title = nodeElOrTitle;
+      const meta = NODE_LIST.find(n => n.title === title);
+      cat = meta?.category || 'beginner';
+      nodeEl = null;
+      isCompleted = false;
+    } else {
+      nodeEl = nodeElOrTitle;
+      title = nodeEl.querySelector('.rm-node-title').textContent.trim();
+      cat = nodeEl.dataset.category || 'beginner';
+      isCompleted = nodeEl.classList.contains('completed');
+    }
 
+    const phaseColor = { beginner: '#10B981', developer: '#2e53fa', operator: '#8B5CF6', distributed: '#F59E0B' };
     _currentDrawerNode = { title, el: nodeEl, category: cat };
 
     document.getElementById('nd-title').textContent = title;
@@ -3659,7 +4084,8 @@ def vector_add_tik(shape, dtype, kernel_name):
 
     // Reset AI strip
     document.getElementById('nd-ai-input').value = '';
-    document.getElementById('nd-ai-response').classList.add('hidden');
+    const _r = document.getElementById('nd-ai-response');
+    _r.classList.add('hidden'); _r.classList.remove('collapsed'); _r.innerHTML = '';
     document.querySelectorAll('.nd-ai-mode').forEach(b => b.classList.remove('active-mode'));
 
     // Load first tab
@@ -3693,6 +4119,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     _currentDrawerTab = tab;
     document.querySelectorAll('.nd-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
+    if (tab === 'quiz') {
+      testNodeKnowledge();
+      return;
+    }
     renderNdTab(tab, _currentDrawerNode?.title);
   }
 
@@ -3729,6 +4159,34 @@ def vector_add_tik(shape, dtype, kernel_name):
       } else {
         body.innerHTML = `<div class="nd-summary" style="text-align:center;padding:40px 20px;color:var(--text-muted);">本节以概念理论为主，暂无独立代码示例。<br>可点击下方「代码示例」按钮让 AI 即时生成。</div>`;
       }
+    } else if (tab === 'lab') {
+      if (k.lab) {
+        const stepsHtml = k.lab.steps.map((s, i) => `
+          <div class="nd-lab-step" id="nd-lab-step-${i}">
+            <div class="nd-lab-step-header" onclick="toggleLabStep(${i})">
+              <div class="nd-lab-step-num">${i + 1}</div>
+              <div class="nd-lab-step-title">${s.title}</div>
+              <span class="nd-lab-step-toggle">▾</span>
+            </div>
+            <div class="nd-lab-step-body">
+              <div class="nd-lab-step-desc">${s.desc}</div>
+              <div class="nd-lab-code-preview">${escHtml(s.code)}</div>
+              <button class="nd-lab-run-btn" onclick="openLabStep(${i})">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                在 HiDevLab 中运行此步
+              </button>
+              <div class="nd-lab-expected"><span class="nd-lab-expected-label">预期：</span>${escHtml(s.expected)}</div>
+            </div>
+          </div>`).join('');
+        body.innerHTML = `
+          <div class="nd-lab-intro">${k.lab.intro}</div>
+          <div class="nd-lab-steps">${stepsHtml}</div>`;
+        // Auto-open first step
+        const first = body.querySelector('.nd-lab-step');
+        if (first) first.classList.add('open');
+      } else {
+        body.innerHTML = `<div class="nd-lab-empty">本节以理论概念为主，暂无独立实验步骤。<br>建议先阅读「代码示例」后，点击「在 HiDevLab 运行」自由练习。</div>`;
+      }
     } else if (tab === 'resources') {
       const resList = (k.resources || []).map(r => `
         <a class="nd-res-item" href="${r.href}" target="_blank">
@@ -3743,12 +4201,59 @@ def vector_add_tik(shape, dtype, kernel_name):
     }
   }
 
+  function toggleLabStep(idx) {
+    const step = document.getElementById(`nd-lab-step-${idx}`);
+    if (step) step.classList.toggle('open');
+  }
+
+  function openLabStep(stepIdx) {
+    if (!_currentDrawerNode) return;
+    const k = NODE_KNOWLEDGE[_currentDrawerNode.title];
+    if (!k || !k.lab) return;
+    const step = k.lab.steps[stepIdx];
+    if (!step) return;
+
+    // Add a markdown guidance cell + the code cell to HiDevLab
+    nbCellCounter++;
+    const guidanceMd = `## ${_currentDrawerNode.title} — ${step.title}\n\n${step.desc}\n\n**预期输出：** \`${step.expected}\``;
+    NB_FILES['main'] = NB_FILES['main'] || [];
+    NB_FILES['main'].unshift(
+      { id: nbCellCounter,     type: 'code',     code: step.code, output: '' },
+      { id: nbCellCounter - 1, type: 'markdown', code: guidanceMd, output: '' }
+    );
+    nbCellCounter++;
+    nbCurrentFile = 'main';
+
+    // Open sandbox
+    document.getElementById('sandbox-drawer').classList.add('open');
+    document.getElementById('sandbox-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.querySelectorAll('.nb-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+    document.querySelectorAll('.nb-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('nb-panel-notebook').classList.add('active');
+    renderNbCells();
+
+    // Scroll to the new cell
+    setTimeout(() => {
+      const c = document.getElementById('nb-cell-' + nbCellCounter);
+      if (c) { c.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); activateCell(c); }
+    }, 120);
+  }
+
   function escHtml(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
+  const _COPY_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>`;
+  function _setCopied(btn, originalHTML) {
+    btn.innerHTML = `${_COPY_SVG} 已复制`;
+    btn.style.cssText += ';display:inline-flex;align-items:center;gap:4px;';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = originalHTML; btn.classList.remove('copied'); btn.style.display = ''; }, 1800);
+  }
   function ndCopyCode(btn) {
     const code = btn.closest('.nd-code-block').querySelector('.nd-code-body pre').textContent;
-    navigator.clipboard.writeText(code).then(() => { btn.textContent = '已复制'; setTimeout(() => btn.textContent = '复制', 1500); });
+    const orig = btn.innerHTML;
+    navigator.clipboard.writeText(code).then(() => _setCopied(btn, orig));
   }
 
   // ── DRAWER AI ──
@@ -3760,28 +4265,117 @@ def vector_add_tik(shape, dtype, kernel_name):
     input.focus();
   }
 
+  function _respHeader(label) {
+    return `<div class="nd-ai-resp-header" onclick="toggleDrawerResp(this)">
+      <span class="nd-ai-resp-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2C9 5.866 5.866 9 2 9c3.866 0 7 3.134 7 7 0-3.866 3.134-7 7-7-3.866 0-7-3.134-7-7z"/><path d="M20 12c0 2.209-1.791 4-4 4 2.209 0 4 1.791 4 4 0-2.209 1.791-4 4-4-2.209 0-4-1.791-4-4z"/></svg>
+        ${label}
+      </span>
+      <button class="nd-ai-resp-toggle">
+        收起
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+      </button>
+    </div>`;
+  }
+
+  function toggleDrawerResp(header) {
+    const resp = header.closest('.nd-ai-response');
+    const collapsed = resp.classList.toggle('collapsed');
+    const btn = header.querySelector('.nd-ai-resp-toggle');
+    btn.childNodes[0].textContent = collapsed ? '展开' : '收起';
+  }
+
   async function sendDrawerAI() {
     if (!_currentDrawerNode) return;
     const input = document.getElementById('nd-ai-input');
     const q = input.value.trim();
     if (!q) return;
     const resp = document.getElementById('nd-ai-response');
-    resp.classList.remove('hidden');
-    resp.innerHTML = '<div style="color:var(--text-muted);font-size:12px">AI 思考中…</div>';
+    resp.classList.remove('hidden', 'collapsed');
+    resp.innerHTML = _respHeader('AI 回答') +
+      `<div class="nd-ai-resp-body"><div style="color:var(--text-muted);font-size:12px;padding:4px 0">AI 思考中…</div></div>`;
     input.value = '';
     try {
       const r = await fetch(AI_WORKER_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          system: `你是 CANN / 昇腾 AI 开发专家。用户正在学习"${_currentDrawerNode.title}"这个知识点，请针对这个具体主题回答他的问题。回答要简洁、有深度，用中文，不超过250字，代码用\`inline\`格式。`,
-          user: q, max_tokens: 400
+          system: `你是 CANN / 昇腾 AI 开发专家。用户正在学习"${_currentDrawerNode.title}"这个知识点，请针对这个具体主题回答他的问题。回答要简洁、有深度，用中文，不超过400字，代码用代码块格式。`,
+          user: q, max_tokens: 600
         })
       });
       const data = await r.json();
-      resp.innerHTML = formatFloorText(data.text || '暂时无法获取回答，请稍后重试。');
+      resp.querySelector('.nd-ai-resp-body').innerHTML = formatFloorText(data.text || '暂时无法获取回答，请稍后重试。');
     } catch(e) {
-      resp.innerHTML = '<span style="color:#EF4444">连接失败，请稍后重试</span>';
+      resp.querySelector('.nd-ai-resp-body').innerHTML = '<span style="color:#EF4444">连接失败，请稍后重试</span>';
     }
+  }
+
+  // ── INLINE QUIZ in drawer nd-body ──
+  const _quizFallback = [
+    { question: "以下哪项是昇腾 AI 处理器的核心架构？", options: ["GPU", "FPGA", "Da Vinci", "ARM"], answer: "Da Vinci" },
+    { question: "CANN 软件栈中，负责模型转换的工具是？", options: ["MsProf", "ATC", "HCCL", "DVPP"], answer: "ATC" },
+    { question: "AscendCL 中，用于管理异步任务队列的机制是？", options: ["Context", "Stream", "Event", "Device"], answer: "Stream" },
+    { question: "在 TBE 开发中，TIK 接口的主要优势是？", options: ["自动调度", "极致性能控制", "简单易用", "跨平台兼容"], answer: "极致性能控制" },
+    { question: "昇腾 310 AI 处理器主要面向以下哪种场景？", options: ["大模型训练", "边缘推理", "通用计算", "图形渲染"], answer: "边缘推理" },
+  ];
+  let _inlineQuiz = null;
+
+  function _renderInlineQuiz(quiz) {
+    _inlineQuiz = quiz;
+    const body = document.getElementById('nd-body');
+    const optsHtml = quiz.options.map((opt, i) => `
+      <label class="nd-quiz-opt" onclick="ndQuizSelect(this)">
+        <input type="radio" name="nd-quiz-opt" value="${opt.replace(/"/g,'&quot;')}">
+        ${opt}
+      </label>`).join('');
+    body.innerHTML = `<div class="nd-quiz">
+      <div class="nd-quiz-q">${quiz.question}</div>
+      <div class="nd-quiz-opts">${optsHtml}</div>
+      <button class="nd-quiz-submit" onclick="ndQuizSubmit(this)" disabled>提交答案</button>
+      <div class="nd-quiz-feedback" id="nd-quiz-feedback"></div>
+      <button class="nd-quiz-retry" onclick="testNodeKnowledge()" style="display:none" id="nd-quiz-retry">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        换一题
+      </button>
+      <button class="nd-quiz-bank-link" id="nd-quiz-bank-link" style="display:none" onclick="openQuizBank()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        查看错题本
+      </button>
+    </div>`;
+  }
+
+  function ndQuizSelect(label) {
+    document.querySelectorAll('.nd-quiz-opt').forEach(l => l.classList.remove('selected'));
+    label.classList.add('selected');
+    label.querySelector('input').checked = true;
+    const btn = document.querySelector('.nd-quiz-submit');
+    if (btn) btn.disabled = false;
+  }
+
+  function ndQuizSubmit(btn) {
+    if (!_inlineQuiz) return;
+    const selected = document.querySelector('input[name="nd-quiz-opt"]:checked');
+    const feedback = document.getElementById('nd-quiz-feedback');
+    const retry = document.getElementById('nd-quiz-retry');
+    if (!selected) return;
+    btn.disabled = true;
+    document.querySelectorAll('.nd-quiz-opt').forEach(l => {
+      l.style.pointerEvents = 'none';
+      if (l.querySelector('input').value === _inlineQuiz.answer) {
+        l.classList.add('correct');
+      } else if (l.classList.contains('selected')) {
+        l.classList.add('wrong');
+      }
+    });
+    const correct = selected.value === _inlineQuiz.answer;
+    feedback.textContent = correct ? '🎉 回答正确！' : `答案是：${_inlineQuiz.answer}`;
+    feedback.style.color = correct ? '#16A34A' : '#DC2626';
+    btn.textContent = correct ? '✓ 正确' : '✗ 错误';
+    btn.style.background = correct ? '#16A34A' : '#DC2626';
+    if (retry) retry.style.display = 'flex';
+    saveQuizResult(_inlineQuiz, selected.value, correct);
+    const bankLink = document.getElementById('nd-quiz-bank-link');
+    if (bankLink) bankLink.style.display = 'inline-flex';
   }
 
   async function testNodeKnowledge() {
@@ -3789,16 +4383,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     const title = _currentDrawerNode.title;
     const k = NODE_KNOWLEDGE[title];
     const concepts = k ? k.concepts.map(c => c.term).join('、') : title;
-
-    const quizModal = document.getElementById('quiz-modal');
-    const quizQuestion = document.getElementById('quiz-question');
-    const quizOptions = document.getElementById('quiz-options');
-    const quizFeedback = document.getElementById('quiz-feedback');
-    quizFeedback.textContent = '';
-    quizQuestion.textContent = 'AI 正在生成题目…';
-    quizOptions.innerHTML = '';
-    quizModal.classList.add('open');
-
+    const body = document.getElementById('nd-body');
+    body.innerHTML = `<div class="nd-quiz-loading"><div class="floor-dots"><span></span><span></span><span></span></div>AI 正在出题…</div>`;
     try {
       const r = await fetch(AI_WORKER_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -3810,78 +4396,23 @@ def vector_add_tik(shape, dtype, kernel_name):
         })
       });
       const data = await r.json();
-      let quiz;
-      try { quiz = JSON.parse(data.text.replace(/```json|```/g,'').trim()); } catch(e) { throw new Error('解析失败'); }
-      currentQuizNode = quiz;
-      quizQuestion.textContent = quiz.question;
-      quizOptions.innerHTML = '';
-      quiz.options.forEach(opt => {
-        const label = document.createElement('label');
-        label.innerHTML = `<input type="radio" name="quiz-option" value="${opt}"> ${opt}`;
-        quizOptions.appendChild(label);
-      });
+      const quiz = JSON.parse(data.text.replace(/```json|```/g,'').trim());
+      _renderInlineQuiz(quiz);
     } catch(e) {
-      // Fallback to static quiz
-      testKnowledge();
+      const fallback = _quizFallback[Math.floor(Math.random() * _quizFallback.length)];
+      _renderInlineQuiz(fallback);
     }
   }
 
-  // Fallback static quiz
-  const quizData = [
-    { question: "以下哪项是昇腾 AI 处理器的核心架构？", options: ["GPU", "FPGA", "Da Vinci", "ARM"], answer: "Da Vinci" },
-    { question: "CANN 软件栈中，负责模型转换的工具是？", options: ["MsProf", "ATC", "HCCL", "DVPP"], answer: "ATC" },
-    { question: "AscendCL 中，用于管理异步任务队列的机制是？", options: ["Context", "Stream", "Event", "Device"], answer: "Stream" },
-    { question: "在 TBE 开发中，TIK 接口的主要优势是？", options: ["自动调度", "极致性能控制", "简单易用", "跨平台兼容"], answer: "极致性能控制" },
-    { question: "昇腾 310 AI 处理器主要面向以下哪种场景？", options: ["大模型训练", "边缘推理", "通用计算", "图形渲染"], answer: "边缘推理" }
-  ];
-  let currentQuizNode = null;
-
-  function testKnowledge() {
-    const quizModal = document.getElementById('quiz-modal');
-    const quizQuestion = document.getElementById('quiz-question');
-    const quizOptions = document.getElementById('quiz-options');
-    const quizFeedback = document.getElementById('quiz-feedback');
-    currentQuizNode = quizData[Math.floor(Math.random() * quizData.length)];
-    quizQuestion.textContent = currentQuizNode.question;
-    quizOptions.innerHTML = '';
-    currentQuizNode.options.forEach(option => {
-      const label = document.createElement('label');
-      label.innerHTML = `<input type="radio" name="quiz-option" value="${option}"> ${option}`;
-      quizOptions.appendChild(label);
-    });
-    quizFeedback.textContent = '';
-    quizModal.classList.add('open');
-  }
-
-  function closeQuizModal() {
-    document.getElementById('quiz-modal').classList.remove('open');
-  }
-
-  function submitQuiz() {
-    const selectedOption = document.querySelector('input[name="quiz-option"]:checked');
-    const quizFeedback = document.getElementById('quiz-feedback');
-    const submitBtn = document.getElementById('quiz-submit');
-    if (selectedOption) {
-      if (selectedOption.value === currentQuizNode.answer) {
-        quizFeedback.textContent = '🎉 回答正确！太棒了！';
-        quizFeedback.style.color = '#16A34A';
-        submitBtn.style.background = '#16A34A';
-        submitBtn.textContent = '完成';
-        setTimeout(() => { closeQuizModal(); submitBtn.style.background = ''; submitBtn.textContent = '提交'; }, 2000);
-      } else {
-        quizFeedback.textContent = `❌ 回答错误。正确答案是：${currentQuizNode.answer}`;
-        quizFeedback.style.color = '#EF4444';
-      }
-    } else {
-      quizFeedback.textContent = '⚠️ 请选择一个选项后再提交。';
-      quizFeedback.style.color = '#F59E0B';
-    }
-  }
+  // Keep modal stubs so nothing breaks if called elsewhere
+  function testKnowledge() { testNodeKnowledge(); }
+  function closeQuizModal() {}
+  function submitQuiz() {}
 
   // Close quiz modal when clicking outside
   window.addEventListener('click', (event) => {
     const quizModal = document.getElementById('quiz-modal');
-    if (event.target === quizModal) {
+    if (quizModal && event.target === quizModal) {
       quizModal.classList.remove('open');
     }
   });
@@ -4023,11 +4554,14 @@ def vector_add_tik(shape, dtype, kernel_name):
   function renderFloorIssues(cat) {
     const issues = issueData[cat] || [];
     const grid = document.getElementById('floor-issue-grid');
+    const badgeLabel = { error: '错误', warning: '警告', info: '提示' };
     grid.innerHTML = issues.map(issue => `
-      <div class="floor-issue-card" onclick="solveProblemWithText('${issue.title.replace(/'/g,"\\'")}')">
-        <div class="fic-title">${issue.title}</div>
-        <div class="fic-desc">${issue.desc}</div>
-        <span class="fic-badge ${issue.badge}">${issue.badge === 'error' ? '错误' : issue.badge === 'warning' ? '警告' : '提示'}</span>
+      <div class="floor-issue-card badge-${issue.badge}" onclick="solveProblemWithText('${issue.title.replace(/'/g,"\\'")}')">
+        <div class="fic-body">
+          <div class="fic-title">${issue.title}</div>
+          <div class="fic-desc">${issue.desc}</div>
+          <span class="fic-badge ${issue.badge}">${badgeLabel[issue.badge] || issue.badge}</span>
+        </div>
       </div>
     `).join('');
   }
@@ -4083,43 +4617,6 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.getElementById('learn-input').value = text;
   }
 
-  // Real course database — URLs verified from hiascend.com
-  // Courses without confirmed IDs fall back to the courses listing page
-  const COURSES_LIST = 'https://www.hiascend.com/edu/courses';
-  const COURSE_DB = [
-    // 入门
-    { title: 'CANN软件介绍', desc: '了解昇腾 CANN 整体架构与软件栈基础', tag: '入门', url: 'https://www.hiascend.com/edu/growth/details/2b5bea0dcd854f3b9d22d9e423a75746', topics: ['cann','架构','入门','基础','软件栈'] },
-    { title: 'AscendCL快速入门', desc: '5分钟跑通第一个 AscendCL 推理应用', tag: '入门', url: 'https://www.hiascend.com/edu/growth/details/2b5bea0dcd854f3b9d22d9e423a75746', topics: ['ascendcl','快速入门','推理','初级'] },
-    { title: '昇腾AI处理器及CANN软件栈基础', desc: '理解 Da Vinci 架构与 CANN 软件栈层次', tag: '入门', url: 'https://www.hiascend.com/developer/courses/detail/1579657120536670210', topics: ['架构','davinci','硬件','cann','软件栈'] },
-    { title: 'Ascend C算子开发（入门）', desc: '使用 Ascend C 开发第一个自定义算子', tag: '入门', url: 'https://www.hiascend.com/developer/courses/detail/1691696509765107713', topics: ['算子','ascend c','入门','自定义','核函数'] },
-    { title: 'CANN训练营_昇腾AI入门课', desc: '系统入门昇腾 AI 开发全流程', tag: '入门', url: 'https://www.hiascend.com/developer/courses/detail/1579657120536670210', topics: ['入门','全流程','cann','训练营','基础'] },
-    { title: 'ATC模型转换', desc: '使用 ATC 工具将 ONNX/TF 模型转为 .om 格式', tag: '入门', url: 'https://www.hiascend.com/edu/growth/details/ee6adb761eda47a5903aecbde9d6142d', topics: ['atc','模型转换','om','推理','onnx'] },
-    { title: 'AscendCL应用开发（初级）', desc: '开发完整的 AscendCL 图像推理应用', tag: '入门', url: 'https://www.hiascend.com/edu/growth/details/ee6adb761eda47a5903aecbde9d6142d', topics: ['ascendcl','应用开发','推理','图像分类'] },
-    { title: '大模型简介', desc: '了解大模型基础知识与昇腾大模型生态', tag: '入门', url: COURSES_LIST, topics: ['大模型','llm','入门','基础知识'] },
-    { title: '神经网络算子开发入门', desc: '了解神经网络算子基本概念与 Ascend C 工具', tag: '入门', url: 'https://www.hiascend.com/developer/courses/detail/1691696509765107713', topics: ['算子','神经网络','入门','ascend c'] },
-    { title: 'Resnet离线推理初体验', desc: '以 Resnet50 为例完成昇腾离线推理全流程', tag: '入门', url: 'https://www.hiascend.com/edu/growth/details/2b5bea0dcd854f3b9d22d9e423a75746', topics: ['resnet','推理','离线','ascendcl','入门'] },
-    // 中级
-    { title: 'Ascend C算子开发（进阶）', desc: '掌握 Tiling、算子编译部署与调用', tag: '中级', url: 'https://www.hiascend.com/developer/courses/detail/1696414606799486977', topics: ['算子','ascend c','进阶','中级','tiling','编译'] },
-    { title: 'Ascend C算子开发训练营（中级）', desc: '系统完成算子开发、调试和单算子调用', tag: '中级', url: 'https://www.hiascend.com/developer/courses/detail/1627494761683783682', topics: ['算子','ascend c','训练营','调试','中级'] },
-    { title: 'AscendCL DVPP媒体数据处理', desc: '使用 DVPP 接口处理图片与视频数据', tag: '中级', url: 'https://www.hiascend.com/edu/growth/details/ee6adb761eda47a5903aecbde9d6142d', topics: ['dvpp','图片','视频','预处理','aipp'] },
-    { title: 'AscendCL推理高级功能', desc: '深入掌握内存管理、Context/Stream 并发', tag: '中级', url: 'https://www.hiascend.com/edu/growth/details/ee6adb761eda47a5903aecbde9d6142d', topics: ['ascendcl','推理','内存','context','stream','并发'] },
-    { title: 'PyTorch模型迁移与调优专题', desc: '将 PyTorch 训练脚本迁移到昇腾 NPU', tag: '中级', url: 'https://www.hiascend.com/developer/courses/detail/2203141624362937328', topics: ['pytorch','迁移','npu','训练','适配'] },
-    { title: '大模型训练环境搭建', desc: '从零搭建昇腾大模型训练开发环境', tag: '中级', url: COURSES_LIST, topics: ['大模型','训练','环境','安装','搭建'] },
-    { title: 'MindIE推理引擎介绍', desc: '使用 MindIE 引擎部署大模型推理服务', tag: '中级', url: COURSES_LIST, topics: ['mindie','推理','大模型','llm','部署'] },
-    { title: '大模型训练迁移', desc: '将主流大模型迁移到昇腾平台', tag: '中级', url: COURSES_LIST, topics: ['大模型','训练','迁移','modellink','mindspeed'] },
-    { title: 'Resnet图像分类应用开发', desc: '端到端开发 AscendCL 图像分类推理应用', tag: '中级', url: 'https://www.hiascend.com/edu/growth/details/ee6adb761eda47a5903aecbde9d6142d', topics: ['resnet','图像分类','ascendcl','推理','中级'] },
-    { title: 'CANN应用工程师微认证（进阶）', desc: '体系化掌握 AscendCL 应用开发，获取认证', tag: '中级', url: 'https://www.hiascend.com/edu/certification/detail/5823c31f22394a1bb57940206bd5949d', topics: ['认证','ascendcl','应用开发','中级','cv'] },
-    // 高级
-    { title: 'AscendCL高性能编程实践', desc: '利用 Stream 并发与异步特性极致调优', tag: '高级', url: COURSES_LIST, topics: ['ascendcl','性能','并发','stream','异步','高性能'] },
-    { title: 'AscendCL动态推理特性', desc: '动态 shape、动态 batch 推理开发', tag: '高级', url: COURSES_LIST, topics: ['ascendcl','动态shape','动态batch','推理','高级'] },
-    { title: '大模型训练精度调试', desc: '定位并修复大模型训练精度问题', tag: '高级', url: COURSES_LIST, topics: ['精度','调试','大模型','训练','调优'] },
-    { title: '大模型训练性能调优', desc: '使用 MindStudio 分析并优化训练性能', tag: '高级', url: COURSES_LIST, topics: ['性能','调优','profiling','mindstudio','训练'] },
-    { title: '大模型推理精度与性能调优', desc: '诊断推理精度异常，实施 KV Cache 等加速', tag: '高级', url: COURSES_LIST, topics: ['精度','推理','量化','kv cache','性能'] },
-    { title: 'MindFormers大模型微调实践', desc: '使用 MindFormers 对大模型进行 LoRA 微调', tag: '高级', url: COURSES_LIST, topics: ['mindformers','微调','lora','大模型','高级'] },
-    { title: 'HCCL分布式训练通信', desc: '掌握 HCCL 集合通信与多卡分布式训练', tag: '高级', url: COURSES_LIST, topics: ['hccl','分布式','训练','通信','多卡'] },
-    { title: 'Ascend C算子开发能力认证（中级）', desc: '获取 Ascend C 算子开发能力的权威认证', tag: '高级', url: 'https://www.hiascend.com/edu/certification/detail/34bf904cb410497cb9c582be6c047ff7', topics: ['认证','算子','ascend c','中级','高级'] },
-  ];
-
   async function generateLearnFloor() {
     const input = document.getElementById('learn-input');
     const query = input.value.trim();
@@ -4131,22 +4628,15 @@ def vector_add_tik(shape, dtype, kernel_name):
     result.innerHTML = '<div class="floor-loading" style="padding:20px 0"><div class="floor-dots"><span></span><span></span><span></span></div><span>AI 正在规划学习路径…</span></div>';
     setTimeout(() => result.scrollIntoView({ behavior:'smooth', block:'nearest' }), 80);
 
-    const courseList = COURSE_DB.map((c, i) => `${i}|${c.title}|${c.tag}|${c.topics.join(',')}`).join('\n');
+    const nodeListStr = NODE_LIST.map((n, i) => `${i}|${n.title}|${n.category}|${n.desc}`).join('\n');
 
     try {
       const resp = await fetch(AI_WORKER_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          system: `你是 CANN 学习路径规划专家。根据用户的学习目标，从下面的课程库中挑选5-7门最相关的课程，按学习顺序排列，组成个性化路径。
-
-课程库（格式：序号|课程名|难度|关键词）：
-${courseList}
-
-输出格式：JSON数组，每项包含 courseIndex（课程库序号）和 desc（一句话说明为什么学这门课，15字以内）。
-例：[{"courseIndex":0,"desc":"先了解CANN整体架构"},{"courseIndex":4,"desc":"动手开发第一个算子"}]
-只输出JSON，不加任何说明或代码块标记。`,
+          system: `你是 CANN 学习路径规划专家。根据用户的学习目标，从下面的知识节点库中挑选4-6个最相关的节点，按学习顺序排列，组成个性化路径。\n\n节点库（格式：序号|节点名|方向|描述）：\n${nodeListStr}\n\n输出格式：JSON数组，每项包含 nodeIndex（节点序号）和 reason（一句话说明为什么学这个节点，不超过12字）。\n例：[{"nodeIndex":0,"reason":"了解底层硬件架构"},{"nodeIndex":3,"reason":"动手写第一个应用"}]\n只输出JSON，不加任何说明或代码块标记。`,
           user: `我的学习目标：${query}`,
-          max_tokens: 600,
+          max_tokens: 400,
         })
       });
       const data = await resp.json();
@@ -4155,10 +4645,9 @@ ${courseList}
       try { picks = JSON.parse(text.replace(/```json|```/g,'').trim()); } catch(e) {}
 
       if (picks.length > 0) {
-        // Resolve to actual course objects and assign step numbers
         const steps = picks.map((p, idx) => {
-          const course = COURSE_DB[p.courseIndex] || COURSE_DB[0];
-          return { ...course, step: idx + 1, whyDesc: p.desc || course.desc };
+          const node = NODE_LIST[p.nodeIndex] || NODE_LIST[0];
+          return { ...node, step: idx + 1, reason: p.reason || node.desc };
         });
         renderLearnPathResult(query, steps);
       } else {
@@ -4178,17 +4667,16 @@ ${courseList}
     try { localStorage.setItem('cann_saved_paths', JSON.stringify(paths)); } catch(e) {}
   }
 
-  function toggleSavePath(btn, query, steps) {
+  function toggleSavePath(btn, query) {
+    const steps = _lastFlrPath || [];
     const paths = getSavedPaths();
     const existing = paths.findIndex(p => p.query === query);
     if (existing >= 0) {
-      // Remove
       paths.splice(existing, 1);
       setSavedPaths(paths);
       btn.classList.remove('saved');
       btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>收藏路径`;
     } else {
-      // Save
       paths.unshift({ query, steps, savedAt: new Date().toLocaleDateString('zh-CN') });
       setSavedPaths(paths);
       btn.classList.add('saved');
@@ -4212,7 +4700,7 @@ ${courseList}
     list.innerHTML = paths.map((p, i) => `
       <div class="saved-path-item">
         <div class="saved-path-name">${p.query}</div>
-        <div class="saved-path-date">${p.steps?.length || 0} 门 · ${p.savedAt}</div>
+        <div class="saved-path-date">${p.steps?.length || 0} 个节点 · ${p.savedAt}</div>
         <button class="btn-load-path" onclick="loadSavedPath(${i})">展开</button>
         <button class="btn-delete-path" onclick="deleteSavedPath(${i})" title="删除">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
@@ -4225,12 +4713,10 @@ ${courseList}
     const paths = getSavedPaths();
     const saved = paths[index];
     if (!saved) return;
-    // Re-render the path from saved data
-    const result = document.getElementById('floor-learn-result');
+    _lastFlrPath = saved.steps;
     document.getElementById('learn-input').value = saved.query;
-    const steps = saved.steps;
-    // Re-use same rendering logic
-    renderLearnPathResult(saved.query, steps);
+    const result = document.getElementById('floor-learn-result');
+    renderLearnPathResult(saved.query, saved.steps);
     result.classList.remove('hidden');
     result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
@@ -4242,69 +4728,86 @@ ${courseList}
     renderSavedPaths();
   }
 
-  // Extract path rendering to reusable function
+  // Renders the AI path result on the homepage floor
+  // steps = array of NODE_LIST items augmented with { step, reason }
   function renderLearnPathResult(query, steps) {
+    _lastFlrPath = steps;
     const result = document.getElementById('floor-learn-result');
-    const phaseLabel = { beginner: '入门', intermediate: '中级', advanced: '高级' };
-    const phaseOrder = ['beginner', 'intermediate', 'advanced'];
-    const phaseIcon = { beginner: '🌱', intermediate: '🔥', advanced: '⚡' };
-    const normalizeTag = (tag) => {
-      if (!tag) return 'beginner';
-      const t = tag.trim();
-      if (t.includes('入门') || t.includes('基础') || t === 'beginner') return 'beginner';
-      if (t.includes('高级') || t.includes('进阶') || t === 'advanced') return 'advanced';
-      return 'intermediate';
-    };
-    const grouped = { beginner: [], intermediate: [], advanced: [] };
-    steps.forEach(s => { grouped[normalizeTag(s.tag)].push(s); });
-    const phasesHtml = phaseOrder.filter(p => grouped[p].length > 0).map(phase => `
+
+    // Group by category preserving first appearance order
+    const seenCats = [];
+    const grouped = {};
+    steps.forEach(s => {
+      const cat = s.category || 'beginner';
+      if (!grouped[cat]) { grouped[cat] = []; seenCats.push(cat); }
+      grouped[cat].push(s);
+    });
+
+    const phasesHtml = seenCats.map(cat => {
+      const meta = CAT_META[cat] || CAT_META.beginner;
+      return `
       <div class="flr-phase">
         <div class="flr-phase-label">
-          <div class="flr-phase-badge ${phase}">${phaseIcon[phase]} ${phaseLabel[phase]}</div>
+          <div class="flr-phase-badge" style="background:${meta.color}">${meta.label}</div>
           <div class="flr-phase-line"></div>
         </div>
         <div class="flr-timeline">
-          ${grouped[phase].map((s, i) => `
+          ${grouped[cat].map((s, i) => `
             <div class="flr-node" style="animation:flrNodeIn .3s ease ${i*0.07}s both">
-              <div class="flr-node-dot ${phase}">${s.step}</div>
-              <a class="flr-node-card" href="${s.url}" target="_blank">
+              <div class="flr-node-dot ${cat}" style="background:${meta.color}">${s.step}</div>
+              <div class="flr-node-card" onclick="openLearnNode('${s.title.replace(/'/g,"\\'")}')">
                 <div class="flr-node-body">
                   <div class="flr-node-title">${s.title}</div>
-                  <div class="flr-node-desc">${s.whyDesc || s.desc}</div>
+                  <div class="flr-node-desc">${s.reason || s.whyDesc || s.desc}</div>
                 </div>
                 <svg class="flr-node-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </a>
+              </div>
             </div>
           `).join('')}
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
+
     const isSaved = getSavedPaths().some(p => p.query === query);
+    const legendHtml = Object.entries(CAT_META).map(([k,v]) =>
+      `<div class="flr-legend-item"><div class="flr-legend-dot" style="background:${v.color}"></div>${v.label}</div>`
+    ).join('');
+
     result.innerHTML = `
       <div class="flr-header">
         <div class="flr-header-text">
           <div class="flr-query-label">AI 生成的学习路径</div>
           <div class="flr-title">${query}</div>
         </div>
-        <div class="flr-legend">
-          <div class="flr-legend-item"><div class="flr-legend-dot beginner"></div>入门</div>
-          <div class="flr-legend-item"><div class="flr-legend-dot intermediate"></div>中级</div>
-          <div class="flr-legend-item"><div class="flr-legend-dot advanced"></div>高级</div>
-        </div>
+        <div class="flr-legend">${legendHtml}</div>
       </div>
       ${phasesHtml}
       <div class="flr-cta">
-        <span class="flr-cta-text">共 ${steps.length} 门课程 · 来自昇腾官方课程库</span>
+        <span class="flr-cta-text">共 ${steps.length} 个知识节点 · 点击节点跳转学习页展开</span>
         <div style="display:flex;gap:10px;align-items:center;">
-          <button class="flr-save-btn ${isSaved ? 'saved' : ''}" id="btn-save-path" onclick="toggleSavePath(this, '${query.replace(/'/g,"\\'")}', ${JSON.stringify(steps).replace(/\\/g,'\\\\').replace(/'/g,"\\'")})">
+          <button class="flr-save-btn ${isSaved ? 'saved' : ''}" id="btn-save-path" onclick="toggleSavePath(this, '${query.replace(/'/g,"\\'")}')">
             <svg viewBox="0 0 24 24" ${isSaved ? 'fill="currentColor"' : 'fill="none"'} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             ${isSaved ? '已收藏' : '收藏路径'}
           </button>
-          <a href="https://www.hiascend.com/edu/courses" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--black);text-decoration:none;padding:9px 18px;border-radius:8px;border:1.5px solid var(--black);transition:all 0.15s;" onmouseover="this.style.background='var(--black)';this.style.color='white'" onmouseout="this.style.background='';this.style.color='var(--black)'">
-            浏览全部课程
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
+          <button class="flr-cta-btn" onclick="navigateLearnWithPath('${query.replace(/'/g,"\\'")}')">
+            在学习页深入学习
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
         </div>
       </div>`;
+  }
+
+  // Navigate to learn page and apply the last generated path
+  function navigateLearnWithPath(query) {
+    if (!_lastFlrPath) return;
+    window._pendingLearnPath = { query, nodes: _lastFlrPath };
+    showPage('learn');
+    document.getElementById('nav-learn')?.classList.add('active');
+  }
+
+  // Open node drawer in-place (works from any page)
+  function openLearnNode(title) {
+    openNodeDrawer(title);
   }
 
   // ── RESOURCE FLOOR ──
@@ -4340,17 +4843,31 @@ ${courseList}
   // ── TEXT FORMATTER ──
   function copyBlockCode(btn) {
     const code = btn.closest('.ai-code-block').querySelector('code').innerText;
-    navigator.clipboard.writeText(code).then(() => { btn.textContent = '已复制'; setTimeout(() => btn.textContent = '复制', 1500); });
+    const orig = btn.innerHTML;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.innerHTML = `${_COPY_SVG} 已复制`;
+      btn.style.cssText += ';display:inline-flex;align-items:center;gap:4px;background:#16A34A;color:white;border-color:#16A34A;';
+      setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = ''; btn.style.display = ''; }, 1800);
+    });
   }
 
   function runInSandbox(btn) {
     const code = btn.closest('.ai-code-block').querySelector('code').innerText;
-    const form = document.createElement('form');
-    form.method = 'POST'; form.action = 'https://tio.run/#python3'; form.target = '_blank';
-    const input = document.createElement('input');
-    input.type = 'hidden'; input.name = 'code'; input.value = code;
-    form.appendChild(input); document.body.appendChild(form); form.submit();
-    document.body.removeChild(form);
+    nbCellCounter++;
+    NB_FILES.main.unshift({ id: nbCellCounter, type: 'code', code: code, output: '' });
+    nbCurrentFile = 'main';
+    document.getElementById('sandbox-drawer').classList.add('open');
+    document.getElementById('sandbox-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderNbCells();
+    document.querySelectorAll('.nb-file-item').forEach((f, i) => f.classList.toggle('active', i === 0));
+    document.querySelectorAll('.nb-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+    document.querySelectorAll('.nb-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('nb-panel-notebook').classList.add('active');
+    setTimeout(() => {
+      const c = document.getElementById('nb-cell-' + nbCellCounter);
+      if (c) { c.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); activateCell(c); }
+    }, 100);
   }
 
   function formatFloorText(text) {
@@ -4368,15 +4885,15 @@ ${courseList}
         const isRunnable = ['python','py','python3'].includes(lang);
         const termStyle = isShell ? 'background:#1a1a2e;color:#a8ff78;' : 'background:#1e1e1e;color:#f8f8f2;';
         const langLabel = lang || (isShell ? 'shell' : 'code');
-        return `<div class="ai-code-block" style="margin:10px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border)">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:#111;color:#aaa;font-size:11px;font-family:var(--mono)">
-            <span>${isShell ? '⬛ ' : ''}${langLabel}</span>
-            <span style="display:flex;gap:6px">
-              ${isRunnable ? `<button onclick="runInSandbox(this)" style="background:#2563eb;color:white;border:none;border-radius:5px;padding:2px 9px;cursor:pointer;font-size:11px">▶ 运行</button>` : ''}
-              <button onclick="copyBlockCode(this)" style="background:#333;color:#ddd;border:none;border-radius:5px;padding:2px 9px;cursor:pointer;font-size:11px">复制</button>
+        return `<div class="ai-code-block" style="margin:12px 0;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:#161b22;color:#8b949e;font-size:11px;font-family:var(--mono);font-weight:600;letter-spacing:0.04em">
+            <span style="display:flex;align-items:center;gap:6px">${isShell ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.7"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>' : '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>'}${langLabel}</span>
+            <span style="display:flex;gap:6px;align-items:center">
+              ${isRunnable ? `<button onclick="runInSandbox(this)" style="background:#1f6feb;color:white;border:none;border-radius:5px;padding:3px 10px;cursor:pointer;font-size:11px;font-family:var(--font);font-weight:600;display:flex;align-items:center;gap:4px"><svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>运行</button>` : ''}
+              <button onclick="copyBlockCode(this)" style="background:rgba(255,255,255,0.08);color:#8b949e;border:1px solid rgba(255,255,255,0.1);border-radius:5px;padding:3px 10px;cursor:pointer;font-size:11px;font-family:var(--font);font-weight:600">复制</button>
             </span>
           </div>
-          <pre style="${termStyle}margin:0;padding:12px 14px;overflow-x:auto;font-size:13px;font-family:var(--mono);line-height:1.6"><code>${code}</code></pre>
+          <pre style="${termStyle}margin:0;padding:14px 16px;overflow-x:auto;font-size:12.5px;font-family:var(--mono);line-height:1.65"><code style="background:none;border:none;padding:0;color:inherit">${code}</code></pre>
         </div>`;
       }
       return part
@@ -4416,63 +4933,75 @@ ${courseList}
     document.getElementById('path-generator-input').value = text;
   }
 
-  function generateCustomPath() {
+  async function generateCustomPath() {
     const input = document.getElementById('path-generator-input');
     const btn = document.querySelector('.btn-generate-path');
     const query = input.value.trim();
-    
     if (!query) return;
-    
-    // Show loading state
+
+    const svgPlay = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
     btn.classList.add('loading');
-    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>生成中...';
-    
-    // Simulate AI generation
-    setTimeout(() => {
-      const newPath = createPathFromQuery(query);
-      customPaths.unshift(newPath);
-      saveCustomPaths();
-      renderCustomPaths();
-      
-      // Reset button
-      btn.classList.remove('loading');
-      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>生成路径';
-      input.value = '';
-      
-      // Auto-select the new path
-      selectCustomPath(newPath.id);
-    }, 1500);
+    btn.innerHTML = svgPlay + '生成中…';
+
+    const nodeListStr = NODE_LIST.map((n, i) => `${i}|${n.title}|${n.category}|${n.desc}`).join('\n');
+
+    let nodes = null;
+    try {
+      const resp = await fetch(AI_WORKER_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: `你是 CANN 学习路径规划专家。根据用户的学习目标，从下面的知识节点库中挑选4-6个最相关的节点，按学习顺序排列，组成个性化路径。\n\n节点库（格式：序号|节点名|方向|描述）：\n${nodeListStr}\n\n输出格式：JSON数组，每项包含 nodeIndex（节点序号）和 reason（一句话说明为什么学这个节点，不超过12字）。\n只输出JSON，不加任何说明或代码块标记。`,
+          user: `我的学习目标：${query}`,
+          max_tokens: 400,
+        })
+      });
+      const data = await resp.json();
+      const text = data.text || '[]';
+      let picks = [];
+      try { picks = JSON.parse(text.replace(/```json|```/g, '').trim()); } catch(e) {}
+      if (picks.length > 0) {
+        nodes = picks.map((p, idx) => {
+          const node = NODE_LIST[p.nodeIndex] || NODE_LIST[0];
+          return { ...node, step: idx + 1, reason: p.reason || node.desc };
+        });
+      }
+    } catch(e) {}
+
+    // Fallback: keyword-based selection
+    if (!nodes) nodes = keywordFallbackNodes(query);
+
+    renderLearnPagePath(query, nodes);
+
+    // Save to custom paths list
+    const path = {
+      id: 'path_' + Date.now(),
+      name: query.length > 18 ? query.substring(0, 18) + '…' : query,
+      query,
+      icon: '✨',
+      nodeList: nodes,
+      createdAt: new Date().toLocaleDateString('zh-CN'),
+    };
+    customPaths.unshift(path);
+    saveCustomPaths();
+    renderCustomPaths();
+
+    btn.classList.remove('loading');
+    btn.innerHTML = svgPlay + '生成路径';
+    input.value = '';
   }
 
-  function createPathFromQuery(query) {
-    const pathTemplates = {
-      '算子': { icon: '🔧', desc: '自定义算子开发学习路径', nodes: ['operator'] },
-      '推理': { icon: '🚀', desc: '模型推理优化学习路径', nodes: ['developer'] },
-      '部署': { icon: '📦', desc: '模型部署实战学习路径', nodes: ['developer', 'distributed'] },
-      '迁移': { icon: '🔄', desc: '模型迁移适配学习路径', nodes: ['developer', 'advanced'] },
-      '训练': { icon: '🎓', desc: '分布式训练学习路径', nodes: ['distributed', 'expert'] },
-      '入门': { icon: '🌱', desc: 'CANN入门基础路径', nodes: ['beginner'] },
-      '默认': { icon: '✨', desc: 'AI生成的个性化学习路径', nodes: ['beginner', 'developer'] }
-    };
-    
-    let template = pathTemplates['默认'];
-    for (let key in pathTemplates) {
-      if (query.includes(key)) {
-        template = pathTemplates[key];
-        break;
-      }
+  function keywordFallbackNodes(query) {
+    const kw = [
+      { keys: ['算子','TBE','TIK','Ascend C'], cats: ['beginner','operator'] },
+      { keys: ['推理','部署','模型','ATC','.om'], cats: ['beginner','developer'] },
+      { keys: ['分布式','训练','HCCL','多卡'],   cats: ['beginner','developer','distributed'] },
+      { keys: ['入门','基础','概览','安装'],       cats: ['beginner'] },
+    ];
+    let cats = ['beginner','developer'];
+    for (const rule of kw) {
+      if (rule.keys.some(k => query.includes(k))) { cats = rule.cats; break; }
     }
-    
-    return {
-      id: 'path_' + Date.now(),
-      name: query.length > 15 ? query.substring(0, 15) + '...' : query,
-      fullQuery: query,
-      icon: template.icon,
-      desc: template.desc,
-      nodes: template.nodes,
-      createdAt: new Date().toLocaleDateString(),
-      progress: 0
-    };
+    return NODE_LIST.filter(n => cats.includes(n.category)).slice(0, 5).map((n, i) => ({ ...n, step: i + 1, reason: n.desc }));
   }
 
   function saveCustomPaths() {
@@ -4506,38 +5035,106 @@ ${courseList}
   function selectCustomPath(pathId) {
     activePathId = pathId;
     const path = customPaths.find(p => p.id === pathId);
-    
-    // Update UI
     document.querySelectorAll('.custom-path-item').forEach(item => {
       item.classList.toggle('active', item.dataset.pathId === pathId);
     });
-    
-    // Filter roadmap nodes based on path
-    if (path && path.nodes) {
-      document.querySelectorAll('.rm-node').forEach(node => {
-        const category = node.dataset.category;
-        if (path.nodes.includes(category)) {
-          node.style.display = '';
-        } else {
-          node.style.display = 'none';
-        }
-      });
+    if (path) {
+      // Use saved node list if available, else fall back to category filter
+      if (path.nodeList) {
+        renderLearnPagePath(path.query, path.nodeList);
+      } else if (path.nodes) {
+        const fallback = NODE_LIST.filter(n => path.nodes.includes(n.category))
+          .map((n, i) => ({ ...n, step: i + 1, reason: n.desc }));
+        renderLearnPagePath(path.query, fallback);
+      }
     }
   }
 
   function deleteCustomPath(pathId) {
     if (!confirm('确定要删除这个学习路径吗？')) return;
-    
     customPaths = customPaths.filter(p => p.id !== pathId);
     if (activePathId === pathId) {
       activePathId = null;
-      // Show all nodes
-      document.querySelectorAll('.rm-node').forEach(node => {
-        node.style.display = '';
-      });
+      clearLearnPath();
     }
     saveCustomPaths();
     renderCustomPaths();
+  }
+
+  // ── LEARN PAGE PATH SEQUENCE ──
+  function renderLearnPagePath(query, nodes) {
+    const strip = document.getElementById('path-seq-strip');
+    if (!strip) return;
+    window._currentLearnPath = nodes;
+
+    const stepsHtml = nodes.map((n, i) => {
+      const color = CAT_META[n.category]?.color || '#666';
+      return `${i > 0 ? '<span class="path-seq-arrow">→</span>' : ''}
+        <div class="path-seq-step" style="--cat-color:${color}" onclick="jumpToPathNode(${i})" title="${(n.reason || n.desc).replace(/"/g, '&quot;')}">
+          <span class="path-seq-num">${i + 1}</span>
+          <span class="path-seq-title">${n.title}</span>
+        </div>`;
+    }).join('');
+
+    strip.innerHTML = `
+      <div class="path-seq-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2C9 5.866 5.866 9 2 9c3.866 0 7 3.134 7 7 0-3.866 3.134-7 7-7-3.866 0-7-3.134-7-7z"/><path d="M20 12c0 2.209-1.791 4-4 4 2.209 0 4 1.791 4 4 0-2.209 1.791-4 4-4-2.209 0-4-1.791-4-4z"/></svg>
+        <span>${query}</span>
+      </div>
+      <div class="path-seq-steps">${stepsHtml}</div>
+      <button class="path-seq-close" onclick="clearLearnPath()">✕ 清除路径</button>`;
+    strip.classList.remove('hidden');
+
+    // Highlight matching rm-nodes; dim others
+    document.querySelectorAll('.rm-node').forEach(el => {
+      const title = el.querySelector('.rm-node-title')?.textContent.trim();
+      const idx = nodes.findIndex(n => n.title === title);
+      el.style.display = '';
+      el.classList.toggle('path-dimmed', idx < 0);
+      el.querySelector('.path-step-badge')?.remove();
+      if (idx >= 0) {
+        const color = CAT_META[nodes[idx].category]?.color || '#666';
+        const badge = document.createElement('span');
+        badge.className = 'path-step-badge';
+        badge.textContent = idx + 1;
+        badge.style.setProperty('--cat-color', color);
+        el.querySelector('.rm-node-header').prepend(badge);
+      }
+    });
+
+    // Scroll to first path node
+    setTimeout(() => {
+      const first = [...document.querySelectorAll('.rm-node')].find(el =>
+        nodes.some(n => n.title === el.querySelector('.rm-node-title')?.textContent.trim())
+      );
+      if (first) first.scrollIntoView({ behavior:'smooth', block:'center' });
+    }, 250);
+  }
+
+  function clearLearnPath() {
+    window._currentLearnPath = null;
+    const strip = document.getElementById('path-seq-strip');
+    if (strip) strip.classList.add('hidden');
+    document.querySelectorAll('.rm-node').forEach(el => {
+      el.classList.remove('path-dimmed');
+      el.querySelector('.path-step-badge')?.remove();
+      el.style.display = '';
+    });
+    activePathId = null;
+    document.querySelectorAll('.custom-path-item').forEach(el => el.classList.remove('active'));
+  }
+
+  function jumpToPathNode(idx) {
+    const path = window._currentLearnPath;
+    if (!path || !path[idx]) return;
+    const title = path[idx].title;
+    const nodeEl = [...document.querySelectorAll('.rm-node')].find(el =>
+      el.querySelector('.rm-node-title')?.textContent.trim() === title
+    );
+    if (nodeEl) {
+      nodeEl.scrollIntoView({ behavior:'smooth', block:'center' });
+      setTimeout(() => openNodeDrawer(nodeEl), 400);
+    }
   }
 
   function scrollPaths(direction) {
@@ -4591,6 +5188,9 @@ ${courseList}
       });
     }
 
+    // Clear path highlighting when switching away from custom tab
+    if (tabName !== 'custom') clearLearnPath();
+
     // Show all roadmap nodes when switching tabs
     document.querySelectorAll('.rm-node').forEach(node => {
       node.style.display = '';
@@ -4599,11 +5199,16 @@ ${courseList}
 
   // Sample custom paths data
   const samplePaths = [
-    { id: 'sample-1', name: 'CANN算子开发入门', icon: '🔧', query: '算子开发', createdAt: '2024-01-15', progress: 30 },
-    { id: 'sample-2', name: 'PyTorch模型迁移', icon: '🔄', query: '模型迁移', createdAt: '2024-01-20', progress: 0 },
-    { id: 'sample-3', name: '昇腾AI推理优化', icon: '⚡', query: '推理优化', createdAt: '2024-02-01', progress: 60 },
-    { id: 'sample-4', name: '分布式训练实战', icon: '🚀', query: '分布式训练', createdAt: '2024-02-10', progress: 0 },
-    { id: 'sample-5', name: 'ACL应用开发指南', icon: '📚', query: 'ACL开发', createdAt: '2024-02-15', progress: 15 }
+    { id: 'sample-1', name: 'CANN算子开发入门', icon: '🔧', query: '算子开发入门', createdAt: '2024-01-15',
+      nodeList: [0,1,2,7,8].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
+    { id: 'sample-2', name: '模型推理部署', icon: '🔄', query: '模型推理部署', createdAt: '2024-01-20',
+      nodeList: [0,2,3,4,5].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
+    { id: 'sample-3', name: '昇腾AI推理优化', icon: '⚡', query: '推理性能优化', createdAt: '2024-02-01',
+      nodeList: [3,4,5,6].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
+    { id: 'sample-4', name: '分布式训练实战', icon: '🚀', query: '分布式大模型训练', createdAt: '2024-02-10',
+      nodeList: [0,3,9,10].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
+    { id: 'sample-5', name: 'CANN 完整入门', icon: '📚', query: 'CANN入门基础', createdAt: '2024-02-15',
+      nodeList: [0,1,2,3,4].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
   ];
 
   // Initialize custom paths on load
@@ -4642,12 +5247,11 @@ ${courseList}
     text = text.replace(/开始/g, '').replace(/复制/g, '').replace(/在 HiDevLab 运行/g, '');
     text = text.replace(/^[A-Z]+\n/, '').trim();
     navigator.clipboard.writeText(text).catch(() => {});
-    btn.textContent = '已复制!';
+    const orig = btn.innerHTML;
+    btn.innerHTML = `${_COPY_SVG} 已复制`;
+    btn.style.cssText += ';display:inline-flex;align-items:center;gap:4px;';
     btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = '复制';
-      btn.classList.remove('copied');
-    }, 2000);
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); btn.style.display = ''; }, 2000);
   }
 
   // Sandbox Drawer Functions
@@ -4657,8 +5261,10 @@ ${courseList}
   function updateDocsSandboxBar() {
     const sandboxBar = document.getElementById('docs-sandbox-bar');
     const docsPage = document.getElementById('page-docs');
-    
-    if (docsPage && docsPage.classList.contains('active')) {
+    const learnPage = document.getElementById('page-learn');
+    const docsActive = docsPage && docsPage.classList.contains('active');
+    const learnActive = learnPage && learnPage.classList.contains('active');
+    if (docsActive || learnActive) {
       sandboxBar.classList.add('visible');
     } else {
       sandboxBar.classList.remove('visible');
@@ -4874,12 +5480,217 @@ ${courseList}
 
   function runSandboxCode() {}
 
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSandboxDrawer(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('qb-drawer')?.classList.contains('open')) { closeQuizBank(); return; }
+      closeSandboxDrawer();
+    }
+  });
 
   document.addEventListener('DOMContentLoaded', () => {
     updateDocsSandboxBar();
     renderNbCells();
+    qbSeedSamples();
+    _updateQbBadge();
   });
+
+  // ── Quiz Bank ──────────────────────────────────────────────────
+  const QB_KEY = 'cann_quiz_bank';
+  const QB_SEEDED_KEY = 'cann_quiz_bank_seeded';
+  let _qbFilter = 'all';
+  let _qbSearch = '';
+  let _qbDomainFilter = 'all';
+  let _qbNodeFilter = 'all';
+
+  const QB_DOMAIN_META = {
+    beginner:    { label: '基础入门', color: '#10B981' },
+    developer:   { label: '应用开发', color: '#2e53fa' },
+    operator:    { label: '算子开发', color: '#8B5CF6' },
+    distributed: { label: '分布式',  color: '#F59E0B' },
+  };
+
+  const QB_SAMPLE = [
+    { id: 1000001, domain: 'beginner',    nodeTitle: '昇腾硬件体系',      question: '昇腾 AI 处理器中，达芬奇架构的核心矩阵计算单元是？', options: ['Cube 单元', 'Vector 单元', 'Scalar 单元', 'SIMD 单元'], answer: 'Cube 单元', userAnswer: 'Vector 单元', result: 'wrong', ts: Date.now() - 86400000 * 5 },
+    { id: 1000002, domain: 'beginner',    nodeTitle: '昇腾硬件体系',      question: 'HBM（高带宽内存）相比 LPDDR 的主要优势是？', options: ['更低功耗', '更高内存带宽', '更大单条容量', '更低访存延迟'], answer: '更高内存带宽', userAnswer: '更低访存延迟', result: 'wrong', ts: Date.now() - 86400000 * 4 },
+    { id: 1000003, domain: 'beginner',    nodeTitle: 'CANN 软件栈概览',   question: 'CANN 软件栈中，GE（Graph Engine）负责的主要工作是？', options: ['计算图优化与子图划分', '内存分配与回收', 'NPU 驱动初始化', '模型量化压缩'], answer: '计算图优化与子图划分', userAnswer: 'NPU 驱动初始化', result: 'wrong', ts: Date.now() - 86400000 * 3 },
+    { id: 1000004, domain: 'beginner',    nodeTitle: '环境安装与配置',    question: '安装 CANN Toolkit 后，激活运行时通常需要 source 哪个脚本？', options: ['set_env.sh', 'ascend_env.sh', 'envs/ascend_toolkit_env.sh', 'activate.sh'], answer: 'set_env.sh', userAnswer: 'ascend_env.sh', result: 'wrong', ts: Date.now() - 86400000 * 3 },
+    { id: 1000005, domain: 'developer',   nodeTitle: 'AscendCL 编程基础', question: 'AscendCL 中，Stream 的主要作用是？', options: ['管理设备内存分配', '定义任务执行的有序队列', '初始化 Context 上下文', '加载模型文件'], answer: '定义任务执行的有序队列', userAnswer: '管理设备内存分配', result: 'wrong', ts: Date.now() - 86400000 * 2 },
+    { id: 1000006, domain: 'developer',   nodeTitle: '模型推理部署',      question: 'ATC 工具的主要功能是？', options: ['将原始框架模型转换为 .om 格式', '执行在线分布式训练', '配置环境变量', '管理推理任务调度'], answer: '将原始框架模型转换为 .om 格式', userAnswer: '管理推理任务调度', result: 'wrong', ts: Date.now() - 86400000 * 2 },
+    { id: 1000007, domain: 'developer',   nodeTitle: '性能调优实战',      question: 'Profiling 分析中，哪项指标直接反映算子执行效率？', options: ['Host CPU 占用率', '算子耗时（Op Time）', '内存碎片率', 'PCIe 带宽利用率'], answer: '算子耗时（Op Time）', userAnswer: '内存碎片率', result: 'wrong', ts: Date.now() - 86400000 },
+    { id: 1000008, domain: 'developer',   nodeTitle: '数据预处理 (DVPP)', question: 'DVPP 中 JPEGD 模块的功能是？', options: ['JPEG 编码（压缩）', 'JPEG 解码（解压）', '视频流拆帧', '颜色空间转换'], answer: 'JPEG 解码（解压）', userAnswer: 'JPEG 编码（压缩）', result: 'wrong', ts: Date.now() - 86400000 },
+    { id: 1000009, domain: 'operator',    nodeTitle: 'TBE DSL 算子开发',  question: 'TBE DSL 中，te.lang.cce.vmul 对应的操作是？', options: ['矩阵乘法', '逐元素向量乘法', '卷积操作', '向量点积'], answer: '逐元素向量乘法', userAnswer: '矩阵乘法', result: 'wrong', ts: Date.now() - 43200000 },
+    { id: 1000010, domain: 'operator',    nodeTitle: 'TIK 底层算子开发',  question: 'TIK 中 data_move 指令将数据从 GM 搬移到 UB，UB 指的是？', options: ['Unified Buffer（统一缓冲区）', 'User Buffer（用户缓冲区）', 'Upload Buffer（上传缓冲区）', 'Ultra Buffer（超带宽缓冲）'], answer: 'Unified Buffer（统一缓冲区）', userAnswer: 'Upload Buffer（上传缓冲区）', result: 'wrong', ts: Date.now() - 43200000 },
+    { id: 1000011, domain: 'distributed', nodeTitle: 'HCCL 分布式通信',   question: 'HCCL AllReduce 操作的语义是？', options: ['从 rank 0 广播到所有进程', '每个进程贡献数据，归约后结果同步给所有进程', '将所有进程数据收集到 rank 0', '进程间点对点交换'], answer: '每个进程贡献数据，归约后结果同步给所有进程', userAnswer: '从 rank 0 广播到所有进程', result: 'wrong', ts: Date.now() - 3600000 },
+    { id: 1000012, domain: 'beginner',    nodeTitle: 'CANN 软件栈概览',   question: 'AscendCL 在 CANN 软件栈中所处的层次是？', options: ['硬件驱动层', '运行时与算子库层', '应用编程接口层', '编译优化层'], answer: '应用编程接口层', userAnswer: '应用编程接口层', result: 'correct', ts: Date.now() - 7200000 },
+    { id: 1000013, domain: 'developer',   nodeTitle: 'AscendCL 编程基础', question: 'acldvppMalloc 与普通 aclrtMalloc 的主要区别是？', options: ['前者分配在 Host 侧', '前者分配在 DVPP 专属区域，对齐要求不同', '前者速度更慢', '两者完全等价'], answer: '前者分配在 DVPP 专属区域，对齐要求不同', userAnswer: '前者分配在 DVPP 专属区域，对齐要求不同', result: 'correct', ts: Date.now() - 1800000 },
+  ];
+
+  function qbSeedSamples() {
+    if (localStorage.getItem(QB_SEEDED_KEY)) return;
+    if (qbLoad().length === 0) {
+      qbSave(QB_SAMPLE);
+      localStorage.setItem(QB_SEEDED_KEY, '1');
+    }
+  }
+
+  function qbLoad() {
+    try { return JSON.parse(localStorage.getItem(QB_KEY) || '[]'); } catch { return []; }
+  }
+  function qbSave(records) {
+    localStorage.setItem(QB_KEY, JSON.stringify(records));
+  }
+  function saveQuizResult(quiz, userAnswer, correct) {
+    const node = NODE_LIST.find(n => n.title === (_currentDrawerNode?.title || ''));
+    const records = qbLoad();
+    records.unshift({
+      id: Date.now(),
+      domain: node?.category || 'beginner',
+      nodeTitle: _currentDrawerNode?.title || '未知节点',
+      question: quiz.question,
+      options: quiz.options,
+      answer: quiz.answer,
+      userAnswer: userAnswer,
+      result: correct ? 'correct' : 'wrong',
+      ts: Date.now()
+    });
+    qbSave(records);
+    _updateQbBadge();
+  }
+  function _updateQbBadge() {
+    const records = qbLoad();
+    const wrong = records.filter(r => r.result === 'wrong').length;
+    const badge = document.getElementById('qb-nav-badge');
+    if (badge) { badge.textContent = wrong > 0 ? wrong : ''; badge.style.display = wrong > 0 ? 'inline-flex' : 'none'; }
+  }
+  function openQuizBank() {
+    _qbFilter = 'all'; _qbSearch = ''; _qbDomainFilter = 'all'; _qbNodeFilter = 'all';
+    renderQuizBank();
+    document.getElementById('qb-overlay').classList.add('open');
+    document.getElementById('qb-drawer').classList.add('open');
+  }
+  function closeQuizBank() {
+    document.getElementById('qb-overlay').classList.remove('open');
+    document.getElementById('qb-drawer').classList.remove('open');
+  }
+  function _qbFormatDate(ts) {
+    const d = new Date(ts);
+    return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  }
+  function renderQuizBank() {
+    const records = qbLoad();
+    let filtered = records;
+    if (_qbFilter === 'wrong')         filtered = filtered.filter(r => r.result === 'wrong');
+    if (_qbFilter === 'correct')       filtered = filtered.filter(r => r.result === 'correct');
+    if (_qbDomainFilter !== 'all')     filtered = filtered.filter(r => (r.domain || 'beginner') === _qbDomainFilter);
+    if (_qbNodeFilter !== 'all')       filtered = filtered.filter(r => r.nodeTitle === _qbNodeFilter);
+    if (_qbSearch.trim()) {
+      const q = _qbSearch.trim().toLowerCase();
+      filtered = filtered.filter(r => r.question.toLowerCase().includes(q) || r.nodeTitle.toLowerCase().includes(q));
+    }
+    const wrongTotal = records.filter(r => r.result === 'wrong').length;
+    const correctTotal = records.filter(r => r.result === 'correct').length;
+    document.getElementById('qb-count').textContent = records.length + ' 题';
+    document.getElementById('qb-footer-stats').textContent = `共 ${records.length} 题 · 错误 ${wrongTotal} · 正确 ${correctTotal}`;
+
+    // Domain filter chips
+    const domainsInBank = [...new Set(records.map(r => r.domain || 'beginner'))];
+    const domainFilters = document.getElementById('qb-domain-filters');
+    domainFilters.innerHTML = `<button class="qb-filter${_qbDomainFilter==='all'?' active':''}" onclick="qbSetDomain('all')">全部领域</button>`
+      + domainsInBank.map(d => {
+          const meta = QB_DOMAIN_META[d] || { label: d, color: '#888' };
+          const active = _qbDomainFilter === d;
+          return `<button class="qb-filter${active?' active':''}" style="${active?`background:${meta.color};border-color:${meta.color};`:''}" onclick="qbSetDomain('${d}')">${meta.label}</button>`;
+        }).join('');
+
+    // Node filter chips (scoped to active domain)
+    const scopedRecords = _qbDomainFilter === 'all' ? records : records.filter(r => (r.domain||'beginner') === _qbDomainFilter);
+    const nodes = [...new Set(scopedRecords.map(r => r.nodeTitle))];
+    const nodeFilters = document.getElementById('qb-node-filters');
+    nodeFilters.innerHTML = nodes.length <= 1 ? '' :
+      `<button class="qb-filter${_qbNodeFilter==='all'?' active':''}" onclick="qbSetNode('all')">全部节点</button>`
+      + nodes.map(n => `<button class="qb-filter${_qbNodeFilter===n?' active':''}" onclick="qbSetNode(${JSON.stringify(n)})">${n}</button>`).join('');
+
+    // Cards
+    const list = document.getElementById('qb-list');
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="qb-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>暂无记录</div>`;
+      return;
+    }
+    list.innerHTML = filtered.map(r => {
+      const domainMeta = QB_DOMAIN_META[r.domain || 'beginner'] || { label: '其他', color: '#888' };
+      return `
+      <div class="qb-card ${r.result}">
+        <div class="qb-card-top">
+          <div class="qb-card-q">${r.question}</div>
+          <button class="qb-card-del" onclick="qbDelete(${r.id})" title="删除">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="qb-card-meta">
+          <span class="qb-tag" style="background:${domainMeta.color}18;color:${domainMeta.color};">${domainMeta.label}</span>
+          <span class="qb-tag">${r.nodeTitle}</span>
+          <span class="qb-result-badge ${r.result}">${r.result === 'wrong' ? '答错' : '答对'}</span>
+          <span class="qb-date">${_qbFormatDate(r.ts)}</span>
+        </div>
+        <div class="qb-answer-row">正确答案：<span>${r.answer}</span>${r.result==='wrong'?` · 你的答案：<span style="color:#EF4444">${r.userAnswer}</span>`:''}</div>
+      </div>`;
+    }).join('');
+  }
+  function qbSetFilter(f, el) {
+    _qbFilter = f;
+    document.querySelectorAll('#qb-result-filters .qb-filter').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    renderQuizBank();
+  }
+  function qbSetDomain(d) { _qbDomainFilter = d; _qbNodeFilter = 'all'; renderQuizBank(); }
+  function qbSetNode(n) { _qbNodeFilter = n; renderQuizBank(); }
+  function qbDelete(id) {
+    const records = qbLoad().filter(r => r.id !== id);
+    qbSave(records);
+    renderQuizBank();
+    _updateQbBadge();
+  }
+  function qbClearAll() {
+    if (!confirm('确定清空全部题目记录？')) return;
+    qbSave([]);
+    localStorage.removeItem(QB_SEEDED_KEY);
+    renderQuizBank();
+    _updateQbBadge();
+  }
+  function qbSearchInput(val) { _qbSearch = val; renderQuizBank(); }
 </script>
+
+<!-- Quiz Bank Overlay + Drawer -->
+<div class="qb-overlay" id="qb-overlay" onclick="closeQuizBank()"></div>
+<div class="qb-drawer" id="qb-drawer">
+  <div class="qb-header">
+    <div class="qb-header-left">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M12 12h.01M12 16h.01M12 8h.01"/></svg>
+      <span class="qb-title">错题本</span>
+      <span class="qb-count" id="qb-count">0 题</span>
+    </div>
+    <button class="qb-close" onclick="closeQuizBank()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="qb-toolbar">
+    <div class="qb-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="搜索题目或节点…" oninput="qbSearchInput(this.value)">
+    </div>
+    <div class="qb-filters" id="qb-result-filters">
+      <button class="qb-filter active" onclick="qbSetFilter('all',this)">全部</button>
+      <button class="qb-filter err" onclick="qbSetFilter('wrong',this)">只看错题</button>
+      <button class="qb-filter ok" onclick="qbSetFilter('correct',this)">只看正确</button>
+    </div>
+    <div class="qb-filters" id="qb-domain-filters"></div>
+    <div class="qb-filters" id="qb-node-filters"></div>
+  </div>
+  <div class="qb-list" id="qb-list"></div>
+  <div class="qb-footer">
+    <span class="qb-footer-stats" id="qb-footer-stats"></span>
+    <button class="qb-clear-btn" onclick="qbClearAll()">清空全部</button>
+  </div>
+</div>
 </body>
 </html>

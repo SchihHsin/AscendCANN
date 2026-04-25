@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习路径样式预览 v3 · 集群版</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F0F2F5;--surface:#fff;--border:#E5E7EB;--muted:#6B7280;--black:#0A0A0F;--font:'Sora',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--black);font-size:14px}
+
+.top-bar{position:sticky;top:0;z-index:200;background:var(--black);color:white;display:flex;align-items:center;height:54px;padding:0 32px;gap:0}
+.top-bar-title{font-size:14px;font-weight:700;padding-right:28px;border-right:1px solid rgba(255,255,255,0.1);margin-right:20px;white-space:nowrap}
+.top-bar-title em{opacity:.35;font-style:normal;font-weight:400}
+.style-tabs{display:flex;gap:2px}
+.style-tab{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;font-family:var(--font);background:none;border:none;color:rgba(255,255,255,.45);cursor:pointer;transition:all .2s;white-space:nowrap}
+.style-tab:hover{color:white;background:rgba(255,255,255,.07)}
+.style-tab.active{color:white;background:rgba(255,255,255,.13)}
+
+.style-panel{display:none}.style-panel.on{display:block}
+.panel-inner{max-width:1200px;margin:0 auto;padding:44px 32px 64px}
+.panel-meta{margin-bottom:32px}
+.panel-name{font-size:26px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.panel-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:620px}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.preview-box{background:white;border-radius:18px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.04);overflow:hidden}
+.preview-label{padding:12px 20px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);display:flex;align-items:center;gap:8px}
+.preview-label .dot{width:7px;height:7px;border-radius:50%}
+.preview-body{padding:20px}
+
+.cta-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);gap:12px;flex-wrap:wrap}
+.cta-hint{font-size:11px;color:var(--muted)}
+.btns{display:flex;gap:8px}
+.btn-ghost{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid var(--border);background:white;color:var(--black);cursor:pointer;font-family:var(--font)}
+.btn-fill{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:700;border:none;background:var(--black);color:white;cursor:pointer;font-family:var(--font);display:inline-flex;align-items:center;gap:6px}
+
+/* path strip */
+.path-strip{background:#F8F9FB;border:1.5px solid var(--black);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:4px;overflow-x:auto;margin-bottom:16px;flex-shrink:0}
+.path-strip::-webkit-scrollbar{height:3px}
+.strip-arrow{color:#CBD5E1;font-size:16px;flex-shrink:0}
+.strip-node{display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 7px;border-radius:10px;cursor:pointer;transition:background .15s;min-width:54px;flex-shrink:0}
+.strip-node:hover{background:#EBEBF0}
+.strip-dot{width:28px;height:28px;border-radius:50%;background:var(--nc);color:white;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.strip-title{font-size:9px;font-weight:600;text-align:center;line-height:1.3;width:52px;color:var(--black)}
+
+/* matrix */
+.matrix-wrap{display:flex;gap:0;align-items:flex-start;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.matrix-col{flex:1;min-width:0;border-right:1px solid var(--border)}
+.matrix-col:last-child{border-right:none}
+.matrix-col-hd{padding:8px 10px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:5px;border-bottom:2px solid var(--cc);background:var(--cl)}
+.matrix-col-dot{width:7px;height:7px;border-radius:50%;background:var(--cc)}
+.matrix-nodes{display:flex;flex-direction:column;gap:3px;padding:6px 6px 8px}
+.m-node{padding:5px 7px;border-radius:7px;font-size:10px;font-weight:600;line-height:1.3;border:1.5px solid transparent;cursor:pointer;transition:all .15s;position:relative}
+.m-node.dim{opacity:.18}
+.m-node.act{border-color:var(--cc);background:var(--cl)}
+.m-node.act::before{content:attr(data-s);position:absolute;top:-7px;left:-7px;width:15px;height:15px;border-radius:50%;background:var(--cc);color:white;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:15px;text-align:center}
+
+/* tier */
+.tier-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.tier-row{display:flex;align-items:flex-start;gap:0;border-bottom:1px solid var(--border)}
+.tier-row:last-child{border-bottom:none}
+.tier-lbl{width:54px;flex-shrink:0;padding:12px 8px 12px 12px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--tc);background:var(--tl);border-right:2px solid var(--tc);display:flex;align-items:flex-start;padding-top:14px}
+.tier-nodes{display:flex;gap:5px;flex-wrap:wrap;padding:10px 10px;flex:1;align-items:center}
+.t-node{padding:4px 9px;border-radius:20px;font-size:10px;font-weight:600;border:1.5px solid var(--tc);color:var(--tc);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap}
+.t-node.dim{opacity:.18}
+.t-node.act{background:var(--tc);color:white}
+.t-node .sbadge{position:absolute;top:-7px;right:-7px;width:14px;height:14px;border-radius:50%;background:var(--black);color:white;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:14px;text-align:center}
+
+.cat-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.cat-chip{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;background:var(--cl);color:var(--cc)}
+.cat-dot{width:6px;height:6px;border-radius:50%;background:var(--cc)}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-title">学习路径样式预览 <em>v3 · 23节点</em></div>
+  <div class="style-tabs">
+    <button class="style-tab active" onclick="show(1,this)">① 集群图谱</button>
+    <button class="style-tab" onclick="show(2,this)">② 分相矩阵</button>
+    <button class="style-tab" onclick="show(3,this)">③ 层级流向</button>
+  </div>
+</div>
+
+<div class="style-panel on" id="s1">
+  <div class="panel-inner">
+    <div class="panel-meta">
+      <div class="panel-name">① 集群图谱</div>
+      <div class="panel-desc">23 个节点按 4 类别聚合为高斯晕染集群，节点间依赖以细线相连。路径激活时，序号节点高亮、带发光弧线，非路径节点深度淡出，集群结构一览无余。</div>
+    </div>
+    <div class="two-col">
+      <div class="preview-box">
+        <div class="preview-label"><div class="dot" style="background:#10B981"></div>首页 · AI 生成路径结果</div>
+        <div class="preview-body">
+          <div class="cat-legend">
+            <span class="cat-chip" style="--cc:#10B981;--cl:#ECFDF5"><span class="cat-dot"></span>基础入门</span>
+            <span class="cat-chip" style="--cc:#2e53fa;--cl:#EEF2FF"><span class="cat-dot"></span>应用开发</span>
+            <span class="cat-chip" style="--cc:#8B5CF6;--cl:#F5F3FF"><span class="cat-dot"></span>算子开发</span>
+            <span class="cat-chip" style="--cc:#F59E0B;--cl:#FFFBEB"><span class="cat-dot"></span>分布式</span>
+          </div>
+          <div id="g1h"></div>
+          <div class="cta-row">
+            <span class="cta-hint">7 步路径 · 点击节点查看详情</span>
+            <div class="btns">
+              <button class="btn-ghost">收藏路径</button>
+              <button class="btn-fill">→ 在学习页深入</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-box">
+        <div class="preview-label"><div class="dot" style="background:#2e53fa"></div>学习页 · 路径激活状态</div>
+        <div class="preview-body">
+          <div class="path-strip" id="strip1"></div>
+          <div id="g1l"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="style-panel" id="s2">
+  <div class="panel-inner">
+    <div class="panel-meta">
+      <div class="panel-name">② 分相矩阵</div>
+      <div class="panel-desc">4 列对应 4 类别，全部 23 个节点以卡片形式垂直排布。路径节点高亮并带序号角标，非路径节点淡出。信息密度高，类别归属一目了然。</div>
+    </div>
+    <div class="two-col" id="s2panels"></div>
+  </div>
+</div>
+
+<div class="style-panel" id="s3">
+  <div class="panel-inner">
+    <div class="panel-meta">
+      <div class="panel-name">③ 层级流向</div>
+      <div class="panel-desc">4 横带分别对应入门→应用→算子→分布式层级，节点以标签形式排布在对应行。路径以序号标记，从基础到高级的递进关系通过行间跳跃体现。</div>
+    </div>
+    <div class="two-col" id="s3panels"></div>
+  </div>
+</div>
+
+<script>
+const CAT = {
+  beginner:    { color:'#10B981', light:'#ECFDF5', dark:'#065F46', label:'基础入门' },
+  developer:   { color:'#2e53fa', light:'#EEF2FF', dark:'#1e3a8a', label:'应用开发' },
+  operator:    { color:'#8B5CF6', light:'#F5F3FF', dark:'#4C1D95', label:'算子开发' },
+  distributed: { color:'#F59E0B', light:'#FFFBEB', dark:'#78350F', label:'分布式'  },
+};
+
+const NODES = [
+  {id:'B1',cx:88, cy:388,cat:'beginner',   short:'昇腾硬件',   full:'昇腾硬件体系'},
+  {id:'B2',cx:162,cy:350,cat:'beginner',   short:'Atlas产品线', full:'Atlas产品线概览'},
+  {id:'B3',cx:250,cy:378,cat:'beginner',   short:'CANN软件栈', full:'CANN软件栈概览'},
+  {id:'B4',cx:100,cy:450,cat:'beginner',   short:'环境安装',   full:'环境安装与配置'},
+  {id:'B5',cx:208,cy:455,cat:'beginner',   short:'NPU驱动',    full:'NPU驱动管理'},
+  {id:'B6',cx:258,cy:440,cat:'beginner',   short:'工具链',     full:'开发工具链介绍'},
+  {id:'D1',cx:375,cy:192,cat:'developer',  short:'AscendCL',  full:'AscendCL编程基础'},
+  {id:'D2',cx:468,cy:158,cat:'developer',  short:'内存管理',   full:'内存管理与Buffer'},
+  {id:'D3',cx:558,cy:192,cat:'developer',  short:'多Stream',   full:'多Stream异步执行'},
+  {id:'D4',cx:378,cy:285,cat:'developer',  short:'推理部署',   full:'模型推理部署'},
+  {id:'D5',cx:502,cy:295,cat:'developer',  short:'DVPP',       full:'数据预处理(DVPP)'},
+  {id:'D6',cx:575,cy:278,cat:'developer',  short:'框架适配',   full:'PyTorch/框架适配'},
+  {id:'D7',cx:462,cy:350,cat:'developer',  short:'性能调优',   full:'性能调优实战'},
+  {id:'O1',cx:648,cy:92, cat:'operator',   short:'算子框架',   full:'算子开发框架概览'},
+  {id:'O2',cx:748,cy:108,cat:'operator',   short:'TBE DSL',    full:'TBE DSL算子开发'},
+  {id:'O3',cx:778,cy:192,cat:'operator',   short:'TIK底层',    full:'TIK底层算子开发'},
+  {id:'O4',cx:678,cy:192,cat:'operator',   short:'算子融合',   full:'算子融合与注册'},
+  {id:'O5',cx:710,cy:268,cat:'operator',   short:'精度验证',   full:'算子精度验证'},
+  {id:'R1',cx:568,cy:408,cat:'distributed',short:'HCCL',       full:'HCCL分布式通信'},
+  {id:'R2',cx:663,cy:392,cat:'distributed',short:'数据并行',   full:'数据并行训练'},
+  {id:'R3',cx:758,cy:415,cat:'distributed',short:'流水线',     full:'流水线并行'},
+  {id:'R4',cx:618,cy:472,cat:'distributed',short:'张量并行',   full:'张量并行策略'},
+  {id:'R5',cx:733,cy:468,cat:'distributed',short:'大模型',     full:'大模型训练实战'},
+];
+
+const EDGES = [
+  ['B1','B2'],['B1','B4'],['B2','B3'],['B2','B5'],['B3','B5'],['B3','B6'],['B4','B5'],
+  ['B2','D1'],['B3','D1'],['B6','D7'],
+  ['D1','D2'],['D1','D3'],['D1','D4'],['D2','D3'],['D2','D5'],['D3','D6'],
+  ['D4','D5'],['D4','D7'],['D5','D7'],['D6','D7'],
+  ['D3','O1'],['D6','O1'],['D7','O4'],['D7','O5'],
+  ['O1','O2'],['O1','O4'],['O2','O3'],['O3','O4'],['O4','O5'],
+  ['D7','R1'],['D6','R2'],['O5','R2'],
+  ['R1','R2'],['R1','R4'],['R2','R3'],['R2','R5'],['R3','R5'],['R4','R5'],
+];
+
+const HALOS = [
+  {cat:'beginner',   cx:175,cy:415,rx:205,ry:118},
+  {cat:'developer',  cx:477,cy:265,rx:228,ry:132},
+  {cat:'operator',   cx:718,cy:178,rx:152,ry:112},
+  {cat:'distributed',cx:667,cy:445,rx:168,ry:98 },
+];
+
+const PATH_HOME  = ['B1','B3','B4','D1','D4','D5','D7'];
+const PATH_LEARN = ['B1','B3','D1','D4','D7','R1'];
+
+/* ── CLUSTER SVG ── */
+function renderCluster(elId, path, dimNonPath) {
+  const ps = new Set(path);
+  let s = '';
+
+  s += `<defs>
+    <filter id="hb${elId}" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="34"/>
+    </filter>
+    <filter id="pg${elId}" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>`;
+
+  // halos
+  HALOS.forEach(h => {
+    const c = CAT[h.cat].color;
+    s += `<ellipse cx="${h.cx}" cy="${h.cy}" rx="${h.rx}" ry="${h.ry}" fill="${c}" fill-opacity="0.16" filter="url(#hb${elId})"/>`;
+  });
+
+  // halo category labels
+  HALOS.forEach(h => {
+    const c = CAT[h.cat].color;
+    const lbl = CAT[h.cat].label;
+    const ty = h.cy - h.ry + 12;
+    s += `<text x="${h.cx}" y="${ty}" text-anchor="middle" font-size="9" font-weight="800" fill="${c}" opacity="0.55" font-family="Sora,sans-serif" letter-spacing="0.08em">${lbl}</text>`;
+  });
+
+  // background edges
+  EDGES.forEach(([a,b]) => {
+    const na = NODES.find(n=>n.id===a), nb = NODES.find(n=>n.id===b);
+    const ai = path.indexOf(a), bi = path.indexOf(b);
+    if (ai>=0 && bi>=0 && Math.abs(ai-bi)===1) return; // skip path edges here
+    const op = dimNonPath ? 0.1 : 0.32;
+    s += `<line x1="${na.cx}" y1="${na.cy}" x2="${nb.cx}" y2="${nb.cy}" stroke="#94A3B8" stroke-width="1" opacity="${op}"/>`;
+  });
+
+  // path arcs
+  for (let i=0; i<path.length-1; i++) {
+    const na = NODES.find(n=>n.id===path[i]);
+    const nb = NODES.find(n=>n.id===path[i+1]);
+    const c = CAT[na.cat].color;
+    const mx = (na.cx+nb.cx)/2, my = (na.cy+nb.cy)/2;
+    const dx = nb.cx-na.cx, dy = nb.cy-na.cy;
+    const px = -dy*0.22, py = dx*0.22;
+    // bezier arc
+    s += `<path d="M${na.cx},${na.cy} Q${mx+px},${my+py} ${nb.cx},${nb.cy}" fill="none" stroke="${c}" stroke-width="2.8" stroke-opacity="0.85" stroke-linecap="round" filter="url(#pg${elId})"/>`;
+    // arrowhead
+    const ang = Math.atan2(nb.cy-(my+py), nb.cx-(mx+px));
+    const tip = {x:nb.cx-Math.cos(ang)*18, y:nb.cy-Math.sin(ang)*18};
+    const p1 = {x:tip.x-Math.cos(ang-0.48)*9, y:tip.y-Math.sin(ang-0.48)*9};
+    const p2 = {x:tip.x-Math.cos(ang+0.48)*9, y:tip.y-Math.sin(ang+0.48)*9};
+    s += `<polygon points="${nb.cx},${nb.cy} ${p1.x},${p1.y} ${p2.x},${p2.y}" fill="${c}" opacity="0.85"/>`;
+  }
+
+  // non-path nodes
+  NODES.forEach(n => {
+    if (ps.has(n.id)) return;
+    const {color,light} = CAT[n.cat];
+    const op = dimNonPath ? 0.15 : 0.6;
+    s += `<circle cx="${n.cx}" cy="${n.cy}" r="12" fill="${light}" stroke="${color}" stroke-width="1.5" opacity="${op}"/>`;
+    s += `<text x="${n.cx}" y="${n.cy+3.5}" text-anchor="middle" font-size="7" font-weight="700" fill="${color}" opacity="${op}" font-family="Sora,sans-serif">${n.short.slice(0,3)}</text>`;
+  });
+
+  // path nodes
+  path.forEach((id,i) => {
+    const n = NODES.find(nd=>nd.id===id);
+    const {color} = CAT[n.cat];
+    s += `<circle cx="${n.cx}" cy="${n.cy}" r="17" fill="${color}" filter="url(#pg${elId})"/>`;
+    s += `<text x="${n.cx}" y="${n.cy+5}" text-anchor="middle" font-size="12" font-weight="800" fill="white" font-family="Sora,sans-serif">${i+1}</text>`;
+    // label below — split if long
+    const lbl = n.short;
+    if (lbl.length <= 5) {
+      s += `<text x="${n.cx}" y="${n.cy+30}" text-anchor="middle" font-size="9" font-weight="700" fill="#0A0A0F" font-family="Sora,sans-serif">${lbl}</text>`;
+    } else {
+      const m = Math.ceil(lbl.length/2);
+      s += `<text x="${n.cx}" y="${n.cy+28}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0A0A0F" font-family="Sora,sans-serif">${lbl.slice(0,m)}</text>`;
+      s += `<text x="${n.cx}" y="${n.cy+38}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0A0A0F" font-family="Sora,sans-serif">${lbl.slice(m)}</text>`;
+    }
+  });
+
+  document.getElementById(elId).innerHTML =
+    `<svg viewBox="0 0 880 540" width="100%" style="display:block;overflow:visible">${s}</svg>`;
+}
+
+/* ── STRIP ── */
+function renderStrip(elId, path) {
+  let h = '';
+  path.forEach((id,i) => {
+    const n = NODES.find(nd=>nd.id===id);
+    const c = CAT[n.cat].color;
+    if (i>0) h += '<div class="strip-arrow">›</div>';
+    h += `<div class="strip-node" style="--nc:${c}"><div class="strip-dot">${i+1}</div><div class="strip-title">${n.short}</div></div>`;
+  });
+  document.getElementById(elId).innerHTML = h;
+}
+
+/* ── MATRIX ── */
+function buildMatrix(path, dim) {
+  const pm = {};
+  path.forEach((id,i) => pm[id]=i+1);
+  const cats = ['beginner','developer','operator','distributed'];
+  let h = '<div class="matrix-wrap">';
+  cats.forEach(cat => {
+    const {color,light,label} = CAT[cat];
+    h += `<div class="matrix-col"><div class="matrix-col-hd" style="--cc:${color};--cl:${light}"><div class="matrix-col-dot"></div>${label}</div><div class="matrix-nodes">`;
+    NODES.filter(n=>n.cat===cat).forEach(n => {
+      const step = pm[n.id];
+      const cls = step ? 'act' : (dim ? 'dim' : '');
+      h += `<div class="m-node ${cls}" style="--cc:${color};--cl:${light}"${step?` data-s="${step}"`:''}>${n.full}</div>`;
+    });
+    h += '</div></div>';
+  });
+  return h + '</div>';
+}
+
+/* ── TIER ── */
+function buildTier(path, dim) {
+  const pm = {};
+  path.forEach((id,i) => pm[id]=i+1);
+  const tiers = [
+    {cat:'beginner',   lbl:'基础',   color:'#10B981',light:'#F0FDF9'},
+    {cat:'developer',  lbl:'应用',   color:'#2e53fa',light:'#EEF2FF'},
+    {cat:'operator',   lbl:'算子',   color:'#8B5CF6',light:'#F5F3FF'},
+    {cat:'distributed',lbl:'分布式', color:'#F59E0B',light:'#FFFBEB'},
+  ];
+  let h = '<div class="tier-wrap">';
+  tiers.forEach(({cat,lbl,color,light}) => {
+    h += `<div class="tier-row"><div class="tier-lbl" style="--tc:${color};--tl:${light}">${lbl}</div><div class="tier-nodes">`;
+    NODES.filter(n=>n.cat===cat).forEach(n => {
+      const step = pm[n.id];
+      const cls = step ? 'act' : (dim ? 'dim' : '');
+      h += `<div class="t-node ${cls}" style="--tc:${color}">${n.short}${step?`<span class="sbadge">${step}</span>`:''}</div>`;
+    });
+    h += '</div></div>';
+  });
+  return h + '</div>';
+}
+
+/* ── PANEL WRAPPERS ── */
+function makeBox(dotColor, label, bodyHtml) {
+  return `<div class="preview-box">
+    <div class="preview-label"><div class="dot" style="background:${dotColor}"></div>${label}</div>
+    <div class="preview-body">${bodyHtml}</div>
+  </div>`;
+}
+const ctaRow = `<div class="cta-row"><span class="cta-hint">7 步路径 · 点击节点查看详情</span><div class="btns"><button class="btn-ghost">收藏路径</button><button class="btn-fill">→ 在学习页深入</button></div></div>`;
+
+// Style 1
+renderCluster('g1h', PATH_HOME, false);
+renderCluster('g1l', PATH_LEARN, true);
+renderStrip('strip1', PATH_LEARN);
+
+// Style 2
+document.getElementById('s2panels').innerHTML =
+  makeBox('#10B981','首页 · AI 生成路径结果', buildMatrix(PATH_HOME,false)+ctaRow) +
+  makeBox('#2e53fa','学习页 · 路径激活状态', `<div class="path-strip" id="strip2"></div>`+buildMatrix(PATH_LEARN,true));
+renderStrip('strip2', PATH_LEARN);
+
+// Style 3
+document.getElementById('s3panels').innerHTML =
+  makeBox('#10B981','首页 · AI 生成路径结果', buildTier(PATH_HOME,false)+ctaRow) +
+  makeBox('#2e53fa','学习页 · 路径激活状态', `<div class="path-strip" id="strip3"></div>`+buildTier(PATH_LEARN,true));
+renderStrip('strip3', PATH_LEARN);
+
+function show(id, btn) {
+  document.querySelectorAll('.style-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.style-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('s'+id).classList.add('on');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

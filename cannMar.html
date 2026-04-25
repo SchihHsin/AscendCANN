@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CANN 探索版</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // 图标组件（简化版）
+    const IconBase = ({ size = 24, children, className = '' }) => (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        {children}
+      </svg>
+    );
+
+    const Search = (props) => (<IconBase {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></IconBase>);
+    const Cpu = (props) => (<IconBase {...props}><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></IconBase>);
+    const Layers = (props) => (<IconBase {...props}><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></IconBase>);
+    const BookOpen = (props) => (<IconBase {...props}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></IconBase>);
+    const Download = (props) => (<IconBase {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></IconBase>);
+    const MessageSquare = (props) => (<IconBase {...props}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></IconBase>);
+    const ChevronRight = (props) => (<IconBase {...props}><path d="m9 18 6-6-6-6"/></IconBase>);
+    const BrainCircuit = (props) => (<IconBase {...props}><path d="M12 5a2 2 0 0 0-2 2c0 .74.75 1.53 1.2 2.07"/><path d="M9 22h6"/><path d="M14.8 13.5c.5.5 1.2 1 2.2 1"/><path d="M12 5a2 2 0 0 1 2 2c0 .74-.75 1.53-1.2 2.07"/><path d="M10 17l2 5"/><circle cx="12" cy="12" r="1"/><path d="M5.2 9.5C4.8 9 4.2 8.5 3.2 8.5"/><path d="M5 13.5c-.5.5-1 1-2 1"/><path d="M9 2c.5.5 1 1 1.5 2"/><path d="M14.5 4c.5-.5 1-1 1.5-2"/></IconBase>);
+    const Activity = (props) => (<IconBase {...props}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></IconBase>);
+    const Gauge = (props) => (<IconBase {...props}><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></IconBase>);
+    const Zap = (props) => (<IconBase {...props}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></IconBase>);
+    const ArrowRightLeft = (props) => (<IconBase {...props}><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></IconBase>);
+    const Terminal = (props) => (<IconBase {...props}><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></IconBase>);
+    const FileText = (props) => (<IconBase {...props}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></IconBase>);
+    const Code = (props) => (<IconBase {...props}><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></IconBase>);
+    const Layout = (props) => (<IconBase {...props}><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></IconBase>);
+    const Wrench = (props) => (<IconBase {...props}><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></IconBase>);
+    const SearchCode = (props) => (<IconBase {...props}><path d="m18 12 2 2"/><path d="m14 14 2 2"/><path d="M9 3a6 6 0 0 0 5 9.8"/><path d="M6.1 6.1a6 6 0 0 0 6.8 9.8"/><path d="M12.5 12.5l8 8"/></IconBase>);
+    const LineChart = (props) => (<IconBase {...props}><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></IconBase>);
+    const ShieldCheck = (props) => (<IconBase {...props}><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></IconBase>);
+    const Filter = (props) => (<IconBase {...props}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></IconBase>);
+    const Info = (props) => (<IconBase {...props}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></IconBase>);
+    const Database = (props) => (<IconBase {...props}><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></IconBase>);
+
+    const App = () => {
+      const [activeTab, setActiveTab] = useState('Home');
+      const [userRole, setUserRole] = useState('Intermediate');
+      const [showCopilot, setShowCopilot] = useState(false);
+      const [searchQuery, setSearchQuery] = useState('');
+
+      // 导航项
+      const navItems = [
+        { name: '主页', icon: <Layers size={18} />, key: 'Home' },
+        { name: '全链路开发', icon: <Cpu size={18} />, key: 'Develop' },
+        { name: '算子百科', icon: <BrainCircuit size={18} />, key: 'Ops' },
+        { name: '文档中心', icon: <BookOpen size={18} />, key: 'Docs' },
+        { name: '下载', icon: <Download size={18} />, key: 'Download' }
+      ];
+
+      const roleSpecificTools = {
+        Beginner: [
+          { name: "环境一键检查工具", icon: <ShieldCheck size={18} />, color: "bg-emerald-100 text-emerald-600", hover: "group-hover:bg-emerald-600" },
+          { name: "MindStudio 安装包", icon: <Download size={18} />, color: "bg-blue-100 text-blue-600", hover: "group-hover:bg-blue-600" },
+          { name: "Sample 样例库", icon: <Layout size={18} />, color: "bg-purple-100 text-purple-600", hover: "group-hover:bg-purple-600" }
+        ],
+        Intermediate: [
+          { name: "ATC 模型转换器", icon: <ArrowRightLeft size={18} />, color: "bg-indigo-100 text-indigo-600", hover: "group-hover:bg-indigo-600" },
+          { name: "AMCT 量化工具", icon: <Gauge size={18} />, color: "bg-amber-100 text-amber-600", hover: "group-hover:bg-amber-600" },
+          { name: "Profiling 性能分析", icon: <LineChart size={18} />, color: "bg-blue-100 text-blue-600", hover: "group-hover:bg-blue-600" }
+        ],
+        Expert: [
+          { name: "Ascend C 调试器", icon: <SearchCode size={18} />, color: "bg-red-100 text-red-600", hover: "group-hover:bg-red-600" },
+          { name: "算子比对工具 (Vector)", icon: <Wrench size={18} />, color: "bg-slate-800 text-white", hover: "group-hover:bg-blue-600" },
+          { name: "专家级日志采集 (msGPURec)", icon: <Terminal size={18} />, color: "bg-indigo-100 text-indigo-600", hover: "group-hover:bg-indigo-600" }
+        ]
+      };
+
+      const roleContent = {
+        Beginner: {
+          title: "新手入门：15分钟跑通第一个模型",
+          desc: "从环境配置到运行 Sample，我们为你准备了零跳转的交互式引导。",
+          tasks: ["环境一键安装", "PyTorch 迁移指南", "Hello World 算子"]
+        },
+        Intermediate: {
+          title: "进阶：CANN 技能掌握与优化",
+          desc: "掌握 Ascend C 编程，深入理解 ATC 转换逻辑，提升模型推理效率。",
+          tasks: ["Ascend C 实战", "模型量化 (AMCT)", "Profiling 调试"]
+        },
+        Expert: {
+          title: "专家：极致性能与底层调优",
+          desc: "深入硬件架构，解决复杂的算子融合、内存分配与多芯并行问题。",
+          tasks: ["自定义算子调优", "大模型推理加速", "HCCS 通信优化"]
+        }
+      };
+
+      const HomeView = () => (
+        <div className="space-y-12">
+          <section>
+            <div className="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
+              <div>
+                <h2 className="text-3xl font-bold text-slate-900 mb-2">欢迎回来，开发者</h2>
+                <p className="text-slate-500">基于您的 <strong>{userRole === 'Beginner' ? '新手' : userRole === 'Intermediate' ? '进阶' : '专家'}</strong> 身份，我们已优化了工具推荐</p>
+              </div>
+              <div className="flex p-1 bg-slate-200 rounded-xl">
+                {['Beginner', 'Intermediate', 'Expert'].map(role => (
+                  <button
+                    key={role}
+                    onClick={() => setUserRole(role)}
+                    className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+                      userRole === role ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                  >
+                    {role === 'Beginner' ? '新手' : role === 'Intermediate' ? '进阶' : '专家'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="md:col-span-2 bg-gradient-to-br from-slate-900 to-blue-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
+                <div className="relative z-10">
+                  <span className="inline-block px-3 py-1 bg-blue-500/20 backdrop-blur-sm border border-blue-400/30 rounded-full text-xs font-bold text-blue-300 mb-4">推荐任务</span>
+                  <h3 className="text-2xl font-bold mb-4">{roleContent[userRole].title}</h3>
+                  <p className="text-blue-100/80 mb-8 max-w-md">{roleContent[userRole].desc}</p>
+                  <div className="flex flex-wrap gap-3">
+                    {roleContent[userRole].tasks.map((task, i) => (
+                      <button key={i} className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl text-sm transition-colors border border-white/10">
+                        {task} <ChevronRight size={14} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="absolute right-[-10%] top-[-20%] w-64 h-64 bg-blue-500/20 blur-[100px] rounded-full"></div>
+              </div>
+              
+              <div className="bg-white border border-slate-200 rounded-3xl p-6 flex flex-col justify-between shadow-sm">
+                <div>
+                  <h4 className="font-bold text-slate-800 mb-2">针对身份推荐工具</h4>
+                  <div className="space-y-3">
+                    {roleSpecificTools[userRole].map((tool, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-blue-50 cursor-pointer transition-all group border border-transparent hover:border-blue-100">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 ${tool.color} rounded-lg ${tool.hover} group-hover:text-white transition-colors`}>
+                            {tool.icon}
+                          </div>
+                          <span className="text-sm font-medium text-slate-700 group-hover:text-blue-700">{tool.name}</span>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-300 group-hover:text-blue-400" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <button className="w-full mt-4 py-3 text-sm font-semibold text-blue-600 border border-blue-200 rounded-xl hover:bg-blue-50 transition-colors">
+                  查看全部工具
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-3"><Activity className="text-blue-600" /> 全生命周期算子流转看板</h2>
+              <p className="text-slate-500">追踪算子从框架定义到 NPU 硬件执行的全过程信息</p>
+            </div>
+            <div className="bg-white border border-slate-200 rounded-3xl shadow-xl overflow-hidden">
+              <div className="bg-slate-50 p-4 border-b border-slate-200 flex items-center justify-around overflow-x-auto gap-4">
+                <div className="flex items-center gap-3 opacity-100"><div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-100">1</div><div className="flex flex-col"><span className="text-xs font-bold uppercase text-blue-600">接入阶段</span><span className="text-sm font-bold">框架训练</span></div></div>
+                <div className="h-px bg-slate-300 flex-1 min-w-[20px]"></div>
+                <div className="flex items-center gap-3 opacity-60"><div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 font-bold">2</div><div className="flex flex-col"><span className="text-xs font-bold uppercase text-slate-500">编译阶段</span><span className="text-sm font-bold">ATC 转换</span></div></div>
+                <div className="h-px bg-slate-300 flex-1 min-w-[20px]"></div>
+                <div className="flex items-center gap-3 opacity-60"><div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 font-bold">3</div><div className="flex flex-col"><span className="text-xs font-bold uppercase text-slate-500">执行阶段</span><span className="text-sm font-bold">NPU 推理</span></div></div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-200 p-2">
+                <div className="p-6">
+                  <h5 className="text-sm font-bold text-slate-400 mb-4 flex items-center gap-2"><ArrowRightLeft size={16} /> 算子映射</h5>
+                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
+                    <div className="flex justify-between text-xs font-bold text-slate-500"><span>PyTorch</span><span>CANN</span></div>
+                    <div className="flex justify-between text-sm font-mono font-bold"><span>nn.Conv2d</span><span className="text-blue-600">Conv2D</span></div>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h5 className="text-sm font-bold text-slate-400 mb-4 flex items-center gap-2"><Gauge size={16} /> 资源规格</h5>
+                  <div className="space-y-4 text-sm font-medium text-slate-600">
+                    <div className="flex justify-between"><span>显存占用</span><span className="text-slate-900">420 MB</span></div>
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden"><div className="w-1/3 h-full bg-blue-500 rounded-full"></div></div>
+                  </div>
+                </div>
+                <div className="p-6 bg-slate-900 rounded-2xl m-2 text-slate-300 text-xs font-mono relative group">
+                  <div className="absolute top-2 right-2 opacity-50 group-hover:opacity-100 transition-opacity"><Terminal size={14}/></div>
+                  <p className="text-emerald-400"># 快速调用接口</p>
+                  <p className="mt-2 text-blue-300">import acl</p>
+                  <p>res = op.run(stream)</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      );
+
+      const OpsView = () => (
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* 侧边快捷过滤 - 强调百科的字典属性 */}
+            <aside className="w-full md:w-64 space-y-4">
+              <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
+                <h3 className="font-bold text-sm mb-4 flex items-center gap-2 text-slate-800"><Filter size={14}/> 规格筛选</h3>
+                <div className="space-y-6">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">硬件平台</label>
+                    <div className="space-y-2">
+                      {['Ascend 910B', 'Ascend 310P', 'Ascend 710'].map(h => (
+                        <label key={h} className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer hover:text-blue-600">
+                          <input type="checkbox" className="rounded text-blue-600 focus:ring-blue-500" /> {h}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block">算子精度</label>
+                    <div className="flex flex-wrap gap-2">
+                      {['FP16', 'FP32', 'INT8', 'BF16'].map(p => (
+                        <button key={p} className="px-2 py-1 bg-slate-100 hover:bg-blue-100 hover:text-blue-600 rounded text-[10px] font-bold transition-colors">{p}</button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-5 rounded-3xl text-white shadow-lg shadow-indigo-100">
+                <div className="flex items-center gap-2 mb-2"><Database size={16}/> <span className="font-bold text-sm">算子覆盖率</span></div>
+                <div className="text-2xl font-black italic">98.2%</div>
+                <p className="text-[10px] text-white/70 mt-1">已完美适配主流模型 Top 200 算子</p>
+              </div>
+            </aside>
+
+            {/* 算子列表主体 */}
+            <div className="flex-1 space-y-4">
+              <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-4 top-2.5 text-slate-400" size={16} />
+                  <input type="text" placeholder="输入算子名或关键词 (如: Convolution)..." className="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+                </div>
+                <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+                  <span>排序:</span>
+                  <select className="bg-transparent border-none font-bold text-slate-700 focus:ring-0 outline-none cursor-pointer">
+                    <option>首字母 A-Z</option>
+                    <option>调用频次</option>
+                    <option>更新时间</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+                <table className="w-full text-left">
+                  <thead className="bg-slate-50 text-slate-400 text-[10px] uppercase font-black tracking-widest border-b border-slate-100">
+                    <tr>
+                      <th className="px-6 py-4">算子 ID & 名称</th>
+                      <th className="px-6 py-4">计算内核</th>
+                      <th className="px-6 py-4">高性能规格</th>
+                      <th className="px-6 py-4">文档状态</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-sm">
+                    {[
+                      { id: '001', name: 'Add', type: 'ElementWise', kernel: 'Ascend C / ACL', specs: ['High Throughput', 'Multicore'], doc: 'V8.0 Updated' },
+                      { id: '024', name: 'Conv2D', type: 'Convolution', kernel: 'Cube Unit', specs: ['L2 Fusion', 'Winograd'], doc: 'Ready' },
+                      { id: '108', name: 'MatMul', type: 'Linear', kernel: 'Cube Unit / Vector', specs: ['Tiling Auto-opt'], doc: 'Ready' },
+                      { id: '256', name: 'Softmax', type: 'Activation', kernel: 'Vector Unit', specs: ['Low Latency'], doc: 'Beta' },
+                      { id: '312', name: 'FlashAttention', type: 'Attention', kernel: 'Ascend C', specs: ['Expert Only', 'Custom Tiling'], doc: 'V8.0 New' },
+                    ].map(op => (
+                      <tr key={op.name} className="hover:bg-blue-50/50 transition-colors cursor-pointer group border-b border-slate-50">
+                        <td className="px-6 py-4">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] text-slate-400 font-mono">#{op.id}</span>
+                            <span className="font-bold text-slate-800 group-hover:text-blue-600 transition-colors font-mono">{op.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-bold">{op.kernel}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 flex flex-wrap gap-1 mt-1">
+                          {op.specs.map(s => <span key={s} className="px-2 py-0.5 bg-blue-50 text-blue-500 rounded text-[10px] font-medium border border-blue-100">{s}</span>)}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-1.5 text-emerald-500 font-bold text-[10px]">
+                            <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
+                            {op.doc}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="flex justify-between items-center px-4">
+                <span className="text-xs text-slate-400 font-medium">共计 1,420 个算子记录</span>
+                <div className="flex gap-2">
+                   <button className="px-3 py-1 border border-slate-200 rounded-lg text-xs hover:bg-slate-50">上一页</button>
+                   <button className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-bold">下一页</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      const DevelopView = () => (
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2"><Code className="text-blue-600" /> 开发环境准备</h3>
+              <p className="text-sm text-slate-500 mb-6">快速配置昇腾开发环境，包含工具链、编译器及驱动。</p>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl group cursor-pointer hover:bg-blue-50 transition-colors">
+                  <div className="p-2 bg-blue-100 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors"><Terminal size={18}/></div>
+                  <div>
+                    <div className="font-bold text-sm">CANN 软件包安装</div>
+                    <div className="text-xs text-slate-400 mt-1">支持 Ubuntu/CentOS/KylinOS/OpenEuler</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl group cursor-pointer hover:bg-indigo-50 transition-colors">
+                  <div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors"><Layout size={18}/></div>
+                  <div>
+                    <div className="font-bold text-sm">MindStudio IDE</div>
+                    <div className="text-xs text-slate-400 mt-1">可视化开发、调试、调优一站式平台</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-slate-900 p-8 rounded-3xl text-white shadow-2xl relative overflow-hidden">
+              <div className="relative z-10">
+                <h3 className="text-xl font-bold mb-4">一键诊断脚本</h3>
+                <pre className="text-xs font-mono text-emerald-400 bg-black/30 p-4 rounded-xl mb-4 border border-white/5">
+                  {`# 运行环境检查\n./ascend_check.sh --mode=full\n\n# 结果预期:\n# NPU 910B detected.\n# Driver: 23.0.rc3 OK\n# Firmware: 23.0.rc3 OK`}
+                </pre>
+                <button className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-900/50">
+                  <Download size={16}/> 下载诊断工具包
+                </button>
+              </div>
+              <div className="absolute -right-8 -bottom-8 opacity-10">
+                <Terminal size={160} />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      const DocsView = () => (
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <aside className="lg:col-span-1 space-y-4">
+            <h3 className="font-bold text-slate-900 px-4">文档中心</h3>
+            <p className="px-4 text-[10px] text-slate-400 leading-relaxed uppercase font-bold tracking-widest italic border-l-2 border-slate-200 ml-4">
+              提示：查阅具体算子参数请前往"算子百科"
+            </p>
+            <div className="space-y-1">
+              {['快速入门', 'CANN 架构原理', '模型转换指南', '应用开发 (ACL)', '性能调优指南', 'Ascend C 编程指南'].map(item => (
+                <button key={item} className="w-full text-left px-4 py-2.5 text-sm rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all font-medium text-slate-600 flex items-center justify-between group">
+                  {item}
+                  <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all"/>
+                </button>
+              ))}
+            </div>
+          </aside>
+          <div className="lg:col-span-3 space-y-6">
+            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-5">
+                 <BookOpen size={120} />
+              </div>
+              <h2 className="text-2xl font-bold mb-4 relative z-10 text-slate-800">CANN 8.0 核心文档</h2>
+              <div className="relative mb-8 z-10">
+                <Search className="absolute left-4 top-3.5 text-slate-400" size={18} />
+                <input 
+                  type="text" 
+                  placeholder="搜索文档教程、故障排除..." 
+                  className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-inner" 
+                />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
+                <div className="p-6 border border-slate-100 rounded-2xl hover:shadow-lg transition-all cursor-pointer group bg-white/50 backdrop-blur-sm">
+                  <div className="flex items-center gap-3 mb-3">
+                    <FileText className="text-blue-500 group-hover:scale-110 transition-transform" size={20} />
+                    <span className="font-bold text-slate-800 text-sm">快速起步 (Getting Started)</span>
+                  </div>
+                  <div className="text-xs text-slate-500 leading-relaxed">新手环境搭建到 Demo 跑通全流程。</div>
+                </div>
+                <div className="p-6 border border-slate-100 rounded-2xl hover:shadow-lg transition-all cursor-pointer group bg-white/50 backdrop-blur-sm">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Info className="text-amber-500 group-hover:scale-110 transition-transform" size={20} />
+                    <span className="font-bold text-slate-800 text-sm">CANN 故障排除指南</span>
+                  </div>
+                  <div className="text-xs text-slate-500 leading-relaxed">收集了 90% 的常见报错及解决方案。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderContent = () => {
+        switch(activeTab) {
+          case 'Home': return <HomeView />;
+          case 'Ops': return <OpsView />;
+          case 'Develop': return <DevelopView />;
+          case 'Docs': return <DocsView />;
+          default: return (
+            <div className="flex flex-col items-center justify-center py-24 text-slate-400">
+              <Zap size={48} className="mb-4 opacity-20" />
+              <p className="text-lg font-medium">该模块正在接入端到端数据...</p>
+              <button onClick={() => setActiveTab('Home')} className="mt-4 text-blue-600 text-sm font-bold hover:underline">返回首页</button>
+            </div>
+          );
+        }
+      };
+
+      return (
+        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-700">
+          <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm">
+            <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2 cursor-pointer group" onClick={() => setActiveTab('Home')}>
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold group-hover:rotate-12 transition-transform">C</div>
+                <span className="text-xl font-bold tracking-tight text-slate-800">CANN <span className="text-blue-600 text-sm align-top">探索版</span></span>
+              </div>
+              
+              <div className="hidden md:flex items-center gap-1">
+                {navItems.map(item => (
+                  <button
+                    key={item.key}
+                    onClick={() => setActiveTab(item.key)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-medium ${
+                      activeTab === item.key ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    {item.icon}
+                    {item.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                  <Search size={16} />
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="快速搜索..."
+                  className="bg-slate-100 border-none rounded-full pl-10 pr-4 py-2 text-sm w-48 lg:w-64 focus:ring-2 focus:ring-blue-500 transition-all outline-none shadow-inner"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <button 
+                onClick={() => setShowCopilot(!showCopilot)}
+                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-blue-200 transition-all active:scale-95"
+              >
+                <MessageSquare size={16} />
+                AI Copilot
+              </button>
+            </div>
+          </nav>
+
+          <main className="max-w-7xl mx-auto px-6 py-8 min-h-[70vh]">
+            {renderContent()}
+          </main>
+
+          <footer className="mt-20 border-t border-slate-200 bg-white py-16 px-6">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 text-sm">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-slate-800 rounded flex items-center justify-center text-white font-bold text-xs">C</div>
+                  <span className="text-lg font-bold text-slate-800">CANN 探索版</span>
+                </div>
+                <p className="text-slate-500 leading-relaxed">
+                  昇腾计算架构 (CANN) 致力于通过极致算力和极简开发，赋能每一位 AI 开发者。
+                </p>
+              </div>
+              <div className="md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8">
+                <div>
+                  <h5 className="font-bold mb-4 text-slate-900">关于 CANN</h5>
+                  <ul className="space-y-2 text-slate-500">
+                    <li><a href="#" className="hover:text-blue-600 transition-colors">技术架构 (Ascend C)</a></li>
+                    <li><a href="#" className="hover:text-blue-600 transition-colors">硬件路线图</a></li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 className="font-bold mb-4 text-slate-900">开发者资源</h5>
+                  <ul className="space-y-2 text-slate-500">
+                    <li><a href="#" className="hover:text-blue-600 transition-colors">Ascend Hub 镜像</a></li>
+                    <li><a href="#" className="hover:text-blue-600 transition-colors">Gitee 核心库</a></li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 className="font-bold mb-4 text-slate-900">技术支持</h5>
+                  <ul className="space-y-2 text-slate-500">
+                    <li><a href="#" className="hover:text-blue-600 transition-colors">昇腾论坛</a></li>
+                    <li><a href="#" className="hover:text-blue-600 transition-colors">建议与反馈</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-100 text-center text-xs text-slate-400">
+              © 2024 华为计算架构 CANN 探索版项目组 | 体验为先，赋能开发
+            </div>
+          </footer>
+
+          {/* AI Copilot */}
+          <div className={`fixed bottom-6 right-6 w-96 max-h-[600px] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col transition-all duration-300 transform origin-bottom-right z-[100] ${
+            showCopilot ? 'scale-100 opacity-100 translate-y-0' : 'scale-90 opacity-0 translate-y-10 pointer-events-none'
+          }`}>
+            <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-3xl text-white flex justify-between items-center shadow-lg">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-md"><BrainCircuit size={18} /></div>
+                <span className="font-bold">CANN AI Copilot</span>
+              </div>
+              <button onClick={() => setShowCopilot(false)} className="hover:bg-white/10 p-1 rounded-lg transition-colors text-white/80 hover:text-white">✕</button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[350px] bg-slate-50/50">
+              <div className="flex items-start gap-2">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0 text-xs font-bold shadow-sm">AI</div>
+                <div className="bg-white p-3 rounded-2xl rounded-tl-none text-sm shadow-sm border border-slate-100">
+                  你好！正在查阅 <span className="font-bold italic">{activeTab === 'Ops' ? '算子百科' : activeTab === 'Docs' ? '文档中心' : '主页'}</span>。
+                  <div className="mt-2 p-2 bg-blue-50 rounded-lg text-xs text-blue-700 font-medium leading-relaxed">
+                    {activeTab === 'Ops' ? '需要我帮你比对不同硬件下的算子性能差异吗？' : '需要我帮你快速定位环境安装的常见报错吗？'}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="p-4 bg-white border-t border-slate-100 rounded-b-3xl">
+              <div className="relative">
+                <input 
+                  type="text" 
+                  placeholder="询问算子用法、报错诊断..." 
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm pr-12 focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
+                />
+                <button className="absolute right-2 top-2 bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-700 transition-colors">
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // 渲染应用
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
