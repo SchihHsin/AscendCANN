@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>昇腾社区 · 用户旅程对比</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --font: 'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  --bg: #fff;
+  --white: #fff;
+  --black: #0A0A0F;
+  --g1: #1C1C28; --g2: #44444F; --g3: #717180; --g4: #A3A3B0; --g5: #D8D8E0; --g6: #EEEFF4;
+  --lw: 80px;   /* row label width */
+  --cw: 210px;  /* column width */
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); padding:44px 52px 72px; min-width:1400px; color:var(--black); }
+
+/* ── page title ── */
+.map-section { margin-bottom: 52px; }
+.section-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 14px 5px 8px; border-radius: 100px;
+  font-size: 11px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.badge-before { background: #F5F0E8; color: #78614A; border: 1.5px solid #E8DDD0; }
+.badge-after  { background: #0A0A0F; color: #fff; border: 1.5px solid #0A0A0F; }
+.badge-dot { width:7px; height:7px; border-radius:50%; }
+.section-title {
+  font-size: 22px; font-weight: 800; letter-spacing:-.4px; margin-bottom: 4px;
+}
+.section-desc { font-size:13px; color:var(--g3); margin-bottom: 24px; }
+
+/* ── journey grid ── */
+.journey {
+  display: grid;
+  grid-template-columns: var(--lw) repeat(5, var(--cw));
+  gap: 0;
+}
+
+/* ── row label cell ── */
+.rl {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 14px 0 0; text-align: right;
+}
+.rl-name { font-size:11px; font-weight:700; color:var(--g2); line-height:1.4; }
+.rl-en   { font-size:9px; font-weight:400; color:var(--g4); text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+
+/* ── phase header ── */
+.ph-wrap { padding: 0 7px 0 0; display: flex; flex-direction: column; }
+.ph { flex: 1;
+  border-radius: 12px 12px 0 0;
+  padding: 16px 17px 14px;
+  position: relative; overflow: hidden;
+}
+.ph::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+}
+.ph-num  { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:4px; }
+.ph-name { font-size:14px; font-weight:800; letter-spacing:-.2px; line-height:1.3; }
+.ph-desc { font-size:10.5px; line-height:1.5; margin-top:4px; }
+.ph-time { font-size:9.5px; font-weight:700; margin-top:8px; display:inline-flex; align-items:center; gap:4px;
+  padding:2px 8px; border-radius:100px; }
+
+/* BEFORE phase headers — warm muted */
+.b .ph { background: #2D2926; }
+.b .ph-num  { color:rgba(255,255,255,.28); }
+.b .ph-name { color: #F5F0E8; }
+.b .ph-desc { color: rgba(255,255,255,.42); }
+.b .ph-time { background: rgba(255,255,255,.08); color: rgba(255,255,255,.5); }
+.b.p1 .ph::after { background:#C2A46A; }
+.b.p2 .ph::after { background:#A07850; }
+.b.p3 .ph::after { background:#8A6E58; }
+.b.p4 .ph::after { background:#7A6050; }
+.b.p5 .ph::after { background:#6A5448; }
+
+/* AFTER phase headers — crisp dark with color accents */
+.a .ph { background: #0A0A0F; }
+.a .ph-num  { color:rgba(255,255,255,.28); }
+.a .ph-name { color: #fff; }
+.a .ph-desc { color: rgba(255,255,255,.45); }
+.a .ph-time { background: rgba(255,255,255,.08); color: rgba(255,255,255,.55); }
+.a.p1 .ph::after { background:#EF4444; }
+.a.p2 .ph::after { background:#F59E0B; }
+.a.p3 .ph::after { background:#3B82F6; }
+.a.p4 .ph::after { background:#10B981; }
+.a.p5 .ph::after { background:#8B5CF6; }
+
+/* ── data cell ── */
+.dc-wrap { padding: 0 7px 0 0; display: flex; flex-direction: column; }
+.dc { flex: 1;
+  background: var(--white);
+  border-left: 1px solid var(--g6); border-right: 1px solid var(--g6); border-bottom: 1px solid var(--g6);
+  padding: 13px 14px;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.row-last .dc, .row-pain .dc, .row-key .dc { border-radius:0 0 12px 12px; border-bottom:1px solid var(--g5); }
+/* row tints */
+.row-flow  .dc { background: #fff; }
+.row-emo   .dc { background: #FAFBFF; }
+.row-pain  .dc { background: #FFFCF5; }
+.row-key   .dc { background: #F8F8FF; }
+
+/* BEFORE row tints (warmer) */
+.before .row-flow  .dc { background: #FDFCFA; }
+.before .row-emo   .dc { background: #FAF8F5; }
+.before .row-pain  .dc { background: #FDF9F2; }
+.before .row-key   .dc { background: #F8F5F0; }
+
+/* ── flow cell content ── */
+.row-flow .dc { align-items: stretch; }
+.flow-screen {
+  border-radius: 7px; overflow: hidden;
+  border: 1px solid var(--g5); background: #F8F9FB; flex-shrink:0;
+  height: 112px; display: flex; flex-direction: column;
+}
+.fs-bar {
+  display:flex; align-items:center; gap:3px;
+  padding:4px 7px; background:#ECEEF2; border-bottom:1px solid var(--g5);
+  flex-shrink: 0;
+}
+.fs-dot { width:5px; height:5px; border-radius:50%; }
+.fs-body { padding:7px 8px; flex:1; overflow:hidden; }
+.flow-label { font-size:11px; font-weight:600; color:var(--g1); line-height:1.5; }
+.flow-sub   { font-size:10.5px; color:var(--g4); line-height:1.5; }
+
+/* ── emotion CURVE row (spans all 5 cols) ── */
+.emo-curve-wrap {
+  grid-column: 2 / 7;
+  margin-right: 7px;
+  position: relative;
+  height: 96px;
+}
+/* 用多层渐变模拟 5 个独立格子：左右边框 + 底边框 + 7px 列间距（同 dc-wrap） */
+.before-curve {
+  background-image:
+    repeating-linear-gradient(90deg,
+      var(--g6) 0, var(--g6) calc(var(--cw) - 7px),
+      transparent calc(var(--cw) - 7px), transparent var(--cw)),
+    repeating-linear-gradient(90deg,
+      var(--g6) 0, var(--g6) 1px,
+      #F4F1EE 1px, #F4F1EE calc(var(--cw) - 8px),
+      var(--g6) calc(var(--cw) - 8px), var(--g6) calc(var(--cw) - 7px),
+      var(--bg) calc(var(--cw) - 7px), var(--bg) var(--cw));
+  background-size: 100% 1px, 100% 100%;
+  background-position: left bottom, left top;
+  background-repeat: no-repeat, no-repeat;
+}
+.after-curve {
+  background-image:
+    repeating-linear-gradient(90deg,
+      var(--g6) 0, var(--g6) calc(var(--cw) - 7px),
+      transparent calc(var(--cw) - 7px), transparent var(--cw)),
+    repeating-linear-gradient(90deg,
+      var(--g6) 0, var(--g6) 1px,
+      #F1F2F8 1px, #F1F2F8 calc(var(--cw) - 8px),
+      var(--g6) calc(var(--cw) - 8px), var(--g6) calc(var(--cw) - 7px),
+      var(--bg) calc(var(--cw) - 7px), var(--bg) var(--cw));
+  background-size: 100% 1px, 100% 100%;
+  background-position: left bottom, left top;
+  background-repeat: no-repeat, no-repeat;
+}
+/* hide old per-cell emo styles */
+.emo-row, .emo-icon, .emo-bar-wrap, .emo-bar, .emo-fill, .emo-desc, .emo-label { display:none; }
+
+/* ── pain items ── */
+.pain-item { display:flex; gap:7px; align-items:flex-start; }
+.pi-icon {
+  width:20px; height:20px; border-radius:5px; flex-shrink:0; margin-top:1px;
+  background:#FEF3C7; display:flex; align-items:center; justify-content:center;
+}
+.pi-icon svg { width:11px; height:11px; stroke:#92400E; }
+.pi-text { font-size:10.5px; color:var(--g2); line-height:1.55; }
+
+/* ── key moment items (after only) ── */
+.key-item { display:flex; gap:6px; align-items:flex-start; }
+.ki-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+.ki-text { font-size:10.5px; color:var(--g1); font-weight:400; line-height:1.55; }
+.ki-tag {
+  display:inline-block; font-size:9px; font-weight:700;
+  padding:1px 6px; border-radius:100px; margin-left:3px; vertical-align:middle;
+}
+
+/* ── lost item (before only) ── */
+.lost-item { display:flex; gap:6px; align-items:flex-start; }
+.li-icon { font-size:12px; flex-shrink:0; margin-top:1px; color:#A8A29E; }
+.li-text { font-size:10.5px; color:#78716C; line-height:1.55; }
+
+/* ── mini UI helpers ── */
+.mini { display:flex; flex-direction:column; gap:2px; }
+.mb  { height:4px; border-radius:2px; background:#E5E7EB; }
+.mc  { height:18px; border-radius:4px; background:#F3F4F6; border:1px solid #E5E7EB; }
+.mr  { display:flex; gap:2px; }
+.mbtn { height:12px; border-radius:4px; background:#0A0A0F; }
+.mtag { height:11px; border-radius:20px; background:#F3F4F6; border:1px solid #ddd; }
+/* dark mini */
+.dk { background:#0F172A; padding:5px 6px; border-radius:4px; display:flex; flex-direction:column; gap:2px; }
+.db { height:3px; border-radius:2px; background:rgba(255,255,255,.12); }
+.dcl { height:14px; border-radius:3px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); }
+.dout { height:6px; border-radius:3px; background:rgba(134,239,172,.28); }
+
+/* ── after design point color override ── */
+.after .ki-dot { background: #9CA3AF !important; }
+.after .ki-tag {
+  background:
+    linear-gradient(135deg, #4361EE, #7C3AED),
+    linear-gradient(135deg, rgba(67,97,238,.13), rgba(124,58,237,.13)) !important;
+  -webkit-background-clip: text, padding-box !important;
+  background-clip: text, padding-box !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+/* ── divider between maps ── */
+.map-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 48px 0 44px; opacity: .5;
+}
+.map-divider::before, .map-divider::after {
+  content:''; flex:1; height:1px; background: var(--g5);
+}
+.map-divider span { font-size:11px; color:var(--g4); font-weight:600; white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════
+     MAP 1 — BEFORE (传统旅程，无 AI)
+════════════════════════════════════════════════════ -->
+<div class="map-section before">
+
+  <div class="section-badge badge-before">
+    <div class="badge-dot" style="background:#C2A46A"></div>
+    传统旅程 · 无 AI 辅助
+  </div>
+  <div class="section-title">开发者在传统文档社区的摸索路径</div>
+  <div class="section-desc">以「关键词搜索 + 文档翻查 + 本地调试」为核心动作，充满被动等待与反复试错</div>
+
+  <div class="journey">
+
+    <!-- Phase headers -->
+    <div></div>
+    <div class="ph-wrap b p1"><div class="ph">
+      <div class="ph-num">01</div>
+      <div class="ph-name">触发需求</div>
+      <div class="ph-desc">遇到任务或问题，想找到昇腾开发方法</div>
+      <div class="ph-time">⏱ 0–10 min</div>
+    </div></div>
+    <div class="ph-wrap b p2"><div class="ph">
+      <div class="ph-num">02</div>
+      <div class="ph-name">搜索入口</div>
+      <div class="ph-desc">用百度 / 搜索引擎找「CANN 教程」</div>
+      <div class="ph-time">⏱ 10–30 min</div>
+    </div></div>
+    <div class="ph-wrap b p3"><div class="ph">
+      <div class="ph-num">03</div>
+      <div class="ph-name">文档迷失</div>
+      <div class="ph-desc">进入官网，在多级文档目录中反复跳转</div>
+      <div class="ph-time">⏱ 30 min–2 hr</div>
+    </div></div>
+    <div class="ph-wrap b p4"><div class="ph">
+      <div class="ph-num">04</div>
+      <div class="ph-name">本地死磕</div>
+      <div class="ph-desc">本地配置驱动 / 安装 CANN，出错靠蒙</div>
+      <div class="ph-time">⏱ 2–8 hr</div>
+    </div></div>
+    <div class="ph-wrap b p5"><div class="ph">
+      <div class="ph-num">05</div>
+      <div class="ph-name">经验难留</div>
+      <div class="ph-desc">问题暂时解决，但经验留不下来，下次还得重来</div>
+      <div class="ph-time">⏱ 不定</div>
+    </div></div>
+
+    <!-- ROW: 操作流程 -->
+    <div class="rl row-flow"><div class="rl-name">操作流程</div><div class="rl-en">Flow</div></div>
+
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body mini">
+          <div class="mb" style="width:55%;height:7px;background:#ccc"></div>
+          <div class="mb" style="width:90%"></div>
+          <div class="mb" style="width:80%"></div>
+          <div class="mb" style="width:70%"></div>
+          <div class="mb" style="width:85%"></div>
+        </div>
+      </div>
+      <div class="flow-label">遇到昇腾开发任务，需要找相关资料</div>
+      <div class="flow-sub">任务要求用 NPU 跑推理，但不知从哪里入手</div>
+    </div></div>
+
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body mini">
+          <div class="mr" style="gap:5px">
+            <div style="width:38px;display:flex;flex-direction:column;gap:2px">
+              <div class="mb" style="width:90%;height:3px;background:#bbb"></div>
+              <div class="mb" style="width:80%;height:3px"></div>
+              <div class="mb" style="width:100%;height:3px;background:#888"></div>
+              <div class="mb" style="width:90%;height:3px"></div>
+              <div class="mb" style="width:85%;height:3px"></div>
+              <div class="mb" style="width:70%;height:3px"></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+              <div class="mb" style="height:6px;width:70%;background:#bbb"></div>
+              <div class="mb" style="width:100%"></div>
+              <div class="mb" style="width:90%"></div>
+              <div class="mb" style="width:80%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-label">进入官网文档页，开始翻目录</div>
+      <div class="flow-sub">左侧有几十个折叠目录项，不知从哪里开始</div>
+    </div></div>
+
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body mini">
+          <div class="mb" style="height:5px;background:#bbb;width:60%"></div>
+          <div class="mb" style="width:95%"></div>
+          <div class="mb" style="width:85%"></div>
+          <div style="background:#0F172A;border-radius:3px;padding:4px;margin-top:2px">
+            <div class="db" style="width:75%"></div>
+            <div class="db" style="width:60%;margin-top:2px"></div>
+          </div>
+          <div class="mb" style="width:90%"></div>
+          <div class="mb" style="width:70%"></div>
+        </div>
+      </div>
+      <div class="flow-label">找到代码示例，在多个标签页间反复比对</div>
+      <div class="flow-sub">示例代码缺少上下文，不知道哪步是关键</div>
+    </div></div>
+
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body mini">
+          <div style="background:#1E1E1E;border-radius:3px;padding:4px 5px">
+            <div style="height:3px;background:rgba(255,255,255,.2);border-radius:2px;width:90%"></div>
+            <div style="height:3px;background:#EF4444;border-radius:2px;width:60%;margin-top:3px"></div>
+            <div style="height:3px;background:#EF4444;border-radius:2px;width:75%;margin-top:2px"></div>
+            <div style="height:3px;background:rgba(255,255,255,.1);border-radius:2px;width:80%;margin-top:2px"></div>
+          </div>
+          <div class="mb" style="width:95%;margin-top:3px"></div>
+          <div class="mb" style="width:75%"></div>
+        </div>
+      </div>
+      <div class="flow-label">本地安装驱动 / CANN，报错不断</div>
+      <div class="flow-sub">遇到版本不兼容、驱动报错，只能反复 Google</div>
+    </div></div>
+
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body mini">
+          <div class="mb" style="height:5px;background:#bbb;width:55%"></div>
+          <div class="mb" style="width:90%"></div>
+          <div class="mb" style="width:70%"></div>
+          <div class="mr" style="gap:3px;margin-top:4px">
+            <div style="flex:1;height:14px;border-radius:4px;background:#F3F4F6;border:1px solid #ddd"></div>
+            <div style="flex:1;height:14px;border-radius:4px;background:#F3F4F6;border:1px solid #ddd"></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-label">勉强跑通，但解法东拼西凑留不下来</div>
+      <div class="flow-sub">缺少「下一步做什么」的引导，下次从头来</div>
+    </div></div>
+
+    <!-- ROW: 情绪曲线 (before) -->
+    <div class="rl row-emo"><div class="rl-name">情绪</div><div class="rl-en">Emotion</div></div>
+    <div class="emo-curve-wrap row-emo before-curve">
+      <svg viewBox="0 0 1050 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%">
+        <defs>
+          <linearGradient id="grad-before" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#F59E0B" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#EF4444" stop-opacity="0.15"/>
+          </linearGradient>
+          <!-- fill area under curve -->
+          <linearGradient id="fill-before" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#EF4444" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#EF4444" stop-opacity="0.01"/>
+          </linearGradient>
+        </defs>
+        <!-- grid lines -->
+        <line x1="0" y1="22" x2="1050" y2="22" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="0" y1="45" x2="1050" y2="45" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="0" y1="68" x2="1050" y2="68" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="4,4"/>
+        <!-- y-axis labels -->
+        <text x="4" y="19" font-size="7" fill="#C0BDB8">积极</text>
+        <text x="4" y="69" font-size="7" fill="#C0BDB8">消极</text>
+        <!-- fill under curve -->
+        <path d="M105,36 C300,42 370,76 525,78 C680,78 820,64 945,58 L945,88 L105,88 Z" fill="url(#fill-before)"/>
+        <!-- main curve: starts medium, drops progressively -->
+        <path d="M105,36 C300,42 370,76 525,78 C680,78 820,64 945,58"
+              fill="none" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+        <!-- stage dots: x positions at col centers (105, 315, 525, 735, 945) adjusted for 5 cols each ~210px -->
+        <circle cx="105" cy="36" r="5" fill="#F59E0B" stroke="white" stroke-width="2"/>
+        <circle cx="315" cy="60" r="5" fill="#F97316" stroke="white" stroke-width="2"/>
+        <circle cx="525" cy="76" r="5" fill="#EF4444" stroke="white" stroke-width="2"/>
+        <circle cx="735" cy="68" r="5" fill="#DC2626" stroke="white" stroke-width="2"/>
+        <circle cx="945" cy="58" r="5" fill="#A8A29E" stroke="white" stroke-width="2"/>
+        <!-- emoji centered on dots -->
+        <text x="105" y="41" font-size="13" text-anchor="middle">🤔</text>
+        <text x="315" y="65" font-size="13" text-anchor="middle">😵</text>
+        <text x="525" y="81" font-size="13" text-anchor="middle">😤</text>
+        <text x="735" y="73" font-size="13" text-anchor="middle">😩</text>
+        <text x="945" y="63" font-size="13" text-anchor="middle">😐</text>
+        <!-- labels below dots -->
+        <text x="105" y="88" font-size="8.5" font-weight="600" fill="#92400E" text-anchor="middle">迷茫</text>
+        <text x="315" y="88" font-size="8.5" font-weight="600" fill="#B45309" text-anchor="middle">信息过载</text>
+        <text x="525" y="88" font-size="8.5" font-weight="600" fill="#B91C1C" text-anchor="middle">焦虑</text>
+        <text x="735" y="88" font-size="8.5" font-weight="600" fill="#991B1B" text-anchor="middle">挫败</text>
+        <text x="945" y="88" font-size="8.5" font-weight="600" fill="#78716C" text-anchor="middle">疲惫·无沉淀</text>
+      </svg>
+    </div>
+
+    <!-- ROW: 痛点 -->
+    <div class="rl row-pain"><div class="rl-name">核心痛点</div><div class="rl-en">Pain Points</div></div>
+
+    <div class="dc-wrap row-pain"><div class="dc">
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="pi-text">搜索结果质量参差，<strong>版本混乱</strong>，无法判断哪个适用</div></div>
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="pi-text"><strong>官网入口不明显</strong>，不知道从文档中心还是开发者社区开始</div></div>
+    </div></div>
+
+    <div class="dc-wrap row-pain"><div class="dc">
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="pi-text"><strong>文档目录层级过深</strong>，看不到整体结构全貌</div></div>
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><div class="pi-text"><strong>学习路径割裂</strong>，不知道「读完这篇下一步读哪篇」</div></div>
+    </div></div>
+
+    <div class="dc-wrap row-pain"><div class="dc">
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="pi-text">代码示例缺少完整上下文，<strong>无法直接复用</strong></div></div>
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg></div><div class="pi-text">遇到问题只能再次搜索，<strong>阅读节奏被频繁打断</strong></div></div>
+    </div></div>
+
+    <div class="dc-wrap row-pain"><div class="dc">
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div><div class="pi-text">本地配置昇腾环境<strong>耗时 2–8 小时</strong>，驱动/CANN 版本配对复杂</div></div>
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="pi-text">报错信息晦涩，只能逐字 Google 错误码，<strong>无任何引导</strong></div></div>
+    </div></div>
+
+    <div class="dc-wrap row-pain row-last"><div class="dc">
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="pi-text">没有个人工作区，下次回来需要从头检索，<strong>上次的思路和代码全部丢失</strong></div></div>
+      <div class="pain-item"><div class="pi-icon"><svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg></div><div class="pi-text">「跑通了」但不知道为什么跑通，也不知道下一步该学什么，<strong>进阶路径完全空白</strong></div></div>
+    </div></div>
+
+  </div><!-- /journey before -->
+</div><!-- /map-section before -->
+
+
+<!-- divider -->
+<div class="map-divider"><span>▼ &nbsp;改造后：有 AI 能力的新旅程</span></div>
+
+
+<!-- ════════════════════════════════════════════════════
+     MAP 2 — AFTER (新版旅程，有 AI)
+════════════════════════════════════════════════════ -->
+<div class="map-section after">
+
+  <div class="section-badge badge-after">
+    <div class="badge-dot" style="background:#10B981"></div>
+    新版旅程 · AI 驱动
+  </div>
+  <div class="section-title">开发者在新版昇腾社区的主动引导路径</div>
+  <div class="section-desc">以「AI 分流 + 结构化路径 + 在线实验」为核心，从被动摸索转变为主动推进</div>
+
+  <div class="journey">
+
+    <!-- Phase headers -->
+    <div></div>
+    <div class="ph-wrap a p1"><div class="ph">
+      <div class="ph-num">01</div>
+      <div class="ph-name">AI 精准分流</div>
+      <div class="ph-desc">说出需求，系统自动定向，无需关键词</div>
+      <div class="ph-time">⏱ 0–3 min</div>
+    </div></div>
+    <div class="ph-wrap a p2"><div class="ph">
+      <div class="ph-num">02</div>
+      <div class="ph-name">生成学习路径</div>
+      <div class="ph-desc">AI 按难度分段规划，节点直链真实课程</div>
+      <div class="ph-time">⏱ 3–10 min</div>
+    </div></div>
+    <div class="ph-wrap a p3"><div class="ph">
+      <div class="ph-num">03</div>
+      <div class="ph-name">文档智能阅读</div>
+      <div class="ph-desc">阅读 API 文档，侧边栏 AI 随时解惑</div>
+      <div class="ph-time">⏱ 10–30 min</div>
+    </div></div>
+    <div class="ph-wrap a p4"><div class="ph">
+      <div class="ph-num">04</div>
+      <div class="ph-name">在线实验</div>
+      <div class="ph-desc">HiDevLab Notebook 真机运行，零配置</div>
+      <div class="ph-time">⏱ 30–90 min</div>
+    </div></div>
+    <div class="ph-wrap a p5"><div class="ph">
+      <div class="ph-num">05</div>
+      <div class="ph-name">沉淀复用</div>
+      <div class="ph-desc">收藏路径，保存 Notebook，持续深入</div>
+      <div class="ph-time">⏱ 持续</div>
+    </div></div>
+
+    <!-- ROW: 操作流程 -->
+    <div class="rl row-flow"><div class="rl-name">操作流程</div><div class="rl-en">Flow</div></div>
+
+    <!-- Col 1: AI 精准分流 -->
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body mini">
+          <div style="background:#F1F4F9;border-radius:5px;padding:5px;display:flex;flex-direction:column;gap:3px">
+            <div class="mb" style="height:6px;width:40%;background:#0A0A0F"></div>
+            <div class="mr" style="gap:2px">
+              <div style="flex:1;height:26px;border-radius:7px;background:#0A0A0F;border:1.5px solid #0A0A0F;display:flex;align-items:center;padding:3px 4px;gap:3px">
+                <div style="width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,.15)"></div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:1.5px"><div class="mb" style="height:3.5px;background:white;width:80%"></div><div class="mb" style="height:2px;background:rgba(255,255,255,.4);width:70%"></div></div>
+              </div>
+              <div style="flex:1;height:26px;border-radius:7px;background:white;border:1.5px solid #ddd;display:flex;align-items:center;padding:3px 4px;gap:3px">
+                <div style="width:12px;height:12px;border-radius:3px;background:#f0f0f0"></div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:1.5px"><div class="mb" style="height:3.5px;background:#555;width:80%"></div><div class="mb" style="width:70%"></div></div>
+              </div>
+              <div style="flex:1;height:26px;border-radius:7px;background:white;border:1.5px solid #ddd;display:flex;align-items:center;padding:3px 4px;gap:3px">
+                <div style="width:12px;height:12px;border-radius:3px;background:#f0f0f0"></div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:1.5px"><div class="mb" style="height:3.5px;background:#555;width:80%"></div><div class="mb" style="width:70%"></div></div>
+              </div>
+            </div>
+            <!-- expanded floor preview -->
+            <div style="border:1px solid #ddd;border-radius:4px;padding:4px;background:white;display:flex;flex-direction:column;gap:2px">
+              <div class="mr" style="gap:2px">
+                <div style="flex:1;height:10px;background:#F1F4F9;border-radius:3px;border:1px solid #ddd"></div>
+                <div style="width:20px;height:10px;background:#0A0A0F;border-radius:3px"></div>
+              </div>
+              <div class="mr" style="gap:2px">
+                <div class="mtag" style="width:30px"></div><div class="mtag" style="width:36px"></div><div class="mtag" style="width:28px"></div>
+              </div>
+              <div class="mr" style="gap:2px">
+                <div style="flex:1;height:8px;background:#0A0A0F;border-radius:3px"></div>
+                <div style="flex:1;height:8px;background:#F1F4F9;border-radius:3px;border:1px solid #ddd"></div>
+                <div style="flex:1;height:8px;background:#F1F4F9;border-radius:3px;border:1px solid #ddd"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-label">点击模式卡片，首页内联展开对应楼层</div>
+      <div class="flow-sub">猜你想问 chips 一键触发 AI，30 秒内完成意图定位，无需输入关键词</div>
+    </div></div>
+
+    <!-- Col 2: 学习路径 Timeline -->
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body" style="padding:6px 7px">
+          <div style="background:#F1F4F9;border-radius:5px;padding:5px;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:4px;margin-bottom:1px">
+              <div class="mb" style="height:5px;width:40%;background:#0A0A0F"></div>
+              <div style="margin-left:auto;display:flex;gap:3px">
+                <div style="height:6px;width:16px;border-radius:10px;background:#10B981"></div>
+                <div style="height:6px;width:16px;border-radius:10px;background:#F59E0B"></div>
+                <div style="height:6px;width:16px;border-radius:10px;background:#8B5CF6"></div>
+              </div>
+            </div>
+            <div style="padding-left:10px;position:relative;display:flex;flex-direction:column;gap:3px">
+              <div style="position:absolute;left:0;top:4px;bottom:4px;width:1.5px;background:#D1D5DB;border-radius:1px"></div>
+              <div style="display:flex;align-items:center;gap:3px">
+                <div style="width:7px;height:7px;border-radius:50%;background:#10B981;margin-left:-3.5px;flex-shrink:0"></div>
+                <div style="flex:1;height:13px;background:white;border-radius:4px;border:1px solid #ddd"></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:3px">
+                <div style="width:7px;height:7px;border-radius:50%;background:#10B981;margin-left:-3.5px;flex-shrink:0"></div>
+                <div style="flex:1;height:13px;background:white;border-radius:4px;border:1px solid #ddd"></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:3px">
+                <div style="width:7px;height:7px;border-radius:50%;background:#F59E0B;margin-left:-3.5px;flex-shrink:0"></div>
+                <div style="flex:1;height:13px;background:white;border-radius:4px;border:1px solid #ddd"></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:3px">
+                <div style="width:7px;height:7px;border-radius:50%;background:#8B5CF6;margin-left:-3.5px;flex-shrink:0"></div>
+                <div style="flex:1;height:13px;background:white;border-radius:4px;border:1px solid #ddd"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-label">AI 生成分段学习路径</div>
+      <div class="flow-sub">入门→中级→高级三段 Timeline，每个节点直接链接 hiascend 真实课程，一键跳转</div>
+    </div></div>
+
+    <!-- Col 3: 文档智能阅读 -->
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body" style="padding:5px 6px;display:flex;gap:5px;">
+          <!-- doc main area -->
+          <div style="flex:1;display:flex;flex-direction:column;gap:2px;">
+            <div class="mb" style="height:5px;width:55%;background:#0A0A0F;"></div>
+            <div class="mb" style="width:100%;"></div>
+            <div class="mb" style="width:88%;"></div>
+            <!-- code block -->
+            <div style="background:#0F172A;border-radius:3px;padding:3px 4px;display:flex;flex-direction:column;gap:1.5px;margin-top:1px;">
+              <div style="height:2.5px;background:rgba(255,255,255,.2);border-radius:1px;width:75%;"></div>
+              <div style="height:2.5px;background:rgba(255,255,255,.12);border-radius:1px;width:90%;"></div>
+              <div style="height:2.5px;background:rgba(255,255,255,.12);border-radius:1px;width:60%;"></div>
+              <div style="display:flex;justify-content:flex-end;margin-top:1px;gap:2px;">
+                <div style="height:7px;width:22px;background:rgba(255,255,255,.12);border-radius:2px;"></div>
+                <div style="height:7px;width:28px;background:#0A0A0F;border-radius:2px;"></div>
+              </div>
+            </div>
+            <div class="mb" style="width:95%;margin-top:1px;"></div>
+          </div>
+          <!-- AI chat sidebar -->
+          <div style="width:48px;border:1px solid #E4E6EC;border-radius:5px;padding:4px 4px;display:flex;flex-direction:column;gap:2px;background:white;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:3px;padding-bottom:3px;border-bottom:1px solid #eee;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#8B5CF6;flex-shrink:0;"></div>
+              <div style="height:4px;background:#0A0A0F;border-radius:2px;flex:1;"></div>
+            </div>
+            <!-- user msg -->
+            <div style="height:14px;border-radius:3px;background:#F1F4F9;padding:2px 3px;display:flex;flex-direction:column;gap:1.5px;">
+              <div class="mb" style="height:2px;width:90%;"></div>
+              <div class="mb" style="height:2px;width:70%;"></div>
+            </div>
+            <!-- AI reply -->
+            <div style="height:22px;border-radius:3px;background:#0A0A0F;padding:2px 3px;display:flex;flex-direction:column;gap:1.5px;">
+              <div style="height:2px;background:rgba(255,255,255,.35);border-radius:1px;width:95%;"></div>
+              <div style="height:2px;background:rgba(255,255,255,.2);border-radius:1px;width:80%;"></div>
+              <div style="height:2px;background:rgba(255,255,255,.2);border-radius:1px;width:88%;"></div>
+            </div>
+            <!-- input -->
+            <div style="margin-top:auto;height:9px;border-radius:3px;background:#F1F4F9;border:1px solid #ddd;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-label">阅读文档时，侧边栏 AI 随时解惑</div>
+      <div class="flow-sub">「这个参数是什么意思？」直接在文档旁问 AI，学习路径 Timeline 同步标记进度</div>
+    </div></div>
+
+    <!-- Col 4: 在线实验 -->
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body" style="padding:0;display:flex;flex-direction:column;">
+          <div style="flex:1;background:#F8F9FB;"></div>
+          <div class="dk" style="border-radius:0;">
+            <div style="display:flex;align-items:center;gap:3px;padding-bottom:3px;border-bottom:1px solid rgba(255,255,255,.07)">
+              <div style="width:12px;height:5px;background:#60A5FA;border-radius:2px"></div>
+              <div style="display:flex;gap:2px">
+                <div style="height:7px;width:22px;background:rgba(255,255,255,.2);border-radius:3px"></div>
+                <div style="height:7px;width:18px;background:rgba(255,255,255,.07);border-radius:3px"></div>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:2px">
+                <div style="height:7px;width:36px;background:rgba(255,255,255,.06);border-radius:3px"></div>
+                <div style="height:7px;width:16px;background:rgba(255,255,255,.06);border-radius:3px"></div>
+              </div>
+            </div>
+            <div style="display:flex;gap:2px;padding:2px 0">
+              <div style="height:3px;width:28px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden"><div style="height:100%;width:65%;background:linear-gradient(90deg,#8B5CF6,#A78BFA)"></div></div>
+              <div style="height:3px;width:28px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden"><div style="height:100%;width:45%;background:linear-gradient(90deg,#3B82F6,#60A5FA)"></div></div>
+            </div>
+            <div style="display:flex;gap:3px">
+              <div style="width:22px;display:flex;flex-direction:column;gap:2px">
+                <div style="height:7px;background:rgba(59,130,246,.3);border-radius:2px"></div>
+                <div class="db" style="height:7px"></div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+                <div class="dcl" style="padding:2px 4px"><div class="db" style="width:80%"></div><div class="db" style="width:60%;margin-top:1px"></div></div>
+                <div style="height:6px;background:rgba(0,0,0,.25);border-radius:2px;padding:1px 4px"><div class="dout" style="width:55%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-label">点击「在线运行」，代码载入 HiDevLab</div>
+      <div class="flow-sub">Notebook 真机运行，NPU 利用率实时可见，无需本地配置</div>
+    </div></div>
+
+    <!-- Col 5: 沉淀复用 -->
+    <div class="dc-wrap row-flow"><div class="dc">
+      <div class="flow-screen">
+        <div class="fs-bar"><div class="fs-dot" style="background:#FF5F57"></div><div class="fs-dot" style="background:#FFBD2E"></div><div class="fs-dot" style="background:#28CA41"></div><div style="flex:1;height:5px;background:#ddd;border-radius:3px;margin-left:5px"></div></div>
+        <div class="fs-body" style="padding:6px 7px">
+          <div style="background:#F1F4F9;border-radius:5px;padding:5px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:4px">
+              <div class="mb" style="height:4px;width:35%;background:#8B5CF6"></div>
+              <div style="width:12px;height:12px;border-radius:50%;background:#8B5CF6;display:flex;align-items:center;justify-content:center"><div style="width:5px;height:5px;border-radius:50%;background:white"></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="background:white;border-radius:5px;border:1px solid #ddd;padding:4px 5px;display:flex;align-items:center;gap:4px">
+                <div style="flex:1;height:3.5px;background:#555;border-radius:2px"></div>
+                <div style="height:3.5px;width:18px;background:#ccc;border-radius:2px"></div>
+                <div style="height:9px;width:18px;background:#0A0A0F;border-radius:3px"></div>
+              </div>
+              <div style="background:white;border-radius:5px;border:1px solid #ddd;padding:4px 5px;display:flex;align-items:center;gap:4px">
+                <div style="flex:1;height:3.5px;background:#555;border-radius:2px"></div>
+                <div style="height:3.5px;width:18px;background:#ccc;border-radius:2px"></div>
+                <div style="height:9px;width:18px;background:#0A0A0F;border-radius:3px"></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:3px">
+              <div style="height:12px;width:42px;background:white;border:1.5px solid #0A0A0F;border-radius:4px"></div>
+              <div style="height:12px;width:42px;background:#0A0A0F;border-radius:4px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-label">收藏学习路径，保存 Notebook 到工作区</div>
+      <div class="flow-sub">跨会话持久保存，下次直接展开，从上次断点继续</div>
+    </div></div>
+
+    <!-- ROW: 情绪曲线 (after) -->
+    <div class="rl row-emo"><div class="rl-name">情绪</div><div class="rl-en">Emotion</div></div>
+    <div class="emo-curve-wrap row-emo after-curve">
+      <svg viewBox="0 0 1048 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%">
+        <defs>
+          <linearGradient id="fill-after" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#4361EE" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="#7C3AED" stop-opacity="0.01"/>
+          </linearGradient>
+          <linearGradient id="stroke-after" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#4361EE"/>
+            <stop offset="100%" stop-color="#7C3AED"/>
+          </linearGradient>
+        </defs>
+        <line x1="0" y1="22" x2="1048" y2="22" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="0" y1="45" x2="1048" y2="45" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="4,4"/>
+        <line x1="0" y1="68" x2="1048" y2="68" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="4,4"/>
+        <text x="4" y="19" font-size="7" fill="#9CA3AF">积极</text>
+        <text x="4" y="69" font-size="7" fill="#9CA3AF">消极</text>
+        <path d="M105,50 C175,44 240,34 315,28 C390,22 450,16 525,13 C600,10 660,9 735,10 C800,11 860,13 945,15 L945,88 L105,88 Z" fill="url(#fill-after)"/>
+        <path d="M105,50 C175,44 240,34 315,28 C390,22 450,16 525,13 C600,10 660,9 735,10 C800,11 860,13 945,15" fill="none" stroke="url(#stroke-after)" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+        <circle cx="105" cy="50" r="5" fill="#EF4444" stroke="white" stroke-width="2"/>
+        <circle cx="315" cy="28" r="5" fill="#3B82F6" stroke="white" stroke-width="2"/>
+        <circle cx="525" cy="13" r="5" fill="#10B981" stroke="white" stroke-width="2"/>
+        <circle cx="735" cy="10" r="5" fill="#059669" stroke="white" stroke-width="2"/>
+        <circle cx="945" cy="15" r="5" fill="#8B5CF6" stroke="white" stroke-width="2"/>
+        <!-- emoji centered on dots -->
+        <text x="105" y="59" font-size="13" text-anchor="middle">😌</text>
+        <text x="315" y="41" font-size="13" text-anchor="middle">🎯</text>
+        <text x="525" y="23" font-size="13" text-anchor="middle">🚀</text>
+        <text x="735" y="17" font-size="13" text-anchor="middle">💡</text>
+        <text x="945" y="21" font-size="13" text-anchor="middle">😊</text>
+        <text x="105" y="88" font-size="8.5" font-weight="600" fill="#B91C1C" text-anchor="middle">清晰·被引导</text>
+        <text x="315" y="88" font-size="8.5" font-weight="600" fill="#1D4ED8" text-anchor="middle">兴奋·有方向</text>
+        <text x="525" y="88" font-size="8.5" font-weight="600" fill="#065F46" text-anchor="middle">专注·不打断</text>
+        <text x="735" y="88" font-size="8.5" font-weight="600" fill="#065F46" text-anchor="middle">掌控·高效</text>
+        <text x="945" y="88" font-size="8.5" font-weight="600" fill="#5B21B6" text-anchor="middle">满足·归属</text>
+      </svg>
+    </div>
+
+    <!-- ROW: 设计点 -->
+    <div class="rl row-key"><div class="rl-name">设计点</div><div class="rl-en">Design</div></div>
+
+    <div class="dc-wrap row-key"><div class="dc">
+      <div class="key-item"><div class="ki-dot" style="background:#EF4444"></div><div class="ki-text">开发者不需要知道信息在哪里，只需说出想做什么——<strong>系统自动定向</strong>，无需关键词<span class="ki-tag" style="background:#FEE2E2;color:#991B1B">意图驱动</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#3B82F6"></div><div class="ki-text">三条路径<strong>一眼可辨</strong>，消除「不知从何下手」的空白时刻；楼层首页<strong>内联展开</strong>，上下文不断<span class="ki-tag" style="background:#EEF4FF;color:#1A56DB">零摩擦入口</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#F59E0B"></div><div class="ki-text">猜你想问基于高频问题预置，并结合历史搜索与浏览行为<strong>智能推荐</strong>，连「怎么表达」都省了<span class="ki-tag" style="background:#FEF3C7;color:#92400E">个性化</span></div></div>
+    </div></div>
+
+    <div class="dc-wrap row-key"><div class="dc">
+      <div class="key-item"><div class="ki-dot" style="background:#8B5CF6"></div><div class="ki-text">AI 路径<strong>按难度分段</strong>（入门 / 中级 / 高级），Timeline 竖线连接，<strong>进度一目了然</strong><span class="ki-tag" style="background:#F5F3FF;color:#5B21B6">结构化</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#10B981"></div><div class="ki-text">每个学习节点<strong>直链</strong> hiascend 真实课程页，不是泛链接，<strong>点击即到具体内容</strong><span class="ki-tag" style="background:#ECFDF5;color:#065F46">真实可达</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#3B82F6"></div><div class="ki-text">路径可收藏，基于历史行为下次打开<strong>自动推荐上次进度</strong>，无需重新生成<span class="ki-tag" style="background:#EEF4FF;color:#1A56DB">持续引导</span></div></div>
+    </div></div>
+
+    <div class="dc-wrap row-key"><div class="dc">
+      <div class="key-item"><div class="ki-dot" style="background:#8B5CF6"></div><div class="ki-text">侧边栏 Ask AI 悬浮在文档旁，<strong>随时提问不离开页面</strong>，阅读心流零中断<span class="ki-tag" style="background:#F5F3FF;color:#5B21B6">不打断</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#3B82F6"></div><div class="ki-text">AI 理解上下文，回答时<strong>自动引用当前文档段落</strong>，而非泛泛给出通用解释<span class="ki-tag" style="background:#EEF4FF;color:#1A56DB">上下文感知</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#EF4444"></div><div class="ki-text">文档代码块<strong>一键「在线运行」</strong>，直接载入 HiDevLab，所见即所跑<span class="ki-tag" style="background:#FEE2E2;color:#991B1B">即读即跑</span></div></div>
+    </div></div>
+
+    <div class="dc-wrap row-key"><div class="dc">
+      <div class="key-item"><div class="ki-dot" style="background:#10B981"></div><div class="ki-text">文档代码载入 HiDevLab 后<strong>零配置即跑</strong>，5 分钟内完成第一个 NPU 推理<span class="ki-tag" style="background:#ECFDF5;color:#065F46">零门槛</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#8B5CF6"></div><div class="ki-text">Notebook 顶部<strong>实时 NPU / HBM / CPU 监控条</strong>，计算资源使用状态可视化<span class="ki-tag" style="background:#F5F3FF;color:#5B21B6">监控</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#F59E0B"></div><div class="ki-text"><strong>多内核切换</strong>（CANN / PyTorch NPU / MindSpore），Terminal 直接执行 npu-smi 等命令<span class="ki-tag" style="background:#FEF3C7;color:#92400E">灵活</span></div></div>
+    </div></div>
+
+    <div class="dc-wrap row-key row-last"><div class="dc">
+      <div class="key-item"><div class="ki-dot" style="background:#8B5CF6"></div><div class="ki-text">收藏夹 + HiDevLab 工作区保留 .ipynb / .om，<strong>跨会话从上次断点继续</strong><span class="ki-tag" style="background:#F5F3FF;color:#5B21B6">工作区</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#10B981"></div><div class="ki-text">每个学习节点可<strong>「Test My Knowledge」</strong>——做题检验掌握程度，答错的题<strong>自动存入错题本</strong>，形成个人专属知识漏洞库<span class="ki-tag" style="background:#ECFDF5;color:#065F46">错题本</span></div></div>
+      <div class="key-item"><div class="ki-dot" style="background:#EF4444"></div><div class="ki-text">个人收藏 + 工作区 + 错题本<strong>共同构成归属感</strong>，推动开发者从单次使用<strong>转化为长期生态参与</strong><span class="ki-tag" style="background:#FEE2E2;color:#991B1B">留存</span></div></div>
+    </div></div>
+
+  </div><!-- /journey after -->
+</div><!-- /map-section after -->
+
+</body>
+</html>
