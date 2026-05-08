@@ -5,6 +5,20 @@
 
 ---
 
+## 当前进度（2026-05-08）
+
+### 已完成
+- UX 分析文档 `analysis.html` v0.4 — 浏览器打开可读
+- 视觉风格：浅色主题，主题色 `#c7000b`，Inter 字体
+- 布局：左侧固定 sidebar（232px）+ 分组导航 + 线性 SVG icon + Intersection Observer 高亮
+- 文件已拆分：`style.css`（样式）、`script.js`（交互）、`analysis.html`（结构+内容）
+
+### 下一步（等待数据）
+- 用户将提供真实 Agent 评分、痛点列表、VOD 原声样本
+- 数据到位后开始 UI 设计（看板本体，非分析文档）
+
+---
+
 ## 信息架构
 
 ### 两条主线
@@ -15,7 +29,7 @@
 
 ### 筛选维度
 - 角色类型（4种）
-- 芯片型号（A5 等，详见下方）
+- 芯片型号（A5 等）
 
 ---
 
@@ -67,13 +81,6 @@
 ### 芯片型号
 从 `ascendc-npu-arch` skill 推断有 DAV_1001 ~ DAV_3510 系列，Ascend 950 有专属知识包。
 
-### 痛点来源（Agent 侧）
-通过以下 skill 产生：
-- `ascendc-code-review`：代码检视问题记录
-- `ascendc-precision-debug`：决策树归档的精度痛点
-- `ascendc-runtime-debug`：运行时错误码痛点
-- `ascendc-performance-best-practices`：性能优化常见问题
-
 ---
 
 ## 设计方向（已确定）
@@ -84,10 +91,10 @@
 
 ---
 
-## 待确认问题（设计前必须明确）
+## 待确认问题（UI 设计前必须明确）
 - [ ] **Q1 VOD 来源**：真实用户反馈从哪来（访谈/问卷/社区工单）？是结构化数据还是原始文字？
 - [ ] **Q2 评分聚合方式**：看板展示的是单次 skill 运行的原始分，还是多次汇总均值？
-- [ ] **Q3 其他角色场景**：AI框架开发者和应用框架开发者是否对应 pypto-* / torch-* 系列 skills？还是有单独场景定义？
+- [ ] **Q3 其他角色场景**：AI框架开发者和应用框架开发者是否对应 pypto-* / torch-* 系列 skills？
 
 ---
 
@@ -95,6 +102,8 @@
 ```
 AscendCANN/
 └── cann-dashboard/
-    ├── analysis.html   ← UX 分析文档（可在浏览器打开）
+    ├── analysis.html   ← UX 分析文档（浏览器打开）~975 行
+    ├── style.css       ← 样式（浅色主题，主题色 #c7000b）~230 行
+    ├── script.js       ← 交互（lightbox + sidebar 高亮）~25 行
     └── context.md      ← 本文件，项目上下文
 ```
