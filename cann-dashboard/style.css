@@ -259,7 +259,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin-bottom: 2
 .callout-p .callout-icon { color: var(--purple); }
 .ref-logo svg { display: block; }
 .dot svg { display: block; }
-.principle > span { display: inline-flex; align-items: center; flex-shrink: 0; color: var(--text-muted); margin-top: 2px; }
+.principle > span { display: inline-flex; align-items: center; flex-shrink: 0; color: var(--accent); margin-top: 2px; }
 
 /* ── tags ── */
 .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
