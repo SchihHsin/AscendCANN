@@ -50,23 +50,18 @@ body {
 .sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
 .sidebar-brand {
-  padding: 20px 18px 16px;
+  padding: 16px 18px;
   border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 10px;
   flex-shrink: 0;
 }
-.brand-icon {
-  width: 30px; height: 30px;
-  background: var(--accent);
-  border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 14px; color: #fff;
-  flex-shrink: 0;
+.sidebar-logo-link {
+  display: inline-block;
+  line-height: 0;
+  border-radius: 4px;
+  transition: opacity .15s;
 }
-.brand-title { font-size: 13px; font-weight: 700; line-height: 1.3; color: var(--text); }
-.brand-sub { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+.sidebar-logo-link:hover { opacity: .7; }
+.sidebar-logo { height: 22px; width: auto; display: block; }
 
 .sidebar-nav { padding: 12px 10px 32px; flex: 1; }
 
@@ -120,7 +115,7 @@ body {
 .cover {
   position: relative;
   min-height: 100vh;
-  background: #0e0608;
+  background: linear-gradient(135deg, #c7000b 0%, #8a0008 100%);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -142,9 +137,9 @@ body {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: .04em;
-  border: 1px solid rgba(199,0,11,.35);
-  color: #ff6b6b;
-  background: rgba(199,0,11,.1);
+  border: 1px solid rgba(255,255,255,.3);
+  color: rgba(255,255,255,.8);
+  background: rgba(255,255,255,.12);
 }
 .cover-title {
   margin-bottom: 20px;
@@ -199,20 +194,20 @@ body {
 .cover-deco-ring {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid rgba(199,0,11,.18);
+  border: 1px solid rgba(255,255,255,.15);
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
 }
 .cover-deco-ring1 { width: 340px; height: 340px; }
-.cover-deco-ring2 { width: 240px; height: 240px; border-color: rgba(199,0,11,.28); }
-.cover-deco-ring3 { width: 140px; height: 140px; background: rgba(199,0,11,.08); border-color: rgba(199,0,11,.4); }
+.cover-deco-ring2 { width: 240px; height: 240px; border-color: rgba(255,255,255,.22); }
+.cover-deco-ring3 { width: 140px; height: 140px; background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.35); }
 .cover-deco-letter {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
   font-size: 72px;
   font-weight: 900;
-  color: #c7000b;
+  color: rgba(255,255,255,.9);
   line-height: 1;
   letter-spacing: -.04em;
   user-select: none;
