@@ -184,6 +184,23 @@ body {
 
 .container { width: 100%; padding: 0 0 80px; }
 
+/* ── cover deco blocks ── */
+.cover-deco {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 280px;
+  pointer-events: none;
+}
+.cover-block {
+  position: absolute;
+  background: var(--accent);
+  border-radius: 3px;
+}
+.cover-block.b1 { width: 56px; height: 200px; right: 60px; top: 60px; opacity: 1; }
+.cover-block.b2 { width: 56px; height: 120px; right: 60px; top: 280px; opacity: .35; }
+.cover-block.b3 { width: 56px; height: 90px;  right: 128px; top: 110px; opacity: .18; }
+.cover-block.b4 { width: 56px; height: 56px;  right: 128px; top: 220px; opacity: .6; }
+
 /* ── sections ── */
 .section {
   padding: 48px max(48px, calc((100% - 900px) / 2));
