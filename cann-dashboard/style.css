@@ -403,7 +403,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin-bottom: 2
 /* ── conclusion ── */
 .conclusion { background: linear-gradient(135deg, rgba(199,0,11,.05), rgba(37,99,235,.03)); border: 1px solid rgba(199,0,11,.18); border-radius: 12px; padding: 24px 28px; }
 .principle { display: flex; gap: 10px; font-size: 13px; margin-bottom: 10px; align-items: flex-start; }
-.principle b { color: var(--text); } .principle span { color: var(--text-muted); }
+.principle b { color: var(--text); } .principle div > span { color: var(--text-muted); }
 
 /* ── lightbox ── */
 .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 999; align-items: center; justify-content: center; cursor: zoom-out; }
