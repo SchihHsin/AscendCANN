@@ -115,11 +115,12 @@ body {
 .cover {
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(135deg, #c7000b 0%, #8a0008 100%);
+  background: var(--bg);
   display: flex;
   align-items: center;
   overflow: hidden;
   padding: 80px max(64px, calc((100% - 900px) / 2));
+  border-bottom: 1px solid var(--border);
 }
 .cover-inner {
   position: relative;
@@ -137,9 +138,9 @@ body {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: .04em;
-  border: 1px solid rgba(255,255,255,.3);
-  color: rgba(255,255,255,.8);
-  background: rgba(255,255,255,.12);
+  border: 1px solid var(--border2);
+  color: var(--text-muted);
+  background: var(--surface);
 }
 .cover-title {
   margin-bottom: 20px;
@@ -150,20 +151,21 @@ body {
   font-weight: 900;
   letter-spacing: -.03em;
   line-height: 1.1;
-  color: #ffffff;
+  color: var(--text);
 }
+.cover-title-cn .cover-accent { color: var(--accent); }
 .cover-title-sub {
   display: block;
   font-size: clamp(18px, 2.5vw, 26px);
   font-weight: 400;
   letter-spacing: -.01em;
-  color: rgba(255,255,255,.45);
+  color: var(--text-muted);
   margin-top: 6px;
 }
 .cover-desc {
   font-size: 14px;
   line-height: 1.8;
-  color: rgba(255,255,255,.5);
+  color: var(--text-muted);
   margin-bottom: 40px;
   max-width: 480px;
 }
@@ -177,37 +179,37 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: rgba(255,255,255,.35);
+  color: var(--text-dim);
 }
-.cover-meta-item svg { opacity: .6; }
 
-/* decorative rings */
+/* decorative element */
 .cover-deco {
   position: absolute;
-  right: max(40px, calc((100% - 900px) / 2 - 80px));
+  right: max(40px, calc((100% - 900px) / 2 - 60px));
   top: 50%;
   transform: translateY(-50%);
-  width: 340px;
-  height: 340px;
+  width: 300px;
+  height: 300px;
   z-index: 1;
+  opacity: .06;
 }
 .cover-deco-ring {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,.15);
+  border: 1.5px solid var(--text);
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
 }
-.cover-deco-ring1 { width: 340px; height: 340px; }
-.cover-deco-ring2 { width: 240px; height: 240px; border-color: rgba(255,255,255,.22); }
-.cover-deco-ring3 { width: 140px; height: 140px; background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.35); }
+.cover-deco-ring1 { width: 300px; height: 300px; }
+.cover-deco-ring2 { width: 210px; height: 210px; }
+.cover-deco-ring3 { width: 120px; height: 120px; }
 .cover-deco-letter {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
-  font-size: 72px;
+  font-size: 80px;
   font-weight: 900;
-  color: rgba(255,255,255,.9);
+  color: var(--text);
   line-height: 1;
   letter-spacing: -.04em;
   user-select: none;
