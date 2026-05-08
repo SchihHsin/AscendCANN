@@ -97,7 +97,6 @@
 </aside>
 <main class="main-content">
 <div class="container">
-
   <!-- 00 背景 -->
   <section class="section">
     <div class="section-label">00 · 背景</div>
@@ -120,6 +119,7 @@
       </div>
     </div>
   </section>
+
 
   <!-- 01 参考案例 -->
   <section class="section" id="refs">
@@ -439,6 +439,7 @@
     </div>
   </section>
 
+
   <!-- 02 核心洞察 -->
   <section class="section" id="insights">
     <div class="section-label">02 · 核心洞察</div>
@@ -453,112 +454,6 @@
     <div class="callout callout-b" style="margin-bottom:0"><div class="callout-icon">🔍</div><div><h4>洞察 6：Agent 评测需要"可解释性"</h4><p>不只给分数，要展示"Agent 在哪步卡住、具体是什么错误"。参照 Stripe API Review 的结构化输出：问题描述 + 发生位置 + 建议修复。</p><div class="from">来源：Stripe DX · Twilio AI Agent 评测实践</div></div></div>
   </section>
 
-  <!-- 03 故事线 -->
-  <section class="section" id="story">
-    <div class="section-label">03 · 故事线</div>
-    <div class="section-title">用户在看板上的认知旅程</div>
-    <div class="section-desc">好的看板引导用户从"全局"走向"细节"，从"发现问题"走向"制定行动"。</div>
-    <hr class="divider">
-    <div class="story-flow">
-      <div class="story-step"><div class="dot">🌐</div><h4>全景扫描</h4><p>整体健康度<br>哪个角色最差？</p></div>
-      <div class="story-step"><div class="dot">🔍</div><h4>聚焦角色</h4><p>选择角色 + 芯片<br>进入专属视角</p></div>
-      <div class="story-step"><div class="dot">📊</div><h4>场景诊断</h4><p>哪个场景评分低？<br>痛点集中在哪？</p></div>
-      <div class="story-step"><div class="dot">💬</div><h4>溯源理解</h4><p>Agent 怎么评的？<br>用户真实说了什么？</p></div>
-    </div>
-    <div class="grid2">
-      <div class="card">
-        <h3><span class="icon icon-o">💡</span> 两条并行的数据脉络</h3>
-        <p style="margin-bottom:10px;"><b style="color:var(--text)">① 产品易用性（三类开发者）</b><br>各典型场景下的 Agent 评分和痛点密度，衡量"工具/文档/API 能不能用好"。对应 cannbot-skills 的 ops/ 下各 skill。</p>
-        <p><b style="color:var(--text)">② 社区应用易用性（入门开发者）</b><br>端到端任务的完成率和障碍，衡量"新人能不能在 GitCode 上跑通"。5 个任务流程评测。</p>
-      </div>
-      <div class="card">
-        <h3><span class="icon icon-b">⚡</span> 核心设计判断</h3>
-        <p style="margin-bottom:8px;">这个看板的核心价值<b style="color:var(--text)">不是展示数据，而是帮助决策者找到值得投入资源的改进点</b>。</p>
-        <p>参照 DX Core 4 研究结论：Agent评分（系统指标）+ VOD（感知数据）两者缺一不可，两者同时展示才能支撑高置信度决策。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 04 信息架构 -->
-  <section class="section" id="ia">
-    <div class="section-label">04 · 信息架构</div>
-    <div class="section-title">三层递进结构</div>
-    <div class="section-desc">全景 → 角色视图 → 场景详情。每层只展示该层需要的信息，点击才展开下一层。</div>
-    <hr class="divider">
-    <div class="ia-l0">🏠 全景层 — 角色健康度矩阵（参考 Spotify Soundcheck Overview）</div>
-    <div class="ia-l1">
-      <div class="ia-l1-title">▸ 产品易用性</div>
-      <div class="tags"><span class="tag o">AI框架开发者</span><span class="tag o">算子开发者</span><span class="tag o">应用框架开发者</span><span class="tag">× 芯片: A5 / 其他…</span></div>
-      <div style="margin-top:10px; padding-left:12px; border-left:1px dashed var(--border)">
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">算子开发者 → 场景列表（按评分升序）：</p>
-        <div class="tags"><span class="tag b">算子复现部署</span><span class="tag b">算子迁移部署</span><span class="tag b">Built-in算子定制</span><span class="tag b">算子基本功能实现</span><span class="tag b">特定shape性能</span><span class="tag b">泛化shape性能</span></div>
-        <div style="margin-top:8px; padding-left:12px; border-left:1px dashed var(--border)">
-          <div class="tags"><span class="tag g">Agent评分（分项）</span><span class="tag g">Agent产生的痛点</span><span class="tag g">VOD原声</span><span class="tag g">Next Step 建议</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="ia-l1" style="margin-top:10px">
-      <div class="ia-l1-title">▸ 社区应用易用性</div>
-      <div class="tags"><span class="tag o">入门开发者</span></div>
-      <div style="margin-top:8px; padding-left:12px; border-left:1px dashed var(--border)">
-        <div class="tags"><span class="tag b">搜索与发现</span><span class="tag b">环境检查与样例</span><span class="tag b">快速体验开发与编译</span><span class="tag b">测试与验证</span><span class="tag b">反馈与贡献</span></div>
-        <div style="margin-top:8px; padding-left:12px; border-left:1px dashed var(--border)">
-          <div class="tags"><span class="tag g">任务完成率</span><span class="tag g">Agent评分</span><span class="tag g">障碍点</span><span class="tag g">综合总结</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 05 交互设计 -->
-  <section class="section" id="interaction">
-    <div class="section-label">05 · 交互设计方向</div>
-    <div class="section-title">关键交互模式</div>
-    <div class="section-desc">围绕"发现问题 → 定位原因 → 理解证据 → 行动决策"主线。</div>
-    <hr class="divider">
-    <div class="grid2" style="margin-bottom:14px">
-      <div class="card">
-        <h3><span class="icon icon-o">🎛</span> 筛选器设计</h3>
-        <div class="flow-steps">
-          <div class="flow-step"><div class="flow-num">1</div><div class="flow-content"><h4>维度选择（横向 Tab）</h4><p>产品易用性 / 社区应用易用性——决定进入哪条故事线</p></div></div>
-          <div class="flow-step"><div class="flow-num">2</div><div class="flow-content"><h4>角色选择（卡片式，带简短描述）</h4><p>图标 + 一句话描述；被选中时高亮并显示综合健康分</p></div></div>
-          <div class="flow-step"><div class="flow-num">3</div><div class="flow-content"><h4>芯片型号（多选 Tag）</h4><p>支持多选跨型号对比；默认"全部型号"聚合视图</p></div></div>
-        </div>
-      </div>
-      <div class="card">
-        <h3><span class="icon icon-b">📈</span> 数据展示设计</h3>
-        <div class="flow-steps">
-          <div class="flow-step"><div class="flow-num">A</div><div class="flow-content"><h4>评分色彩编码 + 排序</h4><p>红(&lt;60)/黄(60-80)/绿(&gt;80)；场景按评分升序，最差永远在最前</p></div></div>
-          <div class="flow-step"><div class="flow-num">B</div><div class="flow-content"><h4>场景卡片：评分 + 证据密度</h4><p>每张卡片：评分 + 痛点数 + VOD 条数，三数字传递"证据强度"</p></div></div>
-          <div class="flow-step"><div class="flow-num">C</div><div class="flow-content"><h4>展开详情：三类证据并列</h4><p>Agent评分分项 / 痛点列表 / VOD 原声引用——互相对照印证</p></div></div>
-          <div class="flow-step"><div class="flow-num">D</div><div class="flow-content"><h4>内嵌 Next Step</h4><p>每个痛点附"改进建议"，看板从报告工具变为决策工具</p></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="grid3">
-      <div class="card"><h3><span class="icon icon-g">📌</span> 痛点归类展示</h3><p>按类别归组（文档类/工具类/API类/环境类），避免长列表过载。归类后可看出哪类问题最突出。</p></div>
-      <div class="card"><h3><span class="icon icon-y">🗣</span> VOD 原声呈现</h3><p>引用样式展示，附来源标签（访谈/问卷/社区）。与 Agent 评分并排放置，帮助判断"机器发现的问题"和"用户感受到的问题"是否一致。</p></div>
-      <div class="card"><h3><span class="icon icon-p">📅</span> 时间趋势（后续）</h3><p>如有历史数据，加"本期 vs 上期"趋势标记（↑↓）。这是 LinearB 和 Datadog IDP 的核心差异化功能，让看板从报告工具升级为追踪工具。</p></div>
-    </div>
-  </section>
-
-  <!-- 06 待确认 -->
-  <section class="section" id="questions">
-    <div class="section-label">06 · 待确认问题</div>
-    <div class="section-title">设计前需明确的关键信息</div>
-    <div class="section-desc">已从 cannbot-skills 仓库解答部分问题，以下 3 个需要你补充确认。</div>
-    <hr class="divider">
-    <div class="q-item ok"><div class="q-num ok">✓</div><div><h4>Agent 评分的结构？ <span style="color:var(--green);font-size:11px">已解答</span></h4><p>不是单一总分——精度类（L0/L1/L2 + MARE/MERE/RMSE）、性能类（11个维度各有三档）、任务执行类（skill 完成情况）。</p></div></div>
-    <div class="q-item ok"><div class="q-num ok">✓</div><div><h4>场景 → Skills 对应关系？ <span style="color:var(--green);font-size:11px">已解答</span></h4><p>算子开发者 6 个场景已与 ops/ 下 33 个 skill 建立对应（详见 context.md）。</p></div></div>
-    <div class="q-item"><div class="q-num">Q1</div><div><h4>VOD 的来源和结构是什么？</h4><p>cannbot-skills 里只有 Agent 产生的技术痛点，没有真实用户反馈。VOD 从哪来（访谈/问卷/社区工单）？是结构化数据还是原始文字？这决定 VOD 展示区的设计。</p></div></div>
-    <div class="q-item"><div class="q-num">Q2</div><div><h4>看板展示的是哪一层的评分聚合？</h4><p>每次跑完一个 skill 产生原始分，看板展示的是单次原始分、多次均值，还是有专门的聚合规则？直接影响总览指标卡的设计。</p></div></div>
-    <div class="q-item"><div class="q-num">Q3</div><div><h4>AI框架开发者和应用框架开发者的典型场景？</h4><p>是否对应 pypto-* 系列和 torch-* 系列？还是有单独的场景定义文档？影响看板是否能复用算子开发者的模板。</p></div></div>
-    <div style="margin-top:20px">
-      <div class="info-grid">
-        <div class="info-item"><h4>🔴 必需 <span class="badge">设计无法推进</span></h4><ul><li>各角色 × 场景的 Agent 评分（哪怕示例数据结构）</li><li>痛点列表（文字描述 + 严重程度分级）</li><li>VOD 原声样本（3-5 条示例）</li><li>所有芯片型号名称（A5 之外）</li><li>AI框架/应用框架开发者的场景列表</li></ul></div>
-        <div class="info-item"><h4>🟡 可选 <span class="badge opt">提升完整度</span></h4><ul><li>Ascend 品牌色 / 设计规范</li><li>历史期数数据（用于趋势展示）</li><li>痛点已有的分类体系</li><li>看板主要受众（内部/汇报/对外）</li><li>是否需要中英双语</li></ul></div>
-      </div>
-    </div>
-  </section>
 
   <!-- 08 用户画像 -->
   <section class="section" id="personas">
@@ -646,6 +541,7 @@
       </div>
     </div>
   </section>
+
 
   <!-- 09 任务流程 -->
   <section class="section" id="taskflow">
@@ -756,6 +652,98 @@
     </div>
   </section>
 
+
+  <!-- 03 故事线 -->
+  <section class="section" id="story">
+    <div class="section-label">03 · 故事线</div>
+    <div class="section-title">用户在看板上的认知旅程</div>
+    <div class="section-desc">好的看板引导用户从"全局"走向"细节"，从"发现问题"走向"制定行动"。</div>
+    <hr class="divider">
+    <div class="story-flow">
+      <div class="story-step"><div class="dot">🌐</div><h4>全景扫描</h4><p>整体健康度<br>哪个角色最差？</p></div>
+      <div class="story-step"><div class="dot">🔍</div><h4>聚焦角色</h4><p>选择角色 + 芯片<br>进入专属视角</p></div>
+      <div class="story-step"><div class="dot">📊</div><h4>场景诊断</h4><p>哪个场景评分低？<br>痛点集中在哪？</p></div>
+      <div class="story-step"><div class="dot">💬</div><h4>溯源理解</h4><p>Agent 怎么评的？<br>用户真实说了什么？</p></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="icon icon-o">💡</span> 两条并行的数据脉络</h3>
+        <p style="margin-bottom:10px;"><b style="color:var(--text)">① 产品易用性（三类开发者）</b><br>各典型场景下的 Agent 评分和痛点密度，衡量"工具/文档/API 能不能用好"。对应 cannbot-skills 的 ops/ 下各 skill。</p>
+        <p><b style="color:var(--text)">② 社区应用易用性（入门开发者）</b><br>端到端任务的完成率和障碍，衡量"新人能不能在 GitCode 上跑通"。5 个任务流程评测。</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-b">⚡</span> 核心设计判断</h3>
+        <p style="margin-bottom:8px;">这个看板的核心价值<b style="color:var(--text)">不是展示数据，而是帮助决策者找到值得投入资源的改进点</b>。</p>
+        <p>参照 DX Core 4 研究结论：Agent评分（系统指标）+ VOD（感知数据）两者缺一不可，两者同时展示才能支撑高置信度决策。</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 04 信息架构 -->
+  <section class="section" id="ia">
+    <div class="section-label">04 · 信息架构</div>
+    <div class="section-title">三层递进结构</div>
+    <div class="section-desc">全景 → 角色视图 → 场景详情。每层只展示该层需要的信息，点击才展开下一层。</div>
+    <hr class="divider">
+    <div class="ia-l0">🏠 全景层 — 角色健康度矩阵（参考 Spotify Soundcheck Overview）</div>
+    <div class="ia-l1">
+      <div class="ia-l1-title">▸ 产品易用性</div>
+      <div class="tags"><span class="tag o">AI框架开发者</span><span class="tag o">算子开发者</span><span class="tag o">应用框架开发者</span><span class="tag">× 芯片: A5 / 其他…</span></div>
+      <div style="margin-top:10px; padding-left:12px; border-left:1px dashed var(--border)">
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">算子开发者 → 场景列表（按评分升序）：</p>
+        <div class="tags"><span class="tag b">算子复现部署</span><span class="tag b">算子迁移部署</span><span class="tag b">Built-in算子定制</span><span class="tag b">算子基本功能实现</span><span class="tag b">特定shape性能</span><span class="tag b">泛化shape性能</span></div>
+        <div style="margin-top:8px; padding-left:12px; border-left:1px dashed var(--border)">
+          <div class="tags"><span class="tag g">Agent评分（分项）</span><span class="tag g">Agent产生的痛点</span><span class="tag g">VOD原声</span><span class="tag g">Next Step 建议</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ia-l1" style="margin-top:10px">
+      <div class="ia-l1-title">▸ 社区应用易用性</div>
+      <div class="tags"><span class="tag o">入门开发者</span></div>
+      <div style="margin-top:8px; padding-left:12px; border-left:1px dashed var(--border)">
+        <div class="tags"><span class="tag b">搜索与发现</span><span class="tag b">环境检查与样例</span><span class="tag b">快速体验开发与编译</span><span class="tag b">测试与验证</span><span class="tag b">反馈与贡献</span></div>
+        <div style="margin-top:8px; padding-left:12px; border-left:1px dashed var(--border)">
+          <div class="tags"><span class="tag g">任务完成率</span><span class="tag g">Agent评分</span><span class="tag g">障碍点</span><span class="tag g">综合总结</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 05 交互设计 -->
+  <section class="section" id="interaction">
+    <div class="section-label">05 · 交互设计方向</div>
+    <div class="section-title">关键交互模式</div>
+    <div class="section-desc">围绕"发现问题 → 定位原因 → 理解证据 → 行动决策"主线。</div>
+    <hr class="divider">
+    <div class="grid2" style="margin-bottom:14px">
+      <div class="card">
+        <h3><span class="icon icon-o">🎛</span> 筛选器设计</h3>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="flow-num">1</div><div class="flow-content"><h4>维度选择（横向 Tab）</h4><p>产品易用性 / 社区应用易用性——决定进入哪条故事线</p></div></div>
+          <div class="flow-step"><div class="flow-num">2</div><div class="flow-content"><h4>角色选择（卡片式，带简短描述）</h4><p>图标 + 一句话描述；被选中时高亮并显示综合健康分</p></div></div>
+          <div class="flow-step"><div class="flow-num">3</div><div class="flow-content"><h4>芯片型号（多选 Tag）</h4><p>支持多选跨型号对比；默认"全部型号"聚合视图</p></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-b">📈</span> 数据展示设计</h3>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="flow-num">A</div><div class="flow-content"><h4>评分色彩编码 + 排序</h4><p>红(&lt;60)/黄(60-80)/绿(&gt;80)；场景按评分升序，最差永远在最前</p></div></div>
+          <div class="flow-step"><div class="flow-num">B</div><div class="flow-content"><h4>场景卡片：评分 + 证据密度</h4><p>每张卡片：评分 + 痛点数 + VOD 条数，三数字传递"证据强度"</p></div></div>
+          <div class="flow-step"><div class="flow-num">C</div><div class="flow-content"><h4>展开详情：三类证据并列</h4><p>Agent评分分项 / 痛点列表 / VOD 原声引用——互相对照印证</p></div></div>
+          <div class="flow-step"><div class="flow-num">D</div><div class="flow-content"><h4>内嵌 Next Step</h4><p>每个痛点附"改进建议"，看板从报告工具变为决策工具</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid3">
+      <div class="card"><h3><span class="icon icon-g">📌</span> 痛点归类展示</h3><p>按类别归组（文档类/工具类/API类/环境类），避免长列表过载。归类后可看出哪类问题最突出。</p></div>
+      <div class="card"><h3><span class="icon icon-y">🗣</span> VOD 原声呈现</h3><p>引用样式展示，附来源标签（访谈/问卷/社区）。与 Agent 评分并排放置，帮助判断"机器发现的问题"和"用户感受到的问题"是否一致。</p></div>
+      <div class="card"><h3><span class="icon icon-p">📅</span> 时间趋势（后续）</h3><p>如有历史数据，加"本期 vs 上期"趋势标记（↑↓）。这是 LinearB 和 Datadog IDP 的核心差异化功能，让看板从报告工具升级为追踪工具。</p></div>
+    </div>
+  </section>
+
+
   <!-- 10 组件清单 -->
   <section class="section" id="components">
     <div class="section-label">10 · 组件清单</div>
@@ -832,6 +820,7 @@
     </div>
   </section>
 
+
   <!-- 11 边缘态设计 -->
   <section class="section" id="edgestates">
     <div class="section-label">11 · 边缘态设计</div>
@@ -906,6 +895,7 @@
     </div>
   </section>
 
+
   <!-- 12 成功指标 -->
   <section class="section" id="metrics">
     <div class="section-label">12 · 成功指标</div>
@@ -949,6 +939,27 @@
     </div>
   </section>
 
+
+  <!-- 06 待确认 -->
+  <section class="section" id="questions">
+    <div class="section-label">06 · 待确认问题</div>
+    <div class="section-title">设计前需明确的关键信息</div>
+    <div class="section-desc">已从 cannbot-skills 仓库解答部分问题，以下 3 个需要你补充确认。</div>
+    <hr class="divider">
+    <div class="q-item ok"><div class="q-num ok">✓</div><div><h4>Agent 评分的结构？ <span style="color:var(--green);font-size:11px">已解答</span></h4><p>不是单一总分——精度类（L0/L1/L2 + MARE/MERE/RMSE）、性能类（11个维度各有三档）、任务执行类（skill 完成情况）。</p></div></div>
+    <div class="q-item ok"><div class="q-num ok">✓</div><div><h4>场景 → Skills 对应关系？ <span style="color:var(--green);font-size:11px">已解答</span></h4><p>算子开发者 6 个场景已与 ops/ 下 33 个 skill 建立对应（详见 context.md）。</p></div></div>
+    <div class="q-item"><div class="q-num">Q1</div><div><h4>VOD 的来源和结构是什么？</h4><p>cannbot-skills 里只有 Agent 产生的技术痛点，没有真实用户反馈。VOD 从哪来（访谈/问卷/社区工单）？是结构化数据还是原始文字？这决定 VOD 展示区的设计。</p></div></div>
+    <div class="q-item"><div class="q-num">Q2</div><div><h4>看板展示的是哪一层的评分聚合？</h4><p>每次跑完一个 skill 产生原始分，看板展示的是单次原始分、多次均值，还是有专门的聚合规则？直接影响总览指标卡的设计。</p></div></div>
+    <div class="q-item"><div class="q-num">Q3</div><div><h4>AI框架开发者和应用框架开发者的典型场景？</h4><p>是否对应 pypto-* 系列和 torch-* 系列？还是有单独的场景定义文档？影响看板是否能复用算子开发者的模板。</p></div></div>
+    <div style="margin-top:20px">
+      <div class="info-grid">
+        <div class="info-item"><h4>🔴 必需 <span class="badge">设计无法推进</span></h4><ul><li>各角色 × 场景的 Agent 评分（哪怕示例数据结构）</li><li>痛点列表（文字描述 + 严重程度分级）</li><li>VOD 原声样本（3-5 条示例）</li><li>所有芯片型号名称（A5 之外）</li><li>AI框架/应用框架开发者的场景列表</li></ul></div>
+        <div class="info-item"><h4>🟡 可选 <span class="badge opt">提升完整度</span></h4><ul><li>Ascend 品牌色 / 设计规范</li><li>历史期数数据（用于趋势展示）</li><li>痛点已有的分类体系</li><li>看板主要受众（内部/汇报/对外）</li><li>是否需要中英双语</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- 07 结论 -->
   <section class="section" id="conclusion">
     <div class="section-label">07 · 设计结论</div>
@@ -964,6 +975,7 @@
       <div class="principle" style="margin-bottom:0"><span>🔍</span><div><b>Agent 评测需要可解释性</b> <span>— 不只给分数，要展示 Agent 在哪步卡住（Stripe DX）</span></div></div>
     </div>
   </section>
+
 
 </div>
 </main>

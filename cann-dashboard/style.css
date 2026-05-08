@@ -114,11 +114,19 @@ body {
 }
 
 /* ── main content ── */
-.main-content { margin-left: 232px; flex: 1; min-width: 0; }
-.container { max-width: 900px; margin: 0 auto; padding: 48px 48px 120px; }
+.main-content { margin-left: 232px; flex: 1; min-width: 0; background: var(--bg); }
+.container { max-width: 900px; margin: 0 auto; padding: 0 0 80px; }
 
 /* ── sections ── */
-.section { margin-bottom: 72px; scroll-margin-top: 32px; }
+.section {
+  padding: 48px;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: 0;
+}
+.section:last-child { border-bottom: none; }
+.section:nth-child(odd)  { background: #ffffff; }
+.section:nth-child(even) { background: #f4f7fb; }
 .section-label {
   font-size: 10px; font-weight: 700; letter-spacing: .12em;
   text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
