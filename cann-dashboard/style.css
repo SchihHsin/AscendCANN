@@ -182,38 +182,6 @@ body {
   color: var(--text-dim);
 }
 
-/* decorative element */
-.cover-deco {
-  position: absolute;
-  right: max(40px, calc((100% - 900px) / 2 - 60px));
-  top: 50%;
-  transform: translateY(-50%);
-  width: 300px;
-  height: 300px;
-  z-index: 1;
-  opacity: .06;
-}
-.cover-deco-ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 1.5px solid var(--text);
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-}
-.cover-deco-ring1 { width: 300px; height: 300px; }
-.cover-deco-ring2 { width: 210px; height: 210px; }
-.cover-deco-ring3 { width: 120px; height: 120px; }
-.cover-deco-letter {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  font-size: 80px;
-  font-weight: 900;
-  color: var(--text);
-  line-height: 1;
-  letter-spacing: -.04em;
-  user-select: none;
-}
 .container { width: 100%; padding: 0 0 80px; }
 
 /* ── sections ── */
