@@ -9,8 +9,12 @@
 
 ### 已完成
 - UX 分析文档 `analysis.html` v0.4 — 浏览器打开可读
-- 视觉风格：浅色主题，主题色 `#c7000b`，Inter 字体
+- 视觉风格：浅色主题（`#f4f5f8` 底）、主题色 `#c7000b`、Inter 字体
 - 布局：左侧固定 sidebar（232px）+ 分组导航 + 线性 SVG icon + Intersection Observer 高亮
+- Sidebar logo：`CANNlogo.png`，点击滚动回顶部
+- 章节顺序与 sidebar 导航对齐（用户研究三节归组、待确认移至收尾）
+- 章节底色交替（白 / `#f4f7fb`），section 铺满 main-content 全宽
+- 封面页：浅灰底、CANN 字样红色、右侧四根升序柱状图（呼应 Ascend + 数据看板）
 - 文件已拆分：`style.css`（样式）、`script.js`（交互）、`analysis.html`（结构+内容）
 
 ### 下一步（等待数据）
@@ -102,8 +106,11 @@
 ```
 AscendCANN/
 └── cann-dashboard/
-    ├── analysis.html   ← UX 分析文档（浏览器打开）~975 行
-    ├── style.css       ← 样式（浅色主题，主题色 #c7000b）~230 行
-    ├── script.js       ← 交互（lightbox + sidebar 高亮）~25 行
+    ├── analysis.html   ← UX 分析文档（浏览器打开）~1020 行
+    ├── style.css       ← 样式（浅色主题，主题色 #c7000b）~394 行
+    ├── script.js       ← 交互（lightbox + sidebar 高亮）~26 行
     └── context.md      ← 本文件，项目上下文
+AscendCANN/
+    ├── CANNlogo.png    ← sidebar 使用的 logo
+    └── Ascendlogo.svg  ← 备用 Ascend logo
 ```
