@@ -184,22 +184,28 @@ body {
 
 .container { width: 100%; padding: 0 0 80px; }
 
-/* ── cover deco blocks ── */
+/* ── cover deco blocks — ascending bars ── */
 .cover-deco {
   position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 280px;
+  right: max(64px, calc((100% - 900px) / 2));
+  bottom: 0;
+  width: 200px;
+  height: 100%;
   pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  padding-bottom: 0;
 }
 .cover-block {
-  position: absolute;
+  flex: 1;
   background: var(--accent);
-  border-radius: 3px;
+  border-radius: 3px 3px 0 0;
 }
-.cover-block.b1 { width: 56px; height: 200px; right: 60px; top: 60px; opacity: 1; }
-.cover-block.b2 { width: 56px; height: 120px; right: 60px; top: 280px; opacity: .35; }
-.cover-block.b3 { width: 56px; height: 90px;  right: 128px; top: 110px; opacity: .18; }
-.cover-block.b4 { width: 56px; height: 56px;  right: 128px; top: 220px; opacity: .6; }
+.cover-block.b1 { height: 28%; opacity: .25; }
+.cover-block.b2 { height: 45%; opacity: .45; }
+.cover-block.b3 { height: 66%; opacity: .7; }
+.cover-block.b4 { height: 88%; opacity: 1; }
 
 /* ── sections ── */
 .section {
