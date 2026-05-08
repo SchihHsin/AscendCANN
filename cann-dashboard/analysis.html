@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CANN 体验看板 · 设计分析</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1e2632;
+      --border: #2a3441;
+      --accent: #e05a00;
+      --accent2: #ff7a1a;
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --text-dim: #4d5566;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px; color: #fff;
+    }
+    header h1 { font-size: 18px; font-weight: 600; }
+    header span { color: var(--text-muted); font-size: 13px; margin-left: 8px; }
+    .nav-pills {
+      margin-left: auto;
+      display: flex; gap: 4px;
+    }
+    .nav-pills a {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      text-decoration: none;
+      color: var(--text-muted);
+      transition: all .2s;
+    }
+    .nav-pills a:hover, .nav-pills a.active {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 40px 80px; }
+
+    /* ── Section ── */
+    .section { margin-bottom: 56px; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    /* ── Cards ── */
+    .card-grid { display: grid; gap: 16px; }
+    .card-grid.col2 { grid-template-columns: 1fr 1fr; }
+    .card-grid.col3 { grid-template-columns: 1fr 1fr 1fr; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+    .card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p, .card li {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .card ul { padding-left: 16px; }
+    .card li { margin-bottom: 4px; }
+    .icon {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .icon-orange { background: rgba(224,90,0,.15); }
+    .icon-blue { background: rgba(59,130,246,.15); }
+    .icon-green { background: rgba(34,197,94,.15); }
+    .icon-yellow { background: rgba(245,158,11,.15); }
+    .icon-red { background: rgba(239,68,68,.15); }
+    .icon-purple { background: rgba(168,85,247,.15); }
+
+    /* ── Story flow ── */
+    .story-flow {
+      display: flex;
+      gap: 0;
+      position: relative;
+    }
+    .story-flow::before {
+      content: '';
+      position: absolute;
+      top: 28px; left: 28px; right: 28px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--blue));
+      z-index: 0;
+    }
+    .story-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .story-step .dot {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 20px;
+    }
+    .story-step:nth-child(2) .dot { border-color: #c77dff; }
+    .story-step:nth-child(3) .dot { border-color: var(--blue); }
+    .story-step:nth-child(4) .dot { border-color: var(--green); }
+    .story-step h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .story-step p { font-size: 12px; color: var(--text-muted); }
+
+    /* ── IA Tree ── */
+    .ia-tree { padding: 4px 0; }
+    .ia-l0 {
+      background: linear-gradient(90deg, rgba(224,90,0,.2), transparent);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 16px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .ia-l1 {
+      margin-left: 20px;
+      border-left: 2px solid var(--border);
+      padding-left: 16px;
+      margin-bottom: 8px;
+    }
+    .ia-l1-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+    .ia-l2 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .tag {
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .tag.orange { border-color: rgba(224,90,0,.4); color: var(--accent2); background: rgba(224,90,0,.08); }
+    .tag.blue { border-color: rgba(59,130,246,.4); color: #93c5fd; background: rgba(59,130,246,.08); }
+    .tag.green { border-color: rgba(34,197,94,.4); color: #86efac; background: rgba(34,197,94,.08); }
+
+    /* ── Interaction flow ── */
+    .flow-steps { display: flex; flex-direction: column; gap: 12px; }
+    .flow-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .flow-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .flow-content h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .flow-content p { font-size: 12px; color: var(--text-muted); }
+
+    /* ── Questions ── */
+    .q-list { display: flex; flex-direction: column; gap: 12px; }
+    .q-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .q-num {
+      background: var(--accent);
+      color: #fff;
+      width: 22px; height: 22px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .q-item h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .q-item p { font-size: 12px; color: var(--text-muted); }
+
+    /* ── Info needed ── */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .info-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+    .info-item h4 { font-size: 13px; font-weight: 600; margin-bottom: 6px; display: flex; gap: 8px; align-items: center; }
+    .info-item ul { padding-left: 14px; }
+    .info-item li { font-size: 12px; color: var(--text-muted); margin-bottom: 3px; }
+    .badge {
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      background: rgba(239,68,68,.15);
+      color: #fca5a5;
+    }
+    .badge.opt { background: rgba(245,158,11,.15); color: #fcd34d; }
+
+    /* ── Proposal Layout Sketch ── */
+    .sketch {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .sketch-header {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sketch-header b { color: var(--text); }
+    .sketch-filter {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .sketch-filter-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .sketch-filter-pill.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .sketch-overview {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .sketch-metric {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .sketch-metric .val {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .sketch-metric .lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .val-red { color: var(--red); }
+    .val-yellow { color: var(--yellow); }
+    .val-green { color: var(--green); }
+    .val-blue { color: var(--blue); }
+    .sketch-scenarios {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    .sketch-scenario {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--border);
+    }
+    .sketch-scenario.warn { border-left-color: var(--red); }
+    .sketch-scenario.ok { border-left-color: var(--green); }
+    .sketch-scenario.mid { border-left-color: var(--yellow); }
+    .sketch-scenario h5 { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+    .sketch-bar {
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .sketch-bar-fill { height: 100%; border-radius: 2px; }
+    .sketch-scenario p { font-size: 11px; color: var(--text-muted); }
+
+    /* ── Conclusion ── */
+    .conclusion {
+      background: linear-gradient(135deg, rgba(224,90,0,.1), rgba(59,130,246,.05));
+      border: 1px solid rgba(224,90,0,.3);
+      border-radius: 12px;
+      padding: 24px 28px;
+    }
+    .conclusion h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+    .principle-list { display: flex; flex-direction: column; gap: 8px; }
+    .principle {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13px;
+    }
+    .principle .p-icon { font-size: 16px; }
+    .principle b { color: var(--text); }
+    .principle span { color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">C</div>
+  <h1>CANN 体验看板</h1>
+  <span>设计分析文档 · v0.1</span>
+  <nav class="nav-pills">
+    <a href="#story" class="active">故事线</a>
+    <a href="#ia">信息架构</a>
+    <a href="#interaction">交互设计</a>
+    <a href="#sketch">布局草稿</a>
+    <a href="#questions">待确认</a>
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- ── 01 背景与目标 ── -->
+  <section class="section" id="story">
+    <div class="section-label">01 · 背景与目标</div>
+    <div class="section-title">这个看板在解决什么问题？</div>
+    <div class="section-desc">明确核心用户、核心任务和核心问题，是重构的起点。</div>
+    <hr class="divider">
+
+    <div class="card-grid col3" style="margin-bottom:16px">
+      <div class="card">
+        <h3><span class="icon icon-orange">👤</span> 看板的使用者</h3>
+        <ul>
+          <li>CANN 产品/体验团队负责人</li>
+          <li>各角色方向的产品经理</li>
+          <li>需要向上汇报体验数据的人</li>
+        </ul>
+        <p style="margin-top:10px;">他们需要在<b style="color:var(--text)">高层次</b>快速判断：哪里出了问题、问题有多严重。</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-blue">🎯</span> 核心任务</h3>
+        <ul>
+          <li>快速定位体验最差的角色/场景</li>
+          <li>了解每个痛点的来源（Agent测评 vs 真实用户）</li>
+          <li>追踪改进后的数据变化</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-red">⚠️</span> 当前可能的痛点</h3>
+        <ul>
+          <li>数据分散：评分/痛点/VOD 没有统一视图</li>
+          <li>缺乏优先级感：不知道先改哪里</li>
+          <li>角色切换体验割裂</li>
+          <li>缺少"整体健康度"的直觉判断</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 故事线 ── -->
+  <section class="section">
+    <div class="section-label">02 · 故事线</div>
+    <div class="section-title">用户在看板上的认知旅程</div>
+    <div class="section-desc">好的看板应该引导用户从"全局"走向"细节"，从"发现问题"走向"理解原因"。</div>
+    <hr class="divider">
+
+    <div class="story-flow" style="margin-bottom:32px">
+      <div class="story-step">
+        <div class="dot">🌐</div>
+        <h4>全景扫描</h4>
+        <p>整体健康度<br>哪个角色最差？</p>
+      </div>
+      <div class="story-step">
+        <div class="dot">🔍</div>
+        <h4>聚焦角色</h4>
+        <p>选择角色 + 芯片<br>进入该视角</p>
+      </div>
+      <div class="story-step">
+        <div class="dot">📊</div>
+        <h4>场景诊断</h4>
+        <p>哪个场景评分低？<br>痛点集中在哪？</p>
+      </div>
+      <div class="story-step">
+        <div class="dot">💬</div>
+        <h4>溯源理解</h4>
+        <p>Agent怎么评的？<br>用户真实说了什么？</p>
+      </div>
+    </div>
+
+    <div class="card-grid col2">
+      <div class="card">
+        <h3><span class="icon icon-orange">💡</span> 设计关键洞察</h3>
+        <p style="margin-bottom:10px;">这个看板的核心价值不是"展示数据"，而是帮助决策者<b style="color:var(--text)">快速找到值得投入资源的改进点</b>。</p>
+        <p>因此，视觉设计需要强调<b style="color:var(--text)">问题的严重程度</b>（而非平均水平），并让 Agent评分、痛点、VOD 三类证据形成<b style="color:var(--text)">相互印证</b>的关系。</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-purple">🗂</span> 两条并行的数据脉络</h3>
+        <div style="margin-bottom:10px;">
+          <p style="color:var(--text); font-size:13px; margin-bottom:4px;">① 产品易用性（三类开发者）</p>
+          <p>关注各典型场景下的 Agent 评分和痛点密度，衡量"工具能不能用好"。</p>
+        </div>
+        <div>
+          <p style="color:var(--text); font-size:13px; margin-bottom:4px;">② 社区应用易用性（入门开发者）</p>
+          <p>关注端到端任务的完成率和障碍，衡量"新人能不能上手"。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 信息架构 ── -->
+  <section class="section" id="ia">
+    <div class="section-label">03 · 信息架构</div>
+    <div class="section-title">内容的组织方式</div>
+    <div class="section-desc">三层递进结构：全景 → 角色视图 → 场景详情。</div>
+    <hr class="divider">
+
+    <div class="ia-tree">
+      <div class="ia-l0">🏠 CANN 体验看板首页（全景层）</div>
+
+      <div class="ia-l1">
+        <div class="ia-l1-title">▸ 产品易用性 维度</div>
+        <div class="ia-l2">
+          <span class="tag orange">AI框架开发者</span>
+          <span class="tag orange">算子开发者</span>
+          <span class="tag orange">应用框架开发者</span>
+          <span style="font-size:12px; color:var(--text-muted); display:flex; align-items:center;">× 芯片筛选</span>
+          <span class="tag">A5</span>
+          <span class="tag">其他型号...</span>
+        </div>
+        <div style="margin-top:10px; padding-left:12px; border-left:1px dashed var(--border);">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">以算子开发者为例 → 场景列表：</p>
+          <div class="ia-l2">
+            <span class="tag blue">算子复现部署</span>
+            <span class="tag blue">算子迁移部署</span>
+            <span class="tag blue">Built-in算子定制</span>
+            <span class="tag blue">算子基本功能实现</span>
+            <span class="tag blue">特定shape性能</span>
+            <span class="tag blue">泛化shape性能</span>
+          </div>
+          <div style="margin-top:8px; padding-left:12px; border-left:1px dashed var(--border);">
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">每个场景内的数据维度：</p>
+            <div class="ia-l2">
+              <span class="tag green">Agent 评分</span>
+              <span class="tag green">Agent 运行痛点</span>
+              <span class="tag green">VOD 痛点（真实用户声音）</span>
+              <span class="tag green">改进建议</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ia-l1" style="margin-top:12px;">
+        <div class="ia-l1-title">▸ 社区应用易用性 维度</div>
+        <div class="ia-l2">
+          <span class="tag orange">入门开发者</span>
+        </div>
+        <div style="margin-top:10px; padding-left:12px; border-left:1px dashed var(--border);">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">GitCode 任务流评测：</p>
+          <div class="ia-l2">
+            <span class="tag blue">搜索与发现</span>
+            <span class="tag blue">环境检查与样例</span>
+            <span class="tag blue">快速体验开发与编译</span>
+            <span class="tag blue">测试与验证</span>
+            <span class="tag blue">反馈与贡献</span>
+          </div>
+          <div style="margin-top:8px; padding-left:12px; border-left:1px dashed var(--border);">
+            <div class="ia-l2">
+              <span class="tag green">任务完成率</span>
+              <span class="tag green">Agent 评分</span>
+              <span class="tag green">障碍点</span>
+              <span class="tag green">综合总结</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 交互设计 ── -->
+  <section class="section" id="interaction">
+    <div class="section-label">04 · 交互设计方向</div>
+    <div class="section-title">关键交互模式与设计原则</div>
+    <div class="section-desc">围绕"发现问题 → 定位原因 → 理解证据"这条主线设计交互。</div>
+    <hr class="divider">
+
+    <div class="card-grid col2" style="margin-bottom:16px;">
+      <div class="card">
+        <h3><span class="icon icon-orange">🎛</span> 筛选器设计</h3>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-num">1</div>
+            <div class="flow-content">
+              <h4>维度选择（横向 Tab）</h4>
+              <p>产品易用性 / 社区应用易用性——决定进入哪条故事线</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">2</div>
+            <div class="flow-content">
+              <h4>角色选择（卡片式选择器）</h4>
+              <p>带角色图标和简短描述，让决策有上下文。被选中后高亮。</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">3</div>
+            <div class="flow-content">
+              <h4>芯片型号（下拉/Tag选择）</h4>
+              <p>多选支持跨型号对比，「全部型号」作为默认聚合视图</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-blue">📈</span> 数据展示设计</h3>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-num">A</div>
+            <div class="flow-content">
+              <h4>评分用色彩语义编码</h4>
+              <p>红（&lt;60）/ 黄（60-80）/ 绿（&gt;80）——让严重问题一眼可见</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">B</div>
+            <div class="flow-content">
+              <h4>场景卡片：密度感知</h4>
+              <p>痛点数量用数字气泡显示，VOD 条数也要呈现，体现"证据厚度"</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">C</div>
+            <div class="flow-content">
+              <h4>展开/收起的双层结构</h4>
+              <p>场景列表是第一层，点击展开详情（Agent评分详情 + 痛点列表 + VOD原声）</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-num">D</div>
+            <div class="flow-content">
+              <h4>VOD 作为"真实声音"单独呈现</h4>
+              <p>引用样式，附来源标签，与 Agent 评分形成对照，增强可信度</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid col3">
+      <div class="card">
+        <h3><span class="icon icon-green">🔢</span> 全景层的优先级排序</h3>
+        <p>所有场景按评分从低到高排列，最需要关注的永远在最上面。不要按场景名称字母序——那是数据库思维，不是决策思维。</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-yellow">📌</span> 痛点聚类展示</h3>
+        <p>同一场景下的痛点需要做归类（如：文档类、工具类、API类），避免长列表导致的信息过载。归类之后可以看出哪一类问题最突出。</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-purple">📅</span> 时间维度（建议后续加）</h3>
+        <p>如果有历史数据，可以加"趋势线"：本期 vs 上期，直观呈现改进效果。这是看板从"报告工具"变成"追踪工具"的关键。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 05 布局草稿 ── -->
+  <section class="section" id="sketch">
+    <div class="section-label">05 · 布局草稿</div>
+    <div class="section-title">建议的视觉布局（线框图）</div>
+    <div class="section-desc">以「算子开发者 / A5 芯片」视角为例，演示三层信息如何在同一页面组织。</div>
+    <hr class="divider">
+
+    <div class="sketch">
+      <!-- 顶部 Header -->
+      <div class="sketch-header">
+        <b>CANN 开发者体验看板</b>
+        <span style="margin-left:auto">📅 2025-Q1 &nbsp;|&nbsp; 数据来源: Agent评测 + VOD</span>
+      </div>
+
+      <!-- 筛选器 -->
+      <div style="display:flex; gap:16px; margin-bottom:12px; flex-wrap:wrap;">
+        <div>
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">维度</div>
+          <div class="sketch-filter">
+            <div class="sketch-filter-pill active">产品易用性</div>
+            <div class="sketch-filter-pill">社区应用易用性</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">角色</div>
+          <div class="sketch-filter">
+            <div class="sketch-filter-pill">AI框架开发者</div>
+            <div class="sketch-filter-pill active">算子开发者</div>
+            <div class="sketch-filter-pill">应用框架开发者</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;">芯片</div>
+          <div class="sketch-filter">
+            <div class="sketch-filter-pill active">全部</div>
+            <div class="sketch-filter-pill">A5</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 全景概览指标 -->
+      <div style="font-size:11px; color:var(--text-muted); margin-bottom:6px;">总览指标</div>
+      <div class="sketch-overview" style="margin-bottom:16px;">
+        <div class="sketch-metric">
+          <div class="val val-yellow">67</div>
+          <div class="lbl">综合 Agent 评分</div>
+        </div>
+        <div class="sketch-metric">
+          <div class="val val-red">23</div>
+          <div class="lbl">活跃痛点数</div>
+        </div>
+        <div class="sketch-metric">
+          <div class="val val-blue">48</div>
+          <div class="lbl">VOD 原声条数</div>
+        </div>
+        <div class="sketch-metric">
+          <div class="val val-red">2</div>
+          <div class="lbl">高危场景（评分&lt;60）</div>
+        </div>
+      </div>
+
+      <!-- 场景卡片 -->
+      <div style="font-size:11px; color:var(--text-muted); margin-bottom:6px;">典型场景（按评分升序）</div>
+      <div class="sketch-scenarios">
+        <div class="sketch-scenario warn">
+          <h5>算子迁移部署 🔴</h5>
+          <div class="sketch-bar"><div class="sketch-bar-fill" style="width:42%; background:var(--red)"></div></div>
+          <p>Agent 评分 42 · 痛点 8 · VOD 12</p>
+        </div>
+        <div class="sketch-scenario warn">
+          <h5>泛化shape性能 🔴</h5>
+          <div class="sketch-bar"><div class="sketch-bar-fill" style="width:55%; background:var(--yellow)"></div></div>
+          <p>Agent 评分 55 · 痛点 5 · VOD 7</p>
+        </div>
+        <div class="sketch-scenario mid">
+          <h5>Built-in 算子定制 🟡</h5>
+          <div class="sketch-bar"><div class="sketch-bar-fill" style="width:68%; background:var(--yellow)"></div></div>
+          <p>Agent 评分 68 · 痛点 4 · VOD 9</p>
+        </div>
+        <div class="sketch-scenario mid">
+          <h5>特定shape性能 🟡</h5>
+          <div class="sketch-bar"><div class="sketch-bar-fill" style="width:72%; background:var(--yellow)"></div></div>
+          <p>Agent 评分 72 · 痛点 3 · VOD 6</p>
+        </div>
+        <div class="sketch-scenario ok">
+          <h5>算子复现部署 🟢</h5>
+          <div class="sketch-bar"><div class="sketch-bar-fill" style="width:81%; background:var(--green)"></div></div>
+          <p>Agent 评分 81 · 痛点 2 · VOD 4</p>
+        </div>
+        <div class="sketch-scenario ok">
+          <h5>算子基本功能实现 🟢</h5>
+          <div class="sketch-bar"><div class="sketch-bar-fill" style="width:85%; background:var(--green)"></div></div>
+          <p>Agent 评分 85 · 痛点 1 · VOD 2</p>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; font-size:12px; color:var(--text-dim); text-align:center;">
+        ↳ 点击任意场景卡片 → 展开详情（评分细项 + 痛点列表 + VOD 原声引用）
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 06 待确认问题 ── -->
+  <section class="section" id="questions">
+    <div class="section-label">06 · 待确认问题</div>
+    <div class="section-title">设计前需要和你确认的点</div>
+    <div class="section-desc">这些问题会直接影响最终设计方案，需要你的判断和补充。</div>
+    <hr class="divider">
+
+    <div class="q-list" style="margin-bottom:32px;">
+      <div class="q-item">
+        <div class="q-num">Q1</div>
+        <div>
+          <h4>Agent 评分的结构是什么？</h4>
+          <p>评分是一个总分（0-100）？还是有多个子项（如：文档完整性/工具可用性/错误处理...）？每个场景的评分维度是否统一？这直接决定评分区域的展示方式。</p>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">Q2</div>
+        <div>
+          <h4>痛点和 VOD 痛点的区别？</h4>
+          <p>「痛点」是 Agent 跑出来的问题，还是人工整理的？「VOD 痛点」是真实用户反馈，那么 VOD 是什么来源（问卷/访谈/用户社区/工单）？两类痛点在看板上需要明显区分还是合并展示？</p>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">Q3</div>
+        <div>
+          <h4>AI框架开发者和应用框架开发者的典型场景是什么？</h4>
+          <p>目前只明确了算子开发者的 6 个场景。其他两种角色的场景结构是否类似？还是完全不同？这会影响页面是否能复用同一套模板。</p>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">Q4</div>
+        <div>
+          <h4>芯片型号有哪些？是否需要跨型号对比？</h4>
+          <p>目前提到了 A5，还有哪些型号？用户是否需要在同一个视图里对比「A5 vs A3」的评分差异？这会决定是否需要对比模式。</p>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">Q5</div>
+        <div>
+          <h4>看板是否需要历史追踪功能？</h4>
+          <p>现在是否有多期数据（如：2024-Q4 vs 2025-Q1）？如果有，这个看板是否需要展示趋势变化？这是纯静态展示还是接入实时数据？</p>
+        </div>
+      </div>
+      <div class="q-item">
+        <div class="q-num">Q6</div>
+        <div>
+          <h4>入门开发者的任务是否有完成率数据？</h4>
+          <p>5 个任务（搜索与发现、环境检查等）除了评分和痛点，是否有"Agent 是否完成该任务"的成功/失败状态？这会影响入门开发者视图的设计。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 需要提供的信息 -->
+    <div class="section-label" style="margin-bottom:8px;">需要你提供的数据 / 素材</div>
+    <div class="info-grid">
+      <div class="info-item">
+        <h4>🔴 必需 <span class="badge">核心数据</span></h4>
+        <ul>
+          <li>各角色 × 场景的 Agent 评分（哪怕是示例数据或结构）</li>
+          <li>痛点列表（文字描述 + 严重程度）</li>
+          <li>VOD 原声样本（哪怕 3-5 条）</li>
+          <li>所有芯片型号名称</li>
+          <li>AI框架开发者 / 应用框架开发者的场景列表</li>
+        </ul>
+      </div>
+      <div class="info-item">
+        <h4>🟡 可选 <span class="badge opt">提升完整度</span></h4>
+        <ul>
+          <li>品牌色 / 设计规范（如有）</li>
+          <li>历史期数数据（用于趋势展示）</li>
+          <li>角色图标或插图资源</li>
+          <li>痛点分类体系（文档/工具/API等）</li>
+          <li>看板预期的主要受众（团队内部/向上汇报/公开）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 07 设计结论 ── -->
+  <section class="section">
+    <div class="section-label">07 · 设计方向总结</div>
+    <div class="section-title">建议的重构方向</div>
+    <hr class="divider">
+    <div class="conclusion">
+      <h3>核心设计原则</h3>
+      <div class="principle-list">
+        <div class="principle">
+          <span class="p-icon">🎯</span>
+          <div><b>问题优先，而非数据优先</b> <span>——排序、颜色、强调都以"哪里最差"为导向，而非展示所有数据</span></div>
+        </div>
+        <div class="principle">
+          <span class="p-icon">🔗</span>
+          <div><b>三类证据互相印证</b> <span>——Agent评分 + Agent痛点 + VOD原声，在同一场景下并列呈现，增强可信度</span></div>
+        </div>
+        <div class="principle">
+          <span class="p-icon">📐</span>
+          <div><b>层级清晰，渐进披露</b> <span>——全景 → 角色 → 场景 → 详情，每一层只展示该层需要的信息</span></div>
+        </div>
+        <div class="principle">
+          <span class="p-icon">🧭</span>
+          <div><b>筛选即叙事</b> <span>——角色和芯片筛选不只是过滤数据，更是进入一个专属的分析视角</span></div>
+        </div>
+        <div class="principle">
+          <span class="p-icon">📈</span>
+          <div><b>为改进而设计</b> <span>——每个痛点和评分最终要指向"下一步做什么"，看板的终点是行动，不是观察</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>
