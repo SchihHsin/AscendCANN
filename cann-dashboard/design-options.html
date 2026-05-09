@@ -18,15 +18,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
 .tab{padding:17px 18px;font-size:13px;font-weight:500;color:#6b7280;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:inherit;display:flex;align-items:center;gap:7px;transition:color .15s,border-color .15s;position:relative}
 .tab:hover{color:#374151}
 .tab.on{color:#c7000b;border-bottom-color:#c7000b}
-.tab-info{position:relative;display:inline-flex;align-items:center;line-height:0}
-.tab-info-icon{color:#d1d5db;transition:color .15s;display:block}
-.tab-info:hover .tab-info-icon{color:#9ca3af}
-.tab-pop{position:absolute;top:calc(100% + 12px);right:-10px;width:320px;background:#fff;border:1px solid #e5e7eb;border-left:3px solid #c7000b;border-radius:10px;padding:14px 16px;box-shadow:0 8px 24px rgba(0,0,0,.1);opacity:0;pointer-events:none;transform:translateY(-4px);transition:opacity .18s,transform .18s;z-index:100;text-align:left;white-space:normal;font-weight:400}
-.tab-info:hover .tab-pop{opacity:1;pointer-events:auto;transform:translateY(0)}
-.tab-pop-tag{font-size:10px;font-weight:700;color:#c7000b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
-.tab-pop p{font-size:12px;color:#374151;line-height:1.75}
-.tab-pop strong{color:#111827;font-weight:600}
-.tab-pop em{color:#c7000b;font-style:normal;font-weight:600}
 
 /* ── PANEL ── */
 .panel{display:none;padding:28px 40px;max-width:1300px;margin:0 auto}
@@ -326,6 +317,17 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
 .kpi-bar-fill.bad{background:linear-gradient(90deg,#fca5a5,#c7000b)}
 .kpi-bar-val{font-size:12px;font-weight:700;text-align:right}
 .kpi-bar-val.ok{color:#15803d}.kpi-bar-val.mid{color:#b45309}.kpi-bar-val.bad{color:#c7000b}
+
+/* ── FLOATING RATIONALE ── */
+.float-ux{position:fixed;bottom:24px;right:24px;z-index:200}
+.float-btn{display:flex;align-items:center;gap:7px;padding:8px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.1);font-size:12px;font-weight:500;color:#6b7280;cursor:default;user-select:none;transition:border-color .15s,color .15s}
+.float-ux:hover .float-btn{border-color:#c7000b;color:#c7000b}
+.float-pop{position:absolute;bottom:calc(100% + 10px);right:0;width:340px;background:#fff;border:1px solid #e5e7eb;border-left:3px solid #c7000b;border-radius:12px;padding:16px 18px;box-shadow:0 8px 32px rgba(0,0,0,.12);opacity:0;pointer-events:none;transform:translateY(6px);transition:opacity .2s,transform .2s}
+.float-ux:hover .float-pop{opacity:1;pointer-events:auto;transform:translateY(0)}
+.float-pop-tag{font-size:10px;font-weight:700;color:#c7000b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.float-pop p{font-size:12.5px;color:#374151;line-height:1.75}
+.float-pop strong{color:#111827}
+.float-pop em{color:#c7000b;font-style:normal;font-weight:600}
 </style>
 </head>
 <body>
@@ -337,9 +339,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
     <span class="ph-title">体验看板 · 设计方案对比</span>
   </div>
   <div class="topbar-tabs">
-    <button class="tab on" onclick="switchTab('hm',this)">方案一：全景决策视图 <span class="tab-info"><svg class="tab-info-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="tab-pop"><div class="tab-pop-tag">设计依据</div><p>基于 <strong>前注意属性理论</strong>，颜色让用户无需逐格阅读即完成全场景严重程度对比，<em>决策时间从分钟级压缩到秒级</em>。每格叠加趋势箭头，支持"变好还是变坏"的即时判断。右侧面板以 <strong>渐进式披露</strong> 方式整合三类证据，点击才展开，不造成信息过载。最适合<strong>跨场景横向排优先级</strong>的决策场景。</p></div></span></button>
-    <button class="tab" onclick="switchTab('fl',this)">方案二：场景解剖视图 <span class="tab-info"><svg class="tab-info-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="tab-pop"><div class="tab-pop-tag">设计依据</div><p>遵循 <strong>信息层级理论</strong>，按"结论→证据→明细"纵向排列，契合 <em>F 型视觉扫描规律</em>。顶部健康判定提供即时决策锚点，开发者漏斗揭示"哪步流失最多人"，痛点优先级评分让决策者直接读出"先修哪个"。最适合<strong>单一场景的深度分析与方案评审</strong>。</p></div></span></button>
-    <button class="tab" onclick="switchTab('jt',this)">方案三：旅程溯因视图 <span class="tab-info"><svg class="tab-info-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="tab-pop"><div class="tab-pop-tag">设计依据</div><p>基于 <strong>情境映射理论</strong>，以开发者真实任务流为主轴，将体验问题绑定到具体行为节点。时间轴显示<em>各步耗时占比和放弃率</em>，一眼看出"哪里最拖"。工具调用链暴露执行细节，三类证据就近嵌入，形成因果关系的自然呈现。最适合<strong>深度根因分析与改善路径规划</strong>。</p></div></span></button>
+    <button class="tab on" onclick="switchTab('hm',this)">方案一：全景决策视图</button>
+    <button class="tab" onclick="switchTab('fl',this)">方案二：场景解剖视图</button>
+    <button class="tab" onclick="switchTab('jt',this)">方案三：旅程溯因视图</button>
   </div>
 </div>
 
@@ -763,12 +765,20 @@ function sparkSvg(data, w, h, color) {
 }
 
 // ── TABS ──
+const _uxRat={'hm':`基于 <strong>前注意属性理论</strong>，颜色让用户无需逐格阅读即完成全场景严重程度对比，<em>决策时间从分钟级压缩到秒级</em>。每格叠加趋势箭头，支持"变好还是变坏"的即时判断。右侧面板以 <strong>渐进式披露</strong> 方式整合三类证据，点击才展开，不造成信息过载。最适合<strong>跨场景横向排优先级</strong>的决策场景。`,'fl':`遵循 <strong>信息层级理论</strong>，按"结论→证据→明细"纵向排列，契合 <em>F 型视觉扫描规律</em>。顶部健康判定提供即时决策锚点，开发者漏斗揭示"哪步流失最多人"，痛点优先级评分让决策者直接读出"先修哪个"。最适合<strong>单一场景的深度分析与方案评审</strong>。`,'jt':`基于 <strong>情境映射理论</strong>，以开发者真实任务流为主轴，将体验问题绑定到具体行为节点。时间轴显示<em>各步耗时占比和放弃率</em>，一眼看出"哪里最拖"。工具调用链暴露执行细节，三类证据就近嵌入，形成因果关系的自然呈现。最适合<strong>深度根因分析与改善路径规划</strong>。`};
+const _uxName={'hm':'方案一：全景决策视图','fl':'方案二：场景解剖视图','jt':'方案三：旅程溯因视图'};
+function _updateFux(id){
+  document.getElementById('fux-tag').textContent=_uxName[id]||'当前方案';
+  document.getElementById('fux-body').innerHTML=_uxRat[id]||'';
+}
 function switchTab(id, btn) {
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   btn.classList.add('on');
   document.getElementById('panel-'+id).classList.add('on');
+  _updateFux(id);
 }
+_updateFux('hm');
 
 // ── HEATMAP ──
 const hmData = [
@@ -1022,5 +1032,16 @@ const spData=[[68,65,70,64,62,66,62],[76,74,75,72,73,71,71],[4.2,4.0,4.1,4.3,4.1
 const spColors=['#c7000b','#b45309','#2563eb','#2563eb'];
 spData.forEach((d,i)=>{document.getElementById('sp'+i).innerHTML=sparkSvg(d,62,28,spColors[i]);});
 </script>
+
+<div class="float-ux">
+  <div class="float-btn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    设计依据
+  </div>
+  <div class="float-pop">
+    <div class="float-pop-tag" id="fux-tag">当前方案</div>
+    <p id="fux-body"></p>
+  </div>
+</div>
 </body>
 </html>
