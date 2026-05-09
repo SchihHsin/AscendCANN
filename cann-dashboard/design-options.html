@@ -144,7 +144,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:var(--tex
 .radar-dim-val{font-size:12px;font-weight:700;width:28px;text-align:right}
 
 /* EVIDENCE TABS ① */
-.ev-tabs{display:flex;border-bottom:1px solid var(--border);background:#fff;position:sticky;top:88px;z-index:10;border-radius:0}
+.ev-tabs{display:flex;border-bottom:1px solid var(--border);background:#fff;border-radius:0}
 .ev-tab{padding:9px 18px;font-size:12px;font-weight:500;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px}
 .ev-tab:hover{color:var(--text)}
 .ev-tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
@@ -288,7 +288,7 @@ body.rat-open .rat-sidebar{width:264px}
   <span class="tb-sep">/</span>
   <span class="tb-title">体验看板</span>
   <div class="tb-dims">
-    <button class="dim-tab on" onclick="switchDim('prod',this)">产品应用性</button>
+    <button class="dim-tab on" onclick="switchDim('prod',this)">产品易用性</button>
     <button class="dim-tab" onclick="switchDim('comm',this)">社区易用性</button>
   </div>
   <div class="tb-right">
@@ -348,7 +348,7 @@ body.rat-open .rat-sidebar{width:264px}
     <!-- SCENE LIST -->
     <div class="scene-list">
       <div class="sl-hdr">
-        场景健康度
+        场景
         <div class="sort-toggle">
           <button class="sort-btn on" id="sortScore" onclick="setSort('score')">问题优先</button>
           <button class="sort-btn" id="sortCatalog" onclick="setSort('catalog')">目录顺序</button>
@@ -423,7 +423,7 @@ body.rat-open .rat-sidebar{width:264px}
     <!-- RATIONALE SIDEBAR -->
     <div class="rat-sidebar" id="ratSidebar">
       <div class="rat-sidebar-inner">
-        <div class="rat-panel-hdr">设计决策 · 悬停高亮对应区域</div>
+        <div class="rat-panel-hdr">设计点</div>
 
         <div class="rat-item" onmouseenter="hlRat(1)" onmouseleave="unhlRat()">
           <div class="rat-num">①</div>
@@ -504,7 +504,7 @@ body.rat-open .rat-sidebar{width:264px}
 <!-- FLOATING TOGGLE BUTTON -->
 <button class="float-rat-btn" id="floatRat" onclick="toggleRat()">
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-  设计依据
+  设计点
 </button>
 
 <script>
@@ -1017,11 +1017,15 @@ function switchEvTab(id, btn){
   if(btn) btn.classList.add('on');
   else document.querySelector('.ev-tab').classList.add('on');
   document.getElementById('panel-'+id).classList.add('on');
-  // Scroll so ev-tabs stick at top and new panel content starts visible
+  // If user has scrolled into the panel, scroll back so panel top is visible below ev-tabs
   const tabs=document.querySelector('.ev-tabs');
-  if(tabs){
-    const tabsTop=tabs.getBoundingClientRect().top+window.scrollY-88;
-    if(window.scrollY>tabsTop) window.scrollTo({top:tabsTop,behavior:'smooth'});
+  const panels=document.querySelector('.ev-panels');
+  if(tabs&&panels){
+    const panelTop=panels.getBoundingClientRect().top;
+    const threshold=88+tabs.offsetHeight;
+    if(panelTop<threshold){
+      window.scrollTo({top:window.scrollY+panelTop-threshold,behavior:'smooth'});
+    }
   }
 }
 
