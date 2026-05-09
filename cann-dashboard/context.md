@@ -5,23 +5,31 @@
 
 ---
 
-## 当前进度（2026-05-09）
+## 当前进度（2026-05-10）
 
 ### 已完成
-- UX 分析文档 `analysis.html` v0.4 — 浏览器打开可读
-- 视觉风格：浅色主题（`#f4f5f8` 底）、主题色 `#c7000b`、Inter 字体
-- 布局：左侧固定 sidebar（232px）+ 分组导航 + 线性 SVG icon + Intersection Observer 高亮
-- Sidebar logo：`CANNlogo.png`，点击滚动回顶部
-- 章节顺序与 sidebar 导航对齐（用户研究三节归组、待确认移至收尾）
-- 章节底色交替（白 / `#f4f7fb`），section 铺满 main-content 全宽
-- 封面页：浅灰底、CANN 字样红色、右侧四根升序柱状图（呼应 Ascend + 数据看板）
-- 文件已拆分：`style.css`（样式）、`script.js`（交互）、`analysis.html`（结构+内容）
-- 完成现有页面架构摸底 + 数据结构确认（2026-05-09）
+#### 分析文档（analysis.html）
+- v0.4，含封面 + 13 章节，浅色主题，拆分为 style.css / script.js / analysis.html
+
+#### 新看板（design-options.html）—— 完整可用，模拟数据
+- **整体架构**：Topbar（产品应用性 / 社区易用性切换）→ 筛选栏（芯片 + 角色）→ KPI 条 → 左侧场景列表 + 右侧场景详情
+- **全页滚动**：body 整体滚动；场景列表 `position:sticky`，场景详情随页面展开
+- **场景列表**：4 个算子场景卡片，含折线图（sparkline）+ 痛点/VOD 数量标签 + 两种排序
+  - 问题优先（评分升序，#1/#2 标签）
+  - 目录顺序（产品定义顺序：复现→迁移→Builtin→基本功能，S1/S2 标签）
+- **场景详情**：
+  - 详情 header（名称 + 等级 + 评分）
+  - 排名参照系 ⑤（N 场景中第 X 差 + 所有场景小型对比柱图）
+  - **评测趋势 & 5 维诊断 ③**：左栏近 7 次折线趋势图（含波动稳定性标签），右栏 5 维雷达图（开发成功率/文档质量/环境效率/调试能力/工具稳定性）+ 图例，最弱维度高亮
+  - 三类证据 Tab ①（Agent 评分 / 痛点分析 / VOD 原声）；切换 Tab 时自动滚动使内容顶部可见
+  - Agent 面板：旅程环节评分 bar + **总结**（Agent 对该步骤的一句话判断）+ **Agent 观测**（Agent 跑任务时发现的离散具体问题，逐条列出）+ **子指标网格**（每环节 6–8 个细粒度数据点）+ 工具调用链
+  - 痛点面板：按类型分组 ⑥（文档/工具/API/环境）+ 每条痛点内嵌 Next Step ④
+  - VOD 面板：声量 + 趋势 + 原声引用
+- **设计依据侧栏**：浮动按钮入口保持，点击后面板从右侧嵌入 main-body 布局（第三 flex 列，~264px），不遮挡页面内容；6 条依据，悬停高亮并自动滚动到对应 UI 区域
 
 ### 下一步
-- 确认新看板设计方向（已收集足够信息，待用户选方案）
-- 用模拟数据开始新看板 UI 设计
-- 后续替换真实 Agent 评分数据
+- 接入真实 Agent 评分数据（替换模拟数据）
+- 社区易用性视图（入门开发者 S0~S5 旅程）
 
 ---
 
@@ -208,19 +216,20 @@
 - [x] **Q2 评分聚合方式**：近7次数据均值
 - [ ] **Q3 其他角色场景**：应用开发者整体开发中，AI框架开发者场景已确认
 - [ ] **入门开发者 S2~S5 步骤的任务列表**（目前只知道 S0/S1）
-- [ ] **新看板设计方案**：待用户从设计选项中确认方向
+- [x] **新看板设计方案**：已完成，design-options.html 可用
 
 ---
 
 ## 文件结构
 ```
 AscendCANN/
+├── CANNlogo.png          ← sidebar 使用的 logo
+├── Ascendlogo.svg        ← 备用 Ascend logo
 └── cann-dashboard/
-    ├── analysis.html   ← UX 分析文档（浏览器打开）~1020 行
-    ├── style.css       ← 样式（浅色主题，主题色 #c7000b）~394 行
-    ├── script.js       ← 交互（lightbox + sidebar 高亮）~26 行
-    └── context.md      ← 本文件，项目上下文
-AscendCANN/
-    ├── CANNlogo.png    ← sidebar 使用的 logo
-    └── Ascendlogo.svg  ← 备用 Ascend logo
+    ├── analysis.html     ← UX 分析文档（封面 + 13 章节）~1020 行
+    ├── style.css         ← 分析文档样式（浅色主题，主题色 #c7000b）~394 行
+    ├── script.js         ← 分析文档交互（lightbox + sidebar 高亮）~26 行
+    ├── design-options.html ← 新看板（单文件，模拟数据，~1000 行）
+    ├── context.md        ← 本文件，项目上下文
+    └── process-log.md    ← 协作过程记录
 ```
