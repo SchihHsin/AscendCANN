@@ -2,1275 +2,822 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>CANN 体验看板 · 设计方案对比</title>
+<title>CANN 体验看板</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;min-height:100vh}
+:root{
+  --accent:#c7000b;--blue:#2563eb;--green:#15803d;--yellow:#b45309;
+  --red-bg:#fef2f2;--yellow-bg:#fffbeb;--green-bg:#f0fdf4;--blue-bg:#eff6ff;
+  --border:#e5e7eb;--surface:#f9fafb;--text:#111827;--muted:#6b7280;--dim:#9ca3af;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
-/* ── TOPBAR (header + tabs in one row) ── */
-.topbar{background:#fff;border-bottom:2px solid #e5e7eb;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
-.topbar-left{display:flex;align-items:center;gap:10px;flex-shrink:0;padding:14px 0}
-.ph-logo{font-size:15px;font-weight:700;color:#c7000b;letter-spacing:-.02em}
-.ph-sep{color:#d1d5db;font-size:18px}
-.ph-title{font-size:13px;color:#6b7280;font-weight:500}
-.topbar-tabs{display:flex}
-.tab{padding:17px 18px;font-size:13px;font-weight:500;color:#6b7280;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:inherit;display:flex;align-items:center;gap:7px;transition:color .15s,border-color .15s;position:relative}
-.tab:hover{color:#374151}
-.tab.on{color:#c7000b;border-bottom-color:#c7000b}
+/* ── TOPBAR ── */
+.topbar{background:#fff;border-bottom:1.5px solid var(--border);padding:0 28px;display:flex;align-items:center;height:50px;flex-shrink:0;gap:0}
+.tb-logo{font-size:14px;font-weight:700;color:var(--accent);letter-spacing:-.02em}
+.tb-sep{color:var(--dim);margin:0 8px;font-size:16px}
+.tb-title{font-size:12px;color:var(--muted);font-weight:500}
+.tb-dims{display:flex;margin-left:28px}
+.dim-tab{padding:0 18px;height:50px;font-size:13px;font-weight:500;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;font-family:inherit;transition:all .15s}
+.dim-tab:hover{color:var(--text)}
+.dim-tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tb-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.period-pill{font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;display:flex;align-items:center;gap:4px}
+.export-btn{font-size:11px;font-weight:500;color:var(--muted);background:#fff;border:1px solid var(--border);border-radius:6px;padding:5px 11px;cursor:pointer;font-family:inherit;transition:all .15s}
+.export-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-/* ── PANEL ── */
-.panel{display:none;padding:28px 40px;max-width:1300px;margin:0 auto}
-.panel.on{display:block}
+/* ── FILTER BAR ── */
+.filter-bar{background:#fff;border-bottom:1px solid var(--border);padding:7px 28px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.fl-lbl{font-size:10px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.fchip{padding:3px 10px;border-radius:14px;font-size:11px;font-weight:500;border:1px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;transition:all .12s}
+.fchip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fl-sep{width:1px;height:14px;background:var(--border);margin:0 2px}
 
-/* ── MOCKUP SHELL ── */
-.mock{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.chrome{background:#f3f4f6;border-bottom:1px solid #e5e7eb;padding:9px 16px;display:flex;align-items:center;gap:6px}
-.dot{width:10px;height:10px;border-radius:50%}
-.dot-r{background:#ef4444}.dot-y{background:#f59e0b}.dot-g{background:#22c55e}
-.chrome-url{margin-left:10px;background:#fff;border:1px solid #d1d5db;border-radius:6px;padding:3px 12px;font-size:11px;color:#9ca3af;flex:1;max-width:360px}
+/* ── KPI STRIP ── */
+.kpi-strip{display:grid;grid-template-columns:1fr 1fr 1fr 1.8fr;gap:10px;padding:12px 28px;flex-shrink:0}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:9px;padding:11px 14px}
+.kpi-lbl{font-size:10px;color:var(--dim);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.kpi-val{font-size:22px;font-weight:700;color:var(--text)}
+.kpi-val span{font-size:11px;font-weight:400;color:var(--dim);margin-left:2px}
+.kpi-val.bad{color:var(--accent)}
+.kpi-val.mid{color:var(--yellow)}
+.kpi-delta{font-size:11px;color:var(--dim);margin-top:3px}
+.kpi-delta.dn{color:var(--accent)}
+.kpi-delta.up{color:var(--green)}
+.kpi.border-red{border-left:3px solid var(--accent)}
+.kpi.border-yellow{border-left:3px solid var(--yellow)}
+.conclusion-pills{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 4px}
+.cpill{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:var(--red-bg);color:var(--accent)}
+.cpill.mid{background:var(--yellow-bg);color:var(--yellow)}
 
-/* ── SHARED ATOMS ── */
-.sec-label{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
-.badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px}
-.b-r{background:#fef2f2;color:#c7000b}
-.b-y{background:#fffbeb;color:#b45309}
-.b-g{background:#f0fdf4;color:#15803d}
-.b-gray{background:#f3f4f6;color:#6b7280}
-.trend-up{color:#15803d;font-size:11px;font-weight:600}
-.trend-dn{color:#c7000b;font-size:11px;font-weight:600}
-.trend-flat{color:#9ca3af;font-size:11px}
+/* ── MAIN BODY ── */
+.main-body{display:flex;flex:1;overflow:hidden;padding:12px 28px 16px;gap:12px}
 
-/* ════════════════════════════════════
-   OPTION 1 — HEATMAP COMMAND CENTER
-════════════════════════════════════ */
-.hm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:20px;border-bottom:1px solid #f0f0f0;background:#fafafa}
-.hm-stat{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px}
-.hm-stat-label{font-size:11px;color:#9ca3af;margin-bottom:4px}
-.hm-stat-val{font-size:22px;font-weight:700;color:#1a1a1a}
-.hm-stat-val span{font-size:12px;font-weight:400;color:#9ca3af;margin-left:3px}
-.hm-stat-sub{font-size:11px;margin-top:2px}
+/* ── SCENE LIST ── */
+.scene-list{width:270px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;overflow-y:auto}
+.sl-hdr{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center;padding:0 2px;margin-bottom:2px;flex-shrink:0}
+.sl-sort{font-weight:400;font-size:10px;color:var(--dim)}
 
-.hm-filters{padding:12px 20px;border-bottom:1px solid #f0f0f0;background:#fff;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.fl{font-size:11px;color:#9ca3af;font-weight:600}
-.fchip{padding:4px 11px;border-radius:16px;font-size:11px;font-weight:500;border:1px solid #e5e7eb;background:#fff;color:#6b7280;cursor:pointer;transition:all .12s}
-.fchip.on{background:#c7000b;color:#fff;border-color:#c7000b}
-.fsep{width:1px;height:18px;background:#e5e7eb;margin:0 4px}
+.sc{background:#fff;border:1px solid var(--border);border-radius:9px;padding:11px;cursor:pointer;transition:border-color .15s,box-shadow .15s;position:relative}
+.sc:hover{border-color:#d1d5db;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.sc.sel{border-color:var(--accent)!important;box-shadow:0 0 0 2px rgba(199,0,11,.1)}
+.sc-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.sc-rank{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.sc-rank.bad{background:var(--red-bg);color:var(--accent)}
+.sc-rank.mid{background:var(--yellow-bg);color:var(--yellow)}
+.sc-rank.ok{background:var(--green-bg);color:var(--green)}
+.sc-title{flex:1;min-width:0}
+.sc-name{font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.sc-grade-row{display:flex;align-items:center;gap:6px}
+.grade-tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px}
+.grade-tag.bad{background:var(--red-bg);color:var(--accent)}
+.grade-tag.mid{background:var(--yellow-bg);color:var(--yellow)}
+.grade-tag.ok{background:var(--green-bg);color:var(--green)}
+.sc-score-row{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.sc-score{font-size:20px;font-weight:700}
+.sc-score.bad{color:var(--accent)}
+.sc-score.mid{color:var(--yellow)}
+.sc-score.ok{color:var(--green)}
+.sc-trend{font-size:11px;font-weight:600}
+.sc-trend.dn{color:var(--accent)}
+.sc-trend.up{color:var(--green)}
+.sc-trend.flat{color:var(--dim)}
+.sc-spark{flex:1;height:22px;margin-left:4px}
+.sc-evidence{display:flex;gap:5px}
+.ev-chip{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px;cursor:default}
+.ev-chip.red{background:var(--red-bg);color:var(--accent)}
+.ev-chip.yellow{background:var(--yellow-bg);color:var(--yellow)}
+.ev-chip.gray{background:#f3f4f6;color:var(--muted)}
 
-.hm-body{display:flex}
-.hm-left{flex:1;padding:20px;overflow-x:auto}
-.hm-table{width:100%;border-collapse:collapse;min-width:600px}
-.hm-table th{font-size:10px;color:#6b7280;font-weight:600;padding:8px 10px;text-align:center;background:#f9fafb;border:1px solid #eee}
-.hm-table th:first-child{text-align:left;min-width:150px}
-.hm-table th:last-child{background:#f0f4ff;color:#3730a3}
-.hm-table td{border:1px solid #f0f0f0;padding:0}
-.hm-table td:first-child{padding:10px 12px;font-size:12px;font-weight:500;color:#374151}
-.hm-table tr:hover td{background:#fafafa}
-.hm-table tr.sel td{background:#fef7f7}
-.hm-table tr.sel td:first-child{border-left:3px solid #c7000b}
+/* ── SCENE DETAIL ── */
+.scene-detail{flex:1;background:#fff;border:1px solid var(--border);border-radius:10px;overflow-y:auto;min-width:0}
+.sd-hint{height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--dim);font-size:13px}
+.sd-hint svg{color:var(--border)}
 
-.hcell{text-align:center;padding:6px 4px;cursor:pointer}
-.hcell-inner{display:inline-flex;flex-direction:column;align-items:center;gap:2px}
-.hcell-val{font-size:12px;font-weight:700;padding:4px 8px;border-radius:5px;min-width:48px}
-.hc-r .hcell-val{background:#fef2f2;color:#c7000b}
-.hc-y .hcell-val{background:#fffbeb;color:#b45309}
-.hc-g .hcell-val{background:#f0fdf4;color:#15803d}
-.hcell-trend{font-size:9px;font-weight:600}
-.hc-r .hcell-trend{color:#c7000b}
-.hc-y .hcell-trend{color:#b45309}
-.hc-g .hcell-trend{color:#15803d}
-.row-score{text-align:center;padding:6px 4px}
-.rs-inner{display:flex;flex-direction:column;align-items:center;gap:3px}
-.rs-num{font-size:16px;font-weight:700}
-.rs-bar{width:36px;height:4px;border-radius:2px;overflow:hidden;background:#f0f0f0}
-.rs-fill{height:100%;border-radius:2px}
-.rs-r .rs-num{color:#c7000b}.rs-r .rs-fill{background:#c7000b}
-.rs-y .rs-num{color:#b45309}.rs-y .rs-fill{background:#f59e0b}
-.rs-g .rs-num{color:#15803d}.rs-g .rs-fill{background:#22c55e}
+/* DETAIL HEADER */
+.det-hdr{padding:16px 22px 12px;border-bottom:1px solid #f3f4f6;flex-shrink:0}
+.det-name-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.det-name{font-size:17px;font-weight:700;flex:1}
+.det-grade{font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px}
+.det-grade.bad{background:var(--red-bg);color:var(--accent)}
+.det-grade.mid{background:var(--yellow-bg);color:var(--yellow)}
+.det-grade.ok{background:var(--green-bg);color:var(--green)}
+.det-score{font-size:34px;font-weight:700}
+.det-score.bad{color:var(--accent)}
+.det-score.mid{color:var(--yellow)}
+.det-score.ok{color:var(--green)}
 
-.hm-right{width:280px;border-left:1px solid #f0f0f0;display:flex;flex-direction:column}
-.hm-hint{padding:50px 20px;text-align:center;color:#9ca3af;font-size:12px;line-height:1.8}
-.hm-detail{padding:18px;display:flex;flex-direction:column;gap:14px}
-.hd-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.hd-name{font-size:14px;font-weight:700;color:#111827;line-height:1.3}
-.hd-score-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0}
-.hd-score{font-size:24px;font-weight:700}
-.hd-score-label{font-size:9px;color:#9ca3af;text-align:center}
-.hd-metrics{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.hd-mc{background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:8px}
-.hd-ml{font-size:9px;color:#9ca3af;margin-bottom:2px}
-.hd-mv{font-size:16px;font-weight:700}
-.hd-mt{font-size:10px;margin-top:1px}
-.bad{color:#c7000b}.mid{color:#b45309}.ok{color:#15803d}
-.hd-divider{border:none;border-top:1px solid #f0f0f0}
-.hd-issue-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}
-.hd-issue-text{font-size:11px;color:#374151;line-height:1.5;flex:1}
-.hd-issue-progress{display:flex;align-items:center;gap:5px;margin-top:3px}
-.hd-prog-track{flex:1;height:3px;background:#f0f0f0;border-radius:2px;overflow:hidden}
-.hd-prog-fill{height:100%;border-radius:2px;background:#c7000b}
-.hd-prog-fill.done{background:#22c55e}
-.hd-prog-pct{font-size:9px;color:#9ca3af}
-.hd-vod-row{background:#fffbeb;border-left:3px solid #f59e0b;padding:7px 9px;border-radius:0 5px 5px 0;font-size:11px;color:#374151;line-height:1.55;margin-bottom:5px}
-.hd-vod-meta{font-size:9px;color:#9ca3af;margin-top:3px}
+/* RANK CONTEXT ⑤ */
+.rank-ctx{display:flex;align-items:center;gap:10px;padding:8px 22px;background:#fafafa;border-bottom:1px solid #f0f0f0;flex-shrink:0;position:relative}
+.rank-pill{font-size:10px;font-weight:700;background:var(--red-bg);color:var(--accent);padding:3px 8px;border-radius:4px;white-space:nowrap}
+.rank-pill.mid{background:var(--yellow-bg);color:var(--yellow)}
+.rank-pill.ok{background:var(--green-bg);color:var(--green)}
+.rank-desc{font-size:11px;color:var(--muted);flex:1}
+.rank-mini-bars{display:flex;align-items:flex-end;gap:3px;height:20px}
+.rank-bar{width:10px;border-radius:2px 2px 0 0;background:#e5e7eb;opacity:.6}
+.rank-bar.cur{opacity:1}
+.rank-bar.bad{background:var(--accent)}
+.rank-bar.mid{background:var(--yellow)}
+.rank-bar.ok{background:#22c55e}
+.rank-mean{font-size:10px;color:var(--dim);white-space:nowrap}
 
-/* ════════════════════════════════════
-   OPTION 2 — NARRATIVE FLOW
-════════════════════════════════════ */
-.fl-shell{display:flex}
-.fl-nav{width:196px;border-right:1px solid #f0f0f0;padding:14px 0;flex-shrink:0}
-.fl-nav-lbl{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.07em;padding:0 14px;margin:10px 0 4px}
-.fl-nav-lbl:first-child{margin-top:0}
-.fl-item{padding:8px 14px;font-size:12px;color:#6b7280;cursor:pointer;display:flex;align-items:center;gap:6px;border-right:2px solid transparent;transition:all .12s}
-.fl-item:hover{background:#fafafa;color:#374151}
-.fl-item.on{color:#c7000b;background:#fef2f2;border-right-color:#c7000b;font-weight:600}
-.fl-item-name{flex:1;line-height:1.3}
-.fl-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex-shrink:0}
-.fl-content{flex:1;padding:20px 24px}
+/* DISTRIBUTION ③ */
+.dist-section{padding:11px 22px;border-bottom:1px solid #f0f0f0;flex-shrink:0;background:#fcfcfc;position:relative}
+.dist-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.dist-lbl{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;flex:1}
+.dist-stability{font-size:10px;font-weight:600;padding:2px 8px;border-radius:3px}
+.dist-stability.unstable{background:var(--red-bg);color:var(--accent)}
+.dist-stability.stable{background:var(--green-bg);color:var(--green)}
+.dist-stability.moderate{background:var(--yellow-bg);color:var(--yellow)}
+#distSvg{display:block}
 
-.verdict-banner{border-radius:8px;padding:12px 16px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start}
-.vb-r{background:#fef2f2;border:1px solid #fecaca}
-.vb-y{background:#fffbeb;border:1px solid #fde68a}
-.vb-g{background:#f0fdf4;border:1px solid #bbf7d0}
-.vb-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
-.vb-dot-r{background:#c7000b}.vb-dot-y{background:#f59e0b}.vb-dot-g{background:#22c55e}
-.vb-content{}
-.vb-title{font-size:13px;font-weight:700;margin-bottom:2px}
-.vb-r .vb-title{color:#c7000b}
-.vb-desc{font-size:12px;color:#374151;line-height:1.6}
+/* EVIDENCE TABS ① */
+.ev-tabs{display:flex;border-bottom:1px solid var(--border);background:#fff;position:sticky;top:0;z-index:10}
+.ev-tab{padding:9px 18px;font-size:12px;font-weight:500;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px}
+.ev-tab:hover{color:var(--text)}
+.ev-tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.ev-tab .ev-tab-count{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;background:#f3f4f6;color:var(--muted)}
+.ev-tab.on .ev-tab-count{background:var(--red-bg);color:var(--accent)}
+.ev-panels{}
+.ev-panel{display:none;padding:14px 22px 28px}
+.ev-panel.on{display:block}
 
-.metrics-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.mc{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px}
-.mc-lbl{font-size:10px;color:#9ca3af;margin-bottom:5px;line-height:1.3}
-.mc-val{font-size:22px;font-weight:700}
-.mc-val.bad{color:#c7000b}.mc-val.mid{color:#b45309}.mc-val.ok{color:#15803d}
-.mc-meta{display:flex;align-items:center;gap:5px;margin-top:3px}
-.mc-vs{font-size:10px;color:#9ca3af}
+/* AGENT PANEL */
+.agent-section-lbl{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.agent-step-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f5f5f5}
+.agent-step-row:last-child{border-bottom:none}
+.as-name{width:72px;font-size:11px;font-weight:600;color:var(--text);flex-shrink:0;padding-top:3px}
+.as-right{flex:1;min-width:0}
+.as-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.as-bar-track{flex:1;height:7px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.as-bar-fill{height:100%;border-radius:4px}
+.as-bar-fill.bad{background:var(--accent)}
+.as-bar-fill.mid{background:#f59e0b}
+.as-bar-fill.ok{background:#22c55e}
+.as-score{font-size:12px;font-weight:700;width:32px;text-align:right;flex-shrink:0}
+.as-score.bad{color:var(--accent)}
+.as-score.mid{color:var(--yellow)}
+.as-score.ok{color:var(--green)}
+.as-stuck{font-size:11px;color:var(--muted);padding:5px 8px;background:#fef9f9;border-left:2px solid #fca5a5;border-radius:0 4px 4px 0;line-height:1.55}
+.as-stuck b{font-size:10px;font-weight:700;color:var(--accent);display:block;margin-bottom:1px}
+.tool-chain-row{margin-top:14px;padding-top:12px;border-top:1px solid #f0f0f0}
+.tool-chain-lbl{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.tool-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tool-chip{font-size:10px;font-weight:600;padding:3px 8px;border-radius:5px;border:1px solid var(--border)}
+.tool-chip.ok{background:var(--green-bg);border-color:#bbf7d0;color:var(--green)}
+.tool-chip.warn{background:var(--yellow-bg);border-color:#fde68a;color:var(--yellow)}
+.tool-chip.crit{background:var(--red-bg);border-color:#fecaca;color:var(--accent)}
+.tool-arrow{color:var(--dim);font-size:11px}
 
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.ev-card{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
-.ev-head{padding:9px 13px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-size:12px;font-weight:600;color:#374151}
-.ev-body{padding:12px 13px}
+/* PAIN PANEL ④ ⑥ */
+.pain-cat-section{margin-bottom:14px}
+.pain-cat-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.cat-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px}
+.cat-badge.doc{background:#eff6ff;color:#1d4ed8}
+.cat-badge.tool{background:#fff7ed;color:#c2410c}
+.cat-badge.api{background:#f5f3ff;color:#6d28d9}
+.cat-badge.env{background:var(--green-bg);color:var(--green)}
+.cat-count{font-size:10px;color:var(--dim)}
+.pain-item{border:1px solid var(--border);border-radius:7px;padding:10px 12px;margin-bottom:7px}
+.pain-top{display:flex;align-items:flex-start;gap:8px}
+.pain-score{font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--red-bg);color:var(--accent);flex-shrink:0}
+.pain-body{flex:1;min-width:0}
+.pain-text{font-size:12px;color:var(--text);line-height:1.6;margin-bottom:4px}
+.pain-meta{font-size:10px;color:var(--dim)}
+.pain-next{display:flex;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed #f0f0f0}
+.pain-next-lbl{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+.pain-next-text{font-size:11px;color:var(--blue);cursor:pointer;line-height:1.5}
+.pain-next-text:hover{text-decoration:underline}
+.pain-status{font-size:10px;font-weight:600;padding:1px 6px;border-radius:3px;margin-left:auto;flex-shrink:0}
+.pain-status.progress{background:var(--blue-bg);color:var(--blue)}
+.pain-status.planned{background:#f3f4f6;color:var(--muted)}
 
-.pain-item{display:flex;gap:8px;margin-bottom:10px;align-items:flex-start}
-.pain-left{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;padding-top:1px}
-.pain-score{font-size:14px;font-weight:700;color:#c7000b;line-height:1}
-.pain-score-lbl{font-size:8px;color:#9ca3af;text-align:center;line-height:1.2}
-.pain-right{}
-.pain-text{font-size:11px;color:#374151;line-height:1.5;margin-bottom:3px}
-.pain-tags{display:flex;gap:4px;flex-wrap:wrap}
-.pain-tag{font-size:9px;padding:1px 6px;border-radius:8px;font-weight:600}
-.pt-status{background:#fffbeb;color:#b45309}
-.pt-owner{background:#eff6ff;color:#2563eb}
-.pt-cust{background:#faf5ff;color:#7c3aed}
-.pain-progress{margin-top:4px;display:flex;align-items:center;gap:5px}
-.pp-track{flex:1;height:3px;background:#f0f0f0;border-radius:2px;overflow:hidden}
-.pp-fill{height:100%;border-radius:2px;background:#c7000b}
-.pp-pct{font-size:9px;color:#9ca3af;min-width:24px}
+/* VOD PANEL */
+.vod-item{border:1px solid var(--border);border-radius:7px;padding:11px 13px;margin-bottom:8px}
+.vod-vol-row{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.vod-vol{font-size:22px;font-weight:700}
+.vod-unit{font-size:11px;color:var(--dim)}
+.vod-trend{font-size:12px;font-weight:700}
+.vod-trend.dn{color:var(--accent)}
+.vod-trend.flat{color:var(--yellow)}
+.vod-quote{font-size:12px;color:var(--text);line-height:1.7;padding:8px 10px 8px 20px;background:#fafafa;border-radius:6px;position:relative;font-style:italic}
+.vod-quote::before{content:'"';font-size:22px;color:var(--dim);position:absolute;top:2px;left:6px;line-height:1}
+.vod-src{font-size:10px;color:var(--dim);margin-top:6px}
 
-.vod-item{margin-bottom:10px}
-.vod-head{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.vod-bar{flex:1;height:4px;background:#f0f0f0;border-radius:2px;overflow:hidden}
-.vod-fill{height:100%;background:#c7000b;border-radius:2px}
-.vod-vol{font-size:10px;font-weight:700;color:#c7000b;min-width:26px}
-.vod-trend{font-size:9px;color:#c7000b;font-weight:600}
-.vod-text{font-size:11px;color:#374151;line-height:1.55;border-left:2px solid #e5e7eb;padding-left:7px}
-.vod-meta{font-size:9px;color:#9ca3af;margin-top:2px}
+/* CALLOUT BADGES */
+.callout-badge{
+  display:none;position:absolute;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--blue);color:#fff;
+  font-size:9px;font-weight:700;
+  align-items:center;justify-content:center;
+  border:1.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);
+  z-index:20;pointer-events:none;
+}
+body.rat-open .callout-badge{display:flex}
+body.rat-open .hl-target{transition:outline .1s}
+body.hl-1 .hl-1{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+body.hl-2 .hl-2{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+body.hl-3 .hl-3{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
+body.hl-4 .hl-4{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+body.hl-5 .hl-5{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+body.hl-6 .hl-6{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
 
-.funnel-section{margin-bottom:16px}
-.funnel-row{display:flex;align-items:center;gap:10px;margin-bottom:5px}
-.funnel-label{font-size:11px;color:#374151;font-weight:500;min-width:80px}
-.funnel-track{flex:1;height:20px;background:#f0f0f0;border-radius:4px;overflow:hidden;position:relative}
-.funnel-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;transition:width .3s}
-.funnel-fill-ok{background:linear-gradient(90deg,#86efac,#22c55e)}
-.funnel-fill-warn{background:linear-gradient(90deg,#fde68a,#f59e0b)}
-.funnel-fill-bad{background:linear-gradient(90deg,#fca5a5,#c7000b)}
-.funnel-pct{font-size:10px;font-weight:700;color:#fff}
-.funnel-drop{font-size:10px;color:#9ca3af;min-width:60px;text-align:right}
+/* FLOATING RATIONALE */
+.float-rat{position:fixed;bottom:22px;right:22px;z-index:300;font-family:'Inter',system-ui,sans-serif}
+.rat-btn{display:flex;align-items:center;gap:7px;padding:7px 14px;background:#fff;border:1px solid var(--border);border-radius:22px;box-shadow:0 4px 16px rgba(0,0,0,.1);font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;user-select:none;transition:all .15s}
+.float-rat.open .rat-btn,.rat-btn:hover{border-color:var(--blue);color:var(--blue);background:#f0f4ff}
+.rat-panel{position:absolute;bottom:calc(100% + 10px);right:0;width:390px;background:#fff;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);display:none;max-height:72vh;overflow-y:auto}
+.float-rat.open .rat-panel{display:block}
+.rat-panel-hdr{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.07em;padding:13px 16px 10px;border-bottom:1px solid var(--border)}
+.rat-item{display:flex;gap:10px;padding:11px 14px;border-bottom:1px solid #f5f5f5;cursor:default}
+.rat-item:last-child{border-bottom:none}
+.rat-item:hover,.rat-item.hl{background:#f0f4ff}
+.rat-num{width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rat-content{}
+.rat-head{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.rat-source{font-size:10px;font-weight:600;color:var(--blue);background:var(--blue-bg);padding:1px 6px;border-radius:3px;display:inline-block;margin-bottom:5px}
+.rat-body{font-size:11px;color:var(--muted);line-height:1.65}
+.rat-pointer{font-size:10px;color:var(--blue);margin-top:4px;font-weight:500}
 
-.journey-acc{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
-.ja-row{border-bottom:1px solid #f0f0f0;cursor:pointer}
-.ja-row:last-child{border-bottom:none}
-.ja-header{display:flex;align-items:center;gap:8px;padding:10px 13px;background:#fff;transition:background .1s}
-.ja-header:hover{background:#fafafa}
-.ja-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
-.jn-r{background:#fef2f2;color:#c7000b}.jn-y{background:#fffbeb;color:#b45309}.jn-g{background:#f0fdf4;color:#15803d}
-.ja-name{font-size:12px;color:#374151;font-weight:500;flex:1}
-.ja-right{display:flex;align-items:center;gap:8px}
-.ja-time{font-size:10px;color:#9ca3af}
-.ja-drop{font-size:10px;font-weight:600}
-.ja-drop.bad{color:#c7000b}
-.ja-body{display:none;padding:10px 13px 13px;background:#fafafa;border-top:1px solid #f0f0f0}
-.ja-body.open{display:block}
-.ja-metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;margin-bottom:8px}
-.ja-mc{background:#fff;border:1px solid #e5e7eb;border-radius:5px;padding:7px}
-.ja-ml{font-size:9px;color:#9ca3af;margin-bottom:2px}
-.ja-mv{font-size:14px;font-weight:700}
-
-/* ════════════════════════════════════
-   OPTION 3 — JOURNEY ATLAS
-════════════════════════════════════ */
-.jt-shell{display:flex}
-.jt-nav{width:196px;border-right:1px solid #f0f0f0;padding:14px 0;flex-shrink:0}
-.jt-main{flex:1}
-
-.tl-header{padding:18px 22px 14px;border-bottom:1px solid #f0f0f0;background:#fafafa}
-.tl-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.tl-scenario{font-size:13px;font-weight:700;color:#111827}
-.tl-total-time{font-size:11px;color:#6b7280}
-.tl-total-time strong{color:#c7000b}
-
-.tl-steps{display:flex;position:relative;align-items:flex-start}
-.tl-line{position:absolute;top:20px;left:20px;right:20px;height:2px;background:#e5e7eb;z-index:0}
-.tl-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;cursor:pointer}
-.tl-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid transparent;margin-bottom:5px;transition:transform .15s,box-shadow .15s;flex-shrink:0}
-.tl-step:hover .tl-dot{transform:scale(1.1)}
-.tl-dot.td-r{background:#fef2f2;color:#c7000b;border-color:#fecaca}
-.tl-dot.td-y{background:#fffbeb;color:#b45309;border-color:#fde68a}
-.tl-dot.td-g{background:#f0fdf4;color:#15803d;border-color:#bbf7d0}
-.tl-dot.act{box-shadow:0 0 0 4px rgba(199,0,11,.15)}
-.tl-dot.act.td-r{background:#c7000b;color:#fff}
-.tl-dot.act.td-y{background:#b45309;color:#fff}
-.tl-dot.act.td-g{background:#15803d;color:#fff}
-.tl-meta{text-align:center;max-width:72px}
-.tl-name{font-size:10px;font-weight:600;color:#6b7280;line-height:1.3;margin-bottom:2px}
-.tl-name.act{color:#c7000b}
-.tl-time-pct{font-size:9px;color:#9ca3af}
-.tl-drop{font-size:9px;font-weight:600}
-.tl-drop.bad{color:#c7000b}
-.tl-drop.ok{color:#15803d}
-
-.step-detail{padding:20px 22px}
-.sd-summary{border-radius:8px;padding:12px 15px;margin-bottom:14px;font-size:13px;color:#374151;line-height:1.65}
-.sd-sum-r{background:#fef2f2;border:1px solid #fecaca}
-.sd-sum-y{background:#fffbeb;border:1px solid #fde68a}
-.sd-sum-g{background:#f0fdf4;border:1px solid #bbf7d0}
-.sd-summary strong.r{color:#c7000b}
-.sd-summary strong.y{color:#b45309}
-.sd-summary strong.g{color:#15803d}
-
-.sd-kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:14px}
-.sd-kpi{background:#fff;border:1px solid #e5e7eb;border-radius:7px;padding:10px}
-.sd-kpi-l{font-size:10px;color:#9ca3af;margin-bottom:3px;line-height:1.3}
-.sd-kpi-v{font-size:18px;font-weight:700}
-.sd-kpi-t{font-size:10px;margin-top:2px}
-
-.status-list{margin-bottom:14px;display:flex;flex-direction:column;gap:5px}
-.sl-row{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;padding:7px 10px}
-.sl-label{font-size:11px;color:#374151;font-weight:500;min-width:140px}
-.sl-track{flex:1;height:4px;background:#f0f0f0;border-radius:2px;overflow:hidden}
-.sl-fill{height:100%;border-radius:2px}
-.sl-fill.ok{background:#22c55e}.sl-fill.warn{background:#f59e0b}.sl-fill.crit{background:#c7000b}
-.sl-val{font-size:12px;font-weight:700;min-width:40px;text-align:right}
-.sl-val.ok{color:#15803d}.sl-val.warn{color:#b45309}.sl-val.crit{color:#c7000b}
-.sl-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;min-width:32px;text-align:center}
-.sl-badge.ok{background:#f0fdf4;color:#15803d}
-.sl-badge.warn{background:#fffbeb;color:#b45309}
-.sl-badge.crit{background:#fef2f2;color:#c7000b}
-
-.sd-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.sd-card{background:#fafafa;border:1px solid #e5e7eb;border-radius:8px;padding:13px}
-.sd-card-lbl{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.sd-pain{font-size:12px;color:#374151;line-height:1.55;border-left:3px solid #c7000b;padding-left:8px;margin-bottom:5px}
-.sd-pain-meta{font-size:10px;color:#9ca3af}
-.sd-pain-tags{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
-.sd-vod{font-size:11px;color:#374151;line-height:1.6;border-left:3px solid #f59e0b;padding-left:8px}
-.sd-vod::before{content:'\201C';color:#f59e0b;font-weight:700;font-size:13px}
-.sd-vod-meta{font-size:10px;color:#9ca3af;margin-top:3px}
-.sd-vol{display:inline-block;background:#fef2f2;color:#c7000b;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;margin-top:4px}
-
-.tool-chain{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-bottom:14px}
-.tool-chip{display:flex;align-items:center;gap:4px;padding:4px 9px;border-radius:16px;font-size:11px;font-weight:500;border:1px solid #e5e7eb;background:#fff}
-.tool-ok{border-color:#bbf7d0;background:#f0fdf4;color:#15803d}
-.tool-warn{border-color:#fde68a;background:#fffbeb;color:#b45309}
-.tool-crit{border-color:#fecaca;background:#fef2f2;color:#c7000b}
-.tool-arrow{color:#d1d5db;font-size:12px}
-.tool-rate{font-size:9px;opacity:.8}
-
-/* ── RADAR CHART ── */
-.hd-radar{display:flex;flex-direction:column;align-items:center;padding:4px 0 8px}
-.hd-radar-lbl{font-size:9px;color:#9ca3af;margin-top:3px}
-
-/* ── HEALTH RING ROW ── */
-.health-ring-row{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px;margin-bottom:14px}
-.hr-ring{flex-shrink:0}
-.hr-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;flex:1}
-.hr-mitem{background:#f9fafb;border-radius:6px;padding:7px 10px}
-.hr-mlbl{font-size:9px;color:#9ca3af;margin-bottom:2px}
-.hr-mval{font-size:14px;font-weight:700;display:flex;align-items:baseline;gap:5px}
-
-/* ── SPARKLINE CARDS ── */
-.spark-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.spark-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px}
-.spark-lbl{font-size:10px;color:#9ca3af;margin-bottom:2px;line-height:1.3}
-.spark-val{font-size:20px;font-weight:700}
-.spark-foot{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
-.spark-trend-lbl{font-size:10px}
-
-/* ── KPI MINI BAR CHART ── */
-.kpi-bar-grid{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
-.kpi-bar-row{display:grid;grid-template-columns:150px 1fr 52px;align-items:center;gap:8px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;padding:6px 10px}
-.kpi-bar-lbl{font-size:11px;color:#374151;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kpi-bar-track{height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;position:relative}
-.kpi-bar-fill{height:100%;border-radius:3px}
-.kpi-bar-fill.ok{background:linear-gradient(90deg,#86efac,#22c55e)}
-.kpi-bar-fill.mid{background:linear-gradient(90deg,#fde68a,#f59e0b)}
-.kpi-bar-fill.bad{background:linear-gradient(90deg,#fca5a5,#c7000b)}
-.kpi-bar-val{font-size:12px;font-weight:700;text-align:right}
-.kpi-bar-val.ok{color:#15803d}.kpi-bar-val.mid{color:#b45309}.kpi-bar-val.bad{color:#c7000b}
-
-/* ── FLOATING RATIONALE ── */
-.float-ux{position:fixed;bottom:24px;right:24px;z-index:200}
-.float-btn{display:flex;align-items:center;gap:7px;padding:8px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:24px;box-shadow:0 4px 16px rgba(0,0,0,.1);font-size:12px;font-weight:500;color:#6b7280;cursor:default;user-select:none;transition:border-color .15s,color .15s}
-.float-ux:hover .float-btn{border-color:#c7000b;color:#c7000b}
-.float-pop{position:absolute;bottom:calc(100% + 10px);right:0;width:340px;background:#fff;border:1px solid #e5e7eb;border-left:3px solid #c7000b;border-radius:12px;padding:16px 18px;box-shadow:0 8px 32px rgba(0,0,0,.12);opacity:0;pointer-events:none;transform:translateY(6px);transition:opacity .2s,transform .2s}
-.float-ux:hover .float-pop{opacity:1;pointer-events:auto;transform:translateY(0)}
-.float-pop-tag{font-size:10px;font-weight:700;color:#c7000b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.float-pop p{font-size:12.5px;color:#374151;line-height:1.75}
-.float-pop strong{color:#111827}
-.float-pop em{color:#c7000b;font-style:normal;font-weight:600}
-
-/* === OPTION 1A: SCENARIO CARDS === */
-.sc-shell{display:flex;background:#fff}
-.sc-left{flex:1;overflow:hidden}
-.sc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:18px 20px;border-bottom:1px solid #f0f0f0;background:#fafafa}
-.sc-filters{padding:10px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.sc-cards-wrap{padding:16px 20px;border-bottom:1px solid #f0f0f0}
-.sc-cards-label{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
-.sc-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.sc-card{border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column;gap:8px;border:1.5px solid #e5e7eb;background:#fff;position:relative;overflow:hidden}
-.sc-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
-.sc-card.c-bad::before{background:#c7000b}
-.sc-card.c-mid::before{background:#f59e0b}
-.sc-card.c-ok::before{background:#22c55e}
-.sc-card:hover{border-color:#d0d0d0;box-shadow:0 3px 12px rgba(0,0,0,.08)}
-.sc-card.sel{border-color:#c7000b;box-shadow:0 0 0 3px rgba(199,0,11,.1)}
-.sc-card-rank{position:absolute;top:8px;right:8px;font-size:9px;font-weight:700;color:#d1d5db}
-.sc-card-name{font-size:11.5px;font-weight:600;color:#111827;line-height:1.35;padding-right:16px}
-.sc-ring-row{display:flex;justify-content:center;padding:4px 0}
-.sc-dims{display:flex;flex-direction:column;gap:3px}
-.sc-dim-row{display:flex;justify-content:space-between;align-items:center}
-.sc-dim-lbl{font-size:9px;color:#9ca3af}
-.sc-dim-val{font-size:10px;font-weight:700}
-.sc-dim-val.bad{color:#c7000b}.sc-dim-val.mid{color:#b45309}.sc-dim-val.ok{color:#15803d}
-.sc-trend{font-size:10px;font-weight:600;text-align:right}
-.sc-right{width:280px;border-left:1px solid #f0f0f0;display:flex;flex-direction:column;flex-shrink:0}
-/* === OPTION 1C: SPOTLIGHT === */
-.slc-shell{background:#fff}
-.slc-spotlight{padding:18px 20px 16px;border-bottom:1px solid #f0f0f0;background:linear-gradient(180deg,#fff9f9 0%,#fff 100%)}
-.slc-sp-label{font-size:10px;font-weight:700;color:#c7000b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.slc-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.slc-card{border:1.5px solid #fecaca;border-radius:12px;background:#fff;padding:16px;display:flex;flex-direction:column;gap:12px}
-.slc-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.slc-badge{font-size:10px;font-weight:700;background:#fef2f2;color:#c7000b;padding:2px 8px;border-radius:10px;flex-shrink:0}
-.slc-score-wrap{text-align:right;flex-shrink:0}
-.slc-score{font-size:28px;font-weight:800;color:#c7000b;line-height:1}
-.slc-score-sub{font-size:9px;color:#9ca3af}
-.slc-name{font-size:14px;font-weight:700;color:#111827;flex:1;line-height:1.3}
-.slc-body{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
-.slc-meta{display:flex;flex-direction:column;gap:6px}
-.slc-metric{background:#fef9f9;border:1px solid #fecaca;border-radius:6px;padding:6px 10px}
-.slc-ml{font-size:9px;color:#9ca3af;margin-bottom:1px}
-.slc-mv{font-size:14px;font-weight:700;color:#c7000b}
-.slc-mv-trend{font-size:9px;color:#c7000b;font-weight:600}
-.slc-pain{font-size:11px;color:#374151;line-height:1.6;border-left:3px solid #fca5a5;padding:7px 9px;border-radius:0 6px 6px 0;background:#fff9f9}
-.slc-pain-meta{font-size:9px;color:#9ca3af;margin-top:4px}
-.slc-hm-header{padding:10px 20px 6px;display:flex;align-items:center;gap:8px;background:#fafafa;border-top:1px solid #f0f0f0}
-.slc-hm-lbl{font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.07em}
-
+/* COMMUNITY PLACEHOLDER */
+.community-shell{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--dim);padding:60px}
+.community-shell h3{font-size:15px;font-weight:600;color:var(--text)}
+.community-shell p{font-size:13px;text-align:center;max-width:400px;line-height:1.7}
 </style>
 </head>
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
-  <div class="topbar-left">
-    <span class="ph-logo">CANN</span>
-    <span class="ph-sep">/</span>
-    <span class="ph-title">体验看板 · 设计方案对比</span>
+  <span class="tb-logo">CANN</span>
+  <span class="tb-sep">/</span>
+  <span class="tb-title">体验看板</span>
+  <div class="tb-dims">
+    <button class="dim-tab on" onclick="switchDim('prod',this)">产品应用性</button>
+    <button class="dim-tab" onclick="switchDim('comm',this)">社区易用性</button>
   </div>
-  <div class="topbar-tabs">
-    <button class="tab on" onclick="switchTab('hm',this)">方案一：全景热力矩阵</button>
-    <button class="tab" onclick="switchTab('a1a',this)">方案1A · 场景卡片</button>
-    <button class="tab" onclick="switchTab('a1c',this)">方案1C · Spotlight</button>
-    <button class="tab" onclick="switchTab('fl',this)">方案二：场景解剖视图</button>
-    <button class="tab" onclick="switchTab('jt',this)">方案三：旅程溯因视图</button>
-  </div>
-</div>
-
-<!-- ════════════════ OPTION 1 ════════════════ -->
-<div class="panel on" id="panel-hm">
-  <div class="mock">
-    <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 产品应用性 · 算子开发者 · 全景概览</span></div>
-
-    <!-- quick stats -->
-    <div class="hm-stats">
-      <div class="hm-stat">
-        <div class="hm-stat-label">评估场景</div>
-        <div class="hm-stat-val">4 <span>/ 6 个</span></div>
-        <div class="hm-stat-sub"><span class="trend-flat">2 个暂无旅程数据</span></div>
-      </div>
-      <div class="hm-stat">
-        <div class="hm-stat-label">严重问题场景</div>
-        <div class="hm-stat-val" style="color:#c7000b">2 <span>个</span></div>
-        <div class="hm-stat-sub"><span class="trend-dn">↑ 较上周 +1</span></div>
-      </div>
-      <div class="hm-stat">
-        <div class="hm-stat-label">整体健康评分</div>
-        <div class="hm-stat-val">61 <span>/ 100</span></div>
-        <div class="hm-stat-sub"><span class="trend-dn">↓ 较上周 -3</span></div>
-      </div>
-      <div class="hm-stat">
-        <div class="hm-stat-label">活跃痛点</div>
-        <div class="hm-stat-val">12 <span>条</span></div>
-        <div class="hm-stat-sub"><span class="trend-up">↑ 本周新增 3</span></div>
-      </div>
+  <div class="tb-right">
+    <div class="period-pill">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      2026-Q2 · 第7期
     </div>
-
-    <!-- filters -->
-    <div class="hm-filters">
-      <span class="fl">芯片</span>
-      <span class="fchip on">A5</span><span class="fchip">A2 &amp; A3</span>
-      <span class="fsep"></span>
-      <span class="fl">角色</span>
-      <span class="fchip on">算子开发者</span><span class="fchip">AI 框架开发者</span><span class="fchip">应用开发者</span>
-      <span class="fsep"></span>
-      <span class="fl">评估周期</span>
-      <span class="fchip on">近7次均值</span><span class="fchip">最新单次</span>
-    </div>
-
-    <div class="hm-body">
-      <!-- heatmap -->
-      <div class="hm-left">
-        <div class="sec-label" style="margin-bottom:10px">场景 × 体验维度 · 颜色 = 严重程度，箭头 = 与上周对比趋势</div>
-        <table class="hm-table" id="hmT">
-          <thead>
-            <tr>
-              <th>典型场景</th>
-              <th>开发成功率</th>
-              <th>文档质量</th>
-              <th>环境效率</th>
-              <th>调试能力</th>
-              <th>工具稳定性</th>
-              <th style="background:#f0f4ff;color:#3730a3">综合评分</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr data-i="0" onclick="selHm(this,0)">
-              <td>算子复现部署</td>
-              <td class="hcell hc-r"><div class="hcell-inner"><span class="hcell-val">62%</span><span class="hcell-trend">↓ -4%</span></div></td>
-              <td class="hcell hc-r"><div class="hcell-inner"><span class="hcell-val">54%</span><span class="hcell-trend">↓ -6%</span></div></td>
-              <td class="hcell hc-y"><div class="hcell-inner"><span class="hcell-val">78%</span><span class="hcell-trend">→ 持平</span></div></td>
-              <td class="hcell hc-r"><div class="hcell-inner"><span class="hcell-val">48%</span><span class="hcell-trend">↓ -3%</span></div></td>
-              <td class="hcell hc-y"><div class="hcell-inner"><span class="hcell-val">71%</span><span class="hcell-trend">↑ +2%</span></div></td>
-              <td class="row-score rs-r"><div class="rs-inner"><span class="rs-num">57</span><div class="rs-bar"><div class="rs-fill" style="width:57%"></div></div></div></td>
-            </tr>
-            <tr data-i="1" onclick="selHm(this,1)">
-              <td>算子迁移部署</td>
-              <td class="hcell hc-y"><div class="hcell-inner"><span class="hcell-val">74%</span><span class="hcell-trend">↑ +2%</span></div></td>
-              <td class="hcell hc-r"><div class="hcell-inner"><span class="hcell-val">49%</span><span class="hcell-trend">↓ -8%</span></div></td>
-              <td class="hcell hc-g"><div class="hcell-inner"><span class="hcell-val">91%</span><span class="hcell-trend">↑ +3%</span></div></td>
-              <td class="hcell hc-y"><div class="hcell-inner"><span class="hcell-val">72%</span><span class="hcell-trend">→ 持平</span></div></td>
-              <td class="hcell hc-y"><div class="hcell-inner"><span class="hcell-val">68%</span><span class="hcell-trend">↓ -2%</span></div></td>
-              <td class="row-score rs-y"><div class="rs-inner"><span class="rs-num">69</span><div class="rs-bar"><div class="rs-fill" style="width:69%"></div></div></div></td>
-            </tr>
-            <tr data-i="2" onclick="selHm(this,2)">
-              <td>Builtin 算子定制修改</td>
-              <td class="hcell hc-r"><div class="hcell-inner"><span class="hcell-val">58%</span><span class="hcell-trend">↓ -7%</span></div></td>
-              <td class="hcell hc-y"><div class="hcell-inner"><span class="hcell-val">73%</span><span class="hcell-trend">↑ +4%</span></div></td>
-              <td class="hcell hc-g"><div class="hcell-inner"><span class="hcell-val">88%</span><span class="hcell-trend">↑ +1%</span></div></td>
-              <td class="hcell hc-r"><div class="hcell-inner"><span class="hcell-val">51%</span><span class="hcell-trend">↓ -5%</span></div></td>
-              <td class="hcell hc-r"><div class="hcell-inner"><span class="hcell-val">61%</span><span class="hcell-trend">↓ -4%</span></div></td>
-              <td class="row-score rs-r"><div class="rs-inner"><span class="rs-num">62</span><div class="rs-bar"><div class="rs-fill" style="width:62%"></div></div></div></td>
-            </tr>
-            <tr data-i="3" onclick="selHm(this,3)">
-              <td>算子基本功能实现</td>
-              <td class="hcell hc-g"><div class="hcell-inner"><span class="hcell-val">85%</span><span class="hcell-trend">↑ +3%</span></div></td>
-              <td class="hcell hc-g"><div class="hcell-inner"><span class="hcell-val">82%</span><span class="hcell-trend">↑ +5%</span></div></td>
-              <td class="hcell hc-g"><div class="hcell-inner"><span class="hcell-val">93%</span><span class="hcell-trend">↑ +2%</span></div></td>
-              <td class="hcell hc-g"><div class="hcell-inner"><span class="hcell-val">81%</span><span class="hcell-trend">↑ +6%</span></div></td>
-              <td class="hcell hc-y"><div class="hcell-inner"><span class="hcell-val">76%</span><span class="hcell-trend">→ 持平</span></div></td>
-              <td class="row-score rs-g"><div class="rs-inner"><span class="rs-num">84</span><div class="rs-bar"><div class="rs-fill" style="width:84%"></div></div></div></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- detail -->
-      <div class="hm-right">
-        <div class="hm-hint" id="hmHint">← 点击任意行<br>查看三类证据详情</div>
-        <div class="hm-detail" id="hmDet" style="display:none">
-          <div class="hd-top">
-            <div class="hd-name" id="hdName"></div>
-            <div class="hd-score-wrap"><div class="hd-score bad" id="hdScore"></div><div class="hd-score-label">健康评分</div></div>
-          </div>
-          <div class="hd-radar" id="hdRadar"></div>
-          <hr class="hd-divider">
-          <div class="sec-label">活跃痛点 · 按优先级</div>
-          <div id="hdPains"></div>
-          <hr class="hd-divider">
-          <div class="sec-label">Top VOD 原声</div>
-          <div id="hdVods"></div>
-        </div>
-      </div>
-    </div>
+    <button class="export-btn">↗ 导出摘要</button>
   </div>
 </div>
 
-<!-- ════════════════ OPTION 2 ════════════════ -->
-<div class="panel" id="panel-fl">
-  <div class="mock">
-    <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 算子开发者 · 算子复现部署</span></div>
-    <div class="fl-shell">
-      <div class="fl-nav">
-        <div class="fl-nav-lbl">算子开发者</div>
-        <div class="fl-item on">
-          <div class="fl-item-name">算子复现部署</div>
-          <div class="fl-item-right"><span class="badge b-r">57分</span><span class="trend-dn" style="font-size:10px">↓ -3</span></div>
-        </div>
-        <div class="fl-item">
-          <div class="fl-item-name">算子迁移部署</div>
-          <div class="fl-item-right"><span class="badge b-y">69分</span><span class="trend-up" style="font-size:10px">↑ +2</span></div>
-        </div>
-        <div class="fl-item">
-          <div class="fl-item-name">Builtin 定制修改</div>
-          <div class="fl-item-right"><span class="badge b-r">62分</span><span class="trend-dn" style="font-size:10px">↓ -5</span></div>
-        </div>
-        <div class="fl-item">
-          <div class="fl-item-name">算子基本功能实现</div>
-          <div class="fl-item-right"><span class="badge b-g">84分</span><span class="trend-up" style="font-size:10px">↑ +4</span></div>
-        </div>
-        <div class="fl-item" style="opacity:.4;cursor:default">特定 shape 性能</div>
-        <div class="fl-item" style="opacity:.4;cursor:default">泛化 shape 性能</div>
-        <div class="fl-nav-lbl">AI 框架开发者</div>
-        <div class="fl-item" style="opacity:.4;cursor:default">裸模型亲和优化</div>
+<!-- PROD VIEW -->
+<div id="prodView" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="fl-lbl">芯片</span>
+    <span class="fchip on">A5</span>
+    <span class="fchip">A2 &amp; A3</span>
+    <div class="fl-sep"></div>
+    <span class="fl-lbl">角色</span>
+    <span class="fchip on">算子开发者</span>
+    <span class="fchip">AI 框架开发者</span>
+    <span class="fchip">应用开发者</span>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-lbl">整体健康评分</div>
+      <div class="kpi-val mid">68 <span>/ 100</span></div>
+      <div class="kpi-delta dn">↓ -4 vs 上期</div>
+    </div>
+    <div class="kpi border-red">
+      <div class="kpi-lbl">严重场景</div>
+      <div class="kpi-val bad">2 <span>个</span></div>
+      <div class="kpi-delta dn">↑ 较上期 +1</div>
+    </div>
+    <div class="kpi border-yellow">
+      <div class="kpi-lbl">活跃痛点 · 有 Next Step</div>
+      <div class="kpi-val">12 <span>条</span></div>
+      <div class="kpi-delta">8 条已有明确行动</div>
+    </div>
+    <div class="kpi border-red">
+      <div class="kpi-lbl">本期优先处理</div>
+      <div class="conclusion-pills">
+        <span class="cpill">算子复现部署</span>
+        <span class="cpill">Builtin 算子定制</span>
+      </div>
+      <div class="kpi-delta">综合评分 + 痛点密度自动排序</div>
+    </div>
+  </div>
+
+  <!-- MAIN BODY -->
+  <div class="main-body">
+
+    <!-- SCENE LIST -->
+    <div class="scene-list">
+      <div class="sl-hdr">
+        场景健康度
+        <span class="sl-sort">评分升序 · 最差在上 ↑</span>
+      </div>
+      <div id="sceneListCards"></div>
+    </div>
+
+    <!-- SCENE DETAIL -->
+    <div class="scene-detail" id="sceneDetail">
+      <div class="sd-hint" id="sdHint">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+        点击左侧场景查看三类证据
       </div>
 
-      <div class="fl-content">
-        <!-- verdict -->
-        <div class="verdict-banner vb-r">
-          <div class="vb-dot vb-dot-r"></div>
-          <div class="vb-content">
-            <div class="vb-title">体验评级：差（57/100）· 较上周下降 3 分</div>
-            <div class="vb-desc">文档质量（54%）和调试能力（48%）是当前最大瓶颈，开发者在感知学习和环境验证阶段放弃率合计高达 31%，亟需优先投入资源改善</div>
+      <div id="sdContent" style="display:none">
+
+        <!-- DETAIL HEADER -->
+        <div class="det-hdr">
+          <div class="det-name-row">
+            <div class="det-name" id="detName"></div>
+            <div class="det-grade" id="detGrade"></div>
+            <div class="det-score" id="detScore"></div>
           </div>
         </div>
 
-        <!-- metrics -->
-        <div class="sec-label">整体健康评分 + 核心指标（近 7 次均值）</div>
-        <div class="health-ring-row">
-          <div class="hr-ring" id="fl-ring"></div>
-          <div class="hr-meta">
-            <div class="hr-mitem"><div class="hr-mlbl">开发成功率</div><div class="hr-mval bad">62% <span class="trend-dn" style="font-size:10px">↓ -4%</span></div></div>
-            <div class="hr-mitem"><div class="hr-mlbl">用例执行通过率</div><div class="hr-mval mid">71% <span class="trend-dn" style="font-size:10px">↓ -2%</span></div></div>
-            <div class="hr-mitem"><div class="hr-mlbl">平均复杂度评分</div><div class="hr-mval mid">4.2 <span class="trend-flat" style="font-size:10px">→ 持平</span></div></div>
-            <div class="hr-mitem"><div class="hr-mlbl">平均任务执行时长</div><div class="hr-mval mid">47min <span class="trend-dn" style="font-size:10px">↑ +6min</span></div></div>
-          </div>
-        </div>
-        <div class="spark-grid">
-          <div class="spark-card"><div class="spark-lbl">开发成功率 · 近7次趋势</div><div class="spark-val bad">62%</div><div class="spark-foot"><span class="spark-trend-lbl trend-dn">↓ -4% vs 上周</span><div id="sp0"></div></div></div>
-          <div class="spark-card"><div class="spark-lbl">用例通过率 · 近7次趋势</div><div class="spark-val mid">71%</div><div class="spark-foot"><span class="spark-trend-lbl trend-dn">↓ -2% vs 上周</span><div id="sp1"></div></div></div>
-          <div class="spark-card"><div class="spark-lbl">平均复杂度 · 近7次趋势</div><div class="spark-val mid">4.2</div><div class="spark-foot"><span class="spark-trend-lbl trend-flat">→ 持平</span><div id="sp2"></div></div></div>
-          <div class="spark-card"><div class="spark-lbl">平均执行时长 · 近7次</div><div class="spark-val mid">47min</div><div class="spark-foot"><span class="spark-trend-lbl trend-dn">↑ +6min 变长</span><div id="sp3"></div></div></div>
+        <!-- RANK CONTEXT ⑤ -->
+        <div class="rank-ctx hl-5" style="position:relative">
+          <div class="callout-badge" style="top:-7px;right:-7px">⑤</div>
+          <div class="rank-pill" id="rankPill"></div>
+          <div class="rank-desc" id="rankDesc"></div>
+          <div class="rank-mini-bars" id="rankBars"></div>
+          <div class="rank-mean" id="rankMean"></div>
         </div>
 
-        <!-- funnel -->
-        <div class="funnel-section">
-          <div class="sec-label">开发者旅程漏斗 · 各阶段通过率 / 放弃率</div>
-          <div class="funnel-row">
-            <span class="funnel-label">进入场景</span>
-            <div class="funnel-track"><div class="funnel-fill funnel-fill-ok" style="width:100%"><span class="funnel-pct">100%</span></div></div>
-            <span class="funnel-drop">—</span>
+        <!-- DISTRIBUTION ③ -->
+        <div class="dist-section hl-3" style="position:relative">
+          <div class="callout-badge" style="top:-7px;right:-7px">③</div>
+          <div class="dist-top">
+            <div class="dist-lbl">近 7 次评测得分分布</div>
+            <div class="dist-stability" id="distStability"></div>
           </div>
-          <div class="funnel-row">
-            <span class="funnel-label">感知学习</span>
-            <div class="funnel-track"><div class="funnel-fill funnel-fill-bad" style="width:79%"><span class="funnel-pct">79%</span></div></div>
-            <span class="funnel-drop bad">放弃 21%</span>
-          </div>
-          <div class="funnel-row">
-            <span class="funnel-label">环境准备</span>
-            <div class="funnel-track"><div class="funnel-fill funnel-fill-warn" style="width:69%"><span class="funnel-pct">69%</span></div></div>
-            <span class="funnel-drop bad">放弃 10%</span>
-          </div>
-          <div class="funnel-row">
-            <span class="funnel-label">环境验证</span>
-            <div class="funnel-track"><div class="funnel-fill funnel-fill-warn" style="width:62%"><span class="funnel-pct">62%</span></div></div>
-            <span class="funnel-drop bad">放弃 7%</span>
-          </div>
-          <div class="funnel-row">
-            <span class="funnel-label">完成开发</span>
-            <div class="funnel-track"><div class="funnel-fill funnel-fill-bad" style="width:62%"><span class="funnel-pct">62%</span></div></div>
-            <span class="funnel-drop">开发成功率</span>
-          </div>
+          <div id="distSvgWrap"></div>
         </div>
 
-        <!-- evidence -->
-        <div class="two-col">
-          <div class="ev-card">
-            <div class="ev-head">大客户痛点 · 按优先级评分排序</div>
-            <div class="ev-body">
-              <div class="pain-item">
-                <div class="pain-left"><div class="pain-score">92</div><div class="pain-score-lbl">优先级<br>评分</div></div>
-                <div class="pain-right">
-                  <div class="pain-text">算子报错时 AIC error 日志未显示报错指令，开发者完全无法自主定位，强依赖华为工程师介入</div>
-                  <div class="pain-tags"><span class="pain-tag pt-status">特性开发中</span><span class="pain-tag pt-owner">算子分队</span><span class="pain-tag pt-cust">腾讯·蚂蚁</span></div>
-                  <div class="pain-progress"><div class="pp-track"><div class="pp-fill" style="width:20%"></div></div><span class="pp-pct">20%</span></div>
-                </div>
-              </div>
-              <div class="pain-item">
-                <div class="pain-left"><div class="pain-score">78</div><div class="pain-score-lbl">优先级<br>评分</div></div>
-                <div class="pain-right">
-                  <div class="pain-text">文档与代码版本不同步，参数描述多处错误，开发者无法仅靠官方文档完成复现</div>
-                  <div class="pain-tags"><span class="pain-tag pt-status">规划中</span><span class="pain-tag pt-owner">资料分队</span><span class="pain-tag pt-cust">美团·京东</span></div>
-                  <div class="pain-progress"><div class="pp-track"><div class="pp-fill" style="width:5%"></div></div><span class="pp-pct">5%</span></div>
-                </div>
-              </div>
-              <div class="pain-item">
-                <div class="pain-left"><div class="pain-score">61</div><div class="pain-score-lbl">优先级<br>评分</div></div>
-                <div class="pain-right">
-                  <div class="pain-text">环境搭建步骤过多（平均 14 步），部分步骤无回滚机制，失败后需完全重来</div>
-                  <div class="pain-tags"><span class="pain-tag pt-status">客户验收</span><span class="pain-tag pt-owner">编译器分队</span></div>
-                  <div class="pain-progress"><div class="pp-track"><div class="pp-fill done" style="width:80%"></div></div><span class="pp-pct">80%</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ev-card">
-            <div class="ev-head">VOD 高频原声 · 声量 + 趋势</div>
-            <div class="ev-body">
-              <div class="vod-item">
-                <div class="vod-head"><span class="vod-vol">71</span><div class="vod-bar"><div class="vod-fill" style="width:100%"></div></div><span class="vod-trend">↑ +8</span></div>
-                <div class="vod-text">多算子层存在空指针校验缺失、编译失败、core dump、精度异常、内存越界等多类稳定性问题</div>
-                <div class="vod-meta">算子仓 · 社区 issue · 社区开发者</div>
-              </div>
-              <div class="vod-item">
-                <div class="vod-head"><span class="vod-vol">61</span><div class="vod-bar"><div class="vod-fill" style="width:86%"></div></div><span class="vod-trend">↑ +5</span></div>
-                <div class="vod-text">CANN 多算子仓文档参数错误、格式错误、描述不一致及内容缺失</div>
-                <div class="vod-meta">资料仓库 · 社区 issue · 社区开发者</div>
-              </div>
-              <div class="vod-item">
-                <div class="vod-head"><span class="vod-vol">40</span><div class="vod-bar"><div class="vod-fill" style="width:56%"></div></div><span class="vod-trend trend-flat">→ 持平</span></div>
-                <div class="vod-text">算子资料文档格式不规范、参数描述错误、命令目录错误</div>
-                <div class="vod-meta">资料仓库 · 社区 issue · 社区开发者</div>
-              </div>
-            </div>
-          </div>
+        <!-- EVIDENCE TABS ① -->
+        <div class="ev-tabs hl-1" style="position:relative">
+          <div class="callout-badge" style="top:-7px;right:-7px">①</div>
+          <button class="ev-tab on" onclick="switchEvTab('agent',this)">
+            Agent 评分
+            <span class="ev-tab-count" id="agentTabCount"></span>
+          </button>
+          <button class="ev-tab" onclick="switchEvTab('pain',this)">
+            痛点分析
+            <span class="ev-tab-count" id="painTabCount"></span>
+          </button>
+          <button class="ev-tab" onclick="switchEvTab('vod',this)">
+            VOD 原声
+            <span class="ev-tab-count" id="vodTabCount"></span>
+          </button>
         </div>
 
-        <!-- journey accordion -->
-        <div class="sec-label">开发旅程明细 · 点击展开子指标</div>
-        <div class="journey-acc">
-          <div class="ja-row">
-            <div class="ja-header" onclick="toggleJa(this)">
-              <div class="ja-num jn-r">1</div>
-              <span class="ja-name">感知学习</span>
-              <div class="ja-right"><span class="ja-time">耗时占比 38%</span><span class="ja-drop bad">放弃率 21%</span><span class="badge b-r">54分</span></div>
-            </div>
-            <div class="ja-body">
-              <div class="ja-metrics">
-                <div class="ja-mc"><div class="ja-ml">总检索次数</div><div class="ja-mv bad">8.3次</div></div>
-                <div class="ja-mc"><div class="ja-ml">检索有效率</div><div class="ja-mv bad">54%</div></div>
-                <div class="ja-mc"><div class="ja-ml">文档完整性</div><div class="ja-mv bad">61%</div></div>
-                <div class="ja-mc"><div class="ja-ml">文档准确率</div><div class="ja-mv bad">58%</div></div>
-                <div class="ja-mc"><div class="ja-ml">文档易理解性</div><div class="ja-mv mid">67%</div></div>
-                <div class="ja-mc"><div class="ja-ml">自助解决率</div><div class="ja-mv bad">41%</div></div>
-                <div class="ja-mc"><div class="ja-ml">知识覆盖率</div><div class="ja-mv mid">68%</div></div>
-              </div>
-            </div>
-          </div>
-          <div class="ja-row">
-            <div class="ja-header" onclick="toggleJa(this)">
-              <div class="ja-num jn-y">2</div>
-              <span class="ja-name">环境准备</span>
-              <div class="ja-right"><span class="ja-time">耗时占比 29%</span><span class="ja-drop bad">放弃率 10%</span><span class="badge b-y">72分</span></div>
-            </div>
-            <div class="ja-body">
-              <div class="ja-metrics">
-                <div class="ja-mc"><div class="ja-ml">代码仓拉取次数</div><div class="ja-mv mid">1.8次</div></div>
-                <div class="ja-mc"><div class="ja-ml">下载包尝试次数</div><div class="ja-mv mid">2.3次</div></div>
-                <div class="ja-mc"><div class="ja-ml">装包尝试次数</div><div class="ja-mv mid">2.1次</div></div>
-                <div class="ja-mc"><div class="ja-ml">装包耗时</div><div class="ja-mv mid">18min</div></div>
-                <div class="ja-mc"><div class="ja-ml">安装步骤数</div><div class="ja-mv bad">14步</div></div>
-                <div class="ja-mc"><div class="ja-ml">部署时间</div><div class="ja-mv mid">34min</div></div>
-                <div class="ja-mc"><div class="ja-ml">环境复杂度评分</div><div class="ja-mv bad">3.8/5</div></div>
-              </div>
-            </div>
-          </div>
-          <div class="ja-row">
-            <div class="ja-header" onclick="toggleJa(this)">
-              <div class="ja-num jn-y">3</div>
-              <span class="ja-name">环境验证</span>
-              <div class="ja-right"><span class="ja-time">耗时占比 33%</span><span class="ja-drop bad">放弃率 7%</span><span class="badge b-y">68分</span></div>
-            </div>
-            <div class="ja-body">
-              <div class="ja-metrics">
-                <div class="ja-mc"><div class="ja-ml">平均编译耗时</div><div class="ja-mv mid">12min</div></div>
-                <div class="ja-mc"><div class="ja-ml">编译成功率</div><div class="ja-mv mid">79%</div></div>
-                <div class="ja-mc"><div class="ja-ml">一次编译通过率</div><div class="ja-mv bad">44%</div></div>
-                <div class="ja-mc"><div class="ja-ml">用例验证次数</div><div class="ja-mv mid">2.4次</div></div>
-                <div class="ja-mc"><div class="ja-ml">错误信息可读性</div><div class="ja-mv bad">52%</div></div>
-                <div class="ja-mc"><div class="ja-ml">平均重编译次数</div><div class="ja-mv mid">2.1次</div></div>
-              </div>
-            </div>
-          </div>
+        <div class="ev-panels">
+          <div class="ev-panel on" id="panel-agent"></div>
+          <div class="ev-panel" id="panel-pain"></div>
+          <div class="ev-panel" id="panel-vod"></div>
         </div>
+
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════════════════ OPTION 3 ════════════════ -->
-<div class="panel" id="panel-jt">
-  <div class="mock">
-    <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 算子开发者 · 算子迁移部署 · 感知学习</span></div>
-    <div class="jt-shell">
-      <div class="jt-nav">
-        <div class="fl-nav-lbl">算子开发者</div>
-        <div class="fl-item"><div class="fl-item-name">算子复现部署</div><div class="fl-item-right"><span class="badge b-r">57分</span></div></div>
-        <div class="fl-item on"><div class="fl-item-name">算子迁移部署</div><div class="fl-item-right"><span class="badge b-y">69分</span></div></div>
-        <div class="fl-item"><div class="fl-item-name">Builtin 定制修改</div><div class="fl-item-right"><span class="badge b-r">62分</span></div></div>
-        <div class="fl-item"><div class="fl-item-name">算子基本功能实现</div><div class="fl-item-right"><span class="badge b-g">84分</span></div></div>
-      </div>
-      <div class="jt-main">
-        <!-- timeline -->
-        <div class="tl-header">
-          <div class="tl-top">
-            <span class="tl-scenario">算子迁移部署 · 开发旅程（近7次均值）</span>
-            <span class="tl-total-time">总耗时均值 <strong>52min</strong> · 较上周 ↑ 4min</span>
-          </div>
-          <div class="tl-steps" id="tlSteps">
-            <div class="tl-line"></div>
-            <div class="tl-step" onclick="selStep(0)">
-              <div class="tl-dot td-r act" id="td0">1</div>
-              <div class="tl-meta"><div class="tl-name act" id="tn0">感知学习</div><div class="tl-time-pct">耗时 36%</div><div class="tl-drop bad" id="tdr0">放弃 21%</div></div>
-            </div>
-            <div class="tl-step" onclick="selStep(1)">
-              <div class="tl-dot td-y" id="td1">2</div>
-              <div class="tl-meta"><div class="tl-name" id="tn1">算子迁移</div><div class="tl-time-pct">耗时 22%</div><div class="tl-drop bad" id="tdr1">放弃 8%</div></div>
-            </div>
-            <div class="tl-step" onclick="selStep(2)">
-              <div class="tl-dot td-y" id="td2">3</div>
-              <div class="tl-meta"><div class="tl-name" id="tn2">算子编译</div><div class="tl-time-pct">耗时 23%</div><div class="tl-drop bad" id="tdr2">放弃 5%</div></div>
-            </div>
-            <div class="tl-step" onclick="selStep(3)">
-              <div class="tl-dot td-g" id="td3">4</div>
-              <div class="tl-meta"><div class="tl-name" id="tn3">功能调测</div><div class="tl-time-pct">耗时 12%</div><div class="tl-drop ok" id="tdr3">放弃 2%</div></div>
-            </div>
-            <div class="tl-step" onclick="selStep(4)">
-              <div class="tl-dot td-g" id="td4">5</div>
-              <div class="tl-meta"><div class="tl-name" id="tn4">性能调优</div><div class="tl-time-pct">耗时 7%</div><div class="tl-drop ok" id="tdr4">放弃 0%</div></div>
-            </div>
-          </div>
-        </div>
+<!-- COMMUNITY VIEW -->
+<div id="commView" style="display:none;flex:1;overflow:hidden;flex-direction:column">
+  <div class="community-shell">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    <h3>社区易用性 · 入门开发者视图</h3>
+    <p>基于 Agent 对 S0~S5 旅程（搜索发现 / 环境检查 / 样例体验 / 开发编译 / 测试验证 / 反馈贡献）的端到端评测，展示任务完成率、障碍点分布和 VOD 原声。</p>
+    <p style="color:#c7000b;font-size:12px;font-weight:600">旅程评测数据接入中 · 预计下期上线</p>
+  </div>
+</div>
 
-        <!-- step detail -->
-        <div class="step-detail" id="stepDetail"></div>
+<!-- FLOATING RATIONALE -->
+<div class="float-rat" id="floatRat">
+  <div class="rat-btn" onclick="toggleRat()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    设计依据
+  </div>
+  <div class="rat-panel">
+    <div class="rat-panel-hdr">设计决策 · 对照分析洞察 · 悬停高亮对应区域</div>
+
+    <div class="rat-item" onmouseenter="hlRat(1)" onmouseleave="unhlRat()">
+      <div class="rat-num">①</div>
+      <div class="rat-content">
+        <div class="rat-head">三类证据并列 · Agent / 痛点 / VOD</div>
+        <div class="rat-source">洞察1 · DX Core 4（800+团队 / 40,000+开发者）</div>
+        <div class="rat-body">Agent评分告诉你"流程哪步卡住了"，VOD告诉你"用户是否感知到这个问题"。两类数据互证才能避免"修了技术问题却没解决用户感受"。</div>
+        <div class="rat-pointer">→ 指向：场景详情的三个证据 Tab</div>
       </div>
     </div>
+
+    <div class="rat-item" onmouseenter="hlRat(2)" onmouseleave="unhlRat()">
+      <div class="rat-num">②</div>
+      <div class="rat-content">
+        <div class="rat-head">颜色编码 + 按评分排序（最差在上）</div>
+        <div class="rat-source">洞察2 · Spotify Soundcheck · Datadog Scorecard</div>
+        <div class="rat-body">红/黄/绿色彩语义让决策者 3 秒内扫描出最危险场景，无需逐一读数字。阈值：红&lt;60 / 黄60–80 / 绿&gt;80。场景列表按评分升序，最差永远在顶部。</div>
+        <div class="rat-pointer">→ 指向：左侧场景列表的等级标签和排序</div>
+      </div>
+    </div>
+
+    <div class="rat-item" onmouseenter="hlRat(3)" onmouseleave="unhlRat()">
+      <div class="rat-num">③</div>
+      <div class="rat-content">
+        <div class="rat-head">近 7 次评测分布图（非均值）</div>
+        <div class="rat-source">洞察3 · Apache DevLake DORA Masterclass · Grafana DORA v2</div>
+        <div class="rat-body">"均分57"可能隐藏了某次54的严重失败。7个数据点展示每次评测结果，让团队判断"这次低分是偶然波动还是持续恶化"，同时标注波动幅度。</div>
+        <div class="rat-pointer">→ 指向：场景详情中的7点分布散点图</div>
+      </div>
+    </div>
+
+    <div class="rat-item" onmouseenter="hlRat(4)" onmouseleave="unhlRat()">
+      <div class="rat-num">④</div>
+      <div class="rat-content">
+        <div class="rat-head">每个痛点内嵌 Next Step 行动链接</div>
+        <div class="rat-source">洞察4 · LinearB 工程效能看板 · Spotify Soundcheck Tracks</div>
+        <div class="rat-body">看板的终点是行动，不是观察。每条痛点附"改进建议 + 责任团队"，让 PM 无需离开看板就能判断"这条痛点的下一步是什么"，从报告工具升级为决策工具。</div>
+        <div class="rat-pointer">→ 指向：痛点 Tab 中每条痛点底部的 Next Step</div>
+      </div>
+    </div>
+
+    <div class="rat-item" onmouseenter="hlRat(5)" onmouseleave="unhlRat()">
+      <div class="rat-num">⑤</div>
+      <div class="rat-content">
+        <div class="rat-head">加入参照系，让评分有意义</div>
+        <div class="rat-source">洞察5 · LinearB 2025 Benchmarks · DX Core 4 DXI 指数</div>
+        <div class="rat-body">"57分"单独看无意义。"4个场景中最差，低于均值11分"立刻建立危机感。参照系还包括角色内所有场景的小型柱状图，让排名一眼可见。</div>
+        <div class="rat-pointer">→ 指向：场景详情顶部的排名 + 对比柱状图</div>
+      </div>
+    </div>
+
+    <div class="rat-item" onmouseenter="hlRat(6)" onmouseleave="unhlRat()">
+      <div class="rat-num">⑥</div>
+      <div class="rat-content">
+        <div class="rat-head">痛点按类型分组（文档/工具/API/环境）</div>
+        <div class="rat-source">分析 · 交互设计方向 · Flow B 设计需求</div>
+        <div class="rat-body">分析明确指出：按文档/工具/API/环境归类，避免长列表认知过载。分类后可直接看出"这个场景的问题集中在哪类"，技术Owner无需自己归纳。</div>
+        <div class="rat-pointer">→ 指向：痛点 Tab 中的分类标签组</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <script>
+// ── DATA ──
+const scenarios = [
+  {
+    id:0, name:'算子复现部署', score:57, grade:'bad', gradeLabel:'严重',
+    runs:[63,59,61,54,58,60,57], trend:-3, trendDir:'dn',
+    painCount:8, vodCount:71,
+    agentSteps:[
+      {name:'感知学习', score:54, cls:'bad', stuck:'文档检索有效率仅 47%，平均 8.3 轮才获取有效信息；文档与代码版本不同步，准确率 58%'},
+      {name:'环境准备', score:71, cls:'mid', stuck:'装包平均尝试 2.4 次，版本依赖矛盾导致安装失败率 18%；部署步骤数比预期多 3.2 步'},
+      {name:'环境验证', score:68, cls:'mid', stuck:'算子编译一次通过率仅 44%，错误信息可读性 52%，AIC error 日志缺失报错指令'},
+    ],
+    tools:[
+      {name:'WebSearch',rate:'91%',cls:'ok'},{name:'BrowserNavigate',rate:'88%',cls:'ok'},
+      {name:'DocFetch',rate:'54%',cls:'warn'},{name:'CompileCmd',rate:'44%',cls:'crit'},
+    ],
+    pains:[
+      {cat:'tool', catLabel:'工具类', score:92, text:'AIC error 日志未显示报错指令，开发者无法自主定位，全链路依赖华为工程师介入排查', meta:'腾讯 · 蚂蚁 | 算子分队 | 优先级：高', status:'特性开发中', statusCls:'progress', nextStep:'立项 AIC-2341：增加错误上下文输出及日志定位指引（Q2）'},
+      {cat:'doc', catLabel:'文档类', score:78, text:'文档与代码版本不同步，参数描述多处错误，仅靠官方文档无法完成复现，依赖口口相传', meta:'美团 | 资料分队 | 优先级：高', status:'规划中', statusCls:'planned', nextStep:'文档同步检查纳入发版流程，Q2 覆盖率达 100%'},
+    ],
+    vods:[
+      {vol:71, trend:'↑+8', trendCls:'dn', text:'多算子层存在空指针校验缺失、编译失败、core dump、精度异常、内存越界等稳定性问题', src:'算子仓 · 社区 issue · 社区开发者'},
+      {vol:61, trend:'↑+5', trendCls:'dn', text:'CANN 多算子仓文档参数错误、格式错误、描述不一致及内容缺失，多处版本对不上', src:'资料仓库 · 社区 issue · 社区开发者'},
+    ]
+  },
+  {
+    id:1, name:'Builtin 算子定制修改', score:62, grade:'bad', gradeLabel:'严重',
+    runs:[68,65,63,60,62,64,62], trend:-5, trendDir:'dn',
+    painCount:6, vodCount:40,
+    agentSteps:[
+      {name:'感知学习', score:61, cls:'bad', stuck:'Builtin 算子定制文档覆盖率低，关键接口说明缺失，开发者无法找到完整参考'},
+      {name:'算子实现', score:58, cls:'bad', stuck:'图模式类型缺失，缺乏参考样例，开发者在设计阶段平均重试 3.1 次'},
+      {name:'功能调测', score:71, cls:'mid', stuck:'调试信息可读性 52%，错误日志无法映射到具体代码行'},
+    ],
+    tools:[
+      {name:'DocSearch',rate:'61%',cls:'warn'},{name:'GraphCompile',rate:'58%',cls:'crit'},
+      {name:'DebugLog',rate:'52%',cls:'crit'},{name:'AccuracyCheck',rate:'88%',cls:'ok'},
+    ],
+    pains:[
+      {cat:'doc', catLabel:'文档类', score:88, text:'图模式类型缺失，算子设计与实现阶段缺乏参考样例，开发者无从下手', meta:'京东 | 算子分队 | 优先级：高', status:'特性开发中', statusCls:'progress', nextStep:'补充图模式 Builtin 算子完整样例库（Q2 Q3）'},
+      {cat:'tool', catLabel:'工具类', score:72, text:'Builtin 算子定制文档覆盖率低，关键接口说明缺失，调试信息不可读', meta:'美团 | 资料分队 | 优先级：中', status:'规划中', statusCls:'planned', nextStep:'接口文档覆盖率提升至 90%，纳入 Q3 里程碑'},
+    ],
+    vods:[
+      {vol:35, trend:'↑+3', trendCls:'dn', text:'transformer 算子存在图模式类型缺失、编码韧性不足及描述不一致等多类问题', src:'算子仓 · 社区 issue · 社区开发者'},
+      {vol:40, trend:'→持平', trendCls:'flat', text:'算子资料文档格式不规范、参数描述错误、命令目录错误等多类内容错误', src:'资料仓库 · 社区 issue · 社区开发者'},
+    ]
+  },
+  {
+    id:2, name:'算子迁移部署', score:69, grade:'mid', gradeLabel:'待改善',
+    runs:[67,70,68,65,72,69,71], trend:2, trendDir:'up',
+    painCount:5, vodCount:33,
+    agentSteps:[
+      {name:'感知学习', score:72, cls:'mid', stuck:'迁移相关文档准确率 73%，但 shape 边界场景覆盖不足，开发者需自行探索'},
+      {name:'算子迁移', score:68, cls:'mid', stuck:'迁移脚本覆盖率 68%，复杂 shape 需手工处理，平均尝试 3.4 次才能完成'},
+      {name:'功能调测', score:80, cls:'ok', stuck:'精度验证工具完备，L0/L1 达标率高；L2 场景有少量边界 case 需人工介入'},
+    ],
+    tools:[
+      {name:'MigrateScript',rate:'68%',cls:'warn'},{name:'ShapeCheck',rate:'52%',cls:'crit'},
+      {name:'CompatCheck',rate:'83%',cls:'ok'},{name:'AccuracyCheck',rate:'91%',cls:'ok'},
+    ],
+    pains:[
+      {cat:'tool', catLabel:'工具类', score:85, text:'迁移工具对复杂 shape 支持不完整，边界情况静默失败、无明确错误提示，开发者无法判断失败原因', meta:'蚂蚁 | 算子编程分队 | 优先级：高', status:'特性开发中', statusCls:'progress', nextStep:'Q2 完成 shape 覆盖率提升至 85%，增加边界 case 静默失败提示'},
+      {cat:'doc', catLabel:'文档类', score:64, text:'文档与代码版本不同步，迁移路径描述缺少边界场景说明，需口耳相传', meta:'腾讯 | 资料分队 | 优先级：中', status:'规划中', statusCls:'planned', nextStep:'边界场景文档专项补充，纳入下期评测验证'},
+    ],
+    vods:[
+      {vol:61, trend:'↑+5', trendCls:'dn', text:'CANN 多算子仓存在文档参数错误、格式错误、描述不一致及内容缺失等多类资料问题', src:'资料仓库 · 社区 issue · 社区开发者'},
+      {vol:33, trend:'→持平', trendCls:'flat', text:'ops-transformer 仓量化适配不足、多算子 shape 拦截缺失、编译依赖缺陷及精度失败', src:'算子仓 · 社区 issue · 社区开发者'},
+    ]
+  },
+  {
+    id:3, name:'算子基本功能实现', score:84, grade:'ok', gradeLabel:'健康',
+    runs:[82,85,83,86,84,83,84], trend:4, trendDir:'up',
+    painCount:2, vodCount:40,
+    agentSteps:[
+      {name:'感知学习', score:85, cls:'ok', stuck:'文档质量良好，检索有效率 82%；少量高级 API 说明待补充'},
+      {name:'算子实现', score:88, cls:'ok', stuck:'参考样例完备，开发者平均首次尝试成功率 79%'},
+      {name:'功能调测', score:91, cls:'ok', stuck:'精度验证自动化覆盖率 81%，L0/L1/L2 均达标，放弃率 2%'},
+    ],
+    tools:[
+      {name:'DocSearch',rate:'85%',cls:'ok'},{name:'CodeCompile',rate:'82%',cls:'ok'},
+      {name:'AccuracyCheck',rate:'94%',cls:'ok'},{name:'PerfAnalyzer',rate:'88%',cls:'ok'},
+    ],
+    pains:[
+      {cat:'tool', catLabel:'工具类', score:45, text:'性能调优阶段缺少自动化工具，VEC ratio 调优建议不够具体，开发者难以直接落地', meta:'腾讯 | 工具链分队 | 优先级：低', status:'规划中', statusCls:'planned', nextStep:'调优建议可操作化改造，纳入 Q3 规划'},
+    ],
+    vods:[
+      {vol:40, trend:'→持平', trendCls:'flat', text:'算子资料文档格式不规范、参数描述错误等多类内容错误，主要为低优先级遗留问题', src:'资料仓库 · 社区 issue · 社区开发者'},
+    ]
+  },
+];
 
-// ── SVG CHART HELPERS ──
-function radarSvg(vals, labels, size) {
-  const cx=size/2, cy=size/2, r=size/2-30, n=vals.length;
-  const ang = i => (i/n)*2*Math.PI - Math.PI/2;
-  let out = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
-  [0.25,0.5,0.75,1].forEach(pct => {
-    const pts = Array.from({length:n},(_,i)=>{const a=ang(i),gr=pct*r;return `${cx+gr*Math.cos(a)},${cy+gr*Math.sin(a)}`;}).join(' ');
-    out += `<polygon points="${pts}" fill="none" stroke="${pct===1?'#e5e7eb':'#f3f4f6'}" stroke-width="1"/>`;
-  });
-  for(let i=0;i<n;i++){const a=ang(i);out+=`<line x1="${cx}" y1="${cy}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="#e5e7eb" stroke-width="1"/>`;}
-  const dataPts=vals.map((v,i)=>{const a=ang(i),rv=(v/100)*r;return `${cx+rv*Math.cos(a)},${cy+rv*Math.sin(a)}`;}).join(' ');
-  out+=`<polygon points="${dataPts}" fill="rgba(199,0,11,.12)" stroke="#c7000b" stroke-width="1.5" stroke-linejoin="round"/>`;
-  vals.forEach((v,i)=>{const a=ang(i),rv=(v/100)*r;out+=`<circle cx="${cx+rv*Math.cos(a)}" cy="${cy+rv*Math.sin(a)}" r="3" fill="#c7000b"/>`;});
-  labels.forEach((l,i)=>{
-    const a=ang(i),lr=r+20,lx=cx+lr*Math.cos(a),ly=cy+lr*Math.sin(a);
-    const anchor=lx>cx+8?'start':lx<cx-8?'end':'middle';
-    const dy=ly>cy+8?'0.8em':ly<cy-8?'-0.1em':'0.35em';
-    out+=`<text x="${lx}" y="${ly}" font-size="9" fill="#6b7280" text-anchor="${anchor}" dy="${dy}">${l}</text>`;
-  });
-  out+=`</svg>`;return out;
-}
-function ringSvg(val, size, color) {
-  const cx=size/2,cy=size/2,r=(size-14)/2,circ=2*Math.PI*r,dash=(val/100)*circ;
-  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f0f0f0" stroke-width="10"/>
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="10"
-      stroke-dasharray="${dash} ${circ}" stroke-dashoffset="${circ/4}" stroke-linecap="round"/>
-    <text x="${cx}" y="${cy-5}" text-anchor="middle" font-size="20" font-weight="700" fill="${color}">${val}</text>
-    <text x="${cx}" y="${cy+12}" text-anchor="middle" font-size="9" fill="#9ca3af">/ 100</text>
-  </svg>`;
-}
-function sparkSvg(data, w, h, color) {
+const allScores = scenarios.map(s=>s.score);
+const meanScore = Math.round(allScores.reduce((a,b)=>a+b)/allScores.length);
+
+// ── SVG HELPERS ──
+function sparkSvg(data,w,h,color){
   const min=Math.min(...data),max=Math.max(...data),range=max-min||1;
-  const pts=data.map((v,i)=>`${(i/(data.length-1))*w},${h-3-((v-min)/range)*(h-8)}`).join(' ');
-  const last=data[data.length-1],lx=w,ly=h-3-((last-min)/range)*(h-8);
-  const area=`M0,${h} L${pts.split(' ').join(' L')} L${w},${h} Z`;
-  const uid='s'+Math.random().toString(36).slice(2,7);
-  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-    <defs><linearGradient id="${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity=".25"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
-    <path d="${area}" fill="url(#${uid})"/>
-    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="${lx}" cy="${ly}" r="2.5" fill="${color}"/>
-  </svg>`;
+  const pts=data.map((v,i)=>`${(i/(data.length-1))*w},${h-2-((v-min)/range)*(h-5)}`).join(' ');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${w}" cy="${h-2-((data[data.length-1]-min)/range)*(h-5)}" r="2.5" fill="${color}"/></svg>`;
 }
 
-// ── TABS ──
-const _uxRat={'hm':`基于 <strong>前注意属性理论</strong>，颜色让用户无需逐格阅读即完成全场景严重程度对比，<em>决策时间从分钟级压缩到秒级</em>。每格叠加趋势箭头，支持"变好还是变坏"的即时判断。右侧面板以 <strong>渐进式披露</strong> 方式整合三类证据，点击才展开，不造成信息过载。最适合<strong>跨场景横向排优先级</strong>的决策场景。`,'fl':`遵循 <strong>信息层级理论</strong>，按"结论→证据→明细"纵向排列，契合 <em>F 型视觉扫描规律</em>。顶部健康判定提供即时决策锚点，开发者漏斗揭示"哪步流失最多人"，痛点优先级评分让决策者直接读出"先修哪个"。最适合<strong>单一场景的深度分析与方案评审</strong>。`,'jt':`基于 <strong>情境映射理论</strong>，以开发者真实任务流为主轴，将体验问题绑定到具体行为节点。时间轴显示<em>各步耗时占比和放弃率</em>，一眼看出"哪里最拖"。工具调用链暴露执行细节，三类证据就近嵌入，形成因果关系的自然呈现。最适合<strong>深度根因分析与改善路径规划</strong>。`};
-const _uxName={'hm':'方案一：全景热力矩阵','fl':'方案二：场景解剖视图','jt':'方案三：旅程溯因视图','a1a':'方案1A：场景卡片','a1c':'方案1C：Spotlight'};
-function _updateFux(id){
-  document.getElementById('fux-tag').textContent=_uxName[id]||'当前方案';
-  document.getElementById('fux-body').innerHTML=_uxRat[id]||'';
-}
-function switchTab(id, btn) {
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById('panel-'+id).classList.add('on');
-  _updateFux(id);
-}
-_updateFux('hm');
-
-// ── HEATMAP ──
-const hmData = [
-  { name:'算子复现部署', score:57, scoreCls:'bad', radar:[62,54,78,48,71],
-    metrics:[
-      {l:'开发成功率',v:'62%',t:'↓ -4%',tc:'dn',c:'bad'},
-      {l:'用例通过率',v:'71%',t:'↓ -2%',tc:'dn',c:'mid'},
-      {l:'平均复杂度',v:'4.2',t:'→ 持平',tc:'flat',c:'mid'},
-      {l:'平均执行时长',v:'47min',t:'↑ +6',tc:'dn',c:'mid'},
-    ],
-    pains:[
-      {score:92,text:'AIC error 日志未显示报错指令，开发者无法自主定位，强依赖华为工程师介入',status:'特性开发中',team:'算子分队',cust:'腾讯·蚂蚁',prog:20},
-      {score:78,text:'文档与代码版本不同步，参数描述多处错误，无法仅靠官方文档完成复现',status:'规划中',team:'资料分队',cust:'美团',prog:5},
-    ],
-    vods:[
-      {vol:71,trend:'↑+8',text:'多算子层存在空指针校验缺失、编译失败、core dump、精度异常、内存越界等稳定性问题',meta:'算子仓 · 社区 issue'},
-      {vol:61,trend:'↑+5',text:'CANN 多算子仓文档参数错误、格式错误、描述不一致及内容缺失',meta:'资料仓库 · 社区 issue'},
-    ]
-  },
-  { name:'算子迁移部署', score:69, scoreCls:'mid', radar:[74,49,91,72,68],
-    metrics:[
-      {l:'开发成功率',v:'74%',t:'↑ +2%',tc:'up',c:'mid'},
-      {l:'用例通过率',v:'80%',t:'↑ +1%',tc:'up',c:'ok'},
-      {l:'平均复杂度',v:'3.8',t:'→ 持平',tc:'flat',c:'mid'},
-      {l:'平均执行时长',v:'52min',t:'↑ +4',tc:'dn',c:'mid'},
-    ],
-    pains:[
-      {score:85,text:'文档与代码版本不同步，迁移工具对边界 shape 静默失败，开发者无法自主判断失败原因',status:'特性开发中',team:'算子编程分队',cust:'蚂蚁',prog:30},
-      {score:64,text:'迁移脚本覆盖率仅 68%，复杂 shape 需手工处理，平均需尝试 3.4 次才能完成',status:'规划中',team:'工具链分队',cust:'腾讯',prog:10},
-    ],
-    vods:[
-      {vol:61,trend:'↑+5',text:'CANN 多算子仓存在文档参数错误、格式错误、描述不一致及内容缺失等多类资料问题',meta:'资料仓库 · 社区 issue'},
-      {vol:33,trend:'→持平',text:'ops-transformer 仓量化适配不足、多算子 shape 拦截缺失、编译依赖缺陷及精度失败',meta:'算子仓 · 社区 issue'},
-    ]
-  },
-  { name:'Builtin 算子定制修改', score:62, scoreCls:'bad', radar:[58,73,88,51,61],
-    metrics:[
-      {l:'开发成功率',v:'58%',t:'↓ -7%',tc:'dn',c:'bad'},
-      {l:'用例通过率',v:'61%',t:'↓ -4%',tc:'dn',c:'bad'},
-      {l:'平均复杂度',v:'4.7',t:'↑ +0.3',tc:'dn',c:'bad'},
-      {l:'平均执行时长',v:'63min',t:'↑ +9',tc:'dn',c:'bad'},
-    ],
-    pains:[
-      {score:88,text:'图模式类型缺失，算子设计与实现阶段缺乏参考样例，开发者无从下手',status:'特性开发中',team:'算子分队',cust:'京东',prog:15},
-      {score:72,text:'Builtin 算子定制文档覆盖率低，关键接口说明缺失，调试信息不可读',status:'规划中',team:'资料分队',cust:'美团',prog:0},
-    ],
-    vods:[
-      {vol:35,trend:'↑+3',text:'transformer 算子存在图模式类型缺失、编码韧性不足及描述不一致等多类问题',meta:'算子仓 · 社区 issue'},
-      {vol:40,trend:'→持平',text:'算子资料文档格式不规范、参数描述错误、命令目录错误等多类内容错误',meta:'资料仓库 · 社区 issue'},
-    ]
-  },
-  { name:'算子基本功能实现', score:84, scoreCls:'ok', radar:[85,82,93,81,76],
-    metrics:[
-      {l:'开发成功率',v:'85%',t:'↑ +3%',tc:'up',c:'ok'},
-      {l:'用例通过率',v:'88%',t:'↑ +2%',tc:'up',c:'ok'},
-      {l:'平均复杂度',v:'3.1',t:'↓ -0.2',tc:'up',c:'ok'},
-      {l:'平均执行时长',v:'38min',t:'↓ -3',tc:'up',c:'ok'},
-    ],
-    pains:[
-      {score:45,text:'性能调优阶段缺少自动化工具，VEC ratio 调优建议不够具体',status:'规划中',team:'工具链分队',cust:'腾讯',prog:40},
-    ],
-    vods:[
-      {vol:40,trend:'→持平',text:'算子资料文档格式不规范、参数描述错误等多类内容错误',meta:'资料仓库 · 社区 issue'},
-    ]
-  },
-];
-
-function selHm(tr, i) {
-  document.querySelectorAll('#hmT tr').forEach(r=>r.classList.remove('sel'));
-  tr.classList.add('sel');
-  document.getElementById('hmHint').style.display='none';
-  const d=hmData[i], det=document.getElementById('hmDet');
-  det.style.display='flex';
-  document.getElementById('hdName').textContent=d.name;
-  const sc=document.getElementById('hdScore');
-  sc.textContent=d.score; sc.className='hd-score '+d.scoreCls;
-  const radarLabels=['开发\n成功率','文档\n质量','环境\n效率','调试\n能力','工具\n稳定性'];
-  document.getElementById('hdRadar').innerHTML=
-    radarSvg(d.radar, radarLabels, 200)+
-    `<div class="hd-radar-lbl">5 维体验雷达图 · 外圈=100%</div>`;
-  document.getElementById('hdPains').innerHTML=d.pains.map(p=>
-    `<div class="hd-issue-row"><span class="badge b-r" style="font-size:11px;padding:3px 7px">${p.score}</span><div style="flex:1"><div class="hd-issue-text">${p.text}</div><div style="font-size:9px;color:#9ca3af;margin:2px 0">${p.team} · ${p.cust}</div><div class="hd-issue-progress"><div class="hd-prog-track"><div class="hd-prog-fill ${p.prog>60?'done':''}" style="width:${p.prog}%"></div></div><span class="hd-prog-pct">${p.prog}%</span></div></div></div>`
-  ).join('');
-  document.getElementById('hdVods').innerHTML=d.vods.map(v=>
-    `<div class="hd-vod-row">${v.text}<div class="hd-vod-meta">${v.meta} · 声量 ${v.vol} <span style="color:#c7000b;font-weight:700">${v.trend}</span></div></div>`
-  ).join('');
+function distSvg(runs){
+  const W=460,H=62,PY=10,PX=20;
+  const min=Math.min(...runs)-6,max=Math.max(...runs)+6,range=max-min;
+  const x=i=>PX+(i/(runs.length-1))*(W-2*PX);
+  const y=v=>PY+(1-(v-min)/range)*(H-2*PY);
+  const mean=runs.reduce((a,b)=>a+b)/runs.length;
+  const dotColor=v=>v<60?'#c7000b':v<80?'#f59e0b':'#22c55e';
+  let svg=`<svg width="${W}" height="${H+16}" viewBox="0 0 ${W} ${H+16}" style="overflow:visible">`;
+  // mean dashed line
+  svg+=`<line x1="${PX}" y1="${y(mean)}" x2="${W-PX}" y2="${y(mean)}" stroke="#d1d5db" stroke-dasharray="3,3" stroke-width="1"/>`;
+  // connect dots
+  const pts=runs.map((v,i)=>`${x(i)},${y(v)}`).join(' ');
+  svg+=`<polyline points="${pts}" fill="none" stroke="#e5e7eb" stroke-width="1.5"/>`;
+  // dots
+  runs.forEach((v,i)=>{
+    const isLast=i===runs.length-1;
+    const c=dotColor(v);
+    if(isLast) svg+=`<circle cx="${x(i)}" cy="${y(v)}" r="6" fill="${c}" fill-opacity=".15" stroke="${c}" stroke-width="1"/>`;
+    svg+=`<circle cx="${x(i)}" cy="${y(v)}" r="${isLast?4:3}" fill="${c}" stroke="#fff" stroke-width="1.5"/>`;
+    svg+=`<text x="${x(i)}" y="${H+14}" font-size="9" fill="${isLast?c:'#9ca3af'}" text-anchor="middle" font-weight="${isLast?700:400}">${v}</text>`;
+  });
+  // mean label
+  svg+=`<text x="${W-PX+4}" y="${y(mean)+3}" font-size="9" fill="#9ca3af">均${Math.round(mean)}</text>`;
+  // "本次" label
+  const li=runs.length-1;
+  svg+=`<text x="${x(li)}" y="${y(runs[li])-8}" font-size="9" fill="${dotColor(runs[li])}" text-anchor="middle" font-weight="700">本次</text>`;
+  svg+=`</svg>`;
+  return svg;
 }
 
-// ── JOURNEY ACCORDION ──
-function toggleJa(header) {
-  const body=header.nextElementSibling;
-  body.classList.toggle('open');
-}
-
-// ── JOURNEY TIMELINE ──
-const dotCls=['td-r','td-y','td-y','td-g','td-g'];
-const steps=[
-  { sumCls:'sd-sum-r', sumStr:'<strong class="r">感知学习是最大瓶颈</strong> — 文档完整性 61%、准确率 58%，平均检索 8.3 次才获取有效信息，放弃率高达 21%，是全旅程最高流失节点',
-    kpis:[
-      {l:'总检索次数',v:'8.3次',c:'bad',t:'↑ +1.2 vs 上周'},
-      {l:'文档检索有效率',v:'54%',c:'bad',t:'↓ -6%'},
-      {l:'文档完整性',v:'61%',c:'bad',t:'↓ -3%'},
-      {l:'文档准确率',v:'58%',c:'bad',t:'↓ -5%'},
-      {l:'文档易理解性',v:'67%',c:'mid',t:'→ 持平'},
-      {l:'自助解决率',v:'41%',c:'bad',t:'↓ -4%'},
-      {l:'知识覆盖率',v:'68%',c:'mid',t:'→ 持平'},
-      {l:'放弃率',v:'21%',c:'bad',t:'↑ +3%'},
-    ],
-    type:'kpi',
-    pain:'文档与代码版本不同步，参数描述多处错误，开发者无法仅靠官方文档完成迁移任务，大量依赖口口相传',
-    painMeta:'腾讯 · 优先级：高 · 特性开发中 · 算子分队',
-    vod:'CANN 多算子仓存在文档参数错误、格式错误、描述不一致及内容缺失等多类资料问题',
-    vodMeta:'资料仓库 · 社区 issue · 社区开发者',
-    vol:'声量 61 · ↑ +5 本周',
-    tools:[
-      {name:'WebSearch',rate:'91%',cls:'tool-ok'},
-      {name:'BrowserNavigate',rate:'88%',cls:'tool-ok'},
-      {name:'DocFetch',rate:'54%',cls:'tool-warn'},
-      {name:'CodeSearch',rate:'47%',cls:'tool-crit'},
-    ]
-  },
-  { sumCls:'sd-sum-y', sumStr:'<strong class="y">迁移工具链覆盖不足</strong> — shape 覆盖率 68%，边界 case 处理率 52%，平均需尝试 3.4 次才能完成迁移，存在静默失败',
-    kpis:[
-      {l:'迁移成功率',v:'71%',c:'mid',t:'↑ +2%'},
-      {l:'平均尝试次数',v:'3.4次',c:'bad',t:'↑ +0.5'},
-      {l:'shape 覆盖率',v:'68%',c:'mid',t:'→ 持平'},
-      {l:'边界case处理率',v:'52%',c:'bad',t:'↓ -3%'},
-      {l:'静默失败率',v:'18%',c:'bad',t:'↑ +2%'},
-      {l:'错误提示可读性',v:'49%',c:'bad',t:'→ 持平'},
-      {l:'平均迁移耗时',v:'18min',c:'mid',t:'↑ +2min'},
-      {l:'放弃率',v:'8%',c:'mid',t:'↑ +1%'},
-    ],
-    type:'kpi',
-    pain:'迁移工具对复杂 shape 支持不完整，边界情况下静默失败、无明确错误提示，开发者无法判断失败原因',
-    painMeta:'蚂蚁 · 优先级：高 · 特性开发中 · 算子编程分队',
-    vod:'ops-transformer 仓存在量化适配不足、多算子 shape 拦截缺失、编译依赖缺陷及精度失败问题',
-    vodMeta:'算子仓 · 社区 issue · 社区开发者',
-    vol:'声量 33 · → 持平',
-    tools:[
-      {name:'ShapeCheck',rate:'52%',cls:'tool-crit'},
-      {name:'MigrateScript',rate:'71%',cls:'tool-warn'},
-      {name:'CompatCheck',rate:'83%',cls:'tool-ok'},
-    ]
-  },
-  { sumCls:'sd-sum-y', sumStr:'<strong class="y">编译失败定位困难</strong> — 一次编译通过率仅 44%，错误信息可读性 52%，平均重编译 2.1 次，大量时间消耗在错误排查',
-    kpis:[
-      {l:'编译成功率',v:'79%',c:'mid',t:'→ 持平'},
-      {l:'一次编译通过率',v:'44%',c:'bad',t:'↓ -5%'},
-      {l:'平均编译耗时',v:'12min',c:'mid',t:'↑ +1min'},
-      {l:'错误信息可读性',v:'52%',c:'bad',t:'→ 持平'},
-      {l:'平均重编译次数',v:'2.1次',c:'mid',t:'↑ +0.3'},
-      {l:'错误自愈成功率',v:'23%',c:'bad',t:'↑ +2%'},
-      {l:'放弃率',v:'5%',c:'mid',t:'→ 持平'},
-    ],
-    type:'kpi',
-    pain:'编译报错信息缺乏上下文，无法快速定位到具体代码行，严重依赖有经验工程师介入排查',
-    painMeta:'美团 · 优先级：中 · 规划中 · 编译器分队',
-    vod:'多算子层存在空指针校验缺失、编译失败、core dump、精度异常、内存越界等多类稳定性问题',
-    vodMeta:'算子仓 · 社区 issue · 社区开发者',
-    vol:'声量 71 · ↑ +8 本周',
-    tools:[
-      {name:'CompileCmd',rate:'79%',cls:'tool-warn'},
-      {name:'ErrorParser',rate:'52%',cls:'tool-crit'},
-      {name:'LogAnalyzer',rate:'61%',cls:'tool-warn'},
-    ]
-  },
-  { sumCls:'sd-sum-g', sumStr:'<strong class="g">功能调测整体良好</strong> — 精度验证工具链完备，L0/L1 达标率高，L2 精度场景有少量边界 case 需手工介入',
-    kpis:[
-      {l:'精度通过率',v:'88%',c:'ok',t:'↑ +3%'},
-      {l:'L0 达标率',v:'91%',c:'ok',t:'↑ +2%'},
-      {l:'L1 达标率',v:'85%',c:'ok',t:'↑ +1%'},
-      {l:'L2 达标率',v:'76%',c:'mid',t:'→ 持平'},
-      {l:'平均调测耗时',v:'8min',c:'ok',t:'↓ -1min'},
-      {l:'自动化覆盖率',v:'81%',c:'ok',t:'↑ +4%'},
-      {l:'放弃率',v:'2%',c:'ok',t:'→ 持平'},
-    ],
-    type:'kpi',
-    pain:'L2 精度场景自动化覆盖率有提升空间，极少数复杂 case 仍需人工介入',
-    painMeta:'京东 · 优先级：低 · 规划中 · 算子分队',
-    vod:'算子资料文档格式不规范、参数描述错误、命令目录错误等多类内容错误',
-    vodMeta:'资料仓库 · 社区 issue · 社区开发者',
-    vol:'声量 40 · → 持平',
-    tools:[
-      {name:'AccuracyCheck',rate:'94%',cls:'tool-ok'},
-      {name:'L0Validator',rate:'91%',cls:'tool-ok'},
-      {name:'L2Validator',rate:'76%',cls:'tool-warn'},
-    ]
-  },
-  { sumCls:'sd-sum-y', sumStr:'<strong class="y">4 个性能维度存在警告</strong> — 11 个维度中 7 个达标，VEC ratio、MTE2 ratio、AI Core 利用率偏低，实际/理论耗时差 23%',
-    kpis:null,
-    type:'status',
-    statusItems:[
-      {l:'核间负载均衡',v:'82%',pct:82,s:'ok'},
-      {l:'Block Dim 利用率',v:'88%',pct:88,s:'ok'},
-      {l:'VEC ratio',v:'78%',pct:78,s:'warn'},
-      {l:'MTE2 ratio',v:'71%',pct:71,s:'warn'},
-      {l:'L2 Cache 命中率',v:'82%',pct:82,s:'ok'},
-      {l:'带宽利用率',v:'84%',pct:84,s:'ok'},
-      {l:'AI Core 利用率',v:'69%',pct:69,s:'warn'},
-      {l:'流水线气泡率',v:'8%',pct:92,s:'ok'},
-      {l:'Scalar ratio',v:'6%',pct:94,s:'ok'},
-      {l:'MTE1 ratio',v:'75%',pct:75,s:'ok'},
-      {l:'实际/理论耗时差',v:'23%',pct:54,s:'warn'},
-    ],
-    pain:'VEC ratio 和 MTE2 ratio 偏低，profiling 工具调优建议不够具体，开发者难以直接落地改进方案',
-    painMeta:'腾讯 · 优先级：中 · 客户验收 · 算子分队',
-    vod:'transformer 算子存在图模式类型缺失、编码韧性不足及描述不一致等多类问题',
-    vodMeta:'算子仓 · 社区 issue · 社区开发者',
-    vol:'声量 35 · ↑ +3',
-    tools:[
-      {name:'Profiling',rate:'96%',cls:'tool-ok'},
-      {name:'PerfAnalyzer',rate:'88%',cls:'tool-ok'},
-      {name:'TuneAdvisor',rate:'67%',cls:'tool-warn'},
-    ]
-  },
-];
-
-function selStep(i) {
-  for(let j=0;j<5;j++){
-    const dot=document.getElementById('td'+j), nm=document.getElementById('tn'+j);
-    dot.className='tl-dot '+dotCls[j]+(j===i?' act':'');
-    nm.className='tl-name'+(j===i?' act':'');
-  }
-  const d=steps[i];
-  let metricsHtml='';
-  if(d.type==='kpi'){
-    metricsHtml=`<div class="kpi-bar-grid">${d.kpis.map(k=>{
-      const num=parseFloat(k.v);
-      const barW=k.v.includes('%')?num:(k.c==='bad'?28:k.c==='mid'?62:85);
-      return `<div class="kpi-bar-row"><span class="kpi-bar-lbl">${k.l}</span><div class="kpi-bar-track"><div class="kpi-bar-fill ${k.c}" style="width:${barW}%"></div></div><span class="kpi-bar-val ${k.c}">${k.v}</span></div>`;
-    }).join('')}</div>`;
-  } else {
-    const sl={'ok':'达标','warn':'警告','crit':'严重'};
-    metricsHtml=`<div class="status-list">${d.statusItems.map(s=>`<div class="sl-row"><span class="sl-label">${s.l}</span><div class="sl-track"><div class="sl-fill ${s.s}" style="width:${s.pct}%"></div></div><span class="sl-val ${s.s}">${s.v}</span><span class="sl-badge ${s.s}">${sl[s.s]}</span></div>`).join('')}</div>`;
-  }
-  const toolsHtml=d.tools?`<div class="sec-label">工具调用链 · 括号内为调用成功率</div><div class="tool-chain">${d.tools.map((t,ti)=>`${ti?'<span class="tool-arrow">→</span>':''}<div class="tool-chip ${t.cls}">${t.name} <span class="tool-rate">${t.rate}</span></div>`).join('')}</div>`:'';
-  document.getElementById('stepDetail').innerHTML=`
-    <div class="sd-summary ${d.sumCls}">${d.sumStr}</div>
-    <div class="sec-label">步骤指标（近 7 次均值）</div>
-    ${metricsHtml}
-    ${toolsHtml}
-    <div class="sd-row2">
-      <div class="sd-card"><div class="sd-card-lbl">大客户痛点</div><div class="sd-pain">${d.pain}</div><div class="sd-pain-meta">${d.painMeta}</div></div>
-      <div class="sd-card"><div class="sd-card-lbl">VOD 原声</div><div class="sd-vod">${d.vod}</div><div class="sd-vod-meta">${d.vodMeta}</div><div class="sd-vol">${d.vol}</div></div>
-    </div>`;
-}
-selStep(0);
-// ── Init Option 2 ring + sparklines ──
-document.getElementById('fl-ring').innerHTML = ringSvg(57, 88, '#c7000b');
-const spData=[[68,65,70,64,62,66,62],[76,74,75,72,73,71,71],[4.2,4.0,4.1,4.3,4.1,4.2,4.2],[41,43,44,45,44,48,47]];
-const spColors=['#c7000b','#b45309','#2563eb','#2563eb'];
-spData.forEach((d,i)=>{document.getElementById('sp'+i).innerHTML=sparkSvg(d,62,28,spColors[i]);});
-
-// === 1A: SCENARIO CARDS ===
-const scOrder=[0,2,1,3];
-const scCls=['c-bad','c-bad','c-mid','c-ok'];
-const scWorstDims=[
-  [{l:'调试能力',v:'48%',c:'bad'},{l:'文档质量',v:'54%',c:'bad'}],
-  [{l:'开发成功率',v:'58%',c:'bad'},{l:'调试能力',v:'51%',c:'bad'}],
-  [{l:'文档质量',v:'49%',c:'bad'},{l:'工具稳定性',v:'68%',c:'mid'}],
-  [{l:'工具稳定性',v:'76%',c:'mid'},{l:'调试能力',v:'81%',c:'ok'}],
-];
-const scTrends=['↓ -3','↓ -5','↑ +2','↑ +4'];
-const scTrendCls=['trend-dn','trend-dn','trend-up','trend-up'];
-const scRingColors=['#c7000b','#c7000b','#b45309','#15803d'];
-
-function initScCards(){
-  const cards=document.getElementById('scCards');
-  if(!cards)return;
-  cards.innerHTML=scOrder.map((di,rank)=>{
-    const d=hmData[di];
-    const wd=scWorstDims[rank];
-    return '<div class="sc-card '+scCls[rank]+'" onclick="selSc(this,'+di+')">'
-      +'<div class="sc-card-rank">#'+(rank+1)+'</div>'
-      +'<div class="sc-card-name">'+d.name+'</div>'
-      +'<div class="sc-ring-row">'+ringSvg(d.score,72,scRingColors[rank])+'</div>'
-      +'<div class="sc-dims"><div style="font-size:9px;color:#9ca3af;margin-bottom:3px">最弱维度</div>'
-      +wd.map(function(w){return '<div class="sc-dim-row"><span class="sc-dim-lbl">'+w.l+'</span><span class="sc-dim-val '+w.c+'">'+w.v+'</span></div>';}).join('')
-      +'</div>'
-      +'<div class="sc-trend '+scTrendCls[rank]+'">'+scTrends[rank]+' vs 上周</div>'
-      +'</div>';
-  }).join('');
-}
-
-function selSc(el,i){
-  document.querySelectorAll('.sc-card').forEach(function(c){c.classList.remove('sel');});
-  el.classList.add('sel');
-  document.getElementById('scHint').style.display='none';
-  var d=hmData[i], det=document.getElementById('scDet');
-  det.style.display='flex';
-  document.getElementById('scName').textContent=d.name;
-  var sc=document.getElementById('scScore');
-  sc.textContent=d.score; sc.className='hd-score '+d.scoreCls;
-  var rl=['开发\n成功率','文档\n质量','环境\n效率','调试\n能力','工具\n稳定性'];
-  document.getElementById('scRadar').innerHTML=radarSvg(d.radar,rl,200)+'<div class="hd-radar-lbl">5 维体验雷达图</div>';
-  document.getElementById('scPains').innerHTML=d.pains.map(function(p){
-    return '<div class="hd-issue-row"><span class="badge b-r" style="font-size:11px;padding:3px 7px">'+p.score+'</span><div style="flex:1"><div class="hd-issue-text">'+p.text+'</div><div style="font-size:9px;color:#9ca3af;margin:2px 0">'+p.team+' \xb7 '+p.cust+'</div><div class="hd-issue-progress"><div class="hd-prog-track"><div class="hd-prog-fill'+(p.prog>60?' done':'')+'" style="width:'+p.prog+'%"></div></div><span class="hd-prog-pct">'+p.prog+'%</span></div></div></div>';
-  }).join('');
-  document.getElementById('scVods').innerHTML=d.vods.map(function(v){
-    return '<div class="hd-vod-row">'+v.text+'<div class="hd-vod-meta">'+v.meta+' \xb7 声量 '+v.vol+' <span style="color:#c7000b;font-weight:700">'+v.trend+'</span></div></div>';
-  }).join('');
-}
-
-// === 1C: SPOTLIGHT ===
-function initSlc(){
-  var worst=[hmData[0],hmData[2]];
-  var worstRadar=[hmData[0].radar,hmData[2].radar];
-  var worstMeta=[
-    [{l:'调试能力',v:'48%',t:'↓ -3%'},{l:'文档质量',v:'54%',t:'↓ -6%'}],
-    [{l:'开发成功率',v:'58%',t:'↓ -7%'},{l:'调试能力',v:'51%',t:'↓ -5%'}],
-  ];
-  var worstPains=[
-    {text:'AIC error 日志未显示报错指令，开发者无法自主定位，强依赖华为工程师介入',meta:'腾讯\xb7蚂蚁 \xb7 特性开发中 \xb7 算子分队'},
-    {text:'图模式类型缺失，算子设计与实现阶段缺乏参考样例，开发者无从下手',meta:'京东 \xb7 特性开发中 \xb7 算子分队'},
-  ];
-  var badges=['最差场景','第2差'];
-  var rl=['开发\n成功率','文档\n质量','环境\n效率','调试\n能力','工具\n稳定性'];
-  var slcCards=document.getElementById('slcCards');
-  if(!slcCards)return;
-  slcCards.innerHTML=worst.map(function(d,i){
-    var m=worstMeta[i];
-    return '<div class="slc-card">'
-      +'<div class="slc-card-head">'
-        +'<div><div class="slc-badge">'+badges[i]+'</div><div class="slc-name" style="margin-top:6px">'+d.name+'</div></div>'
-        +'<div class="slc-score-wrap"><div class="slc-score">'+d.score+'</div><div class="slc-score-sub">/ 100</div></div>'
-      +'</div>'
-      +'<div class="slc-body">'
-        +radarSvg(worstRadar[i],rl,130)
-        +'<div class="slc-meta">'+m.map(function(x){return '<div class="slc-metric"><div class="slc-ml">'+x.l+'</div><div class="slc-mv">'+x.v+' <span class="slc-mv-trend">'+x.t+'</span></div></div>';}).join('')+'</div>'
-      +'</div>'
-      +'<div class="slc-pain">'+worstPains[i].text+'<div class="slc-pain-meta">'+worstPains[i].meta+'</div></div>'
-      +'</div>';
-  }).join('');
-
-  var hmRows=[
-    {di:0,cells:[{c:'hc-r',v:'62%',t:'↓ -4%'},{c:'hc-r',v:'54%',t:'↓ -6%'},{c:'hc-y',v:'78%',t:'→ 持平'},{c:'hc-r',v:'48%',t:'↓ -3%'},{c:'hc-y',v:'71%',t:'↑ +2%'}],sc:57,scCls:'rs-r'},
-    {di:2,cells:[{c:'hc-r',v:'58%',t:'↓ -7%'},{c:'hc-y',v:'73%',t:'↑ +4%'},{c:'hc-g',v:'88%',t:'↑ +1%'},{c:'hc-r',v:'51%',t:'↓ -5%'},{c:'hc-r',v:'61%',t:'↓ -4%'}],sc:62,scCls:'rs-r'},
-    {di:1,cells:[{c:'hc-y',v:'74%',t:'↑ +2%'},{c:'hc-r',v:'49%',t:'↓ -8%'},{c:'hc-g',v:'91%',t:'↑ +3%'},{c:'hc-y',v:'72%',t:'→ 持平'},{c:'hc-y',v:'68%',t:'↓ -2%'}],sc:69,scCls:'rs-y'},
-    {di:3,cells:[{c:'hc-g',v:'85%',t:'↑ +3%'},{c:'hc-g',v:'82%',t:'↑ +5%'},{c:'hc-g',v:'93%',t:'↑ +2%'},{c:'hc-g',v:'81%',t:'↑ +6%'},{c:'hc-y',v:'76%',t:'→ 持平'}],sc:84,scCls:'rs-g'},
-  ];
-  var tbody=document.getElementById('slcTbody');
-  if(!tbody)return;
-  tbody.innerHTML=hmRows.map(function(r){
-    return '<tr><td style="padding:10px 12px;font-size:12px;font-weight:500;color:#374151">'+hmData[r.di].name+'</td>'
-      +r.cells.map(function(c){return '<td class="hcell '+c.c+'"><div class="hcell-inner"><span class="hcell-val">'+c.v+'</span><span class="hcell-trend">'+c.t+'</span></div></td>';}).join('')
-      +'<td class="row-score '+r.scCls+'"><div class="rs-inner"><span class="rs-num">'+r.sc+'</span><div class="rs-bar"><div class="rs-fill" style="width:'+r.sc+'%"></div></div></div></td>'
-      +'</tr>';
-  }).join('');
-}
-document.addEventListener("DOMContentLoaded", function(){ initScCards(); initSlc(); });
-
-</script>
-
-
-<!-- OPTION 1A -->
-<div class="panel" id="panel-a1a">
-  <div class="mock">
-    <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 产品应用性 · 算子开发者 · 全景概览</span></div>
-    <div class="sc-shell">
-      <div class="sc-left">
-        <div class="sc-stats">
-          <div class="hm-stat"><div class="hm-stat-label">评估场景</div><div class="hm-stat-val">4 <span>/ 6 个</span></div><div class="hm-stat-sub"><span class="trend-flat">2 个暂无旅程数据</span></div></div>
-          <div class="hm-stat"><div class="hm-stat-label">严重问题场景</div><div class="hm-stat-val" style="color:#c7000b">2 <span>个</span></div><div class="hm-stat-sub"><span class="trend-dn">↑ 较上周 +1</span></div></div>
-          <div class="hm-stat"><div class="hm-stat-label">整体健康评分</div><div class="hm-stat-val">61 <span>/ 100</span></div><div class="hm-stat-sub"><span class="trend-dn">↓ 较上周 -3</span></div></div>
-          <div class="hm-stat"><div class="hm-stat-label">活跃痛点</div><div class="hm-stat-val">12 <span>条</span></div><div class="hm-stat-sub"><span class="trend-up">↑ 本周新增 3</span></div></div>
-        </div>
-        <div class="sc-filters">
-          <span class="fl">芯片</span><span class="fchip on">A5</span><span class="fchip">A2 &amp; A3</span>
-          <span class="fsep"></span>
-          <span class="fl">角色</span><span class="fchip on">算子开发者</span><span class="fchip">AI 框架开发者</span><span class="fchip">应用开发者</span>
-        </div>
-        <div class="sc-cards-wrap">
-          <div class="sc-cards-label">场景健康度 · 按评分从低到高排列 · 点击查看三类证据</div>
-          <div class="sc-cards" id="scCards"></div>
-        </div>
-      </div>
-      <div class="sc-right hm-right">
-        <div class="hm-hint" id="scHint">&#8592; 点击场景卡片<br>查看三类证据详情</div>
-        <div class="hm-detail" id="scDet" style="display:none">
-          <div class="hd-top">
-            <div class="hd-name" id="scName"></div>
-            <div class="hd-score-wrap"><div class="hd-score bad" id="scScore"></div><div class="hd-score-label">健康评分</div></div>
+// ── RENDER SCENE LIST ──
+function renderList(){
+  const sorted=[...scenarios].sort((a,b)=>a.score-b.score);
+  const container=document.getElementById('sceneListCards');
+  container.innerHTML=sorted.map((s,rank)=>{
+    const trendStr=s.trendDir==='up'?`↑ +${s.trendDir==='up'?s.trend:Math.abs(s.trend)}`:
+      s.trendDir==='dn'?`↓ ${s.trend}`:'→ 持平';
+    const trendDisplay=s.trend>0?`↑ +${s.trend}`:s.trend<0?`↓ ${s.trend}`:'→';
+    const sparkColor=s.grade==='bad'?'#c7000b':s.grade==='mid'?'#f59e0b':'#22c55e';
+    return `<div class="sc hl-2" id="sc${s.id}" onclick="selScene(${s.id})" style="position:relative">
+      <div class="callout-badge" style="top:-7px;right:-7px">②</div>
+      <div class="sc-top">
+        <div class="sc-rank ${s.grade}">#${rank+1}</div>
+        <div class="sc-title">
+          <div class="sc-name">${s.name}</div>
+          <div class="sc-grade-row">
+            <span class="grade-tag ${s.grade}">${s.gradeLabel}</span>
           </div>
-          <div class="hd-radar" id="scRadar"></div>
-          <hr class="hd-divider">
-          <div class="sec-label">活跃痛点 · 按优先级</div>
-          <div id="scPains"></div>
-          <hr class="hd-divider">
-          <div class="sec-label">Top VOD 原声</div>
-          <div id="scVods"></div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
+      <div class="sc-score-row">
+        <span class="sc-score ${s.grade}">${s.score}</span>
+        <span class="sc-trend ${s.trendDir}">${trendDisplay} vs 上期</span>
+        <div class="sc-spark">${sparkSvg(s.runs,70,22,sparkColor)}</div>
+      </div>
+      <div class="sc-evidence">
+        <span class="ev-chip ${s.grade==='ok'?'gray':'red'}">痛点 ${s.painCount}</span>
+        <span class="ev-chip ${s.vodCount>=50?'red':s.vodCount>=30?'yellow':'gray'}">VOD ${s.vodCount}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
 
-<!-- OPTION 1C -->
-<div class="panel" id="panel-a1c">
-  <div class="mock">
-    <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 产品应用性 · 算子开发者 · 全景概览</span></div>
-    <div class="slc-shell">
-      <div class="slc-spotlight">
-        <div class="slc-sp-label">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          需要立即关注 · 最差的 2 个场景
+// ── RENDER DETAIL ──
+function selScene(id){
+  document.querySelectorAll('.sc').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('sc'+id).classList.add('sel');
+  document.getElementById('sdHint').style.display='none';
+  const sd=document.getElementById('sdContent');
+  sd.style.display='block';
+  document.getElementById('sceneDetail').scrollTo({top:0});
+
+  const s=scenarios.find(x=>x.id===id);
+  const sorted=[...scenarios].sort((a,b)=>a.score-b.score);
+  const rank=sorted.findIndex(x=>x.id===id)+1;
+
+  // header
+  document.getElementById('detName').textContent=s.name;
+  const dg=document.getElementById('detGrade');
+  dg.textContent=s.gradeLabel; dg.className='det-grade '+s.grade;
+  const ds=document.getElementById('detScore');
+  ds.textContent=s.score; ds.className='det-score '+s.grade;
+
+  // rank context
+  const rp=document.getElementById('rankPill');
+  rp.textContent=`${scenarios.length} 场景中第 ${rank} 差`;
+  rp.className='rank-pill'+(s.grade==='mid'?' mid':s.grade==='ok'?' ok':'');
+  const diff=s.score-meanScore;
+  document.getElementById('rankDesc').textContent=
+    `${diff<0?'低于':'高于'}角色均分 ${Math.abs(diff)} 分（均分 ${meanScore}）`;
+  // mini bars
+  document.getElementById('rankBars').innerHTML=
+    sorted.map(x=>`<div class="rank-bar ${x.grade}${x.id===id?' cur':''}" style="height:${Math.round((x.score/100)*18)}px" title="${x.name}: ${x.score}"></div>`).join('');
+  document.getElementById('rankMean').textContent=`均 ${meanScore}`;
+
+  // distribution
+  const spread=Math.max(...s.runs)-Math.min(...s.runs);
+  const stab=spread<=6?'stable':spread<=12?'moderate':'unstable';
+  const stabLabel=stab==='stable'?'波动小 · 稳定':stab==='moderate'?'中等波动':'波动大 · 不稳定';
+  const ds2=document.getElementById('distStability');
+  ds2.textContent=stabLabel; ds2.className='dist-stability '+stab;
+  document.getElementById('distSvgWrap').innerHTML=distSvg(s.runs);
+
+  // tab counts
+  document.getElementById('agentTabCount').textContent=s.agentSteps.length;
+  document.getElementById('painTabCount').textContent=s.pains.length;
+  document.getElementById('vodTabCount').textContent=s.vods.length;
+
+  // agent panel
+  document.getElementById('panel-agent').innerHTML=
+    `<div class="agent-section-lbl">旅程环节 · Agent 逐步评分（近7次均值）</div>`+
+    s.agentSteps.map(st=>`
+      <div class="agent-step-row">
+        <div class="as-name">${st.name}</div>
+        <div class="as-right">
+          <div class="as-bar-row">
+            <div class="as-bar-track"><div class="as-bar-fill ${st.cls}" style="width:${st.score}%"></div></div>
+            <div class="as-score ${st.cls}">${st.score}%</div>
+          </div>
+          <div class="as-stuck"><b>卡点</b>${st.stuck}</div>
         </div>
-        <div class="slc-cards" id="slcCards"></div>
-      </div>
-      <div class="hm-filters" style="background:#fff">
-        <span class="fl">芯片</span><span class="fchip on">A5</span><span class="fchip">A2 &amp; A3</span>
-        <span class="fsep"></span>
-        <span class="fl">角色</span><span class="fchip on">算子开发者</span><span class="fchip">AI 框架开发者</span>
-        <span class="fsep"></span>
-        <span class="fl">评估周期</span><span class="fchip on">近7次均值</span>
-      </div>
-      <div class="slc-hm-header">
-        <div class="slc-hm-lbl">全景热力矩阵</div>
-        <span style="font-size:10px;color:#9ca3af">颜色 = 严重程度，箭头 = 趋势</span>
-      </div>
-      <div style="padding:0 20px 20px">
-        <table class="hm-table">
-          <thead><tr>
-            <th>典型场景</th><th>开发成功率</th><th>文档质量</th><th>环境效率</th><th>调试能力</th><th>工具稳定性</th>
-            <th style="background:#f0f4ff;color:#3730a3">综合评分</th>
-          </tr></thead>
-          <tbody id="slcTbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+      </div>`).join('')+
+    `<div class="tool-chain-row">
+      <div class="tool-chain-lbl">工具调用链 · 括号内为调用成功率</div>
+      <div class="tool-chips">${s.tools.map((t,i)=>`${i?'<span class="tool-arrow">→</span>':''}<div class="tool-chip ${t.cls}">${t.name} <span style="opacity:.7">${t.rate}</span></div>`).join('')}</div>
+    </div>`;
 
-<div class="float-ux">
-  <div class="float-btn">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    设计依据
-  </div>
-  <div class="float-pop">
-    <div class="float-pop-tag" id="fux-tag">当前方案</div>
-    <p id="fux-body"></p>
-  </div>
-</div>
+  // pain panel - group by category
+  const catOrder=['doc','tool','api','env'];
+  const catMeta={doc:{label:'文档类',cls:'doc'},tool:{label:'工具类',cls:'tool'},api:{label:'API 类',cls:'api'},env:{label:'环境类',cls:'env'}};
+  const grouped={};
+  s.pains.forEach(p=>{if(!grouped[p.cat])grouped[p.cat]=[];grouped[p.cat].push(p);});
+  document.getElementById('panel-pain').innerHTML=
+    catOrder.filter(c=>grouped[c]).map(c=>`
+      <div class="pain-cat-section hl-6" style="position:relative">
+        <div class="callout-badge" style="top:-7px;right:-7px">⑥</div>
+        <div class="pain-cat-hdr">
+          <span class="cat-badge ${catMeta[c].cls}">${catMeta[c].label}</span>
+          <span class="cat-count">${grouped[c].length} 条</span>
+        </div>
+        ${grouped[c].map(p=>`
+          <div class="pain-item">
+            <div class="pain-top">
+              <span class="pain-score">${p.score}</span>
+              <div class="pain-body">
+                <div class="pain-text">${p.text}</div>
+                <div class="pain-meta">${p.meta}</div>
+              </div>
+              <span class="pain-status ${p.statusCls}">${p.status}</span>
+            </div>
+            <div class="pain-next hl-4" style="position:relative">
+              <div class="callout-badge" style="top:-7px;right:-7px">④</div>
+              <span class="pain-next-lbl">Next Step</span>
+              <span class="pain-next-text">→ ${p.nextStep}</span>
+            </div>
+          </div>`).join('')}
+      </div>`).join('');
+
+  // vod panel
+  document.getElementById('panel-vod').innerHTML=
+    s.vods.map(v=>`
+      <div class="vod-item">
+        <div class="vod-vol-row">
+          <span class="vod-vol">${v.vol}</span>
+          <span class="vod-unit">条声量</span>
+          <span class="vod-trend ${v.trendCls}">${v.trend}</span>
+        </div>
+        <div class="vod-quote">${v.text}</div>
+        <div class="vod-src">${v.src}</div>
+      </div>`).join('');
+
+  // reset to agent tab
+  switchEvTab('agent', document.querySelector('.ev-tab'));
+}
+
+// ── TAB SWITCHING ──
+function switchEvTab(id, btn){
+  document.querySelectorAll('.ev-tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.ev-panel').forEach(p=>p.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  else document.querySelector('.ev-tab').classList.add('on');
+  document.getElementById('panel-'+id).classList.add('on');
+}
+
+function switchDim(id, btn){
+  document.querySelectorAll('.dim-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('prodView').style.display=id==='prod'?'flex':'none';
+  document.getElementById('commView').style.display=id==='comm'?'flex':'none';
+  document.getElementById('commView').style.flexDirection='column';
+}
+
+// ── RATIONALE HIGHLIGHT ──
+function toggleRat(){
+  const fr=document.getElementById('floatRat');
+  fr.classList.toggle('open');
+  document.body.classList.toggle('rat-open',fr.classList.contains('open'));
+}
+function hlRat(n){
+  for(let i=1;i<=6;i++) document.body.classList.remove('hl-'+i);
+  document.body.classList.add('hl-'+n);
+  document.querySelectorAll('.rat-item').forEach(el=>el.classList.remove('hl'));
+  document.querySelectorAll('.rat-item')[n-1].classList.add('hl');
+
+  // Switch to the relevant tab first if needed, then scroll
+  const sd=document.getElementById('sceneDetail');
+  const doScroll=(selector)=>{
+    const el=document.querySelector(selector);
+    if(!el||!sd) return;
+    // scroll the scene-detail panel so the element is centered
+    const elTop=el.getBoundingClientRect().top;
+    const sdTop=sd.getBoundingClientRect().top;
+    const offset=elTop-sdTop+sd.scrollTop-80;
+    sd.scrollTo({top:Math.max(0,offset),behavior:'smooth'});
+  };
+
+  if(n===1){
+    // Evidence tabs — switch to agent, scroll to tabs
+    switchEvTab('agent',document.querySelectorAll('.ev-tab')[0]);
+    setTimeout(()=>doScroll('.ev-tabs'),60);
+  } else if(n===2){
+    // Scene cards are in the left list — scroll scene-list to top
+    document.querySelector('.scene-list').scrollTo({top:0,behavior:'smooth'});
+  } else if(n===3){
+    // Distribution chart
+    setTimeout(()=>doScroll('.dist-section'),60);
+  } else if(n===4){
+    // Next Step links — switch to pain tab, then scroll to first pain-next
+    const painTab=document.querySelectorAll('.ev-tab')[1];
+    switchEvTab('pain',painTab);
+    setTimeout(()=>doScroll('.pain-next'),100);
+  } else if(n===5){
+    // Rank context — scroll to top of detail
+    setTimeout(()=>doScroll('.rank-ctx'),60);
+  } else if(n===6){
+    // Pain categories — switch to pain tab, scroll to first category
+    const painTab=document.querySelectorAll('.ev-tab')[1];
+    switchEvTab('pain',painTab);
+    setTimeout(()=>doScroll('.pain-cat-section'),100);
+  }
+}
+function unhlRat(){
+  for(let i=1;i<=6;i++) document.body.classList.remove('hl-'+i);
+  document.querySelectorAll('.rat-item').forEach(el=>el.classList.remove('hl'));
+}
+
+// ── INIT ──
+renderList();
+selScene(0);
+</script>
 </body>
 </html>
