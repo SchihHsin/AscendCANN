@@ -12,7 +12,10 @@
       "Bash(python3 *)",
       "Bash(node *)",
       "Bash(gh api *)",
-      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('status:', d.get\\('status'\\)\\); print\\('source:', d.get\\('source'\\)\\); print\\('url:', d.get\\('html_url'\\)\\)\")"
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('status:', d.get\\('status'\\)\\); print\\('source:', d.get\\('source'\\)\\); print\\('url:', d.get\\('html_url'\\)\\)\")",
+      "Bash(del \"cann-journey-compare \\(2\\).html\")",
+      "WebFetch(domain:schihsin.github.io)",
+      "PowerShell(gh api *)"
     ]
   }
 }

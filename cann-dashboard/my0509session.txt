@@ -1,0 +1,19 @@
+ ▐▛███▜▌   Claude Code v2.1.131
+▝▜█████▛▘  Sonnet 4.6 · Claude Pro
+  ▘▘ ▝▝    D:\HW\AscendCANN\cann-dashboard
+
+✻ Conversation compacted (ctrl+o for history)
+
+  ⎿  Referenced file design-options.html
+  ⎿  Read context.md (227 lines)
+
+  Read 1 file (ctrl+o to expand)
+  ⎿  API Error: Unable to connect to API (ECONNRESET)
+
+✻ Cogitated for 28m 1s
+
+❯ 怎么回事，api error了吗                                                       
+  ⎿  You've hit your limit · resets 7:20pm (Etc/GMT-8)
+     /upgrade to increase your usage limit.
+
+✻ Cooked for 5s
