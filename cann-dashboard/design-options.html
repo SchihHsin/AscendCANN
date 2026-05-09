@@ -328,6 +328,55 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
 .float-pop p{font-size:12.5px;color:#374151;line-height:1.75}
 .float-pop strong{color:#111827}
 .float-pop em{color:#c7000b;font-style:normal;font-weight:600}
+
+/* === OPTION 1A: SCENARIO CARDS === */
+.sc-shell{display:flex;background:#fff}
+.sc-left{flex:1;overflow:hidden}
+.sc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:18px 20px;border-bottom:1px solid #f0f0f0;background:#fafafa}
+.sc-filters{padding:10px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sc-cards-wrap{padding:16px 20px;border-bottom:1px solid #f0f0f0}
+.sc-cards-label{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.sc-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sc-card{border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column;gap:8px;border:1.5px solid #e5e7eb;background:#fff;position:relative;overflow:hidden}
+.sc-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.sc-card.c-bad::before{background:#c7000b}
+.sc-card.c-mid::before{background:#f59e0b}
+.sc-card.c-ok::before{background:#22c55e}
+.sc-card:hover{border-color:#d0d0d0;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.sc-card.sel{border-color:#c7000b;box-shadow:0 0 0 3px rgba(199,0,11,.1)}
+.sc-card-rank{position:absolute;top:8px;right:8px;font-size:9px;font-weight:700;color:#d1d5db}
+.sc-card-name{font-size:11.5px;font-weight:600;color:#111827;line-height:1.35;padding-right:16px}
+.sc-ring-row{display:flex;justify-content:center;padding:4px 0}
+.sc-dims{display:flex;flex-direction:column;gap:3px}
+.sc-dim-row{display:flex;justify-content:space-between;align-items:center}
+.sc-dim-lbl{font-size:9px;color:#9ca3af}
+.sc-dim-val{font-size:10px;font-weight:700}
+.sc-dim-val.bad{color:#c7000b}.sc-dim-val.mid{color:#b45309}.sc-dim-val.ok{color:#15803d}
+.sc-trend{font-size:10px;font-weight:600;text-align:right}
+.sc-right{width:280px;border-left:1px solid #f0f0f0;display:flex;flex-direction:column;flex-shrink:0}
+/* === OPTION 1C: SPOTLIGHT === */
+.slc-shell{background:#fff}
+.slc-spotlight{padding:18px 20px 16px;border-bottom:1px solid #f0f0f0;background:linear-gradient(180deg,#fff9f9 0%,#fff 100%)}
+.slc-sp-label{font-size:10px;font-weight:700;color:#c7000b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.slc-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.slc-card{border:1.5px solid #fecaca;border-radius:12px;background:#fff;padding:16px;display:flex;flex-direction:column;gap:12px}
+.slc-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.slc-badge{font-size:10px;font-weight:700;background:#fef2f2;color:#c7000b;padding:2px 8px;border-radius:10px;flex-shrink:0}
+.slc-score-wrap{text-align:right;flex-shrink:0}
+.slc-score{font-size:28px;font-weight:800;color:#c7000b;line-height:1}
+.slc-score-sub{font-size:9px;color:#9ca3af}
+.slc-name{font-size:14px;font-weight:700;color:#111827;flex:1;line-height:1.3}
+.slc-body{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.slc-meta{display:flex;flex-direction:column;gap:6px}
+.slc-metric{background:#fef9f9;border:1px solid #fecaca;border-radius:6px;padding:6px 10px}
+.slc-ml{font-size:9px;color:#9ca3af;margin-bottom:1px}
+.slc-mv{font-size:14px;font-weight:700;color:#c7000b}
+.slc-mv-trend{font-size:9px;color:#c7000b;font-weight:600}
+.slc-pain{font-size:11px;color:#374151;line-height:1.6;border-left:3px solid #fca5a5;padding:7px 9px;border-radius:0 6px 6px 0;background:#fff9f9}
+.slc-pain-meta{font-size:9px;color:#9ca3af;margin-top:4px}
+.slc-hm-header{padding:10px 20px 6px;display:flex;align-items:center;gap:8px;background:#fafafa;border-top:1px solid #f0f0f0}
+.slc-hm-lbl{font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.07em}
+
 </style>
 </head>
 <body>
@@ -339,7 +388,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
     <span class="ph-title">体验看板 · 设计方案对比</span>
   </div>
   <div class="topbar-tabs">
-    <button class="tab on" onclick="switchTab('hm',this)">方案一：全景决策视图</button>
+    <button class="tab on" onclick="switchTab('hm',this)">方案一：全景热力矩阵</button>
+    <button class="tab" onclick="switchTab('a1a',this)">方案1A · 场景卡片</button>
+    <button class="tab" onclick="switchTab('a1c',this)">方案1C · Spotlight</button>
     <button class="tab" onclick="switchTab('fl',this)">方案二：场景解剖视图</button>
     <button class="tab" onclick="switchTab('jt',this)">方案三：旅程溯因视图</button>
   </div>
@@ -766,7 +817,7 @@ function sparkSvg(data, w, h, color) {
 
 // ── TABS ──
 const _uxRat={'hm':`基于 <strong>前注意属性理论</strong>，颜色让用户无需逐格阅读即完成全场景严重程度对比，<em>决策时间从分钟级压缩到秒级</em>。每格叠加趋势箭头，支持"变好还是变坏"的即时判断。右侧面板以 <strong>渐进式披露</strong> 方式整合三类证据，点击才展开，不造成信息过载。最适合<strong>跨场景横向排优先级</strong>的决策场景。`,'fl':`遵循 <strong>信息层级理论</strong>，按"结论→证据→明细"纵向排列，契合 <em>F 型视觉扫描规律</em>。顶部健康判定提供即时决策锚点，开发者漏斗揭示"哪步流失最多人"，痛点优先级评分让决策者直接读出"先修哪个"。最适合<strong>单一场景的深度分析与方案评审</strong>。`,'jt':`基于 <strong>情境映射理论</strong>，以开发者真实任务流为主轴，将体验问题绑定到具体行为节点。时间轴显示<em>各步耗时占比和放弃率</em>，一眼看出"哪里最拖"。工具调用链暴露执行细节，三类证据就近嵌入，形成因果关系的自然呈现。最适合<strong>深度根因分析与改善路径规划</strong>。`};
-const _uxName={'hm':'方案一：全景决策视图','fl':'方案二：场景解剖视图','jt':'方案三：旅程溯因视图'};
+const _uxName={'hm':'方案一：全景热力矩阵','fl':'方案二：场景解剖视图','jt':'方案三：旅程溯因视图','a1a':'方案1A：场景卡片','a1c':'方案1C：Spotlight'};
 function _updateFux(id){
   document.getElementById('fux-tag').textContent=_uxName[id]||'当前方案';
   document.getElementById('fux-body').innerHTML=_uxRat[id]||'';
@@ -1031,7 +1082,186 @@ document.getElementById('fl-ring').innerHTML = ringSvg(57, 88, '#c7000b');
 const spData=[[68,65,70,64,62,66,62],[76,74,75,72,73,71,71],[4.2,4.0,4.1,4.3,4.1,4.2,4.2],[41,43,44,45,44,48,47]];
 const spColors=['#c7000b','#b45309','#2563eb','#2563eb'];
 spData.forEach((d,i)=>{document.getElementById('sp'+i).innerHTML=sparkSvg(d,62,28,spColors[i]);});
+
+// === 1A: SCENARIO CARDS ===
+const scOrder=[0,2,1,3];
+const scCls=['c-bad','c-bad','c-mid','c-ok'];
+const scWorstDims=[
+  [{l:'调试能力',v:'48%',c:'bad'},{l:'文档质量',v:'54%',c:'bad'}],
+  [{l:'开发成功率',v:'58%',c:'bad'},{l:'调试能力',v:'51%',c:'bad'}],
+  [{l:'文档质量',v:'49%',c:'bad'},{l:'工具稳定性',v:'68%',c:'mid'}],
+  [{l:'工具稳定性',v:'76%',c:'mid'},{l:'调试能力',v:'81%',c:'ok'}],
+];
+const scTrends=['↓ -3','↓ -5','↑ +2','↑ +4'];
+const scTrendCls=['trend-dn','trend-dn','trend-up','trend-up'];
+const scRingColors=['#c7000b','#c7000b','#b45309','#15803d'];
+
+function initScCards(){
+  const cards=document.getElementById('scCards');
+  if(!cards)return;
+  cards.innerHTML=scOrder.map((di,rank)=>{
+    const d=hmData[di];
+    const wd=scWorstDims[rank];
+    return '<div class="sc-card '+scCls[rank]+'" onclick="selSc(this,'+di+')">'
+      +'<div class="sc-card-rank">#'+(rank+1)+'</div>'
+      +'<div class="sc-card-name">'+d.name+'</div>'
+      +'<div class="sc-ring-row">'+ringSvg(d.score,72,scRingColors[rank])+'</div>'
+      +'<div class="sc-dims"><div style="font-size:9px;color:#9ca3af;margin-bottom:3px">最弱维度</div>'
+      +wd.map(function(w){return '<div class="sc-dim-row"><span class="sc-dim-lbl">'+w.l+'</span><span class="sc-dim-val '+w.c+'">'+w.v+'</span></div>';}).join('')
+      +'</div>'
+      +'<div class="sc-trend '+scTrendCls[rank]+'">'+scTrends[rank]+' vs 上周</div>'
+      +'</div>';
+  }).join('');
+}
+
+function selSc(el,i){
+  document.querySelectorAll('.sc-card').forEach(function(c){c.classList.remove('sel');});
+  el.classList.add('sel');
+  document.getElementById('scHint').style.display='none';
+  var d=hmData[i], det=document.getElementById('scDet');
+  det.style.display='flex';
+  document.getElementById('scName').textContent=d.name;
+  var sc=document.getElementById('scScore');
+  sc.textContent=d.score; sc.className='hd-score '+d.scoreCls;
+  var rl=['开发\n成功率','文档\n质量','环境\n效率','调试\n能力','工具\n稳定性'];
+  document.getElementById('scRadar').innerHTML=radarSvg(d.radar,rl,200)+'<div class="hd-radar-lbl">5 维体验雷达图</div>';
+  document.getElementById('scPains').innerHTML=d.pains.map(function(p){
+    return '<div class="hd-issue-row"><span class="badge b-r" style="font-size:11px;padding:3px 7px">'+p.score+'</span><div style="flex:1"><div class="hd-issue-text">'+p.text+'</div><div style="font-size:9px;color:#9ca3af;margin:2px 0">'+p.team+' \xb7 '+p.cust+'</div><div class="hd-issue-progress"><div class="hd-prog-track"><div class="hd-prog-fill'+(p.prog>60?' done':'')+'" style="width:'+p.prog+'%"></div></div><span class="hd-prog-pct">'+p.prog+'%</span></div></div></div>';
+  }).join('');
+  document.getElementById('scVods').innerHTML=d.vods.map(function(v){
+    return '<div class="hd-vod-row">'+v.text+'<div class="hd-vod-meta">'+v.meta+' \xb7 声量 '+v.vol+' <span style="color:#c7000b;font-weight:700">'+v.trend+'</span></div></div>';
+  }).join('');
+}
+
+// === 1C: SPOTLIGHT ===
+function initSlc(){
+  var worst=[hmData[0],hmData[2]];
+  var worstRadar=[hmData[0].radar,hmData[2].radar];
+  var worstMeta=[
+    [{l:'调试能力',v:'48%',t:'↓ -3%'},{l:'文档质量',v:'54%',t:'↓ -6%'}],
+    [{l:'开发成功率',v:'58%',t:'↓ -7%'},{l:'调试能力',v:'51%',t:'↓ -5%'}],
+  ];
+  var worstPains=[
+    {text:'AIC error 日志未显示报错指令，开发者无法自主定位，强依赖华为工程师介入',meta:'腾讯\xb7蚂蚁 \xb7 特性开发中 \xb7 算子分队'},
+    {text:'图模式类型缺失，算子设计与实现阶段缺乏参考样例，开发者无从下手',meta:'京东 \xb7 特性开发中 \xb7 算子分队'},
+  ];
+  var badges=['最差场景','第2差'];
+  var rl=['开发\n成功率','文档\n质量','环境\n效率','调试\n能力','工具\n稳定性'];
+  var slcCards=document.getElementById('slcCards');
+  if(!slcCards)return;
+  slcCards.innerHTML=worst.map(function(d,i){
+    var m=worstMeta[i];
+    return '<div class="slc-card">'
+      +'<div class="slc-card-head">'
+        +'<div><div class="slc-badge">'+badges[i]+'</div><div class="slc-name" style="margin-top:6px">'+d.name+'</div></div>'
+        +'<div class="slc-score-wrap"><div class="slc-score">'+d.score+'</div><div class="slc-score-sub">/ 100</div></div>'
+      +'</div>'
+      +'<div class="slc-body">'
+        +radarSvg(worstRadar[i],rl,130)
+        +'<div class="slc-meta">'+m.map(function(x){return '<div class="slc-metric"><div class="slc-ml">'+x.l+'</div><div class="slc-mv">'+x.v+' <span class="slc-mv-trend">'+x.t+'</span></div></div>';}).join('')+'</div>'
+      +'</div>'
+      +'<div class="slc-pain">'+worstPains[i].text+'<div class="slc-pain-meta">'+worstPains[i].meta+'</div></div>'
+      +'</div>';
+  }).join('');
+
+  var hmRows=[
+    {di:0,cells:[{c:'hc-r',v:'62%',t:'↓ -4%'},{c:'hc-r',v:'54%',t:'↓ -6%'},{c:'hc-y',v:'78%',t:'→ 持平'},{c:'hc-r',v:'48%',t:'↓ -3%'},{c:'hc-y',v:'71%',t:'↑ +2%'}],sc:57,scCls:'rs-r'},
+    {di:2,cells:[{c:'hc-r',v:'58%',t:'↓ -7%'},{c:'hc-y',v:'73%',t:'↑ +4%'},{c:'hc-g',v:'88%',t:'↑ +1%'},{c:'hc-r',v:'51%',t:'↓ -5%'},{c:'hc-r',v:'61%',t:'↓ -4%'}],sc:62,scCls:'rs-r'},
+    {di:1,cells:[{c:'hc-y',v:'74%',t:'↑ +2%'},{c:'hc-r',v:'49%',t:'↓ -8%'},{c:'hc-g',v:'91%',t:'↑ +3%'},{c:'hc-y',v:'72%',t:'→ 持平'},{c:'hc-y',v:'68%',t:'↓ -2%'}],sc:69,scCls:'rs-y'},
+    {di:3,cells:[{c:'hc-g',v:'85%',t:'↑ +3%'},{c:'hc-g',v:'82%',t:'↑ +5%'},{c:'hc-g',v:'93%',t:'↑ +2%'},{c:'hc-g',v:'81%',t:'↑ +6%'},{c:'hc-y',v:'76%',t:'→ 持平'}],sc:84,scCls:'rs-g'},
+  ];
+  var tbody=document.getElementById('slcTbody');
+  if(!tbody)return;
+  tbody.innerHTML=hmRows.map(function(r){
+    return '<tr><td style="padding:10px 12px;font-size:12px;font-weight:500;color:#374151">'+hmData[r.di].name+'</td>'
+      +r.cells.map(function(c){return '<td class="hcell '+c.c+'"><div class="hcell-inner"><span class="hcell-val">'+c.v+'</span><span class="hcell-trend">'+c.t+'</span></div></td>';}).join('')
+      +'<td class="row-score '+r.scCls+'"><div class="rs-inner"><span class="rs-num">'+r.sc+'</span><div class="rs-bar"><div class="rs-fill" style="width:'+r.sc+'%"></div></div></div></td>'
+      +'</tr>';
+  }).join('');
+}
+initScCards();
+initSlc();
+
 </script>
+
+
+<!-- OPTION 1A -->
+<div class="panel" id="panel-a1a">
+  <div class="mock">
+    <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 产品应用性 · 算子开发者 · 全景概览</span></div>
+    <div class="sc-shell">
+      <div class="sc-left">
+        <div class="sc-stats">
+          <div class="hm-stat"><div class="hm-stat-label">评估场景</div><div class="hm-stat-val">4 <span>/ 6 个</span></div><div class="hm-stat-sub"><span class="trend-flat">2 个暂无旅程数据</span></div></div>
+          <div class="hm-stat"><div class="hm-stat-label">严重问题场景</div><div class="hm-stat-val" style="color:#c7000b">2 <span>个</span></div><div class="hm-stat-sub"><span class="trend-dn">↑ 较上周 +1</span></div></div>
+          <div class="hm-stat"><div class="hm-stat-label">整体健康评分</div><div class="hm-stat-val">61 <span>/ 100</span></div><div class="hm-stat-sub"><span class="trend-dn">↓ 较上周 -3</span></div></div>
+          <div class="hm-stat"><div class="hm-stat-label">活跃痛点</div><div class="hm-stat-val">12 <span>条</span></div><div class="hm-stat-sub"><span class="trend-up">↑ 本周新增 3</span></div></div>
+        </div>
+        <div class="sc-filters">
+          <span class="fl">芯片</span><span class="fchip on">A5</span><span class="fchip">A2 &amp; A3</span>
+          <span class="fsep"></span>
+          <span class="fl">角色</span><span class="fchip on">算子开发者</span><span class="fchip">AI 框架开发者</span><span class="fchip">应用开发者</span>
+        </div>
+        <div class="sc-cards-wrap">
+          <div class="sc-cards-label">场景健康度 · 按评分从低到高排列 · 点击查看三类证据</div>
+          <div class="sc-cards" id="scCards"></div>
+        </div>
+      </div>
+      <div class="sc-right hm-right">
+        <div class="hm-hint" id="scHint">&#8592; 点击场景卡片<br>查看三类证据详情</div>
+        <div class="hm-detail" id="scDet" style="display:none">
+          <div class="hd-top">
+            <div class="hd-name" id="scName"></div>
+            <div class="hd-score-wrap"><div class="hd-score bad" id="scScore"></div><div class="hd-score-label">健康评分</div></div>
+          </div>
+          <div class="hd-radar" id="scRadar"></div>
+          <hr class="hd-divider">
+          <div class="sec-label">活跃痛点 · 按优先级</div>
+          <div id="scPains"></div>
+          <hr class="hd-divider">
+          <div class="sec-label">Top VOD 原声</div>
+          <div id="scVods"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OPTION 1C -->
+<div class="panel" id="panel-a1c">
+  <div class="mock">
+    <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 产品应用性 · 算子开发者 · 全景概览</span></div>
+    <div class="slc-shell">
+      <div class="slc-spotlight">
+        <div class="slc-sp-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          需要立即关注 · 最差的 2 个场景
+        </div>
+        <div class="slc-cards" id="slcCards"></div>
+      </div>
+      <div class="hm-filters" style="background:#fff">
+        <span class="fl">芯片</span><span class="fchip on">A5</span><span class="fchip">A2 &amp; A3</span>
+        <span class="fsep"></span>
+        <span class="fl">角色</span><span class="fchip on">算子开发者</span><span class="fchip">AI 框架开发者</span>
+        <span class="fsep"></span>
+        <span class="fl">评估周期</span><span class="fchip on">近7次均值</span>
+      </div>
+      <div class="slc-hm-header">
+        <div class="slc-hm-lbl">全景热力矩阵</div>
+        <span style="font-size:10px;color:#9ca3af">颜色 = 严重程度，箭头 = 趋势</span>
+      </div>
+      <div style="padding:0 20px 20px">
+        <table class="hm-table">
+          <thead><tr>
+            <th>典型场景</th><th>开发成功率</th><th>文档质量</th><th>环境效率</th><th>调试能力</th><th>工具稳定性</th>
+            <th style="background:#f0f4ff;color:#3730a3">综合评分</th>
+          </tr></thead>
+          <tbody id="slcTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="float-ux">
   <div class="float-btn">
