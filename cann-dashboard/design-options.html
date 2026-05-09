@@ -8,35 +8,29 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;min-height:100vh}
 
-/* ── HEADER ── */
-.ph{background:#fff;border-bottom:1px solid #e5e7eb;padding:14px 40px;display:flex;align-items:center;gap:12px}
+/* ── TOPBAR (header + tabs in one row) ── */
+.topbar{background:#fff;border-bottom:2px solid #e5e7eb;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.topbar-left{display:flex;align-items:center;gap:10px;flex-shrink:0;padding:14px 0}
 .ph-logo{font-size:15px;font-weight:700;color:#c7000b;letter-spacing:-.02em}
 .ph-sep{color:#d1d5db;font-size:18px}
 .ph-title{font-size:13px;color:#6b7280;font-weight:500}
-
-/* ── TABS ── */
-.tabs{background:#fff;border-bottom:2px solid #e5e7eb;padding:0 40px;display:flex}
-.tab{padding:13px 22px;font-size:13.5px;font-weight:500;color:#6b7280;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:inherit;display:flex;align-items:center;gap:8px;transition:color .15s,border-color .15s}
+.topbar-tabs{display:flex}
+.tab{padding:17px 18px;font-size:13px;font-weight:500;color:#6b7280;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;font-family:inherit;display:flex;align-items:center;gap:7px;transition:color .15s,border-color .15s;position:relative}
 .tab:hover{color:#374151}
 .tab.on{color:#c7000b;border-bottom-color:#c7000b}
-.tbadge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
-.tb-rec{background:#fef2f2;color:#c7000b}
-.tb-alt{background:#eff6ff;color:#2563eb}
+.tab-info{position:relative;display:inline-flex;align-items:center;line-height:0}
+.tab-info-icon{color:#d1d5db;transition:color .15s;display:block}
+.tab-info:hover .tab-info-icon{color:#9ca3af}
+.tab-pop{position:absolute;top:calc(100% + 12px);right:-10px;width:320px;background:#fff;border:1px solid #e5e7eb;border-left:3px solid #c7000b;border-radius:10px;padding:14px 16px;box-shadow:0 8px 24px rgba(0,0,0,.1);opacity:0;pointer-events:none;transform:translateY(-4px);transition:opacity .18s,transform .18s;z-index:100;text-align:left;white-space:normal;font-weight:400}
+.tab-info:hover .tab-pop{opacity:1;pointer-events:auto;transform:translateY(0)}
+.tab-pop-tag{font-size:10px;font-weight:700;color:#c7000b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.tab-pop p{font-size:12px;color:#374151;line-height:1.75}
+.tab-pop strong{color:#111827;font-weight:600}
+.tab-pop em{color:#c7000b;font-style:normal;font-weight:600}
 
 /* ── PANEL ── */
-.panel{display:none;padding:28px 40px;max-width:1300px;margin:0 auto;position:relative}
+.panel{display:none;padding:28px 40px;max-width:1300px;margin:0 auto}
 .panel.on{display:block}
-
-/* ── UX INFO ── */
-.ux-wrap{position:absolute;top:28px;right:0;z-index:20}
-.ux-btn{display:flex;align-items:center;gap:5px;padding:5px 11px;background:#fff;border:1px solid #e5e7eb;border-radius:20px;font-size:12px;font-weight:500;color:#6b7280;cursor:default;font-family:inherit;user-select:none;transition:all .15s}
-.ux-wrap:hover .ux-btn{border-color:#c7000b;color:#c7000b}
-.ux-pop{position:absolute;top:calc(100% + 8px);right:0;width:380px;background:#fff;border:1px solid #e5e7eb;border-left:3px solid #c7000b;border-radius:10px;padding:16px 18px;box-shadow:0 8px 24px rgba(0,0,0,.1);opacity:0;pointer-events:none;transform:translateY(-4px);transition:opacity .18s,transform .18s}
-.ux-wrap:hover .ux-pop{opacity:1;pointer-events:auto;transform:translateY(0)}
-.ux-tag{font-size:10px;font-weight:700;color:#c7000b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
-.ux-pop p{font-size:12.5px;color:#374151;line-height:1.75}
-.ux-pop strong{color:#111827}
-.ux-pop em{color:#c7000b;font-style:normal;font-weight:600}
 
 /* ── MOCKUP SHELL ── */
 .mock{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
@@ -300,29 +294,57 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
 .tool-crit{border-color:#fecaca;background:#fef2f2;color:#c7000b}
 .tool-arrow{color:#d1d5db;font-size:12px}
 .tool-rate{font-size:9px;opacity:.8}
+
+/* ── RADAR CHART ── */
+.hd-radar{display:flex;flex-direction:column;align-items:center;padding:4px 0 8px}
+.hd-radar-lbl{font-size:9px;color:#9ca3af;margin-top:3px}
+
+/* ── HEALTH RING ROW ── */
+.health-ring-row{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px;margin-bottom:14px}
+.hr-ring{flex-shrink:0}
+.hr-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;flex:1}
+.hr-mitem{background:#f9fafb;border-radius:6px;padding:7px 10px}
+.hr-mlbl{font-size:9px;color:#9ca3af;margin-bottom:2px}
+.hr-mval{font-size:14px;font-weight:700;display:flex;align-items:baseline;gap:5px}
+
+/* ── SPARKLINE CARDS ── */
+.spark-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.spark-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px}
+.spark-lbl{font-size:10px;color:#9ca3af;margin-bottom:2px;line-height:1.3}
+.spark-val{font-size:20px;font-weight:700}
+.spark-foot{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.spark-trend-lbl{font-size:10px}
+
+/* ── KPI MINI BAR CHART ── */
+.kpi-bar-grid{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.kpi-bar-row{display:grid;grid-template-columns:150px 1fr 52px;align-items:center;gap:8px;background:#fff;border:1px solid #f0f0f0;border-radius:6px;padding:6px 10px}
+.kpi-bar-lbl{font-size:11px;color:#374151;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-bar-track{height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;position:relative}
+.kpi-bar-fill{height:100%;border-radius:3px}
+.kpi-bar-fill.ok{background:linear-gradient(90deg,#86efac,#22c55e)}
+.kpi-bar-fill.mid{background:linear-gradient(90deg,#fde68a,#f59e0b)}
+.kpi-bar-fill.bad{background:linear-gradient(90deg,#fca5a5,#c7000b)}
+.kpi-bar-val{font-size:12px;font-weight:700;text-align:right}
+.kpi-bar-val.ok{color:#15803d}.kpi-bar-val.mid{color:#b45309}.kpi-bar-val.bad{color:#c7000b}
 </style>
 </head>
 <body>
 
-<div class="ph">
-  <span class="ph-logo">CANN</span>
-  <span class="ph-sep">/</span>
-  <span class="ph-title">体验看板 · 设计方案对比</span>
-</div>
-
-<div class="tabs">
-  <button class="tab on" onclick="switchTab('hm',this)">方案一：全景决策视图 <span class="tbadge tb-rec">推荐</span></button>
-  <button class="tab" onclick="switchTab('fl',this)">方案二：场景解剖视图 <span class="tbadge tb-alt">对比</span></button>
-  <button class="tab" onclick="switchTab('jt',this)">方案三：旅程溯因视图 <span class="tbadge tb-alt">对比</span></button>
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="ph-logo">CANN</span>
+    <span class="ph-sep">/</span>
+    <span class="ph-title">体验看板 · 设计方案对比</span>
+  </div>
+  <div class="topbar-tabs">
+    <button class="tab on" onclick="switchTab('hm',this)">方案一：全景决策视图 <span class="tab-info"><svg class="tab-info-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="tab-pop"><div class="tab-pop-tag">设计依据</div><p>基于 <strong>前注意属性理论</strong>，颜色让用户无需逐格阅读即完成全场景严重程度对比，<em>决策时间从分钟级压缩到秒级</em>。每格叠加趋势箭头，支持"变好还是变坏"的即时判断。右侧面板以 <strong>渐进式披露</strong> 方式整合三类证据，点击才展开，不造成信息过载。最适合<strong>跨场景横向排优先级</strong>的决策场景。</p></div></span></button>
+    <button class="tab" onclick="switchTab('fl',this)">方案二：场景解剖视图 <span class="tab-info"><svg class="tab-info-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="tab-pop"><div class="tab-pop-tag">设计依据</div><p>遵循 <strong>信息层级理论</strong>，按"结论→证据→明细"纵向排列，契合 <em>F 型视觉扫描规律</em>。顶部健康判定提供即时决策锚点，开发者漏斗揭示"哪步流失最多人"，痛点优先级评分让决策者直接读出"先修哪个"。最适合<strong>单一场景的深度分析与方案评审</strong>。</p></div></span></button>
+    <button class="tab" onclick="switchTab('jt',this)">方案三：旅程溯因视图 <span class="tab-info"><svg class="tab-info-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div class="tab-pop"><div class="tab-pop-tag">设计依据</div><p>基于 <strong>情境映射理论</strong>，以开发者真实任务流为主轴，将体验问题绑定到具体行为节点。时间轴显示<em>各步耗时占比和放弃率</em>，一眼看出"哪里最拖"。工具调用链暴露执行细节，三类证据就近嵌入，形成因果关系的自然呈现。最适合<strong>深度根因分析与改善路径规划</strong>。</p></div></span></button>
+  </div>
 </div>
 
 <!-- ════════════════ OPTION 1 ════════════════ -->
 <div class="panel on" id="panel-hm">
-  <div class="ux-wrap">
-    <div class="ux-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>UX 设计依据</div>
-    <div class="ux-pop"><div class="ux-tag">为什么选这个方案</div><p>基于 <strong>前注意属性理论</strong>，颜色让用户无需逐格阅读即完成全场景严重程度对比，<em>决策时间从分钟级压缩到秒级</em>。每格叠加趋势箭头，支持"变好还是变坏"的即时判断。右侧面板以 <strong>渐进式披露</strong> 方式整合三类证据，点击才展开，不造成信息过载。最适合<strong>跨场景横向排优先级</strong>的决策场景。</p></div>
-  </div>
-
   <div class="mock">
     <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 产品应用性 · 算子开发者 · 全景概览</span></div>
 
@@ -427,8 +449,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
             <div class="hd-name" id="hdName"></div>
             <div class="hd-score-wrap"><div class="hd-score bad" id="hdScore"></div><div class="hd-score-label">健康评分</div></div>
           </div>
-          <div class="sec-label">核心指标（近7次均值）</div>
-          <div class="hd-metrics" id="hdMetrics"></div>
+          <div class="hd-radar" id="hdRadar"></div>
           <hr class="hd-divider">
           <div class="sec-label">活跃痛点 · 按优先级</div>
           <div id="hdPains"></div>
@@ -443,11 +464,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
 
 <!-- ════════════════ OPTION 2 ════════════════ -->
 <div class="panel" id="panel-fl">
-  <div class="ux-wrap">
-    <div class="ux-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>UX 设计依据</div>
-    <div class="ux-pop"><div class="ux-tag">为什么选这个方案</div><p>遵循 <strong>信息层级理论</strong>，按"结论→证据→明细"纵向排列，契合 <em>F 型视觉扫描规律</em>。顶部健康判定提供即时决策锚点，开发者漏斗揭示"哪步流失最多人"，痛点优先级评分让决策者直接读出"先修哪个"。最适合<strong>单一场景的深度分析与方案评审</strong>。</p></div>
-  </div>
-
   <div class="mock">
     <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 算子开发者 · 算子复现部署</span></div>
     <div class="fl-shell">
@@ -486,12 +502,21 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
         </div>
 
         <!-- metrics -->
-        <div class="sec-label">指标概览（近 7 次均值）</div>
-        <div class="metrics-bar">
-          <div class="mc"><div class="mc-lbl">开发成功率</div><div class="mc-val bad">62%</div><div class="mc-meta"><span class="trend-dn">↓ -4%</span><span class="mc-vs">vs 上周</span></div></div>
-          <div class="mc"><div class="mc-lbl">平均复杂度评分</div><div class="mc-val mid">4.2</div><div class="mc-meta"><span class="trend-flat">→ 持平</span><span class="mc-vs">vs 上周</span></div></div>
-          <div class="mc"><div class="mc-lbl">平均任务执行时长</div><div class="mc-val mid">47min</div><div class="mc-meta"><span class="trend-dn">↑ +6min</span><span class="mc-vs">变长</span></div></div>
-          <div class="mc"><div class="mc-lbl">用例执行通过率</div><div class="mc-val mid">71%</div><div class="mc-meta"><span class="trend-dn">↓ -2%</span><span class="mc-vs">vs 上周</span></div></div>
+        <div class="sec-label">整体健康评分 + 核心指标（近 7 次均值）</div>
+        <div class="health-ring-row">
+          <div class="hr-ring" id="fl-ring"></div>
+          <div class="hr-meta">
+            <div class="hr-mitem"><div class="hr-mlbl">开发成功率</div><div class="hr-mval bad">62% <span class="trend-dn" style="font-size:10px">↓ -4%</span></div></div>
+            <div class="hr-mitem"><div class="hr-mlbl">用例执行通过率</div><div class="hr-mval mid">71% <span class="trend-dn" style="font-size:10px">↓ -2%</span></div></div>
+            <div class="hr-mitem"><div class="hr-mlbl">平均复杂度评分</div><div class="hr-mval mid">4.2 <span class="trend-flat" style="font-size:10px">→ 持平</span></div></div>
+            <div class="hr-mitem"><div class="hr-mlbl">平均任务执行时长</div><div class="hr-mval mid">47min <span class="trend-dn" style="font-size:10px">↑ +6min</span></div></div>
+          </div>
+        </div>
+        <div class="spark-grid">
+          <div class="spark-card"><div class="spark-lbl">开发成功率 · 近7次趋势</div><div class="spark-val bad">62%</div><div class="spark-foot"><span class="spark-trend-lbl trend-dn">↓ -4% vs 上周</span><div id="sp0"></div></div></div>
+          <div class="spark-card"><div class="spark-lbl">用例通过率 · 近7次趋势</div><div class="spark-val mid">71%</div><div class="spark-foot"><span class="spark-trend-lbl trend-dn">↓ -2% vs 上周</span><div id="sp1"></div></div></div>
+          <div class="spark-card"><div class="spark-lbl">平均复杂度 · 近7次趋势</div><div class="spark-val mid">4.2</div><div class="spark-foot"><span class="spark-trend-lbl trend-flat">→ 持平</span><div id="sp2"></div></div></div>
+          <div class="spark-card"><div class="spark-lbl">平均执行时长 · 近7次</div><div class="spark-val mid">47min</div><div class="spark-foot"><span class="spark-trend-lbl trend-dn">↑ +6min 变长</span><div id="sp3"></div></div></div>
         </div>
 
         <!-- funnel -->
@@ -641,11 +666,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
 
 <!-- ════════════════ OPTION 3 ════════════════ -->
 <div class="panel" id="panel-jt">
-  <div class="ux-wrap">
-    <div class="ux-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>UX 设计依据</div>
-    <div class="ux-pop"><div class="ux-tag">为什么选这个方案</div><p>基于 <strong>情境映射理论</strong>，以开发者真实任务流为主轴，将体验问题绑定到具体行为节点。时间轴显示<em>各步耗时占比和放弃率</em>，一眼看出"哪里最拖"。工具调用链暴露执行细节，三类证据就近嵌入，形成因果关系的自然呈现。最适合<strong>深度根因分析与改善路径规划</strong>。</p></div>
-  </div>
-
   <div class="mock">
     <div class="chrome"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span><span class="chrome-url">cann-dashboard / 算子开发者 · 算子迁移部署 · 感知学习</span></div>
     <div class="jt-shell">
@@ -696,6 +716,52 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:#1a1a1a;m
 </div>
 
 <script>
+
+// ── SVG CHART HELPERS ──
+function radarSvg(vals, labels, size) {
+  const cx=size/2, cy=size/2, r=size/2-30, n=vals.length;
+  const ang = i => (i/n)*2*Math.PI - Math.PI/2;
+  let out = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+  [0.25,0.5,0.75,1].forEach(pct => {
+    const pts = Array.from({length:n},(_,i)=>{const a=ang(i),gr=pct*r;return `${cx+gr*Math.cos(a)},${cy+gr*Math.sin(a)}`;}).join(' ');
+    out += `<polygon points="${pts}" fill="none" stroke="${pct===1?'#e5e7eb':'#f3f4f6'}" stroke-width="1"/>`;
+  });
+  for(let i=0;i<n;i++){const a=ang(i);out+=`<line x1="${cx}" y1="${cy}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="#e5e7eb" stroke-width="1"/>`;}
+  const dataPts=vals.map((v,i)=>{const a=ang(i),rv=(v/100)*r;return `${cx+rv*Math.cos(a)},${cy+rv*Math.sin(a)}`;}).join(' ');
+  out+=`<polygon points="${dataPts}" fill="rgba(199,0,11,.12)" stroke="#c7000b" stroke-width="1.5" stroke-linejoin="round"/>`;
+  vals.forEach((v,i)=>{const a=ang(i),rv=(v/100)*r;out+=`<circle cx="${cx+rv*Math.cos(a)}" cy="${cy+rv*Math.sin(a)}" r="3" fill="#c7000b"/>`;});
+  labels.forEach((l,i)=>{
+    const a=ang(i),lr=r+20,lx=cx+lr*Math.cos(a),ly=cy+lr*Math.sin(a);
+    const anchor=lx>cx+8?'start':lx<cx-8?'end':'middle';
+    const dy=ly>cy+8?'0.8em':ly<cy-8?'-0.1em':'0.35em';
+    out+=`<text x="${lx}" y="${ly}" font-size="9" fill="#6b7280" text-anchor="${anchor}" dy="${dy}">${l}</text>`;
+  });
+  out+=`</svg>`;return out;
+}
+function ringSvg(val, size, color) {
+  const cx=size/2,cy=size/2,r=(size-14)/2,circ=2*Math.PI*r,dash=(val/100)*circ;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f0f0f0" stroke-width="10"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="10"
+      stroke-dasharray="${dash} ${circ}" stroke-dashoffset="${circ/4}" stroke-linecap="round"/>
+    <text x="${cx}" y="${cy-5}" text-anchor="middle" font-size="20" font-weight="700" fill="${color}">${val}</text>
+    <text x="${cx}" y="${cy+12}" text-anchor="middle" font-size="9" fill="#9ca3af">/ 100</text>
+  </svg>`;
+}
+function sparkSvg(data, w, h, color) {
+  const min=Math.min(...data),max=Math.max(...data),range=max-min||1;
+  const pts=data.map((v,i)=>`${(i/(data.length-1))*w},${h-3-((v-min)/range)*(h-8)}`).join(' ');
+  const last=data[data.length-1],lx=w,ly=h-3-((last-min)/range)*(h-8);
+  const area=`M0,${h} L${pts.split(' ').join(' L')} L${w},${h} Z`;
+  const uid='s'+Math.random().toString(36).slice(2,7);
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <defs><linearGradient id="${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity=".25"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${area}" fill="url(#${uid})"/>
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${lx}" cy="${ly}" r="2.5" fill="${color}"/>
+  </svg>`;
+}
+
 // ── TABS ──
 function switchTab(id, btn) {
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
@@ -706,7 +772,7 @@ function switchTab(id, btn) {
 
 // ── HEATMAP ──
 const hmData = [
-  { name:'算子复现部署', score:57, scoreCls:'bad',
+  { name:'算子复现部署', score:57, scoreCls:'bad', radar:[62,54,78,48,71],
     metrics:[
       {l:'开发成功率',v:'62%',t:'↓ -4%',tc:'dn',c:'bad'},
       {l:'用例通过率',v:'71%',t:'↓ -2%',tc:'dn',c:'mid'},
@@ -722,7 +788,7 @@ const hmData = [
       {vol:61,trend:'↑+5',text:'CANN 多算子仓文档参数错误、格式错误、描述不一致及内容缺失',meta:'资料仓库 · 社区 issue'},
     ]
   },
-  { name:'算子迁移部署', score:69, scoreCls:'mid',
+  { name:'算子迁移部署', score:69, scoreCls:'mid', radar:[74,49,91,72,68],
     metrics:[
       {l:'开发成功率',v:'74%',t:'↑ +2%',tc:'up',c:'mid'},
       {l:'用例通过率',v:'80%',t:'↑ +1%',tc:'up',c:'ok'},
@@ -738,7 +804,7 @@ const hmData = [
       {vol:33,trend:'→持平',text:'ops-transformer 仓量化适配不足、多算子 shape 拦截缺失、编译依赖缺陷及精度失败',meta:'算子仓 · 社区 issue'},
     ]
   },
-  { name:'Builtin 算子定制修改', score:62, scoreCls:'bad',
+  { name:'Builtin 算子定制修改', score:62, scoreCls:'bad', radar:[58,73,88,51,61],
     metrics:[
       {l:'开发成功率',v:'58%',t:'↓ -7%',tc:'dn',c:'bad'},
       {l:'用例通过率',v:'61%',t:'↓ -4%',tc:'dn',c:'bad'},
@@ -754,7 +820,7 @@ const hmData = [
       {vol:40,trend:'→持平',text:'算子资料文档格式不规范、参数描述错误、命令目录错误等多类内容错误',meta:'资料仓库 · 社区 issue'},
     ]
   },
-  { name:'算子基本功能实现', score:84, scoreCls:'ok',
+  { name:'算子基本功能实现', score:84, scoreCls:'ok', radar:[85,82,93,81,76],
     metrics:[
       {l:'开发成功率',v:'85%',t:'↑ +3%',tc:'up',c:'ok'},
       {l:'用例通过率',v:'88%',t:'↑ +2%',tc:'up',c:'ok'},
@@ -779,9 +845,10 @@ function selHm(tr, i) {
   document.getElementById('hdName').textContent=d.name;
   const sc=document.getElementById('hdScore');
   sc.textContent=d.score; sc.className='hd-score '+d.scoreCls;
-  document.getElementById('hdMetrics').innerHTML=d.metrics.map(m=>
-    `<div class="hd-mc"><div class="hd-ml">${m.l}</div><div class="hd-mv ${m.c}">${m.v}</div><div class="hd-mt ${m.tc==='up'?'trend-up':m.tc==='dn'?'trend-dn':'trend-flat'}">${m.t}</div></div>`
-  ).join('');
+  const radarLabels=['开发\n成功率','文档\n质量','环境\n效率','调试\n能力','工具\n稳定性'];
+  document.getElementById('hdRadar').innerHTML=
+    radarSvg(d.radar, radarLabels, 200)+
+    `<div class="hd-radar-lbl">5 维体验雷达图 · 外圈=100%</div>`;
   document.getElementById('hdPains').innerHTML=d.pains.map(p=>
     `<div class="hd-issue-row"><span class="badge b-r" style="font-size:11px;padding:3px 7px">${p.score}</span><div style="flex:1"><div class="hd-issue-text">${p.text}</div><div style="font-size:9px;color:#9ca3af;margin:2px 0">${p.team} · ${p.cust}</div><div class="hd-issue-progress"><div class="hd-prog-track"><div class="hd-prog-fill ${p.prog>60?'done':''}" style="width:${p.prog}%"></div></div><span class="hd-prog-pct">${p.prog}%</span></div></div></div>`
   ).join('');
@@ -928,7 +995,11 @@ function selStep(i) {
   const d=steps[i];
   let metricsHtml='';
   if(d.type==='kpi'){
-    metricsHtml=`<div class="sd-kpis">${d.kpis.map(k=>`<div class="sd-kpi"><div class="sd-kpi-l">${k.l}</div><div class="sd-kpi-v ${k.c}">${k.v}</div><div class="sd-kpi-t ${k.c==='bad'?'trend-dn':k.c==='ok'?'trend-up':'trend-flat'}">${k.t}</div></div>`).join('')}</div>`;
+    metricsHtml=`<div class="kpi-bar-grid">${d.kpis.map(k=>{
+      const num=parseFloat(k.v);
+      const barW=k.v.includes('%')?num:(k.c==='bad'?28:k.c==='mid'?62:85);
+      return `<div class="kpi-bar-row"><span class="kpi-bar-lbl">${k.l}</span><div class="kpi-bar-track"><div class="kpi-bar-fill ${k.c}" style="width:${barW}%"></div></div><span class="kpi-bar-val ${k.c}">${k.v}</span></div>`;
+    }).join('')}</div>`;
   } else {
     const sl={'ok':'达标','warn':'警告','crit':'严重'};
     metricsHtml=`<div class="status-list">${d.statusItems.map(s=>`<div class="sl-row"><span class="sl-label">${s.l}</span><div class="sl-track"><div class="sl-fill ${s.s}" style="width:${s.pct}%"></div></div><span class="sl-val ${s.s}">${s.v}</span><span class="sl-badge ${s.s}">${sl[s.s]}</span></div>`).join('')}</div>`;
@@ -945,6 +1016,11 @@ function selStep(i) {
     </div>`;
 }
 selStep(0);
+// ── Init Option 2 ring + sparklines ──
+document.getElementById('fl-ring').innerHTML = ringSvg(57, 88, '#c7000b');
+const spData=[[68,65,70,64,62,66,62],[76,74,75,72,73,71,71],[4.2,4.0,4.1,4.3,4.1,4.2,4.2],[41,43,44,45,44,48,47]];
+const spColors=['#c7000b','#b45309','#2563eb','#2563eb'];
+spData.forEach((d,i)=>{document.getElementById('sp'+i).innerHTML=sparkSvg(d,62,28,spColors[i]);});
 </script>
 </body>
 </html>
