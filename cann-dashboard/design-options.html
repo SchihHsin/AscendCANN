@@ -205,7 +205,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:var(--tex
 /* PAIN PANEL ④ ⑥ */
 .pain-cat-section{margin-bottom:14px}
 .pain-cat-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.cat-badge{font-size:10px;font-weight:600;padding:2px 10px;border-radius:20px;border:1.5px solid}
+.cat-badge{font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px;border:1.5px solid;white-space:nowrap;flex-shrink:0}
+.cat-sum-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.cat-sum-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;font-size:11px;font-weight:600;border:1.5px solid;white-space:nowrap;cursor:default}
+.cat-sum-chip.tool{background:#fff7ed;color:#c2410c;border-color:#fdba74}
+.cat-sum-chip.doc{background:#eff6ff;color:#1d4ed8;border-color:#93c5fd}
+.cat-sum-chip.api{background:#faf5ff;color:#6d28d9;border-color:#c4b5fd}
+.cat-sum-chip.env{background:#f0fdf4;color:#15803d;border-color:#86efac}
+.cat-sum-n{font-weight:700;font-size:12px}
 .cat-badge.doc{background:#fff;color:#1d4ed8;border-color:#93c5fd}
 .cat-badge.tool{background:#fff;color:#c2410c;border-color:#fdba74}
 .cat-badge.api{background:#fff;color:#6d28d9;border-color:#c4b5fd}
@@ -765,45 +772,88 @@ body.ov-rat-open .ov-rat-panel{right:0}
             <div id="ecPainDist" style="height:190px"></div>
           </div>
         </div>
-        <div style="margin-top:12px">
-          <div class="pain-cat-section">
-            <div class="pain-cat-hdr"><span class="cat-badge tool">工具类</span><span class="cat-count">3 条</span></div>
-            <div class="pain-item">
-              <div class="pain-top">
-                <span class="pain-score">P0</span>
-                <div class="pain-body">
-                  <div class="pain-text">AIC 日志缺失根因定位能力，算子报错时开发者无自主定位能力，完全依赖华为侧介入</div>
-                  <div class="pain-meta">腾讯 / 蚂蚁 | 算子编程分队 | 优先级：高 | 客户期望 2026-Q3</div>
-                </div>
-                <span class="pain-status progress">特性开发</span>
-              </div>
-              <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ AIC 日志增强改造，展示报错算子 / 指令 / 内存信息，Q3 主线</span></div>
-            </div>
-            <div class="pain-item">
-              <div class="pain-top">
-                <span class="pain-score">P1</span>
-                <div class="pain-body">
-                  <div class="pain-text">迁移工具 shape 限制无提前提示，迁移失败后才发现不支持，严重影响迁移部署成功率</div>
-                  <div class="pain-meta">美团 / 京东 | 工具链分队 | 优先级：中 | 客户期望 2026-Q3</div>
-                </div>
-                <span class="pain-status planned">规划中</span>
-              </div>
-              <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 迁移工具增加 shape 预检查，返回明确提示，纳入 Q3 规划</span></div>
-            </div>
+        <!-- 分类汇总 + 统一列表 -->
+        <div style="margin-top:14px">
+          <div class="cat-sum-row">
+            <span class="cat-sum-chip tool">工具类 <span class="cat-sum-n">3</span></span>
+            <span class="cat-sum-chip doc">文档类 <span class="cat-sum-n">5</span></span>
+            <span class="cat-sum-chip api">API 类 <span class="cat-sum-n">2</span></span>
+            <span class="cat-sum-chip env">环境类 <span class="cat-sum-n">1</span></span>
+            <span style="font-size:10px;color:var(--dim);align-self:center;margin-left:4px">共 11 条 · 按优先级排序 · 仅展示代表性痛点</span>
           </div>
-          <div class="pain-cat-section">
-            <div class="pain-cat-hdr"><span class="cat-badge doc">文档类</span><span class="cat-count">5 条</span></div>
-            <div class="pain-item">
-              <div class="pain-top">
-                <span class="pain-score">P0</span>
-                <div class="pain-body">
-                  <div class="pain-text">Builtin 算子文档参数描述错误、版本不同步，VOD 声量 61 条，社区开发者反复反馈</div>
-                  <div class="pain-meta">社区 / 美团 | 资料分队 | 优先级：高 | 已立项</div>
-                </div>
-                <span class="pain-status progress">特性开发</span>
+          <!-- P0 -->
+          <div class="pain-item">
+            <div class="pain-top">
+              <span class="pain-score">P0</span>
+              <div class="pain-body">
+                <div class="pain-text">AIC 日志缺失根因定位能力，算子报错时开发者无自主定位能力，完全依赖华为侧介入</div>
+                <div class="pain-meta">腾讯 / 蚂蚁 | 算子编程分队 | 客户期望 2026-Q3</div>
               </div>
-              <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 批量修复文档参数错误，建立文档-代码同步机制，Q3 完成</span></div>
+              <span class="pain-status progress">特性开发</span>
+              <span class="cat-badge tool">工具类</span>
             </div>
+            <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ AIC 日志增强改造，展示报错算子 / 指令 / 内存信息，Q3 主线</span></div>
+          </div>
+          <div class="pain-item">
+            <div class="pain-top">
+              <span class="pain-score">P0</span>
+              <div class="pain-body">
+                <div class="pain-text">Builtin 算子文档参数描述错误、版本不同步，VOD 声量 61 条，社区开发者反复反馈</div>
+                <div class="pain-meta">社区 / 美团 | 资料分队 | 已立项</div>
+              </div>
+              <span class="pain-status progress">特性开发</span>
+              <span class="cat-badge doc">文档类</span>
+            </div>
+            <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 批量修复文档参数错误，建立文档-代码同步机制，Q3 完成</span></div>
+          </div>
+          <div class="pain-item">
+            <div class="pain-top">
+              <span class="pain-score">P0</span>
+              <div class="pain-body">
+                <div class="pain-text">算子编程 API 缺少约束条件与边界说明，开发者只能靠试错发现限制，调试成本高</div>
+                <div class="pain-meta">腾讯 / O1 | 算子编程分队 | 客户期望 2026-Q3</div>
+              </div>
+              <span class="pain-status planned">规划中</span>
+              <span class="cat-badge api">API 类</span>
+            </div>
+            <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 梳理高频约束条件，补全 API 参数约束文档，Q3 完成</span></div>
+          </div>
+          <!-- P1 -->
+          <div class="pain-item">
+            <div class="pain-top">
+              <span class="pain-score" style="background:var(--yellow-bg);color:var(--yellow)">P1</span>
+              <div class="pain-body">
+                <div class="pain-text">迁移工具 shape 限制无提前提示，迁移失败后才发现不支持，严重影响迁移部署成功率</div>
+                <div class="pain-meta">美团 / 京东 | 工具链分队 | 客户期望 2026-Q3</div>
+              </div>
+              <span class="pain-status planned">规划中</span>
+              <span class="cat-badge tool">工具类</span>
+            </div>
+            <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 迁移工具增加 shape 预检查，返回明确提示，纳入 Q3 规划</span></div>
+          </div>
+          <div class="pain-item">
+            <div class="pain-top">
+              <span class="pain-score" style="background:var(--yellow-bg);color:var(--yellow)">P1</span>
+              <div class="pain-body">
+                <div class="pain-text">Ascend C Python 接口文档示例缺失，入门开发者无法快速上手，只能参考 C++ 版本推测</div>
+                <div class="pain-meta">讯飞 / O1 | 资料分队 | 客户期望 2026-Q3</div>
+              </div>
+              <span class="pain-status planned">规划中</span>
+              <span class="cat-badge doc">文档类</span>
+            </div>
+            <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 补全 Python 接口示例文档，覆盖常用算子场景，Q3 完成</span></div>
+          </div>
+          <div class="pain-item">
+            <div class="pain-top">
+              <span class="pain-score" style="background:var(--yellow-bg);color:var(--yellow)">P1</span>
+              <div class="pain-body">
+                <div class="pain-text">NPU 容器初始化环境耗时过长（均值 8.3 分钟），开发者反复等待，严重打断调试节奏</div>
+                <div class="pain-meta">京东 / 美团 | 编译器 &amp; OS 分队 | 客户期望 2026-Q4</div>
+              </div>
+              <span class="pain-status planned">规划中</span>
+              <span class="cat-badge env">环境类</span>
+            </div>
+            <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 优化容器启动流程，目标压缩至 3 分钟以内，Q4 规划</span></div>
           </div>
         </div>
       </div>
