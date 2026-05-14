@@ -27,50 +27,10 @@
   - VOD 面板：声量 + 趋势 + 原声引用
 - **设计依据侧栏**：浮动按钮入口保持，点击后面板从右侧嵌入 main-body 布局（第三 flex 列，~264px），不遮挡页面内容；6 条依据，悬停高亮并自动滚动到对应 UI 区域
 
-#### CANN 仓库全量分析与 Agentic 评分
-- 已通过 GitCode API 拉取并梳理 `cann` 组织公开仓库，共 **65 个仓库**
-- 已产出全量证据数据：
-  - `cann-agentic-observations.json`
-  - `cann-agentic-summary.json`
-  - `cann-repo-coverage.json`
-  - `repo-scan-summary.json`
-- 已建立本地仓扫描目录 `repo-scan/`，用于保存部分关键仓的 README / docs / 目录结构证据
-- 已实现分析脚本：
-  - `scripts/analyze_cann_repos.py`
-  - `scripts/render_agentic_report.py`
-  - `scripts/render_ux_journey_report.py`
-  - `scripts/render_context_journey_report.py`
-
-#### 报告输出（HTML 可读版）
-- 已完成第一版 UX 导向报告：
-  - `journey-agentic-report.md`
-  - `journey-agentic-report.html`
-- 已完成第二版 context 骨架导向报告：
-  - `context-journey-report.md`
-  - `context-journey-report.html`
-- 第二版报告当前规则：
-  - `context.md` 负责定义角色 / 场景 / 旅程骨架
-  - 若 `context.md` 中没有内容，但新分析已有可映射内容，则允许**用新分析补全**
-  - 页面中需明确标注：
-    - `context 骨架`
-    - `新分析补全`
-    - `阶段名来自 context，内容来自新分析`
-- 第二版报告当前展示结构：
-  - 顶部按角色 tab 切换
-  - 角色下按场景切换
-  - 场景内用用户旅程可视化展示阶段分
-  - 分数是主信息，覆盖率仅作为辅助证据
-  - 辅助证据区会显示被参考的仓库名称 / 地址
-  - 最高分 / 最低分 / 旅程判断不再单独占一整排，而是通过旅程节点上的小标签和视觉强调表达
-
-#### 已完成的提交
-- `cb063f2` `Add context-based journey report with supplemented UX analysis`
-- `18d7fce` `Add report evidence JSON files`
-
 ### 下一步
-- 继续细化 `context-journey-report.html` 的用户体验分析表达，而不是继续加重数据面板
-- 逐个校正“新分析内容”映射到 `context.md` 场景骨架的合理性
-- 如需要，补充报告中实际引用到的 `repo-scan/...` 证据文件进入版本库
+- 继续细化前端/设计侧的看板表达
+- 设计相关上下文继续维护在 `context.md`
+- 后端读取数据、仓库分析、Agentic 评分、报告生成相关内容已拆到新的后端 context 文件
 
 ---
 
@@ -128,14 +88,6 @@
 
 ## 应用开发者
 整体开发中，暂无内容。
-
-### 当前补充说明（2026-05-14）
-- `context.md` 原始定义里仍为空白
-- 但在 `context-journey-report.html` 中，已经允许用新分析结果补应用开发者的内容层
-- 当前补入的应用侧场景包括：
-  - 行业方案验证与 PoC
-  - 样例落地与快速试用
-- 这部分属于**新分析补全**，不是 `context.md` 原始定义
 
 ---
 
@@ -238,8 +190,6 @@
 3. **三层递进**：全景 → 角色视图 → 场景详情
 4. **筛选即叙事**：角色+芯片筛选是进入专属分析视角的入口
 5. **整体重新设计**（非在老页面上修补），用模拟数据先行，后续替换真实数据
-6. **报告以用户体验结论为主，数据为证据**：分数和旅程判断优先于覆盖率
-7. **context 是骨架，不是内容上限**：若新分析已有可映射内容，可补入 context 骨架导向报告
 
 ---
 
@@ -259,21 +209,16 @@
 ### 关于这个项目
 - 现阶段同时维护**分析文档**（analysis.html）和**新看板**设计
 - 新看板用模拟数据先行，后续替换真实数据
-- 现阶段同时维护两类报告：
-  - `journey-agentic-report.*`：按新分析的人群/场景体系组织
-  - `context-journey-report.*`：按 `context.md` 的角色/场景/旅程骨架组织
-- 第二类报告不再机械保留空白，而是允许使用新分析进行内容补全，但必须显式标注来源
+- 后端读取数据 / 仓库分析 / 评分脚本 / HTML 报告生成的上下文，不再写在本文件里，单独维护在新的后端 context 文件中
 
 ---
 
 ## 待确认问题
 - [x] **Q1 VOD 来源**：已确认（见上方 VOD 数据章节）
 - [x] **Q2 评分聚合方式**：近7次数据均值
-- [ ] **Q3 其他角色场景**：`context.md` 原文里应用开发者仍为空，但报告中已用新分析补入内容层；后续需确认这种映射是否最终采纳
-- [ ] **入门开发者 S2~S5 步骤的任务列表**：目前报告里已用新分析补了内容层，但 `context.md` 原始任务定义仍不完整
+- [ ] **Q3 其他角色场景**：应用开发者整体开发中，AI框架开发者场景已确认
+- [ ] **入门开发者 S2~S5 步骤的任务列表**（目前只知道 S0/S1）
 - [x] **新看板设计方案**：已完成，design-options.html 可用
-- [x] **65 个仓库的全量梳理与评分证据文件**：已完成
-- [x] **HTML 可读报告产出**：已完成，两版报告已可打开预览
 
 ---
 
@@ -287,16 +232,7 @@ AscendCANN/
     ├── style.css         ← 分析文档样式（浅色主题，主题色 #c7000b）~394 行
     ├── script.js         ← 分析文档交互（lightbox + sidebar 高亮）~26 行
     ├── design-options.html ← 新看板（单文件，模拟数据，~1000 行）
-    ├── journey-agentic-report.html ← 第一版 UX 旅程报告（按新分析组织）
-    ├── journey-agentic-report.md   ← 第一版 UX 旅程报告 Markdown
-    ├── context-journey-report.html ← 第二版 context 骨架导向报告
-    ├── context-journey-report.md   ← 第二版 context 骨架导向报告 Markdown
-    ├── cann-agentic-observations.json ← 仓库级观测明细
-    ├── cann-agentic-summary.json      ← 评分汇总
-    ├── cann-repo-coverage.json        ← 全量仓库覆盖清单
-    ├── repo-scan-summary.json         ← 本地 repo-scan 汇总
-    ├── repo-scan/                     ← 本地证据目录（README/docs 等）
-    ├── scripts/                       ← 数据分析 / 报告生成脚本
+    ├── backend-context.md ← 后端读取数据 / 仓库分析 / 评分报告上下文
     ├── context.md        ← 本文件，项目上下文
     └── process-log.md    ← 协作过程记录
 ```
