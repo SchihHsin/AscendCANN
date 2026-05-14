@@ -285,6 +285,9 @@ body.rat-open .rat-sidebar{width:264px}
 .sub-tab-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;position:sticky;top:50px;z-index:98}
 /* Per-tab filter-bar overrides: tabs without sub-tab-bar get filter at top:50px */
 #tabOverview .filter-bar{top:50px}
+/* OVERVIEW RATIONALE DRAWER */
+.ov-rat-panel{position:fixed;top:90px;right:-292px;width:272px;background:#fff;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:10px 0 0 10px;z-index:200;box-shadow:-2px 4px 20px rgba(0,0,0,.08);transition:right .22s ease;max-height:calc(100vh - 110px);overflow-y:auto}
+body.ov-rat-open .ov-rat-panel{right:0}
 /* ROLE FILTER */
 .role-dim{opacity:.2;filter:grayscale(.15);transition:opacity .2s,filter .2s;pointer-events:none}
 .role-focus-badge{font-size:9px;font-weight:700;padding:1px 7px;border-radius:10px;background:var(--blue-bg);color:var(--blue);border:1px solid #bfdbfe;margin-left:8px;vertical-align:middle;letter-spacing:0;text-transform:none}
@@ -912,6 +915,66 @@ body.rat-open .rat-sidebar{width:264px}
       </div>
 
     </div>
+
+  <!-- OVERVIEW RATIONALE DRAWER -->
+  <div class="ov-rat-panel">
+    <div class="rat-panel-hdr">设计点 · 总览</div>
+    <div class="rat-item">
+      <div class="rat-num">①</div>
+      <div class="rat-content">
+        <div class="rat-head">三层增益框架 · 技术内核→开发界面→生态增益</div>
+        <div class="rat-source">框架 · 技术认知生态三层增益系统</div>
+        <div class="rat-body">总览按三层排列，映射"底层能力→开发体验→生态价值"的价值传导链。决策者可快速判断某个问题属于哪个层面的投资——是基础能力缺口、开发体验问题，还是生态扩散的问题。</div>
+        <div class="rat-pointer">→ 指向：三个楼层的分层标题徽章</div>
+      </div>
+    </div>
+    <div class="rat-item">
+      <div class="rat-num">②</div>
+      <div class="rat-content">
+        <div class="rat-head">三证据交叉矩阵 · 避免单视角盲区</div>
+        <div class="rat-source">洞察 · DX Core 4 · Spotify Soundcheck</div>
+        <div class="rat-body">体验健康矩阵把 Agent 评分 / 客户痛点 / VOD 声量三路信号并排。Agent 评分好但 VOD 声量高，说明用户实际感受更差；客户痛点少但 Agent 评分低，说明大客户还未充分暴露问题。</div>
+        <div class="rat-pointer">→ 指向：体验健康矩阵表格</div>
+      </div>
+    </div>
+    <div class="rat-item">
+      <div class="rat-num">③</div>
+      <div class="rat-content">
+        <div class="rat-head">角色视角筛选 · 聚焦而不隐藏</div>
+        <div class="rat-source">设计原则 · 渐进披露 · 减少认知负荷</div>
+        <div class="rat-body">资料负责人关注文档声量、算子编程组关注调试得分、社区运营关注入门旅程——同一份数据，不同角色的关注点差异显著。视角筛选淡化（而非删除）无关区域，保留完整上下文。</div>
+        <div class="rat-pointer">→ 指向：filter-bar 的视角 chips</div>
+      </div>
+    </div>
+    <div class="rat-item">
+      <div class="rat-num">④</div>
+      <div class="rat-content">
+        <div class="rat-head">需立即处理 · 把看板变成决策工具</div>
+        <div class="rat-source">洞察 · LinearB Scorecard · Datadog Watchdog</div>
+        <div class="rat-body">开发界面楼层单独提炼"需立即处理"清单，每条附优先级标签 + 责任分队 + 预期闭环时间。看板的终点是行动，不是观察——避免决策者在数十张图表中自行归纳行动项。</div>
+        <div class="rat-pointer">→ 指向：开发界面楼层左侧"需立即处理"卡片</div>
+      </div>
+    </div>
+    <div class="rat-item">
+      <div class="rat-num">⑤</div>
+      <div class="rat-content">
+        <div class="rat-head">图表替代纯数字 · 方向感比精度更重要</div>
+        <div class="rat-source">可视化原则 · ECharts 5 · Grafana Dashboard</div>
+        <div class="rat-body">KPI sparkline 展示趋势方向而非只看当期值；雷达图用形状定位最弱 API 维度；仪表盘让 62% 比纯数字更有紧迫感；横向柱状图自动着色让客户排名一目了然。</div>
+        <div class="rat-pointer">→ 指向：各楼层的 ECharts 图表卡片</div>
+      </div>
+    </div>
+    <div class="rat-item">
+      <div class="rat-num">⑥</div>
+      <div class="rat-content">
+        <div class="rat-head">S0–S5 入门旅程 · 把量化旅程引入生态视角</div>
+        <div class="rat-source">分析 · Agent 全旅程评测 · 社区入门健康度</div>
+        <div class="rat-body">生态增益楼层通过 S0–S5 步骤圆圈直接标出最弱环节（S0 搜索发现：42 分），把 Agent 全旅程结论聚合到总览页，让社区运营和体验设计师无需跳转详情就能看到社区健康度。</div>
+        <div class="rat-pointer">→ 指向：生态增益楼层的社区入门体验卡片</div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /tabOverview -->
 
 <!-- DEV TAB -->
@@ -1786,12 +1849,20 @@ function switchTab(id,btn){
   document.querySelectorAll('.dim-tab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   ['tabOverview','tabDev'].forEach(v=>document.getElementById(v).style.display=v===(id==='dev'?'tabDev':'tabOverview')?'block':'none');
+  document.body.classList.remove('rat-open','ov-rat-open');
+  document.getElementById('floatRat').classList.remove('open');
 }
 
 // ── RATIONALE HIGHLIGHT ──
 function toggleRat(){
-  document.body.classList.toggle('rat-open');
-  document.getElementById('floatRat').classList.toggle('open',document.body.classList.contains('rat-open'));
+  const onOverview=document.getElementById('tabOverview').style.display!=='none';
+  if(onOverview){
+    document.body.classList.toggle('ov-rat-open');
+    document.getElementById('floatRat').classList.toggle('open',document.body.classList.contains('ov-rat-open'));
+  } else {
+    document.body.classList.toggle('rat-open');
+    document.getElementById('floatRat').classList.toggle('open',document.body.classList.contains('rat-open'));
+  }
 }
 function hlRat(n){
   for(let i=1;i<=6;i++) document.body.classList.remove('hl-'+i);
