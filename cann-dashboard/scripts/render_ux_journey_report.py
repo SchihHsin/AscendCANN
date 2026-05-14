@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+EVIDENCE_ROOT = ROOT / "repo-evidence"
 
 
 def load_json(name):
@@ -33,9 +34,9 @@ PERSONAS = [
             "cann-recipes-train",
         ],
         "evidence_links": [
-            ("embodied README", ROOT / "repo-scan" / "cann-recipes-embodied-intelligence" / "README.md"),
-            ("pi0 infer README", ROOT / "repo-scan" / "cann-recipes-embodied-intelligence" / "manipulation" / "pi0" / "infer_with_torch" / "README.md"),
-            ("VGGT README", ROOT / "repo-scan" / "cann-recipes-spatial-intelligence" / "models" / "vggt" / "README.md"),
+            ("embodied README", EVIDENCE_ROOT / "cann-recipes-embodied-intelligence" / "README.md"),
+            ("pi0 infer README", EVIDENCE_ROOT / "cann-recipes-embodied-intelligence" / "manipulation" / "pi0" / "infer_with_torch" / "README.md"),
+            ("VGGT README", EVIDENCE_ROOT / "cann-recipes-spatial-intelligence" / "models" / "vggt" / "README.md"),
         ],
     },
     {
@@ -86,8 +87,8 @@ PERSONAS = [
             "ascend-boost-comm",
         ],
         "evidence_links": [
-            ("pyasc README", ROOT / "repo-scan" / "pyasc" / "README.md"),
-            ("pyasc quick start", ROOT / "repo-scan" / "pyasc" / "docs" / "quick_start.md"),
+            ("pyasc README", EVIDENCE_ROOT / "pyasc" / "README.md"),
+            ("pyasc quick start", EVIDENCE_ROOT / "pyasc" / "docs" / "quick_start.md"),
             ("observations JSON", ROOT / "cann-agentic-observations.json"),
         ],
     },
@@ -110,8 +111,8 @@ PERSONAS = [
             "cmake",
         ],
         "evidence_links": [
-            ("hixl README", ROOT / "repo-scan" / "hixl" / "README.md"),
-            ("hixl build docs", ROOT / "repo-scan" / "hixl" / "docs" / "build.md"),
+            ("hixl README", EVIDENCE_ROOT / "hixl" / "README.md"),
+            ("hixl build docs", EVIDENCE_ROOT / "hixl" / "docs" / "build.md"),
             ("observations JSON", ROOT / "cann-agentic-observations.json"),
         ],
     },

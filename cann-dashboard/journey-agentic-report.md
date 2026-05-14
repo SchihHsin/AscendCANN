@@ -109,9 +109,9 @@ CANN 现在的问题，不是“没有仓库内容”，而是“内容很多，
 
 ### 直接证据
 
-- [embodied README](D:\HW\AscendCANN\cann-dashboard\repo-scan\cann-recipes-embodied-intelligence\README.md)
-- [pi0 infer README](D:\HW\AscendCANN\cann-dashboard\repo-scan\cann-recipes-embodied-intelligence\manipulation\pi0\infer_with_torch\README.md)
-- [VGGT README](D:\HW\AscendCANN\cann-dashboard\repo-scan\cann-recipes-spatial-intelligence\models\vggt\README.md)
+- [embodied README](D:\HW\AscendCANN\cann-dashboard\repo-evidence\cann-recipes-embodied-intelligence\README.md)
+- [pi0 infer README](D:\HW\AscendCANN\cann-dashboard\repo-evidence\cann-recipes-embodied-intelligence\manipulation\pi0\infer_with_torch\README.md)
+- [VGGT README](D:\HW\AscendCANN\cann-dashboard\repo-evidence\cann-recipes-spatial-intelligence\models\vggt\README.md)
 
 ## 6. 模型/框架适配工程师
 
@@ -216,8 +216,8 @@ CANN 现在的问题，不是“没有仓库内容”，而是“内容很多，
 
 ### 直接证据
 
-- [pyasc README](D:\HW\AscendCANN\cann-dashboard\repo-scan\pyasc\README.md)
-- [pyasc quick start](D:\HW\AscendCANN\cann-dashboard\repo-scan\pyasc\docs\quick_start.md)
+- [pyasc README](D:\HW\AscendCANN\cann-dashboard\repo-evidence\pyasc\README.md)
+- [pyasc quick start](D:\HW\AscendCANN\cann-dashboard\repo-evidence\pyasc\docs\quick_start.md)
 - [observations JSON](D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json)
 
 ## 8. 系统/通信工程师
@@ -270,8 +270,8 @@ CANN 现在的问题，不是“没有仓库内容”，而是“内容很多，
 
 ### 直接证据
 
-- [hixl README](D:\HW\AscendCANN\cann-dashboard\repo-scan\hixl\README.md)
-- [hixl build docs](D:\HW\AscendCANN\cann-dashboard\repo-scan\hixl\docs\build.md)
+- [hixl README](D:\HW\AscendCANN\cann-dashboard\repo-evidence\hixl\README.md)
+- [hixl build docs](D:\HW\AscendCANN\cann-dashboard\repo-evidence\hixl\docs\build.md)
 - [observations JSON](D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json)
 
 ## 9. 行业方案开发者

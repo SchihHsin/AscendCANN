@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+EVIDENCE_ROOT = ROOT / "repo-evidence"
 
 
 def load_json(name):
@@ -100,8 +101,8 @@ FALLBACK_CONTENT = {
                 ],
                 "stages": ["感知学习", "环境准备", "环境验证"],
                 "evidence_links": [
-                    ("embodied README", ROOT / "repo-scan" / "cann-recipes-embodied-intelligence" / "README.md"),
-                    ("VGGT README", ROOT / "repo-scan" / "cann-recipes-spatial-intelligence" / "models" / "vggt" / "README.md"),
+                    ("embodied README", EVIDENCE_ROOT / "cann-recipes-embodied-intelligence" / "README.md"),
+                    ("VGGT README", EVIDENCE_ROOT / "cann-recipes-spatial-intelligence" / "models" / "vggt" / "README.md"),
                 ],
                 "supplemented": True,
                 "supplement_note": "该场景基于新分析中的“样例体验型开发者”补到应用开发者内容层，用来补齐应用侧的上手旅程。",
@@ -221,8 +222,8 @@ CONFIG = {
                 "repos": ["cann-samples", "cann-learning-hub", "ops-test-kit", "pyasc", "asc-devkit"],
                 "stages": ["感知学习", "环境准备", "环境验证"],
                 "evidence_links": [
-                    ("pyasc README", ROOT / "repo-scan" / "pyasc" / "README.md"),
-                    ("pyasc quick start", ROOT / "repo-scan" / "pyasc" / "docs" / "quick_start.md"),
+                    ("pyasc README", EVIDENCE_ROOT / "pyasc" / "README.md"),
+                    ("pyasc quick start", EVIDENCE_ROOT / "pyasc" / "docs" / "quick_start.md"),
                 ],
                 "defined_in_context": True,
             },
@@ -297,8 +298,8 @@ CONFIG = {
                 "repos": ["cann-samples", "cann-learning-hub", "pyasc", "cann-recipes-embodied-intelligence", "cann-recipes-spatial-intelligence"],
                 "stages": ["S1 环境检查与准备"],
                 "evidence_links": [
-                    ("pyasc quick start", ROOT / "repo-scan" / "pyasc" / "docs" / "quick_start.md"),
-                    ("embodied README", ROOT / "repo-scan" / "cann-recipes-embodied-intelligence" / "README.md"),
+                    ("pyasc quick start", EVIDENCE_ROOT / "pyasc" / "docs" / "quick_start.md"),
+                    ("embodied README", EVIDENCE_ROOT / "cann-recipes-embodied-intelligence" / "README.md"),
                 ],
                 "defined_tasks": True,
                 "defined_in_context": True,
