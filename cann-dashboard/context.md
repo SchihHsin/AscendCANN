@@ -11,14 +11,14 @@
 #### 分析文档（analysis.html）
 - v0.4，含封面 + 13 章节，浅色主题，拆分为 style.css / script.js / analysis.html
 
-#### 新看板（design-options.html）—— 完整可用，模拟数据（~1900 行）
+#### 新看板（design-options.html）—— 完整可用，模拟数据（~1960 行）
 ##### 导航架构（两个顶层 Tab）
 - **总览**（`#tabOverview`）：可滚动总览页，filter-bar 含芯片 + 视角（6 个角色 chip）
   1. KPI 横排（4 张摘要卡片，含 ECharts sparkline）
   2. 体验健康矩阵（5 产品线 × Agent/痛点/VOD/综合/环比，含 mini 折线）
   3. **技术内核** 楼层（红色徽章）：PyTorch API 雷达图 / 模型开箱环形图（77% 综合覆盖）/ 0 Day 发布
   4. **开发界面** 楼层（蓝色徽章）：需立即处理清单 + Agentic 效率仪表盘 + "→ 进入用户旅程" CTA
-  5. 客户痛点 section：大客户闭环率 ECharts 横向柱状图 + 痛点分布柱状图 + 分类汇总 chip（工具3/文档5/API2/环境1）+ 统一痛点列表（P0→P1，每条带分类标签）
+  5. 客户痛点 section：大客户闭环率 ECharts 横向柱状图 + 痛点分布柱状图 + 分类汇总 chip（工具3/文档5/API2/环境1，可点击过滤）+ 统一痛点列表（P0→P1，每条带 `data-cat` + 分类标签）
   6. **生态增益** 楼层（绿色徽章）：VOD ECharts 柱状图 + Top3 原声卡片 + 社区入门体验（S0–S5 步骤圆圈 + KPI 4格 + 关键痛点 callout）
   - 右下角"设计点"按钮 → 固定抽屉面板（6 条总览设计依据），tab-aware
   - 视角筛选：选中后无关楼层淡化（opacity .2），相关楼层标题显示"关注"徽章
@@ -30,6 +30,7 @@
 
 ##### 关键实现细节
 - `switchTab(id, btn)` 只处理 `tabOverview` / `tabDev`，切换时关闭两个设计点面板
+- `filterPain(cat, btn)` 按分类过滤痛点列表（全部/工具/文档/API/环境），基于 `data-cat` 属性
 - `selectRole(role, btn)` 控制总览视角筛选（淡化/关注徽章）
 - `renderTpMatrix()` 从 `touchpointData` 渲染触点矩阵
 - `selectTpCell(sceneId, col, el)` 更新 `#tpDetail` 的 `innerHTML`
@@ -39,7 +40,7 @@
 - ECharts 图表：KPI sparklines × 4、健康矩阵 sparklines × 5、PyTorch 雷达、模型覆盖环形、Agentic 仪表盘、大客户闭环柱状图、痛点分布柱状图、VOD 柱状图
 - 0 Day（原"零 Day"）发布卡片
 - 痛点分类 badge：pill 描边样式（区别于实心楼层徽章）
-- 痛点卡片 `.pain-item` 有白色背景
+- 痛点卡片 `.pain-item`：白色背景、减小内边距（padding:7px 10px），紧凑排版
 
 ### 下一步
 - 继续细化前端/设计侧的看板表达
