@@ -28,7 +28,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:var(--tex
 .export-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ── FILTER BAR ── */
-.filter-bar{background:#fff;border-bottom:1px solid var(--border);padding:7px 28px;display:flex;align-items:center;gap:8px;position:sticky;top:50px;z-index:99}
+.filter-bar{background:#fff;border-bottom:1px solid var(--border);padding:7px 28px;display:flex;align-items:center;gap:8px;position:sticky;top:90px;z-index:99}
 .fl-lbl{font-size:10px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
 .fchip{padding:3px 10px;border-radius:14px;font-size:11px;font-weight:500;border:1px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;transition:all .12s}
 .fchip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -55,7 +55,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:var(--tex
 .main-body{display:flex;align-items:flex-start;padding:12px 28px 48px;gap:12px}
 
 /* ── SCENE LIST ── */
-.scene-list{width:270px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;position:sticky;top:102px;align-self:flex-start}
+.scene-list{width:270px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;position:sticky;top:142px;align-self:flex-start}
 #sceneListCards{display:flex;flex-direction:column;gap:10px}
 .sl-hdr{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center;padding:0 2px;margin-bottom:6px;flex-shrink:0}
 .sort-toggle{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0}
@@ -256,9 +256,9 @@ body.hl-5 .hl-5{outline:2px solid var(--blue);outline-offset:2px;border-radius:6
 body.hl-6 .hl-6{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
 
 /* RATIONALE SIDEBAR */
-.rat-sidebar{width:0;overflow:hidden;flex-shrink:0;position:sticky;top:102px;align-self:flex-start;transition:width .22s ease;max-height:calc(100vh - 120px)}
+.rat-sidebar{width:0;overflow:hidden;flex-shrink:0;position:sticky;top:142px;align-self:flex-start;transition:width .22s ease;max-height:calc(100vh - 160px)}
 body.rat-open .rat-sidebar{width:264px}
-.rat-sidebar-inner{width:264px;background:#fff;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:10px;overflow-y:auto;max-height:calc(100vh - 120px)}
+.rat-sidebar-inner{width:264px;background:#fff;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:10px;overflow-y:auto;max-height:calc(100vh - 160px)}
 
 /* FLOATING TOGGLE BUTTON */
 .float-rat-btn{position:fixed;bottom:22px;right:22px;z-index:300;display:flex;align-items:center;gap:7px;padding:7px 14px;background:#fff;border:1px solid var(--border);border-radius:22px;box-shadow:0 4px 16px rgba(0,0,0,.1);font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .15s}
@@ -279,6 +279,196 @@ body.rat-open .rat-sidebar{width:264px}
 .community-shell{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--dim);padding:60px}
 .community-shell h3{font-size:15px;font-weight:600;color:var(--text)}
 .community-shell p{font-size:13px;text-align:center;max-width:400px;line-height:1.7}
+
+/* ── SUB-TAB BAR (inside tabDev only) ── */
+.sub-tab-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;position:sticky;top:50px;z-index:98}
+/* Per-tab filter-bar overrides: tabs without sub-tab-bar get filter at top:50px */
+#tabOverview .filter-bar,#tabPain .filter-bar,#tabEcosys .filter-bar,#tabVod .filter-bar{top:50px}
+/* TOUCHPOINT MATRIX */
+.tp-layout{display:flex;gap:16px;padding:16px 28px 48px;align-items:flex-start}
+.tp-matrix-wrap{flex:1;min-width:0}
+.tp-detail-col{width:296px;flex-shrink:0;position:sticky;top:132px;align-self:flex-start}
+.tp-detail-card{background:#fff;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;overflow:hidden}
+.tp-detail-hint{padding:48px 20px;text-align:center;color:var(--dim);font-size:12px;background:#fff;border:1px solid var(--border);border-radius:10px;line-height:1.6}
+.tp-detail-hdr{padding:12px 16px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:10px}
+.tp-detail-title-wrap{flex:1;min-width:0}
+.tp-detail-scene{font-size:13px;font-weight:600;color:var(--text)}
+.tp-detail-col-lbl{font-size:10px;color:var(--dim);margin-top:1px}
+.tp-detail-body{padding:14px 16px}
+.tp-obs-lbl{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.tp-obs-item{font-size:11px;color:var(--text);line-height:1.5;padding:5px 8px 5px 10px;border-radius:0 4px 4px 0;margin-bottom:5px}
+.tp-obs-item.bad{background:#fef9f9;border-left:2px solid #fca5a5}
+.tp-obs-item.mid{background:var(--yellow-bg);border-left:2px solid #fde68a}
+.tp-obs-item.ok{background:var(--green-bg);border-left:2px solid #86efac}
+.tp-cta{display:flex;align-items:center;gap:6px;margin-top:14px;padding-top:10px;border-top:1px solid #f0f0f0;color:var(--blue);font-size:11px;font-weight:600;cursor:pointer;transition:color .12s}
+.tp-cta:hover{color:#1d4ed8;text-decoration:underline}
+.tp-legend{display:flex;gap:14px;margin-top:10px}
+.tp-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);font-weight:500}
+.tp-legend-dot{width:9px;height:9px;border-radius:2px}
+.tp-legend-dot.bad{background:var(--red-bg);border:1px solid #fca5a5}
+.tp-legend-dot.mid{background:var(--yellow-bg);border:1px solid #fde68a}
+.tp-legend-dot.ok{background:var(--green-bg);border:1px solid #86efac}
+.hm-cell.tp-sel{outline:2px solid var(--blue);outline-offset:2px}
+/* PAIN TAB */
+.pain-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
+.pain-top-row{display:grid;grid-template-columns:1fr 1.4fr;gap:12px}
+.pain-dist-row{display:flex;align-items:center;gap:10px;padding:7px 16px;border-bottom:1px solid #f5f5f5}
+.pain-dist-row:last-child{border-bottom:none}
+.pain-dist-lbl{font-size:11px;color:var(--muted);flex:1}
+.pain-dist-bar-track{width:100px;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;flex-shrink:0}
+.pain-dist-bar-fill{height:100%;border-radius:3px;background:var(--accent);opacity:.7}
+.pain-dist-n{font-size:11px;font-weight:600;color:var(--text);width:24px;text-align:right;flex-shrink:0}
+/* ECOSYSTEM TAB */
+.eco-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
+.eco-three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.eco-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.eco-card-hdr{padding:10px 14px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700}
+.eco-card-body{padding:6px 14px}
+.eco-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f5f5f5;font-size:11px}
+.eco-row:last-child{border-bottom:none}
+.eco-row-lbl{color:var(--muted)}
+.eco-row-val{font-weight:600}
+.eco-row-val.ok{color:var(--green)}
+.eco-row-val.mid{color:var(--yellow)}
+.eco-row-val.bad{color:var(--accent)}
+.eco-tag{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0}
+.eco-tag.new{background:var(--green-bg);color:var(--green)}
+.eco-tag.perf{background:var(--blue-bg);color:var(--blue)}
+.eco-tag.e2e{background:var(--yellow-bg);color:var(--yellow)}
+/* VOD TAB */
+.vod-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
+.vod-two-col{display:grid;grid-template-columns:1fr 1.6fr;gap:12px}
+.vod-src-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.vod-src-row{display:flex;align-items:center;gap:10px;padding:7px 14px;border-bottom:1px solid #f5f5f5}
+.vod-src-row:last-child{border-bottom:none}
+.vod-src-name{font-size:11px;color:var(--muted);width:72px;flex-shrink:0}
+.vod-src-bar-track{flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden}
+.vod-src-bar-fill{height:100%;border-radius:3px;background:var(--accent);opacity:.65}
+.vod-src-pct{font-size:11px;font-weight:600;color:var(--text);width:34px;text-align:right}
+.vod-full-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.vod-full-hdr{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.vod-full-rank{width:22px;height:22px;border-radius:5px;background:var(--red-bg);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.vod-full-vol{font-size:18px;font-weight:700;color:var(--accent)}
+.vod-full-unit{font-size:10px;color:var(--dim)}
+.vod-full-body{flex:1;min-width:0}
+.vod-full-quote{font-size:12px;color:var(--text);line-height:1.7;padding:8px 10px 8px 18px;background:#fafafa;border-radius:6px;position:relative;font-style:italic;margin-bottom:6px}
+.vod-full-quote::before{content:'"';font-size:22px;color:var(--dim);position:absolute;top:2px;left:6px;line-height:1}
+.vod-full-meta{font-size:10px;color:var(--dim)}
+.sub-tab{height:40px;font-size:13px;font-weight:500;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;padding:0 16px;font-family:inherit;transition:all .15s}
+.sub-tab:hover{color:var(--text)}
+.sub-tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+
+/* ── OVERVIEW ── */
+.ov-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
+.ov-section-hdr{font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ov-section-hdr-line{flex:1;height:1px;background:var(--border)}
+.ov-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ov-kpi{background:#fff;border:1px solid var(--border);border-radius:9px;padding:12px 14px}
+.ov-kpi.border-red{border-left:3px solid var(--accent)}
+.ov-kpi.border-yellow{border-left:3px solid var(--yellow)}
+.ov-kpi.border-green{border-left:3px solid var(--green)}
+.ov-kpi-lbl{font-size:10px;color:var(--dim);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.ov-kpi-val{font-size:26px;font-weight:700;color:var(--text)}
+.ov-kpi-val.bad{color:var(--accent)}
+.ov-kpi-val.mid{color:var(--yellow)}
+.ov-kpi-val.ok{color:var(--green)}
+.ov-kpi-sub{font-size:11px;color:var(--dim);margin-top:4px}
+.ov-kpi-sub.dn{color:var(--accent)}
+.ov-kpi-sub.up{color:var(--green)}
+/* HEALTH MATRIX */
+.hm-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.hm-table{width:100%;border-collapse:collapse}
+.hm-th{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;padding:9px 14px;border-bottom:1px solid var(--border);background:#fafafa;text-align:center}
+.hm-th:first-child{text-align:left;width:150px}
+.hm-tr{border-bottom:1px solid #f5f5f5;cursor:pointer;transition:background .12s}
+.hm-tr:hover{background:#fffbfb}
+.hm-tr:last-child{border-bottom:none}
+.hm-td{padding:9px 14px;text-align:center;vertical-align:middle}
+.hm-td:first-child{text-align:left}
+.hm-cell{display:inline-flex;align-items:center;justify-content:center;padding:3px 10px;border-radius:5px;font-size:12px;font-weight:700;min-width:52px}
+.hm-cell.bad{background:var(--red-bg);color:var(--accent)}
+.hm-cell.mid{background:var(--yellow-bg);color:var(--yellow)}
+.hm-cell.ok{background:var(--green-bg);color:var(--green)}
+.hm-cell.na{background:#f3f4f6;color:var(--dim);font-size:10px;font-weight:500}
+.hm-row-name{display:flex;align-items:center;gap:8px}
+.hm-row-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.hm-row-dot.bad{background:var(--accent)}
+.hm-row-dot.mid{background:var(--yellow)}
+.hm-row-dot.ok{background:#22c55e}
+.hm-name-text{font-size:12px;font-weight:600;color:var(--text)}
+.hm-trend{font-size:11px;font-weight:600}
+.hm-trend.dn{color:var(--accent)}
+.hm-trend.up{color:var(--green)}
+.hm-trend.flat{color:var(--dim)}
+.hm-overall{display:inline-flex;align-items:center;padding:3px 10px;border-radius:5px;font-size:12px;font-weight:700}
+.hm-overall.bad{background:var(--red-bg);color:var(--accent)}
+.hm-overall.mid{background:var(--yellow-bg);color:var(--yellow)}
+.hm-overall.ok{background:var(--green-bg);color:var(--green)}
+/* ACTION + CUSTOMER */
+.ov-two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:12px}
+.ov-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.ov-card-hdr{padding:10px 16px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:8px}
+.ov-card-hdr-title{font-size:12px;font-weight:700;flex:1}
+.ov-card-hdr-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--red-bg);color:var(--accent)}
+.action-item{display:flex;gap:10px;padding:10px 16px;border-bottom:1px solid #f5f5f5;align-items:flex-start}
+.action-item:last-child{border-bottom:none}
+.action-num{width:22px;height:22px;border-radius:5px;background:var(--red-bg);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.action-body{flex:1;min-width:0}
+.action-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.45}
+.action-meta{font-size:10px;color:var(--dim);line-height:1.4}
+.action-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;flex-shrink:0}
+.action-tag.urgent{background:var(--red-bg);color:var(--accent)}
+.action-tag.planned{background:var(--blue-bg);color:var(--blue)}
+.cust-list{padding:6px 0}
+.cust-bar-row{display:flex;align-items:center;gap:8px;padding:7px 16px;border-bottom:1px solid #f5f5f5}
+.cust-bar-row:last-child{border-bottom:none}
+.cust-name{font-size:11px;font-weight:600;color:var(--text);width:34px;flex-shrink:0}
+.cust-bar-track{flex:1;height:7px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.cust-bar-fill{height:100%;border-radius:4px}
+.cust-bar-fill.bad{background:var(--accent)}
+.cust-bar-fill.mid{background:#f59e0b}
+.cust-bar-fill.ok{background:#22c55e}
+.cust-pct{font-size:11px;font-weight:700;width:30px;text-align:right;flex-shrink:0}
+.cust-pct.bad{color:var(--accent)}
+.cust-pct.mid{color:var(--yellow)}
+.cust-delta{font-size:10px;width:36px;flex-shrink:0}
+.cust-delta.dn{color:var(--accent)}
+.cust-delta.up{color:var(--green)}
+.cust-delta.flat{color:var(--dim)}
+/* SNAPSHOT ROW */
+.ov-snap-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.snap-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.snap-card-hdr{padding:10px 14px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:8px}
+.snap-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.snap-icon.red{background:var(--red-bg)}
+.snap-icon.blue{background:var(--blue-bg)}
+.snap-icon.green{background:var(--green-bg)}
+.snap-title{font-size:12px;font-weight:700;flex:1}
+.snap-body{padding:10px 14px}
+.snap-big-stat{display:flex;align-items:baseline;gap:5px;margin-bottom:6px}
+.snap-big-val{font-size:22px;font-weight:700}
+.snap-big-val.bad{color:var(--accent)}
+.snap-big-val.ok{color:var(--green)}
+.snap-big-val.mid{color:var(--yellow)}
+.snap-big-lbl{font-size:11px;color:var(--dim)}
+.snap-big-delta{font-size:11px;font-weight:600}
+.snap-big-delta.dn{color:var(--accent)}
+.snap-big-delta.up{color:var(--green)}
+.snap-divider{height:1px;background:#f5f5f5;margin:8px 0}
+.snap-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0}
+.snap-row-lbl{font-size:10px;color:var(--dim)}
+.snap-row-val{font-size:11px;font-weight:600;color:var(--text)}
+.snap-row-val.bad{color:var(--accent)}
+.snap-row-val.mid{color:var(--yellow)}
+.snap-row-val.ok{color:var(--green)}
+/* VOD HIGH-FREQ */
+.vod-hf-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vod-hf-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;display:flex;gap:10px;align-items:flex-start}
+.vod-hf-num{width:28px;height:28px;border-radius:7px;background:var(--red-bg);color:var(--accent);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.vod-hf-body{flex:1;min-width:0}
+.vod-hf-vol{font-size:18px;font-weight:700;color:var(--accent)}
+.vod-hf-text{font-size:11px;color:var(--text);line-height:1.6;margin:3px 0}
+.vod-hf-meta{font-size:10px;color:var(--dim)}
 </style>
 </head>
 <body>
@@ -289,8 +479,11 @@ body.rat-open .rat-sidebar{width:264px}
   <span class="tb-sep">/</span>
   <span class="tb-title">体验看板</span>
   <div class="tb-dims">
-    <button class="dim-tab on" onclick="switchDim('prod',this)">产品易用性</button>
-    <button class="dim-tab" onclick="switchDim('comm',this)">社区易用性</button>
+    <button class="dim-tab on" onclick="switchTab('overview',this)">总览</button>
+    <button class="dim-tab" onclick="switchTab('dev',this)">开发界面</button>
+    <button class="dim-tab" onclick="switchTab('pain',this)">客户痛点</button>
+    <button class="dim-tab" onclick="switchTab('ecosys',this)">生态增益</button>
+    <button class="dim-tab" onclick="switchTab('vod',this)">VOD 声量</button>
   </div>
   <div class="tb-right">
     <div class="period-pill">
@@ -301,8 +494,371 @@ body.rat-open .rat-sidebar{width:264px}
   </div>
 </div>
 
-<!-- PROD VIEW -->
-<div id="prodView">
+<!-- OVERVIEW TAB -->
+<div id="tabOverview">
+  <div class="filter-bar">
+    <span class="fl-lbl">芯片</span>
+    <span class="fchip on">A5</span>
+    <span class="fchip">A2 &amp; A3</span>
+  </div>
+
+    <div class="ov-body">
+
+      <!-- KPI ROW -->
+      <div class="ov-kpis">
+        <div class="ov-kpi border-red">
+          <div class="ov-kpi-lbl">综合健康评分</div>
+          <div class="ov-kpi-val mid">72 <span style="font-size:13px;color:var(--dim);font-weight:400">/ 100</span></div>
+          <div class="ov-kpi-sub dn">↓ −3 vs 上期</div>
+        </div>
+        <div class="ov-kpi border-red">
+          <div class="ov-kpi-lbl">严重问题</div>
+          <div class="ov-kpi-val bad">3 <span style="font-size:13px;color:var(--dim);font-weight:400">个</span></div>
+          <div class="ov-kpi-sub dn">较上期 ↑ +1</div>
+        </div>
+        <div class="ov-kpi border-yellow">
+          <div class="ov-kpi-lbl">痛点闭环率</div>
+          <div class="ov-kpi-val mid">38%</div>
+          <div class="ov-kpi-sub up">↑ +6% vs 上期</div>
+        </div>
+        <div class="ov-kpi border-green">
+          <div class="ov-kpi-lbl">本期改善 · 已验收</div>
+          <div class="ov-kpi-val ok">9 <span style="font-size:13px;color:var(--dim);font-weight:400">条</span></div>
+          <div class="ov-kpi-sub">共 30 个活跃痛点</div>
+        </div>
+      </div>
+
+      <!-- HEALTH MATRIX -->
+      <div>
+        <div class="ov-section-hdr">
+          体验健康矩阵
+          <div class="ov-section-hdr-line"></div>
+          <span style="font-size:10px;color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">三类证据交叉定位 · 点击行查看场景详情</span>
+        </div>
+        <div class="hm-card">
+          <table class="hm-table">
+            <thead>
+              <tr>
+                <th class="hm-th">产品线</th>
+                <th class="hm-th">Agent 评分</th>
+                <th class="hm-th">客户痛点</th>
+                <th class="hm-th">VOD 声量</th>
+                <th class="hm-th">综合健康</th>
+                <th class="hm-th">环比</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hm-tr">
+                <td class="hm-td">
+                  <div class="hm-row-name">
+                    <div class="hm-row-dot bad"></div>
+                    <div class="hm-name-text">算子编程</div>
+                  </div>
+                </td>
+                <td class="hm-td"><span class="hm-cell bad">62</span></td>
+                <td class="hm-td"><span class="hm-cell bad">57 条</span></td>
+                <td class="hm-td"><span class="hm-cell bad">183</span></td>
+                <td class="hm-td"><span class="hm-overall bad">严重</span></td>
+                <td class="hm-td"><span class="hm-trend dn">↓ −4</span></td>
+              </tr>
+              <tr class="hm-tr">
+                <td class="hm-td">
+                  <div class="hm-row-name">
+                    <div class="hm-row-dot mid"></div>
+                    <div class="hm-name-text">推理框架</div>
+                  </div>
+                </td>
+                <td class="hm-td"><span class="hm-cell mid">68</span></td>
+                <td class="hm-td"><span class="hm-cell mid">8 条</span></td>
+                <td class="hm-td"><span class="hm-cell mid">127</span></td>
+                <td class="hm-td"><span class="hm-overall mid">关注</span></td>
+                <td class="hm-td"><span class="hm-trend up">↑ +2</span></td>
+              </tr>
+              <tr class="hm-tr">
+                <td class="hm-td">
+                  <div class="hm-row-name">
+                    <div class="hm-row-dot ok"></div>
+                    <div class="hm-name-text">API 支持</div>
+                  </div>
+                </td>
+                <td class="hm-td"><span class="hm-cell ok">85</span></td>
+                <td class="hm-td"><span class="hm-cell ok">3 条</span></td>
+                <td class="hm-td"><span class="hm-cell ok">40</span></td>
+                <td class="hm-td"><span class="hm-overall ok">健康</span></td>
+                <td class="hm-td"><span class="hm-trend up">↑ +5</span></td>
+              </tr>
+              <tr class="hm-tr">
+                <td class="hm-td">
+                  <div class="hm-row-name">
+                    <div class="hm-row-dot mid"></div>
+                    <div class="hm-name-text">通信库</div>
+                  </div>
+                </td>
+                <td class="hm-td"><span class="hm-cell mid">74</span></td>
+                <td class="hm-td"><span class="hm-cell mid">5 条</span></td>
+                <td class="hm-td"><span class="hm-cell ok">61</span></td>
+                <td class="hm-td"><span class="hm-overall mid">关注</span></td>
+                <td class="hm-td"><span class="hm-trend flat">→ 持平</span></td>
+              </tr>
+              <tr class="hm-tr">
+                <td class="hm-td">
+                  <div class="hm-row-name">
+                    <div class="hm-row-dot ok"></div>
+                    <div class="hm-name-text">基础工具</div>
+                  </div>
+                </td>
+                <td class="hm-td"><span class="hm-cell ok">89</span></td>
+                <td class="hm-td"><span class="hm-cell ok">2 条</span></td>
+                <td class="hm-td"><span class="hm-cell ok">22</span></td>
+                <td class="hm-td"><span class="hm-overall ok">健康</span></td>
+                <td class="hm-td"><span class="hm-trend up">↑ +3</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- NEED ACTION + CUSTOMER CLOSURE -->
+      <div class="ov-two-col">
+        <div class="ov-card">
+          <div class="ov-card-hdr">
+            <div class="ov-card-hdr-title">需立即处理</div>
+            <span class="ov-card-hdr-badge">4 项待行动</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">1</div>
+            <div class="action-body">
+              <div class="action-title">AIC 日志缺失根因定位能力 · 算子复现部署调试能力仅 34 分</div>
+              <div class="action-meta">算子编程分队 · 腾讯 / 蚂蚁反馈 · 预计 Q3 闭环</div>
+            </div>
+            <span class="action-tag urgent">紧急</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">2</div>
+            <div class="action-body">
+              <div class="action-title">Builtin 算子文档参数错误率高 · VOD 声量 71 条</div>
+              <div class="action-meta">资料分队 · 社区 issue 集中 · 已立项</div>
+            </div>
+            <span class="action-tag urgent">紧急</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">3</div>
+            <div class="action-body">
+              <div class="action-title">迁移工具 shape 限制未提前提示 · 影响迁移部署成功率</div>
+              <div class="action-meta">工具链分队 · 美团 / 京东 · Q3 规划</div>
+            </div>
+            <span class="action-tag planned">规划中</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">4</div>
+            <div class="action-body">
+              <div class="action-title">图模式适配样例补全 · 推理框架 Agentic 成功率 68%</div>
+              <div class="action-meta">编译器 &amp; OS 分队 · Q3 / Q4</div>
+            </div>
+            <span class="action-tag planned">规划中</span>
+          </div>
+        </div>
+
+        <div class="ov-card">
+          <div class="ov-card-hdr">
+            <div class="ov-card-hdr-title">客户痛点闭环率</div>
+          </div>
+          <div class="cust-list">
+            <div class="cust-bar-row">
+              <span class="cust-name">京东</span>
+              <div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:45%"></div></div>
+              <span class="cust-pct mid">45%</span>
+              <span class="cust-delta up">↑+8%</span>
+            </div>
+            <div class="cust-bar-row">
+              <span class="cust-name">腾讯</span>
+              <div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:38%"></div></div>
+              <span class="cust-pct mid">38%</span>
+              <span class="cust-delta up">↑+3%</span>
+            </div>
+            <div class="cust-bar-row">
+              <span class="cust-name">蚂蚁</span>
+              <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:35%"></div></div>
+              <span class="cust-pct bad">35%</span>
+              <span class="cust-delta dn">↓−2%</span>
+            </div>
+            <div class="cust-bar-row">
+              <span class="cust-name">美团</span>
+              <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:30%"></div></div>
+              <span class="cust-pct bad">30%</span>
+              <span class="cust-delta flat">→持平</span>
+            </div>
+            <div class="cust-bar-row">
+              <span class="cust-name">O1</span>
+              <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:28%"></div></div>
+              <span class="cust-pct bad">28%</span>
+              <span class="cust-delta up">↑+5%</span>
+            </div>
+            <div class="cust-bar-row">
+              <span class="cust-name">讯飞</span>
+              <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:22%"></div></div>
+              <span class="cust-pct bad">22%</span>
+              <span class="cust-delta dn">↓−1%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SNAPSHOT ROW -->
+      <div>
+        <div class="ov-section-hdr">
+          能力维度快照
+          <div class="ov-section-hdr-line"></div>
+        </div>
+        <div class="ov-snap-row">
+          <div class="snap-card">
+            <div class="snap-card-hdr">
+              <div class="snap-icon red">📦</div>
+              <span class="snap-title">开箱即用</span>
+            </div>
+            <div class="snap-body">
+              <div class="snap-big-stat">
+                <span class="snap-big-val ok">85.4%</span>
+                <span class="snap-big-lbl">Torch API 通过率</span>
+                <span class="snap-big-delta up">↑+2.1%</span>
+              </div>
+              <div class="snap-divider"></div>
+              <div class="snap-row"><span class="snap-row-lbl">纯模型开箱</span><span class="snap-row-val ok">100%</span></div>
+              <div class="snap-row"><span class="snap-row-lbl">带框架模型</span><span class="snap-row-val bad">0%（开发中）</span></div>
+              <div class="snap-row"><span class="snap-row-lbl">零 Day 发布</span><span class="snap-row-val ok">5 个</span></div>
+            </div>
+          </div>
+          <div class="snap-card">
+            <div class="snap-card-hdr">
+              <div class="snap-icon blue">⚡</div>
+              <span class="snap-title">开发效率</span>
+            </div>
+            <div class="snap-body">
+              <div class="snap-big-stat">
+                <span class="snap-big-val mid">62%</span>
+                <span class="snap-big-lbl">Agentic 开发成功率</span>
+                <span class="snap-big-delta dn">↓−3%</span>
+              </div>
+              <div class="snap-divider"></div>
+              <div class="snap-row"><span class="snap-row-lbl">Ascend C 体验评分</span><span class="snap-row-val bad">4.1 / 6</span></div>
+              <div class="snap-row"><span class="snap-row-lbl">样例覆盖度</span><span class="snap-row-val mid">75%</span></div>
+              <div class="snap-row"><span class="snap-row-lbl">优秀实践完成</span><span class="snap-row-val mid">部分</span></div>
+            </div>
+          </div>
+          <div class="snap-card">
+            <div class="snap-card-hdr">
+              <div class="snap-icon green">📊</div>
+              <span class="snap-title">客户痛点</span>
+            </div>
+            <div class="snap-body">
+              <div class="snap-big-stat">
+                <span class="snap-big-val mid">30</span>
+                <span class="snap-big-lbl">活跃痛点总数</span>
+              </div>
+              <div class="snap-divider"></div>
+              <div class="snap-row"><span class="snap-row-lbl">已闭环</span><span class="snap-row-val ok">9 条</span></div>
+              <div class="snap-row"><span class="snap-row-lbl">待验收</span><span class="snap-row-val mid">9 条</span></div>
+              <div class="snap-row"><span class="snap-row-lbl">闭环率</span><span class="snap-row-val mid">38% ↑+13%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VOD HIGH-FREQ -->
+      <div>
+        <div class="ov-section-hdr">
+          VOD 高频声音
+          <div class="ov-section-hdr-line"></div>
+          <span style="font-size:10px;color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">社区 issue 97% · 近一期 Top 3</span>
+        </div>
+        <div class="vod-hf-list">
+          <div class="vod-hf-item">
+            <div class="vod-hf-num">1</div>
+            <div class="vod-hf-body">
+              <div class="vod-hf-vol">71 条</div>
+              <div class="vod-hf-text">多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致</div>
+              <div class="vod-hf-meta">算子仓 · 社区 issue · 社区开发者</div>
+            </div>
+          </div>
+          <div class="vod-hf-item">
+            <div class="vod-hf-num">2</div>
+            <div class="vod-hf-body">
+              <div class="vod-hf-vol">61 条</div>
+              <div class="vod-hf-text">CANN 多算子仓：文档参数错误、格式错误、描述不一致、内容缺失</div>
+              <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
+            </div>
+          </div>
+          <div class="vod-hf-item">
+            <div class="vod-hf-num">3</div>
+            <div class="vod-hf-body">
+              <div class="vod-hf-vol">40 条</div>
+              <div class="vod-hf-text">算子资料文档：格式不规范、参数描述错误、命令目录错误</div>
+              <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</div><!-- /tabOverview -->
+
+<!-- DEV TAB -->
+<div id="tabDev" style="display:none">
+
+  <div class="sub-tab-bar">
+    <button class="sub-tab on" onclick="switchDevTab('matrix',this)">触点分析</button>
+    <button class="sub-tab" onclick="switchDevTab('journey',this)">场景详情</button>
+  </div>
+
+  <!-- TOUCHPOINT MATRIX -->
+  <div id="devMatrix">
+    <div class="filter-bar">
+      <span class="fl-lbl">芯片</span>
+      <span class="fchip on">A5</span>
+      <span class="fchip">A2 &amp; A3</span>
+      <div class="fl-sep"></div>
+      <span class="fl-lbl">角色</span>
+      <span class="fchip on">算子开发者</span>
+    </div>
+    <div class="tp-layout">
+      <div class="tp-matrix-wrap">
+        <div class="ov-section-hdr">
+          触点体验矩阵
+          <div class="ov-section-hdr-line"></div>
+          <span style="font-size:10px;color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">场景 × 触点类型 · 点击格子查看 Agent 观测</span>
+        </div>
+        <div class="hm-card">
+          <table class="hm-table">
+            <thead>
+              <tr>
+                <th class="hm-th">场景</th>
+                <th class="hm-th">文档</th>
+                <th class="hm-th">API</th>
+                <th class="hm-th">工具</th>
+                <th class="hm-th">环境</th>
+                <th class="hm-th">综合</th>
+              </tr>
+            </thead>
+            <tbody id="tpMatrixBody"></tbody>
+          </table>
+        </div>
+        <div class="tp-legend">
+          <div class="tp-legend-item"><div class="tp-legend-dot bad"></div>严重 &lt; 60</div>
+          <div class="tp-legend-item"><div class="tp-legend-dot mid"></div>关注 60–80</div>
+          <div class="tp-legend-item"><div class="tp-legend-dot ok"></div>健康 ≥ 80</div>
+        </div>
+      </div>
+      <div class="tp-detail-col" id="tpDetail">
+        <div class="tp-detail-hint">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5" style="margin-bottom:8px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/></svg><br>
+          点击矩阵格子<br>查看 Agent 观测
+        </div>
+      </div>
+    </div>
+  </div><!-- /devMatrix -->
+
+  <!-- SCENE JOURNEY -->
+  <div id="devJourney" style="display:none">
 
   <!-- FILTER BAR -->
   <div class="filter-bar">
@@ -490,17 +1046,353 @@ body.rat-open .rat-sidebar{width:264px}
     </div>
 
   </div>
-</div>
+  </div><!-- /devJourney -->
+</div><!-- /tabDev -->
 
-<!-- COMMUNITY VIEW -->
-<div id="commView" style="display:none">
-  <div class="community-shell">
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-    <h3>社区易用性 · 入门开发者视图</h3>
-    <p>基于 Agent 对 S0~S5 旅程（搜索发现 / 环境检查 / 样例体验 / 开发编译 / 测试验证 / 反馈贡献）的端到端评测，展示任务完成率、障碍点分布和 VOD 原声。</p>
-    <p style="color:#c7000b;font-size:12px;font-weight:600">旅程评测数据接入中 · 预计下期上线</p>
+<!-- PAIN TAB -->
+<div id="tabPain" style="display:none">
+  <div class="filter-bar">
+    <span class="fl-lbl">芯片</span>
+    <span class="fchip on">A5</span>
+    <span class="fchip">A2 &amp; A3</span>
+    <div class="fl-sep"></div>
+    <span class="fl-lbl">客户</span>
+    <span class="fchip on">全部</span>
+    <span class="fchip">京东</span>
+    <span class="fchip">腾讯</span>
+    <span class="fchip">蚂蚁</span>
+    <span class="fchip">美团</span>
   </div>
-</div>
+  <div class="pain-body">
+    <div class="pain-top-row">
+      <!-- Customer closure chart -->
+      <div class="ov-card">
+        <div class="ov-card-hdr">
+          <div class="ov-card-hdr-title">大客户痛点闭环率</div>
+          <span style="font-size:10px;color:var(--dim)">目标 ≥ 50%</span>
+        </div>
+        <div class="cust-list">
+          <div class="cust-bar-row">
+            <span class="cust-name">京东</span>
+            <div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:45%"></div></div>
+            <span class="cust-pct mid">45%</span><span class="cust-delta up">↑+8%</span>
+          </div>
+          <div class="cust-bar-row">
+            <span class="cust-name">腾讯</span>
+            <div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:38%"></div></div>
+            <span class="cust-pct mid">38%</span><span class="cust-delta up">↑+3%</span>
+          </div>
+          <div class="cust-bar-row">
+            <span class="cust-name">蚂蚁</span>
+            <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:35%"></div></div>
+            <span class="cust-pct bad">35%</span><span class="cust-delta dn">↓−2%</span>
+          </div>
+          <div class="cust-bar-row">
+            <span class="cust-name">美团</span>
+            <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:30%"></div></div>
+            <span class="cust-pct bad">30%</span><span class="cust-delta flat">→持平</span>
+          </div>
+          <div class="cust-bar-row">
+            <span class="cust-name">O1</span>
+            <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:28%"></div></div>
+            <span class="cust-pct bad">28%</span><span class="cust-delta up">↑+5%</span>
+          </div>
+          <div class="cust-bar-row">
+            <span class="cust-name">讯飞</span>
+            <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:22%"></div></div>
+            <span class="cust-pct bad">22%</span><span class="cust-delta dn">↓−1%</span>
+          </div>
+        </div>
+      </div>
+      <!-- Pain distribution by type -->
+      <div class="ov-card">
+        <div class="ov-card-hdr">
+          <div class="ov-card-hdr-title">痛点分布 · 按所属分队</div>
+          <span style="font-size:10px;color:var(--dim)">共 30 个活跃痛点</span>
+        </div>
+        <div>
+          <div class="pain-dist-row">
+            <span class="pain-dist-lbl">算子编程分队</span>
+            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:80%"></div></div>
+            <span class="pain-dist-n">12</span>
+          </div>
+          <div class="pain-dist-row">
+            <span class="pain-dist-lbl">算子分队</span>
+            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:47%"></div></div>
+            <span class="pain-dist-n">7</span>
+          </div>
+          <div class="pain-dist-row">
+            <span class="pain-dist-lbl">编译器 &amp; OS 分队</span>
+            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:33%"></div></div>
+            <span class="pain-dist-n">5</span>
+          </div>
+          <div class="pain-dist-row">
+            <span class="pain-dist-lbl">资料分队</span>
+            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:27%"></div></div>
+            <span class="pain-dist-n">4</span>
+          </div>
+          <div class="pain-dist-row">
+            <span class="pain-dist-lbl">工具链分队</span>
+            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:13%"></div></div>
+            <span class="pain-dist-n">2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full pain list -->
+    <div>
+      <div class="ov-section-hdr">活跃痛点列表 <div class="ov-section-hdr-line"></div></div>
+      <div class="pain-cat-section">
+        <div class="pain-cat-hdr"><span class="cat-badge tool">工具类</span><span class="cat-count">3 条</span></div>
+        <div class="pain-item">
+          <div class="pain-top">
+            <span class="pain-score">P0</span>
+            <div class="pain-body">
+              <div class="pain-text">AIC 日志缺失根因定位能力，算子报错时开发者无自主定位能力，完全依赖华为侧介入</div>
+              <div class="pain-meta">腾讯 / 蚂蚁 | 算子编程分队 | 优先级：高 | 客户期望 2026-Q3</div>
+            </div>
+            <span class="pain-status progress">特性开发</span>
+          </div>
+          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ AIC 日志增强改造，展示报错算子 / 指令 / 内存信息，Q3 主线</span></div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-top">
+            <span class="pain-score">P1</span>
+            <div class="pain-body">
+              <div class="pain-text">迁移工具 shape 限制无提前提示，迁移失败后才发现不支持，严重影响迁移部署成功率</div>
+              <div class="pain-meta">美团 / 京东 | 工具链分队 | 优先级：中 | 客户期望 2026-Q3</div>
+            </div>
+            <span class="pain-status planned">规划中</span>
+          </div>
+          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 迁移工具增加 shape 预检查，返回明确提示，纳入 Q3 规划</span></div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-top">
+            <span class="pain-score">P2</span>
+            <div class="pain-body">
+              <div class="pain-text">性能调优阶段缺少自动化工具，VEC ratio 调优建议不够具体，开发者难以直接落地</div>
+              <div class="pain-meta">腾讯 | 工具链分队 | 优先级：低</div>
+            </div>
+            <span class="pain-status planned">规划中</span>
+          </div>
+          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 调优建议可操作化改造，纳入 Q3 规划</span></div>
+        </div>
+      </div>
+      <div class="pain-cat-section">
+        <div class="pain-cat-hdr"><span class="cat-badge doc">文档类</span><span class="cat-count">5 条</span></div>
+        <div class="pain-item">
+          <div class="pain-top">
+            <span class="pain-score">P0</span>
+            <div class="pain-body">
+              <div class="pain-text">Builtin 算子文档参数描述错误、版本不同步，VOD 声量 61 条，社区开发者反复反馈</div>
+              <div class="pain-meta">社区 / 美团 | 资料分队 | 优先级：高 | 已立项</div>
+            </div>
+            <span class="pain-status progress">特性开发</span>
+          </div>
+          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 批量修复文档参数错误，建立文档-代码同步机制，Q3 完成</span></div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-top">
+            <span class="pain-score">P1</span>
+            <div class="pain-body">
+              <div class="pain-text">图模式适配文档不完善，样例缺失，开发者适配图模式时缺乏参考</div>
+              <div class="pain-meta">蚂蚁 / O1 | 编译器 &amp; OS 分队 | 优先级：中</div>
+            </div>
+            <span class="pain-status planned">规划中</span>
+          </div>
+          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 补全图模式适配样例 × 4 个场景，Q4 上线</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /tabPain -->
+
+<!-- ECOSYSTEM TAB -->
+<div id="tabEcosys" style="display:none">
+  <div class="filter-bar">
+    <span class="fl-lbl">芯片</span>
+    <span class="fchip on">A5</span>
+    <span class="fchip">A2 &amp; A3</span>
+  </div>
+  <div class="eco-body">
+    <!-- Top KPIs -->
+    <div class="ov-kpis">
+      <div class="ov-kpi border-green">
+        <div class="ov-kpi-lbl">Torch API 通过率</div>
+        <div class="ov-kpi-val ok">85.4%</div>
+        <div class="ov-kpi-sub up">↑ +2.1% vs 上期</div>
+      </div>
+      <div class="ov-kpi">
+        <div class="ov-kpi-lbl">纯模型开箱</div>
+        <div class="ov-kpi-val ok">41 <span style="font-size:13px;font-weight:400;color:var(--dim)">个 · 100%</span></div>
+        <div class="ov-kpi-sub">大语言 + 多模态</div>
+      </div>
+      <div class="ov-kpi border-red">
+        <div class="ov-kpi-lbl">带框架模型</div>
+        <div class="ov-kpi-val bad">0%</div>
+        <div class="ov-kpi-sub dn">VLLM / SGLang / VERL 适配中</div>
+      </div>
+      <div class="ov-kpi border-green">
+        <div class="ov-kpi-lbl">零 Day 发布</div>
+        <div class="ov-kpi-val ok">5 <span style="font-size:13px;font-weight:400;color:var(--dim)">个</span></div>
+        <div class="ov-kpi-sub">本期新增 Kimi K2</div>
+      </div>
+    </div>
+
+    <div class="eco-three-col">
+      <!-- PyTorch API Coverage -->
+      <div class="eco-card">
+        <div class="eco-card-hdr">⚙️ PyTorch API 支持度</div>
+        <div class="eco-card-body">
+          <div class="eco-row"><span class="eco-row-lbl">Core test 通过率</span><span class="eco-row-val ok">85.4%</span></div>
+          <div class="eco-row"><span class="eco-row-lbl">全量用例通过率</span><span class="eco-row-val mid">待测</span></div>
+          <div class="eco-row"><span class="eco-row-lbl">算子 API 覆盖</span><span class="eco-row-val ok">92%</span></div>
+          <div class="eco-row"><span class="eco-row-lbl">通信 API 覆盖</span><span class="eco-row-val mid">78%</span></div>
+          <div class="eco-row"><span class="eco-row-lbl">框架 API 覆盖</span><span class="eco-row-val mid">71%</span></div>
+          <div class="eco-row"><span class="eco-row-lbl">工具 API 覆盖</span><span class="eco-row-val ok">88%</span></div>
+        </div>
+      </div>
+      <!-- Model Coverage -->
+      <div class="eco-card">
+        <div class="eco-card-hdr">📦 模型开箱覆盖</div>
+        <div class="eco-card-body">
+          <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
+          <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
+          <div class="eco-row"><span class="eco-row-lbl">VLLM 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
+          <div class="eco-row"><span class="eco-row-lbl">SGLang 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
+          <div class="eco-row"><span class="eco-row-lbl">VERL 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
+        </div>
+      </div>
+      <!-- Zero-Day Releases -->
+      <div class="eco-card">
+        <div class="eco-card-hdr">🚀 零 Day 高影响力发布</div>
+        <div class="eco-card-body">
+          <div class="eco-row">
+            <span class="eco-row-lbl">Deepseek V4 Pro</span>
+            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div>
+          </div>
+          <div class="eco-row">
+            <span class="eco-row-lbl">Deepseek V4 Flash</span>
+            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div>
+          </div>
+          <div class="eco-row">
+            <span class="eco-row-lbl">Kimi K2 Thinking</span>
+            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag e2e">E2E</span></div>
+          </div>
+          <div class="eco-row">
+            <span class="eco-row-lbl">Deepseek V3.2</span>
+            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span><span class="eco-tag e2e">E2E</span></div>
+          </div>
+          <div class="eco-row">
+            <span class="eco-row-lbl">Longcat</span>
+            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Community Onboarding -->
+    <div>
+      <div class="ov-section-hdr">社区入门体验 · S0~S5 旅程 <div class="ov-section-hdr-line"></div></div>
+      <div class="community-shell" style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:40px;flex-direction:column;align-items:center;text-align:center">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        <h3 style="font-size:14px;font-weight:600;color:var(--text);margin:10px 0 6px">入门开发者 · S0~S5 端到端旅程评测</h3>
+        <p style="font-size:12px;color:var(--muted);max-width:440px;line-height:1.7">基于 Agent 对搜索发现 / 环境检查 / 样例体验 / 开发编译 / 测试验证 / 反馈贡献全旅程评测，展示任务完成率、障碍点分布和 VOD 原声。</p>
+        <p style="color:#c7000b;font-size:11px;font-weight:600;margin-top:8px">旅程评测数据接入中 · 预计下期上线</p>
+      </div>
+    </div>
+  </div>
+</div><!-- /tabEcosys -->
+
+<!-- VOD TAB -->
+<div id="tabVod" style="display:none">
+  <div class="filter-bar">
+    <span class="fl-lbl">来源</span>
+    <span class="fchip on">全部</span>
+    <span class="fchip">社区 issue</span>
+    <span class="fchip">线下活动</span>
+    <span class="fchip">社区论坛</span>
+  </div>
+  <div class="vod-body">
+    <div class="vod-two-col">
+      <!-- Source distribution -->
+      <div class="vod-src-card">
+        <div class="ov-card-hdr"><div class="ov-card-hdr-title">声量来源分布</div></div>
+        <div>
+          <div class="vod-src-row"><span class="vod-src-name">社区 issue</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:97%"></div></div><span class="vod-src-pct">97%</span></div>
+          <div class="vod-src-row"><span class="vod-src-name">线下活动</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:9%"></div></div><span class="vod-src-pct">0.9%</span></div>
+          <div class="vod-src-row"><span class="vod-src-name">社区论坛</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:7%"></div></div><span class="vod-src-pct">0.7%</span></div>
+          <div class="vod-src-row"><span class="vod-src-name">线上直播</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:5%"></div></div><span class="vod-src-pct">0.5%</span></div>
+          <div class="vod-src-row"><span class="vod-src-name">高校活动</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:2%"></div></div><span class="vod-src-pct">0.2%</span></div>
+        </div>
+      </div>
+      <!-- Type distribution -->
+      <div class="vod-src-card">
+        <div class="ov-card-hdr"><div class="ov-card-hdr-title">声量类型分布</div><span style="font-size:10px;color:var(--dim)">总声量 433 条</span></div>
+        <div>
+          <div class="vod-src-row"><span class="vod-src-name">算子仓</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:100%"></div></div><span class="vod-src-pct">183</span></div>
+          <div class="vod-src-row"><span class="vod-src-name">资料仓库</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:70%"></div></div><span class="vod-src-pct">127</span></div>
+          <div class="vod-src-row"><span class="vod-src-name">通信库</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:33%"></div></div><span class="vod-src-pct">61</span></div>
+          <div class="vod-src-row"><span class="vod-src-name">图引擎</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:22%"></div></div><span class="vod-src-pct">40</span></div>
+          <div class="vod-src-row"><span class="vod-src-name">基础工具</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:12%"></div></div><span class="vod-src-pct">22</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top 5 VOD -->
+    <div>
+      <div class="ov-section-hdr">高频声音 Top 5 <div class="ov-section-hdr-line"></div><span style="font-size:10px;color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">社区 issue · 社区开发者</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="vod-full-item">
+          <div class="vod-full-hdr">
+            <div class="vod-full-rank">1</div>
+            <span class="vod-full-vol">71</span><span class="vod-full-unit">条</span>
+            <span style="margin-left:auto;font-size:10px;color:var(--accent);font-weight:600">↑ 声量上升</span>
+          </div>
+          <div class="vod-full-quote">多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致</div>
+          <div class="vod-full-meta">算子仓 · 社区 issue · 社区开发者</div>
+        </div>
+        <div class="vod-full-item">
+          <div class="vod-full-hdr">
+            <div class="vod-full-rank">2</div>
+            <span class="vod-full-vol">61</span><span class="vod-full-unit">条</span>
+            <span style="margin-left:auto;font-size:10px;color:var(--dim);font-weight:600">→ 持平</span>
+          </div>
+          <div class="vod-full-quote">CANN 多算子仓：文档参数错误、格式错误、描述不一致、内容缺失</div>
+          <div class="vod-full-meta">资料仓库 · 社区 issue · 社区开发者</div>
+        </div>
+        <div class="vod-full-item">
+          <div class="vod-full-hdr">
+            <div class="vod-full-rank">3</div>
+            <span class="vod-full-vol">40</span><span class="vod-full-unit">条</span>
+            <span style="margin-left:auto;font-size:10px;color:var(--dim);font-weight:600">→ 持平</span>
+          </div>
+          <div class="vod-full-quote">算子资料文档：格式不规范、参数描述错误、命令目录错误</div>
+          <div class="vod-full-meta">资料仓库 · 社区 issue · 社区开发者</div>
+        </div>
+        <div class="vod-full-item">
+          <div class="vod-full-hdr">
+            <div class="vod-full-rank">4</div>
+            <span class="vod-full-vol">35</span><span class="vod-full-unit">条</span>
+            <span style="margin-left:auto;font-size:10px;color:var(--accent);font-weight:600">↑ 新增上榜</span>
+          </div>
+          <div class="vod-full-quote">transformer 算子：图模式类型缺失、编码韧性不足、描述不一致</div>
+          <div class="vod-full-meta">算子仓 · 社区 issue · 社区开发者</div>
+        </div>
+        <div class="vod-full-item">
+          <div class="vod-full-hdr">
+            <div class="vod-full-rank">5</div>
+            <span class="vod-full-vol">33</span><span class="vod-full-unit">条</span>
+            <span style="margin-left:auto;font-size:10px;color:var(--dim);font-weight:600">→ 持平</span>
+          </div>
+          <div class="vod-full-quote">ops-transformer：量化适配不足、shape 拦截缺失、编译依赖缺陷、精度失败</div>
+          <div class="vod-full-meta">算子仓 · 社区 issue · 社区开发者</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /tabVod -->
 
 <!-- FLOATING TOGGLE BUTTON -->
 <button class="float-rat-btn" id="floatRat" onclick="toggleRat()">
@@ -1030,12 +1922,105 @@ function switchEvTab(id, btn){
   }
 }
 
-function switchDim(id, btn){
+// ── TOUCHPOINT DATA ──
+const touchpointData=[
+  {id:0,sceneName:'算子复现部署',overallScore:57,overallCls:'bad',
+   cells:{
+     doc:{s:47,cls:'bad',obs:['文档检索有效率仅 47%，大量结果无关','文档准确率 58%，版本与代码不同步，21% 的开发者在此放弃']},
+     api:{s:63,cls:'mid',obs:['API 文档覆盖 63%，部分参数说明缺失']},
+     tool:{s:34,cls:'bad',obs:['AIC 日志不显示报错指令，错误可读性 52%','错误自愈成功率仅 23%，强依赖人工排查']},
+     env:{s:71,cls:'mid',obs:['装包平均重试 2.4 次，安装失败率 18%']}
+   }},
+  {id:1,sceneName:'算子迁移部署',overallScore:72,overallCls:'mid',
+   cells:{
+     doc:{s:68,cls:'mid',obs:['迁移指南完整度 68%，高级场景示例不足']},
+     api:{s:72,cls:'mid',obs:['迁移 API 覆盖 72%，shape 限制未提前提示']},
+     tool:{s:65,cls:'mid',obs:['迁移工具可用，约 35% shape 异常需手动处理']},
+     env:{s:83,cls:'ok',obs:['环境兼容性较好，偶发版本冲突']}
+   }},
+  {id:2,sceneName:'Builtin 算子定制',overallScore:62,overallCls:'bad',
+   cells:{
+     doc:{s:51,cls:'bad',obs:['Builtin 文档更新滞后，VOD 声量 61 条','参数描述错误率高，社区反复反馈']},
+     api:{s:88,cls:'ok',obs:['Builtin API 完备性强，开发者普遍认可']},
+     tool:{s:42,cls:'bad',obs:['调试工具对 Builtin 场景支持弱，排查耗时 3.2×']},
+     env:{s:77,cls:'mid',obs:['编译环境稳定，但首次配置成本偏高']}
+   }},
+  {id:3,sceneName:'算子基本功能实现',overallScore:78,overallCls:'mid',
+   cells:{
+     doc:{s:74,cls:'mid',obs:['基础文档质量较好，编程指南覆盖主要场景']},
+     api:{s:85,cls:'ok',obs:['核心 API 完备，边界场景偶有文档缺失']},
+     tool:{s:69,cls:'mid',obs:['基础调试可用，高级性能分析功能有限']},
+     env:{s:91,cls:'ok',obs:['环境配置成功率高，部署体验最佳']}
+   }}
+];
+const tpCols=['doc','api','tool','env'];
+const tpColLabels={doc:'文档',api:'API',tool:'工具',env:'环境'};
+
+function renderTpMatrix(){
+  const tbody=document.getElementById('tpMatrixBody');
+  if(!tbody) return;
+  tbody.innerHTML=touchpointData.map(row=>`
+    <tr class="hm-tr">
+      <td class="hm-td">
+        <div class="hm-row-name">
+          <div class="hm-row-dot ${row.overallCls}"></div>
+          <div class="hm-name-text">${row.sceneName}</div>
+        </div>
+      </td>
+      ${tpCols.map(col=>`
+        <td class="hm-td">
+          <span class="hm-cell ${row.cells[col].cls} tp-cell" data-sid="${row.id}" data-col="${col}"
+                onclick="selectTpCell(${row.id},'${col}',this)" style="cursor:pointer">
+            ${row.cells[col].s}
+          </span>
+        </td>`).join('')}
+      <td class="hm-td"><span class="hm-overall ${row.overallCls}">${row.overallScore}</span></td>
+    </tr>`).join('');
+}
+
+function selectTpCell(sceneId,col,el){
+  document.querySelectorAll('.tp-cell.tp-sel').forEach(c=>c.classList.remove('tp-sel'));
+  el.classList.add('tp-sel');
+  const row=touchpointData.find(r=>r.id===sceneId);
+  const cell=row.cells[col];
+  document.getElementById('tpDetail').innerHTML=`
+    <div class="tp-detail-card">
+      <div class="tp-detail-hdr">
+        <div class="tp-detail-title-wrap">
+          <div class="tp-detail-scene">${row.sceneName}</div>
+          <div class="tp-detail-col-lbl">${tpColLabels[col]} 触点</div>
+        </div>
+        <span class="hm-cell ${cell.cls}">${cell.s}</span>
+      </div>
+      <div class="tp-detail-body">
+        <div class="tp-obs-lbl">Agent 观测</div>
+        ${cell.obs.map(o=>`<div class="tp-obs-item ${cell.cls}">${o}</div>`).join('')}
+        <div class="tp-cta" onclick="jumpToJourney(${sceneId})">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          查看完整场景旅程
+        </div>
+      </div>
+    </div>`;
+}
+
+function jumpToJourney(sceneId){
+  switchDevTab('journey',document.querySelectorAll('#tabDev .sub-tab')[1]);
+  setTimeout(()=>selScene(sceneId),80);
+}
+
+function switchDevTab(id,btn){
+  document.querySelectorAll('#tabDev .sub-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('devMatrix').style.display=id==='matrix'?'block':'none';
+  document.getElementById('devJourney').style.display=id==='journey'?'block':'none';
+}
+
+function switchTab(id,btn){
   document.querySelectorAll('.dim-tab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  document.getElementById('prodView').style.display=id==='prod'?'flex':'none';
-  document.getElementById('commView').style.display=id==='comm'?'flex':'none';
-  document.getElementById('commView').style.flexDirection='column';
+  const allTabs=['tabOverview','tabDev','tabPain','tabEcosys','tabVod'];
+  const map={overview:'tabOverview',dev:'tabDev',pain:'tabPain',ecosys:'tabEcosys',vod:'tabVod'};
+  allTabs.forEach(v=>document.getElementById(v).style.display=v===map[id]?'block':'none');
 }
 
 // ── RATIONALE HIGHLIGHT ──
@@ -1089,6 +2074,7 @@ function unhlRat(){
 
 // ── INIT ──
 renderList();
+renderTpMatrix();
 selScene(0);
 </script>
 </body>
