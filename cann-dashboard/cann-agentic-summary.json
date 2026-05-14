@@ -1,0 +1,182 @@
+{
+  "repo_count": 65,
+  "observable_average": 66.15,
+  "confidence_weighted_average": 66.27,
+  "evidence_grade_distribution": {
+    "B": 56,
+    "B+": 5,
+    "A": 4
+  },
+  "local_status_distribution": {
+    "enumerated_only": 56,
+    "git_only": 3,
+    "full": 4,
+    "incomplete": 2
+  },
+  "category_average_scores": {
+    "app_recipe": 55.6,
+    "community_governance": 32.12,
+    "industry_solution": 28.25,
+    "infra_operator": 80.89,
+    "other": 67.88
+  },
+  "top_10_by_weighted_score": [
+    {
+      "repo": "hixl",
+      "weighted_score": 100.0,
+      "observable_score": 100,
+      "confidence_score": 100,
+      "evidence_grade": "A"
+    },
+    {
+      "repo": "pyasc",
+      "weighted_score": 90.0,
+      "observable_score": 90,
+      "confidence_score": 100,
+      "evidence_grade": "A"
+    },
+    {
+      "repo": "asc-devkit",
+      "weighted_score": 72.25,
+      "observable_score": 85,
+      "confidence_score": 85,
+      "evidence_grade": "B+"
+    },
+    {
+      "repo": "hcomm",
+      "weighted_score": 72.25,
+      "observable_score": 85,
+      "confidence_score": 85,
+      "evidence_grade": "B+"
+    },
+    {
+      "repo": "asc-tools",
+      "weighted_score": 69.75,
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "atvc",
+      "weighted_score": 69.75,
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "atvoss",
+      "weighted_score": 69.75,
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "hccl",
+      "weighted_score": 69.75,
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "metadef",
+      "weighted_score": 69.75,
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "driver",
+      "weighted_score": 68.25,
+      "observable_score": 91,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    }
+  ],
+  "bottom_10_by_weighted_score": [
+    {
+      "repo": "cann-infra-mcp",
+      "weighted_score": 7.5,
+      "observable_score": 10,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "release-management",
+      "weighted_score": 15.75,
+      "observable_score": 21,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": ".gitcode",
+      "weighted_score": 17.25,
+      "observable_score": 23,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "elec-ops-inspection",
+      "weighted_score": 19.5,
+      "observable_score": 26,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "cann-agreements",
+      "weighted_score": 21.0,
+      "observable_score": 28,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "cann-competitions",
+      "weighted_score": 21.0,
+      "observable_score": 28,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "cann-spack-package",
+      "weighted_score": 21.75,
+      "observable_score": 29,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "elec-ops-prediction",
+      "weighted_score": 21.75,
+      "observable_score": 29,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "elec-ops-simulation",
+      "weighted_score": 21.75,
+      "observable_score": 29,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    },
+    {
+      "repo": "mat-chem-sim-pred",
+      "weighted_score": 21.75,
+      "observable_score": 29,
+      "confidence_score": 75,
+      "evidence_grade": "B"
+    }
+  ],
+  "scoring_formula": {
+    "observable_score": "discoverability(15) + documentation_onboarding(20) + setup_explicitness(20) + run_affordance(20) + verification_regression(15) + automation_friendliness(10) - friction_penalty(0..20), clamp to 0..100",
+    "confidence_score": {
+      "A": "100: local full-tree validation and command-level evidence",
+      "B+": "70..85: local incomplete/git-only validation plus remote tree/readme evidence",
+      "B": "75: remote tree + readme available",
+      "C+": "60: remote tree available but readme unavailable",
+      "C": "35: metadata only"
+    },
+    "weighted_score": "observable_score * confidence_score / 100"
+  },
+  "repo_headers": {
+    "total_count": 65,
+    "total_page": 4
+  }
+}

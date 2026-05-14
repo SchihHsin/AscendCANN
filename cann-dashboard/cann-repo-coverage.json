@@ -1,0 +1,1052 @@
+﻿[
+    {
+        "repo":  ".gitcode",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/.gitcode",
+        "language":  null,
+        "stars":  2,
+        "created_at":  "2026-04-02T19:22:00.834+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "amct",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/amct",
+        "language":  "Python",
+        "stars":  225,
+        "created_at":  "2025-12-22T17:49:16.740+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "asc-devkit",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/asc-devkit",
+        "language":  "C++",
+        "stars":  358,
+        "created_at":  "2025-11-28T23:52:06.432+08:00",
+        "status":  "git_only",
+        "source":  "gitcode_api + local_validation",
+        "local_path":  "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\asc-devkit-fresh",
+        "evidence":  [
+                         "git ls-remote reachable",
+                         "fresh local clone result only contains .git metadata"
+                     ],
+        "notes":  "Repository existence confirmed, but usable content was not obtained in current environment."
+    },
+    {
+        "repo":  "ascend-boost-comm",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ascend-boost-comm",
+        "language":  "C++",
+        "stars":  168,
+        "created_at":  "2025-09-22T17:30:10.267+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ascend-transformer-boost",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ascend-transformer-boost",
+        "language":  "C++",
+        "stars":  260,
+        "created_at":  "2025-09-22T17:00:31.502+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "asc-tools",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/asc-tools",
+        "language":  "C++",
+        "stars":  173,
+        "created_at":  "2025-11-28T23:48:06.398+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "asnumpy",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/asnumpy",
+        "language":  "C++",
+        "stars":  257,
+        "created_at":  "2025-09-30T15:56:28.241+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "asnumpy-docs",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/asnumpy-docs",
+        "language":  null,
+        "stars":  0,
+        "created_at":  "2026-03-03T09:08:13.607+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "atvc",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/atvc",
+        "language":  "Shell",
+        "stars":  164,
+        "created_at":  "2025-11-15T12:12:28.833+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "atvoss",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/atvoss",
+        "language":  "C++",
+        "stars":  238,
+        "created_at":  "2025-09-17T12:58:26.100+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cann-agreements",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-agreements",
+        "language":  null,
+        "stars":  141,
+        "created_at":  "2025-09-23T09:40:00.229+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cann-bench",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-bench",
+        "language":  "Python",
+        "stars":  15,
+        "created_at":  "2026-04-03T16:51:25.940+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cannbot-skills",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cannbot-skills",
+        "language":  "Python",
+        "stars":  626,
+        "created_at":  "2026-03-20T10:25:16.915+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cann-competitions",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-competitions",
+        "language":  "C++",
+        "stars":  10,
+        "created_at":  "2026-03-26T17:33:11.242+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cann-infra-mcp",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-infra-mcp",
+        "language":  null,
+        "stars":  0,
+        "created_at":  "2026-05-11T14:29:20.659+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cann-learning-hub",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-learning-hub",
+        "language":  "Jupyter Notebook",
+        "stars":  75,
+        "created_at":  "2026-02-25T17:50:30.044+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cann-recipes-embodied-intelligence",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-recipes-embodied-intelligence",
+        "language":  "Python",
+        "stars":  189,
+        "created_at":  "2025-08-22T17:22:51.755+08:00",
+        "status":  "full",
+        "source":  "gitcode_api + local_validation",
+        "local_path":  "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\cann-recipes-embodied-intelligence",
+        "evidence":  [
+                         "git ls-remote reachable",
+                         "full working tree available locally",
+                         "README and subpath docs reviewed",
+                         "python compileall passed on representative path"
+                     ],
+        "notes":  "Representative application-sample repo with multiple scenario paths."
+    },
+    {
+        "repo":  "cann-recipes-harmony-infer",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-recipes-harmony-infer",
+        "language":  "JavaScript",
+        "stars":  169,
+        "created_at":  "2025-08-22T17:27:21.216+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cann-recipes-infer",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-recipes-infer",
+        "language":  "Python",
+        "stars":  634,
+        "created_at":  "2025-09-24T15:31:00.752+08:00",
+        "status":  "incomplete",
+        "source":  "gitcode_api + local_validation",
+        "local_path":  "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\cann-recipes-infer",
+        "evidence":  [
+                         "git ls-remote reachable",
+                         "fresh clone attempt timed out",
+                         "local observable content is near-empty"
+                     ],
+        "notes":  "Repository existence confirmed, but current local content is insufficient for real analysis."
+    },
+    {
+        "repo":  "cann-recipes-spatial-intelligence",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-recipes-spatial-intelligence",
+        "language":  "Python",
+        "stars":  170,
+        "created_at":  "2025-08-22T16:33:16.667+08:00",
+        "status":  "full",
+        "source":  "gitcode_api + local_validation",
+        "local_path":  "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\cann-recipes-spatial-intelligence",
+        "evidence":  [
+                         "git ls-remote reachable",
+                         "full working tree available locally",
+                         "README and VGGT path reviewed",
+                         "python compileall passed on representative path"
+                     ],
+        "notes":  "Representative model-adaptation recipe repo; external upstream and weight steps are heavy."
+    },
+    {
+        "repo":  "cann-recipes-train",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-recipes-train",
+        "language":  "Python",
+        "stars":  319,
+        "created_at":  "2025-08-22T16:31:53.756+08:00",
+        "status":  "incomplete",
+        "source":  "gitcode_api + local_validation",
+        "local_path":  "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\cann-recipes-train",
+        "evidence":  [
+                         "git ls-remote reachable",
+                         "fresh clone attempt timed out",
+                         "local observable content is near-empty"
+                     ],
+        "notes":  "Repository existence confirmed, but current local content is insufficient for real analysis."
+    },
+    {
+        "repo":  "cann-samples",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-samples",
+        "language":  "CMake",
+        "stars":  296,
+        "created_at":  "2025-12-23T11:01:01.620+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cann-spack-package",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cann-spack-package",
+        "language":  "Python",
+        "stars":  3,
+        "created_at":  "2026-03-09T21:27:53.420+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "catccos",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/catccos",
+        "language":  "C++",
+        "stars":  9,
+        "created_at":  "2026-03-02T16:20:10.202+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "catlass",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/catlass",
+        "language":  "C++",
+        "stars":  355,
+        "created_at":  "2025-09-23T16:16:50.869+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "cmake",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/cmake",
+        "language":  "Python",
+        "stars":  4,
+        "created_at":  "2026-04-09T19:57:11.485+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "community",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/community",
+        "language":  null,
+        "stars":  672,
+        "created_at":  "2025-09-24T09:26:32.338+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "driver",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/driver",
+        "language":  "C",
+        "stars":  208,
+        "created_at":  "2025-12-23T16:37:50.828+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "elec-ops-inspection",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/elec-ops-inspection",
+        "language":  "Python",
+        "stars":  2,
+        "created_at":  "2026-03-02T19:52:20.743+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "elec-ops-prediction",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/elec-ops-prediction",
+        "language":  "C++",
+        "stars":  3,
+        "created_at":  "2026-03-02T19:52:02.416+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "elec-ops-simulation",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/elec-ops-simulation",
+        "language":  "C++",
+        "stars":  2,
+        "created_at":  "2026-03-02T19:51:47.223+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ge",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ge",
+        "language":  "C++",
+        "stars":  544,
+        "created_at":  "2025-12-26T13:09:26.087+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "graph-autofusion",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/graph-autofusion",
+        "language":  "C++",
+        "stars":  357,
+        "created_at":  "2025-10-30T22:50:14.589+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "hccl",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/hccl",
+        "language":  "C++",
+        "stars":  262,
+        "created_at":  "2025-11-15T21:38:29.218+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "hcomm",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/hcomm",
+        "language":  "C++",
+        "stars":  255,
+        "created_at":  "2025-10-17T21:43:18.926+08:00",
+        "status":  "git_only",
+        "source":  "gitcode_api + local_validation",
+        "local_path":  "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\hcomm",
+        "evidence":  [
+                         "git ls-remote reachable",
+                         "local clone result only contains .git metadata"
+                     ],
+        "notes":  "Repository existence confirmed, but usable content was not obtained in current environment."
+    },
+    {
+        "repo":  "hixl",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/hixl",
+        "language":  "C++",
+        "stars":  558,
+        "created_at":  "2025-10-14T20:27:15.863+08:00",
+        "status":  "full",
+        "source":  "gitcode_api + local_validation",
+        "local_path":  "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\hixl",
+        "evidence":  [
+                         "git ls-remote reachable",
+                         "full working tree available locally",
+                         "README/build/tests/examples reviewed",
+                         "python compileall passed on examples path"
+                     ],
+        "notes":  "System and communication oriented repo; environment prerequisites are heavy."
+    },
+    {
+        "repo":  "infrastructure",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/infrastructure",
+        "language":  "Python",
+        "stars":  154,
+        "created_at":  "2025-10-29T14:50:10.800+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "manifest",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/manifest",
+        "language":  null,
+        "stars":  1,
+        "created_at":  "2025-06-17T18:43:03.136+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "mat-chem-sim-pred",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/mat-chem-sim-pred",
+        "language":  "C++",
+        "stars":  9,
+        "created_at":  "2026-02-03T16:35:03.303+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "metadef",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/metadef",
+        "language":  "C++",
+        "stars":  387,
+        "created_at":  "2025-12-26T13:08:30.487+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "oam-tools",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/oam-tools",
+        "language":  "C++",
+        "stars":  219,
+        "created_at":  "2025-12-22T20:56:02.982+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "opbase",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/opbase",
+        "language":  "C++",
+        "stars":  553,
+        "created_at":  "2025-09-25T15:57:26.600+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-blas",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-blas",
+        "language":  "C++",
+        "stars":  12,
+        "created_at":  "2026-01-07T15:27:14.206+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-collections",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-collections",
+        "language":  "C++",
+        "stars":  2,
+        "created_at":  "2026-04-08T16:22:59.571+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-cv",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-cv",
+        "language":  "C++",
+        "stars":  460,
+        "created_at":  "2025-09-26T14:31:51.017+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-fft",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-fft",
+        "language":  "Shell",
+        "stars":  1,
+        "created_at":  "2026-01-07T15:29:59.511+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-math",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-math",
+        "language":  "C++",
+        "stars":  986,
+        "created_at":  "2025-09-25T16:01:52.549+08:00",
+        "status":  "git_only",
+        "source":  "gitcode_api + local_validation",
+        "local_path":  "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\ops-math",
+        "evidence":  [
+                         "git ls-remote reachable",
+                         "local clone result only contains .git metadata"
+                     ],
+        "notes":  "Repository existence confirmed, but usable content was not obtained in current environment."
+    },
+    {
+        "repo":  "ops-nn",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-nn",
+        "language":  "C++",
+        "stars":  605,
+        "created_at":  "2025-09-27T17:40:34.987+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-rand",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-rand",
+        "language":  "Shell",
+        "stars":  2,
+        "created_at":  "2026-01-07T15:30:35.982+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-solver",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-solver",
+        "language":  "C++",
+        "stars":  2,
+        "created_at":  "2026-01-07T15:28:42.639+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-sparse",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-sparse",
+        "language":  "C++",
+        "stars":  3,
+        "created_at":  "2026-01-07T15:28:09.726+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-tensor",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-tensor",
+        "language":  "C++",
+        "stars":  11,
+        "created_at":  "2026-01-07T15:29:30.101+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-test-kit",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-test-kit",
+        "language":  "Python",
+        "stars":  18,
+        "created_at":  "2026-05-12T20:30:50.953+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "ops-transformer",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/ops-transformer",
+        "language":  "C++",
+        "stars":  795,
+        "created_at":  "2025-09-28T17:54:46.492+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "pto-isa",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/pto-isa",
+        "language":  "C++",
+        "stars":  255,
+        "created_at":  "2025-12-26T19:08:32.321+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "pyasc",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/pyasc",
+        "language":  "Python",
+        "stars":  246,
+        "created_at":  "2025-11-28T22:44:00.070+08:00",
+        "status":  "full",
+        "source":  "gitcode_api + local_validation",
+        "local_path":  "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\pyasc",
+        "evidence":  [
+                         "git ls-remote reachable",
+                         "full working tree available locally",
+                         "README and quick start reviewed",
+                         "python compileall passed on python package path"
+                     ],
+        "notes":  "Best current positive sample for agentic friendliness among low-level developer repos."
+    },
+    {
+        "repo":  "pypto",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/pypto",
+        "language":  "C++",
+        "stars":  494,
+        "created_at":  "2025-12-04T22:32:59.394+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "release-management",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/release-management",
+        "language":  null,
+        "stars":  112,
+        "created_at":  "2025-06-10T10:11:28.875+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "runtime",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/runtime",
+        "language":  "Motorola 68K Assembly",
+        "stars":  408,
+        "created_at":  "2025-12-25T00:07:41.353+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "shmem",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/shmem",
+        "language":  "C++",
+        "stars":  102,
+        "created_at":  "2025-11-28T21:57:21.073+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "sip",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/sip",
+        "language":  "C++",
+        "stars":  179,
+        "created_at":  "2025-11-05T10:37:27.051+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "tensorflow",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/tensorflow",
+        "language":  "C++",
+        "stars":  7,
+        "created_at":  "2026-04-09T09:35:48.594+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "torchtitan-npu",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/torchtitan-npu",
+        "language":  "Python",
+        "stars":  109,
+        "created_at":  "2026-01-21T17:40:05.420+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "triton-inference-server-ge-backend",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/triton-inference-server-ge-backend",
+        "language":  "C++",
+        "stars":  192,
+        "created_at":  "2025-12-02T12:17:42.138+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    },
+    {
+        "repo":  "xla-npu",
+        "namespace":  "cann",
+        "html_url":  "https://gitcode.com/cann/xla-npu",
+        "language":  "C",
+        "stars":  4,
+        "created_at":  "2026-04-17T18:02:12.615+08:00",
+        "status":  "enumerated_only",
+        "source":  "gitcode_api",
+        "local_path":  null,
+        "evidence":  [
+                         "repository enumerated from authenticated GitCode org API",
+                         "no local content validation performed in current pass"
+                     ],
+        "notes":  "Repo name and metadata were enumerated, but this repo was not locally fetched or deeply analyzed in the current report pass."
+    }
+]

@@ -1,0 +1,4932 @@
+[
+  {
+    "repo": ".gitcode",
+    "html_url": "https://gitcode.com/cann/.gitcode",
+    "category": "community_governance",
+    "metadata": {
+      "description": "CANN组织的模板文件",
+      "language": null,
+      "stars": 2,
+      "forks": 1,
+      "open_issues": 1,
+      "default_branch": "master",
+      "created_at": "2026-04-02T19:22:00.834+08:00",
+      "updated_at": "2026-04-24T10:16:25.651+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 2,
+      "root_entries": [
+        ".gitcode",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 916,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 1,
+      "run_hits_total": 0,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 9,
+        "documentation_onboarding_20": 14,
+        "setup_explicitness_20": 2,
+        "run_affordance_20": 0,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 23,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 17.25
+    }
+  },
+  {
+    "repo": "amct",
+    "html_url": "https://gitcode.com/cann/amct",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "AMCT是CANN提供的昇腾AI处理器亲和的模型压缩工具仓。",
+      "language": "Python",
+      "stars": 225,
+      "forks": 32,
+      "open_issues": 14,
+      "default_branch": "master",
+      "created_at": "2025-12-22T17:49:16.740+08:00",
+      "updated_at": "2025-12-22T22:09:01.443+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 27,
+      "root_entries": [
+        ".claude",
+        ".gitcode",
+        ".opencode",
+        "amct_pytorch",
+        "cmake",
+        "docs",
+        "examples",
+        "npu_ops",
+        "tests",
+        ".clang-format",
+        ".pre-commit-config.yaml",
+        "AGENTS.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "DISCLAIMER.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "classify_rule.yaml",
+        "install_graph.sh",
+        "requirements.txt",
+        "setup.py",
+        "version.info"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 8475,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt",
+        "setup.py"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": false,
+      "setup_hits_total": 22,
+      "run_hits_total": 12,
+      "verify_hits_total": 6,
+      "trouble_hits_total": 3,
+      "friction_hits_total": 15,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 14,
+        "run_affordance_20": 14,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 12
+      },
+      "observable_score": 71,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 53.25
+    }
+  },
+  {
+    "repo": "asc-devkit",
+    "html_url": "https://gitcode.com/cann/asc-devkit",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN 推出的昇腾AI处理器专用的算子程序开发语言，原生支持C和C++标准规范，主要由类库和语言扩展层构成，提供多层级API，满足多维场景算子开发诉求。",
+      "language": "C++",
+      "stars": 358,
+      "forks": 500,
+      "open_issues": 69,
+      "default_branch": "master",
+      "created_at": "2025-11-28T23:52:06.432+08:00",
+      "updated_at": "2025-11-29T00:07:48.171+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 28,
+      "root_entries": [
+        ".devcontainer",
+        ".gitcode",
+        ".vscode",
+        "cmake",
+        "docs",
+        "examples",
+        "impl",
+        "include",
+        "scripts",
+        "tests",
+        "tools",
+        ".clang-format",
+        ".clangd",
+        ".gitattributes",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CHANGELOG.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Softerware_Notice",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "build.sh",
+        "classify_rule.yaml",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 10088,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 15,
+      "run_hits_total": 16,
+      "verify_hits_total": 5,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": "git_only",
+      "local_path": "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\asc-devkit-fresh",
+      "local_compileall_passed": false,
+      "local_notes": "Fresh local clone only contains .git metadata."
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 8
+      },
+      "observable_score": 85,
+      "confidence_score": 85,
+      "evidence_grade": "B+",
+      "weighted_score": 72.25
+    }
+  },
+  {
+    "repo": "asc-tools",
+    "html_url": "https://gitcode.com/cann/asc-tools",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "Ascend C Tools仓是CANN基于Ascend C编程语言推出的配套调试工具仓。",
+      "language": "C++",
+      "stars": 173,
+      "forks": 101,
+      "open_issues": 6,
+      "default_branch": "master",
+      "created_at": "2025-11-28T23:48:06.398+08:00",
+      "updated_at": "2025-11-29T00:10:04.617+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 29,
+      "root_entries": [
+        ".devcontainer",
+        ".gitcode",
+        "cmake",
+        "cpudebug",
+        "docs",
+        "examples",
+        "libraries",
+        "npuchk",
+        "scripts",
+        "tests",
+        "third_party",
+        "utils",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "classify_rule.yaml",
+        "install_dep_tar.py",
+        "install_deps.sh",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 2219,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 8,
+      "run_hits_total": 3,
+      "verify_hits_total": 3,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 69.75
+    }
+  },
+  {
+    "repo": "ascend-boost-comm",
+    "html_url": "https://gitcode.com/cann/ascend-boost-comm",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "算子公共平台，南向对接不同组织开发的算子库，北向支撑不同加速库应用，实现M x N算子能力复用",
+      "language": "C++",
+      "stars": 168,
+      "forks": 26,
+      "open_issues": 4,
+      "default_branch": "master",
+      "created_at": "2025-09-22T17:30:10.267+08:00",
+      "updated_at": "2025-09-30T17:17:57.789+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 20,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "configs",
+        "document",
+        "example",
+        "pre-commit",
+        "scripts",
+        "src",
+        "tests",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "LICENSE",
+        "OAT.xml",
+        "OWNERS",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "version.info"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 3608,
+      "package_files": [
+        "CMakeLists.txt"
+      ],
+      "has_doc_dir": false,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 42,
+      "run_hits_total": 12,
+      "verify_hits_total": 2,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 8,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 16,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 12
+      },
+      "observable_score": 77,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 57.75
+    }
+  },
+  {
+    "repo": "ascend-transformer-boost",
+    "html_url": "https://gitcode.com/cann/ascend-transformer-boost",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN提供的是一款高效、可靠的Transformer加速库，基于华为Ascend AI处理器，提供Transformer定制化场景的高性能融合算子。",
+      "language": "C++",
+      "stars": 260,
+      "forks": 139,
+      "open_issues": 13,
+      "default_branch": "master",
+      "created_at": "2025-09-22T17:00:31.502+08:00",
+      "updated_at": "2025-11-18T11:10:30.236+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 25,
+      "root_entries": [
+        ".gitcode",
+        "ci",
+        "docs",
+        "example",
+        "include",
+        "ops_configs",
+        "ops_customize",
+        "pre-commit",
+        "scripts",
+        "src",
+        "tests",
+        "torch_atb",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "LICENSE",
+        "OAT.xml",
+        "OWNERS",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "pyproject.toml",
+        "version.info"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 9526,
+      "package_files": [
+        "CMakeLists.txt",
+        "pyproject.toml"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 70,
+      "run_hits_total": 19,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 5,
+      "friction_hits_total": 7,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 10,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 12
+      },
+      "observable_score": 79,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 59.25
+    }
+  },
+  {
+    "repo": "asnumpy",
+    "html_url": "https://gitcode.com/cann/asnumpy",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "哈尔滨工业大学计算学部苏统华、王甜甜老师团队联合华为CANN团队开发的华为昇腾NPU原生Numpy仓库",
+      "language": "C++",
+      "stars": 257,
+      "forks": 46,
+      "open_issues": 12,
+      "default_branch": "master",
+      "created_at": "2025-09-30T15:56:28.241+08:00",
+      "updated_at": "2026-02-24T11:00:48.866+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 17,
+      "root_entries": [
+        ".gitcode",
+        "asnumpy",
+        "docs",
+        "examples",
+        "include",
+        "python",
+        "src",
+        "test",
+        "tests",
+        ".gitignore",
+        "CMakeLists.txt",
+        "LICENSE",
+        "MANIFEST.in",
+        "README.md",
+        "contributors.json",
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 6386,
+      "package_files": [
+        "CMakeLists.txt",
+        "pyproject.toml"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": false,
+      "setup_hits_total": 18,
+      "run_hits_total": 11,
+      "verify_hits_total": 2,
+      "trouble_hits_total": 2,
+      "friction_hits_total": 3,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 14,
+        "run_affordance_20": 14,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 6
+      },
+      "observable_score": 77,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 57.75
+    }
+  },
+  {
+    "repo": "asnumpy-docs",
+    "html_url": "https://gitcode.com/cann/asnumpy-docs",
+    "category": "other",
+    "metadata": {
+      "description": "",
+      "language": null,
+      "stars": 0,
+      "forks": 2,
+      "open_issues": 2,
+      "default_branch": "master",
+      "created_at": "2026-03-03T09:08:13.607+08:00",
+      "updated_at": "2026-05-13T19:55:51.045+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 7,
+      "root_entries": [
+        "docs",
+        ".gitignore",
+        "LICENSE",
+        "README.md",
+        "README.zh-CN.md",
+        "package-lock.json",
+        "package.json"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 3660,
+      "package_files": [
+        "package.json"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 5,
+      "run_hits_total": 4,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 2,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 2,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 14,
+        "run_affordance_20": 6,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 4,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 44,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 33.0
+    }
+  },
+  {
+    "repo": "atvc",
+    "html_url": "https://gitcode.com/cann/atvc",
+    "category": "other",
+    "metadata": {
+      "description": "ATVC（Ascend C Templates for Vector Compute），是为基于Ascend C开发的典型Vector算子封装的一系列模板头文件的集合，可帮助用户快速开发典型Vector算子。",
+      "language": "Shell",
+      "stars": 164,
+      "forks": 18,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2025-11-15T12:12:28.833+08:00",
+      "updated_at": "2025-11-15T15:26:30.999+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 19,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "docs",
+        "examples",
+        "include",
+        "scripts",
+        "test",
+        ".gitignore",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Softerware_Notice",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "build.sh",
+        "classify_rule.yaml",
+        "version.info"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1515,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 16,
+      "run_hits_total": 10,
+      "verify_hits_total": 5,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 69.75
+    }
+  },
+  {
+    "repo": "atvoss",
+    "html_url": "https://gitcode.com/cann/atvoss",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "ATVOSS（Ascend C Templates for Vector Operator Subroutines）是一套基于Ascend C开发的Vector算子库，致力于为昇腾硬件上的Vector类融合算子提供极简、高效、高性能、高拓展的编程方式。",
+      "language": "C++",
+      "stars": 238,
+      "forks": 34,
+      "open_issues": 2,
+      "default_branch": "master",
+      "created_at": "2025-09-17T12:58:26.100+08:00",
+      "updated_at": "2025-11-29T00:45:29.282+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 20,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "docs",
+        "examples",
+        "include",
+        "scripts",
+        "tests",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Softerware_List.yaml",
+        "Third_Party_Open_Source_Softerware_Notice",
+        "classify_rule.yaml",
+        "version.info"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1346,
+      "package_files": [
+        "CMakeLists.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 11,
+      "run_hits_total": 9,
+      "verify_hits_total": 4,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 69.75
+    }
+  },
+  {
+    "repo": "cann-agreements",
+    "html_url": "https://gitcode.com/cann/cann-agreements",
+    "category": "community_governance",
+    "metadata": {
+      "description": "CANN 迁移协议签署",
+      "language": null,
+      "stars": 141,
+      "forks": 0,
+      "open_issues": 27,
+      "default_branch": "master",
+      "created_at": "2025-09-23T09:40:00.229+08:00",
+      "updated_at": "2026-04-20T16:50:03.656+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 2,
+      "root_entries": [
+        ".gitcode",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1645,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 1,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 2,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 12,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 3,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 28,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 21.0
+    }
+  },
+  {
+    "repo": "cann-bench",
+    "html_url": "https://gitcode.com/cann/cann-bench",
+    "category": "other",
+    "metadata": {
+      "description": "评测AI在处理CANN领域代码任务的能力，涵盖算子生成、算子优化等领域，支撑模型选型、训练效果评估，统一量化评估标准，识别Agent能力短板，构建CANN领域评测平台，推动AI能力在CANN领域的持续演进。",
+      "language": "Python",
+      "stars": 15,
+      "forks": 13,
+      "open_issues": 2,
+      "default_branch": "master",
+      "created_at": "2026-04-03T16:51:25.940+08:00",
+      "updated_at": "2026-04-30T18:07:17.960+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 11,
+      "root_entries": [
+        "bench_lab",
+        "docs",
+        "examples",
+        "scripts",
+        "src",
+        "tasks",
+        "tests",
+        ".gitignore",
+        "LICENSE",
+        "README.md",
+        "requirements.txt"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 6014,
+      "package_files": [
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 14,
+      "run_hits_total": 12,
+      "verify_hits_total": 43,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 4,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 8
+      },
+      "observable_score": 83,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 62.25
+    }
+  },
+  {
+    "repo": "cann-competitions",
+    "html_url": "https://gitcode.com/cann/cann-competitions",
+    "category": "community_governance",
+    "metadata": {
+      "description": "本仓库用于 CANN 开源社区各类竞赛、开源课题、社区任务等课题发布、开发者作品提交和展示。",
+      "language": "C++",
+      "stars": 10,
+      "forks": 92,
+      "open_issues": 4,
+      "default_branch": "master",
+      "created_at": "2026-03-26T17:33:11.242+08:00",
+      "updated_at": "2026-04-13T14:29:15.493+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 10,
+      "root_entries": [
+        "01_official",
+        "02_enterprise",
+        "03_university",
+        "04_tasks",
+        ".gitignore",
+        "CONTRIBUTING.md",
+        "DIRECTORY_STRUCTURE.md",
+        "LICENSE",
+        "README.md",
+        "test.txt"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1341,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 1,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 12,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 3,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 28,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 21.0
+    }
+  },
+  {
+    "repo": "cann-infra-mcp",
+    "html_url": "https://gitcode.com/cann/cann-infra-mcp",
+    "category": "other",
+    "metadata": {
+      "description": "",
+      "language": null,
+      "stars": 0,
+      "forks": 0,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2026-05-11T14:29:20.659+08:00",
+      "updated_at": "2026-05-11T14:29:20.659+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 1,
+      "root_entries": [
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 18,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 0,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 2,
+        "documentation_onboarding_20": 8,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 0,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 10,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 7.5
+    }
+  },
+  {
+    "repo": "cann-learning-hub",
+    "html_url": "https://gitcode.com/cann/cann-learning-hub",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "CANN 学习中心仓，支持在线互动运行、边学边练，提供教程、示例与优化方案，一站式助力昇腾开发者快速上手。",
+      "language": "Jupyter Notebook",
+      "stars": 76,
+      "forks": 50,
+      "open_issues": 21,
+      "default_branch": "master",
+      "created_at": "2026-02-25T17:50:30.044+08:00",
+      "updated_at": "2026-04-27T11:04:25.962+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 15,
+      "root_entries": [
+        ".gitcode",
+        "blogs",
+        "contrib",
+        "docs",
+        "quick_start",
+        "reference_practice",
+        "skills",
+        "tutorials",
+        ".gitignore",
+        "CONTRIBUTION.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_Notice"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 4500,
+      "package_files": [],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 3,
+      "verify_hits_total": 5,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 16,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 14,
+        "verification_regression_15": 4,
+        "automation_friendliness_10": 2,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 51,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 38.25
+    }
+  },
+  {
+    "repo": "cann-recipes-embodied-intelligence",
+    "html_url": "https://gitcode.com/cann/cann-recipes-embodied-intelligence",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "本项目针对具身智能业务中的典型模型、加速算法，提供基于CANN平台的优化样例",
+      "language": "Python",
+      "stars": 189,
+      "forks": 32,
+      "open_issues": 4,
+      "default_branch": "master",
+      "created_at": "2025-08-22T17:22:51.755+08:00",
+      "updated_at": "2025-12-02T11:49:03.203+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 16,
+      "root_entries": [
+        ".gitcode",
+        "3d_vision",
+        "docs",
+        "locomotion",
+        "manipulation",
+        "module",
+        "navigation",
+        "world_model",
+        ".gitignore",
+        ".gitmodules",
+        ".pre-commit-config.yaml",
+        "CONTRIBUTION.md",
+        "DISCLAIMER.md",
+        "LICENSE",
+        "README.md",
+        "Third_Party_Open_Source_Software_Notice"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 8239,
+      "package_files": [],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 17,
+      "verify_hits_total": 7,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": "full",
+      "local_path": "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\cann-recipes-embodied-intelligence",
+      "local_compileall_passed": true,
+      "local_notes": "README and representative path reviewed; compileall passed on pi0 infer path."
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 16,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 10,
+        "verification_regression_15": 7,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 48,
+      "confidence_score": 100,
+      "evidence_grade": "A",
+      "weighted_score": 48.0
+    }
+  },
+  {
+    "repo": "cann-recipes-harmony-infer",
+    "html_url": "https://gitcode.com/cann/cann-recipes-harmony-infer",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "本项目为鸿蒙开发者提供基于CANN平台的业务实践案例，方便开发者参考实现端云能力迁移及端侧推理部署。",
+      "language": "JavaScript",
+      "stars": 169,
+      "forks": 27,
+      "open_issues": 3,
+      "default_branch": "master",
+      "created_at": "2025-08-22T17:27:21.216+08:00",
+      "updated_at": "2025-12-26T11:42:53.710+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 10,
+      "root_entries": [
+        ".gitcode",
+        "docs",
+        "harmony_infer",
+        "ops",
+        "CONTRIBUTION.md",
+        "DISCLAIMER.md",
+        "LICENSE",
+        "README.md",
+        "Third_Party_Open_Source_Software_Notice",
+        "install_deps.sh"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 2049,
+      "package_files": [],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 6,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 16,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 6,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 37,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 27.75
+    }
+  },
+  {
+    "repo": "cann-recipes-infer",
+    "html_url": "https://gitcode.com/cann/cann-recipes-infer",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "本项目针对LLM与多模态模型推理业务中的典型模型、加速算法，提供基于CANN平台的优化样例",
+      "language": "Python",
+      "stars": 634,
+      "forks": 319,
+      "open_issues": 34,
+      "default_branch": "master",
+      "created_at": "2025-09-24T15:31:00.752+08:00",
+      "updated_at": "2025-09-29T17:27:39.342+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 20,
+      "root_entries": [
+        ".agents",
+        ".gitcode",
+        "accelerator",
+        "contrib",
+        "dataset",
+        "docs",
+        "executor",
+        "models",
+        "module",
+        "ops",
+        "scripts",
+        "tests",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "AGENTS.md",
+        "CONTRIBUTION.md",
+        "DISCLAIMER.md",
+        "LICENSE",
+        "README.md",
+        "Third_Party_Open_Source_Software_Notice"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 7682,
+      "package_files": [],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 1,
+      "run_hits_total": 10,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 2,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": "incomplete",
+      "local_path": "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\cann-recipes-infer",
+      "local_compileall_passed": false,
+      "local_notes": "Fresh clone attempt timed out; local observable content is near-empty."
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 8,
+        "run_affordance_20": 8,
+        "verification_regression_15": 8,
+        "automation_friendliness_10": 4,
+        "friction_penalty_20": 10
+      },
+      "observable_score": 53,
+      "confidence_score": 85,
+      "evidence_grade": "B+",
+      "weighted_score": 45.05
+    }
+  },
+  {
+    "repo": "cann-recipes-spatial-intelligence",
+    "html_url": "https://gitcode.com/cann/cann-recipes-spatial-intelligence",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "本项目针对空间智能业务中的典型模型、加速算法，提供基于CANN平台的优化样例",
+      "language": "Python",
+      "stars": 170,
+      "forks": 21,
+      "open_issues": 2,
+      "default_branch": "master",
+      "created_at": "2025-08-22T16:33:16.667+08:00",
+      "updated_at": "2025-12-02T11:49:17.581+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 13,
+      "root_entries": [
+        ".gitcode",
+        "algorithms",
+        "contrib",
+        "docs",
+        "models",
+        "module",
+        "ops",
+        ".pre-commit-config.yaml",
+        "CONTRIBUTION.md",
+        "DISCLAIMER.md",
+        "LICENSE",
+        "README.md",
+        "Third_Party_Open_Source_Software_Notice"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1989,
+      "package_files": [],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 4,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": "full",
+      "local_path": "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\cann-recipes-spatial-intelligence",
+      "local_compileall_passed": true,
+      "local_notes": "README and VGGT path reviewed; compileall passed on representative path."
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 16,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 10,
+        "verification_regression_15": 5,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 46,
+      "confidence_score": 100,
+      "evidence_grade": "A",
+      "weighted_score": 46.0
+    }
+  },
+  {
+    "repo": "cann-recipes-train",
+    "html_url": "https://gitcode.com/cann/cann-recipes-train",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "本项目针对LLM与多模态模型训练业务中的典型模型、加速算法，提供基于CANN平台的优化样例",
+      "language": "Python",
+      "stars": 319,
+      "forks": 54,
+      "open_issues": 10,
+      "default_branch": "master",
+      "created_at": "2025-08-22T16:31:53.756+08:00",
+      "updated_at": "2025-10-29T10:40:30.100+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 14,
+      "root_entries": [
+        ".gitcode",
+        "agent_rl",
+        "ci",
+        "docs",
+        "llm_pretrain",
+        "llm_rl",
+        "llm_sft",
+        "multimodal_rl",
+        ".pre-commit-config.yaml",
+        "CONTRIBUTION.md",
+        "DISCLAIMER.md",
+        "LICENSE",
+        "README.md",
+        "Third_Party_Open_Source_Software_Notice"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 5398,
+      "package_files": [],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": true,
+      "setup_hits_total": 0,
+      "run_hits_total": 7,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": "incomplete",
+      "local_path": "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\cann-recipes-train",
+      "local_compileall_passed": false,
+      "local_notes": "Fresh clone attempt timed out; local observable content is near-empty."
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 16,
+        "setup_explicitness_20": 6,
+        "run_affordance_20": 8,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 2,
+        "friction_penalty_20": 6
+      },
+      "observable_score": 41,
+      "confidence_score": 85,
+      "evidence_grade": "B+",
+      "weighted_score": 34.85
+    }
+  },
+  {
+    "repo": "cann-samples",
+    "html_url": "https://gitcode.com/cann/cann-samples",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "算子领域高性能实战演进样例与体系化调优知识库",
+      "language": "CMake",
+      "stars": 296,
+      "forks": 130,
+      "open_issues": 16,
+      "default_branch": "master",
+      "created_at": "2025-12-23T11:01:01.620+08:00",
+      "updated_at": "2026-03-17T18:52:56.452+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 18,
+      "root_entries": [
+        ".ci",
+        ".gitcode",
+        "Samples",
+        "cmake",
+        "tests",
+        "third_party",
+        ".clang-format",
+        ".gitignore",
+        ".gitmodules",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "requirements.txt"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 6099,
+      "package_files": [
+        "CMakeLists.txt",
+        "requirements.txt"
+      ],
+      "has_doc_dir": false,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": false,
+      "setup_hits_total": 54,
+      "run_hits_total": 16,
+      "verify_hits_total": 3,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 16,
+        "setup_explicitness_20": 14,
+        "run_affordance_20": 14,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 77,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 57.75
+    }
+  },
+  {
+    "repo": "cann-spack-package",
+    "html_url": "https://gitcode.com/cann/cann-spack-package",
+    "category": "community_governance",
+    "metadata": {
+      "description": "本项目用于管理CANN社区Spack包管理package.py配置文件，Spack包管理器通过解析这些文件，可动态地将用户指定的软件规格（Spec）转化为实际的构建、安装、部署命令，支持用户从源码/二进制安装CANN组件",
+      "language": "Python",
+      "stars": 3,
+      "forks": 6,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2026-03-09T21:27:53.420+08:00",
+      "updated_at": "2026-03-27T15:02:31.410+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 6,
+      "root_entries": [
+        "packages",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "repo.yaml",
+        "spack-repo-index.yaml"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 5279,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 46,
+      "run_hits_total": 9,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 1,
+      "friction_hits_total": 5,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 11,
+        "documentation_onboarding_20": 16,
+        "setup_explicitness_20": 4,
+        "run_affordance_20": 6,
+        "verification_regression_15": 2,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 10
+      },
+      "observable_score": 29,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 21.75
+    }
+  },
+  {
+    "repo": "cannbot-skills",
+    "html_url": "https://gitcode.com/cann/cannbot-skills",
+    "category": "community_governance",
+    "metadata": {
+      "description": "CANNBot 是面向 CANN 开发的用于提升开发效率的系列智能体，本仓库为其提供可复用的 Skills 模块。",
+      "language": "Python",
+      "stars": 626,
+      "forks": 351,
+      "open_issues": 12,
+      "default_branch": "master",
+      "created_at": "2026-03-20T10:25:16.915+08:00",
+      "updated_at": "2026-04-30T09:25:54.057+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 18,
+      "root_entries": [
+        ".claude-plugin",
+        ".gitcode",
+        "docs",
+        "graph",
+        "model",
+        "ops-lab",
+        "ops",
+        "plugins-community",
+        "plugins-official",
+        "tests",
+        ".gitattributes",
+        ".gitignore",
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "package.json"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 16429,
+      "package_files": [
+        "package.json"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": false,
+      "setup_hits_total": 14,
+      "run_hits_total": 33,
+      "verify_hits_total": 14,
+      "trouble_hits_total": 4,
+      "friction_hits_total": 7,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 14,
+        "run_affordance_20": 6,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 6,
+        "friction_penalty_20": 12
+      },
+      "observable_score": 61,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 45.75
+    }
+  },
+  {
+    "repo": "catccos",
+    "html_url": "https://gitcode.com/cann/catccos",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "CATCCOS昇腾计算-通信融合算子模板库，是一个聚焦于提供高性能计算通信融合类算子基础模板的代码库。",
+      "language": "C++",
+      "stars": 9,
+      "forks": 16,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2026-03-02T16:20:10.202+08:00",
+      "updated_at": "2026-04-20T09:19:36.118+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 13,
+      "root_entries": [
+        "3rdparty",
+        "docs",
+        "examples",
+        "include",
+        "pre-commit",
+        "skills",
+        "tests",
+        ".gitignore",
+        ".gitmodules",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "LICENSE",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 2314,
+      "package_files": [
+        "CMakeLists.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": false,
+      "setup_hits_total": 9,
+      "run_hits_total": 14,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 14,
+        "run_affordance_20": 14,
+        "verification_regression_15": 8,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 77,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 57.75
+    }
+  },
+  {
+    "repo": "catlass",
+    "html_url": "https://gitcode.com/cann/catlass",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN的算子模板库，提供NPU上高性能矩阵乘及其相关融合类算子模板样例。",
+      "language": "C++",
+      "stars": 355,
+      "forks": 170,
+      "open_issues": 4,
+      "default_branch": "master",
+      "created_at": "2025-09-23T16:16:50.869+08:00",
+      "updated_at": "2025-10-27T15:51:20.666+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 27,
+      "root_entries": [
+        ".gitcode",
+        "3rdparty",
+        "cmake",
+        "docs",
+        "examples",
+        "include",
+        "scripts",
+        "tests",
+        "tools",
+        ".clang-format",
+        ".gitignore",
+        ".gitmodules",
+        ".pre-commit-config.yaml",
+        "CHANGELOG.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "Dockerfile.atlasa2",
+        "Dockerfile.atlasa3",
+        "LICENSE",
+        "OAT.xml",
+        "OWNERS",
+        "README.md",
+        "SECURITYNOTE.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "get_cann_version_and_soc_name.cpp",
+        "requirements.txt"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 9185,
+      "package_files": [
+        "CMakeLists.txt",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 19,
+      "run_hits_total": 7,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 10,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 10,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 89,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 66.75
+    }
+  },
+  {
+    "repo": "cmake",
+    "html_url": "https://gitcode.com/cann/cmake",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目提供公共编译脚本、第三方开源软件编译脚本、公共打包与安装框架脚本",
+      "language": "Python",
+      "stars": 4,
+      "forks": 21,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2026-04-09T19:57:11.485+08:00",
+      "updated_at": "2026-04-09T21:25:06.836+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 14,
+      "root_entries": [
+        "function",
+        "intf_pub",
+        "modules",
+        "scripts",
+        "superbuild",
+        "third_party",
+        "toolchain",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "build.sh",
+        "classify_rule.yaml"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 3205,
+      "package_files": [
+        "build.sh"
+      ],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": true,
+      "setup_hits_total": 76,
+      "run_hits_total": 3,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 12,
+        "documentation_onboarding_20": 16,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 8,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 6,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 62,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 46.5
+    }
+  },
+  {
+    "repo": "community",
+    "html_url": "https://gitcode.com/cann/community",
+    "category": "community_governance",
+    "metadata": {
+      "description": "本项目是CANN开源社区的核心管理仓库，包含社区的治理章程、治理组织、通用操作指引及流程规范等基础信息",
+      "language": null,
+      "stars": 672,
+      "forks": 262,
+      "open_issues": 16,
+      "default_branch": "master",
+      "created_at": "2025-09-24T09:26:32.338+08:00",
+      "updated_at": "2025-09-25T16:06:11.549+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 11,
+      "root_entries": [
+        ".gitcode",
+        "CANN",
+        "cla",
+        "contributor",
+        "docs",
+        "events",
+        "figures",
+        "governance",
+        "security",
+        "templates",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 4509,
+      "package_files": [],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 1,
+      "run_hits_total": 0,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 2,
+        "run_affordance_20": 0,
+        "verification_regression_15": 2,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 37,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 27.75
+    }
+  },
+  {
+    "repo": "driver",
+    "html_url": "https://gitcode.com/cann/driver",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN提供的驱动模块，实现基础驱动和资源管理及调度等功能，使能昇腾芯片。",
+      "language": "C",
+      "stars": 208,
+      "forks": 83,
+      "open_issues": 3,
+      "default_branch": "master",
+      "created_at": "2025-12-23T16:37:50.828+08:00",
+      "updated_at": "2025-12-24T17:50:23.400+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 20,
+      "root_entries": [
+        ".gitcode",
+        "LICENSES",
+        "cmake",
+        "docs",
+        "examples",
+        "pkg_inc",
+        "scripts",
+        "src",
+        "test",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 6823,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 14,
+      "run_hits_total": 10,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 5,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 10,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 91,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 68.25
+    }
+  },
+  {
+    "repo": "elec-ops-inspection",
+    "html_url": "https://gitcode.com/cann/elec-ops-inspection",
+    "category": "industry_solution",
+    "metadata": {
+      "description": "elec-ops-inspection 是 CANN 社区 Electrical Engineering SIG（电力行业兴趣小组）旗下的电力装备巡检算子库， 覆盖 CV 视觉检测与具身智能两大技术路线，面向输电线路、变电设备、配电设施等电力装备的智能化巡检场景， 基于华为昇腾（Ascend）硬件平台进行深度优化。",
+      "language": "Python",
+      "stars": 2,
+      "forks": 4,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2026-03-02T19:52:20.743+08:00",
+      "updated_at": "2026-03-14T19:03:35.418+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 5,
+      "root_entries": [
+        "optimized_transducer",
+        "unique_v3",
+        "LICENSE",
+        "OAT.xml",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1671,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 1,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 11,
+        "documentation_onboarding_20": 12,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 3,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 26,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 19.5
+    }
+  },
+  {
+    "repo": "elec-ops-prediction",
+    "html_url": "https://gitcode.com/cann/elec-ops-prediction",
+    "category": "industry_solution",
+    "metadata": {
+      "description": "elec-ops-prediction 是 CANN 社区 Electrical Engineering SIG（电力行业兴趣小组）旗下的电力负荷预测算子库， 聚焦于电力系统运行、调度、规划与市场交易中的预测核心需求，面向华为昇腾（Ascend）硬件平台进行深度优化。",
+      "language": "C++",
+      "stars": 3,
+      "forks": 4,
+      "open_issues": 3,
+      "default_branch": "master",
+      "created_at": "2026-03-02T19:52:02.416+08:00",
+      "updated_at": "2026-03-14T19:04:43.350+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 4,
+      "root_entries": [
+        "reduce_all",
+        "LICENSE",
+        "OAT.xml",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1564,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 2,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 11,
+        "documentation_onboarding_20": 12,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 6,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 29,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 21.75
+    }
+  },
+  {
+    "repo": "elec-ops-simulation",
+    "html_url": "https://gitcode.com/cann/elec-ops-simulation",
+    "category": "industry_solution",
+    "metadata": {
+      "description": "elec-ops-simulation 是 CANN 社区 Electrical Engineering SIG（电力行业兴趣小组）旗下的电力仿真求解算子库， 聚焦于计算电网在稳态运行条件下各节点的电压、相角，以及各支路（线路、变压器）的功率分布的仿真核心需求，面向华为昇腾（Ascend）硬件平台进行深度优化。",
+      "language": "C++",
+      "stars": 2,
+      "forks": 4,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2026-03-02T19:51:47.223+08:00",
+      "updated_at": "2026-03-16T14:54:45.372+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 4,
+      "root_entries": [
+        "math",
+        "LICENSE",
+        "OAT.xml",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1651,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 2,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 11,
+        "documentation_onboarding_20": 12,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 6,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 29,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 21.75
+    }
+  },
+  {
+    "repo": "ge",
+    "html_url": "https://gitcode.com/cann/ge",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "GE（Graph Engine）是面向昇腾的图编译器和执行器，提供了计算图优化、多流并行、内存复用和模型下沉等技术手段，加速模型执行效率，减少模型内存占用。 GE 提供对 PyTorch、TensorFlow 前端的友好接入能力，并同时支持 onnx、pb 等主流模型格式的解析与编译。",
+      "language": "C++",
+      "stars": 544,
+      "forks": 310,
+      "open_issues": 40,
+      "default_branch": "master",
+      "created_at": "2025-12-26T13:09:26.087+08:00",
+      "updated_at": "2025-12-26T14:58:31.605+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 36,
+      "root_entries": [
+        ".claude",
+        ".gitcode",
+        ".opencode",
+        "api",
+        "base",
+        "cmake",
+        "compiler",
+        "dflow",
+        "docs",
+        "examples",
+        "graph_metadef",
+        "inc",
+        "parser",
+        "runtime",
+        "scripts",
+        "tests",
+        ".clang-format",
+        ".gitattributes",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "AGENTS.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "blacklist.txt",
+        "build.sh",
+        "build_third_party.sh",
+        "classify_rule.txt",
+        "classify_rule.yaml",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1840,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 6,
+      "run_hits_total": 1,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 3,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 13,
+        "verification_regression_15": 10,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 6
+      },
+      "observable_score": 82,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 61.5
+    }
+  },
+  {
+    "repo": "graph-autofusion",
+    "html_url": "https://gitcode.com/cann/graph-autofusion",
+    "category": "other",
+    "metadata": {
+      "description": "Graph-autofusion 是一个面向昇腾（Ascend）芯片的轻量级、解耦式组件集合，旨在通过自动融合技术加速模型执行。 目前已开源 SuperKernel 组件，未来将持续开放更多自动融合相关模块。",
+      "language": "C++",
+      "stars": 357,
+      "forks": 69,
+      "open_issues": 4,
+      "default_branch": "master",
+      "created_at": "2025-10-30T22:50:14.589+08:00",
+      "updated_at": "2025-10-31T15:18:28.802+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 19,
+      "root_entries": [
+        ".gitcode",
+        "autofuse",
+        "cmake",
+        "docs",
+        "scripts",
+        "super_kernel",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "build.sh",
+        "classify_rule.yaml",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1400,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": true,
+      "setup_hits_total": 7,
+      "run_hits_total": 1,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 5,
+        "verification_regression_15": 2,
+        "automation_friendliness_10": 6,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 68,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 51.0
+    }
+  },
+  {
+    "repo": "hccl",
+    "html_url": "https://gitcode.com/cann/hccl",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "集合通信库（Huawei Collective Communication Library，简称HCCL）是基于昇腾AI处理器的高性能集合通信库，为计算集群提供高性能、高可靠的通信方案",
+      "language": "C++",
+      "stars": 262,
+      "forks": 301,
+      "open_issues": 13,
+      "default_branch": "master",
+      "created_at": "2025-11-15T21:38:29.218+08:00",
+      "updated_at": "2025-12-01T14:47:13.488+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 21,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "docs",
+        "examples",
+        "include",
+        "scripts",
+        "src",
+        "test",
+        ".clang-format",
+        ".gitattributes",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 2469,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 3,
+      "run_hits_total": 4,
+      "verify_hits_total": 2,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 69.75
+    }
+  },
+  {
+    "repo": "hcomm",
+    "html_url": "https://gitcode.com/cann/hcomm",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "HCOMM（Huawei Communication）是HCCL的通信基础库，提供通信域以及通信资源的管理能力。",
+      "language": "C++",
+      "stars": 255,
+      "forks": 539,
+      "open_issues": 22,
+      "default_branch": "master",
+      "created_at": "2025-10-17T21:43:18.926+08:00",
+      "updated_at": "2025-12-01T14:47:47.597+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 26,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "docs",
+        "examples",
+        "externel_depends",
+        "include",
+        "pkg_inc",
+        "python",
+        "scripts",
+        "src",
+        "test",
+        ".clang-format",
+        ".gitattributes",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "blacklist.txt",
+        "build.sh",
+        "classify_rule.yaml",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 3623,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 3,
+      "run_hits_total": 6,
+      "verify_hits_total": 2,
+      "trouble_hits_total": 2,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": "git_only",
+      "local_path": "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\hcomm",
+      "local_compileall_passed": false,
+      "local_notes": "Local clone only contains .git metadata."
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 8
+      },
+      "observable_score": 85,
+      "confidence_score": 85,
+      "evidence_grade": "B+",
+      "weighted_score": 72.25
+    }
+  },
+  {
+    "repo": "hixl",
+    "html_url": "https://gitcode.com/cann/hixl",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "HIXL（Huawei Xfer Library）是一个灵活、高效的昇腾单边通信库，面向集群场景提供简单、可靠、高效的点对点数据传输能力。",
+      "language": "C++",
+      "stars": 558,
+      "forks": 77,
+      "open_issues": 39,
+      "default_branch": "master",
+      "created_at": "2025-10-14T20:27:15.863+08:00",
+      "updated_at": "2025-10-15T09:52:05.811+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 28,
+      "root_entries": [
+        ".agents",
+        ".claude",
+        ".gitcode",
+        "benchmarks",
+        "cmake",
+        "docs",
+        "examples",
+        "include",
+        "scripts",
+        "src",
+        "tests",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "AGENTS.md",
+        "CLAUDE.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "classify_rule.yaml",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 6219,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 9,
+      "run_hits_total": 4,
+      "verify_hits_total": 2,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": "full",
+      "local_path": "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\hixl",
+      "local_compileall_passed": true,
+      "local_notes": "README/build/tests/examples reviewed; compileall passed on examples path."
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 20,
+        "verification_regression_15": 15,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 100,
+      "confidence_score": 100,
+      "evidence_grade": "A",
+      "weighted_score": 100.0
+    }
+  },
+  {
+    "repo": "infrastructure",
+    "html_url": "https://gitcode.com/cann/infrastructure",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本仓库用于托管CANN社区基础设施团队的公开信息，包括不限于：会议日程，成员信息，服务文档和配置等信息",
+      "language": "Python",
+      "stars": 154,
+      "forks": 27,
+      "open_issues": 31,
+      "default_branch": "main",
+      "created_at": "2025-10-29T14:50:10.800+08:00",
+      "updated_at": "2025-11-06T11:33:47.614+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 7,
+      "root_entries": [
+        ".gitcode",
+        "config",
+        "docs",
+        "tools",
+        "LICENSE",
+        "README.md",
+        "infra-sdlc-guidelines.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 671,
+      "package_files": [],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": true,
+      "setup_hits_total": 0,
+      "run_hits_total": 0,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 14,
+        "setup_explicitness_20": 6,
+        "run_affordance_20": 2,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 2,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 39,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 29.25
+    }
+  },
+  {
+    "repo": "manifest",
+    "html_url": "https://gitcode.com/cann/manifest",
+    "category": "community_governance",
+    "metadata": {
+      "description": "本项目是 CANN 的 manifest 配置仓库，用于通过 repo 工具管理和同步 CANN 相关的多个代码仓，定义 CANN 组件的仓库地址、分支版本和目录结构",
+      "language": null,
+      "stars": 1,
+      "forks": 4,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2025-06-17T18:43:03.136+08:00",
+      "updated_at": "2026-03-12T09:24:35.179+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 4,
+      "root_entries": [
+        "LICENSE",
+        "README.md",
+        "cann.xml",
+        "default.xml"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1238,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 6,
+      "verify_hits_total": 5,
+      "trouble_hits_total": 1,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 8,
+        "documentation_onboarding_20": 12,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 6,
+        "verification_regression_15": 4,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 30,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 22.5
+    }
+  },
+  {
+    "repo": "mat-chem-sim-pred",
+    "html_url": "https://gitcode.com/cann/mat-chem-sim-pred",
+    "category": "industry_solution",
+    "metadata": {
+      "description": "面向工业领域，聚焦计算仿真、预测两大核心场景，构建面向流程工业\"机理+数据\"双轮驱动的领域计算层，推动AI for Science在材料化学领域的深度应用。",
+      "language": "C++",
+      "stars": 9,
+      "forks": 8,
+      "open_issues": 1,
+      "default_branch": "master",
+      "created_at": "2026-02-03T16:35:03.303+08:00",
+      "updated_at": "2026-02-10T17:34:20.633+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 7,
+      "root_entries": [
+        ".gitcode",
+        "scientific-computing",
+        ".clang-format",
+        ".pre-commit-config.yaml",
+        "LICENSE",
+        "OAT.xml",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1078,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 2,
+      "run_hits_total": 0,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 14,
+        "setup_explicitness_20": 2,
+        "run_affordance_20": 0,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 29,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 21.75
+    }
+  },
+  {
+    "repo": "metadef",
+    "html_url": "https://gitcode.com/cann/metadef",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "Ascend Metadata Definition",
+      "language": "C++",
+      "stars": 387,
+      "forks": 79,
+      "open_issues": 3,
+      "default_branch": "master",
+      "created_at": "2025-12-26T13:08:30.487+08:00",
+      "updated_at": "2025-12-26T14:58:39.424+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 27,
+      "root_entries": [
+        ".gitcode",
+        "base",
+        "cmake",
+        "docs",
+        "example",
+        "inc",
+        "pkg_inc",
+        "scripts",
+        "tests",
+        ".clang-format",
+        ".gitattributes",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "NOTICE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "blacklist.txt",
+        "build.sh",
+        "classify_rule.txt",
+        "classify_rule.yaml",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 2278,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 3,
+      "run_hits_total": 3,
+      "verify_hits_total": 5,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 93,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 69.75
+    }
+  },
+  {
+    "repo": "oam-tools",
+    "html_url": "https://gitcode.com/cann/oam-tools",
+    "category": "other",
+    "metadata": {
+      "description": "本项目为开发者提供故障定位工具，包含故障信息收集，软硬件信息展示，AI core error报错分析等能力，提升故障问题定位效率，文档可在昇腾社区搜索“故障处理简介”（选择社区版）。",
+      "language": "C++",
+      "stars": 219,
+      "forks": 64,
+      "open_issues": 8,
+      "default_branch": "master",
+      "created_at": "2025-12-22T20:56:02.982+08:00",
+      "updated_at": "2026-03-24T10:18:03.553+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 23,
+      "root_entries": [
+        ".claude",
+        ".gitcode",
+        ".opencode",
+        "cmake",
+        "docs",
+        "scripts",
+        "src",
+        "test",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "AGENTS.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "build.sh",
+        "init_env.sh",
+        "install_bundle.sh",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 3606,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 37,
+      "run_hits_total": 17,
+      "verify_hits_total": 3,
+      "trouble_hits_total": 7,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 8,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 83,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 62.25
+    }
+  },
+  {
+    "repo": "opbase",
+    "html_url": "https://gitcode.com/cann/opbase",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN算子库的基础框架库，为算子提供公共依赖文件和基础调度能力。",
+      "language": "C++",
+      "stars": 553,
+      "forks": 122,
+      "open_issues": 7,
+      "default_branch": "master",
+      "created_at": "2025-09-25T15:57:26.600+08:00",
+      "updated_at": "2025-09-25T16:04:17.452+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 25,
+      "root_entries": [
+        ".gitcode",
+        "aicpu_common",
+        "cmake",
+        "docs",
+        "include",
+        "pkg_inc",
+        "scripts",
+        "src",
+        "tests",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CHANGELOG.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "build.sh",
+        "classify_rule.yaml",
+        "install_deps.sh",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1548,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 4,
+      "run_hits_total": 1,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 5,
+        "verification_regression_15": 10,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 76,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 57.0
+    }
+  },
+  {
+    "repo": "ops-blas",
+    "html_url": "https://gitcode.com/cann/ops-blas",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN提供的高性能线性代数计算以及轻量化GEMM调用算子库。",
+      "language": "C++",
+      "stars": 12,
+      "forks": 25,
+      "open_issues": 6,
+      "default_branch": "master",
+      "created_at": "2026-01-07T15:27:14.206+08:00",
+      "updated_at": "2026-03-31T19:10:48.974+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 20,
+      "root_entries": [
+        ".gitcode",
+        "blas",
+        "blasLt",
+        "cmake",
+        "docs",
+        "examples",
+        "include",
+        "scripts",
+        "test",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "build.sh",
+        "install_deps.sh",
+        "requirements.txt"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 2191,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 6,
+      "run_hits_total": 1,
+      "verify_hits_total": 2,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 13,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 86,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 64.5
+    }
+  },
+  {
+    "repo": "ops-collections",
+    "html_url": "https://gitcode.com/cann/ops-collections",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "ops-collections是基于昇腾硬件的高性能容器模板库，提供运行在NPU上的static_map、dynamic_map、set等容器。利用最新的SIMT并发能力，支持对容器的批量插入、查找等操作，提升整个系统的能力。",
+      "language": "C++",
+      "stars": 2,
+      "forks": 4,
+      "open_issues": 2,
+      "default_branch": "master",
+      "created_at": "2026-04-08T16:22:59.571+08:00",
+      "updated_at": "2026-04-20T09:20:07.057+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 15,
+      "root_entries": [
+        ".gitcode",
+        "docs",
+        "doxygen",
+        "include",
+        "scripts",
+        "tests",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 6501,
+      "package_files": [
+        "CMakeLists.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 28,
+      "run_hits_total": 16,
+      "verify_hits_total": 4,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 8,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 11,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 8,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 12
+      },
+      "observable_score": 67,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 50.25
+    }
+  },
+  {
+    "repo": "ops-cv",
+    "html_url": "https://gitcode.com/cann/ops-cv",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN提供的图像处理、目标检测相关的算子库，实现网络在NPU上加速计算。",
+      "language": "C++",
+      "stars": 460,
+      "forks": 232,
+      "open_issues": 31,
+      "default_branch": "master",
+      "created_at": "2025-09-26T14:31:51.017+08:00",
+      "updated_at": "2025-09-26T14:54:27.677+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 27,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "common",
+        "docs",
+        "examples",
+        "experimental",
+        "image",
+        "objdetect",
+        "scripts",
+        "tests",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CHANGELOG.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "classify_rule.yaml",
+        "install_deps.sh",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 2075,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 7,
+      "run_hits_total": 1,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 13,
+        "verification_regression_15": 8,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 84,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 63.0
+    }
+  },
+  {
+    "repo": "ops-fft",
+    "html_url": "https://gitcode.com/cann/ops-fft",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "ops-fft 是 CANN （Compute Architecture for Neural Networks）算子库中提供 FFT 类计算的基础算子库，采用模块化设计，支持灵活的算子开发和管理。",
+      "language": "Shell",
+      "stars": 1,
+      "forks": 10,
+      "open_issues": 4,
+      "default_branch": "master",
+      "created_at": "2026-01-07T15:29:59.511+08:00",
+      "updated_at": "2026-04-16T09:53:30.531+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 24,
+      "root_entries": [
+        "cmake",
+        "docs",
+        "include",
+        "lib",
+        "scripts",
+        "src",
+        "tests",
+        ".clang-format",
+        ".gitignore",
+        "CHANGELOG.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "QUICKSTART.md",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "classify_rule.yaml",
+        "install_deps.sh",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 7652,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 75,
+      "run_hits_total": 20,
+      "verify_hits_total": 6,
+      "trouble_hits_total": 3,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 10,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 8,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 76,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 57.0
+    }
+  },
+  {
+    "repo": "ops-math",
+    "html_url": "https://gitcode.com/cann/ops-math",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN提供的数学类基础计算算子库，实现网络在NPU上加速计算。",
+      "language": "C++",
+      "stars": 986,
+      "forks": 974,
+      "open_issues": 112,
+      "default_branch": "master",
+      "created_at": "2025-09-25T16:01:52.549+08:00",
+      "updated_at": "2025-09-25T16:05:53.690+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 30,
+      "root_entries": [
+        ".gitcode",
+        "FAQ",
+        "cmake",
+        "common",
+        "conversion",
+        "docs",
+        "examples",
+        "experimental",
+        "math",
+        "random",
+        "scripts",
+        "spack",
+        "tests",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CHANGELOG.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "classify_rule.yaml",
+        "install_deps.sh",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 3423,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 7,
+      "run_hits_total": 1,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": "git_only",
+      "local_path": "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\ops-math",
+      "local_compileall_passed": false,
+      "local_notes": "Local clone only contains .git metadata."
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 13,
+        "verification_regression_15": 8,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 10
+      },
+      "observable_score": 76,
+      "confidence_score": 85,
+      "evidence_grade": "B+",
+      "weighted_score": 64.6
+    }
+  },
+  {
+    "repo": "ops-nn",
+    "html_url": "https://gitcode.com/cann/ops-nn",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN提供的神经网络类计算算子库，实现网络在NPU上加速计算。",
+      "language": "C++",
+      "stars": 605,
+      "forks": 1177,
+      "open_issues": 179,
+      "default_branch": "master",
+      "created_at": "2025-09-27T17:40:34.987+08:00",
+      "updated_at": "2025-09-27T18:09:31.903+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 40,
+      "root_entries": [
+        ".gitcode",
+        "activation",
+        "cmake",
+        "common",
+        "control",
+        "conv",
+        "docs",
+        "examples",
+        "experimental",
+        "foreach",
+        "hash",
+        "index",
+        "loss",
+        "matmul",
+        "norm",
+        "optim",
+        "pooling",
+        "quant",
+        "rnn",
+        "scripts",
+        "tests",
+        "vfusion",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CHANGELOG.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "classify_rule.yaml",
+        "codearts_check_rule_config.md",
+        "install_deps.sh",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 2177,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 7,
+      "run_hits_total": 2,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 8,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 87,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 65.25
+    }
+  },
+  {
+    "repo": "ops-rand",
+    "html_url": "https://gitcode.com/cann/ops-rand",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "ops-rand是CANN （Compute Architecture for Neural Networks）算子库中提供的随机数生成库。",
+      "language": "Shell",
+      "stars": 2,
+      "forks": 9,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2026-01-07T15:30:35.982+08:00",
+      "updated_at": "2026-04-16T09:53:03.132+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 23,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "docs",
+        "include",
+        "lib",
+        "scripts",
+        "src",
+        "tests",
+        ".clang-format",
+        ".gitignore",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "QUICKSTART.md",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "build.sh",
+        "classify_rule.yaml",
+        "install_deps.sh",
+        "requirements.txt",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 4160,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 46,
+      "run_hits_total": 18,
+      "verify_hits_total": 2,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 11,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 8,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 77,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 57.75
+    }
+  },
+  {
+    "repo": "ops-solver",
+    "html_url": "https://gitcode.com/cann/ops-solver",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN提供的高级数值求解算子库，实现矩阵分解、求逆、特征值求解等功能在NPU上的加速计算。",
+      "language": "C++",
+      "stars": 2,
+      "forks": 7,
+      "open_issues": 7,
+      "default_branch": "master",
+      "created_at": "2026-01-07T15:28:42.639+08:00",
+      "updated_at": "2026-04-30T16:55:39.604+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 18,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "docs",
+        "examples",
+        "include",
+        "scripts",
+        "src",
+        "test",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "build.sh"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1309,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 4,
+      "run_hits_total": 1,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 11,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 13,
+        "verification_regression_15": 10,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 84,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 63.0
+    }
+  },
+  {
+    "repo": "ops-sparse",
+    "html_url": "https://gitcode.com/cann/ops-sparse",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN提供的高性能稀疏矩阵计算的算子库，专注于优化稀疏矩阵的计算效率。",
+      "language": "C++",
+      "stars": 3,
+      "forks": 8,
+      "open_issues": 4,
+      "default_branch": "master",
+      "created_at": "2026-01-07T15:28:09.726+08:00",
+      "updated_at": "2026-04-30T16:57:06.523+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 17,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "docs",
+        "examples",
+        "include",
+        "scripts",
+        "src",
+        "test",
+        ".gitignore",
+        "CMakeLists.txt",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "build.sh",
+        "install_deps.sh",
+        "requirements.txt"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 1459,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 5,
+      "run_hits_total": 1,
+      "verify_hits_total": 1,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 11,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 13,
+        "verification_regression_15": 10,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 84,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 63.0
+    }
+  },
+  {
+    "repo": "ops-tensor",
+    "html_url": "https://gitcode.com/cann/ops-tensor",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "ops-tensor 是 CANN （Compute Architecture for Neural Networks）算子库中提供张量类计算的基础算子库，采用模块化设计，支持灵活的算子开发和管理。",
+      "language": "C++",
+      "stars": 11,
+      "forks": 28,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2026-01-07T15:29:30.101+08:00",
+      "updated_at": "2026-04-16T09:52:41.925+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 26,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "docs",
+        "include",
+        "lib",
+        "scripts",
+        "src",
+        "tests",
+        ".clang-format",
+        ".gitignore",
+        "CHANGELOG.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "QUICKSTART.md",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "classify_rule.yaml",
+        "install_deps.sh",
+        "requirements.txt",
+        "version.cmake",
+        "version.info"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 7556,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 72,
+      "run_hits_total": 20,
+      "verify_hits_total": 8,
+      "trouble_hits_total": 1,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 8,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 79,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 59.25
+    }
+  },
+  {
+    "repo": "ops-test-kit",
+    "html_url": "https://gitcode.com/cann/ops-test-kit",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "TTK（Ops Test Tool Kit）是CANN算子库提供的全链路、自动化、批量化算子测试框架，帮助开发者快速完成算子批量功能验证、性能评估以及Golden值比对，提升算子开发质量和效率。",
+      "language": "Python",
+      "stars": 20,
+      "forks": 20,
+      "open_issues": 1,
+      "default_branch": "master",
+      "created_at": "2026-05-12T20:30:50.953+08:00",
+      "updated_at": "2026-05-12T20:56:02.817+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 16,
+      "root_entries": [
+        ".gitcode",
+        "csrc",
+        "docs",
+        "examples",
+        "scripts",
+        "tests",
+        "ttk",
+        ".gitignore",
+        ".pre-commit-config.ymal",
+        "LICENSE",
+        "OAT.xml",
+        "README-EN.md",
+        "README.md",
+        "pyproject.toml",
+        "requirements.txt",
+        "setup.py"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 3394,
+      "package_files": [
+        "pyproject.toml",
+        "requirements.txt",
+        "setup.py"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 6,
+      "run_hits_total": 5,
+      "verify_hits_total": 9,
+      "trouble_hits_total": 4,
+      "friction_hits_total": 4,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 8
+      },
+      "observable_score": 83,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 62.25
+    }
+  },
+  {
+    "repo": "ops-transformer",
+    "html_url": "https://gitcode.com/cann/ops-transformer",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目是CANN提供的transformer类大模型算子库，实现网络在NPU上加速计算。",
+      "language": "C++",
+      "stars": 796,
+      "forks": 1641,
+      "open_issues": 127,
+      "default_branch": "master",
+      "created_at": "2025-09-28T17:54:46.492+08:00",
+      "updated_at": "2025-09-28T18:06:48.894+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 36,
+      "root_entries": [
+        ".gitcode",
+        "3rdparty",
+        "attention",
+        "cmake",
+        "common",
+        "docs",
+        "examples",
+        "experimental",
+        "ffn",
+        "gmm",
+        "mc2",
+        "mhc",
+        "moe",
+        "posembedding",
+        "scripts",
+        "tests",
+        "torch_extension",
+        ".clang-format",
+        ".gitignore",
+        ".gitmodules",
+        ".pre-commit-config.yaml",
+        "CHANGELOG.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "classify_rule.yaml",
+        "install_deps.sh",
+        "requirements.txt",
+        "version.cmake",
+        "version.info"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 3784,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 7,
+      "run_hits_total": 1,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 1,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 13,
+        "verification_regression_15": 8,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 2
+      },
+      "observable_score": 84,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 63.0
+    }
+  },
+  {
+    "repo": "pto-isa",
+    "html_url": "https://gitcode.com/cann/pto-isa",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "Parallel Tile Operation (PTO) is a virtual instruction set architecture designed by Ascend CANN, focusing on tile-level operations. This repository offers high-performance, cross-platform tile operations across Ascend platforms.",
+      "language": "C++",
+      "stars": 255,
+      "forks": 218,
+      "open_issues": 22,
+      "default_branch": "master",
+      "created_at": "2025-12-26T19:08:32.321+08:00",
+      "updated_at": "2025-12-27T17:58:15.573+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 29,
+      "root_entries": [
+        ".gitcode",
+        "agents",
+        "cmake",
+        "demos",
+        "docs",
+        "include",
+        "kernels",
+        "scripts",
+        "tests",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "AGENTS.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "CONTRIBUTING_zh.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "README_zh.md",
+        "ReleaseNote.md",
+        "ReleaseNote_zh.md",
+        "SECURITY.md",
+        "SECURITY_zh.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "pyproject.toml",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 14234,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "pyproject.toml"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 12,
+      "run_hits_total": 6,
+      "verify_hits_total": 18,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 18,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 12
+      },
+      "observable_score": 81,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 60.75
+    }
+  },
+  {
+    "repo": "pyasc",
+    "html_url": "https://gitcode.com/cann/pyasc",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目为Python用户提供算子编程接口，支持在昇腾AI处理器上加速计算，接口与Ascend C一一对应并遵守Python原生语法。",
+      "language": "Python",
+      "stars": 246,
+      "forks": 49,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2025-11-28T22:44:00.070+08:00",
+      "updated_at": "2025-11-28T22:51:58.498+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 23,
+      "root_entries": [
+        ".gitcode",
+        "bin",
+        "docs",
+        "include",
+        "lib",
+        "python",
+        "scripts",
+        "test",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "classify_rule.yaml",
+        "pyproject.toml",
+        "requirements-build.txt",
+        "requirements-runtime.txt",
+        "setup.py",
+        "torch_npu_install.sh"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 4587,
+      "package_files": [
+        "CMakeLists.txt",
+        "pyproject.toml",
+        "setup.py"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 3,
+      "run_hits_total": 4,
+      "verify_hits_total": 3,
+      "trouble_hits_total": 6,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": "full",
+      "local_path": "D:\\HW\\AscendCANN\\cann-dashboard\\repo-scan\\pyasc",
+      "local_compileall_passed": true,
+      "local_notes": "README and quick start reviewed; compileall passed on python package path."
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 12,
+        "verification_regression_15": 15,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 90,
+      "confidence_score": 100,
+      "evidence_grade": "A",
+      "weighted_score": 90.0
+    }
+  },
+  {
+    "repo": "pypto",
+    "html_url": "https://gitcode.com/cann/pypto",
+    "category": "other",
+    "metadata": {
+      "description": "PyPTO（发音: pai p-t-o）：Parallel Tensor/Tile Operation编程范式。",
+      "language": "C++",
+      "stars": 494,
+      "forks": 493,
+      "open_issues": 167,
+      "default_branch": "master",
+      "created_at": "2025-12-04T22:32:59.394+08:00",
+      "updated_at": "2026-04-13T20:20:41.429+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 30,
+      "root_entries": [
+        ".agents",
+        ".gitcode",
+        ".opencode",
+        "cmake",
+        "docs",
+        "examples",
+        "framework",
+        "models",
+        "python",
+        "tools",
+        ".clang-format",
+        ".gitattributes",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "AGENTS.md",
+        "CMakeLists.txt",
+        "CONTRIBUTION.md",
+        "LICENSE",
+        "MANIFEST.in",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Softerware_Notice",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "build_ci.py",
+        "classify_rule.yaml",
+        "conftest.py",
+        "pyproject.toml",
+        "pytest.ini",
+        "setup.py"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 6096,
+      "package_files": [
+        "CMakeLists.txt",
+        "pyproject.toml",
+        "setup.py"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": false,
+      "has_script_dir": true,
+      "setup_hits_total": 27,
+      "run_hits_total": 5,
+      "verify_hits_total": 3,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 4,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 83,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 62.25
+    }
+  },
+  {
+    "repo": "release-management",
+    "html_url": "https://gitcode.com/cann/release-management",
+    "category": "community_governance",
+    "metadata": {
+      "description": "CANN版本发布管理仓库",
+      "language": null,
+      "stars": 112,
+      "forks": 49,
+      "open_issues": 0,
+      "default_branch": "master",
+      "created_at": "2025-06-10T10:11:28.875+08:00",
+      "updated_at": "2026-01-04T09:03:25.303+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 7,
+      "root_entries": [
+        "8.5.0-beta.1",
+        "8.5.0",
+        "9.0.0-beta.1",
+        "9.0.0-beta.2",
+        "9.0.0",
+        "9.1.0-beta.1",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 289,
+      "package_files": [],
+      "has_doc_dir": false,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 0,
+      "run_hits_total": 0,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 13,
+        "documentation_onboarding_20": 8,
+        "setup_explicitness_20": 0,
+        "run_affordance_20": 0,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 0,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 21,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 15.75
+    }
+  },
+  {
+    "repo": "runtime",
+    "html_url": "https://gitcode.com/cann/runtime",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "本项目提供CANN运行时组件和维测功能组件。",
+      "language": "Motorola 68K Assembly",
+      "stars": 408,
+      "forks": 458,
+      "open_issues": 27,
+      "default_branch": "master",
+      "created_at": "2025-12-25T00:07:41.353+08:00",
+      "updated_at": "2025-12-25T15:13:33.886+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 32,
+      "root_entries": [
+        ".claude",
+        ".devcontainer",
+        ".gitcode",
+        ".opencode",
+        "cmake",
+        "docs",
+        "example",
+        "include",
+        "pkg_inc",
+        "scripts",
+        "src",
+        "stub",
+        "tests",
+        ".clang-format",
+        ".gitattributes",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "AGENTS.md",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "OWNERS",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "build.sh",
+        "classify_rule.yaml",
+        "download_3rd_party.py",
+        "install_deps.sh",
+        "pre-smoking-testcase",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 10357,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 107,
+      "run_hits_total": 41,
+      "verify_hits_total": 13,
+      "trouble_hits_total": 3,
+      "friction_hits_total": 6,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 12
+      },
+      "observable_score": 81,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 60.75
+    }
+  },
+  {
+    "repo": "shmem",
+    "html_url": "https://gitcode.com/cann/shmem",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "CANN SHMEM 是面向昇腾平台的多机多卡内存通信库，基于OpenSHMEM 标准协议，实现跨设备的高效内存访问与数据同步。",
+      "language": "C++",
+      "stars": 102,
+      "forks": 103,
+      "open_issues": 34,
+      "default_branch": "master",
+      "created_at": "2025-11-28T21:57:21.073+08:00",
+      "updated_at": "2025-12-30T21:20:21.223+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 23,
+      "root_entries": [
+        ".gitcode",
+        "docs",
+        "examples",
+        "include",
+        "pre-commit",
+        "scripts",
+        "src",
+        "tests",
+        "tools",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "requirements.txt",
+        "setup.py",
+        "version.info"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 12555,
+      "package_files": [
+        "CMakeLists.txt",
+        "requirements.txt",
+        "setup.py"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 46,
+      "run_hits_total": 63,
+      "verify_hits_total": 8,
+      "trouble_hits_total": 15,
+      "friction_hits_total": 12,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 12,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 12
+      },
+      "observable_score": 81,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 60.75
+    }
+  },
+  {
+    "repo": "sip",
+    "html_url": "https://gitcode.com/cann/sip",
+    "category": "other",
+    "metadata": {
+      "description": "本项目是CANN提供的一款高效、可靠的高性能信号处理算子加速库，基于华为Ascend AI处理器，专门为信号处理领域而设计。",
+      "language": "C++",
+      "stars": 179,
+      "forks": 50,
+      "open_issues": 3,
+      "default_branch": "master",
+      "created_at": "2025-11-05T10:37:27.051+08:00",
+      "updated_at": "2025-11-05T14:10:27.287+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 25,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "configs",
+        "core",
+        "docs",
+        "example",
+        "imported_libs",
+        "include",
+        "ops",
+        "scripts",
+        "sip_pta",
+        "tests",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "LICENSE",
+        "OAT.xml",
+        "OWNERS",
+        "README.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "build.sh",
+        "requirements.txt",
+        "version.info"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 8425,
+      "package_files": [
+        "CMakeLists.txt",
+        "build.sh",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 64,
+      "run_hits_total": 11,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 5,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 8,
+        "automation_friendliness_10": 10,
+        "friction_penalty_20": 10
+      },
+      "observable_score": 79,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 59.25
+    }
+  },
+  {
+    "repo": "tensorflow",
+    "html_url": "https://gitcode.com/cann/tensorflow",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "Ascend TensorFlow Adapter",
+      "language": "C++",
+      "stars": 7,
+      "forks": 9,
+      "open_issues": 1,
+      "default_branch": "master",
+      "created_at": "2026-04-09T09:35:48.594+08:00",
+      "updated_at": "2026-04-10T15:52:06.812+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 27,
+      "root_entries": [
+        ".gitcode",
+        "cmake",
+        "convert_tf2npu",
+        "docs",
+        "inc",
+        "scripts",
+        "tf_adapter",
+        "tf_adapter_2.x",
+        ".clang-format",
+        ".gitattributes",
+        ".gitignore",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "NOTICE",
+        "OAT.xml",
+        "OWNERS",
+        "README.md",
+        "RELEASE.md",
+        "SECURITY.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "Third_Party_Open_Source_Software_Notice",
+        "classify_rule.txt",
+        "classify_rule.yaml",
+        "configure",
+        "configure.py",
+        "version.cmake"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 843,
+      "package_files": [
+        "CMakeLists.txt",
+        "configure"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": false,
+      "has_script_dir": true,
+      "setup_hits_total": 5,
+      "run_hits_total": 3,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 12,
+        "documentation_onboarding_20": 18,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 8,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 6,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 64,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 48.0
+    }
+  },
+  {
+    "repo": "torchtitan-npu",
+    "html_url": "https://gitcode.com/cann/torchtitan-npu",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "Ascend Extension for torchtitan",
+      "language": "Python",
+      "stars": 109,
+      "forks": 54,
+      "open_issues": 12,
+      "default_branch": "master",
+      "created_at": "2026-01-21T17:40:05.420+08:00",
+      "updated_at": "2026-04-16T22:17:22.807+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 21,
+      "root_entries": [
+        ".agents",
+        ".ci",
+        ".devcontainer",
+        ".gitcode",
+        ".github",
+        "assets",
+        "docs",
+        "scripts",
+        "tests",
+        "torchtitan_npu",
+        ".flake8",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "NOTICE",
+        "OAT.xml",
+        "README.md",
+        "pyproject.toml",
+        "requirements.txt",
+        "requirements_dev.txt"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 8983,
+      "package_files": [
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": false,
+      "has_test_dir": true,
+      "has_script_dir": true,
+      "setup_hits_total": 6,
+      "run_hits_total": 7,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 1,
+      "friction_hits_total": 5,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 8,
+        "verification_regression_15": 8,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 10
+      },
+      "observable_score": 69,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 51.75
+    }
+  },
+  {
+    "repo": "triton-inference-server-ge-backend",
+    "html_url": "https://gitcode.com/cann/triton-inference-server-ge-backend",
+    "category": "infra_operator",
+    "metadata": {
+      "description": "ge-backend基于triton inference server框架实现对接NPU生态，快速实现传统CV\\NLP等模型的服务化。",
+      "language": "C++",
+      "stars": 192,
+      "forks": 10,
+      "open_issues": 2,
+      "default_branch": "master",
+      "created_at": "2025-12-02T12:17:42.138+08:00",
+      "updated_at": "2025-12-12T22:21:07.966+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 11,
+      "root_entries": [
+        "docs",
+        "example",
+        "include",
+        "src",
+        "CMakeLists.txt",
+        "CONTRIBUTING.md",
+        "Dockerfile",
+        "LICENSE",
+        "README.md",
+        "Third_Party_Open_Source_Software_List.yaml",
+        "build.sh"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 2382,
+      "package_files": [
+        "CMakeLists.txt",
+        "Dockerfile",
+        "build.sh"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": false,
+      "has_script_dir": false,
+      "setup_hits_total": 4,
+      "run_hits_total": 4,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 0,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 15,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 14,
+        "run_affordance_20": 14,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 6,
+        "friction_penalty_20": 0
+      },
+      "observable_score": 69,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 51.75
+    }
+  },
+  {
+    "repo": "xla-npu",
+    "html_url": "https://gitcode.com/cann/xla-npu",
+    "category": "app_recipe",
+    "metadata": {
+      "description": "XLA-NPU 是一个面向华为昇腾NPU硬件的 XLA后端实现。本项目通过接入OpenXLA/XLA开源项目，将XLA开源生态与华为 CANN软件栈集成，对接JAX框架。JAX框架运行时可以直接加载XLA-NPU，使得基于JAX框架开发的模型可以运行在昇腾NPU上，提供推理场景图编译加速能力。",
+      "language": "C",
+      "stars": 4,
+      "forks": 3,
+      "open_issues": 2,
+      "default_branch": "master",
+      "created_at": "2026-04-17T18:02:12.615+08:00",
+      "updated_at": "2026-04-17T18:16:49.390+08:00"
+    },
+    "remote_observation": {
+      "tree_fetched": true,
+      "tree_entry_count": 14,
+      "root_entries": [
+        ".gitcode",
+        "build",
+        "docs",
+        "examples",
+        "scripts",
+        "xla_npu",
+        ".clang-format",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "CMakeLists.txt",
+        "INSTALL_GUIDE.md",
+        "LICENSE",
+        "OAT.xml",
+        "README.md"
+      ],
+      "readme_path": "README.md",
+      "readme_length": 3206,
+      "package_files": [
+        "CMakeLists.txt"
+      ],
+      "has_doc_dir": true,
+      "has_example_dir": true,
+      "has_test_dir": false,
+      "has_script_dir": true,
+      "setup_hits_total": 15,
+      "run_hits_total": 15,
+      "verify_hits_total": 0,
+      "trouble_hits_total": 0,
+      "friction_hits_total": 3,
+      "fetch_errors": []
+    },
+    "local_observation": {
+      "local_status": null,
+      "local_path": null,
+      "local_compileall_passed": false,
+      "local_notes": null
+    },
+    "scores": {
+      "dimensions": {
+        "discoverability_15": 12,
+        "documentation_onboarding_20": 20,
+        "setup_explicitness_20": 20,
+        "run_affordance_20": 16,
+        "verification_regression_15": 0,
+        "automation_friendliness_10": 8,
+        "friction_penalty_20": 6
+      },
+      "observable_score": 70,
+      "confidence_score": 75,
+      "evidence_grade": "B",
+      "weighted_score": 52.5
+    }
+  }
+]
