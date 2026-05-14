@@ -283,7 +283,17 @@ body.rat-open .rat-sidebar{width:264px}
 /* ── SUB-TAB BAR (inside tabDev only) ── */
 .sub-tab-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;position:sticky;top:50px;z-index:98}
 /* Per-tab filter-bar overrides: tabs without sub-tab-bar get filter at top:50px */
-#tabOverview .filter-bar,#tabPain .filter-bar,#tabEcosys .filter-bar,#tabVod .filter-bar{top:50px}
+#tabOverview .filter-bar{top:50px}
+/* LAYER SECTION HEADER */
+.layer-sec{padding:12px 0 0}
+.layer-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.layer-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0}
+.layer-badge.core{background:#fef2f2;color:#c7000b;border:1px solid #fecaca}
+.layer-badge.dev{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
+.layer-badge.eco{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.layer-hdr-title{font-size:13px;font-weight:700;color:var(--text)}
+.layer-hdr-desc{font-size:11px;color:var(--dim);margin-left:4px}
+.layer-hdr-line{flex:1;height:1px;background:var(--border)}
 /* TOUCHPOINT MATRIX */
 .tp-layout{display:flex;gap:16px;padding:16px 28px 48px;align-items:flex-start}
 .tp-matrix-wrap{flex:1;min-width:0}
@@ -309,7 +319,7 @@ body.rat-open .rat-sidebar{width:264px}
 .tp-legend-dot.mid{background:var(--yellow-bg);border:1px solid #fde68a}
 .tp-legend-dot.ok{background:var(--green-bg);border:1px solid #86efac}
 .hm-cell.tp-sel{outline:2px solid var(--blue);outline-offset:2px}
-/* PAIN TAB */
+/* PAIN / ECO / VOD shared styles (used in 总览 floors) */
 .pain-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
 .pain-top-row{display:grid;grid-template-columns:1fr 1.4fr;gap:12px}
 .pain-dist-row{display:flex;align-items:center;gap:10px;padding:7px 16px;border-bottom:1px solid #f5f5f5}
@@ -318,7 +328,7 @@ body.rat-open .rat-sidebar{width:264px}
 .pain-dist-bar-track{width:100px;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;flex-shrink:0}
 .pain-dist-bar-fill{height:100%;border-radius:3px;background:var(--accent);opacity:.7}
 .pain-dist-n{font-size:11px;font-weight:600;color:var(--text);width:24px;text-align:right;flex-shrink:0}
-/* ECOSYSTEM TAB */
+/* ECOSYSTEM */
 .eco-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
 .eco-three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .eco-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
@@ -335,7 +345,7 @@ body.rat-open .rat-sidebar{width:264px}
 .eco-tag.new{background:var(--green-bg);color:var(--green)}
 .eco-tag.perf{background:var(--blue-bg);color:var(--blue)}
 .eco-tag.e2e{background:var(--yellow-bg);color:var(--yellow)}
-/* VOD TAB */
+/* VOD */
 .vod-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
 .vod-two-col{display:grid;grid-template-columns:1fr 1.6fr;gap:12px}
 .vod-src-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
@@ -481,9 +491,6 @@ body.rat-open .rat-sidebar{width:264px}
   <div class="tb-dims">
     <button class="dim-tab on" onclick="switchTab('overview',this)">总览</button>
     <button class="dim-tab" onclick="switchTab('dev',this)">开发界面</button>
-    <button class="dim-tab" onclick="switchTab('pain',this)">客户痛点</button>
-    <button class="dim-tab" onclick="switchTab('ecosys',this)">生态增益</button>
-    <button class="dim-tab" onclick="switchTab('vod',this)">VOD 声量</button>
   </div>
   <div class="tb-right">
     <div class="period-pill">
@@ -504,7 +511,7 @@ body.rat-open .rat-sidebar{width:264px}
 
     <div class="ov-body">
 
-      <!-- KPI ROW -->
+      <!-- TOP KPI ROW -->
       <div class="ov-kpis">
         <div class="ov-kpi border-red">
           <div class="ov-kpi-lbl">综合健康评分</div>
@@ -533,7 +540,7 @@ body.rat-open .rat-sidebar{width:264px}
         <div class="ov-section-hdr">
           体验健康矩阵
           <div class="ov-section-hdr-line"></div>
-          <span style="font-size:10px;color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">三类证据交叉定位 · 点击行查看场景详情</span>
+          <span style="font-size:10px;color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">三类证据交叉定位 · Agent评分 / 客户痛点 / VOD声量</span>
         </div>
         <div class="hm-card">
           <table class="hm-table">
@@ -618,164 +625,197 @@ body.rat-open .rat-sidebar{width:264px}
         </div>
       </div>
 
-      <!-- NEED ACTION + CUSTOMER CLOSURE -->
-      <div class="ov-two-col">
-        <div class="ov-card">
-          <div class="ov-card-hdr">
-            <div class="ov-card-hdr-title">需立即处理</div>
-            <span class="ov-card-hdr-badge">4 项待行动</span>
-          </div>
-          <div class="action-item">
-            <div class="action-num">1</div>
-            <div class="action-body">
-              <div class="action-title">AIC 日志缺失根因定位能力 · 算子复现部署调试能力仅 34 分</div>
-              <div class="action-meta">算子编程分队 · 腾讯 / 蚂蚁反馈 · 预计 Q3 闭环</div>
-            </div>
-            <span class="action-tag urgent">紧急</span>
-          </div>
-          <div class="action-item">
-            <div class="action-num">2</div>
-            <div class="action-body">
-              <div class="action-title">Builtin 算子文档参数错误率高 · VOD 声量 71 条</div>
-              <div class="action-meta">资料分队 · 社区 issue 集中 · 已立项</div>
-            </div>
-            <span class="action-tag urgent">紧急</span>
-          </div>
-          <div class="action-item">
-            <div class="action-num">3</div>
-            <div class="action-body">
-              <div class="action-title">迁移工具 shape 限制未提前提示 · 影响迁移部署成功率</div>
-              <div class="action-meta">工具链分队 · 美团 / 京东 · Q3 规划</div>
-            </div>
-            <span class="action-tag planned">规划中</span>
-          </div>
-          <div class="action-item">
-            <div class="action-num">4</div>
-            <div class="action-body">
-              <div class="action-title">图模式适配样例补全 · 推理框架 Agentic 成功率 68%</div>
-              <div class="action-meta">编译器 &amp; OS 分队 · Q3 / Q4</div>
-            </div>
-            <span class="action-tag planned">规划中</span>
-          </div>
+      <!-- ① 技术内核 -->
+      <div class="layer-sec">
+        <div class="layer-hdr">
+          <span class="layer-badge core">技术内核</span>
+          <span class="layer-hdr-title">压榨硬件极致性能，提供稳定高效的底层能力</span>
+          <div class="layer-hdr-line"></div>
         </div>
-
-        <div class="ov-card">
-          <div class="ov-card-hdr">
-            <div class="ov-card-hdr-title">客户痛点闭环率</div>
+        <div class="eco-three-col">
+          <div class="eco-card">
+            <div class="eco-card-hdr">PyTorch API 支持度</div>
+            <div class="eco-card-body">
+              <div class="eco-row"><span class="eco-row-lbl">Core test 通过率</span><span class="eco-row-val ok">85.4% ↑+2.1%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">算子 API 覆盖</span><span class="eco-row-val ok">92%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">通信 API 覆盖</span><span class="eco-row-val mid">78%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">框架 API 覆盖</span><span class="eco-row-val mid">71%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">工具 API 覆盖</span><span class="eco-row-val ok">88%</span></div>
+            </div>
           </div>
-          <div class="cust-list">
-            <div class="cust-bar-row">
-              <span class="cust-name">京东</span>
-              <div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:45%"></div></div>
-              <span class="cust-pct mid">45%</span>
-              <span class="cust-delta up">↑+8%</span>
+          <div class="eco-card">
+            <div class="eco-card-hdr">模型开箱覆盖</div>
+            <div class="eco-card-body">
+              <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">VLLM 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">SGLang 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">VERL 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
             </div>
-            <div class="cust-bar-row">
-              <span class="cust-name">腾讯</span>
-              <div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:38%"></div></div>
-              <span class="cust-pct mid">38%</span>
-              <span class="cust-delta up">↑+3%</span>
-            </div>
-            <div class="cust-bar-row">
-              <span class="cust-name">蚂蚁</span>
-              <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:35%"></div></div>
-              <span class="cust-pct bad">35%</span>
-              <span class="cust-delta dn">↓−2%</span>
-            </div>
-            <div class="cust-bar-row">
-              <span class="cust-name">美团</span>
-              <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:30%"></div></div>
-              <span class="cust-pct bad">30%</span>
-              <span class="cust-delta flat">→持平</span>
-            </div>
-            <div class="cust-bar-row">
-              <span class="cust-name">O1</span>
-              <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:28%"></div></div>
-              <span class="cust-pct bad">28%</span>
-              <span class="cust-delta up">↑+5%</span>
-            </div>
-            <div class="cust-bar-row">
-              <span class="cust-name">讯飞</span>
-              <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:22%"></div></div>
-              <span class="cust-pct bad">22%</span>
-              <span class="cust-delta dn">↓−1%</span>
+          </div>
+          <div class="eco-card">
+            <div class="eco-card-hdr">零 Day 高影响力发布</div>
+            <div class="eco-card-body">
+              <div class="eco-row"><span class="eco-row-lbl">Deepseek V4 Pro</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div></div>
+              <div class="eco-row"><span class="eco-row-lbl">Deepseek V4 Flash</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div></div>
+              <div class="eco-row"><span class="eco-row-lbl">Kimi K2 Thinking</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag e2e">E2E</span></div></div>
+              <div class="eco-row"><span class="eco-row-lbl">Deepseek V3.2</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span><span class="eco-tag e2e">E2E</span></div></div>
+              <div class="eco-row"><span class="eco-row-lbl">Longcat</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span></div></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SNAPSHOT ROW -->
-      <div>
-        <div class="ov-section-hdr">
-          能力维度快照
-          <div class="ov-section-hdr-line"></div>
+      <!-- ② 开发界面 -->
+      <div class="layer-sec">
+        <div class="layer-hdr">
+          <span class="layer-badge dev">开发界面</span>
+          <span class="layer-hdr-title">降低开发者认知负担，将硬件能力翻译为兼容生态习惯的开发体验</span>
+          <div class="layer-hdr-line"></div>
         </div>
-        <div class="ov-snap-row">
-          <div class="snap-card">
-            <div class="snap-card-hdr">
-              <div class="snap-icon red">📦</div>
-              <span class="snap-title">开箱即用</span>
+        <div class="ov-two-col">
+          <div class="ov-card">
+            <div class="ov-card-hdr">
+              <div class="ov-card-hdr-title">需立即处理</div>
+              <span class="ov-card-hdr-badge">4 项待行动</span>
             </div>
-            <div class="snap-body">
-              <div class="snap-big-stat">
-                <span class="snap-big-val ok">85.4%</span>
-                <span class="snap-big-lbl">Torch API 通过率</span>
-                <span class="snap-big-delta up">↑+2.1%</span>
+            <div class="action-item">
+              <div class="action-num">1</div>
+              <div class="action-body">
+                <div class="action-title">AIC 日志缺失根因定位能力 · 算子复现部署调试能力仅 34 分</div>
+                <div class="action-meta">算子编程分队 · 腾讯 / 蚂蚁反馈 · 预计 Q3 闭环</div>
               </div>
-              <div class="snap-divider"></div>
-              <div class="snap-row"><span class="snap-row-lbl">纯模型开箱</span><span class="snap-row-val ok">100%</span></div>
-              <div class="snap-row"><span class="snap-row-lbl">带框架模型</span><span class="snap-row-val bad">0%（开发中）</span></div>
-              <div class="snap-row"><span class="snap-row-lbl">零 Day 发布</span><span class="snap-row-val ok">5 个</span></div>
+              <span class="action-tag urgent">紧急</span>
+            </div>
+            <div class="action-item">
+              <div class="action-num">2</div>
+              <div class="action-body">
+                <div class="action-title">Builtin 算子文档参数错误率高 · VOD 声量 71 条</div>
+                <div class="action-meta">资料分队 · 社区 issue 集中 · 已立项</div>
+              </div>
+              <span class="action-tag urgent">紧急</span>
+            </div>
+            <div class="action-item">
+              <div class="action-num">3</div>
+              <div class="action-body">
+                <div class="action-title">迁移工具 shape 限制未提前提示 · 影响迁移部署成功率</div>
+                <div class="action-meta">工具链分队 · 美团 / 京东 · Q3 规划</div>
+              </div>
+              <span class="action-tag planned">规划中</span>
+            </div>
+            <div class="action-item">
+              <div class="action-num">4</div>
+              <div class="action-body">
+                <div class="action-title">图模式适配样例补全 · 推理框架 Agentic 成功率 68%</div>
+                <div class="action-meta">编译器 &amp; OS 分队 · Q3 / Q4</div>
+              </div>
+              <span class="action-tag planned">规划中</span>
             </div>
           </div>
-          <div class="snap-card">
-            <div class="snap-card-hdr">
-              <div class="snap-icon blue">⚡</div>
-              <span class="snap-title">开发效率</span>
-            </div>
-            <div class="snap-body">
-              <div class="snap-big-stat">
+          <div class="ov-card">
+            <div class="ov-card-hdr"><div class="ov-card-hdr-title">Agentic 开发效率</div></div>
+            <div style="padding:12px 16px 8px">
+              <div class="snap-big-stat" style="margin-bottom:10px">
                 <span class="snap-big-val mid">62%</span>
-                <span class="snap-big-lbl">Agentic 开发成功率</span>
+                <span class="snap-big-lbl">开发成功率</span>
                 <span class="snap-big-delta dn">↓−3%</span>
               </div>
-              <div class="snap-divider"></div>
               <div class="snap-row"><span class="snap-row-lbl">Ascend C 体验评分</span><span class="snap-row-val bad">4.1 / 6</span></div>
               <div class="snap-row"><span class="snap-row-lbl">样例覆盖度</span><span class="snap-row-val mid">75%</span></div>
-              <div class="snap-row"><span class="snap-row-lbl">优秀实践完成</span><span class="snap-row-val mid">部分</span></div>
+              <div class="snap-row"><span class="snap-row-lbl">优秀实践完成率</span><span class="snap-row-val mid">部分</span></div>
             </div>
-          </div>
-          <div class="snap-card">
-            <div class="snap-card-hdr">
-              <div class="snap-icon green">📊</div>
-              <span class="snap-title">客户痛点</span>
-            </div>
-            <div class="snap-body">
-              <div class="snap-big-stat">
-                <span class="snap-big-val mid">30</span>
-                <span class="snap-big-lbl">活跃痛点总数</span>
-              </div>
-              <div class="snap-divider"></div>
-              <div class="snap-row"><span class="snap-row-lbl">已闭环</span><span class="snap-row-val ok">9 条</span></div>
-              <div class="snap-row"><span class="snap-row-lbl">待验收</span><span class="snap-row-val mid">9 条</span></div>
-              <div class="snap-row"><span class="snap-row-lbl">闭环率</span><span class="snap-row-val mid">38% ↑+13%</span></div>
+            <div style="padding:10px 16px;border-top:1px solid #f5f5f5">
+              <button onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[1])" style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--blue);background:var(--blue-bg);color:var(--blue);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .12s">→ 进入触点分析</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- VOD HIGH-FREQ -->
-      <div>
-        <div class="ov-section-hdr">
-          VOD 高频声音
-          <div class="ov-section-hdr-line"></div>
-          <span style="font-size:10px;color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">社区 issue 97% · 近一期 Top 3</span>
+      <!-- 客户痛点 -->
+      <div class="layer-sec">
+        <div class="layer-hdr">
+          <span class="layer-hdr-title" style="font-size:13px;font-weight:700;color:var(--text)">客户痛点</span>
+          <div class="layer-hdr-line"></div>
+          <span style="font-size:10px;color:var(--dim)">共 30 个活跃痛点</span>
+        </div>
+        <div class="ov-two-col">
+          <div class="ov-card">
+            <div class="ov-card-hdr"><div class="ov-card-hdr-title">大客户闭环率</div><span style="font-size:10px;color:var(--dim)">目标 ≥ 50%</span></div>
+            <div class="cust-list">
+              <div class="cust-bar-row"><span class="cust-name">京东</span><div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:45%"></div></div><span class="cust-pct mid">45%</span><span class="cust-delta up">↑+8%</span></div>
+              <div class="cust-bar-row"><span class="cust-name">腾讯</span><div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:38%"></div></div><span class="cust-pct mid">38%</span><span class="cust-delta up">↑+3%</span></div>
+              <div class="cust-bar-row"><span class="cust-name">蚂蚁</span><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:35%"></div></div><span class="cust-pct bad">35%</span><span class="cust-delta dn">↓−2%</span></div>
+              <div class="cust-bar-row"><span class="cust-name">美团</span><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:30%"></div></div><span class="cust-pct bad">30%</span><span class="cust-delta flat">→持平</span></div>
+              <div class="cust-bar-row"><span class="cust-name">O1</span><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:28%"></div></div><span class="cust-pct bad">28%</span><span class="cust-delta up">↑+5%</span></div>
+              <div class="cust-bar-row"><span class="cust-name">讯飞</span><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:22%"></div></div><span class="cust-pct bad">22%</span><span class="cust-delta dn">↓−1%</span></div>
+            </div>
+          </div>
+          <div class="ov-card">
+            <div class="ov-card-hdr"><div class="ov-card-hdr-title">痛点分布 · 按所属分队</div></div>
+            <div>
+              <div class="pain-dist-row"><span class="pain-dist-lbl">算子编程分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:80%"></div></div><span class="pain-dist-n">12</span></div>
+              <div class="pain-dist-row"><span class="pain-dist-lbl">算子分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:47%"></div></div><span class="pain-dist-n">7</span></div>
+              <div class="pain-dist-row"><span class="pain-dist-lbl">编译器 &amp; OS 分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:33%"></div></div><span class="pain-dist-n">5</span></div>
+              <div class="pain-dist-row"><span class="pain-dist-lbl">资料分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:27%"></div></div><span class="pain-dist-n">4</span></div>
+              <div class="pain-dist-row"><span class="pain-dist-lbl">工具链分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:13%"></div></div><span class="pain-dist-n">2</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="pain-cat-section">
+            <div class="pain-cat-hdr"><span class="cat-badge tool">工具类</span><span class="cat-count">3 条</span></div>
+            <div class="pain-item">
+              <div class="pain-top">
+                <span class="pain-score">P0</span>
+                <div class="pain-body">
+                  <div class="pain-text">AIC 日志缺失根因定位能力，算子报错时开发者无自主定位能力，完全依赖华为侧介入</div>
+                  <div class="pain-meta">腾讯 / 蚂蚁 | 算子编程分队 | 优先级：高 | 客户期望 2026-Q3</div>
+                </div>
+                <span class="pain-status progress">特性开发</span>
+              </div>
+              <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ AIC 日志增强改造，展示报错算子 / 指令 / 内存信息，Q3 主线</span></div>
+            </div>
+            <div class="pain-item">
+              <div class="pain-top">
+                <span class="pain-score">P1</span>
+                <div class="pain-body">
+                  <div class="pain-text">迁移工具 shape 限制无提前提示，迁移失败后才发现不支持，严重影响迁移部署成功率</div>
+                  <div class="pain-meta">美团 / 京东 | 工具链分队 | 优先级：中 | 客户期望 2026-Q3</div>
+                </div>
+                <span class="pain-status planned">规划中</span>
+              </div>
+              <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 迁移工具增加 shape 预检查，返回明确提示，纳入 Q3 规划</span></div>
+            </div>
+          </div>
+          <div class="pain-cat-section">
+            <div class="pain-cat-hdr"><span class="cat-badge doc">文档类</span><span class="cat-count">5 条</span></div>
+            <div class="pain-item">
+              <div class="pain-top">
+                <span class="pain-score">P0</span>
+                <div class="pain-body">
+                  <div class="pain-text">Builtin 算子文档参数描述错误、版本不同步，VOD 声量 61 条，社区开发者反复反馈</div>
+                  <div class="pain-meta">社区 / 美团 | 资料分队 | 优先级：高 | 已立项</div>
+                </div>
+                <span class="pain-status progress">特性开发</span>
+              </div>
+              <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 批量修复文档参数错误，建立文档-代码同步机制，Q3 完成</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ 生态增益 -->
+      <div class="layer-sec">
+        <div class="layer-hdr">
+          <span class="layer-badge eco">生态增益</span>
+          <span class="layer-hdr-title">形成网络效应，让平台价值随生态参与者的增加而指数增长</span>
+          <div class="layer-hdr-line"></div>
         </div>
         <div class="vod-hf-list">
           <div class="vod-hf-item">
             <div class="vod-hf-num">1</div>
             <div class="vod-hf-body">
-              <div class="vod-hf-vol">71 条</div>
+              <div class="vod-hf-vol">71 条 <span style="font-size:10px;color:var(--accent);font-weight:600">↑ 上升</span></div>
               <div class="vod-hf-text">多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致</div>
               <div class="vod-hf-meta">算子仓 · 社区 issue · 社区开发者</div>
             </div>
@@ -796,6 +836,11 @@ body.rat-open .rat-sidebar{width:264px}
               <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
             </div>
           </div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:32px 20px;text-align:center;margin-top:12px">
+          <p style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">社区入门体验 · S0~S5 旅程评测</p>
+          <p style="font-size:11px;color:var(--muted);max-width:440px;margin:0 auto;line-height:1.7">Agent 对搜索发现 / 环境检查 / 样例体验 / 开发编译 / 测试验证 / 反馈贡献全旅程评测</p>
+          <p style="color:#c7000b;font-size:11px;font-weight:600;margin-top:8px">旅程评测数据接入中 · 预计下期上线</p>
         </div>
       </div>
 
@@ -1048,351 +1093,6 @@ body.rat-open .rat-sidebar{width:264px}
   </div>
   </div><!-- /devJourney -->
 </div><!-- /tabDev -->
-
-<!-- PAIN TAB -->
-<div id="tabPain" style="display:none">
-  <div class="filter-bar">
-    <span class="fl-lbl">芯片</span>
-    <span class="fchip on">A5</span>
-    <span class="fchip">A2 &amp; A3</span>
-    <div class="fl-sep"></div>
-    <span class="fl-lbl">客户</span>
-    <span class="fchip on">全部</span>
-    <span class="fchip">京东</span>
-    <span class="fchip">腾讯</span>
-    <span class="fchip">蚂蚁</span>
-    <span class="fchip">美团</span>
-  </div>
-  <div class="pain-body">
-    <div class="pain-top-row">
-      <!-- Customer closure chart -->
-      <div class="ov-card">
-        <div class="ov-card-hdr">
-          <div class="ov-card-hdr-title">大客户痛点闭环率</div>
-          <span style="font-size:10px;color:var(--dim)">目标 ≥ 50%</span>
-        </div>
-        <div class="cust-list">
-          <div class="cust-bar-row">
-            <span class="cust-name">京东</span>
-            <div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:45%"></div></div>
-            <span class="cust-pct mid">45%</span><span class="cust-delta up">↑+8%</span>
-          </div>
-          <div class="cust-bar-row">
-            <span class="cust-name">腾讯</span>
-            <div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:38%"></div></div>
-            <span class="cust-pct mid">38%</span><span class="cust-delta up">↑+3%</span>
-          </div>
-          <div class="cust-bar-row">
-            <span class="cust-name">蚂蚁</span>
-            <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:35%"></div></div>
-            <span class="cust-pct bad">35%</span><span class="cust-delta dn">↓−2%</span>
-          </div>
-          <div class="cust-bar-row">
-            <span class="cust-name">美团</span>
-            <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:30%"></div></div>
-            <span class="cust-pct bad">30%</span><span class="cust-delta flat">→持平</span>
-          </div>
-          <div class="cust-bar-row">
-            <span class="cust-name">O1</span>
-            <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:28%"></div></div>
-            <span class="cust-pct bad">28%</span><span class="cust-delta up">↑+5%</span>
-          </div>
-          <div class="cust-bar-row">
-            <span class="cust-name">讯飞</span>
-            <div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:22%"></div></div>
-            <span class="cust-pct bad">22%</span><span class="cust-delta dn">↓−1%</span>
-          </div>
-        </div>
-      </div>
-      <!-- Pain distribution by type -->
-      <div class="ov-card">
-        <div class="ov-card-hdr">
-          <div class="ov-card-hdr-title">痛点分布 · 按所属分队</div>
-          <span style="font-size:10px;color:var(--dim)">共 30 个活跃痛点</span>
-        </div>
-        <div>
-          <div class="pain-dist-row">
-            <span class="pain-dist-lbl">算子编程分队</span>
-            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:80%"></div></div>
-            <span class="pain-dist-n">12</span>
-          </div>
-          <div class="pain-dist-row">
-            <span class="pain-dist-lbl">算子分队</span>
-            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:47%"></div></div>
-            <span class="pain-dist-n">7</span>
-          </div>
-          <div class="pain-dist-row">
-            <span class="pain-dist-lbl">编译器 &amp; OS 分队</span>
-            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:33%"></div></div>
-            <span class="pain-dist-n">5</span>
-          </div>
-          <div class="pain-dist-row">
-            <span class="pain-dist-lbl">资料分队</span>
-            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:27%"></div></div>
-            <span class="pain-dist-n">4</span>
-          </div>
-          <div class="pain-dist-row">
-            <span class="pain-dist-lbl">工具链分队</span>
-            <div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:13%"></div></div>
-            <span class="pain-dist-n">2</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Full pain list -->
-    <div>
-      <div class="ov-section-hdr">活跃痛点列表 <div class="ov-section-hdr-line"></div></div>
-      <div class="pain-cat-section">
-        <div class="pain-cat-hdr"><span class="cat-badge tool">工具类</span><span class="cat-count">3 条</span></div>
-        <div class="pain-item">
-          <div class="pain-top">
-            <span class="pain-score">P0</span>
-            <div class="pain-body">
-              <div class="pain-text">AIC 日志缺失根因定位能力，算子报错时开发者无自主定位能力，完全依赖华为侧介入</div>
-              <div class="pain-meta">腾讯 / 蚂蚁 | 算子编程分队 | 优先级：高 | 客户期望 2026-Q3</div>
-            </div>
-            <span class="pain-status progress">特性开发</span>
-          </div>
-          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ AIC 日志增强改造，展示报错算子 / 指令 / 内存信息，Q3 主线</span></div>
-        </div>
-        <div class="pain-item">
-          <div class="pain-top">
-            <span class="pain-score">P1</span>
-            <div class="pain-body">
-              <div class="pain-text">迁移工具 shape 限制无提前提示，迁移失败后才发现不支持，严重影响迁移部署成功率</div>
-              <div class="pain-meta">美团 / 京东 | 工具链分队 | 优先级：中 | 客户期望 2026-Q3</div>
-            </div>
-            <span class="pain-status planned">规划中</span>
-          </div>
-          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 迁移工具增加 shape 预检查，返回明确提示，纳入 Q3 规划</span></div>
-        </div>
-        <div class="pain-item">
-          <div class="pain-top">
-            <span class="pain-score">P2</span>
-            <div class="pain-body">
-              <div class="pain-text">性能调优阶段缺少自动化工具，VEC ratio 调优建议不够具体，开发者难以直接落地</div>
-              <div class="pain-meta">腾讯 | 工具链分队 | 优先级：低</div>
-            </div>
-            <span class="pain-status planned">规划中</span>
-          </div>
-          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 调优建议可操作化改造，纳入 Q3 规划</span></div>
-        </div>
-      </div>
-      <div class="pain-cat-section">
-        <div class="pain-cat-hdr"><span class="cat-badge doc">文档类</span><span class="cat-count">5 条</span></div>
-        <div class="pain-item">
-          <div class="pain-top">
-            <span class="pain-score">P0</span>
-            <div class="pain-body">
-              <div class="pain-text">Builtin 算子文档参数描述错误、版本不同步，VOD 声量 61 条，社区开发者反复反馈</div>
-              <div class="pain-meta">社区 / 美团 | 资料分队 | 优先级：高 | 已立项</div>
-            </div>
-            <span class="pain-status progress">特性开发</span>
-          </div>
-          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 批量修复文档参数错误，建立文档-代码同步机制，Q3 完成</span></div>
-        </div>
-        <div class="pain-item">
-          <div class="pain-top">
-            <span class="pain-score">P1</span>
-            <div class="pain-body">
-              <div class="pain-text">图模式适配文档不完善，样例缺失，开发者适配图模式时缺乏参考</div>
-              <div class="pain-meta">蚂蚁 / O1 | 编译器 &amp; OS 分队 | 优先级：中</div>
-            </div>
-            <span class="pain-status planned">规划中</span>
-          </div>
-          <div class="pain-next"><span class="pain-next-lbl">Next Step</span><span class="pain-next-text">→ 补全图模式适配样例 × 4 个场景，Q4 上线</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div><!-- /tabPain -->
-
-<!-- ECOSYSTEM TAB -->
-<div id="tabEcosys" style="display:none">
-  <div class="filter-bar">
-    <span class="fl-lbl">芯片</span>
-    <span class="fchip on">A5</span>
-    <span class="fchip">A2 &amp; A3</span>
-  </div>
-  <div class="eco-body">
-    <!-- Top KPIs -->
-    <div class="ov-kpis">
-      <div class="ov-kpi border-green">
-        <div class="ov-kpi-lbl">Torch API 通过率</div>
-        <div class="ov-kpi-val ok">85.4%</div>
-        <div class="ov-kpi-sub up">↑ +2.1% vs 上期</div>
-      </div>
-      <div class="ov-kpi">
-        <div class="ov-kpi-lbl">纯模型开箱</div>
-        <div class="ov-kpi-val ok">41 <span style="font-size:13px;font-weight:400;color:var(--dim)">个 · 100%</span></div>
-        <div class="ov-kpi-sub">大语言 + 多模态</div>
-      </div>
-      <div class="ov-kpi border-red">
-        <div class="ov-kpi-lbl">带框架模型</div>
-        <div class="ov-kpi-val bad">0%</div>
-        <div class="ov-kpi-sub dn">VLLM / SGLang / VERL 适配中</div>
-      </div>
-      <div class="ov-kpi border-green">
-        <div class="ov-kpi-lbl">零 Day 发布</div>
-        <div class="ov-kpi-val ok">5 <span style="font-size:13px;font-weight:400;color:var(--dim)">个</span></div>
-        <div class="ov-kpi-sub">本期新增 Kimi K2</div>
-      </div>
-    </div>
-
-    <div class="eco-three-col">
-      <!-- PyTorch API Coverage -->
-      <div class="eco-card">
-        <div class="eco-card-hdr">⚙️ PyTorch API 支持度</div>
-        <div class="eco-card-body">
-          <div class="eco-row"><span class="eco-row-lbl">Core test 通过率</span><span class="eco-row-val ok">85.4%</span></div>
-          <div class="eco-row"><span class="eco-row-lbl">全量用例通过率</span><span class="eco-row-val mid">待测</span></div>
-          <div class="eco-row"><span class="eco-row-lbl">算子 API 覆盖</span><span class="eco-row-val ok">92%</span></div>
-          <div class="eco-row"><span class="eco-row-lbl">通信 API 覆盖</span><span class="eco-row-val mid">78%</span></div>
-          <div class="eco-row"><span class="eco-row-lbl">框架 API 覆盖</span><span class="eco-row-val mid">71%</span></div>
-          <div class="eco-row"><span class="eco-row-lbl">工具 API 覆盖</span><span class="eco-row-val ok">88%</span></div>
-        </div>
-      </div>
-      <!-- Model Coverage -->
-      <div class="eco-card">
-        <div class="eco-card-hdr">📦 模型开箱覆盖</div>
-        <div class="eco-card-body">
-          <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
-          <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
-          <div class="eco-row"><span class="eco-row-lbl">VLLM 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
-          <div class="eco-row"><span class="eco-row-lbl">SGLang 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
-          <div class="eco-row"><span class="eco-row-lbl">VERL 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
-        </div>
-      </div>
-      <!-- Zero-Day Releases -->
-      <div class="eco-card">
-        <div class="eco-card-hdr">🚀 零 Day 高影响力发布</div>
-        <div class="eco-card-body">
-          <div class="eco-row">
-            <span class="eco-row-lbl">Deepseek V4 Pro</span>
-            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div>
-          </div>
-          <div class="eco-row">
-            <span class="eco-row-lbl">Deepseek V4 Flash</span>
-            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div>
-          </div>
-          <div class="eco-row">
-            <span class="eco-row-lbl">Kimi K2 Thinking</span>
-            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag e2e">E2E</span></div>
-          </div>
-          <div class="eco-row">
-            <span class="eco-row-lbl">Deepseek V3.2</span>
-            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span><span class="eco-tag e2e">E2E</span></div>
-          </div>
-          <div class="eco-row">
-            <span class="eco-row-lbl">Longcat</span>
-            <div style="display:flex;gap:4px"><span class="eco-tag new">基础</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Community Onboarding -->
-    <div>
-      <div class="ov-section-hdr">社区入门体验 · S0~S5 旅程 <div class="ov-section-hdr-line"></div></div>
-      <div class="community-shell" style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:40px;flex-direction:column;align-items:center;text-align:center">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        <h3 style="font-size:14px;font-weight:600;color:var(--text);margin:10px 0 6px">入门开发者 · S0~S5 端到端旅程评测</h3>
-        <p style="font-size:12px;color:var(--muted);max-width:440px;line-height:1.7">基于 Agent 对搜索发现 / 环境检查 / 样例体验 / 开发编译 / 测试验证 / 反馈贡献全旅程评测，展示任务完成率、障碍点分布和 VOD 原声。</p>
-        <p style="color:#c7000b;font-size:11px;font-weight:600;margin-top:8px">旅程评测数据接入中 · 预计下期上线</p>
-      </div>
-    </div>
-  </div>
-</div><!-- /tabEcosys -->
-
-<!-- VOD TAB -->
-<div id="tabVod" style="display:none">
-  <div class="filter-bar">
-    <span class="fl-lbl">来源</span>
-    <span class="fchip on">全部</span>
-    <span class="fchip">社区 issue</span>
-    <span class="fchip">线下活动</span>
-    <span class="fchip">社区论坛</span>
-  </div>
-  <div class="vod-body">
-    <div class="vod-two-col">
-      <!-- Source distribution -->
-      <div class="vod-src-card">
-        <div class="ov-card-hdr"><div class="ov-card-hdr-title">声量来源分布</div></div>
-        <div>
-          <div class="vod-src-row"><span class="vod-src-name">社区 issue</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:97%"></div></div><span class="vod-src-pct">97%</span></div>
-          <div class="vod-src-row"><span class="vod-src-name">线下活动</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:9%"></div></div><span class="vod-src-pct">0.9%</span></div>
-          <div class="vod-src-row"><span class="vod-src-name">社区论坛</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:7%"></div></div><span class="vod-src-pct">0.7%</span></div>
-          <div class="vod-src-row"><span class="vod-src-name">线上直播</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:5%"></div></div><span class="vod-src-pct">0.5%</span></div>
-          <div class="vod-src-row"><span class="vod-src-name">高校活动</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:2%"></div></div><span class="vod-src-pct">0.2%</span></div>
-        </div>
-      </div>
-      <!-- Type distribution -->
-      <div class="vod-src-card">
-        <div class="ov-card-hdr"><div class="ov-card-hdr-title">声量类型分布</div><span style="font-size:10px;color:var(--dim)">总声量 433 条</span></div>
-        <div>
-          <div class="vod-src-row"><span class="vod-src-name">算子仓</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:100%"></div></div><span class="vod-src-pct">183</span></div>
-          <div class="vod-src-row"><span class="vod-src-name">资料仓库</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:70%"></div></div><span class="vod-src-pct">127</span></div>
-          <div class="vod-src-row"><span class="vod-src-name">通信库</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:33%"></div></div><span class="vod-src-pct">61</span></div>
-          <div class="vod-src-row"><span class="vod-src-name">图引擎</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:22%"></div></div><span class="vod-src-pct">40</span></div>
-          <div class="vod-src-row"><span class="vod-src-name">基础工具</span><div class="vod-src-bar-track"><div class="vod-src-bar-fill" style="width:12%"></div></div><span class="vod-src-pct">22</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Top 5 VOD -->
-    <div>
-      <div class="ov-section-hdr">高频声音 Top 5 <div class="ov-section-hdr-line"></div><span style="font-size:10px;color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0">社区 issue · 社区开发者</span></div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div class="vod-full-item">
-          <div class="vod-full-hdr">
-            <div class="vod-full-rank">1</div>
-            <span class="vod-full-vol">71</span><span class="vod-full-unit">条</span>
-            <span style="margin-left:auto;font-size:10px;color:var(--accent);font-weight:600">↑ 声量上升</span>
-          </div>
-          <div class="vod-full-quote">多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致</div>
-          <div class="vod-full-meta">算子仓 · 社区 issue · 社区开发者</div>
-        </div>
-        <div class="vod-full-item">
-          <div class="vod-full-hdr">
-            <div class="vod-full-rank">2</div>
-            <span class="vod-full-vol">61</span><span class="vod-full-unit">条</span>
-            <span style="margin-left:auto;font-size:10px;color:var(--dim);font-weight:600">→ 持平</span>
-          </div>
-          <div class="vod-full-quote">CANN 多算子仓：文档参数错误、格式错误、描述不一致、内容缺失</div>
-          <div class="vod-full-meta">资料仓库 · 社区 issue · 社区开发者</div>
-        </div>
-        <div class="vod-full-item">
-          <div class="vod-full-hdr">
-            <div class="vod-full-rank">3</div>
-            <span class="vod-full-vol">40</span><span class="vod-full-unit">条</span>
-            <span style="margin-left:auto;font-size:10px;color:var(--dim);font-weight:600">→ 持平</span>
-          </div>
-          <div class="vod-full-quote">算子资料文档：格式不规范、参数描述错误、命令目录错误</div>
-          <div class="vod-full-meta">资料仓库 · 社区 issue · 社区开发者</div>
-        </div>
-        <div class="vod-full-item">
-          <div class="vod-full-hdr">
-            <div class="vod-full-rank">4</div>
-            <span class="vod-full-vol">35</span><span class="vod-full-unit">条</span>
-            <span style="margin-left:auto;font-size:10px;color:var(--accent);font-weight:600">↑ 新增上榜</span>
-          </div>
-          <div class="vod-full-quote">transformer 算子：图模式类型缺失、编码韧性不足、描述不一致</div>
-          <div class="vod-full-meta">算子仓 · 社区 issue · 社区开发者</div>
-        </div>
-        <div class="vod-full-item">
-          <div class="vod-full-hdr">
-            <div class="vod-full-rank">5</div>
-            <span class="vod-full-vol">33</span><span class="vod-full-unit">条</span>
-            <span style="margin-left:auto;font-size:10px;color:var(--dim);font-weight:600">→ 持平</span>
-          </div>
-          <div class="vod-full-quote">ops-transformer：量化适配不足、shape 拦截缺失、编译依赖缺陷、精度失败</div>
-          <div class="vod-full-meta">算子仓 · 社区 issue · 社区开发者</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div><!-- /tabVod -->
 
 <!-- FLOATING TOGGLE BUTTON -->
 <button class="float-rat-btn" id="floatRat" onclick="toggleRat()">
@@ -2018,9 +1718,7 @@ function switchDevTab(id,btn){
 function switchTab(id,btn){
   document.querySelectorAll('.dim-tab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  const allTabs=['tabOverview','tabDev','tabPain','tabEcosys','tabVod'];
-  const map={overview:'tabOverview',dev:'tabDev',pain:'tabPain',ecosys:'tabEcosys',vod:'tabVod'};
-  allTabs.forEach(v=>document.getElementById(v).style.display=v===map[id]?'block':'none');
+  ['tabOverview','tabDev'].forEach(v=>document.getElementById(v).style.display=v===(id==='dev'?'tabDev':'tabOverview')?'block':'none');
 }
 
 // ── RATIONALE HIGHLIGHT ──
