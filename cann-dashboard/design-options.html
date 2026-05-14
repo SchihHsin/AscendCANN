@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>CANN 体验看板</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -517,21 +518,25 @@ body.rat-open .rat-sidebar{width:264px}
           <div class="ov-kpi-lbl">综合健康评分</div>
           <div class="ov-kpi-val mid">72 <span style="font-size:13px;color:var(--dim);font-weight:400">/ 100</span></div>
           <div class="ov-kpi-sub dn">↓ −3 vs 上期</div>
+          <div id="ecKpi0" style="height:40px;margin-top:6px"></div>
         </div>
         <div class="ov-kpi border-red">
           <div class="ov-kpi-lbl">严重问题</div>
           <div class="ov-kpi-val bad">3 <span style="font-size:13px;color:var(--dim);font-weight:400">个</span></div>
           <div class="ov-kpi-sub dn">较上期 ↑ +1</div>
+          <div id="ecKpi1" style="height:40px;margin-top:6px"></div>
         </div>
         <div class="ov-kpi border-yellow">
           <div class="ov-kpi-lbl">痛点闭环率</div>
           <div class="ov-kpi-val mid">38%</div>
           <div class="ov-kpi-sub up">↑ +6% vs 上期</div>
+          <div id="ecKpi2" style="height:40px;margin-top:6px"></div>
         </div>
         <div class="ov-kpi border-green">
           <div class="ov-kpi-lbl">本期改善 · 已验收</div>
           <div class="ov-kpi-val ok">9 <span style="font-size:13px;color:var(--dim);font-weight:400">条</span></div>
           <div class="ov-kpi-sub">共 30 个活跃痛点</div>
+          <div id="ecKpi3" style="height:40px;margin-top:6px"></div>
         </div>
       </div>
 
@@ -566,7 +571,7 @@ body.rat-open .rat-sidebar{width:264px}
                 <td class="hm-td"><span class="hm-cell bad">57 条</span></td>
                 <td class="hm-td"><span class="hm-cell bad">183</span></td>
                 <td class="hm-td"><span class="hm-overall bad">严重</span></td>
-                <td class="hm-td"><span class="hm-trend dn">↓ −4</span></td>
+                <td class="hm-td"><div id="ecHmSpk0" style="width:90px;height:28px;display:inline-block"></div></td>
               </tr>
               <tr class="hm-tr">
                 <td class="hm-td">
@@ -579,7 +584,7 @@ body.rat-open .rat-sidebar{width:264px}
                 <td class="hm-td"><span class="hm-cell mid">8 条</span></td>
                 <td class="hm-td"><span class="hm-cell mid">127</span></td>
                 <td class="hm-td"><span class="hm-overall mid">关注</span></td>
-                <td class="hm-td"><span class="hm-trend up">↑ +2</span></td>
+                <td class="hm-td"><div id="ecHmSpk1" style="width:90px;height:28px;display:inline-block"></div></td>
               </tr>
               <tr class="hm-tr">
                 <td class="hm-td">
@@ -592,7 +597,7 @@ body.rat-open .rat-sidebar{width:264px}
                 <td class="hm-td"><span class="hm-cell ok">3 条</span></td>
                 <td class="hm-td"><span class="hm-cell ok">40</span></td>
                 <td class="hm-td"><span class="hm-overall ok">健康</span></td>
-                <td class="hm-td"><span class="hm-trend up">↑ +5</span></td>
+                <td class="hm-td"><div id="ecHmSpk2" style="width:90px;height:28px;display:inline-block"></div></td>
               </tr>
               <tr class="hm-tr">
                 <td class="hm-td">
@@ -605,7 +610,7 @@ body.rat-open .rat-sidebar{width:264px}
                 <td class="hm-td"><span class="hm-cell mid">5 条</span></td>
                 <td class="hm-td"><span class="hm-cell ok">61</span></td>
                 <td class="hm-td"><span class="hm-overall mid">关注</span></td>
-                <td class="hm-td"><span class="hm-trend flat">→ 持平</span></td>
+                <td class="hm-td"><div id="ecHmSpk3" style="width:90px;height:28px;display:inline-block"></div></td>
               </tr>
               <tr class="hm-tr">
                 <td class="hm-td">
@@ -618,7 +623,7 @@ body.rat-open .rat-sidebar{width:264px}
                 <td class="hm-td"><span class="hm-cell ok">2 条</span></td>
                 <td class="hm-td"><span class="hm-cell ok">22</span></td>
                 <td class="hm-td"><span class="hm-overall ok">健康</span></td>
-                <td class="hm-td"><span class="hm-trend up">↑ +3</span></td>
+                <td class="hm-td"><div id="ecHmSpk4" style="width:90px;height:28px;display:inline-block"></div></td>
               </tr>
             </tbody>
           </table>
@@ -635,16 +640,14 @@ body.rat-open .rat-sidebar{width:264px}
         <div class="eco-three-col">
           <div class="eco-card">
             <div class="eco-card-hdr">PyTorch API 支持度</div>
-            <div class="eco-card-body">
+            <div id="ecPyTorch" style="height:160px"></div>
+            <div class="eco-card-body" style="border-top:1px solid #f5f5f5">
               <div class="eco-row"><span class="eco-row-lbl">Core test 通过率</span><span class="eco-row-val ok">85.4% ↑+2.1%</span></div>
-              <div class="eco-row"><span class="eco-row-lbl">算子 API 覆盖</span><span class="eco-row-val ok">92%</span></div>
-              <div class="eco-row"><span class="eco-row-lbl">通信 API 覆盖</span><span class="eco-row-val mid">78%</span></div>
-              <div class="eco-row"><span class="eco-row-lbl">框架 API 覆盖</span><span class="eco-row-val mid">71%</span></div>
-              <div class="eco-row"><span class="eco-row-lbl">工具 API 覆盖</span><span class="eco-row-val ok">88%</span></div>
             </div>
           </div>
           <div class="eco-card">
             <div class="eco-card-hdr">模型开箱覆盖</div>
+            <div id="ecModel" style="height:140px"></div>
             <div class="eco-card-body">
               <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
               <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
@@ -715,11 +718,7 @@ body.rat-open .rat-sidebar{width:264px}
           <div class="ov-card">
             <div class="ov-card-hdr"><div class="ov-card-hdr-title">Agentic 开发效率</div></div>
             <div style="padding:12px 16px 8px">
-              <div class="snap-big-stat" style="margin-bottom:10px">
-                <span class="snap-big-val mid">62%</span>
-                <span class="snap-big-lbl">开发成功率</span>
-                <span class="snap-big-delta dn">↓−3%</span>
-              </div>
+              <div id="ecGauge" style="height:120px;margin:-4px 0"></div>
               <div class="snap-row"><span class="snap-row-lbl">Ascend C 体验评分</span><span class="snap-row-val bad">4.1 / 6</span></div>
               <div class="snap-row"><span class="snap-row-lbl">样例覆盖度</span><span class="snap-row-val mid">75%</span></div>
               <div class="snap-row"><span class="snap-row-lbl">优秀实践完成率</span><span class="snap-row-val mid">部分</span></div>
@@ -741,24 +740,11 @@ body.rat-open .rat-sidebar{width:264px}
         <div class="ov-two-col">
           <div class="ov-card">
             <div class="ov-card-hdr"><div class="ov-card-hdr-title">大客户闭环率</div><span style="font-size:10px;color:var(--dim)">目标 ≥ 50%</span></div>
-            <div class="cust-list">
-              <div class="cust-bar-row"><span class="cust-name">京东</span><div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:45%"></div></div><span class="cust-pct mid">45%</span><span class="cust-delta up">↑+8%</span></div>
-              <div class="cust-bar-row"><span class="cust-name">腾讯</span><div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:38%"></div></div><span class="cust-pct mid">38%</span><span class="cust-delta up">↑+3%</span></div>
-              <div class="cust-bar-row"><span class="cust-name">蚂蚁</span><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:35%"></div></div><span class="cust-pct bad">35%</span><span class="cust-delta dn">↓−2%</span></div>
-              <div class="cust-bar-row"><span class="cust-name">美团</span><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:30%"></div></div><span class="cust-pct bad">30%</span><span class="cust-delta flat">→持平</span></div>
-              <div class="cust-bar-row"><span class="cust-name">O1</span><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:28%"></div></div><span class="cust-pct bad">28%</span><span class="cust-delta up">↑+5%</span></div>
-              <div class="cust-bar-row"><span class="cust-name">讯飞</span><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:22%"></div></div><span class="cust-pct bad">22%</span><span class="cust-delta dn">↓−1%</span></div>
-            </div>
+            <div id="ecCust" style="height:200px"></div>
           </div>
           <div class="ov-card">
             <div class="ov-card-hdr"><div class="ov-card-hdr-title">痛点分布 · 按所属分队</div></div>
-            <div>
-              <div class="pain-dist-row"><span class="pain-dist-lbl">算子编程分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:80%"></div></div><span class="pain-dist-n">12</span></div>
-              <div class="pain-dist-row"><span class="pain-dist-lbl">算子分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:47%"></div></div><span class="pain-dist-n">7</span></div>
-              <div class="pain-dist-row"><span class="pain-dist-lbl">编译器 &amp; OS 分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:33%"></div></div><span class="pain-dist-n">5</span></div>
-              <div class="pain-dist-row"><span class="pain-dist-lbl">资料分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:27%"></div></div><span class="pain-dist-n">4</span></div>
-              <div class="pain-dist-row"><span class="pain-dist-lbl">工具链分队</span><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:13%"></div></div><span class="pain-dist-n">2</span></div>
-            </div>
+            <div id="ecPainDist" style="height:190px"></div>
           </div>
         </div>
         <div style="margin-top:12px">
@@ -811,6 +797,7 @@ body.rat-open .rat-sidebar{width:264px}
           <span class="layer-hdr-title">形成网络效应，让平台价值随生态参与者的增加而指数增长</span>
           <div class="layer-hdr-line"></div>
         </div>
+        <div id="ecVod" style="height:140px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:12px"></div>
         <div class="vod-hf-list">
           <div class="vod-hf-item">
             <div class="vod-hf-num">1</div>
@@ -1774,6 +1761,69 @@ function unhlRat(){
 renderList();
 renderTpMatrix();
 selScene(0);
+
+function initOvCharts(){
+  const C={bad:'#c7000b',mid:'#b45309',ok:'#15803d',blue:'#2563eb',dim:'#9ca3af',border:'#e5e7eb'};
+  const spark=(id,data,color)=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const ch=echarts.init(el,null,{renderer:'svg'});
+    ch.setOption({grid:{top:2,bottom:2,left:2,right:2},xAxis:{type:'category',show:false},yAxis:{type:'value',show:false},series:[{type:'line',data,smooth:true,symbol:'none',lineStyle:{color,width:1.5},areaStyle:{color,opacity:.12}}],animation:false});
+  };
+  // KPI sparklines
+  spark('ecKpi0',[75,72,74,71,73,72],C.mid);
+  spark('ecKpi1',[1,2,1,3,2,3],C.bad);
+  spark('ecKpi2',[20,24,28,30,35,38],C.ok);
+  spark('ecKpi3',[5,7,6,8,9,9],C.ok);
+
+  // Health matrix sparklines (trend over 6 periods)
+  const hmData=[[60,58,63,61,62,62],[65,67,66,68,69,68],[80,82,84,84,85,85],[73,74,73,74,74,74],[86,87,88,88,89,89]];
+  const hmColors=[C.bad,C.mid,C.ok,C.mid,C.ok];
+  hmData.forEach((d,i)=>spark('ecHmSpk'+i,d,hmColors[i]));
+
+  // PyTorch API radar
+  const ptEl=document.getElementById('ecPyTorch');
+  if(ptEl){
+    const ch=echarts.init(ptEl,null,{renderer:'svg'});
+    ch.setOption({radar:{shape:'circle',radius:'68%',center:['50%','54%'],indicator:[{name:'算子API',max:100},{name:'通信API',max:100},{name:'框架API',max:100},{name:'工具API',max:100},{name:'Core test',max:100}],axisName:{fontSize:9,color:C.dim},splitLine:{lineStyle:{color:C.border}},splitArea:{show:false}},series:[{type:'radar',data:[{value:[92,78,71,88,85],name:'覆盖率',areaStyle:{color:'#2563eb',opacity:.12},lineStyle:{color:'#2563eb',width:1.5},symbol:'circle',symbolSize:4,itemStyle:{color:'#2563eb'}}]}],animation:false});
+  }
+
+  // Model coverage ring
+  const mdEl=document.getElementById('ecModel');
+  if(mdEl){
+    const ch=echarts.init(mdEl,null,{renderer:'svg'});
+    ch.setOption({tooltip:{trigger:'item',formatter:'{b}: {c}%'},legend:{show:false},series:[{type:'pie',radius:['42%','65%'],center:['50%','52%'],label:{show:true,fontSize:9,formatter:'{b}\n{c}%'},labelLine:{length:6,length2:4},data:[{value:100,name:'大语言模型',itemStyle:{color:'#15803d'}},{value:100,name:'多模态',itemStyle:{color:'#22c55e'}},{value:0,name:'VLLM',itemStyle:{color:'#fca5a5'}},{value:0,name:'SGLang',itemStyle:{color:'#f87171'}},{value:0,name:'VERL',itemStyle:{color:'#ef4444'}}]}],animation:false});
+  }
+
+  // Agentic gauge
+  const ggEl=document.getElementById('ecGauge');
+  if(ggEl){
+    const ch=echarts.init(ggEl,null,{renderer:'svg'});
+    ch.setOption({series:[{type:'gauge',startAngle:200,endAngle:-20,min:0,max:100,radius:'90%',center:['50%','62%'],progress:{show:true,width:8,itemStyle:{color:'#b45309'}},axisLine:{lineStyle:{width:8,color:[[1,'#f0f0f0']]}},pointer:{show:false},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},detail:{valueAnimation:false,formatter:'{value}%',fontSize:16,fontWeight:700,color:'#b45309',offsetCenter:[0,'20%']},title:{offsetCenter:[0,'52%'],fontSize:9,color:'#9ca3af'},data:[{value:62,name:'开发成功率'}]}],animation:false});
+  }
+
+  // Customer closure bar
+  const ccEl=document.getElementById('ecCust');
+  if(ccEl){
+    const ch=echarts.init(ccEl,null,{renderer:'svg'});
+    ch.setOption({grid:{top:6,bottom:4,left:40,right:48,containLabel:false},xAxis:{type:'value',max:100,show:false},yAxis:{type:'category',data:['讯飞','O1','美团','蚂蚁','腾讯','京东'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:10,color:'#6b7280'}},series:[{type:'bar',data:[22,28,30,35,38,45],barWidth:10,label:{show:true,position:'right',formatter:'{c}%',fontSize:10,color:'#6b7280'},itemStyle:{borderRadius:3,color:(p)=>p.data>=40?'#15803d':p.data>=35?'#f59e0b':'#c7000b'}}],animation:true});
+  }
+
+  // Pain dist bar
+  const pdEl=document.getElementById('ecPainDist');
+  if(pdEl){
+    const ch=echarts.init(pdEl,null,{renderer:'svg'});
+    ch.setOption({grid:{top:6,bottom:4,left:10,right:40,containLabel:true},xAxis:{type:'value',show:false},yAxis:{type:'category',data:['工具链分队','资料分队','编译器&OS','算子分队','算子编程分队'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:10,color:'#6b7280'}},series:[{type:'bar',data:[2,4,5,7,12],barWidth:10,label:{show:true,position:'right',formatter:'{c} 条',fontSize:10,color:'#6b7280'},itemStyle:{borderRadius:3,color:'#c7000b',opacity:.7}}],animation:true});
+  }
+
+  // VOD bar
+  const vdEl=document.getElementById('ecVod');
+  if(vdEl){
+    const ch=echarts.init(vdEl,null,{renderer:'svg'});
+    ch.setOption({grid:{top:12,bottom:28,left:10,right:16,containLabel:true},xAxis:{type:'category',data:['多算子层\n质量问题','文档参数\n错误','资料格式\n不规范','transformer\n算子','ops-\ntransformer'],axisLabel:{fontSize:9,color:'#6b7280',interval:0}},yAxis:{type:'value',show:false},series:[{type:'bar',data:[71,61,40,35,33],barWidth:'45%',label:{show:true,position:'top',fontSize:10,color:'#c7000b',fontWeight:600},itemStyle:{borderRadius:[3,3,0,0],color:(p)=>{const c=['#fca5a5','#f87171','#ef4444','#dc2626','#b91c1c'];return c[p.dataIndex];}}}],animation:true});
+  }
+}
+initOvCharts();
 </script>
 </body>
 </html>
