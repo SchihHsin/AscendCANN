@@ -285,6 +285,9 @@ body.rat-open .rat-sidebar{width:264px}
 .sub-tab-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;position:sticky;top:50px;z-index:98}
 /* Per-tab filter-bar overrides: tabs without sub-tab-bar get filter at top:50px */
 #tabOverview .filter-bar{top:50px}
+/* ROLE FILTER */
+.role-dim{opacity:.2;filter:grayscale(.15);transition:opacity .2s,filter .2s;pointer-events:none}
+.role-focus-badge{font-size:9px;font-weight:700;padding:1px 7px;border-radius:10px;background:var(--blue-bg);color:var(--blue);border:1px solid #bfdbfe;margin-left:8px;vertical-align:middle;letter-spacing:0;text-transform:none}
 /* LAYER SECTION HEADER */
 .layer-sec{padding:12px 0 0}
 .layer-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
@@ -508,6 +511,15 @@ body.rat-open .rat-sidebar{width:264px}
     <span class="fl-lbl">芯片</span>
     <span class="fchip on">A5</span>
     <span class="fchip">A2 &amp; A3</span>
+    <div class="fl-sep"></div>
+    <span class="fl-lbl">视角</span>
+    <span class="fchip role-chip on" onclick="selectRole('all',this)">全部</span>
+    <span class="fchip role-chip" onclick="selectRole('doc',this)">资料</span>
+    <span class="fchip role-chip" onclick="selectRole('ux',this)">体验设计</span>
+    <span class="fchip role-chip" onclick="selectRole('op',this)">算子编程</span>
+    <span class="fchip role-chip" onclick="selectRole('infra',this)">推理框架</span>
+    <span class="fchip role-chip" onclick="selectRole('pm',this)">产品负责人</span>
+    <span class="fchip role-chip" onclick="selectRole('comm',this)">社区运营</span>
   </div>
 
     <div class="ov-body">
@@ -631,7 +643,7 @@ body.rat-open .rat-sidebar{width:264px}
       </div>
 
       <!-- ① 技术内核 -->
-      <div class="layer-sec">
+      <div class="layer-sec" data-roles="op infra pm">
         <div class="layer-hdr">
           <span class="layer-badge core">技术内核</span>
           <span class="layer-hdr-title">压榨硬件极致性能，提供稳定高效的底层能力</span>
@@ -674,7 +686,7 @@ body.rat-open .rat-sidebar{width:264px}
       </div>
 
       <!-- ② 开发界面 -->
-      <div class="layer-sec">
+      <div class="layer-sec" data-roles="ux op">
         <div class="layer-hdr">
           <span class="layer-badge dev">开发界面</span>
           <span class="layer-hdr-title">降低开发者认知负担，将硬件能力翻译为兼容生态习惯的开发体验</span>
@@ -735,7 +747,7 @@ body.rat-open .rat-sidebar{width:264px}
       </div>
 
       <!-- 客户痛点 -->
-      <div class="layer-sec">
+      <div class="layer-sec" data-roles="pm op doc">
         <div class="layer-hdr">
           <span class="layer-hdr-title" style="font-size:13px;font-weight:700;color:var(--text)">客户痛点</span>
           <div class="layer-hdr-line"></div>
@@ -795,7 +807,7 @@ body.rat-open .rat-sidebar{width:264px}
       </div>
 
       <!-- ③ 生态增益 -->
-      <div class="layer-sec">
+      <div class="layer-sec" data-roles="doc comm ux">
         <div class="layer-hdr">
           <span class="layer-badge eco">生态增益</span>
           <span class="layer-hdr-title">形成网络效应，让平台价值随生态参与者的增加而指数增长</span>
@@ -1829,6 +1841,20 @@ function unhlRat(){
 renderList();
 renderTpMatrix();
 selScene(0);
+
+function selectRole(role, btn){
+  document.querySelectorAll('.role-chip').forEach(b=>b.classList.toggle('on',b===btn));
+  document.querySelectorAll('.role-focus-badge').forEach(b=>b.remove());
+  document.querySelectorAll('[data-roles]').forEach(el=>{
+    if(role==='all'){el.classList.remove('role-dim');return;}
+    const match=el.dataset.roles.split(' ').includes(role);
+    el.classList.toggle('role-dim',!match);
+    if(match){
+      const title=el.querySelector('.layer-hdr-title');
+      if(title){const b=document.createElement('span');b.className='role-focus-badge';b.textContent='关注';title.appendChild(b);}
+    }
+  });
+}
 
 function initOvCharts(){
   const C={bad:'#c7000b',mid:'#b45309',ok:'#15803d',blue:'#2563eb',dim:'#9ca3af',border:'#e5e7eb'};
