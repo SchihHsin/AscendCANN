@@ -205,13 +205,13 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f4f5f8;color:var(--tex
 /* PAIN PANEL ④ ⑥ */
 .pain-cat-section{margin-bottom:14px}
 .pain-cat-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px}
-.cat-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px}
-.cat-badge.doc{background:#eff6ff;color:#1d4ed8}
-.cat-badge.tool{background:#fff7ed;color:#c2410c}
-.cat-badge.api{background:#f5f3ff;color:#6d28d9}
-.cat-badge.env{background:var(--green-bg);color:var(--green)}
+.cat-badge{font-size:10px;font-weight:600;padding:2px 10px;border-radius:20px;border:1.5px solid}
+.cat-badge.doc{background:#fff;color:#1d4ed8;border-color:#93c5fd}
+.cat-badge.tool{background:#fff;color:#c2410c;border-color:#fdba74}
+.cat-badge.api{background:#fff;color:#6d28d9;border-color:#c4b5fd}
+.cat-badge.env{background:#fff;color:var(--green);border-color:#86efac}
 .cat-count{font-size:10px;color:var(--dim)}
-.pain-item{border:1px solid var(--border);border-radius:7px;padding:10px 12px;margin-bottom:7px}
+.pain-item{background:#fff;border:1px solid var(--border);border-radius:7px;padding:10px 12px;margin-bottom:7px}
 .pain-top{display:flex;align-items:flex-start;gap:8px}
 .pain-score{font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--red-bg);color:var(--accent);flex-shrink:0}
 .pain-body{flex:1;min-width:0}
@@ -643,6 +643,10 @@ body.rat-open .rat-sidebar{width:264px}
             <div id="ecPyTorch" style="height:160px"></div>
             <div class="eco-card-body" style="border-top:1px solid #f5f5f5">
               <div class="eco-row"><span class="eco-row-lbl">Core test 通过率</span><span class="eco-row-val ok">85.4% ↑+2.1%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">算子 API 覆盖</span><span class="eco-row-val ok">92%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">通信 API 覆盖</span><span class="eco-row-val mid">78%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">框架 API 覆盖</span><span class="eco-row-val mid">71%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">工具 API 覆盖</span><span class="eco-row-val ok">88%</span></div>
             </div>
           </div>
           <div class="eco-card">
@@ -824,10 +828,74 @@ body.rat-open .rat-sidebar{width:264px}
             </div>
           </div>
         </div>
-        <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:32px 20px;text-align:center;margin-top:12px">
-          <p style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">社区入门体验 · S0~S5 旅程评测</p>
-          <p style="font-size:11px;color:var(--muted);max-width:440px;margin:0 auto;line-height:1.7">Agent 对搜索发现 / 环境检查 / 样例体验 / 开发编译 / 测试验证 / 反馈贡献全旅程评测</p>
-          <p style="color:#c7000b;font-size:11px;font-weight:600;margin-top:8px">旅程评测数据接入中 · 预计下期上线</p>
+        <!-- 社区入门体验卡片 -->
+        <div style="background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:12px">
+          <div style="padding:10px 16px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:8px">
+            <span style="font-size:12px;font-weight:700;flex:1">社区入门体验 · Agent S0–S5 全旅程评测</span>
+            <span style="font-size:10px;color:var(--dim)">CANN · ASC · PYASC · Ascend 910C</span>
+          </div>
+          <!-- KPI strip -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #f5f5f5">
+            <div style="padding:10px 14px;border-right:1px solid #f5f5f5">
+              <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">综合体验评分</div>
+              <div style="font-size:20px;font-weight:700;color:#b45309">71<span style="font-size:11px;color:var(--dim);font-weight:400"> /100</span></div>
+            </div>
+            <div style="padding:10px 14px;border-right:1px solid #f5f5f5">
+              <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">端到端成功率</div>
+              <div style="font-size:20px;font-weight:700;color:#b45309">68<span style="font-size:11px;color:var(--dim);font-weight:400">%</span></div>
+            </div>
+            <div style="padding:10px 14px;border-right:1px solid #f5f5f5">
+              <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">工具执行总耗时</div>
+              <div style="font-size:20px;font-weight:700;color:var(--text)">142<span style="font-size:11px;color:var(--dim);font-weight:400"> s</span></div>
+            </div>
+            <div style="padding:10px 14px">
+              <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">平均 Token 消耗</div>
+              <div style="font-size:20px;font-weight:700;color:var(--text)">8.2<span style="font-size:11px;color:var(--dim);font-weight:400"> k</span></div>
+            </div>
+          </div>
+          <!-- S0-S5 journey steps -->
+          <div style="padding:12px 16px">
+            <div style="font-size:10px;color:var(--dim);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">旅程步骤</div>
+            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px">
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--red-bg);border:2px solid #fca5a5;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:11px;font-weight:700;color:var(--accent)">42</div>
+                <div style="font-size:9px;font-weight:600;color:var(--text)">S0</div>
+                <div style="font-size:9px;color:var(--dim);margin-top:1px">搜索发现</div>
+              </div>
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--yellow-bg);border:2px solid #fde68a;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:11px;font-weight:700;color:#b45309">65</div>
+                <div style="font-size:9px;font-weight:600;color:var(--text)">S1</div>
+                <div style="font-size:9px;color:var(--dim);margin-top:1px">环境准备</div>
+              </div>
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--yellow-bg);border:2px solid #fde68a;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:11px;font-weight:700;color:#b45309">73</div>
+                <div style="font-size:9px;font-weight:600;color:var(--text)">S2</div>
+                <div style="font-size:9px;color:var(--dim);margin-top:1px">样例体验</div>
+              </div>
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--green-bg);border:2px solid #86efac;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:11px;font-weight:700;color:var(--green)">81</div>
+                <div style="font-size:9px;font-weight:600;color:var(--text)">S3</div>
+                <div style="font-size:9px;color:var(--dim);margin-top:1px">开发编译</div>
+              </div>
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--green-bg);border:2px solid #86efac;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:11px;font-weight:700;color:var(--green)">79</div>
+                <div style="font-size:9px;font-weight:600;color:var(--text)">S4</div>
+                <div style="font-size:9px;color:var(--dim);margin-top:1px">测试验证</div>
+              </div>
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--yellow-bg);border:2px solid #fde68a;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:11px;font-weight:700;color:#b45309">68</div>
+                <div style="font-size:9px;font-weight:600;color:var(--text)">S5</div>
+                <div style="font-size:9px;color:var(--dim);margin-top:1px">反馈贡献</div>
+              </div>
+            </div>
+            <!-- Key pain -->
+            <div style="margin-top:10px;padding:8px 10px;background:var(--red-bg);border-radius:6px;font-size:10px;color:var(--accent);line-height:1.6">
+              <span style="font-weight:700">S0 最弱环节：</span>搜索直达率 0%，历经 3 轮搜索才找到仓库；命名混淆导致跨平台迁移摩擦高
+            </div>
+          </div>
+          <div style="padding:8px 16px;border-top:1px solid #f5f5f5;display:flex;justify-content:flex-end">
+            <button onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[1]);setTimeout(()=>switchDevTab('journey',document.querySelectorAll('#tabDev .sub-tab')[1]),60)" style="font-size:11px;font-weight:600;color:var(--blue);background:none;border:none;cursor:pointer;font-family:inherit">→ 查看完整入门旅程</button>
+          </div>
         </div>
       </div>
 
