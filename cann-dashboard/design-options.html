@@ -665,13 +665,13 @@ body.ov-rat-open .ov-rat-panel{right:0}
           </div>
           <div class="eco-card">
             <div class="eco-card-hdr">模型开箱覆盖</div>
-            <div id="ecModel" style="height:140px"></div>
-            <div class="eco-card-body">
-              <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
-              <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">100%</span></div>
-              <div class="eco-row"><span class="eco-row-lbl">VLLM 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
-              <div class="eco-row"><span class="eco-row-lbl">SGLang 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
-              <div class="eco-row"><span class="eco-row-lbl">VERL 框架迁移</span><span class="eco-row-val bad">开发中</span></div>
+            <div id="ecModel" style="height:160px"></div>
+            <div class="eco-card-body" style="border-top:1px solid #f5f5f5">
+              <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">41 / 41 · 100%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">12 / 12 · 100%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">VLLM 框架迁移</span><span class="eco-row-val mid">12 / 15 · 78%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">SGLang 框架迁移</span><span class="eco-row-val mid">5 / 8 · 65%</span></div>
+              <div class="eco-row"><span class="eco-row-lbl">VERL 框架迁移</span><span class="eco-row-val bad">3 / 7 · 42%</span></div>
             </div>
           </div>
           <div class="eco-card">
@@ -1932,7 +1932,30 @@ function initOvCharts(){
   const mdEl=document.getElementById('ecModel');
   if(mdEl){
     const ch=echarts.init(mdEl,null,{renderer:'svg'});
-    ch.setOption({tooltip:{trigger:'item',formatter:'{b}: {c}%'},legend:{show:false},series:[{type:'pie',radius:['42%','65%'],center:['50%','52%'],label:{show:true,fontSize:9,formatter:'{b}\n{c}%'},labelLine:{length:6,length2:4},data:[{value:100,name:'大语言模型',itemStyle:{color:'#15803d'}},{value:100,name:'多模态',itemStyle:{color:'#22c55e'}},{value:0,name:'VLLM',itemStyle:{color:'#fca5a5'}},{value:0,name:'SGLang',itemStyle:{color:'#f87171'}},{value:0,name:'VERL',itemStyle:{color:'#ef4444'}}]}],animation:false});
+    ch.setOption({
+      tooltip:{trigger:'item',formatter:p=>`${p.name}<br/>开箱覆盖率 <b>${p.data.pct}%</b>`},
+      graphic:[
+        {type:'text',left:'center',top:'34%',style:{text:'77%',fontSize:20,fontWeight:'bold',fill:'#15803d',fontFamily:'Inter,system-ui,sans-serif'}},
+        {type:'text',left:'center',top:'52%',style:{text:'综合覆盖',fontSize:9,fill:'#9ca3af',fontFamily:'Inter,system-ui,sans-serif'}}
+      ],
+      series:[{
+        type:'pie',
+        radius:['46%','68%'],
+        center:['50%','52%'],
+        padAngle:2,
+        label:{show:false},
+        labelLine:{show:false},
+        data:[
+          {value:100,name:'大语言模型',pct:100,itemStyle:{color:'#15803d'}},
+          {value:100,name:'多模态模型',pct:100,itemStyle:{color:'#4ade80'}},
+          {value:78,name:'VLLM 框架',pct:78,itemStyle:{color:'#86efac'}},
+          {value:65,name:'SGLang 框架',pct:65,itemStyle:{color:'#fde68a'}},
+          {value:42,name:'VERL 框架',pct:42,itemStyle:{color:'#fca5a5'}}
+        ],
+        emphasis:{scaleSize:4,itemStyle:{shadowBlur:8,shadowColor:'rgba(0,0,0,.12)'}}
+      }],
+      animation:false
+    });
   }
 
   // Agentic gauge
