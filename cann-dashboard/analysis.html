@@ -592,43 +592,7 @@
 
       <!-- Flow 1 -->
       <div class="card">
-        <h3 style="margin-bottom:14px"><span style="background:rgba(199,0,11,.09);color:var(--accent);padding:2px 8px;border-radius:4px;font-size:11px;margin-right:8px">Flow A</span>周期健康巡检 <span style="font-size:12px;color:var(--text-muted);font-weight:400">· 体验 PM · 每期评测后 · 约 10 分钟</span></h3>
-        <div style="display:flex;gap:0;position:relative">
-          <div style="position:absolute;top:16px;left:16px;right:16px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent));opacity:.4"></div>
-          <div style="flex:1;text-align:center;position:relative;z-index:1">
-            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">1</div>
-            <div style="font-size:12px;font-weight:600;margin-bottom:3px">打开看板</div>
-            <div style="font-size:11px;color:var(--text-muted)">进入全景层<br>默认展示最新期</div>
-          </div>
-          <div style="flex:1;text-align:center;position:relative;z-index:1">
-            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">2</div>
-            <div style="font-size:12px;font-weight:600;margin-bottom:3px">扫描红区</div>
-            <div style="font-size:11px;color:var(--text-muted)">颜色矩阵<br>3 秒内发现异常</div>
-          </div>
-          <div style="flex:1;text-align:center;position:relative;z-index:1">
-            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">3</div>
-            <div style="font-size:12px;font-weight:600;margin-bottom:3px">点击问题角色</div>
-            <div style="font-size:11px;color:var(--text-muted)">进入角色视图<br>场景按评分升序</div>
-          </div>
-          <div style="flex:1;text-align:center;position:relative;z-index:1">
-            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">4</div>
-            <div style="font-size:12px;font-weight:600;margin-bottom:3px">确认最差场景</div>
-            <div style="font-size:11px;color:var(--text-muted)">查看痛点数<br>和 VOD 条数</div>
-          </div>
-          <div style="flex:1;text-align:center;position:relative;z-index:1">
-            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">5</div>
-            <div style="font-size:12px;font-weight:600;margin-bottom:3px">记录 / 分享</div>
-            <div style="font-size:11px;color:var(--text-muted)">复制链接<br>或导出摘要</div>
-          </div>
-        </div>
-        <div style="margin-top:14px;font-size:12px;color:var(--text-muted);background:var(--surface2);border-radius:6px;padding:8px 12px">
-          <b style="color:var(--text)">关键设计需求：</b>全景层默认展示最新期数据并自动高亮红色区域；角色视图场景卡片按评分自动排序；看板本身输出"本期结论"（哪几个是最高优先级），不让 PM 自己总结。
-        </div>
-      </div>
-
-      <!-- Flow 2 -->
-      <div class="card">
-        <h3 style="margin-bottom:14px"><span style="background:rgba(37,99,235,.09);color:#1d4ed8;padding:2px 8px;border-radius:4px;font-size:11px;margin-right:8px">Flow B</span>问题深度排查 <span style="font-size:12px;color:var(--text-muted);font-weight:400">· 技术 Owner · 针对特定场景 · 约 30 分钟</span></h3>
+        <h3 style="margin-bottom:14px"><span style="background:rgba(37,99,235,.09);color:#1d4ed8;padding:2px 8px;border-radius:4px;font-size:11px;margin-right:8px">Flow A</span>问题深度排查 <span style="font-size:12px;color:var(--text-muted);font-weight:400">· 技术 Owner · 针对特定场景 · 约 30 分钟</span></h3>
         <div style="display:flex;gap:0;position:relative">
           <div style="position:absolute;top:16px;left:16px;right:16px;height:2px;background:linear-gradient(90deg,var(--blue),rgba(37,99,235,.4));opacity:.4"></div>
           <div style="flex:1;text-align:center;position:relative;z-index:1">
@@ -659,6 +623,42 @@
         </div>
         <div style="margin-top:14px;font-size:12px;color:var(--text-muted);background:var(--surface2);border-radius:6px;padding:8px 12px">
           <b style="color:var(--text)">关键设计需求：</b>场景详情层展示完整评分子项拆解；痛点按"文档/工具/API/环境"分类；Agent 日志可折叠展开（默认收起，避免干扰 PM）；Next Step 是可点击的外链，不是纯文字建议。
+        </div>
+      </div>
+
+      <!-- Flow 2 -->
+      <div class="card">
+        <h3 style="margin-bottom:14px"><span style="background:rgba(199,0,11,.09);color:var(--accent);padding:2px 8px;border-radius:4px;font-size:11px;margin-right:8px">Flow B</span>周期健康巡检 <span style="font-size:12px;color:var(--text-muted);font-weight:400">· 体验 PM · 每期评测后 · 约 10 分钟</span></h3>
+        <div style="display:flex;gap:0;position:relative">
+          <div style="position:absolute;top:16px;left:16px;right:16px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent));opacity:.4"></div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">1</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">打开看板</div>
+            <div style="font-size:11px;color:var(--text-muted)">进入全景层<br>默认展示最新期</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">2</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">扫描红区</div>
+            <div style="font-size:11px;color:var(--text-muted)">颜色矩阵<br>3 秒内发现异常</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">3</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">点击问题角色</div>
+            <div style="font-size:11px;color:var(--text-muted)">进入角色视图<br>场景按评分升序</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">4</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">确认最差场景</div>
+            <div style="font-size:11px;color:var(--text-muted)">查看痛点数<br>和 VOD 条数</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">5</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">记录 / 分享</div>
+            <div style="font-size:11px;color:var(--text-muted)">复制链接<br>或导出摘要</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text-muted);background:var(--surface2);border-radius:6px;padding:8px 12px">
+          <b style="color:var(--text)">关键设计需求：</b>全景层默认展示最新期数据并自动高亮红色区域；角色视图场景卡片按评分自动排序；看板本身输出"本期结论"（哪几个是最高优先级），不让 PM 自己总结。
         </div>
       </div>
 
