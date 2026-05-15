@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CANN 体验看板 - 方案对比</title>
+<style>
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root {
+  --bg: #f3ede4;
+  --paper: rgba(255, 249, 242, .82);
+  --panel: rgba(255, 255, 255, .86);
+  --line: rgba(74, 54, 33, .12);
+  --ink: #1d1813;
+  --muted: #6e6255;
+  --accent: #b53b23;
+  --accent-soft: rgba(181, 59, 35, .10);
+  --teal: #0f766e;
+  --teal-soft: rgba(15, 118, 110, .12);
+  --amber: #b87916;
+  --amber-soft: rgba(184, 121, 22, .12);
+  --good-bg: linear-gradient(180deg, #edf8f2 0%, #d7eee2 100%);
+  --mid-bg: linear-gradient(180deg, #fff8ec 0%, #f5e4c5 100%);
+  --bad-bg: linear-gradient(180deg, #fff3f0 0%, #f5d8d1 100%);
+  --shadow: 0 18px 48px rgba(74, 48, 24, .10);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(209, 128, 67, .14), transparent 24%),
+    radial-gradient(circle at top right, rgba(18, 120, 117, .10), transparent 22%),
+    linear-gradient(180deg, #f5efe8 0%, #eee5d8 100%);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 7px 12px;
+  backdrop-filter: blur(14px);
+  background: rgba(245, 239, 232, .92);
+  border-bottom: 1px solid rgba(74, 54, 33, .08);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.brand img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.brand-title {
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.tab {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .56);
+  color: var(--muted);
+  border-radius: 999px;
+  height: 32px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: .16s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  transform: translateY(-1px);
+}
+
+.tab.active {
+  color: var(--ink);
+  background: #fff8f2;
+  border-color: rgba(181, 59, 35, .24);
+  box-shadow: 0 8px 20px rgba(181, 59, 35, .10);
+}
+
+.tab-code {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.tab-label {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.page {
+  height: calc(100vh - 46px);
+  padding: 10px;
+}
+
+.page.legacy-mode {
+  height: auto;
+  min-height: calc(100vh - 46px);
+}
+
+.view {
+  display: none;
+  height: 100%;
+}
+
+.view.active {
+  display: block;
+}
+
+#legacy-view.active {
+  height: auto;
+}
+
+.panel {
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, .64);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.legacy-shell {
+  position: relative;
+  height: auto;
+  min-height: calc(100vh - 66px);
+  background: rgba(255, 252, 247, .72);
+}
+
+.legacy-actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  display: flex;
+  gap: 8px;
+}
+
+.ghost-btn {
+  text-decoration: none;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .92);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(30, 20, 10, .10);
+}
+
+.legacy-frame {
+  width: 100%;
+  min-height: calc(100vh - 66px);
+  border: 0;
+  display: block;
+  background: #fff;
+}
+
+.matrix-shell {
+  display: grid;
+  grid-template-rows: auto auto minmax(300px, 1fr);
+  gap: 10px;
+  padding: 10px;
+  min-height: 100%;
+  align-content: start;
+  overflow: visible;
+}
+
+.surface {
+  min-height: 0;
+  background: var(--panel);
+  border: 1px solid rgba(74, 54, 33, .08);
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.section-head {
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid rgba(74, 54, 33, .08);
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.section-title {
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+}
+
+.section-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.overview-list {
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: start;
+}
+
+.role-group {
+  border: 1px solid rgba(74, 54, 33, .08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .70);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.role-meta {
+  padding: 14px;
+  border-bottom: 1px solid rgba(74, 54, 33, .08);
+  background: rgba(255, 250, 244, .76);
+}
+
+.role-title {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.role-desc {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.scenario-list {
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr;
+}
+
+.scenario-card {
+  width: 100%;
+  border: 1px solid rgba(74, 54, 33, .08);
+  border-radius: 16px;
+  text-align: left;
+  background: rgba(255, 255, 255, .82);
+  padding: 12px;
+  cursor: pointer;
+  transition: .16s ease;
+}
+
+.overview-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  padding: 0 16px 16px;
+}
+
+.summary-mini {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(74, 54, 33, .08);
+}
+
+.summary-mini-label {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.summary-mini-value {
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.scenario-card.bad { background: var(--bad-bg); }
+.scenario-card.mid { background: var(--mid-bg); }
+.scenario-card.good { background: var(--good-bg); }
+
+.scenario-card:hover,
+.scenario-card.active {
+  transform: translateY(-2px);
+  border-color: rgba(181, 59, 35, .24);
+  box-shadow: 0 12px 24px rgba(44, 28, 12, .10);
+}
+
+.scenario-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.scenario-name {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.score {
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.score.bad { color: var(--accent); }
+.score.mid { color: var(--amber); }
+.score.good { color: var(--teal); }
+
+.scenario-note {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.65;
+  color: rgba(29, 24, 19, .74);
+}
+
+.chip-row {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .76);
+  border: 1px solid rgba(74, 54, 33, .08);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.story-shell {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 10px;
+  min-width: 0;
+}
+
+.hero {
+  padding: 18px 20px;
+}
+
+.hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hero-title {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -.04em;
+}
+
+.hero-sub {
+  margin-top: 8px;
+  max-width: 820px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.hero-badge {
+  flex: 0 0 auto;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(15, 118, 110, .08);
+  color: var(--teal);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.stats {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stat {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .76);
+  border: 1px solid rgba(74, 54, 33, .08);
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.stat-value {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.journey-shell {
+  padding: 14px 14px 8px;
+}
+
+.journey-scroll {
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.journey-grid {
+  display: grid;
+  gap: 10px;
+  min-width: max-content;
+}
+
+.journey-intro,
+.journey-step {
+  min-height: 238px;
+  border-radius: 18px;
+  border: 1px solid rgba(74, 54, 33, .08);
+  background: rgba(255, 255, 255, .82);
+  padding: 14px;
+}
+
+.journey-intro {
+  width: 220px;
+  background: linear-gradient(180deg, rgba(255, 250, 245, .92) 0%, rgba(246, 237, 225, .92) 100%);
+}
+
+.journey-intro-title {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.journey-intro-sub {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.72;
+  color: var(--muted);
+}
+
+.journey-step {
+  width: 196px;
+  text-align: left;
+  cursor: pointer;
+  transition: .16s ease;
+}
+
+.journey-step.bad { background: var(--bad-bg); }
+.journey-step.mid { background: var(--mid-bg); }
+.journey-step.good { background: var(--good-bg); }
+
+.journey-step:hover,
+.journey-step.active {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(44, 28, 12, .12);
+  border-color: rgba(181, 59, 35, .24);
+}
+
+.journey-step-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.step-index {
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(29, 24, 19, .48);
+}
+
+.step-name {
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.step-summary {
+  margin-top: 12px;
+  font-size: 12px;
+  line-height: 1.65;
+  color: rgba(29, 24, 19, .74);
+}
+
+.metric-grid {
+  margin-top: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.metric {
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .70);
+  border: 1px solid rgba(74, 54, 33, .08);
+}
+
+.metric-label {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.metric-value {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.detail-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 320px;
+}
+
+.detail-topbar {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(74, 54, 33, .08);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.detail-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+}
+
+.detail-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.next-action {
+  flex: 0 0 auto;
+  max-width: 320px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: var(--accent-soft);
+  color: #8c2818;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.detail-grid {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 10px;
+  overflow: auto;
+}
+
+.detail-card {
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .80);
+  border: 1px solid rgba(74, 54, 33, .08);
+}
+
+.detail-card h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.detail-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.detail-item {
+  padding-left: 12px;
+  position: relative;
+  font-size: 12px;
+  line-height: 1.72;
+  color: var(--muted);
+}
+
+.detail-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .75em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.float-note {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 60;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .94);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(24, 16, 8, .14);
+}
+
+.float-note.open {
+  color: var(--teal);
+  border-color: rgba(15, 118, 110, .24);
+  background: #f2fbf9;
+}
+
+.note-code {
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(15, 118, 110, .10);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.note-drawer {
+  position: fixed;
+  right: 18px;
+  bottom: 66px;
+  z-index: 59;
+  width: 360px;
+  max-width: calc(100vw - 36px);
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+  display: none;
+  padding: 16px;
+  border: 1px solid rgba(74, 54, 33, .10);
+  border-radius: 22px;
+  background: rgba(255, 250, 244, .98);
+  box-shadow: 0 18px 44px rgba(74, 48, 24, .16);
+}
+
+.note-drawer.open {
+  display: block;
+}
+
+.note-title {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.note-sub {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.68;
+  color: var(--muted);
+}
+
+.note-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.note-item {
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(74, 54, 33, .08);
+  background: rgba(255, 255, 255, .82);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.note-item strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+@media (max-width: 1200px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 980px) {
+  .brand-title {
+    display: none;
+  }
+
+  .page {
+    height: auto;
+    min-height: calc(100vh - 46px);
+  }
+
+  .view,
+  .panel {
+    height: auto;
+    min-height: calc(100vh - 66px);
+  }
+
+  .matrix-shell {
+    height: auto;
+  }
+
+  .overview-list,
+  .overview-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .note-drawer {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: none;
+  }
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">
+    <img src="../CANNlogo.png" alt="CANN">
+    <div class="brand-title">CANN 体验看板 · 方案对比</div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-view="legacy-view">
+      <span class="tab-code">0</span>
+      <span class="tab-label">当前方案</span>
+    </button>
+    <button class="tab" data-view="view-a">
+      <span class="tab-code">A</span>
+      <span class="tab-label">证据矩阵台</span>
+    </button>
+  </div>
+</div>
+
+<div class="page" id="page">
+  <section class="view active" id="legacy-view">
+    <div class="panel legacy-shell">
+      <div class="legacy-actions">
+        <a class="ghost-btn" href="design-options.html" target="_blank" rel="noopener noreferrer">单独打开当前方案</a>
+      </div>
+      <iframe class="legacy-frame" id="legacyFrame" title="当前方案预览" scrolling="no"></iframe>
+    </div>
+  </section>
+
+  <section class="view" id="view-a">
+    <div class="panel">
+      <div class="matrix-shell">
+        <section class="surface">
+          <div class="section-head">
+            <div class="eyebrow">Layer 1</div>
+            <div class="section-title">角色 × 场景总览</div>
+            <div class="section-sub">第一屏直接同时铺开多个角色和多个场景。不是先选角色再选场景，而是让团队先看到全局问题分布，再下钻其中一个重点场景。</div>
+          </div>
+          <div class="overview-summary" id="overviewSummary"></div>
+          <div class="overview-list" id="overviewList"></div>
+        </section>
+
+        <section class="story-shell">
+          <div class="surface hero" id="heroPanel"></div>
+          <div class="surface journey-shell">
+            <div class="journey-scroll">
+              <div class="journey-grid" id="journeyGrid"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="surface detail-shell">
+          <div class="detail-topbar" id="detailTopbar"></div>
+          <div class="detail-grid" id="detailGrid"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+
+<button class="float-note" id="floatNote" type="button">
+  <span>方案说明</span>
+  <span class="note-code" id="noteCode">0</span>
+</button>
+
+<aside class="note-drawer" id="noteDrawer">
+  <div class="note-title" id="noteTitle"></div>
+  <div class="note-sub" id="noteSub"></div>
+  <div class="note-list" id="noteList"></div>
+</aside>
+
+<script>
+const overviewRows = [
+  {
+    roleLabel: "算子开发者",
+    roleDesc: "关注从资料理解到迁移、编译、调测、性能优化的整段链路，通常问题集中在中后段断裂。",
+    scenarios: [
+      {
+        journeyKey: "operator-migrate",
+        name: "算子迁移部署",
+        score: 57,
+        grade: "bad",
+        note: "场景分低的根因不是单一步骤失败，而是迁移、编译、调测阶段连续失血。",
+        pains: 5,
+        vod: 71,
+        nextStep: "优先补齐迁移说明、编译报错定位和调测回路。",
+        agent: "Agent 在迁移到编译这段链路里多次遇到信息断档，需要来回切文档和工具日志。",
+        pain: "迁移约束、shape 限制、编译依赖和调测入口分散，导致问题不是一个按钮能解决，而是一整段流程不断卡住。",
+        vodQuote: "社区高频原声集中在编译失败、精度异常、文档描述不一致。"
+      },
+      {
+        journeyKey: "operator-customize",
+        name: "Builtin 算子定制修改",
+        score: 72,
+        grade: "mid",
+        note: "设计实现阶段相对顺，但性能调优建议不够可执行，后程效率偏低。",
+        pains: 2,
+        vod: 33,
+        nextStep: "保留设计实现优势，补强性能调优的自动化建议。",
+        agent: "Agent 能较快理解样例，但在调优环节难以把指标翻译成具体改法。",
+        pain: "工具建议停留在描述层，缺少面向开发动作的下一步。",
+        vodQuote: "用户原声更多集中在量化、shape 拦截和性能收益不稳定。"
+      }
+    ]
+  },
+  {
+    roleLabel: "AI 框架开发者",
+    roleDesc: "关注依赖对齐、基础适配、整网优化、精度和性能验证，旅程更偏系统联调而非单算子步骤。",
+    scenarios: [
+      {
+        journeyKey: "framework-tune",
+        name: "整网亲和与优化",
+        score: 64,
+        grade: "mid",
+        note: "基础适配已能完成，但整网优化和性能验证阶段证据分散，定位成本高。",
+        pains: 3,
+        vod: 35,
+        nextStep: "把整网优化建议和验证指标放在同一工作面。",
+        agent: "Agent 能完成初步接入，但难以把多类优化能力串成连续方案。",
+        pain: "融合算子、图模式、量化、多流等能力入口分散，用户需要自己拼图。",
+        vodQuote: "用户原声集中在适配收益不稳定、入口分散、验证成本高。"
+      },
+      {
+        journeyKey: "framework-adapt",
+        name: "基础适配落地",
+        score: 76,
+        grade: "good",
+        note: "依赖对齐和首轮适配已相对成熟，但仍缺乏后续验证闭环。",
+        pains: 1,
+        vod: 18,
+        nextStep: "在现有适配基础上，把验证与回归一并纳入主路径。",
+        agent: "Agent 在依赖和基础适配阶段成功率较高，但后续验证仍需要人工拼装工具链。",
+        pain: "适配成功后用户不知道怎样用最短路径证明收益已经落地。",
+        vodQuote: "原声不是不会接，而是接完后不知道是否真的达到目标。"
+      }
+    ]
+  },
+  {
+    roleLabel: "入门开发者",
+    roleDesc: "关注发现、准备、样例、测试、反馈与贡献，更需要低门槛的连续引导和清晰的成功反馈。",
+    scenarios: [
+      {
+        journeyKey: "starter-sample",
+        name: "样例快速体验",
+        score: 61,
+        grade: "mid",
+        note: "前段搜索和代码获取能走通，但环境检查、样例验证和问题反馈仍不够顺滑。",
+        pains: 4,
+        vod: 40,
+        nextStep: "把样例成功路径和失败回退路径做成同一条导向。",
+        agent: "Agent 能搜到入口，但在环境检查与验证阶段仍需要大量重试。",
+        pain: "新手并不理解哪些失败属于环境、哪些属于样例本身。",
+        vodQuote: "大量原声并非抱怨功能，而是抱怨找不到最短成功路径。"
+      }
+    ]
+  }
+];
+
+const journeys = [
+  {
+    key: "operator-migrate",
+    desc: "算子开发者的迁移部署旅程明显长于其他角色，且高风险阶段集中在中后段，因此需要把每一段拆开看。",
+    steps: [
+      {
+        key: "operator-migrate-discover",
+        label: "感知学习",
+        score: 74,
+        grade: "mid",
+        summary: "能找到资料，但迁移前提、限制条件和推荐路径仍不够集中。",
+        metrics: [
+          { label: "资料命中率", value: "82%" },
+          { label: "首轮理解度", value: "74%" }
+        ],
+        observations: [
+          "Agent 需要同时翻文档和仓库示例才能理解迁移边界。",
+          "关键限制条件没有出现在首屏材料里。"
+        ]
+      },
+      {
+        key: "operator-migrate-env",
+        label: "环境准备",
+        score: 69,
+        grade: "mid",
+        summary: "环境安装能完成，但依赖版本与操作顺序不够稳，重试成本偏高。",
+        metrics: [
+          { label: "环境成功率", value: "71%" },
+          { label: "平均重试", value: "2.1 次" }
+        ],
+        observations: [
+          "Agent 能完成安装，但对版本要求的判断缺少一次性说明。",
+          "日志能看到错，但不知道错前的依赖链。"
+        ]
+      },
+      {
+        key: "operator-migrate-port",
+        label: "算子迁移",
+        score: 56,
+        grade: "bad",
+        summary: "迁移规则与 shape 约束理解成本高，场景失败从这里开始明显增加。",
+        metrics: [
+          { label: "迁移成功率", value: "58%" },
+          { label: "规则可解释性", value: "49%" }
+        ],
+        observations: [
+          "不同限制散落在多份资料里，Agent 需要自己归纳。",
+          "用户很难在迁移前判断自己是否命中限制。"
+        ]
+      },
+      {
+        key: "operator-migrate-compile",
+        label: "算子编译",
+        score: 48,
+        grade: "bad",
+        summary: "编译报错无法快速映射到修复动作，是整条旅程最明显的断点。",
+        metrics: [
+          { label: "编译成功率", value: "52%" },
+          { label: "报错定位效率", value: "41%" }
+        ],
+        observations: [
+          "报错信息和修复建议脱节，Agent 只能多轮猜测。",
+          "用户知道哪里错了，但不知道下一步具体改什么。"
+        ]
+      },
+      {
+        key: "operator-migrate-debug",
+        label: "功能调测",
+        score: 63,
+        grade: "mid",
+        summary: "调测入口存在，但测试覆盖与验证闭环仍需要人工补全。",
+        metrics: [
+          { label: "调测通过率", value: "66%" },
+          { label: "回归准备度", value: "61%" }
+        ],
+        observations: [
+          "Agent 能跑基础验证，但复杂场景缺少推荐检查单。",
+          "验证结果不容易回映到上游改动。"
+        ]
+      },
+      {
+        key: "operator-migrate-perf",
+        label: "性能调优",
+        score: 54,
+        grade: "bad",
+        summary: "性能问题能被看到，但建议停留在指标层，难转成开发动作。",
+        metrics: [
+          { label: "调优可执行性", value: "46%" },
+          { label: "收益可验证性", value: "58%" }
+        ],
+        observations: [
+          "工具会告诉用户哪里不理想，但不会直接给出优先动作。",
+          "收益和改法之间缺少一层操作翻译。"
+        ]
+      },
+      {
+        key: "operator-migrate-regress",
+        label: "结果回归",
+        score: 67,
+        grade: "mid",
+        summary: "能完成最终回归，但发布前缺少一页式的结果确认视图。",
+        metrics: [
+          { label: "回归完整性", value: "69%" },
+          { label: "结果可追溯", value: "65%" }
+        ],
+        observations: [
+          "结果分散在不同工具输出里，复盘效率偏低。",
+          "管理者难以快速判断这次问题是否已闭环。"
+        ]
+      }
+    ]
+  },
+  {
+    key: "operator-customize",
+    desc: "Builtin 算子定制修改的前中段更顺，但后段的性能收益解释仍偏弱。",
+    steps: [
+      {
+        key: "operator-customize-discover",
+        label: "感知学习",
+        score: 81,
+        grade: "good",
+        summary: "资料与样例入口比较完整，首轮理解效率较高。",
+        metrics: [
+          { label: "样例可用性", value: "88%" },
+          { label: "资料命中率", value: "84%" }
+        ],
+        observations: [
+          "Agent 基本能靠样例快速进入任务。",
+          "材料组织相对稳定。"
+        ]
+      },
+      {
+        key: "operator-customize-design",
+        label: "设计实现",
+        score: 79,
+        grade: "good",
+        summary: "设计与实现阶段有较清晰的样例支撑，开发动作明确。",
+        metrics: [
+          { label: "实现成功率", value: "79%" },
+          { label: "首轮完成率", value: "76%" }
+        ],
+        observations: [
+          "Agent 能较快判断改哪段代码和接口。",
+          "定制路径明显比迁移路径更顺。"
+        ]
+      },
+      {
+        key: "operator-customize-compile",
+        label: "算子编译",
+        score: 72,
+        grade: "mid",
+        summary: "编译环节偶有卡点，但整体可恢复性尚可。",
+        metrics: [
+          { label: "编译成功率", value: "74%" },
+          { label: "定位效率", value: "67%" }
+        ],
+        observations: [
+          "部分报错仍缺少直接修复映射。",
+          "但问题数量低于迁移部署。"
+        ]
+      },
+      {
+        key: "operator-customize-debug",
+        label: "功能调测",
+        score: 86,
+        grade: "good",
+        summary: "调测链路最稳定，测试与验证支撑相对完整。",
+        metrics: [
+          { label: "调测通过率", value: "90%" },
+          { label: "自动化覆盖", value: "81%" }
+        ],
+        observations: [
+          "Agent 在这一步的行为最稳定。",
+          "自动化覆盖已经形成明显优势。"
+        ]
+      },
+      {
+        key: "operator-customize-perf",
+        label: "性能调优",
+        score: 61,
+        grade: "mid",
+        summary: "性能建议不算少，但仍偏指标表达，落地动作不够直接。",
+        metrics: [
+          { label: "建议可执行性", value: "57%" },
+          { label: "收益确认度", value: "63%" }
+        ],
+        observations: [
+          "用户需要自己解释 VEC ratio、Cache 命中率背后的动作。",
+          "缺少直接可试的改法模板。"
+        ]
+      },
+      {
+        key: "operator-customize-regress",
+        label: "发布回归",
+        score: 70,
+        grade: "mid",
+        summary: "结果能汇总，但发布前后的差异视图仍不够一眼明确。",
+        metrics: [
+          { label: "回归完整性", value: "72%" },
+          { label: "变化可视化", value: "66%" }
+        ],
+        observations: [
+          "回归信息有，但不够集中。",
+          "适合用一页式结果版进一步收口。"
+        ]
+      }
+    ]
+  },
+  {
+    key: "framework-tune",
+    desc: "AI 框架开发者不是单算子链路，而是适配到整网优化的系统联调旅程，因此阶段结构也不同。",
+    steps: [
+      {
+        key: "framework-tune-discover",
+        label: "感知学习",
+        score: 73,
+        grade: "mid",
+        summary: "能力很多，但入口分散，用户需要自己建立地图。",
+        metrics: [
+          { label: "入口清晰度", value: "66%" },
+          { label: "材料覆盖度", value: "79%" }
+        ],
+        observations: [
+          "Agent 能搜到很多能力，但不容易判断先后关系。"
+        ]
+      },
+      {
+        key: "framework-tune-dependency",
+        label: "依赖对齐",
+        score: 77,
+        grade: "good",
+        summary: "依赖和环境对齐相对成熟，是这条旅程中较稳的一段。",
+        metrics: [
+          { label: "对齐成功率", value: "80%" },
+          { label: "版本清晰度", value: "75%" }
+        ],
+        observations: [
+          "Agent 较少在依赖层面反复试错。"
+        ]
+      },
+      {
+        key: "framework-tune-adapt",
+        label: "基础适配",
+        score: 71,
+        grade: "mid",
+        summary: "首轮适配能落地，但接入后不知道收益边界在哪里。",
+        metrics: [
+          { label: "适配完成率", value: "74%" },
+          { label: "收益可感知", value: "63%" }
+        ],
+        observations: [
+          "适配本身不是最大问题，后续收益证明才是。"
+        ]
+      },
+      {
+        key: "framework-tune-network",
+        label: "整网优化",
+        score: 58,
+        grade: "bad",
+        summary: "多类优化能力入口分散，需要用户自己拼图，系统成本高。",
+        metrics: [
+          { label: "方案连续性", value: "51%" },
+          { label: "建议聚合度", value: "47%" }
+        ],
+        observations: [
+          "融合算子、图模式、量化、多流等能力没有被组织成一套连续策略。"
+        ]
+      },
+      {
+        key: "framework-tune-accuracy",
+        label: "精度验证",
+        score: 66,
+        grade: "mid",
+        summary: "指标定义清楚，但验证路径仍偏工具化，不够任务化。",
+        metrics: [
+          { label: "指标可读性", value: "71%" },
+          { label: "验证成本", value: "60%" }
+        ],
+        observations: [
+          "知道看什么，不代表知道怎么最快完成验证。"
+        ]
+      },
+      {
+        key: "framework-tune-performance",
+        label: "性能验证",
+        score: 61,
+        grade: "mid",
+        summary: "性能结果能产出，但前因后果分散，管理层难以快速理解。",
+        metrics: [
+          { label: "结果解释度", value: "58%" },
+          { label: "回归闭环", value: "64%" }
+        ],
+        observations: [
+          "缺少把优化动作、收益指标、验证结果串到一起的工作面。"
+        ]
+      }
+    ]
+  },
+  {
+    key: "framework-adapt",
+    desc: "基础适配落地更像一条较短的闭环路径，风险主要出现在验证收口，而非接入本身。",
+    steps: [
+      {
+        key: "framework-adapt-discover",
+        label: "感知学习",
+        score: 78,
+        grade: "good",
+        summary: "能较快理解接入入口与文档主线。",
+        metrics: [
+          { label: "入口命中率", value: "83%" },
+          { label: "理解速度", value: "78%" }
+        ],
+        observations: [
+          "Agent 首轮即可建立基本接入路径。"
+        ]
+      },
+      {
+        key: "framework-adapt-dependency",
+        label: "依赖对齐",
+        score: 80,
+        grade: "good",
+        summary: "依赖信息比较集中，是整条路径的稳定起点。",
+        metrics: [
+          { label: "依赖成功率", value: "82%" },
+          { label: "版本稳定性", value: "79%" }
+        ],
+        observations: [
+          "依赖对齐已形成可复用经验。"
+        ]
+      },
+      {
+        key: "framework-adapt-adapt",
+        label: "基础适配",
+        score: 77,
+        grade: "good",
+        summary: "基础适配路径清晰，但仍需要更好的后续验证接力。",
+        metrics: [
+          { label: "适配完成率", value: "78%" },
+          { label: "样例参考度", value: "76%" }
+        ],
+        observations: [
+          "适配动作明确，但收口不足。"
+        ]
+      },
+      {
+        key: "framework-adapt-accuracy",
+        label: "精度验证",
+        score: 69,
+        grade: "mid",
+        summary: "验证项存在，但缺少最短路径提示。",
+        metrics: [
+          { label: "验证效率", value: "67%" },
+          { label: "结果可信度", value: "73%" }
+        ],
+        observations: [
+          "Agent 能完成验证，但步骤不够精简。"
+        ]
+      },
+      {
+        key: "framework-adapt-performance",
+        label: "性能验证",
+        score: 65,
+        grade: "mid",
+        summary: "性能结果有输出，但缺少一页式收益确认。",
+        metrics: [
+          { label: "收益可见度", value: "61%" },
+          { label: "结果聚合度", value: "62%" }
+        ],
+        observations: [
+          "用户想知道值不值得，但页面很难直接回答。"
+        ]
+      }
+    ]
+  },
+  {
+    key: "starter-sample",
+    desc: "入门开发者旅程更强调连续引导，不是技术深度不足，而是成功路径必须足够短、足够清楚。",
+    steps: [
+      {
+        key: "starter-sample-search",
+        label: "搜索发现",
+        score: 68,
+        grade: "mid",
+        summary: "能找到入口，但官方文档、源码和示例之间仍要来回跳转。",
+        metrics: [
+          { label: "入口直达率", value: "63%" },
+          { label: "搜索有效率", value: "71%" }
+        ],
+        observations: [
+          "Agent 能找到内容，但首选路径不够明显。"
+        ]
+      },
+      {
+        key: "starter-sample-envcheck",
+        label: "环境检查",
+        score: 57,
+        grade: "bad",
+        summary: "新手最容易在这里误判问题来源，不知道失败属于环境还是样例。",
+        metrics: [
+          { label: "检查成功率", value: "59%" },
+          { label: "问题可归因", value: "46%" }
+        ],
+        observations: [
+          "Agent 能看到异常，但没有新手友好的解释层。"
+        ]
+      },
+      {
+        key: "starter-sample-fetch",
+        label: "代码获取",
+        score: 72,
+        grade: "mid",
+        summary: "仓库获取基本能完成，但命名与目录结构仍影响理解。",
+        metrics: [
+          { label: "获取成功率", value: "76%" },
+          { label: "目录理解度", value: "65%" }
+        ],
+        observations: [
+          "拉下来不等于看得懂。"
+        ]
+      },
+      {
+        key: "starter-sample-run",
+        label: "样例体验",
+        score: 63,
+        grade: "mid",
+        summary: "能运行基础样例，但失败回退路径不够清楚。",
+        metrics: [
+          { label: "首跑成功率", value: "61%" },
+          { label: "回退清晰度", value: "56%" }
+        ],
+        observations: [
+          "用户一旦失败，就不知道该往前查还是往后查。"
+        ]
+      },
+      {
+        key: "starter-sample-test",
+        label: "测试验证",
+        score: 60,
+        grade: "mid",
+        summary: "验证信息零散，新手不容易知道什么算成功。",
+        metrics: [
+          { label: "验证可理解性", value: "55%" },
+          { label: "结果确认度", value: "66%" }
+        ],
+        observations: [
+          "Agent 会验证，但验证结果不够面向新人表达。"
+        ]
+      },
+      {
+        key: "starter-sample-feedback",
+        label: "反馈贡献",
+        score: 58,
+        grade: "bad",
+        summary: "遇到问题后如何反馈、去哪里反馈仍然不够直接。",
+        metrics: [
+          { label: "反馈入口清晰度", value: "52%" },
+          { label: "问题复现支持", value: "57%" }
+        ],
+        observations: [
+          "新手完成不了从失败到有效反馈的最后一步。"
+        ]
+      },
+      {
+        key: "starter-sample-retain",
+        label: "结果沉淀",
+        score: 64,
+        grade: "mid",
+        summary: "体验成功后缺少进一步探索建议，留存承接不够强。",
+        metrics: [
+          { label: "下一步引导", value: "59%" },
+          { label: "成长承接", value: "65%" }
+        ],
+        observations: [
+          "用户完成一次样例后，系统没有主动把他带到下一个目标。"
+        ]
+      }
+    ]
+  }
+];
+
+const noteContent = {
+  "legacy-view": {
+    code: "0",
+    title: "当前方案",
+    sub: "完整保留原始设计页，作为对照基线。这里不再裁切、不再静态截图，而是直接加载原页面本体。",
+    items: [
+      { title: "完整保留", text: "左侧场景卡片、右侧详情、Agent / 痛点 / VOD 三类证据都来自原页面，不再在对比页里二次拼装。" },
+      { title: "稳定预览", text: "改为直接 iframe 加载 `design-options.html`，并提供右上角单独打开入口，避免之前空白或丢内容。" },
+      { title: "对比价值", text: "作为现状基线，方便直接和 A 方案比较信息密度、导向方式与用户阅读路径。" }
+    ]
+  },
+  "view-a": {
+    code: "A",
+    title: "A · 证据矩阵台",
+    sub: "把“先找最差场景，再拆出该角色自己的旅程，再落到证据和动作”做成一块连续工作面，比原方案更偏分析决策台。",
+    items: [
+      { title: "角色不共用旅程", text: "算子开发者、AI 框架开发者、入门开发者分别使用不同阶段模型，避免一套旅程硬套所有角色。" },
+      { title: "先场景后阶段", text: "左侧是角色 × 场景总览，右侧直接展开该场景的完整阶段序列，让低分原因被拆成具体失血步骤。" },
+      { title: "证据直接对动作", text: "底部详情同时放 Agent 观察、低分原因和 VOD / 下一步建议，不让用户在多块区域之间来回拼接。" }
+    ]
+  }
+};
+
+let currentView = "legacy-view";
+let activeFlow = "operator-migrate";
+let activeStage = "operator-migrate-compile";
+let legacyHeightTimer = null;
+
+function getScenario(flowKey) {
+  for (const row of overviewRows) {
+    const scenario = row.scenarios.find(item => item.journeyKey === flowKey);
+    if (scenario) return { row, scenario };
+  }
+  return null;
+}
+
+function getJourney(flowKey) {
+  return journeys.find(item => item.key === flowKey);
+}
+
+function getStage(flowKey, stageKey) {
+  const journey = getJourney(flowKey);
+  return journey.steps.find(item => item.key === stageKey);
+}
+
+function gradeLabel(grade) {
+  if (grade === "bad") return "风险高";
+  if (grade === "mid") return "需优化";
+  return "相对健康";
+}
+
+function renderOverview() {
+  const allScenarios = overviewRows.flatMap(row => row.scenarios);
+  const badCount = allScenarios.filter(item => item.grade === "bad").length;
+  const midCount = allScenarios.filter(item => item.grade === "mid").length;
+  const current = getScenario(activeFlow);
+
+  document.getElementById("overviewSummary").innerHTML = `
+    <div class="summary-mini">
+      <div class="summary-mini-label">角色数量</div>
+      <div class="summary-mini-value">${overviewRows.length}</div>
+    </div>
+    <div class="summary-mini">
+      <div class="summary-mini-label">场景数量</div>
+      <div class="summary-mini-value">${allScenarios.length}</div>
+    </div>
+    <div class="summary-mini">
+      <div class="summary-mini-label">高风险 / 待优化</div>
+      <div class="summary-mini-value">${badCount} / ${midCount}</div>
+    </div>
+    <div class="summary-mini">
+      <div class="summary-mini-label">当前焦点</div>
+      <div class="summary-mini-value" style="font-size:14px;line-height:1.55">${current.row.roleLabel} · ${current.scenario.name}</div>
+    </div>
+  `;
+
+  const html = overviewRows.map(row => `
+    <div class="role-group">
+      <div class="role-meta">
+        <div class="eyebrow">角色</div>
+        <div class="role-title">${row.roleLabel}</div>
+        <div class="role-desc">${row.roleDesc}</div>
+      </div>
+      <div class="scenario-list">
+        ${row.scenarios.map(item => `
+          <button class="scenario-card ${item.grade} ${item.journeyKey === activeFlow ? "active" : ""}" onclick="pickFlow('${item.journeyKey}')">
+            <div class="scenario-top">
+              <div class="scenario-name">${item.name}</div>
+              <div class="score ${item.grade}">${item.score}</div>
+            </div>
+            <div class="scenario-note">${item.note}</div>
+            <div class="chip-row">
+              <span class="chip">${gradeLabel(item.grade)}</span>
+              <span class="chip">痛点 ${item.pains}</span>
+              <span class="chip">VOD ${item.vod}</span>
+            </div>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+
+  document.getElementById("overviewList").innerHTML = html;
+}
+
+function renderHero() {
+  const context = getScenario(activeFlow);
+  const journey = getJourney(activeFlow);
+  const riskCount = journey.steps.filter(item => item.grade === "bad").length;
+
+  document.getElementById("heroPanel").innerHTML = `
+    <div class="hero-top">
+      <div>
+        <div class="eyebrow">Layer 2</div>
+        <div class="hero-title">${context.row.roleLabel} · ${context.scenario.name}</div>
+        <div class="hero-sub">${journey.desc} 现在不是左侧选中、右侧读详情，而是把这个场景的整条旅程直接平铺出来，让团队从上到下连续阅读。</div>
+      </div>
+      <div class="hero-badge">当前选中场景分 <strong>${context.scenario.score}</strong><br>阅读路径改成：先横看场景，再横看阶段，最后下钻证据和动作。</div>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">场景综合分</div>
+        <div class="stat-value">${context.scenario.score}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">阶段数量</div>
+        <div class="stat-value">${journey.steps.length}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">高风险阶段</div>
+        <div class="stat-value">${riskCount}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">当前优先动作</div>
+        <div class="stat-value" style="font-size:15px;line-height:1.6">${context.scenario.nextStep}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderJourney() {
+  const context = getScenario(activeFlow);
+  const journey = getJourney(activeFlow);
+
+  document.getElementById("journeyGrid").style.gridTemplateColumns = `220px repeat(${journey.steps.length}, 196px)`;
+  document.getElementById("journeyGrid").innerHTML = `
+    <div class="journey-intro">
+      <div class="eyebrow">Layer 2</div>
+      <div class="journey-intro-title">这一层不是导航，是直接把该场景的旅程铺成一条工作带。</div>
+      <div class="journey-intro-sub">${context.scenario.note} 用户不需要在左右两个区域来回切换，而是直接沿阶段横向扫描问题扩散路径。</div>
+      <div class="chip-row">
+        <span class="chip">${context.row.roleLabel}</span>
+        <span class="chip">${context.scenario.name}</span>
+      </div>
+    </div>
+    ${journey.steps.map((step, index) => `
+      <button class="journey-step ${step.grade} ${step.key === activeStage ? "active" : ""}" onclick="pickStage('${step.key}')">
+        <div class="journey-step-top">
+          <div>
+            <div class="step-index">S${index + 1}</div>
+            <div class="step-name">${step.label}</div>
+          </div>
+          <div class="score ${step.grade}">${step.score}</div>
+        </div>
+        <div class="step-summary">${step.summary}</div>
+        <div class="metric-grid">
+          ${step.metrics.map(metric => `
+            <div class="metric">
+              <div class="metric-label">${metric.label}</div>
+              <div class="metric-value">${metric.value}</div>
+            </div>
+          `).join("")}
+        </div>
+      </button>
+    `).join("")}
+  `;
+}
+
+function renderDetail() {
+  const context = getScenario(activeFlow);
+  const step = getStage(activeFlow, activeStage);
+
+  document.getElementById("detailTopbar").innerHTML = `
+    <div>
+      <div class="eyebrow">Layer 3</div>
+      <div class="detail-title">${context.scenario.name} · ${step.label}</div>
+      <div class="detail-sub">最底部是统一证据台：无论你在上面点哪个阶段，证据、原因和产品动作都在这一层收口，而不是散在侧边。</div>
+    </div>
+    <div class="next-action"><strong>下一步建议：</strong>${context.scenario.nextStep}</div>
+  `;
+
+  document.getElementById("detailGrid").innerHTML = `
+    <div class="detail-card">
+      <h4>Agent 在这一步看到什么</h4>
+      <div class="detail-list">
+        <div class="detail-item">${step.summary}</div>
+        ${step.observations.map(item => `<div class="detail-item">${item}</div>`).join("")}
+      </div>
+    </div>
+    <div class="detail-card">
+      <h4>为什么这个场景会低分</h4>
+      <div class="detail-list">
+        <div class="detail-item">${context.scenario.agent}</div>
+        <div class="detail-item">${context.scenario.pain}</div>
+        <div class="detail-item">当多个阶段连续失血时，用户感知到的是“整个场景难用”，而不是单点功能缺失。</div>
+      </div>
+    </div>
+    <div class="detail-card">
+      <h4>VOD 与产品动作</h4>
+      <div class="detail-list">
+        <div class="detail-item">${context.scenario.vodQuote}</div>
+        <div class="detail-item">场景层面已有痛点 ${context.scenario.pains} 条、VOD ${context.scenario.vod} 条，不是偶发个案。</div>
+        <div class="detail-item">建议动作：${context.scenario.nextStep}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderA() {
+  renderOverview();
+  renderHero();
+  renderJourney();
+  renderDetail();
+}
+
+function renderNotes() {
+  const note = noteContent[currentView];
+  document.getElementById("noteCode").textContent = note.code;
+  document.getElementById("noteTitle").textContent = note.title;
+  document.getElementById("noteSub").textContent = note.sub;
+  document.getElementById("noteList").innerHTML = note.items.map(item => `
+    <div class="note-item">
+      <strong>${item.title}</strong>
+      ${item.text}
+    </div>
+  `).join("");
+}
+
+function syncLegacyFrameHeight() {
+  const frame = document.getElementById("legacyFrame");
+  if (!frame) return;
+
+  try {
+    const doc = frame.contentDocument || frame.contentWindow.document;
+    if (!doc) return;
+    const body = doc.body;
+    const html = doc.documentElement;
+    const height = Math.max(
+      body ? body.scrollHeight : 0,
+      body ? body.offsetHeight : 0,
+      html ? html.scrollHeight : 0,
+      html ? html.offsetHeight : 0,
+      html ? html.clientHeight : 0
+    );
+    if (height > 0) {
+      frame.style.height = `${height}px`;
+    }
+  } catch (error) {
+    // local preview fallback: if access is restricted, keep iframe viewport mode
+  }
+}
+
+function enableLegacyAutoHeight() {
+  clearInterval(legacyHeightTimer);
+  syncLegacyFrameHeight();
+  legacyHeightTimer = setInterval(syncLegacyFrameHeight, 600);
+  setTimeout(() => clearInterval(legacyHeightTimer), 8000);
+}
+
+function updatePageMode() {
+  document.getElementById("page").classList.toggle("legacy-mode", currentView === "legacy-view");
+}
+
+function resetAViewPosition() {
+  const shell = document.querySelector("#view-a .matrix-shell");
+  if (shell) shell.scrollTop = 0;
+  const panel = document.querySelector("#view-a .panel");
+  if (panel) panel.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: "auto" });
+}
+
+function mountLegacyFrame() {
+  const frame = document.getElementById("legacyFrame");
+  if (!frame || !window.DESIGN_OPTIONS_BASE64) return;
+  const html = decodeURIComponent(escape(window.atob(window.DESIGN_OPTIONS_BASE64)));
+  frame.srcdoc = html;
+}
+
+function pickFlow(flowKey) {
+  activeFlow = flowKey;
+  const journey = getJourney(flowKey);
+  activeStage = (journey.steps.find(item => item.grade === "bad") || journey.steps[0]).key;
+  renderA();
+}
+
+function pickStage(stageKey) {
+  activeStage = stageKey;
+  renderDetail();
+  renderJourney();
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    currentView = tab.dataset.view;
+    document.querySelectorAll(".tab").forEach(item => item.classList.toggle("active", item === tab));
+    document.querySelectorAll(".view").forEach(view => view.classList.toggle("active", view.id === currentView));
+    updatePageMode();
+    renderNotes();
+    if (currentView === "legacy-view") {
+      enableLegacyAutoHeight();
+    } else if (currentView === "view-a") {
+      resetAViewPosition();
+    }
+  });
+});
+
+document.getElementById("floatNote").addEventListener("click", () => {
+  document.getElementById("floatNote").classList.toggle("open");
+  document.getElementById("noteDrawer").classList.toggle("open");
+});
+
+renderA();
+updatePageMode();
+renderNotes();
+document.getElementById("legacyFrame").addEventListener("load", enableLegacyAutoHeight);
+</script>
+<script src="design-options-inline.js"></script>
+<script>
+mountLegacyFrame();
+</script>
+</body>
+</html>

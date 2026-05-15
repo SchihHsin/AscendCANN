@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CANN UX Dashboard v3</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8fafc;--surf:#fff;--bdr:#e2e8f0;
+  --txt:#1e293b;--dim:#64748b;--dim2:#94a3b8;
+  --red:#dc2626;--yel:#d97706;--grn:#16a34a;
+  --red-bg:rgba(220,38,38,.08);--yel-bg:rgba(217,119,6,.08);--grn-bg:rgba(22,163,74,.08);
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 12px rgba(0,0,0,.1);
+  --r:10px;--r-sm:6px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px}
+
+/* ── TOP BAR ── */
+.topbar{display:flex;align-items:center;gap:12px;padding:0 16px;height:52px;background:var(--surf);border-bottom:1px solid var(--bdr);flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.tb-brand{font-size:14px;font-weight:800;color:#0f172a;letter-spacing:-.02em;white-space:nowrap}
+.tb-brand span{color:#3b82f6}
+.tb-sep{width:1px;height:24px;background:var(--bdr);flex-shrink:0}
+.tb-layouts{display:flex;gap:4px}
+.tbl{padding:5px 14px;border-radius:6px;border:1px solid var(--bdr);background:transparent;font-size:12px;font-weight:600;color:var(--dim);cursor:pointer;transition:.15s}
+.tbl:hover{background:#f1f5f9;color:var(--txt)}
+.tbl.on{background:#1e40af;color:#fff;border-color:#1e40af}
+.tb-role-area{display:flex;align-items:center;gap:6px;margin-left:auto}
+.tb-role-lbl{font-size:11px;color:var(--dim2);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+#roleTabs{display:flex;gap:4px}
+.role-tab{display:flex;align-items:center;gap:7px;padding:5px 10px 5px 8px;border-radius:7px;border:1px solid var(--bdr);background:transparent;cursor:pointer;transition:.15s;min-width:0}
+.role-tab:hover{background:#f1f5f9}
+.role-tab.on{background:var(--rc-bg);border-color:var(--rc);box-shadow:0 0 0 1px var(--rc)}
+.rt-icon{font-size:16px}
+.rt-body{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.rt-name{font-size:11px;font-weight:700;color:var(--txt);white-space:nowrap}
+.rt-desc{font-size:9px;color:var(--dim);white-space:nowrap}
+.rt-score{font-size:13px;font-weight:900;margin-left:4px}
+
+/* ── LAYOUT VIEWS ── */
+.layout-view{display:none;flex:1;min-height:0}
+.layout-view.on{display:flex}
+
+/* ────────── LAYOUT A: LEFT-RIGHT ────────── */
+#viewA{flex-direction:row}
+.la-left{width:220px;flex-shrink:0;border-right:1px solid var(--bdr);display:flex;flex-direction:column;background:var(--surf)}
+.la-pc-wrap{padding:12px 10px 8px;border-bottom:1px solid var(--bdr)}
+.la-pc-title{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.sc-list{flex:1;overflow-y:auto;padding:6px 6px}
+.sc-row{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:8px;cursor:pointer;transition:.12s;margin-bottom:2px}
+.sc-row:hover{background:#f1f5f9}
+.sc-row.sel{background:var(--sel-bg);box-shadow:0 0 0 1px var(--sel-ring)}
+.sc-rank{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0}
+.sc-rank.bad{background:var(--red-bg);color:var(--red)}
+.sc-rank.mid{background:var(--yel-bg);color:var(--yel)}
+.sc-rank.ok{background:var(--grn-bg);color:var(--grn)}
+.sc-name{font-size:11px;font-weight:600;color:var(--txt);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-bar-track{width:36px;height:4px;background:#e2e8f0;border-radius:2px;flex-shrink:0}
+.sc-bar-fill{height:100%;border-radius:2px;transition:.3s}
+.sc-snum{font-size:12px;font-weight:900;width:26px;text-align:right;flex-shrink:0}
+.sc-snum.bad{color:var(--red)}.sc-snum.mid{color:var(--yel)}.sc-snum.ok{color:var(--grn)}
+.sc-dtag{font-size:9px;font-weight:700;width:28px;text-align:right;flex-shrink:0}
+.sc-dtag.up{color:var(--grn)}.sc-dtag.dn{color:var(--red)}
+.la-center{flex:1;min-width:0;display:flex;flex-direction:column}
+.la-detail{flex:1;overflow-y:auto;padding:16px}
+
+/* ────────── LAYOUT B: TOP-BOTTOM ────────── */
+#viewB{flex-direction:column}
+.lb-top{display:flex;flex-direction:column;border-bottom:1px solid var(--bdr);background:var(--surf)}
+.lb-pc-row{padding:10px 14px 0}
+.lb-pc-title{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.lb-chips-row{display:flex;gap:8px;padding:10px 14px;overflow-x:auto}
+.scene-chip{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;border:1px solid var(--bdr);background:var(--surf);cursor:pointer;flex-shrink:0;transition:.12s}
+.scene-chip:hover{background:#f1f5f9}
+.scene-chip.sel{background:var(--sel-bg);border-color:var(--sel-c);box-shadow:0 0 0 1px var(--sel-ring)}
+.chip-name{font-size:11px;font-weight:600;color:var(--txt)}
+.chip-score{font-size:14px;font-weight:900}
+.chip-score.bad{color:var(--red)}.chip-score.mid{color:var(--yel)}.chip-score.ok{color:var(--grn)}
+.chip-delta{font-size:10px;font-weight:700}
+.chip-delta.up{color:var(--grn)}.chip-delta.dn{color:var(--red)}
+.lb-bottom{flex:1;min-height:0;overflow-y:auto;padding:16px}
+
+/* ────────── LAYOUT C: TOPOLOGY ────────── */
+#viewC{flex-direction:row}
+.lc-left{width:200px;flex-shrink:0;border-right:1px solid var(--bdr);display:flex;flex-direction:column;background:var(--surf);overflow-y:auto;padding:14px 12px;gap:14px}
+.lc-kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi-cell{background:#f8fafc;border:1px solid var(--bdr);border-radius:8px;padding:10px 10px 8px;display:flex;flex-direction:column;gap:2px}
+.kpi-lbl{font-size:9px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.kpi-val{font-size:20px;font-weight:900;line-height:1}
+.kpi-val.bad{color:var(--red)}.kpi-val.mid{color:var(--yel)}.kpi-val.ok{color:var(--grn)}
+.kpi-meta{font-size:10px;font-weight:600}
+.tag-up{color:var(--grn)}.tag-dn{color:var(--red)}.tag-flat{color:var(--dim)}
+.lc-section-title{font-size:9px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.dim-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.dim-bar-lbl{font-size:10px;font-weight:600;color:var(--txt);width:28px;flex-shrink:0}
+.dim-bar-track{flex:1;height:5px;background:#e2e8f0;border-radius:3px}
+.dim-bar-fill{height:100%;border-radius:3px}
+.dim-bar-val{font-size:10px;font-weight:700;width:22px;text-align:right;flex-shrink:0}
+.lc-hint{background:#f1f5f9;border-radius:7px;padding:8px 9px;font-size:9px;color:var(--dim);line-height:1.9}
+.lc-center{flex:1;min-width:0;background:#f4f6f9;position:relative;overflow:hidden}
+#topoSvg{display:block;width:100%;height:100%}
+.topo-legend-bar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:16px;background:rgba(255,255,255,.88);backdrop-filter:blur(4px);border:1px solid var(--bdr);border-radius:8px;padding:6px 14px;font-size:10px;color:var(--dim);white-space:nowrap;pointer-events:none}
+.topo-legend-bar span{display:flex;align-items:center;gap:5px}
+.topo-legend-bar span::before{content:'';display:inline-block;width:20px;height:2.5px;border-radius:2px}
+.tl-bad::before{background:var(--red)}
+.tl-mid::before{background:var(--yel)}
+.tl-note{color:var(--dim2)}
+.lc-right{width:320px;flex-shrink:0;border-left:1px solid var(--bdr);overflow-y:auto;background:var(--surf);padding:14px}
+
+/* ────────── DETAIL PANEL ────────── */
+.det-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;gap:6px;color:var(--dim2)}
+.det-empty-ico{font-size:40px;opacity:.3}
+.det-empty-title{font-size:14px;font-weight:700;color:var(--dim)}
+.det-empty-sub{font-size:11px;text-align:center;line-height:1.6}
+.det-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.det-name{font-size:16px;font-weight:800;color:var(--txt)}
+.det-score-badge{display:flex;align-items:baseline;gap:3px}
+.det-score{font-size:28px;font-weight:900;line-height:1}
+.det-delta{font-size:11px;font-weight:700}
+.det-delta.up{color:var(--grn)}.det-delta.dn{color:var(--red)}
+.det-dims{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
+.det-dim-cell{background:#f8fafc;border:1px solid var(--bdr);border-radius:7px;padding:8px 9px}
+.ddc-lbl{font-size:9px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.ddc-bar{height:4px;border-radius:2px;margin-bottom:3px}
+.ddc-val{font-size:14px;font-weight:900}
+.det-tabs{display:flex;gap:1px;border-bottom:1px solid var(--bdr);margin-bottom:12px}
+.det-tab{padding:6px 12px;font-size:11px;font-weight:600;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.12s}
+.det-tab.on{color:#1e40af;border-color:#1e40af}
+.det-tab:hover:not(.on){color:var(--txt)}
+.journey-step{border:1px solid var(--bdr);border-radius:8px;margin-bottom:6px;overflow:hidden}
+.js-header{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;cursor:pointer;background:#fafbfc;transition:.12s}
+.js-header:hover{background:#f1f5f9}
+.js-title{font-size:12px;font-weight:700;color:var(--txt)}
+.js-expand{font-size:10px;color:var(--dim);transition:.15s}
+.js-body{padding:10px 12px;border-top:1px solid var(--bdr);display:none}
+.js-body.open{display:block}
+.js-body p{font-size:11px;color:var(--dim);line-height:1.7}
+.pain-item{display:flex;align-items:flex-start;gap:7px;padding:7px 0;border-bottom:1px solid #f1f5f9}
+.pain-item:last-child{border-bottom:none}
+.pain-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.pain-dot.bad{background:var(--red)}.pain-dot.mid{background:var(--yel)}.pain-dot.ok{background:var(--grn)}
+.pain-text{font-size:11px;color:var(--dim);line-height:1.6}
+.vod-item{padding:7px 0;border-bottom:1px solid #f1f5f9;font-size:11px;color:var(--dim);line-height:1.6}
+.vod-item:last-child{border-bottom:none}
+.vod-item strong{color:var(--txt)}
+
+/* dim detail */
+.dim-detail-header{margin-bottom:14px}
+.dim-detail-name{font-size:16px;font-weight:800}
+.dim-detail-sub{font-size:11px;color:var(--dim);margin-top:2px}
+.dim-scene-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f1f5f9;cursor:pointer;border-radius:4px;transition:.1s}
+.dim-scene-row:hover{background:#f8fafc}
+.dim-scene-row:last-child{border-bottom:none}
+.dim-sc-name{font-size:12px;font-weight:600;flex:1}
+.dim-sc-bar{height:5px;border-radius:3px;flex:1}
+.dim-sc-val{font-size:13px;font-weight:900;width:28px;text-align:right}
+
+/* ── TOOLTIP ── */
+#tooltip{position:fixed;z-index:9999;background:#1e293b;color:#f1f5f9;border-radius:9px;padding:9px 12px;font-size:11px;min-width:140px;max-width:240px;pointer-events:none;opacity:0;transform:translateY(4px);transition:.12s;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#tooltip.show{opacity:1;transform:translateY(0)}
+.tt-name{font-size:12px;font-weight:800;margin-bottom:5px;color:#fff}
+.tt-row{display:flex;justify-content:space-between;gap:12px;padding:1px 0;font-size:10px;color:#94a3b8}
+.tt-row span:last-child{font-weight:700;color:#f1f5f9}
+
+/* ── SCROLLBARS ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- TOOLTIP -->
+<div id="tooltip"><div class="tt-name" id="tt-name"></div><div id="tt-body"></div></div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="tb-brand">CANN <span>UX</span> Dashboard</div>
+  <div class="tb-sep"></div>
+  <div class="tb-layouts">
+    <button class="tbl" onclick="switchLayout('A',this)">左右</button>
+    <button class="tbl" onclick="switchLayout('B',this)">上下</button>
+    <button class="tbl on" onclick="switchLayout('C',this)">聚类拓扑</button>
+  </div>
+  <div class="tb-sep"></div>
+  <div class="tb-role-area">
+    <span class="tb-role-lbl">角色</span>
+    <div id="roleTabs"></div>
+  </div>
+</div>
+
+<!-- ══ LAYOUT A ══ -->
+<div class="layout-view" id="viewA">
+  <div class="la-left">
+    <div class="la-pc-wrap">
+      <div class="la-pc-title">多维度平行坐标</div>
+      <svg id="pcSvgA" height="130" style="display:block;width:100%"></svg>
+    </div>
+    <div class="sc-list" id="scListA"></div>
+  </div>
+  <div class="la-center">
+    <div class="la-detail" id="detailA"></div>
+  </div>
+</div>
+
+<!-- ══ LAYOUT B ══ -->
+<div class="layout-view" id="viewB">
+  <div class="lb-top">
+    <div class="lb-pc-row">
+      <div class="lb-pc-title">多维度平行坐标</div>
+      <svg id="pcSvgB" height="120" style="display:block;width:100%"></svg>
+    </div>
+    <div class="lb-chips-row" id="scChipsB"></div>
+  </div>
+  <div class="lb-bottom" id="detailB"></div>
+</div>
+
+<!-- ══ LAYOUT C: TOPOLOGY ══ -->
+<div class="layout-view on" id="viewC">
+  <div class="lc-left" id="lcLeft"></div>
+  <div class="lc-center">
+    <svg id="topoSvg"></svg>
+    <div class="topo-legend-bar">
+      <span class="tl-bad">严重问题边（&lt;65分）</span>
+      <span class="tl-mid">预警问题边（65-70分）</span>
+      <span class="tl-note">◆ 维度节点（六边形）&nbsp;&nbsp;● 场景节点（圆形）&nbsp;&nbsp;可拖动</span>
+    </div>
+  </div>
+  <div class="lc-right" id="detailC"></div>
+</div>
+
+<script>
+/* ════════ DATA ════════ */
+const DIM_KEYS  =['doc','tool','api','env','err'];
+const DIM_SHORT =['文档','工具','API','环境','错误'];
+const DIM_LABELS=['文档质量','工具链','API设计','环境配置','错误处理'];
+const DIM_COLORS=['#6366f1','#f59e0b','#06b6d4','#10b981','#ef4444'];
+const PAL=['#6366f1','#f59e0b','#06b6d4','#10b981','#ef4444','#8b5cf6'];
+
+const SCENES=[
+  {id:1,name:'算子基本功能',score:84,delta:3,
+   dims:{doc:82,tool:85,api:88,env:80,err:86},
+   trend:[78,80,81,82,83,84],
+   pains:[
+     {sev:'ok',text:'文档覆盖较全，但高级用法示例不足'},
+     {sev:'mid',text:'部分工具版本兼容性说明缺失'},
+   ],
+   journey:[
+     {title:'环境准备',desc:'安装CANN工具链，参考官方文档完成基础配置。整体流程清晰，但版本号匹配规则不够直观。'},
+     {title:'代码开发',desc:'使用TBE DSL编写算子，API文档完整，示例可运行。'},
+     {title:'编译验证',desc:'atc编译成功，错误提示清晰，调试效率高。'},
+   ],
+   vod:['文档质量良好，新手可快速上手','工具链稳定，编译错误提示友好'],
+  },
+  {id:2,name:'算子复现',score:57,delta:-2,
+   dims:{doc:52,tool:58,api:65,env:55,err:60},
+   trend:[62,60,59,58,57,57],
+   pains:[
+     {sev:'bad',text:'复现文档严重缺失，关键步骤未说明'},
+     {sev:'bad',text:'工具版本依赖复杂，复现环境搭建困难'},
+     {sev:'mid',text:'错误信息定位困难，排查成本高'},
+     {sev:'bad',text:'环境变量配置说明分散，易遗漏'},
+   ],
+   journey:[
+     {title:'获取参考代码',desc:'官方仓库缺少算子级别复现示例，需自行整理依赖关系，耗时较长。'},
+     {title:'环境配置',desc:'CANN版本、驱动版本、框架版本三方对齐困难，文档缺乏矩阵式说明。'},
+     {title:'执行复现',desc:'中途报错信息不够具体，定位原因需要丰富经验，新手极易卡住。'},
+   ],
+   vod:['复现文档是最大痛点','版本兼容矩阵缺失导致大量试错'],
+  },
+  {id:3,name:'Builtin算子定制',score:62,delta:1,
+   dims:{doc:58,tool:64,api:68,env:60,err:63},
+   trend:[59,60,61,61,62,62],
+   pains:[
+     {sev:'bad',text:'Builtin定制文档不完整，核心接口说明缺失'},
+     {sev:'mid',text:'调试工具对定制算子支持有限'},
+     {sev:'mid',text:'错误码含义不明确'},
+     {sev:'bad',text:'环境隔离机制说明不足'},
+   ],
+   journey:[
+     {title:'了解定制机制',desc:'官方文档对Builtin定制机制描述抽象，缺少完整的流程图和示例代码。'},
+     {title:'实现定制逻辑',desc:'接口文档不够详细，需要结合源码摸索调用规范，开发效率低。'},
+     {title:'验证与调试',desc:'调试工具对定制算子的支持较弱，Profile信息不完整。'},
+   ],
+   vod:['接口文档是核心缺口','需要更多端到端的定制示例'],
+  },
+  {id:4,name:'算子迁移',score:69,delta:4,
+   dims:{doc:72,tool:75,api:58,env:52,err:74},
+   trend:[62,64,65,67,68,69],
+   pains:[
+     {sev:'bad',text:'API差异说明不全，迁移时易踩坑'},
+     {sev:'bad',text:'环境切换成本高，多NPU场景适配困难'},
+     {sev:'mid',text:'迁移脚本对某些OP不支持'},
+   ],
+   journey:[
+     {title:'评估迁移可行性',desc:'API差异文档不完整，需人工比对，评估周期长。'},
+     {title:'环境适配',desc:'不同硬件型号的环境配置差异大，切换成本高，缺乏自动化迁移工具。'},
+     {title:'功能验证',desc:'精度对齐文档较好，验证流程清晰，是整个场景的亮点。'},
+   ],
+   vod:['API差异是最大障碍','环境配置自动化需求强烈'],
+  },
+];
+
+const ROLES=[
+  {id:'all',name:'全部场景',desc:'4个场景综合视角',icon:'🌐',color:'#3b82f6',colorBg:'rgba(59,130,246,.1)',colorRing:'rgba(59,130,246,.3)',sceneIds:[1,2,3,4]},
+  {id:'dev',name:'算子开发',desc:'开发与复现场景',icon:'⚙️',color:'#8b5cf6',colorBg:'rgba(139,92,246,.1)',colorRing:'rgba(139,92,246,.3)',sceneIds:[1,2]},
+  {id:'mig',name:'迁移定制',desc:'迁移与定制场景',icon:'🔄',color:'#06b6d4',colorBg:'rgba(6,182,212,.1)',colorRing:'rgba(6,182,212,.3)',sceneIds:[3,4]},
+];
+
+/* ════════ STATE ════════ */
+let activeRoleId='all', selectedSceneId=null, selectedDimKey=null;
+let activeLayout='C', activeTab='journey', openSteps=new Set(), pcHov=null;
+let _topoUserPos={};  // user-dragged node overrides: {'sid_X':{x,y}, 'dk_Y':{x,y}}
+
+const role    = () => ROLES.find(r=>r.id===activeRoleId);
+const rScenes = () => role().sceneIds.map(id=>SCENES.find(s=>s.id===id));
+
+/* ════════ HELPERS ════════ */
+const sCls  = v => v<65?'bad':v<80?'mid':'ok';
+const sColor = v => v<65?'#dc2626':v<80?'#d97706':'#16a34a';
+const sSoft  = v => v<65?'rgba(220,38,38,.15)':v<80?'rgba(217,119,6,.15)':'rgba(22,163,74,.15)';
+
+/* Smooth severity gradient for topology: red(0)→orange(60)→amber(72)→teal(85)→green(100) */
+function topoColor(v){
+  const s=[
+    {v:0,  r:214,g:48, b:48 },
+    {v:58, r:230,g:100,b:20 },
+    {v:70, r:200,g:140,b:10 },
+    {v:82, r:22, g:178,b:120},
+    {v:100,r:14, g:150,b:70 },
+  ];
+  v=Math.max(0,Math.min(100,v));
+  let lo=s[0],hi=s[s.length-1];
+  for(let i=0;i<s.length-1;i++)if(v>=s[i].v&&v<=s[i+1].v){lo=s[i];hi=s[i+1];break;}
+  const t=(v-lo.v)/((hi.v-lo.v)||1);
+  const r=Math.round(lo.r+(hi.r-lo.r)*t);
+  const g=Math.round(lo.g+(hi.g-lo.g)*t);
+  const b=Math.round(lo.b+(hi.b-lo.b)*t);
+  return `rgb(${r},${g},${b})`;
+}
+
+/* ════════ TOOLTIP ════════ */
+const TT=document.getElementById('tooltip');
+function showTT(e,html,name){
+  document.getElementById('tt-name').textContent=name;
+  document.getElementById('tt-body').innerHTML=html;
+  TT.classList.add('show');
+}
+function moveTT(e){
+  let x=e.clientX+14,y=e.clientY-10;
+  if(x+240>window.innerWidth)x=e.clientX-240;
+  if(y+140>window.innerHeight)y=e.clientY-140;
+  TT.style.left=x+'px';TT.style.top=y+'px';
+}
+function hideTT(){TT.classList.remove('show');}
+document.addEventListener('mousemove',moveTT);
+
+/* ════════ ROLE TABS ════════ */
+function buildRoleTabs(){
+  document.getElementById('roleTabs').innerHTML=ROLES.map(ro=>{
+    const avg=Math.round(ro.sceneIds.map(id=>SCENES.find(s=>s.id===id))
+      .reduce((s,sc)=>s+sc.score,0)/ro.sceneIds.length);
+    return `<button class="role-tab${ro.id===activeRoleId?' on':''}"
+      style="--rc:${ro.color};--rc-bg:${ro.colorBg};--rc-ring:${ro.colorRing}"
+      onclick="switchRole('${ro.id}')">
+      <div class="rt-icon">${ro.icon}</div>
+      <div class="rt-body">
+        <div class="rt-name">${ro.name}</div>
+        <div class="rt-desc">${ro.desc}</div>
+      </div>
+      <span class="rt-score" style="color:${sColor(avg)}">${avg}</span>
+    </button>`;
+  }).join('');
+}
+
+/* ════════ KPI ════════ */
+function kpiCells(){
+  const scenes=rScenes();
+  const avg=Math.round(scenes.reduce((s,sc)=>s+sc.score,0)/scenes.length);
+  const dv=(scenes.reduce((s,sc)=>s+sc.delta,0)/scenes.length).toFixed(1);
+  const redCnt=scenes.reduce((s,sc)=>s+sc.pains.filter(p=>p.sev==='bad').length,0);
+  const dimAvgs=DIM_KEYS.map((k,i)=>({l:DIM_SHORT[i],v:Math.round(scenes.reduce((s,sc)=>s+sc.dims[k],0)/scenes.length)}));
+  const worst=dimAvgs.reduce((a,b)=>a.v<b.v?a:b);
+  const dc=+dv>=0?'up':'dn', ds=+dv>=0?'▲ +':'▼ ';
+  return `
+    <div class="kpi-cell"><div class="kpi-lbl">角色均分</div>
+      <div class="kpi-val ${sCls(avg)}">${avg}</div>
+      <div class="kpi-meta tag-${dc}">${ds}${Math.abs(dv)}</div></div>
+    <div class="kpi-cell"><div class="kpi-lbl">严重痛点</div>
+      <div class="kpi-val bad">${redCnt}</div>
+      <div class="kpi-meta tag-flat"> 条</div></div>
+    <div class="kpi-cell"><div class="kpi-lbl">最差维度</div>
+      <div style="font-size:16px;font-weight:900;color:var(--red);margin-top:2px">${worst.l}</div>
+      <div class="kpi-meta tag-dn">${worst.v} 分</div></div>
+    <div class="kpi-cell"><div class="kpi-lbl">好转场景</div>
+      <div class="kpi-val ${scenes.filter(s=>s.delta>0).length>0?'ok':'mid'}">${scenes.filter(s=>s.delta>0).length}</div>
+      <div class="kpi-meta tag-flat"> 个</div></div>`;
+}
+
+/* ════════ PARALLEL COORDS ════════ */
+function drawPC(svgId){
+  const svg=document.getElementById(svgId);
+  if(!svg||!svg.parentElement)return;
+  const W=svg.parentElement.clientWidth||420,H=+svg.getAttribute('height')||140;
+  svg.setAttribute('width',W);
+  const pad={t:24,b:14,l:40,r:40},iW=W-pad.l-pad.r,iH=H-pad.t-pad.b;
+  const scenes=rScenes();
+  const AXES=[{key:'score',label:'综合',min:50,max:90},
+    {key:'doc',label:'文档',min:30,max:92},{key:'tool',label:'工具',min:44,max:90},
+    {key:'api',label:'API',min:55,max:90},{key:'env',label:'环境',min:30,max:86},
+    {key:'err',label:'错误',min:44,max:90}];
+  const nA=AXES.length;
+  const axX=i=>pad.l+(i/(nA-1))*iW;
+  const axY=(v,ax)=>pad.t+(1-(v-ax.min)/(ax.max-ax.min))*iH;
+  const val=(sc,ax)=>ax.key==='score'?sc.score:sc.dims[ax.key];
+  let h='';
+  AXES.forEach((ax,i)=>{
+    const x=axX(i);
+    h+=`<line x1="${x}" y1="${pad.t}" x2="${x}" y2="${pad.t+iH}" stroke="#e2e8f0" stroke-width="1.5"/>`;
+    h+=`<text x="${x}" y="${pad.t-9}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#64748b">${ax.label}</text>`;
+  });
+  [...scenes].sort((a,b)=>b.score-a.score).forEach((sc,si)=>{
+    const c=PAL[si%PAL.length];
+    const pts=AXES.map((ax,i)=>[axX(i),axY(val(sc,ax),ax)]);
+    let d=`M${pts[0][0]},${pts[0][1]}`;
+    for(let i=0;i<pts.length-1;i++){const mx=(pts[i][0]+pts[i+1][0])/2;d+=` C${mx},${pts[i][1]} ${mx},${pts[i+1][1]} ${pts[i+1][0]},${pts[i+1][1]}`;}
+    const active=(pcHov===null&&selectedSceneId===null)||pcHov===sc.id||selectedSceneId===sc.id;
+    h+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="${pcHov===sc.id?3.5:selectedSceneId===sc.id?3:active?2.2:1.5}"
+      stroke-opacity="${active?.88:.06}" stroke-linecap="round"
+      class="pc-line" data-id="${sc.id}" style="cursor:pointer"/>`;
+    if(active)pts.forEach(([x,y])=>h+=`<circle cx="${x}" cy="${y}" r="${pcHov===sc.id?4:2.5}" fill="${c}" opacity=".9" style="pointer-events:none"/>`);
+    if(pcHov===sc.id){const l=pts[pts.length-1];h+=`<text x="${l[0]+7}" y="${l[1]+4}" font-size="9" font-weight="700" fill="${c}">${sc.name}</text>`;}
+  });
+  svg.innerHTML=h;
+  svg.querySelectorAll('.pc-line').forEach(el=>{
+    el.addEventListener('mouseenter',e=>{pcHov=+el.dataset.id;drawPC(svgId);const sc=SCENES.find(s=>s.id===+el.dataset.id);showTT(e,DIM_KEYS.map((k,i)=>`<div class="tt-row"><span>${DIM_SHORT[i]}</span><span>${sc.dims[k]}</span></div>`).join(''),sc.name+' · '+sc.score+'分')});
+    el.addEventListener('mouseleave',()=>{pcHov=null;drawPC(svgId);hideTT()});
+    el.addEventListener('click',()=>selectScene(+el.dataset.id));
+  });
+}
+
+/* ════════ SELECT ════════ */
+function selectScene(id){
+  selectedSceneId=selectedSceneId===id?null:id;
+  selectedDimKey=null;openSteps=new Set();
+  renderAll();
+}
+function selectDim(key){
+  selectedDimKey=selectedDimKey===key?null:key;
+  selectedSceneId=null;
+  renderAll();
+}
+
+/* ════════ TOPOLOGY – gravity clustering (Layout C) ════════
+   Visual language:
+   • Dimension nodes → HEXAGON, bright dimension color, outer pentagon ring
+   • Scene nodes     → CIRCLE,  score-based color, inner clustered area
+   • Size ∝ problem count (more problems = bigger node)
+   • Nodes are draggable; positions saved in _topoUserPos
+════════════════════════════════════════════════════════════ */
+function buildTopology(){
+  const svg=document.getElementById('topoSvg');
+  if(!svg||!svg.parentElement)return;
+  const W=svg.clientWidth||680, H=svg.clientHeight||500;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const scenes=rScenes();
+  const THRESH=70;
+
+  /* hexagon polygon points centered at (0,0) */
+  const hexPts=r=>Array.from({length:6},(_,i)=>{
+    const a=i*Math.PI/3-Math.PI/6;
+    return `${(Math.cos(a)*r).toFixed(1)},${(Math.sin(a)*r).toFixed(1)}`;
+  }).join(' ');
+
+  /* translate hex points to absolute coords */
+  const hexAbs=(r,cx,cy)=>hexPts(r).split(' ').map(p=>{
+    const[px,py]=p.split(',');return`${(+px+cx).toFixed(1)},${(+py+cy).toFixed(1)}`;
+  }).join(' ');
+
+  /* ── 1. Dimension nodes: HEXAGON on pentagon ring ── */
+  const DIM_R=Math.min(W,H)*0.33;
+  const dimNodes=DIM_KEYS.map((k,i)=>{
+    const angle=i*(2*Math.PI/5)-Math.PI/2;
+    const hits=scenes.filter(sc=>sc.dims[k]<THRESH).length;
+    const avgV=Math.round(scenes.reduce((s,sc)=>s+sc.dims[k],0)/scenes.length);
+    const defX=W/2+Math.cos(angle)*DIM_R, defY=H/2+Math.sin(angle)*DIM_R;
+    const saved=_topoUserPos['dk_'+k];
+    return {k,i,label:DIM_SHORT[i],full:DIM_LABELS[i],color:DIM_COLORS[i],
+      x:saved?saved.x:defX, y:saved?saved.y:defY,
+      hits, avgV,
+      r:24+hits*9};  // size ∝ scenes affected
+  });
+
+  /* ── 2. Scene nodes: CIRCLE, gravity toward problem dims ── */
+  const sceneNodes=scenes.map((sc,si)=>{
+    const probCount=DIM_KEYS.filter(k=>sc.dims[k]<THRESH).length;
+    let wx=0,wy=0,wt=0;
+    DIM_KEYS.forEach((k,ki)=>{
+      const v=sc.dims[k];
+      if(v<THRESH){const w=Math.pow(THRESH-v,1.6);wx+=dimNodes[ki].x*w;wy+=dimNodes[ki].y*w;wt+=w;}
+    });
+    const defX=wt>0?wx/wt:W/2+(si%2===0?-40:40);
+    const defY=wt>0?wy/wt:H/2+(si<2?-40:40);
+    const saved=_topoUserPos['sid_'+sc.id];
+    return {sc, x:saved?saved.x:defX, y:saved?saved.y:defY, vx:0,vy:0,
+      r:18+probCount*10, probCount};  // size ∝ problem dim count: 0→18, 5→68
+  });
+
+  /* ── 3. Repulsion: spread overlapping scene nodes ── */
+  const MIN_DIST=88;
+  for(let iter=0;iter<120;iter++){
+    for(let i=0;i<sceneNodes.length;i++){
+      const a=sceneNodes[i];
+      if(_topoUserPos['sid_'+a.sc.id])continue;
+      for(let j=i+1;j<sceneNodes.length;j++){
+        const b=sceneNodes[j];
+        if(_topoUserPos['sid_'+b.sc.id])continue;
+        const dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||0.01;
+        if(d<MIN_DIST){
+          const push=(MIN_DIST-d)*0.52,nx=dx/d,ny=dy/d;
+          a.x-=push*nx;a.y-=push*ny;b.x+=push*nx;b.y+=push*ny;
+        }
+      }
+      const pad=a.r+20;
+      a.x=Math.max(pad,Math.min(W-pad,a.x));
+      a.y=Math.max(pad+20,Math.min(H-pad-20,a.y));
+    }
+  }
+
+  /* ── 4. Problem edges ── */
+  const edges=[];
+  sceneNodes.forEach(sn=>{
+    dimNodes.forEach(dn=>{
+      const v=sn.sc.dims[dn.k];
+      if(v<THRESH) edges.push({sn,dn,v,sev:THRESH-v});
+    });
+  });
+
+  /* ── 5. Cluster halos: group scenes by dominant problem dim ── */
+  const scByDim={};
+  sceneNodes.forEach(sn=>{
+    let worst=null,worstV=THRESH;
+    DIM_KEYS.forEach((k,ki)=>{if(sn.sc.dims[k]<worstV){worstV=sn.sc.dims[k];worst=ki;}});
+    if(worst!==null)(scByDim[worst]=scByDim[worst]||[]).push(sn);
+  });
+
+  /* ── Render ── */
+  let h='<defs>';
+
+  // Edge gradients — scene-side uses scene severity, dim-side uses dim severity
+  edges.forEach(({sn,dn,v})=>{
+    h+=`<linearGradient id="eg_${sn.sc.id}_${dn.k}"
+      x1="${sn.x.toFixed(1)}" y1="${sn.y.toFixed(1)}" x2="${dn.x.toFixed(1)}" y2="${dn.y.toFixed(1)}" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="${topoColor(sn.sc.score)}" stop-opacity=".85"/>
+      <stop offset="100%" stop-color="${topoColor(dn.avgV)}" stop-opacity=".25"/>
+    </linearGradient>`;
+  });
+
+  h+=`<filter id="glow-s" x="-70%" y="-70%" width="240%" height="240%">
+    <feGaussianBlur stdDeviation="6" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="glow-d" x="-80%" y="-80%" width="260%" height="260%">
+    <feGaussianBlur stdDeviation="8" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="drop" x="-25%" y="-25%" width="150%" height="150%">
+    <feDropShadow dx="0" dy="3" stdDeviation="7" flood-color="rgba(0,0,0,.18)"/>
+  </filter>`;
+  h+='</defs>';
+
+  // Background + dot grid
+  h+=`<rect width="${W}" height="${H}" fill="#f4f6f9"/>`;
+  for(let gx=30;gx<W;gx+=36) for(let gy=30;gy<H;gy+=36)
+    h+=`<circle cx="${gx}" cy="${gy}" r="1" fill="#dde3ec"/>`;
+
+  // Cluster halos — colored by that dim's average severity
+  Object.keys(scByDim).forEach(di=>{
+    const grp=scByDim[di];if(grp.length<2)return;
+    const cx=grp.reduce((s,n)=>s+n.x,0)/grp.length;
+    const cy=grp.reduce((s,n)=>s+n.y,0)/grp.length;
+    const rx=grp.reduce((s,n)=>Math.max(s,Math.abs(n.x-cx)),0)+55;
+    const ry=grp.reduce((s,n)=>Math.max(s,Math.abs(n.y-cy)),0)+55;
+    const c=topoColor(dimNodes[+di].avgV);
+    h+=`<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}"
+      fill="${c}" fill-opacity=".07" stroke="${c}" stroke-opacity=".2"
+      stroke-width="1.5" stroke-dasharray="6 4" style="pointer-events:none"/>`;
+    h+=`<text x="${cx.toFixed(1)}" y="${(cy-ry-8).toFixed(1)}" text-anchor="middle"
+      font-size="9" font-weight="700" fill="${c}" opacity=".85"
+      style="pointer-events:none">${dimNodes[+di].full}问题簇</text>`;
+  });
+
+  // ── EDGES ──
+  edges.forEach(({sn,dn,v,sev})=>{
+    const sw=Math.max(1.5,sev/6.5);
+    const isSelSc=selectedSceneId===sn.sc.id,isSelDm=selectedDimKey===dn.k;
+    const active=!selectedSceneId&&!selectedDimKey||isSelSc||isSelDm;
+    const op=active?0.75:0.06;
+    const midX=(sn.x+dn.x)/2,midY=(sn.y+dn.y)/2;
+    const perpX=-(dn.y-sn.y)*0.18,perpY=(dn.x-sn.x)*0.18;
+    h+=`<path id="edge_${sn.sc.id}_${dn.k}"
+      d="M${sn.x.toFixed(1)},${sn.y.toFixed(1)} Q${(midX+perpX).toFixed(1)},${(midY+perpY).toFixed(1)} ${dn.x.toFixed(1)},${dn.y.toFixed(1)}"
+      fill="none" stroke="${active?`url(#eg_${sn.sc.id}_${dn.k})`:topoColor(v)}"
+      stroke-width="${sw.toFixed(1)}" stroke-opacity="${op}" stroke-linecap="round"
+      class="te" data-sid="${sn.sc.id}" data-dk="${dn.k}" data-v="${v}" style="cursor:pointer"/>`;
+  });
+
+  // ── DIMENSION NODES — HEXAGON (color by severity of avgV) ──
+  dimNodes.forEach(dn=>{
+    const isSel=selectedDimKey===dn.k, c=topoColor(dn.avgV), nr=dn.r;
+    h+=`<polygon points="${hexAbs(nr+16,dn.x,dn.y)}"
+      fill="${c}" opacity="${isSel?.28:.12}" filter="url(#glow-d)" style="pointer-events:none"/>`;
+    h+=`<g class="td-g" data-k="${dn.k}" transform="translate(${dn.x.toFixed(1)},${dn.y.toFixed(1)})" style="cursor:grab">`;
+    h+=`<polygon points="${hexPts(nr)}" fill="${isSel?c:'#fff'}" stroke="${c}"
+      stroke-width="${isSel?0:2.5}" class="td" data-k="${dn.k}"
+      style="filter:${isSel?'url(#drop)':'none'}"/>`;
+    h+=`<text x="0" y="-5" text-anchor="middle" dominant-baseline="middle"
+      font-size="11" font-weight="800" fill="${isSel?'#fff':c}" style="pointer-events:none">${dn.label}</text>`;
+    h+=`<text x="0" y="10" text-anchor="middle" font-size="12" font-weight="900"
+      fill="${isSel?'rgba(255,255,255,.9)':c}" letter-spacing="-.03em"
+      style="pointer-events:none">${dn.avgV}</text>`;
+    if(dn.hits>0){
+      const bx=(nr*0.72).toFixed(1),by=(-nr*0.72).toFixed(1);
+      h+=`<circle cx="${bx}" cy="${by}" r="10" fill="${c}" stroke="#fff" stroke-width="2" style="pointer-events:none"/>`;
+      h+=`<text x="${bx}" y="${by}" text-anchor="middle" dominant-baseline="middle"
+        font-size="9" font-weight="900" fill="#fff" style="pointer-events:none">${dn.hits}</text>`;
+    }
+    h+=`<text x="0" y="${nr+17}" text-anchor="middle" font-size="10"
+      fill="${isSel?c:'#64748b'}" font-weight="${isSel?700:400}"
+      style="pointer-events:none">${dn.full}</text>`;
+    h+=`</g>`;
+  });
+
+  // ── SCENE NODES — CIRCLE (color by severity of score) ──
+  sceneNodes.forEach(({sc,x,y,r:nr,probCount})=>{
+    const isSel=selectedSceneId===sc.id, c=topoColor(sc.score);
+    h+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${nr+14}" fill="${c}"
+      opacity=".09" filter="url(#glow-s)" style="pointer-events:none"/>`;
+    h+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${nr+6}" fill="${c}"
+      fill-opacity=".12" style="pointer-events:none"/>`;
+    h+=`<g class="ts-g" data-id="${sc.id}" transform="translate(${x.toFixed(1)},${y.toFixed(1)})" style="cursor:grab">`;
+    h+=`<circle r="${nr}" fill="${isSel?c:'#fff'}" stroke="${c}" stroke-width="${isSel?0:2.5}"
+      class="ts" data-id="${sc.id}" style="filter:${isSel?'url(#drop)':'none'}"/>`;
+    h+=`<text x="0" y="1" text-anchor="middle" dominant-baseline="middle"
+      font-size="${nr>34?15:13}" font-weight="900" fill="${isSel?'#fff':c}"
+      letter-spacing="-.04em" style="pointer-events:none">${sc.score}</text>`;
+    const short=sc.name.length>8?sc.name.slice(0,7)+'…':sc.name;
+    h+=`<text x="0" y="${-nr-11}" text-anchor="middle" font-size="10" font-weight="700"
+      fill="${isSel?c:'#334155'}" style="pointer-events:none">${short}</text>`;
+    const tC=sc.delta>=0?'#16a34a':'#dc2626';
+    h+=`<text x="0" y="${nr+15}" text-anchor="middle" font-size="10" font-weight="700"
+      fill="${tC}" style="pointer-events:none">${sc.delta>=0?'▲':'▼'}${Math.abs(sc.delta)}</text>`;
+    h+=`</g>`;
+  });
+
+  // Reset layout button
+  h+=`<g class="topo-reset-g" style="cursor:pointer">
+    <rect x="${W-82}" y="10" width="72" height="22" rx="5" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="${W-46}" y="25" text-anchor="middle" font-size="10" font-weight="600" fill="#475569">↺ 重置布局</text>
+  </g>`;
+
+  svg.innerHTML=h;
+
+  /* ── Node lookup for drag ── */
+  const nodeMap={};
+  sceneNodes.forEach(sn=>nodeMap['sid_'+sn.sc.id]=sn);
+  dimNodes.forEach(dn=>nodeMap['dk_'+dn.k]=dn);
+
+  /* ── Edge updater ── */
+  function updateEdges(key){
+    const node=nodeMap[key];if(!node)return;
+    if(key.startsWith('sid_')){
+      dimNodes.forEach(dn=>{
+        const v=node.sc.dims[dn.k];if(v>=THRESH)return;
+        const e=svg.querySelector(`#edge_${node.sc.id}_${dn.k}`);if(!e)return;
+        const mx=(node.x+dn.x)/2,my=(node.y+dn.y)/2;
+        const px=-(dn.y-node.y)*0.18,py=(dn.x-node.x)*0.18;
+        e.setAttribute('d',`M${node.x.toFixed(1)},${node.y.toFixed(1)} Q${(mx+px).toFixed(1)},${(my+py).toFixed(1)} ${dn.x.toFixed(1)},${dn.y.toFixed(1)}`);
+        // update gradient
+        const g=svg.querySelector(`#eg_${node.sc.id}_${dn.k}`);
+        if(g){g.setAttribute('x1',node.x);g.setAttribute('y1',node.y);}
+      });
+    } else {
+      const dn=node;
+      sceneNodes.forEach(sn=>{
+        const v=sn.sc.dims[dn.k];if(v>=THRESH)return;
+        const e=svg.querySelector(`#edge_${sn.sc.id}_${dn.k}`);if(!e)return;
+        const mx=(sn.x+dn.x)/2,my=(sn.y+dn.y)/2;
+        const px=-(dn.y-sn.y)*0.18,py=(dn.x-sn.x)*0.18;
+        e.setAttribute('d',`M${sn.x.toFixed(1)},${sn.y.toFixed(1)} Q${(mx+px).toFixed(1)},${(my+py).toFixed(1)} ${dn.x.toFixed(1)},${dn.y.toFixed(1)}`);
+        const g=svg.querySelector(`#eg_${sn.sc.id}_${dn.k}`);
+        if(g){g.setAttribute('x2',dn.x);g.setAttribute('y2',dn.y);}
+      });
+      // update glow halo polygon
+      const gp=svg.querySelector(`.td-g[data-k="${dn.k}"]`)?.previousElementSibling;
+      if(gp&&gp.tagName==='polygon') gp.setAttribute('points',hexAbs(dn.r+16,dn.x,dn.y));
+    }
+  }
+
+  /* ── SVG point helper ── */
+  function svgPt(e){
+    const r=svg.getBoundingClientRect();
+    return {x:e.clientX-r.left,y:e.clientY-r.top};
+  }
+
+  /* ── DRAG ── */
+  let ds=null;
+  svg.addEventListener('mousedown',e=>{
+    const tg=e.target.closest('.ts-g,.td-g');if(!tg)return;
+    e.preventDefault();hideTT();
+    const isSc=tg.classList.contains('ts-g');
+    const key=isSc?'sid_'+tg.dataset.id:'dk_'+tg.dataset.k;
+    const node=nodeMap[key];if(!node)return;
+    const pt=svgPt(e);
+    ds={key,node,tg,sx:pt.x,sy:pt.y,nx0:node.x,ny0:node.y,moved:false};
+    tg.style.cursor='grabbing';
+  });
+  svg.addEventListener('mousemove',e=>{
+    if(!ds)return;
+    const pt=svgPt(e);
+    const dx=pt.x-ds.sx,dy=pt.y-ds.sy;
+    if(!ds.moved&&Math.hypot(dx,dy)<4)return;
+    ds.moved=true;
+    ds.node.x=ds.nx0+dx; ds.node.y=ds.ny0+dy;
+    ds.tg.setAttribute('transform',`translate(${ds.node.x.toFixed(1)},${ds.node.y.toFixed(1)})`);
+    updateEdges(ds.key);
+  });
+  function endDrag(){
+    if(!ds)return;
+    if(ds.moved) _topoUserPos[ds.key]={x:ds.node.x,y:ds.node.y};
+    ds.tg.style.cursor='grab';
+    ds=null;
+  }
+  svg.addEventListener('mouseup',endDrag);
+  svg.addEventListener('mouseleave',endDrag);
+
+  /* ── Hover & Click events ── */
+  svg.querySelectorAll('.te').forEach(el=>{
+    el.addEventListener('mouseenter',e=>{
+      const sc2=SCENES.find(s=>s.id===+el.dataset.sid);
+      const dk=el.dataset.dk,v=+el.dataset.v;
+      showTT(e,`<div class="tt-row"><span>${DIM_LABELS[DIM_KEYS.indexOf(dk)]}</span><span>${v}分</span></div>
+        <div class="tt-row"><span>综合分</span><span>${sc2.score}</span></div>`,sc2.name);
+    });
+    el.addEventListener('mouseleave',hideTT);
+    el.addEventListener('click',()=>{if(!ds||!ds.moved)selectScene(+el.dataset.sid);});
+  });
+  svg.querySelectorAll('.td').forEach(el=>{
+    el.addEventListener('mouseenter',e=>{
+      const k=el.dataset.k,s2=rScenes();
+      const avg=Math.round(s2.reduce((s,sc)=>s+sc.dims[k],0)/s2.length);
+      showTT(e,s2.map(sc=>`<div class="tt-row"><span>${sc.name}</span>
+        <span style="color:${topoColor(sc.dims[k])}">${sc.dims[k]}</span></div>`).join(''),
+        DIM_LABELS[DIM_KEYS.indexOf(k)]+' · 均值'+avg);
+    });
+    el.addEventListener('mouseleave',hideTT);
+    el.addEventListener('click',()=>{if(!ds||!ds.moved)selectDim(el.dataset.k);});
+  });
+  svg.querySelectorAll('.ts').forEach(el=>{
+    el.addEventListener('mouseenter',e=>{
+      const sc2=SCENES.find(s=>s.id===+el.dataset.id);
+      showTT(e,DIM_KEYS.map((k,i)=>`<div class="tt-row"><span>${DIM_SHORT[i]}</span>
+        <span style="color:${sColor(sc2.dims[k])}">${sc2.dims[k]}</span></div>`).join(''),
+        sc2.name+' · '+sc2.score+'分');
+    });
+    el.addEventListener('mouseleave',hideTT);
+    el.addEventListener('click',()=>{if(!ds||!ds.moved)selectScene(+el.dataset.id);});
+  });
+
+  svg.querySelector('.topo-reset-g')?.addEventListener('click',()=>{
+    _topoUserPos={};buildTopology();
+  });
+}
+
+/* ════════ SCENE LIST (Layout A) ════════ */
+function buildSceneListA(){
+  const scenes=[...rScenes()].sort((a,b)=>a.score-b.score);
+  const r=role();
+  document.getElementById('scListA').innerHTML=scenes.map((sc,i)=>{
+    const isSel=selectedSceneId===sc.id;
+    const dsign=sc.delta>=0?'+':'',dcls=sc.delta>=0?'up':'dn';
+    return `<div class="sc-row${isSel?' sel':''}"
+      style="--sel-c:${r.color};--sel-bg:${r.colorBg};--sel-ring:${r.colorRing}"
+      onclick="selectScene(${sc.id})">
+      <div class="sc-rank ${sCls(sc.score)}">${i+1}</div>
+      <span class="sc-name">${sc.name}</span>
+      <div class="sc-bar-track"><div class="sc-bar-fill" style="width:${sc.score}%;background:${sColor(sc.score)}"></div></div>
+      <span class="sc-snum ${sCls(sc.score)}">${sc.score}</span>
+      <span class="sc-dtag ${dcls}">${dsign}${sc.delta}</span>
+      <svg width="34" height="14" id="sp${sc.id}" style="flex-shrink:0"></svg>
+    </div>`;
+  }).join('');
+  requestAnimationFrame(()=>{
+    scenes.forEach(sc=>{
+      const s=document.getElementById('sp'+sc.id);if(!s)return;
+      const d=sc.trend,W=34,H=14,p=2;
+      const mn=Math.min(...d),mx2=Math.max(...d),rng=Math.max(mx2-mn,1);
+      const pts=d.map((v,i)=>[p+(i/(d.length-1))*(W-p*2),p+(1-(v-mn)/rng)*(H-p*2)]);
+      const c=sColor(sc.score);
+      s.innerHTML=`<polyline points="${pts.map(pt=>pt.join(',')).join(' ')}" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="${pts[pts.length-1][0]}" cy="${pts[pts.length-1][1]}" r="2" fill="${c}"/>`;
+    });
+  });
+}
+
+/* ════════ SCENE CHIPS (Layout B) ════════ */
+function buildSceneChipsB(){
+  const scenes=[...rScenes()].sort((a,b)=>a.score-b.score);
+  const r=role();
+  document.getElementById('scChipsB').innerHTML=scenes.map(sc=>{
+    const isSel=selectedSceneId===sc.id;
+    const dsign=sc.delta>=0?'+':'',dcls=sc.delta>=0?'up':'dn';
+    return `<div class="scene-chip${isSel?' sel':''}"
+      style="--sel-c:${r.color};--sel-bg:${r.colorBg};--sel-ring:${r.colorRing}"
+      onclick="selectScene(${sc.id})">
+      <div class="chip-name">${sc.name}</div>
+      <div class="chip-score ${sCls(sc.score)}">${sc.score}</div>
+      <div class="chip-delta ${dcls}">${dsign}${sc.delta}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════ LEGEND + KPI (Layout C left panel) ════════ */
+function buildLcLeft(){
+  const scenes=rScenes();
+  document.getElementById('lcLeft').innerHTML=`
+    <div class="lc-section-title">核心指标</div>
+    <div class="lc-kpi-grid">${kpiCells()}</div>
+    <div class="lc-section-title">维度均值</div>
+    <div>${DIM_KEYS.map((k,i)=>{
+      const avg=Math.round(scenes.reduce((s,sc)=>s+sc.dims[k],0)/scenes.length);
+      return `<div class="dim-bar-row">
+        <span class="dim-bar-lbl" style="color:${DIM_COLORS[i]}">${DIM_SHORT[i]}</span>
+        <div class="dim-bar-track"><div class="dim-bar-fill" style="width:${avg}%;background:${DIM_COLORS[i]}40"></div></div>
+        <span class="dim-bar-val" style="color:${sColor(avg)}">${avg}</span>
+      </div>`;
+    }).join('')}</div>
+    <div class="lc-hint" style="font-size:9px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">说明</div>
+    <div class="lc-hint">
+      点击场景节点查看详情<br>点击维度节点查看聚类<br>相邻节点表示共同问题<br>可拖动节点自由布局
+    </div>`;
+}
+
+/* ════════ DETAIL PANEL ════════ */
+function detailPanelHTML(){
+  const sc=selectedSceneId!==null?SCENES.find(s=>s.id===selectedSceneId):null;
+  if(selectedDimKey&&!sc)return dimDetailHTML(selectedDimKey);
+  if(!sc)return `<div class="det-empty">
+    <div class="det-empty-ico">↖</div>
+    <div class="det-empty-title">选择场景或维度</div>
+    <div class="det-empty-sub">点击场景或维度节点<br>查看详细分析</div>
+  </div>`;
+
+  const c=sColor(sc.score), dsign=sc.delta>=0?'+':'', dcls=sc.delta>=0?'up':'dn';
+  return `
+  <div class="det-header">
+    <div class="det-name">${sc.name}</div>
+    <div class="det-score-badge">
+      <div class="det-score" style="color:${c}">${sc.score}</div>
+      <div class="det-delta ${dcls}">${dsign}${sc.delta}</div>
+    </div>
+  </div>
+  <div class="det-dims">
+    ${DIM_KEYS.map((k,i)=>`
+    <div class="det-dim-cell">
+      <div class="ddc-lbl">${DIM_LABELS[i]}</div>
+      <div class="ddc-bar" style="background:${DIM_COLORS[i]}20">
+        <div style="width:${sc.dims[k]}%;height:100%;border-radius:2px;background:${DIM_COLORS[i]}"></div>
+      </div>
+      <div class="ddc-val" style="color:${sColor(sc.dims[k])}">${sc.dims[k]}</div>
+    </div>`).join('')}
+  </div>
+  <div class="det-tabs">
+    <div class="det-tab${activeTab==='journey'?' on':''}" onclick="switchDetTab('journey')">用户旅程</div>
+    <div class="det-tab${activeTab==='pain'?' on':''}" onclick="switchDetTab('pain')">痛点</div>
+    <div class="det-tab${activeTab==='vod'?' on':''}" onclick="switchDetTab('vod')">VOD洞察</div>
+  </div>
+  ${activeTab==='journey'?sc.journey.map((j,i)=>`
+    <div class="journey-step">
+      <div class="js-header" onclick="toggleStep(${sc.id},${i})">
+        <span class="js-title">${i+1}. ${j.title}</span>
+        <span class="js-expand">${openSteps.has(i)?'▲':'▼'}</span>
+      </div>
+      <div class="js-body${openSteps.has(i)?' open':''}"><p>${j.desc}</p></div>
+    </div>`).join(''):''}
+  ${activeTab==='pain'?`<div>${sc.pains.map(p=>`
+    <div class="pain-item">
+      <div class="pain-dot ${p.sev}"></div>
+      <div class="pain-text">${p.text}</div>
+    </div>`).join('')}</div>`:''}
+  ${activeTab==='vod'?`<div>${sc.vod.map(v=>`
+    <div class="vod-item">${v}</div>`).join('')}</div>`:''}`;
+}
+
+function dimDetailHTML(k){
+  const i=DIM_KEYS.indexOf(k),c=DIM_COLORS[i];
+  const scenes=rScenes();
+  const avg=Math.round(scenes.reduce((s,sc)=>s+sc.dims[k],0)/scenes.length);
+  return `
+  <div class="dim-detail-header">
+    <div class="dim-detail-name" style="color:${c}">${DIM_LABELS[i]}</div>
+    <div class="dim-detail-sub">均值 ${avg}分 · ${scenes.filter(sc=>sc.dims[k]<70).length}个场景有问题</div>
+  </div>
+  ${[...scenes].sort((a,b)=>a.dims[k]-b.dims[k]).map(sc=>`
+    <div class="dim-scene-row" onclick="selectScene(${sc.id})">
+      <div class="dim-sc-name">${sc.name}</div>
+      <div class="dim-sc-bar" style="background:${sColor(sc.dims[k])}20">
+        <div style="width:${sc.dims[k]}%;height:100%;border-radius:3px;background:${sColor(sc.dims[k])}"></div>
+      </div>
+      <div class="dim-sc-val" style="color:${sColor(sc.dims[k])}">${sc.dims[k]}</div>
+    </div>`).join('')}`;
+}
+
+/* ════════ TABS ════════ */
+function switchDetTab(tab){activeTab=tab;renderAll();}
+function toggleStep(scId,si){
+  if(openSteps.has(si))openSteps.delete(si);else openSteps.add(si);
+  renderAll();
+}
+function switchLayout(l,btn){
+  activeLayout=l;
+  document.querySelectorAll('.tbl').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.layout-view').forEach(v=>v.classList.remove('on'));
+  document.getElementById('view'+l).classList.add('on');
+  renderAll();
+}
+function switchRole(id){
+  activeRoleId=id;selectedSceneId=null;selectedDimKey=null;pcHov=null;openSteps=new Set();
+  buildRoleTabs();renderAll();
+}
+
+/* ════════ RENDER ════════ */
+function renderAll(){
+  buildRoleTabs();
+  if(activeLayout==='A'){
+    requestAnimationFrame(()=>drawPC('pcSvgA'));
+    buildSceneListA();
+    document.getElementById('detailA').innerHTML=detailPanelHTML();
+  }
+  if(activeLayout==='B'){
+    requestAnimationFrame(()=>drawPC('pcSvgB'));
+    buildSceneChipsB();
+    document.getElementById('detailB').innerHTML=detailPanelHTML();
+  }
+  if(activeLayout==='C'){
+    buildLcLeft();
+    requestAnimationFrame(()=>buildTopology());
+    document.getElementById('detailC').innerHTML=detailPanelHTML();
+  }
+}
+
+renderAll();
+window.addEventListener('resize',()=>{
+  if(activeLayout==='A')drawPC('pcSvgA');
+  if(activeLayout==='B')drawPC('pcSvgB');
+  if(activeLayout==='C')buildTopology();
+});
+</script>
+</body>
+</html>

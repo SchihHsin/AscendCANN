@@ -1,0 +1,2410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CANN 角色与旅程体验报告</title>
+  <style>
+    :root {
+      --bg: #f5f1e7;
+      --panel: rgba(255,252,246,.92);
+      --card: rgba(255,255,255,.8);
+      --text: #1f2430;
+      --muted: #5d6473;
+      --line: rgba(31,36,48,.1);
+      --brand: #0f5f64;
+      --brand-soft: rgba(15,95,100,.1);
+      --accent: #cf7a00;
+      --accent-soft: rgba(207,122,0,.14);
+      --danger: #b42318;
+      --danger-soft: rgba(180,35,24,.12);
+      --good: #117a5a;
+      --good-soft: rgba(17,122,90,.12);
+      --shadow: 0 22px 60px rgba(31,36,48,.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(15,95,100,.14), transparent 30%),
+        radial-gradient(circle at 100% 0%, rgba(207,122,0,.12), transparent 26%),
+        linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);
+    }
+    button { font: inherit; color: inherit; background: none; border: none; padding: 0; cursor: pointer; }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .page { width: min(1440px, calc(100vw - 28px)); margin: 16px auto 28px; }
+    .hero, .role-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow); }
+    .hero { padding: 28px 30px 24px; margin-bottom: 14px; }
+    .eyebrow { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: var(--brand-soft); color: var(--brand); font-size: 12px; font-weight: 700; }
+    h1 { margin: 14px 0 10px; font-size: clamp(28px, 4vw, 46px); line-height: 1.05; }
+    .hero p { margin: 0; color: var(--muted); max-width: 920px; }
+    .hero-summary { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-top: 18px; }
+    .summary-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; }
+    .summary-card span { display: block; color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+    .summary-card strong { display: block; font-size: 20px; line-height: 1.1; margin-bottom: 6px; }
+    .role-tabbar { position: sticky; top: 10px; z-index: 20; display: flex; gap: 8px; padding: 8px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,252,246,.92); backdrop-filter: blur(14px); box-shadow: 0 10px 30px rgba(31,36,48,.06); margin-bottom: 14px; overflow-x: auto; }
+    .role-tab { flex: 1 0 220px; min-width: 220px; text-align: left; padding: 10px 14px; border-radius: 14px; border: 1px solid transparent; }
+    .role-tab.active { background: #fff; border-color: rgba(15,95,100,.22); box-shadow: 0 8px 24px rgba(15,95,100,.08); }
+    .role-tab-name { display: block; font-weight: 700; font-size: 15px; }
+    .role-tab-meta { display: block; margin-top: 3px; font-size: 12px; color: var(--muted); }
+    .role-panel { display: none; padding: 22px; }
+    .role-panel.active { display: block; }
+    .role-head, .scenario-hero { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; }
+    .role-head { margin-bottom: 16px; }
+    .role-kicker, .scenario-eyebrow, .meta-title { color: var(--brand); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    h2 { margin: 6px 0 8px; font-size: 28px; line-height: 1.08; }
+    h3 { margin: 6px 0 8px; font-size: 26px; line-height: 1.08; }
+    .role-head p, .scenario-summary { margin: 0; color: var(--muted); max-width: 880px; }
+    .role-score, .scenario-score { min-width: 120px; padding: 12px 14px; border-radius: 18px; background: #fff; border: 1px solid var(--line); text-align: right; }
+    .role-score span, .scenario-score span { display: block; color: var(--muted); font-size: 12px; }
+    .role-score strong, .scenario-score strong { display: block; margin-top: 4px; font-size: 28px; line-height: 1; }
+    .scene-tabbar { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 18px; }
+    .scene-tab { min-width: 176px; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--line); background: rgba(255,255,255,.52); text-align: left; }
+    .scene-tab.active { background: #fff; border-color: rgba(15,95,100,.22); box-shadow: 0 8px 20px rgba(15,95,100,.06); }
+    .scene-tab-name { display: block; font-weight: 700; font-size: 14px; line-height: 1.25; }
+    .scene-tab-score { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .scenario-panel { display: none; }
+    .scenario-panel.active { display: block; }
+    .source-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 10px; }
+    .source-badge { display: inline-flex; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+    .source-badge.context { background: var(--brand-soft); color: var(--brand); }
+    .source-badge.supplement { background: var(--accent-soft); color: #8b5300; }
+    .inline-note { margin: 14px 0; padding: 12px 14px; border-radius: 14px; background: var(--accent-soft); color: #6b4609; }
+    .journey-track { display: flex; gap: 18px; overflow-x: auto; padding: 6px 4px 14px; margin-bottom: 18px; }
+    .journey-step { position: relative; flex: 0 0 min(340px, 78vw); }
+    .journey-node { background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,250,242,.96)); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; box-shadow: 0 12px 26px rgba(31,36,48,.06); }
+    .journey-step.strongest .journey-node { border-color: rgba(17,122,90,.28); box-shadow: 0 12px 26px rgba(17,122,90,.10); }
+    .journey-step.weakest .journey-node { border-color: rgba(180,35,24,.24); box-shadow: 0 12px 26px rgba(180,35,24,.08); }
+    .journey-index { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+    .journey-stage { font-size: 18px; font-weight: 700; line-height: 1.25; }
+    .journey-score-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+    .score-pill, .mini-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 58px; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+    .score-pill.high { background: var(--good-soft); color: var(--good); }
+    .score-pill.mid { background: var(--brand-soft); color: var(--brand); }
+    .score-pill.low { background: var(--accent-soft); color: var(--accent); }
+    .score-pill.bad { background: var(--danger-soft); color: var(--danger); }
+    .mini-badge.strongest { background: var(--good-soft); color: var(--good); min-width: auto; }
+    .mini-badge.weakest { background: var(--danger-soft); color: var(--danger); min-width: auto; }
+    .journey-card { margin-top: 10px; min-height: 180px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; }
+    .journey-point { margin: 0 0 12px; font-size: 15px; }
+    .journey-evidence { margin: 0; color: var(--muted); font-size: 13px; }
+    .journey-connector { position: absolute; top: 44px; right: -18px; width: 18px; height: 2px; background: linear-gradient(90deg, rgba(15,95,100,.35), rgba(207,122,0,.35)); }
+    .scenario-meta { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 14px; }
+    .meta-card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 16px; }
+    .meta-card ul { margin: 0; padding-left: 18px; }
+    .metric-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .metric-grid.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .metric { border-radius: 14px; background: rgba(255,255,255,.72); border: 1px solid var(--line); padding: 10px; }
+    .metric span { display: block; color: var(--muted); font-size: 11px; margin-bottom: 3px; }
+    .metric strong { font-size: 18px; line-height: 1; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .repo-chip { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: var(--brand-soft); color: var(--brand); font-size: 12px; font-weight: 600; }
+    .repo-chip.risk { background: var(--danger-soft); color: var(--danger); }
+    .repo-ref-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .repo-ref { display: inline-flex; padding: 6px 10px; border-radius: 10px; background: rgba(255,255,255,.86); border: 1px solid var(--line); color: var(--brand); font-size: 12px; }
+    .repo-ref.plain { color: var(--text); }
+    .evidence-links { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+    .score-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    .score-table th, .score-table td { padding: 8px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    @media (max-width: 1080px) { .hero-summary, .scenario-meta { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 760px) {
+      .page { width: min(100vw - 16px, 1440px); margin: 8px auto 18px; }
+      .hero, .role-panel { padding: 18px; }
+      .role-head, .scenario-hero { flex-direction: column; }
+      .hero-summary, .scenario-meta, .metric-grid { grid-template-columns: 1fr; }
+      .journey-step { flex-basis: 88vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="eyebrow">Context Skeleton + Research Supplement</div>
+      <h1>CANN 角色与旅程体验报告</h1>
+      <p>这版仍然按角色切换、角色内按场景切换，并且把每个场景的阶段旅程可视化出来。现在页面上的分数已经统一按实际规则计算，不再只是解释口径。</p>
+      <div class="hero-summary">
+        <div class="summary-card"><span>角色切换</span><strong>顶部 Tab</strong>先按角色切换，不把不同角色混在一页。</div>
+        <div class="summary-card"><span>场景切换</span><strong>角色内多场景</strong>每个角色单独维护自己的场景组。</div>
+        <div class="summary-card"><span>旅程展示</span><strong>横向旅程轨道</strong>每个场景按阶段顺序可视化。</div>
+        <div class="summary-card"><span>评分逻辑</span><strong>真实规则</strong>阶段分和场景分都按当前页面所写规则计算。</div>
+      </div>
+    </header>
+    
+    <section class="role-panel active" style="display:block;padding:22px;margin-bottom:14px;">
+      <div class="role-head">
+        <div>
+          <div class="role-kicker">Scoring Method</div>
+          <h2>Agentic 评分结果</h2>
+          <p>评分区间为 <code>0-100</code>。分数越高，说明 agent 越能在少人工干预的情况下自主推进。</p>
+        </div>
+      </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">阶段分公式</div>
+          <table class="score-table small">
+            <thead><tr><th>组成项</th><th>满分</th><th>判断标准</th></tr></thead>
+            <tbody><tr><td>文档清晰度</td><td>30</td><td>动作链、版本、路径、成功判据是否清楚。</td></tr><tr><td>环境可达性</td><td>30</td><td>常见开发环境能推进到哪一步，前置限制越少越高。</td></tr><tr><td>自动化友好度</td><td>25</td><td>是否容易脚本化推进，是否依赖手工复制、跨仓拼装。</td></tr><tr><td>反馈与验证质量</td><td>15</td><td>是否有 help、日志、测试、benchmark、结果校验、失败反馈。</td></tr></tbody>
+          </table>
+          <p><code>阶段分数 = 文档清晰度 + 环境可达性 + 自动化友好度 + 反馈与验证质量</code></p>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">场景分公式</div>
+          <p>场景总分按本场景所包含阶段的权重重新归一化计算，不做简单平均。</p>
+          <p><code>场景总分 = Σ(阶段分数 × 阶段权重) / Σ(场景已使用权重)</code></p>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <p>覆盖率与被引用仓库名只作为辅助证据，不作为主叙事。主叙事仍然是角色、场景和阶段得分。</p>
+        </div>
+      </div>
+    </section>
+    
+    <nav class="role-tabbar">
+            <button class="role-tab active" type="button" data-role-tab="role-0">
+              <span class="role-tab-name">算子开发者</span>
+              <span class="role-tab-meta">产品应用性 · 82.9</span>
+            </button>
+            
+            <button class="role-tab" type="button" data-role-tab="role-1">
+              <span class="role-tab-name">AI 框架开发者</span>
+              <span class="role-tab-meta">产品应用性 · 64.5</span>
+            </button>
+            
+            <button class="role-tab" type="button" data-role-tab="role-2">
+              <span class="role-tab-name">应用开发者</span>
+              <span class="role-tab-meta">产品应用性 · 43.4</span>
+            </button>
+            
+            <button class="role-tab" type="button" data-role-tab="role-3">
+              <span class="role-tab-name">入门开发者</span>
+              <span class="role-tab-meta">社区易用性 · 69.7</span>
+            </button>
+            </nav>
+    <main>
+    <section class="role-panel active" data-role="role-0">
+      <div class="role-head">
+        <div>
+          <div class="role-kicker">产品应用性</div>
+          <h2>算子开发者</h2>
+          <p>这一类角色更关注底层开发是否结构化、可验证、可持续迭代。</p>
+        </div>
+        <div class="role-score high">
+          <span>角色均分</span>
+          <strong>82.9</strong>
+        </div>
+      </div>
+      <div class="scene-tabbar">
+            <button class="scene-tab active" type="button" data-role-target="role-0" data-scene-target="role-0-scene-0">
+              <span class="scene-tab-name">算子复现部署</span>
+              <span class="scene-tab-score">场景分 79.9</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-0" data-scene-target="role-0-scene-1">
+              <span class="scene-tab-name">算子迁移部署</span>
+              <span class="scene-tab-score">场景分 88.4</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-0" data-scene-target="role-0-scene-2">
+              <span class="scene-tab-name">Builtin 算子定制修改</span>
+              <span class="scene-tab-score">场景分 85.2</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-0" data-scene-target="role-0-scene-3">
+              <span class="scene-tab-name">算子基本功能实现</span>
+              <span class="scene-tab-score">场景分 83.0</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-0" data-scene-target="role-0-scene-4">
+              <span class="scene-tab-name">特定 shape 性能优化</span>
+              <span class="scene-tab-score">场景分 80.7</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-0" data-scene-target="role-0-scene-5">
+              <span class="scene-tab-name">泛化 shape 性能优化</span>
+              <span class="scene-tab-score">场景分 80.4</span>
+            </button>
+            </div>
+      
+    <section class="scenario-panel active" data-role-panel="role-0" data-scene-panel="role-0-scene-0">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>算子复现部署</h3>
+          <div class="source-row"><span class="source-badge context">context 骨架</span></div>
+          <p class="scenario-summary">场景分 <strong>79.9</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score mid">
+          <span>场景分</span>
+          <strong>79.9</strong>
+        </div>
+      </div>
+      
+      <div class="journey-track">
+    <div class="journey-step high strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">86</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">从找入口到跑验证的主链路存在，但真正影响推进速度的是工具链与环境前提。</p>
+        <p class="journey-evidence">文档清晰度 28 / 环境可达性 23 / 自动化友好度 22 / 反馈与验证质量 13</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">环境准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">79</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">环境准备 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 25 / 环境可达性 22 / 自动化友好度 20 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">75</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">这条旅程里，环境准备不是辅助步骤，而是决定体验成败的主断点。</p>
+        <p class="journey-evidence">文档清晰度 24 / 环境可达性 21 / 自动化友好度 19 / 反馈与验证质量 11</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>从找入口到跑验证的主链路存在，但真正影响推进速度的是工具链与环境前提。</li><li>这条旅程里，环境准备不是辅助步骤，而是决定体验成败的主断点。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>5</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>80.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>80.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>80.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>5</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">pyasc</span><span class="repo-chip">asc-devkit</span><span class="repo-chip">ops-test-kit</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-learning-hub</span><span class="repo-chip risk">cann-samples</span><span class="repo-chip risk">ops-test-kit</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/cann-samples" target="_blank">cann-samples</a><a class="repo-ref" href="https://gitcode.com/cann/cann-learning-hub" target="_blank">cann-learning-hub</a><a class="repo-ref" href="https://gitcode.com/cann/ops-test-kit" target="_blank">ops-test-kit</a><a class="repo-ref" href="https://gitcode.com/cann/pyasc" target="_blank">pyasc</a><a class="repo-ref" href="https://gitcode.com/cann/asc-devkit" target="_blank">asc-devkit</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\pyasc\README.md" target="_blank">pyasc README</a><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\pyasc\docs\quick_start.md" target="_blank">pyasc quick start</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-0" data-scene-panel="role-0-scene-1">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>算子迁移部署</h3>
+          <div class="source-row"><span class="source-badge context">context 骨架</span></div>
+          <p class="scenario-summary">场景分 <strong>88.4</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score high">
+          <span>场景分</span>
+          <strong>88.4</strong>
+        </div>
+      </div>
+      
+      <div class="journey-track">
+    <div class="journey-step high strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">92</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">这里的瓶颈不是不知道做什么，而是迁移、编译、验证之间存在多段前置条件。</p>
+        <p class="journey-evidence">文档清晰度 30 / 环境可达性 23 / 自动化友好度 25 / 反馈与验证质量 14</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">代码获取</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">89</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">代码获取 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 30 / 环境可达性 24 / 自动化友好度 23 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">依赖安装</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">91</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">依赖安装 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 30 / 环境可达性 25 / 自动化友好度 24 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">80</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">当角色进入深改阶段后，仓库结构化优势会明显放大。</p>
+        <p class="journey-evidence">文档清晰度 25 / 环境可达性 22 / 自动化友好度 21 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 5</div>
+        <div class="journey-stage">深入修改/扩展</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">90</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">深入修改/扩展 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 30 / 环境可达性 23 / 自动化友好度 24 / 反馈与验证质量 13</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>这里的瓶颈不是不知道做什么，而是迁移、编译、验证之间存在多段前置条件。</li><li>当角色进入深改阶段后，仓库结构化优势会明显放大。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>7</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>85.7%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>7</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">pyasc</span><span class="repo-chip">asc-devkit</span><span class="repo-chip">asc-tools</span></div>
+          <div class="chip-row"><span class="repo-chip risk">ascend-transformer-boost</span><span class="repo-chip risk">ops-math</span><span class="repo-chip risk">catlass</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/asc-devkit" target="_blank">asc-devkit</a><a class="repo-ref" href="https://gitcode.com/cann/asc-tools" target="_blank">asc-tools</a><a class="repo-ref" href="https://gitcode.com/cann/pyasc" target="_blank">pyasc</a><a class="repo-ref" href="https://gitcode.com/cann/atvoss" target="_blank">atvoss</a><a class="repo-ref" href="https://gitcode.com/cann/catlass" target="_blank">catlass</a><a class="repo-ref" href="https://gitcode.com/cann/ops-math" target="_blank">ops-math</a><a class="repo-ref" href="https://gitcode.com/cann/ascend-transformer-boost" target="_blank">ascend-transformer-boost</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-0" data-scene-panel="role-0-scene-2">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>Builtin 算子定制修改</h3>
+          <div class="source-row"><span class="source-badge context">context 骨架</span></div>
+          <p class="scenario-summary">场景分 <strong>85.2</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score high">
+          <span>场景分</span>
+          <strong>85.2</strong>
+        </div>
+      </div>
+      
+      <div class="journey-track">
+    <div class="journey-step high strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">91</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">进入定制修改后，自动化友好度与反馈质量的重要性明显高于入口发现。</p>
+        <p class="journey-evidence">文档清晰度 30 / 环境可达性 24 / 自动化友好度 24 / 反馈与验证质量 13</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">代码获取</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">87</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">代码获取 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 29 / 环境可达性 24 / 自动化友好度 22 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">依赖安装</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">89</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">依赖安装 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 29 / 环境可达性 26 / 自动化友好度 23 / 反馈与验证质量 11</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">首次运行</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">79</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">仓库本身更像成熟开发资产，问题主要在环境与验证闭环能否及时反馈。</p>
+        <p class="journey-evidence">文档清晰度 25 / 环境可达性 23 / 自动化友好度 20 / 反馈与验证质量 11</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 5</div>
+        <div class="journey-stage">深入修改/扩展</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">88</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">深入修改/扩展 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 30 / 环境可达性 23 / 自动化友好度 23 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 6</div>
+        <div class="journey-stage">排障与回归</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">81</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">排障与回归 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 25 / 环境可达性 23 / 自动化友好度 22 / 反馈与验证质量 11</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>进入定制修改后，自动化友好度与反馈质量的重要性明显高于入口发现。</li><li>仓库本身更像成熟开发资产，问题主要在环境与验证闭环能否及时反馈。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>9</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>77.8%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>9</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">pyasc</span><span class="repo-chip">asc-devkit</span><span class="repo-chip">catlass</span></div>
+          <div class="chip-row"><span class="repo-chip risk">opbase</span><span class="repo-chip risk">catccos</span><span class="repo-chip risk">ops-cv</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/opbase" target="_blank">opbase</a><a class="repo-ref" href="https://gitcode.com/cann/ops-nn" target="_blank">ops-nn</a><a class="repo-ref" href="https://gitcode.com/cann/ops-cv" target="_blank">ops-cv</a><a class="repo-ref" href="https://gitcode.com/cann/ops-transformer" target="_blank">ops-transformer</a><a class="repo-ref" href="https://gitcode.com/cann/ops-math" target="_blank">ops-math</a><a class="repo-ref" href="https://gitcode.com/cann/catlass" target="_blank">catlass</a><a class="repo-ref" href="https://gitcode.com/cann/catccos" target="_blank">catccos</a><a class="repo-ref" href="https://gitcode.com/cann/asc-devkit" target="_blank">asc-devkit</a><a class="repo-ref" href="https://gitcode.com/cann/pyasc" target="_blank">pyasc</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-0" data-scene-panel="role-0-scene-3">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>算子基本功能实现</h3>
+          <div class="source-row"><span class="source-badge context">context 骨架</span></div>
+          <p class="scenario-summary">场景分 <strong>83.0</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score high">
+          <span>场景分</span>
+          <strong>83.0</strong>
+        </div>
+      </div>
+      
+      <div class="journey-track">
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">89</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">搜索发现 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 28 / 环境可达性 24 / 自动化友好度 24 / 反馈与验证质量 13</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">代码获取</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">86</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">代码获取 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 29 / 环境可达性 24 / 自动化友好度 21 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">依赖安装</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">90</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">这是当前最接近“可持续 agent 化推进”的底层旅程，但仍旧受工具链门槛制约。</p>
+        <p class="journey-evidence">文档清晰度 30 / 环境可达性 26 / 自动化友好度 22 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">首次运行</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">77</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">首次运行 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 24 / 环境可达性 23 / 自动化友好度 19 / 反馈与验证质量 11</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 5</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">76</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">如果补强环境自检与编译失败解释，这条旅程的整体体验还有上升空间。</p>
+        <p class="journey-evidence">文档清晰度 24 / 环境可达性 21 / 自动化友好度 20 / 反馈与验证质量 11</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 6</div>
+        <div class="journey-stage">深入修改/扩展</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">86</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">深入修改/扩展 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 29 / 环境可达性 23 / 自动化友好度 22 / 反馈与验证质量 12</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>这是当前最接近“可持续 agent 化推进”的底层旅程，但仍旧受工具链门槛制约。</li><li>如果补强环境自检与编译失败解释，这条旅程的整体体验还有上升空间。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>12</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>50.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>12</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">pyasc</span><span class="repo-chip">asc-devkit</span><span class="repo-chip">asc-tools</span></div>
+          <div class="chip-row"><span class="repo-chip risk">ops-collections</span><span class="repo-chip risk">opbase</span><span class="repo-chip risk">ops-fft</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/pyasc" target="_blank">pyasc</a><a class="repo-ref" href="https://gitcode.com/cann/asc-devkit" target="_blank">asc-devkit</a><a class="repo-ref" href="https://gitcode.com/cann/asc-tools" target="_blank">asc-tools</a><a class="repo-ref" href="https://gitcode.com/cann/atvoss" target="_blank">atvoss</a><a class="repo-ref" href="https://gitcode.com/cann/opbase" target="_blank">opbase</a><a class="repo-ref" href="https://gitcode.com/cann/ops-collections" target="_blank">ops-collections</a><a class="repo-ref" href="https://gitcode.com/cann/ops-blas" target="_blank">ops-blas</a><a class="repo-ref" href="https://gitcode.com/cann/ops-tensor" target="_blank">ops-tensor</a><a class="repo-ref" href="https://gitcode.com/cann/ops-solver" target="_blank">ops-solver</a><a class="repo-ref" href="https://gitcode.com/cann/ops-sparse" target="_blank">ops-sparse</a><a class="repo-ref" href="https://gitcode.com/cann/ops-rand" target="_blank">ops-rand</a><a class="repo-ref" href="https://gitcode.com/cann/ops-fft" target="_blank">ops-fft</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-0" data-scene-panel="role-0-scene-4">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>特定 shape 性能优化</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>80.7</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score high">
+          <span>场景分</span>
+          <strong>80.7</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 中只有场景名，没有具体旅程；这里用新分析补全。</div>
+      <div class="journey-track">
+    <div class="journey-step high strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">88</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">性能优化更依赖验证和排障链路，而不是单纯的文档入口。</p>
+        <p class="journey-evidence">文档清晰度 30 / 环境可达性 20 / 自动化友好度 25 / 反馈与验证质量 13</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">69</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">如果缺少基准、回归和失败解释，优化过程会退化成高成本试错。</p>
+        <p class="journey-evidence">文档清晰度 22 / 环境可达性 19 / 自动化友好度 18 / 反馈与验证质量 10</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">深入修改/扩展</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">87</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">深入修改/扩展 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 30 / 环境可达性 21 / 自动化友好度 24 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">排障与回归</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">77</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">排障与回归 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 24 / 环境可达性 20 / 自动化友好度 23 / 反馈与验证质量 10</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>性能优化更依赖验证和排障链路，而不是单纯的文档入口。</li><li>如果缺少基准、回归和失败解释，优化过程会退化成高成本试错。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>4</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>4</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">catlass</span><span class="repo-chip">ops-math</span><span class="repo-chip">ops-transformer</span></div>
+          <div class="chip-row"><span class="repo-chip risk">ascend-transformer-boost</span><span class="repo-chip risk">ops-transformer</span><span class="repo-chip risk">ops-math</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/ops-transformer" target="_blank">ops-transformer</a><a class="repo-ref" href="https://gitcode.com/cann/ops-math" target="_blank">ops-math</a><a class="repo-ref" href="https://gitcode.com/cann/ascend-transformer-boost" target="_blank">ascend-transformer-boost</a><a class="repo-ref" href="https://gitcode.com/cann/catlass" target="_blank">catlass</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-0" data-scene-panel="role-0-scene-5">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>泛化 shape 性能优化</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>80.4</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score high">
+          <span>场景分</span>
+          <strong>80.4</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 中只有场景名，没有具体旅程；这里用新分析补全。</div>
+      <div class="journey-track">
+    <div class="journey-step high strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">87</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">泛化优化的关键不在单次提速，而在验证闭环是否足够短、足够可信。</p>
+        <p class="journey-evidence">文档清晰度 29 / 环境可达性 21 / 自动化友好度 24 / 反馈与验证质量 13</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">70</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">这条旅程对反馈与验证质量最敏感。</p>
+        <p class="journey-evidence">文档清晰度 22 / 环境可达性 20 / 自动化友好度 18 / 反馈与验证质量 10</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">深入修改/扩展</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">85</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">深入修改/扩展 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 29 / 环境可达性 21 / 自动化友好度 23 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">排障与回归</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">79</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">排障与回归 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 24 / 环境可达性 21 / 自动化友好度 23 / 反馈与验证质量 11</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>泛化优化的关键不在单次提速，而在验证闭环是否足够短、足够可信。</li><li>这条旅程对反馈与验证质量最敏感。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>5</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>80.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>5</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">ops-math</span><span class="repo-chip">ops-solver</span><span class="repo-chip">ops-transformer</span></div>
+          <div class="chip-row"><span class="repo-chip risk">ascend-transformer-boost</span><span class="repo-chip risk">ops-tensor</span><span class="repo-chip risk">ops-solver</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/ops-transformer" target="_blank">ops-transformer</a><a class="repo-ref" href="https://gitcode.com/cann/ops-math" target="_blank">ops-math</a><a class="repo-ref" href="https://gitcode.com/cann/ops-tensor" target="_blank">ops-tensor</a><a class="repo-ref" href="https://gitcode.com/cann/ops-solver" target="_blank">ops-solver</a><a class="repo-ref" href="https://gitcode.com/cann/ascend-transformer-boost" target="_blank">ascend-transformer-boost</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    </section>
+    
+    <section class="role-panel" data-role="role-1">
+      <div class="role-head">
+        <div>
+          <div class="role-kicker">产品应用性</div>
+          <h2>AI 框架开发者</h2>
+          <p>这一类角色不是单点开发，而是在框架、后端、依赖和模型之间建立连续迁移路径。</p>
+        </div>
+        <div class="role-score mid">
+          <span>角色均分</span>
+          <strong>64.5</strong>
+        </div>
+      </div>
+      <div class="scene-tabbar">
+            <button class="scene-tab active" type="button" data-role-target="role-1" data-scene-target="role-1-scene-0">
+              <span class="scene-tab-name">裸模型 Torch 原生开箱</span>
+              <span class="scene-tab-score">场景分 70.9</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-1" data-scene-target="role-1-scene-1">
+              <span class="scene-tab-name">裸模型昇腾亲和优化</span>
+              <span class="scene-tab-score">场景分 66.8</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-1" data-scene-target="role-1-scene-2">
+              <span class="scene-tab-name">VLLM/SGL 框架原生开箱</span>
+              <span class="scene-tab-score">场景分 58.8</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-1" data-scene-target="role-1-scene-3">
+              <span class="scene-tab-name">VLLM/SGL 框架昇腾亲和优化</span>
+              <span class="scene-tab-score">场景分 64.8</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-1" data-scene-target="role-1-scene-4">
+              <span class="scene-tab-name">Verl 框架原生开箱</span>
+              <span class="scene-tab-score">场景分 59.9</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-1" data-scene-target="role-1-scene-5">
+              <span class="scene-tab-name">Verl 框架昇腾亲和优化</span>
+              <span class="scene-tab-score">场景分 66.0</span>
+            </button>
+            </div>
+      
+    <section class="scenario-panel active" data-role-panel="role-1" data-scene-panel="role-1-scene-0">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>裸模型 Torch 原生开箱</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>70.9</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score mid">
+          <span>场景分</span>
+          <strong>70.9</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 里没有旅程内容，这里用新分析补全原生开箱链路。</div>
+      <div class="journey-track">
+    <div class="journey-step high strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">83</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">原生开箱的问题不是没有文档，而是关键前置条件分散在多个仓和多个技术层次上。</p>
+        <p class="journey-evidence">文档清晰度 28 / 环境可达性 22 / 自动化友好度 22 / 反馈与验证质量 11</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">代码获取</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">77</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">代码获取 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 28 / 环境可达性 22 / 自动化友好度 18 / 反馈与验证质量 9</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">环境准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">80</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">环境准备 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 28 / 环境可达性 24 / 自动化友好度 21 / 反馈与验证质量 7</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">首次运行</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">66</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">首次运行 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 23 / 环境可达性 20 / 自动化友好度 17 / 反馈与验证质量 6</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 5</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">49</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">一旦进入环境和首跑阶段，跨仓拼装摩擦会快速抬升。</p>
+        <p class="journey-evidence">文档清晰度 14 / 环境可达性 19 / 自动化友好度 10 / 反馈与验证质量 6</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>原生开箱的问题不是没有文档，而是关键前置条件分散在多个仓和多个技术层次上。</li><li>一旦进入环境和首跑阶段，跨仓拼装摩擦会快速抬升。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>4</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>50.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>25.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>4</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">xla-npu</span><span class="repo-chip">torchtitan-npu</span><span class="repo-chip">triton-inference-server-ge-backend</span></div>
+          <div class="chip-row"><span class="repo-chip risk">tensorflow</span><span class="repo-chip risk">torchtitan-npu</span><span class="repo-chip risk">triton-inference-server-ge-backend</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/tensorflow" target="_blank">tensorflow</a><a class="repo-ref" href="https://gitcode.com/cann/xla-npu" target="_blank">xla-npu</a><a class="repo-ref" href="https://gitcode.com/cann/torchtitan-npu" target="_blank">torchtitan-npu</a><a class="repo-ref" href="https://gitcode.com/cann/triton-inference-server-ge-backend" target="_blank">triton-inference-server-ge-backend</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a><a href="D:\HW\AscendCANN\cann-dashboard\cann-repo-coverage.json" target="_blank">repo coverage JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-1" data-scene-panel="role-1-scene-1">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>裸模型昇腾亲和优化</h3>
+          <div class="source-row"><span class="source-badge context">context 骨架</span></div>
+          <p class="scenario-summary">场景分 <strong>66.8</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score mid">
+          <span>场景分</span>
+          <strong>66.8</strong>
+        </div>
+      </div>
+      
+      <div class="journey-track">
+    <div class="journey-step mid strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">78</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">进入亲和优化后，首要问题从“能不能跑”转为“怎么稳定验证收益”。</p>
+        <p class="journey-evidence">文档清晰度 28 / 环境可达性 20 / 自动化友好度 20 / 反馈与验证质量 10</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">数据/权重/外部资产准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">71</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">数据/权重/外部资产准备 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 26 / 环境可达性 20 / 自动化友好度 17 / 反馈与验证质量 8</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">48</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">这条旅程更需要标准化迁移模板，而不是再增加零散说明。</p>
+        <p class="journey-evidence">文档清晰度 14 / 环境可达性 19 / 自动化友好度 9 / 反馈与验证质量 6</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">深入修改/扩展</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">70</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">深入修改/扩展 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 26 / 环境可达性 20 / 自动化友好度 15 / 反馈与验证质量 9</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>进入亲和优化后，首要问题从“能不能跑”转为“怎么稳定验证收益”。</li><li>这条旅程更需要标准化迁移模板，而不是再增加零散说明。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>6</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>33.3%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>33.3%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>6</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">xla-npu</span><span class="repo-chip">torchtitan-npu</span><span class="repo-chip">triton-inference-server-ge-backend</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-recipes-train</span><span class="repo-chip risk">cann-recipes-infer</span><span class="repo-chip risk">tensorflow</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/tensorflow" target="_blank">tensorflow</a><a class="repo-ref" href="https://gitcode.com/cann/xla-npu" target="_blank">xla-npu</a><a class="repo-ref" href="https://gitcode.com/cann/torchtitan-npu" target="_blank">torchtitan-npu</a><a class="repo-ref" href="https://gitcode.com/cann/triton-inference-server-ge-backend" target="_blank">triton-inference-server-ge-backend</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-infer" target="_blank">cann-recipes-infer</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-train" target="_blank">cann-recipes-train</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a><a href="D:\HW\AscendCANN\cann-dashboard\cann-repo-coverage.json" target="_blank">repo coverage JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-1" data-scene-panel="role-1-scene-2">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>VLLM/SGL 框架原生开箱</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>58.8</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score low">
+          <span>场景分</span>
+          <strong>58.8</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 里没有旅程内容，这里用新分析补全。</div>
+      <div class="journey-track">
+    <div class="journey-step mid strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">78</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">框架开箱路径看似有入口，但真正的断点集中在依赖和运行前提的连续性上。</p>
+        <p class="journey-evidence">文档清晰度 29 / 环境可达性 20 / 自动化友好度 19 / 反馈与验证质量 10</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">代码获取</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">60</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">代码获取 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 23 / 环境可达性 18 / 自动化友好度 11 / 反馈与验证质量 8</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">环境准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">57</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">环境准备 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 20 / 环境可达性 17 / 自动化友好度 13 / 反馈与验证质量 7</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">首次运行</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">56</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">首次运行 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 19 / 环境可达性 19 / 自动化友好度 12 / 反馈与验证质量 6</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 5</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">47</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">对用户来说，最关键的是能否在最短路径下确认这个框架方案可行。</p>
+        <p class="journey-evidence">文档清晰度 14 / 环境可达性 19 / 自动化友好度 8 / 反馈与验证质量 6</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>框架开箱路径看似有入口，但真正的断点集中在依赖和运行前提的连续性上。</li><li>对用户来说，最关键的是能否在最短路径下确认这个框架方案可行。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>3</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>33.3%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>33.3%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>3</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">triton-inference-server-ge-backend</span><span class="repo-chip">cann-recipes-infer</span><span class="repo-chip">cann-recipes-train</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-recipes-train</span><span class="repo-chip risk">cann-recipes-infer</span><span class="repo-chip risk">triton-inference-server-ge-backend</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-infer" target="_blank">cann-recipes-infer</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-train" target="_blank">cann-recipes-train</a><a class="repo-ref" href="https://gitcode.com/cann/triton-inference-server-ge-backend" target="_blank">triton-inference-server-ge-backend</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-1" data-scene-panel="role-1-scene-3">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>VLLM/SGL 框架昇腾亲和优化</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>64.8</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score mid">
+          <span>场景分</span>
+          <strong>64.8</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 里没有旅程内容，这里用新分析补全。</div>
+      <div class="journey-track">
+    <div class="journey-step mid strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">78</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">亲和优化阶段的 UX 核心是验证闭环和可回退路径，而不是单纯文档量。</p>
+        <p class="journey-evidence">文档清晰度 28 / 环境可达性 20 / 自动化友好度 20 / 反馈与验证质量 10</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">数据/权重/外部资产准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">68</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">数据/权重/外部资产准备 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 25 / 环境可达性 20 / 自动化友好度 15 / 反馈与验证质量 8</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">47</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">如果没有统一的收益判断标准，优化体验会显著下降。</p>
+        <p class="journey-evidence">文档清晰度 14 / 环境可达性 19 / 自动化友好度 8 / 反馈与验证质量 6</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">深入修改/扩展</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">66</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">深入修改/扩展 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 24 / 环境可达性 19 / 自动化友好度 14 / 反馈与验证质量 9</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>亲和优化阶段的 UX 核心是验证闭环和可回退路径，而不是单纯文档量。</li><li>如果没有统一的收益判断标准，优化体验会显著下降。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>4</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>50.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>25.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>4</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">xla-npu</span><span class="repo-chip">triton-inference-server-ge-backend</span><span class="repo-chip">cann-recipes-infer</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-recipes-train</span><span class="repo-chip risk">cann-recipes-infer</span><span class="repo-chip risk">triton-inference-server-ge-backend</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-infer" target="_blank">cann-recipes-infer</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-train" target="_blank">cann-recipes-train</a><a class="repo-ref" href="https://gitcode.com/cann/xla-npu" target="_blank">xla-npu</a><a class="repo-ref" href="https://gitcode.com/cann/triton-inference-server-ge-backend" target="_blank">triton-inference-server-ge-backend</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-1" data-scene-panel="role-1-scene-4">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>Verl 框架原生开箱</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>59.9</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score low">
+          <span>场景分</span>
+          <strong>59.9</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 里没有旅程内容，这里用新分析补全。</div>
+      <div class="journey-track">
+    <div class="journey-step mid strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">76</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">训练框架开箱的问题同样不是发现不到入口，而是环境与运行阶段的前置条件较重。</p>
+        <p class="journey-evidence">文档清晰度 28 / 环境可达性 18 / 自动化友好度 20 / 反馈与验证质量 10</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">代码获取</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">63</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">代码获取 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 25 / 环境可达性 18 / 自动化友好度 12 / 反馈与验证质量 8</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">环境准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">63</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">环境准备 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 23 / 环境可达性 18 / 自动化友好度 16 / 反馈与验证质量 6</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">首次运行</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">54</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">首次运行 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 18 / 环境可达性 18 / 自动化友好度 12 / 反馈与验证质量 6</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 5</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">48</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">如果能把最小可运行路径压缩，开箱体验会明显改善。</p>
+        <p class="journey-evidence">文档清晰度 14 / 环境可达性 18 / 自动化友好度 10 / 反馈与验证质量 6</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>训练框架开箱的问题同样不是发现不到入口，而是环境与运行阶段的前置条件较重。</li><li>如果能把最小可运行路径压缩，开箱体验会明显改善。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>2</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>0.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>50.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>2</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">torchtitan-npu</span><span class="repo-chip">cann-recipes-train</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-recipes-train</span><span class="repo-chip risk">torchtitan-npu</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-train" target="_blank">cann-recipes-train</a><a class="repo-ref" href="https://gitcode.com/cann/torchtitan-npu" target="_blank">torchtitan-npu</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-1" data-scene-panel="role-1-scene-5">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>Verl 框架昇腾亲和优化</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>66.0</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score mid">
+          <span>场景分</span>
+          <strong>66.0</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 里没有旅程内容，这里用新分析补全。</div>
+      <div class="journey-track">
+    <div class="journey-step mid strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">77</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">这条旅程更像持续优化，而不是首次体验，因此验证与扩展阶段的权重更高。</p>
+        <p class="journey-evidence">文档清晰度 28 / 环境可达性 19 / 自动化友好度 20 / 反馈与验证质量 10</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">数据/权重/外部资产准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">69</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">数据/权重/外部资产准备 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 26 / 环境可达性 19 / 自动化友好度 16 / 反馈与验证质量 8</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">48</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">需要统一的优化回路，避免用户在不同仓间自行拼装验证路径。</p>
+        <p class="journey-evidence">文档清晰度 14 / 环境可达性 18 / 自动化友好度 10 / 反馈与验证质量 6</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">深入修改/扩展</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">70</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">深入修改/扩展 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 26 / 环境可达性 19 / 自动化友好度 16 / 反馈与验证质量 9</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>这条旅程更像持续优化，而不是首次体验，因此验证与扩展阶段的权重更高。</li><li>需要统一的优化回路，避免用户在不同仓间自行拼装验证路径。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>3</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>33.3%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>33.3%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>3</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">xla-npu</span><span class="repo-chip">torchtitan-npu</span><span class="repo-chip">cann-recipes-train</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-recipes-train</span><span class="repo-chip risk">torchtitan-npu</span><span class="repo-chip risk">xla-npu</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-train" target="_blank">cann-recipes-train</a><a class="repo-ref" href="https://gitcode.com/cann/xla-npu" target="_blank">xla-npu</a><a class="repo-ref" href="https://gitcode.com/cann/torchtitan-npu" target="_blank">torchtitan-npu</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    </section>
+    
+    <section class="role-panel" data-role="role-2">
+      <div class="role-head">
+        <div>
+          <div class="role-kicker">产品应用性</div>
+          <h2>应用开发者</h2>
+          <p>context.md 原本为空，这里用新分析补出更贴近业务落地与样例消费的两条应用型旅程。</p>
+        </div>
+        <div class="role-score low">
+          <span>角色均分</span>
+          <strong>43.4</strong>
+        </div>
+      </div>
+      <div class="scene-tabbar">
+            <button class="scene-tab active" type="button" data-role-target="role-2" data-scene-target="role-2-scene-0">
+              <span class="scene-tab-name">行业方案验证与 PoC</span>
+              <span class="scene-tab-score">场景分 33.2</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-2" data-scene-target="role-2-scene-1">
+              <span class="scene-tab-name">样例落地与快速试用</span>
+              <span class="scene-tab-score">场景分 53.6</span>
+            </button>
+            </div>
+      
+    <section class="scenario-panel active" data-role-panel="role-2" data-scene-panel="role-2-scene-0">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>行业方案验证与 PoC</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>33.2</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score bad">
+          <span>场景分</span>
+          <strong>33.2</strong>
+        </div>
+      </div>
+      <div class="inline-note">这是对 context.md 空白角色内容的补全。</div>
+      <div class="journey-track">
+    <div class="journey-step mid strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">60</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">应用型用户最先关心的是能否快速完成 PoC，而不是理解整套底层架构。</p>
+        <p class="journey-evidence">文档清晰度 21 / 环境可达性 23 / 自动化友好度 10 / 反馈与验证质量 6</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step bad">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">环境准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill bad">27</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">环境准备 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 9 / 环境可达性 12 / 自动化友好度 3 / 反馈与验证质量 3</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step bad">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">首次运行</div>
+        <div class="journey-score-row">
+          <span class="score-pill bad">29</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">首次运行 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 9 / 环境可达性 16 / 自动化友好度 2 / 反馈与验证质量 2</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step bad weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill bad">24</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">当前更像方案展示而不是最小可运行方案包，所以首跑和验证阶段容易掉线。</p>
+        <p class="journey-evidence">文档清晰度 6 / 环境可达性 15 / 自动化友好度 1 / 反馈与验证质量 2</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>应用型用户最先关心的是能否快速完成 PoC，而不是理解整套底层架构。</li><li>当前更像方案展示而不是最小可运行方案包，所以首跑和验证阶段容易掉线。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>4</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>0.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>0.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>0.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>4</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">elec-ops-prediction</span><span class="repo-chip">elec-ops-simulation</span><span class="repo-chip">mat-chem-sim-pred</span></div>
+          <div class="chip-row"><span class="repo-chip risk">elec-ops-inspection</span><span class="repo-chip risk">elec-ops-prediction</span><span class="repo-chip risk">elec-ops-simulation</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/elec-ops-inspection" target="_blank">elec-ops-inspection</a><a class="repo-ref" href="https://gitcode.com/cann/elec-ops-prediction" target="_blank">elec-ops-prediction</a><a class="repo-ref" href="https://gitcode.com/cann/elec-ops-simulation" target="_blank">elec-ops-simulation</a><a class="repo-ref" href="https://gitcode.com/cann/mat-chem-sim-pred" target="_blank">mat-chem-sim-pred</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a><a href="D:\HW\AscendCANN\cann-dashboard\cann-repo-coverage.json" target="_blank">repo coverage JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-2" data-scene-panel="role-2-scene-1">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>样例落地与快速试用</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>53.6</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score low">
+          <span>场景分</span>
+          <strong>53.6</strong>
+        </div>
+      </div>
+      <div class="inline-note">这是对 context.md 空白角色内容的补全。</div>
+      <div class="journey-track">
+    <div class="journey-step mid strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">76</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">应用开发者真正想看到的是最短路径出结果，而不是在多个 recipe 之间自行判断入口。</p>
+        <p class="journey-evidence">文档清晰度 27 / 环境可达性 23 / 自动化友好度 16 / 反馈与验证质量 10</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">代码获取</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">53</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">代码获取 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 19 / 环境可达性 18 / 自动化友好度 8 / 反馈与验证质量 8</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">环境准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">45</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">内容入口很多，但从“看见方案”到“确认它适合我”之间仍缺收敛路径。</p>
+        <p class="journey-evidence">文档清晰度 15 / 环境可达性 15 / 自动化友好度 8 / 反馈与验证质量 7</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low">
+      <div class="journey-node">
+        <div class="journey-index">阶段 4</div>
+        <div class="journey-stage">首次运行</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">51</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">首次运行 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 16 / 环境可达性 19 / 自动化友好度 9 / 反馈与验证质量 7</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low">
+      <div class="journey-node">
+        <div class="journey-index">阶段 5</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">50</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">结果验证 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 15 / 环境可达性 19 / 自动化友好度 9 / 反馈与验证质量 7</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>应用开发者真正想看到的是最短路径出结果，而不是在多个 recipe 之间自行判断入口。</li><li>内容入口很多，但从“看见方案”到“确认它适合我”之间仍缺收敛路径。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>7</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>85.7%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>28.6%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>28.6%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>7</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">cann-samples</span><span class="repo-chip">cann-recipes-embodied-intelligence</span><span class="repo-chip">cann-recipes-spatial-intelligence</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-recipes-harmony-infer</span><span class="repo-chip risk">cann-recipes-train</span><span class="repo-chip risk">cann-learning-hub</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/cann-learning-hub" target="_blank">cann-learning-hub</a><a class="repo-ref" href="https://gitcode.com/cann/cann-samples" target="_blank">cann-samples</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-harmony-infer" target="_blank">cann-recipes-harmony-infer</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-embodied-intelligence" target="_blank">cann-recipes-embodied-intelligence</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-spatial-intelligence" target="_blank">cann-recipes-spatial-intelligence</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-infer" target="_blank">cann-recipes-infer</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-train" target="_blank">cann-recipes-train</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\cann-recipes-embodied-intelligence\README.md" target="_blank">embodied README</a><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\cann-recipes-spatial-intelligence\models\vggt\README.md" target="_blank">VGGT README</a></div>
+        </div>
+      </div>
+    </section>
+    
+    </section>
+    
+    <section class="role-panel" data-role="role-3">
+      <div class="role-head">
+        <div>
+          <div class="role-kicker">社区易用性</div>
+          <h2>入门开发者</h2>
+          <p>这一类角色最关注能不能找到入口、快速跑通，并知道下一步做什么。</p>
+        </div>
+        <div class="role-score mid">
+          <span>角色均分</span>
+          <strong>69.7</strong>
+        </div>
+      </div>
+      <div class="scene-tabbar">
+            <button class="scene-tab active" type="button" data-role-target="role-3" data-scene-target="role-3-scene-0">
+              <span class="scene-tab-name">S0 搜索与发现</span>
+              <span class="scene-tab-score">场景分 77.0</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-3" data-scene-target="role-3-scene-1">
+              <span class="scene-tab-name">S1 环境检查与准备</span>
+              <span class="scene-tab-score">场景分 55.6</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-3" data-scene-target="role-3-scene-2">
+              <span class="scene-tab-name">S2 样例快速体验</span>
+              <span class="scene-tab-score">场景分 56.3</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-3" data-scene-target="role-3-scene-3">
+              <span class="scene-tab-name">S3 开发与编译</span>
+              <span class="scene-tab-score">场景分 82.6</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-3" data-scene-target="role-3-scene-4">
+              <span class="scene-tab-name">S4 测试与验证</span>
+              <span class="scene-tab-score">场景分 76.3</span>
+            </button>
+            
+            <button class="scene-tab" type="button" data-role-target="role-3" data-scene-target="role-3-scene-5">
+              <span class="scene-tab-name">S5 反馈与贡献</span>
+              <span class="scene-tab-score">场景分 70.3</span>
+            </button>
+            </div>
+      
+    <section class="scenario-panel active" data-role-panel="role-3" data-scene-panel="role-3-scene-0">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>S0 搜索与发现</h3>
+          <div class="source-row"><span class="source-badge context">context 骨架</span></div>
+          <p class="scenario-summary">场景分 <strong>77.0</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score mid">
+          <span>场景分</span>
+          <strong>77.0</strong>
+        </div>
+      </div>
+      
+      <div class="journey-track">
+    <div class="journey-step mid strongest weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">77</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">新用户不是完全找不到信息，而是无法快速判断哪个入口最权威、最适合自己当前目标。</p>
+        <p class="journey-evidence">文档清晰度 26 / 环境可达性 24 / 自动化友好度 17 / 反馈与验证质量 10</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>新用户不是完全找不到信息，而是无法快速判断哪个入口最权威、最适合自己当前目标。</li><li>搜索与发现阶段的 UX 重点是收敛，而不是堆更多入口。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>5</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>60.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>40.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>40.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>5</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">pyasc</span><span class="repo-chip">cann-samples</span><span class="repo-chip">cann-learning-hub</span></div>
+          <div class="chip-row"><span class="repo-chip risk">.gitcode</span><span class="repo-chip risk">community</span><span class="repo-chip risk">cann-learning-hub</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/community" target="_blank">community</a><a class="repo-ref" href="https://gitcode.com/cann/cann-learning-hub" target="_blank">cann-learning-hub</a><a class="repo-ref" href="https://gitcode.com/cann/cann-samples" target="_blank">cann-samples</a><a class="repo-ref" href="https://gitcode.com/cann/pyasc" target="_blank">pyasc</a><a class="repo-ref" href="https://gitcode.com/cann/.gitcode" target="_blank">.gitcode</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\context.md" target="_blank">context.md</a><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-3" data-scene-panel="role-3-scene-1">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>S1 环境检查与准备</h3>
+          <div class="source-row"><span class="source-badge context">context 骨架</span></div>
+          <p class="scenario-summary">场景分 <strong>55.6</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score low">
+          <span>场景分</span>
+          <strong>55.6</strong>
+        </div>
+      </div>
+      
+      <div class="journey-track">
+    <div class="journey-step low strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">环境准备</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">56</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">入门用户的最大断点不是理解概念，而是环境链路过长、失败不够可解释。</p>
+        <p class="journey-evidence">文档清晰度 17 / 环境可达性 19 / 自动化友好度 11 / 反馈与验证质量 9</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">依赖安装</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">55</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">如果没有环境自检与清晰成功判据，准备阶段会快速劝退。</p>
+        <p class="journey-evidence">文档清晰度 16 / 环境可达性 19 / 自动化友好度 10 / 反馈与验证质量 10</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>入门用户的最大断点不是理解概念，而是环境链路过长、失败不够可解释。</li><li>如果没有环境自检与清晰成功判据，准备阶段会快速劝退。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>5</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>80.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>40.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>40.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>5</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">pyasc</span><span class="repo-chip">cann-samples</span><span class="repo-chip">cann-recipes-embodied-intelligence</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-learning-hub</span><span class="repo-chip risk">cann-recipes-spatial-intelligence</span><span class="repo-chip risk">cann-recipes-embodied-intelligence</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/cann-samples" target="_blank">cann-samples</a><a class="repo-ref" href="https://gitcode.com/cann/cann-learning-hub" target="_blank">cann-learning-hub</a><a class="repo-ref" href="https://gitcode.com/cann/pyasc" target="_blank">pyasc</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-embodied-intelligence" target="_blank">cann-recipes-embodied-intelligence</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-spatial-intelligence" target="_blank">cann-recipes-spatial-intelligence</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\pyasc\docs\quick_start.md" target="_blank">pyasc quick start</a><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\cann-recipes-embodied-intelligence\README.md" target="_blank">embodied README</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-3" data-scene-panel="role-3-scene-2">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>S2 样例快速体验</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>56.3</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score low">
+          <span>场景分</span>
+          <strong>56.3</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 只有阶段名，这里用新分析补全内容。</div>
+      <div class="journey-track">
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">首次运行</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">56</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">如果不能快速得到一个明确结果，用户会很难继续下一步。</p>
+        <p class="journey-evidence">文档清晰度 18 / 环境可达性 20 / 自动化友好度 10 / 反馈与验证质量 8</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">57</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">样例快速体验本该是建立信心的阶段，但当前仍受到外部依赖与设备前提影响。</p>
+        <p class="journey-evidence">文档清晰度 18 / 环境可达性 20 / 自动化友好度 11 / 反馈与验证质量 8</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>样例快速体验本该是建立信心的阶段，但当前仍受到外部依赖与设备前提影响。</li><li>如果不能快速得到一个明确结果，用户会很难继续下一步。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>4</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>75.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>50.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>25.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>4</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">cann-samples</span><span class="repo-chip">cann-recipes-embodied-intelligence</span><span class="repo-chip">cann-recipes-spatial-intelligence</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-learning-hub</span><span class="repo-chip risk">cann-recipes-spatial-intelligence</span><span class="repo-chip risk">cann-recipes-embodied-intelligence</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/cann-samples" target="_blank">cann-samples</a><a class="repo-ref" href="https://gitcode.com/cann/cann-learning-hub" target="_blank">cann-learning-hub</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-embodied-intelligence" target="_blank">cann-recipes-embodied-intelligence</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-spatial-intelligence" target="_blank">cann-recipes-spatial-intelligence</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-3" data-scene-panel="role-3-scene-3">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>S3 开发与编译</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>82.6</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score high">
+          <span>场景分</span>
+          <strong>82.6</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 只有阶段名，这里用新分析补全内容。</div>
+      <div class="journey-track">
+    <div class="journey-step high strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">依赖安装</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">86</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">新手进入开发与编译后，最大风险是失败反馈不够短路，导致无法判断自己卡在哪。</p>
+        <p class="journey-evidence">文档清晰度 27 / 环境可达性 25 / 自动化友好度 21 / 反馈与验证质量 13</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">首次运行</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">80</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">这里需要比文档更强的脚本化检查和即时解释。</p>
+        <p class="journey-evidence">文档清晰度 24 / 环境可达性 24 / 自动化友好度 20 / 反馈与验证质量 12</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step high">
+      <div class="journey-node">
+        <div class="journey-index">阶段 3</div>
+        <div class="journey-stage">排障与回归</div>
+        <div class="journey-score-row">
+          <span class="score-pill high">86</span>
+          
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">排障与回归 阶段存在可推进路径，但仍有人工补齐成本。</p>
+        <p class="journey-evidence">文档清晰度 27 / 环境可达性 24 / 自动化友好度 22 / 反馈与验证质量 13</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>新手进入开发与编译后，最大风险是失败反馈不够短路，导致无法判断自己卡在哪。</li><li>这里需要比文档更强的脚本化检查和即时解释。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>3</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>66.7%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>66.7%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>3</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">pyasc</span><span class="repo-chip">asc-devkit</span><span class="repo-chip">cann-samples</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-samples</span><span class="repo-chip risk">asc-devkit</span><span class="repo-chip risk">pyasc</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/pyasc" target="_blank">pyasc</a><a class="repo-ref" href="https://gitcode.com/cann/asc-devkit" target="_blank">asc-devkit</a><a class="repo-ref" href="https://gitcode.com/cann/cann-samples" target="_blank">cann-samples</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-3" data-scene-panel="role-3-scene-4">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>S4 测试与验证</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>76.3</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score mid">
+          <span>场景分</span>
+          <strong>76.3</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 只有阶段名，这里用新分析补全内容。</div>
+      <div class="journey-track">
+    <div class="journey-step mid weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">结果验证</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">76</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">反馈质量越清楚，用户越能继续往下走。</p>
+        <p class="journey-evidence">文档清晰度 23 / 环境可达性 24 / 自动化友好度 18 / 反馈与验证质量 11</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step mid strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">排障与回归</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">77</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">对新手来说，测试与验证的核心不是覆盖率，而是能否明确告诉他‘现在结果算不算成功’。</p>
+        <p class="journey-evidence">文档清晰度 25 / 环境可达性 23 / 自动化友好度 17 / 反馈与验证质量 12</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>对新手来说，测试与验证的核心不是覆盖率，而是能否明确告诉他‘现在结果算不算成功’。</li><li>反馈质量越清楚，用户越能继续往下走。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>4</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>75.0%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>50.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>75.0%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>4</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">pyasc</span><span class="repo-chip">asc-devkit</span><span class="repo-chip">cann-samples</span></div>
+          <div class="chip-row"><span class="repo-chip risk">cann-recipes-spatial-intelligence</span><span class="repo-chip risk">cann-samples</span><span class="repo-chip risk">asc-devkit</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/pyasc" target="_blank">pyasc</a><a class="repo-ref" href="https://gitcode.com/cann/asc-devkit" target="_blank">asc-devkit</a><a class="repo-ref" href="https://gitcode.com/cann/cann-samples" target="_blank">cann-samples</a><a class="repo-ref" href="https://gitcode.com/cann/cann-recipes-spatial-intelligence" target="_blank">cann-recipes-spatial-intelligence</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="scenario-panel" data-role-panel="role-3" data-scene-panel="role-3-scene-5">
+      <div class="scenario-hero">
+        <div>
+          <div class="scenario-eyebrow">场景旅程</div>
+          <h3>S5 反馈与贡献</h3>
+          <div class="source-row"><span class="source-badge supplement">新分析补全</span></div>
+          <p class="scenario-summary">场景分 <strong>70.3</strong>。当前旅程的高低点已经直接体现在轨道里。</p>
+        </div>
+        <div class="scenario-score mid">
+          <span>场景分</span>
+          <strong>70.3</strong>
+        </div>
+      </div>
+      <div class="inline-note">context.md 只有阶段名，这里用新分析补全内容。</div>
+      <div class="journey-track">
+    <div class="journey-step mid strongest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 1</div>
+        <div class="journey-stage">搜索发现</div>
+        <div class="journey-score-row">
+          <span class="score-pill mid">78</span>
+          <span class="mini-badge strongest">高分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">反馈与贡献的关键不是仓库里有没有 issue 入口，而是用户是否清楚该去哪里、提什么、怎么描述问题。</p>
+        <p class="journey-evidence">文档清晰度 26 / 环境可达性 25 / 自动化友好度 17 / 反馈与验证质量 10</p>
+      </div>
+      <div class="journey-connector" aria-hidden="true"></div>
+    </div>
+    
+    <div class="journey-step low weakest">
+      <div class="journey-node">
+        <div class="journey-index">阶段 2</div>
+        <div class="journey-stage">排障与回归</div>
+        <div class="journey-score-row">
+          <span class="score-pill low">55</span>
+          <span class="mini-badge weakest">低分阶段</span>
+        </div>
+      </div>
+      <div class="journey-card">
+        <p class="journey-point">如果反馈入口不收敛，新手的负面体验会被带入社区环节继续放大。</p>
+        <p class="journey-evidence">文档清晰度 19 / 环境可达性 20 / 自动化友好度 9 / 反馈与验证质量 7</p>
+      </div>
+      
+    </div>
+    </div>
+      <div class="scenario-meta">
+        <div class="meta-card">
+          <div class="meta-title">用户体验分析</div>
+          <ul><li>反馈与贡献的关键不是仓库里有没有 issue 入口，而是用户是否清楚该去哪里、提什么、怎么描述问题。</li><li>如果反馈入口不收敛，新手的负面体验会被带入社区环节继续放大。</li></ul>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">辅助证据</div>
+          <div class="metric-grid compact">
+            <div class="metric"><span>仓库数</span><strong>3</strong></div>
+            <div class="metric"><span>README 覆盖率</span><strong>100.0%</strong></div>
+            <div class="metric"><span>docs 覆盖率</span><strong>66.7%</strong></div>
+            <div class="metric"><span>examples 覆盖率</span><strong>0.0%</strong></div>
+            <div class="metric"><span>tests 覆盖率</span><strong>33.3%</strong></div>
+            <div class="metric"><span>参考仓库</span><strong>3</strong></div>
+          </div>
+          <div class="chip-row" style="margin-top:12px;"><span class="repo-chip">pyasc</span><span class="repo-chip">community</span><span class="repo-chip">.gitcode</span></div>
+          <div class="chip-row"><span class="repo-chip risk">.gitcode</span><span class="repo-chip risk">community</span><span class="repo-chip risk">pyasc</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-title">被引用仓 / 证据</div>
+          <div class="repo-ref-list"><a class="repo-ref" href="https://gitcode.com/cann/community" target="_blank">community</a><a class="repo-ref" href="https://gitcode.com/cann/.gitcode" target="_blank">.gitcode</a><a class="repo-ref" href="https://gitcode.com/cann/pyasc" target="_blank">pyasc</a></div>
+          <div class="evidence-links" style="margin-top:12px;"><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json" target="_blank">observations JSON</a></div>
+        </div>
+      </div>
+    </section>
+    
+    </section>
+    </main>
+  </div>
+  <script>
+    const roleTabs = Array.from(document.querySelectorAll('[data-role-tab]'));
+    const rolePanels = Array.from(document.querySelectorAll('.role-panel'));
+    const sceneTabs = Array.from(document.querySelectorAll('.scene-tab'));
+    const scenePanels = Array.from(document.querySelectorAll('.scenario-panel'));
+    function activateRole(roleId) {
+      roleTabs.forEach((tab) => tab.classList.toggle('active', tab.dataset.roleTab === roleId));
+      rolePanels.forEach((panel) => panel.classList.toggle('active', panel.dataset.role === roleId));
+      const roleSceneTabs = sceneTabs.filter((tab) => tab.dataset.roleTarget === roleId);
+      const activeSceneTab = roleSceneTabs.find((tab) => tab.classList.contains('active')) || roleSceneTabs[0];
+      if (activeSceneTab) activateScene(roleId, activeSceneTab.dataset.sceneTarget);
+    }
+    function activateScene(roleId, sceneId) {
+      sceneTabs.filter((tab) => tab.dataset.roleTarget === roleId).forEach((tab) => tab.classList.toggle('active', tab.dataset.sceneTarget === sceneId));
+      scenePanels.filter((panel) => panel.dataset.rolePanel === roleId).forEach((panel) => panel.classList.toggle('active', panel.dataset.scenePanel === sceneId));
+    }
+    roleTabs.forEach((tab) => tab.addEventListener('click', () => activateRole(tab.dataset.roleTab)));
+    sceneTabs.forEach((tab) => tab.addEventListener('click', () => activateScene(tab.dataset.roleTarget, tab.dataset.sceneTarget)));
+    if (roleTabs.length) activateRole(roleTabs[0].dataset.roleTab);
+  </script>
+</body>
+</html>

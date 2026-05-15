@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CANN 用户体验旅程 Agentic 评分报告</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --panel: rgba(255,252,246,.92);
+      --panel-strong: #fffdf8;
+      --text: #1f2430;
+      --muted: #5f6572;
+      --line: rgba(31,36,48,.1);
+      --brand: #0d5c63;
+      --brand-soft: #d9efe9;
+      --accent: #d97706;
+      --danger: #b42318;
+      --good: #13795b;
+      --shadow: 0 18px 50px rgba(31,36,48,.08);
+      --radius: 20px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(13,92,99,.14), transparent 30%),
+        radial-gradient(circle at top right, rgba(217,119,6,.1), transparent 28%),
+        linear-gradient(180deg, #faf7f1 0%, var(--bg) 100%);
+      line-height: 1.65;
+    }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .shell { width: min(1220px, calc(100vw - 32px)); margin: 24px auto 48px; }
+    .hero {
+      background: linear-gradient(145deg, rgba(255,255,255,.95), rgba(246,249,247,.92));
+      border: 1px solid rgba(13,92,99,.12);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .hero-top {
+      padding: 28px 32px 8px;
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+    h1 { margin: 14px 0 12px; font-size: clamp(30px, 4vw, 48px); line-height: 1.08; }
+    .lead { max-width: 860px; color: var(--muted); font-size: 16px; margin: 0 0 10px; }
+    .meta { display: grid; gap: 10px; min-width: 280px; }
+    .meta-card { background: rgba(255,255,255,.75); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+    .meta-card strong { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .08em; }
+    .hero-grid { padding: 8px 32px 32px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+    .stat .k { font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: .08em; margin-bottom: 8px; }
+    .stat .v { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 8px; }
+    .stat .d { font-size: 14px; color: var(--muted); }
+    .toc {
+      position: sticky;
+      top: 12px;
+      z-index: 20;
+      margin: 18px 0 22px;
+      padding: 12px;
+      background: rgba(255,253,248,.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(31,36,48,.06);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .toc a { padding: 10px 14px; border-radius: 999px; background: rgba(13,92,99,.08); color: var(--brand); font-size: 14px; font-weight: 600; }
+    section { margin-top: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 30px; }
+    section h2 { margin: 0 0 12px; font-size: 28px; line-height: 1.15; }
+    p { margin: 10px 0; }
+    ul { margin: 10px 0 10px 20px; padding: 0; }
+    li + li { margin-top: 6px; }
+    .callout { padding: 16px 18px; border-radius: 16px; border-left: 4px solid var(--accent); background: rgba(217,119,6,.08); color: #5a3a0a; margin: 16px 0; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+    .card { background: var(--panel-strong); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+    .card h4 { margin: 0 0 8px; font-size: 17px; }
+    .summary-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 8px 0 0; }
+    .summary-pill { padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.75); font-size: 14px; }
+    .score-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+    .score-table th, .score-table td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .score-table th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+    .small td { font-size: 13px; }
+    .score { display: inline-block; min-width: 58px; padding: 4px 10px; border-radius: 999px; font-weight: 700; text-align: center; }
+    .score.high { background: rgba(19,121,91,.12); color: var(--good); }
+    .score.mid { background: rgba(13,92,99,.12); color: var(--brand); }
+    .score.low { background: rgba(217,119,6,.12); color: var(--accent); }
+    .score.bad { background: rgba(180,35,24,.12); color: var(--danger); }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .tag { padding: 6px 10px; border-radius: 999px; background: rgba(13,92,99,.08); color: var(--brand); font-size: 13px; font-weight: 600; }
+    .tag.warn { background: rgba(180,35,24,.08); color: var(--danger); }
+    .quote { color: var(--muted); font-style: italic; margin-top: 14px; }
+    .evidence-card { margin-top: 16px; }
+    @media (max-width: 900px) { .hero-grid, .grid-2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">User Journey First, Data As Evidence</div>
+          <h1>CANN 用户体验旅程<br />Agentic 评分报告</h1>
+          <p class="lead">这份报告把不同角色的用户旅程放在前面。仓库数据仍然保留，但只作为用户体验分析的证据层。</p>
+        </div>
+        <div class="meta">
+          <div class="meta-card"><strong>角色数</strong>4 个</div>
+          <div class="meta-card"><strong>全量覆盖</strong>65 个仓库</div>
+          <div class="meta-card"><strong>原始数据</strong><code>D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json</code></div>
+        </div>
+      </div>
+      <div class="hero-grid">
+        <div class="stat"><div class="k">最佳体验角色</div><div class="v">算子 / 编译接口开发者</div><div class="d">综合分 67.1</div></div>
+        <div class="stat"><div class="k">最弱体验角色</div><div class="v">样例消费型开发者</div><div class="d">综合分 49.1</div></div>
+        <div class="stat"><div class="k">共同断点</div><div class="v">环境 / 首跑</div><div class="d">多数角色会被环境准备和首次运行卡住</div></div>
+        <div class="stat"><div class="k">结论边界</div><div class="v">实际规则</div><div class="d">页面上的分数与页面里的规则现在一致</div></div>
+      </div>
+    </header>
+
+    <nav class="toc">
+      <a href="#method">评分方法</a>
+      <a href="#overall">总体结论</a>
+      <a href="#sample_consumer">样例消费型开发者</a><a href="#model_adapter">模型 / 框架适配开发者</a><a href="#operator_developer">算子 / 编译接口开发者</a><a href="#system_engineer">系统 / 通信 / 基础设施开发者</a>
+      <a href="#raw">原始数据</a>
+    </nav>
+
+    
+    <section id="method">
+      <h2>Agentic 评分结果</h2>
+      <p>评分区间为 <code>0-100</code>。分数越高，说明 agent 越能在少人工干预的情况下自主推进。</p>
+      <div class="grid-2">
+        <div class="card">
+          <h4>分数怎么算</h4>
+          <table class="score-table small">
+            <thead><tr><th>组成项</th><th>满分</th><th>判断标准</th></tr></thead>
+            <tbody><tr><td>文档清晰度</td><td>30</td><td>是否有明确、线性的动作链，是否写清版本、路径、成功判据。</td></tr><tr><td>环境可达性</td><td>30</td><td>当前常见开发环境能推进到哪一步，前置限制越少分越高。</td></tr><tr><td>自动化友好度</td><td>25</td><td>是否容易脚本化、agent 化推进，是否依赖手工复制、手找权重、跨仓拼装。</td></tr><tr><td>反馈与验证质量</td><td>15</td><td>是否有 help、日志、测试、benchmark、结果校验、失败反馈。</td></tr></tbody>
+          </table>
+          <p><code>阶段分数 = 文档清晰度 + 环境可达性 + 自动化友好度 + 反馈与验证质量</code></p>
+        </div>
+        <div class="card">
+          <h4>角色总分怎么算</h4>
+          <table class="score-table small">
+            <thead><tr><th>阶段</th><th>权重</th></tr></thead>
+            <tbody><tr><td>搜索发现</td><td>10%</td></tr><tr><td>代码获取</td><td>10%</td></tr><tr><td>环境准备</td><td>15%</td></tr><tr><td>依赖安装</td><td>10%</td></tr><tr><td>数据/权重/外部资产准备</td><td>10%</td></tr><tr><td>首次运行</td><td>20%</td></tr><tr><td>结果验证</td><td>10%</td></tr><tr><td>深入修改/扩展</td><td>10%</td></tr><tr><td>排障与回归</td><td>5%</td></tr></tbody>
+          </table>
+          <p><code>角色总分 = Σ(阶段分数 × 阶段权重)</code></p>
+          <p>之所以把“首次运行”和“环境准备”权重放高，是因为这两个阶段最决定首次体验成败。</p>
+        </div>
+      </div>
+      <div class="callout">
+        例子：Persona 1 的“环境准备 = 40 分”当前拆成：
+        <ul><li>文档清晰度：<code>9/30</code></li><li>环境可达性：<code>15/30</code></li><li>自动化友好度：<code>10/25</code></li><li>反馈与验证质量：<code>6/15</code></li></ul>
+        <p><code>9 + 15 + 10 + 6 = 40</code></p>
+      </div>
+    </section>
+    
+
+    <section id="overall">
+      <h2>总体结论</h2>
+      <p>CANN 当前的主要问题，不是“没有仓库内容”，而是“内容很多，但不同角色进入后，前 1 小时的体验链路不够顺滑”。</p>
+      <ul>
+        <li>最佳体验角色：算子 / 编译接口开发者，综合分 67.1</li>
+        <li>最弱体验角色：样例消费型开发者，综合分 49.1</li>
+        <li>共同断点：环境准备 / 首次运行</li>
+        <li>这说明主问题不是“找不到内容”，而是“找到了也不容易顺利推进到成功”。</li>
+      </ul>
+    </section>
+
+    
+            <section id="sample_consumer">
+              <h2>Persona 1：样例消费型开发者</h2>
+              <p class="lead-mini"><strong>场景：</strong>想尽快跑通一个 CANN 样例，先验证这套生态对自己有没有用。</p>
+              <div class="summary-row">
+                <div class="summary-pill"><strong>相关仓库</strong>7 个</div>
+                <div class="summary-pill"><strong>综合评分</strong>49.1 / 100</div>
+              </div>
+              <div class="card evidence-card">
+                <table class="score-table">
+                  <thead><tr><th>阶段</th><th>评分</th><th>四项拆分</th><th>说明</th></tr></thead>
+                  <tbody><tr><td>搜索发现</td><td><span class="score mid">62</span></td><td>文档清晰度 27 / 环境可达性 11 / 自动化友好度 14 / 反馈与验证质量 10</td><td>命名和场景分类清楚，但 infer/train 空壳容易误导入口判断。</td></tr><tr><td>代码获取</td><td><span class="score low">58</span></td><td>文档清晰度 19 / 环境可达性 13 / 自动化友好度 15 / 反馈与验证质量 11</td><td>主仓可 clone，但部分 repo 超时或只落 .git。</td></tr><tr><td>环境准备</td><td><span class="score low">40</span></td><td>文档清晰度 9 / 环境可达性 15 / 自动化友好度 10 / 反馈与验证质量 6</td><td>强依赖 Linux、CANN、NPU、conda、source set_env.sh。</td></tr><tr><td>依赖安装</td><td><span class="score low">46</span></td><td>文档清晰度 9 / 环境可达性 16 / 自动化友好度 14 / 反馈与验证质量 7</td><td>embodied 相对直给，spatial 版本匹配更严。</td></tr><tr><td>数据/权重/外部资产准备</td><td><span class="score low">41</span></td><td>文档清晰度 9 / 环境可达性 14 / 自动化友好度 12 / 反馈与验证质量 6</td><td>VGGT 还要上游代码和权重手动准备。</td></tr><tr><td>首次运行</td><td><span class="score low">43</span></td><td>文档清晰度 8 / 环境可达性 14 / 自动化友好度 10 / 反馈与验证质量 11</td><td>文档明确，但真实前提过多，当前机上无法推进到执行。</td></tr><tr><td>结果验证</td><td><span class="score low">55</span></td><td>文档清晰度 13 / 环境可达性 13 / 自动化友好度 14 / 反馈与验证质量 15</td><td>pi0 有性能与输出说明，VGGT 有评测入口。</td></tr><tr><td>深入修改/扩展</td><td><span class="score mid">61</span></td><td>文档清晰度 14 / 环境可达性 13 / 自动化友好度 22 / 反馈与验证质量 12</td><td>有一定可读性，但路径碎片化明显。</td></tr><tr><td>排障与回归</td><td><span class="score low">44</span></td><td>文档清晰度 7 / 环境可达性 10 / 自动化友好度 12 / 反馈与验证质量 15</td><td>缺统一 troubleshooting 中心。</td></tr></tbody>
+                </table>
+              </div>
+              <div class="grid-2">
+                <div class="card">
+                  <h4>用户体验分析</h4>
+                  <ul><li>样例内容本身不算少，但对第一次进入的人来说，真正断点不在“有没有例子”，而在“哪个例子最短、最稳、最适合我”。</li><li>进入代码后，环境、依赖、权重和上游仓准备连续叠加，导致首次成功体验被推迟。</li><li>验证入口存在，但从“看懂说明”到“在当前机器上真实推进”之间仍有明显断层。</li></ul>
+                  <p class="quote">“可学、可跟，但不够拿来就跑；更像文档驱动样例库，不像低摩擦产品化入口。”</p>
+                </div>
+                <div class="card">
+                  <h4>辅助证据</h4>
+                  <ul>
+                    <li>README 覆盖率：100.0%</li>
+                    <li>docs 覆盖率：85.7%</li>
+                    <li>examples 覆盖率：28.6%</li>
+                    <li>tests 覆盖率：28.6%</li>
+                    <li>scripts 入口覆盖率：28.6%</li>
+                    <li>package/build 入口覆盖率：14.3%</li>
+                    <li>平均 README 长度：5136.57</li>
+                    <li>平均摩擦信号数：0.43</li>
+                  </ul>
+                  <p>相对最强入口：</p>
+                  <div class="tag-row"><span class="tag">cann-samples</span><span class="tag">cann-recipes-embodied-intelligence</span><span class="tag">cann-recipes-spatial-intelligence</span></div>
+                  <p>易误判/易卡顿入口：</p>
+                  <div class="tag-row"><span class="tag warn">cann-recipes-harmony-infer</span><span class="tag warn">cann-recipes-train</span><span class="tag warn">cann-learning-hub</span></div>
+                  <div class="evidence-card">
+                    <h4>直接证据</h4>
+                    <p><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\cann-recipes-embodied-intelligence\README.md">embodied README</a><br /><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\cann-recipes-embodied-intelligence\manipulation\pi0\infer_with_torch\README.md">pi0 infer README</a><br /><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\cann-recipes-spatial-intelligence\models\vggt\README.md">VGGT README</a><br /></p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            
+            <section id="model_adapter">
+              <h2>Persona 2：模型 / 框架适配开发者</h2>
+              <p class="lead-mini"><strong>场景：</strong>想把上游模型、训练/推理框架或服务后端迁移到 CANN 生态。</p>
+              <div class="summary-row">
+                <div class="summary-pill"><strong>相关仓库</strong>8 个</div>
+                <div class="summary-pill"><strong>综合评分</strong>54.0 / 100</div>
+              </div>
+              <div class="card evidence-card">
+                <table class="score-table">
+                  <thead><tr><th>阶段</th><th>评分</th><th>四项拆分</th><th>说明</th></tr></thead>
+                  <tbody><tr><td>搜索发现</td><td><span class="score mid">68</span></td><td>文档清晰度 30 / 环境可达性 12 / 自动化友好度 16 / 反馈与验证质量 10</td><td>分场景清晰，较容易定位模型。</td></tr><tr><td>代码获取</td><td><span class="score mid">61</span></td><td>文档清晰度 20 / 环境可达性 14 / 自动化友好度 16 / 反馈与验证质量 11</td><td>主仓可获取，附属仓稳定性一般。</td></tr><tr><td>环境准备</td><td><span class="score low">45</span></td><td>文档清晰度 10 / 环境可达性 18 / 自动化友好度 11 / 反馈与验证质量 6</td><td>完整 CANN / NPU 前提依旧很重。</td></tr><tr><td>依赖安装</td><td><span class="score low">50</span></td><td>文档清晰度 10 / 环境可达性 17 / 自动化友好度 15 / 反馈与验证质量 8</td><td>版本信息有写，但不是一步完成。</td></tr><tr><td>数据/权重/外部资产准备</td><td><span class="score bad">36</span></td><td>文档清晰度 8 / 环境可达性 12 / 自动化友好度 11 / 反馈与验证质量 5</td><td>VGGT 需要上游 clone + 手工复制 + checkpoint 放置。</td></tr><tr><td>首次运行</td><td><span class="score low">48</span></td><td>文档清晰度 9 / 环境可达性 15 / 自动化友好度 12 / 反馈与验证质量 12</td><td>对熟手尚可，对 agent 自动化不友好。</td></tr><tr><td>结果验证</td><td><span class="score mid">63</span></td><td>文档清晰度 15 / 环境可达性 16 / 自动化友好度 17 / 反馈与验证质量 15</td><td>性能优化文档、精度验证文档是强项。</td></tr><tr><td>深入修改/扩展</td><td><span class="score mid">72</span></td><td>文档清晰度 17 / 环境可达性 16 / 自动化友好度 25 / 反馈与验证质量 14</td><td>适合做模型改造和脚本层调优。</td></tr><tr><td>排障与回归</td><td><span class="score low">52</span></td><td>文档清晰度 9 / 环境可达性 13 / 自动化友好度 15 / 反馈与验证质量 15</td><td>有验证脚本，但回归路径不统一。</td></tr></tbody>
+                </table>
+              </div>
+              <div class="grid-2">
+                <div class="card">
+                  <h4>用户体验分析</h4>
+                  <ul><li>这类用户最不缺的是材料，最缺的是一条跨仓、跨框架、跨依赖的连续动作链。</li><li>数据/权重/外部资产准备阶段明显拉低总分，说明迁移成本主要消耗在拼装，而不是发现知识。</li><li>深入修改与扩展阶段反而较强，意味着它更适合熟手工程师，而不适合低介入自动推进。</li></ul>
+                  <p class="quote">“对熟悉昇腾生态的适配工程师有价值，但跨仓拼装步骤太多。”</p>
+                </div>
+                <div class="card">
+                  <h4>辅助证据</h4>
+                  <ul>
+                    <li>README 覆盖率：100.0%</li>
+                    <li>docs 覆盖率：100.0%</li>
+                    <li>examples 覆盖率：25.0%</li>
+                    <li>tests 覆盖率：25.0%</li>
+                    <li>scripts 入口覆盖率：62.5%</li>
+                    <li>package/build 入口覆盖率：50.0%</li>
+                    <li>平均 README 长度：4840.25</li>
+                    <li>平均摩擦信号数：1.25</li>
+                  </ul>
+                  <p>相对最强入口：</p>
+                  <div class="tag-row"><span class="tag">xla-npu</span><span class="tag">torchtitan-npu</span><span class="tag">triton-inference-server-ge-backend</span></div>
+                  <p>易误判/易卡顿入口：</p>
+                  <div class="tag-row"><span class="tag warn">cann-recipes-train</span><span class="tag warn">cann-recipes-infer</span><span class="tag warn">cann-recipes-spatial-intelligence</span></div>
+                  <div class="evidence-card">
+                    <h4>直接证据</h4>
+                    <p><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json">observations JSON</a><br /><a href="D:\HW\AscendCANN\cann-dashboard\cann-repo-coverage.json">repo coverage JSON</a><br /></p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            
+            <section id="operator_developer">
+              <h2>Persona 3：算子 / 编译接口开发者</h2>
+              <p class="lead-mini"><strong>场景：</strong>想开发或调试底层算子、模板库或语言接口，关注结构化开发体验。</p>
+              <div class="summary-row">
+                <div class="summary-pill"><strong>相关仓库</strong>22 个</div>
+                <div class="summary-pill"><strong>综合评分</strong>67.1 / 100</div>
+              </div>
+              <div class="card evidence-card">
+                <table class="score-table">
+                  <thead><tr><th>阶段</th><th>评分</th><th>四项拆分</th><th>说明</th></tr></thead>
+                  <tbody><tr><td>搜索发现</td><td><span class="score low">57</span></td><td>文档清晰度 25 / 环境可达性 10 / 自动化友好度 13 / 反馈与验证质量 9</td><td>pyasc 定位清楚，但 ops-math 当前不可用。</td></tr><tr><td>代码获取</td><td><span class="score mid">63</span></td><td>文档清晰度 20 / 环境可达性 15 / 自动化友好度 16 / 反馈与验证质量 12</td><td>pyasc 获取完整，ops-math 为空壳。</td></tr><tr><td>环境准备</td><td><span class="score mid">60</span></td><td>文档清晰度 14 / 环境可达性 23 / 自动化友好度 15 / 反馈与验证质量 8</td><td>pyasc 按有无 NPU 分环境路径，这点明显更成熟。</td></tr><tr><td>依赖安装</td><td><span class="score mid">66</span></td><td>文档清晰度 14 / 环境可达性 22 / 自动化友好度 19 / 反馈与验证质量 11</td><td>pip install pyasc 与源码安装并存。</td></tr><tr><td>数据/权重/外部资产准备</td><td><span class="score high">92</span></td><td>文档清晰度 22 / 环境可达性 30 / 自动化友好度 25 / 反馈与验证质量 15</td><td>基本不依赖模型权重。</td></tr><tr><td>首次运行</td><td><span class="score mid">64</span></td><td>文档清晰度 13 / 环境可达性 20 / 自动化友好度 16 / 反馈与验证质量 15</td><td>纯 Python 代码 compileall 通过，但真实编译执行仍需要 LLVM/CANN。</td></tr><tr><td>结果验证</td><td><span class="score mid">62</span></td><td>文档清晰度 15 / 环境可达性 15 / 自动化友好度 17 / 反馈与验证质量 15</td><td>有 test/tutorial，但当前机缺编译工具链。</td></tr><tr><td>深入修改/扩展</td><td><span class="score mid">78</span></td><td>文档清晰度 20 / 环境可达性 18 / 自动化友好度 25 / 反馈与验证质量 15</td><td>文档、API、教程、结构都适合深入开发。</td></tr><tr><td>排障与回归</td><td><span class="score mid">69</span></td><td>文档清晰度 14 / 环境可达性 19 / 自动化友好度 21 / 反馈与验证质量 15</td><td>静态分析和有限自动化空间较大。</td></tr></tbody>
+                </table>
+              </div>
+              <div class="grid-2">
+                <div class="card">
+                  <h4>用户体验分析</h4>
+                  <ul><li>底层开发仓库的结构化程度明显更高，说明这里的主要问题不是信息架构，而是工具链门槛。</li><li>数据/权重阶段得分极高，反而说明它的痛点集中在编译、运行和环境可达性，而不是外部资产依赖。</li><li>这是最接近“可 agent 化推进”的一类角色，但仍然需要更强的环境自检与失败反馈闭环。</li></ul>
+                  <p class="quote">“当前样本里 agentic 体验最好的底层开发仓库，问题主要不在仓库，而在环境重。”</p>
+                </div>
+                <div class="card">
+                  <h4>辅助证据</h4>
+                  <ul>
+                    <li>README 覆盖率：100.0%</li>
+                    <li>docs 覆盖率：95.5%</li>
+                    <li>examples 覆盖率：72.7%</li>
+                    <li>tests 覆盖率：100.0%</li>
+                    <li>scripts 入口覆盖率：90.9%</li>
+                    <li>package/build 入口覆盖率：100.0%</li>
+                    <li>平均 README 长度：4878.55</li>
+                    <li>平均摩擦信号数：2.45</li>
+                  </ul>
+                  <p>相对最强入口：</p>
+                  <div class="tag-row"><span class="tag">pyasc</span><span class="tag">asc-devkit</span><span class="tag">asc-tools</span></div>
+                  <p>易误判/易卡顿入口：</p>
+                  <div class="tag-row"><span class="tag warn">ops-collections</span><span class="tag warn">opbase</span><span class="tag warn">ops-fft</span></div>
+                  <div class="evidence-card">
+                    <h4>直接证据</h4>
+                    <p><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\pyasc\README.md">pyasc README</a><br /><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\pyasc\docs\quick_start.md">pyasc quick start</a><br /><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json">observations JSON</a><br /></p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            
+            <section id="system_engineer">
+              <h2>Persona 4：系统 / 通信 / 基础设施开发者</h2>
+              <p class="lead-mini"><strong>场景：</strong>想搭建、调试或扩展运行时、通信与系统基础设施。</p>
+              <div class="summary-row">
+                <div class="summary-pill"><strong>相关仓库</strong>12 个</div>
+                <div class="summary-pill"><strong>综合评分</strong>50.2 / 100</div>
+              </div>
+              <div class="card evidence-card">
+                <table class="score-table">
+                  <thead><tr><th>阶段</th><th>评分</th><th>四项拆分</th><th>说明</th></tr></thead>
+                  <tbody><tr><td>搜索发现</td><td><span class="score low">52</span></td><td>文档清晰度 23 / 环境可达性 9 / 自动化友好度 12 / 反馈与验证质量 8</td><td>hixl 清楚，但 hcomm/asc-devkit 取不到有效内容。</td></tr><tr><td>代码获取</td><td><span class="score low">48</span></td><td>文档清晰度 16 / 环境可达性 11 / 自动化友好度 12 / 反馈与验证质量 9</td><td>hixl 完整，另外两个当前只落 .git。</td></tr><tr><td>环境准备</td><td><span class="score bad">34</span></td><td>文档清晰度 8 / 环境可达性 13 / 自动化友好度 8 / 反馈与验证质量 5</td><td>设备、驱动、Docker、hccn_tool、网络互通要求都高。</td></tr><tr><td>依赖安装</td><td><span class="score bad">39</span></td><td>文档清晰度 8 / 环境可达性 13 / 自动化友好度 12 / 反馈与验证质量 6</td><td>需要 GCC/CMake/bash/third-party，当前机最小帮助都跑不动。</td></tr><tr><td>数据/权重/外部资产准备</td><td><span class="score high">95</span></td><td>文档清晰度 25 / 环境可达性 30 / 自动化友好度 25 / 反馈与验证质量 15</td><td>这类仓库基本不依赖模型权重。</td></tr><tr><td>首次运行</td><td><span class="score bad">28</span></td><td>文档清晰度 5 / 环境可达性 9 / 自动化友好度 7 / 反馈与验证质量 7</td><td>首次上手几乎必然卡在环境和工具链。</td></tr><tr><td>结果验证</td><td><span class="score low">51</span></td><td>文档清晰度 11 / 环境可达性 12 / 自动化友好度 13 / 反馈与验证质量 15</td><td>tests/examples/benchmarks 齐，但前提太重。</td></tr><tr><td>深入修改/扩展</td><td><span class="score mid">76</span></td><td>文档清晰度 19 / 环境可达性 17 / 自动化友好度 25 / 反馈与验证质量 15</td><td>工程化程度高，适合成熟团队。</td></tr><tr><td>排障与回归</td><td><span class="score mid">67</span></td><td>文档清晰度 13 / 环境可达性 19 / 自动化友好度 20 / 反馈与验证质量 15</td><td>脚本和结构较规范。</td></tr></tbody>
+                </table>
+              </div>
+              <div class="grid-2">
+                <div class="card">
+                  <h4>用户体验分析</h4>
+                  <ul><li>这类角色的问题不是仓库组织混乱，而是现实环境前提过重，首跑成功率天然偏低。</li><li>数据/权重阶段几乎不是问题，首次运行和环境准备才是真正断点。</li><li>对这类用户，最关键的不是再补说明，而是提供设备前提校验、失败即解释和最小预演路径。</li></ul>
+                  <p class="quote">“工程性强，但首次成功率低；它服务的是高手，不是首次体验用户。”</p>
+                </div>
+                <div class="card">
+                  <h4>辅助证据</h4>
+                  <ul>
+                    <li>README 覆盖率：100.0%</li>
+                    <li>docs 覆盖率：83.3%</li>
+                    <li>examples 覆盖率：66.7%</li>
+                    <li>tests 覆盖率：75.0%</li>
+                    <li>scripts 入口覆盖率：91.7%</li>
+                    <li>package/build 入口覆盖率：83.3%</li>
+                    <li>平均 README 长度：4472.0</li>
+                    <li>平均摩擦信号数：1.75</li>
+                  </ul>
+                  <p>相对最强入口：</p>
+                  <div class="tag-row"><span class="tag">hixl</span><span class="tag">hcomm</span><span class="tag">hccl</span></div>
+                  <p>易误判/易卡顿入口：</p>
+                  <div class="tag-row"><span class="tag warn">cann-infra-mcp</span><span class="tag warn">infrastructure</span><span class="tag warn">cmake</span></div>
+                  <div class="evidence-card">
+                    <h4>直接证据</h4>
+                    <p><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\hixl\README.md">hixl README</a><br /><a href="D:\HW\AscendCANN\cann-dashboard\repo-evidence\hixl\docs\build.md">hixl build docs</a><br /><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json">observations JSON</a><br /></p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            
+
+    <section id="raw">
+      <h2>原始数据与方法文件</h2>
+      <ul>
+        <li><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-summary.json">cann-agentic-summary.json</a></li>
+        <li><a href="D:\HW\AscendCANN\cann-dashboard\cann-agentic-observations.json">cann-agentic-observations.json</a></li>
+        <li><a href="D:\HW\AscendCANN\cann-dashboard\cann-repo-coverage.json">cann-repo-coverage.json</a></li>
+        <li><a href="D:\HW\AscendCANN\cann-dashboard\scripts\render_ux_journey_report.py">render_ux_journey_report.py</a></li>
+        <li><a href="D:\HW\AscendCANN\cann-dashboard\scripts\journey_scoring.py">journey_scoring.py</a></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
