@@ -2005,6 +2005,32 @@
   }
   .la-seq-label.done { color: var(--black); font-weight: 500; }
   .la-seq-label.active { color: var(--black); font-weight: 600; }
+  .la-sort-bar {
+    padding: 10px 16px; border-bottom: 1px solid var(--border);
+    background: white; flex-shrink: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .la-sort-chips { display: flex; gap: 4px; align-items: center; }
+  .la-sort-chip {
+    padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600;
+    border: 1.5px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    cursor: pointer; font-family: var(--font); transition: all 0.15s;
+  }
+  .la-sort-chip.active { background: var(--black); color: white; border-color: var(--black); }
+  .la-sort-chip:hover:not(.active) { border-color: var(--border2); color: var(--black); }
+  .la-dir-btn {
+    width: 24px; height: 24px; border-radius: 6px; border: 1.5px solid var(--border);
+    background: var(--surface); cursor: pointer; display: flex; align-items: center;
+    justify-content: center; color: var(--text-secondary); transition: all 0.15s; flex-shrink: 0;
+  }
+  .la-dir-btn:hover { border-color: var(--black); color: var(--black); }
+  .la-filter-chips { display: flex; gap: 4px; align-items: center; margin-left: auto; }
+  .la-filter-chip {
+    padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600;
+    border: 1.5px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    cursor: pointer; font-family: var(--font); transition: all 0.15s;
+  }
+  .la-filter-chip.active { background: #EEF2FF; color: #2e53fa; border-color: #2e53fa; }
+  .la-filter-chip:hover:not(.active) { border-color: var(--border2); color: var(--black); }
 
   /* ── LEARNING ARCHIVE DRAWER TABS ── */
   .la-tabs {
@@ -6305,6 +6331,9 @@ def vector_add_tik(shape, dtype, kernel_name):
   let _qbSearch = '';
   let _qbDomainFilter = 'all';
   let _qbNodeFilter = 'all';
+  let _laSort = 'lastStudied';
+  let _laSortDir = 'desc';
+  let _laFilter = 'all';
 
   const QB_DOMAIN_META = {
     beginner:    { label: '基础入门', color: '#10B981' },
@@ -6383,7 +6412,14 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.getElementById('la-panel-paths').style.display = tab === 'paths' ? '' : 'none';
     const quizPanel = document.getElementById('la-panel-quiz');
     quizPanel.style.display = tab === 'quiz' ? 'flex' : 'none';
-    if (tab === 'paths') renderMyPaths();
+    if (tab === 'paths') {
+      // Reset sort/filter UI to default state
+      _laSort = 'lastStudied'; _laSortDir = 'desc'; _laFilter = 'all';
+      document.querySelectorAll('.la-sort-chip').forEach((b,i) => b.classList.toggle('active', i===0));
+      document.querySelectorAll('.la-filter-chip').forEach((b,i) => b.classList.toggle('active', i===0));
+      _updateLaDirIcon();
+      renderMyPaths();
+    }
     if (tab === 'quiz') {
       _qbFilter = 'all'; _qbSearch = ''; _qbDomainFilter = 'all'; _qbNodeFilter = 'all';
       renderQuizBank();
@@ -6391,6 +6427,36 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
   function openQuizBank() { openLearningArchive('quiz'); }
   function closeQuizBank() { closeLearningArchive(); }
+  function setLaSort(sort) {
+    if (_laSort === sort) { _laSortDir = _laSortDir === 'desc' ? 'asc' : 'desc'; }
+    else { _laSort = sort; _laSortDir = 'desc'; }
+    document.querySelectorAll('.la-sort-chip').forEach(b => b.classList.remove('active'));
+    const chips = document.querySelectorAll('.la-sort-chip');
+    const idx = ['lastStudied','createdAt','progress'].indexOf(_laSort);
+    if (chips[idx]) chips[idx].classList.add('active');
+    _updateLaDirIcon();
+    renderMyPaths();
+  }
+  function toggleLaSortDir() {
+    _laSortDir = _laSortDir === 'desc' ? 'asc' : 'desc';
+    _updateLaDirIcon();
+    renderMyPaths();
+  }
+  function _updateLaDirIcon() {
+    const icon = document.getElementById('la-dir-icon');
+    if (!icon) return;
+    if (_laSortDir === 'asc') {
+      icon.innerHTML = '<path d="M12 4v16"/><polyline points="6 10 12 4 18 10"/>';
+    } else {
+      icon.innerHTML = '<path d="M12 20V4"/><polyline points="18 14 12 20 6 14"/>';
+    }
+  }
+  function setLaFilter(f, el) {
+    _laFilter = f;
+    document.querySelectorAll('.la-filter-chip').forEach(b => b.classList.remove('active'));
+    if (el) el.classList.add('active');
+    renderMyPaths();
+  }
   function renderMyPaths() {
     const container = document.getElementById('la-paths-list');
     if (!container) return;
@@ -6414,48 +6480,77 @@ def vector_add_tik(shape, dtype, kernel_name):
         .map(n => n.querySelector('.rm-node-title')?.textContent?.trim()).filter(Boolean)
     );
 
-    let html = '<div class="la-section" style="padding-bottom:16px;"><div class="la-section-title">我的路径</div>';
-
-    savedPaths.forEach(path => {
+    // Compute per-path progress for sort/filter
+    const withMeta = savedPaths.map(path => {
       const nodes = path.nodeList || [];
       const completedCount = nodes.filter(n => completedTitles.has(n.title)).length;
       const total = nodes.length;
-      const pct = total ? Math.round((completedCount / total) * 100) : 0;
-      const lastTime = path.lastStudied
-        ? '上次学习 ' + new Date(path.lastStudied).toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' })
-        : path.createdAt ? '创建于 ' + path.createdAt.replace(/-/g, '/') : '';
-
-      const seqNodes = nodes.map((node, i) => {
-        const isDone = completedTitles.has(node.title);
-        const isActive = inProgressTitles.has(node.title);
-        const cls = isDone ? 'done' : isActive ? 'active' : '';
-        const icon = isDone ? '✓' : isActive ? '⋯' : (i + 1);
-        const isLast = i === nodes.length - 1;
-        return `<div class="la-seq-node">
-          <div class="la-seq-dot-wrap">
-            <div class="la-seq-dot ${cls}">${icon}</div>
-            ${!isLast ? '<div class="la-seq-connector"></div>' : ''}
-          </div>
-          <div class="la-seq-label ${cls}">${node.title}</div>
-        </div>`;
-      }).join('');
-
-      html += `<div class="la-path-card">
-        <div class="la-path-card-header">
-          <div class="la-path-card-icon">${path.icon || '📘'}</div>
-          <div class="la-path-card-meta">
-            <div class="la-path-card-name">${path.name}</div>
-            <div class="la-path-card-bar">
-              <div class="la-mini-bar" style="flex:1;"><div class="la-mini-fill" style="width:${pct}%;background:#2e53fa"></div></div>
-              <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;">${completedCount}/${total}</span>
-            </div>
-            ${lastTime ? `<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${lastTime}</div>` : ''}
-          </div>
-          <button class="la-continue-btn" onclick="closeLearningArchive();switchTopTab('custom',document.querySelector('.top-tab:last-child'));showPage('learn');">${completedCount > 0 ? '继续' : '开始'}</button>
-        </div>
-        <div class="la-path-seq">${seqNodes}</div>
-      </div>`;
+      const pct = total ? completedCount / total : 0;
+      const hasActive = nodes.some(n => inProgressTitles.has(n.title));
+      return { path, nodes, completedCount, total, pct, hasActive };
     });
+
+    // Filter
+    let filtered = withMeta;
+    if (_laFilter === 'active') filtered = withMeta.filter(m => m.completedCount > 0 && m.completedCount < m.total || m.hasActive);
+    if (_laFilter === 'done')   filtered = withMeta.filter(m => m.total > 0 && m.completedCount === m.total);
+
+    // Sort
+    const dir = _laSortDir === 'asc' ? 1 : -1;
+    filtered.sort((a, b) => {
+      if (_laSort === 'createdAt') {
+        return dir * ((a.path.createdAt || '') > (b.path.createdAt || '') ? 1 : -1);
+      }
+      if (_laSort === 'progress') return dir * (a.pct - b.pct);
+      // lastStudied (default)
+      const ta = a.path.lastStudied || a.path.createdAt || '';
+      const tb = b.path.lastStudied || b.path.createdAt || '';
+      return dir * (ta > tb ? 1 : -1);
+    });
+
+    let html = '<div class="la-section" style="padding-bottom:16px;"><div class="la-section-title">我的路径</div>';
+
+    if (filtered.length === 0) {
+      html += `<div class="la-empty"><div class="la-empty-icon">🔍</div>没有符合条件的路径</div>`;
+    } else {
+      filtered.forEach(({ path, nodes, completedCount, total, pct }) => {
+        const pctDisplay = Math.round(pct * 100);
+        const lastTime = path.lastStudied
+          ? '上次学习 ' + new Date(path.lastStudied).toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' })
+          : path.createdAt ? '创建于 ' + path.createdAt.replace(/-/g, '/') : '';
+
+        const seqNodes = nodes.map((node, i) => {
+          const isDone = completedTitles.has(node.title);
+          const isActive = inProgressTitles.has(node.title);
+          const cls = isDone ? 'done' : isActive ? 'active' : '';
+          const icon = isDone ? '✓' : isActive ? '⋯' : (i + 1);
+          const isLast = i === nodes.length - 1;
+          return `<div class="la-seq-node">
+            <div class="la-seq-dot-wrap">
+              <div class="la-seq-dot ${cls}">${icon}</div>
+              ${!isLast ? '<div class="la-seq-connector"></div>' : ''}
+            </div>
+            <div class="la-seq-label ${cls}">${node.title}</div>
+          </div>`;
+        }).join('');
+
+        html += `<div class="la-path-card">
+          <div class="la-path-card-header">
+            <div class="la-path-card-icon">${path.icon || '📘'}</div>
+            <div class="la-path-card-meta">
+              <div class="la-path-card-name">${path.name}</div>
+              <div class="la-path-card-bar">
+                <div class="la-mini-bar" style="flex:1;"><div class="la-mini-fill" style="width:${pctDisplay}%;background:#2e53fa"></div></div>
+                <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;">${completedCount}/${total}</span>
+              </div>
+              ${lastTime ? `<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${lastTime}</div>` : ''}
+            </div>
+            <button class="la-continue-btn" onclick="closeLearningArchive();switchTopTab('custom',document.querySelector('.top-tab:last-child'));showPage('learn');">${completedCount > 0 ? '继续' : '开始'}</button>
+          </div>
+          <div class="la-path-seq">${seqNodes}</div>
+        </div>`;
+      });
+    }
 
     html += `<button class="la-add-btn" style="margin:4px 0 8px;" onclick="closeLearningArchive();switchTopTab('custom',document.querySelector('.top-tab:last-child'));showPage('learn');">+ 生成新路径</button></div>`;
     container.innerHTML = html;
@@ -6626,6 +6721,21 @@ def vector_add_tik(shape, dtype, kernel_name):
   </div>
   <!-- 我的路径 panel -->
   <div class="la-panel" id="la-panel-paths">
+    <div class="la-sort-bar" id="la-sort-bar">
+      <div class="la-sort-chips" id="la-sort-chips">
+        <button class="la-sort-chip active" onclick="setLaSort('lastStudied')">上次学习</button>
+        <button class="la-sort-chip" onclick="setLaSort('createdAt')">创建时间</button>
+        <button class="la-sort-chip" onclick="setLaSort('progress')">学习进度</button>
+      </div>
+      <button class="la-dir-btn" id="la-dir-btn" onclick="toggleLaSortDir()" title="切换升降序">
+        <svg id="la-dir-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4"/><polyline points="18 14 12 20 6 14"/></svg>
+      </button>
+      <div class="la-filter-chips" id="la-filter-chips">
+        <button class="la-filter-chip active" onclick="setLaFilter('all',this)">全部</button>
+        <button class="la-filter-chip" onclick="setLaFilter('active',this)">进行中</button>
+        <button class="la-filter-chip" onclick="setLaFilter('done',this)">已完成</button>
+      </div>
+    </div>
     <div id="la-paths-list"></div>
   </div>
   <!-- 错题本 panel -->
