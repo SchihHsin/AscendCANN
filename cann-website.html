@@ -5969,6 +5969,17 @@ def vector_add_tik(shape, dtype, kernel_name):
       nodeList: [0,1,2,3,4].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
   ];
 
+  // Seed sample paths into localStorage on first visit
+  const CUSTOM_PATHS_SEEDED_KEY = 'cann_custom_paths_seeded';
+  if (!localStorage.getItem(CUSTOM_PATHS_SEEDED_KEY)) {
+    const seeded = samplePaths.map(p => ({
+      ...p,
+      lastStudied: p.createdAt,
+    }));
+    localStorage.setItem('cann_custom_paths', JSON.stringify(seeded));
+    localStorage.setItem(CUSTOM_PATHS_SEEDED_KEY, '1');
+  }
+
   // Initialize custom paths on load
   document.addEventListener('DOMContentLoaded', () => {
     renderCustomPaths();
