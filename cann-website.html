@@ -1496,17 +1496,6 @@
     border-radius: 100px; font-size: 12px; font-weight: 700;
   }
 
-  /* Progress tracker */
-  .progress-tracker {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
-    padding: 32px; margin-bottom: 60px; display: flex; gap: 40px; align-items: center;
-  }
-  .prog-info h3 { font-size: 20px; font-weight: 800; margin-bottom: 6px; color: var(--black); }
-  .prog-info p { font-size: 15px; color: var(--text-secondary); }
-  .prog-steps { display: flex; gap: 8px; margin-top: 20px; }
-  .prog-step { height: 6px; border-radius: 3px; flex: 1; background: var(--surface2); }
-  .prog-step.done { background: var(--black); }
-  .prog-step.active { background: linear-gradient(90deg, var(--black) 60%, var(--surface2) 60%); }
 
   /* ── NODE DRAWER ── */
   .node-drawer {
@@ -1977,6 +1966,227 @@
   .nd-quiz-bank-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; font-size: 11px; color: var(--text-muted); cursor: pointer; background: none; border: none; padding: 0; font-family: var(--font); }
   .nd-quiz-bank-link:hover { color: var(--black); }
   .nd-quiz-bank-link svg { width: 11px; height: 11px; }
+
+  /* ── LEARNING ARCHIVE PATH CARDS ── */
+  .la-path-card {
+    background: white; border: 1.5px solid var(--border); border-radius: 12px;
+    margin-bottom: 10px; overflow: hidden; transition: border-color 0.15s;
+  }
+  .la-path-card:hover { border-color: var(--border2); box-shadow: var(--shadow-sm); }
+  .la-path-card-header {
+    display: flex; align-items: center; gap: 10px; padding: 14px 16px 12px;
+  }
+  .la-path-card-icon { font-size: 20px; flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--surface2); border-radius: 8px; }
+  .la-path-card-meta { flex: 1; min-width: 0; }
+  .la-path-card-name { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+  .la-path-card-bar { display: flex; align-items: center; gap: 8px; }
+  .la-path-seq {
+    border-top: 1px solid var(--border); padding: 12px 16px 14px;
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .la-seq-node {
+    display: flex; align-items: flex-start; gap: 10px; position: relative;
+  }
+  .la-seq-node:not(:last-child) .la-seq-line {
+    position: absolute; left: 8px; top: 20px; width: 1.5px; height: calc(100% + 2px);
+    background: var(--border);
+  }
+  .la-seq-dot-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; padding-top: 1px; }
+  .la-seq-dot {
+    width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800; color: var(--text-muted); background: white; flex-shrink: 0;
+  }
+  .la-seq-dot.done { background: #10B981; border-color: #10B981; color: white; }
+  .la-seq-dot.active { background: #FEF3C7; border-color: #F59E0B; color: #92400E; }
+  .la-seq-connector { width: 1.5px; flex: 1; min-height: 10px; background: var(--border); margin: 2px 0; }
+  .la-seq-label {
+    font-size: 12px; color: var(--text-secondary); padding: 0 0 10px; line-height: 1.4;
+  }
+  .la-seq-label.done { color: var(--black); font-weight: 500; }
+  .la-seq-label.active { color: var(--black); font-weight: 600; }
+
+  /* ── LEARNING ARCHIVE DRAWER TABS ── */
+  .la-tabs {
+    display: flex; gap: 0; border-bottom: 1.5px solid var(--border);
+    background: white; flex-shrink: 0; padding: 0 20px;
+  }
+  .la-tab {
+    padding: 10px 16px; font-size: 12px; font-weight: 700; color: var(--text-secondary);
+    background: none; border: none; cursor: pointer; font-family: var(--font);
+    border-bottom: 2px solid transparent; margin-bottom: -1.5px; transition: all 0.15s;
+  }
+  .la-tab:hover { color: var(--black); }
+  .la-tab.active { color: var(--black); border-bottom-color: var(--black); }
+  .la-panel { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+  .la-section { padding: 16px 20px 0; }
+  .la-section-title {
+    font-size: 10px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.8px;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .la-path-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px; background: white; border: 1.5px solid var(--border);
+    border-radius: 10px; margin-bottom: 7px; cursor: pointer; transition: all 0.15s;
+  }
+  .la-path-item:hover { border-color: var(--border2); box-shadow: var(--shadow-sm); }
+  .la-path-icon { font-size: 18px; flex-shrink: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--surface2); border-radius: 8px; }
+  .la-path-info { flex: 1; min-width: 0; }
+  .la-path-name { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .la-path-meta { font-size: 11px; color: var(--text-muted); }
+  .la-path-arrow { color: var(--text-muted); font-size: 14px; flex-shrink: 0; }
+  .la-progress-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px; background: white; border: 1.5px solid var(--border);
+    border-radius: 10px; margin-bottom: 7px;
+  }
+  .la-progress-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .la-progress-info { flex: 1; min-width: 0; }
+  .la-progress-name { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 4px; }
+  .la-progress-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+  .la-mini-bar { height: 3px; border-radius: 100px; background: var(--surface2); overflow: hidden; }
+  .la-mini-fill { height: 100%; border-radius: 100px; transition: width 0.3s; }
+  .la-continue-btn {
+    flex-shrink: 0; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
+    border: 1.5px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    cursor: pointer; font-family: var(--font); transition: all 0.15s;
+  }
+  .la-continue-btn:hover { background: var(--black); color: white; border-color: var(--black); }
+  .la-empty { padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 13px; }
+  .la-empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.4; }
+  .la-add-btn {
+    display: inline-flex; align-items: center; gap: 5px; margin-top: 12px;
+    padding: 6px 14px; border-radius: 8px; border: 1.5px dashed var(--border);
+    background: none; color: var(--text-secondary); font-size: 11px; font-weight: 600;
+    cursor: pointer; font-family: var(--font); transition: all 0.15s;
+  }
+  .la-add-btn:hover { border-color: var(--black); color: var(--black); }
+
+  /* ── HIDE NODE TAGS (removed per UX review) ── */
+  .rm-tags { display: none; }
+  .rm-desc { margin-bottom: 0; }
+
+  /* ── VIDEO EMBED IN DRAWER ── */
+  .nd-video-wrap {
+    border-radius: 12px; overflow: hidden; margin-bottom: 20px; position: relative;
+    background: #0A0A0F; cursor: pointer;
+  }
+  .nd-video-thumb {
+    width: 100%; aspect-ratio: 16/9; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+    position: relative; overflow: hidden;
+  }
+  .nd-video-thumb::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% 40%, rgba(46,83,250,0.15) 0%, transparent 70%);
+  }
+  .nd-video-play {
+    width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; backdrop-filter: blur(4px);
+  }
+  .nd-video-wrap:hover .nd-video-play { background: rgba(255,255,255,0.22); transform: scale(1.08); }
+  .nd-video-title { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.75); text-align: center; padding: 0 20px; line-height: 1.5; }
+  .nd-video-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+
+  /* ── MY LEARNING SECTION ── */
+  .my-learning-section {
+    background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px;
+    padding: 20px 24px; margin: 0 0 20px;
+  }
+  .ml-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+  }
+  .ml-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 800; color: var(--black); letter-spacing: 0.2px;
+  }
+  .ml-hint { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .cl-pulse { width: 8px; height: 8px; border-radius: 50%; background: #F59E0B; flex-shrink: 0;
+    animation: pulse-amber 2s infinite; }
+  @keyframes pulse-amber { 0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,0.4)} 50%{box-shadow:0 0 0 5px rgba(245,158,11,0)} }
+
+  .ml-cards { display: flex; flex-direction: column; gap: 10px; }
+  .ml-path-card {
+    display: flex; align-items: center; gap: 16px;
+    background: white; border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; transition: all 0.2s;
+  }
+  .ml-path-card:hover { border-color: var(--border2); box-shadow: var(--shadow-sm); }
+  .ml-path-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .ml-path-info { flex: 1; min-width: 0; }
+  .ml-path-name { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 4px; }
+  .ml-path-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 7px; }
+  .ml-progress-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .ml-progress-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+  .ml-last-node {
+    font-size: 11px; color: var(--text-muted); margin-top: 5px; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .btn-continue {
+    padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 700;
+    background: var(--black); color: white; border: none; cursor: pointer;
+    font-family: var(--font); transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+  }
+  .btn-continue:hover { background: #222; transform: translateY(-1px); }
+
+  /* ── XP / STREAK INCENTIVE ── */
+  .nd-xp-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);
+  }
+  .nd-xp-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 100px;
+    background: linear-gradient(135deg, #F59E0B, #EF4444); color: white;
+    font-size: 11px; font-weight: 800; font-family: var(--mono);
+  }
+  .nd-streak { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: #F59E0B; }
+  .xp-pop {
+    font-size: 14px; font-weight: 900; color: #16A34A;
+    animation: xpFly 1.4s ease both; display: inline-block; margin-left: 8px;
+  }
+  @keyframes xpFly {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    60% { opacity: 1; transform: translateY(-16px) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-28px) scale(1); }
+  }
+  .nd-xp-msg { font-size: 12px; font-weight: 700; }
+  .nd-xp-msg.correct { color: #16A34A; }
+  .nd-xp-msg.wrong { color: #DC2626; }
+
+  /* ── DOCS HOME ── */
+  .doc-home-hero { margin-bottom: 36px; }
+  .doc-home-hero h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+  .doc-home-hero p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; max-width: 520px; }
+  .doc-home-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 0 0 36px;
+  }
+  .doc-home-card {
+    border: 1px solid var(--border); border-radius: 14px; padding: 22px;
+    cursor: pointer; transition: all 0.2s; background: var(--surface); display: block;
+    text-decoration: none;
+  }
+  .doc-home-card:hover { border-color: var(--black); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .dhc-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--surface2);
+    display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; }
+  .dhc-title { font-size: 15px; font-weight: 700; color: var(--black); margin-bottom: 5px; }
+  .dhc-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+  .doc-home-section-label { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+  .doc-home-quick { display: flex; flex-direction: column; gap: 8px; margin-bottom: 40px; }
+  .dhq-item {
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px;
+    cursor: pointer; transition: all 0.2s; text-decoration: none;
+  }
+  .dhq-item:hover { border-color: var(--black); background: var(--surface2); }
+  .dhq-icon { font-size: 15px; width: 30px; text-align: center; }
+  .dhq-info { flex: 1; }
+  .dhq-title { font-size: 13px; font-weight: 700; color: var(--black); }
+  .dhq-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .dhq-arrow { color: var(--text-muted); font-size: 14px; }
+
 </style>
 </head>
 <body>
@@ -2059,17 +2269,9 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
       核心知识
     </button>
-    <button class="nd-tab" data-tab="code" onclick="switchNdTab('code',this)">
+    <button class="nd-tab" data-tab="practice" onclick="switchNdTab('practice',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      代码示例
-    </button>
-    <button class="nd-tab" data-tab="lab" onclick="switchNdTab('lab',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0-3.5 5.5A2 2 0 0 0 7.22 22h9.56a2 2 0 0 0 1.72-3L15 14M9 14h6"/></svg>
-      动手实验
-    </button>
-    <button class="nd-tab" data-tab="resources" onclick="switchNdTab('resources',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-      延伸资源
+      代码实战
     </button>
     <button class="nd-tab" data-tab="quiz" onclick="switchNdTab('quiz',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
@@ -2608,8 +2810,14 @@
         <span class="search-kbd">⌘K</span>
       </div>
       <div class="sidebar-section">
+        <div class="sidebar-item active" onclick="showDoc('home')" style="font-weight:700;display:flex;align-items:center;gap:8px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          文档首页
+        </div>
+      </div>
+      <div class="sidebar-section">
         <div class="sidebar-section-title">入门</div>
-        <div class="sidebar-item active" onclick="showDoc('quickstart')"><span class="si-dot"></span>快速开始</div>
+        <div class="sidebar-item" onclick="showDoc('quickstart')"><span class="si-dot"></span>快速开始</div>
         <div class="sidebar-item" onclick="showDoc('install')">安装与配置</div>
         <div class="sidebar-item" onclick="showDoc('concepts')">核心概念</div>
         <div class="sidebar-item" onclick="showDoc('arch')">架构概览</div>
@@ -2644,8 +2852,104 @@
 
     <!-- Content -->
     <main class="docs-content" id="docs-main">
+
+      <!-- ══ DOCS HOME ══ -->
+      <div id="doc-home">
+        <div class="doc-home-hero">
+          <div class="section-label" style="justify-content:flex-start;">文档中心</div>
+          <h1>CANN 开发者文档</h1>
+          <p>从快速开始到高级调优，找到你需要的一切。选择分类浏览，或使用左侧搜索快速定位。</p>
+        </div>
+
+        <div class="doc-home-section-label">分类浏览</div>
+        <div class="doc-home-grid">
+          <div class="doc-home-card" onclick="showDoc('quickstart')">
+            <div class="dhc-icon">🚀</div>
+            <div class="dhc-title">入门 & 安装</div>
+            <div class="dhc-desc">快速开始、安装配置、核心概念、架构概览</div>
+          </div>
+          <div class="doc-home-card" onclick="showDoc('acl-init')">
+            <div class="dhc-icon">⚡</div>
+            <div class="dhc-title">AscendCL 编程</div>
+            <div class="dhc-desc">设备管理、内存操作、Stream/Context、数据预处理</div>
+          </div>
+          <div class="doc-home-card" onclick="showDoc('tbe-intro')">
+            <div class="dhc-icon">🔧</div>
+            <div class="dhc-title">算子开发</div>
+            <div class="dhc-desc">TBE DSL/TIK 框架、自定义算子开发全流程</div>
+          </div>
+          <div class="doc-home-card" onclick="showDoc('atc')">
+            <div class="dhc-icon">📊</div>
+            <div class="dhc-title">模型工具</div>
+            <div class="dhc-desc">ATC 模型转换、Profiling 性能分析、MsProf 工具</div>
+          </div>
+          <div class="doc-home-card" onclick="showDoc('hccl')">
+            <div class="dhc-icon">🌐</div>
+            <div class="dhc-title">分布式</div>
+            <div class="dhc-desc">HCCL 集合通信、多卡集群配置与部署</div>
+          </div>
+          <div class="doc-home-card" onclick="showPage('learn')">
+            <div class="dhc-icon">🎯</div>
+            <div class="dhc-title">学习路径</div>
+            <div class="dhc-desc">结构化学习路径，从入门到专家的完整进阶指南</div>
+          </div>
+        </div>
+
+        <div class="doc-home-section-label">热门文档</div>
+        <div class="doc-home-quick">
+          <div class="dhq-item" onclick="showDoc('quickstart')">
+            <div class="dhq-icon">📄</div>
+            <div class="dhq-info">
+              <div class="dhq-title">快速开始：Hello CANN</div>
+              <div class="dhq-sub">5 分钟跑通第一个 AscendCL 程序</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('install')">
+            <div class="dhq-icon">⚙️</div>
+            <div class="dhq-info">
+              <div class="dhq-title">安装与配置</div>
+              <div class="dhq-sub">驱动、Toolkit 及 Python 绑定安装指南</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('acl-model')">
+            <div class="dhq-icon">🤖</div>
+            <div class="dhq-info">
+              <div class="dhq-title">模型推理 API</div>
+              <div class="dhq-sub">加载 .om 模型并执行离线推理</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('atc')">
+            <div class="dhq-icon">🔄</div>
+            <div class="dhq-info">
+              <div class="dhq-title">ATC 模型转换</div>
+              <div class="dhq-sub">将 ONNX/Caffe 模型转换为 .om 格式</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('profiling')">
+            <div class="dhq-icon">📈</div>
+            <div class="dhq-info">
+              <div class="dhq-title">性能调优指南</div>
+              <div class="dhq-sub">Profiling 分析热点与算子融合优化</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('tbe-dsl')">
+            <div class="dhq-icon">🛠️</div>
+            <div class="dhq-info">
+              <div class="dhq-title">TBE DSL 算子开发</div>
+              <div class="dhq-sub">用高级 DSL 快速编写自定义算子</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Quick Start content -->
-      <div id="doc-quickstart">
+      <div id="doc-quickstart" style="display:none;">
         <div class="breadcrumb-wrap">
           <div class="breadcrumb">
             <span>CANN</span><span class="sep">›</span>
@@ -3153,10 +3457,22 @@
 <div id="page-learn" class="page">
   <div class="learn-layout">
     <div class="learn-header" style="position:relative;">
-      <button onclick="openQuizBank()" title="错题本" style="position:absolute;top:0;right:0;display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all 0.15s;" onmouseover="this.style.borderColor='var(--black)';this.style.color='var(--black)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-        错题本
-      </button>
+      <div style="position:absolute;top:0;right:0;display:flex;gap:8px;align-items:center;">
+        <a href="https://www.hiascend.com/edu/courses" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all 0.15s;text-decoration:none;" onmouseover="this.style.borderColor='var(--black)';this.style.color='var(--black)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          全量课程
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a href="https://www.hiascend.com/edu/growth" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all 0.15s;text-decoration:none;" onmouseover="this.style.borderColor='var(--black)';this.style.color='var(--black)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          全量路径
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <button onclick="openLearningArchive('paths')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all 0.15s;" onmouseover="this.style.borderColor='var(--black)';this.style.color='var(--black)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          学习档案
+        </button>
+      </div>
       <div class="section-label">学习</div>
       <div class="section-title">系统学习 CANN<br>掌握昇腾 AI 开发</div>
       <p class="section-desc" style="margin: 14px auto 0; text-align: center; max-width: 500px;">从零开始，循序渐进。选择你的方向，按节点展开查看学习资源。</p>
@@ -3166,7 +3482,7 @@
         <button class="top-tab" onclick="switchTopTab('custom', this)">自定义</button>
       </div>
 
-      <!-- AI Path Generator Input -->
+      <!-- AI Path Generator Input（自定义 tab 专属） -->
       <div class="path-generator" id="path-generator">
         <div class="path-generator-input-wrap">
           <svg class="path-generator-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3189,8 +3505,8 @@
         </div>
       </div>
 
+      <!-- 分类筛选 chip（为你推荐 / 官方路径各一组，在我的学习+进度之后、路线图之前） -->
       <div class="filter-bar" id="filter-recommend">
-        <!-- <button class="filter-btn active" onclick="filterRoadmap('all', this)">全部</button> -->
         <button class="filter-btn" onclick="filterRoadmap('beginner', this)">入门</button>
         <button class="filter-btn" onclick="filterRoadmap('developer', this)">应用开发</button>
         <button class="filter-btn" onclick="filterRoadmap('operator', this)">算子开发</button>
@@ -3215,35 +3531,6 @@
         </button>
       </div>
     </div>
-<!-- 
-    <div class="progress-tracker">
-      <svg width="64" height="64" viewBox="0 0 64 64" style="flex-shrink:0; transform:rotate(-90deg)">
-        <circle cx="32" cy="32" r="26" fill="none" stroke="var(--surface2)" stroke-width="6"/>
-        <circle cx="32" cy="32" r="26" fill="none" stroke="var(--black)" stroke-width="6" stroke-dasharray="163.36" stroke-dashoffset="130" stroke-linecap="round"/>
-      </svg>
-       <div class="prog-info">
-        <h3>学习进度</h3>
-        <p style="color: var(--text-muted); font-size: 14px;">已完成 2 / 12 个节点</p>
-        <div class="prog-steps">
-          <div class="prog-step done"></div>
-          <div class="prog-step done"></div>
-          <div class="prog-step active"></div>
-          <div class="prog-step"></div>
-          <div class="prog-step"></div>
-          <div class="prog-step"></div>
-          <div class="prog-step"></div>
-          <div class="prog-step"></div>
-          <div class="prog-step"></div>
-          <div class="prog-step"></div>
-          <div class="prog-step"></div>
-          <div class="prog-step"></div>
-        </div>
-      </div>
-      <div style="margin-left: auto; text-align: right;">
-        <div style="font-size: 32px; font-weight: 800; color: var(--black);">20%</div>
-        <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">完成率</div>
-      </div>
-    </div> -->
 
     <!-- Path sequence strip (shown when custom AI path is active) -->
     <div class="path-seq-strip hidden" id="path-seq-strip"></div>
@@ -3636,12 +3923,14 @@
       if (window._pendingLearnPath) {
         const { query, nodes } = window._pendingLearnPath;
         window._pendingLearnPath = null;
-        // Switch to custom tab
         document.querySelectorAll('.top-tab').forEach(btn => {
           if (btn.textContent.trim() === '自定义') switchTopTab('custom', btn);
         });
         setTimeout(() => renderLearnPagePath(query, nodes), 200);
       }
+    }
+    if (name === 'docs') {
+      showDoc('home');
     }
 
     return false;
@@ -4508,6 +4797,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     const btn = document.getElementById('nd-complete-btn');
     btn.textContent = isNowComplete ? '已完成 ✓' : '标记完成';
     btn.className = 'nd-complete-btn' + (isNowComplete ? ' done' : '');
+    updateProgressTracker();
+    saveLearnState();
   }
 
   function switchNdTab(tab, btn) {
@@ -4521,6 +4812,21 @@ def vector_add_tik(shape, dtype, kernel_name):
     renderNdTab(tab, _currentDrawerNode?.title);
   }
 
+  // NODE_VIDEO: Bilibili-style video metadata per node (shown as embed placeholder)
+  const NODE_VIDEO = {
+    '昇腾硬件体系':      { title: '达芬奇架构深度解析 | 昇腾 AI 系列', duration: '45:12', tag: 'CANN 基础' },
+    'CANN 软件栈概览':   { title: 'CANN 全栈介绍：从驱动到框架', duration: '32:05', tag: 'CANN 基础' },
+    '环境安装与配置':    { title: 'CANN 8.0 环境安装实战演示', duration: '18:44', tag: '环境配置' },
+    'AscendCL 编程基础': { title: 'AscendCL 编程入门：设备 / 流 / 内存', duration: '52:30', tag: 'AscendCL' },
+    '模型推理部署':      { title: 'ATC 模型转换与离线推理实战', duration: '40:18', tag: '推理部署' },
+    '数据预处理 (DVPP)': { title: 'DVPP 硬件加速：图像解码与预处理', duration: '27:55', tag: 'DVPP' },
+    '性能调优实战':      { title: 'Profiling 工具使用与性能瓶颈分析', duration: '61:09', tag: '性能优化' },
+    'TBE DSL 算子开发':  { title: 'TBE DSL 自定义算子开发全流程', duration: '48:33', tag: '算子开发' },
+    'TIK 底层算子开发':  { title: 'TIK C++ 核函数与 AI Core 指令集', duration: '55:20', tag: 'TIK 开发' },
+    'HCCL 分布式通信':   { title: 'HCCL 集合通信与多卡训练配置', duration: '38:47', tag: '分布式' },
+    '大模型训练实战':    { title: 'MindFormers 大模型训练实战（LLaMA）', duration: '2:15:00', tag: '大模型' },
+  };
+
   function renderNdTab(tab, title) {
     const body = document.getElementById('nd-body');
     const k = NODE_KNOWLEDGE[title];
@@ -4528,18 +4834,51 @@ def vector_add_tik(shape, dtype, kernel_name):
       body.innerHTML = `<p class="nd-summary">${_currentDrawerNode?.el?.querySelector('.rm-desc')?.textContent || '暂无内容'}</p>`;
       return;
     }
+
     if (tab === 'knowledge') {
+      // Video embed placeholder
+      const vid = NODE_VIDEO[title] || { title: title + ' — 讲解视频', duration: '--:--', tag: '课程视频' };
+      const videoHtml = `
+        <div class="nd-video-wrap" onclick="showNbToast('即将跳转视频平台（演示模式）')">
+          <div class="nd-video-thumb">
+            <div class="nd-video-play">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="nd-video-title">${vid.title}</div>
+            <div class="nd-video-badge">${vid.tag} · ${vid.duration}</div>
+          </div>
+        </div>`;
+
       const diagramHtml = k.diagram ? `<div class="nd-section-title">架构示意</div><div class="nd-diagram">${k.diagram}</div>` : '';
+
+      // Resources list at bottom
+      const resList = (k.resources || []).map(r => `
+        <a class="nd-res-item" href="${r.href}" target="_blank">
+          <span class="nd-res-icon">${r.icon}</span>
+          <div class="nd-res-info">
+            <div class="nd-res-title">${r.title}</div>
+            ${r.subtitle ? `<div class="nd-res-subtitle">${r.subtitle}</div>` : ''}
+          </div>
+          <span class="nd-res-badge">${r.type}</span>
+        </a>`).join('');
+      const resHtml = resList ? `<div class="nd-section-title" style="margin-top:24px;">延伸资源</div><div class="nd-res-list">${resList}</div>` : '';
+
       body.innerHTML = `
+        ${videoHtml}
         <div class="nd-summary">${k.summary}</div>
         <div class="nd-section-title">核心概念</div>
         <div class="nd-concepts">
           ${k.concepts.map(c => `<div class="nd-concept"><div class="nd-concept-term">${c.term}</div><div class="nd-concept-desc">${c.desc}</div></div>`).join('')}
         </div>
-        ${diagramHtml}`;
-    } else if (tab === 'code') {
+        ${diagramHtml}
+        ${resHtml}`;
+
+    } else if (tab === 'practice') {
+      // Code + Lab merged
+      let codeHtml = '';
       if (k.code) {
-        body.innerHTML = `
+        codeHtml = `
+          <div class="nd-section-title">代码示例</div>
           <div class="nd-code-block">
             <div class="nd-code-header">
               <span class="nd-code-lang">${k.code.lang}</span>
@@ -4551,10 +4890,9 @@ def vector_add_tik(shape, dtype, kernel_name):
             <div class="nd-code-body"><pre style="margin:0;white-space:pre-wrap;word-break:break-all;">${escHtml(k.code.body)}</pre></div>
           </div>
           <div class="nd-code-note">${k.code.note}</div>`;
-      } else {
-        body.innerHTML = `<div class="nd-summary" style="text-align:center;padding:40px 20px;color:var(--text-muted);">本节以概念理论为主，暂无独立代码示例。<br>可点击下方「代码示例」按钮让 AI 即时生成。</div>`;
       }
-    } else if (tab === 'lab') {
+
+      let labHtml = '';
       if (k.lab) {
         const stepsHtml = k.lab.steps.map((s, i) => `
           <div class="nd-lab-step" id="nd-lab-step-${i}">
@@ -4573,26 +4911,19 @@ def vector_add_tik(shape, dtype, kernel_name):
               <div class="nd-lab-expected"><span class="nd-lab-expected-label">预期：</span>${escHtml(s.expected)}</div>
             </div>
           </div>`).join('');
-        body.innerHTML = `
+        labHtml = `
+          <div class="nd-section-title" style="margin-top:${k.code ? '28px' : '0'};">动手实验</div>
           <div class="nd-lab-intro">${k.lab.intro}</div>
           <div class="nd-lab-steps">${stepsHtml}</div>`;
-        // Auto-open first step
+      }
+
+      if (!codeHtml && !labHtml) {
+        body.innerHTML = `<div class="nd-lab-empty">本节以理论概念为主，暂无独立代码练习。<br>可点击下方 AI 按钮即时生成练习代码。</div>`;
+      } else {
+        body.innerHTML = codeHtml + labHtml;
         const first = body.querySelector('.nd-lab-step');
         if (first) first.classList.add('open');
-      } else {
-        body.innerHTML = `<div class="nd-lab-empty">本节以理论概念为主，暂无独立实验步骤。<br>建议先阅读「代码示例」后，点击「在 HiDevLab 运行」自由练习。</div>`;
       }
-    } else if (tab === 'resources') {
-      const resList = (k.resources || []).map(r => `
-        <a class="nd-res-item" href="${r.href}" target="_blank">
-          <span class="nd-res-icon">${r.icon}</span>
-          <div class="nd-res-info">
-            <div class="nd-res-title">${r.title}</div>
-            ${r.subtitle ? `<div class="nd-res-subtitle">${r.subtitle}</div>` : ''}
-          </div>
-          <span class="nd-res-badge">${r.type}</span>
-        </a>`).join('');
-      body.innerHTML = `<div class="nd-res-list">${resList || '<p style="color:var(--text-muted);font-size:13px">暂无资源</p>'}</div>`;
     }
   }
 
@@ -4747,6 +5078,20 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (btn) btn.disabled = false;
   }
 
+  // ── QUIZ XP & STREAK SYSTEM ──
+  const XP_KEY = 'cann_xp';
+  const STREAK_KEY = 'cann_streak';
+
+  function getXP() { return parseInt(localStorage.getItem(XP_KEY) || '0', 10); }
+  function getStreak() { return parseInt(localStorage.getItem(STREAK_KEY) || '0', 10); }
+  function addXP(pts) { localStorage.setItem(XP_KEY, getXP() + pts); }
+  function setStreak(n) { localStorage.setItem(STREAK_KEY, n); }
+
+  const STREAK_MESSAGES = [
+    '继续保持！', '答对了！', '很棒！', '来了来了！',
+    '节节高升！🔥', '连续答对 3 题！🎯', '厉害！连对 5 题！⚡', '完美！连续正确！🚀'
+  ];
+
   function ndQuizSubmit(btn) {
     if (!_inlineQuiz) return;
     const selected = document.querySelector('input[name="nd-quiz-opt"]:checked');
@@ -4763,7 +5108,33 @@ def vector_add_tik(shape, dtype, kernel_name):
       }
     });
     const correct = selected.value === _inlineQuiz.answer;
-    feedback.textContent = correct ? '🎉 回答正确！' : `答案是：${_inlineQuiz.answer}`;
+
+    // XP & Streak logic
+    let streak = getStreak();
+    let xpGain = 0;
+    let incentiveHtml = '';
+    if (correct) {
+      streak++;
+      xpGain = 10 + (streak >= 3 ? 5 : 0); // bonus for streaks
+      addXP(xpGain);
+      setStreak(streak);
+      const msgIdx = Math.min(streak - 1, STREAK_MESSAGES.length - 1);
+      const streakDisplay = streak >= 2 ? `<span class="nd-streak">🔥 ×${streak}</span>` : '';
+      incentiveHtml = `<div class="nd-xp-row">
+        <span class="nd-xp-badge">⚡ ${getXP()} XP</span>
+        ${streakDisplay}
+        <span class="nd-xp-msg correct">${STREAK_MESSAGES[msgIdx]}</span>
+        <span class="xp-pop">+${xpGain} XP</span>
+      </div>`;
+    } else {
+      setStreak(0);
+      incentiveHtml = `<div class="nd-xp-row">
+        <span class="nd-xp-badge">⚡ ${getXP()} XP</span>
+        <span class="nd-xp-msg wrong">别灰心，再来一次！</span>
+      </div>`;
+    }
+
+    feedback.innerHTML = (correct ? '🎉 回答正确！' : `答案是：${escHtml(_inlineQuiz.answer)}`) + incentiveHtml;
     feedback.style.color = correct ? '#16A34A' : '#DC2626';
     btn.textContent = correct ? '✓ 正确' : '✗ 错误';
     btn.style.background = correct ? '#16A34A' : '#DC2626';
@@ -5552,52 +5923,36 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   // Top level tab switching
   function switchTopTab(tabName, btn) {
-    // Update tab active state
     document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
 
-    // Hide all filter bars and custom paths
+    // Filter bars & custom paths container
     document.querySelectorAll('.filter-bar').forEach(bar => bar.style.display = 'none');
     document.getElementById('custom-paths-container').style.display = 'none';
-    
-    // Show/hide path generator
+
+    // Path generator (custom tab only)
     const pathGenerator = document.getElementById('path-generator');
-    if (tabName === 'custom') {
-      pathGenerator.classList.add('visible');
-    } else {
-      pathGenerator.classList.remove('visible');
+    if (pathGenerator) {
+      if (tabName === 'custom') pathGenerator.classList.add('visible');
+      else pathGenerator.classList.remove('visible');
     }
 
-    // Show the corresponding filter bar or custom paths
-    if (tabName === 'custom') {
-      // Don't show custom-paths-container initially, only show path generator
-      // custom-paths-container will be shown after generating a path
-    } else {
+    // Show corresponding filter bar
+    if (tabName !== 'custom') {
       const filterBar = document.getElementById('filter-' + tabName);
       if (filterBar) {
         filterBar.style.display = 'flex';
+        filterBar.querySelectorAll('.filter-btn').forEach((b, i) => {
+          b.classList.toggle('active', i === 0);
+        });
       }
     }
 
-    // Reset filter buttons to first one
-    const filterBar = document.getElementById('filter-' + tabName);
-    if (filterBar) {
-      filterBar.querySelectorAll('.filter-btn').forEach((btn, index) => {
-        if (index === 0) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-    }
-
-    // Clear path highlighting when switching away from custom tab
+    // Clear path highlighting when leaving custom tab
     if (tabName !== 'custom') clearLearnPath();
 
-    // Show all roadmap nodes when switching tabs
-    document.querySelectorAll('.rm-node').forEach(node => {
-      node.style.display = '';
-    });
+    // Reveal all roadmap nodes when switching tabs
+    document.querySelectorAll('.rm-node').forEach(node => { node.style.display = ''; });
   }
 
   // Sample custom paths data
@@ -6000,15 +6355,99 @@ def vector_add_tik(shape, dtype, kernel_name):
     const badge = document.getElementById('qb-nav-badge');
     if (badge) { badge.textContent = wrong > 0 ? wrong : ''; badge.style.display = wrong > 0 ? 'inline-flex' : 'none'; }
   }
-  function openQuizBank() {
-    _qbFilter = 'all'; _qbSearch = ''; _qbDomainFilter = 'all'; _qbNodeFilter = 'all';
-    renderQuizBank();
+  function openLearningArchive(tab) {
+    tab = tab || 'paths';
+    switchLaTab(tab);
     document.getElementById('qb-overlay').classList.add('open');
     document.getElementById('qb-drawer').classList.add('open');
   }
-  function closeQuizBank() {
+  function closeLearningArchive() {
     document.getElementById('qb-overlay').classList.remove('open');
     document.getElementById('qb-drawer').classList.remove('open');
+  }
+  function switchLaTab(tab) {
+    document.querySelectorAll('.la-tab').forEach(t => t.classList.remove('active'));
+    const activeTab = document.getElementById('la-tab-' + tab);
+    if (activeTab) activeTab.classList.add('active');
+    document.getElementById('la-panel-paths').style.display = tab === 'paths' ? '' : 'none';
+    const quizPanel = document.getElementById('la-panel-quiz');
+    quizPanel.style.display = tab === 'quiz' ? 'flex' : 'none';
+    if (tab === 'paths') renderMyPaths();
+    if (tab === 'quiz') {
+      _qbFilter = 'all'; _qbSearch = ''; _qbDomainFilter = 'all'; _qbNodeFilter = 'all';
+      renderQuizBank();
+    }
+  }
+  function openQuizBank() { openLearningArchive('quiz'); }
+  function closeQuizBank() { closeLearningArchive(); }
+  function renderMyPaths() {
+    const container = document.getElementById('la-paths-list');
+    if (!container) return;
+
+    const savedPaths = JSON.parse(localStorage.getItem('cann_custom_paths') || '[]');
+
+    if (savedPaths.length === 0) {
+      container.innerHTML = `<div style="padding:56px 24px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:12px;opacity:.3;">🗺️</div>
+        <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:6px;">还没有学习路径</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.7;margin-bottom:20px;">用 AI 生成一条专属学习路径，<br>你的进度会自动记录在这里。</div>
+        <button class="la-add-btn" onclick="closeLearningArchive();switchTopTab('custom',document.querySelector('.top-tab:last-child'));showPage('learn');">✦ 生成我的学习路径</button>
+      </div>`;
+      return;
+    }
+
+    const completedTitles = new Set(JSON.parse(localStorage.getItem('cann_learn_state') || '[]'));
+    const inProgressTitles = new Set(
+      [...document.querySelectorAll('#page-learn .rm-node')]
+        .filter(n => n.querySelector('.rm-status.in-progress'))
+        .map(n => n.querySelector('.rm-node-title')?.textContent?.trim()).filter(Boolean)
+    );
+
+    let html = '<div class="la-section" style="padding-bottom:16px;"><div class="la-section-title">我的路径</div>';
+
+    savedPaths.forEach(path => {
+      const nodes = path.nodeList || [];
+      const completedCount = nodes.filter(n => completedTitles.has(n.title)).length;
+      const total = nodes.length;
+      const pct = total ? Math.round((completedCount / total) * 100) : 0;
+      const lastTime = path.lastStudied
+        ? '上次学习 ' + new Date(path.lastStudied).toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' })
+        : path.createdAt ? '创建于 ' + path.createdAt.replace(/-/g, '/') : '';
+
+      const seqNodes = nodes.map((node, i) => {
+        const isDone = completedTitles.has(node.title);
+        const isActive = inProgressTitles.has(node.title);
+        const cls = isDone ? 'done' : isActive ? 'active' : '';
+        const icon = isDone ? '✓' : isActive ? '⋯' : (i + 1);
+        const isLast = i === nodes.length - 1;
+        return `<div class="la-seq-node">
+          <div class="la-seq-dot-wrap">
+            <div class="la-seq-dot ${cls}">${icon}</div>
+            ${!isLast ? '<div class="la-seq-connector"></div>' : ''}
+          </div>
+          <div class="la-seq-label ${cls}">${node.title}</div>
+        </div>`;
+      }).join('');
+
+      html += `<div class="la-path-card">
+        <div class="la-path-card-header">
+          <div class="la-path-card-icon">${path.icon || '📘'}</div>
+          <div class="la-path-card-meta">
+            <div class="la-path-card-name">${path.name}</div>
+            <div class="la-path-card-bar">
+              <div class="la-mini-bar" style="flex:1;"><div class="la-mini-fill" style="width:${pct}%;background:#2e53fa"></div></div>
+              <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;">${completedCount}/${total}</span>
+            </div>
+            ${lastTime ? `<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${lastTime}</div>` : ''}
+          </div>
+          <button class="la-continue-btn" onclick="closeLearningArchive();switchTopTab('custom',document.querySelector('.top-tab:last-child'));showPage('learn');">${completedCount > 0 ? '继续' : '开始'}</button>
+        </div>
+        <div class="la-path-seq">${seqNodes}</div>
+      </div>`;
+    });
+
+    html += `<button class="la-add-btn" style="margin:4px 0 8px;" onclick="closeLearningArchive();switchTopTab('custom',document.querySelector('.top-tab:last-child'));showPage('learn');">+ 生成新路径</button></div>`;
+    container.innerHTML = html;
   }
   function _qbFormatDate(ts) {
     const d = new Date(ts);
@@ -6096,38 +6535,108 @@ def vector_add_tik(shape, dtype, kernel_name):
     _updateQbBadge();
   }
   function qbSearchInput(val) { _qbSearch = val; renderQuizBank(); }
+
+  // ── PROGRESS TRACKER ──
+  function updateProgressTracker() {
+    // Refresh archive if it's open on 我的路径 tab
+    const drawer = document.getElementById('qb-drawer');
+    const pathsPanel = document.getElementById('la-panel-paths');
+    if (drawer && drawer.classList.contains('open') && pathsPanel && pathsPanel.style.display !== 'none') {
+      renderMyPaths();
+    }
+  }
+
+  // Phase definitions for the roadmap
+  const PHASE_META = [
+    { cat: 'beginner',    label: '阶段一：基础准备',    color: '#10B981' },
+    { cat: 'developer',   label: '阶段二：应用开发',    color: '#2e53fa' },
+    { cat: 'operator',    label: '阶段三：算子开发',    color: '#8B5CF6' },
+    { cat: 'distributed', label: '阶段四：分布式训练',  color: '#F59E0B' },
+  ];
+
+  function continuePhase(cat) {
+    const nodes = document.querySelectorAll(`#page-learn .rm-node[data-category="${cat}"]`);
+    const target = [...nodes].find(n => !n.classList.contains('completed')) || nodes[0];
+    if (target) openNodeDrawer(target);
+  }
+
+  // ── LEARN STATE PERSISTENCE ──
+  const LEARN_STATE_KEY = 'cann_learn_state';
+
+  function saveLearnState() {
+    const completed = Array.from(document.querySelectorAll('#page-learn .rm-node.completed'))
+      .map(el => el.querySelector('.rm-node-title')?.textContent?.trim())
+      .filter(Boolean);
+    localStorage.setItem(LEARN_STATE_KEY, JSON.stringify(completed));
+  }
+
+  function loadLearnState() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(LEARN_STATE_KEY) || '[]');
+      if (!saved.length) return;
+      document.querySelectorAll('#page-learn .rm-node').forEach(node => {
+        const title = node.querySelector('.rm-node-title')?.textContent?.trim();
+        if (title && saved.includes(title)) {
+          node.classList.add('completed');
+          const statusEl = node.querySelector('.rm-status');
+          if (statusEl) { statusEl.className = 'rm-status done'; statusEl.textContent = '✓'; }
+        }
+      });
+    } catch(e) {}
+    updateProgressTracker();
+  }
+
+
+  // Initialize on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', () => {
+    loadLearnState();
+    updateProgressTracker();
+    // Default docs to home view
+    showDoc('home');
+  });
 </script>
 
-<!-- Quiz Bank Overlay + Drawer -->
-<div class="qb-overlay" id="qb-overlay" onclick="closeQuizBank()"></div>
+<!-- Learning Archive Overlay + Drawer -->
+<div class="qb-overlay" id="qb-overlay" onclick="closeLearningArchive()"></div>
 <div class="qb-drawer" id="qb-drawer">
   <div class="qb-header">
     <div class="qb-header-left">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M12 12h.01M12 16h.01M12 8h.01"/></svg>
-      <span class="qb-title">错题本</span>
-      <span class="qb-count" id="qb-count">0 题</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span class="qb-title">学习档案</span>
     </div>
-    <button class="qb-close" onclick="closeQuizBank()">
+    <button class="qb-close" onclick="closeLearningArchive()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
-  <div class="qb-toolbar">
-    <div class="qb-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" placeholder="搜索题目或节点…" oninput="qbSearchInput(this.value)">
-    </div>
-    <div class="qb-filters" id="qb-result-filters">
-      <button class="qb-filter active" onclick="qbSetFilter('all',this)">全部</button>
-      <button class="qb-filter err" onclick="qbSetFilter('wrong',this)">只看错题</button>
-      <button class="qb-filter ok" onclick="qbSetFilter('correct',this)">只看正确</button>
-    </div>
-    <div class="qb-filters" id="qb-domain-filters"></div>
-    <div class="qb-filters" id="qb-node-filters"></div>
+  <!-- Archive tabs -->
+  <div class="la-tabs">
+    <button class="la-tab active" id="la-tab-paths" onclick="switchLaTab('paths')">我的路径</button>
+    <button class="la-tab" id="la-tab-quiz" onclick="switchLaTab('quiz')">错题本 <span class="qb-count" id="qb-count" style="margin-left:4px;"></span></button>
   </div>
-  <div class="qb-list" id="qb-list"></div>
-  <div class="qb-footer">
-    <span class="qb-footer-stats" id="qb-footer-stats"></span>
-    <button class="qb-clear-btn" onclick="qbClearAll()">清空全部</button>
+  <!-- 我的路径 panel -->
+  <div class="la-panel" id="la-panel-paths">
+    <div id="la-paths-list"></div>
+  </div>
+  <!-- 错题本 panel -->
+  <div class="la-panel" id="la-panel-quiz" style="display:none; flex-direction:column;">
+    <div class="qb-toolbar">
+      <div class="qb-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="搜索题目或节点…" oninput="qbSearchInput(this.value)">
+      </div>
+      <div class="qb-filters" id="qb-result-filters">
+        <button class="qb-filter active" onclick="qbSetFilter('all',this)">全部</button>
+        <button class="qb-filter err" onclick="qbSetFilter('wrong',this)">只看错题</button>
+        <button class="qb-filter ok" onclick="qbSetFilter('correct',this)">只看正确</button>
+      </div>
+      <div class="qb-filters" id="qb-domain-filters"></div>
+      <div class="qb-filters" id="qb-node-filters"></div>
+    </div>
+    <div class="qb-list" id="qb-list"></div>
+    <div class="qb-footer">
+      <span class="qb-footer-stats" id="qb-footer-stats"></span>
+      <button class="qb-clear-btn" onclick="qbClearAll()">清空全部</button>
+    </div>
   </div>
 </div>
 </body>
