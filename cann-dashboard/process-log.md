@@ -275,6 +275,29 @@
 - 痛点展示规则在 chip 行明确：按优先级排序 · 仅展示代表性痛点，消除"为何展示几条"的困惑
 
 ---
+## 阶段二十：痛点列表与角色视角联动                                                                                   
+                                                            
+  **日期**：2026-05-15                                                                                                  
+   
+  **背景**：原来的分类 chip（工具/文档/API/环境）与角色视角没有关联，用户无法通过切换角色来看该角色最关心的痛点。       
+                                                            
+  **变更**：                                                                                                            
+                                                                                                                        
+  1. **每条 pain-item 加 `data-roles`**，与顶栏角色 chip 共用同一套 ID：
+     - AIC 日志 / 迁移工具 shape → `op infra`                                                                           
+     - Builtin 文档 / Ascend C Python 文档 → `doc op`       
+     - 算子编程 API 约束 → `op`                                                                                         
+     - NPU 容器初始化耗时 → `infra op pm` 
+                                                                                                                        
+  2. **新增 `applyPainFilter()`**：基于全局 `_activeRole` 和 `_activeCat` 做交集过滤，同时动态更新各分类 chip 的计数    
+                                                                                                                        
+  3. **`selectRole()` 尾部调用 `applyPainFilter()`**：切换角色时痛点列表自动更新，chip 计数同步变化                     
+                                                                                                                        
+  4. **痛点楼层 `data-roles` 改为覆盖全部角色**（`op infra pm doc ux comm`），任何角色下都不被淡化
+                                                                                                                        
+  **设计决策**：角色筛选（宏观淡化楼层）和分类              
+  chip（细化痛点类型）是两层过滤，互补不冲突——先按角色缩小范围，再按分类进一步定位。                  
+---
 
 ## 协作模式总结
 

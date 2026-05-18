@@ -31,6 +31,9 @@
 ##### 关键实现细节
 - `switchTab(id, btn)` 只处理 `tabOverview` / `tabDev`，切换时关闭两个设计点面板
 - `filterPain(cat, btn)` 按分类过滤痛点列表（全部/工具/文档/API/环境），基于 `data-cat` 属性
+  - `applyPainFilter()` 统一处理角色 + 分类两层交集过滤，cat-sum-chip 计数随 activeRole 动态更新                        
+  - 每条 `pain-item` 同时有 `data-cat`（工具/文档/API/环境）和 `data-roles`（op/infra/doc/pm                            
+  等），两个维度独立叠加；痛点楼层 `data-roles` 覆盖全部角色（不淡化）                 
 - `selectRole(role, btn)` 控制总览视角筛选（淡化/关注徽章）
 - `renderTpMatrix()` 从 `touchpointData` 渲染触点矩阵
 - `selectTpCell(sceneId, col, el)` 更新 `#tpDetail` 的 `innerHTML`
