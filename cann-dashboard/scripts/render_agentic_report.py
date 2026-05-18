@@ -206,7 +206,7 @@ def build_md(summary, observations):
     lines.append("")
     lines.append("## 9. 原始文件")
     lines.append("")
-    lines.append(f"- [journey-agentic-report.html]({ROOT / 'journey-agentic-report.html'})")
+    lines.append(f"- [04-journey-agentic-report.html]({ROOT / '04-journey-agentic-report.html'})")
     lines.append(f"- [cann-agentic-summary.json]({ROOT / 'cann-agentic-summary.json'})")
     lines.append(f"- [cann-agentic-observations.json]({ROOT / 'cann-agentic-observations.json'})")
     lines.append(f"- [cann-repo-coverage.json]({ROOT / 'cann-repo-coverage.json'})")
@@ -796,7 +796,7 @@ def main():
     md = build_md(summary, observations)
     html_doc = build_html(summary, observations)
     (ROOT / "journey-agentic-report.md").write_text(md, encoding="utf-8")
-    (ROOT / "journey-agentic-report.html").write_text(html_doc, encoding="utf-8")
+    (ROOT / "04-journey-agentic-report.html").write_text(html_doc, encoding="utf-8")
 
 
 if __name__ == "__main__":

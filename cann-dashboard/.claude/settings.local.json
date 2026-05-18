@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(start *)"
+      "Bash(start *)",
+      "Bash(git pull *)",
+      "Bash(Get-ChildItem -Filter \"*.html\")",
+      "Bash(Select-Object Name, LastWriteTime, Length)",
+      "Bash(Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem \"D:\\\\HW\\\\AscendCANN\\\\cann-dashboard\" | Where-Object {$_.Extension -eq '.html'} | Select-Object Name, LastWriteTime, Length)",
+      "PowerShell(Get-Item \"D:\\\\HW\\\\AscendCANN\\\\cann-dashboard\\\\analysis.html\" | Select-Object Name, LastWriteTime, @{N='KB';E={[math]::Round\\($_.Length/1KB,0\\)}})",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "PowerShell([System.IO.File]::ReadAllText\\(\"D:\\\\HW\\\\AscendCANN\\\\cann-dashboard\\\\analysis.html\", [System.Text.Encoding]::UTF8\\) | Select-String \"charset|title\" | Select-Object -First 5)",
+      "PowerShell($bytes = [System.IO.File]::ReadAllBytes\\(\"D:\\\\HW\\\\AscendCANN\\\\cann-dashboard\\\\analysis.html\"\\); \"File size: $\\($bytes.Length\\) bytes\"; \"First 4 bytes \\(BOM check\\): $\\($bytes[0..3] | ForEach-Object { $_.ToString\\('X2'\\) } | Join-String -Separator ' '\\)\")"
     ]
   }
 }
