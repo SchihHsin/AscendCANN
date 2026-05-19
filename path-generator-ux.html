@@ -196,10 +196,21 @@ body { font-family: var(--font); background: #F5F7FF; color: var(--black); min-h
 .insert-popup {
   position: fixed; z-index: 1000; background: white; border: 1.5px solid var(--border);
   border-radius: 12px; padding: 12px; box-shadow: var(--shadow-lg);
-  width: 260px; animation: popupIn .18s ease both;
+  width: 288px; animation: popupIn .18s ease both;
 }
 @keyframes popupIn { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
 .insert-popup-title { font-size: 10px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
+.insert-search-wrap { position: relative; margin-bottom: 8px; }
+.insert-search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; font-size: 13px; }
+.insert-search {
+  width: 100%; box-sizing: border-box; padding: 7px 10px 7px 30px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-size: 12px; font-family: var(--font); color: var(--black);
+  background: var(--surface); outline: none; transition: border-color .15s;
+}
+.insert-search:focus { border-color: var(--blue); background: white; }
+.insert-search::placeholder { color: var(--text-3); }
+.insert-section-label { font-size: 10px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; padding: 0 2px; }
 .insert-option {
   display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 8px;
   cursor: pointer; transition: background .12s; margin-bottom: 3px;
@@ -207,8 +218,12 @@ body { font-family: var(--font); background: #F5F7FF; color: var(--black); min-h
 .insert-option:hover { background: var(--surface); }
 .insert-option:last-child { margin-bottom: 0; }
 .insert-option-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+.insert-option-dot.search { background: var(--text-3); }
 .insert-option-title { font-size: 12px; font-weight: 600; color: var(--black); margin-bottom: 1px; }
+.insert-option-title mark { background: #fef08a; border-radius: 2px; padding: 0 1px; font-weight: 700; color: inherit; }
 .insert-option-desc { font-size: 11px; color: var(--text-2); line-height: 1.4; }
+.insert-divider { height: 1px; background: var(--border); margin: 8px 0; }
+.insert-empty { font-size: 12px; color: var(--text-3); text-align: center; padding: 12px 0; }
 .insert-popup-cancel { width: 100%; margin-top: 8px; padding: 6px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface); font-size: 11px; color: var(--text-2); cursor: pointer; font-family: var(--font); transition: all .12s; }
 .insert-popup-cancel:hover { background: var(--surface2); }
 
@@ -368,8 +383,22 @@ body { font-family: var(--font); background: #F5F7FF; color: var(--black); min-h
 
 <!-- INSERT POPUP (shared, repositioned dynamically) -->
 <div class="insert-popup" id="insert-popup" style="display:none;">
-  <div class="insert-popup-title">在此插入节点</div>
-  <div id="insert-options"></div>
+  <div class="insert-popup-title">插入节点</div>
+  <div class="insert-search-wrap">
+    <span class="insert-search-icon">⌕</span>
+    <input class="insert-search" id="insert-search-input" type="text"
+      placeholder="搜索节点名称或描述…"
+      oninput="filterInsertSearch(this.value)"
+      autocomplete="off" />
+  </div>
+  <div id="insert-search-section" style="display:none;">
+    <div class="insert-section-label" id="insert-search-label">搜索结果</div>
+    <div id="insert-search-results"></div>
+  </div>
+  <div id="insert-recommend-section">
+    <div class="insert-section-label">AI 推荐</div>
+    <div id="insert-options"></div>
+  </div>
   <button class="insert-popup-cancel" onclick="closeInsertPopup()">取消</button>
 </div>
 
@@ -481,6 +510,7 @@ let undoStack = [];
 let undoTimer = null;
 let dragSrcIndex = null;
 let insertAfterIndex = null;
+let _insertSearchCache = [];
 
 // ── UTILS ──
 function setInput(text) { document.getElementById('conv-input').value = text; document.getElementById('conv-input').focus(); }
@@ -648,9 +678,93 @@ function toggleCollapse(i) {
 }
 
 // ── INSERT POPUP ──
+
+// Search pool: collect all unique nodes across all paths + insertSuggestions
+const INSERT_NODE_POOL = (() => {
+  const seen = new Set();
+  const pool = [];
+  Object.values(PATHS_DATA).forEach(p => {
+    [...(p.nodes || []), ...(p.insertSuggestions || [])].forEach(n => {
+      if (!seen.has(n.title)) {
+        seen.add(n.title);
+        pool.push({ title: n.title, desc: n.desc || '', tags: n.tags || [] });
+      }
+    });
+  });
+  // Extra general CANN nodes not in any path
+  const extras = [
+    { title: 'GE 图引擎原理',        desc: '理解计算图从框架到 GE 的编译与优化流程。',          tags: ['高级','理论'] },
+    { title: '算子融合优化',          desc: '将多个算子合并执行，减少内存访问开销。',              tags: ['高级','实践'] },
+    { title: '内存管理与复用',        desc: '掌握 NPU 内存生命周期，减少显存峰值。',              tags: ['高级','实践'] },
+    { title: 'AIPP 图像预处理',       desc: '利用 AIPP 对输入图像做色彩空间转换与归一化加速。',  tags: ['进阶','实践'] },
+    { title: 'MindInsight 可视化',    desc: '使用 MindInsight 监控训练过程与精度曲线。',         tags: ['进阶','工具'] },
+    { title: 'HCCL 集合通信',         desc: '掌握 AllReduce / Broadcast 等集合通信原语。',       tags: ['高级','分布式'] },
+    { title: '昇腾社区与资源导航',    desc: '快速定位官方文档、论坛与开源模型仓库。',             tags: ['入门','资源'] },
+    { title: 'AscendCL C++ 进阶',     desc: '深入 C++ AscendCL API，编写高性能推理应用。',       tags: ['高级','实践'] },
+    { title: '模型精度对比与验证',    desc: '对比 GPU/CPU 与 NPU 推理结果，定位精度差异。',      tags: ['进阶','调试'] },
+    { title: 'FP16 混合精度推理',     desc: '使用 FP16 算子降低推理延迟，同时保持精度。',        tags: ['进阶','优化'] },
+  ];
+  extras.forEach(n => { if (!seen.has(n.title)) { seen.add(n.title); pool.push(n); } });
+  return pool;
+})();
+
+function highlight(text, query) {
+  if (!query) return text;
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+function filterInsertSearch(query) {
+  const q = query.trim();
+  const searchSection = document.getElementById('insert-search-section');
+  const recommendSection = document.getElementById('insert-recommend-section');
+  const resultsEl = document.getElementById('insert-search-results');
+  const labelEl = document.getElementById('insert-search-label');
+
+  if (!q) {
+    searchSection.style.display = 'none';
+    recommendSection.style.display = '';
+    return;
+  }
+
+  // Filter pool, exclude nodes already in path
+  const existing = new Set(currentNodes.map(n => n.title));
+  const ql = q.toLowerCase();
+  const matches = INSERT_NODE_POOL
+    .filter(n => !existing.has(n.title) && (n.title.toLowerCase().includes(ql) || n.desc.toLowerCase().includes(ql)))
+    .slice(0, 6);
+
+  _insertSearchCache = matches;
+  if (matches.length === 0) {
+    resultsEl.innerHTML = `<div class="insert-empty">没有找到「${q}」相关节点</div>`;
+    labelEl.textContent = '搜索结果';
+  } else {
+    labelEl.textContent = `搜索结果（${matches.length}）`;
+    resultsEl.innerHTML = matches.map((n, i) => `
+      <div class="insert-option" onclick="insertNodeFromSearch(${i})">
+        <div><div class="insert-option-dot search"></div></div>
+        <div>
+          <div class="insert-option-title">${highlight(n.title, q)}</div>
+          <div class="insert-option-desc">${highlight(n.desc, q)}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  searchSection.style.display = '';
+  recommendSection.style.display = 'none';
+}
+
 function showInsertPopup(afterIndex, zoneEl) {
   insertAfterIndex = afterIndex;
   const popup = document.getElementById('insert-popup');
+
+  // Reset search state
+  const searchInput = document.getElementById('insert-search-input');
+  searchInput.value = '';
+  document.getElementById('insert-search-section').style.display = 'none';
+  document.getElementById('insert-recommend-section').style.display = '';
+
+  // Render recommendations
   const suggestions = currentPath?.insertSuggestions || [];
   document.getElementById('insert-options').innerHTML = suggestions.map((s, idx) => `
     <div class="insert-option" onclick="insertNode(${idx})">
@@ -660,10 +774,11 @@ function showInsertPopup(afterIndex, zoneEl) {
         <div class="insert-option-desc">${s.desc}</div>
       </div>
     </div>`).join('');
+
   // Position near zone
   const rect = zoneEl.getBoundingClientRect();
   popup.style.display = 'block';
-  const pw = 260, ph = popup.offsetHeight || 180;
+  const pw = 288, ph = popup.offsetHeight || 220;
   let top = rect.bottom + 6;
   let left = rect.left + rect.width / 2 - pw / 2;
   if (left + pw > window.innerWidth - 16) left = window.innerWidth - pw - 16;
@@ -671,8 +786,11 @@ function showInsertPopup(afterIndex, zoneEl) {
   if (top + ph > window.innerHeight - 16) top = rect.top - ph - 6;
   popup.style.top = top + 'px';
   popup.style.left = left + 'px';
-  // Close on outside click
-  setTimeout(() => document.addEventListener('click', closeInsertPopupOutside), 0);
+
+  setTimeout(() => {
+    document.addEventListener('click', closeInsertPopupOutside);
+    searchInput.focus();
+  }, 50);
 }
 function closeInsertPopup() {
   document.getElementById('insert-popup').style.display = 'none';
@@ -681,15 +799,20 @@ function closeInsertPopup() {
 function closeInsertPopupOutside(e) {
   if (!document.getElementById('insert-popup').contains(e.target)) closeInsertPopup();
 }
-function insertNode(suggIdx) {
-  const s = currentPath.insertSuggestions[suggIdx];
-  const newNode = { title: s.title, desc: s.desc, tags: ['进阶','实践'], known: false, collapsed: false };
+function _doInsert(nodeObj) {
+  const newNode = { title: nodeObj.title, desc: nodeObj.desc, tags: nodeObj.tags?.length ? nodeObj.tags : ['进阶','实践'], known: false, collapsed: false };
   const pos = insertAfterIndex + 1;
   currentNodes.splice(pos, 0, newNode);
   closeInsertPopup();
   renderNodes(pos);
-  showUndoToast(`已插入「${s.title}」`, () => { currentNodes.splice(pos, 1); renderNodes(0); });
-  addMessage('ai', `已在路径中插入「${s.title}」节点。`);
+  showUndoToast(`已插入「${newNode.title}」`, () => { currentNodes.splice(pos, 1); renderNodes(0); });
+  addMessage('ai', `已在路径中插入「${newNode.title}」节点。`);
+}
+function insertNode(suggIdx) {
+  _doInsert(currentPath.insertSuggestions[suggIdx]);
+}
+function insertNodeFromSearch(i) {
+  _doInsert(_insertSearchCache[i]);
 }
 
 // ── UNDO TOAST ──
