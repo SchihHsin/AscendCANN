@@ -299,6 +299,161 @@
   chip（细化痛点类型）是两层过滤，互补不冲突——先按角色缩小范围，再按分类进一步定位。                  
 ---
 
+
+## 阶段二十一：深入分析 ascendc-agent-main 评测系统
+
+**日期**：2026-05-19
+
+**起因**：用户提供了 ascendc-agent-main 文件夹，要求阅读并理解其内容，然后深入分析它与 design-options.html 看板数据的对应关系，并评估能否在本机运行。
+
+---
+
+### 分析一：这个文件夹实现了什么？
+
+**结论**：一个用 Claude Code Agent 批量自动开发昇腾 NPU 算子、并评测开发者体验（DX）的自动化平台。
+
+**四层架构**：
+
+1. **批量调度系统（evaluation_system/）**
+   - `orchestrator.py`（872行）：主控制器，串行开发算子、并行评测日志
+   - `claude_runner.py`：为每个算子启动独立 Claude Code 会话，支持多 Token 轮换（应对限流）
+   - `config_loader.py`：从 YAML 读取算子目录，按批次/难度/硬件类型查询
+   - `obs_uploader.py`：把评测报告上传到华为云对象存储（OBS）
+
+2. **8个专职 Agent（.claude/agents/）**
+   - architect：设计算子规格、输出技术方案文档
+   - developer：按设计写代码实现
+   - tester：设计并执行测试用例
+   - evaluator：分析开发日志、输出 DX 评分报告
+   - reviewer：代码质量审查
+   - comparator：性能/精度对比
+   - precision-tuner：精度优化
+   - team-lead：整体流程协调
+
+3. **17个 Skill 技能库（.claude/skills/）**
+   包括 ascendc-kernel-develop-workflow、ascendc-precision-debug、ascendc-env-check、
+   ascendc-api-best-practices、ascendc-docker、ascend-docs-search 等
+
+4. **配置与文档层**
+   - operator_catalog.yaml：定义35个算子（L1-L3难度，Vector/Cube/CV_Fusion/General_Fusion分类）
+   - evaluation_config.yaml：单算子最长1小时、总批次最长24小时
+   - AscendC算子开发指南/：4000+页本地文档
+
+**完整开发流程（6阶段，CLAUDE.md 强制要求全部完成）**：
+```
+方案设计 → 算子实现 → 构建测试 → 问题处理 → 结果总结 → 文档编写
+```
+
+**关键原则（摘自 CLAUDE.md）**：
+- 必须使用基础矢量 API（Add/Mul/Exp 等），禁止高阶封装（Softmax/LayerNorm）
+- 硬件参数必须动态获取（GetBlockNum()），禁止写死（blockDim = 8）
+- 6阶段必须全部完成，禁止中途停止
+
+---
+
+### 分析二：ascendc-agent-main 数据对应到 design-options.html 哪些部分？
+
+**数据流向**：
+```
+ascendc-agent-main 运行
+    ↓ 产生
+开发日志 (logs/batch_*/operator.md)
+    ↓ evaluator agent 分析
+评测报告（5维度评分 + 量化指标 + 痛点归因）
+    ↓ 上传 OBS / 汇总
+design-options.html 各板块
+```
+
+**具体对应关系**：
+
+| 看板板块 | 数据来源 |
+|---------|---------|
+| 体验测试评分 算子编程 Ascend C（4.1/6） | evaluator 5维度聚合 × 0.6 |
+| Agentic KPI — token消耗 / 耗时 | orchestrator 运行时记录（无需 NPU） |
+| Agentic KPI — 开发成功率 / 用例通过率 | 真实编译+执行结果（需 NPU） |
+| 客户痛点（工具/文档/API类条目） | evaluator 痛点归因：AIC日志→功能调测维度低分；API约束→感知学习文档完整性缺失 |
+| 用户旅程雷达图5维 | evaluator 5个域直接映射 |
+| 健康矩阵 Agent评分列 | evaluator 综合分 |
+
+**evaluator 的5维度与看板的映射**：
+| evaluator 域 | 看板雷达图维度 |
+|-------------|--------------|
+| 感知学习（文档完整性/准确性/可理解性） | 文档质量 |
+| 算子设计与实现（API命名/样例覆盖） | 开发成功率 |
+| 算子编译（编译次数/配置行数） | 环境效率 |
+| 功能调测（测试循环次数） | 调试能力 |
+| 性能调优（迭代次数） | 工具稳定性 |
+
+**不来自此系统的部分**：PyTorch API 通过率、模型开箱覆盖（VLLM/SGLang/VERL）、0 Day 验证、VOD 原声、大客户闭环率——这些来自独立测试流水线、社区抓取、CRM 系统。
+
+---
+
+### 分析三：能否在本机运行？
+
+**结论：不能完整运行，但可部分模拟。**
+
+**运行卡点**：
+1. Docker 未安装（`command not found: docker`）
+2. 无昇腾 NPU 硬件（`/dev/davinci1` 等设备节点不存在）
+3. Docker 基础镜像来自华为私有仓库，需要华为云账号认证：
+   `FROM swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:8.5.0-910b-openeuler24.03-py3.11`
+
+**数据分类（是否需要 NPU）**：
+
+不需要 NPU（约40%的看板数据）：
+- 所有 DX 评分分析（evaluator 输出，纯日志文本分析）
+- Agentic 过程指标（token数、耗时）
+- VOD / 社区 / 客户反馈数据
+- 社区入门体验 S0–S5（Agentic Web 浏览，不碰硬件）
+
+必须 NPU（约60%）：
+- PyTorch API 77,006个用例通过率
+- 模型开箱覆盖率（VLLM/SGLang/VERL）
+- 0 Day 发布验证
+- 算子编译成功率 / 用例执行通过率
+- 所有性能值（吞吐量/时延）
+
+---
+
+### 分析四：原作者是否有 NPU 服务器？
+
+**结论：几乎可以确定有。**
+
+证据：
+1. 批次 ID 是真实时间戳（`batch_20260115_094732`、`batch_20260224_165307`），非示例占位
+2. `optest-0.2.2-py3-none-any.whl`：自定义测试包已迭代到 0.2.2 版，经历真实使用
+3. OBS 上传配置有真实华为云 bucket 路径和区域设置
+4. 单算子超时限制 3600 秒是根据真实 NPU 编译/测试时长定出来的
+5. 专门设计了多 Token 轮换系统（`ANTHROPIC_AUTH_TOKENS` 逗号分隔），说明长时间运行中单 token 限速会被打爆
+
+---
+
+### 分析五：Token 消耗评估
+
+**结论：非常消耗，35个算子全批次约 $40–100+。**
+
+代码中的直接证据：
+- `AuthTokenRotator`：支持多 token 轮换，专门为高消耗设计
+- 评测 JSON schema 中有 `cost_usd`、`cached_tokens` 字段，作者在认真追踪成本
+- 每个算子跑3次独立 Claude 会话：开发 session + evaluator session + JSON 提取 session（Phase 2，900秒超时）
+- 本地文档 4000+ 页，每次开发都会多次检索读取
+
+估算：
+| 维度 | 估算 |
+|------|------|
+| 单个 L1 简单算子 | ~20–50万 tokens（$1–3） |
+| 35个算子全批次 | ~$40–100+ |
+| L2/L3 复杂算子 | 编译多次失败会大幅拉高，可能 $5–10/个 |
+
+系统已用的降本手段：Prompt Cache（`cached_tokens` 字段）、多 Token 轮换分摊限速
+
+建议试跑命令（单个 L1 算子，最低成本验证流程）：
+```bash
+python3 evaluation_system/orchestrator.py --full-pipeline --limit 1 --difficulty L1
+```
+
+---
+
 ## 协作模式总结
 
 | 模式 | 说明 |

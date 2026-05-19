@@ -5,7 +5,7 @@
 
 ---
 
-## 当前进度（2026-05-15）
+## 当前进度（2026-05-19）
 
 ### 已完成
 #### 分析文档（analysis.html）
@@ -18,10 +18,10 @@
   2. 体验健康矩阵（5 产品线 × Agent/痛点/VOD/综合/环比，含 mini 折线）
   3. **技术内核** 楼层（红色徽章）：PyTorch API 雷达图 / 模型开箱环形图（77% 综合覆盖）/ 0 Day 发布
   4. **开发界面** 楼层（蓝色徽章）：需立即处理清单 + Agentic 效率仪表盘 + "→ 进入用户旅程" CTA
-  5. 客户痛点 section：大客户闭环率 ECharts 横向柱状图 + 痛点分布柱状图 + 分类汇总 chip（工具3/文档5/API2/环境1，可点击过滤）+ 统一痛点列表（P0→P1，每条带 `data-cat` + 分类标签）
+  5. 客户痛点 section：大客户闭环率 ECharts 横向柱状图 + 痛点分布柱状图 + 分类汇总 chip（工具/文档/API/环境，可点击过滤，计数随角色联动）+ 统一痛点列表（P0→P1，每条带 `data-cat` + `data-roles` + 分类标签）
   6. **生态增益** 楼层（绿色徽章）：VOD ECharts 柱状图 + Top3 原声卡片 + 社区入门体验（S0–S5 步骤圆圈 + KPI 4格 + 关键痛点 callout）
   - 右下角"设计点"按钮 → 固定抽屉面板（6 条总览设计依据），tab-aware
-  - 视角筛选：选中后无关楼层淡化（opacity .2），相关楼层标题显示"关注"徽章
+  - 视角筛选：选中后无关楼层淡化（opacity .2），相关楼层标题显示"关注"徽章；同时联动过滤痛点列表
 
 - **用户旅程**（`#tabDev`）：单页纵向滚动，无子 tab
   - filter-bar（芯片 + 三个角色）→ KPI 4格（整体健康/严重场景/活跃痛点/本期优先）
@@ -30,24 +30,58 @@
 
 ##### 关键实现细节
 - `switchTab(id, btn)` 只处理 `tabOverview` / `tabDev`，切换时关闭两个设计点面板
-- `filterPain(cat, btn)` 按分类过滤痛点列表（全部/工具/文档/API/环境），基于 `data-cat` 属性
-  - `applyPainFilter()` 统一处理角色 + 分类两层交集过滤，cat-sum-chip 计数随 activeRole 动态更新                        
-  - 每条 `pain-item` 同时有 `data-cat`（工具/文档/API/环境）和 `data-roles`（op/infra/doc/pm                            
-  等），两个维度独立叠加；痛点楼层 `data-roles` 覆盖全部角色（不淡化）                 
-- `selectRole(role, btn)` 控制总览视角筛选（淡化/关注徽章）
+- `filterPain(cat, btn)` + `applyPainFilter()` 两层交集过滤（角色 × 分类），cat-sum-chip 计数随 `_activeRole` 动态更新
+- 每条 `pain-item` 同时有 `data-cat`（工具/文档/API/环境）和 `data-roles`（op/infra/doc/pm 等）
+- 痛点楼层 `data-roles` 覆盖全部角色（永不淡化），但内部条目按角色过滤
+- `selectRole(role, btn)` 控制总览视角筛选（淡化/关注徽章），尾部调用 `applyPainFilter()`
 - `renderTpMatrix()` 从 `touchpointData` 渲染触点矩阵
 - `selectTpCell(sceneId, col, el)` 更新 `#tpDetail` 的 `innerHTML`
 - `jumpToJourney(sceneId)` 切换至用户旅程 tab 并定位场景
 - `toggleRat()` tab-aware：总览 → `.ov-rat-panel` 固定抽屉；用户旅程 → `.rat-sidebar` 嵌入侧栏
 - 粘滞层次：topbar(top:0, 50px) → filter-bar(top:50px) → scene-list/rat-sidebar/tp-detail-col(top:100px)
 - ECharts 图表：KPI sparklines × 4、健康矩阵 sparklines × 5、PyTorch 雷达、模型覆盖环形、Agentic 仪表盘、大客户闭环柱状图、痛点分布柱状图、VOD 柱状图
-- 0 Day（原"零 Day"）发布卡片
-- 痛点分类 badge：pill 描边样式（区别于实心楼层徽章）
-- 痛点卡片 `.pain-item`：白色背景、减小内边距（padding:7px 10px），紧凑排版
+- 0 Day 发布卡片；痛点分类 badge pill 描边样式；痛点卡片白色背景紧凑排版
+
+#### ascendc-agent-main —— Agentic 算子评测系统（已分析，未运行）
+- 位置：`cann-dashboard/ascendc-agent-main/`（同时存在于 `~/Downloads/ascendc-agent-main/`）
+- **用途**：用 Claude Code Agent 批量自动开发昇腾 NPU 算子，并评测开发者体验（DX）
+- **与看板的关系**：是 design-options.html 中"算子编程 Ascend C"相关数据的生产系统
+
+##### 系统架构（四层）
+1. **orchestrator.py**：串行开发35个算子、并行评测日志、支持多 Token 轮换
+2. **8个专职 Agent**：architect / developer / tester / evaluator / reviewer / comparator / precision-tuner / team-lead
+3. **17个 Skill 模块**：ascendc-kernel-develop-workflow / ascendc-precision-debug / ascendc-env-check 等
+4. **配置层**：operator_catalog.yaml（35个算子，L1-L3难度）+ evaluation_config.yaml
+
+##### evaluator agent 输出的5个维度（直接对应看板评分）
+| evaluator 维度 | 看板对应位置 |
+|---------------|------------|
+| 感知学习（文档完整性/准确性/可理解性） | 体验测试评分 / 用户旅程雷达图 |
+| 算子设计与实现（API命名/样例覆盖） | 开发界面 Agentic KPI |
+| 算子编译（编译次数/配置行数） | 工具类痛点 |
+| 功能调测（测试循环次数） | 调试能力维度 |
+| 性能调优（迭代次数） | 工具稳定性维度 |
+
+##### 数据与看板的对应关系
+| 看板板块 | 数据来源 | 是否需要 NPU |
+|---------|---------|-------------|
+| 体验测试评分 算子编程 Ascend C（4.1/6） | evaluator 5维度聚合 × 0.6 | 否（纯日志分析） |
+| Agentic KPI — token消耗 / 耗时 | orchestrator 运行时记录 | 否 |
+| Agentic KPI — 开发成功率 / 用例通过率 | 真实编译+执行结果 | **是** |
+| 客户痛点条目（工具/文档/API类） | evaluator 痛点归因输出 | 否 |
+| PyTorch API 通过率 / 模型覆盖 / 0 Day | 独立测试流水线 | **是** |
+| VOD 原声 / 大客户闭环率 | CRM / 社区抓取 | 否 |
+| 健康矩阵 Agent评分列 | evaluator 综合分 | 否（有日志即可） |
+
+##### 运行要求
+- **必须有 NPU**：真实编译测试算子、模型开箱、性能测试
+- **不需要 NPU 可跑**：evaluator DX分析、token/耗时统计、痛点归因、社区入门体验评测
+- **Token 消耗**：单个 L1 算子约 20–50万 tokens（$1–3）；35个算子全批次约 $40–100+
+- **系统特征**：内置多 Token 轮换（应对限速）、prompt cache（cached_tokens 字段）、每算子3次独立 Claude 会话
 
 ### 下一步
+- 确认是否有 NPU 服务器资源可以接入，用于替换看板中的模拟数据
 - 继续细化前端/设计侧的看板表达
-- 设计相关上下文继续维护在 `context.md`
 - 后端读取数据、仓库分析、Agentic 评分、报告生成相关内容已拆到新的后端 context 文件
 
 ---
@@ -219,10 +253,9 @@
 
 ### 操作习惯
 - **视觉/设计类改动，先给 2-4 个选项让用户选，不要直接动手实现**
-  - 上一次直接删掉封面装饰元素，被用户指出应该先问
 - 每次完成改动后**立即 commit + push**，不要堆积
-- 改完之后**主动用 `open` 打开浏览器**让用户看效果
 - **修改 context.md** 反映最新状态，不要让它过时
+- git 操作使用 `git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git --work-tree=...` 绕过 macOS TCC 权限（Read/Write 工具无法访问 ~/Documents，但 git 可以）
 
 ### 关于这个项目
 - 现阶段同时维护**分析文档**（analysis.html）和**新看板**设计
@@ -232,25 +265,27 @@
 ---
 
 ## 待确认问题
-- [x] **Q1 VOD 来源**：已确认（见上方 VOD 数据章节）
+- [x] **Q1 VOD 来源**：已确认
 - [x] **Q2 评分聚合方式**：近7次数据均值
 - [ ] **Q3 其他角色场景**：应用开发者整体开发中，AI框架开发者场景已确认
 - [ ] **入门开发者 S2~S5 步骤的任务列表**（目前只知道 S0/S1）
 - [x] **新看板设计方案**：已完成，design-options.html 可用
+- [ ] **是否有 NPU 服务器**：待确认，影响后续真实数据接入计划
 
 ---
 
 ## 文件结构
 ```
 AscendCANN/
-├── CANNlogo.png          ← sidebar 使用的 logo
-├── Ascendlogo.svg        ← 备用 Ascend logo
+├── CANNlogo.png
+├── Ascendlogo.svg
 └── cann-dashboard/
-    ├── analysis.html     ← UX 分析文档（封面 + 13 章节）~1020 行
-    ├── style.css         ← 分析文档样式（浅色主题，主题色 #c7000b）~394 行
-    ├── script.js         ← 分析文档交互（lightbox + sidebar 高亮）~26 行
-    ├── design-options.html ← 新看板（单文件，模拟数据，~1780 行）
-    ├── backend-context.md ← 后端读取数据 / 仓库分析 / 评分报告上下文
-    ├── context.md        ← 本文件，项目上下文
-    └── process-log.md    ← 协作过程记录
+    ├── analysis.html           ← UX 分析文档（封面 + 13 章节）
+    ├── style.css               ← 分析文档样式
+    ├── script.js               ← 分析文档交互逻辑
+    ├── design-options.html     ← 新看板（单文件，模拟数据，~1960 行）
+    ├── ascendc-agent-main/     ← Agentic 算子评测系统（已分析，原作者有 NPU 服务器）
+    ├── backend-context.md      ← 后端上下文
+    ├── context.md              ← 本文件
+    └── process-log.md          ← 协作过程记录
 ```
