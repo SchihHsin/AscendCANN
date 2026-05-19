@@ -2231,6 +2231,7 @@
   .pg-inner {
     background: white; border-radius: 20px; box-shadow: 0 24px 60px rgba(0,0,0,.15);
     display: flex; flex-direction: column; flex: 1; overflow: hidden;
+    position: relative;
   }
   .pg-header {
     display: flex; align-items: center; gap: 10px;
@@ -2337,11 +2338,45 @@
   }
   .pg-iz:hover .pg-iz-plus { background: var(--accent-blue); color: white; transform: scale(1.12); }
 
+  /* Conv panel layout modes */
+  .pg-body.conv-left { flex-direction: row-reverse; }
+  .pg-body.conv-left .pg-preview { border-right: none; border-left: 1px solid var(--border); }
+
   /* Right: conversation */
   .pg-conv {
     width: 360px; flex-shrink: 0; display: flex; flex-direction: column;
     background: var(--bg);
   }
+
+  /* Float mode */
+  .pg-conv.floating {
+    position: absolute; z-index: 10;
+    width: 320px; height: 460px;
+    right: 20px; bottom: 20px;
+    border-radius: 16px; border: 1.5px solid var(--border);
+    box-shadow: 0 8px 32px rgba(0,0,0,.14);
+    overflow: hidden; background: var(--bg);
+  }
+  .pg-conv.floating.dragging-conv { box-shadow: 0 16px 48px rgba(0,0,0,.22); }
+  .pg-preview.pg-full { border-right: none; }
+
+  /* Conv toolbar */
+  .pg-conv-bar {
+    display: flex; align-items: center; gap: 4px; padding: 8px 12px;
+    border-bottom: 1px solid var(--border); background: white; flex-shrink: 0;
+  }
+  .pg-conv-bar-label { font-size: 11px; font-weight: 600; color: var(--text-muted); flex: 1; }
+  /* drag handle visible only in float mode */
+  .pg-conv-bar-drag { display: none; color: var(--text-muted); font-size: 14px; margin-right: 4px; cursor: grab; }
+  .pg-conv.floating .pg-conv-bar { cursor: default; }
+  .pg-conv.floating .pg-conv-bar-drag { display: block; }
+  .pg-mode-btn {
+    width: 26px; height: 26px; border-radius: 6px; border: 1.5px solid transparent;
+    background: none; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; transition: all .12s; padding: 0; color: var(--text-muted);
+  }
+  .pg-mode-btn:hover { background: var(--surface2); border-color: var(--border); color: var(--black); }
+  .pg-mode-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--black); }
   .pg-messages { flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 12px; }
   @keyframes pgMsgIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
   .pg-msg { display: flex; gap: 9px; animation: pgMsgIn .2s ease both; }
@@ -6960,6 +6995,76 @@ def vector_add_tik(shape, dtype, kernel_name):
   let _pgUndoFn = null;
   let _pgUndoTimer = null;
 
+  // Conv panel layout mode
+  let _pgConvMode = 'right';
+  let _pgFloatX = null, _pgFloatY = null;
+  let _pgDraggingConv = false, _pgDragOffX = 0, _pgDragOffY = 0;
+
+  function pgSetConvMode(mode) {
+    _pgConvMode = mode;
+    const conv = document.getElementById('pg-conv');
+    const preview = document.getElementById('pg-preview');
+    const body = document.querySelector('#pg-modal .pg-body');
+    conv.classList.remove('floating', 'dragging-conv');
+    preview.classList.remove('pg-full');
+    body.classList.remove('conv-left');
+    conv.style.cssText = ''; // clear inline positioning
+    document.querySelectorAll('.pg-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+    if (mode === 'left') {
+      body.classList.add('conv-left');
+    } else if (mode === 'float') {
+      conv.classList.add('floating');
+      preview.classList.add('pg-full');
+      if (_pgFloatX !== null) {
+        conv.style.left = _pgFloatX + 'px';
+        conv.style.top = _pgFloatY + 'px';
+        conv.style.right = ''; conv.style.bottom = '';
+      }
+      // else uses CSS default right/bottom
+    }
+  }
+
+  // Drag logic for float mode — attach once on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const handle = document.getElementById('pg-conv-drag-handle');
+    if (!handle) return;
+    handle.addEventListener('mousedown', e => {
+      if (_pgConvMode !== 'float') return;
+      e.preventDefault();
+      _pgDraggingConv = true;
+      const conv = document.getElementById('pg-conv');
+      const inner = document.getElementById('pg-modal').querySelector('.pg-inner');
+      const cr = conv.getBoundingClientRect(), ir = inner.getBoundingClientRect();
+      // Normalize to left/top so we can drag freely
+      conv.style.left = (cr.left - ir.left) + 'px';
+      conv.style.top = (cr.top - ir.top) + 'px';
+      conv.style.right = ''; conv.style.bottom = '';
+      _pgDragOffX = e.clientX - cr.left;
+      _pgDragOffY = e.clientY - cr.top;
+      conv.classList.add('dragging-conv');
+      document.body.style.userSelect = 'none';
+    });
+    document.addEventListener('mousemove', e => {
+      if (!_pgDraggingConv) return;
+      const conv = document.getElementById('pg-conv');
+      const inner = document.getElementById('pg-modal').querySelector('.pg-inner');
+      const ir = inner.getBoundingClientRect();
+      let x = e.clientX - _pgDragOffX - ir.left;
+      let y = e.clientY - _pgDragOffY - ir.top;
+      x = Math.max(0, Math.min(x, ir.width - 320));
+      y = Math.max(0, Math.min(y, ir.height - 200));
+      conv.style.left = x + 'px'; conv.style.top = y + 'px';
+      _pgFloatX = x; _pgFloatY = y;
+    });
+    document.addEventListener('mouseup', () => {
+      if (_pgDraggingConv) {
+        _pgDraggingConv = false;
+        document.getElementById('pg-conv')?.classList.remove('dragging-conv');
+        document.body.style.userSelect = '';
+      }
+    });
+  });
+
   const PG_CLARIFY = [
     { keys: ['算子','TBE','TIK','Ascend C','operator'], q: '你的算子开发基础是？', opts: ['零基础', '会 Python/C++', '有深度学习经验'] },
     { keys: ['推理','部署','inference'], q: '你偏好哪种编程语言？', opts: ['Python', 'C++', '两者都行'] },
@@ -6972,7 +7077,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     _pgState = 'idle';
     _pgNodes = [];
     _pgQuery = '';
+    _pgFloatX = null; _pgFloatY = null;
     closeLearningArchive();
+    // Reset conv layout to default right mode
+    pgSetConvMode('right');
     document.getElementById('pg-overlay').classList.add('open');
     document.getElementById('pg-modal').classList.add('open');
     document.getElementById('pg-messages').innerHTML = '';
@@ -7411,7 +7519,23 @@ def vector_add_tik(shape, dtype, kernel_name):
         </div>
       </div>
       <!-- Right: conversation -->
-      <div class="pg-conv">
+      <div class="pg-conv" id="pg-conv">
+        <div class="pg-conv-bar" id="pg-conv-bar">
+          <span class="pg-conv-bar-drag" id="pg-conv-drag-handle">⠿</span>
+          <span class="pg-conv-bar-label">AI 对话</span>
+          <!-- 嵌入左侧 -->
+          <button class="pg-mode-btn" data-mode="left" onclick="pgSetConvMode('left')" title="嵌入左侧">
+            <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".35"/></svg>
+          </button>
+          <!-- 嵌入右侧（默认） -->
+          <button class="pg-mode-btn active" data-mode="right" onclick="pgSetConvMode('right')" title="嵌入右侧">
+            <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="10" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".35"/></svg>
+          </button>
+          <!-- 浮动面板 -->
+          <button class="pg-mode-btn" data-mode="float" onclick="pgSetConvMode('float')" title="浮动面板">
+            <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".3"/><rect x="5.5" y="3" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="currentColor" opacity=".35"/></svg>
+          </button>
+        </div>
         <div class="pg-messages" id="pg-messages"></div>
         <div class="pg-chips" id="pg-chips"></div>
         <div class="pg-input-row">
