@@ -2213,6 +2213,251 @@
   .dhq-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
   .dhq-arrow { color: var(--text-muted); font-size: 14px; }
 
+  /* ── PATH GENERATOR MODAL ── */
+  .pg-overlay {
+    position: fixed; inset: 0; z-index: 3900;
+    background: rgba(10,10,15,.5); backdrop-filter: blur(4px);
+    opacity: 0; pointer-events: none; transition: opacity .25s;
+  }
+  .pg-overlay.open { opacity: 1; pointer-events: all; }
+  .pg-modal {
+    position: fixed; inset: 0; z-index: 4000;
+    display: flex; align-items: stretch;
+    transform: translateY(28px); opacity: 0; pointer-events: none;
+    transition: transform .28s cubic-bezier(.32,1,.6,1), opacity .25s;
+    padding: 20px; box-sizing: border-box;
+  }
+  .pg-modal.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+  .pg-inner {
+    background: white; border-radius: 20px; box-shadow: 0 24px 60px rgba(0,0,0,.15);
+    display: flex; flex-direction: column; flex: 1; overflow: hidden;
+  }
+  .pg-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .pg-header-title { font-size: 14px; font-weight: 700; color: var(--black); flex: 1; }
+  .pg-close {
+    width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface2); cursor: pointer; display: flex; align-items: center;
+    justify-content: center; color: var(--text-secondary); transition: all .12s;
+  }
+  .pg-close:hover { background: var(--border); color: var(--black); }
+  .pg-body { display: flex; flex: 1; min-height: 0; }
+
+  /* Left: path preview */
+  .pg-preview {
+    flex: 1; display: flex; flex-direction: column; min-width: 0;
+    background: var(--bg); border-right: 1px solid var(--border);
+  }
+  .pg-preview-empty {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 12px; color: var(--text-muted); padding: 40px;
+  }
+  .pg-preview-empty p { font-size: 13px; text-align: center; max-width: 260px; line-height: 1.6; }
+  .pg-path-content { flex: 1; overflow-y: auto; padding: 24px 28px; }
+  .pg-path-header { margin-bottom: 16px; }
+  .pg-path-name { font-size: 20px; font-weight: 800; color: var(--black); letter-spacing: -.4px; }
+  .pg-path-meta { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .pg-legend {
+    display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    padding: 8px 12px; background: white; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 11px; color: var(--text-secondary); margin-bottom: 20px;
+  }
+  .pg-legend-key {
+    font-size: 10px; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1px 5px; font-family: var(--mono); color: var(--black);
+  }
+  .pg-save-bar {
+    padding: 14px 20px; border-top: 1px solid var(--border); background: white;
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  }
+  .pg-save-btn {
+    padding: 9px 22px; background: var(--grad); color: white; border: none;
+    border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: var(--font); transition: all .15s;
+    box-shadow: 0 2px 8px rgba(46,83,250,.25);
+  }
+  .pg-save-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(46,83,250,.35); }
+  .pg-save-btn:disabled { opacity: .4; pointer-events: none; }
+  .pg-save-hint { font-size: 12px; color: var(--text-muted); }
+
+  /* Node list */
+  .pg-nodes { display: flex; flex-direction: column; }
+  .pg-node-row { display: flex; align-items: flex-start; gap: 10px; }
+  .pg-node-row.dragging { opacity: .4; }
+  .pg-node-row.drag-over .pg-node-card { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+  .pg-drag-handle {
+    opacity: 0; transition: opacity .15s; cursor: grab; padding: 12px 3px;
+    color: var(--text-muted); font-size: 15px; flex-shrink: 0; user-select: none;
+  }
+  .pg-node-row:hover .pg-drag-handle { opacity: 1; }
+  .pg-timeline { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; margin-top: 13px; }
+  .pg-tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-blue); box-shadow: 0 0 0 3px var(--bg); z-index: 1; }
+  .pg-node-row.known-row .pg-tl-dot { background: #22c55e; }
+  .pg-tl-line { width: 2px; flex: 1; background: var(--border); min-height: 20px; }
+  .pg-node-card {
+    flex: 1; background: white; border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 12px 14px; transition: all .15s; min-width: 0;
+  }
+  .pg-node-card:hover { border-color: var(--border2); box-shadow: var(--shadow-sm); }
+  .pg-node-row.known-row .pg-node-card { opacity: .55; background: var(--surface2); }
+  .pg-node-top { display: flex; align-items: flex-start; gap: 8px; }
+  .pg-step-badge {
+    font-size: 10px; font-weight: 700; color: var(--text-muted); background: var(--surface2);
+    border-radius: 5px; padding: 2px 6px; flex-shrink: 0; margin-top: 1px; font-family: var(--mono);
+  }
+  .pg-node-title { font-size: 13px; font-weight: 700; color: var(--black); flex: 1; line-height: 1.4; }
+  .pg-node-row.known-row .pg-node-title { text-decoration: line-through; color: var(--text-muted); }
+  .pg-node-actions { display: flex; gap: 4px; flex-shrink: 0; opacity: 0; transition: opacity .15s; }
+  .pg-node-row:hover .pg-node-actions { opacity: 1; }
+  .pg-nbtn {
+    width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border);
+    background: white; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; font-size: 12px; transition: all .12s; color: var(--text-secondary);
+  }
+  .pg-nbtn:hover { background: var(--surface2); color: var(--black); }
+  .pg-nbtn.known-on { background: #dcfce7; border-color: #86efac; color: #16a34a; }
+  .pg-nbtn.del:hover { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+  .pg-node-body { overflow: hidden; max-height: 200px; transition: max-height .25s ease, opacity .2s; opacity: 1; }
+  .pg-node-body.collapsed { max-height: 0; opacity: 0; }
+  .pg-node-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-top: 7px; }
+  .pg-node-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .pg-node-tag { font-size: 10px; padding: 2px 7px; border-radius: 10px; background: var(--blue-50); color: var(--accent-blue); font-weight: 600; }
+  /* Insert zone */
+  .pg-iz { display: flex; align-items: center; gap: 8px; padding: 2px 0 2px 22px; opacity: 0; transition: opacity .15s; cursor: pointer; }
+  .pg-nodes:hover .pg-iz { opacity: .35; }
+  .pg-nodes .pg-iz:hover { opacity: 1 !important; }
+  .pg-iz-line { flex: 1; height: 1.5px; background: var(--accent-blue); border-radius: 1px; }
+  .pg-iz-plus {
+    width: 20px; height: 20px; border-radius: 50%; background: white;
+    border: 1.5px solid var(--accent-blue); color: var(--accent-blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0; transition: all .12s;
+  }
+  .pg-iz:hover .pg-iz-plus { background: var(--accent-blue); color: white; transform: scale(1.12); }
+
+  /* Right: conversation */
+  .pg-conv {
+    width: 360px; flex-shrink: 0; display: flex; flex-direction: column;
+    background: var(--bg);
+  }
+  .pg-messages { flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 12px; }
+  @keyframes pgMsgIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+  .pg-msg { display: flex; gap: 9px; animation: pgMsgIn .2s ease both; }
+  .pg-msg.user { flex-direction: row-reverse; }
+  .pg-avatar {
+    width: 27px; height: 27px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 12px;
+  }
+  .pg-msg.ai .pg-avatar { background: var(--grad); color: white; font-size: 11px; }
+  .pg-msg.user .pg-avatar { background: var(--black); color: white; font-size: 11px; }
+  .pg-bubble {
+    padding: 9px 13px; border-radius: 14px; font-size: 13px;
+    line-height: 1.55; max-width: 240px;
+  }
+  .pg-msg.ai .pg-bubble {
+    background: white; border: 1px solid var(--border); color: var(--black);
+    border-radius: 4px 14px 14px 14px;
+  }
+  .pg-msg.user .pg-bubble { background: var(--black); color: white; border-radius: 14px 4px 14px 14px; }
+  .pg-typing-wrap { display: flex; gap: 9px; }
+  .pg-typing {
+    padding: 10px 13px; background: white; border: 1px solid var(--border);
+    border-radius: 4px 14px 14px 14px; display: flex; gap: 4px; width: fit-content;
+  }
+  .pg-typing span { width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; animation: pgDot 1.2s infinite; }
+  .pg-typing span:nth-child(2) { animation-delay: .2s; }
+  .pg-typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes pgDot { 0%,60%,100%{ transform:translateY(0); opacity:.4; } 30%{ transform:translateY(-4px); opacity:1; } }
+  .pg-chips { padding: 0 14px 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pg-chip {
+    padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid var(--border); background: white;
+    color: var(--black); font-family: var(--font); transition: all .12s;
+  }
+  .pg-chip:hover { border-color: var(--accent-blue); color: var(--accent-blue); background: var(--blue-50); }
+  .pg-chip.sent { opacity: .4; pointer-events: none; }
+  .pg-input-row {
+    display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border);
+    flex-shrink: 0; background: white;
+  }
+  .pg-input {
+    flex: 1; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 10px;
+    font-size: 13px; font-family: var(--font); color: var(--black);
+    background: var(--surface2); outline: none; transition: border-color .15s;
+  }
+  .pg-input:focus { border-color: var(--accent-blue); background: white; }
+  .pg-input::placeholder { color: var(--text-muted); }
+  .pg-send {
+    padding: 9px 14px; background: var(--black); color: white; border: none;
+    border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600;
+    font-family: var(--font); transition: background .12s; flex-shrink: 0;
+  }
+  .pg-send:hover { background: #222; }
+  .pg-send:disabled { opacity: .35; pointer-events: none; }
+
+  /* Insert popup (path generator) */
+  .pg-insert-popup {
+    position: fixed; z-index: 4500; background: white; border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 12px; box-shadow: var(--shadow-lg);
+    width: 288px; animation: pgPopIn .18s ease both;
+  }
+  @keyframes pgPopIn { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
+  .pg-insert-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
+  .pg-isearch-wrap { position: relative; margin-bottom: 8px; }
+  .pg-isearch-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; font-size: 13px; }
+  .pg-isearch {
+    width: 100%; box-sizing: border-box; padding: 7px 10px 7px 30px;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 12px; font-family: var(--font); color: var(--black);
+    background: var(--surface2); outline: none; transition: border-color .15s;
+  }
+  .pg-isearch:focus { border-color: var(--accent-blue); background: white; }
+  .pg-isearch::placeholder { color: var(--text-muted); }
+  .pg-isec-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+  .pg-iopt {
+    display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+    border-radius: 8px; cursor: pointer; transition: background .12s; margin-bottom: 3px;
+  }
+  .pg-iopt:hover { background: var(--surface2); }
+  .pg-iopt-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-blue); flex-shrink: 0; }
+  .pg-iopt-dot.search { background: var(--text-muted); }
+  .pg-iopt-title { font-size: 12px; font-weight: 600; color: var(--black); margin-bottom: 1px; }
+  .pg-iopt-title mark { background: #fef08a; border-radius: 2px; padding: 0 1px; }
+  .pg-iopt-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+  .pg-icancel {
+    width: 100%; margin-top: 8px; padding: 6px; border-radius: 7px;
+    border: 1px solid var(--border); background: var(--surface2); font-size: 11px;
+    color: var(--text-secondary); cursor: pointer; font-family: var(--font); transition: all .12s;
+  }
+  .pg-icancel:hover { border-color: var(--border2); }
+  .pg-iempty { font-size: 12px; color: var(--text-muted); text-align: center; padding: 12px 0; }
+
+  /* Undo toast */
+  .pg-undo-toast {
+    position: fixed; bottom: 36px; left: 50%; z-index: 4600;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--black); color: white; border-radius: 12px;
+    padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+    font-size: 13px; opacity: 0; pointer-events: none;
+    transition: all .22s cubic-bezier(.34,1.56,.64,1);
+  }
+  .pg-undo-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all; }
+  .pg-undo-btn {
+    background: none; border: 1px solid rgba(255,255,255,.4); color: white;
+    border-radius: 6px; padding: 3px 10px; font-size: 12px; cursor: pointer; font-family: var(--font);
+  }
+  .pg-undo-btn:hover { background: rgba(255,255,255,.15); }
+
+  @media (max-width: 700px) {
+    .pg-modal { padding: 0; }
+    .pg-inner { border-radius: 0; }
+    .pg-body { flex-direction: column-reverse; }
+    .pg-preview { border-right: none; border-bottom: 1px solid var(--border); flex: 1; }
+    .pg-conv { width: 100%; max-height: 45vh; }
+  }
+
 </style>
 </head>
 <body>
@@ -5724,14 +5969,15 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   // Path generator functions
   function setPathInput(text) {
-    document.getElementById('path-generator-input').value = text;
+    openPathGenerator(text);
   }
 
   async function generateCustomPath() {
     const input = document.getElementById('path-generator-input');
-    const btn = document.querySelector('.btn-generate-path');
     const query = input.value.trim();
-    if (!query) return;
+    openPathGenerator(query);
+    input.value = '';
+    return; // legacy body below kept but bypassed
 
     const svgPlay = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
     btn.classList.add('loading');
@@ -6468,7 +6714,7 @@ def vector_add_tik(shape, dtype, kernel_name):
         <div style="font-size:36px;margin-bottom:12px;opacity:.3;">🗺️</div>
         <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:6px;">还没有学习路径</div>
         <div style="font-size:12px;color:var(--text-muted);line-height:1.7;margin-bottom:20px;">用 AI 生成一条专属学习路径，<br>你的进度会自动记录在这里。</div>
-        <button class="la-add-btn" onclick="closeLearningArchive();switchTopTab('custom',document.querySelector('.top-tab:last-child'));showPage('learn');">✦ 生成我的学习路径</button>
+        <button class="la-add-btn" onclick="closeLearningArchive();openPathGenerator('');">✦ 生成我的学习路径</button>
       </div>`;
       return;
     }
@@ -6552,7 +6798,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       });
     }
 
-    html += `<button class="la-add-btn" style="margin:4px 0 8px;" onclick="closeLearningArchive();switchTopTab('custom',document.querySelector('.top-tab:last-child'));showPage('learn');">+ 生成新路径</button></div>`;
+    html += `<button class="la-add-btn" style="margin:4px 0 8px;" onclick="closeLearningArchive();openPathGenerator('');">+ 生成新路径</button></div>`;
     container.innerHTML = html;
   }
   function _qbFormatDate(ts) {
@@ -6700,6 +6946,366 @@ def vector_add_tik(shape, dtype, kernel_name):
     // Default docs to home view
     showDoc('home');
   });
+
+  // ── PATH GENERATOR MODAL ──
+  let _pgOpen = false;
+  let _pgState = 'idle'; // idle | clarifying | generating | editing
+  let _pgNodes = [];     // { title, desc, category, tags, reason, known, collapsed }
+  let _pgQuery = '';
+  let _pgName = '';
+  let _pgDragSrc = null;
+  let _pgInsertAfterIdx = null;
+  let _pgSearchCache = [];
+  let _pgSuggCache = [];
+  let _pgUndoFn = null;
+  let _pgUndoTimer = null;
+
+  const PG_CLARIFY = [
+    { keys: ['算子','TBE','TIK','Ascend C','operator'], q: '你的算子开发基础是？', opts: ['零基础', '会 Python/C++', '有深度学习经验'] },
+    { keys: ['推理','部署','inference'], q: '你偏好哪种编程语言？', opts: ['Python', 'C++', '两者都行'] },
+    { keys: ['分布式','训练','大模型'], q: '你熟悉的训练框架是？', opts: ['PyTorch', 'MindSpore', '都不熟'] },
+    { keys: ['入门','基础','初学','zero'], q: '你每周能投入多少学习时间？', opts: ['1–3 小时', '5–10 小时', '全职投入'] },
+  ];
+
+  function openPathGenerator(prefill) {
+    _pgOpen = true;
+    _pgState = 'idle';
+    _pgNodes = [];
+    _pgQuery = '';
+    closeLearningArchive();
+    document.getElementById('pg-overlay').classList.add('open');
+    document.getElementById('pg-modal').classList.add('open');
+    document.getElementById('pg-messages').innerHTML = '';
+    document.getElementById('pg-chips').innerHTML = '';
+    document.getElementById('pg-input').value = prefill || '';
+    document.getElementById('pg-preview-empty').style.display = 'flex';
+    document.getElementById('pg-path-area').style.display = 'none';
+    document.getElementById('pg-save-btn').textContent = '保存路径';
+    document.getElementById('pg-save-btn').style.background = '';
+    document.getElementById('pg-save-hint').textContent = '保存后可在学习档案中查看';
+    setTimeout(() => {
+      _pgAddMsg('ai', '你好！告诉我你想学习的目标，我来帮你规划个性化学习路径。');
+      _pgShowChips(['CANN 算子开发', '模型推理部署', '分布式训练实战', 'CANN 完整入门']);
+      document.getElementById('pg-input').focus();
+    }, 120);
+  }
+
+  function closePathGenerator() {
+    document.getElementById('pg-overlay').classList.remove('open');
+    document.getElementById('pg-modal').classList.remove('open');
+    _pgOpen = false;
+    pgCloseInsert();
+  }
+
+  function _pgAddMsg(role, html) {
+    const wrap = document.getElementById('pg-messages');
+    const div = document.createElement('div');
+    div.className = `pg-msg ${role}`;
+    div.innerHTML = `<div class="pg-avatar">${role==='ai'?'✦':'你'}</div><div class="pg-bubble">${html}</div>`;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function _pgShowChips(opts, cb) {
+    const el = document.getElementById('pg-chips');
+    el.innerHTML = '';
+    opts.forEach(o => {
+      const btn = document.createElement('button');
+      btn.className = 'pg-chip'; btn.textContent = o;
+      btn.onclick = () => {
+        el.querySelectorAll('.pg-chip').forEach(b => b.classList.add('sent'));
+        if (cb) { cb(o); } else { document.getElementById('pg-input').value = o; pgSendConv(); }
+      };
+      el.appendChild(btn);
+    });
+  }
+
+  function pgSendConv() {
+    const input = document.getElementById('pg-input');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    document.getElementById('pg-chips').innerHTML = '';
+    _pgAddMsg('user', text);
+    document.getElementById('pg-send').disabled = true;
+    if (_pgState === 'idle') {
+      _pgQuery = text;
+      _pgName = text.length > 22 ? text.slice(0, 22) + '…' : text;
+      _pgHandleFirst(text);
+    } else if (_pgState === 'clarifying') {
+      _pgHandleClarify(text);
+    }
+  }
+
+  function _pgHandleFirst(query) {
+    _pgState = 'clarifying';
+    const match = PG_CLARIFY.find(c => c.keys.some(k => query.includes(k)));
+    _pgTyping(() => {
+      if (match) {
+        _pgAddMsg('ai', match.q);
+        _pgShowChips(match.opts, ans => { _pgAddMsg('user', ans); document.getElementById('pg-chips').innerHTML = ''; _pgHandleClarify(ans); });
+      } else {
+        _pgAddMsg('ai', '你的主要学习目标是？');
+        _pgShowChips(['工程实践', '科研探索', '找工作 / 提升技能'], ans => { _pgAddMsg('user', ans); document.getElementById('pg-chips').innerHTML = ''; _pgHandleClarify(ans); });
+      }
+      document.getElementById('pg-send').disabled = false;
+    });
+  }
+
+  function _pgHandleClarify(answer) {
+    _pgState = 'generating';
+    _pgTyping(() => {
+      _pgAddMsg('ai', '好的，正在为你规划路径，请稍候…');
+      _pgGenerate(_pgQuery, answer);
+    }, 700);
+  }
+
+  function _pgTyping(cb, delay) {
+    delay = delay || 900;
+    const wrap = document.getElementById('pg-messages');
+    const el = document.createElement('div');
+    el.className = 'pg-typing-wrap';
+    el.innerHTML = `<div class="pg-avatar" style="background:var(--grad);color:white;font-size:11px;width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✦</div><div class="pg-typing"><span></span><span></span><span></span></div>`;
+    wrap.appendChild(el);
+    wrap.scrollTop = wrap.scrollHeight;
+    setTimeout(() => { el.remove(); cb(); document.getElementById('pg-send').disabled = false; }, delay);
+  }
+
+  async function _pgGenerate(query, context) {
+    const nodeListStr = NODE_LIST.map((n, i) => `${i}|${n.title}|${n.category}|${n.desc}`).join('\n');
+    let nodes = null;
+    try {
+      const resp = await fetch(AI_WORKER_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: `你是 CANN 学习路径规划专家。从节点库中选4-6个最相关节点按学习顺序排列。\n节点库（序号|名称|方向|描述）：\n${nodeListStr}\n\n输出格式：JSON数组，每项含 nodeIndex 和 reason（不超过12字）。只输出JSON。`,
+          user: `学习目标：${query}。背景：${context}`,
+          max_tokens: 400,
+        })
+      });
+      const data = await resp.json();
+      let picks = [];
+      try { picks = JSON.parse((data.text || '[]').replace(/```json|```/g, '').trim()); } catch(e) {}
+      if (picks.length > 0) nodes = picks.map((p, i) => { const n = NODE_LIST[p.nodeIndex] || NODE_LIST[i] || NODE_LIST[0]; return { ...n, step: i+1, reason: p.reason || n.desc }; });
+    } catch(e) {}
+    if (!nodes) nodes = keywordFallbackNodes(query).map((n, i) => ({ ...n, step: i+1 }));
+    _pgNodes = nodes.map(n => ({ ...n, known: false, collapsed: false }));
+    document.getElementById('pg-send').disabled = false;
+    _pgTyping(() => {
+      _pgAddMsg('ai', `已为你规划 <strong>${_pgNodes.length}</strong> 个节点的学习路径！可拖拽调整顺序、删除节点或插入新内容，满意后保存即可。`);
+      _pgShowPanel();
+    }, 1200);
+  }
+
+  function _pgShowPanel() {
+    document.getElementById('pg-preview-empty').style.display = 'none';
+    const area = document.getElementById('pg-path-area');
+    area.style.display = 'flex';
+    document.getElementById('pg-path-name').textContent = _pgName;
+    _pgUpdateMeta();
+    pgRenderNodes();
+    _pgState = 'editing';
+  }
+
+  function _pgUpdateMeta() {
+    document.getElementById('pg-path-meta').textContent = `${_pgNodes.length} 个节点 · 刚刚生成`;
+  }
+
+  function pgRenderNodes(scrollToIdx) {
+    const wrap = document.getElementById('pg-nodes');
+    wrap.innerHTML = '';
+    _pgNodes.forEach((n, i) => {
+      if (i === 0) wrap.appendChild(_pgMakeIZ(-1));
+      wrap.appendChild(_pgMakeNodeRow(n, i));
+      wrap.appendChild(_pgMakeIZ(i));
+    });
+    _pgUpdateMeta();
+    if (scrollToIdx !== undefined) {
+      const rows = wrap.querySelectorAll('.pg-node-row');
+      if (rows[scrollToIdx]) rows[scrollToIdx].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+
+  function _pgMakeNodeRow(node, i) {
+    const row = document.createElement('div');
+    row.className = 'pg-node-row' + (node.known ? ' known-row' : '');
+    row.draggable = true;
+    row.dataset.idx = i;
+    const isLast = i === _pgNodes.length - 1;
+    row.innerHTML = `
+      <div class="pg-drag-handle" title="拖拽排序">⠿</div>
+      <div class="pg-timeline">
+        <div class="pg-tl-dot"></div>
+        ${isLast ? '' : '<div class="pg-tl-line"></div>'}
+      </div>
+      <div class="pg-node-card">
+        <div class="pg-node-top">
+          <span class="pg-step-badge">${String(i+1).padStart(2,'0')}</span>
+          <div class="pg-node-title">${node.title}</div>
+          <div class="pg-node-actions">
+            <button class="pg-nbtn${node.known?' known-on':''}" title="标记已掌握" onclick="pgToggleKnown(${i})">✓</button>
+            <button class="pg-nbtn del" title="删除节点" onclick="pgDeleteNode(${i})">×</button>
+            <button class="pg-nbtn" title="折叠/展开" onclick="pgToggleCollapse(${i})" style="transform:${node.collapsed?'rotate(-90deg)':''}">▾</button>
+          </div>
+        </div>
+        <div class="pg-node-body${node.collapsed?' collapsed':''}">
+          <div class="pg-node-desc">${node.reason || node.desc || ''}</div>
+          ${(node.tags||[]).length ? `<div class="pg-node-tags">${(node.tags||[]).map(t=>`<span class="pg-node-tag">${t}</span>`).join('')}</div>` : ''}
+        </div>
+      </div>`;
+    row.addEventListener('dragstart', e => { _pgDragSrc = i; row.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+    row.addEventListener('dragend', () => { _pgDragSrc = null; document.querySelectorAll('.pg-node-row').forEach(r => r.classList.remove('dragging','drag-over')); });
+    row.addEventListener('dragover', e => { e.preventDefault(); if (_pgDragSrc !== null && _pgDragSrc !== i) row.classList.add('drag-over'); });
+    row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+    row.addEventListener('drop', e => {
+      e.preventDefault(); row.classList.remove('drag-over');
+      if (_pgDragSrc === null || _pgDragSrc === i) return;
+      const src = _pgDragSrc;
+      const moved = _pgNodes.splice(src, 1)[0];
+      _pgNodes.splice(i, 0, moved);
+      pgRenderNodes();
+      _pgShowUndo(`已移动「${moved.title}」`, () => { _pgNodes.splice(i, 1); _pgNodes.splice(src, 0, moved); pgRenderNodes(); });
+    });
+    return row;
+  }
+
+  function _pgMakeIZ(afterIdx) {
+    const z = document.createElement('div');
+    z.className = 'pg-iz';
+    z.innerHTML = `<div class="pg-iz-line"></div><div class="pg-iz-plus">+</div><div class="pg-iz-line"></div>`;
+    z.addEventListener('click', e => { e.stopPropagation(); pgShowInsert(afterIdx, z); });
+    return z;
+  }
+
+  function pgDeleteNode(i) {
+    const removed = _pgNodes[i];
+    _pgNodes.splice(i, 1);
+    pgRenderNodes();
+    _pgShowUndo(`已删除「${removed.title}」`, () => { _pgNodes.splice(i, 0, removed); pgRenderNodes(); });
+  }
+
+  function pgToggleKnown(i) {
+    _pgNodes[i].known = !_pgNodes[i].known;
+    pgRenderNodes();
+  }
+
+  function pgToggleCollapse(i) {
+    _pgNodes[i].collapsed = !_pgNodes[i].collapsed;
+    const rows = document.querySelectorAll('.pg-node-row');
+    const row = rows[i];
+    if (!row) { pgRenderNodes(); return; }
+    const body = row.querySelector('.pg-node-body');
+    const btn = row.querySelectorAll('.pg-nbtn')[2];
+    if (body) body.classList.toggle('collapsed', _pgNodes[i].collapsed);
+    if (btn) btn.style.transform = _pgNodes[i].collapsed ? 'rotate(-90deg)' : '';
+  }
+
+  // Insert popup
+  function pgShowInsert(afterIdx, zoneEl) {
+    _pgInsertAfterIdx = afterIdx;
+    _pgSearchCache = [];
+    const popup = document.getElementById('pg-insert-popup');
+    document.getElementById('pg-isearch').value = '';
+    document.getElementById('pg-search-section').style.display = 'none';
+    document.getElementById('pg-recommend-section').style.display = '';
+    // Build suggestions: from NODE_LIST, exclude already-in-path
+    const existing = new Set(_pgNodes.map(n => n.title));
+    _pgSuggCache = NODE_LIST.filter(n => !existing.has(n.title)).slice(0, 3);
+    document.getElementById('pg-recommend-opts').innerHTML = _pgSuggCache.map((s, i) => `
+      <div class="pg-iopt" onclick="pgInsertSuggest(${i})">
+        <div class="pg-iopt-dot"></div>
+        <div><div class="pg-iopt-title">${s.title}</div><div class="pg-iopt-desc">${s.desc||''}</div></div>
+      </div>`).join('');
+    popup.style.display = 'block';
+    const rect = zoneEl.getBoundingClientRect();
+    const pw = 288, ph = popup.offsetHeight || 230;
+    let top = rect.bottom + 6, left = rect.left + rect.width/2 - pw/2;
+    if (left + pw > window.innerWidth - 16) left = window.innerWidth - pw - 16;
+    if (left < 16) left = 16;
+    if (top + ph > window.innerHeight - 16) top = rect.top - ph - 6;
+    popup.style.top = top + 'px'; popup.style.left = left + 'px';
+    setTimeout(() => { document.addEventListener('click', _pgCloseInsertOutside); document.getElementById('pg-isearch').focus(); }, 50);
+  }
+
+  function pgCloseInsert() {
+    document.getElementById('pg-insert-popup').style.display = 'none';
+    document.removeEventListener('click', _pgCloseInsertOutside);
+  }
+
+  function _pgCloseInsertOutside(e) {
+    if (!document.getElementById('pg-insert-popup').contains(e.target)) pgCloseInsert();
+  }
+
+  function pgFilterSearch(query) {
+    const q = query.trim();
+    const ss = document.getElementById('pg-search-section');
+    const rs = document.getElementById('pg-recommend-section');
+    if (!q) { ss.style.display = 'none'; rs.style.display = ''; return; }
+    const existing = new Set(_pgNodes.map(n => n.title));
+    const ql = q.toLowerCase();
+    const hits = NODE_LIST.filter(n => !existing.has(n.title) && (n.title.toLowerCase().includes(ql) || (n.desc||'').toLowerCase().includes(ql))).slice(0, 6);
+    _pgSearchCache = hits;
+    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+    const hl = t => (t||'').replace(re, '<mark>$1</mark>');
+    document.getElementById('pg-search-label').textContent = hits.length ? `搜索结果（${hits.length}）` : '搜索结果';
+    document.getElementById('pg-search-results').innerHTML = hits.length
+      ? hits.map((n, i) => `<div class="pg-iopt" onclick="pgInsertSearch(${i})"><div class="pg-iopt-dot search"></div><div><div class="pg-iopt-title">${hl(n.title)}</div><div class="pg-iopt-desc">${hl(n.desc||'')}</div></div></div>`).join('')
+      : `<div class="pg-iempty">没有找到「${q}」相关节点</div>`;
+    ss.style.display = ''; rs.style.display = 'none';
+  }
+
+  function _pgDoInsert(nodeObj) {
+    const newNode = { ...nodeObj, known: false, collapsed: false };
+    const pos = _pgInsertAfterIdx + 1;
+    _pgNodes.splice(pos, 0, newNode);
+    pgCloseInsert();
+    pgRenderNodes(pos);
+    _pgShowUndo(`已插入「${newNode.title}」`, () => { _pgNodes.splice(pos, 1); pgRenderNodes(); });
+  }
+
+  function pgInsertSuggest(i) { _pgDoInsert(_pgSuggCache[i]); }
+  function pgInsertSearch(i) { _pgDoInsert(_pgSearchCache[i]); }
+
+  // Undo
+  function _pgShowUndo(msg, fn) {
+    if (_pgUndoTimer) clearTimeout(_pgUndoTimer);
+    _pgUndoFn = fn;
+    document.getElementById('pg-undo-msg').textContent = msg;
+    document.getElementById('pg-undo-toast').classList.add('show');
+    _pgUndoTimer = setTimeout(() => { document.getElementById('pg-undo-toast').classList.remove('show'); _pgUndoFn = null; }, 4000);
+  }
+
+  function pgDoUndo() {
+    if (_pgUndoFn) { _pgUndoFn(); _pgUndoFn = null; }
+    clearTimeout(_pgUndoTimer);
+    document.getElementById('pg-undo-toast').classList.remove('show');
+  }
+
+  // Save
+  function pgSavePath() {
+    if (!_pgNodes.length) return;
+    const path = {
+      id: 'path_' + Date.now(),
+      name: _pgName,
+      query: _pgQuery,
+      icon: '✨',
+      nodeList: _pgNodes.map((n, i) => ({ ...n, step: i+1 })),
+      createdAt: new Date().toLocaleDateString('zh-CN'),
+      lastStudied: new Date().toLocaleDateString('zh-CN'),
+    };
+    customPaths = JSON.parse(localStorage.getItem('cann_custom_paths') || '[]');
+    customPaths.unshift(path);
+    localStorage.setItem('cann_custom_paths', JSON.stringify(customPaths));
+    const btn = document.getElementById('pg-save-btn');
+    btn.textContent = '✓ 已保存';
+    btn.style.background = '#22c55e';
+    document.getElementById('pg-save-hint').textContent = '已保存到学习档案';
+    setTimeout(() => { closePathGenerator(); openLearningArchive('paths'); }, 800);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && _pgOpen) { closePathGenerator(); }
+  });
 </script>
 
 <!-- Learning Archive Overlay + Drawer -->
@@ -6760,5 +7366,86 @@ def vector_add_tik(shape, dtype, kernel_name):
     </div>
   </div>
 </div>
+
+<!-- ── PATH GENERATOR MODAL ── -->
+<div class="pg-overlay" id="pg-overlay" onclick="closePathGenerator()"></div>
+<div class="pg-modal" id="pg-modal">
+  <div class="pg-inner">
+    <div class="pg-header">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <defs><linearGradient id="pgGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2e53fa"/><stop offset="100%" stop-color="#7b25f4"/></linearGradient></defs>
+        <path d="M9 2C9 5.866 5.866 9 2 9C5.866 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.866 9 2Z" stroke="url(#pgGrad)"/>
+        <path d="M20 12C20 14.209 18.209 16 16 16C18.209 16 20 17.791 20 20C20 17.791 21.791 16 24 16C21.791 16 20 14.209 20 12Z" stroke="url(#pgGrad)"/>
+      </svg>
+      <div class="pg-header-title">AI 路径生成器</div>
+      <button class="pg-close" onclick="closePathGenerator()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="pg-body">
+      <!-- Left: path preview -->
+      <div class="pg-preview" id="pg-preview">
+        <div class="pg-preview-empty" id="pg-preview-empty">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.25"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <p>告诉 AI 你的学习目标，路径将在这里生成并可直接编辑</p>
+        </div>
+        <div id="pg-path-area" style="display:none; flex-direction:column; flex:1; min-height:0;">
+          <div class="pg-path-content" id="pg-path-content">
+            <div class="pg-path-header">
+              <div class="pg-path-name" id="pg-path-name"></div>
+              <div class="pg-path-meta" id="pg-path-meta"></div>
+            </div>
+            <div class="pg-legend">
+              <span><span class="pg-legend-key">⠿</span> 拖拽排序</span>
+              <span><span class="pg-legend-key">✓</span> 标记已掌握</span>
+              <span><span class="pg-legend-key">×</span> 删除节点</span>
+              <span><span class="pg-legend-key">+</span> 插入节点</span>
+              <span><span class="pg-legend-key">▾</span> 折叠详情</span>
+            </div>
+            <div class="pg-nodes" id="pg-nodes"></div>
+          </div>
+          <div class="pg-save-bar">
+            <button class="pg-save-btn" id="pg-save-btn" onclick="pgSavePath()">保存路径</button>
+            <span class="pg-save-hint" id="pg-save-hint">保存后可在学习档案中查看</span>
+          </div>
+        </div>
+      </div>
+      <!-- Right: conversation -->
+      <div class="pg-conv">
+        <div class="pg-messages" id="pg-messages"></div>
+        <div class="pg-chips" id="pg-chips"></div>
+        <div class="pg-input-row">
+          <input class="pg-input" id="pg-input" type="text" placeholder="描述你的学习目标…" onkeydown="if(event.key==='Enter')pgSendConv()" />
+          <button class="pg-send" id="pg-send" onclick="pgSendConv()">发送</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Insert popup (path generator) -->
+<div class="pg-insert-popup" id="pg-insert-popup" style="display:none;">
+  <div class="pg-insert-title">插入节点</div>
+  <div class="pg-isearch-wrap">
+    <span class="pg-isearch-icon">⌕</span>
+    <input class="pg-isearch" id="pg-isearch" type="text" placeholder="搜索节点名称…" oninput="pgFilterSearch(this.value)" autocomplete="off" />
+  </div>
+  <div id="pg-search-section" style="display:none;">
+    <div class="pg-isec-label" id="pg-search-label">搜索结果</div>
+    <div id="pg-search-results"></div>
+  </div>
+  <div id="pg-recommend-section">
+    <div class="pg-isec-label">推荐插入</div>
+    <div id="pg-recommend-opts"></div>
+  </div>
+  <button class="pg-icancel" onclick="pgCloseInsert()">取消</button>
+</div>
+
+<!-- Undo toast (path generator) -->
+<div class="pg-undo-toast" id="pg-undo-toast">
+  <span id="pg-undo-msg"></span>
+  <button class="pg-undo-btn" onclick="pgDoUndo()">撤销</button>
+</div>
+
 </body>
 </html>
