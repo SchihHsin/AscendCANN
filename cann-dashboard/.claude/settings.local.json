@@ -12,7 +12,20 @@
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
       "PowerShell([System.IO.File]::ReadAllText\\(\"D:\\\\HW\\\\AscendCANN\\\\cann-dashboard\\\\analysis.html\", [System.Text.Encoding]::UTF8\\) | Select-String \"charset|title\" | Select-Object -First 5)",
-      "PowerShell($bytes = [System.IO.File]::ReadAllBytes\\(\"D:\\\\HW\\\\AscendCANN\\\\cann-dashboard\\\\analysis.html\"\\); \"File size: $\\($bytes.Length\\) bytes\"; \"First 4 bytes \\(BOM check\\): $\\($bytes[0..3] | ForEach-Object { $_.ToString\\('X2'\\) } | Join-String -Separator ' '\\)\")"
+      "PowerShell($bytes = [System.IO.File]::ReadAllBytes\\(\"D:\\\\HW\\\\AscendCANN\\\\cann-dashboard\\\\analysis.html\"\\); \"File size: $\\($bytes.Length\\) bytes\"; \"First 4 bytes \\(BOM check\\): $\\($bytes[0..3] | ForEach-Object { $_.ToString\\('X2'\\) } | Join-String -Separator ' '\\)\")",
+      "Bash(Get-ChildItem -Path \"D:\\\\HW\" -Recurse -Filter \"*dashboard*skill*\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object FullName)",
+      "Bash(Get-ChildItem -Path \"D:\\\\HW\\\\AscendCANN\\\\cann-dashboard\" -Filter \"*.html\")",
+      "Bash(Select-String \"teal-core|hero-kpis|glass-num\")",
+      "Bash(Measure-Object)",
+      "Bash(Select-Object -ExpandProperty Count)",
+      "Bash(git checkout *)",
+      "Bash(git stash *)",
+      "Bash(git remote *)",
+      "Bash(ls -la .nojekyll)",
+      "Bash(ls cann-dashboard/.nojekyll)",
+      "Bash(ls _config.yml)",
+      "WebFetch(domain:schihhsin.github.io)"
     ]
   }
 }

@@ -1,0 +1,2252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>CANN 体验看板 · AscendOps 风格</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+/* ====================================================
+   AscendOps Theme  v3 — full redraw
+   ==================================================== */
+:root{
+  --green-dark:#37C597;--green-core:#3BE880;--green-bright:#3BF7D1;
+  --green-med:#9DFBE8;--green-faded:#C3EDDF;--green-light:#EBFCF7;
+  --teal-dark:#179D8A;--teal-core:#1AAFD0;--teal-bright:#02CEFF;
+  --teal-med:#80E6FF;--teal-light:#E8F7FB;
+  --purple-dark:#4F4DA7;--purple-core:#6A67CE;--purple-bright:#A177FF;
+  --purple-med:#D0B8FF;--purple-light:#F0EFFA;
+  --gold-dark:#FD9A00;--gold-core:#FFB900;--gold-bright:#FFD200;
+  --gold-med:#FFE87F;--gold-light:#FFF8E5;
+  --coral-dark:#E63838;--coral-core:#FC636B;--coral-bright:#FF6D92;
+  --coral-med:#FFB6C8;--coral-light:#FEEFF0;
+  --g1:#F8F8F9;--g2:#EFF0F1;--g3:#E1E2E4;--g4:#CDCFD2;--g5:#B9BCC0;
+  --g6:#A1A4AA;--g7:#898E95;--g8:#676D76;--g9:#495058;--g10:#1B2432;
+  /* semantic aliases */
+  --bg:var(--g1);--card:#fff;--border:var(--g3);--border-2:var(--g4);
+  --text:var(--g10);--text-2:var(--g9);--text-3:var(--g6);
+  --primary:var(--purple-core);--primary-2:var(--purple-bright);
+  --primary-soft:var(--purple-light);
+  --accent:var(--purple-core);
+  --good:var(--green-dark);--bad:var(--coral-dark);--warn:var(--gold-dark);
+  --blue:var(--teal-core);
+  --red-bg:var(--coral-light);--yellow-bg:var(--gold-light);
+  --green-bg:var(--green-light);--blue-bg:var(--teal-light);
+  --yellow:var(--gold-dark);--green:var(--green-dark);
+  --surface:var(--g1);--muted:var(--g7);--dim:var(--g6);
+  --radius-xl:22px;--radius-l:18px;--radius-m:12px;--radius-s:8px;
+  --shadow-soft:0 1px 2px rgba(39,51,71,.04),0 4px 14px rgba(39,51,71,.04);
+  --shadow-pop:0 10px 30px rgba(106,103,206,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;}
+
+/* ── TOPBAR ── */
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(106,103,206,.06);}
+.tb-logo{font-size:15px;font-weight:800;letter-spacing:-.02em;background:linear-gradient(135deg,var(--purple-dark),var(--purple-bright));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tb-sep{color:var(--g4);margin:0 8px}
+.tb-title{font-size:12px;color:var(--text-3);font-weight:500}
+.tb-dims{display:flex;margin-left:28px}
+.dim-tab{padding:0 18px;height:54px;font-size:13px;font-weight:600;color:var(--text-3);border:none;background:none;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;font-family:inherit;transition:all .15s;}
+.dim-tab:hover{color:var(--text)}
+.dim-tab.on{color:var(--primary);border-bottom-color:var(--primary)}
+.tb-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.period-pill{font-size:11px;color:var(--text-2);background:#fff;border:1px solid var(--border-2);border-radius:999px;padding:5px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:500;}
+.export-btn{font-size:11px;font-weight:700;color:var(--primary);background:var(--purple-light);border:1px solid var(--purple-med);border-radius:999px;padding:6px 14px;cursor:pointer;font-family:inherit;transition:all .15s;}
+.export-btn:hover{background:var(--purple-med)}
+
+/* ── FILTER BAR ── */
+.filter-bar{background:#fff;border-bottom:1px solid var(--border);padding:8px 28px;display:flex;align-items:center;gap:8px;position:sticky;top:54px;z-index:99;}
+.fl-lbl{font-size:10px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.fchip{padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid var(--border-2);background:#fff;color:var(--text-2);cursor:pointer;transition:all .12s;}
+.fchip:hover{border-color:var(--purple-med);color:var(--primary)}
+.fchip.on{background:var(--purple-light);color:var(--primary);border-color:var(--purple-med)}
+.fl-sep{width:1px;height:14px;background:var(--border);margin:0 2px}
+.role-chip.on{background:var(--purple-light);color:var(--primary);border-color:var(--purple-med)}
+
+/* ═══════════════════════════════════════
+   OVERVIEW — HERO BANNER (AscendOps style)
+   ═══════════════════════════════════════ */
+.ov-body{padding:0 28px 48px;display:flex;flex-direction:column;gap:20px}
+
+/* Hero — purple→teal gradient with dot-grid */
+.ov-hero{
+  position:relative;
+  background:radial-gradient(circle at 80% 20%,rgba(255,255,255,.55),transparent 50%),
+             linear-gradient(135deg,#D0B8FF 0%,#80E6FF 55%,#80E6FF 100%);
+  border-radius:var(--radius-xl);
+  padding:24px 28px 22px;
+  overflow:hidden;
+  margin-top:20px;
+}
+.ov-hero::before{
+  content:'';position:absolute;right:-60px;top:-40px;
+  width:360px;height:360px;border-radius:50%;
+  background:repeating-radial-gradient(circle at center,rgba(255,255,255,.18) 0 1px,transparent 1px 12px);
+  pointer-events:none;
+}
+.ov-hero::after{
+  content:'';position:absolute;right:60px;top:-30px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.6),transparent 70%);
+  pointer-events:none;
+}
+.ov-hero-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+.ov-hero-title{font-size:20px;font-weight:800;color:#4F4DA7;letter-spacing:-.01em}
+.ov-hero-sub{font-size:12px;color:#495058;margin-top:3px}
+.ov-hero-tag{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;
+  background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);
+  font-size:12px;color:#4F4DA7;font-weight:600;backdrop-filter:blur(8px);
+}
+.dot-live{width:8px;height:8px;border-radius:50%;background:#37C597;box-shadow:0 0 0 4px rgba(55,197,151,.2)}
+
+/* Glass KPI cards inside hero */
+.ov-hero-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.glass{
+  background:rgba(255,255,255,.65);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.9);border-radius:16px;padding:16px 18px;position:relative;
+}
+.glass-label{display:flex;align-items:center;gap:8px;color:#495058;font-size:12px;font-weight:600}
+.glass-label .gi{
+  width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  background:rgba(111,91,255,.15);color:#A177FF;
+}
+.glass-label .gi svg{width:13px;height:13px}
+.glass-num{
+  font-size:44px;font-weight:500;color:#4F4DA7;
+  margin-top:6px;letter-spacing:-.04em;line-height:1.05;
+  font-family:'JetBrains Mono',monospace;
+}
+.glass-num.bad{color:var(--coral-dark)}
+.glass-num.mid{color:var(--gold-dark)}
+.glass-num.ok{color:var(--green-dark)}
+.glass-num small{font-size:14px;font-weight:500;color:#495058;margin-left:4px;letter-spacing:0;font-family:inherit}
+.glass-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.glass-foot-txt{font-size:11px;color:#495058}
+.chip{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700}
+.chip svg{width:11px;height:11px}
+.chip.up{background:#EBFCF7;color:#37C597}
+.chip.dn{background:#FEEFF0;color:#E63838}
+.chip.neu{background:#E1E2E4;color:#495058}
+
+/* ── SECTION COMMON ── */
+.ov-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:22px 24px}
+.ov-section-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.ov-section-title{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.ov-section-sub{font-size:12px;color:var(--text-3);margin-top:3px;font-weight:500}
+.ov-section-hdr-line{flex:1;height:1px;background:var(--border)}
+
+.layer-sec{padding:0}
+.layer-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.layer-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0}
+.layer-badge.core{background:var(--coral-light);color:var(--coral-dark);border:1px solid var(--coral-med)}
+.layer-badge.dev{background:var(--teal-light);color:var(--teal-dark);border:1px solid var(--teal-med)}
+.layer-badge.eco{background:var(--green-light);color:var(--green-dark);border:1px solid var(--green-faded)}
+.layer-hdr-title{font-size:13px;font-weight:700;color:var(--text)}
+.layer-hdr-line{flex:1;height:1px;background:var(--border)}
+.layer-hdr-desc{font-size:11px;color:var(--text-3)}
+
+/* ── HEALTH MATRIX (AscendOps heatmap style) ── */
+.hm-wrap{overflow:hidden}
+.hm-grid{display:grid;grid-template-columns:160px repeat(5,1fr);gap:6px;margin-top:4px}
+.hm-header{font-size:11px;font-weight:700;color:var(--text-3);text-align:center;padding:8px 4px;text-transform:uppercase;letter-spacing:.04em}
+.hm-header.first{text-align:left;padding-left:4px}
+.hm-row-label{display:flex;flex-direction:column;justify-content:center;padding:0 4px;font-size:13px;font-weight:700;color:var(--text)}
+.hm-row-label small{font-size:10px;font-weight:500;color:var(--text-3);margin-top:2px}
+.hm-cell{
+  border-radius:10px;aspect-ratio:2.4/1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .15s;
+}
+.hm-cell:hover{transform:scale(1.04);z-index:2;box-shadow:0 6px 16px rgba(106,103,206,.22)}
+.hm-cell .cv{font-size:18px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono',monospace}
+.hm-cell .ct{font-size:10.5px;font-weight:600;opacity:.7;margin-top:1px}
+.hm-legend{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:11px;color:var(--text-3);font-weight:500;justify-content:flex-end}
+.hm-grad{height:8px;width:120px;border-radius:4px;background:linear-gradient(90deg,#FEEFF0 0%,#FFB6C8 35%,#FFE87F 55%,#EBFCF7 80%,#9DFBE8 100%)}
+
+/* ── PIPELINE (AscendOps stage style) ── */
+.pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:6px}
+.stage{position:relative;background:var(--g1);border:1px solid var(--border);border-radius:14px;padding:14px 12px 12px;cursor:pointer;transition:all .2s}
+.stage:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(106,103,206,.16);border-color:#D0B8FF}
+.stage-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.stage-no{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.stage-h-good{background:linear-gradient(135deg,#3BE880,#37C597)}
+.stage-h-warn{background:linear-gradient(135deg,#FFB900,#FD9A00)}
+.stage-h-bad{background:linear-gradient(135deg,#FF6D92,#E63838)}
+.health-dot{width:8px;height:8px;border-radius:50%}
+.health-good{background:#37C597;box-shadow:0 0 0 3px rgba(55,197,151,.2)}
+.health-warn{background:#FD9A00;box-shadow:0 0 0 3px rgba(253,154,0,.2)}
+.health-bad{background:#E63838;box-shadow:0 0 0 3px rgba(230,56,56,.2)}
+.stage-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3}
+.stage-meta{font-size:11px;color:var(--text-3);font-weight:500;margin-bottom:10px}
+.stage-num{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.02em;font-family:'JetBrains Mono',monospace}
+.stage-num small{font-size:11px;font-weight:600;color:var(--text-3);margin-left:3px}
+.stage-bar{height:4px;border-radius:99px;background:var(--g3);margin-top:8px;overflow:hidden}
+.stage-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--primary-2))}
+.stage-foot{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;min-height:18px}
+.mini-tag{font-size:10px;font-weight:600;color:var(--text-2);background:var(--g2);padding:2px 6px;border-radius:4px}
+.mini-tag.alert{background:var(--coral-light);color:var(--coral-dark)}
+
+/* ── ACTION LIST + CARDS ── */
+.ov-two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden}
+.ov-card-hdr{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.ov-card-hdr-title{font-size:14px;font-weight:800;flex:1;letter-spacing:-.01em}
+.ov-card-hdr-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--coral-light);color:var(--coral-dark)}
+.action-item{display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);align-items:flex-start;transition:background .12s}
+.action-item:last-child{border-bottom:none}
+.action-item:hover{background:var(--g1)}
+.action-num{width:24px;height:24px;border-radius:8px;background:linear-gradient(135deg,var(--purple-core),var(--purple-bright));color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:'JetBrains Mono',monospace}
+.action-body{flex:1;min-width:0}
+.action-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.45}
+.action-meta{font-size:10px;color:var(--text-3)}
+.action-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;flex-shrink:0}
+.action-tag.urgent{background:var(--coral-light);color:var(--coral-dark)}
+.action-tag.planned{background:var(--gold-light);color:var(--gold-dark)}
+.snap-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
+.snap-row-lbl{font-size:11px;color:var(--text-3)}
+.snap-row-val{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.snap-row-val.bad{color:var(--coral-dark)}
+.snap-row-val.mid{color:var(--gold-dark)}
+.snap-row-val.ok{color:var(--green-dark)}
+
+/* ── VOD HIGH-FREQ ── */
+.vod-hf-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.vod-hf-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-m);padding:14px;display:flex;gap:10px;align-items:flex-start;transition:all .15s}
+.vod-hf-item:hover{border-color:var(--purple-med);box-shadow:var(--shadow-soft)}
+.vod-hf-num{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--purple-bright),var(--purple-core));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.vod-hf-body{flex:1;min-width:0}
+.vod-hf-vol{font-size:20px;font-weight:500;color:var(--purple-bright);font-family:'JetBrains Mono',monospace;letter-spacing:-.03em}
+.vod-hf-text{font-size:11px;color:var(--text);line-height:1.6;margin:4px 0}
+.vod-hf-meta{font-size:10px;color:var(--text-3)}
+
+/* ── S0-S5 PIPELINE CARD (AscendOps stage style redraw) ── */
+.journey-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden}
+.journey-card-hdr{
+  padding:16px 22px;
+  background:radial-gradient(circle at 90% 10%,rgba(255,255,255,.4),transparent 50%),
+             linear-gradient(135deg,#D0B8FF 0%,#80E6FF 100%);
+  display:flex;align-items:center;gap:10px;position:relative;overflow:hidden;
+}
+.journey-card-hdr::before{
+  content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;
+  background:repeating-radial-gradient(circle at center,rgba(255,255,255,.18) 0 1px,transparent 1px 12px);
+}
+.journey-card-title{font-size:15px;font-weight:800;color:#4F4DA7;flex:1}
+.journey-card-sub{font-size:11px;color:#495058;backdrop-filter:blur(4px)}
+.journey-kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+.journey-kpi{padding:14px 18px;border-right:1px solid var(--border)}
+.journey-kpi:last-child{border-right:none}
+.journey-kpi-lbl{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;font-weight:600}
+.journey-kpi-val{font-size:26px;font-weight:500;color:var(--text);letter-spacing:-.035em;font-family:'JetBrains Mono',monospace}
+.journey-kpi-val.mid{color:var(--gold-dark)}
+.journey-kpi-val.bad{color:var(--coral-dark)}
+.journey-kpi-val small{font-size:12px;font-weight:400;color:var(--text-3);margin-left:3px;letter-spacing:0;font-family:inherit}
+
+/* S0-S5 stages using AscendOps pipeline style */
+.journey-pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:18px 20px}
+.journey-stage{
+  position:relative;background:var(--g1);border:1px solid var(--border);
+  border-radius:14px;padding:14px 12px 12px;text-align:center;
+  transition:all .2s;
+}
+.journey-stage:hover{transform:translateY(-2px);box-shadow:var(--shadow-pop);border-color:var(--purple-med)}
+.journey-stage-no{
+  width:40px;height:40px;border-radius:50%;margin:0 auto 8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;font-family:'JetBrains Mono',monospace;
+  border:2px solid transparent;
+}
+.journey-stage-no.bad{background:var(--coral-light);border-color:var(--coral-med);color:var(--coral-dark)}
+.journey-stage-no.mid{background:var(--gold-light);border-color:var(--gold-med);color:var(--gold-dark)}
+.journey-stage-no.ok{background:var(--green-light);border-color:var(--green-faded);color:var(--green-dark)}
+.journey-stage-code{font-size:11px;font-weight:800;color:var(--text);margin-bottom:2px;font-family:'JetBrains Mono',monospace}
+.journey-stage-name{font-size:10px;color:var(--text-3);font-weight:500}
+.journey-stage-bar{height:3px;border-radius:99px;background:var(--g3);margin-top:8px;overflow:hidden}
+.journey-stage-bar i{display:block;height:100%;border-radius:99px}
+.journey-stage-bar i.bad{background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark))}
+.journey-stage-bar i.mid{background:linear-gradient(90deg,var(--gold-core),var(--gold-dark))}
+.journey-stage-bar i.ok{background:linear-gradient(90deg,var(--green-core),var(--green-dark))}
+.journey-arrow{position:absolute;right:-7px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--text-3);z-index:2;background:#fff;border-radius:50%;padding:1px}
+.journey-alert{
+  margin:0 20px 16px;padding:10px 14px;
+  background:var(--coral-light);border-radius:var(--radius-s);
+  border-left:3px solid var(--coral-dark);
+  font-size:11px;color:var(--coral-dark);line-height:1.6;
+}
+.journey-alert b{font-weight:800}
+.journey-footer{padding:10px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+.journey-btn{
+  font-size:11px;font-weight:700;color:var(--primary);
+  background:var(--purple-light);border:1px solid var(--purple-med);
+  border-radius:999px;padding:5px 14px;cursor:pointer;font-family:inherit;transition:all .15s;
+}
+.journey-btn:hover{background:var(--purple-med)}
+
+/* ── PAIN LIST (AscendOps ranked list style) ── */
+.pain-ranked-list{display:flex;flex-direction:column;gap:0}
+.pain-ranked-item{
+  display:grid;grid-template-columns:22px 1fr 60px 56px;
+  gap:10px;align-items:center;
+  padding:9px 4px;border-bottom:1px dashed var(--border);
+  transition:background .12s;
+}
+.pain-ranked-item:last-child{border-bottom:none}
+.pain-ranked-item:hover{background:var(--g1)}
+.pain-rank-badge{
+  width:22px;height:22px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;font-family:'JetBrains Mono',monospace;
+  background:var(--g2);color:var(--text-2);
+}
+.pain-rank-badge.top{background:linear-gradient(135deg,#FF6D92,#E63838);color:#fff}
+.pain-rank-badge.hi{background:linear-gradient(135deg,#FFB900,#FD9A00);color:#fff}
+.pain-ranked-title{font-size:12.5px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pain-ranked-meta{font-size:10.5px;color:var(--text-3);margin-top:2px}
+.pain-vol-bar{height:5px;border-radius:99px;background:var(--g2);overflow:hidden}
+.pain-vol-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#FF6D92,#FC636B)}
+.pain-vol-num{text-align:right;font-size:12px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace}
+.tag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:5px}
+.tag-doc{background:var(--teal-light);color:var(--teal-dark)}
+.tag-api{background:var(--purple-light);color:var(--purple-dark)}
+.tag-tool{background:var(--gold-light);color:var(--gold-dark)}
+.tag-env{background:var(--green-light);color:var(--green-dark)}
+.tag-other{background:var(--coral-light);color:var(--coral-dark)}
+
+/* ── LEGACY CLASSES (dev tab, keep working) ── */
+.kpi-strip{display:grid;grid-template-columns:1fr 1fr 1fr 1.8fr;gap:14px;padding:16px 28px;flex-shrink:0}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);padding:16px 18px;transition:box-shadow .2s;}
+.kpi:hover{box-shadow:var(--shadow-pop)}
+.kpi.border-red{border-top:3px solid var(--coral-core)}
+.kpi.border-yellow{border-top:3px solid var(--gold-core)}
+.kpi-lbl{font-size:10px;color:var(--text-3);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.kpi-val{font-size:32px;font-weight:500;color:var(--text);font-family:'JetBrains Mono',monospace;letter-spacing:-.035em;line-height:1.1}
+.kpi-val span{font-size:12px;font-weight:400;color:var(--text-3);margin-left:2px;letter-spacing:0}
+.kpi-val.bad{color:var(--coral-dark)}
+.kpi-val.mid{color:var(--gold-dark)}
+.kpi-delta{font-size:11px;color:var(--text-3);margin-top:4px;font-weight:500}
+.kpi-delta.dn{color:var(--coral-dark);font-weight:700}
+.kpi-delta.up{color:var(--green-dark);font-weight:700}
+.conclusion-pills{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 4px}
+.cpill{padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;background:var(--coral-light);color:var(--coral-dark)}
+.cpill.mid{background:var(--gold-light);color:var(--gold-dark)}
+.main-body{display:flex;flex-direction:column;padding:16px 28px 48px;gap:14px}
+.scene-list{width:100%;display:flex;flex-direction:column;gap:8px}
+#sceneListCards{display:flex;flex-wrap:wrap;gap:10px}
+.sl-hdr{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center;padding:0 2px;margin-bottom:8px;flex-shrink:0}
+.sort-toggle{display:flex;border:1px solid var(--border-2);border-radius:8px;overflow:hidden;flex-shrink:0;background:#fff}
+.sort-btn{font-size:10px;font-weight:600;padding:4px 10px;border:none;background:#fff;color:var(--text-2);cursor:pointer;font-family:inherit;transition:all .12s;white-space:nowrap}
+.sort-btn.on{background:var(--primary);color:#fff}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);padding:0;cursor:pointer;transition:all .2s;position:relative;width:100%;box-sizing:border-box;overflow:hidden}
+.sc:hover{transform:translateY(-2px);border-color:var(--purple-med);box-shadow:var(--shadow-pop)}
+.sc.sel{border-color:var(--primary)!important;box-shadow:0 0 0 2px rgba(106,103,206,.2)}
+.sc-top{padding:12px 14px 10px;display:flex;align-items:flex-start;gap:8px}
+.sc:nth-child(4n+1) .sc-top{background:var(--green-light)}
+.sc:nth-child(4n+2) .sc-top{background:var(--gold-light)}
+.sc:nth-child(4n+3) .sc-top{background:var(--coral-light)}
+.sc:nth-child(4n+4) .sc-top,.sc.sel .sc-top{background:var(--purple-light)}
+.sc-rank{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;background:rgba(255,255,255,.75);font-family:'JetBrains Mono',monospace}
+.sc-rank.bad{color:var(--coral-dark)}
+.sc-rank.mid{color:var(--gold-dark)}
+.sc-rank.ok{color:var(--green-dark)}
+.sc-title{flex:1;min-width:0}
+.sc-name{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.sc-grade-row{display:flex;align-items:center;gap:6px}
+.grade-tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;background:rgba(255,255,255,.75)}
+.grade-tag.bad{color:var(--coral-dark)}
+.grade-tag.mid{color:var(--gold-dark)}
+.grade-tag.ok{color:var(--green-dark)}
+.sc-score-row{display:flex;align-items:center;gap:6px;margin:10px 14px 6px}
+.sc-score{font-size:24px;font-weight:500;font-family:'JetBrains Mono',monospace;letter-spacing:-.03em}
+.sc-score.bad{color:var(--coral-dark)}
+.sc-score.mid{color:var(--gold-dark)}
+.sc-score.ok{color:var(--green-dark)}
+.sc-trend{font-size:11px;font-weight:700}
+.sc-trend.dn{color:var(--coral-dark)}
+.sc-trend.up{color:var(--green-dark)}
+.sc-trend.flat{color:var(--text-3)}
+.sc-spark{flex:1;height:22px;margin-left:4px}
+.sc-evidence{display:flex;gap:5px;margin:0 14px 12px}
+.ev-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;cursor:default}
+.ev-chip.red{background:var(--coral-light);color:var(--coral-dark)}
+.ev-chip.yellow{background:var(--gold-light);color:var(--gold-dark)}
+.ev-chip.gray{background:var(--g2);color:var(--text-3)}
+.scene-detail{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);min-width:0;overflow:visible}
+.sd-hint{padding:80px 0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--text-3);font-size:13px}
+.det-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.det-name-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.det-name{font-size:18px;font-weight:800;flex:1;letter-spacing:-.01em}
+.det-grade{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px}
+.det-grade.bad{background:var(--coral-light);color:var(--coral-dark)}
+.det-grade.mid{background:var(--gold-light);color:var(--gold-dark)}
+.det-grade.ok{background:var(--green-light);color:var(--green-dark)}
+.det-score{font-size:44px;font-weight:500;letter-spacing:-.04em;font-family:'JetBrains Mono',monospace;line-height:1}
+.det-score.bad{color:var(--coral-dark)}
+.det-score.mid{color:var(--gold-dark)}
+.det-score.ok{color:var(--green-dark)}
+.rank-ctx{display:flex;align-items:center;gap:10px;padding:10px 22px;background:var(--g1);border-bottom:1px solid var(--border);flex-shrink:0;position:relative}
+.rank-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;background:var(--coral-light);color:var(--coral-dark)}
+.rank-pill.mid{background:var(--gold-light);color:var(--gold-dark)}
+.rank-pill.ok{background:var(--green-light);color:var(--green-dark)}
+.rank-desc{font-size:11px;color:var(--text-3);flex:1}
+.rank-mini-bars{display:flex;align-items:flex-end;gap:3px;height:20px}
+.rank-bar{width:10px;border-radius:3px 3px 0 0;background:var(--g3);opacity:.6}
+.rank-bar.cur{opacity:1}
+.rank-bar.bad{background:var(--coral-dark)}
+.rank-bar.mid{background:var(--gold-dark)}
+.rank-bar.ok{background:var(--green-dark)}
+.rank-mean{font-size:10px;color:var(--text-3);white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.radar-section{padding:14px 22px 16px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--g1);position:relative}
+.radar-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.radar-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;flex:1}
+.radar-worst{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--coral-light);color:var(--coral-dark)}
+.radar-body{display:flex;align-items:stretch;gap:0}
+.chart-col{flex:1;min-width:0;padding-right:18px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+.radar-col{flex:1;min-width:0;padding-left:18px;display:flex;align-items:center;gap:12px}
+.col-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em}
+.stab-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;align-self:flex-start}
+.stab-tag.stable{background:var(--green-light);color:var(--green-dark)}
+.stab-tag.moderate{background:var(--gold-light);color:var(--gold-dark)}
+.stab-tag.unstable{background:var(--coral-light);color:var(--coral-dark)}
+.radar-legend{display:flex;flex-direction:column;gap:7px}
+.radar-dim{display:flex;align-items:center;gap:7px}
+.radar-dim-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.radar-dim-lbl{font-size:10px;color:var(--text-3);flex:1;white-space:nowrap}
+.radar-dim-val{font-size:12px;font-weight:800;width:28px;text-align:right;font-family:'JetBrains Mono',monospace}
+.ev-tabs{display:flex;border-bottom:1px solid var(--border);background:#fff}
+.ev-tab{padding:10px 18px;font-size:12px;font-weight:600;color:var(--text-3);border:none;background:none;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px}
+.ev-tab:hover{color:var(--text)}
+.ev-tab.on{color:var(--primary);border-bottom-color:var(--primary);font-weight:700}
+.ev-tab .ev-tab-count{font-size:10px;font-weight:700;padding:1px 5px;border-radius:5px;background:var(--g2);color:var(--text-3)}
+.ev-tab.on .ev-tab-count{background:var(--purple-light);color:var(--primary)}
+.ev-panels{}
+.ev-panel{display:none;padding:14px 22px 28px}
+.ev-panel.on{display:block}
+.agent-section-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.agent-step-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.agent-step-row:last-child{border-bottom:none}
+.as-name{width:72px;font-size:11px;font-weight:700;color:var(--text);flex-shrink:0;padding-top:3px}
+.as-right{flex:1;min-width:0}
+.as-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.as-bar-track{flex:1;height:7px;background:var(--g2);border-radius:99px;overflow:hidden}
+.as-bar-fill{height:100%;border-radius:99px}
+.as-bar-fill.bad{background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark))}
+.as-bar-fill.mid{background:linear-gradient(90deg,var(--gold-core),var(--gold-dark))}
+.as-bar-fill.ok{background:linear-gradient(90deg,var(--green-core),var(--green-dark))}
+.as-score{font-size:12px;font-weight:800;width:32px;text-align:right;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.as-score.bad{color:var(--coral-dark)}
+.as-score.mid{color:var(--gold-dark)}
+.as-score.ok{color:var(--green-dark)}
+.as-summary{font-size:11px;color:var(--text-2);line-height:1.6;margin-bottom:6px}
+.as-summary b{font-size:9px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:3px}
+.as-obs{margin-bottom:6px}
+.as-obs b{font-size:9px;font-weight:700;color:var(--coral-dark);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.as-obs-list{display:flex;flex-direction:column;gap:3px}
+.as-obs-item{font-size:11px;color:var(--text);line-height:1.5;padding:5px 10px 5px 12px;background:var(--coral-light);border-left:2px solid var(--coral-med);border-radius:0 6px 6px 0}
+.tool-chain-row{margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.tool-chain-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.tool-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tool-chip{font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;border:1px solid transparent}
+.tool-chip.ok{background:var(--green-light);border-color:var(--green-faded);color:var(--green-dark)}
+.tool-chip.warn{background:var(--gold-light);border-color:var(--gold-med);color:var(--gold-dark)}
+.tool-chip.crit{background:var(--coral-light);border-color:var(--coral-med);color:var(--coral-dark)}
+.tool-arrow{color:var(--text-3);font-size:11px}
+.step-metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-top:8px}
+.step-metric{background:var(--g1);border:1px solid var(--border);border-radius:var(--radius-s);padding:8px 10px}
+.step-metric-lbl{font-size:10px;color:var(--text-3);margin-bottom:4px;line-height:1.3}
+.step-metric-bottom{display:flex;align-items:baseline;gap:5px}
+.step-metric-val{font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.step-metric-val.bad{color:var(--coral-dark)}
+.step-metric-val.mid{color:var(--gold-dark)}
+.step-metric-val.ok{color:var(--green-dark)}
+.step-metric-val.neutral{color:var(--text)}
+.step-metric-trend{font-size:10px;font-weight:700}
+.step-metric-trend.dn{color:var(--coral-dark)}
+.step-metric-trend.up{color:var(--green-dark)}
+.step-metric-trend.flat{color:var(--text-3)}
+.pain-cat-section{margin-bottom:14px}
+.pain-cat-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.cat-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px;border:1.5px solid;white-space:nowrap;flex-shrink:0}
+.cat-sum-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.cat-sum-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;border:1.5px solid;white-space:nowrap;cursor:pointer;opacity:.5;transition:all .15s}
+.cat-sum-chip.on,.cat-sum-chip:hover{opacity:1}
+.cat-sum-chip.on{box-shadow:var(--shadow-pop)}
+.cat-sum-chip.all{background:var(--g2);color:var(--text-2);border-color:var(--g4)}
+.cat-sum-chip.tool{background:var(--gold-light);color:var(--gold-dark);border-color:var(--gold-med)}
+.cat-sum-chip.doc{background:var(--teal-light);color:var(--teal-dark);border-color:var(--teal-med)}
+.cat-sum-chip.api{background:var(--purple-light);color:var(--purple-dark);border-color:var(--purple-med)}
+.cat-sum-chip.env{background:var(--green-light);color:var(--green-dark);border-color:var(--green-faded)}
+.cat-sum-n{font-weight:800;font-size:12px;font-family:'JetBrains Mono',monospace}
+.cat-badge.doc{background:#fff;color:var(--teal-dark);border-color:var(--teal-med)}
+.cat-badge.tool{background:#fff;color:var(--gold-dark);border-color:var(--gold-med)}
+.cat-badge.api{background:#fff;color:var(--purple-dark);border-color:var(--purple-med)}
+.cat-badge.env{background:#fff;color:var(--green-dark);border-color:var(--green-faded)}
+.cat-count{font-size:10px;color:var(--text-3)}
+.pain-item{background:var(--g1);border:1px solid var(--border);border-radius:var(--radius-s);padding:8px 10px;margin-bottom:6px;transition:all .15s}
+.pain-item:hover{border-color:var(--purple-med);background:#fff;box-shadow:var(--shadow-soft)}
+.pain-top{display:flex;align-items:flex-start;gap:8px}
+.pain-score{font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;background:var(--coral-light);color:var(--coral-dark);flex-shrink:0;margin-top:1px;font-family:'JetBrains Mono',monospace}
+.pain-body{flex:1;min-width:0}
+.pain-text{font-size:11px;color:var(--text);line-height:1.45;margin-bottom:2px}
+.pain-meta{font-size:10px;color:var(--text-3)}
+.pain-next{display:flex;align-items:center;gap:6px;margin-top:5px;padding-top:5px;border-top:1px dashed var(--border)}
+.pain-next-lbl{font-size:10px;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+.pain-next-text{font-size:11px;color:var(--teal-dark);cursor:pointer;line-height:1.5}
+.pain-next-text:hover{text-decoration:underline}
+.pain-status{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;margin-left:auto;flex-shrink:0}
+.pain-status.progress{background:var(--purple-light);color:var(--purple-dark)}
+.pain-status.planned{background:var(--gold-light);color:var(--gold-dark)}
+.vod-item{border:1px solid var(--border);border-radius:var(--radius-m);padding:12px 14px;margin-bottom:10px;background:var(--g1);transition:all .15s}
+.vod-item:hover{border-color:var(--purple-med);background:#fff;box-shadow:var(--shadow-soft)}
+.vod-vol-row{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.vod-vol{font-size:26px;font-weight:500;color:var(--purple-bright);font-family:'JetBrains Mono',monospace;letter-spacing:-.03em}
+.vod-unit{font-size:11px;color:var(--text-3)}
+.vod-trend{font-size:12px;font-weight:700}
+.vod-trend.dn{color:var(--coral-dark)}
+.vod-trend.flat{color:var(--gold-dark)}
+.vod-quote{font-size:12px;color:var(--text-2);line-height:1.7;padding:8px 12px 8px 16px;background:#fff;border-radius:var(--radius-s);border-left:3px solid var(--purple-med);font-style:italic;position:relative}
+.vod-quote::before{display:none}
+.vod-src{font-size:10px;color:var(--text-3);margin-top:6px}
+.eco-three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.eco-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden}
+.eco-card-hdr{padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px;font-weight:800;letter-spacing:-.01em}
+.eco-card-body{padding:6px 14px}
+.eco-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px}
+.eco-row:last-child{border-bottom:none}
+.eco-row-lbl{color:var(--text-3)}
+.eco-row-val{font-weight:700;font-family:'JetBrains Mono',monospace}
+.eco-row-val.ok{color:var(--green-dark)}
+.eco-row-val.mid{color:var(--gold-dark)}
+.eco-row-val.bad{color:var(--coral-dark)}
+.eco-tag{font-size:9px;font-weight:700;padding:1px 6px;border-radius:5px;flex-shrink:0}
+.eco-tag.new{background:var(--green-light);color:var(--green-dark)}
+.eco-tag.perf{background:var(--teal-light);color:var(--teal-dark)}
+.eco-tag.e2e{background:var(--gold-light);color:var(--gold-dark)}
+.callout-badge{display:none;position:absolute;width:18px;height:18px;border-radius:50%;background:var(--teal-core);color:#fff;font-size:9px;font-weight:700;align-items:center;justify-content:center;border:1.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);z-index:20;pointer-events:none}
+body.rat-open .callout-badge{display:flex}
+body.hl-1 .hl-1,body.hl-2 .hl-2,body.hl-3 .hl-3,body.hl-4 .hl-4,body.hl-5 .hl-5,body.hl-6 .hl-6{outline:2px solid var(--teal-core);outline-offset:2px;border-radius:6px}
+.rat-sidebar{width:0;overflow:hidden;flex-shrink:0;position:sticky;top:100px;align-self:flex-start;transition:width .22s ease;max-height:calc(100vh - 120px)}
+body.rat-open .rat-sidebar{width:264px}
+.rat-sidebar-inner{width:264px;background:#fff;border:1px solid var(--border);border-left:3px solid var(--teal-core);border-radius:var(--radius-m);overflow-y:auto;max-height:calc(100vh - 160px)}
+.float-rat-btn{position:fixed;bottom:22px;right:22px;z-index:300;display:flex;align-items:center;gap:7px;padding:8px 16px;background:#fff;border:1px solid var(--border);border-radius:999px;box-shadow:0 4px 16px rgba(0,0,0,.1);font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;transition:all .15s}
+.float-rat-btn:hover,.float-rat-btn.open{border-color:var(--teal-core);color:var(--teal-dark);background:var(--teal-light)}
+.rat-panel-hdr{font-size:10px;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.07em;padding:13px 16px 10px;border-bottom:1px solid var(--border)}
+.rat-item{display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border);cursor:default}
+.rat-item:last-child{border-bottom:none}
+.rat-item:hover,.rat-item.hl{background:var(--teal-light)}
+.rat-num{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--teal-core),var(--teal-dark));color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rat-content{}
+.rat-head{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px}
+.rat-source{font-size:10px;font-weight:700;color:var(--teal-dark);background:var(--teal-light);padding:1px 6px;border-radius:5px;display:inline-block;margin-bottom:5px}
+.rat-body{font-size:11px;color:var(--text-3);line-height:1.65}
+.rat-pointer{font-size:10px;color:var(--teal-dark);margin-top:4px;font-weight:600}
+.community-shell{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--text-3);padding:60px}
+.community-shell h3{font-size:15px;font-weight:700;color:var(--text)}
+.community-shell p{font-size:13px;text-align:center;max-width:400px;line-height:1.7}
+.sub-tab-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;position:sticky;top:54px;z-index:98}
+.sub-tab{height:42px;font-size:13px;font-weight:600;color:var(--text-3);border:none;background:none;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;padding:0 16px;font-family:inherit;transition:all .15s}
+.sub-tab:hover{color:var(--text)}
+.sub-tab.on{color:var(--primary);border-bottom-color:var(--primary)}
+.ov-rat-panel{position:fixed;top:90px;right:-292px;width:272px;background:#fff;border:1px solid var(--border);border-left:3px solid var(--teal-core);border-radius:var(--radius-m) 0 0 var(--radius-m);z-index:200;box-shadow:-2px 4px 20px rgba(0,0,0,.08);transition:right .22s ease;max-height:calc(100vh - 110px);overflow-y:auto}
+body.ov-rat-open .ov-rat-panel{right:0}
+.role-dim{opacity:.2;filter:grayscale(.15);transition:opacity .2s,filter .2s;pointer-events:none}
+.role-focus-badge{font-size:9px;font-weight:700;padding:1px 7px;border-radius:10px;background:var(--teal-light);color:var(--teal-dark);border:1px solid var(--teal-med);margin-left:8px;vertical-align:middle}
+.tp-layout{display:flex;gap:16px;padding:16px 28px 48px;align-items:flex-start}
+.tp-matrix-wrap{flex:1;min-width:0}
+.tp-detail-col{width:296px;flex-shrink:0;position:sticky;top:100px;align-self:flex-start}
+.tp-detail-card{background:#fff;border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:var(--radius-m);overflow:hidden}
+.tp-detail-hint{padding:48px 20px;text-align:center;color:var(--text-3);font-size:12px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-m);line-height:1.6}
+.tp-detail-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.tp-detail-title-wrap{flex:1;min-width:0}
+.tp-detail-scene{font-size:13px;font-weight:700;color:var(--text)}
+.tp-detail-col-lbl{font-size:10px;color:var(--text-3);margin-top:1px}
+.tp-detail-body{padding:14px 16px}
+.tp-obs-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.tp-obs-item{font-size:11px;color:var(--text);line-height:1.5;padding:5px 8px 5px 10px;border-radius:0 6px 6px 0;margin-bottom:5px}
+.tp-obs-item.bad{background:var(--coral-light);border-left:2px solid var(--coral-med)}
+.tp-obs-item.mid{background:var(--gold-light);border-left:2px solid var(--gold-med)}
+.tp-obs-item.ok{background:var(--green-light);border-left:2px solid var(--green-faded)}
+.tp-cta{display:flex;align-items:center;gap:6px;margin-top:14px;padding-top:10px;border-top:1px solid var(--border);color:var(--primary);font-size:11px;font-weight:700;cursor:pointer}
+.tp-legend{display:flex;gap:14px;margin-top:10px}
+.tp-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-3);font-weight:500}
+.tp-legend-dot{width:9px;height:9px;border-radius:3px}
+.tp-legend-dot.bad{background:var(--coral-light);border:1px solid var(--coral-med)}
+.tp-legend-dot.mid{background:var(--gold-light);border:1px solid var(--gold-med)}
+.tp-legend-dot.ok{background:var(--green-light);border:1px solid var(--green-faded)}
+.hm-cell.tp-sel{outline:2px solid var(--primary);outline-offset:2px}
+.pain-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
+.pain-top-row{display:grid;grid-template-columns:1fr 1.4fr;gap:14px}
+.pain-dist-row{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid var(--border)}
+.pain-dist-row:last-child{border-bottom:none}
+.pain-dist-lbl{font-size:11px;color:var(--text-2);flex:1}
+.pain-dist-bar-track{width:100px;height:6px;background:var(--g2);border-radius:99px;overflow:hidden;flex-shrink:0}
+.pain-dist-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));opacity:.8}
+.pain-dist-n{font-size:11px;font-weight:800;color:var(--text);width:24px;text-align:right;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.eco-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
+.vod-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
+.vod-two-col{display:grid;grid-template-columns:1fr 1.6fr;gap:14px}
+.vod-src-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden}
+.vod-src-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border)}
+.vod-src-row:last-child{border-bottom:none}
+.vod-src-name{font-size:11px;color:var(--text-3);width:72px;flex-shrink:0}
+.vod-src-bar-track{flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden}
+.vod-src-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--purple-bright),var(--purple-core));opacity:.75}
+.vod-src-pct{font-size:11px;font-weight:800;color:var(--text);width:34px;text-align:right;font-family:'JetBrains Mono',monospace}
+.vod-full-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-m);padding:12px 14px;margin-bottom:8px}
+.vod-full-hdr{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.vod-full-rank{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--purple-bright),var(--purple-core));color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-family:'JetBrains Mono',monospace}
+.vod-full-vol{font-size:18px;font-weight:500;color:var(--purple-bright);font-family:'JetBrains Mono',monospace}
+.vod-full-unit{font-size:10px;color:var(--text-3)}
+.vod-full-body{flex:1;min-width:0}
+.vod-full-quote{font-size:12px;color:var(--text-2);line-height:1.7;padding:8px 10px 8px 16px;background:var(--g1);border-radius:var(--radius-s);border-left:3px solid var(--purple-med);font-style:italic;margin-bottom:6px}
+.vod-full-quote::before{display:none}
+.vod-full-meta{font-size:10px;color:var(--text-3)}
+.ov-snap-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.snap-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden;transition:box-shadow .2s}
+.snap-card:hover{box-shadow:var(--shadow-pop)}
+.snap-card-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.snap-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.snap-icon.red{background:linear-gradient(135deg,var(--coral-light),var(--coral-med))}
+.snap-icon.blue{background:linear-gradient(135deg,var(--teal-light),var(--teal-med))}
+.snap-icon.green{background:linear-gradient(135deg,var(--green-light),var(--green-faded))}
+.snap-title{font-size:13px;font-weight:800;flex:1;letter-spacing:-.01em}
+.snap-body{padding:12px 16px}
+.snap-big-stat{display:flex;align-items:baseline;gap:5px;margin-bottom:6px}
+.snap-big-val{font-size:28px;font-weight:500;font-family:'JetBrains Mono',monospace;letter-spacing:-.035em}
+.snap-big-val.bad{color:var(--coral-dark)}
+.snap-big-val.ok{color:var(--green-dark)}
+.snap-big-val.mid{color:var(--gold-dark)}
+.snap-big-lbl{font-size:11px;color:var(--text-3)}
+.snap-big-delta{font-size:11px;font-weight:700}
+.snap-big-delta.dn{color:var(--coral-dark)}
+.snap-big-delta.up{color:var(--green-dark)}
+.snap-divider{height:1px;background:var(--border);margin:8px 0}
+.snap-row-val.bad{color:var(--coral-dark)}
+.snap-row-val.mid{color:var(--gold-dark)}
+.snap-row-val.ok{color:var(--green-dark)}
+.cust-list{padding:6px 0}
+.cust-bar-row{display:flex;align-items:center;gap:8px;padding:8px 18px;border-bottom:1px solid var(--border)}
+.cust-bar-row:last-child{border-bottom:none}
+.cust-name{font-size:11px;font-weight:700;color:var(--text);width:34px;flex-shrink:0}
+.cust-bar-track{flex:1;height:7px;background:var(--g2);border-radius:99px;overflow:hidden}
+.cust-bar-fill{height:100%;border-radius:99px}
+.cust-bar-fill.bad{background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark))}
+.cust-bar-fill.mid{background:linear-gradient(90deg,var(--gold-core),var(--gold-dark))}
+.cust-bar-fill.ok{background:linear-gradient(90deg,var(--green-core),var(--green-dark))}
+.cust-pct{font-size:11px;font-weight:800;width:30px;text-align:right;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.cust-pct.bad{color:var(--coral-dark)}
+.cust-pct.mid{color:var(--gold-dark)}
+.cust-delta{font-size:10px;width:36px;flex-shrink:0;font-weight:700;font-family:'JetBrains Mono',monospace}
+.cust-delta.dn{color:var(--coral-dark)}
+.cust-delta.up{color:var(--green-dark)}
+.cust-delta.flat{color:var(--text-3)}
+
+/* ── AscendOps v4 additions ── */
+/* tp-heat-cell hover */
+.tp-heat-cell:hover{transform:scale(1.05);box-shadow:0 6px 18px rgba(106,103,206,.22);z-index:2}
+/* ov-section layout helper */
+.ov-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:22px 24px}
+.ov-section-title{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.ov-section-sub{font-size:12px;color:var(--text-3);margin-top:3px;font-weight:500}
+.ov-section-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+/* heat-legend */
+.hm-legend{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--text-3);font-weight:500}
+.hm-grad{height:8px;width:100px;border-radius:4px;background:linear-gradient(90deg,#FEEFF0 0%,#FFB6C8 35%,#FFE87F 55%,#EBFCF7 80%,#9DFBE8 100%)}
+/* scene-detail sticky */
+.scene-detail{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:visible}
+/* scene list sidebar */
+.scene-list{display:flex;flex-direction:column;gap:0}
+/* sc card full-width in sidebar */
+#sceneListCards .sc{width:100%!important}
+/* scene name follow pastel */
+.sc:nth-child(4n+1) .sc-name{color:#179D8A}
+.sc:nth-child(4n+2) .sc-name{color:#FD9A00}
+.sc:nth-child(4n+3) .sc-name{color:#E63838}
+.sc:nth-child(4n+4) .sc-name,.sc.sel .sc-name{color:#4F4DA7}
+/* grade tag in pastel banner */
+.sc:nth-child(4n+1) .grade-tag.bad,.sc:nth-child(4n+1) .grade-tag.mid,.sc:nth-child(4n+1) .grade-tag.ok{background:rgba(255,255,255,.8)}
+/* tp detail hint */
+.tp-detail-hint{padding:32px 20px;text-align:center;color:var(--text-3);font-size:12px;background:var(--g1);border:1px solid var(--border);border-radius:var(--radius-m);line-height:1.8}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <span class="tb-logo">CANN</span>
+  <span class="tb-sep">/</span>
+  <span class="tb-title">体验看板</span>
+  <div class="tb-dims">
+    <button class="dim-tab on" onclick="switchTab('overview',this)">总览</button>
+    <button class="dim-tab" onclick="switchTab('dev',this)">用户旅程</button>
+  </div>
+  <div class="tb-right">
+    <div class="period-pill">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      2026-Q2 · 第7期
+    </div>
+    <button class="export-btn">↗ 导出摘要</button>
+  </div>
+</div>
+
+<!-- OVERVIEW TAB -->
+<div id="tabOverview">
+  <div class="filter-bar">
+    <span class="fl-lbl">芯片</span>
+    <span class="fchip on">A5</span>
+    <span class="fchip">A2 &amp; A3</span>
+    <div class="fl-sep"></div>
+    <span class="fl-lbl">视角</span>
+    <span class="fchip role-chip on" onclick="selectRole('all',this)">全部</span>
+    <span class="fchip role-chip" onclick="selectRole('doc',this)">资料</span>
+    <span class="fchip role-chip" onclick="selectRole('ux',this)">体验设计</span>
+    <span class="fchip role-chip" onclick="selectRole('op',this)">算子编程</span>
+    <span class="fchip role-chip" onclick="selectRole('infra',this)">推理框架</span>
+    <span class="fchip role-chip" onclick="selectRole('pm',this)">产品负责人</span>
+    <span class="fchip role-chip" onclick="selectRole('comm',this)">社区运营</span>
+  </div>
+
+  <div class="ov-body">
+
+    <!-- ══ HERO BANNER ══ -->
+    <section class="ov-hero">
+      <div class="ov-hero-head">
+        <div>
+          <div class="ov-hero-title">CANN 体验看板 · 2026 Q2</div>
+          <div class="ov-hero-sub">综合 274 个体验触点 · 65 个仓库 · 240 条 VOD 原声 · 4 类典型场景</div>
+        </div>
+        <div class="ov-hero-tag"><span class="dot-live"></span> Agentic 评分实时聚合 · 近 7 次均值</div>
+      </div>
+      <div class="ov-hero-kpis">
+        <div class="glass">
+          <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>综合健康评分</div>
+          <div class="glass-num mid">72<small>/100</small></div>
+          <div class="glass-foot"><span class="chip dn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>−3</span><span class="glass-foot-txt">vs 上期</span></div>
+        </div>
+        <div class="glass">
+          <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>严重问题</div>
+          <div class="glass-num bad">3<small>个</small></div>
+          <div class="glass-foot"><span class="chip dn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>+1</span><span class="glass-foot-txt">较上期</span></div>
+        </div>
+        <div class="glass">
+          <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>痛点闭环率</div>
+          <div class="glass-num mid">38<small>%</small></div>
+          <div class="glass-foot"><span class="chip up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>+6%</span><span class="glass-foot-txt">vs 上期</span></div>
+        </div>
+        <div class="glass">
+          <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>本期改善 · 已验收</div>
+          <div class="glass-num ok">9<small>条</small></div>
+          <div class="glass-foot"><span class="chip neu">共 30 条</span><span class="glass-foot-txt">活跃痛点</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ HEALTH MATRIX ══ -->
+    <div class="ov-section" data-roles="op infra pm doc ux comm">
+      <div class="ov-section-hdr">
+        <div>
+          <div class="ov-section-title">体验健康矩阵</div>
+          <div class="ov-section-sub">三类证据交叉定位 · Agent评分 / 客户痛点 / VOD声量</div>
+        </div>
+      </div>
+      <div class="hm-wrap">
+        <div class="hm-grid" id="hmGrid">
+          <!-- rendered by JS -->
+        </div>
+        <div class="hm-legend">
+          <span>低</span><div class="hm-grad"></div><span>高</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 技术内核 ══ -->
+    <div class="layer-sec" data-roles="op infra pm">
+      <div class="layer-hdr">
+        <span class="layer-badge core">技术内核</span>
+        <span class="layer-hdr-title">压榨硬件极致性能，提供稳定高效的底层能力</span>
+        <div class="layer-hdr-line"></div>
+      </div>
+      <div class="eco-three-col">
+        <div class="eco-card">
+          <div class="eco-card-hdr">PyTorch API 支持度</div>
+          <div id="ecPyTorch" style="height:160px"></div>
+          <div class="eco-card-body" style="border-top:1px solid var(--border)">
+            <div class="eco-row"><span class="eco-row-lbl">Core test 通过率</span><span class="eco-row-val ok">85.4% ↑+2.1%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">算子 API 覆盖</span><span class="eco-row-val ok">92%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">通信 API 覆盖</span><span class="eco-row-val mid">78%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">框架 API 覆盖</span><span class="eco-row-val mid">71%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">工具 API 覆盖</span><span class="eco-row-val ok">88%</span></div>
+          </div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-card-hdr">模型开箱覆盖</div>
+          <div id="ecModel" style="height:160px"></div>
+          <div class="eco-card-body" style="border-top:1px solid var(--border)">
+            <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">41/41 · 100%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">12/12 · 100%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">VLLM 框架迁移</span><span class="eco-row-val mid">12/15 · 78%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">SGLang 框架迁移</span><span class="eco-row-val mid">5/8 · 65%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">VERL 框架迁移</span><span class="eco-row-val bad">3/7 · 42%</span></div>
+          </div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-card-hdr">0 Day 高影响力发布</div>
+          <div class="eco-card-body">
+            <div class="eco-row"><span class="eco-row-lbl">Deepseek V4 Pro</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div></div>
+            <div class="eco-row"><span class="eco-row-lbl">Deepseek V4 Flash</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div></div>
+            <div class="eco-row"><span class="eco-row-lbl">Kimi K2 Thinking</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag e2e">E2E</span></div></div>
+            <div class="eco-row"><span class="eco-row-lbl">Deepseek V3.2</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span><span class="eco-tag e2e">E2E</span></div></div>
+            <div class="eco-row"><span class="eco-row-lbl">Longcat</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 开发界面 ══ -->
+    <div class="layer-sec" data-roles="ux op">
+      <div class="layer-hdr">
+        <span class="layer-badge dev">开发界面</span>
+        <span class="layer-hdr-title">降低开发者认知负担，将硬件能力翻译为兼容生态习惯的开发体验</span>
+        <div class="layer-hdr-line"></div>
+      </div>
+      <div class="ov-two-col">
+        <div class="ov-card">
+          <div class="ov-card-hdr">
+            <div class="ov-card-hdr-title">需立即处理</div>
+            <span class="ov-card-hdr-badge">4 项待行动</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">1</div>
+            <div class="action-body">
+              <div class="action-title">AIC 日志缺失根因定位能力 · 算子复现部署调试能力仅 34 分</div>
+              <div class="action-meta">算子编程分队 · 腾讯 / 蚂蚁反馈 · 预计 Q3 闭环</div>
+            </div>
+            <span class="action-tag urgent">紧急</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">2</div>
+            <div class="action-body">
+              <div class="action-title">Builtin 算子文档参数错误率高 · VOD 声量 71 条</div>
+              <div class="action-meta">资料分队 · 社区 issue 集中 · 已立项</div>
+            </div>
+            <span class="action-tag urgent">紧急</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">3</div>
+            <div class="action-body">
+              <div class="action-title">迁移工具 shape 限制未提前提示 · 影响迁移部署成功率</div>
+              <div class="action-meta">工具链分队 · 美团 / 京东 · Q3 规划</div>
+            </div>
+            <span class="action-tag planned">规划中</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">4</div>
+            <div class="action-body">
+              <div class="action-title">图模式适配样例补全 · 推理框架 Agentic 成功率 68%</div>
+              <div class="action-meta">编译器 &amp; OS 分队 · Q3 / Q4</div>
+            </div>
+            <span class="action-tag planned">规划中</span>
+          </div>
+        </div>
+        <div class="ov-card">
+          <div class="ov-card-hdr"><div class="ov-card-hdr-title">Agentic 开发效率</div></div>
+          <div style="padding:12px 16px 8px">
+            <div id="ecGauge" style="height:120px;margin:-4px 0"></div>
+            <div class="snap-row"><span class="snap-row-lbl">Ascend C 体验评分</span><span class="snap-row-val bad">4.1 / 6</span></div>
+            <div class="snap-row"><span class="snap-row-lbl">样例覆盖度</span><span class="snap-row-val mid">75%</span></div>
+            <div class="snap-row"><span class="snap-row-lbl">优秀实践完成率</span><span class="snap-row-val mid">部分</span></div>
+          </div>
+          <div style="padding:10px 16px;border-top:1px solid var(--border)">
+            <button onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[1])" style="width:100%;padding:9px;border-radius:999px;border:1px solid var(--purple-med);background:var(--purple-light);color:var(--primary);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s">→ 进入用户旅程</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 生态增益 ══ -->
+    <div class="layer-sec" data-roles="doc comm ux">
+      <div class="layer-hdr">
+        <span class="layer-badge eco">生态增益</span>
+        <span class="layer-hdr-title">形成网络效应，让平台价值随生态参与者的增加而指数增长</span>
+        <div class="layer-hdr-line"></div>
+      </div>
+
+      <!-- VOD Bar Chart -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);margin-bottom:14px;overflow:hidden">
+        <div style="padding:12px 18px;border-bottom:1px solid var(--border);font-size:14px;font-weight:800;letter-spacing:-.01em">高频 VOD 声量排行</div>
+        <div id="ecVod" style="height:150px;padding:0 8px"></div>
+      </div>
+
+      <!-- VOD HF cards -->
+      <div class="vod-hf-list">
+        <div class="vod-hf-item">
+          <div class="vod-hf-num">1</div>
+          <div class="vod-hf-body">
+            <div class="vod-hf-vol">71 条 <span style="font-size:10px;color:var(--coral-dark);font-weight:700">↑ 上升</span></div>
+            <div class="vod-hf-text">多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致</div>
+            <div class="vod-hf-meta">算子仓 · 社区 issue · 社区开发者</div>
+          </div>
+        </div>
+        <div class="vod-hf-item">
+          <div class="vod-hf-num">2</div>
+          <div class="vod-hf-body">
+            <div class="vod-hf-vol">61 条</div>
+            <div class="vod-hf-text">CANN 多算子仓：文档参数错误、格式错误、描述不一致、内容缺失</div>
+            <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
+          </div>
+        </div>
+        <div class="vod-hf-item">
+          <div class="vod-hf-num">3</div>
+          <div class="vod-hf-body">
+            <div class="vod-hf-vol">40 条</div>
+            <div class="vod-hf-text">算子资料文档：格式不规范、参数描述错误、命令目录错误</div>
+            <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ S0-S5 JOURNEY — AscendOps Pipeline 风格 ══ -->
+      <div class="journey-card" style="margin-top:16px">
+        <div class="journey-card-hdr">
+          <div>
+            <div class="journey-card-title">社区入门体验 · Agent S0–S5 全旅程评测</div>
+            <div style="font-size:11px;color:#495058;margin-top:2px">CANN · ASC · PYASC · Ascend 910C</div>
+          </div>
+          <div class="ov-hero-tag" style="margin-left:auto"><span class="dot-live"></span> Agentic 实测</div>
+        </div>
+        <!-- KPI strip -->
+        <div class="journey-kpis">
+          <div class="journey-kpi">
+            <div class="journey-kpi-lbl">综合体验评分</div>
+            <div class="journey-kpi-val mid">71<small>/100</small></div>
+          </div>
+          <div class="journey-kpi">
+            <div class="journey-kpi-lbl">端到端成功率</div>
+            <div class="journey-kpi-val mid">68<small>%</small></div>
+          </div>
+          <div class="journey-kpi">
+            <div class="journey-kpi-lbl">工具执行总耗时</div>
+            <div class="journey-kpi-val">142<small> s</small></div>
+          </div>
+          <div class="journey-kpi">
+            <div class="journey-kpi-lbl">平均 Token 消耗</div>
+            <div class="journey-kpi-val">8.2<small> k</small></div>
+          </div>
+        </div>
+        <!-- S0-S5 Pipeline stages -->
+        <div style="padding:10px 20px 4px;font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em">旅程步骤</div>
+        <div class="journey-pipeline">
+          <div class="journey-stage">
+            <div class="journey-stage-no bad">42</div>
+            <div class="journey-stage-code">S0</div>
+            <div class="journey-stage-name">搜索发现</div>
+            <div class="journey-stage-bar"><i class="bad" style="width:42%"></i></div>
+            <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="journey-stage">
+            <div class="journey-stage-no mid">65</div>
+            <div class="journey-stage-code">S1</div>
+            <div class="journey-stage-name">环境准备</div>
+            <div class="journey-stage-bar"><i class="mid" style="width:65%"></i></div>
+            <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="journey-stage">
+            <div class="journey-stage-no mid">73</div>
+            <div class="journey-stage-code">S2</div>
+            <div class="journey-stage-name">样例体验</div>
+            <div class="journey-stage-bar"><i class="mid" style="width:73%"></i></div>
+            <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="journey-stage">
+            <div class="journey-stage-no ok">81</div>
+            <div class="journey-stage-code">S3</div>
+            <div class="journey-stage-name">开发编译</div>
+            <div class="journey-stage-bar"><i class="ok" style="width:81%"></i></div>
+            <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="journey-stage">
+            <div class="journey-stage-no ok">79</div>
+            <div class="journey-stage-code">S4</div>
+            <div class="journey-stage-name">测试验证</div>
+            <div class="journey-stage-bar"><i class="ok" style="width:79%"></i></div>
+            <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="journey-stage">
+            <div class="journey-stage-no mid">68</div>
+            <div class="journey-stage-code">S5</div>
+            <div class="journey-stage-name">反馈贡献</div>
+            <div class="journey-stage-bar"><i class="mid" style="width:68%"></i></div>
+          </div>
+        </div>
+        <div class="journey-alert">
+          <b>S0 最弱环节：</b>搜索直达率 0%，历经 3 轮搜索才找到仓库；命名混淆导致跨平台迁移摩擦高
+        </div>
+        <div class="journey-footer">
+          <button class="journey-btn" onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[1])">→ 查看完整入门旅程</button>
+        </div>
+      </div>
+
+      <!-- 客户痛点 ranked list (AscendOps pain style) -->
+      <div class="ov-section" style="margin-top:16px" data-roles="op infra pm doc ux comm">
+        <div class="ov-section-hdr">
+          <div>
+            <div class="ov-section-title">客户痛点 · 优先级排行</div>
+            <div class="ov-section-sub">共 30 个活跃痛点 · 按声量排序</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div id="ecCustSmall" style="width:180px;height:80px"></div>
+            <div id="ecPainDistSmall" style="width:180px;height:80px"></div>
+          </div>
+        </div>
+        <div class="cat-sum-row">
+          <span class="cat-sum-chip all on" data-filter-cat="all" onclick="filterPain('all',this)">全部 <span class="cat-sum-n">6</span></span>
+          <span class="cat-sum-chip tool" data-filter-cat="tool" onclick="filterPain('tool',this)">工具类 <span class="cat-sum-n">2</span></span>
+          <span class="cat-sum-chip doc" data-filter-cat="doc" onclick="filterPain('doc',this)">文档类 <span class="cat-sum-n">2</span></span>
+          <span class="cat-sum-chip api" data-filter-cat="api" onclick="filterPain('api',this)">API 类 <span class="cat-sum-n">1</span></span>
+          <span class="cat-sum-chip env" data-filter-cat="env" onclick="filterPain('env',this)">环境类 <span class="cat-sum-n">1</span></span>
+        </div>
+        <div class="pain-ranked-list" id="painRankedList"></div>
+      </div>
+
+    </div><!-- /生态增益 -->
+
+  </div><!-- /ov-body -->
+
+  <!-- OVERVIEW RATIONALE DRAWER -->
+  <div class="ov-rat-panel">
+    <div class="rat-panel-hdr">设计点 · 总览</div>
+    <div class="rat-item"><div class="rat-num">①</div><div class="rat-content"><div class="rat-head">三层增益框架</div><div class="rat-source">框架 · 技术认知生态三层增益系统</div><div class="rat-body">总览按三层排列，映射「底层能力→开发体验→生态价值」的价值传导链。</div></div></div>
+    <div class="rat-item"><div class="rat-num">②</div><div class="rat-content"><div class="rat-head">三证据交叉矩阵</div><div class="rat-source">洞察 · DX Core 4 · Spotify Soundcheck</div><div class="rat-body">体验健康矩阵把 Agent 评分 / 客户痛点 / VOD 声量三路信号并排对比。</div></div></div>
+    <div class="rat-item"><div class="rat-num">③</div><div class="rat-content"><div class="rat-head">角色视角筛选</div><div class="rat-source">设计原则 · 渐进披露</div><div class="rat-body">视角筛选淡化（而非删除）无关区域，保留完整上下文。</div></div></div>
+    <div class="rat-item"><div class="rat-num">④</div><div class="rat-content"><div class="rat-head">需立即处理</div><div class="rat-source">洞察 · LinearB Scorecard</div><div class="rat-body">提炼行动清单，每条附优先级标签 + 责任分队 + 预期闭环时间。</div></div></div>
+    <div class="rat-item"><div class="rat-num">⑤</div><div class="rat-content"><div class="rat-head">图表替代纯数字</div><div class="rat-source">可视化原则 · ECharts 5</div><div class="rat-body">方向感比精度更重要。雷达图用形状定位最弱维度。</div></div></div>
+    <div class="rat-item"><div class="rat-num">⑥</div><div class="rat-content"><div class="rat-head">S0–S5 入门旅程</div><div class="rat-source">分析 · Agent 全旅程评测</div><div class="rat-body">通过 Pipeline 步骤直接标出最弱环节 S0（搜索发现：42分）。</div></div></div>
+  </div>
+
+</div><!-- /tabOverview -->
+
+<!-- DEV TAB -->
+<div id="tabDev" style="display:none">
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="fl-lbl">芯片</span>
+    <span class="fchip on">A5</span>
+    <span class="fchip">A2 &amp; A3</span>
+    <div class="fl-sep"></div>
+    <span class="fl-lbl">角色</span>
+    <span class="fchip on">算子开发者</span>
+    <span class="fchip">AI 框架开发者</span>
+    <span class="fchip">应用开发者</span>
+  </div>
+
+  <!-- KPI STRIP → AscendOps Hero Banner -->
+  <section class="ov-hero" style="margin:16px 28px 0;border-radius:var(--radius-xl)">
+    <div class="ov-hero-head">
+      <div>
+        <div class="ov-hero-title">用户旅程 · 算子开发者</div>
+        <div class="ov-hero-sub">4 大场景 · 12 个活跃痛点 · 近 7 次 Agentic 评测均值</div>
+      </div>
+      <div class="ov-hero-tag"><span class="dot-live"></span> A5 芯片 · 算子开发者视角</div>
+    </div>
+    <div class="ov-hero-kpis" style="grid-template-columns:repeat(4,1fr)">
+      <div class="glass">
+        <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>整体健康评分</div>
+        <div class="glass-num mid">68<small>/100</small></div>
+        <div class="glass-foot"><span class="chip dn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>−4</span><span class="glass-foot-txt">vs 上期</span></div>
+      </div>
+      <div class="glass">
+        <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>严重场景</div>
+        <div class="glass-num bad">2<small>个</small></div>
+        <div class="glass-foot"><span class="chip dn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>+1</span><span class="glass-foot-txt">较上期</span></div>
+      </div>
+      <div class="glass">
+        <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>活跃痛点</div>
+        <div class="glass-num">12<small>条</small></div>
+        <div class="glass-foot"><span class="chip neu">8 条有行动</span><span class="glass-foot-txt">Next Step</span></div>
+      </div>
+      <div class="glass">
+        <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>本期优先处理</div>
+        <div class="glass-label" style="margin-top:6px;gap:6px;flex-wrap:wrap">
+          <span class="chip dn" style="font-size:10px">算子复现部署</span>
+          <span class="chip dn" style="font-size:10px">Builtin 算子定制</span>
+        </div>
+        <div class="glass-foot" style="margin-top:8px"><span class="glass-foot-txt">评分+痛点密度排序</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOUCHPOINT MATRIX — AscendOps heatmap grid style -->
+  <div style="padding:16px 28px">
+    <div class="ov-section">
+      <div class="ov-section-hdr">
+        <div>
+          <div class="ov-section-title">触点体验矩阵</div>
+          <div class="ov-section-sub">场景 × 触点类型 · 点击格子查看 Agent 观测</div>
+        </div>
+        <div class="hm-legend">
+          <span style="font-size:11px;color:var(--text-3)">低</span>
+          <div class="hm-grad"></div>
+          <span style="font-size:11px;color:var(--text-3)">高</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <!-- Heatmap grid -->
+        <div style="flex:1;min-width:0">
+          <div id="tpHeatGrid" style="display:grid;grid-template-columns:160px repeat(4,1fr) 90px;gap:6px"></div>
+        </div>
+        <!-- Detail panel -->
+        <div id="tpDetail" style="width:280px;flex-shrink:0">
+          <div class="tp-detail-hint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--border-2)" stroke-width="1.5" style="margin-bottom:8px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/></svg><br>
+            点击矩阵格子<br>查看 Agent 观测
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN BODY -->
+  <div class="main-body" style="display:flex;flex-direction:row;gap:16px;padding:16px 28px 48px;align-items:flex-start">
+
+    <!-- SCENE LIST -->
+    <div class="scene-list" style="width:320px;flex-shrink:0">
+      <div class="sl-hdr" style="font-size:11px;font-weight:700;color:var(--text-3);padding:0 4px 8px;border-bottom:1px solid var(--border);margin-bottom:10px">
+        场景 · 按评分排序
+        <div class="sort-toggle">
+          <button class="sort-btn on" id="sortScore" onclick="setSort('score')">问题优先</button>
+          <button class="sort-btn" id="sortCatalog" onclick="setSort('catalog')">目录顺序</button>
+        </div>
+      </div>
+      <div id="sceneListCards" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+
+    <!-- SCENE DETAIL -->
+    <div class="scene-detail" id="sceneDetail" style="flex:1;min-width:0;position:sticky;top:120px;align-self:flex-start">
+      <div class="sd-hint" id="sdHint">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--purple-med)" stroke-width="1.5"><path d="M18 15l-6-6-6 6"/></svg>
+        点击上方场景查看三类证据
+      </div>
+
+      <div id="sdContent" style="display:none">
+
+        <!-- DETAIL HEADER — AscendOps gradient banner -->
+        <div id="detHdr" style="padding:18px 22px 14px;border-bottom:1px solid var(--border);flex-shrink:0;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(208,184,255,.2),rgba(128,230,255,.14));pointer-events:none"></div>
+          <div style="position:relative;display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <div class="det-name" id="detName" style="flex:1"></div>
+            <div class="det-grade" id="detGrade"></div>
+          </div>
+          <div class="det-score" id="detScore"></div>
+        </div>
+
+        <!-- RANK CONTEXT ⑤ -->
+        <div class="rank-ctx hl-5" style="position:relative;background:linear-gradient(90deg,var(--purple-light),var(--g1))">
+          <div class="callout-badge" style="top:-7px;right:-7px">⑤</div>
+          <div class="rank-pill" id="rankPill"></div>
+          <div class="rank-desc" id="rankDesc"></div>
+          <div class="rank-mini-bars" id="rankBars"></div>
+          <div class="rank-mean" id="rankMean"></div>
+        </div>
+
+        <!-- RADAR ③ -->
+        <div class="radar-section hl-3" style="position:relative;background:linear-gradient(135deg,var(--purple-light),rgba(232,247,251,.6))">
+          <div class="callout-badge" style="top:-7px;right:-7px">③</div>
+          <div class="radar-top">
+            <div class="radar-lbl">评测趋势 &amp; 5 维诊断</div>
+            <div class="radar-worst" id="radarWorst"></div>
+          </div>
+          <div class="radar-body" id="radarBody"></div>
+        </div>
+
+        <!-- EVIDENCE TABS ① -->
+        <div class="ev-tabs hl-1" style="position:relative">
+          <div class="callout-badge" style="top:-7px;right:-7px">①</div>
+          <button class="ev-tab on" onclick="switchEvTab('agent',this)">
+            Agent 评分
+            <span class="ev-tab-count" id="agentTabCount"></span>
+          </button>
+          <button class="ev-tab" onclick="switchEvTab('pain',this)">
+            痛点分析
+            <span class="ev-tab-count" id="painTabCount"></span>
+          </button>
+          <button class="ev-tab" onclick="switchEvTab('vod',this)">
+            VOD 原声
+            <span class="ev-tab-count" id="vodTabCount"></span>
+          </button>
+        </div>
+
+        <div class="ev-panels">
+          <div class="ev-panel on" id="panel-agent"></div>
+          <div class="ev-panel" id="panel-pain"></div>
+          <div class="ev-panel" id="panel-vod"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RATIONALE SIDEBAR -->
+    <div class="rat-sidebar" id="ratSidebar">
+      <div class="rat-sidebar-inner">
+        <div class="rat-panel-hdr">设计点</div>
+
+        <div class="rat-item" onmouseenter="hlRat(1)" onmouseleave="unhlRat()">
+          <div class="rat-num">①</div>
+          <div class="rat-content">
+            <div class="rat-head">三类证据并列 · Agent / 痛点 / VOD</div>
+            <div class="rat-source">洞察1 · DX Core 4（800+团队 / 40,000+开发者）</div>
+            <div class="rat-body">Agent评分告诉你"流程哪步卡住了"，VOD告诉你"用户是否感知到这个问题"。两类数据互证才能避免"修了技术问题却没解决用户感受"。</div>
+            <div class="rat-pointer">→ 指向：场景详情的三个证据 Tab</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(2)" onmouseleave="unhlRat()">
+          <div class="rat-num">②</div>
+          <div class="rat-content">
+            <div class="rat-head">颜色编码 + 按评分排序（最差在上）</div>
+            <div class="rat-source">洞察2 · Spotify Soundcheck · Datadog Scorecard</div>
+            <div class="rat-body">红/黄/绿色彩语义让决策者 3 秒内扫描出最危险场景，无需逐一读数字。阈值：红&lt;60 / 黄60–80 / 绿&gt;80。场景列表按评分升序，最差永远在顶部。</div>
+            <div class="rat-pointer">→ 指向：左侧场景列表的等级标签和排序</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(3)" onmouseleave="unhlRat()">
+          <div class="rat-num">③</div>
+          <div class="rat-content">
+            <div class="rat-head">5 维雷达图 · 定位最弱维度</div>
+            <div class="rat-source">洞察3 · 从均值向诊断升级 · Apache DevLake · Grafana DORA</div>
+            <div class="rat-body">"均分57"无法告诉你该从哪里下手。雷达图把得分拆成开发成功率/文档质量/环境效率/调试能力/工具稳定性，让团队一眼看出哪个维度拖了腿——比如算子复现的调试能力仅34，直接指向 AIC 日志缺失这个根因。</div>
+            <div class="rat-pointer">→ 指向：场景详情中的 5 维雷达图</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(4)" onmouseleave="unhlRat()">
+          <div class="rat-num">④</div>
+          <div class="rat-content">
+            <div class="rat-head">每个痛点内嵌 Next Step 行动链接</div>
+            <div class="rat-source">洞察4 · LinearB 工程效能看板 · Spotify Soundcheck Tracks</div>
+            <div class="rat-body">看板的终点是行动，不是观察。每条痛点附"改进建议 + 责任团队"，让 PM 无需离开看板就能判断"这条痛点的下一步是什么"，从报告工具升级为决策工具。</div>
+            <div class="rat-pointer">→ 指向：痛点 Tab 中每条痛点底部的 Next Step</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(5)" onmouseleave="unhlRat()">
+          <div class="rat-num">⑤</div>
+          <div class="rat-content">
+            <div class="rat-head">加入参照系，让评分有意义</div>
+            <div class="rat-source">洞察5 · LinearB 2025 Benchmarks · DX Core 4 DXI 指数</div>
+            <div class="rat-body">"57分"单独看无意义。"4个场景中最差，低于均值11分"立刻建立危机感。参照系还包括角色内所有场景的小型柱状图，让排名一眼可见。</div>
+            <div class="rat-pointer">→ 指向：场景详情顶部的排名 + 对比柱状图</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(6)" onmouseleave="unhlRat()">
+          <div class="rat-num">⑥</div>
+          <div class="rat-content">
+            <div class="rat-head">痛点按类型分组（文档/工具/API/环境）</div>
+            <div class="rat-source">分析 · 交互设计方向 · Flow B 设计需求</div>
+            <div class="rat-body">分析明确指出：按文档/工具/API/环境归类，避免长列表认知过载。分类后可直接看出"这个场景的问题集中在哪类"，技术Owner无需自己归纳。</div>
+            <div class="rat-pointer">→ 指向：痛点 Tab 中的分类标签组</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tabDev -->
+
+
+<!-- FLOATING TOGGLE BUTTON -->
+<button class="float-rat-btn" id="floatRat" onclick="toggleRat()">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  设计点
+</button>
+
+
+<script>
+
+/* ── NEW: Health Matrix heatmap render ── */
+(function(){
+const HM_DATA = {
+  rows:[
+    {name:'算子编程', sub:'多算子层 / 编程接口'},
+    {name:'推理框架', sub:'图模式 / 部署框架'},
+    {name:'API 支持', sub:'PyTorch / 通信 / 工具'},
+    {name:'通信库',   sub:'HCCL / 集合通信'},
+    {name:'基础工具', sub:'调试 / 性能 / 环境'},
+  ],
+  cols:['Agent评分','客户痛点','VOD声量','综合健康','环比'],
+  data:[
+    [{v:62,t:'62分'},{v:40,t:'57条',inv:true},{v:30,t:'183',inv:true},{v:20,t:'严重',inv:true},{v:55,t:'↓'}],
+    [{v:68,t:'68分'},{v:65,t:'8条',inv:true},{v:50,t:'127',inv:true},{v:55,t:'关注',inv:true},{v:62,t:'→'}],
+    [{v:85,t:'85分'},{v:90,t:'3条',inv:true},{v:85,t:'40',inv:true},{v:88,t:'健康'},{v:78,t:'↑'}],
+    [{v:74,t:'74分'},{v:80,t:'5条',inv:true},{v:72,t:'61',inv:true},{v:65,t:'关注',inv:true},{v:70,t:'↑'}],
+    [{v:89,t:'89分'},{v:95,t:'2条',inv:true},{v:90,t:'22',inv:true},{v:92,t:'健康'},{v:85,t:'↑'}],
+  ]
+};
+function heatColor(score){
+  const stops=[[0,[254,239,240]],[30,[255,182,200]],[50,[255,232,127]],[65,[255,248,229]],[80,[235,252,247]],[100,[59,232,128]]];
+  let a=stops[0],b=stops[stops.length-1];
+  for(let i=0;i<stops.length-1;i++){if(score>=stops[i][0]&&score<=stops[i+1][0]){a=stops[i];b=stops[i+1];break;}}
+  const t=(score-a[0])/(b[0]-a[0]||1);
+  const c=a[1].map((v,i)=>Math.round(v+(b[1][i]-v)*t));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+function textColor(score){return score>=55?'#1B2432':'#E63838';}
+const grid=document.getElementById('hmGrid');
+if(!grid)return;
+// headers
+grid.innerHTML='<div class="hm-header first"></div>'+HM_DATA.cols.map(c=>`<div class="hm-header">${c}</div>`).join('');
+// rows
+HM_DATA.rows.forEach((r,ri)=>{
+  grid.innerHTML+=`<div class="hm-row-label">${r.name}<small>${r.sub}</small></div>`;
+  HM_DATA.data[ri].forEach(cell=>{
+    const score=cell.inv?(100-cell.v):cell.v;
+    const bg=heatColor(score);
+    const col=textColor(score);
+    grid.innerHTML+=`<div class="hm-cell" style="background:${bg};color:${col}"><div class="cv">${cell.t}</div></div>`;
+  });
+});
+})();
+
+/* ── NEW: Pain ranked list render ── */
+(function(){
+const PAIN_LIST=[
+  {rank:1,title:'AIC 日志缺失根因定位能力，算子报错时开发者无自主定位能力',cat:'tool',cust:'腾讯/蚂蚁',vol:28,status:'P0'},
+  {rank:2,title:'Builtin 算子文档参数描述错误、版本不同步，VOD 声量 61 条',cat:'doc',cust:'社区/美团',vol:24,status:'P0'},
+  {rank:3,title:'算子编程 API 缺少约束条件与边界说明，开发者只能靠试错发现限制',cat:'api',cust:'腾讯/O1',vol:22,status:'P0'},
+  {rank:4,title:'迁移工具 shape 限制无提前提示，迁移失败后才发现不支持',cat:'tool',cust:'美团/京东',vol:19,status:'P1'},
+  {rank:5,title:'Ascend C Python 接口文档示例缺失，入门开发者无法快速上手',cat:'doc',cust:'讯飞/O1',vol:13,status:'P1'},
+  {rank:6,title:'NPU 容器初始化环境耗时过长（均值 8.3 分钟），严重打断调试节奏',cat:'env',cust:'京东/美团',vol:11,status:'P1'},
+];
+const maxVol=Math.max(...PAIN_LIST.map(p=>p.vol));
+const catMap={tool:'tag-tool',doc:'tag-doc',api:'tag-api',env:'tag-env',other:'tag-other'};
+const catName={tool:'工具',doc:'文档',api:'API',env:'环境',other:'综合'};
+const el=document.getElementById('painRankedList');
+if(!el)return;
+el.innerHTML=PAIN_LIST.map(p=>{
+  const rankCls=p.rank<=3?'top':p.rank<=5?'hi':'';
+  return `<div class="pain-ranked-item" data-cat="${p.cat}">
+    <div class="pain-rank-badge ${rankCls}">${p.rank}</div>
+    <div>
+      <div class="pain-ranked-title">${p.title}</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+        <span class="tag ${catMap[p.cat]}">${catName[p.cat]}</span>
+        <span class="pain-ranked-meta">${p.cust} · ${p.status}</span>
+      </div>
+    </div>
+    <div class="pain-vol-bar"><i style="width:${(p.vol/maxVol*100).toFixed(0)}%"></i></div>
+    <div class="pain-vol-num">${p.vol}</div>
+  </div>`;
+}).join('');
+})();
+
+/* ── NEW: Pain filter for ranked list ── */
+let _activePainCat='all';
+function filterPain(cat,btn){
+  _activePainCat=cat;
+  document.querySelectorAll('.cat-sum-chip').forEach(c=>c.classList.toggle('on',c===btn));
+  document.querySelectorAll('#painRankedList .pain-ranked-item').forEach(item=>{
+    item.style.display=(cat==='all'||item.dataset.cat===cat)?'':'none';
+  });
+}
+
+
+// ── DATA ──
+const scenarios = [
+  {
+    id:0, name:'算子复现部署', score:57, grade:'bad', gradeLabel:'严重',
+    runs:[63,59,61,54,58,60,57], trend:-3, trendDir:'dn',
+    radar:[44,55,63,34,50],
+    painCount:8, vodCount:71,
+    agentSteps:[
+      {name:'感知学习', score:54, cls:'bad',
+       summary:'感知学习阶段阻力最大，文档质量是根本瓶颈。开发者平均需 8.3 轮检索才能获取有效信息，整体自助解决率不足 50%。',
+       observations:['文档与代码版本不同步，准确率仅 58%，开发者被迫依赖口口相传','文档检索有效率 47%，大量时间被无效结果消耗','21% 的开发者在感知学习阶段直接放弃'],
+       metrics:[
+         {l:'总检索次数',      v:'8.3 次', trend:'↑+1.2', trendCls:'dn'},
+         {l:'文档检索有效率',  v:'47%',    trend:'↓-6%',  trendCls:'dn'},
+         {l:'文档完整性',      v:'61%',    trend:'↓-3%',  trendCls:'dn'},
+         {l:'文档准确率',      v:'58%',    trend:'↓-5%',  trendCls:'dn'},
+         {l:'文档易理解性',    v:'67%',    trend:'→持平',  trendCls:'flat'},
+         {l:'自助解决率',      v:'41%',    trend:'↓-4%',  trendCls:'dn'},
+         {l:'知识覆盖率',      v:'68%',    trend:'→持平',  trendCls:'flat'},
+         {l:'放弃率',          v:'21%',    trend:'↑+3%',  trendCls:'dn'},
+       ]},
+      {name:'环境准备', score:71, cls:'mid',
+       summary:'环境准备阶段主要受版本依赖问题拖累，整体可完成但需多次重试，流程引导不足。',
+       observations:['版本依赖矛盾导致装包平均重试 2.4 次，安装失败率 18%','部署步骤数比预期多出 3.2 步，流程缺乏引导','装包耗时 18 分钟，高于合理预期'],
+       metrics:[
+         {l:'代码仓拉取尝试次数', v:'1.2 次', trend:'→持平', trendCls:'flat'},
+         {l:'下载包尝试次数',     v:'1.8 次', trend:'↑+0.3',trendCls:'dn'},
+         {l:'装包尝试次数',       v:'2.4 次', trend:'↑+0.6',trendCls:'dn'},
+         {l:'装包耗时',           v:'18 min', trend:'↑+2min',trendCls:'dn'},
+         {l:'安装步骤数（超预期）',v:'+3.2 步',trend:'↑',    trendCls:'dn'},
+         {l:'部署时间',           v:'45 min', trend:'↑+5min',trendCls:'dn'},
+         {l:'安装失败率',         v:'18%',    trend:'↑+2%', trendCls:'dn'},
+       ]},
+      {name:'环境验证', score:68, cls:'mid',
+       summary:'环境验证阶段编译总成功率尚可，但首次通过率低，错误信息质量差，开发者难以自主定位问题。',
+       observations:['一次编译通过率仅 44%，多数开发者需重复编译才能通过','AIC error 日志未显示报错指令，错误信息可读性 52%','错误自愈成功率仅 23%，强依赖人工介入排查'],
+       metrics:[
+         {l:'平均算子编译耗时',   v:'12 min', trend:'↑+1min',trendCls:'dn'},
+         {l:'算子编译成功率',     v:'79%',    trend:'→持平', trendCls:'flat'},
+         {l:'一次编译通过率',     v:'44%',    trend:'↓-5%', trendCls:'dn'},
+         {l:'错误信息可读性',     v:'52%',    trend:'→持平', trendCls:'flat'},
+         {l:'平均重编译次数',     v:'2.1 次', trend:'↑+0.3',trendCls:'dn'},
+         {l:'用例验证尝试次数',   v:'2.1 次', trend:'↑+0.3',trendCls:'dn'},
+         {l:'错误自愈成功率',     v:'23%',    trend:'↑+2%', trendCls:'up'},
+         {l:'放弃率',             v:'5%',     trend:'→持平', trendCls:'flat'},
+       ]},
+    ],
+    tools:[
+      {name:'WebSearch',rate:'91%',cls:'ok'},{name:'BrowserNavigate',rate:'88%',cls:'ok'},
+      {name:'DocFetch',rate:'54%',cls:'warn'},{name:'CompileCmd',rate:'44%',cls:'crit'},
+    ],
+    pains:[
+      {cat:'tool', catLabel:'工具类', score:92, text:'AIC error 日志未显示报错指令，开发者无法自主定位，全链路依赖华为工程师介入排查', meta:'腾讯 · 蚂蚁 | 算子分队 | 优先级：高', status:'特性开发中', statusCls:'progress', nextStep:'立项 AIC-2341：增加错误上下文输出及日志定位指引（Q2）'},
+      {cat:'doc', catLabel:'文档类', score:78, text:'文档与代码版本不同步，参数描述多处错误，仅靠官方文档无法完成复现，依赖口口相传', meta:'美团 | 资料分队 | 优先级：高', status:'规划中', statusCls:'planned', nextStep:'文档同步检查纳入发版流程，Q2 覆盖率达 100%'},
+    ],
+    vods:[
+      {vol:71, trend:'↑+8', trendCls:'dn', text:'多算子层存在空指针校验缺失、编译失败、core dump、精度异常、内存越界等稳定性问题', src:'算子仓 · 社区 issue · 社区开发者'},
+      {vol:61, trend:'↑+5', trendCls:'dn', text:'CANN 多算子仓文档参数错误、格式错误、描述不一致及内容缺失，多处版本对不上', src:'资料仓库 · 社区 issue · 社区开发者'},
+    ]
+  },
+  {
+    id:1, name:'Builtin 算子定制修改', score:62, grade:'bad', gradeLabel:'严重',
+    runs:[68,65,63,60,62,64,62], trend:-5, trendDir:'dn',
+    radar:[38,50,68,49,55],
+    painCount:6, vodCount:40,
+    agentSteps:[
+      {name:'感知学习', score:61, cls:'bad',
+       summary:'感知学习阶段文档覆盖严重不足，Builtin 算子定制缺乏完整参考体系，开发者无法独立建立知识框架。',
+       observations:['关键接口说明完整性仅 48%，核心 API 缺乏有效说明','参考样例可获取性 42%，开发者无从参照实现','自助解决率 38%，18% 的开发者中途放弃'],
+       metrics:[
+         {l:'文档覆盖率',         v:'61%',    trend:'↓-4%', trendCls:'dn'},
+         {l:'关键接口说明完整性', v:'48%',    trend:'↓-7%', trendCls:'dn'},
+         {l:'文档检索有效率',     v:'58%',    trend:'↓-3%', trendCls:'dn'},
+         {l:'参考样例可获取性',   v:'42%',    trend:'↓-8%', trendCls:'dn'},
+         {l:'文档易理解性',       v:'64%',    trend:'→持平', trendCls:'flat'},
+         {l:'自助解决率',         v:'38%',    trend:'↓-5%', trendCls:'dn'},
+         {l:'放弃率',             v:'18%',    trend:'↑+2%', trendCls:'dn'},
+       ]},
+      {name:'算子设计与实现', score:58, cls:'bad',
+       summary:'算子设计与实现阶段问题最严重，图模式支持缺失导致开发者在关键设计决策上无法自主推进。',
+       observations:['图模式适配率仅 52%，常见使用场景未覆盖','首次实现成功率 38%，平均需重试 3.1 次','14% 的开发者在此阶段放弃，高于其他环节'],
+       metrics:[
+         {l:'图模式适配率',     v:'52%',    trend:'↓-8%', trendCls:'dn'},
+         {l:'样例参考可用性',   v:'44%',    trend:'↓-6%', trendCls:'dn'},
+         {l:'接口调用成功率',   v:'71%',    trend:'→持平', trendCls:'flat'},
+         {l:'首次实现成功率',   v:'38%',    trend:'↓-7%', trendCls:'dn'},
+         {l:'平均重试次数',     v:'3.1 次', trend:'↑+0.4',trendCls:'dn'},
+         {l:'放弃率',           v:'14%',    trend:'↑+2%', trendCls:'dn'},
+       ]},
+      {name:'功能调测', score:71, cls:'mid',
+       summary:'功能调测阶段精度通过率可接受，但调试信息质量差阻碍了开发者自主定位错误，仍需依赖外部支持。',
+       observations:['错误日志可定位性 47%，开发者无法将日志映射到具体代码行','调试信息可读性 52%，需依赖经验猜测问题根因','平均调测轮次 2.8 次，定位成本偏高'],
+       metrics:[
+         {l:'功能调测成功率',   v:'71%',    trend:'→持平', trendCls:'flat'},
+         {l:'调试信息可读性',   v:'52%',    trend:'→持平', trendCls:'flat'},
+         {l:'错误日志可定位性', v:'47%',    trend:'↓-3%', trendCls:'dn'},
+         {l:'精度通过率',       v:'79%',    trend:'↑+2%', trendCls:'up'},
+         {l:'平均调测轮次',     v:'2.8 次', trend:'↑+0.2',trendCls:'dn'},
+         {l:'放弃率',           v:'8%',     trend:'→持平', trendCls:'flat'},
+       ]},
+    ],
+    tools:[
+      {name:'DocSearch',rate:'61%',cls:'warn'},{name:'GraphCompile',rate:'58%',cls:'crit'},
+      {name:'DebugLog',rate:'52%',cls:'crit'},{name:'AccuracyCheck',rate:'88%',cls:'ok'},
+    ],
+    pains:[
+      {cat:'doc', catLabel:'文档类', score:88, text:'图模式类型缺失，算子设计与实现阶段缺乏参考样例，开发者无从下手', meta:'京东 | 算子分队 | 优先级：高', status:'特性开发中', statusCls:'progress', nextStep:'补充图模式 Builtin 算子完整样例库（Q2 Q3）'},
+      {cat:'tool', catLabel:'工具类', score:72, text:'Builtin 算子定制文档覆盖率低，关键接口说明缺失，调试信息不可读', meta:'美团 | 资料分队 | 优先级：中', status:'规划中', statusCls:'planned', nextStep:'接口文档覆盖率提升至 90%，纳入 Q3 里程碑'},
+    ],
+    vods:[
+      {vol:35, trend:'↑+3', trendCls:'dn', text:'transformer 算子存在图模式类型缺失、编码韧性不足及描述不一致等多类问题', src:'算子仓 · 社区 issue · 社区开发者'},
+      {vol:40, trend:'→持平', trendCls:'flat', text:'算子资料文档格式不规范、参数描述错误、命令目录错误等多类内容错误', src:'资料仓库 · 社区 issue · 社区开发者'},
+    ]
+  },
+  {
+    id:2, name:'算子迁移部署', score:69, grade:'mid', gradeLabel:'待改善',
+    runs:[67,70,68,65,72,69,71], trend:2, trendDir:'up',
+    radar:[71,72,58,52,68],
+    painCount:5, vodCount:33,
+    agentSteps:[
+      {name:'感知学习', score:72, cls:'mid',
+       summary:'感知学习阶段总体表现尚可，迁移相关文档有一定基础，但边界场景覆盖不足，开发者仍需自行探索。',
+       observations:['边界场景覆盖率仅 52%，非常规 shape 缺乏指引','部分参数描述与实际行为不一致，需反复验证','自助解决率 64%，仍有约 1/3 开发者依赖外部帮助'],
+       metrics:[
+         {l:'信息可获取性',     v:'74%',    trend:'↑+3%', trendCls:'up'},
+         {l:'文档完整性',       v:'68%',    trend:'↑+2%', trendCls:'up'},
+         {l:'文档准确性',       v:'73%',    trend:'↑+4%', trendCls:'up'},
+         {l:'文档易理解性',     v:'76%',    trend:'↑+3%', trendCls:'up'},
+         {l:'边界场景覆盖率',   v:'52%',    trend:'→持平', trendCls:'flat'},
+         {l:'自助解决率',       v:'64%',    trend:'↑+2%', trendCls:'up'},
+         {l:'放弃率',           v:'9%',     trend:'↓-1%', trendCls:'up'},
+       ]},
+      {name:'算子迁移', score:68, cls:'mid',
+       summary:'算子迁移环节受工具覆盖率限制，复杂 shape 场景无法自动化处理，静默失败是主要风险。',
+       observations:['shape 覆盖率 68%，复杂 shape 需手工处理，平均尝试 3.4 次','静默失败率 18%，失败时无明确错误提示，开发者无法判断原因','边界 case 处理率仅 52%，高风险场景缺乏保护机制'],
+       metrics:[
+         {l:'迁移成功率',       v:'71%',    trend:'↑+2%', trendCls:'up'},
+         {l:'平均尝试次数',     v:'3.4 次', trend:'↑+0.5',trendCls:'dn'},
+         {l:'shape 覆盖率',     v:'68%',    trend:'→持平', trendCls:'flat'},
+         {l:'边界 case 处理率', v:'52%',    trend:'↓-3%', trendCls:'dn'},
+         {l:'静默失败率',       v:'18%',    trend:'↑+2%', trendCls:'dn'},
+         {l:'错误提示可读性',   v:'49%',    trend:'→持平', trendCls:'flat'},
+         {l:'平均迁移耗时',     v:'18 min', trend:'↑+2min',trendCls:'dn'},
+         {l:'放弃率',           v:'8%',     trend:'↑+1%', trendCls:'dn'},
+       ]},
+      {name:'功能调测', score:80, cls:'ok',
+       summary:'功能调测阶段表现良好，精度验证工具完备，L0/L1 达标率高，整体自动化程度较高。',
+       observations:['L2 场景有少量边界 case 需人工介入，占比约 24%','自动化覆盖率 81%，约 1/5 场景仍依赖手动验证'],
+       metrics:[
+         {l:'精度通过率',       v:'88%',    trend:'↑+3%', trendCls:'up'},
+         {l:'L0 达标率',        v:'91%',    trend:'↑+2%', trendCls:'up'},
+         {l:'L1 达标率',        v:'85%',    trend:'↑+1%', trendCls:'up'},
+         {l:'L2 达标率',        v:'76%',    trend:'→持平', trendCls:'flat'},
+         {l:'平均调测耗时',     v:'8 min',  trend:'↓-1min',trendCls:'up'},
+         {l:'自动化覆盖率',     v:'81%',    trend:'↑+4%', trendCls:'up'},
+         {l:'放弃率',           v:'2%',     trend:'→持平', trendCls:'flat'},
+       ]},
+    ],
+    tools:[
+      {name:'MigrateScript',rate:'68%',cls:'warn'},{name:'ShapeCheck',rate:'52%',cls:'crit'},
+      {name:'CompatCheck',rate:'83%',cls:'ok'},{name:'AccuracyCheck',rate:'91%',cls:'ok'},
+    ],
+    pains:[
+      {cat:'tool', catLabel:'工具类', score:85, text:'迁移工具对复杂 shape 支持不完整，边界情况静默失败、无明确错误提示，开发者无法判断失败原因', meta:'蚂蚁 | 算子编程分队 | 优先级：高', status:'特性开发中', statusCls:'progress', nextStep:'Q2 完成 shape 覆盖率提升至 85%，增加边界 case 静默失败提示'},
+      {cat:'doc', catLabel:'文档类', score:64, text:'文档与代码版本不同步，迁移路径描述缺少边界场景说明，需口耳相传', meta:'腾讯 | 资料分队 | 优先级：中', status:'规划中', statusCls:'planned', nextStep:'边界场景文档专项补充，纳入下期评测验证'},
+    ],
+    vods:[
+      {vol:61, trend:'↑+5', trendCls:'dn', text:'CANN 多算子仓存在文档参数错误、格式错误、描述不一致及内容缺失等多类资料问题', src:'资料仓库 · 社区 issue · 社区开发者'},
+      {vol:33, trend:'→持平', trendCls:'flat', text:'ops-transformer 仓量化适配不足、多算子 shape 拦截缺失、编译依赖缺陷及精度失败', src:'算子仓 · 社区 issue · 社区开发者'},
+    ]
+  },
+  {
+    id:3, name:'算子基本功能实现', score:84, grade:'ok', gradeLabel:'健康',
+    runs:[82,85,83,86,84,83,84], trend:4, trendDir:'up',
+    radar:[79,85,88,82,87],
+    painCount:2, vodCount:40,
+    agentSteps:[
+      {name:'感知学习', score:85, cls:'ok',
+       summary:'感知学习阶段整体健康，文档质量良好，开发者可高效获取所需信息。',
+       observations:['少量高级 API 说明待补充，文档覆盖率未达 100%'],
+       metrics:[
+         {l:'文档完整性',       v:'84%',    trend:'↑+3%', trendCls:'up'},
+         {l:'文档准确率',       v:'88%',    trend:'↑+2%', trendCls:'up'},
+         {l:'文档检索有效率',   v:'82%',    trend:'↑+4%', trendCls:'up'},
+         {l:'文档易理解性',     v:'86%',    trend:'↑+2%', trendCls:'up'},
+         {l:'自助解决率',       v:'79%',    trend:'↑+5%', trendCls:'up'},
+         {l:'知识覆盖率',       v:'91%',    trend:'↑+3%', trendCls:'up'},
+         {l:'放弃率',           v:'4%',     trend:'↓-1%', trendCls:'up'},
+       ]},
+      {name:'算子设计与实现', score:88, cls:'ok',
+       summary:'算子设计与实现阶段参考样例完备，开发者整体顺畅，首次尝试成功率高，重试成本低。',
+       observations:['极少数复杂场景首次实现失败，平均重试 1.4 次'],
+       metrics:[
+         {l:'首次实现成功率',   v:'79%',    trend:'↑+3%', trendCls:'up'},
+         {l:'接口调用成功率',   v:'91%',    trend:'↑+1%', trendCls:'up'},
+         {l:'样例可用性',       v:'88%',    trend:'↑+4%', trendCls:'up'},
+         {l:'平均重试次数',     v:'1.4 次', trend:'↓-0.2',trendCls:'up'},
+         {l:'放弃率',           v:'3%',     trend:'→持平', trendCls:'flat'},
+       ]},
+      {name:'功能调测', score:91, cls:'ok',
+       summary:'功能调测阶段自动化完善，L0/L1/L2 全面达标，放弃率仅 2%，是 4 个场景中最健康的环节。',
+       observations:['自动化覆盖率 81%，约 19% 场景尚需手动验证'],
+       metrics:[
+         {l:'精度通过率',       v:'91%',    trend:'↑+3%', trendCls:'up'},
+         {l:'L0 达标率',        v:'94%',    trend:'↑+2%', trendCls:'up'},
+         {l:'L1 达标率',        v:'89%',    trend:'↑+1%', trendCls:'up'},
+         {l:'L2 达标率',        v:'82%',    trend:'↑+2%', trendCls:'up'},
+         {l:'自动化覆盖率',     v:'81%',    trend:'↑+4%', trendCls:'up'},
+         {l:'平均调测耗时',     v:'6 min',  trend:'↓-1min',trendCls:'up'},
+         {l:'放弃率',           v:'2%',     trend:'→持平', trendCls:'flat'},
+       ]},
+    ],
+    tools:[
+      {name:'DocSearch',rate:'85%',cls:'ok'},{name:'CodeCompile',rate:'82%',cls:'ok'},
+      {name:'AccuracyCheck',rate:'94%',cls:'ok'},{name:'PerfAnalyzer',rate:'88%',cls:'ok'},
+    ],
+    pains:[
+      {cat:'tool', catLabel:'工具类', score:45, text:'性能调优阶段缺少自动化工具，VEC ratio 调优建议不够具体，开发者难以直接落地', meta:'腾讯 | 工具链分队 | 优先级：低', status:'规划中', statusCls:'planned', nextStep:'调优建议可操作化改造，纳入 Q3 规划'},
+    ],
+    vods:[
+      {vol:40, trend:'→持平', trendCls:'flat', text:'算子资料文档格式不规范、参数描述错误等多类内容错误，主要为低优先级遗留问题', src:'资料仓库 · 社区 issue · 社区开发者'},
+    ]
+  },
+];
+
+// 场景目录顺序（产品定义顺序，按任务复杂度递进）
+const catalogOrder = [0, 2, 1, 3]; // 复现部署→迁移部署→Builtin定制→基本功能实现
+
+const allScores = scenarios.map(s=>s.score);
+const meanScore = Math.round(allScores.reduce((a,b)=>a+b)/allScores.length);
+
+let sortMode = 'score';
+
+// ── SVG HELPERS ──
+function sparkSvg(data,w,h,color){
+  const min=Math.min(...data),max=Math.max(...data),range=max-min||1;
+  const pts=data.map((v,i)=>`${(i/(data.length-1))*w},${h-2-((v-min)/range)*(h-5)}`).join(' ');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${w}" cy="${h-2-((data[data.length-1]-min)/range)*(h-5)}" r="2.5" fill="${color}"/></svg>`;
+}
+
+const radarDims=['开发成功率','文档质量','环境效率','调试能力','工具稳定性'];
+
+function trendSvg(runs,W,H){
+  const PY=12,PX=18,range=(Math.max(...runs)+8)-(Math.min(...runs)-8)||20;
+  const minV=Math.min(...runs)-8;
+  const x=i=>PX+(i/(runs.length-1))*(W-2*PX);
+  const y=v=>PY+(1-(v-minV)/range)*(H-2*PY);
+  const mean=Math.round(runs.reduce((a,b)=>a+b)/runs.length);
+  const lineColor='#6A67CE';
+  const areaColor='rgba(106,103,206,0.13)';
+  const dotColor=v=>v>=80?'#37C597':v>=60?'#FD9A00':'#E63838';
+  const uid='tr'+Math.random().toString(36).slice(2,7);
+  let s=`<svg width="${W}" height="${H+22}" viewBox="0 0 ${W} ${H+22}" style="overflow:visible;display:block">`;
+  // gradient def
+  s+=`<defs><linearGradient id="${uid}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6A67CE" stop-opacity=".22"/><stop offset="1" stop-color="#6A67CE" stop-opacity="0"/></linearGradient></defs>`;
+  // grid lines
+  [0,.25,.5,.75,1].forEach(p=>{
+    const gy=PY+p*(H-2*PY);
+    s+=`<line x1="${PX}" x2="${W-PX}" y1="${gy}" y2="${gy}" stroke="#E1E2E4" stroke-width="1" stroke-dasharray="${p===0||p===1?'none':'3,3'}"/>`;
+  });
+  // mean line
+  s+=`<line x1="${PX}" y1="${y(mean)}" x2="${W-PX}" y2="${y(mean)}" stroke="#A1A4AA" stroke-dasharray="4,4" stroke-width="1"/>`;
+  s+=`<text x="${W-PX+3}" y="${y(mean)+3.5}" font-size="8" fill="#A1A4AA" font-family="Inter,sans-serif">均${mean}</text>`;
+  // area fill
+  const apts=`${x(0)},${H+PY-2} `+runs.map((v,i)=>`${x(i)},${y(v)}`).join(' ')+` ${x(runs.length-1)},${H+PY-2}`;
+  s+=`<polygon points="${apts}" fill="url(#${uid})"/>`;
+  // line
+  const lpts=runs.map((v,i)=>`${x(i)},${y(v)}`).join(' ');
+  s+=`<polyline points="${lpts}" fill="none" stroke="${lineColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // dots + labels
+  runs.forEach((v,i)=>{
+    const last=i===runs.length-1;
+    const dc=dotColor(v);
+    if(last){s+=`<circle cx="${x(i)}" cy="${y(v)}" r="7" fill="${dc}" fill-opacity=".15" stroke="none"/>`;}
+    s+=`<circle cx="${x(i)}" cy="${y(v)}" r="${last?4.5:3}" fill="${last?dc:'#fff'}" stroke="${last?'#fff':lineColor}" stroke-width="1.8"/>`;
+    s+=`<text x="${x(i)}" y="${H+20}" font-size="9" fill="${last?dc:'#A1A4AA'}" text-anchor="middle" font-weight="${last?'800':'400'}" font-family="'JetBrains Mono',monospace">${v}</text>`;
+  });
+  // "本次" label on last point
+  const li=runs.length-1;
+  const lastColor=dotColor(runs[li]);
+  s+=`<text x="${x(li)}" y="${y(runs[li])-9}" font-size="8" fill="${lastColor}" text-anchor="middle" font-weight="700" font-family="Inter,sans-serif">本次</text>`;
+  s+=`</svg>`;
+  return s;
+}
+
+function radarSvg(vals,size){
+  const cx=size/2,cy=size/2,R=size*0.33,n=vals.length;
+  const ang=i=>(-Math.PI/2)+(2*Math.PI/n)*i;
+  const px=(i,r)=>cx+r*Math.cos(ang(i));
+  const py=(i,r)=>cy+r*Math.sin(ang(i));
+  // AscendOps 5-dim colors
+  const dimColors=['#37C597','#1AAFD0','#FD9A00','#A177FF','#FC636B'];
+  const clr=v=>v>=80?'#37C597':v>=60?'#FD9A00':'#E63838';
+
+  let svg=`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="flex-shrink:0">`;
+
+  // background rings — alternating purple-light and white
+  [1,0.75,0.5,0.25].forEach((p,pi)=>{
+    const pts=Array.from({length:n},(_,i)=>`${px(i,R*p)},${py(i,R*p)}`).join(' ');
+    svg+=`<polygon points="${pts}" fill="${pi%2===0?'rgba(240,239,250,.55)':'rgba(255,255,255,0)'}" stroke="#E1E2E4" stroke-width="${p===1?1.5:0.8}"/>`;
+  });
+  // axes
+  for(let i=0;i<n;i++)
+    svg+=`<line x1="${cx}" y1="${cy}" x2="${px(i,R)}" y2="${py(i,R)}" stroke="#CDCFD2" stroke-width="1"/>`;
+
+  // data polygon — purple fill
+  const dpts=vals.map((v,i)=>`${px(i,R*v/100)},${py(i,R*v/100)}`).join(' ');
+  svg+=`<polygon points="${dpts}" fill="rgba(106,103,206,.18)" stroke="#6A67CE" stroke-width="2" stroke-linejoin="round"/>`;
+
+  // dots — each dim gets its own color
+  vals.forEach((v,i)=>{
+    const dc=dimColors[i];
+    const dx=px(i,R*v/100),dy=py(i,R*v/100);
+    svg+=`<circle cx="${dx}" cy="${dy}" r="4" fill="${dc}" stroke="#fff" stroke-width="1.8"/>`;
+    // value label — nudge away from center
+    const ox=(dx-cx)*.28,oy=(dy-cy)*.28;
+    svg+=`<text x="${dx+ox}" y="${dy+oy+(oy<0?-5:13)}" font-size="9" font-family="'JetBrains Mono',monospace" fill="${dc}" text-anchor="middle" font-weight="800">${v}</text>`;
+  });
+
+  // axis labels
+  const lblR=R+20;
+  radarDims.forEach((lbl,i)=>{
+    const lx=px(i,lblR),ly=py(i,lblR);
+    const anchor=lx<cx-5?'end':lx>cx+5?'start':'middle';
+    svg+=`<text x="${lx}" y="${ly}" font-size="9" font-family="Inter,sans-serif" fill="#A1A4AA" text-anchor="${anchor}" dominant-baseline="middle">${lbl}</text>`;
+  });
+
+  svg+=`</svg>`;
+  return svg;
+}
+
+// ── SORT ──
+function setSort(mode){
+  sortMode=mode;
+  document.getElementById('sortScore').classList.toggle('on',mode==='score');
+  document.getElementById('sortCatalog').classList.toggle('on',mode==='catalog');
+  renderList();
+}
+
+// ── RENDER SCENE LIST ──
+function renderList(){
+  const sorted = sortMode==='catalog'
+    ? catalogOrder.map(id=>scenarios.find(s=>s.id===id))
+    : [...scenarios].sort((a,b)=>a.score-b.score);
+  const container=document.getElementById('sceneListCards');
+  container.innerHTML=sorted.map((s,rank)=>{
+    const trendStr=s.trendDir==='up'?`↑ +${s.trendDir==='up'?s.trend:Math.abs(s.trend)}`:
+      s.trendDir==='dn'?`↓ ${s.trend}`:'→ 持平';
+    const trendDisplay=s.trend>0?`↑ +${s.trend}`:s.trend<0?`↓ ${s.trend}`:'→';
+    const sparkColor=s.grade==='bad'?'#E63838':s.grade==='mid'?'#FD9A00':'#37C597';
+    const rankLabel = sortMode==='catalog' ? `S${rank+1}` : `#${rank+1}`;
+    return `<div class="sc hl-2" id="sc${s.id}" onclick="selScene(${s.id})" style="position:relative">
+      <div class="callout-badge" style="top:-7px;right:-7px">②</div>
+      <div class="sc-top">
+        <div class="sc-rank ${s.grade}">${rankLabel}</div>
+        <div class="sc-title">
+          <div class="sc-name" style="color:${['#179D8A','#FD9A00','#E63838','#4F4DA7'][rank%4]};font-weight:700">${s.name}</div>
+          <div class="sc-grade-row">
+            <span class="grade-tag ${s.grade}" style="color:${['#179D8A','#FD9A00','#E63838','#4F4DA7'][rank%4]}">${s.gradeLabel}</span>
+          </div>
+        </div>
+      </div>
+      <div class="sc-score-row">
+        <span class="sc-score ${s.grade}">${s.score}</span>
+        <span class="sc-trend ${s.trendDir}">${trendDisplay} vs 上期</span>
+        <div class="sc-spark">${sparkSvg(s.runs,70,22,sparkColor)}</div>
+      </div>
+      <div class="sc-evidence">
+        <span class="ev-chip ${s.grade==='ok'?'gray':'red'}">痛点 ${s.painCount}</span>
+        <span class="ev-chip ${s.vodCount>=50?'red':s.vodCount>=30?'yellow':'gray'}">VOD ${s.vodCount}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER DETAIL ──
+function selScene(id){
+  document.querySelectorAll('.sc').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('sc'+id).classList.add('sel');
+  document.getElementById('sdHint').style.display='none';
+  const sd=document.getElementById('sdContent');
+  sd.style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  const s=scenarios.find(x=>x.id===id);
+  const sorted=[...scenarios].sort((a,b)=>a.score-b.score);
+  const rank=sorted.findIndex(x=>x.id===id)+1;
+
+  // header
+  document.getElementById('detName').textContent=s.name;
+  const dg=document.getElementById('detGrade');
+  dg.textContent=s.gradeLabel; dg.className='det-grade '+s.grade;
+  const ds=document.getElementById('detScore');
+  ds.textContent=s.score; ds.className='det-score '+s.grade;
+
+  // rank context
+  const rp=document.getElementById('rankPill');
+  rp.textContent=`${scenarios.length} 场景中第 ${rank} 差`;
+  rp.className='rank-pill'+(s.grade==='mid'?' mid':s.grade==='ok'?' ok':'');
+  const diff=s.score-meanScore;
+  document.getElementById('rankDesc').textContent=
+    `${diff<0?'低于':'高于'}角色均分 ${Math.abs(diff)} 分（均分 ${meanScore}）`;
+  // mini bars
+  document.getElementById('rankBars').innerHTML=
+    sorted.map(x=>`<div class="rank-bar ${x.grade}${x.id===id?' cur':''}" style="height:${Math.round((x.score/100)*18)}px" title="${x.name}: ${x.score}"></div>`).join('');
+  document.getElementById('rankMean').textContent=`均 ${meanScore}`;
+
+  // radar + trend
+  const minIdx=s.radar.indexOf(Math.min(...s.radar));
+  document.getElementById('radarWorst').textContent=`最弱：${radarDims[minIdx]} ${s.radar[minIdx]}`;
+  const clrDim=v=>v>=80?'#37C597':v>=60?'#FD9A00':'#E63838';
+  const spread=Math.max(...s.runs)-Math.min(...s.runs);
+  const stab=spread<=6?'stable':spread<=12?'moderate':'unstable';
+  const stabLabel=stab==='stable'?'波动小 · 稳定':stab==='moderate'?'中等波动':'波动大 · 不稳定';
+  document.getElementById('radarBody').innerHTML=
+    `<div class="chart-col" style="background:rgba(255,255,255,.7);border-radius:12px;padding:12px 14px;border:1px solid var(--border)">
+       <div class="col-lbl" style="margin-bottom:8px">近 7 次评测趋势</div>
+       ${trendSvg(s.runs,220,60)}
+       <div class="stab-tag ${stab}" style="margin-top:8px">${stabLabel}</div>
+     </div>
+     <div class="radar-col" style="background:rgba(255,255,255,.7);border-radius:12px;padding:10px;border:1px solid var(--border)">
+       ${radarSvg(s.radar,158)}
+       <div class="radar-legend">${radarDims.map((d,i)=>{
+         const v=s.radar[i],c=clrDim(v);
+         return `<div class="radar-dim">
+           <div class="radar-dim-dot" style="background:${c}"></div>
+           <div class="radar-dim-lbl">${d}</div>
+           <div class="radar-dim-val" style="color:${c}">${v}</div>
+         </div>`;
+       }).join('')}</div>
+     </div>`;
+
+  // tab counts
+  document.getElementById('agentTabCount').textContent=s.agentSteps.length;
+  document.getElementById('painTabCount').textContent=s.pains.length;
+  document.getElementById('vodTabCount').textContent=s.vods.length;
+
+  // agent panel
+  document.getElementById('panel-agent').innerHTML=
+    `<div class="agent-section-lbl">旅程环节 · Agent 逐步评分（近7次均值）</div>`+
+    s.agentSteps.map(st=>{
+      const metricsHtml=st.metrics?
+        `<div class="step-metrics">${st.metrics.map(m=>{
+          const numVal=parseFloat(m.v);
+          const vCls=isNaN(numVal)?'neutral':
+            m.trendCls==='flat'?'neutral':
+            m.trendCls==='up'?'ok':
+            numVal>=80?'ok':numVal>=60?'mid':'bad';
+          return `<div class="step-metric">
+            <div class="step-metric-lbl">${m.l}</div>
+            <div class="step-metric-bottom">
+              <span class="step-metric-val ${vCls}">${m.v}</span>
+              <span class="step-metric-trend ${m.trendCls}">${m.trend}</span>
+            </div>
+          </div>`;
+        }).join('')}</div>`:'';
+      return `
+      <div class="agent-step-row">
+        <div class="as-name">${st.name}</div>
+        <div class="as-right">
+          <div class="as-bar-row">
+            <div class="as-bar-track"><div class="as-bar-fill ${st.cls}" style="width:${st.score}%"></div></div>
+            <div class="as-score ${st.cls}">${st.score}%</div>
+          </div>
+          <div class="as-summary"><b>总结</b>${st.summary}</div>
+          ${st.observations&&st.observations.length?`<div class="as-obs"><b>Agent 观测</b><div class="as-obs-list">${st.observations.map(o=>`<div class="as-obs-item">${o}</div>`).join('')}</div></div>`:''}
+          ${metricsHtml}
+        </div>
+      </div>`;
+    }).join('')+
+    `<div class="tool-chain-row">
+      <div class="tool-chain-lbl">工具调用链 · 括号内为调用成功率</div>
+      <div class="tool-chips">${s.tools.map((t,i)=>`${i?'<span class="tool-arrow">→</span>':''}<div class="tool-chip ${t.cls}">${t.name} <span style="opacity:.7">${t.rate}</span></div>`).join('')}</div>
+    </div>`;
+
+  // pain panel - group by category
+  const catOrder=['doc','tool','api','env'];
+  const catMeta={doc:{label:'文档类',cls:'doc'},tool:{label:'工具类',cls:'tool'},api:{label:'API 类',cls:'api'},env:{label:'环境类',cls:'env'}};
+  const grouped={};
+  s.pains.forEach(p=>{if(!grouped[p.cat])grouped[p.cat]=[];grouped[p.cat].push(p);});
+  document.getElementById('panel-pain').innerHTML=
+    catOrder.filter(c=>grouped[c]).map(c=>`
+      <div class="pain-cat-section hl-6" style="position:relative">
+        <div class="callout-badge" style="top:-7px;right:-7px">⑥</div>
+        <div class="pain-cat-hdr">
+          <span class="cat-badge ${catMeta[c].cls}">${catMeta[c].label}</span>
+          <span class="cat-count">${grouped[c].length} 条</span>
+        </div>
+        ${grouped[c].map(p=>`
+          <div class="pain-item">
+            <div class="pain-top">
+              <span class="pain-score">${p.score}</span>
+              <div class="pain-body">
+                <div class="pain-text">${p.text}</div>
+                <div class="pain-meta">${p.meta}</div>
+              </div>
+              <span class="pain-status ${p.statusCls}">${p.status}</span>
+            </div>
+            <div class="pain-next hl-4" style="position:relative">
+              <div class="callout-badge" style="top:-7px;right:-7px">④</div>
+              <span class="pain-next-lbl">Next Step</span>
+              <span class="pain-next-text">→ ${p.nextStep}</span>
+            </div>
+          </div>`).join('')}
+      </div>`).join('');
+
+  // vod panel
+  document.getElementById('panel-vod').innerHTML=
+    s.vods.map(v=>`
+      <div class="vod-item">
+        <div class="vod-vol-row">
+          <span class="vod-vol">${v.vol}</span>
+          <span class="vod-unit">条声量</span>
+          <span class="vod-trend ${v.trendCls}">${v.trend}</span>
+        </div>
+        <div class="vod-quote">${v.text}</div>
+        <div class="vod-src">${v.src}</div>
+      </div>`).join('');
+
+  // reset to agent tab
+  switchEvTab('agent', document.querySelector('.ev-tab'));
+}
+
+// ── TAB SWITCHING ──
+function switchEvTab(id, btn){
+  document.querySelectorAll('.ev-tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.ev-panel').forEach(p=>p.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  else document.querySelector('.ev-tab').classList.add('on');
+  document.getElementById('panel-'+id).classList.add('on');
+  // If user has scrolled into the panel, scroll back so panel top is visible below ev-tabs
+  const tabs=document.querySelector('.ev-tabs');
+  const panels=document.querySelector('.ev-panels');
+  if(tabs&&panels){
+    const panelTop=panels.getBoundingClientRect().top;
+    const threshold=88+tabs.offsetHeight;
+    if(panelTop<threshold){
+      window.scrollTo({top:window.scrollY+panelTop-threshold,behavior:'smooth'});
+    }
+  }
+}
+
+// ── TOUCHPOINT DATA ──
+const touchpointData=[
+  {id:0,sceneName:'算子复现部署',overallScore:57,overallCls:'bad',
+   cells:{
+     doc:{s:47,cls:'bad',obs:['文档检索有效率仅 47%，大量结果无关','文档准确率 58%，版本与代码不同步，21% 的开发者在此放弃']},
+     api:{s:63,cls:'mid',obs:['API 文档覆盖 63%，部分参数说明缺失']},
+     tool:{s:34,cls:'bad',obs:['AIC 日志不显示报错指令，错误可读性 52%','错误自愈成功率仅 23%，强依赖人工排查']},
+     env:{s:71,cls:'mid',obs:['装包平均重试 2.4 次，安装失败率 18%']}
+   }},
+  {id:1,sceneName:'算子迁移部署',overallScore:72,overallCls:'mid',
+   cells:{
+     doc:{s:68,cls:'mid',obs:['迁移指南完整度 68%，高级场景示例不足']},
+     api:{s:72,cls:'mid',obs:['迁移 API 覆盖 72%，shape 限制未提前提示']},
+     tool:{s:65,cls:'mid',obs:['迁移工具可用，约 35% shape 异常需手动处理']},
+     env:{s:83,cls:'ok',obs:['环境兼容性较好，偶发版本冲突']}
+   }},
+  {id:2,sceneName:'Builtin 算子定制',overallScore:62,overallCls:'bad',
+   cells:{
+     doc:{s:51,cls:'bad',obs:['Builtin 文档更新滞后，VOD 声量 61 条','参数描述错误率高，社区反复反馈']},
+     api:{s:88,cls:'ok',obs:['Builtin API 完备性强，开发者普遍认可']},
+     tool:{s:42,cls:'bad',obs:['调试工具对 Builtin 场景支持弱，排查耗时 3.2×']},
+     env:{s:77,cls:'mid',obs:['编译环境稳定，但首次配置成本偏高']}
+   }},
+  {id:3,sceneName:'算子基本功能实现',overallScore:78,overallCls:'mid',
+   cells:{
+     doc:{s:74,cls:'mid',obs:['基础文档质量较好，编程指南覆盖主要场景']},
+     api:{s:85,cls:'ok',obs:['核心 API 完备，边界场景偶有文档缺失']},
+     tool:{s:69,cls:'mid',obs:['基础调试可用，高级性能分析功能有限']},
+     env:{s:91,cls:'ok',obs:['环境配置成功率高，部署体验最佳']}
+   }}
+];
+const tpCols=['doc','api','tool','env'];
+const tpColLabels={doc:'文档',api:'API',tool:'工具',env:'环境'};
+
+function heatBg(score){
+  const stops=[[0,[254,239,240]],[35,[255,182,200]],[55,[255,232,127]],[70,[255,248,229]],[82,[235,252,247]],[100,[59,232,128]]];
+  let a=stops[0],b=stops[stops.length-1];
+  for(let i=0;i<stops.length-1;i++){if(score>=stops[i][0]&&score<=stops[i+1][0]){a=stops[i];b=stops[i+1];break;}}
+  const t=(score-a[0])/(b[0]-a[0]||1);
+  const c=a[1].map((v,i)=>Math.round(v+(b[1][i]-v)*t));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+function heatFg(score){return score>=60?'#1B2432':'#E63838';}
+
+function renderTpMatrix(){
+  const grid=document.getElementById('tpHeatGrid');
+  if(!grid) return;
+  // Header row
+  const headers=['场景','文档','API','工具','环境','综合'];
+  let html=headers.map((h,i)=>`<div style="font-size:11px;font-weight:700;color:var(--text-3);text-align:${i===0?'left':'center'};padding:6px ${i===0?'4px':'2px'};text-transform:uppercase;letter-spacing:.04em">${h}</div>`).join('');
+  // Data rows
+  touchpointData.forEach(row=>{
+    // Scene label with health dot
+    const dotColor=row.overallCls==='bad'?'#E63838':row.overallCls==='mid'?'#FD9A00':'#37C597';
+    const dotGlow=row.overallCls==='bad'?'rgba(230,56,56,.2)':row.overallCls==='mid'?'rgba(253,154,0,.2)':'rgba(55,197,151,.2)';
+    html+=`<div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+      <div style="width:9px;height:9px;border-radius:50%;background:${dotColor};box-shadow:0 0 0 3px ${dotGlow};flex-shrink:0"></div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--text);line-height:1.3">${row.sceneName}</div>
+    </div>`;
+    // Dimension cells
+    tpCols.forEach(col=>{
+      const s=row.cells[col].s;
+      const bg=heatBg(s),fg=heatFg(s);
+      html+=`<div class="tp-heat-cell" onclick="selectTpCell(${row.id},'${col}',this)"
+        data-sid="${row.id}" data-col="${col}"
+        style="background:${bg};color:${fg};border-radius:10px;aspect-ratio:2/1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;border:2px solid transparent">
+        <div style="font-size:17px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono',monospace">${s}</div>
+        <div style="font-size:9.5px;font-weight:600;opacity:.7;margin-top:1px">${row.cells[col].cls==='bad'?'严重':row.cells[col].cls==='mid'?'关注':'健康'}</div>
+      </div>`;
+    });
+    // Overall
+    const obg=heatBg(row.overallScore),ofg=heatFg(row.overallScore);
+    html+=`<div style="background:${obg};color:${ofg};border-radius:10px;aspect-ratio:2/1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:17px;font-weight:800;font-family:'JetBrains Mono',monospace;letter-spacing:-.02em">
+      ${row.overallScore}
+      <div style="font-size:9px;font-weight:600;opacity:.65;margin-top:1px">综合</div>
+    </div>`;
+  });
+  grid.innerHTML=html;
+}
+
+function selectTpCell(sceneId,col,el){
+  // clear previous selection
+  document.querySelectorAll('.tp-heat-cell').forEach(c=>{
+    c.style.borderColor='transparent';
+    c.style.transform='scale(1)';
+    c.style.boxShadow='none';
+  });
+  // highlight selected
+  el.style.borderColor='var(--primary)';
+  el.style.transform='scale(1.06)';
+  el.style.boxShadow='0 6px 18px rgba(106,103,206,.28)';
+  const row=touchpointData.find(r=>r.id===sceneId);
+  const cell=row.cells[col];
+  const bg=heatBg(cell.s),fg=heatFg(cell.s);
+  const obsItemBg=cell.cls==='bad'?'var(--coral-light)':cell.cls==='mid'?'var(--gold-light)':'var(--green-light)';
+  const obsItemBorder=cell.cls==='bad'?'var(--coral-med)':cell.cls==='mid'?'var(--gold-med)':'var(--green-faded)';
+  document.getElementById('tpDetail').innerHTML=`
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;border-left:3px solid var(--primary)">
+      <!-- Card header with gradient -->
+      <div style="padding:14px 16px;background:linear-gradient(135deg,rgba(208,184,255,.25),rgba(128,230,255,.18));display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em">${row.sceneName}</div>
+          <div style="font-size:10px;color:var(--text-3);margin-top:2px">${tpColLabels[col]} 触点</div>
+        </div>
+        <div style="background:${bg};color:${fg};border-radius:10px;padding:6px 12px;font-size:20px;font-weight:800;font-family:'JetBrains Mono',monospace;letter-spacing:-.03em">${cell.s}</div>
+      </div>
+      <!-- Observations -->
+      <div style="padding:14px 16px">
+        <div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Agent 观测</div>
+        ${cell.obs.map(o=>`
+          <div style="font-size:11px;color:var(--text);line-height:1.55;padding:7px 10px 7px 12px;background:${obsItemBg};border-left:2.5px solid ${obsItemBorder};border-radius:0 7px 7px 0;margin-bottom:6px">${o}</div>
+        `).join('')}
+        <div onclick="jumpToJourney(${sceneId})" style="display:flex;align-items:center;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);color:var(--primary);font-size:11px;font-weight:700;cursor:pointer">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          查看完整场景旅程
+        </div>
+      </div>
+    </div>`;
+}
+
+function jumpToJourney(sceneId){
+  setTimeout(()=>selScene(sceneId),80);
+}
+
+
+function switchTab(id,btn){
+  document.querySelectorAll('.dim-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ['tabOverview','tabDev'].forEach(v=>document.getElementById(v).style.display=v===(id==='dev'?'tabDev':'tabOverview')?'block':'none');
+  document.body.classList.remove('rat-open','ov-rat-open');
+  document.getElementById('floatRat').classList.remove('open');
+}
+
+// ── RATIONALE HIGHLIGHT ──
+function toggleRat(){
+  const onOverview=document.getElementById('tabOverview').style.display!=='none';
+  if(onOverview){
+    document.body.classList.toggle('ov-rat-open');
+    document.getElementById('floatRat').classList.toggle('open',document.body.classList.contains('ov-rat-open'));
+  } else {
+    document.body.classList.toggle('rat-open');
+    document.getElementById('floatRat').classList.toggle('open',document.body.classList.contains('rat-open'));
+  }
+}
+function hlRat(n){
+  for(let i=1;i<=6;i++) document.body.classList.remove('hl-'+i);
+  document.body.classList.add('hl-'+n);
+  document.querySelectorAll('.rat-item').forEach(el=>el.classList.remove('hl'));
+  document.querySelectorAll('.rat-item')[n-1].classList.add('hl');
+
+  // Switch to the relevant tab first if needed, then scroll
+  const doScroll=(selector)=>{
+    const el=document.querySelector(selector);
+    if(!el) return;
+    const top=el.getBoundingClientRect().top+window.scrollY-100;
+    window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+  };
+
+  if(n===1){
+    // Evidence tabs — switch to agent, scroll to tabs
+    switchEvTab('agent',document.querySelectorAll('.ev-tab')[0]);
+    setTimeout(()=>doScroll('.ev-tabs'),60);
+  } else if(n===2){
+    // Scene cards are in the left list — scroll scene-list to top
+    document.querySelector('.scene-list').scrollTo({top:0,behavior:'smooth'});
+  } else if(n===3){
+    // Radar chart
+    setTimeout(()=>doScroll('.radar-section'),60);
+  } else if(n===4){
+    // Next Step links — switch to pain tab, then scroll to first pain-next
+    const painTab=document.querySelectorAll('.ev-tab')[1];
+    switchEvTab('pain',painTab);
+    setTimeout(()=>doScroll('.pain-next'),100);
+  } else if(n===5){
+    // Rank context — scroll to top of detail
+    setTimeout(()=>doScroll('.rank-ctx'),60);
+  } else if(n===6){
+    // Pain categories — switch to pain tab, scroll to first category
+    const painTab=document.querySelectorAll('.ev-tab')[1];
+    switchEvTab('pain',painTab);
+    setTimeout(()=>doScroll('.pain-cat-section'),100);
+  }
+}
+function unhlRat(){
+  for(let i=1;i<=6;i++) document.body.classList.remove('hl-'+i);
+  document.querySelectorAll('.rat-item').forEach(el=>el.classList.remove('hl'));
+}
+
+// ── INIT ──
+renderList();
+renderTpMatrix();
+selScene(0);
+
+let _activeRole='all', _activeCat='all';
+
+function applyPainFilter(){
+  const items=document.querySelectorAll('.pain-item[data-cat]');
+  const counts={all:0,tool:0,doc:0,api:0,env:0};
+  items.forEach(item=>{
+    const roles=(item.dataset.roles||'').split(' ');
+    const roleOk=_activeRole==='all'||roles.includes(_activeRole);
+    if(roleOk){counts.all++;counts[item.dataset.cat]=(counts[item.dataset.cat]||0)+1;}
+    const catOk=_activeCat==='all'||item.dataset.cat===_activeCat;
+    item.style.display=(roleOk&&catOk)?'':'none';
+  });
+  document.querySelectorAll('.cat-sum-chip[data-filter-cat]').forEach(chip=>{
+    const n=chip.querySelector('.cat-sum-n');
+    if(n) n.textContent=counts[chip.dataset.filterCat]||0;
+  });
+}
+
+function filterPain(cat, btn){
+  _activeCat=cat;
+  document.querySelectorAll('.cat-sum-chip').forEach(c=>c.classList.toggle('on',c===btn));
+  applyPainFilter();
+}
+
+function selectRole(role, btn){
+  _activeRole=role;
+  document.querySelectorAll('.role-chip').forEach(b=>b.classList.toggle('on',b===btn));
+  document.querySelectorAll('.role-focus-badge').forEach(b=>b.remove());
+  document.querySelectorAll('[data-roles]').forEach(el=>{
+    if(role==='all'){el.classList.remove('role-dim');return;}
+    const roles=el.dataset.roles.split(' ');
+    const match=roles.includes(role);
+    el.classList.toggle('role-dim',!match);
+    if(match){
+      const title=el.querySelector('.layer-hdr-title');
+      if(title&&!title.querySelector('.role-focus-badge')){const b=document.createElement('span');b.className='role-focus-badge';b.textContent='关注';title.appendChild(b);}
+    }
+  });
+  applyPainFilter();
+}
+
+function initOvCharts(){
+  const C={bad:'#E63838',mid:'#FD9A00',ok:'#37C597',blue:'#1AAFD0',dim:'#A1A4AA',border:'#E1E2E4'};
+  const spark=(id,data,color)=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const ch=echarts.init(el,null,{renderer:'svg'});
+    ch.setOption({grid:{top:2,bottom:2,left:2,right:2},xAxis:{type:'category',show:false},yAxis:{type:'value',show:false},series:[{type:'line',data,smooth:true,symbol:'none',lineStyle:{color,width:1.5},areaStyle:{color,opacity:.12}}],animation:false});
+  };
+  // KPI sparklines
+  spark('ecKpi0',[75,72,74,71,73,72],C.mid);
+  spark('ecKpi1',[1,2,1,3,2,3],C.bad);
+  spark('ecKpi2',[20,24,28,30,35,38],C.ok);
+  spark('ecKpi3',[5,7,6,8,9,9],C.ok);
+
+  // Health matrix sparklines (trend over 6 periods)
+  const hmData=[[60,58,63,61,62,62],[65,67,66,68,69,68],[80,82,84,84,85,85],[73,74,73,74,74,74],[86,87,88,88,89,89]];
+  const hmColors=[C.bad,C.mid,C.ok,C.mid,C.ok];
+  hmData.forEach((d,i)=>spark('ecHmSpk'+i,d,hmColors[i]));
+
+  // PyTorch API radar
+  const ptEl=document.getElementById('ecPyTorch');
+  if(ptEl){
+    const ch=echarts.init(ptEl,null,{renderer:'svg'});
+    ch.setOption({
+  backgroundColor:'transparent',
+  radar:{
+    shape:'circle',radius:'62%',center:['50%','52%'],
+    indicator:[{name:'算子API',max:100},{name:'通信API',max:100},{name:'框架API',max:100},{name:'工具API',max:100},{name:'Core test',max:100}],
+    axisName:{fontSize:9,color:'#A1A4AA',fontFamily:'Inter,sans-serif'},
+    splitLine:{lineStyle:{color:'#E1E2E4',width:1}},
+    splitArea:{areaStyle:{color:['rgba(240,239,250,.5)','rgba(255,255,255,0)','rgba(240,239,250,.3)','rgba(255,255,255,0)']}},
+    axisLine:{lineStyle:{color:'#E1E2E4'}}
+  },
+  series:[{
+    type:'radar',
+    data:[{
+      value:[92,78,71,88,85],name:'覆盖率',
+      areaStyle:{color:'rgba(161,119,255,.18)'},
+      lineStyle:{color:'#A177FF',width:2},
+      symbol:'circle',symbolSize:6,
+      itemStyle:{color:(p)=>{const colors=['#37C597','#1AAFD0','#FD9A00','#A177FF','#FC636B'];return colors[p.dataIndex]||'#A177FF';}}
+    }]
+  }],
+  animation:false
+});
+  }
+
+  // Model coverage ring
+  const mdEl=document.getElementById('ecModel');
+  if(mdEl){
+    const ch=echarts.init(mdEl,null,{renderer:'svg'});
+    ch.setOption({
+      tooltip:{trigger:'item',formatter:p=>`${p.name}<br/>开箱覆盖率 <b>${p.data.pct}%</b>`},
+      graphic:[
+        {type:'text',left:'center',top:'34%',style:{text:'77%',fontSize:20,fontWeight:'bold',fill:'#37C597',fontFamily:"'JetBrains Mono',monospace"}},
+        {type:'text',left:'center',top:'52%',style:{text:'综合覆盖',fontSize:9,fill:'#A1A4AA',fontFamily:'Inter,sans-serif'}}
+      ],
+      series:[{
+        type:'pie',
+        radius:['42%','66%'],
+        center:['50%','52%'],
+        padAngle:2,
+        label:{show:false},
+        labelLine:{show:false},
+        data:[
+          {value:100,name:'大语言模型',pct:100,itemStyle:{color:'#15803d'}},
+          {value:100,name:'多模态模型',pct:100,itemStyle:{color:'#4ade80'}},
+          {value:78,name:'VLLM 框架',pct:78,itemStyle:{color:'#86efac'}},
+          {value:65,name:'SGLang 框架',pct:65,itemStyle:{color:'#fde68a'}},
+          {value:42,name:'VERL 框架',pct:42,itemStyle:{color:'#fca5a5'}}
+        ],
+        emphasis:{scaleSize:4,itemStyle:{shadowBlur:8,shadowColor:'rgba(0,0,0,.12)'}}
+      }],
+      animation:false
+    });
+  }
+
+  // Agentic gauge
+  const ggEl=document.getElementById('ecGauge');
+  if(ggEl){
+    const ch=echarts.init(ggEl,null,{renderer:'svg'});
+    ch.setOption({series:[{type:'gauge',startAngle:200,endAngle:-20,min:0,max:100,radius:'90%',center:['50%','62%'],progress:{show:true,width:8,itemStyle:{color:'#FD9A00'}},axisLine:{lineStyle:{width:8,color:[[1,'#f0f0f0']]}},pointer:{show:false},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},detail:{valueAnimation:false,formatter:'{value}%',fontSize:16,fontWeight:700,color:'#FD9A00',offsetCenter:[0,'20%']},title:{offsetCenter:[0,'52%'],fontSize:9,color:'#A1A4AA'},data:[{value:62,name:'开发成功率'}]}],animation:false});
+  }
+
+  // Customer closure bar
+  const ccEl=document.getElementById('ecCust');
+  if(ccEl){
+    const ch=echarts.init(ccEl,null,{renderer:'svg'});
+    ch.setOption({grid:{top:6,bottom:4,left:40,right:48,containLabel:false},xAxis:{type:'value',max:100,show:false},yAxis:{type:'category',data:['讯飞','O1','美团','蚂蚁','腾讯','京东'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:10,color:'#898E95'}},series:[{type:'bar',data:[22,28,30,35,38,45],barWidth:10,label:{show:true,position:'right',formatter:'{c}%',fontSize:10,color:'#898E95'},itemStyle:{borderRadius:3,color:(p)=>p.data>=40?'#37C597':p.data>=35?'#FD9A00':'#E63838'}}],animation:true});
+  }
+
+  // Pain dist bar
+  const pdEl=document.getElementById('ecPainDist');
+  if(pdEl){
+    const ch=echarts.init(pdEl,null,{renderer:'svg'});
+    ch.setOption({grid:{top:6,bottom:4,left:10,right:40,containLabel:true},xAxis:{type:'value',show:false},yAxis:{type:'category',data:['工具链分队','资料分队','编译器&OS','算子分队','算子编程分队'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:10,color:'#898E95'}},series:[{type:'bar',data:[2,4,5,7,12],barWidth:10,label:{show:true,position:'right',formatter:'{c} 条',fontSize:10,color:'#A1A4AA'},itemStyle:{borderRadius:3,color:'#E63838',opacity:.75}}],animation:true});
+  }
+
+  // VOD bar
+  const vdEl=document.getElementById('ecVod');
+  if(vdEl){
+    const ch=echarts.init(vdEl,null,{renderer:'svg'});
+    ch.setOption({grid:{top:12,bottom:28,left:10,right:16,containLabel:true},xAxis:{type:'category',data:['多算子层\n质量问题','文档参数\n错误','资料格式\n不规范','transformer\n算子','ops-\ntransformer'],axisLabel:{fontSize:9,color:'#A1A4AA',interval:0}},yAxis:{type:'value',show:false},series:[{type:'bar',data:[71,61,40,35,33],barWidth:'45%',label:{show:true,position:'top',fontSize:10,color:'#6A67CE',fontWeight:700},itemStyle:{borderRadius:[3,3,0,0],color:(p)=>{const c=['#FFB6C8','#FC636B','#E63838','#6A67CE','#A177FF'];return c[p.dataIndex];}}}],animation:true});
+  }
+}
+initOvCharts();
+
+/* ── Init small charts in overview ── */
+(function(){
+  const C={bad:'#E63838',mid:'#FD9A00',ok:'#37C597',blue:'#1AAFD0',dim:'#A1A4AA',border:'#E1E2E4'};
+  function tryInit(id,opt){const el=document.getElementById(id);if(!el)return;const ch=echarts.init(el,null,{renderer:'svg'});ch.setOption({...opt,animation:false});}
+  tryInit('ecCustSmall',{grid:{top:4,bottom:4,left:34,right:40,containLabel:false},xAxis:{type:'value',max:100,show:false},yAxis:{type:'category',data:['讯飞','O1','美团','蚂蚁','腾讯','京东'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:9,color:'#898E95'}},series:[{type:'bar',data:[22,28,30,35,38,45],barWidth:6,label:{show:true,position:'right',formatter:'{c}%',fontSize:9,color:'#898E95'},itemStyle:{borderRadius:3,color:(p)=>p.data>=40?'#37C597':p.data>=35?'#FD9A00':'#E63838'}}]});
+  tryInit('ecPainDistSmall',{grid:{top:4,bottom:4,left:8,right:36,containLabel:true},xAxis:{type:'value',show:false},yAxis:{type:'category',data:['工具链','资料','编译器','算子','算子编程'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:9,color:'#898E95'}},series:[{type:'bar',data:[2,4,5,7,12],barWidth:6,label:{show:true,position:'right',formatter:'{c}',fontSize:9,color:'#898E95'},itemStyle:{borderRadius:3,color:'#E63838',opacity:.75}}]});
+})();
+
+</script>
+</body>
+</html>
