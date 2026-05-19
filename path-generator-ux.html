@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习路径生成 — UX 交互探索</title>
+<style>
+:root {
+  --font: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  --black: #0A0A0F;
+  --blue: #2e53fa;
+  --blue-soft: #EEF2FF;
+  --green: #10B981;
+  --green-soft: #ECFDF5;
+  --amber: #F59E0B;
+  --border: #E5E7EB;
+  --border2: #D1D5DB;
+  --surface: #F9FAFB;
+  --surface2: #F3F4F6;
+  --text-2: #6B7280;
+  --text-3: #9CA3AF;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: #F5F7FF;
+  color: var(--black);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  height: 52px;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.topbar-logo {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--black);
+  letter-spacing: -0.3px;
+}
+.topbar-sep { color: var(--border2); font-size: 18px; }
+.topbar-title { font-size: 13px; color: var(--text-2); font-weight: 500; }
+.topbar-badge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  letter-spacing: 0.2px;
+}
+
+/* ── LAYOUT ── */
+.main-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  grid-template-rows: 1fr;
+  gap: 0;
+  overflow: hidden;
+  height: calc(100vh - 52px);
+}
+
+/* ── LEFT: CONVERSATION ── */
+.conv-panel {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+.conv-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.conv-header-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 2px;
+}
+.conv-header-sub {
+  font-size: 12px;
+  color: var(--text-2);
+}
+.conv-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
+}
+.msg {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  animation: msgIn 0.25s ease both;
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.msg.user { flex-direction: row-reverse; }
+.msg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+.msg.ai .msg-avatar {
+  background: linear-gradient(135deg, #2e53fa, #7c3aed);
+  color: white;
+  font-size: 11px;
+}
+.msg.user .msg-avatar {
+  background: var(--surface2);
+  color: var(--text-2);
+}
+.msg-bubble {
+  max-width: 280px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.msg.ai .msg-bubble {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--black);
+  border-radius: 4px 12px 12px 12px;
+}
+.msg.user .msg-bubble {
+  background: var(--black);
+  color: white;
+  border-radius: 12px 4px 12px 12px;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 12px 14px;
+}
+.typing-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-3);
+  animation: typingBounce 1.2s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Chips inside messages */
+.msg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.chip {
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1.5px solid var(--border);
+  background: white;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font);
+}
+.chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
+.chip.selected { background: var(--blue); color: white; border-color: var(--blue); }
+.chip.selected:hover { background: #2347e0; }
+
+/* Design note callout inside conversation */
+.design-note {
+  background: #FFFBEB;
+  border: 1px solid #FCD34D;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: #78350F;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+.design-note strong { font-weight: 700; }
+
+/* ── INPUT AREA ── */
+.conv-input-area {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  background: white;
+}
+.input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 8px 8px 14px;
+  transition: border-color 0.15s;
+}
+.input-wrap:focus-within { border-color: var(--blue); background: white; }
+.conv-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--black);
+  outline: none;
+  font-family: var(--font);
+  resize: none;
+  height: 20px;
+  line-height: 1.5;
+}
+.conv-input::placeholder { color: var(--text-3); }
+.send-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--black);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.send-btn:hover { background: #222; transform: scale(1.05); }
+.send-btn:disabled { background: var(--border); cursor: not-allowed; transform: none; }
+.send-btn svg { color: white; }
+.quick-chips {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.quick-chip {
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font);
+}
+.quick-chip:hover { border-color: var(--border2); color: var(--black); }
+
+/* ── RIGHT: PATH PREVIEW ── */
+.path-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #F5F7FF;
+}
+.path-header {
+  padding: 16px 28px 12px;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.path-header-left { display: flex; flex-direction: column; gap: 2px; }
+.path-header-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+.path-header-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--black);
+  min-height: 22px;
+  transition: all 0.3s;
+}
+.path-actions { display: flex; gap: 8px; align-items: center; }
+.path-meta-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--surface2);
+  color: var(--text-2);
+}
+.save-btn {
+  padding: 7px 18px;
+  border-radius: 8px;
+  background: var(--black);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.2s;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.9);
+}
+.save-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.save-btn:hover { background: #222; transform: scale(1.03); }
+
+.path-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Empty state */
+.path-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-3);
+  width: 100%;
+}
+.path-empty-icon {
+  font-size: 48px;
+  opacity: 0.25;
+  line-height: 1;
+}
+.path-empty-text { font-size: 14px; font-weight: 500; }
+.path-empty-sub { font-size: 12px; }
+
+/* Path nodes */
+.path-nodes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  gap: 0;
+}
+.path-node {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  position: relative;
+  animation: nodeIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes nodeIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.path-node.updating .node-card {
+  animation: nodeUpdate 0.4s ease both;
+}
+@keyframes nodeUpdate {
+  0%   { background: #EEF2FF; border-color: var(--blue); }
+  100% { background: white; border-color: var(--border); }
+}
+.node-timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 16px;
+  flex-shrink: 0;
+}
+.node-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-3);
+  flex-shrink: 0;
+  transition: all 0.3s;
+  z-index: 1;
+}
+.node-dot.done { background: var(--green); border-color: var(--green); color: white; }
+.node-dot.active { background: var(--blue); border-color: var(--blue); color: white; box-shadow: 0 0 0 4px rgba(46,83,250,0.15); }
+.node-connector {
+  width: 2px;
+  min-height: 24px;
+  flex: 1;
+  background: var(--border);
+  margin: 4px 0;
+}
+.path-node:last-child .node-connector { display: none; }
+.node-card {
+  flex: 1;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  transition: all 0.3s;
+  cursor: default;
+}
+.node-card:hover { border-color: var(--border2); box-shadow: var(--shadow); }
+.node-step { font-size: 10px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.node-title { font-size: 14px; font-weight: 700; color: var(--black); margin-bottom: 5px; }
+.node-desc { font-size: 12px; color: var(--text-2); line-height: 1.5; margin-bottom: 8px; }
+.node-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.node-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: var(--surface2);
+  color: var(--text-2);
+}
+.node-tag.blue { background: var(--blue-soft); color: var(--blue); }
+.node-tag.green { background: var(--green-soft); color: #065F46; }
+
+/* Skeleton loader */
+.skeleton-card {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  flex: 1;
+}
+.skel {
+  background: linear-gradient(90deg, var(--surface2) 25%, #e8eaed 50%, var(--surface2) 75%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.skel-title { height: 16px; width: 60%; margin-bottom: 8px; }
+.skel-line { height: 12px; margin-bottom: 5px; }
+.skel-line.w80 { width: 80%; }
+.skel-line.w60 { width: 60%; }
+
+/* ── DESIGN RATIONALE PANEL ── */
+.rationale-bar {
+  background: white;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.rationale-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 28px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  user-select: none;
+  border: none;
+  background: none;
+  width: 100%;
+  font-family: var(--font);
+  transition: color 0.15s;
+}
+.rationale-toggle:hover { color: var(--black); }
+.rationale-toggle svg { transition: transform 0.2s; }
+.rationale-toggle.open svg { transform: rotate(180deg); }
+.rationale-body {
+  display: none;
+  padding: 0 28px 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.rationale-body.open { display: grid; }
+.rationale-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.rationale-card-label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+}
+.rationale-card-label.good { color: var(--green); }
+.rationale-card-label.bad { color: #EF4444; }
+.rationale-card-label.neutral { color: var(--text-3); }
+.rationale-card h4 { font-size: 12px; font-weight: 700; color: var(--black); margin-bottom: 5px; }
+.rationale-card p { font-size: 11px; color: var(--text-2); line-height: 1.5; }
+
+/* Refinement input */
+.refine-input-wrap {
+  width: 100%;
+  max-width: 480px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 8px 8px 8px 14px;
+  transition: border-color 0.15s;
+  animation: nodeIn 0.35s ease both;
+}
+.refine-input-wrap:focus-within { border-color: var(--blue); }
+.refine-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  color: var(--black);
+  outline: none;
+  font-family: var(--font);
+}
+.refine-input::placeholder { color: var(--text-3); }
+.refine-btn {
+  padding: 5px 12px;
+  border-radius: 7px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.15s;
+}
+.refine-btn:hover { background: var(--black); color: white; border-color: var(--black); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="topbar-logo">CANN</span>
+  <span class="topbar-sep">·</span>
+  <span class="topbar-title">学习路径生成 — 交互方案探索</span>
+  <span class="topbar-badge">UX PROTOTYPE</span>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+
+  <!-- LEFT: CONVERSATION -->
+  <div class="conv-panel">
+    <div class="conv-header">
+      <div class="conv-header-title">对话面板</div>
+      <div class="conv-header-sub">用自然语言描述目标，AI 立即生成路径草稿</div>
+    </div>
+    <div class="conv-messages" id="conv-messages">
+      <!-- Initial AI message -->
+      <div class="msg ai">
+        <div class="msg-avatar">AI</div>
+        <div>
+          <div class="msg-bubble">
+            你好！告诉我你想学什么，或者你的学习目标，我会马上为你生成一条个性化的学习路径。
+          </div>
+          <div class="design-note" style="max-width:280px;margin-top:8px;">
+            <strong>设计意图：</strong>开门见山，不问背景。用户输入意图后立即看到路径草稿，比先填表单再等待生成的摩擦低得多。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conv-input-area">
+      <div class="input-wrap">
+        <input class="conv-input" id="conv-input" type="text"
+          placeholder="例如：我想学习CANN算子开发…"
+          onkeydown="if(event.key==='Enter')sendMessage()"
+        />
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="quick-chips" id="quick-chips">
+        <button class="quick-chip" onclick="setInput('我想学CANN算子开发')">算子开发</button>
+        <button class="quick-chip" onclick="setInput('如何在昇腾上做模型推理部署')">模型推理部署</button>
+        <button class="quick-chip" onclick="setInput('分布式大模型训练入门')">分布式训练</button>
+        <button class="quick-chip" onclick="setInput('从零开始学CANN完整入门')">CANN 完整入门</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: PATH PREVIEW -->
+  <div class="path-panel">
+    <div class="path-header">
+      <div class="path-header-left">
+        <div class="path-header-title">路径预览</div>
+        <div class="path-header-name" id="path-name">—</div>
+      </div>
+      <div class="path-actions">
+        <div class="path-meta-pill" id="path-meta" style="display:none;"></div>
+        <button class="save-btn" id="save-btn" onclick="savePath()">保存路径 →</button>
+      </div>
+    </div>
+    <div class="path-content" id="path-content">
+      <div class="path-empty" id="path-empty">
+        <div class="path-empty-icon">🗺️</div>
+        <div class="path-empty-text">路径将在这里实时生成</div>
+        <div class="path-empty-sub">在左侧输入你的学习目标</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- DESIGN RATIONALE BAR -->
+<div class="rationale-bar">
+  <button class="rationale-toggle" id="rationale-toggle" onclick="toggleRationale()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    设计方案说明 — 为什么采用"先生成草稿，再对话精炼"而不是表单确认流程
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+  <div class="rationale-body" id="rationale-body">
+    <div class="rationale-card">
+      <div class="rationale-card-label bad">❌ 方案A — 不推荐</div>
+      <h4>先填表单，再确认，再生成</h4>
+      <p>用户填写背景、目标、时间后才能看到路径。问题：用户不知道哪些参数重要；填表感觉像走流程，不像智能对话；首次看到结果前摩擦太高。</p>
+    </div>
+    <div class="rationale-card">
+      <div class="rationale-card-label bad">❌ 方案B — 不推荐</div>
+      <h4>纯对话多轮问答</h4>
+      <p>AI 先问背景、再问目标、再问时间，用户回答完才生成。问题：多轮对话让用户不知道终点在哪；看不到路径形状，难以判断方向；等待感强。</p>
+    </div>
+    <div class="rationale-card">
+      <div class="rationale-card-label neutral">⚡ 方案C — 可以</div>
+      <h4>直接生成，不做个性化</h4>
+      <p>输入即生成，无任何确认。缺点：路径通用性强，不适合个人背景；用户可能需要多次重新生成；缺少"对话感"。</p>
+    </div>
+    <div class="rationale-card" style="border-color: var(--green); background: var(--green-soft);">
+      <div class="rationale-card-label good">✓ 本方案 — 推荐</div>
+      <h4>先生成草稿，再对话精炼</h4>
+      <p>输入即出草稿（低摩擦）→ AI 推断背景后提 1-2 个针对性问题（非阻塞）→ 选项芯片 + 自然语言修改（灵活）→ 满意后一键保存。用户始终在看具体内容，而非抽象表单。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+const PATHS_DATA = {
+  '算子开发': {
+    name: 'CANN 算子开发路径',
+    nodes: [
+      { title: '昇腾硬件体系',      desc: '理解达芬奇核、AI Core 架构，为算子优化打下硬件认知基础。',    tags: ['入门', '理论'] },
+      { title: 'CANN 软件栈概览',   desc: 'CANN 各组件层次关系，了解算子库在整体架构中的位置。',         tags: ['入门', '理论'] },
+      { title: '环境安装与配置',    desc: '安装 CANN Toolkit，配置 TBE 开发环境与调试工具。',           tags: ['入门', '实践'] },
+      { title: 'TBE DSL 算子开发', desc: '使用高级 DSL 接口快速开发算子，编写 compute 函数。',          tags: ['进阶', '实践', 'core'] },
+      { title: 'TIK 底层算子开发', desc: '直接控制 AI Core 指令级操作，实现极致性能算子。',              tags: ['高级', '底层', 'core'] },
+    ],
+    clarify: [
+      { q: '你目前的基础是？', opts: ['零基础', '了解 Python', '有深度学习经验'] },
+      { q: '主要学习目标是？', opts: ['工程实践', '科研探索', '找工作'] },
+    ],
+    refineMap: {
+      '零基础': { add: { after: 1, node: { title: 'Python 与 NumPy 基础', desc: '为后续 TBE 开发做好编程基础。', tags: ['前置', '入门'] } } },
+      '有深度学习经验': { remove: 0 },
+      '工程实践': { highlight: [3, 4] },
+      '科研探索': { highlight: [3, 4] },
+    }
+  },
+  '模型推理部署': {
+    name: '模型推理部署路径',
+    nodes: [
+      { title: '昇腾硬件体系',      desc: '了解 NPU 架构与推理加速原理。',                              tags: ['入门', '理论'] },
+      { title: '环境安装与配置',    desc: '安装驱动、固件、CANN Toolkit，验证 NPU 可用。',              tags: ['入门', '实践'] },
+      { title: 'AscendCL 编程基础', desc: '掌握设备管理、内存管理、Stream/Context 核心 API。',          tags: ['进阶', '实践', 'core'] },
+      { title: '模型转换 (ATC)',    desc: '使用 ATC 工具将 ONNX/PB/AIR 模型转为高效 .om 格式。',        tags: ['进阶', '实践', 'core'] },
+      { title: '推理程序开发',      desc: '加载 .om 模型，编写完整推理流程，处理输入输出数据。',         tags: ['进阶', '实践'] },
+      { title: '数据预处理 (DVPP)', desc: '使用硬件加速器进行图像解码、缩放，消除数据搬运瓶颈。',       tags: ['进阶', '实践'] },
+    ],
+    clarify: [
+      { q: '你的编程语言偏好？', opts: ['Python', 'C++', '两者都行'] },
+      { q: '部署场景是？', opts: ['边缘推理', '云端服务', '实验研究'] },
+    ],
+    refineMap: {
+      'Python': {},
+      'C++': { highlight: [2, 4] },
+      '边缘推理': { highlight: [3, 5] },
+    }
+  },
+  '分布式训练': {
+    name: '分布式大模型训练路径',
+    nodes: [
+      { title: '昇腾硬件体系',          desc: '理解多卡互联、HCCS 总线与集合通信基础。',               tags: ['入门', '理论'] },
+      { title: 'AscendCL 编程基础',     desc: '理解设备管理与多进程通信机制。',                        tags: ['进阶', '实践'] },
+      { title: 'PyTorch + MindSpore 迁移', desc: '将现有模型迁移至昇腾，配置分布式训练环境。',          tags: ['进阶', '实践', 'core'] },
+      { title: '数据并行训练',           desc: 'DDP 原理与实践，多机多卡梯度同步策略。',               tags: ['进阶', '实践', 'core'] },
+      { title: '流水线 & 张量并行',      desc: '大模型训练的流水并行、张量并行核心技术。',              tags: ['高级', '理论', 'core'] },
+      { title: '性能调优与 Profiling',   desc: '分析通信瓶颈、算子热点，优化分布式训练效率。',         tags: ['高级', '实践'] },
+    ],
+    clarify: [
+      { q: '你熟悉的框架是？', opts: ['PyTorch', 'MindSpore', '都不熟'] },
+      { q: '模型规模是？', opts: ['< 1B 参数', '1B–10B', '> 10B 大模型'] },
+    ],
+    refineMap: {
+      'PyTorch': { highlight: [2, 3] },
+      '> 10B 大模型': { highlight: [4, 5] },
+    }
+  },
+  'CANN 入门': {
+    name: 'CANN 完整入门路径',
+    nodes: [
+      { title: '昇腾硬件体系',      desc: '从硬件视角认识昇腾 AI 处理器，建立完整认知框架。',         tags: ['入门', '理论'] },
+      { title: 'CANN 软件栈概览',   desc: '理解驱动层、运行时、算子库、框架适配层之间的关系。',        tags: ['入门', '理论'] },
+      { title: '环境安装与配置',    desc: '动手安装完整开发环境，跑通第一个 Hello NPU 程序。',         tags: ['入门', '实践', 'core'] },
+      { title: 'AscendCL 编程基础', desc: '学习核心 API，写出第一个可以在 NPU 上执行的推理程序。',     tags: ['进阶', '实践', 'core'] },
+      { title: '模型推理部署',      desc: '完整跑通 ResNet 图像分类推理流程，从模型转换到结果输出。', tags: ['进阶', '实践'] },
+    ],
+    clarify: [
+      { q: '你的编程背景是？', opts: ['零基础', '会 Python', '有 C++ 经验'] },
+      { q: '每周能投入的时间？', opts: ['1–3 小时', '5–10 小时', '全职投入'] },
+    ],
+    refineMap: {
+      '零基础': { add: { after: -1, node: { title: 'Linux 与命令行基础', desc: '快速掌握 Linux 基本操作，为后续环境配置做准备。', tags: ['前置', '入门'] } } },
+      '全职投入': { highlight: [2, 3, 4] },
+    }
+  }
+};
+
+// ── STATE ──
+let state = 'idle'; // idle | generating | clarifying | refining | done
+let currentPath = null;
+let currentNodes = [];
+let pendingClarify = [];
+let clarifyStep = 0;
+
+// ── HELPERS ──
+function setInput(text) {
+  const input = document.getElementById('conv-input');
+  input.value = text;
+  input.focus();
+}
+
+function addMessage(role, content, delay = 0) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const msgs = document.getElementById('conv-messages');
+      const div = document.createElement('div');
+      div.className = `msg ${role}`;
+      const isAI = role === 'ai';
+      div.innerHTML = `
+        <div class="msg-avatar">${isAI ? 'AI' : '你'}</div>
+        <div class="msg-bubble">${content}</div>
+      `;
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+      resolve();
+    }, delay);
+  });
+}
+
+function addTypingIndicator() {
+  const msgs = document.getElementById('conv-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.id = 'typing-indicator';
+  div.innerHTML = `
+    <div class="msg-avatar">AI</div>
+    <div class="msg-bubble" style="padding:8px 14px;">
+      <div class="typing-indicator">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+  `;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+// ── PATH RENDERING ──
+function showSkeletons(count = 4) {
+  const content = document.getElementById('path-content');
+  document.getElementById('path-empty').style.display = 'none';
+  const wrap = document.createElement('div');
+  wrap.className = 'path-nodes';
+  wrap.id = 'path-nodes';
+  for (let i = 0; i < count; i++) {
+    wrap.innerHTML += `
+      <div class="path-node" style="animation-delay:${i * 0.08}s">
+        <div class="node-timeline">
+          <div class="node-dot" style="background:var(--surface2);border-color:var(--border);"></div>
+          <div class="node-connector"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skel skel-title"></div>
+          <div class="skel skel-line w80"></div>
+          <div class="skel skel-line w60"></div>
+        </div>
+      </div>`;
+  }
+  content.appendChild(wrap);
+}
+
+function renderNodes(nodes, animateFrom = 0) {
+  const existing = document.getElementById('path-nodes');
+  if (existing) existing.remove();
+
+  const content = document.getElementById('path-content');
+  document.getElementById('path-empty').style.display = 'none';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'path-nodes';
+  wrap.id = 'path-nodes';
+
+  nodes.forEach((node, i) => {
+    const delay = i >= animateFrom ? (i - animateFrom) * 0.1 : 0;
+    const tagHtml = (node.tags || []).map(t => {
+      const cls = t === 'core' ? 'blue' : t === '实践' ? 'green' : '';
+      const label = t === 'core' ? '核心节点' : t;
+      return `<span class="node-tag ${cls}">${label}</span>`;
+    }).join('');
+    wrap.innerHTML += `
+      <div class="path-node" style="animation-delay:${delay}s">
+        <div class="node-timeline">
+          <div class="node-dot">${i + 1}</div>
+          <div class="node-connector"></div>
+        </div>
+        <div class="node-card">
+          <div class="node-step">步骤 ${i + 1}</div>
+          <div class="node-title">${node.title}</div>
+          <div class="node-desc">${node.desc}</div>
+          <div class="node-tags">${tagHtml}</div>
+        </div>
+      </div>`;
+  });
+
+  // Refinement input
+  wrap.innerHTML += `
+    <div class="refine-input-wrap" id="refine-wrap">
+      <input class="refine-input" id="refine-input" placeholder="告诉 AI 如何调整路径，例如：去掉基础节点，我已经会了…"
+        onkeydown="if(event.key==='Enter')refineByText()"/>
+      <button class="refine-btn" onclick="refineByText()">调整</button>
+    </div>`;
+
+  content.appendChild(wrap);
+
+  // Update meta
+  const meta = document.getElementById('path-meta');
+  meta.textContent = `${nodes.length} 个节点`;
+  meta.style.display = '';
+}
+
+// ── CLARIFY CHIPS ──
+function showClarifyChips(question, options, step) {
+  const msgs = document.getElementById('conv-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.id = `clarify-${step}`;
+
+  const chipsHtml = options.map(o =>
+    `<button class="chip" onclick="selectChip(this,'${o}',${step})">${o}</button>`
+  ).join('');
+
+  div.innerHTML = `
+    <div class="msg-avatar">AI</div>
+    <div>
+      <div class="msg-bubble">${question}</div>
+      <div class="msg-chips">${chipsHtml}</div>
+    </div>
+  `;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function selectChip(el, value, step) {
+  // Mark chip selected, disable others in same group
+  const group = el.closest('.msg-chips');
+  group.querySelectorAll('.chip').forEach(c => {
+    c.disabled = true;
+    c.style.opacity = '0.5';
+    c.style.cursor = 'default';
+  });
+  el.style.opacity = '1';
+  el.classList.add('selected');
+
+  // Apply refinement
+  applyRefinement(value);
+
+  // Show user echo
+  addMessage('user', value);
+
+  // Ask next clarifying question if any
+  clarifyStep++;
+  if (clarifyStep < pendingClarify.length) {
+    setTimeout(() => {
+      const next = pendingClarify[clarifyStep];
+      showClarifyChips(next.q, next.opts, clarifyStep);
+      document.getElementById('conv-messages').scrollTop = 99999;
+    }, 600);
+  } else {
+    // All clarifications done
+    setTimeout(() => {
+      addMessage('ai', '路径已根据你的情况调整好了。如果还想修改，可以直接告诉我，或在路径下方输入调整需求。');
+      document.getElementById('save-btn').classList.add('visible');
+    }, 700);
+  }
+}
+
+function applyRefinement(value) {
+  if (!currentPath) return;
+  const map = currentPath.refineMap || {};
+  const action = map[value];
+
+  // Animate all nodes as "updating"
+  document.querySelectorAll('.path-node').forEach(n => {
+    n.classList.add('updating');
+    setTimeout(() => n.classList.remove('updating'), 600);
+  });
+
+  if (!action) return;
+
+  setTimeout(() => {
+    if (action.add) {
+      const { after, node } = action.add;
+      if (after === -1) currentNodes = [node, ...currentNodes];
+      else currentNodes = [...currentNodes.slice(0, after + 1), node, ...currentNodes.slice(after + 1)];
+      renderNodes(currentNodes, after === -1 ? 0 : after + 1);
+    }
+    if (action.remove !== undefined) {
+      currentNodes = currentNodes.filter((_, i) => i !== action.remove);
+      renderNodes(currentNodes, 0);
+    }
+    if (action.highlight) {
+      // Just update node dots to show 'active' for highlighted ones
+      // (visual feedback, no actual removal)
+    }
+    document.getElementById('path-meta').textContent = `${currentNodes.length} 个节点`;
+  }, 400);
+}
+
+// ── REFINE BY TEXT ──
+function refineByText() {
+  const input = document.getElementById('refine-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  addMessage('user', text);
+
+  // Simple keyword detection for demo
+  setTimeout(() => {
+    addTypingIndicator();
+    setTimeout(() => {
+      removeTypingIndicator();
+      if (text.includes('去掉') || text.includes('删除') || text.includes('已经会')) {
+        currentNodes = currentNodes.slice(1);
+        renderNodes(currentNodes, 0);
+        addMessage('ai', '已为你移除了前置节点，路径更聚焦了。');
+      } else if (text.includes('加') || text.includes('增加') || text.includes('补充')) {
+        const extra = { title: '专项练习', desc: '针对薄弱环节的补充练习与实战项目。', tags: ['实践', 'core'] };
+        currentNodes = [...currentNodes, extra];
+        renderNodes(currentNodes, currentNodes.length - 1);
+        addMessage('ai', '已为你在末尾补充了一个强化练习节点。');
+      } else {
+        addMessage('ai', '收到。你可以继续告诉我需要调整哪些节点，或者点击"保存路径"完成。');
+      }
+    }, 1200);
+  }, 200);
+}
+
+// ── MAIN FLOW ──
+function sendMessage() {
+  if (state === 'generating') return;
+  const input = document.getElementById('conv-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  // Disable quick chips
+  document.getElementById('quick-chips').style.display = 'none';
+
+  addMessage('user', text);
+
+  // Detect intent
+  let pathKey = 'CANN 入门';
+  if (text.includes('算子')) pathKey = '算子开发';
+  else if (text.includes('推理') || text.includes('部署')) pathKey = '模型推理部署';
+  else if (text.includes('分布式') || text.includes('大模型')) pathKey = '分布式训练';
+
+  currentPath = PATHS_DATA[pathKey];
+  currentNodes = [...currentPath.nodes];
+  pendingClarify = [...currentPath.clarify];
+  clarifyStep = 0;
+  state = 'generating';
+
+  // Phase 1: AI acknowledges
+  addTypingIndicator();
+  setTimeout(() => {
+    removeTypingIndicator();
+    addMessage('ai', `好的，我理解你想学习<strong>${text.replace(/[<>]/g,'')}</strong>，正在生成路径草稿…`);
+
+    // Phase 2: Show skeletons immediately
+    document.getElementById('path-name').textContent = currentPath.name;
+    showSkeletons(currentPath.nodes.length);
+
+    // Phase 3: Replace skeletons with real nodes
+    setTimeout(() => {
+      renderNodes(currentNodes, 0);
+
+      // Phase 4: AI confirms + asks first clarification
+      setTimeout(() => {
+        addMessage('ai', `路径草稿已生成，包含 <strong>${currentNodes.length} 个节点</strong>。你可以直接保存，或回答几个问题让我帮你进一步精准调整。`);
+
+        setTimeout(() => {
+          showClarifyChips(pendingClarify[0].q, pendingClarify[0].opts, 0);
+        }, 600);
+
+        state = 'clarifying';
+      }, 400);
+    }, 1600);
+  }, 900);
+}
+
+function savePath() {
+  const btn = document.getElementById('save-btn');
+  btn.textContent = '✓ 已保存';
+  btn.style.background = '#10B981';
+  btn.disabled = true;
+  addMessage('ai', `路径已保存到你的学习档案！共 ${currentNodes.length} 个节点，随时可以在"学习档案 → 我的路径"中查看和继续学习。`);
+}
+
+function toggleRationale() {
+  const toggle = document.getElementById('rationale-toggle');
+  const body = document.getElementById('rationale-body');
+  toggle.classList.toggle('open');
+  body.classList.toggle('open');
+}
+</script>
+</body>
+</html>
