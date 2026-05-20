@@ -767,7 +767,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
       <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:start">
         <!-- Grid -->
         <div style="min-width:0;overflow:auto">
-          <div class="hm-grid" id="hmGrid" style="grid-template-columns:110px repeat(5,90px);gap:5px;min-width:580px"></div>
+          <div class="hm-grid" id="hmGrid" style="grid-template-columns:150px repeat(5,minmax(90px,1fr));gap:5px"></div>
         </div>
         <!-- Detail panel — always same height as grid column -->
         <div id="hmDetail" style="height:100%;overflow-y:auto;box-sizing:border-box">
@@ -1025,7 +1025,13 @@ body.ov-rat-open .ov-rat-panel{right:0}
         </div>
         <div class="eco-card">
           <div class="eco-card-hdr">模型开箱覆盖</div>
-          <div id="ecModel" style="height:160px"></div>
+          <div style="position:relative;height:160px">
+            <div id="ecModel" style="height:100%"></div>
+            <div style="position:absolute;top:52%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;line-height:1">
+              <div style="font-size:22px;font-weight:700;color:#6A67CE;font-family:'JetBrains Mono',monospace">77%</div>
+              <div style="font-size:9px;color:#A1A4AA;font-family:Inter,sans-serif;margin-top:4px">综合覆盖</div>
+            </div>
+          </div>
           <div class="eco-card-body" style="border-top:1px solid var(--border)">
             <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">41/41 · 100%</span></div>
             <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">12/12 · 100%</span></div>
@@ -2317,15 +2323,6 @@ function initOvCharts(){
         textStyle:{color:'#1B2432',fontSize:12,fontFamily:'Inter,sans-serif'},
         formatter:p=>`<div style="font-weight:700;margin-bottom:3px">${p.name}</div><div style="color:#6A67CE;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px">${p.data.pct}%</div>`
       },
-      graphic:[
-        {type:'text',left:'center',top:'30%',
-          style:{text:'77%',fontSize:22,fontWeight:'bold',
-            fill:'#6A67CE',fontFamily:"'JetBrains Mono',monospace",
-            textAlign:'center'}},
-        {type:'text',left:'center',top:'50%',
-          style:{text:'综合覆盖',fontSize:9,fill:'#A1A4AA',
-            fontFamily:'Inter,sans-serif',textAlign:'center'}}
-      ],
       series:[{
         type:'pie',
         radius:['44%','68%'],
