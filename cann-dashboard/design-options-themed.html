@@ -1566,15 +1566,7 @@ el.innerHTML=PAIN_LIST.map(p=>{
 }).join('');
 })();
 
-/* ── NEW: Pain filter for ranked list ── */
-let _activePainCat='all';
-function filterPain(cat,btn){
-  _activePainCat=cat;
-  document.querySelectorAll('.cat-sum-chip').forEach(c=>c.classList.toggle('on',c===btn));
-  document.querySelectorAll('#painRankedList .pain-ranked-item').forEach(item=>{
-    item.style.display=(cat==='all'||item.dataset.cat===cat)?'':'none';
-  });
-}
+/* ── Pain filter: old duplicate removed, handled by applyPainFilter below ── */
 
 
 // ── DATA ──
@@ -2321,14 +2313,20 @@ selScene(0);
 let _activeRole='all', _activeCat='all';
 
 function applyPainFilter(){
-  const items=document.querySelectorAll('.pain-item[data-cat]');
-  const counts={all:0,tool:0,doc:0,api:0,env:0};
-  items.forEach(item=>{
+  // 1. 旅程 tab 的 .pain-item：按角色 + 分类双重过滤（不更新 chip 计数）
+  document.querySelectorAll('.pain-item[data-cat]').forEach(item=>{
     const roles=(item.dataset.roles||'').split(' ');
     const roleOk=_activeRole==='all'||roles.includes(_activeRole);
-    if(roleOk){counts.all++;counts[item.dataset.cat]=(counts[item.dataset.cat]||0)+1;}
     const catOk=_activeCat==='all'||item.dataset.cat===_activeCat;
     item.style.display=(roleOk&&catOk)?'':'none';
+  });
+  // 2. 总览 #painRankedList：chip 计数始终基于该列表全量（与角色无关），显示按 _activeCat 过滤
+  const ranked=document.querySelectorAll('#painRankedList .pain-ranked-item');
+  const counts={all:0,tool:0,doc:0,api:0,env:0};
+  ranked.forEach(item=>{
+    counts.all++;
+    counts[item.dataset.cat]=(counts[item.dataset.cat]||0)+1;
+    item.style.display=(_activeCat==='all'||item.dataset.cat===_activeCat)?'':'none';
   });
   document.querySelectorAll('.cat-sum-chip[data-filter-cat]').forEach(chip=>{
     const n=chip.querySelector('.cat-sum-n');
