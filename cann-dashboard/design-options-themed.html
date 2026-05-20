@@ -997,8 +997,14 @@ body.ov-rat-open .ov-rat-panel{right:0}
             <div class="ov-section-sub">共 30 个活跃痛点 · 按声量排序</div>
           </div>
           <div style="display:flex;gap:8px">
-            <div id="ecCustSmall" style="width:180px;height:80px"></div>
-            <div id="ecPainDistSmall" style="width:180px;height:80px"></div>
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:7px 10px 6px;width:180px">
+              <div style="font-size:9px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">大客户闭环率</div>
+              <div id="ecCustSmall" style="height:88px"></div>
+            </div>
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:7px 10px 6px;width:180px">
+              <div style="font-size:9px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">痛点分布 · 分队</div>
+              <div id="ecPainDistSmall" style="height:88px"></div>
+            </div>
           </div>
         </div>
         <div class="cat-sum-row">
@@ -2247,8 +2253,34 @@ initOvCharts();
 (function(){
   const C={bad:'#E63838',mid:'#FD9A00',ok:'#37C597',blue:'#1AAFD0',dim:'#A1A4AA',border:'#E1E2E4'};
   function tryInit(id,opt){const el=document.getElementById(id);if(!el)return;const ch=echarts.init(el,null,{renderer:'svg'});ch.setOption({...opt,animation:false});}
-  tryInit('ecCustSmall',{grid:{top:4,bottom:4,left:34,right:40,containLabel:false},xAxis:{type:'value',max:100,show:false},yAxis:{type:'category',data:['讯飞','O1','美团','蚂蚁','腾讯','京东'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:9,color:'#898E95'}},series:[{type:'bar',data:[22,28,30,35,38,45],barWidth:6,label:{show:true,position:'right',formatter:'{c}%',fontSize:9,color:'#898E95'},itemStyle:{borderRadius:3,color:(p)=>p.data>=40?'#37C597':p.data>=35?'#FD9A00':'#E63838'}}]});
-  tryInit('ecPainDistSmall',{grid:{top:4,bottom:4,left:8,right:36,containLabel:true},xAxis:{type:'value',show:false},yAxis:{type:'category',data:['工具链','资料','编译器','算子','算子编程'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:9,color:'#898E95'}},series:[{type:'bar',data:[2,4,5,7,12],barWidth:6,label:{show:true,position:'right',formatter:'{c}',fontSize:9,color:'#898E95'},itemStyle:{borderRadius:3,color:'#E63838',opacity:.75}}]});
+  tryInit('ecCustSmall',{
+    grid:{top:2,bottom:2,left:28,right:36,containLabel:false},
+    xAxis:{type:'value',max:100,show:false},
+    yAxis:{type:'category',data:['讯飞','O1','美团','蚂蚁','腾讯','京东'],
+      axisLine:{show:false},axisTick:{show:false},
+      axisLabel:{fontSize:9,color:'#A1A4AA',fontFamily:'Inter,sans-serif'}},
+    series:[{type:'bar',data:[22,28,30,35,38,45],barMaxWidth:7,
+      label:{show:true,position:'right',formatter:p=>`${p.value}%`,
+        fontSize:9,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",
+        color:p=>p.value>=40?'#37C597':p.value>=35?'#FD9A00':'#E63838'},
+      itemStyle:{borderRadius:[0,4,4,0],
+        color:p=>p.value>=40?'#37C597':p.value>=35?'#FD9A00':'#E63838',
+        opacity:.85}}]
+  });
+  tryInit('ecPainDistSmall',{
+    grid:{top:2,bottom:2,left:4,right:28,containLabel:true},
+    xAxis:{type:'value',show:false},
+    yAxis:{type:'category',data:['工具链','资料','编译器','算子','算子编程'],
+      axisLine:{show:false},axisTick:{show:false},
+      axisLabel:{fontSize:9,color:'#A1A4AA',fontFamily:'Inter,sans-serif'}},
+    series:[{type:'bar',data:[2,4,5,7,12],barMaxWidth:7,
+      label:{show:true,position:'right',formatter:'{c}条',
+        fontSize:9,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",
+        color:'#E63838'},
+      itemStyle:{borderRadius:[0,4,4,0],
+        color:{type:'linear',x:0,y:0,x2:1,y2:0,
+          colorStops:[{offset:0,color:'#FC636B'},{offset:1,color:'#E63838'}]}}}]
+  });
 })();
 
 </script>
