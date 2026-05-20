@@ -257,6 +257,128 @@
     wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
+  // ── AI Glow + Cursor ──
+  function _activateGlow(on) {
+    document.getElementById('ai-glow-frame').classList.toggle('active', on);
+  }
+
+  function _showAiCursor(nodeIdx, label) {
+    const cursor = document.getElementById('ai-edit-cursor');
+    document.getElementById('ai-edit-cursor-label').textContent = label || 'AI 正在编辑';
+    cursor.classList.remove('hidden');
+    const rows = document.querySelectorAll('#ipe-nodes .pg-node-row');
+    const target = rows[nodeIdx];
+    if (target) {
+      const r = target.getBoundingClientRect();
+      cursor.style.top  = (r.top  + window.scrollY + r.height / 2 - 16) + 'px';
+      cursor.style.left = (r.left + window.scrollX - 140) + 'px';
+    }
+  }
+
+  function _hideAiCursor() {
+    document.getElementById('ai-edit-cursor').classList.add('hidden');
+  }
+
+  function _aiTouchNode(nodeIdx) {
+    const rows = document.querySelectorAll('#ipe-nodes .pg-node-row');
+    const row = rows[nodeIdx];
+    if (!row) return;
+    row.classList.remove('ai-touching');
+    void row.offsetWidth; // reflow to restart animation
+    row.classList.add('ai-touching');
+    setTimeout(() => row.classList.remove('ai-touching'), 800);
+  }
+
+  // ── AI Path Editing Mode ──
+  async function _aiPathEditMode(instruction) {
+    _activateGlow(true);
+    _showAiCursor(0, 'AI 正在思考…');
+
+    const currentList = _ipNodes.map((n, i) => `${i}. ${n.title}`).join('\n');
+    const nodePoolStr = NODE_LIST.map((n, i) => `${i}|${n.title}|${n.desc}`).join('\n');
+
+    let result = null;
+    try {
+      const resp = await fetch(AI_WORKER_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: `你是 CANN 学习路径编辑助手。当前路径节点（序号. 标题）：\n${currentList}\n\n节点资源库（序号|标题|描述）：\n${nodePoolStr}\n\n根据用户指令返回JSON，格式：{"reply":"回复文本","ops":[...]}。ops每项是以下之一：\n{"type":"remove","index":N} 删除第N个节点\n{"type":"move","from":N,"to":N} 移动位置\n{"type":"add","poolIndex":N,"after":N} 从资源库插入节点，after是插在哪个节点后（-1=最前）\n{"type":"update","index":N,"reason":"新描述"} 更新节点说明\n{"type":"none"} 纯回复不修改路径\n如无需修改路径则ops:[]。只输出JSON。`,
+          user: instruction,
+          max_tokens: 500,
+        })
+      });
+      const data = await resp.json();
+      try { result = JSON.parse((data.text || '{}').replace(/```json|```/g, '').trim()); } catch(e) {}
+    } catch(e) {}
+
+    if (!result) result = { reply: '好的，收到你的意见！', ops: [] };
+
+    // Apply operations with animations
+    const ops = result.ops || [];
+    if (ops.length > 0) {
+      for (let i = 0; i < ops.length; i++) {
+        const op = ops[i];
+        await _aiApplyOp(op);
+        await _sleep(400);
+      }
+    }
+
+    _aiAddBot(result.reply || '已完成修改。');
+    _activateGlow(false);
+    _hideAiCursor();
+  }
+
+  function _sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  async function _aiApplyOp(op) {
+    if (op.type === 'remove') {
+      const idx = op.index;
+      if (idx < 0 || idx >= _ipNodes.length) return;
+      _showAiCursor(idx, 'AI 正在移除…');
+      _aiTouchNode(idx);
+      await _sleep(600);
+      const rows = document.querySelectorAll('#ipe-nodes .pg-node-row');
+      if (rows[idx]) {
+        rows[idx].classList.add('ai-removing');
+        await _sleep(500);
+      }
+      _ipNodes.splice(idx, 1);
+      ipeRenderNodes();
+
+    } else if (op.type === 'move') {
+      const from = op.from, to = op.to;
+      if (from === to || from < 0 || to < 0 || from >= _ipNodes.length || to >= _ipNodes.length) return;
+      _showAiCursor(from, 'AI 正在移动…');
+      _aiTouchNode(from);
+      await _sleep(700);
+      const moved = _ipNodes.splice(from, 1)[0];
+      _ipNodes.splice(to, 0, moved);
+      ipeRenderNodes();
+      _showAiCursor(to, 'AI 已移动');
+
+    } else if (op.type === 'add') {
+      const poolIdx = op.poolIndex;
+      const after   = op.after !== undefined ? op.after : _ipNodes.length - 1;
+      if (poolIdx < 0 || poolIdx >= NODE_LIST.length) return;
+      const pos = Math.min(after + 1, _ipNodes.length);
+      const newNode = { ...NODE_LIST[poolIdx], known: false, collapsed: false };
+      _ipNodes.splice(pos, 0, newNode);
+      ipeRenderNodes();
+      _showAiCursor(pos, 'AI 已添加');
+      const rows = document.querySelectorAll('#ipe-nodes .pg-node-row');
+      if (rows[pos]) rows[pos].classList.add('ai-added');
+
+    } else if (op.type === 'update') {
+      const idx = op.index;
+      if (idx < 0 || idx >= _ipNodes.length) return;
+      _showAiCursor(idx, 'AI 正在更新…');
+      _aiTouchNode(idx);
+      await _sleep(600);
+      if (op.reason) _ipNodes[idx].reason = op.reason;
+      ipeRenderNodes();
+    }
+  }
+
   function openAiForPath(prefill) {
     showPage('learn');
     setTimeout(() => {
@@ -439,6 +561,12 @@
     if (_aiPathMode && _aiPathState === 'clarifying') {
       _aiAddUser(msg);
       _aiPathHandleClarify(msg);
+      return;
+    }
+    // Route to path editing when a path has been generated
+    if (_aiPathMode && _aiPathState === 'editing') {
+      _aiAddUser(msg);
+      _aiPathEditMode(msg);
       return;
     }
 
