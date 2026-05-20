@@ -557,6 +557,15 @@
     input.value = '';
     document.getElementById('ai-chips').innerHTML = '';
 
+    // Guided demo trigger
+    const _DEMO_KW = ['演示', '导览', '怎么用', '如何使用', '介绍一下', '带我了解', '平台功能'];
+    if (_DEMO_KW.some(k => msg.includes(k)) && !_demoRunning) {
+      _aiAddUser(msg);
+      _openSidebar();
+      _runDemo('platform');
+      return;
+    }
+
     // Route to path generation conversation when in path mode
     if (_aiPathMode && _aiPathState === 'clarifying') {
       _aiAddUser(msg);
@@ -3396,4 +3405,119 @@ def vector_add_tik(shape, dtype, kernel_name):
       openLearningArchive('paths');
     }, 800);
   }
+
+  // ── GUIDED DEMO ──
+  let _demoRunning = false;
+
+  const DEMO_TOURS = {
+    platform: [
+      { type: 'msg',    text: '好的！让我来带你了解 CANN 学习平台的主要功能，跟着我的光标走～' },
+      { type: 'moveTo', sel: '#nav-learn',              label: '前往学习页' },
+      { type: 'click',  sel: '#nav-learn',              fn: () => showPage('learn') },
+      { type: 'wait',   ms: 700 },
+      { type: 'msg',    text: '这是「学习」页面，包含 11 个系统化的 CANN 知识节点，从基础入门到分布式训练都有覆盖。' },
+      { type: 'moveTo', sel: '.rm-node',                label: '点击知识节点' },
+      { type: 'click',  sel: '.rm-node' },
+      { type: 'wait',   ms: 900 },
+      { type: 'msg',    text: '点击节点会展开详细介绍、参考文档与视频资源，还能让 AI 来解答疑问。' },
+      { type: 'moveTo', sel: '.top-tab:nth-child(3)',   label: '切换自定义标签' },
+      { type: 'click',  sel: '.top-tab:nth-child(3)' },
+      { type: 'wait',   ms: 600 },
+      { type: 'msg',    text: '「自定义」标签让你用自然语言描述开发目标，AI 会生成专属的学习路径，并可随时对话调整。' },
+      { type: 'moveTo', sel: '#nav-docs',               label: '前往文档页' },
+      { type: 'click',  sel: '#nav-docs',               fn: () => showPage('docs') },
+      { type: 'wait',   ms: 700 },
+      { type: 'msg',    text: '「文档」页包含 AscendCL、TBE、HCCL 等完整 API 参考和场景化教程，支持搜索与在线沙盒运行。' },
+      { type: 'moveTo', sel: '.btn-ask-ai',             label: '唤起 AI 助手' },
+      { type: 'click',  sel: '.btn-ask-ai',             fn: () => _openSidebar() },
+      { type: 'wait',   ms: 400 },
+      { type: 'done',   text: '演示完毕！你已了解平台的核心功能。随时在这里提问，我会帮你解答任何 CANN 相关问题 🎉' },
+    ]
+  };
+
+  async function _runDemo(tourKey) {
+    if (_demoRunning) return;
+    _demoRunning = true;
+    _activateGlow(true);
+    document.getElementById('ai-title-text').textContent = 'AI 引导演示中';
+    const steps = DEMO_TOURS[tourKey] || [];
+    for (const step of steps) {
+      await _demoExecStep(step);
+    }
+    _activateGlow(false);
+    _hideAiCursor();
+    document.getElementById('ai-title-text').textContent = 'CANN 智能助手';
+    _demoRunning = false;
+  }
+
+  async function _demoExecStep(step) {
+    switch (step.type) {
+      case 'msg': {
+        _aiAddBot(step.text);
+        await _sleep(Math.min(step.text.length * 28 + 300, 2200));
+        break;
+      }
+      case 'moveTo': {
+        const el = document.querySelector(step.sel);
+        if (!el) break;
+        _showAiCursorAtEl(el, step.label || 'AI');
+        await _sleep(650);
+        break;
+      }
+      case 'click': {
+        const el = document.querySelector(step.sel);
+        if (!el) break;
+        _showAiCursorAtEl(el, '点击中…');
+        await _sleep(280);
+        _showClickRipple();
+        _highlightEl(el);
+        if (step.fn) step.fn();
+        else el.click();
+        await _sleep(180);
+        break;
+      }
+      case 'wait': {
+        await _sleep(step.ms || 500);
+        break;
+      }
+      case 'done': {
+        _hideAiCursor();
+        _aiAddBot(step.text);
+        break;
+      }
+    }
+  }
+
+  function _showAiCursorAtEl(el, label) {
+    const rect = el.getBoundingClientRect();
+    const cursor = document.getElementById('ai-edit-cursor');
+    document.getElementById('ai-edit-cursor-label').textContent = label;
+    cursor.classList.remove('hidden');
+    // Center cursor over element (cursor is fixed, use viewport coords directly)
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    const cW = 170, cH = 34;
+    const left = Math.max(8, Math.min(cx - cW / 2, window.innerWidth  - cW - 8));
+    const top  = Math.max(8, Math.min(cy - cH / 2, window.innerHeight - cH - 8));
+    cursor.style.left = left + 'px';
+    cursor.style.top  = top  + 'px';
+  }
+
+  function _showClickRipple() {
+    const cursor = document.getElementById('ai-edit-cursor');
+    const rect = cursor.getBoundingClientRect();
+    const ripple = document.createElement('div');
+    ripple.className = 'ai-cursor-ripple';
+    ripple.style.left = (rect.left + rect.width  / 2) + 'px';
+    ripple.style.top  = (rect.top  + rect.height / 2) + 'px';
+    document.body.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 700);
+  }
+
+  function _highlightEl(el) {
+    el.classList.add('demo-highlight');
+    setTimeout(() => el.classList.remove('demo-highlight'), 900);
+  }
+
+  function _sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
