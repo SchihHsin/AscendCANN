@@ -404,7 +404,7 @@ html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);backgro
 .radar-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .radar-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;flex:1}
 .radar-worst{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--coral-light);color:var(--coral-dark)}
-.radar-body{display:flex;align-items:stretch;gap:0}
+.radar-body{display:flex;align-items:start;gap:0}
 .chart-col{flex:1;min-width:0;padding-right:18px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
 .radar-col{flex:1;min-width:0;padding-left:18px;display:flex;align-items:center;gap:12px}
 .col-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em}
@@ -764,7 +764,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
           <span style="font-size:11px;color:var(--text-3)">高</span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:stretch">
+      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:start">
         <!-- Grid -->
         <div style="min-width:0;overflow:auto">
           <div class="hm-grid" id="hmGrid" style="grid-template-columns:110px repeat(5,1fr);gap:5px;min-width:520px"></div>
@@ -787,14 +787,19 @@ body.ov-rat-open .ov-rat-panel{right:0}
         <div class="layer-hdr-line"></div>
       </div>
       <div class="ov-section" data-roles="op infra pm doc ux comm">
+        <!-- 标题行 -->
         <div class="ov-section-hdr">
           <div>
             <div class="ov-section-title">客户痛点 · 优先级排行</div>
             <div class="ov-section-sub">共 30 个活跃痛点 · 按声量排序</div>
           </div>
-          <div style="display:flex;gap:8px">
-            <!-- 痛点闭环率 mini bar -->
-            <div style="width:164px;border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
+        </div>
+        <!-- 左右布局：左=两个图竖排，右=筛选+列表 -->
+        <div style="display:flex;gap:14px;align-items:flex-start">
+          <!-- 左：两个 mini bar chart 竖向堆叠 -->
+          <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;width:160px">
+            <!-- 痛点闭环率 -->
+            <div style="border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
               <div style="font-size:9px;font-weight:700;color:var(--text-3);padding:4px 8px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.04em">痛点闭环率</div>
               <div style="padding:3px 0">
                 <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;font-weight:700;color:var(--text);width:20px;flex-shrink:0">京东</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:45%;height:100%;background:linear-gradient(90deg,var(--green-core),var(--green-dark));border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--green-dark);width:26px;text-align:right;font-family:'JetBrains Mono',monospace">45%</span></div>
@@ -804,8 +809,8 @@ body.ov-rat-open .ov-rat-panel{right:0}
                 <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;font-weight:700;color:var(--text);width:20px;flex-shrink:0">O1</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:28%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--coral-dark);width:26px;text-align:right;font-family:'JetBrains Mono',monospace">28%</span></div>
               </div>
             </div>
-            <!-- 痛点分布 mini bar -->
-            <div style="width:164px;border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
+            <!-- 痛点分布 -->
+            <div style="border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
               <div style="font-size:9px;font-weight:700;color:var(--text-3);padding:4px 8px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.04em">痛点分布 · 分队</div>
               <div style="padding:3px 0">
                 <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;color:var(--text-2);width:44px;flex-shrink:0;white-space:nowrap">算子编程</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));opacity:.8;border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--text);width:14px;text-align:right;font-family:'JetBrains Mono',monospace">12</span></div>
@@ -816,15 +821,18 @@ body.ov-rat-open .ov-rat-panel{right:0}
               </div>
             </div>
           </div>
+          <!-- 右：分类筛选 + 痛点列表 -->
+          <div style="flex:1;min-width:0">
+            <div class="cat-sum-row">
+              <span class="cat-sum-chip all on" data-filter-cat="all" onclick="filterPain('all',this)">全部 <span class="cat-sum-n">6</span></span>
+              <span class="cat-sum-chip tool" data-filter-cat="tool" onclick="filterPain('tool',this)">工具类 <span class="cat-sum-n">2</span></span>
+              <span class="cat-sum-chip doc" data-filter-cat="doc" onclick="filterPain('doc',this)">文档类 <span class="cat-sum-n">2</span></span>
+              <span class="cat-sum-chip api" data-filter-cat="api" onclick="filterPain('api',this)">API 类 <span class="cat-sum-n">1</span></span>
+              <span class="cat-sum-chip env" data-filter-cat="env" onclick="filterPain('env',this)">环境类 <span class="cat-sum-n">1</span></span>
+            </div>
+            <div class="pain-ranked-list" id="painRankedList"></div>
+          </div>
         </div>
-        <div class="cat-sum-row">
-          <span class="cat-sum-chip all on" data-filter-cat="all" onclick="filterPain('all',this)">全部 <span class="cat-sum-n">6</span></span>
-          <span class="cat-sum-chip tool" data-filter-cat="tool" onclick="filterPain('tool',this)">工具类 <span class="cat-sum-n">2</span></span>
-          <span class="cat-sum-chip doc" data-filter-cat="doc" onclick="filterPain('doc',this)">文档类 <span class="cat-sum-n">2</span></span>
-          <span class="cat-sum-chip api" data-filter-cat="api" onclick="filterPain('api',this)">API 类 <span class="cat-sum-n">1</span></span>
-          <span class="cat-sum-chip env" data-filter-cat="env" onclick="filterPain('env',this)">环境类 <span class="cat-sum-n">1</span></span>
-        </div>
-        <div class="pain-ranked-list" id="painRankedList"></div>
       </div>
     </div><!-- /客户痛点 -->
 
@@ -836,7 +844,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
         <div class="layer-hdr-line"></div>
       </div>
       <!-- VOD 图表 + 卡片左右布局 -->
-      <div style="display:flex;gap:14px;align-items:stretch">
+      <div style="display:flex;gap:14px;align-items:start">
         <!-- 左：柱状图 -->
         <div style="width:260px;flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden;display:flex;flex-direction:column">
           <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:800;letter-spacing:-.01em;flex-shrink:0">高频 VOD 声量排行</div>
@@ -1150,7 +1158,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
           <span style="font-size:11px;color:var(--text-3)">高</span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:stretch">
+      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:start">
         <!-- Heatmap grid -->
         <div style="min-width:0;overflow:auto">
           <div id="tpHeatGrid" style="display:grid;grid-template-columns:110px repeat(4,1fr) 64px;gap:5px;min-width:480px"></div>
@@ -1439,6 +1447,17 @@ function showHmDetail(ri,ci){
       const bg=heatColor(score),col=textColor(score);
       grid.innerHTML+=`<div class="hm-cell" data-ri="${ri}" data-ci="${ci}" onclick="showHmDetail(${ri},${ci})" style="background:${bg};color:${col}"><div class="cv">${cell.t}</div></div>`;
     });
+  });
+  // align detail panel with data cells (below header row)
+  requestAnimationFrame(()=>{
+    const hdr=grid.querySelector('.hm-header');
+    const det=document.getElementById('hmDetail');
+    if(hdr&&det){
+      const off=hdr.offsetHeight+5;
+      det.style.marginTop=off+'px';
+      det.style.height=(grid.offsetHeight-off)+'px';
+      det.style.overflow='auto';
+    }
   });
 })();
 
@@ -2211,6 +2230,20 @@ function unhlRat(){
 // ── INIT ──
 renderList();
 renderTpMatrix();
+// align tpDetail with data cells (below header row)
+requestAnimationFrame(()=>{
+  const grid=document.getElementById('tpHeatGrid');
+  const det=document.getElementById('tpDetail');
+  if(grid&&det){
+    const hdr=grid.firstElementChild;
+    if(hdr){
+      const off=hdr.offsetHeight+5;
+      det.style.marginTop=off+'px';
+      det.style.height=(grid.offsetHeight-off)+'px';
+      det.style.overflow='auto';
+    }
+  }
+});
 selScene(0);
 
 let _activeRole='all', _activeCat='all';
