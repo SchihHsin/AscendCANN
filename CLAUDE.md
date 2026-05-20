@@ -14,18 +14,24 @@
 
 ```
 AscendCANN/
-├── CLAUDE.md                   ← 本文件（自动维护）
+├── CLAUDE.md                        ← 本文件（自动维护）
 ├── CANNlogo.png
 ├── Ascendlogo.svg
 └── cann-dashboard/
-    ├── analysis.html           ← UX 分析文档（封面 + 13 章节，v0.4）
-    ├── style.css               ← 分析文档样式
-    ├── script.js               ← 分析文档交互逻辑
-    ├── design-options.html     ← 新看板（单文件，模拟数据，~1960 行）
-    ├── ascendc-agent-main/     ← Agentic 算子评测系统（已分析，原作者有 NPU）
-    ├── backend-context.md      ← 后端上下文
-    ├── context.md              ← 旧上下文文件（内容已迁移至此，保留备查）
-    └── process-log.md          ← 协作过程记录
+    ├── analysis.html                ← UX 分析文档（封面 + 13 章节，v0.4）
+    ├── style.css                    ← 分析文档样式
+    ├── script.js                    ← 分析文档交互逻辑
+    ├── design-options-themed.html   ← 主工作文件（单文件，模拟数据，~2800 行）
+    ├── design-options.html          ← 旧版看板（已停用，保留备查）
+    ├── ascendc-agent-main/          ← Agentic 算子评测系统（已分析，原作者有 NPU）
+    ├── asana-skill/                 ← AscendOps 视觉规范参考文件
+    │   ├── SKILL.md
+    │   ├── ascendops-experience.html
+    │   ├── components.md
+    │   └── tokens.md
+    ├── backend-context.md           ← 后端上下文
+    ├── context.md                   ← 旧上下文（内容已迁移至此，保留备查）
+    └── process-log.md               ← 协作过程记录
 ```
 
 ---
@@ -58,7 +64,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 ---
 
-## 当前进度（2026-05-20，本会话更新）
+## 当前进度（2026-05-21，本会话更新）
 
 ### 已完成
 
@@ -296,7 +302,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 - **PyTorch API 支持度卡片**：雷达图移至左侧（140×140），5 个维度数据行（色点+名称+进度条+数值）移至右侧，与模型开箱覆盖卡片布局一致
 
-#### Commits（本会话）
+#### Commits（上一会话）
 
 | commit | 内容 |
 |--------|------|
@@ -310,3 +316,48 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 | `eddf1a1` | 柱状图居中修复（去 containLabel，固定对称边距） |
 | `7e04cd9` | 柱颜色对应图标背景 + 柱高拉伸 |
 | `7a69baf` | 柱颜色改为严重度渐变 + 上下居中 + 高度充满容器 |
+
+### 2026-05-21（本会话）
+
+#### Bug 修复
+
+- **S0–S5 节点点击显示内容都是 S0**：`#journeyStageDetail` 上方有一个写死"S0 最弱环节"文字的静态 `.journey-alert`，用户看到的是它而非动态面板，已删除
+- **用户旅程 tab 切换后有时滚到底部**：`switchTab()` 未重置滚动位置，已加 `window.scrollTo({top:0})`
+- **`jumpToJourney` 不切换 tab 直接选场景**：现在先调 `switchTab('dev',...)` 再 `selScene()`
+- **刷新后总览页定位到中部**：浏览器 scroll restoration 导致，已在 `<script>` 顶部加 `history.scrollRestoration='manual'` + `window.scrollTo(0,0)`
+- **生态增益 S0–S5 默认无选中态**：加页面初始化调用 `selectStage('S0', firstEl)`，默认选中并渲染 S0 详情
+
+#### 视觉改动
+
+- **PyTorch 雷达图顶点颜色**：由多色改为同色系紫色深浅（高分→深紫 `#4F4DA7`，低分→浅紫 `#C4AAFF`），尺寸同步缩放；右列图例颜色同步更新
+- **用户旅程 5 维雷达图**：`radarSvg()` 的顶点颜色改为同款紫色深浅，图例 `clrDim` 函数同步；`.radar-body` gap 从 0 改为 12px，让"评测趋势"和"五维诊断"两卡片有间距
+- **Agent 步骤改为竖向时间轴**：每个旅程环节左侧有彩色圆点（显示评分数字，颜色按 bad/mid/ok）+ 竖线连接下一步，最后一步无竖线；步骤名从左侧独立列移入内容区作为 header
+
+#### 新功能
+
+- **asana-skill/ 目录 push 至远程**：包含 SKILL.md、ascendops-experience.html、components.md、tokens.md
+
+#### 关键 CSS/JS 变更
+
+| 位置 | 变更 |
+|------|------|
+| `.radar-body` | `gap:0` → `gap:12px` |
+| `radarSvg()` | 顶点颜色改为 `purpleClr(v)` 深浅紫函数 |
+| `clrDim` | 改为紫色深浅映射，与雷达图一致 |
+| `.step-tl-*` 系列 CSS | 新增 timeline 布局类 |
+| agent panel 渲染 JS | `agent-step-row` 改为 `step-tl-item`，增加 `.step-tl-node`（圆点+竖线）+ `.step-tl-body` |
+| `switchTab()` | 末尾加 `window.scrollTo({top:0})` |
+| `jumpToJourney()` | 先 `switchTab('dev',...)` 再 `selScene()` |
+| `selectStage()` | 页面初始化时自动调用，默认选中 S0 |
+
+#### Commits（本会话）
+
+| commit | 内容 |
+|--------|------|
+| `fac03d0` | SVG雷达图按分数着色+尺寸;S0-S5点击详情;去左描边;右列padding20px;角色→痛点tab联动 |
+| `bfc8680` | 删除写死 S0 的静态 journey-alert |
+| `8f001a6` | 雷达图改深浅紫色系;switchTab滚顶;jumpToJourney先切tab |
+| `dace249` | 雷达图紫色深浅;两卡片gap12px;刷新滚顶;图例色同步 |
+| `f68ad8d` | agent步骤改为竖向时间轴，圆点+连线，颜色按评分cls |
+| `2e2a157` | add asana-skill reference files |
+| `839c432` | 生态增益旅程步骤默认选中并显示S0详情 |
