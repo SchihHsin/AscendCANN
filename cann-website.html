@@ -71,7 +71,10 @@
   </div>
   <div class="ai-messages" id="ai-messages">
     <div class="ai-msg bot">
-      您好！我是 CANN 智能助手。您可以问我关于 AscendCL 编程、TBE 算子开发或 ATC 模型转换的任何问题。
+      您好！我是 CANN 智能助手。可以回答 AscendCL、TBE 算子开发、ATC 模型转换等问题，也可以帮你生成专属学习路径。
+      <div style="margin-top:10px;">
+        <button class="ai-demo-chip" onclick="sendAiMessage('演示')">✦ 平台功能导览</button>
+      </div>
     </div>
   </div>
   <div class="ai-chips" id="ai-chips"></div>
@@ -264,6 +267,12 @@
       </div>
       <h1>昇腾 AI 异构<br>计算<span class="grad-text">开发平台</span></h1>
       <p>CANN（Compute Architecture for Neural Networks）是华为针对 AI 场景推出的异构计算架构，全面支持昇腾 NPU，为 AI 应用开发者提供从算子开发到网络部署的完整工具链。</p>
+      <div class="hero-demo-row">
+        <button class="hero-demo-btn" onclick="openAiSidebarAndSend('演示')">
+          <span class="hero-demo-dot"></span>
+          ✦ 平台功能导览
+        </button>
+      </div>
       <div class="suggest-tags" id="hero-mode-tabs">
         <a class="suggest-tag" onclick="selectHeroMode(this, 'solve')">
           <div class="mode-icon">
