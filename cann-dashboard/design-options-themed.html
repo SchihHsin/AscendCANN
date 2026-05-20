@@ -151,20 +151,19 @@ html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);backgro
 
 /* ── HEALTH MATRIX (AscendOps heatmap style) ── */
 .hm-wrap{overflow:hidden}
-.hm-grid{display:grid;grid-template-columns:120px repeat(5,1fr);gap:5px;margin-top:4px}
-.hm-header{font-size:10px;font-weight:700;color:var(--text-3);text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em}
+.hm-grid{display:grid;grid-template-columns:160px repeat(5,1fr);gap:6px;margin-top:4px}
+.hm-header{font-size:11px;font-weight:700;color:var(--text-3);text-align:center;padding:8px 4px;text-transform:uppercase;letter-spacing:.04em}
 .hm-header.first{text-align:left;padding-left:4px}
-.hm-row-label{display:flex;flex-direction:column;justify-content:center;padding:0 4px;font-size:12px;font-weight:700;color:var(--text)}
-.hm-row-label small{font-size:9.5px;font-weight:500;color:var(--text-3);margin-top:1px}
+.hm-row-label{display:flex;flex-direction:column;justify-content:center;padding:0 4px;font-size:13px;font-weight:700;color:var(--text)}
+.hm-row-label small{font-size:10px;font-weight:500;color:var(--text-3);margin-top:2px}
 .hm-cell{
-  border-radius:8px;height:38px;
+  border-radius:10px;aspect-ratio:2.4/1;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .15s;border:2px solid transparent;
+  cursor:pointer;transition:all .15s;
 }
-.hm-cell:hover{transform:scale(1.05);z-index:2;box-shadow:0 4px 14px rgba(106,103,206,.22)}
-.hm-cell.hm-sel,.hm-cell.tp-heat-sel{border-color:var(--primary);box-shadow:0 0 0 3px rgba(106,103,206,.15);transform:scale(1.06)}
-.hm-cell .cv,.tp-heat-cell .cv{font-size:13px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono',monospace}
-.hm-cell .ct,.tp-heat-cell .ct{font-size:9px;font-weight:600;opacity:.7;margin-top:1px}
+.hm-cell:hover{transform:scale(1.04);z-index:2;box-shadow:0 6px 16px rgba(106,103,206,.22)}
+.hm-cell .cv{font-size:18px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono','PingFang SC',sans-serif}
+.hm-cell .ct{font-size:10.5px;font-weight:600;opacity:.7;margin-top:1px}
 .hm-legend{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:11px;color:var(--text-3);font-weight:500;justify-content:flex-end}
 .hm-grad{height:8px;width:120px;border-radius:4px;background:linear-gradient(90deg,#FEEFF0 0%,#FFB6C8 35%,#FFE87F 55%,#EBFCF7 80%,#9DFBE8 100%)}
 
@@ -341,7 +340,7 @@ html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);backgro
 .sort-toggle{display:flex;border:1px solid var(--border-2);border-radius:8px;overflow:hidden;flex-shrink:0;background:#fff}
 .sort-btn{font-size:10px;font-weight:600;padding:4px 10px;border:none;background:#fff;color:var(--text-2);cursor:pointer;font-family:inherit;transition:all .12s;white-space:nowrap}
 .sort-btn.on{background:var(--primary);color:#fff}
-.sc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);padding:0;cursor:pointer;transition:all .2s;position:relative;width:calc(25% - 8px);min-width:180px;box-sizing:border-box;overflow:hidden}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);padding:0;cursor:pointer;transition:all .2s;position:relative;width:100%;box-sizing:border-box;overflow:hidden}
 .sc:hover{transform:translateY(-2px);border-color:var(--purple-med);box-shadow:var(--shadow-pop)}
 .sc.sel{border-color:var(--primary)!important;box-shadow:0 0 0 2px rgba(106,103,206,.2)}
 .sc-top{padding:12px 14px 10px;display:flex;align-items:flex-start;gap:8px}
@@ -404,7 +403,7 @@ html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);backgro
 .radar-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .radar-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;flex:1}
 .radar-worst{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--coral-light);color:var(--coral-dark)}
-.radar-body{display:flex;align-items:stretch;gap:0}
+.radar-body{display:flex;align-items:stretch;gap:12px}
 .chart-col{flex:1;min-width:0;padding-right:18px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
 .radar-col{flex:1;min-width:0;padding-left:18px;display:flex;align-items:center;gap:12px}
 .col-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em}
@@ -647,9 +646,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
 
 /* ── AscendOps v4 additions ── */
 /* tp-heat-cell hover */
-.tp-heat-cell{border-radius:8px;height:38px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;border:2px solid transparent}
-.tp-heat-cell:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(106,103,206,.22);z-index:2}
-.tp-heat-cell.tp-heat-sel{border-color:var(--primary);box-shadow:0 0 0 3px rgba(106,103,206,.15);transform:scale(1.06)}
+.tp-heat-cell:hover{transform:scale(1.05);box-shadow:0 6px 18px rgba(106,103,206,.22);z-index:2}
 /* ov-section layout helper */
 .ov-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:22px 24px}
 .ov-section-title{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.01em}
@@ -663,7 +660,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
 /* scene list sidebar */
 .scene-list{display:flex;flex-direction:column;gap:0}
 /* sc card full-width in sidebar */
-#sceneListCards .sc{width:calc(25% - 8px)!important;min-width:180px}
+#sceneListCards .sc{width:100%!important}
 /* scene name follow pastel */
 .sc:nth-child(4n+1) .sc-name{color:#179D8A}
 .sc:nth-child(4n+2) .sc-name{color:#FD9A00}
@@ -727,25 +724,21 @@ body.ov-rat-open .ov-rat-panel{right:0}
         <div class="glass">
           <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>综合健康评分</div>
           <div class="glass-num mid">72<small>/100</small></div>
-          <div id="ecKpi0" style="height:34px;margin:4px 0 2px"></div>
           <div class="glass-foot"><span class="chip dn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>−3</span><span class="glass-foot-txt">vs 上期</span></div>
         </div>
         <div class="glass">
           <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>严重问题</div>
           <div class="glass-num bad">3<small>个</small></div>
-          <div id="ecKpi1" style="height:34px;margin:4px 0 2px"></div>
           <div class="glass-foot"><span class="chip dn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>+1</span><span class="glass-foot-txt">较上期</span></div>
         </div>
         <div class="glass">
           <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>痛点闭环率</div>
           <div class="glass-num mid">38<small>%</small></div>
-          <div id="ecKpi2" style="height:34px;margin:4px 0 2px"></div>
           <div class="glass-foot"><span class="chip up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>+6%</span><span class="glass-foot-txt">vs 上期</span></div>
         </div>
         <div class="glass">
           <div class="glass-label"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>本期改善 · 已验收</div>
           <div class="glass-num ok">9<small>条</small></div>
-          <div id="ecKpi3" style="height:34px;margin:4px 0 2px"></div>
           <div class="glass-foot"><span class="chip neu">共 30 条</span><span class="glass-foot-txt">活跃痛点</span></div>
         </div>
       </div>
@@ -758,99 +751,120 @@ body.ov-rat-open .ov-rat-panel{right:0}
           <div class="ov-section-title">体验健康矩阵</div>
           <div class="ov-section-sub">三类证据交叉定位 · Agent评分 / 客户痛点 / VOD声量</div>
         </div>
+      </div>
+      <div class="hm-wrap">
+        <div class="hm-grid" id="hmGrid">
+          <!-- rendered by JS -->
+        </div>
         <div class="hm-legend">
-          <span style="font-size:11px;color:var(--text-3)">低</span>
-          <div class="hm-grad"></div>
-          <span style="font-size:11px;color:var(--text-3)">高</span>
+          <span>低</span><div class="hm-grad"></div><span>高</span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:start">
-        <!-- Grid -->
-        <div style="min-width:0;overflow:auto">
-          <div class="hm-grid" id="hmGrid" style="grid-template-columns:110px repeat(5,1fr);gap:5px;min-width:520px"></div>
+    </div>
+
+    <!-- ══ 技术内核 ══ -->
+    <div class="layer-sec" data-roles="op infra pm">
+      <div class="layer-hdr">
+        <span class="layer-badge core">技术内核</span>
+        <span class="layer-hdr-title">压榨硬件极致性能，提供稳定高效的底层能力</span>
+        <div class="layer-hdr-line"></div>
+      </div>
+      <div class="eco-three-col">
+        <div class="eco-card">
+          <div class="eco-card-hdr">PyTorch API 支持度</div>
+          <div id="ecPyTorch" style="height:160px"></div>
+          <div class="eco-card-body" style="border-top:1px solid var(--border)">
+            <div class="eco-row"><span class="eco-row-lbl">Core test 通过率</span><span class="eco-row-val ok">85.4% ↑+2.1%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">算子 API 覆盖</span><span class="eco-row-val ok">92%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">通信 API 覆盖</span><span class="eco-row-val mid">78%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">框架 API 覆盖</span><span class="eco-row-val mid">71%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">工具 API 覆盖</span><span class="eco-row-val ok">88%</span></div>
+          </div>
         </div>
-        <!-- Detail panel -->
-        <div id="hmDetail">
-          <div style="padding:28px 16px;text-align:center;color:var(--text-3);font-size:11.5px;background:var(--g1);border:1px dashed var(--border);border-radius:var(--radius-m);line-height:1.9">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--purple-med)" stroke-width="1.5" style="display:block;margin:0 auto 8px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/></svg>
-            点击矩阵格子<br>查看详细观测
+        <div class="eco-card">
+          <div class="eco-card-hdr">模型开箱覆盖</div>
+          <div id="ecModel" style="height:160px"></div>
+          <div class="eco-card-body" style="border-top:1px solid var(--border)">
+            <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">41/41 · 100%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">12/12 · 100%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">VLLM 框架迁移</span><span class="eco-row-val mid">12/15 · 78%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">SGLang 框架迁移</span><span class="eco-row-val mid">5/8 · 65%</span></div>
+            <div class="eco-row"><span class="eco-row-lbl">VERL 框架迁移</span><span class="eco-row-val bad">3/7 · 42%</span></div>
+          </div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-card-hdr">0 Day 高影响力发布</div>
+          <div class="eco-card-body">
+            <div class="eco-row"><span class="eco-row-lbl">Deepseek V4 Pro</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div></div>
+            <div class="eco-row"><span class="eco-row-lbl">Deepseek V4 Flash</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div></div>
+            <div class="eco-row"><span class="eco-row-lbl">Kimi K2 Thinking</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag e2e">E2E</span></div></div>
+            <div class="eco-row"><span class="eco-row-lbl">Deepseek V3.2</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span><span class="eco-tag e2e">E2E</span></div></div>
+            <div class="eco-row"><span class="eco-row-lbl">Longcat</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span></div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ══ 客户痛点 ══ -->
-    <div class="layer-sec" data-roles="op infra pm doc ux comm">
+    <!-- ══ 开发界面 ══ -->
+    <div class="layer-sec" data-roles="ux op">
       <div class="layer-hdr">
-        <span class="layer-badge" style="background:var(--coral-light);color:var(--coral-dark)">客户痛点</span>
-        <span class="layer-hdr-title">大客户反馈 · 优先级排行 · 分类过滤</span>
+        <span class="layer-badge dev">开发界面</span>
+        <span class="layer-hdr-title">降低开发者认知负担，将硬件能力翻译为兼容生态习惯的开发体验</span>
         <div class="layer-hdr-line"></div>
       </div>
-      <div class="ov-section" data-roles="op infra pm doc ux comm">
-        <div class="ov-section-hdr">
-          <div>
-            <div class="ov-section-title">客户痛点 · 优先级排行</div>
-            <div class="ov-section-sub">共 30 个活跃痛点 · 按声量排序</div>
+      <div class="ov-two-col">
+        <div class="ov-card">
+          <div class="ov-card-hdr">
+            <div class="ov-card-hdr-title">需立即处理</div>
+            <span class="ov-card-hdr-badge">4 项待行动</span>
           </div>
-          <div style="display:flex;gap:8px">
-            <div id="ecCustSmall" style="width:180px;height:80px"></div>
-            <div id="ecPainDistSmall" style="width:180px;height:80px"></div>
+          <div class="action-item">
+            <div class="action-num">1</div>
+            <div class="action-body">
+              <div class="action-title">AIC 日志缺失根因定位能力 · 算子复现部署调试能力仅 34 分</div>
+              <div class="action-meta">算子编程分队 · 腾讯 / 蚂蚁反馈 · 预计 Q3 闭环</div>
+            </div>
+            <span class="action-tag urgent">紧急</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">2</div>
+            <div class="action-body">
+              <div class="action-title">Builtin 算子文档参数错误率高 · VOD 声量 71 条</div>
+              <div class="action-meta">资料分队 · 社区 issue 集中 · 已立项</div>
+            </div>
+            <span class="action-tag urgent">紧急</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">3</div>
+            <div class="action-body">
+              <div class="action-title">迁移工具 shape 限制未提前提示 · 影响迁移部署成功率</div>
+              <div class="action-meta">工具链分队 · 美团 / 京东 · Q3 规划</div>
+            </div>
+            <span class="action-tag planned">规划中</span>
+          </div>
+          <div class="action-item">
+            <div class="action-num">4</div>
+            <div class="action-body">
+              <div class="action-title">图模式适配样例补全 · 推理框架 Agentic 成功率 68%</div>
+              <div class="action-meta">编译器 &amp; OS 分队 · Q3 / Q4</div>
+            </div>
+            <span class="action-tag planned">规划中</span>
           </div>
         </div>
-        <div class="cat-sum-row">
-          <span class="cat-sum-chip all on" data-filter-cat="all" onclick="filterPain('all',this)">全部 <span class="cat-sum-n">6</span></span>
-          <span class="cat-sum-chip tool" data-filter-cat="tool" onclick="filterPain('tool',this)">工具类 <span class="cat-sum-n">2</span></span>
-          <span class="cat-sum-chip doc" data-filter-cat="doc" onclick="filterPain('doc',this)">文档类 <span class="cat-sum-n">2</span></span>
-          <span class="cat-sum-chip api" data-filter-cat="api" onclick="filterPain('api',this)">API 类 <span class="cat-sum-n">1</span></span>
-          <span class="cat-sum-chip env" data-filter-cat="env" onclick="filterPain('env',this)">环境类 <span class="cat-sum-n">1</span></span>
-        </div>
-        <div class="pain-ranked-list" id="painRankedList"></div>
-      </div>
-    </div><!-- /客户痛点 -->
-
-    <!-- ══ VOD 声量 ══ -->
-    <div class="layer-sec" data-roles="doc comm ux">
-      <div class="layer-hdr">
-        <span class="layer-badge eco">VOD 声量</span>
-        <span class="layer-hdr-title">社区原声 · 高频共性问题分布</span>
-        <div class="layer-hdr-line"></div>
-      </div>
-      <!-- VOD 图表 + 卡片左右布局 -->
-      <div style="display:flex;gap:14px;align-items:stretch">
-        <!-- 左：柱状图 -->
-        <div style="width:260px;flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden;display:flex;flex-direction:column">
-          <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:800;letter-spacing:-.01em;flex-shrink:0">高频 VOD 声量排行</div>
-          <div id="ecVod" style="flex:1;min-height:160px"></div>
-        </div>
-        <!-- 右：3 张卡片纵向排列 -->
-        <div style="flex:1;display:flex;flex-direction:column;gap:10px">
-          <div class="vod-hf-item" style="flex:1">
-            <div class="vod-hf-num">1</div>
-            <div class="vod-hf-body">
-              <div class="vod-hf-vol">71 条 <span style="font-size:10px;color:var(--coral-dark);font-weight:700">↑ 上升</span></div>
-              <div class="vod-hf-text">多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致</div>
-              <div class="vod-hf-meta">算子仓 · 社区 issue · 社区开发者</div>
-            </div>
+        <div class="ov-card">
+          <div class="ov-card-hdr"><div class="ov-card-hdr-title">Agentic 开发效率</div></div>
+          <div style="padding:12px 16px 8px">
+            <div id="ecGauge" style="height:120px;margin:-4px 0"></div>
+            <div class="snap-row"><span class="snap-row-lbl">Ascend C 体验评分</span><span class="snap-row-val bad">4.1 / 6</span></div>
+            <div class="snap-row"><span class="snap-row-lbl">样例覆盖度</span><span class="snap-row-val mid">75%</span></div>
+            <div class="snap-row"><span class="snap-row-lbl">优秀实践完成率</span><span class="snap-row-val mid">部分</span></div>
           </div>
-          <div class="vod-hf-item" style="flex:1">
-            <div class="vod-hf-num">2</div>
-            <div class="vod-hf-body">
-              <div class="vod-hf-vol">61 条</div>
-              <div class="vod-hf-text">CANN 多算子仓：文档参数错误、格式错误、描述不一致、内容缺失</div>
-              <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
-            </div>
-          </div>
-          <div class="vod-hf-item" style="flex:1">
-            <div class="vod-hf-num">3</div>
-            <div class="vod-hf-body">
-              <div class="vod-hf-vol">40 条</div>
-              <div class="vod-hf-text">算子资料文档：格式不规范、参数描述错误、命令目录错误</div>
-              <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
-            </div>
+          <div style="padding:10px 16px;border-top:1px solid var(--border)">
+            <button onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[1])" style="width:100%;padding:9px;border-radius:999px;border:1px solid var(--purple-med);background:var(--purple-light);color:var(--primary);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s">→ 进入用户旅程</button>
           </div>
         </div>
       </div>
-    </div><!-- /VOD 声量 -->
+    </div>
 
     <!-- ══ 生态增益 ══ -->
     <div class="layer-sec" data-roles="doc comm ux">
@@ -860,8 +874,42 @@ body.ov-rat-open .ov-rat-panel{right:0}
         <div class="layer-hdr-line"></div>
       </div>
 
+      <!-- VOD Bar Chart -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);margin-bottom:14px;overflow:hidden">
+        <div style="padding:12px 18px;border-bottom:1px solid var(--border);font-size:14px;font-weight:800;letter-spacing:-.01em">高频 VOD 声量排行</div>
+        <div id="ecVod" style="height:150px;padding:0 8px"></div>
+      </div>
+
+      <!-- VOD HF cards -->
+      <div class="vod-hf-list">
+        <div class="vod-hf-item">
+          <div class="vod-hf-num">1</div>
+          <div class="vod-hf-body">
+            <div class="vod-hf-vol">71 条 <span style="font-size:10px;color:var(--coral-dark);font-weight:700">↑ 上升</span></div>
+            <div class="vod-hf-text">多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致</div>
+            <div class="vod-hf-meta">算子仓 · 社区 issue · 社区开发者</div>
+          </div>
+        </div>
+        <div class="vod-hf-item">
+          <div class="vod-hf-num">2</div>
+          <div class="vod-hf-body">
+            <div class="vod-hf-vol">61 条</div>
+            <div class="vod-hf-text">CANN 多算子仓：文档参数错误、格式错误、描述不一致、内容缺失</div>
+            <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
+          </div>
+        </div>
+        <div class="vod-hf-item">
+          <div class="vod-hf-num">3</div>
+          <div class="vod-hf-body">
+            <div class="vod-hf-vol">40 条</div>
+            <div class="vod-hf-text">算子资料文档：格式不规范、参数描述错误、命令目录错误</div>
+            <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
+          </div>
+        </div>
+      </div>
+
       <!-- ══ S0-S5 JOURNEY — AscendOps Pipeline 风格 ══ -->
-      <div class="journey-card">
+      <div class="journey-card" style="margin-top:16px">
         <div class="journey-card-hdr">
           <div>
             <div class="journey-card-title">社区入门体验 · Agent S0–S5 全旅程评测</div>
@@ -941,111 +989,29 @@ body.ov-rat-open .ov-rat-panel{right:0}
         </div>
       </div>
 
+      <!-- 客户痛点 ranked list (AscendOps pain style) -->
+      <div class="ov-section" style="margin-top:16px" data-roles="op infra pm doc ux comm">
+        <div class="ov-section-hdr">
+          <div>
+            <div class="ov-section-title">客户痛点 · 优先级排行</div>
+            <div class="ov-section-sub">共 30 个活跃痛点 · 按声量排序</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div id="ecCustSmall" style="width:180px;height:80px"></div>
+            <div id="ecPainDistSmall" style="width:180px;height:80px"></div>
+          </div>
+        </div>
+        <div class="cat-sum-row">
+          <span class="cat-sum-chip all on" data-filter-cat="all" onclick="filterPain('all',this)">全部 <span class="cat-sum-n">6</span></span>
+          <span class="cat-sum-chip tool" data-filter-cat="tool" onclick="filterPain('tool',this)">工具类 <span class="cat-sum-n">2</span></span>
+          <span class="cat-sum-chip doc" data-filter-cat="doc" onclick="filterPain('doc',this)">文档类 <span class="cat-sum-n">2</span></span>
+          <span class="cat-sum-chip api" data-filter-cat="api" onclick="filterPain('api',this)">API 类 <span class="cat-sum-n">1</span></span>
+          <span class="cat-sum-chip env" data-filter-cat="env" onclick="filterPain('env',this)">环境类 <span class="cat-sum-n">1</span></span>
+        </div>
+        <div class="pain-ranked-list" id="painRankedList"></div>
+      </div>
+
     </div><!-- /生态增益 -->
-
-    <!-- ══ 开发界面 ══ -->
-    <div class="layer-sec" data-roles="ux op">
-      <div class="layer-hdr">
-        <span class="layer-badge dev">开发界面</span>
-        <span class="layer-hdr-title">降低开发者认知负担，将硬件能力翻译为兼容生态习惯的开发体验</span>
-        <div class="layer-hdr-line"></div>
-      </div>
-      <div class="ov-two-col">
-        <div class="ov-card">
-          <div class="ov-card-hdr">
-            <div class="ov-card-hdr-title">需立即处理</div>
-            <span class="ov-card-hdr-badge">4 项待行动</span>
-          </div>
-          <div class="action-item">
-            <div class="action-num">1</div>
-            <div class="action-body">
-              <div class="action-title">AIC 日志缺失根因定位能力 · 算子复现部署调试能力仅 34 分</div>
-              <div class="action-meta">算子编程分队 · 腾讯 / 蚂蚁反馈 · 预计 Q3 闭环</div>
-            </div>
-            <span class="action-tag urgent">紧急</span>
-          </div>
-          <div class="action-item">
-            <div class="action-num">2</div>
-            <div class="action-body">
-              <div class="action-title">Builtin 算子文档参数错误率高 · VOD 声量 71 条</div>
-              <div class="action-meta">资料分队 · 社区 issue 集中 · 已立项</div>
-            </div>
-            <span class="action-tag urgent">紧急</span>
-          </div>
-          <div class="action-item">
-            <div class="action-num">3</div>
-            <div class="action-body">
-              <div class="action-title">迁移工具 shape 限制未提前提示 · 影响迁移部署成功率</div>
-              <div class="action-meta">工具链分队 · 美团 / 京东 · Q3 规划</div>
-            </div>
-            <span class="action-tag planned">规划中</span>
-          </div>
-          <div class="action-item">
-            <div class="action-num">4</div>
-            <div class="action-body">
-              <div class="action-title">图模式适配样例补全 · 推理框架 Agentic 成功率 68%</div>
-              <div class="action-meta">编译器 &amp; OS 分队 · Q3 / Q4</div>
-            </div>
-            <span class="action-tag planned">规划中</span>
-          </div>
-        </div>
-        <div class="ov-card">
-          <div class="ov-card-hdr"><div class="ov-card-hdr-title">Agentic 开发效率</div></div>
-          <div style="padding:12px 16px 8px">
-            <div id="ecGauge" style="height:120px;margin:-4px 0"></div>
-            <div class="snap-row"><span class="snap-row-lbl">Ascend C 体验评分</span><span class="snap-row-val bad">4.1 / 6</span></div>
-            <div class="snap-row"><span class="snap-row-lbl">样例覆盖度</span><span class="snap-row-val mid">75%</span></div>
-            <div class="snap-row"><span class="snap-row-lbl">优秀实践完成率</span><span class="snap-row-val mid">部分</span></div>
-          </div>
-          <div style="padding:10px 16px;border-top:1px solid var(--border)">
-            <button onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[1])" style="width:100%;padding:9px;border-radius:999px;border:1px solid var(--purple-med);background:var(--purple-light);color:var(--primary);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s">→ 进入用户旅程</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ 技术内核 ══ -->
-    <div class="layer-sec" data-roles="op infra pm">
-      <div class="layer-hdr">
-        <span class="layer-badge core">技术内核</span>
-        <span class="layer-hdr-title">压榨硬件极致性能，提供稳定高效的底层能力</span>
-        <div class="layer-hdr-line"></div>
-      </div>
-      <div class="eco-three-col">
-        <div class="eco-card">
-          <div class="eco-card-hdr">PyTorch API 支持度</div>
-          <div id="ecPyTorch" style="height:160px"></div>
-          <div class="eco-card-body" style="border-top:1px solid var(--border)">
-            <div class="eco-row"><span class="eco-row-lbl">Core test 通过率</span><span class="eco-row-val ok">85.4% ↑+2.1%</span></div>
-            <div class="eco-row"><span class="eco-row-lbl">算子 API 覆盖</span><span class="eco-row-val ok">92%</span></div>
-            <div class="eco-row"><span class="eco-row-lbl">通信 API 覆盖</span><span class="eco-row-val mid">78%</span></div>
-            <div class="eco-row"><span class="eco-row-lbl">框架 API 覆盖</span><span class="eco-row-val mid">71%</span></div>
-            <div class="eco-row"><span class="eco-row-lbl">工具 API 覆盖</span><span class="eco-row-val ok">88%</span></div>
-          </div>
-        </div>
-        <div class="eco-card">
-          <div class="eco-card-hdr">模型开箱覆盖</div>
-          <div id="ecModel" style="height:160px"></div>
-          <div class="eco-card-body" style="border-top:1px solid var(--border)">
-            <div class="eco-row"><span class="eco-row-lbl">大语言模型（纯模型）</span><span class="eco-row-val ok">41/41 · 100%</span></div>
-            <div class="eco-row"><span class="eco-row-lbl">多模态模型（纯模型）</span><span class="eco-row-val ok">12/12 · 100%</span></div>
-            <div class="eco-row"><span class="eco-row-lbl">VLLM 框架迁移</span><span class="eco-row-val mid">12/15 · 78%</span></div>
-            <div class="eco-row"><span class="eco-row-lbl">SGLang 框架迁移</span><span class="eco-row-val mid">5/8 · 65%</span></div>
-            <div class="eco-row"><span class="eco-row-lbl">VERL 框架迁移</span><span class="eco-row-val bad">3/7 · 42%</span></div>
-          </div>
-        </div>
-        <div class="eco-card">
-          <div class="eco-card-hdr">0 Day 高影响力发布</div>
-          <div class="eco-card-body">
-            <div class="eco-row"><span class="eco-row-lbl">Deepseek V4 Pro</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div></div>
-            <div class="eco-row"><span class="eco-row-lbl">Deepseek V4 Flash</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span></div></div>
-            <div class="eco-row"><span class="eco-row-lbl">Kimi K2 Thinking</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag e2e">E2E</span></div></div>
-            <div class="eco-row"><span class="eco-row-lbl">Deepseek V3.2</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span><span class="eco-tag perf">SOTA</span><span class="eco-tag e2e">E2E</span></div></div>
-            <div class="eco-row"><span class="eco-row-lbl">Longcat</span><div style="display:flex;gap:4px"><span class="eco-tag new">基础</span></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
 
   </div><!-- /ov-body -->
 
@@ -1127,13 +1093,13 @@ body.ov-rat-open .ov-rat-panel{right:0}
           <span style="font-size:11px;color:var(--text-3)">高</span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:start">
+      <div style="display:flex;gap:16px;align-items:flex-start">
         <!-- Heatmap grid -->
-        <div style="min-width:0;overflow:auto">
-          <div id="tpHeatGrid" style="display:grid;grid-template-columns:110px repeat(4,1fr) 64px;gap:5px;min-width:480px"></div>
+        <div style="flex:1;min-width:0">
+          <div id="tpHeatGrid" style="display:grid;grid-template-columns:160px repeat(4,1fr) 90px;gap:6px"></div>
         </div>
-        <!-- Detail panel — always right column, never wraps -->
-        <div id="tpDetail">
+        <!-- Detail panel -->
+        <div id="tpDetail" style="width:280px;flex-shrink:0;min-height:280px">
           <div class="tp-detail-hint">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--border-2)" stroke-width="1.5" style="margin-bottom:8px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/></svg><br>
             点击矩阵格子<br>查看 Agent 观测
@@ -1144,10 +1110,10 @@ body.ov-rat-open .ov-rat-panel{right:0}
   </div>
 
   <!-- MAIN BODY -->
-  <div class="main-body" style="display:flex;flex-direction:column;gap:16px;padding:16px 28px 48px">
+  <div class="main-body" style="display:flex;flex-direction:row;gap:16px;padding:16px 28px 48px;align-items:flex-start">
 
     <!-- SCENE LIST -->
-    <div class="scene-list">
+    <div class="scene-list" style="width:320px;flex-shrink:0">
       <div class="sl-hdr" style="font-size:11px;font-weight:700;color:var(--text-3);padding:0 4px 8px;border-bottom:1px solid var(--border);margin-bottom:10px">
         场景 · 按评分排序
         <div class="sort-toggle">
@@ -1155,11 +1121,11 @@ body.ov-rat-open .ov-rat-panel{right:0}
           <button class="sort-btn" id="sortCatalog" onclick="setSort('catalog')">目录顺序</button>
         </div>
       </div>
-      <div id="sceneListCards" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+      <div id="sceneListCards" style="display:flex;flex-direction:column;gap:8px"></div>
     </div>
 
     <!-- SCENE DETAIL -->
-    <div class="scene-detail" id="sceneDetail">
+    <div class="scene-detail" id="sceneDetail" style="flex:1;min-width:0;position:sticky;top:120px;align-self:flex-start">
       <div class="sd-hint" id="sdHint">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--purple-med)" stroke-width="1.5"><path d="M18 15l-6-6-6 6"/></svg>
         点击上方场景查看三类证据
@@ -1303,24 +1269,15 @@ body.ov-rat-open .ov-rat-panel{right:0}
 
 <script>
 
-/* ── Health Matrix ── */
-function heatColor(score){
-  const stops=[[0,[254,239,240]],[35,[255,182,200]],[55,[255,232,127]],[70,[255,248,229]],[82,[235,252,247]],[100,[59,232,128]]];
-  let a=stops[0],b=stops[stops.length-1];
-  for(let i=0;i<stops.length-1;i++){if(score>=stops[i][0]&&score<=stops[i+1][0]){a=stops[i];b=stops[i+1];break;}}
-  const t=(score-a[0])/(b[0]-a[0]||1);
-  const rgb=a[1].map((v,j)=>Math.round(v+(b[1][j]-v)*t));
-  return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-}
-function textColor(score){return score>=55?'#1B2432':'#E63838';}
-
-const HM_DATA={
+/* ── NEW: Health Matrix heatmap render ── */
+(function(){
+const HM_DATA = {
   rows:[
-    {name:'算子编程',sub:'多算子层 / 编程接口'},
-    {name:'推理框架',sub:'图模式 / 部署框架'},
-    {name:'API 支持',sub:'PyTorch / 通信 / 工具'},
-    {name:'通信库',  sub:'HCCL / 集合通信'},
-    {name:'基础工具',sub:'调试 / 性能 / 环境'},
+    {name:'算子编程', sub:'多算子层 / 编程接口'},
+    {name:'推理框架', sub:'图模式 / 部署框架'},
+    {name:'API 支持', sub:'PyTorch / 通信 / 工具'},
+    {name:'通信库',   sub:'HCCL / 集合通信'},
+    {name:'基础工具', sub:'调试 / 性能 / 环境'},
   ],
   cols:['Agent评分','客户痛点','VOD声量','综合健康','环比'],
   data:[
@@ -1331,86 +1288,32 @@ const HM_DATA={
     [{v:89,t:'89分'},{v:95,t:'2条',inv:true},{v:90,t:'22',inv:true},{v:92,t:'健康'},{v:85,t:'↑'}],
   ]
 };
-
-const HM_OBS=[
-  [
-    {detail:'开发成功率 44%，调试能力 34 分，AIC 日志缺失是核心瓶颈',action:'AIC 日志增强 · Q3 · P0'},
-    {detail:'57 条痛点，腾讯/蚂蚁集中反馈 core dump 排查困难、精度异常无工具辅助',action:'工具链分队 · P0'},
-    {detail:'183 条声量居首，多算子层质量 71 条 + 文档参数错误 61 条',action:'资料分队 · 已立项'},
-    {detail:'三类证据交叉：严重。调试体验是最大短板，拖累整体落入严重区间',action:'本期优先处理'},
-    {detail:'↓ 较上期下滑，AIC 日志问题未闭环，社区声量持续增加',action:'紧急跟进'},
-  ],
-  [
-    {detail:'图模式适配成功率 68%，VLLM/SGLang 迁移覆盖不足是主因',action:'编译器分队 · Q3'},
-    {detail:'8 条痛点，shape 限制未提前提示导致 35% 迁移需手动处理',action:'工具链分队 · P1'},
-    {detail:'127 条声量，框架迁移兼容性问题最多，VERL 框架仅 42% 覆盖',action:'框架适配 · Q4'},
-    {detail:'关注区间。图模式成熟度不足，基础部署体验尚可',action:'Q3/Q4 规划'},
-    {detail:'→ 持平，框架覆盖率小幅提升但用户感知未改善',action:'持续观察'},
-  ],
-  [
-    {detail:'算子 API 92%、通信 78%、框架 71%，Core test 通过率 85.4%',action:'持续提升通信/框架覆盖'},
-    {detail:'3 条痛点，边界场景文档偶有缺失，整体满意度高',action:'文档补全 · 常规'},
-    {detail:'40 条声量，集中在框架 API 边界说明缺失',action:'资料分队 · 常规'},
-    {detail:'健康区间。API 覆盖是三层中最强，持续保持',action:'维持现状'},
-    {detail:'↑ Core test 通过率 +2.1%，API 覆盖稳步提升',action:'保持节奏'},
-  ],
-  [
-    {detail:'HCCL 集合通信评分 74，基础稳定，高级拓扑场景待提升',action:'通信库分队'},
-    {detail:'5 条痛点，高性能场景调优文档不足',action:'文档补全 · P1'},
-    {detail:'61 条声量，大规模训练场景通信调优指导缺失',action:'最佳实践补全'},
-    {detail:'关注区间。基础健康，高级场景不足影响大客户体验',action:'Q3 文档专项'},
-    {detail:'↑ 小幅上升，部分文档已更新',action:'持续跟进'},
-  ],
-  [
-    {detail:'调试/性能/环境工具评分 89，环境配置成功率高，体验最佳分类',action:'保持'},
-    {detail:'2 条痛点，偶发版本兼容问题，无明显阻塞',action:'常规维护'},
-    {detail:'22 条声量最低，说明工具体验整体符合预期',action:'维持现状'},
-    {detail:'健康区间。五个维度中体验最好，可作为其他维度对标基准',action:'最佳实践沉淀'},
-    {detail:'↑ 持续提升，环境稳定性改善显著',action:''},
-  ],
-];
-
-function showHmDetail(ri,ci){
-  document.querySelectorAll('.hm-cell').forEach(el=>el.classList.remove('hm-sel'));
-  const selEl=document.querySelector(`.hm-cell[data-ri="${ri}"][data-ci="${ci}"]`);
-  if(selEl) selEl.classList.add('hm-sel');
-  const row=HM_DATA.rows[ri];
-  const cell=HM_DATA.data[ri][ci];
-  const obs=HM_OBS[ri][ci];
-  const score=cell.inv?(100-cell.v):cell.v;
-  const bg=heatColor(score),fg=textColor(score);
-  const obsItemBg=score>=80?'var(--green-light)':score>=55?'var(--gold-light)':'var(--coral-light)';
-  const obsItemBorder=score>=80?'var(--green-faded)':score>=55?'var(--gold-med)':'var(--coral-med)';
-  document.getElementById('hmDetail').innerHTML=`
-    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:var(--radius-m);overflow:hidden">
-      <div style="padding:12px 14px;background:linear-gradient(135deg,rgba(208,184,255,.22),rgba(128,230,255,.16));border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
-        <div style="flex:1">
-          <div style="font-size:12.5px;font-weight:800;color:var(--text)">${row.name}</div>
-          <div style="font-size:10px;color:var(--text-3);margin-top:2px">${row.sub} · ${HM_DATA.cols[ci]}</div>
-        </div>
-        <div style="background:${bg};color:${fg};border-radius:8px;padding:5px 10px;font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;white-space:nowrap">${cell.t}</div>
-      </div>
-      <div style="padding:12px 14px">
-        <div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">观测详情</div>
-        <div style="font-size:11.5px;color:var(--text);line-height:1.6;padding:8px 10px 8px 12px;background:${obsItemBg};border-left:2.5px solid ${obsItemBorder};border-radius:0 7px 7px 0;margin-bottom:10px">${obs.detail}</div>
-        ${obs.action?`<div style="display:flex;align-items:center;gap:6px;padding-top:8px;border-top:1px solid var(--border)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><span style="font-size:11px;font-weight:700;color:var(--primary)">${obs.action}</span></div>`:''}
-      </div>
-    </div>`;
+function heatColor(score){
+  const stops=[[0,[254,239,240]],[30,[255,182,200]],[50,[255,232,127]],[65,[255,248,229]],[80,[235,252,247]],[100,[59,232,128]]];
+  let a=stops[0],b=stops[stops.length-1];
+  for(let i=0;i<stops.length-1;i++){if(score>=stops[i][0]&&score<=stops[i+1][0]){a=stops[i];b=stops[i+1];break;}}
+  const t=(score-a[0])/(b[0]-a[0]||1);
+  const c=a[1].map((v,i)=>Math.round(v+(b[1][i]-v)*t));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
-
-(function(){
-  const colFg=['var(--purple-dark)','var(--coral-dark)','var(--gold-dark)','var(--green-dark)','var(--text-2)'];
-  const grid=document.getElementById('hmGrid');
-  if(!grid)return;
-  grid.innerHTML='<div class="hm-header first"></div>'+HM_DATA.cols.map((col)=>`<div class="hm-header">${col}</div>`).join('');
-  HM_DATA.rows.forEach((r,ri)=>{
-    grid.innerHTML+=`<div class="hm-row-label">${r.name}<small>${r.sub}</small></div>`;
-    HM_DATA.data[ri].forEach((cell,ci)=>{
-      const score=cell.inv?(100-cell.v):cell.v;
-      const bg=heatColor(score),col=textColor(score);
-      grid.innerHTML+=`<div class="hm-cell" data-ri="${ri}" data-ci="${ci}" onclick="showHmDetail(${ri},${ci})" style="background:${bg};color:${col}"><div class="cv">${cell.t}</div></div>`;
-    });
+function textColor(score){return score>=55?'#1B2432':'#E63838';}
+const grid=document.getElementById('hmGrid');
+if(!grid)return;
+// headers
+grid.innerHTML='<div class="hm-header first"></div>'+HM_DATA.cols.map(c=>`<div class="hm-header">${c}</div>`).join('');
+// rows
+HM_DATA.rows.forEach((r,ri)=>{
+  const ot=HM_DATA.data[ri][3].t;
+  const dc=ot==='严重'?'#E63838':ot==='关注'?'#FD9A00':'#37C597';
+  const dg=ot==='严重'?'rgba(230,56,56,.2)':ot==='关注'?'rgba(253,154,0,.2)':'rgba(55,197,151,.2)';
+  grid.innerHTML+=`<div class="hm-row-label"><div style="display:flex;align-items:center;gap:6px"><div style="width:8px;height:8px;border-radius:50%;background:${dc};box-shadow:0 0 0 3px ${dg};flex-shrink:0"></div><span>${r.name}</span></div><small>${r.sub}</small></div>`;
+  HM_DATA.data[ri].forEach(cell=>{
+    const score=cell.inv?(100-cell.v):cell.v;
+    const bg=heatColor(score);
+    const col=textColor(score);
+    grid.innerHTML+=`<div class="hm-cell" style="background:${bg};color:${col}"><div class="cv">${cell.t}</div></div>`;
   });
+});
 })();
 
 /* ── NEW: Pain ranked list render ── */
@@ -1809,12 +1712,12 @@ function renderList(){
     const rankLabel = sortMode==='catalog' ? `S${rank+1}` : `#${rank+1}`;
     return `<div class="sc hl-2" id="sc${s.id}" onclick="selScene(${s.id})" style="position:relative">
       <div class="callout-badge" style="top:-7px;right:-7px">②</div>
-      <div class="sc-top" style="background:${{bad:'var(--coral-light)',mid:'var(--gold-light)',ok:'var(--green-light)'}[s.grade]}">
+      <div class="sc-top">
         <div class="sc-rank ${s.grade}">${rankLabel}</div>
         <div class="sc-title">
-          <div class="sc-name" style="color:${{bad:'#E63838',mid:'#FD9A00',ok:'#37C597'}[s.grade]};font-weight:700">${s.name}</div>
+          <div class="sc-name" style="color:${['#179D8A','#FD9A00','#E63838','#4F4DA7'][rank%4]};font-weight:700">${s.name}</div>
           <div class="sc-grade-row">
-            <span class="grade-tag ${s.grade}" style="color:${{bad:'#E63838',mid:'#FD9A00',ok:'#37C597'}[s.grade]}">${s.gradeLabel}</span>
+            <span class="grade-tag ${s.grade}" style="color:${['#179D8A','#FD9A00','#E63838','#4F4DA7'][rank%4]}">${s.gradeLabel}</span>
           </div>
         </div>
       </div>
@@ -2047,15 +1950,15 @@ function renderTpMatrix(){
   if(!grid) return;
   // Header row
   const headers=['场景','文档','API','工具','环境','综合'];
-  let html=headers.map((h,i)=>`<div style="font-size:10px;font-weight:700;color:var(--text-3);text-align:${i===0?'left':'center'};padding:5px ${i===0?'4px':'2px'};text-transform:uppercase;letter-spacing:.04em">${h}</div>`).join('');
+  let html=headers.map((h,i)=>`<div style="font-size:11px;font-weight:700;color:var(--text-3);text-align:${i===0?'left':'center'};padding:6px ${i===0?'4px':'2px'};text-transform:uppercase;letter-spacing:.04em">${h}</div>`).join('');
   // Data rows
   touchpointData.forEach(row=>{
     // Scene label with health dot
     const dotColor=row.overallCls==='bad'?'#E63838':row.overallCls==='mid'?'#FD9A00':'#37C597';
     const dotGlow=row.overallCls==='bad'?'rgba(230,56,56,.2)':row.overallCls==='mid'?'rgba(253,154,0,.2)':'rgba(55,197,151,.2)';
-    html+=`<div class="hm-row-label" style="padding:0;flex-direction:row;align-items:center;gap:6px">
-      <div style="width:8px;height:8px;border-radius:50%;background:${dotColor};box-shadow:0 0 0 2px ${dotGlow};flex-shrink:0"></div>
-      <div>${row.sceneName}</div>
+    html+=`<div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+      <div style="width:9px;height:9px;border-radius:50%;background:${dotColor};box-shadow:0 0 0 3px ${dotGlow};flex-shrink:0"></div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--text);line-height:1.3">${row.sceneName}</div>
     </div>`;
     // Dimension cells
     tpCols.forEach(col=>{
@@ -2063,16 +1966,16 @@ function renderTpMatrix(){
       const bg=heatBg(s),fg=heatFg(s);
       html+=`<div class="tp-heat-cell" onclick="selectTpCell(${row.id},'${col}',this)"
         data-sid="${row.id}" data-col="${col}"
-        style="background:${bg};color:${fg}">
-        <div class="cv">${s}</div>
-        <div class="ct">${row.cells[col].cls==='bad'?'严重':row.cells[col].cls==='mid'?'关注':'健康'}</div>
+        style="background:${bg};color:${fg};border-radius:10px;aspect-ratio:2/1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;border:2px solid transparent">
+        <div style="font-size:17px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono',monospace">${s}</div>
+        <div style="font-size:9.5px;font-weight:600;opacity:.7;margin-top:1px">${row.cells[col].cls==='bad'?'严重':row.cells[col].cls==='mid'?'关注':'健康'}</div>
       </div>`;
     });
     // Overall
     const obg=heatBg(row.overallScore),ofg=heatFg(row.overallScore);
-    html+=`<div class="tp-heat-cell" style="background:${obg};color:${ofg}">
-      <div class="cv">${row.overallScore}</div>
-      <div class="ct">综合</div>
+    html+=`<div style="background:${obg};color:${ofg};border-radius:10px;aspect-ratio:2/1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:17px;font-weight:800;font-family:'JetBrains Mono',monospace;letter-spacing:-.02em">
+      ${row.overallScore}
+      <div style="font-size:9px;font-weight:600;opacity:.65;margin-top:1px">综合</div>
     </div>`;
   });
   grid.innerHTML=html;
@@ -2080,8 +1983,15 @@ function renderTpMatrix(){
 
 function selectTpCell(sceneId,col,el){
   // clear previous selection
-  document.querySelectorAll('.tp-heat-cell').forEach(el=>el.classList.remove('tp-heat-sel'));
-  el.classList.add('tp-heat-sel');
+  document.querySelectorAll('.tp-heat-cell').forEach(c=>{
+    c.style.borderColor='transparent';
+    c.style.transform='scale(1)';
+    c.style.boxShadow='none';
+  });
+  // highlight selected
+  el.style.borderColor='var(--primary)';
+  el.style.transform='scale(1.06)';
+  el.style.boxShadow='0 6px 18px rgba(106,103,206,.28)';
   const row=touchpointData.find(r=>r.id===sceneId);
   const cell=row.cells[col];
   const bg=heatBg(cell.s),fg=heatFg(cell.s);
@@ -2090,7 +2000,7 @@ function selectTpCell(sceneId,col,el){
   document.getElementById('tpDetail').innerHTML=`
     <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;border-left:3px solid var(--primary)">
       <!-- Card header with gradient -->
-      <div style="padding:12px 14px;background:linear-gradient(135deg,rgba(208,184,255,.22),rgba(128,230,255,.16));display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)">
+      <div style="padding:14px 16px;background:linear-gradient(135deg,rgba(208,184,255,.25),rgba(128,230,255,.18));display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)">
         <div style="flex:1">
           <div style="font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em">${row.sceneName}</div>
           <div style="font-size:10px;color:var(--text-3);margin-top:2px">${tpColLabels[col]} 触点</div>
@@ -2101,7 +2011,7 @@ function selectTpCell(sceneId,col,el){
       <div style="padding:14px 16px">
         <div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Agent 观测</div>
         ${cell.obs.map(o=>`
-          <div style="font-size:11px;color:var(--text);line-height:1.55;padding:7px 10px 7px 12px;background:${obsItemBg};border-left:2.5px solid ${obsItemBorder};border-radius:0 7px 7px 0;margin-bottom:6px">${o}</div>
+          <div style="font-size:11px;color:var(--text);line-height:1.55;padding:7px 10px;background:${obsItemBg};border-radius:7px;margin-bottom:6px">${o}</div>
         `).join('')}
         <div onclick="jumpToJourney(${sceneId})" style="display:flex;align-items:center;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);color:var(--primary);font-size:11px;font-weight:700;cursor:pointer">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -2277,49 +2187,37 @@ function initOvCharts(){
   if(mdEl){
     const ch=echarts.init(mdEl,null,{renderer:'svg'});
     ch.setOption({
-      backgroundColor:'transparent',
-      tooltip:{
-        trigger:'item',
-        backgroundColor:'#fff',
-        borderColor:'#E1E2E4',
-        borderWidth:1,
-        textStyle:{color:'#1B2432',fontSize:12,fontFamily:'Inter,sans-serif'},
-        formatter:p=>`<div style="font-weight:700;margin-bottom:3px">${p.name}</div><div style="color:#6A67CE;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px">${p.data.pct}%</div>`
-      },
+      tooltip:{trigger:'item',formatter:p=>`${p.name}<br/>开箱覆盖率 <b>${p.data.pct}%</b>`},
       graphic:[
-        {type:'text',left:'center',top:'30%',
-          style:{text:'77%',fontSize:22,fontWeight:'bold',
-            fill:'#6A67CE',fontFamily:"'JetBrains Mono',monospace"}},
-        {type:'text',left:'center',top:'50%',
-          style:{text:'综合覆盖',fontSize:9,fill:'#A1A4AA',
-            fontFamily:'Inter,sans-serif'}}
+        {type:'text',left:'center',top:'34%',style:{text:'77%',fontSize:20,fontWeight:'bold',fill:'#37C597',fontFamily:"'JetBrains Mono',monospace",textAlign:'center'}},
+        {type:'text',left:'center',top:'52%',style:{text:'综合覆盖',fontSize:9,fill:'#A1A4AA',fontFamily:'Inter,sans-serif',textAlign:'center'}}
       ],
       series:[{
         type:'pie',
-        radius:['44%','68%'],
+        radius:['42%','66%'],
         center:['50%','52%'],
-        padAngle:3,
+        padAngle:2,
         label:{show:false},
         labelLine:{show:false},
         data:[
-          {value:100,name:'大语言模型',pct:100,
-            itemStyle:{color:'#37C597',borderRadius:4}},
-          {value:100,name:'多模态模型',pct:100,
-            itemStyle:{color:'#3BE880',borderRadius:4}},
-          {value:78, name:'VLLM 框架', pct:78,
-            itemStyle:{color:'#1AAFD0',borderRadius:4}},
-          {value:65, name:'SGLang 框架',pct:65,
-            itemStyle:{color:'#A177FF',borderRadius:4}},
-          {value:42, name:'VERL 框架', pct:42,
-            itemStyle:{color:'#FC636B',borderRadius:4}}
+          {value:100,name:'大语言模型',pct:100,itemStyle:{color:'#15803d'}},
+          {value:100,name:'多模态模型',pct:100,itemStyle:{color:'#4ade80'}},
+          {value:78,name:'VLLM 框架',pct:78,itemStyle:{color:'#86efac'}},
+          {value:65,name:'SGLang 框架',pct:65,itemStyle:{color:'#fde68a'}},
+          {value:42,name:'VERL 框架',pct:42,itemStyle:{color:'#fca5a5'}}
         ],
-        emphasis:{
-          scaleSize:6,
-          itemStyle:{shadowBlur:12,shadowColor:'rgba(106,103,206,.3)'}
-        }
+        emphasis:{scaleSize:4,itemStyle:{shadowBlur:8,shadowColor:'rgba(0,0,0,.12)'}}
       }],
       animation:false
     });
+  }
+
+  // Agentic gauge
+  const ggEl=document.getElementById('ecGauge');
+  if(ggEl){
+    const ch=echarts.init(ggEl,null,{renderer:'svg'});
+    ch.setOption({series:[{type:'gauge',startAngle:200,endAngle:-20,min:0,max:100,radius:'85%',center:['50%','56%'],progress:{show:true,width:8,itemStyle:{color:'#FD9A00'}},axisLine:{lineStyle:{width:8,color:[[1,'#f0f0f0']]}},pointer:{show:false},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},detail:{valueAnimation:false,formatter:'{value}%',fontSize:16,fontWeight:700,color:'#FD9A00',offsetCenter:[0,'20%']},title:{offsetCenter:[0,'52%'],fontSize:9,color:'#A1A4AA'},data:[{value:62,name:'开发成功率'}]}],animation:false});
+    ch.resize();
   }
 
   // Customer closure bar
@@ -2339,9 +2237,8 @@ function initOvCharts(){
   // VOD bar
   const vdEl=document.getElementById('ecVod');
   if(vdEl){
-    const ch=echarts.init(vdEl,null,{renderer:'canvas'});
-    ch.setOption({grid:{top:16,bottom:32,left:8,right:8,containLabel:true},xAxis:{type:'category',data:['多算子层\n质量问题','文档参数\n错误','资料格式\n不规范','transformer\n算子','ops-\ntransformer'],axisLabel:{fontSize:9,color:'#A1A4AA',interval:0}},yAxis:{type:'value',show:false},series:[{type:'bar',data:[71,61,40,35,33],barWidth:'45%',label:{show:true,position:'top',fontSize:10,color:'#495058',fontWeight:700,fontFamily:"'JetBrains Mono',monospace"},itemStyle:{borderRadius:[3,3,0,0],color:(p)=>{const c=['#E63838','#FC636B','#FD9A00','#6A67CE','#1AAFD0'];return c[p.dataIndex];}}}],animation:true});
-    setTimeout(()=>ch.resize(),80);
+    const ch=echarts.init(vdEl,null,{renderer:'svg'});
+    ch.setOption({grid:{top:12,bottom:28,left:10,right:16,containLabel:true},xAxis:{type:'category',data:['多算子层\n质量问题','文档参数\n错误','资料格式\n不规范','transformer\n算子','ops-\ntransformer'],axisLabel:{fontSize:9,color:'#A1A4AA',interval:0}},yAxis:{type:'value',show:false},series:[{type:'bar',data:[71,61,40,35,33],barWidth:'45%',label:{show:true,position:'top',fontSize:10,color:'#6A67CE',fontWeight:700},itemStyle:{borderRadius:[3,3,0,0],color:(p)=>{const c=['#FFB6C8','#FC636B','#E63838','#6A67CE','#A177FF'];return c[p.dataIndex];}}}],animation:true});
   }
 }
 initOvCharts();
