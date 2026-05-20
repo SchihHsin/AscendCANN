@@ -1405,7 +1405,7 @@ function showHmDetail(ri,ci){
   const obsItemBg=score>=80?'var(--green-light)':score>=55?'var(--gold-light)':'var(--coral-light)';
   const obsItemBorder=score>=80?'var(--green-faded)':score>=55?'var(--gold-med)':'var(--coral-med)';
   document.getElementById('hmDetail').innerHTML=`
-    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:var(--radius-m);overflow:hidden;min-height:200px">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;min-height:200px">
       <div style="padding:12px 14px;background:linear-gradient(135deg,rgba(208,184,255,.22),rgba(128,230,255,.16));border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
         <div style="flex:1">
           <div style="font-size:12.5px;font-weight:800;color:var(--text)">${row.name}</div>
