@@ -276,6 +276,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
   transition:all .2s;
 }
 .journey-stage:hover{transform:translateY(-2px);box-shadow:var(--shadow-pop);border-color:var(--purple-med)}
+.journey-stage.sel{background:var(--primary-soft);border-color:var(--primary)}
 .journey-stage-no{
   width:40px;height:40px;border-radius:50%;margin:0 auto 8px;
   display:flex;align-items:center;justify-content:center;
@@ -296,7 +297,6 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .journey-alert{
   margin:0 20px 16px;padding:10px 14px;
   background:var(--coral-light);border-radius:var(--radius-s);
-  border-left:3px solid var(--coral-dark);
   font-size:11px;color:var(--coral-dark);line-height:1.6;
 }
 .journey-alert b{font-weight:800}
@@ -480,7 +480,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .as-obs{margin-bottom:6px}
 .as-obs b{font-size:9px;font-weight:700;color:var(--coral-dark);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
 .as-obs-list{display:flex;flex-direction:column;gap:3px}
-.as-obs-item{font-size:11px;color:var(--text);line-height:1.5;padding:5px 10px 5px 12px;background:var(--coral-light);border-left:2px solid var(--coral-med);border-radius:0 6px 6px 0}
+.as-obs-item{font-size:11px;color:var(--text);line-height:1.5;padding:5px 10px 5px 12px;background:var(--coral-light);border-radius:var(--radius-s)}
 .tool-chain-row{margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
 .tool-chain-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
 .tool-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
@@ -976,48 +976,49 @@ body.ov-rat-open .ov-rat-panel{right:0}
         <!-- S0-S5 Pipeline stages -->
         <div style="padding:10px 20px 4px;font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em">旅程步骤</div>
         <div class="journey-pipeline">
-          <div class="journey-stage">
+          <div class="journey-stage" onclick="selectStage('S0',this)" style="cursor:pointer">
             <div class="journey-stage-no bad">42</div>
             <div class="journey-stage-code">S0</div>
             <div class="journey-stage-name">搜索发现</div>
             <div class="journey-stage-bar"><i class="bad" style="width:42%"></i></div>
             <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="journey-stage">
+          <div class="journey-stage" onclick="selectStage('S1',this)" style="cursor:pointer">
             <div class="journey-stage-no mid">65</div>
             <div class="journey-stage-code">S1</div>
             <div class="journey-stage-name">环境准备</div>
             <div class="journey-stage-bar"><i class="mid" style="width:65%"></i></div>
             <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="journey-stage">
+          <div class="journey-stage" onclick="selectStage('S2',this)" style="cursor:pointer">
             <div class="journey-stage-no mid">73</div>
             <div class="journey-stage-code">S2</div>
             <div class="journey-stage-name">样例体验</div>
             <div class="journey-stage-bar"><i class="mid" style="width:73%"></i></div>
             <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="journey-stage">
+          <div class="journey-stage" onclick="selectStage('S3',this)" style="cursor:pointer">
             <div class="journey-stage-no ok">81</div>
             <div class="journey-stage-code">S3</div>
             <div class="journey-stage-name">开发编译</div>
             <div class="journey-stage-bar"><i class="ok" style="width:81%"></i></div>
             <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="journey-stage">
+          <div class="journey-stage" onclick="selectStage('S4',this)" style="cursor:pointer">
             <div class="journey-stage-no ok">79</div>
             <div class="journey-stage-code">S4</div>
             <div class="journey-stage-name">测试验证</div>
             <div class="journey-stage-bar"><i class="ok" style="width:79%"></i></div>
             <svg class="journey-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="journey-stage">
+          <div class="journey-stage" onclick="selectStage('S5',this)" style="cursor:pointer">
             <div class="journey-stage-no mid">68</div>
             <div class="journey-stage-code">S5</div>
             <div class="journey-stage-name">反馈贡献</div>
             <div class="journey-stage-bar"><i class="mid" style="width:68%"></i></div>
           </div>
         </div>
+        <div id="journeyStageDetail" style="padding:0 20px 14px"></div>
         <div class="journey-alert">
           <b>S0 最弱环节：</b>搜索直达率 0%，历经 3 轮搜索才找到仓库；命名混淆导致跨平台迁移摩擦高
         </div>
@@ -1102,8 +1103,33 @@ body.ov-rat-open .ov-rat-panel{right:0}
         <div class="eco-card">
           <div class="eco-card-hdr">PyTorch API 支持度</div>
           <div style="display:grid;grid-template-columns:140px 1fr;gap:12px;align-items:center;padding:12px 16px 16px">
-            <div id="ecPyTorch" style="width:140px;height:140px;flex-shrink:0"></div>
-            <div style="display:flex;flex-direction:column;gap:9px;padding-top:2px;padding-left:10px">
+            <svg viewBox="0 0 140 140" width="140" height="140" style="flex-shrink:0">
+  <!-- 背景网格 -->
+  <polygon points="70,15 122.3,53.1 102.3,114.5 37.7,114.5 17.7,53.1" fill="none" stroke="#E1E2E4" stroke-width="1"/>
+  <polygon points="70,26 111.8,56.4 95.9,105.6 44.1,105.6 28.2,56.4" fill="none" stroke="#E1E2E4" stroke-width="1"/>
+  <polygon points="70,37 101.4,59.8 89.4,96.7 50.6,96.7 38.6,59.8" fill="none" stroke="#E1E2E4" stroke-width="1"/>
+  <polygon points="70,48 90.9,63.2 83.0,87.8 57.0,87.8 49.1,63.2" fill="none" stroke="#E1E2E4" stroke-width="1"/>
+  <!-- 轴线 -->
+  <line x1="70" y1="70" x2="70" y2="15" stroke="#E1E2E4" stroke-width="1"/>
+  <line x1="70" y1="70" x2="122.3" y2="53.1" stroke="#E1E2E4" stroke-width="1"/>
+  <line x1="70" y1="70" x2="102.3" y2="114.5" stroke="#E1E2E4" stroke-width="1"/>
+  <line x1="70" y1="70" x2="37.7" y2="114.5" stroke="#E1E2E4" stroke-width="1"/>
+  <line x1="70" y1="70" x2="17.7" y2="53.1" stroke="#E1E2E4" stroke-width="1"/>
+  <!-- 数据填充（淡紫色） -->
+  <polygon points="70,19.4 110.8,56.7 93.0,101.6 41.6,109.2 25.5,55.6" fill="rgba(106,103,206,.12)" stroke="#A177FF" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- 顶点：颜色按分数深浅，同色系，深=高分 -->
+  <!-- 算子API(92) — 最深 #37C597 -->
+  <circle cx="70" cy="19.4" r="7" fill="#37C597" stroke="#fff" stroke-width="1.5"/>
+  <!-- 通信API(78) — 中等 #FD9A00 -->
+  <circle cx="110.8" cy="56.7" r="5.5" fill="#FD9A00" stroke="#fff" stroke-width="1.5"/>
+  <!-- 框架API(71) — 最浅 #FC636B -->
+  <circle cx="93.0" cy="101.6" r="4.5" fill="#FC636B" stroke="#fff" stroke-width="1.5"/>
+  <!-- 工具API(88) — 深 #3BE880 -->
+  <circle cx="41.6" cy="109.2" r="6.5" fill="#3BE880" stroke="#fff" stroke-width="1.5"/>
+  <!-- Core test(85) — 中深 #1AAFD0 -->
+  <circle cx="25.5" cy="55.6" r="6" fill="#1AAFD0" stroke="#fff" stroke-width="1.5"/>
+</svg>
+            <div style="display:flex;flex-direction:column;gap:9px;padding-top:2px;padding-left:20px">
               <div style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;border-radius:2px;background:#37C597;flex-shrink:0;display:inline-block"></span><span style="font-size:11px;color:#495058;font-weight:600;white-space:nowrap">算子 API</span><div style="flex:1;min-width:32px;max-width:64px;height:6px;border-radius:99px;background:#EFF0F1;overflow:hidden"><div style="width:92%;height:100%;background:#37C597;border-radius:99px"></div></div><span style="width:30px;text-align:right;font-size:11px;font-weight:700;color:#37C597;font-family:'JetBrains Mono',monospace">92%</span></div>
               <div style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;border-radius:2px;background:#A177FF;flex-shrink:0;display:inline-block"></span><span style="font-size:11px;color:#495058;font-weight:600;white-space:nowrap">工具 API</span><div style="flex:1;min-width:32px;max-width:64px;height:6px;border-radius:99px;background:#EFF0F1;overflow:hidden"><div style="width:88%;height:100%;background:#A177FF;border-radius:99px"></div></div><span style="width:30px;text-align:right;font-size:11px;font-weight:700;color:#A177FF;font-family:'JetBrains Mono',monospace">88%</span></div>
               <div style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;border-radius:2px;background:#FC636B;flex-shrink:0;display:inline-block"></span><span style="font-size:11px;color:#495058;font-weight:600;white-space:nowrap">Core test</span><div style="flex:1;min-width:32px;max-width:64px;height:6px;border-radius:99px;background:#EFF0F1;overflow:hidden"><div style="width:85%;height:100%;background:#FC636B;border-radius:99px"></div></div><span style="width:30px;text-align:right;font-size:11px;font-weight:700;color:#FC636B;font-family:'JetBrains Mono',monospace">85%</span></div>
@@ -1129,7 +1155,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
                 <div style="font-size:10px;color:#A1A4AA;font-weight:600;margin-top:4px;font-family:'Inter',sans-serif">综合覆盖</div>
               </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:9px;padding-top:2px;padding-left:10px">
+            <div style="display:flex;flex-direction:column;gap:9px;padding-top:2px;padding-left:20px">
               <div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#37C597;flex-shrink:0;display:inline-block"></span><span style="font-size:11px;color:#495058;font-weight:600;white-space:nowrap">大语言模型</span><div style="flex:1;min-width:36px;max-width:70px;height:6px;border-radius:99px;background:#EFF0F1;overflow:hidden"><div style="width:100%;height:100%;background:#37C597;border-radius:99px"></div></div><span style="width:32px;text-align:right;font-size:11px;font-weight:700;color:#37C597;font-family:'JetBrains Mono',monospace">100%</span></div>
               <div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#3BE880;flex-shrink:0;display:inline-block"></span><span style="font-size:11px;color:#495058;font-weight:600;white-space:nowrap">多模态模型</span><div style="flex:1;min-width:36px;max-width:70px;height:6px;border-radius:99px;background:#EFF0F1;overflow:hidden"><div style="width:100%;height:100%;background:#3BE880;border-radius:99px"></div></div><span style="width:32px;text-align:right;font-size:11px;font-weight:700;color:#37C597;font-family:'JetBrains Mono',monospace">100%</span></div>
               <div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:3px;background:#1AAFD0;flex-shrink:0;display:inline-block"></span><span style="font-size:11px;color:#495058;font-weight:600;white-space:nowrap">VLLM 框架</span><div style="flex:1;min-width:36px;max-width:70px;height:6px;border-radius:99px;background:#EFF0F1;overflow:hidden"><div style="width:78%;height:100%;background:#1AAFD0;border-radius:99px"></div></div><span style="width:32px;text-align:right;font-size:11px;font-weight:700;color:#1AAFD0;font-family:'JetBrains Mono',monospace">78%</span></div>
@@ -2418,6 +2444,11 @@ function selectRole(role, btn){
       if(title&&!title.querySelector('.role-focus-badge')){const b=document.createElement('span');b.className='role-focus-badge';b.textContent='关注';title.appendChild(b);}
     }
   });
+  // 角色 → 痛点分类 tab 联动
+  const roleCat={doc:'doc',op:'tool',infra:'api',ux:'all',pm:'all',comm:'all'};
+  const targetCat=roleCat[role]||'all';
+  const catChip=document.querySelector(`.cat-sum-chip[data-filter-cat="${targetCat}"]`);
+  if(catChip) filterPain(targetCat,catChip);
   applyPainFilter();
 }
 
@@ -2440,33 +2471,6 @@ function initOvCharts(){
   const hmColors=[C.bad,C.mid,C.ok,C.mid,C.ok];
   hmData.forEach((d,i)=>spark('ecHmSpk'+i,d,hmColors[i]));
 
-  // PyTorch API radar
-  const ptEl=document.getElementById('ecPyTorch');
-  if(ptEl){
-    const ch=echarts.init(ptEl,null,{renderer:'svg'});
-    ch.setOption({
-  backgroundColor:'transparent',
-  radar:{
-    shape:'circle',radius:'58%',center:['50%','50%'],
-    indicator:[{name:'算子API',max:100},{name:'通信API',max:100},{name:'框架API',max:100},{name:'工具API',max:100},{name:'Core test',max:100}],
-    axisName:{fontSize:9,color:'#A1A4AA',fontFamily:'Inter,sans-serif'},
-    splitLine:{lineStyle:{color:'#E1E2E4',width:1}},
-    splitArea:{areaStyle:{color:['rgba(240,239,250,.5)','rgba(255,255,255,0)','rgba(240,239,250,.3)','rgba(255,255,255,0)']}},
-    axisLine:{lineStyle:{color:'#E1E2E4'}}
-  },
-  series:[{
-    type:'radar',
-    data:[{
-      value:[92,78,71,88,85],name:'覆盖率',
-      areaStyle:{color:'rgba(161,119,255,.12)'},
-      lineStyle:{color:'#C4B5FD',width:1.5},
-      symbol:'circle',symbolSize:10,
-      itemStyle:{color:(p)=>{const v=p.data.value[p.dataIndex];return v>=90?'#37C597':v>=85?'#3BE880':v>=80?'#1AAFD0':v>=75?'#FD9A00':'#FC636B';}}
-    }]
-  }],
-  animation:false
-});
-  }
 
 
   // Customer closure bar
@@ -2710,6 +2714,46 @@ function initOvCharts(){
 }
 initOvCharts();
 
+// S0-S5 step detail
+const STAGE_DETAIL={
+  S0:{title:'S0 · 搜索发现',score:42,cls:'bad',
+    summary:'搜索直达率 0%，历经 3 轮才找到目标仓库；CANN/ASC/PYASC 命名差异造成严重平台迁移摩擦。',
+    items:['搜索"昇腾算子开发"在主流引擎首页无官方仓入口','仓库名 cann-ops-contrib 与社区常见叫法不一致','PyAscend / Ascend 两个关键词指向不同生态，新人易走错路']},
+  S1:{title:'S1 · 环境准备',score:65,cls:'mid',
+    summary:'驱动安装成功率 72%，CANN toolkit 与驱动版本兼容矩阵缺乏清晰文档，环境配置失败率高。',
+    items:['NPU 驱动与 CANN 版本对应表更新滞后，安装后报版本不匹配','Docker 镜像中环境变量 LD_LIBRARY_PATH 未预设，手动配置步骤多','社区新手对 910C vs 310P 硬件差异不了解，误装驱动']},
+  S2:{title:'S2 · 样例体验',score:73,cls:'mid',
+    summary:'官方样例可运行率 78%，部分样例依赖旧版 API，运行后精度与文档声称有出入。',
+    items:['ResNet50 样例在 CANN 7.x 下报 API deprecated 警告，但仍可运行','部分样例未提供 CPU 对比基线，无法验证精度是否正常','样例运行成功但输出格式不直观，新手不知道如何判断结果正确性']},
+  S3:{title:'S3 · 开发编译',score:81,cls:'ok',
+    summary:'编译成功率 85%，工具链相对成熟；主要摩擦点在编译报错信息不够友好。',
+    items:['编译报错信息缺少源码行号，定位问题需要手动对照','CMake 配置模板缺少注释，新手不清楚哪些参数需要修改','交叉编译场景文档不完整，仅覆盖 x86 → ARM 场景']},
+  S4:{title:'S4 · 测试验证',score:79,cls:'ok',
+    summary:'测试框架集成度较好，主要问题在精度对比工具链不完整，手动验证成本高。',
+    items:['NPU vs CPU 精度对比工具需手动编写脚本，无开箱即用方案','测试日志格式与 PyTorch 不一致，迁移用户需要重新适配 CI 脚本','异构场景（部分算子在 CPU fallback）缺少自动检测机制']},
+  S5:{title:'S5 · 反馈贡献',score:68,cls:'mid',
+    summary:'Issue 响应率 61%，PR 合入周期平均 18 天；贡献门槛感知较高，新手 PR 指引不足。',
+    items:['Issue 模板缺少"最小复现代码"引导，导致沟通轮次多','PR review 标准未公开，贡献者不清楚合入标准','新手 PR 平均等待 18 天才收到第一条评论，流失风险高']},
+};
+function selectStage(code,el){
+  document.querySelectorAll('.journey-stage').forEach(s=>s.classList.remove('sel'));
+  el.classList.add('sel');
+  const d=STAGE_DETAIL[code];
+  if(!d)return;
+  const cls={bad:'var(--coral-dark)',mid:'var(--gold-dark)',ok:'var(--green-dark)'}[d.cls]||'var(--text-3)';
+  const bg={bad:'var(--coral-light)',mid:'var(--gold-light)',ok:'var(--green-light)'}[d.cls]||'var(--g1)';
+  const itemsHtml=d.items.map(i=>`<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text-2);line-height:1.6;padding:4px 0"><span style="width:5px;height:5px;border-radius:50%;background:${cls};flex-shrink:0;margin-top:7px"></span>${i}</div>`).join('');
+  const panel=document.getElementById('journeyStageDetail');
+  if(panel) panel.innerHTML=`
+    <div style="background:${bg};border-radius:var(--radius-m);padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:13px;font-weight:800;color:${cls}">${d.title}</span>
+        <span style="font-size:20px;font-weight:900;color:${cls};font-family:'JetBrains Mono',monospace;margin-left:auto">${d.score}<small style="font-size:11px;font-weight:600;opacity:.6">/100</small></span>
+      </div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.7">${d.summary}</div>
+      <div style="display:flex;flex-direction:column;gap:2px">${itemsHtml}</div>
+    </div>`;
+}
 
 </script>
 </body>
