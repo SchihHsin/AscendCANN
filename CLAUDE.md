@@ -58,11 +58,11 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 ---
 
-## 当前进度（2026-05-20）
+## 当前进度（2026-05-20，本会话更新）
 
 ### 已完成
 
-#### 新看板 design-options.html（~1960 行，单文件，模拟数据）
+#### 新看板 design-options-themed.html（主工作文件，~2600 行，单文件，模拟数据）
 
 ##### 导航架构（两个顶层 Tab）
 
@@ -134,8 +134,8 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 ### 下一步
 
-- **楼层重排**（进行中）：总览 → 客户痛点 → VOD → 生态增益 → 开发界面 → 技术内核，每楼层压缩高度
 - 确认是否有 NPU 服务器资源接入，用于替换模拟数据
+- 内容改版（用户提过，尚未启动）
 
 ---
 
@@ -246,13 +246,67 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 - 深度分析 ascendc-agent-main：四层架构、evaluator 5 维度与看板的映射关系、NPU 依赖分布、token 消耗估算
 - 更新 context.md + process-log.md，完成 push
 
-### 2026-05-20
+### 2026-05-20（第一会话）
 
 - 用户要求：每次改完必须 push + 更新 CLAUDE.md（已存入长期记忆）
 - context.md 内容迁移至 CLAUDE.md，CLAUDE.md 成为唯一上下文维护文件
 - **主要工作文件切换**：从 `design-options.html` 改为 `design-options-themed.html`（用户调整了视觉样式后的版本），视觉规范参考 `ascendops-theme.skill`
-- **总览 Tab 楼层重排完成**（design-options-themed.html）：Hero Banner → 健康矩阵 → 客户痛点 → VOD 声量 → 生态增益（仅 S0–S5）→ 开发界面 → 技术内核
-  - 客户痛点、VOD 声量各新建独立 `layer-sec` wrapper，从原生态增益中拆出
-  - commit: `057324b`
-- **修复 KPI hero 折线图消失**：4 个 glass 卡片缺少 `ecKpi0–3` 挂载容器，已补充，commit: `653a205`
-- 待议：是否将 HTML 拆成 CSS + JS + HTML 三文件以减少 token 消耗（用户已问，尚未决定）
+- **总览 Tab 楼层重排完成**：Hero Banner → 健康矩阵 → 客户痛点 → VOD 声量 → 生态增益 → 开发界面 → 技术内核
+- **修复 KPI hero 折线图消失**：4 个 glass 卡片缺少 `ecKpi0–3` 挂载容器，已补充
+
+### 2026-05-20（本会话）
+
+#### Bug 修复
+
+- **用户旅程场景卡片点击自动滚顶**：`selScene()` 内有 `window.scrollTo({top:0})` 调用，已删除
+- **RSB（角色摘要条）距顶无间距**：`#roleSummaryBar` 的 `margin-top` 从 0 改为 20px，与 `.ov-hero` 对齐
+
+#### VOD 声量楼层 — 完整重构
+
+**旧实现问题**：文件中存在多组冲突的 `.vod-*` CSS：
+- 旧 `.vod-body`（第 611 行）为页面布局类，`padding:16px 28px 48px`，覆盖了卡片级 `.vod-body{min-width:0}`，导致卡片内容区异常膨胀
+- 旧 `.vod-quote`（第 532 行）带 `border-left:3px`、`padding:8px 16px`、`italic`，渗入新卡片样式
+- 死代码 `.vod-two-col`、`.vod-src-*`、`.vod-full-*` 与旧 `.vod-body` 块一并存在
+
+**修复方案**：
+1. 旧 `.vod-quote` 重命名为 `.jvod-quote`（旅程 tab 专用），与新样式隔离
+2. 删除死代码 CSS 块（`.vod-body` 页面布局 + `.vod-two-col` + `.vod-src-*` + `.vod-full-*`）
+3. 新 VOD CSS 严格照抄 `ascendops-experience.html` 参考文件原文，无任何 override hack
+4. `renderVodList` 暴露为 `window.renderVodList`（原为局部作用域，导致"返回列表"按钮无效）
+
+**当前 VOD 交互设计**：
+- 默认：展示 5 条紧凑 `.vod` 卡片列表（参考文件原样）
+- 点击柱状图：切换为该条的详情视图（`.vod-cta` 按钮返回列表）
+- 详情视图包含：完整引语（带紫色左描边）+ 深度分析段落 + 统计行（影响人数/状态/来源拆解）+ 改进计划 callout
+
+**VOD_DATA 新增字段**：`detail`（扩展分析）、`impact`（影响范围）、`trend/trendCls`（趋势）、`status/statusCls`（处理状态）、`action`（改进行动）、`sources[]`（声量来源拆解）
+
+**VOD 图标**：emoji 替换为 5 个 Feather 风格线性 SVG 图标（白色描边，显示在渐变色背景上）：
+1. 扳手（算子工具链）2. 书本（文档仓库）3. 文件文本（资料格式）4. CPU（transformer）5. 滑杆（ops 调参）
+
+**VOD 柱状图优化**：
+- 颜色按严重度从左到右渐变：红(`#E63838`) → 粉(`#FC636B`) → 金(`#FD9A00`) → 青(`#1AAFD0`) → 绿(`#37C597`)
+- 每柱从底部透明到顶部实色的渐变填充
+- `yAxis.max:74`，最高柱(71)填满约 96% 容器高度
+- Grid `top:24 = bottom:24`，上下完全对称居中
+- 去掉 `containLabel:true`（会不对称撑开 grid 导致偏右），改用固定对称像素 `left:20, right:20`
+- X 轴标签改为单行短词，移除 `\n` 换行符
+
+#### 技术内核楼层
+
+- **PyTorch API 支持度卡片**：雷达图移至左侧（140×140），5 个维度数据行（色点+名称+进度条+数值）移至右侧，与模型开箱覆盖卡片布局一致
+
+#### Commits（本会话）
+
+| commit | 内容 |
+|--------|------|
+| `2420bfe` | 修复场景滚顶 + VOD 列表默认视图 + RSB margin |
+| `9fcd84b` | VOD 柱状图居中/窄柱/渐变 + PyTorch 卡片布局 |
+| `d258215` | 修复 `.vod-quote` 旧 CSS 冲突 + renderVodList 全局暴露 |
+| `000bf24` | VOD CSS 从头重写，严格照抄参考文件 |
+| `a424f94` | 详情视图复用 `.vod` 卡片结构 |
+| `8bf2275` | VOD emoji → 线性 SVG 图标 |
+| `fe2eba6` | 详情视图补充 detail/impact/status/action/sources 字段 |
+| `eddf1a1` | 柱状图居中修复（去 containLabel，固定对称边距） |
+| `7e04cd9` | 柱颜色对应图标背景 + 柱高拉伸 |
+| `7a69baf` | 柱颜色改为严重度渐变 + 上下居中 + 高度充满容器 |
