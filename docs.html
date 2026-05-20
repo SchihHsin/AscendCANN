@@ -10,16 +10,16 @@
 </head>
 <body>
 <nav>
-  <a class="nav-logo" href="index.html">
+  <a class="nav-logo" href="#" onclick="showPage('home')">
     <img class="nav-logo-ascend" src="Ascendlogo.svg" alt="Ascend">
     <div class="nav-logo-divider"></div>
     <img class="nav-logo-cann" src="CANNlogo.png" alt="CANN">
   </a>
   <ul class="nav-links">
-    <li><a href="index.html" id="nav-home">首页</a></li>
-    <li><a href="docs.html" id="nav-docs" class="active">文档</a></li>
-    <li><a href="learn.html" id="nav-learn">学习</a></li>
-    <li><a href="api.html" id="nav-api">API 参考</a></li>
+    <li><a href="#" onclick="showPage('home')" id="nav-home">首页</a></li>
+    <li><a href="#" onclick="showPage('docs')" id="nav-docs" class="active">文档</a></li>
+    <li><a href="#" onclick="showPage('learn')" id="nav-learn">学习</a></li>
+    <li><a href="#" onclick="showPage('api')" id="nav-api">API 参考</a></li>
     <li><a href="#">社区</a></li>
     <li><a href="#">博客</a></li>
   </ul>
@@ -90,6 +90,51 @@
 <!-- Node Detail Drawer -->
 <div class="node-drawer" id="node-drawer">
   <div class="nd-header">
+    <div class="nd-header-left">
+      <span class="nd-phase-dot" id="nd-phase-dot"></span>
+      <span class="nd-title" id="nd-title">节点标题</span>
+    </div>
+    <div class="nd-header-right">
+      <button class="nd-complete-btn" id="nd-complete-btn" onclick="toggleNodeComplete()">标记完成</button>
+      <button class="nd-close" onclick="closeNodeDrawer()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nd-tabs">
+    <button class="nd-tab active" data-tab="knowledge" onclick="switchNdTab('knowledge',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      核心知识
+    </button>
+    <button class="nd-tab" data-tab="practice" onclick="switchNdTab('practice',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      代码实战
+    </button>
+    <button class="nd-tab" data-tab="quiz" onclick="switchNdTab('quiz',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      知识测验
+    </button>
+  </div>
+  <div class="nd-body" id="nd-body"></div>
+  <div class="nd-ai-strip">
+    <div class="nd-ai-modes" id="nd-ai-modes">
+      <button class="nd-ai-mode" onclick="prefillDrawerAI(this,'深入解释这个概念')">深入解释</button>
+      <button class="nd-ai-mode" onclick="prefillDrawerAI(this,'给我一个代码示例')">代码示例</button>
+      <button class="nd-ai-mode" onclick="prefillDrawerAI(this,'这在实际项目中如何应用')">实战应用</button>
+    </div>
+    <div class="nd-ai-input-row">
+      <input type="text" id="nd-ai-input" class="nd-ai-input" placeholder="针对本节提问…" onkeydown="if(event.key==='Enter')sendDrawerAI()">
+      <button class="nd-ai-send" onclick="sendDrawerAI()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="nd-ai-response hidden" id="nd-ai-response"></div>
+  </div>
+</div>
+
+<!-- HiDevLab Notebook Drawer -->
+<div class="sandbox-overlay" id="sandbox-overlay" onclick="closeSandboxDrawer()"></div>
+<div class="sandbox-drawer" id="sandbox-drawer">
   <div class="nb-header">
     <div class="nb-header-left">
       <div class="nb-brand">
@@ -208,7 +253,7 @@
   </div>
 </div>
 
-<!-- ══════════════ DOCS PAGE ══════════════ -->
+<!-- ══════════════ HOME PAGE ══════════════ -->
 <div id="page-docs" class="page active">
   <div class="docs-layout">
     <!-- Sidebar -->
@@ -881,10 +926,93 @@
 
 <script src="cann-app.js"></script>
 
+<!-- Learning Archive Overlay + Drawer -->
+<div class="qb-overlay" id="qb-overlay" onclick="closeLearningArchive()"></div>
+<div class="qb-drawer" id="qb-drawer">
+  <div class="qb-header">
+    <div class="qb-header-left">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span class="qb-title">学习档案</span>
+    </div>
+    <button class="qb-close" onclick="closeLearningArchive()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <!-- Archive tabs -->
+  <div class="la-tabs">
+    <button class="la-tab active" id="la-tab-paths" onclick="switchLaTab('paths')">我的路径</button>
+    <button class="la-tab" id="la-tab-quiz" onclick="switchLaTab('quiz')">错题本 <span class="qb-count" id="qb-count" style="margin-left:4px;"></span></button>
+  </div>
+  <!-- 我的路径 panel -->
+  <div class="la-panel" id="la-panel-paths">
+    <div class="la-sort-bar" id="la-sort-bar">
+      <div class="la-sort-chips" id="la-sort-chips">
+        <button class="la-sort-chip active" onclick="setLaSort('lastStudied')">上次学习</button>
+        <button class="la-sort-chip" onclick="setLaSort('createdAt')">创建时间</button>
+        <button class="la-sort-chip" onclick="setLaSort('progress')">学习进度</button>
+      </div>
+      <button class="la-dir-btn" id="la-dir-btn" onclick="toggleLaSortDir()" title="切换升降序">
+        <svg id="la-dir-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4"/><polyline points="18 14 12 20 6 14"/></svg>
+      </button>
+      <div class="la-filter-chips" id="la-filter-chips">
+        <button class="la-filter-chip active" onclick="setLaFilter('all',this)">全部</button>
+        <button class="la-filter-chip" onclick="setLaFilter('active',this)">进行中</button>
+        <button class="la-filter-chip" onclick="setLaFilter('done',this)">已完成</button>
+      </div>
+    </div>
+    <div id="la-paths-list"></div>
+  </div>
+  <!-- 错题本 panel -->
+  <div class="la-panel" id="la-panel-quiz" style="display:none; flex-direction:column;">
+    <div class="qb-toolbar">
+      <div class="qb-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="搜索题目或节点…" oninput="qbSearchInput(this.value)">
+      </div>
+      <div class="qb-filters" id="qb-result-filters">
+        <button class="qb-filter active" onclick="qbSetFilter('all',this)">全部</button>
+        <button class="qb-filter err" onclick="qbSetFilter('wrong',this)">只看错题</button>
+        <button class="qb-filter ok" onclick="qbSetFilter('correct',this)">只看正确</button>
+      </div>
+      <div class="qb-filters" id="qb-domain-filters"></div>
+      <div class="qb-filters" id="qb-node-filters"></div>
+    </div>
+    <div class="qb-list" id="qb-list"></div>
+    <div class="qb-footer">
+      <span class="qb-footer-stats" id="qb-footer-stats"></span>
+      <button class="qb-clear-btn" onclick="qbClearAll()">清空全部</button>
+    </div>
+  </div>
+</div>
+
+<!-- Insert popup (inline path editor) -->
+<div class="pg-insert-popup" id="ipe-insert-popup" style="display:none;">
+  <div class="pg-insert-title">插入节点</div>
+  <div class="pg-isearch-wrap">
+    <span class="pg-isearch-icon">⌕</span>
+    <input class="pg-isearch" id="ipe-isearch" type="text" placeholder="搜索节点名称…" oninput="ipeFilterSearch(this.value)" autocomplete="off" />
+  </div>
+  <div id="ipe-search-section" style="display:none;">
+    <div class="pg-isec-label" id="ipe-search-label">搜索结果</div>
+    <div id="ipe-search-results"></div>
+  </div>
+  <div id="ipe-recommend-section">
+    <div class="pg-isec-label">推荐插入</div>
+    <div id="ipe-recommend-opts"></div>
+  </div>
+  <button class="pg-icancel" onclick="ipeCloseInsert()">取消</button>
+</div>
+
+<!-- Undo toast (inline path editor) -->
+<div class="pg-undo-toast" id="ipe-undo-toast">
+  <span id="ipe-undo-msg"></span>
+  <button class="pg-undo-btn" onclick="ipeDoUndo()">撤销</button>
+</div>
+
 <!-- AI window glow frame -->
 <div id="ai-glow-frame"></div>
 
-<!-- AI cursor (rainbow arrow pointer) -->
+<!-- AI edit cursor -->
 <div id="ai-edit-cursor" class="ai-edit-cursor hidden">
   <svg class="ai-cursor-arrow" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -900,5 +1028,7 @@
   <span id="ai-edit-cursor-label" class="ai-cursor-label">AI</span>
 </div>
 
+</body>
+</html>
 </body>
 </html>
