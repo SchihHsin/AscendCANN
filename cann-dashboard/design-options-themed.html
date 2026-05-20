@@ -695,7 +695,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .vod-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
 .vod-title{font-size:13.5px;font-weight:800;color:var(--text);}
 .vod-date{font-size:11px;color:var(--text-3);margin-left:auto;font-family:'JetBrains Mono',monospace;}
-.vod-quote{font-size:12px;color:var(--text-2);line-height:1.55;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.vod-quote{font-size:12.5px;color:var(--text-2);line-height:1.55;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;border-left:none;padding:0;background:transparent;font-style:normal;position:static;border-radius:0;}
 .vod-foot{display:flex;align-items:center;gap:10px;margin-top:8px;}
 .vod-check{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-2);}
 .vod-check .chk{width:14px;height:14px;border-radius:4px;border:1.5px solid #B9BCC0;display:flex;align-items:center;justify-content:center;}
@@ -2484,7 +2484,7 @@ function initOvCharts(){
   const VOD_COLORS=['#E63838','#FC636B','#FD9A00','#6A67CE','#1AAFD0'];
   const vodCatMap={doc:'tag-doc',api:'tag-api',tool:'tag-tool',env:'tag-env',other:'tag-other'};
 
-  function renderVodList(){
+  window.renderVodList=function renderVodList(){
     const html=VOD_DATA.map(v=>{
       const tags=v.tags.map(([c,n])=>`<span class="tag ${vodCatMap[c]}">${n}</span>`).join(' ');
       const chk=v.checked?'on':'';
