@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CANN 文档</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cann-style.css">
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img class="nav-logo-ascend" src="Ascendlogo.svg" alt="Ascend">
+    <div class="nav-logo-divider"></div>
+    <img class="nav-logo-cann" src="CANNlogo.png" alt="CANN">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" id="nav-home">首页</a></li>
+    <li><a href="#" href="docs.html" id="nav-docs" class="active">文档</a></li>
+    <li><a href="#" href="learn.html" id="nav-learn">学习</a></li>
+    <li><a href="#" href="api.html" id="nav-api">API 参考</a></li>
+    <li><a href="#">社区</a></li>
+    <li><a href="#">博客</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" placeholder="搜索文档或 API..." />
+    </div>
+    <button class="btn-ask-ai" onclick="toggleAiChat()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+        <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+      </svg>
+      Ask AI
+    </button>
+  </div>
+</nav>
+
+<!-- AI Chat Sidebar -->
+<div class="ai-chat-sidebar" id="ai-sidebar">
+  <div class="ai-drag-handle" id="ai-drag-handle">⠿</div>
+  <div class="ai-header-panel">
+    <div class="ai-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--black)"/>
+        <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z" fill="var(--black)"/>
+      </svg>
+      <span id="ai-title-text">CANN 智能助手</span>
+    </div>
+    <div class="ai-layout-btns">
+      <!-- 嵌入：推挤内容（默认） -->
+      <button class="ai-layout-btn active" data-mode="embed" onclick="setAiLayout('embed')" title="嵌入（推挤内容）">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="9" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="10.5" y=".75" width="4.75" height="12.5" rx="1.5" fill="currentColor" opacity=".45" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+      <!-- 左侧覆盖 -->
+      <button class="ai-layout-btn" data-mode="left" onclick="setAiLayout('left')" title="左侧浮层">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".35"/><rect x="1" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
+      </button>
+      <!-- 右侧覆盖 -->
+      <button class="ai-layout-btn" data-mode="right" onclick="setAiLayout('right')" title="右侧浮层">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".35"/><rect x="10" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
+      </button>
+      <!-- 浮动 -->
+      <button class="ai-layout-btn" data-mode="float" onclick="setAiLayout('float')" title="浮动面板">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".3"/><rect x="5.5" y="3" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="currentColor" opacity=".45"/></svg>
+      </button>
+    </div>
+    <button class="btn-close-ai" onclick="toggleAiChat()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+  <div class="ai-messages" id="ai-messages">
+    <div class="ai-msg bot">
+      您好！我是 CANN 智能助手。可以回答 AscendCL、TBE 算子开发、ATC 模型转换等问题，也可以帮你生成专属学习路径。
+      <div style="margin-top:10px;">
+        <button class="ai-demo-chip" onclick="sendAiMessage('演示')">✦ 平台功能导览</button>
+      </div>
+    </div>
+  </div>
+  <div class="ai-chips" id="ai-chips"></div>
+  <div class="ai-input-area">
+    <div class="ai-input-wrap">
+      <input type="text" id="ai-sidebar-input" placeholder="输入您的问题..." onkeydown="if(event.key==='Enter')sendAiMessage()">
+      <button class="btn-send-ai" onclick="sendAiMessage()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- HiDevLab Notebook Drawer -->
+<div class="sandbox-overlay" id="sandbox-overlay" onclick="closeSandboxDrawer()"></div>
+<div class="sandbox-drawer" id="sandbox-drawer">
+  <div class="nb-header">
+    <div class="nb-header-left">
+      <div class="nb-brand">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        HiDevLab
+      </div>
+      <div class="nb-tabs">
+        <button class="nb-tab active" onclick="switchNbTab('notebook',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Notebook
+        </button>
+        <button class="nb-tab" onclick="switchNbTab('terminal',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          Terminal
+        </button>
+        <button class="nb-tab" onclick="switchNbTab('files',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          文件管理
+        </button>
+      </div>
+    </div>
+    <div class="nb-header-right">
+      <div class="nb-spec-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <span>Ascend 910B · 32vCPU · 64GB</span>
+        <span class="nb-spec-dot"></span>
+        <span style="color:#10B981;font-weight:700;">运行中</span>
+      </div>
+      <div class="nb-kernel-select" onclick="toggleKernelMenu(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        <span id="nb-kernel-name">Python 3 (CANN 8.0)</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="nb-kernel-menu" id="nb-kernel-menu">
+          <div class="nb-kernel-option active" onclick="selectKernel(this,'Python 3 (CANN 8.0)')"><span class="nb-kernel-dot" style="background:#3B82F6"></span>Python 3 (CANN 8.0)</div>
+          <div class="nb-kernel-option" onclick="selectKernel(this,'Python 3 (PyTorch NPU)')"><span class="nb-kernel-dot" style="background:#F59E0B"></span>Python 3 (PyTorch NPU)</div>
+          <div class="nb-kernel-option" onclick="selectKernel(this,'Python 3 (MindSpore)')"><span class="nb-kernel-dot" style="background:#10B981"></span>Python 3 (MindSpore)</div>
+          <div class="nb-kernel-option" onclick="selectKernel(this,'Bash')"><span class="nb-kernel-dot" style="background:#94A3B8"></span>Bash</div>
+        </div>
+      </div>
+      <div class="nb-actions">
+        <button class="nb-action-btn" onclick="nbRunAll()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          全部运行
+        </button>
+        <button class="nb-action-btn nb-action-icon" onclick="nbInterrupt()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></button>
+        <button class="nb-action-btn nb-action-icon" onclick="nbRestart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+        <button class="nb-action-btn nb-action-icon" onclick="nbSave()" id="btn-nb-save"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg></button>
+        <button class="nb-action-btn nb-action-icon nb-action-close" onclick="closeSandboxDrawer()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="nb-monitor-bar">
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg><span>NPU 910B</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill npu" id="nb-npu-bar" style="width:0%"></div></div><span class="nb-monitor-val" id="nb-npu-val">0%</span></div>
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z"/></svg><span>HBM</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill hbm" id="nb-hbm-bar" style="width:0%"></div></div><span class="nb-monitor-val" id="nb-hbm-val">0 / 64GB</span></div>
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>CPU</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill cpu" id="nb-cpu-bar" style="width:0%"></div></div><span class="nb-monitor-val" id="nb-cpu-val">0%</span></div>
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>磁盘</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill disk-m" id="nb-disk-bar" style="width:62%"></div></div><span class="nb-monitor-val">31.2 / 50GB</span></div>
+    <div class="nb-monitor-sep"></div>
+    <div class="nb-monitor-status" id="nb-status">● 空闲</div>
+  </div>
+  <div class="nb-body">
+    <div class="nb-panel active" id="nb-panel-notebook">
+      <div class="nb-sidebar">
+        <div class="nb-sidebar-title">文件</div>
+        <div class="nb-file-item active" onclick="loadNbFile(this,'main')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>main.ipynb</div>
+        <div class="nb-file-item" onclick="loadNbFile(this,'inference')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>inference.ipynb</div>
+        <div class="nb-file-item" onclick="loadNbFile(this,'operator')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>custom_op.ipynb</div>
+        <div class="nb-sidebar-divider"></div>
+        <button class="nb-new-file-btn" onclick="nbNewCell()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>新建 Cell</button>
+        <button class="nb-new-file-btn" onclick="nbUploadFile()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>上传文件</button>
+      </div>
+      <div class="nb-cells" id="nb-cells"></div>
+    </div>
+    <div class="nb-panel" id="nb-panel-terminal">
+      <div class="nb-terminal" id="nb-terminal">
+        <div class="nb-term-line"><span class="nb-term-prompt">ascend@hidevlab:~$</span> <span class="nb-term-output">npu-smi info</span></div>
+        <div class="nb-term-line nb-term-out">+-------------------------------------------------------------------------------------------+</div>
+        <div class="nb-term-line nb-term-out">| npu-smi 23.0.3       Driver Version: 23.0.3      CANN Version: 8.0.RC2                   |</div>
+        <div class="nb-term-line nb-term-out">| NPU   Name      Health   Power(W)   Temp(C)   Hugepages-Usage(MB)   Chip                |</div>
+        <div class="nb-term-line nb-term-out">| 0     910B4     OK       72.4       42        0    / 0              0                   |</div>
+        <div class="nb-term-line nb-term-out">+-------------------------------------------------------------------------------------------+</div>
+        <div class="nb-term-line" style="margin-top:8px"><span class="nb-term-prompt">ascend@hidevlab:~$</span> <span id="term-cursor" class="nb-term-cursor"></span></div>
+      </div>
+      <div class="nb-term-input-row">
+        <span class="nb-term-prompt-inline">ascend@hidevlab:~$</span>
+        <input class="nb-term-input" id="nb-term-input" type="text" placeholder="输入命令…" onkeydown="handleTermInput(event)" />
+      </div>
+    </div>
+    <div class="nb-panel" id="nb-panel-files">
+      <div class="nb-files-toolbar">
+        <button class="nb-files-btn" onclick="showNbToast('上传文件（演示模式）')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>上传</button>
+        <button class="nb-files-btn" onclick="showNbToast('新建文件夹（演示模式）')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>新建文件夹</button>
+        <span class="nb-files-path">/home/ascend/workspace</span>
+      </div>
+      <div class="nb-files-list">
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="nb-file-name">data/</span><span class="nb-file-meta">目录</span></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="nb-file-name">models/</span><span class="nb-file-meta">目录</span></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nb-file-name">main.ipynb</span><span class="nb-file-meta">18.4 KB · 3分钟前</span><div class="nb-file-actions"><button>下载</button><button>删除</button></div></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nb-file-name">inference.ipynb</span><span class="nb-file-meta">24.1 KB · 1小时前</span><div class="nb-file-actions"><button>下载</button><button>删除</button></div></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nb-file-name">resnet50.om</span><span class="nb-file-meta">48.2 MB · 2天前</span><div class="nb-file-actions"><button>下载</button><button>删除</button></div></div>
+      </div>
+      <div class="nb-files-footer">共使用 31.2 GB / 50 GB 存储空间</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ DOCS PAGE ══════════════ -->
+<div id="page-docs" class="page">
+  <div class="docs-layout">
+    <!-- Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="docs-search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" placeholder="搜索文档..." />
+        <span class="search-kbd">⌘K</span>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-item active" onclick="showDoc('home')" style="font-weight:700;display:flex;align-items:center;gap:8px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          文档首页
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">入门</div>
+        <div class="sidebar-item" onclick="showDoc('quickstart')"><span class="si-dot"></span>快速开始</div>
+        <div class="sidebar-item" onclick="showDoc('install')">安装与配置</div>
+        <div class="sidebar-item" onclick="showDoc('concepts')">核心概念</div>
+        <div class="sidebar-item" onclick="showDoc('arch')">架构概览</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">AscendCL</div>
+        <div class="sidebar-item" onclick="showDoc('acl-init')">设备初始化</div>
+        <div class="sidebar-item" onclick="showDoc('acl-memory')">内存管理</div>
+        <div class="sidebar-item" onclick="showDoc('acl-model')">模型推理</div>
+        <div class="sidebar-item" onclick="showDoc('acl-stream')">流与事件</div>
+        <div class="sidebar-item" onclick="showDoc('acl-dvpp')">数据预处理</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">算子开发</div>
+        <div class="sidebar-item" onclick="showDoc('tbe-intro')">TBE 介绍</div>
+        <div class="sidebar-item" onclick="showDoc('tbe-dsl')">DSL 开发<span class="sidebar-badge">新</span></div>
+        <div class="sidebar-item" onclick="showDoc('tbe-tik')">TIK 开发</div>
+        <div class="sidebar-item" onclick="showDoc('opbuilder')">自定义算子</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">模型工具</div>
+        <div class="sidebar-item" onclick="showDoc('atc')">ATC 模型转换</div>
+        <div class="sidebar-item" onclick="showDoc('profiling')">性能调优</div>
+        <div class="sidebar-item" onclick="showDoc('msprof')">MsProf 工具</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">分布式</div>
+        <div class="sidebar-item" onclick="showDoc('hccl')">HCCL 通信</div>
+        <div class="sidebar-item" onclick="showDoc('rankfile')">集群配置</div>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="docs-content" id="docs-main">
+
+      <!-- ══ DOCS HOME ══ -->
+      <div id="doc-home">
+        <div class="doc-home-hero">
+          <div class="section-label" style="justify-content:flex-start;">文档中心</div>
+          <h1>CANN 开发者文档</h1>
+          <p>从快速开始到高级调优，找到你需要的一切。选择分类浏览，或使用左侧搜索快速定位。</p>
+        </div>
+
+        <div class="doc-home-section-label">分类浏览</div>
+        <div class="doc-home-grid">
+          <div class="doc-home-card" onclick="showDoc('quickstart')">
+            <div class="dhc-icon">🚀</div>
+            <div class="dhc-title">入门 & 安装</div>
+            <div class="dhc-desc">快速开始、安装配置、核心概念、架构概览</div>
+          </div>
+          <div class="doc-home-card" onclick="showDoc('acl-init')">
+            <div class="dhc-icon">⚡</div>
+            <div class="dhc-title">AscendCL 编程</div>
+            <div class="dhc-desc">设备管理、内存操作、Stream/Context、数据预处理</div>
+          </div>
+          <div class="doc-home-card" onclick="showDoc('tbe-intro')">
+            <div class="dhc-icon">🔧</div>
+            <div class="dhc-title">算子开发</div>
+            <div class="dhc-desc">TBE DSL/TIK 框架、自定义算子开发全流程</div>
+          </div>
+          <div class="doc-home-card" onclick="showDoc('atc')">
+            <div class="dhc-icon">📊</div>
+            <div class="dhc-title">模型工具</div>
+            <div class="dhc-desc">ATC 模型转换、Profiling 性能分析、MsProf 工具</div>
+          </div>
+          <div class="doc-home-card" onclick="showDoc('hccl')">
+            <div class="dhc-icon">🌐</div>
+            <div class="dhc-title">分布式</div>
+            <div class="dhc-desc">HCCL 集合通信、多卡集群配置与部署</div>
+          </div>
+          <div class="doc-home-card" onclick="showPage('learn')">
+            <div class="dhc-icon">🎯</div>
+            <div class="dhc-title">学习路径</div>
+            <div class="dhc-desc">结构化学习路径，从入门到专家的完整进阶指南</div>
+          </div>
+        </div>
+
+        <div class="doc-home-section-label">热门文档</div>
+        <div class="doc-home-quick">
+          <div class="dhq-item" onclick="showDoc('quickstart')">
+            <div class="dhq-icon">📄</div>
+            <div class="dhq-info">
+              <div class="dhq-title">快速开始：Hello CANN</div>
+              <div class="dhq-sub">5 分钟跑通第一个 AscendCL 程序</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('install')">
+            <div class="dhq-icon">⚙️</div>
+            <div class="dhq-info">
+              <div class="dhq-title">安装与配置</div>
+              <div class="dhq-sub">驱动、Toolkit 及 Python 绑定安装指南</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('acl-model')">
+            <div class="dhq-icon">🤖</div>
+            <div class="dhq-info">
+              <div class="dhq-title">模型推理 API</div>
+              <div class="dhq-sub">加载 .om 模型并执行离线推理</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('atc')">
+            <div class="dhq-icon">🔄</div>
+            <div class="dhq-info">
+              <div class="dhq-title">ATC 模型转换</div>
+              <div class="dhq-sub">将 ONNX/Caffe 模型转换为 .om 格式</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('profiling')">
+            <div class="dhq-icon">📈</div>
+            <div class="dhq-info">
+              <div class="dhq-title">性能调优指南</div>
+              <div class="dhq-sub">Profiling 分析热点与算子融合优化</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+          <div class="dhq-item" onclick="showDoc('tbe-dsl')">
+            <div class="dhq-icon">🛠️</div>
+            <div class="dhq-info">
+              <div class="dhq-title">TBE DSL 算子开发</div>
+              <div class="dhq-sub">用高级 DSL 快速编写自定义算子</div>
+            </div>
+            <div class="dhq-arrow">›</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Start content -->
+      <div id="doc-quickstart" style="display:none;">
+        <div class="breadcrumb-wrap">
+          <div class="breadcrumb">
+            <span>CANN</span><span class="sep">›</span>
+            <span>入门</span><span class="sep">›</span>
+            <span class="cur">快速开始</span>
+          </div>
+          <div class="dropdown" id="page-actions-dropdown">
+            <button class="btn-dropdown" onclick="toggleDropdown(event)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy page
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item">
+                <div class="item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">Copy page</div>
+                  <div class="item-desc">Copy page as Markdown for LLMs</div>
+                </div>
+              </div>
+              <div class="dropdown-item">
+                <div class="item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M2 15h10"></path><path d="M9 18l3-3-3-3"></path></svg>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">View as Markdown <span class="item-arrow">↗</span></div>
+                  <div class="item-desc">View this page as plain text</div>
+                </div>
+              </div>
+              <div class="dropdown-item">
+                <div class="item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">Open in AI Chat Window <span class="item-arrow">↗</span></div>
+                  <div class="item-desc">Ask questions about this page</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="doc-title">快速开始</h1>
+        <p class="doc-tagline">在 5 分钟内完成第一个 CANN 推理应用，体验昇腾 NPU 的强大计算能力。</p>
+
+        <div class="doc-meta">
+          <span class="meta-tag">CANN 8.0</span>
+          <span class="meta-text">适用于昇腾 310/910 系列设备</span>
+          <span class="meta-text" style="margin-left: auto; color: var(--text-muted);">阅读时间 ~8 分钟</span>
+        </div>
+
+        <div class="doc-tabs">
+          <div class="doc-tab active" onclick="switchTab(this,'tab-python')">Python</div>
+          <div class="doc-tab" onclick="switchTab(this,'tab-cpp')">C++</div>
+          <div class="doc-tab" onclick="switchTab(this,'tab-docker')">Docker</div>
+        </div>
+
+        <div id="tab-python" class="tab-content active">
+          <div class="doc-section">
+            <h2 class="doc-h2">1. 安装 CANN Toolkit</h2>
+            <p class="doc-p">下载并安装适用于您硬件的 CANN 软件包。推荐使用 pip 安装 Python 绑定：</p>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>BASH</span>
+                <div class="code-block-actions">
+                  <button class="explain-btn" onclick="explainCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                      <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                    </svg>
+                    代码解释
+                  </button>
+                  <div class="sandbox-btn-wrapper">
+                    <button class="sandbox-btn" onclick="openSandbox(this)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      运行
+                    </button>
+                    <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                  </div>
+                  <button class="download-btn" onclick="downloadCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                  <button class="copy-icon-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="code-block-content">
+                <span style="color:#6B6480;"># 安装 CANN Python 包</span><br>
+                <span style="color:#A8FF60;">pip install cann-toolkit</span><br>
+                <span style="color:#A8FF60;">pip install torch-npu  </span><span style="color:#6B6480;"># PyTorch 适配</span>
+              </div>
+            </div>
+            <div class="callout">
+              <strong>注意：</strong>需要提前在宿主机安装昇腾驱动（driver）和固件（firmware），版本需与 CANN Toolkit 匹配。
+            </div>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-h2">2. 第一个推理程序</h2>
+            <p class="doc-p">以下示例演示如何使用 AscendCL 在昇腾 NPU 上运行 ResNet-50 推理：</p>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>PYTHON</span>
+                <div class="code-block-actions">
+                  <button class="explain-btn" onclick="explainCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                      <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                    </svg>
+                    代码解释
+                  </button>
+                  <div class="sandbox-btn-wrapper">
+                    <button class="sandbox-btn" onclick="openSandbox(this)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      运行
+                    </button>
+                    <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                  </div>
+                  <button class="download-btn" onclick="downloadCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                  <button class="copy-icon-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="code-block-content">
+                <span style="color:#6B6480;"># inference_demo.py</span><br>
+              <span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">acl</span><br>
+              <span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">numpy as np</span><br><br>
+              <span style="color:#6B6480;"># Step 1: 初始化运行时</span><br>
+              <span style="color:#F8F8F2;">ret </span><span style="color:#FF79C6;">=</span> <span style="color:#82AAFF;">acl.init</span>()<br>
+              <span style="color:#82AAFF;">acl.rt.set_device</span>(<span style="color:#FFB86C;">0</span>)<br>
+              <span style="color:#F8F8F2;">ctx, _ </span><span style="color:#FF79C6;">=</span> <span style="color:#82AAFF;">acl.rt.create_context</span>(<span style="color:#FFB86C;">0</span>)<br><br>
+              <span style="color:#6B6480;"># Step 2: 加载离线模型</span><br>
+              <span style="color:#F8F8F2;">model_id, _ </span><span style="color:#FF79C6;">=</span> <span style="color:#82AAFF;">acl.mdl.load_from_file</span>(<br>
+              <span style="color:#A8FF60;">&nbsp;&nbsp;"./resnet50.om"</span><br>
+              )<br><br>
+              <span style="color:#6B6480;"># Step 3: 执行推理</span><br>
+              <span style="color:#F8F8F2;">input_data </span><span style="color:#FF79C6;">=</span> <span style="color:#F8F8F2;">np.random.randn(</span><span style="color:#FFB86C;">1</span><span style="color:#F8F8F2;">, </span><span style="color:#FFB86C;">3</span><span style="color:#F8F8F2;">, </span><span style="color:#FFB86C;">224</span><span style="color:#F8F8F2;">, </span><span style="color:#FFB86C;">224</span><span style="color:#F8F8F2;">).astype(np.float16)</span><br>
+              <span style="color:#6B6480;"># ... 执行推理、获取输出 ...</span><br><br>
+              <span style="color:#6B6480;"># Step 4: 释放资源</span><br>
+              <span style="color:#82AAFF;">acl.mdl.unload</span>(<span style="color:#F8F8F2;">model_id</span>)<br>
+              <span style="color:#82AAFF;">acl.rt.destroy_context</span>(<span style="color:#F8F8F2;">ctx</span>)<br>
+              <span style="color:#82AAFF;">acl.rt.reset_device</span>(<span style="color:#FFB86C;">0</span>)
+            </div>
+          </div>
+            <div class="sandbox-container">
+              <div class="sandbox-header">
+                <div class="sandbox-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  HiDevLab
+                </div>
+                <button class="btn-run-sandbox" onclick="runSandbox(this)">运行代码</button>
+              </div>
+              <div class="sandbox-code-editor" contenteditable="true" spellcheck="false">
+                <span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">acl</span><br>
+                <span style="color:#BD93F9;">def</span> <span style="color:#82AAFF;">main</span>():<br>
+                <span style="color:#F8F8F2;">&nbsp;&nbsp;print</span>(<span style="color:#A8FF60;">"Initializing ACL..."</span>)<br>
+                <span style="color:#F8F8F2;">&nbsp;&nbsp;ret </span><span style="color:#FF79C6;">=</span> <span style="color:#82AAFF;">acl.init</span>()<br>
+                <span style="color:#F8F8F2;">&nbsp;&nbsp;if ret </span><span style="color:#FF79C6;">==</span> <span style="color:#FFB86C;">0</span>:<br>
+                <span style="color:#F8F8F2;">&nbsp;&nbsp;&nbsp;&nbsp;print</span>(<span style="color:#A8FF60;">"ACL initialized successfully!"</span>)<br>
+                <span style="color:#F8F8F2;">&nbsp;&nbsp;else</span>:<br>
+                <span style="color:#F8F8F2;">&nbsp;&nbsp;&nbsp;&nbsp;print</span>(<span style="color:#A8FF60;">"ACL initialization failed."</span>)<br>
+                <span style="color:#82AAFF;">main</span>()
+              </div>
+              <div class="sandbox-output">
+                <pre>点击"运行代码"查看输出...</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-h2">3. 下一步</h2>
+            <div class="quickstart-grid">
+              <div class="qs-card" onclick="showDoc('atc')">
+                <span class="qs-icon">⚙️</span>
+                <div>
+                  <div class="qs-title">模型转换</div>
+                  <div class="qs-desc">使用 ATC 工具将 ONNX/PB 模型转为昇腾离线模型</div>
+                  <div class="qs-arrow">了解更多 →</div>
+                </div>
+              </div>
+              <div class="qs-card" onclick="showDoc('tbe-intro')">
+                <span class="qs-icon">🔧</span>
+                <div>
+                  <div class="qs-title">自定义算子</div>
+                  <div class="qs-desc">使用 TBE 框架开发高性能自定义算子</div>
+                  <div class="qs-arrow">了解更多 →</div>
+                </div>
+              </div>
+              <div class="qs-card" onclick="showDoc('profiling')">
+                <span class="qs-icon">📊</span>
+                <div>
+                  <div class="qs-title">性能分析</div>
+                  <div class="qs-desc">使用 Profiling 工具优化推理性能</div>
+                  <div class="qs-arrow">了解更多 →</div>
+                </div>
+              </div>
+              <div class="qs-card" onclick="showDoc('hccl')">
+                <span class="qs-icon">🌐</span>
+                <div>
+                  <div class="qs-title">分布式训练</div>
+                  <div class="qs-desc">配置 HCCL 实现多卡分布式训练</div>
+                  <div class="qs-arrow">了解更多 →</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-cpp" class="tab-content">
+          <div class="doc-section">
+            <h2 class="doc-h2">C++ 快速开始</h2>
+            <p class="doc-p">配置 CMake 构建环境，链接 AscendCL 静态库：</p>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>CMAKE</span>
+                <div class="code-block-actions">
+                  <button class="explain-btn" onclick="explainCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                      <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                    </svg>
+                    代码解释
+                  </button>
+                  <div class="sandbox-btn-wrapper">
+                    <button class="sandbox-btn" onclick="openSandbox(this)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      运行
+                    </button>
+                    <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                  </div>
+                  <button class="download-btn" onclick="downloadCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                  <button class="copy-icon-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="code-block-content">
+                <span style="color:#BD93F9;">cmake_minimum_required</span><span style="color:#F8F8F2;">(VERSION 3.14)</span><br>
+              <span style="color:#BD93F9;">project</span><span style="color:#F8F8F2;">(cann_demo)</span><br><br>
+              <span style="color:#BD93F9;">set</span><span style="color:#F8F8F2;">(CANN_HOME </span><span style="color:#A8FF60;">"/usr/local/Ascend/ascend-toolkit/latest"</span><span style="color:#F8F8F2;">)</span><br>
+              <span style="color:#BD93F9;">include_directories</span><span style="color:#F8F8F2;">(${CANN_HOME}/acllib/include)</span><br>
+              <span style="color:#BD93F9;">link_directories</span><span style="color:#F8F8F2;">(${CANN_HOME}/acllib/lib64/stub)</span><br><br>
+              <span style="color:#BD93F9;">add_executable</span><span style="color:#F8F8F2;">(demo main.cpp)</span><br>
+              <span style="color:#BD93F9;">target_link_libraries</span><span style="color:#F8F8F2;">(demo ascendcl)</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-docker" class="tab-content">
+          <div class="doc-section">
+            <h2 class="doc-h2">Docker 快速开始</h2>
+            <div class="callout callout-info"><strong>推荐：</strong>使用官方 Docker 镜像可跳过驱动配置步骤，一键获得完整 CANN 环境。</div>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>BASH</span>
+                <div class="code-block-actions">
+                  <button class="explain-btn" onclick="explainCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                      <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                    </svg>
+                    代码解释
+                  </button>
+                  <div class="sandbox-btn-wrapper">
+                    <button class="sandbox-btn" onclick="openSandbox(this)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      运行
+                    </button>
+                    <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                  </div>
+                  <button class="download-btn" onclick="downloadCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                  <button class="copy-icon-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="code-block-content">
+                <span style="color:#A8FF60;">docker pull swr.cn-south-1.myhuaweicloud.com/ascendhub/ascend-toolkit:latest</span><br><br>
+              <span style="color:#A8FF60;">docker run -it --device=/dev/davinci0 \</span><br>
+              <span style="color:#A8FF60;">&nbsp;&nbsp;--device=/dev/davinci_manager \</span><br>
+              <span style="color:#A8FF60;">&nbsp;&nbsp;ascend-toolkit:latest /bin/bash</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ATC doc -->
+      <div id="doc-atc" style="display:none">
+        <div class="breadcrumb-wrap">
+          <div class="breadcrumb">
+            <span>CANN</span><span class="sep">›</span><span>模型工具</span><span class="sep">›</span><span class="cur">ATC 模型转换</span>
+          </div>
+          <!-- 复制一份下拉菜单到这里，或者通过 JS 动态移动，这里先手动复制确保每个页面都有 -->
+          <div class="dropdown">
+            <button class="btn-dropdown" onclick="toggleDropdown(event)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy page
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item">
+                <div class="item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">Copy page</div>
+                  <div class="item-desc">Copy page as Markdown for LLMs</div>
+                </div>
+              </div>
+              <div class="dropdown-item">
+                <div class="item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M2 15h10"></path><path d="M9 18l3-3-3-3"></path></svg>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">View as Markdown <span class="item-arrow">↗</span></div>
+                  <div class="item-desc">View this page as plain text</div>
+                </div>
+              </div>
+              <div class="dropdown-item">
+                <div class="item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">Open in CodeArts Web <span class="item-arrow">↗</span></div>
+                  <div class="item-desc">Ask questions about this page</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="doc-title">ATC 模型转换工具</h1>
+        <p class="doc-tagline">将训练框架导出的模型（ONNX、PB、Caffe 等）转换为昇腾离线模型（.om），并进行算子融合与图优化。</p>
+        <div class="doc-section">
+          <h2 class="doc-h2">基本用法</h2>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>BASH</span>
+              <div class="code-block-actions">
+                <button class="explain-btn" onclick="explainCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                    <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                  </svg>
+                  代码解释
+                </button>
+                <button class="download-btn" onclick="downloadCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+                <button class="copy-icon-btn" onclick="copyCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+              </div>
+            </div>
+            <div class="code-block-content">
+              <span style="color:#A8FF60;">atc --model=resnet50.onnx \</span><br>
+            <span style="color:#A8FF60;">&nbsp;&nbsp;--framework=5 \</span><span style="color:#6B6480;">  # 5=ONNX</span><br>
+            <span style="color:#A8FF60;">&nbsp;&nbsp;--output=resnet50 \</span><br>
+            <span style="color:#A8FF60;">&nbsp;&nbsp;--input_format=NCHW \</span><br>
+            <span style="color:#A8FF60;">&nbsp;&nbsp;--input_shape="input:1,3,224,224" \</span><br>
+            <span style="color:#A8FF60;">&nbsp;&nbsp;--soc_version=Ascend310</span>
+          </div>
+          <h3 class="doc-h3">常用参数</h3>
+          <table class="doc-table">
+            <thead><tr><th>参数</th><th>说明</th><th>默认值</th></tr></thead>
+            <tbody>
+              <tr><td><code>--framework</code></td><td>源框架类型：0=Caffe, 3=TF, 5=ONNX</td><td>—</td></tr>
+              <tr><td><code>--input_shape</code></td><td>输入张量形状，支持动态 shape：-1 表示动态维度</td><td>—</td></tr>
+              <tr><td><code>--precision_mode</code></td><td>精度模式：allow_fp32_to_fp16 / force_fp16</td><td>allow_fp32_to_fp16</td></tr>
+              <tr><td><code>--op_select_implmode</code></td><td>算子实现模式：high_performance / high_precision</td><td>high_performance</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Profiling doc -->
+      <div id="doc-profiling" style="display:none">
+        <div class="breadcrumb-wrap">
+          <div class="breadcrumb">
+            <span>CANN</span><span class="sep">›</span><span>模型工具</span><span class="sep">›</span><span class="cur">性能调优</span>
+          </div>
+          <div class="dropdown">
+            <button class="btn-dropdown" onclick="toggleDropdown(event)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy page
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item">
+                <div class="item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">Copy page</div>
+                  <div class="item-desc">Copy page as Markdown for LLMs</div>
+                </div>
+              </div>
+              <div class="dropdown-item">
+                <div class="item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M2 15h10"></path><path d="M9 18l3-3-3-3"></path></svg>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">View as Markdown <span class="item-arrow">↗</span></div>
+                  <div class="item-desc">View this page as plain text</div>
+                </div>
+              </div>
+              <div class="dropdown-item">
+                <div class="item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                </div>
+                <div class="item-content">
+                  <div class="item-title">Open in CodeArts Web <span class="item-arrow">↗</span></div>
+                  <div class="item-desc">Ask questions about this page</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="doc-title">性能调优指南</h1>
+        <p class="doc-tagline">使用 CANN Profiling 工具链深入分析 NPU 执行瓶颈，系统性优化推理与训练性能。</p>
+        <div class="doc-section">
+          <h2 class="doc-h2">开启 Profiling</h2>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="lang-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>PYTHON</span>
+              <div class="code-block-actions">
+                <button class="explain-btn" onclick="explainCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+                    <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+                  </svg>
+                  代码解释
+                </button>
+                <div class="sandbox-btn-wrapper">
+                  <button class="sandbox-btn" onclick="openSandbox(this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    运行
+                  </button>
+                  <span class="sandbox-tooltip">在 HiDevLab 运行</span>
+                </div>
+                <button class="download-btn" onclick="downloadCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+                <button class="copy-icon-btn" onclick="copyCode(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+              </div>
+            </div>
+            <div class="code-block-content">
+              <span style="color:#BD93F9;">from</span> <span style="color:#F8F8F2;">torch_npu.profiler import profile, ProfilerActivity</span><br><br>
+            <span style="color:#BD93F9;">with</span> <span style="color:#82AAFF;">profile</span>(<br>
+            <span style="color:#F8F8F2;">&nbsp;&nbsp;activities</span><span style="color:#FF79C6;">=</span>[<span style="color:#F8F8F2;">ProfilerActivity.NPU</span>],<br>
+            <span style="color:#F8F8F2;">&nbsp;&nbsp;record_shapes</span><span style="color:#FF79C6;">=</span><span style="color:#BD93F9;">True</span>,<br>
+            <span style="color:#F8F8F2;">&nbsp;&nbsp;profile_memory</span><span style="color:#FF79C6;">=</span><span style="color:#BD93F9;">True</span><br>
+            ) <span style="color:#BD93F9;">as</span> <span style="color:#F8F8F2;">prof:</span><br>
+            <span style="color:#F8F8F2;">&nbsp;&nbsp;model(input_data)</span><br><br>
+            <span style="color:#82AAFF;">print</span>(<span style="color:#F8F8F2;">prof.key_averages().table(sort_by</span><span style="color:#FF79C6;">=</span><span style="color:#A8FF60;">"npu_time_total"</span><span style="color:#F8F8F2;">))</span>
+          </div>
+          <div class="sandbox-container">
+            <div class="sandbox-header">
+              <div class="sandbox-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                HiDevLab
+              </div>
+              <button class="btn-run-sandbox" onclick="runSandbox(this)">运行代码</button>
+            </div>
+            <div class="sandbox-code-editor" contenteditable="true" spellcheck="false">
+              <span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">acl</span><br>
+              <span style="color:#BD93F9;">def</span> <span style="color:#82AAFF;">main</span>():<br>
+              <span style="color:#F8F8F2;">&nbsp;&nbsp;print</span>(<span style="color:#A8FF60;">"Initializing ACL..."</span>)<br>
+              <span style="color:#F8F8F2;">&nbsp;&nbsp;ret </span><span style="color:#FF79C6;">=</span> <span style="color:#82AAFF;">acl.init</span>()<br>
+              <span style="color:#F8F8F2;">&nbsp;&nbsp;if ret </span><span style="color:#FF79C6;">==</span> <span style="color:#FFB86C;">0</span>:<br>
+              <span style="color:#F8F8F2;">&nbsp;&nbsp;&nbsp;&nbsp;print</span>(<span style="color:#A8FF60;">"ACL initialized successfully!"</span>)<br>
+              <span style="color:#F8F8F2;">&nbsp;&nbsp;else</span>:<br>
+              <span style="color:#F8F8F2;">&nbsp;&nbsp;&nbsp;&nbsp;print</span>(<span style="color:#A8FF60;">"ACL initialization failed."</span>)<br>
+              <span style="color:#82AAFF;">main</span>()
+            </div>
+            <div class="sandbox-output">
+              <pre>点击“运行代码”查看输出...</pre>
+            </div>
+          </div>
+          <div class="callout callout-warn"><strong>提示：</strong>Profiling 会引入额外开销，请在正式性能测试前关闭。</div>
+        </div>
+      </div>
+
+      <!-- Default placeholder for other docs -->
+      <div id="doc-default" style="display:none; padding: 60px 0; text-align: center;">
+        <div style="font-size: 48px; margin-bottom: 16px;">📄</div>
+        <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">文档建设中</div>
+        <p style="color: var(--text-secondary);">此文档正在完善，请查看其他章节或联系我们。</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Docs Floating Sandbox Bar -->
+<div class="docs-sandbox-bar" id="docs-sandbox-bar">
+  <div class="docs-sandbox-info">
+    <span>在线运行</span>
+  </div>
+  <div class="docs-sandbox-status">
+    <span class="status-dot"></span>
+    <span>就绪</span>
+  </div>
+  <button class="btn-open-sandbox" onclick="openEmptySandbox()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+    </svg>
+    打开 HiDevLab
+  </button>
+</div>
+
+<script src="cann-app.js"></script>
+
+<!-- AI window glow frame -->
+<div id="ai-glow-frame"></div>
+
+<!-- AI edit cursor -->
+<div id="ai-edit-cursor" class="ai-edit-cursor hidden">
+  <div class="ai-edit-cursor-dot"></div>
+  <span id="ai-edit-cursor-label">AI 正在编辑</span>
+</div>
+
+</body>
+</html>

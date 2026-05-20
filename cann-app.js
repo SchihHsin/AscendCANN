@@ -23,31 +23,34 @@
   let _lastFlrPath = null; // stores last homepage-generated path for CTA
 
   // Page navigation
+  const _PAGE_URLS = { home: 'index.html', docs: 'docs.html', learn: 'learn.html', api: 'api.html' };
+
   function showPage(name) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + name).classList.add('active');
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    const navEl = document.getElementById('nav-' + name);
-    if (navEl) navEl.classList.add('active');
-    window.scrollTo(0, 0);
-    setTimeout(updateDocsSandboxBar, 10);
-
-    if (name === 'learn') {
-      // Apply pending path from homepage
-      if (window._pendingLearnPath) {
-        const { query, nodes } = window._pendingLearnPath;
-        window._pendingLearnPath = null;
-        document.querySelectorAll('.top-tab').forEach(btn => {
-          if (btn.textContent.trim() === '自定义') switchTopTab('custom', btn);
-        });
-        setTimeout(() => renderLearnPagePath(query, nodes), 200);
-      }
+    const url = _PAGE_URLS[name];
+    if (!url) return false;
+    // Same page? just scroll top and re-init
+    const currentPage = document.querySelector('.page');
+    if (currentPage && currentPage.id === 'page-' + name) {
+      window.scrollTo(0, 0);
+      if (name === 'docs') { const fn = window.showDoc; if (fn) fn('home'); }
+      return false;
     }
-    if (name === 'docs') {
-      showDoc('home');
-    }
-
+    window.location.href = url;
     return false;
+  }
+
+  // Called on learn.html load to apply any pending path from homepage
+  function _applyPendingLearnPath() {
+    const raw = sessionStorage.getItem('_pendingLearnPath');
+    if (!raw) return;
+    try {
+      const { query, nodes } = JSON.parse(raw);
+      sessionStorage.removeItem('_pendingLearnPath');
+      document.querySelectorAll('.top-tab').forEach(btn => {
+        if (btn.textContent.trim() === '自定义') switchTopTab('custom', btn);
+      });
+      setTimeout(() => renderLearnPagePath(query, nodes), 200);
+    } catch(e) { sessionStorage.removeItem('_pendingLearnPath'); }
   }
 
   // Dropdown toggle
@@ -2057,9 +2060,8 @@ def vector_add_tik(shape, dtype, kernel_name):
   // Navigate to learn page and apply the last generated path
   function navigateLearnWithPath(query) {
     if (!_lastFlrPath) return;
-    window._pendingLearnPath = { query, nodes: _lastFlrPath };
+    sessionStorage.setItem('_pendingLearnPath', JSON.stringify({ query, nodes: _lastFlrPath }));
     showPage('learn');
-    document.getElementById('nav-learn')?.classList.add('active');
   }
 
   // Open node drawer in-place (works from any page)
@@ -2180,7 +2182,6 @@ def vector_add_tik(shape, dtype, kernel_name):
     renderFloorIssues('install');
     renderSavedPaths();
     attachDocAiHelpers();
-    showPage('home'); // Ensure home page is shown and scrolled to top
   });
 
   // Custom paths storage
@@ -3172,8 +3173,11 @@ def vector_add_tik(shape, dtype, kernel_name):
   document.addEventListener('DOMContentLoaded', () => {
     loadLearnState();
     updateProgressTracker();
-    // Default docs to home view
-    showDoc('home');
+    // If on docs page, show home view
+    if (document.getElementById('page-docs')) showDoc('home');
+    // If on learn page, apply any cross-page pending path
+    if (document.getElementById('page-learn')) _applyPendingLearnPath();
+    updateDocsSandboxBar();
   });
 
   // ── INLINE PATH EDITOR (ipe*) ──
@@ -3409,38 +3413,69 @@ def vector_add_tik(shape, dtype, kernel_name):
   // ── GUIDED DEMO ──
   let _demoRunning = false;
 
+  // Each tour runs only within its own page (no cross-page navigation)
   const DEMO_TOURS = {
-    platform: [
-      { type: 'msg',    text: '好的！让我来带你了解 CANN 学习平台的主要功能，跟着我的光标走～' },
-      { type: 'moveTo', sel: '#nav-learn',              label: '前往学习页' },
-      { type: 'click',  sel: '#nav-learn',              fn: () => showPage('learn') },
+    home: [
+      { type: 'msg',    text: '好的！带你了解首页的核心功能，跟着光标走～' },
+      { type: 'moveTo', sel: '.hero-demo-btn',           label: '平台导览入口' },
+      { type: 'msg',    text: '这个按钮随时可以重启导览。下面是三个主要入口：' },
+      { type: 'moveTo', sel: '.suggest-tags .suggest-tag:nth-child(1)', label: '解决问题' },
+      { type: 'click',  sel: '.suggest-tags .suggest-tag:nth-child(1)' },
       { type: 'wait',   ms: 700 },
-      { type: 'msg',    text: '这是「学习」页面，包含 11 个系统化的 CANN 知识节点，从基础入门到分布式训练都有覆盖。' },
-      { type: 'moveTo', sel: '.rm-node',                label: '点击知识节点' },
+      { type: 'msg',    text: '「解决问题」——粘贴报错信息，AI 即时给出解决方案。' },
+      { type: 'moveTo', sel: '.suggest-tags .suggest-tag:nth-child(2)', label: '系统学习' },
+      { type: 'click',  sel: '.suggest-tags .suggest-tag:nth-child(2)' },
+      { type: 'wait',   ms: 600 },
+      { type: 'msg',    text: '「系统学习」——描述你的目标，AI 为你生成个性化学习路径。' },
+      { type: 'moveTo', sel: '#nav-learn',               label: '前往学习页' },
+      { type: 'msg',    text: '点导航里的「学习」进入完整知识路径页，「文档」进入 API 参考页。' },
+      { type: 'moveTo', sel: '.btn-ask-ai',              label: '唤起 AI 助手' },
+      { type: 'click',  sel: '.btn-ask-ai',              fn: () => _openSidebar() },
+      { type: 'wait',   ms: 300 },
+      { type: 'done',   text: '导览完毕！随时在这里向我提问 CANN 相关问题 🎉' },
+    ],
+    learn: [
+      { type: 'msg',    text: '带你了解「学习」页的主要功能～' },
+      { type: 'moveTo', sel: '.rm-node',                 label: '知识节点' },
       { type: 'click',  sel: '.rm-node' },
       { type: 'wait',   ms: 900 },
-      { type: 'msg',    text: '点击节点会展开详细介绍、参考文档与视频资源，还能让 AI 来解答疑问。' },
-      { type: 'moveTo', sel: '.top-tab:nth-child(3)',   label: '切换自定义标签' },
+      { type: 'msg',    text: '点击节点展开核心知识、代码实战与知识测验，也可向 AI 提问。' },
+      { type: 'moveTo', sel: '.top-tab:nth-child(3)',    label: '自定义标签' },
       { type: 'click',  sel: '.top-tab:nth-child(3)' },
       { type: 'wait',   ms: 600 },
-      { type: 'msg',    text: '「自定义」标签让你用自然语言描述开发目标，AI 会生成专属的学习路径，并可随时对话调整。' },
-      { type: 'moveTo', sel: '#nav-docs',               label: '前往文档页' },
-      { type: 'click',  sel: '#nav-docs',               fn: () => showPage('docs') },
+      { type: 'msg',    text: '「自定义」标签：输入你的开发目标，AI 生成专属路径，支持对话式微调。' },
+      { type: 'moveTo', sel: '.btn-ask-ai',              label: '唤起 AI 助手' },
+      { type: 'click',  sel: '.btn-ask-ai',              fn: () => _openSidebar() },
+      { type: 'wait',   ms: 300 },
+      { type: 'done',   text: '导览完毕！有问题随时问我 😊' },
+    ],
+    docs: [
+      { type: 'msg',    text: '带你了解「文档」页的功能～' },
+      { type: 'moveTo', sel: '.docs-sidebar .sidebar-item',  label: '文档章节' },
+      { type: 'click',  sel: '.docs-sidebar .sidebar-item' },
       { type: 'wait',   ms: 700 },
-      { type: 'msg',    text: '「文档」页包含 AscendCL、TBE、HCCL 等完整 API 参考和场景化教程，支持搜索与在线沙盒运行。' },
-      { type: 'moveTo', sel: '.btn-ask-ai',             label: '唤起 AI 助手' },
-      { type: 'click',  sel: '.btn-ask-ai',             fn: () => _openSidebar() },
-      { type: 'wait',   ms: 400 },
-      { type: 'done',   text: '演示完毕！你已了解平台的核心功能。随时在这里提问，我会帮你解答任何 CANN 相关问题 🎉' },
-    ]
+      { type: 'msg',    text: '左侧目录切换章节，右侧自动更新内容，支持代码一键复制与在线运行。' },
+      { type: 'moveTo', sel: '.btn-open-sandbox',         label: '打开 HiDevLab' },
+      { type: 'msg',    text: '点击「打开 HiDevLab」在真实昇腾 NPU 上运行代码，免费使用。' },
+      { type: 'moveTo', sel: '.btn-ask-ai',               label: '唤起 AI 助手' },
+      { type: 'click',  sel: '.btn-ask-ai',               fn: () => _openSidebar() },
+      { type: 'wait',   ms: 300 },
+      { type: 'done',   text: '导览完毕！随时向我提问文档相关问题 🎉' },
+    ],
   };
 
   async function _runDemo(tourKey) {
     if (_demoRunning) return;
+    // Auto-detect current page if 'platform' passed (legacy)
+    if (tourKey === 'platform') {
+      if (document.getElementById('page-learn')) tourKey = 'learn';
+      else if (document.getElementById('page-docs')) tourKey = 'docs';
+      else tourKey = 'home';
+    }
     _demoRunning = true;
     _activateGlow(true);
     document.getElementById('ai-title-text').textContent = 'AI 引导演示中';
-    const steps = DEMO_TOURS[tourKey] || [];
+    const steps = DEMO_TOURS[tourKey] || DEMO_TOURS['home'];
     for (const step of steps) {
       await _demoExecStep(step);
     }

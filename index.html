@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CANN — 异构计算架构与编程</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cann-style.css">
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img class="nav-logo-ascend" src="Ascendlogo.svg" alt="Ascend">
+    <div class="nav-logo-divider"></div>
+    <img class="nav-logo-cann" src="CANNlogo.png" alt="CANN">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" id="nav-home" class="active" class="active">首页</a></li>
+    <li><a href="#" href="docs.html" id="nav-docs">文档</a></li>
+    <li><a href="#" href="learn.html" id="nav-learn">学习</a></li>
+    <li><a href="#" href="api.html" id="nav-api">API 参考</a></li>
+    <li><a href="#">社区</a></li>
+    <li><a href="#">博客</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" placeholder="搜索文档或 API..." />
+    </div>
+    <button class="btn-ask-ai" onclick="toggleAiChat()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
+        <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+      </svg>
+      Ask AI
+    </button>
+  </div>
+</nav>
+
+<!-- AI Chat Sidebar -->
+<div class="ai-chat-sidebar" id="ai-sidebar">
+  <div class="ai-drag-handle" id="ai-drag-handle">⠿</div>
+  <div class="ai-header-panel">
+    <div class="ai-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--black)"/>
+        <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z" fill="var(--black)"/>
+      </svg>
+      <span id="ai-title-text">CANN 智能助手</span>
+    </div>
+    <div class="ai-layout-btns">
+      <!-- 嵌入：推挤内容（默认） -->
+      <button class="ai-layout-btn active" data-mode="embed" onclick="setAiLayout('embed')" title="嵌入（推挤内容）">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="9" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="10.5" y=".75" width="4.75" height="12.5" rx="1.5" fill="currentColor" opacity=".45" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+      <!-- 左侧覆盖 -->
+      <button class="ai-layout-btn" data-mode="left" onclick="setAiLayout('left')" title="左侧浮层">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".35"/><rect x="1" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
+      </button>
+      <!-- 右侧覆盖 -->
+      <button class="ai-layout-btn" data-mode="right" onclick="setAiLayout('right')" title="右侧浮层">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".35"/><rect x="10" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
+      </button>
+      <!-- 浮动 -->
+      <button class="ai-layout-btn" data-mode="float" onclick="setAiLayout('float')" title="浮动面板">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".3"/><rect x="5.5" y="3" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="currentColor" opacity=".45"/></svg>
+      </button>
+    </div>
+    <button class="btn-close-ai" onclick="toggleAiChat()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+  <div class="ai-messages" id="ai-messages">
+    <div class="ai-msg bot">
+      您好！我是 CANN 智能助手。可以回答 AscendCL、TBE 算子开发、ATC 模型转换等问题，也可以帮你生成专属学习路径。
+      <div style="margin-top:10px;">
+        <button class="ai-demo-chip" onclick="sendAiMessage('演示')">✦ 平台功能导览</button>
+      </div>
+    </div>
+  </div>
+  <div class="ai-chips" id="ai-chips"></div>
+  <div class="ai-input-area">
+    <div class="ai-input-wrap">
+      <input type="text" id="ai-sidebar-input" placeholder="输入您的问题..." onkeydown="if(event.key==='Enter')sendAiMessage()">
+      <button class="btn-send-ai" onclick="sendAiMessage()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- HiDevLab Notebook Drawer -->
+<div class="sandbox-overlay" id="sandbox-overlay" onclick="closeSandboxDrawer()"></div>
+<div class="sandbox-drawer" id="sandbox-drawer">
+  <div class="nb-header">
+    <div class="nb-header-left">
+      <div class="nb-brand">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        HiDevLab
+      </div>
+      <div class="nb-tabs">
+        <button class="nb-tab active" onclick="switchNbTab('notebook',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Notebook
+        </button>
+        <button class="nb-tab" onclick="switchNbTab('terminal',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          Terminal
+        </button>
+        <button class="nb-tab" onclick="switchNbTab('files',this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          文件管理
+        </button>
+      </div>
+    </div>
+    <div class="nb-header-right">
+      <div class="nb-spec-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <span>Ascend 910B · 32vCPU · 64GB</span>
+        <span class="nb-spec-dot"></span>
+        <span style="color:#10B981;font-weight:700;">运行中</span>
+      </div>
+      <div class="nb-kernel-select" onclick="toggleKernelMenu(this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        <span id="nb-kernel-name">Python 3 (CANN 8.0)</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="nb-kernel-menu" id="nb-kernel-menu">
+          <div class="nb-kernel-option active" onclick="selectKernel(this,'Python 3 (CANN 8.0)')"><span class="nb-kernel-dot" style="background:#3B82F6"></span>Python 3 (CANN 8.0)</div>
+          <div class="nb-kernel-option" onclick="selectKernel(this,'Python 3 (PyTorch NPU)')"><span class="nb-kernel-dot" style="background:#F59E0B"></span>Python 3 (PyTorch NPU)</div>
+          <div class="nb-kernel-option" onclick="selectKernel(this,'Python 3 (MindSpore)')"><span class="nb-kernel-dot" style="background:#10B981"></span>Python 3 (MindSpore)</div>
+          <div class="nb-kernel-option" onclick="selectKernel(this,'Bash')"><span class="nb-kernel-dot" style="background:#94A3B8"></span>Bash</div>
+        </div>
+      </div>
+      <div class="nb-actions">
+        <button class="nb-action-btn" onclick="nbRunAll()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          全部运行
+        </button>
+        <button class="nb-action-btn nb-action-icon" onclick="nbInterrupt()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></button>
+        <button class="nb-action-btn nb-action-icon" onclick="nbRestart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+        <button class="nb-action-btn nb-action-icon" onclick="nbSave()" id="btn-nb-save"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg></button>
+        <button class="nb-action-btn nb-action-icon nb-action-close" onclick="closeSandboxDrawer()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="nb-monitor-bar">
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg><span>NPU 910B</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill npu" id="nb-npu-bar" style="width:0%"></div></div><span class="nb-monitor-val" id="nb-npu-val">0%</span></div>
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z"/></svg><span>HBM</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill hbm" id="nb-hbm-bar" style="width:0%"></div></div><span class="nb-monitor-val" id="nb-hbm-val">0 / 64GB</span></div>
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>CPU</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill cpu" id="nb-cpu-bar" style="width:0%"></div></div><span class="nb-monitor-val" id="nb-cpu-val">0%</span></div>
+    <div class="nb-monitor-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>磁盘</span><div class="nb-monitor-bar-track"><div class="nb-monitor-bar-fill disk-m" id="nb-disk-bar" style="width:62%"></div></div><span class="nb-monitor-val">31.2 / 50GB</span></div>
+    <div class="nb-monitor-sep"></div>
+    <div class="nb-monitor-status" id="nb-status">● 空闲</div>
+  </div>
+  <div class="nb-body">
+    <div class="nb-panel active" id="nb-panel-notebook">
+      <div class="nb-sidebar">
+        <div class="nb-sidebar-title">文件</div>
+        <div class="nb-file-item active" onclick="loadNbFile(this,'main')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>main.ipynb</div>
+        <div class="nb-file-item" onclick="loadNbFile(this,'inference')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>inference.ipynb</div>
+        <div class="nb-file-item" onclick="loadNbFile(this,'operator')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>custom_op.ipynb</div>
+        <div class="nb-sidebar-divider"></div>
+        <button class="nb-new-file-btn" onclick="nbNewCell()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>新建 Cell</button>
+        <button class="nb-new-file-btn" onclick="nbUploadFile()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>上传文件</button>
+      </div>
+      <div class="nb-cells" id="nb-cells"></div>
+    </div>
+    <div class="nb-panel" id="nb-panel-terminal">
+      <div class="nb-terminal" id="nb-terminal">
+        <div class="nb-term-line"><span class="nb-term-prompt">ascend@hidevlab:~$</span> <span class="nb-term-output">npu-smi info</span></div>
+        <div class="nb-term-line nb-term-out">+-------------------------------------------------------------------------------------------+</div>
+        <div class="nb-term-line nb-term-out">| npu-smi 23.0.3       Driver Version: 23.0.3      CANN Version: 8.0.RC2                   |</div>
+        <div class="nb-term-line nb-term-out">| NPU   Name      Health   Power(W)   Temp(C)   Hugepages-Usage(MB)   Chip                |</div>
+        <div class="nb-term-line nb-term-out">| 0     910B4     OK       72.4       42        0    / 0              0                   |</div>
+        <div class="nb-term-line nb-term-out">+-------------------------------------------------------------------------------------------+</div>
+        <div class="nb-term-line" style="margin-top:8px"><span class="nb-term-prompt">ascend@hidevlab:~$</span> <span id="term-cursor" class="nb-term-cursor"></span></div>
+      </div>
+      <div class="nb-term-input-row">
+        <span class="nb-term-prompt-inline">ascend@hidevlab:~$</span>
+        <input class="nb-term-input" id="nb-term-input" type="text" placeholder="输入命令…" onkeydown="handleTermInput(event)" />
+      </div>
+    </div>
+    <div class="nb-panel" id="nb-panel-files">
+      <div class="nb-files-toolbar">
+        <button class="nb-files-btn" onclick="showNbToast('上传文件（演示模式）')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>上传</button>
+        <button class="nb-files-btn" onclick="showNbToast('新建文件夹（演示模式）')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>新建文件夹</button>
+        <span class="nb-files-path">/home/ascend/workspace</span>
+      </div>
+      <div class="nb-files-list">
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="nb-file-name">data/</span><span class="nb-file-meta">目录</span></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="nb-file-name">models/</span><span class="nb-file-meta">目录</span></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nb-file-name">main.ipynb</span><span class="nb-file-meta">18.4 KB · 3分钟前</span><div class="nb-file-actions"><button>下载</button><button>删除</button></div></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nb-file-name">inference.ipynb</span><span class="nb-file-meta">24.1 KB · 1小时前</span><div class="nb-file-actions"><button>下载</button><button>删除</button></div></div>
+        <div class="nb-file-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg><span class="nb-file-name">resnet50.om</span><span class="nb-file-meta">48.2 MB · 2天前</span><div class="nb-file-actions"><button>下载</button><button>删除</button></div></div>
+      </div>
+      <div class="nb-files-footer">共使用 31.2 GB / 50 GB 存储空间</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ HOME PAGE ══════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <div style="background: white;">
+  <div class="hero">
+    <div class="fade-in">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        CANN 8.0 正式发布
+      </div>
+      <h1>昇腾 AI 异构<br>计算<span class="grad-text">开发平台</span></h1>
+      <p>CANN（Compute Architecture for Neural Networks）是华为针对 AI 场景推出的异构计算架构，全面支持昇腾 NPU，为 AI 应用开发者提供从算子开发到网络部署的完整工具链。</p>
+      <div class="hero-demo-row">
+        <button class="hero-demo-btn" onclick="openAiSidebarAndSend('演示')">
+          <span class="hero-demo-dot"></span>
+          ✦ 平台功能导览
+        </button>
+      </div>
+      <div class="suggest-tags" id="hero-mode-tabs">
+        <a class="suggest-tag" onclick="selectHeroMode(this, 'solve')">
+          <div class="mode-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.5" fill="currentColor"/></svg>
+          </div>
+          <div class="mode-label">
+            <span class="mode-name">解决问题</span>
+            <span class="mode-hint">报错 · 调试 · 排障</span>
+          </div>
+        </a>
+        <a class="suggest-tag" onclick="selectHeroMode(this, 'learn')">
+          <div class="mode-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="mode-label">
+            <span class="mode-name">系统学习</span>
+            <span class="mode-hint">生成个性化学习路径</span>
+          </div>
+        </a>
+        <a class="suggest-tag" onclick="selectHeroMode(this, 'resource')">
+          <div class="mode-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+          <div class="mode-label">
+            <span class="mode-name">获取资源</span>
+            <span class="mode-hint">下载 · 文档 · 示例</span>
+          </div>
+        </a>
+      </div>
+      <!-- <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">300+</div><div class="stat-label">内置算子</div></div>
+        <div class="stat-item"><div class="stat-num">10x</div><div class="stat-label">推理加速比</div></div>
+        <div class="stat-item"><div class="stat-num">全栈</div><div class="stat-label">工具链覆盖</div></div>
+      </div> -->
+    </div>
+    <div class="hero-visual fade-in-2">
+      <div class="code-window">
+        <div class="code-topbar">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+          <span class="code-file-tab">inference.py</span>
+        </div>
+        <div class="code-body">
+          <span class="c-comment"># CANN 推理示例</span><br>
+          <span class="c-keyword">import</span> <span class="c-var">acl</span><br>
+          <span class="c-keyword">from</span> <span class="c-var">cann</span> <span class="c-keyword">import</span> <span class="c-type">AscendContext</span><br><br>
+          <span class="c-comment"># 初始化 CANN 上下文</span><br>
+          <span class="c-var">ctx</span> <span class="c-op">=</span> <span class="c-type">AscendContext</span>(<br>
+          &nbsp;&nbsp;<span class="c-var">device_id</span><span class="c-op">=</span><span class="c-num">0</span>,<br>
+          &nbsp;&nbsp;<span class="c-var">precision</span><span class="c-op">=</span><span class="c-string">"fp16"</span><br>
+          )<br><br>
+          <span class="c-comment"># 加载模型</span><br>
+          <span class="c-var">model</span> <span class="c-op">=</span> <span class="c-func">ctx.load_model</span>(<br>
+          &nbsp;&nbsp;<span class="c-string">"./resnet50.om"</span><br>
+          )<br><br>
+          <span class="c-comment"># 执行推理</span><br>
+          <span class="c-var">output</span> <span class="c-op">=</span> <span class="c-var">model</span>.<span class="c-func">infer</span>(<span class="c-var">input_data</span>)<br>
+          <span class="c-func">print</span>(<span class="c-var">output</span>.<span class="c-var">shape</span>)<br>
+          <span class="c-comment"># → (1, 1000)</span>
+        </div>
+      </div>
+      <div class="floating-card card-a">
+        <div class="fc-label">NPU 利用率</div>
+        <div class="fc-value" style="background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">94.2%</div>
+        <div class="perf-bar"><div class="perf-fill" style="width: 94%"></div></div>
+      </div>
+      <div class="floating-card card-b">
+        <div class="fc-label">推理延迟</div>
+        <div class="fc-value">2.3ms</div>
+        <div class="fc-sub" style="color: #16A34A; font-size: 12px; font-weight: 600;">↓ 68% vs GPU</div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end white hero wrapper -->
+
+  <!-- ══ FLOOR: 解决问题 ══ -->
+  <div class="hero-floor hidden" id="floor-solve">
+    <div class="floor-inner">
+      <div class="floor-label-row">
+        <span class="floor-label">解决问题</span>
+        <button class="floor-close" onclick="closeFloor()">✕ 收起</button>
+      </div>
+      <h2 class="floor-title">遇到问题了？</h2>
+      <p class="floor-desc">描述你遇到的报错或问题，AI 即时给出解决方案。</p>
+
+      <!-- Category tabs + immediate issue grid -->
+      <div class="floor-cats" id="solve-cats">
+        <button class="floor-cat active" onclick="selectSolveCat('install',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M6 7l2 2 4-4"/></svg>
+          安装配置
+        </button>
+        <button class="floor-cat" onclick="selectSolveCat('inference',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6M9 12h4M9 15h2"/><circle cx="17" cy="15" r="2"/><path d="M17 13v-1"/></svg>
+          推理问题
+        </button>
+        <button class="floor-cat" onclick="selectSolveCat('operator',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          算子开发
+        </button>
+        <button class="floor-cat" onclick="selectSolveCat('perf',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          性能调优
+        </button>
+      </div>
+
+      <!-- Typical issue cards — directly under tabs -->
+      <div class="floor-issue-grid" id="floor-issue-grid"></div>
+
+      <!-- Input + submit -->
+      <div class="floor-input-row" style="margin-top:auto;">
+        <input class="floor-input" id="solve-input" type="text" placeholder="粘贴报错信息，或用自己的话描述问题…" onkeydown="if(event.key==='Enter')solveProblemFloor()" />
+        <button class="floor-btn-primary" onclick="solveProblemFloor()">解决问题</button>
+      </div>
+
+      <!-- 猜你想问 chips -->
+      <div class="floor-hint-chips" id="solve-hint-chips">
+        <span class="floor-hint-chip" onclick="fillSolveAndRun('ACL 初始化失败，返回非零错误码')">ACL 初始化失败</span>
+        <span class="floor-hint-chip" onclick="fillSolveAndRun('驱动版本与 CANN 不兼容怎么处理')">驱动版本不兼容</span>
+        <span class="floor-hint-chip" onclick="fillSolveAndRun('.om 模型加载失败 aclmdlLoadFromFile 报错')">模型加载失败</span>
+        <span class="floor-hint-chip" onclick="fillSolveAndRun('TBE 算子编译报错 DSL 语法错误')">算子编译报错</span>
+        <span class="floor-hint-chip" onclick="fillSolveAndRun('推理吞吐量低 NPU 利用率不足')">推理性能低</span>
+        <span class="floor-hint-chip" onclick="fillSolveAndRun('HBM 内存溢出 OOM')">内存溢出 OOM</span>
+      </div>
+
+      <!-- AI Solution result -->
+      <div class="floor-solution hidden" id="floor-solution">
+        <div class="floor-solution-header">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2C9 5.866 5.866 9 2 9c3.866 0 7 3.134 7 7 0-3.866 3.134-7 7-7-3.866 0-7-3.134-7-7z"/><path d="M20 12c0 2.209-1.791 4-4 4 2.209 0 4 1.791 4 4 0-2.209 1.791-4 4-4-2.209 0-4-1.791-4-4z"/></svg>
+          <span id="floor-solution-title">AI 解决方案</span>
+        </div>
+        <div class="floor-solution-body" id="floor-solution-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FLOOR: 系统学习 ══ -->
+  <div class="hero-floor hidden" id="floor-learn">
+    <div class="floor-inner">
+      <div class="floor-label-row">
+        <span class="floor-label">系统学习</span>
+        <button class="floor-close" onclick="closeFloor()">✕ 收起</button>
+      </div>
+      <h2 class="floor-title">生成你的学习路径</h2>
+      <p class="floor-desc">描述你的学习目标，AI 为你规划个性化路径；或点击下方方向快速开始。</p>
+
+      <div class="floor-input-row">
+        <input class="floor-input" id="learn-input" type="text" placeholder="例如：我想从零学习 TBE 算子开发" onkeydown="if(event.key==='Enter')generateLearnFloor()" />
+        <button class="floor-btn-primary" id="btn-learn-gen" onclick="generateLearnFloor()">生成路径</button>
+      </div>
+      <div class="floor-hint-chips">
+        <span class="floor-hint-chip" onclick="setLearnInput('AscendCL 推理应用开发')">AscendCL 推理</span>
+        <span class="floor-hint-chip" onclick="setLearnInput('TBE 自定义算子开发')">TBE 算子开发</span>
+        <span class="floor-hint-chip" onclick="setLearnInput('大模型在昇腾上部署')">大模型部署</span>
+        <span class="floor-hint-chip" onclick="setLearnInput('PyTorch 模型迁移昇腾')">模型迁移</span>
+        <span class="floor-hint-chip" onclick="setLearnInput('分布式训练 HCCL')">分布式训练</span>
+      </div>
+
+      <!-- Generated path result -->
+      <div class="floor-learn-result hidden" id="floor-learn-result"></div>
+
+      <!-- Saved paths -->
+      <div class="saved-paths-section" id="saved-paths-section">
+        <div class="saved-paths-heading">
+          <div class="saved-paths-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            已收藏的学习路径
+            <span class="saved-paths-count" id="saved-paths-count">0</span>
+          </div>
+        </div>
+        <div class="saved-paths-list" id="saved-paths-list"></div>
+      </div>
+
+      <!-- Saved paths panel -->
+    </div>
+  </div>
+
+  <!-- ══ FLOOR: 获取资源 ══ -->
+  <div class="hero-floor hidden" id="floor-resource">
+    <div class="floor-inner">
+      <div class="floor-label-row">
+        <span class="floor-label">获取资源</span>
+        <button class="floor-close" onclick="closeFloor()">✕ 收起</button>
+      </div>
+      <h2 class="floor-title">找到你需要的资源</h2>
+      <p class="floor-desc">描述你需要的资源，AI 帮你找到最直接的获取方式。</p>
+
+      <div class="floor-input-row">
+        <input class="floor-input" id="resource-input" type="text" placeholder="例如：CANN 8.0 完整工具包下载" onkeydown="if(event.key==='Enter')findResourceFloor()" />
+        <button class="floor-btn-primary" onclick="findResourceFloor()">搜索资源</button>
+      </div>
+
+      <!-- 猜你想问 chips -->
+      <div class="floor-hint-chips">
+        <span class="floor-hint-chip" onclick="fillResourceAndRun('CANN Toolkit 安装包下载')">CANN Toolkit 下载</span>
+        <span class="floor-hint-chip" onclick="fillResourceAndRun('昇腾 NPU 固件驱动下载')">固件驱动下载</span>
+        <span class="floor-hint-chip" onclick="fillResourceAndRun('Docker 镜像 AscendHub')">Docker 镜像</span>
+        <span class="floor-hint-chip" onclick="fillResourceAndRun('官方示例代码 samples')">示例代码</span>
+        <span class="floor-hint-chip" onclick="fillResourceAndRun('MindStudio 开发工具下载')">MindStudio 下载</span>
+        <span class="floor-hint-chip" onclick="fillResourceAndRun('API 参考文档')">API 文档</span>
+      </div>
+      <div class="floor-resource-grid">
+        <a class="floor-res-card" href="https://www.hiascend.com/developer/download" target="_blank">
+          <div class="floor-res-icon">📦</div>
+          <div class="floor-res-title">CANN Toolkit</div>
+          <div class="floor-res-desc">完整工具链安装包，支持 Ascend 910/310 系列</div>
+          <div class="floor-res-tag">下载</div>
+        </a>
+        <a class="floor-res-card" href="#" onclick="event.preventDefault();openEmptySandbox()">
+          <div class="floor-res-icon">🧪</div>
+          <div class="floor-res-title">HiDevLab 真机调试</div>
+          <div class="floor-res-desc">免费使用昇腾 NPU 真实环境，在线运行代码</div>
+          <div class="floor-res-tag">免费</div>
+        </a>
+        <a class="floor-res-card" href="https://gitee.com/ascend/samples" target="_blank">
+          <div class="floor-res-icon">💻</div>
+          <div class="floor-res-title">官方示例代码</div>
+          <div class="floor-res-desc">推理、训练、算子开发完整示例，开箱即用</div>
+          <div class="floor-res-tag">Gitee</div>
+        </a>
+        <a class="floor-res-card" href="https://www.hiascend.com/edu/growth" target="_blank">
+          <div class="floor-res-icon">🎓</div>
+          <div class="floor-res-title">全量学习路径</div>
+          <div class="floor-res-desc">系统化学习课程，从入门到专家认证</div>
+          <div class="floor-res-tag">教育</div>
+        </a>
+        <a class="floor-res-card" href="https://www.hiascend.com/document" target="_blank">
+          <div class="floor-res-icon">📄</div>
+          <div class="floor-res-title">官方文档中心</div>
+          <div class="floor-res-desc">API 参考、开发指南、版本说明完整文档</div>
+          <div class="floor-res-tag">文档</div>
+        </a>
+        <a class="floor-res-card" href="https://bbs.huaweicloud.com/forum/forum-798-1.html" target="_blank">
+          <div class="floor-res-icon">💬</div>
+          <div class="floor-res-title">开发者论坛</div>
+          <div class="floor-res-desc">与昇腾开发者社区交流，获取问题解答</div>
+          <div class="floor-res-tag">社区</div>
+        </a>
+      </div>
+
+      <!-- AI resource result -->
+      <div class="floor-solution hidden" id="floor-resource-result">
+        <div class="floor-solution-header">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2C9 5.866 5.866 9 2 9c3.866 0 7 3.134 7 7 0-3.866 3.134-7 7-7-3.866 0-7-3.134-7-7z"/><path d="M20 12c0 2.209-1.791 4-4 4 2.209 0 4 1.791 4 4 0-2.209 1.791-4 4-4-2.209 0-4-1.791-4-4z"/></svg>
+          <span id="floor-resource-title">AI 资源推荐</span>
+        </div>
+        <div class="floor-solution-body" id="floor-resource-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div style="border-top: 1px solid var(--border);">
+  <div class="section">
+    <div class="section-label">核心能力</div>
+    <div class="section-title">为 AI 开发者<br>精心设计的工具链</div>
+    <p class="section-desc">从算子开发到大模型推理，CANN 提供完整的异构计算编程框架，让开发者专注于业务创新。</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="feature-title">AscendCL 编程接口</div>
+        <p class="feature-desc">统一的 C/C++ 编程接口，直接调用昇腾 NPU 的计算资源，实现极致性能。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="feature-title">TBE 算子开发</div>
+        <p class="feature-desc">Tensor Boost Engine 提供 DSL 和 TIK 两种算子开发方式，轻松实现自定义算子。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 7h.01M11 7h6M7 11h2m2 0h4"/></svg>
+        </div>
+        <div class="feature-title">MindSpore 深度集成</div>
+        <p class="feature-desc">与 MindSpore 框架深度融合，同时支持 PyTorch / TensorFlow 等主流框架。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/></svg>
+        </div>
+        <div class="feature-title">模型转换与优化</div>
+        <p class="feature-desc">ATC 工具将训练模型转换为昇腾离线模型（.om），自动进行算子融合与优化。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div class="feature-title">性能调优工具</div>
+        <p class="feature-desc">Profiling 工具链提供细粒度的 NPU 性能分析，快速定位性能瓶颈。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><line x1="12" y1="8" x2="5" y2="16"/><line x1="12" y1="8" x2="19" y2="16"/></svg>
+        </div>
+        <div class="feature-title">分布式训练支持</div>
+        <p class="feature-desc">HCCL 通信库支持昇腾集群训练，助力千亿参数大模型分布式训练。</p>
+      </div>
+    </div>
+  </div>
+  </div><!-- end features border wrapper -->
+
+  <div class="ai-demo-banner">
+    <div class="ai-demo-inner">
+      <div>
+        <div class="section-label">智能文档助手</div>
+        <div class="section-title">用自然语言<br>探索 CANN 文档</div>
+        <p class="section-desc">内置 AI 助手，直接提问即可获得精准的 API 说明、代码示例和最佳实践。</p>
+        <button class="btn-lg btn-black" onclick="showPage('docs')">打开文档</button>
+      </div>
+      <div>
+        <div class="ai-search-bar ai-demo-search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--black)"/>
+            <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z" fill="var(--black)"/>
+          </svg>
+          <input type="text" id="home-ai-input" placeholder="如何使用 AscendCL 初始化设备？">
+          <button class="ai-search-btn" onclick="homeAiSearch()">提问</button>
+        </div>
+        <div id="home-ai-result" class="ai-result">
+          <strong>初始化 AscendCL 设备的步骤：</strong><br><br>
+          1. 调用 <code>acl.init()</code> 完成运行时初始化<br>
+          2. 调用 <code>acl.rt.set_device(device_id)</code> 指定设备<br>
+          3. 创建 Context 上下文以隔离执行环境<br>
+          4. 创建 Stream 流以管理异步任务队列<br><br>
+          查看 <a href="#" onclick="showPage('docs')" class="ai-result-link">完整初始化指南 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">CANN</div>
+          <p class="footer-desc">华为昇腾 AI 异构计算架构，为 AI 开发者提供高性能、易用的 NPU 编程框架。</p>
+        </div>
+        <div>
+          <div class="footer-col-title">文档</div>
+          <a class="footer-link" href="#">快速入门</a>
+          <a class="footer-link" href="#">API 参考</a>
+          <a class="footer-link" href="#">算子库</a>
+          <a class="footer-link" href="#">迁移指南</a>
+        </div>
+        <div>
+          <div class="footer-col-title">学习</div>
+          <a class="footer-link" href="#">学习路径</a>
+          <a class="footer-link" href="#">示例代码</a>
+          <a class="footer-link" href="#">视频教程</a>
+          <a class="footer-link" href="#">认证考试</a>
+        </div>
+        <div>
+          <div class="footer-col-title">社区</div>
+          <a class="footer-link" href="#">论坛</a>
+          <a class="footer-link" href="#">GitHub</a>
+          <a class="footer-link" href="#">Gitee</a>
+          <a class="footer-link" href="#">问题反馈</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2024 Huawei Technologies Co., Ltd.</span>
+        <span>京ICP备 xxxxxx 号</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- Docs Floating Sandbox Bar -->
+<div class="docs-sandbox-bar" id="docs-sandbox-bar">
+  <div class="docs-sandbox-info">
+    <span>在线运行</span>
+  </div>
+  <div class="docs-sandbox-status">
+    <span class="status-dot"></span>
+    <span>就绪</span>
+  </div>
+  <button class="btn-open-sandbox" onclick="openEmptySandbox()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+    </svg>
+    打开 HiDevLab
+  </button>
+</div>
+
+<script src="cann-app.js"></script>
+
+<!-- AI window glow frame -->
+<div id="ai-glow-frame"></div>
+
+<!-- AI edit cursor -->
+<div id="ai-edit-cursor" class="ai-edit-cursor hidden">
+  <div class="ai-edit-cursor-dot"></div>
+  <span id="ai-edit-cursor-label">AI 正在编辑</span>
+</div>
+
+</body>
+</html>
