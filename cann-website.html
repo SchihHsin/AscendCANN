@@ -71,10 +71,7 @@
   </div>
   <div class="ai-messages" id="ai-messages">
     <div class="ai-msg bot">
-      您好！我是 CANN 智能助手。可以回答 AscendCL、TBE 算子开发、ATC 模型转换等问题，也可以帮你生成专属学习路径。
-      <div style="margin-top:10px;">
-        <button class="ai-demo-chip" onclick="sendAiMessage('演示')">✦ 平台功能导览</button>
-      </div>
+      您好！我是 CANN 智能助手。可以回答问题、生成学习路径，也可以帮你操作页面——试试说「帮我切换到自定义标签」。
     </div>
   </div>
   <div class="ai-chips" id="ai-chips"></div>
@@ -267,12 +264,6 @@
       </div>
       <h1>昇腾 AI 异构<br>计算<span class="grad-text">开发平台</span></h1>
       <p>CANN（Compute Architecture for Neural Networks）是华为针对 AI 场景推出的异构计算架构，全面支持昇腾 NPU，为 AI 应用开发者提供从算子开发到网络部署的完整工具链。</p>
-      <div class="hero-demo-row">
-        <button class="hero-demo-btn" onclick="openAiSidebarAndSend('演示')">
-          <span class="hero-demo-dot"></span>
-          ✦ 平台功能导览
-        </button>
-      </div>
       <div class="suggest-tags" id="hero-mode-tabs">
         <a class="suggest-tag" onclick="selectHeroMode(this, 'solve')">
           <div class="mode-icon">
@@ -1839,8 +1830,18 @@
 
 <!-- AI edit cursor -->
 <div id="ai-edit-cursor" class="ai-edit-cursor hidden">
-  <div class="ai-edit-cursor-dot"></div>
-  <span id="ai-edit-cursor-label">AI 正在编辑</span>
+  <svg class="ai-cursor-arrow" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="cursorGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"   stop-color="#2e53fa"/>
+        <stop offset="50%"  stop-color="#7b25f4"/>
+        <stop offset="100%" stop-color="#ec4899"/>
+      </linearGradient>
+    </defs>
+    <path d="M2 1 L2 17 L6 13 L9 20 L12 19 L9 12 L16 12 Z"
+          fill="url(#cursorGrad)" stroke="white" stroke-width="1" stroke-linejoin="round"/>
+  </svg>
+  <span id="ai-edit-cursor-label" class="ai-cursor-label">AI</span>
 </div>
 
 </body>

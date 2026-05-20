@@ -266,16 +266,9 @@
   }
 
   function _showAiCursor(nodeIdx, label) {
-    const cursor = document.getElementById('ai-edit-cursor');
-    document.getElementById('ai-edit-cursor-label').textContent = label || 'AI 正在编辑';
-    cursor.classList.remove('hidden');
     const rows = document.querySelectorAll('#ipe-nodes .pg-node-row');
     const target = rows[nodeIdx];
-    if (target) {
-      const r = target.getBoundingClientRect();
-      cursor.style.top  = (r.top  + window.scrollY + r.height / 2 - 16) + 'px';
-      cursor.style.left = (r.left + window.scrollX - 140) + 'px';
-    }
+    if (target) _showAiCursorAtEl(target, label || 'AI 正在编辑');
   }
 
   function _hideAiCursor() {
@@ -560,14 +553,8 @@
     input.value = '';
     document.getElementById('ai-chips').innerHTML = '';
 
-    // Guided demo trigger
-    const _DEMO_KW = ['演示', '导览', '怎么用', '如何使用', '介绍一下', '带我了解', '平台功能'];
-    if (_DEMO_KW.some(k => msg.includes(k)) && !_demoRunning) {
-      _aiAddUser(msg);
-      _openSidebar();
-      _runDemo('platform');
-      return;
-    }
+    // AI page action — "帮我 + 操作" triggers cursor-driven UI execution
+    if (await _tryPageAction(msg)) return;
 
     // Route to path generation conversation when in path mode
     if (_aiPathMode && _aiPathState === 'clarifying') {
@@ -3410,130 +3397,21 @@ def vector_add_tik(shape, dtype, kernel_name):
     }, 800);
   }
 
-  // ── GUIDED DEMO ──
-  let _demoRunning = false;
+  // ── AI PAGE ACTIONS ──
+  // Triggered when user says "帮我 + 操作" — cursor moves to target and executes.
 
-  // Each tour runs only within its own page (no cross-page navigation)
-  const DEMO_TOURS = {
-    home: [
-      { type: 'msg',    text: '好的！带你了解首页的核心功能，跟着光标走～' },
-      { type: 'moveTo', sel: '.hero-demo-btn',           label: '平台导览入口' },
-      { type: 'msg',    text: '这个按钮随时可以重启导览。下面是三个主要入口：' },
-      { type: 'moveTo', sel: '.suggest-tags .suggest-tag:nth-child(1)', label: '解决问题' },
-      { type: 'click',  sel: '.suggest-tags .suggest-tag:nth-child(1)' },
-      { type: 'wait',   ms: 700 },
-      { type: 'msg',    text: '「解决问题」——粘贴报错信息，AI 即时给出解决方案。' },
-      { type: 'moveTo', sel: '.suggest-tags .suggest-tag:nth-child(2)', label: '系统学习' },
-      { type: 'click',  sel: '.suggest-tags .suggest-tag:nth-child(2)' },
-      { type: 'wait',   ms: 600 },
-      { type: 'msg',    text: '「系统学习」——描述你的目标，AI 为你生成个性化学习路径。' },
-      { type: 'moveTo', sel: '#nav-learn',               label: '前往学习页' },
-      { type: 'msg',    text: '点导航里的「学习」进入完整知识路径页，「文档」进入 API 参考页。' },
-      { type: 'moveTo', sel: '.btn-ask-ai',              label: '唤起 AI 助手' },
-      { type: 'click',  sel: '.btn-ask-ai',              fn: () => _openSidebar() },
-      { type: 'wait',   ms: 300 },
-      { type: 'done',   text: '导览完毕！随时在这里向我提问 CANN 相关问题 🎉' },
-    ],
-    learn: [
-      { type: 'msg',    text: '带你了解「学习」页的主要功能～' },
-      { type: 'moveTo', sel: '.rm-node',                 label: '知识节点' },
-      { type: 'click',  sel: '.rm-node' },
-      { type: 'wait',   ms: 900 },
-      { type: 'msg',    text: '点击节点展开核心知识、代码实战与知识测验，也可向 AI 提问。' },
-      { type: 'moveTo', sel: '.top-tab:nth-child(3)',    label: '自定义标签' },
-      { type: 'click',  sel: '.top-tab:nth-child(3)' },
-      { type: 'wait',   ms: 600 },
-      { type: 'msg',    text: '「自定义」标签：输入你的开发目标，AI 生成专属路径，支持对话式微调。' },
-      { type: 'moveTo', sel: '.btn-ask-ai',              label: '唤起 AI 助手' },
-      { type: 'click',  sel: '.btn-ask-ai',              fn: () => _openSidebar() },
-      { type: 'wait',   ms: 300 },
-      { type: 'done',   text: '导览完毕！有问题随时问我 😊' },
-    ],
-    docs: [
-      { type: 'msg',    text: '带你了解「文档」页的功能～' },
-      { type: 'moveTo', sel: '.docs-sidebar .sidebar-item',  label: '文档章节' },
-      { type: 'click',  sel: '.docs-sidebar .sidebar-item' },
-      { type: 'wait',   ms: 700 },
-      { type: 'msg',    text: '左侧目录切换章节，右侧自动更新内容，支持代码一键复制与在线运行。' },
-      { type: 'moveTo', sel: '.btn-open-sandbox',         label: '打开 HiDevLab' },
-      { type: 'msg',    text: '点击「打开 HiDevLab」在真实昇腾 NPU 上运行代码，免费使用。' },
-      { type: 'moveTo', sel: '.btn-ask-ai',               label: '唤起 AI 助手' },
-      { type: 'click',  sel: '.btn-ask-ai',               fn: () => _openSidebar() },
-      { type: 'wait',   ms: 300 },
-      { type: 'done',   text: '导览完毕！随时向我提问文档相关问题 🎉' },
-    ],
-  };
-
-  async function _runDemo(tourKey) {
-    if (_demoRunning) return;
-    // Auto-detect current page if 'platform' passed (legacy)
-    if (tourKey === 'platform') {
-      if (document.getElementById('page-learn')) tourKey = 'learn';
-      else if (document.getElementById('page-docs')) tourKey = 'docs';
-      else tourKey = 'home';
-    }
-    _demoRunning = true;
-    _activateGlow(true);
-    document.getElementById('ai-title-text').textContent = 'AI 引导演示中';
-    const steps = DEMO_TOURS[tourKey] || DEMO_TOURS['home'];
-    for (const step of steps) {
-      await _demoExecStep(step);
-    }
-    _activateGlow(false);
-    _hideAiCursor();
-    document.getElementById('ai-title-text').textContent = 'CANN 智能助手';
-    _demoRunning = false;
-  }
-
-  async function _demoExecStep(step) {
-    switch (step.type) {
-      case 'msg': {
-        _aiAddBot(step.text);
-        await _sleep(Math.min(step.text.length * 28 + 300, 2200));
-        break;
-      }
-      case 'moveTo': {
-        const el = document.querySelector(step.sel);
-        if (!el) break;
-        _showAiCursorAtEl(el, step.label || 'AI');
-        await _sleep(650);
-        break;
-      }
-      case 'click': {
-        const el = document.querySelector(step.sel);
-        if (!el) break;
-        _showAiCursorAtEl(el, '点击中…');
-        await _sleep(280);
-        _showClickRipple();
-        _highlightEl(el);
-        if (step.fn) step.fn();
-        else el.click();
-        await _sleep(180);
-        break;
-      }
-      case 'wait': {
-        await _sleep(step.ms || 500);
-        break;
-      }
-      case 'done': {
-        _hideAiCursor();
-        _aiAddBot(step.text);
-        break;
-      }
-    }
-  }
-
+  // Position cursor at element; tip of arrow points to element center
   function _showAiCursorAtEl(el, label) {
     const rect = el.getBoundingClientRect();
     const cursor = document.getElementById('ai-edit-cursor');
-    document.getElementById('ai-edit-cursor-label').textContent = label;
+    const labelEl = document.getElementById('ai-edit-cursor-label');
+    if (labelEl) labelEl.textContent = label || 'AI';
     cursor.classList.remove('hidden');
-    // Center cursor over element (cursor is fixed, use viewport coords directly)
-    const cx = rect.left + rect.width  / 2;
-    const cy = rect.top  + rect.height / 2;
-    const cW = 170, cH = 34;
-    const left = Math.max(8, Math.min(cx - cW / 2, window.innerWidth  - cW - 8));
-    const top  = Math.max(8, Math.min(cy - cH / 2, window.innerHeight - cH - 8));
+    // Arrow tip is at top-left of the SVG → place cursor so tip hits element center
+    const tipX = rect.left + rect.width  / 2;
+    const tipY = rect.top  + rect.height / 2;
+    const left = Math.max(4, Math.min(tipX, window.innerWidth  - 200));
+    const top  = Math.max(4, Math.min(tipY, window.innerHeight - 40));
     cursor.style.left = left + 'px';
     cursor.style.top  = top  + 'px';
   }
@@ -3543,8 +3421,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const rect = cursor.getBoundingClientRect();
     const ripple = document.createElement('div');
     ripple.className = 'ai-cursor-ripple';
-    ripple.style.left = (rect.left + rect.width  / 2) + 'px';
-    ripple.style.top  = (rect.top  + rect.height / 2) + 'px';
+    // Ripple at the arrow tip (top-left of cursor bounding box)
+    ripple.style.left = rect.left + 'px';
+    ripple.style.top  = rect.top  + 'px';
     document.body.appendChild(ripple);
     setTimeout(() => ripple.remove(), 700);
   }
@@ -3555,4 +3434,66 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
 
   function _sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  // ── AI page action executor ──
+  // Each action: { match: [regex strings], sel, fn, reply }
+  const _PAGE_ACTIONS = [
+    // Navigation
+    { match: ['前往.*文档|打开.*文档|去.*文档|切换.*文档'],
+      sel: '#nav-docs', fn: () => showPage('docs'),
+      reply: '好的，正在跳转到文档页…' },
+    { match: ['前往.*学习|打开.*学习|去.*学习|切换.*学习'],
+      sel: '#nav-learn', fn: () => showPage('learn'),
+      reply: '好的，正在跳转到学习页…' },
+    { match: ['前往.*首页|回.*首页|返回.*首页'],
+      sel: '#nav-home', fn: () => showPage('home'),
+      reply: '好的，正在跳转到首页…' },
+    // Learn page tabs
+    { match: ['切换.*自定义|自定义.*标签|打开.*自定义'],
+      sel: '.top-tab:nth-child(3)', fn: null,
+      reply: '已为你切换到「自定义」标签，输入你的学习目标即可生成路径～' },
+    { match: ['切换.*推荐|推荐.*路径|默认.*路径'],
+      sel: '.top-tab:nth-child(1)', fn: null,
+      reply: '已为你切换到「推荐路径」标签。' },
+    // Sandbox
+    { match: ['打开.*沙盒|打开.*hidevlab|hidevlab|在线运行|打开.*实验室'],
+      sel: '.btn-open-sandbox', fn: () => openEmptySandbox(),
+      reply: '已为你打开 HiDevLab 在线沙盒 🚀' },
+    // AI sidebar
+    { match: ['关闭.*助手|关闭.*侧边栏|收起.*助手'],
+      sel: '.btn-close-ai', fn: () => _closeSidebar(),
+      reply: '好的，已收起助手面板。' },
+  ];
+
+  async function _tryPageAction(msg) {
+    const lower = msg.toLowerCase();
+    // Only trigger when message contains action intent
+    if (!/(帮我|帮忙|请你|能不能|帮.*切换|帮.*打开|帮.*跳转|帮.*关闭)/.test(msg) &&
+        !/(切换到|打开|前往|跳转|关闭|收起)/.test(msg)) return false;
+
+    for (const action of _PAGE_ACTIONS) {
+      const matched = action.match.some(p => new RegExp(p).test(lower) || new RegExp(p).test(msg));
+      if (!matched) continue;
+      const el = action.sel ? document.querySelector(action.sel) : null;
+      if (action.sel && !el) continue; // element doesn't exist on this page
+      _aiAddUser(msg);
+      _activateGlow(true);
+      if (el) {
+        _showAiCursorAtEl(el, '正在操作…');
+        await _sleep(550);
+        _showClickRipple();
+        _highlightEl(el);
+        await _sleep(150);
+        if (action.fn) action.fn(); else el.click();
+      } else if (action.fn) {
+        action.fn();
+      }
+      await _sleep(300);
+      _hideAiCursor();
+      _activateGlow(false);
+      _aiAddBot(action.reply);
+      return true;
+    }
+    return false;
+  }
 
