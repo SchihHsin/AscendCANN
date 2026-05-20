@@ -1801,6 +1801,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   function renderFloorIssues(cat) {
     const issues = issueData[cat] || [];
     const grid = document.getElementById('floor-issue-grid');
+    if (!grid) return;
     const badgeLabel = { error: '错误', warning: '警告', info: '提示' };
     grid.innerHTML = issues.map(issue => `
       <div class="floor-issue-card badge-${issue.badge}" onclick="solveProblemWithText('${issue.title.replace(/'/g,"\\'")}')">
@@ -2265,7 +2266,8 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   function renderCustomPaths() {
     const container = document.getElementById('custom-paths-scroll');
-    
+    if (!container) return;
+
     // If no custom paths, use sample paths
     let pathsToRender = customPaths.length === 0 ? samplePaths : customPaths;
     
@@ -2553,6 +2555,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   // Show/hide docs sandbox bar based on page
   function updateDocsSandboxBar() {
     const sandboxBar = document.getElementById('docs-sandbox-bar');
+    if (!sandboxBar) return;
     const docsPage = document.getElementById('page-docs');
     const learnPage = document.getElementById('page-learn');
     const docsActive = docsPage && docsPage.classList.contains('active');
@@ -2755,13 +2758,6 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.querySelectorAll('.nb-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('nb-panel-notebook').classList.add('active');
     setTimeout(() => { const c = document.getElementById('nb-cell-' + nbCellCounter); if (c) { c.scrollIntoView({ behavior:'smooth', block:'nearest' }); activateCell(c); } }, 100);
-  }
-
-  function openEmptySandbox() {
-    document.getElementById('sandbox-drawer').classList.add('open');
-    document.getElementById('sandbox-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    renderNbCells();
   }
 
   function closeSandboxDrawer() {
