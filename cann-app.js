@@ -75,10 +75,161 @@
     sidebar.classList.toggle('open');
   }
 
+  // ── AI Sidebar Layout Modes ──
+  let _aiLayout = 'right';
+  let _aiFloatX = null, _aiFloatY = null;
+  let _aiDragging = false, _aiDragOffX = 0, _aiDragOffY = 0;
+
+  function setAiLayout(mode) {
+    _aiLayout = mode;
+    const sidebar = document.getElementById('ai-sidebar');
+    sidebar.classList.remove('layout-left', 'layout-float');
+    if (mode === 'left')  sidebar.classList.add('layout-left');
+    if (mode === 'float') {
+      sidebar.classList.add('layout-float');
+      if (_aiFloatX !== null) {
+        sidebar.style.left = _aiFloatX + 'px';
+        sidebar.style.top  = _aiFloatY + 'px';
+      } else {
+        sidebar.style.right = '20px';
+        sidebar.style.bottom = '20px';
+        sidebar.style.top = '';
+        sidebar.style.left = '';
+      }
+    } else {
+      sidebar.style.cssText = '';
+    }
+    document.querySelectorAll('.ai-layout-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.mode === mode)
+    );
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const handle = document.getElementById('ai-drag-handle');
+    if (!handle) return;
+    handle.addEventListener('mousedown', e => {
+      if (_aiLayout !== 'float') return;
+      e.preventDefault();
+      _aiDragging = true;
+      const sidebar = document.getElementById('ai-sidebar');
+      const cr = sidebar.getBoundingClientRect();
+      if (!_aiFloatX) {
+        sidebar.style.left = cr.left + 'px';
+        sidebar.style.top  = cr.top  + 'px';
+        sidebar.style.right = ''; sidebar.style.bottom = '';
+      }
+      _aiDragOffX = e.clientX - cr.left;
+      _aiDragOffY = e.clientY - cr.top;
+      document.body.style.userSelect = 'none';
+    });
+    document.addEventListener('mousemove', e => {
+      if (!_aiDragging) return;
+      const sidebar = document.getElementById('ai-sidebar');
+      const w = sidebar.offsetWidth, h = sidebar.offsetHeight;
+      let x = e.clientX - _aiDragOffX;
+      let y = e.clientY - _aiDragOffY;
+      x = Math.max(0, Math.min(x, window.innerWidth  - w));
+      y = Math.max(0, Math.min(y, window.innerHeight - h));
+      sidebar.style.left = x + 'px'; sidebar.style.top = y + 'px';
+      _aiFloatX = x; _aiFloatY = y;
+    });
+    document.addEventListener('mouseup', () => {
+      if (_aiDragging) { _aiDragging = false; document.body.style.userSelect = ''; }
+    });
+  });
+
   function openAiSidebarAndSend(message) {
     const sidebar = document.getElementById('ai-sidebar');
     if (!sidebar.classList.contains('open')) sidebar.classList.add('open');
     sendAiMessage(message);
+  }
+
+  // Path generation state
+  let _aiPathQuery = '';
+  let _aiPathName  = '';
+
+  async function _aiPathGenerateDirect(query) {
+    const nodeListStr = NODE_LIST.map((n, i) => `${i}|${n.title}|${n.category}|${n.desc}`).join('\n');
+    let nodes = null;
+    try {
+      const resp = await fetch(AI_WORKER_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: `你是 CANN 学习路径规划专家。从节点库中选4-6个最相关节点按学习顺序排列。\n节点库（序号|名称|方向|描述）：\n${nodeListStr}\n\n输出格式：JSON数组，每项含 nodeIndex 和 reason（不超过12字）。只输出JSON。`,
+          user: `学习目标：${query}`,
+          max_tokens: 400,
+        })
+      });
+      const data = await resp.json();
+      let picks = [];
+      try { picks = JSON.parse((data.text || '[]').replace(/```json|```/g, '').trim()); } catch(e) {}
+      if (picks.length > 0) nodes = picks.map((p, i) => { const n = NODE_LIST[p.nodeIndex] || NODE_LIST[i] || NODE_LIST[0]; return { ...n, step: i+1, reason: p.reason || n.desc }; });
+    } catch(e) {}
+    if (!nodes) nodes = keywordFallbackNodes(query).map((n, i) => ({ ...n, step: i+1 }));
+    _ipNodes = nodes.map(n => ({ ...n, known: false, collapsed: false }));
+    _ipName  = _aiPathName;
+    _ipQuery = query;
+    document.getElementById('ipe-name').textContent = _ipName;
+    document.getElementById('ipe-meta').textContent = `${_ipNodes.length} 个节点 · 刚刚生成`;
+    ipeRenderNodes();
+  }
+
+  function openAiForPath(prefill) {
+    // Navigate to learn page custom tab, pre-fill the input
+    showPage('learn');
+    setTimeout(() => {
+      document.querySelectorAll('.top-tab').forEach(b => {
+        if (b.textContent.trim() === '自定义') b.click();
+      });
+      const input = document.getElementById('path-generator-input');
+      if (input) { input.value = prefill || ''; input.focus(); }
+    }, 200);
+  }
+
+  function _aiAddBot(html) {
+    const wrap = document.getElementById('ai-messages');
+    const div = document.createElement('div');
+    div.className = 'ai-msg bot';
+    div.innerHTML = html;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function _aiAddUser(text) {
+    const wrap = document.getElementById('ai-messages');
+    const div = document.createElement('div');
+    div.className = 'ai-msg user';
+    div.textContent = text;
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function _aiShowChips(opts, cb) {
+    const el = document.getElementById('ai-chips');
+    el.innerHTML = '';
+    opts.forEach(o => {
+      const btn = document.createElement('button');
+      btn.className = 'ai-chip'; btn.textContent = o;
+      btn.onclick = () => {
+        el.querySelectorAll('.ai-chip').forEach(b => b.classList.add('sent'));
+        if (cb) { cb(o); } else {
+          document.getElementById('ai-sidebar-input').value = o;
+          sendAiMessage();
+        }
+      };
+      el.appendChild(btn);
+    });
+  }
+
+  function _aiTyping(cb, delay) {
+    delay = delay || 900;
+    const wrap = document.getElementById('ai-messages');
+    const el = document.createElement('div');
+    el.className = 'ai-msg bot';
+    el.innerHTML = '<div style="display:flex;gap:4px;align-items:center;padding:2px 0"><span style="width:6px;height:6px;background:var(--text-muted);border-radius:50%;animation:pgDot 1.2s infinite;display:inline-block"></span><span style="width:6px;height:6px;background:var(--text-muted);border-radius:50%;animation:pgDot 1.2s .2s infinite;display:inline-block"></span><span style="width:6px;height:6px;background:var(--text-muted);border-radius:50%;animation:pgDot 1.2s .4s infinite;display:inline-block"></span></div>';
+    wrap.appendChild(el);
+    wrap.scrollTop = wrap.scrollHeight;
+    setTimeout(() => { el.remove(); cb(); }, delay);
   }
 
   function _quoteDocText(text) {
@@ -199,16 +350,16 @@
     const input = document.getElementById('ai-sidebar-input');
     const msg = overrideMsg || input.value.trim();
     if (!msg) return;
+    input.value = '';
+    document.getElementById('ai-chips').innerHTML = '';
 
     const container = document.getElementById('ai-messages');
-    
+
     // 1. 添加用户消息
     const userDiv = document.createElement('div');
     userDiv.className = 'ai-msg user';
     userDiv.textContent = msg;
     container.appendChild(userDiv);
-    
-    input.value = '';
     container.scrollTop = container.scrollHeight;
 
     // 2. 添加 loading 消息
@@ -1812,14 +1963,30 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   // Path generator functions
   function setPathInput(text) {
-    openPathGenerator(text);
+    const input = document.getElementById('path-generator-input');
+    if (input) { input.value = text; input.focus(); }
+    generateCustomPath();
   }
 
   async function generateCustomPath() {
     const input = document.getElementById('path-generator-input');
     const query = input.value.trim();
-    openPathGenerator(query);
+    if (!query) { input.focus(); return; }
     input.value = '';
+    _aiPathQuery = query;
+    _aiPathName  = query.length > 22 ? query.slice(0, 22) + '…' : query;
+    // Show loading state in ipe-wrap
+    _ipNodes = [];
+    const wrap = document.getElementById('ipe-wrap');
+    wrap.classList.remove('hidden');
+    document.getElementById('ipe-name').textContent = _aiPathName;
+    document.getElementById('ipe-meta').textContent = '正在生成…';
+    document.getElementById('ipe-nodes').innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">AI 正在规划路径，请稍候…</div>';
+    document.getElementById('ipe-save-btn').textContent = '保存路径';
+    document.getElementById('ipe-save-btn').style.background = '';
+    document.getElementById('ipe-save-hint').textContent = '保存后可在学习档案中查看';
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    await _aiPathGenerateDirect(query);
     return; // legacy body below kept but bypassed
 
     const svgPlay = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
@@ -2045,12 +2212,14 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.querySelectorAll('.filter-bar').forEach(bar => bar.style.display = 'none');
     document.getElementById('custom-paths-container').style.display = 'none';
 
-    // Path generator (custom tab only)
+    // Path generator + inline editor (custom tab only)
     const pathGenerator = document.getElementById('path-generator');
+    const ipeWrap = document.getElementById('ipe-wrap');
     if (pathGenerator) {
       if (tabName === 'custom') pathGenerator.classList.add('visible');
       else pathGenerator.classList.remove('visible');
     }
+    if (ipeWrap && tabName !== 'custom') ipeWrap.classList.add('hidden');
 
     // Show corresponding filter bar
     if (tabName !== 'custom') {
@@ -2557,7 +2726,7 @@ def vector_add_tik(shape, dtype, kernel_name):
         <div style="font-size:36px;margin-bottom:12px;opacity:.3;">🗺️</div>
         <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:6px;">还没有学习路径</div>
         <div style="font-size:12px;color:var(--text-muted);line-height:1.7;margin-bottom:20px;">用 AI 生成一条专属学习路径，<br>你的进度会自动记录在这里。</div>
-        <button class="la-add-btn" onclick="closeLearningArchive();openPathGenerator('');">✦ 生成我的学习路径</button>
+        <button class="la-add-btn" onclick="closeLearningArchive();showPage('learn');setTimeout(()=>{document.querySelectorAll('.top-tab').forEach(b=>{if(b.textContent.trim()==='自定义')b.click()});openAiForPath('');},200);">✦ 生成我的学习路径</button>
       </div>`;
       return;
     }
@@ -2641,7 +2810,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       });
     }
 
-    html += `<button class="la-add-btn" style="margin:4px 0 8px;" onclick="closeLearningArchive();openPathGenerator('');">+ 生成新路径</button></div>`;
+    html += `<button class="la-add-btn" style="margin:4px 0 8px;" onclick="closeLearningArchive();showPage('learn');setTimeout(()=>{document.querySelectorAll('.top-tab').forEach(b=>{if(b.textContent.trim()==='自定义')b.click()});openAiForPath('');},200);">+ 生成新路径</button></div>`;
     container.innerHTML = html;
   }
   function _qbFormatDate(ts) {
@@ -2790,262 +2959,57 @@ def vector_add_tik(shape, dtype, kernel_name):
     showDoc('home');
   });
 
-  // ── PATH GENERATOR MODAL ──
-  let _pgOpen = false;
-  let _pgState = 'idle'; // idle | clarifying | generating | editing
-  let _pgNodes = [];     // { title, desc, category, tags, reason, known, collapsed }
-  let _pgQuery = '';
-  let _pgName = '';
-  let _pgDragSrc = null;
-  let _pgInsertAfterIdx = null;
-  let _pgSearchCache = [];
-  let _pgSuggCache = [];
-  let _pgUndoFn = null;
-  let _pgUndoTimer = null;
+  // ── INLINE PATH EDITOR (ipe*) ──
+  let _ipNodes = [];
+  let _ipName  = '';
+  let _ipQuery = '';
+  let _ipDragSrc = null;
+  let _ipInsertAfterIdx = null;
+  let _ipSearchCache = [];
+  let _ipSuggCache  = [];
+  let _ipUndoFn   = null;
+  let _ipUndoTimer = null;
 
-  // Conv panel layout mode
-  let _pgConvMode = 'right';
-  let _pgFloatX = null, _pgFloatY = null;
-  let _pgDraggingConv = false, _pgDragOffX = 0, _pgDragOffY = 0;
-
-  function pgSetConvMode(mode) {
-    _pgConvMode = mode;
-    const conv = document.getElementById('pg-conv');
-    const preview = document.getElementById('pg-preview');
-    const body = document.querySelector('#pg-modal .pg-body');
-    conv.classList.remove('floating', 'dragging-conv');
-    preview.classList.remove('pg-full');
-    body.classList.remove('conv-left');
-    conv.style.cssText = ''; // clear inline positioning
-    document.querySelectorAll('.pg-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
-    if (mode === 'left') {
-      body.classList.add('conv-left');
-    } else if (mode === 'float') {
-      conv.classList.add('floating');
-      preview.classList.add('pg-full');
-      if (_pgFloatX !== null) {
-        conv.style.left = _pgFloatX + 'px';
-        conv.style.top = _pgFloatY + 'px';
-        conv.style.right = ''; conv.style.bottom = '';
-      }
-      // else uses CSS default right/bottom
-    }
+  function ipeShow() {
+    _ipName  = _aiPathName;
+    _ipQuery = _aiPathQuery;
+    const wrap = document.getElementById('ipe-wrap');
+    wrap.classList.remove('hidden');
+    document.getElementById('ipe-name').textContent = _ipName;
+    document.getElementById('ipe-meta').textContent = `${_ipNodes.length} 个节点 · 刚刚生成`;
+    document.getElementById('ipe-save-btn').textContent = '保存路径';
+    document.getElementById('ipe-save-btn').style.background = '';
+    document.getElementById('ipe-save-hint').textContent = '保存后可在学习档案中查看';
+    ipeRenderNodes();
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  // Drag logic for float mode — attach once on DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', () => {
-    const handle = document.getElementById('pg-conv-drag-handle');
-    if (!handle) return;
-    handle.addEventListener('mousedown', e => {
-      if (_pgConvMode !== 'float') return;
-      e.preventDefault();
-      _pgDraggingConv = true;
-      const conv = document.getElementById('pg-conv');
-      const inner = document.getElementById('pg-modal').querySelector('.pg-inner');
-      const cr = conv.getBoundingClientRect(), ir = inner.getBoundingClientRect();
-      // Normalize to left/top so we can drag freely
-      conv.style.left = (cr.left - ir.left) + 'px';
-      conv.style.top = (cr.top - ir.top) + 'px';
-      conv.style.right = ''; conv.style.bottom = '';
-      _pgDragOffX = e.clientX - cr.left;
-      _pgDragOffY = e.clientY - cr.top;
-      conv.classList.add('dragging-conv');
-      document.body.style.userSelect = 'none';
-    });
-    document.addEventListener('mousemove', e => {
-      if (!_pgDraggingConv) return;
-      const conv = document.getElementById('pg-conv');
-      const inner = document.getElementById('pg-modal').querySelector('.pg-inner');
-      const ir = inner.getBoundingClientRect();
-      let x = e.clientX - _pgDragOffX - ir.left;
-      let y = e.clientY - _pgDragOffY - ir.top;
-      x = Math.max(0, Math.min(x, ir.width - 320));
-      y = Math.max(0, Math.min(y, ir.height - 200));
-      conv.style.left = x + 'px'; conv.style.top = y + 'px';
-      _pgFloatX = x; _pgFloatY = y;
-    });
-    document.addEventListener('mouseup', () => {
-      if (_pgDraggingConv) {
-        _pgDraggingConv = false;
-        document.getElementById('pg-conv')?.classList.remove('dragging-conv');
-        document.body.style.userSelect = '';
-      }
-    });
-  });
-
-  const PG_CLARIFY = [
-    { keys: ['算子','TBE','TIK','Ascend C','operator'], q: '你的算子开发基础是？', opts: ['零基础', '会 Python/C++', '有深度学习经验'] },
-    { keys: ['推理','部署','inference'], q: '你偏好哪种编程语言？', opts: ['Python', 'C++', '两者都行'] },
-    { keys: ['分布式','训练','大模型'], q: '你熟悉的训练框架是？', opts: ['PyTorch', 'MindSpore', '都不熟'] },
-    { keys: ['入门','基础','初学','zero'], q: '你每周能投入多少学习时间？', opts: ['1–3 小时', '5–10 小时', '全职投入'] },
-  ];
-
-  function openPathGenerator(prefill) {
-    _pgOpen = true;
-    _pgState = 'idle';
-    _pgNodes = [];
-    _pgQuery = '';
-    _pgFloatX = null; _pgFloatY = null;
-    closeLearningArchive();
-    // Reset conv layout to default right mode
-    pgSetConvMode('right');
-    document.getElementById('pg-modal').classList.add('open');
-    document.getElementById('pg-messages').innerHTML = '';
-    document.getElementById('pg-chips').innerHTML = '';
-    document.getElementById('pg-input').value = prefill || '';
-    document.getElementById('pg-preview-empty').style.display = 'flex';
-    document.getElementById('pg-path-area').style.display = 'none';
-    document.getElementById('pg-save-btn').textContent = '保存路径';
-    document.getElementById('pg-save-btn').style.background = '';
-    document.getElementById('pg-save-hint').textContent = '保存后可在学习档案中查看';
-    setTimeout(() => {
-      _pgAddMsg('ai', '你好！告诉我你想学习的目标，我来帮你规划个性化学习路径。');
-      _pgShowChips(['CANN 算子开发', '模型推理部署', '分布式训练实战', 'CANN 完整入门']);
-      document.getElementById('pg-input').focus();
-    }, 120);
+  function ipeDiscard() {
+    document.getElementById('ipe-wrap').classList.add('hidden');
+    _ipNodes = [];
   }
 
-  function closePathGenerator() {
-    document.getElementById('pg-modal').classList.remove('open');
-    _pgOpen = false;
-    pgCloseInsert();
-  }
-
-  function _pgAddMsg(role, html) {
-    const wrap = document.getElementById('pg-messages');
-    const div = document.createElement('div');
-    div.className = `pg-msg ${role}`;
-    div.innerHTML = `<div class="pg-avatar">${role==='ai'?'✦':'你'}</div><div class="pg-bubble">${html}</div>`;
-    wrap.appendChild(div);
-    wrap.scrollTop = wrap.scrollHeight;
-  }
-
-  function _pgShowChips(opts, cb) {
-    const el = document.getElementById('pg-chips');
-    el.innerHTML = '';
-    opts.forEach(o => {
-      const btn = document.createElement('button');
-      btn.className = 'pg-chip'; btn.textContent = o;
-      btn.onclick = () => {
-        el.querySelectorAll('.pg-chip').forEach(b => b.classList.add('sent'));
-        if (cb) { cb(o); } else { document.getElementById('pg-input').value = o; pgSendConv(); }
-      };
-      el.appendChild(btn);
-    });
-  }
-
-  function pgSendConv() {
-    const input = document.getElementById('pg-input');
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    document.getElementById('pg-chips').innerHTML = '';
-    _pgAddMsg('user', text);
-    document.getElementById('pg-send').disabled = true;
-    if (_pgState === 'idle') {
-      _pgQuery = text;
-      _pgName = text.length > 22 ? text.slice(0, 22) + '…' : text;
-      _pgHandleFirst(text);
-    } else if (_pgState === 'clarifying') {
-      _pgHandleClarify(text);
-    }
-  }
-
-  function _pgHandleFirst(query) {
-    _pgState = 'clarifying';
-    const match = PG_CLARIFY.find(c => c.keys.some(k => query.includes(k)));
-    _pgTyping(() => {
-      if (match) {
-        _pgAddMsg('ai', match.q);
-        _pgShowChips(match.opts, ans => { _pgAddMsg('user', ans); document.getElementById('pg-chips').innerHTML = ''; _pgHandleClarify(ans); });
-      } else {
-        _pgAddMsg('ai', '你的主要学习目标是？');
-        _pgShowChips(['工程实践', '科研探索', '找工作 / 提升技能'], ans => { _pgAddMsg('user', ans); document.getElementById('pg-chips').innerHTML = ''; _pgHandleClarify(ans); });
-      }
-      document.getElementById('pg-send').disabled = false;
-    });
-  }
-
-  function _pgHandleClarify(answer) {
-    _pgState = 'generating';
-    _pgTyping(() => {
-      _pgAddMsg('ai', '好的，正在为你规划路径，请稍候…');
-      _pgGenerate(_pgQuery, answer);
-    }, 700);
-  }
-
-  function _pgTyping(cb, delay) {
-    delay = delay || 900;
-    const wrap = document.getElementById('pg-messages');
-    const el = document.createElement('div');
-    el.className = 'pg-typing-wrap';
-    el.innerHTML = `<div class="pg-avatar" style="background:var(--grad);color:white;font-size:11px;width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✦</div><div class="pg-typing"><span></span><span></span><span></span></div>`;
-    wrap.appendChild(el);
-    wrap.scrollTop = wrap.scrollHeight;
-    setTimeout(() => { el.remove(); cb(); document.getElementById('pg-send').disabled = false; }, delay);
-  }
-
-  async function _pgGenerate(query, context) {
-    const nodeListStr = NODE_LIST.map((n, i) => `${i}|${n.title}|${n.category}|${n.desc}`).join('\n');
-    let nodes = null;
-    try {
-      const resp = await fetch(AI_WORKER_URL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system: `你是 CANN 学习路径规划专家。从节点库中选4-6个最相关节点按学习顺序排列。\n节点库（序号|名称|方向|描述）：\n${nodeListStr}\n\n输出格式：JSON数组，每项含 nodeIndex 和 reason（不超过12字）。只输出JSON。`,
-          user: `学习目标：${query}。背景：${context}`,
-          max_tokens: 400,
-        })
-      });
-      const data = await resp.json();
-      let picks = [];
-      try { picks = JSON.parse((data.text || '[]').replace(/```json|```/g, '').trim()); } catch(e) {}
-      if (picks.length > 0) nodes = picks.map((p, i) => { const n = NODE_LIST[p.nodeIndex] || NODE_LIST[i] || NODE_LIST[0]; return { ...n, step: i+1, reason: p.reason || n.desc }; });
-    } catch(e) {}
-    if (!nodes) nodes = keywordFallbackNodes(query).map((n, i) => ({ ...n, step: i+1 }));
-    _pgNodes = nodes.map(n => ({ ...n, known: false, collapsed: false }));
-    document.getElementById('pg-send').disabled = false;
-    _pgTyping(() => {
-      _pgAddMsg('ai', `已为你规划 <strong>${_pgNodes.length}</strong> 个节点的学习路径！可拖拽调整顺序、删除节点或插入新内容，满意后保存即可。`);
-      _pgShowPanel();
-    }, 1200);
-  }
-
-  function _pgShowPanel() {
-    document.getElementById('pg-preview-empty').style.display = 'none';
-    const area = document.getElementById('pg-path-area');
-    area.style.display = 'flex';
-    document.getElementById('pg-path-name').textContent = _pgName;
-    _pgUpdateMeta();
-    pgRenderNodes();
-    _pgState = 'editing';
-  }
-
-  function _pgUpdateMeta() {
-    document.getElementById('pg-path-meta').textContent = `${_pgNodes.length} 个节点 · 刚刚生成`;
-  }
-
-  function pgRenderNodes(scrollToIdx) {
-    const wrap = document.getElementById('pg-nodes');
+  function ipeRenderNodes(scrollToIdx) {
+    const wrap = document.getElementById('ipe-nodes');
     wrap.innerHTML = '';
-    _pgNodes.forEach((n, i) => {
-      if (i === 0) wrap.appendChild(_pgMakeIZ(-1));
-      wrap.appendChild(_pgMakeNodeRow(n, i));
-      wrap.appendChild(_pgMakeIZ(i));
+    _ipNodes.forEach((n, i) => {
+      if (i === 0) wrap.appendChild(_ipMakeIZ(-1));
+      wrap.appendChild(_ipMakeNodeRow(n, i));
+      wrap.appendChild(_ipMakeIZ(i));
     });
-    _pgUpdateMeta();
+    document.getElementById('ipe-meta').textContent = `${_ipNodes.length} 个节点 · 刚刚生成`;
     if (scrollToIdx !== undefined) {
       const rows = wrap.querySelectorAll('.pg-node-row');
       if (rows[scrollToIdx]) rows[scrollToIdx].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
   }
 
-  function _pgMakeNodeRow(node, i) {
+  function _ipMakeNodeRow(node, i) {
     const row = document.createElement('div');
     row.className = 'pg-node-row' + (node.known ? ' known-row' : '');
     row.draggable = true;
     row.dataset.idx = i;
-    const isLast = i === _pgNodes.length - 1;
+    const isLast = i === _ipNodes.length - 1;
     row.innerHTML = `
       <div class="pg-drag-handle" title="拖拽排序">⠿</div>
       <div class="pg-timeline">
@@ -3057,9 +3021,9 @@ def vector_add_tik(shape, dtype, kernel_name):
           <span class="pg-step-badge">${String(i+1).padStart(2,'0')}</span>
           <div class="pg-node-title">${node.title}</div>
           <div class="pg-node-actions">
-            <button class="pg-nbtn${node.known?' known-on':''}" title="标记已掌握" onclick="pgToggleKnown(${i})">✓</button>
-            <button class="pg-nbtn del" title="删除节点" onclick="pgDeleteNode(${i})">×</button>
-            <button class="pg-nbtn" title="折叠/展开" onclick="pgToggleCollapse(${i})" style="transform:${node.collapsed?'rotate(-90deg)':''}">▾</button>
+            <button class="pg-nbtn${node.known?' known-on':''}" title="标记已掌握" onclick="ipeToggleKnown(${i})">✓</button>
+            <button class="pg-nbtn del" title="删除节点" onclick="ipeDeleteNode(${i})">×</button>
+            <button class="pg-nbtn" title="折叠/展开" onclick="ipeToggleCollapse(${i})" style="transform:${node.collapsed?'rotate(-90deg)':''}">▾</button>
           </div>
         </div>
         <div class="pg-node-body${node.collapsed?' collapsed':''}">
@@ -3067,66 +3031,65 @@ def vector_add_tik(shape, dtype, kernel_name):
           ${(node.tags||[]).length ? `<div class="pg-node-tags">${(node.tags||[]).map(t=>`<span class="pg-node-tag">${t}</span>`).join('')}</div>` : ''}
         </div>
       </div>`;
-    row.addEventListener('dragstart', e => { _pgDragSrc = i; row.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
-    row.addEventListener('dragend', () => { _pgDragSrc = null; document.querySelectorAll('.pg-node-row').forEach(r => r.classList.remove('dragging','drag-over')); });
-    row.addEventListener('dragover', e => { e.preventDefault(); if (_pgDragSrc !== null && _pgDragSrc !== i) row.classList.add('drag-over'); });
+    row.addEventListener('dragstart', e => { _ipDragSrc = i; row.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+    row.addEventListener('dragend', () => { _ipDragSrc = null; document.querySelectorAll('#ipe-nodes .pg-node-row').forEach(r => r.classList.remove('dragging','drag-over')); });
+    row.addEventListener('dragover', e => { e.preventDefault(); if (_ipDragSrc !== null && _ipDragSrc !== i) row.classList.add('drag-over'); });
     row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
     row.addEventListener('drop', e => {
       e.preventDefault(); row.classList.remove('drag-over');
-      if (_pgDragSrc === null || _pgDragSrc === i) return;
-      const src = _pgDragSrc;
-      const moved = _pgNodes.splice(src, 1)[0];
-      _pgNodes.splice(i, 0, moved);
-      pgRenderNodes();
-      _pgShowUndo(`已移动「${moved.title}」`, () => { _pgNodes.splice(i, 1); _pgNodes.splice(src, 0, moved); pgRenderNodes(); });
+      if (_ipDragSrc === null || _ipDragSrc === i) return;
+      const src = _ipDragSrc;
+      const moved = _ipNodes.splice(src, 1)[0];
+      _ipNodes.splice(i, 0, moved);
+      ipeRenderNodes();
+      _ipeShowUndo(`已移动「${moved.title}」`, () => { _ipNodes.splice(i, 1); _ipNodes.splice(src, 0, moved); ipeRenderNodes(); });
     });
     return row;
   }
 
-  function _pgMakeIZ(afterIdx) {
+  function _ipMakeIZ(afterIdx) {
     const z = document.createElement('div');
     z.className = 'pg-iz';
     z.innerHTML = `<div class="pg-iz-line"></div><div class="pg-iz-plus">+</div><div class="pg-iz-line"></div>`;
-    z.addEventListener('click', e => { e.stopPropagation(); pgShowInsert(afterIdx, z); });
+    z.addEventListener('click', e => { e.stopPropagation(); ipeShowInsert(afterIdx, z); });
     return z;
   }
 
-  function pgDeleteNode(i) {
-    const removed = _pgNodes[i];
-    _pgNodes.splice(i, 1);
-    pgRenderNodes();
-    _pgShowUndo(`已删除「${removed.title}」`, () => { _pgNodes.splice(i, 0, removed); pgRenderNodes(); });
+  function ipeDeleteNode(i) {
+    const removed = _ipNodes[i];
+    _ipNodes.splice(i, 1);
+    ipeRenderNodes();
+    _ipeShowUndo(`已删除「${removed.title}」`, () => { _ipNodes.splice(i, 0, removed); ipeRenderNodes(); });
   }
 
-  function pgToggleKnown(i) {
-    _pgNodes[i].known = !_pgNodes[i].known;
-    pgRenderNodes();
+  function ipeToggleKnown(i) {
+    _ipNodes[i].known = !_ipNodes[i].known;
+    ipeRenderNodes();
   }
 
-  function pgToggleCollapse(i) {
-    _pgNodes[i].collapsed = !_pgNodes[i].collapsed;
-    const rows = document.querySelectorAll('.pg-node-row');
+  function ipeToggleCollapse(i) {
+    _ipNodes[i].collapsed = !_ipNodes[i].collapsed;
+    const rows = document.querySelectorAll('#ipe-nodes .pg-node-row');
     const row = rows[i];
-    if (!row) { pgRenderNodes(); return; }
+    if (!row) { ipeRenderNodes(); return; }
     const body = row.querySelector('.pg-node-body');
-    const btn = row.querySelectorAll('.pg-nbtn')[2];
-    if (body) body.classList.toggle('collapsed', _pgNodes[i].collapsed);
-    if (btn) btn.style.transform = _pgNodes[i].collapsed ? 'rotate(-90deg)' : '';
+    const btn  = row.querySelectorAll('.pg-nbtn')[2];
+    if (body) body.classList.toggle('collapsed', _ipNodes[i].collapsed);
+    if (btn)  btn.style.transform = _ipNodes[i].collapsed ? 'rotate(-90deg)' : '';
   }
 
   // Insert popup
-  function pgShowInsert(afterIdx, zoneEl) {
-    _pgInsertAfterIdx = afterIdx;
-    _pgSearchCache = [];
-    const popup = document.getElementById('pg-insert-popup');
-    document.getElementById('pg-isearch').value = '';
-    document.getElementById('pg-search-section').style.display = 'none';
-    document.getElementById('pg-recommend-section').style.display = '';
-    // Build suggestions: from NODE_LIST, exclude already-in-path
-    const existing = new Set(_pgNodes.map(n => n.title));
-    _pgSuggCache = NODE_LIST.filter(n => !existing.has(n.title)).slice(0, 3);
-    document.getElementById('pg-recommend-opts').innerHTML = _pgSuggCache.map((s, i) => `
-      <div class="pg-iopt" onclick="pgInsertSuggest(${i})">
+  function ipeShowInsert(afterIdx, zoneEl) {
+    _ipInsertAfterIdx = afterIdx;
+    _ipSearchCache = [];
+    const popup = document.getElementById('ipe-insert-popup');
+    document.getElementById('ipe-isearch').value = '';
+    document.getElementById('ipe-search-section').style.display  = 'none';
+    document.getElementById('ipe-recommend-section').style.display = '';
+    const existing = new Set(_ipNodes.map(n => n.title));
+    _ipSuggCache = NODE_LIST.filter(n => !existing.has(n.title)).slice(0, 3);
+    document.getElementById('ipe-recommend-opts').innerHTML = _ipSuggCache.map((s, i) => `
+      <div class="pg-iopt" onclick="ipeInsertSuggest(${i})">
         <div class="pg-iopt-dot"></div>
         <div><div class="pg-iopt-title">${s.title}</div><div class="pg-iopt-desc">${s.desc||''}</div></div>
       </div>`).join('');
@@ -3138,85 +3101,83 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (left < 16) left = 16;
     if (top + ph > window.innerHeight - 16) top = rect.top - ph - 6;
     popup.style.top = top + 'px'; popup.style.left = left + 'px';
-    setTimeout(() => { document.addEventListener('click', _pgCloseInsertOutside); document.getElementById('pg-isearch').focus(); }, 50);
+    setTimeout(() => { document.addEventListener('click', _ipeCloseInsertOutside); document.getElementById('ipe-isearch').focus(); }, 50);
   }
 
-  function pgCloseInsert() {
-    document.getElementById('pg-insert-popup').style.display = 'none';
-    document.removeEventListener('click', _pgCloseInsertOutside);
+  function ipeCloseInsert() {
+    document.getElementById('ipe-insert-popup').style.display = 'none';
+    document.removeEventListener('click', _ipeCloseInsertOutside);
   }
 
-  function _pgCloseInsertOutside(e) {
-    if (!document.getElementById('pg-insert-popup').contains(e.target)) pgCloseInsert();
+  function _ipeCloseInsertOutside(e) {
+    if (!document.getElementById('ipe-insert-popup').contains(e.target)) ipeCloseInsert();
   }
 
-  function pgFilterSearch(query) {
+  function ipeFilterSearch(query) {
     const q = query.trim();
-    const ss = document.getElementById('pg-search-section');
-    const rs = document.getElementById('pg-recommend-section');
+    const ss = document.getElementById('ipe-search-section');
+    const rs = document.getElementById('ipe-recommend-section');
     if (!q) { ss.style.display = 'none'; rs.style.display = ''; return; }
-    const existing = new Set(_pgNodes.map(n => n.title));
+    const existing = new Set(_ipNodes.map(n => n.title));
     const ql = q.toLowerCase();
     const hits = NODE_LIST.filter(n => !existing.has(n.title) && (n.title.toLowerCase().includes(ql) || (n.desc||'').toLowerCase().includes(ql))).slice(0, 6);
-    _pgSearchCache = hits;
+    _ipSearchCache = hits;
     const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
     const hl = t => (t||'').replace(re, '<mark>$1</mark>');
-    document.getElementById('pg-search-label').textContent = hits.length ? `搜索结果（${hits.length}）` : '搜索结果';
-    document.getElementById('pg-search-results').innerHTML = hits.length
-      ? hits.map((n, i) => `<div class="pg-iopt" onclick="pgInsertSearch(${i})"><div class="pg-iopt-dot search"></div><div><div class="pg-iopt-title">${hl(n.title)}</div><div class="pg-iopt-desc">${hl(n.desc||'')}</div></div></div>`).join('')
+    document.getElementById('ipe-search-label').textContent = hits.length ? `搜索结果（${hits.length}）` : '搜索结果';
+    document.getElementById('ipe-search-results').innerHTML = hits.length
+      ? hits.map((n, i) => `<div class="pg-iopt" onclick="ipeInsertSearch(${i})"><div class="pg-iopt-dot search"></div><div><div class="pg-iopt-title">${hl(n.title)}</div><div class="pg-iopt-desc">${hl(n.desc||'')}</div></div></div>`).join('')
       : `<div class="pg-iempty">没有找到「${q}」相关节点</div>`;
     ss.style.display = ''; rs.style.display = 'none';
   }
 
-  function _pgDoInsert(nodeObj) {
+  function _ipeDoInsert(nodeObj) {
     const newNode = { ...nodeObj, known: false, collapsed: false };
-    const pos = _pgInsertAfterIdx + 1;
-    _pgNodes.splice(pos, 0, newNode);
-    pgCloseInsert();
-    pgRenderNodes(pos);
-    _pgShowUndo(`已插入「${newNode.title}」`, () => { _pgNodes.splice(pos, 1); pgRenderNodes(); });
+    const pos = _ipInsertAfterIdx + 1;
+    _ipNodes.splice(pos, 0, newNode);
+    ipeCloseInsert();
+    ipeRenderNodes(pos);
+    _ipeShowUndo(`已插入「${newNode.title}」`, () => { _ipNodes.splice(pos, 1); ipeRenderNodes(); });
   }
 
-  function pgInsertSuggest(i) { _pgDoInsert(_pgSuggCache[i]); }
-  function pgInsertSearch(i) { _pgDoInsert(_pgSearchCache[i]); }
+  function ipeInsertSuggest(i) { _ipeDoInsert(_ipSuggCache[i]); }
+  function ipeInsertSearch(i)  { _ipeDoInsert(_ipSearchCache[i]); }
 
-  // Undo
-  function _pgShowUndo(msg, fn) {
-    if (_pgUndoTimer) clearTimeout(_pgUndoTimer);
-    _pgUndoFn = fn;
-    document.getElementById('pg-undo-msg').textContent = msg;
-    document.getElementById('pg-undo-toast').classList.add('show');
-    _pgUndoTimer = setTimeout(() => { document.getElementById('pg-undo-toast').classList.remove('show'); _pgUndoFn = null; }, 4000);
+  function _ipeShowUndo(msg, fn) {
+    if (_ipUndoTimer) clearTimeout(_ipUndoTimer);
+    _ipUndoFn = fn;
+    document.getElementById('ipe-undo-msg').textContent = msg;
+    document.getElementById('ipe-undo-toast').classList.add('show');
+    _ipUndoTimer = setTimeout(() => { document.getElementById('ipe-undo-toast').classList.remove('show'); _ipUndoFn = null; }, 4000);
   }
 
-  function pgDoUndo() {
-    if (_pgUndoFn) { _pgUndoFn(); _pgUndoFn = null; }
-    clearTimeout(_pgUndoTimer);
-    document.getElementById('pg-undo-toast').classList.remove('show');
+  function ipeDoUndo() {
+    if (_ipUndoFn) { _ipUndoFn(); _ipUndoFn = null; }
+    clearTimeout(_ipUndoTimer);
+    document.getElementById('ipe-undo-toast').classList.remove('show');
   }
 
-  // Save
-  function pgSavePath() {
-    if (!_pgNodes.length) return;
+  function ipeSavePath() {
+    if (!_ipNodes.length) return;
     const path = {
       id: 'path_' + Date.now(),
-      name: _pgName,
-      query: _pgQuery,
+      name: _ipName,
+      query: _ipQuery,
       icon: '✨',
-      nodeList: _pgNodes.map((n, i) => ({ ...n, step: i+1 })),
+      nodeList: _ipNodes.map((n, i) => ({ ...n, step: i+1 })),
       createdAt: new Date().toLocaleDateString('zh-CN'),
       lastStudied: new Date().toLocaleDateString('zh-CN'),
     };
     customPaths = JSON.parse(localStorage.getItem('cann_custom_paths') || '[]');
     customPaths.unshift(path);
     localStorage.setItem('cann_custom_paths', JSON.stringify(customPaths));
-    const btn = document.getElementById('pg-save-btn');
+    const btn = document.getElementById('ipe-save-btn');
     btn.textContent = '✓ 已保存';
     btn.style.background = '#22c55e';
-    document.getElementById('pg-save-hint').textContent = '已保存到学习档案';
-    setTimeout(() => { closePathGenerator(); openLearningArchive('paths'); }, 800);
+    document.getElementById('ipe-save-hint').textContent = '已保存到学习档案';
+    setTimeout(() => {
+      document.getElementById('ipe-wrap').classList.add('hidden');
+      openLearningArchive('paths');
+    }, 800);
   }
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && _pgOpen) { closePathGenerator(); }
-  });

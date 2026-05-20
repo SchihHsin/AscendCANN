@@ -38,13 +38,25 @@
 
 <!-- AI Chat Sidebar -->
 <div class="ai-chat-sidebar" id="ai-sidebar">
+  <div class="ai-drag-handle" id="ai-drag-handle">⠿</div>
   <div class="ai-header-panel">
     <div class="ai-title">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--black)"/>
         <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z" fill="var(--black)"/>
       </svg>
-      CANN 智能助手
+      <span id="ai-title-text">CANN 智能助手</span>
+    </div>
+    <div class="ai-layout-btns">
+      <button class="ai-layout-btn" data-mode="left" onclick="setAiLayout('left')" title="嵌入左侧">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
+      </button>
+      <button class="ai-layout-btn active" data-mode="right" onclick="setAiLayout('right')" title="嵌入右侧">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="10" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
+      </button>
+      <button class="ai-layout-btn" data-mode="float" onclick="setAiLayout('float')" title="浮动面板">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".3"/><rect x="5.5" y="3" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="currentColor" opacity=".45"/></svg>
+      </button>
     </div>
     <button class="btn-close-ai" onclick="toggleAiChat()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -55,6 +67,7 @@
       您好！我是 CANN 智能助手。您可以问我关于 AscendCL 编程、TBE 算子开发或 ATC 模型转换的任何问题。
     </div>
   </div>
+  <div class="ai-chips" id="ai-chips"></div>
   <div class="ai-input-area">
     <div class="ai-input-wrap">
       <input type="text" id="ai-sidebar-input" placeholder="输入您的问题..." onkeydown="if(event.key==='Enter')sendAiMessage()">
@@ -1320,6 +1333,28 @@
         </div>
       </div>
 
+      <!-- Inline Path Editor（AI 生成的路径草稿，显示在输入框下方） -->
+      <div id="ipe-wrap" class="ipe-wrap hidden">
+        <div class="ipe-header">
+          <div class="ipe-name-row">
+            <div class="ipe-name" id="ipe-name"></div>
+            <div class="ipe-meta" id="ipe-meta"></div>
+          </div>
+          <button class="ipe-discard" onclick="ipeDiscard()" title="丢弃草稿">×</button>
+        </div>
+        <div class="ipe-legend">
+          <span><span class="pg-legend-key">⠿</span> 拖拽排序</span>
+          <span><span class="pg-legend-key">✓</span> 标记已掌握</span>
+          <span><span class="pg-legend-key">×</span> 删除节点</span>
+          <span><span class="pg-legend-key">+</span> 插入节点</span>
+        </div>
+        <div class="pg-nodes" id="ipe-nodes"></div>
+        <div class="ipe-save-bar">
+          <button class="ipe-save-btn" id="ipe-save-btn" onclick="ipeSavePath()">保存路径</button>
+          <span class="ipe-save-hint" id="ipe-save-hint">保存后可在学习档案中查看</span>
+        </div>
+      </div>
+
       <!-- 分类筛选 chip（为你推荐 / 官方路径各一组，在我的学习+进度之后、路线图之前） -->
       <div class="filter-bar" id="filter-recommend">
         <button class="filter-btn" onclick="filterRoadmap('beginner', this)">入门</button>
@@ -1759,99 +1794,28 @@
   </div>
 </div>
 
-<!-- ── PATH GENERATOR SIDEBAR ── -->
-<div class="pg-modal" id="pg-modal">
-  <div class="pg-inner">
-    <div class="pg-header">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <defs><linearGradient id="pgGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2e53fa"/><stop offset="100%" stop-color="#7b25f4"/></linearGradient></defs>
-        <path d="M9 2C9 5.866 5.866 9 2 9C5.866 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.866 9 2Z" stroke="url(#pgGrad)"/>
-        <path d="M20 12C20 14.209 18.209 16 16 16C18.209 16 20 17.791 20 20C20 17.791 21.791 16 24 16C21.791 16 20 14.209 20 12Z" stroke="url(#pgGrad)"/>
-      </svg>
-      <div class="pg-header-title">AI 路径生成器</div>
-      <button class="pg-close" onclick="closePathGenerator()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="pg-body">
-      <!-- Left: path preview -->
-      <div class="pg-preview" id="pg-preview">
-        <div class="pg-preview-empty" id="pg-preview-empty">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.25"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          <p>告诉 AI 你的学习目标，路径将在这里生成并可直接编辑</p>
-        </div>
-        <div id="pg-path-area" style="display:none; flex-direction:column; flex:1; min-height:0;">
-          <div class="pg-path-content" id="pg-path-content">
-            <div class="pg-path-header">
-              <div class="pg-path-name" id="pg-path-name"></div>
-              <div class="pg-path-meta" id="pg-path-meta"></div>
-            </div>
-            <div class="pg-legend">
-              <span><span class="pg-legend-key">⠿</span> 拖拽排序</span>
-              <span><span class="pg-legend-key">✓</span> 标记已掌握</span>
-              <span><span class="pg-legend-key">×</span> 删除节点</span>
-              <span><span class="pg-legend-key">+</span> 插入节点</span>
-              <span><span class="pg-legend-key">▾</span> 折叠详情</span>
-            </div>
-            <div class="pg-nodes" id="pg-nodes"></div>
-          </div>
-          <div class="pg-save-bar">
-            <button class="pg-save-btn" id="pg-save-btn" onclick="pgSavePath()">保存路径</button>
-            <span class="pg-save-hint" id="pg-save-hint">保存后可在学习档案中查看</span>
-          </div>
-        </div>
-      </div>
-      <!-- Right: conversation -->
-      <div class="pg-conv" id="pg-conv">
-        <div class="pg-conv-bar" id="pg-conv-bar">
-          <span class="pg-conv-bar-drag" id="pg-conv-drag-handle">⠿</span>
-          <span class="pg-conv-bar-label">AI 对话</span>
-          <!-- 嵌入左侧 -->
-          <button class="pg-mode-btn" data-mode="left" onclick="pgSetConvMode('left')" title="嵌入左侧">
-            <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".35"/></svg>
-          </button>
-          <!-- 嵌入右侧（默认） -->
-          <button class="pg-mode-btn active" data-mode="right" onclick="pgSetConvMode('right')" title="嵌入右侧">
-            <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="10" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".35"/></svg>
-          </button>
-          <!-- 浮动面板 -->
-          <button class="pg-mode-btn" data-mode="float" onclick="pgSetConvMode('float')" title="浮动面板">
-            <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".3"/><rect x="5.5" y="3" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="currentColor" opacity=".35"/></svg>
-          </button>
-        </div>
-        <div class="pg-messages" id="pg-messages"></div>
-        <div class="pg-chips" id="pg-chips"></div>
-        <div class="pg-input-row">
-          <input class="pg-input" id="pg-input" type="text" placeholder="描述你的学习目标…" onkeydown="if(event.key==='Enter')pgSendConv()" />
-          <button class="pg-send" id="pg-send" onclick="pgSendConv()">发送</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Insert popup (path generator) -->
-<div class="pg-insert-popup" id="pg-insert-popup" style="display:none;">
+<!-- Insert popup (inline path editor) -->
+<div class="pg-insert-popup" id="ipe-insert-popup" style="display:none;">
   <div class="pg-insert-title">插入节点</div>
   <div class="pg-isearch-wrap">
     <span class="pg-isearch-icon">⌕</span>
-    <input class="pg-isearch" id="pg-isearch" type="text" placeholder="搜索节点名称…" oninput="pgFilterSearch(this.value)" autocomplete="off" />
+    <input class="pg-isearch" id="ipe-isearch" type="text" placeholder="搜索节点名称…" oninput="ipeFilterSearch(this.value)" autocomplete="off" />
   </div>
-  <div id="pg-search-section" style="display:none;">
-    <div class="pg-isec-label" id="pg-search-label">搜索结果</div>
-    <div id="pg-search-results"></div>
+  <div id="ipe-search-section" style="display:none;">
+    <div class="pg-isec-label" id="ipe-search-label">搜索结果</div>
+    <div id="ipe-search-results"></div>
   </div>
-  <div id="pg-recommend-section">
+  <div id="ipe-recommend-section">
     <div class="pg-isec-label">推荐插入</div>
-    <div id="pg-recommend-opts"></div>
+    <div id="ipe-recommend-opts"></div>
   </div>
-  <button class="pg-icancel" onclick="pgCloseInsert()">取消</button>
+  <button class="pg-icancel" onclick="ipeCloseInsert()">取消</button>
 </div>
 
-<!-- Undo toast (path generator) -->
-<div class="pg-undo-toast" id="pg-undo-toast">
-  <span id="pg-undo-msg"></span>
-  <button class="pg-undo-btn" onclick="pgDoUndo()">撤销</button>
+<!-- Undo toast (inline path editor) -->
+<div class="pg-undo-toast" id="ipe-undo-toast">
+  <span id="ipe-undo-msg"></span>
+  <button class="pg-undo-btn" onclick="ipeDoUndo()">撤销</button>
 </div>
 
 </body>
