@@ -546,7 +546,7 @@
   }
 
   // Send AI Sidebar Message
-  function sendAiMessage(overrideMsg) {
+  async function sendAiMessage(overrideMsg) {
     const input = document.getElementById('ai-sidebar-input');
     const msg = overrideMsg || input.value.trim();
     if (!msg) return;
