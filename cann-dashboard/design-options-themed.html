@@ -2777,6 +2777,12 @@ function selectStage(code,el){
     </div>`;
 }
 
+// default S0 selected on load
+(function(){
+  const el=document.querySelector('.journey-stage');
+  if(el) selectStage('S0',el);
+})();
+
 </script>
 </body>
 </html>
