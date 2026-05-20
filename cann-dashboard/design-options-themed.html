@@ -681,6 +681,35 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .hm-grad{height:8px;width:100px;border-radius:4px;background:linear-gradient(90deg,#FEEFF0 0%,#FFB6C8 35%,#FFE87F 55%,#EBFCF7 80%,#9DFBE8 100%)}
 /* scene-detail sticky */
 .scene-detail{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:visible}
+/* VOD card list */
+.vod-list{display:flex;flex-direction:column;gap:10px;}
+.vod{background:#F8F8F9;border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:flex-start;transition:all .15s;cursor:pointer;}
+.vod:hover{border-color:#D0B8FF;background:#fff;box-shadow:0 4px 14px rgba(59,91,255,.08);}
+.vod-emoji{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.vod-em-1{background:linear-gradient(135deg,#FFE87F,#FD9A00);}
+.vod-em-2{background:linear-gradient(135deg,#D0B8FF,#6A67CE);}
+.vod-em-3{background:linear-gradient(135deg,#FFB6C8,#FC636B);}
+.vod-em-4{background:linear-gradient(135deg,#9DFBE8,#37C597);}
+.vod-em-5{background:linear-gradient(135deg,#FFB6C8,#E63838);}
+.vod-body{min-width:0;}
+.vod-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
+.vod-title{font-size:13.5px;font-weight:800;color:var(--text);}
+.vod-date{font-size:11px;color:var(--text-3);margin-left:auto;font-family:'JetBrains Mono',monospace;}
+.vod-quote{font-size:12px;color:var(--text-2);line-height:1.55;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.vod-foot{display:flex;align-items:center;gap:10px;margin-top:8px;}
+.vod-check{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-2);}
+.vod-check .chk{width:14px;height:14px;border-radius:4px;border:1.5px solid #B9BCC0;display:flex;align-items:center;justify-content:center;}
+.vod-check .chk.on{background:var(--primary-2);border-color:var(--primary-2);}
+.vod-check .chk.on svg{width:9px;height:9px;color:#fff;}
+.vod-source{font-size:11px;color:var(--text-3);}
+.vod-meta-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:72px;}
+.vod-volume{display:flex;align-items:baseline;gap:3px;color:var(--primary-2);font-weight:800;font-family:'JetBrains Mono',monospace;}
+.vod-volume .vv{font-size:22px;}
+.vod-volume .vu{font-size:11px;color:var(--text-3);font-weight:600;}
+.play-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(59,91,255,.3);}
+.play-btn svg{width:13px;height:13px;margin-left:2px;}
+.vod-back-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--primary);background:var(--primary-soft);border:none;border-radius:999px;padding:6px 14px;cursor:pointer;font-family:inherit;margin-bottom:12px;transition:all .15s;}
+.vod-back-btn:hover{background:var(--purple-med);}
 /* scene list sidebar */
 .scene-list{display:flex;flex-direction:column;gap:0}
 /* sc card full-width in sidebar */
@@ -773,7 +802,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
     </section>
 
     <!-- Role Summary Bar — shown in place of Hero when a specific role is selected -->
-    <div id="roleSummaryBar" style="display:none;margin-top:0"></div>
+    <div id="roleSummaryBar" style="display:none;margin-top:20px"></div>
 
     <!-- ══ HEALTH MATRIX ══ -->
     <div class="ov-section" data-roles="op infra pm doc ux comm">
@@ -1893,7 +1922,6 @@ function selScene(id){
   document.getElementById('sdHint').style.display='none';
   const sd=document.getElementById('sdContent');
   sd.style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
 
   const s=scenarios.find(x=>x.id===id);
   const sorted=[...scenarios].sort((a,b)=>a.score-b.score);
@@ -2430,30 +2458,90 @@ function initOvCharts(){
   }
 
   const VOD_DATA=[
-    {rank:1,vol:71,trend:'↑ 上升',trendOk:false,text:'多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致',meta:'算子仓 · 社区 issue · 社区开发者'},
-    {rank:2,vol:61,trend:'',trendOk:true,text:'CANN 多算子仓：文档参数错误、格式错误、描述不一致、内容缺失',meta:'资料仓库 · 社区 issue · 社区开发者'},
-    {rank:3,vol:40,trend:'',trendOk:true,text:'算子资料文档：格式不规范、参数描述错误、命令目录错误',meta:'资料仓库 · 社区 issue · 社区开发者'},
-    {rank:4,vol:35,trend:'',trendOk:true,text:'transformer 算子：图模式类型缺失、编码韧性不足、描述不一致',meta:'算子仓 · 社区 issue · 算子开发者'},
-    {rank:5,vol:33,trend:'',trendOk:true,text:'ops-transformer：量化适配不足、shape 拦截缺失、编译依赖缺陷、精度失败',meta:'算子仓 · 社区 issue · 算子开发者'},
+    {rank:1,vol:71,type:'算子仓',source:'社区 issue',role:'社区开发者',date:'2026-05-12',emoji:'🔧',
+     title:'多算子层：空指针 / core dump / 精度异常',
+     quote:'空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致——基本所有算子开发者都至少踩过一种，希望统一治理一波。',
+     tags:[['tool','工具'],['api','API'],['other','综合']],cls:'vod-em-1',checked:true},
+    {rank:2,vol:61,type:'资料仓库',source:'社区 issue',role:'社区开发者',date:'2026-05-09',emoji:'📚',
+     title:'CANN 多算子仓：文档参数错误',
+     quote:'文档里写的参数和代码对不上号，格式也乱，描述前后不一致、有的章节直接缺失，新人按文档走基本走不通。',
+     tags:[['doc','文档']],cls:'vod-em-2',checked:true},
+    {rank:3,vol:40,type:'资料仓库',source:'社区 issue',role:'社区开发者',date:'2026-05-04',emoji:'📝',
+     title:'算子资料文档：格式 / 命令目录错误',
+     quote:'文档格式不规范、参数描述错误、命令目录给的路径找不到，对新手特别不友好。建议出个文档巡检机制。',
+     tags:[['doc','文档']],cls:'vod-em-3',checked:false},
+    {rank:4,vol:35,type:'算子仓',source:'社区 issue',role:'社区开发者',date:'2026-04-28',emoji:'🧠',
+     title:'transformer 算子：图模式类型缺失',
+     quote:'transformer 这套算子在图模式下经常类型缺失，编码韧性也差，描述和实际行为不一致，调测要靠肉眼对照源码。',
+     tags:[['api','API']],cls:'vod-em-4',checked:false},
+    {rank:5,vol:33,type:'算子仓',source:'社区 issue',role:'社区开发者',date:'2026-04-22',emoji:'⚙️',
+     title:'ops-transformer：量化 / shape / 精度问题',
+     quote:'量化适配不足、shape 拦截缺失，编译依赖也有缺陷，到最后精度还是会失败。希望出一份算子稳定性 checklist。',
+     tags:[['api','API'],['tool','工具']],cls:'vod-em-5',checked:false},
   ];
   const VOD_COLORS=['#E63838','#FC636B','#FD9A00','#6A67CE','#1AAFD0'];
-  let _vodSel=0;
+  const vodCatMap={doc:'tag-doc',api:'tag-api',tool:'tag-tool',env:'tag-env',other:'tag-other'};
+
+  function renderVodList(){
+    const html=VOD_DATA.map(v=>{
+      const tags=v.tags.map(([c,n])=>`<span class="tag ${vodCatMap[c]}">${n}</span>`).join(' ');
+      const chk=v.checked?'on':'';
+      return `<div class="vod" onclick="selectVod(${v.rank-1})">
+        <div class="vod-emoji ${v.cls}">${v.emoji}</div>
+        <div class="vod-body">
+          <div class="vod-head">
+            <span class="vod-title">${v.title}</span>
+            ${tags}
+            <span class="vod-date">${v.date}</span>
+          </div>
+          <div class="vod-quote">"${v.quote}"</div>
+          <div class="vod-foot">
+            <div class="vod-check">
+              <span class="chk ${chk}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              已纳入改进清单
+            </div>
+            <div class="vod-source">${v.type} · ${v.source} · ${v.role}</div>
+          </div>
+        </div>
+        <div class="vod-meta-right">
+          <div class="vod-volume"><span class="vv">${v.vol}</span><span class="vu">声量</span></div>
+          <div class="play-btn" title="播放原声"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg></div>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('vodDetail').innerHTML=`<div class="vod-list">${html}</div>`;
+    if(window._vodChart) window._vodChart.dispatchAction({type:'unselect',seriesIndex:0,dataIndex:[0,1,2,3,4]});
+  }
+
   function renderVodDetail(idx){
     const d=VOD_DATA[idx];
     const col=VOD_COLORS[idx];
+    const tags=d.tags.map(([c,n])=>`<span class="tag ${vodCatMap[c]}">${n}</span>`).join(' ');
+    const chk=d.checked?'on':'';
     document.getElementById('vodDetail').innerHTML=`
-      <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid ${col};border-radius:var(--radius-m);padding:16px 18px;height:100%;box-sizing:border-box">
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px">
-          <div style="width:26px;height:26px;border-radius:8px;background:${col};color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace">${d.rank}</div>
-          <span style="font-size:22px;font-weight:500;color:${col};font-family:'JetBrains Mono',monospace;letter-spacing:-.03em">${d.vol} 条</span>
-          ${d.trend?`<span style="font-size:10px;color:var(--coral-dark);font-weight:700">${d.trend}</span>`:''}
+      <button class="vod-back-btn" onclick="renderVodList()">← 返回列表</button>
+      <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid ${col};border-radius:var(--radius-m);padding:16px 18px;box-sizing:border-box">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div class="vod-emoji ${d.cls}" style="width:48px;height:48px;font-size:24px;flex-shrink:0">${d.emoji}</div>
+          <div>
+            <div style="font-size:15px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:4px">${d.title}</div>
+            <div style="display:flex;align-items:center;gap:6px">${tags}<span style="font-size:11px;color:var(--text-3)">${d.date}</span></div>
+          </div>
+          <div style="margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0">
+            <div class="vod-volume"><span class="vv">${d.vol}</span><span class="vu">声量</span></div>
+          </div>
         </div>
-        <div style="font-size:12px;color:var(--text);line-height:1.7;padding:10px 12px;background:var(--g1);border-radius:var(--radius-s);border-left:2px solid ${col};margin-bottom:8px">${d.text}</div>
-        <div style="font-size:10px;color:var(--text-3)">${d.meta}</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.7;padding:12px 14px;background:var(--g1);border-radius:var(--radius-s);border-left:2px solid ${col};margin-bottom:10px">"${d.quote}"</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="vod-check">
+            <span class="chk ${chk}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            已纳入改进清单
+          </div>
+          <div class="vod-source">${d.type} · ${d.source} · ${d.role}</div>
+        </div>
       </div>`;
   }
   window.selectVod=function(idx){
-    _vodSel=idx;
     renderVodDetail(idx);
     if(window._vodChart) window._vodChart.dispatchAction({type:'select',seriesIndex:0,dataIndex:idx});
   };
@@ -2463,8 +2551,8 @@ function initOvCharts(){
     window._vodChart=ch;
     ch.setOption({grid:{top:16,bottom:32,left:8,right:8,containLabel:true},xAxis:{type:'category',data:['多算子层\n质量问题','文档参数\n错误','资料格式\n不规范','transformer\n算子','ops-\ntransformer'],axisLabel:{fontSize:9,color:'#A1A4AA',interval:0}},yAxis:{type:'value',show:false},series:[{type:'bar',data:[71,61,40,35,33],barWidth:'50%',selectedMode:'single',label:{show:true,position:'top',fontSize:10,color:'#495058',fontWeight:700,fontFamily:"'JetBrains Mono',monospace"},itemStyle:{borderRadius:[3,3,0,0],color:(p)=>VOD_COLORS[p.dataIndex]},select:{itemStyle:{borderColor:'#333',borderWidth:2}}}],animation:true});
     ch.on('click',p=>selectVod(p.dataIndex));
-    setTimeout(()=>{ch.resize();renderVodDetail(0);},80);
-  } else { renderVodDetail(0); }
+    setTimeout(()=>{ch.resize();renderVodList();},80);
+  } else { renderVodList(); }
 }
 initOvCharts();
 
