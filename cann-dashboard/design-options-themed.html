@@ -2441,24 +2441,32 @@ function initOvCharts(){
     setTimeout(()=>ch.resize(),80);
   }
 
+  const _SVG='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">';
+  const VOD_ICONS=[
+    _SVG+'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+    _SVG+'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    _SVG+'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>',
+    _SVG+'<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>',
+    _SVG+'<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>',
+  ];
   const VOD_DATA=[
-    {rank:1,vol:71,type:'算子仓',source:'社区 issue',role:'社区开发者',date:'2026-05-12',emoji:'🔧',
+    {rank:1,vol:71,type:'算子仓',source:'社区 issue',role:'社区开发者',date:'2026-05-12',
      title:'多算子层：空指针 / core dump / 精度异常',
      quote:'空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致——基本所有算子开发者都至少踩过一种，希望统一治理一波。',
      tags:[['tool','工具'],['api','API'],['other','综合']],cls:'vod-em-1',checked:true},
-    {rank:2,vol:61,type:'资料仓库',source:'社区 issue',role:'社区开发者',date:'2026-05-09',emoji:'📚',
+    {rank:2,vol:61,type:'资料仓库',source:'社区 issue',role:'社区开发者',date:'2026-05-09',
      title:'CANN 多算子仓：文档参数错误',
      quote:'文档里写的参数和代码对不上号，格式也乱，描述前后不一致、有的章节直接缺失，新人按文档走基本走不通。',
      tags:[['doc','文档']],cls:'vod-em-2',checked:true},
-    {rank:3,vol:40,type:'资料仓库',source:'社区 issue',role:'社区开发者',date:'2026-05-04',emoji:'📝',
+    {rank:3,vol:40,type:'资料仓库',source:'社区 issue',role:'社区开发者',date:'2026-05-04',
      title:'算子资料文档：格式 / 命令目录错误',
      quote:'文档格式不规范、参数描述错误、命令目录给的路径找不到，对新手特别不友好。建议出个文档巡检机制。',
      tags:[['doc','文档']],cls:'vod-em-3',checked:false},
-    {rank:4,vol:35,type:'算子仓',source:'社区 issue',role:'社区开发者',date:'2026-04-28',emoji:'🧠',
+    {rank:4,vol:35,type:'算子仓',source:'社区 issue',role:'社区开发者',date:'2026-04-28',
      title:'transformer 算子：图模式类型缺失',
      quote:'transformer 这套算子在图模式下经常类型缺失，编码韧性也差，描述和实际行为不一致，调测要靠肉眼对照源码。',
      tags:[['api','API']],cls:'vod-em-4',checked:false},
-    {rank:5,vol:33,type:'算子仓',source:'社区 issue',role:'社区开发者',date:'2026-04-22',emoji:'⚙️',
+    {rank:5,vol:33,type:'算子仓',source:'社区 issue',role:'社区开发者',date:'2026-04-22',
      title:'ops-transformer：量化 / shape / 精度问题',
      quote:'量化适配不足、shape 拦截缺失，编译依赖也有缺陷，到最后精度还是会失败。希望出一份算子稳定性 checklist。',
      tags:[['api','API'],['tool','工具']],cls:'vod-em-5',checked:false},
@@ -2472,7 +2480,7 @@ function initOvCharts(){
       const chk=v.checked?'on':'';
       return `
     <div class="vod" onclick="selectVod(${v.rank-1})">
-      <div class="vod-emoji ${v.cls}">${v.emoji}</div>
+      <div class="vod-emoji ${v.cls}">${VOD_ICONS[v.rank-1]}</div>
       <div class="vod-body">
         <div class="vod-head">
           <span class="vod-title">${v.title}</span>
@@ -2505,7 +2513,7 @@ function initOvCharts(){
     document.getElementById('vodDetail').innerHTML=`
       <button class="vod-cta" onclick="renderVodList()">← 返回全部原声</button>
       <div class="vod" style="cursor:default;background:#fff;border-color:#D0B8FF;box-shadow:0 4px 14px rgba(59,91,255,.08);margin-top:10px">
-        <div class="vod-emoji ${d.cls}">${d.emoji}</div>
+        <div class="vod-emoji ${d.cls}">${VOD_ICONS[d.rank-1]}</div>
         <div class="vod-body">
           <div class="vod-head">
             <span class="vod-title">${d.title}</span>
