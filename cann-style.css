@@ -216,6 +216,11 @@
   .ai-chip:hover { border-color: var(--accent-blue); color: var(--accent-blue); background: var(--blue-50); }
   .ai-chip.sent { opacity: .4; pointer-events: none; }
 
+  /* When AI path is active: hide roadmap, show only ipe-wrap */
+  #page-learn.ipe-active .phase-label,
+  #page-learn.ipe-active .roadmap-container,
+  #page-learn.ipe-active #path-seq-strip { display: none !important; }
+
   /* ── INLINE PATH EDITOR ── */
   .ipe-wrap {
     max-width: 700px; margin: 20px auto 0;

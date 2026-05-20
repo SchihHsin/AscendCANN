@@ -144,11 +144,57 @@
     sendAiMessage(message);
   }
 
-  // Path generation state
+  // ── AI Path Generation (conversation mode) ──
+  let _aiPathMode  = false;
+  let _aiPathState = 'idle'; // idle | clarifying | generating | editing
   let _aiPathQuery = '';
   let _aiPathName  = '';
 
-  async function _aiPathGenerateDirect(query) {
+  const AI_PATH_CLARIFY = [
+    { keys: ['算子','TBE','TIK','Ascend C','operator'], q: '你的算子开发基础是？', opts: ['零基础', '会 Python/C++', '有深度学习经验'] },
+    { keys: ['推理','部署','inference'],                  q: '你偏好哪种编程语言？', opts: ['Python', 'C++', '两者都行'] },
+    { keys: ['分布式','训练','大模型'],                   q: '你熟悉的训练框架是？', opts: ['PyTorch', 'MindSpore', '都不熟'] },
+    { keys: ['入门','基础','初学'],                        q: '你每周能投入多少学习时间？', opts: ['1–3 小时', '5–10 小时', '全职投入'] },
+  ];
+
+  function _aiPathStart(query) {
+    _aiPathMode  = true;
+    _aiPathState = 'idle';
+    _aiPathQuery = query;
+    _aiPathName  = query.length > 22 ? query.slice(0, 22) + '…' : query;
+    // Open sidebar
+    const sidebar = document.getElementById('ai-sidebar');
+    if (!sidebar.classList.contains('open')) sidebar.classList.add('open');
+    document.getElementById('ai-title-text').textContent = 'AI 路径规划';
+    document.getElementById('ai-messages').innerHTML = '';
+    document.getElementById('ai-chips').innerHTML = '';
+    // AI proactively asks the clarifying question
+    setTimeout(() => _aiPathHandleFirst(query), 300);
+  }
+
+  function _aiPathHandleFirst(query) {
+    _aiPathState = 'clarifying';
+    const match = AI_PATH_CLARIFY.find(c => c.keys.some(k => query.includes(k)));
+    _aiTyping(() => {
+      if (match) {
+        _aiAddBot(match.q);
+        _aiShowChips(match.opts, ans => { _aiAddUser(ans); document.getElementById('ai-chips').innerHTML = ''; _aiPathHandleClarify(ans); });
+      } else {
+        _aiAddBot('你的主要学习目标是？');
+        _aiShowChips(['工程实践', '科研探索', '找工作 / 提升技能'], ans => { _aiAddUser(ans); document.getElementById('ai-chips').innerHTML = ''; _aiPathHandleClarify(ans); });
+      }
+    });
+  }
+
+  function _aiPathHandleClarify(answer) {
+    _aiPathState = 'generating';
+    _aiTyping(() => {
+      _aiAddBot('好的，正在为你规划路径…');
+      _aiPathGenerate(_aiPathQuery, answer);
+    }, 700);
+  }
+
+  async function _aiPathGenerate(query, context) {
     const nodeListStr = NODE_LIST.map((n, i) => `${i}|${n.title}|${n.category}|${n.desc}`).join('\n');
     let nodes = null;
     try {
@@ -156,7 +202,7 @@
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           system: `你是 CANN 学习路径规划专家。从节点库中选4-6个最相关节点按学习顺序排列。\n节点库（序号|名称|方向|描述）：\n${nodeListStr}\n\n输出格式：JSON数组，每项含 nodeIndex 和 reason（不超过12字）。只输出JSON。`,
-          user: `学习目标：${query}`,
+          user: `学习目标：${query}。背景：${context}`,
           max_tokens: 400,
         })
       });
@@ -169,13 +215,29 @@
     _ipNodes = nodes.map(n => ({ ...n, known: false, collapsed: false }));
     _ipName  = _aiPathName;
     _ipQuery = query;
+    _aiPathState = 'editing';
+    _aiTyping(() => {
+      _aiAddBot(`已为你规划 <strong>${_ipNodes.length}</strong> 个节点！可在页面中拖拽排序、删除或插入节点，满意后保存。`);
+      _ipeShowAndHideRoadmap();
+    }, 1200);
+  }
+
+  function _ipeShowAndHideRoadmap() {
+    // Hide existing roadmap content
+    document.getElementById('page-learn').classList.add('ipe-active');
+    // Show inline path editor
+    const wrap = document.getElementById('ipe-wrap');
+    wrap.classList.remove('hidden');
     document.getElementById('ipe-name').textContent = _ipName;
     document.getElementById('ipe-meta').textContent = `${_ipNodes.length} 个节点 · 刚刚生成`;
+    document.getElementById('ipe-save-btn').textContent = '保存路径';
+    document.getElementById('ipe-save-btn').style.background = '';
+    document.getElementById('ipe-save-hint').textContent = '保存后可在学习档案中查看';
     ipeRenderNodes();
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function openAiForPath(prefill) {
-    // Navigate to learn page custom tab, pre-fill the input
     showPage('learn');
     setTimeout(() => {
       document.querySelectorAll('.top-tab').forEach(b => {
@@ -352,6 +414,13 @@
     if (!msg) return;
     input.value = '';
     document.getElementById('ai-chips').innerHTML = '';
+
+    // Route to path generation conversation when in path mode
+    if (_aiPathMode && _aiPathState === 'clarifying') {
+      _aiAddUser(msg);
+      _aiPathHandleClarify(msg);
+      return;
+    }
 
     const container = document.getElementById('ai-messages');
 
@@ -1965,7 +2034,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   function setPathInput(text) {
     const input = document.getElementById('path-generator-input');
     if (input) { input.value = text; input.focus(); }
-    generateCustomPath();
+    // Don't auto-generate; let user click the button after reviewing
   }
 
   async function generateCustomPath() {
@@ -1973,20 +2042,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     const query = input.value.trim();
     if (!query) { input.focus(); return; }
     input.value = '';
-    _aiPathQuery = query;
-    _aiPathName  = query.length > 22 ? query.slice(0, 22) + '…' : query;
-    // Show loading state in ipe-wrap
-    _ipNodes = [];
-    const wrap = document.getElementById('ipe-wrap');
-    wrap.classList.remove('hidden');
-    document.getElementById('ipe-name').textContent = _aiPathName;
-    document.getElementById('ipe-meta').textContent = '正在生成…';
-    document.getElementById('ipe-nodes').innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">AI 正在规划路径，请稍候…</div>';
-    document.getElementById('ipe-save-btn').textContent = '保存路径';
-    document.getElementById('ipe-save-btn').style.background = '';
-    document.getElementById('ipe-save-hint').textContent = '保存后可在学习档案中查看';
-    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    await _aiPathGenerateDirect(query);
+    // Open AI sidebar and start conversation; AI will ask clarifying questions first
+    _aiPathStart(query);
     return; // legacy body below kept but bypassed
 
     const svgPlay = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
@@ -2219,7 +2276,10 @@ def vector_add_tik(shape, dtype, kernel_name):
       if (tabName === 'custom') pathGenerator.classList.add('visible');
       else pathGenerator.classList.remove('visible');
     }
-    if (ipeWrap && tabName !== 'custom') ipeWrap.classList.add('hidden');
+    if (tabName !== 'custom') {
+      if (ipeWrap) ipeWrap.classList.add('hidden');
+      document.getElementById('page-learn').classList.remove('ipe-active');
+    }
 
     // Show corresponding filter bar
     if (tabName !== 'custom') {
@@ -2986,7 +3046,11 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   function ipeDiscard() {
     document.getElementById('ipe-wrap').classList.add('hidden');
+    document.getElementById('page-learn').classList.remove('ipe-active');
     _ipNodes = [];
+    _aiPathMode  = false;
+    _aiPathState = 'idle';
+    document.getElementById('ai-title-text').textContent = 'CANN 智能助手';
   }
 
   function ipeRenderNodes(scrollToIdx) {
@@ -3177,6 +3241,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.getElementById('ipe-save-hint').textContent = '已保存到学习档案';
     setTimeout(() => {
       document.getElementById('ipe-wrap').classList.add('hidden');
+      document.getElementById('page-learn').classList.remove('ipe-active');
+      _aiPathMode  = false;
+      _aiPathState = 'idle';
+      document.getElementById('ai-title-text').textContent = 'CANN 智能助手';
       openLearningArchive('paths');
     }, 800);
   }
