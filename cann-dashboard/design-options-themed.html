@@ -163,7 +163,7 @@ html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);backgro
 }
 .hm-cell:hover{transform:scale(1.05);z-index:2;box-shadow:0 4px 14px rgba(106,103,206,.22)}
 .hm-cell.hm-sel,.hm-cell.tp-heat-sel{border-color:var(--primary);box-shadow:0 0 0 3px rgba(106,103,206,.15);transform:scale(1.06)}
-.hm-cell .cv,.tp-heat-cell .cv{font-size:13px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono',monospace}
+.hm-cell .cv,.tp-heat-cell .cv{font-size:13px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace}
 .hm-cell .ct,.tp-heat-cell .ct{font-size:9px;font-weight:600;opacity:.7;margin-top:1px}
 .hm-legend{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:11px;color:var(--text-3);font-weight:500;justify-content:flex-end}
 .hm-grad{height:8px;width:120px;border-radius:4px;background:linear-gradient(90deg,#FEEFF0 0%,#FFB6C8 35%,#FFE87F 55%,#EBFCF7 80%,#9DFBE8 100%)}
@@ -770,8 +770,8 @@ body.ov-rat-open .ov-rat-panel{right:0}
           <div class="hm-grid" id="hmGrid" style="grid-template-columns:110px repeat(5,1fr);gap:5px;min-width:520px"></div>
         </div>
         <!-- Detail panel -->
-        <div id="hmDetail">
-          <div style="padding:28px 16px;text-align:center;color:var(--text-3);font-size:11.5px;background:var(--g1);border:1px dashed var(--border);border-radius:var(--radius-m);line-height:1.9">
+        <div id="hmDetail" style="min-height:200px">
+          <div style="height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--text-3);font-size:11.5px;background:var(--g1);border:1px dashed var(--border);border-radius:var(--radius-m);line-height:1.9">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--purple-med)" stroke-width="1.5" style="display:block;margin:0 auto 8px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/></svg>
             点击矩阵格子<br>查看详细观测
           </div>
@@ -793,8 +793,28 @@ body.ov-rat-open .ov-rat-panel{right:0}
             <div class="ov-section-sub">共 30 个活跃痛点 · 按声量排序</div>
           </div>
           <div style="display:flex;gap:8px">
-            <div id="ecCustSmall" style="width:180px;height:80px"></div>
-            <div id="ecPainDistSmall" style="width:180px;height:80px"></div>
+            <!-- 痛点闭环率 -->
+            <div style="width:180px;border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
+              <div style="font-size:9px;font-weight:700;color:var(--text-3);padding:5px 10px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.04em">痛点闭环率</div>
+              <div class="cust-list" style="padding:2px 0">
+                <div class="cust-bar-row" style="padding:3px 8px"><div class="cust-name" style="width:24px;font-size:9px">京东</div><div class="cust-bar-track"><div class="cust-bar-fill ok" style="width:45%"></div></div><div class="cust-pct ok" style="font-size:9px">45%</div></div>
+                <div class="cust-bar-row" style="padding:3px 8px"><div class="cust-name" style="width:24px;font-size:9px">腾讯</div><div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:38%"></div></div><div class="cust-pct mid" style="font-size:9px">38%</div></div>
+                <div class="cust-bar-row" style="padding:3px 8px"><div class="cust-name" style="width:24px;font-size:9px">蚂蚁</div><div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:35%"></div></div><div class="cust-pct mid" style="font-size:9px">35%</div></div>
+                <div class="cust-bar-row" style="padding:3px 8px"><div class="cust-name" style="width:24px;font-size:9px">美团</div><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:30%"></div></div><div class="cust-pct bad" style="font-size:9px">30%</div></div>
+                <div class="cust-bar-row" style="padding:3px 8px"><div class="cust-name" style="width:24px;font-size:9px">O1</div><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:28%"></div></div><div class="cust-pct bad" style="font-size:9px">28%</div></div>
+              </div>
+            </div>
+            <!-- 痛点分布 -->
+            <div style="width:180px;border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
+              <div style="font-size:9px;font-weight:700;color:var(--text-3);padding:5px 10px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.04em">痛点分布 · 分队</div>
+              <div style="padding:2px 0">
+                <div class="pain-dist-row" style="padding:3px 10px"><div class="pain-dist-lbl" style="font-size:9px">算子编程</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:100%"></div></div><div class="pain-dist-n" style="font-size:9px">12</div></div>
+                <div class="pain-dist-row" style="padding:3px 10px"><div class="pain-dist-lbl" style="font-size:9px">算子分队</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:58%"></div></div><div class="pain-dist-n" style="font-size:9px">7</div></div>
+                <div class="pain-dist-row" style="padding:3px 10px"><div class="pain-dist-lbl" style="font-size:9px">编译器&OS</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:42%"></div></div><div class="pain-dist-n" style="font-size:9px">5</div></div>
+                <div class="pain-dist-row" style="padding:3px 10px"><div class="pain-dist-lbl" style="font-size:9px">资料分队</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:33%"></div></div><div class="pain-dist-n" style="font-size:9px">4</div></div>
+                <div class="pain-dist-row" style="padding:3px 10px"><div class="pain-dist-lbl" style="font-size:9px">工具链</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:17%"></div></div><div class="pain-dist-n" style="font-size:9px">2</div></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="cat-sum-row">
@@ -990,7 +1010,10 @@ body.ov-rat-open .ov-rat-panel{right:0}
           </div>
         </div>
         <div class="ov-card">
-          <div class="ov-card-hdr"><div class="ov-card-hdr-title">Agentic 开发效率</div></div>
+          <div class="ov-card-hdr">
+            <div class="snap-icon blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg></div>
+            <div class="ov-card-hdr-title">Agentic 开发效率</div>
+          </div>
           <div style="padding:12px 16px 8px">
             <div id="ecGauge" style="height:120px;margin:-4px 0"></div>
             <div class="snap-row"><span class="snap-row-lbl">Ascend C 体验评分</span><span class="snap-row-val bad">4.1 / 6</span></div>
@@ -1382,13 +1405,13 @@ function showHmDetail(ri,ci){
   const obsItemBg=score>=80?'var(--green-light)':score>=55?'var(--gold-light)':'var(--coral-light)';
   const obsItemBorder=score>=80?'var(--green-faded)':score>=55?'var(--gold-med)':'var(--coral-med)';
   document.getElementById('hmDetail').innerHTML=`
-    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:var(--radius-m);overflow:hidden">
+    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:var(--radius-m);overflow:hidden;min-height:200px">
       <div style="padding:12px 14px;background:linear-gradient(135deg,rgba(208,184,255,.22),rgba(128,230,255,.16));border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
         <div style="flex:1">
           <div style="font-size:12.5px;font-weight:800;color:var(--text)">${row.name}</div>
           <div style="font-size:10px;color:var(--text-3);margin-top:2px">${row.sub} · ${HM_DATA.cols[ci]}</div>
         </div>
-        <div style="background:${bg};color:${fg};border-radius:8px;padding:5px 10px;font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;white-space:nowrap">${cell.t}</div>
+        <div style="background:${bg};color:${fg};border-radius:8px;padding:5px 10px;font-size:16px;font-weight:800;font-family:'JetBrains Mono','PingFang SC',monospace;white-space:nowrap">${cell.t}</div>
       </div>
       <div style="padding:12px 14px">
         <div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">观测详情</div>
@@ -1404,7 +1427,13 @@ function showHmDetail(ri,ci){
   if(!grid)return;
   grid.innerHTML='<div class="hm-header first"></div>'+HM_DATA.cols.map((col)=>`<div class="hm-header">${col}</div>`).join('');
   HM_DATA.rows.forEach((r,ri)=>{
-    grid.innerHTML+=`<div class="hm-row-label">${r.name}<small>${r.sub}</small></div>`;
+    const overallT=HM_DATA.data[ri][3].t;
+    const dotColor=overallT==='严重'?'var(--coral-dark)':overallT==='关注'?'var(--gold-dark)':'var(--green-dark)';
+    const dotGlow=overallT==='严重'?'rgba(230,56,56,.2)':overallT==='关注'?'rgba(253,154,0,.2)':'rgba(55,197,151,.2)';
+    grid.innerHTML+=`<div class="hm-row-label" style="flex-direction:row;align-items:center;gap:6px;padding:0 4px">
+      <div style="width:8px;height:8px;border-radius:50%;background:${dotColor};box-shadow:0 0 0 3px ${dotGlow};flex-shrink:0"></div>
+      <div><div>${r.name}</div><small>${r.sub}</small></div>
+    </div>`;
     HM_DATA.data[ri].forEach((cell,ci)=>{
       const score=cell.inv?(100-cell.v):cell.v;
       const bg=heatColor(score),col=textColor(score);
@@ -2289,10 +2318,11 @@ function initOvCharts(){
       graphic:[
         {type:'text',left:'center',top:'30%',
           style:{text:'77%',fontSize:22,fontWeight:'bold',
-            fill:'#6A67CE',fontFamily:"'JetBrains Mono',monospace"}},
+            fill:'#6A67CE',fontFamily:"'JetBrains Mono',monospace",
+            textAlign:'center'}},
         {type:'text',left:'center',top:'50%',
           style:{text:'综合覆盖',fontSize:9,fill:'#A1A4AA',
-            fontFamily:'Inter,sans-serif'}}
+            fontFamily:'Inter,sans-serif',textAlign:'center'}}
       ],
       series:[{
         type:'pie',
@@ -2346,13 +2376,6 @@ function initOvCharts(){
 }
 initOvCharts();
 
-/* ── Init small charts in overview ── */
-(function(){
-  const C={bad:'#E63838',mid:'#FD9A00',ok:'#37C597',blue:'#1AAFD0',dim:'#A1A4AA',border:'#E1E2E4'};
-  function tryInit(id,opt){const el=document.getElementById(id);if(!el)return;const ch=echarts.init(el,null,{renderer:'svg'});ch.setOption({...opt,animation:false});}
-  tryInit('ecCustSmall',{grid:{top:4,bottom:4,left:34,right:40,containLabel:false},xAxis:{type:'value',max:100,show:false},yAxis:{type:'category',data:['讯飞','O1','美团','蚂蚁','腾讯','京东'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:9,color:'#898E95'}},series:[{type:'bar',data:[22,28,30,35,38,45],barWidth:6,label:{show:true,position:'right',formatter:'{c}%',fontSize:9,color:'#898E95'},itemStyle:{borderRadius:3,color:(p)=>p.data>=40?'#37C597':p.data>=35?'#FD9A00':'#E63838'}}]});
-  tryInit('ecPainDistSmall',{grid:{top:4,bottom:4,left:8,right:36,containLabel:true},xAxis:{type:'value',show:false},yAxis:{type:'category',data:['工具链','资料','编译器','算子','算子编程'],axisLine:{show:false},axisTick:{show:false},axisLabel:{fontSize:9,color:'#898E95'}},series:[{type:'bar',data:[2,4,5,7,12],barWidth:6,label:{show:true,position:'right',formatter:'{c}',fontSize:9,color:'#898E95'},itemStyle:{borderRadius:3,color:'#E63838',opacity:.75}}]});
-})();
 
 </script>
 </body>
