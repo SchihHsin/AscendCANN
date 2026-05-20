@@ -152,7 +152,7 @@ html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);backgro
 /* ── HEALTH MATRIX (AscendOps heatmap style) ── */
 .hm-wrap{overflow:hidden}
 .hm-grid{display:grid;grid-template-columns:120px repeat(5,1fr);gap:5px;margin-top:4px}
-.hm-header{font-size:10px;font-weight:700;color:var(--text-3);text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em}
+.hm-header{font-size:10px;font-weight:700;color:var(--text-3);text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
 .hm-header.first{text-align:left;padding-left:4px}
 .hm-row-label{display:flex;flex-direction:column;justify-content:center;padding:0 4px;font-size:12px;font-weight:700;color:var(--text)}
 .hm-row-label small{font-size:9.5px;font-weight:500;color:var(--text-3);margin-top:1px}
@@ -767,7 +767,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
       <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:start">
         <!-- Grid -->
         <div style="min-width:0;overflow:auto">
-          <div class="hm-grid" id="hmGrid" style="grid-template-columns:110px repeat(5,68px);gap:5px;min-width:460px"></div>
+          <div class="hm-grid" id="hmGrid" style="grid-template-columns:110px repeat(5,90px);gap:5px;min-width:580px"></div>
         </div>
         <!-- Detail panel — always same height as grid column -->
         <div id="hmDetail" style="height:100%;overflow-y:auto;box-sizing:border-box">
@@ -837,40 +837,15 @@ body.ov-rat-open .ov-rat-panel{right:0}
         <span class="layer-hdr-title">社区原声 · 高频共性问题分布</span>
         <div class="layer-hdr-line"></div>
       </div>
-      <!-- VOD 图表 + 卡片左右布局 -->
-      <div style="display:flex;gap:14px;align-items:start">
-        <!-- 左：柱状图 -->
-        <div style="width:260px;flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden;display:flex;flex-direction:column">
+      <!-- VOD 图表 + 详情左右布局 -->
+      <div style="display:flex;gap:14px;align-items:stretch">
+        <!-- 左：柱状图（点击切换右侧详情） -->
+        <div style="width:320px;flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden;display:flex;flex-direction:column">
           <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:800;letter-spacing:-.01em;flex-shrink:0">高频 VOD 声量排行</div>
-          <div id="ecVod" style="flex:1;min-height:160px"></div>
+          <div id="ecVod" style="flex:1;min-height:180px"></div>
         </div>
-        <!-- 右：3 张卡片纵向排列 -->
-        <div style="flex:1;display:flex;flex-direction:column;gap:10px">
-          <div class="vod-hf-item" style="flex:1">
-            <div class="vod-hf-num">1</div>
-            <div class="vod-hf-body">
-              <div class="vod-hf-vol">71 条 <span style="font-size:10px;color:var(--coral-dark);font-weight:700">↑ 上升</span></div>
-              <div class="vod-hf-text">多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致</div>
-              <div class="vod-hf-meta">算子仓 · 社区 issue · 社区开发者</div>
-            </div>
-          </div>
-          <div class="vod-hf-item" style="flex:1">
-            <div class="vod-hf-num">2</div>
-            <div class="vod-hf-body">
-              <div class="vod-hf-vol">61 条</div>
-              <div class="vod-hf-text">CANN 多算子仓：文档参数错误、格式错误、描述不一致、内容缺失</div>
-              <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
-            </div>
-          </div>
-          <div class="vod-hf-item" style="flex:1">
-            <div class="vod-hf-num">3</div>
-            <div class="vod-hf-body">
-              <div class="vod-hf-vol">40 条</div>
-              <div class="vod-hf-text">算子资料文档：格式不规范、参数描述错误、命令目录错误</div>
-              <div class="vod-hf-meta">资料仓库 · 社区 issue · 社区开发者</div>
-            </div>
-          </div>
-        </div>
+        <!-- 右：动态详情（随柱状图点击切换） -->
+        <div id="vodDetail" style="flex:1;min-width:0"></div>
       </div>
     </div><!-- /VOD 声量 -->
 
@@ -2331,7 +2306,7 @@ function initOvCharts(){
   // Model coverage ring
   const mdEl=document.getElementById('ecModel');
   if(mdEl){
-    const ch=echarts.init(mdEl,null,{renderer:'svg'});
+    const ch=echarts.init(mdEl,null,{renderer:'canvas'});
     ch.setOption({
       backgroundColor:'transparent',
       tooltip:{
@@ -2402,12 +2377,50 @@ function initOvCharts(){
     setTimeout(()=>ch.resize(),80);
   }
 
+  const VOD_DATA=[
+    {rank:1,vol:71,trend:'↑ 上升',trendOk:false,text:'多算子层：空指针校验缺失、编译失败、core dump、精度异常、内存越界、文档描述不一致',meta:'算子仓 · 社区 issue · 社区开发者'},
+    {rank:2,vol:61,trend:'',trendOk:true,text:'CANN 多算子仓：文档参数错误、格式错误、描述不一致、内容缺失',meta:'资料仓库 · 社区 issue · 社区开发者'},
+    {rank:3,vol:40,trend:'',trendOk:true,text:'算子资料文档：格式不规范、参数描述错误、命令目录错误',meta:'资料仓库 · 社区 issue · 社区开发者'},
+    {rank:4,vol:35,trend:'',trendOk:true,text:'transformer 算子：图模式类型缺失、编码韧性不足、描述不一致',meta:'算子仓 · 社区 issue · 算子开发者'},
+    {rank:5,vol:33,trend:'',trendOk:true,text:'ops-transformer：量化适配不足、shape 拦截缺失、编译依赖缺陷、精度失败',meta:'算子仓 · 社区 issue · 算子开发者'},
+  ];
+  const VOD_COLORS=['#E63838','#FC636B','#FD9A00','#6A67CE','#1AAFD0'];
+  let _vodSel=0;
+  function renderVodDetail(idx){
+    const d=VOD_DATA[idx];
+    const col=VOD_COLORS[idx];
+    document.getElementById('vodDetail').innerHTML=`
+      <div style="display:flex;flex-direction:column;gap:8px;height:100%">
+        <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid ${col};border-radius:var(--radius-m);padding:16px 18px;flex:1">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px">
+            <div style="width:26px;height:26px;border-radius:8px;background:${col};color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace">${d.rank}</div>
+            <span style="font-size:22px;font-weight:500;color:${col};font-family:'JetBrains Mono',monospace;letter-spacing:-.03em">${d.vol} 条</span>
+            ${d.trend?`<span style="font-size:10px;color:var(--coral-dark);font-weight:700">${d.trend}</span>`:''}
+          </div>
+          <div style="font-size:12px;color:var(--text);line-height:1.7;padding:10px 12px;background:var(--g1);border-radius:var(--radius-s);border-left:2px solid ${col};margin-bottom:8px">${d.text}</div>
+          <div style="font-size:10px;color:var(--text-3)">${d.meta}</div>
+        </div>
+        <div style="display:flex;gap:5px">
+          ${VOD_DATA.map((v,i)=>`<div onclick="selectVod(${i})" style="flex:1;padding:6px 4px;border-radius:var(--radius-s);border:1.5px solid ${i===idx?VOD_COLORS[i]:'var(--border)'};background:${i===idx?'var(--g1)':'var(--card)'};cursor:pointer;text-align:center;transition:all .15s">
+            <div style="font-size:11px;font-weight:800;color:${VOD_COLORS[i]};font-family:'JetBrains Mono',monospace">${v.vol}</div>
+            <div style="font-size:9px;color:var(--text-3);margin-top:1px">Top ${v.rank}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+  }
+  window.selectVod=function(idx){
+    _vodSel=idx;
+    renderVodDetail(idx);
+    if(window._vodChart) window._vodChart.dispatchAction({type:'select',seriesIndex:0,dataIndex:idx});
+  };
   const vdEl=document.getElementById('ecVod');
   if(vdEl){
     const ch=echarts.init(vdEl,null,{renderer:'canvas'});
-    ch.setOption({grid:{top:16,bottom:32,left:8,right:8,containLabel:true},xAxis:{type:'category',data:['多算子层\n质量问题','文档参数\n错误','资料格式\n不规范','transformer\n算子','ops-\ntransformer'],axisLabel:{fontSize:9,color:'#A1A4AA',interval:0}},yAxis:{type:'value',show:false},series:[{type:'bar',data:[71,61,40,35,33],barWidth:'45%',label:{show:true,position:'top',fontSize:10,color:'#495058',fontWeight:700,fontFamily:"'JetBrains Mono',monospace"},itemStyle:{borderRadius:[3,3,0,0],color:(p)=>{const c=['#E63838','#FC636B','#FD9A00','#6A67CE','#1AAFD0'];return c[p.dataIndex];}}}],animation:true});
-    setTimeout(()=>ch.resize(),80);
-  }
+    window._vodChart=ch;
+    ch.setOption({grid:{top:16,bottom:32,left:8,right:8,containLabel:true},xAxis:{type:'category',data:['多算子层\n质量问题','文档参数\n错误','资料格式\n不规范','transformer\n算子','ops-\ntransformer'],axisLabel:{fontSize:9,color:'#A1A4AA',interval:0}},yAxis:{type:'value',show:false},series:[{type:'bar',data:[71,61,40,35,33],barWidth:'50%',selectedMode:'single',label:{show:true,position:'top',fontSize:10,color:'#495058',fontWeight:700,fontFamily:"'JetBrains Mono',monospace"},itemStyle:{borderRadius:[3,3,0,0],color:(p)=>VOD_COLORS[p.dataIndex]},select:{itemStyle:{borderColor:'#333',borderWidth:2}}}],animation:true});
+    ch.on('click',p=>selectVod(p.dataIndex));
+    setTimeout(()=>{ch.resize();renderVodDetail(0);},80);
+  } else { renderVodDetail(0); }
 }
 initOvCharts();
 
