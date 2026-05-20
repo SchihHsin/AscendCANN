@@ -438,7 +438,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .radar-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .radar-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;flex:1}
 .radar-worst{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--coral-light);color:var(--coral-dark)}
-.radar-body{display:flex;align-items:start;gap:0}
+.radar-body{display:flex;align-items:start;gap:12px}
 .chart-col{flex:1;min-width:0;padding-right:18px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
 .radar-col{flex:1;min-width:0;padding-left:18px;display:flex;align-items:center;gap:12px}
 .col-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em}
@@ -1429,6 +1429,8 @@ body.ov-rat-open .ov-rat-panel{right:0}
 
 
 <script>
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+window.scrollTo(0,0);
 
 /* ── Health Matrix ── */
 function heatColor(score){
@@ -1882,13 +1884,13 @@ function radarSvg(vals,size){
   const ang=i=>(-Math.PI/2)+(2*Math.PI/n)*i;
   const px=(i,r)=>cx+r*Math.cos(ang(i));
   const py=(i,r)=>cy+r*Math.sin(ang(i));
-  // AscendOps 5-dim colors
-  const dimColors=['#37C597','#1AAFD0','#FD9A00','#A177FF','#FC636B'];
-  const clr=v=>v>=80?'#37C597':v>=60?'#FD9A00':'#E63838';
+  // Purple depth scale: high score → deep, low → light
+  const purpleClr=v=>v>=85?'#4F4DA7':v>=75?'#6A67CE':v>=65?'#8B89D8':v>=55?'#A177FF':'#C4AAFF';
+  const dotR=v=>v>=85?6:v>=75?5.5:v>=65?5:v>=55?4.5:4;
 
   let svg=`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="flex-shrink:0">`;
 
-  // background rings — alternating purple-light and white
+  // background rings
   [1,0.75,0.5,0.25].forEach((p,pi)=>{
     const pts=Array.from({length:n},(_,i)=>`${px(i,R*p)},${py(i,R*p)}`).join(' ');
     svg+=`<polygon points="${pts}" fill="${pi%2===0?'rgba(240,239,250,.55)':'rgba(255,255,255,0)'}" stroke="#E1E2E4" stroke-width="${p===1?1.5:0.8}"/>`;
@@ -1897,16 +1899,15 @@ function radarSvg(vals,size){
   for(let i=0;i<n;i++)
     svg+=`<line x1="${cx}" y1="${cy}" x2="${px(i,R)}" y2="${py(i,R)}" stroke="#CDCFD2" stroke-width="1"/>`;
 
-  // data polygon — purple fill
+  // data polygon
   const dpts=vals.map((v,i)=>`${px(i,R*v/100)},${py(i,R*v/100)}`).join(' ');
-  svg+=`<polygon points="${dpts}" fill="rgba(106,103,206,.18)" stroke="#6A67CE" stroke-width="2" stroke-linejoin="round"/>`;
+  svg+=`<polygon points="${dpts}" fill="rgba(106,103,206,.12)" stroke="#6A67CE" stroke-width="1.5" stroke-linejoin="round"/>`;
 
-  // dots — each dim gets its own color
+  // dots — purple depth by score, size also scales
   vals.forEach((v,i)=>{
-    const dc=dimColors[i];
+    const dc=purpleClr(v),r=dotR(v);
     const dx=px(i,R*v/100),dy=py(i,R*v/100);
-    svg+=`<circle cx="${dx}" cy="${dy}" r="4" fill="${dc}" stroke="#fff" stroke-width="1.8"/>`;
-    // value label — nudge away from center
+    svg+=`<circle cx="${dx}" cy="${dy}" r="${r}" fill="${dc}" stroke="#fff" stroke-width="1.5"/>`;
     const ox=(dx-cx)*.28,oy=(dy-cy)*.28;
     svg+=`<text x="${dx+ox}" y="${dy+oy+(oy<0?-5:13)}" font-size="9" font-family="'JetBrains Mono',monospace" fill="${dc}" text-anchor="middle" font-weight="800">${v}</text>`;
   });
@@ -2001,7 +2002,7 @@ function selScene(id){
   // radar + trend
   const minIdx=s.radar.indexOf(Math.min(...s.radar));
   document.getElementById('radarWorst').textContent=`最弱：${radarDims[minIdx]} ${s.radar[minIdx]}`;
-  const clrDim=v=>v>=80?'#37C597':v>=60?'#FD9A00':'#E63838';
+  const clrDim=v=>v>=85?'#4F4DA7':v>=75?'#6A67CE':v>=65?'#8B89D8':v>=55?'#A177FF':'#C4AAFF';
   const spread=Math.max(...s.runs)-Math.min(...s.runs);
   const stab=spread<=6?'stable':spread<=12?'moderate':'unstable';
   const stabLabel=stab==='stable'?'波动小 · 稳定':stab==='moderate'?'中等波动':'波动大 · 不稳定';
