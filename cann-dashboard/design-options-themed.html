@@ -529,8 +529,8 @@ html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);backgro
 .vod-trend{font-size:12px;font-weight:700}
 .vod-trend.dn{color:var(--coral-dark)}
 .vod-trend.flat{color:var(--gold-dark)}
-.vod-quote{font-size:12px;color:var(--text-2);line-height:1.7;padding:8px 12px 8px 16px;background:#fff;border-radius:var(--radius-s);border-left:3px solid var(--purple-med);font-style:italic;position:relative}
-.vod-quote::before{display:none}
+.jvod-quote{font-size:12px;color:var(--text-2);line-height:1.7;padding:8px 12px 8px 16px;background:#fff;border-radius:var(--radius-s);border-left:3px solid var(--purple-med);font-style:italic;position:relative}
+.jvod-quote::before{display:none}
 .vod-src{font-size:10px;color:var(--text-3);margin-top:6px}
 .eco-three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .eco-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden}
@@ -608,24 +608,6 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .pain-dist-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));opacity:.8}
 .pain-dist-n{font-size:11px;font-weight:800;color:var(--text);width:24px;text-align:right;flex-shrink:0;font-family:'JetBrains Mono',monospace}
 .eco-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
-.vod-body{padding:16px 28px 48px;display:flex;flex-direction:column;gap:16px}
-.vod-two-col{display:grid;grid-template-columns:1fr 1.6fr;gap:14px}
-.vod-src-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden}
-.vod-src-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border)}
-.vod-src-row:last-child{border-bottom:none}
-.vod-src-name{font-size:11px;color:var(--text-3);width:72px;flex-shrink:0}
-.vod-src-bar-track{flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden}
-.vod-src-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--purple-bright),var(--purple-core));opacity:.75}
-.vod-src-pct{font-size:11px;font-weight:800;color:var(--text);width:34px;text-align:right;font-family:'JetBrains Mono',monospace}
-.vod-full-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-m);padding:12px 14px;margin-bottom:8px}
-.vod-full-hdr{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
-.vod-full-rank{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--purple-bright),var(--purple-core));color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-family:'JetBrains Mono',monospace}
-.vod-full-vol{font-size:18px;font-weight:500;color:var(--purple-bright);font-family:'JetBrains Mono',monospace}
-.vod-full-unit{font-size:10px;color:var(--text-3)}
-.vod-full-body{flex:1;min-width:0}
-.vod-full-quote{font-size:12px;color:var(--text-2);line-height:1.7;padding:8px 10px 8px 16px;background:var(--g1);border-radius:var(--radius-s);border-left:3px solid var(--purple-med);font-style:italic;margin-bottom:6px}
-.vod-full-quote::before{display:none}
-.vod-full-meta{font-size:10px;color:var(--text-3)}
 .ov-snap-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .snap-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:hidden;transition:box-shadow .2s}
 .snap-card:hover{box-shadow:var(--shadow-pop)}
@@ -681,35 +663,35 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .hm-grad{height:8px;width:100px;border-radius:4px;background:linear-gradient(90deg,#FEEFF0 0%,#FFB6C8 35%,#FFE87F 55%,#EBFCF7 80%,#9DFBE8 100%)}
 /* scene-detail sticky */
 .scene-detail{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-l);overflow:visible}
-/* VOD card list */
-.vod-list{display:flex;flex-direction:column;gap:10px;}
-.vod{background:#F8F8F9;border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:flex-start;transition:all .15s;cursor:pointer;}
-.vod:hover{border-color:#D0B8FF;background:#fff;box-shadow:0 4px 14px rgba(59,91,255,.08);}
-.vod-emoji{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+/* ========== VOD cards — reference style from ascendops-experience.html ========== */
+.vod-list{display:flex; flex-direction:column; gap:12px; padding-top:6px;}
+.vod{background:#F8F8F9; border:1px solid var(--border); border-radius:14px; padding:14px 16px; display:grid; grid-template-columns:44px 1fr auto; gap:14px; align-items:flex-start; transition:all .15s; cursor:pointer;}
+.vod:hover{border-color:#D0B8FF; background:#fff; box-shadow:0 4px 14px rgba(59,91,255,.08);}
+.vod-emoji{width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;}
 .vod-em-1{background:linear-gradient(135deg,#FFE87F,#FD9A00);}
 .vod-em-2{background:linear-gradient(135deg,#D0B8FF,#6A67CE);}
 .vod-em-3{background:linear-gradient(135deg,#FFB6C8,#FC636B);}
 .vod-em-4{background:linear-gradient(135deg,#9DFBE8,#37C597);}
 .vod-em-5{background:linear-gradient(135deg,#FFB6C8,#E63838);}
 .vod-body{min-width:0;}
-.vod-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
-.vod-title{font-size:13.5px;font-weight:800;color:var(--text);}
-.vod-date{font-size:11px;color:var(--text-3);margin-left:auto;font-family:'JetBrains Mono',monospace;}
-.vod-quote{font-size:12.5px;color:var(--text-2);line-height:1.55;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;border-left:none;padding:0;background:transparent;font-style:normal;position:static;border-radius:0;}
-.vod-foot{display:flex;align-items:center;gap:10px;margin-top:8px;}
-.vod-check{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-2);}
-.vod-check .chk{width:14px;height:14px;border-radius:4px;border:1.5px solid #B9BCC0;display:flex;align-items:center;justify-content:center;}
-.vod-check .chk.on{background:var(--primary-2);border-color:var(--primary-2);}
-.vod-check .chk.on svg{width:9px;height:9px;color:#fff;}
-.vod-source{font-size:11px;color:var(--text-3);}
-.vod-meta-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:72px;}
-.vod-volume{display:flex;align-items:baseline;gap:3px;color:var(--primary-2);font-weight:800;font-family:'JetBrains Mono',monospace;}
+.vod-head{display:flex; align-items:center; gap:8px; margin-bottom:5px; flex-wrap:wrap;}
+.vod-title{font-size:14.5px; font-weight:800; color:var(--text);}
+.vod-date{font-size:11px; color:var(--text-3); margin-left:auto; font-family:'JetBrains Mono',monospace;}
+.vod-quote{font-size:12.5px; color:var(--text-2); line-height:1.55; margin-top:4px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+.vod-foot{display:flex; align-items:center; gap:10px; margin-top:8px;}
+.vod-check{display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-2);}
+.vod-check .chk{width:14px; height:14px; border-radius:4px; border:1.5px solid #B9BCC0; display:flex; align-items:center; justify-content:center;}
+.vod-check .chk.on{background:var(--primary-2); border-color:var(--primary-2);}
+.vod-check .chk.on svg{width:9px; height:9px; color:#fff;}
+.vod-source{font-size:11px; color:var(--text-3);}
+.vod-meta-right{display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:80px;}
+.vod-volume{display:flex; align-items:baseline; gap:3px; color:var(--primary-2); font-weight:800; font-family:'JetBrains Mono',monospace;}
 .vod-volume .vv{font-size:22px;}
-.vod-volume .vu{font-size:11px;color:var(--text-3);font-weight:600;}
-.play-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(59,91,255,.3);}
-.play-btn svg{width:13px;height:13px;margin-left:2px;}
-.vod-back-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--primary);background:var(--primary-soft);border:none;border-radius:999px;padding:6px 14px;cursor:pointer;font-family:inherit;margin-bottom:12px;transition:all .15s;}
-.vod-back-btn:hover{background:var(--purple-med);}
+.vod-volume .vu{font-size:11px; color:var(--text-3); font-weight:600;}
+.play-btn{width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--primary-2)); display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; box-shadow:0 4px 12px rgba(59,91,255,.3);}
+.play-btn svg{width:13px; height:13px; margin-left:2px;}
+.vod-cta{margin-top:14px; width:100%; padding:13px; border-radius:12px; border:0; background:linear-gradient(135deg,#F0EFFA,#E8F7FB); color:var(--primary-2); font:inherit; font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;}
+.vod-cta:hover{background:linear-gradient(135deg,#D0B8FF,#80E6FF);}
 /* scene list sidebar */
 .scene-list{display:flex;flex-direction:column;gap:0}
 /* sc card full-width in sidebar */
@@ -2056,7 +2038,7 @@ function selScene(id){
           <span class="vod-unit">条声量</span>
           <span class="vod-trend ${v.trendCls}">${v.trend}</span>
         </div>
-        <div class="vod-quote">${v.text}</div>
+        <div class="jvod-quote">${v.text}</div>
         <div class="vod-src">${v.src}</div>
       </div>`).join('');
 
@@ -2484,32 +2466,33 @@ function initOvCharts(){
   const VOD_COLORS=['#E63838','#FC636B','#FD9A00','#6A67CE','#1AAFD0'];
   const vodCatMap={doc:'tag-doc',api:'tag-api',tool:'tag-tool',env:'tag-env',other:'tag-other'};
 
-  window.renderVodList=function renderVodList(){
+  window.renderVodList=function(){
     const html=VOD_DATA.map(v=>{
       const tags=v.tags.map(([c,n])=>`<span class="tag ${vodCatMap[c]}">${n}</span>`).join(' ');
       const chk=v.checked?'on':'';
-      return `<div class="vod" onclick="selectVod(${v.rank-1})">
-        <div class="vod-emoji ${v.cls}">${v.emoji}</div>
-        <div class="vod-body">
-          <div class="vod-head">
-            <span class="vod-title">${v.title}</span>
-            ${tags}
-            <span class="vod-date">${v.date}</span>
-          </div>
-          <div class="vod-quote">"${v.quote}"</div>
-          <div class="vod-foot">
-            <div class="vod-check">
-              <span class="chk ${chk}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-              已纳入改进清单
-            </div>
-            <div class="vod-source">${v.type} · ${v.source} · ${v.role}</div>
-          </div>
+      return `
+    <div class="vod" onclick="selectVod(${v.rank-1})">
+      <div class="vod-emoji ${v.cls}">${v.emoji}</div>
+      <div class="vod-body">
+        <div class="vod-head">
+          <span class="vod-title">${v.title}</span>
+          ${tags}
+          <span class="vod-date">${v.date}</span>
         </div>
-        <div class="vod-meta-right">
-          <div class="vod-volume"><span class="vv">${v.vol}</span><span class="vu">声量</span></div>
-          <div class="play-btn" title="播放原声"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg></div>
+        <div class="vod-quote">"${v.quote}"</div>
+        <div class="vod-foot">
+          <div class="vod-check">
+            <span class="chk ${chk}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            已纳入改进清单
+          </div>
+          <div class="vod-source">${v.type} · ${v.source} · ${v.role}</div>
         </div>
-      </div>`;
+      </div>
+      <div class="vod-meta-right">
+        <div class="vod-volume"><span class="vv">${v.vol}</span><span class="vu">声量</span></div>
+        <div class="play-btn" title="播放原声"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg></div>
+      </div>
+    </div>`;
     }).join('');
     document.getElementById('vodDetail').innerHTML=`<div class="vod-list">${html}</div>`;
     if(window._vodChart) window._vodChart.dispatchAction({type:'unselect',seriesIndex:0,dataIndex:[0,1,2,3,4]});
@@ -2521,7 +2504,7 @@ function initOvCharts(){
     const tags=d.tags.map(([c,n])=>`<span class="tag ${vodCatMap[c]}">${n}</span>`).join(' ');
     const chk=d.checked?'on':'';
     document.getElementById('vodDetail').innerHTML=`
-      <button class="vod-back-btn" onclick="renderVodList()">← 返回列表</button>
+      <button class="vod-cta" onclick="renderVodList()">← 返回全部原声</button>
       <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid ${col};border-radius:var(--radius-m);padding:16px 18px;box-sizing:border-box">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
           <div class="vod-emoji ${d.cls}" style="width:48px;height:48px;font-size:24px;flex-shrink:0">${d.emoji}</div>
