@@ -764,14 +764,14 @@ body.ov-rat-open .ov-rat-panel{right:0}
           <span style="font-size:11px;color:var(--text-3)">高</span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:start">
+      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:stretch">
         <!-- Grid -->
         <div style="min-width:0;overflow:auto">
           <div class="hm-grid" id="hmGrid" style="grid-template-columns:110px repeat(5,1fr);gap:5px;min-width:520px"></div>
         </div>
-        <!-- Detail panel -->
-        <div id="hmDetail" style="min-height:200px">
-          <div style="height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--text-3);font-size:11.5px;background:var(--g1);border:1px dashed var(--border);border-radius:var(--radius-m);line-height:1.9">
+        <!-- Detail panel — always same height as grid column -->
+        <div id="hmDetail" style="height:100%;overflow-y:auto;box-sizing:border-box">
+          <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--text-3);font-size:11.5px;background:var(--g1);border:1px dashed var(--border);border-radius:var(--radius-m);line-height:1.9">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--purple-med)" stroke-width="1.5" style="display:block;margin:0 auto 8px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/></svg>
             点击矩阵格子<br>查看详细观测
           </div>
@@ -793,26 +793,26 @@ body.ov-rat-open .ov-rat-panel{right:0}
             <div class="ov-section-sub">共 30 个活跃痛点 · 按声量排序</div>
           </div>
           <div style="display:flex;gap:8px">
-            <!-- 痛点闭环率 -->
-            <div style="width:180px;border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
-              <div style="font-size:9px;font-weight:700;color:var(--text-3);padding:4px 10px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.04em">痛点闭环率</div>
-              <div class="cust-list" style="padding:1px 0">
-                <div class="cust-bar-row" style="padding:2px 8px"><div class="cust-name" style="width:24px;font-size:9px">京东</div><div class="cust-bar-track"><div class="cust-bar-fill ok" style="width:45%"></div></div><div class="cust-pct ok" style="font-size:9px">45%</div></div>
-                <div class="cust-bar-row" style="padding:2px 8px"><div class="cust-name" style="width:24px;font-size:9px">腾讯</div><div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:38%"></div></div><div class="cust-pct mid" style="font-size:9px">38%</div></div>
-                <div class="cust-bar-row" style="padding:2px 8px"><div class="cust-name" style="width:24px;font-size:9px">蚂蚁</div><div class="cust-bar-track"><div class="cust-bar-fill mid" style="width:35%"></div></div><div class="cust-pct mid" style="font-size:9px">35%</div></div>
-                <div class="cust-bar-row" style="padding:2px 8px"><div class="cust-name" style="width:24px;font-size:9px">美团</div><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:30%"></div></div><div class="cust-pct bad" style="font-size:9px">30%</div></div>
-                <div class="cust-bar-row" style="padding:2px 8px"><div class="cust-name" style="width:24px;font-size:9px">O1</div><div class="cust-bar-track"><div class="cust-bar-fill bad" style="width:28%"></div></div><div class="cust-pct bad" style="font-size:9px">28%</div></div>
+            <!-- 痛点闭环率 mini bar -->
+            <div style="width:164px;border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
+              <div style="font-size:9px;font-weight:700;color:var(--text-3);padding:4px 8px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.04em">痛点闭环率</div>
+              <div style="padding:3px 0">
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;font-weight:700;color:var(--text);width:20px;flex-shrink:0">京东</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:45%;height:100%;background:linear-gradient(90deg,var(--green-core),var(--green-dark));border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--green-dark);width:26px;text-align:right;font-family:'JetBrains Mono',monospace">45%</span></div>
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;font-weight:700;color:var(--text);width:20px;flex-shrink:0">腾讯</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:38%;height:100%;background:linear-gradient(90deg,var(--gold-core),var(--gold-dark));border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--gold-dark);width:26px;text-align:right;font-family:'JetBrains Mono',monospace">38%</span></div>
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;font-weight:700;color:var(--text);width:20px;flex-shrink:0">蚂蚁</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:35%;height:100%;background:linear-gradient(90deg,var(--gold-core),var(--gold-dark));border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--gold-dark);width:26px;text-align:right;font-family:'JetBrains Mono',monospace">35%</span></div>
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;font-weight:700;color:var(--text);width:20px;flex-shrink:0">美团</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:30%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--coral-dark);width:26px;text-align:right;font-family:'JetBrains Mono',monospace">30%</span></div>
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;font-weight:700;color:var(--text);width:20px;flex-shrink:0">O1</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:28%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--coral-dark);width:26px;text-align:right;font-family:'JetBrains Mono',monospace">28%</span></div>
               </div>
             </div>
-            <!-- 痛点分布 -->
-            <div style="width:180px;border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
-              <div style="font-size:9px;font-weight:700;color:var(--text-3);padding:4px 10px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.04em">痛点分布 · 分队</div>
-              <div style="padding:1px 0">
-                <div class="pain-dist-row" style="padding:2px 10px"><div class="pain-dist-lbl" style="font-size:9px">算子编程</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:100%"></div></div><div class="pain-dist-n" style="font-size:9px">12</div></div>
-                <div class="pain-dist-row" style="padding:2px 10px"><div class="pain-dist-lbl" style="font-size:9px">算子分队</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:58%"></div></div><div class="pain-dist-n" style="font-size:9px">7</div></div>
-                <div class="pain-dist-row" style="padding:2px 10px"><div class="pain-dist-lbl" style="font-size:9px">编译器&OS</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:42%"></div></div><div class="pain-dist-n" style="font-size:9px">5</div></div>
-                <div class="pain-dist-row" style="padding:2px 10px"><div class="pain-dist-lbl" style="font-size:9px">资料分队</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:33%"></div></div><div class="pain-dist-n" style="font-size:9px">4</div></div>
-                <div class="pain-dist-row" style="padding:2px 10px"><div class="pain-dist-lbl" style="font-size:9px">工具链</div><div class="pain-dist-bar-track"><div class="pain-dist-bar-fill" style="width:17%"></div></div><div class="pain-dist-n" style="font-size:9px">2</div></div>
+            <!-- 痛点分布 mini bar -->
+            <div style="width:164px;border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
+              <div style="font-size:9px;font-weight:700;color:var(--text-3);padding:4px 8px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.04em">痛点分布 · 分队</div>
+              <div style="padding:3px 0">
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;color:var(--text-2);width:44px;flex-shrink:0;white-space:nowrap">算子编程</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));opacity:.8;border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--text);width:14px;text-align:right;font-family:'JetBrains Mono',monospace">12</span></div>
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;color:var(--text-2);width:44px;flex-shrink:0;white-space:nowrap">算子分队</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:58%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));opacity:.8;border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--text);width:14px;text-align:right;font-family:'JetBrains Mono',monospace">7</span></div>
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;color:var(--text-2);width:44px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">编译&OS</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:42%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));opacity:.8;border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--text);width:14px;text-align:right;font-family:'JetBrains Mono',monospace">5</span></div>
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;color:var(--text-2);width:44px;flex-shrink:0;white-space:nowrap">资料分队</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:33%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));opacity:.8;border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--text);width:14px;text-align:right;font-family:'JetBrains Mono',monospace">4</span></div>
+                <div style="display:flex;align-items:center;gap:5px;padding:2px 8px"><span style="font-size:9px;color:var(--text-2);width:44px;flex-shrink:0;white-space:nowrap">工具链</span><div style="flex:1;height:5px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:17%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));opacity:.8;border-radius:99px"></div></div><span style="font-size:9px;font-weight:800;color:var(--text);width:14px;text-align:right;font-family:'JetBrains Mono',monospace">2</span></div>
               </div>
             </div>
           </div>
@@ -1150,15 +1150,15 @@ body.ov-rat-open .ov-rat-panel{right:0}
           <span style="font-size:11px;color:var(--text-3)">高</span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:start">
+      <div style="display:grid;grid-template-columns:1fr clamp(180px,22%,240px);gap:14px;align-items:stretch">
         <!-- Heatmap grid -->
         <div style="min-width:0;overflow:auto">
           <div id="tpHeatGrid" style="display:grid;grid-template-columns:110px repeat(4,1fr) 64px;gap:5px;min-width:480px"></div>
         </div>
-        <!-- Detail panel — always right column, never wraps -->
-        <div id="tpDetail">
-          <div class="tp-detail-hint">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--border-2)" stroke-width="1.5" style="margin-bottom:8px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/></svg><br>
+        <!-- Detail panel — always same height as grid column -->
+        <div id="tpDetail" style="height:100%;overflow-y:auto;box-sizing:border-box">
+          <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--text-3);font-size:12px;background:var(--g1);border:1px dashed var(--border);border-radius:var(--radius-m);line-height:1.9">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--border-2)" stroke-width="1.5" style="display:block;margin:0 auto 8px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/></svg>
             点击矩阵格子<br>查看 Agent 观测
           </div>
         </div>
