@@ -48,12 +48,19 @@
       <span id="ai-title-text">CANN 智能助手</span>
     </div>
     <div class="ai-layout-btns">
-      <button class="ai-layout-btn" data-mode="left" onclick="setAiLayout('left')" title="嵌入左侧">
-        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
+      <!-- 嵌入：推挤内容（默认） -->
+      <button class="ai-layout-btn active" data-mode="embed" onclick="setAiLayout('embed')" title="嵌入（推挤内容）">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="9" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="10.5" y=".75" width="4.75" height="12.5" rx="1.5" fill="currentColor" opacity=".45" stroke="currentColor" stroke-width="1.2"/></svg>
       </button>
-      <button class="ai-layout-btn active" data-mode="right" onclick="setAiLayout('right')" title="嵌入右侧">
-        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2"/><rect x="10" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
+      <!-- 左侧覆盖 -->
+      <button class="ai-layout-btn" data-mode="left" onclick="setAiLayout('left')" title="左侧浮层">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".35"/><rect x="1" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
       </button>
+      <!-- 右侧覆盖 -->
+      <button class="ai-layout-btn" data-mode="right" onclick="setAiLayout('right')" title="右侧浮层">
+        <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".35"/><rect x="10" y="1" width="5" height="12" rx="1.5" fill="currentColor" opacity=".45"/></svg>
+      </button>
+      <!-- 浮动 -->
       <button class="ai-layout-btn" data-mode="float" onclick="setAiLayout('float')" title="浮动面板">
         <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><rect x=".75" y=".75" width="14.5" height="12.5" rx="2" stroke="currentColor" stroke-width="1.2" opacity=".3"/><rect x="5.5" y="3" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="currentColor" opacity=".45"/></svg>
       </button>

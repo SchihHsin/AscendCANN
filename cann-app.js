@@ -72,33 +72,54 @@
   // AI Chat Toggle
   function toggleAiChat() {
     const sidebar = document.getElementById('ai-sidebar');
-    sidebar.classList.toggle('open');
+    if (sidebar.classList.contains('open')) _closeSidebar();
+    else _openSidebar();
   }
 
   // ── AI Sidebar Layout Modes ──
-  let _aiLayout = 'right';
+  let _aiLayout = 'embed'; // embed | left | right | float
   let _aiFloatX = null, _aiFloatY = null;
   let _aiDragging = false, _aiDragOffX = 0, _aiDragOffY = 0;
+
+  function _openSidebar() {
+    document.getElementById('ai-sidebar').classList.add('open');
+    _applySidebarBodyClass(true);
+  }
+
+  function _closeSidebar() {
+    document.getElementById('ai-sidebar').classList.remove('open');
+    _applySidebarBodyClass(false);
+  }
+
+  function _applySidebarBodyClass(isOpen) {
+    document.body.classList.remove('sidebar-embed-open');
+    if (isOpen && _aiLayout === 'embed') document.body.classList.add('sidebar-embed-open');
+  }
 
   function setAiLayout(mode) {
     _aiLayout = mode;
     const sidebar = document.getElementById('ai-sidebar');
+    const isOpen  = sidebar.classList.contains('open');
     sidebar.classList.remove('layout-left', 'layout-float');
-    if (mode === 'left')  sidebar.classList.add('layout-left');
-    if (mode === 'float') {
+    sidebar.style.cssText = '';
+    document.body.classList.remove('sidebar-embed-open');
+
+    if (mode === 'left') {
+      sidebar.classList.add('layout-left');
+    } else if (mode === 'float') {
       sidebar.classList.add('layout-float');
       if (_aiFloatX !== null) {
         sidebar.style.left = _aiFloatX + 'px';
         sidebar.style.top  = _aiFloatY + 'px';
       } else {
-        sidebar.style.right = '20px';
+        sidebar.style.right  = '20px';
         sidebar.style.bottom = '20px';
-        sidebar.style.top = '';
-        sidebar.style.left = '';
       }
-    } else {
-      sidebar.style.cssText = '';
+    } else if (mode === 'embed' && isOpen) {
+      document.body.classList.add('sidebar-embed-open');
     }
+    // mode === 'right': no extra class, default fixed right overlay
+
     document.querySelectorAll('.ai-layout-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.mode === mode)
     );
@@ -140,7 +161,7 @@
 
   function openAiSidebarAndSend(message) {
     const sidebar = document.getElementById('ai-sidebar');
-    if (!sidebar.classList.contains('open')) sidebar.classList.add('open');
+    if (!sidebar.classList.contains('open')) _openSidebar();
     sendAiMessage(message);
   }
 
@@ -163,8 +184,7 @@
     _aiPathQuery = query;
     _aiPathName  = query.length > 22 ? query.slice(0, 22) + '…' : query;
     // Open sidebar
-    const sidebar = document.getElementById('ai-sidebar');
-    if (!sidebar.classList.contains('open')) sidebar.classList.add('open');
+    if (!document.getElementById('ai-sidebar').classList.contains('open')) _openSidebar();
     document.getElementById('ai-title-text').textContent = 'AI 路径规划';
     document.getElementById('ai-messages').innerHTML = '';
     document.getElementById('ai-chips').innerHTML = '';
