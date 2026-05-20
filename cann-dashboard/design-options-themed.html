@@ -502,6 +502,15 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .step-metric-trend.dn{color:var(--coral-dark)}
 .step-metric-trend.up{color:var(--green-dark)}
 .step-metric-trend.flat{color:var(--text-3)}
+/* Agent step timeline */
+.step-tl{display:flex;flex-direction:column}
+.step-tl-item{display:flex;gap:12px}
+.step-tl-node{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:30px}
+.step-tl-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;font-family:'JetBrains Mono',monospace;flex-shrink:0;border:1.5px solid}
+.step-tl-line{width:2px;flex:1;min-height:12px;border-radius:1px;margin:3px 0}
+.step-tl-body{flex:1;min-width:0;padding-bottom:18px}
+.step-tl-hdr{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding-top:4px}
+.step-tl-name{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap}
 .pain-cat-section{margin-bottom:14px}
 .pain-cat-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px}
 .cat-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px;border:1.5px solid;white-space:nowrap;flex-shrink:0}
@@ -2029,10 +2038,18 @@ function selScene(id){
   document.getElementById('painTabCount').textContent=s.pains.length;
   document.getElementById('vodTabCount').textContent=s.vods.length;
 
-  // agent panel
+  // agent panel — timeline layout
+  const tlDotStyle={
+    bad:`background:var(--coral-light);border-color:var(--coral-core);color:var(--coral-dark)`,
+    mid:`background:var(--gold-light);border-color:var(--gold-core);color:var(--gold-dark)`,
+    ok:`background:var(--green-light);border-color:var(--green-faded);color:var(--green-dark)`
+  };
+  const tlLineColor={bad:'var(--coral-med)',mid:'var(--gold-med)',ok:'var(--green-faded)'};
   document.getElementById('panel-agent').innerHTML=
-    `<div class="agent-section-lbl">旅程环节 · Agent 逐步评分（近7次均值）</div>`+
-    s.agentSteps.map(st=>{
+    `<div class="agent-section-lbl">旅程环节 · Agent 逐步评分（近7次均值）</div>
+     <div class="step-tl">`+
+    s.agentSteps.map((st,idx)=>{
+      const isLast=idx===s.agentSteps.length-1;
       const metricsHtml=st.metrics?
         `<div class="step-metrics">${st.metrics.map(m=>{
           const numVal=parseFloat(m.v);
@@ -2049,19 +2066,23 @@ function selScene(id){
           </div>`;
         }).join('')}</div>`:'';
       return `
-      <div class="agent-step-row">
-        <div class="as-name">${st.name}</div>
-        <div class="as-right">
-          <div class="as-bar-row">
-            <div class="as-bar-track"><div class="as-bar-fill ${st.cls}" style="width:${st.score}%"></div></div>
-            <div class="as-score ${st.cls}">${st.score}%</div>
+      <div class="step-tl-item">
+        <div class="step-tl-node">
+          <div class="step-tl-dot" style="${tlDotStyle[st.cls]}">${st.score}</div>
+          ${isLast?'':` <div class="step-tl-line" style="background:${tlLineColor[st.cls]}"></div>`}
+        </div>
+        <div class="step-tl-body">
+          <div class="step-tl-hdr">
+            <span class="step-tl-name">${st.name}</span>
+            <div class="as-bar-track" style="flex:1"><div class="as-bar-fill ${st.cls}" style="width:${st.score}%"></div></div>
+            <span class="as-score ${st.cls}">${st.score}%</span>
           </div>
           <div class="as-summary"><b>总结</b>${st.summary}</div>
           ${st.observations&&st.observations.length?`<div class="as-obs"><b>Agent 观测</b><div class="as-obs-list">${st.observations.map(o=>`<div class="as-obs-item">${o}</div>`).join('')}</div></div>`:''}
           ${metricsHtml}
         </div>
       </div>`;
-    }).join('')+
+    }).join('')+`</div>`+
     `<div class="tool-chain-row">
       <div class="tool-chain-lbl">工具调用链 · 括号内为调用成功率</div>
       <div class="tool-chips">${s.tools.map((t,i)=>`${i?'<span class="tool-arrow">→</span>':''}<div class="tool-chip ${t.cls}">${t.name} <span style="opacity:.7">${t.rate}</span></div>`).join('')}</div>
