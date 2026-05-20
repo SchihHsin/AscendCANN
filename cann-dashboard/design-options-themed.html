@@ -2367,6 +2367,14 @@ function initOvCharts(){
   }
 
   // VOD bar
+  // Agentic gauge
+  const ggEl=document.getElementById('ecGauge');
+  if(ggEl){
+    const ch=echarts.init(ggEl,null,{renderer:'svg'});
+    ch.setOption({series:[{type:'gauge',startAngle:200,endAngle:-20,min:0,max:100,radius:'90%',center:['50%','62%'],progress:{show:true,width:8,itemStyle:{color:'var(--coral-dark)'}},axisLine:{lineStyle:{width:8,color:[[1,'var(--g2)']]}},pointer:{show:false},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},detail:{valueAnimation:false,formatter:'{value}%',fontSize:16,fontWeight:700,color:'#E63838',fontFamily:"'JetBrains Mono',monospace",offsetCenter:[0,'20%']},title:{offsetCenter:[0,'52%'],fontSize:9,color:'var(--text-3)',fontFamily:'Inter,sans-serif'},data:[{value:62,name:'开发成功率'}]}],animation:false});
+    setTimeout(()=>ch.resize(),80);
+  }
+
   const vdEl=document.getElementById('ecVod');
   if(vdEl){
     const ch=echarts.init(vdEl,null,{renderer:'canvas'});
