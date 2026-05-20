@@ -41,7 +41,7 @@
   --shadow-pop:0 10px 30px rgba(106,103,206,.18);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;}
+html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;}
 
 /* ── TOPBAR ── */
 .topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(106,103,206,.06);}
@@ -184,7 +184,7 @@ html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);backgro
 }
 .hm-cell:hover{transform:scale(1.05);z-index:2;box-shadow:0 4px 14px rgba(106,103,206,.22)}
 .hm-cell.hm-sel,.hm-cell.tp-heat-sel{border-color:var(--primary);box-shadow:0 0 0 3px rgba(106,103,206,.15);transform:scale(1.06)}
-.hm-cell .cv,.tp-heat-cell .cv{font-size:13px;font-weight:800;letter-spacing:-.02em;font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif}
+.hm-cell .cv,.tp-heat-cell .cv{font-size:13px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace}
 .hm-cell .ct,.tp-heat-cell .ct{font-size:9px;font-weight:600;opacity:.7;margin-top:1px}
 .hm-legend{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:11px;color:var(--text-3);font-weight:500;justify-content:flex-end}
 .hm-grad{height:8px;width:120px;border-radius:4px;background:linear-gradient(90deg,#FEEFF0 0%,#FFB6C8 35%,#FFE87F 55%,#EBFCF7 80%,#9DFBE8 100%)}
@@ -307,6 +307,19 @@ html,body{font-family:'Inter','PingFang SC',sans-serif;color:var(--text);backgro
   border-radius:999px;padding:5px 14px;cursor:pointer;font-family:inherit;transition:all .15s;
 }
 .journey-btn:hover{background:var(--purple-med)}
+
+/* ── CAT-ROW bar chart (仓库类别均分 style) ── */
+.cat-chart{padding-top:4px;}
+.cat-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:7px 0;font-size:12px;}
+.cat-row+.cat-row{border-top:1px dashed var(--border);}
+.cat-name{display:flex;flex-direction:column;gap:2px;min-width:56px;}
+.cn-top{display:flex;align-items:center;gap:7px;font-weight:700;color:var(--text);font-size:12px;}
+.cn-sw{width:9px;height:9px;border-radius:3px;flex-shrink:0;display:inline-block;}
+.cn-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-3);font-weight:500;margin-left:16px;white-space:nowrap;}
+.cat-bar-wrap{height:9px;background:#EFF0F1;border-radius:99px;overflow:visible;position:relative;}
+.cat-bar-wrap i{display:block;height:100%;border-radius:99px;}
+.cat-bar-wrap .cat-target{position:absolute;top:-3px;bottom:-3px;width:2px;background:#CDCFD2;border-radius:2px;}
+.cat-score{text-align:right;font-weight:800;font-family:'JetBrains Mono',monospace;font-size:12px;min-width:28px;color:var(--text);}
 
 /* ── PAIN LIST (AscendOps ranked list style) ── */
 .pain-ranked-list{display:flex;flex-direction:column;gap:0}
@@ -825,31 +838,71 @@ body.ov-rat-open .ov-rat-panel{right:0}
         <!-- 两个图横排，各占一半 -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
           <!-- 痛点闭环率 -->
-          <div style="border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
-            <div style="display:flex;align-items:baseline;gap:8px;padding:10px 14px 8px">
-              <span style="font-size:12px;font-weight:800;color:var(--text);letter-spacing:-.01em">痛点闭环率</span>
-              <span style="font-size:10px;color:var(--text-3)">大客户 · 本期</span>
+          <div style="border:1px solid var(--border);border-radius:var(--radius-m);background:var(--card);padding:12px 16px">
+            <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px">
+              <span style="font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em">痛点闭环率</span>
+              <span style="font-size:11px;color:var(--text-3)">大客户 · 本期 · 目标 50%</span>
             </div>
-            <div style="padding:0 14px 10px;display:flex;flex-direction:column;gap:7px">
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;font-weight:700;color:var(--text);width:24px;flex-shrink:0">京东</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:45%;height:100%;background:linear-gradient(90deg,var(--green-core),var(--green-dark));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--green-dark);width:30px;text-align:right;font-family:'JetBrains Mono',monospace">45%</span></div>
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;font-weight:700;color:var(--text);width:24px;flex-shrink:0">腾讯</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:38%;height:100%;background:linear-gradient(90deg,var(--gold-core),var(--gold-dark));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--gold-dark);width:30px;text-align:right;font-family:'JetBrains Mono',monospace">38%</span></div>
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;font-weight:700;color:var(--text);width:24px;flex-shrink:0">蚂蚁</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:35%;height:100%;background:linear-gradient(90deg,var(--gold-core),var(--gold-dark));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--gold-dark);width:30px;text-align:right;font-family:'JetBrains Mono',monospace">35%</span></div>
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;font-weight:700;color:var(--text);width:24px;flex-shrink:0">美团</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:30%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--coral-dark);width:30px;text-align:right;font-family:'JetBrains Mono',monospace">30%</span></div>
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;font-weight:700;color:var(--text);width:24px;flex-shrink:0">O1</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:28%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--coral-dark);width:30px;text-align:right;font-family:'JetBrains Mono',monospace">28%</span></div>
+            <div class="cat-chart">
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#37C597"></span>京东</div><div class="cn-sub">互联网·电商</div></div>
+                <div class="cat-bar-wrap"><i style="width:45%;background:#37C597"></i><div class="cat-target" style="left:50%"></div></div>
+                <div class="cat-score" style="color:#37C597">45%</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#FD9A00"></span>腾讯</div><div class="cn-sub">互联网·云</div></div>
+                <div class="cat-bar-wrap"><i style="width:38%;background:#FD9A00"></i><div class="cat-target" style="left:50%"></div></div>
+                <div class="cat-score" style="color:#FD9A00">38%</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#FD9A00"></span>蚂蚁</div><div class="cn-sub">金融科技</div></div>
+                <div class="cat-bar-wrap"><i style="width:35%;background:#FD9A00"></i><div class="cat-target" style="left:50%"></div></div>
+                <div class="cat-score" style="color:#FD9A00">35%</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#FC636B"></span>美团</div><div class="cn-sub">互联网·O2O</div></div>
+                <div class="cat-bar-wrap"><i style="width:30%;background:#FC636B"></i><div class="cat-target" style="left:50%"></div></div>
+                <div class="cat-score" style="color:#FC636B">30%</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#E63838"></span>O1</div><div class="cn-sub">AI 模型厂商</div></div>
+                <div class="cat-bar-wrap"><i style="width:28%;background:#E63838"></i><div class="cat-target" style="left:50%"></div></div>
+                <div class="cat-score" style="color:#E63838">28%</div>
+              </div>
             </div>
           </div>
           <!-- 痛点分布 -->
-          <div style="border:1px solid var(--border);border-radius:var(--radius-m);overflow:hidden;background:var(--card)">
-            <div style="display:flex;align-items:baseline;gap:8px;padding:10px 14px 8px">
-              <span style="font-size:12px;font-weight:800;color:var(--text);letter-spacing:-.01em">痛点分布</span>
-              <span style="font-size:10px;color:var(--text-3)">按分队 · 共 30 条</span>
+          <div style="border:1px solid var(--border);border-radius:var(--radius-m);background:var(--card);padding:12px 16px">
+            <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px">
+              <span style="font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em">痛点分布</span>
+              <span style="font-size:11px;color:var(--text-3)">按分队 · 共 30 条 · 刻度线为目标 5</span>
             </div>
-            <div style="padding:0 14px 10px;display:flex;flex-direction:column;gap:7px">
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--text-2);width:52px;flex-shrink:0;white-space:nowrap">算子编程</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(90deg,var(--coral-bright),var(--coral-dark));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--coral-dark);width:18px;text-align:right;font-family:'JetBrains Mono',monospace">12</span></div>
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--text-2);width:52px;flex-shrink:0;white-space:nowrap">算子分队</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:58%;height:100%;background:linear-gradient(90deg,var(--gold-core),var(--gold-dark));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--gold-dark);width:18px;text-align:right;font-family:'JetBrains Mono',monospace">7</span></div>
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--text-2);width:52px;flex-shrink:0;white-space:nowrap">编译&amp;OS</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:42%;height:100%;background:linear-gradient(90deg,var(--purple-bright),var(--purple-core));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--purple-core);width:18px;text-align:right;font-family:'JetBrains Mono',monospace">5</span></div>
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--text-2);width:52px;flex-shrink:0;white-space:nowrap">资料分队</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:33%;height:100%;background:linear-gradient(90deg,var(--teal-bright),var(--teal-core));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--teal-core);width:18px;text-align:right;font-family:'JetBrains Mono',monospace">4</span></div>
-              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--text-2);width:52px;flex-shrink:0;white-space:nowrap">工具链</span><div style="flex:1;height:6px;background:var(--g2);border-radius:99px;overflow:hidden"><div style="width:17%;height:100%;background:linear-gradient(90deg,var(--green-core),var(--green-dark));border-radius:99px"></div></div><span style="font-size:10px;font-weight:800;color:var(--green-dark);width:18px;text-align:right;font-family:'JetBrains Mono',monospace">2</span></div>
+            <div class="cat-chart">
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#E63838"></span>算子编程</div><div class="cn-sub">Ascend C</div></div>
+                <div class="cat-bar-wrap"><i style="width:100%;background:#E63838"></i><div class="cat-target" style="left:41.7%"></div></div>
+                <div class="cat-score" style="color:#E63838">12</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#FD9A00"></span>算子分队</div><div class="cn-sub">多算子层</div></div>
+                <div class="cat-bar-wrap"><i style="width:58.3%;background:#FD9A00"></i><div class="cat-target" style="left:41.7%"></div></div>
+                <div class="cat-score" style="color:#FD9A00">7</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#6A67CE"></span>编译&amp;OS</div><div class="cn-sub">工具链</div></div>
+                <div class="cat-bar-wrap"><i style="width:41.7%;background:#6A67CE"></i><div class="cat-target" style="left:41.7%"></div></div>
+                <div class="cat-score" style="color:#6A67CE">5</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#1AAFD0"></span>资料分队</div><div class="cn-sub">文档仓库</div></div>
+                <div class="cat-bar-wrap"><i style="width:33.3%;background:#1AAFD0"></i><div class="cat-target" style="left:41.7%"></div></div>
+                <div class="cat-score" style="color:#1AAFD0">4</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-name"><div class="cn-top"><span class="cn-sw" style="background:#37C597"></span>工具链</div><div class="cn-sub">DevKit</div></div>
+                <div class="cat-bar-wrap"><i style="width:16.7%;background:#37C597"></i><div class="cat-target" style="left:41.7%"></div></div>
+                <div class="cat-score" style="color:#37C597">2</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1439,7 +1492,7 @@ function showHmDetail(ri,ci){
           <div style="font-size:12.5px;font-weight:800;color:var(--text)">${row.name}</div>
           <div style="font-size:10px;color:var(--text-3);margin-top:2px">${row.sub} · ${HM_DATA.cols[ci]}</div>
         </div>
-        <div style="background:${bg};color:${fg};border-radius:8px;padding:5px 10px;font-size:16px;font-weight:800;font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;white-space:nowrap">${cell.t}</div>
+        <div style="background:${bg};color:${fg};border-radius:8px;padding:5px 10px;font-size:16px;font-weight:800;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace;white-space:nowrap">${cell.t}</div>
       </div>
       <div style="padding:12px 14px">
         <div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">观测详情</div>
