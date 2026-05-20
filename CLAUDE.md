@@ -361,3 +361,41 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 | `f68ad8d` | agent步骤改为竖向时间轴，圆点+连线，颜色按评分cls |
 | `2e2a157` | add asana-skill reference files |
 | `839c432` | 生态增益旅程步骤默认选中并显示S0详情 |
+
+### 2026-05-21（续会话）
+
+#### Bug 修复
+
+- **S0–S5 节点点击均显示相同内容**：静态 `.journey-alert` 写死"S0 最弱环节"，覆盖了动态 `#journeyStageDetail`，已删除
+- **用户旅程 tab 底部大片空白**：`.step-tl-body` 每步 `padding-bottom:18px` + `.ev-panel` 28px + `.main-body` 48px 累积；改为 `align-items:flex-start` + 连线用 `position:absolute` + 最后一步 `.step-tl-body.last{padding-bottom:0}`
+- **设计点 `hlRat(n)` 索引错位**：`querySelectorAll('.rat-item')` 选中总览+旅程共 12 条，在旅程 tab 点击时 n-1 指向总览面板的条目；改为根据激活 tab 限定查询范围（`.ov-rat-panel` vs `#ratSidebar`）
+
+#### 视觉改动
+
+- **生态增益 S0–S5 Pipeline 重绘**：完全按 `ascendops-experience.html` 中"算子开发八阶段 Pipeline"样式重建
+  - 结构：`ov-stage-head`（方形渐变色徽章 S0–S5 + health 圆点光晕）+ 阶段名 + 场景/触点 meta + 大号评分 + 进度条 + 底部痛点 `mini-tag`
+  - CSS：`.ov-pipeline` / `.ov-stage` / `.ov-stage-head` / `.ov-stage-no` / `.ov-h-good/warn/bad` / `.ov-health-dot` / `.ov-health-good/warn/bad` / `.ov-stage-bar` / `.ov-stage-foot`
+  - `selectStage()` 和初始化代码同步改为查询 `.ov-stage`（原 `.journey-stage`）
+- **用户旅程五维雷达图例**：新增进度条列（`radar-dim-bar`），颜色沿用紫色深浅 `clrDim(v)` 
+
+#### 关键 CSS/JS 变更（续）
+
+| 位置 | 变更 |
+|------|------|
+| `.ov-pipeline` | 新 Pipeline 容器，`grid-template-columns:repeat(6,1fr)` |
+| `.ov-stage` | 替换旧 `.journey-stage`，完全照抄参考样式 |
+| `.ov-h-good/warn/bad` | 方形徽章渐变色，对应好/中/差评分 |
+| `.ov-health-dot` | health 圆点，带颜色光晕 |
+| `selectStage()` | 查询目标从 `.journey-stage` 改为 `.ov-stage` |
+| `.radar-dim-bar` | 雷达图例新增进度条列（色随 `clrDim`） |
+| `hlRat(n)` | 根据激活 tab 限定查询范围，避免跨面板索引错位 |
+| `.step-tl-line` | 改为 `position:absolute`，从圆点底延伸到行底 |
+| `.step-tl-body.last` | `padding-bottom:0` 去除最后一步多余底部空间 |
+
+#### Commits（续会话）
+
+| commit | 内容 |
+|--------|------|
+| `501e687` | docs: 更新 CLAUDE.md |
+| `0303976` | timeline连线改绝对定位，最后步去padding，消除底部大片空白 |
+| `de34bde` | S0-S5按参考pipeline重绘;雷达图图例加进度条;设计点hlRat定位到正确面板 |
