@@ -250,4 +250,9 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 - 用户要求：每次改完必须 push + 更新 CLAUDE.md（已存入长期记忆）
 - context.md 内容迁移至 CLAUDE.md，CLAUDE.md 成为唯一上下文维护文件
-- 待实施：总览 Tab 楼层重排（总览 → 客户痛点 → VOD → 生态增益 → 开发界面 → 技术内核）
+- **主要工作文件切换**：从 `design-options.html` 改为 `design-options-themed.html`（用户调整了视觉样式后的版本），视觉规范参考 `ascendops-theme.skill`
+- **总览 Tab 楼层重排完成**（design-options-themed.html）：Hero Banner → 健康矩阵 → 客户痛点 → VOD 声量 → 生态增益（仅 S0–S5）→ 开发界面 → 技术内核
+  - 客户痛点、VOD 声量各新建独立 `layer-sec` wrapper，从原生态增益中拆出
+  - commit: `057324b`
+- **修复 KPI hero 折线图消失**：4 个 glass 卡片缺少 `ecKpi0–3` 挂载容器，已补充，commit: `653a205`
+- 待议：是否将 HTML 拆成 CSS + JS + HTML 三文件以减少 token 消耗（用户已问，尚未决定）
