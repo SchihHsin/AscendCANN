@@ -530,3 +530,43 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 | `660cc5b` | fix: 详情面板外层flex改align-items:center |
 | `0c13d1e` | refactor: 详情面板拆为三列——avatar/文字/走线独立水平对齐 |
 | `fd5e85c` | fix: 文字块去掉flex:1，走线紧跟文字不再靠右 |
+
+### 2026-05-22（续会话）
+
+#### learn.html 完整重设计
+
+**需求**：原 AI 对话框埋在 Tab 内部太深，路径内容太长一屏看不完。
+
+**方案**：双视图结构（仪表盘 + 路径详情）
+
+- **仪表盘视图**（`#ld-dash`）：
+  - 顶部 hero：大号标题 + AI 输入框（Enter/点击触发 `ldGenPath`）+ 快捷 chip
+  - 继续学习版块：紧凑路径卡片（进度条 + 下一步提示 + 继续学习按钮）
+  - 为你推荐版块：节点卡片网格（分类 chip 过滤，展示标题/描述/方向标签）
+
+- **路径详情视图**（`#ld-roadmap`，默认隐藏）：
+  - sticky topbar：← 返回按钮 + 路径名 + 进度条
+  - 完整路径序列 + 节点列表
+  - `ldShowDash()` 返回仪表盘
+
+#### 新增 JS 函数（cann-app.js）
+
+| 函数 | 作用 |
+|------|------|
+| `ldSetInput(text)` | 填充 `#ld-ai-input` |
+| `ldGenPath()` | 调 `_aiPathStart()` 触发 AI 路径生成 |
+| `ldSetCat(cat, btn)` | 切换推荐分类 chip，调 `ldRenderNodes` |
+| `ldRenderContinue()` | 渲染路径卡片列表（从 `customPaths` 或 `samplePaths`） |
+| `ldRenderNodes(cat)` | 渲染节点推荐网格（从 `NODE_LIST` 按分类过滤） |
+| `ldStartNode(title)` | 进入路径详情视图并定位到该节点 |
+| `ldShowRoadmap(pathId)` | 隐藏仪表盘、显示路径详情，设置进度条 |
+| `ldShowDash()` | 返回仪表盘视图 |
+| DOMContentLoaded | learn.html 初始化：调 `ldRenderContinue()` + `ldRenderNodes('all')` |
+
+**CSS 类对应（cann-style.css 已有）**：`.ld-path-body` / `.ld-path-prog-label` / `.ld-node-card-top` / `.ld-node-card-title` / `.ld-node-card-badge` / `.ld-node-card-desc` / `.ld-node-card-footer`
+
+#### Commits
+
+| commit | 内容 |
+|--------|------|
+| `801e2c8` | feat: learn页面重设计 — AI输入框置顶，路径卡片+节点推荐双版块 |
