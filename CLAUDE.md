@@ -453,3 +453,28 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 | commit | 内容 |
 |--------|------|
 | `fb14c5e` | style: OpenDesign token重构——品牌蓝/HarmonyOS字体/扁平圆角/新阴影/nav 72px |
+
+### 2026-05-21（续会话 4）
+
+#### 矩阵趋势箭头 + 角标底色
+
+**趋势箭头**：每个矩阵格子数字右侧新增 8×8 SVG 小箭头，表示该维度较上期的变化方向：
+- 上升 `'u'` → 淡绿 `#6DBD9A` 向上三角折线
+- 下降 `'d'` → 淡珊瑚 `#E89494` 向下三角折线
+- 持平 `'f'` → 灰 `#AAAAAA` 水平线
+
+**实现细节**：
+- 新增 `cellTrendSvg(t)` 工具函数，返回 `<svg width="8" height="8">` 字符串
+- `UXT_MATRIX_ROWS` 每行新增 `trends[]`（长度 9，值为 `'u'|'d'|'f'`）
+- `initUXTMatrix` config 新增 `trendOf:(r,ci)=>r.trends[ci]`
+- `touchpointData` 每个 cell 新增 `t` 字段（4 列）
+- `renderMatrix` 格子内 `.cv` 改为 `display:flex;gap:3px`，数字+箭头并排
+- `renderTpMatrix` 同步更新，读取 `row.cells[col].t`
+
+**角标底色变浅**：`.hm-corner` `background:#E3E3E6` → `#EBEBED`
+
+#### Commits
+
+| commit | 内容 |
+|--------|------|
+| `2496087` | feat: 矩阵格子数字旁加趋势箭头SVG + 角标底色变浅 |
