@@ -2431,19 +2431,29 @@ function renderMatrix(cfg){
   const corner=cfg.corner||{row:'行',col:'列'};
   let html='';
   // 分组行（可选）：与数据格在同一 grid 内，间距自动一致
+  // mergeHeader:true → grid-row:span 2，纵向合并分组行+列名行
+  const mergedExtras=new Set();
   if(cfg.groupCols){
     html+=`<div></div>`; // corner 占位
+    let extraIdx=0;
     cfg.groupCols.forEach(g=>{
       const span=g.span||1;
-      const spanStyle=span>1?`grid-column:span ${span};`:'';
-      if(g.label) html+=`<div style="${spanStyle}font-size:9px;font-weight:700;color:#6B7180;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#E4E4E6;border-radius:6px;padding:4px 0">${g.label}</div>`;
-      else html+=`<div style="${spanStyle}"></div>`;
+      const colSpan=span>1?`grid-column:span ${span};`:'';
+      if(g.mergeHeader){
+        mergedExtras.add(extraIdx);
+        html+=`<div style="${colSpan}grid-row:span 2;font-size:9px;font-weight:700;color:#6B7180;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#E4E4E6;border-radius:6px;display:flex;align-items:center;justify-content:center">${g.label||''}</div>`;
+        extraIdx++;
+      } else if(g.label){
+        html+=`<div style="${colSpan}font-size:9px;font-weight:700;color:#6B7180;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#E4E4E6;border-radius:6px;padding:4px 0">${g.label}</div>`;
+      } else {
+        html+=`<div style="${colSpan}"></div>`;
+      }
     });
   }
   // 列名行
   html+=`<div class="hm-corner"><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
   cols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
-  extraCols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
+  extraCols.forEach((c,i)=>{ if(!mergedExtras.has(i)) html+=`<div class="hm-header">${c.label}</div>`; });
   rows.forEach((row,ri)=>{
     const rl=cfg.rowLabel(row);
     const ds=rl.dotScore;
@@ -2826,7 +2836,7 @@ function initUXTMatrix(){
       {label:'综合',    span:1},
       {label:'分项评分', span:2},
       {label:'开发评分·子维度', span:6},
-      {label:'更新时间', span:1},
+      {label:'更新时间', span:1, mergeHeader:true},
     ],
     cols:UXT_MATRIX_COLS.map(label=>({label})),
     extraCols:[{label:'更新时间',render:r=>`<span>${r.updated}</span>`}],
