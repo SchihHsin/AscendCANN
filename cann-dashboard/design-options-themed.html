@@ -2847,17 +2847,26 @@ const UXT_MATRIX_ROWS=[
    trends:['d','d','d','d','d','f','d','f','u'], ec:'EC 50%·R 20%', updated:'05/21 00:06'},
 ];
 // 纯 SVG mini 走线，data 为 0-100 数组，返回 SVG 字符串
+let _spkIdx=0;
 function miniSparkSvg(data, color, W=80, H=28){
   const n=data.length, min=Math.min(...data), max=Math.max(...data);
   const range=max-min||1;
+  const pad=3;
   const xs=data.map((_,i)=>i/(n-1)*W);
-  const ys=data.map(v=>H-(v-min)/range*(H-4)-2);
+  const ys=data.map(v=>H-(v-min)/range*(H-pad*2)-pad);
   const pts=xs.map((x,i)=>`${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
+  const areaPts=pts+` ${xs[n-1].toFixed(1)},${H} 0,${H}`;
   const last=data[data.length-1], prev=data[data.length-2];
   const dotC=last>prev?'#6DBD9A':last<prev?'#E89494':'#AAAAAA';
-  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <polyline points="${pts}" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.7"/>
-    <circle cx="${xs[n-1].toFixed(1)}" cy="${ys[n-1].toFixed(1)}" r="2.5" fill="${dotC}"/>
+  const gid=`spkg${_spkIdx++}`;
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+    <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${color}" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+    </linearGradient></defs>
+    <polygon points="${areaPts}" fill="url(#${gid})"/>
+    <polyline points="${pts}" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="${xs[n-1].toFixed(1)}" cy="${ys[n-1].toFixed(1)}" r="2.2" fill="${dotC}"/>
   </svg>`;
 }
 
@@ -2922,7 +2931,7 @@ function showUxtDetail(ri,ci){
       </div>
       <div style="font-size:11px;color:var(--text-3);margin-top:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <span>维度：${col} &nbsp;·&nbsp; ${r.ec} &nbsp;·&nbsp; 更新 ${r.updated}</span>
-        ${histData?`<span style="display:inline-flex;align-items:center;gap:4px;opacity:.8"><span style="font-size:9.5px;white-space:nowrap">近6期</span>${miniSparkSvg(histData,sparkColor,60,18)}</span>`:''}
+        ${histData?`<span style="display:inline-flex;align-items:center;gap:4px;opacity:.85"><span style="font-size:9.5px;white-space:nowrap">近6期</span>${miniSparkSvg(histData,sparkColor,72,22)}</span>`:''}
       </div>
     </div>
     <!-- 右：全维度对比条 -->
