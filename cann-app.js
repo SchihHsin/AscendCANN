@@ -3493,3 +3493,131 @@ def vector_add_tik(shape, dtype, kernel_name):
     return false;
   }
 
+  // ── LEARN DASHBOARD (ld-*) ──────────────────────────────────────────────────
+  // Used by learn.html new dashboard layout
+
+  let _ldActiveCat = 'all';
+
+  function ldSetInput(text) {
+    const input = document.getElementById('ld-ai-input');
+    if (input) { input.value = text; input.focus(); }
+  }
+
+  async function ldGenPath() {
+    const input = document.getElementById('ld-ai-input');
+    if (!input) return;
+    const query = input.value.trim();
+    if (!query) { input.focus(); return; }
+
+    // Kick off AI-guided path generation via sidebar
+    _aiPathStart(query);
+  }
+
+  function ldSetCat(cat, btn) {
+    _ldActiveCat = cat;
+    document.querySelectorAll('.ld-cat-chip').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    ldRenderNodes(cat);
+  }
+
+  function ldRenderContinue() {
+    const container = document.getElementById('ld-continue-list');
+    if (!container) return;
+    const paths = customPaths.length > 0 ? customPaths : samplePaths;
+    const shown = paths.slice(0, 4);
+
+    const ICONS = { beginner: '📘', developer: '🔧', operator: '⚙️', distributed: '🌐' };
+    const PROG = [27, 55, 10, 82]; // mock progress %
+
+    container.innerHTML = shown.map((path, idx) => {
+      const prog = PROG[idx % PROG.length];
+      const nodeCount = path.nodeList ? path.nodeList.length : 5;
+      const doneCount = Math.round(nodeCount * prog / 100);
+      const nextNode = path.nodeList ? (path.nodeList[doneCount] || path.nodeList[0]) : null;
+      const icon = path.icon || ICONS[path.nodeList?.[0]?.category] || '📚';
+      return `
+        <div class="ld-path-card" onclick="ldShowRoadmap('${path.id}')">
+          <div class="ld-path-icon">${icon}</div>
+          <div class="ld-path-body">
+            <div class="ld-path-name">${path.name}</div>
+            <div class="ld-path-prog-wrap">
+              <div class="ld-path-prog-track"><div class="ld-path-prog-fill" style="width:${prog}%"></div></div>
+              <span class="ld-path-prog-label">${doneCount} / ${nodeCount} 节点</span>
+            </div>
+            ${nextNode ? `<span class="ld-path-next">下一步：${nextNode.title}</span>` : ''}
+          </div>
+          <button class="ld-path-cta" onclick="event.stopPropagation();ldShowRoadmap('${path.id}')">继续学习</button>
+        </div>`;
+    }).join('');
+  }
+
+  function ldRenderNodes(cat) {
+    const grid = document.getElementById('ld-node-grid');
+    if (!grid) return;
+    const nodes = cat === 'all' ? NODE_LIST : NODE_LIST.filter(n => n.category === cat);
+    grid.innerHTML = nodes.map(n => {
+      const meta = CAT_META[n.category] || { label: n.category, color: '#888' };
+      return `
+        <div class="ld-node-card">
+          <div class="ld-node-card-top">
+            <span class="ld-node-card-title">${n.title}</span>
+            <span class="ld-node-card-badge" style="background:${meta.color}18;color:${meta.color}">${meta.label}</span>
+          </div>
+          <div class="ld-node-card-desc">${n.desc}</div>
+          <div class="ld-node-card-footer">
+            <button class="ld-node-start-btn" onclick="ldStartNode('${n.title}')">开始学习 →</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function ldStartNode(title) {
+    // Navigate to roadmap view and jump to this node
+    const nodeIdx = NODE_LIST.findIndex(n => n.title === title);
+    if (nodeIdx < 0) return;
+    // Show roadmap with a path that includes this node
+    ldShowRoadmap(null, nodeIdx);
+  }
+
+  function ldShowRoadmap(pathId, focusIdx) {
+    const dash = document.getElementById('ld-dash');
+    const roadmap = document.getElementById('ld-roadmap');
+    if (!dash || !roadmap) return;
+
+    if (pathId) {
+      const path = (customPaths.length > 0 ? customPaths : samplePaths).find(p => p.id === pathId);
+      if (path) {
+        const nameEl = document.getElementById('ld-roadmap-name');
+        const progFill = document.getElementById('ld-roadmap-prog-fill');
+        const progLbl = document.getElementById('ld-roadmap-prog-lbl');
+        if (nameEl) nameEl.textContent = path.name;
+        const nodeCount = path.nodeList ? path.nodeList.length : 5;
+        const prog = 27; // mock
+        const done = Math.round(nodeCount * prog / 100);
+        if (progFill) progFill.style.width = prog + '%';
+        if (progLbl) progLbl.textContent = `${done} / ${nodeCount} 节点`;
+        // Render path sequence strip
+        if (path.nodeList) renderLearnPagePath(path.query, path.nodeList);
+      }
+    }
+
+    dash.style.display = 'none';
+    roadmap.style.display = '';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function ldShowDash() {
+    const dash = document.getElementById('ld-dash');
+    const roadmap = document.getElementById('ld-roadmap');
+    if (dash) dash.style.display = '';
+    if (roadmap) roadmap.style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  // Init learn dashboard on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!document.getElementById('ld-dash')) return; // only on learn.html
+    ldRenderContinue();
+    ldRenderNodes('all');
+  });
+

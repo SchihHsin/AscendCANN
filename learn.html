@@ -253,57 +253,34 @@
 
 <!-- ══════════════ HOME PAGE ══════════════ -->
 <div id="page-learn" class="page active">
-  <div class="learn-layout">
-    <div class="learn-header" style="position:relative;">
-      <div style="position:absolute;top:0;right:0;display:flex;gap:8px;align-items:center;">
-        <a href="https://www.hiascend.com/edu/courses" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all 0.15s;text-decoration:none;" onmouseover="this.style.borderColor='var(--black)';this.style.color='var(--black)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          全量课程
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
-        <a href="https://www.hiascend.com/edu/growth" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all 0.15s;text-decoration:none;" onmouseover="this.style.borderColor='var(--black)';this.style.color='var(--black)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          全量路径
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
-        <button onclick="openLearningArchive('paths')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all 0.15s;" onmouseover="this.style.borderColor='var(--black)';this.style.color='var(--black)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          学习档案
-        </button>
-      </div>
-      <div class="section-label">学习</div>
-      <div class="section-title">系统学习 CANN<br>掌握昇腾 AI 开发</div>
-      <p class="section-desc" style="margin: 14px auto 0; text-align: center; max-width: 500px;">从零开始，循序渐进。选择你的方向，按节点展开查看学习资源。</p>
-      <div class="top-tabs">
-        <button class="top-tab active" onclick="switchTopTab('recommend', this)">为你推荐</button>
-        <button class="top-tab" onclick="switchTopTab('official', this)">官方路径</button>
-        <button class="top-tab" onclick="switchTopTab('custom', this)">自定义</button>
-      </div>
+  <!-- ═══ DASHBOARD VIEW ═══ -->
+  <div class="ld-dash" id="ld-dash">
 
-      <!-- AI Path Generator Input（自定义 tab 专属） -->
-      <div class="path-generator" id="path-generator">
-        <div class="path-generator-input-wrap">
-          <svg class="path-generator-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-            <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
+    <!-- AI Input Hero -->
+    <div class="ld-hero">
+      <div class="ld-hero-inner">
+        <div class="section-label" style="text-align:center;justify-content:center;">学习</div>
+        <h2 class="ld-hero-title">学习 CANN，从这里开始</h2>
+        <div class="ld-input-bar">
+          <svg class="ld-input-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--grad-end)"/>
+            <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z" fill="var(--grad-end)"/>
           </svg>
-          <input type="text" id="path-generator-input" placeholder="描述你想学习的内容，例如：我想学习如何使用CANN进行图像分类模型推理..." />
-          <button class="btn-generate-path" onclick="generateCustomPath()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-            生成路径
-          </button>
+          <input id="ld-ai-input" type="text" placeholder="描述你想学的方向，AI 为你生成专属路径…" onkeydown="if(event.key==='Enter')ldGenPath()">
+          <button class="ld-gen-btn" onclick="ldGenPath()">生成路径</button>
         </div>
-        <div class="path-generator-hints">
-          <span>试试：</span>
-          <button onclick="setPathInput('我想学习CANN算子开发')">CANN算子开发</button>
-          <button onclick="setPathInput('昇腾AI模型部署入门')">模型部署入门</button>
-          <button onclick="setPathInput('PyTorch模型迁移到昇腾')">PyTorch模型迁移</button>
+        <div class="ld-hint-chips">
+          <span class="ld-hint-chip" onclick="ldSetInput('AscendCL 推理应用开发')">AscendCL 推理</span>
+          <span class="ld-hint-chip" onclick="ldSetInput('TBE 自定义算子开发')">TBE 算子</span>
+          <span class="ld-hint-chip" onclick="ldSetInput('大模型在昇腾上部署')">大模型部署</span>
+          <span class="ld-hint-chip" onclick="ldSetInput('PyTorch 模型迁移昇腾')">模型迁移</span>
+          <span class="ld-hint-chip" onclick="ldSetInput('分布式训练 HCCL')">分布式训练</span>
         </div>
       </div>
+    </div>
 
-      <!-- Inline Path Editor（AI 生成的路径草稿，显示在输入框下方） -->
+    <!-- IPE: inline path editor (shown when AI generates a path) -->
+    <div class="ld-ipe-outer">
       <div id="ipe-wrap" class="ipe-wrap hidden">
         <div class="ipe-header">
           <div class="ipe-name-row">
@@ -321,242 +298,198 @@
         <div class="pg-nodes" id="ipe-nodes"></div>
         <div class="ipe-save-bar">
           <button class="ipe-save-btn" id="ipe-save-btn" onclick="ipeSavePath()">保存路径</button>
-          <span class="ipe-save-hint" id="ipe-save-hint">保存后可在学习档案中查看</span>
+          <span class="ipe-save-hint" id="ipe-save-hint">保存后可在"继续学习"中找到</span>
         </div>
       </div>
+    </div>
 
-      <!-- 分类筛选 chip（为你推荐 / 官方路径各一组，在我的学习+进度之后、路线图之前） -->
+    <!-- 继续学习 -->
+    <div class="ld-section">
+      <div class="ld-sec-hd">
+        <span class="ld-sec-title">继续学习</span>
+        <button class="ld-sec-link" onclick="openLearningArchive('paths')">查看全部 →</button>
+      </div>
+      <div class="ld-continue-list" id="ld-continue-list"></div>
+    </div>
+
+    <!-- 为你推荐 -->
+    <div class="ld-section">
+      <div class="ld-sec-hd">
+        <span class="ld-sec-title">为你推荐</span>
+        <div class="ld-cat-chips">
+          <button class="ld-cat-chip active" onclick="ldSetCat('all',this)">全部</button>
+          <button class="ld-cat-chip" onclick="ldSetCat('beginner',this)">入门</button>
+          <button class="ld-cat-chip" onclick="ldSetCat('developer',this)">应用开发</button>
+          <button class="ld-cat-chip" onclick="ldSetCat('operator',this)">算子开发</button>
+          <button class="ld-cat-chip" onclick="ldSetCat('distributed',this)">分布式</button>
+        </div>
+      </div>
+      <div class="ld-node-grid" id="ld-node-grid"></div>
+    </div>
+
+    <!-- Footer links row -->
+    <div class="ld-footer-row">
+      <a class="ld-footer-link" href="https://www.hiascend.com/edu/courses" target="_blank">全量课程 ↗</a>
+      <a class="ld-footer-link" href="https://www.hiascend.com/edu/growth" target="_blank">全量路径 ↗</a>
+      <button class="ld-footer-link" onclick="openLearningArchive('paths')">学习档案</button>
+    </div>
+
+  </div>
+
+  <!-- ═══ ROADMAP VIEW ═══ -->
+  <div class="ld-roadmap" id="ld-roadmap" style="display:none;">
+
+    <!-- Sticky top bar -->
+    <div class="ld-roadmap-topbar">
+      <button class="ld-back-btn" onclick="ldShowDash()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        返回
+      </button>
+      <div class="ld-roadmap-meta">
+        <span class="ld-roadmap-name-lbl" id="ld-roadmap-name">学习路径</span>
+        <div class="ld-roadmap-prog-wrap">
+          <div class="ld-roadmap-prog-track"><div class="ld-roadmap-prog-fill" id="ld-roadmap-prog-fill" style="width:27%"></div></div>
+          <span class="ld-roadmap-prog-lbl" id="ld-roadmap-prog-lbl">3 / 11 节点</span>
+        </div>
+      </div>
+      <div class="ld-roadmap-actions">
+        <a class="ld-footer-link" href="https://www.hiascend.com/edu/courses" target="_blank" style="font-size:11px;">全量课程 ↗</a>
+        <button class="ld-footer-link" onclick="openLearningArchive('paths')" style="font-size:11px;">学习档案</button>
+      </div>
+    </div>
+
+    <!-- Path sequence strip (shown for AI-generated paths) -->
+    <div class="path-seq-strip hidden" id="path-seq-strip"></div>
+
+    <!-- Category filter bar -->
+    <div class="learn-header-slim">
       <div class="filter-bar" id="filter-recommend">
         <button class="filter-btn" onclick="filterRoadmap('beginner', this)">入门</button>
         <button class="filter-btn" onclick="filterRoadmap('developer', this)">应用开发</button>
         <button class="filter-btn" onclick="filterRoadmap('operator', this)">算子开发</button>
         <button class="filter-btn" onclick="filterRoadmap('distributed', this)">分布式</button>
       </div>
-      <div class="filter-bar" id="filter-official" style="display:none;">
-        <button class="filter-btn active" onclick="filterRoadmap('all', this)">全部路径</button>
-        <button class="filter-btn" onclick="filterRoadmap('basic', this)">基础路径</button>
-        <button class="filter-btn" onclick="filterRoadmap('advanced', this)">进阶路径</button>
-        <button class="filter-btn" onclick="filterRoadmap('expert', this)">专家路径</button>
-      </div>
-      <!-- Custom Paths Scrollable List -->
-      <div class="custom-paths-container" id="custom-paths-container" style="display:none;">
-        <button class="scroll-nav-btn prev" onclick="scrollPaths('left')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        <div class="custom-paths-scroll" id="custom-paths-scroll">
-          <!-- Paths will be dynamically added here -->
-        </div>
-        <button class="scroll-nav-btn next" onclick="scrollPaths('right')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
-      </div>
     </div>
 
-    <!-- Path sequence strip (shown when custom AI path is active) -->
-    <div class="path-seq-strip hidden" id="path-seq-strip"></div>
+    <!-- Roadmap phases (existing nodes) -->
+    <div class="learn-layout">
 
-    <!-- Phase 0 -->
+    <!-- Phase 1 -->
     <div class="phase-label"><span class="phase-badge">阶段一：基础准备</span></div>
-
     <div class="roadmap-container">
       <div class="roadmap-col-left">
         <div class="rm-node completed" onclick="openNodeDrawer(this)" data-category="beginner">
-          <div class="rm-node-header">
-            <div class="rm-node-title">昇腾硬件体系</div>
-            <div class="rm-status done">✓</div>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">昇腾硬件体系</div><div class="rm-status done">✓</div></div>
           <p class="rm-desc">了解昇腾 AI 处理器架构：达芬奇核、HBM 内存、AI Core 工作原理。</p>
-          <div class="rm-tags">
-            <span class="rm-tag">入门</span>
-            <span class="rm-tag blue">理论</span>
-          </div>
+          <div class="rm-tags"><span class="rm-tag">入门</span><span class="rm-tag blue">理论</span></div>
           <div class="rm-resources">
-            <div class="rm-res-item">
-              <span class="rm-res-icon">📖</span>
-              <a class="rm-res-link" href="#">昇腾 AI 处理器架构白皮书</a>
-              <span class="rm-res-type">文档</span>
-            </div>
-            <div class="rm-res-item">
-              <span class="rm-res-icon">🎬</span>
-              <a class="rm-res-link" href="#">达芬奇架构深度解析</a>
-              <span class="rm-res-type">视频</span>
-            </div>
+            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">昇腾 AI 处理器架构白皮书</a><span class="rm-res-type">文档</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">🎬</span><a class="rm-res-link" href="#">达芬奇架构深度解析</a><span class="rm-res-type">视频</span></div>
           </div>
         </div>
-
         <div class="rm-node completed" onclick="openNodeDrawer(this)" data-category="beginner">
-          <div class="rm-node-header">
-            <div class="rm-node-title">CANN 软件栈概览</div>
-            <div class="rm-status done">✓</div>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">CANN 软件栈概览</div><div class="rm-status done">✓</div></div>
           <p class="rm-desc">理解 CANN 各组件关系：驱动层、运行时、算子库、框架适配层。</p>
-          <div class="rm-tags">
-            <span class="rm-tag">入门</span>
-            <span class="rm-tag blue">理论</span>
-          </div>
+          <div class="rm-tags"><span class="rm-tag">入门</span><span class="rm-tag blue">理论</span></div>
           <div class="rm-resources">
-            <div class="rm-res-item">
-              <span class="rm-res-icon">📖</span>
-              <a class="rm-res-link" href="#">CANN 软件栈介绍</a>
-              <span class="rm-res-type">文档</span>
-            </div>
+            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">CANN 软件栈架构文档</a><span class="rm-res-type">文档</span></div>
           </div>
         </div>
       </div>
       <div class="roadmap-line"></div>
-      <div class="roadmap-col-right" style="padding-top: 120px;">
-        <div class="rm-node" onclick="openNodeDrawer(this)" data-category="beginner">
-          <div class="rm-node-header">
-            <div class="rm-node-title">环境安装与配置</div>
-            <div class="rm-status in-progress">⋯</div>
-          </div>
-          <p class="rm-desc">安装驱动、固件、CANN Toolkit，配置 Python/C++ 开发环境。</p>
-          <div class="rm-tags">
-            <span class="rm-tag">入门</span>
-            <span class="rm-tag green">实践</span>
-          </div>
+      <div class="roadmap-col-right">
+        <div class="rm-node completed" onclick="openNodeDrawer(this)" data-category="beginner">
+          <div class="rm-node-header"><div class="rm-node-title">环境安装与配置</div><div class="rm-status done">✓</div></div>
+          <p class="rm-desc">安装 CANN Toolkit，配置环境变量，验证 NPU 可用性。</p>
+          <div class="rm-tags"><span class="rm-tag">入门</span><span class="rm-tag green">实操</span></div>
           <div class="rm-resources">
-            <div class="rm-res-item">
-              <span class="rm-res-icon">📖</span>
-              <a class="rm-res-link" href="#" onclick="showPage('docs')">安装指南</a>
-              <span class="rm-res-type">文档</span>
-            </div>
-            <div class="rm-res-item">
-              <span class="rm-res-icon">🐳</span>
-              <a class="rm-res-link" href="#">官方 Docker 镜像</a>
-              <span class="rm-res-type">镜像</span>
-            </div>
+            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">CANN 8.0 安装指南</a><span class="rm-res-type">文档</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">💻</span><a class="rm-res-link" href="#" onclick="event.preventDefault();openEmptySandbox()">HiDevLab 验证环境</a><span class="rm-res-type">实验</span></div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Phase 2 -->
-    <div class="phase-label" style="margin-top: 32px;"><span class="phase-badge">阶段二：应用开发</span></div>
-
+    <div class="phase-label" style="margin-top:32px;"><span class="phase-badge">阶段二：应用开发</span></div>
     <div class="roadmap-container">
       <div class="roadmap-col-left">
         <div class="rm-node" onclick="openNodeDrawer(this)" data-category="developer">
-          <div class="rm-node-header">
-            <div class="rm-node-title">AscendCL 编程基础</div>
-            <div class="rm-status"></div>
-          </div>
-          <p class="rm-desc">掌握 AscendCL 核心 API：设备管理、内存管理、Stream/Context 机制。</p>
-          <div class="rm-tags">
-            <span class="rm-tag amber">进阶</span>
-            <span class="rm-tag green">实践</span>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">AscendCL 编程基础</div><div class="rm-status"></div></div>
+          <p class="rm-desc">掌握 ACL 核心 API：初始化、Device / Context / Stream 管理、内存操作。</p>
+          <div class="rm-tags"><span class="rm-tag blue">开发</span><span class="rm-tag">C/C++</span></div>
           <div class="rm-resources">
-            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#" onclick="showDoc('acl-init');showPage('docs')">设备初始化文档</a><span class="rm-res-type">文档</span></div>
-            <div class="rm-res-item"><span class="rm-res-icon">💻</span><a class="rm-res-link" href="#">AscendCL 示例代码仓</a><span class="rm-res-type">代码</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">AscendCL 编程指南</a><span class="rm-res-type">文档</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">💻</span><a class="rm-res-link" href="#">ACL 入门示例</a><span class="rm-res-type">代码</span></div>
           </div>
         </div>
-
         <div class="rm-node" onclick="openNodeDrawer(this)" data-category="developer">
-          <div class="rm-node-header">
-            <div class="rm-node-title">模型推理部署</div>
-            <div class="rm-status"></div>
-          </div>
-          <p class="rm-desc">使用 ATC 转换模型，通过 AscendCL 加载 .om 文件执行高性能推理。</p>
-          <div class="rm-tags">
-            <span class="rm-tag amber">进阶</span>
-            <span class="rm-tag green">实践</span>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">数据预处理 (DVPP)</div><div class="rm-status"></div></div>
+          <p class="rm-desc">使用 DVPP 硬件加速图像/视频解码、缩放、裁剪，提升预处理性能。</p>
+          <div class="rm-tags"><span class="rm-tag blue">开发</span><span class="rm-tag">多媒体</span></div>
           <div class="rm-resources">
-            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#" onclick="showDoc('atc');showPage('docs')">ATC 工具文档</a><span class="rm-res-type">文档</span></div>
-            <div class="rm-res-item"><span class="rm-res-icon">🎬</span><a class="rm-res-link" href="#">ResNet 推理实战</a><span class="rm-res-type">视频</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">DVPP 编程指南</a><span class="rm-res-type">文档</span></div>
           </div>
         </div>
       </div>
       <div class="roadmap-line"></div>
       <div class="roadmap-col-right">
         <div class="rm-node" onclick="openNodeDrawer(this)" data-category="developer">
-          <div class="rm-node-header">
-            <div class="rm-node-title">数据预处理 (DVPP)</div>
-            <div class="rm-status"></div>
-          </div>
-          <p class="rm-desc">使用 DVPP 硬件加速图像解码、缩放、格式转换，消除数据搬运瓶颈。</p>
-          <div class="rm-tags">
-            <span class="rm-tag amber">进阶</span>
-            <span class="rm-tag green">实践</span>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">模型推理部署</div><div class="rm-status"></div></div>
+          <p class="rm-desc">完整推理流程：ATC 转换 .om 文件，加载执行，获取输出结果。</p>
+          <div class="rm-tags"><span class="rm-tag blue">开发</span><span class="rm-tag green">实战</span></div>
           <div class="rm-resources">
-            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">DVPP API 文档</a><span class="rm-res-type">文档</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">ATC 模型转换指南</a><span class="rm-res-type">文档</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">🎬</span><a class="rm-res-link" href="#">ResNet50 推理实战</a><span class="rm-res-type">视频</span></div>
           </div>
         </div>
-
         <div class="rm-node" onclick="openNodeDrawer(this)" data-category="developer">
-          <div class="rm-node-header">
-            <div class="rm-node-title">性能调优实战</div>
-            <div class="rm-status"></div>
-          </div>
-          <p class="rm-desc">使用 Profiling 工具分析热点算子，通过算子融合、数据排布优化提升吞吐。</p>
-          <div class="rm-tags">
-            <span class="rm-tag amber">进阶</span>
-            <span class="rm-tag blue">分析</span>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">性能调优实战</div><div class="rm-status"></div></div>
+          <p class="rm-desc">使用 Profiling 工具定位 NPU 瓶颈，掌握 tiling、pipeline 优化策略。</p>
+          <div class="rm-tags"><span class="rm-tag blue">开发</span><span class="rm-tag" style="background:#FEF3C7;color:#92400E;">进阶</span></div>
           <div class="rm-resources">
-            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#" onclick="showDoc('profiling');showPage('docs')">性能调优指南</a><span class="rm-res-type">文档</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">Profiling 工具使用指南</a><span class="rm-res-type">文档</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">💻</span><a class="rm-res-link" href="#" onclick="event.preventDefault();openEmptySandbox()">性能分析沙盒</a><span class="rm-res-type">实验</span></div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Phase 3 -->
-    <div class="phase-label" style="margin-top: 32px;"><span class="phase-badge">阶段三：算子开发</span></div>
-
+    <div class="phase-label" style="margin-top:32px;"><span class="phase-badge">阶段三：算子开发</span></div>
     <div class="roadmap-container">
       <div class="roadmap-col-left">
         <div class="rm-node" onclick="openNodeDrawer(this)" data-category="operator">
-          <div class="rm-node-header">
-            <div class="rm-node-title">TBE DSL 算子开发</div>
-            <div class="rm-status"></div>
-          </div>
-          <p class="rm-desc">使用高级 DSL 接口快速开发算子，编写 compute 函数描述计算逻辑。</p>
-          <div class="rm-tags">
-            <span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span>
-            <span class="rm-tag green">实践</span>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">TBE DSL 算子开发</div><div class="rm-status"></div></div>
+          <p class="rm-desc">使用 TBE DSL 高级语法快速实现自定义算子，掌握向量化编程模型。</p>
+          <div class="rm-tags"><span class="rm-tag" style="background:#EDE9FE;color:#5B21B6;">算子</span><span class="rm-tag">Python</span></div>
           <div class="rm-resources">
-            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">TBE DSL 开发指南</a><span class="rm-res-type">文档</span></div>
-            <div class="rm-res-item"><span class="rm-res-icon">💻</span><a class="rm-res-link" href="#">算子示例仓库</a><span class="rm-res-type">代码</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">TBE DSL 编程指南</a><span class="rm-res-type">文档</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">💻</span><a class="rm-res-link" href="#">自定义算子示例</a><span class="rm-res-type">代码</span></div>
           </div>
         </div>
       </div>
       <div class="roadmap-line"></div>
       <div class="roadmap-col-right">
         <div class="rm-node" onclick="openNodeDrawer(this)" data-category="operator">
-          <div class="rm-node-header">
-            <div class="rm-node-title">TIK 底层算子开发</div>
-            <div class="rm-status"></div>
-          </div>
-          <p class="rm-desc">使用 TIK 接口直接控制 AI Core 数据搬移与计算指令，实现极致性能。</p>
-          <div class="rm-tags">
-            <span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span>
-            <span class="rm-tag blue">底层</span>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">TIK 底层算子开发</div><div class="rm-status"></div></div>
+          <p class="rm-desc">深入 TIK C++ 接口，直接操控 AI Core 的 UB/L1/L2 内存层次，追求极致性能。</p>
+          <div class="rm-tags"><span class="rm-tag" style="background:#EDE9FE;color:#5B21B6;">算子</span><span class="rm-tag" style="background:#FEF3C7;color:#92400E;">进阶</span></div>
           <div class="rm-resources">
-            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">TIK 指令集文档</a><span class="rm-res-type">文档</span></div>
+            <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">TIK C++ 编程手册</a><span class="rm-res-type">文档</span></div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Phase 4 -->
-    <div class="phase-label" style="margin-top: 32px;"><span class="phase-badge">阶段四：分布式训练</span></div>
-
+    <div class="phase-label" style="margin-top:32px;"><span class="phase-badge">阶段四：分布式训练</span></div>
     <div class="roadmap-container">
       <div class="roadmap-col-left">
         <div class="rm-node" onclick="openNodeDrawer(this)" data-category="distributed">
-          <div class="rm-node-header">
-            <div class="rm-node-title">HCCL 分布式通信</div>
-            <div class="rm-status"></div>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">HCCL 分布式通信</div><div class="rm-status"></div></div>
           <p class="rm-desc">配置昇腾集群网络，使用 HCCL 实现 AllReduce、AllGather 等集合通信。</p>
-          <div class="rm-tags">
-            <span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span>
-            <span class="rm-tag blue">集群</span>
-          </div>
+          <div class="rm-tags"><span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span><span class="rm-tag blue">集群</span></div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">📖</span><a class="rm-res-link" href="#">HCCL 配置指南</a><span class="rm-res-type">文档</span></div>
           </div>
@@ -565,15 +498,9 @@
       <div class="roadmap-line"></div>
       <div class="roadmap-col-right">
         <div class="rm-node" onclick="openNodeDrawer(this)" data-category="distributed">
-          <div class="rm-node-header">
-            <div class="rm-node-title">大模型训练实战</div>
-            <div class="rm-status"></div>
-          </div>
+          <div class="rm-node-header"><div class="rm-node-title">大模型训练实战</div><div class="rm-status"></div></div>
           <p class="rm-desc">基于 MindSpore + CANN 完成千亿参数大语言模型的分布式训练与推理部署。</p>
-          <div class="rm-tags">
-            <span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span>
-            <span class="rm-tag green">项目</span>
-          </div>
+          <div class="rm-tags"><span class="rm-tag" style="background:#FCE7F3;color:#9D174D;">高级</span><span class="rm-tag green">项目</span></div>
           <div class="rm-resources">
             <div class="rm-res-item"><span class="rm-res-icon">🎬</span><a class="rm-res-link" href="#">大模型训练系列课程</a><span class="rm-res-type">视频</span></div>
             <div class="rm-res-item"><span class="rm-res-icon">💻</span><a class="rm-res-link" href="#">MindSpore Transformers</a><span class="rm-res-type">代码</span></div>
@@ -581,7 +508,9 @@
         </div>
       </div>
     </div>
-  </div>
+
+    </div><!-- end learn-layout -->
+  </div><!-- end ld-roadmap -->
 
   <footer style="background:#0A0A0F; color: rgba(255,255,255,0.5); padding: 40px; text-align: center; font-size: 14px;">
     <div>© 2024 Huawei Technologies Co., Ltd. — CANN 智慧化文档平台</div>
