@@ -1408,14 +1408,6 @@ body.ov-rat-open .ov-rat-panel{right:0}
           差 <div class="hm-grad"></div> 优
         </div>
       </div>
-      <!-- 列分组标签（第一层） -->
-      <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;gap:5px;margin-bottom:2px">
-        <div></div>
-        <div style="font-size:9px;font-weight:700;color:#6B7180;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#E4E4E6;border-radius:6px;padding:4px 0">综合</div>
-        <div style="font-size:9px;font-weight:700;color:#6B7180;text-align:center;grid-column:span 2;letter-spacing:.04em;text-transform:uppercase;background:#E4E4E6;border-radius:6px;padding:4px 0">分项评分</div>
-        <div style="font-size:9px;font-weight:700;color:#6B7180;text-align:center;grid-column:span 6;letter-spacing:.04em;text-transform:uppercase;background:#E4E4E6;border-radius:6px;padding:4px 0">开发评分·子维度</div>
-        <div></div>
-      </div>
       <div id="uxtMatrix" style="display:grid;gap:5px"></div>
       <!-- 详情抽屉 -->
       <div id="uxtMatrixDetail" style="display:none;margin-top:14px;padding:14px 18px;background:var(--g1);border:1px solid var(--border);border-radius:var(--radius-m)"></div>
@@ -2437,7 +2429,19 @@ function renderMatrix(cfg){
   grid.style.gridTemplateColumns=`${cfg.rowLabelWidth} ${cols.map(()=>'1fr').join(' ')}${extraW}`;
   window._mxCfg[cfg.gridId]=cfg;
   const corner=cfg.corner||{row:'行',col:'列'};
-  let html=`<div class="hm-corner"><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
+  let html='';
+  // 分组行（可选）：与数据格在同一 grid 内，间距自动一致
+  if(cfg.groupCols){
+    html+=`<div></div>`; // corner 占位
+    cfg.groupCols.forEach(g=>{
+      const span=g.span||1;
+      const spanStyle=span>1?`grid-column:span ${span};`:'';
+      if(g.label) html+=`<div style="${spanStyle}font-size:9px;font-weight:700;color:#6B7180;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#E4E4E6;border-radius:6px;padding:4px 0">${g.label}</div>`;
+      else html+=`<div style="${spanStyle}"></div>`;
+    });
+  }
+  // 列名行
+  html+=`<div class="hm-corner"><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
   cols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
   extraCols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
   rows.forEach((row,ri)=>{
@@ -2818,6 +2822,12 @@ function initUXTMatrix(){
     gridId:'uxtMatrix',
     rowLabelWidth:'130px',
     corner:{row:'组件',col:'维度'},
+    groupCols:[
+      {label:'综合',    span:1},
+      {label:'分项评分', span:2},
+      {label:'开发评分·子维度', span:6},
+      {label:'更新时间', span:1},
+    ],
     cols:UXT_MATRIX_COLS.map(label=>({label})),
     extraCols:[{label:'更新时间',render:r=>`<span>${r.updated}</span>`}],
     rows:UXT_MATRIX_ROWS,
