@@ -187,7 +187,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .hm-cell .cv{font-size:13px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace}
 .hm-cell .ct{font-size:9px;font-weight:600;opacity:.7;margin-top:1px}
 .hm-legend{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:11px;color:var(--text-3);font-weight:500;justify-content:flex-end}
-.hm-grad{height:8px;width:120px;border-radius:4px;background:linear-gradient(90deg,#FEEFF0 0%,#FFB6C8 35%,#FFE87F 55%,#EBFCF7 80%,#9DFBE8 100%)}
+.hm-grad{height:8px;width:120px;border-radius:4px;background:linear-gradient(90deg,#FFC3C3 0%,#FFD29B 35%,#FFED8C 55%,#B0EED7 75%,#78D7B9 100%)}
 
 /* ── PIPELINE (AscendOps stage style) ── */
 .pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:6px}
@@ -1668,14 +1668,14 @@ window.scrollTo(0,0);
 
 /* ── Health Matrix ── */
 function heatColor(score){
-  const stops=[[0,[254,239,240]],[35,[255,182,200]],[55,[255,232,127]],[70,[255,248,229]],[82,[235,252,247]],[100,[59,232,128]]];
+  const stops=[[0,[255,195,195]],[35,[255,210,155]],[55,[255,237,140]],[75,[176,238,215]],[100,[120,215,185]]];
   let a=stops[0],b=stops[stops.length-1];
   for(let i=0;i<stops.length-1;i++){if(score>=stops[i][0]&&score<=stops[i+1][0]){a=stops[i];b=stops[i+1];break;}}
   const t=(score-a[0])/(b[0]-a[0]||1);
   const rgb=a[1].map((v,j)=>Math.round(v+(b[1][j]-v)*t));
   return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
 }
-function textColor(score){return score>=55?'#1B2432':'#E63838';}
+function textColor(score){return '#1B2432';}
 
 const HM_DATA={
   rows:[
