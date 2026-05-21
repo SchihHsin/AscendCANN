@@ -739,21 +739,8 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .uxt-tag-grey{background:var(--g2);color:var(--text-3);border-radius:4px;padding:3px 8px;font-size:10px;display:inline-block;margin:2px}
 .uxt-issue{background:var(--gold-light);border-left:3px solid var(--gold-dark);border-radius:2px;padding:5px 8px;font-size:11px;color:var(--text-2);line-height:1.5;margin-bottom:4px}
 .uxt-issue.red{background:var(--coral-light);border-left-color:var(--coral-dark)}
-.uxt-ov-table{width:100%;border-collapse:collapse;font-size:12px}
-.uxt-ov-table th{background:var(--g1);border-bottom:1px solid var(--border);padding:8px 12px;text-align:center;color:var(--text-3);font-weight:600;font-size:11px;white-space:nowrap}
-.uxt-ov-table th.left{text-align:left}
-.uxt-ov-table td{border-bottom:1px solid var(--border);padding:12px;text-align:center;color:var(--text-2);vertical-align:middle}
-.uxt-ov-table tbody tr:last-child td{border-bottom:none}
-.uxt-ov-table tbody tr:hover td{background:var(--g1)}
-.uxt-comp-name{font-size:13px;font-weight:700;color:var(--text);text-align:left}
-.uxt-comp-sub{font-size:10px;color:var(--text-3);margin-top:1px;text-align:left}
-.uxt-score-red{color:var(--coral-dark);font-size:18px;font-weight:800;font-family:'JetBrains Mono',monospace}
-.uxt-score-mid{color:var(--gold-dark);font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace}
-.uxt-score-ok{color:var(--green-dark);font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace}
-.uxt-ec-label{font-size:10px;color:var(--text-3);margin-top:2px}
-.uxt-col-div{border-left:1px solid var(--border)}
-.uxt-th-sort{cursor:pointer;user-select:none}
-.uxt-th-sort:hover{color:var(--primary)}
+.uxt-comp-name{font-size:13px;font-weight:700;color:var(--text)}
+.uxt-comp-sub{font-size:10px;color:var(--text-3);margin-top:1px}
 </style>
 </head>
 <body>
@@ -1408,81 +1395,27 @@ body.ov-rat-open .ov-rat-panel{right:0}
 
     </div><!-- /两列 -->
 
-    <!-- 组件概览 -->
+    <!-- 组件概览 矩阵 -->
     <div class="ov-section">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div class="ov-section-hdr" style="margin-bottom:12px">
         <div>
-          <div class="ov-section-title">组件概览</div>
-          <div class="ov-section-sub">行=组件，列=评分；点击表头排序</div>
+          <div class="ov-section-title">组件评分矩阵</div>
+          <div class="ov-section-sub">行=组件，列=评分维度；颜色越绿越好，点击格子查看详情</div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--bg);font-size:12px;color:var(--text-3)">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9 9l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-          搜索组件...
+        <div class="hm-legend">
+          差 <div class="hm-grad"></div> 优
         </div>
       </div>
-      <table class="uxt-ov-table" id="uxtOvTable">
-        <thead>
-          <tr>
-            <th class="left" rowspan="2" style="width:110px">组件</th>
-            <th rowspan="2" class="uxt-th-sort" onclick="sortUxtTable(1)">总分 /100 ↓</th>
-            <th colspan="2" style="color:var(--gold-dark);font-size:10px;border-bottom:none">分项评分</th>
-            <th colspan="6" style="color:var(--gold-dark);font-size:10px;border-bottom:none">开发评分·子维度（满分5）</th>
-            <th rowspan="2" style="width:110px">更新时间</th>
-          </tr>
-          <tr>
-            <th class="uxt-th-sort uxt-col-div" onclick="sortUxtTable(2)">测试评分 ↕</th>
-            <th class="uxt-th-sort" onclick="sortUxtTable(3)">开发评分 ↕</th>
-            <th class="uxt-th-sort uxt-col-div" onclick="sortUxtTable(4)">可理解 ↕</th>
-            <th class="uxt-th-sort" onclick="sortUxtTable(5)">可操作 ↕</th>
-            <th class="uxt-th-sort" onclick="sortUxtTable(6)">根因 ↕</th>
-            <th class="uxt-th-sort" onclick="sortUxtTable(7)">完整 ↕</th>
-            <th class="uxt-th-sort" onclick="sortUxtTable(8)">一致 ↕</th>
-            <th class="uxt-th-sort" onclick="sortUxtTable(9)">准确 ↕</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><div class="uxt-comp-name">hccl</div><div class="uxt-comp-sub">通信库</div></td>
-            <td><span class="uxt-score-red">47.9</span></td>
-            <td class="uxt-col-div"><span class="uxt-score-mid">6.0</span><div class="uxt-ec-label">EC 71% · R 45%</div></td>
-            <td><span class="uxt-score-ok">8.0</span></td>
-            <td class="uxt-col-div">4.3</td><td>3.6</td><td>4.7</td><td>2.2</td><td>5.0</td><td>4.9</td>
-            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/21 00:06</td>
-          </tr>
-          <tr>
-            <td><div class="uxt-comp-name">dvpp</div><div class="uxt-comp-sub">图像处理</div></td>
-            <td><span class="uxt-score-red">47.2</span></td>
-            <td class="uxt-col-div"><span class="uxt-score-mid">6.0</span><div class="uxt-ec-label">EC 75% · R 93%</div></td>
-            <td><span class="uxt-score-ok">7.9</span></td>
-            <td class="uxt-col-div">4.2</td><td>3.5</td><td>4.6</td><td>2.8</td><td>4.1</td><td>4.9</td>
-            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/21 00:06</td>
-          </tr>
-          <tr>
-            <td><div class="uxt-comp-name">dump</div><div class="uxt-comp-sub">基础工具</div></td>
-            <td><span class="uxt-score-red">46.4</span></td>
-            <td class="uxt-col-div"><span class="uxt-score-mid">5.6</span><div class="uxt-ec-label">EC 60% · R 50%</div></td>
-            <td><span class="uxt-score-ok">8.3</span></td>
-            <td class="uxt-col-div">4.8</td><td>3.8</td><td>4.7</td><td>2.0</td><td>5.0</td><td>5.0</td>
-            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/21 00:06</td>
-          </tr>
-          <tr>
-            <td><div class="uxt-comp-name">amct</div><div class="uxt-comp-sub">模型优化</div></td>
-            <td><span class="uxt-score-red">44.8</span></td>
-            <td class="uxt-col-div"><span class="uxt-score-mid">6.0</span><div class="uxt-ec-label">EC 71% · R 44%</div></td>
-            <td><span class="uxt-score-ok">7.5</span></td>
-            <td class="uxt-col-div">4.0</td><td>3.0</td><td>4.3</td><td>3.0</td><td>4.5</td><td>4.3</td>
-            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/20 21:46</td>
-          </tr>
-          <tr>
-            <td><div class="uxt-comp-name">ge</div><div class="uxt-comp-sub">图引擎</div></td>
-            <td><span class="uxt-score-red">25.2</span></td>
-            <td class="uxt-col-div"><span class="uxt-score-mid">3.8</span><div class="uxt-ec-label">EC 50% · R 20%</div></td>
-            <td><span class="uxt-score-ok">6.6</span></td>
-            <td class="uxt-col-div">3.0</td><td>2.7</td><td>4.3</td><td>1.7</td><td>5.0</td><td>5.0</td>
-            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/21 00:06</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- 列分组标签 -->
+      <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;gap:5px;margin-bottom:2px">
+        <div></div>
+        <div style="font-size:9px;font-weight:700;color:var(--gold-dark);text-align:center;letter-spacing:.04em;text-transform:uppercase">综合</div>
+        <div style="font-size:9px;font-weight:700;color:var(--teal-dark);text-align:center;grid-column:span 2;letter-spacing:.04em;text-transform:uppercase">分项评分</div>
+        <div style="font-size:9px;font-weight:700;color:var(--purple-dark);text-align:center;grid-column:span 6;letter-spacing:.04em;text-transform:uppercase">开发评分·子维度（满分5）</div>
+      </div>
+      <div id="uxtMatrix" style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;gap:5px"></div>
+      <!-- 详情抽屉 -->
+      <div id="uxtMatrixDetail" style="display:none;margin-top:14px;padding:14px 18px;background:var(--g1);border:1px solid var(--border);border-radius:var(--radius-m)"></div>
     </div><!-- /组件概览 -->
 
   </div><!-- /ov-body -->
@@ -2580,7 +2513,7 @@ function switchTab(id,btn){
   document.body.classList.remove('rat-open','ov-rat-open');
   document.getElementById('floatRat').classList.remove('open');
   window.scrollTo({top:0});
-  if(id==='uxtest') initUXTChart();
+  if(id==='uxtest'){ initUXTChart(); initUXTMatrix(); }
 }
 
 // ── RATIONALE HIGHLIGHT ──
@@ -2822,18 +2755,74 @@ function selUxtProd(name,el){
   if(kepEl) kepEl.textContent=label+' · 评价指标 & 问题';
 }
 
-let _uxtSortDir={};
-function sortUxtTable(col){
-  const tbody=document.querySelector('#uxtOvTable tbody');
-  const rows=Array.from(tbody.querySelectorAll('tr'));
-  const asc=!_uxtSortDir[col];
-  _uxtSortDir={};_uxtSortDir[col]=asc;
-  rows.sort((a,b)=>{
-    const av=parseFloat(a.querySelectorAll('td')[col-1]?.textContent)||0;
-    const bv=parseFloat(b.querySelectorAll('td')[col-1]?.textContent)||0;
-    return asc?av-bv:bv-av;
+// col headers for matrix
+const UXT_MATRIX_COLS=['总分/100','测试评分','开发评分','可理解','可操作','根因','完整','一致','准确'];
+// display values per component: [总分, 测试, 开发, 可理解, 可操作, 根因, 完整, 一致, 准确]
+const UXT_MATRIX_ROWS=[
+  {name:'hccl', sub:'通信库', vals:[47.9,6.0,8.0,4.3,3.6,4.7,2.2,5.0,4.9], ec:'EC 71%·R 45%', updated:'05/21 00:06'},
+  {name:'dvpp', sub:'图像处理', vals:[47.2,6.0,7.9,4.2,3.5,4.6,2.8,4.1,4.9], ec:'EC 75%·R 93%', updated:'05/21 00:06'},
+  {name:'dump', sub:'基础工具', vals:[46.4,5.6,8.3,4.8,3.8,4.7,2.0,5.0,5.0], ec:'EC 60%·R 50%', updated:'05/21 00:06'},
+  {name:'amct', sub:'模型优化', vals:[44.8,6.0,7.5,4.0,3.0,4.3,3.0,4.5,4.3], ec:'EC 71%·R 44%', updated:'05/20 21:46'},
+  {name:'ge',   sub:'图引擎',   vals:[25.2,3.8,6.6,3.0,2.7,4.3,1.7,5.0,5.0], ec:'EC 50%·R 20%', updated:'05/21 00:06'},
+];
+// normalize vals to 0-100 for heatColor
+// col 0: /100 direct; col 1,2: /10×100; col 3-8: /5×100
+function uxtNorm(colIdx, v){
+  if(colIdx===0) return v;
+  if(colIdx<=2) return v*10;
+  return v*20;
+}
+let _uxtMatrixInited=false;
+function initUXTMatrix(){
+  if(_uxtMatrixInited)return;
+  _uxtMatrixInited=true;
+  const grid=document.getElementById('uxtMatrix');
+  if(!grid)return;
+  // header row
+  grid.innerHTML='<div style="font-size:10px;font-weight:700;color:var(--text-3);padding:4px 6px;display:flex;flex-direction:column;justify-content:flex-end"></div>'+
+    UXT_MATRIX_COLS.map(c=>`<div class="hm-header">${c}</div>`).join('');
+  // data rows
+  UXT_MATRIX_ROWS.forEach((r,ri)=>{
+    const totalScore=uxtNorm(0,r.vals[0]);
+    const dotColor=totalScore>=60?'var(--green-dark)':totalScore>=40?'var(--gold-dark)':'var(--coral-dark)';
+    const dotGlow=totalScore>=60?'rgba(55,197,151,.2)':totalScore>=40?'rgba(253,154,0,.2)':'rgba(230,56,56,.2)';
+    grid.innerHTML+=`<div class="hm-row-label" style="flex-direction:row;align-items:center;gap:6px">
+      <div style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:${dotColor};box-shadow:0 0 0 3px ${dotGlow}"></div>
+      <div><div>${r.name}</div><small>${r.sub}</small></div>
+    </div>`;
+    r.vals.forEach((v,ci)=>{
+      const norm=uxtNorm(ci,v);
+      const bg=heatColor(norm), fg=textColor(norm);
+      const display=ci===0?v.toFixed(1):(ci<=2?v.toFixed(1):v.toFixed(1));
+      grid.innerHTML+=`<div class="hm-cell" onclick="showUxtDetail(${ri},${ci})" style="background:${bg};color:${fg}"><div class="cv">${display}</div></div>`;
+    });
   });
-  rows.forEach(r=>tbody.appendChild(r));
+}
+
+function showUxtDetail(ri,ci){
+  document.querySelectorAll('#uxtMatrix .hm-cell').forEach(el=>el.classList.remove('hm-sel'));
+  const cells=document.querySelectorAll('#uxtMatrix .hm-cell');
+  const idx=ri*UXT_MATRIX_COLS.length+ci;
+  if(cells[idx]) cells[idx].classList.add('hm-sel');
+  const r=UXT_MATRIX_ROWS[ri], col=UXT_MATRIX_COLS[ci], v=r.vals[ci];
+  const norm=uxtNorm(ci,v);
+  const bg=heatColor(norm), fg=textColor(norm);
+  const det=document.getElementById('uxtMatrixDetail');
+  if(!det)return;
+  det.style.display='block';
+  det.innerHTML=`<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="width:52px;height:52px;border-radius:10px;background:${bg};color:${fg};display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;font-family:'JetBrains Mono',monospace;flex-shrink:0">${v.toFixed(1)}</div>
+    <div>
+      <div style="font-size:15px;font-weight:800;color:var(--text)">${r.name} <span style="font-size:11px;font-weight:500;color:var(--text-3)">${r.sub}</span></div>
+      <div style="font-size:12px;color:var(--text-3);margin-top:2px">维度：${col} &nbsp;·&nbsp; ${r.ec} &nbsp;·&nbsp; 更新 ${r.updated}</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+      ${r.vals.map((val,i)=>`<div style="text-align:center;min-width:44px">
+        <div style="font-size:11px;color:var(--text-3);margin-bottom:3px">${UXT_MATRIX_COLS[i]}</div>
+        <div style="padding:4px 6px;border-radius:6px;background:${heatColor(uxtNorm(i,val))};color:${textColor(uxtNorm(i,val))};font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace">${val.toFixed(1)}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
 }
 
 function initOvCharts(){
