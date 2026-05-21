@@ -1409,7 +1409,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
         <div></div>
         <div style="font-size:9px;font-weight:700;color:var(--gold-dark);text-align:center;letter-spacing:.04em;text-transform:uppercase;background:var(--gold-light);border-radius:4px;padding:3px 0">综合</div>
         <div style="font-size:9px;font-weight:700;color:var(--teal-dark);text-align:center;grid-column:span 2;letter-spacing:.04em;text-transform:uppercase;background:var(--teal-light);border-radius:4px;padding:3px 0">分项评分</div>
-        <div style="font-size:9px;font-weight:700;color:var(--purple-dark);text-align:center;grid-column:span 6;letter-spacing:.04em;text-transform:uppercase;background:var(--purple-light);border-radius:4px;padding:3px 0">开发评分·子维度（满分5）</div>
+        <div style="font-size:9px;font-weight:700;color:var(--purple-dark);text-align:center;grid-column:span 6;letter-spacing:.04em;text-transform:uppercase;background:var(--purple-light);border-radius:4px;padding:3px 0">开发评分·子维度</div>
         <div></div>
       </div>
       <div id="uxtMatrix" style="display:grid;gap:5px"></div>
@@ -2816,7 +2816,7 @@ function initUXTMatrix(){
     rows:UXT_MATRIX_ROWS,
     rowLabel:r=>({name:r.name,sub:r.sub,dotScore:uxtNorm(0,r.vals[0])}),
     scoreOf:(r,ci)=>uxtNorm(ci,r.vals[ci]),
-    displayOf:(r,ci)=>r.vals[ci].toFixed(1),
+    displayOf:(r,ci)=>uxtNorm(ci,r.vals[ci]).toFixed(0),
     subOf:()=>'',
     onCellClick:(ri,ci)=>showUxtDetail(ri,ci),
   });
@@ -2830,7 +2830,7 @@ function showUxtDetail(ri,ci){
   if(!det)return;
   det.style.display='block';
   det.innerHTML=`<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-    <div style="width:52px;height:52px;border-radius:10px;background:${bg};color:${fg};display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;font-family:'JetBrains Mono',monospace;flex-shrink:0">${v.toFixed(1)}</div>
+    <div style="width:52px;height:52px;border-radius:10px;background:${bg};color:${fg};display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;font-family:'JetBrains Mono',monospace;flex-shrink:0">${norm.toFixed(0)}</div>
     <div>
       <div style="font-size:15px;font-weight:800;color:var(--text)">${r.name} <span style="font-size:11px;font-weight:500;color:var(--text-3)">${r.sub}</span></div>
       <div style="font-size:12px;color:var(--text-3);margin-top:2px">维度：${col} &nbsp;·&nbsp; ${r.ec} &nbsp;·&nbsp; 更新 ${r.updated}</div>
@@ -2838,7 +2838,7 @@ function showUxtDetail(ri,ci){
     <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
       ${r.vals.map((val,i)=>`<div style="text-align:center;min-width:44px">
         <div style="font-size:11px;color:var(--text-3);margin-bottom:3px">${UXT_MATRIX_COLS[i]}</div>
-        <div style="padding:4px 6px;border-radius:6px;background:${heatColor(uxtNorm(i,val))};color:${textColor(uxtNorm(i,val))};font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace">${val.toFixed(1)}</div>
+        <div style="padding:4px 6px;border-radius:6px;background:${heatColor(uxtNorm(i,val))};color:${textColor(uxtNorm(i,val))};font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace">${uxtNorm(i,val).toFixed(0)}</div>
       </div>`).join('')}
     </div>
   </div>`;
