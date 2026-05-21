@@ -2,17 +2,39 @@
 
   // Canonical list of all 11 knowledge nodes shared by both pages
   const NODE_LIST = [
-    { title: '昇腾硬件体系',      category: 'beginner',    desc: '达芬奇核、HBM、AI Core 架构概览' },
-    { title: 'CANN 软件栈概览',   category: 'beginner',    desc: 'CANN 整体分层架构与组件关系' },
-    { title: '环境安装与配置',    category: 'beginner',    desc: 'Toolkit 安装、环境变量与 NPU 验证' },
-    { title: 'AscendCL 编程基础', category: 'developer',   desc: 'ACL 初始化、Device / Context / Stream' },
-    { title: '模型推理部署',      category: 'developer',   desc: 'ATC 转换、.om 加载与离线推理执行' },
-    { title: '数据预处理 (DVPP)', category: 'developer',   desc: '图像/视频硬件解码与缩放加速' },
-    { title: '性能调优实战',      category: 'developer',   desc: 'Profiling 工具链与 NPU 瓶颈分析' },
-    { title: 'TBE DSL 算子开发',  category: 'operator',    desc: 'TBE DSL 自定义算子开发全流程' },
-    { title: 'TIK 底层算子开发',  category: 'operator',    desc: 'TIK C++ 底层核函数与内存管理' },
-    { title: 'HCCL 分布式通信',   category: 'distributed', desc: 'AllReduce 等集合通信原语与多卡同步' },
-    { title: '大模型训练实战',    category: 'distributed', desc: 'DeepSpeed + HCCL 大模型分布式训练' },
+    { title: '昇腾硬件体系',      category: 'beginner',    desc: '达芬奇核、HBM、AI Core 架构概览',
+      topics: ['达芬奇核架构与 Cube/Vector/Scalar 单元', 'Atlas 系列芯片规格对比', 'AI Core 流水线与内存层次', 'NPU vs GPU 计算模型差异'],
+      duration: '1.5h', difficulty: 1 },
+    { title: 'CANN 软件栈概览',   category: 'beginner',    desc: 'CANN 整体分层架构与组件关系',
+      topics: ['CANN 各层组件职责与调用关系', 'AscendCL / GE / FE / TBE 定位', '算子库与图引擎的协作方式', '与 PyTorch/MindSpore 框架的集成点'],
+      duration: '1h', difficulty: 1 },
+    { title: '环境安装与配置',    category: 'beginner',    desc: 'Toolkit 安装、环境变量与 NPU 验证',
+      topics: ['Driver / Firmware / CANN Toolkit 安装顺序', '环境变量 set_env.sh 配置', 'npu-smi 验证 NPU 可用状态', '常见安装报错与修复'],
+      duration: '1h', difficulty: 1 },
+    { title: 'AscendCL 编程基础', category: 'developer',   desc: 'ACL 初始化、Device / Context / Stream',
+      topics: ['ACL 初始化与资源释放生命周期', 'Device / Context / Stream 三层模型', '内存分配：Host ↔ Device 数据搬运', '同步执行与异步流水的区别'],
+      duration: '3h', difficulty: 2 },
+    { title: '模型推理部署',      category: 'developer',   desc: 'ATC 转换、.om 加载与离线推理执行',
+      topics: ['ATC 工具将 ONNX/TF/Caffe 转 .om 模型', '模型加载与输入/输出 Buffer 管理', '离线推理执行与结果后处理', '动态 Shape 与批量推理配置'],
+      duration: '4h', difficulty: 2 },
+    { title: '数据预处理 (DVPP)', category: 'developer',   desc: '图像/视频硬件解码与缩放加速',
+      topics: ['DVPP 硬件解码 JPEG / H.264 / H.265', '图像缩放、抠图、格式转换 API', 'DVPP 与推理流水线的拼接方式', 'CPU 预处理 vs DVPP 性能对比'],
+      duration: '2.5h', difficulty: 2 },
+    { title: '性能调优实战',      category: 'developer',   desc: 'Profiling 工具链与 NPU 瓶颈分析',
+      topics: ['Profiling 采集 Timeline / 算子耗时', 'MindStudio 可视化分析 Bottleneck', 'AICPU / AICORE 调度优化策略', '内存带宽与流水线 Overlap 优化'],
+      duration: '4h', difficulty: 3 },
+    { title: 'TBE DSL 算子开发',  category: 'operator',    desc: 'TBE DSL 自定义算子开发全流程',
+      topics: ['TBE DSL 张量表达式语法', 'Schedule 调度原语（split/reorder/bind）', '算子注册与 OpProto 定义', '用 msopgen 生成算子工程框架'],
+      duration: '5h', difficulty: 3 },
+    { title: 'TIK 底层算子开发',  category: 'operator',    desc: 'TIK C++ 底层核函数与内存管理',
+      topics: ['TIK C++ 核函数编程模型', 'GM / L1 / L0 多级缓存数据搬运', 'Pipeline 双缓冲与流水并行', '精度调试与 dump 数据对比'],
+      duration: '6h', difficulty: 3 },
+    { title: 'HCCL 分布式通信',   category: 'distributed', desc: 'AllReduce 等集合通信原语与多卡同步',
+      topics: ['HCCL 集合通信：AllReduce / Broadcast / Scatter', 'rank / 通信域 / 拓扑配置', '多机多卡环境初始化', '通信性能分析与带宽瓶颈排查'],
+      duration: '3h', difficulty: 3 },
+    { title: '大模型训练实战',    category: 'distributed', desc: 'DeepSpeed + HCCL 大模型分布式训练',
+      topics: ['DeepSpeed ZeRO Stage 1/2/3 配置', 'Pipeline / Tensor 并行与昇腾适配', '混合精度 BF16 训练与梯度缩放', '千卡训练故障诊断与稳定性优化'],
+      duration: '8h', difficulty: 3 },
   ];
   const CAT_META = {
     beginner:    { label: '基础入门', color: '#10B981' },
@@ -3555,16 +3577,31 @@ def vector_add_tik(shape, dtype, kernel_name):
     const grid = document.getElementById('ld-node-grid');
     if (!grid) return;
     const nodes = cat === 'all' ? NODE_LIST : NODE_LIST.filter(n => n.category === cat);
+    const diffLabel = ['', '入门', '进阶', '高级'];
     grid.innerHTML = nodes.map(n => {
       const meta = CAT_META[n.category] || { label: n.category, color: '#888' };
+      const dots = n.difficulty ? Array.from({length: 3}, (_, i) =>
+        `<span style="width:6px;height:6px;border-radius:50%;display:inline-block;background:${i < n.difficulty ? meta.color : 'var(--border)'}"></span>`
+      ).join('') : '';
+      const topicsHtml = (n.topics || []).map(t =>
+        `<li style="display:flex;gap:6px;align-items:flex-start;font-size:12px;color:var(--text-secondary);line-height:1.5">
+          <span style="color:${meta.color};flex-shrink:0;margin-top:1px">✓</span>${t}
+        </li>`
+      ).join('');
       return `
         <div class="ld-node-card">
           <div class="ld-node-card-top">
             <span class="ld-node-card-title">${n.title}</span>
             <span class="ld-node-card-badge" style="background:${meta.color}18;color:${meta.color}">${meta.label}</span>
           </div>
-          <div class="ld-node-card-desc">${n.desc}</div>
+          <div class="ld-node-card-desc" style="margin-bottom:10px">${n.desc}</div>
+          ${topicsHtml ? `<ul style="margin:0 0 12px;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px">${topicsHtml}</ul>` : ''}
           <div class="ld-node-card-footer">
+            <div style="display:flex;align-items:center;gap:6px">
+              ${dots}
+              <span style="font-size:11px;color:var(--text-muted)">${diffLabel[n.difficulty] || ''}</span>
+              ${n.duration ? `<span style="font-size:11px;color:var(--text-muted);margin-left:6px">· ${n.duration}</span>` : ''}
+            </div>
             <button class="ld-node-start-btn" onclick="ldStartNode('${n.title}')">开始学习 →</button>
           </div>
         </div>`;
