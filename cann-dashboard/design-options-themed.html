@@ -175,7 +175,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .hm-grid{display:grid;grid-template-columns:120px repeat(5,1fr);gap:5px;margin-top:4px}
 .hm-header{font-size:10px;font-weight:700;color:#3D4452;text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;background:#F7F7F8;border-radius:6px}
 .hm-header.first{text-align:left;padding-left:4px;background:none}
-.hm-corner{position:relative;overflow:hidden;border-radius:6px;background:#E3E3E6}
+.hm-corner{position:relative;overflow:hidden;border-radius:6px;background:#EBEBED}
 .hm-corner svg{position:absolute;inset:0;width:100%;height:100%}
 .hm-corner .hc-col{position:absolute;top:30%;right:18%;font-size:9px;font-weight:600;color:#3D4452;letter-spacing:.04em;text-transform:uppercase}
 .hm-corner .hc-row{position:absolute;bottom:30%;left:18%;font-size:9px;font-weight:600;color:#3D4452;letter-spacing:.04em;text-transform:uppercase}
@@ -2385,31 +2385,31 @@ function switchEvTab(id, btn){
 const touchpointData=[
   {id:0,sceneName:'算子复现部署',overallScore:57,overallCls:'bad',
    cells:{
-     doc:{s:47,cls:'bad',obs:['文档检索有效率仅 47%，大量结果无关','文档准确率 58%，版本与代码不同步，21% 的开发者在此放弃']},
-     api:{s:63,cls:'mid',obs:['API 文档覆盖 63%，部分参数说明缺失']},
-     tool:{s:34,cls:'bad',obs:['AIC 日志不显示报错指令，错误可读性 52%','错误自愈成功率仅 23%，强依赖人工排查']},
-     env:{s:71,cls:'mid',obs:['装包平均重试 2.4 次，安装失败率 18%']}
+     doc:{s:47,cls:'bad',t:'d',obs:['文档检索有效率仅 47%，大量结果无关','文档准确率 58%，版本与代码不同步，21% 的开发者在此放弃']},
+     api:{s:63,cls:'mid',t:'f',obs:['API 文档覆盖 63%，部分参数说明缺失']},
+     tool:{s:34,cls:'bad',t:'d',obs:['AIC 日志不显示报错指令，错误可读性 52%','错误自愈成功率仅 23%，强依赖人工排查']},
+     env:{s:71,cls:'mid',t:'u',obs:['装包平均重试 2.4 次，安装失败率 18%']}
    }},
   {id:1,sceneName:'算子迁移部署',overallScore:72,overallCls:'mid',
    cells:{
-     doc:{s:68,cls:'mid',obs:['迁移指南完整度 68%，高级场景示例不足']},
-     api:{s:72,cls:'mid',obs:['迁移 API 覆盖 72%，shape 限制未提前提示']},
-     tool:{s:65,cls:'mid',obs:['迁移工具可用，约 35% shape 异常需手动处理']},
-     env:{s:83,cls:'ok',obs:['环境兼容性较好，偶发版本冲突']}
+     doc:{s:68,cls:'mid',t:'u',obs:['迁移指南完整度 68%，高级场景示例不足']},
+     api:{s:72,cls:'mid',t:'f',obs:['迁移 API 覆盖 72%，shape 限制未提前提示']},
+     tool:{s:65,cls:'mid',t:'u',obs:['迁移工具可用，约 35% shape 异常需手动处理']},
+     env:{s:83,cls:'ok',t:'f',obs:['环境兼容性较好，偶发版本冲突']}
    }},
   {id:2,sceneName:'Builtin 算子定制',overallScore:62,overallCls:'bad',
    cells:{
-     doc:{s:51,cls:'bad',obs:['Builtin 文档更新滞后，VOD 声量 61 条','参数描述错误率高，社区反复反馈']},
-     api:{s:88,cls:'ok',obs:['Builtin API 完备性强，开发者普遍认可']},
-     tool:{s:42,cls:'bad',obs:['调试工具对 Builtin 场景支持弱，排查耗时 3.2×']},
-     env:{s:77,cls:'mid',obs:['编译环境稳定，但首次配置成本偏高']}
+     doc:{s:51,cls:'bad',t:'d',obs:['Builtin 文档更新滞后，VOD 声量 61 条','参数描述错误率高，社区反复反馈']},
+     api:{s:88,cls:'ok',t:'u',obs:['Builtin API 完备性强，开发者普遍认可']},
+     tool:{s:42,cls:'bad',t:'f',obs:['调试工具对 Builtin 场景支持弱，排查耗时 3.2×']},
+     env:{s:77,cls:'mid',t:'u',obs:['编译环境稳定，但首次配置成本偏高']}
    }},
   {id:3,sceneName:'算子基本功能实现',overallScore:78,overallCls:'mid',
    cells:{
-     doc:{s:74,cls:'mid',obs:['基础文档质量较好，编程指南覆盖主要场景']},
-     api:{s:85,cls:'ok',obs:['核心 API 完备，边界场景偶有文档缺失']},
-     tool:{s:69,cls:'mid',obs:['基础调试可用，高级性能分析功能有限']},
-     env:{s:91,cls:'ok',obs:['环境配置成功率高，部署体验最佳']}
+     doc:{s:74,cls:'mid',t:'u',obs:['基础文档质量较好，编程指南覆盖主要场景']},
+     api:{s:85,cls:'ok',t:'f',obs:['核心 API 完备，边界场景偶有文档缺失']},
+     tool:{s:69,cls:'mid',t:'u',obs:['基础调试可用，高级性能分析功能有限']},
+     env:{s:91,cls:'ok',t:'u',obs:['环境配置成功率高，部署体验最佳']}
    }}
 ];
 const tpCols=['doc','api','tool','env'];
@@ -2419,7 +2419,14 @@ const tpColLabels={doc:'文档',api:'API',tool:'工具',env:'环境'};
 // Shared by: 触点体验矩阵 (renderTpMatrix), 组件评分矩阵 (initUXTMatrix)
 // Config: { gridId, rowLabelWidth, cols:[{label}], extraCols:[{label, render(row)→html}],
 //           rows, rowLabel(row)→{name,sub?,dotScore}, scoreOf(row,ci)→0-100,
-//           displayOf(row,ci)→string, subOf(row,ci)→string, onCellClick(ri,ci,el) }
+//           displayOf(row,ci)→string, subOf(row,ci)→string, onCellClick(ri,ci,el),
+//           trendOf(row,ci)→'u'|'d'|'f'|null }
+function cellTrendSvg(t){
+  if(!t) return '';
+  if(t==='u') return `<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><polyline points="1,7 4,1 7,7" stroke="#6DBD9A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  if(t==='d') return `<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><polyline points="1,1 4,7 7,1" stroke="#E89494" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  return `<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><line x1="1" y1="4" x2="7" y2="4" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+}
 window._mxCfg={};
 function renderMatrix(cfg){
   const grid=document.getElementById(cfg.gridId);
@@ -2467,8 +2474,9 @@ function renderMatrix(cfg){
       const score=cfg.scoreOf(row,ci);
       const bg=heatColor(score),fg=textColor(score);
       const sub=cfg.subOf?cfg.subOf(row,ci):'';
+      const tr=cfg.trendOf?cfg.trendOf(row,ci):null;
       html+=`<div class="hm-cell" data-ri="${ri}" data-ci="${ci}" onclick="_mxClick('${cfg.gridId}',${ri},${ci},this)" style="background:${bg};color:${fg}">
-        <div class="cv">${cfg.displayOf(row,ci)}</div>${sub?`<div class="ct">${sub}</div>`:''}
+        <div class="cv" style="display:flex;align-items:center;gap:3px">${cfg.displayOf(row,ci)}${cellTrendSvg(tr)}</div>${sub?`<div class="ct">${sub}</div>`:''}
       </div>`;
     });
     extraCols.forEach(ec=>html+=`<div class="mx-extra-cell">${ec.render(row)}</div>`);
@@ -2498,10 +2506,11 @@ function renderTpMatrix(){
     tpCols.forEach(col=>{
       const s=row.cells[col].s;
       const bg=heatColor(s),fg=textColor(s);
+      const tr=row.cells[col].t||null;
       html+=`<div class="hm-cell" onclick="selectTpCell(${row.id},'${col}',this)"
         data-sid="${row.id}" data-col="${col}"
         style="background:${bg};color:${fg}">
-        <div class="cv">${s}</div>
+        <div class="cv" style="display:flex;align-items:center;gap:3px">${s}${cellTrendSvg(tr)}</div>
         <div class="ct">${row.cells[col].cls==='bad'?'严重':row.cells[col].cls==='mid'?'关注':'健康'}</div>
       </div>`;
     });
@@ -2811,11 +2820,11 @@ function selUxtProd(name,el){
 const UXT_MATRIX_COLS=['总分/100','测试评分','开发评分','可理解','可操作','根因','完整','一致','准确'];
 // display values per component: [总分, 测试, 开发, 可理解, 可操作, 根因, 完整, 一致, 准确]
 const UXT_MATRIX_ROWS=[
-  {name:'hccl', sub:'通信库', vals:[47.9,6.0,8.0,4.3,3.6,4.7,2.2,5.0,4.9], ec:'EC 71%·R 45%', updated:'05/21 00:06'},
-  {name:'dvpp', sub:'图像处理', vals:[47.2,6.0,7.9,4.2,3.5,4.6,2.8,4.1,4.9], ec:'EC 75%·R 93%', updated:'05/21 00:06'},
-  {name:'dump', sub:'基础工具', vals:[46.4,5.6,8.3,4.8,3.8,4.7,2.0,5.0,5.0], ec:'EC 60%·R 50%', updated:'05/21 00:06'},
-  {name:'amct', sub:'模型优化', vals:[44.8,6.0,7.5,4.0,3.0,4.3,3.0,4.5,4.3], ec:'EC 71%·R 44%', updated:'05/20 21:46'},
-  {name:'ge',   sub:'图引擎',   vals:[25.2,3.8,6.6,3.0,2.7,4.3,1.7,5.0,5.0], ec:'EC 50%·R 20%', updated:'05/21 00:06'},
+  {name:'hccl', sub:'通信库', vals:[47.9,6.0,8.0,4.3,3.6,4.7,2.2,5.0,4.9], trends:['d','f','u','u','d','f','d','f','u'], ec:'EC 71%·R 45%', updated:'05/21 00:06'},
+  {name:'dvpp', sub:'图像处理', vals:[47.2,6.0,7.9,4.2,3.5,4.6,2.8,4.1,4.9], trends:['f','u','f','f','u','u','u','d','f'], ec:'EC 75%·R 93%', updated:'05/21 00:06'},
+  {name:'dump', sub:'基础工具', vals:[46.4,5.6,8.3,4.8,3.8,4.7,2.0,5.0,5.0], trends:['u','d','u','u','f','f','d','f','f'], ec:'EC 60%·R 50%', updated:'05/21 00:06'},
+  {name:'amct', sub:'模型优化', vals:[44.8,6.0,7.5,4.0,3.0,4.3,3.0,4.5,4.3], trends:['d','f','d','d','d','d','f','d','d'], ec:'EC 71%·R 44%', updated:'05/20 21:46'},
+  {name:'ge',   sub:'图引擎',   vals:[25.2,3.8,6.6,3.0,2.7,4.3,1.7,5.0,5.0], trends:['d','d','d','d','d','f','d','f','u'], ec:'EC 50%·R 20%', updated:'05/21 00:06'},
 ];
 // normalize vals to 0-100 for heatColor
 // col 0: /100 direct; col 1,2: /10×100; col 3-8: /5×100
@@ -2845,6 +2854,7 @@ function initUXTMatrix(){
     scoreOf:(r,ci)=>uxtNorm(ci,r.vals[ci]),
     displayOf:(r,ci)=>uxtNorm(ci,r.vals[ci]).toFixed(0),
     subOf:()=>'',
+    trendOf:(r,ci)=>r.trends?r.trends[ci]:null,
     onCellClick:(ri,ci)=>showUxtDetail(ri,ci),
   });
 }
