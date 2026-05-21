@@ -70,9 +70,9 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 #### 新看板 design-options-themed.html（主工作文件，~2600 行，单文件，模拟数据）
 
-##### 导航架构（两个顶层 Tab）
+##### 导航架构（三个顶层 Tab）
 
-**总览**（`#tabOverview`）：可滚动总览页，filter-bar 含芯片筛选 + 视角（6 个角色 chip）
+**总览**（`#tabOverview`，hash `#overview`）：可滚动总览页，filter-bar 含芯片筛选 + 视角（6 个角色 chip）
 1. KPI 横排（4 张摘要卡片，含 ECharts sparkline）
 2. 体验健康矩阵（5 产品线 × Agent/痛点/VOD/综合/环比，含 mini 折线）
 3. **技术内核** 楼层（红色徽章）：PyTorch API 雷达图 / 模型开箱环形图（77% 综合覆盖）/ 0 Day 发布
@@ -80,7 +80,15 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 5. 客户痛点 section：大客户闭环率横向柱状图 + 痛点分布柱状图 + 分类汇总 chip（工具/文档/API/环境，可点击过滤，计数随角色联动）+ 统一痛点列表（P0→P1，每条带 `data-cat` + `data-roles`）
 6. **生态增益** 楼层（绿色徽章）：VOD ECharts 柱状图 + Top3 原声卡片 + 社区入门体验（S0–S5 步骤圆圈 + KPI 4 格 + 关键痛点 callout）
 
-**用户旅程**（`#tabDev`）：单页纵向滚动
+**体验测试**（`#tabUxtest`，hash `#uxtest`）：单页纵向滚动，专注组件 × 维度量化评分
+- **触点体验矩阵**（`#tpHeatGrid`）：4 场景（算子复现/迁移/Builtin/基本功能）× 5 维度（文档/API/工具/环境/综合），热力色 + 趋势箭头，点击格子展示 `#tpDetail` Agent 观测
+- **组件评分矩阵**（`#uxtMatrix`）：5 组件（hccl/dvpp/dump/amct/ge）× 9 维度（总分/测试/开发/可理解/可操作/根因/完整/一致/准确），两级列标题（综合/分项评分/开发评分子维度），右侧"更新时间"合并列，热力色 + 趋势箭头，点击格子展示 `#uxtMatrixDetail`
+- **数据结构**：`touchpointData`（4行，每格含 `s`/`cls`/`t`/`obs`）、`UXT_MATRIX_ROWS`（5行，含 `vals[]`/`trends[]`/`ec`/`updated`）
+- **统一渲染器**：`renderMatrix(cfg)` + `_mxClick()`，由 `initUXTMatrix()` 和 `renderTpMatrix()` 共用
+- **归一化**：`uxtNorm(colIdx, v)`：col0 直接用，col1-2 ×10，col3-8 ×20（统一映射到 0–100）
+- **URL hash**：`#uxtest`，三个 tab 均支持 hash 路由（`history.replaceState` + 初始化读取 `location.hash`）
+
+**用户旅程**（`#tabDev`，hash `#dev`）：单页纵向滚动
 - filter-bar（芯片 + 三个角色）→ KPI 4 格（整体健康/严重场景/活跃痛点/本期优先）
 - 触点矩阵（4 场景 × 文档/API/工具/环境，点击格子右侧出现 Agent 观测）
 - main-body：场景列表（sticky left）+ 场景详情（评分/痛点/VOD 三证据 tab + 5 维雷达）+ 设计依据侧栏
@@ -89,7 +97,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 | 函数 | 作用 |
 |------|------|
-| `switchTab(id, btn)` | 切换 tabOverview / tabDev，关闭两个设计点面板 |
+| `switchTab(id, btn)` | 切换 overview / uxtest / dev，URL hash 同步，滚顶 |
 | `filterPain(cat, btn)` | 更新 `_activeCat`，调用 `applyPainFilter()` |
 | `applyPainFilter()` | 两层交集过滤（`_activeRole` × `_activeCat`），更新 chip 计数 |
 | `selectRole(role, btn)` | 控制总览视角筛选（淡化/关注徽章），尾部调用 `applyPainFilter()` |
