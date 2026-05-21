@@ -436,7 +436,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .radar-worst{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--coral-light);color:var(--coral-dark)}
 .radar-body{display:flex;align-items:start;gap:12px}
 .chart-col{flex:1;min-width:0;padding-right:18px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
-.radar-col{flex:1;min-width:0;padding-left:18px;display:flex;align-items:center;gap:12px}
+.radar-col{flex:1;min-width:0;padding-left:18px;display:flex;align-items:center;gap:22px}
 .col-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em}
 .stab-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;align-self:flex-start}
 .stab-tag.stable{background:var(--green-light);color:var(--green-dark)}
@@ -503,9 +503,9 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 /* Agent step timeline */
 .step-tl{display:flex;flex-direction:column}
 .step-tl-item{display:flex;gap:12px;align-items:flex-start;position:relative}
-.step-tl-node{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:30px;position:relative}
+.step-tl-node{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:30px}
 .step-tl-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;font-family:'JetBrains Mono',monospace;flex-shrink:0;border:1.5px solid;position:relative;z-index:1}
-.step-tl-line{position:absolute;left:50%;top:33px;bottom:-10px;width:2px;transform:translateX(-50%);border-radius:1px}
+.step-tl-line{position:absolute;left:14px;top:30px;bottom:0;width:2px;border-radius:1px}
 .step-tl-body{flex:1;min-width:0;padding-bottom:14px}
 .step-tl-body.last{padding-bottom:0}
 .step-tl-hdr{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding-top:4px}
@@ -1332,6 +1332,8 @@ body.ov-rat-open .ov-rat-panel{right:0}
       <div id="sceneListCards" style="display:flex;flex-wrap:wrap;gap:10px"></div>
     </div>
 
+    <!-- SCENE DETAIL + SIDEBAR ROW -->
+    <div style="display:flex;flex-direction:row;gap:16px;align-items:flex-start">
     <!-- SCENE DETAIL -->
     <div class="scene-detail" id="sceneDetail">
       <div class="sd-hint" id="sdHint">
@@ -1463,6 +1465,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
 
       </div>
     </div>
+    </div><!-- /row wrapper -->
 
   </div>
 </div><!-- /tabDev -->
@@ -1893,7 +1896,7 @@ function trendSvg(runs,W,H){
   const areaColor='rgba(106,103,206,0.13)';
   const dotColor=v=>v>=80?'#37C597':v>=60?'#FD9A00':'#E63838';
   const uid='tr'+Math.random().toString(36).slice(2,7);
-  let s=`<svg width="${W}" height="${H+22}" viewBox="0 0 ${W} ${H+22}" style="overflow:visible;display:block">`;
+  let s=`<svg width="100%" height="${H+22}" viewBox="0 0 ${W} ${H+22}" style="overflow:visible;display:block">`;
   // gradient def
   s+=`<defs><linearGradient id="${uid}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6A67CE" stop-opacity=".22"/><stop offset="1" stop-color="#6A67CE" stop-opacity="0"/></linearGradient></defs>`;
   // grid lines
