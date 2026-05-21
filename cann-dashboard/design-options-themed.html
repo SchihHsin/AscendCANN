@@ -2544,6 +2544,7 @@ function switchTab(id,btn){
   document.body.classList.remove('rat-open','ov-rat-open');
   document.getElementById('floatRat').classList.remove('open');
   window.scrollTo({top:0});
+  history.replaceState(null,'','#'+id);
   if(id==='uxtest'){ initUXTChart(); initUXTMatrix(); }
 }
 
@@ -3150,6 +3151,17 @@ function selectStage(code,el){
 (function(){
   const el=document.querySelector('.ov-stage');
   if(el) selectStage('S0',el);
+})();
+
+// 根据 URL hash 激活对应 tab（支持直接分享链接）
+(function(){
+  const hash=(location.hash||'').replace('#','');
+  const ids=['overview','uxtest','dev'];
+  if(ids.includes(hash)){
+    const idx=ids.indexOf(hash);
+    const btn=document.querySelectorAll('.dim-tab')[idx];
+    if(btn) switchTab(hash,btn);
+  }
 })();
 
 </script>
