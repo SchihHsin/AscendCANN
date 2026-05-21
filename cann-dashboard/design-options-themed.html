@@ -2912,7 +2912,8 @@ function showUxtDetail(ri,ci){
   const deltaStr=delta!=null?(delta>0?`+${delta}`:String(delta)):'';
   const bg=heatColor(norm), fg=textColor(norm);
   const histData=r.hist?r.hist[ci]:null;
-  const sparkColor=norm>=60?'#37C597':norm>=40?'#FD9A00':'#E63838';
+  const trend=r.trends?r.trends[ci]:null;
+  const sparkColor=trend==='u'?'#6DBD9A':trend==='d'?'#E89494':'#AAAAAA';
   const det=document.getElementById('uxtMatrixDetail');
   if(!det)return;
   det.style.display='block';
