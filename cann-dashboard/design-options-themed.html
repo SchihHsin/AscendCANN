@@ -2909,14 +2909,17 @@ function showUxtDetail(ri,ci){
   det.style.display='block';
   det.innerHTML=`
   <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">
-    <!-- 左：本期大分 + 上期对比 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0">
+    <!-- 左：本期大分 -->
+    <div style="flex-shrink:0">
       <div style="width:56px;height:56px;border-radius:10px;background:${bg};color:${fg};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;font-family:'JetBrains Mono',monospace">${norm.toFixed(0)}</div>
-      ${prevNorm!=null?`<div style="font-size:10px;color:var(--text-3)">上期 <span style="font-weight:700;color:var(--text-2)">${prevNorm.toFixed(0)}</span> <span style="color:${deltaColor};font-weight:700">${deltaStr}</span></div>`:''}
     </div>
-    <!-- 中：组件名 + 维度 + 走线 -->
+    <!-- 中：组件名 + 上期对比 + 维度 + 走线 -->
     <div style="flex:1;min-width:120px">
-      <div style="font-size:15px;font-weight:800;color:var(--text)">${r.name} <span style="font-size:11px;font-weight:500;color:var(--text-3)">${r.sub}</span></div>
+      <div style="display:flex;align-items:baseline;gap:8px">
+        <span style="font-size:15px;font-weight:800;color:var(--text)">${r.name}</span>
+        <span style="font-size:11px;font-weight:500;color:var(--text-3)">${r.sub}</span>
+        ${prevNorm!=null?`<span style="font-size:10px;color:var(--text-3);margin-left:4px">上期 <span style="font-weight:700;color:var(--text-2)">${prevNorm.toFixed(0)}</span> <span style="color:${deltaColor};font-weight:700">${deltaStr}</span></span>`:''}
+      </div>
       <div style="font-size:11px;color:var(--text-3);margin-top:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <span>维度：${col} &nbsp;·&nbsp; ${r.ec} &nbsp;·&nbsp; 更新 ${r.updated}</span>
         ${histData?`<span style="display:inline-flex;align-items:center;gap:4px;opacity:.8"><span style="font-size:9.5px;white-space:nowrap">近6期</span>${miniSparkSvg(histData,sparkColor,60,18)}</span>`:''}
