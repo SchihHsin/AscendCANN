@@ -414,3 +414,42 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 | commit | 内容 |
 |--------|------|
 | `8e7b0c3` | 修复timeline连线/设计点侧栏布局/趋势图宽度/雷达图间距 |
+
+### 2026-05-21（续会话 3）
+
+#### cann-website 视觉规范重构（基于 OpenDesign tokens）
+
+**目标**：将 `cann-style.css` + 4 个 HTML 文件对齐 OpenEuler 设计系统（`OpenDesign/scripts/tokens.json`）。
+
+**CSS `:root` 变量变更**：
+
+| 变量 | 旧值 | 新值 |
+|------|------|------|
+| `--grad` | `linear-gradient(#2e53fa, #7b25f4)` | `linear-gradient(#002FA7, #5177CA)` |
+| `--black` | `#0A0A0F` | `#000000` |
+| `--bg` | `#F8F9FB` | `#F3F3F5`（grey-2） |
+| `--surface2` | `#F1F4F9` | `#EDEDED`（grey-3） |
+| `--border` | `#E5E7EB` | `rgba(0,0,0,0.1)`（color-control4） |
+| `--border2` | `#D1D5DB` | `rgba(0,0,0,0.25)`（color-control1） |
+| `--text-secondary` | `#4B5563` | `rgba(0,0,0,0.8)` |
+| `--text-muted` | `#9CA3AF` | `rgba(0,0,0,0.4)` |
+| `--accent-blue` | `#2e53fa` | `#002FA7` |
+| `--font` | `'Sora', sans-serif` | HarmonyOS/Inter 栈 |
+| `--mono` | `'JetBrains Mono', monospace` | SFMono/Menlo/Monaco 栈 |
+| `--radius` / `--radius-lg` | `12px` / `16px` | `4px` / `4px` |
+| `--radius-xl` | `24px` | `8px` |
+| `--shadow` | `0 4px 12px rgba(0,0,0,0.05)...` | `0 3px 8px rgba(0,0,0,0.08)` |
+| `--shadow-lg` | `0 12px 24px rgba(0,0,0,0.08)...` | `0 2px 24px rgba(0,0,0,0.15)` |
+
+**其他改动**：
+- Nav height `64px` → `72px`；添加 OpenEuler nav shadow `rgba(0,18,85,0.078)`；backdrop-filter blur `4.53px`
+- Nav active link 改为品牌蓝色 + 2px 底部指示线
+- docs-layout sticky offset `64px` → `72px`
+- 全文扫描替换所有硬编码旧品牌色 `rgba(46,83,250,...)` / `rgba(123,37,244,...)` / `#2e53fa` / `#7b25f4` → 新品牌蓝等效值
+- 移除 4 个 HTML 文件中的 Google Fonts（Sora + JetBrains Mono）引用
+
+#### Commits
+
+| commit | 内容 |
+|--------|------|
+| `fb14c5e` | style: OpenDesign token重构——品牌蓝/HarmonyOS字体/扁平圆角/新阴影/nav 72px |
