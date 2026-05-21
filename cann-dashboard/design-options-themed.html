@@ -2859,7 +2859,7 @@ function miniSparkSvg(data, color, W=80, H=28){
   const last=data[data.length-1], prev=data[data.length-2];
   const dotC=last>prev?'#6DBD9A':last<prev?'#E89494':'#AAAAAA';
   const gid=`spkg${_spkIdx++}`;
-  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle">
     <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="${color}" stop-opacity="0.3"/>
       <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
