@@ -175,6 +175,10 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .hm-grid{display:grid;grid-template-columns:120px repeat(5,1fr);gap:5px;margin-top:4px}
 .hm-header{font-size:10px;font-weight:700;color:var(--text-3);text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;background:#F0F0F2;border-radius:6px}
 .hm-header.first{text-align:left;padding-left:4px;background:none}
+.hm-corner{position:relative;overflow:hidden;background:#F0F0F2;border-radius:6px;height:32px}
+.hm-corner::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom right,transparent calc(50% - .5px),#C8C8CC calc(50% - .5px),#C8C8CC calc(50% + .5px),transparent calc(50% + .5px))}
+.hm-corner .hc-col{position:absolute;top:4px;right:6px;font-size:9px;font-weight:600;color:#898E95;letter-spacing:.04em;text-transform:uppercase}
+.hm-corner .hc-row{position:absolute;bottom:4px;left:6px;font-size:9px;font-weight:600;color:#898E95;letter-spacing:.04em;text-transform:uppercase}
 .hm-row-label{display:flex;flex-direction:row;align-items:center;gap:10px;padding:0 4px;font-size:12px;font-weight:700;color:var(--text)}
 .hm-row-label small{font-size:9.5px;font-weight:500;color:var(--text-3);margin-top:1px;display:block}
 .hm-cell{
@@ -2432,7 +2436,8 @@ function renderMatrix(cfg){
   const extraW=extraCols.length?' '+extraCols.map(()=>'auto').join(' '):'';
   grid.style.gridTemplateColumns=`${cfg.rowLabelWidth} ${cols.map(()=>'1fr').join(' ')}${extraW}`;
   window._mxCfg[cfg.gridId]=cfg;
-  let html=`<div class="hm-header first"></div>`;
+  const corner=cfg.corner||{row:'行',col:'列'};
+  let html=`<div class="hm-corner"><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
   cols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
   extraCols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
   rows.forEach((row,ri)=>{
@@ -2466,8 +2471,9 @@ function _mxClick(gridId,ri,ci,el){
 function renderTpMatrix(){
   const grid=document.getElementById('tpHeatGrid');
   if(!grid) return;
-  const headers=['场景','文档','API','工具','环境','综合'];
-  let html=headers.map((h,i)=>`<div class="hm-header${i===0?' first':''}">${h}</div>`).join('');
+  const headers=['文档','API','工具','环境','综合'];
+  let html=`<div class="hm-corner"><span class="hc-col">维度</span><span class="hc-row">场景</span></div>`;
+  html+=headers.map(h=>`<div class="hm-header">${h}</div>`).join('');
   touchpointData.forEach(row=>{
     const dotColor=row.overallCls==='bad'?'#E63838':row.overallCls==='mid'?'#FD9A00':'#37C597';
     const dotGlow=row.overallCls==='bad'?'rgba(230,56,56,.2)':row.overallCls==='mid'?'rgba(253,154,0,.2)':'rgba(55,197,151,.2)';
@@ -2811,6 +2817,7 @@ function initUXTMatrix(){
   renderMatrix({
     gridId:'uxtMatrix',
     rowLabelWidth:'130px',
+    corner:{row:'组件',col:'维度'},
     cols:UXT_MATRIX_COLS.map(label=>({label})),
     extraCols:[{label:'更新时间',render:r=>`<span>${r.updated}</span>`}],
     rows:UXT_MATRIX_ROWS,
