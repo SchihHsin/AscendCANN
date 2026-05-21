@@ -2423,9 +2423,9 @@ const tpColLabels={doc:'文档',api:'API',tool:'工具',env:'环境'};
 //           trendOf(row,ci)→'u'|'d'|'f'|null }
 function cellTrendSvg(t){
   if(!t) return '';
-  if(t==='u') return `<svg width="6" height="6" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><polyline points="1,7 4,1 7,7" stroke="#6DBD9A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  if(t==='d') return `<svg width="6" height="6" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><polyline points="1,1 4,7 7,1" stroke="#E89494" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  return `<svg width="6" height="6" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><line x1="1" y1="4" x2="7" y2="4" stroke="#AAAAAA" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+  if(t==='u') return `<svg width="5" height="5" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><polyline points="1,7 4,3 7,7" stroke="#6DBD9A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  if(t==='d') return `<svg width="5" height="5" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><polyline points="1,1 4,5 7,1" stroke="#E89494" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  return `<svg width="5" height="5" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><line x1="1" y1="4" x2="7" y2="4" stroke="#AAAAAA" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 }
 window._mxCfg={};
 function renderMatrix(cfg){
