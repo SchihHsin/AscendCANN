@@ -96,7 +96,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .ov-hero{
   position:relative;
   background:radial-gradient(circle at 80% 20%,rgba(255,255,255,.55),transparent 50%),
-             linear-gradient(135deg,#D0B8FF 0%,#80E6FF 55%,#80E6FF 100%);
+             linear-gradient(135deg,#C8D4FF 0%,#A8ECFF 55%,#A8ECFF 100%);
   border-radius:var(--radius-xl);
   padding:24px 28px 22px;
   overflow:hidden;
@@ -176,7 +176,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .hm-header{font-size:10px;font-weight:700;color:#3D4452;text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;background:#F7F7F8;border-radius:6px}
 .hm-header.first{text-align:left;padding-left:4px;background:none}
 .hm-corner{position:relative;overflow:hidden;border-radius:6px}
-.hm-corner::before{content:'';position:absolute;top:50%;left:50%;width:55%;height:1px;background:#9098A6;transform:translate(-50%,-50%) rotate(45deg)}
+.hm-corner svg{position:absolute;inset:0;width:100%;height:100%}
 .hm-corner .hc-col{position:absolute;top:30%;right:18%;font-size:9px;font-weight:600;color:#3D4452;letter-spacing:.04em;text-transform:uppercase}
 .hm-corner .hc-row{position:absolute;bottom:30%;left:18%;font-size:9px;font-weight:600;color:#3D4452;letter-spacing:.04em;text-transform:uppercase}
 .hm-row-label{display:flex;flex-direction:row;align-items:center;gap:10px;padding:0 4px;font-size:12px;font-weight:700;color:var(--text)}
@@ -254,7 +254,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .journey-card-hdr{
   padding:16px 22px;
   background:radial-gradient(circle at 90% 10%,rgba(255,255,255,.4),transparent 50%),
-             linear-gradient(135deg,#D0B8FF 0%,#80E6FF 100%);
+             linear-gradient(135deg,#C8D4FF 0%,#A8ECFF 100%);
   display:flex;align-items:center;gap:10px;position:relative;overflow:hidden;
 }
 .journey-card-hdr::before{
@@ -2434,7 +2434,7 @@ function renderMatrix(cfg){
   // mergeHeader:true → grid-row:span 2，纵向合并分组行+列名行
   const mergedExtras=new Set();
   if(cfg.groupCols){
-    html+=`<div class="hm-corner" style="grid-row:span 2"><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
+    html+=`<div class="hm-corner" style="grid-row:span 2"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="22" y1="22" x2="78" y2="78" stroke="#9098A6" stroke-width="2"/></svg><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
     let extraIdx=0;
     cfg.groupCols.forEach(g=>{
       const span=g.span||1;
@@ -2451,7 +2451,7 @@ function renderMatrix(cfg){
     });
   }
   // 列名行（有分组行时角标已在上方 span 2，此处跳过）
-  if(!cfg.groupCols) html+=`<div class="hm-corner"><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
+  if(!cfg.groupCols) html+=`<div class="hm-corner"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="22" y1="22" x2="78" y2="78" stroke="#9098A6" stroke-width="2"/></svg><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
   cols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
   extraCols.forEach((c,i)=>{ if(!mergedExtras.has(i)) html+=`<div class="hm-header">${c.label}</div>`; });
   rows.forEach((row,ri)=>{
@@ -2486,7 +2486,7 @@ function renderTpMatrix(){
   const grid=document.getElementById('tpHeatGrid');
   if(!grid) return;
   const headers=['文档','API','工具','环境','综合'];
-  let html=`<div class="hm-corner"><span class="hc-col">维度</span><span class="hc-row">场景</span></div>`;
+  let html=`<div class="hm-corner"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="22" y1="22" x2="78" y2="78" stroke="#9098A6" stroke-width="2"/></svg><span class="hc-col">维度</span><span class="hc-row">场景</span></div>`;
   html+=headers.map(h=>`<div class="hm-header">${h}</div>`).join('');
   touchpointData.forEach(row=>{
     const dotColor=row.overallCls==='bad'?'#E63838':row.overallCls==='mid'?'#FD9A00':'#37C597';
