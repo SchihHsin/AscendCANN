@@ -2434,7 +2434,7 @@ function renderMatrix(cfg){
   // mergeHeader:true → grid-row:span 2，纵向合并分组行+列名行
   const mergedExtras=new Set();
   if(cfg.groupCols){
-    html+=`<div class="hm-corner" style="grid-row:span 2"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="0" x2="100" y2="100" stroke="#fff" stroke-width="1.5"/></svg><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
+    html+=`<div class="hm-corner" style="grid-row:span 2"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="0" x2="100" y2="100" stroke="#fff" stroke-width="2.5"/></svg><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
     let extraIdx=0;
     cfg.groupCols.forEach(g=>{
       const span=g.span||1;
@@ -2451,7 +2451,7 @@ function renderMatrix(cfg){
     });
   }
   // 列名行（有分组行时角标已在上方 span 2，此处跳过）
-  if(!cfg.groupCols) html+=`<div class="hm-corner"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="0" x2="100" y2="100" stroke="#fff" stroke-width="1.5"/></svg><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
+  if(!cfg.groupCols) html+=`<div class="hm-corner"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="0" x2="100" y2="100" stroke="#fff" stroke-width="2.5"/></svg><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
   cols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
   extraCols.forEach((c,i)=>{ if(!mergedExtras.has(i)) html+=`<div class="hm-header">${c.label}</div>`; });
   rows.forEach((row,ri)=>{
@@ -2486,7 +2486,7 @@ function renderTpMatrix(){
   const grid=document.getElementById('tpHeatGrid');
   if(!grid) return;
   const headers=['文档','API','工具','环境','综合'];
-  let html=`<div class="hm-corner"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="0" x2="100" y2="100" stroke="#fff" stroke-width="1.5"/></svg><span class="hc-col">维度</span><span class="hc-row">场景</span></div>`;
+  let html=`<div class="hm-corner"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="0" x2="100" y2="100" stroke="#fff" stroke-width="2.5"/></svg><span class="hc-col">维度</span><span class="hc-row">场景</span></div>`;
   html+=headers.map(h=>`<div class="hm-header">${h}</div>`).join('');
   touchpointData.forEach(row=>{
     const dotColor=row.overallCls==='bad'?'#E63838':row.overallCls==='mid'?'#FD9A00':'#37C597';
