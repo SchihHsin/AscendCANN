@@ -183,9 +183,9 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
   cursor:pointer;transition:all .15s;border:2px solid transparent;
 }
 .hm-cell:hover{transform:scale(1.05);z-index:2;box-shadow:0 4px 14px rgba(106,103,206,.22)}
-.hm-cell.hm-sel,.hm-cell.tp-heat-sel{border-color:var(--primary);box-shadow:0 0 0 3px rgba(106,103,206,.15);transform:scale(1.06)}
-.hm-cell .cv,.tp-heat-cell .cv{font-size:13px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace}
-.hm-cell .ct,.tp-heat-cell .ct{font-size:9px;font-weight:600;opacity:.7;margin-top:1px}
+.hm-cell.hm-sel{border-color:var(--primary);box-shadow:0 0 0 3px rgba(106,103,206,.15);transform:scale(1.06)}
+.hm-cell .cv{font-size:13px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace}
+.hm-cell .ct{font-size:9px;font-weight:600;opacity:.7;margin-top:1px}
 .hm-legend{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:11px;color:var(--text-3);font-weight:500;justify-content:flex-end}
 .hm-grad{height:8px;width:120px;border-radius:4px;background:linear-gradient(90deg,#FEEFF0 0%,#FFB6C8 35%,#FFE87F 55%,#EBFCF7 80%,#9DFBE8 100%)}
 
@@ -670,10 +670,8 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .cust-delta.flat{color:var(--text-3)}
 
 /* ── AscendOps v4 additions ── */
-/* tp-heat-cell hover */
-.tp-heat-cell{border-radius:8px;height:38px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;border:2px solid transparent}
-.tp-heat-cell:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(106,103,206,.22);z-index:2}
-.tp-heat-cell.tp-heat-sel{border-color:var(--primary);box-shadow:0 0 0 3px rgba(106,103,206,.15);transform:scale(1.06)}
+/* extra column cell (e.g. 更新时间) in renderMatrix() */
+.mx-extra-cell{display:flex;align-items:center;justify-content:center;padding:0 8px;font-size:10px;color:var(--text-3);font-family:'JetBrains Mono',monospace;white-space:nowrap;min-width:72px}
 /* ov-section layout helper */
 .ov-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:22px 24px}
 .ov-section-title{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.01em}
@@ -1407,13 +1405,14 @@ body.ov-rat-open .ov-rat-panel{right:0}
         </div>
       </div>
       <!-- 列分组标签 -->
-      <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;gap:5px;margin-bottom:2px">
+      <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;gap:5px;margin-bottom:2px">
         <div></div>
         <div style="font-size:9px;font-weight:700;color:var(--gold-dark);text-align:center;letter-spacing:.04em;text-transform:uppercase">综合</div>
         <div style="font-size:9px;font-weight:700;color:var(--teal-dark);text-align:center;grid-column:span 2;letter-spacing:.04em;text-transform:uppercase">分项评分</div>
         <div style="font-size:9px;font-weight:700;color:var(--purple-dark);text-align:center;grid-column:span 6;letter-spacing:.04em;text-transform:uppercase">开发评分·子维度（满分5）</div>
+        <div style="font-size:9px;font-weight:700;color:var(--text-3);text-align:center;letter-spacing:.04em;text-transform:uppercase">更新时间</div>
       </div>
-      <div id="uxtMatrix" style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;gap:5px"></div>
+      <div id="uxtMatrix" style="display:grid;gap:5px"></div>
       <!-- 详情抽屉 -->
       <div id="uxtMatrixDetail" style="display:none;margin-top:14px;padding:14px 18px;background:var(--g1);border:1px solid var(--border);border-radius:var(--radius-m)"></div>
     </div><!-- /组件概览 -->
@@ -2416,45 +2415,74 @@ const touchpointData=[
 const tpCols=['doc','api','tool','env'];
 const tpColLabels={doc:'文档',api:'API',tool:'工具',env:'环境'};
 
-function heatBg(score){
-  const stops=[[0,[254,239,240]],[35,[255,182,200]],[55,[255,232,127]],[70,[255,248,229]],[82,[235,252,247]],[100,[59,232,128]]];
-  let a=stops[0],b=stops[stops.length-1];
-  for(let i=0;i<stops.length-1;i++){if(score>=stops[i][0]&&score<=stops[i+1][0]){a=stops[i];b=stops[i+1];break;}}
-  const t=(score-a[0])/(b[0]-a[0]||1);
-  const c=a[1].map((v,i)=>Math.round(v+(b[1][i]-v)*t));
-  return `rgb(${c[0]},${c[1]},${c[2]})`;
+// ── UNIFIED MATRIX RENDERER ──
+// Shared by: 触点体验矩阵 (renderTpMatrix), 组件评分矩阵 (initUXTMatrix)
+// Config: { gridId, rowLabelWidth, cols:[{label}], extraCols:[{label, render(row)→html}],
+//           rows, rowLabel(row)→{name,sub?,dotScore}, scoreOf(row,ci)→0-100,
+//           displayOf(row,ci)→string, subOf(row,ci)→string, onCellClick(ri,ci,el) }
+window._mxCfg={};
+function renderMatrix(cfg){
+  const grid=document.getElementById(cfg.gridId);
+  if(!grid)return;
+  const {cols,extraCols=[],rows}=cfg;
+  const extraW=extraCols.length?' '+extraCols.map(()=>'auto').join(' '):'';
+  grid.style.gridTemplateColumns=`${cfg.rowLabelWidth} ${cols.map(()=>'1fr').join(' ')}${extraW}`;
+  window._mxCfg[cfg.gridId]=cfg;
+  let html=`<div class="hm-header first"></div>`;
+  cols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
+  extraCols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
+  rows.forEach((row,ri)=>{
+    const rl=cfg.rowLabel(row);
+    const ds=rl.dotScore;
+    const dotC=ds>=60?'var(--green-dark)':ds>=40?'var(--gold-dark)':'var(--coral-dark)';
+    const dotG=ds>=60?'rgba(55,197,151,.2)':ds>=40?'rgba(253,154,0,.2)':'rgba(230,56,56,.2)';
+    html+=`<div class="hm-row-label" style="flex-direction:row;align-items:center;gap:6px">
+      <div style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:${dotC};box-shadow:0 0 0 3px ${dotG}"></div>
+      <div><div>${rl.name}</div>${rl.sub?`<small>${rl.sub}</small>`:''}</div>
+    </div>`;
+    cols.forEach((c,ci)=>{
+      const score=cfg.scoreOf(row,ci);
+      const bg=heatColor(score),fg=textColor(score);
+      const sub=cfg.subOf?cfg.subOf(row,ci):'';
+      html+=`<div class="hm-cell" data-ri="${ri}" data-ci="${ci}" onclick="_mxClick('${cfg.gridId}',${ri},${ci},this)" style="background:${bg};color:${fg}">
+        <div class="cv">${cfg.displayOf(row,ci)}</div>${sub?`<div class="ct">${sub}</div>`:''}
+      </div>`;
+    });
+    extraCols.forEach(ec=>html+=`<div class="mx-extra-cell">${ec.render(row)}</div>`);
+  });
+  grid.innerHTML=html;
 }
-function heatFg(score){return score>=60?'#1B2432':'#E63838';}
+function _mxClick(gridId,ri,ci,el){
+  document.querySelectorAll(`#${gridId} .hm-cell`).forEach(c=>c.classList.remove('hm-sel'));
+  el.classList.add('hm-sel');
+  const cfg=window._mxCfg[gridId];
+  if(cfg&&cfg.onCellClick) cfg.onCellClick(ri,ci,el);
+}
 
 function renderTpMatrix(){
   const grid=document.getElementById('tpHeatGrid');
   if(!grid) return;
-  // Header row
   const headers=['场景','文档','API','工具','环境','综合'];
-  let html=headers.map((h,i)=>`<div style="font-size:10px;font-weight:700;color:var(--text-3);text-align:${i===0?'left':'center'};padding:5px ${i===0?'4px':'2px'};text-transform:uppercase;letter-spacing:.04em">${h}</div>`).join('');
-  // Data rows
+  let html=headers.map((h,i)=>`<div class="hm-header${i===0?' first':''}">${h}</div>`).join('');
   touchpointData.forEach(row=>{
-    // Scene label with health dot
     const dotColor=row.overallCls==='bad'?'#E63838':row.overallCls==='mid'?'#FD9A00':'#37C597';
     const dotGlow=row.overallCls==='bad'?'rgba(230,56,56,.2)':row.overallCls==='mid'?'rgba(253,154,0,.2)':'rgba(55,197,151,.2)';
     html+=`<div class="hm-row-label" style="padding:0;flex-direction:row;align-items:center;gap:6px">
       <div style="width:8px;height:8px;border-radius:50%;background:${dotColor};box-shadow:0 0 0 2px ${dotGlow};flex-shrink:0"></div>
       <div>${row.sceneName}</div>
     </div>`;
-    // Dimension cells
     tpCols.forEach(col=>{
       const s=row.cells[col].s;
-      const bg=heatBg(s),fg=heatFg(s);
-      html+=`<div class="tp-heat-cell" onclick="selectTpCell(${row.id},'${col}',this)"
+      const bg=heatColor(s),fg=textColor(s);
+      html+=`<div class="hm-cell" onclick="selectTpCell(${row.id},'${col}',this)"
         data-sid="${row.id}" data-col="${col}"
         style="background:${bg};color:${fg}">
         <div class="cv">${s}</div>
         <div class="ct">${row.cells[col].cls==='bad'?'严重':row.cells[col].cls==='mid'?'关注':'健康'}</div>
       </div>`;
     });
-    // Overall
-    const obg=heatBg(row.overallScore),ofg=heatFg(row.overallScore);
-    html+=`<div class="tp-heat-cell" style="background:${obg};color:${ofg}">
+    const obg=heatColor(row.overallScore),ofg=textColor(row.overallScore);
+    html+=`<div class="hm-cell" style="background:${obg};color:${ofg}">
       <div class="cv">${row.overallScore}</div>
       <div class="ct">综合</div>
     </div>`;
@@ -2463,12 +2491,11 @@ function renderTpMatrix(){
 }
 
 function selectTpCell(sceneId,col,el){
-  // clear previous selection
-  document.querySelectorAll('.tp-heat-cell').forEach(el=>el.classList.remove('tp-heat-sel'));
-  el.classList.add('tp-heat-sel');
+  document.querySelectorAll('#tpHeatGrid .hm-cell').forEach(c=>c.classList.remove('hm-sel'));
+  el.classList.add('hm-sel');
   const row=touchpointData.find(r=>r.id===sceneId);
   const cell=row.cells[col];
-  const bg=heatBg(cell.s),fg=heatFg(cell.s);
+  const bg=heatColor(cell.s),fg=textColor(cell.s);
   const obsItemBg=cell.cls==='bad'?'var(--coral-light)':cell.cls==='mid'?'var(--gold-light)':'var(--green-light)';
   const obsItemBorder=cell.cls==='bad'?'var(--coral-med)':cell.cls==='mid'?'var(--gold-med)':'var(--green-faded)';
   document.getElementById('tpDetail').innerHTML=`
@@ -2776,34 +2803,21 @@ let _uxtMatrixInited=false;
 function initUXTMatrix(){
   if(_uxtMatrixInited)return;
   _uxtMatrixInited=true;
-  const grid=document.getElementById('uxtMatrix');
-  if(!grid)return;
-  // header row
-  grid.innerHTML='<div style="font-size:10px;font-weight:700;color:var(--text-3);padding:4px 6px;display:flex;flex-direction:column;justify-content:flex-end"></div>'+
-    UXT_MATRIX_COLS.map(c=>`<div class="hm-header">${c}</div>`).join('');
-  // data rows
-  UXT_MATRIX_ROWS.forEach((r,ri)=>{
-    const totalScore=uxtNorm(0,r.vals[0]);
-    const dotColor=totalScore>=60?'var(--green-dark)':totalScore>=40?'var(--gold-dark)':'var(--coral-dark)';
-    const dotGlow=totalScore>=60?'rgba(55,197,151,.2)':totalScore>=40?'rgba(253,154,0,.2)':'rgba(230,56,56,.2)';
-    grid.innerHTML+=`<div class="hm-row-label" style="flex-direction:row;align-items:center;gap:6px">
-      <div style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:${dotColor};box-shadow:0 0 0 3px ${dotGlow}"></div>
-      <div><div>${r.name}</div><small>${r.sub}</small></div>
-    </div>`;
-    r.vals.forEach((v,ci)=>{
-      const norm=uxtNorm(ci,v);
-      const bg=heatColor(norm), fg=textColor(norm);
-      const display=ci===0?v.toFixed(1):(ci<=2?v.toFixed(1):v.toFixed(1));
-      grid.innerHTML+=`<div class="hm-cell" onclick="showUxtDetail(${ri},${ci})" style="background:${bg};color:${fg}"><div class="cv">${display}</div></div>`;
-    });
+  renderMatrix({
+    gridId:'uxtMatrix',
+    rowLabelWidth:'130px',
+    cols:UXT_MATRIX_COLS.map(label=>({label})),
+    extraCols:[{label:'更新时间',render:r=>`<span>${r.updated}</span>`}],
+    rows:UXT_MATRIX_ROWS,
+    rowLabel:r=>({name:r.name,sub:r.sub,dotScore:uxtNorm(0,r.vals[0])}),
+    scoreOf:(r,ci)=>uxtNorm(ci,r.vals[ci]),
+    displayOf:(r,ci)=>r.vals[ci].toFixed(1),
+    subOf:()=>'',
+    onCellClick:(ri,ci)=>showUxtDetail(ri,ci),
   });
 }
 
 function showUxtDetail(ri,ci){
-  document.querySelectorAll('#uxtMatrix .hm-cell').forEach(el=>el.classList.remove('hm-sel'));
-  const cells=document.querySelectorAll('#uxtMatrix .hm-cell');
-  const idx=ri*UXT_MATRIX_COLS.length+ci;
-  if(cells[idx]) cells[idx].classList.add('hm-sel');
   const r=UXT_MATRIX_ROWS[ri], col=UXT_MATRIX_COLS[ci], v=r.vals[ci];
   const norm=uxtNorm(ci,v);
   const bg=heatColor(norm), fg=textColor(norm);
