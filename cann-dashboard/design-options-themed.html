@@ -175,10 +175,10 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .hm-grid{display:grid;grid-template-columns:120px repeat(5,1fr);gap:5px;margin-top:4px}
 .hm-header{font-size:10px;font-weight:700;color:var(--text-3);text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;background:#F0F0F2;border-radius:6px}
 .hm-header.first{text-align:left;padding-left:4px;background:none}
-.hm-corner{position:relative;overflow:hidden;background:#F0F0F2;border-radius:6px;height:32px}
-.hm-corner::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom right,transparent calc(50% - .5px),#C8C8CC calc(50% - .5px),#C8C8CC calc(50% + .5px),transparent calc(50% + .5px))}
-.hm-corner .hc-col{position:absolute;top:4px;right:6px;font-size:9px;font-weight:600;color:#898E95;letter-spacing:.04em;text-transform:uppercase}
-.hm-corner .hc-row{position:absolute;bottom:4px;left:6px;font-size:9px;font-weight:600;color:#898E95;letter-spacing:.04em;text-transform:uppercase}
+.hm-corner{position:relative;overflow:hidden;border-radius:6px}
+.hm-corner::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom left,transparent calc(50% - .5px),#C8C8CC calc(50% - .5px),#C8C8CC calc(50% + .5px),transparent calc(50% + .5px))}
+.hm-corner .hc-col{position:absolute;top:5px;right:6px;font-size:9px;font-weight:600;color:#898E95;letter-spacing:.04em;text-transform:uppercase}
+.hm-corner .hc-row{position:absolute;bottom:5px;left:6px;font-size:9px;font-weight:600;color:#898E95;letter-spacing:.04em;text-transform:uppercase}
 .hm-row-label{display:flex;flex-direction:row;align-items:center;gap:10px;padding:0 4px;font-size:12px;font-weight:700;color:var(--text)}
 .hm-row-label small{font-size:9.5px;font-weight:500;color:var(--text-3);margin-top:1px;display:block}
 .hm-cell{
@@ -2434,7 +2434,7 @@ function renderMatrix(cfg){
   // mergeHeader:true → grid-row:span 2，纵向合并分组行+列名行
   const mergedExtras=new Set();
   if(cfg.groupCols){
-    html+=`<div></div>`; // corner 占位
+    html+=`<div class="hm-corner" style="grid-row:span 2"><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
     let extraIdx=0;
     cfg.groupCols.forEach(g=>{
       const span=g.span||1;
@@ -2450,8 +2450,8 @@ function renderMatrix(cfg){
       }
     });
   }
-  // 列名行
-  html+=`<div class="hm-corner"><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
+  // 列名行（有分组行时角标已在上方 span 2，此处跳过）
+  if(!cfg.groupCols) html+=`<div class="hm-corner"><span class="hc-col">${corner.col}</span><span class="hc-row">${corner.row}</span></div>`;
   cols.forEach(c=>html+=`<div class="hm-header">${c.label}</div>`);
   extraCols.forEach((c,i)=>{ if(!mergedExtras.has(i)) html+=`<div class="hm-header">${c.label}</div>`; });
   rows.forEach((row,ri)=>{
