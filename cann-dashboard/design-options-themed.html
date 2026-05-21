@@ -726,6 +726,34 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .sc:nth-child(4n+1) .grade-tag.bad,.sc:nth-child(4n+1) .grade-tag.mid,.sc:nth-child(4n+1) .grade-tag.ok{background:rgba(255,255,255,.8)}
 /* tp detail hint */
 .tp-detail-hint{padding:32px 20px;text-align:center;color:var(--text-3);font-size:12px;background:var(--g1);border:1px solid var(--border);border-radius:var(--radius-m);line-height:1.8}
+
+/* ── UX TEST TAB ── */
+.uxt-sub-tab{padding:6px 14px;height:38px;font-size:12px;font-weight:600;color:var(--text-3);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;transition:all .12s;white-space:nowrap}
+.uxt-sub-tab:hover{color:var(--text)}
+.uxt-sub-tab.on{color:var(--primary);border-bottom-color:var(--primary)}
+.uxt-kep-table{width:100%;border-collapse:collapse;font-size:12px}
+.uxt-kep-table th{background:var(--g1);border:1px solid var(--border);padding:8px 10px;text-align:center;color:var(--text-3);font-weight:600;font-size:11px}
+.uxt-kep-table td{border:1px solid var(--border);padding:6px 10px;vertical-align:top;color:var(--text-2);font-size:11px}
+.uxt-row-label{background:var(--g1);color:var(--text-3);font-weight:700;text-align:center;white-space:nowrap;vertical-align:middle}
+.uxt-tag-blue{background:var(--purple-light);color:var(--purple-dark);border-radius:4px;padding:3px 8px;font-size:10px;font-weight:700;display:inline-block;margin:2px}
+.uxt-tag-grey{background:var(--g2);color:var(--text-3);border-radius:4px;padding:3px 8px;font-size:10px;display:inline-block;margin:2px}
+.uxt-issue{background:var(--gold-light);border-left:3px solid var(--gold-dark);border-radius:2px;padding:5px 8px;font-size:11px;color:var(--text-2);line-height:1.5;margin-bottom:4px}
+.uxt-issue.red{background:var(--coral-light);border-left-color:var(--coral-dark)}
+.uxt-ov-table{width:100%;border-collapse:collapse;font-size:12px}
+.uxt-ov-table th{background:var(--g1);border-bottom:1px solid var(--border);padding:8px 12px;text-align:center;color:var(--text-3);font-weight:600;font-size:11px;white-space:nowrap}
+.uxt-ov-table th.left{text-align:left}
+.uxt-ov-table td{border-bottom:1px solid var(--border);padding:12px;text-align:center;color:var(--text-2);vertical-align:middle}
+.uxt-ov-table tbody tr:last-child td{border-bottom:none}
+.uxt-ov-table tbody tr:hover td{background:var(--g1)}
+.uxt-comp-name{font-size:13px;font-weight:700;color:var(--text);text-align:left}
+.uxt-comp-sub{font-size:10px;color:var(--text-3);margin-top:1px;text-align:left}
+.uxt-score-red{color:var(--coral-dark);font-size:18px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.uxt-score-mid{color:var(--gold-dark);font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.uxt-score-ok{color:var(--green-dark);font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.uxt-ec-label{font-size:10px;color:var(--text-3);margin-top:2px}
+.uxt-col-div{border-left:1px solid var(--border)}
+.uxt-th-sort{cursor:pointer;user-select:none}
+.uxt-th-sort:hover{color:var(--primary)}
 </style>
 </head>
 <body>
@@ -737,6 +765,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
   <span class="tb-title">体验看板</span>
   <div class="tb-dims">
     <button class="dim-tab on" onclick="switchTab('overview',this)">总览</button>
+    <button class="dim-tab" onclick="switchTab('uxtest',this)">体验测试</button>
     <button class="dim-tab" onclick="switchTab('dev',this)">用户旅程</button>
   </div>
   <div class="tb-right">
@@ -1067,7 +1096,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
         </div>
         <div id="journeyStageDetail" style="padding:0 20px 14px"></div>
         <div class="journey-footer">
-          <button class="journey-btn" onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[1])">→ 查看完整入门旅程</button>
+          <button class="journey-btn" onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[2])">→ 查看完整入门旅程</button>
         </div>
       </div>
 
@@ -1130,7 +1159,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
             <div class="snap-row"><span class="snap-row-lbl">优秀实践完成率</span><span class="snap-row-val mid">部分</span></div>
           </div>
           <div style="padding:10px 16px;border-top:1px solid var(--border)">
-            <button onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[1])" style="width:100%;padding:9px;border-radius:999px;border:1px solid var(--purple-med);background:var(--purple-light);color:var(--primary);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s">→ 进入用户旅程</button>
+            <button onclick="switchTab('dev',document.querySelectorAll('.dim-tab')[2])" style="width:100%;padding:9px;border-radius:999px;border:1px solid var(--purple-med);background:var(--purple-light);color:var(--primary);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s">→ 进入用户旅程</button>
           </div>
         </div>
       </div>
@@ -1235,6 +1264,229 @@ body.ov-rat-open .ov-rat-panel{right:0}
   </div>
 
 </div><!-- /tabOverview -->
+
+<!-- UX TEST TAB -->
+<div id="tabUXTest" style="display:none">
+
+  <!-- filter bar -->
+  <div class="filter-bar">
+    <span class="fl-lbl">芯片</span>
+    <button class="fchip on">A2&amp;A3</button>
+    <button class="fchip">A5</button>
+    <div class="fl-sep"></div>
+    <span class="fl-lbl">周期</span>
+    <button class="fchip on">2026-05</button>
+    <div class="fl-sep"></div>
+    <span class="fl-lbl">组件</span>
+    <button class="fchip on" id="uxtProdAll" onclick="selUxtProd('all',this)">全部</button>
+    <button class="fchip" onclick="selUxtProd('算子库',this)">算子库</button>
+    <button class="fchip" onclick="selUxtProd('通信库-集合通信',this)">通信库-集合通信</button>
+    <button class="fchip" onclick="selUxtProd('通信库-单边通信',this)">通信库-单边通信</button>
+    <button class="fchip" onclick="selUxtProd('算子编程-Ascend C',this)">算子编程-Ascend C</button>
+    <button class="fchip" onclick="selUxtProd('图引擎',this)">图引擎</button>
+    <button class="fchip" onclick="selUxtProd('运行时',this)">运行时</button>
+    <button class="fchip" id="uxtProdJC" onclick="selUxtProd('基础工具',this)">基础工具</button>
+    <button class="fchip" onclick="selUxtProd('模型优化样例',this)">模型优化样例</button>
+    <button class="fchip" onclick="selUxtProd('资料',this)">资料</button>
+  </div>
+
+  <div class="ov-body">
+
+    <!-- 满意度评分 -->
+    <div class="ov-section">
+      <div class="ov-section-hdr">
+        <div>
+          <div class="ov-section-title">满意度评分</div>
+          <div class="ov-section-sub">各组件当前评分 vs 目标值（满分 10）</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="display:flex;gap:10px;font-size:11px;color:var(--text-3)">
+            <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:var(--coral-core);display:inline-block"></span>当前分</span>
+            <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:var(--purple-dark);display:inline-block"></span>目标值</span>
+          </div>
+          <div style="display:flex;gap:6px">
+            <span class="chip dn" style="font-size:10px">0–4 难用</span>
+            <span class="chip" style="background:var(--gold-light);color:var(--gold-dark);font-size:10px">4–6 可用</span>
+            <span class="chip up" style="font-size:10px">6–10 好用</span>
+          </div>
+        </div>
+      </div>
+      <div id="ecUXBar" style="height:200px;width:100%"></div>
+    </div>
+
+    <!-- 两列详情 -->
+    <div style="display:grid;grid-template-columns:380px 1fr;gap:16px">
+
+      <!-- 折线图 -->
+      <div class="ov-section" style="padding:18px 20px" id="uxtLineCard">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div id="uxtLineTitle" style="font-size:13px;font-weight:700;color:var(--text)">基础工具 · 各阶段满意度</div>
+          <div style="display:flex;gap:6px">
+            <span class="chip" style="background:var(--purple-light);color:var(--purple-dark)">A2&amp;A3 <b>5.44</b></span>
+            <span class="chip" style="background:var(--teal-light);color:var(--teal-dark)">A5 <b>5.44</b></span>
+          </div>
+        </div>
+        <div style="position:relative;height:130px;padding-bottom:22px">
+          <div style="position:absolute;left:0;top:0;bottom:22px;display:flex;flex-direction:column;justify-content:space-between;font-size:10px;color:var(--text-3);width:16px;text-align:right">
+            <span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span><span>0</span>
+          </div>
+          <div style="margin-left:22px;height:calc(100% - 22px);position:relative">
+            <svg width="100%" height="100%" viewBox="0 0 300 110" preserveAspectRatio="none">
+              <line x1="0" y1="0"   x2="300" y2="0"   stroke="#E1E2E4" stroke-width="1"/>
+              <line x1="0" y1="18"  x2="300" y2="18"  stroke="#E1E2E4" stroke-width="1"/>
+              <line x1="0" y1="36"  x2="300" y2="36"  stroke="#E1E2E4" stroke-width="1"/>
+              <line x1="0" y1="54"  x2="300" y2="54"  stroke="#E1E2E4" stroke-width="1"/>
+              <line x1="0" y1="72"  x2="300" y2="72"  stroke="#E1E2E4" stroke-width="1"/>
+              <line x1="0" y1="90"  x2="300" y2="90"  stroke="#E1E2E4" stroke-width="1"/>
+              <line x1="0" y1="108" x2="300" y2="108" stroke="#E1E2E4" stroke-width="1"/>
+              <defs>
+                <linearGradient id="fillUXA" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#6A67CE" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="#6A67CE" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,15 C60,12 90,18 150,16 C200,14 250,20 300,17 L300,108 L0,108 Z" fill="url(#fillUXA)"/>
+              <path d="M0,15 C60,12 90,18 150,16 C200,14 250,20 300,17" fill="none" stroke="#6A67CE" stroke-width="2"/>
+              <path d="M0,12 C60,16 90,20 150,14 C200,12 250,18 300,14" fill="none" stroke="#1AAFD0" stroke-width="2" stroke-dasharray="4 3"/>
+              <text x="0"   y="122" font-size="9" fill="#898E95" text-anchor="start">工具获取</text>
+              <text x="100" y="122" font-size="9" fill="#898E95" text-anchor="middle">工具使用</text>
+              <text x="200" y="122" font-size="9" fill="#898E95" text-anchor="middle">结果分析</text>
+              <text x="295" y="122" font-size="9" fill="#898E95" text-anchor="end">分包解耦</text>
+            </svg>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;font-size:11px;color:var(--text-3);margin-top:4px;margin-left:22px">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:20px;height:2px;background:#6A67CE;display:inline-block;border-radius:1px"></span>A2&amp;A3</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:20px;height:2px;background:#1AAFD0;display:inline-block;border-radius:1px;border-top:2px dashed #1AAFD0"></span>A5</span>
+        </div>
+      </div>
+
+      <!-- KEP/KEI 表 -->
+      <div class="ov-section" style="padding:18px 20px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <span id="uxtKepTitle" style="font-size:13px;font-weight:700;color:var(--text)">基础工具 · 评价指标 &amp; 问题</span>
+          <span class="chip" style="background:var(--purple-light);color:var(--purple-dark)">A5</span>
+        </div>
+        <table class="uxt-kep-table">
+          <thead>
+            <tr>
+              <th style="width:48px"></th>
+              <th><div style="display:flex;align-items:center;justify-content:center;gap:4px">工具获取<span style="color:var(--purple-core);font-size:14px">›</span></div></th>
+              <th><div style="display:flex;align-items:center;justify-content:center;gap:4px">工具使用<span style="color:var(--purple-core);font-size:14px">›</span></div></th>
+              <th><div style="display:flex;align-items:center;justify-content:center;gap:4px">结果分析<span style="color:var(--purple-core);font-size:14px">›</span></div></th>
+              <th>分包分仓解耦</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="uxt-row-label">KEP</td>
+              <td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td class="uxt-row-label">KEI<br>指标</td>
+              <td><span class="uxt-tag-blue">工具易获取性</span></td>
+              <td>
+                <div><span class="uxt-tag-grey">工具易操作性</span></div>
+                <div><span class="uxt-tag-grey">友商工具支持度</span></div>
+              </td>
+              <td><span class="uxt-tag-grey">输出结果有效性</span></td>
+              <td><span class="uxt-tag-grey">工具包可解耦</span></td>
+            </tr>
+            <tr>
+              <td class="uxt-row-label">TOP<br>问题</td>
+              <td><div class="uxt-issue">asys工具资料不易获取，使用说明中重复和冗余较多</div></td>
+              <td><div class="uxt-issue red">日志资料不按分析格式过滤；profiling资料中采集流程结合在一起，不便于理解</div></td>
+              <td>
+                <div class="uxt-issue">dump stats功能不可用</div>
+                <div class="uxt-issue">msrpureport、asys有些功能不支持并行但工具确实可用</div>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /两列 -->
+
+    <!-- 组件概览 -->
+    <div class="ov-section">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div>
+          <div class="ov-section-title">组件概览</div>
+          <div class="ov-section-sub">行=组件，列=评分；点击表头排序</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--bg);font-size:12px;color:var(--text-3)">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9 9l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          搜索组件...
+        </div>
+      </div>
+      <table class="uxt-ov-table" id="uxtOvTable">
+        <thead>
+          <tr>
+            <th class="left" rowspan="2" style="width:110px">组件</th>
+            <th rowspan="2" class="uxt-th-sort" onclick="sortUxtTable(1)">总分 /100 ↓</th>
+            <th colspan="2" style="color:var(--gold-dark);font-size:10px;border-bottom:none">分项评分</th>
+            <th colspan="6" style="color:var(--gold-dark);font-size:10px;border-bottom:none">开发评分·子维度（满分5）</th>
+            <th rowspan="2" style="width:110px">更新时间</th>
+          </tr>
+          <tr>
+            <th class="uxt-th-sort uxt-col-div" onclick="sortUxtTable(2)">测试评分 ↕</th>
+            <th class="uxt-th-sort" onclick="sortUxtTable(3)">开发评分 ↕</th>
+            <th class="uxt-th-sort uxt-col-div" onclick="sortUxtTable(4)">可理解 ↕</th>
+            <th class="uxt-th-sort" onclick="sortUxtTable(5)">可操作 ↕</th>
+            <th class="uxt-th-sort" onclick="sortUxtTable(6)">根因 ↕</th>
+            <th class="uxt-th-sort" onclick="sortUxtTable(7)">完整 ↕</th>
+            <th class="uxt-th-sort" onclick="sortUxtTable(8)">一致 ↕</th>
+            <th class="uxt-th-sort" onclick="sortUxtTable(9)">准确 ↕</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="uxt-comp-name">hccl</div><div class="uxt-comp-sub">通信库</div></td>
+            <td><span class="uxt-score-red">47.9</span></td>
+            <td class="uxt-col-div"><span class="uxt-score-mid">6.0</span><div class="uxt-ec-label">EC 71% · R 45%</div></td>
+            <td><span class="uxt-score-ok">8.0</span></td>
+            <td class="uxt-col-div">4.3</td><td>3.6</td><td>4.7</td><td>2.2</td><td>5.0</td><td>4.9</td>
+            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/21 00:06</td>
+          </tr>
+          <tr>
+            <td><div class="uxt-comp-name">dvpp</div><div class="uxt-comp-sub">图像处理</div></td>
+            <td><span class="uxt-score-red">47.2</span></td>
+            <td class="uxt-col-div"><span class="uxt-score-mid">6.0</span><div class="uxt-ec-label">EC 75% · R 93%</div></td>
+            <td><span class="uxt-score-ok">7.9</span></td>
+            <td class="uxt-col-div">4.2</td><td>3.5</td><td>4.6</td><td>2.8</td><td>4.1</td><td>4.9</td>
+            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/21 00:06</td>
+          </tr>
+          <tr>
+            <td><div class="uxt-comp-name">dump</div><div class="uxt-comp-sub">基础工具</div></td>
+            <td><span class="uxt-score-red">46.4</span></td>
+            <td class="uxt-col-div"><span class="uxt-score-mid">5.6</span><div class="uxt-ec-label">EC 60% · R 50%</div></td>
+            <td><span class="uxt-score-ok">8.3</span></td>
+            <td class="uxt-col-div">4.8</td><td>3.8</td><td>4.7</td><td>2.0</td><td>5.0</td><td>5.0</td>
+            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/21 00:06</td>
+          </tr>
+          <tr>
+            <td><div class="uxt-comp-name">amct</div><div class="uxt-comp-sub">模型优化</div></td>
+            <td><span class="uxt-score-red">44.8</span></td>
+            <td class="uxt-col-div"><span class="uxt-score-mid">6.0</span><div class="uxt-ec-label">EC 71% · R 44%</div></td>
+            <td><span class="uxt-score-ok">7.5</span></td>
+            <td class="uxt-col-div">4.0</td><td>3.0</td><td>4.3</td><td>3.0</td><td>4.5</td><td>4.3</td>
+            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/20 21:46</td>
+          </tr>
+          <tr>
+            <td><div class="uxt-comp-name">ge</div><div class="uxt-comp-sub">图引擎</div></td>
+            <td><span class="uxt-score-red">25.2</span></td>
+            <td class="uxt-col-div"><span class="uxt-score-mid">3.8</span><div class="uxt-ec-label">EC 50% · R 20%</div></td>
+            <td><span class="uxt-score-ok">6.6</span></td>
+            <td class="uxt-col-div">3.0</td><td>2.7</td><td>4.3</td><td>1.7</td><td>5.0</td><td>5.0</td>
+            <td style="color:var(--text-3);font-size:11px;white-space:nowrap">2026/05/21 00:06</td>
+          </tr>
+        </tbody>
+      </table>
+    </div><!-- /组件概览 -->
+
+  </div><!-- /ov-body -->
+</div><!-- /tabUXTest -->
 
 <!-- DEV TAB -->
 <div id="tabDev" style="display:none">
@@ -2311,7 +2563,7 @@ function selectTpCell(sceneId,col,el){
 }
 
 function jumpToJourney(sceneId){
-  const devBtn=document.querySelectorAll('.dim-tab')[1];
+  const devBtn=document.querySelectorAll('.dim-tab')[2];
   switchTab('dev',devBtn);
   setTimeout(()=>selScene(sceneId),80);
 }
@@ -2320,10 +2572,15 @@ function jumpToJourney(sceneId){
 function switchTab(id,btn){
   document.querySelectorAll('.dim-tab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  ['tabOverview','tabDev'].forEach(v=>document.getElementById(v).style.display=v===(id==='dev'?'tabDev':'tabOverview')?'block':'none');
+  const tabMap={'overview':'tabOverview','uxtest':'tabUXTest','dev':'tabDev'};
+  ['tabOverview','tabUXTest','tabDev'].forEach(v=>{
+    const el=document.getElementById(v);
+    if(el) el.style.display=v===tabMap[id]?'block':'none';
+  });
   document.body.classList.remove('rat-open','ov-rat-open');
   document.getElementById('floatRat').classList.remove('open');
   window.scrollTo({top:0});
+  if(id==='uxtest') initUXTChart();
 }
 
 // ── RATIONALE HIGHLIGHT ──
@@ -2482,7 +2739,7 @@ function selectRole(role, btn){
     if(hero) hero.style.display='none';
     const d=ROLE_SUMMARY[role];
     const ctaClick=d.ctaDev
-      ?`switchTab('dev',document.querySelectorAll('.dim-tab')[1])`
+      ?`switchTab('dev',document.querySelectorAll('.dim-tab')[2])`
       :`document.getElementById('painRankedList').scrollIntoView({behavior:'smooth'})`;
     rsb.innerHTML=`<div class="rsb" style="background:${d.grad};color:${d.tc}">
       <div class="rsb-score-block">
@@ -2518,6 +2775,65 @@ function selectRole(role, btn){
   const catChip=document.querySelector(`.cat-sum-chip[data-filter-cat="${targetCat}"]`);
   if(catChip) filterPain(targetCat,catChip);
   applyPainFilter();
+}
+
+// ── UX TEST ──
+let _uxtChartInited=false;
+const UXT_PRODS=['算子库','通信库-集合通信','通信库-单边通信','算子编程-Ascend C','图引擎','运行时','基础工具','模型优化样例','资料'];
+const UXT_CURR=[5.23,4.8,4.6,4.1,5.27,4.7,5.44,5.0,5.12];
+const UXT_TARG=[5.8,6.0,7.0,6.0,6.0,6.0,5.5,6.0,5.8];
+
+function initUXTChart(){
+  if(_uxtChartInited)return;
+  const el=document.getElementById('ecUXBar');
+  if(!el||typeof echarts==='undefined')return;
+  _uxtChartInited=true;
+  const ch=echarts.init(el,null,{renderer:'svg'});
+  ch.setOption({
+    grid:{top:20,bottom:60,left:10,right:10,containLabel:true},
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+    legend:{bottom:4,itemWidth:10,itemHeight:10,textStyle:{fontSize:11,color:'#898E95'}},
+    xAxis:{type:'category',data:UXT_PRODS,axisLabel:{fontSize:10,color:'#898E95',interval:0,rotate:15},axisLine:{lineStyle:{color:'#E1E2E4'}},axisTick:{show:false}},
+    yAxis:{type:'value',max:10,splitLine:{lineStyle:{color:'#F0F0F2'}},axisLabel:{fontSize:10,color:'#898E95'},axisLine:{show:false}},
+    series:[
+      {name:'当前分',type:'bar',barWidth:14,data:UXT_CURR,itemStyle:{borderRadius:[3,3,0,0],color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'#FC636B'},{offset:1,color:'#FEEFF0'}]}}},
+      {name:'目标值',type:'bar',barWidth:14,barGap:'30%',data:UXT_TARG,itemStyle:{borderRadius:[3,3,0,0],color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'#4F4DA7'},{offset:1,color:'#F0EFFA'}]}}}
+    ],
+    animation:true
+  });
+  ch.on('click',params=>{
+    if(params.componentType==='series'){
+      selUxtProd(params.name, document.querySelector(`.fchip[onclick*="${params.name}"]`)||null);
+    }
+  });
+}
+
+function selUxtProd(name,el){
+  document.querySelectorAll('#tabUXTest .filter-bar .fchip').forEach(c=>{
+    if(c.id==='uxtProdAll'||c.onclick){
+      c.classList.remove('on');
+    }
+  });
+  if(el) el.classList.add('on');
+  const titleEl=document.getElementById('uxtLineTitle');
+  const kepEl=document.getElementById('uxtKepTitle');
+  const label=name==='all'?'基础工具':name;
+  if(titleEl) titleEl.textContent=label+' · 各阶段满意度';
+  if(kepEl) kepEl.textContent=label+' · 评价指标 & 问题';
+}
+
+let _uxtSortDir={};
+function sortUxtTable(col){
+  const tbody=document.querySelector('#uxtOvTable tbody');
+  const rows=Array.from(tbody.querySelectorAll('tr'));
+  const asc=!_uxtSortDir[col];
+  _uxtSortDir={};_uxtSortDir[col]=asc;
+  rows.sort((a,b)=>{
+    const av=parseFloat(a.querySelectorAll('td')[col-1]?.textContent)||0;
+    const bv=parseFloat(b.querySelectorAll('td')[col-1]?.textContent)||0;
+    return asc?av-bv:bv-av;
+  });
+  rows.forEach(r=>tbody.appendChild(r));
 }
 
 function initOvCharts(){
