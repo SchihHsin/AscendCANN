@@ -2917,11 +2917,10 @@ function showUxtDetail(ri,ci){
     <!-- 中：组件名 + 维度 + 走线 -->
     <div style="flex:1;min-width:120px">
       <div style="font-size:15px;font-weight:800;color:var(--text)">${r.name} <span style="font-size:11px;font-weight:500;color:var(--text-3)">${r.sub}</span></div>
-      <div style="font-size:11px;color:var(--text-3);margin:3px 0 8px">维度：${col} &nbsp;·&nbsp; ${r.ec} &nbsp;·&nbsp; 更新 ${r.updated}</div>
-      ${histData?`<div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:10px;color:var(--text-3);white-space:nowrap">近6期</span>
-        ${miniSparkSvg(histData,sparkColor,80,24)}
-      </div>`:''}
+      <div style="font-size:11px;color:var(--text-3);margin-top:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span>维度：${col} &nbsp;·&nbsp; ${r.ec} &nbsp;·&nbsp; 更新 ${r.updated}</span>
+        ${histData?`<span style="display:inline-flex;align-items:center;gap:4px;opacity:.8"><span style="font-size:9.5px;white-space:nowrap">近6期</span>${miniSparkSvg(histData,sparkColor,60,18)}</span>`:''}
+      </div>
     </div>
     <!-- 右：全维度对比条 -->
     <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end">
