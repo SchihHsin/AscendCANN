@@ -173,7 +173,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 /* ── HEALTH MATRIX (AscendOps heatmap style) ── */
 .hm-wrap{overflow:hidden}
 .hm-grid{display:grid;grid-template-columns:120px repeat(5,1fr);gap:5px;margin-top:4px}
-.hm-header{font-size:10px;font-weight:700;color:#3D4452;text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;background:#F3F3F5;border-radius:6px}
+.hm-header{font-size:10px;font-weight:700;color:#3D4452;text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;background:#F7F7F8;border-radius:6px}
 .hm-header.first{text-align:left;padding-left:4px;background:none}
 .hm-corner{position:relative;overflow:hidden;border-radius:6px}
 .hm-corner::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom left,transparent calc(50% - .5px),#C8C8CC calc(50% - .5px),#C8C8CC calc(50% + .5px),transparent calc(50% + .5px))}
@@ -2441,10 +2441,10 @@ function renderMatrix(cfg){
       const colSpan=span>1?`grid-column:span ${span};`:'';
       if(g.mergeHeader){
         mergedExtras.add(extraIdx);
-        html+=`<div style="${colSpan}grid-row:span 2;font-size:9px;font-weight:700;color:#3D4452;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#F3F3F5;border-radius:6px;display:flex;align-items:center;justify-content:center">${g.label||''}</div>`;
+        html+=`<div style="${colSpan}grid-row:span 2;font-size:9px;font-weight:700;color:#3D4452;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#F7F7F8;border-radius:6px;display:flex;align-items:center;justify-content:center">${g.label||''}</div>`;
         extraIdx++;
       } else if(g.label){
-        html+=`<div style="${colSpan}font-size:9px;font-weight:700;color:#3D4452;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#EBEBED;border-radius:6px;padding:4px 0">${g.label}</div>`;
+        html+=`<div style="${colSpan}font-size:9px;font-weight:700;color:#3D4452;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#F2F2F4;border-radius:6px;padding:4px 0">${g.label}</div>`;
       } else {
         html+=`<div style="${colSpan}"></div>`;
       }
