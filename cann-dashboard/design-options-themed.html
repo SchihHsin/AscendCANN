@@ -173,8 +173,8 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 /* ── HEALTH MATRIX (AscendOps heatmap style) ── */
 .hm-wrap{overflow:hidden}
 .hm-grid{display:grid;grid-template-columns:120px repeat(5,1fr);gap:5px;margin-top:4px}
-.hm-header{font-size:10px;font-weight:700;color:var(--text-3);text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
-.hm-header.first{text-align:left;padding-left:4px}
+.hm-header{font-size:10px;font-weight:700;color:var(--text-3);text-align:center;padding:6px 4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;background:#EDEDED;border-radius:0}
+.hm-header.first{text-align:left;padding-left:4px;background:none}
 .hm-row-label{display:flex;flex-direction:row;align-items:center;gap:10px;padding:0 4px;font-size:12px;font-weight:700;color:var(--text)}
 .hm-row-label small{font-size:9.5px;font-weight:500;color:var(--text-3);margin-top:1px;display:block}
 .hm-cell{
@@ -187,7 +187,7 @@ html,body{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace
 .hm-cell .cv{font-size:13px;font-weight:800;letter-spacing:-.02em;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace}
 .hm-cell .ct{font-size:9px;font-weight:600;opacity:.7;margin-top:1px}
 .hm-legend{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:11px;color:var(--text-3);font-weight:500;justify-content:flex-end}
-.hm-grad{height:8px;width:120px;border-radius:4px;background:linear-gradient(90deg,#FFA5A5 0%,#FFC8A0 35%,#FFED8C 55%,#B0EED7 75%,#78D7B9 100%)}
+.hm-grad{height:8px;width:120px;border-radius:4px;background:linear-gradient(90deg,#FFB9B9 0%,#FFD7B7 35%,#FFF2A5 55%,#C4F3E1 75%,#94E1C8 100%)}
 
 /* ── PIPELINE (AscendOps stage style) ── */
 .pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:6px}
@@ -1405,11 +1405,11 @@ body.ov-rat-open .ov-rat-panel{right:0}
         </div>
       </div>
       <!-- 列分组标签（第一层） -->
-      <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;gap:5px;margin-bottom:2px;background:var(--g2);border-radius:6px;padding:5px 4px">
+      <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;gap:5px;margin-bottom:2px;background:#DDDDE0;border-radius:6px 6px 0 0;padding:5px 4px">
         <div></div>
-        <div style="font-size:9px;font-weight:700;color:var(--gold-dark);text-align:center;letter-spacing:.04em;text-transform:uppercase;background:var(--gold-light);border-radius:4px;padding:3px 0">综合</div>
-        <div style="font-size:9px;font-weight:700;color:var(--teal-dark);text-align:center;grid-column:span 2;letter-spacing:.04em;text-transform:uppercase;background:var(--teal-light);border-radius:4px;padding:3px 0">分项评分</div>
-        <div style="font-size:9px;font-weight:700;color:var(--purple-dark);text-align:center;grid-column:span 6;letter-spacing:.04em;text-transform:uppercase;background:var(--purple-light);border-radius:4px;padding:3px 0">开发评分·子维度</div>
+        <div style="font-size:9px;font-weight:700;color:#565C65;text-align:center;letter-spacing:.04em;text-transform:uppercase">综合</div>
+        <div style="font-size:9px;font-weight:700;color:#565C65;text-align:center;grid-column:span 2;letter-spacing:.04em;text-transform:uppercase">分项评分</div>
+        <div style="font-size:9px;font-weight:700;color:#565C65;text-align:center;grid-column:span 6;letter-spacing:.04em;text-transform:uppercase">开发评分·子维度</div>
         <div></div>
       </div>
       <div id="uxtMatrix" style="display:grid;gap:5px"></div>
@@ -1668,7 +1668,7 @@ window.scrollTo(0,0);
 
 /* ── Health Matrix ── */
 function heatColor(score){
-  const stops=[[0,[255,165,165]],[35,[255,200,160]],[55,[255,237,140]],[75,[176,238,215]],[100,[120,215,185]]];
+  const stops=[[0,[255,185,185]],[35,[255,215,183]],[55,[255,242,165]],[75,[196,243,225]],[100,[148,225,200]]];
   let a=stops[0],b=stops[stops.length-1];
   for(let i=0;i<stops.length-1;i++){if(score>=stops[i][0]&&score<=stops[i+1][0]){a=stops[i];b=stops[i+1];break;}}
   const t=(score-a[0])/(b[0]-a[0]||1);
