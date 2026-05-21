@@ -2441,7 +2441,7 @@ function renderMatrix(cfg){
       const colSpan=span>1?`grid-column:span ${span};`:'';
       if(g.mergeHeader){
         mergedExtras.add(extraIdx);
-        html+=`<div style="${colSpan}grid-row:span 2;font-size:9px;font-weight:700;color:#3D4452;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#EBEBED;border-radius:6px;display:flex;align-items:center;justify-content:center">${g.label||''}</div>`;
+        html+=`<div style="${colSpan}grid-row:span 2;font-size:9px;font-weight:700;color:#3D4452;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#F3F3F5;border-radius:6px;display:flex;align-items:center;justify-content:center">${g.label||''}</div>`;
         extraIdx++;
       } else if(g.label){
         html+=`<div style="${colSpan}font-size:9px;font-weight:700;color:#3D4452;text-align:center;letter-spacing:.04em;text-transform:uppercase;background:#EBEBED;border-radius:6px;padding:4px 0">${g.label}</div>`;
