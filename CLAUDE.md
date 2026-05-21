@@ -399,3 +399,18 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 | `501e687` | docs: 更新 CLAUDE.md |
 | `0303976` | timeline连线改绝对定位，最后步去padding，消除底部大片空白 |
 | `de34bde` | S0-S5按参考pipeline重绘;雷达图图例加进度条;设计点hlRat定位到正确面板 |
+
+### 2026-05-21（续会话 2）
+
+#### Bug 修复
+
+- **Agent 时间轴连线不可见**：`.step-tl-line` 使用 `position:absolute` 定位在 `.step-tl-node`（高度仅 30px），`top:33px` 已超出父容器，连线实际只有几像素。修复：将定位改为相对 `.step-tl-item`（`left:14px; top:30px; bottom:0`），连线可正确延伸到下一节点顶端。同时移除 `.step-tl-node` 上的 `position:relative`
+- **设计点面板不出现**：`.rat-sidebar` 是 `.main-body`（`flex-direction:column`）的子元素，导致侧栏排在场景详情**下方**（页面底部），不在视野内。修复：在 scene-detail + rat-sidebar 外包一层 `display:flex;flex-direction:row` 容器
+- **评测趋势图右侧空白**：`trendSvg()` 输出固定 `width="220"` SVG，未随 chart-col 弹性宽度拉伸。修复：改为 `width="100%"`（保留 `viewBox="0 0 220 82"` 确保正确缩放）
+- **雷达图与图例距离过近**：`.radar-col` 的 `gap:12px` 改为 `gap:22px`
+
+#### Commits
+
+| commit | 内容 |
+|--------|------|
+| `8e7b0c3` | 修复timeline连线/设计点侧栏布局/趋势图宽度/雷达图间距 |
