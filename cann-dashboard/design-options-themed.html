@@ -1675,7 +1675,11 @@ function heatColor(score){
   const rgb=a[1].map((v,j)=>Math.round(v+(b[1][j]-v)*t));
   return `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
 }
-function textColor(score){return '#1B2432';}
+function textColor(score){
+  if(score<40) return '#B03030'; // 深珊瑚红
+  if(score<60) return '#8B6200'; // 深琥珀
+  return '#1A7055';              // 深青绿
+}
 
 const HM_DATA={
   rows:[
