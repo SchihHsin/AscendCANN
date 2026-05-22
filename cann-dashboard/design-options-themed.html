@@ -3989,7 +3989,7 @@ function mdToVisualHtml(md){
 }
 
 let _rptOpen = false;
-let _rptView = 'rendered'; // 'rendered' | 'visual'
+let _rptView = 'visual'; // 'rendered' | 'visual'
 let _rptName = '';
 
 function openReportDrawer(name) {
@@ -4059,8 +4059,8 @@ function rptDownload() {
     </button>
   </div>
   <div class="rpt-toolbar">
-    <button id="rptTabMd" class="rpt-tab active" onclick="rptSwitchView('rendered')">渲染</button>
-    <button id="rptTabHtml" class="rpt-tab" onclick="rptSwitchView('visual')">可视化</button>
+    <button id="rptTabHtml" class="rpt-tab active" onclick="rptSwitchView('visual')">可视化</button>
+    <button id="rptTabMd" class="rpt-tab" onclick="rptSwitchView('rendered')">Markdown</button>
     <div style="flex:1"></div>
     <button id="rptCopyBtn" class="rpt-btn" onclick="rptCopy()">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="#565C65" stroke-width="1.5"/><path d="M3 11V3a2 2 0 0 1 2-2h8" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
