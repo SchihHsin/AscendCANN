@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>H2 & Alert 样式方案</title>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','HarmonyOS Sans',sans-serif;background:#F3F3F5;margin:0;padding:40px;color:#1A1A1E}
+  h1{font-size:16px;font-weight:700;margin:0 0 32px;color:#1A1A1E}
+  .page{display:flex;gap:24px;flex-wrap:wrap}
+  .option{background:#fff;border-radius:10px;padding:28px 24px;width:340px;box-shadow:0 2px 12px rgba(0,0,0,.07);flex-shrink:0}
+  .opt-label{font-size:10px;font-weight:700;letter-spacing:.08em;color:#898E95;text-transform:uppercase;margin-bottom:16px}
+  .body-text{font-size:12.5px;line-height:1.8;color:#555;margin:8px 0}
+
+  /* ── 方案 A：H2 纯粗体下划线 + Alert 左描边（保持语义） ── */
+  .a-h2{font-size:13px;font-weight:700;color:#1A1A1E;border-bottom:2px solid #E1E2E4;padding-bottom:6px;margin:0 0 10px}
+  .a-alert{border-left:3px solid #FD9A00;background:#FFFBEB;border-radius:0 6px 6px 0;padding:8px 14px;font-size:12px;line-height:1.7;color:#7A4700;margin:10px 0}
+  .a-alert strong{color:#92400E}
+
+  /* ── 方案 B：H2 色块徽章式 + Alert 全边框卡片 ── */
+  .b-h2{display:inline-block;font-size:12px;font-weight:700;background:#6A67CE;color:#fff;padding:3px 12px;border-radius:4px;margin:0 0 10px}
+  .b-alert{border:1px solid #FD9A00;border-radius:6px;padding:10px 14px;font-size:12px;line-height:1.7;color:#7A4700;background:#FFFBEB;margin:10px 0;display:flex;gap:10px;align-items:flex-start}
+  .b-alert-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+  .b-alert-body strong{color:#92400E}
+
+  /* ── 方案 C：H2 顶部色条 + Alert 横幅填色 ── */
+  .c-h2{font-size:13px;font-weight:700;color:#1A1A1E;border-top:3px solid #6A67CE;padding:8px 12px 6px;background:#F8F7FF;border-radius:0 0 4px 4px;margin:0 0 10px}
+  .c-alert{border-radius:6px;padding:10px 14px;font-size:12px;line-height:1.7;color:#fff;background:#E86B00;margin:10px 0;display:flex;gap:10px;align-items:flex-start}
+  .c-alert-icon{font-size:15px;flex-shrink:0}
+  .c-alert strong{color:#fff;font-weight:800}
+
+  /* ── 方案 D：H2 左点 + Alert 顶部色条卡片 ── */
+  .d-h2{font-size:13px;font-weight:700;color:#1A1A1E;display:flex;align-items:center;gap:8px;margin:0 0 10px}
+  .d-h2::before{content:'';width:6px;height:6px;border-radius:50%;background:#6A67CE;flex-shrink:0;margin-top:1px}
+  .d-alert{border-radius:6px;border:1px solid #FFD8A8;border-top:3px solid #FD9A00;padding:10px 14px;font-size:12px;line-height:1.7;color:#7A4700;background:#FFFDF8;margin:10px 0}
+  .d-alert strong{color:#92400E}
+  .d-alert-hdr{display:flex;align-items:center;gap:6px;font-weight:700;margin-bottom:4px;color:#92400E}
+
+  /* ── 方案 E：H2 背景色块带左色条 + Alert 行内 badge 横幅 ── */
+  .e-h2{font-size:13px;font-weight:700;color:#4F4DA7;background:rgba(106,103,206,.08);border-left:3px solid #6A67CE;padding:6px 12px;border-radius:0 6px 6px 0;margin:0 0 10px}
+  .e-alert{display:flex;align-items:center;gap:8px;font-size:12px;margin:10px 0}
+  .e-alert-badge{background:#E63838;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+  .e-alert-text{color:#7A4700;line-height:1.6}
+  .e-alert-text strong{color:#E63838}
+</style>
+</head>
+<body>
+
+<h1>H2 标题 & Alert 警告 · 样式方案对比</h1>
+
+<div class="page">
+
+  <!-- 方案 A -->
+  <div class="option">
+    <div class="opt-label">方案 A — H2 纯下划线 / Alert 左描边（不变）</div>
+    <div class="a-h2">评估结论总览</div>
+    <div class="body-text">评估覆盖 ErrorMessage 规范三层结构，共检测 24 条规则。</div>
+    <div class="a-alert"><strong>⚠ 必须规则检查失败 — 评审不通过</strong><br>EE1001 格式不合规，等级强制降为 D。</div>
+    <div class="body-text">整体合规率 <strong>45.8%</strong>，低于准入门槛。</div>
+  </div>
+
+  <!-- 方案 B -->
+  <div class="option">
+    <div class="opt-label">方案 B — H2 白底色块徽章 / Alert 全边框卡片</div>
+    <div class="b-h2">评估结论总览</div>
+    <div class="body-text">评估覆盖 ErrorMessage 规范三层结构，共检测 24 条规则。</div>
+    <div class="b-alert">
+      <div class="b-alert-icon">⚠</div>
+      <div class="b-alert-body"><strong>必须规则检查失败 — 评审不通过</strong><br>EE1001 格式不合规，等级强制降为 D。</div>
+    </div>
+    <div class="body-text">整体合规率 <strong>45.8%</strong>，低于准入门槛。</div>
+  </div>
+
+  <!-- 方案 C -->
+  <div class="option">
+    <div class="opt-label">方案 C — H2 顶部色条 / Alert 实色横幅</div>
+    <div class="c-h2">评估结论总览</div>
+    <div class="body-text">评估覆盖 ErrorMessage 规范三层结构，共检测 24 条规则。</div>
+    <div class="c-alert">
+      <div class="c-alert-icon">⚠</div>
+      <div><strong>必须规则检查失败 — 评审不通过</strong><br>EE1001 格式不合规，等级强制降为 D。</div>
+    </div>
+    <div class="body-text">整体合规率 <strong>45.8%</strong>，低于准入门槛。</div>
+  </div>
+
+  <!-- 方案 D -->
+  <div class="option">
+    <div class="opt-label">方案 D — H2 左圆点 / Alert 顶部色条卡片</div>
+    <div class="d-h2">评估结论总览</div>
+    <div class="body-text">评估覆盖 ErrorMessage 规范三层结构，共检测 24 条规则。</div>
+    <div class="d-alert">
+      <div class="d-alert-hdr">⚠ 必须规则检查失败 — 评审不通过</div>
+      EE1001 格式不合规，等级强制降为 D。
+    </div>
+    <div class="body-text">整体合规率 <strong>45.8%</strong>，低于准入门槛。</div>
+  </div>
+
+  <!-- 方案 E -->
+  <div class="option">
+    <div class="opt-label">方案 E — H2 背景色块左描边 / Alert 行内 Badge</div>
+    <div class="e-h2">评估结论总览</div>
+    <div class="body-text">评估覆盖 ErrorMessage 规范三层结构，共检测 24 条规则。</div>
+    <div class="e-alert">
+      <span class="e-alert-badge">⚠ FAIL</span>
+      <span class="e-alert-text"><strong>必须规则检查失败 — 评审不通过</strong>，EE1001 格式不合规，等级强制降为 D。</span>
+    </div>
+    <div class="body-text">整体合规率 <strong>45.8%</strong>，低于准入门槛。</div>
+  </div>
+
+</div>
+
+</body>
+</html>

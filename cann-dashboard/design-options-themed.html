@@ -823,8 +823,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .vi-score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
 .vi-score-card{border-radius:8px;padding:10px 12px}
 /* search highlight */
-.rpt-search-row{display:flex;align-items:center;gap:8px;padding:8px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
-.rpt-search-wrap{display:flex;align-items:center;gap:6px;flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 10px;transition:border-color .15s}
+.rpt-search-wrap{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 10px;transition:border-color .15s}
 .rpt-search-wrap:focus-within{border-color:var(--primary)}
 .rpt-search-input{flex:1;border:none;background:none;font-size:12px;color:var(--text);outline:none;font-family:inherit}
 .rpt-search-input::placeholder{color:var(--text-3)}
@@ -4227,9 +4226,9 @@ function rptCopy() {
   const md = REPORT_MD[_rptName] || '';
   navigator.clipboard.writeText(md).then(() => {
     const btn = document.getElementById('rptCopyBtn');
-    const orig = btn.textContent;
-    btn.textContent = '已复制';
-    setTimeout(() => btn.textContent = orig, 1500);
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#37C597" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    setTimeout(() => btn.innerHTML = orig, 1500);
   });
 }
 
@@ -4261,18 +4260,9 @@ function rptDownload() {
     <button id="rptTabMd" class="rpt-tab" onclick="rptSwitchView('rendered')">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:4px"><path d="M2 2h12v12H2z" stroke="#565C65" stroke-width="1.4" rx="1"/><path d="M5 6v4m0 0 2-2 2 2m0-4v4" stroke="#565C65" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Markdown 报告
     </button>
-    <div style="flex:1"></div>
-    <button id="rptCopyBtn" class="rpt-btn rpt-btn-icon" title="复制" onclick="rptCopy()">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="#565C65" stroke-width="1.5"/><path d="M3 11V3a2 2 0 0 1 2-2h8" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
-    <button class="rpt-btn rpt-btn-icon" title="下载" onclick="rptDownload()">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0-3-3m3 3 3-3" stroke="#565C65" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
-  </div>
-  <div class="rpt-search-row">
-    <div class="rpt-search-wrap">
+    <div class="rpt-search-wrap" style="flex:1;max-width:220px">
       <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#898E95" stroke-width="1.5"/><line x1="11" y1="11" x2="14" y2="14" stroke="#898E95" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <input id="rptSearchInput" class="rpt-search-input" placeholder="在报告中搜索…" oninput="rptSearchExec()" onkeydown="if(event.key==='Enter')rptSearchNav(event.shiftKey?-1:1)">
+      <input id="rptSearchInput" class="rpt-search-input" placeholder="搜索…" oninput="rptSearchExec()" onkeydown="if(event.key==='Enter')rptSearchNav(event.shiftKey?-1:1)">
       <button id="rptSearchClear" onclick="rptSearchClearAll()" style="display:none;border:none;background:none;cursor:pointer;font-size:15px;color:var(--text-3);padding:0 2px;line-height:1">×</button>
     </div>
     <span id="rptSearchCount" style="display:none;font-size:11px;color:var(--text-3);white-space:nowrap;min-width:36px;text-align:center"></span>
@@ -4281,6 +4271,12 @@ function rptDownload() {
     </button>
     <button class="rpt-btn rpt-btn-icon" onclick="rptSearchNav(1)" title="下一个">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="#565C65" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button id="rptCopyBtn" class="rpt-btn rpt-btn-icon" title="复制" onclick="rptCopy()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="9" height="10" rx="1.5" stroke="#565C65" stroke-width="1.5"/><path d="M5 5V3.5A1.5 1.5 0 0 1 6.5 2h7A1.5 1.5 0 0 1 15 3.5v7A1.5 1.5 0 0 1 13.5 12H11" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <button class="rpt-btn rpt-btn-icon" title="下载" onclick="rptDownload()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0-3-3m3 3 3-3" stroke="#565C65" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
   </div>
   <div id="rptBody" class="rpt-body"></div>
