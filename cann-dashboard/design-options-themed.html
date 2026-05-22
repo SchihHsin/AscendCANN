@@ -2508,7 +2508,7 @@ function renderMatrix(cfg){
     html+=`<div class="hm-row-label">
       <div style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:${dotC};box-shadow:0 0 0 3px ${dotG}"></div>
       <div>
-        <div ${hasReport?`class="comp-link" onclick="openReportDrawer('${rl.name}')" title="查看评估报告"`:''} style="${hasReport?'cursor:pointer;':''}">${rl.name}${hasReport?`<svg style="margin-left:3px;vertical-align:middle;opacity:.45" width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 10V4h4m0 0 4 0v4M6 4l4 4" stroke="#1B2432" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</div>
+        <div ${hasReport?`class="comp-link" onclick="openReportDrawer('${rl.name}')" title="查看评估报告"`:''} style="${hasReport?'cursor:pointer;':''}">${rl.name}</div>
         ${rl.sub?`<small>${rl.sub}</small>`:''}
       </div>
     </div>`;
