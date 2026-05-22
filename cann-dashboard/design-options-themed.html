@@ -838,9 +838,8 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .rpt-toc-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.06)}
 .rpt-toc-item.active{color:#fff;border-left-color:rgba(255,255,255,.5);background:rgba(255,255,255,.07)}
 .rpt-toc-item.h3{padding-left:26px;font-size:11px}
-/* Skeleton shimmer */
-@keyframes skel-shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
-.skel-block{border-radius:4px;background:linear-gradient(90deg,#EBEBED 25%,#F5F5F7 50%,#EBEBED 75%);background-size:400% 100%;animation:skel-shimmer 1.6s ease-in-out infinite}
+/* Skeleton placeholder */
+.skel-block{border-radius:4px;background:#EBEBED}
 .skel-row{height:10px;margin:6px 0;border-radius:3px}
 .skel-chart{border-radius:6px;width:100%}
 .rpt-search-input{flex:1;border:none;background:none;font-size:12px;color:#fff;outline:none;font-family:inherit}
@@ -1402,12 +1401,9 @@ body.ov-rat-open .ov-rat-panel{right:0}
 
     <!-- 满意度评分 骨架屏 -->
     <div class="ov-section" style="padding:16px 20px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div>
-          <div class="ov-section-title">满意度评分</div>
-          <div class="ov-section-sub">各组件当前评分 vs 目标值（满分 10）</div>
-        </div>
-        <span style="font-size:11px;color:var(--text-3);background:var(--surface);padding:3px 8px;border-radius:4px;border:1px solid var(--border)">数据接入中…</span>
+      <div style="margin-bottom:12px">
+        <div class="ov-section-title">满意度评分</div>
+        <div class="ov-section-sub">各组件当前评分 vs 目标值（满分 10）</div>
       </div>
       <div style="display:flex;align-items:flex-end;gap:10px;height:60px;padding:0 4px">
         <div class="skel-block skel-chart" style="height:40px;flex:1"></div>
@@ -1426,21 +1422,16 @@ body.ov-rat-open .ov-rat-panel{right:0}
 
       <!-- 折线图 骨架屏 -->
       <div class="ov-section" style="padding:16px 20px" id="uxtLineCard">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="margin-bottom:12px">
           <div id="uxtLineTitle" style="font-size:13px;font-weight:700;color:var(--text)">基础工具 · 各阶段满意度</div>
-          <div style="display:flex;gap:6px">
-            <span class="chip" style="background:var(--purple-light);color:var(--purple-dark)">A2&amp;A3 <b>5.44</b></span>
-            <span class="chip" style="background:var(--teal-light);color:var(--teal-dark)">A5 <b>5.44</b></span>
-          </div>
         </div>
         <div class="skel-block skel-chart" style="height:56px;margin-top:4px"></div>
       </div>
 
       <!-- KEP/KEI 表 骨架屏 -->
       <div class="ov-section" style="padding:16px 20px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="margin-bottom:12px">
           <span id="uxtKepTitle" style="font-size:13px;font-weight:700;color:var(--text)">基础工具 · 评价指标 &amp; 问题</span>
-          <span style="font-size:11px;color:var(--text-3);background:var(--surface);padding:2px 7px;border-radius:4px;border:1px solid var(--border)">数据接入中…</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:7px">
           <div class="skel-block skel-row" style="width:100%;height:12px"></div>
