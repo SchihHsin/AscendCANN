@@ -743,6 +743,44 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .uxt-issue.red{background:var(--coral-light);border-left-color:var(--coral-dark)}
 .uxt-comp-name{font-size:13px;font-weight:700;color:var(--text)}
 .uxt-comp-sub{font-size:10px;color:var(--text-3);margin-top:1px}
+
+/* ── Report Drawer ── */
+.rpt-overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:900;opacity:0;pointer-events:none;transition:opacity .2s}
+.rpt-overlay.open{opacity:1;pointer-events:auto}
+.rpt-drawer{position:fixed;top:0;right:0;bottom:0;width:520px;max-width:90vw;background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:901;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.rpt-drawer.open{transform:translateX(0)}
+.rpt-hdr{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+.rpt-hdr-title{flex:1;font-size:14px;font-weight:700;color:var(--text)}
+.rpt-hdr-sub{font-size:11px;font-weight:500;color:var(--text-3)}
+.rpt-close{width:28px;height:28px;border-radius:6px;border:none;background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rpt-close:hover{background:var(--border)}
+.rpt-toolbar{display:flex;align-items:center;gap:8px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
+.rpt-tab{padding:4px 12px;border-radius:6px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;transition:background .15s}
+.rpt-tab.active{background:var(--text);color:#fff;border-color:var(--text)}
+.rpt-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:500;color:var(--text-2);cursor:pointer;transition:background .15s}
+.rpt-btn:hover{background:var(--surface)}
+.rpt-body{flex:1;overflow-y:auto;padding:20px}
+.rpt-md pre{white-space:pre-wrap;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:var(--text);background:var(--surface);border-radius:8px;padding:16px}
+.rpt-html{font-size:13px;line-height:1.8;color:var(--text)}
+.rpt-html h1{font-size:18px;font-weight:800;margin:0 0 12px;color:var(--text)}
+.rpt-html h2{font-size:15px;font-weight:700;margin:20px 0 8px;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:4px}
+.rpt-html h3{font-size:13px;font-weight:700;margin:14px 0 6px;color:var(--text-2)}
+.rpt-html h4{font-size:12px;font-weight:700;margin:10px 0 4px;color:var(--text-2)}
+.rpt-html p{margin:6px 0}
+.rpt-html ul,.rpt-html ol{padding-left:20px;margin:4px 0}
+.rpt-html li{margin:2px 0}
+.rpt-html table{border-collapse:collapse;width:100%;font-size:12px;margin:8px 0}
+.rpt-html th{background:var(--surface);padding:6px 10px;text-align:left;font-weight:700;border:1px solid var(--border)}
+.rpt-html td{padding:5px 10px;border:1px solid var(--border)}
+.rpt-html tr:nth-child(even) td{background:#FAFAFA}
+.rpt-html code{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--surface);padding:1px 4px;border-radius:3px}
+.rpt-html pre{background:var(--surface);border-radius:6px;padding:12px;overflow-x:auto}
+.rpt-html pre code{background:none;padding:0}
+.rpt-html blockquote{border-left:3px solid var(--border2);margin:8px 0;padding:6px 12px;color:var(--text-2);background:var(--surface);border-radius:0 6px 6px 0}
+.rpt-html strong{font-weight:700}
+.rpt-html hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+.hm-row-label .comp-link{cursor:pointer;color:inherit;text-decoration:none}
+.hm-row-label .comp-link:hover{text-decoration:underline;color:var(--accent)}
 </style>
 </head>
 <body>
@@ -2466,9 +2504,13 @@ function renderMatrix(cfg){
     const ds=rl.dotScore;
     const dotC=ds>=60?'var(--green-dark)':ds>=40?'var(--gold-dark)':'var(--coral-dark)';
     const dotG=ds>=60?'rgba(55,197,151,.2)':ds>=40?'rgba(253,154,0,.2)':'rgba(230,56,56,.2)';
+    const hasReport=typeof REPORT_MD!=='undefined'&&(REPORT_MD[rl.name]!=null);
     html+=`<div class="hm-row-label">
       <div style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:${dotC};box-shadow:0 0 0 3px ${dotG}"></div>
-      <div><div>${rl.name}</div>${rl.sub?`<small>${rl.sub}</small>`:''}</div>
+      <div>
+        <div ${hasReport?`class="comp-link" onclick="openReportDrawer('${rl.name}')" title="查看评估报告"`:''} style="${hasReport?'cursor:pointer;':''}">${rl.name}${hasReport?`<svg style="margin-left:3px;vertical-align:middle;opacity:.45" width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 10V4h4m0 0 4 0v4M6 4l4 4" stroke="#1B2432" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</div>
+        ${rl.sub?`<small>${rl.sub}</small>`:''}
+      </div>
     </div>`;
     cols.forEach((c,ci)=>{
       const score=cfg.scoreOf(row,ci);
@@ -3277,6 +3319,381 @@ function selectStage(code,el){
   }
 })();
 
+// ── Report Drawer ──────────────────────────────────────────────────────────
+const REPORT_MD = {
+  dump: `# Dump ErrorMessage 评估报告
+
+**评估日期**: 2026-05-05
+**评估范围**: output/dump_error_messages.json (32条)
+**参考基准**: reference/cann_error_message.md + reference/dump/Dump_ErrorMsg设计方案_20260304.xlsx
+
+## 评估结论总览
+
+> **⚠️ 必须规则检查失败 — 评审不通过**
+
+| 必须规则 | 要求 | 实际值 | 结果 |
+|---------|------|--------|------|
+| 测试用例ErrCode覆盖率 | 100% | 75.0% (3/4) | **❌ FAIL** |
+| 每个ErrCode Reason可操作修复测试覆盖 | ≥5% | EP0003 = 0% | **❌ FAIL** |
+| 测试覆盖用户场景（非仅开发整改） | 是 | 是（配置校验场景） | ✅ PASS |
+
+**根据评分规则: ErrCode覆盖率未达100% → 评审不通过 → 综合评分 < 6.0（等级D）**
+
+| 维度 | 原始得分 | 权重 | 原始加权 | 关键发现 |
+|------|---------|------|---------|----------|
+| 一、设计评分 | 10.0/10 | 20% | 2.00 | 3/3个Dump ErrCode在设计文档中均有定义 |
+| 二、测试评分 | 7.0/10 | 40% | 2.80 | ErrCode覆盖75%，Reason覆盖50% |
+| 三、交付质量 | 9.1/10 | 40% | 3.64 | 24/24条Dump条目全部合规 |
+| **原始总分** | — | 100% | **8.44** | **等级B（原始）** |
+| **强制执行后** | — | — | **5.0** | **等级D（必须规则FAIL）** |
+
+**关键数据一览**:
+- 总条目数: 32 (EP系列24 + 跨组件8)
+- Dump组件条目(EP系列): 24 (EP0001×11 + EP0002×6 + EP0004×7)
+- 跨组件条目: 8 (EE1001×7 + EH0004×1)
+- ErrCode覆盖率: 75.0% (3/4 设计ErrCode有测试覆盖，EP0003缺失)
+- Reason覆盖率: 50.0% (4/8 设计Reason被覆盖)
+- 规范符合率(Dump条目): 100.0% (24/24条EP系列条目全部合规)
+- 用户指导能力(Dump条目): 8.375/10 (EP系列entry加权平均)
+
+**核心问题 (必须/P0-P2)**:
+1. **[必须-FAIL]** ErrCode覆盖率75% < 100%，EP0003完全无测试覆盖 → 评审不通过，评分强制<6.0
+2. **[必须-FAIL]** EP0003的Reason可操作修复覆盖0% < 5%最低要求
+3. **[P0-跨组件]** EE1001 (7条) Reason暴露CANN内部函数名\`rtGetDevMsg\`和内部状态\`context is a null pointer\`
+4. **[P1-跨组件]** EH0004 (1条) 为ACL组件错误码穿透至Dump日志
+5. **[P2-本组件]** EP0003完全无测试覆盖，4个Reason场景全部缺失
+6. **[P2-本组件]** EP0004 Locatability偏低(5分)，不指明具体出错的JSON字段
+
+---
+
+## 二、设计文档分析
+
+| 设计ErrCode | errTitle | 设计Reason数 | 输出中有测试 | 输出条目数 | 备注 |
+|------------|----------|-------------|-------------|-----------|------|
+| EP0001 | Config_Error | 2 | ✅ 已覆盖 | 11 | 2/2 Reason覆盖 |
+| EP0002 | Config_Error | 1(NA) | ✅ 已覆盖 | 6 | NA匹配 |
+| EP0003 | Config_Error | 4 | ❌ 未覆盖 | 0 | **完全无测试数据** |
+| EP0004 | File_Operation_Error_Parse | 1(模板) | ✅ 已覆盖 | 7 | json.exception.*匹配 |
+
+---
+
+## 三、Reason覆盖率
+
+| 设计Reason | 日志匹配 |
+|-----------|---------|
+| EP0001: The configuration item is not found | **✅ 已覆盖** |
+| EP0001: The configuration item value is empty | **✅ 已覆盖** |
+| EP0002: NA | **✅ 已覆盖** |
+| EP0004: %s (json库异常) | **✅ 已覆盖** |
+| EP0003: value length exceeds upper limit | **❌ 未覆盖** |
+| EP0003: invalid path | **❌ 未覆盖** |
+| EP0003: invalid characters | **❌ 未覆盖** |
+| EP0003: path without read/write permissions | **❌ 未覆盖** |
+
+**覆盖率**: 4/8 = **50.0%**
+
+---
+
+## 四、ErrCode覆盖率
+
+| 指标 | 值 | 是否达标 |
+|------|-----|---------|
+| 设计ErrCode总数 | 4 | — |
+| 已覆盖ErrCode数 | 3 (EP0001, EP0002, EP0004) | — |
+| 未覆盖ErrCode数 | 1 (EP0003) | — |
+| **ErrCode覆盖率** | **75.0%** | **❌ <100% 必须规则FAIL** |
+| **Reason覆盖率** | **50.0%** | 偏低 |
+
+---
+
+## 五、交付质量 — 规范符合性
+
+| 范围 | 合规 | 不合规 | 合规率 |
+|------|------|--------|--------|
+| **Dump组件(EP系列, 24条)** | **24** | **0** | **100.0%** |
+| 跨组件(EE/EH系列, 8条) | 0 | 8 | 0.0% |
+
+---
+
+## 六、用户指导能力评分
+
+| ErrCode | Understandability | Locatability | Actionability | Self-closure | 加权平均 |
+|---------|------------------|--------------|---------------|--------------|---------|
+| EP0001 | 9 | 8 | 9 | 9 | **8.75** |
+| EP0002 | 9 | 9 | 9 | 9 | **9.0** |
+| EP0004 | 6 | 5 | 9 | 9 | **7.25** |
+| **Dump加权平均** | — | — | — | — | **8.375** |
+
+---
+
+## 十、核心问题汇总
+
+| 优先级 | 问题 | 影响 |
+|--------|------|------|
+| **必须** | ErrCode覆盖率75% < 100%，评审不通过 | 评分强制<6.0(等级D) |
+| **P0** | EE1001 Reason暴露CANN内部函数名 | 用户无法理解/修复 |
+| **P1** | EH0004为ACL错误码穿透至Dump日志 | 错误码归属模糊 |
+| **P2** | EP0003完全无测试覆盖 | ErrCode/Reason主要缺口 |
+| **P2** | EP0004 Locatability=5，不指明具体JSON字段 | 用户定位困难 |
+
+---
+
+## 十一、修复路线图
+
+| 阶段 | 优先级 | 时间 | 修复内容 | 预期评分变化 |
+|------|--------|------|---------|-------------|
+| **Phase 1** | **必须** | **1-2周** | **补充EP0003全部4个Reason的测试用例** | **评分5.0→9.4(A)** |
+| Phase 2 | P2 | 2-3周 | 优化EP0004 Locatability，补充字段名/行号 | 用户指导微升 |
+| Phase 3 | P0 | 3-4周 | 推动Runtime修复EE1001内部信息暴露 | 消除7条跨组件违规 |
+
+---
+
+## 十二、评分汇总
+
+| 维度 | 原始得分 | 权重 | 加权得分 |
+|------|---------|------|---------|
+| 一、设计评分 | 10.0/10 | 20% | 2.00 |
+| 二、测试评分 | 7.0/10 | 40% | 2.80 |
+| 三、交付质量 | 9.1/10 | 40% | 3.64 |
+| **原始总分** | **8.44** | 100% | — |
+| **最终评分（必须规则FAIL）** | | | **5.0/10 (D)** |
+`,
+  hccl: `# hccl 通信库 · 评估报告
+
+> **评估状态**: 模拟数据（待接入真实评测结果）
+
+## 评估结论总览
+
+| 维度 | 得分 | 等级 |
+|------|------|------|
+| 综合 | 48/100 | D |
+| 测试评分 | 60/100 | D |
+| 开发评分 | 80/100 | C |
+
+## 核心问题
+
+1. **[P0]** 集合通信 API 文档覆盖率不足，allreduce/allgather 高级用法缺失示例
+2. **[P1]** 错误码 HCCL_E_REMOTE 无用户可操作的修复指引
+3. **[P2]** 多机多卡场景下日志可读性差，内部状态暴露
+
+## 修复路线图
+
+| 阶段 | 内容 | 预期收益 |
+|------|------|---------|
+| Phase 1 | 补充高级 API 文档与示例 | 综合分 +15 |
+| Phase 2 | 完善错误码用户指引 | 可操作性 +20 |
+`,
+  dvpp: `# dvpp 图像处理 · 评估报告
+
+> **评估状态**: 模拟数据（待接入真实评测结果）
+
+## 评估结论总览
+
+| 维度 | 得分 | 等级 |
+|------|------|------|
+| 综合 | 47/100 | D |
+| 测试评分 | 60/100 | D |
+| 开发评分 | 79/100 | C |
+
+## 核心问题
+
+1. **[P0]** VPC/JPEGD 接口参数说明缺失，开发者频繁反馈
+2. **[P1]** 图像格式转换失败时错误码信息不足以定位问题
+3. **[P2]** 性能调优文档严重滞后于版本迭代
+
+## 修复路线图
+
+| 阶段 | 内容 | 预期收益 |
+|------|------|---------|
+| Phase 1 | 补全 VPC/JPEGD 参数文档 | 综合分 +18 |
+| Phase 2 | 优化错误码可操作性 | 用户指导 +15 |
+`,
+  amct: `# amct 模型优化 · 评估报告
+
+> **评估状态**: 模拟数据（待接入真实评测结果）
+
+## 评估结论总览
+
+| 维度 | 得分 | 等级 |
+|------|------|------|
+| 综合 | 45/100 | D |
+| 测试评分 | 60/100 | D |
+| 开发评分 | 75/100 | C |
+
+## 核心问题
+
+1. **[P0]** 量化感知训练文档与实际 API 行为不一致
+2. **[P1]** 模型精度异常时缺乏系统性排查指引
+3. **[P2]** 示例代码未覆盖主流模型（LLaMA / Qwen）
+
+## 修复路线图
+
+| 阶段 | 内容 | 预期收益 |
+|------|------|---------|
+| Phase 1 | 修正文档与API不一致问题 | 综合分 +20 |
+| Phase 2 | 新增主流模型示例 | 开发评分 +10 |
+`,
+  ge: `# ge 图引擎 · 评估报告
+
+> **评估状态**: 模拟数据（待接入真实评测结果）
+
+## 评估结论总览
+
+| 维度 | 得分 | 等级 |
+|------|------|------|
+| 综合 | 25/100 | F |
+| 测试评分 | 38/100 | F |
+| 开发评分 | 66/100 | D |
+
+## 核心问题
+
+1. **[必须-FAIL]** 图编译 API 文档覆盖率 < 50%，大量接口无文档
+2. **[P0]** 动态 shape 场景下编译失败信息完全不可操作
+3. **[P0]** 子图融合相关错误码 R3/R4 暴露内部函数名
+4. **[P1]** 自定义算子注册流程文档与实际行为脱节
+
+## 修复路线图
+
+| 阶段 | 内容 | 预期收益 |
+|------|------|---------|
+| Phase 1 | 紧急补全核心 API 文档 | 综合分 +30 |
+| Phase 2 | 重写动态 shape 错误码 | 可操作性 +25 |
+| Phase 3 | 修复内部函数名暴露 | 合规率 +40% |
+`,
+};
+
+// simple markdown → html (tables, headers, bold, code, hr, blockquote, lists)
+function mdToHtml(md){
+  let h = md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    // fenced code blocks
+    .replace(/```[\w]*\n([\s\S]*?)```/g,(_,c)=>`<pre><code>${c}</code></pre>`)
+    // blockquote
+    .replace(/^&gt; (.+)$/gm,(_,c)=>`<blockquote>${c}</blockquote>`)
+    // headers
+    .replace(/^#### (.+)$/gm,(_,c)=>`<h4>${c}</h4>`)
+    .replace(/^### (.+)$/gm,(_,c)=>`<h3>${c}</h3>`)
+    .replace(/^## (.+)$/gm,(_,c)=>`<h2>${c}</h2>`)
+    .replace(/^# (.+)$/gm,(_,c)=>`<h1>${c}</h1>`)
+    // hr
+    .replace(/^---$/gm,'<hr>')
+    // bold
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    // inline code
+    .replace(/`([^`]+)`/g,'<code>$1</code>');
+
+  // tables
+  h = h.replace(/(\|.+\|\n)+/g, block => {
+    const lines = block.trim().split('\n');
+    if(lines.length < 2) return block;
+    const toTd = (line, tag) => '<tr>' + line.replace(/^\||\|$/g,'').split('|').map(c=>`<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
+    const head = toTd(lines[0], 'th');
+    const body = lines.slice(2).map(l => toTd(l, 'td')).join('');
+    return `<table>${head}${body}</table>`;
+  });
+
+  // lists
+  h = h.replace(/((?:^[*\-] .+\n?)+)/gm, block =>
+    '<ul>' + block.trim().split('\n').map(l=>`<li>${l.replace(/^[*\-] /,'')}</li>`).join('') + '</ul>');
+  h = h.replace(/((?:^\d+\. .+\n?)+)/gm, block =>
+    '<ol>' + block.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\. /,'')}</li>`).join('') + '</ol>');
+
+  // paragraphs (lines not already wrapped)
+  h = h.split('\n').map(line => {
+    if(/^<(h[1-4]|ul|ol|li|table|pre|blockquote|hr|tr|th|td)/.test(line.trim()) || line.trim()==='') return line;
+    return `<p>${line}</p>`;
+  }).join('\n');
+
+  return h;
+}
+
+let _rptOpen = false;
+let _rptView = 'html'; // 'md' | 'html'
+let _rptName = '';
+
+function openReportDrawer(name) {
+  _rptName = name;
+  const md = REPORT_MD[name] || `# ${name} · 暂无报告\n\n该组件的评估报告尚未生成。`;
+  const overlay = document.getElementById('rptOverlay');
+  const drawer = document.getElementById('rptDrawer');
+  const title = document.getElementById('rptTitle');
+  title.textContent = name + ' · 评估报告';
+  overlay.classList.add('open');
+  drawer.classList.add('open');
+  _rptOpen = true;
+  renderRptContent(md);
+}
+
+function closeReportDrawer() {
+  document.getElementById('rptOverlay').classList.remove('open');
+  document.getElementById('rptDrawer').classList.remove('open');
+  _rptOpen = false;
+}
+
+function renderRptContent(md) {
+  const body = document.getElementById('rptBody');
+  const mdBtn = document.getElementById('rptTabMd');
+  const htmlBtn = document.getElementById('rptTabHtml');
+  if (_rptView === 'md') {
+    mdBtn.classList.add('active'); htmlBtn.classList.remove('active');
+    body.innerHTML = `<div class="rpt-md"><pre>${md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre></div>`;
+  } else {
+    htmlBtn.classList.add('active'); mdBtn.classList.remove('active');
+    body.innerHTML = `<div class="rpt-html">${mdToHtml(md)}</div>`;
+  }
+}
+
+function rptSwitchView(view) {
+  _rptView = view;
+  const md = REPORT_MD[_rptName] || '';
+  renderRptContent(md);
+}
+
+function rptCopy() {
+  const md = REPORT_MD[_rptName] || '';
+  navigator.clipboard.writeText(md).then(() => {
+    const btn = document.getElementById('rptCopyBtn');
+    const orig = btn.textContent;
+    btn.textContent = '已复制';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+function rptDownload() {
+  const md = REPORT_MD[_rptName] || '';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([md], {type:'text/markdown'}));
+  a.download = _rptName + '_evaluation_report.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
 </script>
+
+<!-- Report Drawer -->
+<div id="rptOverlay" class="rpt-overlay" onclick="closeReportDrawer()"></div>
+<div id="rptDrawer" class="rpt-drawer">
+  <div class="rpt-hdr">
+    <div class="rpt-hdr-title" id="rptTitle">评估报告</div>
+    <button class="rpt-close" onclick="closeReportDrawer()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="#565C65" stroke-width="2" stroke-linecap="round"/><line x1="13" y1="1" x2="1" y2="13" stroke="#565C65" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="rpt-toolbar">
+    <button id="rptTabHtml" class="rpt-tab active" onclick="rptSwitchView('html')">可视化</button>
+    <button id="rptTabMd" class="rpt-tab" onclick="rptSwitchView('md')">Markdown</button>
+    <div style="flex:1"></div>
+    <button id="rptCopyBtn" class="rpt-btn" onclick="rptCopy()">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="#565C65" stroke-width="1.5"/><path d="M3 11V3a2 2 0 0 1 2-2h8" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
+      复制
+    </button>
+    <button class="rpt-btn" onclick="rptDownload()">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0-3-3m3 3 3-3" stroke="#565C65" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
+      下载
+    </button>
+  </div>
+  <div id="rptBody" class="rpt-body"></div>
+</div>
+
 </body>
 </html>
