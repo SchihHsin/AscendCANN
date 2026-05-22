@@ -2488,6 +2488,7 @@ function cellTrendSvg(t){
   return `<svg width="7" height="5" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><line x1="1" y1="4" x2="7" y2="4" stroke="#AAAAAA" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 }
 window._mxCfg={};
+var REPORT_MD; // hoisted so TDZ-safe when IIFE runs before assignment at line ~3345
 function renderMatrix(cfg){
   const grid=document.getElementById(cfg.gridId);
   if(!grid)return;
@@ -3342,7 +3343,7 @@ function selectStage(code,el){
 })();
 
 // ── Report Drawer ──────────────────────────────────────────────────────────
-const REPORT_MD = {
+REPORT_MD = {
   dump: `# Dump ErrorMessage 评估报告
 
 **评估日期**: 2026-05-05
