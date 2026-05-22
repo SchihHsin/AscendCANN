@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -3461,7 +3461,7 @@ REPORT_MD = {
 
 **设计Reason总数**: 8 (含1个NA按Principle 3计数)
 
-### 3.2 提取日志Reason
+### 3.2 提取日志Reason（独立Reason字段）
 
 **Dump组件(EP系列, 纳入分析)**:
 
@@ -3496,6 +3496,10 @@ REPORT_MD = {
 **覆盖率**: 4/8 = **50.0%** (严格匹配)
 **未覆盖设计Reason**: 4个，全部属于EP0003 (路径值校验类错误)
 
+**设计外日志Reason**:
+- EE1001: \`rtGetDevMsg execution failed, the context is a null pointer\` (CANN内部暴露，非Dump定义)
+- EH0004: \`json.exception.parse_error.101\` (ACL层错误穿透)
+
 ---
 
 ## 四、ErrCode覆盖率
@@ -3529,37 +3533,55 @@ REPORT_MD = {
 
 ### 5.1 有效条目逐条合规审查
 
+**Dump组件条目(EP系列，纳入评分，24条)**:
+
 | ErrCode | 条目数 | R1 errTitle | R2 ErrCode | R3 ErrMessage | R3/R4 Reason | R5 Solution | R6 用户错误 | 判定 |
 |---------|--------|-------------|------------|---------------|-------------|-------------|------------|------|
 | EP0001 | 11 | ✅ 已注册 | ✅ 格式有效 | ✅ 用户语言 | ✅ 自解释 | ✅ P4适用 | ✅ P4适用 | **合规** |
 | EP0002 | 6 | ✅ 已注册 | ✅ 格式有效 | ✅ 含Expected value | ✅ P4适用 | ✅ P4适用 | ✅ P4适用 | **合规** |
 | EP0004 | 7 | ✅ 已注册 | ✅ 格式有效 | ✅ 用户语言 | ✅ P2第三方库 | ✅ P4适用 | ✅ P4适用 | **合规** |
 
+**合规审查详评**:
+
 #### EP0001 (Config_Error, 11条)
-- **R1**: \`Config_Error\` 在规范errTitle表中已注册 ✅
-- **R2**: \`EP0001\` 格式 \`[EWI][0-9A-Z]\\d{4}\` — E=Error, P=Dump模块, 0001=用户错误编号 ✅
-- **R3**: ErrMessage "The content of configuration item %s in configuration file %s is invalid" — 用户语言，明确指出哪个配置项在哪个文件 ✅
+- **R1**: \`Config_Error\` 在规范errTitle表中已注册(line 226) ✅
+- **R2**: \`EP0001\` 格式 \`[EWI][0-9A-Z]\\\\d{4}\` — E=Error, P=Dump模块, 0001=用户错误编号 ✅
+- **R3**: ErrMessage "The content of configuration item %s in configuration file %s is invalid" — 用户语言，明确指出哪个配置项(dump_op_switch/dump_mode/dump_stats/dump_path/dump_level/dump_debug/dump_data/dump_scene)在哪个文件(acl.json) ✅
 - **R3/R4**: Reason "value is empty" / "not found" — 用户语言，自解释 ✅
-- **R5**: Solution=NA → Principle 4适用 ✅
+- **R5**: Solution=NA → Principle 4适用: "value is empty"→用户填入值, "not found"→用户添加配置项 ✅
+- **R6**: 用户错误(0001)，Solution=NA可接受因Reason自解释可操作 ✅
 - **Verdict**: COMPLIANT
 
 #### EP0002 (Config_Error, 6条)
-- **R3**: ErrMessage含 "Expected value: stats/tensor", "all/input/output", "off/on" 等 — 最佳实践，直接展示正确值范围 ✅
+- **R1**: \`Config_Error\` 已注册 ✅
+- **R2**: \`EP0002\` 格式有效 ✅
+- **R3**: ErrMessage含 "Expected value: stats/tensor", "all/input/output", "off/on", "all/kernel/op", "aic_err_brief_dump/aic_err_detail_dump/..." — 最佳实践，直接展示正确值范围 ✅
+- **R5/R6**: Solution=NA → ErrMessage展示正确值(Principle 4自解释) ✅
 - **Verdict**: COMPLIANT
 
 #### EP0004 (File_Operation_Error_Parse, 7条)
+- **R1**: \`File_Operation_Error_Parse\` 在规范errTitle表中已注册(line 235) ✅
+- **R2**: \`EP0004\` 格式有效 ✅
+- **R3**: ErrMessage "Failed to parse file acl.json" — 用户语言 ✅
 - **R3**: Reason = \`json.exception.type_error.302\` → Principle 2适用(nlohmann/json第三方库异常可接受) ✅
-- **Locatability=5**: 仅给出文件名(acl.json)，**不指明哪个具体字段类型错误** — 主要扣分项
+- **R5**: Solution=NA → Principle 4适用: "type must be string, but is number"→用户修改JSON类型; "type must be array, but is string"→用户修改为array ✅
 - **Verdict**: COMPLIANT
 
-### 5.2 跨组件条目审查
+**跨组件条目(非EP系列，不纳入评分，8条)**:
 
 | ErrCode | 条目数 | 主要违规 | 判定 |
 |---------|--------|---------|------|
 | EE1001 | 7 | R3/R4 暴露CANN内部(rtGetDevMsg, "context is a null pointer") | **不合规-P0跨组件** |
 | EH0004 | 1 | 不在Dump设计文档(属ACL/H模块) | **跨组件-P1** |
 
-### 5.3 合规率汇总
+**EE1001不合规详析(7条)**:
+- errTitle=\`Invalid_Argument\`(在spec注册表中存在)，ErrCode格式合规
+- **R3 FAIL**: Reason \`rtGetDevMsg execution failed, the context is a null pointer\` — 暴露Runtime内部函数名\`rtGetDevMsg\`和内部状态\`context is a null pointer\`
+- **R4 FAIL**: Possible Cause含内部API调用失败信息
+- **NOT P2**: \`rtGetDevMsg\`是CANN内部函数，非第三方库，Principle 2不适用
+- TraceBack进一步暴露: \`[FUNC:ReportInnerError] [FILE:log_inner.cpp] [LINE:132]\`, \`[FUNC:GetDevErrMsg] [FILE:api_impl.cc] [LINE:6145]\`
+
+### 5.2 合规率汇总
 
 | 范围 | 合规 | 不合规 | 合规率 |
 |------|------|--------|--------|
@@ -3573,6 +3595,8 @@ REPORT_MD = {
 
 ### 6.1 逐ErrCode指导评分
 
+**Dump组件ErrCode(纳入评分)**:
+
 | ErrCode | Understandability (25%) | Locatability (25%) | Actionability (30%) | Self-closure (20%) | 加权平均 | 评分说明 |
 |---------|------------------------|--------------------|--------------------|--------------------|---------|---------|
 | EP0001 | 9 | 8 | 9 | 9 | **8.75** | 精确到配置项名+文件名 |
@@ -3580,15 +3604,44 @@ REPORT_MD = {
 | EP0004 | 6 | 5 | 9 | 9 | **7.25** | json.exception技术性,Locatability偏低 |
 | **Dump加权平均(24条)** | — | — | — | — | **8.375** | (11×8.75+6×9+7×7.25)/24 |
 
+**评分说明**:
+
+- **EP0001 (11条)**:
+  - Understandability=9: 明确指出哪个配置项、哪个文件、什么问题
+  - Locatability=8: 精确到配置项名称+文件名(略扣因未说明正确格式)
+  - Actionability=9: "value is empty"→填入值, "not found"→添加配置项
+  - Self-closure=9: 立即可修复
+
+- **EP0002 (6条) — 最佳实践**:
+  - Understandability=9: 清晰的Expected value模式
+  - Locatability=9: 精确到配置项+正确值范围
+  - Actionability=9: 正确值已列出(stats/tensor, all/input/output等)
+  - Self-closure=9: 立即修复，无需查文档
+
+- **EP0004 (7条)**:
+  - Understandability=6: json.exception技术性强但P2适用(第三方库)
+  - Locatability=5: 仅给出文件名(acl.json)，**不指明哪个具体字段类型错误** — 主要扣分项
+  - Actionability=9: P4 "type must be string, but is number" → 用户知道修改JSON类型
+  - Self-closure=9: 知道类型不匹配即可立即修复
+
+**跨组件ErrCode(不纳入评分，仅供跟踪)**:
+
+| ErrCode | Understandability (25%) | Locatability (25%) | Actionability (30%) | Self-closure (20%) | 加权平均 |
+|---------|------------------------|--------------------|--------------------|--------------------|---------|
+| EE1001 | 2 | 1 | 7 | 6 | **4.1** |
+| EH0004 | 6 | 5 | 9 | 9 | **7.2** |
+
 ### 6.2 问题总结
 
 1. **EP0002为最佳实践**: "Expected value"设计使用户可直接看到正确选项，建议所有配置校验类错误采用此模式
-2. **EP0004 Locatability不足(5分)**: "Failed to parse file acl.json"不指明具体字段，建议补充出错JSON字段名/行号
+2. **EP0004 Locatability不足(5分)**: "Failed to parse file acl.json"不指明具体字段，建议补充出错JSON字段名/行号，如 "Failed to parse field 'dump_mode' in file acl.json"
 3. **EE1001(4.1/10)为跨组件最差**: Reason暴露内部函数名，用户完全无法理解或修复
 
 ---
 
 ## 七、errTitle细分分析
+
+### 7.1 设计文档vs提取errTitle对比
 
 | errTitle | 规范注册 | 设计文档定义 | 输出使用 | 对应ErrCode | R1判定 |
 |----------|---------|------------|---------|-------------|--------|
@@ -3597,19 +3650,21 @@ REPORT_MD = {
 | Invalid_Argument | ✅ (line 194) | ❌ (非Dump定义) | ✅ (7条) | EE1001(跨组件) | 跨组件 |
 | File_Operation_Error | ✅ (line 230) | ❌ (非Dump定义) | ✅ (1条) | EH0004(跨组件) | 跨组件 |
 
-**结论**: Dump组件EP系列使用的errTitle均在规范errTitle注册表中定义，R1全部通过。
+**结论**: Dump组件EP系列使用的errTitle(Config_Error, File_Operation_Error_Parse)均在规范errTitle注册表中定义，R1全部通过。
 
 ---
 
 ## 八、TraceBack规范审查
 
+### 8.1 TraceBack合规判断
+
 | ErrCode | 条目数 | TraceBack典型内容 | 合规判断 |
 |---------|--------|------------------|---------|
-| EP0001 | 11 | \`[FUNC:ReportInnerError] [FILE:log_inner.cpp] [LINE:132]\` | TraceBack含内部信息 — **ErrMessage/Reason层合规**(TraceBack为调试层) |
+| EP0001 | 11 | \`[FUNC:ReportInnerError] [FILE:log_inner.cpp] [LINE:132]\` + \`[FUNC:GetDevErrMsg] [FILE:api_impl.cc]\` | TraceBack含内部信息 — **ErrMessage/Reason层合规**(TraceBack为调试层) |
 | EP0002 | 6 | 同上 | 同上 |
 | EP0004 | 7 | 同上 | 同上 |
-| EE1001 | 7 | 暴露\`[FUNC:ReportInnerError]\` + \`HandleDumpConfig\` | **跨组件内部暴露** |
-| EH0004 | 1 | 暴露json解析异常链 | **跨组件内部暴露** |
+| EE1001 | 7 | 暴露\`[FUNC:ReportInnerError]\` + \`HandleDumpConfig\` + \`GetDevErrMsg\`等 | **跨组件内部暴露** |
+| EH0004 | 1 | 暴露\`[FUNC:ReportInnerError]\` + json解析异常链 | **跨组件内部暴露** |
 
 **说明**: TraceBack作为调试日志信息，包含内部函数名和行号属正常设计。评估重点在ErrMessage/Reason层面的用户语言规范性。Dump组件EP系列的ErrMessage和Reason均不含CANN内部信息，TraceBack层内容不影响交付质量评分。
 
@@ -3669,6 +3724,8 @@ REPORT_MD = {
 - 交付质量(40%): 9.1/10 → 3.64 (不变)
 - 总分: 2.00 + 4.00 + 3.64 = **9.64** → 等级A
 
+**跨组件修复后额外收益**: 消除8条跨组件错误穿透条目，Dump日志整体规范符合率达100%
+
 ---
 
 ## 十二、评分汇总
@@ -3678,6 +3735,7 @@ REPORT_MD = {
 | 维度 | 子项 | 子项得分 | 子项权重 | 维度权重 | 加权得分 |
 |------|------|---------|---------|---------|---------|
 | **一、设计评分** | 设计文档完整性 | 10.0/10 (3/3) | 100% | 20% | 2.00 |
+| | | | | | |
 | **二、测试评分** | ErrCode覆盖度 | 7.5/10 (3/4) | 80% | 40% | 2.40 |
 | | Reason覆盖率 | 5.0/10 (4/8) | 20% | 40% | 0.40 |
 | | *维度小计* | *7.0/10* | — | 40% | **2.80** |
@@ -3686,9 +3744,11 @@ REPORT_MD = {
 | | 用户指导能力 | 8.375/10 | 30% | 40% | 1.005 |
 | | *维度小计* | *9.1/10* | — | 40% | **3.625** |
 | **原始总分** | | | **100%** | | **8.425** |
+| | | | | | |
 | **必须规则检查** | ErrCode覆盖率 | 75% < 100% | — | — | **❌ FAIL** |
 | | EP0003 Reason覆盖 | 0% < 5% | — | — | **❌ FAIL** |
 | | 用户场景覆盖 | ✅ | — | — | **✅ PASS** |
+| **强制执行** | 2项必须规则FAIL → 评审不通过 | | | | **评分<6.0** |
 | **最终评分** | | | | | **5.0/10 (D)** |
 
 ### ErrMessage质量评分明细
@@ -3772,8 +3832,7 @@ Dump组件错误通过aclGetRecentErrMsg()接口获取。Dump配置校验链路:
 |----------------------|------|------------|--------------|--------|
 | P | Dump | EPxxxx | ✅ 本组件 | 24条 |
 | E | Runtime | EExxxx | ❌ 跨组件 | 7条 |
-| H | ACL | EHxxxx | ❌ 跨组件 | 1条 |
-`,
+| H | ACL | EHxxxx | ❌ 跨组件 | 1条 |`,
   hccl: `# hccl 通信库 · 评估报告
 
 > **评估状态**: 模拟数据（待接入真实评测结果）
@@ -3954,6 +4013,14 @@ function mdToVisualHtml(md){
     const v = parseFloat(pct);
     const barC = v >= 80 ? '#37C597' : v >= 50 ? '#FD9A00' : '#E63838';
     return `<span class="vi-pct-wrap"><span class="vi-pct-bar" style="width:${Math.min(v,100)}%;background:${barC}"></span><span class="vi-pct-num">${m}</span></span>`;
+  });
+
+  // score/100 in table cells → horizontal bar (e.g. "48/100", "9.3/10")
+  h = h.replace(/<td([^>]*)>([^<]*?(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)[^<]*?)<\/td>/g, (m, attrs, cell, num, denom) => {
+    const v = parseFloat(num)/parseFloat(denom)*100;
+    if(isNaN(v)||v<0||v>100) return m;
+    const barC = v>=80?'#37C597':v>=50?'#FD9A00':'#E63838';
+    return `<td${attrs} class="vi-bar-cell"><div class="vi-bar-row"><span class="vi-bar-label" style="color:${barC};font-weight:700">${cell}</span><span class="vi-bar-track"><span class="vi-bar-fill" style="width:${v.toFixed(1)}%;background:${barC}"></span></span></div></td>`;
   });
 
   // blockquote → alert box
