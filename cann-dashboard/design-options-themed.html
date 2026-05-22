@@ -4198,11 +4198,20 @@ function rptSearchExec() {
 function _rptSearchApply(countEl) {
   const matches = document.querySelectorAll('#rptBody .rpt-hl');
   countEl = countEl || document.getElementById('rptSearchCount');
-  if (!matches.length) { countEl.textContent = '无结果'; countEl.style.display = 'inline'; return; }
+  const prevBtn = document.getElementById('rptSearchPrev');
+  const nextBtn = document.getElementById('rptSearchNext');
+  if (!matches.length) {
+    countEl.textContent = '无结果'; countEl.style.display = 'inline';
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+    return;
+  }
   matches.forEach((el, i) => el.classList.toggle('current', i === _rptSearchIdx));
   matches[_rptSearchIdx].scrollIntoView({block:'nearest', behavior:'smooth'});
-  countEl.textContent = `${_rptSearchIdx + 1} / ${matches.length}`;
+  countEl.textContent = `${_rptSearchIdx + 1}/${matches.length}`;
   countEl.style.display = 'inline';
+  if (prevBtn) prevBtn.style.display = 'inline-flex';
+  if (nextBtn) nextBtn.style.display = 'inline-flex';
 }
 
 function rptSearchNav(dir) {
@@ -4215,8 +4224,9 @@ function rptSearchNav(dir) {
 function rptSearchClearAll() {
   const body = document.getElementById('rptBody');
   if (_rptOrigHtml) body.innerHTML = _rptOrigHtml;
-  document.getElementById('rptSearchCount').style.display = 'none';
-  document.getElementById('rptSearchClear').style.display = 'none';
+  ['rptSearchCount','rptSearchClear','rptSearchPrev','rptSearchNext'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
 }
 
 function rptSwitchView(view) {
@@ -4262,18 +4272,19 @@ function rptDownload() {
     <button id="rptTabMd" class="rpt-tab" onclick="rptSwitchView('rendered')">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:4px"><path d="M2 2h12v12H2z" stroke="#565C65" stroke-width="1.4" rx="1"/><path d="M5 6v4m0 0 2-2 2 2m0-4v4" stroke="#565C65" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Markdown 报告
     </button>
-    <div class="rpt-search-wrap" style="flex:1;max-width:220px">
-      <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#898E95" stroke-width="1.5"/><line x1="11" y1="11" x2="14" y2="14" stroke="#898E95" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <div class="rpt-search-wrap" style="flex:1">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><circle cx="7" cy="7" r="5" stroke="#898E95" stroke-width="1.5"/><line x1="11" y1="11" x2="14" y2="14" stroke="#898E95" stroke-width="1.5" stroke-linecap="round"/></svg>
       <input id="rptSearchInput" class="rpt-search-input" placeholder="搜索…" oninput="rptSearchExec()" onkeydown="if(event.key==='Enter')rptSearchNav(event.shiftKey?-1:1)">
+      <span id="rptSearchCount" style="display:none;font-size:11px;color:var(--text-3);white-space:nowrap;padding:0 4px;border-right:1px solid var(--border)"></span>
+      <button id="rptSearchPrev" onclick="rptSearchNav(-1)" title="上一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;color:var(--text-3);line-height:1">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 8l4-4 4 4" stroke="#565C65" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button id="rptSearchNext" onclick="rptSearchNav(1)" title="下一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;color:var(--text-3);line-height:1">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="#565C65" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
       <button id="rptSearchClear" onclick="rptSearchClearAll()" style="display:none;border:none;background:none;cursor:pointer;font-size:15px;color:var(--text-3);padding:0 2px;line-height:1">×</button>
     </div>
-    <span id="rptSearchCount" style="display:none;font-size:11px;color:var(--text-3);white-space:nowrap;min-width:36px;text-align:center"></span>
-    <button class="rpt-btn rpt-btn-icon" onclick="rptSearchNav(-1)" title="上一个">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 8l4-4 4 4" stroke="#565C65" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button class="rpt-btn rpt-btn-icon" onclick="rptSearchNav(1)" title="下一个">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="#565C65" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
+    <div style="flex:1"></div>
     <button id="rptCopyBtn" class="rpt-btn rpt-btn-icon" title="复制" onclick="rptCopy()">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="9" height="10" rx="1.5" stroke="#565C65" stroke-width="1.5"/><path d="M5 5V3.5A1.5 1.5 0 0 1 6.5 2h7A1.5 1.5 0 0 1 15 3.5v7A1.5 1.5 0 0 1 13.5 12H11" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
