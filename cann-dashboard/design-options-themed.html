@@ -764,54 +764,79 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .rpt-btn-icon{padding:5px 7px;gap:0}
 .rpt-body{flex:1;overflow-y:auto;padding:20px}
 .rpt-md pre{white-space:pre-wrap;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:var(--text);background:var(--surface);border-radius:8px;padding:16px}
+/* ── Markdown rendered tab ── */
 .rpt-html{font-size:13px;line-height:1.8;color:var(--text)}
-.rpt-html h1{font-size:18px;font-weight:800;margin:0 0 12px;color:var(--text)}
-.rpt-html h2{font-size:15px;font-weight:700;margin:20px 0 8px;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:4px}
-.rpt-html h3{font-size:13px;font-weight:700;margin:14px 0 6px;color:var(--text-2)}
-.rpt-html h4{font-size:12px;font-weight:700;margin:10px 0 4px;color:var(--text-2)}
-.rpt-html p{margin:6px 0}
-.rpt-html ul,.rpt-html ol{padding-left:20px;margin:4px 0}
+.rpt-html h1{font-size:17px;font-weight:800;margin:0 0 14px;color:var(--text)}
+.rpt-html h2{font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:4px}
+.rpt-html h3{font-size:13px;font-weight:700;margin:14px 0 5px;color:var(--text-2)}
+.rpt-html h4{font-size:12px;font-weight:700;margin:10px 0 4px;color:#898E95}
+.rpt-html p{margin:5px 0}
+.rpt-html ul,.rpt-html ol{padding-left:18px;margin:4px 0}
 .rpt-html li{margin:2px 0}
 .rpt-html table{border-collapse:collapse;width:100%;font-size:12px;margin:8px 0}
-.rpt-html th{background:var(--surface);padding:6px 10px;text-align:left;font-weight:700;border:1px solid var(--border)}
-.rpt-html td{padding:5px 10px;border:1px solid var(--border)}
+.rpt-html th{background:var(--surface);padding:5px 8px;text-align:left;font-weight:700;border:1px solid var(--border);white-space:nowrap}
+.rpt-html td{padding:4px 8px;border:1px solid var(--border);vertical-align:top}
 .rpt-html tr:nth-child(even) td{background:#FAFAFA}
-.rpt-html code{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--surface);padding:1px 4px;border-radius:3px}
+.rpt-html code{font-family:monospace;font-size:11px;background:var(--surface);padding:1px 4px;border-radius:3px}
 .rpt-html pre{background:var(--surface);border-radius:6px;padding:12px;overflow-x:auto}
 .rpt-html pre code{background:none;padding:0}
 .rpt-html blockquote{border-left:3px solid var(--border2);margin:8px 0;padding:6px 12px;color:var(--text-2);background:var(--surface);border-radius:0 6px 6px 0}
 .rpt-html strong{font-weight:700}
-.rpt-html hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+.rpt-html hr{border:none;border-top:1px solid var(--border);margin:14px 0}
 .hm-row-label .comp-link{cursor:pointer;color:inherit;text-decoration:none}
 .hm-row-label .comp-link:hover{text-decoration:underline;color:var(--accent)}
-/* visual badges */
+/* ── Visual tab ── */
+/* badges */
 .vi-badge{display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.02em;vertical-align:middle}
 .vi-ok{background:#D1FAE5;color:#065F46}
 .vi-fail{background:#FEE2E2;color:#991B1B}
 .vi-warn{background:#FEF3C7;color:#92400E}
+/* headings */
+.vi-h1{font-size:16px;font-weight:800;color:var(--text);padding:0 0 10px;margin:0 0 16px;border-bottom:2px solid var(--primary)}
+.vi-h2{font-size:13px;font-weight:700;color:var(--primary);background:rgba(106,103,206,.07);border-left:3px solid var(--primary);padding:6px 10px;border-radius:0 6px 6px 0;margin:20px 0 10px}
+.vi-h3{font-size:12px;font-weight:700;color:var(--text-2);margin:12px 0 5px;padding-left:2px}
+.vi-h4{font-size:11px;font-weight:700;color:#898E95;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.04em}
+/* table wrapper — horizontal scroll for narrow drawer */
+.vi-tbl-wrap{overflow-x:auto;margin:8px 0;border-radius:6px;border:1px solid var(--border)}
+.vi-tbl-wrap table{border-collapse:collapse;width:100%;font-size:11.5px;margin:0;border:none}
+.vi-tbl-wrap th{background:#F2F2F5;padding:5px 9px;text-align:left;font-weight:700;border-bottom:1px solid var(--border);white-space:nowrap;color:var(--text-2)}
+.vi-tbl-wrap td{padding:5px 9px;border-bottom:1px solid #F0F0F2;vertical-align:middle}
+.vi-tbl-wrap tr:last-child td{border-bottom:none}
 /* table cell colors */
-.rpt-html td.vi-cell-ok{background:#F0FDF4;color:#166534}
-.rpt-html td.vi-cell-fail{background:#FEF2F2;color:#991B1B}
-.rpt-html td.vi-cell-warn{background:#FFFBEB;color:#92400E}
-/* inline % progress (outside tables) */
-.vi-pct-wrap{display:inline-flex;align-items:center;gap:5px;vertical-align:middle}
-.vi-pct-bar{display:inline-block;height:5px;border-radius:3px;min-width:2px;max-width:80px;flex-shrink:0}
-.vi-pct-num{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:11px}
-/* table cell % → horizontal bar block */
-.vi-bar-cell{vertical-align:middle}
+.vi-tbl-wrap td.vi-cell-ok{background:#F0FDF4;color:#166534;font-weight:600}
+.vi-tbl-wrap td.vi-cell-fail{background:#FEF2F2;color:#991B1B;font-weight:600}
+.vi-tbl-wrap td.vi-cell-warn{background:#FFFBEB;color:#92400E;font-weight:600}
+/* bar in table cell */
+.vi-bar-cell{min-width:100px}
 .vi-bar-row{display:flex;flex-direction:column;gap:3px}
-.vi-bar-label{font-size:12px;font-weight:600;color:inherit}
-.vi-bar-track{display:block;background:#EBEBED;border-radius:3px;height:6px;width:100%;min-width:80px;overflow:hidden}
-.vi-bar-fill{display:block;height:100%;border-radius:3px;transition:width .3s}
-/* alert box */
-.vi-alert{border-left:3px solid #FD9A00;background:#FFFBEB;border-radius:0 6px 6px 0;padding:8px 14px;margin:8px 0;font-size:12px;color:#92400E}
-/* score summary cards */
-.vi-score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-.vi-score-card{background:#F8F8F9;border-radius:8px;padding:10px 12px;text-align:center}
-.vi-score-label{font-size:10px;font-weight:600;color:var(--text-3);margin-bottom:4px}
-.vi-score-val{font-size:22px;font-weight:800;font-family:'JetBrains Mono',monospace;line-height:1}
-.vi-score-unit{font-size:12px;font-weight:500;color:var(--text-3)}
-.vi-score-sub{font-size:9px;color:var(--text-3);margin-top:4px}
+.vi-bar-label{font-size:12px;font-weight:700}
+.vi-bar-track{display:block;background:#EBEBED;border-radius:3px;height:5px;overflow:hidden}
+.vi-bar-fill{display:block;height:100%;border-radius:3px}
+/* inline % */
+.vi-pct-wrap{display:inline-flex;align-items:center;gap:5px;vertical-align:middle}
+.vi-pct-bar{display:inline-block;height:5px;border-radius:3px;min-width:2px;max-width:60px;flex-shrink:0}
+.vi-pct-num{font-weight:700;font-size:11px}
+/* alert */
+.vi-alert{border-left:3px solid #FD9A00;background:#FFFBEB;border-radius:0 6px 6px 0;padding:8px 14px;margin:10px 0;font-size:12px;line-height:1.7;color:#7A4700}
+.vi-alert strong{color:#92400E}
+/* score cards */
+.vi-score-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+.vi-score-card{background:#F8F8F9;border-radius:8px;padding:10px 12px}
+.vi-score-label{font-size:10px;font-weight:600;color:var(--text-3);margin-bottom:2px}
+.vi-score-val{font-size:20px;font-weight:800;font-family:monospace;line-height:1.2}
+.vi-score-unit{font-size:11px;font-weight:500;color:var(--text-3)}
+.vi-score-sub{font-size:9px;color:var(--text-3);margin-top:3px}
+/* list items */
+.vi-body{font-size:12.5px;line-height:1.8;color:var(--text-2)}
+.vi-body p{margin:4px 0}
+.vi-body ul,.vi-body ol{padding-left:16px;margin:4px 0}
+.vi-body li{margin:2px 0}
+.vi-body strong{color:var(--text);font-weight:700}
+.vi-body code{font-family:monospace;font-size:11px;background:#F0F0F3;padding:1px 4px;border-radius:3px;color:#3D4452}
+.vi-body hr{border:none;border-top:1px solid var(--border);margin:12px 0}
+.vi-kv-row{display:flex;gap:8px;margin:3px 0;font-size:12px}
+.vi-kv-key{color:var(--text-3);flex-shrink:0}
+.vi-kv-val{color:var(--text);font-weight:600}
 </style>
 </head>
 <body>
@@ -3988,37 +4013,32 @@ function mdToHtml(md){
 function mdToVisualHtml(md){
   let h = mdToHtml(md);
 
-  // ✅❌⚠️ → colored badges
+  // 1. Headings → styled div classes (hierarchy: H1 prominent, H2 sectioned, H3/H4 muted)
+  h = h.replace(/<h1>([\s\S]*?)<\/h1>/g, '<div class="vi-h1">$1</div>');
+  h = h.replace(/<h2>([\s\S]*?)<\/h2>/g, '<div class="vi-h2">$1</div>');
+  h = h.replace(/<h3>([\s\S]*?)<\/h3>/g, '<div class="vi-h3">$1</div>');
+  h = h.replace(/<h4>([\s\S]*?)<\/h4>/g, '<div class="vi-h4">$1</div>');
+
+  // 2. Wrap tables in scrollable container (fixes narrow-drawer overflow)
+  h = h.replace(/<table>([\s\S]*?)<\/table>/g, '<div class="vi-tbl-wrap"><table>$1</table></div>');
+
+  // 3. ✅❌⚠️ → colored badges
   h = h.replace(/✅\s*(PASS|已覆盖|合规|存在|COMPLIANT)?/g, '<span class="vi-badge vi-ok">✓ PASS</span>');
   h = h.replace(/❌\s*(FAIL|未覆盖|不合规|FAIL)?/g, '<span class="vi-badge vi-fail">✗ FAIL</span>');
   h = h.replace(/⚠️/g, '<span class="vi-badge vi-warn">⚠ 警告</span>');
 
-  // table cells: color by content
+  // 4. Table cells: color by content keyword
   h = h.replace(/<td>([^<]*)<\/td>/g, (m, cell) => {
     const t = cell.trim();
-    if(/FAIL|未覆盖|不合规|❌|&lt;100%/.test(t)) return `<td class="vi-cell-fail">${cell}</td>`;
+    if(/FAIL|未覆盖|不合规/.test(t)) return `<td class="vi-cell-fail">${cell}</td>`;
     if(/PASS|已覆盖|合规|COMPLIANT/.test(t)) return `<td class="vi-cell-ok">${cell}</td>`;
     if(/偏低|关注|P0|P1|必须/.test(t)) return `<td class="vi-cell-warn">${cell}</td>`;
     return m;
   });
-  // strong cells in tables
   h = h.replace(/<td><strong>([^<]*FAIL[^<]*)<\/strong><\/td>/g, '<td class="vi-cell-fail"><strong>$1</strong></td>');
   h = h.replace(/<td><strong>([^<]*PASS[^<]*)<\/strong><\/td>/g, '<td class="vi-cell-ok"><strong>$1</strong></td>');
 
-  // % in table cells → horizontal bar block
-  h = h.replace(/<td([^>]*)>([^<]*?(\d{1,3}\.\d)%[^<]*?)<\/td>/g, (m, attrs, cell, pct) => {
-    const v = parseFloat(pct);
-    const barC = v >= 80 ? '#37C597' : v >= 50 ? '#FD9A00' : '#E63838';
-    return `<td${attrs} class="vi-bar-cell"><div class="vi-bar-row"><span class="vi-bar-label">${cell}</span><span class="vi-bar-track"><span class="vi-bar-fill" style="width:${Math.min(v,100)}%;background:${barC}"></span></span></div></td>`;
-  });
-  // % outside tables → inline badge with small bar
-  h = h.replace(/(\d{1,3}\.\d)%/g, (m, pct) => {
-    const v = parseFloat(pct);
-    const barC = v >= 80 ? '#37C597' : v >= 50 ? '#FD9A00' : '#E63838';
-    return `<span class="vi-pct-wrap"><span class="vi-pct-bar" style="width:${Math.min(v,100)}%;background:${barC}"></span><span class="vi-pct-num">${m}</span></span>`;
-  });
-
-  // score/100 in table cells → horizontal bar (e.g. "48/100", "9.3/10")
+  // 5. score/N in table cells → bar (e.g. "48/100", "9.3/10", "11/24")
   h = h.replace(/<td([^>]*)>([^<]*?(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)[^<]*?)<\/td>/g, (m, attrs, cell, num, denom) => {
     const v = parseFloat(num)/parseFloat(denom)*100;
     if(isNaN(v)||v<0||v>100) return m;
@@ -4026,11 +4046,29 @@ function mdToVisualHtml(md){
     return `<td${attrs} class="vi-bar-cell"><div class="vi-bar-row"><span class="vi-bar-label" style="color:${barC};font-weight:700">${cell}</span><span class="vi-bar-track"><span class="vi-bar-fill" style="width:${v.toFixed(1)}%;background:${barC}"></span></span></div></td>`;
   });
 
-  // blockquote → alert box
-  h = h.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g,
-    '<div class="vi-alert">$1</div>');
+  // 6. % in table cells → bar
+  h = h.replace(/<td([^>]*)>([^<]*?(\d+(?:\.\d+)?)%[^<]*?)<\/td>/g, (m, attrs, cell, pct) => {
+    const v = parseFloat(pct);
+    if(isNaN(v)||v<0||v>100) return m;
+    const barC = v>=80?'#37C597':v>=50?'#FD9A00':'#E63838';
+    return `<td${attrs} class="vi-bar-cell"><div class="vi-bar-row"><span class="vi-bar-label">${cell}</span><span class="vi-bar-track"><span class="vi-bar-fill" style="width:${v.toFixed(1)}%;background:${barC}"></span></span></div></td>`;
+  });
 
-  // score summary cards (hardcoded for dump, extracted from known table structure)
+  // 7. % outside tables (in p/li/headings) → inline colored badge
+  h = h.replace(/(\d+(?:\.\d+)?)%/g, (m, pct) => {
+    const v = parseFloat(pct);
+    if(isNaN(v)||v<0||v>100) return m;
+    const barC = v>=80?'#37C597':v>=50?'#FD9A00':'#E63838';
+    return `<span class="vi-pct-wrap"><span class="vi-pct-bar" style="width:${(v*0.6).toFixed(1)}px;background:${barC}"></span><span class="vi-pct-num" style="color:${barC}">${m}</span></span>`;
+  });
+
+  // 8. blockquote → alert box
+  h = h.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, '<div class="vi-alert">$1</div>');
+
+  // 9. Wrap all content in vi-body for consistent text styling
+  h = `<div class="vi-body">${h}</div>`;
+
+  // 10. Score summary cards — prepend before title
   const scoreBlock = `<div class="vi-score-grid">
     <div class="vi-score-card" style="border-top:3px solid #37C597">
       <div class="vi-score-label">设计评分</div>
@@ -4053,8 +4091,7 @@ function mdToVisualHtml(md){
       <div class="vi-score-sub">必须规则 FAIL → 等级 D</div>
     </div>
   </div>`;
-
-  h = h.replace('<h1>', scoreBlock + '<h1>');
+  h = h.replace('<div class="vi-h1">', scoreBlock + '<div class="vi-h1">');
   return h;
 }
 
@@ -4119,7 +4156,7 @@ function renderRptContent() {
     body.innerHTML = `<div class="rpt-html">${mdToHtml(md)}</div>`;
   } else {
     visBtn.classList.add('active'); rendBtn.classList.remove('active');
-    body.innerHTML = `<div class="rpt-html">${mdToVisualHtml(md)}</div>`;
+    body.innerHTML = mdToVisualHtml(md); // vi-body wrapper included inside
   }
 }
 
