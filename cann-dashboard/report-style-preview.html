@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>报告装饰方案</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#EDEDED;padding:32px;color:#1A1A1E}
+  h1{font-size:14px;font-weight:700;color:#898E95;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px}
+  .row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px}
+  .card{width:380px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);flex-shrink:0}
+  .opt{font-size:10px;font-weight:700;letter-spacing:.08em;color:#898E95;text-transform:uppercase;padding:10px 16px;border-bottom:1px solid #EDEDED}
+
+  /* ── 方案 A：封面色带 ── */
+  .a-cover{background:linear-gradient(135deg,#002FA7 0%,#5177CA 100%);padding:20px 22px 18px;color:#fff}
+  .a-cover-tag{font-size:10px;font-weight:700;letter-spacing:.1em;opacity:.7;margin-bottom:6px;text-transform:uppercase}
+  .a-cover-title{font-size:17px;font-weight:800;margin-bottom:4px}
+  .a-cover-sub{font-size:11px;opacity:.75;display:flex;gap:14px}
+  .a-cover-sub span{display:flex;align-items:center;gap:4px}
+  .a-scores{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid #EDEDED}
+  .a-sc{padding:10px 12px;text-align:center;border-right:1px solid #EDEDED}
+  .a-sc:last-child{border-right:none}
+  .a-sc-val{font-size:16px;font-weight:800}
+  .a-sc-lbl{font-size:9px;color:#898E95;margin-top:2px}
+  .a-body{padding:14px 16px;font-size:12px;line-height:1.7;color:#555}
+  .a-h2{font-size:12px;font-weight:700;color:#1A1A1E;border-bottom:1.5px solid #E1E2E4;padding-bottom:5px;margin:12px 0 6px}
+  .a-alert{border:1px solid #FD9A00;border-radius:6px;padding:8px 12px;font-size:11px;color:#565C65;background:#FFFBEB;display:flex;gap:8px;align-items:center;margin:8px 0}
+  .badge{display:inline-block;padding:1px 6px;border-radius:999px;font-size:10px;font-weight:700}
+  .ok{background:#D1FAE5;color:#065F46}.fail{background:#FEE2E2;color:#991B1B}.warn{background:#FEF3C7;color:#92400E}
+
+  /* ── 方案 B：侧边状态栏 ── */
+  .b-wrap{display:flex;height:100%}
+  .b-sidebar{width:6px;background:linear-gradient(180deg,#E63838 0%,#FD9A00 100%);flex-shrink:0}
+  .b-sidebar.ok{background:linear-gradient(180deg,#37C597 0%,#1AAFD0 100%)}
+  .b-inner{flex:1;padding:16px}
+  .b-hdr{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+  .b-icon{width:36px;height:36px;border-radius:8px;background:#FEF2F2;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
+  .b-icon.ok{background:#F0FDF4}
+  .b-title{font-size:14px;font-weight:800;color:#1A1A1E}
+  .b-meta{font-size:10px;color:#898E95;margin-top:2px}
+  .b-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .b-chip{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;background:#F3F3F5;color:#565C65}
+  .b-chip.red{background:#FEE2E2;color:#991B1B}
+  .b-chip.green{background:#D1FAE5;color:#065F46}
+  .b-body{font-size:11.5px;line-height:1.7;color:#555}
+  .b-h2{font-size:11.5px;font-weight:700;color:#1A1A1E;border-bottom:1.5px solid #E1E2E4;padding-bottom:4px;margin:10px 0 5px}
+
+  /* ── 方案 C：文件纸张感 ── */
+  .c-wrap{background:#FAFAFA;border-top:4px solid #002FA7}
+  .c-stamp{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px dashed #D1D5DB}
+  .c-stamp-left{font-size:10px;color:#898E95;line-height:1.6}
+  .c-stamp-grade{width:40px;height:40px;border-radius:50%;border:3px solid #E63838;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#E63838}
+  .c-stamp-grade.ok{border-color:#37C597;color:#37C597}
+  .c-title{padding:12px 16px 8px;font-size:15px;font-weight:800;color:#1A1A1E}
+  .c-divider{border:none;border-top:1px solid #E1E2E4;margin:0 16px}
+  .c-body{padding:10px 16px;font-size:11.5px;line-height:1.7;color:#555}
+  .c-h2{font-size:11.5px;font-weight:700;color:#1A1A1E;border-bottom:1.5px solid #E1E2E4;padding-bottom:4px;margin:10px 0 5px}
+  .c-alert{border:1px solid #FD9A00;border-radius:6px;padding:7px 10px;font-size:11px;color:#565C65;background:#FFFBEB;display:flex;gap:8px;align-items:center;margin:6px 0}
+  .c-footer{padding:8px 16px;font-size:9px;color:#B0B3B8;border-top:1px solid #EDEDED;display:flex;justify-content:space-between}
+
+  /* ── 方案 D：暗色标题栏 ── */
+  .d-hdr{background:#111827;padding:16px 18px}
+  .d-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:3px 8px;font-size:10px;color:rgba(255,255,255,.6);margin-bottom:8px}
+  .d-title{font-size:16px;font-weight:800;color:#fff;margin-bottom:4px}
+  .d-meta{font-size:10px;color:rgba(255,255,255,.45);display:flex;gap:12px}
+  .d-scores{display:grid;grid-template-columns:repeat(4,1fr);background:#F8F9FA;border-bottom:1px solid #EDEDED}
+  .d-sc{padding:10px;text-align:center;border-right:1px solid #EDEDED}
+  .d-sc:last-child{border-right:none}
+  .d-sc-val{font-size:15px;font-weight:800}
+  .d-sc-lbl{font-size:9px;color:#898E95;margin-top:1px}
+  .d-body{padding:12px 16px;font-size:11.5px;line-height:1.7;color:#555}
+  .d-h2{font-size:11.5px;font-weight:700;color:#1A1A1E;border-bottom:1.5px solid #E1E2E4;padding-bottom:4px;margin:10px 0 5px}
+  .d-alert{border:1px solid #FD9A00;border-radius:6px;padding:7px 10px;font-size:11px;color:#565C65;background:#FFFBEB;display:flex;gap:8px;align-items:center;margin:6px 0}
+</style>
+</head>
+<body>
+
+<h1>抽屉报告装饰方案</h1>
+<div class="row">
+
+  <!-- 方案 A：蓝色封面色带 + 4格评分 -->
+  <div class="card">
+    <div class="opt">方案 A — 品牌蓝封面色带</div>
+    <div class="a-cover">
+      <div class="a-cover-tag">评估报告 · Dump ErrorMessage</div>
+      <div class="a-cover-title">dump · 基础工具</div>
+      <div class="a-cover-sub">
+        <span>📅 2026-05-22</span>
+        <span>🏷 等级 D</span>
+        <span>⚠ 必须规则未通过</span>
+      </div>
+    </div>
+    <div class="a-scores">
+      <div class="a-sc"><div class="a-sc-val" style="color:#37C597">10.0</div><div class="a-sc-lbl">设计评分</div></div>
+      <div class="a-sc"><div class="a-sc-val" style="color:#FD9A00">7.0</div><div class="a-sc-lbl">测试评分</div></div>
+      <div class="a-sc"><div class="a-sc-val" style="color:#37C597">9.1</div><div class="a-sc-lbl">交付质量</div></div>
+      <div class="a-sc"><div class="a-sc-val" style="color:#E63838">5.0</div><div class="a-sc-lbl">最终评分</div></div>
+    </div>
+    <div class="a-body">
+      <div class="a-h2">评估结论总览</div>
+      <div class="a-alert">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><path d="M8 2.5L1.5 13.5h13L8 2.5z" stroke="#FD9A00" stroke-width="1.5" stroke-linejoin="round"/><line x1="8" y1="6.5" x2="8" y2="9.5" stroke="#FD9A00" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11.5" r=".8" fill="#FD9A00"/></svg>
+        <div><strong>必须规则检查失败</strong> — 评审不通过，EE1001 不合规</div>
+      </div>
+      整体合规率 <span style="color:#E63838;font-weight:700">45.8%</span>，低于准入门槛。
+      ErrCode 设计 <span class="badge ok">✓ PASS</span>，提取覆盖 <span class="badge fail">✗ FAIL</span>
+    </div>
+  </div>
+
+  <!-- 方案 B：左侧状态色条 + 图标头部 -->
+  <div class="card">
+    <div class="opt">方案 B — 侧边状态色条 + 图标</div>
+    <div class="b-wrap">
+      <div class="b-sidebar"></div>
+      <div class="b-inner">
+        <div class="b-hdr">
+          <div class="b-icon">🔧</div>
+          <div>
+            <div class="b-title">Dump ErrorMessage 评估报告</div>
+            <div class="b-meta">dump · 基础工具 · 2026-05-22 · 等级 D</div>
+          </div>
+        </div>
+        <div class="b-chips">
+          <span class="b-chip red">⚠ 必须规则未通过</span>
+          <span class="b-chip">最终分 5.0/10</span>
+          <span class="b-chip green">设计 10.0</span>
+          <span class="b-chip">测试 7.0</span>
+        </div>
+        <div class="b-body">
+          <div class="b-h2">评估结论总览</div>
+          整体合规率 <span style="color:#E63838;font-weight:700">45.8%</span>，EE1001 格式不合规，等级强制降为 D。
+          设计评分 <span class="badge ok">✓ PASS</span>，覆盖率 <span class="badge fail">✗ FAIL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 方案 C：纸张/文件感 -->
+  <div class="card">
+    <div class="opt">方案 C — 文件纸张感 + 印章等级</div>
+    <div class="c-wrap">
+      <div class="c-stamp">
+        <div class="c-stamp-left">
+          <div style="font-weight:700;font-size:11px;color:#1A1A1E">Dump ErrorMessage 评估报告</div>
+          <div>评测日期：2026-05-22 · 基础工具</div>
+          <div>最终评分：<strong style="color:#E63838">5.0 / 10</strong></div>
+        </div>
+        <div class="c-stamp-grade">D</div>
+      </div>
+      <div class="c-title">dump · 基础工具组件评估</div>
+      <hr class="c-divider">
+      <div class="c-body">
+        <div class="c-h2">评估结论总览</div>
+        <div class="c-alert">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><path d="M8 2.5L1.5 13.5h13L8 2.5z" stroke="#FD9A00" stroke-width="1.5" stroke-linejoin="round"/><line x1="8" y1="6.5" x2="8" y2="9.5" stroke="#FD9A00" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11.5" r=".8" fill="#FD9A00"/></svg>
+          <div><strong>必须规则检查失败</strong> — 评审不通过</div>
+        </div>
+        合规率 <span style="color:#E63838;font-weight:700">45.8%</span>，设计 <span class="badge ok">✓</span> 覆盖 <span class="badge fail">✗</span>
+      </div>
+      <div class="c-footer"><span>CANN 体验评测系统</span><span>自动生成 · 非最终定论</span></div>
+    </div>
+  </div>
+
+  <!-- 方案 D：深色标题栏 -->
+  <div class="card">
+    <div class="opt">方案 D — 深色标题栏</div>
+    <div class="d-hdr">
+      <div class="d-badge">
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M8 1L1 14h14L8 1z" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        评估报告 · 等级 D
+      </div>
+      <div class="d-title">Dump ErrorMessage</div>
+      <div class="d-meta"><span>dump · 基础工具</span><span>2026-05-22</span></div>
+    </div>
+    <div class="d-scores">
+      <div class="d-sc"><div class="d-sc-val" style="color:#37C597">10.0</div><div class="d-sc-lbl">设计</div></div>
+      <div class="d-sc"><div class="d-sc-val" style="color:#FD9A00">7.0</div><div class="d-sc-lbl">测试</div></div>
+      <div class="d-sc"><div class="d-sc-val" style="color:#37C597">9.1</div><div class="d-sc-lbl">交付</div></div>
+      <div class="d-sc"><div class="d-sc-val" style="color:#E63838">5.0</div><div class="d-sc-lbl">最终</div></div>
+    </div>
+    <div class="d-body">
+      <div class="d-h2">评估结论总览</div>
+      <div class="d-alert">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><path d="M8 2.5L1.5 13.5h13L8 2.5z" stroke="#FD9A00" stroke-width="1.5" stroke-linejoin="round"/><line x1="8" y1="6.5" x2="8" y2="9.5" stroke="#FD9A00" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11.5" r=".8" fill="#FD9A00"/></svg>
+        <div><strong>必须规则检查失败</strong> — 评审不通过</div>
+      </div>
+      合规率 <span style="color:#E63838;font-weight:700">45.8%</span>，设计 <span class="badge ok">✓ PASS</span>，覆盖 <span class="badge fail">✗ FAIL</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
