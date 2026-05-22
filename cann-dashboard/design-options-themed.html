@@ -1361,14 +1361,14 @@ body.ov-rat-open .ov-rat-panel{right:0}
     <button class="fchip on">2026-05</button>
     <div class="fl-sep"></div>
     <span class="fl-lbl">组件</span>
-    <button class="fchip on" id="uxtProdAll" onclick="selUxtProd('all',this)">全部</button>
+    <button class="fchip" id="uxtProdAll" onclick="selUxtProd('all',this)">全部</button>
     <button class="fchip" onclick="selUxtProd('算子库',this)">算子库</button>
     <button class="fchip" onclick="selUxtProd('通信库-集合通信',this)">通信库-集合通信</button>
     <button class="fchip" onclick="selUxtProd('通信库-单边通信',this)">通信库-单边通信</button>
     <button class="fchip" onclick="selUxtProd('算子编程-Ascend C',this)">算子编程-Ascend C</button>
     <button class="fchip" onclick="selUxtProd('图引擎',this)">图引擎</button>
     <button class="fchip" onclick="selUxtProd('运行时',this)">运行时</button>
-    <button class="fchip" id="uxtProdJC" onclick="selUxtProd('基础工具',this)">基础工具</button>
+    <button class="fchip on" id="uxtProdJC" onclick="selUxtProd('基础工具',this)">基础工具</button>
     <button class="fchip" onclick="selUxtProd('模型优化样例',this)">模型优化样例</button>
     <button class="fchip" onclick="selUxtProd('资料',this)">资料</button>
   </div>
@@ -1492,7 +1492,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
     </div><!-- /两列 -->
 
     <!-- 组件概览 矩阵 -->
-    <div class="ov-section">
+    <div class="ov-section" style="margin-top:20px">
       <div class="ov-section-hdr" style="margin-bottom:12px">
         <div>
           <div class="ov-section-title">组件评分矩阵</div>
@@ -4054,12 +4054,12 @@ function mdToVisualHtml(md){
     return `<td${attrs} class="vi-bar-cell"><div class="vi-bar-row"><span class="vi-bar-label">${cell}</span><span class="vi-bar-track"><span class="vi-bar-fill" style="width:${v.toFixed(1)}%;background:${barC}"></span></span></div></td>`;
   });
 
-  // 7. % outside tables (in p/li/headings) → inline colored badge
+  // 7. % outside tables → color text only, no inline chart
   h = h.replace(/(\d+(?:\.\d+)?)%/g, (m, pct) => {
     const v = parseFloat(pct);
     if(isNaN(v)||v<0||v>100) return m;
     const barC = v>=80?'#37C597':v>=50?'#FD9A00':'#E63838';
-    return `<span class="vi-pct-wrap"><span class="vi-pct-bar" style="width:${(v*0.6).toFixed(1)}px;background:${barC}"></span><span class="vi-pct-num" style="color:${barC}">${m}</span></span>`;
+    return `<span style="color:${barC};font-weight:700">${m}</span>`;
   });
 
   // 8. blockquote → alert box
