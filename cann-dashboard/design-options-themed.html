@@ -4137,6 +4137,7 @@ function openReportDrawer(name) {
   }
   document.getElementById('rptOverlay').classList.add('open');
   document.getElementById('rptDrawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
   _rptOpen = true;
   // Show TOC by default
   _rptTocOpen = true;
@@ -4148,6 +4149,7 @@ function openReportDrawer(name) {
 function closeReportDrawer() {
   document.getElementById('rptOverlay').classList.remove('open');
   document.getElementById('rptDrawer').classList.remove('open');
+  document.body.style.overflow = '';
   _rptOpen = false;
   _rptTocOpen = false;
   const panel = document.getElementById('rptTocPanel');
