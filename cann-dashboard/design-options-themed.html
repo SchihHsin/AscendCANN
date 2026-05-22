@@ -781,6 +781,28 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .rpt-html hr{border:none;border-top:1px solid var(--border);margin:16px 0}
 .hm-row-label .comp-link{cursor:pointer;color:inherit;text-decoration:none}
 .hm-row-label .comp-link:hover{text-decoration:underline;color:var(--accent)}
+/* visual badges */
+.vi-badge{display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.02em;vertical-align:middle}
+.vi-ok{background:#D1FAE5;color:#065F46}
+.vi-fail{background:#FEE2E2;color:#991B1B}
+.vi-warn{background:#FEF3C7;color:#92400E}
+/* table cell colors */
+.rpt-html td.vi-cell-ok{background:#F0FDF4;color:#166534}
+.rpt-html td.vi-cell-fail{background:#FEF2F2;color:#991B1B}
+.rpt-html td.vi-cell-warn{background:#FFFBEB;color:#92400E}
+/* inline % progress */
+.vi-pct-wrap{display:inline-flex;align-items:center;gap:5px;vertical-align:middle}
+.vi-pct-bar{display:inline-block;height:5px;border-radius:3px;min-width:2px;max-width:80px;flex-shrink:0}
+.vi-pct-num{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:11px}
+/* alert box */
+.vi-alert{border-left:3px solid #FD9A00;background:#FFFBEB;border-radius:0 6px 6px 0;padding:8px 14px;margin:8px 0;font-size:12px;color:#92400E}
+/* score summary cards */
+.vi-score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.vi-score-card{background:#F8F8F9;border-radius:8px;padding:10px 12px;text-align:center}
+.vi-score-label{font-size:10px;font-weight:600;color:var(--text-3);margin-bottom:4px}
+.vi-score-val{font-size:22px;font-weight:800;font-family:'JetBrains Mono',monospace;line-height:1}
+.vi-score-unit{font-size:12px;font-weight:500;color:var(--text-3)}
+.vi-score-sub{font-size:9px;color:var(--text-3);margin-top:4px}
 </style>
 </head>
 <body>
@@ -3326,6 +3348,12 @@ const REPORT_MD = {
 **评估日期**: 2026-05-05
 **评估范围**: output/dump_error_messages.json (32条)
 **参考基准**: reference/cann_error_message.md + reference/dump/Dump_ErrorMsg设计方案_20260304.xlsx
+**评估原则**:
+- Principle 1: Reason作为独立字段解析，与ErrMessage(Symptom)分离
+- Principle 2: 第三方库异常名（json.exception.*）视为用户语言
+- Principle 3: 每个ErrCode的NA算作一个独立合法Reason
+- Principle 4: Reason自解释且可操作时，Solution=NA可接受
+- Principle 5: 跨组件ErrCode不计入本组件评分分母
 
 ## 评估结论总览
 
@@ -3355,46 +3383,137 @@ const REPORT_MD = {
 - Reason覆盖率: 50.0% (4/8 设计Reason被覆盖)
 - 规范符合率(Dump条目): 100.0% (24/24条EP系列条目全部合规)
 - 用户指导能力(Dump条目): 8.375/10 (EP系列entry加权平均)
+- 跨组件问题: 8条(EE1001×7 + EH0004×1)，非Dump评分范围
 
 **核心问题 (必须/P0-P2)**:
 1. **[必须-FAIL]** ErrCode覆盖率75% < 100%，EP0003完全无测试覆盖 → 评审不通过，评分强制<6.0
 2. **[必须-FAIL]** EP0003的Reason可操作修复覆盖0% < 5%最低要求
-3. **[P0-跨组件]** EE1001 (7条) Reason暴露CANN内部函数名\`rtGetDevMsg\`和内部状态\`context is a null pointer\`
-4. **[P1-跨组件]** EH0004 (1条) 为ACL组件错误码穿透至Dump日志
-5. **[P2-本组件]** EP0003完全无测试覆盖，4个Reason场景全部缺失
+3. **[P0-跨组件]** EE1001 (7条) Reason暴露CANN内部函数名\`rtGetDevMsg\`和内部状态\`context is a null pointer\`，属Runtime组件问题
+4. **[P1-跨组件]** EH0004 (1条) 为ACL组件错误码穿透至Dump日志，归属不明确
+5. **[P2-本组件]** EP0003完全无测试覆盖，4个Reason场景(路径长度/有效性/字符/权限)全部缺失
 6. **[P2-本组件]** EP0004 Locatability偏低(5分)，不指明具体出错的JSON字段
+
+---
+
+## 一、日志提取分析
+
+### 1.1 日志文件概览
+
+| 日志文件 | 条目数 | 格式 |
+|---------|--------|------|
+| tc_adump_data_func_acljson_*_polymorph_1971_evb_physical_EP.log (32个文件) | 32 | ATC-raw |
+
+### 1.2 提取条目分类
+
+| 分类 | ErrCode系列 | 条目数 | 占比 | 备注 |
+|------|-----------|--------|------|------|
+| Dump组件 | EP0001 | 11 | 34.4% | Config_Error |
+| Dump组件 | EP0002 | 6 | 18.8% | Config_Error (Expected value) |
+| Dump组件 | EP0004 | 7 | 21.9% | File_Operation_Error_Parse |
+| **Dump小计** | **EP系列** | **24** | **75.0%** | **纳入评分** |
+| 跨组件(Runtime) | EE1001 | 7 | 21.9% | Invalid_Argument |
+| 跨组件(ACL) | EH0004 | 1 | 3.1% | File_Operation_Error |
+| **跨组件小计** | **EE/EH系列** | **8** | **25.0%** | **不纳入评分** |
+| **总计** | — | **32** | **100%** | |
 
 ---
 
 ## 二、设计文档分析
 
+### 2.1 设计文档状态
+
+| 文档 | 路径 | 状态 |
+|------|------|------|
+| Dump专用设计文档 | reference/dump/Dump_ErrorMsg设计方案_20260304.xlsx | ✅ 存在 |
+| ErrorMessage规范 | reference/cann_error_message.md | ✅ 存在 |
+
+### 2.2 与提取ErrCode的设计文档对照
+
 | 设计ErrCode | errTitle | 设计Reason数 | 输出中有测试 | 输出条目数 | 备注 |
 |------------|----------|-------------|-------------|-----------|------|
 | EP0001 | Config_Error | 2 | ✅ 已覆盖 | 11 | 2/2 Reason覆盖 |
-| EP0002 | Config_Error | 1(NA) | ✅ 已覆盖 | 6 | NA匹配 |
+| EP0002 | Config_Error | 1(NA) | ✅ 已覆盖 | 6 | NA匹配(Expected value) |
 | EP0003 | Config_Error | 4 | ❌ 未覆盖 | 0 | **完全无测试数据** |
 | EP0004 | File_Operation_Error_Parse | 1(模板) | ✅ 已覆盖 | 7 | json.exception.*匹配 |
+
+**设计文档ErrCode总数**: 4 (EP0001, EP0002, EP0003, EP0004)
+**输出中Dump ErrCode去重数**: 3 (EP0001, EP0002, EP0004; EP0003不在输出中)
+**跨组件ErrCode**: 2 (EE1001=E=Runtime, EH0004=H=ACL)，按Principle 5不计入Dump评分分母
+
+### 2.3 设计文档完整性评分因素
+
+- 输出中Dump ErrCode(EP系列)3个，全部在设计文档找到定义 → 完整性100%
+- EP0003在设计文档有定义但无测试覆盖 → 影响测试评分(维度二)，不影响设计完整性(维度一)
+- 跨组件ErrCode(EE1001, EH0004)不计入本组件分母
 
 ---
 
 ## 三、Reason覆盖率
 
-| 设计Reason | 日志匹配 |
-|-----------|---------|
-| EP0001: The configuration item is not found | **✅ 已覆盖** |
-| EP0001: The configuration item value is empty | **✅ 已覆盖** |
-| EP0002: NA | **✅ 已覆盖** |
-| EP0004: %s (json库异常) | **✅ 已覆盖** |
-| EP0003: value length exceeds upper limit | **❌ 未覆盖** |
-| EP0003: invalid path | **❌ 未覆盖** |
-| EP0003: invalid characters | **❌ 未覆盖** |
-| EP0003: path without read/write permissions | **❌ 未覆盖** |
+### 3.1 设计文档Reason
 
-**覆盖率**: 4/8 = **50.0%**
+| ErrCode | errTitle | Reason | 场景说明 |
+|---------|----------|--------|----------|
+| EP0001 | Config_Error | The configuration item is not found | dump_path字段不存在 |
+| EP0001 | Config_Error | The configuration item value is empty | dump_path等字段值为空 |
+| EP0002 | Config_Error | NA (Expected value自解释) | dump_mode等字段选项非法 |
+| EP0003 | Config_Error | The value length %d exceeds the upper limit %d | dump_path字段过长 |
+| EP0003 | Config_Error | The value is an invalid path | mmRealPath失败 |
+| EP0003 | Config_Error | The value contains invalid characters | dump_path字段含非法字符 |
+| EP0003 | Config_Error | The value is a path without read and write permissions | dump_path字段mmAccess2失败 |
+| EP0004 | File_Operation_Error_Parse | %s (json库抛出的异常) | nlohmann::json库兜底报错 |
+
+**设计Reason总数**: 8 (含1个NA按Principle 3计数)
+
+### 3.2 提取日志Reason
+
+**Dump组件(EP系列, 纳入分析)**:
+
+| ErrCode | 去重Reason | 出现次数 |
+|---------|-----------|----------|
+| EP0001 | The configuration item value is empty | 7 |
+| EP0001 | The configuration item is not found | 4 |
+| EP0002 | NA | 6 |
+| EP0004 | [json.exception.type_error.302] type must be string, but is number | 6 |
+| EP0004 | [json.exception.type_error.302] type must be array, but is string | 1 |
+
+**跨组件(不计入评分)**:
+
+| ErrCode | 去重Reason | 出现次数 | 备注 |
+|---------|-----------|----------|------|
+| EE1001 | rtGetDevMsg execution failed, the context is a null pointer | 7 | CANN内部暴露(R3/R4违规) |
+| EH0004 | Parse exception: [json.exception.parse_error.101] ... | 1 | ACL层错误穿透 |
+
+### 3.3 覆盖矩阵
+
+| 设计Reason | 日志匹配 | 匹配方式 |
+|-----------|---------|----------|
+| EP0001: The configuration item is not found | **✅ 已覆盖** | 精确匹配 (4条日志) |
+| EP0001: The configuration item value is empty | **✅ 已覆盖** | 精确匹配 (7条日志) |
+| EP0002: NA | **✅ 已覆盖** | NA匹配 (ErrMessage含Expected value自解释, 6条) |
+| EP0004: %s (json库异常) | **✅ 已覆盖** | json.exception.*匹配模板 (7条日志) |
+| EP0003: value length exceeds upper limit | **❌ 未覆盖** | EP0003无测试数据 |
+| EP0003: invalid path | **❌ 未覆盖** | EP0003无测试数据 |
+| EP0003: invalid characters | **❌ 未覆盖** | EP0003无测试数据 |
+| EP0003: path without read/write permissions | **❌ 未覆盖** | EP0003无测试数据 |
+
+**覆盖率**: 4/8 = **50.0%** (严格匹配)
+**未覆盖设计Reason**: 4个，全部属于EP0003 (路径值校验类错误)
 
 ---
 
 ## 四、ErrCode覆盖率
+
+### 4.1 测试用例 → ErrCode映射
+
+| 设计ErrCode | 是否有测试覆盖 | 覆盖的Reason数/总Reason数 | 缺失的Reason |
+|------------|--------------|-------------------------|-------------|
+| EP0001 | ✅ 已覆盖 | 2/2 | 无 |
+| EP0002 | ✅ 已覆盖 | 1/1 (NA) | 无 |
+| **EP0003** | **❌ 未覆盖** | **0/4** | **全部4个Reason** |
+| EP0004 | ✅ 已覆盖 | 1/1 (模板) | 无 |
+
+### 4.2 覆盖统计
 
 | 指标 | 值 | 是否达标 |
 |------|-----|---------|
@@ -3402,39 +3521,140 @@ const REPORT_MD = {
 | 已覆盖ErrCode数 | 3 (EP0001, EP0002, EP0004) | — |
 | 未覆盖ErrCode数 | 1 (EP0003) | — |
 | **ErrCode覆盖率** | **75.0%** | **❌ <100% 必须规则FAIL** |
+| 已覆盖Reason数 | 4 | — |
+| 设计Reason总数 | 8 | — |
 | **Reason覆盖率** | **50.0%** | 偏低 |
+
+> **⚠️ 必须规则违反: ErrCode覆盖率75%未达100%要求。EP0003整个ErrCode无任何测试用例覆盖。**
 
 ---
 
 ## 五、交付质量 — 规范符合性
 
+### 5.1 有效条目逐条合规审查
+
+| ErrCode | 条目数 | R1 errTitle | R2 ErrCode | R3 ErrMessage | R3/R4 Reason | R5 Solution | R6 用户错误 | 判定 |
+|---------|--------|-------------|------------|---------------|-------------|-------------|------------|------|
+| EP0001 | 11 | ✅ 已注册 | ✅ 格式有效 | ✅ 用户语言 | ✅ 自解释 | ✅ P4适用 | ✅ P4适用 | **合规** |
+| EP0002 | 6 | ✅ 已注册 | ✅ 格式有效 | ✅ 含Expected value | ✅ P4适用 | ✅ P4适用 | ✅ P4适用 | **合规** |
+| EP0004 | 7 | ✅ 已注册 | ✅ 格式有效 | ✅ 用户语言 | ✅ P2第三方库 | ✅ P4适用 | ✅ P4适用 | **合规** |
+
+#### EP0001 (Config_Error, 11条)
+- **R1**: \`Config_Error\` 在规范errTitle表中已注册 ✅
+- **R2**: \`EP0001\` 格式 \`[EWI][0-9A-Z]\\d{4}\` — E=Error, P=Dump模块, 0001=用户错误编号 ✅
+- **R3**: ErrMessage "The content of configuration item %s in configuration file %s is invalid" — 用户语言，明确指出哪个配置项在哪个文件 ✅
+- **R3/R4**: Reason "value is empty" / "not found" — 用户语言，自解释 ✅
+- **R5**: Solution=NA → Principle 4适用 ✅
+- **Verdict**: COMPLIANT
+
+#### EP0002 (Config_Error, 6条)
+- **R3**: ErrMessage含 "Expected value: stats/tensor", "all/input/output", "off/on" 等 — 最佳实践，直接展示正确值范围 ✅
+- **Verdict**: COMPLIANT
+
+#### EP0004 (File_Operation_Error_Parse, 7条)
+- **R3**: Reason = \`json.exception.type_error.302\` → Principle 2适用(nlohmann/json第三方库异常可接受) ✅
+- **Locatability=5**: 仅给出文件名(acl.json)，**不指明哪个具体字段类型错误** — 主要扣分项
+- **Verdict**: COMPLIANT
+
+### 5.2 跨组件条目审查
+
+| ErrCode | 条目数 | 主要违规 | 判定 |
+|---------|--------|---------|------|
+| EE1001 | 7 | R3/R4 暴露CANN内部(rtGetDevMsg, "context is a null pointer") | **不合规-P0跨组件** |
+| EH0004 | 1 | 不在Dump设计文档(属ACL/H模块) | **跨组件-P1** |
+
+### 5.3 合规率汇总
+
 | 范围 | 合规 | 不合规 | 合规率 |
 |------|------|--------|--------|
 | **Dump组件(EP系列, 24条)** | **24** | **0** | **100.0%** |
 | 跨组件(EE/EH系列, 8条) | 0 | 8 | 0.0% |
+| 全部(32条) | 24 | 8 | 75.0% |
 
 ---
 
 ## 六、用户指导能力评分
 
-| ErrCode | Understandability | Locatability | Actionability | Self-closure | 加权平均 |
-|---------|------------------|--------------|---------------|--------------|---------|
-| EP0001 | 9 | 8 | 9 | 9 | **8.75** |
-| EP0002 | 9 | 9 | 9 | 9 | **9.0** |
-| EP0004 | 6 | 5 | 9 | 9 | **7.25** |
-| **Dump加权平均** | — | — | — | — | **8.375** |
+### 6.1 逐ErrCode指导评分
+
+| ErrCode | Understandability (25%) | Locatability (25%) | Actionability (30%) | Self-closure (20%) | 加权平均 | 评分说明 |
+|---------|------------------------|--------------------|--------------------|--------------------|---------|---------|
+| EP0001 | 9 | 8 | 9 | 9 | **8.75** | 精确到配置项名+文件名 |
+| EP0002 | 9 | 9 | 9 | 9 | **9.0** | Expected value最佳实践 |
+| EP0004 | 6 | 5 | 9 | 9 | **7.25** | json.exception技术性,Locatability偏低 |
+| **Dump加权平均(24条)** | — | — | — | — | **8.375** | (11×8.75+6×9+7×7.25)/24 |
+
+### 6.2 问题总结
+
+1. **EP0002为最佳实践**: "Expected value"设计使用户可直接看到正确选项，建议所有配置校验类错误采用此模式
+2. **EP0004 Locatability不足(5分)**: "Failed to parse file acl.json"不指明具体字段，建议补充出错JSON字段名/行号
+3. **EE1001(4.1/10)为跨组件最差**: Reason暴露内部函数名，用户完全无法理解或修复
+
+---
+
+## 七、errTitle细分分析
+
+| errTitle | 规范注册 | 设计文档定义 | 输出使用 | 对应ErrCode | R1判定 |
+|----------|---------|------------|---------|-------------|--------|
+| Config_Error | ✅ (line 226) | ✅ | ✅ (17条) | EP0001, EP0002 | **合规** |
+| File_Operation_Error_Parse | ✅ (line 235) | ✅ | ✅ (7条) | EP0004 | **合规** |
+| Invalid_Argument | ✅ (line 194) | ❌ (非Dump定义) | ✅ (7条) | EE1001(跨组件) | 跨组件 |
+| File_Operation_Error | ✅ (line 230) | ❌ (非Dump定义) | ✅ (1条) | EH0004(跨组件) | 跨组件 |
+
+**结论**: Dump组件EP系列使用的errTitle均在规范errTitle注册表中定义，R1全部通过。
+
+---
+
+## 八、TraceBack规范审查
+
+| ErrCode | 条目数 | TraceBack典型内容 | 合规判断 |
+|---------|--------|------------------|---------|
+| EP0001 | 11 | \`[FUNC:ReportInnerError] [FILE:log_inner.cpp] [LINE:132]\` | TraceBack含内部信息 — **ErrMessage/Reason层合规**(TraceBack为调试层) |
+| EP0002 | 6 | 同上 | 同上 |
+| EP0004 | 7 | 同上 | 同上 |
+| EE1001 | 7 | 暴露\`[FUNC:ReportInnerError]\` + \`HandleDumpConfig\` | **跨组件内部暴露** |
+| EH0004 | 1 | 暴露json解析异常链 | **跨组件内部暴露** |
+
+**说明**: TraceBack作为调试日志信息，包含内部函数名和行号属正常设计。评估重点在ErrMessage/Reason层面的用户语言规范性。Dump组件EP系列的ErrMessage和Reason均不含CANN内部信息，TraceBack层内容不影响交付质量评分。
+
+---
+
+## 九、测试结果分析
+
+### 9.1 测试Pass/Fail统计
+
+| 测试场景类别 | 设计ErrCode | 测试条目数 | Pass | Fail(场景缺失) | 通过率 |
+|------------|------------|-----------|------|--------------|--------|
+| 配置项值校验 | EP0001 | 11 | 11 | 0 | 100% |
+| 配置项选项校验 | EP0002 | 6 | 6 | 0 | 100% |
+| 文件JSON解析 | EP0004 | 7 | 7 | 0 | 100% |
+| 路径值校验 | EP0003 | **0** | **0** | **4** | **0%** |
+| **总计** | **4** | **24** | **24** | **4** | **75.0%** |
+
+### 9.2 Failed用例根因分析
+
+| 未覆盖ErrCode | 缺失场景 | 根因分析 |
+|--------------|---------|---------|
+| EP0003 | 路径长度超限 (value length exceeds upper limit) | 无测试用例覆盖dump_path长度校验场景 |
+| EP0003 | 无效路径 (invalid path, mmRealPath失败) | 无测试用例覆盖dump_path有效性校验场景 |
+| EP0003 | 非法字符 (contains invalid characters) | 无测试用例覆盖dump_path字符合法性校验场景 |
+| EP0003 | 权限不足 (path without read/write permissions) | 无测试用例覆盖dump_path读写权限校验场景 |
+
+**根因**: EP0003的4个Reason场景均无对应测试用例，整个ErrCode未进入测试视野。需补充dump_path路径校验的4个测试场景。
 
 ---
 
 ## 十、核心问题汇总
 
-| 优先级 | 问题 | 影响 |
-|--------|------|------|
-| **必须** | ErrCode覆盖率75% < 100%，评审不通过 | 评分强制<6.0(等级D) |
-| **P0** | EE1001 Reason暴露CANN内部函数名 | 用户无法理解/修复 |
-| **P1** | EH0004为ACL错误码穿透至Dump日志 | 错误码归属模糊 |
-| **P2** | EP0003完全无测试覆盖 | ErrCode/Reason主要缺口 |
-| **P2** | EP0004 Locatability=5，不指明具体JSON字段 | 用户定位困难 |
+| 优先级 | 标签 | 问题 | 影响 | 涉及条目 |
+|--------|------|------|------|---------|
+| **必须** | **规则FAIL** | **ErrCode覆盖率75% < 100%，评审不通过** | **评分强制<6.0(等级D)** | EP0003(0→4缺失) |
+| **必须** | **规则FAIL** | EP0003的Reason可操作修复覆盖0% < 5%最低要求 | 额外必须规则违反 | EP0003 |
+| **P0** | 紧急-跨组件 | EE1001 Reason暴露\`rtGetDevMsg\`(CANN内部) + \`context is a null pointer\`(内部状态) | 用户无法理解/修复 | 7条EE1001 |
+| **P1** | 高优-跨组件 | EH0004为ACL错误码穿透至Dump日志，归属不明确 | 错误码归属模糊 | 1条EH0004 |
+| **P2** | 中优-本组件 | EP0003完全无测试覆盖，4个Reason场景缺失 | ErrCode覆盖和Reason覆盖的主要缺口 | 0→4条新测试 |
+| **P2** | 中优-本组件 | EP0004 Locatability=5(低)，不指明具体出错JSON字段 | 用户定位困难 | 7条EP0004 |
+| **P3** | 低优 | 设计文档Solution均为NA(Reason自解释可接受但缺复杂场景修复指导) | 可选改进 | EP系列24条 |
 
 ---
 
@@ -3442,21 +3662,56 @@ const REPORT_MD = {
 
 | 阶段 | 优先级 | 时间 | 修复内容 | 预期评分变化 |
 |------|--------|------|---------|-------------|
-| **Phase 1** | **必须** | **1-2周** | **补充EP0003全部4个Reason的测试用例** | **评分5.0→9.4(A)** |
-| Phase 2 | P2 | 2-3周 | 优化EP0004 Locatability，补充字段名/行号 | 用户指导微升 |
-| Phase 3 | P0 | 3-4周 | 推动Runtime修复EE1001内部信息暴露 | 消除7条跨组件违规 |
+| **Phase 1** | **必须** | **1-2周** | **补充EP0003全部4个Reason的测试用例**(路径长度/有效性/字符/权限校验) | **ErrCode覆盖75%→100%, 消除必须规则FAIL, 评分5.0→9.4(A)** |
+| Phase 2 | P2-本组件 | 2-3周 | 优化EP0004 Locatability: 补充出错JSON字段名/行号信息 | 用户指导8.375→8.8, 总分微升 |
+| Phase 3 | P0-跨组件 | 3-4周 | 推动Runtime修复EE1001内部信息暴露: 将\`rtGetDevMsg\`替换为用户语言 | 消除7条跨组件违规 |
+| Phase 4 | P1-跨组件 | 4-6周 | 建立跨组件错误码协调机制，明确EE1001/EH0004归属 | 架构级优化, 防止错误穿透 |
+
+**Phase 1修复后预期评分**: 9.4/10 (等级A)
+- 设计评分(20%): 10/10 → 2.00 (不变)
+- 测试评分(40%): (10×0.8 + 10×0.2) = 10/10 → **4.00** (从7.0→10.0)
+- 交付质量(40%): 9.1/10 → 3.64 (不变)
+- 总分: 2.00 + 4.00 + 3.64 = **9.64** → 等级A
 
 ---
 
 ## 十二、评分汇总
 
-| 维度 | 原始得分 | 权重 | 加权得分 |
-|------|---------|------|---------|
-| 一、设计评分 | 10.0/10 | 20% | 2.00 |
-| 二、测试评分 | 7.0/10 | 40% | 2.80 |
-| 三、交付质量 | 9.1/10 | 40% | 3.64 |
-| **原始总分** | **8.44** | 100% | — |
-| **最终评分（必须规则FAIL）** | | | **5.0/10 (D)** |
+### 评分计算明细
+
+| 维度 | 子项 | 子项得分 | 子项权重 | 维度权重 | 加权得分 |
+|------|------|---------|---------|---------|---------|
+| **一、设计评分** | 设计文档完整性 | 10.0/10 (3/3) | 100% | 20% | 2.00 |
+| **二、测试评分** | ErrCode覆盖度 | 7.5/10 (3/4) | 80% | 40% | 2.40 |
+| | Reason覆盖率 | 5.0/10 (4/8) | 20% | 40% | 0.40 |
+| | *维度小计* | *7.0/10* | — | 40% | **2.80** |
+| **三、交付质量** | 规范符合性 | 10.0/10 (24/24) | 40% | 40% | 1.60 |
+| | ErrMessage质量 | 8.5/10 | 30% | 40% | 1.02 |
+| | 用户指导能力 | 8.375/10 | 30% | 40% | 1.005 |
+| | *维度小计* | *9.1/10* | — | 40% | **3.625** |
+| **原始总分** | | | **100%** | | **8.425** |
+| **必须规则检查** | ErrCode覆盖率 | 75% < 100% | — | — | **❌ FAIL** |
+| | EP0003 Reason覆盖 | 0% < 5% | — | — | **❌ FAIL** |
+| | 用户场景覆盖 | ✅ | — | — | **✅ PASS** |
+| **最终评分** | | | | | **5.0/10 (D)** |
+
+### ErrMessage质量评分明细
+
+| ErrCode组 | Symptom清晰度 | Reason精确度 | 内部信息暴露 | 组平均 | 条目权重 |
+|-----------|-------------|-------------|------------|--------|---------|
+| EP0001 (11条) | 9 | 9 | 10 | 9.3 | 11/24 |
+| EP0002 (6条) | 10 | 9 | 10 | 9.7 | 6/24 |
+| EP0004 (7条) | 6 | 8 | 9 | 7.7 | 7/24 |
+| **加权平均** | — | — | — | **8.83** | 24/24 |
+
+### 等级判定
+
+| 等级 | 分数范围 | 判定 |
+|------|---------|------|
+| A | 9.0-10.0 | Phase 1修复后预期等级 |
+| B | 7.0-8.9 | 原始等级(8.425，被必须规则覆盖) |
+| C | 6.0-6.9 | — |
+| **D** | **4.0-5.9** | **✅ 当前等级(5.0/10，必须规则FAIL)** |
 `,
   hccl: `# hccl 通信库 · 评估报告
 
@@ -3563,26 +3818,19 @@ const REPORT_MD = {
 };
 
 // simple markdown → html (tables, headers, bold, code, hr, blockquote, lists)
+// ── Markdown → HTML renderer ──────────────────────────────────────────────
 function mdToHtml(md){
   let h = md
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    // fenced code blocks
     .replace(/```[\w]*\n([\s\S]*?)```/g,(_,c)=>`<pre><code>${c}</code></pre>`)
-    // blockquote
     .replace(/^&gt; (.+)$/gm,(_,c)=>`<blockquote>${c}</blockquote>`)
-    // headers
     .replace(/^#### (.+)$/gm,(_,c)=>`<h4>${c}</h4>`)
     .replace(/^### (.+)$/gm,(_,c)=>`<h3>${c}</h3>`)
     .replace(/^## (.+)$/gm,(_,c)=>`<h2>${c}</h2>`)
     .replace(/^# (.+)$/gm,(_,c)=>`<h1>${c}</h1>`)
-    // hr
     .replace(/^---$/gm,'<hr>')
-    // bold
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    // inline code
     .replace(/`([^`]+)`/g,'<code>$1</code>');
-
-  // tables
   h = h.replace(/(\|.+\|\n)+/g, block => {
     const lines = block.trim().split('\n');
     if(lines.length < 2) return block;
@@ -3591,37 +3839,90 @@ function mdToHtml(md){
     const body = lines.slice(2).map(l => toTd(l, 'td')).join('');
     return `<table>${head}${body}</table>`;
   });
-
-  // lists
   h = h.replace(/((?:^[*\-] .+\n?)+)/gm, block =>
     '<ul>' + block.trim().split('\n').map(l=>`<li>${l.replace(/^[*\-] /,'')}</li>`).join('') + '</ul>');
   h = h.replace(/((?:^\d+\. .+\n?)+)/gm, block =>
     '<ol>' + block.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\. /,'')}</li>`).join('') + '</ol>');
-
-  // paragraphs (lines not already wrapped)
   h = h.split('\n').map(line => {
     if(/^<(h[1-4]|ul|ol|li|table|pre|blockquote|hr|tr|th|td)/.test(line.trim()) || line.trim()==='') return line;
     return `<p>${line}</p>`;
   }).join('\n');
+  return h;
+}
 
+// ── Visual HTML renderer (enhanced) ───────────────────────────────────────
+function mdToVisualHtml(md){
+  let h = mdToHtml(md);
+
+  // ✅❌⚠️ → colored badges
+  h = h.replace(/✅\s*(PASS|已覆盖|合规|存在|COMPLIANT)?/g, '<span class="vi-badge vi-ok">✓ PASS</span>');
+  h = h.replace(/❌\s*(FAIL|未覆盖|不合规|FAIL)?/g, '<span class="vi-badge vi-fail">✗ FAIL</span>');
+  h = h.replace(/⚠️/g, '<span class="vi-badge vi-warn">⚠ 警告</span>');
+
+  // table cells: color by content
+  h = h.replace(/<td>([^<]*)<\/td>/g, (m, cell) => {
+    const t = cell.trim();
+    if(/FAIL|未覆盖|不合规|❌|&lt;100%/.test(t)) return `<td class="vi-cell-fail">${cell}</td>`;
+    if(/PASS|已覆盖|合规|COMPLIANT/.test(t)) return `<td class="vi-cell-ok">${cell}</td>`;
+    if(/偏低|关注|P0|P1|必须/.test(t)) return `<td class="vi-cell-warn">${cell}</td>`;
+    return m;
+  });
+  // strong cells in tables
+  h = h.replace(/<td><strong>([^<]*FAIL[^<]*)<\/strong><\/td>/g, '<td class="vi-cell-fail"><strong>$1</strong></td>');
+  h = h.replace(/<td><strong>([^<]*PASS[^<]*)<\/strong><\/td>/g, '<td class="vi-cell-ok"><strong>$1</strong></td>');
+
+  // inline % → progress bar
+  h = h.replace(/(\d{1,3}\.\d)%/g, (m, pct) => {
+    const v = parseFloat(pct);
+    const barC = v >= 80 ? '#37C597' : v >= 50 ? '#FD9A00' : '#E63838';
+    return `<span class="vi-pct-wrap"><span class="vi-pct-bar" style="width:${Math.min(v,100)}%;background:${barC}"></span><span class="vi-pct-num">${m}</span></span>`;
+  });
+
+  // blockquote → alert box
+  h = h.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g,
+    '<div class="vi-alert">$1</div>');
+
+  // score summary cards (hardcoded for dump, extracted from known table structure)
+  const scoreBlock = `<div class="vi-score-grid">
+    <div class="vi-score-card" style="border-top:3px solid #37C597">
+      <div class="vi-score-label">设计评分</div>
+      <div class="vi-score-val" style="color:#37C597">10.0<span class="vi-score-unit">/10</span></div>
+      <div class="vi-score-sub">权重 20%</div>
+    </div>
+    <div class="vi-score-card" style="border-top:3px solid #FD9A00">
+      <div class="vi-score-label">测试评分</div>
+      <div class="vi-score-val" style="color:#FD9A00">7.0<span class="vi-score-unit">/10</span></div>
+      <div class="vi-score-sub">权重 40%</div>
+    </div>
+    <div class="vi-score-card" style="border-top:3px solid #37C597">
+      <div class="vi-score-label">交付质量</div>
+      <div class="vi-score-val" style="color:#37C597">9.1<span class="vi-score-unit">/10</span></div>
+      <div class="vi-score-sub">权重 40%</div>
+    </div>
+    <div class="vi-score-card" style="border-top:3px solid #E63838;background:#FEF2F2">
+      <div class="vi-score-label">最终评分</div>
+      <div class="vi-score-val" style="color:#E63838">5.0<span class="vi-score-unit">/10</span></div>
+      <div class="vi-score-sub">必须规则 FAIL → 等级 D</div>
+    </div>
+  </div>`;
+
+  h = h.replace('<h1>', scoreBlock + '<h1>');
   return h;
 }
 
 let _rptOpen = false;
-let _rptView = 'html'; // 'md' | 'html'
+let _rptView = 'visual'; // 'rendered' | 'visual'
 let _rptName = '';
 
 function openReportDrawer(name) {
   _rptName = name;
-  const md = REPORT_MD[name] || `# ${name} · 暂无报告\n\n该组件的评估报告尚未生成。`;
   const overlay = document.getElementById('rptOverlay');
   const drawer = document.getElementById('rptDrawer');
-  const title = document.getElementById('rptTitle');
-  title.textContent = name + ' · 评估报告';
+  document.getElementById('rptTitle').textContent = name + ' · 评估报告';
   overlay.classList.add('open');
   drawer.classList.add('open');
   _rptOpen = true;
-  renderRptContent(md);
+  renderRptContent();
 }
 
 function closeReportDrawer() {
@@ -3630,23 +3931,23 @@ function closeReportDrawer() {
   _rptOpen = false;
 }
 
-function renderRptContent(md) {
+function renderRptContent() {
+  const md = REPORT_MD[_rptName] || `# ${_rptName} · 暂无报告\n\n该组件的评估报告尚未生成。`;
   const body = document.getElementById('rptBody');
-  const mdBtn = document.getElementById('rptTabMd');
-  const htmlBtn = document.getElementById('rptTabHtml');
-  if (_rptView === 'md') {
-    mdBtn.classList.add('active'); htmlBtn.classList.remove('active');
-    body.innerHTML = `<div class="rpt-md"><pre>${md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre></div>`;
-  } else {
-    htmlBtn.classList.add('active'); mdBtn.classList.remove('active');
+  const rendBtn = document.getElementById('rptTabMd');
+  const visBtn = document.getElementById('rptTabHtml');
+  if (_rptView === 'rendered') {
+    rendBtn.classList.add('active'); visBtn.classList.remove('active');
     body.innerHTML = `<div class="rpt-html">${mdToHtml(md)}</div>`;
+  } else {
+    visBtn.classList.add('active'); rendBtn.classList.remove('active');
+    body.innerHTML = `<div class="rpt-html">${mdToVisualHtml(md)}</div>`;
   }
 }
 
 function rptSwitchView(view) {
   _rptView = view;
-  const md = REPORT_MD[_rptName] || '';
-  renderRptContent(md);
+  renderRptContent();
 }
 
 function rptCopy() {
@@ -3680,8 +3981,8 @@ function rptDownload() {
     </button>
   </div>
   <div class="rpt-toolbar">
-    <button id="rptTabHtml" class="rpt-tab active" onclick="rptSwitchView('html')">可视化</button>
-    <button id="rptTabMd" class="rpt-tab" onclick="rptSwitchView('md')">Markdown</button>
+    <button id="rptTabHtml" class="rpt-tab active" onclick="rptSwitchView('visual')">可视化</button>
+    <button id="rptTabMd" class="rpt-tab" onclick="rptSwitchView('rendered')">渲染</button>
     <div style="flex:1"></div>
     <button id="rptCopyBtn" class="rpt-btn" onclick="rptCopy()">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="#565C65" stroke-width="1.5"/><path d="M3 11V3a2 2 0 0 1 2-2h8" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
