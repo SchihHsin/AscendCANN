@@ -757,8 +757,6 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .rpt-close{width:28px;height:28px;border-radius:6px;border:none;background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .rpt-close:hover{background:var(--border)}
 .rpt-toolbar{display:flex;align-items:center;gap:8px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
-.rpt-tab{padding:4px 12px;border-radius:6px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;transition:background .15s}
-.rpt-tab.active{background:var(--text);color:#fff;border-color:var(--text)}
 .rpt-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:500;color:var(--text-2);cursor:pointer;transition:background .15s}
 .rpt-btn:hover{background:var(--surface)}
 .rpt-btn-icon{padding:5px 7px;gap:0}
@@ -826,6 +824,10 @@ body.ov-rat-open .ov-rat-panel{right:0}
 /* search highlight */
 .rpt-search-wrap{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 10px;transition:border-color .15s}
 .rpt-search-wrap:focus-within{border-color:var(--primary)}
+.rpt-dl-wrap{position:relative}
+.rpt-dl-menu{position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);padding:4px;min-width:160px;z-index:10}
+.rpt-dl-menu button{display:block;width:100%;text-align:left;padding:7px 12px;font-size:12px;border:none;background:none;cursor:pointer;border-radius:5px;color:var(--text-2);font-family:inherit}
+.rpt-dl-menu button:hover{background:var(--surface);color:var(--text)}
 .rpt-search-input{flex:1;border:none;background:none;font-size:12px;color:var(--text);outline:none;font-family:inherit}
 .rpt-search-input::placeholder{color:var(--text-3)}
 .rpt-hl{background:#FFF176;border-radius:2px;padding:0 1px}
@@ -4144,7 +4146,6 @@ function mdToVisualHtml(md){
 }
 
 let _rptOpen = false;
-let _rptView = 'visual'; // 'rendered' | 'visual'
 let _rptName = '';
 
 function openReportDrawer(name) {
@@ -4200,17 +4201,8 @@ let _rptSearchIdx = 0;
 function renderRptContent() {
   const md = REPORT_MD[_rptName] || `# ${_rptName} · 暂无报告\n\n该组件的评估报告尚未生成。`;
   const body = document.getElementById('rptBody');
-  const rendBtn = document.getElementById('rptTabMd');
-  const visBtn = document.getElementById('rptTabHtml');
-  if (_rptView === 'rendered') {
-    rendBtn.classList.add('active'); visBtn.classList.remove('active');
-    body.innerHTML = `<div class="rpt-html">${mdToColoredHtml(md)}</div>`;
-  } else {
-    visBtn.classList.add('active'); rendBtn.classList.remove('active');
-    body.innerHTML = mdToVisualHtml(md);
-  }
+  body.innerHTML = `<div class="rpt-html">${mdToColoredHtml(md)}</div>`;
   _rptOrigHtml = body.innerHTML;
-  // clear search state on content switch
   const si = document.getElementById('rptSearchInput');
   if (si) { si.value = ''; rptSearchClearAll(); }
 }
@@ -4283,13 +4275,33 @@ function rptCopy() {
   });
 }
 
-function rptDownload() {
+function rptToggleDlMenu(e) {
+  e.stopPropagation();
+  const m = document.getElementById('rptDlMenu');
+  m.style.display = m.style.display === 'none' ? 'block' : 'none';
+  if (m.style.display === 'block') {
+    const hide = () => { m.style.display = 'none'; document.removeEventListener('click', hide); };
+    setTimeout(() => document.addEventListener('click', hide), 0);
+  }
+}
+
+function rptDownload(fmt) {
+  document.getElementById('rptDlMenu').style.display = 'none';
   const md = REPORT_MD[_rptName] || '';
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([md], {type:'text/markdown'}));
-  a.download = _rptName + '_evaluation_report.md';
-  a.click();
-  URL.revokeObjectURL(a.href);
+  const base = _rptName + '_evaluation_report';
+  if (fmt === 'md') {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([md], {type:'text/markdown'}));
+    a.download = base + '.md'; a.click(); URL.revokeObjectURL(a.href);
+  } else if (fmt === 'html') {
+    const body = document.getElementById('rptBody').innerHTML;
+    const full = `<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><title>${_rptName} 评估报告</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:860px;margin:40px auto;padding:0 24px;color:#1A1A1E;line-height:1.8}h1{font-size:20px;font-weight:800}h2{font-size:15px;font-weight:700;border-bottom:1.5px solid #E1E2E4;padding-bottom:6px;margin-top:24px}h3{font-size:13px;color:#555}table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}th{background:#F2F2F5;padding:6px 10px;text-align:left;border:1px solid #ddd}td{padding:5px 10px;border:1px solid #eee}.vi-badge{display:inline-block;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700}.vi-ok{background:#D1FAE5;color:#065F46}.vi-fail{background:#FEE2E2;color:#991B1B}.vi-warn{background:#FEF3C7;color:#92400E}.vi-cell-ok{background:#F0FDF4;color:#166534;font-weight:600}.vi-cell-fail{background:#FEF2F2;color:#991B1B;font-weight:600}.vi-cell-warn{background:#FFFBEB;color:#92400E;font-weight:600}</style></head><body>${body}</body></html>`;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([full], {type:'text/html'}));
+    a.download = base + '.html'; a.click(); URL.revokeObjectURL(a.href);
+  } else if (fmt === 'pdf') {
+    window.print();
+  }
 }
 
 </script>
@@ -4300,26 +4312,14 @@ function rptDownload() {
   <div class="rpt-resize-handle" id="rptResizeHandle"></div>
   <div class="rpt-hdr">
     <div class="rpt-hdr-title" id="rptTitle">评估报告</div>
-    <button class="rpt-close" onclick="closeReportDrawer()">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="#565C65" stroke-width="2" stroke-linecap="round"/><line x1="13" y1="1" x2="1" y2="13" stroke="#565C65" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
-  </div>
-  <div class="rpt-toolbar">
-    <button id="rptTabHtml" class="rpt-tab active" onclick="rptSwitchView('visual')">
-      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:4px"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#565C65" stroke-width="1.4"/><line x1="4" y1="7" x2="12" y2="7" stroke="#565C65" stroke-width="1.2" stroke-linecap="round"/><line x1="4" y1="10" x2="9" y2="10" stroke="#565C65" stroke-width="1.2" stroke-linecap="round"/></svg>HTML 可视化
-    </button>
-    <button id="rptTabMd" class="rpt-tab" onclick="rptSwitchView('rendered')">
-      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:4px"><path d="M2 2h12v12H2z" stroke="#565C65" stroke-width="1.4" rx="1"/><path d="M5 6v4m0 0 2-2 2 2m0-4v4" stroke="#565C65" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Markdown 报告
-    </button>
-    <div style="flex:1"></div>
     <div class="rpt-search-wrap">
       <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><circle cx="7" cy="7" r="5" stroke="#898E95" stroke-width="1.5"/><line x1="11" y1="11" x2="14" y2="14" stroke="#898E95" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <input id="rptSearchInput" class="rpt-search-input" placeholder="搜索…" oninput="rptSearchExec()" onkeydown="if(event.key==='Enter')rptSearchNav(event.shiftKey?-1:1)" style="width:140px">
+      <input id="rptSearchInput" class="rpt-search-input" placeholder="搜索…" oninput="rptSearchExec()" onkeydown="if(event.key==='Enter')rptSearchNav(event.shiftKey?-1:1)" style="width:130px">
       <span id="rptSearchCount" style="display:none;font-size:11px;color:var(--text-3);white-space:nowrap;padding:0 4px;border-right:1px solid var(--border)"></span>
-      <button id="rptSearchPrev" onclick="rptSearchNav(-1)" title="上一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;color:var(--text-3);line-height:1">
+      <button id="rptSearchPrev" onclick="rptSearchNav(-1)" title="上一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;line-height:1">
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 8l4-4 4 4" stroke="#565C65" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <button id="rptSearchNext" onclick="rptSearchNav(1)" title="下一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;color:var(--text-3);line-height:1">
+      <button id="rptSearchNext" onclick="rptSearchNav(1)" title="下一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;line-height:1">
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="#565C65" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <button id="rptSearchClear" onclick="rptSearchClearAll()" style="display:none;border:none;background:none;cursor:pointer;font-size:15px;color:var(--text-3);padding:0 2px;line-height:1">×</button>
@@ -4327,8 +4327,18 @@ function rptDownload() {
     <button id="rptCopyBtn" class="rpt-btn rpt-btn-icon" title="复制" onclick="rptCopy()">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="9" height="10" rx="1.5" stroke="#565C65" stroke-width="1.5"/><path d="M5 5V3.5A1.5 1.5 0 0 1 6.5 2h7A1.5 1.5 0 0 1 15 3.5v7A1.5 1.5 0 0 1 13.5 12H11" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
-    <button class="rpt-btn rpt-btn-icon" title="下载" onclick="rptDownload()">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0-3-3m3 3 3-3" stroke="#565C65" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <div class="rpt-dl-wrap">
+      <button class="rpt-btn rpt-btn-icon" title="下载" onclick="rptToggleDlMenu(event)">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0-3-3m3 3 3-3" stroke="#565C65" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div id="rptDlMenu" class="rpt-dl-menu" style="display:none">
+        <button onclick="rptDownload('md')">Markdown (.md)</button>
+        <button onclick="rptDownload('html')">HTML (.html)</button>
+        <button onclick="rptDownload('pdf')">PDF（打印导出）</button>
+      </div>
+    </div>
+    <button class="rpt-close" onclick="closeReportDrawer()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="#565C65" stroke-width="2" stroke-linecap="round"/><line x1="13" y1="1" x2="1" y2="13" stroke="#565C65" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
   </div>
   <div id="rptBody" class="rpt-body"></div>
