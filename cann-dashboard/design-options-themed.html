@@ -751,13 +751,15 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .rpt-drawer.open{transform:translateX(0)}
 .rpt-resize-handle{position:absolute;left:0;top:0;bottom:0;width:8px;cursor:ew-resize;z-index:10;background:transparent;transition:background .15s}
 .rpt-resize-handle:hover,.rpt-resize-handle.dragging{background:rgba(106,103,206,.35)}
-.rpt-hdr{background:#0F172A;padding:14px 20px 10px;flex-shrink:0}
-.rpt-hdr-row1{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+.rpt-hdr{background:#0F172A;padding:12px 20px;flex-shrink:0;display:flex;align-items:center;gap:14px}
+.rpt-hdr-left{flex:1;min-width:0}
+.rpt-hdr-row1{display:flex;align-items:center;gap:8px;margin-bottom:3px}
 .rpt-hdr-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:#E63838}
-.rpt-hdr-title{flex:1;font-size:14px;font-weight:800;color:#fff}
-.rpt-hdr-meta{font-size:11px;color:rgba(255,255,255,.38);padding-left:17px}
-.rpt-close{width:28px;height:28px;border-radius:6px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.1);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:rgba(255,255,255,.65)}
-.rpt-close:hover{background:rgba(255,255,255,.18)}
+.rpt-hdr-title{font-size:14px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rpt-hdr-meta{font-size:11px;color:rgba(255,255,255,.38);padding-left:16px}
+.rpt-hdr-actions{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.rpt-close{width:24px;height:24px;border-radius:4px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:rgba(255,255,255,.5)}
+.rpt-close:hover{color:rgba(255,255,255,.9)}
 .rpt-toolbar{display:flex;align-items:center;gap:8px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
 .rpt-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.1);font-size:12px;font-weight:500;color:rgba(255,255,255,.7);cursor:pointer;transition:background .15s}
 .rpt-btn:hover{background:rgba(255,255,255,.18)}
@@ -834,16 +836,17 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .rpt-content-area{display:flex;flex:1;overflow:hidden}
 .rpt-toc-panel{width:172px;min-width:172px;border-left:1px solid #E8E8EC;background:#F6F6F8;overflow-y:auto;padding:12px 0;flex-shrink:0;order:1}
 .rpt-toc-hdr{font-size:9px;font-weight:700;letter-spacing:.1em;color:#B0B5BC;text-transform:uppercase;padding:0 14px 8px}
-.rpt-toc-item{display:block;padding:5px 14px;font-size:12px;color:#6B7280;cursor:pointer;transition:color .12s,background .12s;line-height:1.45;border-right:2px solid transparent}
+.rpt-toc-item{display:block;padding:5px 14px;font-size:12px;color:#6B7280;cursor:pointer;transition:color .12s,background .12s;line-height:1.45;border-left:2px solid transparent}
 .rpt-toc-item:hover{color:#1A1A1E;background:rgba(0,0,0,.04)}
-.rpt-toc-item.active{color:var(--primary);border-right-color:var(--primary);background:rgba(106,103,206,.07);font-weight:600}
+.rpt-toc-item.active{color:var(--primary);border-left-color:var(--primary);background:rgba(106,103,206,.07);font-weight:600}
 .rpt-toc-item.h3{padding-left:22px;font-size:11px;color:#9CA3AF}
-/* Thin scrollbars — only visible on hover */
+/* Scrollbars */
 .rpt-toc-panel::-webkit-scrollbar,#rptBody::-webkit-scrollbar{width:4px}
 .rpt-toc-panel::-webkit-scrollbar-track,#rptBody::-webkit-scrollbar-track{background:transparent}
-.rpt-toc-panel::-webkit-scrollbar-thumb,#rptBody::-webkit-scrollbar-thumb{background:transparent;border-radius:2px;transition:background .2s}
-.rpt-toc-panel:hover::-webkit-scrollbar-thumb,#rptBody:hover::-webkit-scrollbar-thumb{background:#D4D4D8}
-.rpt-toc-panel:hover::-webkit-scrollbar-thumb:hover,#rptBody:hover::-webkit-scrollbar-thumb:hover{background:#A1A1AA}
+.rpt-toc-panel::-webkit-scrollbar-thumb{background:transparent;border-radius:2px;transition:background .3s}
+.rpt-toc-panel.toc-scrolling::-webkit-scrollbar-thumb{background:#C8C8CC}
+#rptBody::-webkit-scrollbar-thumb{background:#D4D4D8;border-radius:2px}
+#rptBody::-webkit-scrollbar-thumb:hover{background:#A1A1AA}
 /* Skeleton placeholder */
 .skel-block{border-radius:4px;background:#EBEBED}
 .skel-row{height:10px;margin:6px 0;border-radius:3px}
@@ -1406,7 +1409,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
   <div class="ov-body">
 
     <!-- 满意度评分 骨架屏 -->
-    <div class="ov-section" style="padding:16px 20px">
+    <div class="ov-section" style="padding:16px 20px;margin-top:16px">
       <div style="margin-bottom:12px">
         <div class="ov-section-title">满意度评分</div>
         <div class="ov-section-sub">各组件当前评分 vs 目标值（满分 10）</div>
@@ -4225,6 +4228,20 @@ function rptToggleToc() {
   if (panel) panel.style.display = _rptTocOpen ? 'block' : 'none';
 }
 
+// TOC scrollbar: only show while scrolling
+(function(){
+  let _tocScrollTimer = null;
+  document.addEventListener('DOMContentLoaded', () => {
+    const toc = document.getElementById('rptTocPanel');
+    if (!toc) return;
+    toc.addEventListener('scroll', () => {
+      toc.classList.add('toc-scrolling');
+      clearTimeout(_tocScrollTimer);
+      _tocScrollTimer = setTimeout(() => toc.classList.remove('toc-scrolling'), 1000);
+    });
+  });
+})();
+
 function rptSearchExec() {
   const q = document.getElementById('rptSearchInput').value;
   const body = document.getElementById('rptBody');
@@ -4329,39 +4346,43 @@ function rptDownload(fmt) {
 <div id="rptDrawer" class="rpt-drawer">
   <div class="rpt-resize-handle" id="rptResizeHandle"></div>
   <div class="rpt-hdr" id="rptHdr">
-    <div class="rpt-hdr-row1">
-      <div class="rpt-hdr-dot" id="rptHdrDot"></div>
-      <div class="rpt-hdr-title" id="rptTitle">评估报告</div>
-    <div class="rpt-search-wrap">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><circle cx="7" cy="7" r="5" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/><line x1="11" y1="11" x2="14" y2="14" stroke="rgba(255,255,255,.55)" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <input id="rptSearchInput" class="rpt-search-input" placeholder="搜索…" oninput="rptSearchExec()" onkeydown="if(event.key==='Enter')rptSearchNav(event.shiftKey?-1:1)" style="width:130px">
-      <span id="rptSearchCount" style="display:none;font-size:11px;color:var(--text-3);white-space:nowrap;padding:0 4px;border-right:1px solid var(--border)"></span>
-      <button id="rptSearchPrev" onclick="rptSearchNav(-1)" title="上一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;line-height:1">
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 8l4-4 4 4" stroke="#565C65" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button id="rptSearchNext" onclick="rptSearchNav(1)" title="下一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;line-height:1">
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="#565C65" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button id="rptSearchClear" onclick="rptSearchClearAll()" style="display:none;border:none;background:none;cursor:pointer;font-size:15px;color:var(--text-3);padding:0 2px;line-height:1">×</button>
-    </div>
-    <button id="rptCopyBtn" class="rpt-btn rpt-btn-icon" title="复制" onclick="rptCopy()">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="9" height="10" rx="1.5" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/><path d="M5 5V3.5A1.5 1.5 0 0 1 6.5 2h7A1.5 1.5 0 0 1 15 3.5v7A1.5 1.5 0 0 1 13.5 12H11" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
-<div class="rpt-dl-wrap">
-      <button class="rpt-btn rpt-btn-icon" title="下载" onclick="rptToggleDlMenu(event)">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0-3-3m3 3 3-3" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </button>
-      <div id="rptDlMenu" class="rpt-dl-menu" style="display:none">
-        <button onclick="rptDownload('md')"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:6px"><path d="M2 2h12v12H2z" stroke="rgba(255,255,255,.75)" stroke-width="1.4" rx="1"/><path d="M5 6v4m0 0 2-2 2 2m0-4v4" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>导出为 Markdown</button>
-        <button onclick="rptDownload('html')"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:6px"><rect x="1" y="3" width="14" height="10" rx="2" stroke="rgba(255,255,255,.75)" stroke-width="1.4"/><line x1="4" y1="7" x2="12" y2="7" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round"/></svg>导出为 HTML</button>
-        <button onclick="rptDownload('pdf')"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:6px"><rect x="2" y="1" width="12" height="14" rx="2" stroke="rgba(255,255,255,.75)" stroke-width="1.4"/><line x1="5" y1="5" x2="11" y2="5" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round"/><line x1="5" y1="8" x2="11" y2="8" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round"/><line x1="5" y1="11" x2="9" y2="11" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round"/></svg>导出为 PDF</button>
+    <div class="rpt-hdr-left">
+      <div class="rpt-hdr-row1">
+        <div class="rpt-hdr-dot" id="rptHdrDot"></div>
+        <div class="rpt-hdr-title" id="rptTitle">评估报告</div>
       </div>
+      <div class="rpt-hdr-meta" id="rptHdrMeta"></div>
     </div>
-    <button class="rpt-close" onclick="closeReportDrawer()">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-linecap="round"/><line x1="13" y1="1" x2="1" y2="13" stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
+    <div class="rpt-hdr-actions">
+      <div class="rpt-search-wrap">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><circle cx="7" cy="7" r="5" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/><line x1="11" y1="11" x2="14" y2="14" stroke="rgba(255,255,255,.55)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input id="rptSearchInput" class="rpt-search-input" placeholder="搜索…" oninput="rptSearchExec()" onkeydown="if(event.key==='Enter')rptSearchNav(event.shiftKey?-1:1)" style="width:110px">
+        <span id="rptSearchCount" style="display:none;font-size:11px;color:rgba(255,255,255,.45);white-space:nowrap;padding:0 4px;border-right:1px solid rgba(255,255,255,.15)"></span>
+        <button id="rptSearchPrev" onclick="rptSearchNav(-1)" title="上一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;line-height:1">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 8l4-4 4 4" stroke="rgba(255,255,255,.6)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="rptSearchNext" onclick="rptSearchNav(1)" title="下一个" style="display:none;border:none;background:none;cursor:pointer;padding:2px 3px;line-height:1">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="rgba(255,255,255,.6)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="rptSearchClear" onclick="rptSearchClearAll()" style="display:none;border:none;background:none;cursor:pointer;font-size:14px;color:rgba(255,255,255,.45);padding:0 2px;line-height:1">×</button>
+      </div>
+      <button id="rptCopyBtn" class="rpt-btn rpt-btn-icon" title="复制" onclick="rptCopy()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="9" height="10" rx="1.5" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/><path d="M5 5V3.5A1.5 1.5 0 0 1 6.5 2h7A1.5 1.5 0 0 1 15 3.5v7A1.5 1.5 0 0 1 13.5 12H11" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="rpt-dl-wrap">
+        <button class="rpt-btn rpt-btn-icon" title="下载" onclick="rptToggleDlMenu(event)">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0-3-3m3 3 3-3" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div id="rptDlMenu" class="rpt-dl-menu" style="display:none">
+          <button onclick="rptDownload('md')"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:6px"><path d="M2 2h12v12H2z" stroke="rgba(255,255,255,.75)" stroke-width="1.4" rx="1"/><path d="M5 6v4m0 0 2-2 2 2m0-4v4" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>导出为 Markdown</button>
+          <button onclick="rptDownload('html')"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:6px"><rect x="1" y="3" width="14" height="10" rx="2" stroke="rgba(255,255,255,.75)" stroke-width="1.4"/><line x1="4" y1="7" x2="12" y2="7" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round"/></svg>导出为 HTML</button>
+          <button onclick="rptDownload('pdf')"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:6px"><rect x="2" y="1" width="12" height="14" rx="2" stroke="rgba(255,255,255,.75)" stroke-width="1.4"/><line x1="5" y1="5" x2="11" y2="5" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round"/><line x1="5" y1="8" x2="11" y2="8" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round"/><line x1="5" y1="11" x2="9" y2="11" stroke="rgba(255,255,255,.75)" stroke-width="1.2" stroke-linecap="round"/></svg>导出为 PDF</button>
+        </div>
+      </div>
+      <button class="rpt-close" onclick="closeReportDrawer()">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><line x1="1" y1="1" x2="11" y2="11" stroke="rgba(255,255,255,.55)" stroke-width="1.8" stroke-linecap="round"/><line x1="11" y1="1" x2="1" y2="11" stroke="rgba(255,255,255,.55)" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
     </div>
-    <div class="rpt-hdr-meta" id="rptHdrMeta"></div>
   </div>
   <div class="rpt-content-area">
     <div id="rptTocPanel" class="rpt-toc-panel" style="display:none">
