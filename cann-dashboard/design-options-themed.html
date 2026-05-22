@@ -3331,17 +3331,6 @@ function selectStage(code,el){
   if(el) selectStage('S0',el);
 })();
 
-// 根据 URL hash 激活对应 tab（支持直接分享链接）
-(function(){
-  const hash=(location.hash||'').replace('#','');
-  const ids=['overview','uxtest','dev'];
-  if(ids.includes(hash)){
-    const idx=ids.indexOf(hash);
-    const btn=document.querySelectorAll('.dim-tab')[idx];
-    if(btn) switchTab(hash,btn);
-  }
-})();
-
 // ── Report Drawer ──────────────────────────────────────────────────────────
 REPORT_MD = {
   dump: `# Dump ErrorMessage 评估报告
@@ -3817,6 +3806,17 @@ REPORT_MD = {
 | Phase 3 | 修复内部函数名暴露 | 合规率 +40% |
 `,
 };
+
+// 根据 URL hash 激活对应 tab（放在 REPORT_MD 赋值之后，确保 hasReport 检查正常）
+(function(){
+  const hash=(location.hash||'').replace('#','');
+  const ids=['overview','uxtest','dev'];
+  if(ids.includes(hash)){
+    const idx=ids.indexOf(hash);
+    const btn=document.querySelectorAll('.dim-tab')[idx];
+    if(btn) switchTab(hash,btn);
+  }
+})();
 
 // simple markdown → html (tables, headers, bold, code, hr, blockquote, lists)
 // ── Markdown → HTML renderer ──────────────────────────────────────────────
