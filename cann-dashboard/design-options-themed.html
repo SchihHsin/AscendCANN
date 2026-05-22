@@ -790,10 +790,16 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .rpt-html td.vi-cell-ok{background:#F0FDF4;color:#166534}
 .rpt-html td.vi-cell-fail{background:#FEF2F2;color:#991B1B}
 .rpt-html td.vi-cell-warn{background:#FFFBEB;color:#92400E}
-/* inline % progress */
+/* inline % progress (outside tables) */
 .vi-pct-wrap{display:inline-flex;align-items:center;gap:5px;vertical-align:middle}
 .vi-pct-bar{display:inline-block;height:5px;border-radius:3px;min-width:2px;max-width:80px;flex-shrink:0}
 .vi-pct-num{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:11px}
+/* table cell % → horizontal bar block */
+.vi-bar-cell{vertical-align:middle}
+.vi-bar-row{display:flex;flex-direction:column;gap:3px}
+.vi-bar-label{font-size:12px;font-weight:600;color:inherit}
+.vi-bar-track{display:block;background:#EBEBED;border-radius:3px;height:6px;width:100%;min-width:80px;overflow:hidden}
+.vi-bar-fill{display:block;height:100%;border-radius:3px;transition:width .3s}
 /* alert box */
 .vi-alert{border-left:3px solid #FD9A00;background:#FFFBEB;border-radius:0 6px 6px 0;padding:8px 14px;margin:8px 0;font-size:12px;color:#92400E}
 /* score summary cards */
@@ -3702,6 +3708,71 @@ REPORT_MD = {
 | B | 7.0-8.9 | 原始等级(8.425，被必须规则覆盖) |
 | C | 6.0-6.9 | — |
 | **D** | **4.0-5.9** | **✅ 当前等级(5.0/10，必须规则FAIL)** |
+| E | <4.0 | — |
+
+### 必须规则影响说明
+
+> **关键判定**: 根据skills/eval_err_msg.md规定的必须规则:
+> 1. **"测试用例错误码覆盖率必须为100%，否则评审不通过，评分小于60"** — Dump组件ErrCode覆盖率75%(3/4)未达标
+> 2. **"每个Error Code至少有5%的Error Reason测试覆盖是否可以操作修复问题"** — EP0003覆盖0%
+>
+> 两条必须规则FAIL，因此原始8.425分被强制执行为5.0分(等级D)。
+>
+> **修复路径**: 仅需补充EP0003的4个测试场景即可将ErrCode覆盖率提升至100%，同时满足两条必须规则，预期评分恢复至9.4+/10(等级A)。
+
+---
+
+## 附录
+
+### A. 有效条目清单
+
+**Dump组件(EP系列, 24条)**:
+
+| # | ErrCode | 配置项 | Reason | source_file |
+|---|---------|--------|--------|-------------|
+| 1 | EP0001 | dump_op_switch | value is empty | ...021.log |
+| 2 | EP0001 | dump_mode | value is empty | ...018.log |
+| 3 | EP0001 | dump_stats | value is empty | ...015.log |
+| 4 | EP0001 | dump_path | not found | ...045.log |
+| 5 | EP0001 | dump_path | not found | ...027.log |
+| 6 | EP0001 | dump_path | not found | ...028.log |
+| 7 | EP0001 | dump_path | not found | ...040.log |
+| 8 | EP0001 | dump_scene | value is empty | ...037.log |
+| 9 | EP0001 | dump_level | value is empty | ...019.log |
+| 10 | EP0001 | dump_debug | value is empty | ...042.log |
+| 11 | EP0001 | dump_data | value is empty | ...021.log |
+| 12 | EP0002 | dump_data | NA (Expected: stats/tensor) | ...014.log |
+| 13 | EP0002 | dump_mode | NA (Expected: all/input/output) | ...010.log |
+| 14 | EP0002 | dump_debug | NA (Expected: off/on) | ...041.log |
+| 15 | EP0002 | dump_op_switch | NA (Expected: off/on) | ...013.log |
+| 16 | EP0002 | dump_level | NA (Expected: all/kernel/op) | ...012.log |
+| 17 | EP0002 | dump_scene | NA (Expected: aic_err_...) | ...036.log |
+| 18 | EP0004 | acl.json | type must be string, but is number | ...024.log |
+| 19 | EP0004 | acl.json | type must be string, but is number | ...023.log |
+| 20 | EP0004 | acl.json | type must be string, but is number | ...043.log |
+| 21 | EP0004 | acl.json | type must be array, but is string | ...022.log |
+| 22 | EP0004 | acl.json | type must be string, but is number | ...038.log |
+| 23 | EP0004 | acl.json | type must be string, but is number | ...026.log |
+| 24 | EP0004 | acl.json | type must be string, but is number | ...025.log |
+
+**跨组件(8条, 不纳入Dump评分)**:
+
+| # | ErrCode | errTitle | Reason | 所属模块 |
+|---|---------|----------|--------|---------|
+| 1-7 | EE1001 | Invalid_Argument | rtGetDevMsg execution failed, the context is a null pointer | Runtime (E) |
+| 8 | EH0004 | File_Operation_Error | Parse exception: [json.exception.parse_error.101] ... | ACL (H) |
+
+### B. 错误输出机制
+
+Dump组件错误通过aclGetRecentErrMsg()接口获取。Dump配置校验链路: 用户配置acl.json → Dump组件解析 → 配置项逐项校验 → 错误上报。错误信息包含errTitle、ErrCode、ErrMessage(Symptom)、Reason、Possible Cause、Solution等字段。
+
+### C. 组件ErrCode归属对照
+
+| 模块标识(ErrCode第2位) | 组件 | ErrCode范围 | Dump日志中出现 | 条目数 |
+|----------------------|------|------------|--------------|--------|
+| P | Dump | EPxxxx | ✅ 本组件 | 24条 |
+| E | Runtime | EExxxx | ❌ 跨组件 | 7条 |
+| H | ACL | EHxxxx | ❌ 跨组件 | 1条 |
 `,
   hccl: `# hccl 通信库 · 评估报告
 
@@ -3872,7 +3943,13 @@ function mdToVisualHtml(md){
   h = h.replace(/<td><strong>([^<]*FAIL[^<]*)<\/strong><\/td>/g, '<td class="vi-cell-fail"><strong>$1</strong></td>');
   h = h.replace(/<td><strong>([^<]*PASS[^<]*)<\/strong><\/td>/g, '<td class="vi-cell-ok"><strong>$1</strong></td>');
 
-  // inline % → progress bar
+  // % in table cells → horizontal bar block
+  h = h.replace(/<td([^>]*)>([^<]*?(\d{1,3}\.\d)%[^<]*?)<\/td>/g, (m, attrs, cell, pct) => {
+    const v = parseFloat(pct);
+    const barC = v >= 80 ? '#37C597' : v >= 50 ? '#FD9A00' : '#E63838';
+    return `<td${attrs} class="vi-bar-cell"><div class="vi-bar-row"><span class="vi-bar-label">${cell}</span><span class="vi-bar-track"><span class="vi-bar-fill" style="width:${Math.min(v,100)}%;background:${barC}"></span></span></div></td>`;
+  });
+  // % outside tables → inline badge with small bar
   h = h.replace(/(\d{1,3}\.\d)%/g, (m, pct) => {
     const v = parseFloat(pct);
     const barC = v >= 80 ? '#37C597' : v >= 50 ? '#FD9A00' : '#E63838';
@@ -3912,7 +3989,7 @@ function mdToVisualHtml(md){
 }
 
 let _rptOpen = false;
-let _rptView = 'visual'; // 'rendered' | 'visual'
+let _rptView = 'rendered'; // 'rendered' | 'visual'
 let _rptName = '';
 
 function openReportDrawer(name) {
@@ -3982,8 +4059,8 @@ function rptDownload() {
     </button>
   </div>
   <div class="rpt-toolbar">
-    <button id="rptTabHtml" class="rpt-tab active" onclick="rptSwitchView('visual')">可视化</button>
-    <button id="rptTabMd" class="rpt-tab" onclick="rptSwitchView('rendered')">渲染</button>
+    <button id="rptTabMd" class="rpt-tab active" onclick="rptSwitchView('rendered')">渲染</button>
+    <button id="rptTabHtml" class="rpt-tab" onclick="rptSwitchView('visual')">可视化</button>
     <div style="flex:1"></div>
     <button id="rptCopyBtn" class="rpt-btn" onclick="rptCopy()">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="#565C65" stroke-width="1.5"/><path d="M3 11V3a2 2 0 0 1 2-2h8" stroke="#565C65" stroke-width="1.5" stroke-linecap="round"/></svg>
