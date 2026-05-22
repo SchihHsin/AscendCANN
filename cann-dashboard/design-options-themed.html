@@ -749,7 +749,7 @@ body.ov-rat-open .ov-rat-panel{right:0}
 .rpt-overlay.open{opacity:1;pointer-events:auto}
 .rpt-drawer{position:fixed;top:0;right:0;bottom:0;width:520px;min-width:320px;max-width:90vw;background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:901;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1)}
 .rpt-drawer.open{transform:translateX(0)}
-.rpt-resize-handle{position:absolute;left:0;top:0;bottom:0;width:5px;cursor:ew-resize;z-index:10;background:transparent;transition:background .15s}
+.rpt-resize-handle{position:absolute;left:0;top:0;bottom:0;width:8px;cursor:ew-resize;z-index:10;background:transparent;transition:background .15s}
 .rpt-resize-handle:hover,.rpt-resize-handle.dragging{background:rgba(106,103,206,.35)}
 .rpt-hdr{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
 .rpt-hdr-title{flex:1;font-size:14px;font-weight:700;color:var(--text)}
@@ -4116,8 +4116,8 @@ function closeReportDrawer() {
   _rptOpen = false;
 }
 
-// ── Drawer resize ──
-(function(){
+// ── Drawer resize (bound after DOM ready) ──
+document.addEventListener('DOMContentLoaded', function(){
   const handle = document.getElementById('rptResizeHandle');
   const drawer = document.getElementById('rptDrawer');
   if(!handle||!drawer) return;
@@ -4144,7 +4144,7 @@ function closeReportDrawer() {
     document.body.style.cursor='';
     drawer.style.transition='';
   });
-})();
+});
 
 function renderRptContent() {
   const md = REPORT_MD[_rptName] || `# ${_rptName} · 暂无报告\n\n该组件的评估报告尚未生成。`;
