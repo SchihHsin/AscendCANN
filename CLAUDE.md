@@ -570,3 +570,32 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 | commit | 内容 |
 |--------|------|
 | `801e2c8` | feat: learn页面重设计 — AI输入框置顶，路径卡片+节点推荐双版块 |
+
+### 2026-05-22（续会话 2）
+
+#### 右侧抽屉报告功能（design-options-themed.html）
+
+**需求**：点击组件评分矩阵左列组件名，以右侧抽屉形式展示 dump_evaluation_report.md，支持可视化/渲染两种视图，支持复制、下载。
+
+**实现**：
+- `REPORT_MD` JS 对象：组件名 → 完整 markdown 字符串（嵌入 dump_evaluation_report.md 全文，12节/429行，不截断）
+- `openReportDrawer(name)` / `closeReportDrawer()`：固定定位右侧面板，overlay 背景蒙层
+- `mdToHtml(md)`：标准 MD→HTML（表格/标题/粗体/代码/列表/blockquote/hr）
+- `mdToVisualHtml(md)`：增强可视化渲染
+  - ✅❌⚠️ → 彩色徽章（绿/红/黄圆角标签）
+  - 表格单元格按关键词着色（PASS→绿、FAIL→红、P0/P1/偏低→橙）
+  - `xx.x%` → 内联进度条 + 数值（颜色按 ≥80/≥50/其他分级）
+  - `<blockquote>` → 橙色左边框 alert 框
+  - 前置 4 格评分摘要卡片（设计/提取/覆盖/等级，颜色按分值）
+- `renderRptContent()`：根据 `_rptView` 切换调用 `mdToVisualHtml` 或 `mdToHtml`
+- 默认视图：可视化；按钮标签：**可视化** / **渲染**
+- 行标签条件渲染：`hasReport` 时加 `comp-link` class + `onclick="openReportDrawer(...)"`
+- 移除旧版重复的 `rptSwitchView` 函数
+
+**CSS 新增类**：`.vi-badge` `.vi-ok/fail/warn` `.vi-cell-ok/fail/warn` `.vi-pct-wrap/bar/num` `.vi-alert` `.vi-score-grid/card/val/label/sub/unit`
+
+#### Commits
+
+| commit | 内容 |
+|--------|------|
+| `a891349` | feat: 抽屉报告 mdToVisualHtml 可视化渲染 + 完整 dump 报告内容嵌入 |
