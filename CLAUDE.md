@@ -599,3 +599,76 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 | commit | 内容 |
 |--------|------|
 | `a891349` | feat: 抽屉报告 mdToVisualHtml 可视化渲染 + 完整 dump 报告内容嵌入 |
+
+### 2026-05-25（本会话）
+
+#### design-options-themed.html 抽屉报告精修
+
+**CSS cascade bug 修复**：
+- 搜索/复制/下载/关闭按钮底色不一致——旧 `.rpt-btn` 规则写在覆盖规则之前导致后者失效，整合为单一规则 `background:rgba(255,255,255,.1)`
+- 图标尺寸统一为 14×14
+- 状态圆点颜色阈值与矩阵 `textColor()` 对齐（≥60 绿 / ≥40 橙 / 其余红）
+
+**目录（TOC）**：
+- 默认展开，放在抽屉右侧（172px 宽，浅色 `#F6F6F8` 背景）
+- 滚动时才显示滚动条（JS scroll event + `toc-scrolling` class + 1s timeout）
+- 激活项用左描边（`border-left`），非右描边
+- 报告正文滚动条始终可见
+
+**抽屉 header 重构**：
+- 两列 flex 布局：左列（圆点+标题+meta），右列（所有操作按钮垂直居中）
+- 状态色光晕：从 dot color 解析 RGB，生成 `linear-gradient(105deg, rgba(r,g,b,.18)→transparent), #0F172A`
+- 关闭按钮缩小 + 去底色
+
+**其他**：
+- 打开抽屉时锁定页面滚动（`document.body.style.overflow='hidden'`）
+- 表格"权重"列不着色：列感知处理，识别表头含"权重"的列，跳过百分比颜色化
+- 下载下拉菜单磨砂玻璃质感：`backdrop-filter:blur(16px) saturate(180%)`
+- 体验测试 tab 三张隐藏卡片改为骨架屏（无闪烁动画、无文字、无 tag）
+
+#### VitePress 文档站 Ascend 主题
+
+**背景**：对 `cann-dashboard/ascend-doc/vitepress` VitePress 项目做视觉重绘，参考 `性能调优-CANN社区版9.1.0-beta.1-昇腾社区.html`（hiascend.com OpenDesign 设计系统）。
+
+**新增文件**：
+- `.vitepress/theme/ascend-theme.css`（780 行）：完整主题覆盖
+- `package.json`：补充缺失的 npm 配置
+
+**主题覆盖范围**：
+
+| 区域 | 关键值 |
+|------|-------|
+| 品牌色 | `#c7000b`（昇腾红），替换默认蓝 |
+| 字体 | HarmonyOS Sans SC → PingFang SC → Microsoft YaHei 回退链 |
+| 导航栏 | 白底 64px，站点名红色，激活链接红色+底部 2px 指示线 |
+| 侧边栏 | `#f6f6f8` 底，激活链接红色+左描边 |
+| H1 | 红色 2px 底线；H2 灰色 1px 底线 |
+| 内联代码 | 淡红底 + 红字 |
+| 代码块 | `#282c34` 深色，语言标签，复制按钮 |
+| 表格 | 带边框，灰色表头，hover 行高亮 |
+| 提示块 | tip=蓝/warning=橙/danger=红/info=绿色左描边 |
+| 首页 | 红色 CTA 按钮，Feature 卡片 hover 红边框 |
+| FilterToggle | 匹配红色 focus/hover |
+
+**config.mjs 更新**：
+- 新增 `srcDir: resolve(import.meta.dirname, '../../../repo-scan/asc-devkit-fresh/docs')`
+- 文档源文件在 `cann-dashboard/repo-scan/asc-devkit-fresh/docs/`
+
+**新增 index.md**：
+- 路径：`repo-scan/asc-devkit-fresh/docs/index.md`
+- VitePress home layout，含快速入门/API 两个 CTA + 三个 Feature 卡片
+
+**启动方式**（Windows，npm 缓存需指向用户目录）：
+```
+cd D:\HW\AscendCANN\cann-dashboard\ascend-doc\vitepress
+npm install --registry https://registry.npmjs.org --cache "%LOCALAPPDATA%\npm-cache"
+node node_modules/vitepress/bin/vitepress.js dev --port 5300
+```
+
+> npm 注意：系统全局 npm cache 在 `C:\Program Files\nodejs\node_cache`（需管理员权限），每次 install 需加 `--cache` 参数指向用户可写路径。淘宝镜像证书已过期，用 `--registry https://registry.npmjs.org`。
+
+#### Commits
+
+| commit | 内容 |
+|--------|------|
+| `d01fe9c` | feat: VitePress Ascend community theme — brand red, HarmonyOS font stack, full component coverage |
