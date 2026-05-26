@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CANN 体验看板 - 体验测试</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+    background: #f4f5f7;
+    color: #333;
+    font-size: 13px;
+  }
+
+  /* ── Top Nav ── */
+  .top-nav {
+    background: #fff;
+    border-bottom: 1px solid #e8e8e8;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: #c0392b;
+    letter-spacing: 1px;
+    margin-right: 6px;
+  }
+  .logo-sub {
+    font-size: 13px;
+    color: #555;
+    margin-right: 32px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+  .logo-sub svg { width:12px; height:12px; fill:#888; }
+  .nav-links {
+    display: flex;
+    gap: 0;
+    flex: 1;
+    justify-content: center;
+  }
+  .nav-link {
+    padding: 0 20px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+  }
+  .nav-link:hover { color: #1677ff; }
+  .nav-link.active {
+    color: #1677ff;
+    font-weight: 500;
+  }
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background: #1677ff;
+    border-radius: 2px 2px 0 0;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+  }
+  .btn-detail {
+    background: #1677ff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 14px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .date-picker {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ── Page Container ── */
+  .page {
+    padding: 0 24px 24px;
+  }
+
+  /* ── Page Header Banner ── */
+  .page-header {
+    background: linear-gradient(135deg, #e8f4ff 0%, #f0e8ff 40%, #e0f7fa 100%);
+    border-radius: 0 0 12px 12px;
+    padding: 12px 24px;
+    margin: 0 0 16px;
+    position: relative;
+    overflow: hidden;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+  }
+  .page-header-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+    z-index: 2;
+    position: relative;
+  }
+  .header-deco {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 340px;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 340 120'%3E%3Cellipse cx='280' cy='40' rx='80' ry='55' fill='%23c5b3e6' opacity='0.4'/%3E%3Cellipse cx='200' cy='80' rx='60' ry='35' fill='%2390caf9' opacity='0.35'/%3E%3Cellipse cx='320' cy='95' rx='40' ry='25' fill='%23a5d6a7' opacity='0.3'/%3E%3C/svg%3E") no-repeat right center / contain;
+    pointer-events: none;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chip-selector {
+    font-size: 12px;
+    color: #555;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 1px 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #fff;
+  }
+
+  /* ── Legend ── */
+  .legend-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot-red { background: #f5222d; }
+  .dot-orange { background: #fa8c16; }
+  .dot-yellow { background: #fadb14; }
+  .dot-green { background: #52c41a; }
+  .dot-teal { background: #13c2c2; }
+  .flag { width: 12px; height: 10px; background: #1677ff; border-radius: 1px; display: inline-block; }
+
+  /* ── Bar Chart Section ── */
+  .bar-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 8px;
+    align-items: end;
+    min-height: 110px;
+    padding: 0 8px;
+    margin-top: 8px;
+  }
+  .bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .bars {
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 80px;
+  }
+  .bar {
+    width: 18px;
+    border-radius: 3px 3px 0 0;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .bar-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    margin-top: 2px;
+    line-height: 1;
+  }
+  .bar.green { background: #52c41a; }
+  .bar.blue  { background: #1677ff; }
+  .group-label {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  /* ── Tab Strip ── */
+  .tab-strip {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid #e8e8e8;
+    margin: 16px 0 12px;
+    padding: 0 4px;
+  }
+  .tab {
+    padding: 6px 14px;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+  }
+  .tab:hover { color: #1677ff; }
+  .tab.active {
+    color: #1677ff;
+    border-bottom-color: #1677ff;
+    font-weight: 500;
+  }
+
+  /* ── Two-col layout ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .two-col > .card {
+    margin-bottom: 0;
+  }
+
+  /* ── Score card (left) ── */
+  .score-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .score-badge {
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .score-badge.a2a3 { background: #e6f7ff; color: #1677ff; border: 1px solid #91d5ff; }
+  .score-badge.a5   { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
+
+  /* Line chart (simple SVG) */
+  .line-chart-wrap {
+    width: 100%;
+    height: 140px;
+    position: relative;
+    padding: 8px 0 28px;
+  }
+  .axis-y {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #bbb;
+    width: 16px;
+    text-align: right;
+  }
+  .chart-area {
+    margin-left: 20px;
+    height: 100%;
+    position: relative;
+  }
+  .chart-area svg { width: 100%; height: 100%; }
+
+  /* ── KEP/KEI Table (right) ── */
+  .kep-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .kep-table th {
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    padding: 8px 12px;
+    text-align: center;
+    color: #555;
+    font-weight: 500;
+  }
+  .kep-table td {
+    border: 1px solid #f0f0f0;
+    padding: 6px 10px;
+    vertical-align: top;
+    color: #444;
+  }
+  .kep-table .row-label {
+    background: #fafafa;
+    color: #555;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .arrow-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    font-weight: 500;
+  }
+  .arrow-sep {
+    color: #1677ff;
+    font-size: 16px;
+    font-weight: 300;
+  }
+  .tag-blue {
+    background: #e6f7ff;
+    color: #1677ff;
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 11px;
+    display: inline-block;
+    margin: 2px;
+    white-space: nowrap;
+  }
+  .tag-light {
+    background: #f5f5f5;
+    color: #555;
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 11px;
+    display: inline-block;
+    margin: 2px;
+    white-space: nowrap;
+  }
+  .issue-row { display: flex; flex-direction: column; gap: 4px; }
+  .issue-item {
+    background: #fff7e6;
+    border-left: 3px solid #fa8c16;
+    border-radius: 2px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: #555;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .issue-item.pink {
+    background: #fff1f0;
+    border-left-color: #f5222d;
+  }
+  .more-btn {
+    color: #bbb;
+    font-size: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* ── errmsg section ── */
+  .errmsg-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .view-more {
+    font-size: 12px;
+    color: #1677ff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .btn-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .btn-outline {
+    border: 1px solid #d9d9d9;
+    background: #fff;
+    border-radius: 4px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+  }
+  .btn-outline:hover { border-color: #1677ff; color: #1677ff; }
+
+  .errmsg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .errmsg-table th {
+    background: #fafafa;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 8px 12px;
+    text-align: left;
+    color: #666;
+    font-weight: 500;
+  }
+  .errmsg-table td {
+    border-bottom: 1px solid #f5f5f5;
+    padding: 10px 12px;
+    color: #444;
+    vertical-align: top;
+  }
+  .progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #f0f0f0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #52c41a;
+    border-radius: 3px;
+  }
+  .star-rating { color: #fadb14; font-size: 13px; }
+
+  /* right side panel icons */
+  .side-icons {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    box-shadow: -2px 0 6px rgba(0,0,0,.06);
+    z-index: 50;
+  }
+  .side-icon-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 14px;
+    color: #888;
+  }
+  .side-icon-btn:last-child { border-bottom: none; }
+  .side-icon-btn:hover { color: #1677ff; background: #f0f5ff; }
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<div class="top-nav">
+  <span class="logo">CANN</span>
+  <div class="logo-sub">
+    体验看板
+    <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="#888" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+  </div>
+  <div class="nav-links">
+    <div class="nav-link">总览</div>
+    <div class="nav-link">客户痛点</div>
+    <div class="nav-link active">体验测试</div>
+    <div class="nav-link">用户旅程</div>
+  </div>
+</div>
+
+<!-- Page -->
+<div class="page">
+
+  <!-- Header Banner -->
+  <div class="page-header">
+    <div class="page-header-title">体验测试</div>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:10px; position:relative; z-index:2;">
+      <button class="btn-detail">查看详情</button>
+      <div class="date-picker">
+        2026-5
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="#888" stroke-width="1.2"/><path d="M4 1v2M8 1v2M1 5h10" stroke="#888" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <div class="header-deco"></div>
+  </div>
+
+  <!-- Satisfaction Score Card -->
+  <div class="card">
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+      <div class="card-title">
+        满意度评分
+        <span class="chip-selector">芯片：A5 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="#888" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="legend-bar" style="margin:0;">
+        <span style="font-size:11px;color:#999;">评分标准</span>
+        <span style="font-size:11px;color:#999;">📋</span>
+        <div class="legend-item"><span class="dot dot-red"></span>不可用[0-2分]</div>
+        <div class="legend-item"><span class="dot dot-orange"></span>难用[2-4分]</div>
+        <div class="legend-item"><span class="dot dot-yellow"></span>可用[4-6分]</div>
+        <div class="legend-item"><span class="dot dot-green"></span>好用[6-8分]</div>
+        <div class="legend-item"><span class="dot dot-teal"></span>好用[8-10分]</div>
+        <div class="legend-item"><span class="flag"></span>目标值</div>
+      </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="bar-chart-grid">
+      <!-- 算子库 -->
+      <div class="bar-group">
+        <div class="bars">
+          <div class="bar green" style="height:52px"><span class="bar-label">5.23</span></div>
+          <div class="bar blue"  style="height:58px"><span class="bar-label">5.8</span></div>
+        </div>
+        <div class="group-label">算子库</div>
+      </div>
+      <!-- 通信库-集合通信 -->
+      <div class="bar-group">
+        <div class="bars">
+          <div class="bar green" style="height:48px"><span class="bar-label">4.8</span></div>
+          <div class="bar blue"  style="height:60px"><span class="bar-label">6</span></div>
+        </div>
+        <div class="group-label" style="font-size:10px;">通信库-集合通信</div>
+      </div>
+      <!-- 通信库-单边通信 -->
+      <div class="bar-group">
+        <div class="bars">
+          <div class="bar green" style="height:46px"><span class="bar-label">4.6</span></div>
+          <div class="bar blue"  style="height:70px"><span class="bar-label">7</span></div>
+        </div>
+        <div class="group-label" style="font-size:10px;">通信库-单边通信</div>
+      </div>
+      <!-- 算子编程-Ascend C -->
+      <div class="bar-group">
+        <div class="bars">
+          <div class="bar green" style="height:41px"><span class="bar-label">4.1</span></div>
+          <div class="bar blue"  style="height:60px"><span class="bar-label">6</span></div>
+        </div>
+        <div class="group-label" style="font-size:10px;">算子编程-Ascend C</div>
+      </div>
+      <!-- 图引擎 -->
+      <div class="bar-group">
+        <div class="bars">
+          <div class="bar green" style="height:53px"><span class="bar-label">5.27</span></div>
+          <div class="bar blue"  style="height:60px"><span class="bar-label">6</span></div>
+        </div>
+        <div class="group-label">图引擎</div>
+      </div>
+      <!-- 运行时 -->
+      <div class="bar-group">
+        <div class="bars">
+          <div class="bar green" style="height:47px"><span class="bar-label">4.7</span></div>
+          <div class="bar blue"  style="height:60px"><span class="bar-label">6</span></div>
+        </div>
+        <div class="group-label">运行时</div>
+      </div>
+      <!-- 基础工具 -->
+      <div class="bar-group">
+        <div class="bars">
+          <div class="bar green" style="height:54px"><span class="bar-label">5.44</span></div>
+          <div class="bar blue"  style="height:55px"><span class="bar-label">5.5</span></div>
+        </div>
+        <div class="group-label">基础工具</div>
+      </div>
+      <!-- 模型优化样例 -->
+      <div class="bar-group">
+        <div class="bars">
+          <div class="bar green" style="height:50px"><span class="bar-label">5</span></div>
+          <div class="bar blue"  style="height:60px"><span class="bar-label">6</span></div>
+        </div>
+        <div class="group-label" style="font-size:10px;">模型优化样例</div>
+      </div>
+      <!-- 资料 -->
+      <div class="bar-group">
+        <div class="bars">
+          <div class="bar green" style="height:51px"><span class="bar-label">5.12</span></div>
+          <div class="bar blue"  style="height:58px"><span class="bar-label">5.8</span></div>
+        </div>
+        <div class="group-label">资料</div>
+      </div>
+    </div>
+
+    <!-- Tab Strip -->
+    <div class="tab-strip">
+      <div class="tab">全部</div>
+      <div class="tab">算子库</div>
+      <div class="tab">通信库-集合通信</div>
+      <div class="tab">通信库-单边通信</div>
+      <div class="tab">算子编程-Ascend C</div>
+      <div class="tab">图引擎</div>
+      <div class="tab">运行时</div>
+      <div class="tab active">基础工具</div>
+      <div class="tab">模型优化样例</div>
+      <div class="tab">资料</div>
+    </div>
+
+  </div><!-- /card 1 -->
+
+  <!-- Two-column detail area -->
+  <div class="two-col">
+
+    <!-- Card 2: Line chart -->
+    <div class="card">
+        <div class="score-header">
+          <span class="card-title" style="font-size:13px;">基础工具 各阶段满意度评分</span>
+          <span style="display:flex;gap:6px;align-items:center;">
+            <span class="score-badge a2a3">A2&A3 <b>5.44分</b></span>
+            <span class="score-badge a5">A5 <b>5.44分</b></span>
+          </span>
+        </div>
+
+        <div class="line-chart-wrap">
+          <div class="axis-y">
+            <span>6</span>
+            <span>5</span>
+            <span>4</span>
+            <span>3</span>
+            <span>2</span>
+            <span>1</span>
+            <span>0</span>
+          </div>
+          <div class="chart-area">
+            <svg viewBox="0 0 300 110" preserveAspectRatio="none">
+              <!-- Grid lines -->
+              <line x1="0" y1="0"   x2="300" y2="0"   stroke="#f0f0f0" stroke-width="1"/>
+              <line x1="0" y1="18"  x2="300" y2="18"  stroke="#f0f0f0" stroke-width="1"/>
+              <line x1="0" y1="36"  x2="300" y2="36"  stroke="#f0f0f0" stroke-width="1"/>
+              <line x1="0" y1="54"  x2="300" y2="54"  stroke="#f0f0f0" stroke-width="1"/>
+              <line x1="0" y1="72"  x2="300" y2="72"  stroke="#f0f0f0" stroke-width="1"/>
+              <line x1="0" y1="90"  x2="300" y2="90"  stroke="#f0f0f0" stroke-width="1"/>
+              <line x1="0" y1="108" x2="300" y2="108" stroke="#f0f0f0" stroke-width="1"/>
+
+              <!-- A2&A3 line (blue-purple, relatively flat ~5.44) -->
+              <!-- scale: 0=108, 6=0, so 5.44 => (6-5.44)/6*108 = 10.08 => y≈10; slight curve -->
+              <defs>
+                <linearGradient id="fillA" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.18"/>
+                  <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <!-- Fill area A2A3 -->
+              <path d="M0,15 C60,12 90,18 150,16 C200,14 250,20 300,17 L300,108 L0,108 Z" fill="url(#fillA)"/>
+              <!-- Line A2A3 -->
+              <path d="M0,15 C60,12 90,18 150,16 C200,14 250,20 300,17" fill="none" stroke="#7c3aed" stroke-width="2"/>
+
+              <!-- A5 line (blue, also ~5.44) -->
+              <path d="M0,12 C60,16 90,20 150,14 C200,12 250,18 300,14" fill="none" stroke="#1677ff" stroke-width="2" stroke-dasharray="4 3"/>
+
+              <!-- X axis labels -->
+              <text x="0"   y="122" font-size="9" fill="#999" text-anchor="start">工具获取</text>
+              <text x="100" y="122" font-size="9" fill="#999" text-anchor="middle">工具使用</text>
+              <text x="200" y="122" font-size="9" fill="#999" text-anchor="middle">结果分析</text>
+              <text x="295" y="122" font-size="9" fill="#999" text-anchor="end">分包分仓解耦</text>
+            </svg>
+            <!-- Legend -->
+            <div style="display:flex;gap:12px;font-size:11px;color:#666;margin-top:4px;margin-left:4px;">
+              <div style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:2px;background:#7c3aed;display:inline-block;border-radius:1px;"></span> A2&A3</div>
+              <div style="display:flex;align-items:center;gap:4px;"><span style="width:20px;height:2px;background:#1677ff;display:inline-block;border-radius:1px;border-top:2px dashed #1677ff;"></span> A5</div>
+            </div>
+          </div>
+        </div>
+    </div><!-- /card 2 -->
+
+    <!-- Card 3: KEP/KEI table -->
+    <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span class="card-title" style="font-size:13px;">基础工具评价指标&问题</span>
+          <span class="chip-selector" style="font-size:11px;">芯片：A5 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="#888" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+        </div>
+        <table class="kep-table">
+          <thead>
+            <tr>
+              <th style="width:50px;"></th>
+              <th>
+                <div class="arrow-header">工具获取 <span class="arrow-sep">›</span></div>
+              </th>
+              <th>
+                <div class="arrow-header">工具使用 <span class="arrow-sep">›</span></div>
+              </th>
+              <th>
+                <div class="arrow-header">结果分析 <span class="arrow-sep">›</span></div>
+              </th>
+              <th>
+                <div class="arrow-header">分包分仓解耦</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-label">KEP</td>
+              <td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td class="row-label">KEI<br>指标</td>
+              <td><span class="tag-blue">工具易获取性</span></td>
+              <td>
+                <div><span class="tag-light">工具易操作性</span></div>
+                <div><span class="tag-light">友商工具支持度</span></div>
+              </td>
+              <td><span class="tag-light">输出结果有效性</span></td>
+              <td><span class="tag-light">工具包可解耦</span></td>
+            </tr>
+            <tr>
+              <td class="row-label">TOP<br>问题</td>
+              <td>
+                <div class="issue-row">
+                  <div class="issue-item">asys工具资料不易获取，使用说明中重复和冗余较多</div>
+                </div>
+              </td>
+              <td>
+                <div class="issue-row">
+                  <div class="issue-item pink">
+                    <span>日志资料不按分析格式过滤; profiling资料中采集流程评集模式结合在一起，不便于理解</span>
+                    <span class="more-btn">•••</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="issue-row">
+                  <div class="issue-item">
+                    <span>dump stats功能不可用</span>
+                  </div>
+                  <div class="issue-item">
+                    <span>msrpureport，asys有些功能不支持并行但工具确实可能</span>
+                    <span class="more-btn">•••</span>
+                  </div>
+                </div>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+    </div><!-- /card 3 -->
+
+  </div><!-- /two-col -->
+
+  <!-- 组件概览 Section -->
+  <div class="card">
+    <style>
+      .overview-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px; }
+      .overview-title { font-size:18px; font-weight:700; color:#222; }
+      .overview-subtitle { font-size:12px; color:#888; margin-top:4px; }
+      .search-box {
+        display:flex; align-items:center; gap:6px;
+        border:1px solid #d9d9d9; border-radius:6px;
+        padding:5px 12px; font-size:12px; color:#bbb;
+        background:#fafafa; min-width:180px;
+      }
+      .overview-table { width:100%; border-collapse:collapse; font-size:13px; }
+      .overview-table thead tr { border-bottom:2px solid #f0f0f0; }
+      .overview-table th {
+        padding:8px 12px; text-align:center;
+        font-size:12px; font-weight:500; color:#888;
+        white-space:nowrap;
+      }
+      .overview-table th.left { text-align:left; }
+      .overview-table .group-header th {
+        color:#e8734a; font-size:11px; font-weight:400;
+        padding-top:4px; padding-bottom:4px;
+        border-bottom:1px solid #f5f5f5;
+      }
+      .overview-table tbody tr { border-bottom:1px solid #f5f5f5; }
+      .overview-table tbody tr:last-child { border-bottom:none; }
+      .overview-table td { padding:14px 12px; text-align:center; color:#444; vertical-align:middle; }
+      .overview-table td.comp-cell { text-align:left; padding-left:16px; }
+      .comp-name { font-size:14px; font-weight:600; color:#222; }
+      .comp-sub  { font-size:11px; color:#aaa; margin-top:2px; }
+      .score-red    { color:#e84c3d; font-size:20px; font-weight:700; }
+      .score-orange { color:#e8734a; font-size:15px; font-weight:600; }
+      .score-green  { color:#52c41a; font-size:14px; font-weight:500; }
+      .ec-label { font-size:10px; color:#aaa; margin-top:2px; }
+      .sort-icon { font-size:9px; color:#bbb; margin-left:2px; cursor:pointer; }
+      .col-divider { border-left:1px solid #f0f0f0; }
+      .th-sort { cursor:pointer; user-select:none; }
+      .th-sort:hover { color:#1677ff; }
+    </style>
+
+    <div class="overview-header">
+      <div>
+        <div class="overview-title">组件概览</div>
+        <div class="overview-subtitle">行=组件，列=评分。点击表头排序。</div>
+      </div>
+      <div class="search-box">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="5.5" cy="5.5" r="4" stroke="#bbb" stroke-width="1.3"/><path d="M9 9l2.5 2.5" stroke="#bbb" stroke-width="1.3" stroke-linecap="round"/></svg>
+        搜索组件...
+      </div>
+    </div>
+
+    <table class="overview-table" id="overviewTable">
+      <thead>
+        <!-- 分组标题行 -->
+        <tr>
+          <th class="left" rowspan="2" style="width:120px;">组件 <span class="sort-icon">↕</span></th>
+          <th rowspan="2" style="width:110px;" class="th-sort" onclick="sortTable(1)">总分 (/100) <span style="color:#555;">↓</span></th>
+          <th colspan="2" style="color:#e8734a;font-size:11px;border-bottom:none;">分项评分</th>
+          <th colspan="6" style="color:#e8734a;font-size:11px;border-bottom:none;">开发评分・子维度（满分 5）</th>
+          <th rowspan="2">更新时间</th>
+        </tr>
+        <tr>
+          <th class="th-sort col-divider" onclick="sortTable(2)">测试评分 <span class="sort-icon">↕</span></th>
+          <th class="th-sort" onclick="sortTable(3)">开发评分 <span class="sort-icon">↕</span></th>
+          <th class="th-sort col-divider" onclick="sortTable(4)">可理解 <span class="sort-icon">↕</span></th>
+          <th class="th-sort" onclick="sortTable(5)">可操作 <span class="sort-icon">↕</span></th>
+          <th class="th-sort" onclick="sortTable(6)">根因 <span class="sort-icon">↕</span></th>
+          <th class="th-sort" onclick="sortTable(7)">完整 <span class="sort-icon">↕</span></th>
+          <th class="th-sort" onclick="sortTable(8)">一致 <span class="sort-icon">↕</span></th>
+          <th class="th-sort" onclick="sortTable(9)">准确 <span class="sort-icon">↕</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="comp-cell"><div class="comp-name">hccl</div><div class="comp-sub">hccl</div></td>
+          <td><span class="score-red">47.9</span></td>
+          <td class="col-divider"><span class="score-orange">6.0</span><div class="ec-label">EC 71% · R 45%</div></td>
+          <td><span class="score-green">8.0</span></td>
+          <td class="col-divider">4.3</td><td>3.6</td><td>4.7</td><td>2.2</td><td>5.0</td><td>4.9</td>
+          <td style="color:#aaa;font-size:12px;white-space:nowrap;">2026/05/21 00:06</td>
+        </tr>
+        <tr>
+          <td class="comp-cell"><div class="comp-name">dvpp</div><div class="comp-sub">dvpp</div></td>
+          <td><span class="score-red">47.2</span></td>
+          <td class="col-divider"><span class="score-orange">6.0</span><div class="ec-label">EC 75% · R 93%</div></td>
+          <td><span class="score-green">7.9</span></td>
+          <td class="col-divider">4.2</td><td>3.5</td><td>4.6</td><td>2.8</td><td>4.1</td><td>4.9</td>
+          <td style="color:#aaa;font-size:12px;white-space:nowrap;">2026/05/21 00:06</td>
+        </tr>
+        <tr>
+          <td class="comp-cell"><div class="comp-name">dump</div><div class="comp-sub">dump</div></td>
+          <td><span class="score-red">46.4</span></td>
+          <td class="col-divider"><span class="score-orange">5.6</span><div class="ec-label">EC 60% · R 50%</div></td>
+          <td><span class="score-green">8.3</span></td>
+          <td class="col-divider">4.8</td><td>3.8</td><td>4.7</td><td>2.0</td><td>5.0</td><td>5.0</td>
+          <td style="color:#aaa;font-size:12px;white-space:nowrap;">2026/05/21 00:06</td>
+        </tr>
+        <tr>
+          <td class="comp-cell"><div class="comp-name">amct</div><div class="comp-sub">amct</div></td>
+          <td><span class="score-red">44.8</span></td>
+          <td class="col-divider"><span class="score-orange">6.0</span><div class="ec-label">EC 71% · R 44%</div></td>
+          <td><span class="score-green">7.5</span></td>
+          <td class="col-divider">4.0</td><td>3.0</td><td>4.3</td><td>3.0</td><td>4.5</td><td>4.3</td>
+          <td style="color:#aaa;font-size:12px;white-space:nowrap;">2026/05/20 21:46</td>
+        </tr>
+        <tr>
+          <td class="comp-cell"><div class="comp-name">ge</div><div class="comp-sub">ge</div></td>
+          <td><span class="score-red">25.2</span></td>
+          <td class="col-divider"><span class="score-orange">3.8</span><div class="ec-label">EC 50% · R 20%</div></td>
+          <td><span class="score-green">6.6</span></td>
+          <td class="col-divider">3.0</td><td>2.7</td><td>4.3</td><td>1.7</td><td>5.0</td><td>5.0</td>
+          <td style="color:#aaa;font-size:12px;white-space:nowrap;">2026/05/21 00:06</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Right side icon panel -->
+<div class="side-icons">
+  <div class="side-icon-btn" title="反馈">💬</div>
+  <div class="side-icon-btn" title="wiki">📖</div>
+  <div class="side-icon-btn" title="展开">◀</div>
+</div>
+
+<script>
+  // Tab interactivity
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      this.closest('.tab-strip').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Sort overview table
+  let sortDir = {};
+  function sortTable(colIndex) {
+    const table = document.getElementById('overviewTable');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const asc = !sortDir[colIndex];
+    sortDir = {};
+    sortDir[colIndex] = asc;
+    rows.sort((a, b) => {
+      const aVal = parseFloat(a.querySelectorAll('td')[colIndex - 1]?.textContent) || 0;
+      const bVal = parseFloat(b.querySelectorAll('td')[colIndex - 1]?.textContent) || 0;
+      return asc ? aVal - bVal : bVal - aVal;
+    });
+    rows.forEach(r => tbody.appendChild(r));
+  }
+</script>
+</body>
+</html>

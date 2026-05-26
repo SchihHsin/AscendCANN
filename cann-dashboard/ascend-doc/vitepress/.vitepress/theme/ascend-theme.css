@@ -87,11 +87,13 @@
 /* ── 3. NAV BAR ── */
 .VPNav {
   border-bottom: 1px solid var(--vp-c-divider) !important;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+  box-shadow: 0 1px 8px rgba(0, 18, 85, .06);
 }
 
 .VPNavBar {
-  background: #fff !important;
+  background: rgba(255, 255, 255, .92) !important;
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
   border-bottom: none !important;
 }
 
@@ -146,7 +148,7 @@
 
 /* ── 4. SIDEBAR ── */
 .VPSidebar {
-  background: #f6f6f8 !important;
+  background: linear-gradient(180deg, #f8f8fa 0%, #f2f2f5 100%) !important;
   border-right: 1px solid var(--vp-c-divider) !important;
   padding-top: 16px !important;
 }
@@ -533,6 +535,10 @@ details.custom-block[open] summary {
 }
 
 /* ── 12. HOME LAYOUT ── */
+.VPHero {
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 45%, #f5f7ff 100%);
+}
+
 .VPHome .VPHero .tagline {
   color: var(--vp-c-text-2);
 }
@@ -585,6 +591,13 @@ details.custom-block[open] summary {
 }
 
 /* ── 13. CONTENT OUTLINE (right-side TOC) ── */
+.VPDocAside {
+  background: linear-gradient(180deg, #fafafa 0%, #f5f5f7 100%);
+  border-left: 1px solid #ebebed;
+  border-radius: 0;
+  padding: 12px 0 0 0;
+}
+
 .VPDocOutline .title {
   font-size: 12px;
   font-weight: 700;
