@@ -609,24 +609,20 @@ details.custom-block[open] summary {
 
 .VPDocOutlineItem a {
   font-size: 13px;
-  color: var(--vp-c-text-2);
-  transition: color .12s;
-}
-
-.VPDocOutlineItem a {
-  font-size: 13px;
-  color: var(--vp-c-text-2);
+  color: var(--vp-c-text-2) !important;
+  border-bottom: none !important;
   transition: color .12s;
 }
 
 .VPDocOutlineItem a:hover {
-  color: var(--vp-c-text-1);
-  border-bottom: none;
+  color: var(--vp-c-text-1) !important;
+  border-bottom: none !important;
 }
 
 .VPDocOutlineItem.active > a {
-  color: var(--vp-c-text-1) !important;
-  font-weight: 700;
+  color: #1d2129 !important;
+  font-weight: 700 !important;
+  border-bottom: none !important;
 }
 
 /* ── 14. DOC FOOTER (Prev / Next cards) ── */
