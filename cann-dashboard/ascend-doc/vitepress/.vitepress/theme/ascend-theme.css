@@ -199,9 +199,9 @@
 }
 
 .VPSidebarItem .link.active {
-  background: rgba(46, 83, 250, .14) !important;
+  background: rgba(46, 83, 250, .22) !important;
   color: var(--vp-c-text-1) !important;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .VPSidebarItem .link.active .indicator {
@@ -586,17 +586,25 @@ details.custom-block[open] summary {
 
 /* ── 13. CONTENT OUTLINE (右侧本页内容) ── */
 .VPDocAside {
-  background: transparent;
-  border-left: 1px solid #ebebed;
-  padding: 12px 0 0 0;
+  padding: 0;
+}
+
+.VPDocOutline {
+  background: #ebf1fa;
+  background-image: linear-gradient(180deg, rgba(46, 83, 250, .06) 0%, rgba(123, 37, 244, .03) 100%);
+  border: 1px solid rgba(46, 83, 250, .15);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 24px;
 }
 
 .VPDocOutline .title {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--vp-c-text-3);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--vp-c-text-1);
+  margin-bottom: 8px;
 }
 
 .VPDocOutlineItem a {
@@ -617,8 +625,8 @@ details.custom-block[open] summary {
 }
 
 .VPDocOutlineItem.active > a {
-  color: #002fa7 !important;
-  font-weight: 600;
+  color: var(--vp-c-text-1) !important;
+  font-weight: 700;
 }
 
 /* ── 14. DOC FOOTER (Prev / Next cards) ── */
