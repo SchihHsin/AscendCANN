@@ -553,8 +553,8 @@ details.custom-block[open] summary {
 }
 
 .VPFeature:hover {
-  border-color: #002fa7 !important;
-  box-shadow: 0 4px 16px rgba(0, 47, 167, .1) !important;
+  border-color: #1d2129 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .08) !important;
 }
 
 .VPFeature .icon { font-size: 28px; }
@@ -592,6 +592,12 @@ details.custom-block[open] summary {
   transition: color .12s;
 }
 
+.VPDocOutlineItem a {
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+  transition: color .12s;
+}
+
 .VPDocOutlineItem a:hover {
   color: var(--vp-c-text-1);
   border-bottom: none;
@@ -610,12 +616,12 @@ details.custom-block[open] summary {
 }
 
 .VPDocFooter .pager-link:hover {
-  border-color: #002fa7;
-  background: rgba(0, 47, 167, .03);
+  border-color: #1d2129;
+  background: rgba(0, 0, 0, .03);
 }
 
 .VPDocFooter .pager-link .title {
-  color: #002fa7;
+  color: #1d2129;
   font-weight: 600;
 }
 
@@ -633,11 +639,11 @@ details.custom-block[open] summary {
 
 /* ── 16. SEARCH ── */
 .VPLocalSearchBox {
-  --vp-local-search-highlight-text-color: #002fa7;
+  --vp-local-search-highlight-text-color: #1d2129;
 }
 
 .VPLocalSearchBox .result.selected {
-  border-color: #002fa7 !important;
+  border-color: #1d2129 !important;
 }
 
 /* ── 17. FilterToggle (version select) ── */
