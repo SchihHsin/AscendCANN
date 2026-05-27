@@ -672,3 +672,50 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 | commit | 内容 |
 |--------|------|
 | `d01fe9c` | feat: VitePress Ascend community theme — brand red, HarmonyOS font stack, full component coverage |
+
+### 2026-05-27（本会话）
+
+#### VitePress Ascend 主题深度重构（去红 + 蓝紫主题色）
+
+**背景**：初版主题大量使用昇腾红 `#c7000b`，用户要求除顶部导航栏外全部去红，主题色改为蓝紫，按钮改黑色胶囊，文字链接蓝色仅限文档内容区。
+
+**关键改动**：
+
+| 区域 | 旧值 | 新值 |
+|------|------|------|
+| 侧边栏背景 | `#f6f6f8` 纯灰 | `#ebf1fa` + `linear-gradient(90deg, rgba(46,83,250,.03), rgba(123,37,244,.03))` |
+| 侧边栏激活态文字 | 红色 `#c7000b` | `var(--vp-c-text-1)`（深色） |
+| 侧边栏激活态背景 | 无 | `rgba(46,83,250,.18)` |
+| 侧边栏激活态字重 | 正常 | `700` |
+| H1 底线 | 红色 2px | 灰色 `#e5e5e9` |
+| 内联代码底色/字色 | 淡红/红 | `rgba(0,0,0,.05)` / `#1d2129` |
+| 文字链接 | 全局红色 | 仅 `.vp-doc a` 用蓝色 `#002fa7`，其余均为深色 |
+| 主要按钮 | 红色 | 黑色 `#000000`，`border-radius:100px`（胶囊） |
+| 次要按钮 | 红色边框 | 透明底 + 黑色边框/字色，`border-radius:100px` |
+| 首页 CTA/Feature 卡片 | 红色 hover | 深色/中性 |
+| 搜索高亮/选中态 | 红色 | `#1d2129` 深色 |
+| TOC 激活态 | 红色 | 深色 `var(--vp-c-text-1)`，加粗 |
+| Logo | 文字 "Ascend C" 显示 | 仅显示 SVG（`display:none` 隐藏 `.title`），高度 26px |
+| `:root --vp-c-brand-*` | 红色系 | `#002fa7` / `#5177ca` / `#84a1dc`（蓝紫系） |
+
+**保留红色的唯一位置**（导航栏）：
+- `.VPNavBarTitle .title { color: #c7000b }` — 站点名
+- `.VPNavBarMenu .VPNavBarMenuLink.active { color: #c7000b }` — 激活链接
+- `.VPNavBarMenu .VPNavBarMenuLink.active::after { background: #c7000b }` — 底部 2px 指示线
+
+**按钮规范**（参考 OpenDesign button.md）：
+- 主要（brand）：`background:#000; border-color:#000; color:#fff; border-radius:100px`
+- 次要（alt）：`background:transparent; border-color:#1d2129; color:#1d2129; border-radius:100px`
+
+**链接规范**（参考 OpenDesign link.md）：
+- 仅 `.vp-doc a`：`color:#002fa7`（brand-6），hover `#5177ca`（brand-4），底部 `1px solid rgba(0,47,167,.2)`
+- 所有其他 UI 链接（侧边栏、TOC、Feature 卡片、Footer、搜索）均使用深色 `#1d2129` 或 `var(--vp-c-text-1)`
+
+#### Commits
+
+| commit | 内容 |
+|--------|------|
+| `8b2bafc` | style: sidebar蓝紫背景+蓝色激活态；Logo仅显示SVG；隐藏title文字 |
+| `2ad7371` | style: 全面去红——链接蓝色、按钮黑色胶囊、激活态深色文字+蓝紫填充 |
+| `bf82ad2` | style: 选中态背景加深至 rgba(.18)，文字加粗 700 |
+| `4960e1c` | style: 蓝色链接仅限 vp-doc 内容区，其余链接/卡片/搜索均改深色 |
