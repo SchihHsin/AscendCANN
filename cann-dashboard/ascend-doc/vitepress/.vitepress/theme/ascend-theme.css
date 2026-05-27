@@ -21,11 +21,11 @@
 
 /* ── 2. CSS variable overrides ── */
 :root {
-  /* VitePress brand tokens → brand blue (used by VitePress internals) */
-  --vp-c-brand-1: #002fa7;
-  --vp-c-brand-2: #5177ca;
-  --vp-c-brand-3: #84a1dc;
-  --vp-c-brand-soft: rgba(0, 47, 167, .08);
+  /* VitePress brand tokens — Ascend blue #2e53fa */
+  --vp-c-brand-1: #2e53fa;
+  --vp-c-brand-2: #5a7bfc;
+  --vp-c-brand-3: #8aaafe;
+  --vp-c-brand-soft: rgba(46, 83, 250, .08);
 
   /* Background */
   --vp-c-bg: #ffffff;
@@ -54,8 +54,8 @@
   --vp-nav-screen-bg-color: #ffffff;
 
   /* Sidebar */
-  --vp-sidebar-width: 272px;
-  --vp-sidebar-bg-color: #ebf1fa;
+  --vp-sidebar-width: 256px;
+  --vp-sidebar-bg-color: #eeeeff;
 
   /* Code — neutral, no red */
   --vp-code-block-bg: #282c34;
@@ -150,9 +150,9 @@
 
 /* ── 4. SIDEBAR ── */
 .VPSidebar {
-  background-color: #ebf1fa !important;
-  background-image: linear-gradient(180deg, rgba(46, 83, 250, .05) 0%, rgba(123, 37, 244, .03) 100%) !important;
-  border-right: 1px solid rgba(46, 83, 250, .15) !important;
+  background-color: #eeeeff !important;
+  background-image: linear-gradient(180deg, rgba(100, 60, 255, .06) 0%, rgba(140, 80, 255, .03) 100%) !important;
+  border-right: 1px solid rgba(100, 60, 255, .12) !important;
   padding-top: 16px !important;
 }
 
@@ -194,12 +194,12 @@
 }
 
 .VPSidebarItem .link:hover {
-  background: rgba(46, 83, 250, .07) !important;
+  background: rgba(46, 83, 250, .08) !important;
   color: var(--vp-c-text-1) !important;
 }
 
 .VPSidebarItem .link.active {
-  background: rgba(46, 83, 250, .22) !important;
+  background: rgba(46, 83, 250, .16) !important;
   color: var(--vp-c-text-1) !important;
   font-weight: 700;
 }
@@ -208,10 +208,11 @@
   background: #2e53fa !important;
 }
 
-/* Nested indentation */
-.VPSidebarItem.level-2 .link { padding-left: 28px !important; }
-.VPSidebarItem.level-3 .link { padding-left: 40px !important; }
-.VPSidebarItem.level-4 .link { padding-left: 52px !important; }
+/* Nested indentation — 12px per level */
+.VPSidebarItem.level-1 .link { padding-left: 20px !important; }
+.VPSidebarItem.level-2 .link { padding-left: 32px !important; }
+.VPSidebarItem.level-3 .link { padding-left: 44px !important; }
+.VPSidebarItem.level-4 .link { padding-left: 56px !important; }
 
 /* ── 5. ARTICLE CONTENT ── */
 .vp-doc {
@@ -222,14 +223,18 @@
 }
 
 .vp-doc h1 {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: #1d2129;
-  border-bottom: 2px solid #e5e5e9;
-  padding-bottom: 12px;
-  margin-top: 0;
-  margin-bottom: 24px;
   letter-spacing: -.01em;
+  /* Banner background */
+  background: #eef0ff url('/doc-banner.png') no-repeat right top / auto 100%;
+  margin: -32px -24px 32px;
+  padding: 36px 280px 36px 32px;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  border-bottom: none;
 }
 
 .vp-doc h2 {
@@ -264,17 +269,17 @@
   line-height: 1.8;
 }
 
-/* Links — brand blue */
+/* Links — brand blue #2e53fa */
 .vp-doc a {
-  color: #002fa7;
+  color: #2e53fa;
   text-decoration: none;
-  border-bottom: 1px solid rgba(0, 47, 167, .2);
+  border-bottom: 1px solid rgba(46, 83, 250, .2);
   transition: border-color .15s, color .15s;
 }
 
 .vp-doc a:hover {
-  color: #5177ca;
-  border-bottom-color: rgba(0, 47, 167, .6);
+  color: #5a7bfc;
+  border-bottom-color: rgba(46, 83, 250, .6);
 }
 
 /* Inline code — neutral grey */
@@ -589,13 +594,15 @@ details.custom-block[open] summary {
   padding: 0;
 }
 
-.VPDocOutline {
-  background: #ebf1fa;
-  background-image: linear-gradient(180deg, rgba(46, 83, 250, .06) 0%, rgba(123, 37, 244, .03) 100%);
-  border: 1px solid rgba(46, 83, 250, .15);
-  border-radius: 8px;
-  padding: 14px 16px;
-  margin-top: 24px;
+/* TOC card — force override VitePress scoped styles */
+.VPDocOutline,
+.VPDocAside .VPDocOutline {
+  background: #eeeeff !important;
+  background-image: linear-gradient(180deg, rgba(100, 60, 255, .07) 0%, rgba(140, 80, 255, .03) 100%) !important;
+  border: 1px solid rgba(100, 60, 255, .15) !important;
+  border-radius: 8px !important;
+  padding: 14px 16px !important;
+  margin-top: 24px !important;
 }
 
 .VPDocOutline .title {
@@ -745,14 +752,14 @@ details.custom-block[open] summary {
   --vp-c-text-2: #4e5969;
   --vp-c-text-3: #86909c;
   --vp-c-divider: #e5e5e9;
-  --vp-sidebar-bg-color: #ebf1fa;
+  --vp-sidebar-bg-color: #eeeeff;
   --vp-nav-bg-color: #ffffff;
 }
 
 /* Force light sidebar even in dark mode toggle */
 .dark .VPSidebar {
-  background-color: #ebf1fa !important;
-  background-image: linear-gradient(180deg, rgba(46, 83, 250, .05) 0%, rgba(123, 37, 244, .03) 100%) !important;
+  background-color: #eeeeff !important;
+  background-image: linear-gradient(180deg, rgba(100, 60, 255, .06) 0%, rgba(140, 80, 255, .03) 100%) !important;
 }
 
 /* ── 21. LOGO ── */
