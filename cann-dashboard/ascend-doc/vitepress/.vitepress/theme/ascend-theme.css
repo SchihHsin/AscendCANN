@@ -200,8 +200,8 @@
 
 .VPSidebarItem .link.active {
   background: rgba(46, 83, 250, .16) !important;
-  color: var(--vp-c-text-1) !important;
-  font-weight: 700;
+  color: #1d2129 !important;
+  font-weight: 700 !important;
 }
 
 .VPSidebarItem .link.active .indicator {
@@ -227,14 +227,15 @@
   font-weight: 700;
   color: #1d2129;
   letter-spacing: -.01em;
-  /* Banner background */
-  background: #eef0ff url('/doc-banner.png') no-repeat right top / auto 100%;
+  /* Banner background — relative path so Vite bundles it */
+  background: #eef0ff url('../../public/doc-banner.png') no-repeat right top / auto 100%;
   margin: -32px -24px 32px;
   padding: 36px 280px 36px 32px;
   min-height: 90px;
   display: flex;
   align-items: center;
   border-bottom: none;
+  border-radius: 12px;
 }
 
 .vp-doc h2 {
@@ -626,7 +627,9 @@ details.custom-block[open] summary {
   border-bottom: none !important;
 }
 
-.VPDocOutlineItem.active > a {
+/* VitePress puts .active on the <a> itself in outline */
+.VPDocOutlineItem.active > a,
+.VPDocOutline a.active {
   color: #1d2129 !important;
   font-weight: 700 !important;
   border-bottom: none !important;
