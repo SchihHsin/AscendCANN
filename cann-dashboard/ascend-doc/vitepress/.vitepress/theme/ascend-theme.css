@@ -204,6 +204,12 @@
   font-weight: 700 !important;
 }
 
+/* 文字在内部 <p class="text"> 上，必须直接指向 */
+.VPSidebarItem .link.active .text {
+  color: #1d2129 !important;
+  font-weight: 700 !important;
+}
+
 .VPSidebarItem .link.active .indicator {
   background: #2e53fa !important;
 }
@@ -629,7 +635,8 @@ details.custom-block[open] summary {
 
 /* VitePress puts .active on the <a> itself in outline */
 .VPDocOutlineItem.active > a,
-.VPDocOutline a.active {
+.VPDocOutline a.active,
+.VPDocOutline .outline-link.active {
   color: #1d2129 !important;
   font-weight: 700 !important;
   border-bottom: none !important;
