@@ -1,0 +1,2 @@
+# Session save skill dependencies
+# No external dependencies required - uses standard library only

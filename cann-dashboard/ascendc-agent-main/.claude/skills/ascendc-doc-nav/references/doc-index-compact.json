@@ -1,0 +1,177 @@
+{
+  "categories": {
+    "vector": "04-API参考/基础API/矢量计算",
+    "data_copy": "04-API参考/基础API/数据搬运",
+    "resource": "04-API参考/基础API/资源管理",
+    "sync": "04-API参考/基础API/同步控制",
+    "high_level": "04-API参考/高阶API",
+    "tutorial": "01-入门教程",
+    "guide": "02-编程指南",
+    "practice": "03-算子实践参考"
+  },
+  "common_apis": [
+    {
+      "name": "Add",
+      "paths": [
+        "Add"
+      ]
+    },
+    {
+      "name": "Sub",
+      "paths": [
+        "Sub"
+      ]
+    },
+    {
+      "name": "Mul",
+      "paths": [
+        "Mul"
+      ]
+    },
+    {
+      "name": "Div",
+      "paths": [
+        "Div"
+      ]
+    },
+    {
+      "name": "Exp",
+      "paths": [
+        "Exp",
+        "Exp"
+      ]
+    },
+    {
+      "name": "Ln",
+      "paths": [
+        "Ln"
+      ]
+    },
+    {
+      "name": "Sqrt",
+      "paths": [
+        "Sqrt"
+      ]
+    },
+    {
+      "name": "Abs",
+      "paths": [
+        "Abs"
+      ]
+    },
+    {
+      "name": "ReduceSum",
+      "paths": [
+        "ReduceSum",
+        "ReduceSum"
+      ]
+    },
+    {
+      "name": "ReduceMax",
+      "paths": [
+        "ReduceMax",
+        "ReduceMax"
+      ]
+    },
+    {
+      "name": "ReduceMin",
+      "paths": [
+        "ReduceMin",
+        "ReduceMin"
+      ]
+    },
+    {
+      "name": "Cast",
+      "paths": [
+        "Cast"
+      ]
+    },
+    {
+      "name": "Compare",
+      "paths": [
+        "Compare"
+      ]
+    },
+    {
+      "name": "Select",
+      "paths": [
+        "Select",
+        "Select"
+      ]
+    },
+    {
+      "name": "DataCopy",
+      "paths": [
+        "DataCopy"
+      ]
+    },
+    {
+      "name": "Copy",
+      "paths": [
+        "Copy"
+      ]
+    },
+    {
+      "name": "TPipe",
+      "paths": [
+        "TPipe"
+      ]
+    },
+    {
+      "name": "TQue",
+      "paths": [
+        "TQue"
+      ]
+    },
+    {
+      "name": "TBuf",
+      "paths": [
+        "TBuf"
+      ]
+    },
+    {
+      "name": "AllocTensor",
+      "paths": [
+        "AllocTensor",
+        "AllocTensor"
+      ]
+    },
+    {
+      "name": "FreeTensor",
+      "paths": [
+        "FreeTensor",
+        "FreeTensor"
+      ]
+    },
+    {
+      "name": "SyncAll",
+      "paths": [
+        "SyncAll"
+      ]
+    },
+    {
+      "name": "GetBlockNum",
+      "paths": [
+        "GetBlockNum"
+      ]
+    },
+    {
+      "name": "GetBlockIdx",
+      "paths": [
+        "GetBlockIdx"
+      ]
+    },
+    {
+      "name": "LocalTensor",
+      "paths": [
+        "LocalTensor"
+      ]
+    },
+    {
+      "name": "GlobalTensor",
+      "paths": [
+        "GlobalTensor"
+      ]
+    }
+  ]
+}

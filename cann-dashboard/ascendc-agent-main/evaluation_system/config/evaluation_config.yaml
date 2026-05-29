@@ -1,0 +1,76 @@
+# Ascend C 算子评估系统配置
+
+# Agent配置
+agent:
+  # 执行模式（固定行为，非可配置项）
+  execution:
+    development_mode: "serial"     # 串行开发：逐个开发算子
+    evaluation_mode: "parallel"    # 并行评估：同时评估多个日志
+
+# 资源限制
+resources:
+  time_limits:
+    per_operator: 3600             # 单个算子最多1小时
+    total_batch: 86400             # 总批次最多24小时
+
+  storage:
+    max_log_size_mb: 100           # 单个日志最大100MB
+    max_total_size_gb: 50          # 总日志最大50GB
+
+  evaluation:
+    max_workers: 2                 # 并行评估的线程数（默认2）
+    timeout_seconds: 3600          # 单个日志评估超时时间（秒，默认1小时）
+
+# ============================================================
+# 每日评估计划
+# ============================================================
+daily_evaluation:
+  # 硬件分类配置
+  hardware_categories:
+    Vector:
+      description: "矢量计算算子"
+      estimated_hours_per_operator: 0.5
+    Cube:
+      description: "矩阵计算算子"
+      estimated_hours_per_operator: 1.0
+    CV_Fusion:
+      description: "计算机视觉融合算子"
+      estimated_hours_per_operator: 1.5
+    General_Fusion:
+      description: "通用计算融合算子"
+      estimated_hours_per_operator: 1.5
+
+  # 每日评估计划（根据 operator_catalog.yaml 中的批次配置）
+  # 每个批次包含各种难度的算子，按硬件分类组织
+  schedule:
+    day_1:
+      day: 1
+      description: "第一批次评估"
+      estimated_hours: 6
+      enabled: true
+    day_2:
+      day: 2
+      description: "第二批次评估"
+      estimated_hours: 6
+      enabled: true
+    day_3:
+      day: 3
+      description: "第三批次评估"
+      estimated_hours: 6
+      enabled: true
+    # 根据实际批次继续添加 day_4, day_5, ...
+
+# ============================================================
+# OBS 上传配置
+# ============================================================
+obs_upload:
+  enabled: false                    # 是否启用自动上传
+  prefix: "cann_exp/static/prod/agent_operator"  # OBS对象前缀
+  scene_name: "scene4"              # 场景名称
+  auto_upload_on_completion: true   # 评估完成后自动上传
+  overwrite: false                  # 是否覆盖已存在的对象
+
+  # AK/SK 从华为云委托自动获取，无需配置
+  # 如果不在华为云环境，可通过环境变量设置：
+  #   OBS_ACCESS_KEY, OBS_SECRET_KEY, OBS_ENDPOINT, OBS_BUCKET_NAME
+  # 注意：endpoint 格式为 https://obs.{region}.myhuaweicloud.com，不包含 bucket 名称
