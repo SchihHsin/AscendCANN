@@ -1,0 +1,104 @@
+{
+  "env": {
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "0",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_TEAM_MODE": "in-process"
+  },
+  "permissions": {
+    "allow": [
+      "Skill(ascend-docs-search)",
+      "Skill(operator-test)",
+      "Skill(save-session)",
+      "Skill(evaluate)",
+      "Skill(compare)",
+      "Task(subagent_type=code-analyzer)",
+      "Task(subagent_type=comparator)",
+      "Task(subagent_type=evaluator)",
+      "Task(subagent_type=Explore)",
+      "Task(subagent_type=Plan)",
+      "Task(subagent_type=general-purpose)",
+      "Task(subagent_type=claude-code-guide)",
+      "WebSearch",
+      "WebFetch(domain:support.huawei.com)",
+      "WebFetch(domain:www.huawei.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.hiascend.com)",
+      "WebFetch(domain:gitee.com)",
+      "WebFetch(domain:gitcode.com)",
+      "Edit",
+      "Write",
+      "Read",
+      "Glob",
+      "Grep",
+      "LSP",
+      "NotebookEdit",
+      "MultiEdit",
+      "AskUserQuestion",
+      "TodoWrite",
+      "EnterPlanMode",
+      "ExitPlanMode",
+      "Bash",
+      "KillShell",
+      "TaskOutput",
+      "TaskCreate",
+      "TaskUpdate",
+      "TaskList",
+      "TaskGet",
+      "SendMessage"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $CLAUDE_PROJECT_DIR/.claude/hooks/session_stop_handle.py"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $CLAUDE_PROJECT_DIR/.claude/hooks/session_stop_handle.py --subagent"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/skills/self-improvement/scripts/activator.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/skills/self-improvement/scripts/error-detector.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "sandbox": {
+    "enabled": false,
+    "autoAllowBashIfSandboxed": false
+  },
+  "enabledPlugins": {
+  }
+}

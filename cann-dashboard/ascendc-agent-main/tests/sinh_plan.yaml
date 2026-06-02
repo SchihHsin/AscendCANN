@@ -1,0 +1,17 @@
+operator: ascend_sinh
+description: "Hyperbolic sine operator: y = (e^x - e^(-x)) / 2"
+inputs: ["data/input0.bin"]
+outputs: ["out/output0.bin"]
+generator: {name: builtin.random}
+assertion: {name: builtin.sinh, rtol: 1e-5, atol: 1e-4}
+backends:
+  - type: cann
+    chip: ascend910b
+    workdir: /ascendc-agent/ops/ascend_sinh
+    command: ["/bin/bash", "./run_entry.sh",
+              "--input0", "{input0}", "--output0", "{output0}"]
+cases:
+  - name: f32_vector
+    dtypes: [float32]
+    shapes: [{inputs: [[1, 16384]], outputs: [[1, 16384]]}]
+cache: regen

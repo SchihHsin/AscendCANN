@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 时代下社区的重构 · UX 设计师角色与方法 · Report No. 001</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F2EBDB;
+    --cream-deep: #E7DDC4;
+    --cream-light: #F8F3E6;
+    --ink: #1A1612;
+    --ink-soft: #3B342B;
+    --ink-mute: #6E665A;
+    --accent: #BF3A1C;
+    --accent-soft: #D8593A;
+    --gold: #A88547;
+    --rule: #C9BFA6;
+
+    --serif-en: 'Fraunces', 'Noto Serif SC', serif;
+    --serif-cn: 'Noto Serif SC', 'Fraunces', serif;
+    --sans: 'Noto Sans SC', 'Fraunces', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+
+    --maxw: 1180px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background-image:
+      radial-gradient(rgba(26,22,18,0.04) 1px, transparent 1px),
+      radial-gradient(rgba(26,22,18,0.025) 1px, transparent 1px);
+    background-size: 24px 24px, 96px 96px;
+    background-position: 0 0, 12px 12px;
+  }
+
+  ::selection { background: var(--accent); color: var(--cream-light); }
+
+  /* ============ GLOBAL TYPE ============ */
+  .display {
+    font-family: var(--serif-cn);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+  .display-en {
+    font-family: var(--serif-en);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+  .mono {
+    font-family: var(--mono);
+    font-size: 0.78em;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  /* ============ CONTAINER ============ */
+  .container {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* ============ TOP BAR ============ */
+  .topbar {
+    border-bottom: 1px solid var(--ink);
+    padding: 18px 0;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .topbar .center {
+    text-align: center;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .topbar .right { text-align: right; }
+
+  /* ============ HERO ============ */
+  .hero {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--ink);
+    position: relative;
+  }
+  .hero .meta-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 64px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .hero h1 {
+    font-family: var(--serif-cn);
+    font-weight: 900;
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  .hero h1 .accent-word {
+    color: var(--accent);
+    font-style: italic;
+    font-family: var(--serif-en);
+    font-weight: 600;
+  }
+  .hero h1 .strike {
+    text-decoration: line-through;
+    text-decoration-thickness: 4px;
+    text-decoration-color: var(--accent);
+    color: var(--ink-mute);
+  }
+  .hero .deck {
+    max-width: 720px;
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    font-weight: 400;
+    margin-top: 24px;
+  }
+  .hero .deck em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .hero .footer-row {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px dashed var(--rule);
+  }
+  .hero .footer-row .item {
+    font-size: 13px;
+  }
+  .hero .footer-row .item .lab {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-mute);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* decorative number */
+  .hero .big-no {
+    position: absolute;
+    top: 40px;
+    right: 48px;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 280px;
+    line-height: 1;
+    color: var(--cream-deep);
+    z-index: 0;
+    user-select: none;
+  }
+  .hero > * { position: relative; z-index: 1; }
+
+  /* ============ TOC ============ */
+  .toc {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .toc .toc-title {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 28px;
+    margin-bottom: 32px;
+    color: var(--ink-mute);
+  }
+  .toc-list {
+    list-style: none;
+  }
+  .toc-list li {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px dotted var(--rule);
+    gap: 24px;
+    transition: color 0.2s;
+  }
+  .toc-list li:hover { color: var(--accent); }
+  .toc-list li:hover .toc-num { color: var(--accent); }
+  .toc-list a {
+    color: inherit;
+    text-decoration: none;
+    display: contents;
+  }
+  .toc-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+  }
+  .toc-text {
+    font-family: var(--serif-cn);
+    font-size: 22px;
+    font-weight: 500;
+  }
+  .toc-text .en {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-mute);
+    margin-left: 12px;
+  }
+  .toc-page {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-mute);
+  }
+
+  /* ============ SECTION ============ */
+  section.chapter {
+    padding: 96px 0 64px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .chapter-header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    margin-bottom: 56px;
+    align-items: start;
+  }
+  .chapter-no {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 88px;
+    line-height: 1;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .chapter-no::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 1px;
+    background: var(--ink);
+    margin-top: 16px;
+  }
+  .chapter-no .small {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-style: normal;
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+  .chapter-title {
+    font-family: var(--serif-cn);
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .chapter-title .en {
+    display: block;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 0.4em;
+    font-weight: 400;
+    color: var(--ink-mute);
+    margin-top: 12px;
+  }
+  .chapter-lede {
+    font-size: 19px;
+    line-height: 1.65;
+    max-width: 720px;
+    margin-bottom: 48px;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  .chapter-lede em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* prose */
+  .prose p {
+    margin-bottom: 1.4em;
+    max-width: 720px;
+  }
+  .prose strong {
+    font-weight: 700;
+    color: var(--ink);
+    background: linear-gradient(transparent 60%, rgba(191,58,28,0.18) 60%);
+    padding: 0 2px;
+  }
+  .prose h3 {
+    font-family: var(--serif-cn);
+    font-size: 26px;
+    font-weight: 700;
+    margin: 48px 0 16px;
+    letter-spacing: -0.005em;
+  }
+  .prose h3 .num {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+    margin-right: 12px;
+  }
+  .prose h4 {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 24px 0 12px;
+    color: var(--accent);
+  }
+
+  /* ============ PULL QUOTE ============ */
+  .pullquote {
+    margin: 64px 0;
+    padding: 0 0 0 48px;
+    border-left: 4px solid var(--accent);
+    max-width: 880px;
+  }
+  .pullquote .q {
+    font-family: var(--serif-cn);
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+  .pullquote .q em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .pullquote .attr {
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  /* ============ COMPARISON BLOCK ============ */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 24px;
+    margin: 56px 0;
+    align-items: stretch;
+  }
+  .compare .col {
+    padding: 32px;
+    background: var(--cream-light);
+    border: 1px solid var(--rule);
+    position: relative;
+  }
+  .compare .col.before { border-color: var(--ink-mute); }
+  .compare .col.after { border-color: var(--accent); background: #FAF1E0; }
+  .compare .col .tag {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--cream);
+    padding: 0 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .compare .col.before .tag { color: var(--ink-mute); }
+  .compare .col.after .tag { color: var(--accent); }
+  .compare .col h5 {
+    font-family: var(--serif-cn);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .compare .col ul {
+    list-style: none;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .compare .col ul li {
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .compare .col ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--ink-mute);
+  }
+  .compare .col.after ul li::before { color: var(--accent); }
+  .compare .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 36px;
+    color: var(--accent);
+  }
+
+  /* ============ MODE CARDS ============ */
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin: 48px 0;
+  }
+  .mode {
+    border: 1px solid var(--ink);
+    padding: 32px;
+    background: var(--cream-light);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .mode:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--accent);
+  }
+  .mode .mode-no {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 48px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .mode .mode-name {
+    font-family: var(--serif-cn);
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .mode .mode-en {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+  }
+  .mode p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+  .mode .tech {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--rule);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+  }
+  .mode .tech span {
+    background: var(--cream-deep);
+    padding: 2px 8px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    display: inline-block;
+    color: var(--ink-soft);
+  }
+
+  /* ============ ROLE TRANSFORMATION ============ */
+  .role {
+    margin: 40px 0;
+    padding: 32px 0;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+  }
+  .role:first-child { border-top: 1px solid var(--ink); padding-top: 40px; }
+  .role .num-large {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 56px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .role .role-name {
+    font-family: var(--serif-cn);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    letter-spacing: -0.005em;
+  }
+  .role .from-to {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 20px;
+  }
+  .role .from-to .from { text-decoration: line-through; color: var(--ink-mute); }
+  .role .from-to .arrow { color: var(--accent); margin: 0 10px; font-style: normal; }
+  .role .from-to .to { color: var(--accent); font-weight: 700; }
+  .role p {
+    font-size: 15.5px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    max-width: 760px;
+  }
+  .role .do-list {
+    margin-top: 20px;
+    padding: 20px 24px;
+    background: var(--cream-light);
+    border-left: 3px solid var(--accent);
+  }
+  .role .do-list .do-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .role .do-list ul {
+    list-style: none;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .role .do-list ul li {
+    padding-left: 22px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .role .do-list ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: var(--serif-en);
+  }
+
+  /* ============ PHASE FRAMEWORK ============ */
+  .phases {
+    margin: 48px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .phase {
+    padding: 32px 24px 28px;
+    background: var(--cream-light);
+    border: 1px solid var(--ink);
+    border-right: none;
+    position: relative;
+  }
+  .phase:last-child { border-right: 1px solid var(--ink); }
+  .phase:nth-child(2n) { background: var(--cream-deep); }
+  .phase .phase-num {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .phase .phase-title {
+    font-family: var(--serif-cn);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .phase .phase-en {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+  }
+  .phase ul {
+    list-style: none;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .phase ul li {
+    padding: 6px 0;
+    border-top: 1px dotted var(--rule);
+  }
+  .phase ul li:first-child { border-top: none; }
+
+  /* ============ METRICS TABLE ============ */
+  .metrics {
+    margin: 48px 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  .metric-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr;
+    gap: 32px;
+    padding: 24px 0;
+    border-bottom: 1px dotted var(--rule);
+    align-items: start;
+  }
+  .metric-row:last-child { border-bottom: none; }
+  .metric-row.header {
+    border-bottom: 1px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding: 12px 0;
+  }
+  .metric-row .cat {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 24px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .metric-row .col-h {
+    font-family: var(--serif-cn);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .metric-row .col-list {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  /* ============ DIAGRAM ============ */
+  .diagram-wrap {
+    margin: 56px 0;
+    padding: 40px;
+    background: var(--cream-light);
+    border: 1px solid var(--ink);
+  }
+  .diagram-wrap .dia-cap {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 24px;
+  }
+  .diagram-wrap .dia-cap b {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ============ CLOSING ============ */
+  .closing {
+    padding: 120px 0 80px;
+    text-align: left;
+    border-bottom: 1px solid var(--ink);
+  }
+  .closing .label {
+    margin-bottom: 32px;
+  }
+  .closing h2 {
+    font-family: var(--serif-cn);
+    font-weight: 900;
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 48px;
+    max-width: 1000px;
+  }
+  .closing h2 em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .closing .takeaways {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  .closing .take {
+    border-top: 2px solid var(--accent);
+    padding-top: 20px;
+  }
+  .closing .take .num {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 32px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .closing .take h4 {
+    font-family: var(--serif-cn);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .closing .take p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* ============ COLOPHON ============ */
+  .colophon {
+    padding: 48px 0 64px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+  }
+  .colophon .col h5 {
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: 0.15em;
+  }
+  .colophon p { line-height: 1.8; }
+
+  /* ============ INLINE BADGE / CALLOUT ============ */
+  .callout {
+    margin: 32px 0;
+    padding: 24px 28px;
+    background: linear-gradient(to right, var(--cream-deep), transparent);
+    border-left: 3px solid var(--ink);
+    max-width: 760px;
+  }
+  .callout .ct {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .callout p { font-size: 14.5px; line-height: 1.65; margin: 0; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .container { padding: 0 24px; }
+    .topbar { grid-template-columns: 1fr; text-align: center; gap: 6px; }
+    .topbar .right { text-align: center; }
+    .hero { padding: 56px 0 40px; }
+    .hero .big-no { font-size: 140px; top: 20px; right: 24px; }
+    .hero .footer-row { grid-template-columns: repeat(2, 1fr); }
+    .chapter-header { grid-template-columns: 1fr; gap: 24px; }
+    .chapter-no { font-size: 56px; }
+    .compare { grid-template-columns: 1fr; }
+    .compare .arrow { transform: rotate(90deg); padding: 8px 0; }
+    .modes { grid-template-columns: 1fr; }
+    .role { grid-template-columns: 1fr; gap: 16px; }
+    .role .num-large { font-size: 40px; }
+    .phases { grid-template-columns: 1fr; }
+    .phase { border-right: 1px solid var(--ink); border-bottom: none; }
+    .phase:not(:last-child) { border-bottom: none; }
+    .metric-row { grid-template-columns: 1fr; gap: 12px; }
+    .closing .takeaways { grid-template-columns: 1fr; }
+    .colophon { grid-template-columns: 1fr; }
+  }
+
+  /* ============ PRINT ============ */
+  @media print {
+    body { background: white; }
+    .hero .big-no { color: #f5f5f5; }
+    section.chapter, .toc, .closing { page-break-inside: avoid; }
+    .chapter { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div>Report No. 001 · 2026</div>
+    <div class="center">— Design Research Note —</div>
+    <div class="right">UX × AI · Internal Draft</div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="big-no">01</div>
+    <div class="meta-row">
+      <div class="label">Issue 001 / Design Research</div>
+      <div class="label">May 2026 · 23 min read</div>
+    </div>
+
+    <h1 class="display">
+      当社区不再被<br>
+      <span class="strike">浏览</span>，而被
+      <span class="accent-word">调用</span>。
+    </h1>
+
+    <p class="deck">
+      文档、下载、学习路径——曾经为人类的眼睛与手指设计。
+      如今 AI 成了一种新的 <em>"用户"</em>：它阅读、理解、转述，
+      代替人完成任务。这份报告讨论一件事：在这场范式转移中，
+      <em>用户体验设计师</em>不仅没有失去位置，反而处在重新定义工作内容的关键时刻。
+    </p>
+
+    <div class="footer-row">
+      <div class="item">
+        <span class="lab">Subject</span>
+        AI 时代下开发者 / 创作者社区的体验重构
+      </div>
+      <div class="item">
+        <span class="lab">Focus</span>
+        UX 设计师的新角色、新方法、新指标
+      </div>
+      <div class="item">
+        <span class="lab">For</span>
+        UX 设计师 · 内容策略 · 社区负责人
+      </div>
+      <div class="item">
+        <span class="lab">Format</span>
+        Research Note · 6 章节 · 可下载 HTML
+      </div>
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-title">— Table of Contents</div>
+    <ul class="toc-list">
+      <li><a href="#ch1">
+        <span class="toc-num">CHAPTER 01</span>
+        <span class="toc-text">范式转变 <span class="en">The Shift</span></span>
+        <span class="toc-page">p. 01</span>
+      </a></li>
+      <li><a href="#ch2">
+        <span class="toc-num">CHAPTER 02</span>
+        <span class="toc-text">内容被 AI 调用的四种模式 <span class="en">Four Modes of AI Consumption</span></span>
+        <span class="toc-page">p. 02</span>
+      </a></li>
+      <li><a href="#ch3">
+        <span class="toc-num">CHAPTER 03</span>
+        <span class="toc-text">UX 设计师的六个新角色 <span class="en">Six New Roles for the UX Designer</span></span>
+        <span class="toc-page">p. 04</span>
+      </a></li>
+      <li><a href="#ch4">
+        <span class="toc-num">CHAPTER 04</span>
+        <span class="toc-text">如何开始：四阶段行动框架 <span class="en">A Four-Phase Action Framework</span></span>
+        <span class="toc-page">p. 08</span>
+      </a></li>
+      <li><a href="#ch5">
+        <span class="toc-num">CHAPTER 05</span>
+        <span class="toc-text">双指标：如何度量 <span class="en">Dual Metrics</span></span>
+        <span class="toc-page">p. 10</span>
+      </a></li>
+      <li><a href="#ch6">
+        <span class="toc-num">CHAPTER 06</span>
+        <span class="toc-text">收尾 · 三条主张 <span class="en">Three Theses</span></span>
+        <span class="toc-page">p. 12</span>
+      </a></li>
+    </ul>
+  </nav>
+
+  <!-- CHAPTER 01 -->
+  <section class="chapter" id="ch1">
+    <div class="chapter-header">
+      <div class="chapter-no">
+        01
+        <span class="small">The Shift</span>
+      </div>
+      <h2 class="chapter-title">
+        当用户不再来，<br>来的是它的代理。
+        <span class="en">The user no longer visits. Their agent does.</span>
+      </h2>
+    </div>
+
+    <p class="chapter-lede">
+      传统社区是一种<em>"拉"</em>的模型：网站坐在那里，等用户来。文档、下载、教程、课程，
+      每一份内容都假设有一双人类的眼睛在阅读、有一双人类的手在点击。
+      AI 改变了这件事——它不只是一种新工具，更是一个<em>新的中介层</em>。
+    </p>
+
+    <div class="prose">
+      <p>
+        今天，用户问 AI："帮我用这个框架做一个组件"，AI 在背后完成了过去用户要做的全部动作：
+        搜索文档、选定 API、写出代码、调试错误。<strong>用户从未访问社区，但社区被使用了。</strong>
+      </p>
+      <p>
+        这个变化的关键不在于"少了多少访问量"，而在于<strong>内容消费的回路被重新串接</strong>：
+        过去内容直接面向人，今天它必须先取悦一个中间译者。如果文档不能被 AI 准确摄取与转述，
+        那么这个社区对终端用户就等同于"不存在"。
+      </p>
+    </div>
+
+    <div class="compare">
+      <div class="col before">
+        <div class="tag">Before / 旧范式</div>
+        <h5>人 → 社区</h5>
+        <ul>
+          <li>用户主动访问网站</li>
+          <li>线性学习路径，按页阅读</li>
+          <li>搜索 + 浏览 + 收藏</li>
+          <li>内容为"页面"而设计</li>
+          <li>成功 = 用户完成转化</li>
+        </ul>
+      </div>
+      <div class="arrow">↦</div>
+      <div class="col after">
+        <div class="tag">After / 新范式</div>
+        <h5>人 → AI → 社区，或 Agent → 社区</h5>
+        <ul>
+          <li>AI 代理内容的检索、理解、执行</li>
+          <li>路径由用户当下任务即时生成</li>
+          <li>提问 + 协作 + 验证</li>
+          <li>内容为"模块"和"技能"而设计</li>
+          <li>成功 = 任务被正确完成（且可追溯）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      <p class="q">
+        如果 AI 是新的<em>"读者"</em>，那么文档就是新的<em>"产品"</em>。<br>
+        UX 设计师的工作，正从"设计页面"变成"设计能被准确理解、引用、执行的知识。"
+      </p>
+      <p class="attr">— Thesis One</p>
+    </div>
+  </section>
+
+  <!-- CHAPTER 02 -->
+  <section class="chapter" id="ch2">
+    <div class="chapter-header">
+      <div class="chapter-no">
+        02
+        <span class="small">Four Modes</span>
+      </div>
+      <h2 class="chapter-title">
+        让内容被 AI<br>更好地调用。
+        <span class="en">Making content callable, executable, and trustworthy.</span>
+      </h2>
+    </div>
+
+    <p class="chapter-lede">
+      "被 AI 调用"不是一个比喻，而是<em>四种具体的技术与设计形态</em>——
+      它们之间没有冲突，社区通常需要同时铺设。
+    </p>
+
+    <div class="modes">
+      <div class="mode">
+        <div class="mode-no">i.</div>
+        <div class="mode-name">结构化与机器可读</div>
+        <div class="mode-en">Machine-Readable Content</div>
+        <p>
+          为内容铺一层"AI 可读层"：清晰语义结构、独立元数据、稳定 URL。
+          AI 读得准，转述才准。
+        </p>
+        <div class="tech">
+          <span>llms.txt</span><span>llms-full.txt</span><span>OpenAPI</span><span>schema.org</span><span>Markdown</span>
+        </div>
+      </div>
+
+      <div class="mode">
+        <div class="mode-no">ii.</div>
+        <div class="mode-name">知识可执行化</div>
+        <div class="mode-en">Executable Knowledge / Skills</div>
+        <p>
+          把教程从"叙事文章"重写为"技能包"：明确前提、步骤、产出与失败处理，
+          让 AI 代理可以直接执行而非"复述"。
+        </p>
+        <div class="tech">
+          <span>SKILL.md</span><span>Recipe pattern</span><span>Runnable snippets</span><span>I/O contract</span>
+        </div>
+      </div>
+
+      <div class="mode">
+        <div class="mode-no">iii.</div>
+        <div class="mode-name">对话式接入</div>
+        <div class="mode-en">Conversational / RAG Layer</div>
+        <p>
+          在文档之上提供问答接口，让 AI 直接基于权威内容回答用户问题，
+          并能跳转到原始证据。
+        </p>
+        <div class="tech">
+          <span>RAG</span><span>嵌入式 AI Assistant</span><span>Citation / 引用回链</span>
+        </div>
+      </div>
+
+      <div class="mode">
+        <div class="mode-no">iv.</div>
+        <div class="mode-name">智能体接入</div>
+        <div class="mode-en">Agent Interface (MCP)</div>
+        <p>
+          为社区资源提供 Agent 能直接调用的工具接口：搜索、下载、提交、订阅，
+          像 API 但面向 LLM 的行为协议。
+        </p>
+        <div class="tech">
+          <span>MCP server</span><span>Tools / Resources</span><span>Auth flow</span><span>Permissions</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="ct">Important · 设计含义</div>
+      <p>
+        这四层各对应一种 AI 与社区的关系。但它们不是"工程团队的事"——
+        每一层都包含大量需要被<strong>设计</strong>的决策：
+        哪些内容暴露、以什么粒度暴露、如何呈现来源与置信度、出错时谁负责。
+        这正是 UX 设计师的领地。
+      </p>
+    </div>
+  </section>
+
+  <!-- CHAPTER 03 -->
+  <section class="chapter" id="ch3">
+    <div class="chapter-header">
+      <div class="chapter-no">
+        03
+        <span class="small">New Roles · 核心</span>
+      </div>
+      <h2 class="chapter-title">
+        UX 设计师的六个新角色。
+        <span class="en">From page designer to knowledge systems designer.</span>
+      </h2>
+    </div>
+
+    <p class="chapter-lede">
+      在 AI 时代，UX 设计师的"工作"没有变少，但<em>工作的形态</em>变了。
+      下面六种角色，多数已经在头部社区与开发者平台中出现。
+      它们不是六个职位，而是<em>一个设计师在一个项目里需要同时扮演的六个面</em>。
+    </p>
+
+    <!-- ROLE 1 -->
+    <div class="role">
+      <div class="num-large">i.</div>
+      <div>
+        <h3 class="role-name">双重受众的信息架构师</h3>
+        <div class="from-to">
+          <span class="from">为人类设计的页面 IA</span>
+          <span class="arrow">↦</span>
+          <span class="to">为人与 AI 同时设计的知识 IA</span>
+        </div>
+        <p>
+          过去 IA 关心"用户能不能找到这一页"。今天还要关心：<strong>AI 能不能不混淆这一段</strong>。
+          这意味着内容必须"原子化"：每个段落、代码块、概念定义都能脱离上下文独立成立，并附带充足的元数据。
+        </p>
+        <p>
+          一个长教程不再是 IA 的最小单位——一个"可独立被检索的知识片段"才是。
+        </p>
+        <div class="do-list">
+          <div class="do-label">设计师要做的</div>
+          <ul>
+            <li>把文档拆解为可独立寻址的"内容原子"，每个原子有标题、主题、前提、产出</li>
+            <li>制定双 IA：人类导航 IA + 机器消费 IA（如 llms.txt 结构）</li>
+            <li>设计"内容卡片"组件，作为人与 AI 共享的基本单元</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLE 2 -->
+    <div class="role">
+      <div class="num-large">ii.</div>
+      <div>
+        <h3 class="role-name">"AI 可摄取"的内容设计师</h3>
+        <div class="from-to">
+          <span class="from">写得清楚就行</span>
+          <span class="arrow">↦</span>
+          <span class="to">既能让人读懂，也能让 AI 不误读</span>
+        </div>
+        <p>
+          内容设计的新约束：<strong>避免反讽、避免上下文依赖、避免"见图说话"</strong>。
+          AI 不一定能看到图，不一定能识别玩笑，也不一定能从你的标题里推出语境。
+          需要把意思<em>明示</em>，而不是<em>暗示</em>。
+        </p>
+        <p>
+          这不是让写作变机械——而是让写作多一层"可被机器准确转述"的检查。
+          好的 AI-friendly 文档往往对人也更友好。
+        </p>
+        <div class="do-list">
+          <div class="do-label">设计师要做的</div>
+          <ul>
+            <li>制定内容写作准则（Content Standards），明确禁止与推荐句式</li>
+            <li>每篇文档前置 TL;DR + 适用场景 + 不适用场景</li>
+            <li>所有图像、代码、视频都附等价文字说明，AI 才看得懂</li>
+            <li>给 AI 写"使用说明"：哪些段落可引用，哪些是 example 不能照搬</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLE 3 -->
+    <div class="role">
+      <div class="num-large">iii.</div>
+      <div>
+        <h3 class="role-name">对话式交互设计师</h3>
+        <div class="from-to">
+          <span class="from">设计搜索框</span>
+          <span class="arrow">↦</span>
+          <span class="to">设计与社区"说话"的体验</span>
+        </div>
+        <p>
+          当用户在文档里直接对话，体验问题变成了：<strong>怎么问才能问得清？答错了怎么办？多轮上下文怎么保持？</strong>
+          这是新的交互模式，与表单、按钮、链接同样需要被精心设计。
+        </p>
+        <div class="do-list">
+          <div class="do-label">设计师要做的</div>
+          <ul>
+            <li>设计提问引导（suggested prompts）、澄清流程、零结果状态</li>
+            <li>设计"AI 回答 + 引用源"组件：答案与证据同框出现</li>
+            <li>设计多轮对话的"上下文条"，让用户随时知道 AI 还记得什么</li>
+            <li>设计明确的"我不知道"出口——比强答更重要</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLE 4 -->
+    <div class="role">
+      <div class="num-large">iv.</div>
+      <div>
+        <h3 class="role-name">信任与透明度设计师</h3>
+        <div class="from-to">
+          <span class="from">假定内容权威</span>
+          <span class="arrow">↦</span>
+          <span class="to">让用户随时能验证 AI 是否说错</span>
+        </div>
+        <p>
+          AI 会出错，且会自信地出错。这不是技术问题——这是<strong>体验设计问题</strong>。
+          用户需要在不打断流程的前提下，知道：这句话从哪来？置信度有多高？我怎么核实？
+        </p>
+        <div class="do-list">
+          <div class="do-label">设计师要做的</div>
+          <ul>
+            <li>设计"引用样式"：脚注式、悬浮式、行内式——选哪种取决于使用场景</li>
+            <li>设计置信度的视觉语言（不是百分比，而是色阶、措辞、是否带保留）</li>
+            <li>设计"一键到原文"的核实路径</li>
+            <li>设计用户反馈纠错的入口与回流机制：用户改了之后会发生什么？</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLE 5 -->
+    <div class="role">
+      <div class="num-large">v.</div>
+      <div>
+        <h3 class="role-name">学习体验设计师（个性化路径）</h3>
+        <div class="from-to">
+          <span class="from">线性课程表</span>
+          <span class="arrow">↦</span>
+          <span class="to">AI 协同生成的"此刻最适合你"</span>
+        </div>
+        <p>
+          固定的"零基础→高级"学习路径在 AI 时代显得僵硬：用户的背景、目标、当下的代码项目千差万别。
+          AI 可以即时拼装一条<strong>当下最适合此用户的路径</strong>——但这条路径的形态、节奏、引导语，都需要被设计。
+        </p>
+        <div class="do-list">
+          <div class="do-label">设计师要做的</div>
+          <ul>
+            <li>设计"项目导向的学习壳"：用户描述目标，AI 拆分子任务，每步关联社区原始内容</li>
+            <li>设计"导师介入时机"——AI 何时只看、何时讲解、何时挑战学习者</li>
+            <li>设计能力地图与已掌握状态的可视化（取代"完成了几节课"）</li>
+            <li>保留人类讲师 / 社区高手的可见性，避免学习者孤立在与 AI 的二人世界里</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLE 6 -->
+    <div class="role">
+      <div class="num-large">vi.</div>
+      <div>
+        <h3 class="role-name">智能体 UX 设计师（Agent UX）</h3>
+        <div class="from-to">
+          <span class="from">设计用户的点击</span>
+          <span class="arrow">↦</span>
+          <span class="to">设计 Agent 的操作与人对它的监督</span>
+        </div>
+        <p>
+          当 Agent 能代用户在社区里下载、订阅、提交工单，谁来决定它能做什么、什么时候要问一下人？
+          这是一个全新的设计领域：<strong>人不在键盘前，但仍要保留控制感</strong>。
+        </p>
+        <div class="do-list">
+          <div class="do-label">设计师要做的</div>
+          <ul>
+            <li>设计 Agent 权限的授权流程（一次性 / 长期 / 范围）</li>
+            <li>设计"行动前确认"的语言与节奏——什么必须问、什么静默执行</li>
+            <li>设计 Agent 工作日志的呈现：发生了什么、用了哪些资源、是否成功</li>
+            <li>设计"撤销"与"接管"——人随时可以回到方向盘前</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      <p class="q">
+        设计师不是被 AI 取代。设计师正在被<em>请回到桌前</em>——
+        因为这些新角色，<em>没有一个</em>是工程师能独自决定的。
+      </p>
+      <p class="attr">— Thesis Two</p>
+    </div>
+  </section>
+
+  <!-- CHAPTER 04 -->
+  <section class="chapter" id="ch4">
+    <div class="chapter-header">
+      <div class="chapter-no">
+        04
+        <span class="small">Action Framework</span>
+      </div>
+      <h2 class="chapter-title">
+        怎么开始：<br>四个阶段。
+        <span class="en">Diagnose · Restructure · Redesign · Measure.</span>
+      </h2>
+    </div>
+
+    <p class="chapter-lede">
+      这套框架适用于任何已有内容资产的社区——开发者文档、设计系统、教育平台、品牌知识库。
+      关键是<em>从一小块内容开始试点</em>，而不是一次重做全部。
+    </p>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-num">Phase 01</div>
+        <div class="phase-title">诊断</div>
+        <div class="phase-en">Diagnose</div>
+        <ul>
+          <li>挑一个高频任务（如"快速上手"），观察用户实际通过 AI 完成它的过程</li>
+          <li>用主流 AI 模型拷问现有文档，看它转述对不对</li>
+          <li>盘点内容形态：哪些是叙事、哪些已是结构化</li>
+          <li>研究：用户为什么不来社区了？是不是 AI 已经替代了入口</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-num">Phase 02</div>
+        <div class="phase-title">重构</div>
+        <div class="phase-en">Restructure</div>
+        <ul>
+          <li>把试点内容原子化，加元数据</li>
+          <li>制定 llms.txt 与内容索引</li>
+          <li>识别需要变成"可执行技能包"的教程</li>
+          <li>设计统一的引用 / 来源样式</li>
+          <li>评估是否需要建 MCP 接口</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-num">Phase 03</div>
+        <div class="phase-title">重设计</div>
+        <div class="phase-en">Redesign</div>
+        <ul>
+          <li>嵌入对话式入口（带引用）</li>
+          <li>把"学习路径"页改为"AI 助你拟定路径"</li>
+          <li>设计 Agent 行动确认 / 日志组件</li>
+          <li>更新设计系统：新增"AI 卡片"族组件</li>
+          <li>建立内容写作准则与培训</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-num">Phase 04</div>
+        <div class="phase-title">度量</div>
+        <div class="phase-en">Measure</div>
+        <ul>
+          <li>建立双指标体系（见 Ch.5）</li>
+          <li>跟踪 AI 转述准确率（人工抽样审）</li>
+          <li>跟踪用户的"二次验证率"——他们多频繁去核实</li>
+          <li>跟踪 Agent 调用率与失败原因</li>
+          <li>每季度迭代内容写作准则</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="ct">设计师视角的提醒</div>
+      <p>
+        四个阶段中，最容易被忽视的是 <strong>Phase 01 诊断</strong>。
+        不要在没看过用户实际"通过 AI 用你的内容"是什么样之前就开始重构。
+        像所有 UX 研究一样：先观察，再下笔。
+      </p>
+    </div>
+  </section>
+
+  <!-- CHAPTER 05 -->
+  <section class="chapter" id="ch5">
+    <div class="chapter-header">
+      <div class="chapter-no">
+        05
+        <span class="small">Dual Metrics</span>
+      </div>
+      <h2 class="chapter-title">
+        既看人，也看机器。
+        <span class="en">A dual indicator system.</span>
+      </h2>
+    </div>
+
+    <p class="chapter-lede">
+      传统的 PV、UV、停留时间在 AI 中介的世界里失真。<em>真正要看的是"任务是否完成"</em>，
+      以及"内容是否被准确传递"——无论传递路径上有没有人。
+    </p>
+
+    <div class="metrics">
+      <div class="metric-row header">
+        <div>类别</div>
+        <div>人类侧 / Human Side</div>
+        <div>AI 侧 / Machine Side</div>
+      </div>
+
+      <div class="metric-row">
+        <div class="cat">α</div>
+        <div>
+          <div class="col-h">触达与任务完成</div>
+          <div class="col-list">
+            页面访问、搜索成功率、教程完成率、社区提问数
+          </div>
+        </div>
+        <div>
+          <div class="col-h">AI 调用与任务完成</div>
+          <div class="col-list">
+            内容被 AI 引用次数、AI 协助下的任务完成率、Agent 调用 MCP 成功率
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-row">
+        <div class="cat">β</div>
+        <div>
+          <div class="col-h">理解与信任</div>
+          <div class="col-list">
+            阅读理解抽样、文档反馈"有用 / 无用"、回访率
+          </div>
+        </div>
+        <div>
+          <div class="col-h">转述准确率</div>
+          <div class="col-list">
+            AI 转述与原文一致性（人工抽样）、幻觉率、引用准确率
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-row">
+        <div class="cat">γ</div>
+        <div>
+          <div class="col-h">满意与留存</div>
+          <div class="col-list">
+            NPS、社区活跃度、贡献者数量、二次回访
+          </div>
+        </div>
+        <div>
+          <div class="col-h">协作信任</div>
+          <div class="col-list">
+            用户对 AI 回答的接受率、二次验证频率、纠错提交率
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-row">
+        <div class="cat">δ</div>
+        <div>
+          <div class="col-h">内容健康</div>
+          <div class="col-list">
+            过期文档比例、缺失链接、可读性评分
+          </div>
+        </div>
+        <div>
+          <div class="col-h">AI 友好度</div>
+          <div class="col-list">
+            原子化覆盖率、元数据完备度、MCP / llms.txt 暴露率
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="ct">关键观察</div>
+      <p>
+        随着 AI 转述准确率上升，<strong>人的访问量可能下降</strong>——这不一定是坏事。
+        如果用户通过 AI 顺利完成了任务，社区的价值<em>被传递</em>了，只是路径变了。
+        把"内容被准确使用"作为成功定义，比"页面被看到"更重要。
+      </p>
+    </div>
+  </section>
+
+  <!-- CHAPTER 06 -->
+  <section class="closing" id="ch6">
+    <div class="label">— Closing · Three Theses</div>
+    <h2 class="display">
+      设计师不会消失。<br>
+      设计师在<em>重新定义</em><br>
+      自己的工作。
+    </h2>
+
+    <div class="takeaways">
+      <div class="take">
+        <span class="num">i.</span>
+        <h4>从页面思维到知识系统思维</h4>
+        <p>
+          每个内容片段都是一个"独立运行的小程序"，必须自带元数据、前提、产出。
+          设计的最小单位不再是页面，而是<em>可被任意组合调用的知识原子</em>。
+        </p>
+      </div>
+      <div class="take">
+        <span class="num">ii.</span>
+        <h4>从转化漏斗到协作回路</h4>
+        <p>
+          成功不再是"用户走完路径"，而是"任务被正确完成"——
+          无论是用户独立完成、与 AI 共同完成、还是 Agent 代为完成。设计要为这三种情形同时设计。
+        </p>
+      </div>
+      <div class="take">
+        <span class="num">iii.</span>
+        <h4>从权威输出到透明协作</h4>
+        <p>
+          信任不再来自"我们说了算"，而来自"你随时能看清证据、随时能纠正"。
+          这是 AI 时代体验设计的<em>新基准线</em>，也是设计师能做的最关键的贡献。
+        </p>
+      </div>
+    </div>
+
+    <div class="pullquote" style="margin-top: 80px; max-width: 100%;">
+      <p class="q">
+        UX 设计师的下一站，不在屏幕里。<br>
+        在<em>内容与智能之间的那一层</em>。
+      </p>
+      <p class="attr">— Thesis Three</p>
+    </div>
+  </section>
+
+  <!-- COLOPHON -->
+  <footer class="colophon">
+    <div class="col">
+      <h5>Colophon</h5>
+      <p>
+        Design Research Note 001<br>
+        Set in Fraunces, Noto Serif SC,<br>
+        Noto Sans SC, JetBrains Mono.<br>
+        Composed as a single HTML file.
+      </p>
+    </div>
+    <div class="col">
+      <h5>Citation</h5>
+      <p>
+        《当社区不再被浏览，而被调用》<br>
+        UX × AI Research, 2026<br>
+        Internal draft, may be<br>
+        circulated freely.
+      </p>
+    </div>
+    <div class="col">
+      <h5>End of Report</h5>
+      <p>
+        — fin —<br>
+        Read time ≈ 23 min<br>
+        Saved as .html for offline reading.
+      </p>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

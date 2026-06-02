@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>CANN 体验看板</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#6A67CE;--blue:#4F4DA7;--green:#179D8A;--yellow:#FD9A00;
+  --red-bg:#FEEFF0;--yellow-bg:#FFF8E5;--green-bg:#EBFCF7;--blue-bg:#E8F7FB;
+  --border:#E1E2E4;--surface:#F8F8F9;--text:#1B2432;--muted:#676D76;--dim:#A1A4AA;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:#F8F8F9;color:var(--text)}
+
+/* ── TOPBAR ── */
+.topbar{background:#FFFFFF;border-bottom:1.5px solid var(--border);padding:0 28px;display:flex;align-items:center;height:50px;gap:0;position:sticky;top:0;z-index:100}
+.tb-logo{font-size:14px;font-weight:700;color:var(--accent);letter-spacing:0;margin:0 8px;font-size:16px}
+.tb-title{font-size:12px;color:var(--muted);font-weight:500}
+.tb-dims{display:flex;margin-left:28px}
+.dim-tab{padding:0 18px;height:50px;font-size:13px;font-weight:500;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;font-family:inherit;transition:all .15s}
+.dim-tab:hover{color:var(--text)}
+.dim-tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tb-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.period-pill{font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;display:flex;align-items:center;gap:4px}
+.export-btn{font-size:11px;font-weight:500;color:var(--muted);background:#FFFFFF;border:1px solid var(--border);border-radius:6px;padding:5px 11px;cursor:pointer;font-family:inherit;transition:all .15s}
+.export-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── FILTER BAR ── */
+.filter-bar{background:#FFFFFF;border-bottom:1px solid var(--border);padding:7px 28px;display:flex;align-items:center;gap:8px;position:sticky;top:50px;z-index:99}
+.fl-lbl{font-size:10px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.fchip{padding:3px 10px;border-radius:14px;font-size:11px;font-weight:500;border:1px solid var(--border);background:#FFFFFF;color:var(--muted);cursor:pointer;transition:all .12s}
+.fchip.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent)}
+.fl-sep{width:1px;height:14px;background:var(--border);margin:0 2px}
+
+/* ── KPI STRIP ── */
+.kpi-strip{display:grid;grid-template-columns:1fr 1fr 1fr 1.8fr;gap:10px;padding:12px 28px;flex-shrink:0}
+.kpi{background:#FFFFFF;border:1px solid var(--border);border-radius:9px;padding:11px 14px}
+.kpi-lbl{font-size:10px;color:var(--dim);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.kpi-val{font-size:52px;font-weight:500;color:var(--text)}
+.kpi-val span{font-size:11px;font-weight:400;color:var(--dim);margin-left:2px}
+.kpi-val.bad{color:var(--accent)}
+.kpi-val.mid{color:var(--yellow)}
+.kpi-delta{font-size:11px;color:var(--dim);margin-top:3px}
+.kpi-delta.dn{color:var(--accent)}
+.kpi-delta.up{color:var(--green)}
+.kpi.border-red{}
+.kpi.border-yellow{}
+.conclusion-pills{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 4px}
+.cpill{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:var(--red-bg);color:var(--accent)}
+.cpill.mid{background:var(--yellow-bg);color:var(--yellow)}
+
+/* ── MAIN BODY ── */
+.main-body{display:flex;align-items:flex-start;padding:12px 28px 48px;gap:12px}
+
+/* ── SCENE LIST ── */
+.scene-list{width:270px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;position:sticky;top:102px;align-self:flex-start}
+#sceneListCards{display:flex;flex-direction:column;gap:10px}
+.sl-hdr{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center;padding:0 2px;margin-bottom:6px;flex-shrink:0}
+.sort-toggle{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0}
+.sort-btn{font-size:10px;font-weight:500;padding:3px 8px;border:none;background:#FFFFFF;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .12s;white-space:nowrap}
+.sort-btn.on{background:var(--text);color:#FFFFFF}
+
+.sc{background:#FFFFFF;border:1px solid var(--border);border-radius:9px;padding:11px;cursor:pointer;transition:border-color .15s,box-shadow .15s;position:relative}
+.sc:hover{border-color:#CDCFD2;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.sc.sel{border-color:var(--accent)!important;box-shadow:0 0 0 2px rgba(230,56,56,.1)}
+.sc-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.sc-rank{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.sc-rank.bad{background:var(--red-bg);color:var(--accent)}
+.sc-rank.mid{background:var(--yellow-bg);color:var(--yellow)}
+.sc-rank.ok{background:var(--green-bg);color:var(--green)}
+.sc-title{flex:1;min-width:0}
+.sc-name{font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.sc-grade-row{display:flex;align-items:center;gap:6px}
+.grade-tag{font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px}
+.grade-tag.bad{background:var(--red-bg);color:var(--accent)}
+.grade-tag.mid{background:var(--yellow-bg);color:var(--yellow)}
+.grade-tag.ok{background:var(--green-bg);color:var(--green)}
+.sc-score-row{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.sc-score{font-size:20px;font-weight:700}
+.sc-score.bad{color:var(--accent)}
+.sc-score.mid{color:var(--yellow)}
+.sc-score.ok{color:var(--green)}
+.sc-trend{font-size:11px;font-weight:600}
+.sc-trend.dn{color:var(--accent)}
+.sc-trend.up{color:var(--green)}
+.sc-trend.flat{color:var(--dim)}
+.sc-spark{flex:1;height:22px;margin-left:4px}
+.sc-evidence{display:flex;gap:5px}
+.ev-chip{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px;cursor:default}
+.ev-chip.red{background:var(--red-bg);color:var(--accent)}
+.ev-chip.yellow{background:var(--yellow-bg);color:var(--yellow)}
+.ev-chip.gray{background:#F0EFFA;color:var(--muted)}
+
+/* ── SCENE DETAIL ── */
+.scene-detail{flex:1;background:#FFFFFF;border:1px solid var(--border);border-radius:10px;min-width:0;overflow:visible}
+.sd-hint{padding:80px 0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--dim);font-size:13px}
+.sd-hint svg{color:var(--border)}
+
+/* DETAIL HEADER */
+.det-hdr{padding:16px 22px 12px;border-bottom:1px solid #F0EFFA;flex-shrink:0}
+.det-name-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.det-name{font-size:17px;font-weight:700;flex:1}
+.det-grade{font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px}
+.det-grade.bad{background:var(--red-bg);color:var(--accent)}
+.det-grade.mid{background:var(--yellow-bg);color:var(--yellow)}
+.det-grade.ok{background:var(--green-bg);color:var(--green)}
+.det-score{font-size:34px;font-weight:700}
+.det-score.bad{color:var(--accent)}
+.det-score.mid{color:var(--yellow)}
+.det-score.ok{color:var(--green)}
+
+/* RANK CONTEXT ⑤ */
+.rank-ctx{display:flex;align-items:center;gap:10px;padding:8px 22px;background:#F8F8F9;border-bottom:1px solid #EFF0F1;flex-shrink:0;position:relative}
+.rank-pill{font-size:10px;font-weight:700;background:var(--red-bg);color:var(--accent);padding:3px 8px;border-radius:4px;white-space:nowrap}
+.rank-pill.mid{background:var(--yellow-bg);color:var(--yellow)}
+.rank-pill.ok{background:var(--green-bg);color:var(--green)}
+.rank-desc{font-size:11px;color:var(--muted);flex:1}
+.rank-mini-bars{display:flex;align-items:flex-end;gap:3px;height:20px}
+.rank-bar{width:10px;border-radius:2px 2px 0 0;background:#E1E2E4;opacity:.6}
+.rank-bar.cur{opacity:1}
+.rank-bar.bad{background:var(--accent)}
+.rank-bar.mid{background:var(--yellow)}
+.rank-bar.ok{background:#37C597}
+.rank-mean{font-size:10px;color:var(--dim);white-space:nowrap}
+
+/* RADAR ③ */
+.radar-section{padding:11px 22px 14px;border-bottom:1px solid #EFF0F1;flex-shrink:0;background:#FFFFFF;position:relative}
+.radar-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.radar-lbl{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;flex:1}
+.radar-worst{font-size:10px;font-weight:600;padding:2px 8px;border-radius:3px;background:var(--red-bg);color:var(--accent)}
+.radar-body{display:flex;align-items:stretch;gap:0}
+.chart-col{flex:1;min-width:0;padding-right:18px;border-right:0;display:flex;flex-direction:column;gap:8px}
+.radar-col{flex:1;min-width:0;padding-left:18px;display:flex;align-items:center;gap:12px}
+.col-lbl{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em}
+.stab-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;align-self:flex-start}
+.stab-tag.stable{background:var(--green-bg);color:var(--green)}
+.stab-tag.moderate{background:var(--yellow-bg);color:var(--yellow)}
+.stab-tag.unstable{background:var(--red-bg);color:var(--accent)}
+.radar-legend{display:flex;flex-direction:column;gap:7px}
+.radar-dim{display:flex;align-items:center;gap:7px}
+.radar-dim-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.radar-dim-lbl{font-size:10px;color:var(--muted);flex:1;white-space:nowrap}
+.radar-dim-val{font-size:12px;font-weight:700;width:28px;text-align:right}
+
+/* EVIDENCE TABS ① */
+.ev-tabs{display:flex;border-bottom:1px solid var(--border);background:#FFFFFF;border-radius:0}
+.ev-tab{padding:9px 18px;font-size:12px;font-weight:500;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px}
+.ev-tab:hover{color:var(--text)}
+.ev-tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.ev-tab .ev-tab-count{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;background:#F0EFFA;color:var(--muted)}
+.ev-tab.on .ev-tab-count{background:var(--red-bg);color:var(--accent)}
+.ev-panels{}
+.ev-panel{display:none;padding:14px 22px 28px}
+.ev-panel.on{display:block}
+
+/* AGENT PANEL */
+.agent-section-lbl{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.agent-step-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #F8F8F9}
+.agent-step-row:last-child{border-bottom:none}
+.as-name{width:72px;font-size:11px;font-weight:600;color:var(--text);flex-shrink:0;padding-top:3px}
+.as-right{flex:1;min-width:0}
+.as-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.as-bar-track{flex:1;height:7px;background:#EFF0F1;border-radius:4px;overflow:hidden}
+.as-bar-fill{height:100%;border-radius:4px}
+.as-bar-fill.bad{background:var(--accent)}
+.as-bar-fill.mid{background:#FD9A00}
+.as-bar-fill.ok{background:#37C597}
+.as-score{font-size:12px;font-weight:700;width:32px;text-align:right;flex-shrink:0}
+.as-score.bad{color:var(--accent)}
+.as-score.mid{color:var(--yellow)}
+.as-score.ok{color:var(--green)}
+.as-summary{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:6px}
+.as-summary b{font-size:9px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:3px}
+.as-obs{margin-bottom:6px}
+.as-obs b{font-size:9px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.as-obs-list{display:flex;flex-direction:column;gap:3px}
+.as-obs-item{font-size:11px;color:var(--text);line-height:1.5;padding:4px 8px 4px 10px;background:#F8F8F9;border-radius:0 4px 4px 0}
+.tool-chain-row{margin-top:14px;padding-top:12px;border-top:1px solid #EFF0F1}
+.tool-chain-lbl{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.tool-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tool-chip{font-size:10px;font-weight:600;padding:3px 8px;border-radius:5px;border:1px solid var(--border)}
+.tool-chip.ok{background:var(--green-bg);border-color:#C3EDDF;color:var(--green)}
+.tool-chip.warn{background:var(--yellow-bg);border-color:#FFE87F;color:var(--yellow)}
+.tool-chip.crit{background:var(--red-bg);border-color:#F3C7BF;color:var(--accent)}
+.tool-arrow{color:var(--dim);font-size:11px}
+
+/* STEP METRICS GRID */
+.step-metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:5px;margin-top:8px}
+.step-metric{background:#F8F8F9;border:1px solid #EFF0F1;border-radius:5px;padding:6px 8px}
+.step-metric-lbl{font-size:10px;color:var(--dim);margin-bottom:3px;line-height:1.3}
+.step-metric-bottom{display:flex;align-items:baseline;gap:5px}
+.step-metric-val{font-size:14px;font-weight:700}
+.step-metric-val.bad{color:var(--accent)}
+.step-metric-val.mid{color:var(--yellow)}
+.step-metric-val.ok{color:var(--green)}
+.step-metric-val.neutral{color:var(--text)}
+.step-metric-trend{font-size:10px;font-weight:600}
+.step-metric-trend.dn{color:var(--accent)}
+.step-metric-trend.up{color:var(--green)}
+.step-metric-trend.flat{color:var(--dim)}
+
+/* PAIN PANEL ④ ⑥ */
+.pain-cat-section{margin-bottom:14px}
+.pain-cat-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.cat-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px}
+.cat-badge.doc{background:#E8F7FB;color:#4F4DA7}
+.cat-badge.tool{background:#FFF8E5;color:#FD9A00}
+.cat-badge.api{background:#F0EFFA;color:#4F4DA7}
+.cat-badge.env{background:var(--green-bg);color:var(--green)}
+.cat-count{font-size:10px;color:var(--dim)}
+.pain-item{border:1px solid var(--border);border-radius:7px;padding:10px 12px;margin-bottom:7px}
+.pain-top{display:flex;align-items:flex-start;gap:8px}
+.pain-score{font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--red-bg);color:var(--accent);flex-shrink:0}
+.pain-body{flex:1;min-width:0}
+.pain-text{font-size:12px;color:var(--text);line-height:1.6;margin-bottom:4px}
+.pain-meta{font-size:10px;color:var(--dim)}
+.pain-next{display:flex;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed #EFF0F1}
+.pain-next-lbl{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+.pain-next-text{font-size:11px;color:var(--blue);cursor:pointer;line-height:1.5}
+.pain-next-text:hover{text-decoration:underline}
+.pain-status{font-size:10px;font-weight:600;padding:1px 6px;border-radius:3px;margin-left:auto;flex-shrink:0}
+.pain-status.progress{background:var(--blue-bg);color:var(--blue)}
+.pain-status.planned{background:#F0EFFA;color:var(--muted)}
+
+/* VOD PANEL */
+.vod-item{border:1px solid var(--border);border-radius:7px;padding:11px 13px;margin-bottom:8px}
+.vod-vol-row{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.vod-vol{font-size:28px;font-weight:500}
+.vod-unit{font-size:11px;color:var(--dim)}
+.vod-trend{font-size:12px;font-weight:700}
+.vod-trend.dn{color:var(--accent)}
+.vod-trend.flat{color:var(--yellow)}
+.vod-quote{font-size:12px;color:var(--text);line-height:1.7;padding:8px 10px 8px 20px;background:#F8F8F9;border-radius:6px;position:relative;font-style:italic}
+.vod-quote::before{content:'"';font-size:22px;color:var(--dim);position:absolute;top:2px;left:6px;line-height:1}
+.vod-src{font-size:10px;color:var(--dim);margin-top:6px}
+
+/* CALLOUT BADGES */
+.callout-badge{
+  display:none;position:absolute;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--blue);color:#FFFFFF;
+  font-size:9px;font-weight:700;
+  align-items:center;justify-content:center;
+  border:1.5px solid #FFFFFF;box-shadow:0 1px 4px rgba(0,0,0,.2);
+  z-index:20;pointer-events:none;
+}
+body.rat-open .callout-badge{display:flex}
+body.rat-open .hl-target{transition:outline .1s}
+body.hl-1 .hl-1{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+body.hl-2 .hl-2{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+body.hl-3 .hl-3{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
+body.hl-4 .hl-4{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+body.hl-5 .hl-5{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+body.hl-6 .hl-6{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+
+/* RATIONALE SIDEBAR */
+.rat-sidebar{width:0;overflow:hidden;flex-shrink:0;position:sticky;top:102px;align-self:flex-start;transition:width .22s ease;max-height:calc(100vh - 120px)}
+body.rat-open .rat-sidebar{width:264px}
+.rat-sidebar-inner{width:264px;background:#FFFFFF;border:1px solid var(--border);border-radius:10px;overflow-y:auto;max-height:calc(100vh - 120px)}
+
+/* FLOATING TOGGLE BUTTON */
+.float-rat-btn{position:fixed;bottom:22px;right:22px;z-index:300;display:flex;align-items:center;gap:7px;padding:7px 14px;background:#FFFFFF;border:1px solid var(--border);border-radius:22px;box-shadow:0 4px 16px rgba(0,0,0,.1);font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;font-family:inherit;transition:all .15s}
+.float-rat-btn:hover,.float-rat-btn.open{border-color:var(--blue);color:var(--blue);background:#F0EFFA}
+
+.rat-panel-hdr{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.07em;padding:13px 16px 10px;border-bottom:1px solid var(--border)}
+.rat-item{display:flex;gap:10px;padding:11px 14px;border-bottom:1px solid #F8F8F9;cursor:default}
+.rat-item:last-child{border-bottom:none}
+.rat-item:hover,.rat-item.hl{background:#F0EFFA}
+.rat-num{width:22px;height:22px;border-radius:50%;background:var(--blue);color:#FFFFFF;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rat-content{}
+.rat-head{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.rat-source{font-size:10px;font-weight:600;color:var(--blue);background:var(--blue-bg);padding:1px 6px;border-radius:3px;display:inline-block;margin-bottom:5px}
+.rat-body{font-size:11px;color:var(--muted);line-height:1.65}
+.rat-pointer{font-size:10px;color:var(--blue);margin-top:4px;font-weight:500}
+
+/* COMMUNITY PLACEHOLDER */
+.community-shell{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--dim);padding:60px}
+.community-shell h3{font-size:15px;font-weight:600;color:var(--text)}
+.community-shell p{font-size:13px;text-align:center;max-width:400px;line-height:1.7}
+
+
+:root{
+  --green-dark:#37C597;--green-core:#3BE880;--green-bright:#3BF7D1;--green-med:#9DFBE8;--green-faded:#C3EDDF;--green-light:#EBFCF7;
+  --teal-dark:#179D8A;--teal-core:#1AAFD0;--teal-bright:#02CEFF;--teal-med:#80E6FF;--teal-light:#E8F7FB;
+  --purple-dark:#4F4DA7;--purple-core:#6A67CE;--purple-bright:#A177FF;--purple-med:#D0B8FF;--purple-light:#F0EFFA;
+  --gold-dark:#FD9A00;--gold-core:#FFB900;--gold-bright:#FFD200;--gold-med:#FFE87F;--gold-light:#FFF8E5;
+  --coral-dark:#E63838;--coral-core:#FC636B;--coral-bright:#FF6D92;--coral-med:#FFB6C8;--coral-light:#FEEFF0;
+  --white:#FFFFFF;--neutral-2:#EEEEF0;--navy:#273347;--navy-title:#B3BCC4;--navy-text:#8897A3;
+  --g1:#F8F8F9;--g2:#EFF0F1;--g3:#E1E2E4;--g4:#CDCFD2;--g5:#B9BCC0;--g6:#A1A4AA;--g7:#898E95;--g8:#676D76;--g9:#495058;--g10:#1B2432;
+  --warm-1:#FFD7A8;--warm-2:#F3C7BF;--warm-3:#D9BFEE;--warm-4:#BFB6F0;--warm-5:#A8C0F0;--warm-6:#BFD3F2;
+  --bg:var(--g1);--surface:var(--white);--surface-2:var(--g2);--card:var(--white);--panel:var(--white);
+  --text:var(--g10);--black:var(--g10);--text-2:var(--g9);--text-secondary:var(--g9);--muted:var(--g9);--dim:var(--g6);--text-3:var(--g6);
+  --line:rgba(225,226,228,.82);--line-hair:rgba(205,207,210,.72);--border:var(--g3);--border2:var(--g4);--border-2:var(--g4);
+  --brand:var(--purple-core);--brand-dark:var(--purple-dark);--brand-soft:var(--purple-light);
+  --primary:var(--purple-core);--primary-2:var(--purple-bright);--primary-dark:var(--purple-dark);--primary-soft:var(--purple-light);
+  --accent:var(--purple-core);--blue:var(--purple-core);--teal:var(--teal-core);
+  --good:var(--green-dark);--good-soft:var(--green-light);--green:var(--green-dark);--green-soft:var(--green-light);
+  --warn:var(--gold-dark);--warn-soft:var(--gold-light);--yellow:var(--gold-dark);--amber:var(--gold-dark);--yellow-bg:var(--gold-light);
+  --bad:var(--coral-dark);--bad-soft:var(--coral-light);--danger:var(--coral-dark);--red:var(--coral-dark);--red-bg:var(--coral-light);
+  --blue-bg:var(--purple-light);--green-bg:var(--green-light);
+  --radius-xl:24px;--radius-l:18px;--radius-m:12px;--radius-s:8px;
+  --shadow-soft:0 1px 2px rgba(39,51,71,.05),0 8px 24px rgba(39,51,71,.075);
+  --shadow-pop:0 16px 42px rgba(106,103,206,.16);
+  --font:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif!important;
+  color:var(--g10);
+  -webkit-font-smoothing:antialiased;
+  background:
+    linear-gradient(180deg, rgba(248,248,249,0) 0%, rgba(248,248,249,.08) 46%, rgba(248,248,249,.9) 78%, var(--g1) 94%) 0 0 / 100% 520px no-repeat,
+    linear-gradient(115deg, rgba(255,215,168,.50) 0%, rgba(243,199,191,.50) 22%, rgba(217,191,238,.50) 44%, rgba(191,182,240,.50) 60%, rgba(168,192,240,.50) 78%, rgba(191,211,242,.50) 100%) 0 0 / 100% 520px no-repeat,
+    var(--g1)!important;
+}
+body::before{
+  content:'';position:fixed;inset:0 0 auto 0;height:520px;pointer-events:none;z-index:-1;
+  background:
+    linear-gradient(115deg, transparent 0%, transparent 10%, rgba(255,255,255,.20) 10%, rgba(255,255,255,.20) 18%, transparent 18%),
+    linear-gradient(115deg, transparent 24%, rgba(255,255,255,.14) 24%, rgba(255,255,255,.14) 34%, transparent 34%),
+    linear-gradient(115deg, transparent 46%, rgba(255,255,255,.16) 46%, rgba(255,255,255,.16) 56%, transparent 56%),
+    linear-gradient(115deg, transparent 66%, rgba(255,255,255,.12) 66%, rgba(255,255,255,.12) 78%, transparent 78%),
+    linear-gradient(115deg, transparent 84%, rgba(255,255,255,.18) 84%, rgba(255,255,255,.18) 95%, transparent 95%);
+}
+a{color:var(--purple-dark)}
+a:hover{text-decoration:underline}
+code,kbd,pre,.mono,.kpi-val,.stat .v,.score,.score-pill,.det-score,.role-score strong,.scenario-score strong{
+  font-family:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+}
+code,kbd{background:var(--purple-light);color:var(--purple-dark);border-radius:6px;padding:.08em .42em}
+pre{background:var(--navy)!important;color:var(--navy-title)!important;border-radius:14px!important;box-shadow:var(--shadow-soft)}
+h1{color:var(--g10)!important;letter-spacing:0!important}
+h2,h3,h4{color:var(--g10);letter-spacing:0!important}
+.hero,.cover{
+  position:relative;overflow:hidden;border:0!important;border-radius:24px!important;box-shadow:var(--shadow-soft)!important;
+  background:
+    linear-gradient(115deg, rgba(255,215,168,.50) 0%, rgba(243,199,191,.50) 22%, rgba(217,191,238,.50) 44%, rgba(191,182,240,.50) 60%, rgba(168,192,240,.50) 78%, rgba(191,211,242,.50) 100%),
+    var(--white)!important;
+}
+.hero::before,.cover::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(115deg, transparent 0%, transparent 10%, rgba(255,255,255,.20) 10%, rgba(255,255,255,.20) 18%, transparent 18%),
+    linear-gradient(115deg, transparent 24%, rgba(255,255,255,.14) 24%, rgba(255,255,255,.14) 34%, transparent 34%),
+    linear-gradient(115deg, transparent 46%, rgba(255,255,255,.16) 46%, rgba(255,255,255,.16) 56%, transparent 56%),
+    linear-gradient(115deg, transparent 66%, rgba(255,255,255,.12) 66%, rgba(255,255,255,.12) 78%, transparent 78%),
+    linear-gradient(115deg, transparent 84%, rgba(255,255,255,.18) 84%, rgba(255,255,255,.18) 95%, transparent 95%);
+}
+.hero>* , .cover>*{position:relative;z-index:1}
+.eyebrow,.cover-tag,.badge,.tag,.cpill,.fchip,.source-badge,.mini-badge,.grade-tag,.cat-badge,.role-focus-badge,.ntag,.node-tag,.repo-chip{
+  border:0!important;border-radius:999px!important;font-weight:700;
+}
+.topbar,.filter-bar,.role-tabbar,.tabs,.header,.top-bar,nav:not(.sidebar-nav):not(.toc),.path-header,.conv-header,.conv-input-area,.rationale-bar{
+  border:0!important;box-shadow:var(--shadow-soft)!important;background:rgba(255,255,255,.78)!important;backdrop-filter:blur(14px);
+}
+.toc,.nav-links,.style-tabs,.nd-tabs,.ev-tabs,.scene-tabbar,.tabbar{
+  border:0!important;box-shadow:none!important;background:transparent!important;
+}
+section,.section,.map-section{
+  background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;
+}
+.section,.map-section{position:relative}
+.section::before,.map-section::before,main>section::before{
+  content:'';display:block;height:1px;width:100%;margin:0 0 22px;background:linear-gradient(90deg,rgba(106,103,206,.34),rgba(26,175,208,.18),transparent 78%);
+}
+:is(.card,.panel,.summary-card,.meta-card,.journey-node,.journey-card,.metric,.summary-pill,.stat,.kpi,.sc,.role-panel,.scenario-panel,.ref-section,.preview-box,.nc,.node-card,.pain-item,.step-metric,.detail-card,.api-card,.doc-home-card,.floor-res-card,.qs-card,.op-card,.ref-card,.insight-card,.callout,.rationale-card,.msg-bubble,.insert-popup,.quiz-content,.ai-chat-sidebar,.node-drawer,.sandbox-drawer,.qb-panel,.path-card){
+  border:0!important;box-shadow:var(--shadow-soft)!important;background:var(--white)!important;border-radius:16px!important;
+}
+:is(.role-panel,.scenario-panel,.preview-box,.ref-section){padding:24px}
+:is(.card,.summary-card,.meta-card,.journey-card,.metric,.stat,.kpi,.detail-card,.pain-item,.step-metric,.ref-card,.doc-home-card,.floor-res-card,.qs-card){padding:20px}
+:is(.card,.panel,.summary-card,.meta-card,.journey-node,.journey-card,.metric,.summary-pill,.stat,.kpi,.sc,.ref-section,.preview-box,.nc,.node-card,.pain-item,.step-metric,.detail-card,.api-card,.doc-home-card,.floor-res-card,.qs-card,.op-card,.path-card):hover{
+  box-shadow:var(--shadow-pop)!important;transform:translateY(-1px);
+}
+table,.score-table,.data-table{
+  width:100%;border-collapse:separate!important;border-spacing:0 8px!important;background:var(--white)!important;border:0!important;border-radius:16px!important;box-shadow:var(--shadow-soft)!important;overflow:hidden;
+}
+thead,thead tr,th{background:var(--white)!important;color:var(--g6)!important;text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:800;border:0!important}
+td,th{border:0!important;padding:14px 18px!important}
+tbody tr{background:var(--white)!important;border-radius:10px!important}
+tbody tr:hover td{background:var(--purple-light)!important}
+.score-pill,.score,.rank-pill,.det-grade,.stab-tag,.as-score,.step-metric-val,.persona-score,.role-score strong,.scenario-score strong{
+  font-weight:700;
+}
+.high,.ok,.gd-high,.stable{--pill-bg:var(--green-light);--pill-fg:var(--green-dark)}
+.mid,.gd-mid,.moderate{--pill-bg:var(--purple-light);--pill-fg:var(--purple-dark)}
+.low,.warn,.gd-low{--pill-bg:var(--gold-light);--pill-fg:var(--gold-dark)}
+.bad,.gd-bad,.unstable,.risk{--pill-bg:var(--coral-light);--pill-fg:var(--coral-dark)}
+.score-pill,.grade-tag,.rank-pill,.det-grade,.stab-tag,.mini-badge,.source-badge{background:var(--pill-bg,var(--purple-light))!important;color:var(--pill-fg,var(--purple-dark))!important}
+.score-bar,.m-bar,.p-bar,.cov-bar,.as-bar-track,.dim-bar-track,.sc-bar-track,.node-connector,.progress-track,.nb-monitor-bar-track{
+  background:var(--g2)!important;border-radius:999px!important;overflow:hidden;
+}
+.score-bar i,.m-bar i,.p-bar i,.cov-bar i,.as-bar-fill,.dim-bar-fill,.sc-bar-fill,.nb-monitor-bar-fill,.progress-fill{
+  background:linear-gradient(90deg,var(--purple-core),var(--teal-core))!important;border-radius:999px!important;
+}
+.icon,.h2-icon,.card-icon,.ci,.ref-logo,.mode-icon,.msg-avatar,.node-dot,.strip-dot,.cat-dot,.matrix-col-dot,.brand-logo{
+  border:0!important;background:var(--purple-light)!important;color:var(--purple-dark)!important;
+}
+button,.btn,.export-btn,.save-btn,.btn-fill,.btn-lg,.floor-btn-primary,.btn-generate-path,.pg-send,.pg-save-btn,.send-btn{
+  border:0!important;border-radius:10px!important;font-family:inherit;background:var(--purple-core);color:var(--white);
+}
+button:hover,.btn:hover,.export-btn:hover,.save-btn:hover,.btn-fill:hover,.btn-lg:hover,.floor-btn-primary:hover,.btn-generate-path:hover,.pg-send:hover,.pg-save-btn:hover,.send-btn:hover{
+  background:var(--purple-bright)!important;color:var(--white)!important;text-decoration:none!important;
+}
+input,textarea,select{
+  border:0!important;border-radius:10px!important;background:var(--g2)!important;color:var(--g10)!important;box-shadow:inset 0 0 0 1px rgba(225,226,228,.68);
+}
+input:focus,textarea:focus,select:focus{outline:0;box-shadow:inset 0 0 0 2px rgba(106,103,206,.36)!important;background:var(--white)!important}
+[style*="border-left"],[style*="border-right"],.border-red,.border-yellow{border-right:0!important}
+img{max-width:100%}
+svg text{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif}
+
+/* AscendOps width contract: this tool page uses custom roots, not .container/.section. */
+html,body{min-width:1440px}
+body{overflow-x:auto}
+.topbar,.filter-bar,.kpi-strip,.main-body{
+  width:1392px!important;
+  max-width:1392px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+.topbar,.filter-bar{
+  left:auto!important;
+  right:auto!important;
+}
+.kpi-strip{
+  padding-left:0!important;
+  padding-right:0!important;
+}
+.main-body{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 0;
+  align-items:start!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  gap:18px 16px!important;
+}
+.scene-list{
+  grid-column:1 / -1;
+  width:100%!important;
+  position:static!important;
+  top:auto!important;
+}
+#sceneListCards{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px!important;
+}
+#sceneListCards .sc{
+  width:auto!important;
+  min-width:0!important;
+  height:100%;
+}
+.scene-detail{
+  grid-column:1;
+  grid-row:2;
+  flex:1 1 auto!important;
+  min-width:0!important;
+}
+.rat-sidebar{
+  grid-column:2;
+  grid-row:2;
+}
+body.rat-open .main-body{grid-template-columns:minmax(0,1fr) 300px}
+body.rat-open .rat-sidebar{width:300px!important}
+.rat-sidebar-inner{width:300px!important}
+
+/* Final Mode-B correction: bind AscendOps rules to this page's real selectors. */
+:root{
+  --accent:var(--purple-core);
+  --risk:var(--coral-core);
+  --risk-dark:var(--coral-dark);
+  --warn:var(--gold-dark);
+}
+body{font-size:16px!important}
+.topbar,.filter-bar{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  padding-left:48px!important;
+  padding-right:48px!important;
+  background:rgba(255,255,255,.88)!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.topbar{height:64px!important}
+.filter-bar{top:64px!important;min-height:48px!important;gap:12px!important;justify-content:center!important}
+.tb-logo{font-size:18px!important;color:var(--coral-dark)!important;font-weight:800!important;margin-left:0!important}
+.tb-title{font-size:14px!important;color:var(--g9)!important}
+.tb-sep{color:var(--g6)!important;margin:0 8px!important}
+.tb-dims{margin-left:42px!important;gap:12px!important;align-items:center!important}
+.dim-tab{height:40px!important;font-size:15px!important;padding:0 24px!important;color:var(--g8)!important;border:0!important;border-radius:16px!important;display:flex!important;align-items:center!important;margin-bottom:0!important}
+.dim-tab.on{color:var(--purple-dark)!important;background:var(--purple-light)!important;font-weight:800!important}
+.period-pill,.export-btn{font-size:13px!important;border:0!important;border-radius:12px!important;padding:8px 13px!important;box-shadow:none!important}
+.export-btn{background:var(--purple-core)!important;color:var(--white)!important}
+.fl-lbl{font-size:12px!important;color:var(--g7)!important}
+.fchip{font-size:13px!important;padding:6px 13px!important;border:0!important;background:var(--white)!important;color:var(--g8)!important}
+.fchip.on{background:var(--purple-core)!important;color:var(--white)!important}
+.fl-sep{display:none!important}
+.kpi-strip{
+  width:1392px!important;
+  max-width:1392px!important;
+  padding:22px 0 18px!important;
+  gap:16px!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+.kpi{
+  min-height:148px!important;
+  padding:24px 24px 22px!important;
+  border:0!important;
+  border-radius:18px!important;
+  box-shadow:var(--shadow-soft)!important;
+}
+.kpi-lbl{font-size:12px!important;letter-spacing:.04em!important;margin-bottom:12px!important;color:var(--g8)!important}
+.kpi-val{font-size:52px!important;line-height:1!important;font-weight:500!important;color:var(--g10)!important;letter-spacing:0!important}
+.kpi-val span{font-size:15px!important;color:var(--g8)!important}
+.kpi-val.bad{color:var(--risk)!important}
+.kpi-val.mid{color:var(--gold-dark)!important}
+.kpi-delta{font-size:13px!important;margin-top:12px!important;color:var(--g8)!important}
+.kpi-delta.dn{color:var(--risk)!important}
+.cpill{font-size:12px!important;border-radius:999px!important;padding:5px 10px!important;background:var(--coral-light)!important;color:var(--risk-dark)!important}
+.cpill.mid{background:var(--gold-light)!important;color:var(--gold-dark)!important}
+.main-body{
+  width:1392px!important;
+  max-width:1392px!important;
+  padding-top:14px!important;
+  gap:22px!important;
+}
+#sceneListCards{gap:16px!important}
+.sc{border:0!important;border-radius:18px!important;padding:18px!important;box-shadow:var(--shadow-soft)!important}
+.sc.sel{box-shadow:0 1px 2px rgba(39,51,71,.05),0 14px 30px rgba(106,103,206,.14)!important}
+.sc-name{font-size:15px!important}
+.sc-score{font-size:30px!important;font-weight:500!important}
+.sc-score.bad,.det-score.bad,.rank-bar.bad,.as-score.bad,.step-metric-val.bad,.pain-score,.vod-trend.dn{color:var(--risk)!important}
+.sc-trend.dn,.step-metric-trend.dn,.as-obs b{color:var(--risk)!important}
+.rank-bar.bad,.as-bar-fill.bad{background:var(--risk)!important}
+.tool-chip.crit{background:var(--coral-light)!important;color:var(--risk-dark)!important}
+.stab-tag.unstable{background:var(--coral-light)!important;color:var(--risk-dark)!important}
+.sc-rank.bad,.grade-tag.bad,.det-grade.bad,.rank-pill,.radar-worst,.ev-tab.on .ev-tab-count,.pain-score{background:var(--coral-light)!important;color:var(--risk-dark)!important}
+.sc-trend,.grade-tag,.ev-chip,.cat-badge,.pain-status{font-size:12px!important}
+.scene-detail{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  overflow:visible!important;
+}
+.det-hdr{padding:24px 0 18px!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.det-name{font-size:24px!important}
+.det-score{font-size:56px!important;line-height:1!important;font-weight:500!important}
+.rank-ctx{padding:20px 30px!important;border:0!important;background:var(--white)!important;border-radius:18px!important;box-shadow:var(--shadow-soft)!important;margin-top:4px!important}
+.rank-pill{font-size:13px!important;border-radius:999px!important;padding:6px 12px!important}
+.rank-desc{font-size:16px!important}
+.rank-mean{font-size:13px!important}
+.radar-section{padding:24px 30px 28px!important;border:0!important;background:var(--white)!important;border-radius:18px!important;box-shadow:var(--shadow-soft)!important;margin-top:16px!important}
+.radar-lbl,.col-lbl{font-size:13px!important}
+.radar-worst{font-size:13px!important;border-radius:999px!important;padding:6px 12px!important}
+.radar-body{min-height:390px!important;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr)!important;gap:34px!important;align-items:center!important}
+.chart-col{padding-right:0!important;gap:16px!important}
+.radar-col{padding-left:0!important;gap:26px!important;justify-content:center!important}
+.stab-tag{font-size:13px!important;border-radius:999px!important;padding:6px 12px!important}
+.radar-legend{gap:14px!important;min-width:190px!important}
+.radar-dim-lbl{font-size:14px!important}
+.radar-dim-val{font-size:20px!important;width:42px!important;font-weight:700!important}
+.radar-dim-dot{width:11px!important;height:11px!important}
+.ev-tabs{margin-top:20px!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.ev-tab{font-size:15px!important;padding:14px 24px!important;border:0!important}
+.ev-tab.on{color:var(--purple-dark)!important;background:var(--purple-light)!important}
+.ev-tab .ev-tab-count{font-size:12px!important;border-radius:999px!important;padding:3px 7px!important}
+.ev-panels{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;margin-top:12px!important}
+.ev-panel{padding:0 0 36px!important}
+.agent-step-row{background:var(--white)!important;border:0!important;border-radius:16px!important;box-shadow:var(--shadow-soft)!important;padding:18px 20px!important;margin-bottom:12px!important}
+.agent-section-lbl,.tool-chain-lbl{font-size:13px!important}
+.agent-step-row{padding:18px 20px!important}
+.as-name{width:112px!important;font-size:15px!important}
+.as-summary,.as-obs-item,.pain-text,.pain-next-text,.vod-quote{font-size:14px!important}
+.as-score{font-size:16px!important;width:44px!important}
+.step-metrics{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))!important;gap:10px!important}
+.step-metric{border:0!important;border-radius:12px!important;padding:12px 14px!important;box-shadow:none!important;background:var(--g2)!important}
+.step-metric-lbl{font-size:12px!important}
+.step-metric-val{font-size:22px!important;font-weight:500!important}
+.pain-item,.vod-item{border:0!important;border-radius:14px!important;padding:16px 18px!important;box-shadow:var(--shadow-soft)!important}
+.pain-meta,.vod-src,.cat-count{font-size:12px!important}
+.pain-next{border-top:1px solid rgba(225,226,228,.65)!important}
+.pain-next-lbl{font-size:12px!important;color:var(--purple-dark)!important}
+.pain-next-text{color:var(--purple-dark)!important}
+.cat-badge.tool{background:var(--gold-light)!important;color:var(--gold-dark)!important}
+.float-rat-btn,.rat-sidebar-inner{border:0!important;box-shadow:var(--shadow-soft)!important}
+.rat-panel-hdr,.rat-num,.rat-source{color:var(--purple-dark)!important}
+.rat-num{background:var(--purple-core)!important;color:var(--white)!important}
+
+</style>
+
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <span class="tb-logo">CANN</span>
+  <span class="tb-sep">/</span>
+  <span class="tb-title">体验看板</span>
+  <div class="tb-dims">
+    <button class="dim-tab on" onclick="switchDim('prod',this)">产品易用性</button>
+    <button class="dim-tab" onclick="switchDim('comm',this)">社区易用性</button>
+  </div>
+  <div class="tb-right">
+    <div class="period-pill">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      2026-Q2 · 第7期
+    </div>
+    <button class="export-btn">↗ 导出摘要</button>
+  </div>
+</div>
+
+<!-- PROD VIEW -->
+<div id="prodView">
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="fl-lbl">芯片</span>
+    <span class="fchip on">A5</span>
+    <span class="fchip">A2 &amp; A3</span>
+    <div class="fl-sep"></div>
+    <span class="fl-lbl">角色</span>
+    <span class="fchip on">算子开发者</span>
+    <span class="fchip">AI 框架开发者</span>
+    <span class="fchip">应用开发者</span>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-lbl">整体健康评分</div>
+      <div class="kpi-val mid">68 <span>/ 100</span></div>
+      <div class="kpi-delta dn">↓ -4 vs 上期</div>
+    </div>
+    <div class="kpi border-red">
+      <div class="kpi-lbl">严重场景</div>
+      <div class="kpi-val bad">2 <span>个</span></div>
+      <div class="kpi-delta dn">↑ 较上期 +1</div>
+    </div>
+    <div class="kpi border-yellow">
+      <div class="kpi-lbl">活跃痛点 · 有 Next Step</div>
+      <div class="kpi-val">12 <span>条</span></div>
+      <div class="kpi-delta">8 条已有明确行动</div>
+    </div>
+    <div class="kpi border-red">
+      <div class="kpi-lbl">本期优先处理</div>
+      <div class="conclusion-pills">
+        <span class="cpill">算子复现部署</span>
+        <span class="cpill">Builtin 算子定制</span>
+      </div>
+      <div class="kpi-delta">综合评分 + 痛点密度自动排序</div>
+    </div>
+  </div>
+
+  <!-- MAIN BODY -->
+  <div class="main-body">
+
+    <!-- SCENE LIST -->
+    <div class="scene-list">
+      <div class="sl-hdr">
+        场景
+        <div class="sort-toggle">
+          <button class="sort-btn on" id="sortScore" onclick="setSort('score')">问题优先</button>
+          <button class="sort-btn" id="sortCatalog" onclick="setSort('catalog')">目录顺序</button>
+        </div>
+      </div>
+      <div id="sceneListCards"></div>
+    </div>
+
+    <!-- SCENE DETAIL -->
+    <div class="scene-detail" id="sceneDetail">
+      <div class="sd-hint" id="sdHint">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+        点击左侧场景查看三类证据
+      </div>
+
+      <div id="sdContent" style="display:none">
+
+        <!-- DETAIL HEADER -->
+        <div class="det-hdr">
+          <div class="det-name-row">
+            <div class="det-name" id="detName"></div>
+            <div class="det-grade" id="detGrade"></div>
+            <div class="det-score" id="detScore"></div>
+          </div>
+        </div>
+
+        <!-- RANK CONTEXT ⑤ -->
+        <div class="rank-ctx hl-5" style="position:relative">
+          <div class="callout-badge" style="top:-7px;right:-7px">⑤</div>
+          <div class="rank-pill" id="rankPill"></div>
+          <div class="rank-desc" id="rankDesc"></div>
+          <div class="rank-mini-bars" id="rankBars"></div>
+          <div class="rank-mean" id="rankMean"></div>
+        </div>
+
+        <!-- RADAR ③ -->
+        <div class="radar-section hl-3" style="position:relative">
+          <div class="callout-badge" style="top:-7px;right:-7px">③</div>
+          <div class="radar-top">
+            <div class="radar-lbl">评测趋势 &amp; 5 维诊断</div>
+            <div class="radar-worst" id="radarWorst"></div>
+          </div>
+          <div class="radar-body" id="radarBody"></div>
+        </div>
+
+        <!-- EVIDENCE TABS ① -->
+        <div class="ev-tabs hl-1" style="position:relative">
+          <div class="callout-badge" style="top:-7px;right:-7px">①</div>
+          <button class="ev-tab on" onclick="switchEvTab('agent',this)">
+            Agent 评分
+            <span class="ev-tab-count" id="agentTabCount"></span>
+          </button>
+          <button class="ev-tab" onclick="switchEvTab('pain',this)">
+            痛点分析
+            <span class="ev-tab-count" id="painTabCount"></span>
+          </button>
+          <button class="ev-tab" onclick="switchEvTab('vod',this)">
+            VOD 原声
+            <span class="ev-tab-count" id="vodTabCount"></span>
+          </button>
+        </div>
+
+        <div class="ev-panels">
+          <div class="ev-panel on" id="panel-agent"></div>
+          <div class="ev-panel" id="panel-pain"></div>
+          <div class="ev-panel" id="panel-vod"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RATIONALE SIDEBAR -->
+    <div class="rat-sidebar" id="ratSidebar">
+      <div class="rat-sidebar-inner">
+        <div class="rat-panel-hdr">设计点</div>
+
+        <div class="rat-item" onmouseenter="hlRat(1)" onmouseleave="unhlRat()">
+          <div class="rat-num">①</div>
+          <div class="rat-content">
+            <div class="rat-head">三类证据并列 · Agent / 痛点 / VOD</div>
+            <div class="rat-source">洞察1 · DX Core 4（800+团队 / 40,000+开发者）</div>
+            <div class="rat-body">Agent评分告诉你"流程哪步卡住了"，VOD告诉你"用户是否感知到这个问题"。两类数据互证才能避免"修了技术问题却没解决用户感受"。</div>
+            <div class="rat-pointer">→ 指向：场景详情的三个证据 Tab</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(2)" onmouseleave="unhlRat()">
+          <div class="rat-num">②</div>
+          <div class="rat-content">
+            <div class="rat-head">颜色编码 + 按评分排序（最差在上）</div>
+            <div class="rat-source">洞察2 · Spotify Soundcheck · Datadog Scorecard</div>
+            <div class="rat-body">红/黄/绿色彩语义让决策者 3 秒内扫描出最危险场景，无需逐一读数字。阈值：红&lt;60 / 黄60–80 / 绿&gt;80。场景列表按评分升序，最差永远在顶部。</div>
+            <div class="rat-pointer">→ 指向：左侧场景列表的等级标签和排序</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(3)" onmouseleave="unhlRat()">
+          <div class="rat-num">③</div>
+          <div class="rat-content">
+            <div class="rat-head">5 维雷达图 · 定位最弱维度</div>
+            <div class="rat-source">洞察3 · 从均值向诊断升级 · Apache DevLake · Grafana DORA</div>
+            <div class="rat-body">"均分57"无法告诉你该从哪里下手。雷达图把得分拆成开发成功率/文档质量/环境效率/调试能力/工具稳定性，让团队一眼看出哪个维度拖了腿——比如算子复现的调试能力仅34，直接指向 AIC 日志缺失这个根因。</div>
+            <div class="rat-pointer">→ 指向：场景详情中的 5 维雷达图</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(4)" onmouseleave="unhlRat()">
+          <div class="rat-num">④</div>
+          <div class="rat-content">
+            <div class="rat-head">每个痛点内嵌 Next Step 行动链接</div>
+            <div class="rat-source">洞察4 · LinearB 工程效能看板 · Spotify Soundcheck Tracks</div>
+            <div class="rat-body">看板的终点是行动，不是观察。每条痛点附"改进建议 + 责任团队"，让 PM 无需离开看板就能判断"这条痛点的下一步是什么"，从报告工具升级为决策工具。</div>
+            <div class="rat-pointer">→ 指向：痛点 Tab 中每条痛点底部的 Next Step</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(5)" onmouseleave="unhlRat()">
+          <div class="rat-num">⑤</div>
+          <div class="rat-content">
+            <div class="rat-head">加入参照系，让评分有意义</div>
+            <div class="rat-source">洞察5 · LinearB 2025 Benchmarks · DX Core 4 DXI 指数</div>
+            <div class="rat-body">"57分"单独看无意义。"4个场景中最差，低于均值11分"立刻建立危机感。参照系还包括角色内所有场景的小型柱状图，让排名一眼可见。</div>
+            <div class="rat-pointer">→ 指向：场景详情顶部的排名 + 对比柱状图</div>
+          </div>
+        </div>
+
+        <div class="rat-item" onmouseenter="hlRat(6)" onmouseleave="unhlRat()">
+          <div class="rat-num">⑥</div>
+          <div class="rat-content">
+            <div class="rat-head">痛点按类型分组（文档/工具/API/环境）</div>
+            <div class="rat-source">分析 · 交互设计方向 · Flow B 设计需求</div>
+            <div class="rat-body">分析明确指出：按文档/工具/API/环境归类，避免长列表认知过载。分类后可直接看出"这个场景的问题集中在哪类"，技术Owner无需自己归纳。</div>
+            <div class="rat-pointer">→ 指向：痛点 Tab 中的分类标签组</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- COMMUNITY VIEW -->
+<div id="commView" style="display:none">
+  <div class="community-shell">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#CDCFD2" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    <h3>社区易用性 · 入门开发者视图</h3>
+    <p>基于 Agent 对 S0~S5 旅程（搜索发现 / 环境检查 / 样例体验 / 开发编译 / 测试验证 / 反馈贡献）的端到端评测，展示任务完成率、障碍点分布和 VOD 原声。</p>
+    <p style="color:#FC636B;font-size:12px;font-weight:600">旅程评测数据接入中 · 预计下期上线</p>
+  </div>
+</div>
+
+<!-- FLOATING TOGGLE BUTTON -->
+<button class="float-rat-btn" id="floatRat" onclick="toggleRat()">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  设计点
+</button>
+
+<script>
+// ── DATA ──
+const scenarios = [
+  {
+    id:0, name:'算子复现部署', score:57, grade:'bad', gradeLabel:'严重',
+    runs:[63,59,61,54,58,60,57], trend:-3, trendDir:'dn',
+    radar:[44,55,63,34,50],
+    painCount:8, vodCount:71,
+    agentSteps:[
+      {name:'感知学习', score:54, cls:'bad',
+       summary:'感知学习阶段阻力最大，文档质量是根本瓶颈。开发者平均需 8.3 轮检索才能获取有效信息，整体自助解决率不足 50%。',
+       observations:['文档与代码版本不同步，准确率仅 58%，开发者被迫依赖口口相传','文档检索有效率 47%，大量时间被无效结果消耗','21% 的开发者在感知学习阶段直接放弃'],
+       metrics:[
+         {l:'总检索次数',      v:'8.3 次', trend:'↑+1.2', trendCls:'dn'},
+         {l:'文档检索有效率',  v:'47%',    trend:'↓-6%',  trendCls:'dn'},
+         {l:'文档完整性',      v:'61%',    trend:'↓-3%',  trendCls:'dn'},
+         {l:'文档准确率',      v:'58%',    trend:'↓-5%',  trendCls:'dn'},
+         {l:'文档易理解性',    v:'67%',    trend:'→持平',  trendCls:'flat'},
+         {l:'自助解决率',      v:'41%',    trend:'↓-4%',  trendCls:'dn'},
+         {l:'知识覆盖率',      v:'68%',    trend:'→持平',  trendCls:'flat'},
+         {l:'放弃率',          v:'21%',    trend:'↑+3%',  trendCls:'dn'},
+       ]},
+      {name:'环境准备', score:71, cls:'mid',
+       summary:'环境准备阶段主要受版本依赖问题拖累，整体可完成但需多次重试，流程引导不足。',
+       observations:['版本依赖矛盾导致装包平均重试 2.4 次，安装失败率 18%','部署步骤数比预期多出 3.2 步，流程缺乏引导','装包耗时 18 分钟，高于合理预期'],
+       metrics:[
+         {l:'代码仓拉取尝试次数', v:'1.2 次', trend:'→持平', trendCls:'flat'},
+         {l:'下载包尝试次数',     v:'1.8 次', trend:'↑+0.3',trendCls:'dn'},
+         {l:'装包尝试次数',       v:'2.4 次', trend:'↑+0.6',trendCls:'dn'},
+         {l:'装包耗时',           v:'18 min', trend:'↑+2min',trendCls:'dn'},
+         {l:'安装步骤数（超预期）',v:'+3.2 步',trend:'↑',    trendCls:'dn'},
+         {l:'部署时间',           v:'45 min', trend:'↑+5min',trendCls:'dn'},
+         {l:'安装失败率',         v:'18%',    trend:'↑+2%', trendCls:'dn'},
+       ]},
+      {name:'环境验证', score:68, cls:'mid',
+       summary:'环境验证阶段编译总成功率尚可，但首次通过率低，错误信息质量差，开发者难以自主定位问题。',
+       observations:['一次编译通过率仅 44%，多数开发者需重复编译才能通过','AIC error 日志未显示报错指令，错误信息可读性 52%','错误自愈成功率仅 23%，强依赖人工介入排查'],
+       metrics:[
+         {l:'平均算子编译耗时',   v:'12 min', trend:'↑+1min',trendCls:'dn'},
+         {l:'算子编译成功率',     v:'79%',    trend:'→持平', trendCls:'flat'},
+         {l:'一次编译通过率',     v:'44%',    trend:'↓-5%', trendCls:'dn'},
+         {l:'错误信息可读性',     v:'52%',    trend:'→持平', trendCls:'flat'},
+         {l:'平均重编译次数',     v:'2.1 次', trend:'↑+0.3',trendCls:'dn'},
+         {l:'用例验证尝试次数',   v:'2.1 次', trend:'↑+0.3',trendCls:'dn'},
+         {l:'错误自愈成功率',     v:'23%',    trend:'↑+2%', trendCls:'up'},
+         {l:'放弃率',             v:'5%',     trend:'→持平', trendCls:'flat'},
+       ]},
+    ],
+    tools:[
+      {name:'WebSearch',rate:'91%',cls:'ok'},{name:'BrowserNavigate',rate:'88%',cls:'ok'},
+      {name:'DocFetch',rate:'54%',cls:'warn'},{name:'CompileCmd',rate:'44%',cls:'crit'},
+    ],
+    pains:[
+      {cat:'tool', catLabel:'工具类', score:92, text:'AIC error 日志未显示报错指令，开发者无法自主定位，全链路依赖华为工程师介入排查', meta:'腾讯 · 蚂蚁 | 算子分队 | 优先级：高', status:'特性开发中', statusCls:'progress', nextStep:'立项 AIC-2341：增加错误上下文输出及日志定位指引（Q2）'},
+      {cat:'doc', catLabel:'文档类', score:78, text:'文档与代码版本不同步，参数描述多处错误，仅靠官方文档无法完成复现，依赖口口相传', meta:'美团 | 资料分队 | 优先级：高', status:'规划中', statusCls:'planned', nextStep:'文档同步检查纳入发版流程，Q2 覆盖率达 100%'},
+    ],
+    vods:[
+      {vol:71, trend:'↑+8', trendCls:'dn', text:'多算子层存在空指针校验缺失、编译失败、core dump、精度异常、内存越界等稳定性问题', src:'算子仓 · 社区 issue · 社区开发者'},
+      {vol:61, trend:'↑+5', trendCls:'dn', text:'CANN 多算子仓文档参数错误、格式错误、描述不一致及内容缺失，多处版本对不上', src:'资料仓库 · 社区 issue · 社区开发者'},
+    ]
+  },
+  {
+    id:1, name:'Builtin 算子定制修改', score:62, grade:'bad', gradeLabel:'严重',
+    runs:[68,65,63,60,62,64,62], trend:-5, trendDir:'dn',
+    radar:[38,50,68,49,55],
+    painCount:6, vodCount:40,
+    agentSteps:[
+      {name:'感知学习', score:61, cls:'bad',
+       summary:'感知学习阶段文档覆盖严重不足，Builtin 算子定制缺乏完整参考体系，开发者无法独立建立知识框架。',
+       observations:['关键接口说明完整性仅 48%，核心 API 缺乏有效说明','参考样例可获取性 42%，开发者无从参照实现','自助解决率 38%，18% 的开发者中途放弃'],
+       metrics:[
+         {l:'文档覆盖率',         v:'61%',    trend:'↓-4%', trendCls:'dn'},
+         {l:'关键接口说明完整性', v:'48%',    trend:'↓-7%', trendCls:'dn'},
+         {l:'文档检索有效率',     v:'58%',    trend:'↓-3%', trendCls:'dn'},
+         {l:'参考样例可获取性',   v:'42%',    trend:'↓-8%', trendCls:'dn'},
+         {l:'文档易理解性',       v:'64%',    trend:'→持平', trendCls:'flat'},
+         {l:'自助解决率',         v:'38%',    trend:'↓-5%', trendCls:'dn'},
+         {l:'放弃率',             v:'18%',    trend:'↑+2%', trendCls:'dn'},
+       ]},
+      {name:'算子设计与实现', score:58, cls:'bad',
+       summary:'算子设计与实现阶段问题最严重，图模式支持缺失导致开发者在关键设计决策上无法自主推进。',
+       observations:['图模式适配率仅 52%，常见使用场景未覆盖','首次实现成功率 38%，平均需重试 3.1 次','14% 的开发者在此阶段放弃，高于其他环节'],
+       metrics:[
+         {l:'图模式适配率',     v:'52%',    trend:'↓-8%', trendCls:'dn'},
+         {l:'样例参考可用性',   v:'44%',    trend:'↓-6%', trendCls:'dn'},
+         {l:'接口调用成功率',   v:'71%',    trend:'→持平', trendCls:'flat'},
+         {l:'首次实现成功率',   v:'38%',    trend:'↓-7%', trendCls:'dn'},
+         {l:'平均重试次数',     v:'3.1 次', trend:'↑+0.4',trendCls:'dn'},
+         {l:'放弃率',           v:'14%',    trend:'↑+2%', trendCls:'dn'},
+       ]},
+      {name:'功能调测', score:71, cls:'mid',
+       summary:'功能调测阶段精度通过率可接受，但调试信息质量差阻碍了开发者自主定位错误，仍需依赖外部支持。',
+       observations:['错误日志可定位性 47%，开发者无法将日志映射到具体代码行','调试信息可读性 52%，需依赖经验猜测问题根因','平均调测轮次 2.8 次，定位成本偏高'],
+       metrics:[
+         {l:'功能调测成功率',   v:'71%',    trend:'→持平', trendCls:'flat'},
+         {l:'调试信息可读性',   v:'52%',    trend:'→持平', trendCls:'flat'},
+         {l:'错误日志可定位性', v:'47%',    trend:'↓-3%', trendCls:'dn'},
+         {l:'精度通过率',       v:'79%',    trend:'↑+2%', trendCls:'up'},
+         {l:'平均调测轮次',     v:'2.8 次', trend:'↑+0.2',trendCls:'dn'},
+         {l:'放弃率',           v:'8%',     trend:'→持平', trendCls:'flat'},
+       ]},
+    ],
+    tools:[
+      {name:'DocSearch',rate:'61%',cls:'warn'},{name:'GraphCompile',rate:'58%',cls:'crit'},
+      {name:'DebugLog',rate:'52%',cls:'crit'},{name:'AccuracyCheck',rate:'88%',cls:'ok'},
+    ],
+    pains:[
+      {cat:'doc', catLabel:'文档类', score:88, text:'图模式类型缺失，算子设计与实现阶段缺乏参考样例，开发者无从下手', meta:'京东 | 算子分队 | 优先级：高', status:'特性开发中', statusCls:'progress', nextStep:'补充图模式 Builtin 算子完整样例库（Q2 Q3）'},
+      {cat:'tool', catLabel:'工具类', score:72, text:'Builtin 算子定制文档覆盖率低，关键接口说明缺失，调试信息不可读', meta:'美团 | 资料分队 | 优先级：中', status:'规划中', statusCls:'planned', nextStep:'接口文档覆盖率提升至 90%，纳入 Q3 里程碑'},
+    ],
+    vods:[
+      {vol:35, trend:'↑+3', trendCls:'dn', text:'transformer 算子存在图模式类型缺失、编码韧性不足及描述不一致等多类问题', src:'算子仓 · 社区 issue · 社区开发者'},
+      {vol:40, trend:'→持平', trendCls:'flat', text:'算子资料文档格式不规范、参数描述错误、命令目录错误等多类内容错误', src:'资料仓库 · 社区 issue · 社区开发者'},
+    ]
+  },
+  {
+    id:2, name:'算子迁移部署', score:69, grade:'mid', gradeLabel:'待改善',
+    runs:[67,70,68,65,72,69,71], trend:2, trendDir:'up',
+    radar:[71,72,58,52,68],
+    painCount:5, vodCount:33,
+    agentSteps:[
+      {name:'感知学习', score:72, cls:'mid',
+       summary:'感知学习阶段总体表现尚可，迁移相关文档有一定基础，但边界场景覆盖不足，开发者仍需自行探索。',
+       observations:['边界场景覆盖率仅 52%，非常规 shape 缺乏指引','部分参数描述与实际行为不一致，需反复验证','自助解决率 64%，仍有约 1/3 开发者依赖外部帮助'],
+       metrics:[
+         {l:'信息可获取性',     v:'74%',    trend:'↑+3%', trendCls:'up'},
+         {l:'文档完整性',       v:'68%',    trend:'↑+2%', trendCls:'up'},
+         {l:'文档准确性',       v:'73%',    trend:'↑+4%', trendCls:'up'},
+         {l:'文档易理解性',     v:'76%',    trend:'↑+3%', trendCls:'up'},
+         {l:'边界场景覆盖率',   v:'52%',    trend:'→持平', trendCls:'flat'},
+         {l:'自助解决率',       v:'64%',    trend:'↑+2%', trendCls:'up'},
+         {l:'放弃率',           v:'9%',     trend:'↓-1%', trendCls:'up'},
+       ]},
+      {name:'算子迁移', score:68, cls:'mid',
+       summary:'算子迁移环节受工具覆盖率限制，复杂 shape 场景无法自动化处理，静默失败是主要风险。',
+       observations:['shape 覆盖率 68%，复杂 shape 需手工处理，平均尝试 3.4 次','静默失败率 18%，失败时无明确错误提示，开发者无法判断原因','边界 case 处理率仅 52%，高风险场景缺乏保护机制'],
+       metrics:[
+         {l:'迁移成功率',       v:'71%',    trend:'↑+2%', trendCls:'up'},
+         {l:'平均尝试次数',     v:'3.4 次', trend:'↑+0.5',trendCls:'dn'},
+         {l:'shape 覆盖率',     v:'68%',    trend:'→持平', trendCls:'flat'},
+         {l:'边界 case 处理率', v:'52%',    trend:'↓-3%', trendCls:'dn'},
+         {l:'静默失败率',       v:'18%',    trend:'↑+2%', trendCls:'dn'},
+         {l:'错误提示可读性',   v:'49%',    trend:'→持平', trendCls:'flat'},
+         {l:'平均迁移耗时',     v:'18 min', trend:'↑+2min',trendCls:'dn'},
+         {l:'放弃率',           v:'8%',     trend:'↑+1%', trendCls:'dn'},
+       ]},
+      {name:'功能调测', score:80, cls:'ok',
+       summary:'功能调测阶段表现良好，精度验证工具完备，L0/L1 达标率高，整体自动化程度较高。',
+       observations:['L2 场景有少量边界 case 需人工介入，占比约 24%','自动化覆盖率 81%，约 1/5 场景仍依赖手动验证'],
+       metrics:[
+         {l:'精度通过率',       v:'88%',    trend:'↑+3%', trendCls:'up'},
+         {l:'L0 达标率',        v:'91%',    trend:'↑+2%', trendCls:'up'},
+         {l:'L1 达标率',        v:'85%',    trend:'↑+1%', trendCls:'up'},
+         {l:'L2 达标率',        v:'76%',    trend:'→持平', trendCls:'flat'},
+         {l:'平均调测耗时',     v:'8 min',  trend:'↓-1min',trendCls:'up'},
+         {l:'自动化覆盖率',     v:'81%',    trend:'↑+4%', trendCls:'up'},
+         {l:'放弃率',           v:'2%',     trend:'→持平', trendCls:'flat'},
+       ]},
+    ],
+    tools:[
+      {name:'MigrateScript',rate:'68%',cls:'warn'},{name:'ShapeCheck',rate:'52%',cls:'crit'},
+      {name:'CompatCheck',rate:'83%',cls:'ok'},{name:'AccuracyCheck',rate:'91%',cls:'ok'},
+    ],
+    pains:[
+      {cat:'tool', catLabel:'工具类', score:85, text:'迁移工具对复杂 shape 支持不完整，边界情况静默失败、无明确错误提示，开发者无法判断失败原因', meta:'蚂蚁 | 算子编程分队 | 优先级：高', status:'特性开发中', statusCls:'progress', nextStep:'Q2 完成 shape 覆盖率提升至 85%，增加边界 case 静默失败提示'},
+      {cat:'doc', catLabel:'文档类', score:64, text:'文档与代码版本不同步，迁移路径描述缺少边界场景说明，需口耳相传', meta:'腾讯 | 资料分队 | 优先级：中', status:'规划中', statusCls:'planned', nextStep:'边界场景文档专项补充，纳入下期评测验证'},
+    ],
+    vods:[
+      {vol:61, trend:'↑+5', trendCls:'dn', text:'CANN 多算子仓存在文档参数错误、格式错误、描述不一致及内容缺失等多类资料问题', src:'资料仓库 · 社区 issue · 社区开发者'},
+      {vol:33, trend:'→持平', trendCls:'flat', text:'ops-transformer 仓量化适配不足、多算子 shape 拦截缺失、编译依赖缺陷及精度失败', src:'算子仓 · 社区 issue · 社区开发者'},
+    ]
+  },
+  {
+    id:3, name:'算子基本功能实现', score:84, grade:'ok', gradeLabel:'健康',
+    runs:[82,85,83,86,84,83,84], trend:4, trendDir:'up',
+    radar:[79,85,88,82,87],
+    painCount:2, vodCount:40,
+    agentSteps:[
+      {name:'感知学习', score:85, cls:'ok',
+       summary:'感知学习阶段整体健康，文档质量良好，开发者可高效获取所需信息。',
+       observations:['少量高级 API 说明待补充，文档覆盖率未达 100%'],
+       metrics:[
+         {l:'文档完整性',       v:'84%',    trend:'↑+3%', trendCls:'up'},
+         {l:'文档准确率',       v:'88%',    trend:'↑+2%', trendCls:'up'},
+         {l:'文档检索有效率',   v:'82%',    trend:'↑+4%', trendCls:'up'},
+         {l:'文档易理解性',     v:'86%',    trend:'↑+2%', trendCls:'up'},
+         {l:'自助解决率',       v:'79%',    trend:'↑+5%', trendCls:'up'},
+         {l:'知识覆盖率',       v:'91%',    trend:'↑+3%', trendCls:'up'},
+         {l:'放弃率',           v:'4%',     trend:'↓-1%', trendCls:'up'},
+       ]},
+      {name:'算子设计与实现', score:88, cls:'ok',
+       summary:'算子设计与实现阶段参考样例完备，开发者整体顺畅，首次尝试成功率高，重试成本低。',
+       observations:['极少数复杂场景首次实现失败，平均重试 1.4 次'],
+       metrics:[
+         {l:'首次实现成功率',   v:'79%',    trend:'↑+3%', trendCls:'up'},
+         {l:'接口调用成功率',   v:'91%',    trend:'↑+1%', trendCls:'up'},
+         {l:'样例可用性',       v:'88%',    trend:'↑+4%', trendCls:'up'},
+         {l:'平均重试次数',     v:'1.4 次', trend:'↓-0.2',trendCls:'up'},
+         {l:'放弃率',           v:'3%',     trend:'→持平', trendCls:'flat'},
+       ]},
+      {name:'功能调测', score:91, cls:'ok',
+       summary:'功能调测阶段自动化完善，L0/L1/L2 全面达标，放弃率仅 2%，是 4 个场景中最健康的环节。',
+       observations:['自动化覆盖率 81%，约 19% 场景尚需手动验证'],
+       metrics:[
+         {l:'精度通过率',       v:'91%',    trend:'↑+3%', trendCls:'up'},
+         {l:'L0 达标率',        v:'94%',    trend:'↑+2%', trendCls:'up'},
+         {l:'L1 达标率',        v:'89%',    trend:'↑+1%', trendCls:'up'},
+         {l:'L2 达标率',        v:'82%',    trend:'↑+2%', trendCls:'up'},
+         {l:'自动化覆盖率',     v:'81%',    trend:'↑+4%', trendCls:'up'},
+         {l:'平均调测耗时',     v:'6 min',  trend:'↓-1min',trendCls:'up'},
+         {l:'放弃率',           v:'2%',     trend:'→持平', trendCls:'flat'},
+       ]},
+    ],
+    tools:[
+      {name:'DocSearch',rate:'85%',cls:'ok'},{name:'CodeCompile',rate:'82%',cls:'ok'},
+      {name:'AccuracyCheck',rate:'94%',cls:'ok'},{name:'PerfAnalyzer',rate:'88%',cls:'ok'},
+    ],
+    pains:[
+      {cat:'tool', catLabel:'工具类', score:45, text:'性能调优阶段缺少自动化工具，VEC ratio 调优建议不够具体，开发者难以直接落地', meta:'腾讯 | 工具链分队 | 优先级：低', status:'规划中', statusCls:'planned', nextStep:'调优建议可操作化改造，纳入 Q3 规划'},
+    ],
+    vods:[
+      {vol:40, trend:'→持平', trendCls:'flat', text:'算子资料文档格式不规范、参数描述错误等多类内容错误，主要为低优先级遗留问题', src:'资料仓库 · 社区 issue · 社区开发者'},
+    ]
+  },
+];
+
+// 场景目录顺序（产品定义顺序，按任务复杂度递进）
+const catalogOrder = [0, 2, 1, 3]; // 复现部署→迁移部署→Builtin定制→基本功能实现
+
+const allScores = scenarios.map(s=>s.score);
+const meanScore = Math.round(allScores.reduce((a,b)=>a+b)/allScores.length);
+
+let sortMode = 'score';
+
+// ── SVG HELPERS ──
+function sparkSvg(data,w,h,color){
+  const min=Math.min(...data),max=Math.max(...data),range=max-min||1;
+  const pts=data.map((v,i)=>`${(i/(data.length-1))*w},${h-2-((v-min)/range)*(h-5)}`).join(' ');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${w}" cy="${h-2-((data[data.length-1]-min)/range)*(h-5)}" r="2.5" fill="${color}"/></svg>`;
+}
+
+const radarDims=['开发成功率','文档质量','环境效率','调试能力','工具稳定性'];
+
+function trendSvg(runs,W,H){
+  const PY=10,PX=16,range=(Math.max(...runs)+6)-(Math.min(...runs)-6);
+  const min=Math.min(...runs)-6;
+  const x=i=>PX+(i/(runs.length-1))*(W-2*PX);
+  const y=v=>PY+(1-(v-min)/range)*(H-2*PY);
+  const mean=runs.reduce((a,b)=>a+b)/runs.length;
+  const clr=v=>v<60?'#FC636B':v<80?'#FD9A00':'#37C597';
+  let s=`<svg width="${W}" height="${H+18}" viewBox="0 0 ${W} ${H+18}" style="overflow:visible;display:block">`;
+  s+=`<line x1="${PX}" y1="${y(mean)}" x2="${W-PX}" y2="${y(mean)}" stroke="#CDCFD2" stroke-dasharray="3,3" stroke-width="1"/>`;
+  s+=`<text x="${W-PX+8}" y="${y(mean)+4}" font-size="12" fill="#A1A4AA" font-family="Inter,sans-serif">均${Math.round(mean)}</text>`;
+  const pts=runs.map((v,i)=>`${x(i)},${y(v)}`).join(' ');
+  s+=`<polyline points="${pts}" fill="none" stroke="#E1E2E4" stroke-width="1.5"/>`;
+  runs.forEach((v,i)=>{
+    const last=i===runs.length-1,c=clr(v);
+    if(last) s+=`<circle cx="${x(i)}" cy="${y(v)}" r="6" fill="${c}" fill-opacity=".13" stroke="none"/>`;
+    s+=`<circle cx="${x(i)}" cy="${y(v)}" r="${last?4:3}" fill="${c}" stroke="#FFFFFF" stroke-width="1.5"/>`;
+    s+=`<text x="${x(i)}" y="${H+20}" font-size="12" fill="${last?c:'#A1A4AA'}" text-anchor="middle" font-weight="${last?700:400}" font-family="Inter,sans-serif">${v}</text>`;
+  });
+  const li=runs.length-1;
+  s+=`<text x="${x(li)}" y="${y(runs[li])-12}" font-size="12" fill="${clr(runs[li])}" text-anchor="middle" font-weight="700" font-family="Inter,sans-serif">本次</text>`;
+  s+=`</svg>`;
+  return s;
+}
+
+function radarSvg(vals,size){
+  const cx=size/2,cy=size/2,R=size*0.36,n=vals.length;
+  const ang=i=>(-Math.PI/2)+(2*Math.PI/n)*i;
+  const px=(i,r)=>cx+r*Math.cos(ang(i));
+  const py=(i,r)=>cy+r*Math.sin(ang(i));
+  const clr=v=>v>=80?'#37C597':v>=60?'#FD9A00':'#FC636B';
+
+  let svg=`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="flex-shrink:0">`;
+
+  // background rings
+  [0.25,0.5,0.75,1].forEach(p=>{
+    const pts=Array.from({length:n},(_,i)=>`${px(i,R*p)},${py(i,R*p)}`).join(' ');
+    svg+=`<polygon points="${pts}" fill="${p===1?'#F8F8F9':'none'}" stroke="#E1E2E4" stroke-width="${p===1?1.5:1}"/>`;
+  });
+  // axes
+  for(let i=0;i<n;i++)
+    svg+=`<line x1="${cx}" y1="${cy}" x2="${px(i,R)}" y2="${py(i,R)}" stroke="#E1E2E4" stroke-width="1"/>`;
+
+  // data polygon
+  const dpts=vals.map((v,i)=>`${px(i,R*v/100)},${py(i,R*v/100)}`).join(' ');
+  svg+=`<polygon points="${dpts}" fill="#FC636B" fill-opacity=".14" stroke="#FC636B" stroke-width="2"/>`;
+
+  // dots + value labels
+  vals.forEach((v,i)=>{
+    const c=clr(v);
+    const dx=px(i,R*v/100),dy=py(i,R*v/100);
+    svg+=`<circle cx="${dx}" cy="${dy}" r="3.5" fill="${c}" stroke="#FFFFFF" stroke-width="1.5"/>`;
+    // offset label away from center
+    const ox=(dx-cx)*0.3,oy=(dy-cy)*0.3;
+    svg+=`<text x="${dx+ox}" y="${dy+oy+(oy<0?-8:16)}" font-size="13" font-family="Inter,sans-serif" fill="${c}" text-anchor="middle" font-weight="700">${v}</text>`;
+  });
+
+  // axis labels at outer ring + extra margin
+  const lblR=R+22;
+  radarDims.forEach((lbl,i)=>{
+    const lx=px(i,lblR),ly=py(i,lblR);
+    const anchor=lx<cx-4?'end':lx>cx+4?'start':'middle';
+    svg+=`<text x="${lx}" y="${ly}" font-size="12" font-family="Inter,sans-serif" fill="#676D76" text-anchor="${anchor}" dominant-baseline="middle">${lbl}</text>`;
+  });
+
+  svg+=`</svg>`;
+  return svg;
+}
+
+// ── SORT ──
+function setSort(mode){
+  sortMode=mode;
+  document.getElementById('sortScore').classList.toggle('on',mode==='score');
+  document.getElementById('sortCatalog').classList.toggle('on',mode==='catalog');
+  renderList();
+}
+
+// ── RENDER SCENE LIST ──
+function renderList(){
+  const sorted = sortMode==='catalog'
+    ? catalogOrder.map(id=>scenarios.find(s=>s.id===id))
+    : [...scenarios].sort((a,b)=>a.score-b.score);
+  const container=document.getElementById('sceneListCards');
+  container.innerHTML=sorted.map((s,rank)=>{
+    const trendStr=s.trendDir==='up'?`↑ +${s.trendDir==='up'?s.trend:Math.abs(s.trend)}`:
+      s.trendDir==='dn'?`↓ ${s.trend}`:'→ 持平';
+    const trendDisplay=s.trend>0?`↑ +${s.trend}`:s.trend<0?`↓ ${s.trend}`:'→';
+    const sparkColor=s.grade==='bad'?'#FC636B':s.grade==='mid'?'#FD9A00':'#37C597';
+    const rankLabel = sortMode==='catalog' ? `S${rank+1}` : `#${rank+1}`;
+    return `<div class="sc hl-2" id="sc${s.id}" onclick="selScene(${s.id})" style="position:relative">
+      <div class="callout-badge" style="top:-7px;right:-7px">②</div>
+      <div class="sc-top">
+        <div class="sc-rank ${s.grade}">${rankLabel}</div>
+        <div class="sc-title">
+          <div class="sc-name">${s.name}</div>
+          <div class="sc-grade-row">
+            <span class="grade-tag ${s.grade}">${s.gradeLabel}</span>
+          </div>
+        </div>
+      </div>
+      <div class="sc-score-row">
+        <span class="sc-score ${s.grade}">${s.score}</span>
+        <span class="sc-trend ${s.trendDir}">${trendDisplay} vs 上期</span>
+        <div class="sc-spark">${sparkSvg(s.runs,70,22,sparkColor)}</div>
+      </div>
+      <div class="sc-evidence">
+        <span class="ev-chip ${s.grade==='ok'?'gray':'red'}">痛点 ${s.painCount}</span>
+        <span class="ev-chip ${s.vodCount>=50?'red':s.vodCount>=30?'yellow':'gray'}">VOD ${s.vodCount}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER DETAIL ──
+function selScene(id){
+  document.querySelectorAll('.sc').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('sc'+id).classList.add('sel');
+  document.getElementById('sdHint').style.display='none';
+  const sd=document.getElementById('sdContent');
+  sd.style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  const s=scenarios.find(x=>x.id===id);
+  const sorted=[...scenarios].sort((a,b)=>a.score-b.score);
+  const rank=sorted.findIndex(x=>x.id===id)+1;
+
+  // header
+  document.getElementById('detName').textContent=s.name;
+  const dg=document.getElementById('detGrade');
+  dg.textContent=s.gradeLabel; dg.className='det-grade '+s.grade;
+  const ds=document.getElementById('detScore');
+  ds.textContent=s.score; ds.className='det-score '+s.grade;
+
+  // rank context
+  const rp=document.getElementById('rankPill');
+  rp.textContent=`${scenarios.length} 场景中第 ${rank} 差`;
+  rp.className='rank-pill'+(s.grade==='mid'?' mid':s.grade==='ok'?' ok':'');
+  const diff=s.score-meanScore;
+  document.getElementById('rankDesc').textContent=
+    `${diff<0?'低于':'高于'}角色均分 ${Math.abs(diff)} 分（均分 ${meanScore}）`;
+  // mini bars
+  document.getElementById('rankBars').innerHTML=
+    sorted.map(x=>`<div class="rank-bar ${x.grade}${x.id===id?' cur':''}" style="height:${Math.round((x.score/100)*18)}px" title="${x.name}: ${x.score}"></div>`).join('');
+  document.getElementById('rankMean').textContent=`均 ${meanScore}`;
+
+  // radar + trend
+  const minIdx=s.radar.indexOf(Math.min(...s.radar));
+  document.getElementById('radarWorst').textContent=`最弱：${radarDims[minIdx]} ${s.radar[minIdx]}`;
+  const clrDim=v=>v>=80?'#37C597':v>=60?'#FD9A00':'#FC636B';
+  const spread=Math.max(...s.runs)-Math.min(...s.runs);
+  const stab=spread<=6?'stable':spread<=12?'moderate':'unstable';
+  const stabLabel=stab==='stable'?'波动小 · 稳定':stab==='moderate'?'中等波动':'波动大 · 不稳定';
+  document.getElementById('radarBody').innerHTML=
+    `<div class="chart-col">
+       <div class="col-lbl">近 7 次评测趋势</div>
+       ${trendSvg(s.runs,420,112)}
+       <div class="stab-tag ${stab}">${stabLabel}</div>
+     </div>
+     <div class="radar-col">
+       ${radarSvg(s.radar,300)}
+       <div class="radar-legend">${radarDims.map((d,i)=>{
+         const v=s.radar[i],c=clrDim(v);
+         return `<div class="radar-dim">
+           <div class="radar-dim-dot" style="background:${c}"></div>
+           <div class="radar-dim-lbl">${d}</div>
+           <div class="radar-dim-val" style="color:${c}">${v}</div>
+         </div>`;
+       }).join('')}</div>
+     </div>`;
+
+  // tab counts
+  document.getElementById('agentTabCount').textContent=s.agentSteps.length;
+  document.getElementById('painTabCount').textContent=s.pains.length;
+  document.getElementById('vodTabCount').textContent=s.vods.length;
+
+  // agent panel
+  document.getElementById('panel-agent').innerHTML=
+    `<div class="agent-section-lbl">旅程环节 · Agent 逐步评分（近7次均值）</div>`+
+    s.agentSteps.map(st=>{
+      const metricsHtml=st.metrics?
+        `<div class="step-metrics">${st.metrics.map(m=>{
+          const numVal=parseFloat(m.v);
+          const vCls=isNaN(numVal)?'neutral':
+            m.trendCls==='flat'?'neutral':
+            m.trendCls==='up'?'ok':
+            numVal>=80?'ok':numVal>=60?'mid':'bad';
+          return `<div class="step-metric">
+            <div class="step-metric-lbl">${m.l}</div>
+            <div class="step-metric-bottom">
+              <span class="step-metric-val ${vCls}">${m.v}</span>
+              <span class="step-metric-trend ${m.trendCls}">${m.trend}</span>
+            </div>
+          </div>`;
+        }).join('')}</div>`:'';
+      return `
+      <div class="agent-step-row">
+        <div class="as-name">${st.name}</div>
+        <div class="as-right">
+          <div class="as-bar-row">
+            <div class="as-bar-track"><div class="as-bar-fill ${st.cls}" style="width:${st.score}%"></div></div>
+            <div class="as-score ${st.cls}">${st.score}%</div>
+          </div>
+          <div class="as-summary"><b>总结</b>${st.summary}</div>
+          ${st.observations&&st.observations.length?`<div class="as-obs"><b>Agent 观测</b><div class="as-obs-list">${st.observations.map(o=>`<div class="as-obs-item">${o}</div>`).join('')}</div></div>`:''}
+          ${metricsHtml}
+        </div>
+      </div>`;
+    }).join('')+
+    `<div class="tool-chain-row">
+      <div class="tool-chain-lbl">工具调用链 · 括号内为调用成功率</div>
+      <div class="tool-chips">${s.tools.map((t,i)=>`${i?'<span class="tool-arrow">→</span>':''}<div class="tool-chip ${t.cls}">${t.name} <span style="opacity:.7">${t.rate}</span></div>`).join('')}</div>
+    </div>`;
+
+  // pain panel - group by category
+  const catOrder=['doc','tool','api','env'];
+  const catMeta={doc:{label:'文档类',cls:'doc'},tool:{label:'工具类',cls:'tool'},api:{label:'API 类',cls:'api'},env:{label:'环境类',cls:'env'}};
+  const grouped={};
+  s.pains.forEach(p=>{if(!grouped[p.cat])grouped[p.cat]=[];grouped[p.cat].push(p);});
+  document.getElementById('panel-pain').innerHTML=
+    catOrder.filter(c=>grouped[c]).map(c=>`
+      <div class="pain-cat-section hl-6" style="position:relative">
+        <div class="callout-badge" style="top:-7px;right:-7px">⑥</div>
+        <div class="pain-cat-hdr">
+          <span class="cat-badge ${catMeta[c].cls}">${catMeta[c].label}</span>
+          <span class="cat-count">${grouped[c].length} 条</span>
+        </div>
+        ${grouped[c].map(p=>`
+          <div class="pain-item">
+            <div class="pain-top">
+              <span class="pain-score">${p.score}</span>
+              <div class="pain-body">
+                <div class="pain-text">${p.text}</div>
+                <div class="pain-meta">${p.meta}</div>
+              </div>
+              <span class="pain-status ${p.statusCls}">${p.status}</span>
+            </div>
+            <div class="pain-next hl-4" style="position:relative">
+              <div class="callout-badge" style="top:-7px;right:-7px">④</div>
+              <span class="pain-next-lbl">Next Step</span>
+              <span class="pain-next-text">→ ${p.nextStep}</span>
+            </div>
+          </div>`).join('')}
+      </div>`).join('');
+
+  // vod panel
+  document.getElementById('panel-vod').innerHTML=
+    s.vods.map(v=>`
+      <div class="vod-item">
+        <div class="vod-vol-row">
+          <span class="vod-vol">${v.vol}</span>
+          <span class="vod-unit">条声量</span>
+          <span class="vod-trend ${v.trendCls}">${v.trend}</span>
+        </div>
+        <div class="vod-quote">${v.text}</div>
+        <div class="vod-src">${v.src}</div>
+      </div>`).join('');
+
+  // reset to agent tab
+  switchEvTab('agent', document.querySelector('.ev-tab'));
+}
+
+// ── TAB SWITCHING ──
+function switchEvTab(id, btn){
+  document.querySelectorAll('.ev-tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.ev-panel').forEach(p=>p.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  else document.querySelector('.ev-tab').classList.add('on');
+  document.getElementById('panel-'+id).classList.add('on');
+  // If user has scrolled into the panel, scroll back so panel top is visible below ev-tabs
+  const tabs=document.querySelector('.ev-tabs');
+  const panels=document.querySelector('.ev-panels');
+  if(tabs&&panels){
+    const panelTop=panels.getBoundingClientRect().top;
+    const threshold=88+tabs.offsetHeight;
+    if(panelTop<threshold){
+      window.scrollTo({top:window.scrollY+panelTop-threshold,behavior:'smooth'});
+    }
+  }
+}
+
+function switchDim(id, btn){
+  document.querySelectorAll('.dim-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('prodView').style.display=id==='prod'?'flex':'none';
+  document.getElementById('commView').style.display=id==='comm'?'flex':'none';
+  document.getElementById('commView').style.flexDirection='column';
+}
+
+// ── RATIONALE HIGHLIGHT ──
+function toggleRat(){
+  document.body.classList.toggle('rat-open');
+  document.getElementById('floatRat').classList.toggle('open',document.body.classList.contains('rat-open'));
+}
+function hlRat(n){
+  for(let i=1;i<=6;i++) document.body.classList.remove('hl-'+i);
+  document.body.classList.add('hl-'+n);
+  document.querySelectorAll('.rat-item').forEach(el=>el.classList.remove('hl'));
+  document.querySelectorAll('.rat-item')[n-1].classList.add('hl');
+
+  // Switch to the relevant tab first if needed, then scroll
+  const doScroll=(selector)=>{
+    const el=document.querySelector(selector);
+    if(!el) return;
+    const top=el.getBoundingClientRect().top+window.scrollY-100;
+    window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+  };
+
+  if(n===1){
+    // Evidence tabs — switch to agent, scroll to tabs
+    switchEvTab('agent',document.querySelectorAll('.ev-tab')[0]);
+    setTimeout(()=>doScroll('.ev-tabs'),60);
+  } else if(n===2){
+    // Scene cards are in the left list — scroll scene-list to top
+    document.querySelector('.scene-list').scrollTo({top:0,behavior:'smooth'});
+  } else if(n===3){
+    // Radar chart
+    setTimeout(()=>doScroll('.radar-section'),60);
+  } else if(n===4){
+    // Next Step links — switch to pain tab, then scroll to first pain-next
+    const painTab=document.querySelectorAll('.ev-tab')[1];
+    switchEvTab('pain',painTab);
+    setTimeout(()=>doScroll('.pain-next'),100);
+  } else if(n===5){
+    // Rank context — scroll to top of detail
+    setTimeout(()=>doScroll('.rank-ctx'),60);
+  } else if(n===6){
+    // Pain categories — switch to pain tab, scroll to first category
+    const painTab=document.querySelectorAll('.ev-tab')[1];
+    switchEvTab('pain',painTab);
+    setTimeout(()=>doScroll('.pain-cat-section'),100);
+  }
+}
+function unhlRat(){
+  for(let i=1;i<=6;i++) document.body.classList.remove('hl-'+i);
+  document.querySelectorAll('.rat-item').forEach(el=>el.classList.remove('hl'));
+}
+
+// ── INIT ──
+renderList();
+selScene(0);
+</script>
+</body>
+</html>

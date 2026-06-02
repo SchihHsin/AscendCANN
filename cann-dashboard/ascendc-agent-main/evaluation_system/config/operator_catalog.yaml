@@ -1,0 +1,356 @@
+catalog:
+  version: "6.0"
+  total_operators: 35
+  last_updated: "2026-03-18"
+  description: ""
+
+  # ============================================================
+  # 评估计划
+  # ============================================================
+  evaluation_schedule:
+    - batch: "day_1"
+      day: 1
+      description: "第一批次评估"
+
+  # ============================================================
+  # 评估批次
+  # ============================================================
+  batches:
+
+    # --------------------------------------------------------
+    # Day 1: 第一批次评估
+    # --------------------------------------------------------
+    day_1:
+      metadata:
+        description: "第一批次评估"
+        day: 1
+        total_count: 35
+        estimated_hours: 8
+      hardware_categories:
+
+        Vector:
+          description: "矢量计算算子"
+          operators:
+            - id: "OP001"
+              name: "cos"
+              difficulty: "L1"
+              tech_type: "elementwise"
+              formula: "y = cos(x)"
+              api_hints: ["Cos"]
+              note: "使用Math API,支持half/float类型"
+
+            - id: "OP002"
+              name: "sin"
+              difficulty: "L1"
+              tech_type: "elementwise"
+              formula: "y = sin(x)"
+              api_hints: ["Sin"]
+              note: "使用Math API,支持half/float类型"
+
+            - id: "OP003"
+              name: "ceil"
+              difficulty: "L1"
+              tech_type: "elementwise"
+              formula: "y = ceil(x)"
+              api_hints: ["Ceil"]
+              note: "使用Math API,支持half/float类型"
+
+            - id: "OP004"
+              name: "pow"
+              difficulty: "L2"
+              tech_type: "elementwise"
+              formula: "y = x^y"
+              api_hints: ["Power"]
+              note: "使用Math API,支持half/float/int32类型"
+
+            - id: "OP005"
+              name: "relu"
+              difficulty: "L1"
+              tech_type: "elementwise"
+              formula: "y = max(0, x)"
+              api_hints: ["Relu"]
+              note: "使用基础API,支持half/int32/float类型"
+
+            - id: "OP006"
+              name: "gelu"
+              difficulty: "L2"
+              tech_type: "elementwise"
+              formula: "GELU(x) = 0.5 * x * (1 + tanh(sqrt(2/π) * (x + 0.044715 * x^3)))"
+              api_hints: ["Gelu"]
+              note: "使用Math API,支持half/float类型"
+              
+            - id: "OP001"
+              name: "softmax"
+              difficulty: "L2"
+              tech_type: "softmax"
+              formula: "softmax数学稳定计算公式"
+              api_hints: ["Exp", "ReduceSum", "Div", "Sub", "Max"]
+              note: "使用基础API实现，不允许使用AscendC::Softmax高阶API，支持fp16/fp32/bf16，支持任意轴"
+
+            - id: "OP028"
+              name: "abs"
+              difficulty: "L1"
+              tech_type: "elementwise"
+              formula: "out = |self|"
+              api_hints: ["Abs"]
+              note: "支持1-8维，输入支持bf16/fp16/fp32/int8/int16/int32/int64，输出dtype/shape与输入一致"
+
+            - id: "OP029"
+              name: "masked_scale"
+              difficulty: "L1"
+              tech_type: "elementwise"
+              formula: "out = x * mask * scale"
+              api_hints: ["Mul", "Cast"]
+              note: "x/mask升精度至FP32计算后cast回原始dtype，x支持fp16/bf16/fp32，mask支持int8/uint8/fp16/fp32，支持1-8维"
+
+            - id: "OP030"
+              name: "apply_adam_w"
+              difficulty: "L3"
+              tech_type: "elementwise"
+              formula: "AdamW优化器权重更新公式"
+              api_hints: ["Add", "Mul", "Sub", "Div", "Sqrt", "Max", "Cast"]
+              note: "仅实现amsgrad=False场景，var/m/v/grad支持1-8维fp16/bf16/fp32，使用AscendC基础API"
+
+            - id: "OP031"
+              name: "add"
+              difficulty: "L1"
+              tech_type: "broadcast"
+              formula: "out = in1 + in2"
+              api_hints: ["Add"]
+              note: "支持1-8维broadcast，in1/in2支持bf16/fp16/fp32/int32/uint8/int8/int64/bool/complex32/complex64，混合精度时输出fp32"
+
+            - id: "OP032"
+              name: "squared_difference"
+              difficulty: "L1"
+              tech_type: "broadcast"
+              formula: "out = (in1 - in2)^2"
+              api_hints: ["Sub", "Mul", "Cast"]
+              note: "支持1-8维broadcast，in1/in2支持fp16/bf16/fp32/int32/int64且dtype相同，bf16场景升精度至fp32计算"
+
+            - id: "OP033"
+              name: "addcdiv"
+              difficulty: "L1"
+              tech_type: "broadcast"
+              formula: "out = in1 + value * (in2 / in3)"
+              api_hints: ["Add", "Mul", "Div", "Cast"]
+              note: "支持1-8维broadcast，in1/in2/in3支持fp16/bf16/fp32且dtype相同，中间计算升精度至FP32"
+
+            - id: "OP034"
+              name: "dot"
+              difficulty: "L1"
+              tech_type: "reduction"
+              formula: "向量点积"
+              api_hints: ["Mul", "ReduceSum", "Cast"]
+              note: "in1/in2支持fp16/fp32/bf16/int32/int8/uint8且shape相同，int8/uint8升精度至int32，fp16/bf16升精度至fp32计算"
+
+            - id: "OP007"
+              name: "sigmoid"
+              difficulty: "L2"
+              tech_type: "elementwise"
+              formula: "y = 1 / (1 + e^(-x))"
+              api_hints: ["Sigmoid"]
+              note: "使用Math API,支持half/float类型"
+
+            - id: "OP008"
+              name: "reduce_mean"
+              difficulty: "L2"
+              tech_type: "reduction"
+              formula: "y = mean(x) = Σ(x) / n"
+              api_hints: ["ReduceMean"]
+              note: "使用ReduceMean 基础API,支持half/float类型"
+
+            - id: "OP009"
+              name: "reduce_max"
+              difficulty: "L2"
+              tech_type: "reduction"
+              formula: "y = max(x)"
+              api_hints: ["ReduceMax"]
+              note: "使用ReduceMax 基础API, 支持half/float类型"
+
+            - id: "OP0010"
+              name: "reduce_sum"
+              difficulty: "L2"
+              tech_type: "reduction"
+              formula: "y = Σ(x)"
+              api_hints: ["ReduceSum"]
+              note: "使用ReduceSum 基础API, 支持half/float类型"
+
+            - id: "OP011"
+              name: "broadcast"
+              difficulty: "L2"
+              tech_type: "broadcast"
+              formula: "y = broadcast(x, target_shape)"
+              api_hints: ["Broadcast"]
+              note: "使用Broadcast API,支持张量形状广播,支持int8/uint8/half/float类型"
+
+            - id: "OP012"
+              name: "pad"
+              difficulty: "L2"
+              tech_type: "pad"
+              formula: "y = pad(x, padding)"
+              api_hints: ["Pad"]
+              note: "使用Pad API, 支持half/float类型"
+              
+            - id: "OP013"
+              name: "topk"
+              difficulty: "L3"
+              tech_type: "sort"
+              formula: "y, idx = topk(x, k)"
+              api_hints: ["TopK"]
+              note: "使用TopK API,需要Tiling参数和临时空间,支持half/float类型,输出包括值和索引"
+
+            - id: "OP014"
+              name: "sort"
+              difficulty: "L3"
+              tech_type: "sort"
+              formula: "y, idx = sort(x, dim=-1, descending=False)"
+              api_hints: ["Sort"]
+              note: "使用Sort API,支持half/float类型,输出包括排序值和索引"
+
+        Cube:
+          description: "矩阵计算算子"
+          operators:
+            - id: "OP015"
+              name: "matmul"
+              difficulty: "L2"
+              tech_type: "matmul"
+              formula: "C = A * B"
+              api_hints: ["Matmul", "MatmulGetTmpBufSize"]
+              note: "使用TPipe接口,需要MatmulGetTmpBufSize获取临时空间,支持half/float/bfloat16/int8/int4b输入,float/half/bfloat16/int32/int8输出"
+
+            - id: "OP016"
+              name: "batch_matmul"
+              difficulty: "L2"
+              tech_type: "matmul"
+              formula: "C[i] = A[i] * B[i], i ∈ [0, batch-1]"
+              api_hints: ["BatchMatmul", "BatchMatmulGetTmpBufSize"]
+              note: "使用TPipe接口,需要BatchMatmulGetTmpBufSize获取临时空间,支持half/float/bfloat16/int8/int4b输入,float/half/bfloat16/int32/int8输出"
+
+            - id: "OP017"
+              name: "transpose_batch_matmul"
+              difficulty: "L2"
+              tech_type: "matmul"
+              formula: "C[i] = A[i] * B[i]T 或 C[i] = A[i]T * B[i]"
+              api_hints: ["Matmul"]
+              note: "使用TPipe接口,支持half/float/bfloat16/int8/int4b输入,float/half/bfloat16/int32/int8输出"
+
+            - id: "OP018"
+              name: "sparse_matmul"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: "C = SparseMatmul(A_sparse, B)"
+              api_hints: [""]
+              note: "稀疏矩阵乘法,支持half/float/bfloat16输入,float输出"
+
+            - id: "OP019"
+              name: "quant_matmul"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: "C = dequant(quant(A) ⊗ quant(B))"
+              api_hints: ["Matmul", "SetQuantVector", "SetQuantScalar", "GetAscendQuantMaxMinTmpSize"]
+              note: "W8A8量化矩阵乘法:输入量化为int8后进行整型矩阵乘法,结果反量化得到浮点输出,支持half/float/bfloat16和量化int8/uint8输入,float/half/bfloat16/int32/int8输出"
+
+            - id: "OP020"
+              name: "quant_mm_dequant"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: "C = dequant(B) * A"
+              api_hints: ["Matmul", "AscendQuant", "AscendDequant"]
+              note: "Weight-only量化:量化权重反量化后与激活值相乘,使用Matmul+AscendQuant+AscendDequant链式调用,支持half/float/bfloat16和量化int8/uint8输入,float/half/bfloat16/int32/int8输出"
+
+            - id: "OP021"
+              name: "transpose_quant_batch_mm"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: "C[i] = quant(A[i]) ⊗ quant(B[i]^T)"
+              api_hints: ["BatchMatmul", "SetQuantVector"]
+              note: "量化批量矩阵乘法+转置:B矩阵转置后进行量化计算,使用BatchMatmul+SetQuantVector,支持half/float/bfloat16和量化int8/uint8输入,float/half/bfloat16/int32/int8输出"
+
+            - id: "OP022"
+              name: "weight_quant_batch_mm"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: "C[i] = dequant(B[i]) * A[i]"
+              api_hints: ["Matmul", "AscendDequant"]
+              note: "Weight-only量化批量矩阵乘法:预量化权重反量化后与激活值相乘,使用Matmul+AscendDequant,支持half/float/bfloat16输入和预量化int8/uint8权重,float/half/bfloat16/int32/int8输出"
+
+            - id: "OP023"
+              name: "gmm"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: ""
+              api_hints: ["GroupedMatmul", "Matmul"]
+              note: "Grouped Matmul分组矩阵乘法,每组独立矩阵乘,支持half/float/bfloat16输入,float/half/bfloat16输出"
+
+            - id: "OP024"
+              name: "gmm_add"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: ""
+              api_hints: ["GroupedMatmul", "Matmul", "Add"]
+              note: "Grouped Matmul+Bias融合,支持half/float/bfloat16输入,float/half/bfloat16输出"
+
+            - id: "OP025"
+              name: "gmm_swiglu"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: ""
+              api_hints: ["SwiGLU", "GroupedMatmul", "Matmul"]
+              note: "使用SwiGLU接口,支持half/float输入,half/float输出"
+
+            - id: "OP026"
+              name: "gmm_swiglu_quant"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: "output = quant(Swish(A*W) ⊙ (A*V))"
+              api_hints: ["Matmul", "SwiGLU", "SetQuantVector", "AscendQuant"]
+              note: "SwiGLU+量化:SwiGLU激活后量化输出,使用SwiGLU+SetQuantVector+AscendQuant,支持half/float和量化int8/uint8输入,量化int8/uint8输出"
+
+            - id: "OP027"
+              name: "gmm_gelu"
+              difficulty: "L3"
+              tech_type: "matmul"
+              formula: "output = GELU(A * B)"
+              api_hints: ["Matmul", "Gelu"]
+              note: "GMM+GELU融合:矩阵乘法后接GELU激活,使用Matmul+Gelu接口,支持half输入,half输出"
+
+        CV_Fusion:
+          description: "cube/Vector融合算子"
+          operators: []
+
+        General_Fusion:
+          description: "通用计算融合算子"
+          operators: []
+
+# ============================================================
+# tech_type 到硬件分类的映射参考
+# ============================================================
+# | 硬件分类       | tech_type                                                            |
+# |---------------|----------------------------------------------------------------------|
+# | Vector        | elementwise, reduction, cumsum, softmax, normalization, sort,       |
+# |               | gather, scatter, transpose, broadcast, concat, cast, copy,          |
+# |               | pad, fill, quantization, compare, select, logical, math             |
+# | Cube          | matmul, conv, attention, gradient, fft                               |
+# | CV_Fusion     | interpolation                                                        |
+# | General_Fusion| fused                                                                |
+
+# ============================================================
+# 精简后的算子格式规范
+# ============================================================
+# 必需字段:
+#   - id: 唯一标识符,如 "OP001"
+#   - name: 算子名称,如 "add"
+#   - difficulty: 难度等级,"L1"/"L2"/"L3"
+#   - tech_type: 技术类型,用于映射到硬件分类
+#   - formula: 算子公式,如 "out = x + y"
+#   - api_hints: API提示列表,如 ["Add", "Adds"]
+#
+# 可选字段:
+#   - note: 简短说明
+#
+# 已移除字段（不再需要）:
+#   - category, sub_category: 由 tech_type 推导
+#   - priority: 目前未使用
+#   - reference.url/framework: Agent 可自己搜索
+#   - spec.inputs/outputs: 从公式推导
+#   - hints.internal_reference: 从 api_hints 推导

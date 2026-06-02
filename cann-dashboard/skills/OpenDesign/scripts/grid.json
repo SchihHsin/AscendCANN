@@ -1,0 +1,18 @@
+{
+  "grid": {
+    "pc": {
+      "breakpoint": "1920px",
+      "columns": 24,
+      "gutter": "32vp",
+      "margin": "64px",
+      "width": "1920px"
+    },
+    "mb": {
+      "breakpoint": "360px",
+      "columns": 4,
+      "gutter": "12vp",
+      "margin": "24",
+      "width": "360px"
+    }
+  }
+}

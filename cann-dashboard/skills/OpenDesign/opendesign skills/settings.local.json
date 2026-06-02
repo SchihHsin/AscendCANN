@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__pixso-desktop__get_variable_sets",
+      "mcp__pixso-desktop__get_local_styles",
+      "mcp__pixso-desktop__get_all_components",
+      "Bash(npm install:*)",
+      "mcp__pixso-desktop__get_node_dsl",
+      "mcp__pixso-desktop__get_image"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "local-mcp"
+  ],
+  "enableAllProjectMcpServers": true
+}

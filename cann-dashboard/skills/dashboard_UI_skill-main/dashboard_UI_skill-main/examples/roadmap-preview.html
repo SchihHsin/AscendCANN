@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学习路径方案预览</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;background:#F0EFFA}
+
+.header{background:#FFFFFF;border:0;padding:14px 28px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:100;box-shadow:none}
+.header-title{font-size:15px;font-weight:700;color:#1B2432;white-space:nowrap}
+.tabs{display:flex;gap:3px;background:#F0EFFA;padding:3px;border-radius:8px}
+.tab{padding:6px 16px;border-radius:6px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:600;color:#676D76;transition:all .15s}
+.tab.active{background:#FFFFFF;color:#1B2432;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.hint{font-size:12px;color:#A1A4AA;margin-left:auto;white-space:nowrap}
+
+.option{display:none;padding:30px 24px 80px}
+.option.active{display:block}
+.opt-inner{max-width:720px;margin:0 auto}
+.opt-desc{text-align:center;font-size:11px;color:#A1A4AA;letter-spacing:.6px;text-transform:uppercase;font-weight:700;margin-bottom:44px}
+
+/* ── 共用节点 —— position:relative + z-index:1 使其渲染在 SVG 连线之上 ── */
+.nc{border-radius:11px;padding:14px 16px;cursor:pointer;position:relative;z-index:1;transition:all .2s}
+.nc:hover{transform:translateY(-2px)}
+.nt{font-size:13px;font-weight:700;color:#1B2432;margin-bottom:5px}
+.ns{font-size:11px;color:#676D76;margin-bottom:9px;line-height:1.45}
+.ntags{display:flex;gap:5px;flex-wrap:wrap}
+.ntag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px}
+
+/* SVG 连线层 —— z-index:0，在节点（z-index:1）之下 */
+.clines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+
+/* ════ OPTION A — 聚类卡片 ════ */
+#opt-a{background:#F8F8F9}
+.a-wrap{position:relative} /* SVG 锚定在这里 */
+.a-cluster{border:0;border-radius:16px;overflow:hidden;margin-bottom:0;box-shadow:var(--shadow-soft)}
+.a-head{display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:0}
+.a-phase{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+.a-name{font-size:14px;font-weight:700;color:#1B2432}
+.a-body{padding:18px 20px;display:grid;gap:10px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.a-body .nc{background:#FFFFFF;border:0;box-shadow:var(--shadow-soft)}
+.a-body .nc:hover{box-shadow:0 4px 16px rgba(0,0,0,.1)}
+
+.a-cluster.p1{border-color:#C3EDDF}
+.a-cluster.p1 .a-head{background:#EBFCF7;border-color:#C3EDDF}
+.a-cluster.p1 .a-phase{color:#179D8A}
+.a-cluster.p2{border-color:#BFD3F2}
+.a-cluster.p2 .a-head{background:#E8F7FB;border-color:#BFD3F2}
+.a-cluster.p2 .a-phase{color:#4F4DA7}
+.a-cluster.p3{border-color:#E1E2E4}
+.a-cluster.p3 .a-head{background:#F8F8F9;border-color:#E1E2E4}
+.a-cluster.p3 .a-phase{color:#6A67CE}
+.a-cluster.p4{border-color:#FFD7A8}
+.a-cluster.p4 .a-head{background:#FFF8E5;border-color:#FFD7A8}
+.a-cluster.p4 .a-phase{color:#E63838}
+
+.phase-arr{display:flex;justify-content:center;align-items:center;height:36px}
+.phase-arr svg{opacity:.3}
+
+/* ════ OPTION B — 主干轨道 ════ */
+#opt-b{background:#1B2432}
+#opt-b .opt-desc{color:#273347}
+.b-wrap{position:relative} /* SVG 锚定在这里 */
+.b-spine{position:absolute;left:50%;transform:translateX(-50%);width:3px;top:0;bottom:0;
+  background:linear-gradient(to bottom,#37C597 0%,#6A67CE 35%,#A177FF 68%,#FD9A00 100%);
+  border-radius:2px;z-index:0;opacity:.5}
+.b-seg{position:relative;padding:32px 0 12px}
+.b-seg-label{position:absolute;left:50%;transform:translateX(-50%);top:-13px;
+  padding:3px 14px;border-radius:100px;font-size:10px;font-weight:800;
+  letter-spacing:.6px;text-transform:uppercase;z-index:2;white-space:nowrap}
+.b-row{display:grid;grid-template-columns:1fr 52px 1fr;align-items:start;margin-bottom:14px}
+.b-left{padding-right:32px;display:flex;justify-content:flex-end}
+.b-right{padding-left:32px}
+.b-mid{display:flex;justify-content:center;padding-top:16px;position:relative;z-index:2}
+.b-dot{width:11px;height:11px;border-radius:50%;border:3px solid;flex-shrink:0}
+.b-wrap .nc{border:1px solid rgba(255,255,255,.08);min-width:200px;max-width:252px}
+.b-wrap .nt{color:#E1E2E4}
+.b-wrap .ns{color:#495058}
+
+.b-seg.s1 .b-seg-label{background:#273347;color:#9DFBE8}
+.b-seg.s1 .b-dot{background:#37C597;border-color:#1B2432}
+.b-seg.s1 .nc{background:#1B2432;border-color:rgba(55,197,151,.2)}
+.b-seg.s2 .b-seg-label{background:#273347;color:#A8C0F0}
+.b-seg.s2 .b-dot{background:#6A67CE;border-color:#1B2432}
+.b-seg.s2 .nc{background:#1B2432;border-color:rgba(106,103,206,.2)}
+.b-seg.s3 .b-seg-label{background:#273347;color:#BFB6F0}
+.b-seg.s3 .b-dot{background:#A177FF;border-color:#1B2432}
+.b-seg.s3 .nc{background:#1B2432;border-color:rgba(161,119,255,.2)}
+.b-seg.s4 .b-seg-label{background:#495058;color:#FFD7A8}
+.b-seg.s4 .b-dot{background:#FD9A00;border-color:#1B2432}
+.b-seg.s4 .nc{background:#1B2432;border-color:rgba(253,154,0,.2)}
+
+/* ════ OPTION C — 流程图谱 ════ */
+#opt-c{background:#FFFFFF}
+.c-dag{position:relative} /* SVG 锚定在这里 */
+.c-phase{padding:22px 20px 28px;border-radius:14px;margin-bottom:0}
+.c-phase.p1{background:#EBFCF7}
+.c-phase.p2{background:#E8F7FB}
+.c-phase.p3{background:#F8F8F9}
+.c-phase.p4{background:#FFF8E5}
+.c-plabel{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+  margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.c-plabel::before{content:'';width:18px;height:3px;border-radius:2px;background:currentColor;flex-shrink:0}
+.c-phase.p1 .c-plabel{color:#179D8A}
+.c-phase.p2 .c-plabel{color:#4F4DA7}
+.c-phase.p3 .c-plabel{color:#6A67CE}
+.c-phase.p4 .c-plabel{color:#E63838}
+.c-row{display:grid;gap:10px}
+.r1{grid-template-columns:1fr}
+.r2{grid-template-columns:1fr 1fr}
+.r3{grid-template-columns:1fr 1fr 1fr}
+.cgap{height:32px}
+.inter{height:44px}
+.c-phase .nc{background:#FFFFFF;border:0;box-shadow:var(--shadow-soft)}
+.c-phase.p1 .nc,.c-phase.p2 .nc,.c-phase.p3 .nc,.c-phase.p4 .nc{box-shadow:var(--shadow-soft)}
+.c-phase .nc:hover{box-shadow:0 4px 16px rgba(0,0,0,.1)}
+
+
+:root{
+  --green-dark:#37C597;--green-core:#3BE880;--green-bright:#3BF7D1;--green-med:#9DFBE8;--green-faded:#C3EDDF;--green-light:#EBFCF7;
+  --teal-dark:#179D8A;--teal-core:#1AAFD0;--teal-bright:#02CEFF;--teal-med:#80E6FF;--teal-light:#E8F7FB;
+  --purple-dark:#4F4DA7;--purple-core:#6A67CE;--purple-bright:#A177FF;--purple-med:#D0B8FF;--purple-light:#F0EFFA;
+  --gold-dark:#FD9A00;--gold-core:#FFB900;--gold-bright:#FFD200;--gold-med:#FFE87F;--gold-light:#FFF8E5;
+  --coral-dark:#E63838;--coral-core:#FC636B;--coral-bright:#FF6D92;--coral-med:#FFB6C8;--coral-light:#FEEFF0;
+  --white:#FFFFFF;--neutral-2:#EEEEF0;--navy:#273347;--navy-title:#B3BCC4;--navy-text:#8897A3;
+  --g1:#F8F8F9;--g2:#EFF0F1;--g3:#E1E2E4;--g4:#CDCFD2;--g5:#B9BCC0;--g6:#A1A4AA;--g7:#898E95;--g8:#676D76;--g9:#495058;--g10:#1B2432;
+  --warm-1:#FFD7A8;--warm-2:#F3C7BF;--warm-3:#D9BFEE;--warm-4:#BFB6F0;--warm-5:#A8C0F0;--warm-6:#BFD3F2;
+  --bg:var(--g1);--surface:var(--white);--surface-2:var(--g2);--card:var(--white);--panel:var(--white);
+  --text:var(--g10);--black:var(--g10);--text-2:var(--g9);--text-secondary:var(--g9);--muted:var(--g9);--dim:var(--g6);--text-3:var(--g6);
+  --line:rgba(225,226,228,.82);--line-hair:rgba(205,207,210,.72);--border:var(--g3);--border2:var(--g4);--border-2:var(--g4);
+  --brand:var(--purple-core);--brand-dark:var(--purple-dark);--brand-soft:var(--purple-light);
+  --primary:var(--purple-core);--primary-2:var(--purple-bright);--primary-dark:var(--purple-dark);--primary-soft:var(--purple-light);
+  --accent:var(--coral-dark);--blue:var(--purple-core);--teal:var(--teal-core);
+  --good:var(--green-dark);--good-soft:var(--green-light);--green:var(--green-dark);--green-soft:var(--green-light);
+  --warn:var(--gold-dark);--warn-soft:var(--gold-light);--yellow:var(--gold-dark);--amber:var(--gold-dark);--yellow-bg:var(--gold-light);
+  --bad:var(--coral-dark);--bad-soft:var(--coral-light);--danger:var(--coral-dark);--red:var(--coral-dark);--red-bg:var(--coral-light);
+  --blue-bg:var(--purple-light);--green-bg:var(--green-light);
+  --radius-xl:24px;--radius-l:18px;--radius-m:12px;--radius-s:8px;
+  --shadow-soft:0 1px 2px rgba(39,51,71,.05),0 8px 24px rgba(39,51,71,.075);
+  --shadow-pop:0 16px 42px rgba(106,103,206,.16);
+  --font:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif!important;
+  color:var(--g10);
+  -webkit-font-smoothing:antialiased;
+  background:
+    linear-gradient(180deg, rgba(248,248,249,0) 0%, rgba(248,248,249,.08) 46%, rgba(248,248,249,.9) 78%, var(--g1) 94%) 0 0 / 100% 520px no-repeat,
+    linear-gradient(115deg, rgba(255,215,168,.50) 0%, rgba(243,199,191,.50) 22%, rgba(217,191,238,.50) 44%, rgba(191,182,240,.50) 60%, rgba(168,192,240,.50) 78%, rgba(191,211,242,.50) 100%) 0 0 / 100% 520px no-repeat,
+    var(--g1)!important;
+}
+body::before{
+  content:'';position:fixed;inset:0 0 auto 0;height:520px;pointer-events:none;z-index:-1;
+  background:
+    linear-gradient(115deg, transparent 0%, transparent 10%, rgba(255,255,255,.20) 10%, rgba(255,255,255,.20) 18%, transparent 18%),
+    linear-gradient(115deg, transparent 24%, rgba(255,255,255,.14) 24%, rgba(255,255,255,.14) 34%, transparent 34%),
+    linear-gradient(115deg, transparent 46%, rgba(255,255,255,.16) 46%, rgba(255,255,255,.16) 56%, transparent 56%),
+    linear-gradient(115deg, transparent 66%, rgba(255,255,255,.12) 66%, rgba(255,255,255,.12) 78%, transparent 78%),
+    linear-gradient(115deg, transparent 84%, rgba(255,255,255,.18) 84%, rgba(255,255,255,.18) 95%, transparent 95%);
+}
+a{color:var(--purple-dark)}
+a:hover{text-decoration:underline}
+code,kbd,pre,.mono,.kpi-val,.stat .v,.score,.score-pill,.det-score,.role-score strong,.scenario-score strong{
+  font-family:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+}
+code,kbd{background:var(--purple-light);color:var(--purple-dark);border-radius:6px;padding:.08em .42em}
+pre{background:var(--navy)!important;color:var(--navy-title)!important;border-radius:14px!important;box-shadow:var(--shadow-soft)}
+h1{color:var(--g10)!important;letter-spacing:0!important}
+h2,h3,h4{color:var(--g10);letter-spacing:0!important}
+.hero,.cover{
+  position:relative;overflow:hidden;border:0!important;border-radius:24px!important;box-shadow:var(--shadow-soft)!important;
+  background:
+    linear-gradient(115deg, rgba(255,215,168,.50) 0%, rgba(243,199,191,.50) 22%, rgba(217,191,238,.50) 44%, rgba(191,182,240,.50) 60%, rgba(168,192,240,.50) 78%, rgba(191,211,242,.50) 100%),
+    var(--white)!important;
+}
+.hero::before,.cover::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(115deg, transparent 0%, transparent 10%, rgba(255,255,255,.20) 10%, rgba(255,255,255,.20) 18%, transparent 18%),
+    linear-gradient(115deg, transparent 24%, rgba(255,255,255,.14) 24%, rgba(255,255,255,.14) 34%, transparent 34%),
+    linear-gradient(115deg, transparent 46%, rgba(255,255,255,.16) 46%, rgba(255,255,255,.16) 56%, transparent 56%),
+    linear-gradient(115deg, transparent 66%, rgba(255,255,255,.12) 66%, rgba(255,255,255,.12) 78%, transparent 78%),
+    linear-gradient(115deg, transparent 84%, rgba(255,255,255,.18) 84%, rgba(255,255,255,.18) 95%, transparent 95%);
+}
+.hero>* , .cover>*{position:relative;z-index:1}
+.eyebrow,.cover-tag,.badge,.tag,.cpill,.fchip,.source-badge,.mini-badge,.grade-tag,.cat-badge,.role-focus-badge,.ntag,.node-tag,.repo-chip{
+  border:0!important;border-radius:999px!important;font-weight:700;
+}
+.topbar,.filter-bar,.role-tabbar,.tabs,.header,.top-bar,nav:not(.sidebar-nav):not(.toc),.path-header,.conv-header,.conv-input-area,.rationale-bar{
+  border:0!important;box-shadow:var(--shadow-soft)!important;background:rgba(255,255,255,.78)!important;backdrop-filter:blur(14px);
+}
+.toc,.nav-links,.style-tabs,.nd-tabs,.ev-tabs,.scene-tabbar,.tabbar{
+  border:0!important;box-shadow:none!important;background:transparent!important;
+}
+section,.section,.map-section{
+  background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;
+}
+.section,.map-section{position:relative}
+.section::before,.map-section::before,main>section::before{
+  content:'';display:block;height:1px;width:100%;margin:0 0 22px;background:linear-gradient(90deg,rgba(106,103,206,.34),rgba(26,175,208,.18),transparent 78%);
+}
+:is(.card,.panel,.summary-card,.meta-card,.journey-node,.journey-card,.metric,.summary-pill,.stat,.kpi,.sc,.scene-detail,.role-panel,.scenario-panel,.ref-section,.preview-box,.nc,.node-card,.pain-item,.step-metric,.detail-card,.api-card,.doc-home-card,.floor-res-card,.qs-card,.op-card,.ref-card,.insight-card,.callout,.rationale-card,.msg-bubble,.insert-popup,.quiz-content,.ai-chat-sidebar,.node-drawer,.sandbox-drawer,.qb-panel,.path-card){
+  border:0!important;box-shadow:var(--shadow-soft)!important;background:var(--white)!important;border-radius:16px!important;
+}
+:is(.role-panel,.scenario-panel,.scene-detail,.preview-box,.ref-section){padding:24px}
+:is(.card,.summary-card,.meta-card,.journey-card,.metric,.stat,.kpi,.detail-card,.pain-item,.step-metric,.ref-card,.doc-home-card,.floor-res-card,.qs-card){padding:20px}
+:is(.card,.panel,.summary-card,.meta-card,.journey-node,.journey-card,.metric,.summary-pill,.stat,.kpi,.sc,.ref-section,.preview-box,.nc,.node-card,.pain-item,.step-metric,.detail-card,.api-card,.doc-home-card,.floor-res-card,.qs-card,.op-card,.path-card):hover{
+  box-shadow:var(--shadow-pop)!important;transform:translateY(-1px);
+}
+table,.score-table,.data-table{
+  width:100%;border-collapse:separate!important;border-spacing:0 8px!important;background:var(--white)!important;border:0!important;border-radius:16px!important;box-shadow:var(--shadow-soft)!important;overflow:hidden;
+}
+thead,thead tr,th{background:var(--white)!important;color:var(--g6)!important;text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:800;border:0!important}
+td,th{border:0!important;padding:14px 18px!important}
+tbody tr{background:var(--white)!important;border-radius:10px!important}
+tbody tr:hover td{background:var(--purple-light)!important}
+.score-pill,.score,.rank-pill,.det-grade,.stab-tag,.as-score,.step-metric-val,.persona-score,.role-score strong,.scenario-score strong{
+  font-weight:700;
+}
+.high,.ok,.gd-high,.stable{--pill-bg:var(--green-light);--pill-fg:var(--green-dark)}
+.mid,.gd-mid,.moderate{--pill-bg:var(--purple-light);--pill-fg:var(--purple-dark)}
+.low,.warn,.gd-low{--pill-bg:var(--gold-light);--pill-fg:var(--gold-dark)}
+.bad,.gd-bad,.unstable,.risk{--pill-bg:var(--coral-light);--pill-fg:var(--coral-dark)}
+.score-pill,.grade-tag,.rank-pill,.det-grade,.stab-tag,.mini-badge,.source-badge{background:var(--pill-bg,var(--purple-light))!important;color:var(--pill-fg,var(--purple-dark))!important}
+.score-bar,.m-bar,.p-bar,.cov-bar,.as-bar-track,.dim-bar-track,.sc-bar-track,.node-connector,.progress-track,.nb-monitor-bar-track{
+  background:var(--g2)!important;border-radius:999px!important;overflow:hidden;
+}
+.score-bar i,.m-bar i,.p-bar i,.cov-bar i,.as-bar-fill,.dim-bar-fill,.sc-bar-fill,.nb-monitor-bar-fill,.progress-fill{
+  background:linear-gradient(90deg,var(--purple-core),var(--teal-core))!important;border-radius:999px!important;
+}
+.icon,.h2-icon,.card-icon,.ci,.ref-logo,.mode-icon,.msg-avatar,.node-dot,.strip-dot,.cat-dot,.matrix-col-dot,.brand-logo{
+  border:0!important;background:var(--purple-light)!important;color:var(--purple-dark)!important;
+}
+button,.btn,.export-btn,.save-btn,.btn-fill,.btn-lg,.floor-btn-primary,.btn-generate-path,.pg-send,.pg-save-btn,.send-btn{
+  border:0!important;border-radius:10px!important;font-family:inherit;background:var(--purple-core);color:var(--white);
+}
+button:hover,.btn:hover,.export-btn:hover,.save-btn:hover,.btn-fill:hover,.btn-lg:hover,.floor-btn-primary:hover,.btn-generate-path:hover,.pg-send:hover,.pg-save-btn:hover,.send-btn:hover{
+  background:var(--purple-bright)!important;color:var(--white)!important;text-decoration:none!important;
+}
+input,textarea,select{
+  border:0!important;border-radius:10px!important;background:var(--g2)!important;color:var(--g10)!important;box-shadow:none;
+}
+input:focus,textarea:focus,select:focus{outline:0;box-shadow:none!important;background:var(--white)!important}
+[style*="border-left"],[style*="border-right"],.border-red,.border-yellow{border-right:0!important}
+img{max-width:100%}
+svg text{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif}
+
+/* Option C correction: keep the DAG spacious enough for readable dependency curves. */
+.header{display:none!important}
+#opt-a,#opt-b{display:none!important}
+#opt-c.active{display:block}
+#opt-c .opt-inner{max-width:920px!important}
+#opt-c .opt-desc{margin-bottom:56px!important}
+#opt-c .c-dag{position:relative;padding:8px 0 28px}
+#opt-c .c-phase{padding:30px 30px 38px!important;border-radius:20px!important;margin-bottom:0!important}
+#opt-c .c-plabel{margin-bottom:24px!important}
+#opt-c .c-row{gap:22px 28px!important}
+#opt-c .cgap{height:82px!important}
+#opt-c .inter{height:96px!important}
+#opt-c .c-phase .nc{min-height:108px;padding:18px 20px!important;border:0!important;box-shadow:var(--shadow-soft)!important}
+#opt-c .c-phase.p1 .nc,#opt-c .c-phase.p2 .nc,#opt-c .c-phase.p3 .nc,#opt-c .c-phase.p4 .nc{box-shadow:var(--shadow-soft)!important}
+#opt-c .clines path{stroke-width:1.8!important}
+
+
+</style>
+
+</head>
+<body>
+
+<!-- ══════════ OPTION A ══════════ -->
+<div class="option" id="opt-a">
+<div class="opt-inner">
+<div class="opt-desc">每阶段为聚类块 · 块内连线标明顺序 · 阶段箭头贯通</div>
+
+<div class="a-wrap" id="a-wrap">
+
+<div class="a-cluster p1">
+  <div class="a-head"><span class="a-phase">阶段一</span><span class="a-name">基础准备</span></div>
+  <div class="a-body g3">
+    <div class="nc" data-id="a-hw"><div class="nt">昇腾硬件体系</div><div class="ns">达芬奇核 · AI Core · HBM</div><div class="ntags"><span class="ntag" style="background:#EBFCF7;color:#179D8A">入门</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">理论</span></div></div>
+    <div class="nc" data-id="a-stack"><div class="nt">CANN 软件栈概览</div><div class="ns">驱动 · 运行时 · 算子库</div><div class="ntags"><span class="ntag" style="background:#EBFCF7;color:#179D8A">入门</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">理论</span></div></div>
+    <div class="nc" data-id="a-pyc"><div class="nt">Python / C++ 基础</div><div class="ns">numpy · pybind11 · CMake</div><div class="ntags"><span class="ntag" style="background:#EBFCF7;color:#179D8A">入门</span><span class="ntag" style="background:#FFF8E5;color:#E63838">预备</span></div></div>
+  </div>
+  <div class="a-body" style="padding-top:4px"><div class="nc" data-id="a-env" style="max-width:280px;margin:0 auto;width:100%"><div class="nt">环境安装与配置</div><div class="ns">Driver · Firmware · Toolkit 安装</div><div class="ntags"><span class="ntag" style="background:#EBFCF7;color:#179D8A">入门</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div></div>
+</div>
+
+<div class="phase-arr"><svg width="20" height="28" viewBox="0 0 20 28" fill="none" stroke="#676D76" stroke-width="2"><line x1="10" y1="2" x2="10" y2="20"/><polyline points="4 14 10 22 16 14"/></svg></div>
+
+<div class="a-cluster p2">
+  <div class="a-head"><span class="a-phase">阶段二</span><span class="a-name">应用开发</span></div>
+  <div class="a-body g2">
+    <div class="nc" data-id="a-acl"><div class="nt">AscendCL 编程基础</div><div class="ns">设备管理 · Stream · 内存</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+    <div class="nc" data-id="a-atc"><div class="nt">ATC 模型转换</div><div class="ns">ONNX / TF → .om · 图优化</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#EBFCF7;color:#273347">工具</span></div></div>
+    <div class="nc" data-id="a-dvpp"><div class="nt">数据预处理 (DVPP)</div><div class="ns">图像解码 · 缩放 · 格式转换</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+    <div class="nc" data-id="a-infer"><div class="nt">模型推理部署</div><div class="ns">加载 .om · 执行推理 · 后处理</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+  </div>
+  <div class="a-body" style="padding-top:4px"><div class="nc" data-id="a-perf" style="max-width:280px;margin:0 auto;width:100%"><div class="nt">性能调优</div><div class="ns">Profiling · 算子融合 · 数据排布优化</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">分析</span></div></div></div>
+</div>
+
+<div class="phase-arr"><svg width="20" height="28" viewBox="0 0 20 28" fill="none" stroke="#676D76" stroke-width="2"><line x1="10" y1="2" x2="10" y2="20"/><polyline points="4 14 10 22 16 14"/></svg></div>
+
+<div class="a-cluster p3">
+  <div class="a-head"><span class="a-phase">阶段三</span><span class="a-name">算子开发</span></div>
+  <div class="a-body g2">
+    <div class="nc" data-id="a-tbe"><div class="nt">TBE DSL 算子开发</div><div class="ns">compute 函数 · 调度原语</div><div class="ntags"><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">高级</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+    <div class="nc" data-id="a-tik"><div class="nt">TIK 底层算子开发</div><div class="ns">AI Core 指令 · 极致性能</div><div class="ntags"><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">高级</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">底层</span></div></div>
+    <div class="nc" data-id="a-reg"><div class="nt">自定义算子注册</div><div class="ns">IR 定义 · 框架注册 · 插件</div><div class="ntags"><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">高级</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+    <div class="nc" data-id="a-opv"><div class="nt">算子性能验证</div><div class="ns">msopst · 精度对比 · Benchmark</div><div class="ntags"><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">高级</span><span class="ntag" style="background:#FFF8E5;color:#E63838">工具</span></div></div>
+  </div>
+</div>
+
+<div class="phase-arr"><svg width="20" height="28" viewBox="0 0 20 28" fill="none" stroke="#676D76" stroke-width="2"><line x1="10" y1="2" x2="10" y2="20"/><polyline points="4 14 10 22 16 14"/></svg></div>
+
+<div class="a-cluster p4">
+  <div class="a-head"><span class="a-phase">阶段四</span><span class="a-name">分布式训练</span></div>
+  <div class="a-body g2">
+    <div class="nc" data-id="a-hccl"><div class="nt">HCCL 分布式通信</div><div class="ns">AllReduce · AllGather · 集群拓扑</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">专家</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">集群</span></div></div>
+    <div class="nc" data-id="a-ms"><div class="nt">MindSpore 分布式框架</div><div class="ns">数据并行 · 模型并行 · 流水线</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">专家</span><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">框架</span></div></div>
+  </div>
+  <div class="a-body" style="padding-top:4px"><div class="nc" data-id="a-llm" style="max-width:280px;margin:0 auto;width:100%"><div class="nt">大模型训练实战</div><div class="ns">千亿参数 · RLHF · LoRA 微调</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">专家</span><span class="ntag" style="background:#EBFCF7;color:#273347">项目</span></div></div></div>
+</div>
+
+</div><!-- /a-wrap -->
+</div></div><!-- /opt-inner /opt-a -->
+
+<!-- ══════════ OPTION B ══════════ -->
+<div class="option" id="opt-b">
+<div class="opt-inner">
+<div class="opt-desc" style="color:#273347">彩色主干贯通全程 · 节点左右分布 · 连线穿越主干显示关联</div>
+
+<div class="b-wrap" id="b-wrap">
+<div class="b-spine"></div>
+
+<div class="b-seg s1">
+  <div class="b-seg-label">阶段一 · 基础准备</div>
+  <div class="b-row">
+    <div class="b-left"><div class="nc" data-id="b-hw"><div class="nt">昇腾硬件体系</div><div class="ns">达芬奇核 · AI Core · HBM</div><div class="ntags"><span class="ntag" style="background:rgba(55,197,151,.18);color:#9DFBE8">入门</span><span class="ntag" style="background:rgba(55,197,151,.12);color:#80E6FF">理论</span></div></div></div>
+    <div class="b-mid"><div class="b-dot"></div></div>
+    <div class="b-right"><div class="nc" data-id="b-stack"><div class="nt">CANN 软件栈概览</div><div class="ns">驱动层 · 运行时 · 算子库</div><div class="ntags"><span class="ntag" style="background:rgba(55,197,151,.18);color:#9DFBE8">入门</span><span class="ntag" style="background:rgba(55,197,151,.12);color:#80E6FF">理论</span></div></div></div>
+  </div>
+  <div class="b-row">
+    <div class="b-left"><div class="nc" data-id="b-pyc"><div class="nt">Python / C++ 基础</div><div class="ns">numpy · pybind11 · CMake</div><div class="ntags"><span class="ntag" style="background:rgba(55,197,151,.18);color:#9DFBE8">入门</span></div></div></div>
+    <div class="b-mid"><div class="b-dot"></div></div>
+    <div class="b-right"><div class="nc" data-id="b-env"><div class="nt">环境安装与配置</div><div class="ns">Driver · Firmware · Toolkit</div><div class="ntags"><span class="ntag" style="background:rgba(55,197,151,.18);color:#9DFBE8">入门</span><span class="ntag" style="background:rgba(55,197,151,.12);color:#80E6FF">实践</span></div></div></div>
+  </div>
+</div>
+
+<div class="b-seg s2">
+  <div class="b-seg-label">阶段二 · 应用开发</div>
+  <div class="b-row">
+    <div class="b-left"><div class="nc" data-id="b-acl"><div class="nt">AscendCL 编程基础</div><div class="ns">设备管理 · Stream · 内存</div><div class="ntags"><span class="ntag" style="background:rgba(106,103,206,.2);color:#A8C0F0">进阶</span><span class="ntag" style="background:rgba(55,197,151,.15);color:#80E6FF">实践</span></div></div></div>
+    <div class="b-mid"><div class="b-dot"></div></div>
+    <div class="b-right"><div class="nc" data-id="b-atc"><div class="nt">ATC 模型转换</div><div class="ns">ONNX / TF → .om · 图优化</div><div class="ntags"><span class="ntag" style="background:rgba(106,103,206,.2);color:#A8C0F0">进阶</span><span class="ntag" style="background:rgba(55,197,151,.15);color:#80E6FF">工具</span></div></div></div>
+  </div>
+  <div class="b-row">
+    <div class="b-left"><div class="nc" data-id="b-dvpp"><div class="nt">数据预处理 (DVPP)</div><div class="ns">图像解码 · 缩放 · 格式转换</div><div class="ntags"><span class="ntag" style="background:rgba(106,103,206,.2);color:#A8C0F0">进阶</span><span class="ntag" style="background:rgba(55,197,151,.15);color:#80E6FF">实践</span></div></div></div>
+    <div class="b-mid"><div class="b-dot"></div></div>
+    <div class="b-right"><div class="nc" data-id="b-infer"><div class="nt">模型推理部署</div><div class="ns">加载 .om · 执行推理 · 后处理</div><div class="ntags"><span class="ntag" style="background:rgba(106,103,206,.2);color:#A8C0F0">进阶</span><span class="ntag" style="background:rgba(55,197,151,.15);color:#80E6FF">实践</span></div></div></div>
+  </div>
+  <div class="b-row">
+    <div class="b-left"><div class="nc" data-id="b-perf"><div class="nt">性能调优</div><div class="ns">Profiling · 算子融合 · 排布优化</div><div class="ntags"><span class="ntag" style="background:rgba(106,103,206,.2);color:#A8C0F0">进阶</span><span class="ntag" style="background:rgba(99,102,241,.2);color:#A8C0F0">分析</span></div></div></div>
+    <div class="b-mid"><div class="b-dot"></div></div>
+    <div class="b-right"></div>
+  </div>
+</div>
+
+<div class="b-seg s3">
+  <div class="b-seg-label">阶段三 · 算子开发</div>
+  <div class="b-row">
+    <div class="b-left"><div class="nc" data-id="b-tbe"><div class="nt">TBE DSL 算子开发</div><div class="ns">compute 函数 · 调度原语</div><div class="ntags"><span class="ntag" style="background:rgba(161,119,255,.2);color:#D0B8FF">高级</span><span class="ntag" style="background:rgba(55,197,151,.15);color:#80E6FF">实践</span></div></div></div>
+    <div class="b-mid"><div class="b-dot"></div></div>
+    <div class="b-right"><div class="nc" data-id="b-tik"><div class="nt">TIK 底层算子开发</div><div class="ns">AI Core 指令 · 极致性能</div><div class="ntags"><span class="ntag" style="background:rgba(161,119,255,.2);color:#D0B8FF">高级</span><span class="ntag" style="background:rgba(106,103,206,.2);color:#A8C0F0">底层</span></div></div></div>
+  </div>
+  <div class="b-row">
+    <div class="b-left"><div class="nc" data-id="b-reg"><div class="nt">自定义算子注册</div><div class="ns">IR 定义 · 框架注册 · 插件</div><div class="ntags"><span class="ntag" style="background:rgba(161,119,255,.2);color:#D0B8FF">高级</span><span class="ntag" style="background:rgba(55,197,151,.15);color:#80E6FF">实践</span></div></div></div>
+    <div class="b-mid"><div class="b-dot"></div></div>
+    <div class="b-right"><div class="nc" data-id="b-opv"><div class="nt">算子性能验证</div><div class="ns">msopst · 精度对比 · Benchmark</div><div class="ntags"><span class="ntag" style="background:rgba(161,119,255,.2);color:#D0B8FF">高级</span><span class="ntag" style="background:rgba(253,224,71,.15);color:#FD9A00">工具</span></div></div></div>
+  </div>
+</div>
+
+<div class="b-seg s4" style="padding-bottom:40px">
+  <div class="b-seg-label">阶段四 · 分布式训练</div>
+  <div class="b-row">
+    <div class="b-left"><div class="nc" data-id="b-hccl"><div class="nt">HCCL 分布式通信</div><div class="ns">AllReduce · AllGather · 拓扑</div><div class="ntags"><span class="ntag" style="background:rgba(253,154,0,.2);color:#FFD7A8">专家</span><span class="ntag" style="background:rgba(106,103,206,.2);color:#A8C0F0">集群</span></div></div></div>
+    <div class="b-mid"><div class="b-dot"></div></div>
+    <div class="b-right"><div class="nc" data-id="b-ms"><div class="nt">MindSpore 分布式</div><div class="ns">数据并行 · 模型并行 · 流水线</div><div class="ntags"><span class="ntag" style="background:rgba(253,154,0,.2);color:#FFD7A8">专家</span><span class="ntag" style="background:rgba(161,119,255,.2);color:#D0B8FF">框架</span></div></div></div>
+  </div>
+  <div class="b-row">
+    <div class="b-left"></div>
+    <div class="b-mid"><div class="b-dot"></div></div>
+    <div class="b-right"><div class="nc" data-id="b-llm"><div class="nt">大模型训练实战</div><div class="ns">千亿参数 · RLHF · LoRA 微调</div><div class="ntags"><span class="ntag" style="background:rgba(253,154,0,.2);color:#FFD7A8">专家</span><span class="ntag" style="background:rgba(55,197,151,.15);color:#80E6FF">项目</span></div></div></div>
+  </div>
+</div>
+
+</div><!-- /b-wrap -->
+</div></div><!-- /opt-inner /opt-b -->
+
+<!-- ══════════ OPTION C ══════════ -->
+<div class="option active" id="opt-c">
+<div class="opt-inner">
+<div class="opt-desc" style="color:#A1A4AA">节点按流程图排列 · 贝塞尔曲线标明所有依赖 · 并行路径清晰可见</div>
+
+<div class="c-dag" id="c-dag">
+
+<div class="c-phase p1">
+  <div class="c-plabel">阶段一 · 基础准备</div>
+  <div class="c-row r3">
+    <div class="nc" data-id="c-hw"><div class="nt">昇腾硬件体系</div><div class="ns">达芬奇核 · AI Core · HBM</div><div class="ntags"><span class="ntag" style="background:#EBFCF7;color:#179D8A">入门</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">理论</span></div></div>
+    <div class="nc" data-id="c-stack"><div class="nt">CANN 软件栈概览</div><div class="ns">驱动层 · 运行时 · 算子库</div><div class="ntags"><span class="ntag" style="background:#EBFCF7;color:#179D8A">入门</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">理论</span></div></div>
+    <div class="nc" data-id="c-pyc"><div class="nt">Python / C++ 基础</div><div class="ns">numpy · pybind11 · CMake</div><div class="ntags"><span class="ntag" style="background:#EBFCF7;color:#179D8A">入门</span><span class="ntag" style="background:#FFF8E5;color:#E63838">预备</span></div></div>
+  </div>
+  <div class="cgap"></div>
+  <div class="c-row r1" style="max-width:260px;margin:0 auto">
+    <div class="nc" data-id="c-env"><div class="nt">环境安装与配置</div><div class="ns">Driver · Firmware · Toolkit 安装</div><div class="ntags"><span class="ntag" style="background:#EBFCF7;color:#179D8A">入门</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+  </div>
+</div>
+
+<div class="inter"></div>
+
+<div class="c-phase p2">
+  <div class="c-plabel">阶段二 · 应用开发</div>
+  <div class="c-row r2">
+    <div class="nc" data-id="c-acl"><div class="nt">AscendCL 编程基础</div><div class="ns">设备管理 · Stream · 内存管理</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+    <div class="nc" data-id="c-atc"><div class="nt">ATC 模型转换</div><div class="ns">ONNX / TF → .om · 图优化 · 量化</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#EBFCF7;color:#273347">工具</span></div></div>
+  </div>
+  <div class="cgap"></div>
+  <div class="c-row r2">
+    <div class="nc" data-id="c-dvpp"><div class="nt">数据预处理 (DVPP)</div><div class="ns">图像解码 · 缩放 · 格式转换</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+    <div class="nc" data-id="c-infer"><div class="nt">模型推理部署</div><div class="ns">加载 .om · 执行推理 · 后处理</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+  </div>
+  <div class="cgap"></div>
+  <div class="c-row r1" style="max-width:260px;margin:0 auto">
+    <div class="nc" data-id="c-perf"><div class="nt">性能调优</div><div class="ns">Profiling · 算子融合 · 数据排布优化</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">进阶</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">分析</span></div></div>
+  </div>
+</div>
+
+<div class="inter"></div>
+
+<div class="c-phase p3">
+  <div class="c-plabel">阶段三 · 算子开发</div>
+  <div class="c-row r2">
+    <div class="nc" data-id="c-tbe"><div class="nt">TBE DSL 算子开发</div><div class="ns">compute 函数 · 调度原语 · 自动调优</div><div class="ntags"><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">高级</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+    <div class="nc" data-id="c-tik"><div class="nt">TIK 底层算子开发</div><div class="ns">AI Core 指令 · 数据搬移 · 极致性能</div><div class="ntags"><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">高级</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">底层</span></div></div>
+  </div>
+  <div class="cgap"></div>
+  <div class="c-row r2">
+    <div class="nc" data-id="c-reg"><div class="nt">自定义算子注册</div><div class="ns">IR 定义 · 框架注册 · 插件机制</div><div class="ntags"><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">高级</span><span class="ntag" style="background:#EBFCF7;color:#273347">实践</span></div></div>
+    <div class="nc" data-id="c-opv"><div class="nt">算子性能验证</div><div class="ns">msopst · 精度对比 · Benchmark</div><div class="ntags"><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">高级</span><span class="ntag" style="background:#FFF8E5;color:#E63838">工具</span></div></div>
+  </div>
+</div>
+
+<div class="inter"></div>
+
+<div class="c-phase p4">
+  <div class="c-plabel">阶段四 · 分布式训练</div>
+  <div class="c-row r2">
+    <div class="nc" data-id="c-hccl"><div class="nt">HCCL 分布式通信</div><div class="ns">AllReduce · AllGather · 集群拓扑</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">专家</span><span class="ntag" style="background:#E8F7FB;color:#4F4DA7">集群</span></div></div>
+    <div class="nc" data-id="c-ms"><div class="nt">MindSpore 分布式框架</div><div class="ns">数据并行 · 模型并行 · 流水线</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">专家</span><span class="ntag" style="background:#F0EFFA;color:#4F4DA7">框架</span></div></div>
+  </div>
+  <div class="cgap"></div>
+  <div class="c-row r1" style="max-width:260px;margin:0 auto">
+    <div class="nc" data-id="c-llm"><div class="nt">大模型训练实战</div><div class="ns">千亿参数 · RLHF · LoRA 微调</div><div class="ntags"><span class="ntag" style="background:#FFF8E5;color:#E63838">专家</span><span class="ntag" style="background:#EBFCF7;color:#273347">项目</span></div></div>
+  </div>
+</div>
+
+</div><!-- /c-dag -->
+</div></div><!-- /opt-inner /opt-c -->
+
+<script>
+// ── Tab switching ──
+function switchTab(id) {
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('opt-' + id).classList.add('active');
+  const idx = {a:0,b:1,c:2}[id];
+  const tab = document.querySelectorAll('.tab')[idx];
+  if (tab) tab.classList.add('active');
+  // 关键：只在 tab 变为可见之后再画线，否则 getBoundingClientRect 全为 0
+  requestAnimationFrame(() => requestAnimationFrame(() => drawForTab(id)));
+}
+
+// ── SVG 工具 ──
+function mkSvg(container, markerId) {
+  const old = container.querySelector(':scope > svg.clines');
+  if (old) old.remove();
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.classList.add('clines');
+
+  // defs: 箭头 markers，每种颜色一个
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  const colors = {
+    'mg':'rgba(161,164,170,.75)',
+    'm1':'rgba(55,197,151,.8)',
+    'm2':'rgba(106,103,206,.8)',
+    'm3':'rgba(161,119,255,.8)',
+    'm4':'rgba(253,154,0,.8)',
+  };
+  Object.entries(colors).forEach(([id, fill]) => {
+    const m = document.createElementNS('http://www.w3.org/2000/svg','marker');
+    m.setAttribute('id', markerId + id);
+    m.setAttribute('markerWidth','8'); m.setAttribute('markerHeight','6');
+    m.setAttribute('refX','7'); m.setAttribute('refY','3');
+    m.setAttribute('orient','auto');
+    m.setAttribute('markerUnits','userSpaceOnUse');
+    const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d','M0,0 L8,3 L0,6 z');
+    p.setAttribute('fill', fill);
+    m.appendChild(p); defs.appendChild(m);
+  });
+  svg.appendChild(defs);
+  // 插入为第一个子元素（但 z-index 由 CSS 控制，节点有 z-index:1 会盖住它）
+  container.insertBefore(svg, container.firstChild);
+  return svg;
+}
+
+// 计算连线路径 —— 始终从 source 底部中心 → target 顶部中心，纵向贝塞尔切线
+function makePath(fEl, tEl, cr) {
+  const f = fEl.getBoundingClientRect();
+  const t = tEl.getBoundingClientRect();
+  // 转为相对 container 的坐标
+  const fx = f.left + f.width/2 - cr.left;
+  const fy = f.bottom - cr.top;
+  const tx = t.left + t.width/2 - cr.left;
+  const ty = t.top - cr.top;
+  // 控制点高度：取实际间距的 45%，最少 20px
+  const gap = Math.abs(ty - fy);
+  const h = Math.max(gap * 0.45, 20);
+  // 两个控制点都保持各自 x，产生顺滑的垂直切线曲线
+  return `M${fx},${fy} C${fx},${fy+h} ${tx},${ty-h} ${tx},${ty}`;
+}
+
+function drawEdge(svg, fEl, tEl, cr, stroke, mId, dashed) {
+  if (!fEl || !tEl) return;
+  const d = makePath(fEl, tEl, cr);
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d', d);
+  path.setAttribute('fill','none');
+  path.setAttribute('stroke', stroke);
+  path.setAttribute('stroke-width','1.5');
+  if (dashed) path.setAttribute('stroke-dasharray','5 3');
+  path.setAttribute('marker-end', `url(#${mId})`);
+  svg.appendChild(path);
+}
+
+function drawEdges(containerId, edges) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const svg = mkSvg(container, containerId + '-');
+  const cr = container.getBoundingClientRect();
+  edges.forEach(([fId, tId, stroke, mSuffix, dashed]) => {
+    const fEl = container.querySelector(`[data-id="${fId}"]`);
+    const tEl = container.querySelector(`[data-id="${tId}"]`);
+    drawEdge(svg, fEl, tEl, cr, stroke, containerId + '-' + mSuffix, dashed);
+  });
+}
+
+// ── 边定义 ──
+// 方案 A：只画各阶段内部连线（阶段间由箭头分隔符表示）
+const EA = [
+  // 阶段一：三条汇聚到 env
+  ['a-hw',   'a-env',  'rgba(55,197,151,.55)',  'm1'],
+  ['a-stack','a-env',  'rgba(55,197,151,.55)',  'm1'],
+  ['a-pyc',  'a-env',  'rgba(55,197,151,.4)',   'm1', true],
+  // 阶段二：acl/atc 各自下分，dvpp/infer 汇到 perf
+  ['a-acl',  'a-dvpp', 'rgba(106,103,206,.45)', 'm2', true],
+  ['a-acl',  'a-infer','rgba(106,103,206,.55)', 'm2'],
+  ['a-atc',  'a-infer','rgba(106,103,206,.55)', 'm2'],
+  ['a-dvpp', 'a-perf', 'rgba(106,103,206,.55)', 'm2'],
+  ['a-infer','a-perf', 'rgba(106,103,206,.55)', 'm2'],
+  // 阶段三：tbe/tik 各自下分到 reg/opv
+  ['a-tbe',  'a-reg',  'rgba(161,119,255,.55)', 'm3'],
+  ['a-tik',  'a-opv',  'rgba(161,119,255,.55)', 'm3'],
+  ['a-tbe',  'a-opv',  'rgba(161,119,255,.38)', 'm3', true],
+  // 阶段四：汇到 llm
+  ['a-hccl', 'a-llm',  'rgba(253,154,0,.55)', 'm4'],
+  ['a-ms',   'a-llm',  'rgba(253,154,0,.55)', 'm4'],
+];
+
+// 方案 B：完整路径含跨阶段
+const EB = [
+  ['b-hw',   'b-env',  'rgba(55,197,151,.5)',   'm1'],
+  ['b-stack','b-env',  'rgba(55,197,151,.5)',   'm1'],
+  ['b-pyc',  'b-env',  'rgba(55,197,151,.38)',  'm1', true],
+  ['b-env',  'b-acl',  'rgba(106,103,206,.55)', 'm2'],
+  ['b-env',  'b-atc',  'rgba(106,103,206,.55)', 'm2'],
+  ['b-acl',  'b-dvpp', 'rgba(106,103,206,.45)', 'm2', true],
+  ['b-acl',  'b-infer','rgba(106,103,206,.5)',  'm2'],
+  ['b-atc',  'b-infer','rgba(106,103,206,.5)',  'm2'],
+  ['b-dvpp', 'b-perf', 'rgba(106,103,206,.5)',  'm2'],
+  ['b-infer','b-perf', 'rgba(106,103,206,.45)', 'm2', true],
+  ['b-perf', 'b-tbe',  'rgba(161,119,255,.55)', 'm3'],
+  ['b-perf', 'b-tik',  'rgba(161,119,255,.5)',  'm3', true],
+  ['b-tbe',  'b-reg',  'rgba(161,119,255,.5)',  'm3'],
+  ['b-tik',  'b-opv',  'rgba(161,119,255,.5)',  'm3'],
+  ['b-reg',  'b-opv',  'rgba(161,119,255,.35)', 'm3', true],
+  ['b-opv',  'b-hccl', 'rgba(253,154,0,.55)', 'm4'],
+  ['b-opv',  'b-ms',   'rgba(253,154,0,.5)',  'm4', true],
+  ['b-hccl', 'b-llm',  'rgba(253,154,0,.5)',  'm4'],
+  ['b-ms',   'b-llm',  'rgba(253,154,0,.5)',  'm4'],
+];
+
+// 方案 C：同 B 结构
+const EC = [
+  ['c-hw',   'c-env',  'rgba(55,197,151,.6)',   'm1'],
+  ['c-stack','c-env',  'rgba(55,197,151,.6)',   'm1'],
+  ['c-pyc',  'c-env',  'rgba(55,197,151,.45)',  'm1', true],
+  ['c-env',  'c-acl',  'rgba(106,103,206,.65)', 'm2'],
+  ['c-env',  'c-atc',  'rgba(106,103,206,.65)', 'm2'],
+  ['c-acl',  'c-dvpp', 'rgba(106,103,206,.5)',  'm2', true],
+  ['c-acl',  'c-infer','rgba(106,103,206,.55)', 'm2'],
+  ['c-atc',  'c-infer','rgba(106,103,206,.55)', 'm2'],
+  ['c-dvpp', 'c-perf', 'rgba(106,103,206,.55)', 'm2'],
+  ['c-infer','c-perf', 'rgba(106,103,206,.5)',  'm2'],
+  ['c-perf', 'c-tbe',  'rgba(161,119,255,.65)', 'm3'],
+  ['c-perf', 'c-tik',  'rgba(161,119,255,.55)', 'm3', true],
+  ['c-tbe',  'c-reg',  'rgba(161,119,255,.55)', 'm3'],
+  ['c-tik',  'c-opv',  'rgba(161,119,255,.55)', 'm3'],
+  ['c-tbe',  'c-opv',  'rgba(161,119,255,.38)', 'm3', true],
+  ['c-opv',  'c-hccl', 'rgba(253,154,0,.65)', 'm4'],
+  ['c-opv',  'c-ms',   'rgba(253,154,0,.55)', 'm4', true],
+  ['c-hccl', 'c-llm',  'rgba(253,154,0,.55)', 'm4'],
+  ['c-ms',   'c-llm',  'rgba(253,154,0,.55)', 'm4'],
+];
+
+function drawForTab(id) {
+  if (id === 'a') drawEdges('a-wrap', EA);
+  if (id === 'b') drawEdges('b-wrap', EB);
+  if (id === 'c') drawEdges('c-dag',  EC);
+}
+
+// 初始化：只画当前激活的 tab（C）
+window.addEventListener('load', () => {
+  requestAnimationFrame(() => requestAnimationFrame(() => drawForTab('c')));
+});
+window.addEventListener('resize', () => {
+  const active = document.querySelector('.option.active');
+  if (active) {
+    const id = active.id.replace('opt-','');
+    drawForTab(id);
+  }
+});
+</script>
+</body>
+</html>

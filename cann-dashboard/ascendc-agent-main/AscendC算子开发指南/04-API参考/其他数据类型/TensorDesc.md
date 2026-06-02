@@ -1,0 +1,17 @@
+# TensorDesc
+
+-   **[TensorDesc简介](TensorDesc简介.md)**
+
+-   **[构造和析构函数](构造和析构函数-113.md)**
+
+-   **[SetShapeAddr](SetShapeAddr.md)**
+
+-   **[GetDim](GetDim.md)**
+
+-   **[GetIndex](GetIndex.md)**
+
+-   **[GetShape](GetShape-114.md)**
+
+-   **[GetDataPtr](GetDataPtr.md)**
+
+-   **[GetDataObj](GetDataObj.md)**

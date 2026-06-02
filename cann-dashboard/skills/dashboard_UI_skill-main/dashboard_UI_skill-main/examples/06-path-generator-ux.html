@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习路径生成 — UX 交互探索</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --font: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  --black: #1B2432;
+  --blue: #4F4DA7;
+  --blue-soft: #F0EFFA;
+  --green: #179D8A;
+  --green-soft: #EBFCF7;
+  --amber: #FD9A00;
+  --red: #E63838;
+  --border: #E1E2E4;
+  --border2: #CDCFD2;
+  --surface: #F8F8F9;
+  --surface2: #F0EFFA;
+  --text-2: #676D76;
+  --text-3: #A1A4AA;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: #F8F8F9; color: var(--black); min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ── TOP BAR ── */
+.topbar { height: 52px; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 28px; gap: 16px; flex-shrink: 0; }
+.topbar-logo { font-size: 13px; font-weight: 800; color: var(--black); letter-spacing:0; }
+.topbar-sep { color: var(--border2); font-size: 18px; }
+.topbar-title { font-size: 13px; color: var(--text-2); font-weight: 500; }
+.topbar-badge { margin-left: auto; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: var(--blue-soft); color: var(--blue); }
+
+/* ── LAYOUT ── */
+.main-layout { flex: 1; display: grid; grid-template-columns: 400px 1fr; overflow: hidden; height: calc(100vh - 52px - 42px); }
+
+/* ── LEFT: CONVERSATION ── */
+.conv-panel { display: flex; flex-direction: column; background: white; border-right:0; overflow: hidden; }
+.conv-header { padding: 14px 20px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.conv-header-title { font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 2px; }
+.conv-header-sub { font-size: 12px; color: var(--text-2); }
+.conv-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; scroll-behavior: smooth; }
+.msg { display: flex; gap: 10px; align-items: flex-start; animation: msgIn 0.22s ease both; }
+@keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.msg.user { flex-direction: row-reverse; }
+.msg-avatar { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; }
+.msg.ai .msg-avatar { background: linear-gradient(135deg, #4F4DA7, #6A67CE); color: white; }
+.msg.user .msg-avatar { background: var(--surface2); color: var(--text-2); }
+.msg-bubble { max-width: 270px; padding: 9px 13px; border-radius: 12px; font-size: 12.5px; line-height: 1.6; }
+.msg.ai .msg-bubble { background: var(--surface); border: 1px solid var(--border); color: var(--black); border-radius: 3px 12px 12px 12px; }
+.msg.user .msg-bubble { background: var(--black); color: white; border-radius: 12px 3px 12px 12px; }
+.typing-indicator { display: flex; gap: 4px; align-items: center; padding: 10px 13px; }
+.typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-3); animation: typingBounce 1.2s infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce { 0%,60%,100% { transform: translateY(0); opacity:.4; } 30% { transform: translateY(-4px); opacity:1; } }
+.msg-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.chip { padding: 5px 11px; border-radius: 100px; border: 1.5px solid var(--border); background: white; font-size: 11px; font-weight: 600; color: var(--text-2); cursor: pointer; transition: all .15s; font-family: var(--font); }
+.chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
+.chip.selected { background: var(--blue); color: white; border-color: var(--blue); }
+.design-note { background: #FFF8E5; border: 1px solid #FFE87F; border-radius: 8px; padding: 7px 11px; font-size: 11px; color: #495058; line-height: 1.5; margin-top: 6px; }
+.design-note strong { font-weight: 700; }
+.conv-input-area { padding: 12px 14px; border-top: 1px solid var(--border); flex-shrink: 0; background: white; }
+.input-wrap { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 7px 7px 7px 13px; transition: border-color .15s; }
+.input-wrap:focus-within { border-color: var(--blue); background: white; }
+.conv-input { flex: 1; border: none; background: transparent; font-size: 13px; color: var(--black); outline: none; font-family: var(--font); }
+.conv-input::placeholder { color: var(--text-3); }
+.send-btn { width: 28px; height: 28px; border-radius: 7px; background: var(--black); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s; }
+.send-btn:hover { background: #1B2432; transform: scale(1.05); }
+.send-btn svg { color: white; }
+.quick-chips { display: flex; gap: 5px; margin-top: 7px; flex-wrap: wrap; }
+.quick-chip { padding: 3px 9px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); font-size: 11px; font-weight: 500; color: var(--text-2); cursor: pointer; transition: all .15s; font-family: var(--font); }
+.quick-chip:hover { border-color: var(--border2); color: var(--black); }
+
+/* ── RIGHT: PATH PANEL ── */
+.path-panel { display: flex; flex-direction: column; overflow: hidden; background: #F8F8F9; }
+.path-header { padding: 14px 24px 11px; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.path-header-label { font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 2px; }
+.path-header-name { font-size: 15px; font-weight: 800; color: var(--black); min-height: 22px; }
+.path-header-right { display: flex; gap: 8px; align-items: center; }
+.path-meta-pill { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 100px; background: var(--surface2); color: var(--text-2); display: none; }
+.save-btn { padding: 6px 16px; border-radius: 8px; background: var(--black); color: white; font-size: 12px; font-weight: 700; border: none; cursor: pointer; font-family: var(--font); transition: all .2s; opacity: 0; pointer-events: none; transform: scale(.92); }
+.save-btn.visible { opacity: 1; pointer-events: auto; transform: scale(1); }
+.save-btn:hover { background: #1B2432; }
+.path-content { flex: 1; overflow-y: auto; padding: 28px 32px; display: flex; flex-direction: column; align-items: center; }
+.path-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--text-3); width: 100%; }
+.path-empty-icon { font-size: 44px; opacity: .2; }
+.path-empty-text { font-size: 14px; font-weight: 500; }
+.path-empty-sub { font-size: 12px; }
+
+/* ── SKELETON ── */
+.skel { background: linear-gradient(90deg, var(--surface2) 25%, #EEEEF0 50%, var(--surface2) 75%); background-size: 200% 100%; border-radius: 4px; animation: shimmer 1.4s infinite; }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.skel-title { height: 15px; width: 55%; margin-bottom: 7px; }
+.skel-line { height: 11px; margin-bottom: 5px; }
+.skel-line.w80 { width: 80%; }
+.skel-line.w60 { width: 60%; }
+
+/* ── PATH NODES CONTAINER ── */
+.path-nodes { display: flex; flex-direction: column; width: 100%; max-width: 500px; }
+
+/* ── INSERT ZONE (between nodes) ── */
+.insert-zone {
+  display: flex; align-items: center; justify-content: center;
+  height: 28px; margin: -2px 0; position: relative; cursor: pointer;
+  opacity: 0; transition: opacity .15s;
+}
+.insert-zone:hover { opacity: 1; }
+.path-nodes:hover .insert-zone { opacity: .4; }
+.path-nodes .insert-zone:hover { opacity: 1 !important; }
+.insert-line { flex: 1; height: 1.5px; background: var(--blue); border-radius: 1px; }
+.insert-plus {
+  width: 22px; height: 22px; border-radius: 50%; background: white; border: 1.5px solid var(--blue);
+  color: var(--blue); font-size: 14px; font-weight: 700; display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0; transition: all .15s; line-height: 1;
+}
+.insert-zone:hover .insert-plus { background: var(--blue); color: white; transform: scale(1.1); }
+
+/* ── NODE ROW ── */
+.node-row {
+  display: flex; align-items: flex-start; gap: 0; position: relative;
+  animation: nodeIn .32s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes nodeIn { from { opacity:0; transform:translateY(16px) scale(.96); } to { opacity:1; transform:translateY(0) scale(1); } }
+.node-row.drag-over-top { border-top: 2px solid var(--blue); }
+.node-row.drag-over-bottom { border-bottom: 2px solid var(--blue); }
+.node-row.dragging { opacity: .35; }
+
+/* Drag handle */
+.node-drag-handle {
+  width: 20px; flex-shrink: 0; display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 18px; cursor: grab; color: var(--text-3); opacity: 0;
+  transition: opacity .15s;
+}
+.node-row:hover .node-drag-handle { opacity: 1; }
+.node-drag-handle:active { cursor: grabbing; }
+
+/* Timeline */
+.node-timeline { display: flex; flex-direction: column; align-items: center; padding-top: 16px; flex-shrink: 0; width: 32px; }
+.node-dot {
+  width: 26px; height: 26px; border-radius: 50%; background: white; border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;
+  color: var(--text-3); flex-shrink: 0; transition: all .25s; z-index: 1;
+}
+.node-dot.known { background: var(--green); border-color: var(--green); color: white; }
+.node-connector { width: 2px; min-height: 20px; flex: 1; background: var(--border); margin: 3px 0; }
+.node-row:last-child .node-connector { display: none; }
+
+/* Node card */
+.node-card {
+  flex: 1; background: white; border: 1.5px solid var(--border); border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 0; transition: all .2s; position: relative;
+  margin-left: 12px;
+}
+.node-row:hover .node-card { border-color: var(--border2); box-shadow: var(--shadow); }
+.node-card.known { opacity: .55; background: var(--surface); }
+.node-card.known .node-title { text-decoration: line-through; text-decoration-color: var(--text-3); }
+.node-row-wrap { display: flex; flex-direction: column; margin-bottom: 0; }
+
+/* Card top: step + title + actions */
+.node-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.node-card-left { flex: 1; min-width: 0; }
+.node-step { font-size: 10px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+.node-title { font-size: 13.5px; font-weight: 700; color: var(--black); line-height: 1.35; }
+
+/* Hover action buttons */
+.node-actions {
+  display: flex; gap: 4px; align-items: center; flex-shrink: 0;
+  opacity: 0; transition: opacity .15s; padding-top: 1px;
+}
+.node-row:hover .node-actions { opacity: 1; }
+.node-action-btn {
+  width: 26px; height: 26px; border-radius: 6px; border: 1.5px solid var(--border);
+  background: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--text-2); transition: all .15s; font-family: var(--font);
+  font-weight: 600;
+}
+.node-action-btn:hover { border-color: var(--border2); color: var(--black); }
+.node-action-btn.known-btn:hover { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+.node-action-btn.known-btn.active { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+.node-action-btn.del-btn:hover { background: #FEEFF0; border-color: var(--red); color: var(--red); }
+.node-action-btn.collapse-btn { font-size: 9px; }
+
+/* Collapsible desc + tags */
+.node-body { overflow: hidden; transition: max-height .25s ease, opacity .2s; max-height: 200px; opacity: 1; }
+.node-body.collapsed { max-height: 0; opacity: 0; }
+.node-desc { font-size: 12px; color: var(--text-2); line-height: 1.5; margin-bottom: 8px; }
+.node-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.node-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 100px; background: var(--surface2); color: var(--text-2); }
+.node-tag.blue { background: var(--blue-soft); color: var(--blue); }
+.node-tag.green { background: var(--green-soft); color: #273347; }
+
+/* ── INSERT POPUP ── */
+.insert-popup {
+  position: fixed; z-index: 1000; background: white; border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 12px; box-shadow: var(--shadow-lg);
+  width: 288px; animation: popupIn .18s ease both;
+}
+@keyframes popupIn { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+.insert-popup-title { font-size: 10px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
+.insert-search-wrap { position: relative; margin-bottom: 8px; }
+.insert-search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; font-size: 13px; }
+.insert-search {
+  width: 100%; box-sizing: border-box; padding: 7px 10px 7px 30px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-size: 12px; font-family: var(--font); color: var(--black);
+  background: var(--surface); outline: none; transition: border-color .15s;
+}
+.insert-search:focus { border-color: var(--blue); background: white; }
+.insert-search::placeholder { color: var(--text-3); }
+.insert-section-label { font-size: 10px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; padding: 0 2px; }
+.insert-option {
+  display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 8px;
+  cursor: pointer; transition: background .12s; margin-bottom: 3px;
+}
+.insert-option:hover { background: var(--surface); }
+.insert-option:last-child { margin-bottom: 0; }
+.insert-option-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+.insert-option-dot.search { background: var(--text-3); }
+.insert-option-title { font-size: 12px; font-weight: 600; color: var(--black); margin-bottom: 1px; }
+.insert-option-title mark { background: #FFE87F; border-radius: 2px; padding: 0 1px; font-weight: 700; color: inherit; }
+.insert-option-desc { font-size: 11px; color: var(--text-2); line-height: 1.4; }
+.insert-divider { height: 1px; background: var(--border); margin: 8px 0; }
+.insert-empty { font-size: 12px; color: var(--text-3); text-align: center; padding: 12px 0; }
+.insert-popup-cancel { width: 100%; margin-top: 8px; padding: 6px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface); font-size: 11px; color: var(--text-2); cursor: pointer; font-family: var(--font); transition: all .12s; }
+.insert-popup-cancel:hover { background: var(--surface2); }
+
+/* ── UNDO TOAST ── */
+.undo-toast {
+  position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(12px);
+  background: var(--black); color: white; border-radius: 10px; padding: 10px 16px;
+  font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 12px;
+  box-shadow: var(--shadow-lg); z-index: 2000; opacity: 0; pointer-events: none;
+  transition: all .22s cubic-bezier(.34,1.56,.64,1);
+}
+.undo-toast.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+.undo-btn { background: none; border: 1.5px solid rgba(255,255,255,.4); border-radius: 6px; color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; cursor: pointer; font-family: var(--font); transition: all .12s; }
+.undo-btn:hover { background: rgba(255,255,255,.15); }
+
+/* ── REFINE INPUT ── */
+.refine-input-wrap {
+  width: 100%; max-width: 500px; margin-top: 12px; display: flex; align-items: center; gap: 8px;
+  background: white; border: 1.5px solid var(--border2); border-radius: 10px; padding: 7px 7px 7px 13px;
+  transition: border-color .15s; animation: nodeIn .3s ease both;
+}
+.refine-input-wrap:focus-within { border-color: var(--blue); }
+.refine-input { flex: 1; border: none; background: transparent; font-size: 12px; color: var(--black); outline: none; font-family: var(--font); }
+.refine-input::placeholder { color: var(--text-3); }
+.refine-btn { padding: 5px 11px; border-radius: 7px; background: var(--surface2); border: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--text-2); cursor: pointer; font-family: var(--font); transition: all .15s; }
+.refine-btn:hover { background: var(--black); color: white; border-color: var(--black); }
+
+/* ── RATIONALE BAR ── */
+.rationale-bar { background: white; border-top: 1px solid var(--border); flex-shrink: 0; }
+.rationale-toggle { display: flex; align-items: center; gap: 8px; padding: 9px 24px; cursor: pointer; font-size: 11.5px; font-weight: 600; color: var(--text-2); user-select: none; border: none; background: none; width: 100%; font-family: var(--font); transition: color .15s; }
+.rationale-toggle:hover { color: var(--black); }
+.rationale-toggle .arrow { transition: transform .2s; }
+.rationale-toggle.open .arrow { transform: rotate(180deg); }
+.rationale-body { display: none; padding: 0 24px 16px; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.rationale-body.open { display: grid; }
+.rationale-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+.rc-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 5px; }
+.rc-label.good { color: var(--green); }
+.rc-label.bad { color: var(--red); }
+.rc-label.ok { color: var(--amber); }
+.rationale-card h4 { font-size: 12px; font-weight: 700; color: var(--black); margin-bottom: 4px; }
+.rationale-card p { font-size: 11px; color: var(--text-2); line-height: 1.5; }
+
+
+:root{
+  --green-dark:#37C597;--green-core:#3BE880;--green-bright:#3BF7D1;--green-med:#9DFBE8;--green-faded:#C3EDDF;--green-light:#EBFCF7;
+  --teal-dark:#179D8A;--teal-core:#1AAFD0;--teal-bright:#02CEFF;--teal-med:#80E6FF;--teal-light:#E8F7FB;
+  --purple-dark:#4F4DA7;--purple-core:#6A67CE;--purple-bright:#A177FF;--purple-med:#D0B8FF;--purple-light:#F0EFFA;
+  --gold-dark:#FD9A00;--gold-core:#FFB900;--gold-bright:#FFD200;--gold-med:#FFE87F;--gold-light:#FFF8E5;
+  --coral-dark:#E63838;--coral-core:#FC636B;--coral-bright:#FF6D92;--coral-med:#FFB6C8;--coral-light:#FEEFF0;
+  --white:#FFFFFF;--neutral-2:#EEEEF0;--navy:#273347;--navy-title:#B3BCC4;--navy-text:#8897A3;
+  --g1:#F8F8F9;--g2:#EFF0F1;--g3:#E1E2E4;--g4:#CDCFD2;--g5:#B9BCC0;--g6:#A1A4AA;--g7:#898E95;--g8:#676D76;--g9:#495058;--g10:#1B2432;
+  --warm-1:#FFD7A8;--warm-2:#F3C7BF;--warm-3:#D9BFEE;--warm-4:#BFB6F0;--warm-5:#A8C0F0;--warm-6:#BFD3F2;
+  --bg:var(--g1);--surface:var(--white);--surface-2:var(--g2);--card:var(--white);--panel:var(--white);
+  --text:var(--g10);--black:var(--g10);--text-2:var(--g9);--text-secondary:var(--g9);--muted:var(--g9);--dim:var(--g6);--text-3:var(--g6);
+  --line:rgba(225,226,228,.82);--line-hair:rgba(205,207,210,.72);--border:var(--g3);--border2:var(--g4);--border-2:var(--g4);
+  --brand:var(--purple-core);--brand-dark:var(--purple-dark);--brand-soft:var(--purple-light);
+  --primary:var(--purple-core);--primary-2:var(--purple-bright);--primary-dark:var(--purple-dark);--primary-soft:var(--purple-light);
+  --accent:var(--coral-dark);--blue:var(--purple-core);--teal:var(--teal-core);
+  --good:var(--green-dark);--good-soft:var(--green-light);--green:var(--green-dark);--green-soft:var(--green-light);
+  --warn:var(--gold-dark);--warn-soft:var(--gold-light);--yellow:var(--gold-dark);--amber:var(--gold-dark);--yellow-bg:var(--gold-light);
+  --bad:var(--coral-dark);--bad-soft:var(--coral-light);--danger:var(--coral-dark);--red:var(--coral-dark);--red-bg:var(--coral-light);
+  --blue-bg:var(--purple-light);--green-bg:var(--green-light);
+  --radius-xl:24px;--radius-l:18px;--radius-m:12px;--radius-s:8px;
+  --shadow-soft:0 1px 2px rgba(39,51,71,.05),0 8px 24px rgba(39,51,71,.075);
+  --shadow-pop:0 16px 42px rgba(106,103,206,.16);
+  --font:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif!important;
+  color:var(--g10);
+  -webkit-font-smoothing:antialiased;
+  background:
+    linear-gradient(180deg, rgba(248,248,249,0) 0%, rgba(248,248,249,.08) 46%, rgba(248,248,249,.9) 78%, var(--g1) 94%) 0 0 / 100% 520px no-repeat,
+    linear-gradient(115deg, rgba(255,215,168,.50) 0%, rgba(243,199,191,.50) 22%, rgba(217,191,238,.50) 44%, rgba(191,182,240,.50) 60%, rgba(168,192,240,.50) 78%, rgba(191,211,242,.50) 100%) 0 0 / 100% 520px no-repeat,
+    var(--g1)!important;
+}
+body::before{
+  content:'';position:fixed;inset:0 0 auto 0;height:520px;pointer-events:none;z-index:-1;
+  background:
+    linear-gradient(115deg, transparent 0%, transparent 10%, rgba(255,255,255,.20) 10%, rgba(255,255,255,.20) 18%, transparent 18%),
+    linear-gradient(115deg, transparent 24%, rgba(255,255,255,.14) 24%, rgba(255,255,255,.14) 34%, transparent 34%),
+    linear-gradient(115deg, transparent 46%, rgba(255,255,255,.16) 46%, rgba(255,255,255,.16) 56%, transparent 56%),
+    linear-gradient(115deg, transparent 66%, rgba(255,255,255,.12) 66%, rgba(255,255,255,.12) 78%, transparent 78%),
+    linear-gradient(115deg, transparent 84%, rgba(255,255,255,.18) 84%, rgba(255,255,255,.18) 95%, transparent 95%);
+}
+a{color:var(--purple-dark)}
+a:hover{text-decoration:underline}
+code,kbd,pre,.mono,.kpi-val,.stat .v,.score,.score-pill,.det-score,.role-score strong,.scenario-score strong{
+  font-family:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+}
+code,kbd{background:var(--purple-light);color:var(--purple-dark);border-radius:6px;padding:.08em .42em}
+pre{background:var(--navy)!important;color:var(--navy-title)!important;border-radius:14px!important;box-shadow:var(--shadow-soft)}
+h1{color:var(--g10)!important;letter-spacing:0!important}
+h2,h3,h4{color:var(--g10);letter-spacing:0!important}
+.hero,.cover{
+  position:relative;overflow:hidden;border:0!important;border-radius:24px!important;box-shadow:var(--shadow-soft)!important;
+  background:
+    linear-gradient(115deg, rgba(255,215,168,.50) 0%, rgba(243,199,191,.50) 22%, rgba(217,191,238,.50) 44%, rgba(191,182,240,.50) 60%, rgba(168,192,240,.50) 78%, rgba(191,211,242,.50) 100%),
+    var(--white)!important;
+}
+.hero::before,.cover::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(115deg, transparent 0%, transparent 10%, rgba(255,255,255,.20) 10%, rgba(255,255,255,.20) 18%, transparent 18%),
+    linear-gradient(115deg, transparent 24%, rgba(255,255,255,.14) 24%, rgba(255,255,255,.14) 34%, transparent 34%),
+    linear-gradient(115deg, transparent 46%, rgba(255,255,255,.16) 46%, rgba(255,255,255,.16) 56%, transparent 56%),
+    linear-gradient(115deg, transparent 66%, rgba(255,255,255,.12) 66%, rgba(255,255,255,.12) 78%, transparent 78%),
+    linear-gradient(115deg, transparent 84%, rgba(255,255,255,.18) 84%, rgba(255,255,255,.18) 95%, transparent 95%);
+}
+.hero>* , .cover>*{position:relative;z-index:1}
+.eyebrow,.cover-tag,.badge,.tag,.cpill,.fchip,.source-badge,.mini-badge,.grade-tag,.cat-badge,.role-focus-badge,.ntag,.node-tag,.repo-chip{
+  border:0!important;border-radius:999px!important;font-weight:700;
+}
+.topbar,.filter-bar,.role-tabbar,.tabs,.header,.top-bar,nav:not(.sidebar-nav):not(.toc),.path-header,.conv-header,.conv-input-area,.rationale-bar{
+  border:0!important;box-shadow:var(--shadow-soft)!important;background:rgba(255,255,255,.78)!important;backdrop-filter:blur(14px);
+}
+.toc,.nav-links,.style-tabs,.nd-tabs,.ev-tabs,.scene-tabbar,.tabbar{
+  border:0!important;box-shadow:none!important;background:transparent!important;
+}
+section,.section,.map-section{
+  background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;
+}
+.section,.map-section{position:relative}
+.section::before,.map-section::before,main>section::before{
+  content:'';display:block;height:1px;width:100%;margin:0 0 22px;background:linear-gradient(90deg,rgba(106,103,206,.34),rgba(26,175,208,.18),transparent 78%);
+}
+:is(.card,.panel,.summary-card,.meta-card,.journey-node,.journey-card,.metric,.summary-pill,.stat,.kpi,.sc,.scene-detail,.role-panel,.scenario-panel,.ref-section,.preview-box,.nc,.node-card,.pain-item,.step-metric,.detail-card,.api-card,.doc-home-card,.floor-res-card,.qs-card,.op-card,.ref-card,.insight-card,.callout,.rationale-card,.msg-bubble,.insert-popup,.quiz-content,.ai-chat-sidebar,.node-drawer,.sandbox-drawer,.qb-panel,.path-card){
+  border:0!important;box-shadow:var(--shadow-soft)!important;background:var(--white)!important;border-radius:16px!important;
+}
+:is(.role-panel,.scenario-panel,.scene-detail,.preview-box,.ref-section){padding:24px}
+:is(.card,.summary-card,.meta-card,.journey-card,.metric,.stat,.kpi,.detail-card,.pain-item,.step-metric,.ref-card,.doc-home-card,.floor-res-card,.qs-card){padding:20px}
+:is(.card,.panel,.summary-card,.meta-card,.journey-node,.journey-card,.metric,.summary-pill,.stat,.kpi,.sc,.ref-section,.preview-box,.nc,.node-card,.pain-item,.step-metric,.detail-card,.api-card,.doc-home-card,.floor-res-card,.qs-card,.op-card,.path-card):hover{
+  box-shadow:var(--shadow-pop)!important;transform:translateY(-1px);
+}
+table,.score-table,.data-table{
+  width:100%;border-collapse:separate!important;border-spacing:0 8px!important;background:var(--white)!important;border:0!important;border-radius:16px!important;box-shadow:var(--shadow-soft)!important;overflow:hidden;
+}
+thead,thead tr,th{background:var(--white)!important;color:var(--g6)!important;text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:800;border:0!important}
+td,th{border:0!important;padding:14px 18px!important}
+tbody tr{background:var(--white)!important;border-radius:10px!important}
+tbody tr:hover td{background:var(--purple-light)!important}
+.score-pill,.score,.rank-pill,.det-grade,.stab-tag,.as-score,.step-metric-val,.persona-score,.role-score strong,.scenario-score strong{
+  font-weight:700;
+}
+.high,.ok,.gd-high,.stable{--pill-bg:var(--green-light);--pill-fg:var(--green-dark)}
+.mid,.gd-mid,.moderate{--pill-bg:var(--purple-light);--pill-fg:var(--purple-dark)}
+.low,.warn,.gd-low{--pill-bg:var(--gold-light);--pill-fg:var(--gold-dark)}
+.bad,.gd-bad,.unstable,.risk{--pill-bg:var(--coral-light);--pill-fg:var(--coral-dark)}
+.score-pill,.grade-tag,.rank-pill,.det-grade,.stab-tag,.mini-badge,.source-badge{background:var(--pill-bg,var(--purple-light))!important;color:var(--pill-fg,var(--purple-dark))!important}
+.score-bar,.m-bar,.p-bar,.cov-bar,.as-bar-track,.dim-bar-track,.sc-bar-track,.node-connector,.progress-track,.nb-monitor-bar-track{
+  background:var(--g2)!important;border-radius:999px!important;overflow:hidden;
+}
+.score-bar i,.m-bar i,.p-bar i,.cov-bar i,.as-bar-fill,.dim-bar-fill,.sc-bar-fill,.nb-monitor-bar-fill,.progress-fill{
+  background:linear-gradient(90deg,var(--purple-core),var(--teal-core))!important;border-radius:999px!important;
+}
+.icon,.h2-icon,.card-icon,.ci,.ref-logo,.mode-icon,.msg-avatar,.node-dot,.strip-dot,.cat-dot,.matrix-col-dot,.brand-logo{
+  border:0!important;background:var(--purple-light)!important;color:var(--purple-dark)!important;
+}
+button,.btn,.export-btn,.save-btn,.btn-fill,.btn-lg,.floor-btn-primary,.btn-generate-path,.pg-send,.pg-save-btn,.send-btn{
+  border:0!important;border-radius:10px!important;font-family:inherit;background:var(--purple-core);color:var(--white);
+}
+button:hover,.btn:hover,.export-btn:hover,.save-btn:hover,.btn-fill:hover,.btn-lg:hover,.floor-btn-primary:hover,.btn-generate-path:hover,.pg-send:hover,.pg-save-btn:hover,.send-btn:hover{
+  background:var(--purple-bright)!important;color:var(--white)!important;text-decoration:none!important;
+}
+input,textarea,select{
+  border:0!important;border-radius:10px!important;background:var(--g2)!important;color:var(--g10)!important;box-shadow:inset 0 0 0 1px rgba(225,226,228,.68);
+}
+input:focus,textarea:focus,select:focus{outline:0;box-shadow:inset 0 0 0 2px rgba(106,103,206,.36)!important;background:var(--white)!important}
+[style*="border-left"],[style*="border-right"],.border-red,.border-yellow{border-right:0!important}
+img{max-width:100%}
+svg text{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif}
+
+/* ChatGPT-style split: left conversation, right canvas, with minimal chrome. */
+html,body{height:100%;min-width:1440px}
+body{overflow:hidden;background:var(--g1)!important}
+.topbar{
+  height:48px!important;padding:0 22px!important;background:rgba(255,255,255,.86)!important;
+  border:0!important;border-bottom:1px solid rgba(225,226,228,.42)!important;box-shadow:none!important;backdrop-filter:none!important;
+}
+.main-layout{
+  height:calc(100vh - 48px)!important;display:grid!important;grid-template-columns:420px minmax(0,1fr)!important;
+  gap:0!important;overflow:hidden!important;background:var(--g1)!important;
+}
+.conv-panel{
+  background:rgba(255,255,255,.74)!important;border:0!important;border-right:1px solid rgba(225,226,228,.56)!important;
+  box-shadow:none!important;
+}
+.conv-header,.conv-input-area{border:0!important;box-shadow:none!important;background:transparent!important;backdrop-filter:none!important}
+.conv-header{padding:22px 22px 12px!important}
+.conv-messages{padding:18px 22px 20px!important;gap:18px!important}
+.msg-bubble{box-shadow:none!important;border:0!important}
+.msg.ai .msg-bubble{background:var(--white)!important;color:var(--g10)!important}
+.msg.user .msg-bubble{background:var(--g10)!important;color:var(--white)!important}
+.design-note{border:0!important;background:var(--gold-light)!important}
+.input-wrap{
+  border:0!important;box-shadow:0 1px 2px rgba(39,51,71,.04),0 10px 30px rgba(39,51,71,.06)!important;
+  background:rgba(255,255,255,.94)!important;border-radius:22px!important;padding:8px 8px 8px 18px!important;min-height:54px;
+}
+.input-wrap .conv-input{
+  background:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important;
+  padding:0!important;height:36px!important;font-size:14px!important;color:var(--g10)!important;
+}
+.input-wrap .conv-input::placeholder{color:var(--g6)!important}
+.input-wrap .send-btn{width:40px!important;height:40px!important;border-radius:14px!important;box-shadow:none!important}
+.quick-chips{gap:8px!important;margin-top:12px!important}
+.quick-chip{
+  border:0!important;background:var(--g2)!important;box-shadow:none!important;border-radius:999px!important;
+  padding:7px 14px!important;color:var(--g9)!important;font-size:12px!important;font-weight:700!important;
+}
+.quick-chip:hover{background:var(--purple-light)!important;color:var(--purple-dark)!important}
+.chip{border:0!important;background:var(--purple-light)!important;box-shadow:none!important;border-radius:999px!important}
+.path-panel{background:var(--g1)!important;border:0!important;box-shadow:none!important}
+.path-header{
+  height:54px!important;padding:0 20px!important;background:rgba(255,255,255,.64)!important;border:0!important;
+  border-bottom:1px solid rgba(225,226,228,.54)!important;box-shadow:none!important;backdrop-filter:none!important;
+  display:none!important;
+}
+.path-header-label{display:none}
+.path-header-name{font-size:13px!important;font-weight:700!important;min-height:0!important}
+.path-content{
+  padding:0!important;align-items:stretch!important;background:var(--g1)!important;overflow:hidden!important;position:relative;
+}
+.path-canvas-frame{width:100%;height:100%;border:0;background:var(--g1);display:block;flex:1}
+.path-empty{display:none!important}
+.path-nodes,.refine-input-wrap,#path-legend{display:none!important}
+.rationale-bar{display:none!important}
+
+
+</style>
+
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-logo">CANN</span>
+  <span class="topbar-sep">·</span>
+  <span class="topbar-title">学习路径生成 — 交互方案探索</span>
+  <span class="topbar-badge">UX PROTOTYPE</span>
+</div>
+
+<div class="main-layout">
+
+  <!-- LEFT: CONVERSATION -->
+  <div class="conv-panel">
+    <div class="conv-header">
+      <div class="conv-header-title">对话面板</div>
+      <div class="conv-header-sub">用自然语言描述目标，AI 立即生成路径草稿</div>
+    </div>
+    <div class="conv-messages" id="conv-messages">
+      <div class="msg ai">
+        <div class="msg-avatar">AI</div>
+        <div>
+          <div class="msg-bubble">你好！告诉我你想学什么，我会马上为你生成一条个性化的学习路径。</div>
+          <div class="design-note" style="max-width:265px;margin-top:6px;">
+            <strong>设计意图：</strong>零摩擦入口——先出草稿，再对话精炼；右侧节点支持拖拽排序、点击操作，对话和直接操作并行。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conv-input-area">
+      <div class="input-wrap">
+        <input class="conv-input" id="conv-input" type="text"
+          placeholder="例如：我想学习CANN算子开发…"
+          onkeydown="if(event.key==='Enter')sendMessage()"/>
+        <button class="send-btn" onclick="sendMessage()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="quick-chips" id="quick-chips">
+        <button class="quick-chip" onclick="setInput('我想学CANN算子开发')">算子开发</button>
+        <button class="quick-chip" onclick="setInput('如何在昇腾上做模型推理部署')">模型推理</button>
+        <button class="quick-chip" onclick="setInput('分布式大模型训练入门')">分布式训练</button>
+        <button class="quick-chip" onclick="setInput('从零开始学CANN入门')">CANN 入门</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: PATH PANEL -->
+  <div class="path-panel">
+    <div class="path-header">
+      <div>
+        <div class="path-header-label">路径预览 · 可直接编辑</div>
+        <div class="path-header-name" id="path-name">学习路径图谱 Canvas</div>
+      </div>
+      <div class="path-header-right">
+        <div class="path-meta-pill" id="path-meta"></div>
+        <button class="save-btn" id="save-btn" onclick="savePath()">保存路径 →</button>
+      </div>
+    </div>
+
+    <!-- Interaction legend -->
+    <div id="path-legend" style="display:none;padding:8px 24px;background:white;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;gap:16px;align-items:center;flex-shrink:0;">
+      <span style="font-size:11px;color:var(--text-3);font-weight:600;">节点操作：</span>
+      <span style="font-size:11px;color:var(--text-2);display:flex;align-items:center;gap:4px;">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="15" cy="5" r="1" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><circle cx="9" cy="19" r="1" fill="currentColor"/><circle cx="15" cy="19" r="1" fill="currentColor"/></svg>
+        拖拽排序
+      </span>
+      <span style="font-size:11px;color:var(--text-2);">✓ 标记已掌握</span>
+      <span style="font-size:11px;color:var(--text-2);">× 删除节点</span>
+      <span style="font-size:11px;color:var(--text-2);">⊕ 插入节点</span>
+      <span style="font-size:11px;color:var(--text-2);">▾ 折叠详情</span>
+    </div>
+
+    <div class="path-content" id="path-content">
+      <iframe class="path-canvas-frame" title="学习路径图谱预览" src="./roadmap-preview.html"></iframe>
+      <div class="path-empty" id="path-empty">
+        <div class="path-empty-icon">🗺️</div>
+        <div class="path-empty-text">路径将在这里实时生成</div>
+        <div class="path-empty-sub">在左侧输入你的学习目标</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RATIONALE BAR -->
+<div class="rationale-bar">
+  <button class="rationale-toggle" id="rationale-toggle" onclick="toggleRationale()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    设计方案说明 — 为什么选择"先生成草稿 + 对话 + 直接操作"三层交互
+    <svg class="arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+  <div class="rationale-body" id="rationale-body">
+    <div class="rationale-card">
+      <div class="rc-label bad">❌ 不推荐</div>
+      <h4>先填表单再生成</h4>
+      <p>用户不知哪些参数重要，填表摩擦高，首次看到结果前已失去耐心。</p>
+    </div>
+    <div class="rationale-card">
+      <div class="rc-label bad">❌ 不推荐</div>
+      <h4>纯多轮对话</h4>
+      <p>看不到路径形状，难以判断方向，多轮交互才能看到结果，等待感强。</p>
+    </div>
+    <div class="rationale-card">
+      <div class="rc-label ok">⚡ 可以但不够</div>
+      <h4>一键生成 + 纯对话修改</h4>
+      <p>生成快但个性化弱；文字描述修改不够直觉，用户不知道说什么才有效。</p>
+    </div>
+    <div class="rationale-card" style="border-color:var(--green);background:var(--green-soft);">
+      <div class="rc-label good">✓ 本方案推荐</div>
+      <h4>草稿 + 对话 + 直接操作</h4>
+      <p>三层递进：AI 即时出草稿 → 选项芯片快速个性化 → 拖拽/点击直接操作节点。覆盖不同习惯的用户，始终在操作具体内容而非抽象描述。</p>
+    </div>
+  </div>
+</div>
+
+<!-- INSERT POPUP (shared, repositioned dynamically) -->
+<div class="insert-popup" id="insert-popup" style="display:none;">
+  <div class="insert-popup-title">插入节点</div>
+  <div class="insert-search-wrap">
+    <span class="insert-search-icon">⌕</span>
+    <input class="insert-search" id="insert-search-input" type="text"
+      placeholder="搜索节点名称或描述…"
+      oninput="filterInsertSearch(this.value)"
+      autocomplete="off" />
+  </div>
+  <div id="insert-search-section" style="display:none;">
+    <div class="insert-section-label" id="insert-search-label">搜索结果</div>
+    <div id="insert-search-results"></div>
+  </div>
+  <div id="insert-recommend-section">
+    <div class="insert-section-label">AI 推荐</div>
+    <div id="insert-options"></div>
+  </div>
+  <button class="insert-popup-cancel" onclick="closeInsertPopup()">取消</button>
+</div>
+
+<!-- UNDO TOAST -->
+<div class="undo-toast" id="undo-toast">
+  <span id="undo-toast-msg"></span>
+  <button class="undo-btn" onclick="doUndo()">撤销</button>
+</div>
+
+<script>
+// ── DATA ──
+const PATHS_DATA = {
+  '算子开发': {
+    name: 'CANN 算子开发路径',
+    nodes: [
+      { title: '昇腾硬件体系',       desc: '理解达芬奇核、AI Core 架构，为算子优化打下硬件认知基础。',  tags: ['入门','理论'] },
+      { title: 'CANN 软件栈概览',    desc: 'CANN 各组件层次关系，了解算子库在整体架构中的位置。',        tags: ['入门','理论'] },
+      { title: '环境安装与配置',     desc: '安装 CANN Toolkit，配置 TBE 开发环境与调试工具链。',         tags: ['入门','实践'] },
+      { title: 'TBE DSL 算子开发',  desc: '使用高级 DSL 接口快速开发算子，编写 compute 函数描述计算逻辑。', tags: ['进阶','实践','core'] },
+      { title: 'TIK 底层算子开发',  desc: '直接控制 AI Core 数据搬移与计算指令，实现极致性能算子。',     tags: ['高级','底层','core'] },
+    ],
+    clarify: [
+      { q: '你目前的基础是？', opts: ['零基础','了解 Python','有深度学习经验'] },
+      { q: '主要学习目标是？', opts: ['工程实践','科研探索','找工作'] },
+    ],
+    refineMap: {
+      '零基础':   { add: { after: 1, node: { title: 'Python 与 NumPy 基础', desc: '为后续 TBE 开发做好编程基础。', tags: ['前置','入门'] } } },
+      '有深度学习经验': { remove: 0 },
+    },
+    insertSuggestions: [
+      { title: '算子调试技巧',    desc: '使用 TBE 调试工具定位算子精度与性能问题。' },
+      { title: '自定义算子注册',  desc: '将开发好的算子注册到框架，供训练推理调用。' },
+      { title: '算子性能 Profiling', desc: '分析算子执行瓶颈，指导进一步优化。' },
+    ]
+  },
+  '模型推理部署': {
+    name: '模型推理部署路径',
+    nodes: [
+      { title: '昇腾硬件体系',      desc: '了解 NPU 架构与推理加速原理。',                             tags: ['入门','理论'] },
+      { title: '环境安装与配置',    desc: '安装驱动、固件、CANN Toolkit，验证 NPU 可用。',              tags: ['入门','实践'] },
+      { title: 'AscendCL 编程基础', desc: '掌握设备管理、内存管理、Stream/Context 核心 API。',          tags: ['进阶','实践','core'] },
+      { title: '模型转换 (ATC)',    desc: '使用 ATC 工具将 ONNX/PB 模型转为高效 .om 格式。',            tags: ['进阶','实践','core'] },
+      { title: '推理程序开发',      desc: '加载 .om 模型，编写完整推理流程，处理输入输出。',             tags: ['进阶','实践'] },
+      { title: '数据预处理 (DVPP)', desc: '使用硬件加速器进行图像解码、缩放，消除数据搬运瓶颈。',       tags: ['进阶','实践'] },
+    ],
+    clarify: [
+      { q: '编程语言偏好？', opts: ['Python','C++','两者都行'] },
+      { q: '部署场景是？',   opts: ['边缘推理','云端服务','实验研究'] },
+    ],
+    refineMap: { 'C++': {}, '边缘推理': {} },
+    insertSuggestions: [
+      { title: '模型量化与压缩',  desc: '使用 AMCT 工具对模型进行量化，减少推理延迟。' },
+      { title: '多模型并发推理',  desc: '在同一设备上并发运行多个模型，提升资源利用率。' },
+      { title: '性能调优实战',    desc: '使用 Profiling 工具分析推理瓶颈并优化。' },
+    ]
+  },
+  '分布式训练': {
+    name: '分布式大模型训练路径',
+    nodes: [
+      { title: '昇腾硬件体系',            desc: '理解多卡互联、HCCS 总线与集合通信基础。',              tags: ['入门','理论'] },
+      { title: 'AscendCL 编程基础',       desc: '理解设备管理与多进程通信机制。',                       tags: ['进阶','实践'] },
+      { title: 'PyTorch / MindSpore 迁移', desc: '将现有模型迁移至昇腾，配置分布式训练环境。',           tags: ['进阶','实践','core'] },
+      { title: '数据并行训练',             desc: 'DDP 原理与实践，多机多卡梯度同步策略。',              tags: ['进阶','实践','core'] },
+      { title: '流水线 & 张量并行',        desc: '大模型训练的流水并行、张量并行核心技术。',             tags: ['高级','理论','core'] },
+      { title: '性能调优与 Profiling',     desc: '分析通信瓶颈、算子热点，优化分布式训练效率。',        tags: ['高级','实践'] },
+    ],
+    clarify: [
+      { q: '熟悉的框架？',  opts: ['PyTorch','MindSpore','都不熟'] },
+      { q: '模型规模？',    opts: ['< 1B 参数','1B–10B','> 10B 大模型'] },
+    ],
+    refineMap: { '> 10B 大模型': {} },
+    insertSuggestions: [
+      { title: '混合精度训练',    desc: 'FP16/BF16 混合精度策略，兼顾速度与精度。' },
+      { title: '梯度累积与裁剪',  desc: '处理大 batch 训练时的梯度稳定性问题。' },
+      { title: '检查点与断点续训', desc: '大规模训练的容错与恢复机制。' },
+    ]
+  },
+  'CANN 入门': {
+    name: 'CANN 完整入门路径',
+    nodes: [
+      { title: '昇腾硬件体系',      desc: '从硬件视角认识昇腾 AI 处理器，建立完整认知框架。',          tags: ['入门','理论'] },
+      { title: 'CANN 软件栈概览',   desc: '理解驱动层、运行时、算子库、框架适配层之间的关系。',         tags: ['入门','理论'] },
+      { title: '环境安装与配置',    desc: '动手安装完整开发环境，跑通第一个 Hello NPU 程序。',          tags: ['入门','实践','core'] },
+      { title: 'AscendCL 编程基础', desc: '学习核心 API，写出第一个可在 NPU 上执行的推理程序。',        tags: ['进阶','实践','core'] },
+      { title: '模型推理部署',      desc: '完整跑通 ResNet 图像分类推理流程，从模型转换到结果输出。',   tags: ['进阶','实践'] },
+    ],
+    clarify: [
+      { q: '编程背景是？',       opts: ['零基础','会 Python','有 C++ 经验'] },
+      { q: '每周能投入时间？',   opts: ['1–3 小时','5–10 小时','全职投入'] },
+    ],
+    refineMap: {
+      '零基础': { add: { after: -1, node: { title: 'Linux 与命令行基础', desc: '快速掌握 Linux 基本操作，为环境配置做准备。', tags: ['前置','入门'] } } },
+    },
+    insertSuggestions: [
+      { title: '算子开发初体验',  desc: '用 TBE DSL 编写一个简单的向量加法算子。' },
+      { title: '模型调优入门',    desc: '使用 Profiling 工具初步了解性能分析流程。' },
+      { title: 'MindSpore 框架适配', desc: '将简单模型通过框架适配层在昇腾上训练。' },
+    ]
+  }
+};
+
+// ── STATE ──
+let state = 'idle';
+let currentPath = null;
+let currentNodes = []; // each: { title, desc, tags, known:bool, collapsed:bool }
+let pendingClarify = [];
+let clarifyStep = 0;
+let undoStack = [];
+let undoTimer = null;
+let dragSrcIndex = null;
+let insertAfterIndex = null;
+let _insertSearchCache = [];
+
+// ── UTILS ──
+function setInput(text) { document.getElementById('conv-input').value = text; document.getElementById('conv-input').focus(); }
+
+function addMessage(role, content) {
+  const msgs = document.getElementById('conv-messages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  div.innerHTML = `<div class="msg-avatar">${role === 'ai' ? 'AI' : '你'}</div><div class="msg-bubble">${content}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addTypingIndicator() {
+  const msgs = document.getElementById('conv-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ai'; div.id = 'typing-ind';
+  div.innerHTML = `<div class="msg-avatar">AI</div><div class="msg-bubble" style="padding:8px 13px;"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+  msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
+}
+function removeTypingIndicator() { const el = document.getElementById('typing-ind'); if (el) el.remove(); }
+
+// ── RENDER NODES ──
+function renderNodes(animateFrom = 0) {
+  const existing = document.getElementById('path-nodes');
+  if (existing) existing.remove();
+  document.getElementById('path-empty').style.display = 'none';
+
+  const content = document.getElementById('path-content');
+  const wrap = document.createElement('div');
+  wrap.className = 'path-nodes'; wrap.id = 'path-nodes';
+
+  currentNodes.forEach((node, i) => {
+    const delay = i >= animateFrom ? (i - animateFrom) * 0.08 : 0;
+    // Insert zone before first node
+    if (i === 0) wrap.appendChild(makeInsertZone(-1));
+    // Node row wrapper
+    const rowWrap = document.createElement('div');
+    rowWrap.className = 'node-row-wrap';
+    const row = document.createElement('div');
+    row.className = 'node-row';
+    row.style.animationDelay = delay + 's';
+    row.dataset.index = i;
+    row.draggable = true;
+    row.addEventListener('dragstart', e => onDragStart(e, i));
+    row.addEventListener('dragover',  e => onDragOver(e, i));
+    row.addEventListener('drop',      e => onDrop(e, i));
+    row.addEventListener('dragend',   e => onDragEnd(e));
+
+    const tagHtml = (node.tags || []).filter(t => t !== 'core').map(t => {
+      const cls = t === '实践' ? 'green' : '';
+      return `<span class="node-tag ${cls}">${t}</span>`;
+    }).join('') + (node.tags?.includes('core') ? '<span class="node-tag blue">核心</span>' : '');
+
+    row.innerHTML = `
+      <div class="node-drag-handle" title="拖拽排序">
+        <svg width="10" height="16" viewBox="0 0 10 16" fill="currentColor"><circle cx="3" cy="3" r="1.5"/><circle cx="7" cy="3" r="1.5"/><circle cx="3" cy="8" r="1.5"/><circle cx="7" cy="8" r="1.5"/><circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/></svg>
+      </div>
+      <div class="node-timeline">
+        <div class="node-dot ${node.known ? 'known' : ''}">${node.known ? '✓' : i + 1}</div>
+        <div class="node-connector"></div>
+      </div>
+      <div class="node-card ${node.known ? 'known' : ''}">
+        <div class="node-card-top">
+          <div class="node-card-left">
+            <div class="node-step">步骤 ${i + 1}</div>
+            <div class="node-title">${node.title}</div>
+          </div>
+          <div class="node-actions">
+            <button class="node-action-btn collapse-btn" onclick="toggleCollapse(${i})" title="折叠/展开">▾</button>
+            <button class="node-action-btn known-btn ${node.known ? 'active' : ''}" onclick="toggleKnown(${i})" title="标记已掌握">✓</button>
+            <button class="node-action-btn del-btn" onclick="deleteNode(${i})" title="删除节点">×</button>
+          </div>
+        </div>
+        <div class="node-body ${node.collapsed ? 'collapsed' : ''}">
+          <div class="node-desc">${node.desc}</div>
+          <div class="node-tags">${tagHtml}</div>
+        </div>
+      </div>`;
+
+    rowWrap.appendChild(row);
+    wrap.appendChild(rowWrap);
+    // Insert zone after each node
+    wrap.appendChild(makeInsertZone(i));
+  });
+
+  // Refine text input
+  const refineWrap = document.createElement('div');
+  refineWrap.className = 'refine-input-wrap';
+  refineWrap.style.marginTop = '16px';
+  refineWrap.innerHTML = `
+    <input class="refine-input" id="refine-input" placeholder="对话调整，例如：去掉基础节点，我已经会了…" onkeydown="if(event.key==='Enter')refineByText()"/>
+    <button class="refine-btn" onclick="refineByText()">调整</button>`;
+  wrap.appendChild(refineWrap);
+
+  content.appendChild(wrap);
+  updateMeta();
+}
+
+function makeInsertZone(afterIndex) {
+  const zone = document.createElement('div');
+  zone.className = 'insert-zone';
+  zone.innerHTML = `<div class="insert-line"></div><div class="insert-plus">+</div><div class="insert-line"></div>`;
+  zone.addEventListener('click', e => { e.stopPropagation(); showInsertPopup(afterIndex, zone); });
+  return zone;
+}
+
+// ── DRAG & DROP ──
+function onDragStart(e, i) {
+  dragSrcIndex = i;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', i);
+}
+function onDragOver(e, i) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.node-row').forEach(r => r.classList.remove('drag-over-top','drag-over-bottom'));
+  if (dragSrcIndex !== null && dragSrcIndex !== i) {
+    const cls = i < dragSrcIndex ? 'drag-over-top' : 'drag-over-bottom';
+    e.currentTarget.classList.add(cls);
+  }
+}
+function onDrop(e, i) {
+  e.preventDefault();
+  if (dragSrcIndex === null || dragSrcIndex === i) return;
+  const prev = JSON.parse(JSON.stringify(currentNodes));
+  const [moved] = currentNodes.splice(dragSrcIndex, 1);
+  currentNodes.splice(i, 0, moved);
+  renderNodes(Math.min(dragSrcIndex, i));
+  showUndoToast('已重新排序', () => { currentNodes = prev; renderNodes(0); });
+}
+function onDragEnd(e) {
+  dragSrcIndex = null;
+  document.querySelectorAll('.node-row').forEach(r => {
+    r.classList.remove('dragging','drag-over-top','drag-over-bottom');
+  });
+}
+
+// ── NODE ACTIONS ──
+function deleteNode(i) {
+  const removed = currentNodes[i];
+  const prev = JSON.parse(JSON.stringify(currentNodes));
+  currentNodes.splice(i, 1);
+  renderNodes(0);
+  showUndoToast(`已删除「${removed.title}」`, () => { currentNodes = prev; renderNodes(0); });
+}
+
+function toggleKnown(i) {
+  currentNodes[i].known = !currentNodes[i].known;
+  renderNodes(i);
+  const known = currentNodes.filter(n => n.known).length;
+  if (known > 0) {
+    const hint = known === currentNodes.length ? '所有节点已标记为已掌握，路径完成！' : `已标记 ${known} 个节点为已掌握，路径将跳过这些节点。`;
+    addMessage('ai', hint);
+  }
+}
+
+function toggleCollapse(i) {
+  currentNodes[i].collapsed = !currentNodes[i].collapsed;
+  const body = document.querySelectorAll('.node-body')[i];
+  if (body) body.classList.toggle('collapsed', currentNodes[i].collapsed);
+  const btn = document.querySelectorAll('.collapse-btn')[i];
+  if (btn) btn.style.transform = currentNodes[i].collapsed ? 'rotate(-90deg)' : '';
+}
+
+// ── INSERT POPUP ──
+
+// Search pool: collect all unique nodes across all paths + insertSuggestions
+const INSERT_NODE_POOL = (() => {
+  const seen = new Set();
+  const pool = [];
+  Object.values(PATHS_DATA).forEach(p => {
+    [...(p.nodes || []), ...(p.insertSuggestions || [])].forEach(n => {
+      if (!seen.has(n.title)) {
+        seen.add(n.title);
+        pool.push({ title: n.title, desc: n.desc || '', tags: n.tags || [] });
+      }
+    });
+  });
+  // Extra general CANN nodes not in any path
+  const extras = [
+    { title: 'GE 图引擎原理',        desc: '理解计算图从框架到 GE 的编译与优化流程。',          tags: ['高级','理论'] },
+    { title: '算子融合优化',          desc: '将多个算子合并执行，减少内存访问开销。',              tags: ['高级','实践'] },
+    { title: '内存管理与复用',        desc: '掌握 NPU 内存生命周期，减少显存峰值。',              tags: ['高级','实践'] },
+    { title: 'AIPP 图像预处理',       desc: '利用 AIPP 对输入图像做色彩空间转换与归一化加速。',  tags: ['进阶','实践'] },
+    { title: 'MindInsight 可视化',    desc: '使用 MindInsight 监控训练过程与精度曲线。',         tags: ['进阶','工具'] },
+    { title: 'HCCL 集合通信',         desc: '掌握 AllReduce / Broadcast 等集合通信原语。',       tags: ['高级','分布式'] },
+    { title: '昇腾社区与资源导航',    desc: '快速定位官方文档、论坛与开源模型仓库。',             tags: ['入门','资源'] },
+    { title: 'AscendCL C++ 进阶',     desc: '深入 C++ AscendCL API，编写高性能推理应用。',       tags: ['高级','实践'] },
+    { title: '模型精度对比与验证',    desc: '对比 GPU/CPU 与 NPU 推理结果，定位精度差异。',      tags: ['进阶','调试'] },
+    { title: 'FP16 混合精度推理',     desc: '使用 FP16 算子降低推理延迟，同时保持精度。',        tags: ['进阶','优化'] },
+  ];
+  extras.forEach(n => { if (!seen.has(n.title)) { seen.add(n.title); pool.push(n); } });
+  return pool;
+})();
+
+function highlight(text, query) {
+  if (!query) return text;
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+function filterInsertSearch(query) {
+  const q = query.trim();
+  const searchSection = document.getElementById('insert-search-section');
+  const recommendSection = document.getElementById('insert-recommend-section');
+  const resultsEl = document.getElementById('insert-search-results');
+  const labelEl = document.getElementById('insert-search-label');
+
+  if (!q) {
+    searchSection.style.display = 'none';
+    recommendSection.style.display = '';
+    return;
+  }
+
+  // Filter pool, exclude nodes already in path
+  const existing = new Set(currentNodes.map(n => n.title));
+  const ql = q.toLowerCase();
+  const matches = INSERT_NODE_POOL
+    .filter(n => !existing.has(n.title) && (n.title.toLowerCase().includes(ql) || n.desc.toLowerCase().includes(ql)))
+    .slice(0, 6);
+
+  _insertSearchCache = matches;
+  if (matches.length === 0) {
+    resultsEl.innerHTML = `<div class="insert-empty">没有找到「${q}」相关节点</div>`;
+    labelEl.textContent = '搜索结果';
+  } else {
+    labelEl.textContent = `搜索结果（${matches.length}）`;
+    resultsEl.innerHTML = matches.map((n, i) => `
+      <div class="insert-option" onclick="insertNodeFromSearch(${i})">
+        <div><div class="insert-option-dot search"></div></div>
+        <div>
+          <div class="insert-option-title">${highlight(n.title, q)}</div>
+          <div class="insert-option-desc">${highlight(n.desc, q)}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  searchSection.style.display = '';
+  recommendSection.style.display = 'none';
+}
+
+function showInsertPopup(afterIndex, zoneEl) {
+  insertAfterIndex = afterIndex;
+  const popup = document.getElementById('insert-popup');
+
+  // Reset search state
+  const searchInput = document.getElementById('insert-search-input');
+  searchInput.value = '';
+  document.getElementById('insert-search-section').style.display = 'none';
+  document.getElementById('insert-recommend-section').style.display = '';
+
+  // Render recommendations
+  const suggestions = currentPath?.insertSuggestions || [];
+  document.getElementById('insert-options').innerHTML = suggestions.map((s, idx) => `
+    <div class="insert-option" onclick="insertNode(${idx})">
+      <div><div class="insert-option-dot"></div></div>
+      <div>
+        <div class="insert-option-title">${s.title}</div>
+        <div class="insert-option-desc">${s.desc}</div>
+      </div>
+    </div>`).join('');
+
+  // Position near zone
+  const rect = zoneEl.getBoundingClientRect();
+  popup.style.display = 'block';
+  const pw = 288, ph = popup.offsetHeight || 220;
+  let top = rect.bottom + 6;
+  let left = rect.left + rect.width / 2 - pw / 2;
+  if (left + pw > window.innerWidth - 16) left = window.innerWidth - pw - 16;
+  if (left < 16) left = 16;
+  if (top + ph > window.innerHeight - 16) top = rect.top - ph - 6;
+  popup.style.top = top + 'px';
+  popup.style.left = left + 'px';
+
+  setTimeout(() => {
+    document.addEventListener('click', closeInsertPopupOutside);
+    searchInput.focus();
+  }, 50);
+}
+function closeInsertPopup() {
+  document.getElementById('insert-popup').style.display = 'none';
+  document.removeEventListener('click', closeInsertPopupOutside);
+}
+function closeInsertPopupOutside(e) {
+  if (!document.getElementById('insert-popup').contains(e.target)) closeInsertPopup();
+}
+function _doInsert(nodeObj) {
+  const newNode = { title: nodeObj.title, desc: nodeObj.desc, tags: nodeObj.tags?.length ? nodeObj.tags : ['进阶','实践'], known: false, collapsed: false };
+  const pos = insertAfterIndex + 1;
+  currentNodes.splice(pos, 0, newNode);
+  closeInsertPopup();
+  renderNodes(pos);
+  showUndoToast(`已插入「${newNode.title}」`, () => { currentNodes.splice(pos, 1); renderNodes(0); });
+  addMessage('ai', `已在路径中插入「${newNode.title}」节点。`);
+}
+function insertNode(suggIdx) {
+  _doInsert(currentPath.insertSuggestions[suggIdx]);
+}
+function insertNodeFromSearch(i) {
+  _doInsert(_insertSearchCache[i]);
+}
+
+// ── UNDO TOAST ──
+function showUndoToast(msg, undoFn) {
+  if (undoTimer) clearTimeout(undoTimer);
+  undoStack = [undoFn];
+  const toast = document.getElementById('undo-toast');
+  document.getElementById('undo-toast-msg').textContent = msg;
+  toast.classList.add('show');
+  undoTimer = setTimeout(() => { toast.classList.remove('show'); undoStack = []; }, 4000);
+}
+function doUndo() {
+  if (undoStack.length > 0) { undoStack[0](); undoStack = []; }
+  document.getElementById('undo-toast').classList.remove('show');
+  if (undoTimer) clearTimeout(undoTimer);
+}
+
+// ── META ──
+function updateMeta() {
+  const active = currentNodes.filter(n => !n.known).length;
+  const known = currentNodes.filter(n => n.known).length;
+  const meta = document.getElementById('path-meta');
+  meta.textContent = known > 0 ? `${active} 个节点 · ${known} 已掌握` : `${active} 个节点`;
+  meta.style.display = '';
+}
+
+// ── SKELETON ──
+function showSkeletons(count) {
+  document.getElementById('path-empty').style.display = 'none';
+  const content = document.getElementById('path-content');
+  const wrap = document.createElement('div'); wrap.className = 'path-nodes'; wrap.id = 'path-nodes';
+  for (let i = 0; i < count; i++) {
+    wrap.innerHTML += `<div class="node-row" style="animation-delay:${i*.08}s">
+      <div style="width:20px;flex-shrink:0;"></div>
+      <div class="node-timeline"><div class="node-dot" style="background:var(--surface2);border-color:var(--border);"></div><div class="node-connector"></div></div>
+      <div class="node-card" style="margin-left:12px;">
+        <div class="skel skel-title"></div><div class="skel skel-line w80"></div><div class="skel skel-line w60"></div>
+      </div></div>`;
+  }
+  content.appendChild(wrap);
+}
+
+// ── CLARIFY ──
+function showClarifyChips(q, opts, step) {
+  const msgs = document.getElementById('conv-messages');
+  const div = document.createElement('div'); div.className = 'msg ai';
+  const chipsHtml = opts.map(o => `<button class="chip" onclick="selectChip(this,'${o}',${step})">${o}</button>`).join('');
+  div.innerHTML = `<div class="msg-avatar">AI</div><div><div class="msg-bubble">${q}</div><div class="msg-chips">${chipsHtml}</div></div>`;
+  msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
+}
+function selectChip(el, value, step) {
+  el.closest('.msg-chips').querySelectorAll('.chip').forEach(c => { c.disabled=true; c.style.opacity='.5'; c.style.cursor='default'; });
+  el.style.opacity = '1'; el.classList.add('selected');
+  applyRefinement(value);
+  addMessage('user', value);
+  clarifyStep++;
+  if (clarifyStep < pendingClarify.length) {
+    setTimeout(() => { showClarifyChips(pendingClarify[clarifyStep].q, pendingClarify[clarifyStep].opts, clarifyStep); document.getElementById('conv-messages').scrollTop=99999; }, 600);
+  } else {
+    setTimeout(() => {
+      addMessage('ai', '路径已个性化调整完毕。<br>右侧你还可以：<strong>拖拽节点排序</strong>、<strong>点 ✓ 标记已掌握</strong>、<strong>点 + 插入节点</strong>，满意后保存。');
+      document.getElementById('save-btn').classList.add('visible');
+    }, 700);
+  }
+}
+function applyRefinement(value) {
+  if (!currentPath) return;
+  const action = (currentPath.refineMap || {})[value];
+  document.querySelectorAll('.node-row').forEach(n => { n.style.transition='background .3s'; n.style.background='#F0EFFA'; setTimeout(()=>n.style.background='',600); });
+  if (!action) return;
+  setTimeout(() => {
+    if (action.add) {
+      const { after, node } = action.add;
+      const newNode = { ...node, known: false, collapsed: false };
+      if (after === -1) currentNodes.unshift(newNode); else currentNodes.splice(after + 1, 0, newNode);
+      renderNodes(after === -1 ? 0 : after + 1);
+    }
+    if (action.remove !== undefined) { currentNodes.splice(action.remove, 1); renderNodes(0); }
+  }, 400);
+}
+
+// ── REFINE BY TEXT ──
+function refineByText() {
+  const input = document.getElementById('refine-input');
+  const text = input.value.trim(); if (!text) return;
+  input.value = ''; addMessage('user', text);
+  setTimeout(() => {
+    addTypingIndicator();
+    setTimeout(() => {
+      removeTypingIndicator();
+      if (text.includes('去掉') || text.includes('删除') || text.includes('已经会')) {
+        const removed = currentNodes.shift(); renderNodes(0);
+        addMessage('ai', `已移除「${removed.title}」，路径更聚焦了。`);
+      } else if (text.includes('加') || text.includes('增加') || text.includes('补充')) {
+        const extra = { title: '专项强化练习', desc: '针对薄弱环节的补充练习与实战项目。', tags: ['实践','core'], known:false, collapsed:false };
+        currentNodes.push(extra); renderNodes(currentNodes.length - 1);
+        addMessage('ai', '已在末尾补充了一个强化练习节点，你也可以拖拽它到合适的位置。');
+      } else {
+        addMessage('ai', '收到！你也可以直接在右侧拖拽节点排序或点 + 插入节点。满意后点"保存路径"。');
+      }
+    }, 1100);
+  }, 200);
+}
+
+// ── MAIN FLOW ──
+function sendMessage() {
+  if (state === 'generating') return;
+  const input = document.getElementById('conv-input');
+  const text = input.value.trim(); if (!text) return;
+  input.value = '';
+  document.getElementById('quick-chips').style.display = 'none';
+  addMessage('user', text);
+
+  let pathKey = 'CANN 入门';
+  if (text.includes('算子')) pathKey = '算子开发';
+  else if (text.includes('推理') || text.includes('部署')) pathKey = '模型推理部署';
+  else if (text.includes('分布式') || text.includes('大模型')) pathKey = '分布式训练';
+
+  currentPath = PATHS_DATA[pathKey];
+  currentNodes = currentPath.nodes.map(n => ({ ...n, known: false, collapsed: false }));
+  pendingClarify = [...currentPath.clarify];
+  clarifyStep = 0; state = 'generating';
+
+  addTypingIndicator();
+  setTimeout(() => {
+    removeTypingIndicator();
+    addMessage('ai', `好的，正在为你生成「${text.replace(/[<>]/g,'')}」的学习路径…`);
+    document.getElementById('path-name').textContent = currentPath.name;
+    showSkeletons(currentPath.nodes.length);
+    setTimeout(() => {
+      renderNodes(0);
+      // Show legend
+      const legend = document.getElementById('path-legend');
+      if (legend) legend.style.display = 'flex';
+      setTimeout(() => {
+        addMessage('ai', `草稿已生成，共 <strong>${currentNodes.length} 个节点</strong>。右侧可直接拖拽排序、标记已掌握、插入节点；也可回答下面的问题让我帮你精准调整。`);
+        setTimeout(() => { showClarifyChips(pendingClarify[0].q, pendingClarify[0].opts, 0); state = 'clarifying'; }, 600);
+      }, 350);
+    }, 1500);
+  }, 800);
+}
+
+function savePath() {
+  const btn = document.getElementById('save-btn');
+  btn.textContent = '✓ 已保存'; btn.style.background = '#179D8A'; btn.disabled = true;
+  addMessage('ai', `路径已保存！共 ${currentNodes.filter(n=>!n.known).length} 个待学节点，${currentNodes.filter(n=>n.known).length} 个已掌握。可在"学习档案 → 我的路径"中随时查看。`);
+}
+
+function toggleRationale() {
+  document.getElementById('rationale-toggle').classList.toggle('open');
+  document.getElementById('rationale-body').classList.toggle('open');
+}
+
+// Close insert popup on ESC
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeInsertPopup(); });
+</script>
+</body>
+</html>

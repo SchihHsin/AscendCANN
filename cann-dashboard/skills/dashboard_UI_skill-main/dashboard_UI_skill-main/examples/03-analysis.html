@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=1440" />
+  <title>CANN 体验看板 · 设计分析 v0.4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ── tokens ── */
+:root {
+  --bg: #F8F8F9;
+  --sidebar: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface2: #F8F8F9;
+  --surface3: #EEEEF0;
+  --border: #E1E2E4;
+  --border2: #CDCFD2;
+  --accent: #E63838;
+  --accent-dim: rgba(230,56,56,.08);
+  --accent-glow: rgba(230,56,56,.05);
+  --blue: #4F4DA7;
+  --green: #179D8A;
+  --yellow: #FD9A00;
+  --red: #E63838;
+  --purple: #6A67CE;
+  --text: #1B2432;
+  --text-muted: #676D76;
+  --text-dim: #A1A4AA;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* ── layout ── */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── sidebar ── */
+.sidebar {
+  width: 232px;
+  flex-shrink: 0;
+  background: var(--sidebar);
+  border-right:0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.sidebar-brand {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.sidebar-logo-link {
+  display: inline-block;
+  line-height: 0;
+  border-radius: 4px;
+  transition: opacity .15s;
+}
+.sidebar-logo-link:hover { opacity: .7; }
+.sidebar-logo { height: 22px; width: auto; display: block; }
+.sidebar-brand-text { margin-left: 10px; padding-left: 10px; position: relative; }
+.sidebar-brand-text::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1px; height: 16px; background: var(--border); }
+.sidebar-brand-title { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.sidebar-brand-sub { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+
+.sidebar-nav { padding: 12px 10px 32px; flex: 1; }
+
+.nav-group { margin-bottom: 4px; }
+.nav-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 12px 8px 5px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+  cursor: pointer;
+  position: relative;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.nav-icon {
+  width: 16px; height: 16px;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── main content ── */
+.main-content { margin-left: 232px; flex: 1; min-width: 0; background: var(--bg); }
+
+/* ── cover ── */
+.cover {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 80px max(64px, calc((100% - 900px) / 2));
+  border-bottom: 1px solid var(--border);
+}
+.cover-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+}
+.cover-eyebrow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.cover-tag {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  border: 1px solid var(--border2);
+  color: var(--text-muted);
+  background: var(--surface);
+}
+.cover-title {
+  margin-bottom: 20px;
+}
+.cover-title-cn {
+  display: block;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900;
+  letter-spacing:0;
+  line-height: 1.1;
+  color: var(--text);
+}
+.cover-title-cn .cover-accent { color: var(--accent); }
+.cover-title-sub {
+  display: block;
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 400;
+  letter-spacing:0;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.cover-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  max-width: 480px;
+}
+.cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.cover-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.container { width: 100%; padding: 0 0 80px; }
+
+/* ── cover deco blocks — ascending bars ── */
+.cover-deco {
+  position: absolute;
+  right: max(64px, calc((100% - 900px) / 2));
+  bottom: 0;
+  width: 200px;
+  height: 100%;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  padding-bottom: 0;
+}
+.cover-block {
+  flex: 1;
+  background: var(--accent);
+  border-radius: 3px 3px 0 0;
+}
+.cover-block.b1 { height: 28%; opacity: .25; }
+.cover-block.b2 { height: 45%; opacity: .45; }
+.cover-block.b3 { height: 66%; opacity: .7; }
+.cover-block.b4 { height: 88%; opacity: 1; }
+
+/* ── sections ── */
+.section {
+  padding: 48px max(48px, calc((100% - 900px) / 2));
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: 0;
+}
+.section:last-child { border-bottom: none; }
+.section:nth-child(odd)  { background: #FFFFFF; }
+.section:nth-child(even) { background: #F8F8F9; }
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+.section-title { font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing:0; }
+.section-desc { color: var(--text-muted); font-size: 14px; max-width: 620px; margin-bottom: 28px; line-height: 1.7; }
+hr.divider { border: none; border-top: 1px solid var(--border); margin-bottom: 28px; }
+
+/* ── cards ── */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px 22px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.card:hover { border-color: var(--border2); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+.card h3 { font-size: 13px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.card p, .card li { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
+.card ul { padding-left: 16px; }
+.card li { margin-bottom: 4px; }
+.icon { width: 24px; height: 24px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.icon svg { display: block; }
+.icon-o { background: rgba(230,56,56,.09);   color: var(--accent); }
+.icon-b { background: rgba(106,103,206,.09);  color: var(--blue); }
+.icon-g { background: rgba(55,197,151,.09);  color: var(--green); }
+.icon-y { background: rgba(253,154,0,.09);  color: var(--yellow); }
+.icon-r { background: rgba(230,56,56,.09);  color: var(--red); }
+.icon-p { background: rgba(106,103,206,.09); color: var(--purple); }
+.callout-icon svg { display: block; }
+.callout-o .callout-icon { color: var(--accent); }
+.callout-b .callout-icon { color: var(--blue); }
+.callout-g .callout-icon { color: var(--green); }
+.callout-p .callout-icon { color: var(--purple); }
+.ref-logo svg { display: block; }
+.dot svg { display: block; }
+.principle > span { display: inline-flex; align-items: center; flex-shrink: 0; color: var(--accent); margin-top: 2px; }
+
+/* ── tags ── */
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.tag { padding: 2px 9px; border-radius: 20px; font-size: 11px; background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); }
+.tag.o { border-color: rgba(230,56,56,.25); color: #E63838; background: rgba(230,56,56,.06); }
+.tag.b { border-color: rgba(106,103,206,.25); color: #4F4DA7; background: rgba(106,103,206,.06); }
+.tag.g { border-color: rgba(55,197,151,.25); color: #179D8A; background: rgba(55,197,151,.06); }
+.tag.p { border-color: rgba(106,103,206,.25); color: #4F4DA7; background: rgba(106,103,206,.06); }
+
+/* ── reference cards ── */
+.ref-section { margin-bottom: 40px; }
+.ref-header-bar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 20px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px 12px 0 0; border-bottom: 2px solid var(--accent);
+}
+.ref-section.mid .ref-header-bar { border-bottom-color: var(--blue); }
+.ref-section.low .ref-header-bar { border-bottom-color: var(--border2); }
+.ref-logo { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.ref-title { flex: 1; }
+.ref-title h3 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.ref-title p { font-size: 12px; color: var(--text-muted); }
+.ref-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: var(--accent-dim); color: #E63838; border: 1px solid rgba(230,56,56,.2); }
+.ref-section.mid .ref-badge { background: rgba(106,103,206,.08); color: #4F4DA7; border-color: rgba(106,103,206,.25); }
+.ref-section.low .ref-badge { background: var(--surface2); color: var(--text-muted); border-color: var(--border); }
+.ref-body { background: var(--surface); border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px; padding: 20px; }
+
+/* ── screenshots ── */
+.screenshots { display: grid; gap: 12px; margin-bottom: 16px; }
+.screenshots.cols2 { grid-template-columns: 1fr 1fr; }
+.screenshots.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+.screenshot-item img {
+  width: 100%; border-radius: 8px; border: 1px solid var(--border);
+  display: block; background: var(--surface2); cursor: zoom-in;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.screenshot-item img:hover { transform: scale(1.015); box-shadow: 0 8px 32px rgba(0,0,0,.12); border-color: var(--border2); }
+.caption { margin-top: 7px; font-size: 11.5px; color: var(--text-muted); display: flex; gap: 7px; line-height: 1.55; }
+.caption-num {
+  background: var(--accent); color: #FFFFFF; min-width: 18px; height: 18px;
+  border-radius: 4px; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.ref-section.mid .caption-num { background: var(--blue); }
+.ref-section.low .caption-num { background: var(--text-dim); }
+.caption b { color: var(--text); }
+
+/* ── key insight ── */
+.key-insight {
+  background: var(--accent-glow); border: 1px solid rgba(230,56,56,.15);
+  border-radius: 8px; padding: 12px 16px; margin-bottom: 14px;
+  font-size: 12.5px; color: var(--text-muted); line-height: 1.65;
+}
+.ref-section.mid .key-insight { background: rgba(106,103,206,.04); border-color: rgba(106,103,206,.18); }
+.ref-section.low .key-insight { background: var(--surface2); border-color: var(--border); }
+.key-insight b { color: var(--text); }
+.key-insight .from { font-size: 11px; color: var(--text-dim); margin-top: 5px; }
+
+/* ── links ── */
+.ref-links { display: flex; flex-wrap: wrap; gap: 6px; }
+.ref-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 6px; font-size: 11px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text-muted); text-decoration: none; transition: all .15s;
+}
+.ref-link:hover { border-color: var(--blue); color: #4F4DA7; background: rgba(106,103,206,.05); }
+.ref-link.video { border-color: rgba(230,56,56,.25); color: #E63838; }
+
+/* ── tier labels ── */
+.tier-label {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  color: var(--text-dim); margin-bottom: 20px; text-transform: uppercase;
+}
+.tier-label::before, .tier-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.tier-label.hot { color: #E63838; }
+.tier-label.hot::before, .tier-label.hot::after { background: rgba(230,56,56,.2); }
+
+/* ── story flow ── */
+.story-flow { display: flex; position: relative; margin-bottom: 32px; gap: 4px; }
+.story-flow::before { content: ''; position: absolute; top: 27px; left: 30px; right: 30px; height: 1px; background: linear-gradient(90deg, var(--accent), var(--blue)); opacity: .4; }
+.story-step { flex: 1; text-align: center; position: relative; z-index: 1; }
+.story-step .dot { width: 54px; height: 54px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 20px; }
+.story-step:nth-child(2) .dot { border-color: var(--purple); }
+.story-step:nth-child(3) .dot { border-color: var(--blue); }
+.story-step:nth-child(4) .dot { border-color: var(--green); }
+.story-step h4 { font-size: 12.5px; font-weight: 600; margin-bottom: 3px; }
+.story-step p { font-size: 11.5px; color: var(--text-muted); }
+
+/* ── callouts ── */
+.callout { border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; display: flex; gap: 12px; }
+.callout-o { background: rgba(230,56,56,.05); border: 1px solid rgba(230,56,56,.18); }
+.callout-b { background: rgba(106,103,206,.04); border: 1px solid rgba(106,103,206,.18); }
+.callout-g { background: rgba(55,197,151,.04); border: 1px solid rgba(55,197,151,.18); }
+.callout-p { background: rgba(106,103,206,.04); border: 1px solid rgba(106,103,206,.18); }
+.callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.callout h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.callout p { font-size: 12.5px; color: var(--text-muted); line-height: 1.65; }
+.callout .from { font-size: 11px; color: var(--text-dim); margin-top: 5px; }
+
+/* ── IA tree ── */
+.ia-l0 { background: linear-gradient(90deg, rgba(230,56,56,.07), transparent);  border-radius: 0 8px 8px 0; padding: 10px 16px; margin-bottom: 10px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.ia-l0 svg { flex-shrink: 0; color: var(--accent); }
+.ia-l1 { margin-left: 22px;  padding-left: 18px; margin-bottom: 12px; }
+.ia-l1-title { font-size: 13px; font-weight: 600; color: var(--blue); margin-bottom: 7px; }
+
+/* ── flow steps ── */
+.flow-steps { display: flex; flex-direction: column; gap: 10px; }
+.flow-step { display: flex; gap: 12px; align-items: flex-start; }
+.flow-num { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #FFFFFF; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.flow-content h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.flow-content p { font-size: 12px; color: var(--text-muted); }
+
+/* ── compare table ── */
+.compare-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.compare-table th { background: var(--surface2); color: var(--text-muted); padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); font-weight: 600; }
+.compare-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+.compare-table tr:hover td { background: rgba(0,0,0,.02); }
+.dy { color: var(--green); } .dn { color: var(--text-dim); } .dp { color: var(--yellow); }
+
+/* ── questions ── */
+.q-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; display: flex; gap: 11px; margin-bottom: 10px; transition: border-color .15s; }
+.q-item:hover { border-color: var(--border2); }
+.q-item.ok { border-color: rgba(55,197,151,.3); background: rgba(55,197,151,.03); }
+.q-num { background: var(--accent); color: #FFFFFF; min-width: 22px; height: 22px; border-radius: 5px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.q-num.ok { background: var(--green); }
+.q-item h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.q-item p { font-size: 12.5px; color: var(--text-muted); line-height: 1.65; }
+
+/* ── info grid ── */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.info-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }
+.info-item h4 { font-size: 13px; font-weight: 600; margin-bottom: 7px; display: flex; gap: 8px; align-items: center; }
+.info-item ul { padding-left: 14px; }
+.info-item li { font-size: 12.5px; color: var(--text-muted); margin-bottom: 4px; line-height: 1.6; }
+.badge { padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; background: rgba(230,56,56,.1); color: #E63838; }
+.badge.opt { background: rgba(253,154,0,.1); color: #E63838; }
+
+/* ── conclusion ── */
+.conclusion { background: linear-gradient(135deg, rgba(230,56,56,.05), rgba(106,103,206,.03)); border: 1px solid rgba(230,56,56,.18); border-radius: 12px; padding: 24px 28px; }
+.principle { display: flex; gap: 10px; font-size: 13px; margin-bottom: 10px; align-items: flex-start; }
+.principle b { color: var(--text); } .principle div > span { color: var(--text-muted); }
+
+/* ── lightbox ── */
+.lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 999; align-items: center; justify-content: center; cursor: zoom-out; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 90vw; max-height: 88vh; border-radius: 10px; object-fit: contain; box-shadow: 0 32px 80px rgba(0,0,0,.5); }
+.lightbox-close { position: absolute; top: 20px; right: 28px; font-size: 28px; color: rgba(255,255,255,.6); cursor: pointer; }
+.lightbox-close:hover { color: #FFFFFF; }
+
+
+:root{
+  --green-dark:#37C597;--green-core:#3BE880;--green-bright:#3BF7D1;--green-med:#9DFBE8;--green-faded:#C3EDDF;--green-light:#EBFCF7;
+  --teal-dark:#179D8A;--teal-core:#1AAFD0;--teal-bright:#02CEFF;--teal-med:#80E6FF;--teal-light:#E8F7FB;
+  --purple-dark:#4F4DA7;--purple-core:#6A67CE;--purple-bright:#A177FF;--purple-med:#D0B8FF;--purple-light:#F0EFFA;
+  --gold-dark:#FD9A00;--gold-core:#FFB900;--gold-bright:#FFD200;--gold-med:#FFE87F;--gold-light:#FFF8E5;
+  --coral-dark:#E63838;--coral-core:#FC636B;--coral-bright:#FF6D92;--coral-med:#FFB6C8;--coral-light:#FEEFF0;
+  --white:#FFFFFF;--neutral-2:#EEEEF0;--navy:#273347;--navy-title:#B3BCC4;--navy-text:#8897A3;
+  --g1:#F8F8F9;--g2:#EFF0F1;--g3:#E1E2E4;--g4:#CDCFD2;--g5:#B9BCC0;--g6:#A1A4AA;--g7:#898E95;--g8:#676D76;--g9:#495058;--g10:#1B2432;
+  --warm-1:#FFD7A8;--warm-2:#F3C7BF;--warm-3:#D9BFEE;--warm-4:#BFB6F0;--warm-5:#A8C0F0;--warm-6:#BFD3F2;
+  --bg:var(--g1);--surface:var(--white);--surface-2:var(--g2);--card:var(--white);--panel:var(--white);
+  --text:var(--g10);--black:var(--g10);--text-2:var(--g9);--text-secondary:var(--g9);--muted:var(--g9);--dim:var(--g6);--text-3:var(--g6);
+  --line:rgba(225,226,228,.82);--line-hair:rgba(205,207,210,.72);--border:var(--g3);--border2:var(--g4);--border-2:var(--g4);
+  --brand:var(--purple-core);--brand-dark:var(--purple-dark);--brand-soft:var(--purple-light);
+  --primary:var(--purple-core);--primary-2:var(--purple-bright);--primary-dark:var(--purple-dark);--primary-soft:var(--purple-light);
+  --accent:var(--coral-dark);--blue:var(--purple-core);--teal:var(--teal-core);
+  --good:var(--green-dark);--good-soft:var(--green-light);--green:var(--green-dark);--green-soft:var(--green-light);
+  --warn:var(--gold-dark);--warn-soft:var(--gold-light);--yellow:var(--gold-dark);--amber:var(--gold-dark);--yellow-bg:var(--gold-light);
+  --bad:var(--coral-dark);--bad-soft:var(--coral-light);--danger:var(--coral-dark);--red:var(--coral-dark);--red-bg:var(--coral-light);
+  --blue-bg:var(--purple-light);--green-bg:var(--green-light);
+  --radius-xl:24px;--radius-l:18px;--radius-m:12px;--radius-s:8px;
+  --shadow-soft:0 1px 2px rgba(39,51,71,.05),0 8px 24px rgba(39,51,71,.075);
+  --shadow-pop:0 16px 42px rgba(106,103,206,.16);
+  --font:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif!important;
+  color:var(--g10);
+  -webkit-font-smoothing:antialiased;
+  background:
+    linear-gradient(180deg, rgba(248,248,249,0) 0%, rgba(248,248,249,.08) 46%, rgba(248,248,249,.9) 78%, var(--g1) 94%) 0 0 / 100% 520px no-repeat,
+    linear-gradient(115deg, rgba(255,215,168,.50) 0%, rgba(243,199,191,.50) 22%, rgba(217,191,238,.50) 44%, rgba(191,182,240,.50) 60%, rgba(168,192,240,.50) 78%, rgba(191,211,242,.50) 100%) 0 0 / 100% 520px no-repeat,
+    var(--g1)!important;
+}
+body::before{
+  content:'';position:fixed;inset:0 0 auto 0;height:520px;pointer-events:none;z-index:-1;
+  background:
+    linear-gradient(115deg, transparent 0%, transparent 10%, rgba(255,255,255,.20) 10%, rgba(255,255,255,.20) 18%, transparent 18%),
+    linear-gradient(115deg, transparent 24%, rgba(255,255,255,.14) 24%, rgba(255,255,255,.14) 34%, transparent 34%),
+    linear-gradient(115deg, transparent 46%, rgba(255,255,255,.16) 46%, rgba(255,255,255,.16) 56%, transparent 56%),
+    linear-gradient(115deg, transparent 66%, rgba(255,255,255,.12) 66%, rgba(255,255,255,.12) 78%, transparent 78%),
+    linear-gradient(115deg, transparent 84%, rgba(255,255,255,.18) 84%, rgba(255,255,255,.18) 95%, transparent 95%);
+}
+a{color:var(--purple-dark)}
+a:hover{text-decoration:underline}
+code,kbd,pre,.mono,.kpi-val,.stat .v,.score,.score-pill,.det-score,.role-score strong,.scenario-score strong{
+  font-family:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+}
+code,kbd{background:var(--purple-light);color:var(--purple-dark);border-radius:6px;padding:.08em .42em}
+pre{background:var(--navy)!important;color:var(--navy-title)!important;border-radius:14px!important;box-shadow:var(--shadow-soft)}
+h1{color:var(--g10)!important;letter-spacing:0!important}
+h2,h3,h4{color:var(--g10);letter-spacing:0!important}
+.hero,.cover{
+  position:relative;overflow:hidden;border:0!important;border-radius:24px!important;box-shadow:var(--shadow-soft)!important;
+  background:
+    linear-gradient(115deg, rgba(255,215,168,.50) 0%, rgba(243,199,191,.50) 22%, rgba(217,191,238,.50) 44%, rgba(191,182,240,.50) 60%, rgba(168,192,240,.50) 78%, rgba(191,211,242,.50) 100%),
+    var(--white)!important;
+}
+.hero::before,.cover::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(115deg, transparent 0%, transparent 10%, rgba(255,255,255,.20) 10%, rgba(255,255,255,.20) 18%, transparent 18%),
+    linear-gradient(115deg, transparent 24%, rgba(255,255,255,.14) 24%, rgba(255,255,255,.14) 34%, transparent 34%),
+    linear-gradient(115deg, transparent 46%, rgba(255,255,255,.16) 46%, rgba(255,255,255,.16) 56%, transparent 56%),
+    linear-gradient(115deg, transparent 66%, rgba(255,255,255,.12) 66%, rgba(255,255,255,.12) 78%, transparent 78%),
+    linear-gradient(115deg, transparent 84%, rgba(255,255,255,.18) 84%, rgba(255,255,255,.18) 95%, transparent 95%);
+}
+.hero>* , .cover>*{position:relative;z-index:1}
+.eyebrow,.cover-tag,.badge,.tag,.cpill,.fchip,.source-badge,.mini-badge,.grade-tag,.cat-badge,.role-focus-badge,.ntag,.node-tag,.repo-chip{
+  border:0!important;border-radius:999px!important;font-weight:700;
+}
+.topbar,.filter-bar,.role-tabbar,.tabs,.header,.top-bar,nav:not(.sidebar-nav):not(.toc),.path-header,.conv-header,.conv-input-area,.rationale-bar{
+  border:0!important;box-shadow:var(--shadow-soft)!important;background:rgba(255,255,255,.78)!important;backdrop-filter:blur(14px);
+}
+.toc,.nav-links,.style-tabs,.nd-tabs,.ev-tabs,.scene-tabbar,.tabbar{
+  border:0!important;box-shadow:none!important;background:transparent!important;
+}
+section,.section,.map-section{
+  background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;
+}
+.section,.map-section{position:relative}
+.section::before,.map-section::before,main>section::before{
+  content:'';display:block;height:1px;width:100%;margin:0 0 22px;background:linear-gradient(90deg,rgba(106,103,206,.34),rgba(26,175,208,.18),transparent 78%);
+}
+:is(.card,.panel,.summary-card,.meta-card,.journey-node,.journey-card,.metric,.summary-pill,.stat,.kpi,.sc,.scene-detail,.role-panel,.scenario-panel,.ref-section,.preview-box,.nc,.node-card,.pain-item,.step-metric,.detail-card,.api-card,.doc-home-card,.floor-res-card,.qs-card,.op-card,.ref-card,.insight-card,.callout,.rationale-card,.msg-bubble,.insert-popup,.quiz-content,.ai-chat-sidebar,.node-drawer,.sandbox-drawer,.qb-panel,.path-card){
+  border:0!important;box-shadow:var(--shadow-soft)!important;background:var(--white)!important;border-radius:16px!important;
+}
+:is(.role-panel,.scenario-panel,.scene-detail,.preview-box,.ref-section){padding:24px}
+:is(.card,.summary-card,.meta-card,.journey-card,.metric,.stat,.kpi,.detail-card,.pain-item,.step-metric,.ref-card,.doc-home-card,.floor-res-card,.qs-card){padding:20px}
+:is(.card,.panel,.summary-card,.meta-card,.journey-node,.journey-card,.metric,.summary-pill,.stat,.kpi,.sc,.ref-section,.preview-box,.nc,.node-card,.pain-item,.step-metric,.detail-card,.api-card,.doc-home-card,.floor-res-card,.qs-card,.op-card,.path-card):hover{
+  box-shadow:var(--shadow-pop)!important;transform:translateY(-1px);
+}
+table,.score-table,.data-table{
+  width:100%;border-collapse:separate!important;border-spacing:0 8px!important;background:var(--white)!important;border:0!important;border-radius:16px!important;box-shadow:var(--shadow-soft)!important;overflow:hidden;
+}
+thead,thead tr,th{background:var(--white)!important;color:var(--g6)!important;text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:800;border:0!important}
+td,th{border:0!important;padding:14px 18px!important}
+tbody tr{background:var(--white)!important;border-radius:10px!important}
+tbody tr:hover td{background:var(--purple-light)!important}
+.score-pill,.score,.rank-pill,.det-grade,.stab-tag,.as-score,.step-metric-val,.persona-score,.role-score strong,.scenario-score strong{
+  font-weight:700;
+}
+.high,.ok,.gd-high,.stable{--pill-bg:var(--green-light);--pill-fg:var(--green-dark)}
+.mid,.gd-mid,.moderate{--pill-bg:var(--purple-light);--pill-fg:var(--purple-dark)}
+.low,.warn,.gd-low{--pill-bg:var(--gold-light);--pill-fg:var(--gold-dark)}
+.bad,.gd-bad,.unstable,.risk{--pill-bg:var(--coral-light);--pill-fg:var(--coral-dark)}
+.score-pill,.grade-tag,.rank-pill,.det-grade,.stab-tag,.mini-badge,.source-badge{background:var(--pill-bg,var(--purple-light))!important;color:var(--pill-fg,var(--purple-dark))!important}
+.score-bar,.m-bar,.p-bar,.cov-bar,.as-bar-track,.dim-bar-track,.sc-bar-track,.node-connector,.progress-track,.nb-monitor-bar-track{
+  background:var(--g2)!important;border-radius:999px!important;overflow:hidden;
+}
+.score-bar i,.m-bar i,.p-bar i,.cov-bar i,.as-bar-fill,.dim-bar-fill,.sc-bar-fill,.nb-monitor-bar-fill,.progress-fill{
+  background:linear-gradient(90deg,var(--purple-core),var(--teal-core))!important;border-radius:999px!important;
+}
+.icon,.h2-icon,.card-icon,.ci,.ref-logo,.mode-icon,.msg-avatar,.node-dot,.strip-dot,.cat-dot,.matrix-col-dot,.brand-logo{
+  border:0!important;background:var(--purple-light)!important;color:var(--purple-dark)!important;
+}
+button,.btn,.export-btn,.save-btn,.btn-fill,.btn-lg,.floor-btn-primary,.btn-generate-path,.pg-send,.pg-save-btn,.send-btn{
+  border:0!important;border-radius:10px!important;font-family:inherit;background:var(--purple-core);color:var(--white);
+}
+button:hover,.btn:hover,.export-btn:hover,.save-btn:hover,.btn-fill:hover,.btn-lg:hover,.floor-btn-primary:hover,.btn-generate-path:hover,.pg-send:hover,.pg-save-btn:hover,.send-btn:hover{
+  background:var(--purple-bright)!important;color:var(--white)!important;text-decoration:none!important;
+}
+input,textarea,select{
+  border:0!important;border-radius:10px!important;background:var(--g2)!important;color:var(--g10)!important;box-shadow:inset 0 0 0 1px rgba(225,226,228,.68);
+}
+input:focus,textarea:focus,select:focus{outline:0;box-shadow:inset 0 0 0 2px rgba(106,103,206,.36)!important;background:var(--white)!important}
+[style*="border-left"],[style*="border-right"],.border-red,.border-yellow{border-right:0!important}
+img{max-width:100%}
+svg text{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif}
+
+/* AscendOps correction: restore dashboard width and remove nested bordered reference cards. */
+body{min-width:1624px}
+.main-content{
+  margin-left:232px!important;
+  width:calc(100vw - 232px)!important;
+  min-width:1392px!important;
+}
+.container{
+  width:1392px!important;
+  max-width:none!important;
+  margin:0 auto!important;
+  padding:0 0 80px!important;
+}
+.cover{
+  padding-left:max(64px,calc((100% - 1392px)/2))!important;
+  padding-right:max(64px,calc((100% - 1392px)/2))!important;
+}
+.cover-inner{max-width:680px}
+.section{
+  width:1392px!important;
+  max-width:none!important;
+  padding:56px 0!important;
+  margin:0 auto!important;
+}
+.section-desc{max-width:820px}
+.nav-item.active::before{display:none!important}
+.ref-section{
+  margin-bottom:44px!important;
+  padding:28px 32px 30px!important;
+  border:0!important;
+  border-radius:22px!important;
+  background:var(--white)!important;
+  box-shadow:var(--shadow-soft)!important;
+}
+.ref-header-bar{
+  position:relative;
+  padding:4px 0 24px!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.ref-header-bar::after{
+  content:'';
+  position:absolute;
+  left:-32px;
+  right:-32px;
+  bottom:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--coral-dark),rgba(230,56,56,.42),transparent 72%);
+}
+.ref-section.mid .ref-header-bar::after{
+  background:linear-gradient(90deg,var(--purple-core),rgba(106,103,206,.38),transparent 72%);
+}
+.ref-section.low .ref-header-bar::after{
+  background:linear-gradient(90deg,var(--g4),rgba(205,207,210,.38),transparent 72%);
+}
+.ref-body{
+  padding:26px 0 0!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.ref-section :is(.ref-header-bar,.ref-body,.key-insight,.ref-links,.screenshots,.screenshot-item,.caption,.from){
+  box-shadow:none!important;
+}
+.ref-section :is(.ref-header-bar,.ref-body,.key-insight,.ref-link,.tag,.ref-badge,.screenshot-item img){
+  border:0!important;
+}
+.ref-section :is(.ref-header-bar,.ref-body){
+  background:transparent!important;
+  border-radius:0!important;
+}
+.screenshot-item img{
+  border:0!important;
+  box-shadow:0 1px 2px rgba(39,51,71,.05),0 8px 18px rgba(39,51,71,.06)!important;
+}
+.screenshot-item img:hover{
+  border:0!important;
+  box-shadow:0 12px 30px rgba(39,51,71,.12)!important;
+}
+.key-insight{
+  border:0!important;
+  box-shadow:none!important;
+}
+.ref-section.mid .key-insight{
+  box-shadow:none!important;
+}
+.ref-section.low .key-insight{
+  box-shadow:none!important;
+}
+.ref-link{
+  border:0!important;
+  box-shadow:var(--shadow-soft)!important;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">×</span>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <a class="sidebar-logo-link" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" title="回到顶部">
+      <img src="../CANNlogo.png" alt="CANN" class="sidebar-logo" />
+    </a>
+    <div class="sidebar-brand-text">
+      <div class="sidebar-brand-title">体验看板</div>
+      <div class="sidebar-brand-sub">设计分析</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+
+    <div class="nav-group">
+      <div class="nav-group-label">分析基础</div>
+      <a class="nav-item" href="#refs" data-section="refs">
+        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+        参考案例
+      </a>
+      <a class="nav-item" href="#insights" data-section="insights">
+        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r=".5" fill="currentColor" stroke="none"/></svg>
+        核心洞察
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">用户研究</div>
+      <a class="nav-item" href="#personas" data-section="personas">
+        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        用户画像
+      </a>
+      <a class="nav-item" href="#taskflow" data-section="taskflow">
+        <svg class="nav-icon" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="15" y2="18"/></svg>
+        任务流程
+      </a>
+      <a class="nav-item" href="#story" data-section="story">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        故事线
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">设计方向</div>
+      <a class="nav-item" href="#ia" data-section="ia">
+        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="5" rx="1"/><rect x="3" y="10" width="11" height="5" rx="1"/><rect x="3" y="17" width="7" height="5" rx="1"/></svg>
+        信息架构
+      </a>
+      <a class="nav-item" href="#interaction" data-section="interaction">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        交互设计
+      </a>
+      <a class="nav-item" href="#components" data-section="components">
+        <svg class="nav-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        组件清单
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">质量保障</div>
+      <a class="nav-item" href="#edgestates" data-section="edgestates">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r=".5" fill="currentColor" stroke="none"/></svg>
+        边缘态设计
+      </a>
+      <a class="nav-item" href="#metrics" data-section="metrics">
+        <svg class="nav-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        成功指标
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">收尾</div>
+      <a class="nav-item" href="#questions" data-section="questions">
+        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="currentColor" stroke="none"/></svg>
+        待确认
+      </a>
+      <a class="nav-item" href="#conclusion" data-section="conclusion">
+        <svg class="nav-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        设计结论
+      </a>
+    </div>
+
+  </nav>
+</aside>
+<main class="main-content">
+
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-eyebrow">
+      <span class="cover-tag">内部文档</span>
+      <span class="cover-tag">UX 分析</span>
+      <span class="cover-tag">v0.4</span>
+    </div>
+    <div class="cover-title">
+      <span class="cover-title-cn"><span class="cover-accent">CANN</span> 体验看板</span>
+      <span class="cover-title-sub">设计分析报告</span>
+    </div>
+    <p class="cover-desc">从行业参考案例到设计原则，从用户研究到组件清单——<br>面向 CANN 产品 / 体验团队的完整 UX 分析文档。</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        2026-05
+      </div>
+      <div class="cover-meta-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        DEV LAB
+      </div>
+      <div class="cover-meta-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        13 个章节 · 9 个参考案例
+      </div>
+    </div>
+  </div>
+  <div class="cover-deco" aria-hidden="true">
+    <div class="cover-block b1"></div>
+    <div class="cover-block b2"></div>
+    <div class="cover-block b3"></div>
+    <div class="cover-block b4"></div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- 00 背景 -->
+  <section class="section">
+    <div class="section-label">00 · 背景</div>
+    <div class="section-title">这个看板在解决什么问题？</div>
+    <div class="section-desc">CANN 体验看板面向产品/体验团队，帮助决策者基于 Agentic 评分、痛点和真实用户声音（VOD），快速定位开发者体验中最需要改进的环节。</div>
+    <hr class="divider">
+    <div class="grid3">
+      <div class="card">
+        <h3><span class="icon icon-o"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> 看板的使用者</h3>
+        <ul><li>CANN 产品 / 体验团队负责人</li><li>各角色方向的产品经理</li><li>需要向上汇报数据的人</li></ul>
+        <p style="margin-top:10px;">他们需要<b style="color:var(--text)">快速判断：哪里出了问题、有多严重、改进成效如何</b>。</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-b"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span> 核心任务</h3>
+        <ul><li>快速定位体验最差的角色 / 场景</li><li>了解痛点来源（Agent 评测 vs 真实用户）</li><li>追踪改进后的数据变化</li><li>为改进优先级排序提供依据</li></ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-r"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> 设计出发点</h3>
+        <ul><li>数据分散：评分/痛点/VOD 没有统一视图</li><li>缺乏优先级感：不知先改哪里</li><li>角色切换体验割裂</li><li>缺少整体健康度的直觉判断</li></ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 01 参考案例 -->
+  <section class="section" id="refs">
+    <div class="section-label">01 · 参考案例</div>
+    <div class="section-title">行业最佳实践 · 图文对照</div>
+    <div class="section-desc">精选 9 个与 CANN 体验看板最相关的案例，每个产品附多张截图并标注与 CANN 的对应关系。</div>
+    <hr class="divider">
+
+    <!-- ═══ 高度相关 ═══ -->
+    <div class="tier-label hot">高度相关 · 直接借鉴</div>
+
+    <!-- Spotify Soundcheck -->
+    <div class="ref-section">
+      <div class="ref-header-bar">
+        <div class="ref-logo" style="background:rgba(55,197,151,.12);"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3BE880" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+        <div class="ref-title">
+          <h3>Spotify Soundcheck / Backstage</h3>
+          <p>服务健康度自动化评分看板 · 与 CANN 场景卡片结构最接近</p>
+        </div>
+        <div class="tags" style="margin:0"><span class="tag o">多维评分</span><span class="tag b">健康热力图</span><span class="tag g">改进 Track</span></div>
+        <span class="ref-badge">最高参考价值</span>
+      </div>
+      <div class="ref-body">
+        <div class="screenshots cols2">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/spotify-soundcheck-overview.png" alt="Soundcheck Overview" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">1</span><span><b>全景健康热力图</b> — 所有服务/组件排列成矩阵，颜色即健康状态。CANN 看板的"角色 × 场景"全景视图可借鉴此设计：一眼看出哪个场景是红色。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/spotify-soundcheck-tech-health.png" alt="Tech Health Trends" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">2</span><span><b>聚合指标 + 趋势线</b> — 每个维度分项打分，并叠加历史趋势。CANN 看板的 Agent 评分可拆为多子项（精度/性能/文档等），同样展示各项变化趋势。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/spotify-soundcheck-checks.png" alt="Checks Grading" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">3</span><span><b>Check 评分详情</b> — 每条检查项显示"通过/失败 + 原因说明"。对应 CANN 的痛点条目：每条痛点应附"来源 + 严重程度 + 建议改进"。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/spotify-soundcheck-tracks.png" alt="Tracks - Long-term Initiatives" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">4</span><span><b>Tracks 长期改进路径</b> — 将改进项目组织为"路径"，每个 Track 有进度和截止目标。CANN 看板后续可加"改进计划追踪"模块。</span></div>
+          </div>
+        </div>
+        <div class="key-insight">
+          <b>核心借鉴：</b>三层结构（总览热力图 → 实体评分卡 → 单项 Check 详情）与 CANN"全景 → 角色 → 场景详情"完全对齐。颜色矩阵让严重问题 3 秒内可见；每个 Check 都有 Next Step 指引，不只是看数据。
+          <div class="from">来源：<a class="ref-link" style="display:inline-flex" href="https://backstage.spotify.com/partners/spotify/plugin/soundcheck/" target="_blank">Soundcheck 插件页</a> · <a class="ref-link" style="display:inline-flex" href="https://info.backstage.spotify.com/portal-first-run-demo" target="_blank">Live Demo</a></div>
+        </div>
+        <div class="ref-links">
+          <a class="ref-link" href="https://backstage.spotify.com/docs/plugins/soundcheck/core-concepts/tech-health" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Tech Health 文档</a>
+          <a class="ref-link" href="https://www.infoq.com/news/2023/04/spotify-success-backstage/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> InfoQ 案例分析</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- DX Core 4 -->
+    <div class="ref-section">
+      <div class="ref-header-bar">
+        <div class="ref-logo" style="background:rgba(106,103,206,.12);"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6A67CE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <div class="ref-title">
+          <h3>DX Core 4 · getdx.com</h3>
+          <p>系统指标 + 感知数据统一评分框架 · 行业最权威 DX 量化体系</p>
+        </div>
+        <div class="tags" style="margin:0"><span class="tag o">系统指标+感知数据</span><span class="tag p">行业基准对比</span></div>
+        <span class="ref-badge">最高参考价值</span>
+      </div>
+      <div class="ref-body">
+        <div class="screenshots cols3">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/dx-dashboard-overview.webp" alt="DXI Dashboard Overview" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">1</span><span><b>DXI 全景仪表板</b> — 14 个关键驱动因素按维度分组，右侧显示与业务影响的关联。CANN 全景层可类似地将评分 + 痛点数 + VOD 数三列并排。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/dx-research-metrics.webp" alt="Research-backed Metrics" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">2</span><span><b>标准化指标维度</b> — 每个指标同时有"系统数据"和"感知调查"两列，颜色区分数据来源。CANN 中 Agent 评分和 VOD 分列展示，互相对照。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/dx-benchmark.webp" alt="Benchmark Comparison" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">3</span><span><b>行业 Benchmark 对比</b> — 你的分数 vs 行业中位数，让"67分"变成有意义的判断。CANN 看板至少应提供角色内横向对比（6个场景间的相对排名）。</span></div>
+          </div>
+        </div>
+        <div class="key-insight">
+          <b>核心借鉴：</b>Agent评分（系统指标）+ VOD（感知数据）并用是行业黄金标准，有 800+ 团队数据支撑。每提升 1 分 DX = 节省开发者 13 分钟/周。两者必须同时展示，否则无法形成高置信度改进决策。
+          <div class="from">来源：<a class="ref-link" style="display:inline-flex" href="https://getdx.com/research/measuring-developer-productivity-with-the-dx-core-4/" target="_blank">DX Core 4 研究论文</a></div>
+        </div>
+        <div class="ref-links">
+          <a class="ref-link" href="https://getdx.com/blog/introducing-dx-dashboard/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Dashboard 发布公告</a>
+          <a class="ref-link" href="https://getdx.com/developer-experience-index/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> DXI 指数说明</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Datadog -->
+    <div class="ref-section">
+      <div class="ref-header-bar">
+        <div class="ref-logo" style="background:rgba(106,103,206,.12);"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6A67CE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="ref-title">
+          <h3>Datadog IDP · DORA Metrics + Scorecard</h3>
+          <p>服务目录 + Scorecard 评分卡 + DORA 三合一 · Scorecard 设计与 CANN 场景卡片高度一致</p>
+        </div>
+        <div class="tags" style="margin:0"><span class="tag o">Scorecard 评分卡</span><span class="tag b">多维聚合</span><span class="tag g">自动数据采集</span></div>
+        <span class="ref-badge">高度相关</span>
+      </div>
+      <div class="ref-body">
+        <div class="screenshots cols2" style="margin-bottom:12px">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/datadog-dora-hero.png" alt="Datadog DORA Hero" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">1</span><span><b>DORA 指标总览</b> — 四项指标并排，颜色区分表现等级，同时显示趋势箭头（↑↓）。CANN 全景层的总览指标卡可参照此布局。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/datadog-dora-feature2.png" alt="Workflow Bottleneck Analysis" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">2</span><span><b>工作流瓶颈分析</b> — 将整体指标拆解到具体瓶颈步骤，每步显示耗时占比。CANN 场景详情层可类似地把 Agent 评分拆解到具体的"卡点步骤"。</span></div>
+          </div>
+        </div>
+        <div class="screenshots cols2">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/datadog-idp-hero.png" alt="IDP Hero" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">3</span><span><b>IDP 服务目录总览</b> — 左侧导航按服务分类，中间卡片每个服务显示综合健康分 + 当前状态。这是 CANN 角色视图"场景卡片列表"的直接参考。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/datadog-idp-scorecard.png" alt="IDP Scorecard" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">4</span><span><b>Scorecard 评分卡</b> — 每个规则项显示通过率进度条 + 颜色 + 具体数量。CANN 场景卡片中的评分分项可完全参照此设计：进度条 + 色彩 + 痛点数量气泡。</span></div>
+          </div>
+        </div>
+        <div class="key-insight">
+          <b>核心借鉴：</b>Scorecard 的设计语言——进度条 + 颜色 + 数量气泡，三个视觉元素同时传递"完成度、严重程度、证据量"三个维度，且不需要读任何文字。CANN 场景卡片应采用相同的视觉密度。
+          <div class="from">来源：<a class="ref-link" style="display:inline-flex" href="https://www.datadoghq.com/product/internal-developer-portal/" target="_blank">Datadog IDP</a></div>
+        </div>
+        <div class="ref-links">
+          <a class="ref-link" href="https://www.datadoghq.com/product/platform/dora-metrics/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> DORA Metrics 产品页</a>
+          <a class="ref-link" href="https://docs.datadoghq.com/dora_metrics/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> 使用文档</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 中度相关 ═══ -->
+    <div class="tier-label mid" style="color:var(--blue)">中度相关 · 局部借鉴</div>
+
+    <!-- Apache DevLake -->
+    <div class="ref-section mid">
+      <div class="ref-header-bar">
+        <div class="ref-logo" style="background:rgba(253,154,0,.1);"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FD9A00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <div class="ref-title">
+          <h3>Apache DevLake</h3>
+          <p>开源 DORA 看板 · 多源数据聚合 + Grafana 可视化</p>
+        </div>
+        <div class="tags" style="margin:0"><span class="tag b">多源聚合</span><span class="tag g">开源可导入</span></div>
+        <span class="ref-badge">局部借鉴</span>
+      </div>
+      <div class="ref-body">
+        <div class="screenshots cols2">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/devlake-dora-framework.png" alt="DORA Framework" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">1</span><span><b>DORA 框架分类</b> — 四项指标按"速度 / 稳定性"两个维度归类。CANN 看板的指标也可按"功能易用性 / 性能 / 稳定性"分类展示，而非平铺列表。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/devlake-dora-dashboard.png" alt="DORA Dashboard" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">2</span><span><b>DORA 看板实际效果</b> — 每项指标显示时间轴折线图 + 当前等级区间（Elite/High/Medium/Low）。CANN 可借鉴等级分档（优秀/良好/待改进/严重），比纯分数更直觉。</span></div>
+          </div>
+        </div>
+        <div class="key-insight">
+          <b>核心借鉴：</b>用"等级分档"代替纯数字——Elite/High/Medium/Low 比"82分/67分/55分"更容易被非技术决策者理解。数据分布（折线图而非只看单点）让团队判断稳定性而非只看均值。
+        </div>
+        <div class="ref-links">
+          <a class="ref-link" href="https://devlake.apache.org/docs/DORA/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> DORA 文档</a>
+          <a class="ref-link video" href="https://www.youtube.com/watch?v=MpfNiB84F50" target="_blank">▶ YouTube 演示视频</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grafana DORA -->
+    <div class="ref-section mid">
+      <div class="ref-header-bar">
+        <div class="ref-logo" style="background:rgba(253,154,0,.1);"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FD9A00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <div class="ref-title">
+          <h3>Grafana CI/CD DORA 看板</h3>
+          <p>从 CD 流水线提取 DORA 指标 · 部署频率 + 变更失败率可视化实例</p>
+        </div>
+        <div class="tags" style="margin:0"><span class="tag b">可视化多样</span><span class="tag g">开源模板</span></div>
+        <span class="ref-badge">局部借鉴</span>
+      </div>
+      <div class="ref-body">
+        <div class="screenshots cols2" style="margin-bottom:12px">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/linearb-cd-workflow.png" alt="CD Workflow Architecture" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">1</span><span><b>数据流架构图</b> — 从 Argo Workflows + 告警系统 → 统一看板的数据管道。CANN 可绘制类似架构：cannbot-skills + VOD 来源 → 体验看板数据流。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/linearb-deployment-freq.png" alt="Deployment Frequency Dashboard" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">2</span><span><b>部署频率时序图</b> — 时间轴上每次部署标记一个点，颜色区分成功/失败，背景色块表示当前所在等级区间。CANN 评分历史趋势可参照此格式。</span></div>
+          </div>
+        </div>
+        <div class="screenshots cols2">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/linearb-cfr-before.png" alt="Change Failure Rate Before" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">3</span><span><b>变更失败率（事件前）</b> — 稳定期的基线数据。CANN 可用类似方式展示"某次改进前"的评分基线，建立对比参照。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/linearb-cfr-after.png" alt="Change Failure Rate After" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">4</span><span><b>变更失败率（事件后）</b> — 同一指标在发生问题后的突变。"改进前 vs 改进后"对比是追踪效果的核心视觉——CANN 最终也需要此功能。</span></div>
+          </div>
+        </div>
+        <div class="key-insight">
+          <b>核心借鉴：</b>用时序图展示"改进效果"比只展示当前值更有说服力。颜色背景区间（红色/黄色/绿色区域）让数字落在哪个范围一目了然，不需要记阈值。
+        </div>
+        <div class="ref-links">
+          <a class="ref-link" href="https://grafana.com/grafana/dashboards/20889-dora-v2/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> DORA v2 可导入模板</a>
+          <a class="ref-link" href="https://grafana.com/blog/ci-cd-observability-extracting-dora-metrics-from-a-cd-pipeline/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> 原文博客</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SquaredUp -->
+    <div class="ref-section mid">
+      <div class="ref-header-bar">
+        <div class="ref-logo" style="background:rgba(55,197,151,.1);"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#37C597" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+        <div class="ref-title">
+          <h3>SquaredUp · 跨工具 DORA 看板</h3>
+          <p>Jira + Azure DevOps + ServiceNow 数据融合 · 多源痛点聚合的实际解决方案</p>
+        </div>
+        <div class="tags" style="margin:0"><span class="tag b">多工具整合</span><span class="tag g">实际生产案例</span></div>
+        <span class="ref-badge">局部借鉴</span>
+      </div>
+      <div class="ref-body">
+        <div class="screenshots cols2" style="margin-bottom:12px">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/squaredup-main.png" alt="SquaredUp Main Dashboard" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">1</span><span><b>综合 DORA 仪表板</b> — 四个指标同屏展示，每个指标包含折线趋势 + 当前值 + 等级标签。这是 CANN 全景层"多指标同屏概览"的直接参考。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/squaredup-dora.png" alt="Pre-built DORA Dashboard" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">2</span><span><b>预构建看板界面</b> — 展示数据配置流程与最终展示效果的对比，说明"从数据到可视化"的整体路径。有助于规划 CANN 看板的数据接入架构。</span></div>
+          </div>
+        </div>
+        <div class="screenshots cols3">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/squaredup-sql.png" alt="SQL Analytics" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">3</span><span><b>跨源 SQL 分析</b> — Jira + ServiceNow 数据关联查询界面。对应 CANN：Agent 评分数据 + VOD 数据的跨源关联设计。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/squaredup-mttr.png" alt="MTTR Dashboard" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">4</span><span><b>MTTR 指标面板</b> — 优先级 P1 事件的恢复时间分布，以散点图展示每次事件。CANN 可用类似散点图展示"各次 Agent 评测的分布"，揭示稳定性。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/squaredup-custom.png" alt="Custom DORA Dashboard" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">5</span><span><b>定制化最终看板</b> — 多个子面板自由拼合，每块聚焦一个问题。CANN 看板最终形态可参照此"面板拼合"布局，按角色定制视图。</span></div>
+          </div>
+        </div>
+        <div class="key-insight">
+          <b>核心借鉴：</b>散点图（非折线均值）展示分布，能揭示"均分尚可但极端情况很差"的问题。多源数据的关联关系（Agent 评分哪期对应 VOD 哪批反馈）需要在架构上提前设计。
+        </div>
+        <div class="ref-links">
+          <a class="ref-link" href="https://squaredup.com/dashboard-gallery/measuring-dora-metrics-across-tools-jira-azure-devops-servicenow/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> 案例详情（含全部截图）</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stripe DX -->
+    <div class="ref-section mid">
+      <div class="ref-header-bar">
+        <div class="ref-logo" style="background:rgba(106,103,206,.1);"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6A67CE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <div class="ref-title">
+          <h3>Stripe API Developer Experience</h3>
+          <p>LLM 驱动的 API 自动审查 + 开发者仪表板可观测性</p>
+        </div>
+        <div class="tags" style="margin:0"><span class="tag o">LLM 自动审查</span><span class="tag p">可观测性 DX</span></div>
+        <span class="ref-badge">局部借鉴</span>
+      </div>
+      <div class="ref-body">
+        <div class="screenshots cols2" style="margin-bottom:12px">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/stripe-api-review.png" alt="Stripe API Review" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">1</span><span><b>LLM 驱动的 API Review 流程</b> — 从设计提案到审查建议的自动化流程图。直接对应 CANN 的 cannbot-skills 体系：Agent 自动评测并产生问题记录的闭环。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/stripe-request-log.png" alt="Request Log Dashboard" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">2</span><span><b>Request Logs 面板</b> — 开发者实时查看自己每次 API 调用情况，被 Stripe 认为是"被低估的 DX 功能"。对应 CANN：Agent 评测详细日志的可见性设计。</span></div>
+          </div>
+        </div>
+        <div class="screenshots cols2">
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/stripe-inspectability.png" alt="Inspectability" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">3</span><span><b>可检视性设计</b> — 仪表板 UI 动作与底层 API 请求直接映射，让开发者"看到"系统在做什么。CANN 看板的 Agent 评分应同样可展开查看"Agent 具体做了什么"。</span></div>
+          </div>
+          <div class="screenshot-item">
+            <img src="../cann-dashboard/images/competitor-screenshots/stripe-integration-insights.png" alt="Integration Insights" onclick="openLightbox(this)" />
+            <div class="caption"><span class="caption-num">4</span><span><b>集成洞察引擎</b> — 自动发现高频错误模式并给出建议。CANN 痛点模块可参照此设计：自动聚类相似痛点，识别高频问题模式。</span></div>
+          </div>
+        </div>
+        <div class="key-insight">
+          <b>核心借鉴：</b>Agent 评测的"可解释性"——不只给一个分数，要让使用者看到"Agent 具体在哪步卡住、给出了什么建议"。Stripe 将 API 审查从第 149 次做到第 3328 次的规模化，依靠的就是日志和建议的结构化输出。
+        </div>
+        <div class="ref-links">
+          <a class="ref-link" href="https://kenneth.io/post/insights-from-building-stripes-developer-platform-and-api-developer-experience-part-1" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Stripe DX 深度文章</a>
+          <a class="ref-link" href="https://stripe.com/sessions/2025/developer-keynote" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Stripe Sessions 2025 演讲</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 横向对比表 -->
+    <div style="margin-top:32px">
+      <div class="section-label" style="margin-bottom:10px">参考案例横向对比矩阵</div>
+      <div style="overflow-x:auto">
+        <table class="compare-table">
+          <thead>
+            <tr><th>案例</th><th>多角色/场景筛选</th><th>自动化评分</th><th>感知/用户数据</th><th>痛点可视化</th><th>Next Step 指引</th><th>可访问演示</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Spotify Soundcheck</b></td><td class="dy">●</td><td class="dy">●</td><td class="dn">—</td><td class="dy">●</td><td class="dy">●</td><td class="dy">Live Demo</td></tr>
+            <tr><td><b>DX Core 4 (getdx.com)</b></td><td class="dy">●</td><td class="dy">●</td><td class="dy">● 核心</td><td class="dy">●</td><td class="dy">●</td><td class="dp">注册后</td></tr>
+            <tr><td><b>Datadog IDP + DORA</b></td><td class="dy">●</td><td class="dy">●</td><td class="dn">—</td><td class="dy">●</td><td class="dy">●</td><td class="dy">产品页</td></tr>
+            <tr><td><b>Apache DevLake</b></td><td class="dp">△ 团队级</td><td class="dy">●</td><td class="dn">—</td><td class="dy">●</td><td class="dp">△</td><td class="dy">YouTube 视频</td></tr>
+            <tr><td><b>Grafana DORA</b></td><td class="dn">—</td><td class="dy">●</td><td class="dn">—</td><td class="dy">●</td><td class="dp">△</td><td class="dy">开源模板</td></tr>
+            <tr><td><b>SquaredUp DORA</b></td><td class="dp">△</td><td class="dy">●</td><td class="dn">—</td><td class="dy">●</td><td class="dp">△</td><td class="dy">案例页含截图</td></tr>
+            <tr><td><b>Stripe DX</b></td><td class="dn">—</td><td class="dy">● LLM</td><td class="dp">△</td><td class="dy">●</td><td class="dy">●</td><td class="dy">文章截图</td></tr>
+            <tr style="background:rgba(230,56,56,.03)"><td><b>CANN 看板（目标）</b></td><td class="dy">● 4角色</td><td class="dy">● Agent</td><td class="dy">● VOD</td><td class="dy">●</td><td class="dy">●</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 02 核心洞察 -->
+  <section class="section" id="insights">
+    <div class="section-label">02 · 核心洞察</div>
+    <div class="section-title">从参考案例提炼的设计原则</div>
+    <div class="section-desc">每条原则都有行业案例佐证，是本次重构的设计依据，而非主观判断。</div>
+    <hr class="divider">
+    <div class="callout callout-o"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><div><h4>洞察 1：系统指标 + 感知数据必须并用</h4><p>Agent评分告诉你"流程哪步卡住了"，VOD 告诉你"用户是否真的感知到这个问题"。两者叠加才能形成高置信度改进决策，避免修了技术问题却没解决用户感受。</p><div class="from">来源：DX Core 4 研究（800+团队/40,000+开发者）· GitHub DevSat</div></div></div>
+    <div class="callout callout-b"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><div><h4>洞察 2：颜色编码是优先级传递的最快路径</h4><p>红/黄/绿的色彩语义编码，让决策者在 3 秒内扫描出最危险的场景，无需逐一读取数字。阈值建议：红 &lt;60、黄 60-80、绿 &gt;80。</p><div class="from">来源：Spotify Soundcheck · Datadog Scorecard</div></div></div>
+    <div class="callout callout-g"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div><h4>洞察 3：展示分布，而非只展示均值</h4><p>均值会掩盖极端情况。"均分 72"可能隐藏了某次严重失败。用散点图或箱线图展示评测结果的分布，判断"稳定性"而非只看均值。</p><div class="from">来源：Apache DevLake DORA Masterclass · Grafana DORA v2 · SquaredUp MTTR 散点图</div></div></div>
+    <div class="callout callout-p"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div><div><h4>洞察 4：每个低分必须有对应的 Next Step</h4><p>看板的终点是行动，不是观察。为每个痛点条目附"改进建议"，让看板从"报告工具"成为"决策工具"。</p><div class="from">来源：LinearB 工程效能看板 · Spotify Soundcheck Tracks</div></div></div>
+    <div class="callout callout-o"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div><div><h4>洞察 5：加入参照系，让分数有意义</h4><p>"算子迁移部署得了 42 分"不如"42 分，低于内部平均 25 分，6 个场景中最低"来得直觉。CANN 至少应提供角色内场景横向排名。</p><div class="from">来源：LinearB 2025 Benchmarks · DX Core 4 DXI 指数</div></div></div>
+    <div class="callout callout-b" style="margin-bottom:0"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div><h4>洞察 6：Agent 评测需要"可解释性"</h4><p>不只给分数，要展示"Agent 在哪步卡住、具体是什么错误"。参照 Stripe API Review 的结构化输出：问题描述 + 发生位置 + 建议修复。</p><div class="from">来源：Stripe DX · Twilio AI Agent 评测实践</div></div></div>
+  </section>
+
+
+  <!-- 08 用户画像 -->
+  <section class="section" id="personas">
+    <div class="section-label">08 · 用户画像</div>
+    <div class="section-title">谁在用这个看板，怎么用</div>
+    <div class="section-desc">主要受众是内部体验团队，汇报是次要诉求。设计优先服务"日常操作"场景，"汇报模式"作为附加功能。</div>
+    <hr class="divider">
+
+    <div class="grid3" style="margin-bottom:16px">
+      <!-- Persona 1 -->
+      <div class="card" style="border-top:3px solid var(--accent)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(230,56,56,.09);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div>
+            <div style="font-size:14px;font-weight:700">体验 PM</div>
+            <div style="font-size:11px;color:var(--text-muted)">主要用户 · 最高频</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+          <b style="color:var(--text);display:block;margin-bottom:4px">典型任务</b>
+          每周/每期评测结束后，扫描整体健康度，找出本期最需要优先改进的 2-3 个场景，推动对应团队跟进。
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+          <b style="color:var(--text);display:block;margin-bottom:4px">使用方式</b>
+          单独查看为主；偶尔在周会上投影。时间有限，需要<b style="color:var(--text)">快速定位问题</b>，不需要读所有数据。
+        </div>
+        <div style="font-size:12px;color:var(--text-muted)">
+          <b style="color:var(--text);display:block;margin-bottom:4px">对设计的影响</b>
+          全景层必须"一眼看出哪里红"；筛选操作要快；痛点要自动排优先级，不能让 PM 自己判断顺序。
+        </div>
+      </div>
+
+      <!-- Persona 2 -->
+      <div class="card" style="border-top:3px solid var(--blue)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(106,103,206,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <div>
+            <div style="font-size:14px;font-weight:700">技术方向 Owner</div>
+            <div style="font-size:11px;color:var(--text-muted)">主要用户 · 深度使用</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+          <b style="color:var(--text);display:block;margin-bottom:4px">典型任务</b>
+          聚焦自己负责的角色（如算子开发者），深度查看某个低分场景的 Agent 评测细节和 VOD 原声，判断问题根因。
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+          <b style="color:var(--text);display:block;margin-bottom:4px">使用方式</b>
+          独立查看，看得很深。需要<b style="color:var(--text)">看到足够多的细节</b>：评分子项拆解、每条痛点的具体描述、Agent 运行日志。
+        </div>
+        <div style="font-size:12px;color:var(--text-muted)">
+          <b style="color:var(--text);display:block;margin-bottom:4px">对设计的影响</b>
+          场景详情层要信息充分，不能省略技术细节；支持直接跳转到对应 skill 文档或改进 ticket。
+        </div>
+      </div>
+
+      <!-- Persona 3 -->
+      <div class="card" style="border-top:3px solid var(--text-dim)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(137,142,149,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+          <div>
+            <div style="font-size:14px;font-weight:700">产品总监 / 管理层</div>
+            <div style="font-size:11px;color:var(--text-muted)">次要用户 · 低频 · 汇报场景</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+          <b style="color:var(--text);display:block;margin-bottom:4px">典型任务</b>
+          在季度汇报或专项会议上，了解整体开发者体验健康度，判断资源投入方向是否正确。
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+          <b style="color:var(--text);display:block;margin-bottom:4px">使用方式</b>
+          由 PM 导出摘要后展示，或直接在看板上查看全景层。不会自己操作筛选，需要<b style="color:var(--text)">结论直接可见</b>。
+        </div>
+        <div style="font-size:12px;color:var(--text-muted)">
+          <b style="color:var(--text);display:block;margin-bottom:4px">对设计的影响</b>
+          全景层+总览指标卡需自带结论感；提供一键"导出摘要"功能（PDF/截图），不需要专门的"汇报模式"。
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-o">
+      <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+      <div>
+        <h4>设计优先级决策</h4>
+        <p>主界面优先服务 Persona 1 + Persona 2（操作密度高、交互深）。Persona 3 的诉求通过<b style="color:var(--text)">全景层的自解释设计</b>（结论直接写在界面上）+ <b style="color:var(--text)">一键导出摘要</b>满足，不另设"简化版"。</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 09 任务流程 -->
+  <section class="section" id="taskflow">
+    <div class="section-label">09 · 任务流程</div>
+    <div class="section-title">三条核心用户旅程</div>
+    <div class="section-desc">对应三类使用者的真实操作路径，是组件设计和页面跳转逻辑的直接依据。</div>
+    <hr class="divider">
+
+    <div style="display:flex;flex-direction:column;gap:24px">
+
+      <!-- Flow 1 -->
+      <div class="card">
+        <h3 style="margin-bottom:14px"><span style="background:rgba(106,103,206,.09);color:#4F4DA7;padding:2px 8px;border-radius:4px;font-size:11px;margin-right:8px">Flow A</span>问题深度排查 <span style="font-size:12px;color:var(--text-muted);font-weight:400">· 技术 Owner · 针对特定场景 · 约 30 分钟</span></h3>
+        <div style="display:flex;gap:0;position:relative">
+          <div style="position:absolute;top:16px;left:16px;right:16px;height:2px;background:linear-gradient(90deg,var(--blue),rgba(106,103,206,.4));opacity:.4"></div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--blue);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">1</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">直达角色视图</div>
+            <div style="font-size:11px;color:var(--text-muted)">选自己负责的<br>角色+芯片</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--blue);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">2</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">展开场景详情</div>
+            <div style="font-size:11px;color:var(--text-muted)">查看评分子项<br>痛点分类列表</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--blue);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">3</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">查看 VOD 原声</div>
+            <div style="font-size:11px;color:var(--text-muted)">判断用户感知<br>与评分是否一致</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--blue);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">4</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">查看 Agent 日志</div>
+            <div style="font-size:11px;color:var(--text-muted)">了解具体卡点<br>对应 skill 步骤</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--blue);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">5</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">跳转改进</div>
+            <div style="font-size:11px;color:var(--text-muted)">点击 Next Step<br>跳转至文档/ticket</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text-muted);background:var(--surface2);border-radius:6px;padding:8px 12px">
+          <b style="color:var(--text)">关键设计需求：</b>场景详情层展示完整评分子项拆解；痛点按"文档/工具/API/环境"分类；Agent 日志可折叠展开（默认收起，避免干扰 PM）；Next Step 是可点击的外链，不是纯文字建议。
+        </div>
+      </div>
+
+      <!-- Flow 2 -->
+      <div class="card">
+        <h3 style="margin-bottom:14px"><span style="background:rgba(230,56,56,.09);color:var(--accent);padding:2px 8px;border-radius:4px;font-size:11px;margin-right:8px">Flow B</span>周期健康巡检 <span style="font-size:12px;color:var(--text-muted);font-weight:400">· 体验 PM · 每期评测后 · 约 10 分钟</span></h3>
+        <div style="display:flex;gap:0;position:relative">
+          <div style="position:absolute;top:16px;left:16px;right:16px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent));opacity:.4"></div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">1</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">打开看板</div>
+            <div style="font-size:11px;color:var(--text-muted)">进入全景层<br>默认展示最新期</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">2</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">扫描红区</div>
+            <div style="font-size:11px;color:var(--text-muted)">颜色矩阵<br>3 秒内发现异常</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">3</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">点击问题角色</div>
+            <div style="font-size:11px;color:var(--text-muted)">进入角色视图<br>场景按评分升序</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">4</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">确认最差场景</div>
+            <div style="font-size:11px;color:var(--text-muted)">查看痛点数<br>和 VOD 条数</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#FFFFFF;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">5</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">记录 / 分享</div>
+            <div style="font-size:11px;color:var(--text-muted)">复制链接<br>或导出摘要</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text-muted);background:var(--surface2);border-radius:6px;padding:8px 12px">
+          <b style="color:var(--text)">关键设计需求：</b>全景层默认展示最新期数据并自动高亮红色区域；角色视图场景卡片按评分自动排序；看板本身输出"本期结论"（哪几个是最高优先级），不让 PM 自己总结。
+        </div>
+      </div>
+
+      <!-- Flow 3 -->
+      <div class="card">
+        <h3 style="margin-bottom:14px"><span style="background:rgba(137,142,149,.1);color:var(--text-muted);padding:2px 8px;border-radius:4px;font-size:11px;margin-right:8px">Flow C</span>汇报材料准备 <span style="font-size:12px;color:var(--text-muted);font-weight:400">· 体验 PM → 管理层 · 季度汇报前 · 约 5 分钟</span></h3>
+        <div style="display:flex;gap:0;position:relative">
+          <div style="position:absolute;top:16px;left:16px;right:16px;height:2px;background:var(--border)"></div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">1</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">切换到全景层</div>
+            <div style="font-size:11px;color:var(--text-muted)">确认数据期数<br>和整体健康度</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">2</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">点击导出摘要</div>
+            <div style="font-size:11px;color:var(--text-muted)">生成本期要点<br>自动汇总红色项</div>
+          </div>
+          <div style="flex:1;text-align:center;position:relative;z-index:1">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px">3</div>
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">复制 / 下载</div>
+            <div style="font-size:11px;color:var(--text-muted)">粘贴到汇报文档<br>或截图</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text-muted);background:var(--surface2);border-radius:6px;padding:8px 12px">
+          <b style="color:var(--text)">关键设计需求：</b>"导出摘要"功能输出的是结构化的文字摘要（本期综合评分 / 最高优先改进项 / 与上期对比），而非截图或 CSV——管理层看的是结论，不是原始数据。
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 03 故事线 -->
+  <section class="section" id="story">
+    <div class="section-label">03 · 故事线</div>
+    <div class="section-title">用户在看板上的认知旅程</div>
+    <div class="section-desc">好的看板引导用户从"全局"走向"细节"，从"发现问题"走向"制定行动"。</div>
+    <hr class="divider">
+    <div class="story-flow">
+      <div class="story-step"><div class="dot"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><h4>全景扫描</h4><p>整体健康度<br>哪个角色最差？</p></div>
+      <div class="story-step"><div class="dot"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h4>聚焦角色</h4><p>选择角色 + 芯片<br>进入专属视角</p></div>
+      <div class="story-step"><div class="dot"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><h4>场景诊断</h4><p>哪个场景评分低？<br>痛点集中在哪？</p></div>
+      <div class="story-step"><div class="dot"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h4>溯源理解</h4><p>Agent 怎么评的？<br>用户真实说了什么？</p></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="icon icon-o"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span> 两条并行的数据脉络</h3>
+        <p style="margin-bottom:10px;"><b style="color:var(--text)">① 产品易用性（三类开发者）</b><br>各典型场景下的 Agent 评分和痛点密度，衡量"工具/文档/API 能不能用好"。对应 cannbot-skills 的 ops/ 下各 skill。</p>
+        <p><b style="color:var(--text)">② 社区应用易用性（入门开发者）</b><br>端到端任务的完成率和障碍，衡量"新人能不能在 GitCode 上跑通"。5 个任务流程评测。</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-b"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span> 核心设计判断</h3>
+        <p style="margin-bottom:8px;">这个看板的核心价值<b style="color:var(--text)">不是展示数据，而是帮助决策者找到值得投入资源的改进点</b>。</p>
+        <p>参照 DX Core 4 研究结论：Agent评分（系统指标）+ VOD（感知数据）两者缺一不可，两者同时展示才能支撑高置信度决策。</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 04 信息架构 -->
+  <section class="section" id="ia">
+    <div class="section-label">04 · 信息架构</div>
+    <div class="section-title">三层递进结构</div>
+    <div class="section-desc">全景 → 角色视图 → 场景详情。每层只展示该层需要的信息，点击才展开下一层。</div>
+    <hr class="divider">
+    <div class="ia-l0"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg> 全景层 — 角色健康度矩阵（参考 Spotify Soundcheck Overview）</div>
+    <div class="ia-l1">
+      <div class="ia-l1-title">▸ 产品易用性</div>
+      <div class="tags"><span class="tag o">AI框架开发者</span><span class="tag o">算子开发者</span><span class="tag o">应用框架开发者</span><span class="tag">× 芯片: A5 / 其他…</span></div>
+      <div style="margin-top:10px; padding-left:12px; ">
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">算子开发者 → 场景列表（按评分升序）：</p>
+        <div class="tags"><span class="tag b">算子复现部署</span><span class="tag b">算子迁移部署</span><span class="tag b">Built-in算子定制</span><span class="tag b">算子基本功能实现</span><span class="tag b">特定shape性能</span><span class="tag b">泛化shape性能</span></div>
+        <div style="margin-top:8px; padding-left:12px; ">
+          <div class="tags"><span class="tag g">Agent评分（分项）</span><span class="tag g">Agent产生的痛点</span><span class="tag g">VOD原声</span><span class="tag g">Next Step 建议</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ia-l1" style="margin-top:10px">
+      <div class="ia-l1-title">▸ 社区应用易用性</div>
+      <div class="tags"><span class="tag o">入门开发者</span></div>
+      <div style="margin-top:8px; padding-left:12px; ">
+        <div class="tags"><span class="tag b">搜索与发现</span><span class="tag b">环境检查与样例</span><span class="tag b">快速体验开发与编译</span><span class="tag b">测试与验证</span><span class="tag b">反馈与贡献</span></div>
+        <div style="margin-top:8px; padding-left:12px; ">
+          <div class="tags"><span class="tag g">任务完成率</span><span class="tag g">Agent评分</span><span class="tag g">障碍点</span><span class="tag g">综合总结</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 05 交互设计 -->
+  <section class="section" id="interaction">
+    <div class="section-label">05 · 交互设计方向</div>
+    <div class="section-title">关键交互模式</div>
+    <div class="section-desc">围绕"发现问题 → 定位原因 → 理解证据 → 行动决策"主线。</div>
+    <hr class="divider">
+    <div class="grid2" style="margin-bottom:14px">
+      <div class="card">
+        <h3><span class="icon icon-o"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span> 筛选器设计</h3>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="flow-num">1</div><div class="flow-content"><h4>维度选择（横向 Tab）</h4><p>产品易用性 / 社区应用易用性——决定进入哪条故事线</p></div></div>
+          <div class="flow-step"><div class="flow-num">2</div><div class="flow-content"><h4>角色选择（卡片式，带简短描述）</h4><p>图标 + 一句话描述；被选中时高亮并显示综合健康分</p></div></div>
+          <div class="flow-step"><div class="flow-num">3</div><div class="flow-content"><h4>芯片型号（多选 Tag）</h4><p>支持多选跨型号对比；默认"全部型号"聚合视图</p></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3><span class="icon icon-b"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span> 数据展示设计</h3>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="flow-num">A</div><div class="flow-content"><h4>评分色彩编码 + 排序</h4><p>红(&lt;60)/黄(60-80)/绿(&gt;80)；场景按评分升序，最差永远在最前</p></div></div>
+          <div class="flow-step"><div class="flow-num">B</div><div class="flow-content"><h4>场景卡片：评分 + 证据密度</h4><p>每张卡片：评分 + 痛点数 + VOD 条数，三数字传递"证据强度"</p></div></div>
+          <div class="flow-step"><div class="flow-num">C</div><div class="flow-content"><h4>展开详情：三类证据并列</h4><p>Agent评分分项 / 痛点列表 / VOD 原声引用——互相对照印证</p></div></div>
+          <div class="flow-step"><div class="flow-num">D</div><div class="flow-content"><h4>内嵌 Next Step</h4><p>每个痛点附"改进建议"，看板从报告工具变为决策工具</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid3">
+      <div class="card"><h3><span class="icon icon-g"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> 痛点归类展示</h3><p>按类别归组（文档类/工具类/API类/环境类），避免长列表过载。归类后可看出哪类问题最突出。</p></div>
+      <div class="card"><h3><span class="icon icon-y"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span> VOD 原声呈现</h3><p>引用样式展示，附来源标签（访谈/问卷/社区）。与 Agent 评分并排放置，帮助判断"机器发现的问题"和"用户感受到的问题"是否一致。</p></div>
+      <div class="card"><h3><span class="icon icon-p"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span> 时间趋势（后续）</h3><p>如有历史数据，加"本期 vs 上期"趋势标记（↑↓）。这是 LinearB 和 Datadog IDP 的核心差异化功能，让看板从报告工具升级为追踪工具。</p></div>
+    </div>
+  </section>
+
+
+  <!-- 10 组件清单 -->
+  <section class="section" id="components">
+    <div class="section-label">10 · 组件清单</div>
+    <div class="section-title">看板由哪些模块构成</div>
+    <div class="section-desc">每个组件定义名称、职责、所有需要设计的状态。这是进入 UI 设计阶段前的完整边界。</div>
+    <hr class="divider">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+      <div class="card">
+        <h3><span class="icon icon-o">C1</span> 全景健康矩阵</h3>
+        <p style="margin-bottom:8px">各角色 × 各期综合评分的颜色矩阵，是看板的"首屏"。</p>
+        <div class="tags">
+          <span class="tag g">默认态</span><span class="tag b">悬停（显示分数tooltip）</span><span class="tag">点击（进入角色视图）</span><span class="tag o">空数据（某角色无评测）</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="icon icon-b">C2</span> 角色选择器</h3>
+        <p style="margin-bottom:8px">4 种角色 + 芯片型号的组合筛选，是进入专属视角的入口。</p>
+        <div class="tags">
+          <span class="tag g">未选中</span><span class="tag b">已选中（高亮 + 显示综合健康分）</span><span class="tag">禁用（无数据）</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="icon icon-g">C3</span> 场景卡片</h3>
+        <p style="margin-bottom:8px">单个典型场景的摘要展示：评分 + 痛点数 + VOD 数 + 颜色。</p>
+        <div class="tags">
+          <span class="tag g">默认（收起）</span><span class="tag b">展开（显示详情）</span><span class="tag o">严重（红色边框）</span><span class="tag">无数据</span><span class="tag">加载中</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="icon icon-y">C4</span> 评分分项条</h3>
+        <p style="margin-bottom:8px">场景内 Agent 评分的子项拆解：精度/性能/任务完成各维度进度条。</p>
+        <div class="tags">
+          <span class="tag g">正常</span><span class="tag o">警告（黄）</span><span class="tag o">严重（红）</span><span class="tag">无数据（虚线条）</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="icon icon-r">C5</span> 痛点条目</h3>
+        <p style="margin-bottom:8px">单条痛点：来源标签 + 描述 + 严重程度 + Next Step 链接。</p>
+        <div class="tags">
+          <span class="tag g">普通</span><span class="tag o">高优（红色标记）</span><span class="tag b">有 Next Step</span><span class="tag">无 Next Step</span><span class="tag">已解决（灰色划线）</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="icon icon-p">C6</span> VOD 原声卡</h3>
+        <p style="margin-bottom:8px">真实用户声音的引用展示：引用文本 + 来源标签 + 日期。</p>
+        <div class="tags">
+          <span class="tag g">默认</span><span class="tag b">展开全文（文字被截断时）</span><span class="tag">无 VOD 数据</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="icon icon-b">C7</span> 总览指标卡</h3>
+        <p style="margin-bottom:8px">全景层 4 个核心数字：综合评分 / 活跃痛点数 / VOD 条数 / 严重场景数。</p>
+        <div class="tags">
+          <span class="tag g">正常</span><span class="tag b">与上期对比（↑↓ 趋势标记）</span><span class="tag">首期无对比基准</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="icon icon-g">C8</span> 导出摘要按钮</h3>
+        <p style="margin-bottom:8px">生成本期结构化文字摘要，面向汇报场景。</p>
+        <div class="tags">
+          <span class="tag g">可用</span><span class="tag b">生成中（loading）</span><span class="tag o">复制成功（toast 提示）</span><span class="tag">无数据时禁用</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 11 边缘态设计 -->
+  <section class="section" id="edgestates">
+    <div class="section-label">11 · 边缘态设计</div>
+    <div class="section-title">数据不完整时怎么办</div>
+    <div class="section-desc">边缘态处理得好，看板才有可信度。每种缺失情况都需要明确的视觉语言，而不是空白或报错。</div>
+    <hr class="divider">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px">
+
+      <div class="card" style="">
+        <h3 style="color:var(--yellow);margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 加载中</h3>
+        <p style="margin-bottom:8px;font-size:12px">Agent 评测数据正在获取时。</p>
+        <div style="font-size:12px;color:var(--text-muted)">
+          <b style="color:var(--text);display:block;margin-bottom:4px">设计方案</b>
+          骨架屏（Skeleton）占位，保持布局稳定不跳动；评分区域显示灰色占位条；顶部显示"数据加载中"进度提示。
+        </div>
+      </div>
+
+      <div class="card" style="">
+        <h3 style="color:var(--text-muted);margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg> 无数据</h3>
+        <p style="margin-bottom:8px;font-size:12px">某角色/场景尚未进行评测，或本期暂无数据。</p>
+        <div style="font-size:12px;color:var(--text-muted)">
+          <b style="color:var(--text);display:block;margin-bottom:4px">设计方案</b>
+          场景卡片显示"暂无评测数据"占位态（灰色虚线边框）；不隐藏卡片，让用户知道这个场景存在但未评测；说明"预计下期覆盖"。
+        </div>
+      </div>
+
+      <div class="card" style="">
+        <h3 style="color:var(--red);margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> 评测失败</h3>
+        <p style="margin-bottom:8px;font-size:12px">Agent 运行过程中出现异常，未能完成评测。</p>
+        <div style="font-size:12px;color:var(--text-muted)">
+          <b style="color:var(--text);display:block;margin-bottom:4px">设计方案</b>
+          用"评测异常"标签替代分数，红色边框提示，附错误类型说明（网络/环境/timeout）；不计入综合均分，避免失败数据拉低其他场景。
+        </div>
+      </div>
+
+      <div class="card" style="">
+        <h3 style="color:var(--blue);margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg> VOD 为空</h3>
+        <p style="margin-bottom:8px;font-size:12px">某场景有 Agent 评分但无 VOD 用户原声数据。</p>
+        <div style="font-size:12px;color:var(--text-muted)">
+          <b style="color:var(--text);display:block;margin-bottom:4px">设计方案</b>
+          VOD 区域显示"暂无用户反馈"，给出置信度提示："当前结论仅基于 Agent 评测，用户感知待验证"——明确告知数据置信度降低，而非假装没问题。
+        </div>
+      </div>
+
+      <div class="card" style="">
+        <h3 style="color:var(--purple);margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 首期无对比</h3>
+        <p style="margin-bottom:8px;font-size:12px">第一次运行，没有历史数据可以对比趋势。</p>
+        <div style="font-size:12px;color:var(--text-muted)">
+          <b style="color:var(--text);display:block;margin-bottom:4px">设计方案</b>
+          趋势标记（↑↓）位置显示"—"，hover 提示"首期数据，下期起展示趋势"；总览指标卡隐藏对比数字，不显示空的"vs 上期"。
+        </div>
+      </div>
+
+      <div class="card" style="">
+        <h3 style="color:var(--accent);margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 数据过时</h3>
+        <p style="margin-bottom:8px;font-size:12px">展示的数据已超出预定更新周期，可能不再准确。</p>
+        <div style="font-size:12px;color:var(--text-muted)">
+          <b style="color:var(--text);display:block;margin-bottom:4px">设计方案</b>
+          顶部 Banner 提示"当前数据更新于 XX 天前，可能不反映最新状态"；数据仍正常展示，不阻断浏览；旁边附"触发重新评测"按钮。
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout callout-b">
+      <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <div>
+        <h4>边缘态的设计原则</h4>
+        <p>缺失数据不等于没有信息——"暂无 VOD"本身就是一个有价值的状态，说明这个场景的改进决策置信度较低。边缘态设计的目标是<b style="color:var(--text)">让用户始终知道数据的可信程度</b>，而不是假装完整或直接报错。</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 12 成功指标 -->
+  <section class="section" id="metrics">
+    <div class="section-label">12 · 成功指标</div>
+    <div class="section-title">怎么知道看板本身做好了</div>
+    <div class="section-desc">看板是一个产品，它自己也需要被评估。以下是判断看板设计是否达成目标的可验证指标。</div>
+    <hr class="divider">
+
+    <div class="grid3" style="margin-bottom:16px">
+      <div class="card" style="border-top:3px solid var(--green)">
+        <h3 style="margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> 效率指标</h3>
+        <div style="font-size:13px;color:var(--text-muted)">
+          <div style="margin-bottom:8px"><b style="color:var(--text)">定位最高优先级问题 &lt; 30 秒</b><br>从打开看板到说出"本期最需要改进的是 X"，不超过 30 秒。</div>
+          <div style="margin-bottom:8px"><b style="color:var(--text)">周期巡检 &lt; 10 分钟</b><br>体验 PM 完成 Flow A 全流程的时间不超过 10 分钟。</div>
+          <div><b style="color:var(--text)">导出汇报摘要 &lt; 2 分钟</b><br>从打开看板到复制摘要内容完成，不超过 2 分钟。</div>
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--blue)">
+        <h3 style="margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> 使用质量指标</h3>
+        <div style="font-size:13px;color:var(--text-muted)">
+          <div style="margin-bottom:8px"><b style="color:var(--text)">每期评测后 100% 有人查看</b><br>看板不只是数据仓库，每期数据产出后应有实际查看行为。</div>
+          <div style="margin-bottom:8px"><b style="color:var(--text)">场景详情展开率 &gt; 60%</b><br>打开看板的用户中，有超过 60% 展开了至少一个场景详情。</div>
+          <div><b style="color:var(--text)">VOD 区域查看率 &gt; 40%</b><br>查看场景详情的用户中，超过 40% 也查看了 VOD 原声。</div>
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--accent)">
+        <h3 style="margin-bottom:8px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> 业务影响指标</h3>
+        <div style="font-size:13px;color:var(--text-muted)">
+          <div style="margin-bottom:8px"><b style="color:var(--text)">看板评分与实际改进正相关</b><br>被标记为"高优先级"的场景，下期评分应有提升，说明看板决策有效。</div>
+          <div style="margin-bottom:8px"><b style="color:var(--text)">减少改进决策的讨论时间</b><br>引入看板后，"本期改哪里"的对齐时间应明显缩短（可对比引入前）。</div>
+          <div><b style="color:var(--text)">VOD + Agent 评分双高的痛点，改进率优先</b><br>两类数据都指向同一问题时，该问题被实际解决的比例应更高。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-g">
+      <div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
+      <div>
+        <h4>如何在设计评审时用这些指标</h4>
+        <p>在方案评审阶段，可以用效率指标做走查测试："请找到本期最需要改进的场景"——计时，如果超过 30 秒，说明全景层或排序逻辑需要调整。不需要等到上线后才验证，这些指标在原型阶段就能测试。</p>
+      </div>
+    </div>
+  </section>
+
+
+<!-- 06 待确认 -->
+  <!--  <section class="section" id="questions">
+    <div class="section-label">06 · 待确认问题</div>
+    <div class="section-title">设计前需明确的关键信息</div>
+    <div class="section-desc">已从 cannbot-skills 仓库解答部分问题，以下 3 个需要你补充确认。</div>
+    <hr class="divider">
+    <div class="q-item ok"><div class="q-num ok"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div><h4>Agent 评分的结构？ <span style="color:var(--green);font-size:11px">已解答</span></h4><p>不是单一总分——精度类（L0/L1/L2 + MARE/MERE/RMSE）、性能类（11个维度各有三档）、任务执行类（skill 完成情况）。</p></div></div>
+    <div class="q-item ok"><div class="q-num ok"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div><h4>场景 → Skills 对应关系？ <span style="color:var(--green);font-size:11px">已解答</span></h4><p>算子开发者 6 个场景已与 ops/ 下 33 个 skill 建立对应（详见 context.md）。</p></div></div>
+    <div class="q-item"><div class="q-num">Q1</div><div><h4>VOD 的来源和结构是什么？</h4><p>cannbot-skills 里只有 Agent 产生的技术痛点，没有真实用户反馈。VOD 从哪来（访谈/问卷/社区工单）？是结构化数据还是原始文字？这决定 VOD 展示区的设计。</p></div></div>
+    <div class="q-item"><div class="q-num">Q2</div><div><h4>看板展示的是哪一层的评分聚合？</h4><p>每次跑完一个 skill 产生原始分，看板展示的是单次原始分、多次均值，还是有专门的聚合规则？直接影响总览指标卡的设计。</p></div></div>
+    <div class="q-item"><div class="q-num">Q3</div><div><h4>AI框架开发者和应用框架开发者的典型场景？</h4><p>是否对应 pypto-* 系列和 torch-* 系列？还是有单独的场景定义文档？影响看板是否能复用算子开发者的模板。</p></div></div>
+    <div style="margin-top:20px">
+      <div class="info-grid">
+        <div class="info-item"><h4><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="#E63838"/></svg> 必需 <span class="badge">设计无法推进</span></h4><ul><li>各角色 × 场景的 Agent 评分（哪怕示例数据结构）</li><li>痛点列表（文字描述 + 严重程度分级）</li><li>VOD 原声样本（3-5 条示例）</li><li>所有芯片型号名称（A5 之外）</li><li>AI框架/应用框架开发者的场景列表</li></ul></div>
+        <div class="info-item"><h4><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="#FD9A00"/></svg> 可选 <span class="badge opt">提升完整度</span></h4><ul><li>Ascend 品牌色 / 设计规范</li><li>历史期数数据（用于趋势展示）</li><li>痛点已有的分类体系</li><li>看板主要受众（内部/汇报/对外）</li><li>是否需要中英双语</li></ul></div>
+      </div>
+    </div>
+  </section> -->
+
+
+  <!-- 13 结论 -->
+  <section class="section" id="conclusion">
+    <div class="section-label">07 · 设计结论</div>
+    <div class="section-title">重构方向总结</div>
+    <hr class="divider">
+    <div class="conclusion">
+      <div style="font-size:15px;font-weight:700;margin-bottom:14px">6 条核心设计原则（有行业数据支撑）</div>
+      <div class="principle"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><div><b>问题优先，而非数据优先</b> <span>— 排序/颜色/强调全以"哪里最差"为导向（Spotify Soundcheck）</span></div></div>
+      <div class="principle"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><div><b>三类证据互相印证</b> <span>— Agent评分 + 痛点 + VOD原声并列，高置信度决策（DX Core 4）</span></div></div>
+      <div class="principle"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span><div><b>三层渐进披露</b> <span>— 全景→角色→场景→详情，每层只展示该层需要的信息（Datadog IDP）</span></div></div>
+      <div class="principle"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span><div><b>每个低分有 Next Step</b> <span>— 看板的终点是行动，不是观察（LinearB）</span></div></div>
+      <div class="principle"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span><div><b>评分需要参照系</b> <span>— 横向对比让分数有意义（LinearB 2025 Benchmarks）</span></div></div>
+      <div class="principle" style="margin-bottom:0"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><div><b>Agent 评测需要可解释性</b> <span>— 不只给分数，要展示 Agent 在哪步卡住（Stripe DX）</span></div></div>
+    </div>
+  </section>
+
+
+</div>
+</main>
+</div>
+
+<script>
+function openLightbox(img) {
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// Sidebar active state via Intersection Observer
+(function() {
+  const navItems = document.querySelectorAll('.nav-item[data-section]');
+  const sectionIds = Array.from(navItems).map(a => a.dataset.section);
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  function setActive(id) {
+    navItems.forEach(a => a.classList.toggle('active', a.dataset.section === id));
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) setActive(entry.target.id); });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+  if (sections.length) setActive(sections[0].id);
+})();
+
+</script>
+</body>
+</html>

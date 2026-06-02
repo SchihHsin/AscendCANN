@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CANN 用户体验旅程 Agentic 评分报告</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --green-dark:#37C597; --green-core:#3BE880; --green-light:#EBFCF7;
+      --teal-dark:#179D8A;  --teal-core:#1AAFD0;  --teal-light:#E8F7FB;
+      --purple-dark:#4F4DA7;--purple-core:#6A67CE;--purple-bright:#A177FF;--purple-med:#D0B8FF;--purple-light:#F0EFFA;
+      --gold-dark:#FD9A00;  --gold-core:#FFB900;  --gold-light:#FFF8E5;
+      --coral-dark:#E63838; --coral-core:#FC636B; --coral-light:#FEEFF0;
+      --teal-med:#80E6FF;
+      --g1:#F8F8F9; --g2:#EFF0F1; --g3:#E1E2E4; --g4:#CDCFD2; --g6:#A1A4AA; --g9:#495058; --g10:#1B2432;
+
+      --bg:var(--g1); --card:#FFFFFF; --line:var(--g3); --line-2:var(--g4);
+      --text:var(--g10); --text-2:var(--g9); --text-3:var(--g6);
+      --brand:var(--purple-core); --brand-dark:var(--purple-dark); --brand-soft:var(--purple-light);
+      --radius:18px;
+      --shadow-soft:0 1px 2px rgba(39,51,71,.05), 0 6px 18px rgba(39,51,71,.07);
+    }
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0; font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+      color:var(--text); background:var(--bg); line-height:1.65; -webkit-font-smoothing:antialiased;
+    }
+    a{ color:var(--brand); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+    code{
+      font-family:'JetBrains Mono',monospace; font-size:.88em;
+      background:var(--brand-soft); color:var(--brand-dark); padding:1px 6px; border-radius:5px;
+    }
+    .shell{ width:min(1220px, calc(100vw - 32px)); margin:24px auto 56px; }
+
+    /* ===== Hero · 渐变 banner ===== */
+    .hero{
+      position:relative; overflow:hidden; border-radius:24px;
+      padding:30px 34px 32px;
+      background:
+        linear-gradient(115deg, rgba(255,215,168,.5) 0%, rgba(243,199,191,.5) 22%, rgba(217,191,238,.5) 44%, rgba(191,182,240,.5) 60%, rgba(168,192,240,.5) 78%, rgba(191,211,242,.5) 100%),
+        #FFFFFF;
+    }
+    .hero::before{
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background:
+        linear-gradient(115deg, transparent 0%, transparent 10%, rgba(255,255,255,.20) 10%, rgba(255,255,255,.20) 18%, transparent 18%),
+        linear-gradient(115deg, transparent 24%, rgba(255,255,255,.14) 24%, rgba(255,255,255,.14) 34%, transparent 34%),
+        linear-gradient(115deg, transparent 46%, rgba(255,255,255,.16) 46%, rgba(255,255,255,.16) 56%, transparent 56%),
+        linear-gradient(115deg, transparent 66%, rgba(255,255,255,.12) 66%, rgba(255,255,255,.12) 78%, transparent 78%),
+        linear-gradient(115deg, transparent 84%, rgba(255,255,255,.18) 84%, rgba(255,255,255,.18) 95%, transparent 95%);
+    }
+    .hero-top{
+      position:relative; z-index:1;
+      display:flex; gap:24px; justify-content:space-between; align-items:flex-start; flex-wrap:wrap;
+    }
+    .hero-left{ max-width:680px; }
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:8px; padding:7px 13px; border-radius:999px;
+      background:rgba(255,255,255,.62); border:1px solid rgba(255,255,255,.85);
+      backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+      color:#4F4DA7; font-size:12px; font-weight:700; letter-spacing:.02em;
+    }
+    .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background:#37C597; box-shadow:0 0 0 3px rgba(55,197,151,.3); }
+    h1{ margin:14px 0 12px; font-size:clamp(28px,3.4vw,42px); line-height:1.12; font-weight:800; letter-spacing:-.02em; color:var(--g10); }
+    .lead{ max-width:660px; color:var(--g9); font-size:15px; margin:0; font-weight:500; }
+    .meta{ min-width:300px; padding-top:6px; }
+    .meta-lines{ margin:0; display:grid; gap:11px; }
+    .meta-lines div{
+      display:flex; align-items:baseline; justify-content:space-between; gap:22px;
+      padding-bottom:10px; border-bottom:1px solid rgba(79,77,167,.18);
+    }
+    .meta-lines div:last-child{ border-bottom:0; padding-bottom:0; }
+    .meta-lines dt{
+      font-size:11px; color:var(--g8); text-transform:uppercase; letter-spacing:.08em; font-weight:800;
+    }
+    .meta-lines dd{
+      margin:0; color:#1B2432; font-size:17px; line-height:1.3; font-weight:700; text-align:right;
+    }
+    .meta-lines a{ color:#4F4DA7; font-weight:700; }
+    .hero-grid{
+      position:relative; z-index:1; margin-top:22px;
+      display:grid; grid-template-columns:repeat(4, 1fr); gap:14px;
+    }
+    .stat{
+      background:rgba(255,255,255,.64); border:1px solid rgba(255,255,255,.86);
+      backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+      border-radius:16px; padding:15px 17px;
+    }
+    .stat .k{ display:flex; align-items:center; gap:7px; font-size:11px; text-transform:uppercase; color:var(--g8); letter-spacing:.06em; font-weight:700; }
+    .stat .k .si{ width:20px; height:20px; border-radius:6px; display:flex; align-items:center; justify-content:center; background:rgba(106,103,206,.16); color:#6A67CE; }
+    .stat .k .si svg{ width:12px; height:12px; }
+    .stat .v{ font-size:18.5px; font-weight:800; color:#1B2432; line-height:1.25; margin:8px 0 6px; letter-spacing:-.01em; }
+    .stat .d{ font-size:12.5px; color:#495058; }
+
+    /* ===== TOC ===== */
+    .toc{
+      position:sticky; top:12px; z-index:20; margin:20px 0 34px; padding:0;
+      background:transparent; backdrop-filter:none;
+      border:0; border-radius:0;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .toc a{ padding:8px 14px; border-radius:999px; background:var(--brand-soft); color:var(--brand-dark); font-size:12.5px; font-weight:600; }
+    .toc a:hover{ text-decoration:none; background:#E5E3F4; }
+
+    /* ===== Section ===== */
+    section{
+      position:relative; margin-top:44px; background:transparent; border:0; border-radius:0; padding:24px 0 10px;
+    }
+    section::before{
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg, rgba(106,103,206,.34), rgba(26,175,208,.18), transparent 78%);
+    }
+    .sec-h2{ display:flex; align-items:center; gap:13px; }
+    .h2-icon{ width:34px; height:34px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+    .h2-icon svg{ width:18px; height:18px; }
+    .sec-h2 h2{ margin:0; font-size:25px; line-height:1.2; font-weight:800; letter-spacing:-.015em; }
+    .sec-h2 .lead-mini{ margin:3px 0 0; color:var(--text-2); font-size:13.5px; font-weight:500; }
+    .persona-score{ margin-left:auto; text-align:right; font-family:'JetBrains Mono',monospace; font-size:38px; font-weight:500; letter-spacing:-.03em; line-height:1; }
+    .persona-score small{ font-size:14px; font-weight:600; color:var(--text-3); margin-left:2px; }
+    p{ margin:10px 0; }
+    ul{ margin:10px 0 10px 20px; padding:0; }
+    li + li{ margin-top:6px; }
+
+    .callout{
+      background:var(--gold-light);
+      border-radius:14px; padding:22px 26px; margin:20px 0;
+    }
+    .callout ul{ margin:8px 0 8px 20px; }
+
+    .grid-2{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:30px; margin-top:18px; }
+    .card{ background:#fff; border:0; border-radius:16px; padding:28px; box-shadow:var(--shadow-soft); }
+    .card h4{ margin:0 0 10px; font-size:14.5px; font-weight:800; display:flex; align-items:center; gap:8px; }
+    .card h4 .ci{ width:22px; height:22px; border-radius:6px; display:flex; align-items:center; justify-content:center; }
+    .card h4 .ci svg{ width:13px; height:13px; }
+    .method-grid{ gap:28px; align-items:start; }
+    .method-panel{ min-width:0; }
+    .method-panel h4{ margin:0 0 12px; font-size:14.5px; font-weight:800; display:flex; align-items:center; gap:8px; }
+    .method-panel h4 .ci{ width:22px; height:22px; border-radius:6px; display:flex; align-items:center; justify-content:center; }
+    .method-panel h4 .ci svg{ width:13px; height:13px; }
+    .plain-section{ background:transparent; border:0; border-radius:0; padding:24px 0 8px; }
+    .persona-section{ margin-top:52px; padding-top:26px; }
+    .persona-section::before{
+      height:2px;
+      background:linear-gradient(90deg, var(--ac), rgba(255,255,255,0) 72%);
+    }
+    .insight-card{
+      margin-top:16px; padding:26px 30px; border-radius:16px;
+      background:linear-gradient(135deg, rgba(232,247,251,.86), rgba(240,239,250,.74));
+    }
+    .insight-card p:first-child{ margin-top:0; }
+    .insight-card ul{ margin-bottom:0; }
+
+    /* ===== Method tables ===== */
+    .mtable{ border:0; border-radius:14px; overflow:hidden; margin-top:12px; background:#fff; box-shadow:var(--shadow-soft); }
+    .m-head, .m-row{ display:grid; align-items:center; gap:20px; padding:14px 28px; }
+    .m1 .m-head, .m1 .m-row{ grid-template-columns:96px 116px 1fr; }
+    .m2 .m-head, .m2 .m-row{ grid-template-columns:1fr 132px; }
+    .m-head{ background:transparent; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-3); font-weight:800; }
+    .m-row{ border-top:0; font-size:12.5px; background:#fff; }
+    .m-row:hover{ background:var(--purple-light); }
+    .m-name{ font-weight:700; color:var(--text); }
+    .m-barwrap{ display:flex; align-items:center; gap:8px; }
+    .m-bar{ flex:1; height:8px; border-radius:99px; background:var(--g2); overflow:hidden; }
+    .m-bar i{ display:block; height:100%; border-radius:99px; }
+    .m-val{ font-family:'JetBrains Mono',monospace; font-weight:800; font-size:12px; min-width:30px; text-align:right; }
+    .m-desc{ color:var(--text-2); font-size:12px; }
+
+    /* ===== Persona summary ===== */
+    .summary-row{ display:flex; gap:12px; flex-wrap:wrap; align-items:stretch; margin:14px 0 0; }
+    .summary-pill{
+      display:flex; flex-direction:column; justify-content:center; gap:4px;
+      padding:18px 22px; min-width:128px; border-radius:14px; background:rgba(255,255,255,.72);
+    }
+    .summary-pill .sp-l{ font-size:10.5px; color:var(--text-3); font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+    .summary-pill .sp-v{ font-size:16px; font-weight:800; }
+    .mini-chart{
+      flex:1; min-width:280px; display:flex; align-items:flex-end; gap:7px;
+      padding:18px 18px 12px; background:rgba(255,255,255,.72); border-radius:14px;
+    }
+    .mc-col{ flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
+    .mc-track{ width:100%; height:88px; display:flex; align-items:flex-end; justify-content:center; }
+    .mc-bar{ width:58%; border-radius:4px 4px 0 0; min-height:6px; }
+    .mc-x{ font-size:9px; color:var(--text-3); font-weight:600; }
+
+    /* ===== Persona score table ===== */
+    .ptable{ border:0; border-radius:14px; overflow:hidden; margin-top:16px; background:#fff; box-shadow:var(--shadow-soft); }
+    .pt-head, .pt-row{ display:grid; grid-template-columns:118px 132px minmax(0,1.3fr) minmax(0,1fr); gap:30px; padding:20px 34px; }
+    .pt-head{ background:transparent; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-3); font-weight:800; }
+    .pt-row{ border-top:0; align-items:center; background:#fff; }
+    .pt-row:hover{ background:var(--purple-light); }
+    .pt-stage{ font-size:12.5px; font-weight:700; color:var(--text); }
+    .pt-score .score-pill{
+      display:inline-block; min-width:46px; padding:3px 9px; border-radius:7px;
+      font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:800; text-align:center;
+    }
+    .score-bar{ height:5px; border-radius:99px; background:var(--g2); overflow:hidden; margin-top:5px; }
+    .score-bar i{ display:block; height:100%; border-radius:99px; }
+    .gd-high .score-pill{ background:var(--green-light); color:var(--green-dark); }
+    .gd-mid  .score-pill{ background:var(--purple-light); color:var(--purple-dark); }
+    .gd-low  .score-pill{ background:var(--gold-light); color:var(--gold-dark); }
+    .gd-bad  .score-pill{ background:var(--coral-light); color:var(--coral-dark); }
+    .parts{ display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; }
+    .part{ display:grid; grid-template-columns:28px 1fr 22px; gap:6px; align-items:center; }
+    .p-label{ font-size:9.5px; color:var(--text-3); font-weight:600; }
+    .p-bar{ height:5px; border-radius:99px; background:var(--g2); overflow:hidden; }
+    .p-bar i{ display:block; height:100%; border-radius:99px; }
+    .p-val{ font-size:10px; font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--text-2); text-align:right; }
+    .pt-note{ font-size:12px; color:var(--text-2); line-height:1.55; }
+
+    /* ===== Evidence ===== */
+    .cov-list{ display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+    .cov-row{ display:grid; grid-template-columns:96px 1fr 46px; gap:10px; align-items:center; font-size:12px; }
+    .cov-label{ color:var(--text-2); font-weight:600; }
+    .cov-bar{ height:8px; border-radius:99px; background:var(--g2); overflow:hidden; }
+    .cov-bar i{ display:block; height:100%; border-radius:99px; }
+    .cov-val{ font-family:'JetBrains Mono',monospace; font-weight:800; font-size:11.5px; text-align:right; }
+    .ev-stats{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:13px; padding-top:0; border-top:0; }
+    .ev-stat .es-l{ font-size:10.5px; color:var(--text-3); font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+    .ev-stat .es-v{ font-size:16px; font-weight:800; font-family:'JetBrains Mono',monospace; letter-spacing:-.01em; }
+
+    .ev-sub{ font-size:12px; color:var(--text-2); font-weight:600; margin:14px 0 0; }
+    .tag-row{ display:flex; flex-wrap:wrap; gap:7px; margin-top:7px; }
+    .tag{ padding:5px 10px; border-radius:7px; background:var(--teal-light); color:var(--teal-dark); font-size:11.5px; font-weight:700; font-family:'JetBrains Mono',monospace; }
+    .tag.warn{ background:var(--coral-light); color:var(--coral-dark); }
+    .quote{
+      color:var(--text-2); font-size:13px; font-style:italic; margin-top:14px;
+      background:transparent; border:0; border-radius:0; padding:0;
+      position:relative;
+    }
+    .direct-links{ margin-top:14px; padding-top:0; border-top:0; }
+    .direct-links .dl-title{ font-size:12px; font-weight:800; margin-bottom:6px; }
+    .direct-links a{ display:block; font-size:12px; padding:2px 0; word-break:break-all; }
+
+    .raw-list{ display:flex; flex-direction:column; gap:3px; margin-top:12px; }
+    .raw-list a{
+      display:flex; align-items:center; gap:10px; padding:7px 0;
+      background:transparent; border:0; border-radius:0;
+      font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:600;
+    }
+    .raw-list a:hover{ text-decoration:none; color:var(--purple-dark); background:transparent; }
+    .raw-list a svg{ width:14px; height:14px; color:var(--text-3); }
+
+    @media (max-width:900px){ .hero-grid,.grid-2{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ===== Hero ===== -->
+    <header class="hero">
+      <div class="hero-top">
+        <div class="hero-left">
+          <div class="eyebrow"><span class="dot"></span> User Journey First, Data As Evidence</div>
+          <h1>CANN 用户体验旅程<br />Agentic 评分报告</h1>
+          <p class="lead">这份报告把不同角色的用户旅程放在前面。仓库数据仍然保留，但只作为用户体验分析的证据层。</p>
+        </div>
+        <div class="meta">
+          <dl class="meta-lines">
+            <div><dt>角色数</dt><dd>4 个</dd></div>
+            <div><dt>全量覆盖</dt><dd>65 个仓库</dd></div>
+            <div><dt>原始数据</dt><dd><a href="https://github.com/SchihHsin/AscendCANN/blob/main/cann-dashboard/cann-agentic-observations.json" target="_blank"><code>cann-agentic-observations.json</code></a></dd></div>
+          </dl>
+        </div>
+      </div>
+      <div class="hero-grid" id="heroGrid"></div>
+    </header>
+
+    <nav class="toc">
+      <a href="#method">评分方法</a>
+      <a href="#overall">总体结论</a>
+      <a href="#sample_consumer">样例消费型开发者</a><a href="#model_adapter">模型 / 框架适配开发者</a><a href="#operator_developer">算子 / 编译接口开发者</a><a href="#system_engineer">系统 / 通信 / 基础设施开发者</a>
+      <a href="#raw">原始数据</a>
+    </nav>
+
+    <!-- ===== 评分方法 ===== -->
+    <section id="method" class="plain-section">
+      <div class="sec-h2">
+        <div class="h2-icon" style="background:var(--purple-light);color:var(--purple-core);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        <div><h2>Agentic 评分结果</h2></div>
+      </div>
+      <p>评分区间为 <code>0-100</code>。分数越高，说明 agent 越能在少人工干预的情况下自主推进。</p>
+      <div class="grid-2 method-grid">
+        <div class="method-panel">
+          <h4><span class="ci" style="background:var(--purple-light);color:var(--purple-core);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>分数怎么算</h4>
+          <div class="mtable m1" id="method1"></div>
+          <p><code>阶段分数 = 文档清晰度 + 环境可达性 + 自动化友好度 + 反馈与验证质量</code></p>
+        </div>
+        <div class="method-panel">
+          <h4><span class="ci" style="background:var(--teal-light);color:var(--teal-core);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>角色总分怎么算</h4>
+          <div class="mtable m2" id="method2"></div>
+          <p><code>角色总分 = Σ(阶段分数 × 阶段权重)</code></p>
+          <p>之所以把“首次运行”和“环境准备”权重放高，是因为这两个阶段最决定首次体验成败。</p>
+        </div>
+      </div>
+      <div class="callout">
+        例子：Persona 1 的“环境准备 = 40 分”当前拆成：
+        <ul><li>文档清晰度：<code>9/30</code></li><li>环境可达性：<code>15/30</code></li><li>自动化友好度：<code>10/25</code></li><li>反馈与验证质量：<code>6/15</code></li></ul>
+        <p style="margin-bottom:0;"><code>9 + 15 + 10 + 6 = 40</code></p>
+      </div>
+    </section>
+
+    <!-- ===== 总体结论 ===== -->
+    <section id="overall">
+      <div class="sec-h2">
+        <div class="h2-icon" style="background:var(--teal-light);color:var(--teal-core);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div><h2>总体结论</h2></div>
+      </div>
+      <div class="insight-card">
+        <p>CANN 当前的主要问题，不是“没有仓库内容”，而是“内容很多，但不同角色进入后，前 1 小时的体验链路不够顺滑”。</p>
+        <ul>
+          <li>最佳体验角色：算子 / 编译接口开发者，综合分 67.1</li>
+          <li>最弱体验角色：样例消费型开发者，综合分 49.1</li>
+          <li>共同断点：环境准备 / 首次运行</li>
+          <li>这说明主问题不是“找不到内容”，而是“找到了也不容易顺利推进到成功”。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 4 Persona sections (JS-rendered) ===== -->
+    <div id="personas"></div>
+
+    <!-- ===== 原始数据 ===== -->
+    <section id="raw">
+      <div class="sec-h2">
+        <div class="h2-icon" style="background:var(--g2);color:var(--g9);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <div><h2>原始数据与方法文件</h2></div>
+      </div>
+      <div class="raw-list">
+        <a href="https://github.com/SchihHsin/AscendCANN/blob/main/cann-dashboard/cann-agentic-summary.json" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>cann-agentic-summary.json</a>
+        <a href="https://github.com/SchihHsin/AscendCANN/blob/main/cann-dashboard/cann-agentic-observations.json" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>cann-agentic-observations.json</a>
+        <a href="https://github.com/SchihHsin/AscendCANN/blob/main/cann-dashboard/cann-repo-coverage.json" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>cann-repo-coverage.json</a>
+        <a href="https://github.com/SchihHsin/AscendCANN/blob/main/cann-dashboard/scripts/render_ux_journey_report.py" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>render_ux_journey_report.py</a>
+        <a href="https://github.com/SchihHsin/AscendCANN/blob/main/cann-dashboard/scripts/journey_scoring.py" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>journey_scoring.py</a>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+/* ============================================================
+   数据 1:1 来自原 04-journey-agentic-report.html，未增删。
+   仅做视觉换肤 + 可视化呈现。
+   ============================================================ */
+
+const HERO = [
+  { k:'最佳体验角色', v:'算子 / 编译接口开发者', d:'综合分 67.1',
+    icon:'<polyline points="20 6 9 17 4 12"/>' },
+  { k:'最弱体验角色', v:'样例消费型开发者', d:'综合分 49.1',
+    icon:'<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
+  { k:'共同断点', v:'环境 / 首跑', d:'多数角色会被环境准备和首次运行卡住',
+    icon:'<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>' },
+  { k:'结论边界', v:'实际规则', d:'页面上的分数与页面里的规则现在一致',
+    icon:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>' },
+];
+
+const METHOD1 = [
+  ['文档清晰度', 30, '是否有明确、线性的动作链，是否写清版本、路径、成功判据。', '#6A67CE'],
+  ['环境可达性', 30, '当前常见开发环境能推进到哪一步，前置限制越少分越高。', '#1AAFD0'],
+  ['自动化友好度', 25, '是否容易脚本化、agent 化推进，是否依赖手工复制、手找权重、跨仓拼装。', '#FD9A00'],
+  ['反馈与验证质量', 15, '是否有 help、日志、测试、benchmark、结果校验、失败反馈。', '#FC636B'],
+];
+
+const METHOD2 = [
+  ['搜索发现','10%'], ['代码获取','10%'], ['环境准备','15%'], ['依赖安装','10%'],
+  ['数据/权重/外部资产准备','10%'], ['首次运行','20%'], ['结果验证','10%'],
+  ['深入修改/扩展','10%'], ['排障与回归','5%'],
+];
+
+/* 四项拆分满分：文档 30 / 环境 30 / 自动 25 / 反馈 15 */
+const PART_MAX = [30,30,25,15];
+const PART_COL = ['#6A67CE','#1AAFD0','#FD9A00','#E63838'];
+const PART_LB  = ['文档','环境','自动','反馈'];
+const GRADE_COL = { high:'#37C597', mid:'#6A67CE', low:'#FD9A00', bad:'#E63838' };
+
+const PERSONAS = [
+  {
+    id:'sample_consumer', no:1, title:'样例消费型开发者',
+    scene:'想尽快跑通一个 CANN 样例，先验证这套生态对自己有没有用。',
+    repos:'7 个', score:'49.1', ac:'#E63838', acSoft:'#FEEFF0',
+    icon:'<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+    stages:[
+      ['搜索发现',62,'mid',[27,11,14,10],'命名和场景分类清楚，但 infer/train 空壳容易误导入口判断。'],
+      ['代码获取',58,'low',[19,13,15,11],'主仓可 clone，但部分 repo 超时或只落 .git。'],
+      ['环境准备',40,'low',[9,15,10,6],'强依赖 Linux、CANN、NPU、conda、source set_env.sh。'],
+      ['依赖安装',46,'low',[9,16,14,7],'embodied 相对直给，spatial 版本匹配更严。'],
+      ['数据/权重/外部资产准备',41,'low',[9,14,12,6],'VGGT 还要上游代码和权重手动准备。'],
+      ['首次运行',43,'low',[8,14,10,11],'文档明确，但真实前提过多，当前机上无法推进到执行。'],
+      ['结果验证',55,'low',[13,13,14,15],'pi0 有性能与输出说明，VGGT 有评测入口。'],
+      ['深入修改/扩展',61,'mid',[14,13,22,12],'有一定可读性，但路径碎片化明显。'],
+      ['排障与回归',44,'low',[7,10,12,15],'缺统一 troubleshooting 中心。'],
+    ],
+    analysis:[
+      '样例内容本身不算少，但对第一次进入的人来说，真正断点不在“有没有例子”，而在“哪个例子最短、最稳、最适合我”。',
+      '进入代码后，环境、依赖、权重和上游仓准备连续叠加，导致首次成功体验被推迟。',
+      '验证入口存在，但从“看懂说明”到“在当前机器上真实推进”之间仍有明显断层。',
+    ],
+    quote:'“可学、可跟，但不够拿来就跑；更像文档驱动样例库，不像低摩擦产品化入口。”',
+    ev:[['README',100.0],['docs',85.7],['examples',28.6],['tests',28.6],['scripts 入口',28.6],['package/build 入口',14.3]],
+    evRaw:[['平均 README 长度','5136.57'],['平均摩擦信号数','0.43']],
+    strong:['cann-samples','cann-recipes-embodied-intelligence','cann-recipes-spatial-intelligence'],
+    weak:['cann-recipes-harmony-infer','cann-recipes-train','cann-learning-hub'],
+    links:[
+      ['embodied README','D:\\HW\\AscendCANN\\cann-dashboard\\repo-evidence\\cann-recipes-embodied-intelligence\\README.md'],
+      ['pi0 infer README','D:\\HW\\AscendCANN\\cann-dashboard\\repo-evidence\\cann-recipes-embodied-intelligence\\manipulation\\pi0\\infer_with_torch\\README.md'],
+      ['VGGT README','D:\\HW\\AscendCANN\\cann-dashboard\\repo-evidence\\cann-recipes-spatial-intelligence\\models\\vggt\\README.md'],
+    ],
+  },
+  {
+    id:'model_adapter', no:2, title:'模型 / 框架适配开发者',
+    scene:'想把上游模型、训练/推理框架或服务后端迁移到 CANN 生态。',
+    repos:'8 个', score:'54.0', ac:'#FD9A00', acSoft:'#FFF8E5',
+    icon:'<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+    stages:[
+      ['搜索发现',68,'mid',[30,12,16,10],'分场景清晰，较容易定位模型。'],
+      ['代码获取',61,'mid',[20,14,16,11],'主仓可获取，附属仓稳定性一般。'],
+      ['环境准备',45,'low',[10,18,11,6],'完整 CANN / NPU 前提依旧很重。'],
+      ['依赖安装',50,'low',[10,17,15,8],'版本信息有写，但不是一步完成。'],
+      ['数据/权重/外部资产准备',36,'bad',[8,12,11,5],'VGGT 需要上游 clone + 手工复制 + checkpoint 放置。'],
+      ['首次运行',48,'low',[9,15,12,12],'对熟手尚可，对 agent 自动化不友好。'],
+      ['结果验证',63,'mid',[15,16,17,15],'性能优化文档、精度验证文档是强项。'],
+      ['深入修改/扩展',72,'mid',[17,16,25,14],'适合做模型改造和脚本层调优。'],
+      ['排障与回归',52,'low',[9,13,15,15],'有验证脚本，但回归路径不统一。'],
+    ],
+    analysis:[
+      '这类用户最不缺的是材料，最缺的是一条跨仓、跨框架、跨依赖的连续动作链。',
+      '数据/权重/外部资产准备阶段明显拉低总分，说明迁移成本主要消耗在拼装，而不是发现知识。',
+      '深入修改与扩展阶段反而较强，意味着它更适合熟手工程师，而不适合低介入自动推进。',
+    ],
+    quote:'“对熟悉昇腾生态的适配工程师有价值，但跨仓拼装步骤太多。”',
+    ev:[['README',100.0],['docs',100.0],['examples',25.0],['tests',25.0],['scripts 入口',62.5],['package/build 入口',50.0]],
+    evRaw:[['平均 README 长度','4840.25'],['平均摩擦信号数','1.25']],
+    strong:['xla-npu','torchtitan-npu','triton-inference-server-ge-backend'],
+    weak:['cann-recipes-train','cann-recipes-infer','cann-recipes-spatial-intelligence'],
+    links:[
+      ['observations JSON','D:\\HW\\AscendCANN\\cann-dashboard\\cann-agentic-observations.json'],
+      ['repo coverage JSON','D:\\HW\\AscendCANN\\cann-dashboard\\cann-repo-coverage.json'],
+    ],
+  },
+  {
+    id:'operator_developer', no:3, title:'算子 / 编译接口开发者',
+    scene:'想开发或调试底层算子、模板库或语言接口，关注结构化开发体验。',
+    repos:'22 个', score:'67.1', ac:'#37C597', acSoft:'#EBFCF7',
+    icon:'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+    stages:[
+      ['搜索发现',57,'low',[25,10,13,9],'pyasc 定位清楚，但 ops-math 当前不可用。'],
+      ['代码获取',63,'mid',[20,15,16,12],'pyasc 获取完整，ops-math 为空壳。'],
+      ['环境准备',60,'mid',[14,23,15,8],'pyasc 按有无 NPU 分环境路径，这点明显更成熟。'],
+      ['依赖安装',66,'mid',[14,22,19,11],'pip install pyasc 与源码安装并存。'],
+      ['数据/权重/外部资产准备',92,'high',[22,30,25,15],'基本不依赖模型权重。'],
+      ['首次运行',64,'mid',[13,20,16,15],'纯 Python 代码 compileall 通过，但真实编译执行仍需要 LLVM/CANN。'],
+      ['结果验证',62,'mid',[15,15,17,15],'有 test/tutorial，但当前机缺编译工具链。'],
+      ['深入修改/扩展',78,'mid',[20,18,25,15],'文档、API、教程、结构都适合深入开发。'],
+      ['排障与回归',69,'mid',[14,19,21,15],'静态分析和有限自动化空间较大。'],
+    ],
+    analysis:[
+      '底层开发仓库的结构化程度明显更高，说明这里的主要问题不是信息架构，而是工具链门槛。',
+      '数据/权重阶段得分极高，反而说明它的痛点集中在编译、运行和环境可达性，而不是外部资产依赖。',
+      '这是最接近“可 agent 化推进”的一类角色，但仍然需要更强的环境自检与失败反馈闭环。',
+    ],
+    quote:'“当前样本里 agentic 体验最好的底层开发仓库，问题主要不在仓库，而在环境重。”',
+    ev:[['README',100.0],['docs',95.5],['examples',72.7],['tests',100.0],['scripts 入口',90.9],['package/build 入口',100.0]],
+    evRaw:[['平均 README 长度','4878.55'],['平均摩擦信号数','2.45']],
+    strong:['pyasc','asc-devkit','asc-tools'],
+    weak:['ops-collections','opbase','ops-fft'],
+    links:[
+      ['pyasc README','D:\\HW\\AscendCANN\\cann-dashboard\\repo-evidence\\pyasc\\README.md'],
+      ['pyasc quick start','D:\\HW\\AscendCANN\\cann-dashboard\\repo-evidence\\pyasc\\docs\\quick_start.md'],
+      ['observations JSON','D:\\HW\\AscendCANN\\cann-dashboard\\cann-agentic-observations.json'],
+    ],
+  },
+  {
+    id:'system_engineer', no:4, title:'系统 / 通信 / 基础设施开发者',
+    scene:'想搭建、调试或扩展运行时、通信与系统基础设施。',
+    repos:'12 个', score:'50.2', ac:'#6A67CE', acSoft:'#F0EFFA',
+    icon:'<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>',
+    stages:[
+      ['搜索发现',52,'low',[23,9,12,8],'hixl 清楚，但 hcomm/asc-devkit 取不到有效内容。'],
+      ['代码获取',48,'low',[16,11,12,9],'hixl 完整，另外两个当前只落 .git。'],
+      ['环境准备',34,'bad',[8,13,8,5],'设备、驱动、Docker、hccn_tool、网络互通要求都高。'],
+      ['依赖安装',39,'bad',[8,13,12,6],'需要 GCC/CMake/bash/third-party，当前机最小帮助都跑不动。'],
+      ['数据/权重/外部资产准备',95,'high',[25,30,25,15],'这类仓库基本不依赖模型权重。'],
+      ['首次运行',28,'bad',[5,9,7,7],'首次上手几乎必然卡在环境和工具链。'],
+      ['结果验证',51,'low',[11,12,13,15],'tests/examples/benchmarks 齐，但前提太重。'],
+      ['深入修改/扩展',76,'mid',[19,17,25,15],'工程化程度高，适合成熟团队。'],
+      ['排障与回归',67,'mid',[13,19,20,15],'脚本和结构较规范。'],
+    ],
+    analysis:[
+      '这类角色的问题不是仓库组织混乱，而是现实环境前提过重，首跑成功率天然偏低。',
+      '数据/权重阶段几乎不是问题，首次运行和环境准备才是真正断点。',
+      '对这类用户，最关键的不是再补说明，而是提供设备前提校验、失败即解释和最小预演路径。',
+    ],
+    quote:'“工程性强，但首次成功率低；它服务的是高手，不是首次体验用户。”',
+    ev:[['README',100.0],['docs',83.3],['examples',66.7],['tests',75.0],['scripts 入口',91.7],['package/build 入口',83.3]],
+    evRaw:[['平均 README 长度','4472.0'],['平均摩擦信号数','1.75']],
+    strong:['hixl','hcomm','hccl'],
+    weak:['cann-infra-mcp','infrastructure','cmake'],
+    links:[
+      ['hixl README','D:\\HW\\AscendCANN\\cann-dashboard\\repo-evidence\\hixl\\README.md'],
+      ['hixl build docs','D:\\HW\\AscendCANN\\cann-dashboard\\repo-evidence\\hixl\\docs\\build.md'],
+      ['observations JSON','D:\\HW\\AscendCANN\\cann-dashboard\\cann-agentic-observations.json'],
+    ],
+  },
+];
+
+/* ---------- Hero KPI ---------- */
+document.getElementById('heroGrid').innerHTML = HERO.map(h=>`
+  <div class="stat">
+    <div class="k">
+      <span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${h.icon}</svg></span>
+      ${h.k}
+    </div>
+    <div class="v">${h.v}</div>
+    <div class="d">${h.d}</div>
+  </div>
+`).join('');
+
+/* ---------- Method tables ---------- */
+document.getElementById('method1').innerHTML =
+  `<div class="m-head"><div>组成项</div><div>满分</div><div>判断标准</div></div>` +
+  METHOD1.map(([n,full,desc,col])=>`
+    <div class="m-row">
+      <div class="m-name">${n}</div>
+      <div class="m-barwrap">
+        <div class="m-bar"><i style="width:${full/30*100}%;background:${col}"></i></div>
+        <div class="m-val" style="color:${col}">${full}</div>
+      </div>
+      <div class="m-desc">${desc}</div>
+    </div>
+  `).join('');
+
+document.getElementById('method2').innerHTML =
+  `<div class="m-head"><div>阶段</div><div>权重</div></div>` +
+  METHOD2.map(([n,w])=>{
+    const pct = parseInt(w);
+    return `
+    <div class="m-row">
+      <div class="m-name">${n}</div>
+      <div class="m-barwrap">
+        <div class="m-bar"><i style="width:${pct/20*100}%;background:linear-gradient(90deg,#6A67CE,#A177FF)"></i></div>
+        <div class="m-val" style="color:#6A67CE">${w}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+/* ---------- Persona sections ---------- */
+function covColor(v){ return v>=80 ? '#37C597' : v>=50 ? '#FD9A00' : '#E63838'; }
+function barGrad(g){
+  return g==='high' ? 'linear-gradient(90deg,#3BE880,#37C597)'
+       : g==='mid'  ? 'linear-gradient(90deg,#A177FF,#6A67CE)'
+       : g==='low'  ? 'linear-gradient(90deg,#FFB900,#FD9A00)'
+       :              'linear-gradient(90deg,#FF6D92,#E63838)';
+}
+
+document.getElementById('personas').innerHTML = PERSONAS.map(p=>{
+  const maxScore = Math.max(...p.stages.map(s=>s[1]));
+
+  const miniChart = p.stages.map(s=>`
+    <div class="mc-col" title="${s[0]}：${s[1]}">
+      <div class="mc-track"><div class="mc-bar" style="height:${s[1]/100*100}%;background:${GRADE_COL[s[2]]}"></div></div>
+      <div class="mc-x">${s[0].slice(0,2)}</div>
+    </div>`).join('');
+
+  const rows = p.stages.map(s=>{
+    const [name, score, grade, parts, note] = s;
+    const partsHtml = parts.map((v,i)=>`
+      <div class="part">
+        <span class="p-label">${PART_LB[i]}</span>
+        <div class="p-bar"><i style="width:${v/PART_MAX[i]*100}%;background:${PART_COL[i]}"></i></div>
+        <span class="p-val">${v}</span>
+      </div>`).join('');
+    return `
+      <div class="pt-row gd-${grade}">
+        <div class="pt-stage">${name}</div>
+        <div class="pt-score">
+          <span class="score-pill">${score}</span>
+          <div class="score-bar"><i style="width:${score}%;background:${barGrad(grade)}"></i></div>
+        </div>
+        <div class="parts">${partsHtml}</div>
+        <div class="pt-note">${note}</div>
+      </div>`;
+  }).join('');
+
+  const cov = p.ev.map(([l,v])=>`
+    <div class="cov-row">
+      <span class="cov-label">${l}</span>
+      <div class="cov-bar"><i style="width:${v}%;background:${covColor(v)}"></i></div>
+      <span class="cov-val" style="color:${covColor(v)}">${v.toFixed(1)}%</span>
+    </div>`).join('');
+
+  const evRaw = p.evRaw.map(([l,v])=>`
+    <div class="ev-stat"><div class="es-l">${l}</div><div class="es-v">${v}</div></div>`).join('');
+
+  return `
+  <section id="${p.id}" class="persona-section" style="--ac:${p.ac};">
+    <div class="sec-h2">
+      <div class="h2-icon" style="background:${p.acSoft};color:${p.ac};">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">${p.icon}</svg>
+      </div>
+      <div>
+        <h2>Persona ${p.no}：${p.title}</h2>
+        <p class="lead-mini"><strong>场景：</strong>${p.scene}</p>
+      </div>
+      <div class="persona-score" style="color:${p.ac};">${p.score}<small>/100</small></div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-pill"><span class="sp-l">相关仓库</span><span class="sp-v" style="color:${p.ac}">${p.repos}</span></div>
+      <div class="summary-pill"><span class="sp-l">综合评分</span><span class="sp-v" style="color:${p.ac}">${p.score} / 100</span></div>
+      <div class="mini-chart" title="九阶段评分走势">${miniChart}</div>
+    </div>
+
+    <div class="ptable">
+      <div class="pt-head">
+        <div>阶段</div><div>评分</div>
+        <div>四项拆分 · 文档30 环境30 自动25 反馈15</div><div>说明</div>
+      </div>
+      ${rows}
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h4><span class="ci" style="background:${p.acSoft};color:${p.ac};"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>用户体验分析</h4>
+        <ul>${p.analysis.map(a=>`<li>${a}</li>`).join('')}</ul>
+        <div class="quote">${p.quote}</div>
+      </div>
+      <div class="card">
+        <h4><span class="ci" style="background:${p.acSoft};color:${p.ac};"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>辅助证据</h4>
+        <div class="cov-list">${cov}</div>
+        <div class="ev-stats">${evRaw}</div>
+        <p class="ev-sub">相对最强入口：</p>
+        <div class="tag-row">${p.strong.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <p class="ev-sub">易误判/易卡顿入口：</p>
+        <div class="tag-row">${p.weak.map(t=>`<span class="tag warn">${t}</span>`).join('')}</div>
+        <div class="direct-links">
+          <div class="dl-title">直接证据</div>
+          ${p.links.map(([l,h])=>`<a href="${h}">${l}</a>`).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`;
+}).join('');
+</script>
+</body>
+</html>
