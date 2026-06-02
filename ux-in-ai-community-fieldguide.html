@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计师的实操手册 · 让内容被 AI 抓取 · Report No. 002</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F2EBDB;
+    --cream-deep: #E7DDC4;
+    --cream-light: #F8F3E6;
+    --paper: #FAF5E8;
+    --ink: #1A1612;
+    --ink-soft: #3B342B;
+    --ink-mute: #6E665A;
+    --accent: #BF3A1C;
+    --accent-soft: #D8593A;
+    --green: #4A6741;
+    --gold: #A88547;
+    --rule: #C9BFA6;
+
+    --serif-en: 'Fraunces', 'Noto Serif SC', serif;
+    --serif-cn: 'Noto Serif SC', 'Fraunces', serif;
+    --sans: 'Noto Sans SC', 'Fraunces', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+
+    --maxw: 1240px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background-image:
+      radial-gradient(rgba(26,22,18,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  ::selection { background: var(--accent); color: var(--cream-light); }
+
+  .container { max-width: var(--maxw); margin: 0 auto; padding: 0 48px; }
+
+  /* ============ TOP BAR ============ */
+  .topbar {
+    border-bottom: 1px solid var(--ink);
+    padding: 18px 0;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .topbar .center {
+    text-align: center;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .topbar .right { text-align: right; }
+
+  /* ============ HERO ============ */
+  .hero {
+    padding: 72px 0 56px;
+    border-bottom: 1px solid var(--ink);
+    position: relative;
+  }
+  .hero .meta-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .hero .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .hero h1 {
+    font-family: var(--serif-cn);
+    font-weight: 900;
+    font-size: clamp(44px, 7.5vw, 100px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  .hero h1 .it {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .hero .deck {
+    max-width: 760px;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  .hero .deck em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .hero .big-no {
+    position: absolute;
+    top: 40px;
+    right: 48px;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 260px;
+    line-height: 1;
+    color: var(--cream-deep);
+    z-index: 0;
+    user-select: none;
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .hero .footer-row {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding-top: 28px;
+    border-top: 1px dashed var(--rule);
+    font-size: 13px;
+  }
+  .hero .footer-row .lab {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-mute);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ============ PRINCIPLE BLOCK ============ */
+  .principle {
+    margin: 64px 0;
+    padding: 48px 56px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    position: relative;
+  }
+  .principle::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px;
+    width: 8px; height: 48px;
+    background: var(--accent);
+  }
+  .principle .pl {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .principle h3 {
+    font-family: var(--serif-cn);
+    font-size: clamp(28px, 3.5vw, 38px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .principle h3 em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .principle p {
+    font-size: 16.5px;
+    line-height: 1.7;
+    max-width: 880px;
+    color: var(--ink-soft);
+  }
+
+  /* ============ PART HEADER ============ */
+  .part-header {
+    padding: 96px 0 32px;
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 64px;
+  }
+  .part-header .part-no {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .part-header h2 {
+    font-family: var(--serif-cn);
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+  }
+  .part-header h2 .en {
+    display: block;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 0.38em;
+    font-weight: 400;
+    color: var(--ink-mute);
+    margin-top: 10px;
+  }
+  .part-header .lede {
+    margin-top: 24px;
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 800px;
+    color: var(--ink-soft);
+  }
+  .part-header .lede em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* ============ PART 1 DELIVERABLES ============ */
+  .deliverables {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    margin-bottom: 80px;
+    border-top: 1px solid var(--ink);
+    border-left: 1px solid var(--ink);
+  }
+  .deliverable {
+    padding: 32px 32px 32px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+    transition: background 0.2s;
+  }
+  .deliverable:hover { background: var(--cream-light); }
+  .deliverable .num {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 36px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .deliverable h4 {
+    font-family: var(--serif-cn);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .deliverable .sub {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+  }
+  .deliverable p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .deliverable .tag-row {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .deliverable .tag-row span {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    background: var(--cream-deep);
+    padding: 3px 9px;
+    color: var(--ink-soft);
+    border-radius: 2px;
+  }
+
+  /* ============ ELEMENT BLOCK ============ */
+  .element {
+    margin: 72px 0;
+    border-top: 2px solid var(--ink);
+    padding-top: 32px;
+  }
+  .element-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+  .element-icon {
+    width: 64px;
+    height: 64px;
+    border: 2px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cream-light);
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 28px;
+    color: var(--accent);
+  }
+  .element-title {
+    flex: 1;
+  }
+  .element-title .index {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+  }
+  .element-title h3 {
+    font-family: var(--serif-cn);
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+  .element-title h3 .en {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-mute);
+    font-size: 0.55em;
+    margin-left: 10px;
+  }
+  .element-difficulty {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .element-difficulty .dots {
+    display: inline-block;
+    margin-left: 8px;
+    color: var(--accent);
+  }
+
+  /* element 3-col layout */
+  .element-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr 1fr;
+    gap: 0;
+    border: 1px solid var(--ink);
+  }
+  .element-grid > div {
+    padding: 24px 28px;
+  }
+  .element-grid > div + div {
+    border-left: 1px solid var(--rule);
+  }
+  .element-grid .why { background: #F5EAE3; }
+  .element-grid .do { background: var(--paper); }
+  .element-grid .out { background: var(--cream-deep); }
+
+  .col-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .col-label.alt { color: var(--ink); }
+  .col-content {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .col-content p { margin-bottom: 10px; }
+  .col-content ul {
+    list-style: none;
+  }
+  .col-content ul li {
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .col-content ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: var(--serif-en);
+    font-style: italic;
+  }
+  .col-content strong {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* before/after example */
+  .example {
+    margin-top: 24px;
+    border: 1px solid var(--rule);
+    background: var(--cream-light);
+  }
+  .example-head {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: flex;
+    justify-content: space-between;
+  }
+  .example-head .case {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .example-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .example-body > div {
+    padding: 20px 24px;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+  .example-body .ex-before {
+    border-right: 1px solid var(--rule);
+    background: #F5EAE3;
+  }
+  .example-body .ex-after {
+    background: #EFF1E5;
+  }
+  .ex-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .ex-before .ex-tag { color: var(--accent); }
+  .ex-after .ex-tag { color: var(--green); }
+  .ex-body {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: rgba(0,0,0,0.04);
+    padding: 12px 14px;
+    border-radius: 2px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    color: var(--ink-soft);
+  }
+  .ex-body .comment { color: var(--ink-mute); font-style: italic; }
+  .ex-narrative {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    line-height: 1.65;
+  }
+
+  /* ============ SPEC TEMPLATE ============ */
+  .spec-template {
+    margin: 64px 0;
+    padding: 48px;
+    background: var(--ink);
+    color: var(--cream-light);
+    position: relative;
+  }
+  .spec-template::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 80px; height: 8px;
+    background: var(--accent);
+  }
+  .spec-template .lab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .spec-template h3 {
+    font-family: var(--serif-cn);
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--cream-light);
+  }
+  .spec-template h3 em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--accent-soft);
+    font-weight: 500;
+  }
+  .spec-template .intro {
+    margin-bottom: 32px;
+    color: #D9CFB6;
+    max-width: 760px;
+  }
+  .spec-template pre {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: rgba(255,255,255,0.05);
+    padding: 24px 28px;
+    border-left: 3px solid var(--accent);
+    line-height: 1.7;
+    overflow-x: auto;
+    color: #E8DFC9;
+  }
+  .spec-template pre .key { color: var(--accent-soft); }
+  .spec-template pre .str { color: #C9D69D; }
+  .spec-template pre .com { color: var(--ink-mute); font-style: italic; }
+
+  /* ============ AUDIT CHECKLIST ============ */
+  .audit {
+    margin: 64px 0;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+  }
+  .audit-head {
+    padding: 28px 36px;
+    border-bottom: 2px solid var(--ink);
+    background: var(--cream-deep);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 24px;
+  }
+  .audit-head .a-lab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .audit-head h3 {
+    font-family: var(--serif-cn);
+    font-size: 28px;
+    font-weight: 700;
+  }
+  .audit-head .a-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    text-align: right;
+  }
+  .audit-body {
+    padding: 8px 0;
+  }
+  .audit-group {
+    padding: 16px 36px;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .audit-group:last-child { border-bottom: none; }
+  .audit-group h5 {
+    font-family: var(--serif-cn);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--accent);
+  }
+  .audit-group h5 .gn {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--ink-mute);
+    font-weight: 400;
+    margin-right: 8px;
+  }
+  .audit-group ul {
+    list-style: none;
+  }
+  .audit-group ul li {
+    padding: 6px 0 6px 32px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .audit-group ul li::before {
+    content: '☐';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    font-size: 14px;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+
+  /* ============ CLOSING ============ */
+  .closing-note {
+    padding: 96px 0 64px;
+    border-top: 1px solid var(--ink);
+  }
+  .closing-note .lab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 24px;
+  }
+  .closing-note h2 {
+    font-family: var(--serif-cn);
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 32px;
+    max-width: 1000px;
+  }
+  .closing-note h2 em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .closing-note p {
+    max-width: 760px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+
+  /* ============ COLOPHON ============ */
+  .colophon {
+    padding: 48px 0 64px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    border-top: 1px solid var(--rule);
+  }
+  .colophon h5 {
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .colophon p { line-height: 1.8; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .container { padding: 0 24px; }
+    .topbar { grid-template-columns: 1fr; text-align: center; gap: 6px; }
+    .topbar .right { text-align: center; }
+    .hero .big-no { font-size: 140px; top: 20px; right: 24px; }
+    .hero .footer-row { grid-template-columns: repeat(2, 1fr); }
+    .deliverables { grid-template-columns: 1fr; }
+    .element-head { grid-template-columns: 1fr; gap: 16px; align-items: start; }
+    .element-grid { grid-template-columns: 1fr; }
+    .element-grid > div + div { border-left: none; border-top: 1px solid var(--rule); }
+    .example-body { grid-template-columns: 1fr; }
+    .example-body .ex-before { border-right: none; border-bottom: 1px solid var(--rule); }
+    .spec-template { padding: 32px 24px; }
+    .audit-head { grid-template-columns: 1fr; }
+    .audit-head .a-meta { text-align: left; }
+    .audit-group { padding: 14px 20px; }
+    .colophon { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: white; }
+    .hero .big-no { color: #f0f0f0; }
+    .element, .part-header, .principle, .spec-template, .audit { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div>Report No. 002 · Field Guide</div>
+    <div class="center">— Companion to Report 001 —</div>
+    <div class="right">Practical Playbook · 2026</div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="big-no">02</div>
+    <div class="meta-row">
+      <div class="label">Issue 002 / Practical Guide</div>
+      <div class="label">May 2026 · 28 min read</div>
+    </div>
+
+    <h1>
+      把每一种<br>
+      <span class="it">元素</span>，<br>
+      改造成 AI 看得懂的样子。
+    </h1>
+
+    <p class="deck">
+      Report 001 谈了"为什么"和"做什么"。这一份谈"具体怎么做"——
+      设计师每天交付的<em>七类产出物</em>，
+      以及面对文本、图片、视频、代码、数据等<em>十种内容元素</em>，
+      逐一给出"AI 为什么读不懂、设计师要加什么、最终输出什么"。
+    </p>
+
+    <div class="footer-row">
+      <div>
+        <span class="lab">Subject</span>
+        AI 时代的内容元素改造手册
+      </div>
+      <div>
+        <span class="lab">For</span>
+        UX 设计师 · 内容设计师 · 设计系统负责人
+      </div>
+      <div>
+        <span class="lab">Method</span>
+        每元素三栏对照 + 改造前后例子
+      </div>
+      <div>
+        <span class="lab">Pair With</span>
+        Report 001 · 范式 + 角色
+      </div>
+    </div>
+  </header>
+
+  <!-- CORE PRINCIPLE -->
+  <div class="principle">
+    <div class="pl">— Core Principle / 总则</div>
+    <h3>非文本内容必须有<em>同等价值的文本副本</em>。</h3>
+    <p>
+      这是 AI 时代内容设计的第一原则。图、视频、代码、互动 demo —— 人类用感官消费，
+      AI 用文本消费。文本副本不是可访问性的"补丁"，而是<strong>面向 AI 这位新读者的"正本"</strong>。
+      它要回答三个问题：<em>这是什么？关键信息是什么？我如何核实？</em>
+    </p>
+  </div>
+
+  <!-- ============ PART 1: DELIVERABLES ============ -->
+  <div class="part-header">
+    <div class="part-no">— Part 01 / Designer Deliverables</div>
+    <h2>
+      设计师交付什么？
+      <span class="en">Seven concrete outputs.</span>
+    </h2>
+    <p class="lede">
+      AI 时代下，UX 设计师的产出物比过去更<em>系统</em>、更<em>跨学科</em>。
+      下面七类是这场转型期里几乎一定会落到设计师桌上的工作。
+    </p>
+  </div>
+
+  <div class="deliverables">
+
+    <div class="deliverable">
+      <div class="num">i.</div>
+      <h4>内容模型与规格库</h4>
+      <div class="sub">Content Model & Element Specs</div>
+      <p>
+        为每一种内容类型（文档、教程、视频、API 参考、案例）定义必填字段、可选字段、元数据、示例。
+        这是工程师建库、AI 检索、人类编辑共同遵守的"数据合同"。
+      </p>
+      <div class="tag-row">
+        <span>Frontmatter 模板</span><span>JSON Schema</span><span>分类法</span>
+      </div>
+    </div>
+
+    <div class="deliverable">
+      <div class="num">ii.</div>
+      <h4>AI 友好型内容写作规范</h4>
+      <div class="sub">Content Standards / Style Guide</div>
+      <p>
+        给写作者一份明确的指引：哪些句式 AI 读得准，哪些会被误读；
+        什么时候必须加 TL;DR；图片该怎么写说明；代码该怎么注释。
+      </p>
+      <div class="tag-row">
+        <span>禁用句式</span><span>必备结构</span><span>Voice & Tone</span>
+      </div>
+    </div>
+
+    <div class="deliverable">
+      <div class="num">iii.</div>
+      <h4>设计系统的"AI 组件族"</h4>
+      <div class="sub">AI Component Family in Design System</div>
+      <p>
+        在已有设计系统里，新增一族为"人 + AI 共用"而设计的组件：
+        引用块、置信度指示器、提示建议、对话上下文条、Agent 行动确认弹窗、权限选择器、错误恢复入口。
+      </p>
+      <div class="tag-row">
+        <span>Citation</span><span>Confidence</span><span>Prompt suggestions</span><span>Agent confirm</span>
+      </div>
+    </div>
+
+    <div class="deliverable">
+      <div class="num">iv.</div>
+      <h4>对话与提示模式库</h4>
+      <div class="sub">Conversation & Prompt Patterns</div>
+      <p>
+        AI 助手要"说人话"，但也要在恰当时刻说"我不知道"、给出选项、寻求澄清、引用来源。
+        这些都是可被复用、被规范化的对话模式——它们是新时代的"按钮形态"。
+      </p>
+      <div class="tag-row">
+        <span>澄清流</span><span>不知道时</span><span>多轮上下文</span><span>纠错入口</span>
+      </div>
+    </div>
+
+    <div class="deliverable">
+      <div class="num">v.</div>
+      <h4>元数据与标签体系</h4>
+      <div class="sub">Metadata Schema & Taxonomy</div>
+      <p>
+        为内容打"标签"听起来像运营的事，但它决定了 AI 能不能精确召回对的内容。
+        受众、版本、状态、前提、产出、难度——这些字段的设计是 UX 工作的一部分。
+      </p>
+      <div class="tag-row">
+        <span>受众标签</span><span>版本</span><span>难度</span><span>状态</span>
+      </div>
+    </div>
+
+    <div class="deliverable">
+      <div class="num">vi.</div>
+      <h4>智能体交互流程</h4>
+      <div class="sub">Agent UX Flows</div>
+      <p>
+        Agent 要代用户做事——授权范围怎么选、执行前要不要问、错了怎么撤销、日志长什么样。
+        这些是流程图 + 状态机 + 文案 + 组件的综合产物。
+      </p>
+      <div class="tag-row">
+        <span>授权流</span><span>行动确认</span><span>撤销路径</span><span>日志可视化</span>
+      </div>
+    </div>
+
+    <div class="deliverable">
+      <div class="num">vii.</div>
+      <h4>审计 Rubric 与度量框架</h4>
+      <div class="sub">Audit Toolkit & Metrics</div>
+      <p>
+        为现有内容打一个"AI 友好度"分数；为新发布的内容设立准入门槛；
+        为团队提供一份月度 / 季度的健康度仪表盘。审计能力本身就是设计师的产出物之一。
+      </p>
+      <div class="tag-row">
+        <span>评分卡</span><span>抽样协议</span><span>仪表盘</span>
+      </div>
+    </div>
+
+    <div class="deliverable" style="background: var(--cream-deep);">
+      <div class="num">+</div>
+      <h4>这些产出物之间的关系</h4>
+      <div class="sub">How they fit together</div>
+      <p>
+        <strong>规范（ii）→ 模型（i）→ 组件（iii）→ 模式（iv）→ 标签（v）→ 流程（vi）→ 审计（vii）。</strong>
+        一份规范定义了写法，模型把规范"固化"成数据结构，组件把数据呈现给人和 AI，
+        模式让交互可复用，标签让召回精准，流程把人放回控制位，审计让一切持续健康。
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ============ PART 2: ELEMENT PLAYBOOK ============ -->
+  <div class="part-header">
+    <div class="part-no">— Part 02 / Element Playbook</div>
+    <h2>
+      逐元素拆解：<br>怎么让 AI 抓得准。
+      <span class="en">Ten content elements, one method.</span>
+    </h2>
+    <p class="lede">
+      每个元素三栏并列：<em>为什么 AI 读不懂</em> · <em>设计师要加什么</em> · <em>具体交付什么</em>。
+      下面再附一个改造前后的具体例子。
+    </p>
+  </div>
+
+  <!-- ELEMENT 1: TEXT -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">T</div>
+      <div class="element-title">
+        <div class="index">Element 01 / 10</div>
+        <h3>文本与文档 <span class="en">Text & Docs</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ○ ○</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>段落依赖上文，单独拎出来意思就不全</li>
+            <li>"这个 / 它 / 上面提到的"等代词在切片后失锚</li>
+            <li>反讽、玩笑、内部黑话会被 AI 当真</li>
+            <li>没有版本 / 适用范围标注，AI 不知道该不该用</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li><strong>TL;DR + 适用 / 不适用场景</strong>放在最前</li>
+            <li>每段<strong>自包含</strong>——不依赖代词回指</li>
+            <li>每篇有<strong>前提（Prerequisites）+ 产出（Outcome）</strong>字段</li>
+            <li>版本号、最后更新日期、适用读者等元数据</li>
+            <li>术语首次出现时<strong>显式定义或链接到术语表</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>文档 frontmatter 模板（YAML）</li>
+            <li>写作风格指南 v1</li>
+            <li>"文档骨架"组件（标题 / TL;DR / 前提 / 步骤 / 产出 / 异常）</li>
+            <li>术语表 schema + 链接组件</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span>改造示例</span><span class="case">一段教程开头</span>
+      </div>
+      <div class="example-body">
+        <div class="ex-before">
+          <div class="ex-tag">Before · 普通写法</div>
+          <div class="ex-body">"这次我们继续上一节的内容。
+你可能已经知道怎么装它了，
+现在我们来玩点更有意思的——
+配置一下让它跑起来。"</div>
+          <div class="ex-narrative">
+            AI 切到这一段，完全不知道"它"是什么、"上一节"是哪一节、"配置一下"具体配什么。
+          </div>
+        </div>
+        <div class="ex-after">
+          <div class="ex-tag">After · AI 友好写法</div>
+          <div class="ex-body"><span class="comment">--- 前提 ---</span>
+- 已安装 Framework X v2.1+
+- 已完成基础项目初始化
+
+<span class="comment">--- 本节产出 ---</span>
+完成 Framework X 的运行时配置，
+能够本地启动开发服务器。
+
+<span class="comment">--- 适用读者 ---</span>
+初学者 / 中级</div>
+          <div class="ex-narrative">
+            上下文显式化，AI 哪怕只抓到这一段也能正确转述。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEMENT 2: IMAGE -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">◳</div>
+      <div class="element-title">
+        <div class="index">Element 02 / 10</div>
+        <h3>图片与截图 <span class="en">Images & Screenshots</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ● ○</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>AI 不一定调用视觉模型；调用了也未必看准</li>
+            <li>截图里的小字、状态、错误信息常被识别错</li>
+            <li>"如图所示"这种引用，切片后图像不在身边</li>
+            <li>装饰性图片浪费 AI 的注意力</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li><strong>三层文本</strong>：alt（这是什么）+ caption（为什么放它）+ 正文描述（图里讲了什么关键信息）</li>
+            <li>装饰性图片明确标 <code>alt=""</code>，让 AI 跳过</li>
+            <li>图片<strong>文件名</strong>语义化：<code>dashboard-error-state-v2.png</code></li>
+            <li>关键截图同步提供<strong>等价数据</strong>（如表格）</li>
+            <li>避免"如下图"，改成"下图展示了 X 与 Y 的关系，其中 X 增长 23%"</li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>图片组件规范：alt / caption / data-source 三字段</li>
+            <li>Alt 文本写作 SOP（含 do/don't 例子）</li>
+            <li>装饰图 vs 信息图的判断流程图</li>
+            <li>截图采集模板（含必填字段）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span>改造示例</span><span class="case">一张产品截图</span>
+      </div>
+      <div class="example-body">
+        <div class="ex-before">
+          <div class="ex-tag">Before · 缺失语境</div>
+          <div class="ex-body">&lt;img src="screen.png"
+     alt="dashboard"/&gt;
+
+&lt;p&gt;如图所示，
+点击右上角即可开始。&lt;/p&gt;</div>
+          <div class="ex-narrative">
+            AI 看不见图，"右上角"对它毫无信息量。
+          </div>
+        </div>
+        <div class="ex-after">
+          <div class="ex-tag">After · 三层冗余</div>
+          <div class="ex-body">&lt;img
+  src="dashboard-empty-state.png"
+  alt="空状态仪表盘，
+       右上角有蓝色 New Project 按钮"
+  data-source="screenshots/v2.4"
+/&gt;
+&lt;figcaption&gt;
+  首次进入时，仪表盘为空状态，
+  点击右上角 <span class="comment">New Project</span> 按钮开始。
+&lt;/figcaption&gt;</div>
+          <div class="ex-narrative">
+            即使图片完全不被读取，仅凭文字 AI 也能引导用户走完路径。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEMENT 3: DIAGRAM -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">⌘</div>
+      <div class="element-title">
+        <div class="index">Element 03 / 10</div>
+        <h3>架构图 / 流程图 <span class="en">Diagrams</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ● ●</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>SVG / PNG 里的箭头方向、连接关系，AI 几乎无法可靠解析</li>
+            <li>图里堆叠的小标签经常识别错</li>
+            <li>多视角 / 多层级图，光看像素更难还原结构</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li><strong>图即代码（Diagrams as Code）</strong>：用 Mermaid / PlantUML / DOT 写，源码与图同源</li>
+            <li>每张图配一段<strong>叙事走读</strong>："A 接收请求，转发到 B，B 调用 C..."</li>
+            <li>配一份<strong>节点 + 边的清单</strong>（适合 AI 解析的结构化版本）</li>
+            <li>图的 <strong>title 和 desc</strong> 标签都要写</li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>Diagram 组件：渲染图 + 折叠源码 + 节点列表</li>
+            <li>统一的图风格（颜色 / 形状语义）</li>
+            <li>叙事走读写作模板</li>
+            <li>对图作者的培训：避免重像素轻文字</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span>改造示例</span><span class="case">一张三层架构图</span>
+      </div>
+      <div class="example-body">
+        <div class="ex-before">
+          <div class="ex-tag">Before · 仅图片</div>
+          <div class="ex-body">&lt;img
+  src="architecture-v3.svg"
+  alt="system architecture"
+/&gt;</div>
+          <div class="ex-narrative">
+            AI 拿到 alt "system architecture"，对结构一无所知。
+          </div>
+        </div>
+        <div class="ex-after">
+          <div class="ex-tag">After · 图+源+叙述</div>
+          <div class="ex-body"><span class="comment">--- Mermaid 源码 ---</span>
+graph LR
+  Client --&gt; Gateway
+  Gateway --&gt; AuthService
+  Gateway --&gt; DataAPI
+  DataAPI --&gt; PostgresDB
+
+<span class="comment">--- 叙事走读 ---</span>
+客户端经 Gateway 进入；
+Gateway 同时校验权限（AuthService）
+与转发数据请求（DataAPI）；
+DataAPI 单向访问 PostgresDB。</div>
+          <div class="ex-narrative">
+            AI 用源码 + 走读，能 100% 还原结构。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEMENT 4: VIDEO -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">▶</div>
+      <div class="element-title">
+        <div class="index">Element 04 / 10</div>
+        <h3>视频 <span class="en">Video</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ● ●</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>多数 AI 不直接消费视频；能解析的也是高成本</li>
+            <li>"看演示就懂"的内容失去了文字痕迹</li>
+            <li>演讲者口误、术语发音差异让自动转写出错</li>
+            <li>关键时刻没有标注，AI 不知道哪段最重要</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li>每个视频必须有<strong>人工校对的转写稿</strong>（含说话人 / 时间戳）</li>
+            <li><strong>章节标记</strong>：每 1-2 分钟一个语义片段，带描述</li>
+            <li><strong>"等价文章版"</strong>：把视频内容写成可独立阅读的图文</li>
+            <li><strong>关键帧 + 标题</strong>：演示型视频抽 5-10 张关键截图配说明</li>
+            <li>视频简介里写清"看完能做什么 / 需要什么前提"</li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>视频页模板（视频 / 章节 / 转写 / 文章版 / 关键帧）</li>
+            <li>转写校对 SOP</li>
+            <li>章节切分指南</li>
+            <li>"文字版"写作指南（不是字幕的复制粘贴）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span>改造示例</span><span class="case">一段 8 分钟教学视频</span>
+      </div>
+      <div class="example-body">
+        <div class="ex-before">
+          <div class="ex-tag">Before · 只挂视频</div>
+          <div class="ex-body">&lt;video src="tutorial.mp4"/&gt;
+
+&lt;p&gt;欢迎观看本期教学。&lt;/p&gt;</div>
+          <div class="ex-narrative">
+            AI 找不到任何可索引的知识，整集视频对 AI 用户透明。
+          </div>
+        </div>
+        <div class="ex-after">
+          <div class="ex-tag">After · 视频是"图层"，文字是"正本"</div>
+          <div class="ex-body"><span class="comment">--- 简介 ---</span>
+看完你能：在 5 分钟内
+配置 X 的本地开发环境。
+前提：已装 Node 20+。
+
+<span class="comment">--- 章节 ---</span>
+00:00 概览
+01:20 安装 CLI
+03:05 配置文件详解
+05:40 第一次启动
+07:15 常见错误处理
+
+<span class="comment">--- 文章版（独立可读）---</span>
+[完整图文教程链接]
+
+<span class="comment">--- 转写 ---</span>
+[校对过的完整文字版]</div>
+          <div class="ex-narrative">
+            视频面向人，文章版与转写面向 AI，双轨并行。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEMENT 5: AUDIO -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">♪</div>
+      <div class="element-title">
+        <div class="index">Element 05 / 10</div>
+        <h3>音频 / 播客 <span class="en">Audio & Podcasts</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ● ○</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>自动转写在专有名词、人名、代码读音上常出错</li>
+            <li>嘉宾来宾的长对话缺少结构化标注</li>
+            <li>缺少"摘要 + 高光时刻"，AI 难以判断该引用哪段</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li><strong>人工校对的转写稿</strong>，特别是术语、人名、产品名</li>
+            <li><strong>Show notes</strong>：分话题、带时间戳、带嘉宾正确名字与链接</li>
+            <li>每集开头一段 100 字摘要 + 三条 Key Takeaways</li>
+            <li>提供"提及的资源"清单：链接、引用论文等</li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>播客页模板（音频 + 摘要 + 要点 + 转写 + 资源）</li>
+            <li>命名实体词典（保证转写名字拼对）</li>
+            <li>Show notes 编辑流程</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEMENT 6: CODE -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">{}</div>
+      <div class="element-title">
+        <div class="index">Element 06 / 10</div>
+        <h3>代码片段 <span class="en">Code Snippets</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ● ○</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>缺 import / 缺依赖，AI 抓到就直接复用，运行报错</li>
+            <li>占位符（your_api_key、xxx）AI 不知道是要替换的</li>
+            <li>没标语言 / 版本，AI 可能用错语法</li>
+            <li>"省略号"和"中间略"对 AI 是地雷</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li>每段代码<strong>自包含、可直接运行</strong></li>
+            <li>头部声明<strong>语言 / 版本 / 依赖</strong></li>
+            <li>占位符明确标记，且配一行注释说明"这是要替换的"</li>
+            <li>给出<strong>预期输出 / 预期错误</strong></li>
+            <li>避免 <code>...</code> 省略；要省也写清"省略的是 X"</li>
+            <li>提供<strong>一键复制 / 一键到 Playground</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>代码块组件：语言 / 版本 / 依赖 / runnable 字段</li>
+            <li>代码写作 SOP（注释格式、占位符规则）</li>
+            <li>预期输出渲染样式</li>
+            <li>Playground 接入规范</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEMENT 7: INTERACTIVE -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">◉</div>
+      <div class="element-title">
+        <div class="index">Element 07 / 10</div>
+        <h3>交互演示 / 沙箱 <span class="en">Interactive Demos</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ● ●</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>AI 不能动手玩，看不到状态变化</li>
+            <li>"试试拖一下""点一下看看"对 AI 等于空白</li>
+            <li>沙箱里的最终代码 AI 拿不到完整快照</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li>每个交互演示配<strong>等价文字版操作指南</strong>："点 A → 出现 B → 修改 C"</li>
+            <li>列出<strong>所有可能状态</strong>及其触发条件</li>
+            <li>提供<strong>初始代码 + 完成态代码</strong>的纯文本版</li>
+            <li>演示页有一个"导出当前状态为代码片段"按钮</li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>交互演示页模板（演示 / 操作指南 / 初始 / 完成态）</li>
+            <li>状态描述写作规范</li>
+            <li>"导出快照"组件</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEMENT 8: DATA & CHARTS -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">▪</div>
+      <div class="element-title">
+        <div class="index">Element 08 / 10</div>
+        <h3>数据 / 图表 <span class="en">Data & Charts</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ● ○</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>图表是图像，坐标轴 / 图例 / 单位 AI 识别不可靠</li>
+            <li>"看图自己理解"的洞察可能被 AI 误读</li>
+            <li>缺数据来源 / 时间窗口 / 方法说明，AI 不敢引用</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li>每张图<strong>配一句话结论</strong>（caption 写明洞察，不是图名）</li>
+            <li>提供<strong>表格视图切换</strong>或<strong>原始数据下载</strong>（CSV / JSON）</li>
+            <li>明确标注<strong>单位 / 时间 / 样本量 / 方法</strong></li>
+            <li>不依赖颜色区分（AI 与色盲用户共同受益）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>图表组件：图 / 表 / 下载 / 元数据 四视图</li>
+            <li>Caption 写作规范（结论 + 数字 + 时间）</li>
+            <li>数据元信息字段表</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEMENT 9: FILES -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">↓</div>
+      <div class="element-title">
+        <div class="index">Element 09 / 10</div>
+        <h3>文件与下载 <span class="en">Files & Downloads</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ○ ○</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>"点击下载"对 AI 是黑盒：里面是什么、能干嘛、装多大</li>
+            <li>缺版本 / 平台 / 依赖信息，AI 不敢推荐</li>
+            <li>同一资源多个版本，AI 不知道选哪个</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li>下载组件附<strong>"包含内容"</strong>清单</li>
+            <li>列出<strong>适用平台 / 系统 / 版本要求</strong></li>
+            <li>列出<strong>典型使用场景</strong>（"什么时候应该下这个"）</li>
+            <li>多版本资源附<strong>版本对比表</strong></li>
+            <li>提供<strong>样例预览</strong>（如压缩包内文件树）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>下载组件 + 元数据 schema</li>
+            <li>"内容清单"自动生成规范</li>
+            <li>版本对比模板</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEMENT 10: Q&A -->
+  <section class="element">
+    <div class="element-head">
+      <div class="element-icon">?</div>
+      <div class="element-title">
+        <div class="index">Element 10 / 10</div>
+        <h3>社区问答 / 讨论帖 <span class="en">Q&amp;A · Forum Threads</span></h3>
+      </div>
+      <div class="element-difficulty">改造难度<span class="dots">● ● ○</span></div>
+    </div>
+
+    <div class="element-grid">
+      <div class="why">
+        <span class="col-label">AI 为什么读不懂</span>
+        <div class="col-content">
+          <ul>
+            <li>提问缺上下文（什么版本、什么环境、什么报错）</li>
+            <li>长贴跑题，AI 抓到中段会误解原始问题</li>
+            <li>多个回答没有标"被采纳"，AI 不知信谁</li>
+            <li>评论区里的"已解决，谢谢"让 AI 以为问题没结论</li>
+          </ul>
+        </div>
+      </div>
+      <div class="do">
+        <span class="col-label">设计师要加什么</span>
+        <div class="col-content">
+          <ul>
+            <li><strong>结构化提问表单</strong>：环境 / 版本 / 已尝试 / 期望结果 / 实际结果</li>
+            <li>必须标记<strong>"已采纳答案"</strong>，且<strong>置顶呈现</strong></li>
+            <li>长贴提供<strong>AI 总结的"结论摘要"</strong>组件</li>
+            <li>标签体系：错误类型、产品模块、严重程度</li>
+          </ul>
+        </div>
+      </div>
+      <div class="out">
+        <span class="col-label alt">具体交付物</span>
+        <div class="col-content">
+          <ul>
+            <li>结构化提问表单</li>
+            <li>采纳答案样式与位置规范</li>
+            <li>长贴摘要组件 + 触发规则</li>
+            <li>标签分类法</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ UNIFIED SPEC TEMPLATE ============ -->
+  <div class="spec-template">
+    <div class="lab">— Unified Spec / 统一模板</div>
+    <h3>每一个内容元素，都<em>填这张表</em>。</h3>
+    <p class="intro">
+      跨十种元素抽取出来的公共字段。把它做成设计系统里的"内容卡片"基线 schema，
+      所有内容类型都从它扩展。这是设计师交付给工程和内容团队的"地基契约"。
+    </p>
+    <pre><span class="com">--- universal-element.schema.yaml ---</span>
+
+<span class="key">id:</span>              <span class="str">unique-stable-slug</span>
+<span class="key">type:</span>            <span class="str">text | image | video | audio | code | diagram | interactive | data | file | qa</span>
+<span class="key">title:</span>           <span class="str">"人类可读标题"</span>
+<span class="key">summary:</span>         <span class="str">"一句话讲清楚这是什么"</span>          <span class="com"># AI 必读</span>
+<span class="key">key_insight:</span>     <span class="str">"如果只能记一句，记这句"</span>        <span class="com"># AI 必读</span>
+
+<span class="key">audience:</span>        [beginner, intermediate, advanced]
+<span class="key">version:</span>         <span class="str">"v2.4"</span>
+<span class="key">status:</span>          <span class="str">"current | deprecated | preview"</span>
+<span class="key">updated_at:</span>      <span class="str">"2026-05-01"</span>
+
+<span class="key">prerequisites:</span>   [<span class="str">"已装 Node 20+"</span>]
+<span class="key">outcome:</span>         <span class="str">"读完 / 看完 / 跑完之后能做到什么"</span>
+<span class="key">not_for:</span>         <span class="str">"什么情况下不该用这个"</span>          <span class="com"># 避免 AI 错配</span>
+
+<span class="key">media:</span>
+  <span class="key">primary:</span>        <span class="str">"file path / url"</span>           <span class="com"># 给人</span>
+  <span class="key">text_equivalent:</span> <span class="str">"路径或内联文本"</span>             <span class="com"># 给 AI · 必填</span>
+  <span class="key">source_code:</span>    <span class="str">"diagram 源码 / 代码 / 数据"</span>   <span class="com"># 给 AI · 可选</span>
+
+<span class="key">citation:</span>
+  <span class="key">canonical_url:</span>  <span class="str">"权威链接"</span>
+  <span class="key">attribution:</span>    <span class="str">"作者 / 团队"</span>
+
+<span class="key">ai_directives:</span>                                   <span class="com"># 给 AI 的明确指令</span>
+  <span class="key">quotable:</span>       <span class="str">true</span>
+  <span class="key">example_only:</span>   <span class="str">false</span>
+  <span class="key">may_be_outdated:</span> <span class="str">false</span>
+
+<span class="key">tags:</span>            [<span class="str">"setup"</span>, <span class="str">"runtime"</span>, <span class="str">"error-handling"</span>]</pre>
+  </div>
+
+  <!-- ============ AUDIT CHECKLIST ============ -->
+  <div class="audit">
+    <div class="audit-head">
+      <div>
+        <div class="a-lab">— Audit Checklist</div>
+        <h3>AI 友好度审计清单</h3>
+      </div>
+      <div class="a-meta">
+        v1.0 · for content & design teams<br>
+        每季度抽样 30-50 条
+      </div>
+    </div>
+    <div class="audit-body">
+
+      <div class="audit-group">
+        <h5><span class="gn">A.</span>基础元数据</h5>
+        <ul>
+          <li>有 summary（一句话讲清楚是什么）</li>
+          <li>有 key_insight（关键信息）</li>
+          <li>标了 audience（受众）</li>
+          <li>标了 version 和 updated_at（版本与时间）</li>
+          <li>标了 status（current / deprecated / preview）</li>
+        </ul>
+      </div>
+
+      <div class="audit-group">
+        <h5><span class="gn">B.</span>自包含程度</h5>
+        <ul>
+          <li>抽取任一段落，意思仍完整（无悬空代词）</li>
+          <li>有 prerequisites（前提）</li>
+          <li>有 outcome（产出）</li>
+          <li>有 not_for（不适用场景）</li>
+        </ul>
+      </div>
+
+      <div class="audit-group">
+        <h5><span class="gn">C.</span>非文本元素的文本副本</h5>
+        <ul>
+          <li>所有信息性图片都有 alt + caption + 描述</li>
+          <li>所有图表都有源码或结构化数据</li>
+          <li>所有视频都有人工校对的转写 + 章节 + 文章版</li>
+          <li>所有音频都有 show notes + 转写</li>
+          <li>所有交互演示都有"等价文字操作指南"</li>
+        </ul>
+      </div>
+
+      <div class="audit-group">
+        <h5><span class="gn">D.</span>代码质量</h5>
+        <ul>
+          <li>代码自包含可运行</li>
+          <li>头部声明语言 / 版本 / 依赖</li>
+          <li>占位符显式标记并注释</li>
+          <li>有预期输出 / 预期错误</li>
+        </ul>
+      </div>
+
+      <div class="audit-group">
+        <h5><span class="gn">E.</span>引用与可验证</h5>
+        <ul>
+          <li>有 canonical_url（权威源）</li>
+          <li>AI 引用时能精确定位到段落 / 时间戳</li>
+          <li>有 ai_directives（quotable / example_only / may_be_outdated）</li>
+        </ul>
+      </div>
+
+      <div class="audit-group">
+        <h5><span class="gn">F.</span>使用 AI 实测</h5>
+        <ul>
+          <li>用主流模型让它"基于这一段回答 X 问题"，准确率 ≥ 90%</li>
+          <li>转述时不出现幻觉版本号 / 不存在的 API</li>
+          <li>能正确识别哪些是示例、哪些是规范</li>
+          <li>能正确识别 deprecated 内容并提示</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ CLOSING ============ -->
+  <div class="closing-note">
+    <div class="lab">— Closing</div>
+    <h2>
+      设计师真正在做的，<br>
+      是为内容<em>建造一个新的读者</em>。
+    </h2>
+    <p>
+      AI 不是用户调研里那种"目标用户" —— 它没有同理心、没有耐心、不会读图、不爱看视频，
+      但它有惊人的覆盖能力和重组能力。我们不是为了迁就它，
+      而是<strong>因为它的存在，让我们重新看见了"清晰"本身的价值</strong>。
+    </p>
+    <p>
+      这份手册里的每一条改造建议，最终都同时让人和 AI 受益。
+      为 AI 写清楚，就是为下一位读者写清楚。<em>这或许是 AI 给设计师最大的礼物</em>。
+    </p>
+  </div>
+
+  <!-- COLOPHON -->
+  <footer class="colophon">
+    <div>
+      <h5>Colophon</h5>
+      <p>
+        Field Guide No. 002<br>
+        Set in Fraunces, Noto Serif SC,<br>
+        Noto Sans SC, JetBrains Mono.<br>
+        Companion to Report 001.
+      </p>
+    </div>
+    <div>
+      <h5>Pair With</h5>
+      <p>
+        Report 001 ·<br>
+        当社区不再被浏览，而被调用<br>
+        范式 + 角色 + 行动框架
+      </p>
+    </div>
+    <div>
+      <h5>End of Field Guide</h5>
+      <p>
+        — fin —<br>
+        Read time ≈ 28 min<br>
+        Saved as .html for offline use.
+      </p>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
