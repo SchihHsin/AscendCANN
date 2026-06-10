@@ -781,3 +781,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 | `96d6a06` | style: 金字塔加圆角——顶点+底角clipPath贝塞尔圆化 |
 | `2994bde` | style: 移除右下角FAB按钮 |
 | `926f6b4` | style: 图表非语义色统一改为蓝色渐变（#2E6BE6→#BFDBFE） |
+
+### 2026-06-10（本会话）
+
+#### ascendc-agent-main 运行原理 HTML
+
+- 用户回访：定位 `cann-dashboard/ascendc-agent-main`（原作者在昇腾 NPU 服务器上跑的算子自动开发评测系统），并回顾此前对"它怎么跑"的分析（源：会话 `bb61e3e5-...` 及其子代理日志）
+- 实读 `orchestrator.py` / `claude_runner.py` / `env_setup.sh` / `Dockerfile` / `*.yaml`，新增详细 HTML：`ascendc-agent-main/运行原理与复现指南.html`
+  - 七节：是什么 / 四层架构 / 运行流程 / NPU 容器机制 / **复现限制** / 复现步骤 / 成本估算
+  - 重点补全"复现限制"：硬依赖 Linux（`/dev/davinci*` 设备节点仅 Linux+真实 NPU 才有）、昇腾 910B 物理卡、NPU 驱动/固件、aarch64 架构、Docker、claude CLI + ANTHROPIC token；Mac 只能跑 CPU 孪生或纯 `--evaluate`
+- 在线地址（AscendCANN 仓 Pages，main 根目录）：
+  `https://schihhsin.github.io/AscendCANN/cann-dashboard/ascendc-agent-main/运行原理与复现指南.html`
