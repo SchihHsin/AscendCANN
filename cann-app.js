@@ -3584,7 +3584,7 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   function ldProfileLoad() { try { return JSON.parse(localStorage.getItem(LD_PROFILE_KEY) || '{}'); } catch(e) { return {}; } }
   function ldOpenOnboarding(reset) {
-    _ldProfileDraft = reset ? ldProfileLoad() : {};
+    _ldProfileDraft = ldProfileLoad();
     _ldOnboardingStep = 0;
     document.getElementById('ld-onboarding')?.classList.add('open');
     ldRenderOnboarding();
@@ -3719,9 +3719,14 @@ def vector_add_tik(shape, dtype, kernel_name):
   function ldChooseScenario(name) {
     _ldSelectedScenario = name;
     document.querySelectorAll('.ld-scenario-card').forEach(card => card.classList.toggle('active', card.querySelector('strong')?.textContent === name));
-    ldRenderPlanPreset(name);
-    document.getElementById('ld-task-action')?.classList.add('open');
-    ldUpdateGenerateState();
+    const custom = document.getElementById('ld-custom-scenario');
+    if (name === '个性定制') {
+      custom?.classList.add('open');
+      document.getElementById('ld-custom-goal-input')?.focus();
+      return;
+    }
+    custom?.classList.remove('open');
+    ldGenPath('scenario');
   }
 
   function ldSetInput(text) {
@@ -3738,12 +3743,13 @@ def vector_add_tik(shape, dtype, kernel_name):
       _aiPathStart(query);
       return;
     }
-    const query = _ldSelectedScenario === '个性定制'
+    const query = mode === 'custom'
       ? document.getElementById('ld-custom-goal-input')?.value.trim()
       : LD_SCENARIOS[_ldSelectedScenario];
     if (!query) return;
-    const planContext = Object.entries(_ldPlan).map(([key, value]) => `${({identity:'身份',foundation:'基础',goal:'目标',resource:'资源',time:'时间'})[key]}：${value}`).join('；');
-    sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, ..._ldPlan }));
+    const profile = ldProfileLoad();
+    const planContext = Object.entries(profile).filter(([key]) => key !== 'skipped').map(([key, value]) => `${({interest:'兴趣场景',goal:'学习目标',foundation:'基础与资源'})[key] || key}：${value}`).join('；');
+    sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, ...profile }));
     _aiPathStart(query, planContext);
   }
 
@@ -4038,5 +4044,5 @@ def vector_add_tik(shape, dtype, kernel_name):
     _updateQbBadge();
     document.getElementById('ld-ai-input')?.addEventListener('input', ldUpdateGenerateState);
     ldUpdateGenerateState();
-    if (!localStorage.getItem(LD_PROFILE_KEY)) ldOpenOnboarding(false);
+    ldOpenOnboarding(false);
   });
