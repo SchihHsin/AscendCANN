@@ -2706,6 +2706,8 @@
 
   /* ── 为你推荐: node cards ── */
   .ld-node-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .ld-refresh-btn { margin-left:10px; padding:5px 10px; border:1px solid var(--border); border-radius:14px; background:#fff; color:var(--text-secondary); cursor:pointer; white-space:nowrap; font:600 11px var(--font); }
+  .ld-refresh-btn:hover { border-color:var(--accent-blue); color:var(--accent-blue); }
   .ld-node-card {
     background: white; border: 1.5px solid var(--border); border-radius: 14px;
     min-height:164px; padding:16px; display:flex; flex-direction:column; gap:10px; position:relative;

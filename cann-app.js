@@ -3558,6 +3558,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   // Used by learn.html new dashboard layout
 
   let _ldActiveCat = 'all';
+  let _ldRecommendationOffset = 0;
   let _ldSelectedScenario = '';
   let _ldPathView = 'list';
   let _ldActivePathNodes = [];
@@ -3776,9 +3777,15 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   function ldSetCat(cat, btn) {
     _ldActiveCat = cat;
+    _ldRecommendationOffset = 0;
     document.querySelectorAll('.ld-cat-chip').forEach(c => c.classList.remove('active'));
     if (btn) btn.classList.add('active');
     ldRenderNodes(cat);
+  }
+
+  function ldRefreshRecommendations() {
+    _ldRecommendationOffset += 3;
+    ldRenderNodes(_ldActiveCat);
   }
 
   function ldRenderContinue() {
@@ -3821,7 +3828,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const interestMap = { '算子开发':'operator', '模型训练':'distributed', '模型推理':'developer', '模型迁移':'developer', '性能调优':'developer' };
     const preferred = interestMap[profile.interest];
     if (cat === 'all' && preferred) nodes.sort((a, b) => (b.category === preferred) - (a.category === preferred));
-    nodes = nodes.slice(0, 6);
+    const pageSize = 3;
+    if (_ldRecommendationOffset >= nodes.length) _ldRecommendationOffset = 0;
+    nodes = [...nodes.slice(_ldRecommendationOffset), ...nodes.slice(0, _ldRecommendationOffset)].slice(0, pageSize);
     const diffLabel = ['', '入门', '进阶', '高级'];
     grid.innerHTML = nodes.map(n => {
       const meta = CAT_META[n.category] || { label: n.category, color: '#888' };
