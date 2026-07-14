@@ -96,9 +96,25 @@
 
   // AI Chat Toggle
   function toggleAiChat() {
+    if (document.getElementById('ld-roadmap')?.style.display !== 'none') {
+      openLearningAi();
+      return;
+    }
     const sidebar = document.getElementById('ai-sidebar');
     if (sidebar.classList.contains('open')) _closeSidebar();
     else _openSidebar();
+  }
+
+  function openLearningAi() {
+    const roadmap = document.getElementById('ld-roadmap');
+    if (roadmap?.style.display !== 'none') {
+      _closeSidebar();
+      const tab = [...document.querySelectorAll('.ld-tool-tabs button')].find(button => button.textContent.trim() === 'AI 助手');
+      if (tab) ldSwitchTool('ai', tab);
+      setTimeout(() => document.getElementById('ld-tool-ai-input')?.focus(), 0);
+      return;
+    }
+    toggleAiChat();
   }
 
   // ── AI Sidebar Layout Modes ──
@@ -3928,6 +3944,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
 
   function ldRefreshStudyTools(node, knowledge) {
+    _closeSidebar();
     const context = document.getElementById('ld-ai-context');
     const chat = document.getElementById('ld-tool-chat');
     if (context) context.textContent = `当前节点：${node.title}`;
@@ -3951,7 +3968,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     input.value = '';
     chat.insertAdjacentHTML('beforeend', `<div class="ld-tool-msg user">${escHtml(question)}</div><div class="ld-tool-msg pending">正在思考…</div>`);
     try {
-      const response = await fetch(AI_WORKER_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ system:`你是 CANN 学习助手。用户正在学习「${node.title}」，请针对问题用中文简明作答，不超过180字。`, user:question, max_tokens:350 }) });
+      const response = await fetch(AI_WORKER_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ system:`你是 CANN AI 助手。用户当前学习「${node.title}」，但也可能询问其他 CANN、页面操作或学习路径问题。请结合当前上下文用中文简明作答，不超过180字。`, user:question, max_tokens:350 }) });
       const data = await response.json();
       chat.querySelector('.pending')?.remove();
       chat.insertAdjacentHTML('beforeend', `<div class="ld-tool-msg">${formatFloorText(data.text || '暂时无法回答，请稍后再试。')}</div>`);

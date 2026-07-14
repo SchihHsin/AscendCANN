@@ -26,7 +26,7 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       <input type="text" placeholder="搜索文档或 API..." />
     </div>
-    <button class="btn-ask-ai" onclick="toggleAiChat()">
+    <button class="btn-ask-ai" onclick="openLearningAi()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
         <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
@@ -418,9 +418,9 @@
       <main class="ld-learning-content" id="ld-learning-content"></main>
       <aside class="ld-study-tools" id="ld-study-tools">
         <div class="ld-tool-tabs">
-          <button class="active" onclick="ldSwitchTool('ai',this)">智能助手</button>
+          <button class="active" onclick="ldSwitchTool('ai',this)">AI 助手</button>
+          <button onclick="ldSwitchTool('visual',this)">知识图谱</button>
           <button onclick="ldSwitchTool('quiz',this)">随堂测验</button>
-          <button onclick="ldSwitchTool('visual',this)">知识可视化</button>
         </div>
         <div class="ld-tool-panel active" id="ld-tool-ai">
           <div class="ld-tool-context" id="ld-ai-context">正在学习当前节点</div>
