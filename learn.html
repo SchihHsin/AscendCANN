@@ -405,8 +405,13 @@
       <aside class="ld-path-sidebar">
         <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button class="active" onclick="ldSetPathView('list',this)">列表</button><button onclick="ldSetPathView('map',this)">可视化</button></div></div>
         <div class="ld-path-nav" id="ld-path-nav"></div>
+        <button class="ld-edit-path-btn" onclick="ldOpenPathEditor()">编辑路径</button>
       </aside>
       <main class="ld-learning-content" id="ld-learning-content"></main>
+      <aside class="ld-study-tools">
+        <section><div class="ld-tools-title">智能助手</div><p>针对当前节点提问，获得解释或代码示例。</p><button onclick="toggleAiChat()">打开智能助手</button></section>
+        <section><div class="ld-tools-title">随堂测验</div><p>检验当前节点的掌握情况。</p><button class="secondary" onclick="ldGenerateQuestion()">为当前节点出题</button></section>
+      </aside>
     </div>
 
     <!-- Path sequence strip (shown for AI-generated paths) -->

@@ -268,11 +268,34 @@
     _ipNodes = nodes.map(n => ({ ...n, known: false, collapsed: false }));
     _ipName  = _aiPathName;
     _ipQuery = query;
-    _aiPathState = 'editing';
+    _aiPathState = 'ready';
     _aiTyping(() => {
-      _aiAddBot(`已为你规划 <strong>${_ipNodes.length}</strong> 个节点！可在页面中拖拽排序、删除或插入节点，满意后保存。`);
-      _ipeShowAndHideRoadmap();
-    }, 1200);
+      _aiAddBot(`已为你规划 <strong>${_ipNodes.length}</strong> 个节点，正在进入学习路径。`);
+      ldShowGeneratedPath();
+    }, 500);
+  }
+
+  function ldShowGeneratedPath() {
+    const nodes = _ipNodes.map((node, index) => ({ ...node, step: index + 1 }));
+    const dash = document.getElementById('ld-dash');
+    const roadmap = document.getElementById('ld-roadmap');
+    if (dash) dash.style.display = 'none';
+    if (roadmap) roadmap.style.display = '';
+    document.getElementById('ld-roadmap-name').textContent = _ipName || '我的学习路径';
+    document.getElementById('ld-roadmap-prog-fill').style.width = '0%';
+    document.getElementById('ld-roadmap-prog-lbl').textContent = `0 / ${nodes.length} 节点`;
+    window._currentLearnPath = nodes;
+    ldRenderPathWorkspace(nodes);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function ldOpenPathEditor() {
+    if (!_ipNodes.length && window._currentLearnPath?.length) _ipNodes = window._currentLearnPath.map(node => ({ ...node, known: false, collapsed: false }));
+    if (!_ipNodes.length) return;
+    _aiPathState = 'editing';
+    document.getElementById('ld-roadmap').style.display = 'none';
+    document.getElementById('ld-dash').style.display = '';
+    _ipeShowAndHideRoadmap();
   }
 
   function _ipeShowAndHideRoadmap() {
