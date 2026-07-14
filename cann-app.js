@@ -3719,6 +3719,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       const dots = n.difficulty ? Array.from({length: 3}, (_, i) =>
         `<span style="width:6px;height:6px;border-radius:50%;display:inline-block;background:${i < n.difficulty ? meta.color : 'var(--border)'}"></span>`
       ).join('') : '';
+      const topics = (n.topics || []).slice(0, 3).map(topic => `<li>${topic}</li>`).join('');
       return `
         <div class="ld-node-card">
           <div class="ld-node-card-top">
@@ -3734,6 +3735,7 @@ def vector_add_tik(shape, dtype, kernel_name):
             </div>
             <button class="ld-node-start-btn" onclick="ldStartNode('${n.title}')">开始学习 →</button>
           </div>
+          ${topics ? `<div class="ld-node-hover"><strong>本节内容</strong><ul>${topics}</ul></div>` : ''}
         </div>`;
     }).join('');
   }
@@ -3828,6 +3830,9 @@ def vector_add_tik(shape, dtype, kernel_name):
   // Init learn dashboard on page load
   document.addEventListener('DOMContentLoaded', () => {
     if (!document.getElementById('ld-dash')) return; // only on learn.html
+    // Prevent the browser from restoring a previous free-form prompt on page load.
+    const freeInput = document.getElementById('ld-ai-input');
+    if (freeInput) freeInput.value = '';
     ldRenderContinue();
     ldRenderNodes('all');
     ldRenderResources();

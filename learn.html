@@ -282,7 +282,7 @@
             <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--grad-end)"/>
             <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z" fill="var(--grad-end)"/>
           </svg>
-          <input id="ld-ai-input" type="text" placeholder="描述你的学习任务，AI 为你生成专属路径…" onkeydown="if(event.key==='Enter')ldGenPath('free')">
+          <input id="ld-ai-input" type="text" value="" autocomplete="off" placeholder="描述你的学习任务，AI 为你生成专属路径…" onkeydown="if(event.key==='Enter')ldGenPath('free')">
           <button class="ld-gen-btn" id="ld-free-gen-btn" onclick="ldGenPath('free')" disabled>生成路径</button>
         </div>
         <div class="ld-scenario-head"><span>从高频任务开始</span><small>选择一个场景，生成可执行的学习计划</small></div>

@@ -2682,7 +2682,8 @@
   .ld-node-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
   .ld-node-card {
     background: white; border: 1.5px solid var(--border); border-radius: 14px;
-    min-height:164px; padding:16px; display:flex; flex-direction:column; gap:10px;
+    min-height:164px; padding:16px; display:flex; flex-direction:column; gap:10px; position:relative;
+    overflow:hidden;
     transition: all .15s; cursor: pointer;
   }
   .ld-node-card:hover { border-color: var(--grad-end); box-shadow: 0 4px 16px rgba(123,37,244,.08); transform: translateY(-1px); }
@@ -2701,6 +2702,12 @@
     cursor: pointer; font-family: var(--font); transition: all .12s;
   }
   .ld-node-start-btn:hover { background: var(--grad); border-color: transparent; color: white; }
+  .ld-node-hover { position:absolute; inset:0; padding:17px; display:flex; flex-direction:column; justify-content:center; background:rgba(255,255,255,.98); opacity:0; transform:translateY(8px); transition:opacity .16s,transform .16s; pointer-events:none; }
+  .ld-node-card:hover .ld-node-hover { opacity:1; transform:translateY(0); }
+  .ld-node-hover strong { font-size:12px; color:var(--black); }
+  .ld-node-hover ul { display:flex; flex-direction:column; gap:7px; margin:11px 0 0; padding:0; list-style:none; }
+  .ld-node-hover li { display:flex; gap:7px; color:var(--text-secondary); font-size:11px; line-height:1.45; }
+  .ld-node-hover li::before { content:'·'; color:var(--accent-blue); font-size:16px; line-height:10px; }
 
   @media (max-width: 760px) {
     .ld-node-grid { grid-template-columns:repeat(2,1fr); }
