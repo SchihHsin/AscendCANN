@@ -2639,7 +2639,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const learnPage = document.getElementById('page-learn');
     const docsActive = docsPage && docsPage.classList.contains('active');
     const learnActive = learnPage && learnPage.classList.contains('active');
-    if (docsActive || learnActive) {
+    if (docsActive) {
       sandboxBar.classList.add('visible');
     } else {
       sandboxBar.classList.remove('visible');
@@ -3872,11 +3872,24 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
 
   function ldStartNode(title) {
-    // Navigate to roadmap view and jump to this node
     const nodeIdx = NODE_LIST.findIndex(n => n.title === title);
     if (nodeIdx < 0) return;
-    // Show roadmap with a path that includes this node
-    ldShowRoadmap(null, nodeIdx);
+    const selected = NODE_LIST[nodeIdx];
+    const related = NODE_LIST.filter(node => node.category === selected.category && node.title !== selected.title);
+    const foundation = NODE_LIST.filter(node => node.category === 'beginner').slice(0, 3);
+    const path = [...foundation, selected, ...related].filter((node, i, all) => all.findIndex(item => item.title === node.title) === i).slice(0, 6).map((node, i) => ({ ...node, step:i + 1, reason: node.title === selected.title ? '你选择的学习节点' : '建议的前置或进阶节点' }));
+    const dash = document.getElementById('ld-dash');
+    const roadmap = document.getElementById('ld-roadmap');
+    if (dash) dash.style.display = 'none';
+    if (roadmap) roadmap.style.display = '';
+    document.getElementById('ld-roadmap-name').textContent = `${selected.title}学习路径`;
+    document.getElementById('ld-roadmap-prog-fill').style.width = '0%';
+    document.getElementById('ld-roadmap-prog-lbl').textContent = `0 / ${path.length} 节点`;
+    window._currentLearnPath = path;
+    ldRenderPathWorkspace(path);
+    const focus = path.findIndex(node => node.title === selected.title);
+    if (focus >= 0) ldOpenPathNode(focus);
+    window.scrollTo({ top:0, behavior:'instant' });
   }
 
   function ldShowRoadmap(pathId, focusIdx) {
@@ -3956,7 +3969,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const video = NODE_VIDEO[node.title] || { title: `${node.title}讲解视频`, duration: '课程视频', tag: '视频学习' };
     const resources = (knowledge?.resources || []).map(r => `<a class="ld-content-resource" href="${r.href}" target="_blank"><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`).join('');
     const concepts = (knowledge?.concepts || []).slice(0, 4).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p></div>`).join('');
-    content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button onclick="openNodeDrawer('${node.title}')">打开完整学习内容</button><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>推荐视频</h2><button class="ld-video-card" onclick="openNodeDrawer('${node.title}')"><span class="ld-video-play">▶</span><div><strong>${video.title}</strong><small>${video.tag} · ${video.duration}</small></div><span class="ld-video-open">观看并学习 →</span></button></section><section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><h2>学习资源</h2><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    const code = knowledge?.code;
+    const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="openEmptySandbox()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
+    content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button onclick="openNodeDrawer('${node.title}')">打开完整学习内容</button><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>推荐视频</h2><button class="ld-video-card" onclick="openNodeDrawer('${node.title}')"><span class="ld-video-play">▶</span><div><strong>${video.title}</strong><small>${video.tag} · ${video.duration}</small></div><span class="ld-video-open">观看并学习 →</span></button></section>${codeHtml}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><h2>学习资源</h2><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     ldRefreshStudyTools(node, knowledge);
   }
 
@@ -3972,6 +3987,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     const chat = document.getElementById('ld-tool-chat');
     if (context) context.textContent = `当前节点：${node.title}`;
     if (chat) chat.innerHTML = `<div class="ld-tool-msg">正在学习「${node.title}」。可以让我解释概念、给出代码示例或规划练习。</div>`;
+    const prompts = document.getElementById('ld-tool-prompts');
+    if (prompts) prompts.innerHTML = ['用适合初学者的方式解释这个概念', '逐行讲解这个节点的代码示例', '列出实践中最常见的三个错误与排查方法', '为我设计一个 20 分钟的动手练习'].map(text => `<button onclick="ldToolPrompt('${text}')">${text}</button>`).join('');
     const quiz = document.getElementById('ld-embedded-quiz');
     if (quiz) quiz.innerHTML = `<div class="ld-tool-empty">切换到随堂测验后会自动出题。</div>`;
     const visual = document.getElementById('ld-knowledge-visual');
@@ -3997,6 +4014,13 @@ def vector_add_tik(shape, dtype, kernel_name):
       chat.insertAdjacentHTML('beforeend', `<div class="ld-tool-msg">${formatFloorText(data.text || '暂时无法回答，请稍后再试。')}</div>`);
     } catch(e) { chat.querySelector('.pending')?.replaceWith(Object.assign(document.createElement('div'), { className:'ld-tool-msg', textContent:'连接失败，请稍后再试。' })); }
     chat.scrollTop = chat.scrollHeight;
+  }
+
+  function ldToolPrompt(text) {
+    const input = document.getElementById('ld-tool-ai-input');
+    if (!input) return;
+    input.value = text;
+    ldToolAsk();
   }
 
   function ldLoadEmbeddedQuiz() {

@@ -2841,6 +2841,9 @@
   .ld-tool-msg { align-self:flex-start; max-width:92%; padding:9px 10px; border:1px solid var(--border); border-radius:8px; background:#fff; color:var(--text-secondary); font-size:11px; line-height:1.55; }
   .ld-tool-msg.user { align-self:flex-end; background:var(--black); color:#fff; border-color:var(--black); }
   .ld-tool-msg.pending { color:var(--text-muted); }
+  .ld-tool-prompts { display:flex; flex-wrap:wrap; gap:6px; padding:0 0 10px; }
+  .ld-tool-prompts button { padding:5px 7px; border:1px solid var(--border); border-radius:12px; background:#fff; color:var(--text-secondary); cursor:pointer; font:10px var(--font); }
+  .ld-tool-prompts button:hover { border-color:var(--accent-blue); color:var(--accent-blue); }
   .ld-tool-input { display:flex; gap:6px; padding-top:10px; border-top:1px solid var(--border); }
   .ld-tool-input input { flex:1; min-width:0; height:34px; padding:0 9px; border:1px solid var(--border); border-radius:6px; outline:none; font:11px var(--font); }
   .ld-tool-input button, .ld-tool-primary { padding:0 11px; border:0; border-radius:6px; background:var(--black); color:#fff; cursor:pointer; font:600 11px var(--font); }
@@ -2880,6 +2883,10 @@
   .ld-video-card strong { font-size:13px; }
   .ld-video-card small { margin-top:4px; color:rgba(255,255,255,.7); font-size:11px; }
   .ld-video-open { margin-left:auto; font-size:11px; white-space:nowrap; }
+  .ld-code-example { overflow:hidden; border:1px solid var(--border); border-radius:8px; background:#0F172A; }
+  .ld-code-example > div { display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border-bottom:1px solid rgba(255,255,255,.12); color:#CBD5E1; font:11px var(--mono); }
+  .ld-code-example button { padding:5px 8px; border:1px solid rgba(255,255,255,.3); border-radius:5px; background:transparent; color:#fff; cursor:pointer; font:600 10px var(--font); }
+  .ld-code-example pre { margin:0; padding:14px; overflow:auto; color:#E2E8F0; font:11px/1.65 var(--mono); }
   .ld-content-concepts { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
   .ld-content-concept { padding:14px; border:1px solid var(--border); border-radius:8px; background:var(--surface); }
   .ld-content-concept strong { font-size:13px; }
