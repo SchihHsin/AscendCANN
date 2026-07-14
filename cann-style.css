@@ -2580,6 +2580,7 @@
     transition: opacity .15s;
   }
   .ld-gen-btn:hover { opacity: .88; }
+  .ld-gen-btn:disabled { opacity:.38; cursor:not-allowed; }
   .ld-hint-chips {
     display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px;
   }
@@ -2608,6 +2609,8 @@
   .ld-plan-row div { display:flex; flex-wrap:wrap; gap:6px; }
   .ld-plan-row button { padding:5px 10px; border:1px solid var(--border); border-radius:14px; background:#fff; color:var(--text-secondary); cursor:pointer; font:12px var(--font); }
   .ld-plan-row button:hover, .ld-plan-row button.active { border-color:var(--accent-blue); background:#EAF0FF; color:var(--accent-blue); font-weight:700; }
+  .ld-task-gen-btn { display:block; margin:14px auto 0; }
+  .ld-gen-hint { margin:8px 0 0; color:var(--text-muted); font-size:11px; }
 
   /* IPE outer wrapper (centers the inline path editor) */
   .ld-ipe-outer { max-width: 860px; margin: -32px auto 32px; }
@@ -2675,12 +2678,10 @@
   .ld-path-card-empty a { color: var(--grad-end); cursor: pointer; text-decoration: none; }
 
   /* ── 为你推荐: node cards ── */
-  .ld-node-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px;
-  }
+  .ld-node-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
   .ld-node-card {
     background: white; border: 1.5px solid var(--border); border-radius: 14px;
-    padding: 18px 18px 14px; display: flex; flex-direction: column; gap: 10px;
+    min-height:164px; padding:16px; display:flex; flex-direction:column; gap:10px;
     transition: all .15s; cursor: pointer;
   }
   .ld-node-card:hover { border-color: var(--grad-end); box-shadow: 0 4px 16px rgba(123,37,244,.08); transform: translateY(-1px); }
@@ -2699,6 +2700,10 @@
     cursor: pointer; font-family: var(--font); transition: all .12s;
   }
   .ld-node-start-btn:hover { background: var(--grad); border-color: transparent; color: white; }
+
+  @media (max-width: 760px) {
+    .ld-node-grid { grid-template-columns:repeat(2,1fr); }
+  }
 
   .ld-resource-section { margin-top:-16px; }
   .ld-resource-form { display:none; grid-template-columns:1.2fr 1.5fr 90px auto; gap:8px; margin-bottom:12px; }

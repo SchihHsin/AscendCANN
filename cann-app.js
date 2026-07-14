@@ -3591,35 +3591,46 @@ def vector_add_tik(shape, dtype, kernel_name):
     button.closest('.ld-plan-row').querySelectorAll('button').forEach(item => item.classList.remove('active'));
     button.classList.add('active');
     _ldPlan[key] = button.textContent.trim();
+    ldUpdateGenerateState();
+  }
+
+  function ldUpdateGenerateState() {
+    const btn = document.getElementById('ld-task-gen-btn');
+    const hint = document.getElementById('ld-gen-hint');
+    const freeBtn = document.getElementById('ld-free-gen-btn');
+    const freeInput = document.getElementById('ld-ai-input');
+    if (!btn || !hint) return;
+    const ready = Boolean(_ldSelectedScenario) && Object.keys(_ldPlan).length >= 5;
+    btn.disabled = !ready;
+    hint.textContent = ready ? '已准备好，AI 会根据你的选择生成可编辑学习路径' : '请完成任务场景和五项学习偏好后生成路径';
+    if (freeBtn && freeInput) freeBtn.disabled = !freeInput.value.trim();
   }
 
   function ldChooseScenario(name) {
     _ldSelectedScenario = name;
     document.querySelectorAll('.ld-scenario-card').forEach(card => card.classList.toggle('active', card.querySelector('strong')?.textContent === name));
-    const input = document.getElementById('ld-ai-input');
-    if (name) {
-      const text = LD_SCENARIOS[name];
-      if (input) input.value = text;
-    } else if (input) {
-      input.focus();
-    }
     ldRenderPlanPreset(name);
+    ldUpdateGenerateState();
   }
 
   function ldSetInput(text) {
-    const input = document.getElementById('ld-ai-input');
-    if (input) { input.value = text; input.focus(); }
+    const scenario = Object.entries(LD_SCENARIOS).find(([, value]) => value === text)?.[0];
+    if (scenario) ldChooseScenario(scenario);
   }
 
-  async function ldGenPath() {
+  async function ldGenPath(mode) {
     const input = document.getElementById('ld-ai-input');
-    if (!input) return;
-    const query = input.value.trim();
-    if (!query) { input.focus(); return; }
-
+    if (mode === 'free') {
+      const query = input?.value.trim();
+      if (!query) return;
+      sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: '自由输入' }));
+      _aiPathStart(query);
+      return;
+    }
+    const query = LD_SCENARIOS[_ldSelectedScenario];
+    if (!query || Object.keys(_ldPlan).length < 5) return;
     const planContext = Object.entries(_ldPlan).map(([key, value]) => `${({identity:'身份',foundation:'基础',goal:'目标',resource:'资源',time:'时间'})[key]}：${value}`).join('；');
     sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, ..._ldPlan }));
-    // Kick off AI-guided path generation via sidebar
     _aiPathStart(query, planContext);
   }
 
@@ -3700,26 +3711,20 @@ def vector_add_tik(shape, dtype, kernel_name):
   function ldRenderNodes(cat) {
     const grid = document.getElementById('ld-node-grid');
     if (!grid) return;
-    const nodes = cat === 'all' ? NODE_LIST : NODE_LIST.filter(n => n.category === cat);
+    const nodes = (cat === 'all' ? NODE_LIST : NODE_LIST.filter(n => n.category === cat)).slice(0, 6);
     const diffLabel = ['', '入门', '进阶', '高级'];
     grid.innerHTML = nodes.map(n => {
       const meta = CAT_META[n.category] || { label: n.category, color: '#888' };
       const dots = n.difficulty ? Array.from({length: 3}, (_, i) =>
         `<span style="width:6px;height:6px;border-radius:50%;display:inline-block;background:${i < n.difficulty ? meta.color : 'var(--border)'}"></span>`
       ).join('') : '';
-      const topicsHtml = (n.topics || []).map(t =>
-        `<li style="display:flex;gap:6px;align-items:flex-start;font-size:12px;color:var(--text-secondary);line-height:1.5">
-          <span style="color:${meta.color};flex-shrink:0;margin-top:1px">✓</span>${t}
-        </li>`
-      ).join('');
       return `
         <div class="ld-node-card">
           <div class="ld-node-card-top">
             <span class="ld-node-card-title">${n.title}</span>
             <span class="ld-node-card-badge" style="background:${meta.color}18;color:${meta.color}">${meta.label}</span>
           </div>
-          <div class="ld-node-card-desc" style="margin-bottom:10px">${n.desc}</div>
-          ${topicsHtml ? `<ul style="margin:0 0 12px;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px">${topicsHtml}</ul>` : ''}
+          <div class="ld-node-card-desc">${n.desc}</div>
           <div class="ld-node-card-footer">
             <div style="display:flex;align-items:center;gap:6px">
               ${dots}
@@ -3826,4 +3831,6 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldRenderNodes('all');
     ldRenderResources();
     _updateQbBadge();
+    document.getElementById('ld-ai-input')?.addEventListener('input', ldUpdateGenerateState);
+    ldUpdateGenerateState();
   });

@@ -272,7 +272,7 @@
   <!-- ═══ DASHBOARD VIEW ═══ -->
   <div class="ld-dash" id="ld-dash">
 
-    <!-- AI Input Hero -->
+    <!-- Task-first hero -->
     <div class="ld-hero">
       <div class="ld-hero-inner">
         <div class="section-label" style="text-align:center;justify-content:center;">学习</div>
@@ -282,8 +282,8 @@
             <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--grad-end)"/>
             <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z" fill="var(--grad-end)"/>
           </svg>
-          <input id="ld-ai-input" type="text" placeholder="描述你想学的方向，AI 为你生成专属路径…" onkeydown="if(event.key==='Enter')ldGenPath()">
-          <button class="ld-gen-btn" onclick="ldGenPath()">生成路径</button>
+          <input id="ld-ai-input" type="text" placeholder="描述你的学习任务，AI 为你生成专属路径…" onkeydown="if(event.key==='Enter')ldGenPath('free')">
+          <button class="ld-gen-btn" id="ld-free-gen-btn" onclick="ldGenPath('free')" disabled>生成路径</button>
         </div>
         <div class="ld-scenario-head"><span>从高频任务开始</span><small>选择一个场景，生成可执行的学习计划</small></div>
         <div class="ld-scenario-grid" id="ld-scenario-grid">
@@ -301,6 +301,8 @@
           <div class="ld-plan-row" data-plan="resource"><b>你的资源</b><div><button>有昇腾硬件</button><button>希望在线实验</button></div></div>
           <div class="ld-plan-row" data-plan="time"><b>你的时间</b><div><button>30 分钟</button><button>1 天</button><button>1 周</button><button>1 个月</button></div></div>
         </div>
+        <button class="ld-gen-btn ld-task-gen-btn" id="ld-task-gen-btn" onclick="ldGenPath('scenario')" disabled>根据选择生成学习路径</button>
+        <p class="ld-gen-hint" id="ld-gen-hint">选择场景后，完成五项学习偏好即可直接生成</p>
       </div>
     </div>
 
@@ -328,15 +330,6 @@
       </div>
     </div>
 
-    <!-- 继续学习 -->
-    <div class="ld-section">
-      <div class="ld-sec-hd">
-        <span class="ld-sec-title">继续学习</span>
-        <button class="ld-sec-link" onclick="openLearningArchive('paths')">查看全部 →</button>
-      </div>
-      <div class="ld-continue-list" id="ld-continue-list"></div>
-    </div>
-
     <!-- 为你推荐 -->
     <div class="ld-section">
       <div class="ld-sec-hd">
@@ -346,7 +339,7 @@
           <button class="ld-cat-chip" onclick="ldSetCat('beginner',this)">入门</button>
           <button class="ld-cat-chip" onclick="ldSetCat('developer',this)">应用开发</button>
           <button class="ld-cat-chip" onclick="ldSetCat('operator',this)">算子开发</button>
-          <button class="ld-cat-chip" onclick="ldSetCat('distributed',this)">分布式</button>
+          <button class="ld-cat-chip" onclick="ldSetCat('distributed',this)">训练</button>
         </div>
       </div>
       <div class="ld-node-grid" id="ld-node-grid"></div>
