@@ -203,7 +203,7 @@
     { keys: ['入门','基础','初学'],                        q: '你每周能投入多少学习时间？', opts: ['1–3 小时', '5–10 小时', '全职投入'] },
   ];
 
-  function _aiPathStart(query) {
+  function _aiPathStart(query, planContext) {
     _aiPathMode  = true;
     _aiPathState = 'idle';
     _aiPathQuery = query;
@@ -213,8 +213,16 @@
     document.getElementById('ai-title-text').textContent = 'AI 路径规划';
     document.getElementById('ai-messages').innerHTML = '';
     document.getElementById('ai-chips').innerHTML = '';
-    // AI proactively asks the clarifying question
-    setTimeout(() => _aiPathHandleFirst(query), 300);
+    // The dashboard has already collected structured preferences, so do not ask them twice.
+    if (planContext) {
+      _aiPathState = 'generating';
+      setTimeout(() => _aiTyping(() => {
+        _aiAddBot('已读取你的场景与学习偏好，正在为你规划路径…');
+        _aiPathGenerate(query, planContext);
+      }), 300);
+    } else {
+      setTimeout(() => _aiPathHandleFirst(query), 300);
+    }
   }
 
   function _aiPathHandleFirst(query) {
@@ -3525,6 +3533,66 @@ def vector_add_tik(shape, dtype, kernel_name):
     '性能调优': '使用 Profiling 定位训练、推理或算子性能瓶颈',
   };
 
+  const LD_PLAN_PRESETS = {
+    '算子开发': [
+      ['identity', '你的身份', ['学生', '算子开发者', '算法工程师']],
+      ['foundation', '你的基础', ['零基础', '会 Python', '熟悉 C++', '了解 AI Core']],
+      ['goal', '你的目标', ['完成首个算子', '调试精度', '性能优化', '开发认证']],
+      ['resource', '你的资源', ['有昇腾硬件', '希望在线实验']],
+      ['time', '你的时间', ['30 分钟', '1 天', '1 周', '1 个月']],
+    ],
+    '模型迁移': [
+      ['identity', '你的身份', ['学生', '应用开发者', '算法工程师']],
+      ['foundation', '你的基础', ['零基础', '会 PyTorch', '熟悉 ONNX', '会 Python']],
+      ['goal', '你的目标', ['跑通迁移', '精度对齐', '算子适配', '完成认证']],
+      ['resource', '你的资源', ['有昇腾硬件', '希望在线实验']],
+      ['time', '你的时间', ['30 分钟', '1 天', '1 周', '1 个月']],
+    ],
+    '模型推理': [
+      ['identity', '你的身份', ['学生', '应用开发者', '算法工程师']],
+      ['foundation', '你的基础', ['零基础', '会 Python', '熟悉 C++', '了解 ONNX']],
+      ['goal', '你的目标', ['模型转换', '跑通推理', '服务化部署', '完成认证']],
+      ['resource', '你的资源', ['有部署环境', '有昇腾硬件', '希望在线实验']],
+      ['time', '你的时间', ['30 分钟', '1 天', '1 周', '1 个月']],
+    ],
+    '模型训练': [
+      ['identity', '你的身份', ['学生', '算法工程师', '应用开发者']],
+      ['foundation', '你的基础', ['会 PyTorch', '会 MindSpore', '零基础', '熟悉分布式']],
+      ['goal', '你的目标', ['启动训练', '模型微调', '训练稳定性', '多卡训练']],
+      ['resource', '你的资源', ['单卡昇腾硬件', '多卡昇腾硬件', '希望在线实验']],
+      ['time', '你的时间', ['30 分钟', '1 天', '1 周', '1 个月']],
+    ],
+    '性能调优': [
+      ['identity', '你的身份', ['应用开发者', '算子开发者', '算法工程师']],
+      ['foundation', '你的基础', ['会 Profiling', '会 Python', '熟悉 C++', '零基础']],
+      ['goal', '你的目标', ['定位瓶颈', '降低时延', '提升吞吐', '优化算子']],
+      ['resource', '你的资源', ['有昇腾硬件', '有性能数据', '希望在线实验']],
+      ['time', '你的时间', ['30 分钟', '1 天', '1 周', '1 个月']],
+    ],
+    '自定义目标': [
+      ['identity', '你的身份', ['学生', '应用开发者', '算子开发者', '算法工程师']],
+      ['foundation', '你的基础', ['零基础', '会 Python', '会 PyTorch', '熟悉 C++']],
+      ['goal', '你的目标', ['入门', '模型迁移', '推理部署', '算子开发', '认证']],
+      ['resource', '你的资源', ['有昇腾硬件', '希望在线实验']],
+      ['time', '你的时间', ['30 分钟', '1 天', '1 周', '1 个月']],
+    ],
+  };
+
+  function ldRenderPlanPreset(name) {
+    const container = document.getElementById('ld-plan-fields');
+    const preset = LD_PLAN_PRESETS[name || '自定义目标'];
+    if (!container || !preset) return;
+    _ldPlan = {};
+    container.innerHTML = preset.map(([key, label, options]) => `<div class="ld-plan-row" data-plan="${key}"><b>${label}</b><div>${options.map(option => `<button type="button" onclick="ldSelectPlan('${key}', this)">${option}</button>`).join('')}</div></div>`).join('');
+    container.classList.add('open');
+  }
+
+  function ldSelectPlan(key, button) {
+    button.closest('.ld-plan-row').querySelectorAll('button').forEach(item => item.classList.remove('active'));
+    button.classList.add('active');
+    _ldPlan[key] = button.textContent.trim();
+  }
+
   function ldChooseScenario(name) {
     _ldSelectedScenario = name;
     document.querySelectorAll('.ld-scenario-card').forEach(card => card.classList.toggle('active', card.querySelector('strong')?.textContent === name));
@@ -3532,11 +3600,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (name) {
       const text = LD_SCENARIOS[name];
       if (input) input.value = text;
-      _ldPlan.goal = name;
     } else if (input) {
       input.focus();
     }
-    document.getElementById('ld-plan-fields')?.classList.add('open');
+    ldRenderPlanPreset(name);
   }
 
   function ldSetInput(text) {
@@ -3553,7 +3620,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const planContext = Object.entries(_ldPlan).map(([key, value]) => `${({identity:'身份',foundation:'基础',goal:'目标',resource:'资源',time:'时间'})[key]}：${value}`).join('；');
     sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, ..._ldPlan }));
     // Kick off AI-guided path generation via sidebar
-    _aiPathStart(planContext ? `${query}；${planContext}` : query);
+    _aiPathStart(query, planContext);
   }
 
   function ldToggleResourceForm() {
@@ -3759,10 +3826,4 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldRenderNodes('all');
     ldRenderResources();
     _updateQbBadge();
-    document.querySelectorAll('.ld-plan-row button').forEach(btn => btn.addEventListener('click', () => {
-      const row = btn.closest('.ld-plan-row');
-      row.querySelectorAll('button').forEach(item => item.classList.remove('active'));
-      btn.classList.add('active');
-      _ldPlan[row.dataset.plan] = btn.textContent.trim();
-    }));
   });
