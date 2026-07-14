@@ -3749,6 +3749,16 @@ def vector_add_tik(shape, dtype, kernel_name):
     content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button onclick="openNodeDrawer('${node.title}')">打开完整学习内容</button><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><h2>学习资源</h2><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
   }
 
+  function ldGenerateQuestion() {
+    const active = document.querySelector('.ld-path-nav-item.active');
+    const node = _ldActivePathNodes[active ? [...document.querySelectorAll('.ld-path-nav-item')].indexOf(active) : 0] || NODE_LIST[0];
+    openNodeDrawer(node.title);
+    setTimeout(() => {
+      const tab = document.querySelector('.nd-tab[data-tab="quiz"]');
+      if (tab) switchNdTab('quiz', tab);
+    }, 80);
+  }
+
   function ldShowDash() {
     const dash = document.getElementById('ld-dash');
     const roadmap = document.getElementById('ld-roadmap');
