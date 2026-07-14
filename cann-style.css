@@ -2736,6 +2736,8 @@
   .ld-node-hover ul { display:flex; flex-direction:column; gap:7px; margin:11px 0 0; padding:0; list-style:none; }
   .ld-node-hover li { display:flex; gap:7px; color:var(--text-secondary); font-size:11px; line-height:1.45; }
   .ld-node-hover li::before { content:'·'; color:var(--accent-blue); font-size:16px; line-height:10px; }
+  .ld-node-enter { position:absolute; right:14px; bottom:13px; display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:0; border-radius:50%; background:var(--black); color:#fff; cursor:pointer; font:700 17px/1 var(--font); }
+  .ld-node-enter:hover { background:var(--accent-blue); }
 
   @media (max-width: 760px) {
     .ld-ob-card { padding:30px 22px; }

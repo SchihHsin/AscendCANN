@@ -3847,7 +3847,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       ).join('') : '';
       const topics = (n.topics || []).slice(0, 3).map(topic => `<li>${topic}</li>`).join('');
       return `
-        <div class="ld-node-card">
+        <div class="ld-node-card" onclick="ldStartNode('${n.title}')">
           <div class="ld-node-card-top">
             <span class="ld-node-card-title">${n.title}</span>
             <span class="ld-node-card-badge" style="background:${meta.color}18;color:${meta.color}">${meta.label}</span>
@@ -3859,9 +3859,8 @@ def vector_add_tik(shape, dtype, kernel_name):
               <span style="font-size:11px;color:var(--text-muted)">${diffLabel[n.difficulty] || ''}</span>
               ${n.duration ? `<span style="font-size:11px;color:var(--text-muted);margin-left:6px">· ${n.duration}</span>` : ''}
             </div>
-            <button class="ld-node-start-btn" onclick="ldStartNode('${n.title}')">开始学习 →</button>
           </div>
-          ${topics ? `<div class="ld-node-hover"><strong>本节内容</strong><ul>${topics}</ul></div>` : ''}
+          ${topics ? `<div class="ld-node-hover"><strong>本节内容</strong><ul>${topics}</ul><button class="ld-node-enter" onclick="event.stopPropagation();ldStartNode('${n.title}')" title="进入学习" aria-label="进入学习：${n.title}">→</button></div>` : ''}
         </div>`;
     }).join('');
   }
