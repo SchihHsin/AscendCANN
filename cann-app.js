@@ -3600,9 +3600,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const freeBtn = document.getElementById('ld-free-gen-btn');
     const freeInput = document.getElementById('ld-ai-input');
     if (!btn || !hint) return;
-    const ready = Boolean(_ldSelectedScenario) && Object.keys(_ldPlan).length >= 5;
+    const ready = Boolean(_ldSelectedScenario);
     btn.disabled = !ready;
-    hint.textContent = ready ? '已准备好，AI 会根据你的选择生成可编辑学习路径' : '请完成任务场景和五项学习偏好后生成路径';
+    hint.textContent = ready ? '可直接生成；补充学习偏好后，路径会更贴近你的情况' : '请先选择一个任务场景';
     if (freeBtn && freeInput) freeBtn.disabled = !freeInput.value.trim();
   }
 
@@ -3629,7 +3629,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       return;
     }
     const query = LD_SCENARIOS[_ldSelectedScenario];
-    if (!query || Object.keys(_ldPlan).length < 5) return;
+    if (!query) return;
     const planContext = Object.entries(_ldPlan).map(([key, value]) => `${({identity:'身份',foundation:'基础',goal:'目标',resource:'资源',time:'时间'})[key]}：${value}`).join('；');
     sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, ..._ldPlan }));
     _aiPathStart(query, planContext);
