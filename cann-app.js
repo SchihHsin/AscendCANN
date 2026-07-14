@@ -110,14 +110,15 @@
     if (roadmap?.style.display !== 'none') {
       _closeSidebar();
       const workspace = document.getElementById('ld-path-workspace');
+      const aiTab = [...document.querySelectorAll('.ld-tool-tabs button')].find(button => button.textContent.trim() === 'AI 助手');
+      const aiIsActive = aiTab?.classList.contains('active');
       if (workspace?.classList.contains('ld-tools-collapsed')) {
         workspace.classList.remove('ld-tools-collapsed');
-      } else {
+      } else if (aiIsActive) {
         workspace?.classList.add('ld-tools-collapsed');
         return;
       }
-      const tab = [...document.querySelectorAll('.ld-tool-tabs button')].find(button => button.textContent.trim() === 'AI 助手');
-      if (tab) ldSwitchTool('ai', tab);
+      if (aiTab) ldSwitchTool('ai', aiTab);
       setTimeout(() => document.getElementById('ld-tool-ai-input')?.focus(), 0);
       return;
     }
@@ -3957,6 +3958,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   function ldSwitchTool(name, button) {
     document.querySelectorAll('.ld-tool-tabs button').forEach(item => item.classList.toggle('active', item === button));
     document.querySelectorAll('.ld-tool-panel').forEach(panel => panel.classList.toggle('active', panel.id === `ld-tool-${name}`));
+    if (name === 'quiz') ldLoadEmbeddedQuiz();
   }
 
   function ldRefreshStudyTools(node, knowledge) {
@@ -3966,7 +3968,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (context) context.textContent = `当前节点：${node.title}`;
     if (chat) chat.innerHTML = `<div class="ld-tool-msg">正在学习「${node.title}」。可以让我解释概念、给出代码示例或规划练习。</div>`;
     const quiz = document.getElementById('ld-embedded-quiz');
-    if (quiz) quiz.innerHTML = `<div class="ld-tool-empty">围绕「${node.title}」生成一题，检验理解程度。</div>`;
+    if (quiz) quiz.innerHTML = `<div class="ld-tool-empty">切换到随堂测验后会自动出题。</div>`;
     const visual = document.getElementById('ld-knowledge-visual');
     if (!visual) return;
     const items = (knowledge?.concepts || []).slice(0, 4);
