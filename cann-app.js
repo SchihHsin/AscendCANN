@@ -3547,6 +3547,51 @@ def vector_add_tik(shape, dtype, kernel_name):
   let _ldActivePathNodes = [];
   let _ldPlan = {};
   const LD_RESOURCES_KEY = 'cann_learn_resources';
+  const LD_PROFILE_KEY = 'cann_learning_profile';
+  let _ldOnboardingStep = 0;
+  let _ldProfileDraft = {};
+  const LD_ONBOARDING = [
+    { key:'interest', title:'你想用 CANN 做什么？', options:['算子开发','模型迁移','模型推理','模型训练','性能调优','暂不确定'] },
+    { key:'goal', title:'你希望通过学习达成什么？', options:['跑通一个项目','解决当前任务','提升工作技能','学习认证','暂不确定'] },
+    { key:'foundation', title:'你的基础与资源如何？', options:['零基础','会 Python','会 PyTorch','熟悉 C++','有昇腾硬件','希望在线实验'] },
+  ];
+
+  function ldProfileLoad() { try { return JSON.parse(localStorage.getItem(LD_PROFILE_KEY) || '{}'); } catch(e) { return {}; } }
+  function ldOpenOnboarding(reset) {
+    _ldProfileDraft = reset ? ldProfileLoad() : {};
+    _ldOnboardingStep = 0;
+    document.getElementById('ld-onboarding')?.classList.add('open');
+    ldRenderOnboarding();
+  }
+  function ldSkipOnboarding() {
+    localStorage.setItem(LD_PROFILE_KEY, JSON.stringify({ skipped:true }));
+    document.getElementById('ld-onboarding')?.classList.remove('open');
+    ldRenderNodes(_ldActiveCat);
+  }
+  function ldRenderOnboarding() {
+    const item = LD_ONBOARDING[_ldOnboardingStep];
+    const box = document.getElementById('ld-ob-question');
+    const next = document.getElementById('ld-ob-next');
+    if (!box || !next) return;
+    const current = _ldProfileDraft[item.key];
+    box.innerHTML = `<h2>${item.title}</h2><div class="ld-ob-options">${item.options.map(option => `<button class="${current === option ? 'active' : ''}" onclick="ldPickOnboarding('${item.key}','${option}',this)">${option}</button>`).join('')}</div>`;
+    document.querySelectorAll('.ld-ob-progress span').forEach(span => span.classList.toggle('active', Number(span.dataset.step) <= _ldOnboardingStep + 1));
+    next.disabled = !current;
+    next.textContent = _ldOnboardingStep === LD_ONBOARDING.length - 1 ? '查看我的推荐' : '下一步';
+  }
+  function ldPickOnboarding(key, value, button) {
+    _ldProfileDraft[key] = value;
+    button.closest('.ld-ob-options').querySelectorAll('button').forEach(item => item.classList.remove('active'));
+    button.classList.add('active');
+    document.getElementById('ld-ob-next').disabled = false;
+  }
+  function ldNextOnboarding() {
+    if (!_ldProfileDraft[LD_ONBOARDING[_ldOnboardingStep].key]) return;
+    if (_ldOnboardingStep < LD_ONBOARDING.length - 1) { _ldOnboardingStep++; ldRenderOnboarding(); return; }
+    localStorage.setItem(LD_PROFILE_KEY, JSON.stringify(_ldProfileDraft));
+    document.getElementById('ld-onboarding')?.classList.remove('open');
+    ldRenderNodes(_ldActiveCat);
+  }
 
   const LD_SCENARIOS = {
     '算子开发': 'TBE / TIK 自定义算子开发、编译与调试',
@@ -3754,7 +3799,12 @@ def vector_add_tik(shape, dtype, kernel_name):
   function ldRenderNodes(cat) {
     const grid = document.getElementById('ld-node-grid');
     if (!grid) return;
-    const nodes = (cat === 'all' ? NODE_LIST : NODE_LIST.filter(n => n.category === cat)).slice(0, 6);
+    let nodes = cat === 'all' ? [...NODE_LIST] : NODE_LIST.filter(n => n.category === cat);
+    const profile = ldProfileLoad();
+    const interestMap = { '算子开发':'operator', '模型训练':'distributed', '模型推理':'developer', '模型迁移':'developer', '性能调优':'developer' };
+    const preferred = interestMap[profile.interest];
+    if (cat === 'all' && preferred) nodes.sort((a, b) => (b.category === preferred) - (a.category === preferred));
+    nodes = nodes.slice(0, 6);
     const diffLabel = ['', '入门', '进阶', '高级'];
     grid.innerHTML = nodes.map(n => {
       const meta = CAT_META[n.category] || { label: n.category, color: '#888' };
@@ -3881,4 +3931,5 @@ def vector_add_tik(shape, dtype, kernel_name):
     _updateQbBadge();
     document.getElementById('ld-ai-input')?.addEventListener('input', ldUpdateGenerateState);
     ldUpdateGenerateState();
+    if (!localStorage.getItem(LD_PROFILE_KEY)) ldOpenOnboarding(false);
   });

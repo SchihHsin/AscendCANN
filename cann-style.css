@@ -2550,6 +2550,25 @@
   .ld-dash {
     max-width: 860px; margin: 0 auto; padding: 56px 24px 80px;
   }
+  .ld-onboarding { position:fixed; inset:0; z-index:4200; display:none; align-items:center; justify-content:center; padding:30px; background:#FFF7EF; }
+  .ld-onboarding.open { display:flex; }
+  .ld-ob-card { width:min(840px,100%); padding:46px 54px; border:1px solid var(--border); background:#fff; box-shadow:var(--shadow-lg); }
+  .ld-ob-kicker { color:var(--accent-blue); font-size:12px; font-weight:800; letter-spacing:.08em; }
+  .ld-ob-card h1 { max-width:570px; margin:12px 0 8px; color:var(--black); font-size:30px; line-height:1.2; }
+  .ld-ob-desc { margin:0; color:var(--text-secondary); font-size:14px; }
+  .ld-ob-progress { display:flex; align-items:center; gap:8px; margin:34px 0 28px; }
+  .ld-ob-progress span { display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid var(--border2); border-radius:50%; color:var(--text-muted); font-size:12px; font-weight:800; }
+  .ld-ob-progress span.active { border-color:var(--black); background:var(--black); color:#fff; }
+  .ld-ob-progress i { width:44px; height:1px; background:var(--border2); }
+  .ld-ob-question h2 { margin:0 0 16px; color:var(--black); font-size:20px; }
+  .ld-ob-options { display:grid; grid-template-columns:repeat(2,1fr); gap:9px; }
+  .ld-ob-options button { padding:13px 15px; border:1px solid var(--border2); background:#fff; color:var(--black); cursor:pointer; text-align:left; font:600 13px var(--font); }
+  .ld-ob-options button:hover, .ld-ob-options button.active { border-color:var(--accent-blue); background:#EEF3FF; color:var(--accent-blue); }
+  .ld-ob-actions { display:flex; justify-content:space-between; align-items:center; margin-top:30px; }
+  .ld-ob-skip { border:0; background:none; color:var(--accent-blue); cursor:pointer; font:600 12px var(--font); }
+  .ld-ob-next { padding:10px 18px; border:0; border-radius:6px; background:var(--black); color:#fff; cursor:pointer; font:700 12px var(--font); }
+  .ld-ob-next:disabled { opacity:.35; cursor:not-allowed; }
+  .ld-profile-btn { margin:0 0 14px; border:0; background:none; color:var(--accent-blue); cursor:pointer; font:600 12px var(--font); }
 
   /* ── Hero / AI input ── */
   .ld-hero { text-align: center; margin-bottom: 56px; }
@@ -2717,6 +2736,9 @@
   .ld-node-hover li::before { content:'·'; color:var(--accent-blue); font-size:16px; line-height:10px; }
 
   @media (max-width: 760px) {
+    .ld-ob-card { padding:30px 22px; }
+    .ld-ob-card h1 { font-size:24px; }
+    .ld-ob-options { grid-template-columns:1fr; }
     .ld-node-grid { grid-template-columns:repeat(2,1fr); }
   }
 
