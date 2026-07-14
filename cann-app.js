@@ -3610,6 +3610,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     _ldSelectedScenario = name;
     document.querySelectorAll('.ld-scenario-card').forEach(card => card.classList.toggle('active', card.querySelector('strong')?.textContent === name));
     ldRenderPlanPreset(name);
+    document.getElementById('ld-task-action')?.classList.add('open');
     ldUpdateGenerateState();
   }
 

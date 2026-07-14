@@ -2610,6 +2610,8 @@
   .ld-plan-row button { padding:5px 10px; border:1px solid var(--border); border-radius:14px; background:#fff; color:var(--text-secondary); cursor:pointer; font:12px var(--font); }
   .ld-plan-row button:hover, .ld-plan-row button.active { border-color:var(--accent-blue); background:#EAF0FF; color:var(--accent-blue); font-weight:700; }
   .ld-task-gen-btn { display:block; margin:14px auto 0; }
+  .ld-task-action { display:none; }
+  .ld-task-action.open { display:block; }
   .ld-gen-hint { margin:8px 0 0; color:var(--text-muted); font-size:11px; }
 
   /* IPE outer wrapper (centers the inline path editor) */
