@@ -3592,7 +3592,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       ['resource', '你的资源', ['有昇腾硬件', '有性能数据', '希望在线实验']],
       ['time', '你的时间', ['30 分钟', '1 天', '1 周', '1 个月']],
     ],
-    '自定义目标': [
+    '个性定制': [
       ['identity', '你的身份', ['学生', '应用开发者', '算子开发者', '算法工程师']],
       ['foundation', '你的基础', ['零基础', '会 Python', '会 PyTorch', '熟悉 C++']],
       ['goal', '你的目标', ['入门', '模型迁移', '推理部署', '算子开发', '认证']],
@@ -3603,17 +3603,32 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   function ldRenderPlanPreset(name) {
     const container = document.getElementById('ld-plan-fields');
-    const preset = LD_PLAN_PRESETS[name || '自定义目标'];
+    const preset = LD_PLAN_PRESETS[name || '个性定制'];
     if (!container || !preset) return;
     _ldPlan = {};
-    container.innerHTML = preset.map(([key, label, options]) => `<div class="ld-plan-row" data-plan="${key}"><b>${label}</b><div>${options.map(option => `<button type="button" onclick="ldSelectPlan('${key}', this)">${option}</button>`).join('')}</div></div>`).join('');
+    const customGoal = name === '个性定制' ? `<label class="ld-custom-goal"><b>你的目标</b><input id="ld-custom-goal-input" type="text" placeholder="例如：我想让 LLM 应用跑在昇腾 NPU 上" oninput="ldUpdateGenerateState()"></label>` : '';
+    container.innerHTML = customGoal + preset.map(([key, label, options]) => `<div class="ld-plan-row" data-plan="${key}"><b>${label}</b><div>${[...options, '其他'].map(option => `<button type="button" onclick="ldSelectPlan('${key}', this)">${option}</button>`).join('')}</div></div>`).join('');
     container.classList.add('open');
   }
 
   function ldSelectPlan(key, button) {
     button.closest('.ld-plan-row').querySelectorAll('button').forEach(item => item.classList.remove('active'));
     button.classList.add('active');
-    _ldPlan[key] = button.textContent.trim();
+    const value = button.textContent.trim();
+    _ldPlan[key] = value;
+    let customInput = button.closest('.ld-plan-row').querySelector('.ld-other-input');
+    if (value === '其他') {
+      if (!customInput) {
+        customInput = document.createElement('input');
+        customInput.className = 'ld-other-input';
+        customInput.placeholder = '请输入你的情况';
+        customInput.addEventListener('input', () => { _ldPlan[key] = customInput.value.trim() || '其他'; });
+        button.closest('.ld-plan-row').querySelector('div').appendChild(customInput);
+      }
+      customInput.focus();
+    } else if (customInput) {
+      customInput.remove();
+    }
     ldUpdateGenerateState();
   }
 
@@ -3623,9 +3638,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     const freeBtn = document.getElementById('ld-free-gen-btn');
     const freeInput = document.getElementById('ld-ai-input');
     if (!btn || !hint) return;
-    const ready = Boolean(_ldSelectedScenario);
+    const customGoal = document.getElementById('ld-custom-goal-input')?.value.trim();
+    const ready = Boolean(_ldSelectedScenario) && (_ldSelectedScenario !== '个性定制' || Boolean(customGoal));
     btn.disabled = !ready;
-    hint.textContent = ready ? '可直接生成；补充学习偏好后，路径会更贴近你的情况' : '请先选择一个任务场景';
+    hint.textContent = ready ? '可直接生成；补充学习偏好后，路径会更贴近你的情况' : (_ldSelectedScenario === '个性定制' ? '请描述你的学习目标' : '请先选择一个任务场景');
     if (freeBtn && freeInput) freeBtn.disabled = !freeInput.value.trim();
   }
 
@@ -3651,7 +3667,9 @@ def vector_add_tik(shape, dtype, kernel_name):
       _aiPathStart(query);
       return;
     }
-    const query = LD_SCENARIOS[_ldSelectedScenario];
+    const query = _ldSelectedScenario === '个性定制'
+      ? document.getElementById('ld-custom-goal-input')?.value.trim()
+      : LD_SCENARIOS[_ldSelectedScenario];
     if (!query) return;
     const planContext = Object.entries(_ldPlan).map(([key, value]) => `${({identity:'身份',foundation:'基础',goal:'目标',resource:'资源',time:'时间'})[key]}：${value}`).join('；');
     sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, ..._ldPlan }));

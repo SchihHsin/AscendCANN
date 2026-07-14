@@ -2609,6 +2609,11 @@
   .ld-plan-row div { display:flex; flex-wrap:wrap; gap:6px; }
   .ld-plan-row button { padding:5px 10px; border:1px solid var(--border); border-radius:14px; background:#fff; color:var(--text-secondary); cursor:pointer; font:12px var(--font); }
   .ld-plan-row button:hover, .ld-plan-row button.active { border-color:var(--accent-blue); background:#EAF0FF; color:var(--accent-blue); font-weight:700; }
+  .ld-other-input { width:142px; padding:5px 9px; border:1px solid var(--accent-blue); border-radius:14px; outline:none; color:var(--black); font:12px var(--font); }
+  .ld-custom-goal { display:grid; grid-template-columns:72px 1fr; align-items:center; gap:12px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+  .ld-custom-goal b { color:var(--text-secondary); font-size:12px; }
+  .ld-custom-goal input { height:34px; padding:0 10px; border:1px solid var(--border); border-radius:6px; outline:none; color:var(--black); font:12px var(--font); }
+  .ld-custom-goal input:focus { border-color:var(--accent-blue); }
   .ld-task-gen-btn { display:block; margin:14px auto 0; }
   .ld-task-action { display:none; }
   .ld-task-action.open { display:block; }
