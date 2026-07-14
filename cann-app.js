@@ -109,6 +109,13 @@
     const roadmap = document.getElementById('ld-roadmap');
     if (roadmap?.style.display !== 'none') {
       _closeSidebar();
+      const workspace = document.getElementById('ld-path-workspace');
+      if (workspace?.classList.contains('ld-tools-collapsed')) {
+        workspace.classList.remove('ld-tools-collapsed');
+      } else {
+        workspace?.classList.add('ld-tools-collapsed');
+        return;
+      }
       const tab = [...document.querySelectorAll('.ld-tool-tabs button')].find(button => button.textContent.trim() === 'AI 助手');
       if (tab) ldSwitchTool('ai', tab);
       setTimeout(() => document.getElementById('ld-tool-ai-input')?.focus(), 0);
