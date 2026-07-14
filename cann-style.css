@@ -2768,7 +2768,7 @@
   .ld-roadmap-actions { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
 
   /* The route is navigation; learning content owns the main workspace. */
-  .ld-path-workspace { display:grid; grid-template-columns:250px minmax(0, 1fr) 220px; gap:0; max-width:1240px; min-height:calc(100vh - 132px); margin:0 auto; background:#fff; border-left:1px solid var(--border); border-right:1px solid var(--border); }
+  .ld-path-workspace { display:grid; grid-template-columns:250px minmax(0, 1fr) 220px; gap:0; width:100%; max-width:none; min-height:calc(100vh - 132px); margin:0; background:#fff; border-left:1px solid var(--border); border-right:1px solid var(--border); }
   .ld-roadmap > .path-seq-strip, .ld-roadmap > .learn-header-slim, .ld-roadmap > .learn-layout { display:none !important; }
   .ld-path-sidebar { position:sticky; top:122px; align-self:start; max-height:calc(100vh - 122px); overflow:auto; padding:20px 0; border-right:1px solid var(--border); background:var(--surface); }
   .ld-sidebar-head { display:flex; align-items:center; justify-content:space-between; margin:0 14px 16px; font-size:13px; }
