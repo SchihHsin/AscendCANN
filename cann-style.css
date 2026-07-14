@@ -2798,12 +2798,18 @@
   .ld-view-switch button { border:0; padding:4px 7px; border-radius:4px; background:transparent; color:var(--text-muted); font-size:10px; cursor:pointer; font-family:var(--font); }
   .ld-view-switch button.active { color:#fff; background:var(--black); }
   .ld-path-nav { display:flex; flex-direction:column; gap:5px; }
-  .ld-path-nav.map { position:relative; display:flex; flex-direction:column; gap:0; padding-left:10px; }
-  .ld-path-nav.map::before { content:''; position:absolute; top:22px; bottom:22px; left:21px; width:1px; background:var(--accent-blue); opacity:.4; }
-  .ld-path-nav.map .ld-path-nav-item { position:relative; grid-template-columns:28px minmax(0,1fr); background:transparent; border-color:transparent; }
-  .ld-path-nav.map .ld-path-nav-item::after { content:'↘'; position:absolute; left:2px; bottom:-8px; color:var(--accent-blue); font-size:12px; }
-  .ld-path-nav.map .ld-path-nav-item:last-child::after { display:none; }
-  .ld-path-nav.map .ld-path-nav-item span { position:relative; z-index:1; border:2px solid #fff; }
+  .ld-path-nav.map { display:block; padding:0 8px; }
+  .ld-route-map-wrap { width:100%; overflow:hidden; }
+  .ld-route-map { display:block; width:100%; height:auto; }
+  .ld-route-link { fill:none; stroke:var(--border2); stroke-width:1.5; }
+  .ld-route-map marker path { fill:var(--border2); }
+  .ld-route-node { cursor:pointer; }
+  .ld-route-node rect { fill:#fff; stroke:var(--border); stroke-width:1; transition:.16s; }
+  .ld-route-node:hover rect { stroke:var(--accent-blue); }
+  .ld-route-node.active rect { fill:#EEF3FF; stroke:var(--accent-blue); stroke-width:1.5; }
+  .ld-route-number { fill:#fff; font:700 10px var(--font); }
+  .ld-route-title { fill:var(--black); font:700 11px var(--font); }
+  .ld-route-meta { fill:var(--text-muted); font:10px var(--font); }
   .ld-path-nav-item { display:grid; grid-template-columns:26px minmax(0,1fr); column-gap:8px; text-align:left; padding:10px 14px; border:1px solid transparent; border-radius:0; background:transparent; cursor:pointer; font-family:var(--font); }
   .ld-path-nav-item:hover, .ld-path-nav-item.active { background:#fff; border-color:var(--border); }
   .ld-path-nav-item.active { box-shadow:0 2px 7px rgba(0,0,0,.05); }

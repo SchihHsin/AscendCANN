@@ -3545,6 +3545,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   let _ldSelectedScenario = '';
   let _ldPathView = 'list';
   let _ldActivePathNodes = [];
+  let _ldActivePathIndex = 0;
   let _ldPlan = {};
   const LD_RESOURCES_KEY = 'cann_learn_resources';
   const LD_PROFILE_KEY = 'cann_learning_profile';
@@ -3877,6 +3878,7 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   function ldRenderPathWorkspace(nodes) {
     _ldActivePathNodes = nodes || [];
+    _ldActivePathIndex = 0;
     ldRenderPathNav();
     if (_ldActivePathNodes.length) ldOpenPathNode(0);
   }
@@ -3885,12 +3887,30 @@ def vector_add_tik(shape, dtype, kernel_name):
     const nav = document.getElementById('ld-path-nav');
     if (!nav) return;
     nav.classList.toggle('map', _ldPathView === 'map');
-    nav.innerHTML = _ldActivePathNodes.map((n, i) => `<button class="ld-path-nav-item ${i === 0 ? 'active' : ''}" onclick="ldOpenPathNode(${i})"><span>${i + 1}</span><strong>${n.title}</strong><small>${n.duration || '学习节点'}</small></button>`).join('');
+    if (_ldPathView === 'map') {
+      const W = 230, H = Math.max(190, _ldActivePathNodes.length * 88 + 30);
+      const nodeY = i => 42 + i * 88;
+      const label = text => String(text).replace(/[&<>]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' })[char]);
+      const links = _ldActivePathNodes.slice(0, -1).map((_, i) => {
+        const y1 = nodeY(i) + 22, y2 = nodeY(i + 1) - 22;
+        return `<path class="ld-route-link" d="M115 ${y1} C 185 ${y1 + 16}, 45 ${y2 - 16}, 115 ${y2}" marker-end="url(#ldRouteArrow)"/>`;
+      }).join('');
+      const marks = _ldActivePathNodes.map((node, i) => {
+        const active = i === _ldActivePathIndex ? ' active' : '';
+        const color = CAT_META[node.category]?.color || '#002FA7';
+        return `<g class="ld-route-node${active}" onclick="ldOpenPathNode(${i})" role="button" aria-label="打开第 ${i + 1} 步：${label(node.title)}"><rect x="20" y="${nodeY(i) - 22}" width="190" height="44" rx="7"/><circle cx="42" cy="${nodeY(i)}" r="13" fill="${color}"/><text class="ld-route-number" x="42" y="${nodeY(i) + 4}" text-anchor="middle">${i + 1}</text><text class="ld-route-title" x="64" y="${nodeY(i) - 2}">${label(node.title)}</text><text class="ld-route-meta" x="64" y="${nodeY(i) + 13}">${label(node.duration || '学习节点')}</text></g>`;
+      }).join('');
+      nav.innerHTML = `<div class="ld-route-map-wrap"><svg class="ld-route-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="学习路径可视化路线图"><defs><marker id="ldRouteArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker></defs>${links}${marks}</svg></div>`;
+      return;
+    }
+    nav.innerHTML = _ldActivePathNodes.map((n, i) => `<button class="ld-path-nav-item ${i === _ldActivePathIndex ? 'active' : ''}" onclick="ldOpenPathNode(${i})"><span>${i + 1}</span><strong>${n.title}</strong><small>${n.duration || '学习节点'}</small></button>`).join('');
   }
 
   function ldOpenPathNode(index) {
     const node = _ldActivePathNodes[index];
     if (!node) return;
+    _ldActivePathIndex = index;
+    if (_ldPathView === 'map') ldRenderPathNav();
     document.querySelectorAll('.ld-path-nav-item').forEach((el, i) => el.classList.toggle('active', i === index));
     const knowledge = NODE_KNOWLEDGE[node.title];
     const content = document.getElementById('ld-learning-content');
