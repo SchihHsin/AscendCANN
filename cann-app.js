@@ -3919,6 +3919,59 @@ def vector_add_tik(shape, dtype, kernel_name):
     const resources = (knowledge?.resources || []).map(r => `<a class="ld-content-resource" href="${r.href}" target="_blank"><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`).join('');
     const concepts = (knowledge?.concepts || []).slice(0, 4).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p></div>`).join('');
     content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button onclick="openNodeDrawer('${node.title}')">打开完整学习内容</button><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>推荐视频</h2><button class="ld-video-card" onclick="openNodeDrawer('${node.title}')"><span class="ld-video-play">▶</span><div><strong>${video.title}</strong><small>${video.tag} · ${video.duration}</small></div><span class="ld-video-open">观看并学习 →</span></button></section><section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><h2>学习资源</h2><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    ldRefreshStudyTools(node, knowledge);
+  }
+
+  function ldSwitchTool(name, button) {
+    document.querySelectorAll('.ld-tool-tabs button').forEach(item => item.classList.toggle('active', item === button));
+    document.querySelectorAll('.ld-tool-panel').forEach(panel => panel.classList.toggle('active', panel.id === `ld-tool-${name}`));
+  }
+
+  function ldRefreshStudyTools(node, knowledge) {
+    const context = document.getElementById('ld-ai-context');
+    const chat = document.getElementById('ld-tool-chat');
+    if (context) context.textContent = `当前节点：${node.title}`;
+    if (chat) chat.innerHTML = `<div class="ld-tool-msg">正在学习「${node.title}」。可以让我解释概念、给出代码示例或规划练习。</div>`;
+    const quiz = document.getElementById('ld-embedded-quiz');
+    if (quiz) quiz.innerHTML = `<div class="ld-tool-empty">围绕「${node.title}」生成一题，检验理解程度。</div>`;
+    const visual = document.getElementById('ld-knowledge-visual');
+    if (!visual) return;
+    const items = (knowledge?.concepts || []).slice(0, 4);
+    const nodes = items.map((item, i) => `<button class="ld-kv-node" style="--i:${i}" title="${item.desc}" onclick="openNodeDrawer('${node.title}')">${item.term}</button>`).join('');
+    const links = items.map((_, i) => `<span class="ld-kv-link l${i}"></span>`).join('');
+    visual.innerHTML = `<div class="ld-kv-title">${node.title}</div><div class="ld-kv-map"><div class="ld-kv-core">核心<br>知识</div>${links}${nodes}</div><p class="ld-kv-note">点击概念查看当前节点的完整内容</p>`;
+  }
+
+  async function ldToolAsk() {
+    const input = document.getElementById('ld-tool-ai-input');
+    const chat = document.getElementById('ld-tool-chat');
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    const question = input?.value.trim();
+    if (!question || !chat || !node) return;
+    input.value = '';
+    chat.insertAdjacentHTML('beforeend', `<div class="ld-tool-msg user">${escHtml(question)}</div><div class="ld-tool-msg pending">正在思考…</div>`);
+    try {
+      const response = await fetch(AI_WORKER_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ system:`你是 CANN 学习助手。用户正在学习「${node.title}」，请针对问题用中文简明作答，不超过180字。`, user:question, max_tokens:350 }) });
+      const data = await response.json();
+      chat.querySelector('.pending')?.remove();
+      chat.insertAdjacentHTML('beforeend', `<div class="ld-tool-msg">${formatFloorText(data.text || '暂时无法回答，请稍后再试。')}</div>`);
+    } catch(e) { chat.querySelector('.pending')?.replaceWith(Object.assign(document.createElement('div'), { className:'ld-tool-msg', textContent:'连接失败，请稍后再试。' })); }
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function ldLoadEmbeddedQuiz() {
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    const box = document.getElementById('ld-embedded-quiz');
+    if (!node || !box) return;
+    const pool = _quizFallback.filter(item => item.question).slice(0, 5);
+    const quiz = pool[_ldActivePathIndex % pool.length];
+    box.innerHTML = `<div class="ld-quiz-question">${quiz.question}</div><div class="ld-quiz-options">${quiz.options.map(option => `<button onclick="ldAnswerEmbeddedQuiz(this,'${escHtml(quiz.answer)}')">${option}</button>`).join('')}</div>`;
+  }
+
+  function ldAnswerEmbeddedQuiz(button, answer) {
+    const correct = button.textContent.trim() === answer;
+    button.closest('.ld-quiz-options').querySelectorAll('button').forEach(item => { item.disabled = true; if (item.textContent.trim() === answer) item.classList.add('correct'); });
+    if (!correct) button.classList.add('wrong');
   }
 
   function ldGenerateQuestion() {
