@@ -3681,7 +3681,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     const container = document.getElementById('ld-continue-list');
     if (!container) return;
     const paths = customPaths.length > 0 ? customPaths : samplePaths;
-    const shown = paths.slice(0, 4);
+    // Keep the dashboard concise; the archive contains the complete path list.
+    const shown = paths.slice(0, 1);
 
     const ICONS = { beginner: '📘', developer: '🔧', operator: '⚙️', distributed: '🌐' };
     const PROG = [27, 55, 10, 82]; // mock progress %
