@@ -2877,6 +2877,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     const wrong = records.filter(r => r.result === 'wrong').length;
     const badge = document.getElementById('qb-nav-badge');
     if (badge) { badge.textContent = wrong > 0 ? wrong : ''; badge.style.display = wrong > 0 ? 'inline-flex' : 'none'; }
+    const railBadge = document.getElementById('learn-rail-quiz-count');
+    if (railBadge) railBadge.classList.toggle('has-items', wrong > 0);
   }
   function openLearningArchive(tab) {
     tab = tab || 'paths';
@@ -3761,4 +3763,5 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldRenderContinue();
     ldRenderNodes('all');
     ldRenderResources();
+    _updateQbBadge();
   });
