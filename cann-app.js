@@ -2363,6 +2363,8 @@ def vector_add_tik(shape, dtype, kernel_name):
       <div class="path-seq-steps">${stepsHtml}</div>
       <button class="path-seq-close" onclick="clearLearnPath()">✕ 清除路径</button>`;
     strip.classList.remove('hidden');
+    _ldActivePathNodes = nodes;
+    if (document.getElementById('ld-roadmap')?.style.display !== 'none') ldRenderPathWorkspace(nodes);
 
     // Highlight matching rm-nodes; dim others
     document.querySelectorAll('.rm-node').forEach(el => {
@@ -3398,6 +3400,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       createdAt: new Date().toLocaleDateString('zh-CN'),
       lastStudied: new Date().toLocaleDateString('zh-CN'),
     };
+    try { Object.assign(path, JSON.parse(sessionStorage.getItem('cann_learning_plan') || '{}')); } catch(e) {}
     customPaths = JSON.parse(localStorage.getItem('cann_custom_paths') || '[]');
     customPaths.unshift(path);
     localStorage.setItem('cann_custom_paths', JSON.stringify(customPaths));
@@ -3519,6 +3522,34 @@ def vector_add_tik(shape, dtype, kernel_name):
   // Used by learn.html new dashboard layout
 
   let _ldActiveCat = 'all';
+  let _ldSelectedScenario = '';
+  let _ldPathView = 'list';
+  let _ldActivePathNodes = [];
+  const LD_RESOURCES_KEY = 'cann_learn_resources';
+
+  const LD_SCENARIOS = {
+    '算子开发': 'TBE / TIK 自定义算子开发、编译与调试',
+    '模型迁移': '将 PyTorch 或 ONNX 模型迁移并适配到昇腾',
+    '模型推理': '完成模型转换、AscendCL 推理与部署验证',
+    '模型训练': '在昇腾上启动、调试和优化模型训练',
+    '性能调优': '使用 Profiling 定位训练、推理或算子性能瓶颈',
+  };
+
+  function ldChooseScenario(name) {
+    _ldSelectedScenario = name;
+    document.querySelectorAll('.ld-scenario-card').forEach(card => card.classList.toggle('active', card.querySelector('strong')?.textContent === name));
+    const goal = document.getElementById('ld-goal-input');
+    const input = document.getElementById('ld-ai-input');
+    if (name) {
+      const text = LD_SCENARIOS[name];
+      if (input) input.value = text;
+      if (goal) goal.value = `完成${name}相关的实践任务`;
+    } else if (goal) {
+      goal.value = '';
+      goal.focus();
+    }
+    document.getElementById('ld-plan-fields')?.classList.add('open');
+  }
 
   function ldSetInput(text) {
     const input = document.getElementById('ld-ai-input');
@@ -3531,8 +3562,48 @@ def vector_add_tik(shape, dtype, kernel_name):
     const query = input.value.trim();
     if (!query) { input.focus(); return; }
 
+    const goal = document.getElementById('ld-goal-input')?.value.trim();
+    const deadline = document.getElementById('ld-deadline-input')?.value;
+    const planContext = [goal && `学习目标：${goal}`, deadline && `计划完成日：${deadline}`].filter(Boolean).join('；');
+    sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, goal, deadline }));
     // Kick off AI-guided path generation via sidebar
-    _aiPathStart(query);
+    _aiPathStart(planContext ? `${query}；${planContext}` : query);
+  }
+
+  function ldToggleResourceForm() {
+    document.getElementById('ld-resource-form')?.classList.toggle('open');
+  }
+
+  function ldLoadResources() {
+    try { return JSON.parse(localStorage.getItem(LD_RESOURCES_KEY) || '[]'); } catch(e) { return []; }
+  }
+
+  function ldRenderResources() {
+    const list = document.getElementById('ld-resource-list');
+    if (!list) return;
+    const resources = ldLoadResources();
+    list.innerHTML = resources.length ? resources.map((r, i) => `<div class="ld-resource-item"><span>${r.type}</span><a href="${r.url}" target="_blank" rel="noopener">${r.title}</a><button onclick="ldDeleteResource(${i})" title="删除">×</button></div>`).join('') : '<div class="ld-resource-empty">还没有个人资源。可添加常用文档、课程或代码仓库。</div>';
+  }
+
+  function ldSaveResource(event) {
+    event.preventDefault();
+    const title = document.getElementById('ld-resource-title').value.trim();
+    const url = document.getElementById('ld-resource-url').value.trim();
+    const type = document.getElementById('ld-resource-type').value;
+    if (!title || !url) return;
+    const resources = ldLoadResources();
+    resources.unshift({ title, url, type });
+    localStorage.setItem(LD_RESOURCES_KEY, JSON.stringify(resources));
+    event.currentTarget.reset();
+    event.currentTarget.classList.remove('open');
+    ldRenderResources();
+  }
+
+  function ldDeleteResource(index) {
+    const resources = ldLoadResources();
+    resources.splice(index, 1);
+    localStorage.setItem(LD_RESOURCES_KEY, JSON.stringify(resources));
+    ldRenderResources();
   }
 
   function ldSetCat(cat, btn) {
@@ -3640,7 +3711,40 @@ def vector_add_tik(shape, dtype, kernel_name):
 
     dash.style.display = 'none';
     roadmap.style.display = '';
+    const fallback = focusIdx !== undefined ? [NODE_LIST[focusIdx]] : (window._currentLearnPath || NODE_LIST.slice(0, 5));
+    ldRenderPathWorkspace(window._currentLearnPath?.length ? window._currentLearnPath : fallback);
     window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function ldSetPathView(view, btn) {
+    _ldPathView = view;
+    document.querySelectorAll('.ld-view-switch button').forEach(b => b.classList.toggle('active', b === btn));
+    ldRenderPathNav();
+  }
+
+  function ldRenderPathWorkspace(nodes) {
+    _ldActivePathNodes = nodes || [];
+    ldRenderPathNav();
+    if (_ldActivePathNodes.length) ldOpenPathNode(0);
+  }
+
+  function ldRenderPathNav() {
+    const nav = document.getElementById('ld-path-nav');
+    if (!nav) return;
+    nav.classList.toggle('map', _ldPathView === 'map');
+    nav.innerHTML = _ldActivePathNodes.map((n, i) => `<button class="ld-path-nav-item ${i === 0 ? 'active' : ''}" onclick="ldOpenPathNode(${i})"><span>${i + 1}</span><strong>${n.title}</strong><small>${n.duration || '学习节点'}</small></button>`).join('');
+  }
+
+  function ldOpenPathNode(index) {
+    const node = _ldActivePathNodes[index];
+    if (!node) return;
+    document.querySelectorAll('.ld-path-nav-item').forEach((el, i) => el.classList.toggle('active', i === index));
+    const knowledge = NODE_KNOWLEDGE[node.title];
+    const content = document.getElementById('ld-learning-content');
+    if (!content) return;
+    const resources = (knowledge?.resources || []).map(r => `<a class="ld-content-resource" href="${r.href}" target="_blank"><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`).join('');
+    const concepts = (knowledge?.concepts || []).slice(0, 4).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p></div>`).join('');
+    content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button onclick="openNodeDrawer('${node.title}')">打开完整学习内容</button><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><h2>学习资源</h2><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
   }
 
   function ldShowDash() {
@@ -3656,5 +3760,5 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!document.getElementById('ld-dash')) return; // only on learn.html
     ldRenderContinue();
     ldRenderNodes('all');
+    ldRenderResources();
   });
-
