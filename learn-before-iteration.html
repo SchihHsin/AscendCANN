@@ -36,22 +36,6 @@
   </div>
 </nav>
 
-<!-- Learning quick tools: keep global study actions available in both views. -->
-<div class="learn-quick-rail" aria-label="学习快捷工具">
-  <button onclick="toggleAiChat()" title="智能助手">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2c0 3.866-3.134 7-7 7 3.866 0 7 3.134 7 7 0-3.866 3.134-7 7-7-3.866 0-7-3.134-7-7Z"/><path d="M20 12c0 2.209-1.791 4-4 4 2.209 0 4 1.791 4 4 0-2.209 1.791-4 4-4-2.209 0-4-1.791-4-4Z"/></svg>
-    <span>智能助手</span>
-  </button>
-  <button onclick="openLearningArchive('paths')" title="学习档案">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15Z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17"/></svg>
-    <span>学习档案</span>
-  </button>
-  <button onclick="ldGenerateQuestion()" title="出题">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-    <span>出题</span>
-  </button>
-</div>
-
 <!-- AI Chat Sidebar -->
 <div class="ai-chat-sidebar" id="ai-sidebar">
   <div class="ai-drag-handle" id="ai-drag-handle">⠿</div>
@@ -285,21 +269,12 @@
           <input id="ld-ai-input" type="text" placeholder="描述你想学的方向，AI 为你生成专属路径…" onkeydown="if(event.key==='Enter')ldGenPath()">
           <button class="ld-gen-btn" onclick="ldGenPath()">生成路径</button>
         </div>
-        <div class="ld-scenario-head"><span>从高频任务开始</span><small>选择一个场景，生成可执行的学习计划</small></div>
-        <div class="ld-scenario-grid" id="ld-scenario-grid">
-          <button class="ld-scenario-card" onclick="ldChooseScenario('算子开发')"><span class="ld-scenario-icon">⚙</span><strong>算子开发</strong><small>开发、编译与调试自定义算子</small></button>
-          <button class="ld-scenario-card" onclick="ldChooseScenario('模型迁移')"><span class="ld-scenario-icon">↔</span><strong>模型迁移</strong><small>将现有模型适配到昇腾</small></button>
-          <button class="ld-scenario-card" onclick="ldChooseScenario('模型推理')"><span class="ld-scenario-icon">▶</span><strong>模型推理</strong><small>转换模型并完成推理部署</small></button>
-          <button class="ld-scenario-card" onclick="ldChooseScenario('模型训练')"><span class="ld-scenario-icon">⌁</span><strong>模型训练</strong><small>启动、调试与优化训练任务</small></button>
-          <button class="ld-scenario-card" onclick="ldChooseScenario('性能调优')"><span class="ld-scenario-icon">⌁</span><strong>性能调优</strong><small>定位训练、推理或算子瓶颈</small></button>
-          <button class="ld-scenario-card is-custom" onclick="ldChooseScenario('')"><span class="ld-scenario-icon">＋</span><strong>自定义目标</strong><small>描述你的任务，让 AI 为你规划</small></button>
-        </div>
-        <div class="ld-plan-fields" id="ld-plan-fields">
-          <div class="ld-plan-row" data-plan="identity"><b>你的身份</b><div><button>学生</button><button>应用开发者</button><button>算子开发者</button><button>算法工程师</button></div></div>
-          <div class="ld-plan-row" data-plan="foundation"><b>你的基础</b><div><button>零基础</button><button>会 Python</button><button>会 PyTorch</button><button>熟悉 C++</button></div></div>
-          <div class="ld-plan-row" data-plan="goal"><b>你的目标</b><div><button>入门</button><button>模型迁移</button><button>推理部署</button><button>算子开发</button><button>认证</button></div></div>
-          <div class="ld-plan-row" data-plan="resource"><b>你的资源</b><div><button>有昇腾硬件</button><button>希望在线实验</button></div></div>
-          <div class="ld-plan-row" data-plan="time"><b>你的时间</b><div><button>30 分钟</button><button>1 天</button><button>1 周</button><button>1 个月</button></div></div>
+        <div class="ld-hint-chips">
+          <span class="ld-hint-chip" onclick="ldSetInput('AscendCL 推理应用开发')">AscendCL 推理</span>
+          <span class="ld-hint-chip" onclick="ldSetInput('TBE 自定义算子开发')">TBE 算子</span>
+          <span class="ld-hint-chip" onclick="ldSetInput('大模型在昇腾上部署')">大模型部署</span>
+          <span class="ld-hint-chip" onclick="ldSetInput('PyTorch 模型迁移昇腾')">模型迁移</span>
+          <span class="ld-hint-chip" onclick="ldSetInput('分布式训练 HCCL')">分布式训练</span>
         </div>
       </div>
     </div>
@@ -352,26 +327,11 @@
       <div class="ld-node-grid" id="ld-node-grid"></div>
     </div>
 
-    <div class="ld-section ld-resource-section">
-      <div class="ld-sec-hd">
-        <span class="ld-sec-title">我的学习资源</span>
-        <button class="ld-sec-link" onclick="ldToggleResourceForm()">+ 添加资源</button>
-      </div>
-      <form class="ld-resource-form" id="ld-resource-form" onsubmit="ldSaveResource(event)">
-        <input id="ld-resource-title" required placeholder="资源名称">
-        <input id="ld-resource-url" type="url" required placeholder="链接，例如 https://...">
-        <select id="ld-resource-type"><option>文档</option><option>课程</option><option>代码</option><option>视频</option><option>其他</option></select>
-        <button type="submit">保存</button>
-      </form>
-      <div class="ld-resource-list" id="ld-resource-list"></div>
-    </div>
-
     <!-- Footer links row -->
     <div class="ld-footer-row">
       <a class="ld-footer-link" href="https://www.hiascend.com/edu/courses" target="_blank">全量课程 ↗</a>
       <a class="ld-footer-link" href="https://www.hiascend.com/edu/growth" target="_blank">全量路径 ↗</a>
       <button class="ld-footer-link" onclick="openLearningArchive('paths')">学习档案</button>
-      <a class="ld-footer-link" href="learn-before-iteration.html">查看迭代前页面 ↗</a>
     </div>
 
   </div>
@@ -396,14 +356,6 @@
         <a class="ld-footer-link" href="https://www.hiascend.com/edu/courses" target="_blank" style="font-size:11px;">全量课程 ↗</a>
         <button class="ld-footer-link" onclick="openLearningArchive('paths')" style="font-size:11px;">学习档案</button>
       </div>
-    </div>
-
-    <div class="ld-path-workspace" id="ld-path-workspace">
-      <aside class="ld-path-sidebar">
-        <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button class="active" onclick="ldSetPathView('list',this)">列表</button><button onclick="ldSetPathView('map',this)">可视化</button></div></div>
-        <div class="ld-path-nav" id="ld-path-nav"></div>
-      </aside>
-      <main class="ld-learning-content" id="ld-learning-content"></main>
     </div>
 
     <!-- Path sequence strip (shown for AI-generated paths) -->

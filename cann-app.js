@@ -2593,28 +2593,15 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   // Open empty sandbox from docs bar
   function openEmptySandbox() {
-    // Set default sample code
-    const defaultCode = `<span style="color:#6B6480;"># 欢迎使用 CANN HiDevLab</span><br><span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">acl</span><br><span style="color:#BD93F9;">import</span> <span style="color:#F8F8F2;">numpy as np</span><br><br><span style="color:#6B6480;"># 初始化 CANN 环境</span><br><span style="color:#F8F8F2;">ret </span><span style="color:#FF79C6;">=</span> <span style="color:#82AAFF;">acl.init</span>()<br><span style="color:#82AAFF;">acl.rt.set_device</span>(<span style="color:#FFB86C;">0</span>)<br><br><span style="color:#6B6480;"># 在这里编写您的代码...</span><br><span style="color:#F8F8F2;">print</span>(<span style="color:#A8FF60;">"Hello CANN!"</span>)`;
-    
-    const editor = document.getElementById('sandbox-editor');
-    editor.innerHTML = '<pre contenteditable="true" spellcheck="false">' + defaultCode + '</pre>';
-    
-    // Update title
-    const title = document.querySelector('.sandbox-drawer-title');
-    const langSpan = title.querySelector('span');
-    if (langSpan) {
-      langSpan.textContent = '| PYTHON Playground';
-    }
-    
-    // Reset output
-    document.getElementById('sandbox-output').textContent = '点击"运行代码"查看输出结果...';
-    document.getElementById('sandbox-output-header').className = 'sandbox-output-header';
-    document.getElementById('sandbox-output-header').textContent = '输出';
-    
-    // Open drawer
+    // The old playground DOM was replaced by the HiDevLab notebook drawer.
+    nbCurrentFile = 'main';
     document.getElementById('sandbox-drawer').classList.add('open');
     document.getElementById('sandbox-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
+    document.querySelectorAll('.nb-tab').forEach((tab, i) => tab.classList.toggle('active', i === 0));
+    document.querySelectorAll('.nb-panel').forEach(panel => panel.classList.remove('active'));
+    document.getElementById('nb-panel-notebook').classList.add('active');
+    renderNbCells();
   }
 
   // ── HIDEVLAB NOTEBOOK ──
@@ -3527,6 +3514,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   let _ldSelectedScenario = '';
   let _ldPathView = 'list';
   let _ldActivePathNodes = [];
+  let _ldPlan = {};
   const LD_RESOURCES_KEY = 'cann_learn_resources';
 
   const LD_SCENARIOS = {
@@ -3540,15 +3528,13 @@ def vector_add_tik(shape, dtype, kernel_name):
   function ldChooseScenario(name) {
     _ldSelectedScenario = name;
     document.querySelectorAll('.ld-scenario-card').forEach(card => card.classList.toggle('active', card.querySelector('strong')?.textContent === name));
-    const goal = document.getElementById('ld-goal-input');
     const input = document.getElementById('ld-ai-input');
     if (name) {
       const text = LD_SCENARIOS[name];
       if (input) input.value = text;
-      if (goal) goal.value = `完成${name}相关的实践任务`;
-    } else if (goal) {
-      goal.value = '';
-      goal.focus();
+      _ldPlan.goal = name;
+    } else if (input) {
+      input.focus();
     }
     document.getElementById('ld-plan-fields')?.classList.add('open');
   }
@@ -3564,10 +3550,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     const query = input.value.trim();
     if (!query) { input.focus(); return; }
 
-    const goal = document.getElementById('ld-goal-input')?.value.trim();
-    const deadline = document.getElementById('ld-deadline-input')?.value;
-    const planContext = [goal && `学习目标：${goal}`, deadline && `计划完成日：${deadline}`].filter(Boolean).join('；');
-    sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, goal, deadline }));
+    const planContext = Object.entries(_ldPlan).map(([key, value]) => `${({identity:'身份',foundation:'基础',goal:'目标',resource:'资源',time:'时间'})[key]}：${value}`).join('；');
+    sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, ..._ldPlan }));
     // Kick off AI-guided path generation via sidebar
     _aiPathStart(planContext ? `${query}；${planContext}` : query);
   }
@@ -3774,4 +3758,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldRenderNodes('all');
     ldRenderResources();
     _updateQbBadge();
+    document.querySelectorAll('.ld-plan-row button').forEach(btn => btn.addEventListener('click', () => {
+      const row = btn.closest('.ld-plan-row');
+      row.querySelectorAll('button').forEach(item => item.classList.remove('active'));
+      btn.classList.add('active');
+      _ldPlan[row.dataset.plan] = btn.textContent.trim();
+    }));
   });
