@@ -2970,13 +2970,13 @@ def vector_add_tik(shape, dtype, kernel_name):
     const nodes = [...nodePaths.keys()].map(title => NODE_LIST.find(node => node.title === title)).filter(Boolean);
     const groups = ['beginner', 'developer', 'operator', 'distributed'];
     const statusText = { done:'已学', current:'学习中', todo:'待学' };
-    panel.innerHTML = `<div class="la-map-desc">汇总所有学习路径中的知识节点。按知识类型分列；同一节点只出现一次，并标注它关联的学习路径。</div><div class="la-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><div class="la-column-map">${groups.map(category => {
+    panel.innerHTML = `<div class="la-map-desc">汇总所有学习路径中的知识节点。按知识类型分列；每列按学习顺序纵向串联。</div><div class="la-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span><span class="linked">学习衔接</span></div><div class="la-column-map">${groups.map(category => {
       const meta = CAT_META[category];
       const groupNodes = nodes.filter(node => node.category === category);
       return `<section class="la-map-column" style="--map-color:${meta.color}"><h3><i></i>${meta.label}<small>${groupNodes.length}</small></h3><div class="la-map-column-nodes">${groupNodes.length ? groupNodes.map(node => {
         const state = completed.has(node.title) ? 'done' : active.has(node.title) ? 'current' : 'todo';
         const related = nodePaths.get(node.title) || [];
-        return `<button class="la-column-node ${state}" onclick="ldStartNode('${node.title}')" title="来自：${related.join('、')}"><span class="la-column-node-state">${statusText[state]}</span><strong>${node.title}</strong><small>关联 ${related.length} 条路径</small></button>`;
+        return `<button class="la-column-node ${state}" data-map-node="${NODE_LIST.indexOf(node)}" onclick="ldStartNode('${node.title}')" title="来自：${related.join('、')}"><span class="la-column-node-state">${statusText[state]}</span><strong>${node.title}</strong><small>关联 ${related.length} 条路径</small></button>`;
       }).join('') : '<div class="la-column-empty">尚未接触此类知识</div>'}</div></section>`;
     }).join('')}</div>`;
   }
