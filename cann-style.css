@@ -2810,6 +2810,8 @@
   .ld-view-switch button { border:0; padding:4px 7px; border-radius:4px; background:transparent; color:var(--text-muted); font-size:10px; cursor:pointer; font-family:var(--font); }
   .ld-view-switch button.active { color:#fff; background:var(--black); }
   .ld-path-nav { display:flex; flex-direction:column; gap:5px; }
+  .ld-path-cluster { margin:14px 14px 4px; padding-top:12px; border-top:1px solid var(--border); color:var(--black); font-size:11px; font-weight:800; line-height:1.35; }
+  .ld-path-cluster:first-child { margin-top:0; padding-top:0; border-top:0; }
   .ld-path-nav.map { display:block; padding:0 8px; }
   .ld-route-map-wrap { width:100%; overflow:hidden; }
   .ld-route-map { display:block; width:100%; height:auto; }
@@ -2820,6 +2822,7 @@
   .ld-route-node:hover rect { stroke:var(--accent-blue); }
   .ld-route-node.active rect { fill:#EEF3FF; stroke:var(--accent-blue); stroke-width:1.5; }
   .ld-route-number { fill:#fff; font:700 10px var(--font); }
+  .ld-route-cluster { fill:var(--text-secondary); font:800 10px var(--font); }
   .ld-route-title { fill:var(--black); font:700 11px var(--font); }
   .ld-route-meta { fill:var(--text-muted); font:10px var(--font); }
   .la-map-desc { margin:16px 20px 8px; color:var(--text-secondary); font-size:12px; line-height:1.55; }

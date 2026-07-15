@@ -2,13 +2,39 @@
 
   // Official Ascend C programming path, aligned with hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53.
   const NODE_LIST = [
-    { title: 'Ascend C基本概念', category: 'beginner', desc: '官方路径的预备知识：理解 Ascend C 的定位和基础概念。', topics: ['Ascend C 编程模型', '算子开发流程', '基础数据类型与计算范式'], duration: '预备知识', difficulty: 1 },
-    { title: '昇腾异构编程基础课程（速成班）', category: 'beginner', desc: '官方课程：建立昇腾 AI 处理器、CANN 异构计算架构与算子开发基础。', topics: ['昇腾 AI 处理器基础', 'CANN 异构计算架构', '算子开发与性能分析概览'], duration: '课程 1', difficulty: 1 },
-    { title: 'Ascend C算子开发（入门）', category: 'operator', desc: '官方课程：从基础编程模型开始完成首个 Ascend C 算子。', topics: ['Ascend C 编程模型', '算子工程与调用', '基础算子实现'], duration: '课程 2', difficulty: 1 },
-    { title: 'Ascend C算子开发（进阶）', category: 'operator', desc: '官方课程：深入数据搬运、并行计算和算子调测。', topics: ['数据搬运与流水', '算子调用与调测', '计算与内存协同'], duration: '课程 3', difficulty: 2 },
-    { title: 'Ascend C算子开发（高级）', category: 'operator', desc: '官方课程：面向性能分析与优化，掌握高性能算子开发方法。', topics: ['算子性能分析', '性能优化方法', '高性能算子实践'], duration: '课程 4', difficulty: 3 },
-    { title: 'Ascend C skills系列课程', category: 'operator', desc: '官方课程：通过技能化专题练习巩固 Ascend C 算子开发能力。', topics: ['技能专题练习', '典型算子案例', '开发问题排查'], duration: '课程 5', difficulty: 2 },
-    { title: '昇腾异构编程基础微认证', category: 'beginner', desc: '官方微认证：考察昇腾 AI 处理器、CANN 异构计算、算子开发与性能分析知识。', topics: ['硬件架构', 'CANN 异构计算架构', '算子开发与性能分析'], duration: '微认证', difficulty: 2 },
+    { title:'昇腾硬件架构介绍', course:'昇腾异构编程基础（速成班）', category:'beginner', desc:'第 1 章：认识昇腾 AI 处理器的硬件架构与异构计算基础。', topics:['昇腾 AI 处理器组成','AI Core 与计算单元','异构计算任务分工'], duration:'第 1 章', difficulty:1 },
+    { title:'CANN软件包结构', course:'昇腾异构编程基础（速成班）', category:'beginner', desc:'第 2 章：理解 CANN 软件包、组件职责与开发环境组成。', topics:['CANN 软件包组成','Toolkit 与开发工具','组件依赖关系'], duration:'第 2 章', difficulty:1 },
+    { title:'算子开发编程基础', course:'昇腾异构编程基础（速成班）', category:'beginner', desc:'第 3 章：建立自定义算子开发所需的基础编程认知。', topics:['算子与计算逻辑','数据与存储层级','开发流程概览'], duration:'第 3 章', difficulty:1 },
+    { title:'算子开发编程范式', course:'昇腾异构编程基础（速成班）', category:'operator', desc:'第 4 章：学习算子开发的通用组织方式与执行范式。', topics:['数据搬运','计算过程','流水并行'], duration:'第 4 章', difficulty:2 },
+    { title:'昇腾平台仿真分析', course:'昇腾异构编程基础（速成班）', category:'operator', desc:'第 5 章：使用仿真分析理解算子执行行为。', topics:['仿真分析目标','执行过程观察','问题定位'], duration:'第 5 章', difficulty:2 },
+    { title:'自定义算子性能评估', course:'昇腾异构编程基础（速成班）', category:'operator', desc:'第 6 章：评估自定义算子的执行效率和性能瓶颈。', topics:['性能指标','瓶颈识别','评估结果解读'], duration:'第 6 章', difficulty:2 },
+    { title:'自定义算子性能优化', course:'昇腾异构编程基础（速成班）', category:'operator', desc:'第 7 章：围绕数据搬运、并行与计算组织开展优化。', topics:['数据搬运优化','并行策略','性能调优闭环'], duration:'第 7 章', difficulty:3 },
+    { title:'多机多卡系统', course:'昇腾异构编程基础（速成班）', category:'distributed', desc:'第 8 章：了解多机多卡场景下的系统与协同方式。', topics:['多机多卡概念','资源协同','系统运行基础'], duration:'第 8 章', difficulty:2 },
+    { title:'异构编程实践', course:'昇腾异构编程基础（速成班）', category:'operator', desc:'第 9 章：综合运用基础知识完成异构编程实践。', topics:['任务拆解','算子开发实践','结果验证'], duration:'第 9 章', difficulty:3 },
+    { title:'什么是算子', course:'Ascend C算子开发（入门）', category:'operator', desc:'模块一：理解算子的角色、输入输出与在模型中的作用。', topics:['算子定义','计算图中的算子','自定义算子场景'], duration:'模块一', difficulty:1 },
+    { title:'什么是Ascend C', course:'Ascend C算子开发（入门）', category:'operator', desc:'模块二：认识以标准 C/C++ 为基础扩展的 Ascend C 编程语言。', topics:['Ascend C 定位','编程模型','面向 AI Core 的开发'], duration:'模块二', difficulty:1 },
+    { title:'算子开发初体验', course:'Ascend C算子开发（入门）', category:'operator', desc:'模块三：完成一次从工程创建到运行验证的算子开发体验。', topics:['首个算子','编译与运行','结果校验'], duration:'模块三', difficulty:1 },
+    { title:'算子开发环境搭建', course:'Ascend C算子开发（入门）', category:'operator', desc:'模块四：准备 Ascend C 算子开发所需的软件与工程环境。', topics:['环境准备','工具链配置','工程目录'], duration:'模块四', difficulty:1 },
+    { title:'一个Add算子的前世今生', course:'Ascend C算子开发（进阶）', category:'operator', desc:'模块一：以 Add 算子为例串起从需求、实现到调用的完整过程。', topics:['Add 算子逻辑','开发流程','端到端链路'], duration:'模块一', difficulty:2 },
+    { title:'Host侧实现', course:'Ascend C算子开发（进阶）', category:'operator', desc:'模块二：理解 Host 侧负责的算子配置、启动与资源组织。', topics:['Host 侧职责','核函数启动','参数配置'], duration:'模块二', difficulty:2 },
+    { title:'算子开发工程', course:'Ascend C算子开发（进阶）', category:'operator', desc:'模块三：掌握算子工程的文件组织、构建与调试入口。', topics:['工程结构','构建流程','调试入口'], duration:'模块三', difficulty:2 },
+    { title:'API调用解读', course:'Ascend C算子开发（进阶）', category:'operator', desc:'模块四：理解开发和调用链路中的关键 API。', topics:['API 作用','参数传递','调用时序'], duration:'模块四', difficulty:2 },
+    { title:'算子的多种调用方式', course:'Ascend C算子开发（进阶）', category:'operator', desc:'模块五：比较不同场景下的算子调用方式。', topics:['调用场景','调用接口','集成方式'], duration:'模块五', difficulty:2 },
+    { title:'非对齐尾块处理', course:'Ascend C算子开发（进阶）', category:'operator', desc:'模块六：处理数据长度不能整齐切分时的尾块计算。', topics:['数据对齐','尾块场景','边界处理'], duration:'模块六', difficulty:3 },
+    { title:'Add算子微认证', course:'Ascend C算子开发（进阶）', category:'operator', desc:'模块七：检验 Add 算子开发、调用与边界处理的掌握程度。', topics:['知识回顾','动手验证','微认证'], duration:'模块七', difficulty:2 },
+    { title:'算子调试', course:'Ascend C算子开发（高级）', category:'operator', desc:'模块一：定位 Ascend C 算子开发、编译和运行过程中的问题。', topics:['调试流程','问题定位','结果验证'], duration:'模块一', difficulty:3 },
+    { title:'矩阵编程（高阶API）', course:'Ascend C算子开发（高级）', category:'operator', desc:'模块二：使用矩阵编程相关高阶 API 组织计算。', topics:['矩阵计算','高阶 API','计算组织'], duration:'模块二', difficulty:3 },
+    { title:'融合算子', course:'Ascend C算子开发（高级）', category:'operator', desc:'模块三：理解融合算子的设计目标与实现方式。', topics:['算子融合','访存减少','计算协同'], duration:'模块三', difficulty:3 },
+    { title:'性能优化（理论）', course:'Ascend C算子开发（高级）', category:'operator', desc:'模块四：建立算子性能优化的理论框架与分析方法。', topics:['性能瓶颈','数据搬运','并行优化'], duration:'模块四', difficulty:3 },
+    { title:'Ascend C语言定位与核心特性', course:'Ascend C Skills 全景概览', category:'operator', desc:'第 1 节：认识 Ascend C 的语言定位、能力边界与核心特性。', topics:['语言定位','核心特性','适用场景'], duration:'第 1 节', difficulty:1 },
+    { title:'Ascend C Skills工具链全景', course:'Ascend C Skills 全景概览', category:'operator', desc:'第 2 节：了解围绕算子开发的 Skills 工具链和协作方式。', topics:['Skills 工具链','开发流程','能力分工'], duration:'第 2 节', difficulty:2 },
+    { title:'课程体系与学习路径', course:'Ascend C Skills 全景概览', category:'beginner', desc:'第 3 节：理解 Ascend C Skills 的课程体系与推荐学习顺序。', topics:['课程体系','学习路径','能力进阶'], duration:'第 3 节', difficulty:1 },
+    { title:'异构架构与Ascend C定位', course:'Ascend C skills系列课程第二弹 - 算子开发入门', category:'beginner', desc:'Ch1：明确 Ascend C 在什么硬件上、以什么语言进行开发。', topics:['异构硬件架构','Ascend C 定位','高性能开发前提'], duration:'Ch1', difficulty:1 },
+    { title:'Ascend C编程基础', course:'Ascend C skills系列课程第二弹 - 算子开发入门', category:'operator', desc:'Ch2：掌握 Host / Device 分工、SPMD 模型与矢量编程范式。', topics:['Host / Device 分工','SPMD 模型','矢量编程范式'], duration:'Ch2', difficulty:1 },
+    { title:'算子开发流程与环境搭建', course:'Ascend C skills系列课程第二弹 - 算子开发入门', category:'operator', desc:'Ch3：搭建环境并创建工程，理解 env-config 和 project-init。', topics:['全流程地图','env-config','project-init'], duration:'Ch3', difficulty:1 },
+    { title:'算子设计与代码实现', course:'Ascend C skills系列课程第二弹 - 算子开发入门', category:'operator', desc:'Ch4：学习 Tiling 策略和 API 映射，完成设计、编码与编译。', topics:['Tiling 策略','API 映射','design / code-gen / compile-debug'], duration:'Ch4', difficulty:2 },
+    { title:'文档输出与课程总结', course:'Ascend C skills系列课程第二弹 - 算子开发入门', category:'operator', desc:'Ch5：生成 API 文档，回顾算子开发关键知识。', topics:['API 文档','doc-gen','知识回顾'], duration:'Ch5', difficulty:2 },
+    { title:'随堂实操练习', course:'Ascend C skills系列课程第二弹 - 算子开发入门', category:'operator', desc:'Ch6：以 Add 算子串联 6 个 Skills，完成从零到跑通的实践。', topics:['Add 算子','6 个 Skills 全流程','端到端实践'], duration:'Ch6', difficulty:2 },
   ];
   const CAT_META = {
     beginner:    { label: '基础入门', color: '#10B981' },
@@ -2518,7 +2544,7 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   // Seed sample paths into localStorage on first visit
   const CUSTOM_PATHS_SEEDED_KEY = 'cann_custom_paths_seeded';
-  const OFFICIAL_PATH_MIGRATION_KEY = 'cann_official_path_v2';
+  const OFFICIAL_PATH_MIGRATION_KEY = 'cann_official_path_v3';
   if (!localStorage.getItem(OFFICIAL_PATH_MIGRATION_KEY)) {
     // Replace only earlier built-in demo paths; preserve learner-created paths.
     customPaths = customPaths.filter(path => !String(path.id).startsWith('sample-'));
@@ -4006,22 +4032,36 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!nav) return;
     nav.classList.toggle('map', _ldPathView === 'map');
     if (_ldPathView === 'map') {
-      const W = 230, H = Math.max(190, _ldActivePathNodes.length * 88 + 30);
-      const nodeY = i => 42 + i * 88;
+      const clusters = [];
+      _ldActivePathNodes.forEach((node, index) => {
+        const last = clusters[clusters.length - 1];
+        if (!last || last.course !== node.course) clusters.push({ course:node.course || '学习节点', items:[] });
+        clusters[clusters.length - 1].items.push({ node, index });
+      });
+      const W = 230, H = Math.max(220, _ldActivePathNodes.length * 68 + clusters.length * 32 + 30);
+      let y = 26;
+      const layout = [];
+      clusters.forEach(cluster => { y += 16; cluster.y = y; cluster.items.forEach(item => { y += 34; layout.push({ ...item, y }); y += 34; }); y += 12; });
       const label = text => String(text).replace(/[&<>]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' })[char]);
-      const links = _ldActivePathNodes.slice(0, -1).map((_, i) => {
-        const y1 = nodeY(i) + 22, y2 = nodeY(i + 1) - 22;
-        return `<path class="ld-route-link" d="M115 ${y1} L115 ${y2}" marker-end="url(#ldRouteArrow)"/>`;
+      const links = layout.slice(0, -1).map((item, i) => {
+        const next = layout[i + 1];
+        return `<path class="ld-route-link" d="M42 ${item.y + 22} L42 ${next.y - 22}" marker-end="url(#ldRouteArrow)"/>`;
       }).join('');
-      const marks = _ldActivePathNodes.map((node, i) => {
-        const active = i === _ldActivePathIndex ? ' active' : '';
+      const headings = clusters.map(cluster => `<text class="ld-route-cluster" x="20" y="${cluster.y}">${label(cluster.course)}</text>`).join('');
+      const marks = layout.map(({ node, index, y:nodeY }) => {
+        const active = index === _ldActivePathIndex ? ' active' : '';
         const color = CAT_META[node.category]?.color || '#002FA7';
-        return `<g class="ld-route-node${active}" onclick="ldOpenPathNode(${i})" role="button" aria-label="打开第 ${i + 1} 步：${label(node.title)}"><rect x="20" y="${nodeY(i) - 22}" width="190" height="44" rx="7"/><circle cx="42" cy="${nodeY(i)}" r="13" fill="${color}"/><text class="ld-route-number" x="42" y="${nodeY(i) + 4}" text-anchor="middle">${i + 1}</text><text class="ld-route-title" x="64" y="${nodeY(i) - 2}">${label(node.title)}</text><text class="ld-route-meta" x="64" y="${nodeY(i) + 13}">${label(node.duration || '学习节点')}</text></g>`;
+        return `<g class="ld-route-node${active}" onclick="ldOpenPathNode(${index})" role="button" aria-label="打开第 ${index + 1} 步：${label(node.title)}"><rect x="20" y="${nodeY - 22}" width="190" height="44" rx="7"/><circle cx="42" cy="${nodeY}" r="13" fill="${color}"/><text class="ld-route-number" x="42" y="${nodeY + 4}" text-anchor="middle">${index + 1}</text><text class="ld-route-title" x="64" y="${nodeY - 2}">${label(node.title)}</text><text class="ld-route-meta" x="64" y="${nodeY + 13}">${label(node.duration || '学习节点')}</text></g>`;
       }).join('');
-      nav.innerHTML = `<div class="ld-route-map-wrap"><svg class="ld-route-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="学习路径可视化路线图"><defs><marker id="ldRouteArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker></defs>${links}${marks}</svg></div>`;
+      nav.innerHTML = `<div class="ld-route-map-wrap"><svg class="ld-route-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="按课程聚类的学习路径可视化路线图"><defs><marker id="ldRouteArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker></defs>${headings}${links}${marks}</svg></div>`;
       return;
     }
-    nav.innerHTML = _ldActivePathNodes.map((n, i) => `<button class="ld-path-nav-item ${i === _ldActivePathIndex ? 'active' : ''}" onclick="ldOpenPathNode(${i})"><span>${i + 1}</span><strong>${n.title}</strong><small>${n.duration || '学习节点'}</small></button>`).join('');
+    let previousCourse = '';
+    nav.innerHTML = _ldActivePathNodes.map((n, i) => {
+      const cluster = n.course && n.course !== previousCourse ? `<div class="ld-path-cluster">${n.course}</div>` : '';
+      previousCourse = n.course || previousCourse;
+      return `${cluster}<button class="ld-path-nav-item ${i === _ldActivePathIndex ? 'active' : ''}" onclick="ldOpenPathNode(${i})"><span>${i + 1}</span><strong>${n.title}</strong><small>${n.duration || '学习节点'}</small></button>`;
+    }).join('');
   }
 
   function ldOpenPathNode(index) {
@@ -4030,7 +4070,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     _ldActivePathIndex = index;
     if (_ldPathView === 'map') ldRenderPathNav();
     document.querySelectorAll('.ld-path-nav-item').forEach((el, i) => el.classList.toggle('active', i === index));
-    const knowledge = NODE_KNOWLEDGE[node.title];
+    const knowledge = NODE_KNOWLEDGE[node.title] || ldBuildChapterKnowledge(node);
     const content = document.getElementById('ld-learning-content');
     if (!content) return;
     const video = NODE_VIDEO[node.title] || { title: `${node.title}讲解视频`, duration: '课程视频', tag: '视频学习' };
@@ -4039,8 +4079,31 @@ def vector_add_tik(shape, dtype, kernel_name):
     const code = knowledge?.code;
     const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="ldRunNodeCode()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
     const practice = knowledge?.lab ? `<section><h2>动手练习</h2><div class="ld-practice-steps">${knowledge.lab.steps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>` : '';
-    content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>学习视频</h2><div class="ld-video-embed"><div class="ld-video-stage"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div><div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${codeHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>学习视频</h2><div class="ld-video-embed"><div class="ld-video-stage"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div><div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${codeHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     ldRefreshStudyTools(node, knowledge);
+  }
+
+  function ldBuildChapterKnowledge(node) {
+    const topics = node.topics || [];
+    const skillsSource = node.course?.includes('Skills');
+    const extra = node.title === '算子设计与代码实现' ? [{ term:'实践流程', desc:'按 design、code-gen、compile-debug 的顺序完成设计、编码与编译调试。' }] : [];
+    const labs = {
+      '算子开发环境搭建': [{ title:'核对开发环境', desc:'确认 CANN 环境变量、编译工具与工程目录可用。' }, { title:'创建算子工程', desc:'使用官方工程模板创建一个可编译的算子项目。' }],
+      '算子开发初体验': [{ title:'编译首个算子', desc:'运行样例工程，观察编译产物与执行结果。' }],
+      '一个Add算子的前世今生': [{ title:'梳理 Add 算子链路', desc:'从算子描述、Host 侧到 Device 侧，标出每个环节的职责。' }],
+      '非对齐尾块处理': [{ title:'构造尾块测试', desc:'用不能整除的数据长度验证尾块处理逻辑。' }],
+      '算子设计与代码实现': [{ title:'执行 Skills 流程', desc:'按 design、code-gen、compile-debug 完成 Add 算子的设计与构建。' }],
+      '随堂实操练习': [{ title:'完成 Add 全流程', desc:'串联 env-config、project-init、design、code-gen、compile-debug、doc-gen 六个 Skills。' }]
+    };
+    return {
+      summary: node.desc,
+      concepts: [...topics.map(topic => ({ term:topic, desc:`围绕「${node.title}」理解 ${topic} 的作用、基本方法与在 Ascend C 开发中的应用。` })), ...extra],
+      resources: [
+        { icon:skillsSource ? '📝' : '🎓', title:node.course || 'Ascend C编程', href:skillsSource ? 'https://www.hiascend.com/blogs/details/1c91fc3edb804adca3c93e1e3de9266f' : 'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53', type:skillsSource ? '官方课程文章' : '官方课程', subtitle:`${node.duration || '课程章节'} · 查看完整课程内容` },
+        { icon:'📖', title:'Ascend C基本概念', href:'https://hiascend.com/document/redirect/CannCommunityAscendCbase', type:'官方文档', subtitle:'配合章节学习查阅基础概念' }
+      ],
+      lab: labs[node.title] ? { steps:labs[node.title] } : undefined
+    };
   }
 
   function ldSwitchTool(name, button) {
