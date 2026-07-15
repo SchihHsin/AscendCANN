@@ -4164,11 +4164,29 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
 
   function ldBuildKnowledgeGraph(node, knowledge) {
+    if (node.title === '昇腾硬件架构介绍') {
+      return { nodes:[
+        { id:'ascend', label:'昇腾 AI 处理器', title:'昇腾 AI 处理器', desc:'面向 AI 计算的异构处理器，协同处理控制、计算与数据访问任务。', group:'model', x:0, y:12 },
+        { id:'host', label:'Host CPU', title:'Host 侧', desc:'负责应用控制、任务下发和运行时调度。', group:'model', x:99, y:12 },
+        { id:'device', label:'Device', title:'Device 侧', desc:'承接由 Host 下发的计算任务，在昇腾 AI 处理器上执行。', group:'model', x:198, y:12 },
+        { id:'aicore', label:'AI Core', title:'AI Core', desc:'执行高性能 AI 算子的核心计算资源，由不同计算与搬运单元协同组成。', group:'layout', x:0, y:104 },
+        { id:'cube', label:'Cube 单元', title:'Cube 计算单元', desc:'面向矩阵类计算，服务卷积、矩阵乘等高吞吐运算。', group:'layout', x:99, y:104 },
+        { id:'vector', label:'Vector 单元', title:'Vector 计算单元', desc:'负责向量类计算，适合逐元素计算、激活和归一化等操作。', group:'layout', x:198, y:104 },
+        { id:'gm', label:'Global Memory', title:'全局内存', desc:'容量较大的片外存储，用于保存输入、输出与中间数据。', group:'layout', x:0, y:196 },
+        { id:'l1', label:'L1 Buffer', title:'L1 存储', desc:'片上缓存层级之一，用于缩短数据到计算单元的访问路径。', group:'layout', x:99, y:196 },
+        { id:'ub', label:'Unified Buffer', title:'Unified Buffer', desc:'面向向量计算等场景的片上缓冲区，承接数据搬运与计算。', group:'layout', x:198, y:196 },
+        { id:'mte', label:'MTE 搬运', title:'数据搬运单元', desc:'在不同存储层级之间搬运数据，为计算单元持续供数。', group:'flow', x:0, y:288 },
+        { id:'pipeline', label:'执行流水', title:'搬运-计算流水', desc:'将数据搬运、计算和写回组织为流水，减少计算单元等待。', group:'flow', x:99, y:288 },
+        { id:'operator', label:'自定义算子', title:'算子执行', desc:'将具体计算逻辑映射到 AI Core 的计算和存储资源上执行。', group:'flow', x:198, y:288 }
+      ], edges:[
+        ['ascend','host'], ['ascend','device'], ['device','aicore'], ['aicore','cube'], ['aicore','vector'], ['device','gm'], ['gm','l1'], ['l1','ub'], ['ub','cube'], ['ub','vector'], ['gm','mte'], ['mte','pipeline'], ['pipeline','operator'], ['cube','operator'], ['vector','operator']
+      ] };
+    }
     const operatorBasics = node.title === '算子开发编程基础';
     if (!operatorBasics) {
-      const items = (knowledge?.concepts || []).slice(0, 6);
+      const items = (knowledge?.concepts || []).slice(0, 8);
       return {
-        nodes: items.map((item, index) => ({ id:`n${index}`, label:item.term, title:item.term, desc:item.desc, group:index % 3 === 0 ? 'model' : index % 3 === 1 ? 'layout' : 'flow', x:index % 2 ? 156 : 82, y:18 + Math.floor(index / 2) * 92 })),
+        nodes: items.map((item, index) => ({ id:`n${index}`, label:item.term, title:item.term, desc:item.desc, group:index % 3 === 0 ? 'model' : index % 3 === 1 ? 'layout' : 'flow', x:[0,99,198][index % 3], y:18 + Math.floor(index / 3) * 92 })),
         edges: items.slice(1).map((_, index) => [`n${index}`, `n${index + 1}`])
       };
     }
