@@ -3994,7 +3994,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!dash || !roadmap) return;
 
     if (pathId) {
-      const path = (customPaths.length > 0 ? customPaths : samplePaths).find(p => p.id === pathId);
+      // Built-in sample paths remain addressable even when the learner has saved paths.
+      const path = [...samplePaths, ...customPaths].find(p => p.id === pathId);
       if (path) {
         const nameEl = document.getElementById('ld-roadmap-name');
         const progFill = document.getElementById('ld-roadmap-prog-fill');
@@ -4006,7 +4007,11 @@ def vector_add_tik(shape, dtype, kernel_name):
         if (progFill) progFill.style.width = prog + '%';
         if (progLbl) progLbl.textContent = `${done} / ${nodeCount} 节点`;
         // Render path sequence strip
-        if (path.nodeList) renderLearnPagePath(path.query, path.nodeList);
+        if (path.nodeList) {
+          window._currentLearnPath = path.nodeList;
+          const strip = document.getElementById('path-seq-strip');
+          if (strip) renderLearnPagePath(path.query, path.nodeList);
+        }
       }
     }
 
@@ -4015,6 +4020,11 @@ def vector_add_tik(shape, dtype, kernel_name):
     const fallback = focusIdx !== undefined ? [NODE_LIST[focusIdx]] : (window._currentLearnPath || NODE_LIST.slice(0, 5));
     ldRenderPathWorkspace(window._currentLearnPath?.length ? window._currentLearnPath : fallback);
     window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function ldOpenAscendCDemo() {
+    _ldGeneratedPlanContext = 'Ascend C 编程样板路径';
+    ldShowRoadmap('official-ascend-c');
   }
 
   function ldSetPathView(view, btn) {
@@ -4248,9 +4258,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldUpdateGenerateState();
     const profile = ldProfileLoad();
     ldArrangeDashboard(Boolean(profile.role && profile.role !== '暂不确定'));
-    const demoPath = new URLSearchParams(window.location.search).get('path') === 'ascend-c-demo';
+    const demoPath = new URLSearchParams(window.location.search).get('path') === 'ascend-c-demo' || window.location.hash === '#ascend-c-demo';
     if (demoPath) {
-      ldShowRoadmap('official-ascend-c');
+      ldOpenAscendCDemo();
     } else {
       ldOpenOnboarding(false);
     }
