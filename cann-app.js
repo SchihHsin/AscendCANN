@@ -1,40 +1,14 @@
   const AI_WORKER_URL = 'https://ascend-cann.10xinyu0901.workers.dev';
 
-  // Canonical list of all 11 knowledge nodes shared by both pages
+  // Official Ascend C programming path, aligned with hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53.
   const NODE_LIST = [
-    { title: '昇腾硬件体系',      category: 'beginner',    desc: '达芬奇核、HBM、AI Core 架构概览',
-      topics: ['达芬奇核架构与 Cube/Vector/Scalar 单元', 'Atlas 系列芯片规格对比', 'AI Core 流水线与内存层次', 'NPU vs GPU 计算模型差异'],
-      duration: '1.5h', difficulty: 1 },
-    { title: 'CANN 软件栈概览',   category: 'beginner',    desc: 'CANN 整体分层架构与组件关系',
-      topics: ['CANN 各层组件职责与调用关系', 'AscendCL / GE / FE / TBE 定位', '算子库与图引擎的协作方式', '与 PyTorch/MindSpore 框架的集成点'],
-      duration: '1h', difficulty: 1 },
-    { title: '环境安装与配置',    category: 'beginner',    desc: 'Toolkit 安装、环境变量与 NPU 验证',
-      topics: ['Driver / Firmware / CANN Toolkit 安装顺序', '环境变量 set_env.sh 配置', 'npu-smi 验证 NPU 可用状态', '常见安装报错与修复'],
-      duration: '1h', difficulty: 1 },
-    { title: 'AscendCL 编程基础', category: 'developer',   desc: 'ACL 初始化、Device / Context / Stream',
-      topics: ['ACL 初始化与资源释放生命周期', 'Device / Context / Stream 三层模型', '内存分配：Host ↔ Device 数据搬运', '同步执行与异步流水的区别'],
-      duration: '3h', difficulty: 2 },
-    { title: '模型推理部署',      category: 'developer',   desc: 'ATC 转换、.om 加载与离线推理执行',
-      topics: ['ATC 工具将 ONNX/TF/Caffe 转 .om 模型', '模型加载与输入/输出 Buffer 管理', '离线推理执行与结果后处理', '动态 Shape 与批量推理配置'],
-      duration: '4h', difficulty: 2 },
-    { title: '数据预处理 (DVPP)', category: 'developer',   desc: '图像/视频硬件解码与缩放加速',
-      topics: ['DVPP 硬件解码 JPEG / H.264 / H.265', '图像缩放、抠图、格式转换 API', 'DVPP 与推理流水线的拼接方式', 'CPU 预处理 vs DVPP 性能对比'],
-      duration: '2.5h', difficulty: 2 },
-    { title: '性能调优实战',      category: 'developer',   desc: 'Profiling 工具链与 NPU 瓶颈分析',
-      topics: ['Profiling 采集 Timeline / 算子耗时', 'MindStudio 可视化分析 Bottleneck', 'AICPU / AICORE 调度优化策略', '内存带宽与流水线 Overlap 优化'],
-      duration: '4h', difficulty: 3 },
-    { title: 'TBE DSL 算子开发',  category: 'operator',    desc: 'TBE DSL 自定义算子开发全流程',
-      topics: ['TBE DSL 张量表达式语法', 'Schedule 调度原语（split/reorder/bind）', '算子注册与 OpProto 定义', '用 msopgen 生成算子工程框架'],
-      duration: '5h', difficulty: 3 },
-    { title: 'TIK 底层算子开发',  category: 'operator',    desc: 'TIK C++ 底层核函数与内存管理',
-      topics: ['TIK C++ 核函数编程模型', 'GM / L1 / L0 多级缓存数据搬运', 'Pipeline 双缓冲与流水并行', '精度调试与 dump 数据对比'],
-      duration: '6h', difficulty: 3 },
-    { title: 'HCCL 分布式通信',   category: 'distributed', desc: 'AllReduce 等集合通信原语与多卡同步',
-      topics: ['HCCL 集合通信：AllReduce / Broadcast / Scatter', 'rank / 通信域 / 拓扑配置', '多机多卡环境初始化', '通信性能分析与带宽瓶颈排查'],
-      duration: '3h', difficulty: 3 },
-    { title: '大模型训练实战',    category: 'distributed', desc: 'DeepSpeed + HCCL 大模型分布式训练',
-      topics: ['DeepSpeed ZeRO Stage 1/2/3 配置', 'Pipeline / Tensor 并行与昇腾适配', '混合精度 BF16 训练与梯度缩放', '千卡训练故障诊断与稳定性优化'],
-      duration: '8h', difficulty: 3 },
+    { title: 'Ascend C基本概念', category: 'beginner', desc: '官方路径的预备知识：理解 Ascend C 的定位和基础概念。', topics: ['Ascend C 编程模型', '算子开发流程', '基础数据类型与计算范式'], duration: '预备知识', difficulty: 1 },
+    { title: '昇腾异构编程基础课程（速成班）', category: 'beginner', desc: '官方课程：建立昇腾 AI 处理器、CANN 异构计算架构与算子开发基础。', topics: ['昇腾 AI 处理器基础', 'CANN 异构计算架构', '算子开发与性能分析概览'], duration: '课程 1', difficulty: 1 },
+    { title: 'Ascend C算子开发（入门）', category: 'operator', desc: '官方课程：从基础编程模型开始完成首个 Ascend C 算子。', topics: ['Ascend C 编程模型', '算子工程与调用', '基础算子实现'], duration: '课程 2', difficulty: 1 },
+    { title: 'Ascend C算子开发（进阶）', category: 'operator', desc: '官方课程：深入数据搬运、并行计算和算子调测。', topics: ['数据搬运与流水', '算子调用与调测', '计算与内存协同'], duration: '课程 3', difficulty: 2 },
+    { title: 'Ascend C算子开发（高级）', category: 'operator', desc: '官方课程：面向性能分析与优化，掌握高性能算子开发方法。', topics: ['算子性能分析', '性能优化方法', '高性能算子实践'], duration: '课程 4', difficulty: 3 },
+    { title: 'Ascend C skills系列课程', category: 'operator', desc: '官方课程：通过技能化专题练习巩固 Ascend C 算子开发能力。', topics: ['技能专题练习', '典型算子案例', '开发问题排查'], duration: '课程 5', difficulty: 2 },
+    { title: '昇腾异构编程基础微认证', category: 'beginner', desc: '官方微认证：考察昇腾 AI 处理器、CANN 异构计算、算子开发与性能分析知识。', topics: ['硬件架构', 'CANN 异构计算架构', '算子开发与性能分析'], duration: '微认证', difficulty: 2 },
   ];
   const CAT_META = {
     beginner:    { label: '基础入门', color: '#10B981' },
@@ -1294,6 +1268,16 @@ def vector_add_tik(shape, dtype, kernel_name):
     }
   };
 
+  Object.assign(NODE_KNOWLEDGE, {
+    'Ascend C基本概念': { summary:'这是官方 Ascend C 编程路径的预备知识。先理解 Ascend C 以标准 C/C++ 为基础扩展、用于开发高性能算子的定位，再进入课程学习。', concepts:[{term:'Ascend C',desc:'面向昇腾 AI Core 的算子开发语言，以标准 C/C++ 为基础扩展。'},{term:'算子开发',desc:'将计算逻辑、数据搬运和并行执行组织为可在昇腾 AI 处理器上高效运行的算子。'}], resources:[{icon:'📖',title:'Ascend C基本概念',href:'https://hiascend.com/document/redirect/CannCommunityAscendCbase',type:'官方预备知识',subtitle:'官方路径指定的预备知识'}] },
+    '昇腾异构编程基础课程（速成班）': { summary:'官方 Ascend C 编程路径第 1 门课程。建立昇腾 AI 处理器、CANN 异构计算架构、算子开发与性能分析的基础认识。', concepts:[{term:'异构编程',desc:'让 CPU 与 AI 处理器各自承担擅长的任务，并通过 CANN 完成调度和协同。'},{term:'CANN',desc:'昇腾 AI 异构计算架构，提供算子开发、运行时和性能分析能力。'}], resources:[{icon:'🎓',title:'Ascend C编程官方学习路径',href:'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',type:'官方课程',subtitle:'课程 1：昇腾异构编程基础课程（速成班）'}] },
+    'Ascend C算子开发（入门）': { summary:'官方 Ascend C 编程路径第 2 门课程。从 Ascend C 编程模型出发，完成首个算子开发与调用。', concepts:[{term:'编程模型',desc:'以数据搬运、向量/矩阵计算和流水协同组织算子执行。'},{term:'算子调用',desc:'将已开发的算子接入工程，并完成编译、运行与结果验证。'}], resources:[{icon:'🎓',title:'Ascend C编程官方学习路径',href:'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',type:'官方课程',subtitle:'课程 2：Ascend C算子开发（入门）'}] },
+    'Ascend C算子开发（进阶）': { summary:'官方 Ascend C 编程路径第 3 门课程。围绕数据搬运、并行计算、算子调用和调测深化开发能力。', concepts:[{term:'数据搬运',desc:'在不同存储层级间组织数据传输，为计算单元准备数据。'},{term:'算子调测',desc:'通过编译、运行、精度校验等步骤定位算子开发问题。'}], resources:[{icon:'🎓',title:'Ascend C编程官方学习路径',href:'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',type:'官方课程',subtitle:'课程 3：Ascend C算子开发（进阶）'}] },
+    'Ascend C算子开发（高级）': { summary:'官方 Ascend C 编程路径第 4 门课程。聚焦算子性能分析与优化，面向高性能算子开发实践。', concepts:[{term:'性能分析',desc:'识别算子在计算、数据搬运和并行协同中的瓶颈。'},{term:'性能优化',desc:'针对瓶颈调整数据切分、流水与计算组织，提高算子执行效率。'}], resources:[{icon:'🎓',title:'Ascend C编程官方学习路径',href:'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',type:'官方课程',subtitle:'课程 4：Ascend C算子开发（高级）'}] },
+    'Ascend C skills系列课程': { summary:'官方 Ascend C 编程路径第 5 门课程。以技能专题和案例练习巩固算子开发、调用、性能分析与优化的完整流程。', concepts:[{term:'Skills 专题',desc:'围绕具体开发技能设计的系列化练习，强调在场景中应用。'},{term:'全流程实践',desc:'从开发、调用到性能分析与优化的闭环能力。'}], resources:[{icon:'🎓',title:'Ascend C编程官方学习路径',href:'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',type:'官方课程',subtitle:'课程 5：Ascend C skills系列课程'}] },
+    '昇腾异构编程基础微认证': { summary:'官方 Ascend C 编程路径的微认证。用于检验昇腾 AI 处理器、CANN 异构计算架构、算子开发和性能分析等基础知识。', concepts:[{term:'认证范围',desc:'昇腾 AI 处理器硬件架构、CANN 异构计算架构、算子开发及性能分析。'}], resources:[{icon:'🏅',title:'昇腾异构编程基础微认证',href:'https://www.hiascend.com/edu/certification/detail/c9ce549104334952b06a472ef600dc53',type:'官方微认证',subtitle:'完成路径后进行能力验证'}] }
+  });
+
   // ── DRAWER STATE ──
   let _currentDrawerNode = null;
   let _currentDrawerTab = 'knowledge';
@@ -2527,22 +2511,23 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   // Sample custom paths data
   const samplePaths = [
-    { id: 'sample-1', name: 'CANN算子开发入门', icon: '🔧', query: '算子开发入门', createdAt: '2024-01-15',
-      nodeList: [0,1,2,7,8].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
-    { id: 'sample-2', name: '模型推理部署', icon: '🔄', query: '模型推理部署', createdAt: '2024-01-20',
-      nodeList: [0,2,3,4,5].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
-    { id: 'sample-3', name: '昇腾AI推理优化', icon: '⚡', query: '推理性能优化', createdAt: '2024-02-01',
-      nodeList: [3,4,5,6].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
-    { id: 'sample-4', name: '分布式训练实战', icon: '🚀', query: '分布式大模型训练', createdAt: '2024-02-10',
-      nodeList: [0,3,9,10].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
-    { id: 'sample-5', name: 'CANN 完整入门', icon: '📚', query: 'CANN入门基础', createdAt: '2024-02-15',
-      nodeList: [0,1,2,3,4].map((i,s) => ({ ...NODE_LIST[i], step: s+1, reason: NODE_LIST[i].desc })) },
+    { id: 'official-ascend-c', name: 'Ascend C编程', icon: '⚙️', query: 'Ascend C编程', createdAt: '2026-07-15', official: true,
+      sourceUrl: 'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',
+      nodeList: NODE_LIST.map((node, step) => ({ ...node, step:step + 1, reason:node.desc })) },
   ];
 
   // Seed sample paths into localStorage on first visit
   const CUSTOM_PATHS_SEEDED_KEY = 'cann_custom_paths_seeded';
+  const OFFICIAL_PATH_MIGRATION_KEY = 'cann_official_path_v2';
+  if (!localStorage.getItem(OFFICIAL_PATH_MIGRATION_KEY)) {
+    // Replace only earlier built-in demo paths; preserve learner-created paths.
+    customPaths = customPaths.filter(path => !String(path.id).startsWith('sample-'));
+    customPaths.unshift({ ...samplePaths[0], lastStudied: samplePaths[0].createdAt });
+    localStorage.setItem('cann_custom_paths', JSON.stringify(customPaths));
+    localStorage.setItem(OFFICIAL_PATH_MIGRATION_KEY, '1');
+  }
   if (!localStorage.getItem(CUSTOM_PATHS_SEEDED_KEY)) {
-    const seeded = samplePaths.map(p => ({
+    const seeded = (customPaths.length ? customPaths : samplePaths).map(p => ({
       ...p,
       lastStudied: p.createdAt,
     }));
