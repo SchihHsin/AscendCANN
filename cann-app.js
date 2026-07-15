@@ -3646,6 +3646,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   let _ldActiveCat = 'all';
   let _ldRecommendationOffset = 0;
   let _ldSelectedScenario = '';
+  let _ldGeneratedPlanContext = '';
   let _ldPathView = 'list';
   let _ldActivePathNodes = [];
   let _ldActivePathIndex = 0;
@@ -3832,6 +3833,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (mode === 'free') {
       const query = input?.value.trim();
       if (!query) return;
+      _ldGeneratedPlanContext = `你的学习目标「${query}」`;
       sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: '自由输入' }));
       _aiPathStart(query);
       return;
@@ -3843,6 +3845,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const profile = ldProfileLoad();
     const planContext = Object.entries(profile).filter(([key]) => key !== 'skipped').map(([key, value]) => `${({interest:'兴趣场景',goal:'学习目标',foundation:'基础与资源'})[key] || key}：${value}`).join('；');
     sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: _ldSelectedScenario, ...profile }));
+    _ldGeneratedPlanContext = `你选择的典型场景「${_ldSelectedScenario}」`;
     _aiPathStart(query, planContext);
   }
 
@@ -4118,7 +4121,12 @@ def vector_add_tik(shape, dtype, kernel_name):
     const context = document.getElementById('ld-ai-context');
     const chat = document.getElementById('ld-tool-chat');
     if (context) context.textContent = `当前节点：${node.title}`;
-    if (chat) chat.innerHTML = `<div class="ld-tool-msg">正在学习「${node.title}」。可以让我解释概念、给出代码示例或规划练习。</div>`;
+    if (chat) {
+      const pathNotice = _ldGeneratedPlanContext
+        ? `已根据${_ldGeneratedPlanContext}生成学习路径，请在左侧查看。当前打开「${node.title}」，你还可以继续问我任何学习、代码或实践问题。`
+        : `正在学习「${node.title}」。可以让我解释概念、给出代码示例或规划练习。`;
+      chat.innerHTML = `<div class="ld-tool-msg">${pathNotice}</div>`;
+    }
     const prompts = document.getElementById('ld-tool-prompts');
     if (prompts) prompts.innerHTML = ['用适合初学者的方式解释这个概念', '逐行讲解这个节点的代码示例', '列出实践中最常见的三个错误与排查方法', '为我设计一个 20 分钟的动手练习'].map(text => `<button onclick="ldToolPrompt('${text}')">${text}</button>`).join('');
     const quiz = document.getElementById('ld-embedded-quiz');
