@@ -4240,5 +4240,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldUpdateGenerateState();
     const profile = ldProfileLoad();
     ldArrangeDashboard(Boolean(profile.role && profile.role !== '暂不确定'));
-    ldOpenOnboarding(false);
+    const demoPath = new URLSearchParams(window.location.search).get('path') === 'ascend-c-demo';
+    if (demoPath) {
+      ldShowRoadmap('official-ascend-c');
+    } else {
+      ldOpenOnboarding(false);
+    }
   });
