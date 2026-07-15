@@ -3638,6 +3638,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     _ldProfileDraft[key] = value;
     button.closest('.ld-ob-options').querySelectorAll('button').forEach(item => item.classList.remove('active'));
     button.classList.add('active');
+    // Role is the explicit switch for the dashboard recommendation layout.
+    if (key === 'role') ldArrangeDashboard(value !== '暂不确定');
     document.getElementById('ld-ob-next').disabled = false;
   }
   function ldNextOnboarding() {
@@ -4146,6 +4148,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     _updateQbBadge();
     document.getElementById('ld-ai-input')?.addEventListener('input', ldUpdateGenerateState);
     ldUpdateGenerateState();
-    ldArrangeDashboard(false);
+    const profile = ldProfileLoad();
+    ldArrangeDashboard(Boolean(profile.role && profile.role !== '暂不确定'));
     ldOpenOnboarding(false);
   });
