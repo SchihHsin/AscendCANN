@@ -4092,11 +4092,12 @@ def vector_add_tik(shape, dtype, kernel_name):
       : `<div class="ld-video-stage"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div>`;
     const resources = (knowledge?.resources || []).map(r => `<a class="ld-content-resource" href="${r.href}" target="_blank"><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`).join('');
     const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p></div>`).join('');
+    const reading = knowledge?.reading ? `<section class="ld-reading"><h2>正文讲解</h2>${knowledge.reading.map(item => `<article><h3>${item.title}</h3><p>${item.body}</p></article>`).join('')}</section>` : '';
     const code = knowledge?.code;
     const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="ldRunNodeCode()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
     const practiceSteps = knowledge?.lab?.steps || [{ title:`运行「${node.title}」配套练习`, desc:'在 HiDevLab 中打开本章节的实践环境，边学边验证。' }];
     const practice = `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>`;
-    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${codeHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${reading}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section>${codeHtml}${practice}<section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     ldRefreshStudyTools(node, knowledge);
   }
 
@@ -4112,6 +4113,14 @@ def vector_add_tik(shape, dtype, kernel_name):
       '算子设计与代码实现': [{ title:'执行 Skills 流程', desc:'按 design、code-gen、compile-debug 完成 Add 算子的设计与构建。' }],
       '随堂实操练习': [{ title:'完成 Add 全流程', desc:'串联 env-config、project-init、design、code-gen、compile-debug、doc-gen 六个 Skills。' }]
     };
+    const reading = node.title === '算子开发编程基础' ? [
+      { title:'从算子到计算任务', body:'在 CANN 中，算子用于描述模型中的一个计算单元，例如加法、卷积或归一化。自定义算子开发的第一步不是直接写代码，而是先明确输入、输出、数据类型与计算规则；这些信息决定后续的数据切分和执行方式。' },
+      { title:'数据搬运与计算配合', body:'昇腾 AI Core 上的高性能算子通常把执行过程组织为数据搬运、计算和结果写回。开发时需要关注数据所在的存储层级、搬运顺序与计算单元的配合，避免让计算单元因等待数据而空闲。' },
+      { title:'从开发到验证的闭环', body:'一个可用的算子需要经过工程创建、实现、编译、调用和结果校验。先以正确性为目标跑通最小样例，再结合实际输入规模观察性能，是更稳妥的学习与开发路径。' }
+    ] : [
+      { title:'本节学习切入点', body:`围绕「${node.title}」，先建立概念和使用场景，再将知识点放回 Ascend C 算子开发流程中理解。` },
+      { title:'如何在开发中应用', body:`本节的重点是把 ${topics.join('、')} 转化为可验证的开发动作：阅读官方说明、运行最小样例，并记录遇到的问题。` }
+    ];
     return {
       summary: node.desc,
       concepts: [...topics.map(topic => ({ term:topic, desc:`围绕「${node.title}」理解 ${topic} 的作用、基本方法与在 Ascend C 开发中的应用。` })), ...extra],
@@ -4119,6 +4128,7 @@ def vector_add_tik(shape, dtype, kernel_name):
         { icon:skillsSource ? '📝' : '🎓', title:node.course || 'Ascend C编程', href:skillsSource ? 'https://www.hiascend.com/blogs/details/1c91fc3edb804adca3c93e1e3de9266f' : 'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53', type:skillsSource ? '官方课程文章' : '官方课程', subtitle:`${node.duration || '课程章节'} · 查看完整课程内容` },
         { icon:'📖', title:'Ascend C基本概念', href:'https://hiascend.com/document/redirect/CannCommunityAscendCbase', type:'官方文档', subtitle:'配合章节学习查阅基础概念' }
       ],
+      reading,
       lab: labs[node.title] ? { steps:labs[node.title] } : undefined
     };
   }
@@ -4149,9 +4159,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const visual = document.getElementById('ld-knowledge-visual');
     if (!visual) return;
     const items = (knowledge?.concepts || []).slice(0, 4);
-    const nodes = items.map((item, i) => `<button class="ld-kv-node" style="--i:${i}" title="${item.desc}" onclick="ldFocusLearningContent()">${item.term}</button>`).join('');
+    const nodes = items.map((item, i) => `<button class="ld-kv-node" style="--i:${i}" onclick="ldFocusLearningContent()"><span>${item.term}</span><em>${item.desc}</em></button>`).join('');
     const links = items.map((_, i) => `<span class="ld-kv-link l${i}"></span>`).join('');
-    visual.innerHTML = `<div class="ld-kv-title">${node.title} · 本节概念关系</div><div class="ld-kv-map"><div class="ld-kv-core">核心<br>概念</div>${links}${nodes}</div><p class="ld-kv-note">展示当前节点内部的概念关系；点击概念查看学习内容</p>`;
+    visual.innerHTML = `<div class="ld-kv-title">${node.title} · 知识图谱</div><div class="ld-kv-map"><div class="ld-kv-core">${node.title}</div>${links}${nodes}</div><p class="ld-kv-note">悬浮节点查看知识点解释；点击节点定位到中间学习内容</p>`;
   }
 
   async function ldToolAsk() {
