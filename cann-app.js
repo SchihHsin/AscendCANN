@@ -2939,6 +2939,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.getElementById('la-panel-paths').style.display = tab === 'paths' ? '' : 'none';
     const quizPanel = document.getElementById('la-panel-quiz');
     quizPanel.style.display = tab === 'quiz' ? 'flex' : 'none';
+    const mapPanel = document.getElementById('la-panel-map');
+    if (mapPanel) mapPanel.style.display = tab === 'map' ? '' : 'none';
     if (tab === 'paths') {
       // Reset sort/filter UI to default state
       _laSort = 'lastStudied'; _laSortDir = 'desc'; _laFilter = 'all';
@@ -2951,6 +2953,34 @@ def vector_add_tik(shape, dtype, kernel_name):
       _qbFilter = 'all'; _qbSearch = ''; _qbDomainFilter = 'all'; _qbNodeFilter = 'all';
       renderQuizBank();
     }
+    if (tab === 'map') renderLearningMap();
+  }
+
+  function renderLearningMap() {
+    const panel = document.getElementById('la-panel-map');
+    if (!panel) return;
+    const paths = customPaths.length ? customPaths : samplePaths;
+    const completed = new Set(JSON.parse(localStorage.getItem(LEARN_STATE_KEY) || '[]'));
+    const active = new Set((_ldActivePathNodes || []).map(node => node.title));
+    const nodePaths = new Map();
+    paths.forEach(path => (path.nodeList || []).forEach(node => {
+      if (!nodePaths.has(node.title)) nodePaths.set(node.title, []);
+      nodePaths.get(node.title).push(path.name);
+    }));
+    const nodes = [...nodePaths.keys()].map(title => NODE_LIST.find(node => node.title === title)).filter(Boolean);
+    const cols = 3, W = 500, colW = 150, rowH = 94;
+    const H = Math.max(240, Math.ceil(nodes.length / cols) * rowH + 74);
+    const pos = i => ({ x: 25 + (i % cols) * colW, y: 42 + Math.floor(i / cols) * rowH });
+    const edges = [];
+    paths.forEach(path => (path.nodeList || []).slice(0, -1).forEach((node, i) => {
+      const a = nodes.findIndex(item => item.title === node.title);
+      const b = nodes.findIndex(item => item.title === path.nodeList[i + 1].title);
+      if (a >= 0 && b >= 0) edges.push([a,b]);
+    }));
+    const uniqueEdges = [...new Map(edges.map(edge => [edge.slice().sort().join('-'), edge])).values()];
+    const edgeSvg = uniqueEdges.map(([a,b]) => { const p1 = pos(a), p2 = pos(b); return `<line x1="${p1.x + 50}" y1="${p1.y + 24}" x2="${p2.x + 50}" y2="${p2.y + 24}"/>`; }).join('');
+    const nodeSvg = nodes.map((node, i) => { const p = pos(i); const state = completed.has(node.title) ? 'done' : active.has(node.title) ? 'current' : 'todo'; return `<g class="la-km-node ${state}" onclick="ldStartNode('${node.title}')"><rect x="${p.x}" y="${p.y}" width="100" height="48" rx="7"/><text x="${p.x + 50}" y="${p.y + 20}" text-anchor="middle">${node.title}</text><text class="la-km-state" x="${p.x + 50}" y="${p.y + 36}" text-anchor="middle">${state === 'done' ? '已学' : state === 'current' ? '学习中' : '待学'}</text></g>`; }).join('');
+    panel.innerHTML = `<div class="la-map-desc">汇总你所有学习路径中的知识节点；连线表示至少有一条路径将两个节点相连。</div><div class="la-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><svg class="la-knowledge-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="我的全局学习知识图谱">${edgeSvg}${nodeSvg}</svg>`;
   }
   function openQuizBank() { openLearningArchive('quiz'); }
   function closeQuizBank() { closeLearningArchive(); }
@@ -3616,7 +3646,19 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (_ldOnboardingStep < LD_ONBOARDING.length - 1) { _ldOnboardingStep++; ldRenderOnboarding(); return; }
     localStorage.setItem(LD_PROFILE_KEY, JSON.stringify(_ldProfileDraft));
     document.getElementById('ld-onboarding')?.classList.remove('open');
+    ldArrangeDashboard(_ldProfileDraft.interest && _ldProfileDraft.interest !== '暂不确定');
     ldRenderNodes(_ldActiveCat);
+  }
+
+  function ldArrangeDashboard(hasProfile) {
+    const recommend = document.getElementById('ld-recommend-section');
+    const scenario = document.getElementById('ld-scenario-section');
+    const chips = document.getElementById('ld-cat-chips');
+    const note = document.getElementById('ld-recommend-note');
+    if (!recommend || !scenario) return;
+    if (hasProfile) scenario.before(recommend); else scenario.after(recommend);
+    if (chips) chips.style.display = hasProfile ? 'none' : '';
+    if (note) note.textContent = hasProfile ? '基于你的学习画像' : '';
   }
 
   const LD_SCENARIOS = {
@@ -3944,7 +3986,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       const label = text => String(text).replace(/[&<>]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' })[char]);
       const links = _ldActivePathNodes.slice(0, -1).map((_, i) => {
         const y1 = nodeY(i) + 22, y2 = nodeY(i + 1) - 22;
-        return `<path class="ld-route-link" d="M115 ${y1} C 185 ${y1 + 16}, 45 ${y2 - 16}, 115 ${y2}" marker-end="url(#ldRouteArrow)"/>`;
+        return `<path class="ld-route-link" d="M115 ${y1} L115 ${y2}" marker-end="url(#ldRouteArrow)"/>`;
       }).join('');
       const marks = _ldActivePathNodes.map((node, i) => {
         const active = i === _ldActivePathIndex ? ' active' : '';
@@ -3968,10 +4010,11 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!content) return;
     const video = NODE_VIDEO[node.title] || { title: `${node.title}讲解视频`, duration: '课程视频', tag: '视频学习' };
     const resources = (knowledge?.resources || []).map(r => `<a class="ld-content-resource" href="${r.href}" target="_blank"><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`).join('');
-    const concepts = (knowledge?.concepts || []).slice(0, 4).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p></div>`).join('');
+    const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p></div>`).join('');
     const code = knowledge?.code;
-    const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="openEmptySandbox()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
-    content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>推荐视频</h2><button class="ld-video-card" onclick="openNodeDrawer('${node.title}')"><span class="ld-video-play">▶</span><div><strong>${video.title}</strong><small>${video.tag} · ${video.duration}</small></div><span class="ld-video-open">观看并学习 →</span></button></section>${codeHtml}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><h2>学习资源</h2><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="ldRunNodeCode()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
+    const practice = knowledge?.lab ? `<section><h2>动手练习</h2><div class="ld-practice-steps">${knowledge.lab.steps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>` : '';
+    content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>推荐视频</h2><button class="ld-video-card" onclick="openNodeDrawer('${node.title}')"><span class="ld-video-play">▶</span><div><strong>${video.title}</strong><small>${video.tag} · ${video.duration}</small></div><span class="ld-video-open">观看并学习 →</span></button></section>${codeHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     ldRefreshStudyTools(node, knowledge);
   }
 
@@ -4021,6 +4064,38 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!input) return;
     input.value = text;
     ldToolAsk();
+  }
+
+  function ldAddResourceToNode(title) {
+    const name = window.prompt('资源名称');
+    const url = window.prompt('资源链接（https://...）');
+    if (!name || !url) return;
+    const resources = ldLoadResources();
+    resources.unshift({ title:name, url, type:`${title} · 自定义资源` });
+    localStorage.setItem(LD_RESOURCES_KEY, JSON.stringify(resources));
+    ldRenderResources();
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    if (node) ldOpenPathNode(_ldActivePathIndex);
+  }
+
+  function ldRunNodeCode() {
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    const code = NODE_KNOWLEDGE[node?.title]?.code;
+    if (!code) return openEmptySandbox();
+    nbCellCounter++;
+    NB_FILES.main.unshift({ id:nbCellCounter, type:'code', code:code.body, output:'' });
+    nbCurrentFile = 'main';
+    document.getElementById('sandbox-drawer').classList.add('open');
+    document.getElementById('sandbox-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderNbCells();
+  }
+
+  function ldOpenLabStep(stepIndex) {
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    if (!node) return;
+    _currentDrawerNode = { title:node.title, el:null, category:node.category };
+    openLabStep(stepIndex);
   }
 
   function ldLoadEmbeddedQuiz() {

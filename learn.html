@@ -271,6 +271,7 @@
       <div class="ld-hero-inner">
         <div class="section-label" style="text-align:center;justify-content:center;">学习</div>
         <h2 class="ld-hero-title">学习 CANN，从这里开始</h2>
+        <button class="ld-archive-entry" onclick="openLearningArchive('paths')">学习档案 →</button>
         <div class="ld-input-bar">
           <svg class="ld-input-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--grad-end)"/>
@@ -307,10 +308,10 @@
     </div>
 
     <!-- 为你推荐 -->
-    <div class="ld-section">
+    <div class="ld-section" id="ld-recommend-section">
       <div class="ld-sec-hd">
-        <span class="ld-sec-title">为你推荐</span>
-        <div class="ld-cat-chips">
+        <span class="ld-sec-title">为你推荐 <small id="ld-recommend-note"></small></span>
+        <div class="ld-cat-chips" id="ld-cat-chips">
           <button class="ld-cat-chip active" onclick="ldSetCat('all',this)">全部</button>
           <button class="ld-cat-chip" onclick="ldSetCat('beginner',this)">入门</button>
           <button class="ld-cat-chip" onclick="ldSetCat('developer',this)">应用开发</button>
@@ -322,7 +323,7 @@
       <div class="ld-node-grid" id="ld-node-grid"></div>
     </div>
 
-    <div class="ld-section ld-scenario-section">
+    <div class="ld-section ld-scenario-section" id="ld-scenario-section">
       <div class="ld-scenario-head"><span>从典型场景开始</span><small>选择一个场景，生成可执行的学习计划</small></div>
       <div class="ld-scenario-grid" id="ld-scenario-grid">
         <button class="ld-scenario-card" onclick="ldChooseScenario('算子开发')"><span class="ld-scenario-icon">⚙</span><strong>算子开发</strong><small>开发、编译与调试自定义算子</small></button>
@@ -408,6 +409,7 @@
         <div class="ld-tool-panel active" id="ld-tool-ai">
           <div class="ld-tool-context" id="ld-ai-context">正在学习当前节点</div>
           <div class="ld-tool-chat" id="ld-tool-chat"><div class="ld-tool-msg">可以针对当前知识点提问，或让我提供代码示例。</div></div>
+          <div class="ld-tool-prompts" id="ld-tool-prompts"></div>
           <div class="ld-tool-input"><input id="ld-tool-ai-input" placeholder="针对本节提问…" onkeydown="if(event.key==='Enter')ldToolAsk()"><button onclick="ldToolAsk()">发送</button></div>
         </div>
         <div class="ld-tool-panel" id="ld-tool-quiz"><div id="ld-embedded-quiz"></div><button class="ld-tool-primary" onclick="ldLoadEmbeddedQuiz()">生成一道题</button></div>
@@ -609,6 +611,7 @@
   <div class="la-tabs">
     <button class="la-tab active" id="la-tab-paths" onclick="switchLaTab('paths')">我的路径</button>
     <button class="la-tab" id="la-tab-quiz" onclick="switchLaTab('quiz')">错题本 <span class="qb-count" id="qb-count" style="margin-left:4px;"></span></button>
+    <button class="la-tab" id="la-tab-map" onclick="switchLaTab('map')">学习图谱</button>
   </div>
   <!-- 我的路径 panel -->
   <div class="la-panel" id="la-panel-paths">
@@ -650,6 +653,7 @@
       <button class="qb-clear-btn" onclick="qbClearAll()">清空全部</button>
     </div>
   </div>
+  <div class="la-panel" id="la-panel-map" style="display:none;"></div>
 </div>
 
 <!-- Insert popup (inline path editor) -->
