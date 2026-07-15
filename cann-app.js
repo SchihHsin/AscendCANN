@@ -2967,20 +2967,28 @@ def vector_add_tik(shape, dtype, kernel_name):
       if (!nodePaths.has(node.title)) nodePaths.set(node.title, []);
       nodePaths.get(node.title).push(path.name);
     }));
+    // Keep the whole learning history in one mind map, grouped by shared domain.
     const nodes = [...nodePaths.keys()].map(title => NODE_LIST.find(node => node.title === title)).filter(Boolean);
-    const cols = 3, W = 500, colW = 150, rowH = 94;
-    const H = Math.max(240, Math.ceil(nodes.length / cols) * rowH + 74);
-    const pos = i => ({ x: 25 + (i % cols) * colW, y: 42 + Math.floor(i / cols) * rowH });
-    const edges = [];
-    paths.forEach(path => (path.nodeList || []).slice(0, -1).forEach((node, i) => {
-      const a = nodes.findIndex(item => item.title === node.title);
-      const b = nodes.findIndex(item => item.title === path.nodeList[i + 1].title);
-      if (a >= 0 && b >= 0) edges.push([a,b]);
-    }));
-    const uniqueEdges = [...new Map(edges.map(edge => [edge.slice().sort().join('-'), edge])).values()];
-    const edgeSvg = uniqueEdges.map(([a,b]) => { const p1 = pos(a), p2 = pos(b); return `<line x1="${p1.x + 50}" y1="${p1.y + 24}" x2="${p2.x + 50}" y2="${p2.y + 24}"/>`; }).join('');
-    const nodeSvg = nodes.map((node, i) => { const p = pos(i); const state = completed.has(node.title) ? 'done' : active.has(node.title) ? 'current' : 'todo'; return `<g class="la-km-node ${state}" onclick="ldStartNode('${node.title}')"><rect x="${p.x}" y="${p.y}" width="100" height="48" rx="7"/><text x="${p.x + 50}" y="${p.y + 20}" text-anchor="middle">${node.title}</text><text class="la-km-state" x="${p.x + 50}" y="${p.y + 36}" text-anchor="middle">${state === 'done' ? '已学' : state === 'current' ? '学习中' : '待学'}</text></g>`; }).join('');
-    panel.innerHTML = `<div class="la-map-desc">汇总你所有学习路径中的知识节点；连线表示至少有一条路径将两个节点相连。</div><div class="la-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><svg class="la-knowledge-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="我的全局学习知识图谱">${edgeSvg}${nodeSvg}</svg>`;
+    const groups = ['beginner', 'developer', 'operator', 'distributed'].map(category => ({ category, nodes:nodes.filter(node => node.category === category) })).filter(group => group.nodes.length);
+    const W = 820, H = Math.max(480, groups.reduce((n, group) => n + group.nodes.length, 0) * 50 + 120);
+    const center = { x:410, y:H / 2 };
+    const anchors = [{x:190,y:110},{x:630,y:120},{x:635,y:H-130},{x:185,y:H-120}];
+    const esc = text => String(text).replace(/[&<>]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' })[char]);
+    let leafSvg = '', branchSvg = '', groupSvg = '';
+    groups.forEach((group, gi) => {
+      const anchor = anchors[gi]; const meta = CAT_META[group.category];
+      branchSvg += `<path class="la-mm-branch" style="stroke:${meta.color}" d="M${center.x} ${center.y} C${center.x + (anchor.x-center.x)*.35} ${center.y}, ${center.x + (anchor.x-center.x)*.7} ${anchor.y}, ${anchor.x} ${anchor.y}"/>`;
+      groupSvg += `<g class="la-mm-group"><rect x="${anchor.x-64}" y="${anchor.y-19}" width="128" height="38" rx="8"/><circle cx="${anchor.x-45}" cy="${anchor.y}" r="6" style="fill:${meta.color}"/><text x="${anchor.x-32}" y="${anchor.y+4}">${meta.label}</text></g>`;
+      group.nodes.forEach((node, ni) => {
+        const direction = anchor.x < center.x ? -1 : 1;
+        const x = anchor.x + direction * 175;
+        const y = anchor.y + (ni - (group.nodes.length - 1) / 2) * 60;
+        const state = completed.has(node.title) ? 'done' : active.has(node.title) ? 'current' : 'todo';
+        branchSvg += `<path class="la-mm-leaf-link" style="stroke:${meta.color}" d="M${anchor.x + direction*64} ${anchor.y} C${anchor.x + direction*110} ${anchor.y}, ${x - direction*72} ${y}, ${x - direction*58} ${y}"/>`;
+        leafSvg += `<g class="la-mm-node ${state}" onclick="ldStartNode('${node.title}')"><rect x="${x-58}" y="${y-20}" width="116" height="40" rx="7"/><text x="${x}" y="${y-2}" text-anchor="middle">${esc(node.title)}</text><text class="la-mm-state" x="${x}" y="${y+12}" text-anchor="middle">${state === 'done' ? '已学' : state === 'current' ? '学习中' : '待学'}</text></g>`;
+      });
+    });
+    panel.innerHTML = `<div class="la-map-desc">汇总你所有学习路径中的节点。中心是你的学习空间，分支按方向聚合；节点状态会随着学习进度变化。</div><div class="la-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><svg class="la-knowledge-map la-mind-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="我的全局学习知识图谱"><g class="la-mm-lines">${branchSvg}</g><g class="la-mm-center"><rect x="${center.x-70}" y="${center.y-30}" width="140" height="60" rx="10"/><text x="${center.x}" y="${center.y-4}" text-anchor="middle">我的学习</text><text x="${center.x}" y="${center.y+15}" text-anchor="middle">知识图谱</text></g>${groupSvg}${leafSvg}</svg>`;
   }
   function openQuizBank() { openLearningArchive('quiz'); }
   function closeQuizBank() { closeLearningArchive(); }
@@ -4014,7 +4022,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const code = knowledge?.code;
     const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="ldRunNodeCode()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
     const practice = knowledge?.lab ? `<section><h2>动手练习</h2><div class="ld-practice-steps">${knowledge.lab.steps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>` : '';
-    content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>推荐视频</h2><button class="ld-video-card" onclick="openNodeDrawer('${node.title}')"><span class="ld-video-play">▶</span><div><strong>${video.title}</strong><small>${video.tag} · ${video.duration}</small></div><span class="ld-video-open">观看并学习 →</span></button></section>${codeHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    content.innerHTML = `<div class="ld-content-kicker">第 ${index + 1} 步 · ${CAT_META[node.category]?.label || '学习节点'}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>学习视频</h2><div class="ld-video-embed"><div class="ld-video-stage"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div><div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${codeHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     ldRefreshStudyTools(node, knowledge);
   }
 
@@ -4037,9 +4045,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const visual = document.getElementById('ld-knowledge-visual');
     if (!visual) return;
     const items = (knowledge?.concepts || []).slice(0, 4);
-    const nodes = items.map((item, i) => `<button class="ld-kv-node" style="--i:${i}" title="${item.desc}" onclick="openNodeDrawer('${node.title}')">${item.term}</button>`).join('');
+    const nodes = items.map((item, i) => `<button class="ld-kv-node" style="--i:${i}" title="${item.desc}" onclick="ldFocusLearningContent()">${item.term}</button>`).join('');
     const links = items.map((_, i) => `<span class="ld-kv-link l${i}"></span>`).join('');
-    visual.innerHTML = `<div class="ld-kv-title">${node.title}</div><div class="ld-kv-map"><div class="ld-kv-core">核心<br>知识</div>${links}${nodes}</div><p class="ld-kv-note">点击概念查看当前节点的完整内容</p>`;
+    visual.innerHTML = `<div class="ld-kv-title">${node.title} · 本节概念关系</div><div class="ld-kv-map"><div class="ld-kv-core">核心<br>概念</div>${links}${nodes}</div><p class="ld-kv-note">展示当前节点内部的概念关系；点击概念查看学习内容</p>`;
   }
 
   async function ldToolAsk() {
@@ -4064,6 +4072,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!input) return;
     input.value = text;
     ldToolAsk();
+  }
+
+  function ldFocusLearningContent() {
+    document.getElementById('ld-learning-content')?.scrollIntoView({ behavior:'smooth', block:'start' });
   }
 
   function ldAddResourceToNode(title) {

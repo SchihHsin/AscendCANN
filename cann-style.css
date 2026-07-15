@@ -2894,6 +2894,11 @@
   .ld-video-card strong { font-size:13px; }
   .ld-video-card small { margin-top:4px; color:rgba(255,255,255,.7); font-size:11px; }
   .ld-video-open { margin-left:auto; font-size:11px; white-space:nowrap; }
+  .ld-video-embed { overflow:hidden; border:1px solid var(--border); border-radius:9px; background:#fff; }
+  .ld-video-stage { position:relative; display:flex; align-items:center; justify-content:center; min-height:190px; background:linear-gradient(120deg,#0F172A,#1E3A8A); }
+  .ld-video-stage .ld-video-play { width:48px; height:48px; background:rgba(255,255,255,.18); font-size:18px; }
+  .ld-video-duration { position:absolute; right:12px; bottom:10px; padding:4px 7px; border-radius:4px; background:rgba(0,0,0,.55); color:#fff; font-size:11px; }
+  .ld-video-caption { padding:12px 14px; }.ld-video-caption strong,.ld-video-caption small { display:block; }.ld-video-caption strong { color:var(--black); font-size:13px; }.ld-video-caption small { margin-top:4px; color:var(--text-muted); font-size:11px; }
   .ld-code-example { overflow:hidden; border:1px solid var(--border); border-radius:8px; background:#0F172A; }
   .ld-code-example > div { display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border-bottom:1px solid rgba(255,255,255,.12); color:#CBD5E1; font:11px var(--mono); }
   .ld-code-example button { padding:5px 8px; border:1px solid rgba(255,255,255,.3); border-radius:5px; background:transparent; color:#fff; cursor:pointer; font:600 10px var(--font); }
