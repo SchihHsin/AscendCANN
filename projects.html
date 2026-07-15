@@ -3,126 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="昇腾 CANN 相关项目与在线原型的统一入口。">
-  <title>CANN 项目汇总</title>
+  <meta name="description" content="昇腾 CANN 项目与具体页面的统一目录。">
+  <title>CANN 页面目录</title>
   <link rel="stylesheet" href="cann-style.css">
   <style>
-    .hub-page { min-height:100vh; padding:132px 40px 72px; background:linear-gradient(160deg,#f8faff 0%,#f4f7fc 48%,#fff 100%); }
-    .hub-wrap { max-width:1200px; margin:0 auto; }
-    .hub-kicker { display:flex; align-items:center; gap:9px; color:var(--text-secondary); font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
-    .hub-kicker::before { width:28px; height:2px; background:var(--grad); content:''; }
-    .hub-hero { display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:48px; align-items:end; padding:26px 0 52px; border-bottom:1px solid var(--border); }
-    .hub-title { max-width:740px; margin:16px 0 14px; color:var(--black); font-size:clamp(40px,6vw,72px); font-weight:800; letter-spacing:-.065em; line-height:1.03; }
-    .hub-title span { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
-    .hub-intro { max-width:600px; margin:0; color:var(--text-secondary); font-size:17px; line-height:1.8; }
-    .hub-stat { padding:25px 27px; border:1px solid rgba(55,102,239,.14); border-radius:18px; background:linear-gradient(135deg,rgba(255,255,255,.93),rgba(238,244,255,.93)); box-shadow:0 16px 42px rgba(40,72,140,.08); }
-    .hub-stat strong { display:block; color:var(--black); font-size:48px; letter-spacing:-.08em; line-height:1; }
-    .hub-stat p { margin:9px 0 0; color:var(--text-secondary); font-size:13px; line-height:1.6; }
-    .hub-toolbar { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:30px 0 18px; }
-    .hub-toolbar h2 { margin:0; font-size:20px; letter-spacing:-.03em; }
-    .hub-filters { display:flex; flex-wrap:wrap; gap:8px; }
-    .hub-filter { border:1px solid var(--border); border-radius:999px; padding:8px 13px; background:#fff; color:var(--text-secondary); font:600 12px var(--font); cursor:pointer; transition:.2s; }
-    .hub-filter:hover, .hub-filter.active { border-color:transparent; background:var(--black); color:#fff; box-shadow:0 5px 15px rgba(0,0,0,.12); }
-    .project-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-    .project-card { position:relative; display:flex; min-height:306px; flex-direction:column; overflow:hidden; border:1px solid var(--border); border-radius:18px; background:#fff; box-shadow:0 8px 24px rgba(30,42,68,.04); transition:transform .22s,box-shadow .22s,border-color .22s; }
-    .project-card:hover { transform:translateY(-5px); border-color:rgba(64,105,229,.3); box-shadow:0 20px 44px rgba(35,62,118,.13); }
-    .project-card[hidden] { display:none; }
-    .card-top { position:relative; min-height:119px; padding:20px; overflow:hidden; color:#fff; }
-    .card-top::after { position:absolute; right:-20px; bottom:-48px; width:150px; height:150px; border:1px solid rgba(255,255,255,.23); border-radius:50%; content:''; }
-    .card-top::before { position:absolute; right:23px; top:23px; width:30px; height:30px; border:5px solid rgba(255,255,255,.55); border-radius:8px; content:''; transform:rotate(20deg); }
-    .tone-blue { background:linear-gradient(135deg,#111b3d,#345de7); } .tone-teal { background:linear-gradient(135deg,#0e2d3a,#048c9c); } .tone-red { background:linear-gradient(135deg,#40131d,#c91d32); } .tone-dark { background:linear-gradient(135deg,#202430,#575d70); } .tone-purple { background:linear-gradient(135deg,#2a164a,#7547d4); } .tone-orange { background:linear-gradient(135deg,#482719,#d37532); }
-    .card-type { position:relative; z-index:1; display:inline-flex; border:1px solid rgba(255,255,255,.24); border-radius:999px; padding:4px 8px; background:rgba(255,255,255,.11); font-size:10px; font-weight:700; letter-spacing:.05em; }
-    .card-index { position:absolute; z-index:1; right:19px; bottom:15px; font-size:31px; font-weight:800; letter-spacing:-.08em; opacity:.75; }
-    .card-body { display:flex; flex:1; flex-direction:column; padding:21px 20px 20px; }
-    .card-body h3 { margin:0; color:var(--black); font-size:20px; letter-spacing:-.04em; }
-    .card-body p { margin:10px 0 17px; color:var(--text-secondary); font-size:13px; line-height:1.7; }
-    .card-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; }
-    .card-tags span { border-radius:5px; padding:4px 7px; background:var(--surface2); color:var(--text-secondary); font-size:10px; font-weight:600; }
-    .card-actions { display:flex; gap:8px; margin-top:17px; }
-    .card-link { display:inline-flex; align-items:center; justify-content:center; min-height:35px; border-radius:8px; padding:0 12px; background:var(--black); color:#fff; font-size:12px; font-weight:700; text-decoration:none; transition:.18s; }
-    .card-link:hover { background:#345de7; } .card-link.ghost { border:1px solid var(--border); background:#fff; color:var(--text-secondary); } .card-link.ghost:hover { border-color:#345de7; background:#f5f7ff; color:#345de7; }
-    .hub-note { margin:28px 0 0; color:var(--text-muted); font-size:12px; line-height:1.7; }
-    @media (max-width:900px) { .hub-page{padding:110px 24px 48px}.hub-hero{grid-template-columns:1fr;gap:24px}.hub-stat{max-width:300px}.project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav-search{display:none} }
-    @media (max-width:600px) { nav{padding:0 18px}.nav-links{display:none}.hub-page{padding:100px 18px 38px}.hub-title{font-size:44px}.hub-toolbar{align-items:flex-start;flex-direction:column}.project-grid{grid-template-columns:1fr}.project-card{min-height:280px} }
+    .directory-page { min-height:100vh; padding:116px 40px 72px; background:#f7f8fb; }
+    .directory-wrap { max-width:1060px; margin:0 auto; }
+    .directory-head { display:flex; align-items:flex-end; justify-content:space-between; gap:28px; padding:0 0 29px; border-bottom:1px solid var(--border); }
+    .directory-eyebrow { color:var(--text-muted); font-size:11px; font-weight:700; letter-spacing:.11em; text-transform:uppercase; }
+    .directory-head h1 { margin:8px 0 0; color:var(--black); font-size:32px; letter-spacing:-.05em; }
+    .directory-head p { max-width:420px; margin:0; color:var(--text-secondary); font-size:13px; line-height:1.7; text-align:right; }
+    .directory-tools { display:flex; align-items:center; gap:10px; padding:19px 0; }
+    .directory-tools input { width:280px; max-width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 12px; background:#fff; color:var(--text-primary); font:13px var(--font); outline:none; }
+    .directory-tools input:focus { border-color:#6684e6; box-shadow:0 0 0 3px rgba(82,110,204,.12); }
+    .directory-count { margin-left:auto; color:var(--text-muted); font-size:12px; }
+    .directory-group { margin:0 0 12px; border:1px solid var(--border); border-radius:12px; background:#fff; overflow:hidden; }
+    .directory-group[hidden], .directory-item[hidden] { display:none; }
+    .directory-group summary { display:flex; align-items:center; gap:12px; padding:17px 19px; cursor:pointer; list-style:none; user-select:none; }
+    .directory-group summary::-webkit-details-marker { display:none; }
+    .directory-group summary::before { width:7px; height:7px; border-right:1.5px solid var(--text-muted); border-bottom:1.5px solid var(--text-muted); content:''; transform:rotate(-45deg); transition:transform .16s; }
+    .directory-group[open] summary::before { transform:rotate(45deg) translate(-2px,-2px); }
+    .group-name { color:var(--black); font-size:16px; font-weight:700; letter-spacing:-.025em; }
+    .group-description { color:var(--text-secondary); font-size:12px; }
+    .group-badge { margin-left:auto; border-radius:999px; padding:4px 8px; background:var(--surface2); color:var(--text-muted); font-size:10px; font-weight:700; }
+    .directory-list { border-top:1px solid var(--border); }
+    .directory-item { display:grid; grid-template-columns:minmax(190px, .82fr) minmax(260px, 1.7fr) auto; align-items:center; gap:20px; padding:15px 19px; border-bottom:1px solid var(--border); transition:background .15s; }
+    .directory-item:last-child { border-bottom:0; }.directory-item:hover { background:#fafbff; }
+    .directory-item h2 { margin:0; color:var(--black); font-size:14px; font-weight:700; letter-spacing:-.02em; }
+    .directory-item p { margin:0; color:var(--text-secondary); font-size:12px; line-height:1.55; }
+    .directory-link { display:inline-flex; align-items:center; justify-content:center; min-width:62px; min-height:30px; border:1px solid var(--border); border-radius:7px; color:var(--text-secondary); font-size:11px; font-weight:700; text-decoration:none; transition:.16s; }
+    .directory-link:hover { border-color:#4669d4; background:#eef2ff; color:#3454b4; }.directory-link::after { margin-left:5px; content:'↗'; }
+    .directory-empty { display:none; padding:44px 0; color:var(--text-muted); font-size:13px; text-align:center; }
+    .directory-empty.show { display:block; }
+    .directory-note { margin:23px 0 0; color:var(--text-muted); font-size:11px; line-height:1.7; }
+    @media (max-width:760px) { nav{padding:0 18px}.nav-links{display:none}.nav-search{display:none}.directory-page{padding:96px 18px 44px}.directory-head{align-items:flex-start;flex-direction:column;gap:9px}.directory-head p{text-align:left}.directory-tools{align-items:stretch;flex-direction:column}.directory-tools input{width:100%}.directory-count{margin-left:0}.directory-item{grid-template-columns:1fr auto;gap:8px 16px}.directory-item p{grid-column:1 / -1;grid-row:2}.directory-link{grid-column:2;grid-row:1} }
   </style>
 </head>
 <body>
   <nav>
-    <a class="nav-logo" href="index.html">
-      <img class="nav-logo-ascend" src="Ascendlogo.svg" alt="Ascend">
-      <div class="nav-logo-divider"></div>
-      <img class="nav-logo-cann" src="CANNlogo.png" alt="CANN">
-    </a>
-    <ul class="nav-links">
-      <li><a href="index.html">首页</a></li>
-      <li><a href="docs.html">文档</a></li>
-      <li><a href="learn.html">学习</a></li>
-      <li><a href="api.html">API 参考</a></li>
-      <li><a class="active" href="projects.html">项目汇总</a></li>
-    </ul>
+    <a class="nav-logo" href="index.html"><img class="nav-logo-ascend" src="Ascendlogo.svg" alt="Ascend"><div class="nav-logo-divider"></div><img class="nav-logo-cann" src="CANNlogo.png" alt="CANN"></a>
+    <ul class="nav-links"><li><a href="index.html">首页</a></li><li><a href="docs.html">文档</a></li><li><a href="learn.html">学习</a></li><li><a href="api.html">API 参考</a></li><li><a class="active" href="projects.html">项目汇总</a></li></ul>
     <div class="nav-right"><a class="btn-ask-ai" href="https://github.com/SchihHsin" target="_blank" rel="noreferrer">GitHub 主页</a></div>
   </nav>
+  <main class="directory-page">
+    <div class="directory-wrap">
+      <header class="directory-head"><div><div class="directory-eyebrow">Ascend / CANN</div><h1>页面目录</h1></div><p>按项目归档的可访问页面。每一条都直接进入具体页面，而不是停留在仓库首页。</p></header>
+      <div class="directory-tools"><input id="page-search" type="search" placeholder="搜索页面名称或用途" aria-label="搜索页面"><span class="directory-count" id="directory-count">29 个页面</span></div>
 
-  <main class="hub-page">
-    <div class="hub-wrap">
-      <div class="hub-hero">
-        <div>
-          <div class="hub-kicker">Ascend / CANN collection</div>
-          <h1 class="hub-title">把每一项探索，<br><span>连成一个入口。</span></h1>
-          <p class="hub-intro">昇腾与 CANN 相关的产品原型、体验研究、知识库与效率工具，集中在这里浏览和访问。</p>
-        </div>
-        <aside class="hub-stat"><strong>6</strong><p>个关联项目<br>4 个在线可浏览的 GitHub Pages</p></aside>
-      </div>
-
-      <section aria-labelledby="projects-title">
-        <div class="hub-toolbar">
-          <h2 id="projects-title">项目入口</h2>
-          <div class="hub-filters" aria-label="项目类型筛选">
-            <button class="hub-filter active" data-filter="all">全部</button>
-            <button class="hub-filter" data-filter="product">产品与原型</button>
-            <button class="hub-filter" data-filter="research">研究与洞察</button>
-            <button class="hub-filter" data-filter="tool">工具与知识库</button>
+      <section class="directory-groups">
+        <details class="directory-group" open data-group="AscendCANN 开发平台 学习 文档 API 产品原型">
+          <summary><span class="group-name">AscendCANN</span><span class="group-description">开发平台与学习体验原型</span><span class="group-badge">11 页</span></summary>
+          <div class="directory-list">
+            <div class="directory-item" data-search="平台首页 异构计算 开发平台"><h2>开发平台首页</h2><p>文档、学习、API 与 AI 助手的整合入口。</p><a class="directory-link" href="./" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="CANN 文档 文档中心"><h2>CANN 文档</h2><p>面向开发者的信息架构与文档浏览原型。</p><a class="directory-link" href="docs.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="学习路径 学习"><h2>学习路径</h2><p>按角色和场景生成、编辑及跟踪学习路径。</p><a class="directory-link" href="learn.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="Ascend C 样板课程 学习路径"><h2>Ascend C 编程样板路径</h2><p>章节级学习内容、实践和知识图谱的固定演示页。</p><a class="directory-link" href="learn-ascend-c-demo.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="API 参考 接口"><h2>API 参考</h2><p>面向 CANN 接口查询的参考页原型。</p><a class="directory-link" href="api.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="探索版 CANN 产品概念"><h2>CANN 探索版</h2><p>较早期的 CANN 产品概念与页面探索。</p><a class="directory-link" href="cannMar.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="用户旅程 对比 社区"><h2>昇腾社区用户旅程对比</h2><p>不同开发路径和体验触点的对照。</p><a class="directory-link" href="cann-journey-compare.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="学习路径 生成 UX 交互"><h2>学习路径生成 UX 探索</h2><p>聚焦生成流程与交互细节的设计探索页。</p><a class="directory-link" href="path-generator-ux.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="路线图 学习路径 预览"><h2>学习路径方案预览</h2><p>学习路线图呈现方案的预览页面。</p><a class="directory-link" href="roadmap-preview.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="AI 社区 UX 设计手册"><h2>AI 时代社区设计实操手册</h2><p>让内容被 AI 抓取的设计师实践指南。</p><a class="directory-link" href="ux-in-ai-community-fieldguide.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="AI 社区 UX 报告"><h2>AI 时代社区重构报告</h2><p>AI 时代社区与 UX 设计师角色的研究报告。</p><a class="directory-link" href="cann-dashboard/ux-in-ai-community-report.html" target="_blank">打开</a></div>
           </div>
-        </div>
-        <div class="project-grid">
-          <article class="project-card" data-category="product">
-            <div class="card-top tone-blue"><span class="card-type">PRODUCT CONCEPT</span><strong class="card-index">01</strong></div>
-            <div class="card-body"><h3>AscendCANN</h3><p>CANN 开发平台概念站，覆盖文档、学习路径、API 参考及 AI 助手交互。</p><div class="card-tags"><span>开发平台</span><span>学习体验</span><span>AI 助手</span></div><div class="card-actions"><a class="card-link" href="https://schihhsin.github.io/AscendCANN/" target="_blank" rel="noreferrer">打开页面</a><a class="card-link ghost" href="https://github.com/SchihHsin/AscendCANN" target="_blank" rel="noreferrer">代码</a></div></div>
-          </article>
-          <article class="project-card" data-category="product">
-            <div class="card-top tone-teal"><span class="card-type">PROTOTYPE</span><strong class="card-index">02</strong></div>
-            <div class="card-body"><h3>CANN-Bench</h3><p>面向 CANN 能力评估的基准原型，探索任务、结果与效能信息的可视化呈现。</p><div class="card-tags"><span>Benchmark</span><span>数据看板</span><span>原型</span></div><div class="card-actions"><a class="card-link" href="https://schihhsin.github.io/cannbench/" target="_blank" rel="noreferrer">打开页面</a><a class="card-link ghost" href="https://github.com/SchihHsin/cannbench" target="_blank" rel="noreferrer">代码</a></div></div>
-          </article>
-          <article class="project-card" data-category="research">
-            <div class="card-top tone-red"><span class="card-type">UX RESEARCH</span><strong class="card-index">03</strong></div>
-            <div class="card-body"><h3>昇腾 vs 英伟达 UX</h3><p>从开发者真实任务出发，比较昇腾与英伟达生态的体验，并沉淀改进机会。</p><div class="card-tags"><span>竞品分析</span><span>开发者体验</span><span>旅程</span></div><div class="card-actions"><a class="card-link" href="https://schihhsin.github.io/ascend-vs-nvidia-ux/" target="_blank" rel="noreferrer">打开页面</a><a class="card-link ghost" href="https://github.com/SchihHsin/ascend-vs-nvidia-ux" target="_blank" rel="noreferrer">代码</a></div></div>
-          </article>
-          <article class="project-card" data-category="research">
-            <div class="card-top tone-dark"><span class="card-type">USABILITY MAP</span><strong class="card-index">04</strong></div>
-            <div class="card-body"><h3>OPKnow</h3><p>按任务逐格呈现可用性证据，帮助快速定位 CANN 开发流程中的体验断点。</p><div class="card-tags"><span>可用性</span><span>热力图</span><span>证据库</span></div><div class="card-actions"><a class="card-link" href="https://schihhsin.github.io/opknow/" target="_blank" rel="noreferrer">打开页面</a><a class="card-link ghost" href="https://github.com/SchihHsin/opknow" target="_blank" rel="noreferrer">代码</a></div></div>
-          </article>
-          <article class="project-card" data-category="tool">
-            <div class="card-top tone-purple"><span class="card-type">DOCS SYSTEM</span><strong class="card-index">05</strong></div>
-            <div class="card-body"><h3>Ascend Doc</h3><p>昇腾文档站的视觉改造与可复用设计规则，面向更清晰、更易用的开发者文档体验。</p><div class="card-tags"><span>VitePress</span><span>文档设计</span><span>Design system</span></div><div class="card-actions"><a class="card-link" href="https://github.com/SchihHsin/ascend-doc" target="_blank" rel="noreferrer">查看代码</a></div></div>
-          </article>
-          <article class="project-card" data-category="tool">
-            <div class="card-top tone-orange"><span class="card-type">EXPERIENCE OPS</span><strong class="card-index">06</strong></div>
-            <div class="card-body"><h3>CANN Dashboard</h3><p>汇聚 Agent 评测、用户痛点和 VOC 的开发者体验运营看板及配套分析资产。</p><div class="card-tags"><span>体验运营</span><span>Agent 评测</span><span>洞察</span></div><div class="card-actions"><a class="card-link" href="https://github.com/SchihHsin/cann-dashboard" target="_blank" rel="noreferrer">查看代码</a></div></div>
-          </article>
-        </div>
-        <p class="hub-note">“打开页面”指向已公开的 GitHub Pages；其余项目暂以代码仓库为入口，待发布后可在此补充在线链接。</p>
+        </details>
+
+        <details class="directory-group" open data-group="CANN Dashboard 体验运营 用户旅程 Agent 评测 看板">
+          <summary><span class="group-name">CANN Dashboard</span><span class="group-description">体验运营、评测与用户旅程</span><span class="group-badge">6 页</span></summary>
+          <div class="directory-list">
+            <div class="directory-item" data-search="体验看板 文件目录"><h2>看板目录</h2><p>体验看板相关分析与原型的文件入口。</p><a class="directory-link" href="cann-dashboard/00-index.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="体验看板 设计分析"><h2>体验看板设计分析</h2><p>看板的信息架构、指标与视觉设计分析。</p><a class="directory-link" href="cann-dashboard/analysis.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="体验看板 AscendOps 总览"><h2>体验看板</h2><p>聚合体验健康、痛点、Agent 评测与 VOC 的主看板。</p><a class="directory-link" href="cann-dashboard/design-options-themed.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="体验测试 组件评分矩阵"><h2>体验测试</h2><p>组件与用户触点的体验评分矩阵。</p><a class="directory-link" href="cann-dashboard/cann_dashboard_UXtest.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="用户旅程 Agentic 评分报告"><h2>用户旅程 Agentic 评分报告</h2><p>基于 Agent 观测的用户旅程评估报告。</p><a class="directory-link" href="cann-dashboard/04-journey-agentic-report.html" target="_blank">打开</a></div>
+            <div class="directory-item" data-search="体验看板 总览 用户旅程 组件评分"><h2>独立 Dashboard 原型</h2><p>仓库内独立维护的总览、用户旅程与评分矩阵页面。</p><a class="directory-link" href="https://github.com/SchihHsin/cann-dashboard" target="_blank" rel="noreferrer">代码</a></div>
+          </div>
+        </details>
+
+        <details class="directory-group" open data-group="CANN Bench benchmark 基准 任务 排行榜 UX 报告">
+          <summary><span class="group-name">CANN-Bench</span><span class="group-description">基准任务与产品原型</span><span class="group-badge">5 页</span></summary>
+          <div class="directory-list">
+            <div class="directory-item" data-search="CANN Bench 首页 基准"><h2>Benchmark 首页</h2><p>CANN-Bench 产品原型的主入口。</p><a class="directory-link" href="https://schihhsin.github.io/cannbench/cannbench-frontend-download/static-prototype/" target="_blank" rel="noreferrer">打开</a></div>
+            <div class="directory-item" data-search="任务包 benchmark"><h2>任务包</h2><p>可运行任务与基准套件的浏览页。</p><a class="directory-link" href="https://schihhsin.github.io/cannbench/cannbench-frontend-download/static-prototype/benchmarks.html" target="_blank" rel="noreferrer">打开</a></div>
+            <div class="directory-item" data-search="排行榜 leaderboard"><h2>排行榜</h2><p>不同结果的排名与对比页面。</p><a class="directory-link" href="https://schihhsin.github.io/cannbench/cannbench-frontend-download/static-prototype/leaderboard.html" target="_blank" rel="noreferrer">打开</a></div>
+            <div class="directory-item" data-search="账户 个人中心"><h2>账户中心</h2><p>登录态下的账户与个人信息页面。</p><a class="directory-link" href="https://schihhsin.github.io/cannbench/cannbench-frontend-download/static-prototype/account.html" target="_blank" rel="noreferrer">打开</a></div>
+            <div class="directory-item" data-search="CANN Bench UX 分析报告"><h2>登录态中文站 UX 分析</h2><p>针对 CANN-Bench 产品页面的体验分析报告。</p><a class="directory-link" href="https://schihhsin.github.io/cannbench/cannbench-frontend-download/analysis/ux-report.html" target="_blank" rel="noreferrer">打开</a></div>
+          </div>
+        </details>
+
+        <details class="directory-group" open data-group="昇腾 英伟达 Nvidia CUDA CANN UX 竞品 GitCode 代码体验">
+          <summary><span class="group-name">昇腾 vs 英伟达 UX</span><span class="group-description">竞品与 GitCode 开发体验研究</span><span class="group-badge">3 页</span></summary>
+          <div class="directory-list">
+            <div class="directory-item" data-search="GitCode CANN 算子开发 AI 可用性"><h2>GitCode CANN 算子开发体验</h2><p>围绕算子开发与 AI 可用性的体验报告。</p><a class="directory-link" href="https://schihhsin.github.io/ascend-vs-nvidia-ux/reports/gitcode-cann/" target="_blank" rel="noreferrer">打开</a></div>
+            <div class="directory-item" data-search="CANN GitCode 代码级体验评测"><h2>代码级体验评测</h2><p>聚焦代码与实现层面的开发体验评测。</p><a class="directory-link" href="https://schihhsin.github.io/ascend-vs-nvidia-ux/reports/gitcode-cann-code/" target="_blank" rel="noreferrer">打开</a></div>
+            <div class="directory-item" data-search="昇腾社区 可用性 分析 综合"><h2>昇腾社区可用性综合分析</h2><p>汇总社区体验、任务与改进方向的综合报告。</p><a class="directory-link" href="https://schihhsin.github.io/ascend-vs-nvidia-ux/reports/synthesis/" target="_blank" rel="noreferrer">打开</a></div>
+          </div>
+        </details>
+
+        <details class="directory-group" open data-group="OPKnow 可用性 热力图 人机协同 AI 用户旅程 汇报">
+          <summary><span class="group-name">OPKnow</span><span class="group-description">任务可用性与人机协同研究</span><span class="group-badge">4 页</span></summary>
+          <div class="directory-list">
+            <div class="directory-item" data-search="任务可用性 热力图"><h2>全任务可用性热力图</h2><p>按任务与证据逐格查看可用性情况的主页面。</p><a class="directory-link" href="https://schihhsin.github.io/opknow/" target="_blank" rel="noreferrer">打开</a></div>
+            <div class="directory-item" data-search="问题清单 UX 发力点 Agent 体验设计"><h2>问题清单与 UX 发力点</h2><p>阶段性问题梳理及 Agent 时代体验设计方向。</p><a class="directory-link" href="https://schihhsin.github.io/opknow/19_findings_ux_synthesis.html" target="_blank" rel="noreferrer">打开</a></div>
+            <div class="directory-item" data-search="人机协同 用户旅程 自定义算子开发"><h2>人机协同旅程</h2><p>一次自定义算子开发的人机协同时序与工程拆解。</p><a class="directory-link" href="https://schihhsin.github.io/opknow/20_human_ai_journey.html" target="_blank" rel="noreferrer">打开</a></div>
+            <div class="directory-item" data-search="人 AI 两视角 算子开发 汇报 PPT"><h2>人 × AI 两视角汇报</h2><p>比较 AI 与人使用昇腾开发时的体验差异。</p><a class="directory-link" href="https://schihhsin.github.io/opknow/22_deck.html" target="_blank" rel="noreferrer">打开</a></div>
+          </div>
+        </details>
       </section>
+      <p class="directory-empty" id="directory-empty">没有匹配的页面。</p>
+      <p class="directory-note">仅收录有明确用途、适合直接阅读或体验的页面；样式实验、过程稿和内部备份不在此目录中。</p>
     </div>
   </main>
   <script>
-    const filters = document.querySelectorAll('.hub-filter');
-    const cards = document.querySelectorAll('.project-card');
-    filters.forEach((filter) => filter.addEventListener('click', () => {
-      filters.forEach((item) => item.classList.remove('active'));
-      filter.classList.add('active');
-      const category = filter.dataset.filter;
-      cards.forEach((card) => { card.hidden = category !== 'all' && card.dataset.category !== category; });
-    }));
+    const search = document.getElementById('page-search');
+    const groups = [...document.querySelectorAll('.directory-group')];
+    const count = document.getElementById('directory-count');
+    const empty = document.getElementById('directory-empty');
+    const items = [...document.querySelectorAll('.directory-item')];
+    function filterDirectory() {
+      const term = search.value.trim().toLowerCase();
+      let visible = 0;
+      groups.forEach((group) => {
+        let groupVisible = 0;
+        group.querySelectorAll('.directory-item').forEach((item) => {
+          const match = !term || `${item.dataset.search} ${item.textContent}`.toLowerCase().includes(term);
+          item.hidden = !match;
+          if (match) groupVisible += 1;
+        });
+        group.hidden = groupVisible === 0;
+        if (term && groupVisible) group.open = true;
+        visible += groupVisible;
+      });
+      count.textContent = term ? `${visible} 个匹配页面` : `${items.length} 个页面`;
+      empty.classList.toggle('show', visible === 0);
+    }
+    search.addEventListener('input', filterDirectory);
   </script>
 </body>
 </html>
