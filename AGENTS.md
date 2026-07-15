@@ -68,6 +68,8 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 ### 2026-07-15（学习页迭代）
 
+- 新增 `projects.html` 作为昇腾 / CANN 关联项目汇总页，并在主站顶栏加入“项目汇总”入口。页面收录 AscendCANN、CANN-Bench、昇腾 vs 英伟达 UX、OPKnow、Ascend Doc、CANN Dashboard；已上线项目跳转 GitHub Pages，其余跳转仓库并明确尚未发布页面。
+
 - 学习档案的“学习全景图”改为无中心的知识分列视图：基础入门、应用开发、算子开发、分布式四类并列呈现；同名节点跨路径合并，显示关联路径数量和已学 / 学习中 / 待学状态。
 - 移除原有中心式 SVG 思维导图，避免 SVG 样式级联导致的黑色节点与黑色连线渲染问题。
 - 全景图采用四列纵向知识流：移除分类外围容器，仅保留列标题和节点；每列节点以竖直连线串联，避免跨列连线造成杂乱。

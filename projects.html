@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="昇腾 CANN 相关项目与在线原型的统一入口。">
+  <title>CANN 项目汇总</title>
+  <link rel="stylesheet" href="cann-style.css">
+  <style>
+    .hub-page { min-height:100vh; padding:132px 40px 72px; background:linear-gradient(160deg,#f8faff 0%,#f4f7fc 48%,#fff 100%); }
+    .hub-wrap { max-width:1200px; margin:0 auto; }
+    .hub-kicker { display:flex; align-items:center; gap:9px; color:var(--text-secondary); font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+    .hub-kicker::before { width:28px; height:2px; background:var(--grad); content:''; }
+    .hub-hero { display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:48px; align-items:end; padding:26px 0 52px; border-bottom:1px solid var(--border); }
+    .hub-title { max-width:740px; margin:16px 0 14px; color:var(--black); font-size:clamp(40px,6vw,72px); font-weight:800; letter-spacing:-.065em; line-height:1.03; }
+    .hub-title span { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .hub-intro { max-width:600px; margin:0; color:var(--text-secondary); font-size:17px; line-height:1.8; }
+    .hub-stat { padding:25px 27px; border:1px solid rgba(55,102,239,.14); border-radius:18px; background:linear-gradient(135deg,rgba(255,255,255,.93),rgba(238,244,255,.93)); box-shadow:0 16px 42px rgba(40,72,140,.08); }
+    .hub-stat strong { display:block; color:var(--black); font-size:48px; letter-spacing:-.08em; line-height:1; }
+    .hub-stat p { margin:9px 0 0; color:var(--text-secondary); font-size:13px; line-height:1.6; }
+    .hub-toolbar { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:30px 0 18px; }
+    .hub-toolbar h2 { margin:0; font-size:20px; letter-spacing:-.03em; }
+    .hub-filters { display:flex; flex-wrap:wrap; gap:8px; }
+    .hub-filter { border:1px solid var(--border); border-radius:999px; padding:8px 13px; background:#fff; color:var(--text-secondary); font:600 12px var(--font); cursor:pointer; transition:.2s; }
+    .hub-filter:hover, .hub-filter.active { border-color:transparent; background:var(--black); color:#fff; box-shadow:0 5px 15px rgba(0,0,0,.12); }
+    .project-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+    .project-card { position:relative; display:flex; min-height:306px; flex-direction:column; overflow:hidden; border:1px solid var(--border); border-radius:18px; background:#fff; box-shadow:0 8px 24px rgba(30,42,68,.04); transition:transform .22s,box-shadow .22s,border-color .22s; }
+    .project-card:hover { transform:translateY(-5px); border-color:rgba(64,105,229,.3); box-shadow:0 20px 44px rgba(35,62,118,.13); }
+    .project-card[hidden] { display:none; }
+    .card-top { position:relative; min-height:119px; padding:20px; overflow:hidden; color:#fff; }
+    .card-top::after { position:absolute; right:-20px; bottom:-48px; width:150px; height:150px; border:1px solid rgba(255,255,255,.23); border-radius:50%; content:''; }
+    .card-top::before { position:absolute; right:23px; top:23px; width:30px; height:30px; border:5px solid rgba(255,255,255,.55); border-radius:8px; content:''; transform:rotate(20deg); }
+    .tone-blue { background:linear-gradient(135deg,#111b3d,#345de7); } .tone-teal { background:linear-gradient(135deg,#0e2d3a,#048c9c); } .tone-red { background:linear-gradient(135deg,#40131d,#c91d32); } .tone-dark { background:linear-gradient(135deg,#202430,#575d70); } .tone-purple { background:linear-gradient(135deg,#2a164a,#7547d4); } .tone-orange { background:linear-gradient(135deg,#482719,#d37532); }
+    .card-type { position:relative; z-index:1; display:inline-flex; border:1px solid rgba(255,255,255,.24); border-radius:999px; padding:4px 8px; background:rgba(255,255,255,.11); font-size:10px; font-weight:700; letter-spacing:.05em; }
+    .card-index { position:absolute; z-index:1; right:19px; bottom:15px; font-size:31px; font-weight:800; letter-spacing:-.08em; opacity:.75; }
+    .card-body { display:flex; flex:1; flex-direction:column; padding:21px 20px 20px; }
+    .card-body h3 { margin:0; color:var(--black); font-size:20px; letter-spacing:-.04em; }
+    .card-body p { margin:10px 0 17px; color:var(--text-secondary); font-size:13px; line-height:1.7; }
+    .card-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; }
+    .card-tags span { border-radius:5px; padding:4px 7px; background:var(--surface2); color:var(--text-secondary); font-size:10px; font-weight:600; }
+    .card-actions { display:flex; gap:8px; margin-top:17px; }
+    .card-link { display:inline-flex; align-items:center; justify-content:center; min-height:35px; border-radius:8px; padding:0 12px; background:var(--black); color:#fff; font-size:12px; font-weight:700; text-decoration:none; transition:.18s; }
+    .card-link:hover { background:#345de7; } .card-link.ghost { border:1px solid var(--border); background:#fff; color:var(--text-secondary); } .card-link.ghost:hover { border-color:#345de7; background:#f5f7ff; color:#345de7; }
+    .hub-note { margin:28px 0 0; color:var(--text-muted); font-size:12px; line-height:1.7; }
+    @media (max-width:900px) { .hub-page{padding:110px 24px 48px}.hub-hero{grid-template-columns:1fr;gap:24px}.hub-stat{max-width:300px}.project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav-search{display:none} }
+    @media (max-width:600px) { nav{padding:0 18px}.nav-links{display:none}.hub-page{padding:100px 18px 38px}.hub-title{font-size:44px}.hub-toolbar{align-items:flex-start;flex-direction:column}.project-grid{grid-template-columns:1fr}.project-card{min-height:280px} }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img class="nav-logo-ascend" src="Ascendlogo.svg" alt="Ascend">
+      <div class="nav-logo-divider"></div>
+      <img class="nav-logo-cann" src="CANNlogo.png" alt="CANN">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="docs.html">文档</a></li>
+      <li><a href="learn.html">学习</a></li>
+      <li><a href="api.html">API 参考</a></li>
+      <li><a class="active" href="projects.html">项目汇总</a></li>
+    </ul>
+    <div class="nav-right"><a class="btn-ask-ai" href="https://github.com/SchihHsin" target="_blank" rel="noreferrer">GitHub 主页</a></div>
+  </nav>
+
+  <main class="hub-page">
+    <div class="hub-wrap">
+      <div class="hub-hero">
+        <div>
+          <div class="hub-kicker">Ascend / CANN collection</div>
+          <h1 class="hub-title">把每一项探索，<br><span>连成一个入口。</span></h1>
+          <p class="hub-intro">昇腾与 CANN 相关的产品原型、体验研究、知识库与效率工具，集中在这里浏览和访问。</p>
+        </div>
+        <aside class="hub-stat"><strong>6</strong><p>个关联项目<br>4 个在线可浏览的 GitHub Pages</p></aside>
+      </div>
+
+      <section aria-labelledby="projects-title">
+        <div class="hub-toolbar">
+          <h2 id="projects-title">项目入口</h2>
+          <div class="hub-filters" aria-label="项目类型筛选">
+            <button class="hub-filter active" data-filter="all">全部</button>
+            <button class="hub-filter" data-filter="product">产品与原型</button>
+            <button class="hub-filter" data-filter="research">研究与洞察</button>
+            <button class="hub-filter" data-filter="tool">工具与知识库</button>
+          </div>
+        </div>
+        <div class="project-grid">
+          <article class="project-card" data-category="product">
+            <div class="card-top tone-blue"><span class="card-type">PRODUCT CONCEPT</span><strong class="card-index">01</strong></div>
+            <div class="card-body"><h3>AscendCANN</h3><p>CANN 开发平台概念站，覆盖文档、学习路径、API 参考及 AI 助手交互。</p><div class="card-tags"><span>开发平台</span><span>学习体验</span><span>AI 助手</span></div><div class="card-actions"><a class="card-link" href="https://schihhsin.github.io/AscendCANN/" target="_blank" rel="noreferrer">打开页面</a><a class="card-link ghost" href="https://github.com/SchihHsin/AscendCANN" target="_blank" rel="noreferrer">代码</a></div></div>
+          </article>
+          <article class="project-card" data-category="product">
+            <div class="card-top tone-teal"><span class="card-type">PROTOTYPE</span><strong class="card-index">02</strong></div>
+            <div class="card-body"><h3>CANN-Bench</h3><p>面向 CANN 能力评估的基准原型，探索任务、结果与效能信息的可视化呈现。</p><div class="card-tags"><span>Benchmark</span><span>数据看板</span><span>原型</span></div><div class="card-actions"><a class="card-link" href="https://schihhsin.github.io/cannbench/" target="_blank" rel="noreferrer">打开页面</a><a class="card-link ghost" href="https://github.com/SchihHsin/cannbench" target="_blank" rel="noreferrer">代码</a></div></div>
+          </article>
+          <article class="project-card" data-category="research">
+            <div class="card-top tone-red"><span class="card-type">UX RESEARCH</span><strong class="card-index">03</strong></div>
+            <div class="card-body"><h3>昇腾 vs 英伟达 UX</h3><p>从开发者真实任务出发，比较昇腾与英伟达生态的体验，并沉淀改进机会。</p><div class="card-tags"><span>竞品分析</span><span>开发者体验</span><span>旅程</span></div><div class="card-actions"><a class="card-link" href="https://schihhsin.github.io/ascend-vs-nvidia-ux/" target="_blank" rel="noreferrer">打开页面</a><a class="card-link ghost" href="https://github.com/SchihHsin/ascend-vs-nvidia-ux" target="_blank" rel="noreferrer">代码</a></div></div>
+          </article>
+          <article class="project-card" data-category="research">
+            <div class="card-top tone-dark"><span class="card-type">USABILITY MAP</span><strong class="card-index">04</strong></div>
+            <div class="card-body"><h3>OPKnow</h3><p>按任务逐格呈现可用性证据，帮助快速定位 CANN 开发流程中的体验断点。</p><div class="card-tags"><span>可用性</span><span>热力图</span><span>证据库</span></div><div class="card-actions"><a class="card-link" href="https://schihhsin.github.io/opknow/" target="_blank" rel="noreferrer">打开页面</a><a class="card-link ghost" href="https://github.com/SchihHsin/opknow" target="_blank" rel="noreferrer">代码</a></div></div>
+          </article>
+          <article class="project-card" data-category="tool">
+            <div class="card-top tone-purple"><span class="card-type">DOCS SYSTEM</span><strong class="card-index">05</strong></div>
+            <div class="card-body"><h3>Ascend Doc</h3><p>昇腾文档站的视觉改造与可复用设计规则，面向更清晰、更易用的开发者文档体验。</p><div class="card-tags"><span>VitePress</span><span>文档设计</span><span>Design system</span></div><div class="card-actions"><a class="card-link" href="https://github.com/SchihHsin/ascend-doc" target="_blank" rel="noreferrer">查看代码</a></div></div>
+          </article>
+          <article class="project-card" data-category="tool">
+            <div class="card-top tone-orange"><span class="card-type">EXPERIENCE OPS</span><strong class="card-index">06</strong></div>
+            <div class="card-body"><h3>CANN Dashboard</h3><p>汇聚 Agent 评测、用户痛点和 VOC 的开发者体验运营看板及配套分析资产。</p><div class="card-tags"><span>体验运营</span><span>Agent 评测</span><span>洞察</span></div><div class="card-actions"><a class="card-link" href="https://github.com/SchihHsin/cann-dashboard" target="_blank" rel="noreferrer">查看代码</a></div></div>
+          </article>
+        </div>
+        <p class="hub-note">“打开页面”指向已公开的 GitHub Pages；其余项目暂以代码仓库为入口，待发布后可在此补充在线链接。</p>
+      </section>
+    </div>
+  </main>
+  <script>
+    const filters = document.querySelectorAll('.hub-filter');
+    const cards = document.querySelectorAll('.project-card');
+    filters.forEach((filter) => filter.addEventListener('click', () => {
+      filters.forEach((item) => item.classList.remove('active'));
+      filter.classList.add('active');
+      const category = filter.dataset.filter;
+      cards.forEach((card) => { card.hidden = category !== 'all' && card.dataset.category !== category; });
+    }));
+  </script>
+</body>
+</html>
