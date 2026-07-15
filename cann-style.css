@@ -2902,11 +2902,11 @@
   .ld-kv-legend { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-top:9px; }
   .ld-kv-legend span { padding:3px 6px; border-radius:10px; font-size:9px; font-weight:700; }
   .ld-kv-legend .model { background:#EAF0FF; color:#2455B5; }.ld-kv-legend .layout { background:#EEF8F3; color:#26845A; }.ld-kv-legend .scalar { background:#F5EFFF; color:#7846B4; }.ld-kv-legend .flow { background:#FFF3E4; color:#B66014; }
-  .ld-kv-map { position:relative; width:278px; height:356px; margin:12px auto 0; overflow:visible; }
+  .ld-kv-map { position:relative; width:278px; height:416px; margin:12px auto 0; overflow:visible; }
   .ld-kv-edges { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; }
   .ld-kv-edges path { fill:none; stroke:#B8C4D6; stroke-width:1.25; marker-end:url(#ld-kv-arrow); }
   .ld-kv-edges marker path { fill:#B8C4D6; stroke:none; }
-  .ld-kv-cluster { position:absolute; z-index:0; left:0; width:100%; height:80px; padding:8px 9px; border:1px solid; border-radius:9px; pointer-events:none; }
+  .ld-kv-cluster { position:absolute; z-index:0; padding:8px 9px; border:1px solid; border-radius:38% 62% 48% 52% / 16% 28% 20% 24%; pointer-events:none; }
   .ld-kv-cluster strong, .ld-kv-cluster small { display:block; }.ld-kv-cluster strong { font-size:10px; }.ld-kv-cluster small { margin-top:2px; font-size:9px; opacity:.72; }
   .ld-kv-cluster.model { border-color:#D8E4FC; background:rgba(234,240,255,.45); color:#2455B5; }.ld-kv-cluster.layout { border-color:#D7EEDC; background:rgba(238,248,243,.55); color:#26845A; }.ld-kv-cluster.scalar { border-color:#E6D8F6; background:rgba(245,239,255,.55); color:#7846B4; }.ld-kv-cluster.flow { border-color:#F7E1C6; background:rgba(255,243,228,.62); color:#B66014; }
   .ld-kv-graph-node { position:absolute; z-index:2; display:flex; align-items:center; justify-content:center; width:80px; min-height:32px; padding:4px; border:1px solid; border-radius:7px; background:#fff; color:var(--black); cursor:pointer; font:700 9px/1.25 var(--font); text-align:center; }
