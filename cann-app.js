@@ -4158,16 +4158,17 @@ def vector_add_tik(shape, dtype, kernel_name):
       const start = graph.nodes.find(item => item.id === from);
       const end = graph.nodes.find(item => item.id === to);
       if (!start || !end) return '';
-      const sx = start.x + 40, sy = start.y + 16, ex = end.x + 40, ey = end.y + 16;
+      const sx = start.x + (start.w || 80) / 2, sy = start.y + (start.h || 32) / 2;
+      const ex = end.x + (end.w || 80) / 2, ey = end.y + (end.h || 32) / 2;
       const bend = (edgeIndex % 2 ? 1 : -1) * (14 + (edgeIndex % 3) * 7);
       return `<path d="M ${sx} ${sy} Q ${(sx + ex) / 2 + bend} ${(sy + ey) / 2 - bend} ${ex} ${ey}" />`;
     }).join('');
-    const nodes = graph.nodes.map(item => `<button class="ld-kv-graph-node ${item.group}" style="left:${item.x}px;top:${item.y}px" onclick="ldFocusLearningContent()"><span>${item.label}</span><em><b>${item.title}</b>${item.desc}${item.source ? `<a href="${item.source}" target="_blank" onclick="event.stopPropagation()">查看官方文档 ↗</a>` : ''}</em></button>`).join('');
+    const nodes = graph.nodes.map(item => `<button class="ld-kv-graph-node ${item.group} ${item.kind || ''}" style="left:${item.x}px;top:${item.y}px;${item.w ? `width:${item.w}px;` : ''}${item.h ? `height:${item.h}px;min-height:${item.h}px;` : ''}" onclick="ldFocusLearningContent()"><span>${item.label}</span>${item.kind !== 'core' ? `<em><b>${item.title}</b>${item.desc}${item.source ? `<a href="${item.source}" target="_blank" onclick="event.stopPropagation()">查看官方文档 ↗</a>` : ''}</em>` : ''}</button>`).join('');
     const clusters = (graph.clusters || []).map(item => `<div class="ld-kv-cluster ${item.group}" style="left:${item.x || 0}px;top:${item.y}px;width:${item.width || 278}px;height:${item.height || 80}px"><strong>${item.title}</strong><small>${item.subtitle}</small></div>`).join('');
     const legend = graph.clusters?.length
       ? graph.clusters.map(item => `<span class="${item.group}">${item.title}</span>`).join('')
       : '<span class="model">概念建模</span><span class="layout">数据与访存</span><span class="flow">执行与优化</span>';
-    visual.innerHTML = `<div class="ld-kv-title">${node.title} · 知识图谱</div><div class="ld-kv-legend">${legend}</div><div class="ld-kv-map"><svg class="ld-kv-edges" viewBox="0 0 278 416" aria-hidden="true"><defs><marker id="ld-kv-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L8,4 L0,8 Z" /></marker></defs>${links}</svg>${clusters}${nodes}</div><p class="ld-kv-note">同一轮廓为一个知识簇；曲线表示簇内或跨簇的知识依赖。</p>`;
+    visual.innerHTML = `<div class="ld-kv-title">${node.title} · 知识图谱</div><div class="ld-kv-legend">${legend}</div><div class="ld-kv-map ${graph.radial ? 'radial' : ''}"><svg class="ld-kv-edges" viewBox="0 0 278 416" aria-hidden="true"><defs><marker id="ld-kv-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L8,4 L0,8 Z" /></marker></defs>${links}</svg>${clusters}${nodes}</div><p class="ld-kv-note">${graph.radial ? '中心主题连接知识簇，外圈为具体概念；悬浮节点查看说明。' : '同一轮廓为一个知识簇；曲线表示簇内或跨簇的知识依赖。'}</p>`;
   }
 
   function ldBuildKnowledgeGraph(node, knowledge) {
@@ -4203,26 +4204,24 @@ def vector_add_tik(shape, dtype, kernel_name):
       scalar:'https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta3/programug/Ascendcopdevg/docs/guide/%E6%8A%80%E6%9C%AF%E9%99%84%E5%BD%95/%E6%A6%82%E5%BF%B5%E5%8E%9F%E7%90%86%E5%92%8C%E6%9C%AF%E8%AF%AD/%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE%E5%8E%9F%E7%90%86/Scalar%E8%AF%BB%E5%86%99%E6%95%B0%E6%8D%AE.md',
       buffer:'https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta3/programug/Ascendcopdevg/docs/guide/%E6%8A%80%E6%9C%AF%E9%99%84%E5%BD%95/%E6%A6%82%E5%BF%B5%E5%8E%9F%E7%90%86%E5%92%8C%E6%9C%AF%E8%AF%AD/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86/DoubleBuffer.md'
     };
-    return { clusters:[
-      { group:'model', title:'算子建模', subtitle:'定义计算契约', x:8, y:0, width:262, height:93 },
-      { group:'layout', title:'数据排布', subtitle:'决定访问与计算适配', x:6, y:99, width:258, height:96 },
-      { group:'scalar', title:'Scalar 访存', subtitle:'控制与数据读写', x:14, y:201, width:248, height:93 },
-      { group:'flow', title:'流水优化', subtitle:'隐藏搬运等待', x:5, y:300, width:266, height:104 }
-    ], nodes:[
-      { id:'operator', label:'算子', title:'算子基本概念', desc:'算子是模型中的计算单元；先定义输入、输出、数据类型与计算规则。', group:'model', x:22, y:42, source:docs.operator },
-      { id:'io', label:'输入 / 输出', title:'逻辑输入与输出', desc:'输入、输出及其 shape、数据类型共同描述算子的计算契约。', group:'model', x:112, y:28, source:docs.operator },
-      { id:'logic', label:'计算逻辑', title:'计算规则', desc:'将数学计算拆成可在 AI Core 上执行的数据搬运与计算步骤。', group:'model', x:190, y:55, source:docs.operator },
-      { id:'tensor', label:'Tensor', title:'Tensor 数据排布', desc:'数据排布定义多维 Tensor 在内存中的存储方式。', group:'layout', x:20, y:144, source:docs.layout },
-      { id:'nd', label:'ND / NCHW', title:'通用数据格式', desc:'ND、NCHW、NHWC 为维度赋予业务语义，通道位置会影响访问特性。', group:'layout', x:114, y:123, source:docs.layout },
-      { id:'nz', label:'FRACTAL_NZ', title:'分形数据格式', desc:'NZ 等格式通过分块布局适配 Cube 计算单元，服务矩阵计算效率。', group:'layout', x:183, y:158, source:docs.layout },
-      { id:'gmub', label:'GM ↔ UB', title:'Scalar 可访问存储', desc:'Scalar 仅支持读写 Global Memory 和 Unified Buffer。', group:'scalar', x:25, y:251, source:docs.scalar },
-      { id:'scalar', label:'Get / Set', title:'Scalar 读写', desc:'Scalar 通过 GetValue、SetValue 操作数据，属于 PIPE_S 流水操作。', group:'scalar', x:109, y:222, source:docs.scalar },
-      { id:'sync', label:'DataCache 同步', title:'缓存一致性', desc:'GM 标量访问经过 DataCache；多核共享数据变化时需要保证一致性。', group:'scalar', x:181, y:250, source:docs.scalar },
-      { id:'pipeline', label:'Copy + Compute', title:'搬运与计算流水', desc:'CopyIn、Compute、CopyOut 组成典型的数据搬运与计算过程。', group:'flow', x:22, y:354, source:docs.buffer },
-      { id:'queues', label:'MTE / Vector', title:'独立指令队列', desc:'MTE 搬运队列和 Vector 计算队列相互独立，可并行执行。', group:'flow', x:109, y:326, source:docs.buffer },
-      { id:'double', label:'DoubleBuffer', title:'双缓冲优化', desc:'将数据分两块，让一块计算时另一块搬运或回写，以隐藏等待时间。', group:'flow', x:181, y:362, source:docs.buffer }
+    return { radial:true, nodes:[
+      { id:'core', label:'算子开发\n编程基础', title:'算子开发编程基础', desc:'本节主题', group:'model', kind:'core', x:94, y:166, w:90, h:90 },
+      { id:'model', label:'算子建模', title:'算子建模', desc:'定义一个算子的计算契约。', group:'model', kind:'cluster-node', x:107, y:52, w:64, h:64 },
+      { id:'layout', label:'数据排布', title:'数据排布', desc:'决定 Tensor 如何被访问与计算。', group:'layout', kind:'cluster-node', x:195, y:162, w:64, h:64 },
+      { id:'scalar', label:'Scalar\n访存', title:'Scalar 访存', desc:'负责标量控制和数据读写。', group:'scalar', kind:'cluster-node', x:106, y:292, w:64, h:64 },
+      { id:'flow', label:'流水优化', title:'流水优化', desc:'通过并行搬运与计算提升利用率。', group:'flow', kind:'cluster-node', x:18, y:162, w:64, h:64 },
+      { id:'operator', label:'算子', title:'算子基本概念', desc:'算子是模型中的计算单元；先定义输入、输出、数据类型与计算规则。', group:'model', x:20, y:18, source:docs.operator },
+      { id:'io', label:'输入 / 输出', title:'逻辑输入与输出', desc:'输入、输出及其 shape、数据类型共同描述算子的计算契约。', group:'model', x:184, y:18, source:docs.operator },
+      { id:'nd', label:'ND / NCHW', title:'通用数据格式', desc:'ND、NCHW、NHWC 为维度赋予业务语义，通道位置会影响访问特性。', group:'layout', x:198, y:102, source:docs.layout },
+      { id:'nz', label:'FRACTAL_NZ', title:'分形数据格式', desc:'NZ 等格式通过分块布局适配 Cube 计算单元，服务矩阵计算效率。', group:'layout', x:198, y:252, source:docs.layout },
+      { id:'gmub', label:'GM ↔ UB', title:'Scalar 可访问存储', desc:'Scalar 仅支持读写 Global Memory 和 Unified Buffer。', group:'scalar', x:182, y:370, source:docs.scalar },
+      { id:'sync', label:'DataCache', title:'缓存一致性', desc:'GM 标量访问经过 DataCache；多核共享数据变化时需要保证一致性。', group:'scalar', x:18, y:370, source:docs.scalar },
+      { id:'queues', label:'MTE / Vector', title:'独立指令队列', desc:'MTE 搬运队列和 Vector 计算队列相互独立，可并行执行。', group:'flow', x:0, y:104, source:docs.buffer },
+      { id:'double', label:'DoubleBuffer', title:'双缓冲优化', desc:'将数据分两块，让一块计算时另一块搬运或回写，以隐藏等待时间。', group:'flow', x:0, y:252, source:docs.buffer }
     ], edges:[
-      ['operator','io'], ['io','logic'], ['io','tensor'], ['tensor','nd'], ['tensor','nz'], ['nd','gmub'], ['nz','pipeline'], ['gmub','scalar'], ['scalar','sync'], ['pipeline','queues'], ['queues','double'], ['gmub','pipeline']
+      ['core','model'], ['core','layout'], ['core','scalar'], ['core','flow'],
+      ['model','operator'], ['model','io'], ['layout','nd'], ['layout','nz'], ['scalar','gmub'], ['scalar','sync'], ['flow','queues'], ['flow','double'],
+      ['io','nd'], ['nz','double'], ['gmub','queues']
     ] };
   }
 
