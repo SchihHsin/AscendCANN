@@ -7,33 +7,21 @@
 <link rel="stylesheet" href="cann-style.css">
 </head>
 <body>
-<nav>
-  <a class="nav-logo" href="#" onclick="showPage('home')">
-    <img class="nav-logo-ascend" src="Ascendlogo.svg" alt="Ascend">
-    <div class="nav-logo-divider"></div>
-    <img class="nav-logo-cann" src="CANNlogo.png" alt="CANN">
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home')" id="nav-home">首页</a></li>
-    <li><a href="#" onclick="showPage('docs')" id="nav-docs">文档</a></li>
-    <li><a href="#" onclick="showPage('learn')" id="nav-learn" class="active">学习</a></li>
-    <li><a href="#" onclick="showPage('api')" id="nav-api">API 参考</a></li>
-    <li><a href="#">社区</a></li>
-    <li><a href="#">博客</a></li>
+<div class="ascend-community-bar"><a href="https://www.hiascend.com/" target="_blank" rel="noopener">昇腾社区首页</a><span aria-hidden="true">◯</span></div>
+<nav class="ascend-developer-nav">
+  <a class="ascend-brand" href="https://www.hiascend.com/developer" target="_blank" rel="noopener"><img src="Ascendlogo.svg" alt="Ascend"></a>
+  <strong class="ascend-developer-label">开发者</strong>
+  <ul class="ascend-nav-links">
+    <li><a href="https://www.hiascend.com/developer" target="_blank" rel="noopener">主页</a></li>
+    <li><a href="https://www.hiascend.com/developer" target="_blank" rel="noopener">开发</a></li>
+    <li><a href="https://www.hiascend.com/document" target="_blank" rel="noopener">文档</a></li>
+    <li><a href="https://www.hiascend.com/activities" target="_blank" rel="noopener">活动</a></li>
+    <li><a class="active" href="https://www.hiascend.com/edu/growth" target="_blank" rel="noopener">学习</a></li>
+    <li><a href="https://www.hiascend.com/forum/" target="_blank" rel="noopener">论坛</a></li>
+    <li><a href="https://www.hiascend.com/developer/blog" target="_blank" rel="noopener">博客</a></li>
+    <li><a href="https://www.hiascend.com/developer-program" target="_blank" rel="noopener">开发者计划</a></li>
   </ul>
-  <div class="nav-right">
-    <div class="nav-search">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" placeholder="搜索文档或 API..." />
-    </div>
-    <button class="btn-ask-ai" onclick="openLearningAi()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z"/>
-        <path d="M20 12C20 14.2091 18.2091 16 16 16C18.2091 16 20 17.7909 20 20C20 17.7909 21.7909 16 24 16C21.7909 16 20 14.2091 20 12Z"/>
-      </svg>
-      Ask AI
-    </button>
-  </div>
+  <div class="ascend-nav-actions"><a href="#">下载⌄</a><a href="https://www.hiascend.com/support" target="_blank" rel="noopener">支持</a><a href="#">积分兑换 <b>NEW</b></a></div>
 </nav>
 
 <!-- AI Chat Sidebar -->
