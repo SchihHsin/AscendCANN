@@ -2967,28 +2967,18 @@ def vector_add_tik(shape, dtype, kernel_name):
       if (!nodePaths.has(node.title)) nodePaths.set(node.title, []);
       nodePaths.get(node.title).push(path.name);
     }));
-    // Keep the whole learning history in one mind map, grouped by shared domain.
     const nodes = [...nodePaths.keys()].map(title => NODE_LIST.find(node => node.title === title)).filter(Boolean);
-    const groups = ['beginner', 'developer', 'operator', 'distributed'].map(category => ({ category, nodes:nodes.filter(node => node.category === category) })).filter(group => group.nodes.length);
-    const W = 820, H = Math.max(480, groups.reduce((n, group) => n + group.nodes.length, 0) * 50 + 120);
-    const center = { x:410, y:H / 2 };
-    const anchors = [{x:190,y:110},{x:630,y:120},{x:635,y:H-130},{x:185,y:H-120}];
-    const esc = text => String(text).replace(/[&<>]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' })[char]);
-    let leafSvg = '', branchSvg = '', groupSvg = '';
-    groups.forEach((group, gi) => {
-      const anchor = anchors[gi]; const meta = CAT_META[group.category];
-      branchSvg += `<path class="la-mm-branch" style="stroke:${meta.color}" d="M${center.x} ${center.y} C${center.x + (anchor.x-center.x)*.35} ${center.y}, ${center.x + (anchor.x-center.x)*.7} ${anchor.y}, ${anchor.x} ${anchor.y}"/>`;
-      groupSvg += `<g class="la-mm-group"><rect x="${anchor.x-64}" y="${anchor.y-19}" width="128" height="38" rx="8"/><circle cx="${anchor.x-45}" cy="${anchor.y}" r="6" style="fill:${meta.color}"/><text x="${anchor.x-32}" y="${anchor.y+4}">${meta.label}</text></g>`;
-      group.nodes.forEach((node, ni) => {
-        const direction = anchor.x < center.x ? -1 : 1;
-        const x = anchor.x + direction * 175;
-        const y = anchor.y + (ni - (group.nodes.length - 1) / 2) * 60;
+    const groups = ['beginner', 'developer', 'operator', 'distributed'];
+    const statusText = { done:'已学', current:'学习中', todo:'待学' };
+    panel.innerHTML = `<div class="la-map-desc">汇总所有学习路径中的知识节点。按知识类型分列；同一节点只出现一次，并标注它关联的学习路径。</div><div class="la-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><div class="la-column-map">${groups.map(category => {
+      const meta = CAT_META[category];
+      const groupNodes = nodes.filter(node => node.category === category);
+      return `<section class="la-map-column" style="--map-color:${meta.color}"><h3><i></i>${meta.label}<small>${groupNodes.length}</small></h3><div class="la-map-column-nodes">${groupNodes.length ? groupNodes.map(node => {
         const state = completed.has(node.title) ? 'done' : active.has(node.title) ? 'current' : 'todo';
-        branchSvg += `<path class="la-mm-leaf-link" style="stroke:${meta.color}" d="M${anchor.x + direction*64} ${anchor.y} C${anchor.x + direction*110} ${anchor.y}, ${x - direction*72} ${y}, ${x - direction*58} ${y}"/>`;
-        leafSvg += `<g class="la-mm-node ${state}" onclick="ldStartNode('${node.title}')"><rect x="${x-58}" y="${y-20}" width="116" height="40" rx="7"/><text x="${x}" y="${y-2}" text-anchor="middle">${esc(node.title)}</text><text class="la-mm-state" x="${x}" y="${y+12}" text-anchor="middle">${state === 'done' ? '已学' : state === 'current' ? '学习中' : '待学'}</text></g>`;
-      });
-    });
-    panel.innerHTML = `<div class="la-map-desc">汇总你所有学习路径中的节点。中心是你的学习空间，分支按方向聚合；节点状态会随着学习进度变化。</div><div class="la-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><svg class="la-knowledge-map la-mind-map" viewBox="0 0 ${W} ${H}" role="img" aria-label="我的全局学习知识图谱"><g class="la-mm-lines">${branchSvg}</g><g class="la-mm-center"><rect x="${center.x-70}" y="${center.y-30}" width="140" height="60" rx="10"/><text x="${center.x}" y="${center.y-4}" text-anchor="middle">我的学习</text><text x="${center.x}" y="${center.y+15}" text-anchor="middle">知识图谱</text></g>${groupSvg}${leafSvg}</svg>`;
+        const related = nodePaths.get(node.title) || [];
+        return `<button class="la-column-node ${state}" onclick="ldStartNode('${node.title}')" title="来自：${related.join('、')}"><span class="la-column-node-state">${statusText[state]}</span><strong>${node.title}</strong><small>关联 ${related.length} 条路径</small></button>`;
+      }).join('') : '<div class="la-column-empty">尚未接触此类知识</div>'}</div></section>`;
+    }).join('')}</div>`;
   }
   function openQuizBank() { openLearningArchive('quiz'); }
   function closeQuizBank() { closeLearningArchive(); }
@@ -3615,7 +3605,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   let _ldOnboardingStep = 0;
   let _ldProfileDraft = {};
   const LD_ONBOARDING = [
-    { key:'interest', title:'你想用 CANN 做什么？', options:['算子开发','模型迁移','模型推理','模型训练','性能调优','暂不确定'] },
+    { key:'role', title:'你的角色是？', options:['学生','应用开发者','算子开发者','算法工程师','暂不确定'] },
     { key:'goal', title:'你希望通过学习达成什么？', options:['跑通一个项目','解决当前任务','提升工作技能','学习认证','暂不确定'] },
     { key:'foundation', title:'你的基础与资源如何？', options:['零基础','会 Python','会 PyTorch','熟悉 C++','有昇腾硬件','希望在线实验'] },
   ];
@@ -3630,6 +3620,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   function ldSkipOnboarding() {
     localStorage.setItem(LD_PROFILE_KEY, JSON.stringify({ skipped:true }));
     document.getElementById('ld-onboarding')?.classList.remove('open');
+    ldArrangeDashboard(false);
     ldRenderNodes(_ldActiveCat);
   }
   function ldRenderOnboarding() {
@@ -3654,7 +3645,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (_ldOnboardingStep < LD_ONBOARDING.length - 1) { _ldOnboardingStep++; ldRenderOnboarding(); return; }
     localStorage.setItem(LD_PROFILE_KEY, JSON.stringify(_ldProfileDraft));
     document.getElementById('ld-onboarding')?.classList.remove('open');
-    ldArrangeDashboard(_ldProfileDraft.interest && _ldProfileDraft.interest !== '暂不确定');
+    ldArrangeDashboard(_ldProfileDraft.role && _ldProfileDraft.role !== '暂不确定');
     ldRenderNodes(_ldActiveCat);
   }
 
@@ -4155,5 +4146,6 @@ def vector_add_tik(shape, dtype, kernel_name):
     _updateQbBadge();
     document.getElementById('ld-ai-input')?.addEventListener('input', ldUpdateGenerateState);
     ldUpdateGenerateState();
+    ldArrangeDashboard(false);
     ldOpenOnboarding(false);
   });
