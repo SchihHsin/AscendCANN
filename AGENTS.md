@@ -81,6 +81,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 - 样板路径直达地址：`learn.html#ascend-c-demo`（同时兼容 `?path=ascend-c-demo`），直接进入 Ascend C 编程样板路径详情并跳过首页画像弹窗；内置样板路径不受用户已保存路径影响。
 - 另提供独立定制页面 `learn-ascend-c-demo.html`，作为审阅 Ascend C 章节级样板路径的固定地址；页面加载后自动进入该样板路径详情。
 - AI 助手在由场景卡或自由输入生成路径后，首条上下文消息会回显生成来源，提示“已生成路径，请在左侧查看”，并引导用户继续就当前节点、代码或实践提问。
+- 路径侧栏的列表 / 可视化切换改为 Lucide `list-tree` / `git-branch` 图标按钮，保留悬浮说明和无障碍标签；样板路径 AI 首条回复采用固定的 AscendC 编程生成提示。用户提供的昇腾异构编程基础图片仅作为“算子开发编程基础”节点的视频封面。
 
 ### 已完成
 

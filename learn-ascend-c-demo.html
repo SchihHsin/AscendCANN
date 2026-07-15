@@ -395,7 +395,7 @@
 
     <div class="ld-path-workspace" id="ld-path-workspace">
       <aside class="ld-path-sidebar">
-        <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button class="active" onclick="ldSetPathView('list',this)">列表</button><button onclick="ldSetPathView('map',this)">可视化</button></div></div>
+        <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button class="active" onclick="ldSetPathView('list',this)" title="列表视图" aria-label="列表视图"><i data-lucide="list-tree"></i></button><button onclick="ldSetPathView('map',this)" title="可视化视图" aria-label="可视化视图"><i data-lucide="git-branch"></i></button></div></div>
         <div class="ld-path-nav" id="ld-path-nav"></div>
         <button class="ld-edit-path-btn" onclick="ldOpenPathEditor()">编辑路径</button>
       </aside>
@@ -597,7 +597,9 @@
   // This dedicated sample page always opens the Ascend C chapter-level path.
   window.location.hash = 'ascend-c-demo';
 </script>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script src="cann-app.js"></script>
+<script>window.lucide?.createIcons();</script>
 
 <!-- Learning Archive Overlay + Drawer -->
 <div class="qb-overlay" id="qb-overlay" onclick="closeLearningArchive()"></div>

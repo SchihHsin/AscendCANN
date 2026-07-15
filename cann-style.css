@@ -2807,7 +2807,8 @@
   .ld-path-sidebar { position:sticky; top:122px; align-self:start; max-height:calc(100vh - 122px); overflow:auto; padding:20px 0; border-right:1px solid var(--border); background:var(--surface); }
   .ld-sidebar-head { display:flex; align-items:center; justify-content:space-between; margin:0 14px 16px; font-size:13px; }
   .ld-view-switch { display:flex; padding:2px; border:1px solid var(--border); border-radius:6px; background:#fff; }
-  .ld-view-switch button { border:0; padding:4px 7px; border-radius:4px; background:transparent; color:var(--text-muted); font-size:10px; cursor:pointer; font-family:var(--font); }
+  .ld-view-switch button { display:flex; align-items:center; justify-content:center; width:28px; height:26px; border:0; padding:0; border-radius:4px; background:transparent; color:var(--text-muted); cursor:pointer; }
+  .ld-view-switch button svg { width:14px; height:14px; stroke-width:2; }
   .ld-view-switch button.active { color:#fff; background:var(--black); }
   .ld-path-nav { display:flex; flex-direction:column; gap:5px; }
   .ld-path-cluster { margin:14px 14px 4px; padding-top:12px; border-top:1px solid var(--border); color:var(--black); font-size:11px; font-weight:800; line-height:1.35; }
@@ -2915,6 +2916,9 @@
   .ld-video-open { margin-left:auto; font-size:11px; white-space:nowrap; }
   .ld-video-embed { overflow:hidden; border:1px solid var(--border); border-radius:9px; background:#fff; }
   .ld-video-stage { position:relative; display:flex; align-items:center; justify-content:center; min-height:190px; background:linear-gradient(120deg,#0F172A,#1E3A8A); }
+  .ld-video-cover { background:#fff; }
+  .ld-video-cover img { display:block; width:100%; height:100%; min-height:190px; object-fit:cover; }
+  .ld-video-cover .ld-video-play { position:absolute; color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.25); }
   .ld-video-stage .ld-video-play { width:48px; height:48px; background:rgba(255,255,255,.18); font-size:18px; }
   .ld-video-duration { position:absolute; right:12px; bottom:10px; padding:4px 7px; border-radius:4px; background:rgba(0,0,0,.55); color:#fff; font-size:11px; }
   .ld-video-caption { padding:12px 14px; }.ld-video-caption strong,.ld-video-caption small { display:block; }.ld-video-caption strong { color:var(--black); font-size:13px; }.ld-video-caption small { margin-top:4px; color:var(--text-muted); font-size:11px; }

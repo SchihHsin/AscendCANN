@@ -4087,13 +4087,16 @@ def vector_add_tik(shape, dtype, kernel_name):
     const content = document.getElementById('ld-learning-content');
     if (!content) return;
     const video = NODE_VIDEO[node.title] || { title: `${node.title}讲解视频`, duration: '课程视频', tag: '视频学习' };
+    const videoStage = node.title === '算子开发编程基础'
+      ? `<div class="ld-video-stage ld-video-cover"><img src="ascend-c-course-cover.png" alt="昇腾异构编程基础课程封面"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div>`
+      : `<div class="ld-video-stage"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div>`;
     const resources = (knowledge?.resources || []).map(r => `<a class="ld-content-resource" href="${r.href}" target="_blank"><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`).join('');
     const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p></div>`).join('');
     const code = knowledge?.code;
     const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="ldRunNodeCode()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
     const practiceSteps = knowledge?.lab?.steps || [{ title:`运行「${node.title}」配套练习`, desc:'在 HiDevLab 中打开本章节的实践环境，边学边验证。' }];
     const practice = `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>`;
-    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>学习视频</h2><div class="ld-video-embed"><div class="ld-video-stage"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div><div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${codeHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div><section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${codeHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     ldRefreshStudyTools(node, knowledge);
   }
 
@@ -4132,7 +4135,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const chat = document.getElementById('ld-tool-chat');
     if (context) context.textContent = `当前节点：${node.title}`;
     if (chat) {
-      const pathNotice = _ldGeneratedPlanContext
+      const pathNotice = _ldGeneratedPlanContext === 'Ascend C 编程样板路径'
+        ? '已根据您的需求生成个性化学习路径“AscendC编程”，请在左侧查看。你还可以继续问我任何学习、代码或实践问题。'
+        : _ldGeneratedPlanContext
         ? `已根据${_ldGeneratedPlanContext}生成学习路径，请在左侧查看。当前打开「${node.title}」，你还可以继续问我任何学习、代码或实践问题。`
         : `正在学习「${node.title}」。可以让我解释概念、给出代码示例或规划练习。`;
       chat.innerHTML = `<div class="ld-tool-msg">${pathNotice}</div>`;
