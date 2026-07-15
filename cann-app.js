@@ -2537,14 +2537,14 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   // Sample custom paths data
   const samplePaths = [
-    { id: 'official-ascend-c', name: 'Ascend C编程', icon: '⚙️', query: 'Ascend C编程', createdAt: '2026-07-15', official: true,
+    { id: 'official-ascend-c', name: '算子开发从入门到精通', icon: '⚙️', query: 'Ascend C编程', createdAt: '2026-07-15', official: true,
       sourceUrl: 'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',
       nodeList: NODE_LIST.map((node, step) => ({ ...node, step:step + 1, reason:node.desc })) },
   ];
 
   // Seed sample paths into localStorage on first visit
   const CUSTOM_PATHS_SEEDED_KEY = 'cann_custom_paths_seeded';
-  const OFFICIAL_PATH_MIGRATION_KEY = 'cann_official_path_v3';
+  const OFFICIAL_PATH_MIGRATION_KEY = 'cann_official_path_v4';
   if (!localStorage.getItem(OFFICIAL_PATH_MIGRATION_KEY)) {
     // Replace only earlier built-in demo paths; preserve learner-created paths.
     customPaths = customPaths.filter(path => !String(path.id).startsWith('sample-'));
@@ -4141,7 +4141,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (context) context.textContent = `当前节点：${node.title}`;
     if (chat) {
       const pathNotice = _ldGeneratedPlanContext === 'Ascend C 编程样板路径'
-        ? '已根据您的需求生成个性化学习路径“AscendC编程”，请在左侧查看。你还可以继续问我任何学习、代码或实践问题。'
+        ? '已根据您的需求生成个性化学习路径“算子开发从入门到精通”，请在左侧查看。你还可以继续问我任何学习、代码或实践问题。'
         : _ldGeneratedPlanContext
         ? `已根据${_ldGeneratedPlanContext}生成学习路径，请在左侧查看。当前打开「${node.title}」，你还可以继续问我任何学习、代码或实践问题。`
         : `正在学习「${node.title}」。可以让我解释概念、给出代码示例或规划练习。`;
