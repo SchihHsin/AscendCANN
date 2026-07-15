@@ -2843,6 +2843,8 @@
   .la-column-node.done { background:#F0FDF4; border-left-color:#16A34A; }.la-column-node.done .la-column-node-state { color:#15803D; }
   .la-column-node.current { background:#EEF3FF; border-left-color:var(--accent-blue); }.la-column-node.current .la-column-node-state { color:var(--accent-blue); }
   .la-column-node.todo { background:#FAFBFC; }.la-column-empty { padding:14px 4px; color:var(--text-muted); font-size:10px; text-align:center; }
+  .la-map-cross-links { position:absolute; inset:0; z-index:0; overflow:visible; pointer-events:none; }
+  .la-map-cross-links path { fill:none; stroke:#7B8CC9; opacity:.5; stroke-linecap:round; }
   @media (max-width:760px) { .la-column-map { grid-template-columns:repeat(2,minmax(0,1fr)); } }
   @media (max-width:540px) { .la-column-map { grid-template-columns:1fr; } }
   .ld-path-nav-item { display:grid; grid-template-columns:26px minmax(0,1fr); column-gap:8px; text-align:left; padding:10px 14px; border:1px solid transparent; border-radius:0; background:transparent; cursor:pointer; font-family:var(--font); }

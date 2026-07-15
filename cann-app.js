@@ -2962,6 +2962,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const paths = customPaths.length ? customPaths : samplePaths;
     const completed = new Set(JSON.parse(localStorage.getItem(LEARN_STATE_KEY) || '[]'));
     const active = new Set((_ldActivePathNodes || []).map(node => node.title));
+    // Keep all three states visible for the seeded example before the learner has activity.
+    const demoDone = new Set(['昇腾硬件体系', 'CANN 软件栈概览']);
+    const demoCurrent = new Set(['环境安装与配置']);
     const nodePaths = new Map();
     paths.forEach(path => (path.nodeList || []).forEach(node => {
       if (!nodePaths.has(node.title)) nodePaths.set(node.title, []);
@@ -2970,15 +2973,51 @@ def vector_add_tik(shape, dtype, kernel_name):
     const nodes = [...nodePaths.keys()].map(title => NODE_LIST.find(node => node.title === title)).filter(Boolean);
     const groups = ['beginner', 'developer', 'operator', 'distributed'];
     const statusText = { done:'已学', current:'学习中', todo:'待学' };
-    panel.innerHTML = `<div class="la-map-desc">汇总所有学习路径中的知识节点。按知识类型分列；每列按学习顺序纵向串联。</div><div class="la-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span><span class="linked">学习衔接</span></div><div class="la-column-map">${groups.map(category => {
+    panel.innerHTML = `<div class="la-map-desc">汇总所有学习路径中的知识节点。按知识类型分列；纵向连线表示同类学习顺序，曲线表示跨类别的知识依赖。</div><div class="la-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span><span class="linked">跨类依赖</span></div><div class="la-column-map">${groups.map(category => {
       const meta = CAT_META[category];
       const groupNodes = nodes.filter(node => node.category === category);
       return `<section class="la-map-column" style="--map-color:${meta.color}"><h3><i></i>${meta.label}<small>${groupNodes.length}</small></h3><div class="la-map-column-nodes">${groupNodes.length ? groupNodes.map(node => {
-        const state = completed.has(node.title) ? 'done' : active.has(node.title) ? 'current' : 'todo';
+        const state = completed.has(node.title) || (!completed.size && demoDone.has(node.title)) ? 'done' : active.has(node.title) || (!completed.size && demoCurrent.has(node.title)) ? 'current' : 'todo';
         const related = nodePaths.get(node.title) || [];
         return `<button class="la-column-node ${state}" data-map-node="${NODE_LIST.indexOf(node)}" onclick="ldStartNode('${node.title}')" title="来自：${related.join('、')}"><span class="la-column-node-state">${statusText[state]}</span><strong>${node.title}</strong><small>关联 ${related.length} 条路径</small></button>`;
       }).join('') : '<div class="la-column-empty">尚未接触此类知识</div>'}</div></section>`;
-    }).join('')}</div>`;
+    }).join('')}<svg class="la-map-cross-links" aria-hidden="true"></svg></div>`;
+    requestAnimationFrame(() => renderLearningMapCrossLinks(panel, paths));
+  }
+
+  function renderLearningMapCrossLinks(panel, paths) {
+    const map = panel.querySelector('.la-column-map');
+    const svg = panel.querySelector('.la-map-cross-links');
+    if (!map || !svg) return;
+    const mapRect = map.getBoundingClientRect();
+    const edges = new Map();
+    paths.forEach(path => {
+      const list = (path.nodeList || []).map(node => NODE_LIST.findIndex(item => item.title === node.title)).filter(index => index >= 0);
+      list.slice(1).forEach((target, index) => {
+        const source = list[index];
+        if (NODE_LIST[source].category === NODE_LIST[target].category) return;
+        const key = `${source}-${target}`;
+        edges.set(key, { source, target, count:(edges.get(key)?.count || 0) + 1 });
+      });
+    });
+    svg.setAttribute('viewBox', `0 0 ${mapRect.width} ${mapRect.height}`);
+    svg.setAttribute('width', mapRect.width);
+    svg.setAttribute('height', mapRect.height);
+    svg.innerHTML = [...edges.values()].map(edge => {
+      const source = map.querySelector(`[data-map-node="${edge.source}"]`);
+      const target = map.querySelector(`[data-map-node="${edge.target}"]`);
+      if (!source || !target) return '';
+      const a = source.getBoundingClientRect(), b = target.getBoundingClientRect();
+      const goingRight = b.left > a.left;
+      const x1 = (goingRight ? a.right : a.left) - mapRect.left;
+      const x2 = (goingRight ? b.left : b.right) - mapRect.left;
+      const y1 = a.top - mapRect.top + a.height / 2;
+      const y2 = b.top - mapRect.top + b.height / 2;
+      const curve = Math.max(24, Math.abs(x2 - x1) * .45);
+      const c1 = x1 + (goingRight ? curve : -curve);
+      const c2 = x2 + (goingRight ? -curve : curve);
+      return `<path d="M${x1} ${y1} C${c1} ${y1},${c2} ${y2},${x2} ${y2}" stroke-width="${edge.count > 1 ? 2.25 : 1.35}"/>`;
+    }).join('');
   }
   function openQuizBank() { openLearningArchive('quiz'); }
   function closeQuizBank() { closeLearningArchive(); }
