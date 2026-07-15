@@ -4153,10 +4153,47 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (quiz) quiz.innerHTML = `<div class="ld-tool-empty">切换到随堂测验后会自动出题。</div>`;
     const visual = document.getElementById('ld-knowledge-visual');
     if (!visual) return;
-    const items = (knowledge?.concepts || []).slice(0, 4);
-    const nodes = items.map((item, i) => `<button class="ld-kv-node" style="--i:${i}" onclick="ldFocusLearningContent()"><span>${item.term}</span><em>${item.desc}</em></button>`).join('');
-    const links = items.map((_, i) => `<span class="ld-kv-link l${i}"></span>`).join('');
-    visual.innerHTML = `<div class="ld-kv-title">${node.title} · 知识图谱</div><div class="ld-kv-map"><div class="ld-kv-core">${node.title}</div>${links}${nodes}</div><p class="ld-kv-note">悬浮节点查看知识点解释；点击节点定位到中间学习内容</p>`;
+    const graph = ldBuildKnowledgeGraph(node, knowledge);
+    const links = graph.edges.map(([from, to]) => {
+      const start = graph.nodes.find(item => item.id === from);
+      const end = graph.nodes.find(item => item.id === to);
+      return start && end ? `<path d="M ${start.x + 40} ${start.y + 16} L ${end.x + 40} ${end.y + 16}" />` : '';
+    }).join('');
+    const nodes = graph.nodes.map(item => `<button class="ld-kv-graph-node ${item.group}" style="left:${item.x}px;top:${item.y}px" onclick="ldFocusLearningContent()"><span>${item.label}</span><em><b>${item.title}</b>${item.desc}${item.source ? `<a href="${item.source}" target="_blank" onclick="event.stopPropagation()">查看官方文档 ↗</a>` : ''}</em></button>`).join('');
+    visual.innerHTML = `<div class="ld-kv-title">${node.title} · 知识图谱</div><div class="ld-kv-legend"><span class="model">算子建模</span><span class="layout">数据与访存</span><span class="flow">流水优化</span></div><div class="ld-kv-map"><svg class="ld-kv-edges" viewBox="0 0 278 356" aria-hidden="true"><defs><marker id="ld-kv-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L8,4 L0,8 Z" /></marker></defs>${links}</svg>${nodes}</div><p class="ld-kv-note">连线表示知识依赖；悬浮查看解释，点击节点回到中间内容。</p>`;
+  }
+
+  function ldBuildKnowledgeGraph(node, knowledge) {
+    const operatorBasics = node.title === '算子开发编程基础';
+    if (!operatorBasics) {
+      const items = (knowledge?.concepts || []).slice(0, 6);
+      return {
+        nodes: items.map((item, index) => ({ id:`n${index}`, label:item.term, title:item.term, desc:item.desc, group:index % 3 === 0 ? 'model' : index % 3 === 1 ? 'layout' : 'flow', x:index % 2 ? 156 : 82, y:18 + Math.floor(index / 2) * 92 })),
+        edges: items.slice(1).map((_, index) => [`n${index}`, `n${index + 1}`])
+      };
+    }
+    const docs = {
+      operator:'https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta3/programug/Ascendcopdevg/docs/guide/%E6%8A%80%E6%9C%AF%E9%99%84%E5%BD%95/%E6%A6%82%E5%BF%B5%E5%8E%9F%E7%90%86%E5%92%8C%E6%9C%AF%E8%AF%AD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%92%8C%E7%AE%97%E5%AD%90/%E7%AE%97%E5%AD%90%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5.md',
+      layout:'https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta3/programug/Ascendcopdevg/docs/guide/%E6%8A%80%E6%9C%AF%E9%99%84%E5%BD%95/%E6%A6%82%E5%BF%B5%E5%8E%9F%E7%90%86%E5%92%8C%E6%9C%AF%E8%AF%AD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%92%8C%E7%AE%97%E5%AD%90/%E6%95%B0%E6%8D%AE%E6%8E%92%E5%B8%83%E6%A0%BC%E5%BC%8F.md',
+      scalar:'https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta3/programug/Ascendcopdevg/docs/guide/%E6%8A%80%E6%9C%AF%E9%99%84%E5%BD%95/%E6%A6%82%E5%BF%B5%E5%8E%9F%E7%90%86%E5%92%8C%E6%9C%AF%E8%AF%AD/%E5%86%85%E5%AD%98%E8%AE%BF%E9%97%AE%E5%8E%9F%E7%90%86/Scalar%E8%AF%BB%E5%86%99%E6%95%B0%E6%8D%AE.md',
+      buffer:'https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta3/programug/Ascendcopdevg/docs/guide/%E6%8A%80%E6%9C%AF%E9%99%84%E5%BD%95/%E6%A6%82%E5%BF%B5%E5%8E%9F%E7%90%86%E5%92%8C%E6%9C%AF%E8%AF%AD/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86/DoubleBuffer.md'
+    };
+    return { nodes:[
+      { id:'operator', label:'算子', title:'算子基本概念', desc:'算子是模型中的计算单元；先定义输入、输出、数据类型与计算规则。', group:'model', x:0, y:12, source:docs.operator },
+      { id:'io', label:'输入 / 输出', title:'逻辑输入与输出', desc:'输入、输出及其 shape、数据类型共同描述算子的计算契约。', group:'model', x:99, y:12, source:docs.operator },
+      { id:'logic', label:'计算逻辑', title:'计算规则', desc:'将数学计算拆成可在 AI Core 上执行的数据搬运与计算步骤。', group:'model', x:198, y:12, source:docs.operator },
+      { id:'tensor', label:'Tensor', title:'Tensor 数据排布', desc:'数据排布定义多维 Tensor 在内存中的存储方式。', group:'layout', x:0, y:104, source:docs.layout },
+      { id:'nd', label:'ND / NCHW', title:'通用数据格式', desc:'ND、NCHW、NHWC 为维度赋予业务语义，通道位置会影响访问特性。', group:'layout', x:99, y:104, source:docs.layout },
+      { id:'nz', label:'FRACTAL_NZ', title:'分形数据格式', desc:'NZ 等格式通过分块布局适配 Cube 计算单元，服务矩阵计算效率。', group:'layout', x:198, y:104, source:docs.layout },
+      { id:'gmub', label:'GM ↔ UB', title:'Scalar 可访问存储', desc:'Scalar 仅支持读写 Global Memory 和 Unified Buffer。', group:'layout', x:0, y:196, source:docs.scalar },
+      { id:'scalar', label:'Get / Set', title:'Scalar 读写', desc:'Scalar 通过 GetValue、SetValue 操作数据，属于 PIPE_S 流水操作。', group:'layout', x:99, y:196, source:docs.scalar },
+      { id:'sync', label:'DataCache 同步', title:'缓存一致性', desc:'GM 标量访问经过 DataCache；多核共享数据变化时需要保证一致性。', group:'layout', x:198, y:196, source:docs.scalar },
+      { id:'pipeline', label:'Copy + Compute', title:'搬运与计算流水', desc:'CopyIn、Compute、CopyOut 组成典型的数据搬运与计算过程。', group:'flow', x:0, y:288, source:docs.buffer },
+      { id:'queues', label:'MTE / Vector', title:'独立指令队列', desc:'MTE 搬运队列和 Vector 计算队列相互独立，可并行执行。', group:'flow', x:99, y:288, source:docs.buffer },
+      { id:'double', label:'DoubleBuffer', title:'双缓冲优化', desc:'将数据分两块，让一块计算时另一块搬运或回写，以隐藏等待时间。', group:'flow', x:198, y:288, source:docs.buffer }
+    ], edges:[
+      ['operator','io'], ['io','logic'], ['io','tensor'], ['tensor','nd'], ['tensor','nz'], ['nd','gmub'], ['nz','pipeline'], ['gmub','scalar'], ['scalar','sync'], ['pipeline','queues'], ['queues','double'], ['gmub','pipeline']
+    ] };
   }
 
   async function ldToolAsk() {
