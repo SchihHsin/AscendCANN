@@ -864,3 +864,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `cann.zip` 内导出的背景素材已整理到 `visual-assets/cann-redesign/` 并实际接入独立重绘页：文档页使用搜索框与标题区素材，右侧目录使用淡化装饰素材；学习页首张视频卡直接使用“视频封面”素材。原页面保持不变。
 - 新建 `cann-website-v2.html`：以原 `cann-website.html` 的交互和旧版 HiDevLab 抽屉为功能底座，文档页和学习路径详情替换为新视觉；v2 内导航不再跳转到其他 HTML，文档目录、路径节点、AI/图谱/测验和路径编辑均映射到对应的真实 DOM 元素。
 - 根据评审反馈，`cann-website-v2` 的文档页改用 `ascend-doc` 已精调的技术文档视觉系统：红色只用于品牌导航、蓝色用于内容链接、目录采用低饱和渐变选中态、H1 使用 `doc-banner.png`、代码和表格保持中性高可读样式；学习路径详情继续使用新的视觉稿方向。
+- `cann-website-v2` 导航改为对齐 Ascend 开发者站：顶部昇腾社区细条，下方 Ascend 单 Logo + 开发者身份 + 主页/开发/文档/活动/学习/论坛/博客/开发者计划及下载、支持、积分兑换；不再显示 CANN Logo。本地的主页、文档、学习仍在 v2 内切换，其余开发者站入口跳转官网。

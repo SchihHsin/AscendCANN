@@ -2,12 +2,8 @@
 :root { --v2-line:#E4E7F0; --v2-ink:#1A1D27; --v2-muted:#6F7788; --v2-purple:#5A56CC; }
 body { background:#F7F8FC; }
 body:has(#page-docs.active), body:has(#page-learn.active) { background:#fff; }
-body:has(#page-docs.active) nav, body:has(#page-learn.active) nav { height:72px; padding:0 56px; background:rgba(255,255,255,.96); border-bottom:1px solid var(--v2-line); box-shadow:0 2px 10px rgba(45,53,91,.04); }
-body:has(#page-docs.active) .nav-links a, body:has(#page-learn.active) .nav-links a { padding:25px 14px 21px; border-radius:0; }
-body:has(#page-docs.active) .nav-links a.active, body:has(#page-learn.active) .nav-links a.active { color:#C9151D; }
-body:has(#page-docs.active) .nav-links a.active::after, body:has(#page-learn.active) .nav-links a.active::after { position:absolute; right:14px; bottom:0; left:14px; height:2px; background:#C9151D; content:''; }
-body:has(#page-docs.active) .nav-search, body:has(#page-learn.active) .nav-search { border:1px solid #D8DCE7; border-radius:20px; background:#fff; }
-body:has(#page-docs.active) .btn-ask-ai, body:has(#page-learn.active) .btn-ask-ai { border-radius:20px; background:linear-gradient(120deg,#665FE4,#A76FE3); box-shadow:0 4px 13px rgba(101,95,228,.2); }
+body:has(.ascend-developer-nav) .page { padding-top:92px; }
+body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-community-bar { right:400px; }
 
 /* Documentation: ported from the reviewed ascend-doc documentation system. */
 #page-docs { --doc-brand-active:#c7000b; --doc-link:#2e53fa; --doc-link-hover:#5a7bfc; --doc-purple:#7b25f4; --doc-text-1:#1d2129; --doc-text-2:#4e5969; --doc-text-3:#86909c; --doc-divider:#e5e5e9; --doc-border:#dededf; --doc-code-bg:#f6f7f8; --doc-panel-gradient:linear-gradient(90deg,rgba(46,83,250,.03),rgba(123,37,244,.03)); --doc-active-gradient:linear-gradient(to right,rgba(46,83,250,.18),rgba(100,60,255,.12)); }
