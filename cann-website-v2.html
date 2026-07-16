@@ -1680,6 +1680,16 @@
     v2UseLucideResourceIcons();
   }
   function v2UseLucideResourceIcons() {
+    const titleIcons = {
+      '动手练习':'square-terminal',
+      '本节要掌握什么':'brain-circuit',
+      '学习资源':'book-open'
+    };
+    document.querySelectorAll('#ld-learning-content h2').forEach(title => {
+      const iconName = titleIcons[title.textContent.trim()];
+      if (!iconName || title.querySelector('.v2-section-icon')) return;
+      title.insertAdjacentHTML('afterbegin', `<i class="v2-section-icon" data-lucide="${iconName}" aria-hidden="true"></i>`);
+    });
     document.querySelectorAll('#ld-learning-content .ld-content-resource > span').forEach((icon, index) => {
       icon.innerHTML = `<i data-lucide="${index === 0 ? 'graduation-cap' : 'book-open'}" aria-hidden="true"></i>`;
       icon.setAttribute('aria-label', index === 0 ? '课程资源' : '文档资源');
