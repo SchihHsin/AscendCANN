@@ -3720,6 +3720,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (key === 'role') ldArrangeDashboard(value !== '暂不确定');
     const choices = _ldProfileDraft[key];
     document.getElementById('ld-ob-next').disabled = Array.isArray(choices) ? !choices.length : !choices;
+    if (!item?.multiple) {
+      // A single choice is already complete, so continue without another click.
+      setTimeout(ldNextOnboarding, 120);
+    }
   }
   function ldNextOnboarding() {
     const answer = _ldProfileDraft[LD_ONBOARDING[_ldOnboardingStep].key];
