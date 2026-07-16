@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="300" viewBox="0 0 1600 300" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1600" y2="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8F9FF"/>
+      <stop offset=".52" stop-color="#F2F3FF"/>
+      <stop offset="1" stop-color="#FCF7FF"/>
+    </linearGradient>
+    <linearGradient id="path" x1="540" y1="216" x2="1302" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E7E9FF" stop-opacity=".15"/>
+      <stop offset=".36" stop-color="#A9B7FF" stop-opacity=".75"/>
+      <stop offset=".73" stop-color="#7089F0" stop-opacity=".52"/>
+      <stop offset="1" stop-color="#E9D5FF" stop-opacity=".08"/>
+    </linearGradient>
+    <linearGradient id="cloudFront" x1="902" y1="97" x2="1118" y2="204" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EAF0FF"/>
+      <stop offset=".45" stop-color="#B7CDFF"/>
+      <stop offset="1" stop-color="#7E9CEF"/>
+    </linearGradient>
+    <linearGradient id="cloudBack" x1="817" y1="86" x2="986" y2="184" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6283E8"/>
+      <stop offset="1" stop-color="#314FBE"/>
+    </linearGradient>
+    <filter id="blur" x="-15%" y="-40%" width="130%" height="180%"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#7185D5" flood-opacity=".18"/></filter>
+  </defs>
+  <rect width="1600" height="300" fill="url(#sky)"/>
+  <path d="M438 252C571 155 715 180 790 137C858 98 856 44 963 35C1103 23 1194 90 1350 57C1430 40 1484 18 1565-2" stroke="#D7DDFF" stroke-width="52" stroke-linecap="round" opacity=".25" filter="url(#blur)"/>
+  <path d="M462 238C595 162 691 196 783 152C857 117 872 78 961 70C1099 57 1189 115 1336 79C1424 57 1487 29 1574 13" stroke="url(#path)" stroke-width="28" stroke-linecap="round" opacity=".88"/>
+  <path d="M494 266C644 215 738 243 838 215C948 185 1007 203 1118 234C1224 264 1357 236 1498 176" stroke="#BCC9FF" stroke-width="3" stroke-linecap="round" opacity=".48"/>
+  <path d="M518 277C656 227 738 256 837 229C932 202 1010 220 1114 247C1223 275 1350 250 1490 192" stroke="#EEF0FF" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+  <g filter="url(#shadow)">
+    <path d="M817 177C781 177 751 153 751 117C751 84 777 57 810 55C825 23 857 4 894 4C935 4 969 28 981 63C1016 65 1044 94 1044 130C1044 157 1027 180 1003 191V206H846V184C835 181 826 179 817 177Z" fill="url(#cloudBack)"/>
+    <path d="M895 190C858 190 828 161 828 124C828 90 854 62 889 59C905 31 936 14 972 14C1016 14 1052 43 1063 81C1101 83 1131 114 1131 151C1131 185 1105 213 1073 218H928C910 210 898 201 895 190Z" fill="url(#cloudFront)"/>
+    <path d="M918 173C918 151 936 134 958 134H1053C1075 134 1093 151 1093 173V185C1093 207 1075 224 1053 224H958C936 224 918 207 918 185V173Z" fill="#F5D766"/>
+    <circle cx="954" cy="179" r="8" fill="#FFF9E0"/><circle cx="1004" cy="179" r="8" fill="#FFF9E0"/><circle cx="1054" cy="179" r="8" fill="#FFF9E0"/>
+    <path d="M963 179H995M1013 179H1045" stroke="#D0A835" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <path d="M623 103C665 79 710 73 755 85" stroke="#E4E8FF" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+  <path d="M1340 121C1402 100 1466 104 1520 130" stroke="#E9DDFF" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+</svg>

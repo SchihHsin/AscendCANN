@@ -1422,7 +1422,7 @@
 
     <div class="ld-path-workspace" id="ld-path-workspace">
       <aside class="ld-path-sidebar">
-        <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button class="active" onclick="ldSetPathView('list',this)" title="列表视图" aria-label="列表视图"><i data-lucide="list-tree"></i></button><button onclick="ldSetPathView('map',this)" title="可视化视图" aria-label="可视化视图"><i data-lucide="git-branch"></i></button></div></div>
+        <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button class="active" onclick="v2SetPathView('list',this)" title="列表视图" aria-label="列表视图"><i data-lucide="list-tree"></i></button><button onclick="v2SetPathView('map',this)" title="可视化视图" aria-label="可视化视图"><i data-lucide="git-branch"></i></button></div></div>
         <div class="ld-path-nav" id="ld-path-nav"></div>
         <button class="ld-edit-path-btn" onclick="ldOpenPathEditor()">编辑路径</button>
       </aside>
@@ -1644,16 +1644,16 @@
     button?.classList.add('active');
   }
 
-  // The original list remains the default. This version only replaces the map mode
-  // with a compact course-grouped timeline that matches the redesigned workspace.
+  // List and map are intentionally distinct: the list mirrors the V1 chapter list;
+  // the map alone uses the connected course timeline from the visual design.
   const v2OriginalRenderPathNav = window.ldRenderPathNav;
-  window.ldRenderPathNav = function() {
-    if (window._ldPathView !== 'map') return v2OriginalRenderPathNav();
+  const v2OriginalOpenPathNode = window.ldOpenPathNode;
+  function v2RenderPathNav() {
     const nav = document.getElementById('ld-path-nav');
     if (!nav) return;
-    nav.classList.add('map');
+    nav.classList.toggle('map', _ldPathView === 'map');
     const clusters = [];
-    (window._ldActivePathNodes || []).forEach((node, index) => {
+    (_ldActivePathNodes || []).forEach((node, index) => {
       const course = node.course || '学习节点';
       let cluster = clusters[clusters.length - 1];
       if (!cluster || cluster.course !== course) {
@@ -1663,8 +1663,37 @@
       cluster.items.push({ node, index });
     });
     const escape = value => String(value || '').replace(/[&<>\"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' })[char]);
-    nav.innerHTML = `<div class="v2-route-map">${clusters.map(cluster => `<div class="v2-route-cluster">${escape(cluster.course)}</div>${cluster.items.map(({ node, index }) => `<button class="v2-route-node ${index === window._ldActivePathIndex ? 'active' : ''}" data-number="${index + 1}" onclick="ldOpenPathNode(${index})"><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || '学习节点')}</small></div></button>`).join('')}`).join('')}</div>`;
+    if (_ldPathView === 'list') {
+      nav.innerHTML = `<div class="v2-list-route">${clusters.map(cluster => `<section class="v2-list-cluster"><h3>${escape(cluster.course)}</h3>${cluster.items.map(({ node, index }) => `<button class="v2-list-node ${index === _ldActivePathIndex ? 'active' : ''}" onclick="v2OpenPathNode(${index})"><span>${index + 1}</span><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || `第 ${index + 1} 章`)}</small></div></button>`).join('')}</section>`).join('')}</div>`;
+      return;
+    }
+    nav.innerHTML = `<div class="v2-route-map">${clusters.map(cluster => `<div class="v2-route-cluster">${escape(cluster.course)}</div>${cluster.items.map(({ node, index }) => `<button class="v2-route-node ${index === _ldActivePathIndex ? 'active' : ''}" data-number="${index + 1}" onclick="v2OpenPathNode(${index})"><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || '学习节点')}</small></div></button>`).join('')}`).join('')}</div>`;
+  }
+  function v2SetPathView(view, button) {
+    _ldPathView = view;
+    document.querySelectorAll('.ld-view-switch button').forEach(item => item.classList.toggle('active', item === button));
+    v2RenderPathNav();
+  }
+  function v2OpenPathNode(index) {
+    v2OriginalOpenPathNode(index);
+    v2RenderPathNav();
+    v2UseLucideResourceIcons();
+  }
+  function v2UseLucideResourceIcons() {
+    document.querySelectorAll('#ld-learning-content .ld-content-resource > span').forEach((icon, index) => {
+      icon.innerHTML = `<i data-lucide="${index === 0 ? 'graduation-cap' : 'book-open'}" aria-hidden="true"></i>`;
+      icon.setAttribute('aria-label', index === 0 ? '课程资源' : '文档资源');
+    });
+    window.lucide?.createIcons();
+  }
+  const v2OriginalShowRoadmap = window.ldShowRoadmap;
+  window.ldShowRoadmap = function(...args) {
+    const result = v2OriginalShowRoadmap(...args);
+    v2RenderPathNav();
+    v2UseLucideResourceIcons();
+    return result;
   };
+  window.ldOpenPathNode = v2OpenPathNode;
 
   // Preserve the existing AI, quiz and graph data. Only the graph presentation is
   // replaced with the four connected knowledge clusters shown in the visual draft.
