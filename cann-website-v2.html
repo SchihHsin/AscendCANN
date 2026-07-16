@@ -1879,6 +1879,7 @@
   <!-- Archive tabs -->
   <div class="la-tabs">
     <button class="la-tab active" id="la-tab-paths" onclick="switchLaTab('paths')">我的路径</button>
+    <button class="la-tab" id="la-tab-map" onclick="switchLaTab('map')">学习全景图</button>
     <button class="la-tab" id="la-tab-quiz" onclick="switchLaTab('quiz')">错题本 <span class="qb-count" id="qb-count" style="margin-left:4px;"></span></button>
   </div>
   <!-- 我的路径 panel -->
@@ -1900,6 +1901,8 @@
     </div>
     <div id="la-paths-list"></div>
   </div>
+  <!-- 所有路径汇总的全局知识图谱；与路径详情右栏的当前章节图谱区分。 -->
+  <div class="la-panel" id="la-panel-map" style="display:none;"></div>
   <!-- 错题本 panel -->
   <div class="la-panel" id="la-panel-quiz" style="display:none; flex-direction:column;">
     <div class="qb-toolbar">
