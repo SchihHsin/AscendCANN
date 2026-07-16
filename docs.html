@@ -902,6 +902,13 @@
         <p style="color: var(--text-secondary);">此文档正在完善，请查看其他章节或联系我们。</p>
       </div>
     </main>
+    <aside class="docs-toc" aria-label="本页内容">
+      <strong>本页内容</strong>
+      <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">概览</a>
+      <a href="#" onclick="document.querySelector('.doc-h2')?.scrollIntoView({behavior:'smooth'});return false;">核心说明</a>
+      <a href="#" onclick="document.querySelector('.code-block')?.scrollIntoView({behavior:'smooth'});return false;">调用示例</a>
+      <a href="#" onclick="document.querySelector('.docs-sandbox-bar')?.click();return false;">在线实践</a>
+    </aside>
   </div>
 </div>
 
