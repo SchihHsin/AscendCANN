@@ -1421,11 +1421,15 @@
     </div>
 
     <div class="ld-path-workspace" id="ld-path-workspace">
-      <aside class="ld-path-sidebar">
+      <button class="v2-collapsed-rail v2-collapsed-rail-left" type="button" onclick="v2ToggleWorkspacePanel('left')" aria-label="展开学习路径" title="展开学习路径"><i data-lucide="panel-left-open"></i></button>
+      <button class="v2-collapsed-rail v2-collapsed-rail-right" type="button" onclick="v2ToggleWorkspacePanel('right')" aria-label="展开学习工具" title="展开学习工具"><i data-lucide="panel-right-open"></i></button>
+      <aside class="ld-path-sidebar" id="v2-path-sidebar">
         <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button class="active" onclick="v2SetPathView('list',this)" title="列表视图" aria-label="列表视图"><i data-lucide="list-tree"></i></button><button onclick="v2SetPathView('map',this)" title="可视化视图" aria-label="可视化视图"><i data-lucide="git-branch"></i></button></div></div>
         <div class="ld-path-nav" id="ld-path-nav"></div>
         <button class="ld-edit-path-btn" onclick="ldOpenPathEditor()">编辑路径</button>
+        <button class="v2-panel-collapse v2-panel-collapse-left" type="button" onclick="v2ToggleWorkspacePanel('left')" aria-label="收起学习路径" title="收起学习路径"><i data-lucide="panel-left-close"></i></button>
       </aside>
+      <div class="v2-workspace-resizer v2-workspace-resizer-left" id="v2-left-resizer" role="separator" aria-label="调整学习路径宽度" aria-orientation="vertical"></div>
       <main class="ld-learning-content" id="ld-learning-content"></main>
       <aside class="ld-study-tools" id="ld-study-tools">
         <div class="ld-tool-tabs">
@@ -1441,7 +1445,9 @@
         </div>
         <div class="ld-tool-panel" id="ld-tool-quiz"><div id="ld-embedded-quiz"></div><button class="ld-tool-primary" onclick="ldLoadEmbeddedQuiz()">生成一道题</button></div>
         <div class="ld-tool-panel" id="ld-tool-visual"><div id="ld-knowledge-visual"></div></div>
+        <button class="v2-panel-collapse v2-panel-collapse-right" type="button" onclick="v2ToggleWorkspacePanel('right')" aria-label="收起学习工具" title="收起学习工具"><i data-lucide="panel-right-close"></i></button>
       </aside>
+      <div class="v2-workspace-resizer v2-workspace-resizer-right" id="v2-right-resizer" role="separator" aria-label="调整学习工具宽度" aria-orientation="vertical"></div>
     </div>
 
     <!-- Path sequence strip (shown for AI-generated paths) -->
@@ -1705,6 +1711,69 @@
   };
   window.ldOpenPathNode = v2OpenPathNode;
 
+  const V2_WORKSPACE_SIZE_KEY = 'cann_v2_learning_workspace_sizes';
+  function v2Workspace() { return document.getElementById('ld-path-workspace'); }
+  function v2SaveWorkspaceSizes(workspace) {
+    sessionStorage.setItem(V2_WORKSPACE_SIZE_KEY, JSON.stringify({
+      left:parseInt(workspace.style.getPropertyValue('--v2-left-width'), 10) || 320,
+      right:parseInt(workspace.style.getPropertyValue('--v2-right-width'), 10) || 390
+    }));
+  }
+  function v2RestoreWorkspaceSizes() {
+    const workspace = v2Workspace();
+    if (!workspace) return;
+    try {
+      const sizes = JSON.parse(sessionStorage.getItem(V2_WORKSPACE_SIZE_KEY) || '{}');
+      if (sizes.left >= 220 && sizes.left <= 440) workspace.style.setProperty('--v2-left-width', `${sizes.left}px`);
+      if (sizes.right >= 300 && sizes.right <= 520) workspace.style.setProperty('--v2-right-width', `${sizes.right}px`);
+    } catch (error) { /* Ignore invalid per-session layout data. */ }
+  }
+  function v2ToggleWorkspacePanel(side) {
+    const workspace = v2Workspace();
+    if (!workspace) return;
+    const collapsedClass = side === 'left' ? 'v2-left-collapsed' : 'v2-right-collapsed';
+    workspace.classList.toggle(collapsedClass);
+    if (side === 'right') workspace.classList.toggle('ld-tools-collapsed', workspace.classList.contains(collapsedClass));
+    window.lucide?.createIcons();
+  }
+  function v2BindWorkspaceResizer(id, side) {
+    const handle = document.getElementById(id);
+    if (!handle) return;
+    handle.addEventListener('pointerdown', event => {
+      const workspace = v2Workspace();
+      if (!workspace) return;
+      event.preventDefault();
+      handle.setPointerCapture?.(event.pointerId);
+      handle.classList.add('dragging');
+      const move = moveEvent => {
+        const bounds = workspace.getBoundingClientRect();
+        const rawWidth = side === 'left' ? moveEvent.clientX - bounds.left : bounds.right - moveEvent.clientX;
+        const width = Math.round(Math.max(side === 'left' ? 220 : 300, Math.min(side === 'left' ? 440 : 520, rawWidth)));
+        workspace.style.setProperty(side === 'left' ? '--v2-left-width' : '--v2-right-width', `${width}px`);
+      };
+      const finish = () => {
+        handle.classList.remove('dragging');
+        v2SaveWorkspaceSizes(workspace);
+        window.removeEventListener('pointermove', move);
+        window.removeEventListener('pointerup', finish);
+      };
+      window.addEventListener('pointermove', move);
+      window.addEventListener('pointerup', finish, { once:true });
+    });
+  }
+  const v2OriginalOpenLearningAi = window.openLearningAi;
+  window.openLearningAi = function() {
+    const workspace = v2Workspace();
+    if (workspace?.classList.contains('v2-right-collapsed')) {
+      v2ToggleWorkspacePanel('right');
+      const aiTab = [...document.querySelectorAll('.ld-tool-tabs button')].find(button => button.textContent.trim() === 'AI 助手');
+      if (aiTab) ldSwitchTool('ai', aiTab);
+      setTimeout(() => document.getElementById('ld-tool-ai-input')?.focus(), 0);
+      return;
+    }
+    return v2OriginalOpenLearningAi();
+  };
+
   // Preserve the existing AI, quiz and graph data. Only the graph presentation is
   // replaced with the four connected knowledge clusters shown in the visual draft.
   const v2OriginalRefreshStudyTools = window.ldRefreshStudyTools;
@@ -1735,6 +1804,9 @@
     const initial = location.hash.slice(1);
     if (['home','docs','learn','api'].includes(initial)) window.showPage(initial);
     else window.showPage('home');
+    v2RestoreWorkspaceSizes();
+    v2BindWorkspaceResizer('v2-left-resizer', 'left');
+    v2BindWorkspaceResizer('v2-right-resizer', 'right');
     window.lucide?.createIcons();
   });
 </script>
