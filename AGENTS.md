@@ -862,3 +862,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 评审后撤回章节级放射图方案，恢复为非等距的聚类拓扑图；保留已有的 12 个知识点、知识簇、曲线依赖与官方文档悬浮入口。
 - 撤回直接覆盖原文档页和学习页视觉的尝试，保留原有页面；新增独立重绘预览页 `docs-visual-redesign.html` 与 `learn-visual-redesign.html`，以 `cann.zip` 的两张视觉稿为基准重新构建文档阅读态与章节学习态，后续在预览页确认后再迁移到主页面。
 - `cann.zip` 内导出的背景素材已整理到 `visual-assets/cann-redesign/` 并实际接入独立重绘页：文档页使用搜索框与标题区素材，右侧目录使用淡化装饰素材；学习页首张视频卡直接使用“视频封面”素材。原页面保持不变。
+- 新建 `cann-website-v2.html`：以原 `cann-website.html` 的交互和旧版 HiDevLab 抽屉为功能底座，文档页和学习路径详情替换为新视觉；v2 内导航不再跳转到其他 HTML，文档目录、路径节点、AI/图谱/测验和路径编辑均映射到对应的真实 DOM 元素。
