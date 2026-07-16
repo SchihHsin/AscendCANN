@@ -1430,7 +1430,7 @@
       <aside class="ld-study-tools" id="ld-study-tools">
         <div class="ld-tool-tabs">
           <button class="active" onclick="ldSwitchTool('ai',this)">AI 助手</button>
-          <button onclick="ldSwitchTool('visual',this)">本节概念图</button>
+          <button onclick="ldSwitchTool('visual',this)">知识图谱</button>
           <button onclick="ldSwitchTool('quiz',this)">随堂测验</button>
         </div>
         <div class="ld-tool-panel active" id="ld-tool-ai">
@@ -1643,6 +1643,51 @@
     document.querySelectorAll('.v2-doc-toc button').forEach(item => item.classList.remove('active'));
     button?.classList.add('active');
   }
+
+  // The original list remains the default. This version only replaces the map mode
+  // with a compact course-grouped timeline that matches the redesigned workspace.
+  const v2OriginalRenderPathNav = window.ldRenderPathNav;
+  window.ldRenderPathNav = function() {
+    if (window._ldPathView !== 'map') return v2OriginalRenderPathNav();
+    const nav = document.getElementById('ld-path-nav');
+    if (!nav) return;
+    nav.classList.add('map');
+    const clusters = [];
+    (window._ldActivePathNodes || []).forEach((node, index) => {
+      const course = node.course || '学习节点';
+      let cluster = clusters[clusters.length - 1];
+      if (!cluster || cluster.course !== course) {
+        cluster = { course, items: [] };
+        clusters.push(cluster);
+      }
+      cluster.items.push({ node, index });
+    });
+    const escape = value => String(value || '').replace(/[&<>\"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' })[char]);
+    nav.innerHTML = `<div class="v2-route-map">${clusters.map(cluster => `<div class="v2-route-cluster">${escape(cluster.course)}</div>${cluster.items.map(({ node, index }) => `<button class="v2-route-node ${index === window._ldActivePathIndex ? 'active' : ''}" data-number="${index + 1}" onclick="ldOpenPathNode(${index})"><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || '学习节点')}</small></div></button>`).join('')}`).join('')}</div>`;
+  };
+
+  // Preserve the existing AI, quiz and graph data. Only the graph presentation is
+  // replaced with the four connected knowledge clusters shown in the visual draft.
+  const v2OriginalRefreshStudyTools = window.ldRefreshStudyTools;
+  window.ldRefreshStudyTools = function(node, knowledge) {
+    v2OriginalRefreshStudyTools(node, knowledge);
+    const visual = document.getElementById('ld-knowledge-visual');
+    if (!visual) return;
+    const graph = window.ldBuildKnowledgeGraph(node, knowledge);
+    const escape = value => String(value || '').replace(/[&<>\"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' })[char]);
+    const groups = [
+      { key:'model', title:'算子建模', subtitle:'定义计算契约' },
+      { key:'layout', title:'数据排布', subtitle:'决定访问与计算适配' },
+      { key:'flow', title:'流水优化', subtitle:'隐藏搬运等待' },
+      { key:'scalar', title:'Scalar 访存', subtitle:'控制与数据读写' }
+    ];
+    const fallback = (knowledge?.concepts || []).map((item, index) => ({
+      title:item.term, label:item.term, desc:item.desc, group:groups[index % groups.length].key
+    }));
+    const nodes = graph?.nodes?.length ? graph.nodes : fallback;
+    const card = item => `<button class="v2-k-node" onclick="ldFocusLearningContent()"><span>${escape(item.label || item.title)}</span><em><b>${escape(item.title || item.label)}</b>${escape(item.desc || '点击回到中间学习内容。')}${item.source ? `<a href="${escape(item.source)}" target="_blank" onclick="event.stopPropagation()">查看官方文档 ↗</a>` : ''}</em></button>`;
+    visual.innerHTML = `<div class="ld-kv-title">${escape(node.title)} · 知识图谱</div><div class="ld-kv-legend">${groups.map(group => `<span class="${group.key}">${group.title}</span>`).join('')}</div><div class="v2-kmap"><svg class="v2-kmap-lines" viewBox="0 0 340 490" aria-hidden="true"><path d="M170 232 C151 194 110 174 76 142"/><path d="M170 232 C189 194 229 174 264 142"/><path d="M170 254 C147 291 108 320 76 350"/><path d="M170 254 C193 291 231 320 264 350"/><path class="v2-kmap-secondary" d="M146 90 C182 112 208 112 244 90"/><path class="v2-kmap-secondary" d="M96 396 C143 370 196 370 244 396"/></svg>${groups.map(group => `<section class="v2-kmap-group ${group.key}"><h4>${group.title}<small>${group.subtitle}</small></h4><div class="v2-kmap-nodes">${nodes.filter(item => item.group === group.key).slice(0, 3).map(card).join('') || `<button class="v2-k-node" onclick="ldFocusLearningContent()">${group.title}</button>`}</div></section>`).join('')}<div class="v2-kmap-center">${escape(node.course || '当前章节')}</div></div><p class="ld-kv-note">四个知识簇通过曲线连接；悬浮节点可查看解释，点击可回到中间内容。</p>`;
+  };
   document.addEventListener('DOMContentLoaded', () => {
     const toc = document.createElement('aside');
     toc.className = 'v2-doc-toc';
