@@ -27,6 +27,8 @@ body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-c
 #page-learn .ld-ob-card { position:relative; box-shadow:0 18px 48px rgba(31,38,74,.16); }
 #page-learn .v2-ob-close { position:absolute; top:16px; right:16px; display:flex; align-items:center; justify-content:center; width:30px; height:30px; padding:0; border:0; border-radius:50%; background:transparent; color:#535B6A; cursor:pointer; }
 #page-learn .v2-ob-close:hover { background:#F0F2F7; color:#161920; } #page-learn .v2-ob-close svg { width:17px; height:17px; stroke-width:2; }
+#page-learn .ld-ob-question h2 small { margin-left:9px; color:#7A8292; font-size:12px; font-weight:500; }
+#page-learn .ld-ob-options.is-multiple button.active::after { margin-left:auto; color:currentColor; content:'✓'; font-weight:800; }
 .v2-doc-toc { position:sticky; top:96px; align-self:start; margin:24px 26px 0 0; padding:14px 16px; border-radius:8px; background:#fff var(--doc-panel-gradient); color:var(--doc-text-3); font-size:13px; }.v2-doc-toc strong { display:block; margin-bottom:10px; color:var(--doc-text-1); font-size:14px; }.v2-doc-toc button { display:block; width:100%; padding:6px 0 6px 13px; border:0; border-left:1px solid var(--doc-divider); background:none; color:inherit; cursor:pointer; font:inherit; text-align:left; }.v2-doc-toc button.active,.v2-doc-toc button:hover { border-left-color:var(--doc-link); color:var(--doc-text-2); }
 
 /* Learning overview retains original behavior. Detail receives the redesigned workspace. */

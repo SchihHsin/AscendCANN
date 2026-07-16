@@ -3658,7 +3658,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   const LD_ONBOARDING = [
     { key:'role', title:'你的角色是？', options:['学生','应用开发者','算子开发者','算法工程师','暂不确定'] },
     { key:'goal', title:'你希望通过学习达成什么？', options:['跑通一个项目','解决当前任务','提升工作技能','学习认证','暂不确定'] },
-    { key:'foundation', title:'你的基础与资源如何？', options:['零基础','会 Python','会 PyTorch','熟悉 C++','有昇腾硬件','希望在线实验'] },
+    { key:'foundation', title:'你的基础与资源如何？', hint:'可多选', multiple:true, options:['零基础','会 Python','会 PyTorch','熟悉 C++','有昇腾硬件','希望在线实验'] },
   ];
 
   function ldProfileLoad() { try { return JSON.parse(localStorage.getItem(LD_PROFILE_KEY) || '{}'); } catch(e) { return {}; } }
@@ -3682,22 +3682,48 @@ def vector_add_tik(shape, dtype, kernel_name):
     const box = document.getElementById('ld-ob-question');
     const next = document.getElementById('ld-ob-next');
     if (!box || !next) return;
-    const current = _ldProfileDraft[item.key];
-    box.innerHTML = `<h2>${item.title}</h2><div class="ld-ob-options">${item.options.map(option => `<button class="${current === option ? 'active' : ''}" onclick="ldPickOnboarding('${item.key}','${option}',this)">${option}</button>`).join('')}</div>`;
+    const stored = _ldProfileDraft[item.key];
+    const current = item.multiple ? (Array.isArray(stored) ? stored : stored ? [stored] : []) : stored;
+    box.innerHTML = `<h2>${item.title}${item.hint ? `<small>${item.hint}</small>` : ''}</h2><div class="ld-ob-options ${item.multiple ? 'is-multiple' : ''}">${item.options.map(option => {
+      const selected = item.multiple ? current.includes(option) : current === option;
+      return `<button class="${selected ? 'active' : ''}" aria-pressed="${selected}" onclick="ldPickOnboarding('${item.key}','${option}',this)">${option}</button>`;
+    }).join('')}</div>`;
     document.querySelectorAll('.ld-ob-progress span').forEach(span => span.classList.toggle('active', Number(span.dataset.step) <= _ldOnboardingStep + 1));
-    next.disabled = !current;
+    next.disabled = item.multiple ? !current.length : !current;
     next.textContent = _ldOnboardingStep === LD_ONBOARDING.length - 1 ? '查看我的推荐' : '下一步';
   }
   function ldPickOnboarding(key, value, button) {
-    _ldProfileDraft[key] = value;
-    button.closest('.ld-ob-options').querySelectorAll('button').forEach(item => item.classList.remove('active'));
-    button.classList.add('active');
+    const item = LD_ONBOARDING.find(entry => entry.key === key);
+    if (item?.multiple) {
+      let choices = Array.isArray(_ldProfileDraft[key]) ? [..._ldProfileDraft[key]] : _ldProfileDraft[key] ? [_ldProfileDraft[key]] : [];
+      // “零基础” is mutually exclusive with declared programming experience.
+      if (value === '零基础') choices = choices.includes(value) ? [] : ['零基础'];
+      else {
+        choices = choices.filter(choice => choice !== '零基础');
+        choices = choices.includes(value) ? choices.filter(choice => choice !== value) : [...choices, value];
+      }
+      _ldProfileDraft[key] = choices;
+      button.closest('.ld-ob-options').querySelectorAll('button').forEach(option => {
+        const selected = choices.includes(option.textContent);
+        option.classList.toggle('active', selected);
+        option.setAttribute('aria-pressed', String(selected));
+      });
+    } else {
+      _ldProfileDraft[key] = value;
+      button.closest('.ld-ob-options').querySelectorAll('button').forEach(item => {
+        const selected = item === button;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-pressed', String(selected));
+      });
+    }
     // Role is the explicit switch for the dashboard recommendation layout.
     if (key === 'role') ldArrangeDashboard(value !== '暂不确定');
-    document.getElementById('ld-ob-next').disabled = false;
+    const choices = _ldProfileDraft[key];
+    document.getElementById('ld-ob-next').disabled = Array.isArray(choices) ? !choices.length : !choices;
   }
   function ldNextOnboarding() {
-    if (!_ldProfileDraft[LD_ONBOARDING[_ldOnboardingStep].key]) return;
+    const answer = _ldProfileDraft[LD_ONBOARDING[_ldOnboardingStep].key];
+    if (!answer || (Array.isArray(answer) && !answer.length)) return;
     if (_ldOnboardingStep < LD_ONBOARDING.length - 1) { _ldOnboardingStep++; ldRenderOnboarding(); return; }
     localStorage.setItem(LD_PROFILE_KEY, JSON.stringify(_ldProfileDraft));
     document.getElementById('ld-onboarding')?.classList.remove('open');
