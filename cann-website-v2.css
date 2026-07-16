@@ -71,10 +71,8 @@ body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-c
 #page-learn .v2-workspace-resizer:hover::after,#page-learn .v2-workspace-resizer.dragging::after { background:#7774D6; }
 #page-learn .v2-workspace-resizer-left { left:calc(var(--v2-left-width) - 5px); } #page-learn .v2-workspace-resizer-right { right:calc(var(--v2-right-width) - 5px); }
 #page-learn .ld-path-workspace.v2-left-collapsed .v2-workspace-resizer-left,#page-learn .ld-path-workspace.v2-right-collapsed .v2-workspace-resizer-right { display:none; }
-#page-learn .v2-edge-pill { position:absolute; z-index:22; top:50%; display:flex; align-items:center; justify-content:center; width:18px; height:48px; padding:0; transform:translateY(-50%); border:1px solid #DDE1EB; border-radius:10px; background:#fff; color:#535A69; cursor:pointer; box-shadow:0 2px 8px rgba(36,40,57,.08); transition:width .16s,background .16s,color .16s; }
+#page-learn .v2-edge-pill { position:fixed; z-index:120; top:50vh; display:flex; align-items:center; justify-content:center; width:18px; height:48px; padding:0; transform:translateY(-50%); border:1px solid #DDE1EB; border-radius:10px; background:#fff; color:#535A69; cursor:pointer; box-shadow:0 2px 8px rgba(36,40,57,.08); transition:width .16s,background .16s,color .16s; }
 #page-learn .v2-edge-pill:hover { width:22px; background:#F5F5FF; color:#403DA5; } #page-learn .v2-edge-pill svg { width:14px; height:14px; stroke-width:2; }
-#page-learn .v2-edge-pill-left { left:calc(var(--v2-left-width) - 9px); } #page-learn .v2-edge-pill-right { right:calc(var(--v2-right-width) - 9px); }
-#page-learn .ld-path-workspace.v2-left-collapsed .v2-edge-pill-left { left:-1px; } #page-learn .ld-path-workspace.v2-right-collapsed .v2-edge-pill-right { right:-1px; }
 #page-learn .ld-path-workspace.v2-left-collapsed .v2-edge-pill-left svg { transform:rotate(180deg); } #page-learn .ld-path-workspace.v2-right-collapsed .v2-edge-pill-right svg { transform:rotate(180deg); }
 
 /* Chapter knowledge map: four connected knowledge clusters around the active chapter. */

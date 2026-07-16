@@ -1711,6 +1711,19 @@
 
   const V2_WORKSPACE_SIZE_KEY = 'cann_v2_learning_workspace_sizes_v2';
   function v2Workspace() { return document.getElementById('ld-path-workspace'); }
+  function v2SyncEdgePills() {
+    const workspace = v2Workspace();
+    const leftPill = document.querySelector('.v2-edge-pill-left');
+    const rightPill = document.querySelector('.v2-edge-pill-right');
+    const pathSidebar = document.getElementById('v2-path-sidebar');
+    const studyTools = document.getElementById('ld-study-tools');
+    if (!workspace || !leftPill || !rightPill || !pathSidebar || !studyTools) return;
+    const bounds = workspace.getBoundingClientRect();
+    const leftWidth = pathSidebar.getBoundingClientRect().width;
+    const rightWidth = studyTools.getBoundingClientRect().width;
+    leftPill.style.left = `${Math.round(bounds.left + leftWidth - 9)}px`;
+    rightPill.style.left = `${Math.round(bounds.right - rightWidth - 9)}px`;
+  }
   function v2SaveWorkspaceSizes(workspace) {
     sessionStorage.setItem(V2_WORKSPACE_SIZE_KEY, JSON.stringify({
       left:parseInt(workspace.style.getPropertyValue('--v2-left-width'), 10) || 250,
@@ -1733,6 +1746,7 @@
     workspace.classList.toggle(collapsedClass);
     if (side === 'right') workspace.classList.toggle('ld-tools-collapsed', workspace.classList.contains(collapsedClass));
     window.lucide?.createIcons();
+    requestAnimationFrame(v2SyncEdgePills);
   }
   function v2BindWorkspaceResizer(id, side) {
     const handle = document.getElementById(id);
@@ -1748,6 +1762,7 @@
         const rawWidth = side === 'left' ? moveEvent.clientX - bounds.left : bounds.right - moveEvent.clientX;
         const width = Math.round(Math.max(side === 'left' ? 220 : 300, Math.min(side === 'left' ? 440 : 520, rawWidth)));
         workspace.style.setProperty(side === 'left' ? '--v2-left-width' : '--v2-right-width', `${width}px`);
+        v2SyncEdgePills();
       };
       const finish = () => {
         handle.classList.remove('dragging');
@@ -1805,6 +1820,8 @@
     v2RestoreWorkspaceSizes();
     v2BindWorkspaceResizer('v2-left-resizer', 'left');
     v2BindWorkspaceResizer('v2-right-resizer', 'right');
+    v2SyncEdgePills();
+    window.addEventListener('resize', v2SyncEdgePills);
     window.lucide?.createIcons();
   });
 </script>
