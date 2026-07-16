@@ -123,6 +123,7 @@
 <!-- HiDevLab Notebook Drawer -->
 <div class="sandbox-overlay" id="sandbox-overlay" onclick="closeSandboxDrawer()"></div>
 <div class="sandbox-drawer" id="sandbox-drawer">
+  <div class="v2-sandbox-resizer" id="v2-sandbox-resizer" role="separator" aria-label="调整 HiDevLab 高度" aria-orientation="horizontal"><span></span></div>
   <div class="nb-header">
     <div class="nb-header-left">
       <div class="nb-brand">
@@ -1713,6 +1714,37 @@
   };
   window.ldOpenPathNode = v2OpenPathNode;
 
+  const V2_SANDBOX_HEIGHT_KEY = 'cann_v2_hidevlab_height';
+  function v2SetSandboxHeight(height) {
+    const drawer = document.getElementById('sandbox-drawer');
+    if (!drawer) return;
+    const minHeight = 360;
+    const maxHeight = Math.max(minHeight, window.innerHeight - 92);
+    const nextHeight = Math.round(Math.max(minHeight, Math.min(maxHeight, height)));
+    drawer.style.setProperty('--v2-sandbox-height', `${nextHeight}px`);
+    sessionStorage.setItem(V2_SANDBOX_HEIGHT_KEY, String(nextHeight));
+  }
+  function v2InitSandboxResizer() {
+    const drawer = document.getElementById('sandbox-drawer');
+    const handle = document.getElementById('v2-sandbox-resizer');
+    if (!drawer || !handle) return;
+    const saved = Number(sessionStorage.getItem(V2_SANDBOX_HEIGHT_KEY));
+    v2SetSandboxHeight(Number.isFinite(saved) && saved > 0 ? saved : window.innerHeight * .6);
+    handle.addEventListener('pointerdown', event => {
+      event.preventDefault();
+      handle.setPointerCapture?.(event.pointerId);
+      handle.classList.add('dragging');
+      const move = moveEvent => v2SetSandboxHeight(window.innerHeight - moveEvent.clientY);
+      const finish = () => {
+        handle.classList.remove('dragging');
+        window.removeEventListener('pointermove', move);
+        window.removeEventListener('pointerup', finish);
+      };
+      window.addEventListener('pointermove', move);
+      window.addEventListener('pointerup', finish, { once:true });
+    });
+  }
+
   const V2_WORKSPACE_SIZE_KEY = 'cann_v2_learning_workspace_sizes_v2';
   function v2Workspace() { return document.getElementById('ld-path-workspace'); }
   function v2SyncEdgePills() {
@@ -1827,6 +1859,7 @@
     v2RestoreWorkspaceSizes();
     v2BindWorkspaceResizer('v2-left-resizer', 'left');
     v2BindWorkspaceResizer('v2-right-resizer', 'right');
+    v2InitSandboxResizer();
     v2SyncEdgePills();
     window.addEventListener('resize', v2SyncEdgePills);
     window.lucide?.createIcons();

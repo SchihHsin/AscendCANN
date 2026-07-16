@@ -45,6 +45,13 @@ body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-c
 #page-learn .ld-roadmap .ld-path-sidebar,#page-learn .ld-roadmap .ld-study-tools { position:relative; top:auto; align-self:stretch; height:auto; max-height:none; overflow-y:auto; overscroll-behavior:contain; }
 #page-learn .ld-roadmap .ld-learning-content { height:auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
 
+/* HiDevLab reuses the existing drawer but starts at 60% of the viewport and resizes from its top edge. */
+.sandbox-drawer { --v2-sandbox-height:60vh; height:var(--v2-sandbox-height); bottom:calc(-1 * var(--v2-sandbox-height)); }
+.sandbox-drawer.open { bottom:0; }
+.v2-sandbox-resizer { position:absolute; top:-7px; right:0; left:0; z-index:3; display:flex; align-items:center; justify-content:center; height:14px; cursor:ns-resize; touch-action:none; }
+.v2-sandbox-resizer span { width:42px; height:4px; border-radius:4px; background:#B9BFCA; transition:background .15s,width .15s; }
+.v2-sandbox-resizer:hover span,.v2-sandbox-resizer.dragging span { width:54px; background:#6865C5; }
+
 /* Redesigned learning-route map: a timeline, while list mode stays untouched. */
 #page-learn .ld-path-nav.map { display:block; padding:2px 0 20px; }
 #page-learn .v2-route-map { position:relative; padding:2px 0 8px; }
