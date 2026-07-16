@@ -1686,15 +1686,15 @@
     v2UseLucideResourceIcons();
   }
   function v2UseLucideResourceIcons() {
-    const titleIcons = {
-      '动手练习':'square-terminal',
-      '本节要掌握什么':'brain-circuit',
-      '学习资源':'book-open'
-    };
-    document.querySelectorAll('#ld-learning-content h2').forEach(title => {
-      const iconName = titleIcons[title.textContent.trim()];
-      if (!iconName || title.querySelector('.v2-section-icon')) return;
-      title.insertAdjacentHTML('afterbegin', `<i class="v2-section-icon" data-lucide="${iconName}" aria-hidden="true"></i>`);
+    document.querySelectorAll('#ld-learning-content h2 .v2-section-icon').forEach(icon => icon.remove());
+    document.querySelectorAll('#ld-learning-content .ld-practice-steps button > span').forEach(icon => {
+      icon.innerHTML = '<i data-lucide="square-terminal" aria-hidden="true"></i>';
+      icon.setAttribute('aria-label', '实践练习');
+    });
+    document.querySelectorAll('#ld-learning-content .ld-content-concept').forEach((card, index) => {
+      if (card.querySelector('.v2-card-icon')) return;
+      const icons = ['brain-circuit', 'layers-3', 'workflow'];
+      card.insertAdjacentHTML('afterbegin', `<i class="v2-card-icon" data-lucide="${icons[index % icons.length]}" aria-hidden="true"></i>`);
     });
     document.querySelectorAll('#ld-learning-content .ld-content-resource > span').forEach((icon, index) => {
       icon.innerHTML = `<i data-lucide="${index === 0 ? 'graduation-cap' : 'book-open'}" aria-hidden="true"></i>`;
