@@ -2943,6 +2943,15 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.getElementById('qb-overlay').classList.remove('open');
     document.getElementById('qb-drawer').classList.remove('open');
   }
+  function ldOpenArchivedPath(pathId) {
+    const savedPaths = JSON.parse(localStorage.getItem('cann_custom_paths') || '[]');
+    const path = [...samplePaths, ...customPaths, ...savedPaths].find(item => item.id === pathId);
+    if (!path) return;
+    closeLearningArchive();
+    showPage('learn');
+    document.getElementById('ld-onboarding')?.classList.remove('open');
+    ldShowRoadmap(path.id);
+  }
   function switchLaTab(tab) {
     document.querySelectorAll('.la-tab').forEach(t => t.classList.remove('active'));
     const activeTab = document.getElementById('la-tab-' + tab);
@@ -3139,7 +3148,7 @@ def vector_add_tik(shape, dtype, kernel_name):
           </div>`;
         }).join('');
 
-        html += `<div class="la-path-card">
+        html += `<div class="la-path-card" role="button" tabindex="0" onclick="ldOpenArchivedPath('${path.id}')" onkeydown="if(event.key==='Enter'||event.key===' ')ldOpenArchivedPath('${path.id}')">
           <div class="la-path-card-header">
             <div class="la-path-card-icon">${path.icon || '📘'}</div>
             <div class="la-path-card-meta">
@@ -3150,7 +3159,7 @@ def vector_add_tik(shape, dtype, kernel_name):
               </div>
               ${lastTime ? `<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${lastTime}</div>` : ''}
             </div>
-            <button class="la-continue-btn" onclick="closeLearningArchive();switchTopTab('custom',document.querySelector('.top-tab:last-child'));showPage('learn');">${completedCount > 0 ? '继续' : '开始'}</button>
+            <button class="la-continue-btn" onclick="event.stopPropagation();ldOpenArchivedPath('${path.id}')">${completedCount > 0 ? '继续' : '开始'}</button>
           </div>
           <div class="la-path-seq">${seqNodes}</div>
         </div>`;
