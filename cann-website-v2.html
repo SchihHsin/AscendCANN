@@ -1709,11 +1709,11 @@
   };
   window.ldOpenPathNode = v2OpenPathNode;
 
-  const V2_WORKSPACE_SIZE_KEY = 'cann_v2_learning_workspace_sizes';
+  const V2_WORKSPACE_SIZE_KEY = 'cann_v2_learning_workspace_sizes_v2';
   function v2Workspace() { return document.getElementById('ld-path-workspace'); }
   function v2SaveWorkspaceSizes(workspace) {
     sessionStorage.setItem(V2_WORKSPACE_SIZE_KEY, JSON.stringify({
-      left:parseInt(workspace.style.getPropertyValue('--v2-left-width'), 10) || 320,
+      left:parseInt(workspace.style.getPropertyValue('--v2-left-width'), 10) || 250,
       right:parseInt(workspace.style.getPropertyValue('--v2-right-width'), 10) || 390
     }));
   }
