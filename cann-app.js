@@ -3674,6 +3674,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldArrangeDashboard(false);
     ldRenderNodes(_ldActiveCat);
   }
+  function ldCloseOnboarding() {
+    document.getElementById('ld-onboarding')?.classList.remove('open');
+  }
   function ldRenderOnboarding() {
     const item = LD_ONBOARDING[_ldOnboardingStep];
     const box = document.getElementById('ld-ob-question');

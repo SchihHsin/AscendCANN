@@ -1280,8 +1280,9 @@
 
 <!-- ══════════════ LEARN PAGE ══════════════ -->
 <div id="page-learn" class="page">
-  <div class="ld-onboarding" id="ld-onboarding" aria-label="学习偏好引导">
+  <div class="ld-onboarding" id="ld-onboarding" aria-label="学习偏好引导" onclick="if(event.target===this)ldCloseOnboarding()">
     <div class="ld-ob-card">
+      <button class="v2-ob-close" type="button" onclick="ldCloseOnboarding()" aria-label="关闭学习偏好引导" title="关闭"><i data-lucide="x"></i></button>
       <div class="ld-ob-kicker">个性化推荐</div>
       <h1>先了解你，再推荐适合的 CANN 学习内容</h1>
       <p class="ld-ob-desc">回答 3 个简短问题，之后可以随时调整。</p>
@@ -1637,7 +1638,10 @@
     document.querySelectorAll('.ascend-nav-links a[id^="nav-"]').forEach(item => item.classList.toggle('active', item.id === 'nav-' + name));
     document.getElementById('docs-sandbox-bar')?.classList.toggle('visible', name === 'docs');
     if (name === 'docs') window.showDoc?.('home');
-    if (name === 'learn') window.ldShowRoadmap?.('official-ascend-c');
+    if (name === 'learn') {
+      window.ldShowDash?.();
+      window.ldOpenOnboarding?.(false);
+    }
     window.scrollTo({ top:0, behavior:'instant' });
     history.replaceState(null, '', '#' + name);
     return false;
@@ -1816,7 +1820,10 @@
     document.querySelector('#page-docs .docs-layout')?.appendChild(toc);
     const initial = location.hash.slice(1);
     if (['home','docs','learn','api'].includes(initial)) window.showPage(initial);
-    else window.showPage('home');
+    else {
+      document.getElementById('ld-onboarding')?.classList.remove('open');
+      window.showPage('home');
+    }
     v2RestoreWorkspaceSizes();
     v2BindWorkspaceResizer('v2-left-resizer', 'left');
     v2BindWorkspaceResizer('v2-right-resizer', 'right');
