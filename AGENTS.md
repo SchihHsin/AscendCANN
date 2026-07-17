@@ -901,3 +901,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修复 Qwen3 hash 直达地址被首页路由改写成 `#home`：页面脚本加载时立即保存 `#learn/qwen3-npu-inference-baseline` 的路径 ID，在 DOM 初始化和所有资源加载后使用保存的 ID 进入详情，并将地址恢复为该固定 hash。
 - 进一步修复 Qwen3 直达：路径 ID 的捕获前移到 `cann-website-v2.html` 的 `<head>`，在 `cann-app.js` 加载前完成；主学习初始化直接读取该值。新增独立入口 `learn-qwen3.html`，用于提供不依赖 hash 的稳定直达地址，跳转到带路径参数的详情页。
 - 学习路径内嵌视频封面改为按素材原始 956×538 比例（约 16:9）渲染，不再由固定最小高度压扁；视频尺寸随中间内容栏宽度自适应。
+- 视频卡片桌面端宽度收敛为中间内容栏约 50%（最小 320px），保持原始比例；中等屏为 65%，移动端恢复满宽。
