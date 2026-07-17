@@ -1643,7 +1643,8 @@
       window.ldOpenOnboarding?.(false);
     }
     window.scrollTo({ top:0, behavior:'instant' });
-    history.replaceState(null, '', '#' + name);
+    const directLearnPath = new URLSearchParams(location.search).get('path');
+    history.replaceState(null, '', name === 'learn' && directLearnPath ? `?path=${encodeURIComponent(directLearnPath)}#learn` : '#' + name);
     return false;
   };
   function v2ScrollDoc(selector, button) {
@@ -1850,7 +1851,12 @@
     toc.innerHTML = '<strong>本页内容</strong><button class="active" onclick="v2ScrollDoc(\'.doc-title,.doc-home-hero\',this)">概览</button><button onclick="v2ScrollDoc(\'.doc-h2\',this)">核心说明</button><button onclick="v2ScrollDoc(\'.code-block\',this)">调用示例</button><button onclick="openEmptySandbox()">在线实践</button>';
     document.querySelector('#page-docs .docs-layout')?.appendChild(toc);
     const initial = location.hash.slice(1);
-    if (['home','docs','learn','api'].includes(initial)) window.showPage(initial);
+    const directPath = new URLSearchParams(location.search).get('path');
+    if (directPath === 'qwen3-npu-inference-baseline') {
+      window.showPage('learn');
+      document.getElementById('ld-onboarding')?.classList.remove('open');
+      window.ldShowRoadmap?.(directPath);
+    } else if (['home','docs','learn','api'].includes(initial)) window.showPage(initial);
     else {
       document.getElementById('ld-onboarding')?.classList.remove('open');
       window.showPage('home');

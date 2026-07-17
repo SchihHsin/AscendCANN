@@ -4518,8 +4518,12 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldUpdateGenerateState();
     const profile = ldProfileLoad();
     ldArrangeDashboard(Boolean(profile.role && profile.role !== '暂不确定'));
-    const demoPath = new URLSearchParams(window.location.search).get('path') === 'ascend-c-demo' || window.location.hash === '#ascend-c-demo';
-    if (demoPath) {
+    const requestedPath = new URLSearchParams(window.location.search).get('path');
+    const demoPath = requestedPath === 'ascend-c-demo' || window.location.hash === '#ascend-c-demo';
+    const directPath = requestedPath === 'qwen3-npu-inference-baseline' ? requestedPath : null;
+    if (directPath) {
+      ldShowRoadmap(directPath);
+    } else if (demoPath) {
       ldOpenAscendCDemo();
     } else {
       ldOpenOnboarding(false);
