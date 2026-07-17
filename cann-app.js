@@ -1612,6 +1612,7 @@ def vector_add_tik(shape, dtype, kernel_name):
         </div>
         ${diagramHtml}
         ${resHtml}`;
+      requestAnimationFrame(() => window.lucide?.createIcons());
 
     } else if (tab === 'practice') {
       // Code + Lab merged
@@ -1639,7 +1640,7 @@ def vector_add_tik(shape, dtype, kernel_name):
             <div class="nd-lab-step-header" onclick="toggleLabStep(${i})">
               <div class="nd-lab-step-num">${i + 1}</div>
               <div class="nd-lab-step-title">${s.title}</div>
-              <span class="nd-lab-step-toggle">▾</span>
+              <i class="nd-lab-step-toggle" data-lucide="chevron-down" aria-hidden="true"></i>
             </div>
             <div class="nd-lab-step-body">
               <div class="nd-lab-step-desc">${s.desc}</div>
@@ -1663,6 +1664,7 @@ def vector_add_tik(shape, dtype, kernel_name):
         body.innerHTML = codeHtml + labHtml;
         const first = body.querySelector('.nd-lab-step');
         if (first) first.classList.add('open');
+        requestAnimationFrame(() => window.lucide?.createIcons());
       }
     }
   }
@@ -3562,7 +3564,7 @@ def vector_add_tik(shape, dtype, kernel_name):
           <div class="pg-node-actions">
             <button class="pg-nbtn${node.known?' known-on':''}" title="标记已掌握" onclick="ipeToggleKnown(${i})">✓</button>
             <button class="pg-nbtn del" title="删除节点" onclick="ipeDeleteNode(${i})">×</button>
-            <button class="pg-nbtn" title="折叠/展开" onclick="ipeToggleCollapse(${i})" style="transform:${node.collapsed?'rotate(-90deg)':''}">▾</button>
+            <button class="pg-nbtn pg-collapse-btn" title="折叠/展开" onclick="ipeToggleCollapse(${i})"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
           </div>
         </div>
         <div class="pg-node-body${node.collapsed?' collapsed':''}">
@@ -3583,6 +3585,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       ipeRenderNodes();
       _ipeShowUndo(`已移动「${moved.title}」`, () => { _ipNodes.splice(i, 1); _ipNodes.splice(src, 0, moved); ipeRenderNodes(); });
     });
+    requestAnimationFrame(() => window.lucide?.createIcons());
     return row;
   }
 
@@ -3614,7 +3617,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const body = row.querySelector('.pg-node-body');
     const btn  = row.querySelectorAll('.pg-nbtn')[2];
     if (body) body.classList.toggle('collapsed', _ipNodes[i].collapsed);
-    if (btn)  btn.style.transform = _ipNodes[i].collapsed ? 'rotate(-90deg)' : '';
+    if (btn) btn.classList.toggle('is-collapsed', _ipNodes[i].collapsed);
   }
 
   // Insert popup
@@ -4352,7 +4355,9 @@ def vector_add_tik(shape, dtype, kernel_name):
   function ldRenderTroubleshooting(node) {
     const isQwen = QWEN3_PATH_COURSES.has(node.course);
     const guides = isQwen ? LD_TROUBLESHOOTING.qwen : node.category === 'operator' ? LD_TROUBLESHOOTING.operator : LD_TROUBLESHOOTING.general;
-    return `<section class="ld-troubleshooting"><div class="ld-section-title-row"><h2>常见错误码与排查</h2><a href="${LD_ERROR_CODE_REFERENCE}" target="_blank" rel="noopener">官方错误码参考 ↗</a></div><p class="ld-troubleshooting-lead">粘贴错误码或错误文本即可筛选。若日志包含多个报错，请优先从最早出现的一条开始排查。</p><label class="ld-error-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="例如：EZ9999、ACL_ERROR_RT_MEMORY_ALLOCATION、torch_npu" oninput="ldFilterTroubleshooting(this)"></label><div class="ld-error-guides">${guides.map((guide, index) => `<details class="ld-error-guide" data-error-search="${[guide.code, guide.title, guide.symptom, guide.causes].join(' ').toLowerCase()}"${index === 0 ? ' open' : ''}><summary><span>${guide.code}</span><strong>${guide.title}</strong><i aria-hidden="true">⌄</i></summary><div class="ld-error-guide-body"><p><b>出现时：</b>${guide.symptom}</p><p><b>常见原因：</b>${guide.causes}</p><ol>${guide.steps.map(step => `<li>${step}</li>`).join('')}</ol><p class="ld-error-fix"><b>建议修复：</b>${guide.fix}</p></div></details>`).join('')}</div><p class="ld-error-empty" hidden>当前章节没有匹配项。请保留完整错误码和前后日志，并查看官方错误码参考。</p></section>`;
+    const html = `<section class="ld-troubleshooting"><div class="ld-section-title-row"><h2>常见错误码与排查</h2><a href="${LD_ERROR_CODE_REFERENCE}" target="_blank" rel="noopener">官方错误码参考 ↗</a></div><p class="ld-troubleshooting-lead">粘贴错误码或错误文本即可筛选。若日志包含多个报错，请优先从最早出现的一条开始排查。</p><label class="ld-error-search"><i data-lucide="search" aria-hidden="true"></i><input type="search" placeholder="例如：EZ9999、ACL_ERROR_RT_MEMORY_ALLOCATION、torch_npu" oninput="ldFilterTroubleshooting(this)"></label><div class="ld-error-guides">${guides.map((guide, index) => `<details class="ld-error-guide" data-error-search="${[guide.code, guide.title, guide.symptom, guide.causes].join(' ').toLowerCase()}"${index === 0 ? ' open' : ''}><summary><span>${guide.code}</span><strong>${guide.title}</strong><i class="ld-error-chevron" data-lucide="chevron-down" aria-hidden="true"></i></summary><div class="ld-error-guide-body"><p><b>出现时：</b>${guide.symptom}</p><p><b>常见原因：</b>${guide.causes}</p><ol>${guide.steps.map(step => `<li>${step}</li>`).join('')}</ol><p class="ld-error-fix"><b>建议修复：</b>${guide.fix}</p></div></details>`).join('')}</div><p class="ld-error-empty" hidden>当前章节没有匹配项。请保留完整错误码和前后日志，并查看官方错误码参考。</p></section>`;
+    requestAnimationFrame(() => window.lucide?.createIcons());
+    return html;
   }
 
   function ldFilterTroubleshooting(input) {
