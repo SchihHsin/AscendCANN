@@ -1400,6 +1400,82 @@ def vector_add_tik(shape, dtype, kernel_name):
     }
   });
 
+  // Notebook explanations are kept in the middle reading flow rather than reduced to titles and code.
+  const QWEN3_NOTEBOOK_READING = {
+    'AI 与大模型基础': [
+      { term:'先分清训练与推理', desc:'可以把 AI 想成一名学生：阅读大量课本和试卷是训练，学会知识是模型形成能力，毕业后回答新问题就是推理。本路径关注的是后一步：让训练完成的模型在昇腾 NPU 上生成回答。' },
+      { term:'为什么叫“大模型”', desc:'“大”来自参数量、训练数据和训练计算量。参数可以理解为模型内部大量可调整的数字；Qwen3-0.6B 有约 6 亿个参数，0.6B 即 0.6 Billion。' },
+      { term:'为什么从 Qwen3-0.6B 开始', desc:'它是通义千问第 3 代中较轻量的模型：规模足以完成流畅对话，又适合第一次在本地 NPU 上完整跑通下载、加载和推理闭环。' }
+    ],
+    '大模型推理核心组件': [
+      { term:'分词器是“翻译官”', desc:'计算机不直接认识“你好”这样的文字。Tokenizer 会把文本编码为一串 token ID，例如把一句话变成 [108046, 3837, ...]；模型生成后，再由它把 ID 解码回文字。' },
+      { term:'模型只负责给出概率', desc:'模型输入已有 token 序列，输出下一个 token 的概率分布。例如“从前有座”之后，“山”可能最有可能，“庙”次之。模型并不替你做最终选择。' },
+      { term:'后处理决定如何继续生成', desc:'每轮前向传播后，需要选出 token、检查它是否为 EOS 结束标记，并把它拼接回原序列。若没有 EOS，拼接后的长序列会再次输入模型，形成逐 token 的循环。' },
+      { term:'NPU 是推理的计算工作台', desc:'数亿参数涉及大量矩阵运算，CPU 完成得较慢。昇腾 NPU 面向这类 AI 计算优化，承担模型前向传播中的主要计算。' }
+    ],
+    'PyTorch 与张量基础': [
+      { term:'PyTorch 是 AI 开发工具箱', desc:'它提供张量计算、自动求导和常用神经网络模块。即使本课只做推理、不训练模型，仍会通过 PyTorch 构造输入、调用模型和处理输出。' },
+      { term:'Tensor 是统一的数据形式', desc:'标量、向量、矩阵以及更高维数组都属于 Tensor。可以把它理解为 Excel 表格的扩展：不止行和列，还可表达任意维度，并能在 NPU 上高速计算。' },
+      { term:'本课中 Tensor 的位置', desc:'分词器输出的 token IDs 会被包装为 long 类型 Tensor 并迁移到 npu:0；模型参数、logits 和生成序列也都以 Tensor 参与推理。' }
+    ],
+    '昇腾 NPU 与 torch_npu': [
+      { term:'torch_npu 是适配层', desc:'开源大模型通常基于 PyTorch 编写。导入 torch_npu 后，它会注册昇腾 NPU 后端，让原有模型代码只需很少改动便可使用昇腾设备。' },
+      { term:'三行最常见的设备操作', desc:'import torch_npu 导入适配层；.to(\'npu:0\') 把模型或 Tensor 放到第 0 张 NPU；torch.npu.is_available() 检查 NPU 是否可用。模型和输入必须在同一设备上。' },
+      { term:'CANN 在底层做什么', desc:'CANN 是昇腾异构计算架构，可理解为 NPU 的运行基础：提供算子、运行时和底层计算能力，torch_npu 则把这些能力接入熟悉的 PyTorch 使用方式。' }
+    ],
+    '检查昇腾 NPU 环境': [
+      { term:'先检查再下载', desc:'模型下载和加载都需要时间，先打印 PyTorch、torch_npu 版本和设备信息，能快速发现环境不匹配、设备不可见等基础问题。' },
+      { term:'最关键的判断', desc:'只有“NPU 是否可用”输出 True，才说明当前 Python 进程可以继续使用昇腾 NPU。还可用设备数量和 get_device_name(0) 确认实际识别到的硬件。' },
+      { term:'失败时先不要往下跑', desc:'若设备不可用，后续 .to(\'npu:0\') 会失败。应先核对 torch_npu 安装、驱动和运行环境，而不是直接执行模型加载代码。' }
+    ],
+    '下载 Qwen3-0.6B 模型': [
+      { term:'模型也需要先“安装”', desc:'Qwen3-0.6B 的参数文件约 1.4GB。Notebook 使用 ModelScope 的 snapshot_download 从魔搭社区获取模型，并将文件保存到 /mnt/workspace/models。' },
+      { term:'缓存意味着只需下载一次', desc:'下载完成后，模型文件保留在本地目录；下次加载时直接使用这个路径即可，不必重复下载。' },
+      { term:'关于下载进度提示', desc:'在某些 CANN Lab 环境中，Jupyter 扩展可能显示 Error rendering 或无法正常展示进度条；只要代码仍在执行，通常不影响实际下载，等待完成即可。' }
+    ],
+    '加载分词器与 Qwen3 模型': [
+      { term:'先请“翻译官”，再请“大脑”', desc:'AutoTokenizer.from_pretrained 从本地模型目录加载分词器；AutoModelForCausalLM.from_pretrained 加载用于续写下一个 token 的语言模型。' },
+      { term:'为什么使用 eager', desc:'attn_implementation="eager" 表示注意力相关算子按即时模式逐个执行，不进行图编译或算子融合。它不是最快的方式，但最便于先观察基础推理流程；后续课程会在此基础上加速。' },
+      { term:'为什么 half 与 eval 必不可少', desc:'.half() 将参数转为 float16，每个数由 4 字节降为 2 字节，可减少显存并通常提升推理速度。model.eval() 关闭 Dropout 等训练专用行为，进入稳定的推理状态。' },
+      { term:'加载后的三个核对点', desc:'输出应能确认分词器已完成、模型位于 npu:0，且数据类型为 float16。若这三项不对，应在第一次推理前排查。' }
+    ],
+    '体验 Tokenizer 编码与解码': [
+      { term:'模型看到的不是汉字', desc:'test_text 先经 tokenizer.encode 变为 token ID 列表；这些整数才是后续送入模型计算的输入形式。一个 token 不一定等于一个汉字或一个单词。' },
+      { term:'再解码是一次自检', desc:'把 token ID 用 tokenizer.decode 还原后，应能得到与原文一致或等价的文字。这一步能直观看到“文本 → 数字 → 文本”的往返过程。' },
+      { term:'为什么要在推理前单独体验', desc:'后续聊天模板、输入 Tensor 和生成结果都依赖同一个分词器。先理解编码与解码，阅读逐 token 推理循环时不会只看到一串抽象数字。' }
+    ],
+    '手写逐 Token 推理循环': [
+      { term:'先构造 Qwen3 能理解的输入', desc:'messages 保存用户问题；apply_chat_template 将其包装为聊天格式，并追加 generation prompt；随后 encode 并构造 long 类型 input_ids，再迁移到 npu:0。' },
+      { term:'每一轮只预测一个位置', desc:'model(generated_ids).logits 给出序列每个位置的输出；logits[:, -1, :] 取最后一个位置，也就是“下一个 token”的候选概率。with torch.no_grad() 表示推理无需记录训练梯度。' },
+      { term:'贪心解码与 EOS', desc:'torch.argmax 直接选择概率最大的 token，称为贪心解码。若这个 token 等于 tokenizer.eos_token_id，就说明模型自然结束，循环立即 break。' },
+      { term:'拼接让上下文持续增长', desc:'未结束时，torch.cat 把新 token 接到 generated_ids 尾部。下一轮模型看到的是更长的完整上下文，因此才能一个 token 接一个 token 地生成回答。' },
+      { term:'最后只解码新增部分', desc:'generated_ids 前半部分是用户输入；用 input_ids.shape[1] 切掉它，只对模型后来生成的 token 解码，得到真正的回答文本。' }
+    ],
+    '测量 Qwen3 推理基线速度': [
+      { term:'首次推理不适合直接计时', desc:'第一次调用往往包含初始化和热身开销，速度通常偏慢。Notebook 先完整跑一次生成循环，再开始正式测量。' },
+      { term:'为什么要 synchronize', desc:'NPU 任务可能异步执行。如果不调用 torch.npu.synchronize()，Python 的计时器可能在 NPU 尚未完成时就停止，得到的耗时不真实。' },
+      { term:'三次测量取平均', desc:'Notebook 重复三次生成，记录每次 elapsed，再计算平均时间。生成 token 数除以平均时间得到 tokens/s，这就是当前 eager 实现的 Baseline。' },
+      { term:'基线是后续优化的参照', desc:'下一个 Notebook 会使用 CANN npugraph_ex 加速推理。没有此处的基线速度，就无法判断图编译等优化实际带来了多少提升。' }
+    ],
+    '用多种提示词测试模型': [
+      { term:'同一循环可服务多种任务', desc:'古诗创作、英文问答和快速排序代码生成，看似不同，本质都是根据当前上下文预测下一个 token。只需替换 prompt，底层推理循环无需改变。' },
+      { term:'每个问题都要重新构造输入', desc:'循环中为每个 prompt 新建 messages、聊天模板、input_ids 和 generated_ids，避免前一个问题的生成序列污染下一个问题。' },
+      { term:'体验不等于验证', desc:'这些例子用于感受模型的生成能力。涉及事实、代码正确性或生产使用时，仍应对输出进行人工检查和实际运行验证。' }
+    ],
+    '自由对话与推理练习': [
+      { term:'只改两个变量即可开始', desc:'my_question 决定你问什么，max_new_tokens 限制最多新生成多少 token。其余聊天模板、编码、循环和解码代码可以保持不变。' },
+      { term:'建议怎样提问', desc:'可尝试知识问答、C++ Hello World、科幻短故事、简单推理题或英文问题。比较不同任务的回答长度、风格与完成度。' },
+      { term:'长度与耗时的关系', desc:'把 max_new_tokens 从 128 调到 256，模型最多能输出更多内容，但逐 token 循环也会运行更久；它是观察生成长度与延迟关系的直接参数。' },
+      { term:'可继续挑战随机采样', desc:'当前代码通过 argmax 做贪心解码。可尝试用 torch.multinomial 从概率分布中采样，观察结果的多样性；此时还需要进一步学习温度等采样控制参数。' }
+    ]
+  };
+  Object.entries(QWEN3_NOTEBOOK_READING).forEach(([title, reading]) => {
+    if (NODE_KNOWLEDGE[title]) {
+      NODE_KNOWLEDGE[title].reading = reading;
+      NODE_KNOWLEDGE[title].body = reading.map(item => `<p><strong>${item.term}</strong>${item.desc}</p>`).join('');
+    }
+  });
+
   // ── DRAWER STATE ──
   let _currentDrawerNode = null;
   let _currentDrawerTab = 'knowledge';
@@ -4242,11 +4318,12 @@ def vector_add_tik(shape, dtype, kernel_name):
       : `<div class="ld-video-stage"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div>`;
     const resources = (knowledge?.resources || []).map(r => `<a class="ld-content-resource" href="${r.href}" target="_blank"><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`).join('');
     const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p></div>`).join('');
+    const readingHtml = knowledge?.body ? `<section class="ld-reading-section"><h2>本节讲解</h2><div class="ld-reading-body">${knowledge.body}</div></section>` : '';
     const code = knowledge?.code;
     const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="ldRunNodeCode()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
     const practiceSteps = knowledge?.lab?.steps || [{ title:`运行「${node.title}」配套练习`, desc:'在 HiDevLab 中打开本章节的实践环境，边学边验证。' }];
     const practice = `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>`;
-    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div></div><section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section>${codeHtml}<section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div></div><section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${readingHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section>${codeHtml}<section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     ldRefreshStudyTools(node, knowledge);
   }
 

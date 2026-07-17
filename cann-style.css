@@ -2935,6 +2935,10 @@
   .ld-content-kicker { color:var(--accent-blue); font-size:12px; font-weight:700; }
   .ld-learning-content h1 { margin:10px 0 14px; color:var(--black); font-size:30px; }
   .ld-content-summary { max-width:700px; color:var(--text-secondary); line-height:1.8; font-size:15px; }
+  .ld-reading-section { max-width:760px; }
+  .ld-reading-body { color:var(--text-secondary); font-size:14px; line-height:1.9; }
+  .ld-reading-body p { margin:0 0 14px; }
+  .ld-reading-body strong { display:block; margin-bottom:3px; color:var(--black); font-size:14px; }
   .ld-content-actions { display:flex; gap:10px; margin:24px 0 38px; }
   .ld-content-actions button { padding:9px 14px; border:1px solid var(--black); border-radius:6px; background:var(--black); color:#fff; cursor:pointer; font-family:var(--font); font-size:12px; font-weight:700; }
   .ld-content-actions button.secondary { background:#fff; color:var(--black); }
