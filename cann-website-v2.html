@@ -1348,7 +1348,6 @@
         <button class="ld-refresh-btn" onclick="ldRefreshRecommendations()">↻ 换一换</button>
       </div>
       <div class="ld-node-grid" id="ld-node-grid"></div>
-      <div class="ld-recommend-path" id="ld-recommend-path"></div>
     </div>
 
     <div class="ld-section ld-scenario-section" id="ld-scenario-section">
@@ -1828,6 +1827,7 @@
   const v2OriginalRefreshStudyTools = window.ldRefreshStudyTools;
   window.ldRefreshStudyTools = function(node, knowledge) {
     v2OriginalRefreshStudyTools(node, knowledge);
+    if (['第一次让大模型在昇腾 NPU 上运行', '在昇腾 NPU 上准备 Qwen3', '理解 Qwen3 基线推理', '巩固与延展'].includes(node.course)) return;
     const visual = document.getElementById('ld-knowledge-visual');
     if (!visual) return;
     const graph = window.ldBuildKnowledgeGraph(node, knowledge);
@@ -1852,14 +1852,18 @@
     document.querySelector('#page-docs .docs-layout')?.appendChild(toc);
     const initial = location.hash.slice(1);
     const directPath = new URLSearchParams(location.search).get('path');
-    if (directPath === 'qwen3-npu-inference-baseline') {
-      window.showPage('learn');
-      document.getElementById('ld-onboarding')?.classList.remove('open');
-      window.ldShowRoadmap?.(directPath);
-    } else if (['home','docs','learn','api'].includes(initial)) window.showPage(initial);
+    if (['home','docs','learn','api'].includes(initial)) window.showPage(initial);
     else {
       document.getElementById('ld-onboarding')?.classList.remove('open');
       window.showPage('home');
+    }
+    if (directPath === 'qwen3-npu-inference-baseline') {
+      // Run after both page initializers so the direct link cannot be reset to the dashboard.
+      setTimeout(() => {
+        window.showPage('learn');
+        document.getElementById('ld-onboarding')?.classList.remove('open');
+        window.ldShowRoadmap?.(directPath);
+      }, 0);
     }
     v2RestoreWorkspaceSizes();
     v2BindWorkspaceResizer('v2-left-resizer', 'left');

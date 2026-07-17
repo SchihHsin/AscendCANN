@@ -4072,19 +4072,6 @@ def vector_add_tik(shape, dtype, kernel_name):
     }).join('');
   }
 
-  function ldRenderRecommendedPath() {
-    const container = document.getElementById('ld-recommend-path');
-    const path = samplePaths.find(item => item.id === 'qwen3-npu-inference-baseline');
-    if (!container || !path) return;
-    const nodeCount = path.nodeList.length;
-    container.innerHTML = `<button class="ld-recommend-path-card" type="button" onclick="ldShowRoadmap('${path.id}')">
-      <span class="ld-recommend-path-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
-      <span class="ld-recommend-path-body"><small>完整学习路径</small><strong>${path.name}</strong><em>Qwen3-0.6B · ${nodeCount} 节 · 环境检查到基线测速</em></span>
-      <span class="ld-recommend-path-action" aria-label="开始学习">→</span>
-    </button>`;
-    window.lucide?.createIcons();
-  }
-
   function ldRenderNodes(cat) {
     const grid = document.getElementById('ld-node-grid');
     if (!grid) return;
@@ -4093,11 +4080,19 @@ def vector_add_tik(shape, dtype, kernel_name):
     const interestMap = { '算子开发':'operator', '模型训练':'distributed', '模型推理':'developer', '模型迁移':'developer', '性能调优':'developer' };
     const preferred = interestMap[profile.interest];
     if (cat === 'all' && preferred) nodes.sort((a, b) => (b.category === preferred) - (a.category === preferred));
-    const pageSize = 3;
+    const qwenPath = samplePaths.find(item => item.id === 'qwen3-npu-inference-baseline');
+    const showQwenPath = Boolean(qwenPath) && (cat === 'all' || cat === 'developer');
+    const pageSize = showQwenPath ? 2 : 3;
     if (_ldRecommendationOffset >= nodes.length) _ldRecommendationOffset = 0;
     nodes = [...nodes.slice(_ldRecommendationOffset), ...nodes.slice(0, _ldRecommendationOffset)].slice(0, pageSize);
     const diffLabel = ['', '入门', '进阶', '高级'];
-    grid.innerHTML = nodes.map(n => {
+    const pathCard = showQwenPath ? `<div class="ld-node-card" onclick="ldShowRoadmap('${qwenPath.id}')">
+      <div class="ld-node-card-top"><span class="ld-node-card-title">${qwenPath.name}</span><span class="ld-node-card-badge" style="background:#2e53fa18;color:#2e53fa">学习路径</span></div>
+      <div class="ld-node-card-desc">Qwen3-0.6B · ${qwenPath.nodeList.length} 节：从 NPU 环境检查、模型加载到逐 token 推理和基线测速。</div>
+      <div class="ld-node-card-footer"><div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:var(--text-muted)">模型推理 · 入门</span></div></div>
+      <div class="ld-node-hover"><strong>路径内容</strong><ul><li>检查昇腾 NPU 与 torch_npu 环境</li><li>加载 Qwen3-0.6B 并执行首次推理</li><li>测量 tokens/s 基线速度</li></ul><button class="ld-node-enter" onclick="event.stopPropagation();ldShowRoadmap('${qwenPath.id}')" title="进入学习" aria-label="进入学习：${qwenPath.name}">→</button></div>
+    </div>` : '';
+    grid.innerHTML = pathCard + nodes.map(n => {
       const meta = CAT_META[n.category] || { label: n.category, color: '#888' };
       const dots = n.difficulty ? Array.from({length: 3}, (_, i) =>
         `<span style="width:6px;height:6px;border-radius:50%;display:inline-block;background:${i < n.difficulty ? meta.color : 'var(--border)'}"></span>`
@@ -4120,7 +4115,6 @@ def vector_add_tik(shape, dtype, kernel_name):
           ${topics ? `<div class="ld-node-hover"><strong>本节内容</strong><ul>${topics}</ul><button class="ld-node-enter" onclick="event.stopPropagation();ldStartNode('${n.title}')" title="进入学习" aria-label="进入学习：${n.title}">→</button></div>` : ''}
         </div>`;
     }).join('');
-    ldRenderRecommendedPath();
   }
 
   function ldStartNode(title) {
