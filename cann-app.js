@@ -2713,7 +2713,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     { id: 'official-ascend-c', name: '算子开发从入门到精通', icon: '⚙️', query: 'Ascend C编程', createdAt: '2026-07-15', official: true,
       sourceUrl: 'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',
       nodeList: NODE_LIST.filter(node => !QWEN3_PATH_COURSES.has(node.course)).map((node, step) => ({ ...node, step:step + 1, reason:node.desc })) },
-    { id: 'qwen3-npu-inference-baseline', name: '第一次让 Qwen3 在昇腾 NPU 上运行', icon: '✨', query: 'Qwen3 昇腾 NPU 推理入门', createdAt: '2026-07-17', official: true,
+    { id: 'qwen3-npu-inference-baseline', name: '在昇腾 NPU 上运行Qwen3', icon: '✨', query: 'Qwen3 昇腾 NPU 推理入门', createdAt: '2026-07-17', official: true,
       sourceUrl: 'https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_llm_inference/01_qwen3_npu_inference_baseline.ipynb',
       nodeList: NODE_LIST.filter(node => QWEN3_PATH_COURSES.has(node.course)).map((node, step) => ({ ...node, step:step + 1, reason:node.desc })) },
   ];
@@ -4632,8 +4632,9 @@ def vector_add_tik(shape, dtype, kernel_name):
     const profile = ldProfileLoad();
     ldArrangeDashboard(Boolean(profile.role && profile.role !== '暂不确定'));
     const requestedPath = new URLSearchParams(window.location.search).get('path');
+    const hashPath = window.location.hash.replace(/^#learn\//, '');
     const demoPath = requestedPath === 'ascend-c-demo' || window.location.hash === '#ascend-c-demo';
-    const directPath = requestedPath === 'qwen3-npu-inference-baseline' ? requestedPath : null;
+    const directPath = requestedPath === 'qwen3-npu-inference-baseline' || hashPath === 'qwen3-npu-inference-baseline' ? 'qwen3-npu-inference-baseline' : null;
     if (directPath) {
       ldShowRoadmap(directPath);
     } else if (demoPath) {

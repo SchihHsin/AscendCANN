@@ -889,9 +889,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 学习路径详情中间栏只保留用户提供的透明流线素材 `learn-path-bottom-ribbon.png`：右上缩小并向内收，露出更多完整弧线，图像透明度约 50%，左缘使用 CSS mask 渐隐到透明；背景渐变改为仅在顶部由淡蓝紫自上而下淡出至白色，移除底部渐变和右到左渐变。
 - 流线装饰进一步向右上偏移（右移 46px、上移 34px），其余大小、透明度与顶部纵向渐变保持不变。
 - v2 文档首页与学习首页移除 `section-label` 眉标（“文档中心”“学习”），保留主标题和其余内容结构，不影响主页的功能性 section label。
-- 新增“第一次让 Qwen3 在昇腾 NPU 上运行”路径：内容严格对应 CANN Learning Hub 的 `01_qwen3_npu_inference_baseline.ipynb`，按 AI/LLM 基础、推理组件、PyTorch 与 `torch_npu`、NPU 环境检查、ModelScope 下载 Qwen3-0.6B、模型加载、Tokenizer、逐 token 贪心推理、基线测速和自由对话组织为 12 个节点、4 个课程聚类。入口作为“为你推荐”网格内的普通卡片（占用三卡中的一张），仅在全部 / 应用开发筛选中显示；详情沿用现有三栏工作区，并为节点补充 Notebook 原链接、真实代码示例与 HiDevLab 练习入口。
+- 新增“在昇腾 NPU 上运行Qwen3”路径：内容严格对应 CANN Learning Hub 的 `01_qwen3_npu_inference_baseline.ipynb`，按 AI/LLM 基础、推理组件、PyTorch 与 `torch_npu`、NPU 环境检查、ModelScope 下载 Qwen3-0.6B、模型加载、Tokenizer、逐 token 贪心推理、基线测速和自由对话组织为 12 个节点、4 个课程聚类。入口作为“为你推荐”网格内的普通卡片（占用三卡中的一张），仅在全部 / 应用开发筛选中显示；详情沿用现有三栏工作区，并为节点补充 Notebook 原链接、真实代码示例与 HiDevLab 练习入口。
 - Qwen3 路径右侧“知识图谱”改为 Notebook 的真实“推理流程一图看懂”：用户输入 → Tokenizer 编码 → 推理循环（模型前向、选 token、EOS 检查与拼接）→ Tokenizer 解码 → 输出结果，并明确标注未结束时回到循环、EOS 时结束；不再误用通用的概念拓扑图。
-- 学习路径详情中间栏右上流线背景再上移 40px；Qwen3 路径支持固定直达地址 `cann-website-v2.html?path=qwen3-npu-inference-baseline`，首次打开会跳过首页与画像弹窗，直接进入三栏详情。
+- 学习路径详情中间栏右上流线背景再上移 40px；Qwen3 路径支持固定直达地址 `cann-website-v2.html#learn/qwen3-npu-inference-baseline`，首次打开会跳过首页与画像弹窗，直接进入三栏详情。直达逻辑同时兼容旧查询参数，并在 DOM 就绪和页面加载完成后各校验一次，避免首页初始化覆盖详情状态。
 - 修复 Qwen3 专用推理流程图被 v2 通用知识簇图二次覆盖的问题；v2 图谱覆写器会对该路径直接放行。直达地址改为在所有初始化逻辑结束后再进入详情，避免被学习首页重置。
 - v2 学习路径右侧工具栏的 Tab 头固定在工具栏顶部；右栏滚动由激活的工具内容面板承接，AI / 知识图谱 / 随堂测验 Tab 不再随内容滚走。
 - Qwen3 路径不再只保留 Notebook 的标题、摘要和关键代码：保留独立的“本节讲解”正文楼层，用连续段落呈现原 Notebook 的教学说明；“本节要掌握什么”仅保留适合扫读的关键概念卡。内容覆盖训练/推理比喻、Tokenizer 与后处理、PyTorch Tensor、`torch_npu` / CANN、下载提示、Eager / FP16 / eval 参数、逐 token 循环、EOS / 拼接、NPU 同步计时、tokens/s 基线和自由练习提示。
