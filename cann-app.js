@@ -4072,15 +4072,15 @@ def vector_add_tik(shape, dtype, kernel_name):
     }).join('');
   }
 
-  function ldRenderFeaturedPaths() {
-    const container = document.getElementById('ld-featured-path-list');
+  function ldRenderRecommendedPath() {
+    const container = document.getElementById('ld-recommend-path');
     const path = samplePaths.find(item => item.id === 'qwen3-npu-inference-baseline');
     if (!container || !path) return;
     const nodeCount = path.nodeList.length;
-    container.innerHTML = `<button class="ld-featured-path-card" type="button" onclick="ldShowRoadmap('${path.id}')">
-      <span class="ld-featured-path-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
-      <span class="ld-featured-path-body"><strong>${path.name}</strong><small>Qwen3-0.6B · PyTorch + torch_npu · ${nodeCount} 个学习节点</small><em>环境检查 → 模型下载 → NPU 加载 → 手写推理 → 基线测速</em></span>
-      <span class="ld-featured-path-action">开始学习 <b aria-hidden="true">→</b></span>
+    container.innerHTML = `<button class="ld-recommend-path-card" type="button" onclick="ldShowRoadmap('${path.id}')">
+      <span class="ld-recommend-path-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+      <span class="ld-recommend-path-body"><small>完整学习路径</small><strong>${path.name}</strong><em>Qwen3-0.6B · ${nodeCount} 节 · 环境检查到基线测速</em></span>
+      <span class="ld-recommend-path-action" aria-label="开始学习">→</span>
     </button>`;
     window.lucide?.createIcons();
   }
@@ -4120,6 +4120,7 @@ def vector_add_tik(shape, dtype, kernel_name):
           ${topics ? `<div class="ld-node-hover"><strong>本节内容</strong><ul>${topics}</ul><button class="ld-node-enter" onclick="event.stopPropagation();ldStartNode('${n.title}')" title="进入学习" aria-label="进入学习：${n.title}">→</button></div>` : ''}
         </div>`;
     }).join('');
+    ldRenderRecommendedPath();
   }
 
   function ldStartNode(title) {
@@ -4483,7 +4484,6 @@ def vector_add_tik(shape, dtype, kernel_name):
     const freeInput = document.getElementById('ld-ai-input');
     if (freeInput) freeInput.value = '';
     ldRenderContinue();
-    ldRenderFeaturedPaths();
     ldRenderNodes('all');
     ldRenderResources();
     _updateQbBadge();
