@@ -4020,12 +4020,13 @@ def vector_add_tik(shape, dtype, kernel_name):
     const hint = document.getElementById('ld-gen-hint');
     const freeBtn = document.getElementById('ld-free-gen-btn');
     const freeInput = document.getElementById('ld-ai-input');
+    // The free-form input is independent from the optional scenario configuration.
+    if (freeBtn && freeInput) freeBtn.disabled = !freeInput.value.trim();
     if (!btn || !hint) return;
     const customGoal = document.getElementById('ld-custom-goal-input')?.value.trim();
     const ready = Boolean(_ldSelectedScenario) && (_ldSelectedScenario !== '个性定制' || Boolean(customGoal));
     btn.disabled = !ready;
     hint.textContent = ready ? '可直接生成；补充学习偏好后，路径会更贴近你的情况' : (_ldSelectedScenario === '个性定制' ? '请描述你的学习目标' : '请先选择一个任务场景');
-    if (freeBtn && freeInput) freeBtn.disabled = !freeInput.value.trim();
   }
 
   function ldChooseScenario(name) {
