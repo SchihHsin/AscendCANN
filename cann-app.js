@@ -4634,7 +4634,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const requestedPath = new URLSearchParams(window.location.search).get('path');
     const hashPath = window.location.hash.replace(/^#learn\//, '');
     const demoPath = requestedPath === 'ascend-c-demo' || window.location.hash === '#ascend-c-demo';
-    const directPath = requestedPath === 'qwen3-npu-inference-baseline' || hashPath === 'qwen3-npu-inference-baseline' ? 'qwen3-npu-inference-baseline' : null;
+    const directPath = window.__cannInitialLearningPath === 'qwen3-npu-inference-baseline' || requestedPath === 'qwen3-npu-inference-baseline' || hashPath === 'qwen3-npu-inference-baseline' ? 'qwen3-npu-inference-baseline' : null;
     if (directPath) {
       ldShowRoadmap(directPath);
     } else if (demoPath) {

@@ -8,6 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="cann-style.css">
 <link rel="stylesheet" href="cann-website-v2.css">
+<script>
+  // Preserve the deep-link target before any application router can normalize the hash.
+  (() => {
+    const queryPath = new URLSearchParams(location.search).get('path');
+    const hashPath = location.hash.replace(/^#learn\//, '');
+    window.__cannInitialLearningPath = queryPath === 'qwen3-npu-inference-baseline' || hashPath === 'qwen3-npu-inference-baseline'
+      ? 'qwen3-npu-inference-baseline'
+      : null;
+  })();
+</script>
 <script src="https://unpkg.com/lucide"></script>
 <div class="ascend-community-bar"><a href="https://www.hiascend.com/" target="_blank" rel="noopener">昇腾社区首页</a><span aria-hidden="true">◯</span></div>
 <nav class="ascend-developer-nav">
@@ -1627,14 +1637,7 @@
 <script src="cann-app.js"></script>
 <script>
   // v2 stays in one document; keep the original page interactions without redirecting away.
-  // Capture deep-link state before the normal hash router can rewrite it to #home.
-  const V2_INITIAL_DIRECT_PATH_ID = (() => {
-    const queryPath = new URLSearchParams(location.search).get('path');
-    const hashPath = location.hash.replace(/^#learn\//, '');
-    return queryPath === 'qwen3-npu-inference-baseline' || hashPath === 'qwen3-npu-inference-baseline'
-      ? 'qwen3-npu-inference-baseline'
-      : null;
-  })();
+  const V2_INITIAL_DIRECT_PATH_ID = window.__cannInitialLearningPath;
   window._PAGE_URLS = { home: '#home', docs: '#docs', learn: '#learn', api: '#api' };
   window.showPage = function(name) {
     if (name === 'api') { window.location.href = 'api.html'; return false; }
