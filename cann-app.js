@@ -35,6 +35,18 @@
     { title:'算子设计与代码实现', course:'Ascend C skills系列课程第二弹 - 算子开发入门', category:'operator', desc:'Ch4：学习 Tiling 策略和 API 映射，完成设计、编码与编译。', topics:['Tiling 策略','API 映射','design / code-gen / compile-debug'], duration:'Ch4', difficulty:2 },
     { title:'文档输出与课程总结', course:'Ascend C skills系列课程第二弹 - 算子开发入门', category:'operator', desc:'Ch5：生成 API 文档，回顾算子开发关键知识。', topics:['API 文档','doc-gen','知识回顾'], duration:'Ch5', difficulty:2 },
     { title:'随堂实操练习', course:'Ascend C skills系列课程第二弹 - 算子开发入门', category:'operator', desc:'Ch6：以 Add 算子串联 6 个 Skills，完成从零到跑通的实践。', topics:['Add 算子','6 个 Skills 全流程','端到端实践'], duration:'Ch6', difficulty:2 },
+    { title:'AI 与大模型基础', course:'第一次让大模型在昇腾 NPU 上运行', category:'developer', desc:'第 1 节：建立训练、推理、模型与数据的整体认识，了解 Qwen3-0.6B。', topics:['训练与推理','LLM 参数规模','Qwen3-0.6B'], duration:'第 1 节', difficulty:1 },
+    { title:'大模型推理核心组件', course:'第一次让大模型在昇腾 NPU 上运行', category:'developer', desc:'第 2 节：理解 Tokenizer、模型、后处理与 NPU 如何协同完成生成。', topics:['Tokenizer','逐 token 生成','EOS 结束标记'], duration:'第 2 节', difficulty:1 },
+    { title:'PyTorch 与张量基础', course:'第一次让大模型在昇腾 NPU 上运行', category:'developer', desc:'第 3 节：认识 PyTorch 工具箱和作为 AI 基本数据单位的 Tensor。', topics:['PyTorch','Tensor','张量运算'], duration:'第 3 节', difficulty:1 },
+    { title:'昇腾 NPU 与 torch_npu', course:'第一次让大模型在昇腾 NPU 上运行', category:'developer', desc:'第 4 节：通过 torch_npu 适配层，让 PyTorch 模型运行在昇腾 NPU 上。', topics:['torch_npu','.to(\'npu:0\')','CANN'], duration:'第 4 节', difficulty:1 },
+    { title:'检查昇腾 NPU 环境', course:'在昇腾 NPU 上准备 Qwen3', category:'developer', desc:'第 5 节：检查 PyTorch、torch_npu 版本及 NPU 设备是否可用。', topics:['版本检查','NPU 可用性','设备数量'], duration:'第 5 节', difficulty:1 },
+    { title:'下载 Qwen3-0.6B 模型', course:'在昇腾 NPU 上准备 Qwen3', category:'developer', desc:'第 6 节：使用 ModelScope 将 Qwen3-0.6B 下载并缓存到本地工作目录。', topics:['ModelScope','模型缓存','Qwen3-0.6B'], duration:'第 6 节', difficulty:1 },
+    { title:'加载分词器与 Qwen3 模型', course:'在昇腾 NPU 上准备 Qwen3', category:'developer', desc:'第 7 节：加载 Tokenizer 和模型，将模型以 FP16 Eager 模式放到 npu:0。', topics:['AutoTokenizer','AutoModelForCausalLM','FP16 / eval'], duration:'第 7 节', difficulty:2 },
+    { title:'体验 Tokenizer 编码与解码', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 8 节：把文本转换为 token IDs，再还原为文本，观察模型的输入形式。', topics:['encode','decode','token IDs'], duration:'第 8 节', difficulty:1 },
+    { title:'手写逐 Token 推理循环', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 9 节：用贪心解码、EOS 检查与序列拼接，让 Qwen3 在 NPU 上回答问题。', topics:['前向传播','argmax','EOS / 拼接'], duration:'第 9 节', difficulty:2 },
+    { title:'测量 Qwen3 推理基线速度', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 10 节：热身后连续测量三次推理，得到 tokens/s 作为后续加速的 Baseline。', topics:['warmup','torch.npu.synchronize','tokens/s'], duration:'第 10 节', difficulty:2 },
+    { title:'用多种提示词测试模型', course:'巩固与延展', category:'developer', desc:'第 11 节：以诗歌、英文问答和代码生成等提示词体验 Qwen3 的生成能力。', topics:['Prompt','文本生成','模型能力边界'], duration:'第 11 节', difficulty:1 },
+    { title:'自由对话与推理练习', course:'巩固与延展', category:'developer', desc:'第 12 节：修改问题与最大生成 token 数，完成自己的 Qwen3 NPU 推理实验。', topics:['my_question','max_new_tokens','采样扩展'], duration:'第 12 节', difficulty:1 },
   ];
   const CAT_META = {
     beginner:    { label: '基础入门', color: '#10B981' },
@@ -1304,6 +1316,90 @@ def vector_add_tik(shape, dtype, kernel_name):
     '昇腾异构编程基础微认证': { summary:'官方 Ascend C 编程路径的微认证。用于检验昇腾 AI 处理器、CANN 异构计算架构、算子开发和性能分析等基础知识。', concepts:[{term:'认证范围',desc:'昇腾 AI 处理器硬件架构、CANN 异构计算架构、算子开发及性能分析。'}], resources:[{icon:'🏅',title:'昇腾异构编程基础微认证',href:'https://www.hiascend.com/edu/certification/detail/c9ce549104334952b06a472ef600dc53',type:'官方微认证',subtitle:'完成路径后进行能力验证'}] }
   });
 
+  // Content follows the real CANN Learning Hub Qwen3 NPU inference baseline notebook.
+  const QWEN3_BASELINE_NOTEBOOK = 'https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_llm_inference/01_qwen3_npu_inference_baseline.ipynb';
+  const qwen3Resources = subtitle => [
+    { icon:'📓', title:'Qwen3 昇腾 NPU 推理基线 Notebook', href:QWEN3_BASELINE_NOTEBOOK, type:'GitCode Notebook', subtitle },
+    { icon:'🤗', title:'Qwen3-0.6B 模型页', href:'https://www.modelscope.cn/models/Qwen/Qwen3-0.6B', type:'ModelScope', subtitle:'本路径使用的开源模型' }
+  ];
+  Object.assign(NODE_KNOWLEDGE, {
+    'AI 与大模型基础': {
+      summary:'本路径以 Qwen3-0.6B 为例，先建立“训练”和“推理”的整体概念：训练让模型从大量数据中学习；推理则是把已经学到的能力用于回答一个新问题。',
+      concepts:[{term:'训练',desc:'使用大量数据调整模型参数，让模型学会语言和任务规律。'},{term:'推理',desc:'固定已训练好的参数，根据输入生成回答；这是本 Notebook 要跑通的环节。'},{term:'Qwen3-0.6B',desc:'通义千问第 3 代的 6 亿参数模型，体量适合第一次在本地 NPU 上学习推理流程。'}],
+      resources:qwen3Resources('第 1 课：AI、LLM 与 Qwen3-0.6B 的入门说明')
+    },
+    '大模型推理核心组件': {
+      summary:'一次文本生成由分词器、模型、后处理和 NPU 共同完成。模型只输出“下一个 token 的概率”，选哪个 token、何时结束以及如何接回序列都由后处理完成。',
+      concepts:[{term:'Tokenizer',desc:'把文字编码成 token IDs，并将模型生成的 token IDs 解码回文字。'},{term:'模型前向传播',desc:'输入当前 token 序列，输出下一个位置所有候选 token 的概率分布。'},{term:'后处理',desc:'选择 token、检查 EOS 结束标记并拼接到已有序列；三步构成逐 token 推理循环。'},{term:'NPU',desc:'神经网络处理器，擅长大规模矩阵运算，用于加速模型前向计算。'}],
+      resources:qwen3Resources('第 3 节：推理流程和四个核心组件')
+    },
+    'PyTorch 与张量基础': {
+      summary:'PyTorch 提供张量计算、自动求导和神经网络模块。推理时，输入、模型参数和输出都以 Tensor 的形式参与计算。',
+      concepts:[{term:'Tensor',desc:'多维数组；标量、向量和矩阵都是 Tensor 的特殊形式。'},{term:'张量运算',desc:'可在 CPU 或 NPU 上执行，例如逐元素乘法、加法和矩阵运算。'},{term:'PyTorch',desc:'Notebook 使用的深度学习框架，torch_npu 会为它注册昇腾 NPU 后端。'}],
+      code:{lang:'python',body:`import torch\n\nx = torch.tensor([1.0, 2.0, 3.0])\ny = x * 2 + 1\nprint(y)  # tensor([3., 5., 7.])`},
+      resources:qwen3Resources('第 4 节：PyTorch 与 Tensor 基础')
+    },
+    '昇腾 NPU 与 torch_npu': {
+      summary:'torch_npu 是 PyTorch 的昇腾适配插件。导入后，可将 Tensor 或模型通过 .to(\'npu:0\') 放到第 0 张 NPU 上执行；CANN 提供其底层运行能力。',
+      concepts:[{term:'torch_npu',desc:'导入后自动注册 PyTorch 的 NPU 后端，是原生 PyTorch 代码跑在昇腾上的适配层。'},{term:'npu:0',desc:'第 0 个昇腾 NPU 设备标识；模型和输入应位于同一设备。'},{term:'CANN',desc:'昇腾异构计算架构，为 NPU 上的算子和运行时提供基础能力。'}],
+      code:{lang:'python',body:`import torch\nimport torch_npu\n\nprint(torch.npu.is_available())\nx = torch.tensor([1.0, 2.0]).to('npu:0')\nprint(x.device)`},
+      resources:qwen3Resources('第 5 节：通过 torch_npu 使用昇腾 NPU')
+    },
+    '检查昇腾 NPU 环境': {
+      summary:'在下载模型前，先检查 PyTorch、torch_npu 和 NPU 是否正常。只有 torch.npu.is_available() 返回 True，才应继续执行后续模型加载和推理。',
+      concepts:[{term:'版本兼容',desc:'PyTorch 与 torch_npu 的版本需要匹配，先打印版本信息方便排查环境问题。'},{term:'设备可用性',desc:'torch.npu.is_available() 为 True 表示当前运行环境可识别并使用 NPU。'},{term:'设备名称',desc:'通过 get_device_name(0) 确认当前推理实际使用的昇腾设备。'}],
+      code:{lang:'python',body:`import torch\nimport torch_npu\n\nprint(f"PyTorch 版本: {torch.__version__}")\nprint(f"torch_npu 版本: {torch_npu.__version__}")\nprint(f"NPU 是否可用: {torch.npu.is_available()}")\nprint(f"NPU 设备数量: {torch.npu.device_count()}")\nprint(f"NPU 设备名称: {torch.npu.get_device_name(0)}")`},
+      lab:{steps:[{title:'运行 NPU 环境检查',desc:'在 HiDevLab 中执行原 Notebook 的检查代码，确认 NPU 是否可用。',code:'import torch\nimport torch_npu\nprint(torch.npu.is_available())',expected:'输出 True，且可查看到 NPU 设备名称'}]},
+      resources:qwen3Resources('第 6 节：动手实践，环境检查')
+    },
+    '下载 Qwen3-0.6B 模型': {
+      summary:'Notebook 通过 ModelScope 下载 Qwen/Qwen3-0.6B，并缓存在 /mnt/workspace/models。模型约 1.4GB，首次下载完成后可复用本地缓存。',
+      concepts:[{term:'ModelScope',desc:'国内模型开源平台；Notebook 使用 snapshot_download 获取 Qwen3 模型文件。'},{term:'模型缓存',desc:'将模型保存到指定目录，之后从本地读取，避免重复下载。'},{term:'模型权重',desc:'模型参数文件决定模型能力，加载前必须完整下载。'}],
+      code:{lang:'python',body:`from modelscope import snapshot_download\n\nmodel_dir = snapshot_download(\n    'Qwen/Qwen3-0.6B',\n    cache_dir='/mnt/workspace/models'\n)\nprint(f'模型已下载到: {model_dir}')`},
+      lab:{steps:[{title:'下载 Qwen3-0.6B',desc:'执行下载并记录模型缓存目录；下载完成后下次无需重新下载。'}]},
+      resources:qwen3Resources('第 7 节：从魔搭社区下载 Qwen3-0.6B')
+    },
+    '加载分词器与 Qwen3 模型': {
+      summary:'使用 AutoTokenizer 和 AutoModelForCausalLM 加载本地模型。Notebook 选择 eager 注意力实现以便理解基础执行流程，再将模型迁移到 npu:0、转换为 FP16 并切换至 eval 模式。',
+      concepts:[{term:'AutoTokenizer',desc:'从模型目录读取分词器配置，用于构造模型输入和解析输出。'},{term:'Eager 模式',desc:'每个算子立即执行，适合观察基础推理流程；后续可学习图编译加速。'},{term:'FP16',desc:'半精度参数仅占用 float32 一半存储，通常可节省显存并提升推理速度。'},{term:'eval()',desc:'关闭 Dropout 等训练期行为，确保模型进入稳定的推理模式。'}],
+      code:{lang:'python',body:`from transformers import AutoTokenizer, AutoModelForCausalLM\n\nmodel_path = '/mnt/workspace/models/Qwen/Qwen3-0.6B'\ntokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)\nmodel = AutoModelForCausalLM.from_pretrained(\n    model_path, trust_remote_code=True, attn_implementation='eager'\n).to('npu:0').half()\nmodel.eval()`},
+      lab:{steps:[{title:'加载分词器与模型到 NPU',desc:'运行原 Notebook 的加载代码，确认 model.device 为 npu:0，model.dtype 为 float16。'}]},
+      resources:qwen3Resources('第 8 节：加载分词器和模型')
+    },
+    '体验 Tokenizer 编码与解码': {
+      summary:'模型不直接读取“你好，我是昇腾”这样的文字，而是读取 token IDs。通过一次 encode 与 decode 往返，可以看到文字和数字序列之间的转换。',
+      concepts:[{term:'编码',desc:'tokenizer.encode 将文本切分并转换为整数 token IDs。'},{term:'解码',desc:'tokenizer.decode 将 token IDs 还原为人类可读文本。'},{term:'token IDs',desc:'模型在 NPU 上实际计算的离散数字序列。'}],
+      code:{lang:'python',body:`test_text = '你好，我是昇腾'\n\ntokens = tokenizer.encode(test_text)\ndecoded = tokenizer.decode(tokens)\nprint(f'原文: {test_text}')\nprint(f'编码为 token IDs: {tokens}')\nprint(f'解码回文字: {decoded}')`},
+      resources:qwen3Resources('第 9 节：体验分词器')
+    },
+    '手写逐 Token 推理循环': {
+      summary:'这是本 Notebook 的核心实践：将聊天模板编码为 NPU Tensor，循环执行模型前向传播，贪心选择下一个 token；遇到 EOS 结束标记即停止，否则拼接 token 后继续。',
+      concepts:[{term:'聊天模板',desc:'apply_chat_template 将 user 消息组织为 Qwen3 能理解的提示词格式。'},{term:'贪心解码',desc:'torch.argmax 选择当前概率最大的 token，结果稳定且便于理解。'},{term:'EOS',desc:'结束标记；生成到 EOS 时停止循环，避免无意义地生成到 token 上限。'},{term:'拼接',desc:'将新 token 接到 generated_ids 尾部，作为下一轮前向传播的输入。'}],
+      code:{lang:'python',body:`question = '你好，请介绍一下AI是什么'\nmessages = [{'role': 'user', 'content': question}]\ntext = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)\ninput_ids = torch.tensor([tokenizer.encode(text)], dtype=torch.long).to('npu:0')\ngenerated_ids = input_ids.clone()\n\nfor step in range(128):\n    with torch.no_grad():\n        logits = model(generated_ids).logits\n    next_token_id = torch.argmax(logits[:, -1, :], dim=-1, keepdim=True)\n    if next_token_id.item() == tokenizer.eos_token_id:\n        break\n    generated_ids = torch.cat([generated_ids, next_token_id], dim=1)\n\nresponse = tokenizer.decode(generated_ids[0][input_ids.shape[1]:], skip_special_tokens=True)\nprint(response)`},
+      lab:{steps:[{title:'让 Qwen3 在 NPU 上回答第一个问题',desc:'运行逐 token 推理循环，观察输入 token 数、EOS 和最终模型回答。'}]},
+      resources:qwen3Resources('第 10 节：第一次推理')
+    },
+    '测量 Qwen3 推理基线速度': {
+      summary:'第一次推理会包含初始化开销，不能直接作为性能结论。Notebook 先热身，再用 torch.npu.synchronize() 等待 NPU 任务完成，连续测量三次并以 tokens/s 作为基线。',
+      concepts:[{term:'Warmup',desc:'提前跑一次推理，让首次加载和初始化开销不干扰正式测量。'},{term:'synchronize()',desc:'等待 NPU 异步任务完成，确保计时覆盖真实的设备执行时间。'},{term:'Baseline',desc:'未加速的推理速度；后续使用 npugraph_ex 等技术时可与它对比。'}],
+      code:{lang:'python',body:`import time\n\n# 先执行一次与正式推理相同的循环作为热身\n# ...\ntorch.npu.synchronize()\n\ntimes = []\nfor i in range(3):\n    generated_ids = input_ids.clone()\n    t0 = time.time()\n    # 执行逐 token 推理循环\n    # ...\n    torch.npu.synchronize()\n    times.append(time.time() - t0)\n\navg_time = sum(times) / len(times)\nprint(f'平均推理时间: {avg_time:.3f}s')\nprint(f'生成速度: {num_generated / avg_time:.1f} tokens/s')`},
+      resources:qwen3Resources('第 11 节：测量推理速度')
+    },
+    '用多种提示词测试模型': {
+      summary:'同一套推理循环可以服务不同任务。Notebook 以古诗、英文问答和快速排序代码为例，观察 Qwen3 在不同提示词下的文本生成表现。',
+      concepts:[{term:'Prompt',desc:'输入给模型的指令或问题；不同表达会影响模型输出。'},{term:'生成任务',desc:'诗歌、问答和代码生成本质上都是根据上下文预测后续 token。'},{term:'能力观察',desc:'测试结果用于体验模型能力，不应替代对事实正确性和代码可运行性的验证。'}],
+      code:{lang:'python',body:`test_prompts = [\n    '请写一首关于春天的五言绝句',\n    'What is the capital of France?',\n    '用Python写一个快速排序算法',\n]\n\nfor prompt in test_prompts:\n    # 套用上一节的聊天模板与逐 token 推理循环\n    print(f'Q: {prompt}')\n    print(f'A: {response}')`},
+      resources:qwen3Resources('第 12 节：更多有趣的问题')
+    },
+    '自由对话与推理练习': {
+      summary:'最后将问题抽为 my_question、将生成长度抽为 max_new_tokens。先修改这两个变量，再复用已经跑通的推理循环；进一步可把贪心解码替换为随机采样，比较输出差异。',
+      concepts:[{term:'my_question',desc:'可自由替换的问题变量，例如知识问答、代码生成、创作或英文提问。'},{term:'max_new_tokens',desc:'限制最多生成多少个新 token；值越大，输出可能更长，耗时也会增加。'},{term:'随机采样',desc:'可用 torch.multinomial 替代 argmax，让输出具有随机性；需额外控制温度等参数。'}],
+      code:{lang:'python',body:`my_question = '你好，请用一句话介绍你自己'\nmax_new_tokens = 128\n\nmessages = [{'role': 'user', 'content': my_question}]\ntext = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)\ninput_ids = torch.tensor([tokenizer.encode(text)], dtype=torch.long).to('npu:0')\n# 复用上一节的逐 token 推理循环\n# 修改 my_question 后重新运行即可`},
+      lab:{steps:[{title:'设计自己的 Qwen3 提问',desc:'修改 my_question，并尝试调整 max_new_tokens，记录回答长度和效果的变化。'}]},
+      resources:qwen3Resources('课后练习：和大模型自由对话')
+    }
+  });
+
   // ── DRAWER STATE ──
   let _currentDrawerNode = null;
   let _currentDrawerTab = 'knowledge';
@@ -2536,10 +2632,14 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
 
   // Sample custom paths data
+  const QWEN3_PATH_COURSES = new Set(['第一次让大模型在昇腾 NPU 上运行', '在昇腾 NPU 上准备 Qwen3', '理解 Qwen3 基线推理', '巩固与延展']);
   const samplePaths = [
     { id: 'official-ascend-c', name: '算子开发从入门到精通', icon: '⚙️', query: 'Ascend C编程', createdAt: '2026-07-15', official: true,
       sourceUrl: 'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',
-      nodeList: NODE_LIST.map((node, step) => ({ ...node, step:step + 1, reason:node.desc })) },
+      nodeList: NODE_LIST.filter(node => !QWEN3_PATH_COURSES.has(node.course)).map((node, step) => ({ ...node, step:step + 1, reason:node.desc })) },
+    { id: 'qwen3-npu-inference-baseline', name: '第一次让 Qwen3 在昇腾 NPU 上运行', icon: '✨', query: 'Qwen3 昇腾 NPU 推理入门', createdAt: '2026-07-17', official: true,
+      sourceUrl: 'https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_llm_inference/01_qwen3_npu_inference_baseline.ipynb',
+      nodeList: NODE_LIST.filter(node => QWEN3_PATH_COURSES.has(node.course)).map((node, step) => ({ ...node, step:step + 1, reason:node.desc })) },
   ];
 
   // Seed sample paths into localStorage on first visit
@@ -3972,6 +4072,19 @@ def vector_add_tik(shape, dtype, kernel_name):
     }).join('');
   }
 
+  function ldRenderFeaturedPaths() {
+    const container = document.getElementById('ld-featured-path-list');
+    const path = samplePaths.find(item => item.id === 'qwen3-npu-inference-baseline');
+    if (!container || !path) return;
+    const nodeCount = path.nodeList.length;
+    container.innerHTML = `<button class="ld-featured-path-card" type="button" onclick="ldShowRoadmap('${path.id}')">
+      <span class="ld-featured-path-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+      <span class="ld-featured-path-body"><strong>${path.name}</strong><small>Qwen3-0.6B · PyTorch + torch_npu · ${nodeCount} 个学习节点</small><em>环境检查 → 模型下载 → NPU 加载 → 手写推理 → 基线测速</em></span>
+      <span class="ld-featured-path-action">开始学习 <b aria-hidden="true">→</b></span>
+    </button>`;
+    window.lucide?.createIcons();
+  }
+
   function ldRenderNodes(cat) {
     const grid = document.getElementById('ld-node-grid');
     if (!grid) return;
@@ -4370,6 +4483,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const freeInput = document.getElementById('ld-ai-input');
     if (freeInput) freeInput.value = '';
     ldRenderContinue();
+    ldRenderFeaturedPaths();
     ldRenderNodes('all');
     ldRenderResources();
     _updateQbBadge();

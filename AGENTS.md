@@ -889,3 +889,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 学习路径详情中间栏只保留用户提供的透明流线素材 `learn-path-bottom-ribbon.png`：右上缩小并向内收，露出更多完整弧线，图像透明度约 50%，左缘使用 CSS mask 渐隐到透明；背景渐变改为仅在顶部由淡蓝紫自上而下淡出至白色，移除底部渐变和右到左渐变。
 - 流线装饰进一步向右上偏移（右移 46px、上移 34px），其余大小、透明度与顶部纵向渐变保持不变。
 - v2 文档首页与学习首页移除 `section-label` 眉标（“文档中心”“学习”），保留主标题和其余内容结构，不影响主页的功能性 section label。
+- 新增首页精选路径“第一次让 Qwen3 在昇腾 NPU 上运行”：内容严格对应 CANN Learning Hub 的 `01_qwen3_npu_inference_baseline.ipynb`，按 AI/LLM 基础、推理组件、PyTorch 与 `torch_npu`、NPU 环境检查、ModelScope 下载 Qwen3-0.6B、模型加载、Tokenizer、逐 token 贪心推理、基线测速和自由对话组织为 12 个节点、4 个课程聚类。学习首页新增可直接进入的路径卡；详情沿用现有三栏工作区，并为节点补充 Notebook 原链接、真实代码示例与 HiDevLab 练习入口。
