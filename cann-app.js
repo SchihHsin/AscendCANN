@@ -4317,14 +4317,40 @@ def vector_add_tik(shape, dtype, kernel_name):
       ? `<div class="ld-video-stage ld-video-cover"><img src="ascend-c-course-cover.png" alt="昇腾异构编程基础课程封面"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div>`
       : `<div class="ld-video-stage"><span class="ld-video-play">▶</span><span class="ld-video-duration">${video.duration}</span></div>`;
     const resources = (knowledge?.resources || []).map(r => `<a class="ld-content-resource" href="${r.href}" target="_blank"><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`).join('');
-    const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p></div>`).join('');
+    const conceptDoc = concept => concept.href || knowledge?.resources?.[0]?.href || 'https://www.hiascend.com/document';
+    const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p><a class="ld-concept-doc" href="${conceptDoc(c)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">查看文档 <span aria-hidden="true">↗</span></a></div>`).join('');
     const readingHtml = knowledge?.body ? `<section class="ld-reading-section"><h2>本节讲解</h2><div class="ld-reading-body">${knowledge.body}</div></section>` : '';
     const code = knowledge?.code;
     const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="ldRunNodeCode()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
     const practiceSteps = knowledge?.lab?.steps || [{ title:`运行「${node.title}」配套练习`, desc:'在 HiDevLab 中打开本章节的实践环境，边学边验证。' }];
     const practice = `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>`;
-    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div></div><section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${readingHtml}${practice}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section>${codeHtml}<section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    const troubleshooting = ldRenderTroubleshooting(node, knowledge);
+    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div></div><section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${readingHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section>${codeHtml}<section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     ldRefreshStudyTools(node, knowledge);
+  }
+
+  const LD_ERROR_CODE_REFERENCE = 'https://www.hiascend.com/document/detail/zh/canncommercial/80RC1/developmentguide/maintenref/troubleshooting/atlaserrorcode_15_0313.html';
+  const LD_TROUBLESHOOTING = {
+    qwen: [
+      { code:'环境异常', title:'torch_npu 无法导入或 NPU 不可用', symptom:'出现 ModuleNotFoundError，或 torch.npu.is_available() 返回 False。', causes:'当前 Python 环境未安装匹配版本的 torch_npu，或运行环境未识别到昇腾设备。', steps:['确认当前解释器与已安装 torch_npu 属于同一环境。','重新运行环境检查，核对 PyTorch / torch_npu 版本、设备数量与设备名称。','在确认 NPU 可用前，不执行 .to(\'npu:0\') 与模型加载。'], fix:'切换到带有 PyTorch NPU 运行时的 HiDevLab 内核，或按 CANN 版本重新安装匹配的 torch_npu。' },
+      { code:'内存不足', title:'加载模型或生成时显存不足', symptom:'模型迁移到 npu:0 或生成循环中出现内存分配失败。', causes:'模型、输入序列或最大生成长度超过当前设备可用内存；还可能重复保留多个模型实例。', steps:['确认模型只加载一次，并使用 model.eval()。','保持 .half()，先用较短问题和较小 max_new_tokens 复测。','结束无用 Notebook 单元或重启内核后再尝试。'], fix:'先以 Qwen3-0.6B 和 128 个新 token 跑通基线，再逐步扩大输入或生成长度。' },
+      { code:'下载 / 路径', title:'模型下载完成但无法加载', symptom:'from_pretrained 报找不到文件，或 ModelScope 下载过程未正确结束。', causes:'model_path 与 snapshot_download 返回目录不一致，或下载尚未完成。', steps:['打印 model_dir，直接把该返回值作为 model_path。','检查模型目录是否包含配置、权重与 tokenizer 文件。','若 Lab 仅显示进度渲染异常，等待代码单元真正执行结束。'], fix:'不要手写推测的缓存目录；以 snapshot_download 的返回路径作为唯一来源。' }
+    ],
+    operator: [
+      { code:'EZ9999', title:'AclNN / AI Core 内部错误', symptom:'运行日志中出现 EZ9999 或 AclNN Inner Error。', causes:'这类错误需要结合上下文定位，常见于输入 shape 与编译期不符、soc_version 与实际芯片不匹配，或自定义算子未正确部署到 OPP。', steps:['打开详细日志并保留首次失败前后的完整上下文。','用 npu-smi info 核对设备型号，并核对构建时 soc_version。','复查输入 shape、dtype 与算子编译配置；随后确认 OPP 部署路径。'], fix:'从最小输入复测，逐项恢复 shape、设备和部署配置；不要只依据错误码的通用描述直接修改代码。' },
+      { code:'编译失败', title:'算子工程构建或核函数编译失败', symptom:'编译阶段出现 kernel build failed、找不到依赖或符号错误。', causes:'CANN 环境变量未生效、工程配置与当前 Toolkit 不匹配，或 Host / Device 侧接口不一致。', steps:['在新终端重新加载 CANN 环境变量。','确认编译器、Toolkit 与工程模板版本一致。','从第一条错误日志开始处理，优先修复头文件、接口签名或路径问题。'], fix:'先恢复官方最小样例的可编译状态，再把自定义逻辑逐段加回。' },
+      { code:'精度异常', title:'结果不一致或边界输入失败', symptom:'算子可以运行，但输出与基线不一致，或只在尾块 / 特定 shape 下失败。', causes:'数据类型、切分策略、尾块处理或数据搬运顺序不一致。', steps:['先用很小且可手算的输入比对输出。','分别检查主块与非对齐尾块。','记录每一步中间结果，缩小第一个出现偏差的位置。'], fix:'先确保正确性，再讨论流水和性能优化；不要在结果未验证时叠加性能改动。' }
+    ],
+    general: [
+      { code:'运行时错误', title:'设备、版本或环境不匹配', symptom:'初始化、加载或运行阶段返回非零错误码。', causes:'驱动、CANN Toolkit、框架插件或芯片配置之间不匹配。', steps:['记录完整错误码与前后日志。','核对当前 CANN 版本、设备型号与运行环境。','使用最小示例先验证环境，再回到当前章节代码。'], fix:'以当前版本的官方文档与错误码页为准，逐项排除环境与输入差异。' },
+      { code:'结果异常', title:'代码运行但输出不符合预期', symptom:'输出为空、数值异常或与示例结果不同。', causes:'输入、数据类型、版本或上一步状态不一致。', steps:['对照章节中的最小输入与预期输出。','确认执行顺序和变量未被旧单元覆盖。','缩小输入规模，逐步复现问题。'], fix:'保留最小可复现代码与日志，再向 AI 助手或社区提问。' }
+    ]
+  };
+
+  function ldRenderTroubleshooting(node) {
+    const isQwen = QWEN3_PATH_COURSES.has(node.course);
+    const guides = isQwen ? LD_TROUBLESHOOTING.qwen : node.category === 'operator' ? LD_TROUBLESHOOTING.operator : LD_TROUBLESHOOTING.general;
+    return `<section class="ld-troubleshooting"><div class="ld-section-title-row"><h2>常见错误码与排查</h2><a href="${LD_ERROR_CODE_REFERENCE}" target="_blank" rel="noopener">官方错误码参考 ↗</a></div><p class="ld-troubleshooting-lead">遇到报错时先保留完整错误码、日志和最小复现；以下按当前学习场景提供优先排查路径。</p><div class="ld-error-guides">${guides.map((guide, index) => `<details class="ld-error-guide"${index === 0 ? ' open' : ''}><summary><span>${guide.code}</span><strong>${guide.title}</strong><i aria-hidden="true">⌄</i></summary><div class="ld-error-guide-body"><p><b>出现时：</b>${guide.symptom}</p><p><b>常见原因：</b>${guide.causes}</p><ol>${guide.steps.map(step => `<li>${step}</li>`).join('')}</ol><p class="ld-error-fix"><b>建议修复：</b>${guide.fix}</p></div></details>`).join('')}</div></section>`;
   }
 
   function ldBuildChapterKnowledge(node) {
