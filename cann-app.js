@@ -4333,9 +4333,10 @@ def vector_add_tik(shape, dtype, kernel_name):
   const LD_ERROR_CODE_REFERENCE = 'https://www.hiascend.com/document/detail/zh/canncommercial/80RC1/developmentguide/maintenref/troubleshooting/atlaserrorcode_15_0313.html';
   const LD_TROUBLESHOOTING = {
     qwen: [
-      { code:'环境异常', title:'torch_npu 无法导入或 NPU 不可用', symptom:'出现 ModuleNotFoundError，或 torch.npu.is_available() 返回 False。', causes:'当前 Python 环境未安装匹配版本的 torch_npu，或运行环境未识别到昇腾设备。', steps:['确认当前解释器与已安装 torch_npu 属于同一环境。','重新运行环境检查，核对 PyTorch / torch_npu 版本、设备数量与设备名称。','在确认 NPU 可用前，不执行 .to(\'npu:0\') 与模型加载。'], fix:'切换到带有 PyTorch NPU 运行时的 HiDevLab 内核，或按 CANN 版本重新安装匹配的 torch_npu。' },
-      { code:'内存不足', title:'加载模型或生成时显存不足', symptom:'模型迁移到 npu:0 或生成循环中出现内存分配失败。', causes:'模型、输入序列或最大生成长度超过当前设备可用内存；还可能重复保留多个模型实例。', steps:['确认模型只加载一次，并使用 model.eval()。','保持 .half()，先用较短问题和较小 max_new_tokens 复测。','结束无用 Notebook 单元或重启内核后再尝试。'], fix:'先以 Qwen3-0.6B 和 128 个新 token 跑通基线，再逐步扩大输入或生成长度。' },
-      { code:'下载 / 路径', title:'模型下载完成但无法加载', symptom:'from_pretrained 报找不到文件，或 ModelScope 下载过程未正确结束。', causes:'model_path 与 snapshot_download 返回目录不一致，或下载尚未完成。', steps:['打印 model_dir，直接把该返回值作为 model_path。','检查模型目录是否包含配置、权重与 tokenizer 文件。','若 Lab 仅显示进度渲染异常，等待代码单元真正执行结束。'], fix:'不要手写推测的缓存目录；以 snapshot_download 的返回路径作为唯一来源。' }
+      { code:'ACL_ERROR_RT_MEMORY_ALLOCATION', title:'NPU 内存分配失败', symptom:'模型迁移到 npu:0 或生成循环中出现内存分配失败、out of memory。', causes:'模型、输入序列或最大生成长度超过当前设备可用内存；也可能重复保留多个模型实例。', steps:['确认模型只加载一次，并使用 model.eval()。','保持 .half()，先用较短问题和较小 max_new_tokens 复测。','结束无用 Notebook 单元或重启内核后再尝试。'], fix:'先以 Qwen3-0.6B 和 128 个新 token 跑通基线，再逐步扩大输入或生成长度。' },
+      { code:'ACL_ERROR_RT_DEVICE_NOT_READY', title:'NPU 设备未就绪或不可用', symptom:'设备初始化失败，或 torch.npu.is_available() 返回 False。', causes:'当前 Python 环境未安装匹配版本的 torch_npu，或运行环境未识别到昇腾设备。', steps:['确认当前解释器与已安装 torch_npu 属于同一环境。','重新运行环境检查，核对 PyTorch / torch_npu 版本、设备数量与设备名称。','在确认 NPU 可用前，不执行 .to(\'npu:0\') 与模型加载。'], fix:'切换到带有 PyTorch NPU 运行时的 HiDevLab 内核，或按 CANN 版本重新安装匹配的 torch_npu。' },
+      { code:'ModuleNotFoundError: torch_npu', title:'Python 适配插件未安装', symptom:'import torch_npu 时提示 No module named torch_npu。', causes:'当前 Notebook 内核不是 PyTorch NPU 环境，或插件版本与 PyTorch 不匹配。', steps:['在当前内核执行 import sys，确认解释器路径。','切换到 Python 3 (PyTorch NPU) 内核。','核对 PyTorch 与 torch_npu 的配套版本。'], fix:'不要在纯 CPU 内核继续运行本课程；切换到预装 NPU 运行时的环境后从环境检查节点重试。' },
+      { code:'OSError / from_pretrained', title:'模型路径或权重文件不可用', symptom:'from_pretrained 报目录不存在、配置缺失或无法找到模型文件。', causes:'model_path 与 snapshot_download 返回目录不一致，或下载尚未完成。', steps:['打印 model_dir，直接把该返回值作为 model_path。','检查模型目录是否包含配置、权重与 tokenizer 文件。','若 Lab 仅显示进度渲染异常，等待代码单元真正执行结束。'], fix:'不要手写推测的缓存目录；以 snapshot_download 的返回路径作为唯一来源。' }
     ],
     operator: [
       { code:'EZ9999', title:'AclNN / AI Core 内部错误', symptom:'运行日志中出现 EZ9999 或 AclNN Inner Error。', causes:'这类错误需要结合上下文定位，常见于输入 shape 与编译期不符、soc_version 与实际芯片不匹配，或自定义算子未正确部署到 OPP。', steps:['打开详细日志并保留首次失败前后的完整上下文。','用 npu-smi info 核对设备型号，并核对构建时 soc_version。','复查输入 shape、dtype 与算子编译配置；随后确认 OPP 部署路径。'], fix:'从最小输入复测，逐项恢复 shape、设备和部署配置；不要只依据错误码的通用描述直接修改代码。' },
@@ -4351,7 +4352,21 @@ def vector_add_tik(shape, dtype, kernel_name):
   function ldRenderTroubleshooting(node) {
     const isQwen = QWEN3_PATH_COURSES.has(node.course);
     const guides = isQwen ? LD_TROUBLESHOOTING.qwen : node.category === 'operator' ? LD_TROUBLESHOOTING.operator : LD_TROUBLESHOOTING.general;
-    return `<section class="ld-troubleshooting"><div class="ld-section-title-row"><h2>常见错误码与排查</h2><a href="${LD_ERROR_CODE_REFERENCE}" target="_blank" rel="noopener">官方错误码参考 ↗</a></div><p class="ld-troubleshooting-lead">遇到报错时先保留完整错误码、日志和最小复现；以下按当前学习场景提供优先排查路径。</p><div class="ld-error-guides">${guides.map((guide, index) => `<details class="ld-error-guide"${index === 0 ? ' open' : ''}><summary><span>${guide.code}</span><strong>${guide.title}</strong><i aria-hidden="true">⌄</i></summary><div class="ld-error-guide-body"><p><b>出现时：</b>${guide.symptom}</p><p><b>常见原因：</b>${guide.causes}</p><ol>${guide.steps.map(step => `<li>${step}</li>`).join('')}</ol><p class="ld-error-fix"><b>建议修复：</b>${guide.fix}</p></div></details>`).join('')}</div></section>`;
+    return `<section class="ld-troubleshooting"><div class="ld-section-title-row"><h2>常见错误码与排查</h2><a href="${LD_ERROR_CODE_REFERENCE}" target="_blank" rel="noopener">官方错误码参考 ↗</a></div><p class="ld-troubleshooting-lead">粘贴错误码或错误文本即可筛选。若日志包含多个报错，请优先从最早出现的一条开始排查。</p><label class="ld-error-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="例如：EZ9999、ACL_ERROR_RT_MEMORY_ALLOCATION、torch_npu" oninput="ldFilterTroubleshooting(this)"></label><div class="ld-error-guides">${guides.map((guide, index) => `<details class="ld-error-guide" data-error-search="${[guide.code, guide.title, guide.symptom, guide.causes].join(' ').toLowerCase()}"${index === 0 ? ' open' : ''}><summary><span>${guide.code}</span><strong>${guide.title}</strong><i aria-hidden="true">⌄</i></summary><div class="ld-error-guide-body"><p><b>出现时：</b>${guide.symptom}</p><p><b>常见原因：</b>${guide.causes}</p><ol>${guide.steps.map(step => `<li>${step}</li>`).join('')}</ol><p class="ld-error-fix"><b>建议修复：</b>${guide.fix}</p></div></details>`).join('')}</div><p class="ld-error-empty" hidden>当前章节没有匹配项。请保留完整错误码和前后日志，并查看官方错误码参考。</p></section>`;
+  }
+
+  function ldFilterTroubleshooting(input) {
+    const section = input.closest('.ld-troubleshooting');
+    if (!section) return;
+    const keyword = input.value.trim().toLowerCase();
+    let visible = 0;
+    section.querySelectorAll('.ld-error-guide').forEach(item => {
+      const matches = !keyword || item.dataset.errorSearch.includes(keyword);
+      item.hidden = !matches;
+      if (matches) visible += 1;
+    });
+    const empty = section.querySelector('.ld-error-empty');
+    if (empty) empty.hidden = visible > 0;
   }
 
   function ldBuildChapterKnowledge(node) {
