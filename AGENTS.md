@@ -69,7 +69,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 ### 2026-07-15（学习页迭代）
 
 - 作品集筛选新增双视图 Tab：可按主题浏览，或切换为按真实项目文件夹浏览。项目视图含 AscendCANN（13）、AscendCANN/cann-dashboard（6）、cannbench（9）、ascend-vs-nvidia-ux（6）、opknow（7）和两个 Skill 来源目录（各 1）。
-- 补齐 `ascend-vs-nvidia-ux/reports/ascend-vs-nvidia-2026-06-13-visual.html` 的独立卡片和真实桌面全页预览；同步收录同项目的代码级深度报告和综合分析 UX 版，避免发布报告漏归档。
+- 补齐 `ascend-vs-nvidia-ux/reports/ascend-vs-nvidia-2026-06-13-visual.html` 的独立卡片和真实桌面全页预览；同步收录综合分析 UX 版。已移除未发布到 GitHub Pages 的 `gitcode-cann-code-deep` 本地目录卡片，避免 404。
 - 探索版昇腾社区作品集的 40 个入口全部补齐一页一图的真实桌面截图，移除 `NO PREVIEW YET` 占位；已校验 40 条页面数据均引用唯一且存在的封面文件。
 - 学习档案的“学习全景图”改为无中心的知识分列视图：基础入门、应用开发、算子开发、分布式四类并列呈现；同名节点跨路径合并，显示关联路径数量和已学 / 学习中 / 待学状态。
 - 移除原有中心式 SVG 思维导图，避免 SVG 样式级联导致的黑色节点与黑色连线渲染问题。
