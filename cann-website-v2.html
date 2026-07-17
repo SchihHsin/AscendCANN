@@ -1627,6 +1627,14 @@
 <script src="cann-app.js"></script>
 <script>
   // v2 stays in one document; keep the original page interactions without redirecting away.
+  // Capture deep-link state before the normal hash router can rewrite it to #home.
+  const V2_INITIAL_DIRECT_PATH_ID = (() => {
+    const queryPath = new URLSearchParams(location.search).get('path');
+    const hashPath = location.hash.replace(/^#learn\//, '');
+    return queryPath === 'qwen3-npu-inference-baseline' || hashPath === 'qwen3-npu-inference-baseline'
+      ? 'qwen3-npu-inference-baseline'
+      : null;
+  })();
   window._PAGE_URLS = { home: '#home', docs: '#docs', learn: '#learn', api: '#api' };
   window.showPage = function(name) {
     if (name === 'api') { window.location.href = 'api.html'; return false; }
@@ -1846,6 +1854,7 @@
     visual.innerHTML = `<div class="ld-kv-title">${escape(node.title)} · 知识图谱</div><div class="ld-kv-legend">${groups.map(group => `<span class="${group.key}">${group.title}</span>`).join('')}</div><div class="v2-kmap"><svg class="v2-kmap-lines" viewBox="0 0 340 490" aria-hidden="true"><path d="M170 232 C151 194 110 174 76 142"/><path d="M170 232 C189 194 229 174 264 142"/><path d="M170 254 C147 291 108 320 76 350"/><path d="M170 254 C193 291 231 320 264 350"/><path class="v2-kmap-secondary" d="M146 90 C182 112 208 112 244 90"/><path class="v2-kmap-secondary" d="M96 396 C143 370 196 370 244 396"/></svg>${groups.map(group => `<section class="v2-kmap-group ${group.key}"><h4>${group.title}<small>${group.subtitle}</small></h4><div class="v2-kmap-nodes">${nodes.filter(item => item.group === group.key).slice(0, 3).map(card).join('') || `<button class="v2-k-node" onclick="ldFocusLearningContent()">${group.title}</button>`}</div></section>`).join('')}<div class="v2-kmap-center">${escape(node.course || '当前章节')}</div></div><p class="ld-kv-note">四个知识簇通过曲线连接；悬浮节点可查看解释，点击可回到中间内容。</p>`;
   };
   function v2DirectLearningPathId() {
+    if (V2_INITIAL_DIRECT_PATH_ID) return V2_INITIAL_DIRECT_PATH_ID;
     const queryPath = new URLSearchParams(location.search).get('path');
     const hashPath = location.hash.replace(/^#learn\//, '');
     return queryPath === 'qwen3-npu-inference-baseline' || hashPath === 'qwen3-npu-inference-baseline'
@@ -1859,6 +1868,7 @@
     document.querySelectorAll('.ascend-nav-links a[id^="nav-"]').forEach(item => item.classList.toggle('active', item.id === 'nav-learn'));
     document.getElementById('ld-onboarding')?.classList.remove('open');
     window.ldShowRoadmap(pathId);
+    history.replaceState(null, '', `#learn/${pathId}`);
     return true;
   }
   document.addEventListener('DOMContentLoaded', () => {
@@ -1867,7 +1877,10 @@
     toc.innerHTML = '<strong>本页内容</strong><button class="active" onclick="v2ScrollDoc(\'.doc-title,.doc-home-hero\',this)">概览</button><button onclick="v2ScrollDoc(\'.doc-h2\',this)">核心说明</button><button onclick="v2ScrollDoc(\'.code-block\',this)">调用示例</button><button onclick="openEmptySandbox()">在线实践</button>';
     document.querySelector('#page-docs .docs-layout')?.appendChild(toc);
     const initial = location.hash.slice(1);
-    if (['home','docs','learn','api'].includes(initial)) window.showPage(initial);
+    if (V2_INITIAL_DIRECT_PATH_ID) {
+      // Let the learning initializer finish, then v2OpenDirectLearningPath enters detail.
+      document.getElementById('ld-onboarding')?.classList.remove('open');
+    } else if (['home','docs','learn','api'].includes(initial)) window.showPage(initial);
     else {
       document.getElementById('ld-onboarding')?.classList.remove('open');
       window.showPage('home');
