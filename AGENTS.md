@@ -893,3 +893,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Qwen3 路径右侧“知识图谱”改为 Notebook 的真实“推理流程一图看懂”：用户输入 → Tokenizer 编码 → 推理循环（模型前向、选 token、EOS 检查与拼接）→ Tokenizer 解码 → 输出结果，并明确标注未结束时回到循环、EOS 时结束；不再误用通用的概念拓扑图。
 - 学习路径详情中间栏右上流线背景再上移 40px；Qwen3 路径支持固定直达地址 `cann-website-v2.html?path=qwen3-npu-inference-baseline`，首次打开会跳过首页与画像弹窗，直接进入三栏详情。
 - 修复 Qwen3 专用推理流程图被 v2 通用知识簇图二次覆盖的问题；v2 图谱覆写器会对该路径直接放行。直达地址改为在所有初始化逻辑结束后再进入详情，避免被学习首页重置。
+- v2 学习路径右侧工具栏的 Tab 头固定在工具栏顶部；右栏滚动由激活的工具内容面板承接，AI / 知识图谱 / 随堂测验 Tab 不再随内容滚走。
