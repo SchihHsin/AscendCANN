@@ -4309,6 +4309,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (quiz) quiz.innerHTML = `<div class="ld-tool-empty">切换到随堂测验后会自动出题。</div>`;
     const visual = document.getElementById('ld-knowledge-visual');
     if (!visual) return;
+    if (QWEN3_PATH_COURSES.has(node.course)) {
+      ldRenderInferenceFlow(visual);
+      return;
+    }
     const graph = ldBuildKnowledgeGraph(node, knowledge);
     const links = graph.edges.map(([from, to], edgeIndex) => {
       const start = graph.nodes.find(item => item.id === from);
@@ -4324,6 +4328,29 @@ def vector_add_tik(shape, dtype, kernel_name):
       ? graph.clusters.map(item => `<span class="${item.group}">${item.title}</span>`).join('')
       : '<span class="model">概念建模</span><span class="layout">数据与访存</span><span class="flow">执行与优化</span>';
     visual.innerHTML = `<div class="ld-kv-title">${node.title} · 知识图谱</div><div class="ld-kv-legend">${legend}</div><div class="ld-kv-map"><svg class="ld-kv-edges" viewBox="0 0 278 416" aria-hidden="true"><defs><marker id="ld-kv-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L8,4 L0,8 Z" /></marker></defs>${links}</svg>${clusters}${nodes}</div><p class="ld-kv-note">同一轮廓为一个知识簇；曲线表示簇内或跨簇的知识依赖。</p>`;
+  }
+
+  function ldRenderInferenceFlow(visual) {
+    visual.innerHTML = `<div class="ld-kv-title">推理流程一图看懂</div>
+      <p class="ld-inference-lead">Qwen3 在昇腾 NPU 上如何把一句问题变成回答</p>
+      <div class="ld-inference-flow">
+        <button class="ld-inference-step input" onclick="ldFocusLearningContent()"><small>用户输入</small><strong>“你好，请介绍你自己”</strong></button>
+        <span class="ld-inference-arrow" aria-hidden="true">↓</span>
+        <button class="ld-inference-step tokenizer" onclick="ldFocusLearningContent()"><small>Tokenizer · 编码</small><strong>文字 → token IDs</strong><em>[108046, 3837, ...]</em></button>
+        <span class="ld-inference-arrow" aria-hidden="true">↓</span>
+        <div class="ld-inference-loop">
+          <div class="ld-inference-loop-head"><span>推理循环</span><small>重复生成下一个 token</small></div>
+          <button onclick="ldFocusLearningContent()"><b>1</b><span><strong>模型前向传播</strong><small>输出下一个 token 的概率分布</small></span></button>
+          <button onclick="ldFocusLearningContent()"><b>2</b><span><strong>后处理：选 token</strong><small>贪心解码取 argmax</small></span></button>
+          <button onclick="ldFocusLearningContent()"><b>3</b><span><strong>检查 EOS 并拼接</strong><small>未结束则接回序列，继续推理</small></span></button>
+          <span class="ld-inference-loopback" aria-hidden="true">↺ 未结束</span>
+        </div>
+        <span class="ld-inference-arrow" aria-hidden="true">↓</span>
+        <button class="ld-inference-step tokenizer" onclick="ldFocusLearningContent()"><small>Tokenizer · 解码</small><strong>token IDs → 文字</strong></button>
+        <span class="ld-inference-arrow" aria-hidden="true">↓</span>
+        <button class="ld-inference-step output" onclick="ldFocusLearningContent()"><small>输出结果</small><strong>“我是 AI 助手，专注于帮助用户解决问题”</strong></button>
+      </div>
+      <p class="ld-kv-note">点击任一步骤可回到当前章节内容；循环在生成 EOS 结束标记后停止。</p>`;
   }
 
   function ldBuildKnowledgeGraph(node, knowledge) {

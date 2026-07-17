@@ -2928,6 +2928,22 @@
   .ld-kv-graph-node em b, .ld-kv-graph-node em a { display:block; }.ld-kv-graph-node em b { margin-bottom:3px; font-size:11px; }.ld-kv-graph-node em a { margin-top:6px; color:#9CC1FF; font-weight:700; text-decoration:none; }
   .ld-kv-graph-node:hover em { display:block; }
   .ld-kv-note { margin:8px 0 0; color:var(--text-muted); font-size:10px; text-align:center; }
+  /* Qwen3 Notebook 的真实推理流程，不复用通用概念拓扑。 */
+  .ld-inference-lead { margin:5px 0 12px; color:var(--text-muted); font-size:10px; line-height:1.5; text-align:center; }
+  .ld-inference-flow { display:flex; align-items:center; flex-direction:column; width:100%; }
+  .ld-inference-step { width:100%; padding:9px 11px; border:1px solid var(--border); border-radius:8px; background:#fff; color:var(--black); cursor:pointer; font-family:var(--font); text-align:left; transition:border-color .15s,transform .15s; }
+  .ld-inference-step:hover,.ld-inference-loop button:hover { border-color:var(--accent-blue); transform:translateY(-1px); }
+  .ld-inference-step small,.ld-inference-step strong,.ld-inference-step em { display:block; }
+  .ld-inference-step small { color:var(--text-muted); font-size:9px; font-weight:700; }
+  .ld-inference-step strong { margin-top:3px; font-size:11px; line-height:1.45; }
+  .ld-inference-step em { margin-top:3px; color:var(--text-secondary); font:9px var(--mono); }
+  .ld-inference-step.input { border-color:#BFD0FA; background:#F6F8FF; }.ld-inference-step.tokenizer { border-color:#A9D2BD; background:#F4FBF7; }.ld-inference-step.output { border-color:#EAC98D; background:#FFF9F0; }
+  .ld-inference-arrow { height:17px; color:#8390A5; font-size:16px; line-height:17px; }
+  .ld-inference-loop { position:relative; width:100%; padding:9px; border:1px solid #C7D4F7; border-radius:9px; background:linear-gradient(145deg,#F7F9FF,#FFF); }
+  .ld-inference-loop-head { display:flex; align-items:baseline; justify-content:space-between; margin:0 2px 7px; }.ld-inference-loop-head span { color:#2455B5; font-size:11px; font-weight:800; }.ld-inference-loop-head small { color:var(--text-muted); font-size:9px; }
+  .ld-inference-loop button { display:flex; align-items:center; gap:7px; width:100%; margin-top:5px; padding:7px; border:1px solid #DCE4F7; border-radius:6px; background:#fff; color:var(--black); cursor:pointer; font-family:var(--font); text-align:left; transition:border-color .15s,transform .15s; }
+  .ld-inference-loop b { display:flex; align-items:center; justify-content:center; width:17px; height:17px; border-radius:50%; background:var(--grad); color:#fff; font-size:9px; flex-shrink:0; }.ld-inference-loop strong,.ld-inference-loop small { display:block; }.ld-inference-loop strong { font-size:10px; }.ld-inference-loop small { margin-top:2px; color:var(--text-muted); font-size:9px; line-height:1.35; }
+  .ld-inference-loopback { display:block; margin:7px 2px 0; color:#5571BA; font-size:9px; font-weight:700; text-align:right; }
   .ld-content-kicker { color:var(--accent-blue); font-size:12px; font-weight:700; }
   .ld-learning-content h1 { margin:10px 0 14px; color:var(--black); font-size:30px; }
   .ld-content-summary { max-width:700px; color:var(--text-secondary); line-height:1.8; font-size:15px; }
