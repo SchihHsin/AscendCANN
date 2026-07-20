@@ -1835,7 +1835,7 @@
   const v2OriginalRefreshStudyTools = window.ldRefreshStudyTools;
   window.ldRefreshStudyTools = function(node, knowledge) {
     v2OriginalRefreshStudyTools(node, knowledge);
-    if (['第一次让大模型在昇腾 NPU 上运行', '在昇腾 NPU 上准备 Qwen3', '理解 Qwen3 基线推理', '巩固、优化与认证'].includes(node.course)) return;
+    if (['第一次让大模型在昇腾 NPU 上运行', '在昇腾 NPU 上准备 Qwen3', '理解 Qwen3 基线推理', '巩固与扩展'].includes(node.course)) return;
     const visual = document.getElementById('ld-knowledge-visual');
     if (!visual) return;
     const graph = window.ldBuildKnowledgeGraph(node, knowledge);

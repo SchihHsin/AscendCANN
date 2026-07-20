@@ -45,13 +45,13 @@
     { title:'体验 Tokenizer 编码与解码', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 8 节：把文本转换为 token IDs，再还原为文本，观察模型的输入形式。', topics:['encode','decode','token IDs'], duration:'第 8 节', difficulty:1 },
     { title:'手写逐 Token 推理循环', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 9 节：用贪心解码、EOS 检查与序列拼接，让 Qwen3 在 NPU 上回答问题。', topics:['前向传播','argmax','EOS / 拼接'], duration:'第 9 节', difficulty:2 },
     { title:'测量 Qwen3 推理基线速度', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 10 节：热身后连续测量三次推理，得到 tokens/s 作为后续加速的 Baseline。', topics:['warmup','torch.npu.synchronize','tokens/s'], duration:'第 10 节', difficulty:2 },
-    { title:'用多种提示词测试模型', course:'巩固、优化与认证', category:'developer', desc:'第 11 节：以诗歌、英文问答和代码生成等提示词体验 Qwen3 的生成能力。', topics:['Prompt','文本生成','模型能力边界'], duration:'第 11 节', difficulty:1 },
-    { title:'自由对话与推理练习', course:'巩固、优化与认证', category:'developer', desc:'第 12 节：修改问题与最大生成 token 数，完成自己的 Qwen3 NPU 推理实验。', topics:['my_question','max_new_tokens','采样扩展'], duration:'第 12 节', difficulty:1 },
-    { title:'建立本地推理实验工程', course:'巩固、优化与认证', category:'developer', desc:'第 13 节：将首跑 Notebook 整理为自己的实验目录，明确基线、改动和验证记录。', topics:['cann-learning-hub','实验目录','基线记录'], duration:'第 13 节', difficulty:1 },
-    { title:'替换 Qwen3 RMSNorm 融合算子', course:'巩固、优化与认证', category:'operator', desc:'第 14 节：将 RMSNorm 的小算子拼接替换为 torch_npu.npu_rms_norm。', topics:['Qwen3RMSNorm','npu_rms_norm','融合算子'], duration:'第 14 节', difficulty:2 },
-    { title:'验证融合算子加速效果', course:'巩固、优化与认证', category:'developer', desc:'第 15 节：分别测量小算子版与融合版，记录 tokens/s 和加速比。', topics:['warmup','三次计时','tokens/s'], duration:'第 15 节', difficulty:2 },
-    { title:'扩展 RoPE 与图模式推理', course:'巩固、优化与认证', category:'operator', desc:'第 16 节：继续尝试 npu_rotary_mul，并让融合算子与图模式优化叠加。', topics:['npu_rotary_mul','RoPE','图模式'], duration:'第 16 节', difficulty:3 },
-    { title:'提交实验成果并完成认证', course:'巩固、优化与认证', category:'developer', desc:'第 17 节：整理可复现成果、性能对比和排障记录，再进入对应的昇腾学习认证。', topics:['实验报告','成果归档','学习认证'], duration:'第 17 节', difficulty:2 },
+    { title:'首跑后：建立本地推理实验工程', course:'巩固与扩展', category:'developer', desc:'第 11 节：从已跑通的基线进入固定工程，明确文件、首个改动和验证方式。', topics:['cann-learning-hub','实验副本','验证清单'], duration:'第 11 节', difficulty:1 },
+    { title:'替换 Qwen3 RMSNorm 融合算子', course:'巩固与扩展', category:'operator', desc:'第 12 节：将 RMSNorm 的小算子拼接替换为 torch_npu.npu_rms_norm。', topics:['Qwen3RMSNorm','npu_rms_norm','融合算子'], duration:'第 12 节', difficulty:2 },
+    { title:'验证融合算子加速效果', course:'巩固与扩展', category:'developer', desc:'第 13 节：分别测量小算子版与融合版，记录 tokens/s 和加速比。', topics:['warmup','三次计时','tokens/s'], duration:'第 13 节', difficulty:2 },
+    { title:'扩展 RoPE 与图模式推理', course:'巩固与扩展', category:'operator', desc:'第 14 节：继续尝试 npu_rotary_mul，并让融合算子与图模式优化叠加。', topics:['npu_rotary_mul','RoPE','图模式'], duration:'第 14 节', difficulty:3 },
+    { title:'用多种提示词测试模型', course:'巩固与扩展', category:'developer', desc:'第 15 节：以诗歌、英文问答和代码生成等提示词体验 Qwen3 的生成能力。', topics:['Prompt','文本生成','模型能力边界'], duration:'第 15 节', difficulty:1 },
+    { title:'自由对话与推理练习', course:'巩固与扩展', category:'developer', desc:'第 16 节：修改问题与最大生成 token 数，完成自己的 Qwen3 NPU 推理实验。', topics:['my_question','max_new_tokens','采样扩展'], duration:'第 16 节', difficulty:1 },
+    { title:'提交实验成果并完成认证', course:'巩固与扩展', category:'developer', desc:'第 17 节：整理可复现成果、性能对比和排障记录，再进入对应的昇腾学习认证。', topics:['实验报告','成果归档','学习认证'], duration:'第 17 节', difficulty:2 },
   ];
   const CAT_META = {
     beginner:    { label: '基础入门', color: '#10B981' },
@@ -1411,9 +1411,15 @@ def vector_add_tik(shape, dtype, kernel_name):
       lab:{steps:[{title:'设计自己的 Qwen3 提问',desc:'修改 my_question，并尝试调整 max_new_tokens，记录回答长度和效果的变化。'}]},
       resources:qwen3Resources('课后练习：和大模型自由对话')
     },
-    '建立本地推理实验工程': {
-      summary:'首跑成功后，不需要从零新建一个陌生工程。先克隆 cann-learning-hub，在 quick_start/first_llm_inference 下复制融合算子 Notebook 作为自己的实验副本；保留基线版本、改动版本和结果记录，之后每次调优都有可回退、可比较的依据。',
-      body:'<p><strong>推荐从官方工程开始。</strong>将 <code>cann-learning-hub</code> 克隆到本地后，定位到 <code>quick_start/first_llm_inference</code>。保留已跑通的基线 Notebook，再复制 <code>03_qwen3_npu_inference_fused_op.ipynb</code> 为个人实验文件，例如 <code>my_qwen3_fused_op.ipynb</code>。</p><p>在实验文件最前面写下三项记录：运行环境（CANN / PyTorch / torch_npu 版本）、基线 tokens/s、这次只准备替换的模块。这样出现结果异常时，能先切回基线判断是环境、模型加载还是本次改动导致的问题。</p>',
+    '首跑后：建立本地推理实验工程': {
+      summary:'首跑成功后的下一步已经为你固定好：进入 cann-learning-hub 工程，复制融合算子 Notebook，只替换 RMSNorm，再以同一输入测三次 tokens/s。不要从零新建项目，也不要一次改多个模块。',
+      nextSteps:[
+        { icon:'folder-git-2', label:'在哪个工程做', title:'cann-learning-hub', detail:'克隆官方工程后，进入 quick_start/first_llm_inference；不要另起一个空工程。', code:'git clone https://gitcode.com/cann/cann-learning-hub.git\ncd cann-learning-hub/quick_start/first_llm_inference' },
+        { icon:'copy-plus', label:'从哪个文件开始', title:'03_qwen3_npu_inference_fused_op.ipynb', detail:'保留 01 基线 Notebook 不改动，把第 03 课复制为自己的实验副本。', code:'cp 03_qwen3_npu_inference_fused_op.ipynb my_qwen3_fused_op.ipynb' },
+        { icon:'pencil-line', label:'第一处改什么', title:'只替换 Qwen3RMSNorm.forward', detail:'将小算子实现切换为 torch_npu.npu_rms_norm；模型、提示词和生成长度先保持不变。', code:'qwen3_mod.Qwen3RMSNorm.forward = fused_forward' },
+        { icon:'badge-check', label:'怎样算验证完成', title:'热身 1 次，正式测 3 次', detail:'小算子版与融合版各记录平均耗时、tokens/s、加速比；结果异常就切回 orig_forward。', code:'avg_small = benchmark("small ops", small_ops_forward)\navg_fused = benchmark("fused op", fused_forward)' }
+      ],
+      body:'<p><strong>首跑结束后，按下面四步继续即可。</strong>你不需要猜“该在哪个工程改、先改什么、怎么判断成功”。本节把下一步收成一条固定路径：工程 → 文件 → 单点改动 → 验证标准。</p><p>每次只改变一个模块，并在实验文件开头记录 CANN / PyTorch / torch_npu 版本、基线 tokens/s 和本轮改动目标。这样结果异常时，可立即切回基线，判断问题来自环境、模型加载还是这次替换。</p>',
       concepts:[{term:'基线副本',desc:'保留 01 基线推理 Notebook 不改动；所有优化都在复制出的实验文件中进行。'},{term:'实验目录',desc:'将模型路径、Notebook、运行日志和性能记录放在同一工程，避免只在临时单元里改完就丢失。'},{term:'单变量改动',desc:'每次只替换一个模块，例如先 RMSNorm，再 RoPE；这样性能变化和精度问题才可定位。'}],
       code:{lang:'bash',body:`git clone https://gitcode.com/cann/cann-learning-hub.git\ncd cann-learning-hub/quick_start/first_llm_inference\n\n# 保留基线，复制融合算子课作为个人实验副本\ncp 03_qwen3_npu_inference_fused_op.ipynb my_qwen3_fused_op.ipynb\n\n# 在 Notebook 首个 Markdown 单元记录：\n# CANN / PyTorch / torch_npu 版本、基线 tokens/s、改动目标`},
       lab:{steps:[{title:'创建个人 Qwen3 实验副本',desc:'在 HiDevLab 或本地工作区复制融合算子 Notebook；不要直接覆盖已跑通的基线。',code:'cp 03_qwen3_npu_inference_fused_op.ipynb my_qwen3_fused_op.ipynb',expected:'得到独立实验文件，并保留 01 基线 Notebook 可随时回退。'}]},
@@ -2762,7 +2768,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
 
   // Sample custom paths data
-  const QWEN3_PATH_COURSES = new Set(['第一次让大模型在昇腾 NPU 上运行', '在昇腾 NPU 上准备 Qwen3', '理解 Qwen3 基线推理', '巩固、优化与认证']);
+  const QWEN3_PATH_COURSES = new Set(['第一次让大模型在昇腾 NPU 上运行', '在昇腾 NPU 上准备 Qwen3', '理解 Qwen3 基线推理', '巩固与扩展']);
   const samplePaths = [
     { id: 'official-ascend-c', name: '算子开发从入门到精通', icon: '⚙️', query: 'Ascend C编程', createdAt: '2026-07-15', official: true,
       sourceUrl: 'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',
@@ -4376,12 +4382,14 @@ def vector_add_tik(shape, dtype, kernel_name):
     const conceptDoc = concept => concept.href || knowledge?.resources?.[0]?.href || 'https://www.hiascend.com/document';
     const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p><a class="ld-concept-doc" href="${conceptDoc(c)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">查看文档 <span aria-hidden="true">↗</span></a></div>`).join('');
     const readingHtml = knowledge?.body ? `<section class="ld-reading-section"><h2>本节讲解</h2><div class="ld-reading-body">${knowledge.body}</div></section>` : '';
+    const nextStepsHtml = knowledge?.nextSteps?.length ? `<section class="ld-next-steps"><div class="ld-next-steps-head"><h2>首跑后，照着做</h2><p>先固定工程与验证规则，再开始优化。</p></div><div class="ld-next-steps-grid">${knowledge.nextSteps.map((step, stepIndex) => `<article class="ld-next-step"><div class="ld-next-step-index">${stepIndex + 1}</div><i data-lucide="${step.icon}" aria-hidden="true"></i><small>${step.label}</small><strong>${step.title}</strong><p>${step.detail}</p><pre>${escHtml(step.code)}</pre></article>`).join('')}</div><a class="ld-next-steps-source" href="${QWEN3_FUSED_OP_NOTEBOOK}" target="_blank" rel="noopener">打开官方融合算子 Notebook，按第 1 步开始 <span aria-hidden="true">↗</span></a></section>` : '';
     const code = knowledge?.code;
     const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="ldRunNodeCode()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
     const practiceSteps = knowledge?.lab?.steps || [{ title:`运行「${node.title}」配套练习`, desc:'在 HiDevLab 中打开本章节的实践环境，边学边验证。' }];
     const practice = `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>`;
     const troubleshooting = ldRenderTroubleshooting(node, knowledge);
-    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div></div><section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${readingHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section>${codeHtml}<section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div></div>${nextStepsHtml}<section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${readingHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section>${codeHtml}<section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    requestAnimationFrame(() => window.lucide?.createIcons());
     ldRefreshStudyTools(node, knowledge);
   }
 
@@ -4501,7 +4509,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
 
   function ldRenderInferenceFlow(visual, node) {
-    const isExtension = node?.course === '巩固、优化与认证';
+    const isExtension = node?.course === '巩固与扩展';
     if (isExtension) {
       visual.innerHTML = `<div class="ld-kv-title">优化闭环一图看懂</div>
         <p class="ld-inference-lead">从首跑基线到融合算子、验证和认证</p>
