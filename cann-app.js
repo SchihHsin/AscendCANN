@@ -45,8 +45,13 @@
     { title:'体验 Tokenizer 编码与解码', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 8 节：把文本转换为 token IDs，再还原为文本，观察模型的输入形式。', topics:['encode','decode','token IDs'], duration:'第 8 节', difficulty:1 },
     { title:'手写逐 Token 推理循环', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 9 节：用贪心解码、EOS 检查与序列拼接，让 Qwen3 在 NPU 上回答问题。', topics:['前向传播','argmax','EOS / 拼接'], duration:'第 9 节', difficulty:2 },
     { title:'测量 Qwen3 推理基线速度', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 10 节：热身后连续测量三次推理，得到 tokens/s 作为后续加速的 Baseline。', topics:['warmup','torch.npu.synchronize','tokens/s'], duration:'第 10 节', difficulty:2 },
-    { title:'用多种提示词测试模型', course:'巩固与延展', category:'developer', desc:'第 11 节：以诗歌、英文问答和代码生成等提示词体验 Qwen3 的生成能力。', topics:['Prompt','文本生成','模型能力边界'], duration:'第 11 节', difficulty:1 },
-    { title:'自由对话与推理练习', course:'巩固与延展', category:'developer', desc:'第 12 节：修改问题与最大生成 token 数，完成自己的 Qwen3 NPU 推理实验。', topics:['my_question','max_new_tokens','采样扩展'], duration:'第 12 节', difficulty:1 },
+    { title:'用多种提示词测试模型', course:'巩固、优化与认证', category:'developer', desc:'第 11 节：以诗歌、英文问答和代码生成等提示词体验 Qwen3 的生成能力。', topics:['Prompt','文本生成','模型能力边界'], duration:'第 11 节', difficulty:1 },
+    { title:'自由对话与推理练习', course:'巩固、优化与认证', category:'developer', desc:'第 12 节：修改问题与最大生成 token 数，完成自己的 Qwen3 NPU 推理实验。', topics:['my_question','max_new_tokens','采样扩展'], duration:'第 12 节', difficulty:1 },
+    { title:'建立本地推理实验工程', course:'巩固、优化与认证', category:'developer', desc:'第 13 节：将首跑 Notebook 整理为自己的实验目录，明确基线、改动和验证记录。', topics:['cann-learning-hub','实验目录','基线记录'], duration:'第 13 节', difficulty:1 },
+    { title:'替换 Qwen3 RMSNorm 融合算子', course:'巩固、优化与认证', category:'operator', desc:'第 14 节：将 RMSNorm 的小算子拼接替换为 torch_npu.npu_rms_norm。', topics:['Qwen3RMSNorm','npu_rms_norm','融合算子'], duration:'第 14 节', difficulty:2 },
+    { title:'验证融合算子加速效果', course:'巩固、优化与认证', category:'developer', desc:'第 15 节：分别测量小算子版与融合版，记录 tokens/s 和加速比。', topics:['warmup','三次计时','tokens/s'], duration:'第 15 节', difficulty:2 },
+    { title:'扩展 RoPE 与图模式推理', course:'巩固、优化与认证', category:'operator', desc:'第 16 节：继续尝试 npu_rotary_mul，并让融合算子与图模式优化叠加。', topics:['npu_rotary_mul','RoPE','图模式'], duration:'第 16 节', difficulty:3 },
+    { title:'提交实验成果并完成认证', course:'巩固、优化与认证', category:'developer', desc:'第 17 节：整理可复现成果、性能对比和排障记录，再进入对应的昇腾学习认证。', topics:['实验报告','成果归档','学习认证'], duration:'第 17 节', difficulty:2 },
   ];
   const CAT_META = {
     beginner:    { label: '基础入门', color: '#10B981' },
@@ -1318,9 +1323,17 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   // Content follows the real CANN Learning Hub Qwen3 NPU inference baseline notebook.
   const QWEN3_BASELINE_NOTEBOOK = 'https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_llm_inference/01_qwen3_npu_inference_baseline.ipynb';
+  const QWEN3_FUSED_OP_NOTEBOOK = 'https://gitcode.com/cann/cann-learning-hub/blob/master/quick_start/first_llm_inference/03_qwen3_npu_inference_fused_op.ipynb';
+  const QWEN3_LEARNING_HUB = 'https://gitcode.com/cann/cann-learning-hub';
+  const QWEN3_CERTIFICATION = 'https://www.hiascend.com/edu/certification';
   const qwen3Resources = subtitle => [
     { icon:'📓', title:'Qwen3 昇腾 NPU 推理基线 Notebook', href:QWEN3_BASELINE_NOTEBOOK, type:'GitCode Notebook', subtitle },
     { icon:'🤗', title:'Qwen3-0.6B 模型页', href:'https://www.modelscope.cn/models/Qwen/Qwen3-0.6B', type:'ModelScope', subtitle:'本路径使用的开源模型' }
+  ];
+  const qwen3ExtensionResources = subtitle => [
+    { icon:'📓', title:'Qwen3 融合算子替换 Notebook', href:QWEN3_FUSED_OP_NOTEBOOK, type:'GitCode Notebook', subtitle },
+    { icon:'⌘', title:'CANN Learning Hub 工程', href:QWEN3_LEARNING_HUB, type:'代码仓库', subtitle:'创建个人实验副本的起点' },
+    { icon:'🏅', title:'昇腾学习认证', href:QWEN3_CERTIFICATION, type:'认证中心', subtitle:'按当前开放认证选择匹配方向' }
   ];
   Object.assign(NODE_KNOWLEDGE, {
     'AI 与大模型基础': {
@@ -1397,6 +1410,45 @@ def vector_add_tik(shape, dtype, kernel_name):
       code:{lang:'python',body:`my_question = '你好，请用一句话介绍你自己'\nmax_new_tokens = 128\n\nmessages = [{'role': 'user', 'content': my_question}]\ntext = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)\ninput_ids = torch.tensor([tokenizer.encode(text)], dtype=torch.long).to('npu:0')\n# 复用上一节的逐 token 推理循环\n# 修改 my_question 后重新运行即可`},
       lab:{steps:[{title:'设计自己的 Qwen3 提问',desc:'修改 my_question，并尝试调整 max_new_tokens，记录回答长度和效果的变化。'}]},
       resources:qwen3Resources('课后练习：和大模型自由对话')
+    },
+    '建立本地推理实验工程': {
+      summary:'首跑成功后，不需要从零新建一个陌生工程。先克隆 cann-learning-hub，在 quick_start/first_llm_inference 下复制融合算子 Notebook 作为自己的实验副本；保留基线版本、改动版本和结果记录，之后每次调优都有可回退、可比较的依据。',
+      body:'<p><strong>推荐从官方工程开始。</strong>将 <code>cann-learning-hub</code> 克隆到本地后，定位到 <code>quick_start/first_llm_inference</code>。保留已跑通的基线 Notebook，再复制 <code>03_qwen3_npu_inference_fused_op.ipynb</code> 为个人实验文件，例如 <code>my_qwen3_fused_op.ipynb</code>。</p><p>在实验文件最前面写下三项记录：运行环境（CANN / PyTorch / torch_npu 版本）、基线 tokens/s、这次只准备替换的模块。这样出现结果异常时，能先切回基线判断是环境、模型加载还是本次改动导致的问题。</p>',
+      concepts:[{term:'基线副本',desc:'保留 01 基线推理 Notebook 不改动；所有优化都在复制出的实验文件中进行。'},{term:'实验目录',desc:'将模型路径、Notebook、运行日志和性能记录放在同一工程，避免只在临时单元里改完就丢失。'},{term:'单变量改动',desc:'每次只替换一个模块，例如先 RMSNorm，再 RoPE；这样性能变化和精度问题才可定位。'}],
+      code:{lang:'bash',body:`git clone https://gitcode.com/cann/cann-learning-hub.git\ncd cann-learning-hub/quick_start/first_llm_inference\n\n# 保留基线，复制融合算子课作为个人实验副本\ncp 03_qwen3_npu_inference_fused_op.ipynb my_qwen3_fused_op.ipynb\n\n# 在 Notebook 首个 Markdown 单元记录：\n# CANN / PyTorch / torch_npu 版本、基线 tokens/s、改动目标`},
+      lab:{steps:[{title:'创建个人 Qwen3 实验副本',desc:'在 HiDevLab 或本地工作区复制融合算子 Notebook；不要直接覆盖已跑通的基线。',code:'cp 03_qwen3_npu_inference_fused_op.ipynb my_qwen3_fused_op.ipynb',expected:'得到独立实验文件，并保留 01 基线 Notebook 可随时回退。'}]},
+      resources:qwen3ExtensionResources('第 13 节：从首跑 Notebook 进入可复现的本地实验')
+    },
+    '替换 Qwen3 RMSNorm 融合算子': {
+      summary:'Qwen3 的 RMSNorm 在原始实现中由精度转换、平方、均值、加 epsilon、rsqrt、归一化和乘权重等 8 个小算子串联而成。使用 torch_npu.npu_rms_norm 后，可将该单元替换为一个融合算子，减少启动和中间内存读写。',
+      body:'<p><strong>这一步只改 RMSNorm，不动模型其余部分。</strong>先通过 <code>transformers.models.qwen3.modeling_qwen3</code> 获取模块，保存原始 <code>forward</code>。随后定义小算子版与融合版，使用一行赋值切换，以便在同一环境和同一输入下公平比较。</p><p><code>npu_rms_norm</code> 的三个参数对应原公式：输入 <code>hidden_states</code>、权重 <code>self.weight</code>、属性 <code>self.variance_epsilon</code>。接口返回两个 Tensor；推理只取第一个归一化结果。</p>',
+      concepts:[{term:'RMSNorm',desc:'Qwen3 中高频出现的归一化单元；0.6B 模型 28 层中共出现 57 次。'},{term:'融合算子',desc:'把多个连续小算子交给一个针对硬件优化的算子一次完成，减少调度和中间读写。'},{term:'npu_rms_norm',desc:'torch_npu 提供的 RMSNorm 融合接口，推理时返回值取 [0]。'}],
+      code:{lang:'python',body:`import torch_npu\nimport transformers.models.qwen3.modeling_qwen3 as qwen3_mod\n\n# 保存原实现，便于回退\norig_forward = qwen3_mod.Qwen3RMSNorm.forward\n\ndef fused_forward(self, hidden_states):\n    return torch_npu.npu_rms_norm(\n        hidden_states,\n        self.weight,\n        self.variance_epsilon\n    )[0]\n\n# 只替换 RMSNorm；模型其余模块保持不变\nqwen3_mod.Qwen3RMSNorm.forward = fused_forward`},
+      lab:{steps:[{title:'保存原实现并切换至融合 RMSNorm',desc:'先保存 orig_forward，再把 Qwen3RMSNorm.forward 指向 fused_forward。若结果异常，立即切回 orig_forward。',code:'orig_forward = qwen3_mod.Qwen3RMSNorm.forward\nqwen3_mod.Qwen3RMSNorm.forward = fused_forward',expected:'模型可继续加载并完成一次 Eager 推理；需要回退时可恢复 orig_forward。'}]},
+      resources:qwen3ExtensionResources('第 14 节：融合算子替换，8 个小算子到 1 个 RMSNorm 算子')
+    },
+    '验证融合算子加速效果': {
+      summary:'是否“优化成功”不能只看模型还能输出。必须在相同输入、相同 max_new_tokens、相同 Eager 模式下，让小算子版和融合版各热身一次、正式计时三次，再比较平均 tokens/s 与加速比。',
+      body:'<p><strong>先保证比较公平。</strong>基线版与融合版共用同一个模型、提示词和 <code>max_new_tokens</code>；每次测量前先热身一次，并在计时结束后执行 <code>torch.npu.synchronize()</code>，否则 Python 可能在 NPU 尚未执行完时就停止计时。</p><p>记录生成 token 数、三次耗时、平均 tokens/s 和加速比。若融合版速度没有提升，先检查是否真的切换到了 <code>fused_forward</code>、是否仍为 Eager 模式，以及输入长度和生成长度是否一致。</p>',
+      concepts:[{term:'Warmup',desc:'排除首次加载与初始化成本，避免一次偶然的慢结果影响结论。'},{term:'synchronize',desc:'等待 NPU 异步任务完成，确保耗时包含真实的设备执行。'},{term:'加速比',desc:'小算子版平均耗时除以融合版平均耗时；大于 1 说明融合版更快。'}],
+      code:{lang:'python',body:`# 小算子版和融合版均各热身一次后，重复三次计时\ndef benchmark(label, forward_impl):\n    qwen3_mod.Qwen3RMSNorm.forward = forward_impl\n    run_inference(model, input_ids, max_new_tokens)  # warmup\n    times = []\n    for _ in range(3):\n        t0 = time.time()\n        output = run_inference(model, input_ids, max_new_tokens)\n        torch.npu.synchronize()\n        times.append(time.time() - t0)\n    avg = sum(times) / len(times)\n    tokens = output.shape[1] - input_ids.shape[1]\n    print(label, f'{tokens / avg:.1f} tokens/s')\n    return avg\n\navg_small = benchmark('small ops', small_ops_forward)\navg_fused = benchmark('fused op', fused_forward)\nprint(f'加速比: {avg_small / avg_fused:.2f}x')`},
+      lab:{steps:[{title:'输出小算子版与融合版对比表',desc:'两个版本各热身一次、计时三次，记录平均耗时、tokens/s 与加速比。',code:'# 复用本节 benchmark 函数\navg_small = benchmark("small ops", small_ops_forward)\navg_fused = benchmark("fused op", fused_forward)',expected:'得到两组可比较的速度数据与加速比；不要只记录一次运行结果。'}]},
+      resources:qwen3ExtensionResources('第 15 节：在 Eager 模式下验证纯算子层面的加速')
+    },
+    '扩展 RoPE 与图模式推理': {
+      summary:'RMSNorm 只是一个开始。下一步可以把 Qwen3 的 RoPE 旋转位置编码替换为 npu_rotary_mul，并在 RMSNorm 融合基础上尝试图模式推理；融合算子优化和图编译优化处于不同层，可以叠加。',
+      body:'<p><strong>按同样的实验方法继续扩展。</strong>先保留 RMSNorm 融合版作为新的基线，再独立替换 <code>apply_rotary_pos_emb</code> 为 <code>npu_rotary_mul</code>。确认输出正常并测量后，再开启图模式。每做完一层优化都保存一个可运行版本，避免无法区分是哪项改动带来了收益或回归。</p><p>图编译解决的是“CPU 逐个调度算子的等待”；融合算子解决的是“多个小算子重复启动和读写”。两者目标不同，因此可以组合，但也应分阶段验证。</p>',
+      concepts:[{term:'RoPE',desc:'旋转位置编码；Qwen3 使用它让注意力计算感知 token 的相对位置。'},{term:'npu_rotary_mul',desc:'可用于替换 RoPE 中乘法、旋转和加法等组合计算的融合算子。'},{term:'图模式',desc:'将算子编排为执行图后一次交给 NPU，减少 CPU 与 NPU 间的逐算子调度。'}],
+      code:{lang:'python',body:`# 推荐实验顺序（每一步都独立记录性能）\n# 1. RMSNorm 融合版：已得到新的基线\n# 2. 替换 apply_rotary_pos_emb 为 torch_npu.npu_rotary_mul\n# 3. 复用相同输入，验证输出与性能\n# 4. 在融合版基础上开启图模式，再单独测量\n\n# 不要在一次实验中同时替换多个模块，\n# 否则出现性能或结果异常时无法定位。`},
+      lab:{steps:[{title:'规划下一轮单变量优化',desc:'先创建 RoPE 实验副本，保持 RMSNorm 融合版不变；记录本轮只验证 npu_rotary_mul。',code:'# my_qwen3_rope_op.ipynb\n# baseline: fused RMSNorm\n# change: apply_rotary_pos_emb -> npu_rotary_mul',expected:'形成可回退的优化序列：基线 → RMSNorm 融合 → RoPE 融合 → 图模式。'}]},
+      resources:qwen3ExtensionResources('第 16 节：RoPE 融合与图模式是可叠加的下一步')
+    },
+    '提交实验成果并完成认证': {
+      summary:'路径的终点不是“代码跑过一次”，而是能把实验讲清楚、复现出来：说明环境、基线、每项改动、性能数据和遇到的问题。完成后可进入昇腾学习认证，检验并沉淀推理与优化能力。',
+      body:'<p><strong>提交前用一页实验记录收口。</strong>至少包含：环境版本、模型与提示词、基线 tokens/s、RMSNorm 融合后的 tokens/s、加速比、是否继续尝试 RoPE / 图模式，以及一次问题排查记录。它既是个人作品的可复现说明，也是之后继续优化的起点。</p><p>认证不应只是额外跳转链接，而应排在实践成果之后：先完成路径内验证，再按认证中心当前开放的方向选择匹配课程或考试。</p>',
+      concepts:[{term:'可复现实验',desc:'他人根据工程、版本、输入与步骤能够重复得到同类结果。'},{term:'性能报告',desc:'用基线、优化后数据和明确的测量条件说明收益，而不是只描述“感觉更快”。'},{term:'学习认证',desc:'将系统学习与实操成果结合，选择认证中心当前开放的相关方向完成能力验证。'}],
+      lab:{steps:[{title:'整理并提交 Qwen3 优化实验记录',desc:'将环境、改动、三次计时结果、加速比与一次排障记录写入实验 README 或 Notebook 首段。',code:'# 实验收口清单\n# [ ] 环境与模型版本\n# [ ] baseline / fused tokens/s\n# [ ] 三次耗时和加速比\n# [ ] 失败或排障记录\n# [ ] 下一轮优化计划',expected:'形成可回看、可分享的实验记录，并可进入昇腾学习认证继续验证能力。'}]},
+      resources:qwen3ExtensionResources('第 17 节：实验成果收口与学习认证')
     }
   });
 
@@ -2710,7 +2762,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
 
   // Sample custom paths data
-  const QWEN3_PATH_COURSES = new Set(['第一次让大模型在昇腾 NPU 上运行', '在昇腾 NPU 上准备 Qwen3', '理解 Qwen3 基线推理', '巩固与延展']);
+  const QWEN3_PATH_COURSES = new Set(['第一次让大模型在昇腾 NPU 上运行', '在昇腾 NPU 上准备 Qwen3', '理解 Qwen3 基线推理', '巩固、优化与认证']);
   const samplePaths = [
     { id: 'official-ascend-c', name: '算子开发从入门到精通', icon: '⚙️', query: 'Ascend C编程', createdAt: '2026-07-15', official: true,
       sourceUrl: 'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53',
@@ -4428,7 +4480,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const visual = document.getElementById('ld-knowledge-visual');
     if (!visual) return;
     if (QWEN3_PATH_COURSES.has(node.course)) {
-      ldRenderInferenceFlow(visual);
+      ldRenderInferenceFlow(visual, node);
       return;
     }
     const graph = ldBuildKnowledgeGraph(node, knowledge);
@@ -4448,7 +4500,28 @@ def vector_add_tik(shape, dtype, kernel_name):
     visual.innerHTML = `<div class="ld-kv-title">${node.title} · 知识图谱</div><div class="ld-kv-legend">${legend}</div><div class="ld-kv-map"><svg class="ld-kv-edges" viewBox="0 0 278 416" aria-hidden="true"><defs><marker id="ld-kv-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L8,4 L0,8 Z" /></marker></defs>${links}</svg>${clusters}${nodes}</div><p class="ld-kv-note">同一轮廓为一个知识簇；曲线表示簇内或跨簇的知识依赖。</p>`;
   }
 
-  function ldRenderInferenceFlow(visual) {
+  function ldRenderInferenceFlow(visual, node) {
+    const isExtension = node?.course === '巩固、优化与认证';
+    if (isExtension) {
+      visual.innerHTML = `<div class="ld-kv-title">优化闭环一图看懂</div>
+        <p class="ld-inference-lead">从首跑基线到融合算子、验证和认证</p>
+        <div class="ld-inference-flow ld-optimization-flow">
+          <button class="ld-inference-step input" onclick="ldFocusLearningContent()"><small>已跑通基线</small><strong>保留 Notebook、环境与 tokens/s</strong></button>
+          <span class="ld-inference-arrow" aria-hidden="true">↓</span>
+          <button class="ld-inference-step tokenizer" onclick="ldFocusLearningContent()"><small>建立实验工程</small><strong>复制融合算子 Notebook</strong><em>一次只修改一个模块</em></button>
+          <span class="ld-inference-arrow" aria-hidden="true">↓</span>
+          <div class="ld-inference-loop">
+            <div class="ld-inference-loop-head"><span>单变量验证循环</span><small>每一步均可回退</small></div>
+            <button onclick="ldFocusLearningContent()"><b>1</b><span><strong>替换 RMSNorm</strong><small>8 个小算子 → npu_rms_norm</small></span></button>
+            <button onclick="ldFocusLearningContent()"><b>2</b><span><strong>热身与三次计时</strong><small>记录 tokens/s 与加速比</small></span></button>
+            <button onclick="ldFocusLearningContent()"><b>3</b><span><strong>继续扩展或回退</strong><small>RoPE 融合、图模式、排障记录</small></span></button>
+          </div>
+          <span class="ld-inference-arrow" aria-hidden="true">↓</span>
+          <button class="ld-inference-step output" onclick="ldFocusLearningContent()"><small>成果与认证</small><strong>提交可复现实验记录，完成学习认证</strong></button>
+        </div>
+        <p class="ld-kv-note">点击任一步骤可回到当前章节；每次只变更一项，才能说明优化结果来自哪里。</p>`;
+      return;
+    }
     visual.innerHTML = `<div class="ld-kv-title">推理流程一图看懂</div>
       <p class="ld-inference-lead">Qwen3 在昇腾 NPU 上如何把一句问题变成回答</p>
       <div class="ld-inference-flow">
