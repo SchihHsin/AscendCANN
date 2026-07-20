@@ -1660,8 +1660,8 @@
     button?.classList.add('active');
   }
 
-  // List and map are intentionally distinct: the list mirrors the V1 chapter list;
-  // the map alone uses the connected course timeline from the visual design.
+  // Both modes use the latest grouped path navigation; the right mode keeps the
+  // compact timeline treatment while the left mode is optimised for scanning.
   const v2OriginalRenderPathNav = window.ldRenderPathNav;
   const v2OriginalOpenPathNode = window.ldOpenPathNode;
   function v2RenderPathNav() {
@@ -1680,10 +1680,12 @@
     });
     const escape = value => String(value || '').replace(/[&<>\"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' })[char]);
     if (_ldPathView === 'list') {
-      nav.innerHTML = `<div class="v2-list-route">${clusters.map(cluster => `<section class="v2-list-cluster"><h3>${escape(cluster.course)}</h3>${cluster.items.map(({ node, index }) => `<button class="v2-list-node ${index === _ldActivePathIndex ? 'active' : ''}" onclick="v2OpenPathNode(${index})"><span>${index + 1}</span><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || `第 ${index + 1} 章`)}</small></div></button>`).join('')}</section>`).join('')}</div>`;
+      nav.innerHTML = `<div class="v2-list-route">${clusters.map(cluster => `<section class="v2-list-cluster"><h3><i data-lucide="book-open" aria-hidden="true"></i>${escape(cluster.course)}</h3>${cluster.items.map(({ node, index }) => `<button class="v2-list-node ${index === _ldActivePathIndex ? 'active' : ''}" onclick="v2OpenPathNode(${index})"><span>${index + 1}</span><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || `第 ${index + 1} 章`)}</small></div></button>`).join('')}</section>`).join('')}</div>`;
+      window.lucide?.createIcons();
       return;
     }
-    nav.innerHTML = `<div class="v2-route-map">${clusters.map(cluster => `<div class="v2-route-cluster">${escape(cluster.course)}</div>${cluster.items.map(({ node, index }) => `<button class="v2-route-node ${index === _ldActivePathIndex ? 'active' : ''}" data-number="${index + 1}" onclick="v2OpenPathNode(${index})"><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || '学习节点')}</small></div></button>`).join('')}`).join('')}</div>`;
+    nav.innerHTML = `<div class="v2-route-map">${clusters.map(cluster => `<div class="v2-route-cluster"><i data-lucide="git-branch" aria-hidden="true"></i>${escape(cluster.course)}</div>${cluster.items.map(({ node, index }) => `<button class="v2-route-node ${index === _ldActivePathIndex ? 'active' : ''}" data-number="${index + 1}" onclick="v2OpenPathNode(${index})"><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || '学习节点')}</small></div></button>`).join('')}`).join('')}</div>`;
+    window.lucide?.createIcons();
   }
   function v2SetPathView(view, button) {
     _ldPathView = view;
