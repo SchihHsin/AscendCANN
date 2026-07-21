@@ -1792,8 +1792,11 @@
     const bounds = workspace.getBoundingClientRect();
     const leftWidth = pathSidebar.getBoundingClientRect().width;
     const rightWidth = studyTools.getBoundingClientRect().width;
+    const centerY = Math.round(bounds.top + bounds.height / 2);
     leftPill.style.left = `${Math.round(bounds.left + leftWidth - 9)}px`;
     rightPill.style.left = `${Math.round(bounds.right - rightWidth - 9)}px`;
+    leftPill.style.top = `${centerY}px`;
+    rightPill.style.top = `${centerY}px`;
   }
   function v2SaveWorkspaceSizes(workspace) {
     sessionStorage.setItem(V2_WORKSPACE_SIZE_KEY, JSON.stringify({
