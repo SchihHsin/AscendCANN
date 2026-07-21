@@ -1431,7 +1431,7 @@
       <button class="v2-edge-pill v2-edge-pill-left" type="button" onclick="v2ToggleWorkspacePanel('left')" aria-label="收起学习路径" title="收起学习路径"><i data-lucide="chevron-left"></i></button>
       <button class="v2-edge-pill v2-edge-pill-right" type="button" onclick="v2ToggleWorkspacePanel('right')" aria-label="收起学习工具" title="收起学习工具"><i data-lucide="chevron-right"></i></button>
       <aside class="ld-path-sidebar" id="v2-path-sidebar">
-        <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button class="active" onclick="v2SetPathView('list',this)" title="列表视图" aria-label="列表视图"><i data-lucide="list-tree"></i></button><button onclick="v2SetPathView('map',this)" title="可视化视图" aria-label="可视化视图"><i data-lucide="git-branch"></i></button></div></div>
+        <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button onclick="v2SetPathView('list',this)" title="列表视图" aria-label="列表视图"><i data-lucide="list-tree"></i></button><button class="active" onclick="v2SetPathView('map',this)" title="可视化视图" aria-label="可视化视图"><i data-lucide="git-branch"></i></button></div></div>
         <div class="ld-path-nav" id="ld-path-nav"></div>
         <button class="ld-edit-path-btn" onclick="ldOpenPathEditor()">编辑路径</button>
       </aside>
@@ -1660,14 +1660,18 @@
     button?.classList.add('active');
   }
 
-  // Both modes use the latest grouped path navigation; the right mode keeps the
-  // compact timeline treatment while the left mode is optimised for scanning.
+  // The left tab retains the V1 course list; the right tab shows the redesigned
+  // grouped node visualization.
   const v2OriginalRenderPathNav = window.ldRenderPathNav;
   const v2OriginalOpenPathNode = window.ldOpenPathNode;
   function v2RenderPathNav() {
     const nav = document.getElementById('ld-path-nav');
     if (!nav) return;
-    nav.classList.toggle('map', _ldPathView === 'map');
+    if (_ldPathView === 'list') {
+      v2OriginalRenderPathNav();
+      return;
+    }
+    nav.classList.remove('map');
     const clusters = [];
     (_ldActivePathNodes || []).forEach((node, index) => {
       const course = node.course || '学习节点';
@@ -1679,12 +1683,7 @@
       cluster.items.push({ node, index });
     });
     const escape = value => String(value || '').replace(/[&<>\"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' })[char]);
-    if (_ldPathView === 'list') {
-      nav.innerHTML = `<div class="v2-list-route">${clusters.map(cluster => `<section class="v2-list-cluster"><h3><i data-lucide="book-open" aria-hidden="true"></i>${escape(cluster.course)}</h3>${cluster.items.map(({ node, index }) => `<button class="v2-list-node ${index === _ldActivePathIndex ? 'active' : ''}" onclick="v2OpenPathNode(${index})"><span>${index + 1}</span><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || `第 ${index + 1} 章`)}</small></div></button>`).join('')}</section>`).join('')}</div>`;
-      window.lucide?.createIcons();
-      return;
-    }
-    nav.innerHTML = `<div class="v2-route-map">${clusters.map(cluster => `<div class="v2-route-cluster"><i data-lucide="git-branch" aria-hidden="true"></i>${escape(cluster.course)}</div>${cluster.items.map(({ node, index }) => `<button class="v2-route-node ${index === _ldActivePathIndex ? 'active' : ''}" data-number="${index + 1}" onclick="v2OpenPathNode(${index})"><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || '学习节点')}</small></div></button>`).join('')}`).join('')}</div>`;
+    nav.innerHTML = `<div class="v2-list-route">${clusters.map(cluster => `<section class="v2-list-cluster"><h3><i data-lucide="book-open" aria-hidden="true"></i>${escape(cluster.course)}</h3>${cluster.items.map(({ node, index }) => `<button class="v2-list-node ${index === _ldActivePathIndex ? 'active' : ''}" onclick="v2OpenPathNode(${index})"><span>${index + 1}</span><div><strong>${escape(node.title)}</strong><small>${escape(node.duration || `第 ${index + 1} 章`)}</small></div></button>`).join('')}</section>`).join('')}</div>`;
     window.lucide?.createIcons();
   }
   function v2SetPathView(view, button) {

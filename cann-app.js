@@ -3893,7 +3893,7 @@ def vector_add_tik(shape, dtype, kernel_name):
   let _ldRecommendationOffset = 0;
   let _ldSelectedScenario = '';
   let _ldGeneratedPlanContext = '';
-  let _ldPathView = 'list';
+  let _ldPathView = 'map';
   let _ldActivePathNodes = [];
   let _ldActivePathIndex = 0;
   let _ldPlan = {};
