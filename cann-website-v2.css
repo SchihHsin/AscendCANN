@@ -5,6 +5,48 @@ body:has(#page-docs.active), body:has(#page-learn.active) { background:#fff; }
 body:has(.ascend-developer-nav) .page { padding-top:92px; }
 body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-community-bar { right:400px; }
 
+/* Learning home — light community direction. The dashboard keeps its original actions and data. */
+#page-learn .ld-dash { position:relative; max-width:1180px; padding:56px clamp(24px,5vw,72px) 88px; }
+#page-learn .ld-dash::before { position:absolute; z-index:0; top:0; right:0; width:min(780px,76vw); height:440px; background:url('visual-assets/cann-community/learning-card-bg.png') right top/contain no-repeat; content:''; opacity:.8; pointer-events:none; }
+#page-learn .ld-dash > * { position:relative; z-index:1; }
+#page-learn .ld-hero { position:relative; max-width:790px; margin:0 0 54px; text-align:left; }
+#page-learn .ld-hero-inner { display:block; }
+#page-learn .ld-hero-kicker { display:flex; align-items:center; gap:7px; color:#858c9a; font-size:12px; font-weight:700; }
+#page-learn .ld-hero-kicker svg { width:15px; height:15px; color:#726DD0; stroke-width:1.9; }
+#page-learn .ld-hero-title { margin:12px 0 0; color:#222630; font-size:38px; letter-spacing:-.055em; line-height:1.16; }
+#page-learn .ld-hero-title em { color:#5654bd; font-style:normal; }
+#page-learn .ld-hero-desc { max-width:600px; margin:12px 0 0; color:#747d8d; font-size:14px; line-height:1.65; }
+#page-learn .ld-archive-entry { display:inline-flex; align-items:center; gap:7px; margin:16px 0 0; padding:7px 11px; border-color:rgba(220,223,234,.92); border-radius:18px; background:rgba(255,255,255,.7); color:#566071; backdrop-filter:blur(8px); }
+#page-learn .ld-archive-entry svg { width:14px; height:14px; }
+#page-learn .ld-input-bar { width:min(710px,100%); margin-top:14px; padding:9px 9px 9px 17px; border-color:#dfe3ec; border-radius:16px; background:rgba(255,255,255,.86); box-shadow:0 11px 26px rgba(58,65,93,.08); backdrop-filter:blur(8px); }
+#page-learn .ld-input-bar:focus-within { border-color:#a9afe5; box-shadow:0 0 0 3px rgba(86,84,189,.1),0 11px 26px rgba(58,65,93,.08); }
+#page-learn .ld-gen-btn { border-radius:11px; background:linear-gradient(100deg,#3a75ef,#8a6ce9); }
+#page-learn .ld-section { margin-bottom:48px; }
+#page-learn .ld-sec-hd { margin-bottom:16px; }
+#page-learn .ld-sec-title { color:#242831; font-size:20px; letter-spacing:-.04em; }
+#page-learn .ld-cat-chip { border-color:#e1e4ec; background:rgba(255,255,255,.76); color:#6d7587; }
+#page-learn .ld-cat-chip.active { border-color:#595ac0; background:#595ac0; }
+#page-learn .ld-refresh-btn { display:inline-flex; align-items:center; gap:5px; margin-left:0; border:0; background:transparent; color:#626b7c; }
+#page-learn .ld-refresh-btn svg { width:14px; height:14px; }
+#page-learn .ld-node-grid { gap:14px; }
+#page-learn .ld-node-card { min-height:178px; border-color:rgba(223,226,235,.92); border-radius:15px; background:rgba(255,255,255,.82); box-shadow:0 6px 16px rgba(55,62,83,.035); }
+#page-learn .ld-node-card:hover { border-color:#c6c9eb; box-shadow:0 10px 24px rgba(55,62,83,.08); }
+#page-learn .ld-node-hover { background:rgba(255,255,255,.96); }
+#page-learn .ld-scenario-head { margin:0 0 16px; font-size:20px; letter-spacing:-.04em; }
+#page-learn .ld-scenario-head small { font-size:12px; }
+#page-learn .ld-scenario-grid { grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+#page-learn .ld-scenario-card { min-height:116px; padding:14px; border-color:#e2e5ec; border-radius:13px; background:rgba(255,255,255,.88); }
+#page-learn .ld-scenario-card:hover,#page-learn .ld-scenario-card.active { border-color:#bfc8eb; background:#fff; box-shadow:0 7px 17px rgba(66,74,111,.08); }
+#page-learn .ld-scenario-icon { display:flex; align-items:center; width:21px; height:21px; margin-bottom:17px; color:#313641; }
+#page-learn .ld-scenario-icon svg { width:20px; height:20px; stroke-width:1.8; }
+#page-learn .ld-scenario-card strong { margin-bottom:5px; }
+#page-learn .ld-continue-list { gap:10px; }
+#page-learn .ld-path-card { border-color:#e0e4ed; border-radius:14px; background:rgba(255,255,255,.92); }
+#page-learn .ld-path-card:hover { border-color:#c6c9eb; box-shadow:0 8px 20px rgba(55,62,83,.07); }
+#page-learn .ld-resource-section { padding-top:4px; }
+@media (max-width:900px) { #page-learn .ld-scenario-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media (max-width:600px) { #page-learn .ld-dash { padding:38px 20px 58px; } #page-learn .ld-dash::before { width:100%; height:300px; opacity:.46; } #page-learn .ld-hero-title { font-size:31px; } #page-learn .ld-scenario-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
 /* Documentation: ported from the reviewed ascend-doc documentation system. */
 #page-docs { --doc-brand-active:#c7000b; --doc-link:#2e53fa; --doc-link-hover:#5a7bfc; --doc-purple:#7b25f4; --doc-text-1:#1d2129; --doc-text-2:#4e5969; --doc-text-3:#86909c; --doc-divider:#e5e5e9; --doc-border:#dededf; --doc-code-bg:#f6f7f8; --doc-panel-gradient:linear-gradient(90deg,rgba(46,83,250,.03),rgba(123,37,244,.03)); --doc-active-gradient:linear-gradient(to right,rgba(46,83,250,.18),rgba(100,60,255,.12)); }
 #page-docs .docs-layout { display:grid; grid-template-columns:320px minmax(0,1fr) 255px; min-height:calc(100vh - 72px); padding-top:72px; background:#fff; }

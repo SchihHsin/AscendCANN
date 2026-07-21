@@ -1304,8 +1304,10 @@
     <!-- Task-first hero -->
     <div class="ld-hero">
       <div class="ld-hero-inner">
-        <h2 class="ld-hero-title">学习 CANN，从这里开始</h2>
-        <button class="ld-archive-entry" onclick="openLearningArchive('paths')">学习档案 →</button>
+        <div class="ld-hero-kicker"><i data-lucide="sparkles" aria-hidden="true"></i>面向 CANN 开发者的个性化学习</div>
+        <h2 class="ld-hero-title">学习 CANN，<em>从你的任务开始</em></h2>
+        <p class="ld-hero-desc">告诉我你想完成的开发任务，AI 会结合当前基础与可用资源，为你组织一条可实践的学习路径。</p>
+        <button class="ld-archive-entry" onclick="openLearningArchive('paths')"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i>学习档案</button>
         <div class="ld-input-bar">
           <svg class="ld-input-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 2C9 5.86599 5.86599 9 2 9C5.86599 9 9 12.134 9 16C9 12.134 12.134 9 16 9C12.134 9 9 5.86599 9 2Z" fill="var(--grad-end)"/>
@@ -1352,7 +1354,7 @@
           <button class="ld-cat-chip" onclick="ldSetCat('operator',this)">算子开发</button>
           <button class="ld-cat-chip" onclick="ldSetCat('distributed',this)">训练</button>
         </div>
-        <button class="ld-refresh-btn" onclick="ldRefreshRecommendations()">↻ 换一换</button>
+        <button class="ld-refresh-btn" onclick="ldRefreshRecommendations()"><i data-lucide="refresh-cw" aria-hidden="true"></i>换一换</button>
       </div>
       <div class="ld-node-grid" id="ld-node-grid"></div>
     </div>
@@ -1360,16 +1362,11 @@
     <div class="ld-section ld-scenario-section" id="ld-scenario-section">
       <div class="ld-scenario-head"><span>从典型场景开始</span><small>选择一个场景，生成可执行的学习计划</small></div>
       <div class="ld-scenario-grid" id="ld-scenario-grid">
-        <button class="ld-scenario-card" onclick="ldChooseScenario('算子开发')"><span class="ld-scenario-icon">⚙</span><strong>算子开发</strong><small>开发、编译与调试自定义算子</small></button>
-        <button class="ld-scenario-card" onclick="ldChooseScenario('模型迁移')"><span class="ld-scenario-icon">↔</span><strong>模型迁移</strong><small>将现有模型适配到昇腾</small></button>
-        <button class="ld-scenario-card" onclick="ldChooseScenario('模型推理')"><span class="ld-scenario-icon">▶</span><strong>模型推理</strong><small>转换模型并完成推理部署</small></button>
-        <button class="ld-scenario-card" onclick="ldChooseScenario('模型训练')"><span class="ld-scenario-icon">⌁</span><strong>模型训练</strong><small>启动、调试与优化训练任务</small></button>
-        <button class="ld-scenario-card" onclick="ldChooseScenario('性能调优')"><span class="ld-scenario-icon">⌁</span><strong>性能调优</strong><small>定位训练、推理或算子瓶颈</small></button>
-        <button class="ld-scenario-card is-custom" onclick="ldChooseScenario('个性定制')"><span class="ld-scenario-icon">＋</span><strong>个性定制</strong><small>描述你的任务，让 AI 为你规划</small></button>
-      </div>
-      <div class="ld-custom-scenario" id="ld-custom-scenario">
-        <input id="ld-custom-goal-input" placeholder="描述你希望完成的 CANN 任务…" onkeydown="if(event.key==='Enter')ldGenPath('custom')">
-        <button class="ld-gen-btn" onclick="ldGenPath('custom')">生成路径</button>
+        <button class="ld-scenario-card" onclick="ldChooseScenario('算子开发')"><span class="ld-scenario-icon"><i data-lucide="boxes" aria-hidden="true"></i></span><strong>算子开发</strong><small>开发、编译与调试自定义算子</small></button>
+        <button class="ld-scenario-card" onclick="ldChooseScenario('模型迁移')"><span class="ld-scenario-icon"><i data-lucide="arrow-left-right" aria-hidden="true"></i></span><strong>模型迁移</strong><small>将现有模型适配到昇腾</small></button>
+        <button class="ld-scenario-card" onclick="ldChooseScenario('模型推理')"><span class="ld-scenario-icon"><i data-lucide="play" aria-hidden="true"></i></span><strong>模型推理</strong><small>转换模型并完成推理部署</small></button>
+        <button class="ld-scenario-card" onclick="ldChooseScenario('模型训练')"><span class="ld-scenario-icon"><i data-lucide="brain-circuit" aria-hidden="true"></i></span><strong>模型训练</strong><small>启动、调试与优化训练任务</small></button>
+        <button class="ld-scenario-card" onclick="ldChooseScenario('性能调优')"><span class="ld-scenario-icon"><i data-lucide="gauge" aria-hidden="true"></i></span><strong>性能调优</strong><small>定位训练、推理或算子瓶颈</small></button>
       </div>
     </div>
 
