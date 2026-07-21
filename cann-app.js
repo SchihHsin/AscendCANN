@@ -355,6 +355,22 @@
     document.getElementById('ai-sidebar-input')?.focus();
   }
 
+  // Preserve a request written in the contextual AI panel, then hand it to the
+  // cursor-driven path editor instead of asking the learner to repeat it.
+  function ldStartAiPathEdit() {
+    const request = document.getElementById('ld-tool-ai-input')?.value.trim();
+    ldOpenAiPathEditor();
+    if (!request) return;
+    const editorInput = document.getElementById('ai-sidebar-input');
+    if (!editorInput) return;
+    editorInput.value = request;
+    sendAiMessage();
+  }
+
+  function ldIsPathEditRequest(text) {
+    return /(?:添加|增加|删除|移除|移动|调整|替换|重排|修改).{0,16}(?:路径|学习路径|节点|步骤)|(?:路径|学习路径|节点|步骤).{0,16}(?:添加|增加|删除|移除|移动|调整|替换|重排|修改)/.test(text);
+  }
+
   function _ipeShowAndHideRoadmap() {
     // Hide existing roadmap content
     document.getElementById('page-learn').classList.add('ipe-active');
@@ -4501,7 +4517,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       chat.innerHTML = `<div class="ld-tool-msg">${pathNotice}</div>`;
     }
     const prompts = document.getElementById('ld-tool-prompts');
-    if (prompts) prompts.innerHTML = ['用适合初学者的方式解释这个概念', '逐行讲解这个节点的代码示例', '列出实践中最常见的三个错误与排查方法', '为我设计一个 20 分钟的动手练习'].map(text => `<button onclick="ldToolPrompt('${text}')">${text}</button>`).join('');
+    if (prompts) prompts.innerHTML = ['用适合初学者的方式解释这个概念', '逐行讲解这个节点的代码示例', '列出实践中最常见的三个错误与排查方法', '为我设计一个 20 分钟的动手练习'].map(text => `<button onclick="ldToolPrompt('${text}')">${text}</button>`).join('') + '<button class="ld-tool-path-edit" onclick="ldStartAiPathEdit()"><i data-lucide="wand-sparkles" aria-hidden="true"></i>让 AI 调整学习路径</button>';
     const quiz = document.getElementById('ld-embedded-quiz');
     if (quiz) quiz.innerHTML = `<div class="ld-tool-empty">切换到随堂测验后会自动出题。</div>`;
     const visual = document.getElementById('ld-knowledge-visual');
@@ -4633,6 +4649,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     const node = _ldActivePathNodes[_ldActivePathIndex];
     const question = input?.value.trim();
     if (!question || !chat || !node) return;
+    if (ldIsPathEditRequest(question)) {
+      ldStartAiPathEdit();
+      return;
+    }
     input.value = '';
     chat.insertAdjacentHTML('beforeend', `<div class="ld-tool-msg user">${escHtml(question)}</div><div class="ld-tool-msg pending">正在思考…</div>`);
     try {
