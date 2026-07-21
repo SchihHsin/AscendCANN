@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>学习首页视觉方向预览</title>
+  <script src="https://unpkg.com/lucide"></script>
+  <style>
+    :root { --ink:#20232c; --muted:#737b8c; --line:#e4e7ee; --paper:#fff; --violet:#6f6cec; --blue:#386ff1; --soft:#f6f7fb; font-family:"HarmonyOS Sans SC","PingFang SC",Arial,sans-serif; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#eef0f6; color:var(--ink); }
+    .intro { max-width:1320px; margin:0 auto; padding:36px 28px 24px; }
+    .intro p { margin:7px 0 0; color:var(--muted); font-size:14px; }
+    h1 { margin:0; font-size:25px; letter-spacing:-.04em; }
+    .option-stack { display:flex; flex-direction:column; gap:32px; padding:0 22px 64px; }
+    .option { width:min(1440px,100%); margin:0 auto; overflow:hidden; border:1px solid #dfe3eb; border-radius:20px; background:#fff; box-shadow:0 18px 46px rgba(54,62,86,.09); }
+    .option-label { display:flex; align-items:center; justify-content:space-between; padding:15px 24px; border-bottom:1px solid var(--line); background:#fff; }
+    .option-label b { display:flex; align-items:center; gap:9px; font-size:15px; }
+    .option-label b span { display:grid; width:25px; height:25px; place-items:center; border-radius:8px; background:linear-gradient(135deg,#4384fc,#9a7ceb); color:#fff; font-size:12px; }
+    .option-label small { color:#7c8494; font-size:12px; }
+    .site-top { display:flex; align-items:center; justify-content:space-between; height:70px; padding:0 46px; border-bottom:1px solid rgba(225,227,234,.85); background:rgba(255,255,255,.92); }
+    .brand { display:flex; align-items:center; gap:11px; font-size:15px; font-weight:750; }
+    .brand-mark { width:29px; height:29px; border-radius:8px; background:linear-gradient(135deg,#e23d4d,#bb0014); color:white; display:grid; place-items:center; font-weight:900; }
+    .nav { display:flex; gap:25px; color:#596171; font-size:13px; }
+    .nav b { color:#bd0010; }
+    .profile { display:flex; align-items:center; gap:8px; color:#525a6a; font-size:12px; }
+    .profile i { width:18px; }
+    .frame { position:relative; min-height:790px; padding:44px clamp(28px,7vw,116px) 66px; overflow:hidden; }
+    .frame::before { position:absolute; content:""; pointer-events:none; }
+    .kicker { display:flex; align-items:center; gap:7px; color:#858c9a; font-size:12px; font-weight:650; }
+    .kicker i { width:15px; height:15px; }
+    .hero-title { margin:12px 0 0; font-size:36px; letter-spacing:-.06em; line-height:1.18; }
+    .hero-sub { max-width:590px; margin:12px 0 0; color:#737c8f; font-size:14px; line-height:1.65; }
+    .search { position:relative; z-index:2; display:flex; align-items:center; gap:11px; width:min(710px,100%); height:56px; margin-top:26px; padding:0 9px 0 18px; border:1px solid #dfe3ec; border-radius:16px; background:rgba(255,255,255,.86); box-shadow:0 11px 26px rgba(58,65,93,.08); backdrop-filter:blur(8px); }
+    .search i { width:19px; color:#798294; }
+    .search span { flex:1; color:#969dab; font-size:14px; }
+    .search button { height:38px; padding:0 16px; border:0; border-radius:11px; background:linear-gradient(100deg,#3a75ef,#8a6ce9); color:#fff; font:700 13px inherit; }
+    .quick { display:flex; flex-wrap:wrap; gap:7px; margin-top:13px; }
+    .quick span { padding:6px 10px; border:1px solid rgba(214,218,229,.8); border-radius:16px; background:rgba(255,255,255,.62); color:#697286; font-size:11px; }
+    .section-head { display:flex; align-items:center; justify-content:space-between; margin-top:46px; }
+    .section-title { font-size:20px; letter-spacing:-.04em; }
+    .section-meta { display:flex; align-items:center; gap:10px; color:#7d8595; font-size:12px; }
+    .chip { padding:6px 10px; border:1px solid #e1e4ec; border-radius:14px; background:rgba(255,255,255,.8); color:#6d7587; }
+    .renew { display:flex; align-items:center; gap:5px; padding:6px 10px; border:0; border-radius:14px; background:transparent; color:#626b7c; font:600 12px inherit; }
+    .renew i { width:14px; }
+    .card-grid { position:relative; z-index:1; display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:17px; }
+    .rec-card { min-height:174px; padding:18px; border:1px solid rgba(223,226,235,.92); border-radius:15px; background:rgba(255,255,255,.82); box-shadow:0 6px 16px rgba(55,62,83,.035); }
+    .rec-card i { width:19px; height:19px; color:#2d303a; }
+    .tag { display:inline-block; margin-left:8px; padding:3px 7px; border-radius:8px; background:#f0efff; color:#6158be; font-size:10px; font-weight:700; vertical-align:2px; }
+    .rec-card h3 { margin:17px 0 7px; font-size:15px; letter-spacing:-.03em; }
+    .rec-card p { min-height:35px; margin:0; color:#747d8e; font-size:12px; line-height:1.5; }
+    .rec-footer { display:flex; align-items:center; justify-content:space-between; margin-top:13px; color:#9aa1ae; font-size:11px; }
+    .go { display:grid; width:25px; height:25px; place-items:center; border:1px solid #dde1e9; border-radius:50%; color:#323744; }
+    .go i { width:13px; height:13px; }
+    .scenarios { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:16px; }
+    .scenario { min-height:108px; padding:14px; border:1px solid #e2e5ec; border-radius:13px; background:#fff; }
+    .scenario i { width:20px; color:#313641; }
+    .scenario b { display:block; margin-top:17px; font-size:13px; }
+    .scenario small { display:block; margin-top:5px; color:#8a92a0; font-size:10px; line-height:1.4; }
+    .continue { display:flex; align-items:center; gap:16px; margin-top:16px; padding:16px; border:1px solid #e0e4ed; border-radius:14px; background:#fff; }
+    .continue-icon { display:grid; flex:0 0 auto; width:39px; height:39px; place-items:center; border-radius:11px; background:linear-gradient(140deg,#edf2ff,#efeaff); color:#5554bd; }
+    .continue-icon i { width:20px; }
+    .continue b { font-size:13px; }
+    .continue p { margin:5px 0 0; color:#858d9c; font-size:11px; }
+    .progress { flex:1; height:5px; margin-left:auto; border-radius:5px; background:#eceef3; overflow:hidden; }
+    .progress span { display:block; width:42%; height:100%; border-radius:inherit; background:linear-gradient(90deg,#4b84f5,#8e70e9); }
+    .continue button { padding:8px 12px; border:0; border-radius:9px; background:#292c34; color:#fff; font:700 11px inherit; }
+
+    /* A — Light technology community */
+    .community .frame { background:linear-gradient(180deg,#f5f6fa 0%,#fff 40%); }
+    .community .frame::before { top:-66px; right:-50px; width:610px; height:410px; background:url('visual-assets/cann-community/learning-card-bg.png') right top/contain no-repeat; opacity:.92; }
+    .community .hero { position:relative; z-index:1; max-width:780px; }
+    .community .hero-title em { color:#5654be; font-style:normal; }
+    .community .card-grid .rec-card:nth-child(1) { background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(244,247,255,.9)); }
+    .community .card-grid .rec-card:nth-child(2) { background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(249,246,255,.9)); }
+    .community .card-grid .rec-card:nth-child(3) { background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(245,250,255,.9)); }
+    .community .resource-link { position:absolute; z-index:2; top:43px; right:clamp(28px,7vw,116px); display:flex; align-items:center; gap:7px; padding:8px 11px; border:1px solid rgba(220,223,234,.9); border-radius:18px; background:rgba(255,255,255,.72); color:#555e6e; font-size:11px; backdrop-filter:blur(8px); }
+    .community .resource-link i { width:14px; }
+
+    /* B — Immersive learning */
+    .immersive .frame { min-height:820px; background:#11141d; color:#f8f9fe; }
+    .immersive .frame::before { top:0; right:0; width:100%; height:400px; background:radial-gradient(circle at 73% 22%,rgba(118,114,255,.42),transparent 26%),radial-gradient(circle at 58% -10%,rgba(60,128,255,.34),transparent 34%),url('visual-assets/cann-community/learning-search-bg.png') right top/auto 430px no-repeat; opacity:.95; }
+    .immersive .site-top { border-bottom-color:rgba(255,255,255,.1); background:#11141d; color:#e9ebf3; }
+    .immersive .nav,.immersive .profile { color:#bac1d0; }
+    .immersive .nav b { color:#fff; }
+    .immersive .brand-mark { background:linear-gradient(135deg,#f25767,#cb0017); }
+    .immersive .hero { position:relative; z-index:1; max-width:870px; padding-top:37px; }
+    .immersive .kicker { color:#c8cbe1; }
+    .immersive .kicker i { color:#a9a4ff; }
+    .immersive .hero-title { max-width:700px; font-size:48px; color:#fff; }
+    .immersive .hero-title span { background:linear-gradient(100deg,#b9ccff,#c7a7ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .immersive .hero-sub { color:#c2c7d6; }
+    .immersive .search { border-color:rgba(255,255,255,.2); background:rgba(255,255,255,.12); box-shadow:0 18px 40px rgba(0,0,0,.25); }
+    .immersive .search i,.immersive .search span { color:#d2d6e4; }
+    .immersive .search button { background:linear-gradient(100deg,#6c8dff,#9c70ed); }
+    .immersive .quick span { border-color:rgba(255,255,255,.14); background:rgba(255,255,255,.06); color:#d0d4e1; }
+    .immersive .section-head { position:relative; z-index:1; margin-top:52px; }
+    .immersive .section-title { color:#fff; }
+    .immersive .section-meta { color:#c1c6d3; }
+    .immersive .chip { border-color:rgba(255,255,255,.15); background:rgba(255,255,255,.08); color:#d6d9e3; }
+    .immersive .renew { color:#d6d9e3; }
+    .immersive .card-grid { grid-template-columns:1.18fr .91fr .91fr; }
+    .immersive .rec-card { min-height:188px; border-color:rgba(255,255,255,.15); background:rgba(255,255,255,.09); box-shadow:none; backdrop-filter:blur(10px); }
+    .immersive .rec-card:first-child { background:linear-gradient(135deg,rgba(111,128,255,.35),rgba(157,103,239,.18)); }
+    .immersive .rec-card i { color:#fff; }.immersive .rec-card h3 { color:#fff; }.immersive .rec-card p,.immersive .rec-footer { color:#c2c8d5; }.immersive .tag { background:rgba(255,255,255,.16); color:#e5e5ff; }.immersive .go { border-color:rgba(255,255,255,.22); color:#fff; }
+    .immersive .lower { position:relative; z-index:1; display:grid; grid-template-columns:1.32fr .88fr; gap:28px; margin-top:48px; }
+    .immersive .lower .section-head { margin-top:0; }
+    .immersive .scenarios { grid-template-columns:repeat(3,1fr); }
+    .immersive .scenario { min-height:104px; border-color:rgba(255,255,255,.13); background:rgba(255,255,255,.07); }
+    .immersive .scenario i { color:#d9dcff; }.immersive .scenario b { color:#fff; }.immersive .scenario small { color:#b7bdcc; }
+    .immersive .continue { min-height:143px; border-color:rgba(255,255,255,.14); background:rgba(255,255,255,.08); }
+    .immersive .continue b { color:#fff; }.immersive .continue p { color:#bdc4d1; }.immersive .progress { background:rgba(255,255,255,.16); }.immersive .continue button { background:#fff; color:#222633; }
+    .immersive .continue-icon { background:linear-gradient(135deg,rgba(159,178,255,.35),rgba(206,154,255,.35)); color:#fff; }
+    @media (max-width:900px) { .card-grid,.scenarios,.immersive .card-grid { grid-template-columns:repeat(2,1fr); }.immersive .lower { grid-template-columns:1fr; }.frame { padding:35px 28px 52px; }.resource-link { display:none; } }
+    @media (max-width:560px) { .nav { display:none; }.site-top { padding:0 20px; }.card-grid,.scenarios,.immersive .card-grid { grid-template-columns:1fr; }.hero-title,.immersive .hero-title { font-size:31px; }.search { height:auto; min-height:54px; }.search button { padding:0 11px; }.intro { padding:26px 22px 20px; } }
+  </style>
+</head>
+<body>
+  <header class="intro"><h1>学习首页 · 两个视觉方向</h1><p>同一套内容与入口，只比较视觉重心。A 更贴近现有路径页；B 让学习任务成为首屏焦点。</p></header>
+  <main class="option-stack">
+    <section class="option community">
+      <div class="option-label"><b><span>A</span>轻科技社区</b><small>明亮、轻量、适合承接丰富的课程与社区内容</small></div>
+      <div class="site-top"><div class="brand"><span class="brand-mark">升</span>昇腾开发者</div><nav class="nav"><span>主页</span><span>开发</span><span>文档</span><span>活动</span><b>学习</b><span>论坛</span><span>博客</span></nav><span class="profile"><i data-lucide="user-round"></i>个人中心</span></div>
+      <div class="frame"><button class="resource-link"><i data-lucide="chart-no-axes-combined"></i>学习档案</button><div class="hero"><div class="kicker"><i data-lucide="sparkles"></i>面向 CANN 开发者的个性化学习</div><h2 class="hero-title">学习 CANN，<em>从你的任务开始</em></h2><p class="hero-sub">告诉我你想完成的开发任务，AI 会结合当前基础与可用资源，为你组织一条可实践的学习路径。</p><div class="search"><i data-lucide="search"></i><span>例如：我想在昇腾 NPU 上跑通 Qwen3 推理</span><button>生成路径</button></div><div class="quick"><span>自定义算子开发</span><span>模型迁移到昇腾</span><span>Qwen3 NPU 推理</span></div></div>
+        <div class="section-head"><b class="section-title">为你推荐</b><div class="section-meta"><span class="chip">全部</span><span class="chip">应用开发</span><button class="renew"><i data-lucide="refresh-cw"></i>换一换</button></div></div>
+        <div class="card-grid"><article class="rec-card"><i data-lucide="cpu"></i><span class="tag">典型路径</span><h3>在昇腾 NPU 上运行 Qwen3</h3><p>从环境检查、模型下载到逐 token 推理，完成一次可复现的基线运行。</p><div class="rec-footer"><span>17 个学习节点 · 约 3 小时</span><span class="go"><i data-lucide="arrow-up-right"></i></span></div></article><article class="rec-card"><i data-lucide="braces"></i><span class="tag">算子开发</span><h3>算子开发从入门到精通</h3><p>理解计算逻辑、数据搬运与性能优化的完整开发闭环。</p><div class="rec-footer"><span>28 个学习节点</span><span class="go"><i data-lucide="arrow-up-right"></i></span></div></article><article class="rec-card"><i data-lucide="git-merge"></i><span class="tag">模型迁移</span><h3>PyTorch 模型迁移实践</h3><p>从兼容检查到精度验证，逐步完成模型的昇腾适配。</p><div class="rec-footer"><span>12 个学习节点</span><span class="go"><i data-lucide="arrow-up-right"></i></span></div></article></div>
+        <div class="section-head"><b class="section-title">从典型场景开始</b><span class="section-meta">选择一个场景，生成可执行的学习计划</span></div>
+        <div class="scenarios"><article class="scenario"><i data-lucide="boxes"></i><b>算子开发</b><small>开发、编译与调试自定义算子</small></article><article class="scenario"><i data-lucide="arrow-left-right"></i><b>模型迁移</b><small>将现有模型适配到昇腾</small></article><article class="scenario"><i data-lucide="play"></i><b>模型推理</b><small>完成推理部署与性能验证</small></article><article class="scenario"><i data-lucide="gauge"></i><b>性能调优</b><small>定位训练、推理或算子瓶颈</small></article><article class="scenario"><i data-lucide="sparkles"></i><b>个性定制</b><small>描述你的任务，让 AI 为你规划</small></article></div>
+        <div class="section-head"><b class="section-title">继续学习</b><span class="section-meta">查看全部路径 <i data-lucide="arrow-right"></i></span></div><div class="continue"><span class="continue-icon"><i data-lucide="book-open-check"></i></span><div><b>在昇腾 NPU 上运行 Qwen3</b><p>下一节：检查 torch_npu 与 CANN 环境</p></div><div class="progress"><span></span></div><button>继续学习</button></div>
+      </div>
+    </section>
+    <section class="option immersive">
+      <div class="option-label"><b><span>B</span>沉浸式学习</b><small>更强的首屏任务感，适合聚焦 AI 辅助与个人学习路径</small></div>
+      <div class="site-top"><div class="brand"><span class="brand-mark">升</span>昇腾开发者</div><nav class="nav"><span>主页</span><span>开发</span><span>文档</span><span>活动</span><b>学习</b><span>论坛</span><span>博客</span></nav><span class="profile"><i data-lucide="user-round"></i>个人中心</span></div>
+      <div class="frame"><div class="hero"><div class="kicker"><i data-lucide="sparkles"></i>你的 CANN 学习空间</div><h2 class="hero-title">让每一次学习，<br><span>都从正在解决的问题开始。</span></h2><p class="hero-sub">输入一个任务，获得一条包含真实课程、代码实践与验证步骤的个性化路径。</p><div class="search"><i data-lucide="sparkles"></i><span>我想在昇腾 NPU 上运行 Qwen3</span><button>生成路径</button></div><div class="quick"><span>算子开发</span><span>模型迁移</span><span>推理部署</span><span>性能优化</span></div></div>
+        <div class="section-head"><b class="section-title">为你推荐</b><div class="section-meta"><span class="chip">为你更新</span><button class="renew"><i data-lucide="refresh-cw"></i>换一换</button></div></div>
+        <div class="card-grid"><article class="rec-card"><i data-lucide="cpu"></i><span class="tag">推荐路径</span><h3>在昇腾 NPU 上运行 Qwen3</h3><p>从安装、下载模型到基线测速，带你完成首个 LLM 推理实验。</p><div class="rec-footer"><span>17 个节点 · 3 小时</span><span class="go"><i data-lucide="arrow-up-right"></i></span></div></article><article class="rec-card"><i data-lucide="braces"></i><h3>算子开发从入门到精通</h3><p>掌握 Ascend C 算子开发的关键概念与实践流程。</p><div class="rec-footer"><span>28 个节点</span><span class="go"><i data-lucide="arrow-up-right"></i></span></div></article><article class="rec-card"><i data-lucide="graduation-cap"></i><h3>异构编程基础速成班</h3><p>用一小时建立对昇腾硬件与软件栈的整体认识。</p><div class="rec-footer"><span>9 个节点</span><span class="go"><i data-lucide="arrow-up-right"></i></span></div></article></div>
+        <div class="lower"><div><div class="section-head"><b class="section-title">从典型场景开始</b></div><div class="scenarios"><article class="scenario"><i data-lucide="boxes"></i><b>算子开发</b><small>开发并验证自定义算子</small></article><article class="scenario"><i data-lucide="play"></i><b>模型推理</b><small>部署并加速模型推理</small></article><article class="scenario"><i data-lucide="gauge"></i><b>性能调优</b><small>找到关键性能瓶颈</small></article></div></div><div><div class="section-head"><b class="section-title">继续学习</b></div><div class="continue"><span class="continue-icon"><i data-lucide="book-open-check"></i></span><div><b>在昇腾 NPU 上运行 Qwen3</b><p>第 4 / 17 节 · NPU 环境检查</p></div><div class="progress"><span></span></div><button>继续</button></div></div></div>
+      </div>
+    </section>
+  </main>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
