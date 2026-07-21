@@ -4115,7 +4115,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       if (!query) return;
       _ldGeneratedPlanContext = `你的学习目标「${query}」`;
       sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: '自由输入' }));
-      _aiPathStart(query);
+      _aiPathStart(query, '用户已在输入框明确描述学习任务，请直接生成学习路径，不再追问学习目标。');
       return;
     }
     const query = mode === 'custom'

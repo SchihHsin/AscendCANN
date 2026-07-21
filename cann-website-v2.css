@@ -14,7 +14,7 @@ body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-c
 #page-learn .ld-hero-kicker { display:flex; align-items:center; gap:7px; color:#858c9a; font-size:12px; font-weight:700; }
 #page-learn .ld-hero-kicker svg { width:15px; height:15px; color:#726DD0; stroke-width:1.9; }
 #page-learn .ld-hero-title { margin:12px 0 0; color:#222630; font-size:38px; letter-spacing:-.055em; line-height:1.16; }
-#page-learn .ld-hero-title em { color:#5654bd; font-style:normal; }
+#page-learn .ld-hero-title em { background:linear-gradient(100deg,#3A75EF,#8A6CE9); -webkit-background-clip:text; background-clip:text; color:transparent; font-style:normal; }
 #page-learn .ld-hero-desc { max-width:600px; margin:12px 0 0; color:#747d8d; font-size:14px; line-height:1.65; }
 #page-learn .ld-archive-entry { display:inline-flex; align-items:center; gap:7px; margin:16px 0 0; padding:7px 11px; border-color:rgba(220,223,234,.92); border-radius:18px; background:rgba(255,255,255,.7); color:#566071; backdrop-filter:blur(8px); }
 #page-learn .ld-archive-entry svg { width:14px; height:14px; }
@@ -25,7 +25,7 @@ body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-c
 #page-learn .ld-sec-hd { margin-bottom:16px; }
 #page-learn .ld-sec-title { color:#242831; font-size:20px; letter-spacing:-.04em; }
 #page-learn .ld-cat-chip { border-color:#e1e4ec; background:rgba(255,255,255,.76); color:#6d7587; }
-#page-learn .ld-cat-chip.active { border-color:#595ac0; background:#595ac0; }
+#page-learn .ld-cat-chip.active { border-color:transparent; background:linear-gradient(100deg,#3A75EF,#8A6CE9); color:#fff; }
 #page-learn .ld-refresh-btn { display:inline-flex; align-items:center; gap:5px; margin-left:0; border:0; background:transparent; color:#626b7c; }
 #page-learn .ld-refresh-btn svg { width:14px; height:14px; }
 #page-learn .ld-node-grid { gap:14px; }
