@@ -4375,7 +4375,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const content = document.getElementById('ld-learning-content');
     if (!content) return;
     const video = NODE_VIDEO[node.title] || { title: `${node.title}讲解视频`, duration: '课程视频', tag: '视频学习' };
-    const videoOverlay = `<div class="ld-video-overlay"><span>${node.course || '学习路径'} · ${node.duration || '课程讲解'}</span><strong>${video.title}</strong><small>跟随本节内容理解核心概念，并完成对应实践</small><button class="ld-video-play" type="button" aria-label="播放：${video.title}">▶</button></div>`;
+    const videoOverlay = `<div class="ld-video-overlay"><strong>${video.title}</strong><small>跟随本节内容理解核心概念，并完成对应实践</small><button class="ld-video-play" type="button" aria-label="播放：${video.title}">▶</button></div>`;
     const videoStage = node.title === '算子开发编程基础'
       ? `<div class="ld-video-stage ld-video-cover"><img src="ascend-c-course-cover.png" alt="昇腾异构编程基础课程封面">${videoOverlay}<span class="ld-video-duration">${video.duration}</span></div>`
       : `<div class="ld-video-stage">${videoOverlay}<span class="ld-video-duration">${video.duration}</span></div>`;
