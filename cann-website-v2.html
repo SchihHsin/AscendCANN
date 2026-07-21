@@ -1430,7 +1430,8 @@
       <aside class="ld-path-sidebar" id="v2-path-sidebar">
         <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button onclick="v2SetPathView('list',this)" title="列表视图" aria-label="列表视图"><i data-lucide="list-tree"></i></button><button class="active" onclick="v2SetPathView('map',this)" title="可视化视图" aria-label="可视化视图"><i data-lucide="git-branch"></i></button></div></div>
         <div class="ld-path-nav" id="ld-path-nav"></div>
-        <button class="ld-edit-path-btn" onclick="ldOpenPathEditor()">编辑路径</button>
+        <button class="ld-edit-path-btn" type="button" onclick="ldOpenPathEditor()">编辑路径</button>
+        <button class="ld-ai-edit-path-btn" type="button" onclick="ldOpenAiPathEditor()"><i data-lucide="wand-sparkles" aria-hidden="true"></i>让 AI 调整路径</button>
       </aside>
       <div class="v2-workspace-resizer v2-workspace-resizer-left" id="v2-left-resizer" role="separator" aria-label="调整学习路径宽度" aria-orientation="vertical"></div>
       <main class="ld-learning-content" id="ld-learning-content"></main>
@@ -1655,6 +1656,32 @@
     document.querySelector(selector)?.scrollIntoView({ behavior:'smooth', block:'start' });
     document.querySelectorAll('.v2-doc-toc button').forEach(item => item.classList.remove('active'));
     button?.classList.add('active');
+  }
+
+  // The reading workspace owns its scroll. Hide the two global navigation bars
+  // while moving downward, and bring them back as soon as the user reverses.
+  function v2InitCollapsibleNavigation() {
+    let lastTop = 0;
+    let ticking = false;
+    const sync = top => {
+      const movingDown = top > lastTop + 8;
+      const movingUp = top < lastTop - 4;
+      if (movingDown && top > 24) document.body.classList.add('v2-nav-collapsed');
+      if (movingUp || top < 24) document.body.classList.remove('v2-nav-collapsed');
+      lastTop = top;
+    };
+    const onScroll = event => {
+      const target = event.currentTarget === window ? document.documentElement : event.currentTarget;
+      const top = target.scrollTop || window.scrollY || 0;
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => { sync(top); ticking = false; });
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive:true });
+    ['ld-learning-content', 'v2-path-sidebar', 'ld-study-tools'].forEach(id => {
+      document.getElementById(id)?.addEventListener('scroll', onScroll, { passive:true });
+    });
   }
 
   // The left tab retains the V1 course list; the right tab shows the redesigned
@@ -1890,6 +1917,7 @@
     v2BindWorkspaceResizer('v2-left-resizer', 'left');
     v2BindWorkspaceResizer('v2-right-resizer', 'right');
     v2InitSandboxResizer();
+    v2InitCollapsibleNavigation();
     v2SyncEdgePills();
     window.addEventListener('resize', v2SyncEdgePills);
     window.lucide?.createIcons();

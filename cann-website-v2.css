@@ -5,6 +5,13 @@ body:has(#page-docs.active), body:has(#page-learn.active) { background:#fff; }
 body:has(.ascend-developer-nav) .page { padding-top:92px; }
 body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-community-bar { right:400px; }
 
+/* The global developer chrome yields space to the focused learning workspace. */
+.ascend-community-bar,.ascend-developer-nav { transition:transform .24s ease,opacity .18s ease; }
+body.v2-nav-collapsed .ascend-community-bar { transform:translateY(-30px); opacity:0; pointer-events:none; }
+body.v2-nav-collapsed .ascend-developer-nav { transform:translateY(-92px); opacity:0; pointer-events:none; }
+body.v2-nav-collapsed #page-learn .ld-roadmap { top:0; }
+body.v2-nav-collapsed #page-learn .ld-roadmap-topbar { flex-basis:58px; }
+
 /* Learning home — light community direction. The dashboard keeps its original actions and data. */
 #page-learn .ld-dash { position:relative; max-width:1180px; padding:56px clamp(24px,5vw,72px) 88px; }
 #page-learn .ld-dash::before { position:absolute; z-index:0; top:0; right:0; width:min(780px,76vw); height:440px; background:url('visual-assets/cann-community/learning-card-bg.png') right top/contain no-repeat; content:''; opacity:.8; pointer-events:none; }
@@ -122,6 +129,14 @@ body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-c
 #page-learn .ld-roadmap .ld-tool-tabs { position:relative; z-index:1; flex:0 0 auto; }
 #page-learn .ld-roadmap .ld-tool-panel.active { min-height:0; overflow-y:auto; overscroll-behavior:contain; }
 #page-learn .ld-roadmap .ld-learning-content { height:auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+
+/* Keep the three independently scrolling columns visually quiet. */
+#page-learn .ld-path-sidebar,#page-learn .ld-learning-content,#page-learn .ld-tool-panel.active { scrollbar-width:thin; scrollbar-color:rgba(111,119,136,.38) transparent; }
+#page-learn .ld-path-sidebar::-webkit-scrollbar,#page-learn .ld-learning-content::-webkit-scrollbar,#page-learn .ld-tool-panel.active::-webkit-scrollbar { width:6px; height:6px; }
+#page-learn .ld-path-sidebar::-webkit-scrollbar-track,#page-learn .ld-learning-content::-webkit-scrollbar-track,#page-learn .ld-tool-panel.active::-webkit-scrollbar-track { background:transparent; }
+#page-learn .ld-path-sidebar::-webkit-scrollbar-button,#page-learn .ld-learning-content::-webkit-scrollbar-button,#page-learn .ld-tool-panel.active::-webkit-scrollbar-button { display:none; width:0; height:0; }
+#page-learn .ld-path-sidebar::-webkit-scrollbar-thumb,#page-learn .ld-learning-content::-webkit-scrollbar-thumb,#page-learn .ld-tool-panel.active::-webkit-scrollbar-thumb { border:0; border-radius:99px; background:rgba(111,119,136,.34); }
+#page-learn .ld-path-sidebar:hover::-webkit-scrollbar-thumb,#page-learn .ld-learning-content:hover::-webkit-scrollbar-thumb,#page-learn .ld-tool-panel.active:hover::-webkit-scrollbar-thumb { background:rgba(87,95,111,.5); }
 
 /* HiDevLab reuses the existing drawer but starts at 60% of the viewport and resizes from its top edge. */
 .sandbox-drawer { --v2-sandbox-height:60vh; height:var(--v2-sandbox-height); bottom:calc(-1 * var(--v2-sandbox-height)); }
