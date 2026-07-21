@@ -1682,6 +1682,9 @@
     ['ld-learning-content', 'v2-path-sidebar', 'ld-study-tools'].forEach(id => {
       document.getElementById(id)?.addEventListener('scroll', onScroll, { passive:true });
     });
+    document.querySelectorAll('#ld-study-tools .ld-tool-panel').forEach(panel => {
+      panel.addEventListener('scroll', onScroll, { passive:true });
+    });
   }
 
   // The left tab retains the V1 course list; the right tab shows the redesigned
