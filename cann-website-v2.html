@@ -1695,9 +1695,11 @@
     const nav = document.getElementById('ld-path-nav');
     if (!nav) return;
     if (_ldPathView === 'list') {
+      nav.classList.add('v2-list-mode');
       v2OriginalRenderPathNav();
       return;
     }
+    nav.classList.remove('v2-list-mode');
     nav.classList.remove('map');
     const clusters = [];
     (_ldActivePathNodes || []).forEach((node, index) => {
