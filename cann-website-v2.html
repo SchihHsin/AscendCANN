@@ -644,7 +644,7 @@
       </div>
       <div class="sidebar-section">
         <div class="sidebar-item active" onclick="showDoc('home')" style="font-weight:700;display:flex;align-items:center;gap:8px;">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <i data-lucide="house" aria-hidden="true"></i>
           文档首页
         </div>
       </div>
@@ -696,32 +696,32 @@
         <div class="doc-home-section-label">分类浏览</div>
         <div class="doc-home-grid">
           <div class="doc-home-card" onclick="showDoc('quickstart')">
-            <div class="dhc-icon">🚀</div>
+            <div class="dhc-icon"><i data-lucide="rocket" aria-hidden="true"></i></div>
             <div class="dhc-title">入门 & 安装</div>
             <div class="dhc-desc">快速开始、安装配置、核心概念、架构概览</div>
           </div>
           <div class="doc-home-card" onclick="showDoc('acl-init')">
-            <div class="dhc-icon">⚡</div>
+            <div class="dhc-icon"><i data-lucide="zap" aria-hidden="true"></i></div>
             <div class="dhc-title">AscendCL 编程</div>
             <div class="dhc-desc">设备管理、内存操作、Stream/Context、数据预处理</div>
           </div>
           <div class="doc-home-card" onclick="showDoc('tbe-intro')">
-            <div class="dhc-icon">🔧</div>
+            <div class="dhc-icon"><i data-lucide="wrench" aria-hidden="true"></i></div>
             <div class="dhc-title">算子开发</div>
             <div class="dhc-desc">TBE DSL/TIK 框架、自定义算子开发全流程</div>
           </div>
           <div class="doc-home-card" onclick="showDoc('atc')">
-            <div class="dhc-icon">📊</div>
+            <div class="dhc-icon"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i></div>
             <div class="dhc-title">模型工具</div>
             <div class="dhc-desc">ATC 模型转换、Profiling 性能分析、MsProf 工具</div>
           </div>
           <div class="doc-home-card" onclick="showDoc('hccl')">
-            <div class="dhc-icon">🌐</div>
+            <div class="dhc-icon"><i data-lucide="network" aria-hidden="true"></i></div>
             <div class="dhc-title">分布式</div>
             <div class="dhc-desc">HCCL 集合通信、多卡集群配置与部署</div>
           </div>
           <div class="doc-home-card" onclick="showPage('learn')">
-            <div class="dhc-icon">🎯</div>
+            <div class="dhc-icon"><i data-lucide="graduation-cap" aria-hidden="true"></i></div>
             <div class="dhc-title">学习路径</div>
             <div class="dhc-desc">结构化学习路径，从入门到专家的完整进阶指南</div>
           </div>
@@ -730,7 +730,7 @@
         <div class="doc-home-section-label">热门文档</div>
         <div class="doc-home-quick">
           <div class="dhq-item" onclick="showDoc('quickstart')">
-            <div class="dhq-icon">📄</div>
+            <div class="dhq-icon"><i data-lucide="file-text" aria-hidden="true"></i></div>
             <div class="dhq-info">
               <div class="dhq-title">快速开始：Hello CANN</div>
               <div class="dhq-sub">5 分钟跑通第一个 AscendCL 程序</div>
@@ -738,7 +738,7 @@
             <div class="dhq-arrow">›</div>
           </div>
           <div class="dhq-item" onclick="showDoc('install')">
-            <div class="dhq-icon">⚙️</div>
+            <div class="dhq-icon"><i data-lucide="settings-2" aria-hidden="true"></i></div>
             <div class="dhq-info">
               <div class="dhq-title">安装与配置</div>
               <div class="dhq-sub">驱动、Toolkit 及 Python 绑定安装指南</div>
@@ -746,7 +746,7 @@
             <div class="dhq-arrow">›</div>
           </div>
           <div class="dhq-item" onclick="showDoc('acl-model')">
-            <div class="dhq-icon">🤖</div>
+            <div class="dhq-icon"><i data-lucide="bot" aria-hidden="true"></i></div>
             <div class="dhq-info">
               <div class="dhq-title">模型推理 API</div>
               <div class="dhq-sub">加载 .om 模型并执行离线推理</div>
@@ -754,7 +754,7 @@
             <div class="dhq-arrow">›</div>
           </div>
           <div class="dhq-item" onclick="showDoc('atc')">
-            <div class="dhq-icon">🔄</div>
+            <div class="dhq-icon"><i data-lucide="refresh-cw" aria-hidden="true"></i></div>
             <div class="dhq-info">
               <div class="dhq-title">ATC 模型转换</div>
               <div class="dhq-sub">将 ONNX/Caffe 模型转换为 .om 格式</div>
@@ -762,7 +762,7 @@
             <div class="dhq-arrow">›</div>
           </div>
           <div class="dhq-item" onclick="showDoc('profiling')">
-            <div class="dhq-icon">📈</div>
+            <div class="dhq-icon"><i data-lucide="chart-line" aria-hidden="true"></i></div>
             <div class="dhq-info">
               <div class="dhq-title">性能调优指南</div>
               <div class="dhq-sub">Profiling 分析热点与算子融合优化</div>
@@ -770,7 +770,7 @@
             <div class="dhq-arrow">›</div>
           </div>
           <div class="dhq-item" onclick="showDoc('tbe-dsl')">
-            <div class="dhq-icon">🛠️</div>
+            <div class="dhq-icon"><i data-lucide="hammer" aria-hidden="true"></i></div>
             <div class="dhq-info">
               <div class="dhq-title">TBE DSL 算子开发</div>
               <div class="dhq-sub">用高级 DSL 快速编写自定义算子</div>
@@ -1907,7 +1907,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     const toc = document.createElement('aside');
     toc.className = 'v2-doc-toc';
-    toc.innerHTML = '<strong>本页内容</strong><button class="active" onclick="v2ScrollDoc(\'.doc-title,.doc-home-hero\',this)">概览</button><button onclick="v2ScrollDoc(\'.doc-h2\',this)">核心说明</button><button onclick="v2ScrollDoc(\'.code-block\',this)">调用示例</button><button onclick="openEmptySandbox()">在线实践</button>';
+    toc.innerHTML = '<strong><i data-lucide="list-tree" aria-hidden="true"></i>本页内容</strong><button class="active" onclick="v2ScrollDoc(\'.doc-title,.doc-home-hero\',this)">概览</button><button onclick="v2ScrollDoc(\'.doc-h2\',this)">核心说明</button><button onclick="v2ScrollDoc(\'.code-block\',this)">调用示例</button><button onclick="openEmptySandbox()">在线实践</button>';
     document.querySelector('#page-docs .docs-layout')?.appendChild(toc);
     const initial = location.hash.slice(1);
     if (V2_INITIAL_DIRECT_PATH_ID) {
