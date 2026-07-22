@@ -239,13 +239,6 @@
     sendAiMessage(message);
   }
 
-  function _localDocAiReply(message) {
-    const quoted = message.split('\n\n').slice(1).join('\n\n').replace(/^>\s?/gm, '').trim();
-    const excerpt = quoted || message;
-    const compact = excerpt.replace(/\s+/g, ' ').slice(0, 180);
-    return `**基于当前文档的解读**\n\n${compact}${excerpt.length > 180 ? '…' : ''}\n\n**你可以这样理解：**\n1. 先确认它解决的对象、输入与输出。\n2. 再结合当前代码或配置，核对初始化、资源准备和执行顺序。\n3. 实践时优先用最小示例验证结果，再逐步扩大到完整工程。\n\n远程智能解读暂不可用，已先为你生成基于当前选中内容的本地说明。`;
-  }
-
   // ── AI Path Generation (conversation mode) ──
   let _aiPathMode  = false;
   let _aiPathState = 'idle'; // idle | clarifying | generating | editing
@@ -755,13 +748,10 @@
 - 如有代码示例，用三个反引号包裹并标注语言（如 \`\`\`python）
 - 如果问题超出 CANN 范围，礼貌引导用户回到 CANN 主题`;
 
-    // 4. 调用 AI 接口；演示页在离线或接口超时时仍给出可读的文档解读。
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
+    // 4. 调用远程 AI Worker。回复必须来自远程模型，不使用本地兜底内容。
     fetch(AI_WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
         body: JSON.stringify({
             system: systemPrompt,
             user: msg,
@@ -769,7 +759,6 @@
         })
     })
     .then(response => {
-        clearTimeout(timeout);
         if (!response.ok) throw new Error('API 响应异常: ' + response.status);
         return response.json();
     })
@@ -788,11 +777,8 @@
         container.scrollTop = container.scrollHeight;
     })
     .catch(error => {
-        clearTimeout(timeout);
         console.error('AI Sidebar Error:', error);
-        // Keep the explanation flow usable when the remote demo endpoint is unavailable.
-        loadingDiv.innerHTML = formatFloorText(_localDocAiReply(msg));
-        loadingDiv.classList.add('ai-msg-local-fallback');
+        loadingDiv.innerHTML = '<span style="color:#EF4444;font-size:13px">远程 AI Worker 当前不可用。</span><br><span style="color:var(--text-muted);font-size:11px">' + error.message + '</span>';
         loadingDiv.id = '';
         container.scrollTop = container.scrollHeight;
     });
