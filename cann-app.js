@@ -122,6 +122,12 @@
     else _openSidebar();
   }
 
+  // This control belongs to the floating assistant itself. It must never route
+  // into the learning workspace merely because a roadmap exists elsewhere.
+  function closeAiSidebar() {
+    _closeSidebar();
+  }
+
   function openLearningAi() {
     const roadmap = document.getElementById('ld-roadmap');
     if (roadmap?.style.display !== 'none') {
@@ -227,8 +233,17 @@
 
   function openAiSidebarAndSend(message) {
     const sidebar = document.getElementById('ai-sidebar');
+    // Document explanations are easier to compare with the source in a movable panel.
+    setAiLayout('float');
     if (!sidebar.classList.contains('open')) _openSidebar();
     sendAiMessage(message);
+  }
+
+  function _localDocAiReply(message) {
+    const quoted = message.split('\n\n').slice(1).join('\n\n').replace(/^>\s?/gm, '').trim();
+    const excerpt = quoted || message;
+    const compact = excerpt.replace(/\s+/g, ' ').slice(0, 180);
+    return `**基于当前文档的解读**\n\n${compact}${excerpt.length > 180 ? '…' : ''}\n\n**你可以这样理解：**\n1. 先确认它解决的对象、输入与输出。\n2. 再结合当前代码或配置，核对初始化、资源准备和执行顺序。\n3. 实践时优先用最小示例验证结果，再逐步扩大到完整工程。\n\n远程智能解读暂不可用，已先为你生成基于当前选中内容的本地说明。`;
   }
 
   // ── AI Path Generation (conversation mode) ──
@@ -740,10 +755,13 @@
 - 如有代码示例，用三个反引号包裹并标注语言（如 \`\`\`python）
 - 如果问题超出 CANN 范围，礼貌引导用户回到 CANN 主题`;
 
-    // 4. 调用真实的 AI 接口
+    // 4. 调用 AI 接口；演示页在离线或接口超时时仍给出可读的文档解读。
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
     fetch(AI_WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
             system: systemPrompt,
             user: msg,
@@ -751,6 +769,7 @@
         })
     })
     .then(response => {
+        clearTimeout(timeout);
         if (!response.ok) throw new Error('API 响应异常: ' + response.status);
         return response.json();
     })
@@ -769,9 +788,11 @@
         container.scrollTop = container.scrollHeight;
     })
     .catch(error => {
+        clearTimeout(timeout);
         console.error('AI Sidebar Error:', error);
-        // 更新 loading 消息为错误提示
-        loadingDiv.innerHTML = '<span style="color:#EF4444;font-size:13px">⚠️ 连接失败，请稍后重试。</span><br><span style="color:var(--text-muted);font-size:11px">' + error.message + '</span>';
+        // Keep the explanation flow usable when the remote demo endpoint is unavailable.
+        loadingDiv.innerHTML = formatFloorText(_localDocAiReply(msg));
+        loadingDiv.classList.add('ai-msg-local-fallback');
         loadingDiv.id = '';
         container.scrollTop = container.scrollHeight;
     });
