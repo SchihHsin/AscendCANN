@@ -169,12 +169,27 @@ body.v2-nav-collapsed #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 #page-learn .ld-path-sidebar::-webkit-scrollbar-thumb,#page-learn .ld-learning-content::-webkit-scrollbar-thumb,#page-learn .ld-tool-panel.active::-webkit-scrollbar-thumb { border:0; border-radius:99px; background:rgba(111,119,136,.34); }
 #page-learn .ld-path-sidebar:hover::-webkit-scrollbar-thumb,#page-learn .ld-learning-content:hover::-webkit-scrollbar-thumb,#page-learn .ld-tool-panel.active:hover::-webkit-scrollbar-thumb { background:rgba(87,95,111,.5); }
 
-/* HiDevLab reuses the existing drawer but starts at 60% of the viewport and resizes from its top edge. */
-.sandbox-drawer { --v2-sandbox-height:60vh; height:var(--v2-sandbox-height); bottom:calc(-1 * var(--v2-sandbox-height)); }
-.sandbox-drawer.open { bottom:0; }
+/* HiDevLab shares one notebook instance across bottom, split and focus layouts. */
+.sandbox-drawer { --v2-sandbox-height:60vh; --v2-sandbox-width:48vw; height:var(--v2-sandbox-height); bottom:calc(-1 * var(--v2-sandbox-height)); }
+.sandbox-drawer.v2-dock-bottom.open { bottom:0; }
 .v2-sandbox-resizer { position:absolute; top:-7px; right:0; left:0; z-index:3; display:flex; align-items:center; justify-content:center; height:14px; cursor:ns-resize; touch-action:none; }
 .v2-sandbox-resizer span { width:42px; height:4px; border-radius:4px; background:#B9BFCA; transition:background .15s,width .15s; }
 .v2-sandbox-resizer:hover span,.v2-sandbox-resizer.dragging span { width:54px; background:#6865C5; }
+.v2-sandbox-layout { display:flex; align-items:center; gap:2px; padding:2px; border:1px solid var(--border); border-radius:7px; background:var(--surface2); }
+.v2-sandbox-layout .nb-action-btn { width:26px; height:24px; padding:0; border-radius:4px; color:var(--text-muted); }
+.v2-sandbox-layout .nb-action-btn svg { width:13px; height:13px; }
+.v2-sandbox-layout .nb-action-btn.active { background:#fff; color:var(--black); box-shadow:0 1px 3px rgba(20,24,35,.12); }
+.sandbox-drawer.v2-dock-split { top:92px; right:calc(-1 * var(--v2-sandbox-width)); bottom:0; left:auto; width:var(--v2-sandbox-width); height:auto; border-top:0; border-left:1px solid var(--border); box-shadow:-10px 0 38px rgba(26,31,47,.12); }
+.sandbox-drawer.v2-dock-split.open { right:0; bottom:0; }
+.sandbox-drawer.v2-dock-split .v2-sandbox-resizer { top:0; right:auto; bottom:0; left:-7px; width:14px; height:auto; cursor:ew-resize; }
+.sandbox-drawer.v2-dock-split .v2-sandbox-resizer span { width:4px; height:42px; }
+.sandbox-drawer.v2-dock-split .v2-sandbox-resizer:hover span,.sandbox-drawer.v2-dock-split .v2-sandbox-resizer.dragging span { width:4px; height:54px; }
+.sandbox-drawer.v2-dock-full { top:0; right:0; bottom:auto; left:0; width:100vw; height:100vh; border:0; box-shadow:none; }
+.sandbox-drawer.v2-dock-full.open { bottom:auto; }
+.sandbox-drawer.v2-dock-full .v2-sandbox-resizer { display:none; }
+#page-learn.v2-hidevlab-split .ld-path-workspace { padding-right:var(--v2-sandbox-width); transition:padding-right .4s cubic-bezier(.4,0,.2,1); }
+#page-learn.v2-hidevlab-split .ld-roadmap-topbar { padding-right:calc(var(--v2-sandbox-width) + 24px); transition:padding-right .4s cubic-bezier(.4,0,.2,1); }
+@media (max-width:900px) { .sandbox-drawer.v2-dock-split { width:min(88vw,var(--v2-sandbox-width)); } #page-learn.v2-hidevlab-split .ld-path-workspace,#page-learn.v2-hidevlab-split .ld-roadmap-topbar { padding-right:0; } }
 
 /* Redesigned learning-route map: a timeline, while list mode stays untouched. */
 #page-learn .ld-path-nav.map { display:block; padding:2px 0 20px; }

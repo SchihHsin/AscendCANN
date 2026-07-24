@@ -181,6 +181,11 @@
         <button class="nb-action-btn nb-action-icon" onclick="nbInterrupt()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></button>
         <button class="nb-action-btn nb-action-icon" onclick="nbRestart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
         <button class="nb-action-btn nb-action-icon" onclick="nbSave()" id="btn-nb-save"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg></button>
+        <div class="v2-sandbox-layout" role="group" aria-label="HiDevLab 布局">
+          <button class="nb-action-btn nb-action-icon active" type="button" onclick="v2SetSandboxDock('bottom')" title="底部抽屉" aria-label="底部抽屉" aria-pressed="true" data-v2-sandbox-dock="bottom"><i data-lucide="panel-bottom" aria-hidden="true"></i></button>
+          <button class="nb-action-btn nb-action-icon" type="button" onclick="v2SetSandboxDock('split')" title="右侧分屏" aria-label="右侧分屏" aria-pressed="false" data-v2-sandbox-dock="split"><i data-lucide="columns-2" aria-hidden="true"></i></button>
+          <button class="nb-action-btn nb-action-icon" type="button" onclick="v2SetSandboxDock('full')" title="全屏专注" aria-label="全屏专注" aria-pressed="false" data-v2-sandbox-dock="full"><i data-lucide="maximize-2" aria-hidden="true"></i></button>
+        </div>
         <button class="nb-action-btn nb-action-icon nb-action-close" onclick="closeSandboxDrawer()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
     </div>
@@ -1752,6 +1757,7 @@
   window.ldOpenPathNode = v2OpenPathNode;
 
   const V2_SANDBOX_HEIGHT_KEY = 'cann_v2_hidevlab_height';
+  const V2_SANDBOX_WIDTH_KEY = 'cann_v2_hidevlab_width';
   function v2SetSandboxHeight(height) {
     const drawer = document.getElementById('sandbox-drawer');
     if (!drawer) return;
@@ -1761,17 +1767,32 @@
     drawer.style.setProperty('--v2-sandbox-height', `${nextHeight}px`);
     sessionStorage.setItem(V2_SANDBOX_HEIGHT_KEY, String(nextHeight));
   }
+  function v2SetSandboxWidth(width) {
+    const drawer = document.getElementById('sandbox-drawer');
+    if (!drawer) return;
+    const minWidth = 480;
+    const maxWidth = Math.max(minWidth, Math.round(window.innerWidth * .72));
+    const nextWidth = Math.round(Math.max(minWidth, Math.min(maxWidth, width)));
+    drawer.style.setProperty('--v2-sandbox-width', `${nextWidth}px`);
+    sessionStorage.setItem(V2_SANDBOX_WIDTH_KEY, String(nextWidth));
+  }
   function v2InitSandboxResizer() {
     const drawer = document.getElementById('sandbox-drawer');
     const handle = document.getElementById('v2-sandbox-resizer');
     if (!drawer || !handle) return;
     const saved = Number(sessionStorage.getItem(V2_SANDBOX_HEIGHT_KEY));
     v2SetSandboxHeight(Number.isFinite(saved) && saved > 0 ? saved : window.innerHeight * .6);
+    const savedWidth = Number(sessionStorage.getItem(V2_SANDBOX_WIDTH_KEY));
+    v2SetSandboxWidth(Number.isFinite(savedWidth) && savedWidth > 0 ? savedWidth : window.innerWidth * .48);
     handle.addEventListener('pointerdown', event => {
       event.preventDefault();
       handle.setPointerCapture?.(event.pointerId);
       handle.classList.add('dragging');
-      const move = moveEvent => v2SetSandboxHeight(window.innerHeight - moveEvent.clientY);
+      const move = moveEvent => {
+        const dock = drawer.classList.contains('v2-dock-split') ? 'split' : 'bottom';
+        if (dock === 'split') v2SetSandboxWidth(window.innerWidth - moveEvent.clientX);
+        else v2SetSandboxHeight(window.innerHeight - moveEvent.clientY);
+      };
       const finish = () => {
         handle.classList.remove('dragging');
         window.removeEventListener('pointermove', move);
@@ -1780,6 +1801,46 @@
       window.addEventListener('pointermove', move);
       window.addEventListener('pointerup', finish, { once:true });
     });
+  }
+
+  // The same notebook surface can be docked under the lesson, beside it, or in
+  // full-screen focus mode. Keeping one DOM instance preserves cells and terminal state.
+  const V2_SANDBOX_DOCK_KEY = 'cann_v2_hidevlab_dock';
+  function v2SetSandboxDock(mode) {
+    const validMode = ['bottom', 'split', 'full'].includes(mode) ? mode : 'bottom';
+    const drawer = document.getElementById('sandbox-drawer');
+    const overlay = document.getElementById('sandbox-overlay');
+    const learnPage = document.getElementById('page-learn');
+    if (!drawer || !overlay) return;
+    if (drawer.dataset.v2SandboxDock !== validMode) {
+      drawer.classList.remove('v2-dock-bottom', 'v2-dock-split', 'v2-dock-full');
+      drawer.classList.add(`v2-dock-${validMode}`);
+      drawer.dataset.v2SandboxDock = validMode;
+    }
+    learnPage?.classList.toggle('v2-hidevlab-split', validMode === 'split' && drawer.classList.contains('open'));
+    overlay.classList.toggle('open', drawer.classList.contains('open') && validMode === 'bottom');
+    document.body.style.overflow = drawer.classList.contains('open') && validMode !== 'split' ? 'hidden' : '';
+    document.querySelectorAll('[data-v2-sandbox-dock]').forEach(button => {
+      const active = button.dataset.v2SandboxDock === validMode;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    const handle = document.getElementById('v2-sandbox-resizer');
+    if (handle) handle.setAttribute('aria-orientation', validMode === 'split' ? 'vertical' : 'horizontal');
+    sessionStorage.setItem(V2_SANDBOX_DOCK_KEY, validMode);
+  }
+  function v2InitSandboxDock() {
+    const drawer = document.getElementById('sandbox-drawer');
+    if (!drawer) return;
+    const savedMode = sessionStorage.getItem(V2_SANDBOX_DOCK_KEY);
+    v2SetSandboxDock(savedMode || 'bottom');
+    let wasOpen = drawer.classList.contains('open');
+    new MutationObserver(() => {
+      const isOpen = drawer.classList.contains('open');
+      if (isOpen === wasOpen) return;
+      wasOpen = isOpen;
+      v2SetSandboxDock(drawer.dataset.v2SandboxDock || 'bottom');
+    }).observe(drawer, { attributes:true, attributeFilter:['class'] });
   }
 
   const V2_WORKSPACE_SIZE_KEY = 'cann_v2_learning_workspace_sizes_v2';
@@ -1925,6 +1986,7 @@
     v2BindWorkspaceResizer('v2-left-resizer', 'left');
     v2BindWorkspaceResizer('v2-right-resizer', 'right');
     v2InitSandboxResizer();
+    v2InitSandboxDock();
     v2InitCollapsibleNavigation();
     v2SyncEdgePills();
     window.addEventListener('resize', v2SyncEdgePills);
