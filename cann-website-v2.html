@@ -1769,11 +1769,13 @@
   }
   function v2SetSandboxWidth(width) {
     const drawer = document.getElementById('sandbox-drawer');
+    const learnPage = document.getElementById('page-learn');
     if (!drawer) return;
     const minWidth = 480;
     const maxWidth = Math.max(minWidth, Math.round(window.innerWidth * .72));
     const nextWidth = Math.round(Math.max(minWidth, Math.min(maxWidth, width)));
     drawer.style.setProperty('--v2-sandbox-width', `${nextWidth}px`);
+    learnPage?.style.setProperty('--v2-sandbox-width', `${nextWidth}px`);
     sessionStorage.setItem(V2_SANDBOX_WIDTH_KEY, String(nextWidth));
   }
   function v2InitSandboxResizer() {
