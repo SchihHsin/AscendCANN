@@ -2119,6 +2119,44 @@
     history.replaceState(null, '', `#learn/${pathId}`);
     return true;
   }
+  const V2_ARCHIVE_WIDTH_KEY = 'cann_v2_learning_archive_width';
+  function v2SetArchiveWidth(width) {
+    const drawer = document.getElementById('qb-drawer');
+    if (!drawer) return;
+    const minWidth = 440;
+    const maxWidth = Math.max(minWidth, Math.min(window.innerWidth - 160, window.innerWidth * .82));
+    const nextWidth = Math.round(Math.max(minWidth, Math.min(maxWidth, width)));
+    drawer.style.setProperty('--v2-archive-width', `${nextWidth}px`);
+    sessionStorage.setItem(V2_ARCHIVE_WIDTH_KEY, String(nextWidth));
+  }
+  function v2RestoreArchiveWidth() {
+    const savedWidth = Number(sessionStorage.getItem(V2_ARCHIVE_WIDTH_KEY));
+    if (Number.isFinite(savedWidth) && savedWidth > 0) v2SetArchiveWidth(savedWidth);
+  }
+  function v2InitArchiveResizer() {
+    const drawer = document.getElementById('qb-drawer');
+    const handle = document.getElementById('v2-archive-resizer');
+    if (!drawer || !handle || handle.dataset.bound) return;
+    handle.dataset.bound = 'true';
+    handle.addEventListener('pointerdown', event => {
+      if (event.button !== 0) return;
+      event.preventDefault();
+      const startX = event.clientX;
+      const startWidth = drawer.getBoundingClientRect().width;
+      document.body.classList.add('v2-resizing-archive');
+      handle.setPointerCapture?.(event.pointerId);
+      const resize = moveEvent => v2SetArchiveWidth(startWidth + startX - moveEvent.clientX);
+      const finish = () => {
+        document.body.classList.remove('v2-resizing-archive');
+        window.removeEventListener('pointermove', resize);
+        window.removeEventListener('pointerup', finish);
+        window.removeEventListener('pointercancel', finish);
+      };
+      window.addEventListener('pointermove', resize);
+      window.addEventListener('pointerup', finish, { once:true });
+      window.addEventListener('pointercancel', finish, { once:true });
+    });
+  }
   document.addEventListener('DOMContentLoaded', () => {
     const toc = document.createElement('aside');
     toc.className = 'v2-doc-toc';
@@ -2141,9 +2179,11 @@
     v2BindWorkspaceResizer('v2-right-resizer', 'right');
     v2InitSandboxResizer();
     v2InitSandboxDock();
+    v2RestoreArchiveWidth();
+    v2InitArchiveResizer();
     v2InitCollapsibleNavigation();
     v2SyncEdgePills();
-    window.addEventListener('resize', v2SyncEdgePills);
+    window.addEventListener('resize', () => { v2SyncEdgePills(); v2RestoreArchiveWidth(); });
     window.lucide?.createIcons();
   });
   window.addEventListener('load', () => setTimeout(v2OpenDirectLearningPath, 0));
@@ -2152,6 +2192,7 @@
 <!-- Learning Archive Overlay + Drawer -->
 <div class="qb-overlay" id="qb-overlay" onclick="closeLearningArchive()"></div>
 <div class="qb-drawer" id="qb-drawer">
+  <div class="v2-archive-resizer" id="v2-archive-resizer" role="separator" aria-orientation="vertical" aria-label="拖动调整学习档案宽度" title="拖动调整宽度"></div>
   <div class="qb-header">
     <div class="qb-header-left">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
