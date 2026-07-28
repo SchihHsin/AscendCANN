@@ -1785,7 +1785,7 @@
         return { item, state, related, category, meta, index:archiveNodeIndex++ };
       });
       return { category, meta, categoryIndex, entries };
-    }).filter(group => group.entries.length);
+    }).filter(group => group.entries.length).map((group, visibleIndex) => ({ ...group, categoryIndex:visibleIndex }));
     const nodeWidth = 204;
     const nodeHeight = 62;
     const columnGap = 86;
