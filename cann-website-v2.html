@@ -1926,8 +1926,9 @@
     return v2OriginalOpenLearningAi();
   };
 
-  // Preserve the existing AI, quiz and graph data. Only the graph presentation is
-  // replaced with the four connected knowledge clusters shown in the visual draft.
+  // Preserve the existing AI, quiz and graph data. The visual layer is a stable
+  // left-to-right flow: relationships are expressed between knowledge clusters,
+  // avoiding the unreadable web of individual cross-links.
   const v2OriginalRefreshStudyTools = window.ldRefreshStudyTools;
   window.ldRefreshStudyTools = function(node, knowledge) {
     v2OriginalRefreshStudyTools(node, knowledge);
@@ -1939,15 +1940,20 @@
     const groups = [
       { key:'model', title:'算子建模', subtitle:'定义计算契约' },
       { key:'layout', title:'数据排布', subtitle:'决定访问与计算适配' },
-      { key:'flow', title:'流水优化', subtitle:'隐藏搬运等待' },
-      { key:'scalar', title:'Scalar 访存', subtitle:'控制与数据读写' }
+      { key:'scalar', title:'Scalar 访存', subtitle:'控制与数据读写' },
+      { key:'flow', title:'流水优化', subtitle:'隐藏搬运等待' }
     ];
     const fallback = (knowledge?.concepts || []).map((item, index) => ({
       title:item.term, label:item.term, desc:item.desc, group:groups[index % groups.length].key
     }));
     const nodes = graph?.nodes?.length ? graph.nodes : fallback;
-    const card = item => `<button class="v2-k-node" onclick="ldFocusLearningContent()"><span>${escape(item.label || item.title)}</span><em><b>${escape(item.title || item.label)}</b>${escape(item.desc || '点击回到中间学习内容。')}${item.source ? `<a href="${escape(item.source)}" target="_blank" onclick="event.stopPropagation()">查看官方文档 ↗</a>` : ''}</em></button>`;
-    visual.innerHTML = `<div class="ld-kv-title">${escape(node.title)} · 知识图谱</div><div class="ld-kv-legend">${groups.map(group => `<span class="${group.key}">${group.title}</span>`).join('')}</div><div class="v2-kmap"><svg class="v2-kmap-lines" viewBox="0 0 340 490" aria-hidden="true"><path d="M170 232 C151 194 110 174 76 142"/><path d="M170 232 C189 194 229 174 264 142"/><path d="M170 254 C147 291 108 320 76 350"/><path d="M170 254 C193 291 231 320 264 350"/><path class="v2-kmap-secondary" d="M146 90 C182 112 208 112 244 90"/><path class="v2-kmap-secondary" d="M96 396 C143 370 196 370 244 396"/></svg>${groups.map(group => `<section class="v2-kmap-group ${group.key}"><h4>${group.title}<small>${group.subtitle}</small></h4><div class="v2-kmap-nodes">${nodes.filter(item => item.group === group.key).slice(0, 3).map(card).join('') || `<button class="v2-k-node" onclick="ldFocusLearningContent()">${group.title}</button>`}</div></section>`).join('')}<div class="v2-kmap-center">${escape(node.course || '当前章节')}</div></div><p class="ld-kv-note">四个知识簇通过曲线连接；悬浮节点可查看解释，点击可回到中间内容。</p>`;
+    const concept = item => `<button class="v2-kflow-concept" onclick="ldFocusLearningContent()"><span>${escape(item.label || item.title)}</span><em><b>${escape(item.title || item.label)}</b>${escape(item.desc || '点击回到中间学习内容。')}${item.source ? `<a href="${escape(item.source)}" target="_blank" onclick="event.stopPropagation()">查看官方文档 ↗</a>` : ''}</em></button>`;
+    const flowCards = groups.map((group, index) => {
+      const concepts = nodes.filter(item => item.group === group.key);
+      return `<section class="v2-kflow-card ${group.key}"><div class="v2-kflow-card-head"><span>${String(index + 1).padStart(2, '0')}</span><div><strong>${group.title}</strong><small>${group.subtitle}</small></div><i data-lucide="more-horizontal" aria-hidden="true"></i></div><div class="v2-kflow-concepts">${concepts.length ? concepts.map(concept).join('') : `<button class="v2-kflow-concept" onclick="ldFocusLearningContent()"><span>${group.title}</span></button>`}</div><b class="v2-kflow-port in" aria-hidden="true"></b><b class="v2-kflow-port out" aria-hidden="true"></b></section>`;
+    }).join('');
+    visual.innerHTML = `<div class="ld-kv-title">${escape(node.title)} · 知识图谱</div><div class="v2-kflow-scroll"><div class="v2-kflow"><div class="v2-kflow-start">知识起点</div><svg class="v2-kflow-lines" viewBox="0 0 1370 324" preserveAspectRatio="none" aria-hidden="true"><path d="M18 162 H38 Q52 162 52 176 V188 Q52 202 66 202 H76"/><path d="M328 202 H350 Q364 202 364 188 V176 Q364 162 378 162 H388"/><path d="M640 162 H662 Q676 162 676 176 V188 Q676 202 690 202 H700"/><path d="M952 202 H974 Q988 202 988 188 V176 Q988 162 1002 162 H1012"/><path d="M1264 162 H1292"/></svg>${flowCards}<div class="v2-kflow-end">可执行优化</div></div></div><p class="ld-kv-note">按从左到右的学习顺序组织知识簇；悬浮知识点查看解释，点击可回到中间内容。</p>`;
+    window.lucide?.createIcons();
   };
   function v2DirectLearningPathId() {
     if (V2_INITIAL_DIRECT_PATH_ID) return V2_INITIAL_DIRECT_PATH_ID;
