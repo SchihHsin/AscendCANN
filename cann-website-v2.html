@@ -1775,31 +1775,57 @@
     const nodes = [...nodePaths.keys()].map(title => NODE_LIST.find(item => item.title === title)).filter(Boolean);
     const groups = ['beginner', 'developer', 'operator', 'distributed'];
     const statusText = { done:'已学', current:'学习中', todo:'待学' };
-    const orderedNodes = [];
-    const categoryMarkers = [];
-    groups.forEach(category => {
+    const categoryGroups = groups.map((category, categoryIndex) => {
       const meta = CAT_META[category];
       const groupNodes = nodes.filter(item => item.category === category);
-      if (!groupNodes.length) return;
-      categoryMarkers.push({ category, meta, index:orderedNodes.length, count:groupNodes.length });
-      groupNodes.forEach(item => {
+      const entries = groupNodes.map(item => {
         const state = completed.has(item.title) || (!completed.size && demoDone.has(item.title)) ? 'done' : active.has(item.title) || (!completed.size && demoCurrent.has(item.title)) ? 'current' : 'todo';
         const related = nodePaths.get(item.title) || [];
-        orderedNodes.push({ item, state, related, category, meta });
+        return { item, state, related, category, meta };
       });
+      return { category, meta, categoryIndex, entries };
+    }).filter(group => group.entries.length);
+    const nodeWidth = 204;
+    const nodeHeight = 62;
+    const columnGap = 86;
+    const nodeGap = 18;
+    const firstX = 82;
+    const firstY = 88;
+    const nodeX = column => firstX + column * (nodeWidth + columnGap);
+    const nodeY = row => firstY + row * (nodeHeight + nodeGap);
+    const maxRows = Math.max(1, ...categoryGroups.map(group => group.entries.length));
+    const flowWidth = nodeX(categoryGroups.length) + 48;
+    const flowHeight = nodeY(maxRows - 1) + nodeHeight + 52;
+    const verticalLinks = categoryGroups.flatMap(group => group.entries.slice(1).map((_, row) => {
+      const x = nodeX(group.categoryIndex) + nodeWidth / 2;
+      // Each line terminates at the center of the matching circular port.
+      return `<path d="M${x} ${nodeY(row) + nodeHeight + 1} V${nodeY(row + 1) - 1}"/>`;
+    }));
+    const categoryLinks = categoryGroups.slice(0, -1).flatMap((group, index) => {
+      const next = categoryGroups[index + 1];
+      if (!group.entries.length || !next.entries.length) return [];
+      const x1 = nodeX(group.categoryIndex) + nodeWidth + 1;
+      const y1 = nodeY(group.entries.length - 1) + nodeHeight / 2;
+      const x2 = nodeX(next.categoryIndex) - 1;
+      const y2 = nodeY(0) + nodeHeight / 2;
+      const bend = Math.max(26, (x2 - x1) * .45);
+      return [`<path d="M${x1} ${y1} H${x1 + 18} Q${x1 + bend} ${y1} ${x1 + bend} ${y1 + (y2 - y1) / 2} Q${x1 + bend} ${y2} ${x2 - 18} ${y2} H${x2}"/>`];
     });
-    const nodeWidth = 196;
-    const nodeGap = 58;
-    const nodeLeft = index => 86 + index * (nodeWidth + nodeGap);
-    const flowWidth = Math.max(650, nodeLeft(orderedNodes.length) + 58);
-    const links = orderedNodes.map((_, index) => {
-      const from = index === 0 ? 26 : nodeLeft(index - 1) + nodeWidth;
-      const to = nodeLeft(index);
-      return `<path d="M${from} 198 H${to}"/>`;
-    }).join('') + (orderedNodes.length ? `<path d="M${nodeLeft(orderedNodes.length - 1) + nodeWidth} 198 H${flowWidth - 46}"/>` : '');
-    const markerHtml = categoryMarkers.map(marker => `<div class="v2-archive-category-marker" style="left:${nodeLeft(marker.index)}px;--archive-color:${marker.meta.color}"><i></i><strong>${marker.meta.label}</strong><small>${marker.count} 个节点</small></div>`).join('');
-    const cards = orderedNodes.map((entry, index) => `<button class="v2-archive-node-flow-card ${entry.state}" style="left:${nodeLeft(index)}px;--archive-color:${entry.meta.color}" onclick="ldStartNode('${entry.item.title}')" title="来自：${entry.related.join('、')}"><span class="v2-archive-node-order">${String(index + 1).padStart(2, '0')}</span><strong>${entry.item.title}</strong><small>关联 ${entry.related.length} 条路径</small><em>${statusText[entry.state]}</em><b class="v2-archive-node-port in" aria-hidden="true"></b><b class="v2-archive-node-port out" aria-hidden="true"></b></button>`).join('');
-    panel.innerHTML = `<div class="v2-archive-map-desc">汇总所有学习路径中的知识节点。每张卡为一个知识节点，连线表示推荐的学习顺序；分类仅用于标识知识方向。</div><div class="v2-archive-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><div class="v2-archive-flow-scroll"><div class="v2-archive-node-flow" style="width:${flowWidth}px"><div class="v2-archive-flow-label start">学习起点</div><svg class="v2-archive-flow-lines" viewBox="0 0 ${flowWidth} 330" preserveAspectRatio="none" aria-hidden="true">${links}</svg>${markerHtml}${cards}<div class="v2-archive-flow-label end">持续进阶</div></div></div>`;
+    const firstGroup = categoryGroups.find(group => group.entries.length);
+    const startLink = firstGroup ? `<path d="M30 ${nodeY(0) + nodeHeight / 2} H${nodeX(firstGroup.categoryIndex) - 1}"/>` : '';
+    const markerHtml = categoryGroups.map(group => `<div class="v2-archive-category-marker" style="left:${nodeX(group.categoryIndex)}px;--archive-color:${group.meta.color}"><i></i><strong>${group.meta.label}</strong><small>${group.entries.length} 个节点</small></div>`).join('');
+    const cards = categoryGroups.flatMap((group, groupIndex) => group.entries.map((entry, row) => {
+      const firstNode = groupIndex === 0 && row === 0;
+      const lastNode = groupIndex === categoryGroups.length - 1 && row === group.entries.length - 1;
+      const ports = [
+        row > 0 ? '<b class="v2-archive-node-port top" aria-hidden="true"></b>' : '',
+        row < group.entries.length - 1 ? '<b class="v2-archive-node-port bottom" aria-hidden="true"></b>' : '',
+        (groupIndex > 0 && row === 0) || firstNode ? '<b class="v2-archive-node-port left" aria-hidden="true"></b>' : '',
+        (groupIndex < categoryGroups.length - 1 && row === group.entries.length - 1) || lastNode ? '<b class="v2-archive-node-port right" aria-hidden="true"></b>' : ''
+      ].join('');
+      return `<button class="v2-archive-node-flow-card ${entry.state}" style="left:${nodeX(group.categoryIndex)}px;top:${nodeY(row)}px;--archive-color:${entry.meta.color}" onclick="ldStartNode('${entry.item.title}')" title="来自：${entry.related.join('、')}"><strong>${entry.item.title}</strong><small>关联 ${entry.related.length} 条路径</small><em>${statusText[entry.state]}</em>${ports}</button>`;
+    }));
+    panel.innerHTML = `<div class="v2-archive-map-desc">汇总所有学习路径中的知识节点。分类横向并列，分类内节点按推荐顺序纵向连接；点击节点可直接进入对应学习内容。</div><div class="v2-archive-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><div class="v2-archive-flow-scroll"><div class="v2-archive-node-flow" style="width:${flowWidth}px;height:${flowHeight}px"><div class="v2-archive-flow-label start" style="top:${nodeY(0) + 9}px">学习起点</div><svg class="v2-archive-flow-lines" viewBox="0 0 ${flowWidth} ${flowHeight}" preserveAspectRatio="none" aria-hidden="true">${startLink}${verticalLinks.join('')}${categoryLinks.join('')}</svg>${markerHtml}${cards.join('')}<div class="v2-archive-flow-label end" style="top:${nodeY(0) + 9}px">持续进阶</div></div></div>`;
     window.lucide?.createIcons();
   };
 
