@@ -1757,7 +1757,8 @@
   window.ldOpenPathNode = v2OpenPathNode;
 
   // The archive keeps category labels, but renders the actual learning nodes as
-  // the connected flow. This makes each dependency visible without a line mesh.
+  // Categories provide orientation only. Lines are drawn exclusively for a
+  // documented prerequisite or an application relationship between two nodes.
   const v2OriginalRenderLearningMap = window.renderLearningMap;
   window.renderLearningMap = function() {
     const panel = document.getElementById('la-panel-map');
@@ -1797,37 +1798,89 @@
     const maxRows = Math.max(1, ...categoryGroups.map(group => group.entries.length));
     const flowWidth = nodeX(categoryGroups.length) + 48;
     const flowHeight = nodeY(maxRows - 1) + nodeHeight + 52;
-    const verticalLinks = categoryGroups.flatMap(group => group.entries.slice(1).map((entry, row) => {
-      const x = nodeX(group.categoryIndex) + nodeWidth / 2;
-      // Each line terminates at the center of the matching circular port.
-      const previous = group.entries[row];
-      return `<path class="v2-archive-flow-link" data-from="${previous.index}" data-from-port="bottom" data-to="${entry.index}" data-to-port="top" d="M${x} ${nodeY(row) + nodeHeight + 1} V${nodeY(row + 1) - 1}"/>`;
-    }));
-    const categoryLinks = categoryGroups.slice(0, -1).flatMap((group, index) => {
-      const next = categoryGroups[index + 1];
-      if (!group.entries.length || !next.entries.length) return [];
-      const x1 = nodeX(group.categoryIndex) + nodeWidth + 1;
-      const y1 = nodeY(group.entries.length - 1) + nodeHeight / 2;
-      const x2 = nodeX(next.categoryIndex) - 1;
-      const y2 = nodeY(0) + nodeHeight / 2;
-      const bend = Math.max(26, (x2 - x1) * .45);
-      return [`<path class="v2-archive-flow-link" data-from="${group.entries[group.entries.length - 1].index}" data-from-port="right" data-to="${next.entries[0].index}" data-to-port="left" d="M${x1} ${y1} H${x1 + 18} Q${x1 + bend} ${y1} ${x1 + bend} ${y1 + (y2 - y1) / 2} Q${x1 + bend} ${y2} ${x2 - 18} ${y2} H${x2}"/>`];
+    const entriesByTitle = new Map(categoryGroups.flatMap(group => group.entries.map((entry, row) => [entry.item.title, { ...entry, row, column:group.categoryIndex }])));
+    // This is deliberately a knowledge graph, not a copy of any course's
+    // chapter order. Keep edges at the level of actual prerequisites or use.
+    const knowledgeEdges = [
+      ['昇腾硬件架构介绍', 'CANN软件包结构'],
+      ['昇腾硬件架构介绍', '异构架构与Ascend C定位'],
+      ['CANN软件包结构', '算子开发编程基础'],
+      ['CANN软件包结构', '昇腾 NPU 与 torch_npu'],
+      ['算子开发编程基础', '算子开发编程范式'],
+      ['算子开发编程基础', '什么是算子'],
+      ['算子开发编程基础', '什么是Ascend C'],
+      ['异构架构与Ascend C定位', 'Ascend C编程基础'],
+      ['什么是Ascend C', 'Ascend C编程基础'],
+      ['Ascend C编程基础', '算子开发流程与环境搭建'],
+      ['算子开发流程与环境搭建', '算子开发初体验'],
+      ['算子开发初体验', '一个Add算子的前世今生'],
+      ['一个Add算子的前世今生', 'Host侧实现'],
+      ['一个Add算子的前世今生', '算子开发工程'],
+      ['Host侧实现', 'API调用解读'],
+      ['算子开发工程', '算子设计与代码实现'],
+      ['算子设计与代码实现', '随堂实操练习'],
+      ['算子开发编程范式', '昇腾平台仿真分析'],
+      ['昇腾平台仿真分析', '自定义算子性能评估'],
+      ['自定义算子性能评估', '自定义算子性能优化'],
+      ['自定义算子性能优化', '融合算子'],
+      ['融合算子', '性能优化（理论）'],
+      ['AI 与大模型基础', 'PyTorch 与张量基础'],
+      ['PyTorch 与张量基础', '昇腾 NPU 与 torch_npu'],
+      ['昇腾 NPU 与 torch_npu', '检查昇腾 NPU 环境'],
+      ['检查昇腾 NPU 环境', '加载分词器与 Qwen3 模型'],
+      ['下载 Qwen3-0.6B 模型', '加载分词器与 Qwen3 模型'],
+      ['加载分词器与 Qwen3 模型', '体验 Tokenizer 编码与解码'],
+      ['大模型推理核心组件', '体验 Tokenizer 编码与解码'],
+      ['体验 Tokenizer 编码与解码', '手写逐 Token 推理循环'],
+      ['手写逐 Token 推理循环', '测量 Qwen3 推理基线速度'],
+      ['测量 Qwen3 推理基线速度', '验证融合算子加速效果'],
+      ['替换 Qwen3 RMSNorm 融合算子', '验证融合算子加速效果'],
+      ['验证融合算子加速效果', '扩展 RoPE 与图模式推理'],
+      ['多机多卡系统', '异构编程实践']
+    ].map(([fromTitle, toTitle]) => ({ from:entriesByTitle.get(fromTitle), to:entriesByTitle.get(toTitle) })).filter(edge => edge.from && edge.to);
+    const portFor = (entry, port) => {
+      const x = nodeX(entry.column), y = nodeY(entry.row);
+      if (port === 'top') return [x + nodeWidth / 2, y - 1];
+      if (port === 'bottom') return [x + nodeWidth / 2, y + nodeHeight + 1];
+      if (port === 'left') return [x - 1, y + nodeHeight / 2];
+      return [x + nodeWidth + 1, y + nodeHeight / 2];
+    };
+    const relationLinks = knowledgeEdges.map(({ from, to }) => {
+      const dx = to.column - from.column;
+      const dy = to.row - from.row;
+      const horizontal = Math.abs(dx) > 0;
+      const fromPort = horizontal ? (dx > 0 ? 'right' : 'left') : (dy >= 0 ? 'bottom' : 'top');
+      const toPort = horizontal ? (dx > 0 ? 'left' : 'right') : (dy >= 0 ? 'top' : 'bottom');
+      const [x1, y1] = portFor(from, fromPort);
+      const [x2, y2] = portFor(to, toPort);
+      const distance = horizontal ? Math.max(30, Math.abs(x2 - x1) * .42) : Math.max(28, Math.abs(y2 - y1) * .42);
+      const c1x = horizontal ? x1 + (dx > 0 ? distance : -distance) : x1;
+      const c1y = horizontal ? y1 : y1 + (dy >= 0 ? distance : -distance);
+      const c2x = horizontal ? x2 - (dx > 0 ? distance : -distance) : x2;
+      const c2y = horizontal ? y2 : y2 - (dy >= 0 ? distance : -distance);
+      return `<path class="v2-archive-flow-link" data-from="${from.index}" data-from-port="${fromPort}" data-to="${to.index}" data-to-port="${toPort}" d="M${x1} ${y1} C${c1x} ${c1y},${c2x} ${c2y},${x2} ${y2}"/>`;
     });
-    const firstGroup = categoryGroups.find(group => group.entries.length);
-    const startLink = firstGroup ? `<path class="v2-archive-flow-link" data-from="start" data-to="${firstGroup.entries[0].index}" data-to-port="left" d="M30 ${nodeY(0) + nodeHeight / 2} H${nodeX(firstGroup.categoryIndex) - 1}"/>` : '';
+    const connectedPorts = new Map();
+    knowledgeEdges.forEach(({ from, to }) => {
+      const horizontal = from.column !== to.column;
+      const fromPort = horizontal ? (to.column > from.column ? 'right' : 'left') : (to.row >= from.row ? 'bottom' : 'top');
+      const toPort = horizontal ? (to.column > from.column ? 'left' : 'right') : (to.row >= from.row ? 'top' : 'bottom');
+      [from, to].forEach(entry => { if (!connectedPorts.has(entry.index)) connectedPorts.set(entry.index, new Set()); });
+      connectedPorts.get(from.index).add(fromPort);
+      connectedPorts.get(to.index).add(toPort);
+    });
     const markerHtml = categoryGroups.map(group => `<div class="v2-archive-category-marker" style="left:${nodeX(group.categoryIndex)}px;--archive-color:${group.meta.color}"><i></i><strong>${group.meta.label}</strong><small>${group.entries.length} 个节点</small></div>`).join('');
-    const cards = categoryGroups.flatMap((group, groupIndex) => group.entries.map((entry, row) => {
-      const firstNode = groupIndex === 0 && row === 0;
-      const lastNode = groupIndex === categoryGroups.length - 1 && row === group.entries.length - 1;
+    const cards = categoryGroups.flatMap(group => group.entries.map((entry, row) => {
+      const nodePorts = connectedPorts.get(entry.index) || new Set();
       const ports = [
-        row > 0 ? '<b class="v2-archive-node-port top" aria-hidden="true"></b>' : '',
-        row < group.entries.length - 1 ? '<b class="v2-archive-node-port bottom" aria-hidden="true"></b>' : '',
-        (groupIndex > 0 && row === 0) || firstNode ? '<b class="v2-archive-node-port left" aria-hidden="true"></b>' : '',
-        (groupIndex < categoryGroups.length - 1 && row === group.entries.length - 1) || lastNode ? '<b class="v2-archive-node-port right" aria-hidden="true"></b>' : ''
+        nodePorts.has('top') ? '<b class="v2-archive-node-port top" aria-hidden="true"></b>' : '',
+        nodePorts.has('bottom') ? '<b class="v2-archive-node-port bottom" aria-hidden="true"></b>' : '',
+        nodePorts.has('left') ? '<b class="v2-archive-node-port left" aria-hidden="true"></b>' : '',
+        nodePorts.has('right') ? '<b class="v2-archive-node-port right" aria-hidden="true"></b>' : ''
       ].join('');
       return `<button class="v2-archive-node-flow-card ${entry.state}" data-archive-node="${entry.index}" style="left:${nodeX(group.categoryIndex)}px;top:${nodeY(row)}px;--archive-color:${entry.meta.color}" onclick="ldStartNode('${entry.item.title}')" onmouseenter="v2ArchiveHighlightNode(${entry.index})" onmouseleave="v2ArchiveClearHighlight()" onfocus="v2ArchiveHighlightNode(${entry.index})" onblur="v2ArchiveClearHighlight()" title="来自：${entry.related.join('、')}"><strong>${entry.item.title}</strong><small>关联 ${entry.related.length} 条路径</small><em>${statusText[entry.state]}</em>${ports}</button>`;
     }));
-    panel.innerHTML = `<div class="v2-archive-map-desc">汇总所有学习路径中的知识节点。分类横向并列，分类内节点按推荐顺序纵向连接；点击节点可直接进入对应学习内容。</div><div class="v2-archive-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><div class="v2-archive-flow-scroll"><div class="v2-archive-node-flow" style="width:${flowWidth}px;height:${flowHeight}px"><div class="v2-archive-flow-label start" style="top:${nodeY(0) + 9}px">学习起点</div><svg class="v2-archive-flow-lines" viewBox="0 0 ${flowWidth} ${flowHeight}" preserveAspectRatio="none" aria-hidden="true">${startLink}${verticalLinks.join('')}${categoryLinks.join('')}</svg>${markerHtml}${cards.join('')}<div class="v2-archive-flow-label end" style="top:${nodeY(0) + 9}px">持续进阶</div></div></div>`;
+    panel.innerHTML = `<div class="v2-archive-map-desc">汇总所有学习路径中的知识节点。分类仅用于浏览，连线表示节点之间的知识依赖或应用关联；点击节点可直接进入对应学习内容。</div><div class="v2-archive-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><div class="v2-archive-flow-scroll"><div class="v2-archive-node-flow" style="width:${flowWidth}px;height:${flowHeight}px"><svg class="v2-archive-flow-lines" viewBox="0 0 ${flowWidth} ${flowHeight}" preserveAspectRatio="none" aria-hidden="true">${relationLinks.join('')}</svg>${markerHtml}${cards.join('')}</div></div>`;
     window.lucide?.createIcons();
   };
   window.v2ArchiveHighlightNode = function(index) {
