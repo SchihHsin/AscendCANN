@@ -1756,6 +1756,39 @@
   };
   window.ldOpenPathNode = v2OpenPathNode;
 
+  // The archive is a global overview, so it uses category-level flow links
+  // instead of the dense node-to-node dependency mesh used by the old view.
+  const v2OriginalRenderLearningMap = window.renderLearningMap;
+  window.renderLearningMap = function() {
+    const panel = document.getElementById('la-panel-map');
+    if (!panel) return;
+    const paths = customPaths.length ? customPaths : samplePaths;
+    const completed = new Set(JSON.parse(localStorage.getItem(LEARN_STATE_KEY) || '[]'));
+    const active = new Set((_ldActivePathNodes || []).map(node => node.title));
+    const demoDone = new Set(['昇腾硬件体系', 'CANN 软件栈概览']);
+    const demoCurrent = new Set(['环境安装与配置']);
+    const nodePaths = new Map();
+    paths.forEach(path => (path.nodeList || []).forEach(item => {
+      if (!nodePaths.has(item.title)) nodePaths.set(item.title, []);
+      nodePaths.get(item.title).push(path.name);
+    }));
+    const nodes = [...nodePaths.keys()].map(title => NODE_LIST.find(item => item.title === title)).filter(Boolean);
+    const groups = ['beginner', 'developer', 'operator', 'distributed'];
+    const statusText = { done:'已学', current:'学习中', todo:'待学' };
+    const cards = groups.map((category, index) => {
+      const meta = CAT_META[category];
+      const groupNodes = nodes.filter(item => item.category === category);
+      const rows = groupNodes.length ? groupNodes.map(item => {
+        const state = completed.has(item.title) || (!completed.size && demoDone.has(item.title)) ? 'done' : active.has(item.title) || (!completed.size && demoCurrent.has(item.title)) ? 'current' : 'todo';
+        const related = nodePaths.get(item.title) || [];
+        return `<button class="v2-archive-flow-node ${state}" onclick="ldStartNode('${item.title}')" title="来自：${related.join('、')}"><strong>${item.title}</strong><small>关联 ${related.length} 条路径</small><span>${statusText[state]}</span></button>`;
+      }).join('') : '<div class="v2-archive-flow-empty">尚未接触此类知识</div>';
+      return `<section class="v2-archive-flow-card ${category}" style="--archive-color:${meta.color}"><div class="v2-archive-flow-head"><span>${String(index + 1).padStart(2, '0')}</span><div><strong>${meta.label}</strong><small>${groupNodes.length} 个知识节点</small></div><i data-lucide="more-horizontal" aria-hidden="true"></i></div><div class="v2-archive-flow-list">${rows}</div><b class="v2-archive-flow-port in" aria-hidden="true"></b><b class="v2-archive-flow-port out" aria-hidden="true"></b></section>`;
+    }).join('');
+    panel.innerHTML = `<div class="v2-archive-map-desc">汇总所有学习路径中的知识节点，按学习脉络从左到右串联。点击节点可直接进入对应学习内容。</div><div class="v2-archive-map-legend"><span class="done">已学</span><span class="current">学习中</span><span class="todo">待学</span></div><div class="v2-archive-flow-scroll"><div class="v2-archive-flow"><div class="v2-archive-flow-label start">学习起点</div><svg class="v2-archive-flow-lines" viewBox="0 0 1480 430" preserveAspectRatio="none" aria-hidden="true"><path d="M28 215 H62 Q76 215 76 229 V241 Q76 255 90 255 H98"/><path d="M374 255 H392 Q406 255 406 241 V229 Q406 215 420 215 H428"/><path d="M704 215 H722 Q736 215 736 229 V241 Q736 255 750 255 H758"/><path d="M1034 255 H1052 Q1066 255 1066 241 V229 Q1066 215 1080 215 H1088"/><path d="M1364 215 H1422"/></svg>${cards}<div class="v2-archive-flow-label end">持续进阶</div></div></div>`;
+    window.lucide?.createIcons();
+  };
+
   const V2_SANDBOX_HEIGHT_KEY = 'cann_v2_hidevlab_height';
   const V2_SANDBOX_WIDTH_KEY = 'cann_v2_hidevlab_width';
   function v2SetSandboxHeight(height) {
