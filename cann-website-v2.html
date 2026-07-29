@@ -1442,11 +1442,6 @@
       <main class="ld-learning-content" id="ld-learning-content"></main>
       <aside class="ld-study-tools" id="ld-study-tools">
         <div class="v2-tool-float-head"><span><i data-lucide="bot" aria-hidden="true"></i><strong>AI 助手</strong></span><button type="button" onclick="v2CloseToolFloat()" aria-label="关闭工具窗口"><i data-lucide="x"></i></button></div>
-        <div class="ld-tool-tabs">
-          <button class="active" data-v2-tool="ai" onclick="ldSwitchTool('ai',this)">AI 助手</button>
-          <button data-v2-tool="visual" onclick="ldSwitchTool('visual',this)">知识图谱</button>
-          <button data-v2-tool="quiz" onclick="ldSwitchTool('quiz',this)">随堂测验</button>
-        </div>
         <div class="ld-tool-panel active" id="ld-tool-ai">
           <div class="ld-tool-context" id="ld-ai-context">正在学习当前节点</div>
           <div class="ld-tool-chat" id="ld-tool-chat"><div class="ld-tool-msg">可以针对当前知识点提问，或让我提供代码示例。</div></div>
@@ -2057,12 +2052,11 @@
     visual:{ title:'知识图谱', icon:'network' },
     quiz:{ title:'随堂测验', icon:'circle-help' }
   };
-  function v2OpenToolFloat(name) {
+  window.v2OpenToolFloat = function v2OpenToolFloat(name) {
     const workspace = v2Workspace();
     const meta = V2_TOOL_FLOAT_META[name];
     if (!workspace || !meta) return;
-    const tab = workspace.querySelector(`.ld-tool-tabs [data-v2-tool="${name}"]`);
-    if (tab) ldSwitchTool(name, tab);
+    ldSwitchTool(name);
     workspace.classList.add('v2-right-collapsed', 'ld-tools-collapsed', 'v2-tool-float-open');
     workspace.querySelectorAll('[data-v2-tool-fab]').forEach(button => button.classList.toggle('active', button.dataset.v2ToolFab === name));
     const title = workspace.querySelector('.v2-tool-float-head strong');
@@ -2073,7 +2067,7 @@
       window.lucide?.createIcons();
     }
     if (name === 'ai') setTimeout(() => document.getElementById('ld-tool-ai-input')?.focus(), 0);
-  }
+  };
   function v2CloseToolFloat() {
     const workspace = v2Workspace();
     if (!workspace) return;

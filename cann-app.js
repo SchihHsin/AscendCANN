@@ -132,17 +132,8 @@
     const roadmap = document.getElementById('ld-roadmap');
     if (roadmap?.style.display !== 'none') {
       _closeSidebar();
-      const workspace = document.getElementById('ld-path-workspace');
-      const aiTab = [...document.querySelectorAll('.ld-tool-tabs button')].find(button => button.textContent.trim() === 'AI 助手');
-      const aiIsActive = aiTab?.classList.contains('active');
-      if (workspace?.classList.contains('ld-tools-collapsed')) {
-        workspace.classList.remove('ld-tools-collapsed');
-      } else if (aiIsActive) {
-        workspace?.classList.add('ld-tools-collapsed');
-        return;
-      }
-      if (aiTab) ldSwitchTool('ai', aiTab);
-      setTimeout(() => document.getElementById('ld-tool-ai-input')?.focus(), 0);
+      // The learning workspace now exposes each tool through its own FAB.
+      if (typeof window.v2OpenToolFloat === 'function') window.v2OpenToolFloat('ai');
       return;
     }
     toggleAiChat();
@@ -4528,8 +4519,9 @@ def vector_add_tik(shape, dtype, kernel_name):
   }
 
   function ldSwitchTool(name, button) {
-    document.querySelectorAll('.ld-tool-tabs button').forEach(item => item.classList.toggle('active', item === button));
-    document.querySelectorAll('.ld-tool-panel').forEach(panel => panel.classList.toggle('active', panel.id === `ld-tool-${name}`));
+    const tools = button?.closest('.ld-study-tools') || document.getElementById('ld-study-tools') || document;
+    tools.querySelectorAll('.ld-tool-tabs button').forEach(item => item.classList.toggle('active', item === button));
+    tools.querySelectorAll('.ld-tool-panel').forEach(panel => panel.classList.toggle('active', panel.id === `ld-tool-${name}`));
     if (name === 'quiz') ldLoadEmbeddedQuiz();
   }
 
