@@ -311,3 +311,8 @@ body.v2-nav-collapsed #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 .v2-archive-resizer:hover::after,.v2-resizing-archive .v2-archive-resizer::after { opacity:1; background:rgba(46,83,250,.7); }
 body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!important; user-select:none!important; }
 @media(max-width:760px){.qb-drawer{width:100%;right:-100%}.v2-archive-resizer{display:none}}
+
+/* Preserve the supplied HiDevLab mark's native wide proportion in every dock layout. */
+.nb-brand { gap:0; }
+.nb-brand > img { display:block; width:auto; height:22px; max-width:118px; object-fit:contain; object-position:left center; }
+.sandbox-drawer.v2-dock-split .nb-brand > img { height:19px; max-width:98px; }
