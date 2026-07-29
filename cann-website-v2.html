@@ -1971,9 +1971,11 @@
       drawer.classList.add(`v2-dock-${validMode}`);
       drawer.dataset.v2SandboxDock = validMode;
     }
-    learnPage?.classList.toggle('v2-hidevlab-split', validMode === 'split' && drawer.classList.contains('open'));
-    overlay.classList.toggle('open', drawer.classList.contains('open') && validMode === 'bottom');
-    document.body.style.overflow = drawer.classList.contains('open') && validMode !== 'split' ? 'hidden' : '';
+    const isOpen = drawer.classList.contains('open');
+    learnPage?.classList.toggle('v2-hidevlab-split', validMode === 'split' && isOpen);
+    document.body.classList.toggle('v2-hidevlab-open', isOpen);
+    overlay.classList.toggle('open', isOpen && validMode === 'bottom');
+    document.body.style.overflow = isOpen && validMode !== 'split' ? 'hidden' : '';
     document.querySelectorAll('[data-v2-sandbox-dock]').forEach(button => {
       const active = button.dataset.v2SandboxDock === validMode;
       button.classList.toggle('active', active);

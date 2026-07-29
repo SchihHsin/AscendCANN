@@ -954,3 +954,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修复 HiDevLab 右侧分屏拖拽只改变实验区、不改变学习内容宽度的问题：分屏打开时，整个 `ld-roadmap` 的右边界由 HiDevLab 当前宽度占位，路径工作区、顶栏和中间正文的实际可用宽度都会随拖拽同步变化；900px 以下仍退回覆盖式分屏，避免将正文压缩到不可读。
 - HiDevLab 顶部 Logo 统一为 36px 高、最大 176px 宽，底部抽屉、右侧分屏和全屏专注均使用同一尺寸；移除曾为分屏保留的缩小覆盖，因为三种布局的顶部栏高度一致。
 - 学习路径详情在未打开 HiDevLab 时改为默认“左侧学习路径 + 中间正文”两栏：右侧 AI 助手、知识图谱、随堂测验不再常驻占用一栏，而是作为右侧三枚 Lucide FAB 按需唤醒；每次只打开一个独立浮窗，沿用原有工具数据、当前节点上下文和交互。左侧路径收起后改为左侧 `route` FAB，点击以独立路径浮窗展开。HiDevLab 右侧分屏时继续隐藏这些 FAB / 浮窗，避免与实验区争夺空间。
+- HiDevLab 打开态进入专注工作区：自动收起 Ascend Community Bar 和 Ascend Developer Nav，学习路径的 `ld-roadmap-topbar` 紧贴视口顶部；右侧分屏的实验区同步从该 58px 顶栏下开始，关闭 HiDevLab 后恢复全局导航。

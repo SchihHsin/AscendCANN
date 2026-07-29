@@ -11,6 +11,11 @@ body.v2-nav-collapsed .ascend-community-bar { transform:translateY(-30px); opaci
 body.v2-nav-collapsed .ascend-developer-nav { transform:translateY(-92px); opacity:0; pointer-events:none; }
 body.v2-nav-collapsed #page-learn .ld-roadmap { top:0; }
 body.v2-nav-collapsed #page-learn .ld-roadmap-topbar { flex-basis:58px; }
+/* A running lab is a focused workspace: retain only the lesson topbar above it. */
+body.v2-hidevlab-open .ascend-community-bar { transform:translateY(-30px); opacity:0; pointer-events:none; }
+body.v2-hidevlab-open .ascend-developer-nav { transform:translateY(-92px); opacity:0; pointer-events:none; }
+body.v2-hidevlab-open #page-learn .ld-roadmap { top:0; }
+body.v2-hidevlab-open #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 
 /* Learning home — light community direction. The dashboard keeps its original actions and data. */
 #page-learn .ld-dash { position:relative; max-width:1180px; padding:56px clamp(24px,5vw,72px) 88px; }
@@ -180,6 +185,7 @@ body.v2-nav-collapsed #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 .v2-sandbox-layout .nb-action-btn svg { width:13px; height:13px; }
 .v2-sandbox-layout .nb-action-btn.active { background:#fff; color:var(--black); box-shadow:0 1px 3px rgba(20,24,35,.12); }
 .sandbox-drawer.v2-dock-split { top:92px; right:calc(-1 * var(--v2-sandbox-width)); bottom:0; left:auto; width:var(--v2-sandbox-width); height:auto; border-top:0; border-left:1px solid var(--border); box-shadow:-10px 0 38px rgba(26,31,47,.12); }
+body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 .sandbox-drawer.v2-dock-split.open { right:0; bottom:0; }
 .sandbox-drawer.v2-dock-split .v2-sandbox-resizer { top:0; right:auto; bottom:0; left:-7px; width:14px; height:auto; cursor:ew-resize; }
 .sandbox-drawer.v2-dock-split .v2-sandbox-resizer span { width:4px; height:42px; }
