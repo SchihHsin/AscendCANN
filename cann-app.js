@@ -1392,7 +1392,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       summary:'这不是通用的“查一下有没有 NPU”，而是为 Qwen3-0.6B 基线 Notebook 做一次开跑前检查：NPU 是否可用、PyTorch 与 torch_npu 是否成对安装，以及 transformers 和 ModelScope 是否已具备。通过后再下载模型，避免下载完成才发现当前环境无法加载或运行。',
       concepts:[{term:'Qwen3 基线依赖',desc:'本路径的首跑依赖 torch、torch_npu、transformers 和 modelscope；缺少其中任一项，后面的下载、加载或推理步骤都会中断。'},{term:'版本组合',desc:'torch 与 torch_npu 必须使用对应发布组合，不能只升级其中一个。预检会把两者版本并排输出，作为后续排障和实验记录的基线。'},{term:'首跑设备条件',desc:'除了 NPU 可见，还要能创建 npu:0 Tensor；这比仅检查设备数量更接近下一节实际加载 Qwen3 时的条件。'},{term:'替代路径',desc:'本地预检未通过时，不继续下载和猜错；可切换到匹配版本环境，或使用已配置依赖的 HiDevLab 完成本路径。'}],
       body:'<p><strong>这一步只回答一个问题：这台环境能不能按当前 Qwen3 基线 Notebook 继续首跑？</strong>它会同时检查 NPU、框架、适配插件和模型相关 Python 依赖，并把版本记录下来。通过后再下载 1.4GB 模型；未通过则先按提示修环境或切换到 HiDevLab。</p><p>预检不要求你立刻理解所有版本号。你只需要看结果中的“可以继续”或具体缺项：缺 <code>modelscope</code> 就先安装下载依赖；NPU 不可用就检查驱动 / CANN / <code>torch_npu</code> 组合；框架版本不成对则切换到课程推荐组合后重跑本节。</p>',
-      code:{kind:'practice',lang:'python',label:'Qwen3 首跑预检',note:'将输出保存到实验记录；当结果不是“可以继续”时，先处理对应项，不要直接执行模型下载和加载。',body:`import importlib.util\nimport torch\nimport torch_npu\n\nrequired = ['transformers', 'modelscope']\nmissing = [name for name in required if importlib.util.find_spec(name) is None]\n\nprint(f"PyTorch: {torch.__version__}")\nprint(f"torch_npu: {torch_npu.__version__}")\nprint(f"NPU 可用: {torch.npu.is_available()}")\nprint(f"NPU 数量: {torch.npu.device_count() if torch.npu.is_available() else 0}")\nif torch.npu.is_available():\n    print(f"首跑设备: {torch.npu.get_device_name(0)}")\n    probe = torch.zeros(1, device='npu:0')\n    print(f"npu:0 Tensor: {probe.device}")\n\nif missing:\n    print(f"不能继续：缺少 {', '.join(missing)}")\n    print('替代路径：安装缺少依赖后重跑本节。')\nelif not torch.npu.is_available():\n    print('不能继续：检查 Driver / CANN / torch_npu 配套组合，或改用 HiDevLab。')\nelse:\n    print('可以继续：记录以上版本，再下载 Qwen3-0.6B 模型。')`},
+      code:{kind:'practice',lang:'python',label:'Qwen3 首跑预检',note:'在本机终端或本地 Jupyter 内核运行；将输出保存到实验记录。结果不是“可以继续”时，先处理对应项，不要直接下载和加载模型。',body:`import importlib.util\nimport shutil\nimport subprocess\n\nrequired = ['torch', 'torch_npu', 'transformers', 'modelscope']\nmissing = [name for name in required if importlib.util.find_spec(name) is None]\nprint('Python 依赖:', '齐全' if not missing else f'缺少 {", ".join(missing)}')\n\nif not missing:\n    import torch\n    import torch_npu\n    print(f'PyTorch: {torch.__version__}')\n    print(f'torch_npu: {torch_npu.__version__}')\n    print(f'NPU 可用: {torch.npu.is_available()}')\n    if torch.npu.is_available():\n        print(f'首跑设备: {torch.npu.get_device_name(0)}')\n        print('npu:0 Tensor:', torch.zeros(1, device='npu:0').device)\n\nif shutil.which('npu-smi'):\n    print('npu-smi 已找到：请在输出中记录 Driver / CANN 版本。')\n    subprocess.run(['npu-smi', 'info'], check=False)\n\nif missing:\n    print('下一步：安装缺少的 Python 依赖后重跑。')\nelif not torch.npu.is_available():\n    print('下一步：检查 Driver / CANN / torch_npu 配套组合，或改用 HiDevLab。')\nelse:\n    print('可以继续：记录版本后下载 Qwen3-0.6B 模型。')`},
       lab:{steps:[{title:'完成 Qwen3 首跑预检',desc:'运行预检，确认本机既能使用 npu:0，也具备下载与加载 Qwen3 所需的 Python 依赖；将输出作为实验的环境记录。',code:'import torch\nimport torch_npu\nimport importlib.util\n\nassert torch.npu.is_available(), "请先检查 Driver / CANN / torch_npu，或使用 HiDevLab"\nassert all(importlib.util.find_spec(name) for name in ["transformers", "modelscope"]), "请安装 Qwen3 依赖"\nprint(torch.zeros(1, device="npu:0").device)\nprint("Qwen3 首跑环境已就绪")',expected:'输出 npu:0 与“Qwen3 首跑环境已就绪”；否则根据报错处理对应依赖或使用 HiDevLab。'}]},
       resources:[...qwen3Resources('第 6 节：Qwen3 首跑前的环境与版本预检'),{icon:'🧪',title:'在 HiDevLab 运行 Qwen3 基线',href:'#',type:'替代环境',subtitle:'本地版本不匹配时使用已配置的 NPU 环境',action:'lab'}]
     },
@@ -4397,6 +4397,45 @@ def vector_add_tik(shape, dtype, kernel_name):
     }).join('');
   }
 
+  function ldRenderQwen3Preflight(node, knowledge, index) {
+    const content = document.getElementById('ld-learning-content');
+    if (!content) return;
+    const code = knowledge.code?.body || '';
+    content.innerHTML = `<div class="ld-preflight">
+      <div class="ld-preflight-hero">
+        <div><span class="ld-preflight-eyebrow"><i data-lucide="shield-check" aria-hidden="true"></i>本地首跑预检</span><h1>开始 Qwen3 首跑前，先确认环境</h1><p>在下载模型前，用一次本地检查确认这台机器能否按 Qwen3 基线 Notebook 继续运行。这里检查的是<strong>本机</strong>，不是 HiDevLab 的远程环境。</p></div>
+        <div class="ld-preflight-stage"><i data-lucide="circle-play" aria-hidden="true"></i><span>下一步</span><strong>下载 Qwen3-0.6B</strong></div>
+      </div>
+      <section class="ld-preflight-location"><i data-lucide="monitor-cog" aria-hidden="true"></i><div><strong>在哪里运行？</strong><p>复制下方脚本，在本机终端或本地 Jupyter 内核运行。网页和 HiDevLab 都无法读取你的本机 NPU、Driver 或 CANN 版本。</p></div><button type="button" onclick="ldCopyPreflightCode(this)"><i data-lucide="copy" aria-hidden="true"></i>复制本地预检代码</button></section>
+      <section><div class="ld-preflight-section-head"><span>01</span><div><h2>这次首跑要确认什么</h2><p>只检查与当前 Qwen3 基线 Notebook 直接相关的条件。</p></div></div><div class="ld-preflight-checks">
+        <article><i data-lucide="cpu" aria-hidden="true"></i><strong>昇腾 NPU</strong><p>能识别设备，并实际创建 <code>npu:0</code> Tensor。</p><small>首跑设备条件</small></article>
+        <article><i data-lucide="layers-2" aria-hidden="true"></i><strong>Driver 与 CANN</strong><p>通过 <code>npu-smi info</code> 记录版本，确认与当前 NPU 运行环境配套。</p><small>底层运行条件</small></article>
+        <article><i data-lucide="puzzle" aria-hidden="true"></i><strong>PyTorch 与 torch_npu</strong><p>必须使用同一套兼容组合，不能只单独升级其中一个包。</p><small>框架适配条件</small></article>
+        <article><i data-lucide="package-check" aria-hidden="true"></i><strong>Qwen3 Python 依赖</strong><p><code>transformers</code> 用于加载模型，<code>modelscope</code> 用于下载模型。</p><small>Notebook 依赖条件</small></article>
+      </div></section>
+      <section class="ld-preflight-script"><div class="ld-preflight-section-head"><span>02</span><div><h2>在本机运行预检</h2><p>运行结果会直接告诉你下一步该下载模型、补依赖还是切换环境。</p></div></div><div class="ld-code-example"><div class="ld-code-toolbar"><span>python · 本地环境</span><div><button type="button" onclick="ldCopyPreflightCode(this)" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button type="button" onclick="ldExplainNodeCode()" title="让 AI 解释检查项"><i data-lucide="sparkles" aria-hidden="true"></i>AI 解释</button></div></div><pre data-preflight-code>${escHtml(code)}</pre></div></section>
+      <section><div class="ld-preflight-section-head"><span>03</span><div><h2>按结果继续，不在报错后重搜</h2><p>预检只做分流；修复完成后回到本节重跑，再进入模型下载。</p></div></div><div class="ld-preflight-outcomes">
+        <article class="ready"><i data-lucide="badge-check" aria-hidden="true"></i><div><strong>可以继续</strong><p>依赖齐全、NPU 可用且能创建 <code>npu:0</code> Tensor。</p><button type="button" onclick="ldOpenPathNode(${index + 1})">继续下载 Qwen3-0.6B <span>→</span></button></div></article>
+        <article class="repair"><i data-lucide="wrench" aria-hidden="true"></i><div><strong>缺 Python 依赖</strong><p>安装缺少的 <code>transformers</code> 或 <code>modelscope</code> 后，重新运行本地预检。</p><code>pip install transformers modelscope</code></div></article>
+        <article class="alternate"><i data-lucide="route" aria-hidden="true"></i><div><strong>NPU 或版本组合不匹配</strong><p>先切换与当前 Driver / CANN 配套的 PyTorch NPU 环境；本地暂时不能调整时，再使用 HiDevLab 的预置环境继续路径。</p><button type="button" onclick="openEmptySandbox()">在 HiDevLab 验证预置环境 <span>→</span></button></div></article>
+      </div></section>
+      <p class="ld-preflight-footnote">本节输出用于记录本机环境；HiDevLab 只作为替代执行环境，不代表你的本机预检结果。</p>
+    </div>`;
+    requestAnimationFrame(() => window.lucide?.createIcons());
+    ldRefreshStudyTools(node, knowledge);
+  }
+
+  function ldCopyPreflightCode(button) {
+    const code = document.querySelector('[data-preflight-code]')?.textContent || '';
+    if (!code) return;
+    navigator.clipboard.writeText(code).then(() => {
+      const original = button.innerHTML;
+      button.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>已复制';
+      window.lucide?.createIcons();
+      setTimeout(() => { button.innerHTML = original; window.lucide?.createIcons(); }, 1300);
+    }).catch(() => {});
+  }
+
   function ldOpenPathNode(index) {
     const node = _ldActivePathNodes[index];
     if (!node) return;
@@ -4406,6 +4445,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     const knowledge = NODE_KNOWLEDGE[node.title] || ldBuildChapterKnowledge(node);
     const content = document.getElementById('ld-learning-content');
     if (!content) return;
+    if (node.title === 'Qwen3 首跑：环境与版本预检') {
+      ldRenderQwen3Preflight(node, knowledge, index);
+      return;
+    }
     const video = NODE_VIDEO[node.title] || { title: `${node.title}讲解视频`, duration: '课程视频', tag: '视频学习' };
     const videoOverlay = `<div class="ld-video-overlay"><strong>${video.title}</strong><small>跟随本节内容理解核心概念，并完成对应实践</small></div><button class="ld-video-play" type="button" aria-label="播放：${video.title}">▶</button>`;
     const videoStage = node.title === '算子开发编程基础'
