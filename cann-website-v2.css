@@ -187,10 +187,10 @@ body.v2-nav-collapsed #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 .sandbox-drawer.v2-dock-full { top:0; right:0; bottom:auto; left:0; width:100vw; height:100vh; border:0; box-shadow:none; }
 .sandbox-drawer.v2-dock-full.open { bottom:auto; }
 .sandbox-drawer.v2-dock-full .v2-sandbox-resizer { display:none; }
+#page-learn.v2-hidevlab-split .ld-roadmap { right:var(--v2-sandbox-width); transition:right .4s cubic-bezier(.4,0,.2,1); }
 #page-learn.v2-hidevlab-split .ld-path-workspace { grid-template-columns:minmax(0,1fr); padding:0; transition:grid-template-columns .4s cubic-bezier(.4,0,.2,1); }
 #page-learn.v2-hidevlab-split .ld-path-sidebar,#page-learn.v2-hidevlab-split .ld-study-tools,#page-learn.v2-hidevlab-split .v2-workspace-resizer,#page-learn.v2-hidevlab-split .v2-edge-pill { display:none!important; }
-#page-learn.v2-hidevlab-split .ld-learning-content { max-width:920px; padding-right:48px; }
-#page-learn.v2-hidevlab-split .ld-roadmap-topbar { padding-right:calc(var(--v2-sandbox-width) + 24px); transition:padding-right .4s cubic-bezier(.4,0,.2,1); }
+#page-learn.v2-hidevlab-split .ld-learning-content { max-width:none; padding-right:48px; }
 /* Split mode narrows the lab: retain actions, but let informational controls wrap or hide first. */
 .sandbox-drawer.v2-dock-split .nb-header { min-height:48px; height:auto; padding:6px 10px; gap:8px; align-items:flex-start; }
 .sandbox-drawer.v2-dock-split .nb-header-left { min-width:0; gap:8px; flex:1; }
@@ -214,7 +214,7 @@ body.v2-nav-collapsed #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 .sandbox-drawer.v2-dock-split .nb-cell-header { padding:6px 9px; gap:5px; }
 .sandbox-drawer.v2-dock-split .nb-cell-code { padding:12px; font-size:11px; }
 @media (max-width:1180px) { .sandbox-drawer.v2-dock-split .nb-sidebar { display:none; }.sandbox-drawer.v2-dock-split .nb-tabs .nb-tab:nth-child(3) { display:none; } }
-@media (max-width:900px) { .sandbox-drawer.v2-dock-split { width:min(88vw,var(--v2-sandbox-width)); } #page-learn.v2-hidevlab-split .ld-path-workspace,#page-learn.v2-hidevlab-split .ld-roadmap-topbar { padding-right:0; } }
+@media (max-width:900px) { .sandbox-drawer.v2-dock-split { width:min(88vw,var(--v2-sandbox-width)); } #page-learn.v2-hidevlab-split .ld-roadmap { right:0; } #page-learn.v2-hidevlab-split .ld-path-workspace { padding-right:0; } }
 
 /* Redesigned learning-route map: a timeline, while list mode stays untouched. */
 #page-learn .ld-path-nav.map { display:block; padding:2px 0 20px; }
