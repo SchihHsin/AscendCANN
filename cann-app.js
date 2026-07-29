@@ -4784,6 +4784,17 @@ def vector_add_tik(shape, dtype, kernel_name):
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
+  // Show the otherwise quiet scrollbar briefly while a nested surface is scrolling.
+  const V2_SCROLL_SURFACES = '#page-learn .ld-path-sidebar,#page-learn .ld-learning-content,#page-learn .ld-tool-panel.active,#page-learn .v2-kflow-scroll,#qb-drawer .v2-archive-flow-scroll,#page-docs .docs-sidebar,#page-docs .docs-content,#page-docs .v2-doc-toc,.sandbox-drawer .nb-cells,.nd-body,.nd-ai-resp-body,.ai-msg pre,.ld-code-example pre,.custom-paths-scroll';
+  const v2ScrollbarTimers = new WeakMap();
+  document.addEventListener('scroll', event => {
+    const surface = event.target instanceof Element ? event.target.closest(V2_SCROLL_SURFACES) : null;
+    if (!surface) return;
+    surface.classList.add('v2-scrollbar-active');
+    window.clearTimeout(v2ScrollbarTimers.get(surface));
+    v2ScrollbarTimers.set(surface, window.setTimeout(() => surface.classList.remove('v2-scrollbar-active'), 800));
+  }, true);
+
   // Init learn dashboard on page load
   document.addEventListener('DOMContentLoaded', () => {
     if (!document.getElementById('ld-dash')) return; // only on learn.html
