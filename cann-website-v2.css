@@ -205,8 +205,12 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 .sandbox-drawer.v2-dock-full.open { bottom:auto; }
 .sandbox-drawer.v2-dock-full .v2-sandbox-resizer { display:none; }
 #page-learn.v2-hidevlab-split .ld-roadmap { right:var(--v2-sandbox-width); transition:right .4s cubic-bezier(.4,0,.2,1); }
-#page-learn.v2-hidevlab-split .ld-path-workspace { grid-template-columns:minmax(0,1fr); padding:0; transition:grid-template-columns .4s cubic-bezier(.4,0,.2,1); }
-#page-learn.v2-hidevlab-split .ld-path-sidebar,#page-learn.v2-hidevlab-split .ld-study-tools,#page-learn.v2-hidevlab-split .v2-workspace-resizer,#page-learn.v2-hidevlab-split .v2-edge-pill { display:none!important; }
+#page-learn.v2-hidevlab-split .ld-path-workspace { grid-template-columns:0 minmax(0,1fr) 0; padding:0; transition:grid-template-columns .4s cubic-bezier(.4,0,.2,1); }
+#page-learn.v2-hidevlab-split .ld-path-workspace:not(.v2-left-collapsed) { grid-template-columns:var(--v2-left-width) minmax(0,1fr) 0; }
+#page-learn.v2-hidevlab-split .ld-study-tools,#page-learn.v2-hidevlab-split .v2-workspace-resizer-right { display:none!important; }
+#page-learn.v2-hidevlab-split .v2-workspace-resizer-left { display:block; }
+#page-learn.v2-hidevlab-split .ld-path-workspace.v2-left-collapsed .v2-path-fab { position:fixed; z-index:122; top:50%; left:14px; display:flex; align-items:center; justify-content:center; width:42px; height:42px; padding:0; transform:translateY(-50%); border:1px solid #DCE1EA; border-radius:50%; background:rgba(255,255,255,.94); box-shadow:0 8px 22px rgba(36,40,57,.13); color:#303642; cursor:pointer; }
+#page-learn.v2-hidevlab-split .ld-path-workspace:not(.v2-left-collapsed) .v2-edge-pill-left { display:flex; }
 #page-learn.v2-hidevlab-split .ld-learning-content { max-width:none; padding-right:48px; }
 /* The route actions belong to the global workspace edge, not the narrowed reading pane. */
 @media (min-width:901px) { #page-learn.v2-hidevlab-split .ld-roadmap-actions { position:fixed; z-index:70; top:0; right:28px; display:flex; height:58px; align-items:center; } }
@@ -312,8 +316,10 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 #page-learn .ld-path-workspace.v2-tool-float-open .ld-tool-tabs button { padding:13px 4px 11px; }
 #page-learn .ld-path-workspace.v2-tool-float-open .ld-tool-panel { padding:16px 18px; }
 #page-learn .ld-path-workspace.v2-tool-float-open .ld-tool-panel.active { flex:1; min-height:0; }
-#page-learn.v2-hidevlab-split .v2-tool-fab-rail,#page-learn.v2-hidevlab-split .v2-path-fab,#page-learn.v2-hidevlab-split .v2-path-float-head,#page-learn.v2-hidevlab-split .v2-tool-float-head { display:none!important; }
-#page-learn.v2-hidevlab-split .ld-path-workspace.v2-tool-float-open .ld-study-tools,#page-learn.v2-hidevlab-split .ld-path-workspace.v2-path-float-open .ld-path-sidebar { display:none!important; }
+#page-learn.v2-hidevlab-split .v2-tool-fab-rail { position:fixed; z-index:121; top:50%; right:calc(var(--v2-sandbox-width) + 18px); display:flex; transform:translateY(-50%); }
+#page-learn.v2-hidevlab-split .v2-path-float-head { display:none!important; }
+#page-learn.v2-hidevlab-split .ld-path-workspace.v2-tool-float-open .ld-study-tools { position:fixed; z-index:123; top:76px; right:calc(var(--v2-sandbox-width) + 26px); bottom:22px; display:flex!important; width:min(440px,calc(100vw - var(--v2-sandbox-width) - 88px)); height:auto; max-height:none; padding:0; overflow:hidden; visibility:visible; border:1px solid #DFE3EA; border-radius:14px; background:#FCFDFF; box-shadow:0 16px 42px rgba(35,41,55,.18); }
+#page-learn.v2-hidevlab-split .ld-path-workspace.v2-tool-float-open .v2-tool-float-head { display:flex!important; }
 @media(max-width:760px){
   #page-learn .v2-tool-fab-rail,#page-learn .v2-path-fab,#page-learn .v2-path-float-head,#page-learn .v2-tool-float-head { display:none!important; }
   #page-learn .ld-path-workspace.v2-right-collapsed .ld-study-tools { display:none!important; }

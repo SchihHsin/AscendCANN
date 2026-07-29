@@ -1974,6 +1974,18 @@
     const isOpen = drawer.classList.contains('open');
     learnPage?.classList.toggle('v2-hidevlab-split', validMode === 'split' && isOpen);
     document.body.classList.toggle('v2-hidevlab-open', isOpen);
+    const workspace = v2Workspace();
+    const isSplitOpen = validMode === 'split' && isOpen;
+    if (workspace && isSplitOpen && drawer.dataset.v2RouteSplitState === undefined) {
+      // Enter split mode with the path collapsed, but restore its prior state on exit.
+      drawer.dataset.v2RouteSplitState = workspace.classList.contains('v2-left-collapsed') ? 'collapsed' : 'open';
+      workspace.classList.add('v2-left-collapsed');
+      workspace.classList.remove('v2-path-float-open');
+    } else if (workspace && !isSplitOpen && drawer.dataset.v2RouteSplitState !== undefined) {
+      workspace.classList.toggle('v2-left-collapsed', drawer.dataset.v2RouteSplitState === 'collapsed');
+      delete drawer.dataset.v2RouteSplitState;
+      requestAnimationFrame(v2SyncEdgePills);
+    }
     overlay.classList.toggle('open', isOpen && validMode === 'bottom');
     document.body.style.overflow = isOpen && validMode !== 'split' ? 'hidden' : '';
     document.querySelectorAll('[data-v2-sandbox-dock]').forEach(button => {
@@ -2071,12 +2083,22 @@
   function v2OpenPathFloat() {
     const workspace = v2Workspace();
     if (!workspace) return;
+    if (document.getElementById('page-learn')?.classList.contains('v2-hidevlab-split')) {
+      workspace.classList.remove('v2-left-collapsed', 'v2-path-float-open');
+      requestAnimationFrame(v2SyncEdgePills);
+      return;
+    }
     workspace.classList.add('v2-left-collapsed', 'v2-path-float-open');
     window.lucide?.createIcons();
   }
   function v2ClosePathFloat() {
     const workspace = v2Workspace();
     if (!workspace) return;
+    if (document.getElementById('page-learn')?.classList.contains('v2-hidevlab-split')) {
+      workspace.classList.add('v2-left-collapsed');
+      requestAnimationFrame(v2SyncEdgePills);
+      return;
+    }
     workspace.classList.remove('v2-path-float-open');
   }
   function v2BindWorkspaceResizer(id, side) {
