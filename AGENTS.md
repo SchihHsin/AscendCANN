@@ -965,3 +965,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 右侧工具浮窗打开时隐藏整组 FAB，避免按钮从浮窗底部露出；关闭浮窗后再恢复 FAB 入口。
 - 站内嵌套滚动区域统一为轻量按需滚动条：默认透明，鼠标悬浮或用户滚动时短暂显示 5px 无底色滑块；移除上下箭头和常驻白色轨道，覆盖学习路径、工具浮窗、知识图谱、学习档案、文档栏、代码框与 HiDevLab 等滚动容器。
 - 右侧工具浮窗改为内容型可调高度：AI 助手初始 420px、随堂测验初始 320px、知识图谱保留 540px 画布；浮窗贴近页面下方，拖动上边缘的轻量把手调节高度（向上变高、向下变矮），并按工具分别保存本会话尺寸。
+- “在昇腾 NPU 上运行 Qwen3”路径的第 5 节由通用“检查昇腾 NPU 环境”升级为“Qwen3 首跑：环境与版本预检”：在下载模型前针对该基线 Notebook 检查 NPU、PyTorch / torch_npu 配套、transformers 与 modelscope，并以实际创建 `npu:0` Tensor 作为首跑条件；结果未通过时明确引导安装缺少依赖、切换与 CANN / Driver 配套的 NPU 环境，或转到 HiDevLab。

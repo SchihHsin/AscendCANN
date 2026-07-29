@@ -39,7 +39,7 @@
     { title:'大模型推理核心组件', course:'第一次让大模型在昇腾 NPU 上运行', category:'developer', desc:'第 2 节：理解 Tokenizer、模型、后处理与 NPU 如何协同完成生成。', topics:['Tokenizer','逐 token 生成','EOS 结束标记'], duration:'第 2 节', difficulty:1 },
     { title:'PyTorch 与张量基础', course:'第一次让大模型在昇腾 NPU 上运行', category:'developer', desc:'第 3 节：认识 PyTorch 工具箱和作为 AI 基本数据单位的 Tensor。', topics:['PyTorch','Tensor','张量运算'], duration:'第 3 节', difficulty:1 },
     { title:'昇腾 NPU 与 torch_npu', course:'第一次让大模型在昇腾 NPU 上运行', category:'developer', desc:'第 4 节：通过 torch_npu 适配层，让 PyTorch 模型运行在昇腾 NPU 上。', topics:['torch_npu','.to(\'npu:0\')','CANN'], duration:'第 4 节', difficulty:1 },
-    { title:'检查昇腾 NPU 环境', course:'在昇腾 NPU 上准备 Qwen3', category:'developer', desc:'第 5 节：检查 PyTorch、torch_npu 版本及 NPU 设备是否可用。', topics:['版本检查','NPU 可用性','设备数量'], duration:'第 5 节', difficulty:1 },
+    { title:'Qwen3 首跑：环境与版本预检', course:'在昇腾 NPU 上准备 Qwen3', category:'developer', desc:'第 5 节：在下载模型前，检查本机是否满足 Qwen3 基线 Notebook 的 NPU、框架与依赖要求。', topics:['Qwen3 依赖','版本组合','NPU 可见性'], duration:'第 5 节', difficulty:1 },
     { title:'下载 Qwen3-0.6B 模型', course:'在昇腾 NPU 上准备 Qwen3', category:'developer', desc:'第 6 节：使用 ModelScope 将 Qwen3-0.6B 下载并缓存到本地工作目录。', topics:['ModelScope','模型缓存','Qwen3-0.6B'], duration:'第 6 节', difficulty:1 },
     { title:'加载分词器与 Qwen3 模型', course:'在昇腾 NPU 上准备 Qwen3', category:'developer', desc:'第 7 节：加载 Tokenizer 和模型，将模型以 FP16 Eager 模式放到 npu:0。', topics:['AutoTokenizer','AutoModelForCausalLM','FP16 / eval'], duration:'第 7 节', difficulty:2 },
     { title:'体验 Tokenizer 编码与解码', course:'理解 Qwen3 基线推理', category:'developer', desc:'第 8 节：把文本转换为 token IDs，再还原为文本，观察模型的输入形式。', topics:['encode','decode','token IDs'], duration:'第 8 节', difficulty:1 },
@@ -1388,12 +1388,13 @@ def vector_add_tik(shape, dtype, kernel_name):
       code:{lang:'python',body:`import torch\nimport torch_npu\n\nprint(torch.npu.is_available())\nx = torch.tensor([1.0, 2.0]).to('npu:0')\nprint(x.device)`},
       resources:qwen3Resources('第 5 节：通过 torch_npu 使用昇腾 NPU')
     },
-    '检查昇腾 NPU 环境': {
-      summary:'在下载模型前，先检查 PyTorch、torch_npu 和 NPU 是否正常。只有 torch.npu.is_available() 返回 True，才应继续执行后续模型加载和推理。',
-      concepts:[{term:'版本兼容',desc:'PyTorch 与 torch_npu 的版本需要匹配，先打印版本信息方便排查环境问题。'},{term:'设备可用性',desc:'torch.npu.is_available() 为 True 表示当前运行环境可识别并使用 NPU。'},{term:'设备名称',desc:'通过 get_device_name(0) 确认当前推理实际使用的昇腾设备。'}],
-      code:{lang:'python',body:`import torch\nimport torch_npu\n\nprint(f"PyTorch 版本: {torch.__version__}")\nprint(f"torch_npu 版本: {torch_npu.__version__}")\nprint(f"NPU 是否可用: {torch.npu.is_available()}")\nprint(f"NPU 设备数量: {torch.npu.device_count()}")\nprint(f"NPU 设备名称: {torch.npu.get_device_name(0)}")`},
-      lab:{steps:[{title:'运行 NPU 环境检查',desc:'在 HiDevLab 中执行原 Notebook 的检查代码，确认 NPU 是否可用。',code:'import torch\nimport torch_npu\nprint(torch.npu.is_available())',expected:'输出 True，且可查看到 NPU 设备名称'}]},
-      resources:qwen3Resources('第 6 节：动手实践，环境检查')
+    'Qwen3 首跑：环境与版本预检': {
+      summary:'这不是通用的“查一下有没有 NPU”，而是为 Qwen3-0.6B 基线 Notebook 做一次开跑前检查：NPU 是否可用、PyTorch 与 torch_npu 是否成对安装，以及 transformers 和 ModelScope 是否已具备。通过后再下载模型，避免下载完成才发现当前环境无法加载或运行。',
+      concepts:[{term:'Qwen3 基线依赖',desc:'本路径的首跑依赖 torch、torch_npu、transformers 和 modelscope；缺少其中任一项，后面的下载、加载或推理步骤都会中断。'},{term:'版本组合',desc:'torch 与 torch_npu 必须使用对应发布组合，不能只升级其中一个。预检会把两者版本并排输出，作为后续排障和实验记录的基线。'},{term:'首跑设备条件',desc:'除了 NPU 可见，还要能创建 npu:0 Tensor；这比仅检查设备数量更接近下一节实际加载 Qwen3 时的条件。'},{term:'替代路径',desc:'本地预检未通过时，不继续下载和猜错；可切换到匹配版本环境，或使用已配置依赖的 HiDevLab 完成本路径。'}],
+      body:'<p><strong>这一步只回答一个问题：这台环境能不能按当前 Qwen3 基线 Notebook 继续首跑？</strong>它会同时检查 NPU、框架、适配插件和模型相关 Python 依赖，并把版本记录下来。通过后再下载 1.4GB 模型；未通过则先按提示修环境或切换到 HiDevLab。</p><p>预检不要求你立刻理解所有版本号。你只需要看结果中的“可以继续”或具体缺项：缺 <code>modelscope</code> 就先安装下载依赖；NPU 不可用就检查驱动 / CANN / <code>torch_npu</code> 组合；框架版本不成对则切换到课程推荐组合后重跑本节。</p>',
+      code:{kind:'practice',lang:'python',label:'Qwen3 首跑预检',note:'将输出保存到实验记录；当结果不是“可以继续”时，先处理对应项，不要直接执行模型下载和加载。',body:`import importlib.util\nimport torch\nimport torch_npu\n\nrequired = ['transformers', 'modelscope']\nmissing = [name for name in required if importlib.util.find_spec(name) is None]\n\nprint(f"PyTorch: {torch.__version__}")\nprint(f"torch_npu: {torch_npu.__version__}")\nprint(f"NPU 可用: {torch.npu.is_available()}")\nprint(f"NPU 数量: {torch.npu.device_count() if torch.npu.is_available() else 0}")\nif torch.npu.is_available():\n    print(f"首跑设备: {torch.npu.get_device_name(0)}")\n    probe = torch.zeros(1, device='npu:0')\n    print(f"npu:0 Tensor: {probe.device}")\n\nif missing:\n    print(f"不能继续：缺少 {', '.join(missing)}")\n    print('替代路径：安装缺少依赖后重跑本节。')\nelif not torch.npu.is_available():\n    print('不能继续：检查 Driver / CANN / torch_npu 配套组合，或改用 HiDevLab。')\nelse:\n    print('可以继续：记录以上版本，再下载 Qwen3-0.6B 模型。')`},
+      lab:{steps:[{title:'完成 Qwen3 首跑预检',desc:'运行预检，确认本机既能使用 npu:0，也具备下载与加载 Qwen3 所需的 Python 依赖；将输出作为实验的环境记录。',code:'import torch\nimport torch_npu\nimport importlib.util\n\nassert torch.npu.is_available(), "请先检查 Driver / CANN / torch_npu，或使用 HiDevLab"\nassert all(importlib.util.find_spec(name) for name in ["transformers", "modelscope"]), "请安装 Qwen3 依赖"\nprint(torch.zeros(1, device="npu:0").device)\nprint("Qwen3 首跑环境已就绪")',expected:'输出 npu:0 与“Qwen3 首跑环境已就绪”；否则根据报错处理对应依赖或使用 HiDevLab。'}]},
+      resources:[...qwen3Resources('第 6 节：Qwen3 首跑前的环境与版本预检'),{icon:'🧪',title:'在 HiDevLab 运行 Qwen3 基线',href:'#',type:'替代环境',subtitle:'本地版本不匹配时使用已配置的 NPU 环境',action:'lab'}]
     },
     '下载 Qwen3-0.6B 模型': {
       summary:'Notebook 通过 ModelScope 下载 Qwen/Qwen3-0.6B，并缓存在 /mnt/workspace/models。模型约 1.4GB，首次下载完成后可复用本地缓存。',
@@ -1511,10 +1512,11 @@ def vector_add_tik(shape, dtype, kernel_name):
       { term:'三行最常见的设备操作', desc:'import torch_npu 导入适配层；.to(\'npu:0\') 把模型或 Tensor 放到第 0 张 NPU；torch.npu.is_available() 检查 NPU 是否可用。模型和输入必须在同一设备上。' },
       { term:'CANN 在底层做什么', desc:'CANN 是昇腾异构计算架构，可理解为 NPU 的运行基础：提供算子、运行时和底层计算能力，torch_npu 则把这些能力接入熟悉的 PyTorch 使用方式。' }
     ],
-    '检查昇腾 NPU 环境': [
-      { term:'先检查再下载', desc:'模型下载和加载都需要时间，先打印 PyTorch、torch_npu 版本和设备信息，能快速发现环境不匹配、设备不可见等基础问题。' },
-      { term:'最关键的判断', desc:'只有“NPU 是否可用”输出 True，才说明当前 Python 进程可以继续使用昇腾 NPU。还可用设备数量和 get_device_name(0) 确认实际识别到的硬件。' },
-      { term:'失败时先不要往下跑', desc:'若设备不可用，后续 .to(\'npu:0\') 会失败。应先核对 torch_npu 安装、驱动和运行环境，而不是直接执行模型加载代码。' }
+    'Qwen3 首跑：环境与版本预检': [
+      { term:'这是 Qwen3 的“起跑线”', desc:'本节不泛泛检查设备，而是验证是否能继续执行本路径的下一步：下载 Qwen3-0.6B、加载 Transformers 模型并把它放到 npu:0。' },
+      { term:'先看完整组合，不单看一个版本', desc:'记录 PyTorch、torch_npu、CANN / Driver，以及 transformers、modelscope。PyTorch 和 torch_npu 必须来自同一套兼容组合；不要只单独升级其中一个包。' },
+      { term:'用 npu:0 Tensor 做最后确认', desc:'设备数量不为 0 还不够。实际创建一个 npu:0 Tensor 成功，才说明当前 Python 内核已具备运行本 Notebook 的最小设备条件。' },
+      { term:'预检失败就走替代路径', desc:'缺 transformers 或 modelscope：安装缺少依赖后重跑；NPU 不可用或框架组合异常：先切换与当前 CANN / Driver 配套的 PyTorch NPU 环境；本地暂时无法调整：转到 HiDevLab 继续首跑。' }
     ],
     '下载 Qwen3-0.6B 模型': [
       { term:'模型也需要先“安装”', desc:'Qwen3-0.6B 的参数文件约 1.4GB。Notebook 使用 ModelScope 的 snapshot_download 从魔搭社区获取模型，并将文件保存到 /mnt/workspace/models。' },
@@ -4409,7 +4411,10 @@ def vector_add_tik(shape, dtype, kernel_name):
     const videoStage = node.title === '算子开发编程基础'
       ? `<div class="ld-video-stage ld-video-cover"><img src="ascend-c-course-cover.png" alt="昇腾异构编程基础课程封面">${videoOverlay}</div>`
       : `<div class="ld-video-stage">${videoOverlay}</div>`;
-    const resources = (knowledge?.resources || []).map(r => `<a class="ld-content-resource" href="${r.href}" target="_blank"><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`).join('');
+    const resources = (knowledge?.resources || []).map(r => {
+      const openLab = r.action === 'lab';
+      return `<a class="ld-content-resource" href="${openLab ? '#' : r.href}"${openLab ? ' onclick="event.preventDefault();openEmptySandbox()"' : ' target="_blank"'}><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`;
+    }).join('');
     const conceptDoc = concept => concept.href || knowledge?.resources?.[0]?.href || 'https://www.hiascend.com/document';
     const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p><a class="ld-concept-doc" href="${conceptDoc(c)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">查看文档 <span aria-hidden="true">↗</span></a></div>`).join('');
     const readingHtml = knowledge?.body ? `<section class="ld-reading-section"><h2>本节讲解</h2><div class="ld-reading-body">${knowledge.body}</div></section>` : '';
