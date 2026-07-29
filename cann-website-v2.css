@@ -314,8 +314,8 @@ body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!importan
 
 /* Preserve the supplied HiDevLab mark's native wide proportion in every dock layout. */
 .nb-brand { gap:0; }
-.nb-brand > img { display:block; width:auto; height:30px; max-width:148px; object-fit:contain; object-position:left center; }
-.sandbox-drawer.v2-dock-split .nb-brand > img { height:24px; max-width:118px; }
+.nb-brand > img { display:block; width:auto; height:36px; max-width:176px; object-fit:contain; object-position:left center; }
+.sandbox-drawer.v2-dock-split .nb-brand > img { height:28px; max-width:138px; }
 
 /* Code is an action surface: learners can read, copy, ask about, or run the same snippet. */
 #page-learn .ld-code-section { margin-top:34px; }
