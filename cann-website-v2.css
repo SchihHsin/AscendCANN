@@ -373,3 +373,40 @@ body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!importan
 #page-learn .ld-code-example button.ld-code-run { border-color:rgba(122,150,255,.55); background:rgba(78,111,223,.2); color:#F3F5FF; }
 #page-learn .ld-code-example button svg { width:12px; height:12px; }
 #page-learn .ld-code-example pre { max-height:370px; padding:16px 18px; color:#E7EAF0; font-size:12px; line-height:1.72; }
+
+/* Lesson reading typography follows one 4px/8px rhythm, independent of the surrounding UI. */
+#page-learn .ld-learning-content { font-size:16px; line-height:1.7; }
+#page-learn .ld-learning-content h1 { margin:32px 0 18px; color:#20242D; font-size:26px; font-weight:600; line-height:1.35; letter-spacing:0; }
+#page-learn .ld-learning-content h2 { margin:28px 0 16px; color:#252934; font-size:22px; font-weight:600; line-height:1.35; letter-spacing:0; }
+#page-learn .ld-learning-content h3 { margin:24px 0 14px; color:#2A2F3A; font-size:19px; font-weight:600; line-height:1.4; }
+#page-learn .ld-learning-content h4 { margin:20px 0 12px; color:#303642; font-size:17px; font-weight:600; line-height:1.4; }
+#page-learn .ld-learning-content p { margin:0 0 16px; font-size:16px; font-weight:400; line-height:1.7; }
+#page-learn .ld-learning-content ul,#page-learn .ld-learning-content ol { margin:12px 0; padding-left:24px; }
+#page-learn .ld-learning-content li + li { margin-top:8px; }
+#page-learn .ld-content-kicker,#page-learn .ld-code-note,#page-learn .ld-troubleshooting-lead,#page-learn .ld-video-caption small,#page-learn .ld-next-steps-head p { font-size:14px; font-weight:400; line-height:1.5; }
+#page-learn .ld-content-kicker { margin:0; }
+#page-learn .ld-content-summary { font-size:16px; font-weight:400; line-height:1.7; }
+#page-learn .ld-content-intro { margin:0 0 16px; }
+#page-learn .ld-reading-body { color:#5D6576; font-size:16px; line-height:1.7; }
+#page-learn .ld-reading-body p { margin:0 0 16px; font-size:16px; line-height:1.7; }
+#page-learn .ld-reading-body strong { font-size:inherit; }
+#page-learn .ld-next-steps-head h2 { margin:0; font-size:22px; font-weight:600; line-height:1.35; }
+#page-learn .ld-video-embed,#page-learn .ld-code-example,#page-learn .ld-learning-content table,#page-learn .ld-learning-content figure { margin-top:20px; margin-bottom:20px; }
+#page-learn .ld-reading-body img,#page-learn .ld-reading-body table { display:block; max-width:100%; margin-top:20px; margin-bottom:20px; }
+#page-learn .ld-video-caption { padding:16px 20px; }
+#page-learn .ld-video-caption strong { display:block; color:#252934; font-size:17px; font-weight:600; line-height:1.4; }
+#page-learn .ld-video-caption small { display:block; margin-top:4px; }
+#page-learn .ld-code-section { margin-top:0; }
+#page-learn .ld-code-section .ld-section-title-row h2 { margin-bottom:0; }
+#page-learn .ld-code-note { margin:0 0 12px; color:#687184; }
+#page-learn .ld-code-example pre { font-size:14px; line-height:1.5; }
+#page-learn .ld-content-concept strong,#page-learn .ld-content-resource strong,#page-learn .ld-practice-steps strong { font-size:17px; font-weight:600; line-height:1.4; }
+#page-learn .ld-content-concept p,#page-learn .ld-content-resource small,#page-learn .ld-practice-steps small { font-size:14px; font-weight:400; line-height:1.5; }
+#page-learn .ld-content-concept p { margin:12px 0 0; }
+#page-learn .ld-troubleshooting .ld-section-title-row h2 { margin-bottom:0; }
+#page-learn .ld-troubleshooting-lead { margin:0 0 12px; }
+#page-learn .ld-error-guide-body { font-size:16px; line-height:1.7; }
+#page-learn .ld-error-guide-body p { margin:12px 0 0; font-size:16px; line-height:1.7; }
+#page-learn .ld-error-guide-body ol { margin:12px 0 0 24px; }
+#page-learn .ld-error-guide-body li + li { margin-top:8px; }
+#page-learn .ld-error-fix { margin-top:12px!important; }
