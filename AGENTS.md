@@ -956,3 +956,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 学习路径详情在未打开 HiDevLab 时改为默认“左侧学习路径 + 中间正文”两栏：右侧 AI 助手、知识图谱、随堂测验不再常驻占用一栏，而是作为右侧三枚 Lucide FAB 按需唤醒；每次只打开一个独立浮窗，沿用原有工具数据、当前节点上下文和交互。左侧路径收起后改为左侧 `route` FAB，点击以独立路径浮窗展开。HiDevLab 右侧分屏时继续隐藏这些 FAB / 浮窗，避免与实验区争夺空间。
 - HiDevLab 打开态进入专注工作区：自动收起 Ascend Community Bar 和 Ascend Developer Nav，学习路径的 `ld-roadmap-topbar` 紧贴视口顶部；右侧分屏的实验区同步从该 58px 顶栏下开始，关闭 HiDevLab 后恢复全局导航。
 - 学习路径中间正文区建立统一排版阶梯：H1/H2/H3/H4 分别为 26/22/19/17px、600 字重及 1.35/1.35/1.4/1.4 行高，对应 32/28/24/20px 上间距和 18/16/14/12px 下间距；正文统一 16px/400/1.7 与 16px 段落间距，注释/图注统一 14px/1.5。列表上下间距 12px，视频、代码、图片与表格块上下 20px，全部采用 4px/8px 间距网格。
+- 全局 Ascend 导航按等比收紧：Community Bar 30px → 24px、Developer Nav 62px → 52px，总高 92px → 76px；同步缩小 Logo、文字、导航间距与两侧留白。学习详情、文档布局、移动端顶栏和 HiDevLab 分屏的顶部锚点均同步使用 76px，避免缩小导航后产生空白或遮挡。

@@ -2,18 +2,29 @@
 :root { --v2-line:#E4E7F0; --v2-ink:#1A1D27; --v2-muted:#6F7788; }
 body { background:#F7F8FC; }
 body:has(#page-docs.active), body:has(#page-learn.active) { background:#fff; }
-body:has(.ascend-developer-nav) .page { padding-top:92px; }
+/* Ascend developer chrome is proportionally condensed: 24px community bar + 52px nav. */
+body:has(.ascend-developer-nav) .page { padding-top:76px; }
+body:has(.ascend-developer-nav) .ascend-community-bar { height:24px; padding:0 48px; font-size:11px; }
+body:has(.ascend-developer-nav) .ascend-community-bar .ascend-account-entry { width:24px; height:24px; }
+body:has(.ascend-developer-nav) .ascend-community-bar .ascend-account-entry svg { width:18px; height:18px; }
+body:has(.ascend-developer-nav) .ascend-developer-nav { top:24px; gap:22px; height:52px; padding:0 48px; }
+body:has(.ascend-developer-nav) .ascend-brand img { width:124px; height:32px; }
+body:has(.ascend-developer-nav) .ascend-developer-label { font-size:17px; }
+body:has(.ascend-developer-nav) .ascend-nav-links { gap:20px; }
+body:has(.ascend-developer-nav) .ascend-nav-links a { font-size:15px; }
+body:has(.ascend-developer-nav) .ascend-nav-actions { gap:18px; }
+body:has(.ascend-developer-nav) .ascend-nav-actions a { font-size:13px; }
 body.sidebar-embed-open .ascend-developer-nav, body.sidebar-embed-open .ascend-community-bar { right:400px; }
 
 /* The global developer chrome yields space to the focused learning workspace. */
 .ascend-community-bar,.ascend-developer-nav { transition:transform .24s ease,opacity .18s ease; }
-body.v2-nav-collapsed .ascend-community-bar { transform:translateY(-30px); opacity:0; pointer-events:none; }
-body.v2-nav-collapsed .ascend-developer-nav { transform:translateY(-92px); opacity:0; pointer-events:none; }
+body.v2-nav-collapsed .ascend-community-bar { transform:translateY(-24px); opacity:0; pointer-events:none; }
+body.v2-nav-collapsed .ascend-developer-nav { transform:translateY(-76px); opacity:0; pointer-events:none; }
 body.v2-nav-collapsed #page-learn .ld-roadmap { top:0; }
 body.v2-nav-collapsed #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 /* A running lab is a focused workspace: retain only the lesson topbar above it. */
-body.v2-hidevlab-open .ascend-community-bar { transform:translateY(-30px); opacity:0; pointer-events:none; }
-body.v2-hidevlab-open .ascend-developer-nav { transform:translateY(-92px); opacity:0; pointer-events:none; }
+body.v2-hidevlab-open .ascend-community-bar { transform:translateY(-24px); opacity:0; pointer-events:none; }
+body.v2-hidevlab-open .ascend-developer-nav { transform:translateY(-76px); opacity:0; pointer-events:none; }
 body.v2-hidevlab-open #page-learn .ld-roadmap { top:0; }
 body.v2-hidevlab-open #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 
@@ -61,8 +72,8 @@ body.v2-hidevlab-open #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 
 /* Documentation: ported from the reviewed ascend-doc documentation system. */
 #page-docs { --doc-brand-active:#c7000b; --doc-link:#2e53fa; --doc-link-hover:#5a7bfc; --doc-purple:#7b25f4; --doc-text-1:#1d2129; --doc-text-2:#4e5969; --doc-text-3:#86909c; --doc-divider:#e5e5e9; --doc-border:#dededf; --doc-code-bg:#f6f7f8; --doc-panel-gradient:linear-gradient(90deg,rgba(46,83,250,.03),rgba(123,37,244,.03)); --doc-active-gradient:linear-gradient(to right,rgba(46,83,250,.18),rgba(100,60,255,.12)); }
-#page-docs .docs-layout { display:grid; grid-template-columns:320px minmax(0,1fr) 255px; min-height:calc(100vh - 92px); padding-top:0; background:#fff; }
-#page-docs .docs-sidebar { top:0; height:calc(100vh - 92px); padding:38px 24px 40px; border-right:1px solid rgba(0,0,0,.1); background:#fff var(--doc-panel-gradient); }
+#page-docs .docs-layout { display:grid; grid-template-columns:320px minmax(0,1fr) 255px; min-height:calc(100vh - 76px); padding-top:0; background:#fff; }
+#page-docs .docs-sidebar { top:0; height:calc(100vh - 76px); padding:38px 24px 40px; border-right:1px solid rgba(0,0,0,.1); background:#fff var(--doc-panel-gradient); }
 #page-docs .docs-search { height:38px; margin-bottom:18px; padding:7px 12px; border:1px solid #D8DCE7; border-radius:20px; background:#fff; }
 #page-docs .sidebar-section { position:relative; margin:2px 0 8px; padding:0; }
 #page-docs .sidebar-section::before { position:absolute; top:34px; bottom:7px; left:15px; width:1px; background:rgba(0,0,0,.12); content:''; }
@@ -109,7 +120,7 @@ body.v2-hidevlab-open #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 /* Learning overview retains original behavior. Detail receives the redesigned workspace. */
 #page-learn .ld-roadmap-topbar { top:72px; min-height:58px; padding:10px 28px; border-bottom-color:var(--v2-line); background:rgba(255,255,255,.97); } #page-learn .ld-back-btn { border:0; border-radius:0; background:transparent; color:#596172; } #page-learn .ld-roadmap-prog-fill { background:linear-gradient(90deg,#7F76F0,#B88AF2); }
 #page-learn .ld-path-workspace { --v2-left-width:250px; --v2-right-width:390px; position:relative; grid-template-columns:var(--v2-left-width) minmax(0,1fr) var(--v2-right-width); min-height:calc(100vh - 130px); border:0; background:#fff; } #page-learn .ld-path-workspace.v2-left-collapsed { grid-template-columns:0 minmax(0,1fr) var(--v2-right-width); } #page-learn .ld-path-workspace.v2-right-collapsed,#page-learn .ld-path-workspace.ld-tools-collapsed { grid-template-columns:var(--v2-left-width) minmax(0,1fr) 0; } #page-learn .ld-path-workspace.v2-left-collapsed.v2-right-collapsed { grid-template-columns:0 minmax(0,1fr) 0; }
-#page-learn .ld-roadmap { position:fixed; top:92px; right:0; bottom:0; left:0; z-index:30; display:flex; flex-direction:column; min-height:0; background:#fff; } #page-learn .ld-roadmap-topbar { position:relative; top:auto; z-index:2; flex:0 0 58px; } #page-learn .ld-path-workspace { flex:1; min-height:0; height:auto; } #page-learn .ld-path-sidebar,#page-learn .ld-study-tools { position:relative; top:auto; align-self:stretch; height:auto; max-height:none; overflow-y:auto; overscroll-behavior:contain; } #page-learn .ld-learning-content { height:auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+#page-learn .ld-roadmap { position:fixed; top:76px; right:0; bottom:0; left:0; z-index:30; display:flex; flex-direction:column; min-height:0; background:#fff; } #page-learn .ld-roadmap-topbar { position:relative; top:auto; z-index:2; flex:0 0 58px; } #page-learn .ld-path-workspace { flex:1; min-height:0; height:auto; } #page-learn .ld-path-sidebar,#page-learn .ld-study-tools { position:relative; top:auto; align-self:stretch; height:auto; max-height:none; overflow-y:auto; overscroll-behavior:contain; } #page-learn .ld-learning-content { height:auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
 #page-learn .ld-path-sidebar { top:130px; max-height:calc(100vh - 130px); padding:22px 0 24px; border-right:1px solid #E1E3E7; background:#F1F2F4; } #page-learn .ld-sidebar-head { margin:0 24px 14px; color:#20242E; font-size:17px; } #page-learn .ld-view-switch { border:0; border-radius:16px; background:rgba(255,255,255,.85); box-shadow:inset 0 0 0 1px #E0E2E6; } #page-learn .ld-view-switch button { border-radius:14px; } #page-learn .ld-view-switch button.active { background:#fff; color:#353B48; box-shadow:0 1px 4px rgba(48,58,84,.12); }
 #page-learn .ld-path-cluster { margin:20px 0 8px; padding-top:17px; border-top-color:#E5E7F0; font-size:14px; } #page-learn .ld-path-nav { gap:7px; } #page-learn .ld-path-nav.v2-list-mode { padding:0 14px 20px; } #page-learn .ld-path-nav-item { position:relative; padding:9px 10px; border-radius:9px; } #page-learn .ld-path-nav-item:hover { border-color:transparent; background:#F3F4FF; } #page-learn .ld-path-nav-item.active { border-color:transparent; background:linear-gradient(90deg,rgba(46,83,250,.1),rgba(123,37,244,.06)); box-shadow:none; } #page-learn .ld-path-nav.v2-list-mode .ld-path-nav-item.active::before { left:-14px; } #page-learn .ld-path-nav-item.active::before { position:absolute; top:50%; left:-24px; width:3px; height:24px; border-radius:3px; background:var(--grad); content:''; transform:translateY(-50%); }
 /* The first tab is deliberately the original V1 course list, not a visualized route. */
@@ -184,7 +195,7 @@ body.v2-hidevlab-open #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 .v2-sandbox-layout .nb-action-btn { width:26px; height:24px; padding:0; border-radius:4px; color:var(--text-muted); }
 .v2-sandbox-layout .nb-action-btn svg { width:13px; height:13px; }
 .v2-sandbox-layout .nb-action-btn.active { background:#fff; color:var(--black); box-shadow:0 1px 3px rgba(20,24,35,.12); }
-.sandbox-drawer.v2-dock-split { top:92px; right:calc(-1 * var(--v2-sandbox-width)); bottom:0; left:auto; width:var(--v2-sandbox-width); height:auto; border-top:0; border-left:1px solid var(--border); box-shadow:-10px 0 38px rgba(26,31,47,.12); }
+.sandbox-drawer.v2-dock-split { top:76px; right:calc(-1 * var(--v2-sandbox-width)); bottom:0; left:auto; width:var(--v2-sandbox-width); height:auto; border-top:0; border-left:1px solid var(--border); box-shadow:-10px 0 38px rgba(26,31,47,.12); }
 body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 .sandbox-drawer.v2-dock-split.open { right:0; bottom:0; }
 .sandbox-drawer.v2-dock-split .v2-sandbox-resizer { top:0; right:auto; bottom:0; left:-7px; width:14px; height:auto; cursor:ew-resize; }
@@ -329,7 +340,7 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 #page-learn .v2-kflow-concept:hover em,#page-learn .v2-kflow-concept:focus-visible em { display:block; }.v2-kflow-concept em b,.v2-kflow-concept em a { display:block; }.v2-kflow-concept em b { margin-bottom:3px; font-size:11px; }.v2-kflow-concept em a { margin-top:6px; color:#C9D2FF; font-weight:700; text-decoration:none; }
 #page-learn .v2-kflow-port { position:absolute; z-index:3; top:calc(50% - 5px); width:10px; height:10px; border:3px solid #292B31; border-radius:50%; background:#fff; }.v2-kflow-port.in { left:-6px; }.v2-kflow-port.out { right:-6px; }
 #page-learn .ld-kv-note { margin:9px 0 0; color:#8A91A1; font-size:10px; line-height:1.45; text-align:left; }
-@media(max-width:1180px){#page-docs .docs-layout{grid-template-columns:280px minmax(0,1fr)}.v2-doc-toc{display:none}#page-learn .ld-path-workspace{--v2-left-width:270px;--v2-right-width:330px}#page-learn .ld-video-embed{width:65%}}@media(max-width:760px){#page-docs .docs-layout{display:block;padding-top:0}#page-docs .docs-sidebar{position:static;height:auto;max-height:300px}#page-docs .docs-content{padding:30px 20px 90px}#page-learn .ld-roadmap{position:static;display:block;min-height:100vh}#page-learn .ld-roadmap-topbar{position:sticky;top:92px}#page-learn .ld-path-workspace,#page-learn .ld-path-workspace.v2-left-collapsed,#page-learn .ld-path-workspace.v2-right-collapsed{display:grid;min-height:0;grid-template-columns:1fr}#page-learn .ld-path-sidebar,#page-learn .ld-study-tools,#page-learn .ld-learning-content{position:static;max-height:none;height:auto;overflow:visible}#page-learn .ld-video-embed{width:100%;min-width:0}#page-learn .ld-next-steps{padding:18px}#page-learn .ld-next-steps-head{display:block}#page-learn .ld-next-steps-head p{margin-top:5px}#page-learn .ld-next-steps-grid{grid-template-columns:1fr}#page-learn .v2-workspace-resizer,#page-learn .v2-edge-pill{display:none!important}}
+@media(max-width:1180px){#page-docs .docs-layout{grid-template-columns:280px minmax(0,1fr)}.v2-doc-toc{display:none}#page-learn .ld-path-workspace{--v2-left-width:270px;--v2-right-width:330px}#page-learn .ld-video-embed{width:65%}}@media(max-width:760px){#page-docs .docs-layout{display:block;padding-top:0}#page-docs .docs-sidebar{position:static;height:auto;max-height:300px}#page-docs .docs-content{padding:30px 20px 90px}#page-learn .ld-roadmap{position:static;display:block;min-height:100vh}#page-learn .ld-roadmap-topbar{position:sticky;top:76px}#page-learn .ld-path-workspace,#page-learn .ld-path-workspace.v2-left-collapsed,#page-learn .ld-path-workspace.v2-right-collapsed{display:grid;min-height:0;grid-template-columns:1fr}#page-learn .ld-path-sidebar,#page-learn .ld-study-tools,#page-learn .ld-learning-content{position:static;max-height:none;height:auto;overflow:visible}#page-learn .ld-video-embed{width:100%;min-width:0}#page-learn .ld-next-steps{padding:18px}#page-learn .ld-next-steps-head{display:block}#page-learn .ld-next-steps-head p{margin-top:5px}#page-learn .ld-next-steps-grid{grid-template-columns:1fr}#page-learn .v2-workspace-resizer,#page-learn .v2-edge-pill{display:none!important}}
 
 /* Learning archive overview: the individual knowledge nodes form the flow. */
 #qb-drawer .v2-archive-map-desc { margin:17px 24px 8px; color:#687184; font-size:12px; line-height:1.55; }
