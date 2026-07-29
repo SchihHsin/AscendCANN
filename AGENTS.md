@@ -959,3 +959,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 全局 Ascend 导航按等比收紧：Community Bar 30px → 24px、Developer Nav 62px → 52px，总高 92px → 76px；同步缩小 Logo、文字、导航间距与两侧留白。学习详情、文档布局、移动端顶栏和 HiDevLab 分屏的顶部锚点均同步使用 76px，避免缩小导航后产生空白或遮挡。
 - HiDevLab 右侧分屏时，`ld-roadmap-actions` 脱离被实验区压缩的 `ld-roadmap` 右边界并固定在视口右上角、与 58px 路径顶栏居中；因此拖拽 HiDevLab 宽度不会再带动“全量课程 / 学习档案”操作区左移。窄屏与常规布局保持原逻辑。
 - 修正 HiDevLab 右侧分屏的侧栏入口：分屏进入时左侧学习路径默认收起为左侧 FAB，右侧保留 AI 助手、知识图谱、随堂测验三个 FAB；左侧 FAB 点击后恢复为分屏内嵌的学习路径栏（非浮窗），右侧三个 FAB 继续以独立浮窗打开。退出分屏后恢复进入前的左栏展开/收起状态。
+- 学习档案“学习全景图”节点悬浮/聚焦态的黑色描边加粗为 2.75px，与关联高亮连线使用同一视觉粗细；默认节点描边仍保持 1px 浅灰。
