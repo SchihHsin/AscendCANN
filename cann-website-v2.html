@@ -1441,6 +1441,7 @@
       <div class="v2-workspace-resizer v2-workspace-resizer-left" id="v2-left-resizer" role="separator" aria-label="调整学习路径宽度" aria-orientation="vertical"></div>
       <main class="ld-learning-content" id="ld-learning-content"></main>
       <aside class="ld-study-tools" id="ld-study-tools">
+        <div class="v2-tool-float-resizer" id="v2-tool-float-resizer" role="separator" aria-label="调整工具窗口高度" aria-orientation="horizontal"><span></span></div>
         <div class="v2-tool-float-head"><span><i data-lucide="bot" aria-hidden="true"></i><strong>AI 助手</strong></span><button type="button" onclick="v2CloseToolFloat()" aria-label="关闭工具窗口"><i data-lucide="x"></i></button></div>
         <div class="ld-tool-panel active" id="ld-tool-ai">
           <div class="ld-tool-context" id="ld-ai-context">正在学习当前节点</div>
@@ -2048,14 +2049,55 @@
     requestAnimationFrame(v2SyncEdgePills);
   }
   const V2_TOOL_FLOAT_META = {
-    ai:{ title:'AI 助手', icon:'bot' },
-    visual:{ title:'知识图谱', icon:'network' },
-    quiz:{ title:'随堂测验', icon:'circle-help' }
+    ai:{ title:'AI 助手', icon:'bot', height:420, minHeight:300 },
+    visual:{ title:'知识图谱', icon:'network', height:540, minHeight:380 },
+    quiz:{ title:'随堂测验', icon:'circle-help', height:320, minHeight:240 }
   };
+  const V2_TOOL_FLOAT_HEIGHT_KEY = 'cann_v2_tool_float_height_';
+  function v2SetToolFloatHeight(name, height) {
+    const workspace = v2Workspace();
+    const meta = V2_TOOL_FLOAT_META[name];
+    if (!workspace || !meta) return;
+    const top = document.getElementById('page-learn')?.classList.contains('v2-hidevlab-split') ? 76 : 164;
+    const maxHeight = Math.max(meta.minHeight, window.innerHeight - top - 24);
+    const nextHeight = Math.round(Math.max(meta.minHeight, Math.min(maxHeight, height)));
+    workspace.style.setProperty('--v2-tool-float-height', `${nextHeight}px`);
+    sessionStorage.setItem(`${V2_TOOL_FLOAT_HEIGHT_KEY}${name}`, String(nextHeight));
+  }
+  function v2InitToolFloatResizer() {
+    const handle = document.getElementById('v2-tool-float-resizer');
+    if (!handle || handle.dataset.bound) return;
+    handle.dataset.bound = 'true';
+    handle.addEventListener('pointerdown', event => {
+      if (event.button !== 0) return;
+      const workspace = v2Workspace();
+      const name = workspace?.dataset.v2ToolFloat;
+      const tools = document.getElementById('ld-study-tools');
+      if (!workspace || !name || !tools) return;
+      event.preventDefault();
+      const startY = event.clientY;
+      const startHeight = tools.getBoundingClientRect().height;
+      handle.classList.add('dragging');
+      handle.setPointerCapture?.(event.pointerId);
+      const move = moveEvent => v2SetToolFloatHeight(name, startHeight + startY - moveEvent.clientY);
+      const finish = () => {
+        handle.classList.remove('dragging');
+        window.removeEventListener('pointermove', move);
+        window.removeEventListener('pointerup', finish);
+        window.removeEventListener('pointercancel', finish);
+      };
+      window.addEventListener('pointermove', move);
+      window.addEventListener('pointerup', finish, { once:true });
+      window.addEventListener('pointercancel', finish, { once:true });
+    });
+  }
   window.v2OpenToolFloat = function v2OpenToolFloat(name) {
     const workspace = v2Workspace();
     const meta = V2_TOOL_FLOAT_META[name];
     if (!workspace || !meta) return;
+    const savedHeight = Number(sessionStorage.getItem(`${V2_TOOL_FLOAT_HEIGHT_KEY}${name}`));
+    v2SetToolFloatHeight(name, Number.isFinite(savedHeight) && savedHeight > 0 ? savedHeight : meta.height);
+    workspace.dataset.v2ToolFloat = name;
     ldSwitchTool(name);
     workspace.classList.add('v2-right-collapsed', 'ld-tools-collapsed', 'v2-tool-float-open');
     workspace.querySelectorAll('[data-v2-tool-fab]').forEach(button => button.classList.toggle('active', button.dataset.v2ToolFab === name));
@@ -2072,6 +2114,7 @@
     const workspace = v2Workspace();
     if (!workspace) return;
     workspace.classList.remove('v2-tool-float-open');
+    delete workspace.dataset.v2ToolFloat;
     workspace.querySelectorAll('[data-v2-tool-fab]').forEach(button => button.classList.remove('active'));
   }
   function v2OpenPathFloat() {
@@ -2235,6 +2278,7 @@
     v2RestoreWorkspaceSizes();
     v2BindWorkspaceResizer('v2-left-resizer', 'left');
     v2BindWorkspaceResizer('v2-right-resizer', 'right');
+    v2InitToolFloatResizer();
     v2InitSandboxResizer();
     v2InitSandboxDock();
     v2RestoreArchiveWidth();
