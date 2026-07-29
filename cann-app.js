@@ -4424,7 +4424,11 @@ def vector_add_tik(shape, dtype, kernel_name):
     const readingHtml = knowledge?.body ? `<section class="ld-reading-section"><h2>本节讲解</h2><div class="ld-reading-body">${knowledge.body}</div></section>` : '';
     const nextStepsHtml = knowledge?.nextSteps?.length ? `<section class="ld-next-steps"><div class="ld-next-steps-head"><h2>首跑后，照着做</h2><p>先固定工程与验证规则，再开始优化。</p></div><div class="ld-next-steps-grid">${knowledge.nextSteps.map((step, stepIndex) => `<article class="ld-next-step"><div class="ld-next-step-index">${stepIndex + 1}</div><i data-lucide="${step.icon}" aria-hidden="true"></i><small>${step.label}</small><strong>${step.title}</strong><p>${step.detail}</p><pre>${escHtml(step.code)}</pre></article>`).join('')}</div><a class="ld-next-steps-source" href="${QWEN3_FUSED_OP_NOTEBOOK}" target="_blank" rel="noopener">打开官方融合算子 Notebook，按第 1 步开始 <span aria-hidden="true">↗</span></a></section>` : '';
     const code = knowledge?.code;
-    const codeHtml = code ? `<section><h2>代码示例</h2><div class="ld-code-example"><div><span>${code.lang}</span><button onclick="ldRunNodeCode()">▶ 在 HiDevLab 运行</button></div><pre>${escHtml(code.body)}</pre></div></section>` : '';
+    const codeKind = { concept:'概念调用', practice:'可运行示例', compare:'改前 / 改后对照' };
+    const runAction = code?.kind === 'practice' || !code?.kind
+      ? '<button class="ld-code-run" type="button" onclick="ldRunNodeCode()" title="在 HiDevLab 打开"><i data-lucide="play" aria-hidden="true"></i>在 HiDevLab 运行</button>'
+      : '';
+    const codeHtml = code ? `<section class="ld-code-section"><div class="ld-section-title-row"><h2>代码示例</h2><span class="ld-code-kind ${code.kind || 'practice'}">${codeKind[code.kind] || '可运行示例'}</span></div>${code.note ? `<p class="ld-code-note">${code.note}</p>` : ''}<div class="ld-code-example"><div class="ld-code-toolbar"><span>${code.label || code.lang}</span><div><button type="button" onclick="ldCopyNodeCode(this)" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button type="button" onclick="ldExplainNodeCode()" title="让 AI 逐行解释"><i data-lucide="sparkles" aria-hidden="true"></i>AI 解释</button>${runAction}</div></div><pre data-node-code>${escHtml(code.body)}</pre></div></section>` : '';
     const practiceSteps = knowledge?.lab?.steps || [{ title:`运行「${node.title}」配套练习`, desc:'在 HiDevLab 中打开本章节的实践环境，边学边验证。' }];
     const practice = `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>`;
     const troubleshooting = ldRenderTroubleshooting(node, knowledge);
@@ -4488,6 +4492,24 @@ def vector_add_tik(shape, dtype, kernel_name):
       '算子设计与代码实现': [{ title:'执行 Skills 流程', desc:'按 design、code-gen、compile-debug 完成 Add 算子的设计与构建。' }],
       '随堂实操练习': [{ title:'完成 Add 全流程', desc:'串联 env-config、project-init、design、code-gen、compile-debug、doc-gen 六个 Skills。' }]
     };
+    const codeExamples = {
+      '昇腾硬件架构介绍': { kind:'concept', lang:'python', label:'短调用片段', note:'先确认运行时能识别到 NPU；这一步只验证硬件可用性，不运行模型。', body:`import torch\nimport torch_npu\n\nassert torch.npu.is_available(), '未检测到可用昇腾 NPU'\nprint(torch.npu.get_device_name(0))\nprint(f'可用设备数: {torch.npu.device_count()}')` },
+      'CANN软件包结构': { kind:'concept', lang:'bash', label:'组件定位', note:'用环境变量确认当前 Shell 实际使用的 CANN Toolkit，排查时优先记录这两个值。', body:`source /usr/local/Ascend/ascend-toolkit/set_env.sh\nprintf 'Toolkit: %s\\n' "$ASCEND_TOOLKIT_HOME"\nprintf 'Python:  %s\\n' "$(which python3)"\npython3 -c "import acl; print('pyACL:', acl.__version__)"` },
+      '算子开发编程基础': { kind:'concept', lang:'cpp', label:'最小计算契约', note:'先把输入、输出和计算规则写清楚；后续 Tiling、搬运和核函数实现都以此为准。', body:`// Add 算子的最小计算契约\n// 输入: x、y，shape 相同，float32\n// 输出: z[i] = x[i] + y[i]\n\nconstexpr uint32_t BLOCK_LENGTH = 1024;\n// 下一步：为每个 Block 设计数据搬运和计算流程` },
+      '算子开发编程范式': { kind:'concept', lang:'cpp', label:'搬运—计算—回写', note:'典型 Ascend C 算子以 CopyIn、Compute、CopyOut 三段组织，便于后续做流水优化。', body:`// 伪代码：一个 Tile 的标准执行范式\nCopyIn(tile);          // GM -> UB\nCompute(tile);         // Vector / Cube\nCopyOut(tile);         // UB -> GM\n\n// 先跑通正确性，再将多个 Tile 组织成流水` },
+      '算子开发环境搭建': { kind:'practice', lang:'bash', label:'可运行环境检查', note:'在创建工程前执行；三项均正常后再继续编译样例。', body:`source /usr/local/Ascend/ascend-toolkit/set_env.sh\nnpu-smi info\nascendc --version || true\nprintf 'ASCEND_HOME_PATH=%s\\n' "$ASCEND_HOME_PATH"` },
+      '算子开发初体验': { kind:'practice', lang:'bash', label:'首个工程验证', note:'从官方模板生成工程后，先编译并运行原样例，不要一开始就修改 Kernel。', body:`# 在已创建的 Add 算子工程中执行\ncd add_custom\n./build.sh\npython3 run_op.py --input-size 1024\n# 预期：输出与 CPU 基线一致` },
+      '一个Add算子的前世今生': { kind:'practice', lang:'cpp', label:'Add 核心计算', note:'这个最小片段用于把数学公式映射到 Device 侧计算；Host 侧负责准备参数和启动。', body:`__aicore__ inline void Compute(LocalTensor<float>& x,\n                               LocalTensor<float>& y,\n                               LocalTensor<float>& z,\n                               uint32_t count) {\n  Add(z, x, y, count);\n}\n\n// Host: 设置 shape / dtype / blockDim 后启动 Kernel` },
+      'Host侧实现': { kind:'practice', lang:'cpp', label:'Host 启动骨架', note:'Host 侧只组织参数和任务启动；计算逻辑仍在 Device Kernel 中。', body:`uint32_t blockDim = 8;\naclrtStream stream = GetStream();\n\n// 参数顺序需与 Kernel 定义保持一致\nACLRT_LAUNCH_KERNEL(AddKernel, blockDim, stream,\n                    xDevice, yDevice, zDevice, elementCount);\naclrtSynchronizeStream(stream);` },
+      '算子开发工程': { kind:'practice', lang:'text', label:'工程最小结构', note:'先保持 Host、Kernel、构建和测试入口清晰分离，定位编译或运行问题更容易。', body:`add_custom/\n├── op_host/       # 参数校验、Kernel 启动\n├── op_kernel/     # Ascend C Device 实现\n├── CMakeLists.txt # 构建配置\n└── tests/         # CPU 基线与 NPU 结果对比` },
+      'API调用解读': { kind:'concept', lang:'cpp', label:'返回值校验', note:'每个关键运行时调用都检查返回码；日志中最早的非零返回通常最接近根因。', body:`aclError ret = aclrtSetDevice(0);\nif (ret != ACL_SUCCESS) {\n  std::cerr << "aclrtSetDevice failed: " << ret << std::endl;\n  return ret;\n}\n\n// 再创建 Context、Stream 并启动 Kernel` },
+      '非对齐尾块处理': { kind:'practice', lang:'cpp', label:'尾块边界验证', note:'不能整除的输入最容易暴露越界问题；先用 1025 这类最小尾块用例验证。', body:`uint32_t offset = blockIdx * TILE_LENGTH;\nuint32_t remain = totalLength > offset ? totalLength - offset : 0;\nuint32_t count = min(remain, TILE_LENGTH);\n\nif (count > 0) {\n  // 只搬运并计算有效元素，避免尾块越界\n  ProcessTile(offset, count);\n}` },
+      '自定义算子性能评估': { kind:'compare', lang:'bash', label:'性能基线记录', note:'先记录同一 shape 的耗时和吞吐；优化前后只改变一个变量。', body:`# 固定 shape、dtype、运行次数后采样\nmsprof --application="python3 run_op.py --input-size 1048576"\n# 记录：Kernel 耗时、MTE / Vector 利用率、吞吐\n# 优化后使用相同命令再次采样并对比` },
+      '自定义算子性能优化': { kind:'compare', lang:'cpp', label:'双缓冲改造点', note:'双缓冲的目标是在一块数据计算时搬运下一块；先确保单缓冲结果完全正确。', body:`for (uint32_t tile = 0; tile < tileNum; ++tile) {\n  LocalTensor<float> in = inQueue.AllocTensor<float>();\n  CopyIn(in, tile);                  // 搬运下一块\n  LocalTensor<float> out = outQueue.AllocTensor<float>();\n  Compute(in, out);                  // 计算当前块\n  CopyOut(out, tile);                // 回写当前块\n}` },
+      '算子调试': { kind:'practice', lang:'bash', label:'最小复现命令', note:'调试从最小输入开始，并保存完整日志；不要直接在大模型或大 shape 上猜测。', body:`export ASCEND_GLOBAL_LOG_LEVEL=1\npython3 run_op.py --input-size 16 --dump-input --check-cpu\n# 依次确认：输入 -> 中间结果 -> 输出 -> CPU 基线` },
+      '融合算子': { kind:'compare', lang:'python', label:'改前 / 改后替换', note:'融合不是简单堆 API；要以一致的输入和输出校验为前提，再比较性能。', body:`# 改前：多个小算子\ny = x * scale\ny = y + bias\ny = torch.nn.functional.gelu(y)\n\n# 改后：使用对应的 NPU 融合算子（按实际接口替换）\n# y = torch_npu.<fused_api>(x, scale, bias)` },
+      '性能优化（理论）': { kind:'compare', lang:'text', label:'优化验证清单', note:'性能结论至少同时满足正确性、可复现和可量化三个条件。', body:`[ ] 固定输入 shape、dtype、随机种子\n[ ] 优化前后各热身一次、正式运行三次\n[ ] 对比输出误差是否在阈值内\n[ ] 记录平均耗时、吞吐和加速比\n[ ] 一次只保留一项改动` }
+    };
     const chapterConcepts = node.title === '算子开发编程基础' ? [
       { term:'算子与计算逻辑', desc:'在 CANN 中，算子用于描述模型中的一个计算单元，例如加法、卷积或归一化。自定义算子开发的第一步不是直接写代码，而是先明确输入、输出、数据类型与计算规则；这些信息决定后续的数据切分和执行方式。' },
       { term:'数据与存储层级', desc:'昇腾 AI Core 上的高性能算子通常把执行过程组织为数据搬运、计算和结果写回。需要关注数据所在的存储层级、搬运顺序与计算单元的配合，避免计算单元因等待数据而空闲。' },
@@ -4496,6 +4518,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     return {
       summary: node.desc,
       concepts: [...chapterConcepts, ...extra],
+      code: codeExamples[node.title],
       resources: [
         { icon:skillsSource ? '📝' : '🎓', title:node.course || 'Ascend C编程', href:skillsSource ? 'https://www.hiascend.com/blogs/details/1c91fc3edb804adca3c93e1e3de9266f' : 'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53', type:skillsSource ? '官方课程文章' : '官方课程', subtitle:`${node.duration || '课程章节'} · 查看完整课程内容` },
         { icon:'📖', title:'Ascend C基本概念', href:'https://hiascend.com/document/redirect/CannCommunityAscendCbase', type:'官方文档', subtitle:'配合章节学习查阅基础概念' }
@@ -4696,7 +4719,7 @@ def vector_add_tik(shape, dtype, kernel_name):
 
   function ldRunNodeCode() {
     const node = _ldActivePathNodes[_ldActivePathIndex];
-    const code = NODE_KNOWLEDGE[node?.title]?.code;
+    const code = node && (NODE_KNOWLEDGE[node.title] || ldBuildChapterKnowledge(node)).code;
     if (!code) return openEmptySandbox();
     nbCellCounter++;
     NB_FILES.main.unshift({ id:nbCellCounter, type:'code', code:code.body, output:'' });
@@ -4705,6 +4728,26 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.getElementById('sandbox-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
     renderNbCells();
+  }
+
+  function ldCopyNodeCode(button) {
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    const code = node && (NODE_KNOWLEDGE[node.title] || ldBuildChapterKnowledge(node)).code;
+    if (!code) return;
+    navigator.clipboard.writeText(code.body).then(() => {
+      const original = button.innerHTML;
+      button.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>已复制';
+      window.lucide?.createIcons();
+      setTimeout(() => { button.innerHTML = original; window.lucide?.createIcons(); }, 1300);
+    }).catch(() => {});
+  }
+
+  function ldExplainNodeCode() {
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    const code = node && (NODE_KNOWLEDGE[node.title] || ldBuildChapterKnowledge(node)).code;
+    if (!node || !code) return;
+    openLearningAi();
+    ldToolPrompt(`请结合当前章节「${node.title}」，逐行解释这段 ${code.lang} 代码，并说明运行前提和预期结果：\n\n${code.body}`);
   }
 
   function ldOpenLabStep(stepIndex) {

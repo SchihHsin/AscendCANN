@@ -316,3 +316,19 @@ body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!importan
 .nb-brand { gap:0; }
 .nb-brand > img { display:block; width:auto; height:22px; max-width:118px; object-fit:contain; object-position:left center; }
 .sandbox-drawer.v2-dock-split .nb-brand > img { height:19px; max-width:98px; }
+
+/* Code is an action surface: learners can read, copy, ask about, or run the same snippet. */
+#page-learn .ld-code-section { margin-top:34px; }
+#page-learn .ld-code-section .ld-section-title-row { align-items:center; }
+#page-learn .ld-code-kind { padding:4px 8px; border-radius:99px; background:#F0F2F5; color:#667082; font-size:10px; font-weight:700; }
+#page-learn .ld-code-kind.practice { background:#EEF3FF; color:#365FC3; }
+#page-learn .ld-code-kind.compare { background:#F7F0FF; color:#7651A8; }
+#page-learn .ld-code-note { margin:0 0 10px; color:#687184; font-size:12px; line-height:1.6; }
+#page-learn .ld-code-example { border:1px solid #252A33; border-radius:12px; background:#151820; box-shadow:0 8px 22px rgba(29,34,45,.11); }
+#page-learn .ld-code-example .ld-code-toolbar { min-height:42px; padding:0 11px 0 14px; border-bottom-color:rgba(255,255,255,.1); color:#BFC6D2; font-size:11px; }
+#page-learn .ld-code-toolbar > div { display:flex; align-items:center; gap:6px; }
+#page-learn .ld-code-example button { display:inline-flex; align-items:center; gap:4px; min-height:26px; padding:4px 7px; border-color:rgba(255,255,255,.22); border-radius:6px; color:#E6EAF2; font-size:10px; }
+#page-learn .ld-code-example button:hover { border-color:rgba(255,255,255,.52); background:rgba(255,255,255,.08); }
+#page-learn .ld-code-example button.ld-code-run { border-color:rgba(122,150,255,.55); background:rgba(78,111,223,.2); color:#F3F5FF; }
+#page-learn .ld-code-example button svg { width:12px; height:12px; }
+#page-learn .ld-code-example pre { max-height:370px; padding:16px 18px; color:#E7EAF0; font-size:12px; line-height:1.72; }
