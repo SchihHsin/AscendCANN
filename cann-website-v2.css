@@ -306,7 +306,7 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 #page-learn .v2-tool-fab { display:flex; align-items:center; justify-content:center; width:42px; height:42px; padding:0; border:1px solid #DCE1EA; border-radius:50%; background:rgba(255,255,255,.94); box-shadow:0 8px 22px rgba(36,40,57,.13); color:#303642; cursor:pointer; transition:transform .16s,border-color .16s,background .16s,color .16s; }
 #page-learn .v2-tool-fab.active { border-color:transparent; background:var(--grad); color:#fff; box-shadow:0 9px 22px rgba(64,62,175,.23); }
 #page-learn .ld-path-workspace:not(.v2-tool-float-open) .v2-tool-fab-rail { display:flex; }
-#page-learn .ld-path-workspace.v2-tool-float-open .v2-tool-fab-rail { display:flex; }
+#page-learn .ld-path-workspace.v2-tool-float-open .v2-tool-fab-rail { display:none; }
 #page-learn .ld-path-workspace.v2-right-collapsed.v2-tool-float-open .ld-study-tools { position:fixed; z-index:123; top:164px; right:26px; bottom:22px; display:flex; width:min(440px,calc(100vw - 88px)); height:auto; max-height:none; padding:0; overflow:hidden; visibility:visible; border:1px solid #DFE3EA; border-radius:14px; background:#FCFDFF; box-shadow:0 16px 42px rgba(35,41,55,.18); }
 #page-learn .ld-path-workspace.v2-tool-float-open .v2-tool-float-head { display:flex; align-items:center; justify-content:space-between; flex:0 0 46px; padding:0 12px 0 15px; border-bottom:1px solid #E6E8EE; background:#fff; color:#252A34; }
 #page-learn .v2-tool-float-head span { display:flex; align-items:center; gap:7px; font-size:13px; }
