@@ -1428,10 +1428,11 @@
       </div>
     </div>
 
-    <div class="ld-path-workspace" id="ld-path-workspace">
+    <div class="ld-path-workspace v2-right-collapsed ld-tools-collapsed" id="ld-path-workspace">
       <button class="v2-edge-pill v2-edge-pill-left" type="button" onclick="v2ToggleWorkspacePanel('left')" aria-label="收起学习路径" title="收起学习路径"><i data-lucide="chevron-left"></i></button>
-      <button class="v2-edge-pill v2-edge-pill-right" type="button" onclick="v2ToggleWorkspacePanel('right')" aria-label="收起学习工具" title="收起学习工具"><i data-lucide="chevron-right"></i></button>
+      <button class="v2-path-fab" type="button" onclick="v2OpenPathFloat()" aria-label="打开学习路径" title="学习路径"><i data-lucide="route"></i></button>
       <aside class="ld-path-sidebar" id="v2-path-sidebar">
+        <div class="v2-path-float-head"><strong>学习路径</strong><button type="button" onclick="v2ClosePathFloat()" aria-label="关闭学习路径"><i data-lucide="x"></i></button></div>
         <div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button onclick="v2SetPathView('list',this)" title="列表视图" aria-label="列表视图"><i data-lucide="list-tree"></i></button><button class="active" onclick="v2SetPathView('map',this)" title="可视化视图" aria-label="可视化视图"><i data-lucide="git-branch"></i></button></div></div>
         <div class="ld-path-nav" id="ld-path-nav"></div>
         <button class="ld-edit-path-btn" type="button" onclick="ldOpenPathEditor()">编辑路径</button>
@@ -1440,10 +1441,11 @@
       <div class="v2-workspace-resizer v2-workspace-resizer-left" id="v2-left-resizer" role="separator" aria-label="调整学习路径宽度" aria-orientation="vertical"></div>
       <main class="ld-learning-content" id="ld-learning-content"></main>
       <aside class="ld-study-tools" id="ld-study-tools">
+        <div class="v2-tool-float-head"><span><i data-lucide="bot" aria-hidden="true"></i><strong>AI 助手</strong></span><button type="button" onclick="v2CloseToolFloat()" aria-label="关闭工具窗口"><i data-lucide="x"></i></button></div>
         <div class="ld-tool-tabs">
-          <button class="active" onclick="ldSwitchTool('ai',this)">AI 助手</button>
-          <button onclick="ldSwitchTool('visual',this)">知识图谱</button>
-          <button onclick="ldSwitchTool('quiz',this)">随堂测验</button>
+          <button class="active" data-v2-tool="ai" onclick="ldSwitchTool('ai',this)">AI 助手</button>
+          <button data-v2-tool="visual" onclick="ldSwitchTool('visual',this)">知识图谱</button>
+          <button data-v2-tool="quiz" onclick="ldSwitchTool('quiz',this)">随堂测验</button>
         </div>
         <div class="ld-tool-panel active" id="ld-tool-ai">
           <div class="ld-tool-context" id="ld-ai-context">正在学习当前节点</div>
@@ -1455,6 +1457,11 @@
         <div class="ld-tool-panel" id="ld-tool-visual"><div id="ld-knowledge-visual"></div></div>
       </aside>
       <div class="v2-workspace-resizer v2-workspace-resizer-right" id="v2-right-resizer" role="separator" aria-label="调整学习工具宽度" aria-orientation="vertical"></div>
+      <div class="v2-tool-fab-rail" aria-label="学习工具">
+        <button class="v2-tool-fab" type="button" data-v2-tool-fab="ai" onclick="v2OpenToolFloat('ai')" aria-label="打开 AI 助手" title="AI 助手"><i data-lucide="bot"></i></button>
+        <button class="v2-tool-fab" type="button" data-v2-tool-fab="visual" onclick="v2OpenToolFloat('visual')" aria-label="打开知识图谱" title="知识图谱"><i data-lucide="network"></i></button>
+        <button class="v2-tool-fab" type="button" data-v2-tool-fab="quiz" onclick="v2OpenToolFloat('quiz')" aria-label="打开随堂测验" title="随堂测验"><i data-lucide="circle-help"></i></button>
+      </div>
     </div>
 
     <!-- Path sequence strip (shown for AI-generated paths) -->
@@ -1995,18 +2002,13 @@
   function v2SyncEdgePills() {
     const workspace = v2Workspace();
     const leftPill = document.querySelector('.v2-edge-pill-left');
-    const rightPill = document.querySelector('.v2-edge-pill-right');
     const pathSidebar = document.getElementById('v2-path-sidebar');
-    const studyTools = document.getElementById('ld-study-tools');
-    if (!workspace || !leftPill || !rightPill || !pathSidebar || !studyTools) return;
+    if (!workspace || !leftPill || !pathSidebar) return;
     const bounds = workspace.getBoundingClientRect();
     const leftWidth = pathSidebar.getBoundingClientRect().width;
-    const rightWidth = studyTools.getBoundingClientRect().width;
     const centerY = Math.round(bounds.top + bounds.height / 2);
     leftPill.style.left = `${Math.round(bounds.left + leftWidth - 9)}px`;
-    rightPill.style.left = `${Math.round(bounds.right - rightWidth - 9)}px`;
     leftPill.style.top = `${centerY}px`;
-    rightPill.style.top = `${centerY}px`;
   }
   function v2SaveWorkspaceSizes(workspace) {
     sessionStorage.setItem(V2_WORKSPACE_SIZE_KEY, JSON.stringify({
@@ -2026,11 +2028,54 @@
   function v2ToggleWorkspacePanel(side) {
     const workspace = v2Workspace();
     if (!workspace) return;
+    if (side === 'right') {
+      v2OpenToolFloat('ai');
+      return;
+    }
     const collapsedClass = side === 'left' ? 'v2-left-collapsed' : 'v2-right-collapsed';
     workspace.classList.toggle(collapsedClass);
-    if (side === 'right') workspace.classList.toggle('ld-tools-collapsed', workspace.classList.contains(collapsedClass));
+    if (side === 'left') workspace.classList.remove('v2-path-float-open');
     window.lucide?.createIcons();
     requestAnimationFrame(v2SyncEdgePills);
+  }
+  const V2_TOOL_FLOAT_META = {
+    ai:{ title:'AI 助手', icon:'bot' },
+    visual:{ title:'知识图谱', icon:'network' },
+    quiz:{ title:'随堂测验', icon:'circle-help' }
+  };
+  function v2OpenToolFloat(name) {
+    const workspace = v2Workspace();
+    const meta = V2_TOOL_FLOAT_META[name];
+    if (!workspace || !meta) return;
+    const tab = workspace.querySelector(`.ld-tool-tabs [data-v2-tool="${name}"]`);
+    if (tab) ldSwitchTool(name, tab);
+    workspace.classList.add('v2-right-collapsed', 'ld-tools-collapsed', 'v2-tool-float-open');
+    workspace.querySelectorAll('[data-v2-tool-fab]').forEach(button => button.classList.toggle('active', button.dataset.v2ToolFab === name));
+    const title = workspace.querySelector('.v2-tool-float-head strong');
+    const icon = workspace.querySelector('.v2-tool-float-head span > svg, .v2-tool-float-head span > i');
+    if (title) title.textContent = meta.title;
+    if (icon) {
+      icon.outerHTML = `<i data-lucide="${meta.icon}" aria-hidden="true"></i>`;
+      window.lucide?.createIcons();
+    }
+    if (name === 'ai') setTimeout(() => document.getElementById('ld-tool-ai-input')?.focus(), 0);
+  }
+  function v2CloseToolFloat() {
+    const workspace = v2Workspace();
+    if (!workspace) return;
+    workspace.classList.remove('v2-tool-float-open');
+    workspace.querySelectorAll('[data-v2-tool-fab]').forEach(button => button.classList.remove('active'));
+  }
+  function v2OpenPathFloat() {
+    const workspace = v2Workspace();
+    if (!workspace) return;
+    workspace.classList.add('v2-left-collapsed', 'v2-path-float-open');
+    window.lucide?.createIcons();
+  }
+  function v2ClosePathFloat() {
+    const workspace = v2Workspace();
+    if (!workspace) return;
+    workspace.classList.remove('v2-path-float-open');
   }
   function v2BindWorkspaceResizer(id, side) {
     const handle = document.getElementById(id);
@@ -2058,17 +2103,13 @@
       window.addEventListener('pointerup', finish, { once:true });
     });
   }
-  const v2OriginalOpenLearningAi = window.openLearningAi;
   window.openLearningAi = function() {
-    const workspace = v2Workspace();
-    if (workspace?.classList.contains('v2-right-collapsed')) {
-      v2ToggleWorkspacePanel('right');
-      const aiTab = [...document.querySelectorAll('.ld-tool-tabs button')].find(button => button.textContent.trim() === 'AI 助手');
-      if (aiTab) ldSwitchTool('ai', aiTab);
-      setTimeout(() => document.getElementById('ld-tool-ai-input')?.focus(), 0);
+    if (document.getElementById('ld-roadmap')?.style.display !== 'none') {
+      _closeSidebar();
+      v2OpenToolFloat('ai');
       return;
     }
-    return v2OriginalOpenLearningAi();
+    return toggleAiChat();
   };
 
   // Preserve the existing AI, quiz and graph data. The visual layer is a stable
