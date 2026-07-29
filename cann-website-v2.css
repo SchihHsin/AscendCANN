@@ -208,6 +208,8 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 #page-learn.v2-hidevlab-split .ld-path-workspace { grid-template-columns:minmax(0,1fr); padding:0; transition:grid-template-columns .4s cubic-bezier(.4,0,.2,1); }
 #page-learn.v2-hidevlab-split .ld-path-sidebar,#page-learn.v2-hidevlab-split .ld-study-tools,#page-learn.v2-hidevlab-split .v2-workspace-resizer,#page-learn.v2-hidevlab-split .v2-edge-pill { display:none!important; }
 #page-learn.v2-hidevlab-split .ld-learning-content { max-width:none; padding-right:48px; }
+/* The route actions belong to the global workspace edge, not the narrowed reading pane. */
+@media (min-width:901px) { #page-learn.v2-hidevlab-split .ld-roadmap-actions { position:fixed; z-index:70; top:0; right:28px; display:flex; height:58px; align-items:center; } }
 /* Split mode narrows the lab: retain actions, but let informational controls wrap or hide first. */
 .sandbox-drawer.v2-dock-split .nb-header { min-height:48px; height:auto; padding:6px 10px; gap:8px; align-items:flex-start; }
 .sandbox-drawer.v2-dock-split .nb-header-left { min-width:0; gap:8px; flex:1; }
