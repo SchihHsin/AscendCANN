@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能学习方案 - 张宸梓访谈分析</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/IKKI2000/harmonyos-fonts@master/css/harmonyos_sans_sc.css">
+<style>
+/* ===== 设计 token ===== */
+:root{
+  --fs-h1:clamp(20px,1.7vw,30px); --fs-h2:clamp(16px,1.25vw,22px); --fs-h3:clamp(15.5px,1.2vw,19px);
+  --fs-body:clamp(15px,1.12vw,18px); --fs-sm:clamp(12px,.82vw,14.5px); --fs-xs:clamp(9px,.62vw,11px);  /* body=舒适阅读档；密集形式见 .pf/.pp/.up 局部回小 */
+  --paper:#E9EBEE; --card:#fff; --card-2:#F1F3F6;
+  --ink:#16191e; --ink-2:#5e646e; --ink-3:#929aa6; --line:#d4d8df;
+  --accent:#5B5BD6; --accent-soft:#ECECFB; --red:#E60012;
+  --c-red:#F05A68; --c-orange:#F47A4B; --c-amber:#F4B450; --c-yellow:#D9B52C; --c-lime:#91BD48; --c-green:#39B982; --c-mint:#36BFA2; --c-teal:#28A8D8; --c-blue:#4B8DFF; --c-indigo:#5B5BD6; --c-purple:#8D63D8; --c-pink:#D95F9D; --c-rose:#E76C88; --c-neutral:#9BA5B4; --c-ink:#22262F;
+  --g-red:linear-gradient(120deg,#FF5A6E,#FF6F55); --g-orange:linear-gradient(120deg,#FF9A55,#F47A4B); --g-amber:linear-gradient(120deg,#FBBF60,#F59E0B); --g-yellow:linear-gradient(120deg,#F4D35E,#D9B52C); --g-lime:linear-gradient(120deg,#B8DC62,#91BD48); --g-green:linear-gradient(120deg,#23CFA0,#45D65A); --g-mint:linear-gradient(120deg,#42D4B8,#36BFA2); --g-teal:linear-gradient(120deg,#38C9D7,#4FACFE); --g-blue:linear-gradient(120deg,#2F6FED,#4B8DFF); --g-indigo:linear-gradient(120deg,#6674E6,#5B5BD6); --g-purple:linear-gradient(120deg,#A78BFA,#7C3AED); --g-pink:linear-gradient(120deg,#FF4FA3,#FF7AC8); --g-rose:linear-gradient(120deg,#F37A9A,#E76C88); --g-neutral:linear-gradient(120deg,#E4E8EF,#CBD3DF);
+  --dark:var(--c-ink); --g-ink:linear-gradient(140deg,#22262F,#14171C); --g-accent:linear-gradient(135deg,var(--c-indigo),#7C3AED);
+  /* 黑底光晕（每页可被 inline 变量覆盖，实现一章一色）*/
+  --glow-h:234; --glow-h2:291; --glow-sat:95%; --glow-light:40%; --glow-spread:35; --glow-color-int:.68; --glow-white-int:.58;
+}
+/* 用户画像是高密度特殊形式：body/h3 局部冻回紧凑档，不随全局正文放大 */
+.pf,.pp,.up{--fs-h3:clamp(13px,.95vw,16px);--fs-body:clamp(12px,.82vw,15px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+html,body{width:100%;height:100%;margin:0;background:#0c0a0b;color:var(--ink);
+  font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;-webkit-font-smoothing:antialiased}
+/* 纵向翻页：body 作滚动容器 + 原生 scroll-snap（划时短暂两页，松手吸附到整页）*/
+body{overflow:hidden auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+/* 滚动条：细、半透、默认隐藏，滚动时（body.scrolling）才淡入；亮/暗随 body.on-dark */
+body{scrollbar-width:thin;scrollbar-color:transparent transparent}
+body.scrolling{scrollbar-color:rgba(140,140,160,.45) transparent}
+body::-webkit-scrollbar{width:9px}
+body::-webkit-scrollbar-track{background:transparent}
+body::-webkit-scrollbar-thumb{background:transparent;border-radius:9px;border:3px solid transparent;background-clip:padding-box;transition:background .25s}
+body.scrolling::-webkit-scrollbar-thumb{background:rgba(140,140,160,.45);background-clip:padding-box}
+body.on-dark.scrolling{scrollbar-color:rgba(255,255,255,.32) transparent}
+body.on-dark.scrolling::-webkit-scrollbar-thumb{background:rgba(255,255,255,.32);background-clip:padding-box}
+#deck{position:relative;width:100vw;display:block}
+.slide{position:relative;width:100vw;height:100vh;overflow:hidden;font-size:var(--fs-body);scroll-snap-align:start;scroll-snap-stop:always}
+
+/* ===== 总览（Overview）：缩略图网格（按当前视窗比例，不强制 16:9）===== */
+body.overview{scroll-snap-type:none;background:#15151a;padding:30px 30px 64px}
+body.overview #deck{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:auto;max-width:1480px;margin:0 auto;align-items:start}
+body.overview .slide{position:relative!important;width:auto!important;min-height:0!important;padding:0!important;margin:0!important;display:block!important;overflow:hidden!important;border-radius:12px;cursor:pointer;scroll-snap-align:none;box-shadow:0 12px 34px -14px rgba(0,0,0,.6);outline:2px solid transparent;transition:outline-color .18s,transform .18s}
+body.overview .slide:hover{transform:translateY(-4px);outline-color:var(--accent)}
+body.overview .slide-inner{position:absolute;top:0;left:0;width:100vw;height:100vh;transform-origin:top left;overflow:hidden;pointer-events:none;box-sizing:border-box}
+body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5vh 4vw}
+body.overview .s-glow .slide-inner{padding:7vh 6vw}
+body.overview .s-cover .slide-inner{padding:0}
+
+/* ===== 翻页过渡（可切换）=====
+   默认 slide=纵向 scroll-snap；其余走「受控叠层」(body.ctrl)：所有页叠同位、只 .active 显示
+   TRANSITION / ?t= : slide(默认) | fade | cut | slide-h | magic */
+body.ctrl{overflow:hidden;scroll-snap-type:none}
+body.ctrl #deck{position:fixed;inset:0;width:100vw}
+body.ctrl .slide{position:absolute;inset:0;opacity:0;visibility:hidden;scroll-snap-align:none;scroll-snap-stop:normal}
+body.ctrl .slide.active{opacity:1;visibility:visible;z-index:2}
+body.ctrl .slide.leaving{visibility:visible;z-index:1}
+body[data-transition=fade] .slide{transition:opacity .5s ease}
+body[data-transition=fade] .slide.leaving{opacity:0}
+body[data-transition=cut] .slide{transition:none}
+body[data-transition=cut] .slide.leaving{opacity:0}
+body[data-transition=slide-h] .slide{transition:transform .56s cubic-bezier(.77,0,.175,1),opacity .4s ease}
+body[data-transition=slide-h] .slide.active{opacity:1}
+body[data-transition=slide-h] .slide.leaving{opacity:1}
+body[data-transition=magic] .slide{transition:opacity .6s ease}
+body[data-transition=magic] .slide.leaving{opacity:0}
+body.overview.ctrl{overflow:hidden auto}
+body.overview.ctrl #deck{position:static}
+body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibility:visible!important;transform:none!important}
+
+/* ============ 基调②：灰底分析篇 ============ */
+.s-gray{color:var(--ink);padding:5vh 4vw;display:flex;flex-direction:column;background:var(--paper);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 480' preserveAspectRatio='none'%3E%3Cpath d='M0 320 C 380 250 760 330 1080 195 C 1280 140 1380 185 1440 130 L1440 480 L0 480 Z' fill='%237e8696' fill-opacity='0.07'/%3E%3Cpath d='M0 372 C 430 305 820 405 1180 245 C 1340 198 1402 240 1440 190 L1440 480 L0 480 Z' fill='%23949bab' fill-opacity='0.08'/%3E%3C/svg%3E"),linear-gradient(125deg,rgba(120,128,145,.05),transparent 50%);
+  background-position:bottom center,0 0;background-size:100% 50%,100% 100%;background-repeat:no-repeat,no-repeat}
+.head{display:flex;align-items:flex-start;justify-content:space-between;flex:0 0 auto;margin-bottom:3.4vh}
+.head-l{display:flex;flex-direction:column-reverse;gap:.8vh}  /* 小副标(.subttl)在上、大标题在下：column-reverse 反转视觉顺序，HTML 仍 .brand 在前 .subttl 在后 */
+.brand{display:flex;align-items:center;gap:.5em}
+.brand .logo{height:clamp(19px,1.7vw,25px);width:auto;display:block;flex-shrink:0}  /* ⛔ 标题前只放 CANN logo（无合适 logo 就删掉 img 留空），绝不换成 Lucide/通用 icon */
+.brand .ttl{font-weight:800;font-size:var(--fs-h1);letter-spacing:-.01em}      /* 标题=结论 */
+.subttl{font-weight:300;font-size:var(--fs-sm);color:var(--ink-2)}
+/* 右上章节 Tab：横向列出整份汇报章节，当前章节用深色胶囊高亮；不再放孤立的小字页码。 */
+.section-tabs{display:flex;align-items:center;gap:5px;flex:0 0 auto;margin-left:auto;padding:.45vh .48vw;border:1px solid rgba(127,137,157,.18);border-radius:999px;background:rgba(255,255,255,.46)}
+.section-tabs span{padding:.42vh .6vw;border-radius:999px;font:600 var(--fs-sm)/1.2 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;color:var(--ink-3);white-space:nowrap}
+.section-tabs span.active{background:var(--g-ink);color:#fff;box-shadow:0 3px 10px -6px rgba(20,25,35,.5)}
+/* 目录：4 章单行；3 / 5 / 6 章的完整数量路由见 components.md §18 与模板库。 */
+.contents-slide .body-area{justify-content:center}
+.contents-directory{width:min(1120px,100%);margin:0 auto;display:grid;gap:1vw;align-items:stretch}
+.contents-directory.contents-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.directory-card{--dir:var(--c-indigo);position:relative;min-width:0;min-height:31vh;overflow:hidden;padding:1.8vh 1.25vw 1.35vh;display:flex;flex-direction:column;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.88);border-radius:14px;box-shadow:0 18px 42px -25px rgba(20,25,35,.22),inset 0 1px 0 rgba(255,255,255,.94)}
+.directory-card::after{content:"";position:absolute;right:-25%;bottom:-24%;width:90%;height:46%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--dir) 16%,transparent),transparent 70%);pointer-events:none}
+.directory-card.research{--dir:var(--c-indigo)}.directory-card.competitor{--dir:var(--c-blue)}.directory-card.persona{--dir:var(--c-teal)}.directory-card.roadmap{--dir:var(--c-pink)}
+.directory-no,.directory-name,.directory-en,.directory-items,.directory-note{position:relative;z-index:1}
+.directory-no{font-family:'Barlow Condensed','Inter',sans-serif;font-size:clamp(54px,5.4vw,86px);line-height:.82;letter-spacing:-.035em;font-weight:300;color:var(--dir);text-shadow:0 0 28px color-mix(in srgb,var(--dir) 24%,transparent)}
+.directory-name{margin-top:1.35vh;font-size:var(--fs-h2);line-height:1.2;font-weight:950;color:var(--ink);overflow-wrap:anywhere}
+.directory-en{margin-top:.42vh;font-family:'Inter',sans-serif;font-size:var(--fs-sm);font-weight:700;color:color-mix(in srgb,var(--dir) 76%,#596575);overflow-wrap:anywhere}
+.directory-items{display:grid;gap:.52vh;margin-top:2.65vh}.directory-items span{font-size:var(--fs-body);line-height:1.36;color:var(--ink-2);overflow-wrap:anywhere}
+.directory-items span::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;vertical-align:middle;margin:-2px .48em 0 0;background:var(--dir);box-shadow:0 0 12px color-mix(in srgb,var(--dir) 42%,transparent)}
+.directory-note{margin-top:auto;padding-top:1.25vh;border-top:1px solid rgba(47,61,99,.14);font-size:var(--fs-sm);font-weight:900;line-height:1.35;color:color-mix(in srgb,var(--dir) 72%,#465364);overflow-wrap:anywhere}
+/* padding-bottom 给绝对定位的 .foot/.ucd 留位，否则居中卡会紧贴页尾（见 pitfalls.md）*/
+.body-area{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+/* 居中型页（内容是个居中块、四周留白）加 .vc：JS balanceHeads() 按实际页眉高度补 padding-bottom，
+   抵消"页眉占空间、页脚(.foot/.ucd 绝对定位)不占空间"的不平衡，让内容落到整页真正正中（任意窗口都准）。
+   固定 vh 猜测值在不同页眉高度/窗口宽高比下对不上，见 pitfalls.md。
+   填满型页（旅程/VOC/画像表格等用满整页的）不加 .vc */
+.body-area.vc{padding-bottom:0}
+.card{background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.7);border-radius:16px;box-shadow:0 10px 30px -16px rgba(30,40,70,.2),inset 0 1px 0 rgba(255,255,255,.85);padding:2.2vh 1.6vw}
+
+/* 甘特 roadmap（精调件②）：玻璃大卡 + 浮动条 + 虚线网格底纹 */
+.rm{position:relative;flex:1;min-height:0;margin-top:1vh;background:rgba(255,255,255,.55);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border:1px solid rgba(255,255,255,.7);border-radius:18px;box-shadow:0 12px 34px -16px rgba(30,40,70,.22),inset 0 1px 0 rgba(255,255,255,.85)}
+.rm-pad{position:absolute;top:6vh;left:3.2vw;right:3.2vw;bottom:4vh}            /* 内层容器：绝对定位的条/刻度相对它，padding 才生效 */
+.rm-pad::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0H0V40' fill='none' stroke='%237e8696' stroke-opacity='0.18' stroke-width='1' stroke-dasharray='2,4'/%3E%3C/svg%3E");background-size:40px 40px}
+.rm-date{position:absolute;top:0;transform:translateX(-50%);font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;color:var(--ink-3);white-space:nowrap}
+.rm-now-pill{position:absolute;top:1.6%;transform:translateX(-50%);font-size:var(--fs-xs);font-weight:600;color:#fff;background:rgba(91,91,214,.92);padding:3px 11px;border-radius:9px;box-shadow:0 3px 10px rgba(60,52,137,.32);z-index:3}
+.rm-now-line{position:absolute;top:9%;height:84%;width:2px;background:linear-gradient(rgba(91,91,214,.85),rgba(91,91,214,.35));box-shadow:0 0 12px rgba(91,91,214,.5);z-index:1}
+.rm-now-tri{position:absolute;top:7.2%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid var(--accent);z-index:2}
+.rm-bar{position:absolute;height:8.5%;min-height:30px;max-height:46px;border-radius:13px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:var(--fs-body);font-weight:500;backdrop-filter:blur(2px) saturate(130%);-webkit-backdrop-filter:blur(2px) saturate(130%);z-index:2}
+.rm-bar .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rm-badge{font-size:var(--fs-xs);font-weight:600;padding:3px 9px;border-radius:7px;white-space:nowrap;margin-left:10px;flex:none}
+.rm-bar.white{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.75);color:var(--ink);box-shadow:0 8px 22px rgba(30,40,70,.1),inset 0 1px 0 rgba(255,255,255,.8)}
+.rm-bar.white .rm-badge{background:var(--dark);color:#fff}
+.rm-bar.dark{background:var(--g-ink);border:1px solid rgba(255,255,255,.22);color:#fff;box-shadow:0 8px 26px rgba(20,25,35,.32),inset 0 1px 0 rgba(255,255,255,.28)}
+.rm-bar.dark .rm-badge{background:rgba(255,255,255,.92);color:var(--dark)}
+.rm-bar.accent{background:var(--g-accent);border:1px solid rgba(255,255,255,.34);color:#fff;box-shadow:0 10px 28px rgba(91,91,214,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+.rm-bar.accent .rm-badge{background:#fff;color:#5B21B6}
+.rm-diamond{position:absolute;width:18px;height:18px;transform:rotate(45deg);background:var(--g-ink);border:1px solid rgba(255,255,255,.3);border-radius:3px;box-shadow:0 5px 14px rgba(0,0,0,.22);z-index:3}
+.rm-ms{position:absolute;font-size:var(--fs-sm);font-weight:500;color:var(--ink-2)}
+
+/* 关键指标：多彩渐变胶囊 + 极细超大数字（精调件①）*/
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3.4vw;flex:1;min-height:0;align-items:center}
+.stat-col{display:flex;flex-direction:column;gap:2vh}
+.stat-bar-area{position:relative}
+.stat-marks{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10.5px;color:var(--ink-3);margin-bottom:.7vh;position:relative;height:18px;align-items:flex-end}
+.stat-tri{position:absolute;font-size:9px;transform:translateX(-50%);color:var(--ink-2);bottom:0;line-height:1}
+.stat-pills{display:flex;gap:5px;height:6vh} .stat-pill{border-radius:999px;flex-shrink:0}
+.stat-num{font-family:'Inter';font-weight:200;font-size:min(8.4vw,13.8vh);line-height:.88;letter-spacing:-.04em;color:var(--ink);margin-top:.4vh}
+.stat-num .u{font-size:.35em;font-weight:300;color:var(--ink-2);margin-left:.05em}
+.stat-desc{font-size:var(--fs-body);color:var(--ink-2);line-height:1.58;max-width:26ch}
+
+/* 竞品对照：三卡大段论述 + 图沉卡底（order:2）+ 对策深色条 */
+.compare{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw;flex:0 0 auto}
+.cmp{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.cmp-img{order:2;flex:0 0 auto;padding:0 .9vw .9vw;margin-top:auto}
+.cmp-img img{width:100%;height:auto;display:block;border-radius:9px;border:1px solid var(--line)}
+.cmp-cap{font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--ink-3);text-align:center;letter-spacing:.02em;margin-top:.7vh}
+.cmp-body{order:1;padding:2vh 1.4vw .8vh;flex:0 0 auto;display:flex;flex-direction:column;gap:1.7vh}
+.cmp-h{font-weight:700;font-size:var(--fs-h2);letter-spacing:-.01em;line-height:1.3;color:var(--ink)}
+.cmp-h .hk{display:block;font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.5vh}
+.cmp-desc{font-size:var(--fs-body);line-height:1.72;color:var(--ink-2)}
+.cmp-desc b{color:var(--ink);font-weight:600;background:linear-gradient(transparent 60%,rgba(91,91,214,.16) 0)}
+.verdict{flex:0 0 auto;margin-top:1.6vh;display:grid;grid-template-columns:auto 1fr;gap:1.2vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:12px;padding:1.8vh 1.6vw}
+.verdict .vk{font-size:var(--fs-h3);font-weight:700;color:var(--ink);background:#fff;border-radius:12px;padding:6px 15px;white-space:nowrap}
+.verdict .vv{font-size:var(--fs-body);line-height:1.55} .verdict .vv b{font-weight:700}
+
+/* 用户画像·形式一（左栏人物 + 右四区）。⚠️ 与形式二是两套方案【二选一】，按用户输入择优 */
+.pf{--b:#385CFF;--bs:rgba(56,92,255,.1);flex:0 1 auto;min-height:0;display:grid;grid-template-columns:23% 1fr;gap:1.5vw;align-items:stretch}
+.pf-side{background:#EFEFF1;border-radius:16px;padding:1.7vh 1.2vw;display:flex;flex-direction:column;gap:.85vh;overflow:hidden}
+.pf-portrait{width:100%;aspect-ratio:1/.86;border-radius:12px;overflow:hidden;background:#fff;flex:0 0 auto}
+.pf-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-sb{border-radius:11px;padding:.95vh .9vw;flex:0 0 auto}
+.pf-sb.head{background:var(--bs);padding-top:.85vh;padding-bottom:.85vh}
+.pf-sb.head .nm{font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC';font-weight:800;font-size:var(--fs-h2);color:#1a1a1a;line-height:1.2}
+.pf-sb.head .rl{font-size:var(--fs-body);color:var(--b);font-weight:600;margin-top:.1vh}
+.pf-sb.white{background:#fff}
+.pf-sb .sbh{font-size:var(--fs-xs);color:#999;font-weight:700;margin-bottom:.25vh}
+.pf-sb .sbt{font-size:var(--fs-body);color:#333;line-height:1.5}
+.pf-chips{display:flex;flex-wrap:wrap;gap:.4vw}
+.pf-chips span{font-size:var(--fs-sm);color:var(--b);background:var(--bs);border-radius:6px;padding:.4vh .65vw}
+.pf-quote{font-size:var(--fs-body);color:#333;font-weight:600;line-height:1.5;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c2c7d0}
+.pf-r{display:flex;flex-direction:column;gap:1.1vh;min-height:0}
+.pf-row{display:grid;grid-template-columns:.82fr 1.7fr;gap:1.8vw;align-items:start}
+.pf-block{display:flex;flex-direction:column;min-width:0}
+.pf-h2{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;background:var(--b);color:#fff;border-radius:20px;padding:.3vh .9vw .3vh .3vh;font-weight:700;font-size:var(--fs-h3);margin-bottom:.8vh}
+.pf-h2 .ico{width:clamp(21px,1.8vw,27px);height:clamp(21px,1.8vw,27px);border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pf-h2 .ico svg{width:56%;height:56%;display:block}
+.pf-sub{font-weight:700;font-size:var(--fs-sm);color:#333;margin:.1vh 0 .4vh .2vw}
+.pf-rings{display:flex;gap:2vw;padding-left:.3vw}
+.pf-rg{display:flex;flex-direction:column;align-items:center;gap:.4vh;text-align:center;width:min(13vw,150px)}
+.pf-rg .dn{width:clamp(46px,4.4vw,62px);height:clamp(46px,4.4vw,62px);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}
+.pf-rg .dn::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--b) 0 var(--p),#D6DAE4 0)}
+.pf-rg .dn::after{content:'';position:absolute;inset:23%;border-radius:50%;background:var(--paper)}
+.pf-rg .dn b{position:relative;z-index:1;font-weight:700;font-size:var(--fs-h3);color:#1a1a1a}
+.pf-rg .rl2{font-size:var(--fs-sm);color:#555;line-height:1.4}
+.pf-flow{display:flex;align-items:stretch;gap:.25vw}
+.pf-fc{flex:1;background:var(--bs);border-radius:10px;padding:.85vh .75vw;display:flex;flex-direction:column;gap:.35vh;min-width:0}
+.pf-fc .ft{font-weight:700;font-size:var(--fs-sm);color:var(--b)}
+.pf-fc .fl{font-size:var(--fs-xs);color:#444;line-height:1.4;display:flex;gap:.3em}
+.pf-fc .fl::before{content:'·';color:var(--b);font-weight:700;flex-shrink:0}
+.pf-fa{display:flex;align-items:center;color:var(--b);font-size:var(--fs-sm);flex-shrink:0}
+.pf-fc .fkpi{margin-top:.5vh;padding-top:.5vh;border-top:1px dashed rgba(56,92,255,.35);display:flex;flex-wrap:wrap;gap:.2em .55em;align-items:center}
+.pf-fc .fkpi .kl{font-size:var(--fs-xs);color:#999;font-weight:700;background:#fff;border-radius:4px;padding:.1vh .4vw}
+.pf-fc .fkpi b{font-size:var(--fs-xs);color:var(--b);font-weight:700}
+.pf-scs{display:grid;grid-template-columns:repeat(4,1fr);gap:.7vw}
+.pf-sc{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:.9vh .75vw;display:flex;flex-direction:column;gap:.55vh}
+.pf-sc .st{font-weight:700;font-size:var(--fs-body);color:#1a1a1a}
+.pf-sc .sd{font-size:var(--fs-sm);color:#666;line-height:1.45}
+.pf-pains{display:flex;flex-direction:column;gap:.4vh}
+.pf-pain{font-size:var(--fs-body);line-height:1.5;color:#333;display:flex;gap:.5em;align-items:flex-start}
+.pf-pain::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--b);flex-shrink:0;margin-top:.55em}
+.pf-pain b{color:var(--b);font-weight:600}
+.pf-mk{flex:0 0 auto;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;border:1px solid #E0E3EA;background:#F6F8FC;display:flex;flex-direction:column}
+.pf-mk .bar{display:flex;align-items:center;gap:3px;padding:2px 5px;background:#EBEEF4;border-bottom:1px solid #E0E3EA;flex-shrink:0}
+.pf-mk .bar i{width:3.5px;height:3.5px;border-radius:50%;background:#C4CAD6}
+.pf-mk .bd{flex:1;padding:4px 5px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.mkl{height:2.5px;border-radius:1.5px;background:#D3D8E2;display:block;flex-shrink:0}
+.mkl.b{background:var(--b)} .mkl.o{background:#E8896B}
+
+/* ============ 基调①：封面（真实素材）============ */
+.s-cover{color:#fff;background:#0c0a0b;padding:0}
+.cv-bg{position:absolute;inset:0;background:url("cover-bg.png") center/cover no-repeat;z-index:0}   /* 换成你的封面图 */
+.cv-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(10,8,9,.92),rgba(10,8,9,.55) 30%,rgba(10,8,9,0) 58%)}
+.cv-content{position:relative;z-index:1;height:100vh;padding:6vh 6vw;display:flex;flex-direction:column;justify-content:space-between}
+.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}
+.cv-huawei{display:flex;align-items:center;gap:.7em;font-weight:600;font-size:16px;letter-spacing:.04em;align-self:flex-start}
+.cv-huawei .petal{width:19px;height:19px;flex-shrink:0}
+.cv-meta{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;opacity:.55}
+.cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:60vw}
+.cv-kicker{font-family:'JetBrains Mono';font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1vh}
+.cv-logo{display:flex}
+.cv-logo img{height:min(17vh,12vw);width:auto;display:block}  /* 深色封面用白色版 logo */
+.cv-sub{font-weight:300;font-size:min(3vw,5vh);line-height:1.1;color:rgba(255,255,255,.92)}
+.cv-lead{font-weight:300;font-size:max(15px,1.2vw);line-height:1.6;color:rgba(255,255,255,.6);max-width:36ch;margin-top:1.4vh}
+.cv-ucd{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.6em}
+.cv-ucd .sq{width:12px;height:12px;border:1.5px solid currentColor;display:inline-block}
+
+/* ============ 基调③：黑底设计点（光晕 + 渐变标题字）============ */
+.s-glow{background:#06060a;color:#fff;padding:7vh 6vw}
+.s-glow .glow{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none}
+.s-glow .glow::before,.s-glow .glow::after{content:"";position:absolute;inset:0;mix-blend-mode:screen}
+.s-glow .glow::before{background:radial-gradient(ellipse 78% 96% at 22% 112%,hsla(var(--glow-h),var(--glow-sat),calc(var(--glow-light) + 12%),var(--glow-color-int)) 0%,hsla(var(--glow-h),var(--glow-sat),var(--glow-light),0) 92%)}
+.s-glow .glow::after{background:radial-gradient(ellipse 78% 96% at 78% 112%,hsla(var(--glow-h2),var(--glow-sat),calc(var(--glow-light) + 12%),calc(var(--glow-color-int)*.9)) 0%,hsla(var(--glow-h2),var(--glow-sat),var(--glow-light),0) 90%)}
+.s-glow .glow-white{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(to top,hsla(var(--glow-h),22%,90%,var(--glow-white-int)) 0%,hsla(var(--glow-h),30%,80%,0) 84%)}
+.s-glow .chrome{position:absolute;top:5vh;left:6vw;right:6vw;z-index:1;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.s-glow .inner{position:relative;z-index:1;height:100%;display:grid;grid-template-columns:0.5fr 1.5fr;gap:2vw;align-items:center}  /* 设计点版式①（默认）左文右图：图占~65% */
+.kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:hsl(var(--glow-h),var(--glow-sat),72%);margin-bottom:2.6vh;display:flex;align-items:center;gap:.8em}
+.kicker::before{content:"";width:28px;height:1px;background:currentColor;opacity:.7}
+.h-title{font-weight:700;font-size:min(3.5vw,6vh);line-height:1.15;letter-spacing:-.01em;margin-bottom:1.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),78%),hsl(var(--glow-h2),var(--glow-sat),72%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.h-title .light{font-weight:200}
+.body{font-weight:300;font-size:var(--fs-body);line-height:1.75;color:rgba(255,255,255,.62);max-width:40ch;margin-bottom:4vh}
+.body b{color:#fff;font-weight:600}  /* 正文主次：默认细体 + <b> 加粗提亮 */
+.points{display:flex;flex-direction:column;gap:2.2vh}
+.point{display:grid;grid-template-columns:auto 1fr;gap:1.2em;align-items:start}
+.point .dot{width:9px;height:9px;margin-top:.7em;border-radius:50%;background:hsl(var(--glow-h),var(--glow-sat),62%);box-shadow:0 0 12px 2px hsla(var(--glow-h),var(--glow-sat),60%,.7);flex-shrink:0}
+.point .pt-title{font-weight:500;font-size:var(--fs-h3);color:#fff;margin-bottom:.4vh}
+.point .pt-desc{font-weight:300;font-size:var(--fs-sm);line-height:1.6;color:rgba(255,255,255,.5)}
+.shot{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px -20px hsla(var(--glow-h),var(--glow-sat),30%,.5);display:flex;align-items:center;justify-content:center}  /* 16:9 匹配 1920×1080 截图 */
+.shot .ph{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* 设计点版式② 上下堆叠 hero（大图型）：title+body 薄薄一条（无 kicker/无要点）+ 16:9 大图填高居中（~75-78%）*/
+.s-glow .inner.stack{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:2.6vh;align-items:stretch}
+.inner.stack .stack-head{display:grid;grid-template-columns:1.35fr 1fr;gap:3.4vw;align-items:end}
+.inner.stack .stack-head .h-title{margin-bottom:0;font-size:min(2.9vw,4.6vh);line-height:1.2}
+.inner.stack .stack-head .body{margin:0;max-width:46ch;padding-bottom:.4vh}
+.inner.stack .shot{aspect-ratio:16/9;height:100%;width:auto;max-width:100%;margin:0 auto}  /* 真 16:9、按高填满、居中、不裁 */
+.chapter-cover .inner{grid-template-columns:1fr;align-content:center}
+.cover-block{max-width:62vw}
+.ch-no{font-family:'Inter';font-weight:200;font-size:min(11vw,17vh);line-height:.9;letter-spacing:-.04em;opacity:.45;background:linear-gradient(120deg,hsl(var(--glow-h),var(--glow-sat),82%),hsl(var(--glow-h2),var(--glow-sat),70%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1vh}
+.ch-cover-title{font-weight:700;font-size:min(6vw,10vh);line-height:1.05;letter-spacing:-.01em;margin-bottom:2.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),85%),hsl(var(--glow-h2),var(--glow-sat),74%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.ch-cover-sub{font-weight:300;font-size:max(15px,1.2vw);line-height:1.65;color:rgba(255,255,255,.6);max-width:46ch}
+
+/* 调色面板（仅黑底章节封面显示，色值持久记忆）*/
+#panel{position:absolute;top:3.8vh;right:calc(6vw + 58px);z-index:60;width:280px;background:linear-gradient(155deg,rgba(58,58,80,.30),rgba(14,14,22,.40));backdrop-filter:blur(34px) saturate(1.7);-webkit-backdrop-filter:blur(34px) saturate(1.7);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:18px 20px;color:#fff;box-shadow:0 24px 64px -16px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.28)}
+#panel h4{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:14px}
+.preset-row{display:flex;gap:6px;margin-bottom:16px}
+.preset{flex:1;height:30px;border-radius:7px;border:1px solid rgba(255,255,255,.18);cursor:pointer;transition:transform .15s}
+.preset:hover{transform:scale(1.08)}
+.ctrl{margin-bottom:13px}
+.ctrl label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.62);margin-bottom:6px;font-family:'JetBrains Mono'}
+.ctrl label .val{color:#fff}
+.ctrl input[type=range]{width:100%;height:6px;-webkit-appearance:none;border-radius:4px;outline:none;cursor:pointer;background:rgba(255,255,255,.14)}
+.ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.5)}
+#toggle{position:absolute;top:3.8vh;right:6vw;z-index:61;width:46px;height:46px;border-radius:14px;background:linear-gradient(155deg,rgba(58,58,80,.4),rgba(14,14,22,.5));backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.82);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 32px -8px rgba(0,0,0,.5)}
+#toggle:hover{color:#fff}#toggle svg{width:22px;height:22px}
+
+/* ===== 导航 ===== */
+/* 右侧竖排导航点（鼠标到底部才显隐；亮/暗随当前页）*/
+.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:7px;padding:10px 7px;border-radius:999px;background:rgba(150,150,170,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
+.nav-dots.show{opacity:1}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:rgba(40,45,60,.28);cursor:pointer;border:0;padding:0;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.nav-dot:hover{background:rgba(40,45,60,.5);transform:scale(1.25)}
+.nav-dot.active{background:var(--accent);height:18px;border-radius:4px}
+body.on-dark .nav-dots{background:rgba(255,255,255,.1)}
+body.on-dark .nav-dot{background:rgba(255,255,255,.3)}
+body.on-dark .nav-dot.active{background:#fff}
+/* 底部居中控制栏：小而透，默认隐藏，鼠标到底部才出现 */
+#controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;background:rgba(22,25,30,.42);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);color:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.4);opacity:0;transition:opacity .25s}
+#controls.show{opacity:.92}
+#controls button{background:transparent;color:#fff;border:0;cursor:pointer;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;opacity:.7;transition:opacity .15s,background .15s}
+#controls button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.12)}
+#controls button:disabled{opacity:.28;cursor:default}
+#controls button svg{width:14px;height:14px}
+.ctrl-counter{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.08em;min-width:48px;text-align:center;opacity:.7;user-select:none}
+.ctrl-sep{width:1px;height:13px;background:rgba(255,255,255,.18)}
+body.overview #panel,body.overview #toggle{display:none!important}
+</style>
+</head>
+<body>
+<div id="deck">
+
+  <!-- ① 封面 -->
+  <section class="slide s-cover">
+    <div class="cv-bg"></div>
+    <div class="cv-content">
+      <div class="cv-top">
+        <div class="cv-huawei"><svg class="petal" viewBox="0 0 24 24" fill="#E60012"><path d="M12 2c-1 4-3 6-6 7 3 1 5 3 6 7 1-4 3-6 6-7-3-1-5-3-6-7z"/></svg>HUAWEI</div>
+        <div class="cv-meta">Ascend · Compute Architecture</div>
+      </div>
+      <div class="cv-center">
+        <div class="cv-kicker">Design Concept · 2026</div>
+        <div class="cv-logo"><img src="cann-dark-logo.svg" alt="CANN"></div>
+        <div class="cv-sub">DesignConcept 2026</div>
+        <div class="cv-lead">华为昇腾计算架构 · 开发者体验设计概念</div>
+      </div>
+      <div class="cv-bot">
+        <div class="cv-ucd"><span class="sq"></span>UCD CENTER</div>
+        <div class="cv-meta">2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 灰底：目录（4 章单行；目录页不放章节 Tab） -->
+  <section id="contents-directory" class="slide s-gray contents-slide" data-template="contents-directory">
+    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">目录</span></div></div></div>
+    <div class="body-area"><div class="contents-directory contents-4">
+      <article class="directory-card research"><div class="directory-no">01</div><h2 class="directory-name">用户研究</h2><div class="directory-en">User Research</div><div class="directory-items"><span>核心障碍</span><span>关键证据</span></div><div class="directory-note">确认问题与优先改善方向</div></article>
+      <article class="directory-card competitor"><div class="directory-no">02</div><h2 class="directory-name">竞品对照</h2><div class="directory-en">Competitive Analysis</div><div class="directory-items"><span>标杆能力</span><span>体验差距</span></div><div class="directory-note">找到可借鉴的体验范式</div></article>
+      <article class="directory-card persona"><div class="directory-no">03</div><h2 class="directory-name">用户画像</h2><div class="directory-en">User Persona</div><div class="directory-items"><span>典型角色</span><span>任务场景</span></div><div class="directory-note">明确关键用户的真实诉求</div></article>
+      <article class="directory-card roadmap"><div class="directory-no">04</div><h2 class="directory-name">实施路线</h2><div class="directory-en">Delivery Roadmap</div><div class="directory-items"><span>阶段计划</span><span>协作依赖</span></div><div class="directory-note">让方案按节奏进入落地</div></article>
+    </div></div>
+  </section>
+
+  <!-- ③ 灰底：关键指标（多彩渐变胶囊）-->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">文档、调试、环境是三大核心障碍</span></div>
+        <div class="subttl">User Research · 2026 Q1 · 关键指标概览</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span class="active">01 用户研究</span><span>02 竞品对照</span><span>03 用户画像</span><span>04 实施路线</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="stat-grid">
+        <div class="stat-col"><div class="stat-bar-area"><div class="stat-marks"><span>0</span><span class="stat-tri" style="left:72%">▼</span><span>100%</span></div><div class="stat-pills"><div class="stat-pill" style="flex:72;background:linear-gradient(90deg,#FF4FA3,#FF7AC8)"></div><div class="stat-pill" style="flex:28;background:linear-gradient(90deg,#FF7AC8,#FFE040)"></div></div></div><div class="stat-num">72<span class="u">%</span></div><div class="stat-desc">开发者表示文档覆盖不足，找不到连贯的学习路径，上手阶段严重受阻。</div></div>
+        <div class="stat-col"><div class="stat-bar-area"><div class="stat-marks"><span>0</span><span class="stat-tri" style="left:58%">▼</span><span>100%</span></div><div class="stat-pills"><div class="stat-pill" style="flex:58;background:linear-gradient(90deg,#56F5A0,#38D4CF)"></div><div class="stat-pill" style="flex:42;background:linear-gradient(90deg,#38D4CF,#4FACFE)"></div></div></div><div class="stat-num">58<span class="u">%</span></div><div class="stat-desc">开发者陷入调试黑盒，只能靠 print 排查，定位一个问题平均耗时数天。</div></div>
+        <div class="stat-col"><div class="stat-bar-area"><div class="stat-marks"><span>0</span><span class="stat-tri" style="left:47%">▼</span><span>100%</span></div><div class="stat-pills"><div class="stat-pill" style="flex:47;background:linear-gradient(90deg,#2F6FED,#8A6AED)"></div><div class="stat-pill" style="flex:53;background:linear-gradient(90deg,#8A6AED,#FF5A6E)"></div></div></div><div class="stat-num">47<span class="u">%</span></div><div class="stat-desc">受版本依赖矩阵复杂度影响，换机器复现实验时遭遇环境配置失败。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 灰底：竞品对照（三卡论述 + 图沉底 + 对策条）-->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">竞品已普及统一时间线，CANN 仍缺位</span></div>
+        <div class="subttl">Competitive Analysis · Nsight / VTune / rocprof 横向对比</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 用户研究</span><span class="active">02 竞品对照</span><span>03 用户画像</span><span>04 实施路线</span>
+      </div>
+    </div>
+    <div class="body-area" style="justify-content:flex-start">
+      <div class="compare">
+        <div class="cmp">
+          <div class="cmp-body">
+            <div class="cmp-h"><span class="hk">Timeline 标杆</span>时间线 + 源码跳转，新手零门槛</div>
+            <div class="cmp-desc">以 <b>CPU/GPU 统一时间线</b> 为核心，开发者框选即可缩放、定位瓶颈算子，并支持 <b>事件 → 源码一键跳转</b>。配合完善的教程体系，新手也能<b>引导式上手</b> Profiling，几乎零学习成本。</div>
+          </div>
+          <div class="cmp-img"><img src="cmp-nsight.jpg" alt="Nsight Systems 界面"><div class="cmp-cap">NVIDIA Nsight Systems</div></div>
+        </div>
+        <div class="cmp">
+          <div class="cmp-body">
+            <div class="cmp-h"><span class="hk">归因深度</span>逐层下钻，瓶颈归因到微架构</div>
+            <div class="cmp-desc">提供多种分析类型，热点可 <b>逐层下钻</b>，并给出 <b>微架构级瓶颈归因</b>，直指问题根因。向导式配置分析任务，让性能调优<b>有据可依、不靠猜测</b>，深受系统级开发者青睐。</div>
+          </div>
+          <div class="cmp-img"><img src="cmp-vtune.jpg" alt="Intel VTune 界面"><div class="cmp-cap">Intel VTune Profiler</div></div>
+        </div>
+        <div class="cmp">
+          <div class="cmp-body">
+            <div class="cmp-h"><span class="hk">开放协作</span>开源 Web 化，trace 浏览器可分享</div>
+            <div class="cmp-desc">走 <b>开源 + Web 化</b> 路线，trace 可导出 <b>Perfetto</b> 在浏览器中查看与 <b>分享</b>。虽以命令行采集为主，但天然适合<b>团队协作与远程复现</b>，可视化门槛低、可扩展性强。</div>
+          </div>
+          <div class="cmp-img"><img src="cmp-rocm-tool.jpg" alt="AMD rocprof 架构"><div class="cmp-cap">AMD rocprof / Omnitrace</div></div>
+        </div>
+      </div>
+      <div class="verdict">
+        <span class="vk">对策</span>
+        <span class="vv">CANN 的 Profiling 看板应对标三家共性——<b>统一时间线 + 一键瓶颈定位 + Web 化可视化</b>，并补齐<b>事件→源码跳转</b>与<b>浏览器端 trace 分享</b>，把命令行门槛降下来。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 灰底：用户画像·形式一。⚠️ 与形式二是两套方案【二选一】，生成时按用户输入择优 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">资深用户：追求极致性能的内源算子专家</span></div>
+        <div class="subttl">User Persona · 内源团队主力</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 用户研究</span><span>02 竞品对照</span><span class="active">03 用户画像</span><span>04 实施路线</span>
+      </div>
+    </div>
+    <div class="body-area" style="justify-content:flex-start">
+      <div class="pf">
+        <div class="pf-side">
+          <div class="pf-portrait"><img src="persona.svg" alt=""></div>
+          <div class="pf-sb head"><div class="nm">李 · 资深算子工程师</div><div class="rl">Senior Operator Engineer · 内源团队</div></div>
+          <div class="pf-sb white"><div class="sbh">标签</div><div class="pf-chips"><span>8 年经验</span><span>团队 Leader</span><span>Ascend C 专家</span><span>C++ / CUDA</span></div></div>
+          <div class="pf-sb white"><div class="sbh">职责</div><div class="sbt">负责高性能融合算子开发与性能调优，沉淀团队算子库与开发规范</div></div>
+          <div class="pf-sb white" style="margin-top:auto"><div class="sbh">原声</div><div class="pf-quote">性能优化是门手艺，工具得让我看见每一层。</div></div>
+        </div>
+        <div class="pf-r">
+          <div class="pf-row">
+          <div class="pf-block">
+          <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#385CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5"/></svg></span>岗位特征</div>
+          <div class="pf-sub">主要工作职责及分配占比</div>
+          <div class="pf-rings">
+            <div class="pf-rg"><div class="dn" style="--p:45%"><b>45%</b></div><div class="rl2">NPU 推理链路<br/>适配与调试</div></div>
+            <div class="pf-rg"><div class="dn" style="--p:30%"><b>30%</b></div><div class="rl2">吞吐 / 时延<br/>性能调优</div></div>
+            <div class="pf-rg"><div class="dn" style="--p:25%"><b>25%</b></div><div class="rl2">文档查阅与<br/>问题排查</div></div>
+          </div>
+          </div>
+          <div class="pf-block">
+          <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#385CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="6" height="5" rx="1"/><rect x="15" y="15" width="6" height="5" rx="1"/><path d="M9 6.5h3.5a2 2 0 0 1 2 2V15.5"/></svg></span>上下游协同关系</div>
+          <div class="pf-flow">
+            <div class="pf-fc"><div class="ft">需求来源</div><div class="fl">推荐/大模型业务方提出上线需求</div><div class="fl">算法团队交付待部署模型</div></div>
+            <div class="pf-fa">➤</div>
+            <div class="pf-fc"><div class="ft">交付物</div><div class="fl">昇腾适配推理服务包</div><div class="fl">性能基线报告与调优方案</div><div class="fl">算子缺失问题排查记录</div><div class="fkpi"><span class="kl">KPI</span><b>推理时延 P99</b><b>GPU 替换率</b><b>上线周期</b></div></div>
+            <div class="pf-fa">➤</div>
+            <div class="pf-fc"><div class="ft">下一步流转</div><div class="fl">SRE 团队接手灰度上线</div><div class="fl">业务方验收精度与响应时延</div></div>
+            <div class="pf-fa">➤</div>
+            <div class="pf-fc"><div class="ft">产出去向</div><div class="fl">线上推理服务正式替换 GPU 集群</div></div>
+          </div>
+          </div>
+          </div>
+          <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#385CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.2"/></svg></span>典型业务场景及工具</div>
+          <div class="pf-scs">
+            <div class="pf-sc"><div class="pf-mk"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><span class="mkl b" style="width:45%"></span><span class="mkl" style="width:90%"></span><div style="display:flex;align-items:center;gap:3px"><span style="width:4px;height:4px;border-radius:50%;background:#385CFF;flex-shrink:0"></span><span class="mkl" style="flex:1"></span></div><div style="display:flex;align-items:center;gap:3px"><span style="width:4px;height:4px;border-radius:50%;background:#C4CAD6;flex-shrink:0"></span><span class="mkl" style="flex:1"></span></div></div></div><div class="st">资源获取与问题解决</div><div class="sd">昇腾社区 · GitCode</div></div>
+            <div class="pf-sc"><div class="pf-mk"><div class="bar"><i></i><i></i><i></i></div><div class="bd" style="flex-direction:row;gap:4px"><div style="width:8px;display:flex;flex-direction:column;gap:2px"><span class="mkl"></span><span class="mkl"></span><span class="mkl"></span></div><div style="flex:1;background:#1E2740;border-radius:3px;padding:3px;display:flex;flex-direction:column;gap:2px"><span class="mkl" style="width:70%;background:rgba(255,255,255,.28)"></span><span class="mkl" style="width:88%;background:rgba(120,150,255,.55)"></span><span class="mkl" style="width:60%;background:rgba(255,255,255,.2)"></span></div></div></div><div class="st">推理代码适配</div><div class="sd">Trae（AI IDE）· 智能体协作</div></div>
+            <div class="pf-sc"><div class="pf-mk"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><div style="display:flex;gap:3px"><span style="height:5px;width:34%;background:var(--b);border-radius:2px"></span><span style="height:5px;width:24%;background:#E8896B;border-radius:2px"></span></div><span class="mkl b" style="width:62%"></span><span class="mkl" style="width:80%"></span></div></div><div class="st">性能 Profiling</div><div class="sd">MindStudio · 火山引擎监控平台</div></div>
+            <div class="pf-sc"><div class="pf-mk"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><svg viewBox="0 0 100 40" preserveAspectRatio="none" style="width:100%;flex:1"><polyline points="2,30 20,16 38,24 56,9 74,20 98,7" fill="none" stroke="#385CFF" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="st">精度对齐验证</div><div class="sd">Jupyter Notebook · 内部测评框架</div></div>
+          </div>
+          <div class="pf-h2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#385CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l8.5 15h-17z"/><path d="M12 10v3.6M12 16.6h.01"/></svg></span>核心痛点</div>
+          <div class="pf-pains">
+            <div class="pf-pain">算子行为与 <b>CUDA 存在细微差异</b>，文档描述模糊，只能靠反复试验定位，严重拖慢上线排期</div>
+            <div class="pf-pain"><b>文档碎片化、多版本并存</b>，找到的示例代码不确定是否适配当前 CANN 版本，踩坑成本极高</div>
+            <div class="pf-pain">用通用 AI 助手问昇腾问题，往往得到 <b>CUDA 思路的答案</b>，甚至给出不存在的 API，浪费排查时间</div>
+            <div class="pf-pain">缺乏「从 TensorRT/CUDA <b>迁移到昇腾</b>」的系统化路径，差异点散落各处，新人上手周期被拉长</div>
+            <div class="pf-pain">性能调优缺乏可落地的 <b>NPU 最佳实践指引</b>，Profiling 数据看得懂但不知下一步优化哪里</div>
+            <div class="pf-pain">遇到算子缺失或 Bug 只能发飞书群等回复，<b>响应时间不可控</b>，影响项目整体节奏</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 灰底：甘特 roadmap（精调件②：浮动条 + 虚线网格）-->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">设计与开发并行推进，开发是关键路径</span></div>
+        <div class="subttl">Roadmap · 2026 H1 落地时间线</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 用户研究</span><span>02 竞品对照</span><span>03 用户画像</span><span class="active">04 实施路线</span>
+      </div>
+    </div>
+    <div class="body-area vc">
+      <div class="rm">
+        <div class="rm-pad">
+          <div class="rm-date" style="left:6%">2 月初</div>
+          <div class="rm-date" style="left:25%">3 月初</div>
+          <div class="rm-date" style="left:44%">4 月初</div>
+          <div class="rm-date" style="left:63%">5 月初</div>
+          <div class="rm-date" style="left:82%">6 月初</div>
+          <div class="rm-now-pill" style="left:40%">Now</div>
+          <div class="rm-now-tri" style="left:40%"></div>
+          <div class="rm-now-line" style="left:40%"></div>
+          <div class="rm-bar dark"  style="left:5%;width:21%;top:13%"><span class="lbl">用户研究 &amp; VOC</span><span class="rm-badge">25 天</span></div>
+          <div class="rm-bar white" style="left:11%;width:14%;top:25%"><span class="lbl">竞品调研</span><span class="rm-badge">10 天</span></div>
+          <div class="rm-bar white" style="left:25%;width:16%;top:37%"><span class="lbl">设计概念定义</span><span class="rm-badge">12 天</span></div>
+          <div class="rm-bar dark"  style="left:39%;width:25%;top:25%"><span class="lbl">交互式文档 &amp; 成长地图</span><span class="rm-badge">20 天</span></div>
+          <div class="rm-bar accent" style="left:50%;width:26%;top:49%"><span class="lbl">可视化 Profiling 看板</span><span class="rm-badge">30 天</span></div>
+          <div class="rm-bar accent" style="left:58%;width:28%;top:37%"><span class="lbl">算子开发向导</span><span class="rm-badge">28 天</span></div>
+          <div class="rm-bar white" style="left:70%;width:16%;top:61%"><span class="lbl">智能错误诊断</span><span class="rm-badge">12 天</span></div>
+          <div class="rm-bar dark"  style="left:83%;width:14%;top:49%"><span class="lbl">联调 &amp; 灰度发布</span><span class="rm-badge">10 天</span></div>
+          <div class="rm-diamond" style="left:41%;top:73%"></div>
+          <div class="rm-ms" style="left:44%;top:72.5%">设计定稿 · 转入开发</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑥ 黑底：设计点章节封面（带调色面板，色值持久记忆）-->
+  <section class="slide s-glow chapter-cover" data-chapter="1">
+    <div class="glow-white"></div><div class="glow"></div>
+    <div class="chrome"><div>第一章 · CHAPTER ONE</div><div>DesignConcept · 2026</div></div>
+    <div class="inner">
+      <div class="cover-block">
+        <div class="ch-no">01</div>
+        <h1 class="ch-cover-title">章节标题</h1>
+        <p class="ch-cover-sub">这一章要讲什么的一句话概述。右上角图标可打开调色面板，调好的光晕色下次打开自动恢复。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑦ 黑底：设计点页 · 版式①（左文右图位，默认）-->
+  <section class="slide s-glow" data-chapter="1">
+    <div class="glow-white"></div><div class="glow"></div>
+    <div class="chrome"><div>设计点 1.1 · DESIGN POINT</div><div>第一章</div></div>
+    <div class="inner">
+      <div>
+        <div class="kicker">DESIGN POINT 1.1</div>
+        <h1 class="h-title">设计点标题<br/><span class="light">副标用细体</span></h1>
+        <p class="body">一段说明这个设计点解决什么问题、带来什么价值。</p>
+        <div class="points">
+          <div class="point"><div class="dot"></div><div><div class="pt-title">要点标题</div><div class="pt-desc">要点描述文字。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">要点标题</div><div class="pt-desc">要点描述文字。</div></div></div>
+          <div class="point"><div class="dot"></div><div><div class="pt-title">要点标题</div><div class="pt-desc">要点描述文字。</div></div></div>
+        </div>
+      </div>
+      <div class="shot"><span class="ph">界面截图位 · 16:9</span></div>  <!-- 真图：<img src="shot.png"> -->
+    </div>
+  </section>
+
+  <!-- ⑧ 黑底：设计点页 · 版式②（上下堆叠 hero，大图型 ~75-78% 宽）⛔ 无 kicker、无要点 -->
+  <section class="slide s-glow" data-chapter="1">
+    <div class="glow-white"></div><div class="glow"></div>
+    <div class="chrome"><div>设计点 1.2 · DESIGN POINT</div><div>第一章</div></div>
+    <div class="inner stack">
+      <div class="stack-head">
+        <div class="sh-l">
+          <h1 class="h-title">设计点标题<span class="light"> · 副标用细体</span></h1>  <!-- 单行，别用 <br> -->
+        </div>
+        <p class="body">一段说明这个设计点<b>解决什么问题</b>、<b>带来什么价值</b>——默认细体、关键词 &lt;b&gt; 加粗提亮做主次。</p>
+      </div>
+      <div class="shot"><span class="ph">界面截图位 · 16:9</span></div>  <!-- 真图：<img src="shot.png">（16:9 不裁）-->
+    </div>
+  </section>
+
+</div>
+
+<script type="text/plain" id="researchDeckMarkup">
+/* This deck replaces the template examples while preserving its complete navigation runtime. */
+document.getElementById('deck').innerHTML = String.raw`
+<style>
+.s-cover.research-cover{background:#06060a;color:#fff;isolation:isolate;overflow:hidden}
+.research-cover::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 76% 65%,rgba(105,90,255,.48),transparent 24%),radial-gradient(circle at 89% 18%,rgba(40,184,219,.25),transparent 22%),linear-gradient(120deg,rgba(4,5,11,.98) 16%,rgba(7,8,18,.82) 58%,rgba(12,10,28,.58));z-index:-1}
+.research-cover::after{content:"";position:absolute;right:-8vw;bottom:-18vh;width:72vw;height:72vw;border:1px solid rgba(178,166,255,.2);border-radius:50%;box-shadow:0 0 0 7vw rgba(117,91,255,.05),0 0 0 14vw rgba(77,163,255,.035);z-index:-1}
+.cover-copy{position:absolute;left:8vw;top:20vh;max-width:910px}.cover-kicker{font:600 var(--fs-sm)/1.3 'JetBrains Mono',monospace;letter-spacing:.18em;color:#b9b5ff}.cover-copy h1{margin:2vh 0 2.2vh;font-size:clamp(48px,5.5vw,88px);line-height:1.1;letter-spacing:-.055em}.cover-copy h1 span{background:linear-gradient(100deg,#fff,#a8b8ff 56%,#b697ff);background-clip:text;-webkit-background-clip:text;color:transparent}.cover-copy p{max-width:46ch;font-size:var(--fs-h2);line-height:1.65;color:rgba(255,255,255,.68)}.cover-meta{position:absolute;left:8vw;bottom:7vh;display:flex;gap:1vw;font-size:var(--fs-sm);color:rgba(255,255,255,.6)}.cover-meta b{color:#fff;font-weight:600}.cover-note{position:absolute;right:6vw;bottom:7vh;width:260px;font-size:var(--fs-sm);line-height:1.5;color:rgba(255,255,255,.54)}
+.research-slide .head{margin-bottom:2.6vh}.research-slide .body-area{min-height:0}.research-slide .foot{position:absolute;bottom:2.6vh;left:4vw;right:auto;font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.05em;color:var(--ink-3)}
+.evidence-pill{display:inline-flex;align-items:center;gap:.45em;padding:.32em .72em;border-radius:999px;background:#eef0f4;color:#596273;font:700 var(--fs-xs)/1.2 'HarmonyOS Sans SC',sans-serif}.evidence-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pill,#5B5BD6)}.evidence-pill.direct{--pill:#39B982}.evidence-pill.infer{--pill:#5B5BD6}.evidence-pill.test{--pill:#F4B450}
+.scope-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:1.4vw;align-items:stretch;min-height:0}.scope-main,.scope-side{min-width:0;min-height:0}.scope-main{display:flex;flex-direction:column;gap:1.1vh}.scope-big{padding:2.2vh 1.8vw;background:var(--g-ink);border-radius:18px;color:#fff}.scope-big h2{font-size:var(--fs-h1);line-height:1.3}.scope-big p{margin-top:.8vh;font-size:var(--fs-body);line-height:1.65;color:rgba(255,255,255,.67);max-width:58ch}.scope-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:.9vw}.scope-fact{padding:1.4vh 1vw;border-radius:14px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.82)}.scope-num{font:300 clamp(34px,3.4vw,56px)/1 'Inter',sans-serif;color:var(--accent)}.scope-fact b{display:block;margin-top:.7vh;font-size:var(--fs-h3)}.scope-fact span{display:block;margin-top:.35vh;font-size:var(--fs-sm);line-height:1.42;color:var(--ink-2)}.scope-side{padding:2vh 1.5vw;border-radius:18px;background:rgba(255,255,255,.57);border:1px solid rgba(255,255,255,.8);display:flex;flex-direction:column}.scope-side h3{font-size:var(--fs-h2)}.scope-side ol{margin:1.3vh 0 0;padding:0;list-style:none;counter-reset:step;display:grid;gap:1.1vh}.scope-side li{counter-increment:step;display:grid;grid-template-columns:28px 1fr;gap:.7vw;align-items:start;font-size:var(--fs-body);line-height:1.5;color:var(--ink-2)}.scope-side li::before{content:"0" counter(step);font:700 var(--fs-xs)/28px 'JetBrains Mono',monospace;text-align:center;color:#fff;border-radius:50%;background:var(--g-accent)}.scope-side .boundary{margin-top:auto;padding-top:1.2vh;border-top:1px solid rgba(40,48,66,.12);font-size:var(--fs-sm);line-height:1.45;color:var(--ink-2)}
+.voc-layout{display:grid;grid-template-columns:1.12fr .88fr;gap:1.5vw;min-height:0;align-items:stretch}.voc-wall{column-count:2;column-gap:1vw;min-height:0}.voc{break-inside:avoid;margin:0 0 1vw;padding:1.45vh 1.15vw;border:1px solid rgba(255,255,255,.88);border-radius:15px;background:rgba(255,255,255,.65);box-shadow:0 10px 24px -20px rgba(22,29,41,.25)}.voc strong{display:block;font-size:var(--fs-h3);line-height:1.5;color:var(--ink)}.voc p{margin:.7vh 0 .75vh;font-size:var(--fs-body);line-height:1.58;color:var(--ink-2)}.voc cite{font:600 var(--fs-xs)/1.3 'JetBrains Mono',monospace;color:var(--accent);font-style:normal}.voc.aside{background:var(--g-ink);color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:2.4vh 1.9vw}.voc.aside .quote-mark{font:300 88px/.5 Georgia,serif;color:#8e8bf3}.voc.aside blockquote{font-size:var(--fs-h1);font-weight:700;line-height:1.42}.voc.aside p{font-size:var(--fs-body);line-height:1.6;color:rgba(255,255,255,.65)}.voc.aside cite{color:#b9b5ff}.quote-flag{display:inline-flex;align-items:center;margin-top:1.2vh;padding:.34em .65em;border-radius:99px;background:rgba(255,255,255,.12);font-size:var(--fs-sm);color:#fff}
+.persona{display:grid;grid-template-columns:26% 1fr;gap:1.3vw;min-height:0}.persona-side{display:flex;flex-direction:column;padding:1.75vh 1.2vw;border-radius:18px;background:linear-gradient(160deg,#e9eaff,#f8f8fc);border:1px solid rgba(255,255,255,.9)}.persona-initial{width:84px;height:84px;display:grid;place-items:center;border-radius:24px;background:var(--g-accent);font:300 46px/1 'Inter',sans-serif;color:#fff;box-shadow:0 15px 25px -16px rgba(91,91,214,.65)}.persona-side h2{margin-top:1.5vh;font-size:var(--fs-h2)}.persona-side .role{margin-top:.35vh;color:var(--accent);font-size:var(--fs-body);font-weight:700}.persona-side .tagline{margin-top:1.2vh;font-size:var(--fs-body);line-height:1.56;color:var(--ink-2)}.persona-side .direct-quote{margin-top:auto;padding:1.15vh 1vw;border-radius:12px;background:#fff;font-size:var(--fs-sm);font-weight:600;line-height:1.5;color:#343945}.persona-main{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:1vw;min-height:0}.pbox{min-width:0;padding:1.45vh 1.2vw;border-radius:16px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.85)}.pbox.wide{grid-column:1/-1}.pbox h3{font-size:var(--fs-h3)}.pbox ul{list-style:none;margin-top:.9vh;display:grid;gap:.6vh}.pbox li{position:relative;padding-left:1em;font-size:var(--fs-body);line-height:1.48;color:var(--ink-2)}.pbox li::before{content:"";position:absolute;left:0;top:.6em;width:5px;height:5px;border-radius:50%;background:var(--accent)}.pbox .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:.7vw;margin-top:1vh}.flow-step{padding:.85vh .7vw;border-radius:10px;background:#f5f6f9;font-size:var(--fs-sm);line-height:1.42;color:var(--ink-2)}.flow-step b{display:block;margin-bottom:.35vh;color:var(--ink);font-size:var(--fs-sm)}
+.journey-wrap{--jcols:5;display:grid;grid-template-columns:64px repeat(var(--jcols),minmax(0,1fr));grid-template-rows:10.5vh 7vh 16.5vh 12.5vh 13.5vh 13.5vh;gap:0;min-height:0}.jlabel{padding-right:.7vw;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;text-align:right;border-bottom:1px solid rgba(255,255,255,.5)}.jlabel b{font-size:var(--fs-sm)}.jlabel span{font:500 var(--fs-xs)/1.2 'JetBrains Mono',monospace;color:var(--ink-3);margin-top:2px}.jhead{position:relative;padding:1.15vh .9vw;background:var(--g-ink);border-right:6px solid var(--paper);color:#fff}.jhead:last-child{border-right:0}.jhead::after{content:"";position:absolute;left:0;right:6px;bottom:0;height:3px;background:var(--stage)}.jhead b{display:block;font-size:var(--fs-h3);line-height:1.35}.jhead span{display:block;margin-top:.35vh;color:rgba(255,255,255,.56);font-size:var(--fs-xs)}.jcell{min-width:0;padding:.9vh .85vw;border-left:1px solid rgba(255,255,255,.66);border-bottom:1px solid rgba(255,255,255,.66);background:rgba(255,255,255,.48);font-size:var(--fs-sm);line-height:1.43;color:var(--ink-2)}.jcell strong{display:block;color:var(--ink);font-size:var(--fs-sm);margin-bottom:.3vh}.jcell.action{font-size:var(--fs-sm)}.jcell.pain{background:linear-gradient(160deg,rgba(255,238,238,.74),rgba(255,247,241,.58));color:#7f1d1d}.jcell.opp{background:linear-gradient(160deg,rgba(226,250,238,.74),rgba(241,253,246,.62));color:#065f46}.emotion{position:relative;overflow:hidden;padding:0;background:rgba(255,255,255,.38)}.emotion svg{position:absolute;inset:0;width:100%;height:100%}.emotion .emotion-label{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);white-space:nowrap;font:700 var(--fs-xs)/1 'JetBrains Mono',monospace;color:var(--stage)}.emotion .emotion-dot{position:absolute;left:50%;top:var(--y);width:10px;height:10px;border:2px solid #fff;border-radius:50%;transform:translate(-50%,-50%);background:var(--stage);box-shadow:0 1px 5px rgba(0,0,0,.18)}
+.black-study{background:#06060a;color:#fff;isolation:isolate}.black-study::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 72% 75%,rgba(104,75,255,.42),transparent 28%),radial-gradient(circle at 30% 90%,rgba(51,188,217,.18),transparent 26%);z-index:-1}.black-study .chrome{display:flex;justify-content:space-between;padding:5vh 4vw 0;color:rgba(255,255,255,.5);font:600 var(--fs-sm)/1.2 'JetBrains Mono',monospace}.black-inner{height:calc(100% - 12vh);padding:5.5vh 8vw 7vh;display:grid;grid-template-columns:1.05fr .95fr;gap:6vw;align-items:center}.black-inner h2{font-size:clamp(34px,3.5vw,58px);line-height:1.16;letter-spacing:-.04em}.black-inner h2 span{background:linear-gradient(100deg,#fff,#aab8ff,#c69aff);background-clip:text;-webkit-background-clip:text;color:transparent}.black-inner p{margin-top:2vh;max-width:43ch;font-size:var(--fs-h2);line-height:1.7;color:rgba(255,255,255,.66)}.tension{display:grid;gap:1vh}.tension-card{padding:1.55vh 1.35vw;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06)}.tension-card b{font-size:var(--fs-h3)}.tension-card p{margin:.45vh 0 0;font-size:var(--fs-body);line-height:1.55;color:rgba(255,255,255,.62)}.tension-card.hot{background:linear-gradient(130deg,rgba(104,84,255,.56),rgba(44,41,91,.32));border-color:rgba(190,181,255,.3)}
+.validate-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1vw;min-height:0}.vcard{position:relative;min-width:0;padding:2.1vh 1.4vw;border-radius:18px;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.9);display:flex;flex-direction:column;overflow:hidden}.vcard::after{content:"";position:absolute;right:-12%;bottom:-14%;width:52%;height:45%;border-radius:50%;background:radial-gradient(circle,var(--tone-soft),transparent 68%)}.vcard.run{--tone:#39B982;--tone-soft:rgba(57,185,130,.22)}.vcard.map{--tone:#5B5BD6;--tone-soft:rgba(91,91,214,.22)}.vcard.debug{--tone:#28A8D8;--tone-soft:rgba(40,168,216,.22)}.vcard .k{color:var(--tone);font:700 var(--fs-xs)/1.2 'JetBrains Mono',monospace;letter-spacing:.11em}.vcard h3{margin-top:1vh;font-size:var(--fs-h2);line-height:1.3}.vcard p{margin-top:.9vh;font-size:var(--fs-body);line-height:1.6;color:var(--ink-2)}.vcard .proof{position:relative;z-index:1;margin-top:auto;padding-top:1.1vh;font-size:var(--fs-sm);font-weight:700;line-height:1.5;color:var(--ink)}.vcard .proof::before{content:"受访者反馈";display:block;margin-bottom:.35vh;font-size:var(--fs-xs);font-weight:700;color:var(--tone)}
+.issue-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:1.3vw;min-height:0}.issue-main,.issue-side{min-height:0}.issue-main{display:grid;grid-template-columns:1fr 1fr;gap:1vw}.issue-card{padding:1.8vh 1.35vw;border-radius:17px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.88);display:flex;flex-direction:column}.issue-card h3{font-size:var(--fs-h2);line-height:1.35}.issue-card p{margin-top:.75vh;font-size:var(--fs-body);line-height:1.58;color:var(--ink-2)}.issue-card .direct{margin-top:auto;padding-top:1vh;font-size:var(--fs-sm);line-height:1.5;color:var(--accent);font-weight:700}.issue-side{padding:2vh 1.5vw;border-radius:18px;background:var(--g-ink);color:#fff;display:flex;flex-direction:column}.issue-side h3{font-size:var(--fs-h2)}.issue-side ul{margin:1.2vh 0 0;padding:0;list-style:none;display:grid;gap:1.1vh}.issue-side li{display:grid;grid-template-columns:23px 1fr;gap:.6vw;font-size:var(--fs-body);line-height:1.5;color:rgba(255,255,255,.7)}.issue-side li b{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:rgba(255,255,255,.12);font:600 var(--fs-xs)/1 'JetBrains Mono',monospace;color:#c3bdff}.issue-side .decision{margin-top:auto;padding-top:1.2vh;border-top:1px solid rgba(255,255,255,.16);font-size:var(--fs-sm);line-height:1.5;color:#fff}
+.matrix-wrap{display:grid;grid-template-columns:1fr 230px;gap:1.5vw;align-items:stretch;min-height:0}.matrix{position:relative;min-height:0;border-radius:18px;border:1px solid rgba(255,255,255,.85);background:rgba(255,255,255,.54);overflow:hidden}.matrix::before,.matrix::after{content:"";position:absolute;background:rgba(75,83,101,.18)}.matrix::before{top:0;bottom:0;left:50%;width:1px}.matrix::after{left:0;right:0;top:50%;height:1px}.mx-axis-y,.mx-axis-x{position:absolute;font:700 var(--fs-xs)/1.2 'JetBrains Mono',monospace;color:var(--ink-3);letter-spacing:.05em}.mx-axis-y{left:1vw;top:50%;transform:rotate(-90deg) translateX(-50%);transform-origin:left top}.mx-axis-x{left:50%;bottom:.8vh;transform:translateX(-50%)}.quad{position:absolute;font-size:var(--fs-xs);font-weight:700;color:var(--ink-3)}.q1{right:1vw;top:1vh}.q2{left:1vw;top:1vh}.q3{left:1vw;bottom:1vh}.q4{right:1vw;bottom:1vh}.op{position:absolute;max-width:170px;padding:.85vh .75vw;border-radius:9px;background:#fff;border:1px solid rgba(42,50,69,.1);box-shadow:0 8px 18px -14px rgba(20,29,50,.36);font-size:var(--fs-sm);line-height:1.35;color:var(--ink)}.op b{display:block;font-size:var(--fs-sm)}.op span{display:block;margin-top:.25vh;color:var(--ink-2)}.op.high{background:var(--g-accent);color:#fff}.op.high span{color:rgba(255,255,255,.75)}.matrix-note{padding:1.8vh 1.25vw;border-radius:18px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.88);display:flex;flex-direction:column}.matrix-note h3{font-size:var(--fs-h3)}.matrix-note p{margin-top:.8vh;font-size:var(--fs-body);line-height:1.56;color:var(--ink-2)}.matrix-note ol{margin:auto 0 0;padding-left:1.15em;display:grid;gap:.8vh}.matrix-note li{font-size:var(--fs-sm);line-height:1.45;color:var(--ink-2)}
+.loop-slide{background:#06060a;color:#fff;overflow:hidden}.loop-slide::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 105%,rgba(109,83,255,.56),transparent 38%),radial-gradient(circle at 94% 15%,rgba(42,189,222,.16),transparent 20%)}.loop-head{position:relative;padding:7vh 8vw 0}.loop-head .chrome{font:600 var(--fs-sm)/1.2 'JetBrains Mono',monospace;color:rgba(255,255,255,.46)}.loop-head h2{max-width:900px;margin-top:2vh;font-size:clamp(34px,3.4vw,56px);line-height:1.15;letter-spacing:-.045em}.loop-head h2 span{color:#b9b3ff}.loop-steps{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:1.1vw;margin:8vh 8vw 0}.loop-steps::before{content:"";position:absolute;left:8%;right:8%;top:32px;height:2px;background:linear-gradient(90deg,#5fbdff,#9e8bff,#64dab6)}.loop-step{position:relative;min-width:0;padding-top:5.2vh}.loop-no{position:absolute;top:0;left:0;width:64px;height:64px;display:grid;place-items:center;border-radius:50%;background:#11121b;border:1px solid rgba(255,255,255,.22);box-shadow:0 0 0 6px rgba(100,85,255,.08);font:600 var(--fs-sm)/1 'JetBrains Mono',monospace;color:#c1bbff}.loop-step h3{font-size:var(--fs-h3)}.loop-step p{margin-top:.55vh;font-size:var(--fs-body);line-height:1.55;color:rgba(255,255,255,.64)}.loop-tag{display:inline-flex;margin-top:1vh;padding:.3em .58em;border-radius:99px;background:rgba(255,255,255,.1);font-size:var(--fs-xs);color:#fff}
+.next-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:1.5vw;min-height:0}.next-big{padding:2.3vh 1.8vw;border-radius:18px;background:var(--g-ink);color:#fff}.next-big h2{font-size:var(--fs-h1);line-height:1.3}.next-big p{margin-top:1vh;font-size:var(--fs-body);line-height:1.65;color:rgba(255,255,255,.67)}.next-big .assumption{margin-top:2vh;padding:1.15vh 1vw;border-radius:12px;background:rgba(255,255,255,.1);font-size:var(--fs-sm);line-height:1.5;color:#fff}.next-list{display:grid;gap:.9vw}.next-item{display:grid;grid-template-columns:48px 1fr auto;gap:1vw;align-items:center;padding:1.15vh 1vw;border-radius:14px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.88)}.next-item .n{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--accent-soft);font:700 var(--fs-sm)/1 'JetBrains Mono',monospace;color:var(--accent)}.next-item h3{font-size:var(--fs-h3)}.next-item p{margin-top:.25vh;font-size:var(--fs-sm);line-height:1.42;color:var(--ink-2)}.next-item .method{padding:.35em .6em;border-radius:99px;background:#fff;font-size:var(--fs-xs);font-weight:700;color:var(--ink-2);white-space:nowrap}
+.appendix{display:grid;grid-template-columns:1fr 1fr;gap:1.2vw;min-height:0}.appendix-col{padding:1.5vh 1.2vw;border-radius:16px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.86)}.appendix-col h3{font-size:var(--fs-h3)}.transcript-list{margin-top:1vh;display:grid;gap:.8vh}.transcript-list div{display:grid;grid-template-columns:78px 1fr;gap:.7vw;align-items:start}.transcript-list time{font:600 var(--fs-xs)/1.4 'JetBrains Mono',monospace;color:var(--accent)}.transcript-list p{font-size:var(--fs-sm);line-height:1.5;color:var(--ink-2)}.appendix-note{grid-column:1/-1;padding:1.2vh 1.2vw;border-radius:14px;background:#f4f5f8;font-size:var(--fs-sm);line-height:1.55;color:var(--ink-2)}
+</style>
+
+<section class="slide s-cover research-cover">
+  <div class="cover-copy"><div class="cover-kicker">ASCEND INTELLIGENT LEARNING · USER RESEARCH</div><h1>任务完成更快之后，<br><span>学习还如何发生？</span></h1><p>张宸梓访谈分析：面向 AI 辅助开发的智能学习方案，重点验证学习闭环、信息组织与用户介入点。</p></div>
+  <div class="cover-meta"><span><b>研究对象</b>　有算子开发与竞赛经历的开发者</span><span><b>访谈时间</b>　2026.08.02</span></div><div class="cover-note">内部讨论稿<br>证据来自 1 位受访者的两段访谈逐字稿</div>
+</section>
+
+<section class="slide s-gray research-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">本次研究回答：智能学习应补上 AI 开发中的哪一段能力？</span></div><div class="subttl">Research scope · 先界定证据边界，再讨论设计机会</div></div><div class="section-tabs"><span class="active">01 研究证据</span><span>02 用户与旅程</span><span>03 设计判断</span><span>04 下一步验证</span></div></div>
+  <div class="body-area"><div class="scope-grid"><div class="scope-main"><div class="scope-big"><span class="evidence-pill direct">直接证据</span><h2>受访者已从“资料检索”转向“把任务交给 Agent”，但关键判断仍需要人介入。</h2><p>讨论覆盖其算子开发学习路径、AI 辅助开发实践，以及对现有智能学习原型的逐项反馈。</p></div><div class="scope-facts"><div class="scope-fact"><div class="scope-num">2</div><b>段连续访谈</b><span>同一受访者，前后约 60 分钟</span></div><div class="scope-fact"><div class="scope-num">3</div><b>验证主题</b><span>学习路径、实践环境、AI 辅助</span></div><div class="scope-fact"><div class="scope-num">1</div><b>样本边界</b><span>资深 AI 使用者，不代表全部用户</span></div></div></div><aside class="scope-side"><h3>分析方法</h3><ol><li>抽取行为、原声与具体原型反馈</li><li>重建 AI 辅助下的学习 / 开发旅程</li><li>区分明确反馈、设计推论与待验证假设</li></ol><p class="boundary">结论用于形成下一轮设计假设与测试重点；不将单一受访者的偏好直接外推为总体需求。</p></aside></div></div>
+  <div class="foot">Source · 张宸梓逐字稿 1 / 2</div>
+</section>
+
+<section class="slide s-gray research-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">原声指向同一件事：用户要的是“能继续推进任务”的支持</span></div><div class="subttl">Voice of customer · 访谈摘录按设计意义归类</div></div><div class="section-tabs"><span class="active">01 研究证据</span><span>02 用户与旅程</span><span>03 设计判断</span><span>04 下一步验证</span></div></div>
+  <div class="body-area"><div class="voc-layout"><div class="voc-wall"><article class="voc"><strong>Agent 已成为首选检索入口</strong><p>“现在基本都是这么开发的。基本都是用 Claude 或者 Codex。”</p><cite>逐字稿 1 · 00:09:48</cite></article><article class="voc"><strong>可运行环境比问答更有价值</strong><p>“它切切实实提供了开发者一个能开发的环境……我能自己动手去执行代码，然后跑代码看结果。”</p><cite>逐字稿 1 · 00:27:12</cite></article><article class="voc"><strong>错误帮助必须具体到可执行</strong><p>“错误代码、出现原因、修复方案都整理起来……就是一个特别好的开发 debug 指南。”</p><cite>逐字稿 1 · 00:31:24</cite></article><article class="voc"><strong>学习分身不应侵入注意力</strong><p>“加太多东西反而容易扰乱我的专注。能帮我整理这一块已经很不错了。”</p><cite>逐字稿 1 · 00:35:55</cite></article></div><article class="voc aside"><div><div class="quote-mark">“</div><blockquote>AI 帮你做完搜索与整理后，你没有走过程，学的东西并不牢靠。</blockquote><span class="quote-flag">核心张力 · 效率提升 vs. 能力内化</span></div><div><p>这不是对 AI 效率的否定，而是指出学习产品的价值不应重复 Agent 已经擅长的“查找与生成”。</p><cite>逐字稿 2 · 00:08:00</cite></div></article></div></div>
+  <div class="foot">Evidence status · 原声为受访者明确表达；页内解释为研究团队整理</div>
+</section>
+
+<section class="slide s-gray research-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">张宸梓：结果导向、AI 熟练、在失败与优化时才深度介入</span></div><div class="subttl">Persona · 单人深描，不等同于通用用户分群</div></div><div class="section-tabs"><span>01 研究证据</span><span class="active">02 用户与旅程</span><span>03 设计判断</span><span>04 下一步验证</span></div></div>
+  <div class="body-area"><div class="persona"><aside class="persona-side"><div class="persona-initial">Z</div><h2>张宸梓</h2><div class="role">算子开发者 · 竞赛型学习者</div><p class="tagline">在 310B / 310P / 910 等环境有开发经历；学习通常由竞赛或具体开发任务触发。</p><div class="direct-quote">“那肯定是表现结果！”<br><small>逐字稿 1 · 00:19:45</small></div></aside><div class="persona-main"><div class="pbox"><span class="evidence-pill direct">明确表达</span><h3>工作方式</h3><ul><li>偏好 CLI 和直接的 Agent 协作</li><li>不完整通读数千行生成代码</li><li>优先验收功能、精度、性能与稳定性</li></ul></div><div class="pbox"><span class="evidence-pill infer">设计推论</span><h3>介入阈值</h3><ul><li>常规实现交给 AI，关注可观察结果</li><li>边界输入、反复报错、性能优化时介入</li><li>以经验为 AI 提供新的排查分支</li></ul></div><div class="pbox wide"><h3>当前学习 / 开发流</h3><div class="flow"><div class="flow-step"><b>任务触发</b>竞赛或开发目标</div><div class="flow-step"><b>Agent 执行</b>搜索、生成与改写</div><div class="flow-step"><b>结果验收</b>功能、精度、性能基线</div><div class="flow-step"><b>关键介入</b>边界、错误、优化与决策</div></div></div></div></div></div>
+  <div class="foot">Persona boundary · 高经验 / 高 AI 使用熟练度；需以新手与中等经验用户补齐</div>
+</section>
+
+<section class="slide s-gray research-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">AI 已压缩“找答案”，但在验证、失败与复盘处留下学习缺口</span></div><div class="subttl">AI-assisted learning journey · 阶段、触点、行为、感受、问题与机会一一对应</div></div><div class="section-tabs"><span>01 研究证据</span><span class="active">02 用户与旅程</span><span>03 设计判断</span><span>04 下一步验证</span></div></div>
+  <div class="body-area" style="justify-content:flex-start"><div class="journey-wrap"><div></div><div class="jhead" style="--stage:#5B5BD6"><b>任务触发</b><span>竞赛 / 开发目标</span></div><div class="jhead" style="--stage:#4B8DFF"><b>交给 Agent</b><span>检索与生成</span></div><div class="jhead" style="--stage:#39B982"><b>运行与验收</b><span>看结果</span></div><div class="jhead" style="--stage:#F47A4B"><b>失败与优化</b><span>关键介入</span></div><div class="jhead" style="--stage:#8D63D8"><b>沉淀与再用</b><span>能力内化</span></div><div class="jlabel"><b>触点</b><span>TOUCH</span></div><div class="jcell">竞赛规则<br>Sample 仓库</div><div class="jcell">Codex / Claude<br>网页与 Skill</div><div class="jcell">HiDevLab<br>终端 / 测试输出</div><div class="jcell">报错日志<br>性能流水 / Baseline</div><div class="jcell">课程路径<br>知识图谱 / 测验</div><div class="jlabel"><b>主行为</b><span>ACTION</span></div><div class="jcell action"><strong>确定目标</strong>按任务选择课程、示例或开发起点。</div><div class="jcell action"><strong>快速推进</strong>让 AI 搜资料、产出代码与修改方案。</div><div class="jcell action"><strong>验证结果</strong>检查功能、精度、性能和输入输出稳健性。</div><div class="jcell action"><strong>经验纠偏</strong>判断错误、补充边界条件、选择新分支。</div><div class="jcell action"><strong>形成记忆</strong>把实践过程转成可回顾、可再用的能力。</div><div class="jlabel"><b>信心变化</b><span>EMOTION</span></div><div class="emotion" style="--stage:#5B5BD6;--y:37%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="0,42 50,37 100,30" fill="none" stroke="#5B5BD6" stroke-width="2"/></svg><i class="emotion-dot"></i><span class="emotion-label">目标清晰</span></div><div class="emotion" style="--stage:#4B8DFF;--y:22%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="0,30 50,22 100,26" fill="none" stroke="#4B8DFF" stroke-width="2"/></svg><i class="emotion-dot"></i><span class="emotion-label">高效推进</span></div><div class="emotion" style="--stage:#39B982;--y:29%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="0,26 50,29 100,44" fill="none" stroke="#39B982" stroke-width="2"/></svg><i class="emotion-dot"></i><span class="emotion-label">结果确认</span></div><div class="emotion" style="--stage:#F47A4B;--y:66%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="0,44 50,66 100,58" fill="none" stroke="#F47A4B" stroke-width="2"/></svg><i class="emotion-dot"></i><span class="emotion-label">需要介入</span></div><div class="emotion" style="--stage:#8D63D8;--y:54%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="0,58 50,54 100,54" fill="none" stroke="#8D63D8" stroke-width="2"/></svg><i class="emotion-dot"></i><span class="emotion-label">能否内化？</span></div><div class="jlabel"><b>痛点</b><span>PAIN</span></div><div class="jcell pain">目标之外的知识结构不清晰，学习易停在“完成当前任务”。</div><div class="jcell pain">搜索与整理过程被跳过，获得的信息零散、短期易忘。</div><div class="jcell pain">只看典型输出时，边界条件和真实问题容易被忽略。</div><div class="jcell pain">通用错误说明无效；模型迭代失败时只能依赖经验。</div><div class="jcell pain">没有把“做过、判断过”的过程转成可复用的理解。</div><div class="jlabel"><b>机会</b><span>OPPORTUNITY</span></div><div class="jcell opp">用典型场景组织入口，先让用户看见下一步。</div><div class="jcell opp">让 AI 说明来源、选择与关键判断，不只输出答案。</div><div class="jcell opp">提供可运行环境、基线和边界测试，引导观察结果。</div><div class="jcell opp">错误码 / 原文 → 成因 → 上下文排查 → 修复验证。</div><div class="jcell opp">在任务后嵌入复盘、测验与知识关联，形成最小沉淀。</div></div></div>
+  <div class="foot">Journey evidence · 部分“痛点/机会”为基于原声的设计推论，需后续可用性测试验证</div>
+</section>
+
+<section class="slide black-study">
+  <div class="chrome"><span>DESIGN TENSION · 01</span><span>AI-ASSISTED LEARNING</span></div><div class="black-inner"><div><h2>不重复 Agent 的搜索与生成，<br><span>而要支撑人的验证与判断。</span></h2><p>受访者并不排斥 AI；相反，他已把 AI 当作默认工作流。产品需要从“再提供一个聊天入口”转向“让学习过程可实践、可检查、可回顾”。</p></div><div class="tension"><div class="tension-card"><b>AI 擅长：压缩行动成本</b><p>跨网页检索、信息整理、代码生成和迭代速度远超手动搜索。</p></div><div class="tension-card hot"><b>人仍要做：定义标准与处理例外</b><p>在边界输入、持续报错、性能优化和方案选择时，经验决定下一条正确分支。</p></div><div class="tension-card"><b>学习产品应补：可观察的验证与最小内化</b><p>把运行、结果、问题和复盘连起来，让“完成任务”不等于“没有学会”。</p></div></div></div>
+</section>
+
+<section class="slide s-gray research-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">原型已命中三项高价值能力：能跑、能理解、能排障</span></div><div class="subttl">Prototype validation · 正向反馈不等于已完成可用性验证</div></div><div class="section-tabs"><span>01 研究证据</span><span>02 用户与旅程</span><span class="active">03 设计判断</span><span>04 下一步验证</span></div></div>
+  <div class="body-area"><div class="validate-grid"><article class="vcard run"><div class="k">01 · PRACTICE</div><h3>可运行的实践环境</h3><p>从课程解释延伸到可执行代码、运行结果和本地工程迁移，是受访者最明确认可的价值点。</p><div class="proof">“能自己动手去执行代码，然后跑代码看结果。”</div></article><article class="vcard map"><div class="k">02 · GUIDANCE</div><h3>老师式的结构化引导</h3><p>知识图谱与路径可以帮用户整理重点、前置知识与下一步，降低自组织学习的门槛。</p><div class="proof">“知识图谱……完成了作为一个老师的工作。”</div></article><article class="vcard debug"><div class="k">03 · DEBUG</div><h3>面向上下文的排障</h3><p>错误帮助需从泛化提示升级为可搜索、可解释、可执行的诊断与修复指南。</p><div class="proof">“possible cause 无穷……没有有效信息。”</div></article></div></div>
+  <div class="foot">Source · 逐字稿 1 · 00:27:12 / 00:29:29 / 00:31:24 - 00:33:24</div>
+</section>
+
+<section class="slide s-gray research-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">两项原型风险需要先收敛：分类逻辑与注意力负担</span></div><div class="subttl">Prototype issues · 应在下一版信息架构中解决，而非继续叠加功能</div></div><div class="section-tabs"><span>01 研究证据</span><span>02 用户与旅程</span><span class="active">03 设计判断</span><span>04 下一步验证</span></div></div>
+  <div class="body-area"><div class="issue-grid"><div class="issue-main"><article class="issue-card"><span class="evidence-pill direct">原型反馈</span><h3>角色选项混合了不同维度</h3><p>“学生”是身份，“算子开发者 / 算法工程师”是领域或岗位；它们可同时成立，难以用作互斥画像。</p><div class="direct">“不要互相包含的那种。”</div></article><article class="issue-card"><span class="evidence-pill direct">原型反馈</span><h3>编程语言不等于能力层级</h3><p>“熟悉 Python / 熟悉 C++”无法代表基础程度，应拆为语言经验与熟悉程度，避免错误推断。</p><div class="direct">“基础还是分编程语言、编程语言的熟悉程度会比较好。”</div></article><article class="issue-card"><span class="evidence-pill direct">原型反馈</span><h3>学习分身的强提醒可能反噬</h3><p>对高经验用户，主动提醒与进度元素可能打断阅读和实践；它应按需唤起，而不是常驻干预。</p><div class="direct">“加太多东西反而容易扰乱我的专注。”</div></article><article class="issue-card"><span class="evidence-pill infer">设计推论</span><h3>插件不应成为近期主线</h3><p>只有在比现有 Agent 更快、更方便、更直观时，IDE 插件才可能被采用；现阶段应先验证核心闭环。</p><div class="direct">“这一点我觉得挺难的。”</div></article></div><aside class="issue-side"><h3>建议的信息架构调整</h3><ul><li><b>1</b><span><strong>身份 / 阶段</strong>：学生、在职、团队新人等。</span></li><li><b>2</b><span><strong>目标领域</strong>：算子、应用、模型训练 / 推理等。</span></li><li><b>3</b><span><strong>基础能力</strong>：语言经验、NPU 环境、相关实践经历。</span></li></ul><div class="decision">决策原则：先用少量、互不包含的问题形成“足够好的起点”，再允许用户在路径内调整。</div></aside></div></div>
+  <div class="foot">Source · 逐字稿 1 · 00:35:55 - 00:42:43；逐字稿 2 · 00:04:14</div>
+</section>
+
+<section class="slide s-gray research-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">优先做“任务闭环”，暂缓强介入的学习陪伴与 IDE 插件</span></div><div class="subttl">Opportunity matrix · 以用户价值 × 当前可验证性排序，不代表工程成本评估</div></div><div class="section-tabs"><span>01 研究证据</span><span>02 用户与旅程</span><span class="active">03 设计判断</span><span>04 下一步验证</span></div></div>
+  <div class="body-area vc"><div class="matrix-wrap"><div class="matrix"><span class="mx-axis-y">用户价值 ↑</span><span class="mx-axis-x">当前可验证性 →</span><span class="quad q1">优先验证</span><span class="quad q2">有价值但需探索</span><span class="quad q3">暂缓</span><span class="quad q4">补充项</span><div class="op high" style="left:56%;top:19%"><b>任务化实践闭环</b><span>运行、基线、结果与下一步</span></div><div class="op high" style="left:53%;top:43%"><b>近场错误码排障</b><span>症状 → 成因 → 排查 → 验证</span></div><div class="op" style="left:18%;top:26%"><b>知识图谱 / 路径</b><span>作为“老师式”结构化引导</span></div><div class="op" style="left:11%;top:61%"><b>学习分身提醒</b><span>按需使用，先验证新手价值</span></div><div class="op" style="left:62%;top:69%"><b>随堂测验入口</b><span>嵌入完成节点，而非静态陈列</span></div><div class="op" style="left:74%;top:31%"><b>IDE 社区插件</b><span>价值条件苛刻，后置探索</span></div></div><aside class="matrix-note"><span class="evidence-pill infer">优先级判断</span><h3>下一版最小充分范围</h3><p>围绕一个真实任务，把“能运行、会看结果、遇错能恢复、完成后有最小复盘”做成连续体验。</p><ol><li>先从算子 / NPU 推理等已有实践素材切入</li><li>用真实错误和边界测试检验排障价值</li><li>再看知识图谱、测验是否提高理解与留存</li></ol></aside></div></div>
+  <div class="foot">Priority boundary · 价值判断来自本次访谈；工程成本与普适性需另行评估</div>
+</section>
+
+<section class="slide loop-slide">
+  <div class="loop-head"><div class="chrome">TARGET EXPERIENCE · 02</div><h2>目标不是“多一个 AI 入口”，<br><span>而是形成可实践、可验证、<br>可恢复、可沉淀的学习闭环。</span></h2></div><div class="loop-steps"><article class="loop-step"><div class="loop-no">01</div><h3>从场景开始</h3><p>用典型任务而非泛化课程目录，给出用户可立即选择的起点。</p><span class="loop-tag">找到下一步</span></article><article class="loop-step"><div class="loop-no">02</div><h3>在环境中实践</h3><p>把解释、最小代码与可运行环境放在同一条任务链上。</p><span class="loop-tag">真正动手</span></article><article class="loop-step"><div class="loop-no">03</div><h3>用结果建立判断</h3><p>呈现功能、精度、性能和边界条件，让用户知道何为“通过”。</p><span class="loop-tag">看懂结果</span></article><article class="loop-step"><div class="loop-no">04</div><h3>在失败处恢复</h3><p>让错误携带上下文，提供成因、排查步骤与修复验证。</p><span class="loop-tag">继续推进</span></article><article class="loop-step"><div class="loop-no">05</div><h3>以最小动作沉淀</h3><p>通过短测、复盘和关联知识，保留本次任务中真正做过的判断。</p><span class="loop-tag">带走能力</span></article></div>
+</section>
+
+<section class="slide s-gray research-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">下一轮应从“能否提升内化与恢复能力”验证，而非只问喜欢不喜欢</span></div><div class="subttl">Next research · 用真实任务、不同熟练度用户和可观察行为收敛方案</div></div><div class="section-tabs"><span>01 研究证据</span><span>02 用户与旅程</span><span>03 设计判断</span><span class="active">04 下一步验证</span></div></div>
+  <div class="body-area"><div class="next-grid"><div class="next-big"><span class="evidence-pill test">待验证假设</span><h2>如果产品把关键观察与复盘嵌入真实任务，用户不仅能更快完成，也能在 AI 失败时更有能力继续推进。</h2><p>本次访谈只证明了方向的合理性，尚未证明不同经验层用户是否愿意、是否能够在其中完成学习行为。</p><div class="assumption">建议先聚焦一个可运行任务，避免同时测试完整画像、学习分身、图谱、测验与插件等过多变量。</div></div><div class="next-list"><article class="next-item"><div class="n">01</div><div><h3>补齐样本</h3><p>招募新手、中等经验、资深开发者；比较其对提醒、引导和错误恢复的差异。</p></div><span class="method">访谈 + 任务测试</span></article><article class="next-item"><div class="n">02</div><div><h3>测试闭环</h3><p>给出真实目标与一个可预期错误，观察是否完成运行、理解结果、恢复任务。</p></div><span class="method">可用性测试</span></article><article class="next-item"><div class="n">03</div><div><h3>验证内化</h3><p>在任务后以轻量追问或变式题检验：用户是否知道做了什么、为什么这样做。</p></div><span class="method">延迟回访</span></article><article class="next-item"><div class="n">04</div><div><h3>定义成功信号</h3><p>记录完成率、恢复率、关键判断正确率、复盘完成率与主观负担。</p></div><span class="method">行为指标</span></article></div></div></div>
+  <div class="foot">Research plan · 先验证闭环，再决定哪些陪伴与扩展能力值得投入</div>
+</section>
+
+<section class="slide s-gray research-slide">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">附录：关键原声索引与使用边界</span></div><div class="subttl">Traceability · 让每个关键判断可回到对应的访谈位置</div></div><div class="section-tabs"><span class="active">01 研究证据</span><span>02 用户与旅程</span><span>03 设计判断</span><span>04 下一步验证</span></div></div>
+  <div class="body-area"><div class="appendix"><div class="appendix-col"><h3>AI 与学习</h3><div class="transcript-list"><div><time>1 · 00:10:12</time><p>“现在基本上我们查找的东西都不会直接在谷歌上面搜了。”</p></div><div><time>2 · 00:08:00</time><p>“搜索的过程其实是一种学习的强化过程……AI 帮你做了这件事情之后，你没有走过程。”</p></div><div><time>2 · 00:09:40</time><p>“AI 能力强了，但你人的能力并没有同步地随着 AI 能力变强。”</p></div></div></div><div class="appendix-col"><h3>原型与设计</h3><div class="transcript-list"><div><time>1 · 00:27:12</time><p>“我能自己动手去执行代码，然后跑代码看结果。这才是开发者最需要的场景。”</p></div><div><time>1 · 00:32:03</time><p>“错误代码、出现原因、修复方案都整理起来……是特别好的开发 debug 指南。”</p></div><div><time>1 · 00:40:39</time><p>“就不要互相包含的那种吧！”</p></div></div></div><div class="appendix-note"><b>使用边界：</b> 本 deck 直接引用或转述一名受访者的主观经验。文中的用户旅程、机会优先级和目标闭环是研究团队基于访谈形成的设计推论，应以下一轮多样本任务测试进一步验证。</div></div></div>
+  <div class="foot">Sources · 20260802100730…逐字稿文本-1.pdf / 20260802105144…逐字稿文本-1.pdf</div>
+</section>`;
+</script>
+
+<!-- 调色面板（JS 会把它挂到当前黑底章节封面页内）-->
+<div id="panel" style="display:none">
+  <h4>底部光晕调色</h4>
+  <div class="preset-row">
+    <div class="preset" data-p="255,85,58" style="background:linear-gradient(90deg,hsl(255,85%,58%),hsl(300,85%,58%))"></div>
+    <div class="preset" data-p="160,80,56" style="background:linear-gradient(90deg,hsl(160,80%,56%),hsl(205,80%,56%))"></div>
+    <div class="preset" data-p="30,88,58" style="background:linear-gradient(90deg,hsl(30,88%,58%),hsl(75,88%,58%))"></div>
+    <div class="preset" data-p="200,82,60" style="background:linear-gradient(90deg,hsl(200,82%,60%),hsl(245,82%,60%))"></div>
+  </div>
+  <div class="ctrl"><label>色相 HUE <span class="val" id="v-h">234</span></label><input type="range" id="s-h" min="0" max="360" value="234"></div>
+  <div class="ctrl"><label>色相跨度 GAP <span class="val" id="v-gap">57°</span></label><input type="range" id="s-gap" min="0" max="180" value="57"></div>
+  <div class="ctrl"><label>饱和度 SAT <span class="val" id="v-sat">95%</span></label><input type="range" id="s-sat" min="0" max="100" value="95"></div>
+  <div class="ctrl"><label>亮度 LIGHT <span class="val" id="v-light">40%</span></label><input type="range" id="s-light" min="20" max="80" value="40"></div>
+  <div class="ctrl"><label>扩散 SPREAD <span class="val" id="v-spread">35vh</span></label><input type="range" id="s-spread" min="20" max="90" value="35"></div>
+  <div class="ctrl"><label>彩色亮度 COLOR <span class="val" id="v-cint">0.68</span></label><input type="range" id="s-cint" min="0" max="100" value="68"></div>
+  <div class="ctrl"><label>白色亮度 WHITE <span class="val" id="v-wint">0.58</span></label><input type="range" id="s-wint" min="0" max="100" value="58"></div>
+</div>
+<button id="toggle" style="display:none" title="调色面板"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="10" cy="7" r="2.4"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="15" cy="17" r="2.4"/></svg></button>
+
+<nav class="nav-dots" id="navDots"></nav>
+<!-- 底部居中控制栏（默认隐藏，鼠标移到底部才出现）-->
+<div id="controls">
+  <button id="prevBtn" title="上一页 ↑/←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg></button>
+  <span class="ctrl-counter" id="counter">01 / 01</span>
+  <button id="nextBtn" title="下一页 ↓/→"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+  <span class="ctrl-sep"></span>
+  <button id="ovBtn" title="概览 O"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+  <button id="fsBtn" title="全屏 F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+</div>
+
+<script>
+eval(document.getElementById('researchDeckMarkup').textContent);
+const root=document.documentElement;
+const deck=document.getElementById('deck');
+const slides=[...document.querySelectorAll('.slide')];
+let idx=0;
+
+/* ===== 翻页过渡（可切换）：slide(默认) | fade | cut | slide-h | magic =====
+   改默认改这行兜底值；或地址加 ?t=fade / ?t=cut / ?t=slide-h / ?t=magic 临时切换、不用改代码 */
+const TRANSITION = (new URLSearchParams(location.search).get('t')) || 'slide';
+const CTRL = TRANSITION!=='slide';
+if(CTRL){ document.body.classList.add('ctrl'); document.body.dataset.transition=TRANSITION; }
+const TDUR=600;
+function setActive(i){ slides.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.remove('leaving');s.style.transform='';s.style.opacity='';}); }
+function showSlide(i,dir){
+  const cur=slides.find(s=>s.classList.contains('active'));
+  const nxt=slides[i]; if(!nxt||nxt===cur)return; dir=dir||'fwd';
+  if(TRANSITION==='magic'&&cur){ magicMove(cur,nxt); return; }
+  if(TRANSITION==='slide-h'){
+    nxt.style.transition='none'; nxt.style.visibility='visible'; nxt.style.opacity='1';
+    nxt.style.transform='translateX('+(dir==='fwd'?'100%':'-100%')+')';
+    void nxt.offsetWidth; nxt.style.transition=''; nxt.classList.add('active'); nxt.style.transform='';
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving');
+      cur.style.transform='translateX('+(dir==='fwd'?'-100%':'100%')+')';
+      const c=cur; setTimeout(()=>{c.classList.remove('leaving');c.style.transform='';},TDUR); }
+  } else {
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving'); const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR); }
+    nxt.classList.add('active');
+  }
+}
+/* Keynote 式神奇移动：相邻两页中 data-key 相同的元素 FLIP 位移/缩放（用 Web Animations API）*/
+function magicMove(cur,nxt){
+  const out={}; cur.querySelectorAll('[data-key]').forEach(el=>{out[el.dataset.key]=el.getBoundingClientRect();});
+  cur.classList.remove('active'); cur.classList.add('leaving'); nxt.classList.add('active');
+  nxt.querySelectorAll('[data-key]').forEach(el=>{
+    const o=out[el.dataset.key]; if(!o)return; const n=el.getBoundingClientRect(); if(!n.width||!n.height)return;
+    const dx=o.left-n.left, dy=o.top-n.top, sx=o.width/n.width, sy=o.height/n.height;
+    if(Math.abs(dx)<1&&Math.abs(dy)<1&&Math.abs(sx-1)<.02&&Math.abs(sy-1)<.02)return;
+    el.style.zIndex='3';
+    el.animate([{transformOrigin:'top left',transform:'translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')'},
+                {transformOrigin:'top left',transform:'none'}],
+               {duration:620,easing:'cubic-bezier(.4,0,.2,1)'}).onfinish=()=>{el.style.zIndex='';};
+  });
+  const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR);
+}
+
+/* ===== 黑底光晕：每章一组色值，可调 + localStorage 持久记忆 ===== */
+const chapters={'1':{h:234,gap:57,sat:95,light:40,spread:35,cint:68,wint:58}};
+const GLOW_KEY='deck-glow-chapters';
+try{const sv=localStorage.getItem(GLOW_KEY);if(sv){const o=JSON.parse(sv);Object.keys(o).forEach(k=>{if(chapters[k])Object.assign(chapters[k],o[k]);});}}catch(e){}
+function saveChapters(){try{localStorage.setItem(GLOW_KEY,JSON.stringify(chapters));}catch(e){}}
+function curChap(){return chapters[slides[idx].dataset.chapter];}
+const S={h:'s-h',gap:'s-gap',sat:'s-sat',light:'s-light',spread:'s-spread',cint:'s-cint',wint:'s-wint'};
+const V={h:'v-h',gap:'v-gap',sat:'v-sat',light:'v-light',spread:'v-spread',cint:'v-cint',wint:'v-wint'};
+function paintSlide(s){const c=chapters[s.dataset.chapter];if(!c)return;
+  s.style.setProperty('--glow-h',c.h);s.style.setProperty('--glow-h2',(c.h+c.gap)%360);
+  s.style.setProperty('--glow-sat',c.sat+'%');s.style.setProperty('--glow-light',c.light+'%');
+  s.style.setProperty('--glow-spread',c.spread);s.style.setProperty('--glow-color-int',(c.cint/100).toFixed(2));
+  s.style.setProperty('--glow-white-int',(c.wint/100).toFixed(2));}
+function apply(){slides.forEach(paintSlide);saveChapters();const c=curChap();if(!c)return;
+  root.style.setProperty('--glow-h',c.h);root.style.setProperty('--glow-h2',(c.h+c.gap)%360);}
+function syncPanel(){const c=curChap();if(!c)return;
+  for(const k in S){const el=document.getElementById(S[k]),v=document.getElementById(V[k]);if(!el)continue;el.value=c[k];
+    v.textContent=(k==='sat'||k==='light')?c[k]+'%':k==='spread'?c[k]+'vh':k==='gap'?c[k]+'°':(k==='cint'||k==='wint')?(c[k]/100).toFixed(2):c[k];}}
+for(const k in S){const el=document.getElementById(S[k]);if(el)el.addEventListener('input',()=>{const c=curChap();if(!c)return;c[k]=+el.value;
+  const v=document.getElementById(V[k]);v.textContent=(k==='sat'||k==='light')?el.value+'%':k==='spread'?el.value+'vh':k==='gap'?el.value+'°':(k==='cint'||k==='wint')?(el.value/100).toFixed(2):el.value;apply();});}
+document.querySelectorAll('.preset').forEach(p=>p.onclick=()=>{const c=curChap();if(!c)return;const[h,sat,light]=p.dataset.p.split(',').map(Number);Object.assign(c,{h,sat,light});apply();syncPanel();});
+function setPanelOpen(open){const p=document.getElementById('panel');if(p)p.style.display=open?'block':'none';}
+document.addEventListener('click',e=>{const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');if(!panel||!toggle)return;
+  if(toggle.contains(e.target)){setPanelOpen(panel.style.display!=='block');syncPanel();return;}
+  if(panel.contains(e.target))return; setPanelOpen(false);});
+
+/* ===== 纵向 scroll-snap 翻页 + 右侧点 + 控制栏 + 总览 + 全屏 ===== */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+/* 滚动条默认隐藏，滚动时淡入、停 700ms 后淡出（body 是滚动容器，事件挂 body 不是 window；wheel 兜底）*/
+let scrollbarTimer;
+function flashScrollbar(){document.body.classList.add('scrolling');clearTimeout(scrollbarTimer);scrollbarTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700);}
+document.body.addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('wheel',flashScrollbar,{passive:true});
+const navDots=document.getElementById('navDots'), controls=document.getElementById('controls'), counter=document.getElementById('counter');
+const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn'), ovBtn=document.getElementById('ovBtn'), fsBtn=document.getElementById('fsBtn');
+const pad=n=>String(n).padStart(2,'0');
+const dots=slides.map((s,i)=>{const b=document.createElement('button');b.className='nav-dot';b.title=pad(i+1)+' / '+pad(slides.length);b.onclick=()=>go(i);navDots.appendChild(b);return b;});
+
+function updateCurrent(i){
+  idx=i; const s=slides[idx];
+  dots.forEach((d,k)=>d.classList.toggle('active',k===idx));
+  counter.textContent=pad(idx+1)+' / '+pad(slides.length);
+  prevBtn.disabled=idx<=0; nextBtn.disabled=idx>=slides.length-1;
+  document.body.classList.toggle('on-dark', s.classList.contains('s-cover')||s.classList.contains('s-glow'));
+  const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');
+  if(s.dataset.chapter && s.classList.contains('chapter-cover')){ if(panel)s.appendChild(panel); if(toggle){s.appendChild(toggle);toggle.style.display='flex';} setPanelOpen(false); apply(); syncPanel(); }
+  else if(toggle){ toggle.style.display='none'; setPanelOpen(false); }
+}
+/* slide 模式：谁滚进视口 ≥55% 谁就是当前页。受控模式无滚动，不用 IO */
+if(!CTRL){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>=0.55){const i=slides.indexOf(e.target);if(i>=0&&i!==idx)updateCurrent(i);}});},{threshold:[0.55]});
+  slides.forEach(s=>io.observe(s));
+}
+
+function go(n){ if(document.body.classList.contains('overview'))return; const i=Math.max(0,Math.min(slides.length-1,n));
+  if(CTRL){ const dir=i>idx?'fwd':'back'; showSlide(i,dir); updateCurrent(i); }
+  else slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+}
+function next(){go(idx+1);} function prev(){go(idx-1);}
+prevBtn.onclick=prev; nextBtn.onclick=next;
+/* 受控模式：滚轮 / 触控板翻页（无原生滚动，需拦截 + 节流）*/
+if(CTRL){
+  let wlock=false;
+  addEventListener('wheel',e=>{ if(document.body.classList.contains('overview'))return; e.preventDefault();
+    if(wlock||Math.abs(e.deltaY)<6)return; wlock=true; setTimeout(()=>wlock=false,620);
+    if(e.deltaY>0)next(); else prev();
+  },{passive:false});
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  else if(e.key==='o'||e.key==='O'){toggleOverview();}
+  else if(e.key==='f'||e.key==='F'){toggleFullscreen();}
+  else if(e.key==='Escape'){ if(document.body.classList.contains('overview')) exitOverview(); }
+});
+
+/* 全屏（进入后图标变退出全屏）*/
+const ICON_MAX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+const ICON_MIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+function syncFsIcon(){const fs=!!document.fullscreenElement;fsBtn.innerHTML=fs?ICON_MIN:ICON_MAX;fsBtn.title=fs?'退出全屏 F':'全屏 F';}
+function toggleFullscreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});}else{document.exitFullscreen();} }
+fsBtn.onclick=toggleFullscreen;
+function reanchor(){ if(CTRL||document.body.classList.contains('overview'))return; slides[idx].scrollIntoView({block:'start',behavior:'auto'}); }
+document.addEventListener('fullscreenchange',()=>{syncFsIcon();setTimeout(reanchor,90);});
+syncFsIcon();
+
+/* 总览 Overview：每页包进 .slide-inner 缩放成缩略图，排网格（按当前视窗比例）*/
+function applyOverviewScale(){if(!document.body.classList.contains('overview'))return;const cellW=slides[0].getBoundingClientRect().width,scale=cellW/window.innerWidth;slides.forEach(s=>{s.style.height=(window.innerHeight*scale)+'px';const inner=s.querySelector(':scope>.slide-inner');if(inner)inner.style.transform='scale('+scale+')';});}
+function enterOverview(){slides.forEach(s=>{if(!s.querySelector(':scope>.slide-inner')){const w=document.createElement('div');w.className='slide-inner';while(s.firstChild)w.appendChild(s.firstChild);s.appendChild(w);}});document.body.classList.add('overview');requestAnimationFrame(applyOverviewScale);}
+function exitOverview(){slides.forEach(s=>{const w=s.querySelector(':scope>.slide-inner');if(w){while(w.firstChild)s.insertBefore(w.firstChild,w);w.remove();}s.style.height='';});document.body.classList.remove('overview');balanceHeads();if(CTRL){setActive(idx);}else setTimeout(()=>slides[idx].scrollIntoView({block:'start',behavior:'auto'}),20);}
+function toggleOverview(){document.body.classList.contains('overview')?exitOverview():enterOverview();}
+ovBtn.onclick=toggleOverview;
+document.body.addEventListener('click',e=>{if(!document.body.classList.contains('overview'))return;const sl=e.target.closest('.slide');if(sl){const i=slides.indexOf(sl);if(i>=0){idx=i;exitOverview();}}});
+addEventListener('resize',()=>{if(document.body.classList.contains('overview'))applyOverviewScale();else reanchor();balanceHeads();});
+
+/* ===== 居中型页竖向平衡：直接量"页眉下沿→内容"和"内容→页脚上沿"两个可见空白，让它们相等 =====
+   ⚠️ 别拿页眉高度当 padding-bottom（试过，会系统性补过头）：页眉的留白已经是它自己的 margin-bottom，
+   不需要重复补；真正缺的只是页脚那一截（.foot 绝对定位、不占流式空间，但视觉上离底边有自己的 inset）。
+   两个空白差是 P 的线性函数、斜率恰为 -1（justify-content:center 对称分担），所以不用试错：
+   newPad = 当前 padding-bottom + (topGap − botGap)，一步算出让两个空白相等的正确值。
+   只作用于标了 .vc 的居中型页；填满型页不动 */
+function balanceHeads(){
+  if(document.body.classList.contains('overview'))return;
+  document.querySelectorAll('.body-area.vc').forEach(function(ba){
+    var head=ba.parentElement.querySelector('.head');
+    var foot=ba.parentElement.querySelector('.foot');
+    var kids=ba.children; if(!head||!foot||!kids.length)return;
+    var firstTop=kids[0].getBoundingClientRect().top;
+    var lastBottom=kids[kids.length-1].getBoundingClientRect().bottom;
+    var topGap=firstTop-head.getBoundingClientRect().bottom;
+    var botGap=foot.getBoundingClientRect().top-lastBottom;
+    var curPad=parseFloat(getComputedStyle(ba).paddingBottom)||0;
+    ba.style.paddingBottom=Math.max(0,curPad+(topGap-botGap))+'px';
+  });
+}
+requestAnimationFrame(balanceHeads);
+
+/* 底部控制栏 / 右侧导航点各自独立显隐：移到底部出底部栏、移到右侧出右侧点，离开该区即淡出 */
+document.addEventListener('mousemove',e=>{
+  controls.classList.toggle('show', e.clientY > window.innerHeight - 120);
+  navDots.classList.toggle('show', e.clientX > window.innerWidth - 120);
+});
+document.addEventListener('mouseleave',()=>{ controls.classList.remove('show'); navDots.classList.remove('show'); });
+
+slides.forEach(paintSlide);
+const initialPage=parseInt(location.hash.slice(1),10);
+const initialIdx=(!isNaN(initialPage)&&initialPage>=1&&initialPage<=slides.length)?initialPage-1:0;
+window.scrollTo(0,0);
+updateCurrent(initialIdx);
+if(CTRL) setActive(initialIdx);
+else if(initialIdx>0) requestAnimationFrame(()=>slides[initialIdx].scrollIntoView({block:'start',behavior:'auto'}));
+addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(!isNaN(n)&&n>=1&&n<=slides.length&&n-1!==idx)go(n-1);});
+</script>
+</body>
+</html>
