@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智能学习方案 - 原型测试访谈要点</title>
+<style>
+  :root{
+    --bg:#f1f3f7;
+    --paper:rgba(255,255,255,.78);
+    --ink:#18202d;
+    --muted:#697486;
+    --line:#dce1e9;
+    --purple:#6659d9;
+    --blue:#3a8ee8;
+    --green:#22a970;
+    --orange:#ed7a4e;
+    --red:#c94e5d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(circle at 88% 4%,rgba(111,92,219,.14),transparent 21%),linear-gradient(145deg,#f6f7fa 0%,var(--bg) 64%,#e9edf4 100%);color:var(--ink);font-family:"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif}
+  main{width:min(1440px,calc(100% - 64px));margin:0 auto;padding:56px 0 72px}
+  .eyebrow{display:flex;gap:10px;align-items:center;color:var(--purple);font:700 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase}
+  .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--purple);box-shadow:0 0 0 5px rgba(102,89,217,.12)}
+  header{display:grid;grid-template-columns:1fr 300px;gap:36px;align-items:end;padding-bottom:32px;border-bottom:1px solid var(--line)}
+  h1{max-width:880px;margin:13px 0 12px;font-size:clamp(30px,3.1vw,50px);letter-spacing:-.045em;line-height:1.13}
+  .lead{max-width:740px;margin:0;color:var(--muted);font-size:17px;line-height:1.7}
+  .scope{padding:17px 18px;border:1px solid rgba(255,255,255,.92);border-radius:16px;background:rgba(255,255,255,.52);box-shadow:0 12px 30px -25px rgba(29,37,57,.42)}
+  .scope b{display:block;font-size:14px}.scope p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.55}
+  .section{padding-top:36px}.section-head{display:flex;gap:18px;align-items:baseline;margin-bottom:18px}.section-index{color:var(--muted);font:500 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace}.section h2{margin:0;font-size:22px;letter-spacing:-.025em}.section-desc{margin:0 0 0 auto;color:var(--muted);font-size:13px}
+  .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.cards.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card{position:relative;min-width:0;display:flex;flex-direction:column;min-height:288px;padding:22px 22px 18px;overflow:hidden;border:1px solid rgba(255,255,255,.94);border-radius:18px;background:var(--paper);box-shadow:0 12px 32px -28px rgba(25,32,48,.36)}
+  .card::after{content:"";position:absolute;right:-38px;bottom:-44px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,var(--glow,rgba(102,89,217,.16)),transparent 67%);pointer-events:none}
+  .card.run{--tone:var(--green);--glow:rgba(34,169,112,.2)}.card.map{--tone:var(--purple);--glow:rgba(102,89,217,.19)}.card.debug{--tone:var(--blue);--glow:rgba(58,142,232,.2)}.card.ia{--tone:var(--orange);--glow:rgba(237,122,78,.18)}.card.persona{--tone:var(--red);--glow:rgba(201,78,93,.17)}.card.agent{--tone:#5869a6;--glow:rgba(88,105,166,.18)}
+  .tag{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;background:color-mix(in srgb,var(--tone) 10%,white);color:var(--tone);font-size:12px;font-weight:800}.tag i{width:6px;height:6px;border-radius:50%;background:currentColor}
+  h3{margin:14px 0 8px;font-size:19px;letter-spacing:-.02em;line-height:1.3}.finding{margin:0;color:var(--muted);font-size:14px;line-height:1.65}.quote{position:relative;z-index:1;margin:17px 0 0;padding:13px 14px;border-radius:11px;background:#f7f8fb;color:#354051;font-size:14px;font-weight:650;line-height:1.58}.quote::before{content:"“";color:var(--tone);font-family:Georgia,serif;font-size:29px;line-height:0;vertical-align:-8px;margin-right:3px}.time{position:relative;z-index:1;display:block;margin-top:auto;padding-top:12px;color:var(--tone);font:700 11px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace}
+  .conclusion{position:relative;z-index:1;margin-top:13px;padding-top:13px;border-top:1px solid rgba(47,58,75,.1);color:#2e3848;font-size:13px;line-height:1.55}.conclusion b{color:var(--tone)}
+  .split{display:grid;grid-template-columns:1.06fr .94fr;gap:16px}.split .card{min-height:305px}.subcards{display:grid;grid-template-columns:1fr 1fr;gap:16px}.subcards .card{min-height:0}
+  .note{margin-top:32px;padding:16px 18px;border-left:3px solid var(--purple);border-radius:0 14px 14px 0;background:rgba(255,255,255,.45);color:#566174;font-size:13px;line-height:1.65}.note b{color:var(--ink)}
+  @media (max-width:980px){main{width:min(100% - 32px,760px);padding-top:36px}header,.split{grid-template-columns:1fr}.cards,.cards.two,.subcards{grid-template-columns:1fr}.section-desc{display:none}.card{min-height:0}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <div class="eyebrow">Prototype Test · Interview Findings</div>
+      <h1>智能学习方案：原型测试中的确认与待改点</h1>
+      <p class="lead">将本次访谈中与已展示原型直接相关的反馈，按正向验证、信息架构与学习分身概念整理。每张卡保留原声、时间点和可用于后续设计讨论的结论。</p>
+    </div>
+    <aside class="scope"><b>使用边界</b><p>证据来自张宸梓一位受访者的两段访谈。原声是明确反馈；“可写结论”是对反馈的整理，不代表全体用户结论。</p></aside>
+  </header>
+
+  <section class="section">
+    <div class="section-head"><span class="section-index">01</span><h2>已有原型：用户明确认可的价值</h2><p class="section-desc">正向验证</p></div>
+    <div class="cards">
+      <article class="card run"><span class="tag"><i></i>实践环境</span><h3>能运行、能看结果，比纯问答更有价值</h3><p class="finding">受访者将在线实践、代码执行和结果观察视为开发学习的核心场景。</p><blockquote class="quote">它切切实实提供了开发者一个能开发的环境……我能自己动手去执行代码，然后跑代码看结果。这才是开发者最需要的一个场景。</blockquote><time class="time">逐字稿 1 · 00:27:12</time><div class="conclusion"><b>可写结论：</b>保留“课程内容 + 可运行环境 + 实操结果”的连续体验，突出它与普通 AI 问答的差异。</div></article>
+      <article class="card map"><span class="tag"><i></i>知识图谱与路径</span><h3>知识结构化，承担“老师整理重点”的角色</h3><p class="finding">用户认可知识图谱、关联路径与 AI 引导对重点、前置知识和学习顺序的整理价值。</p><blockquote class="quote">知识图谱、AI 这些工作其实就是完成了作为一个老师的工作……我觉得是可以的，是有必要。</blockquote><time class="time">逐字稿 1 · 00:29:29 / 00:30:25</time><div class="conclusion"><b>可写结论：</b>重点不是继续扩充资料，而是帮助用户理解重点、关联与下一步。</div></article>
+      <article class="card debug"><span class="tag"><i></i>排障与错误码</span><h3>泛化提示无效，需要可执行的 Debug 指南</h3><p class="finding">用户认可错误码、原因和修复方案的结构化沉淀，但认为当前“possible cause”类提示没有帮助。</p><blockquote class="quote">错误代码、出现原因、修复方案都整理起来……那它就是一个特别好的开发 debug 的指南。</blockquote><time class="time">逐字稿 1 · 00:31:24；负向反馈 00:33:11 - 00:33:24</time><div class="conclusion"><b>可写结论：</b>从“通用可能原因”升级为“错误码 / 原文 → 成因 → 排查路径 → 修复办法”。</div></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="section-index">02</span><h2>已有原型：信息架构与画像需要修正</h2><p class="section-desc">理解成本与入口优先级</p></div>
+    <div class="split">
+      <article class="card ia"><span class="tag"><i></i>首页内容优先级</span><h3>从典型场景开始；高阶内容在后续分层</h3><p class="finding">用户可理解学习目标，但希望首页先承接当下任务场景；VLLM / LLM 等主题更适合在基础之后作为高级模块展开。</p><blockquote class="quote">从典型场景放前面吧！……高阶的学习是从分一个初级模块和高级模块，在高级模块里面再加那些东西。</blockquote><time class="time">逐字稿 1 · 00:42:31；逐字稿 2 · 00:01:07</time><div class="conclusion"><b>可写结论：</b>首页先帮助用户定位当前任务 / 场景，再以分层路径承接高阶主题；当前学习目标选项可保留。</div></article>
+      <div class="subcards">
+        <article class="card persona"><span class="tag"><i></i>角色题目</span><h3>身份与职业领域不能混为互斥选项</h3><blockquote class="quote">一个算子开发者，他可以是学生，也可以应用开发者，也可以算法工程师……不要互相包含的那种。</blockquote><time class="time">逐字稿 1 · 00:40:18 - 00:40:44</time><div class="conclusion"><b>可写结论：</b>将“身份 / 阶段”与“目标领域”拆成不同问题。</div></article>
+        <article class="card persona"><span class="tag"><i></i>基础题目</span><h3>编程语言不等于能力层级</h3><blockquote class="quote">基础还是分编程语言、编程语言的熟悉程度会比较好，不能这样分。</blockquote><time class="time">逐字稿 1 · 00:41:00 - 00:41:54</time><div class="conclusion"><b>可写结论：</b>拆问语言经验与熟悉程度，避免将 Python / C++ 直接映射成基础高低。</div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="section-index">03</span><h2>未进入原型：学习分身的反向反馈</h2><p class="section-desc">概念待验证</p></div>
+    <div class="cards two">
+      <article class="card agent"><span class="tag"><i></i>注意力负担</span><h3>不宜成为拟人化、常驻、强提醒的陪伴层</h3><p class="finding">受访者将学习分身联想到游戏中的主动提醒，并担心在学习文档内叠加过多元素会破坏专注。</p><blockquote class="quote">我个人来说的话，我是不太喜欢，我甚至很讨厌王者荣耀灵宝。</blockquote><time class="time">逐字稿 1 · 00:34:49</time><div class="conclusion"><b>可写结论：</b>不要以“陪伴感”或频繁打断作为卖点，优先讨论它是否能在关键时刻减少真实负担。</div></article>
+      <article class="card agent"><span class="tag"><i></i>更合适的形态</span><h3>若保留，更接近按需调用的整理与回顾</h3><p class="finding">对用户而言，已有路径整理已足够有帮助；额外进度提醒的价值并不明确。</p><blockquote class="quote">加太多东西反而容易扰乱我的专注。能帮我整理这一块已经很不错了……学习进度这些，个人观点吧，我觉得没太大必要。</blockquote><time class="time">逐字稿 1 · 00:35:55 - 00:36:26</time><div class="conclusion"><b>可写结论：</b>可探索按需打开的进度整理、路径回顾或复盘，而非默认常驻提醒；需补充新手用户验证。</div></article>
+    </div>
+  </section>
+
+  <p class="note"><b>下一步讨论：</b>本页只收录“已展示原型”与“学习分身”相关内容。AI 趋势、IDE 插件、昇腾知识库 / Skill 等不在这里展开，后续可作为独立研究分类整理。</p>
+</main>
+</body>
+</html>
