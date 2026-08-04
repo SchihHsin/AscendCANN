@@ -4168,12 +4168,39 @@ def vector_add_tik(shape, dtype, kernel_name):
     ],
   };
 
+  let _ldSceneTaskFilters = { scenario:null, goal:'', level:'' };
+
+  function ldSetSceneTaskFilter(kind, value) {
+    if (_ldSceneTaskFilters[kind] === value) _ldSceneTaskFilters[kind] = '';
+    else _ldSceneTaskFilters[kind] = value;
+    ldRenderSceneTasks(_ldSceneTaskFilters.scenario);
+  }
+
+  function ldSceneTaskScore([title, desc, topics, rating]) {
+    const text = `${title} ${desc} ${topics.join(' ')} ${rating}`;
+    let score = 0;
+    const { goal, level } = _ldSceneTaskFilters;
+    if (goal === '快速验证效果' && /入门|初体验|LoRA|Qwen3|迁移|转换/.test(text)) score += 3;
+    if (goal === '可控与可解释' && /验证|评估|调试|精度|分析|基线/.test(text)) score += 3;
+    if (goal === '极致性能' && /性能|并行|融合|Profiling|瓶颈|大规模/.test(text)) score += 3;
+    if (level === '新手' && /入门|初体验|Qwen3|LoRA|迁移|转换/.test(text)) score += 2;
+    if (level === '进阶' && /调试|验证|部署|适配|分析/.test(text)) score += 2;
+    if (level === '高级' && /性能|并行|融合|大规模|自定义/.test(text)) score += 2;
+    return score;
+  }
+
   function ldRenderSceneTasks(name) {
     const panel = document.getElementById('ld-scene-tasks');
     const tasks = LD_SCENE_TASKS[name];
     if (!panel || !tasks) return;
+    if (_ldSceneTaskFilters.scenario !== name) _ldSceneTaskFilters = { scenario:name, goal:'', level:'' };
     const ratingMarkup = rating => rating.replace(/(学习成本|性能控制力)\s*(★+☆*)/g, '<span>$1 <b>$2</b></span>');
-    panel.innerHTML = `<h3 class="ld-scene-task-title">${name}任务</h3><p class="ld-scene-task-desc">结合你的开发目标、基础与可用资源，找到适合的起点</p><div class="ld-scene-filters"><small>开发目标</small><span>快速验证效果</span><span>可控与可解释</span><span>极致性能</span><small>用户水平</small><span>新手</span><span>进阶</span><span>高级</span></div><div class="ld-scene-task-list">${tasks.map(([title, desc, topics, rating]) => `<article class="ld-scene-task-card" onclick="ldStartSceneTask('${name}','${title}')"><div><strong>${title}</strong><small>${desc}</small></div><div class="ld-scene-topic">${topics.map(topic => `<span>${topic}</span>`).join('')}</div><div class="ld-scene-rating">${ratingMarkup(rating)}</div><button type="button" onclick="event.stopPropagation();ldStartSceneTask('${name}','${title}')">开始学习</button></article>`).join('')}</div>`;
+    const filterButton = (kind, label) => `<button type="button" class="ld-scene-filter ${_ldSceneTaskFilters[kind] === label ? 'active' : ''}" aria-pressed="${_ldSceneTaskFilters[kind] === label}" onclick="ldSetSceneTaskFilter('${kind}','${label}')">${label}</button>`;
+    const sortedTasks = tasks.map((task, index) => ({ task, index, score:ldSceneTaskScore(task) })).sort((a, b) => b.score - a.score || a.index - b.index);
+    const hasFilter = Boolean(_ldSceneTaskFilters.goal || _ldSceneTaskFilters.level);
+    const selection = [_ldSceneTaskFilters.goal, _ldSceneTaskFilters.level].filter(Boolean).join(' · ');
+    const taskCards = sortedTasks.map(({ task:[title, desc, topics, rating], score }, index) => `<article class="ld-scene-task-card ${hasFilter && index === 0 && score > 0 ? 'recommended' : ''}" onclick="ldStartSceneTask('${name}','${title}')"><div><strong>${title}${hasFilter && index === 0 && score > 0 ? '<em class="ld-scene-priority">优先推荐</em>' : ''}</strong><small>${desc}</small></div><div class="ld-scene-topic">${topics.map(topic => `<span>${topic}</span>`).join('')}</div><div class="ld-scene-rating">${ratingMarkup(rating)}</div><button type="button" onclick="event.stopPropagation();ldStartSceneTask('${name}','${title}')">开始学习</button></article>`).join('');
+    panel.innerHTML = `<h3 class="ld-scene-task-title">${name}任务</h3><p class="ld-scene-task-desc">${hasFilter ? `已按「${selection}」调整任务顺序，优先从推荐起点开始。` : '选择你的开发目标和当前水平，找到更适合的起点。'}</p><div class="ld-scene-filters"><small>开发目标</small>${['快速验证效果','可控与可解释','极致性能'].map(label => filterButton('goal', label)).join('')}<small>用户水平</small>${['新手','进阶','高级'].map(label => filterButton('level', label)).join('')}</div><div class="ld-scene-task-list">${taskCards}</div>`;
     panel.classList.add('open');
     window.lucide?.createIcons();
   }
