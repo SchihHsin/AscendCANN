@@ -1666,7 +1666,7 @@
   // v2 stays in one document; keep the original page interactions without redirecting away.
   const V2_INITIAL_DIRECT_PATH_ID = window.__cannInitialLearningPath;
   window._PAGE_URLS = { home: '#home', docs: '#docs', learn: '#learn', api: '#api' };
-  window.showPage = function(name) {
+  window.showPage = function(name, options = {}) {
     if (name === 'api') { window.location.href = 'api.html'; return false; }
     const page = document.getElementById('page-' + name);
     if (!page) return false;
@@ -1680,8 +1680,10 @@
       window.ldOpenOnboarding?.(false);
     }
     window.scrollTo({ top:0, behavior:'instant' });
-    const directLearnPath = new URLSearchParams(location.search).get('path');
-    history.replaceState(null, '', name === 'learn' && directLearnPath ? `?path=${encodeURIComponent(directLearnPath)}#learn` : '#' + name);
+    if (!options.preserveHash) {
+      const directLearnPath = new URLSearchParams(location.search).get('path');
+      history.replaceState(null, '', name === 'learn' && directLearnPath ? `?path=${encodeURIComponent(directLearnPath)}#learn` : '#' + name);
+    }
     return false;
   };
   function v2ScrollDoc(selector, button) {
@@ -2228,12 +2230,30 @@
     window.lucide?.createIcons();
   };
   function v2DirectLearningPathId() {
-    if (V2_INITIAL_DIRECT_PATH_ID) return V2_INITIAL_DIRECT_PATH_ID;
     const queryPath = new URLSearchParams(location.search).get('path');
     const hashPath = location.hash.replace(/^#learn\//, '');
-    return queryPath === 'qwen3-npu-inference-baseline' || hashPath === 'qwen3-npu-inference-baseline'
+    if (queryPath === 'qwen3-npu-inference-baseline' || hashPath === 'qwen3-npu-inference-baseline') {
+      return 'qwen3-npu-inference-baseline';
+    }
+    return location.hash === '#learn' && V2_INITIAL_DIRECT_PATH_ID
       ? 'qwen3-npu-inference-baseline'
       : null;
+  }
+  function v2ReadLocationRoute() {
+    const hash = location.hash.slice(1);
+    const [page] = hash.split('/');
+    if (['home', 'docs', 'learn', 'api'].includes(page)) return page;
+    // Keep the legacy Ascend C demo URL usable after a refresh as well.
+    if (hash === 'ascend-c-demo') return 'learn';
+    return 'home';
+  }
+  function v2ApplyLocationRoute() {
+    const page = v2ReadLocationRoute();
+    if (V2_INITIAL_DIRECT_PATH_ID && page === 'learn') {
+      document.getElementById('ld-onboarding')?.classList.remove('open');
+    }
+    window.showPage(page, { preserveHash:true });
+    if (page === 'learn') setTimeout(v2OpenDirectLearningPath, 0);
   }
   function v2OpenDirectLearningPath() {
     const pathId = v2DirectLearningPathId();
@@ -2288,15 +2308,7 @@
     toc.className = 'v2-doc-toc';
     toc.innerHTML = '<strong><i data-lucide="list-tree" aria-hidden="true"></i>本页内容</strong><button class="active" onclick="v2ScrollDoc(\'.doc-title,.doc-home-hero\',this)">概览</button><button onclick="v2ScrollDoc(\'.doc-h2\',this)">核心说明</button><button onclick="v2ScrollDoc(\'.code-block\',this)">调用示例</button><button onclick="openEmptySandbox()">在线实践</button>';
     document.querySelector('#page-docs .docs-layout')?.appendChild(toc);
-    const initial = location.hash.slice(1);
-    if (V2_INITIAL_DIRECT_PATH_ID) {
-      // Let the learning initializer finish, then v2OpenDirectLearningPath enters detail.
-      document.getElementById('ld-onboarding')?.classList.remove('open');
-    } else if (['home','docs','learn','api'].includes(initial)) window.showPage(initial);
-    else {
-      document.getElementById('ld-onboarding')?.classList.remove('open');
-      window.showPage('home');
-    }
+    v2ApplyLocationRoute();
     // The dashboard initializer also runs at DOMContentLoaded. Reapply the detail
     // view after it, then repeat after local assets have finished loading.
     setTimeout(v2OpenDirectLearningPath, 0);
@@ -2311,6 +2323,7 @@
     v2InitCollapsibleNavigation();
     v2SyncEdgePills();
     window.addEventListener('resize', () => { v2SyncEdgePills(); v2RestoreArchiveWidth(); });
+    window.addEventListener('hashchange', v2ApplyLocationRoute);
     window.lucide?.createIcons();
   });
   window.addEventListener('load', () => setTimeout(v2OpenDirectLearningPath, 0));
