@@ -127,7 +127,7 @@ body.v2-hidevlab-open #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 #page-learn .ld-search-progress { display:grid; gap:13px; width:min(420px,90%); margin-top:24px; color:#3e9d88; font-size:13px; text-align:left; } #page-learn .ld-search-progress span::before { margin-right:9px; content:'✓'; }
 @media (max-width:700px) { #page-learn .ld-search-overlay { padding:14px; } #page-learn .ld-search-dialog { width:100%; min-height:540px; border-radius:16px; } #page-learn .ld-search-top,#page-learn .ld-search-content { padding-right:16px; padding-left:16px; } #page-learn .ld-search-grid { grid-template-columns:1fr; } #page-learn .ld-search-courses { grid-template-columns:repeat(2,1fr); } #page-learn .ld-search-match { grid-template-columns:1fr; } #page-learn .ld-search-match-action { align-items:flex-start; } }
 #page-learn .ld-dash { position:relative; max-width:none; min-height:100vh; padding:0 0 88px; overflow:hidden; background:#f5f6f8; }
-#page-learn .ld-dash::before { position:absolute; z-index:0; top:0; right:0; left:0; height:462px; background:url('visual-assets/learning-hi-fi/bg@4x.png') center top/cover no-repeat; content:''; pointer-events:none; }
+#page-learn .ld-dash::before { position:absolute; z-index:0; top:0; right:0; left:0; height:462px; background:url('visual-assets/learning-hi-fi/learning-hero-bg.avif') center top/cover no-repeat; content:''; pointer-events:none; }
 #page-learn .ld-dash::after { display:none; }
 #page-learn .ld-dash > * { position:relative; z-index:1; }
 #page-learn .ld-hero { position:relative; max-width:none; margin:0 0 72px; padding:48px clamp(24px,5vw,72px) 0; text-align:center; }
@@ -136,7 +136,7 @@ body.v2-hidevlab-open #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 #page-learn .ld-hero-title { margin:0; color:#171922; font-size:42px; letter-spacing:-.065em; line-height:1.18; }
 #page-learn .ld-hero-title em { background:linear-gradient(100deg,#3A75EF,#8A6CE9); -webkit-background-clip:text; background-clip:text; color:transparent; font-style:normal; }
 #page-learn .ld-hero-desc { max-width:720px; margin:14px auto 0; color:#70798a; font-size:14px; line-height:1.7; }
-#page-learn .ld-hero-art { width:min(620px,72vw); height:252px; margin:7px auto 0; background:url('visual-assets/learning-hi-fi/配图@4x.png') center bottom/contain no-repeat; }
+#page-learn .ld-hero-art { width:min(620px,72vw); height:252px; margin:7px auto 0; background:url('visual-assets/learning-hi-fi/learning-hero-art.avif') center bottom/contain no-repeat; }
 #page-learn .ld-input-bar { position:relative; z-index:2; width:min(980px,calc(100% - 48px)); min-height:40px; margin:-28px auto 0; padding:4px 5px 4px 17px; border-color:#eff0f4; border-radius:24px; background:#fff; box-shadow:0 10px 28px rgba(58,65,93,.10); backdrop-filter:blur(12px); }
 #page-learn .ld-input-bar:focus-within { border-color:#a9afe5; box-shadow:0 0 0 3px rgba(86,84,189,.1),0 11px 26px rgba(58,65,93,.08); }
 #page-learn .ld-gen-btn { padding:8px 14px; border-radius:18px; background:linear-gradient(100deg,#a895fc,#d6b3ff); font-size:11px; }
