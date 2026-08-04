@@ -243,11 +243,11 @@
     { keys: ['入门','基础','初学'],                        q: '你每周能投入多少学习时间？', opts: ['1–3 小时', '5–10 小时', '全职投入'] },
   ];
 
-  function _aiPathStart(query, planContext) {
+  function _aiPathStart(query, planContext, pathName) {
     _aiPathMode  = true;
     _aiPathState = 'idle';
     _aiPathQuery = query;
-    _aiPathName  = query.length > 22 ? query.slice(0, 22) + '…' : query;
+    _aiPathName  = pathName || (query.length > 22 ? query.slice(0, 22) + '…' : query);
     // Open sidebar
     if (!document.getElementById('ai-sidebar').classList.contains('open')) _openSidebar();
     document.getElementById('ai-title-text').textContent = 'AI 路径规划';
@@ -316,6 +316,7 @@
   }
 
   function ldShowGeneratedPath() {
+    ldFinishTaskPrompt();
     const nodes = _ipNodes.map((node, index) => ({ ...node, step: index + 1 }));
     const dash = document.getElementById('ld-dash');
     const roadmap = document.getElementById('ld-roadmap');
@@ -3211,6 +3212,19 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.getElementById('qb-overlay').classList.remove('open');
     document.getElementById('qb-drawer').classList.remove('open');
   }
+  function ldToggleTwinPanel() {
+    const panel = document.getElementById('ld-twin-panel');
+    if (!panel) return;
+    const open = panel.classList.toggle('open');
+    panel.setAttribute('aria-hidden', String(!open));
+    window.lucide?.createIcons();
+  }
+  function ldCloseTwinPanel() {
+    const panel = document.getElementById('ld-twin-panel');
+    if (!panel) return;
+    panel.classList.remove('open');
+    panel.setAttribute('aria-hidden', 'true');
+  }
   function ldOpenArchivedPath(pathId) {
     const savedPaths = JSON.parse(localStorage.getItem('cann_custom_paths') || '[]');
     const path = [...samplePaths, ...customPaths, ...savedPaths].find(item => item.id === pathId);
@@ -4016,12 +4030,15 @@ def vector_add_tik(shape, dtype, kernel_name):
   function ldArrangeDashboard(hasProfile) {
     const recommend = document.getElementById('ld-recommend-section');
     const scenario = document.getElementById('ld-scenario-section');
+    const sceneTasks = document.getElementById('ld-scene-tasks');
     const chips = document.getElementById('ld-cat-chips');
     const note = document.getElementById('ld-recommend-note');
     if (!recommend || !scenario) return;
-    if (hasProfile) scenario.before(recommend); else scenario.after(recommend);
-    if (chips) chips.style.display = hasProfile ? 'none' : '';
-    if (note) note.textContent = hasProfile ? '基于你的学习画像' : '';
+    // Keep the task floor immediately after the selected scenario; recommendations follow it.
+    // `after()` inserts immediately after the source, so target the task floor when it exists.
+    (sceneTasks || scenario).after(recommend);
+    if (chips) chips.style.display = '';
+    if (note) note.textContent = '';
   }
 
   const LD_SCENARIOS = {
@@ -4114,12 +4131,60 @@ def vector_add_tik(shape, dtype, kernel_name):
     const freeBtn = document.getElementById('ld-free-gen-btn');
     const freeInput = document.getElementById('ld-ai-input');
     // The free-form input is independent from the optional scenario configuration.
-    if (freeBtn && freeInput) freeBtn.disabled = !freeInput.value.trim();
+    if (freeBtn && freeInput) freeBtn.disabled = !freeInput.value.trim() || freeBtn.dataset.generating === 'true';
     if (!btn || !hint) return;
     const customGoal = document.getElementById('ld-custom-goal-input')?.value.trim();
     const ready = Boolean(_ldSelectedScenario) && (_ldSelectedScenario !== '个性定制' || Boolean(customGoal));
     btn.disabled = !ready;
     hint.textContent = ready ? '可直接生成；补充学习偏好后，路径会更贴近你的情况' : (_ldSelectedScenario === '个性定制' ? '请描述你的学习目标' : '请先选择一个任务场景');
+  }
+
+  const LD_SCENE_TASKS = {
+    '模型训练': [
+      ['基础模型预训练', '从零训练基座模型，了解数据、并行与评估闭环', ['语料', '分词', '大规模训练', '评估'], '学习成本 ★★★☆☆　性能控制力 ★★★★★'],
+      ['LoRA 低成本微调', '在昇腾上快速完成面向业务的模型微调', ['基座', 'LoRA 配置', '训练', '合并验证'], '学习成本 ★★☆☆☆　性能控制力 ★★★☆☆'],
+      ['多机多卡并行训练', '面向大规模集群，掌握并行策略与稳定性', ['并行策略', '加速库', '显存优化', '断点训练'], '学习成本 ★★★★☆　性能控制力 ★★★★★'],
+      ['自动驾驶感知训练', '针对多模态视觉任务完成训练与验证', ['场景数据', '专用模型', '分布式', '上线验证'], '学习成本 ★★★☆☆　性能控制力 ★★★★☆'],
+    ],
+    '模型推理': [
+      ['在昇腾 NPU 上运行 Qwen3', '完成模型加载、逐 token 推理与基线测速', ['NPU 环境', '模型加载', '生成', '性能基线'], '学习成本 ★★☆☆☆　性能控制力 ★★★☆☆'],
+      ['模型转换与部署', '将 ONNX 或 PyTorch 模型部署到昇腾环境', ['模型转换', 'ATC', '推理', '验证'], '学习成本 ★★★☆☆　性能控制力 ★★★★☆'],
+      ['推理性能分析', '定位时延和吞吐瓶颈，完成可验证的优化', ['Profiling', '算子', '吞吐', '时延'], '学习成本 ★★★☆☆　性能控制力 ★★★★★'],
+    ],
+    '模型迁移': [
+      ['PyTorch 模型迁移到昇腾', '完成模型适配、算子检查与结果对齐', ['torch_npu', '兼容性', '精度', '验证'], '学习成本 ★★☆☆☆　性能控制力 ★★★★☆'],
+      ['ONNX 推理迁移', '从导出模型到 NPU 推理的完整路径', ['ONNX', '模型转换', '推理', '性能'], '学习成本 ★★★☆☆　性能控制力 ★★★★☆'],
+      ['自定义算子适配', '处理不支持算子并完成模型闭环', ['算子分析', '实现', '编译', '验证'], '学习成本 ★★★★☆　性能控制力 ★★★★★'],
+    ],
+    '算子开发': [
+      ['Ascend C 算子开发入门', '从计算契约到 CopyIn / Compute / CopyOut', ['Ascend C', '数据搬运', '编译', '验证'], '学习成本 ★★★☆☆　性能控制力 ★★★★★'],
+      ['算子调试与精度验证', '定位功能与精度问题，建立验证流程', ['调试', '精度', 'Dump', '测试'], '学习成本 ★★★☆☆　性能控制力 ★★★★★'],
+      ['融合算子性能优化', '对热点算子进行融合和性能调优', ['融合', '双缓冲', 'Profiling', '性能'], '学习成本 ★★★★☆　性能控制力 ★★★★★'],
+    ],
+    '性能调优': [
+      ['推理性能调优', '定位推理阶段端到端性能瓶颈', ['Profiling', '时延', '吞吐', '优化'], '学习成本 ★★★☆☆　性能控制力 ★★★★★'],
+      ['算子性能分析', '从算子执行轨迹找到关键瓶颈', ['算子', 'Block', '内存', '带宽'], '学习成本 ★★★★☆　性能控制力 ★★★★★'],
+      ['训练稳定性优化', '针对训练性能和稳定性建立分析路径', ['训练', '通信', '显存', '验证'], '学习成本 ★★★★☆　性能控制力 ★★★★☆'],
+    ],
+  };
+
+  function ldRenderSceneTasks(name) {
+    const panel = document.getElementById('ld-scene-tasks');
+    const tasks = LD_SCENE_TASKS[name];
+    if (!panel || !tasks) return;
+    const ratingMarkup = rating => rating.replace(/(学习成本|性能控制力)\s*(★+☆*)/g, '<span>$1 <b>$2</b></span>');
+    panel.innerHTML = `<h3 class="ld-scene-task-title">${name}任务</h3><p class="ld-scene-task-desc">结合你的开发目标、基础与可用资源，找到适合的起点</p><div class="ld-scene-filters"><small>开发目标</small><span>快速验证效果</span><span>可控与可解释</span><span>极致性能</span><small>用户水平</small><span>新手</span><span>进阶</span><span>高级</span></div><div class="ld-scene-task-list">${tasks.map(([title, desc, topics, rating]) => `<article class="ld-scene-task-card" onclick="ldStartSceneTask('${name}','${title}')"><div><strong>${title}</strong><small>${desc}</small></div><div class="ld-scene-topic">${topics.map(topic => `<span>${topic}</span>`).join('')}</div><div class="ld-scene-rating">${ratingMarkup(rating)}</div><button type="button" onclick="event.stopPropagation();ldStartSceneTask('${name}','${title}')">开始学习</button></article>`).join('')}</div>`;
+    panel.classList.add('open');
+    window.lucide?.createIcons();
+  }
+
+  function ldStartSceneTask(scenario, title) {
+    _ldSelectedScenario = scenario;
+    if (title.includes('Qwen3')) {
+      ldShowRoadmap('qwen3-npu-inference-baseline');
+      return;
+    }
+    ldGenPath('scenario');
   }
 
   function ldChooseScenario(name) {
@@ -4132,12 +4197,211 @@ def vector_add_tik(shape, dtype, kernel_name):
       return;
     }
     custom?.classList.remove('open');
-    ldGenPath('scenario');
+    ldRenderSceneTasks(name);
   }
 
   function ldSetInput(text) {
     const scenario = Object.entries(LD_SCENARIOS).find(([, value]) => value === text)?.[0];
     if (scenario) ldChooseScenario(scenario);
+  }
+
+  function ldSubmitTaskPrompt(event) {
+    event?.preventDefault();
+    const input = document.getElementById('ld-ai-input');
+    const query = input?.value.trim();
+    const button = document.getElementById('ld-free-gen-btn');
+    const form = document.getElementById('ld-task-search');
+    const status = document.getElementById('ld-task-search-status');
+    if (!query || button?.dataset.generating === 'true') return;
+    button.dataset.generating = 'true';
+    button.textContent = '生成中';
+    form?.classList.add('is-generating');
+    if (status) status.textContent = `正在理解“${query}”，为你组织学习路径…`;
+    // Let the loading state render before switching to the assistant or a known path.
+    requestAnimationFrame(() => setTimeout(() => ldGenPath('free'), 160));
+  }
+
+  function ldFinishTaskPrompt() {
+    const button = document.getElementById('ld-free-gen-btn');
+    const form = document.getElementById('ld-task-search');
+    if (!button) return;
+    delete button.dataset.generating;
+    button.textContent = '生成路径';
+    form?.classList.remove('is-generating');
+    ldUpdateGenerateState();
+  }
+
+  const LD_SEARCH_RECENT = ['Ascend C', '推理开发', '算子调试'];
+  const LD_SEARCH_STARTERS = [
+    ['基座模型预训练', '从零训练基座模型，大数据量与算力', '模型训练'],
+    ['LoRA 低成本微调', '基座 · LoRA 配置 · 训练 · 合并验证', '模型训练'],
+    ['多机多卡并行训练', '多维并行 + 加速库，拉到多机多卡', '模型训练'],
+  ];
+  const LD_SEARCH_TEST_STEPS = [
+    { key:'role', lead:'您好~', question:'请告诉我一些你的情况，以便我提出最佳建议。\n首先，你当前是什么身份？', options:['AI 初学者','高校学生','算法工程师','应用开发者','推理/部署人员','算子开发者','随便看看'] },
+    { key:'goal', lead:'很好~', question:'您的目标是？', options:['快速了解昇腾','快速学习入门','训练或微调大模型','部署推理服务','开发自定义算子','获取昇腾认证','解决开发问题'] },
+    { key:'level', lead:'好的~', question:'您当前的技术水平为？', options:['零基础','会 Python','会 Triton','熟悉 C++','了解 CUDA C / Ascend C'] },
+  ];
+  let _ldSearchTest = { step:0, answers:{} };
+
+  // Search results never invent a path name from the learner's sentence. A result
+  // is either a known path or a stable, domain-level plan assembled from real nodes.
+  function ldSearchResolve(query) {
+    const q = query.toLowerCase();
+    if (/qwen\s*3|千问/.test(q)) return { kind:'known', id:'qwen3-npu-inference-baseline', name:'在昇腾 NPU 上运行Qwen3', type:'站内专题路径', match:96, desc:'从环境准备、基线推理到融合算子优化，完成一次可运行、可测量、可扩展的 Qwen3 推理实践。', tags:['模型推理','PyTorch 基础','在线实验'] };
+    if (/ascend\s*c|算子|tbe|tik/.test(q)) return { kind:'known', id:'official-ascend-c', name:'Ascend C 编程', type:'官方学习路径', match:94, url:'https://www.hiascend.com/edu/growth/details/9614049b0d6044c28e291aea1d931a53', desc:'从昇腾异构编程基础到 Ascend C 算子开发、性能分析与微认证的官方课程路径。', tags:['算子开发','官方课程','微认证'] };
+    if (/了解|入门|认证/.test(q)) return { kind:'compose', name:'昇腾基础入门路径', scenario:'算子开发', match:82, desc:'基于官方异构编程基础课程、入门章节和微认证节点编排，帮助建立昇腾开发全景认知。', tags:['昇腾基础','官方课程','微认证'] };
+    if (/训练|微调|lora|预训练|并行/.test(q)) return { kind:'compose', name:'昇腾模型训练实践路径', scenario:'模型训练', match:86, desc:'基于真实训练课程、实践任务与验证节点，按你的基础和目标编排训练学习顺序。', tags:['模型训练','实践任务','可调整'] };
+    if (/迁移|onnx|适配|torch_npu/.test(q)) return { kind:'compose', name:'昇腾模型迁移实践路径', scenario:'模型迁移', match:86, desc:'基于模型迁移、环境适配、精度验证和部署实践节点编排。', tags:['模型迁移','环境适配','精度验证'] };
+    if (/推理|部署|ascendcl|agent/.test(q)) return { kind:'compose', name:'昇腾模型推理实践路径', scenario:'模型推理', match:84, desc:'基于真实推理课程、模型转换、性能分析和在线实验节点编排。', tags:['模型推理','模型部署','在线实验'] };
+    if (/性能|profiling|调优|瓶颈/.test(q)) return { kind:'compose', name:'昇腾性能分析与优化路径', scenario:'性能调优', match:83, desc:'基于性能分析、瓶颈定位和优化验证的真实学习节点编排。', tags:['性能分析','优化验证','实践任务'] };
+    if (/问题|排障|报错/.test(q)) return { kind:'compose', name:'昇腾开发排障与验证路径', scenario:'性能调优', match:80, desc:'基于环境检查、错误码排查、验证实践和性能分析节点编排。', tags:['问题定位','错误码排查','验证实践'] };
+    return null;
+  }
+
+  function ldOpenSearch(event) {
+    event?.preventDefault();
+    const overlay = document.getElementById('ld-search-overlay');
+    const homeInput = document.getElementById('ld-ai-input');
+    const input = document.getElementById('ld-search-input');
+    if (!overlay || !input) return;
+    input.value = homeInput?.value || '';
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    ldRenderSearch(input.value.trim());
+    window.lucide?.createIcons();
+    requestAnimationFrame(() => input.focus());
+  }
+
+  function ldCloseSearch() {
+    const overlay = document.getElementById('ld-search-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
+  function ldSearchBindInput() {
+    const input = document.getElementById('ld-search-input');
+    if (!input || input.dataset.bound === 'true') return;
+    input.dataset.bound = 'true';
+    input.addEventListener('input', () => ldRenderSearch(input.value.trim()));
+  }
+
+  function ldRenderSearch(query = '') {
+    const content = document.getElementById('ld-search-content');
+    if (!content) return;
+    ldSearchBindInput();
+    if (!query) {
+      content.innerHTML = `<p class="ld-search-label">最近搜索</p><div class="ld-search-recent">${LD_SEARCH_RECENT.map(item => `<button type="button" onclick='ldSearchUse(${JSON.stringify(item)})'>${item}</button>`).join('')}</div><p class="ld-search-label">快速开始昇腾学习成长之旅吧</p><div class="ld-search-grid">${LD_SEARCH_STARTERS.map(([title, desc, scenario]) => `<button class="ld-search-starter" type="button" onclick='ldSearchStartScenario(${JSON.stringify(scenario)})'><strong>${title}</strong><p>${desc}</p></button>`).join('')}</div><p class="ld-search-label" style="margin-top:28px">热门课程</p><div class="ld-search-courses"><button class="ld-search-course" type="button" onclick="ldSearchStartScenario('算子开发')"><i><i data-lucide="cpu"></i></i><span><b>Ascend C 算子开发</b><small>3 课程｜1 微认证｜3 案例</small></span></button><button class="ld-search-course" type="button" onclick="ldSearchStartScenario('模型推理')"><i><i data-lucide="bot"></i></i><span><b>Agent 部署</b><small>1 课程｜1 微认证｜3 案例</small></span></button><button class="ld-search-course" type="button" onclick="ldSearchStartScenario('模型推理')"><i><i data-lucide="boxes"></i></i><span><b>AscendCL 应用开发</b><small>2 课程｜1 微认证｜2 案例</small></span></button><button class="ld-search-course" type="button" onclick="ldSearchStartScenario('模型训练')"><i><i data-lucide="brain-circuit"></i></i><span><b>大模型开发全流程</b><small>3 课程｜1 微认证｜3 案例</small></span></button></div><button class="ld-search-test-link" type="button" onclick="ldStartSearchTest()">不知道从哪里开始？　点击进行 AI 测验</button>`;
+      window.lucide?.createIcons();
+      return;
+    }
+    const match = ldSearchResolve(query);
+    if (!match) {
+      content.innerHTML = `<div class="ld-search-results"><p class="ld-search-label">没有找到可直接匹配的学习路径</p><article class="ld-search-match"><div><h3>先补充一点你的情况</h3><p>“${escHtml(query)}”还不足以判断适合你的学习顺序。通过 3 个问题补充角色、目标与技术基础后，AI 会从真实课程和实践节点中编排个性化路径。</p><div class="ld-search-tags"><span>不虚构路径</span><span>基于真实课程与实验</span></div></div><div class="ld-search-match-action"><button type="button" onclick="ldStartSearchTest()">进行 AI 测验</button><small>约 30 秒</small></div></article><p class="ld-search-label">你也可以试试</p><ul class="ld-search-suggestions"><li><button type="button" onclick="ldSearchUse('Ascend C 算子开发')"><span>Ascend C 算子开发</span><b>›</b></button></li><li><button type="button" onclick="ldSearchUse('在昇腾 NPU 上运行 Qwen3')"><span>在昇腾 NPU 上运行 Qwen3</span><b>›</b></button></li><li><button type="button" onclick="ldSearchUse('模型迁移到昇腾')"><span>模型迁移到昇腾</span><b>›</b></button></li></ul></div>`;
+      return;
+    }
+    const action = match.kind === 'known' ? `ldSearchOpenKnownPath(${JSON.stringify(match.id)})` : `ldSearchStartComposedPath(${JSON.stringify(match.scenario)},${JSON.stringify(match.name)},${JSON.stringify(encodeURIComponent(query))})`;
+    const suggestions = match.kind === 'known' && match.id === 'qwen3-npu-inference-baseline' ? ['昇腾 深度学习组件 MindCluster','昇腾 产品形态说明 - 产品与技术常见问题','昇腾 虚拟化实例（AVI）用户指南','昇腾 技术认证与申请方案发布-认证要求','在非 昇腾 设备上安装 CANN'] : ['昇腾软件包与环境准备','PyTorch 模型迁移到昇腾','Ascend C 算子开发入门','如何在 HiDevLab 验证代码'];
+    content.innerHTML = `<div class="ld-search-results"><article class="ld-search-match"><div><span class="ld-search-path-type">${match.type || '个性化编排'}</span><h3>${match.name}</h3><p>${match.desc}</p><div class="ld-search-tags">${match.tags.map(tag => `<span>${tag}</span>`).join('')}</div></div><div class="ld-search-match-action"><button type="button" onclick='${action}'>${match.kind === 'compose' ? '生成路径' : '开始学习'}</button><b>${match.match}<small>% 匹配</small></b><small>${match.kind === 'compose' ? '基于真实学习节点编排' : '首选学习路径'}</small></div></article><p class="ld-search-label">搜索建议</p><ul class="ld-search-suggestions">${suggestions.map(item => `<li><button type="button" onclick='ldSearchUse(${JSON.stringify(item)})'><span>${item}</span><b>›</b></button></li>`).join('')}</ul></div>`;
+  }
+
+  function ldSearchUse(text) {
+    const input = document.getElementById('ld-search-input');
+    const homeInput = document.getElementById('ld-ai-input');
+    if (input) input.value = text;
+    if (homeInput) homeInput.value = text;
+    ldUpdateGenerateState();
+    ldRenderSearch(text);
+  }
+
+  function ldSearchStartScenario(scenario) {
+    ldCloseSearch();
+    ldChooseScenario(scenario);
+    document.getElementById('ld-scene-tasks')?.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  function ldSearchStartQwen() {
+    ldCloseSearch();
+    _ldGeneratedPlanContext = '搜索到的 Qwen3 学习路径';
+    ldShowRoadmap('qwen3-npu-inference-baseline');
+  }
+
+  function ldSearchOpenKnownPath(pathId) {
+    ldCloseSearch();
+    _ldGeneratedPlanContext = pathId === 'qwen3-npu-inference-baseline' ? '搜索到的 Qwen3 学习路径' : '搜索到的官方 Ascend C 学习路径';
+    ldShowRoadmap(pathId);
+  }
+
+  function ldSearchStartComposedPath(scenario, name, query) {
+    try { query = decodeURIComponent(query); } catch (error) { /* Keep plain text for malformed percent escapes. */ }
+    const content = document.getElementById('ld-search-content');
+    if (!content) return;
+    // Keep the generated name stable by domain; query only controls node selection.
+    _ldSearchTest.answers.goal = scenario;
+    content.innerHTML = `<button class="ld-search-back" type="button" onclick="ldRenderSearch(${JSON.stringify(query)})"><i data-lucide="arrow-left"></i>返回结果</button><div class="ld-search-generating"><h2>AI 正在编排「${name}」</h2><div class="ld-search-dots"><i></i><i></i><i></i></div><div class="ld-search-progress"><span>匹配真实课程与实验节点…</span><span>结合你的目标调整学习顺序…</span><span>检查前置依赖知识…</span></div></div>`;
+    window.lucide?.createIcons();
+    window.setTimeout(() => {
+      ldCloseSearch();
+      _ldSelectedScenario = scenario;
+      _ldGeneratedPlanContext = `你的学习目标「${query}」`;
+      sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario, source:'personalized-search' }));
+      _aiPathStart(LD_SCENARIOS[scenario], `用户目标：${query}；请从真实课程章节和实践节点中编排，不新增虚构课程。`, name);
+    }, 1550);
+  }
+
+  function ldSearchSubmit(event) {
+    event?.preventDefault();
+    const query = document.getElementById('ld-search-input')?.value.trim();
+    if (!query) return;
+    ldSearchGenerate(query);
+  }
+
+  function ldSearchGenerate(query) {
+    const content = document.getElementById('ld-search-content');
+    if (!content) return;
+    const chips = Object.values(_ldSearchTest.answers).filter(Boolean);
+    content.innerHTML = `<button class="ld-search-back" type="button" onclick="ldRenderSearch('')"><i data-lucide="arrow-left"></i>AI 测验</button><div class="ld-search-generating"><h2>AI 正在为你生成学习路径</h2><div class="ld-search-dots"><i></i><i></i><i></i></div>${chips.length ? `<div class="ld-search-tags">${chips.map(item => `<span>${escHtml(item)}</span>`).join('')}</div>` : ''}<div class="ld-search-progress"><span>分析你的角色与基础…</span><span>匹配适合的学习任务…</span><span>检查前置依赖知识…</span></div></div>`;
+    window.lucide?.createIcons();
+    window.setTimeout(() => {
+      const match = ldSearchResolve(query);
+      if (match?.kind === 'known') { ldSearchOpenKnownPath(match.id); return; }
+      if (match?.kind === 'compose') { ldSearchStartComposedPath(match.scenario, match.name, query); return; }
+      ldStartSearchTest();
+    }, 1550);
+  }
+
+  function ldStartSearchTest() {
+    _ldSearchTest = { step:0, answers:{} };
+    ldRenderSearchTest();
+  }
+
+  function ldRenderSearchTest() {
+    const content = document.getElementById('ld-search-content');
+    const step = LD_SEARCH_TEST_STEPS[_ldSearchTest.step];
+    if (!content || !step) return;
+    const backAction = _ldSearchTest.step ? 'ldSearchTestBack()' : "ldRenderSearch('')";
+    content.innerHTML = `<button class="ld-search-back" type="button" onclick="${backAction}"><i data-lucide="arrow-left"></i>AI 测验</button><div class="ld-search-test"><h2>${step.lead}<br>${step.question.replace('\n','<br>')}</h2><div class="ld-search-choices">${step.options.map((option, index) => `<button class="ld-search-choice ${_ldSearchTest.answers[step.key] === option ? 'active' : ''}" type="button" onclick='ldSearchTestChoose(${JSON.stringify(option)})'><span class="ld-search-choice-index">${index + 1}</span>${option}</button>`).join('')}</div></div>`;
+    window.lucide?.createIcons();
+  }
+
+  function ldSearchTestChoose(option) {
+    const step = LD_SEARCH_TEST_STEPS[_ldSearchTest.step];
+    _ldSearchTest.answers[step.key] = option;
+    if (_ldSearchTest.step < LD_SEARCH_TEST_STEPS.length - 1) {
+      _ldSearchTest.step++;
+      window.setTimeout(ldRenderSearchTest, 150);
+      return;
+    }
+    const goal = _ldSearchTest.answers.goal || '';
+    const query = /部署|推理/.test(goal) ? '模型推理与部署' : goal;
+    const match = ldSearchResolve(query) || { kind:'compose', scenario:'模型训练', name:'昇腾模型训练实践路径' };
+    ldSearchStartComposedPath(match.scenario, match.name, query);
+  }
+
+  function ldSearchTestBack() {
+    if (_ldSearchTest.step > 0) _ldSearchTest.step--;
+    ldRenderSearchTest();
   }
 
   async function ldGenPath(mode) {
@@ -4147,6 +4411,12 @@ def vector_add_tik(shape, dtype, kernel_name):
       if (!query) return;
       _ldGeneratedPlanContext = `你的学习目标「${query}」`;
       sessionStorage.setItem('cann_learning_plan', JSON.stringify({ scenario: '自由输入' }));
+      // A clear request for this canonical path should not wait for generic planning.
+      if (/qwen\s*3|qwen3/i.test(query) && /npu|昇腾|推理|运行/i.test(query)) {
+        ldFinishTaskPrompt();
+        ldShowRoadmap('qwen3-npu-inference-baseline');
+        return;
+      }
       _aiPathStart(query, '用户已在输入框明确描述学习任务，请直接生成学习路径，不再追问学习目标。');
       return;
     }
@@ -4217,25 +4487,30 @@ def vector_add_tik(shape, dtype, kernel_name):
     // Keep the dashboard concise; the archive contains the complete path list.
     const shown = paths.slice(0, 1);
 
-    const ICONS = { beginner: '📘', developer: '🔧', operator: '⚙️', distributed: '🌐' };
     const PROG = [27, 55, 10, 82]; // mock progress %
-
+    const coverOf = path => {
+      if (path.id === 'qwen3-npu-inference-baseline' || /qwen|推理/i.test(path.name || '')) return 'developer';
+      if (/训练|微调|并行/.test(path.name || '')) return 'distributed';
+      if (/迁移/.test(path.name || '')) return 'beginner';
+      return 'operator';
+    };
     container.innerHTML = shown.map((path, idx) => {
       const prog = PROG[idx % PROG.length];
       const nodeCount = path.nodeList ? path.nodeList.length : 5;
       const doneCount = Math.round(nodeCount * prog / 100);
       const nextNode = path.nodeList ? (path.nodeList[doneCount] || path.nodeList[0]) : null;
-      const icon = path.icon || ICONS[path.nodeList?.[0]?.category] || '📚';
+      const cover = coverOf(path);
       return `
-        <div class="ld-path-card" onclick="ldShowRoadmap('${path.id}')">
-          <div class="ld-path-icon">${icon}</div>
+        <div class="ld-path-card ld-my-learning-card" onclick="ldShowRoadmap('${path.id}')">
+          <div class="ld-path-icon cover-${cover}"><div class="ld-cover-pills"><span>学习入门</span><span>学习路径</span></div><strong>${path.name}</strong><small>1 课程　1 微认证　2 教程</small></div>
           <div class="ld-path-body">
+            <span class="ld-path-status">进行中</span>
             <div class="ld-path-name">${path.name}</div>
-            <div class="ld-path-prog-wrap">
-              <div class="ld-path-prog-track"><div class="ld-path-prog-fill" style="width:${prog}%"></div></div>
-              <span class="ld-path-prog-label">${doneCount} / ${nodeCount} 节点</span>
-            </div>
             ${nextNode ? `<span class="ld-path-next">下一步：${nextNode.title}</span>` : ''}
+          </div>
+          <div class="ld-path-progress" aria-label="学习进度 ${doneCount} / ${nodeCount} 节点">
+            <span class="ld-path-prog-label">${doneCount} / ${nodeCount} 节点</span>
+            <div class="ld-path-prog-track"><div class="ld-path-prog-fill" style="width:${prog}%"></div></div>
           </div>
           <button class="ld-path-cta" onclick="event.stopPropagation();ldShowRoadmap('${path.id}')">继续学习</button>
         </div>`;
@@ -4255,36 +4530,13 @@ def vector_add_tik(shape, dtype, kernel_name):
     const pageSize = showQwenPath ? 2 : 3;
     if (_ldRecommendationOffset >= nodes.length) _ldRecommendationOffset = 0;
     nodes = [...nodes.slice(_ldRecommendationOffset), ...nodes.slice(0, _ldRecommendationOffset)].slice(0, pageSize);
-    const diffLabel = ['', '入门', '进阶', '高级'];
-    const pathCard = showQwenPath ? `<div class="ld-node-card" onclick="ldShowRoadmap('${qwenPath.id}')">
-      <div class="ld-node-card-top"><span class="ld-node-card-title">${qwenPath.name}</span><span class="ld-node-card-badge" style="background:#2e53fa18;color:#2e53fa">学习路径</span></div>
-      <div class="ld-node-card-desc">Qwen3-0.6B · ${qwenPath.nodeList.length} 节：从 NPU 环境检查、模型加载到逐 token 推理和基线测速。</div>
-      <div class="ld-node-card-footer"><div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:var(--text-muted)">模型推理 · 入门</span></div></div>
-      <div class="ld-node-hover"><strong>路径内容</strong><ul><li>检查昇腾 NPU 与 torch_npu 环境</li><li>加载 Qwen3-0.6B 并执行首次推理</li><li>测量 tokens/s 基线速度</li></ul><button class="ld-node-enter" onclick="event.stopPropagation();ldShowRoadmap('${qwenPath.id}')" title="进入学习" aria-label="进入学习：${qwenPath.name}">→</button></div>
-    </div>` : '';
+    const systemCard = (title, description, category, onClick, coverKey = 'beginner') => `<article class="ld-system-card" onclick="${onClick}"><div class="ld-system-card-cover cover-${coverKey}"><div class="ld-cover-pills"><span>${category}</span><span>基础入门</span></div><strong>${title}</strong></div><p>${description}</p><small><i data-lucide="file-text" aria-hidden="true"></i>${category} · 入门</small></article>`;
+    const pathCard = showQwenPath ? systemCard(qwenPath.name, 'Qwen3-0.6B · 17 节：从 NPU 环境检查、模型加载到逐 token 推理和基线测速。', '模型推理', `ldShowRoadmap('${qwenPath.id}')`, 'developer') : '';
     grid.innerHTML = pathCard + nodes.map(n => {
       const meta = CAT_META[n.category] || { label: n.category, color: '#888' };
-      const dots = n.difficulty ? Array.from({length: 3}, (_, i) =>
-        `<span style="width:6px;height:6px;border-radius:50%;display:inline-block;background:${i < n.difficulty ? meta.color : 'var(--border)'}"></span>`
-      ).join('') : '';
-      const topics = (n.topics || []).slice(0, 3).map(topic => `<li>${topic}</li>`).join('');
-      return `
-        <div class="ld-node-card" onclick="ldStartNode('${n.title}')">
-          <div class="ld-node-card-top">
-            <span class="ld-node-card-title">${n.title}</span>
-            <span class="ld-node-card-badge" style="background:${meta.color}18;color:${meta.color}">${meta.label}</span>
-          </div>
-          <div class="ld-node-card-desc">${n.desc}</div>
-          <div class="ld-node-card-footer">
-            <div style="display:flex;align-items:center;gap:6px">
-              ${dots}
-              <span style="font-size:11px;color:var(--text-muted)">${diffLabel[n.difficulty] || ''}</span>
-              ${n.duration ? `<span style="font-size:11px;color:var(--text-muted);margin-left:6px">· ${n.duration}</span>` : ''}
-            </div>
-          </div>
-          ${topics ? `<div class="ld-node-hover"><strong>本节内容</strong><ul>${topics}</ul><button class="ld-node-enter" onclick="event.stopPropagation();ldStartNode('${n.title}')" title="进入学习" aria-label="进入学习：${n.title}">→</button></div>` : ''}
-        </div>`;
+      return systemCard(n.title, n.desc, meta.label, `ldStartNode('${n.title}')`, n.category);
     }).join('');
+    window.lucide?.createIcons();
   }
 
   function ldStartNode(title) {
@@ -4852,6 +5104,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldRenderContinue();
     ldRenderNodes('all');
     ldRenderResources();
+    ldChooseScenario('模型训练');
     _updateQbBadge();
     document.getElementById('ld-ai-input')?.addEventListener('input', ldUpdateGenerateState);
     ldUpdateGenerateState();
