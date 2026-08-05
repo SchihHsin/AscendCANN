@@ -5146,6 +5146,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     } else if (demoPath) {
       ldOpenAscendCDemo();
     } else {
-      ldOpenOnboarding(false);
+      // A direct visit is for browsing. Gather personalization only from the
+      // search flow when the learner asks for a path but has not given enough context.
+      ldShowDash();
     }
   });
