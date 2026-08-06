@@ -4857,14 +4857,8 @@ def vector_add_tik(shape, dtype, kernel_name):
     const context = document.getElementById('ld-ai-context');
     const chat = document.getElementById('ld-tool-chat');
     if (context) context.textContent = `当前节点：${node.title}`;
-    if (chat) {
-      const pathNotice = _ldGeneratedPlanContext === 'Ascend C 编程样板路径'
-        ? '已根据您的需求生成个性化学习路径“算子开发从入门到精通”，请在左侧查看。你还可以继续问我任何学习、代码或实践问题。'
-        : _ldGeneratedPlanContext
-        ? `已根据${_ldGeneratedPlanContext}生成学习路径，请在左侧查看。当前打开「${node.title}」，你还可以继续问我任何学习、代码或实践问题。`
-        : `正在学习「${node.title}」。可以让我解释概念、给出代码示例或规划练习。`;
-      chat.innerHTML = `<div class="ld-tool-msg">${pathNotice}</div>`;
-    }
+    if (chat) chat.innerHTML = '';
+    document.getElementById('ld-tool-ai')?.classList.remove('has-chat');
     const prompts = document.getElementById('ld-tool-prompts');
     if (prompts) prompts.innerHTML = ['用适合初学者的方式解释这个概念', '逐行讲解这个节点的代码示例', '列出实践中最常见的三个错误与排查方法', '为我设计一个 20 分钟的动手练习'].map(text => `<button onclick="ldToolPrompt('${text}')">${text}</button>`).join('') + '<button class="ld-tool-path-edit" onclick="ldStartAiPathEdit()"><i data-lucide="wand-sparkles" aria-hidden="true"></i>让 AI 调整学习路径</button>';
     const quiz = document.getElementById('ld-embedded-quiz');
@@ -5003,6 +4997,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       return;
     }
     input.value = '';
+    document.getElementById('ld-tool-ai')?.classList.add('has-chat');
     chat.insertAdjacentHTML('beforeend', `<div class="ld-tool-msg user">${escHtml(question)}</div><div class="ld-tool-msg pending">正在思考…</div>`);
     try {
       const response = await fetch(AI_WORKER_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ system:`你是 CANN AI 助手。用户当前学习「${node.title}」，但也可能询问其他 CANN、页面操作或学习路径问题。请结合当前上下文用中文简明作答，不超过180字。`, user:question, max_tokens:350 }) });
@@ -5018,6 +5013,14 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!input) return;
     input.value = text;
     ldToolAsk();
+  }
+
+  function ldResetToolChat() {
+    const chat = document.getElementById('ld-tool-chat');
+    const input = document.getElementById('ld-tool-ai-input');
+    if (chat) chat.innerHTML = '';
+    if (input) input.value = '';
+    document.getElementById('ld-tool-ai')?.classList.remove('has-chat');
   }
 
   function ldFocusLearningContent() {

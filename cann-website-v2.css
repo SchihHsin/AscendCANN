@@ -484,6 +484,32 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 #page-learn .ld-path-workspace.v2-tool-float-open .ld-tool-panel { padding:16px 18px 24px; }
 #page-learn .ld-path-workspace.v2-tool-float-open .ld-tool-panel.active { flex:1; min-height:0; }
 #page-learn .ld-path-workspace.v2-tool-float-open .v2-tool-float-resizer { display:flex; }
+#page-learn .v2-tool-float-actions { display:flex; align-items:center; gap:3px; }
+#page-learn .v2-tool-float-actions button { display:flex; align-items:center; justify-content:center; width:28px; height:28px; padding:0; border:0; border-radius:50%; background:transparent; color:#343943; cursor:pointer; }
+#page-learn .v2-tool-float-actions button:hover { background:#F1F3F7; }
+#page-learn .v2-tool-float-actions svg { width:18px; height:18px; stroke-width:1.8; }
+/* Contextual assistant: community-style welcome, then a focused learning chat. */
+#page-learn #ld-tool-ai { display:flex; min-height:0; padding:0!important; overflow:hidden; background:linear-gradient(135deg,#fff 0%,#fff 72%,#F3F0FF 100%); flex-direction:column; }
+#page-learn #ld-tool-ai .ld-ai-welcome { display:flex; flex:1; align-items:center; justify-content:center; min-height:0; padding:28px 28px 22px; overflow:auto; text-align:center; flex-direction:column; }
+#page-learn #ld-tool-ai .ld-ai-welcome > img { width:76px; height:76px; margin-bottom:16px; object-fit:contain; filter:drop-shadow(0 8px 12px rgba(92,90,192,.16)); }
+#page-learn #ld-tool-ai .ld-ai-welcome h2 { margin:0; color:#121826; font-size:25px; font-weight:700; letter-spacing:-.04em; }
+#page-learn #ld-tool-ai .ld-ai-welcome > p { max-width:300px; margin:12px 0 13px; color:#565E6D; font-size:13px; line-height:1.65; }
+#page-learn #ld-tool-ai .ld-tool-context { display:inline-flex; width:auto; margin:0; padding:5px 10px; border:1px solid #E4E7F0; border-radius:99px; background:#F6F7FA; color:#7A8291; font-size:11px; }
+#page-learn #ld-tool-ai .ld-tool-prompts { display:flex; flex-wrap:wrap; justify-content:center; gap:7px; max-width:330px; margin-top:18px; }
+#page-learn #ld-tool-ai .ld-tool-prompts button { padding:7px 10px; border:1px solid #E1E5ED; border-radius:9px; background:#fff; color:#515967; cursor:pointer; font:11px/1.35 var(--font); text-align:left; transition:border-color .15s,background .15s; }
+#page-learn #ld-tool-ai .ld-tool-prompts button:hover { border-color:#B8B3E8; background:#FAF9FF; }
+#page-learn #ld-tool-ai .ld-tool-prompts .ld-tool-path-edit { display:none; }
+#page-learn #ld-tool-ai .ld-tool-chat { display:none; flex:1; min-height:0; padding:20px 18px; overflow-y:auto; }
+#page-learn #ld-tool-ai.has-chat .ld-ai-welcome { display:none; }
+#page-learn #ld-tool-ai.has-chat .ld-tool-chat { display:flex; gap:10px; flex-direction:column; }
+#page-learn #ld-tool-ai .ld-tool-msg { max-width:88%; margin:0; padding:10px 12px; border:1px solid #E5E8F0; border-radius:12px 12px 12px 3px; background:#fff; color:#343B48; font-size:13px; line-height:1.6; }
+#page-learn #ld-tool-ai .ld-tool-msg.user { align-self:flex-end; border:0; border-radius:12px 12px 3px 12px; background:linear-gradient(135deg,#766CEB,#A383EC); color:#fff; }
+#page-learn #ld-tool-ai .ld-tool-msg.pending { color:#818998; }
+#page-learn #ld-tool-ai .ld-tool-input { flex:0 0 auto; grid-template-columns:minmax(0,1fr) 34px; gap:8px; margin:0 18px 17px; padding:6px 7px 6px 13px; border:1px solid #E2E6EF; border-radius:14px; background:#fff; box-shadow:0 6px 18px rgba(37,45,66,.06); }
+#page-learn #ld-tool-ai .ld-tool-input input { height:32px; padding:0; border:0; border-radius:0; color:#343A45; font-size:12px; }
+#page-learn #ld-tool-ai .ld-tool-input input:focus { box-shadow:none; }
+#page-learn #ld-tool-ai .ld-tool-input button { display:flex; align-items:center; justify-content:center; min-width:0; width:32px; height:32px; padding:0; border-radius:10px; background:linear-gradient(135deg,#7D73ED,#AA82E8); color:#fff; }
+#page-learn #ld-tool-ai .ld-tool-input button svg { width:16px; height:16px; stroke-width:2.2; }
 #page-learn.v2-hidevlab-split .v2-tool-fab-rail { position:fixed; z-index:121; top:50%; right:calc(var(--v2-sandbox-width) + 18px); display:flex; transform:translateY(-50%); }
 #page-learn.v2-hidevlab-split .v2-path-float-head { display:none!important; }
 #page-learn.v2-hidevlab-split .ld-path-workspace.v2-tool-float-open .ld-study-tools { position:fixed; z-index:123; top:auto; right:calc(var(--v2-sandbox-width) + 26px); bottom:22px; display:flex!important; width:min(440px,calc(100vw - var(--v2-sandbox-width) - 88px)); height:var(--v2-tool-float-height,420px); max-height:calc(100vh - 100px); padding:0; overflow:hidden; visibility:visible; border:1px solid #DFE3EA; border-radius:14px; background:#FCFDFF; box-shadow:0 16px 42px rgba(35,41,55,.18); }
