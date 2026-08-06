@@ -1394,53 +1394,88 @@ def vector_add_tik(shape, dtype, kernel_name):
       concepts:[{term:'Qwen3 基线依赖',desc:'本路径的首跑依赖 torch、torch_npu、transformers 和 modelscope；缺少其中任一项，后面的下载、加载或推理步骤都会中断。'},{term:'版本组合',desc:'torch 与 torch_npu 必须使用对应发布组合，不能只升级其中一个。预检会把两者版本并排输出，作为后续排障和实验记录的基线。'},{term:'首跑设备条件',desc:'除了 NPU 可见，还要能创建 npu:0 Tensor；这比仅检查设备数量更接近下一节实际加载 Qwen3 时的条件。'},{term:'替代路径',desc:'本地预检未通过时，不继续下载和猜错；可切换到匹配版本环境，或使用已配置依赖的 HiDevLab 完成本路径。'}],
       body:'<p><strong>这一步只回答一个问题：这台环境能不能按当前 Qwen3 基线 Notebook 继续首跑？</strong>它会同时检查 NPU、框架、适配插件和模型相关 Python 依赖，并把版本记录下来。通过后再下载 1.4GB 模型；未通过则先按提示修环境或切换到 HiDevLab。</p><p>预检不要求你立刻理解所有版本号。你只需要看结果中的“可以继续”或具体缺项：缺 <code>modelscope</code> 就先安装下载依赖；NPU 不可用就检查驱动 / CANN / <code>torch_npu</code> 组合；框架版本不成对则切换到课程推荐组合后重跑本节。</p>',
       code:{kind:'practice',lang:'python',label:'Qwen3 首跑预检',note:'在本机终端或本地 Jupyter 内核运行；将输出保存到实验记录。结果不是“可以继续”时，先处理对应项，不要直接下载和加载模型。',body:`import importlib.util\nimport shutil\nimport subprocess\n\nrequired = ['torch', 'torch_npu', 'transformers', 'modelscope']\nmissing = [name for name in required if importlib.util.find_spec(name) is None]\nprint('Python 依赖:', '齐全' if not missing else f'缺少 {", ".join(missing)}')\n\nif not missing:\n    import torch\n    import torch_npu\n    print(f'PyTorch: {torch.__version__}')\n    print(f'torch_npu: {torch_npu.__version__}')\n    print(f'NPU 可用: {torch.npu.is_available()}')\n    if torch.npu.is_available():\n        print(f'首跑设备: {torch.npu.get_device_name(0)}')\n        print('npu:0 Tensor:', torch.zeros(1, device='npu:0').device)\n\nif shutil.which('npu-smi'):\n    print('npu-smi 已找到：请在输出中记录 Driver / CANN 版本。')\n    subprocess.run(['npu-smi', 'info'], check=False)\n\nif missing:\n    print('下一步：安装缺少的 Python 依赖后重跑。')\nelif not torch.npu.is_available():\n    print('下一步：检查 Driver / CANN / torch_npu 配套组合，或改用 HiDevLab。')\nelse:\n    print('可以继续：记录版本后下载 Qwen3-0.6B 模型。')`},
-      lab:{steps:[{title:'完成 Qwen3 首跑预检',desc:'运行预检，确认本机既能使用 npu:0，也具备下载与加载 Qwen3 所需的 Python 依赖；将输出作为实验的环境记录。',code:'import torch\nimport torch_npu\nimport importlib.util\n\nassert torch.npu.is_available(), "请先检查 Driver / CANN / torch_npu，或使用 HiDevLab"\nassert all(importlib.util.find_spec(name) for name in ["transformers", "modelscope"]), "请安装 Qwen3 依赖"\nprint(torch.zeros(1, device="npu:0").device)\nprint("Qwen3 首跑环境已就绪")',expected:'输出 npu:0 与“Qwen3 首跑环境已就绪”；否则根据报错处理对应依赖或使用 HiDevLab。'}]},
+      lab:{steps:[
+        {title:'确认 Python 依赖',desc:'确认 torch、torch_npu、transformers 和 modelscope 都在当前内核中可用。',code:'import importlib.util\nfor name in ["torch", "torch_npu", "transformers", "modelscope"]:\n    print(name, bool(importlib.util.find_spec(name)))',expected:'四项均输出 True。'},
+        {title:'确认 NPU 与版本组合',desc:'输出 PyTorch、torch_npu 版本并检查 npu:0 是否可用。',code:'import torch\nimport torch_npu\nprint(torch.__version__, torch_npu.__version__)\nprint(torch.npu.is_available())',expected:'输出一组配套版本与 True。'},
+        {title:'创建第一枚 NPU Tensor',desc:'真正创建 npu:0 Tensor；成功后才进入模型下载。',code:'x = torch.zeros(1, device="npu:0")\nprint(x.device)',expected:'输出 npu:0；失败时先修环境或改用 HiDevLab。'}
+      ]},
       resources:[...qwen3Resources('第 6 节：Qwen3 首跑前的环境与版本预检'),{icon:'🧪',title:'在 HiDevLab 运行 Qwen3 基线',href:'#',type:'替代环境',subtitle:'本地版本不匹配时使用已配置的 NPU 环境',action:'lab'}]
     },
     '下载 Qwen3-0.6B 模型': {
       summary:'Notebook 通过 ModelScope 下载 Qwen/Qwen3-0.6B，并缓存在 /mnt/workspace/models。模型约 1.4GB，首次下载完成后可复用本地缓存。',
       concepts:[{term:'ModelScope',desc:'国内模型开源平台；Notebook 使用 snapshot_download 获取 Qwen3 模型文件。'},{term:'模型缓存',desc:'将模型保存到指定目录，之后从本地读取，避免重复下载。'},{term:'模型权重',desc:'模型参数文件决定模型能力，加载前必须完整下载。'}],
       code:{lang:'python',body:`from modelscope import snapshot_download\n\nmodel_dir = snapshot_download(\n    'Qwen/Qwen3-0.6B',\n    cache_dir='/mnt/workspace/models'\n)\nprint(f'模型已下载到: {model_dir}')`},
-      lab:{steps:[{title:'下载 Qwen3-0.6B',desc:'执行下载并记录模型缓存目录；下载完成后下次无需重新下载。'}]},
+      lab:{steps:[
+        {title:'确认模型缓存目录',desc:'先确定模型保存到 /mnt/workspace/models，避免后续加载时再猜路径。',code:"from pathlib import Path\ncache_dir = Path('/mnt/workspace/models')\ncache_dir.mkdir(parents=True, exist_ok=True)\nprint(cache_dir)",expected:'输出可写入的模型缓存目录。'},
+        {title:'下载 Qwen3-0.6B',desc:'使用 ModelScope 下载 Qwen/Qwen3-0.6B；首次下载约 1.4GB，请等待命令完整结束。',code:"from modelscope import snapshot_download\nmodel_dir = snapshot_download('Qwen/Qwen3-0.6B', cache_dir='/mnt/workspace/models')\nprint(model_dir)",expected:'输出 Qwen3-0.6B 的本地模型目录。'},
+        {title:'核对缓存是否完整',desc:'检查模型目录中是否已有配置与权重文件；存在后即可进入下一节加载。',code:"from pathlib import Path\nfiles = [p.name for p in Path(model_dir).iterdir()]\nprint('\n'.join(files[:12]))",expected:'列表中包含 config.json、tokenizer 及模型权重相关文件。'}
+      ]},
       resources:qwen3Resources('第 7 节：从魔搭社区下载 Qwen3-0.6B')
     },
     '加载分词器与 Qwen3 模型': {
       summary:'使用 AutoTokenizer 和 AutoModelForCausalLM 加载本地模型。Notebook 选择 eager 注意力实现以便理解基础执行流程，再将模型迁移到 npu:0、转换为 FP16 并切换至 eval 模式。',
       concepts:[{term:'AutoTokenizer',desc:'从模型目录读取分词器配置，用于构造模型输入和解析输出。'},{term:'Eager 模式',desc:'每个算子立即执行，适合观察基础推理流程；后续可学习图编译加速。'},{term:'FP16',desc:'半精度参数仅占用 float32 一半存储，通常可节省显存并提升推理速度。'},{term:'eval()',desc:'关闭 Dropout 等训练期行为，确保模型进入稳定的推理模式。'}],
       code:{lang:'python',body:`from transformers import AutoTokenizer, AutoModelForCausalLM\n\nmodel_path = '/mnt/workspace/models/Qwen/Qwen3-0.6B'\ntokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)\nmodel = AutoModelForCausalLM.from_pretrained(\n    model_path, trust_remote_code=True, attn_implementation='eager'\n).to('npu:0').half()\nmodel.eval()`},
-      lab:{steps:[{title:'加载分词器与模型到 NPU',desc:'运行原 Notebook 的加载代码，确认 model.device 为 npu:0，model.dtype 为 float16。'}]},
+      lab:{steps:[
+        {title:'加载分词器',desc:'从上一节的 model_path 创建 tokenizer，先确认本地模型目录可以读取。',code:"tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)\nprint(type(tokenizer).__name__)",expected:'输出 tokenizer 类型，且不触发联网下载。'},
+        {title:'以 Eager 模式加载模型',desc:'保持 eager 作为可观察的推理基线，先将模型加载到 CPU。',code:"model = AutoModelForCausalLM.from_pretrained(\n    model_path, trust_remote_code=True, attn_implementation='eager'\n)",expected:'模型对象创建成功。'},
+        {title:'迁移 NPU 并确认推理状态',desc:'将模型放到 npu:0、转为 float16、切换 eval；这是开始生成前的三项核对。',code:"model = model.to('npu:0').half()\nmodel.eval()\nprint(next(model.parameters()).device, next(model.parameters()).dtype, not model.training)",expected:'输出 npu:0、torch.float16、True。'}
+      ]},
       resources:qwen3Resources('第 8 节：加载分词器和模型')
     },
     '体验 Tokenizer 编码与解码': {
       summary:'模型不直接读取“你好，我是昇腾”这样的文字，而是读取 token IDs。通过一次 encode 与 decode 往返，可以看到文字和数字序列之间的转换。',
       concepts:[{term:'编码',desc:'tokenizer.encode 将文本切分并转换为整数 token IDs。'},{term:'解码',desc:'tokenizer.decode 将 token IDs 还原为人类可读文本。'},{term:'token IDs',desc:'模型在 NPU 上实际计算的离散数字序列。'}],
       code:{lang:'python',body:`test_text = '你好，我是昇腾'\n\ntokens = tokenizer.encode(test_text)\ndecoded = tokenizer.decode(tokens)\nprint(f'原文: {test_text}')\nprint(f'编码为 token IDs: {tokens}')\nprint(f'解码回文字: {decoded}')`},
+      lab:{steps:[
+        {title:'编码一条中文文本',desc:'用 tokenizer.encode 把文本转换成模型真正读取的 token IDs。',code:"test_text = '你好，我是昇腾'\ntokens = tokenizer.encode(test_text)\nprint(tokens)",expected:'输出一个整数 token ID 列表。'},
+        {title:'解码并对照原文',desc:'把 token IDs 还原为文字，确认编码与解码使用的是同一分词器。',code:"decoded = tokenizer.decode(tokens)\nprint(decoded)",expected:'输出与原文一致或等价的文字。'},
+        {title:'比较不同表达的 token 数',desc:'改写一句提示词，观察文字长度不等于 token 数。',code:"for text in ['你好', '请介绍一下昇腾 NPU']:\n    print(text, len(tokenizer.encode(text)))",expected:'两条文本各输出对应 token 数。'}
+      ]},
       resources:qwen3Resources('第 9 节：体验分词器')
     },
     '手写逐 Token 推理循环': {
       summary:'这是本 Notebook 的核心实践：将聊天模板编码为 NPU Tensor，循环执行模型前向传播，贪心选择下一个 token；遇到 EOS 结束标记即停止，否则拼接 token 后继续。',
       concepts:[{term:'聊天模板',desc:'apply_chat_template 将 user 消息组织为 Qwen3 能理解的提示词格式。'},{term:'贪心解码',desc:'torch.argmax 选择当前概率最大的 token，结果稳定且便于理解。'},{term:'EOS',desc:'结束标记；生成到 EOS 时停止循环，避免无意义地生成到 token 上限。'},{term:'拼接',desc:'将新 token 接到 generated_ids 尾部，作为下一轮前向传播的输入。'}],
       code:{lang:'python',body:`question = '你好，请介绍一下AI是什么'\nmessages = [{'role': 'user', 'content': question}]\ntext = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)\ninput_ids = torch.tensor([tokenizer.encode(text)], dtype=torch.long).to('npu:0')\ngenerated_ids = input_ids.clone()\n\nfor step in range(128):\n    with torch.no_grad():\n        logits = model(generated_ids).logits\n    next_token_id = torch.argmax(logits[:, -1, :], dim=-1, keepdim=True)\n    if next_token_id.item() == tokenizer.eos_token_id:\n        break\n    generated_ids = torch.cat([generated_ids, next_token_id], dim=1)\n\nresponse = tokenizer.decode(generated_ids[0][input_ids.shape[1]:], skip_special_tokens=True)\nprint(response)`},
-      lab:{steps:[{title:'让 Qwen3 在 NPU 上回答第一个问题',desc:'运行逐 token 推理循环，观察输入 token 数、EOS 和最终模型回答。'}]},
+      lab:{steps:[
+        {title:'构造聊天模板与 NPU 输入',desc:'先把问题包装为 Qwen3 聊天格式，并确认 input_ids 已在 npu:0。',code:"question = '你好，请介绍一下 AI 是什么'\nmessages = [{'role':'user', 'content':question}]\ntext = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)\ninput_ids = torch.tensor([tokenizer.encode(text)], dtype=torch.long).to('npu:0')\nprint(input_ids.shape, input_ids.device)",expected:'输出输入 shape 与 npu:0。'},
+        {title:'执行逐 token 生成',desc:'运行本节完整循环；每轮从最后一个位置选择概率最大的 token，并在 EOS 时停止。',code:"generated_ids = input_ids.clone()\nfor step in range(128):\n    with torch.no_grad():\n        logits = model(generated_ids).logits\n    next_token_id = torch.argmax(logits[:, -1, :], dim=-1, keepdim=True)\n    if next_token_id.item() == tokenizer.eos_token_id:\n        break\n    generated_ids = torch.cat([generated_ids, next_token_id], dim=1)",expected:'循环自然结束，或在 128 个 token 上限内完成。'},
+        {title:'解码回答并检查新增 token',desc:'只解码模型新增部分，避免把聊天模板和用户问题重复显示。',code:"response = tokenizer.decode(generated_ids[0][input_ids.shape[1]:], skip_special_tokens=True)\nprint('新增 token:', generated_ids.shape[1] - input_ids.shape[1])\nprint(response)",expected:'输出 Qwen3 回答与新增 token 数。'}
+      ]},
       resources:qwen3Resources('第 10 节：第一次推理')
     },
     '测量 Qwen3 推理基线速度': {
       summary:'第一次推理会包含初始化开销，不能直接作为性能结论。Notebook 先热身，再用 torch.npu.synchronize() 等待 NPU 任务完成，连续测量三次并以 tokens/s 作为基线。',
       concepts:[{term:'Warmup',desc:'提前跑一次推理，让首次加载和初始化开销不干扰正式测量。'},{term:'synchronize()',desc:'等待 NPU 异步任务完成，确保计时覆盖真实的设备执行时间。'},{term:'Baseline',desc:'未加速的推理速度；后续使用 npugraph_ex 等技术时可与它对比。'}],
       code:{lang:'python',body:`import time\n\n# 先执行一次与正式推理相同的循环作为热身\n# ...\ntorch.npu.synchronize()\n\ntimes = []\nfor i in range(3):\n    generated_ids = input_ids.clone()\n    t0 = time.time()\n    # 执行逐 token 推理循环\n    # ...\n    torch.npu.synchronize()\n    times.append(time.time() - t0)\n\navg_time = sum(times) / len(times)\nprint(f'平均推理时间: {avg_time:.3f}s')\nprint(f'生成速度: {num_generated / avg_time:.1f} tokens/s')`},
+      lab:{steps:[
+        {title:'固定本轮测量条件',desc:'记录提示词与 max_new_tokens；之后所有对比都复用它们。',code:"max_new_tokens = 128\nprint('input tokens:', input_ids.shape[1])\nprint('max new tokens:', max_new_tokens)",expected:'输出本轮输入长度和生成上限。'},
+        {title:'先热身一次',desc:'用同一段推理循环先跑一次，并等待 NPU 任务完成；热身不记入结果。',code:"# 复用上一节的 run_inference\n_ = run_inference(model, input_ids, max_new_tokens)\ntorch.npu.synchronize()\nprint('warmup done')",expected:'输出 warmup done。'},
+        {title:'连续测三次并记录基线',desc:'每次计时后必须 synchronize，再计算平均耗时与 tokens/s。',code:"times = []\nfor _ in range(3):\n    t0 = time.time()\n    output = run_inference(model, input_ids, max_new_tokens)\n    torch.npu.synchronize()\n    times.append(time.time() - t0)\navg = sum(times) / len(times)\nprint(times, (output.shape[1] - input_ids.shape[1]) / avg)",expected:'输出三次耗时及一条 tokens/s 基线。'}
+      ]},
       resources:qwen3Resources('第 11 节：测量推理速度')
     },
     '用多种提示词测试模型': {
       summary:'同一套推理循环可以服务不同任务。Notebook 以古诗、英文问答和快速排序代码为例，观察 Qwen3 在不同提示词下的文本生成表现。',
       concepts:[{term:'Prompt',desc:'输入给模型的指令或问题；不同表达会影响模型输出。'},{term:'生成任务',desc:'诗歌、问答和代码生成本质上都是根据上下文预测后续 token。'},{term:'能力观察',desc:'测试结果用于体验模型能力，不应替代对事实正确性和代码可运行性的验证。'}],
       code:{lang:'python',body:`test_prompts = [\n    '请写一首关于春天的五言绝句',\n    'What is the capital of France?',\n    '用Python写一个快速排序算法',\n]\n\nfor prompt in test_prompts:\n    # 套用上一节的聊天模板与逐 token 推理循环\n    print(f'Q: {prompt}')\n    print(f'A: {response}')`},
+      lab:{steps:[
+        {title:'准备三类提示词',desc:'分别准备创作、英文问答和代码生成，避免只用一种任务判断模型能力。',code:"test_prompts = [\n  '请写一首关于春天的五言绝句',\n  'What is the capital of France?',\n  '用 Python 写一个快速排序算法'\n]",expected:'列表中包含三个不同任务。'},
+        {title:'逐条运行同一推理循环',desc:'保持模型、解码方式和生成上限不变，只替换 prompt。',code:"for prompt in test_prompts:\n    response = ask_qwen3(prompt, max_new_tokens=128)\n    print(f'Q: {prompt}\\nA: {response}\\n')",expected:'每条提示词都得到一段独立回答。'},
+        {title:'记录能力边界',desc:'分别标记语言是否通顺、事实是否需要核验、代码是否还需执行验证。',code:"review = {\n  'poem': '语言表现',\n  'english_qa': '事实待核验',\n  'code': '需在环境中运行验证'\n}\nprint(review)",expected:'形成对三类结果的有效观察，而不是只看是否有输出。'}
+      ]},
       resources:qwen3Resources('第 12 节：更多有趣的问题')
     },
     '自由对话与推理练习': {
       summary:'最后将问题抽为 my_question、将生成长度抽为 max_new_tokens。先修改这两个变量，再复用已经跑通的推理循环；进一步可把贪心解码替换为随机采样，比较输出差异。',
       concepts:[{term:'my_question',desc:'可自由替换的问题变量，例如知识问答、代码生成、创作或英文提问。'},{term:'max_new_tokens',desc:'限制最多生成多少个新 token；值越大，输出可能更长，耗时也会增加。'},{term:'随机采样',desc:'可用 torch.multinomial 替代 argmax，让输出具有随机性；需额外控制温度等参数。'}],
       code:{lang:'python',body:`my_question = '你好，请用一句话介绍你自己'\nmax_new_tokens = 128\n\nmessages = [{'role': 'user', 'content': my_question}]\ntext = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)\ninput_ids = torch.tensor([tokenizer.encode(text)], dtype=torch.long).to('npu:0')\n# 复用上一节的逐 token 推理循环\n# 修改 my_question 后重新运行即可`},
-      lab:{steps:[{title:'设计自己的 Qwen3 提问',desc:'修改 my_question，并尝试调整 max_new_tokens，记录回答长度和效果的变化。'}]},
+      lab:{steps:[
+        {title:'定义自己的问题',desc:'先替换 my_question，选择一个你能判断回答好坏的具体任务。',code:"my_question = '请用三句话解释什么是 token'\nprint(my_question)",expected:'输出本轮要测试的问题。'},
+        {title:'控制生成长度',desc:'分别用短、长两个 max_new_tokens 运行，观察输出长度和耗时的变化。',code:"for max_new_tokens in [32, 128]:\n    output = run_inference(model, input_ids, max_new_tokens)\n    print(max_new_tokens, output.shape[1] - input_ids.shape[1])",expected:'两次输出的新增 token 数可用于比较。'},
+        {title:'记录一次有效观察',desc:'写下提示词、生成长度与回答是否符合目标，作为后续改采样策略的基线。',code:"experiment_note = {\n  'prompt': my_question,\n  'max_new_tokens': 128,\n  'observation': '回答是否准确、是否完整'\n}\nprint(experiment_note)",expected:'形成一条可回看的推理实验记录。'}
+      ]},
       resources:qwen3Resources('课后练习：和大模型自由对话')
     },
     '首跑后：建立本地推理实验工程': {
@@ -1454,7 +1489,11 @@ def vector_add_tik(shape, dtype, kernel_name):
       body:'<p><strong>首跑结束后，按下面四步继续即可。</strong>你不需要猜“该在哪个工程改、先改什么、怎么判断成功”。本节把下一步收成一条固定路径：工程 → 文件 → 单点改动 → 验证标准。</p><p>每次只改变一个模块，并在实验文件开头记录 CANN / PyTorch / torch_npu 版本、基线 tokens/s 和本轮改动目标。这样结果异常时，可立即切回基线，判断问题来自环境、模型加载还是这次替换。</p>',
       concepts:[{term:'基线副本',desc:'保留 01 基线推理 Notebook 不改动；所有优化都在复制出的实验文件中进行。'},{term:'实验目录',desc:'将模型路径、Notebook、运行日志和性能记录放在同一工程，避免只在临时单元里改完就丢失。'},{term:'单变量改动',desc:'每次只替换一个模块，例如先 RMSNorm，再 RoPE；这样性能变化和精度问题才可定位。'}],
       code:{lang:'bash',body:`git clone https://gitcode.com/cann/cann-learning-hub.git\ncd cann-learning-hub/quick_start/first_llm_inference\n\n# 保留基线，复制融合算子课作为个人实验副本\ncp 03_qwen3_npu_inference_fused_op.ipynb my_qwen3_fused_op.ipynb\n\n# 在 Notebook 首个 Markdown 单元记录：\n# CANN / PyTorch / torch_npu 版本、基线 tokens/s、改动目标`},
-      lab:{steps:[{title:'创建个人 Qwen3 实验副本',desc:'在 HiDevLab 或本地工作区复制融合算子 Notebook；不要直接覆盖已跑通的基线。',code:'cp 03_qwen3_npu_inference_fused_op.ipynb my_qwen3_fused_op.ipynb',expected:'得到独立实验文件，并保留 01 基线 Notebook 可随时回退。'}]},
+      lab:{steps:[
+        {title:'进入官方基线工程',desc:'克隆后进入 quick_start/first_llm_inference，后续实验只在这里展开。',code:'git clone https://gitcode.com/cann/cann-learning-hub.git\ncd cann-learning-hub/quick_start/first_llm_inference',expected:'当前目录包含 Qwen3 基线与融合算子 Notebook。'},
+        {title:'复制融合算子实验副本',desc:'保留原 01 基线不改，将 03 Notebook 复制为个人实验文件。',code:'cp 03_qwen3_npu_inference_fused_op.ipynb my_qwen3_fused_op.ipynb',expected:'得到 my_qwen3_fused_op.ipynb。'},
+        {title:'写入实验起始记录',desc:'在副本首个 Markdown Cell 记录版本、基线 tokens/s 和本轮单变量目标。',code:'# CANN: <version>\n# PyTorch / torch_npu: <versions>\n# baseline: <tokens/s>\n# change: RMSNorm fusion only',expected:'实验文件可说明环境、基线与唯一改动。'}
+      ]},
       resources:qwen3ExtensionResources('第 13 节：从首跑 Notebook 进入可复现的本地实验')
     },
     '替换 Qwen3 RMSNorm 融合算子': {
@@ -1462,7 +1501,11 @@ def vector_add_tik(shape, dtype, kernel_name):
       body:'<p><strong>这一步只改 RMSNorm，不动模型其余部分。</strong>先通过 <code>transformers.models.qwen3.modeling_qwen3</code> 获取模块，保存原始 <code>forward</code>。随后定义小算子版与融合版，使用一行赋值切换，以便在同一环境和同一输入下公平比较。</p><p><code>npu_rms_norm</code> 的三个参数对应原公式：输入 <code>hidden_states</code>、权重 <code>self.weight</code>、属性 <code>self.variance_epsilon</code>。接口返回两个 Tensor；推理只取第一个归一化结果。</p>',
       concepts:[{term:'RMSNorm',desc:'Qwen3 中高频出现的归一化单元；0.6B 模型 28 层中共出现 57 次。'},{term:'融合算子',desc:'把多个连续小算子交给一个针对硬件优化的算子一次完成，减少调度和中间读写。'},{term:'npu_rms_norm',desc:'torch_npu 提供的 RMSNorm 融合接口，推理时返回值取 [0]。'}],
       code:{lang:'python',body:`import torch_npu\nimport transformers.models.qwen3.modeling_qwen3 as qwen3_mod\n\n# 保存原实现，便于回退\norig_forward = qwen3_mod.Qwen3RMSNorm.forward\n\ndef fused_forward(self, hidden_states):\n    return torch_npu.npu_rms_norm(\n        hidden_states,\n        self.weight,\n        self.variance_epsilon\n    )[0]\n\n# 只替换 RMSNorm；模型其余模块保持不变\nqwen3_mod.Qwen3RMSNorm.forward = fused_forward`},
-      lab:{steps:[{title:'保存原实现并切换至融合 RMSNorm',desc:'先保存 orig_forward，再把 Qwen3RMSNorm.forward 指向 fused_forward。若结果异常，立即切回 orig_forward。',code:'orig_forward = qwen3_mod.Qwen3RMSNorm.forward\nqwen3_mod.Qwen3RMSNorm.forward = fused_forward',expected:'模型可继续加载并完成一次 Eager 推理；需要回退时可恢复 orig_forward。'}]},
+      lab:{steps:[
+        {title:'保存原始 RMSNorm 实现',desc:'先保存原 forward，确保本次实验可立即回退。',code:'orig_forward = qwen3_mod.Qwen3RMSNorm.forward\nprint(orig_forward)',expected:'输出原始 forward 函数引用。'},
+        {title:'定义并替换融合实现',desc:'只将 RMSNorm 替换为 npu_rms_norm，模型其他模块、提示词和生成长度保持不变。',code:'def fused_forward(self, hidden_states):\n    return torch_npu.npu_rms_norm(hidden_states, self.weight, self.variance_epsilon)[0]\n\nqwen3_mod.Qwen3RMSNorm.forward = fused_forward',expected:'Qwen3RMSNorm.forward 指向 fused_forward。'},
+        {title:'完成一次正确性冒烟验证',desc:'复用同一 input_ids 做一次短生成；若异常，先恢复原实现再查看报错。',code:"output = run_inference(model, input_ids, max_new_tokens=16)\nprint(tokenizer.decode(output[0][-16:], skip_special_tokens=True))",expected:'模型能完成短生成；异常时可执行 qwen3_mod.Qwen3RMSNorm.forward = orig_forward。'}
+      ]},
       resources:qwen3ExtensionResources('第 14 节：融合算子替换，8 个小算子到 1 个 RMSNorm 算子')
     },
     '验证融合算子加速效果': {
@@ -1470,7 +1513,11 @@ def vector_add_tik(shape, dtype, kernel_name):
       body:'<p><strong>先保证比较公平。</strong>基线版与融合版共用同一个模型、提示词和 <code>max_new_tokens</code>；每次测量前先热身一次，并在计时结束后执行 <code>torch.npu.synchronize()</code>，否则 Python 可能在 NPU 尚未执行完时就停止计时。</p><p>记录生成 token 数、三次耗时、平均 tokens/s 和加速比。若融合版速度没有提升，先检查是否真的切换到了 <code>fused_forward</code>、是否仍为 Eager 模式，以及输入长度和生成长度是否一致。</p>',
       concepts:[{term:'Warmup',desc:'排除首次加载与初始化成本，避免一次偶然的慢结果影响结论。'},{term:'synchronize',desc:'等待 NPU 异步任务完成，确保耗时包含真实的设备执行。'},{term:'加速比',desc:'小算子版平均耗时除以融合版平均耗时；大于 1 说明融合版更快。'}],
       code:{lang:'python',body:`# 小算子版和融合版均各热身一次后，重复三次计时\ndef benchmark(label, forward_impl):\n    qwen3_mod.Qwen3RMSNorm.forward = forward_impl\n    run_inference(model, input_ids, max_new_tokens)  # warmup\n    times = []\n    for _ in range(3):\n        t0 = time.time()\n        output = run_inference(model, input_ids, max_new_tokens)\n        torch.npu.synchronize()\n        times.append(time.time() - t0)\n    avg = sum(times) / len(times)\n    tokens = output.shape[1] - input_ids.shape[1]\n    print(label, f'{tokens / avg:.1f} tokens/s')\n    return avg\n\navg_small = benchmark('small ops', small_ops_forward)\navg_fused = benchmark('fused op', fused_forward)\nprint(f'加速比: {avg_small / avg_fused:.2f}x')`},
-      lab:{steps:[{title:'输出小算子版与融合版对比表',desc:'两个版本各热身一次、计时三次，记录平均耗时、tokens/s 与加速比。',code:'# 复用本节 benchmark 函数\navg_small = benchmark("small ops", small_ops_forward)\navg_fused = benchmark("fused op", fused_forward)',expected:'得到两组可比较的速度数据与加速比；不要只记录一次运行结果。'}]},
+      lab:{steps:[
+        {title:'固定公平的对比输入',desc:'两种实现使用同一 input_ids 与 max_new_tokens，避免输入差异影响结论。',code:"assert input_ids.device.type == 'npu'\nmax_new_tokens = 128\nprint(input_ids.shape, max_new_tokens)",expected:'确认两组测试使用相同输入与长度。'},
+        {title:'分别热身并正式测三次',desc:'小算子版与融合版各热身一次、计时三次，不以单次运行判断性能。',code:"avg_small = benchmark('small ops', small_ops_forward)\navg_fused = benchmark('fused op', fused_forward)",expected:'得到两组平均耗时。'},
+        {title:'计算加速比并写入记录',desc:'以小算子版平均耗时除以融合版；大于 1 才表示融合版更快。',code:"speedup = avg_small / avg_fused\nprint(f'RMSNorm fusion speedup: {speedup:.2f}x')",expected:'输出可复用的加速比结论。'}
+      ]},
       resources:qwen3ExtensionResources('第 15 节：在 Eager 模式下验证纯算子层面的加速')
     },
     '扩展 RoPE 与图模式推理': {
@@ -1478,14 +1525,22 @@ def vector_add_tik(shape, dtype, kernel_name):
       body:'<p><strong>按同样的实验方法继续扩展。</strong>先保留 RMSNorm 融合版作为新的基线，再独立替换 <code>apply_rotary_pos_emb</code> 为 <code>npu_rotary_mul</code>。确认输出正常并测量后，再开启图模式。每做完一层优化都保存一个可运行版本，避免无法区分是哪项改动带来了收益或回归。</p><p>图编译解决的是“CPU 逐个调度算子的等待”；融合算子解决的是“多个小算子重复启动和读写”。两者目标不同，因此可以组合，但也应分阶段验证。</p>',
       concepts:[{term:'RoPE',desc:'旋转位置编码；Qwen3 使用它让注意力计算感知 token 的相对位置。'},{term:'npu_rotary_mul',desc:'可用于替换 RoPE 中乘法、旋转和加法等组合计算的融合算子。'},{term:'图模式',desc:'将算子编排为执行图后一次交给 NPU，减少 CPU 与 NPU 间的逐算子调度。'}],
       code:{lang:'python',body:`# 推荐实验顺序（每一步都独立记录性能）\n# 1. RMSNorm 融合版：已得到新的基线\n# 2. 替换 apply_rotary_pos_emb 为 torch_npu.npu_rotary_mul\n# 3. 复用相同输入，验证输出与性能\n# 4. 在融合版基础上开启图模式，再单独测量\n\n# 不要在一次实验中同时替换多个模块，\n# 否则出现性能或结果异常时无法定位。`},
-      lab:{steps:[{title:'规划下一轮单变量优化',desc:'先创建 RoPE 实验副本，保持 RMSNorm 融合版不变；记录本轮只验证 npu_rotary_mul。',code:'# my_qwen3_rope_op.ipynb\n# baseline: fused RMSNorm\n# change: apply_rotary_pos_emb -> npu_rotary_mul',expected:'形成可回退的优化序列：基线 → RMSNorm 融合 → RoPE 融合 → 图模式。'}]},
+      lab:{steps:[
+        {title:'从 RMSNorm 融合版复制实验',desc:'不要在已经验证的 RMSNorm 副本上直接叠加修改；新建 RoPE 实验副本。',code:'cp my_qwen3_fused_op.ipynb my_qwen3_rope_op.ipynb',expected:'得到可独立回退的 RoPE 实验文件。'},
+        {title:'只标记本轮 RoPE 改动',desc:'本轮只验证 apply_rotary_pos_emb 到 npu_rotary_mul 的替换，不开启图模式。',code:'# baseline: fused RMSNorm\n# change: apply_rotary_pos_emb -> npu_rotary_mul\n# graph mode: off',expected:'实验范围清晰，不混入其他优化。'},
+        {title:'先正确性后性能',desc:'先用固定短输入验证输出可用，再复用第 13 节的三次计时方法。',code:'# 1. run_inference(model, input_ids, max_new_tokens=16)\n# 2. benchmark RoPE baseline and fused RoPE\n# 3. record tokens/s',expected:'形成 RMSNorm、RoPE、图模式可逐层对比的序列。'}
+      ]},
       resources:qwen3ExtensionResources('第 16 节：RoPE 融合与图模式是可叠加的下一步')
     },
     '提交实验成果并完成认证': {
       summary:'路径的终点不是“代码跑过一次”，而是能把实验讲清楚、复现出来：说明环境、基线、每项改动、性能数据和遇到的问题。完成后可进入昇腾学习认证，检验并沉淀推理与优化能力。',
       body:'<p><strong>提交前用一页实验记录收口。</strong>至少包含：环境版本、模型与提示词、基线 tokens/s、RMSNorm 融合后的 tokens/s、加速比、是否继续尝试 RoPE / 图模式，以及一次问题排查记录。它既是个人作品的可复现说明，也是之后继续优化的起点。</p><p>认证不应只是额外跳转链接，而应排在实践成果之后：先完成路径内验证，再按认证中心当前开放的方向选择匹配课程或考试。</p>',
       concepts:[{term:'可复现实验',desc:'他人根据工程、版本、输入与步骤能够重复得到同类结果。'},{term:'性能报告',desc:'用基线、优化后数据和明确的测量条件说明收益，而不是只描述“感觉更快”。'},{term:'学习认证',desc:'将系统学习与实操成果结合，选择认证中心当前开放的相关方向完成能力验证。'}],
-      lab:{steps:[{title:'整理并提交 Qwen3 优化实验记录',desc:'将环境、改动、三次计时结果、加速比与一次排障记录写入实验 README 或 Notebook 首段。',code:'# 实验收口清单\n# [ ] 环境与模型版本\n# [ ] baseline / fused tokens/s\n# [ ] 三次耗时和加速比\n# [ ] 失败或排障记录\n# [ ] 下一轮优化计划',expected:'形成可回看、可分享的实验记录，并可进入昇腾学习认证继续验证能力。'}]},
+      lab:{steps:[
+        {title:'整理环境与基线',desc:'填写模型、CANN、PyTorch、torch_npu 版本，以及固定提示词和基线 tokens/s。',code:'# environment / model / prompt\n# baseline tokens/s: <value>',expected:'他人可以判断实验的复现条件。'},
+        {title:'补齐优化对比数据',desc:'把每种实现的三次耗时、平均 tokens/s 和加速比写入同一张表。',code:'# small ops: [t1, t2, t3] / avg tokens/s\n# fused RMSNorm: [t1, t2, t3] / avg tokens/s\n# speedup: <value>x',expected:'优化收益有完整数据支撑。'},
+        {title:'记录问题与下一轮计划',desc:'至少沉淀一次真实排障或限制，并明确下一步是 RoPE、图模式还是停止优化。',code:'# issue / diagnosis / fix\n# next: RoPE fusion or graph mode',expected:'形成可分享、可继续迭代的实验结论。'}
+      ]},
       resources:qwen3ExtensionResources('第 17 节：实验成果收口与学习认证')
     }
   });
