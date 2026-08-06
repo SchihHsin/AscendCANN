@@ -1656,6 +1656,14 @@ def vector_add_tik(shape, dtype, kernel_name):
     'TIK 底层算子开发':  { title: 'TIK C++ 核函数与 AI Core 指令集', duration: '55:20', tag: 'TIK 开发' },
     'HCCL 分布式通信':   { title: 'HCCL 集合通信与多卡训练配置', duration: '38:47', tag: '分布式' },
     '大模型训练实战':    { title: 'MindFormers 大模型训练实战（LLaMA）', duration: '2:15:00', tag: '大模型' },
+    // Only explainable concepts and observable workflows receive video. Other
+    // chapters stay reading-first instead of displaying a fabricated video.
+    'AI 与大模型基础': { title: '从大模型到 Qwen3：首次 NPU 推理前的全景认知', duration: '06:20', tag: '概念导览' },
+    '大模型推理核心组件': { title: 'Qwen3 推理流程：Tokenizer、模型与逐 token 生成', duration: '08:10', tag: '推理流程' },
+    '加载分词器与 Qwen3 模型': { title: '将 Qwen3 加载到昇腾 NPU：分词器、模型与 FP16', duration: '07:35', tag: '上机演示' },
+    '手写逐 Token 推理循环': { title: '从输入到回答：手写 Qwen3 逐 token 推理循环', duration: '10:40', tag: '代码讲解' },
+    '测量 Qwen3 推理基线速度': { title: '如何得到可信的 Qwen3 tokens/s 基线', duration: '05:45', tag: '性能演示' },
+    '替换 Qwen3 RMSNorm 融合算子': { title: '替换 RMSNorm：用融合算子缩短 Qwen3 推理路径', duration: '09:15', tag: '优化演示' },
   };
 
   function renderNdTab(tab, title) {
@@ -4728,11 +4736,7 @@ def vector_add_tik(shape, dtype, kernel_name):
       ldRenderQwen3Preflight(node, knowledge, index);
       return;
     }
-    const video = NODE_VIDEO[node.title] || { title: `${node.title}讲解视频`, duration: '课程视频', tag: '视频学习' };
-    const videoOverlay = `<div class="ld-video-overlay"><strong>${video.title}</strong><small>跟随本节内容理解核心概念，并完成对应实践</small></div><button class="ld-video-play" type="button" aria-label="播放：${video.title}">▶</button>`;
-    const videoStage = node.title === '算子开发编程基础'
-      ? `<div class="ld-video-stage ld-video-cover"><img src="ascend-c-course-cover.png" alt="昇腾异构编程基础课程封面">${videoOverlay}</div>`
-      : `<div class="ld-video-stage">${videoOverlay}</div>`;
+    const video = NODE_VIDEO[node.title];
     const resources = (knowledge?.resources || []).map(r => {
       const openLab = r.action === 'lab';
       return `<a class="ld-content-resource" href="${openLab ? '#' : r.href}"${openLab ? ' onclick="event.preventDefault();openEmptySandbox()"' : ' target="_blank"'}><span>${r.icon}</span><div><strong>${r.title}</strong><small>${r.subtitle || r.type}</small></div></a>`;
@@ -4740,6 +4744,12 @@ def vector_add_tik(shape, dtype, kernel_name):
     const conceptDoc = concept => concept.href || knowledge?.resources?.[0]?.href || 'https://www.hiascend.com/document';
     const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p><a class="ld-concept-doc" href="${conceptDoc(c)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">查看文档 <span aria-hidden="true">↗</span></a></div>`).join('');
     const readingHtml = knowledge?.body ? `<section class="ld-reading-section"><h2>本节讲解</h2><div class="ld-reading-body">${knowledge.body}</div></section>` : '';
+    const videoOverlay = video ? `<div class="ld-video-overlay"><strong>${video.title}</strong><small>跟随本节内容理解核心概念，并完成对应实践</small></div><button class="ld-video-play" type="button" aria-label="播放：${video.title}">▶</button>` : '';
+    const videoStage = node.title === '算子开发编程基础'
+      ? `<div class="ld-video-stage ld-video-cover"><img src="ascend-c-course-cover.png" alt="昇腾异构编程基础课程封面">${videoOverlay}</div>`
+      : `<div class="ld-video-stage">${videoOverlay}</div>`;
+    const videoNotes = video ? `<aside class="ld-video-notes" aria-label="视频同步要点"><div class="ld-video-notes-head"><span>视频同步要点</span><small>${video.duration}</small></div><button class="active" type="button" data-video-time="00:00" onclick="ldFocusVideoNote(this)"><time>00:00</time><span><strong>知识点总结</strong><small>${(knowledge?.concepts || []).slice(0, 2).map(item => item.term).join('、') || '建立本节核心概念'}</small></span></button><button type="button" data-video-time="02:10" onclick="ldFocusVideoNote(this)"><time>02:10</time><span><strong>文档摘要</strong><small>结合本节讲解，确认 API、版本与使用边界。</small></span></button><button type="button" data-video-time="04:20" onclick="ldFocusVideoNote(this)"><time>04:20</time><span><strong>动手练习</strong><small>先完成最小验证，再进入 HiDevLab 实践。</small></span></button><button type="button" data-video-time="06:00" onclick="ldFocusVideoNote(this)"><time>06:00</time><span><strong>排障与资源</strong><small>记录常见错误码，并保留官方资源入口。</small></span></button></aside>` : '';
+    const videoHtml = video ? `<section class="ld-video-section"><h2>学习视频</h2><div class="ld-video-study-grid"><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div>${videoNotes}</div></section>` : '';
     const nextStepsHtml = knowledge?.nextSteps?.length ? `<section class="ld-next-steps"><div class="ld-next-steps-head"><h2>首跑后，照着做</h2><p>先固定工程与验证规则，再开始优化。</p></div><div class="ld-next-steps-grid">${knowledge.nextSteps.map((step, stepIndex) => `<article class="ld-next-step"><div class="ld-next-step-index">${stepIndex + 1}</div><i data-lucide="${step.icon}" aria-hidden="true"></i><small>${step.label}</small><strong>${step.title}</strong><p>${step.detail}</p><pre>${escHtml(step.code)}</pre></article>`).join('')}</div><a class="ld-next-steps-source" href="${QWEN3_FUSED_OP_NOTEBOOK}" target="_blank" rel="noopener">打开官方融合算子 Notebook，按第 1 步开始 <span aria-hidden="true">↗</span></a></section>` : '';
     const code = knowledge?.code;
     const codeKind = { concept:'概念调用', practice:'可运行示例', compare:'改前 / 改后对照' };
@@ -4750,7 +4760,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const practiceSteps = knowledge?.lab?.steps || [{ title:`运行「${node.title}」配套练习`, desc:'在 HiDevLab 中打开本章节的实践环境，边学边验证。' }];
     const practice = `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>`;
     const troubleshooting = ldRenderTroubleshooting(node, knowledge);
-    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div></div>${nextStepsHtml}<section><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>${readingHtml}${codeHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div></div>${nextStepsHtml}${videoHtml}${readingHtml}${codeHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     requestAnimationFrame(() => window.lucide?.createIcons());
     ldRefreshStudyTools(node, knowledge);
   }
@@ -5013,6 +5023,13 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!input) return;
     input.value = text;
     ldToolAsk();
+  }
+
+  function ldFocusVideoNote(button) {
+    const notes = button?.closest('.ld-video-notes');
+    notes?.querySelectorAll('button').forEach(item => item.classList.toggle('active', item === button));
+    // The local prototype has a cover rather than a media player; retain the
+    // timestamp selection so it maps directly to a real player's seek event.
   }
 
   function ldResetToolChat() {
