@@ -639,8 +639,8 @@ body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!importan
 #page-learn .ld-path-nav.v2-list-mode .ld-path-nav-item.active { border-color:#E8EBF1; background:#fff; box-shadow:0 4px 12px rgba(32,39,52,.06); }
 #page-learn .ld-path-nav.v2-list-mode .ld-path-nav-item.active span { border-radius:7px; background:#1767EA; color:#fff; }
 
-#page-learn .ld-learning-content { --v2-learning-measure:1080px; padding:32px clamp(32px,4vw,56px) 88px; background:#fff; }
-#page-learn .ld-learning-content::before { display:none; }
+#page-learn .ld-learning-content { --v2-learning-measure:1080px; padding:32px clamp(32px,4vw,56px) 88px; background:linear-gradient(180deg,#F5F6F8 0%,#FAFBFC 210px,#fff 430px); }
+#page-learn .ld-learning-content::before { position:absolute; top:0; right:0; z-index:0; display:block; width:100%; height:450px; background:url('visual-assets/cann-community/learning-card-bg.png') right top/min(1200px,100%) auto no-repeat; content:''; opacity:.82; pointer-events:none; -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.18) 18%,#000 48%); mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.18) 18%,#000 48%); }
 #page-learn .ld-learning-content > section { width:min(100%,var(--v2-learning-measure)); }
 #page-learn .ld-content-kicker { display:inline-flex; align-items:center; margin:0 0 8px; color:#6F7786; font-size:14px; }
 #page-learn .ld-learning-content h1 { margin:0 0 10px; color:#20242D; font-size:30px; font-weight:600; letter-spacing:-.025em; }
