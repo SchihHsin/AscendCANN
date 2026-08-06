@@ -35,6 +35,24 @@ body.v2-hidevlab-open #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 #page-learn .ld-home-rail-btn svg { width:17px; height:17px; stroke-width:1.7; }
 #page-learn .ld-home-rail-btn img { display:block; width:23px; height:23px; object-fit:contain; }
 #page-learn .ld-home-rail-btn:hover { background:#f0edff; color:#7566c8; }
+/* Standalone learning pages remove the site shell while retaining the shared visual system. */
+body.learn-standalone { min-width:0; background:#f5f6f8; }
+body.learn-path-standalone #page-learn .ld-roadmap { top:0; }
+body.learn-path-standalone #page-learn .ld-roadmap-topbar { min-height:58px; }
+body.learn-path-standalone .sandbox-drawer.v2-dock-split { top:0; }
+.learn-utility-window { position:fixed; z-index:200; right:24px; bottom:24px; display:none; width:min(380px,calc(100vw - 40px)); overflow:hidden; border:1px solid #dfe3ea; border-radius:14px; background:#fff; box-shadow:0 16px 42px rgba(35,41,55,.18); color:#303642; }
+.learn-utility-window.open { display:block; }
+.learn-utility-window header { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #e7e9ef; }
+.learn-utility-window header button { border:0; background:transparent; color:#697181; cursor:pointer; font-size:22px; line-height:1; }
+.learn-utility-body { display:grid; gap:12px; padding:16px; font-size:13px; line-height:1.6; }
+.learn-utility-body p { margin:0; color:#687182; }
+.learn-utility-body label { display:grid; gap:6px; color:#4b5362; font-size:12px; }
+.learn-utility-body input { width:100%; padding:9px 10px; border:1px solid #dfe3ea; border-radius:8px; font:inherit; }
+.learn-utility-body button { padding:8px 10px; border:1px solid #dfe3ea; border-radius:8px; background:#f8f9fb; color:#3c4452; cursor:pointer; font:600 12px var(--font); text-align:left; }
+.learn-utility-suggestions { display:flex; flex-wrap:wrap; gap:7px; }
+.learn-utility-path { display:grid; gap:2px; width:100%; }
+.learn-utility-path small { color:#788191; font-weight:400; }
+.learn-twin-summary { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:9px; background:#f2efff; color:#7065b6; }
 #page-learn .ld-home-assistant-btn img { width:21px; height:21px; }
 #page-learn .ld-home-twin-btn { background:linear-gradient(135deg,#f2efff,#e5f2ff); }
 #page-learn .ld-twin-panel { position:fixed; z-index:90; top:116px; right:78px; width:min(440px,calc(100vw - 118px)); max-height:calc(100vh - 148px); padding:24px 26px; overflow-y:auto; border:1px solid #e8ebf1; border-radius:16px; background:#fff; box-shadow:0 18px 44px rgba(35,43,71,.16); opacity:0; pointer-events:none; transform:translateY(-8px) translateX(12px); transition:transform .2s ease,opacity .18s ease; }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>昇腾学习路径</title>
+  <link rel="stylesheet" href="cann-style.css">
+  <link rel="stylesheet" href="cann-website-v2.css">
+  <script src="https://unpkg.com/lucide"></script>
+</head>
+<body class="learn-standalone learn-path-standalone">
+  <main id="page-learn" class="page active">
+    <div class="ld-dash" id="ld-dash" style="display:none"></div>
+    <div class="ld-roadmap" id="ld-roadmap">
+      <div class="ld-roadmap-topbar">
+        <button class="ld-back-btn" type="button" onclick="ldShowDash()"><i data-lucide="arrow-left"></i>返回学习首页</button>
+        <div class="ld-roadmap-meta"><span class="ld-roadmap-name-lbl" id="ld-roadmap-name">学习路径</span><div class="ld-roadmap-prog-wrap"><div class="ld-roadmap-prog-track"><div class="ld-roadmap-prog-fill" id="ld-roadmap-prog-fill"></div></div><span class="ld-roadmap-prog-lbl" id="ld-roadmap-prog-lbl">0 / 0 节点</span></div></div>
+        <div class="ld-roadmap-actions"><a class="ld-footer-link" href="https://www.hiascend.com/edu/courses" target="_blank">全量课程 ↗</a><button class="ld-footer-link" type="button" onclick="openLearningArchive('paths')">学习档案</button></div>
+      </div>
+      <div class="ld-path-workspace v2-right-collapsed ld-tools-collapsed" id="ld-path-workspace">
+        <button class="v2-edge-pill v2-edge-pill-left" type="button" onclick="v2ToggleWorkspacePanel('left')" aria-label="收起学习路径"><i data-lucide="chevron-left"></i></button>
+        <button class="v2-path-fab" type="button" onclick="v2OpenPathFloat()" aria-label="打开学习路径"><i data-lucide="route"></i></button>
+        <aside class="ld-path-sidebar" id="v2-path-sidebar"><div class="v2-path-float-head"><strong>学习路径</strong><button type="button" onclick="v2ClosePathFloat()"><i data-lucide="x"></i></button></div><div class="ld-sidebar-head"><strong>学习路径</strong><div class="ld-view-switch"><button onclick="v2SetPathView('list',this)" title="列表视图"><i data-lucide="list-tree"></i></button><button class="active" onclick="v2SetPathView('map',this)" title="可视化视图"><i data-lucide="git-branch"></i></button></div></div><div class="ld-path-nav" id="ld-path-nav"></div><button class="ld-edit-path-btn" type="button" onclick="ldOpenPathEditor()">编辑路径</button><button class="ld-ai-edit-path-btn" type="button" onclick="ldOpenAiPathEditor()"><i data-lucide="wand-sparkles"></i>让 AI 调整路径</button></aside>
+        <div class="v2-workspace-resizer v2-workspace-resizer-left" id="v2-left-resizer" role="separator" aria-label="调整学习路径宽度" aria-orientation="vertical"></div>
+        <main class="ld-learning-content" id="ld-learning-content"></main>
+        <aside class="ld-study-tools" id="ld-study-tools"><div class="v2-tool-float-resizer" id="v2-tool-float-resizer" role="separator" aria-label="调整工具窗口高度" aria-orientation="horizontal"><span></span></div><div class="v2-tool-float-head"><span><i data-lucide="bot"></i><strong>AI 助手</strong></span><div class="v2-tool-float-actions"><button type="button" onclick="ldResetToolChat()"><i data-lucide="circle-plus"></i></button><button type="button" onclick="v2CloseToolFloat()"><i data-lucide="x"></i></button></div></div><div class="ld-tool-panel active" id="ld-tool-ai"><section class="ld-ai-welcome"><img src="visual-assets/learning-hi-fi/智能助手@4x.png" alt=""><h2>智能助手</h2><p>我会结合当前学习内容，帮你理解概念、检查代码并规划下一步。</p><span class="ld-tool-context" id="ld-ai-context">正在学习当前节点</span><div class="ld-tool-prompts" id="ld-tool-prompts"></div></section><div class="ld-tool-chat" id="ld-tool-chat"></div><div class="ld-tool-input"><input id="ld-tool-ai-input" placeholder="输入你想咨询的学习问题" onkeydown="if(event.key==='Enter')ldToolAsk()"><button onclick="ldToolAsk()"><i data-lucide="arrow-up"></i></button></div></div><div class="ld-tool-panel" id="ld-tool-quiz"><div id="ld-embedded-quiz"></div><button class="ld-tool-primary" onclick="ldLoadEmbeddedQuiz()">生成一道题</button></div><div class="ld-tool-panel" id="ld-tool-visual"><div id="ld-knowledge-visual"></div></div></aside>
+        <div class="v2-workspace-resizer v2-workspace-resizer-right" id="v2-right-resizer" role="separator" aria-label="调整学习工具宽度" aria-orientation="vertical"></div>
+        <div class="v2-tool-fab-rail"><button class="v2-tool-fab" type="button" data-v2-tool-fab="ai" onclick="v2OpenToolFloat('ai')" title="AI 助手"><i data-lucide="bot"></i></button><button class="v2-tool-fab" type="button" data-v2-tool-fab="visual" onclick="v2OpenToolFloat('visual')" title="知识图谱"><i data-lucide="network"></i></button><button class="v2-tool-fab" type="button" data-v2-tool-fab="quiz" onclick="v2OpenToolFloat('quiz')" title="随堂测验"><i data-lucide="circle-help"></i></button></div>
+      </div>
+    </div>
+    <div class="sandbox-overlay" id="sandbox-overlay" onclick="closeSandboxDrawer()"></div><section class="sandbox-drawer" id="sandbox-drawer"><div class="v2-sandbox-resizer" id="v2-sandbox-resizer" role="separator" aria-label="调整 HiDevLab 高度" aria-orientation="horizontal"><span></span></div><header class="nb-header"><div class="nb-header-left"><div class="nb-brand"><img src="visual-assets/hidevlab/hidevlab-logo.png" alt="HiDevLab"></div><div class="nb-tabs"><button class="nb-tab active" type="button" onclick="switchNbTab('notebook',this)">Notebook</button></div></div><div class="nb-actions"><button class="nb-action-btn" type="button" onclick="nbRunAll()">全部运行</button><button class="nb-action-btn nb-action-icon active" type="button" onclick="v2SetSandboxDock('bottom')" data-v2-sandbox-dock="bottom" title="底部抽屉"><i data-lucide="panel-bottom"></i></button><button class="nb-action-btn nb-action-icon" type="button" onclick="v2SetSandboxDock('split')" data-v2-sandbox-dock="split" title="右侧分屏"><i data-lucide="columns-2"></i></button><button class="nb-action-btn nb-action-icon" type="button" onclick="v2SetSandboxDock('full')" data-v2-sandbox-dock="full" title="全屏专注"><i data-lucide="maximize-2"></i></button><button class="nb-action-btn nb-action-icon" type="button" onclick="closeSandboxDrawer()"><i data-lucide="x"></i></button></div></header><div class="nb-body"><div class="nb-panel active" id="nb-panel-notebook"><div class="nb-sidebar"><div class="nb-sidebar-title">文件</div><div class="nb-file-item active">main.ipynb</div></div><div class="nb-cells" id="nb-cells"></div></div></div></section>
+    <aside class="ai-chat-sidebar" id="ai-sidebar" aria-label="智能助手"><div class="ai-header-panel"><div class="ai-title"><span id="ai-title-text">智能助手</span></div><button class="btn-close-ai" type="button" onclick="closeAiSidebar()">×</button></div><div class="ai-messages" id="ai-messages"></div><div class="ai-chips" id="ai-chips"></div><div class="ai-input-area"><div class="ai-input-wrap"><input id="ai-sidebar-input" placeholder="输入路径调整建议" onkeydown="if(event.key==='Enter')sendAiMessage()"><button type="button" onclick="sendAiMessage()">发送</button></div></div></aside>
+  </main>
+  <script>window.__LEARN_STANDALONE_PAGE='path';</script>
+  <script src="cann-app.js"></script><script src="learn-standalone.js"></script>
+</body>
+</html>

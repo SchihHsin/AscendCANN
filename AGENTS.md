@@ -1025,3 +1025,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 视频统一为中等宽度的独立媒体卡；代码框改为浅色编辑器式容器；动手练习改为带蓝色编号与纵向连线的步骤流，右侧 HiDevLab 入口作为轻操作保留。路径侧栏同步收紧为浅灰背景、紧凑课程分组和蓝色当前节点状态。
 - 右侧工具仍遵循现有按需 FAB / 浮窗机制；本轮只微调其浮窗尺寸和边界，不将知识图谱或助手嵌回正文，也不新增“视频对应内容”。
 - Qwen3 路径的动手练习由单个泛化入口改为章节内的 3 步任务流：预检（依赖→NPU/版本→NPU Tensor）、下载（目录→下载→完整性）、加载（Tokenizer→Eager 模型→NPU/FP16/eval）、Tokenizer（编码→解码→token 数比较）、推理（构造输入→生成→解码）、性能（固定条件→热身→三次计时）、融合（保存原实现→替换→冒烟）、验证（公平输入→三次对比→加速比）及后续实验收口。每步附具体代码和预期结果，可独立送入 HiDevLab Notebook。
+
+### 2026-08-06（学习页面拆分）
+
+- 将学习 Demo 按职责拆为两个独立入口：`learn-home.html` 仅维护学习首页（Hero、搜索、典型场景、系统化学习和我的学习），`learn-path.html` 仅维护路径详情（学习侧栏、正文、工具 FAB / 浮窗和 HiDevLab）。原 `cann-website-v2.html` 保留为整站兼容入口，不强制迁移既有 `#learn` 链接。
+- 新增 `learn-standalone.js` 作为独立页胶水层；两个页面继续共用 `cann-app.js` 的学习数据、内容渲染和实验逻辑，以及 `cann-website-v2.css` 的视觉 token，避免复制节点数据和样式。
+- 首页卡片、搜索结果和“我的学习”会跳转到 `learn-path.html?path=<id>`；从路径详情返回则回到 `learn-home.html`。指定单节点可用 `learn-path.html?node=<节点名>` 打开。
+- 路径独立页保留 Qwen3 的 17 节节点内容、右侧 AI / 知识图谱 / 随堂测验三枚 FAB、可调高度的工具浮窗，以及动手练习把代码送入 HiDevLab 的行为；已在本地 HTTP 页面实际验证首页加载、Qwen3 跳转、工具浮窗、HiDevLab 和返回首页，未发现页面脚本错误。
