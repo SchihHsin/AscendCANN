@@ -1666,6 +1666,22 @@ def vector_add_tik(shape, dtype, kernel_name):
     '替换 Qwen3 RMSNorm 融合算子': { title: '替换 RMSNorm：用融合算子缩短 Qwen3 推理路径', duration: '09:15', tag: '优化演示' },
   };
 
+  // The first video detail sample is intentionally specific: it explains what
+  // the learner sees in the Qwen3 loop instead of showing a generic chapter list.
+  const LD_VIDEO_DETAIL_SAMPLES = {
+    '手写逐 Token 推理循环': {
+      point: '02:12',
+      title: '把一句问题变成 NPU 可执行的输入',
+      explanation: '这一段先用聊天模板组织用户问题，再编码成 token IDs 并放到 npu:0。模型并不直接理解文字，后面的每一次前向传播都从这串 token 开始。',
+      codeLabel: '对应代码',
+      code: "text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)\ninput_ids = torch.tensor([tokenizer.encode(text)]).to('npu:0')",
+      practice: '把问题改成你自己的任务，先打印 input_ids.shape，再确认 Tensor 的设备是 npu:0。',
+      warning: '若报 Expected all tensors to be on the same device，通常是输入仍在 CPU、模型已在 NPU；不要只移动模型或只移动输入。',
+      docLabel: '对应文档',
+      doc: 'Qwen3 推理基线 Notebook · 聊天模板与输入编码'
+    }
+  };
+
   function renderNdTab(tab, title) {
     const body = document.getElementById('nd-body');
     const k = NODE_KNOWLEDGE[title];
@@ -4748,8 +4764,19 @@ def vector_add_tik(shape, dtype, kernel_name):
     const videoStage = node.title === '算子开发编程基础'
       ? `<div class="ld-video-stage ld-video-cover"><img src="ascend-c-course-cover.png" alt="昇腾异构编程基础课程封面">${videoOverlay}</div>`
       : `<div class="ld-video-stage">${videoOverlay}</div>`;
-    const videoNotes = video ? `<aside class="ld-video-notes" aria-label="视频同步要点"><div class="ld-video-notes-head"><span>视频同步要点</span><small>${video.duration}</small></div><button class="active" type="button" data-video-time="00:00" onclick="ldFocusVideoNote(this)"><time>00:00</time><span><strong>知识点总结</strong><small>${(knowledge?.concepts || []).slice(0, 2).map(item => item.term).join('、') || '建立本节核心概念'}</small></span></button><button type="button" data-video-time="02:10" onclick="ldFocusVideoNote(this)"><time>02:10</time><span><strong>文档摘要</strong><small>结合本节讲解，确认 API、版本与使用边界。</small></span></button><button type="button" data-video-time="04:20" onclick="ldFocusVideoNote(this)"><time>04:20</time><span><strong>动手练习</strong><small>先完成最小验证，再进入 HiDevLab 实践。</small></span></button><button type="button" data-video-time="06:00" onclick="ldFocusVideoNote(this)"><time>06:00</time><span><strong>排障与资源</strong><small>记录常见错误码，并保留官方资源入口。</small></span></button></aside>` : '';
-    const videoHtml = video ? `<section class="ld-video-section"><h2>学习视频</h2><div class="ld-video-study-grid"><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div>${videoNotes}</div></section>` : '';
+    const videoDetail = LD_VIDEO_DETAIL_SAMPLES[node.title];
+    const videoCard = `<div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div>`;
+    // Only the reviewed Qwen3 sample has companion material. Other videos stay
+    // media-first until their own content has been authored and verified.
+    const videoDetailHtml = videoDetail ? `<aside class="ld-video-detail-card" aria-label="视频对应学习内容">
+      <div class="ld-video-detail-head"><span><i data-lucide="scan-text" aria-hidden="true"></i>视频内容解读</span><time>${videoDetail.point}</time></div>
+      <div class="ld-video-detail-explain"><strong>${videoDetail.title}</strong><p>${videoDetail.explanation}</p></div>
+      <div class="ld-video-detail-code"><span>${videoDetail.codeLabel}</span><pre>${escHtml(videoDetail.code)}</pre></div>
+      <div class="ld-video-detail-practice"><i data-lucide="flask-conical" aria-hidden="true"></i><div><strong>你可以马上做</strong><p>${videoDetail.practice}</p></div><button type="button" onclick="ldOpenLabStep(0)">去验证 <i data-lucide="arrow-up-right" aria-hidden="true"></i></button></div>
+      <div class="ld-video-detail-warning"><i data-lucide="triangle-alert" aria-hidden="true"></i><p>${videoDetail.warning}</p></div>
+      <a class="ld-video-detail-doc" href="${QWEN3_BASELINE_NOTEBOOK}" target="_blank" rel="noopener"><span><i data-lucide="book-open" aria-hidden="true"></i>${videoDetail.docLabel}</span><small>${videoDetail.doc}</small><i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+    </aside>` : '';
+    const videoHtml = video ? `<section class="ld-video-section"><h2>学习视频</h2><div class="${videoDetail ? 'ld-video-study-grid' : 'ld-video-single'}">${videoCard}${videoDetailHtml}</div></section>` : '';
     const nextStepsHtml = knowledge?.nextSteps?.length ? `<section class="ld-next-steps"><div class="ld-next-steps-head"><h2>首跑后，照着做</h2><p>先固定工程与验证规则，再开始优化。</p></div><div class="ld-next-steps-grid">${knowledge.nextSteps.map((step, stepIndex) => `<article class="ld-next-step"><div class="ld-next-step-index">${stepIndex + 1}</div><i data-lucide="${step.icon}" aria-hidden="true"></i><small>${step.label}</small><strong>${step.title}</strong><p>${step.detail}</p><pre>${escHtml(step.code)}</pre></article>`).join('')}</div><a class="ld-next-steps-source" href="${QWEN3_FUSED_OP_NOTEBOOK}" target="_blank" rel="noopener">打开官方融合算子 Notebook，按第 1 步开始 <span aria-hidden="true">↗</span></a></section>` : '';
     const code = knowledge?.code;
     const codeKind = { concept:'概念调用', practice:'可运行示例', compare:'改前 / 改后对照' };
@@ -5023,13 +5050,6 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!input) return;
     input.value = text;
     ldToolAsk();
-  }
-
-  function ldFocusVideoNote(button) {
-    const notes = button?.closest('.ld-video-notes');
-    notes?.querySelectorAll('button').forEach(item => item.classList.toggle('active', item === button));
-    // The local prototype has a cover rather than a media player; retain the
-    // timestamp selection so it maps directly to a real player's seek event.
   }
 
   function ldResetToolChat() {
