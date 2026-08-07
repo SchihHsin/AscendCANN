@@ -8,7 +8,7 @@
 <style>
   :root{--ink:#202735;--muted:#707b8f;--line:#9aa4b2;--paper:#f7f8fb;--panel:#fff}
   *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font-family:'HarmonyOS Sans SC','Noto Sans SC',sans-serif}
-  .page{min-width:1280px;padding:42px 48px 56px}.head{max-width:1760px;margin:0 auto 28px;display:flex;align-items:end;justify-content:space-between;gap:24px}.eyebrow{font:600 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;color:#687489}.head h1{margin:7px 0 0;font-size:32px;letter-spacing:-.035em}.head p{max-width:430px;margin:0;color:var(--muted);font-size:14px;line-height:1.6;text-align:right}.canvas{max-width:1760px;margin:0 auto;border:1px solid #e0e4eb;border-radius:22px;background:var(--panel);box-shadow:0 16px 38px -30px rgba(22,33,54,.35);overflow:auto}.canvas svg{display:block;min-width:1280px;width:100%;height:auto}.edge{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.edge-main{stroke:var(--line)}.root rect{fill:#27324a}.root .title{fill:#fff;font-size:20px;font-weight:700}.root .sub{fill:rgba(255,255,255,.72);font-size:13px}.topic rect{stroke-width:1.7}.topic .num{font-size:11px;font-weight:700}.topic .title{font-size:16px;font-weight:700;fill:var(--ink)}.topic .count{font-size:11px;fill:var(--muted)}.question rect{stroke-width:1.1}.question text{fill:var(--ink);font-size:13px}.question .dot{font-size:11px;font-weight:700}
+  .page{min-width:1280px;padding:42px 48px 56px}.head{max-width:1760px;margin:0 auto 28px;display:flex;align-items:end;justify-content:space-between;gap:24px}.eyebrow{font:600 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;color:#687489}.head h1{margin:7px 0 0;font-size:32px;letter-spacing:-.035em}.head p{max-width:430px;margin:0;color:var(--muted);font-size:14px;line-height:1.6;text-align:right}.canvas{max-width:1760px;margin:0 auto;border:1px solid #e0e4eb;border-radius:22px;background:var(--panel);box-shadow:0 16px 38px -30px rgba(22,33,54,.35);overflow:auto}.canvas svg{display:block;min-width:1280px;width:100%;height:auto}.edge{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.edge-main{stroke:var(--line)}.root rect{fill:#27324a}.root .title{fill:#fff;font-size:20px;font-weight:700}.root .sub{fill:rgba(255,255,255,.72);font-size:13px}.topic rect{stroke-width:1.7}.topic .num{font-size:11px;font-weight:700}.topic .title{font-size:16px;font-weight:700;fill:var(--ink)}.topic .count{font-size:11px;fill:var(--muted)}.question rect{stroke-width:1.1}.question text{fill:var(--ink);font-size:13px}.question .emphasis{font-weight:700}.question .dot{font-size:11px;font-weight:700}
   @media(max-width:900px){.page{padding:24px}.head{align-items:start;flex-direction:column}.head p{text-align:left}.canvas{border-radius:14px}}
 </style>
 </head>
@@ -32,6 +32,14 @@ const topics=[
   {title:'AI 对学习的影响',color:'#bd8b15',fill:'#fff8e3',items:['任务完成后，是否真的学会？','哪些被压缩的过程影响理解？搜索、排错、写代码、理解原理','AI 失败时，用户能否自己继续？','新手、中等经验、资深用户有什么差异？']},
   {title:'学习类产品的 AI 机会',color:'#d55f83',fill:'#fff0f4',items:['现有 Agent 已经在哪些地方足够好？','哪些任务或学习节点仍然不够？','如果学习类产品加入 AI，必须提供什么价值才会使用？','更需要什么？可信来源、工程上下文、运行验证、错误恢复、知识沉淀或其他','希望以什么形式出现？学习页面、运行环境、Skill、IDE 插件或其他']}
 ];
+const emphasis=[
+  [['最近一次','AI'],['任务类型','工具 / 模型','技术场景'],['完成']],
+  [['AI 帮了哪些步骤','检索、读文档、选方案、写代码、调试、优化'],['没有 AI','原本'],['官方文档、社区、Sample、论坛'],['仍无法解决问题','原因']],
+  [['AI 会卡住或反复报错'],['人如何接手','补上下文、重定义问题、给新分支、换模型或方案'],['判断依赖经验'],['昇腾等专有技术场景','知识、版本、错误案例、工程上下文、Skill']],
+  [['功能、精度、性能、稳健性'],['关键代码'],['AI 审核','必须人判断'],['最终结果、过程证据还是代码']],
+  [['是否真的学会'],['被压缩的过程','搜索、排错、写代码、理解原理'],['AI 失败时','自己继续'],['新手、中等经验、资深用户']],
+  [['现有 Agent','足够好'],['任务或学习节点','仍然不够'],['学习类产品加入 AI','必须提供什么价值'],['可信来源、工程上下文、运行验证、错误恢复、知识沉淀'],['学习页面、运行环境、Skill、IDE 插件']]
+];
 
 const cfg={w:1660,rootX:44,rootW:235,topicX:344,topicW:220,forkX:602,questionX:638,questionW:960,top:40,gap:20,itemGap:7};
 const svg=d3.select('#map').attr('viewBox',`0 0 ${cfg.w} 100`);
@@ -42,11 +50,19 @@ function wrap(text,maxChars=54){
   if(line)lines.push(line);return lines;
 }
 
+function renderLine(selection,line,terms){
+  const matches=(terms||[]).filter(term=>line.includes(term)).sort((a,b)=>b.length-a.length);
+  if(!matches.length){selection.text(line);return}
+  const escaped=matches.map(term=>term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+  const pattern=new RegExp(`(${escaped.join('|')})`,'g');
+  line.split(pattern).filter(Boolean).forEach(part=>selection.append('tspan').attr('class',matches.includes(part)?'emphasis':null).text(part));
+}
+
 function draw(){
   svg.selectAll('*').remove();
   const layout=[];let cursor=cfg.top;
   topics.forEach((topic,index)=>{
-    const questions=topic.items.map((text,i)=>{const lines=wrap(text);return {text,i,lines,h:Math.max(42,18+lines.length*18)}});
+    const questions=topic.items.map((text,i)=>{const lines=wrap(text);return {text,i,lines,terms:emphasis[index][i],h:Math.max(42,18+lines.length*18)}});
     const questionsH=d3.sum(questions,d=>d.h)+cfg.itemGap*(questions.length-1);
     const topicH=64;const blockH=Math.max(topicH,questionsH);const topicY=cursor+(blockH-topicH)/2;
     let itemY=cursor;questions.forEach(q=>{q.y=itemY;itemY+=q.h+cfg.itemGap});
@@ -82,7 +98,7 @@ function draw(){
       q.append('rect').attr('width',cfg.questionW).attr('height',question.h).attr('rx',10).attr('ry',10).attr('fill','#fcfcfd').attr('stroke',topic.color).attr('stroke-opacity',.42);
       q.append('circle').attr('cx',16).attr('cy',question.h/2).attr('r',3.5).attr('fill',topic.color);
       const label=q.append('text').attr('x',29).attr('y',question.lines.length===1?question.h/2+4:18);
-      label.selectAll('tspan').data(question.lines).join('tspan').attr('x',29).attr('dy',(_,i)=>i?18:0).text(d=>d);
+      label.selectAll('tspan.line').data(question.lines).join('tspan').attr('class','line').attr('x',29).attr('dy',(_,i)=>i?18:0).each(function(line){renderLine(d3.select(this),line,question.terms)});
     });
   });
 }
