@@ -79,7 +79,7 @@ function draw(){
       const mid=question.y+question.h/2;
       g.append('path').attr('class','edge').attr('stroke',topic.color).attr('d',`M${cfg.forkX},${mid}H${cfg.questionX}`);
       const q=g.append('g').attr('class','question').attr('transform',`translate(${cfg.questionX},${question.y})`);
-      q.append('rect').attr('width',cfg.questionW).attr('height',question.h).attr('rx',10).attr('ry',10).attr('fill',topic.fill).attr('stroke',topic.color);
+      q.append('rect').attr('width',cfg.questionW).attr('height',question.h).attr('rx',10).attr('ry',10).attr('fill','#fcfcfd').attr('stroke',topic.color).attr('stroke-opacity',.42);
       q.append('circle').attr('cx',16).attr('cy',question.h/2).attr('r',3.5).attr('fill',topic.color);
       const label=q.append('text').attr('x',29).attr('y',question.lines.length===1?question.h/2+4:18);
       label.selectAll('tspan').data(question.lines).join('tspan').attr('x',29).attr('dy',(_,i)=>i?18:0).text(d=>d);
