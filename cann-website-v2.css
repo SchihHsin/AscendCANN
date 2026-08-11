@@ -26,6 +26,8 @@ body.v2-nav-collapsed #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 /* A running lab is a focused workspace: retain only the lesson topbar above it. */
 body.v2-hidevlab-open .ascend-community-bar { transform:translateY(-24px); opacity:0; pointer-events:none; }
 body.v2-hidevlab-open .ascend-developer-nav { transform:translateY(-76px); opacity:0; pointer-events:none; }
+/* In split lab mode the lesson topbar and the space above the notebook form one white workspace bar. */
+body.v2-hidevlab-open #page-learn { background:#fff; }
 body.v2-hidevlab-open #page-learn .ld-roadmap { top:0; }
 body.v2-hidevlab-open #page-learn .ld-roadmap-topbar { flex-basis:58px; }
 
@@ -508,7 +510,7 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 #page-learn .v2-tool-float-actions button:hover { background:#F1F3F7; }
 #page-learn .v2-tool-float-actions svg { width:18px; height:18px; stroke-width:1.8; }
 /* Contextual assistant: community-style welcome, then a focused learning chat. */
-#page-learn #ld-tool-ai { display:flex; min-height:0; padding:0!important; overflow:hidden; background:linear-gradient(135deg,#fff 0%,#fff 72%,#F3F0FF 100%); flex-direction:column; }
+#page-learn #ld-tool-ai.active { display:flex; min-height:0; padding:0!important; overflow:hidden; background:linear-gradient(135deg,#fff 0%,#fff 72%,#F3F0FF 100%); flex-direction:column; }
 #page-learn #ld-tool-ai .ld-ai-welcome { display:flex; flex:1; align-items:center; justify-content:center; min-height:0; padding:28px 28px 22px; overflow:auto; text-align:center; flex-direction:column; }
 #page-learn #ld-tool-ai .ld-ai-welcome > img { width:76px; height:76px; margin-bottom:16px; object-fit:contain; filter:drop-shadow(0 8px 12px rgba(92,90,192,.16)); }
 #page-learn #ld-tool-ai .ld-ai-welcome h2 { margin:0; color:#121826; font-size:25px; font-weight:700; letter-spacing:-.04em; }
