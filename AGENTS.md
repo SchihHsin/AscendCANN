@@ -1041,3 +1041,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增 `learn-standalone.js` 作为独立页胶水层；两个页面继续共用 `cann-app.js` 的学习数据、内容渲染和实验逻辑，以及 `cann-website-v2.css` 的视觉 token，避免复制节点数据和样式。
 - 首页卡片、搜索结果和“我的学习”会跳转到 `learn-path.html?path=<id>`；从路径详情返回则回到 `learn-home.html`。指定单节点可用 `learn-path.html?node=<节点名>` 打开。
 - 路径独立页保留 Qwen3 的 17 节节点内容、右侧 AI / 知识图谱 / 随堂测验三枚 FAB、可调高度的工具浮窗，以及动手练习把代码送入 HiDevLab 的行为；已在本地 HTTP 页面实际验证首页加载、Qwen3 跳转、工具浮窗、HiDevLab 和返回首页，未发现页面脚本错误。
+
+### 2026-08-11（路径实践入口收敛）
+
+- 移除学习正文标题简介后的重复“在 HiDevLab 实践”入口，避免与章节内“动手练习”产生两处并列入口。
+- 在路径顶栏右侧加入主行动“开始实践”；它始终对应当前学习节点，优先把该节点的第一个分步练习及预期结果送入 HiDevLab。没有分步练习时，打开该节点的代码示例。

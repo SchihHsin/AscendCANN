@@ -4814,7 +4814,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const practiceSteps = knowledge?.lab?.steps || [{ title:`运行「${node.title}」配套练习`, desc:'在 HiDevLab 中打开本章节的实践环境，边学边验证。' }];
     const practice = `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>`;
     const troubleshooting = ldRenderTroubleshooting(node, knowledge);
-    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p><div class="ld-content-actions"><button class="secondary" onclick="openEmptySandbox()">在 HiDevLab 实践</button></div></div>${nextStepsHtml}${videoHtml}${readingHtml}${codeHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p></div>${nextStepsHtml}${videoHtml}${readingHtml}${codeHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     requestAnimationFrame(() => window.lucide?.createIcons());
     ldRefreshStudyTools(node, knowledge);
   }
@@ -5143,6 +5143,14 @@ def vector_add_tik(shape, dtype, kernel_name):
     if (!lab?.steps?.[stepIndex]) return openEmptySandbox();
     _currentDrawerNode = { title:node.title, el:null, category:node.category };
     openLabStep(stepIndex);
+  }
+
+  function ldStartCurrentPractice() {
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    if (!node) return openEmptySandbox();
+    const steps = NODE_KNOWLEDGE[node.title]?.lab?.steps;
+    if (steps?.length) return ldOpenLabStep(0);
+    return ldRunNodeCode();
   }
 
   function ldLoadEmbeddedQuiz() {
