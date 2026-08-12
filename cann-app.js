@@ -1741,6 +1741,41 @@ def vector_add_tik(shape, dtype, kernel_name):
     '替换 Qwen3 RMSNorm 融合算子': { title: '替换 RMSNorm：用融合算子缩短 Qwen3 推理路径', duration: '09:15', tag: '优化演示' },
   };
 
+  // Videos are not a second, generic lesson. Each timestamp points to the
+  // explanation, code or hands-on step that the learner should use next.
+  const LD_VIDEO_SYNC = {
+    'AI 与大模型基础': [
+      { time:'00:00', title:'训练、推理与这条路径', note:'先区分训练和推理，明确这条路径的目标是让已经训练好的 Qwen3 在昇腾 NPU 上完成一次生成。', reading:0 },
+      { time:'02:10', title:'为什么从 Qwen3-0.6B 开始', note:'理解参数规模与模型选择；0.6B 是完成首次端到端推理闭环的合适起点。', reading:1, practice:0 },
+      { time:'04:35', title:'把概念落到首跑闭环', note:'从模型下载、加载到生成和测速，建立后续每一节的完整地图。', reading:2, practice:1 }
+    ],
+    '大模型推理核心组件': [
+      { time:'00:00', title:'四个核心组件各做什么', note:'Tokenizer、模型、后处理与 NPU 共同完成一次文本生成。', reading:0, practice:0 },
+      { time:'02:25', title:'逐 token 生成怎样发生', note:'看懂模型给出概率、后处理挑选 token，再把结果拼回输入的循环。', reading:1, practice:1 },
+      { time:'05:40', title:'NPU 在哪里参与计算', note:'把大规模前向计算交给 NPU；下一节会实际将 Tensor 迁移到设备。', reading:3, practice:2 }
+    ],
+    '加载分词器与 Qwen3 模型': [
+      { time:'00:00', title:'先加载分词器', note:'分词器负责把文本转为模型可读的 token ID，也负责还原最终输出。', reading:0, practice:0 },
+      { time:'02:10', title:'用 Eager 建立可观察基线', note:'先用 eager 模式看清基础推理流程，后续优化才有可比较的基线。', reading:1, practice:1 },
+      { time:'04:55', title:'迁移 NPU、半精度与 eval', note:'模型放到 npu:0、转换为 FP16 并切换 eval 后，才具备稳定推理条件。', reading:2, practice:2, code:true }
+    ],
+    '手写逐 Token 推理循环': [
+      { time:'00:00', title:'构造聊天输入', note:'使用聊天模板、编码并创建位于 npu:0 的 input_ids。', reading:0, practice:0 },
+      { time:'02:45', title:'取最后一个位置的预测', note:'每轮前向传播只取最后位置的 logits，用贪心策略选出下一个 token。', reading:1, practice:1, code:true },
+      { time:'06:50', title:'EOS 与序列拼接', note:'遇到 EOS 就停止；否则把新 token 接回序列，继续下一轮生成。', reading:2, practice:2 }
+    ],
+    '测量 Qwen3 推理基线速度': [
+      { time:'00:00', title:'为什么先热身', note:'首次推理的初始化成本会干扰测量，完成一次热身后再开始正式计时。', reading:0, practice:0 },
+      { time:'01:35', title:'为什么必须 synchronize', note:'等待异步 NPU 任务结束，保证计时覆盖真实的设备执行时间。', reading:1, practice:1, code:true },
+      { time:'03:30', title:'记录可比较的基线', note:'重复三次、取平均 tokens/s，作为后续融合算子或图模式优化的对照。', reading:2, practice:2 }
+    ],
+    '替换 Qwen3 RMSNorm 融合算子': [
+      { time:'00:00', title:'为什么替换 RMSNorm', note:'原实现由多个小算子组成；融合后可减少调度与中间内存读写。', reading:0 },
+      { time:'02:40', title:'只替换这一处实现', note:'保存原 forward，再把 RMSNorm 切换到 torch_npu.npu_rms_norm；模型其他部分保持不变。', reading:1, practice:1, code:true },
+      { time:'06:15', title:'先做正确性冒烟验证', note:'复用同一输入完成短生成；出现异常时立即恢复原实现，再定位问题。', reading:2, practice:2 }
+    ]
+  };
+
   function renderNdTab(tab, title) {
     const body = document.getElementById('nd-body');
     const k = NODE_KNOWLEDGE[title];
@@ -4828,12 +4863,14 @@ def vector_add_tik(shape, dtype, kernel_name):
     }).join('');
     const conceptDoc = concept => concept.href || knowledge?.resources?.[0]?.href || 'https://www.hiascend.com/document';
     const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p><a class="ld-concept-doc" href="${conceptDoc(c)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">查看文档 <span aria-hidden="true">↗</span></a></div>`).join('');
-    const readingHtml = knowledge?.body ? `<section class="ld-reading-section"><h2>本节讲解</h2><div class="ld-reading-body">${knowledge.body}</div></section>` : '';
+    const readingItems = knowledge?.reading || [];
+    const readingHtml = knowledge?.body ? `<section class="ld-reading-section" id="ld-reading-section"><h2>本节讲解</h2><div class="ld-reading-body">${readingItems.length ? readingItems.map((item, itemIndex) => `<article class="ld-reading-item" data-reading-index="${itemIndex}"><h3>${item.term}</h3><p>${item.desc}</p></article>`).join('') : knowledge.body}</div></section>` : '';
     const videoOverlay = video ? `<div class="ld-video-overlay"><strong>${video.title}</strong><small>跟随本节内容理解核心概念，并完成对应实践</small></div><button class="ld-video-play" type="button" aria-label="播放：${video.title}">▶</button>` : '';
     const videoStage = node.title === '算子开发编程基础'
       ? `<div class="ld-video-stage ld-video-cover"><img src="ascend-c-course-cover.png" alt="昇腾异构编程基础课程封面">${videoOverlay}</div>`
       : `<div class="ld-video-stage">${videoOverlay}</div>`;
-    const videoHtml = video ? `<section class="ld-video-section"><h2>学习视频</h2><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div></section>` : '';
+    const videoSegments = LD_VIDEO_SYNC[node.title] || [];
+    const videoHtml = video ? `<section class="ld-video-section"><h2>视频与本节内容</h2><div class="ld-video-study-stack"><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div><div class="ld-video-sync" aria-label="视频章节"><div class="ld-video-sync-head"><strong>视频章节</strong><small>选择一个时间点，定位下方对应讲解、代码或练习</small></div><div class="ld-video-segments">${videoSegments.map((segment, segmentIndex) => `<button class="ld-video-segment ${segmentIndex === 0 ? 'active' : ''}" type="button" data-video-segment="${segmentIndex}" onclick="ldSelectVideoSegment(${segmentIndex})"><time>${segment.time}</time><span><strong>${segment.title}</strong><small>${segment.note}</small></span><i data-lucide="arrow-down" aria-hidden="true"></i></button>`).join('') || '<p class="ld-video-sync-empty">本视频暂无章节标注，可按下方讲解继续学习。</p>'}</div></div></div></section>` : '';
     const nextStepsHtml = knowledge?.nextSteps?.length ? `<section class="ld-next-steps"><div class="ld-next-steps-head"><h2>首跑后，照着做</h2><p>先固定工程与验证规则，再开始优化。</p></div><div class="ld-next-steps-grid">${knowledge.nextSteps.map((step, stepIndex) => `<article class="ld-next-step"><div class="ld-next-step-index">${stepIndex + 1}</div><i data-lucide="${step.icon}" aria-hidden="true"></i><small>${step.label}</small><strong>${step.title}</strong><p>${step.detail}</p><pre>${escHtml(step.code)}</pre></article>`).join('')}</div><a class="ld-next-steps-source" href="${QWEN3_FUSED_OP_NOTEBOOK}" target="_blank" rel="noopener">打开官方融合算子 Notebook，按第 1 步开始 <span aria-hidden="true">↗</span></a></section>` : '';
     const code = knowledge?.code;
     const codeKind = { concept:'概念调用', practice:'可运行示例', compare:'改前 / 改后对照' };
@@ -4842,11 +4879,22 @@ def vector_add_tik(shape, dtype, kernel_name):
       : '';
     const codeHtml = code ? `<section class="ld-code-section"><div class="ld-section-title-row"><h2>代码示例</h2><span class="ld-code-kind ${code.kind || 'practice'}">${codeKind[code.kind] || '可运行示例'}</span></div>${code.note ? `<p class="ld-code-note">${code.note}</p>` : ''}<div class="ld-code-example"><div class="ld-code-toolbar"><span>${code.label || code.lang}</span><div><button type="button" onclick="ldCopyNodeCode(this)" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button type="button" onclick="ldExplainNodeCode()" title="让 AI 逐行解释"><i data-lucide="sparkles" aria-hidden="true"></i>AI 解释</button>${runAction}</div></div><pre data-node-code>${escHtml(code.body)}</pre></div></section>` : '';
     const practiceSteps = knowledge?.lab?.steps || [];
-    const practice = practiceSteps.length ? `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>` : '';
+    const practice = practiceSteps.length ? `<section id="ld-practice-section"><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button data-practice-index="${stepIndex}" onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>` : '';
     const troubleshooting = ldRenderTroubleshooting(node, knowledge);
     content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p></div>${nextStepsHtml}${videoHtml}${readingHtml}${codeHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     requestAnimationFrame(() => window.lucide?.createIcons());
     ldRefreshStudyTools(node, knowledge);
+  }
+
+  function ldSelectVideoSegment(segmentIndex) {
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    const segment = LD_VIDEO_SYNC[node?.title]?.[segmentIndex];
+    if (!segment) return;
+    document.querySelectorAll('.ld-video-segment').forEach((item, index) => item.classList.toggle('active', index === segmentIndex));
+    document.querySelectorAll('.ld-reading-item').forEach((item, index) => item.classList.toggle('is-linked', index === segment.reading));
+    document.querySelectorAll('.ld-practice-steps button').forEach(item => item.classList.toggle('is-linked', Number(item.dataset.practiceIndex) === segment.practice));
+    const target = segment.code ? document.querySelector('.ld-code-section') : segment.practice !== undefined ? document.querySelector(`[data-practice-index="${segment.practice}"]`) : document.querySelector(`[data-reading-index="${segment.reading}"]`);
+    target?.scrollIntoView({ behavior:'smooth', block:'center' });
   }
 
   const LD_ERROR_CODE_REFERENCE = 'https://www.hiascend.com/document/detail/zh/canncommercial/80RC1/developmentguide/maintenref/troubleshooting/atlaserrorcode_15_0313.html';

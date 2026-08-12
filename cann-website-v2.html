@@ -1765,10 +1765,6 @@
   }
   function v2UseLucideResourceIcons() {
     document.querySelectorAll('#ld-learning-content h2 .v2-section-icon').forEach(icon => icon.remove());
-    document.querySelectorAll('#ld-learning-content .ld-practice-steps button > span').forEach(icon => {
-      icon.innerHTML = '<i data-lucide="square-terminal" aria-hidden="true"></i>';
-      icon.setAttribute('aria-label', '实践练习');
-    });
     document.querySelectorAll('#ld-learning-content .ld-content-concept').forEach((card, index) => {
       if (card.querySelector('.v2-card-icon')) return;
       const icons = ['brain-circuit', 'layers-3', 'workflow'];
