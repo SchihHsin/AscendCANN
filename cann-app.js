@@ -4865,12 +4865,13 @@ def vector_add_tik(shape, dtype, kernel_name):
     const concepts = (knowledge?.concepts || []).map(c => `<div class="ld-content-concept"><strong>${c.term}</strong><p>${c.desc}</p><a class="ld-concept-doc" href="${conceptDoc(c)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">查看文档 <span aria-hidden="true">↗</span></a></div>`).join('');
     const readingItems = knowledge?.reading || [];
     const readingHtml = knowledge?.body ? `<section class="ld-reading-section" id="ld-reading-section"><h2>本节讲解</h2><div class="ld-reading-body">${readingItems.length ? readingItems.map((item, itemIndex) => `<article class="ld-reading-item" data-reading-index="${itemIndex}"><h3>${item.term}</h3><p>${item.desc}</p></article>`).join('') : knowledge.body}</div></section>` : '';
-    const videoOverlay = video ? `<div class="ld-video-overlay"><strong>${video.title}</strong><small>跟随本节内容理解核心概念，并完成对应实践</small></div><button class="ld-video-play" type="button" aria-label="播放：${video.title}">▶</button>` : '';
+    const videoOverlay = video ? `<div class="ld-video-overlay"><strong>${video.title}</strong><small>跟随本节内容理解核心概念，并完成对应实践</small></div><button class="ld-video-play" type="button" onclick="ldAdvanceVideoSegment()" aria-label="播放并切换到下一视频章节">▶</button>` : '';
     const videoStage = node.title === '算子开发编程基础'
       ? `<div class="ld-video-stage ld-video-cover"><img src="ascend-c-course-cover.png" alt="昇腾异构编程基础课程封面">${videoOverlay}</div>`
       : `<div class="ld-video-stage">${videoOverlay}</div>`;
     const videoSegments = LD_VIDEO_SYNC[node.title] || [];
-    const videoHtml = video ? `<section class="ld-video-section"><h2>视频与本节内容</h2><div class="ld-video-study-stack"><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div><div class="ld-video-sync" aria-label="视频章节"><div class="ld-video-sync-head"><strong>视频章节</strong><small>选择一个时间点，定位下方对应讲解、代码或练习</small></div><div class="ld-video-segments">${videoSegments.map((segment, segmentIndex) => `<button class="ld-video-segment ${segmentIndex === 0 ? 'active' : ''}" type="button" data-video-segment="${segmentIndex}" onclick="ldSelectVideoSegment(${segmentIndex})"><time>${segment.time}</time><span><strong>${segment.title}</strong><small>${segment.note}</small></span><i data-lucide="arrow-down" aria-hidden="true"></i></button>`).join('') || '<p class="ld-video-sync-empty">本视频暂无章节标注，可按下方讲解继续学习。</p>'}</div></div></div></section>` : '';
+    const isVideoLed = videoSegments.length > 0;
+    const videoHtml = video ? `<section class="ld-video-section"><h2>视频与本节内容</h2><div class="ld-video-study-stack"><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div><div class="ld-video-sync" aria-label="视频章节"><div class="ld-video-sync-head"><strong>视频章节</strong><small>选择时间点，下方内容会随视频章节切换</small></div><div class="ld-video-segments">${videoSegments.map((segment, segmentIndex) => `<button class="ld-video-segment ${segmentIndex === 0 ? 'active' : ''}" type="button" data-video-segment="${segmentIndex}" onclick="ldSelectVideoSegment(${segmentIndex})"><time>${segment.time}</time><span><strong>${segment.title}</strong><small>${segment.note}</small></span><i data-lucide="arrow-down" aria-hidden="true"></i></button>`).join('') || '<p class="ld-video-sync-empty">本视频暂无章节标注，可按下方讲解继续学习。</p>'}</div></div></div></section>${isVideoLed ? '<section class="ld-video-linked-content" id="ld-video-linked-content" aria-live="polite"></section>' : ''}` : '';
     const nextStepsHtml = knowledge?.nextSteps?.length ? `<section class="ld-next-steps"><div class="ld-next-steps-head"><h2>首跑后，照着做</h2><p>先固定工程与验证规则，再开始优化。</p></div><div class="ld-next-steps-grid">${knowledge.nextSteps.map((step, stepIndex) => `<article class="ld-next-step"><div class="ld-next-step-index">${stepIndex + 1}</div><i data-lucide="${step.icon}" aria-hidden="true"></i><small>${step.label}</small><strong>${step.title}</strong><p>${step.detail}</p><pre>${escHtml(step.code)}</pre></article>`).join('')}</div><a class="ld-next-steps-source" href="${QWEN3_FUSED_OP_NOTEBOOK}" target="_blank" rel="noopener">打开官方融合算子 Notebook，按第 1 步开始 <span aria-hidden="true">↗</span></a></section>` : '';
     const code = knowledge?.code;
     const codeKind = { concept:'概念调用', practice:'可运行示例', compare:'改前 / 改后对照' };
@@ -4881,20 +4882,45 @@ def vector_add_tik(shape, dtype, kernel_name):
     const practiceSteps = knowledge?.lab?.steps || [];
     const practice = practiceSteps.length ? `<section id="ld-practice-section"><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button data-practice-index="${stepIndex}" onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>` : '';
     const troubleshooting = ldRenderTroubleshooting(node, knowledge);
-    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p></div>${nextStepsHtml}${videoHtml}${readingHtml}${codeHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
+    content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p></div>${nextStepsHtml}${videoHtml}${isVideoLed ? '' : `${readingHtml}${codeHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`}`;
+    if (isVideoLed) {
+      window._ldVideoLesson = { node, knowledge, videoSegments, readingItems, practiceSteps, concepts, resources, code, codeHtml, practice };
+      ldRenderVideoLinkedContent(0);
+    } else {
+      delete window._ldVideoLesson;
+    }
     requestAnimationFrame(() => window.lucide?.createIcons());
     ldRefreshStudyTools(node, knowledge);
   }
 
   function ldSelectVideoSegment(segmentIndex) {
-    const node = _ldActivePathNodes[_ldActivePathIndex];
-    const segment = LD_VIDEO_SYNC[node?.title]?.[segmentIndex];
+    const segment = window._ldVideoLesson?.videoSegments?.[segmentIndex];
     if (!segment) return;
     document.querySelectorAll('.ld-video-segment').forEach((item, index) => item.classList.toggle('active', index === segmentIndex));
-    document.querySelectorAll('.ld-reading-item').forEach((item, index) => item.classList.toggle('is-linked', index === segment.reading));
-    document.querySelectorAll('.ld-practice-steps button').forEach(item => item.classList.toggle('is-linked', Number(item.dataset.practiceIndex) === segment.practice));
-    const target = segment.code ? document.querySelector('.ld-code-section') : segment.practice !== undefined ? document.querySelector(`[data-practice-index="${segment.practice}"]`) : document.querySelector(`[data-reading-index="${segment.reading}"]`);
-    target?.scrollIntoView({ behavior:'smooth', block:'center' });
+    ldRenderVideoLinkedContent(segmentIndex);
+  }
+
+  function ldAdvanceVideoSegment() {
+    const active = document.querySelector('.ld-video-segment.active');
+    const current = Number(active?.dataset.videoSegment || 0);
+    const count = window._ldVideoLesson?.videoSegments?.length || 0;
+    if (count) ldSelectVideoSegment((current + 1) % count);
+  }
+
+  function ldRenderVideoLinkedContent(segmentIndex) {
+    const lesson = window._ldVideoLesson;
+    const panel = document.getElementById('ld-video-linked-content');
+    const segment = lesson?.videoSegments?.[segmentIndex];
+    if (!lesson || !panel || !segment) return;
+    const reading = lesson.readingItems?.[segment.reading];
+    const concept = lesson.knowledge?.concepts?.[segment.reading];
+    const step = segment.practice !== undefined ? lesson.practiceSteps?.[segment.practice] : null;
+    const code = segment.code ? lesson.code : null;
+    const codeKind = { concept:'概念调用', practice:'可运行示例', compare:'改前 / 改后对照' };
+    const codeBlock = code ? `<section class="ld-video-linked-code"><div class="ld-section-title-row"><h3>对应代码</h3><span class="ld-code-kind ${code.kind || 'practice'}">${codeKind[code.kind] || '可运行示例'}</span></div>${code.note ? `<p class="ld-code-note">${code.note}</p>` : ''}<div class="ld-code-example"><div class="ld-code-toolbar"><span>${code.label || code.lang}</span><div><button type="button" onclick="ldCopyNodeCode(this)" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button type="button" onclick="ldRunNodeCode()"><i data-lucide="play" aria-hidden="true"></i>在 HiDevLab 运行</button></div></div><pre data-node-code>${escHtml(code.body)}</pre></div></section>` : '';
+    const practice = step ? `<section class="ld-video-linked-practice"><h3>对应动手练习</h3><button class="ld-video-practice-step" type="button" onclick="ldOpenLabStep(${segment.practice})"><span>${segment.practice + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button></section>` : '';
+    panel.innerHTML = `<div class="ld-video-linked-head"><span>${segment.time}</span><div><small>当前视频段</small><h2>${segment.title}</h2></div></div><p class="ld-video-linked-note">${segment.note}</p>${reading ? `<section class="ld-video-linked-reading"><h3>这段在讲什么</h3><p>${reading.desc}</p></section>` : ''}${concept ? `<section class="ld-video-linked-concept"><h3>关键知识点</h3><strong>${concept.term}</strong><p>${concept.desc}</p></section>` : ''}${codeBlock}${practice}`;
+    window.lucide?.createIcons();
   }
 
   const LD_ERROR_CODE_REFERENCE = 'https://www.hiascend.com/document/detail/zh/canncommercial/80RC1/developmentguide/maintenref/troubleshooting/atlaserrorcode_15_0313.html';
