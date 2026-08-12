@@ -758,7 +758,8 @@ body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!importan
 #page-learn .ld-practice-steps button > div { padding-top:3px; }
 #page-learn .ld-practice-steps strong { color:#242A34; font-size:16px; }
 #page-learn .ld-practice-steps small { display:block; max-width:720px; margin-top:7px; color:#6B7483; font-size:14px; line-height:1.65; }
-#page-learn .ld-practice-steps b { align-self:start; margin-top:1px; padding:8px 12px; border-radius:8px; background:#F1F6FF; color:#2466C6; font-size:12px; font-weight:600; }
+#page-learn .ld-practice-steps b { align-self:start; margin-top:1px; padding:8px 12px; border-radius:8px; background:#F1F6FF; color:#2466C6; font-size:12px; font-weight:600; opacity:0; pointer-events:none; transform:translateX(-6px); transition:opacity .16s ease,transform .16s ease,background .16s ease; }
+#page-learn .ld-practice-steps button:hover b,#page-learn .ld-practice-steps button:focus-visible b { opacity:1; transform:translateX(0); }
 #page-learn .ld-practice-steps button:hover b { background:#E5F0FF; }
 
 #page-learn .ld-path-workspace.v2-right-collapsed.v2-tool-float-open .ld-study-tools { width:min(500px,calc(100vw - 88px)); border-radius:16px; box-shadow:0 18px 48px rgba(35,41,55,.16); }
