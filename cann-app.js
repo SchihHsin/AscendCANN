@@ -1370,23 +1370,43 @@ def vector_add_tik(shape, dtype, kernel_name):
     'AI 与大模型基础': {
       summary:'本路径以 Qwen3-0.6B 为例，先建立“训练”和“推理”的整体概念：训练让模型从大量数据中学习；推理则是把已经学到的能力用于回答一个新问题。',
       concepts:[{term:'训练',desc:'使用大量数据调整模型参数，让模型学会语言和任务规律。'},{term:'推理',desc:'固定已训练好的参数，根据输入生成回答；这是本 Notebook 要跑通的环节。'},{term:'Qwen3-0.6B',desc:'通义千问第 3 代的 6 亿参数模型，体量适合第一次在本地 NPU 上学习推理流程。'}],
+      lab:{steps:[
+        {title:'明确本次运行的目标',desc:'把目标限定为“运行已训练好的 Qwen3”，避免把后续推理路径和训练模型混为一谈。',code:"learning_goal = '在昇腾 NPU 上完成 Qwen3-0.6B 的一次推理'\nprint(learning_goal)",expected:'输出本次学习目标：在昇腾 NPU 上完成一次 Qwen3 推理。'},
+        {title:'确认模型与目标设备',desc:'记录本路径使用的模型、参数规模和目标设备；后续下载、加载与测速都以这三个条件为准。',code:"model_name = 'Qwen/Qwen3-0.6B'\nparameter_scale = '0.6B'\ntarget_device = 'npu:0'\nprint(model_name, parameter_scale, target_device)",expected:'输出 Qwen3-0.6B、0.6B 和 npu:0。'},
+        {title:'整理本次推理闭环',desc:'将视频中介绍的流程落到可执行顺序：先准备环境和模型，再加载、生成并测量结果。',code:"run_flow = ['环境与版本预检', '下载模型', '加载模型', '生成回答', '测量 tokens/s']\nfor index, item in enumerate(run_flow, 1):\n    print(f'{index}. {item}')",expected:'输出五步推理闭环；下一节点进入环境与版本预检。'}
+      ]},
       resources:qwen3Resources('第 1 课：AI、LLM 与 Qwen3-0.6B 的入门说明')
     },
     '大模型推理核心组件': {
       summary:'一次文本生成由分词器、模型、后处理和 NPU 共同完成。模型只输出“下一个 token 的概率”，选哪个 token、何时结束以及如何接回序列都由后处理完成。',
       concepts:[{term:'Tokenizer',desc:'把文字编码成 token IDs，并将模型生成的 token IDs 解码回文字。'},{term:'模型前向传播',desc:'输入当前 token 序列，输出下一个位置所有候选 token 的概率分布。'},{term:'后处理',desc:'选择 token、检查 EOS 结束标记并拼接到已有序列；三步构成逐 token 推理循环。'},{term:'NPU',desc:'神经网络处理器，擅长大规模矩阵运算，用于加速模型前向计算。'}],
+      lab:{steps:[
+        {title:'用 token IDs 模拟模型输入',desc:'先不加载真实模型，确认模型实际接收的是整数 token 序列，而不是原始文字。',code:"input_ids = [151644, 8948, 198]\nprint('input token IDs:', input_ids)",expected:'输出一串整数 token IDs。'},
+        {title:'模拟选择下一个 token',desc:'用候选分数模拟模型前向输出，并选择最高分 token，理解贪心解码的核心动作。',code:"candidates = {42: 0.18, 73: 0.64, 91: 0.18}\nnext_token = max(candidates, key=candidates.get)\nprint('next token:', next_token)",expected:'输出概率最高的 token：73。'},
+        {title:'拼接 token 并检查是否结束',desc:'将新 token 接回已有序列；没有遇到 EOS 时，下一轮会继续把更长的序列送入模型。',code:"eos_token_id = 151645\ngenerated_ids = input_ids + [next_token]\nfinished = generated_ids[-1] == eos_token_id\nprint('generated:', generated_ids)\nprint('finished:', finished)",expected:'输出扩展后的序列和 False，表示仍会继续生成。'}
+      ]},
       resources:qwen3Resources('第 3 节：推理流程和四个核心组件')
     },
     'PyTorch 与张量基础': {
       summary:'PyTorch 提供张量计算、自动求导和神经网络模块。推理时，输入、模型参数和输出都以 Tensor 的形式参与计算。',
       concepts:[{term:'Tensor',desc:'多维数组；标量、向量和矩阵都是 Tensor 的特殊形式。'},{term:'张量运算',desc:'可在 CPU 或 NPU 上执行，例如逐元素乘法、加法和矩阵运算。'},{term:'PyTorch',desc:'Notebook 使用的深度学习框架，torch_npu 会为它注册昇腾 NPU 后端。'}],
       code:{lang:'python',body:`import torch\n\nx = torch.tensor([1.0, 2.0, 3.0])\ny = x * 2 + 1\nprint(y)  # tensor([3., 5., 7.])`},
+      lab:{steps:[
+        {title:'创建第一枚 Tensor',desc:'确认当前 Notebook 内核可以导入 PyTorch，并查看 Tensor 的类型与初始设备。',code:"import torch\nx = torch.tensor([1.0, 2.0, 3.0])\nprint(x, x.dtype, x.device)",expected:'输出 Tensor 内容、float32 类型和 cpu 设备。'},
+        {title:'完成一次张量计算',desc:'执行一次逐元素计算，观察模型计算中的输入和输出都会保持为 Tensor。',code:"y = x * 2 + 1\nprint(y)",expected:'输出 tensor([3., 5., 7.])。'},
+        {title:'构造一批推理输入',desc:'把两条 token 序列堆叠成 batch，理解后续模型输入中的 batch 与 sequence 两个维度。',code:"input_ids = torch.tensor([[101, 102, 103], [201, 202, 203]], dtype=torch.long)\nprint('shape:', input_ids.shape)\nprint('dtype:', input_ids.dtype)",expected:'输出 shape 为 [2, 3]，dtype 为 torch.int64。'}
+      ]},
       resources:qwen3Resources('第 4 节：PyTorch 与 Tensor 基础')
     },
     '昇腾 NPU 与 torch_npu': {
       summary:'torch_npu 是 PyTorch 的昇腾适配插件。导入后，可将 Tensor 或模型通过 .to(\'npu:0\') 放到第 0 张 NPU 上执行；CANN 提供其底层运行能力。',
       concepts:[{term:'torch_npu',desc:'导入后自动注册 PyTorch 的 NPU 后端，是原生 PyTorch 代码跑在昇腾上的适配层。'},{term:'npu:0',desc:'第 0 个昇腾 NPU 设备标识；模型和输入应位于同一设备。'},{term:'CANN',desc:'昇腾异构计算架构，为 NPU 上的算子和运行时提供基础能力。'}],
       code:{lang:'python',body:`import torch\nimport torch_npu\n\nprint(torch.npu.is_available())\nx = torch.tensor([1.0, 2.0]).to('npu:0')\nprint(x.device)`},
+      lab:{steps:[
+        {title:'确认 NPU 后端可用',desc:'导入 torch_npu 后检查当前内核是否识别昇腾 NPU；未通过时应回到环境与版本预检，而不是继续加载模型。',code:"import torch\nimport torch_npu\nprint('NPU available:', torch.npu.is_available())",expected:'在 HiDevLab 的 NPU 内核中输出 True。'},
+        {title:'迁移一枚 Tensor 到 npu:0',desc:'先在 CPU 创建小 Tensor，再显式迁移到 npu:0；这是后续模型输入迁移的最小验证。',code:"x = torch.tensor([1.0, 2.0])\nx_npu = x.to('npu:0')\nprint(x_npu.device)",expected:'输出 npu:0。'},
+        {title:'确认计算结果保持在 NPU',desc:'在 NPU 上执行一次最小计算，验证输入与结果处于同一设备，避免后续模型与输入跨设备报错。',code:"y_npu = x_npu * 2 + 1\nprint(y_npu.device)\nprint(y_npu.cpu())",expected:'先输出 npu:0，再输出 tensor([3., 5.])。'}
+      ]},
       resources:qwen3Resources('第 5 节：通过 torch_npu 使用昇腾 NPU')
     },
     'Qwen3 首跑：环境与版本预检': {
@@ -4811,8 +4831,8 @@ def vector_add_tik(shape, dtype, kernel_name):
       ? '<button class="ld-code-run" type="button" onclick="ldRunNodeCode()" title="在 HiDevLab 打开"><i data-lucide="play" aria-hidden="true"></i>在 HiDevLab 运行</button>'
       : '';
     const codeHtml = code ? `<section class="ld-code-section"><div class="ld-section-title-row"><h2>代码示例</h2><span class="ld-code-kind ${code.kind || 'practice'}">${codeKind[code.kind] || '可运行示例'}</span></div>${code.note ? `<p class="ld-code-note">${code.note}</p>` : ''}<div class="ld-code-example"><div class="ld-code-toolbar"><span>${code.label || code.lang}</span><div><button type="button" onclick="ldCopyNodeCode(this)" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button type="button" onclick="ldExplainNodeCode()" title="让 AI 逐行解释"><i data-lucide="sparkles" aria-hidden="true"></i>AI 解释</button>${runAction}</div></div><pre data-node-code>${escHtml(code.body)}</pre></div></section>` : '';
-    const practiceSteps = knowledge?.lab?.steps || [{ title:`运行「${node.title}」配套练习`, desc:'在 HiDevLab 中打开本章节的实践环境，边学边验证。' }];
-    const practice = `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>`;
+    const practiceSteps = knowledge?.lab?.steps || [];
+    const practice = practiceSteps.length ? `<section><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>` : '';
     const troubleshooting = ldRenderTroubleshooting(node, knowledge);
     content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p></div>${nextStepsHtml}${videoHtml}${readingHtml}${codeHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`;
     requestAnimationFrame(() => window.lucide?.createIcons());
