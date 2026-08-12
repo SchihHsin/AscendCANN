@@ -518,6 +518,7 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 #page-learn.ld-route-active .v2-tool-fab:hover { background:#F1F3F8; transform:none; }
 #page-learn.ld-route-active .v2-tool-fab.active { background:#EDEBFF; color:#4940AF; box-shadow:none; }
 #page-learn.ld-route-active .v2-tool-fab svg { width:18px; height:18px; }
+#page-learn .v2-tool-fab-ai img { display:block; width:24px; height:24px; object-fit:contain; }
 /* Contextual assistant: community-style welcome, then a focused learning chat. */
 #page-learn #ld-tool-ai.active { display:flex; min-height:0; padding:0!important; overflow:hidden; background:linear-gradient(135deg,#fff 0%,#fff 72%,#F3F0FF 100%); flex-direction:column; }
 #page-learn #ld-tool-ai .ld-ai-welcome { display:flex; flex:1; align-items:center; justify-content:center; min-height:0; padding:28px 28px 22px; overflow:auto; text-align:center; flex-direction:column; }
