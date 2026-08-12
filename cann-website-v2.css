@@ -509,6 +509,15 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 #page-learn .v2-tool-float-actions button { display:flex; align-items:center; justify-content:center; width:28px; height:28px; padding:0; border:0; border-radius:50%; background:transparent; color:#343943; cursor:pointer; }
 #page-learn .v2-tool-float-actions button:hover { background:#F1F3F7; }
 #page-learn .v2-tool-float-actions svg { width:18px; height:18px; stroke-width:1.8; }
+
+/* One contextual capsule owns the right edge. The home shortcuts disappear as
+   soon as a route is open; the course-specific actions take their place. */
+#page-learn.ld-route-active .ld-home-rail { display:none; }
+#page-learn.ld-route-active .v2-tool-fab-rail { display:flex; gap:4px; padding:6px; border:1px solid #E2E5EC; border-radius:24px; background:rgba(255,255,255,.96); box-shadow:0 8px 22px rgba(36,40,57,.13); }
+#page-learn.ld-route-active .v2-tool-fab { width:34px; height:34px; border:0; border-radius:50%; background:transparent; box-shadow:none; }
+#page-learn.ld-route-active .v2-tool-fab:hover { background:#F1F3F8; transform:none; }
+#page-learn.ld-route-active .v2-tool-fab.active { background:#EDEBFF; color:#4940AF; box-shadow:none; }
+#page-learn.ld-route-active .v2-tool-fab svg { width:18px; height:18px; }
 /* Contextual assistant: community-style welcome, then a focused learning chat. */
 #page-learn #ld-tool-ai.active { display:flex; min-height:0; padding:0!important; overflow:hidden; background:linear-gradient(135deg,#fff 0%,#fff 72%,#F3F0FF 100%); flex-direction:column; }
 #page-learn #ld-tool-ai .ld-ai-welcome { display:flex; flex:1; align-items:center; justify-content:center; min-height:0; padding:28px 28px 22px; overflow:auto; text-align:center; flex-direction:column; }
@@ -587,6 +596,16 @@ body.v2-hidevlab-open .sandbox-drawer.v2-dock-split { top:58px; }
 .v2-archive-resizer:hover::after,.v2-resizing-archive .v2-archive-resizer::after { opacity:1; background:rgba(46,83,250,.7); }
 body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!important; user-select:none!important; }
 @media(max-width:760px){.qb-drawer{width:100%;right:-100%}.v2-archive-resizer{display:none}}
+
+/* Archive-related rail actions open their own small windows. They reuse the
+   existing data panels, but never expose the old three-tab drawer. */
+#qb-overlay.v2-archive-float { display:none; }
+#qb-drawer.v2-archive-float { top:auto; right:22px; bottom:22px; width:min(500px,calc(100vw - 44px)); height:min(660px,calc(100vh - 94px)); border:1px solid #DFE3EA; border-radius:16px; background:#FCFDFF; box-shadow:0 18px 48px rgba(35,41,55,.18); opacity:0; pointer-events:none; transform:translateY(12px); transition:opacity .18s ease,transform .2s ease; }
+#qb-drawer.v2-archive-float.open { right:22px; opacity:1; pointer-events:auto; transform:translateY(0); }
+#qb-drawer.v2-archive-float .la-tabs { display:none; }
+#qb-drawer.v2-archive-float .qb-header { min-height:50px; border-radius:16px 16px 0 0; }
+#qb-drawer.v2-archive-float .v2-archive-resizer { display:none; }
+@media(max-width:760px){#qb-drawer.v2-archive-float,#qb-drawer.v2-archive-float.open{right:14px;bottom:14px;width:calc(100vw - 28px);height:min(660px,calc(100vh - 54px));}}
 
 /* Preserve the supplied HiDevLab mark's native wide proportion in every dock layout. */
 .nb-brand { gap:0; }

@@ -3288,12 +3288,20 @@ def vector_add_tik(shape, dtype, kernel_name):
   function openLearningArchive(tab) {
     tab = tab || 'paths';
     switchLaTab(tab);
-    document.getElementById('qb-overlay').classList.add('open');
-    document.getElementById('qb-drawer').classList.add('open');
+    const title = tab === 'quiz' ? '错题本' : tab === 'map' ? '学习全景图' : '学习档案';
+    const overlay = document.getElementById('qb-overlay');
+    const drawer = document.getElementById('qb-drawer');
+    if (!drawer) return;
+    drawer.querySelector('.qb-title').textContent = title;
+    drawer.dataset.archiveView = tab;
+    drawer.classList.add('v2-archive-float', 'open');
+    overlay?.classList.add('v2-archive-float');
   }
   function closeLearningArchive() {
-    document.getElementById('qb-overlay').classList.remove('open');
-    document.getElementById('qb-drawer').classList.remove('open');
+    const overlay = document.getElementById('qb-overlay');
+    const drawer = document.getElementById('qb-drawer');
+    overlay?.classList.remove('open', 'v2-archive-float');
+    drawer?.classList.remove('open', 'v2-archive-float');
   }
   function ldToggleTwinPanel() {
     const panel = document.getElementById('ld-twin-panel');
@@ -4660,6 +4668,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const roadmap = document.getElementById('ld-roadmap');
     if (dash) dash.style.display = 'none';
     if (roadmap) roadmap.style.display = '';
+    document.getElementById('page-learn')?.classList.add('ld-route-active');
     document.getElementById('ld-roadmap-name').textContent = `${selected.title}学习路径`;
     document.getElementById('ld-roadmap-prog-fill').style.width = '0%';
     document.getElementById('ld-roadmap-prog-lbl').textContent = `0 / ${path.length} 节点`;
@@ -4699,6 +4708,7 @@ def vector_add_tik(shape, dtype, kernel_name):
 
     dash.style.display = 'none';
     roadmap.style.display = '';
+    document.getElementById('page-learn')?.classList.add('ld-route-active');
     const fallback = focusIdx !== undefined ? [NODE_LIST[focusIdx]] : (window._currentLearnPath || NODE_LIST.slice(0, 5));
     ldRenderPathWorkspace(window._currentLearnPath?.length ? window._currentLearnPath : fallback);
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -5203,6 +5213,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     const roadmap = document.getElementById('ld-roadmap');
     if (dash) dash.style.display = '';
     if (roadmap) roadmap.style.display = 'none';
+    document.getElementById('page-learn')?.classList.remove('ld-route-active');
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 

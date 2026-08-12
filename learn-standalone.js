@@ -11,7 +11,7 @@
   const toolMeta = {
     ai: { title:'AI 助手', icon:'bot', height:420, min:300 },
     visual: { title:'知识图谱', icon:'network', height:540, min:380 },
-    quiz: { title:'随堂测验', icon:'circle-help', height:320, min:240 }
+    quiz: { title:'随堂出题', icon:'circle-help', height:320, min:240 }
   };
 
   const escapeHtml = value => String(value || '').replace(/[&<>\"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' })[char]);
@@ -48,7 +48,7 @@
   };
 
   window.openLearningArchive = function openStandaloneArchive(tab = 'paths') {
-    const selected = tab === 'quiz' ? '随堂复习' : tab === 'map' ? '学习全景图' : '学习档案';
+    const selected = tab === 'quiz' ? '错题本' : tab === 'map' ? '学习全景图' : '学习档案';
     const paths = [
       { id:'qwen3-npu-inference-baseline', name:'在昇腾 NPU 上运行 Qwen3', count:17 },
       { id:'official-ascend-c', name:'算子开发从入门到精通', count:34 }
@@ -57,7 +57,7 @@
     const content = tab === 'paths'
       ? `<p>从这里继续已保存或官方学习路径。</p>${list || '<p>暂无学习路径。</p>'}`
       : tab === 'quiz'
-        ? '<p>随堂测验会根据正在学习的节点生成，进入路径后从右侧 FAB 打开即可。</p>'
+        ? '<p>这里汇总需要复习的错题；随堂出题会根据正在学习的节点生成，进入路径后从右侧胶囊打开即可。</p>'
         : '<p>学习全景图聚合你的路径和已学节点；完整视图保留在整站兼容入口中。</p>';
     showUtilityWindow(selected, content);
     document.querySelectorAll('.learn-utility-path').forEach(button => button.addEventListener('click', () => pathLocation(button.dataset.path)));
