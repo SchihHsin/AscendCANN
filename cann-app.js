@@ -4877,13 +4877,14 @@ def vector_add_tik(shape, dtype, kernel_name):
     const videoHtml = video ? `<section class="ld-video-section"><h2>视频与本节内容</h2><div class="ld-video-study-stack"><div class="ld-video-embed">${videoStage}<div class="ld-video-caption"><strong>${video.title}</strong><small>${video.tag} · 当前节点配套讲解</small></div></div><div class="ld-video-sync" aria-label="视频章节"><div class="ld-video-sync-head"><strong>视频章节</strong><small>选择时间点，下方内容会随视频章节切换</small></div><div class="ld-video-segments">${videoSegments.map((segment, segmentIndex) => `<button class="ld-video-segment ${segmentIndex === 0 ? 'active' : ''}" type="button" data-video-segment="${segmentIndex}" onclick="ldSelectVideoSegment(${segmentIndex})"><time>${segment.time}</time><span><strong>${segment.title}</strong><small>${segment.note}</small></span><i data-lucide="arrow-down" aria-hidden="true"></i></button>`).join('') || '<p class="ld-video-sync-empty">本视频暂无章节标注，可按下方讲解继续学习。</p>'}</div></div></div></section>${isVideoLed ? '<section class="ld-video-linked-content" id="ld-video-linked-content" aria-live="polite"></section>' : ''}` : '';
     const nextStepsHtml = knowledge?.nextSteps?.length ? `<section class="ld-next-steps"><div class="ld-next-steps-head"><h2>首跑后，照着做</h2><p>先固定工程与验证规则，再开始优化。</p></div><div class="ld-next-steps-grid">${knowledge.nextSteps.map((step, stepIndex) => `<article class="ld-next-step"><div class="ld-next-step-index">${stepIndex + 1}</div><i data-lucide="${step.icon}" aria-hidden="true"></i><small>${step.label}</small><strong>${step.title}</strong><p>${step.detail}</p><pre>${escHtml(step.code)}</pre></article>`).join('')}</div><a class="ld-next-steps-source" href="${QWEN3_FUSED_OP_NOTEBOOK}" target="_blank" rel="noopener">打开官方融合算子 Notebook，按第 1 步开始 <span aria-hidden="true">↗</span></a></section>` : '';
     const code = knowledge?.code;
+    const practiceSteps = knowledge?.lab?.steps || [];
+    const keepStandaloneCode = code && (!practiceSteps.length || code.kind === 'concept');
     const codeKind = { concept:'概念调用', practice:'可运行示例', compare:'改前 / 改后对照' };
     const runAction = code?.kind === 'practice' || !code?.kind
       ? '<button class="ld-code-run" type="button" onclick="ldRunNodeCode()" title="在 HiDevLab 打开"><i data-lucide="play" aria-hidden="true"></i>在 HiDevLab 运行</button>'
       : '';
-    const codeHtml = code ? `<section class="ld-code-section"><div class="ld-section-title-row"><h2>代码示例</h2><span class="ld-code-kind ${code.kind || 'practice'}">${codeKind[code.kind] || '可运行示例'}</span></div>${code.note ? `<p class="ld-code-note">${code.note}</p>` : ''}<div class="ld-code-example"><div class="ld-code-toolbar"><span>${code.label || code.lang}</span><div><button type="button" onclick="ldCopyNodeCode(this)" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button type="button" onclick="ldExplainNodeCode()" title="让 AI 逐行解释"><i data-lucide="sparkles" aria-hidden="true"></i>AI 解释</button>${runAction}</div></div><pre data-node-code>${escHtml(code.body)}</pre></div></section>` : '';
-    const practiceSteps = knowledge?.lab?.steps || [];
-    const practice = practiceSteps.length ? `<section id="ld-practice-section"><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<button data-practice-index="${stepIndex}" onclick="ldOpenLabStep(${stepIndex})"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button>`).join('')}</div></section>` : '';
+    const codeHtml = keepStandaloneCode ? `<section class="ld-code-section"><div class="ld-section-title-row"><h2>代码示例</h2><span class="ld-code-kind ${code.kind || 'practice'}">${codeKind[code.kind] || '可运行示例'}</span></div>${code.note ? `<p class="ld-code-note">${code.note}</p>` : ''}<div class="ld-code-example"><div class="ld-code-toolbar"><span>${code.label || code.lang}</span><div><button type="button" onclick="ldCopyNodeCode(this)" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button type="button" onclick="ldExplainNodeCode()" title="让 AI 逐行解释"><i data-lucide="sparkles" aria-hidden="true"></i>AI 解释</button>${runAction}</div></div><pre data-node-code>${escHtml(code.body)}</pre></div></section>` : '';
+    const practice = practiceSteps.length ? `<section id="ld-practice-section"><h2>动手练习</h2><div class="ld-practice-steps">${practiceSteps.map((step, stepIndex) => `<article class="ld-practice-step" data-practice-index="${stepIndex}"><button class="ld-practice-step-trigger" type="button" onclick="ldTogglePracticeStep(${stepIndex},this)" aria-expanded="false"><span>${stepIndex + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><i data-lucide="chevron-down" aria-hidden="true"></i></button><div class="ld-practice-step-detail" hidden><div class="ld-practice-code-head"><strong>本步代码</strong><small>运行后预期：${step.expected}</small></div><div class="ld-code-example"><div class="ld-code-toolbar"><span>python · 第 ${stepIndex + 1} 步</span><div><button type="button" onclick="event.stopPropagation();ldCopyPracticeCode(this,${stepIndex})"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button class="ld-code-run" type="button" onclick="event.stopPropagation();ldOpenLabStep(${stepIndex})"><i data-lucide="play" aria-hidden="true"></i>在 HiDevLab 运行</button></div></div><pre>${escHtml(step.code)}</pre></div></div></article>`).join('')}</div></section>` : '';
     const troubleshooting = ldRenderTroubleshooting(node, knowledge);
     content.innerHTML = `<div class="ld-content-kicker">${node.course || 'Ascend C编程'} · ${node.duration || `第 ${index + 1} 步`}</div><h1>${node.title}</h1><div class="ld-content-intro"><p class="ld-content-summary">${knowledge?.summary || node.desc}</p></div>${nextStepsHtml}${videoHtml}${isVideoLed ? '' : `${readingHtml}${codeHtml}${practice}${troubleshooting}<section><h2>本节要掌握什么</h2><div class="ld-content-concepts">${concepts || '<p>完成本节学习并在实践中验证。</p>'}</div></section><section><div class="ld-section-title-row"><h2>学习资源</h2><button onclick="ldAddResourceToNode('${node.title}')">+ 添加到当前节点</button></div><div class="ld-content-resources">${resources || '<p>暂无推荐资源。</p>'}</div></section>`}`;
     if (isVideoLed) {
@@ -4903,6 +4904,28 @@ def vector_add_tik(shape, dtype, kernel_name):
     ldRenderVideoLinkedContent(segmentIndex);
   }
 
+  function ldTogglePracticeStep(stepIndex, trigger) {
+    const item = trigger?.closest('.ld-practice-step');
+    const detail = item?.querySelector('.ld-practice-step-detail');
+    if (!item || !detail) return;
+    const isOpen = item.classList.toggle('open');
+    detail.hidden = !isOpen;
+    trigger.setAttribute('aria-expanded', String(isOpen));
+    window.lucide?.createIcons();
+  }
+
+  function ldCopyPracticeCode(button, stepIndex) {
+    const node = _ldActivePathNodes[_ldActivePathIndex];
+    const step = node && (NODE_KNOWLEDGE[node.title] || ldBuildChapterKnowledge(node)).lab?.steps?.[stepIndex];
+    if (!step?.code) return;
+    navigator.clipboard.writeText(step.code).then(() => {
+      const original = button.innerHTML;
+      button.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>已复制';
+      window.lucide?.createIcons();
+      setTimeout(() => { button.innerHTML = original; window.lucide?.createIcons(); }, 1300);
+    }).catch(() => {});
+  }
+
   function ldAdvanceVideoSegment() {
     const active = document.querySelector('.ld-video-segment.active');
     const current = Number(active?.dataset.videoSegment || 0);
@@ -4920,9 +4943,11 @@ def vector_add_tik(shape, dtype, kernel_name):
     const step = segment.practice !== undefined ? lesson.practiceSteps?.[segment.practice] : null;
     const code = segment.code ? lesson.code : null;
     const codeKind = { concept:'概念调用', practice:'可运行示例', compare:'改前 / 改后对照' };
-    const codeBlock = code ? `<section class="ld-video-linked-code"><div class="ld-section-title-row"><h3>对应代码</h3><span class="ld-code-kind ${code.kind || 'practice'}">${codeKind[code.kind] || '可运行示例'}</span></div>${code.note ? `<p class="ld-code-note">${code.note}</p>` : ''}<div class="ld-code-example"><div class="ld-code-toolbar"><span>${code.label || code.lang}</span><div><button type="button" onclick="ldCopyNodeCode(this)" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button type="button" onclick="ldRunNodeCode()"><i data-lucide="play" aria-hidden="true"></i>在 HiDevLab 运行</button></div></div><pre data-node-code>${escHtml(code.body)}</pre></div></section>` : '';
-    const practice = step ? `<section class="ld-video-linked-practice"><h3>对应动手练习</h3><button class="ld-video-practice-step" type="button" onclick="ldOpenLabStep(${segment.practice})"><span>${segment.practice + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div><b>在 HiDevLab 运行</b></button></section>` : '';
-    panel.innerHTML = `<div class="ld-video-linked-head"><span>${segment.time}</span><div><small>当前视频段</small><h2>${segment.title}</h2></div></div><p class="ld-video-linked-note">${segment.note}</p>${reading ? `<section class="ld-video-linked-reading"><h3>这段在讲什么</h3><p>${reading.desc}</p></section>` : ''}${concept ? `<section class="ld-video-linked-concept"><h3>关键知识点</h3><strong>${concept.term}</strong><p>${concept.desc}</p></section>` : ''}${codeBlock}${practice}`;
+    const codeBlock = code ? `<div class="ld-code-example"><div class="ld-code-toolbar"><span>${code.label || code.lang}</span><div><button type="button" onclick="ldCopyNodeCode(this)" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button><button type="button" onclick="ldRunNodeCode()"><i data-lucide="play" aria-hidden="true"></i>在 HiDevLab 运行</button></div></div><pre data-node-code>${escHtml(code.body)}</pre></div>` : '';
+    const practiceCodeBlock = step?.code ? `<div class="ld-code-example"><div class="ld-code-toolbar"><span>python · 第 ${segment.practice + 1} 步</span><div><button type="button" onclick="ldCopyPracticeCode(this,${segment.practice})" title="复制代码"><i data-lucide="copy" aria-hidden="true"></i>复制</button></div></div><pre>${escHtml(step.code)}</pre></div>` : '';
+    const practice = step ? `<section class="ld-video-linked-practice"><h3>对应动手练习</h3><div class="ld-video-practice-step"><span>${segment.practice + 1}</span><div><strong>${step.title}</strong><small>${step.desc}</small></div></div>${practiceCodeBlock ? `<div class="ld-video-practice-code"><div class="ld-practice-code-head"><strong>本步代码</strong><small>运行后预期：${step.expected}</small></div>${practiceCodeBlock}</div>` : ''}<button class="ld-video-practice-run" type="button" onclick="ldOpenLabStep(${segment.practice})"><i data-lucide="play" aria-hidden="true"></i>在 HiDevLab 运行这一步</button></section>` : '';
+    const standaloneCode = code && !step ? `<section class="ld-video-linked-code"><div class="ld-section-title-row"><h3>对应代码</h3><span class="ld-code-kind ${code.kind || 'practice'}">${codeKind[code.kind] || '可运行示例'}</span></div>${code.note ? `<p class="ld-code-note">${code.note}</p>` : ''}${codeBlock}</section>` : '';
+    panel.innerHTML = `<div class="ld-video-linked-head"><span>${segment.time}</span><div><small>当前视频段</small><h2>${segment.title}</h2></div></div><p class="ld-video-linked-note">${segment.note}</p>${reading ? `<section class="ld-video-linked-reading"><h3>这段在讲什么</h3><p>${reading.desc}</p></section>` : ''}${concept ? `<section class="ld-video-linked-concept"><h3>关键知识点</h3><strong>${concept.term}</strong><p>${concept.desc}</p></section>` : ''}${practice}${standaloneCode}`;
     window.lucide?.createIcons();
   }
 
