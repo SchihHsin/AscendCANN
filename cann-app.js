@@ -1909,6 +1909,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.querySelectorAll('.nb-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('nb-panel-notebook').classList.add('active');
     renderNbCells();
+    window.v2SetSandboxDock?.('split');
 
     // Scroll to the new cell
     setTimeout(() => {
@@ -3055,6 +3056,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.querySelectorAll('.nb-panel').forEach(panel => panel.classList.remove('active'));
     document.getElementById('nb-panel-notebook').classList.add('active');
     renderNbCells();
+    if (document.getElementById('page-learn')?.classList.contains('active')) window.v2SetSandboxDock?.('split');
   }
 
   // ── HIDEVLAB NOTEBOOK ──
@@ -3217,6 +3219,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.getElementById('sandbox-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
     renderNbCells();
+    window.v2SetSandboxDock?.('split');
     document.querySelectorAll('.nb-file-item').forEach((f, i) => f.classList.toggle('active', i === 0));
     document.querySelectorAll('.nb-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
     document.querySelectorAll('.nb-panel').forEach(p => p.classList.remove('active'));
@@ -5218,6 +5221,7 @@ def vector_add_tik(shape, dtype, kernel_name):
     document.getElementById('sandbox-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
     renderNbCells();
+    window.v2SetSandboxDock?.('split');
   }
 
   function ldCopyNodeCode(button) {

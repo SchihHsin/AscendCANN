@@ -199,7 +199,7 @@
     if (node) window.ldStartNode(node);
     else window.ldShowRoadmap(pathId);
     bindToolResizer();
-    window.v2SetSandboxDock('bottom');
+    window.v2SetSandboxDock('split');
     window.lucide?.createIcons();
   });
 })();
