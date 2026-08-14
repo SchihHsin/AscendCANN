@@ -793,7 +793,7 @@ body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!importan
    should not each introduce a full-width rule, which created a ladder of
    visually unrelated lines when only the explanation block was present. */
 #page-learn .ld-video-linked-content { width:min(900px,100%); margin-top:24px; padding:0; overflow:hidden; border-color:#E2E7EF; border-radius:16px; }
-#page-learn .ld-video-linked-head { gap:14px; padding:22px 24px 16px; }
+#page-learn .ld-video-linked-head { gap:14px; align-items:center; padding:22px 24px 16px; }
 #page-learn .ld-video-linked-note { margin:0; padding:16px 24px 18px; color:#5E6878; }
 #page-learn .ld-video-linked-content section { margin:0; padding:18px 24px 22px; border-top:0; }
 #page-learn .ld-video-linked-reading { padding-top:0!important; }
