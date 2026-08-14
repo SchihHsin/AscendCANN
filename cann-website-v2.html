@@ -2043,9 +2043,12 @@
     if (!workspace || !leftPill || !pathSidebar) return;
     const bounds = workspace.getBoundingClientRect();
     const leftWidth = pathSidebar.getBoundingClientRect().width;
-    const centerY = Math.round(bounds.top + bounds.height / 2);
-    leftPill.style.left = `${Math.round(bounds.left + leftWidth - 9)}px`;
-    leftPill.style.top = `${centerY}px`;
+    const nextLeft = `${Math.round(bounds.left + leftWidth - 9)}px`;
+    const nextTop = `${Math.round(bounds.top + bounds.height / 2)}px`;
+    // Fullscreen changes the viewport in several quick steps. Avoid writing the
+    // same fixed-position values back into the layout on every intermediate tick.
+    if (leftPill.style.left !== nextLeft) leftPill.style.left = nextLeft;
+    if (leftPill.style.top !== nextTop) leftPill.style.top = nextTop;
   }
   function v2SaveWorkspaceSizes(workspace) {
     sessionStorage.setItem(V2_WORKSPACE_SIZE_KEY, JSON.stringify({
@@ -2322,7 +2325,17 @@
     v2InitArchiveResizer();
     v2InitCollapsibleNavigation();
     v2SyncEdgePills();
-    window.addEventListener('resize', () => { v2SyncEdgePills(); v2RestoreArchiveWidth(); });
+    let v2ViewportSyncFrame = 0;
+    window.addEventListener('resize', () => {
+      // F11 can emit a burst of resize events while browser chrome is settling.
+      // Coalesce it into one read/write pass per paint to prevent reflow flicker.
+      if (v2ViewportSyncFrame) cancelAnimationFrame(v2ViewportSyncFrame);
+      v2ViewportSyncFrame = requestAnimationFrame(() => {
+        v2ViewportSyncFrame = 0;
+        v2SyncEdgePills();
+        v2RestoreArchiveWidth();
+      });
+    }, { passive:true });
     window.addEventListener('hashchange', v2ApplyLocationRoute);
     window.lucide?.createIcons();
   });
