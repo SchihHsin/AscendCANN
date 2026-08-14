@@ -770,9 +770,13 @@ body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!importan
 #page-learn .ld-practice-steps strong { color:#242A34; font-size:16px; }
 #page-learn .ld-practice-steps small { display:block; max-width:720px; margin-top:7px; color:#6B7483; font-size:14px; line-height:1.65; }
 #page-learn .ld-practice-step-detail { margin:12px 0 0 44px; padding:14px; border:1px solid #E0E7F4; border-radius:12px; background:#FAFCFF; }
-#page-learn .ld-practice-code-head { display:flex; justify-content:space-between; gap:16px; margin-bottom:10px; }
+#page-learn .ld-practice-code-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:10px; }
+#page-learn .ld-practice-code-title { display:flex; min-width:0; flex-direction:column; align-items:flex-start; gap:3px; }
 #page-learn .ld-practice-code-head strong { font-size:14px; }
-#page-learn .ld-practice-code-head small { max-width:none; margin:0; color:#7A8494; font-size:12px; text-align:right; }
+#page-learn .ld-practice-code-title small { display:block; max-width:none; margin:0; color:#9AA2AF; font-size:11px; line-height:1.35; text-align:left; white-space:nowrap; }
+#page-learn .ld-practice-code-head .ld-practice-expected { max-width:none; margin:3px 0 0; color:#7A8494; font-size:12px; text-align:right; }
+#page-learn .ld-practice-code-toolbar { justify-content:flex-end; }
+#page-learn .ld-practice-code-toolbar > div { margin-left:auto; }
 #page-learn .ld-practice-step-detail .ld-code-example { margin:0; }
 #page-learn .ld-practice-step-detail .ld-code-example pre { max-height:280px; }
 
