@@ -789,6 +789,19 @@ body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!importan
 #page-learn #ld-practice-section .ld-practice-steps small { margin-top:7px; color:#707A8B; font-size:14px; line-height:1.6; }
 #page-learn #ld-practice-section .ld-practice-step-detail { margin:12px 0 0 44px; }
 
+/* Current video segment is one reading surface. Individual content blocks
+   should not each introduce a full-width rule, which created a ladder of
+   visually unrelated lines when only the explanation block was present. */
+#page-learn .ld-video-linked-content { width:min(900px,100%); margin-top:24px; padding:0; overflow:hidden; border-color:#E2E7EF; border-radius:16px; }
+#page-learn .ld-video-linked-head { gap:14px; padding:22px 24px 16px; }
+#page-learn .ld-video-linked-note { margin:0; padding:16px 24px 18px; color:#5E6878; }
+#page-learn .ld-video-linked-content section { margin:0; padding:18px 24px 22px; border-top:0; }
+#page-learn .ld-video-linked-reading { padding-top:0!important; }
+#page-learn .ld-video-linked-reading h3 { margin-bottom:9px; }
+#page-learn .ld-video-linked-reading p { max-width:880px; }
+#page-learn .ld-video-linked-concept { margin:0 24px!important; padding:16px 0 16px 14px!important; border-top:1px solid #EEF1F5!important; }
+#page-learn .ld-video-linked-practice,#page-learn .ld-video-linked-code { border-top:1px solid #EEF1F5!important; }
+
 #page-learn .ld-path-workspace.v2-right-collapsed.v2-tool-float-open .ld-study-tools { width:min(500px,calc(100vw - 88px)); border-radius:16px; box-shadow:0 18px 48px rgba(35,41,55,.16); }
 #page-learn .ld-path-workspace.v2-tool-float-open .v2-tool-float-head { flex-basis:48px; }
 #page-learn .ld-path-workspace.v2-tool-float-open .ld-tool-panel { padding:18px 20px 24px; }
