@@ -776,6 +776,19 @@ body.v2-resizing-archive,body.v2-resizing-archive * { cursor:col-resize!importan
 #page-learn .ld-practice-step-detail .ld-code-example { margin:0; }
 #page-learn .ld-practice-step-detail .ld-code-example pre { max-height:280px; }
 
+/* Practice steps use compact numbered blocks and a quiet timeline, so the
+   number reads as the step marker rather than another action button. */
+#page-learn #ld-practice-section .ld-practice-steps { max-width:920px; }
+#page-learn #ld-practice-section .ld-practice-steps::before { top:30px; bottom:30px; left:14px; width:1px; background:#B8C4D7; }
+#page-learn #ld-practice-section .ld-practice-step { padding-bottom:26px; }
+#page-learn #ld-practice-section .ld-practice-step + .ld-practice-step { padding-top:0; }
+#page-learn #ld-practice-section .ld-practice-step-trigger { grid-template-columns:30px minmax(0,1fr) 18px; gap:14px; }
+#page-learn #ld-practice-section .ld-practice-step-trigger > span { width:30px; height:30px; border:1px solid #185FE6; border-radius:5px; background:#1767EA; color:#fff; font-size:16px; font-weight:700; line-height:1; box-shadow:none; }
+#page-learn #ld-practice-section .ld-practice-step-trigger > div { padding-top:1px; }
+#page-learn #ld-practice-section .ld-practice-steps strong { color:#292E38; font-size:17px; font-weight:650; line-height:1.45; }
+#page-learn #ld-practice-section .ld-practice-steps small { margin-top:7px; color:#707A8B; font-size:14px; line-height:1.6; }
+#page-learn #ld-practice-section .ld-practice-step-detail { margin:12px 0 0 44px; }
+
 #page-learn .ld-path-workspace.v2-right-collapsed.v2-tool-float-open .ld-study-tools { width:min(500px,calc(100vw - 88px)); border-radius:16px; box-shadow:0 18px 48px rgba(35,41,55,.16); }
 #page-learn .ld-path-workspace.v2-tool-float-open .v2-tool-float-head { flex-basis:48px; }
 #page-learn .ld-path-workspace.v2-tool-float-open .ld-tool-panel { padding:18px 20px 24px; }
