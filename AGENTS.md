@@ -1206,3 +1206,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增“生态职责—任务会话”服务设计：文档、GitCode、站外经验、AI、社区分工；任务会话包含任务简报、可信路径、可验证执行、带上下文升级、结果回流，字段含硬件、CANN / 框架版本、分支、容器、最小复现、日志、预期输出、验证和规模条件。案例反推 P0 为版本 / 硬件匹配与日志 / 复现携带。
 - 页面本地浏览器实测：12 个主章节、15案例统计、5步 LLM 旅程、3行 AI 对照矩阵、5个生态职责节点、5步任务会话、5步算子任务链均存在；63 个 Lucide SVG 正常渲染、没有残留图标占位、1280px 无横向溢出。
 - 补充修复：初次保存的扩展案例快照文件名带空格且内容为空，已重新抓取为 `Ascend-pytorch-<id>.json` / `Ascend-torchair-<id>.json` 及对应 `-comments.json`；10 个 Issue 与 10 个评论响应均通过 JSON 解析，零空文件。
+
+### 2026-08-18（CANN × CUDA 开发者旅程对比）
+
+- 用户指出已有 AI 检索评分矩阵不等于足够直观的 CUDA 对比；新增独立“同一开发任务下，CANN 与 CUDA 的旅程差异”章节。
+- 用共同目标“模型 / ONNX 任务转为可部署、可验证结果”串联五阶段：发现入口、选择版本与路径、获得首跑步骤、失败恢复、回流与复用；每一阶段将 CANN / 昇腾与 CUDA / NVIDIA 触点、可观察差异并列。
+- 新对比复用本轮实测来源：CANN 场景 / ATC / Profiling / GitCode、CUDA Quick Start / CUDA Programming Guide / TensorRT Quick Start / Nsight Systems User Guide，另验证 NVIDIA Developer Forums 为公开讨论入口。对 CUDA 未采集等量 Issue 语料的地方明确不作恢复率数值对比。
+- 新结论：两侧官方入口均可一轮到达；CANN 的首跑知识更常跨场景页、文档、GitCode 和站外经验拼接，CUDA 本轮更多在连续官方正文中承接。社区机会是把 CANN 的多源资产编排为可执行、可验证、可恢复的任务路径，而非复制内容规模。

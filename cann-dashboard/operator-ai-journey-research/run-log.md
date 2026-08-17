@@ -106,3 +106,17 @@
 - 大模型应用旅程：定义目标 → 选型与配套 → 首个可运行结果 → 排障与扩展 → 交付与回流；每阶段都关联公开案例、触点和具体断点。
 - AI 对照矩阵：将 3 个任务的 CANN / CUDA ⑪ 综合置信度、最大差距与实测依据并列呈现。
 - 生态职责与任务会话：明确文档、GitCode、站外经验、AI、社区的职责，并给出任务简报、可信路径、验证、升级、回流的最小服务流与字段。
+
+## 10. CANN × CUDA 开发者旅程对比（2026-08-18）
+
+在评分矩阵之外，报告新增“同一任务下的旅程对比”章节，按发现入口、选择版本与路径、获得首跑步骤、失败恢复、回流与复用五阶段并列 CANN / CUDA 的本轮可观察触点。
+
+| 阶段 | CANN 实测触点 | CUDA 实测触点 | 本轮观察 |
+|---|---|---|---|
+| 发现 | 算子场景、ATC / Profiling 文档入口 | CUDA Quick Start、TensorRT Quick Start、Nsight Systems User Guide | 两侧均能 1 轮到达。 |
+| 选择 | 芯片 / CANN / 框架 / 容器与多个文档版本共同影响选择 | CUDA 13.3 Quick Start 与 TensorRT 专题路径 | CANN 的版本、硬件和框架组合在真实 Issue 中反复出现，单次回复需要更多条件收集。 |
+| 首跑 | Ascend C Add 样例提供完整闭环；ATC / Profiling 当前导览页偏概览 | vecAdd、TensorRT ONNX 与 Nsight 指南在连续官方正文中连接更多步骤 | 与 3 个 AI 实测的“官方正文详尽度、复现性”评分一致。 |
+| 恢复 | GitCode Issue、论坛、工单，公开案例要求携带日志 / 版本 / 复现 | NVIDIA Developer Forums 可达；本轮未采集等量 CUDA Issue | 不对两侧恢复率做数值结论。 |
+| 回流 | GitCode 有 Issue / PR / SIG；状态与规模条件常分散在评论中 | 官方文档与论坛并行 | CANN 的机会是将验证状态、未解条件和复用结果结构化回流。 |
+
+来源：CANN / CUDA 任务来源见第 8 节；CUDA Quick Start：<https://docs.nvidia.com/cuda/cuda-quick-start-guide/index.html>；NVIDIA Developer Forums：<https://forums.developer.nvidia.com/>。该对比描述公开知识与协作路径，不比较硬件性能、工具功能、用户规模或社区贡献总量。

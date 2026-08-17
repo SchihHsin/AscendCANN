@@ -1162,6 +1162,145 @@
         font-size: 12px;
         line-height: 1.55;
       }
+      .stack-compare {
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .stack-head,
+      .stack-row {
+        display: grid;
+        grid-template-columns: 150px 1fr 1fr;
+      }
+      .stack-head {
+        background: #111417;
+        color: #fff;
+      }
+      .stack-head div {
+        padding: 13px 14px;
+        border-right: 1px solid #34404a;
+        font:
+          800 11px/1.2 Inter,
+          sans-serif;
+        letter-spacing: 0.06em;
+      }
+      .stack-head div:last-child {
+        border-right: 0;
+      }
+      .stack-row > div {
+        min-height: 112px;
+        padding: 14px;
+        border-right: 1px solid var(--l);
+        border-bottom: 1px solid var(--l);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .stack-row:last-child > div {
+        border-bottom: 0;
+      }
+      .stack-row > div:last-child {
+        border-right: 0;
+      }
+      .stack-stage {
+        background: #f6f8fa;
+      }
+      .stack-stage b {
+        display: block;
+        color: #1b232a;
+        font-size: 14px;
+      }
+      .stack-stage span {
+        display: block;
+        margin-top: 4px;
+        color: #6e7985;
+        font-size: 11px;
+      }
+      .stack-cell {
+        color: var(--t);
+      }
+      .stack-cell b {
+        display: block;
+        margin-bottom: 5px;
+        color: #1b232a;
+        font-size: 13px;
+      }
+      .stack-cell .licon {
+        width: 15px;
+        height: 15px;
+        margin-right: 4px;
+        color: #111417;
+      }
+      .stack-cell ul {
+        margin: 6px 0 0;
+        padding-left: 15px;
+      }
+      .stack-cell li {
+        margin: 3px 0;
+      }
+      .stack-cell.cann {
+        background: #fbfcfd;
+      }
+      .stack-cell.cuda {
+        background: #fff;
+      }
+      .compare-insights {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .compare-insights div {
+        padding: 12px 13px;
+        border-radius: 9px;
+        background: #f5f7f8;
+        color: var(--t);
+        font-size: 12px;
+        line-height: 1.52;
+      }
+      .compare-insights b {
+        display: block;
+        margin-bottom: 4px;
+        color: #1b232a;
+      }
+      .compare-insights .licon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        color: #111417;
+      }
+      @media (max-width: 850px) {
+        .stack-head {
+          display: none;
+        }
+        .stack-row {
+          grid-template-columns: 1fr;
+        }
+        .stack-row > div {
+          border-right: 0;
+        }
+        .stack-row > div:nth-child(2) {
+          border-bottom: 0;
+        }
+        .stack-cell:before {
+          display: block;
+          margin-bottom: 6px;
+          color: #7b8794;
+          font:
+            800 10px/1 Inter,
+            sans-serif;
+          letter-spacing: 0.08em;
+        }
+        .stack-cell.cann:before {
+          content: "CANN / ASCEND";
+        }
+        .stack-cell.cuda:before {
+          content: "CUDA / NVIDIA";
+        }
+        .compare-insights {
+          grid-template-columns: 1fr;
+        }
+      }
       .ecosystem-map {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
@@ -2521,6 +2660,7 @@
           <a href="#change">旅程变化</a><a href="#cases">真实案例</a
           ><a href="#corpus">案例样本</a><a href="#llm-journey">大模型旅程</a
           ><a href="#position">社区定位</a><a href="#benchmark">AI 对照</a
+          ><a href="#stack-compare">旅程对比</a
           ><a href="#service-design">服务设计</a
           ><a href="#research">研究验证</a>
         </nav>
@@ -3229,6 +3369,138 @@
           AI 与人提供<strong>任务级路径卡</strong>：版本 /
           硬件范围、命令、预期输出、已验证状态、失败升级入口。完整问句、URL、原始观测、11
           项分数与公式见 <code>evidence/ai-usability/</code>。
+        </div>
+      </section>
+      <section id="stack-compare">
+        <div class="head">
+          <div class="eye">08 · DEVELOPER JOURNEY COMPARISON</div>
+          <h2>同一开发任务下，CANN 与 CUDA 的旅程差异</h2>
+          <p>
+            以“将 ONNX /
+            模型任务转换为可部署、可验证结果”为共同目标，比较本轮实测触点与公开支持路径。此图描述知识与协作路径，不比较芯片性能、工具能力或用户规模。
+          </p>
+        </div>
+        <div class="stack-compare">
+          <div class="stack-head">
+            <div>任务阶段</div>
+            <div>CANN / 昇腾</div>
+            <div>CUDA / NVIDIA</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-stage">
+              <b>1. 发现入口</b><span>用户：我该从哪里开始？</span>
+            </div>
+            <div class="stack-cell cann">
+              <b><i data-lucide="search"></i>场景页 → 文档入口</b>本轮 1
+              轮到达算子场景、ATC / Profiling
+              文档；入口按产品、工具与成长阶段分布。
+            </div>
+            <div class="stack-cell cuda">
+              <b><i data-lucide="search"></i>Quick Start → 专题指南</b>本轮 1
+              轮到达 CUDA Quick Start、TensorRT Quick Start、Nsight Systems User
+              Guide。
+            </div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-stage">
+              <b>2. 选择版本与路径</b><span>用户：哪套组合适合我？</span>
+            </div>
+            <div class="stack-cell cann">
+              <b><i data-lucide="git-branch"></i>多轴选择</b>
+              <ul>
+                <li>芯片 / CANN / 框架 / 容器常共同出现</li>
+                <li>文档版本选择器可见多个历史版本</li>
+                <li>真实 Issue 中版本匹配与分支兼容为一类任务</li>
+              </ul>
+            </div>
+            <div class="stack-cell cuda">
+              <b><i data-lucide="git-branch"></i>产品链内定向</b>
+              <ul>
+                <li>CUDA 13.3 Quick Start 提供安装与验证入口</li>
+                <li>TensorRT 文档把 ONNX、engine、runtime 与部署实例串联</li>
+                <li>本轮任务中版本锁定得分更高</li>
+              </ul>
+            </div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-stage">
+              <b>3. 获得首跑步骤</b><span>用户：能否照着跑？</span>
+            </div>
+            <div class="stack-cell cann">
+              <b><i data-lucide="terminal"></i>文档 + GitCode 样例组合</b>
+              <ul>
+                <li>Ascend C Add 样例给出 CMake、运行和精度信号</li>
+                <li>ATC / Profiling 的当前导览入口未提供完整最小命令</li>
+                <li>AI 需跨页面拼装答案</li>
+              </ul>
+            </div>
+            <div class="stack-cell cuda">
+              <b><i data-lucide="terminal"></i>连续正文承接</b>
+              <ul>
+                <li>CUDA `vecAdd` 同页提供完整最小 kernel 与校验</li>
+                <li>TensorRT Quick Start 明示 `trtexec` 和 ONNX 部署实例</li>
+                <li>Nsight 指南含 profiling 准备与聚焦章节</li>
+              </ul>
+            </div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-stage">
+              <b>4. 失败恢复</b><span>用户：报错后如何继续？</span>
+            </div>
+            <div class="stack-cell cann">
+              <b><i data-lucide="life-buoy"></i>Issue / 论坛 / 工单分流</b>
+              <ul>
+                <li>15 个案例显示日志、版本、最小复现是恢复前提</li>
+                <li>#154 反映方案在 1.5B 条件下仍未闭环</li>
+                <li>核心机会：携带上下文跨触点升级</li>
+              </ul>
+            </div>
+            <div class="stack-cell cuda">
+              <b><i data-lucide="messages-square"></i>文档 + 论坛社区</b>
+              <ul>
+                <li>NVIDIA Developer Forums 为可达的公开讨论入口</li>
+                <li>本轮未采集同量级 CUDA Issue 语料，不对恢复率做数值比较</li>
+                <li>可作为下一轮配对案例样本来源</li>
+              </ul>
+            </div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-stage">
+              <b>5. 回流与复用</b><span>用户：结果如何变成资产？</span>
+            </div>
+            <div class="stack-cell cann">
+              <b><i data-lucide="repeat-2"></i>待强化任务状态</b>
+              <ul>
+                <li>GitCode 已承载 Issue / PR / SIG 流程</li>
+                <li>公开案例的“已验证 / 未闭环 / 规模条件”分散在评论中</li>
+                <li>机会：把任务状态生成可引用案例</li>
+              </ul>
+            </div>
+            <div class="stack-cell cuda">
+              <b><i data-lucide="repeat-2"></i>文档与社区并行复用</b>
+              <ul>
+                <li>官方文档给出专题化、连续的入门与工具指南</li>
+                <li>论坛作为社区讨论入口</li>
+                <li>本轮仅比较公开知识路径，不评价贡献机制强弱</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="compare-insights">
+          <div>
+            <b><i data-lucide="equal"></i>共同点</b
+            >两套生态的官方入口在本轮都可快速到达；复杂任务都需要版本、环境、命令和验证条件。
+          </div>
+          <div>
+            <b><i data-lucide="split"></i>主要差异</b>CANN
+            的首跑知识更常分布在场景页、文档、GitCode 和站外经验之间；CUDA
+            本轮更多在连续官方正文内完成任务链。
+          </div>
+          <div>
+            <b><i data-lucide="lightbulb"></i>社区机会</b>不复制 CUDA
+            的内容规模，而把 CANN 的多源资产编排成可被 AI /
+            人直接执行、验证和恢复的任务路径。
+          </div>
         </div>
       </section>
       <section id="growth">
