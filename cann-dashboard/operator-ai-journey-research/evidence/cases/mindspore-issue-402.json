@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/mindspore-ai/mindspore/issues/402",
+  "repository_url": "https://api.github.com/repos/mindspore-ai/mindspore",
+  "labels_url": "https://api.github.com/repos/mindspore-ai/mindspore/issues/402/labels{/name}",
+  "comments_url": "https://api.github.com/repos/mindspore-ai/mindspore/issues/402/comments",
+  "events_url": "https://api.github.com/repos/mindspore-ai/mindspore/issues/402/events",
+  "html_url": "https://github.com/mindspore-ai/mindspore/issues/402",
+  "id": 5078313730,
+  "node_id": "I_kwDODknCE88AAAABLrDrAg",
+  "number": 402,
+  "title": "ops.igamma has inaccurate float64 result for igamma(100.0, 100.0)",
+  "user": {
+    "login": "ALinrunrun",
+    "id": 126737088,
+    "node_id": "U_kgDOB43awA",
+    "avatar_url": "https://avatars.githubusercontent.com/u/126737088?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/ALinrunrun",
+    "html_url": "https://github.com/ALinrunrun",
+    "followers_url": "https://api.github.com/users/ALinrunrun/followers",
+    "following_url": "https://api.github.com/users/ALinrunrun/following{/other_user}",
+    "gists_url": "https://api.github.com/users/ALinrunrun/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/ALinrunrun/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/ALinrunrun/subscriptions",
+    "organizations_url": "https://api.github.com/users/ALinrunrun/orgs",
+    "repos_url": "https://api.github.com/users/ALinrunrun/repos",
+    "events_url": "https://api.github.com/users/ALinrunrun/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/ALinrunrun/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 0,
+  "created_at": "2026-08-06T06:29:32Z",
+  "updated_at": "2026-08-06T06:29:32Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "## Environment\n### Hardware Environment(`Ascend`/`GPU`/`CPU`): \n/device cpu\n\n### Software Environment:\n- **MindSpore version (source or binary)**: MindSpore 2.9.0\n- **Python version (e.g., Python 3.7.5)**: Python 3.11.15\n- **OS platform and distribution (e.g., Linux Ubuntu 24.04)**: Ubuntu 24.04.1, Linux 6.17.0-29-generic, x86_64\n- **GCC/Compiler version (if compiled from source)**: gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n\n## Describe the current behavior\n\n`mindspore.ops.igamma` appears to produce an inaccurate `float64` result for regularized lower incomplete gamma values.\n\nFor the input:\n\n```\na = 100.0\nx = 100.0\n```\n\ncalling:\n\n```\nops.igamma(a, x)\n```\n\nreturns:\n\n```\n0.5133034878313246\n```\n\nHowever, the high-precision reference value is:\n\n```\n0.5132987982791487\n```\n\nThe absolute error is about `4.69e-06`, which is larger than expected for a `float64` special function.\n\n## Describe the expected behavior\n\n`ops.igamma(100.0, 100.0)` should return a value close to the high-precision reference:\n\n```\n0.5132987982791487\n```\n\nThis also agrees with `scipy.special.gammainc`.\n\n## Steps to reproduce the issue\n1. Install MindSpore 2.9.0 and NumPy 1.26.4.\n2. Save the following script as `reproduce.py`.\n3. Run `python reproduce.py`.\n\n```\nimport numpy as np\nimport mindspore as ms\nimport mindspore.ops as ops\n\na = ms.Tensor(\n    np.array(\n        [100.0],\n        dtype=np.float64,\n    )\n)\n\nx = ms.Tensor(\n    np.array(\n        [100.0],\n        dtype=np.float64,\n    )\n)\n\nwrong = ops.igamma(a, x).asnumpy()\n\ncorrect = np.array(\n    [0.5132987982791487],\n    dtype=np.float64,\n)\n\nprint(\"wrong:\", wrong.tolist())\nprint(\"correct:\", correct.tolist())\nprint(\"abs_error:\", np.abs(wrong - correct).tolist())\n```\n\n## Related log / screenshot\n\nRunning the script produces:\n\n```\nwrong: [0.5133034878313246]\ncorrect: [0.5132987982791487]\nabs_error: [4.689552175896695e-06]\n```\n\nThe original high-precision checker produced:\n\n```\nBUG mindspore.ops.igamma(100.0, 100.0) = 0.5133034878313246   truth = 0.5132987982791487\n\n1/1 points wrong\n```\n\nEnvironment output:\n\n```\nPython version: 3.11.15\nOS platform: Linux-6.17.0-29-generic-x86_64-with-glibc2.39\nMachine: x86_64\nMindSpore version: 2.9.0\nNumPy version: 1.26.4\nGCC version: gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n```\n\n## Special notes for this issue\n\nThis looks like a numerical accuracy issue in `ops.igamma` for `float64`.\n\nThe expected value was computed using a high-precision reference and rounded to `float64`:\n\n```\nigamma(100.0, 100.0) ~= 0.5132987982791487\n```\n\nThe current MindSpore result is:\n\n```\n0.5133034878313246\n```\n\nThe same value is computed correctly by `scipy.special.gammainc`, while `mindspore.ops.igamma` differs by about `4.69e-06`.",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/mindspore-ai/mindspore/issues/402/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/mindspore-ai/mindspore/issues/402/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

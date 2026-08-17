@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/pytorch/issues/154",
+  "repository_url": "https://api.github.com/repos/Ascend/pytorch",
+  "labels_url": "https://api.github.com/repos/Ascend/pytorch/issues/154/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/pytorch/issues/154/comments",
+  "events_url": "https://api.github.com/repos/Ascend/pytorch/issues/154/events",
+  "html_url": "https://github.com/Ascend/pytorch/issues/154",
+  "id": 4996063433,
+  "node_id": "I_kwDOF-8i788AAAABKcngyQ",
+  "number": 154,
+  "title": "[Bug]: torch.compile在编译时会出现硬件访问超时问题",
+  "user": {
+    "login": "ShaohonChen",
+    "id": 35194781,
+    "node_id": "MDQ6VXNlcjM1MTk0Nzgx",
+    "avatar_url": "https://avatars.githubusercontent.com/u/35194781?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/ShaohonChen",
+    "html_url": "https://github.com/ShaohonChen",
+    "followers_url": "https://api.github.com/users/ShaohonChen/followers",
+    "following_url": "https://api.github.com/users/ShaohonChen/following{/other_user}",
+    "gists_url": "https://api.github.com/users/ShaohonChen/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/ShaohonChen/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/ShaohonChen/subscriptions",
+    "organizations_url": "https://api.github.com/users/ShaohonChen/orgs",
+    "repos_url": "https://api.github.com/users/ShaohonChen/repos",
+    "events_url": "https://api.github.com/users/ShaohonChen/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/ShaohonChen/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 1,
+  "created_at": "2026-07-28T07:26:34Z",
+  "updated_at": "2026-07-28T07:28:13Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "> 该问题同步于GitCode社区，参考：https://gitcode.com/Ascend/pytorch/issues/3067\n\n## 环境信息\n环境问题如下\n\n```\n- 操作系统：ubuntu22.04\n- 昇腾硬件信息：Ascend950PR_9579\n- CANN软件版本：CANN 9.0.0\n- 安装的对应软件版本 torch 2.10.0，torch_npu（v2.10.0源码编译），triton-ascend 3.2.1\n```\n\n其中torch_npu源码版本如下（使用源码编译而非官方release版本是由于另一个bug，参考：https://gitcode.com/Ascend/pytorch/issues/3066）\n\n```\ncommit 3e81424f0b0f131f64032bdb4173292303257bea (grafted, HEAD -> v2.10.0, origin/v2.10.0)\nAuthor: Dring <17737727613@163.com>\nDate:   Mon Jul 20 14:46:52 2026 +0800\n```\n\n## 最小复现脚本\n\n```\n\"\"\"可调参数量的最小 GPT 多 NPU torch.compile 测试。\"\"\"\n\nimport argparse\nimport os\nimport time\n\nimport torch\nimport torch.distributed as dist\nimport torch.nn as nn\nimport torch.nn.functional as F\n# 导入后会为 PyTorch 注册 NPU backend。\nimport torch_npu  # noqa: F401\n\n\nclass Block(nn.Module):\n    def __init__(self, width, heads):\n        super().__init__()\n        self.heads = heads\n        self.norm1 = nn.RMSNorm(width)\n        self.qkv = nn.Linear(width, 3 * width, bias=False)\n        self.proj = nn.Linear(width, width, bias=False)\n        self.norm2 = nn.RMSNorm(width)\n        self.mlp = nn.Sequential(\n            nn.Linear(width, 4 * width, bias=False),\n            nn.GELU(),\n            nn.Linear(4 * width, width, bias=False),\n        )\n\n    def forward(self, x):\n        batch, seq, width = x.shape\n        q, k, v = self.qkv(self.norm1(x)).chunk(3, dim=-1)\n        shape = (batch, seq, self.heads, width // self.heads)\n        q, k, v = (tensor.view(shape).transpose(1, 2) for tensor in (q, k, v))\n        attention = F.scaled_dot_product_attention(q, k, v, is_causal=True)\n        x = x + self.proj(attention.transpose(1, 2).contiguous().view(batch, seq, width))\n        return x + self.mlp(self.norm2(x))\n\n\nclass GPT(nn.Module):\n    def __init__(self, layers, width, heads, vocab_size, seq_len):\n        super().__init__()\n        self.token = nn.Embedding(vocab_size, width)\n        self.position = nn.Embedding(seq_len, width)\n        self.blocks = nn.ModuleList([Block(width, heads) for _ in range(layers)])\n        self.norm = nn.RMSNorm(width)\n        self.head = nn.Linear(width, vocab_size, bias=False)\n\n    def forward(self, tokens, targets):\n        positions = torch.arange(tokens.size(1), device=tokens.device)\n        x = self.token(tokens) + self.position(positions)\n        for block in self.blocks:\n            x = block(x)\n        logits = self.head(self.norm(x))\n        return F.cross_entropy(logits.flatten(0, 1).float(), targets.flatten())\n\n\nparser = argparse.ArgumentParser(description=__doc__)\nparser.add_argument(\"--layers\", type=int, default=4)\nparser.add_argument(\"--width\", type=int, default=256)\nparser.add_argument(\"--heads\", type=int, default=4)\nparser.add_argument(\"--vocab-size\", type=int, default=32768)\nparser.add_argument(\"--seq-len\", type=int, default=128)\nparser.add_argument(\"--batch-size\", type=int, default=2)\nargs = parser.parse_args()\nassert args.width % args.heads == 0, \"width 必须能被 heads 整除\"\n\nrank = int(os.environ[\"RANK\"])\nlocal_rank = int(os.environ[\"LOCAL_RANK\"])\ndevice = torch.device(\"npu\", local_rank)\ntorch.npu.set_device(device)\ndist.init_process_group(backend=\"hccl\", device_id=device)\ntorch.manual_seed(0)\n\nmodel = GPT(args.layers, args.width, args.heads, args.vocab_size, args.seq_len)\nmodel = model.to(device=device, dtype=torch.bfloat16).train()\ntokens = torch.randint(args.vocab_size, (args.batch_size, args.seq_len), device=device)\ntargets = torch.randint_like(tokens, args.vocab_size)\n\nif rank == 0:\n    parameters = sum(parameter.numel() for parameter in model.parameters())\n    print(f\"GPT parameters: {parameters:,} ({parameters / 1e6:.1f}M)\", flush=True)\n    print(f\"config: {vars(args)}\", flush=True)\n\n# 所有 rank 同时进入首次 forward/backward 编译。\ndist.barrier()\ntorch.npu.synchronize()\nstarted = time.monotonic()\n\nmodel = torch.compile(model)\nloss = model(tokens, targets)\nloss.backward()\n\ntorch.npu.synchronize()\nprint(\n    f\"rank {rank}: forward+backward compile={time.monotonic() - started:.2f}s, \"\n    f\"loss={loss.item():.4f}\",\n    flush=True,\n)\ndist.destroy_process_group()\n\n```\n\n## 报错信息\n\n在2卡NPU上进行测试，结果如下：\n\n```\nubuntu@ascend950:~/workspace/nanochat-ascend$ ASCEND_RT_VISIBLE_DEVICES=6,7 timeout 300s torchrun   --standalone   --nproc_per_node=2   test_gpt_compile.py   --layers 4   --width 256   --heads 4   --seq-len 128   --batch-size 2   2>&1 | tee gpt-compile-small.log\nW0721 14:40:58.569000 3203689 torch/distributed/run.py:852] \nW0721 14:40:58.569000 3203689 torch/distributed/run.py:852] *****************************************\nW0721 14:40:58.569000 3203689 torch/distributed/run.py:852] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. \nW0721 14:40:58.569000 3203689 torch/distributed/run.py:852] *****************************************\n[rank0]:[W721 14:41:05.320600730 NPUCachingAllocator.cpp:204] Warning: The current CANN and HDK(driver) versions require processing for 32 padding size, with memory allocation. (function operator())\nGPT parameters: 19,958,016 (20.0M)\nconfig: {'layers': 4, 'width': 256, 'heads': 4, 'vocab_size': 32768, 'seq_len': 128, 'batch_size': 2}\n/home/ubuntu/workspace/nanochat/.venv/lib/python3.12/site-packages/torch_npu/op_plugin/meta/_meta_registrations.py:2227: UserWarning: CAUTION: On Ascend950, when npu_fusion_attention is compiled by torch.compile, the seed, offset, and numels may be optimized, which can cause results to differ from eager mode when the random seed is set. This issue will be fixed in later version.\n  _warn_npu_fusion_attention_compile_once()\n[rank0]:W0721 14:41:59.823000 3204242 torch/_inductor/debug.py:518] [0/0] model__0_forward_1 debug trace: /home/ubuntu/workspace/nanochat-ascend/torch_compile_debug/run_2026_07_21_14_41_09_079998-pid_3204242/torchinductor/model__0_forward_1.0\n2026-07-21 14:42:03,388 - WARNING - [256*x1 + y0, x1 + 32768*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,440 - WARNING - [1024*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,470 - WARNING - [256*x1 + y0, x1 + 1024*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,517 - WARNING - [256*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,567 - WARNING - [256*x1 + y0, x1 + 768*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,606 - WARNING - [1024*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,627 - WARNING - [256*x1 + y0, x1 + 1024*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,662 - WARNING - [256*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,699 - WARNING - [256*x1 + y0, x1 + 768*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,735 - WARNING - [1024*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,754 - WARNING - [256*x1 + y0, x1 + 1024*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,791 - WARNING - [256*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,827 - WARNING - [256*x1 + y0, x1 + 768*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,862 - WARNING - [1024*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,883 - WARNING - [256*x1 + y0, x1 + 1024*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,919 - WARNING - [256*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:03,955 - WARNING - [256*x1 + y0, x1 + 768*y0] low_dims is null, {0, 1}, {0, 1}\n[rank1]:W0721 14:42:21.497000 3204244 torch/_inductor/debug.py:518] [0/0] model__0_forward_1 debug trace: /home/ubuntu/workspace/nanochat-ascend/torch_compile_debug/run_2026_07_21_14_41_09_011532-pid_3204244/torchinductor/model__0_forward_1.0\n2026-07-21 14:42:24,867 - WARNING - [256*x1 + y0, x1 + 32768*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:24,917 - WARNING - [1024*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:24,948 - WARNING - [256*x1 + y0, x1 + 1024*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:24,994 - WARNING - [256*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,044 - WARNING - [256*x1 + y0, x1 + 768*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,083 - WARNING - [1024*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,103 - WARNING - [256*x1 + y0, x1 + 1024*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,139 - WARNING - [256*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,175 - WARNING - [256*x1 + y0, x1 + 768*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,211 - WARNING - [1024*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,230 - WARNING - [256*x1 + y0, x1 + 1024*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,266 - WARNING - [256*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,302 - WARNING - [256*x1 + y0, x1 + 768*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,337 - WARNING - [1024*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,358 - WARNING - [256*x1 + y0, x1 + 1024*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,393 - WARNING - [256*x1 + y0, x1 + 256*y0] low_dims is null, {0, 1}, {0, 1}\n2026-07-21 14:42:25,430 - WARNING - [256*x1 + y0, x1 + 768*y0] low_dims is null, {0, 1}, {0, 1}\n[rank0]:W0721 14:42:54.653000 3204242 torch/_inductor/debug.py:518] [0/0] model__0_backward_3 debug trace: /home/ubuntu/workspace/nanochat-ascend/torch_compile_debug/run_2026_07_21_14_41_09_079998-pid_3204242/torchinductor/model__0_backward_3.1\nrank 0: forward+backward compile=110.46s, loss=10.5788\n^[[A^[[A^[[ATerminated\n```\n\n> 最后是通过ctrl+c中断任务\n\n目前看来一个20.0M的参数量的GPT模型，在rank0进行了110s的编译时间。\n\n不过没遇到npu-smi info的命令卡死问题，使用命令后发现rank1的进程消失了😂。推测原因可能时超时或者别的原因导致了挂掉。",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/154/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/pytorch/issues/154/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

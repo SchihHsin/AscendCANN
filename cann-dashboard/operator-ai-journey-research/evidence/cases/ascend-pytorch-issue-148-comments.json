@@ -1,0 +1,49 @@
+[
+  {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/comments/4864976105",
+    "html_url": "https://github.com/Ascend/pytorch/issues/148#issuecomment-4864976105",
+    "issue_url": "https://api.github.com/repos/Ascend/pytorch/issues/148",
+    "id": 4864976105,
+    "node_id": "IC_kwDOF-8i788AAAABIfmk6Q",
+    "user": {
+      "login": "lrs02",
+      "id": 111416235,
+      "node_id": "U_kgDOBqQTqw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/111416235?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lrs02",
+      "html_url": "https://github.com/lrs02",
+      "followers_url": "https://api.github.com/users/lrs02/followers",
+      "following_url": "https://api.github.com/users/lrs02/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lrs02/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lrs02/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lrs02/subscriptions",
+      "organizations_url": "https://api.github.com/users/lrs02/orgs",
+      "repos_url": "https://api.github.com/users/lrs02/repos",
+      "events_url": "https://api.github.com/users/lrs02/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lrs02/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "created_at": "2026-07-02T11:01:16Z",
+    "updated_at": "2026-07-02T11:01:16Z",
+    "body": "Found  a way to solve this problem. Just change into 910B2 and update CANN  and torch_npu",
+    "author_association": "NONE",
+    "pin": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/Ascend/pytorch/issues/comments/4864976105/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "performed_via_github_app": null,
+    "minimized": null
+  }
+]

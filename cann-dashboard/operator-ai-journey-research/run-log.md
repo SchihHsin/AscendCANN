@@ -57,3 +57,17 @@
 3. 保存完整 stdout/stderr、构建耗时、首次报错与修复链路；
 4. 修改 Add 的 shape / dtype 或计算逻辑，验证“复用／定制／从零”分流是否仍可完成；
 5. 用完全对齐的 CUDA `vecAdd` 执行同一验证，比较成功率、轮数与故障恢复成本。
+
+## 6. 公开真实用户案例补跑（2026-08-17）
+
+> 目的：补充“开发者实际上如何使用生态、如何求助与恢复”的行为证据。来源是公开 GitHub Issue 与评论镜像，代表可追溯个案，不代表用户规模、满意度或所有生态路径。
+
+| 案例 | 用户任务与上下文 | 公开支持 / 状态 | 可观察的旅程事实 |
+|---|---|---|---|
+| Ascend/pytorch #148 | 用户 `lrs02` 在 Ascend 910B 上，以 `torch_npu 2.1.0 + CANN 8.0.0` 微调 Qwen3-ASR；提交 E90003、bfloat16 TransData 不支持及训练日志。 | 提问者后续评论称切换到 910B2 并升级 CANN、torch_npu 后解决。 | 用户从模型微调任务和算子编译失败进入；软硬件/版本组合是求助上下文的一部分。 |
+| Ascend/pytorch #106 | 用户 `NiYueLiuFeng` 在 `pytorch-7.3.0-pytorch2.6.0` 分支，以 Python 3.11 源码编译；报告缺少 `op_plugin_functions.yaml`、`derivatives.yaml`。 | 回复建议检查前序报错、使用干净/推荐编译环境，并回链官方源码安装文档。 | 有效支持不是重述安装说明，而是将当前分支、命令和报错路径映射到环境约束与文档。 |
+| Ascend/pytorch #154 | 用户 `ShaohonChen` 在 Ascend950PR、CANN 9.0.0、torch 2.10.0、源码 torch_npu、triton-ascend 3.2.1 下，给出最小 GPT 多 NPU `torch.compile` 复现和硬件访问超时。 | 该问题同步到 GitCode；用户引用方案后反馈大参数量（1.5B）仍超时、原因未定位。 | 支持是一段可持续状态，而非“一条答案”；规模条件、未解分支和跨站链接必须能保留。 |
+| Ascend/MindIE-LLM #1 | 用户 `flyingbytes163` 直接询问 PD 分离部署是否支持及参考方案。 | 回复确认支持、指出需要 K8s，并直链 PD 分离服务部署文档。 | 大模型应用用户从部署目标进入；任务路由比产品树导航更符合需求。 |
+| MindSpore #402 | 用户 `ALinrunrun` 为 `ops.igamma` 精度问题提交硬件、MindSpore/Python/OS/GCC 版本、输入与实际/预期行为。 | 截至抓取时开放、0 条评论。 | 高质量问题天然是“可复现任务包”：环境 + 最小输入 + 行为 + 预期；也揭示了无响应/未闭环状态需要被看见。 |
+
+**快照保存**：`evidence/cases/` 保存前四个 Ascend Issue 及评论、MindSpore #402 的公开 GitHub API 响应，便于复核页面解析所依据的标题、时间、正文、状态和评论。

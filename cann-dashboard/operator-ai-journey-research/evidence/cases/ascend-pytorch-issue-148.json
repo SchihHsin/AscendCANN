@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/pytorch/issues/148",
+  "repository_url": "https://api.github.com/repos/Ascend/pytorch",
+  "labels_url": "https://api.github.com/repos/Ascend/pytorch/issues/148/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/pytorch/issues/148/comments",
+  "events_url": "https://api.github.com/repos/Ascend/pytorch/issues/148/events",
+  "html_url": "https://github.com/Ascend/pytorch/issues/148",
+  "id": 4742412943,
+  "node_id": "I_kwDOF-8i788AAAABGqt6jw",
+  "number": 148,
+  "title": "torch_npu 2.1.0 + CANN 8.0.0 在昇腾910B上微调Qwen3-ASR 模型",
+  "user": {
+    "login": "lrs02",
+    "id": 111416235,
+    "node_id": "U_kgDOBqQTqw",
+    "avatar_url": "https://avatars.githubusercontent.com/u/111416235?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/lrs02",
+    "html_url": "https://github.com/lrs02",
+    "followers_url": "https://api.github.com/users/lrs02/followers",
+    "following_url": "https://api.github.com/users/lrs02/following{/other_user}",
+    "gists_url": "https://api.github.com/users/lrs02/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/lrs02/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/lrs02/subscriptions",
+    "organizations_url": "https://api.github.com/users/lrs02/orgs",
+    "repos_url": "https://api.github.com/users/lrs02/repos",
+    "events_url": "https://api.github.com/users/lrs02/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/lrs02/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 1,
+  "created_at": "2026-06-25T09:15:52Z",
+  "updated_at": "2026-07-02T11:01:16Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "**核心问题是**“  E90003: Compile operator failed\n  bfloat16 of tbe.dsl.transdata is not supported.\n  optype: [TransData]\n”\n\n\n\n**### 在模型微调训练时遇到如下bug：**\n“/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/torch_npu/dynamo/__init__.py:18: UserWarning: Register eager implementation for the 'npu' backend of dynamo, as torch_npu was\n  not compiled with torchair.\n    warnings.warn(\n  [device] train_device=npu:0, model_dtype=torch.bfloat16\n  The following generation flags are not valid and may be ignored: ['temperature']. Set `TRANSFORMERS_VERBOSITY=info` for more details.\n  /home/zhenglin/lrs/code/Qwen3-ASR-main/finetuning/qwen3_asr_sft.py:348: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `CastFloatInputsTrainer.__init__`. Use\n  `processing_class` instead.\n    trainer = CastFloatInputsTrainer(\n  Detected kernel version 4.14.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.\n  The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values.\n  Updated tokens: {'eos_token_id': 151645, 'pad_token_id': 151643}.\n    0%|\n  | 0/8728 [00:00<?, ?it/s][W NeKernelNpu.cpp:45] Warning: The oprator of ne is executed, Currently High Accuracy but Low Performance OP with 64-bit has been used, Please Do Some Cast at Python Functions with\n  32-bit for Better Performance! (function operator())\n  [W AddKernelNpu.cpp:80] Warning: The oprator of add is executed, Currently High Accuracy but Low Performance OP with 64-bit has been used, Please Do Some Cast at Python Functions with 32-bit for Better\n  Performance! (function operator())\n  ...../usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/qwen_asr/core/transformers_backend/modeling_qwen3_asr.py:691: UserWarning: AutoNonVariableTypeMode is deprecated and will be removed in 1.10\n  release. For kernel implementations please use AutoDispatchBelowADInplaceOrView instead, If you are looking for a user facing API to enable running your inference-only workload, please use\n  c10::InferenceMode. Using AutoDispatchBelowADInplaceOrView in user code is under risk of producing silent wrong result in some edge cases. See Note [AutoDispatchBelowAutograd] for more details. (Triggered\n  internally at torch_npu/csrc/aten/common/TensorFactories.cpp:74.)\n    chunk_lengths[chunk_lengths == 0] = self.n_window * 2\n  [W OpCommand.cpp:75] Warning: [Check][offset] Check input storage_offset[%ld] = 0 failed, result is untrustworthy100 (function operator())\n  ...E90003: [PID: 9680] 2026-06-23-09:34:04.407.177 Compile operator failed, cause: Template constraint, detailed information: bfloat16 of tbe.dsl.transdata is not supported.\n          TraceBack (most recent call last):\n          Failed to compile Op [trans_TransData_17,]. (oppath: [Compile /usr/local/Ascend/ascend-toolkit/8.0.0/opp/built-in/op_impl/ai_core/tbe/impl/dynamic/trans_data.py failed with errormsg/stack: File \"/\n  usr/local/Ascend/ascend-toolkit/latest/python/site-packages/tbe/dsl/compute/util.py\", line 1886, in dtype_check_decorator\n      raise RuntimeError(dict_args, get_error_message(dict_args))\n  RuntimeError: ({'errCode': 'E90003', 'detailed_cause': 'bfloat16 of tbe.dsl.transdata is not supported'}, 'Compile operator failed, cause: Template constraint, detailed information: bfloat16 of\n  tbe.dsl.transdata is not supported.')\n  ], optype: [TransData])\n          Compile op[trans_TransData_17,] failed, oppath[/usr/local/Ascend/ascend-toolkit/8.0.0/opp/built-in/op_impl/ai_core/tbe/impl/dynamic/trans_data.py], optype[TransData], taskID[123]. Please check op's\n  compilation error message.[FUNC:ReportBuildErrMessage][FILE:fusion_manager.cc][LINE:367]\n          [SubGraphOpt][Compile][ProcFailedCompTask] Thread[281449366221152] recompile single op[trans_TransData_17] failed[FUNC:ProcessAllFailedCompileTasks][FILE:tbe_op_store_adapter.cc][LINE:1069]\n          [SubGraphOpt][Compile][ParalCompOp] Thread[281449366221152] process fail task failed[FUNC:ParallelCompileOp][FILE:tbe_op_store_adapter.cc][LINE:1116]\n          [SubGraphOpt][Compile][CompOpOnly] CompileOp failed.[FUNC:CompileOpOnly][FILE:op_compiler.cc][LINE:1190]\n          [GraphOpt][FusedGraph][RunCompile] Failed to compile graph with compiler Normal mode Op Compiler[FUNC:SubGraphCompile][FILE:fe_graph_optimizer.cc][LINE:1410]\n          Call OptimizeFusedGraph failed, ret:4294967295, engine_name:AIcoreEngine, graph_name:partition0_rank6_new_sub_graph8[FUNC:OptimizeSubGraph][FILE:graph_optimize.cc][LINE:119]\n          subgraph 5 optimize failed[FUNC:OptimizeSubGraphWithMultiThreads][FILE:graph_manager.cc][LINE:815]\n          build graph failed, graph id:68, ret:4294967295[FUNC:BuildModelWithGraphId][FILE:ge_generator.cc][LINE:1618]\n          [Build][SingleOpModel]call ge interface generator.BuildSingleOpModel failed. ge result = 4294967295[FUNC:ReportCallError][FILE:log_inner.cpp][LINE:161]\n          [Build][Op]Fail to build op model[FUNC:ReportInnerError][FILE:log_inner.cpp][LINE:145]\n          build op model failed, result = 500002[FUNC:ReportInnerError][FILE:log_inner.cpp][LINE:145]\n\n  Traceback (most recent call last):\n    File \"/home/zhenglin/lrs/code/Qwen3-ASR-main/finetuning/qwen3_asr_sft.py\", line 371, in <module>\n      main()\n    File \"/home/zhenglin/lrs/code/Qwen3-ASR-main/finetuning/qwen3_asr_sft.py\", line 367, in main\n      trainer.train()\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/transformers/trainer.py\", line 2325, in train\n      return inner_training_loop(\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/transformers/trainer.py\", line 2674, in _inner_training_loop\n      tr_loss_step = self.training_step(model, inputs, num_items_in_batch)\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/transformers/trainer.py\", line 4020, in training_step\n      loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/transformers/trainer.py\", line 4110, in compute_loss\n      outputs = model(**inputs)\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/torch/nn/modules/module.py\", line 1518, in _wrapped_call_impl\n      return self._call_impl(*args, **kwargs)\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/torch/nn/modules/module.py\", line 1527, in _call_impl\n      return forward_call(*args, **kwargs)\n    File \"/home/zhenglin/lrs/code/Qwen3-ASR-main/finetuning/qwen3_asr_sft.py\", line 55, in forward\n      return self.thinker.forward(\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/transformers/utils/generic.py\", line 918, in wrapper\n      output = func(self, *args, **kwargs)\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/qwen_asr/core/transformers_backend/modeling_qwen3_asr.py\", line 1196, in forward\n      audio_features = self.get_audio_features(\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/qwen_asr/core/transformers_backend/modeling_qwen3_asr.py\", line 1125, in get_audio_features\n      audio_output = self.audio_tower(\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/torch/nn/modules/module.py\", line 1518, in _wrapped_call_impl\n      return self._call_impl(*args, **kwargs)\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/torch/nn/modules/module.py\", line 1527, in _call_impl\n      return forward_call(*args, **kwargs)\n    File \"/usr/local/miniconda3/envs/qwen3/lib/python3.10/site-packages/qwen_asr/core/transformers_backend/modeling_qwen3_asr.py\", line 718, in forward\n      hidden_states = padded_embed[padded_mask_after_cnn]\n  RuntimeError: The Inner error as above.\n   ASCEND kernel errors might be asynchronously reported at some other API call, so the stacktrace may not correct.\n  For getting the stacktrace of OP in PyTorch, consider passing ASCEND_LAUNCH_BLOCKING=1.\n\n”\n\n\n",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/148/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/pytorch/issues/148/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

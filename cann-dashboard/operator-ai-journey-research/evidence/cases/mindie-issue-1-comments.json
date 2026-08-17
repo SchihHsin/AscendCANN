@@ -1,0 +1,49 @@
+[
+  {
+    "url": "https://api.github.com/repos/Ascend/MindIE-LLM/issues/comments/4484048921",
+    "html_url": "https://github.com/Ascend/MindIE-LLM/issues/1#issuecomment-4484048921",
+    "issue_url": "https://api.github.com/repos/Ascend/MindIE-LLM/issues/1",
+    "id": 4484048921,
+    "node_id": "IC_kwDOR0xKH88AAAABC0UoGQ",
+    "user": {
+      "login": "veropeaky",
+      "id": 117310433,
+      "node_id": "U_kgDOBv4D4Q",
+      "avatar_url": "https://avatars.githubusercontent.com/u/117310433?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/veropeaky",
+      "html_url": "https://github.com/veropeaky",
+      "followers_url": "https://api.github.com/users/veropeaky/followers",
+      "following_url": "https://api.github.com/users/veropeaky/following{/other_user}",
+      "gists_url": "https://api.github.com/users/veropeaky/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/veropeaky/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/veropeaky/subscriptions",
+      "organizations_url": "https://api.github.com/users/veropeaky/orgs",
+      "repos_url": "https://api.github.com/users/veropeaky/repos",
+      "events_url": "https://api.github.com/users/veropeaky/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/veropeaky/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "created_at": "2026-05-19T03:04:14Z",
+    "updated_at": "2026-05-19T03:04:14Z",
+    "body": "这个一直支持啊，需要配置k8s，https://www.hiascend.com/document/detail/zh/mindie/300/mindiemotor/motordev/user_guide/service_deployment/pd_separation_service_deployment.md",
+    "author_association": "NONE",
+    "pin": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/Ascend/MindIE-LLM/issues/comments/4484048921/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "performed_via_github_app": null,
+    "minimized": null
+  }
+]

@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/pytorch/issues/106",
+  "repository_url": "https://api.github.com/repos/Ascend/pytorch",
+  "labels_url": "https://api.github.com/repos/Ascend/pytorch/issues/106/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/pytorch/issues/106/comments",
+  "events_url": "https://api.github.com/repos/Ascend/pytorch/issues/106/events",
+  "html_url": "https://github.com/Ascend/pytorch/issues/106",
+  "id": 3869769606,
+  "node_id": "I_kwDOF-8i787mp_-G",
+  "number": 106,
+  "title": "编译安装的时候报错：FileNotFoundError-v2r6/op_plugin_functions.yaml",
+  "user": {
+    "login": "NiYueLiuFeng",
+    "id": 26535557,
+    "node_id": "MDQ6VXNlcjI2NTM1NTU3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/26535557?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/NiYueLiuFeng",
+    "html_url": "https://github.com/NiYueLiuFeng",
+    "followers_url": "https://api.github.com/users/NiYueLiuFeng/followers",
+    "following_url": "https://api.github.com/users/NiYueLiuFeng/following{/other_user}",
+    "gists_url": "https://api.github.com/users/NiYueLiuFeng/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/NiYueLiuFeng/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/NiYueLiuFeng/subscriptions",
+    "organizations_url": "https://api.github.com/users/NiYueLiuFeng/orgs",
+    "repos_url": "https://api.github.com/users/NiYueLiuFeng/repos",
+    "events_url": "https://api.github.com/users/NiYueLiuFeng/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/NiYueLiuFeng/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 1,
+  "created_at": "2026-01-29T09:49:22Z",
+  "updated_at": "2026-02-13T01:30:52Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "当我使用分支 pytorch-7.3.0-pytorch2.6.0，进行编译安装的时候` bash ci/build.sh --python=3.11` 会出现如下的报错。\n\n```\nFileNotFoundError: [Errno 2] No such file or directory: 'pytorch/third_party/op-plugin/op_plugin/config/v2r6//op_plugin_functions.yaml\n\nFileNotFoundError: [Errno 2] No such file or directory: 'pytorch/third_party/op-plugin/op_plugin/config/v2r6/derivatives.yaml\n\n```\n\n请问如何解决？",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/106/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/pytorch/issues/106/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

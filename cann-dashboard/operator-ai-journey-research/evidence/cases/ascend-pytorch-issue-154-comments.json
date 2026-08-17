@@ -1,0 +1,49 @@
+[
+  {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/comments/5101224546",
+    "html_url": "https://github.com/Ascend/pytorch/issues/154#issuecomment-5101224546",
+    "issue_url": "https://api.github.com/repos/Ascend/pytorch/issues/154",
+    "id": 5101224546,
+    "node_id": "IC_kwDOF-8i788AAAABMA6CYg",
+    "user": {
+      "login": "ShaohonChen",
+      "id": 35194781,
+      "node_id": "MDQ6VXNlcjM1MTk0Nzgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35194781?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ShaohonChen",
+      "html_url": "https://github.com/ShaohonChen",
+      "followers_url": "https://api.github.com/users/ShaohonChen/followers",
+      "following_url": "https://api.github.com/users/ShaohonChen/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ShaohonChen/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ShaohonChen/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ShaohonChen/subscriptions",
+      "organizations_url": "https://api.github.com/users/ShaohonChen/orgs",
+      "repos_url": "https://api.github.com/users/ShaohonChen/repos",
+      "events_url": "https://api.github.com/users/ShaohonChen/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ShaohonChen/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "created_at": "2026-07-28T07:28:13Z",
+    "updated_at": "2026-07-28T07:28:13Z",
+    "body": "感谢 [@Akiy](https://github.com/Akiyamaice)大神提供的解决方案：https://gitcode.com/Ascend/pytorch/issues/3067?ref=&did=3385bc5e9d78edb6005805dc0f5f68dabe75ff7f#tid-181334773\n\n不过在较大参数量下（1.5B）仍会出现超时，原因暂未排查到",
+    "author_association": "NONE",
+    "pin": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/Ascend/pytorch/issues/comments/5101224546/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "performed_via_github_app": null,
+    "minimized": null
+  }
+]

@@ -1,0 +1,49 @@
+[
+  {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/comments/3894319661",
+    "html_url": "https://github.com/Ascend/pytorch/issues/106#issuecomment-3894319661",
+    "issue_url": "https://api.github.com/repos/Ascend/pytorch/issues/106",
+    "id": 3894319661,
+    "node_id": "IC_kwDOF-8i787oHpot",
+    "user": {
+      "login": "yunyiyun",
+      "id": 44031387,
+      "node_id": "MDQ6VXNlcjQ0MDMxMzg3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44031387?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yunyiyun",
+      "html_url": "https://github.com/yunyiyun",
+      "followers_url": "https://api.github.com/users/yunyiyun/followers",
+      "following_url": "https://api.github.com/users/yunyiyun/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yunyiyun/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yunyiyun/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yunyiyun/subscriptions",
+      "organizations_url": "https://api.github.com/users/yunyiyun/orgs",
+      "repos_url": "https://api.github.com/users/yunyiyun/repos",
+      "events_url": "https://api.github.com/users/yunyiyun/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yunyiyun/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "created_at": "2026-02-13T01:30:51Z",
+    "updated_at": "2026-02-13T01:30:51Z",
+    "body": "看下编译过程中是否有其他报错，或者使用干净的环境重新编译下，注意使用推荐的编译环境，防止编译环境差异带来问题\nhttps://www.hiascend.com/document/detail/zh/Pytorch/730/configandinstg/instg/docs/zh/installation_guide/compilation_installation_using_source_code.md",
+    "author_association": "NONE",
+    "pin": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/Ascend/pytorch/issues/comments/3894319661/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "performed_via_github_app": null,
+    "minimized": null
+  }
+]
