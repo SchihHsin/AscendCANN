@@ -1137,3 +1137,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 真实任务锚点为官方 GitCode `CANN/asc-devkit` 9.0.0 的 Add 直调样例；AI 实测跑过昇腾算子开发场景页、CANN Ascend C 文档入口、该 GitCode 样例，以及 CUDA 13.3 `Intro to CUDA C++` 的 `vecAdd` 对照。
 - 初步结论严格限定为知识路径：昇腾官方已有从入门到调试的场景旅程与完整样例，但最小闭环需在官方文档与 GitCode 间编排；CUDA 对照将概念、代码与验证连续放在一个文档中。报告将论坛/Issue 未获取到真实报错案例记为“证据待补”，不据此推断社区无案例。
 - 当前设备未接入版本匹配的 NPU/CANN 环境，因此未实际运行 `cmake` / `make` / `./add`，不声称精度已验证；报告内置下一轮 NPU 复跑清单（记录环境、日志、失败与修复链路）并计划由真实 stderr 驱动排障支线。
+
+### 2026-08-17（AI 时代社区价值研究·重跑扩展版）
+
+- 用户指出首轮报告过窄，仅描述算子样例，未充分回答开源 + 大模型背景下用户旅程变化、社区未来价值、用户吸引与体验设计；已按“多触点资产分布 → AI 协作旅程 → 社区定位/机会 → 可验证研究策略”重跑并重构报告。
+- `cann-dashboard/operator-ai-journey-research/index.html` 已升级为完整研究报告；首轮窄报告另保留为 `index-round1.html` 便于追溯。
+- 新增公开实测证据：GitCode `cann/community`（治理、SIG、Issue/PR、会议、邮件、发布流程及仓库智能体入口）、`cann-learning-hub`（quick_start/tutorials/reference_practice 与 155 Issues/160 PR 页面状态）、MindSpore API 文档，以及 CSDN 对“Ascend C 自定义算子”的搜索页（页面显示约 13,316 个结果）。截图保存为 `evidence/05–09`。
+- 核心策略判断改为“社区是可信任务完成网络”：不是集中复制所有内容，而是在任务层路由 GitCode、文档、Mind 系列、站外经验与 AI，提供适用范围/版本/硬件/来源/验证状态、首跑与诊断闭环，以及完成后的低摩擦贡献回流。
+- 报告明确列出：AI 使发现、判断、执行、排障、沉淀重新分配；社区价值指标应从单纯 PV 转向权威引用被采用、任务完成率、首次成功时间、失败恢复率、贡献回流率及答案—验证一致率。以上体验收益均标为待用 NPU 真机与开发者回放验证的假设，而非既定结果。
