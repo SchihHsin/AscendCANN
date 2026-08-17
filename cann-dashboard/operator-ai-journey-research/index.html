@@ -2582,6 +2582,223 @@
       .grow:nth-child(4) .gicon {
         color: #c05259;
       }
+      /* Evidence is shown only where the source page changes the argument. */
+      .evidence-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 14px;
+      }
+      .evidence-card,
+      .compare-proof-card,
+      .session-demo {
+        overflow: hidden;
+        border: 1px solid #d9dee3;
+        border-radius: 13px;
+        background: #fff;
+      }
+      .evidence-shot,
+      .compare-shot {
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid #dfe5eb;
+        background: #eef1f4;
+      }
+      .evidence-shot {
+        height: 172px;
+      }
+      .compare-shot {
+        height: 228px;
+      }
+      .evidence-shot img,
+      .compare-shot img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+      }
+      .evidence-card:nth-child(2) .evidence-shot img {
+        object-position: center 8%;
+      }
+      .evidence-card:nth-child(3) .evidence-shot img {
+        object-position: center 3%;
+      }
+      .evidence-caption,
+      .compare-caption {
+        padding: 13px 14px 14px;
+        color: #596675;
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .evidence-caption b,
+      .compare-caption b {
+        display: block;
+        margin-bottom: 3px;
+        color: #1b232a;
+        font-size: 13px;
+      }
+      .evidence-caption .licon,
+      .compare-caption .licon {
+        width: 15px;
+        height: 15px;
+        margin-right: 4px;
+        color: #45576a;
+      }
+      .evidence-source {
+        display: block;
+        margin-top: 7px;
+        color: #7b8794;
+        font-size: 10px;
+      }
+      .compare-proof {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-top: 14px;
+      }
+      .compare-proof-card:first-child {
+        border-top: 3px solid #52616f;
+      }
+      .compare-proof-card:last-child {
+        border-top: 3px solid #287b61;
+      }
+      .compare-caption p {
+        margin: 5px 0 0;
+      }
+      .session-demo {
+        display: grid;
+        grid-template-columns: 0.78fr 1.22fr;
+        margin-top: 14px;
+      }
+      .demo-brief,
+      .demo-path {
+        padding: 18px;
+      }
+      .demo-brief {
+        border-right: 1px solid #dfe5eb;
+        background: #f7f9fa;
+      }
+      .demo-kicker {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 11px;
+        color: #65717d;
+        font: 800 10px/1 Inter, sans-serif;
+        letter-spacing: 0.09em;
+      }
+      .demo-kicker .licon {
+        width: 15px;
+        height: 15px;
+      }
+      .demo-brief h3,
+      .demo-path h3 {
+        margin: 0 0 12px;
+        color: #1b232a;
+        font-size: 16px;
+      }
+      .demo-form-row {
+        margin-top: 8px;
+      }
+      .demo-form-row span {
+        display: block;
+        margin-bottom: 3px;
+        color: #7b8794;
+        font-size: 10px;
+      }
+      .demo-input {
+        min-height: 29px;
+        padding: 6px 8px;
+        border: 1px solid #d9e0e6;
+        border-radius: 5px;
+        background: #fff;
+        color: #41505e;
+        font: 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      .demo-input.empty {
+        border-style: dashed;
+        color: #a36a20;
+      }
+      .demo-path {
+        background: #fff;
+      }
+      .demo-path-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .demo-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        flex: none;
+        padding: 4px 6px;
+        border-radius: 4px;
+        background: #eaf7f1;
+        color: #287b61;
+        font-size: 10px;
+        white-space: nowrap;
+      }
+      .demo-status .licon {
+        width: 13px;
+        height: 13px;
+      }
+      .demo-step {
+        display: grid;
+        grid-template-columns: 20px 1fr auto;
+        gap: 8px;
+        align-items: center;
+        padding: 9px 0;
+        border-top: 1px solid #edf0f3;
+        color: #596675;
+        font-size: 11px;
+      }
+      .demo-step:first-of-type {
+        border-top: 0;
+      }
+      .demo-step > .licon {
+        width: 16px;
+        height: 16px;
+        color: #45576a;
+      }
+      .demo-step b {
+        display: block;
+        color: #2b3743;
+        font-size: 12px;
+      }
+      .demo-step small {
+        color: #7b8794;
+        font-size: 10px;
+      }
+      .demo-step em {
+        padding: 3px 5px;
+        border-radius: 4px;
+        background: #f1f4f6;
+        color: #667480;
+        font-size: 10px;
+        font-style: normal;
+      }
+      .demo-step em.ready {
+        background: #eaf7f1;
+        color: #287b61;
+      }
+      .demo-step em.attention {
+        background: #fff5e8;
+        color: #a36a20;
+      }
+      @media (max-width: 850px) {
+        .evidence-strip,
+        .compare-proof,
+        .session-demo {
+          grid-template-columns: 1fr;
+        }
+        .demo-brief {
+          border-right: 0;
+          border-bottom: 1px solid #dfe5eb;
+        }
+      }
     </style>
     <script
       defer
@@ -2808,6 +3025,38 @@
             <b><i data-lucide="link-2"></i>关系迁移</b
             >社区覆盖首次成功、长期交付和影响回流。
           </div>
+        </div>
+        <div class="evidence-strip" aria-label="分布式资产的页面证据">
+          <article class="evidence-card">
+            <a class="evidence-shot" href="evidence/04-ascend-operator-journey.png">
+              <img src="evidence/04-ascend-operator-journey.png" alt="昇腾算子开发场景页面截图" />
+            </a>
+            <div class="evidence-caption">
+              <b><i data-lucide="map"></i>官方场景定义任务边界</b>
+              同一任务先在场景页选择 Ascend C、CATLASS 或 Triton 等开发路径。
+              <span class="evidence-source">截图证据 · 昇腾算子开发场景</span>
+            </div>
+          </article>
+          <article class="evidence-card">
+            <a class="evidence-shot" href="evidence/02-gitcode-add-example.png">
+              <img src="evidence/02-gitcode-add-example.png" alt="GitCode Add 算子样例页面截图" />
+            </a>
+            <div class="evidence-caption">
+              <b><i data-lucide="git-branch"></i>GitCode 承接可运行资产</b>
+              Add 样例把实现、构建、运行和精度信号放入代码仓，但需要从场景页抵达。
+              <span class="evidence-source">截图证据 · GitCode Add 样例</span>
+            </div>
+          </article>
+          <article class="evidence-card">
+            <a class="evidence-shot" href="evidence/08-csdn-search.png">
+              <img src="evidence/08-csdn-search.png" alt="CSDN 昇腾相关搜索结果页面截图" />
+            </a>
+            <div class="evidence-caption">
+              <b><i data-lucide="messages-square"></i>站外经验扩大可发现面</b>
+              搜索结果带来大量经验入口，也把来源、版本和适用条件的核验责任交给用户。
+              <span class="evidence-source">截图证据 · CSDN 昇腾相关搜索</span>
+            </div>
+          </article>
         </div>
       </section>
       <section id="cases">
@@ -3370,6 +3619,26 @@
           硬件范围、命令、预期输出、已验证状态、失败升级入口。完整问句、URL、原始观测、11
           项分数与公式见 <code>evidence/ai-usability/</code>。
         </div>
+        <div class="compare-proof" aria-label="自定义算子首跑页面证据">
+          <article class="compare-proof-card">
+            <a class="compare-shot" href="evidence/02-gitcode-add-example.png">
+              <img src="evidence/02-gitcode-add-example.png" alt="CANN GitCode Add 样例页面截图" />
+            </a>
+            <div class="compare-caption">
+              <b><i data-lucide="git-branch"></i>CANN：代码仓承接首跑闭环</b>
+              实现、环境、构建、运行和精度信号可在样例中找到；任务路径需与场景 / 文档入口拼接。
+            </div>
+          </article>
+          <article class="compare-proof-card">
+            <a class="compare-shot" href="evidence/03-cuda-vecadd-guide.png">
+              <img src="evidence/03-cuda-vecadd-guide.png" alt="CUDA vecAdd 官方指南页面截图" />
+            </a>
+            <div class="compare-caption">
+              <b><i data-lucide="file-text"></i>CUDA：官方正文连续承接</b>
+              vecAdd 指南把最小 kernel、编译与校验放在同一官方阅读流中，是本轮“连续正文”判断的页面证据。
+            </div>
+          </article>
+        </div>
       </section>
       <section id="stack-compare">
         <div class="head">
@@ -3700,6 +3969,29 @@
               ><span>P2：贡献影响反馈</span>
             </div>
           </aside>
+        </div>
+        <div class="session-demo" aria-label="任务会话界面示例">
+          <div class="demo-brief">
+            <div class="demo-kicker"><i data-lucide="clipboard-list"></i>任务简报 · 示例</div>
+            <h3>自定义 Add 算子首跑</h3>
+            <div class="demo-form-row"><span>目标</span><div class="demo-input">构建并验证 Add 自定义算子</div></div>
+            <div class="demo-form-row"><span>环境</span><div class="demo-input">Ascend 910B · CANN 9.0.0 · PyTorch</div></div>
+            <div class="demo-form-row"><span>当前状态</span><div class="demo-input">编译已通过，待精度验证</div></div>
+            <div class="demo-form-row"><span>待补信息</span><div class="demo-input empty">最小复现命令 / 日志</div></div>
+          </div>
+          <div class="demo-path">
+            <div class="demo-path-head">
+              <div>
+                <div class="demo-kicker"><i data-lucide="route"></i>可信路径</div>
+                <h3>按当前条件匹配的下一步</h3>
+              </div>
+              <span class="demo-status"><i data-lucide="badge-check"></i>3 条已验证</span>
+            </div>
+            <div class="demo-step"><i data-lucide="book-open-check"></i><div><b>官方场景说明</b><small>适用：Ascend C 自定义算子</small></div><em class="ready">已匹配</em></div>
+            <div class="demo-step"><i data-lucide="git-branch"></i><div><b>GitCode Add 样例</b><small>含构建、运行与精度成功信号</small></div><em class="ready">已验证</em></div>
+            <div class="demo-step"><i data-lucide="circle-check"></i><div><b>执行检查</b><small>记录命令、预期输出和实际结果</small></div><em>待执行</em></div>
+            <div class="demo-step"><i data-lucide="life-buoy"></i><div><b>失败升级</b><small>自动携带版本、日志和已尝试动作</small></div><em class="attention">条件缺失</em></div>
+          </div>
         </div>
       </section>
       <section>

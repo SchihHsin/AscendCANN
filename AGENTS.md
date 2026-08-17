@@ -1213,3 +1213,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用共同目标“模型 / ONNX 任务转为可部署、可验证结果”串联五阶段：发现入口、选择版本与路径、获得首跑步骤、失败恢复、回流与复用；每一阶段将 CANN / 昇腾与 CUDA / NVIDIA 触点、可观察差异并列。
 - 新对比复用本轮实测来源：CANN 场景 / ATC / Profiling / GitCode、CUDA Quick Start / CUDA Programming Guide / TensorRT Quick Start / Nsight Systems User Guide，另验证 NVIDIA Developer Forums 为公开讨论入口。对 CUDA 未采集等量 Issue 语料的地方明确不作恢复率数值对比。
 - 新结论：两侧官方入口均可一轮到达；CANN 的首跑知识更常跨场景页、文档、GitCode 和站外经验拼接，CUDA 本轮更多在连续官方正文中承接。社区机会是把 CANN 的多源资产编排为可执行、可验证、可恢复的任务路径，而非复制内容规模。
+
+### 2026-08-18（报告图文证据增强）
+
+- 用户要求仅在截图真正支撑论证时补图，不为装饰而堆砌图标或模板；`operator-ai-journey-research/index.html` 因此新增三处定向图文模块。
+- “旅程变化”补入官方算子场景、GitCode Add 样例、CSDN 搜索三张已有实测截图，分别说明任务边界、可运行资产与站外经验如何分散在不同触点；截图均可点击查看原图。
+- AI 评测后新增 CANN Add 样例与 CUDA vecAdd 官方指南的并列页面证据，直接支撑“CANN 需要跨入口拼接、CUDA 本轮在连续官方正文中承接”的结论，不以截图取代评分或案例证据。
+- “任务会话”新增克制的 HTML 界面示例：任务简报、环境/状态、待补信息、可信路径、验证状态和失败升级同屏出现，用于具体化“上下文不断流”的服务机制；它明确标为示例，未伪装为真实产品截图。
+- 新模块复用亮白、近黑蓝灰、绿色/橙色状态语义；窄屏自动单列，避免在小屏强塞截图卡。
