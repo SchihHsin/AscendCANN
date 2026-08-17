@@ -899,6 +899,390 @@
         background: #fff;
         font-size: 12px;
       }
+      .corpus-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .corpus-stat {
+        padding: 16px;
+        border: 1px solid var(--l);
+        border-radius: 12px;
+        background: #fff;
+      }
+      .corpus-stat .n {
+        display: block;
+        font:
+          800 30px/1 ui-monospace,
+          monospace;
+        color: #111417;
+      }
+      .corpus-stat span {
+        display: block;
+        margin-top: 6px;
+        color: var(--t);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .case-map {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 14px;
+      }
+      .case-board,
+      .case-readout {
+        padding: 18px;
+        border: 1px solid var(--l);
+        border-radius: 13px;
+        background: #fff;
+      }
+      .case-board h3,
+      .case-readout h3 {
+        margin: 0 0 11px;
+        font-size: 18px;
+      }
+      .case-group {
+        display: grid;
+        grid-template-columns: 118px 1fr;
+        gap: 10px;
+        align-items: start;
+        padding: 10px 0;
+        border-top: 1px solid var(--l);
+      }
+      .case-group:first-of-type {
+        border-top: 0;
+      }
+      .case-group b {
+        color: #1b232a;
+        font-size: 13px;
+      }
+      .case-dots {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .case-dot {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border: 1px solid #dce2e6;
+        border-radius: 7px;
+        background: #f5f7f8;
+        color: #26313a;
+        font-size: 10px;
+        font-weight: 800;
+      }
+      .case-dot.done {
+        border-color: #cfe7dc;
+        background: #eaf7f1;
+        color: #287b61;
+      }
+      .case-dot.warn {
+        border-color: #f0d9ba;
+        background: #fff5e8;
+        color: #a36a20;
+      }
+      .case-dot.risk {
+        border-color: #f0ced1;
+        background: #fff0f1;
+        color: #b8464d;
+      }
+      .case-readout ul {
+        margin: 0;
+        padding-left: 17px;
+        color: var(--t);
+        font-size: 12px;
+      }
+      .case-readout li {
+        margin: 8px 0;
+      }
+      .case-readout strong {
+        color: #1b232a;
+      }
+      .llm-journey {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .llm-stage {
+        position: relative;
+        min-height: 252px;
+        padding: 17px 14px;
+        border-right: 1px solid var(--l);
+      }
+      .llm-stage:last-child {
+        border-right: 0;
+      }
+      .llm-stage:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 3px;
+        background: #111417;
+      }
+      .llm-stage:nth-child(3):before {
+        background: #287b61;
+      }
+      .llm-stage:nth-child(4):before {
+        background: #b8792c;
+      }
+      .llm-stage:nth-child(5):before {
+        background: #c05259;
+      }
+      .llm-stage .licon {
+        width: 19px;
+        height: 19px;
+        color: #111417;
+      }
+      .llm-stage h3 {
+        margin: 9px 0 5px;
+        font-size: 16px;
+      }
+      .llm-stage p {
+        margin: 0;
+        color: var(--t);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .llm-stage ul {
+        margin: 11px 0 0;
+        padding: 0;
+        list-style: none;
+        font-size: 11px;
+        color: #44515e;
+      }
+      .llm-stage li {
+        margin: 6px 0;
+        padding-left: 13px;
+        position: relative;
+      }
+      .llm-stage li:before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #111417;
+      }
+      .llm-stage .gap {
+        display: block;
+        margin-top: 12px;
+        padding: 5px 7px;
+        border-radius: 5px;
+        background: #fff0f1;
+        color: #a64349;
+        font-size: 10px;
+        font-weight: 800;
+      }
+      .bench-summary {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 16px;
+      }
+      .bench-key {
+        padding: 19px;
+        border-radius: 13px;
+        background: #111417;
+        color: #fff;
+      }
+      .bench-key h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .bench-key .score {
+        margin: 15px 0 5px;
+        font:
+          800 43px/1 ui-monospace,
+          monospace;
+      }
+      .bench-key p {
+        margin: 0;
+        color: #cbd2d8;
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .bench-table {
+        overflow: auto;
+        border: 1px solid var(--l);
+        border-radius: 13px;
+        background: #fff;
+      }
+      .bench-table table {
+        min-width: 690px;
+      }
+      .bench-table th,
+      .bench-table td {
+        padding: 11px;
+        border-bottom: 1px solid var(--l);
+        font-size: 12px;
+        text-align: left;
+        vertical-align: middle;
+      }
+      .bench-table th {
+        background: #f6f8fa;
+        color: #687482;
+        font-size: 11px;
+      }
+      .bench-table tr:last-child td {
+        border-bottom: 0;
+      }
+      .barcmp {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        min-width: 140px;
+      }
+      .barcmp i {
+        display: block;
+        height: 7px;
+        border-radius: 99px;
+        background: #111417;
+      }
+      .barcmp i.cann {
+        background: #65717b;
+      }
+      .barcmp span {
+        font:
+          700 11px ui-monospace,
+          monospace;
+        color: #44515e;
+      }
+      .benchmark-note {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-left: 3px solid #b8792c;
+        background: #fff8ed;
+        color: #6f593a;
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .ecosystem-map {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+      }
+      .ecosystem-node {
+        position: relative;
+        padding: 15px 13px;
+        border: 1px solid var(--l);
+        border-radius: 11px;
+        background: #fff;
+        min-height: 154px;
+      }
+      .ecosystem-node .licon {
+        width: 19px;
+        height: 19px;
+        color: #111417;
+      }
+      .ecosystem-node h3 {
+        margin: 8px 0 4px;
+        font-size: 15px;
+      }
+      .ecosystem-node p {
+        margin: 0;
+        color: var(--t);
+        font-size: 11px;
+        line-height: 1.5;
+      }
+      .ecosystem-node b {
+        display: block;
+        margin-top: 10px;
+        color: #1b232a;
+        font-size: 11px;
+      }
+      .session-design {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 14px;
+        margin-top: 15px;
+      }
+      .session-flow,
+      .session-fields {
+        padding: 18px;
+        border: 1px solid var(--l);
+        border-radius: 13px;
+        background: #fff;
+      }
+      .session-flow h3,
+      .session-fields h3 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+      .session-row {
+        display: grid;
+        grid-template-columns: 38px 1fr;
+        gap: 10px;
+        padding: 10px 0;
+        border-top: 1px solid var(--l);
+      }
+      .session-row:first-of-type {
+        border-top: 0;
+      }
+      .session-row .licon {
+        width: 18px;
+        height: 18px;
+        color: #111417;
+      }
+      .session-row b {
+        display: block;
+        color: #1b232a;
+        font-size: 13px;
+      }
+      .session-row span {
+        display: block;
+        color: var(--t);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .field-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .field-chips span {
+        padding: 4px 7px;
+        border-radius: 5px;
+        background: #f1f4f6;
+        color: #43515e;
+        font-size: 11px;
+      }
+      .field-chips span.status {
+        background: #eaf7f1;
+        color: #287b61;
+      }
+      @media (max-width: 850px) {
+        .corpus-stats,
+        .case-map,
+        .bench-summary,
+        .ecosystem-map,
+        .session-design {
+          grid-template-columns: 1fr;
+        }
+        .llm-journey {
+          grid-template-columns: 1fr;
+        }
+        .llm-stage {
+          min-height: 0;
+          border-right: 0;
+          border-bottom: 1px solid var(--l);
+        }
+        .llm-stage:last-child {
+          border-bottom: 0;
+        }
+        .case-group {
+          grid-template-columns: 1fr;
+        }
+        .task-analysis-head {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
       .table th,
       .table td {
         padding: 12px;
@@ -2135,8 +2519,10 @@
         <span class="brand">ASCEND COMMUNITY · AI JOURNEY RESEARCH</span>
         <nav class="nav">
           <a href="#change">旅程变化</a><a href="#cases">真实案例</a
-          ><a href="#life">生命周期</a><a href="#position">社区定位</a
-          ><a href="#growth">增长与体验</a><a href="#research">研究验证</a>
+          ><a href="#corpus">案例样本</a><a href="#llm-journey">大模型旅程</a
+          ><a href="#position">社区定位</a><a href="#benchmark">AI 对照</a
+          ><a href="#service-design">服务设计</a
+          ><a href="#research">研究验证</a>
         </nav>
       </div>
     </header>
@@ -2166,17 +2552,16 @@
           >
         </article>
         <article>
-          <b class="n">5</b
-          ><span
-            >新的开发者关系生命周期：发现、定向、首次价值、规模交付、共创影响</span
-          >
+          <b class="n">15</b
+          ><span>公开 Issue 样本：交付、兼容、正确性与性能三类任务各 5 个</span>
         </article>
         <article>
           <b class="n">3</b
-          ><span>社区应构建的能力层：可发现、可信任、可协作</span>
+          ><span>AI 对等任务实测：算子、模型转换、性能分析</span>
         </article>
         <article>
-          <b class="n">1</b><span>1 个任务分析：Ascend C 自定义算子</span>
+          <b class="n">0.75</b
+          ><span>CANN AI 检索综合置信度均值；CUDA 对照为 0.99</span>
         </article>
       </div>
       <section>
@@ -2440,6 +2825,158 @@
           </article>
         </div>
       </section>
+      <section id="corpus">
+        <div class="head">
+          <div class="eye">04 · CASE CORPUS</div>
+          <h2>15 个公开案例：任务集中在交付、兼容与正确性</h2>
+          <p>
+            新增 10 个 Issue 快照，连同原有 5
+            个案例编码为任务类型、上下文字段与公开状态。
+          </p>
+        </div>
+        <div class="corpus-stats">
+          <div class="corpus-stat">
+            <b class="n">15</b
+            ><span>公开 Issue 样本<br />5 个仓库 / 镜像入口</span>
+          </div>
+          <div class="corpus-stat">
+            <b class="n">5</b
+            ><span>模型训练、推理与部署<br />应用交付类任务</span>
+          </div>
+          <div class="corpus-stat">
+            <b class="n">5</b
+            ><span>源码构建、版本匹配、上游兼容<br />构建与兼容类任务</span>
+          </div>
+          <div class="corpus-stat">
+            <b class="n">5</b
+            ><span>精度、崩溃、Profiler 与转换<br />正确性与性能类任务</span>
+          </div>
+        </div>
+        <div class="case-map">
+          <div class="case-board">
+            <h3>任务类型 × 公开状态</h3>
+            <div class="case-group">
+              <b>应用交付 · 5</b>
+              <div class="case-dots">
+                <span class="case-dot done">148</span
+                ><span class="case-dot risk">154</span
+                ><span class="case-dot warn">M1</span
+                ><span class="case-dot risk">147</span
+                ><span class="case-dot risk">144</span>
+              </div>
+            </div>
+            <div class="case-group">
+              <b>构建与兼容 · 5</b>
+              <div class="case-dots">
+                <span class="case-dot warn">106</span
+                ><span class="case-dot risk">163</span
+                ><span class="case-dot done">149</span
+                ><span class="case-dot risk">T4</span
+                ><span class="case-dot risk">T1/2</span>
+              </div>
+            </div>
+            <div class="case-group">
+              <b>正确性与性能 · 5</b>
+              <div class="case-dots">
+                <span class="case-dot risk">MS402</span
+                ><span class="case-dot warn">133</span
+                ><span class="case-dot risk">153</span
+                ><span class="case-dot risk">125</span
+                ><span class="case-dot risk">精度</span>
+              </div>
+            </div>
+            <p class="note">
+              绿＝用户报告恢复 /
+              已关闭；橙＝给出路径或公开方案；红＝开放或未完全闭环。编号对应
+              <code>evidence/case-corpus-20260818.json</code>。
+            </p>
+          </div>
+          <aside class="case-readout">
+            <h3>从样本读到的三件事</h3>
+            <ul>
+              <li>
+                <strong>任务起点：</strong>15
+                个案例均从具体交付、报错或版本选择进入，没有一个以“浏览产品目录”作为起点。
+              </li>
+              <li>
+                <strong>上下文门槛：</strong>硬件、CANN /
+                框架版本、分支、容器、错误码、最小复现或精度预期反复出现；它们决定答案是否适用。
+              </li>
+              <li>
+                <strong>闭环缺口：</strong>样本中只有 #148
+                明确由提问者报告恢复；#154
+                说明“小规模可用”后仍可在规模条件下失败。
+              </li>
+              <li>
+                <strong>服务结论：</strong
+                >支持对象应是带状态的任务会话：保留上下文、方案、验证结果与未解条件。
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+      <section id="llm-journey">
+        <div class="head">
+          <div class="eye">05 · LLM APPLICATION JOURNEY</div>
+          <h2>大模型应用旅程：从部署目标到规模化交付</h2>
+          <p>
+            依据 MindIE PD 分离、Qwen 微调、多 NPU GPT、Qwen 推理和 ATC
+            精度案例归纳。每一列对应具体任务阶段及当前可观察断点。
+          </p>
+        </div>
+        <div class="llm-journey">
+          <article class="llm-stage">
+            <i data-lucide="target"></i>
+            <h3>定义目标</h3>
+            <p>选择部署、微调、推理、训练或迁移目标。</p>
+            <ul>
+              <li>触点：搜索 / AI / 产品页</li>
+              <li>案例：MindIE #1</li>
+            </ul>
+            <span class="gap">断点：产品树不等于任务路径</span>
+          </article>
+          <article class="llm-stage">
+            <i data-lucide="route"></i>
+            <h3>选型与配套</h3>
+            <p>确定模型、芯片、CANN、框架、容器与分布式方案。</p>
+            <ul>
+              <li>触点：版本文档 / GitCode</li>
+              <li>案例：torchair #4、pytorch #144</li>
+            </ul>
+            <span class="gap">断点：版本与硬件组合需人工比对</span>
+          </article>
+          <article class="llm-stage">
+            <i data-lucide="play-circle"></i>
+            <h3>首个可运行结果</h3>
+            <p>运行最小模型、样例或单卡 / 小规模任务。</p>
+            <ul>
+              <li>触点：样例 / README / AI</li>
+              <li>案例：Qwen3-ASR #148</li>
+            </ul>
+            <span class="gap">断点：样例到项目配置的迁移</span>
+          </article>
+          <article class="llm-stage">
+            <i data-lucide="triangle-alert"></i>
+            <h3>排障与扩展</h3>
+            <p>处理算子、编译、精度、超时与性能问题。</p>
+            <ul>
+              <li>触点：日志 / Issue / CSDN</li>
+              <li>案例：#154、#125、#153</li>
+            </ul>
+            <span class="gap">断点：日志与已尝试动作跨站丢失</span>
+          </article>
+          <article class="llm-stage">
+            <i data-lucide="git-pull-request"></i>
+            <h3>交付与回流</h3>
+            <p>确认规模条件、沉淀方案、更新资产并服务团队复用。</p>
+            <ul>
+              <li>触点：Issue / PR / 案例库</li>
+              <li>案例：#133、#149</li>
+            </ul>
+            <span class="gap">断点：解决状态和复用影响不可见</span>
+          </article>
+        </div>
+      </section>
       <section id="life">
         <div class="head">
           <div class="eye">04 · DEVELOPER × AI LIFECYCLE</div>
@@ -2608,6 +3145,92 @@
           </div>
         </div>
       </section>
+      <section id="benchmark">
+        <div class="head">
+          <div class="eye">07 · AI USABILITY BENCHMARK</div>
+          <h2>CANN × CUDA：AI 检索 3 个对等任务</h2>
+          <p>
+            用同样要求“来源、版本、可执行步骤与验证信号”的问句，实测自定义算子、模型转换、性能分析。①–⑪
+            分数由原始记录和同一计分脚本生成。
+          </p>
+        </div>
+        <div class="bench-summary">
+          <div class="bench-key">
+            <h3>综合置信度均值</h3>
+            <div class="score">0.75</div>
+            <p>
+              CANN：3 个任务均为“中高”<br />CUDA：0.99，均为“高”<br /><br />差距集中在官方正文详尽度、版本锁定和最终复现步骤；不是官方入口的可发现性。
+            </p>
+          </div>
+          <div class="bench-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>对等任务</th>
+                  <th>CANN ⑪</th>
+                  <th>CUDA ⑪</th>
+                  <th>最大差距</th>
+                  <th>实测依据</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>自定义算子</b><br />版本敏感度：中</td>
+                  <td>
+                    <div class="barcmp">
+                      <i class="cann" style="width: 77%"></i><span>0.768</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="barcmp">
+                      <i style="width: 100%"></i><span>1.000</span>
+                    </div>
+                  </td>
+                  <td>版本清晰度 3 / 5；正文 4 / 5</td>
+                  <td>Ascend C + GitCode Add 样例；CUDA 13.3 vecAdd</td>
+                </tr>
+                <tr>
+                  <td><b>ONNX 模型转换</b><br />版本敏感度：高</td>
+                  <td>
+                    <div class="barcmp">
+                      <i class="cann" style="width: 74%"></i><span>0.741</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="barcmp">
+                      <i style="width: 96%"></i><span>0.962</span>
+                    </div>
+                  </td>
+                  <td>ATC 导览缺最小命令；复现 2 / 5</td>
+                  <td>CANN 9.0 ATC 学习向导；TensorRT Quick Start</td>
+                </tr>
+                <tr>
+                  <td><b>性能分析</b><br />版本敏感度：中</td>
+                  <td>
+                    <div class="barcmp">
+                      <i class="cann" style="width: 74%"></i><span>0.741</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="barcmp">
+                      <i style="width: 100%"></i><span>1.000</span>
+                    </div>
+                  </td>
+                  <td>工具简介缺采集路径；复现 2 / 5</td>
+                  <td>CANN Profiling 简介；Nsight Systems User Guide</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="benchmark-note">
+          <b>分析结论：</b>三项任务的官方入口都能在 1 轮到达；AI
+          回答的主要摩擦发生在“从概览页取到版本锁定、可照抄的最小命令和验证信号”。社区的机会不是替代官方文档，而是为
+          AI 与人提供<strong>任务级路径卡</strong>：版本 /
+          硬件范围、命令、预期输出、已验证状态、失败升级入口。完整问句、URL、原始观测、11
+          项分数与公式见 <code>evidence/ai-usability/</code>。
+        </div>
+      </section>
       <section id="growth">
         <div class="head">
           <div class="eye">05 · GROWTH & EXPERIENCE</div>
@@ -2692,6 +3315,119 @@
           <div><b>可验证执行</b>代码、环境、命令、预期和检查</div>
           <div><b>上下文支持</b>日志诊断、案例、专家与升级</div>
           <div><b>结果回流</b>案例、修订、Issue / PR 与影响</div>
+        </div>
+      </section>
+      <section id="service-design">
+        <div class="head">
+          <div class="eye">09 · ECOSYSTEM & SERVICE DESIGN</div>
+          <h2>社区的工作方式：连接资产，承接任务</h2>
+          <p>
+            生态内不同资产继续在各自最合适的位置沉淀；社区在任务层提供选择依据、状态和回流。
+          </p>
+        </div>
+        <div class="ecosystem-map">
+          <article class="ecosystem-node">
+            <i data-lucide="book-open-check"></i>
+            <h3>官方文档</h3>
+            <p>权威定义、版本说明、API 和工具参考。</p>
+            <b>交给社区：任务语言与适用范围</b>
+          </article>
+          <article class="ecosystem-node">
+            <i data-lucide="git-branch"></i>
+            <h3>GitCode</h3>
+            <p>代码、样例、Issue / PR、治理与发布。</p>
+            <b>交给社区：可发现入口与结果索引</b>
+          </article>
+          <article class="ecosystem-node">
+            <i data-lucide="messages-square"></i>
+            <h3>站外经验</h3>
+            <p>CSDN、博客、活动与同伴实践。</p>
+            <b>交给社区：来源分层与条件标注</b>
+          </article>
+          <article class="ecosystem-node">
+            <i data-lucide="bot"></i>
+            <h3>大模型</h3>
+            <p>搜索、解释、生成、诊断与摘要。</p>
+            <b>交给社区：可引用、可验证任务资产</b>
+          </article>
+          <article class="ecosystem-node">
+            <i data-lucide="network"></i>
+            <h3>昇腾社区</h3>
+            <p>任务路由、可信证据、支持升级、影响回流。</p>
+            <b>核心：降低完成风险</b>
+          </article>
+        </div>
+        <div class="session-design">
+          <div class="session-flow">
+            <h3>任务会话：建议的最小服务单元</h3>
+            <div class="session-row">
+              <i data-lucide="clipboard-list"></i>
+              <div>
+                <b>1. 创建任务简报</b
+                ><span
+                  >目标、模型 / 算子、芯片、CANN、框架、分支与当前状态。</span
+                >
+              </div>
+            </div>
+            <div class="session-row">
+              <i data-lucide="route"></i>
+              <div>
+                <b>2. 返回可信路径</b
+                ><span
+                  >按条件筛选官方文档、GitCode 样例、已验证案例与 AI
+                  可引用摘要。</span
+                >
+              </div>
+            </div>
+            <div class="session-row">
+              <i data-lucide="circle-check"></i>
+              <div>
+                <b>3. 执行并验证</b
+                ><span
+                  >展示命令、预期输出、验证信号与版本 / 硬件适用范围。</span
+                >
+              </div>
+            </div>
+            <div class="session-row">
+              <i data-lucide="life-buoy"></i>
+              <div>
+                <b>4. 失败时带上下文升级</b
+                ><span
+                  >日志、已尝试动作和最小复现直接进入案例、专家、Issue
+                  或工单。</span
+                >
+              </div>
+            </div>
+            <div class="session-row">
+              <i data-lucide="repeat-2"></i>
+              <div>
+                <b>5. 回流结果与影响</b
+                ><span
+                  >记录“已验证 / 未验证 / 未解条件”，生成案例、修订或
+                  PR，并反馈复用。</span
+                >
+              </div>
+            </div>
+          </div>
+          <aside class="session-fields">
+            <h3>任务包字段</h3>
+            <div class="field-chips">
+              <span class="status">任务目标</span
+              ><span class="status">当前状态</span><span>模型 / 算子</span
+              ><span>芯片</span><span>CANN 版本</span><span>框架版本</span
+              ><span>分支 / 容器</span><span>最小复现</span
+              ><span>日志 / 错误码</span><span>已尝试动作</span
+              ><span>来源 URL</span><span>预期输出</span><span>验证记录</span
+              ><span>规模条件</span>
+            </div>
+            <h3 style="margin-top: 20px">由案例反推的优先级</h3>
+            <div class="field-chips">
+              <span class="status">P0：版本 / 硬件匹配</span
+              ><span class="status">P0：日志与复现携带</span
+              ><span>P1：可验证路径卡</span><span>P1：解决状态与规模条件</span
+              ><span>P2：贡献影响反馈</span>
+            </div>
+          </aside>
         </div>
       </section>
       <section>

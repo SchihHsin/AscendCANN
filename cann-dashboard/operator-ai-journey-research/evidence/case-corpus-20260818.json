@@ -1,0 +1,21 @@
+{
+  "date": "2026-08-18",
+  "scope": "15 个公开 GitHub Issue；编码字段来自 Issue 标题、正文、评论与状态，不代表全部用户或满意度。",
+  "cases": [
+    {"id":"pytorch#148","task":"Qwen3-ASR 微调","group":"应用交付","state":"用户报告恢复","context":["硬件","版本","日志"],"url":"https://github.com/Ascend/pytorch/issues/148"},
+    {"id":"pytorch#106","task":"torch_npu 源码构建","group":"构建与兼容","state":"人工引导","context":["分支","版本","错误路径"],"url":"https://github.com/Ascend/pytorch/issues/106"},
+    {"id":"pytorch#154","task":"多 NPU GPT torch.compile","group":"应用交付","state":"未闭环","context":["硬件","版本","最小复现","日志"],"url":"https://github.com/Ascend/pytorch/issues/154"},
+    {"id":"MindIE-LLM#1","task":"PD 分离部署","group":"应用交付","state":"路径定向","context":["部署目标"],"url":"https://github.com/Ascend/MindIE-LLM/issues/1"},
+    {"id":"MindSpore#402","task":"igamma 精度异常","group":"正确性与性能","state":"开放待响应","context":["硬件","版本","最小输入","预期结果"],"url":"https://github.com/mindspore-ai/mindspore/issues/402"},
+    {"id":"pytorch#163","task":"Dynamo 行为不一致","group":"构建与兼容","state":"开放","context":["版本","上游用例"],"url":"https://github.com/Ascend/pytorch/issues/163"},
+    {"id":"pytorch#147","task":"flex_attention 训练","group":"应用交付","state":"开放","context":["框架能力"],"url":"https://github.com/Ascend/pytorch/issues/147"},
+    {"id":"pytorch#133","task":"profiler trace 兼容","group":"正确性与性能","state":"公开方案","context":["分析结论","解决方案"],"url":"https://github.com/Ascend/pytorch/issues/133"},
+    {"id":"pytorch#153","task":"310P index_put_ 崩溃","group":"正确性与性能","state":"开放","context":["硬件","版本","容器","错误码"],"url":"https://github.com/Ascend/pytorch/issues/153"},
+    {"id":"pytorch#144","task":"Qwen3-0.6B linear 推理","group":"应用交付","state":"开放","context":["硬件","版本","容器","错误码"],"url":"https://github.com/Ascend/pytorch/issues/144"},
+    {"id":"pytorch#125","task":"ATC 混合精度转换","group":"正确性与性能","state":"开放","context":["硬件","版本","模型","精度结果"],"url":"https://github.com/Ascend/pytorch/issues/125"},
+    {"id":"pytorch#149","task":"CI 上游兼容构建","group":"构建与兼容","state":"已关闭","context":["上游分支","CI 日志"],"url":"https://github.com/Ascend/pytorch/issues/149"},
+    {"id":"torchair#4","task":"CANN 8.5.1 版本匹配","group":"构建与兼容","state":"开放","context":["版本"],"url":"https://github.com/Ascend/torchair/issues/4"},
+    {"id":"torchair#2","task":"分布式模块导入","group":"构建与兼容","state":"开放","context":["模块路径","错误栈"],"url":"https://github.com/Ascend/torchair/issues/2"},
+    {"id":"torchair#1","task":"源码 make 构建","group":"构建与兼容","state":"开放","context":["构建日志","接口变更"],"url":"https://github.com/Ascend/torchair/issues/1"}
+  ]
+}
