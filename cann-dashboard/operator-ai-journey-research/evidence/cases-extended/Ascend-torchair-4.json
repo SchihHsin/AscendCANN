@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/torchair/issues/4",
+  "repository_url": "https://api.github.com/repos/Ascend/torchair",
+  "labels_url": "https://api.github.com/repos/Ascend/torchair/issues/4/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/torchair/issues/4/comments",
+  "events_url": "https://api.github.com/repos/Ascend/torchair/issues/4/events",
+  "html_url": "https://github.com/Ascend/torchair/issues/4",
+  "id": 5020121474,
+  "node_id": "I_kwDOKODdC88AAAABKzj5gg",
+  "number": 4,
+  "title": "cann-8.5.1应该用哪个版本",
+  "user": {
+    "login": "lyn0102",
+    "id": 32315708,
+    "node_id": "MDQ6VXNlcjMyMzE1NzA4",
+    "avatar_url": "https://avatars.githubusercontent.com/u/32315708?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/lyn0102",
+    "html_url": "https://github.com/lyn0102",
+    "followers_url": "https://api.github.com/users/lyn0102/followers",
+    "following_url": "https://api.github.com/users/lyn0102/following{/other_user}",
+    "gists_url": "https://api.github.com/users/lyn0102/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/lyn0102/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/lyn0102/subscriptions",
+    "organizations_url": "https://api.github.com/users/lyn0102/orgs",
+    "repos_url": "https://api.github.com/users/lyn0102/repos",
+    "events_url": "https://api.github.com/users/lyn0102/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/lyn0102/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 0,
+  "created_at": "2026-07-30T13:16:32Z",
+  "updated_at": "2026-07-30T13:16:32Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "cann-8.5.1应该用哪个版本",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/torchair/issues/4/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/torchair/issues/4/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

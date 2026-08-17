@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/pytorch/issues/153",
+  "repository_url": "https://api.github.com/repos/Ascend/pytorch",
+  "labels_url": "https://api.github.com/repos/Ascend/pytorch/issues/153/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/pytorch/issues/153/comments",
+  "events_url": "https://api.github.com/repos/Ascend/pytorch/issues/153/events",
+  "html_url": "https://github.com/Ascend/pytorch/issues/153",
+  "id": 4984700150,
+  "node_id": "I_kwDOF-8i788AAAABKRx89g",
+  "number": 153,
+  "title": "[Bug]: 310P 布尔掩码 index_put_ 导致设备上下文崩溃（aicpu 错误 507018）",
+  "user": {
+    "login": "ash934141435",
+    "id": 147369907,
+    "node_id": "U_kgDOCMivsw",
+    "avatar_url": "https://avatars.githubusercontent.com/u/147369907?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/ash934141435",
+    "html_url": "https://github.com/ash934141435",
+    "followers_url": "https://api.github.com/users/ash934141435/followers",
+    "following_url": "https://api.github.com/users/ash934141435/following{/other_user}",
+    "gists_url": "https://api.github.com/users/ash934141435/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/ash934141435/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/ash934141435/subscriptions",
+    "organizations_url": "https://api.github.com/users/ash934141435/orgs",
+    "repos_url": "https://api.github.com/users/ash934141435/repos",
+    "events_url": "https://api.github.com/users/ash934141435/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/ash934141435/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 0,
+  "created_at": "2026-07-27T05:38:56Z",
+  "updated_at": "2026-07-27T05:41:15Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "## 环境信息\n\n\n\n- 硬件：Atlas 310P（单卡，驱动 固件 24.1.t35 ）\n\n- CANN：9.1.0-beta.1（镜像 `quay.io/ascend/vllm-ascend:v0.23.0rc1-310p` 内置）\n\n- torch：2.10.0+cpu\n\n- torch_npu：2.10.0.post2\n\n- 操作系统/架构：ubuntu22.04 上述容器镜像内\n\n## 问题描述\n\n\n\n在 **Ascend 310P** 上，布尔掩码 `index_put_`（即 `x[bool_mask] = values`）会使\n\nNPU 设备上下文崩溃，报 **aicpu 错误 507018**。\n\n\n\n出错的是底层 aicpu `IndexPut`内核；一旦触发，设备上下文被污染，后续所有算子都会失败。这一问题导致 vLLM推理服务中所有多模态（图像）请\n\n求崩溃（vllm-ascend issue #12086）https://github.com/vllm-project/vllm-ascend/issues/12086\n\n因为视觉embedding 合并用的正是布尔掩码赋值。\n\n\n\n## 最小复现\n\n\n\n```python\n\nimport torch, torch_npu\n\n\n\nx = torch.zeros(171, 2048, dtype=torch.float16).npu()\n\nmask = torch.zeros(171, dtype=torch.bool).npu()\n\nmask[10:30] = True\n\nvals = torch.randn(20, 2048, dtype=torch.float16).npu()\n\nx[mask] = vals            # NPU 上的布尔掩码 index_put_\n\ntorch.npu.synchronize()\n\n```\n\n\n\n实际报错：\n\n\n\n```\n\nRuntimeError: npuSynchronizeDevice:.../torch_npu/csrc/core/npu/NPUStream.cpp:576\n\nNPU function error: AclrtSynchronizeDeviceWithTimeout, error code is 507018\n\n[Error]: The aicpu execution is abnormal.\n\n```\n\n\n\n### 测试矩阵\n\n每个用例均在独立子进程中执行。\n\n| 用例 | 结果 |\n| --- | --- |\n| 掩码在 NPU：`x[mask] = vals` | 失败（错误码 `507018`） |\n| 掩码在 CPU：`x[mask] = vals` | 失败（错误码 `507018`） |\n| 整数索引：`x.index_copy_(0, idx, vals)` | 正常，可作为临时绕过方案 |\n\n\n\n\n## 期望行为\n\n\n\n布尔掩码 `index_put_` 应当与 `x.index_copy_(0, mask.nonzero()[0], vals)` 结果一致，\n\n且不应使设备上下文崩溃——在 CUDA 上（以及推测在 A2/A3 上）行为是正常的。\n\n\n\n## 补充说明\n\n\n\n- 下游影响及已验证的临时绕过方案见 vllm-ascend：\n\n  https://github.com/vllm-project/vllm-ascend/issues/12086\n\n- 如果该问题在新版 CANN/torch_npu 的 310P 组合中已修复，请告知最低版本要求。",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/153/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/pytorch/issues/153/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

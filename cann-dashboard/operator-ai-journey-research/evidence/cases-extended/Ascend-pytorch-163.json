@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/pytorch/issues/163",
+  "repository_url": "https://api.github.com/repos/Ascend/pytorch",
+  "labels_url": "https://api.github.com/repos/Ascend/pytorch/issues/163/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/pytorch/issues/163/comments",
+  "events_url": "https://api.github.com/repos/Ascend/pytorch/issues/163/events",
+  "html_url": "https://github.com/Ascend/pytorch/issues/163",
+  "id": 5118878743,
+  "node_id": "I_kwDOF-8i788AAAABMRvkFw",
+  "number": 163,
+  "title": "[Bug]: NPU 环境下 Dynamo 处理零参数 id() 时抛出 IndexError 而非 TypeError，与 PyTorch 原生行为不一致，影响设备测试解耦",
+  "user": {
+    "login": "taochong123456",
+    "id": 29744975,
+    "node_id": "MDQ6VXNlcjI5NzQ0OTc1",
+    "avatar_url": "https://avatars.githubusercontent.com/u/29744975?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/taochong123456",
+    "html_url": "https://github.com/taochong123456",
+    "followers_url": "https://api.github.com/users/taochong123456/followers",
+    "following_url": "https://api.github.com/users/taochong123456/following{/other_user}",
+    "gists_url": "https://api.github.com/users/taochong123456/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/taochong123456/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/taochong123456/subscriptions",
+    "organizations_url": "https://api.github.com/users/taochong123456/orgs",
+    "repos_url": "https://api.github.com/users/taochong123456/repos",
+    "events_url": "https://api.github.com/users/taochong123456/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/taochong123456/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 1,
+  "created_at": "2026-08-11T09:55:10Z",
+  "updated_at": "2026-08-13T06:36:06Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "\n\n## 环境信息\n环境问题如下\n\n\n```\n### Environment\n| Item | Version |\n|------|---------|\n| CANN | 9.1.0 |\n| PyTorch | 2.14.0+gitee7bc39 |\n| torch_npu | 2.14.0+gitee7bc39 |\n```\n\n社区用例：\nhttps://github.com/pytorch/pytorch/blob/main/test/dynamo/test_id.py\n\n<img width=\"622\" height=\"341\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7a7e3ae9-0855-49bf-a498-925700807b51\" />\n\n\n\n\n## 报错信息\n\n\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/npu-env/pytorch/torch/_dynamo/variables/builtin.py\", line 1388, in builtin_dispatch\n    rv = handler(tx, args, kwargs)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/npu-env/pytorch/torch/_dynamo/variables/builtin.py\", line 1262, in call_self_handler\n    return self_handler(tx, *args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/miniconda/envs/npu/lib/python3.12/site-packages/torch_npu/utils/_dynamo.py\", line 290, in _wrap_call_id\n    args[0], torch._dynamo.variables.streams.EventVariable\n    ~~~~^^^\nIndexError: tuple index out of range\n\nfrom user code:\n   File \"/workspace/dcp-work-dcp-tc/pytorch/test/dynamo/test_id.py\", line 453, in wrapper\n    return fn(x)\n           ^^^^^\n  File \"/workspace/dcp-work-dcp-tc/pytorch/test/dynamo/test_id.py\", line 443, in fn0\n    return id()\n           ^^^^\n\nSet TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS=\"+dynamo\"\n\n\nTo execute this test, run the following from the base repo dir:\n    python test/dynamo/test_id.py IdTests.test_id_wrong_arg_count\n\nThis message can be suppressed by setting PYTORCH_PRINT_REPRO_ON_FAILURE=0\n\n\n```\n\n\n## 期望\n和pytorch抛的异常一致",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/163/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/pytorch/issues/163/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

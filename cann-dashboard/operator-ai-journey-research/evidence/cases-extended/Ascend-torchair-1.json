@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/torchair/issues/1",
+  "repository_url": "https://api.github.com/repos/Ascend/torchair",
+  "labels_url": "https://api.github.com/repos/Ascend/torchair/issues/1/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/torchair/issues/1/comments",
+  "events_url": "https://api.github.com/repos/Ascend/torchair/issues/1/events",
+  "html_url": "https://github.com/Ascend/torchair/issues/1",
+  "id": 2528066452,
+  "node_id": "I_kwDOKODdC86WrzuU",
+  "number": 1,
+  "title": "make torchair -j8时报错error: ‘const struct gert::Shape’ has no member named ‘GetDims’",
+  "user": {
+    "login": "StubbornCalf",
+    "id": 55679366,
+    "node_id": "MDQ6VXNlcjU1Njc5MzY2",
+    "avatar_url": "https://avatars.githubusercontent.com/u/55679366?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/StubbornCalf",
+    "html_url": "https://github.com/StubbornCalf",
+    "followers_url": "https://api.github.com/users/StubbornCalf/followers",
+    "following_url": "https://api.github.com/users/StubbornCalf/following{/other_user}",
+    "gists_url": "https://api.github.com/users/StubbornCalf/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/StubbornCalf/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/StubbornCalf/subscriptions",
+    "organizations_url": "https://api.github.com/users/StubbornCalf/orgs",
+    "repos_url": "https://api.github.com/users/StubbornCalf/repos",
+    "events_url": "https://api.github.com/users/StubbornCalf/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/StubbornCalf/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 2,
+  "created_at": "2024-09-16T10:25:20Z",
+  "updated_at": "2024-09-16T10:49:30Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "完整的代码\r\n```typescript\r\n[  3%] Built target ascend_protobuf\r\n[  8%] Built target fmk_parser\r\n[ 10%] Copy pthon files\r\n[ 15%] Built target acl_tdt_channel\r\n[ 20%] Built target acl_op_compiler\r\n[ 25%] Built target graph\r\n[ 31%] Built target acl_stub\r\n[ 36%] Built target hccl_stub\r\n[ 41%] Built target ascendcl\r\n[ 46%] Built target hccl\r\n[ 51%] Built target ge_local_stub\r\n[ 56%] Built target ge_runner\r\nConsolidate compiler generated dependencies of target _abi_compat_ge_apis\r\n[ 56%] Building CXX object torchair/abi_compat_ge_apis/CMakeFiles/_abi_compat_ge_apis.dir/compat_apis.cpp.o\r\n[ 56%] Built target copy_pyfiles\r\n[ 60%] Built target torch_npu_local_stub\r\n[ 65%] Built target torch_npu\r\n/home/HwHiAiUser/project/torchair/torchair/abi_compat_ge_apis/compat_apis.cpp: In function ‘tng::Status tng::compat::DebugString(const gert::Shape&)’:\r\n/home/HwHiAiUser/project/torchair/torchair/abi_compat_ge_apis/compat_apis.cpp:142:21: error: ‘const struct gert::Shape’ has no member named ‘GetDims’; did you mean ‘GetDim’?\r\n  142 |   auto dims = shape.GetDims();\r\n      |                     ^~~~~~~\r\n      |                     GetDim\r\nmake[3]: *** [torchair/abi_compat_ge_apis/CMakeFiles/_abi_compat_ge_apis.dir/build.make:76: torchair/abi_compat_ge_apis/CMakeFiles/_abi_compat_ge_apis.dir/compat_apis.cpp.o] Error 1\r\nmake[2]: *** [CMakeFiles/Makefile2:812: torchair/abi_compat_ge_apis/CMakeFiles/_abi_compat_ge_apis.dir/all] Error 2\r\nmake[1]: *** [CMakeFiles/Makefile2:675: CMakeFiles/torchair.dir/rule] Error 2\r\nmake: *** [Makefile:403: torchair] Error 2\r\n\r\n``` \r\n请问如何解决呢？",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/torchair/issues/1/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/torchair/issues/1/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

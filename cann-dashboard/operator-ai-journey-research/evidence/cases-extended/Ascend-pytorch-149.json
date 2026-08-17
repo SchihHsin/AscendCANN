@@ -1,0 +1,110 @@
+{
+  "url": "https://api.github.com/repos/Ascend/pytorch/issues/149",
+  "repository_url": "https://api.github.com/repos/Ascend/pytorch",
+  "labels_url": "https://api.github.com/repos/Ascend/pytorch/issues/149/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/pytorch/issues/149/comments",
+  "events_url": "https://api.github.com/repos/Ascend/pytorch/issues/149/events",
+  "html_url": "https://github.com/Ascend/pytorch/issues/149",
+  "id": 4757514325,
+  "node_id": "I_kwDOF-8i788AAAABG5HoVQ",
+  "number": 149,
+  "title": "[CI Break] torch_npu 编译失败：torchgen 无法识别已删除的 Dimname 类型",
+  "user": {
+    "login": "kerer-ai",
+    "id": 68881768,
+    "node_id": "MDQ6VXNlcjY4ODgxNzY4",
+    "avatar_url": "https://avatars.githubusercontent.com/u/68881768?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/kerer-ai",
+    "html_url": "https://github.com/kerer-ai",
+    "followers_url": "https://api.github.com/users/kerer-ai/followers",
+    "following_url": "https://api.github.com/users/kerer-ai/following{/other_user}",
+    "gists_url": "https://api.github.com/users/kerer-ai/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/kerer-ai/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/kerer-ai/subscriptions",
+    "organizations_url": "https://api.github.com/users/kerer-ai/orgs",
+    "repos_url": "https://api.github.com/users/kerer-ai/repos",
+    "events_url": "https://api.github.com/users/kerer-ai/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/kerer-ai/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+    {
+      "id": 3309300177,
+      "node_id": "MDU6TGFiZWwzMzA5MzAwMTc3",
+      "url": "https://api.github.com/repos/Ascend/pytorch/labels/bug",
+      "name": "bug",
+      "color": "d73a4a",
+      "default": true,
+      "description": "Something isn't working"
+    }
+  ],
+  "state": "closed",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 0,
+  "created_at": "2026-06-27T08:26:59Z",
+  "updated_at": "2026-06-27T08:30:28Z",
+  "closed_at": "2026-06-27T08:30:28Z",
+  "assignee": null,
+  "author_association": "COLLABORATOR",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "## 问题现象\n\ntorch_npu CI 构建流程（`receive-trigger.yml` → `_build.yml`）在拉取上游 pytorch/pytorch 最新 main 编译时，**torch_npu 编译阶段失败**。\n\nCI 运行：https://github.com/Ascend/pytorch/actions/runs/28282366641\n\n## 报错日志\n\n```\nFile \"/__w/pytorch/pytorch/torch_npu/torchnpugen/gen_backend_stubs.py\", line 255, in parse_native_and_custom_yaml\n    func, m = NativeFunction.from_yaml(e, \"Location\", valid_tags)\n...\nFile \"/opt/conda/envs/py_3.10/lib/python3.10/site-packages/torchgen/model.py\", line 2010, in _parse\n    return BaseType(BaseTy[t])\nFile \"/opt/conda/envs/py_3.10/lib/python3.10/enum.py\", line 440, in __getitem__\n    return cls._member_map_[name]\nKeyError: Dimname\n\nThe above exception was the direct cause of the following exception:\n\nFile \"/opt/conda/envs/py_3.10/lib/python3.10/site-packages/torchgen/model.py\", line 2012, in _parse\n    raise RuntimeError(f\"unrecognized type {t}\") from e\nRuntimeError: unrecognized type Dimname\n\nFailed to generate ATEN bindings: [bash, /__w/pytorch/pytorch/torch_npu/generate_code.sh, ...]\ntorch_npu build failed!\n```\n\n## 引入点\n\n上游 pytorch/pytorch PR **[Remove named tensor (#173895)](https://github.com/pytorch/pytorch/pull/173895)** 于 2026-06-03 合入（commit `00512145ec`），从 PyTorch 代码库中硬删除了 `named tensor` 功能，包括：\n\n- 删除 `torchgen/model.py` 中 `BaseTy` 枚举的 `Dimname` 成员\n- 删除 `Type._parse()` 中对 `Dimname` 类型的解析支持\n- 代码变更量：+239 / **-8587** 行\n\n## 根因分析\n\n`torch_npu/torchnpugen/gen_backend_stubs.py` 在代码生成阶段解析 `native_functions.yaml` 时，仍引用了 `Dimname` 类型。当使用最新 pytorch main 构建的 PyTorch wheel（其中 torchgen 已移除该类型）执行代码生成时，`torchgen/model.py` 抛出 `RuntimeError: unrecognized type Dimname`。\n\n**调用链**：`gen_backend_stubs.py:parse_native_and_custom_yaml()` → `NativeFunction.from_yaml()` → `FunctionSchema.parse()` → `Type.parse(\"Dimname\")` → `Type._parse()` → `KeyError: Dimname`\n\n## 建议修复方案\n\n1. **检查 `torch_npu` 的 `native_functions.yaml`（或自定义 YAML 文件）**，查找是否存在 `Dimname` 类型的引用，将其替换为等价的替代类型\n2. **检查 `torchnpugen/gen_backend_stubs.py`** 中对 `Dimname` 类型的特殊处理逻辑，参考上游 PR #173895 的移除方式做对应适配\n3. 可参考上游 PR #173895 的 diff 来确定所有需要修改的位置\n\n## 影响范围\n\n所有依赖 `receive-trigger.yml` 触发的 CI 构建，一旦拉取到 2026-06-03 之后的 pytorch/pytorch main，torch_npu 编译都会失败。",
+  "closed_by": {
+    "login": "kerer-ai",
+    "id": 68881768,
+    "node_id": "MDQ6VXNlcjY4ODgxNzY4",
+    "avatar_url": "https://avatars.githubusercontent.com/u/68881768?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/kerer-ai",
+    "html_url": "https://github.com/kerer-ai",
+    "followers_url": "https://api.github.com/users/kerer-ai/followers",
+    "following_url": "https://api.github.com/users/kerer-ai/following{/other_user}",
+    "gists_url": "https://api.github.com/users/kerer-ai/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/kerer-ai/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/kerer-ai/subscriptions",
+    "organizations_url": "https://api.github.com/users/kerer-ai/orgs",
+    "repos_url": "https://api.github.com/users/kerer-ai/repos",
+    "events_url": "https://api.github.com/users/kerer-ai/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/kerer-ai/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/149/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/pytorch/issues/149/timeline",
+  "performed_via_github_app": null,
+  "state_reason": "completed",
+  "pinned_comment": null
+}

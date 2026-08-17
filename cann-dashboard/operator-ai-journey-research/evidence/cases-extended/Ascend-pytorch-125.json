@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/pytorch/issues/125",
+  "repository_url": "https://api.github.com/repos/Ascend/pytorch",
+  "labels_url": "https://api.github.com/repos/Ascend/pytorch/issues/125/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/pytorch/issues/125/comments",
+  "events_url": "https://api.github.com/repos/Ascend/pytorch/issues/125/events",
+  "html_url": "https://github.com/Ascend/pytorch/issues/125",
+  "id": 4320063800,
+  "node_id": "I_kwDOF-8i788AAAABAX7xOA",
+  "number": 125,
+  "title": "[Bug] ATC allow_mix_precision / allow_fp32_to_fp16 在 SAM3 vision encoder FPN neck 上造成灾难性精度崩溃 (与 torch_npu fp16 行为不一致)",
+  "user": {
+    "login": "ZhaoyuZhong0913",
+    "id": 52737793,
+    "node_id": "MDQ6VXNlcjUyNzM3Nzkz",
+    "avatar_url": "https://avatars.githubusercontent.com/u/52737793?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/ZhaoyuZhong0913",
+    "html_url": "https://github.com/ZhaoyuZhong0913",
+    "followers_url": "https://api.github.com/users/ZhaoyuZhong0913/followers",
+    "following_url": "https://api.github.com/users/ZhaoyuZhong0913/following{/other_user}",
+    "gists_url": "https://api.github.com/users/ZhaoyuZhong0913/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/ZhaoyuZhong0913/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/ZhaoyuZhong0913/subscriptions",
+    "organizations_url": "https://api.github.com/users/ZhaoyuZhong0913/orgs",
+    "repos_url": "https://api.github.com/users/ZhaoyuZhong0913/repos",
+    "events_url": "https://api.github.com/users/ZhaoyuZhong0913/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/ZhaoyuZhong0913/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 0,
+  "created_at": "2026-04-24T02:17:37Z",
+  "updated_at": "2026-04-24T02:18:26Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "## 摘要 (TL;DR)\n\n同一份 SAM3 (Meta, HF Transformers) vision encoder ONNX 文件:\n\n- 用 `torch_npu 2.9.0` + `torch.float16` 在 910B3 上 **eager 推理** → 精度与 CPU fp32 **完全对齐**, top-10 命中率 100%\n- 用 **ATC 8.5.0** 把同一份 ONNX 编成 OM, `--precision_mode=allow_mix_precision` 或 `allow_fp32_to_fp16` → top-10 命中率 **跌到 5–8%** (基本随机)\n- 只有 `--precision_mode=must_keep_origin_dtype` (fp32) 才能保精度, 但延迟比 PyTorch fp16 还慢 12%\n\n**期望**: ATC 的降精度路径至少应与 `torch_npu` 运行时的 fp16 行为等价. 当前两者行为不一致, 且没有中间档位可用.\n\n## 环境\n\n| 组件 | 版本 |\n|---|---|\n| 硬件 | Ascend 910B3 (`soc_version=Ascend910B3`) |\n| OS | Ubuntu 22.04 aarch64 |\n| NPU 驱动 | 24.1.0.3 |\n| CANN / ATC | 8.5.0 |\n| PyTorch | 2.9.0+cpu |\n| torch_npu | 2.9.0 |\n| transformers | 5.3.0 |\n| 模型 | `facebook/sam3` (Sam3Model, ViT-L backbone + FPN neck + CLIP text + DETR detector) |\n\n## 目标模型结构 (关键)\n\n```\nVision encoder (问题定位在这里):\n  ViT-L backbone (32 层, hidden_size=1024)\n       │\n       ▼\n  Sam3VisionNeck (FPN):\n    ConvTranspose2d 2x2 stride=2  →  fpn_feat_3 (H/32)\n         │ + skip\n         ▼\n    ConvTranspose2d              →  fpn_feat_2 (H/16)   ← max_diff=1.46 ❌\n         │ + skip\n         ▼\n    ConvTranspose2d              →  fpn_feat_1 (H/8)    ← max_diff=1.47 ❌\n         │ + skip\n         ▼\n    ConvTranspose2d              →  fpn_feat_0 (H/4)    ← max_diff=2.7e-2 (自纠一些)\n```\n\n输入 `pixel_values [1,3,1008,1008]` fp32. FPN neck 只占 ~2% 参数 (7.8M / 454M), 但是精度崩溃的源头.\n\n## 复现步骤\n\n### 1) 导出 ONNX (fp32)\n\n```python\nimport torch\nfrom transformers import Sam3Model\nmodel = Sam3Model.from_pretrained(\"facebook/sam3\", torch_dtype=torch.float32).eval()\n\nclass VisionWrap(torch.nn.Module):\n    def __init__(self, m):\n        super().__init__(); self.m = m\n    def forward(self, pixel_values):\n        out = self.m.get_vision_features(pixel_values=pixel_values)\n        return (out.last_hidden_state, *out.fpn_hidden_states, *out.fpn_position_encoding)\n\ndummy = torch.randn(1, 3, 1008, 1008)\ntorch.onnx.export(\n    VisionWrap(model), (dummy,), \"sam3_vision_encoder.onnx\",\n    input_names=[\"pixel_values\"],\n    output_names=[\"last_hidden_state\",\n                  \"fpn_feat_0\",\"fpn_feat_1\",\"fpn_feat_2\",\"fpn_feat_3\",\n                  \"fpn_pe_0\",\"fpn_pe_1\",\"fpn_pe_2\",\"fpn_pe_3\"],\n    opset_version=17,\n)\n```\n\n### 2) ATC 转 OM (3 种 precision_mode 对比)\n\n```bash\nsource /usr/local/Ascend/ascend-toolkit/set_env.sh\n\nfor MODE in allow_mix_precision allow_fp32_to_fp16 must_keep_origin_dtype; do\n  atc --framework=5 \\\n      --model=sam3_vision_encoder.onnx \\\n      --output=vision_${MODE} \\\n      --soc_version=Ascend910B3 \\\n      --input_format=NCHW \\\n      --input_shape=\"pixel_values:1,3,1008,1008\" \\\n      --precision_mode=${MODE} \\\n      --log=error\ndone\n```\n\n### 3) 用 ONNX Runtime CPU 跑同一 ONNX 作为 ground truth, 对比 OM 各输出\n\n```python\nimport numpy as np, onnxruntime as ort\n# 用 pyACL 跑 OM, 得到 om_fpn_feat_0..3\n# 用 ORT CPU 跑 ONNX, 得到 cpu_fpn_feat_0..3\nfor i in range(4):\n    d = np.abs(om_fpn_feat[i] - cpu_fpn_feat[i])\n    print(f\"fpn_feat_{i}: max_diff={d.max():.3f} mean_diff={d.mean():.3e}\")\n```\n\n## 实测结果\n\n### 各 precision_mode 下的端到端精度 (15 样本, 3 prompts/image)\n\n| `precision_mode` | top-10 命中 | bbox IoU | mask IoU | vision p50 | 可用? |\n|---|---|---|---|---|---|\n| `allow_mix_precision` + `high_performance` | **0.08** | **0.027** | 0.15 | 190 ms | ❌ |\n| `allow_fp32_to_fp16` | **0.05** | **0.019** | 0.07 | 240 ms | ❌ |\n| `must_keep_origin_dtype` | **0.9933** | **0.946** | 0.92 | 317 ms | ✓ (但慢) |\n| **torch_npu fp16 eager (对照组)** | **1.000** | **1.000** | 1.00 | 150 ms | ✓ |\n\n### 各输出张量的 ORT-CPU vs OM 数值差异 (`allow_mix_precision` 模式)\n\n| 输出 | shape | max_diff | mean_diff | 判定 |\n|---|---|---|---|---|\n| `fpn_pe_2` (位置编码) | `[1,256,72,72]` | 4.8e-7 | 4.9e-9 | ✓ |\n| `fpn_feat_0` | `[1,256,288,288]` | 2.7e-2 | 1e-3 级 | ⚠ |\n| **`fpn_feat_1`** | `[1,256,144,144]` | **1.47** | 5.2e-1 | ❌ |\n| **`fpn_feat_2`** | `[1,256,72,72]` | **1.46** | 3.5e-1 | ❌ |\n| `last_hidden_state` | `[1,5184,1024]` | 220+ | 6.1e-1 | ❌ |\n\nfp16 的数值范围是 `[-65504, 65504]`, 但 `max_diff` 达到 **220** 说明中间层已经 overflow 到远超 fp16 可表示的幅度.\n\n## 根因假设\n\n1. **`ConvTranspose2d` 中间累加器似乎用了 fp16 存储**. FPN 上采样把低分辨率 feature 插值放大, 中间累加值幅度很容易超过 fp16 范围.\n2. **Skip connection 的 `Add` 两端幅度差异大**. ViT backbone 累积 32 层残差后, 其输出的幅度远大于上采样分支, 两者 fp16 相加时小分支被 underflow 掉.\n3. **ATC 粗暴把 fp32 cast 成 fp16**, 没有像 `torch_npu` 那样对 LayerNorm / Softmax / Div / 大动态范围 Add / ConvTranspose 等保留 fp32 累加.\n\n## 为什么 PyTorch NPU fp16 能保精度\n\n根据我们的观察, `torch_npu` 对数值敏感算子 (`LayerNorm`, `Softmax`, `F.scaled_dot_product_attention` 的部分分支, `torch.div`) 默认走**混合精度 kernel**: fp16 输入输出 + fp32 累加 + fp32 归一化. 这是 Ascend 工程师多年踩坑积累的隐式白名单.\n\nATC 的降精度路径似乎缺少这一层\"兜底\", 用户自己导 ONNX 送 ATC 就拿不到这份保障.\n\n## 期望行为\n\n任何满足以下之一都能解决:\n\n1. **`allow_mix_precision` 默认对 `ConvTranspose2d` / 大动态范围 `Add` / `LayerNorm` 自动保 fp32 累加**, 对齐 `torch_npu` 的行为. (首选)\n2. **提供 `--keep_dtype=<op_list.json>` 机制**, 用户可以手动指定某些 op 保 fp32. 当前 ATC 虽然已有类似机制 (`keep_dtype_config`), 但文档和样例对\"怎么从 ONNX op name 映射到 keep 列表\"说明不足, 且 PyTorch 导出的 op 名 (`/ve/neck/layers.X/conv_transpose`) 难以定位对应 PyTorch 源码中的具体 `nn.Module`.\n3. **至少在文档里明确说明**: 对 ViT + FPN 类模型, `allow_mix_precision` 有风险, 推荐路径是 X.\n\n## 关于 bf16 (尚未测)\n\n我们没有单独跑 `allow_fp32_to_bf16` / `allow_mix_precision_bf16`. 但 bf16 尾数 7 bit < fp16 的 10 bit, 按相同的 FPN neck 数值累加链路分析, 预期精度**只会更差**. 如需 bf16 实测数据可补.\n\n## Workaround 现状\n\n目前业务只能继续用 `torch_npu` + `torch_dtype=float16` 在 eager 模式运行. 我们测过:\n- OM + `must_keep_origin_dtype`: 精度达标但延迟 453 ms > PyTorch eager 的 400 ms, **反而更慢**, 失去 OM 优化意义\n- OM + 低精度模式: 快但精度崩\n\n## 愿意提供\n\n- 完整 SAM3 ONNX (vision 1.8GB, head 1.5GB) 和 OM (3 种模式各一份)\n- 精度对比脚本和原始 npz 数据\n- 最小复现 K8s pod YAML\n- 在你们指定的 CANN / torch_npu 版本上补测\n- 补测 bf16 相关 precision_mode\n",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/125/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/pytorch/issues/125/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

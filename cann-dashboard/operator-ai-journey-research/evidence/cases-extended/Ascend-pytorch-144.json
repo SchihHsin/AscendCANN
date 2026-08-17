@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/pytorch/issues/144",
+  "repository_url": "https://api.github.com/repos/Ascend/pytorch",
+  "labels_url": "https://api.github.com/repos/Ascend/pytorch/issues/144/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/pytorch/issues/144/comments",
+  "events_url": "https://api.github.com/repos/Ascend/pytorch/issues/144/events",
+  "html_url": "https://github.com/Ascend/pytorch/issues/144",
+  "id": 4616214559,
+  "node_id": "I_kwDOF-8i788AAAABEyXYHw",
+  "number": 144,
+  "title": "torch_npu 2.10 + CANN 9.0 on soc_version 104: torch.nn.functional.linear fails with MatMul/TransData",
+  "user": {
+    "login": "wakaka6",
+    "id": 48764488,
+    "node_id": "MDQ6VXNlcjQ4NzY0NDg4",
+    "avatar_url": "https://avatars.githubusercontent.com/u/48764488?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/wakaka6",
+    "html_url": "https://github.com/wakaka6",
+    "followers_url": "https://api.github.com/users/wakaka6/followers",
+    "following_url": "https://api.github.com/users/wakaka6/following{/other_user}",
+    "gists_url": "https://api.github.com/users/wakaka6/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/wakaka6/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/wakaka6/subscriptions",
+    "organizations_url": "https://api.github.com/users/wakaka6/orgs",
+    "repos_url": "https://api.github.com/users/wakaka6/repos",
+    "events_url": "https://api.github.com/users/wakaka6/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/wakaka6/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 1,
+  "created_at": "2026-06-08T20:02:30Z",
+  "updated_at": "2026-06-08T20:04:46Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "### Current environment\n\nWe are trying to run Qwen3-0.6B on Ascend 910B with `soc_version == 104`.\n\nRelevant environment from the container:\n\n```text\nOS: openEuler 24.03 (LTS-SP2) (aarch64)\nPython: 3.11.15\nPyTorch: 2.10.0+cpu\ntorch_npu: 2.10.0\nCANN: 9.0.0\nvLLM: 0.20.2\nvLLM Ascend image: quay.io/ascend/vllm-ascend:v0.20.2rc1 based local image\nNPU: 910B 32GB\nnpu-smi: 25.5.2\ntorch_npu.npu.get_soc_version(): 104\n```\n\n`npu-smi` shows 910B devices:\n\n```text\n+------------------------------------------------------------------------------------------------+\n| npu-smi 25.5.2                   Version: 25.5.2                                               |\n+---------------------------+---------------+----------------------------------------------------+\n| NPU   Name                | Health        | Power(W)    Temp(C)           Hugepages-Usage(page)|\n| Chip                      | Bus-Id        | AICore(%)   Memory-Usage(MB)  HBM-Usage(MB)        |\n+===========================+===============+====================================================+\n| 0     910B                | OK            | 70.3        38                0    / 0             |\n| 0                         | 0000:C1:00.0  | 0           1103 / 13552      0    / 32768         |\n+===========================+===============+====================================================+\n| 1     910B                | OK            | 68.9        38                0    / 0             |\n| 0                         | 0000:81:00.0  | 0           1483 / 15665      0    / 32768         |\n+===========================+===============+====================================================+\n| 2     910B                | OK            | 70.7        39                0    / 0             |\n| 0                         | 0000:41:00.0  | 0           2803 / 15665      0    / 32768         |\n+===========================+===============+====================================================+\n| 3     910B                | OK            | 67.6        36                0    / 0             |\n| 0                         | 0000:01:00.0  | 0           3184 / 15563      0    / 32768         |\n+===========================+===============+====================================================+\n| 4     910B                | OK            | 72.1        52                0    / 0             |\n| 0                         | 0000:C2:00.0  | 0           1071 / 13526      0    / 32768         |\n+===========================+===============+====================================================+\n| 5     910B                | OK            | 68.3        37                0    / 0             |\n| 0                         | 0000:82:00.0  | 0           1408 / 15665      0    / 32768         |\n+===========================+===============+====================================================+\n| 6     910B                | OK            | 70.0        43                0    / 0             |\n| 0                         | 0000:42:00.0  | 0           2277 / 15665      0    / 32768         |\n+===========================+===============+====================================================+\n| 7     910B                | OK            | 68.5        36                0    / 0             |\n| 0                         | 0000:02:00.0  | 0           3818 / 15589      0    / 32768         |\n+===========================+===============+====================================================+\n+---------------------------+---------------+----------------------------------------------------+\n| NPU     Chip              | Process id    | Process name             | Process memory(MB)      |\n+===========================+===============+====================================================+\n| No running processes found in NPU 0                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 1                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 2                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 3                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 4                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 5                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 6                                                            |\n+===========================+===============+====================================================+\n| No running processes found in NPU 7                                                            |\n+===========================+===============+====================================================+\n```\n\n### What happened\n\nOn upstream vLLM Ascend, the first error is:\n\n```text\nRuntimeError: Can not support soc_version: 104.\n```\n\nThis matches the currently open issue https://github.com/vllm-project/vllm-ascend/issues/6796.\n\nFor debugging only, I temporarily treated `soc_version == 104` as `AscendDeviceType.A2` in `vllm_ascend/utils.py` to get past the device-type guard. After that, Qwen3-0.6B can get further, but it fails during the first dummy/profile forward in `qkv_proj`, eventually reaching `torch.nn.functional.linear`.\n\nThe important part is that this is not only a vLLM model-startup failure: a minimal standalone PyTorch `torch.nn.functional.linear` repro also fails on NPU with `soc_version 104`.\n\n### Minimal repro\n\n```python\nimport os\nos.environ.setdefault(\"ASCEND_RT_VISIBLE_DEVICES\", \"0\")\nos.environ.setdefault(\"ASCEND_LAUNCH_BLOCKING\", \"1\")\n\nimport torch\nimport torch_npu\n\ntorch.npu.set_device(0)\nprint(\"torch\", torch.__version__)\nprint(\"torch_npu\", torch_npu.__version__)\nprint(\"soc_version\", torch_npu.npu.get_soc_version())\n\nx = torch.ones((1, 1024), dtype=torch.float16).to(\"npu:0\")\nw = torch.ones((2048, 1024), dtype=torch.float16).to(\"npu:0\")\ny = torch.nn.functional.linear(x, w)\ntorch.npu.synchronize()\nprint(y.shape, y[0, 0].float().cpu())\n```\n\nRun command:\n\n```bash\nASCEND_RT_VISIBLE_DEVICES=0 ASCEND_LAUNCH_BLOCKING=1 python3 /tmp/repro_matmul_uncaught.py\n```\n\n### Minimal repro error log\n\n```text\ntorch 2.10.0+cpu\ntorch_npu 2.10.0\nsoc_version 104\nTraceback (most recent call last):\n  File \"/tmp/repro_matmul_uncaught.py\", line 14, in <module>\n    y = torch.nn.functional.linear(x, w)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: InnerRun:../torch_npu/csrc/framework/OpParamMaker.cpp:240 OPS function error: MatMul, error code is 500002\n[ERROR] 2026-06-08-19:41:31 (PID:8818, Device:0, RankID:-1) ERR01100 OPS call acl api failed\n[Error]: A GE error occurs in the system.\n        Rectify the fault based on the error information in the ascend log.\n[PID: 8818] 2026-06-08-19:41:31.081.721 Unsupported_Operator(EZ3002): Optype [TransData] of Ops kernel [DNN_VM_HOST_CPU_OP_STORE] is unsupported. Reason: Transdata op, groups should be greater than 1, but now is 1.\n        Possible Cause: The operator type is unsupported in the operator information library due to specification mismatch.\n        Solution: Submit an issue to request for support at https://gitee.com/ascend, or remove this type of operators from your model.\n        TraceBack (most recent call last):\n        Optype [TransData] of Ops kernel [aicpu_ascend_kernel] is unsupported. Reason: Transdata op, groups should be greater than 1, but now is 1.\n        No supported Ops kernel and engine are found for [trans_TransData_0], optype [TransData].\n        Failed to select engine for [trans_TransData_0][TransData].[FUNC:operator()][FILE:engine_place.cc][LINE:152]\n        RunAllSubgraphs failed, graph=online.[FUNC:RunAllSubgraphs][FILE:engine_place.cc][LINE:125]\n        build graph failed, graph id:0, ret:4294967295[FUNC:BuildModelWithGraphId][FILE:ge_generator.cc][LINE:1603]\n        [Build][SingleOpModel]call ge interface generator.BuildSingleOpModel failed. ge result = 4294967295[FUNC:ReportCallError][FILE:log_inner.cpp][LINE:148]\n        [Build][Op]Fail to build op model[FUNC:ReportInnerError][FILE:log_inner.cpp][LINE:132]\n        build op model failed, result = 500002[FUNC:ReportInnerError][FILE:log_inner.cpp][LINE:132]\n```\n\n### vLLM repro command\n\nQwen3-0.6B is mounted at `/model`.\n\n```bash\nexport ASCEND_RT_VISIBLE_DEVICES=0\nexport TASK_QUEUE_ENABLE=1\nexport HCCL_OP_EXPANSION_MODE=AIV\nexport ASCEND_LAUNCH_BLOCKING=1\n\npython3 -m vllm.entrypoints.openai.api_server \\\n  --model /model \\\n  --dtype float16 \\\n  --port 18002 \\\n  --host 0.0.0.0 \\\n  --reasoning-parser qwen3 \\\n  --served-model-name qwen3-0.6b \\\n  --enable-prefix-caching \\\n  --trust-remote-code \\\n  --tensor-parallel-size 1 \\\n  --gpu-memory-utilization 0.75 \\\n  --max-model-len 2048 \\\n  --enforce-eager\n```\n\nNotes:\n\n- The Docker container maps all NPU devices (`/dev/davinci0` through `/dev/davinci7`) and selects NPU0 with `ASCEND_RT_VISIBLE_DEVICES=0` inside the container.\n- BF16 is not used here; this repro uses `float16`.\n- `Gloo Rank 0 is connected to 0 peer ranks` appears with `world_size=1`, which seems expected and unrelated.\n\n### vLLM error log\n\n```text\nEngineCore failed to start during profile_run / _dummy_run.\n\nTraceback reaches:\n\n  File \"/vllm-workspace/vllm/vllm/model_executor/models/qwen3.py\", line 228, in forward\n    hidden_states = self.self_attn(\n  File \"/vllm-workspace/vllm-ascend/vllm_ascend/patch/worker/patch_qwen3vl.py\", line 36, in forward_with_split_qkv_rmsnorm_mrope\n    qkv, _ = self.qkv_proj(hidden_states)\n  File \"/vllm-workspace/vllm-ascend/vllm_ascend/ops/linear.py\", line 199, in forward\n    return super().forward(input_)\n  File \"/vllm-workspace/vllm/vllm/model_executor/layers/linear.py\", line 587, in forward\n    output_parallel = self.quant_method.apply(self, input_, bias)\n  File \"/vllm-workspace/vllm-ascend/vllm_ascend/ops/linear.py\", line 90, in apply\n    return torch.ops.vllm.unquantized_gemm(x, layer.weight, bias)\n  File \"/vllm-workspace/vllm-ascend/vllm_ascend/ops/linear.py\", line 52, in unquantized_gemm\n    return torch.nn.functional.linear(x, weight, bias)\n\nRuntimeError: Sync:../torch_npu/csrc/framework/OpCommand.cpp:340 NPU function error: c10_npu::acl::AclrtSynchronizeStreamWithTimeout(stream), error code is 507018\n[ERROR] 2026-06-08-19:04:04 (PID:4179, Device:0, RankID:-1) ERR00100 PTA call acl api failed\n[Error]: The aicpu execution is abnormal.\nE39999: Inner Error!\nE39999[PID: 4179] 2026-06-08-19:04:04.698.981 (E39999):  Kernel task happen error, retCode=0x2a, [aicpu exception].[FUNC:PreCheckTaskErr][FILE:davinci_kernel_task.cc][LINE:1729]\nTraceBack (most recent call last):\nAicpu kernel execute failed, device_id=0, stream_id=15, task_id=265, soName=libtf_kernels.so, funcName=TFOperateAPI, kernelName=MatMul, errorCode=0x2a.[FUNC:PrintAicpuErrorInfo][FILE:davinci_kernel_task.cc][LINE:1435]\nAicpu kernel execute failed, device_id=0,stream_id=15,task_id=265, soName=libtf_kernels.so, funcName=TFOperateAPI, kernelName=MatMul[FUNC:PrintAicpuErrorInfo][FILE:davinci_kernel_task.cc][LINE:1460]\nAn exception occurred during AICPU execution, stream_id:15, task_id:265, errcode:5, msg:aicpu execute failed[FUNC:ProcessAicpuErrorInfo][FILE:device_error_proc.cc][LINE:878]\nrtStreamSynchronizeWithTimeout execution failed, reason=aicpu exception[FUNC:FuncErrorReason][FILE:error_message_manage.cc][LINE:65]\n```\n\n### Additional observation\n\nBefore reaching the MatMul error, I also saw an Ascend RoPE/update path issue when debugging Qwen3:\n\n```text\nUnsupported_Operator(EZ3003): No supported Ops kernel and engine are found for [AsStrided12], optype [AsStrided]\n```\n\nThis was triggered by `vllm_ascend/ops/rotary_embedding.py:update_cos_sin` at the slice assignment:\n\n```python\n_cos[:, :num_tokens] = ...\n```\n\nFor debugging, I bypassed that slice assignment and then the startup moved forward to the MatMul failure above. I mention this only as supporting evidence that `soc_version=104` seems to be going through unsupported or wrong operator paths when treated as A2.\n\n### Expected behavior\n\n- Please clarify whether `soc_version == 104` is supposed to be supported by vLLM Ascend / torch_npu / CANN 9.0 on 910B.\n- If it should be supported, `torch.nn.functional.linear` with a small FP16 matrix should work on NPU.\n- If it is not supported, vLLM Ascend should document this and avoid recommending workarounds that simply map 104 to A2, because later operator selection still fails.\n\n### Related issue\n\n- https://github.com/vllm-project/vllm-ascend/issues/6796\n",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/144/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/pytorch/issues/144/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

@@ -1,0 +1,82 @@
+{
+  "url": "https://api.github.com/repos/Ascend/pytorch/issues/147",
+  "repository_url": "https://api.github.com/repos/Ascend/pytorch",
+  "labels_url": "https://api.github.com/repos/Ascend/pytorch/issues/147/labels{/name}",
+  "comments_url": "https://api.github.com/repos/Ascend/pytorch/issues/147/comments",
+  "events_url": "https://api.github.com/repos/Ascend/pytorch/issues/147/events",
+  "html_url": "https://github.com/Ascend/pytorch/issues/147",
+  "id": 4741714835,
+  "node_id": "I_kwDOF-8i788AAAABGqDTkw",
+  "number": 147,
+  "title": "【bug】torch_npu不支持flex_attention，使用flex_attention进行训练会报错",
+  "user": {
+    "login": "sunny-infra",
+    "id": 176372238,
+    "node_id": "U_kgDOCoM6Dg",
+    "avatar_url": "https://avatars.githubusercontent.com/u/176372238?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/sunny-infra",
+    "html_url": "https://github.com/sunny-infra",
+    "followers_url": "https://api.github.com/users/sunny-infra/followers",
+    "following_url": "https://api.github.com/users/sunny-infra/following{/other_user}",
+    "gists_url": "https://api.github.com/users/sunny-infra/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/sunny-infra/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/sunny-infra/subscriptions",
+    "organizations_url": "https://api.github.com/users/sunny-infra/orgs",
+    "repos_url": "https://api.github.com/users/sunny-infra/repos",
+    "events_url": "https://api.github.com/users/sunny-infra/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/sunny-infra/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "labels": [
+
+  ],
+  "state": "open",
+  "locked": false,
+  "assignees": [
+
+  ],
+  "milestone": null,
+  "comments": 2,
+  "created_at": "2026-06-25T07:31:33Z",
+  "updated_at": "2026-08-12T08:07:42Z",
+  "closed_at": null,
+  "assignee": null,
+  "author_association": "NONE",
+  "issue_field_values": [
+
+  ],
+  "type": null,
+  "active_lock_reason": null,
+  "sub_issues_summary": {
+    "total": 0,
+    "completed": 0,
+    "percent_completed": 0
+  },
+  "issue_dependencies_summary": {
+    "blocked_by": 0,
+    "total_blocked_by": 0,
+    "blocking": 0,
+    "total_blocking": 0
+  },
+  "body": "torch_npu不支持flex_attention\n\n**torch/nn/attention/flex_attention.py**\n\ndef _validate_device(query: Tensor, key: Tensor, value: Tensor) :\n\n    if query.device.type == \"cpu\" and (\n        query.requires_grad or key.requires_grad or value.requires_grad\n    ):\n        raise NotImplementedError(\n            \"FlexAttention does not support backward on CPU. Please set the input requires_grad to False or use another device.\"\n        )\n    if query.device.type == \"mps\" and (\n        query.requires_grad or key.requires_grad or value.requires_grad\n    ):\n        raise NotImplementedError(\n            \"FlexAttention does not support backward on MPS. Please set the input requires_grad to False or use another device.\"\n        )\n    supported_devices = {\"cuda\", \"cpu\", \"xpu\", \"hpu\", \"mps\"}\n    if query.device.type not in supported_devices:\n        raise ValueError(\n            \"FlexAttention is only supported on CUDA, CPU, HPU, or MPS devices. \"\n            f\"Found input tensors on {query.device.type} device.\"\n        ) \n\n\n使用vllm-speculators训练等使用flex_attention场景会报如下错误，如果绕过会对性能产生较大影响建议适配：\n[rank0]: Traceback (most recent call last):\n[rank0]:   File \"/workspace/speculators/scripts/train.py\", line 681, in <module>\n[rank0]:     main(args)\n[rank0]:   File \"/workspace/speculators/scripts/train.py\", line 380, in main\n[rank0]:     trainer.run_training()\n[rank0]:   File \"/workspace/speculators/src/speculators/train/graceful_shutdown.py\", line 118, in wrapper\n[rank0]:     return fn(self, *args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/workspace/speculators/src/speculators/train/trainer.py\", line 340, in run_training\n[rank0]:     self.train_epoch(epoch)\n[rank0]:   File \"/workspace/speculators/src/speculators/train/trainer.py\", line 209, in train_epoch\n[rank0]:     _draft_tokens, loss, metrics = self.model(\n[rank0]:                                    ^^^^^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n[rank0]:     return self._call_impl(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1882, in _call_impl\n[rank0]:     return inner()\n[rank0]:            ^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1830, in inner\n[rank0]:     result = forward_call(*args, **kwargs)\n[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/workspace/speculators/src/speculators/models/eagle3/core.py\", line 204, in forward\n[rank0]:     hidden_states = decoder_layer(\n[rank0]:                     ^^^^^^^^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/transformers/modeling_layers.py\", line 93, in __call__\n[rank0]:     return super().__call__(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n[rank0]:     return self._call_impl(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1882, in _call_impl\n[rank0]:     return inner()\n[rank0]:            ^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1830, in inner\n[rank0]:     result = forward_call(*args, **kwargs)\n[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/workspace/speculators/src/speculators/models/eagle3/model_definitions.py\", line 93, in forward\n[rank0]:     hidden_states, _ = self.self_attn(\n[rank0]:                        ^^^^^^^^^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1776, in _wrapped_call_impl\n[rank0]:     return self._call_impl(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/modules/module.py\", line 1787, in _call_impl\n[rank0]:     return forward_call(*args, **kwargs)\n[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/transformers/models/llama/modeling_llama.py\", line 276, in forward\n[rank0]:     attn_output, attn_weights = attention_interface(\n[rank0]:                                 ^^^^^^^^^^^^^^^^^^^^\n[rank0]:   File \"/workspace/speculators/src/speculators/models/attention.py\", line 49, in flex_attention_forward\n[rank0]:     flex_attention_output = flex_attention(\n[rank0]:                             ^^^^^^^^^^^^^^^\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/attention/flex_attention.py\", line 1475, in flex_attention\n[rank0]:     _validate_device(query, key, value)\n[rank0]:   File \"/usr/local/python3.11.15/lib/python3.11/site-packages/torch/nn/attention/flex_attention.py\", line 1331, in _validate_device\n[rank0]:     raise ValueError(\n[rank0]: ValueError: FlexAttention is only supported on CUDA, CPU or HPU devices. Found input tensors on npu device.",
+  "closed_by": null,
+  "reactions": {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/147/reactions",
+    "total_count": 0,
+    "+1": 0,
+    "-1": 0,
+    "laugh": 0,
+    "hooray": 0,
+    "confused": 0,
+    "heart": 0,
+    "rocket": 0,
+    "eyes": 0
+  },
+  "timeline_url": "https://api.github.com/repos/Ascend/pytorch/issues/147/timeline",
+  "performed_via_github_app": null,
+  "state_reason": null,
+  "pinned_comment": null
+}

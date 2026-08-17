@@ -1,0 +1,49 @@
+[
+  {
+    "url": "https://api.github.com/repos/Ascend/pytorch/issues/comments/5275205394",
+    "html_url": "https://github.com/Ascend/pytorch/issues/163#issuecomment-5275205394",
+    "issue_url": "https://api.github.com/repos/Ascend/pytorch/issues/163",
+    "id": 5275205394,
+    "node_id": "IC_kwDOF-8i788AAAABOm0_Eg",
+    "user": {
+      "login": "ascend-robot",
+      "id": 260663423,
+      "node_id": "U_kgDOD4lofw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/260663423?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ascend-robot",
+      "html_url": "https://github.com/ascend-robot",
+      "followers_url": "https://api.github.com/users/ascend-robot/followers",
+      "following_url": "https://api.github.com/users/ascend-robot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ascend-robot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ascend-robot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ascend-robot/subscriptions",
+      "organizations_url": "https://api.github.com/users/ascend-robot/orgs",
+      "repos_url": "https://api.github.com/users/ascend-robot/repos",
+      "events_url": "https://api.github.com/users/ascend-robot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ascend-robot/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "created_at": "2026-08-13T02:25:31Z",
+    "updated_at": "2026-08-13T02:25:31Z",
+    "body": "Hello,\n\nThis repo is only a mirror with no active development or maintenance.\nAll bug reports, questions and code contributions should be submitted via the original repository link below.\nThanks for your interest!\n\nOriginal Repository Link: https://gitcode.com/Ascend/pytorch",
+    "author_association": "NONE",
+    "pin": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/Ascend/pytorch/issues/comments/5275205394/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "performed_via_github_app": null,
+    "minimized": null
+  }
+]
