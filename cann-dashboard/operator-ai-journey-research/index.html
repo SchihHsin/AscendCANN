@@ -647,7 +647,20 @@
       }
       .journey-delta .licon { width: 18px; height: 18px; }
       .journey-delta b { color: #202a33; }
-      /* Future service model: knowledge and problems are the two durable work objects, not another channel taxonomy. */
+      /* Community's future role: task progress is the product outcome; knowledge and problems are its durable service assets. */
+      .future-role {
+        margin: 0 0 16px;
+        padding: 15px 18px;
+        border: 1px solid var(--l);
+        border-left: 4px solid #26333e;
+        border-radius: 10px;
+        background: #f8fafb;
+        color: #4c5a66;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .future-role b { color: #1d2933; }
+      .future-role strong { color: #287b61; }
       .future-intro {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -845,11 +858,62 @@
       }
       .future-verdict b { color: #fff; }
       .future-verdict code { color: #d6e2e9; font-size: 12px; }
+      .solution-head { margin: 28px 0 0; }
+      .solution-head h3 { margin: 7px 0 0; color: #202a33; font-size: 21px; }
+      .solution-head p { margin: 7px 0 0; color: var(--t); font-size: 13px; line-height: 1.55; }
+      .service-blueprint {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(150px, 1fr));
+        gap: 0;
+        margin-top: 15px;
+        overflow-x: auto;
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .blueprint-step {
+        position: relative;
+        min-width: 150px;
+        min-height: 196px;
+        padding: 16px 15px;
+        border-right: 1px solid var(--l);
+      }
+      .blueprint-step:last-child { border-right: 0; }
+      .blueprint-step:not(:last-child):after {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        top: 26px;
+        right: -5px;
+        width: 9px;
+        height: 9px;
+        border-top: 1px solid #a9b4bd;
+        border-right: 1px solid #a9b4bd;
+        background: #fff;
+        transform: rotate(45deg);
+      }
+      .blueprint-step .bp-no { display: block; color: #8a97a2; font: 800 10px/1 Inter, sans-serif; letter-spacing: .08em; }
+      .blueprint-step .licon { width: 19px; height: 19px; margin-top: 11px; color: #35434f; }
+      .blueprint-step h4 { margin: 8px 0 5px; color: #24303a; font-size: 14px; }
+      .blueprint-step p { margin: 0; color: #5b6975; font-size: 11px; line-height: 1.5; }
+      .blueprint-step small { display: block; margin-top: 10px; color: #287b61; font-size: 10px; font-weight: 800; line-height: 1.4; }
+      .service-surface {
+        display: grid;
+        grid-template-columns: 1.05fr 1.05fr 1.1fr 1.2fr;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .surface-card { min-height: 122px; padding: 13px 14px; border: 1px solid var(--l); border-radius: 10px; background: #fff; }
+      .surface-card .object-tag { margin-bottom: 8px; }
+      .surface-card b { display: block; color: #26323c; font-size: 13px; }
+      .surface-card p { margin: 5px 0 0; color: #62707b; font-size: 11px; line-height: 1.45; }
       @media (max-width: 850px) {
         .future-intro,
         .future-question-grid,
         .collab-model,
-        .cost-ledger { grid-template-columns: 1fr; }
+        .cost-ledger,
+        .service-surface { grid-template-columns: 1fr; }
+        .service-blueprint { grid-template-columns: repeat(5, 150px); }
         .collab-core { min-height: 118px; }
         .cost-ledger > div { border-right: 0; border-bottom: 1px solid var(--l); }
         .cost-ledger > div:last-child { border-bottom: 0; }
@@ -4444,19 +4508,20 @@
       <section id="future-model">
         <div class="head">
           <div class="eye">10 · FUTURE SERVICE COLLABORATION MODEL</div>
-          <h2>未来工作流只管理两类对象：知识与问题</h2>
-          <p>不再按“文档、论坛、工单、AI 工具”分割服务，而是围绕知识能否被可信采用、问题能否被持续解决来组织 AI、社区服务、工具与专家。</p>
+          <h2>社区在 AI 时代的新角色：让开发任务可信地持续推进</h2>
+          <p>AI 改变了开发者进入服务的方式；社区的价值不再是聚集内容或承接问答，而是把分散的知识、工具与专家能力组织成可验证、可恢复、可复用的开发过程。</p>
         </div>
+        <div class="future-role"><b>价值判断：</b>当答案可以由任意 AI 生成时，社区的不可替代性在于提供<strong>可信边界、执行验证与责任闭环</strong>。它不与 AI 竞争聊天入口，而成为 AI 进入真实开发任务后的可信服务网络。</div>
         <div class="future-intro">
           <article class="work-object">
-            <span class="object-tag"><i data-lucide="book-open-check"></i>对象一 · 知识</span>
-            <h3>让 AI 找得到，也让人敢采用</h3>
+            <span class="object-tag"><i data-lucide="book-open-check"></i>社区能力资产一 · 可信知识</span>
+            <h3>让 AI 找得到，也让开发者敢采用</h3>
             <p>知识不是一篇孤立内容，而是一条有来源、版本、适用范围、验证记录和维护责任的可引用路径。</p>
             <div class="object-tags"><span>官方定义</span><span>样例与命令</span><span>版本 / 芯片</span><span>验证记录</span><span>维护状态</span></div>
           </article>
           <article class="work-object problem">
-            <span class="object-tag"><i data-lucide="circle-help"></i>对象二 · 问题</span>
-            <h3>让问题有状态，并能带着上下文走完闭环</h3>
+            <span class="object-tag"><i data-lucide="circle-help"></i>社区能力资产二 · 可接续问题</span>
+            <h3>让问题有状态，并带着上下文走完闭环</h3>
             <p>问题不是一条帖子或一张工单，而是一个持续对象：记录环境、证据、已尝试动作、解决分支、未解条件与实际影响。</p>
             <div class="object-tags"><span>任务目标</span><span>日志 / 复现</span><span>当前状态</span><span>规模条件</span><span>解决证据</span></div>
           </article>
@@ -4501,7 +4566,25 @@
           <div><span class="cost-kind medium">中等成本 · 产品化服务</span><h3>可信与状态</h3><p>知识元数据、版本矩阵、路径卡、状态机、跨触点上下文、通知与案例索引。衡量的是可验证路径采用率和恢复时间。</p></div>
           <div><span class="cost-kind high">高成本 · 有限投入</span><h3>执行与责任闭环</h3><p>真机 / CI、专家诊断、版本修复、规模性能复现与治理。只在高风险、高价值或 AI 无法判定时介入，衡量的是解决质量和复用影响。</p></div>
         </div>
-        <div class="future-verdict"><b>对未来产品形态的判断：</b>不是“社区 + 一个聊天机器人”，也不是把现有能力包装成 <code>MCP / Skill</code>；而是以<strong>任务会话</strong>为核心的协同服务——AI 负责低成本地理解与编排，知识服务负责可信边界，验证工具和专家服务负责高成本判定，问题状态把所有触点和投入连成可持续的闭环。</div>
+        <div class="future-verdict"><b>对未来产品形态的判断：</b>不是“社区 + 一个聊天机器人”，也不是单一 AI 入口；而是以<strong>任务会话</strong>为核心的协同服务——AI 负责低成本地理解与编排，知识服务负责可信边界，验证工具和专家服务负责高成本判定，问题状态把所有触点和投入连成可持续的闭环。</div>
+        <div class="solution-head">
+          <span class="label">FROM ROLE TO SERVICE · 从角色判断到服务方案</span>
+          <h3>围绕一个任务，提供一条可交付、可恢复的服务闭环</h3>
+          <p>以“Ascend C 自定义 Add 算子首跑”为首个试点：开发者可以从对话、搜索、文档、IDE 或自动化代理进入；服务围绕同一任务保持上下文，并按阶段协同 AI、知识、工具与专家能力。</p>
+        </div>
+        <div class="service-blueprint" aria-label="开发任务服务闭环">
+          <article class="blueprint-step"><span class="bp-no">01 · 任务进入</span><i data-lucide="message-square-text"></i><h4>形成任务简报</h4><p>用自然语言、日志、代码或当前 IDE 上下文发起；自动补齐目标、环境、阶段与缺失信息。</p><small>入口：对话 / 搜索 / 文档 / IDE</small></article>
+          <article class="blueprint-step"><span class="bp-no">02 · 可信决策</span><i data-lucide="route"></i><h4>匹配可信路径</h4><p>按芯片、版本、框架与目标给出最小步骤，并说明来源、适用范围和验证状态。</p><small>资产：版本化知识路径</small></article>
+          <article class="blueprint-step"><span class="bp-no">03 · 执行验证</span><i data-lucide="circle-check-big"></i><h4>把建议跑成结果</h4><p>接入环境预检、样例构建、真机 / CI、精度与性能检查，记录预期和实际输出。</p><small>能力：可执行验证工具</small></article>
+          <article class="blueprint-step"><span class="bp-no">04 · 失败恢复</span><i data-lucide="life-buoy"></i><h4>带上下文升级</h4><p>失败自动形成最小复现包；按风险与状态路由至 Issue、工单、专家或版本计划。</p><small>机制：问题状态与责任路由</small></article>
+          <article class="blueprint-step"><span class="bp-no">05 · 结果回流</span><i data-lucide="repeat-2"></i><h4>让解决成为资产</h4><p>验证过的路径、反例与未解条件回流到知识、案例和维护计划，形成下一次的更好决策。</p><small>结果：可复用的社区记忆</small></article>
+        </div>
+        <div class="service-surface" aria-label="服务呈现和能力职责">
+          <article class="surface-card"><span class="object-tag"><i data-lucide="sparkles"></i>开发者可见入口</span><b>在工作流中随处进入</b><p>对话、搜索结果、文档页、IDE、命令行与事件通知都能唤起同一任务，而非新开一个孤立 AI 窗口。</p></article>
+          <article class="surface-card"><span class="object-tag"><i data-lucide="bot"></i>AI / Agent</span><b>理解、检索、编排与陪跑</b><p>组织上下文、解释现象、生成下一步、提醒待补条件；不能单独宣告建议已经可用或问题已经解决。</p></article>
+          <article class="surface-card"><span class="object-tag"><i data-lucide="plug-zap"></i>连接与自动化</span><b>把建议接到执行现场</b><p>通过 API、MCP、Skill、插件或脚本接入 GitCode、文档、IDE、CI 与真机；它们都是实现手段，不是用户服务的终点。</p></article>
+          <article class="surface-card"><span class="object-tag"><i data-lucide="shield-check"></i>社区服务</span><b>交付可信与责任闭环</b><p>维护知识、验证结果、问题状态、专家升级与版本治理，最终交付“任务被推进、结果可复用”的确定性。</p></article>
+        </div>
       </section>
       <section>
         <div class="head">
