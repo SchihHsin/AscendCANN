@@ -163,10 +163,10 @@
       #llm-journey { order: 6; }
       #benchmark { order: 7; }
       #stack-compare { order: 8; }
-      #position { order: 9; }
-      #growth { order: 10; }
-      #service-design { order: 11; }
-      #future-model { order: 12; }
+      #service-design { order: 9; }
+      #position { order: 10; }
+      #future-model { order: 11; }
+      #growth { order: 12; }
       #research { order: 13; }
       a {
         color: #274fc9;
@@ -922,6 +922,10 @@
       .surface-card .object-tag { margin-bottom: 8px; }
       .surface-card b { display: block; color: #26323c; font-size: 13px; }
       .surface-card p { margin: 5px 0 0; color: #62707b; font-size: 11px; line-height: 1.45; }
+      .demo-application { margin-top: 20px; }
+      .demo-application-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 10px; }
+      .demo-application-head h3 { margin: 7px 0 0; color: #202a33; font-size: 19px; }
+      .demo-application-head p { max-width: 570px; margin: 0; color: #5b6975; font-size: 12px; line-height: 1.5; }
       .research-roadmap {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -941,6 +945,8 @@
         .cost-ledger,
         .service-surface,
         .research-roadmap { grid-template-columns: 1fr; }
+        .demo-application-head { display: block; }
+        .demo-application-head p { margin-top: 7px; }
         .service-blueprint { grid-template-columns: repeat(5, 150px); }
         .research-wave:not(:last-child):after { top: auto; right: auto; bottom: -7px; left: 26px; transform: rotate(135deg); }
         .collab-core { min-height: 118px; }
@@ -3470,7 +3476,8 @@
         <nav class="nav">
           <a href="#change">旅程变化</a><a href="#cases">真实案例</a
           ><a href="#corpus">案例样本</a><a href="#benchmark">AI 对照</a
-          ><a href="#position">定位判断</a><a href="#future-model">角色与方案</a
+          ><a href="#service-design">生态分工</a><a href="#future-model">社区角色与方案</a
+          ><a href="#growth">增长机制</a
           ><a href="#research">后续研究</a>
         </nav>
       </div>
@@ -4010,16 +4017,15 @@
       </section>
       <section id="position">
         <div class="head">
-          <div class="eye">09 · COMMUNITY POSITION</div>
-          <h2>社区定位：生态的可信协作层</h2>
+          <div class="eye">10 · VALUE-SPACE JUDGMENT</div>
+          <h2>生态资产之间缺的是什么：判断、验证与协作</h2>
           <p>
-            连接文档、GitCode、CSDN、Mind 系列资产与
-            AI，提供来源、适用范围、执行验证和结果回流。
+            资产不需要被重新搬运到一个站点；需要补齐的是跨资产的判断、验证与协作。这个缺口构成社区在 AI 时代可以创造价值的空间，而不是又一个内容中心。
           </p>
         </div>
         <div class="position">
           <div>
-            <h3>从“内容中心”转向“关系基础设施”</h3>
+            <h3>从“内容中心”转向“可信协作层”</h3>
             <p>
               内容与代码继续在最适合它们的地方沉淀；社区提供跨资产的身份、证据、协作和反馈闭环。
             </p>
@@ -4311,10 +4317,10 @@
       </section>
       <section id="growth">
         <div class="head">
-          <div class="eye">10 · GROWTH & EXPERIENCE</div>
-          <h2>增长闭环：从需求发现到共创影响</h2>
+          <div class="eye">12 · GROWTH OUTCOME</div>
+          <h2>这种角色如何形成增长：让任务完成带来回访与共创</h2>
           <p>
-            用户沿获客、激活、留存、共创四个阶段转化；每阶段对应明确动作与指标。
+            增长不是独立的运营漏斗，而是社区将“可信任务推进”做成之后产生的结果：被任务发现、完成首个结果、在交付中持续受益，并将结果回流为共创。
           </p>
         </div>
         <div class="fly">
@@ -4362,8 +4368,8 @@
           </article>
         </div>
         <div class="head" style="margin-top: 40px">
-          <div class="eye">EXPERIENCE PRINCIPLES</div>
-          <h2 style="font-size: 24px">体验设计原则</h2>
+          <div class="eye">GROWTH DESIGN REQUIREMENTS</div>
+          <h2 style="font-size: 24px">让增长发生的体验要求</h2>
         </div>
         <div class="principles">
           <article class="principle">
@@ -4387,20 +4393,13 @@
             ><span>将结果、修复与贡献意愿转为生态资产并反馈影响。</span>
           </article>
         </div>
-        <div class="service">
-          <div><b>任务简报</b>目标、约束与待补信息</div>
-          <div><b>可信路径</b>选择依据、来源与适用范围</div>
-          <div><b>可验证执行</b>代码、环境、命令、预期和检查</div>
-          <div><b>上下文支持</b>日志诊断、案例、专家与升级</div>
-          <div><b>结果回流</b>案例、修订、Issue / PR 与影响</div>
-        </div>
       </section>
       <section id="service-design">
         <div class="head">
-          <div class="eye">11 · ECOSYSTEM & SERVICE DESIGN</div>
-          <h2>社区的工作方式：连接资产，承接任务</h2>
+          <div class="eye">09 · ECOSYSTEM ASSET MAP</div>
+          <h2>生态资产分工：内容继续分散沉淀</h2>
           <p>
-            生态内不同资产继续在各自最合适的位置沉淀；社区在任务层提供选择依据、状态和回流。
+            这不是新的服务方案，而是当前生态的承载事实：文档、代码、站外经验与 AI 各有最佳沉淀位置，未来不应试图把它们重新收拢为单一内容站。
           </p>
         </div>
         <div class="ecosystem-map">
@@ -4408,132 +4407,37 @@
             <i data-lucide="book-open-check"></i>
             <h3>官方文档</h3>
             <p>权威定义、版本说明、API 和工具参考。</p>
-            <b>交给社区：任务语言与适用范围</b>
+            <b>当前承载：规范与参考</b>
           </article>
           <article class="ecosystem-node">
             <i data-lucide="git-branch"></i>
             <h3>GitCode</h3>
             <p>代码、样例、Issue / PR、治理与发布。</p>
-            <b>交给社区：可发现入口与结果索引</b>
+            <b>当前承载：可运行资产与协作</b>
           </article>
           <article class="ecosystem-node">
             <i data-lucide="messages-square"></i>
             <h3>站外经验</h3>
             <p>CSDN、博客、活动与同伴实践。</p>
-            <b>交给社区：来源分层与条件标注</b>
+            <b>当前承载：搜索扩散与多样实践</b>
           </article>
           <article class="ecosystem-node">
             <i data-lucide="bot"></i>
             <h3>大模型</h3>
             <p>搜索、解释、生成、诊断与摘要。</p>
-            <b>交给社区：可引用、可验证任务资产</b>
+            <b>当前承载：交互与信息编排</b>
           </article>
           <article class="ecosystem-node">
             <i data-lucide="network"></i>
-            <h3>昇腾社区</h3>
-            <p>任务路由、可信证据、支持升级、影响回流。</p>
-            <b>核心：降低完成风险</b>
+            <h3>社区现有底座</h3>
+            <p>SIG、Issue / PR、活动、发布流程与治理。</p>
+            <b>当前承载：协作与维护机制</b>
           </article>
-        </div>
-        <div class="session-design">
-          <div class="session-flow">
-            <h3>任务会话：建议的最小服务单元</h3>
-            <div class="session-row">
-              <i data-lucide="clipboard-list"></i>
-              <div>
-                <b>1. 创建任务简报</b
-                ><span
-                  >目标、模型 / 算子、芯片、CANN、框架、分支与当前状态。</span
-                >
-              </div>
-            </div>
-            <div class="session-row">
-              <i data-lucide="route"></i>
-              <div>
-                <b>2. 返回可信路径</b
-                ><span
-                  >按条件筛选官方文档、GitCode 样例、已验证案例与 AI
-                  可引用摘要。</span
-                >
-              </div>
-            </div>
-            <div class="session-row">
-              <i data-lucide="circle-check"></i>
-              <div>
-                <b>3. 执行并验证</b
-                ><span
-                  >展示命令、预期输出、验证信号与版本 / 硬件适用范围。</span
-                >
-              </div>
-            </div>
-            <div class="session-row">
-              <i data-lucide="life-buoy"></i>
-              <div>
-                <b>4. 失败时带上下文升级</b
-                ><span
-                  >日志、已尝试动作和最小复现直接进入案例、专家、Issue
-                  或工单。</span
-                >
-              </div>
-            </div>
-            <div class="session-row">
-              <i data-lucide="repeat-2"></i>
-              <div>
-                <b>5. 回流结果与影响</b
-                ><span
-                  >记录“已验证 / 未验证 / 未解条件”，生成案例、修订或
-                  PR，并反馈复用。</span
-                >
-              </div>
-            </div>
-          </div>
-          <aside class="session-fields">
-            <h3>任务包字段</h3>
-            <div class="field-chips">
-              <span class="status">任务目标</span
-              ><span class="status">当前状态</span><span>模型 / 算子</span
-              ><span>芯片</span><span>CANN 版本</span><span>框架版本</span
-              ><span>分支 / 容器</span><span>最小复现</span
-              ><span>日志 / 错误码</span><span>已尝试动作</span
-              ><span>来源 URL</span><span>预期输出</span><span>验证记录</span
-              ><span>规模条件</span>
-            </div>
-            <h3 style="margin-top: 20px">由案例反推的优先级</h3>
-            <div class="field-chips">
-              <span class="status">P0：版本 / 硬件匹配</span
-              ><span class="status">P0：日志与复现携带</span
-              ><span>P1：可验证路径卡</span><span>P1：解决状态与规模条件</span
-              ><span>P2：贡献影响反馈</span>
-            </div>
-          </aside>
-        </div>
-        <div class="session-demo" aria-label="任务会话界面示例">
-          <div class="demo-brief">
-            <div class="demo-kicker"><i data-lucide="clipboard-list"></i>任务简报 · 示例</div>
-            <h3>自定义 Add 算子首跑</h3>
-            <div class="demo-form-row"><span>目标</span><div class="demo-input">构建并验证 Add 自定义算子</div></div>
-            <div class="demo-form-row"><span>环境</span><div class="demo-input">Ascend 910B · CANN 9.0.0 · PyTorch</div></div>
-            <div class="demo-form-row"><span>当前状态</span><div class="demo-input">编译已通过，待精度验证</div></div>
-            <div class="demo-form-row"><span>待补信息</span><div class="demo-input empty">最小复现命令 / 日志</div></div>
-          </div>
-          <div class="demo-path">
-            <div class="demo-path-head">
-              <div>
-                <div class="demo-kicker"><i data-lucide="route"></i>可信路径</div>
-                <h3>按当前条件匹配的下一步</h3>
-              </div>
-              <span class="demo-status"><i data-lucide="badge-check"></i>3 条已验证</span>
-            </div>
-            <div class="demo-step"><i data-lucide="book-open-check"></i><div><b>官方场景说明</b><small>适用：Ascend C 自定义算子</small></div><em class="ready">已匹配</em></div>
-            <div class="demo-step"><i data-lucide="git-branch"></i><div><b>GitCode Add 样例</b><small>含构建、运行与精度成功信号</small></div><em class="ready">已验证</em></div>
-            <div class="demo-step"><i data-lucide="circle-check"></i><div><b>执行检查</b><small>记录命令、预期输出和实际结果</small></div><em>待执行</em></div>
-            <div class="demo-step"><i data-lucide="life-buoy"></i><div><b>失败升级</b><small>自动携带版本、日志和已尝试动作</small></div><em class="attention">条件缺失</em></div>
-          </div>
         </div>
       </section>
       <section id="future-model">
         <div class="head">
-          <div class="eye">12 · AI-ERA COMMUNITY ROLE & SERVICE MODEL</div>
+          <div class="eye">11 · CORE RESEARCH QUESTION · AI-ERA COMMUNITY ROLE & SERVICE MODEL</div>
           <h2>社区在 AI 时代的新角色：让开发任务可信地持续推进</h2>
           <p>AI 改变了开发者进入服务的方式；社区的价值不再是聚集内容或承接问答，而是把分散的知识、工具与专家能力组织成可验证、可恢复、可复用的开发过程。</p>
         </div>
@@ -4610,6 +4514,35 @@
           <article class="surface-card"><span class="object-tag"><i data-lucide="bot"></i>AI / Agent</span><b>理解、检索、编排与陪跑</b><p>组织上下文、解释现象、生成下一步、提醒待补条件；不能单独宣告建议已经可用或问题已经解决。</p></article>
           <article class="surface-card"><span class="object-tag"><i data-lucide="plug-zap"></i>连接与自动化</span><b>把建议接到执行现场</b><p>通过 API、MCP、Skill、插件或脚本接入 GitCode、文档、IDE、CI 与真机；它们都是实现手段，不是用户服务的终点。</p></article>
           <article class="surface-card"><span class="object-tag"><i data-lucide="shield-check"></i>社区服务</span><b>交付可信与责任闭环</b><p>维护知识、验证结果、问题状态、专家升级与版本治理，最终交付“任务被推进、结果可复用”的确定性。</p></article>
+        </div>
+        <div class="demo-application">
+          <div class="demo-application-head">
+            <div><span class="label">FIRST PRODUCTIZATION EXAMPLE · 首个产品化示例</span><h3>把社区新角色落到一个真实任务：Ascend C Add 首跑</h3></div>
+            <p>该界面不是独立的 AI 助手概念，而是前述四项能力在一个任务中的呈现：可信知识用于路径推荐，问题状态暴露待补条件，执行验证记录结果，失败升级携带责任所需的上下文。</p>
+          </div>
+          <div class="session-demo" aria-label="Ascend C Add 首跑的任务会话示例">
+            <div class="demo-brief">
+              <div class="demo-kicker"><i data-lucide="clipboard-list"></i>任务简报 · 示例</div>
+              <h3>自定义 Add 算子首跑</h3>
+              <div class="demo-form-row"><span>目标</span><div class="demo-input">构建并验证 Add 自定义算子</div></div>
+              <div class="demo-form-row"><span>环境</span><div class="demo-input">Ascend 910B · CANN 9.0.0 · PyTorch</div></div>
+              <div class="demo-form-row"><span>当前状态</span><div class="demo-input">编译已通过，待精度验证</div></div>
+              <div class="demo-form-row"><span>待补信息</span><div class="demo-input empty">最小复现命令 / 日志</div></div>
+            </div>
+            <div class="demo-path">
+              <div class="demo-path-head">
+                <div>
+                  <div class="demo-kicker"><i data-lucide="route"></i>可信路径</div>
+                  <h3>按当前条件匹配的下一步</h3>
+                </div>
+                <span class="demo-status"><i data-lucide="badge-check"></i>3 条已验证</span>
+              </div>
+              <div class="demo-step"><i data-lucide="book-open-check"></i><div><b>官方场景说明</b><small>适用：Ascend C 自定义算子</small></div><em class="ready">已匹配</em></div>
+              <div class="demo-step"><i data-lucide="git-branch"></i><div><b>GitCode Add 样例</b><small>含构建、运行与精度成功信号</small></div><em class="ready">已验证</em></div>
+              <div class="demo-step"><i data-lucide="circle-check"></i><div><b>执行检查</b><small>记录命令、预期输出和实际结果</small></div><em>待执行</em></div>
+              <div class="demo-step"><i data-lucide="life-buoy"></i><div><b>失败升级</b><small>自动携带版本、日志和已尝试动作</small></div><em class="attention">条件缺失</em></div>
+            </div>
+          </div>
         </div>
       </section>
       <section id="operator-slice">
