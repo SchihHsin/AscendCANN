@@ -1311,3 +1311,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出 `opknow/20_human_ai_journey.html` 的“Agent 循环架构”更成熟，并澄清它与报告中的流程图不应互斥。经对照，opknow 4.3 是 Agent 内部的工具调用循环（计划 / 工具路由 / tool result / 证据判断 / 继续或收敛）；报告原图若再画同一循环会形成重复。
 - 报告图改为“社区任务服务工作流”，将 Agent 循环作为中部明确标注的可重复子循环嵌入外层任务：开发者进入 → 社区识别缺口与风险 → Agent 循环调用知识库、Skill、模板 / 插件、MCP / API → 开发者与环境执行 / 复核 → 验证或失败恢复 → 已验证解决 / 已升级。
 - 因而两图分工清晰：opknow 解释 Agent 内部如何运转；本报告解释循环怎样与社区资产、开发者、本地环境和责任服务协作。图下注释加入指向 opknow `#s4` 的本地链接，桌面预览确认嵌套循环与外层 Start / End 主线均可读、无控制台错误。
+
+### 2026-08-18（固定坐标 SVG 重画与来源分层）
+
+- 用户截图指出嵌套 D3 图仍出现能力卡、主节点与连线交叠。根因是运行时 D3 布局把侧支和主干放入同一空间；本图不需要数据驱动的自动排版，继续使用 D3 只会增加不确定性。
+- `#agentCapabilityFlow` 改为仿照 `opknow/20_human_ai_journey.html#s4` 的固定坐标内联 SVG：固定 defs/marker、手工节点坐标、边缘到边缘的直连/回路；主线为开发者进入 → 识别缺口 → Agent 循环框 → 执行复核 → 验证 → 结果，循环框内四类能力卡按左右两列对齐接入“Plan / Route”和“Tool Call + Result”。移除页面加载时的 D3 渲染调用，避免字体和容器宽度造成的叠压。
+- 图注完整分层来源：①图形绘制方式与内层循环参照 opknow 的 Agent 循环架构；②该循环的机制依据 Anthropic Tool Use（opknow 的示范实现使用 Anthropic Messages API）及 OpenAI Function Calling 的公开文档；③外层社区服务链是本研究结合公开案例和 Ascend C Agent 六阶段工作流的服务设计推导；④MCP/API、模板/插件明确为待验证建议，不冒充已实现事实。浏览器桌面检查：固定 SVG 48 条文本 / 20 条路径均渲染、无控制台错误。

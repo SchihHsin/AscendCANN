@@ -3660,7 +3660,9 @@
           txt(615,698,"是",{fill:p.green,size:9.5,weight:800});txt(667,729,"否 / 风险高",{fill:p.orange,size:9.5,weight:800});
           const note=svg.append("g").attr("transform","translate(54,610)");note.append("rect").attr("width",282).attr("height",153).attr("rx",10).attr("fill","#f7f9fa").attr("stroke","#d6dfe5");note.append("text").attr("x",14).attr("y",21).attr("fill",p.ink).attr("font-size",10).attr("font-weight",800).text("这张图与 opknow 图的关系");note.append("text").attr("x",14).attr("y",44).attr("fill",p.purple).attr("font-size",10).text("opknow：Agent 内部循环怎么运行");note.append("text").attr("x",14).attr("y",65).attr("fill",p.blue).attr("font-size",10).text("本图：循环如何嵌入社区任务服务");note.append("text").attr("x",14).attr("y",92).attr("fill",p.muted).attr("font-size",9.7).text("当前 Ascend C Agent 已实现 workflow、文档检索、");note.append("text").attr("x",14).attr("y",108).attr("fill",p.muted).attr("font-size",9.7).text("环境检查、调试与 Docker/NPU 执行；MCP/API、");note.append("text").attr("x",14).attr("y",124).attr("fill",p.muted).attr("font-size",9.7).text("模板/插件是面向社区的产品化建议，待验证。");note.append("text").attr("x",14).attr("y",143).attr("fill",p.orange).attr("font-size",9.5).text("关键边界：没有运行证据，Agent 不宣告任务解决。");
         };
-        renderCommunityServiceWorkflow();
+        // The workflow below is deliberately authored as a fixed inline SVG.
+        // Unlike a force/layout rendering, its nodes and connectors remain aligned
+        // at every desktop width, following the static SVG approach used in opknow.
         const unsupported = document.querySelector(
           'i[data-lucide="map-pin-question"]',
         );
@@ -4724,8 +4726,62 @@
             <p>研究对象是现有文档、GitCode、Issue、案例和站外经验如何转化，提升 AI 调用质量与开发者获取效率。判断不取决于内容来自哪里，而取决于它是否需要被检索、按步骤执行、读取实时状态、在工作现场呈现，或经过验证与责任判定。</p>
           </div>
           <figure class="agent-flow-figure">
-            <svg id="agentCapabilityFlow" role="img" aria-label="从任务开始到验证结束的 Agent 工具调用工作流"></svg>
-            <figcaption><b>两层关系，而非替代。</b><a href="file:///Users/hsin/Documents/Coding/opknow/20_human_ai_journey.html#s4">opknow 的 Agent 循环架构</a>解释 Agent 内部如何“计划 → 工具路由 → tool result → 证据判断 → 继续 / 收敛”；本图解释这个循环如何嵌入社区任务服务：从开发者进入、到本地执行验证、再到失败恢复与结果回流。通用循环依据 <a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">OpenAI Function Calling</a> 与 <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">Anthropic Tool Use</a>；领域阶段依据本仓 <code>ascendc-agent-main/CLAUDE.md</code> 与 <code>.claude/skills/ascendc-kernel-develop-workflow/SKILL.md</code>。MCP / API、模板 / 插件为社区产品化建议，不宣称为当前 Agent 已有实现。</figcaption>
+            <svg id="agentCapabilityFlow" viewBox="0 0 920 1000" role="img" aria-label="社区任务服务工作流，包含 Agent 工具调用循环">
+              <defs>
+                <marker id="cwfArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8d9aa5"/></marker>
+                <marker id="cwfGreen" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#287b61"/></marker>
+                <marker id="cwfOrange" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#a36a20"/></marker>
+                <marker id="cwfPurple" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6b5b93"/></marker>
+              </defs>
+              <style>
+                .cwf-k { font: 800 10px Inter, sans-serif; letter-spacing: .08em; }
+                .cwf-t { font: 800 15px "HarmonyOS Sans SC", Inter, sans-serif; fill: #26343f; }
+                .cwf-b { font: 10.5px "HarmonyOS Sans SC", Inter, sans-serif; fill: #647381; }
+                .cwf-s { font: 9px "HarmonyOS Sans SC", Inter, sans-serif; fill: #647381; }
+                .cwf-line { fill: none; stroke: #8d9aa5; stroke-width: 1.35; marker-end: url(#cwfArrow); }
+              </style>
+              <text x="34" y="34" class="cwf-t" font-size="18">社区任务服务工作流：Agent 循环嵌在任务推进过程里</text>
+              <text x="34" y="54" class="cwf-b">外层：社区如何推进开发任务；内层：Agent 如何选择工具并读取结果。两者互补。</text>
+
+              <g transform="translate(310,80)"><rect width="300" height="82" rx="10" fill="#fff" stroke="#c7d2dc"/><text x="15" y="21" class="cwf-k" fill="#466c96">START · 开发者进入</text><text x="15" y="47" class="cwf-t">发起任务，建立任务会话</text><text x="15" y="67" class="cwf-b">目标、环境、代码 / 日志与当前状态</text></g>
+              <path d="M460,162 V190" class="cwf-line"/>
+              <g transform="translate(310,191)"><rect width="300" height="72" rx="10" fill="#eff4fa" stroke="#b8c9dd"/><text x="15" y="21" class="cwf-k" fill="#466c96">01 · COMMUNITY SERVICE</text><text x="15" y="47" class="cwf-t">识别任务缺口与风险</text><text x="15" y="64" class="cwf-b">补齐版本、芯片、框架、最小复现</text></g>
+              <path d="M460,263 V296" class="cwf-line"/>
+
+              <g transform="translate(72,297)">
+                <rect width="776" height="410" rx="14" fill="#fbfcfd" stroke="#b8c9d7" stroke-width="1.4"/>
+                <text x="20" y="24" class="cwf-k" fill="#6b5b93">02 · AGENT LOOP · 任务中的可重复子循环</text>
+                <text x="20" y="43" class="cwf-b">参考 opknow 的 Agent 循环架构：计划 → 工具路由 → tool result → 证据判断 → 继续 / 收敛</text>
+
+                <g transform="translate(238,65)"><rect width="300" height="70" rx="9" fill="#eff4fa" stroke="#b8c9dd"/><text x="13" y="20" class="cwf-k" fill="#466c96">PLAN / ROUTE</text><text x="13" y="45" class="cwf-t">解析任务，选择下一种工具</text><text x="13" y="62" class="cwf-b">缺事实、方法、状态，还是工程入口？</text></g>
+                <path d="M388,135 V164" class="cwf-line"/>
+                <g transform="translate(238,165)"><rect width="300" height="70" rx="9" fill="#eef1f4" stroke="#cbd4dc"/><text x="13" y="20" class="cwf-k" fill="#4c5b68">TOOL CALL + RESULT</text><text x="13" y="45" class="cwf-t">调用并读取工具结果</text><text x="13" y="62" class="cwf-b">来源、结果、错误与条件写回任务会话</text></g>
+                <path d="M388,235 V262" class="cwf-line"/>
+                <g transform="translate(326,265)"><path d="M0,28 L62,0 L124,28 L62,56 Z" fill="#fff" stroke="#aebbc5"/><text x="62" y="25" text-anchor="middle" class="cwf-k" fill="#26343f" style="letter-spacing:0">证据已足够？</text><text x="62" y="39" text-anchor="middle" class="cwf-s">继续或收敛</text></g>
+
+                <g transform="translate(22,76)"><rect width="185" height="80" rx="8" fill="#eff4fa" stroke="#b8c9dd"/><text x="12" y="19" class="cwf-k" fill="#466c96">缺权威事实</text><text x="12" y="43" class="cwf-t" font-size="13">知识库 / 文档检索</text><text x="12" y="60" class="cwf-b">API、版本、兼容范围</text><text x="12" y="74" class="cwf-s">返回来源与适用条件</text></g>
+                <path d="M207,116 H238" fill="none" stroke="#466c96" stroke-width="1.35" marker-end="url(#cwfArrow)"/>
+                <g transform="translate(568,76)"><rect width="185" height="80" rx="8" fill="#eef1f4" stroke="#cbd4dc"/><text x="12" y="19" class="cwf-k" fill="#4c5b68">缺可重复方法</text><text x="12" y="43" class="cwf-t" font-size="13">Skill / 工作流</text><text x="12" y="60" class="cwf-b">预检、编译 / 精度排障</text><text x="12" y="74" class="cwf-s">返回步骤与停止条件</text></g>
+                <path d="M568,116 H538" fill="none" stroke="#4c5b68" stroke-width="1.35" marker-end="url(#cwfArrow)"/>
+                <g transform="translate(22,190)"><rect width="185" height="80" rx="8" fill="#f7f4fb" stroke="#d4c8e3"/><text x="12" y="19" class="cwf-k" fill="#6b5b93">缺工程或现场入口</text><text x="12" y="43" class="cwf-t" font-size="13">模板 / 插件 / CLI</text><text x="12" y="60" class="cwf-b">样例、配置、IDE 操作</text><text x="12" y="74" class="cwf-s">返回可运行工程与命令</text></g>
+                <path d="M207,230 H238" fill="none" stroke="#6b5b93" stroke-width="1.35" marker-end="url(#cwfPurple)"/>
+                <g transform="translate(568,190)"><rect width="185" height="80" rx="8" fill="#eaf7f1" stroke="#bcd8cc"/><text x="12" y="19" class="cwf-k" fill="#287b61">缺实时状态或外部动作</text><text x="12" y="43" class="cwf-t" font-size="13">MCP / API</text><text x="12" y="60" class="cwf-b">GitCode、CI、NPU、日志</text><text x="12" y="74" class="cwf-s">返回实时结果与审计记录</text></g>
+                <path d="M568,230 H538" fill="none" stroke="#287b61" stroke-width="1.35" marker-end="url(#cwfGreen)"/>
+                <path d="M326,293 C258,293 236,257 238,228" fill="none" stroke="#6b5b93" stroke-width="1.35" stroke-dasharray="5,4" marker-end="url(#cwfPurple)"/>
+                <text x="175" y="295" class="cwf-s" fill="#6b5b93">否：换工具 / 补条件后继续</text>
+              </g>
+              <path d="M460,707 V741" fill="none" stroke="#6b5b93" stroke-width="1.35" marker-end="url(#cwfPurple)"/>
+              <g transform="translate(310,742)"><rect width="300" height="80" rx="10" fill="#f7f4fb" stroke="#d4c8e3"/><text x="15" y="21" class="cwf-k" fill="#6b5b93">03 · EXECUTE</text><text x="15" y="47" class="cwf-t">开发者与环境执行 / 复核</text><text x="15" y="66" class="cwf-b">IDE、CLI、容器、CI 或真机记录实际输出</text></g>
+              <path d="M460,822 V843" class="cwf-line"/>
+              <g transform="translate(398,845)"><path d="M0,28 L62,0 L124,28 L62,56 Z" fill="#fff" stroke="#aebbc5"/><text x="62" y="25" text-anchor="middle" class="cwf-k" fill="#26343f" style="letter-spacing:0">验证通过？</text><text x="62" y="39" text-anchor="middle" class="cwf-s">有运行证据吗</text></g>
+              <path d="M460,901 V925" fill="none" stroke="#287b61" stroke-width="1.35" marker-end="url(#cwfGreen)"/>
+              <g transform="translate(310,927)"><rect width="300" height="60" rx="10" fill="#eaf7f1" stroke="#bcd8cc"/><text x="15" y="20" class="cwf-k" fill="#287b61">END · VERIFIED OUTCOME</text><text x="15" y="43" class="cwf-t">已验证解决 / 已升级</text><text x="15" y="56" class="cwf-s">回流为知识、案例、状态与维护计划</text></g>
+              <g transform="translate(650,839)"><rect width="230" height="98" rx="9" fill="#fff5e8" stroke="#e8cfa6"/><text x="12" y="19" class="cwf-k" fill="#a36a20">未通过 / 高风险</text><text x="12" y="43" class="cwf-t" font-size="13">恢复与责任升级</text><text x="12" y="60" class="cwf-b">调试、CI / 真机、Issue 或专家</text><text x="12" y="75" class="cwf-s">携带复现包，不让用户重述</text></g>
+              <path d="M522,873 H650" fill="none" stroke="#a36a20" stroke-width="1.35" marker-end="url(#cwfOrange)"/>
+              <path d="M765,937 C765,975 630,977 610,957" fill="none" stroke="#a36a20" stroke-width="1.35" marker-end="url(#cwfOrange)"/>
+              <text x="555" y="865" class="cwf-s" fill="#a36a20">否 / 风险高</text>
+            </svg>
+            <figcaption><b>图形与来源说明。</b>图的固定坐标、节点、菱形判断与回路绘制方式参考 <a href="file:///Users/hsin/Documents/Coding/opknow/20_human_ai_journey.html#s4">opknow《Agent 循环架构》</a>；其内层工具调用循环基于 Anthropic Messages API 的公开 Tool Use 示例。当前图的<strong>内层循环</strong>同样参考 <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">Anthropic Tool Use</a> 与 <a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">OpenAI Function Calling</a>；<strong>外层社区任务服务链</strong>是本研究基于公开案例与 <code>ascendc-agent-main</code> 六阶段流程作出的服务设计推导。MCP / API、模板 / 插件为待验证的社区产品化建议，不是当前 Agent 已实现功能。</figcaption>
           </figure>
           <div class="content-carrier-matrix" aria-label="社区内容到AI服务形态映射">
             <table>
