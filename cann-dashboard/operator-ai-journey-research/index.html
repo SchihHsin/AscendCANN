@@ -931,7 +931,7 @@
       .agent-model-head h3 { margin: 7px 0 0; color: #202a33; font-size: 21px; }
       .agent-model-head p { max-width: 570px; margin: 0; color: #5b6975; font-size: 12px; line-height: 1.55; }
       .agent-flow-figure { margin: 15px 0 0; overflow-x: auto; border: 1px solid var(--l); border-radius: 14px; background: #fbfcfd; }
-      #agentCapabilityFlow { display: block; min-width: 900px; width: 100%; }
+      #agentCapabilityFlow { display: block; min-width: 960px; width: 100%; }
       .agent-flow-figure figcaption { padding: 10px 15px 12px; border-top: 1px solid var(--l); color: #677581; font-size: 11px; line-height: 1.5; }
       .content-carrier-matrix { margin-top: 12px; overflow-x: auto; border: 1px solid var(--l); border-radius: 12px; background: #fff; }
       .content-carrier-matrix table { width: 100%; min-width: 900px; border-collapse: collapse; table-layout: fixed; }
@@ -3580,7 +3580,43 @@
           text(756, 429, "是 / 高风险", { fill: p.orange, size: 9.5, weight: 800 });
           text(900, 521, "验证结果回流为知识、案例与维护计划", { anchor: "middle", fill: p.green, size: 10, weight: 800 });
         };
-        renderAgentCapabilityFlow();
+        const renderAgentWorkflow = () => {
+          if (!window.d3) return;
+          const svg = d3.select("#agentCapabilityFlow");
+          if (svg.empty()) return;
+          const W = 1080, H = 970, cx = 540;
+          const p = { ink:"#26343f", muted:"#647381", line:"#adb9c3", blue:"#466c96", blueSoft:"#eff4fa", slate:"#4c5b68", slateSoft:"#eef1f4", green:"#287b61", greenSoft:"#eaf7f1", orange:"#a36a20", orangeSoft:"#fff5e8", purple:"#6b5b93", purpleSoft:"#f7f4fb" };
+          svg.attr("viewBox", `0 0 ${W} ${H}`).attr("preserveAspectRatio", "xMidYMid meet").selectAll("*").remove();
+          const defs = svg.append("defs");
+          [["wf-arrow",p.line],["wf-green",p.green],["wf-orange",p.orange]].forEach(([id,color]) => defs.append("marker").attr("id",id).attr("viewBox","0 -5 10 10").attr("refX",8).attr("refY",0).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto").append("path").attr("d","M0,-5L10,0L0,5").attr("fill",color));
+          const layer = svg.append("g").attr("fill","none");
+          const arrow = (x1,y1,x2,y2,color=p.line,marker="wf-arrow",dash=null) => layer.append("path").attr("d",`M${x1},${y1} C${x1},${y1+(y2-y1)*.45} ${x2},${y2-(y2-y1)*.45} ${x2},${y2}`).attr("stroke",color).attr("stroke-width",1.5).attr("stroke-dasharray",dash).attr("marker-end",`url(#${marker})`);
+          const txt = (x,y,t,o={}) => svg.append("text").attr("x",x).attr("y",y).attr("text-anchor",o.anchor||"start").attr("fill",o.fill||p.muted).attr("font-size",o.size||10.5).attr("font-weight",o.weight||500).text(t);
+          const rows = (g,x,y,items,o={}) => items.forEach((t,i) => g.append("text").attr("x",x).attr("y",y+i*(o.gap||14)).attr("fill",o.fill||p.muted).attr("font-size",o.size||10.2).text(t));
+          const box = (n) => { const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`); g.append("rect").attr("width",n.w).attr("height",n.h).attr("rx",10).attr("fill",n.fill).attr("stroke",n.stroke); g.append("text").attr("x",14).attr("y",19).attr("fill",n.accent).attr("font-size",9).attr("font-weight",800).attr("letter-spacing",".08em").text(n.kicker); g.append("text").attr("x",14).attr("y",42).attr("fill",p.ink).attr("font-size",14).attr("font-weight",800).text(n.title); rows(g,14,64,n.lines,{size:10.2}); };
+          const tool = (n) => { const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`); g.append("rect").attr("width",n.w).attr("height",n.h).attr("rx",9).attr("fill",n.fill).attr("stroke",n.stroke); g.append("text").attr("x",12).attr("y",18).attr("fill",n.accent).attr("font-size",9).attr("font-weight",800).attr("letter-spacing",".07em").text(n.when); g.append("text").attr("x",12).attr("y",39).attr("fill",p.ink).attr("font-size",13).attr("font-weight",800).text(n.title); rows(g,12,59,n.lines,{size:10,gap:13}); };
+          const diamond = (x,y,title,note) => { const g=svg.append("g").attr("transform",`translate(${x},${y})`); g.append("path").attr("d","M0,40 L72,0 L144,40 L72,80 Z").attr("fill","#fff").attr("stroke",p.line); g.append("text").attr("x",72).attr("y",34).attr("text-anchor","middle").attr("fill",p.ink).attr("font-size",11).attr("font-weight",800).text(title); g.append("text").attr("x",72).attr("y",50).attr("text-anchor","middle").attr("fill",p.muted).attr("font-size",9.5).text(note); };
+          txt(30,32,"Agent 工具调用：从任务开始到验证结束",{fill:p.ink,size:15,weight:800});
+          txt(30,51,"纵向主干描述一次任务会话；侧分支回答在什么条件下调用哪一种能力。",{size:10.5});
+          txt(30,70,"依据：公开模型工具调用闭环 + Ascend C Agent 的六阶段工作流。",{size:10,fill:p.blue,weight:700});
+          box({x:390,y:91,w:300,h:84,kicker:"START · TASK INPUT",title:"接收任务与上下文",lines:["目标、代码、日志、芯片 / CANN 版本进入同一任务会话","Agent 先抽取缺失条件与当前阶段"],fill:"#fff",stroke:"#c7d2dc",accent:p.blue});
+          box({x:390,y:230,w:300,h:100,kicker:"01 · PLAN / SELECT",title:"理解任务，判断是否需要工具",lines:["模型结合任务状态决定：检索事实、执行流程、读取状态或生成工程","这一步是“工具选择”，不是把所有工具顺序跑一遍"],fill:p.blueSoft,stroke:"#b8c9dd",accent:p.blue});
+          box({x:390,y:385,w:300,h:100,kicker:"02 · TOOL CALL + RESULT",title:"调用能力，并把结果写回任务",lines:["工具返回来源、步骤、实时结果或工程配置","Agent 读取结果后更新证据、风险和下一步，而不是一次回答结束"],fill:p.slateSoft,stroke:"#cbd4dc",accent:p.slate});
+          diamond(468,540,"证据足够？","能进入验证吗");
+          box({x:390,y:675,w:300,h:94,kicker:"04 · VERIFY / RECOVER",title:"执行验证，或携带上下文恢复",lines:["通过：记录版本、命令、输出与适用范围","失败：形成复现包，进入调试 / CI / 真机 / 专家升级"],fill:p.orangeSoft,stroke:"#e8cfa6",accent:p.orange});
+          box({x:390,y:834,w:300,h:72,kicker:"END · TASK STATE",title:"已验证解决 / 已升级",lines:["回流为知识、案例、Issue 状态与维护计划"],fill:p.greenSoft,stroke:"#bcd8cc",accent:p.green});
+          arrow(cx,175,cx,230); arrow(cx,330,cx,385); arrow(cx,485,cx,540); arrow(cx,620,cx,675,p.green,"wf-green"); arrow(cx,769,cx,834,p.green,"wf-green");
+          tool({x:52,y:225,w:285,h:112,when:"若缺权威事实 / API / 版本范围",title:"检索：知识库 / 文档",lines:["现有事实：ascend-docs-search 依次搜索、选择、获取","返回：出处、适用范围、候选路径"],fill:p.blueSoft,stroke:"#b8c9dd",accent:p.blue});
+          tool({x:743,y:225,w:285,h:112,when:"若需固定步骤 / 判断规则",title:"执行：Skill / 工作流",lines:["现有事实：workflow 在各阶段调用规划、设计、环境等 Skill","返回：步骤、停止条件、完成标准"],fill:p.slateSoft,stroke:"#cbd4dc",accent:p.slate});
+          tool({x:52,y:383,w:285,h:112,when:"若需要工程、配置或 IDE 内呈现",title:"生成：模板 / 脚手架 / 插件",lines:["社区建议：匹配 GitCode 样例、配置与命令","返回：可运行工程及任务上下文"],fill:p.purpleSoft,stroke:"#d4c8e3",accent:p.purple});
+          tool({x:743,y:383,w:285,h:112,when:"若需要当前状态或外部执行",title:"连接：MCP / API",lines:["社区建议：读取 GitCode、CI、NPU、日志；按权限执行","返回：实时证据、审计记录与状态更新"],fill:p.greenSoft,stroke:"#bcd8cc",accent:p.green});
+          tool({x:743,y:545,w:285,h:112,when:"若证据不足 / 失败 / 风险高",title:"恢复：调试、验证或专家升级",lines:["现有事实：编译 / 运行错误和精度问题有专项 Skill","社区建议：带着复现包路由 CI、真机、Issue、专家"],fill:p.orangeSoft,stroke:"#e8cfa6",accent:p.orange});
+          arrow(337,281,390,281,p.blue); arrow(743,281,690,281,p.slate); arrow(337,439,390,439,p.purple); arrow(743,439,690,439,p.green,"wf-green"); arrow(612,580,743,600,p.orange,"wf-orange"); arrow(743,635,690,720,p.orange,"wf-orange");
+          arrow(612,620,690,452,p.orange,"wf-orange","4 4");
+          txt(702,584,"否 / 证据不足",{fill:p.orange,size:9.5,weight:800}); txt(624,531,"是",{fill:p.green,size:10,weight:800}); txt(715,680,"通过后进入总结",{fill:p.orange,size:9.5,weight:800});
+          const note=svg.append("g").attr("transform","translate(52,704)"); note.append("rect").attr("width",285).attr("height",103).attr("rx",10).attr("fill","#f7f9fa").attr("stroke","#d6dfe5"); note.append("text").attr("x",14).attr("y",21).attr("fill",p.ink).attr("font-size",10).attr("font-weight",800).text("事实与推导的边界"); note.append("text").attr("x",14).attr("y",42).attr("fill",p.muted).attr("font-size",10).text("蓝灰：公开工具调用机制 + 当前 Ascend C Agent 实现"); note.append("text").attr("x",14).attr("y",61).attr("fill",p.purple).attr("font-size",10).text("紫绿：面向社区的产品化建议，需下一轮研究验证"); note.append("text").attr("x",14).attr("y",82).attr("fill",p.orange).attr("font-size",10).text("橙：必须保留运行证据或责任升级，不能由模型宣告");
+        };
+        renderAgentWorkflow();
         const unsupported = document.querySelector(
           'i[data-lucide="map-pin-question"]',
         );
@@ -4644,8 +4680,8 @@
             <p>研究对象是现有文档、GitCode、Issue、案例和站外经验如何转化，提升 AI 调用质量与开发者获取效率。判断不取决于内容来自哪里，而取决于它是否需要被检索、按步骤执行、读取实时状态、在工作现场呈现，或经过验证与责任判定。</p>
           </div>
           <figure class="agent-flow-figure">
-            <svg id="agentCapabilityFlow" role="img" aria-label="社区内容转为不同 AI 可调用和开发者可获取形态的流程图"></svg>
-            <figcaption>图中不是按站点分流，而是按内容工作方式分流：稳定事实进入知识库；可复用步骤进入 Skill / 工作流；实时系统通过连接器调用；用户需要操作的内容进入工作台或插件；高风险结论进入验证与治理。一个资产可产生多种交付形态。</figcaption>
+            <svg id="agentCapabilityFlow" role="img" aria-label="从任务开始到验证结束的 Agent 工具调用工作流"></svg>
+            <figcaption><b>图示依据。</b>通用主循环依据 <a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">OpenAI Function Calling</a> 与 <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">Anthropic Tool Use</a> 的公开机制：模型判断是否调用工具，读取工具结果后继续处理直至完成；领域阶段依据本仓 <code>ascendc-agent-main/CLAUDE.md</code> 与 <code>.claude/skills/ascendc-kernel-develop-workflow/SKILL.md</code> 的六阶段流程（方案设计 → 算子实现 → 构建测试 → 问题处理 → 结果总结 → 文档编写）。图中的 MCP / API、模板 / 插件为社区产品化建议，不宣称为当前 Agent 已有实现。</figcaption>
           </figure>
           <div class="content-carrier-matrix" aria-label="社区内容到AI服务形态映射">
             <table>
@@ -4665,7 +4701,7 @@
             <article class="carrier-card connector-card"><span class="object-tag"><i data-lucide="plug-zap"></i>MCP / API 的边界</span><h4>适合“访问与动作”，不适合“沉淀知识”</h4><p>优先接入 GitCode、CI、NPU、日志、制品和工单等实时系统，提供受控读取、执行与写回。</p><small>接口应按权限和风险分级：先只读诊断，再授权执行，最后才允许创建 / 修改外部对象。</small></article>
             <article class="carrier-card state-store-card"><span class="object-tag"><i data-lucide="git-fork"></i>社区的新服务底座</span><h4>任务状态与案例图谱</h4><p>把上述形态的结果统一沉淀到任务对象：什么条件下用过什么知识和流程、运行了什么、谁验证、结果怎样。</p><small>它使 AI 和开发者不必每次从头开始，也让社区可衡量真实复用和问题解决质量。</small></article>
           </div>
-          <div class="agent-evidence"><b>依据：</b>现有 Ascend C Agent 已将“完整开发工作流、环境检查、文档检索、通用调试、精度调试”做成流程组件；编排器再启动开发 / 测试 / 评估角色，并通过 Docker 与 NPU 环境执行、产生日志。因此本建议不是抽象分类，而是将现有 Agent 已验证的“流程 + 执行 + 评估”机制扩展到社区、GitCode 与开发者工作流。</div>
+          <div class="agent-evidence"><b>依据与边界：</b>公开 Agent API 的共同机制是“模型决定工具调用 → 工具返回结果 → 模型继续处理”；当前 Ascend C Agent 则进一步给出算子任务的六阶段强制流程，并在不同阶段调用 workflow、环境检查、文档检索、调试、精度调试等 Skill，通过 Docker + NPU 执行构建 / 测试并产生日志。社区侧的 MCP / API、模板 / 插件、任务状态服务是基于这些已验证机制提出的产品化映射，需在后续原型研究中验证价值与成本。</div>
         </div>
         <div class="demo-application">
           <div class="demo-application-head">
