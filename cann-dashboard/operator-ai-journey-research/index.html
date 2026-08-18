@@ -397,6 +397,259 @@
         color: var(--i);
         margin-bottom: 3px;
       }
+      /* Journey pattern adapted from the report journey template: phase → touchpoint → action → emotion → pain → community response. */
+      .journey-compare {
+        display: grid;
+        gap: 18px;
+      }
+      .journey-map {
+        overflow: hidden;
+        border: 1px solid var(--l);
+        border-radius: 15px;
+        background: #fff;
+      }
+      .journey-map-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 18px 20px 15px;
+        border-bottom: 1px solid var(--l);
+      }
+      .journey-map-head .label {
+        display: block;
+        margin-bottom: 6px;
+      }
+      .journey-map-head h3 {
+        margin: 0;
+        color: #17212b;
+        font-size: 20px;
+        line-height: 1.25;
+      }
+      .journey-map-head p {
+        max-width: 410px;
+        margin: 0;
+        color: var(--t);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .journey-scroll {
+        overflow-x: auto;
+      }
+      .journey-grid {
+        display: grid;
+        grid-template-columns: 82px repeat(4, minmax(205px, 1fr));
+        min-width: 990px;
+      }
+      .journey-grid > div {
+        min-width: 0;
+      }
+      .journey-row-label {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 12px 12px 12px 16px;
+        border-right: 1px solid var(--l);
+        background: #f7f9fb;
+        text-align: right;
+      }
+      .journey-row-label b {
+        color: #34404b;
+        font-size: 12px;
+      }
+      .journey-row-label span {
+        margin-top: 2px;
+        color: #88939f;
+        font: 700 9px/1.1 Inter, sans-serif;
+        letter-spacing: 0.08em;
+      }
+      .journey-phase {
+        position: relative;
+        min-height: 88px;
+        padding: 14px 15px;
+        border-right: 1px solid #4d5965;
+        background: #1b232a;
+        color: #fff;
+      }
+      .journey-phase:last-child { border-right: 0; }
+      .journey-phase .num {
+        display: block;
+        color: #aeb9c3;
+        font: 800 10px/1 Inter, sans-serif;
+        letter-spacing: .1em;
+      }
+      .journey-phase b {
+        display: block;
+        min-height: 2.4em;
+        margin-top: 7px;
+        color: #fff;
+        font-size: 15px;
+        line-height: 1.25;
+      }
+      .journey-phase small {
+        display: block;
+        margin-top: 5px;
+        color: #c0c8cf;
+        font-size: 10px;
+        line-height: 1.3;
+      }
+      .journey-cell {
+        min-height: 76px;
+        padding: 11px 14px;
+        border-right: 1px solid var(--l);
+        border-bottom: 1px solid var(--l);
+        background: #fff;
+      }
+      .journey-cell:last-child { border-right: 0; }
+      .journey-touch {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        align-content: center;
+      }
+      .journey-touch span {
+        padding: 3px 6px;
+        border-radius: 4px;
+        background: #f0f3f5;
+        color: #52606d;
+        font-size: 11px;
+        line-height: 1.3;
+      }
+      .journey-action-cell {
+        min-height: 128px;
+        padding: 11px 14px;
+        border-right: 1px solid var(--l);
+        border-bottom: 1px solid var(--l);
+        background: #fff;
+      }
+      .journey-action-cell:last-child { border-right: 0; }
+      .journey-action {
+        display: grid;
+        grid-template-columns: 62px 1fr;
+        gap: 10px;
+        align-items: center;
+        height: 100%;
+        color: #4f5b67;
+        font-size: 11px;
+        line-height: 1.48;
+      }
+      .mini-ui {
+        position: relative;
+        height: 54px;
+        overflow: hidden;
+        border: 1px solid #d9e0e5;
+        border-radius: 5px;
+        background: #f8fafb;
+      }
+      .mini-ui:before {
+        content: "";
+        display: block;
+        height: 10px;
+        border-bottom: 1px solid #e0e5e9;
+        background: #eef2f4;
+      }
+      .mini-ui i,
+      .mini-ui b {
+        position: absolute;
+        display: block;
+        height: 4px;
+        border-radius: 99px;
+        background: #bdc7d0;
+      }
+      .mini-ui i:nth-child(1) { top: 18px; left: 8px; width: 37px; }
+      .mini-ui i:nth-child(2) { top: 27px; left: 8px; width: 45px; }
+      .mini-ui i:nth-child(3) { top: 36px; left: 8px; width: 28px; }
+      .mini-ui.menu b { top: 18px; right: 7px; width: 13px; height: 28px; background: #dfe5ea; }
+      .mini-ui.search b { top: 18px; left: 8px; width: 46px; height: 10px; border: 1px solid #b9c3cc; background: #fff; }
+      .mini-ui.ask b { top: 20px; left: 10px; width: 38px; height: 17px; border-radius: 7px 7px 7px 2px; background: #e1e6ea; }
+      .mini-ui.post b { top: 18px; left: 8px; width: 44px; height: 27px; border: 1px solid #d3dae0; background: #fff; }
+      .mini-ui.prompt b { top: 25px; left: 7px; width: 48px; height: 14px; border-radius: 5px; background: #e8edf0; }
+      .mini-ui.sources b { top: 17px; left: 8px; width: 46px; height: 8px; background: #dbe2e7; box-shadow: 0 11px #cbd5dc, 0 22px #dbe2e7; }
+      .mini-ui.terminal { background: #20262c; border-color: #20262c; }
+      .mini-ui.terminal:before { background: #303a43; border-color: #3d4650; }
+      .mini-ui.terminal b { top: 21px; left: 8px; width: 42px; height: 4px; background: #8ac4a7; box-shadow: 0 10px #d5dce2, 0 20px #d5dce2; }
+      .mini-ui.loop b { top: 18px; left: 9px; width: 42px; height: 24px; border: 1px dashed #9da9b4; background: transparent; }
+      .journey-emotion-cell {
+        position: relative;
+        height: 108px;
+        overflow: hidden;
+        border-right: 1px solid var(--l);
+        border-bottom: 1px solid var(--l);
+        background: #fbfcfd;
+      }
+      .journey-emotion-cell:last-child { border-right: 0; }
+      .journey-emotion-cell svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .journey-emotion-cell .emotion-dot {
+        position: absolute;
+        top: var(--y);
+        left: 50%;
+        width: 9px;
+        height: 9px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        background: #45576a;
+        box-shadow: 0 1px 4px rgba(0,0,0,.18);
+      }
+      .journey-emotion-cell b {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #526170;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+      .journey-pain-cell,
+      .journey-opportunity-cell {
+        min-height: 98px;
+        padding: 10px 13px;
+        border-right: 1px solid var(--l);
+        border-bottom: 1px solid var(--l);
+      }
+      .journey-pain-cell:last-child,
+      .journey-opportunity-cell:last-child { border-right: 0; }
+      .journey-pain-cell { background: #fff5f5; }
+      .journey-opportunity-cell { background: #eef8f3; }
+      .journey-pain-cell p,
+      .journey-opportunity-cell p {
+        position: relative;
+        margin: 0 0 6px;
+        padding-left: 10px;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+      .journey-pain-cell p { color: #85494e; }
+      .journey-opportunity-cell p { color: #386956; }
+      .journey-pain-cell p:before,
+      .journey-opportunity-cell p:before {
+        content: "";
+        position: absolute;
+        top: .48em;
+        left: 0;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+      }
+      .journey-pain-cell p:before { background: #c05259; }
+      .journey-opportunity-cell p:before { background: #287b61; }
+      .journey-delta {
+        display: grid;
+        grid-template-columns: 22px 1fr;
+        gap: 9px;
+        align-items: center;
+        padding: 13px 18px;
+        border-top: 1px solid var(--l);
+        background: #f5f7f8;
+        color: #465460;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .journey-delta .licon { width: 18px; height: 18px; }
+      .journey-delta b { color: #202a33; }
+      @media (max-width: 850px) {
+        .journey-map-head { align-items: flex-start; flex-direction: column; }
+      }
       .life {
         overflow: auto;
         border: 1px solid var(--l);
@@ -3005,68 +3258,96 @@
             缩短发现与生成时间；版本、硬件、来源、验证与责任判断进入每一次任务。
           </p>
         </div>
-        <div class="change">
-          <article class="era">
-            <h3>
-              <i data-lucide="library-big"></i>过去：以社区为入口的资料旅程
-            </h3>
-            <small>用户主要在同一品牌空间完成查阅与求助</small>
-            <div class="rows">
-              <div class="row">
-                <b>起点</b><span>产品 / 文档 / 论坛导航</span>
-              </div>
-              <div class="row">
-                <b>主要动作</b><span>阅读、搜索、发帖、提单</span>
-              </div>
-              <div class="row">
-                <b>社区价值</b><span>内容承载、人工答疑、实践展示</span>
-              </div>
-              <div class="row">
-                <b>信任方式</b><span>官方身份、专家回复、人工判断</span>
-              </div>
+        <div class="journey-compare">
+          <article class="journey-map">
+            <div class="journey-map-head">
+              <div><span class="label">BEFORE · 社区主导的资料旅程</span><h3>用户在同一品牌空间完成“找资料—问人—复用”</h3></div>
+              <p>典型入口是产品页、文档与论坛导航；社区的核心职责是承载内容与组织人工支持。</p>
             </div>
+            <div class="journey-scroll"><div class="journey-grid">
+              <div></div>
+              <div class="journey-phase"><span class="num">01</span><b>进入社区</b><small>找到产品与资料入口</small></div>
+              <div class="journey-phase"><span class="num">02</span><b>查阅与理解</b><small>阅读文档、教程和案例</small></div>
+              <div class="journey-phase"><span class="num">03</span><b>求助与等待</b><small>发帖、提单、等专家回复</small></div>
+              <div class="journey-phase"><span class="num">04</span><b>采纳与复用</b><small>保存经验、下次再找</small></div>
+
+              <div class="journey-row-label"><b>触点</b><span>TOUCH</span></div>
+              <div class="journey-cell"><div class="journey-touch"><span>官网导航</span><span>产品页</span></div></div>
+              <div class="journey-cell"><div class="journey-touch"><span>官方文档</span><span>教程</span><span>博客</span></div></div>
+              <div class="journey-cell"><div class="journey-touch"><span>论坛</span><span>工单</span><span>专家</span></div></div>
+              <div class="journey-cell"><div class="journey-touch"><span>收藏夹</span><span>团队 Wiki</span></div></div>
+
+              <div class="journey-row-label"><b>行为</b><span>ACTION</span></div>
+              <div class="journey-action-cell"><div class="journey-action"><div class="mini-ui menu"><i></i><i></i><i></i><b></b></div><span>沿产品、文档、论坛目录判断“该从哪里开始”。</span></div></div>
+              <div class="journey-action-cell"><div class="journey-action"><div class="mini-ui search"><i></i><i></i><i></i><b></b></div><span>搜索关键词，阅读多篇内容后自行拼出做法。</span></div></div>
+              <div class="journey-action-cell"><div class="journey-action"><div class="mini-ui ask"><i></i><i></i><i></i><b></b></div><span>整理问题、补充描述，等待人工回复或处理。</span></div></div>
+              <div class="journey-action-cell"><div class="journey-action"><div class="mini-ui post"><i></i><i></i><i></i><b></b></div><span>采纳答案，将链接、笔记或案例留给团队。</span></div></div>
+
+              <div class="journey-row-label"><b>情绪</b><span>EMOTION</span></div>
+              <div class="journey-emotion-cell" style="--y:30%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="50" x2="100" y2="50" stroke="#d9e0e5" stroke-width=".8" stroke-dasharray="3 3"/><polyline points="0,30 50,30 100,34" fill="none" stroke="#45576a" stroke-width="1.7"/></svg><span class="emotion-dot"></span><b>有方向</b></div>
+              <div class="journey-emotion-cell" style="--y:38%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="50" x2="100" y2="50" stroke="#d9e0e5" stroke-width=".8" stroke-dasharray="3 3"/><polyline points="0,34 50,38 100,45" fill="none" stroke="#45576a" stroke-width="1.7"/></svg><span class="emotion-dot"></span><b>逐步理解</b></div>
+              <div class="journey-emotion-cell" style="--y:52%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="50" x2="100" y2="50" stroke="#d9e0e5" stroke-width=".8" stroke-dasharray="3 3"/><polyline points="0,45 50,52 100,43" fill="none" stroke="#45576a" stroke-width="1.7"/></svg><span class="emotion-dot"></span><b>等待恢复</b></div>
+              <div class="journey-emotion-cell" style="--y:35%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="50" x2="100" y2="50" stroke="#d9e0e5" stroke-width=".8" stroke-dasharray="3 3"/><polyline points="0,43 50,35 100,35" fill="none" stroke="#45576a" stroke-width="1.7"/></svg><span class="emotion-dot"></span><b>获得帮助</b></div>
+
+              <div class="journey-row-label"><b>痛点</b><span>PAIN</span></div>
+              <div class="journey-pain-cell"><p>入口依赖站内导航</p><p>任务意图未被识别</p></div>
+              <div class="journey-pain-cell"><p>内容以阅读为主</p><p>版本与适用条件分散</p></div>
+              <div class="journey-pain-cell"><p>问题描述从零开始</p><p>支持结果与执行环境脱节</p></div>
+              <div class="journey-pain-cell"><p>经验停留在链接或帖子</p><p>复用效果不可见</p></div>
+
+              <div class="journey-row-label"><b>社区价值</b><span>ROLE</span></div>
+              <div class="journey-opportunity-cell"><p>建立清晰内容目录</p><p>提供新手入口</p></div>
+              <div class="journey-opportunity-cell"><p>沉淀权威知识</p><p>展示最佳实践</p></div>
+              <div class="journey-opportunity-cell"><p>组织专家答疑</p><p>承接工单流转</p></div>
+              <div class="journey-opportunity-cell"><p>汇集案例与贡献</p><p>形成可搜索档案</p></div>
+            </div></div>
           </article>
-          <div class="arrow">→</div>
-          <article class="era">
-            <h3>
-              <i data-lucide="workflow"></i>现在：以任务为中心的分布式协作旅程
-            </h3>
-            <small
-              >用户常从 AI / 搜索开始，在多源资产与本地环境间完成任务</small
-            >
-            <div class="rows">
-              <div class="row">
-                <b>起点</b><span>自然语言目标、报错、项目需求</span>
-              </div>
-              <div class="row">
-                <b>主要动作</b
-                ><span>AI 对话、代码复用、跨站核验、执行与恢复</span>
-              </div>
-              <div class="row">
-                <b>社区价值</b
-                ><span>任务路由、可信证据、上下文支持、贡献回流</span>
-              </div>
-              <div class="row">
-                <b>信任方式</b
-                ><span>来源、版本、验证状态、维护责任、同类结果</span>
-              </div>
+
+          <article class="journey-map">
+            <div class="journey-map-head">
+              <div><span class="label">NOW · AI 广泛使用后的任务旅程</span><h3>用户从任务或报错进入，在 AI、多源资产与本地环境间交付结果</h3></div>
+              <p>AI 把发现、解释和生成压缩进一次对话，但版本、来源、验证和责任判断成为每一步的前提。</p>
             </div>
+            <div class="journey-scroll"><div class="journey-grid">
+              <div></div>
+              <div class="journey-phase"><span class="num">01</span><b>提出任务</b><small>目标、报错或项目需求</small></div>
+              <div class="journey-phase"><span class="num">02</span><b>AI 生成路径</b><small>搜索、解释、代码与建议</small></div>
+              <div class="journey-phase"><span class="num">03</span><b>执行并核验</b><small>本地环境运行、比对信号</small></div>
+              <div class="journey-phase"><span class="num">04</span><b>恢复并回流</b><small>失败升级、沉淀验证结果</small></div>
+
+              <div class="journey-row-label"><b>触点</b><span>TOUCH</span></div>
+              <div class="journey-cell"><div class="journey-touch"><span>搜索</span><span>AI 对话</span><span>项目日志</span></div></div>
+              <div class="journey-cell"><div class="journey-touch"><span>官方文档</span><span>GitCode</span><span>CSDN</span></div></div>
+              <div class="journey-cell"><div class="journey-touch"><span>终端</span><span>容器</span><span>NPU</span><span>测试日志</span></div></div>
+              <div class="journey-cell"><div class="journey-touch"><span>Issue</span><span>论坛</span><span>工单</span><span>PR</span></div></div>
+
+              <div class="journey-row-label"><b>行为</b><span>ACTION</span></div>
+              <div class="journey-action-cell"><div class="journey-action"><div class="mini-ui prompt"><i></i><i></i><i></i><b></b></div><span>用自然语言描述目标或贴入报错，期待直接得到下一步。</span></div></div>
+              <div class="journey-action-cell"><div class="journey-action"><div class="mini-ui sources"><i></i><i></i><i></i><b></b></div><span>让 AI 聚合多源内容，再判断来源、版本和适用范围。</span></div></div>
+              <div class="journey-action-cell"><div class="journey-action"><div class="mini-ui terminal"><i></i><i></i><i></i><b></b></div><span>复制或改写步骤，在真实硬件、版本与项目约束下验证。</span></div></div>
+              <div class="journey-action-cell"><div class="journey-action"><div class="mini-ui loop"><i></i><i></i><i></i><b></b></div><span>携带日志、版本与已尝试动作，转入案例、专家或 Issue。</span></div></div>
+
+              <div class="journey-row-label"><b>情绪</b><span>EMOTION</span></div>
+              <div class="journey-emotion-cell" style="--y:35%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="50" x2="100" y2="50" stroke="#d9e0e5" stroke-width=".8" stroke-dasharray="3 3"/><polyline points="0,35 50,35 100,32" fill="none" stroke="#287b61" stroke-width="1.7"/></svg><span class="emotion-dot" style="background:#287b61"></span><b>期待加速</b></div>
+              <div class="journey-emotion-cell" style="--y:28%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="50" x2="100" y2="50" stroke="#d9e0e5" stroke-width=".8" stroke-dasharray="3 3"/><polyline points="0,32 50,28 100,41" fill="none" stroke="#287b61" stroke-width="1.7"/></svg><span class="emotion-dot" style="background:#287b61"></span><b>快速获得候选</b></div>
+              <div class="journey-emotion-cell" style="--y:53%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="50" x2="100" y2="50" stroke="#d9e0e5" stroke-width=".8" stroke-dasharray="3 3"/><polyline points="0,41 50,53 100,57" fill="none" stroke="#c05259" stroke-width="1.7"/></svg><span class="emotion-dot" style="background:#c05259"></span><b>验证压力上升</b></div>
+              <div class="journey-emotion-cell" style="--y:60%"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="50" x2="100" y2="50" stroke="#d9e0e5" stroke-width=".8" stroke-dasharray="3 3"/><polyline points="0,57 50,60 100,60" fill="none" stroke="#c05259" stroke-width="1.7"/></svg><span class="emotion-dot" style="background:#c05259"></span><b>能否持续恢复</b></div>
+
+              <div class="journey-row-label"><b>新增断点</b><span>PAIN</span></div>
+              <div class="journey-pain-cell"><p>入口不再只属于社区</p><p>意图与环境信息常不完整</p></div>
+              <div class="journey-pain-cell"><p>答案跨文档、仓库和站外经验</p><p>AI 输出缺来源与版本边界</p></div>
+              <div class="journey-pain-cell"><p>候选答案不等于可运行</p><p>验证信号和硬件条件难对齐</p></div>
+              <div class="journey-pain-cell"><p>日志与上下文在切换中丢失</p><p>结果状态难回流为资产</p></div>
+
+              <div class="journey-row-label"><b>社区新职责</b><span>ROLE</span></div>
+              <div class="journey-opportunity-cell"><p>让任务页被 AI / 搜索准确发现</p><p>收集任务简报的必要条件</p></div>
+              <div class="journey-opportunity-cell"><p>输出带来源、版本、范围的可信路径</p><p>把多源资产编排为步骤</p></div>
+              <div class="journey-opportunity-cell"><p>提供命令、预期输出、验证状态</p><p>记录适用硬件和规模条件</p></div>
+              <div class="journey-opportunity-cell"><p>升级时自动携带上下文</p><p>将结果回流为可引用案例</p></div>
+            </div></div>
           </article>
         </div>
-        <div class="shift-note">
-          <div>
-            <b><i data-lucide="search"></i>入口迁移</b
-            >用户不一定先到社区；社区必须能被搜索和 AI 发现、引用并准确带回。
-          </div>
-          <div>
-            <b><i data-lucide="bot"></i>消费迁移</b>用户不再只阅读，而是让 AI
-            生成、修改、执行与诊断，内容需要具备可执行结构。
-          </div>
-          <div>
-            <b><i data-lucide="link-2"></i>关系迁移</b
-            >社区覆盖首次成功、长期交付和影响回流。
-          </div>
-        </div>
+        <div class="journey-delta"><i data-lucide="arrow-down-up"></i><div><b>旅程的关键变化：</b>过去的主要摩擦是“找不到或看不懂内容”；现在的主要风险是“AI 给出的候选路径能否在我的版本、硬件和项目条件下被验证，并在失败后持续恢复”。</div></div>
         <div class="evidence-strip" aria-label="分布式资产的页面证据">
           <article class="evidence-card">
             <a class="evidence-shot" href="evidence/04-ascend-operator-journey.png" aria-label="查看昇腾算子开发场景原图">
