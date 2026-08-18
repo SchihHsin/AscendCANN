@@ -1460,3 +1460,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户发现先前 iframe 聚焦方案实际仍显示了整个 Opknow 报告。已撤销该方式，新增 `cann-dashboard/operator-ai-journey-research/evidence/opknow-agent-loop-original.html`：该切片在隐藏的源 iframe 中读取 Opknow 的 `#archView svg`，仅克隆现成的 SVG 原图到自身页面，不加载或呈现报告正文、章节、代码或其他内容。
 - 研究底稿与 PPT 均改为嵌入上述切片文件；报告内可见区域将只包含 Opknow 的 Agent 循环架构 SVG。切片本身不改写、重画或拆解原图的节点、箭头和回环。
+
+### 2026-08-19（主叙事改为公开案例证据优先）
+
+- 用户指出传统 / AI 两张用户旅程论证力不足，报告主线不应从旅程推断开始，而应从真实公开案例进入，再承接 Agent 架构、资产形态与建设规划。原旅程页从主导航隐藏，保留源代码备查。
+- `operator-ai-journey-deck/index.html` 主顺序调整为：研究问题 → 公开案例 → 15 个案例样本 → Agent Workflow → 资产分流 → 真实资产映射 → 状态与验证资产 → 社区新角色 → 服务模型 → 体验部供给侧工作 → 后续研究。
+- 为遵循 Report PPT Skill 的“原件优先复用”规则，新增 `operator-ai-journey-research/evidence-embed.html` 作为研究底稿裁切副本，通过 `?sec=answers|cases|corpus|research` 只露目标 section；PPT 以 iframe 懒加载嵌入，不重画已有问题卡、案例卡、样本矩阵和研究规划。
+- Add 首跑总览与四张步骤 Demo 降为附录，不进入主 deck 的导航与页码，避免简单 Demo 抢占真实案例论证；资产形态与 Agent 架构仍保留为主线核心。
+- 已完成静态桌面首屏检查（1440×900）；未能用浏览器内嵌控制完成本地 `file://` 逐页截图，Chrome headless 对带 iframe 的 hash 页在当前环境未稳定返回内容，需用户在本地浏览器打开 deck 复核嵌入页视觉。
