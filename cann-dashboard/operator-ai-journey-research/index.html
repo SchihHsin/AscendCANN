@@ -2600,15 +2600,16 @@
       .evidence-shot,
       .compare-shot {
         position: relative;
+        display: block;
         overflow: hidden;
         border-bottom: 1px solid #dfe5eb;
         background: #eef1f4;
       }
       .evidence-shot {
-        height: 172px;
+        height: 226px;
       }
       .compare-shot {
-        height: 228px;
+        height: 300px;
       }
       .evidence-shot img,
       .compare-shot img {
@@ -2618,12 +2619,52 @@
         object-fit: cover;
         object-position: center top;
       }
-      .evidence-card:nth-child(2) .evidence-shot img {
-        object-position: center 8%;
+      .evidence-shot img,
+      .compare-shot img { object-position: center top; }
+      .evidence-markers {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
       }
-      .evidence-card:nth-child(3) .evidence-shot img {
-        object-position: center 3%;
+      .evidence-marker {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 7px 4px 4px;
+        border: 1px solid rgba(17,20,23,.24);
+        border-radius: 5px;
+        background: rgba(255,255,255,.92);
+        box-shadow: 0 2px 9px rgba(17,20,23,.12);
+        color: #26313c;
+        font: 700 10px/1.2 Inter, "HarmonyOS Sans SC", sans-serif;
+        white-space: nowrap;
       }
+      .evidence-marker:after {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 18px;
+        border-top: 1px solid #c05259;
+        border-right: 1px solid #c05259;
+      }
+      .evidence-marker b {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #c05259;
+        color: #fff;
+        font: 800 9px/1 Inter, sans-serif;
+      }
+      .evidence-marker.m1 { top: 18px; left: 14px; }
+      .evidence-marker.m1:after { top: 100%; left: 13px; transform: rotate(45deg); transform-origin: left top; }
+      .evidence-marker.m2 { right: 14px; bottom: 16px; }
+      .evidence-marker.m2:after { right: 17px; bottom: 100%; transform: rotate(-135deg); transform-origin: right bottom; }
+      .evidence-marker.m3 { top: 34%; right: 11px; }
+      .evidence-marker.m3:after { right: 100%; top: 13px; transform: rotate(-45deg); transform-origin: right top; }
       .evidence-caption,
       .compare-caption {
         padding: 13px 14px 14px;
@@ -3028,33 +3069,44 @@
         </div>
         <div class="evidence-strip" aria-label="分布式资产的页面证据">
           <article class="evidence-card">
-            <a class="evidence-shot" href="evidence/04-ascend-operator-journey.png">
-              <img src="evidence/04-ascend-operator-journey.png" alt="昇腾算子开发场景页面截图" />
+            <a class="evidence-shot" href="evidence/04-ascend-operator-journey.png" aria-label="查看昇腾算子开发场景原图">
+              <img src="evidence/crops/operator-entry-routes.png" alt="昇腾算子开发场景：三种开发路径和用户旅程矩阵" />
+              <span class="evidence-markers" aria-hidden="true">
+                <span class="evidence-marker m1"><b>1</b>先选开发路径</span>
+                <span class="evidence-marker m2"><b>2</b>再按阶段找资源</span>
+              </span>
             </a>
             <div class="evidence-caption">
-              <b><i data-lucide="map"></i>官方场景定义任务边界</b>
-              同一任务先在场景页选择 Ascend C、CATLASS 或 Triton 等开发路径。
-              <span class="evidence-source">截图证据 · 昇腾算子开发场景</span>
+              <b><i data-lucide="map"></i>任务入口已经包含两次判断</b>
+              先在 Ascend C / CATLASS / Triton 中选路径，再在新手、进阶、深度创新中找资源；用户在进入代码仓前已开始做选择。
+              <span class="evidence-source">页面证据 · 昇腾算子开发场景（标注 1–2）</span>
             </div>
           </article>
           <article class="evidence-card">
-            <a class="evidence-shot" href="evidence/02-gitcode-add-example.png">
-              <img src="evidence/02-gitcode-add-example.png" alt="GitCode Add 算子样例页面截图" />
+            <a class="evidence-shot" href="evidence/02-gitcode-add-example.png" aria-label="查看 GitCode Add 样例原图">
+              <img src="evidence/crops/gitcode-add-assets.png" alt="GitCode Add 算子样例：版本选择、样例目录和构建文件" />
+              <span class="evidence-markers" aria-hidden="true">
+                <span class="evidence-marker m1"><b>1</b>版本是前置条件</span>
+                <span class="evidence-marker m2"><b>2</b>样例资产在仓内</span>
+              </span>
             </a>
             <div class="evidence-caption">
-              <b><i data-lucide="git-branch"></i>GitCode 承接可运行资产</b>
-              Add 样例把实现、构建、运行和精度信号放入代码仓，但需要从场景页抵达。
-              <span class="evidence-source">截图证据 · GitCode Add 样例</span>
+              <b><i data-lucide="git-branch"></i>可运行资产在代码仓中，但需带着条件抵达</b>
+              截图可见 9.0.0 版本、`01_add` 样例目录与 CMake / README / `add.asc` 文件；这就是首跑所需资产的落点。
+              <span class="evidence-source">页面证据 · GitCode Add 样例（标注 1–2）</span>
             </div>
           </article>
           <article class="evidence-card">
-            <a class="evidence-shot" href="evidence/08-csdn-search.png">
-              <img src="evidence/08-csdn-search.png" alt="CSDN 昇腾相关搜索结果页面截图" />
+            <a class="evidence-shot" href="evidence/08-csdn-search.png" aria-label="查看 CSDN 搜索原图">
+              <img src="evidence/crops/csdn-search-results.png" alt="CSDN Ascend C 自定义算子搜索结果" />
+              <span class="evidence-markers" aria-hidden="true">
+                <span class="evidence-marker m3"><b>3</b>多篇站外经验</span>
+              </span>
             </a>
             <div class="evidence-caption">
               <b><i data-lucide="messages-square"></i>站外经验扩大可发现面</b>
-              搜索结果带来大量经验入口，也把来源、版本和适用条件的核验责任交给用户。
-              <span class="evidence-source">截图证据 · CSDN 昇腾相关搜索</span>
+              单次搜索即出现多篇实践文章；可发现性很强，但版本、硬件与验证条件并不在结果页中统一呈现。
+              <span class="evidence-source">页面证据 · CSDN 搜索结果（标注 3）</span>
             </div>
           </article>
         </div>
@@ -3621,21 +3673,29 @@
         </div>
         <div class="compare-proof" aria-label="自定义算子首跑页面证据">
           <article class="compare-proof-card">
-            <a class="compare-shot" href="evidence/02-gitcode-add-example.png">
-              <img src="evidence/02-gitcode-add-example.png" alt="CANN GitCode Add 样例页面截图" />
+            <a class="compare-shot" href="evidence/02-gitcode-add-example.png" aria-label="查看 CANN GitCode Add 样例原图">
+              <img src="evidence/crops/gitcode-add-build.png" alt="CANN GitCode Add 样例：目录、构建文件和说明文件" />
+              <span class="evidence-markers" aria-hidden="true">
+                <span class="evidence-marker m1"><b>1</b>样例的构成要素</span>
+                <span class="evidence-marker m2"><b>2</b>仓外仍需场景入口</span>
+              </span>
             </a>
             <div class="compare-caption">
               <b><i data-lucide="git-branch"></i>CANN：代码仓承接首跑闭环</b>
-              实现、环境、构建、运行和精度信号可在样例中找到；任务路径需与场景 / 文档入口拼接。
+              图中可直接读到 `basic_api_tque_add`、CMake、README、`add.asc`；它证明样例具备闭环构成，但用户仍需先在场景 / 文档中判断该进哪个仓、选哪个版本。
             </div>
           </article>
           <article class="compare-proof-card">
-            <a class="compare-shot" href="evidence/03-cuda-vecadd-guide.png">
-              <img src="evidence/03-cuda-vecadd-guide.png" alt="CUDA vecAdd 官方指南页面截图" />
+            <a class="compare-shot" href="evidence/03-cuda-vecadd-guide.png" aria-label="查看 CUDA vecAdd 官方指南原图">
+              <img src="evidence/crops/cuda-kernel-example.png" alt="CUDA Programming Guide：NVCC、Kernels 和 kernel 定义同页连续出现" />
+              <span class="evidence-markers" aria-hidden="true">
+                <span class="evidence-marker m1"><b>1</b>编译章节</span>
+                <span class="evidence-marker m2"><b>2</b>紧邻 Kernel 定义</span>
+              </span>
             </a>
             <div class="compare-caption">
               <b><i data-lucide="file-text"></i>CUDA：官方正文连续承接</b>
-              vecAdd 指南把最小 kernel、编译与校验放在同一官方阅读流中，是本轮“连续正文”判断的页面证据。
+              图中 `Compilation with NVCC`、`Kernels` 与 `Specifying Kernels` 位于同一章节阅读流；这支撑本轮实测中“最小知识链更连续”的判断。
             </div>
           </article>
         </div>
