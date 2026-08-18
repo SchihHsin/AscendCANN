@@ -1330,3 +1330,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增六个实例：①昇腾算子开发场景 → 版本化知识库 / 结构化检索；②本仓 Ascend C Agent 六阶段工作流 → Skill / 工作流；③GitCode `asc-devkit` 9.0.0 Add 样例 → 模板 / 脚手架与可执行配方；④CANN community 的 Issue / Pull Request / Actions → 连接器 / MCP / API；⑤`Ascend/pytorch#154` 公开 Issue → 案例图谱 / 问题状态；⑥同一 Add 样例的构建入口 → 验证服务 / 人机协作。明确源码仍应在仓库、MCP/API 只承载实时状态与受控动作、验证结论必须有 NPU / CI 运行证据。
 - 新采集两张可读证据截图并保存 metadata：`evidence/crops/github-issue-154.png`（公开 GitHub Issue，展示 GitCode 同步、软硬件版本和最小复现脚本）与 `evidence/crops/ascendc-agent-six-stage-flow.png`（本地 Agent 运行原理页面，展示实际的批次、开发、Docker + NPU、日志与评估阶段）。页面文本和元数据均清楚区分已存在资产与待验证的产品化建议。
 - 桌面浏览器已验证新增区域 6 张卡片、所有 6 张截图加载正常，卡片宽度无横向溢出；现有证据截图只用作支撑相应形态判断，不作为装饰图。
+- “真实资产示例”标题采用直接陈述的“六类真实资产：对应六种 AI 服务形态”，移除“不是抽象分类”这类反驳 / 辩解式表达。
