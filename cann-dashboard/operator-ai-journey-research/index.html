@@ -953,6 +953,15 @@
       .carrier-card.govern-card .object-tag { background: #fff5e8; color: #a36a20; }
       .agent-evidence { margin: 12px 0 0; padding: 11px 14px; border-left: 3px solid #607180; background: #f6f8f9; color: #5b6975; font-size: 11px; line-height: 1.55; }
       .agent-evidence b { color: #2c3842; }
+      #cases .head .eye, #corpus .head .eye, #operator-slice .head .eye { color: #526f94; }
+      #benchmark .head .eye, #stack-compare .head .eye { color: #287b61; }
+      #service-design .head .eye, #position .head .eye { color: #405a78; }
+      #future-model .head .eye { color: #a36a20; }
+      #growth .head .eye { color: #6b5b93; }
+      #research .head .eye { color: #a0444a; }
+      #future-model { border-top: 3px solid #263845; background: #f8fbfa; }
+      #operator-slice { border-top: 3px solid #58789d; }
+      #research { border-top: 3px solid #a0444a; }
       .research-roadmap {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -3493,78 +3502,83 @@
           if (!window.d3) return;
           const svg = d3.select("#agentCapabilityFlow");
           if (svg.empty()) return;
-          const W = 1080, H = 522;
+          const W = 1080, H = 625;
           svg.attr("viewBox", `0 0 ${W} ${H}`).attr("preserveAspectRatio", "xMidYMid meet");
           svg.selectAll("*").remove();
-          const palette = {
-            ink: "#26343f", muted: "#647381", line: "#b9c3cb",
-            green: "#287b61", greenSoft: "#eaf7f1",
-            orange: "#a36a20", orangeSoft: "#fff5e8",
-            red: "#a0444a", redSoft: "#fff0f1",
-            slate: "#4c5b68", slateSoft: "#eef1f4"
+          const p = {
+            ink: "#26343f", muted: "#647381", line: "#aebbc5",
+            blue: "#466c96", blueSoft: "#eff4fa", slate: "#4c5b68", slateSoft: "#eef1f4",
+            green: "#287b61", greenSoft: "#eaf7f1", orange: "#a36a20", orangeSoft: "#fff5e8",
+            red: "#a0444a", redSoft: "#fff0f1"
           };
-          const arrow = svg.append("defs").append("marker")
-            .attr("id", "agent-flow-arrow").attr("viewBox", "0 -5 10 10")
-            .attr("refX", 8).attr("refY", 0).attr("markerWidth", 6)
-            .attr("markerHeight", 6).attr("orient", "auto");
-          arrow.append("path").attr("d", "M0,-5L10,0L0,5").attr("fill", palette.line);
-          const linkLayer = svg.append("g").attr("fill", "none").attr("stroke", palette.line).attr("stroke-width", 1.35).attr("marker-end", "url(#agent-flow-arrow)");
-          const link = (x1, y1, x2, y2, color = palette.line, dash = null) => {
-            const path = `M${x1},${y1} C${x1},${y1 + (y2-y1)*.42} ${x2},${y2 - (y2-y1)*.35} ${x2},${y2}`;
-            linkLayer.append("path").attr("d", path).attr("stroke", color).attr("stroke-dasharray", dash || null);
+          const defs = svg.append("defs");
+          const marker = (id, color) => defs.append("marker").attr("id", id).attr("viewBox", "0 -5 10 10")
+            .attr("refX", 8).attr("refY", 0).attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto")
+            .append("path").attr("d", "M0,-5L10,0L0,5").attr("fill", color);
+          marker("flow-arrow", p.line); marker("flow-arrow-green", p.green); marker("flow-arrow-orange", p.orange);
+          const links = svg.append("g").attr("fill", "none").attr("stroke-width", 1.35);
+          const link = (d, color = p.line, end = "flow-arrow", dash = null) => links.append("path").attr("d", d)
+            .attr("stroke", color).attr("stroke-dasharray", dash).attr("marker-end", `url(#${end})`);
+          const text = (x, y, str, opt = {}) => svg.append("text").attr("x", x).attr("y", y)
+            .attr("text-anchor", opt.anchor || "start").attr("fill", opt.fill || p.muted)
+            .attr("font-size", opt.size || 10.5).attr("font-weight", opt.weight || 500).text(str);
+          const multiline = (g, x, y, lines, opt = {}) => lines.forEach((line, i) => g.append("text").attr("x", x).attr("y", y + i * (opt.gap || 14))
+            .attr("fill", opt.fill || p.muted).attr("font-size", opt.size || 10.2).attr("font-weight", opt.weight || 500).text(line));
+          const card = (n) => {
+            const g = svg.append("g").attr("transform", `translate(${n.x},${n.y})`);
+            g.append("rect").attr("width", n.w).attr("height", n.h).attr("rx", 10).attr("fill", n.fill).attr("stroke", n.stroke);
+            g.append("text").attr("x", 13).attr("y", 18).attr("fill", n.accent).attr("font-size", 9).attr("font-weight", 800).attr("letter-spacing", ".08em").text(n.kicker);
+            g.append("text").attr("x", 13).attr("y", 41).attr("fill", p.ink).attr("font-size", 14).attr("font-weight", 800).text(n.title);
+            multiline(g, 13, 62, n.lines, { size: 10.2, gap: 14 });
+            return n;
           };
-          const label = (x, y, value, opts = {}) => {
-            svg.append("text").attr("x", x).attr("y", y)
-              .attr("text-anchor", opts.anchor || "start")
-              .attr("fill", opts.fill || palette.muted)
-              .attr("font-size", opts.size || 11)
-              .attr("font-weight", opts.weight || 500)
-              .text(value);
+          const diamond = (x, y, title, note) => {
+            const g = svg.append("g").attr("transform", `translate(${x},${y})`);
+            g.append("path").attr("d", "M0,42 L66,0 L132,42 L66,84 Z").attr("fill", "#fff").attr("stroke", "#aebbc5");
+            g.append("text").attr("x", 66).attr("y", 35).attr("text-anchor", "middle").attr("fill", p.ink).attr("font-size", 11).attr("font-weight", 800).text(title);
+            g.append("text").attr("x", 66).attr("y", 51).attr("text-anchor", "middle").attr("fill", p.muted).attr("font-size", 9.5).text(note);
           };
-          const box = (node) => {
-            const g = svg.append("g").attr("transform", `translate(${node.x},${node.y})`);
-            g.append("rect").attr("width", node.w).attr("height", node.h).attr("rx", 9)
-              .attr("fill", node.fill || "#fff").attr("stroke", node.stroke || "#d5dde3");
-            g.append("text").attr("x", 13).attr("y", 19).attr("fill", node.kickerFill || palette.muted)
-              .attr("font-size", 9).attr("font-weight", 800).attr("letter-spacing", ".09em").text(node.kicker);
-            g.append("text").attr("x", 13).attr("y", 40).attr("fill", palette.ink)
-              .attr("font-size", 14).attr("font-weight", 800).text(node.title);
-            const lines = node.lines || [];
-            lines.forEach((line, i) => g.append("text").attr("x", 13).attr("y", 58 + i * 14)
-              .attr("fill", palette.muted).attr("font-size", 10.5).text(line));
-            return node;
+          const state = (x, y, w, name, note, fill, stroke, accent) => {
+            const g = svg.append("g").attr("transform", `translate(${x},${y})`);
+            g.append("rect").attr("width", w).attr("height", 75).attr("rx", 10).attr("fill", fill).attr("stroke", stroke);
+            g.append("text").attr("x", 12).attr("y", 22).attr("fill", accent).attr("font-size", 9).attr("font-weight", 800).attr("letter-spacing", ".08em").text("TASK STATE");
+            g.append("text").attr("x", 12).attr("y", 44).attr("fill", p.ink).attr("font-size", 13).attr("font-weight", 800).text(name);
+            g.append("text").attr("x", 12).attr("y", 61).attr("fill", p.muted).attr("font-size", 10).text(note);
           };
-          const sources = [
-            { x: 22, y: 32, w: 192, h: 78, kicker: "OFFICIAL KNOWLEDGE", title: "文档 / API / 版本说明", lines: ["权威定义、范围、变更"] },
-            { x: 232, y: 32, w: 192, h: 78, kicker: "RUNNABLE ASSET", title: "GitCode 样例 / Issue / PR", lines: ["代码、变更、协作与证据"] },
-            { x: 442, y: 32, w: 192, h: 78, kicker: "FIELD EXPERIENCE", title: "社区 / CSDN / 活动经验", lines: ["真实条件、反例与实践"] },
-            { x: 652, y: 32, w: 192, h: 78, kicker: "RUNTIME SIGNAL", title: "环境 / 日志 / 制品", lines: ["当前状态，不是静态内容"], fill: "#f8fafb" },
-            { x: 862, y: 32, w: 196, h: 78, kicker: "HUMAN RESPONSIBILITY", title: "专家 / SIG / 版本计划", lines: ["裁决、维护与升级"], fill: "#f8fafb" }
+          text(24, 34, "Agent 不是按“工具名”依次调用，而是依据任务缺口选择能力 · 以 Ascend C Add 首跑为例", { fill: p.ink, weight: 800, size: 14 });
+          text(24, 51, "每次调用都把新证据写回同一任务会话；一个任务可以同时命中多个分支。", { size: 10.5 });
+          card({ x: 24, y: 88, w: 196, h: 120, kicker: "01 · 进入任务会话", title: "目标 + 当前上下文", lines: ["输入：自然语言、代码、日志、IDE 上下文", "Agent：抽取芯片 / CANN / 框架 / 当前阶段", "输出：待补字段、风险、下一轮判断"], fill: "#fff", stroke: "#c7d2dc", accent: p.blue });
+          diamond(270, 106, "缺什么证据？", "可多选，不是单选");
+          const branches = [
+            { x: 448, y: 76, w: 190, h: 112, kicker: "若缺稳定事实", title: "知识库 / 检索", lines: ["何时：问 API、版本、适用范围", "动作：检索权威文档、样例、案例", "写回：来源、范围、候选路径"], fill: p.blueSoft, stroke: "#b8c9dd", accent: p.blue },
+            { x: 662, y: 76, w: 190, h: 112, kicker: "若缺操作方法", title: "Skill / 工作流", lines: ["何时：预检、编译、精度排障", "动作：按规则执行步骤与判断分支", "写回：下一步、停止条件、复现包"], fill: p.slateSoft, stroke: "#cbd4dc", accent: p.slate },
+            { x: 876, y: 76, w: 180, h: 112, kicker: "若缺当前状态 / 动作", title: "MCP / API", lines: ["何时：分支、Issue、CI、NPU、日志", "动作：受控读取、执行、写回", "写回：实时结果与审计记录"], fill: p.greenSoft, stroke: "#bcd8cc", accent: p.green },
+            { x: 555, y: 225, w: 205, h: 112, kicker: "若需生成或嵌入现场", title: "模板 / 插件 / CLI", lines: ["何时：创建工程、填配置、在 IDE 操作", "动作：拉取匹配样例，生成可运行配方", "写回：工程版本、命令、运行入口"], fill: "#f7f4fb", stroke: "#d4c8e3", accent: "#6b5b93" }
           ];
-          const task = { x: 45, y: 210, w: 220, h: 100, kicker: "DEVELOPER TASK", title: "Add 算子首跑", lines: ["目标 + 910B + CANN 9.0.0", "编译通过，待精度验证"], fill: "#fff", stroke: "#bfcad2" };
-          const agent = { x: 370, y: 186, w: 340, h: 148, kicker: "AGENT ORCHESTRATION", title: "任务会话 / 编排器", lines: ["① 提取上下文与待补条件  ② 选择知识与流程", "③ 调用连接器执行 / 读取状态  ④ 按风险升级", "输出必须附：来源、范围、验证与状态"], fill: "#202a33", stroke: "#202a33", kickerFill: "#bfcbd3" };
-          const carriers = [
-            { x: 22, y: 390, w: 192, h: 94, kicker: "KNOWLEDGE", title: "版本化知识库", lines: ["可检索事实 + 元数据"], fill: "#fff", stroke: "#cdd6dd" },
-            { x: 232, y: 390, w: 192, h: 94, kicker: "PROCEDURE", title: "流程组件 / Skill", lines: ["设计、预检、调试、总结"], fill: "#f7f9fa", stroke: "#cdd6dd" },
-            { x: 442, y: 390, w: 192, h: 94, kicker: "LIVE SYSTEM", title: "连接器 / MCP / API", lines: ["GitCode、CI、NPU、日志"], fill: "#f4faf7", stroke: "#bcd8cc", kickerFill: palette.green },
-            { x: 652, y: 390, w: 192, h: 94, kicker: "USER SURFACE", title: "工作台 / 插件 / 模板", lines: ["社区、文档、IDE、CLI"], fill: "#fff", stroke: "#cdd6dd" },
-            { x: 862, y: 390, w: 196, h: 94, kicker: "TRUST & GOVERNANCE", title: "验证服务 / 治理", lines: ["真机、CI、专家、状态机"], fill: "#fff9f1", stroke: "#ead1ab", kickerFill: palette.orange }
-          ];
-          sources.forEach(s => link(s.x + s.w / 2, s.y + s.h, agent.x + agent.w / 2, agent.y, s.x === 652 ? palette.green : palette.line, s.x === 442 ? "3 3" : null));
-          link(task.x + task.w, task.y + task.h / 2, agent.x, agent.y + agent.h / 2, palette.green);
-          carriers.forEach(c => link(agent.x + agent.w / 2, agent.y + agent.h, c.x + c.w / 2, c.y, c.x === 442 ? palette.green : (c.x === 862 ? palette.orange : palette.line)));
-          link(710, 260, 862, 438, palette.orange);
-          box(task);
-          sources.forEach(box);
-          const agentG = svg.append("g").attr("transform", `translate(${agent.x},${agent.y})`);
-          agentG.append("rect").attr("width", agent.w).attr("height", agent.h).attr("rx", 12).attr("fill", agent.fill);
-          agentG.append("text").attr("x", 16).attr("y", 22).attr("fill", "#cbd5dc").attr("font-size", 9).attr("font-weight", 800).attr("letter-spacing", ".09em").text(agent.kicker);
-          agentG.append("text").attr("x", 16).attr("y", 49).attr("fill", "#fff").attr("font-size", 18).attr("font-weight", 800).text(agent.title);
-          agent.lines.forEach((line, i) => agentG.append("text").attr("x", 16).attr("y", 75 + i * 18).attr("fill", "#d8e0e5").attr("font-size", 11).text(line));
-          carriers.forEach(box);
-          label(45, 175, "同一任务上下文", { fill: palette.green, weight: 800, size: 10 });
-          label(540, 370, "由 Agent 选择与调用", { anchor: "middle", fill: palette.muted, weight: 700, size: 10 });
-          label(1058, 502, "可验证结果回流为知识与案例", { anchor: "end", fill: palette.green, weight: 800, size: 10 });
+          branches.forEach(card);
+          card({ x: 255, y: 382, w: 282, h: 116, kicker: "02 · 汇合到任务会话", title: "更新证据账本与问题状态", lines: ["记录：用了什么、在何种版本 / 环境下、得到什么", "状态：待补信息 / 路径已生成 / 等待运行证据", "Agent 再根据剩余缺口进入下一轮分流"], fill: "#f5f8fa", stroke: "#c7d2dc", accent: p.blue });
+          diamond(603, 398, "能宣告解决？", "是否具备验证信号");
+          card({ x: 811, y: 382, w: 245, h: 116, kicker: "03 · 仅在需要时投入高成本", title: "验证服务或专家升级", lines: ["低风险：命令 + 预期输出 + 自动检查", "高风险：CI / 真机 / 性能复现 / 专家评审", "失败：携带上下文升级，不重述问题"], fill: p.orangeSoft, stroke: "#e8cfa6", accent: p.orange });
+          state(24, 530, 248, "待补信息", "返回任务入口补环境、复现或日志", "#fff", "#c7d2dc", p.blue);
+          state(330, 530, 248, "待验证", "已生成路径，等待运行或评审证据", p.orangeSoft, "#e8cfa6", p.orange);
+          state(636, 530, 420, "已验证解决 / 已升级", "成功回流知识与案例；未解保留条件、责任人和下一步", p.greenSoft, "#bcd8cc", p.green);
+          link("M220,148 L270,148");
+          link("M402,148 C424,148 428,132 448,132", p.blue);
+          link("M402,148 C514,148 552,132 662,132", p.slate);
+          link("M402,148 C622,148 702,132 876,132", p.green, "flow-arrow-green");
+          link("M336,190 C380,254 468,281 555,281", "#6b5b93");
+          branches.slice(0, 3).forEach((b, i) => link(`M${b.x + b.w / 2},188 C${b.x + b.w / 2},292 ${396 + i * 18},336 396,382`, i === 2 ? p.green : p.line, i === 2 ? "flow-arrow-green" : "flow-arrow"));
+          link("M657,337 C620,354 574,391 537,430", "#6b5b93");
+          link("M537,440 L603,440");
+          link("M735,440 L811,440", p.orange, "flow-arrow-orange");
+          link("M321,498 C231,508 150,508 150,530", p.blue);
+          link("M396,498 L454,530", p.orange, "flow-arrow-orange");
+          link("M934,498 L846,530", p.green, "flow-arrow-green");
+          link("M811,458 C752,506 667,508 578,508 C548,508 520,519 520,530", p.orange, "flow-arrow-orange", "4 4");
+          text(481, 365, "每个分支的输出都回写", { fill: p.muted, size: 9.5, weight: 700 });
+          text(669, 385, "否 / 证据不足", { fill: p.orange, size: 9.5, weight: 800 });
+          text(756, 429, "是 / 高风险", { fill: p.orange, size: 9.5, weight: 800 });
+          text(900, 521, "验证结果回流为知识、案例与维护计划", { anchor: "middle", fill: p.green, size: 10, weight: 800 });
         };
         renderAgentCapabilityFlow();
         const unsupported = document.querySelector(
