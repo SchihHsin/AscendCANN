@@ -926,6 +926,25 @@
       .demo-application-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 10px; }
       .demo-application-head h3 { margin: 7px 0 0; color: #202a33; font-size: 19px; }
       .demo-application-head p { max-width: 570px; margin: 0; color: #5b6975; font-size: 12px; line-height: 1.5; }
+      .agent-model { margin-top: 24px; padding-top: 23px; border-top: 1px solid var(--l); }
+      .agent-model-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+      .agent-model-head h3 { margin: 7px 0 0; color: #202a33; font-size: 21px; }
+      .agent-model-head p { max-width: 570px; margin: 0; color: #5b6975; font-size: 12px; line-height: 1.55; }
+      .agent-flow-figure { margin: 15px 0 0; overflow-x: auto; border: 1px solid var(--l); border-radius: 14px; background: #fbfcfd; }
+      #agentCapabilityFlow { display: block; min-width: 900px; width: 100%; }
+      .agent-flow-figure figcaption { padding: 10px 15px 12px; border-top: 1px solid var(--l); color: #677581; font-size: 11px; line-height: 1.5; }
+      .carrier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+      .carrier-card { min-height: 146px; padding: 14px 15px; border: 1px solid var(--l); border-radius: 10px; background: #fff; }
+      .carrier-card .object-tag { margin-bottom: 9px; }
+      .carrier-card h4 { margin: 0 0 6px; color: #26323c; font-size: 14px; }
+      .carrier-card p { margin: 0; color: #5e6c78; font-size: 11px; line-height: 1.48; }
+      .carrier-card small { display: block; margin-top: 9px; color: #687682; font-size: 10px; line-height: 1.45; }
+      .carrier-card.skill-card .object-tag { background: #eef1f4; color: #45535f; }
+      .carrier-card.connector-card .object-tag { background: #eaf7f1; color: #287b61; }
+      .carrier-card.state-store-card .object-tag { background: #edf2f8; color: #405a78; }
+      .carrier-card.govern-card .object-tag { background: #fff5e8; color: #a36a20; }
+      .agent-evidence { margin: 12px 0 0; padding: 11px 14px; border-left: 3px solid #607180; background: #f6f8f9; color: #5b6975; font-size: 11px; line-height: 1.55; }
+      .agent-evidence b { color: #2c3842; }
       .research-roadmap {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -944,9 +963,12 @@
         .collab-model,
         .cost-ledger,
         .service-surface,
-        .research-roadmap { grid-template-columns: 1fr; }
+        .research-roadmap,
+        .carrier-grid { grid-template-columns: 1fr; }
         .demo-application-head { display: block; }
         .demo-application-head p { margin-top: 7px; }
+        .agent-model-head { display: block; }
+        .agent-model-head p { margin-top: 7px; }
         .service-blueprint { grid-template-columns: repeat(5, 150px); }
         .research-wave:not(:last-child):after { top: auto; right: auto; bottom: -7px; left: 26px; transform: rotate(135deg); }
         .collab-core { min-height: 118px; }
@@ -3404,6 +3426,7 @@
       defer
       src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"
     ></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const prependIcon = (selector, name, wrapperClass) => {
@@ -3458,6 +3481,84 @@
               `<i data-lucide="${name}" aria-hidden="true"></i>`,
             );
         });
+        const renderAgentCapabilityFlow = () => {
+          if (!window.d3) return;
+          const svg = d3.select("#agentCapabilityFlow");
+          if (svg.empty()) return;
+          const W = 1080, H = 522;
+          svg.attr("viewBox", `0 0 ${W} ${H}`).attr("preserveAspectRatio", "xMidYMid meet");
+          svg.selectAll("*").remove();
+          const palette = {
+            ink: "#26343f", muted: "#647381", line: "#b9c3cb",
+            green: "#287b61", greenSoft: "#eaf7f1",
+            orange: "#a36a20", orangeSoft: "#fff5e8",
+            red: "#a0444a", redSoft: "#fff0f1",
+            slate: "#4c5b68", slateSoft: "#eef1f4"
+          };
+          const arrow = svg.append("defs").append("marker")
+            .attr("id", "agent-flow-arrow").attr("viewBox", "0 -5 10 10")
+            .attr("refX", 8).attr("refY", 0).attr("markerWidth", 6)
+            .attr("markerHeight", 6).attr("orient", "auto");
+          arrow.append("path").attr("d", "M0,-5L10,0L0,5").attr("fill", palette.line);
+          const linkLayer = svg.append("g").attr("fill", "none").attr("stroke", palette.line).attr("stroke-width", 1.35).attr("marker-end", "url(#agent-flow-arrow)");
+          const link = (x1, y1, x2, y2, color = palette.line, dash = null) => {
+            const path = `M${x1},${y1} C${x1},${y1 + (y2-y1)*.42} ${x2},${y2 - (y2-y1)*.35} ${x2},${y2}`;
+            linkLayer.append("path").attr("d", path).attr("stroke", color).attr("stroke-dasharray", dash || null);
+          };
+          const label = (x, y, value, opts = {}) => {
+            svg.append("text").attr("x", x).attr("y", y)
+              .attr("text-anchor", opts.anchor || "start")
+              .attr("fill", opts.fill || palette.muted)
+              .attr("font-size", opts.size || 11)
+              .attr("font-weight", opts.weight || 500)
+              .text(value);
+          };
+          const box = (node) => {
+            const g = svg.append("g").attr("transform", `translate(${node.x},${node.y})`);
+            g.append("rect").attr("width", node.w).attr("height", node.h).attr("rx", 9)
+              .attr("fill", node.fill || "#fff").attr("stroke", node.stroke || "#d5dde3");
+            g.append("text").attr("x", 13).attr("y", 19).attr("fill", node.kickerFill || palette.muted)
+              .attr("font-size", 9).attr("font-weight", 800).attr("letter-spacing", ".09em").text(node.kicker);
+            g.append("text").attr("x", 13).attr("y", 40).attr("fill", palette.ink)
+              .attr("font-size", 14).attr("font-weight", 800).text(node.title);
+            const lines = node.lines || [];
+            lines.forEach((line, i) => g.append("text").attr("x", 13).attr("y", 58 + i * 14)
+              .attr("fill", palette.muted).attr("font-size", 10.5).text(line));
+            return node;
+          };
+          const sources = [
+            { x: 22, y: 32, w: 192, h: 78, kicker: "OFFICIAL KNOWLEDGE", title: "文档 / API / 版本说明", lines: ["权威定义、范围、变更"] },
+            { x: 232, y: 32, w: 192, h: 78, kicker: "RUNNABLE ASSET", title: "GitCode 样例 / Issue / PR", lines: ["代码、变更、协作与证据"] },
+            { x: 442, y: 32, w: 192, h: 78, kicker: "FIELD EXPERIENCE", title: "社区 / CSDN / 活动经验", lines: ["真实条件、反例与实践"] },
+            { x: 652, y: 32, w: 192, h: 78, kicker: "RUNTIME SIGNAL", title: "环境 / 日志 / 制品", lines: ["当前状态，不是静态内容"], fill: "#f8fafb" },
+            { x: 862, y: 32, w: 196, h: 78, kicker: "HUMAN RESPONSIBILITY", title: "专家 / SIG / 版本计划", lines: ["裁决、维护与升级"], fill: "#f8fafb" }
+          ];
+          const task = { x: 45, y: 210, w: 220, h: 100, kicker: "DEVELOPER TASK", title: "Add 算子首跑", lines: ["目标 + 910B + CANN 9.0.0", "编译通过，待精度验证"], fill: "#fff", stroke: "#bfcad2" };
+          const agent = { x: 370, y: 186, w: 340, h: 148, kicker: "AGENT ORCHESTRATION", title: "任务会话 / 编排器", lines: ["① 提取上下文与待补条件  ② 选择知识与流程", "③ 调用连接器执行 / 读取状态  ④ 按风险升级", "输出必须附：来源、范围、验证与状态"], fill: "#202a33", stroke: "#202a33", kickerFill: "#bfcbd3" };
+          const carriers = [
+            { x: 22, y: 390, w: 192, h: 94, kicker: "KNOWLEDGE", title: "版本化知识库", lines: ["可检索事实 + 元数据"], fill: "#fff", stroke: "#cdd6dd" },
+            { x: 232, y: 390, w: 192, h: 94, kicker: "PROCEDURE", title: "流程组件 / Skill", lines: ["设计、预检、调试、总结"], fill: "#f7f9fa", stroke: "#cdd6dd" },
+            { x: 442, y: 390, w: 192, h: 94, kicker: "LIVE SYSTEM", title: "连接器 / MCP / API", lines: ["GitCode、CI、NPU、日志"], fill: "#f4faf7", stroke: "#bcd8cc", kickerFill: palette.green },
+            { x: 652, y: 390, w: 192, h: 94, kicker: "USER SURFACE", title: "工作台 / 插件 / 模板", lines: ["社区、文档、IDE、CLI"], fill: "#fff", stroke: "#cdd6dd" },
+            { x: 862, y: 390, w: 196, h: 94, kicker: "TRUST & GOVERNANCE", title: "验证服务 / 治理", lines: ["真机、CI、专家、状态机"], fill: "#fff9f1", stroke: "#ead1ab", kickerFill: palette.orange }
+          ];
+          sources.forEach(s => link(s.x + s.w / 2, s.y + s.h, agent.x + agent.w / 2, agent.y, s.x === 652 ? palette.green : palette.line, s.x === 442 ? "3 3" : null));
+          link(task.x + task.w, task.y + task.h / 2, agent.x, agent.y + agent.h / 2, palette.green);
+          carriers.forEach(c => link(agent.x + agent.w / 2, agent.y + agent.h, c.x + c.w / 2, c.y, c.x === 442 ? palette.green : (c.x === 862 ? palette.orange : palette.line)));
+          link(710, 260, 862, 438, palette.orange);
+          box(task);
+          sources.forEach(box);
+          const agentG = svg.append("g").attr("transform", `translate(${agent.x},${agent.y})`);
+          agentG.append("rect").attr("width", agent.w).attr("height", agent.h).attr("rx", 12).attr("fill", agent.fill);
+          agentG.append("text").attr("x", 16).attr("y", 22).attr("fill", "#cbd5dc").attr("font-size", 9).attr("font-weight", 800).attr("letter-spacing", ".09em").text(agent.kicker);
+          agentG.append("text").attr("x", 16).attr("y", 49).attr("fill", "#fff").attr("font-size", 18).attr("font-weight", 800).text(agent.title);
+          agent.lines.forEach((line, i) => agentG.append("text").attr("x", 16).attr("y", 75 + i * 18).attr("fill", "#d8e0e5").attr("font-size", 11).text(line));
+          carriers.forEach(box);
+          label(45, 175, "同一任务上下文", { fill: palette.green, weight: 800, size: 10 });
+          label(540, 370, "由 Agent 选择与调用", { anchor: "middle", fill: palette.muted, weight: 700, size: 10 });
+          label(1058, 502, "可验证结果回流为知识与案例", { anchor: "end", fill: palette.green, weight: 800, size: 10 });
+        };
+        renderAgentCapabilityFlow();
         const unsupported = document.querySelector(
           'i[data-lucide="map-pin-question"]',
         );
@@ -4514,6 +4615,25 @@
           <article class="surface-card"><span class="object-tag"><i data-lucide="bot"></i>AI / Agent</span><b>理解、检索、编排与陪跑</b><p>组织上下文、解释现象、生成下一步、提醒待补条件；不能单独宣告建议已经可用或问题已经解决。</p></article>
           <article class="surface-card"><span class="object-tag"><i data-lucide="plug-zap"></i>连接与自动化</span><b>把建议接到执行现场</b><p>通过 API、MCP、Skill、插件或脚本接入 GitCode、文档、IDE、CI 与真机；它们都是实现手段，不是用户服务的终点。</p></article>
           <article class="surface-card"><span class="object-tag"><i data-lucide="shield-check"></i>社区服务</span><b>交付可信与责任闭环</b><p>维护知识、验证结果、问题状态、专家升级与版本治理，最终交付“任务被推进、结果可复用”的确定性。</p></article>
+        </div>
+        <div class="agent-model">
+          <div class="agent-model-head">
+            <div><span class="label">AGENT CAPABILITY ARCHITECTURE · 内容不等于一种 AI 载体</span><h3>按“稳定性 × 是否要执行 × 是否连实时系统”选择承载方式</h3></div>
+            <p>不按“社区 / GitCode / 文档”一刀切：同一 Add 样例既要作为可检索知识，也可能被流程调用；Agent 需要实时检查 NPU 时则必须连接运行环境。下图给出一次任务中各层的协作边界。</p>
+          </div>
+          <figure class="agent-flow-figure">
+            <svg id="agentCapabilityFlow" role="img" aria-label="Ascend C Add 算子任务中，知识库、流程组件、系统连接、工作台和治理如何被 Agent 编排"></svg>
+            <figcaption>阅读方式：上方是输入资产；中间是 Agent 的任务编排；下方各层按“知识、动作、连接、工作台、验证与治理”承担不同职责。只有带版本、范围和验证记录的结果才回流为可信资产。</figcaption>
+          </figure>
+          <div class="carrier-grid">
+            <article class="carrier-card"><span class="object-tag"><i data-lucide="database"></i>知识库 / 检索索引</span><h4>沉淀“可引用事实”</h4><p>官方文档、API 参考、GitCode README、样例说明、已验证案例、Issue 结论都应带来源、版本、芯片、框架、维护状态和验证记录进入版本化知识库。</p><small>适合：稳定、需被问答 / RAG 引用的内容。GitCode 源码保留在仓，索引其 README、接口、变更与验证摘要。</small></article>
+            <article class="carrier-card skill-card"><span class="object-tag"><i data-lucide="list-checks"></i>流程组件 / Skill</span><h4>沉淀“如何做判断”</h4><p>把可复用、可审计的任务规则封装为流程：需求拆解、路径选择、环境预检规则、编译诊断、精度排障、复现包生成、结果总结。</p><small>不适合：大篇原始文档或频繁变化的状态。现有 Agent 的开发工作流、环境检查、调试 / 精度调试正属于这一层。</small></article>
+            <article class="carrier-card connector-card"><span class="object-tag"><i data-lucide="plug-zap"></i>连接器 / MCP / API</span><h4>读取状态，触发真实动作</h4><p>连接 GitCode 的仓库 / Issue / PR，文档版本服务，IDE / 命令行，CI，NPU 真机，日志与制品库；让 Agent 看到当前分支、环境、执行结果并发起受控操作。</p><small>适合：实时、带权限、需执行或写回的系统。接口选择取决于目标系统能力，不是所有内容都要做成 MCP。</small></article>
+            <article class="carrier-card"><span class="object-tag"><i data-lucide="panel-left-open"></i>工作台 / 插件 / 模板</span><h4>在开发现场呈现与接续</h4><p>在社区、文档、IDE 或 CLI 中展示任务简报、路径卡、验证状态、待补信息和下一步；项目模板、脚手架和代码生成把推荐直接带入工程。</p><small>适合：用户需要看、改、确认或继续任务的界面与起步资产；不是知识和连接层的替代。</small></article>
+            <article class="carrier-card state-store-card"><span class="object-tag"><i data-lucide="git-fork"></i>任务状态 / 案例图谱</span><h4>保存“这件事进行到哪里”</h4><p>将目标、环境、日志、已尝试动作、验证结果、未解条件、责任人与复用关系保存为任务对象，而非散落在聊天记录、评论和工单里。</p><small>适合：跨入口接续、问题状态机、案例回流和影响追踪；它是任务会话能够持续存在的服务底座。</small></article>
+            <article class="carrier-card govern-card"><span class="object-tag"><i data-lucide="badge-check"></i>验证服务 / 治理工作流</span><h4>把“建议”变成“可采用结果”</h4><p>真机 / CI 验证、测试基线、版本兼容矩阵、问题状态机、专家升级、Issue / 工单路由、维护责任与回流审核共同提供可信边界。</p><small>适合：高风险、高成本或需责任人介入的事项；不应交给通用 Agent 自行断言。</small></article>
+          </div>
+          <div class="agent-evidence"><b>依据：</b>现有 Ascend C Agent 已将“完整开发工作流、环境检查、文档检索、通用调试、精度调试”做成流程组件；编排器再启动开发 / 测试 / 评估角色，并通过 Docker 与 NPU 环境执行、产生日志。由此可见，推荐架构不是“把知识全部做成 Skill”，而是用流程组件编排知识、连接、验证和治理。</div>
         </div>
         <div class="demo-application">
           <div class="demo-application-head">
