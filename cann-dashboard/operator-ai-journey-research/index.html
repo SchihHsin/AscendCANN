@@ -153,6 +153,21 @@
         width: min(1200px, calc(100% - 48px));
         margin: auto;
       }
+      main.wrap { display: flex; flex-direction: column; }
+      main.wrap > .summary { order: 0; }
+      #answers { order: 1; }
+      #change { order: 2; }
+      #cases { order: 3; }
+      #corpus { order: 4; }
+      #operator-slice { order: 5; }
+      #llm-journey { order: 6; }
+      #benchmark { order: 7; }
+      #stack-compare { order: 8; }
+      #position { order: 9; }
+      #growth { order: 10; }
+      #service-design { order: 11; }
+      #future-model { order: 12; }
+      #research { order: 13; }
       a {
         color: #274fc9;
         text-decoration: none;
@@ -907,13 +922,27 @@
       .surface-card .object-tag { margin-bottom: 8px; }
       .surface-card b { display: block; color: #26323c; font-size: 13px; }
       .surface-card p { margin: 5px 0 0; color: #62707b; font-size: 11px; line-height: 1.45; }
+      .research-roadmap {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 0 0 16px;
+      }
+      .research-wave { position: relative; min-height: 146px; padding: 16px 17px 15px; border: 1px solid var(--l); border-radius: 12px; background: #fff; }
+      .research-wave:not(:last-child):after { content: ""; position: absolute; top: 28px; right: -7px; z-index: 1; width: 12px; height: 12px; border-top: 1px solid #b3bec7; border-right: 1px solid #b3bec7; background: #fff; transform: rotate(45deg); }
+      .research-wave span { color: #73818d; font: 800 10px/1 Inter, sans-serif; letter-spacing: .09em; }
+      .research-wave h3 { margin: 9px 0 6px; color: #26323c; font-size: 16px; }
+      .research-wave p { margin: 0; color: #5d6b77; font-size: 12px; line-height: 1.5; }
+      .research-wave small { display: block; margin-top: 9px; color: #287b61; font-size: 10px; font-weight: 800; }
       @media (max-width: 850px) {
         .future-intro,
         .future-question-grid,
         .collab-model,
         .cost-ledger,
-        .service-surface { grid-template-columns: 1fr; }
+        .service-surface,
+        .research-roadmap { grid-template-columns: 1fr; }
         .service-blueprint { grid-template-columns: repeat(5, 150px); }
+        .research-wave:not(:last-child):after { top: auto; right: auto; bottom: -7px; left: 26px; transform: rotate(135deg); }
         .collab-core { min-height: 118px; }
         .cost-ledger > div { border-right: 0; border-bottom: 1px solid var(--l); }
         .cost-ledger > div:last-child { border-bottom: 0; }
@@ -3440,12 +3469,9 @@
         <span class="brand">ASCEND COMMUNITY · AI JOURNEY RESEARCH</span>
         <nav class="nav">
           <a href="#change">旅程变化</a><a href="#cases">真实案例</a
-          ><a href="#corpus">案例样本</a><a href="#llm-journey">大模型案例</a
-          ><a href="#position">社区定位</a><a href="#benchmark">AI 对照</a
-          ><a href="#stack-compare">旅程对比</a
-          ><a href="#service-design">服务设计</a
-          ><a href="#future-model">协同模式</a
-          ><a href="#research">研究验证</a>
+          ><a href="#corpus">案例样本</a><a href="#benchmark">AI 对照</a
+          ><a href="#position">定位判断</a><a href="#future-model">角色与方案</a
+          ><a href="#research">后续研究</a>
         </nav>
       </div>
     </header>
@@ -3487,7 +3513,7 @@
           ><span>CANN AI 检索综合置信度均值；CUDA 对照为 0.99</span>
         </article>
       </div>
-      <section>
+      <section id="answers">
         <div class="head">
           <div class="eye">01 · DIRECT ANSWERS</div>
           <h2>先回答三个核心问题</h2>
@@ -3922,7 +3948,7 @@
       </section>
       <section id="llm-journey">
         <div class="head">
-          <div class="eye">04 · LLM APPLICATION EVIDENCE SLICE</div>
+          <div class="eye">06 · LLM APPLICATION EVIDENCE SLICE</div>
           <h2>大模型应用案例切片：验证开发者 × AI 生命周期的 S0–S4 断点</h2>
           <p>
             依据 MindIE PD 分离、Qwen 微调、多 NPU GPT、Qwen 推理和 ATC
@@ -3984,7 +4010,7 @@
       </section>
       <section id="position">
         <div class="head">
-          <div class="eye">04 · COMMUNITY POSITION</div>
+          <div class="eye">09 · COMMUNITY POSITION</div>
           <h2>社区定位：生态的可信协作层</h2>
           <p>
             连接文档、GitCode、CSDN、Mind 系列资产与
@@ -4153,7 +4179,7 @@
       </section>
       <section id="stack-compare">
         <div class="head">
-          <div class="eye">08 · DEVELOPER JOURNEY COMPARISON</div>
+          <div class="eye">08 · JOURNEY COMPARISON</div>
           <h2>同一开发任务下，CANN 与 CUDA 的旅程差异</h2>
           <p>
             以“将 ONNX /
@@ -4285,7 +4311,7 @@
       </section>
       <section id="growth">
         <div class="head">
-          <div class="eye">05 · GROWTH & EXPERIENCE</div>
+          <div class="eye">10 · GROWTH & EXPERIENCE</div>
           <h2>增长闭环：从需求发现到共创影响</h2>
           <p>
             用户沿获客、激活、留存、共创四个阶段转化；每阶段对应明确动作与指标。
@@ -4371,7 +4397,7 @@
       </section>
       <section id="service-design">
         <div class="head">
-          <div class="eye">09 · ECOSYSTEM & SERVICE DESIGN</div>
+          <div class="eye">11 · ECOSYSTEM & SERVICE DESIGN</div>
           <h2>社区的工作方式：连接资产，承接任务</h2>
           <p>
             生态内不同资产继续在各自最合适的位置沉淀；社区在任务层提供选择依据、状态和回流。
@@ -4507,7 +4533,7 @@
       </section>
       <section id="future-model">
         <div class="head">
-          <div class="eye">10 · FUTURE SERVICE COLLABORATION MODEL</div>
+          <div class="eye">12 · AI-ERA COMMUNITY ROLE & SERVICE MODEL</div>
           <h2>社区在 AI 时代的新角色：让开发任务可信地持续推进</h2>
           <p>AI 改变了开发者进入服务的方式；社区的价值不再是聚集内容或承接问答，而是把分散的知识、工具与专家能力组织成可验证、可恢复、可复用的开发过程。</p>
         </div>
@@ -4586,9 +4612,9 @@
           <article class="surface-card"><span class="object-tag"><i data-lucide="shield-check"></i>社区服务</span><b>交付可信与责任闭环</b><p>维护知识、验证结果、问题状态、专家升级与版本治理，最终交付“任务被推进、结果可复用”的确定性。</p></article>
         </div>
       </section>
-      <section>
+      <section id="operator-slice">
         <div class="head">
-          <div class="eye">06 · VALIDATION SLICE</div>
+          <div class="eye">05 · ASCEND C VALIDATION SLICE</div>
           <h2>Ascend C 算子开发：任务链分析</h2>
           <p>
             公开场景、GitCode 样例、社区治理仓、学习仓和 CSDN
@@ -4741,12 +4767,16 @@
       </section>
       <section id="research">
         <div class="head">
-          <div class="eye">08 · RESEARCH STRATEGY</div>
-          <h2>研究验证：把判断转成可测任务</h2>
+          <div class="eye">13 · NEXT RESEARCH STRATEGY</div>
+          <h2>下一阶段研究：验证“社区能否真正推进任务”</h2>
           <p>
-            公开 Issue
-            已记录用户以项目目标、环境、版本和错误进入生态；验证阶段测量触点、耗时、恢复和回流。
+            公开案例已说明用户以项目目标、环境、版本和错误进入生态；下一阶段不再只补更多素材，而是用真实任务、原型与行为数据检验前述角色判断和服务方案。
           </p>
+        </div>
+        <div class="research-roadmap" aria-label="下一阶段研究路线">
+          <article class="research-wave"><span>WAVE 01 · 校准问题</span><h3>补齐真实任务证据</h3><p>招募不同主旅程的开发者，回放从入口到首跑或恢复的过程，校准角色、断点与优先任务。</p><small>产出：任务样本与优先级基线</small></article>
+          <article class="research-wave"><span>WAVE 02 · 验证方案</span><h3>检验任务会话原型</h3><p>对比现有多入口路径与“可信路径 + 执行验证 + 上下文升级”原型，观察是否减少选择和恢复成本。</p><small>产出：原型效果与机制取舍</small></article>
+          <article class="research-wave"><span>WAVE 03 · 建立运营证据</span><h3>持续测量真实影响</h3><p>接入任务漏斗和问题状态数据，持续判断哪些资产、验证能力和专家投入真正推动了用户完成任务。</p><small>产出：可复盘的社区服务指标</small></article>
         </div>
         <div class="research">
           <table class="table">
