@@ -1455,3 +1455,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 第二个 Tab 继续承载本研究的“社区任务服务闭环”：从任务进入、任务会话、进入 Agent 循环、开发者与环境执行，到验证/升级后的资产回流。它不再重复 Agent 内部机制，以避免两张图讲同一件事。
 - 图的职责边界固定为：Opknow 图回答“模型在任务内部何时调用工具、如何回灌、何时继续或收敛”；社区图回答“知识、工程、执行、验证与问题状态如何围绕同一开发任务接续”。页面脚注已明确前者来自公开 Anthropic Messages API Tool Use 示范，后者是结合公开案例和 `ascendc-agent-main` 六阶段流程的服务设计推导。
 - 技术评估结论：这类固定主干、判断分支、回环与旁注的汇报流程图不采用自动布局库（D3 / Mermaid / Cytoscape），而采用 Opknow 已验证的固定 SVG 原图复用；仅在尚未存在原图的社区任务闭环中使用固定坐标 SVG。自动布局不保证连线落点和阅读顺序，React Flow / X6 更适合可编辑工作台而非静态汇报。
+
+### 2026-08-18（Workflow 原图切片修复）
+
+- 用户发现先前 iframe 聚焦方案实际仍显示了整个 Opknow 报告。已撤销该方式，新增 `cann-dashboard/operator-ai-journey-research/evidence/opknow-agent-loop-original.html`：该切片在隐藏的源 iframe 中读取 Opknow 的 `#archView svg`，仅克隆现成的 SVG 原图到自身页面，不加载或呈现报告正文、章节、代码或其他内容。
+- 研究底稿与 PPT 均改为嵌入上述切片文件；报告内可见区域将只包含 Opknow 的 Agent 循环架构 SVG。切片本身不改写、重画或拆解原图的节点、箭头和回环。
