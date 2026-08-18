@@ -788,6 +788,7 @@
         margin-top: 16px;
       }
       .collab-lane {
+        min-width: 0;
         padding: 18px;
         border: 1px solid var(--l);
         border-radius: 14px;
@@ -800,7 +801,7 @@
       .collab-list li:before { content: ""; position: absolute; left: 0; top: .52em; width: 5px; height: 5px; border-radius: 50%; background: #607180; }
       .collab-lane.ai { background: #f7f9fa; }
       .collab-lane.ai .object-tag { background: #eaf7f1; color: #287b61; }
-      .collab-lane.service .object-tag { background: #eef1f4; color: #43515e; }
+      .collab-lane.service-lane .object-tag { background: #eef1f4; color: #43515e; }
       .collab-core {
         display: flex;
         flex-direction: column;
@@ -4488,7 +4489,7 @@
             <ul class="collab-list"><li>将自然语言目标和日志转为任务简报</li><li>检索、比对、摘要多源知识并暴露出处</li><li>生成步骤、检查缺失字段、解释失败现象</li><li>按问题状态提醒下一步，而非重复对话</li></ul>
           </article>
           <div class="collab-core"><i data-lucide="workflow"></i><b>任务会话</b><span>知识、问题、运行证据和人员协作的共同上下文</span></div>
-          <article class="collab-lane service">
+          <article class="collab-lane service-lane">
             <span class="object-tag"><i data-lucide="shield-check"></i>服务与工具的高价值层</span>
             <h3>判定、验证、升级、治理</h3>
             <p>社区不与 AI 竞争聊天入口，而提供 AI 无法自行保证的可信约束、验证能力和责任闭环。</p>
