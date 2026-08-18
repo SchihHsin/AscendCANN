@@ -931,7 +931,18 @@
       .agent-model-head h3 { margin: 7px 0 0; color: #202a33; font-size: 21px; }
       .agent-model-head p { max-width: 570px; margin: 0; color: #5b6975; font-size: 12px; line-height: 1.55; }
       .agent-flow-figure { margin: 15px 0 0; overflow-x: auto; border: 1px solid var(--l); border-radius: 14px; background: #fbfcfd; }
-      #agentCapabilityFlow { display: block; min-width: 960px; width: 100%; }
+      #agentCapabilityFlowLegacy { display: none; }
+      #agentCapabilityFlowLegacy + figcaption { display: none; }
+      .flow-tabs { display: flex; gap: 5px; padding: 10px 12px 0; }
+      .flow-tab { padding: 7px 13px; border: 1px solid #d3dbe2; border-radius: 8px; background: #f4f6f8; color: #60707d; font: 700 11px/1.1 Inter, sans-serif; cursor: pointer; }
+      .flow-tab.active { border-color: #2d3945; background: #2d3945; color: #fff; }
+      .flow-pane { display: none; padding: 4px 12px 0; }
+      .flow-pane.active { display: block; }
+      .flow-static { display: block; width: 100%; max-width: 660px; height: auto; margin: 0 auto; }
+      .flow-static .fk { font: 800 9px Inter, sans-serif; letter-spacing: .08em; }
+      .flow-static .ft { font: 800 13px "HarmonyOS Sans SC", Inter, sans-serif; fill: #26343f; }
+      .flow-static .fb { font: 10px "HarmonyOS Sans SC", Inter, sans-serif; fill: #647381; }
+      .flow-static .fs { font: 8.4px "HarmonyOS Sans SC", Inter, sans-serif; fill: #647381; }
       .agent-flow-figure figcaption { padding: 10px 15px 12px; border-top: 1px solid var(--l); color: #677581; font-size: 11px; line-height: 1.5; }
       .content-carrier-matrix { margin-top: 12px; overflow-x: auto; border: 1px solid var(--l); border-radius: 12px; background: #fff; }
       .content-carrier-matrix table { width: 100%; min-width: 900px; border-collapse: collapse; table-layout: fixed; }
@@ -3663,6 +3674,19 @@
         // The workflow below is deliberately authored as a fixed inline SVG.
         // Unlike a force/layout rendering, its nodes and connectors remain aligned
         // at every desktop width, following the static SVG approach used in opknow.
+        document.querySelectorAll(".flow-tab").forEach((tab) => tab.addEventListener("click", () => {
+          const target = tab.dataset.flow;
+          document.querySelectorAll(".flow-tab").forEach((item) => {
+            const selected = item === tab;
+            item.classList.toggle("active", selected);
+            item.setAttribute("aria-selected", String(selected));
+          });
+          document.querySelectorAll(".flow-pane").forEach((pane) => {
+            const selected = pane.id === target;
+            pane.classList.toggle("active", selected);
+            pane.hidden = !selected;
+          });
+        }));
         const unsupported = document.querySelector(
           'i[data-lucide="map-pin-question"]',
         );
@@ -4726,7 +4750,63 @@
             <p>研究对象是现有文档、GitCode、Issue、案例和站外经验如何转化，提升 AI 调用质量与开发者获取效率。判断不取决于内容来自哪里，而取决于它是否需要被检索、按步骤执行、读取实时状态、在工作现场呈现，或经过验证与责任判定。</p>
           </div>
           <figure class="agent-flow-figure">
-            <svg id="agentCapabilityFlow" viewBox="0 0 920 1000" role="img" aria-label="社区任务服务工作流，包含 Agent 工具调用循环">
+            <div class="flow-tabs" role="tablist" aria-label="流程图视图">
+              <button class="flow-tab active" type="button" role="tab" aria-selected="true" aria-controls="agent-loop-pane" data-flow="agent-loop-pane">Agent 工具调用循环</button>
+              <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="service-flow-pane" data-flow="service-flow-pane">社区任务服务闭环</button>
+            </div>
+            <div id="agent-loop-pane" class="flow-pane active" role="tabpanel">
+              <svg class="flow-static" viewBox="0 0 720 610" role="img" aria-label="Agent 工具调用循环：规划、工具路由、工具结果回灌、证据判断、继续或收敛">
+                <defs>
+                  <marker id="alArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8a8a8a"/></marker>
+                  <marker id="alGreen" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#287b61"/></marker>
+                  <marker id="alOrange" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#a36a20"/></marker>
+                </defs>
+                <text x="360" y="26" text-anchor="middle" class="ft" font-size="16">Agent 工具调用循环</text>
+                <text x="360" y="43" text-anchor="middle" class="fb">一次任务中，模型根据证据缺口重复选择工具，直到收敛或转交验证</text>
+                <g transform="translate(240,62)"><rect width="240" height="52" rx="8" fill="#eff4fa" stroke="#b8c9dd"/><text x="12" y="19" class="fk" fill="#466c96">01 · PLAN / ROUTE</text><text x="12" y="39" class="ft">解析任务，选择工具</text></g>
+                <path d="M360,114 V136" fill="none" stroke="#8a8a8a" stroke-width="1.3" marker-end="url(#alArrow)"/>
+                <g transform="translate(240,137)"><rect width="240" height="54" rx="8" fill="#eef1f4" stroke="#cbd4dc"/><text x="12" y="19" class="fk" fill="#4c5b68">02 · TOOL CALL + RESULT</text><text x="12" y="40" class="ft">调用并读取工具结果</text></g>
+                <path d="M360,191 V214" fill="none" stroke="#8a8a8a" stroke-width="1.3" marker-end="url(#alArrow)"/>
+                <g transform="translate(298,215)"><path d="M0,28 L62,0 L124,28 L62,56 Z" fill="#fff" stroke="#aebbc5"/><text x="62" y="25" text-anchor="middle" class="fk" fill="#26343f" style="letter-spacing:0">证据已足够？</text><text x="62" y="39" text-anchor="middle" class="fs">继续或收敛</text></g>
+                <g transform="translate(40,136)"><rect width="160" height="58" rx="8" fill="#eff4fa" stroke="#b8c9dd"/><text x="10" y="18" class="fk" fill="#466c96">缺权威事实</text><text x="10" y="37" class="ft" font-size="11">知识库 / 文档检索</text><text x="10" y="51" class="fs">API、版本、兼容范围</text></g>
+                <path d="M200,165 H240" fill="none" stroke="#466c96" stroke-width="1.25" marker-end="url(#alArrow)"/>
+                <g transform="translate(520,136)"><rect width="160" height="58" rx="8" fill="#eef1f4" stroke="#cbd4dc"/><text x="10" y="18" class="fk" fill="#4c5b68">缺可重复方法</text><text x="10" y="37" class="ft" font-size="11">Skill / 工作流</text><text x="10" y="51" class="fs">预检、编译 / 精度排障</text></g>
+                <path d="M520,165 H480" fill="none" stroke="#4c5b68" stroke-width="1.25" marker-end="url(#alArrow)"/>
+                <g transform="translate(40,212)"><rect width="160" height="58" rx="8" fill="#f7f4fb" stroke="#d4c8e3"/><text x="10" y="18" class="fk" fill="#6b5b93">缺工程或现场入口</text><text x="10" y="37" class="ft" font-size="11">模板 / 插件 / CLI</text><text x="10" y="51" class="fs">样例、配置、IDE 操作</text></g>
+                <path d="M200,241 H240" fill="none" stroke="#6b5b93" stroke-width="1.25" marker-end="url(#alArrow)"/>
+                <g transform="translate(520,212)"><rect width="160" height="58" rx="8" fill="#eaf7f1" stroke="#bcd8cc"/><text x="10" y="18" class="fk" fill="#287b61">缺实时状态或外部动作</text><text x="10" y="37" class="ft" font-size="11">MCP / API</text><text x="10" y="51" class="fs">GitCode、CI、NPU、日志</text></g>
+                <path d="M520,241 H480" fill="none" stroke="#287b61" stroke-width="1.25" marker-end="url(#alGreen)"/>
+                <path d="M298,243 C225,243 205,220 238,166" fill="none" stroke="#6b5b93" stroke-width="1.25" stroke-dasharray="5,4" marker-end="url(#alArrow)"/>
+                <text x="44" y="291" class="fs" fill="#6b5b93">否：换工具 / 补条件后回到路由</text>
+                <path d="M360,271 V300" fill="none" stroke="#287b61" stroke-width="1.3" marker-end="url(#alGreen)"/>
+                <g transform="translate(240,301)"><rect width="240" height="55" rx="8" fill="#eaf7f1" stroke="#bcd8cc"/><text x="12" y="20" class="fk" fill="#287b61">03 · CONVERGE</text><text x="12" y="41" class="ft">收敛为可验证路径</text></g>
+                <path d="M360,356 V384" fill="none" stroke="#287b61" stroke-width="1.3" marker-end="url(#alGreen)"/>
+                <g transform="translate(240,385)"><rect width="240" height="69" rx="9" fill="#fff5e8" stroke="#e8cfa6"/><text x="12" y="20" class="fk" fill="#a36a20">04 · VERIFY / ESCALATE</text><text x="12" y="42" class="ft">交给执行验证或升级</text><text x="12" y="58" class="fs">无运行证据时，Agent 不宣告任务解决</text></g>
+                <path d="M422,243 C505,270 525,368 480,416" fill="none" stroke="#a36a20" stroke-width="1.25" marker-end="url(#alOrange)"/>
+                <text x="494" y="330" class="fs" fill="#a36a20">否 / 高风险</text>
+                <text x="42" y="516" class="fs" fill="#647381">来源：参考 opknow 的 Anthropic Messages API Tool Use 示例；MCP / API 等为社区产品化建议。</text>
+              </svg>
+            </div>
+            <div id="service-flow-pane" class="flow-pane" role="tabpanel" hidden>
+              <svg class="flow-static" viewBox="0 0 720 610" role="img" aria-label="社区任务服务闭环：进入、任务会话、Agent循环、执行验证、恢复升级、结果回流">
+                <defs>
+                  <marker id="sfArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8a8a8a"/></marker><marker id="sfGreen" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#287b61"/></marker><marker id="sfOrange" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#a36a20"/></marker>
+                </defs>
+                <text x="360" y="26" text-anchor="middle" class="ft" font-size="16">社区任务服务闭环</text><text x="360" y="43" text-anchor="middle" class="fb">把 Agent 循环、开发者执行与社区验证服务连接为同一任务</text>
+                <g transform="translate(240,70)"><rect width="240" height="58" rx="8" fill="#fff" stroke="#c7d2dc"/><text x="12" y="19" class="fk" fill="#466c96">START · 任务进入</text><text x="12" y="40" class="ft">从搜索、文档、IDE 或对话进入</text></g><path d="M360,128 V150" fill="none" stroke="#8a8a8a" stroke-width="1.3" marker-end="url(#sfArrow)"/>
+                <g transform="translate(240,151)"><rect width="240" height="60" rx="8" fill="#eff4fa" stroke="#b8c9dd"/><text x="12" y="19" class="fk" fill="#466c96">01 · TASK SESSION</text><text x="12" y="41" class="ft">形成任务简报与缺失条件</text></g><path d="M360,211 V235" fill="none" stroke="#8a8a8a" stroke-width="1.3" marker-end="url(#sfArrow)"/>
+                <g transform="translate(205,236)"><rect width="310" height="98" rx="10" fill="#f7f4fb" stroke="#d4c8e3"/><text x="14" y="21" class="fk" fill="#6b5b93">02 · AGENT LOOP</text><text x="14" y="46" class="ft">调用循环：路由、工具结果、证据判断</text><text x="14" y="66" class="fb">知识库 / Skill / MCP / 模板的调用条件见「Agent 工具调用循环」Tab</text><text x="14" y="84" class="fs">此处不重复循环细节，避免与 Agent 图冲突</text></g><path d="M360,334 V360" fill="none" stroke="#6b5b93" stroke-width="1.3" marker-end="url(#sfArrow)"/>
+                <g transform="translate(240,361)"><rect width="240" height="61" rx="8" fill="#f7f4fb" stroke="#d4c8e3"/><text x="12" y="19" class="fk" fill="#6b5b93">03 · EXECUTE</text><text x="12" y="42" class="ft">在 IDE、CLI、容器或真机执行</text></g><path d="M360,422 V446" fill="none" stroke="#8a8a8a" stroke-width="1.3" marker-end="url(#sfArrow)"/>
+                <g transform="translate(298,448)"><path d="M0,26 L62,0 L124,26 L62,52 Z" fill="#fff" stroke="#aebbc5"/><text x="62" y="24" text-anchor="middle" class="fk" fill="#26343f" style="letter-spacing:0">有运行证据？</text><text x="62" y="37" text-anchor="middle" class="fs">验证通过吗</text></g>
+                <path d="M360,500 V526" fill="none" stroke="#287b61" stroke-width="1.3" marker-end="url(#sfGreen)"/>
+                <g transform="translate(240,527)"><rect width="240" height="58" rx="8" fill="#eaf7f1" stroke="#bcd8cc"/><text x="12" y="19" class="fk" fill="#287b61">END · RESULT RECYCLED</text><text x="12" y="41" class="ft">结果回流为知识、案例与状态</text></g>
+                <g transform="translate(505,436)"><rect width="180" height="90" rx="8" fill="#fff5e8" stroke="#e8cfa6"/><text x="11" y="19" class="fk" fill="#a36a20">否 / 高风险</text><text x="11" y="41" class="ft" font-size="11">失败恢复与责任升级</text><text x="11" y="58" class="fs">CI / 真机、Issue、专家</text><text x="11" y="73" class="fs">携带日志与复现包</text></g>
+                <path d="M422,474 H505" fill="none" stroke="#a36a20" stroke-width="1.3" marker-end="url(#sfOrange)"/><path d="M594,526 C594,574 515,574 480,556" fill="none" stroke="#a36a20" stroke-width="1.3" marker-end="url(#sfOrange)"/><text x="432" y="466" class="fs" fill="#a36a20">否 / 风险高</text>
+                <text x="42" y="606" class="fs" fill="#647381">来源：本研究基于公开案例与 Ascend C Agent 六阶段流程的服务设计推导。</text>
+              </svg>
+            </div>
+            <figcaption><b>图形与来源说明。</b>两个 Tab 分别回答不同问题：Agent 图的固定坐标、节点、菱形判断与回路绘制方式参考 <a href="file:///Users/hsin/Documents/Coding/opknow/20_human_ai_journey.html#s4">opknow《Agent 循环架构》</a>；其内层循环基于 Anthropic Messages API Tool Use 示例，并与 <a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">OpenAI Function Calling</a> 的工具调用机制交叉验证。社区服务图是本研究结合公开案例和 <code>ascendc-agent-main</code> 六阶段流程的服务设计推导；MCP / API、模板 / 插件为待验证的产品化建议。</figcaption>
+            <svg id="agentCapabilityFlowLegacy" viewBox="0 0 920 1000" aria-hidden="true">
               <defs>
                 <marker id="cwfArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8d9aa5"/></marker>
                 <marker id="cwfGreen" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#287b61"/></marker>
