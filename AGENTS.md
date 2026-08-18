@@ -1331,3 +1331,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新采集两张可读证据截图并保存 metadata：`evidence/crops/github-issue-154.png`（公开 GitHub Issue，展示 GitCode 同步、软硬件版本和最小复现脚本）与 `evidence/crops/ascendc-agent-six-stage-flow.png`（本地 Agent 运行原理页面，展示实际的批次、开发、Docker + NPU、日志与评估阶段）。页面文本和元数据均清楚区分已存在资产与待验证的产品化建议。
 - 桌面浏览器已验证新增区域 6 张卡片、所有 6 张截图加载正常，卡片宽度无横向溢出；现有证据截图只用作支撑相应形态判断，不作为装饰图。
 - “真实资产示例”标题采用直接陈述的“六类真实资产：对应六种 AI 服务形态”，移除“不是抽象分类”这类反驳 / 辩解式表达。
+
+### 2026-08-18（AI 时代昇腾社区角色研究 · 决策汇报版）
+
+- 原 `operator-ai-journey-research/index.html` 同时承担研究底稿、证据库、方案说明、Demo 与研究计划，阅读主线过长；新增 `cann-dashboard/operator-ai-journey-deck/index.html` 作为独立 9 页决策汇报版，原页面继续保留为可下钻证据底稿。
+- 汇报主线收束为：旅程变化 → 真实证据 → 研究判断 → 社区新角色 → 服务闭环 / Add 首跑试点 → 下一阶段验证。证据页复用并标注官方算子场景页、GitCode `asc-devkit` Add 样例与 `Ascend/pytorch#154` 公开 Issue，重要链接均保留在材料内。
+- 研究判断明确区分边界：公开资产与问题记录是已采集证据；“可信服务网络”和任务会话是基于证据的服务设计推导；Add 首跑界面为待验证试点原型，不表述为既有能力。
+- 社区角色聚焦可信知识、可接续问题、执行验证与责任闭环；服务模型以一个任务串联自然语言 / 日志 / IDE 入口、版本化路径、知识库、工作流、模板、连接器、CI / NPU 与专家升级，避免将 Skill 或聊天入口视为唯一产品形态。
+- 按 `report-ppt-skill` 保留完整 deck runtime（翻页、页码、概览、全屏、键盘和 URL 定位）；旅程页按 `user-journey-skill` 将阶段、真实触点、行为、关键风险和社区职责逐列对应呈现。已在 1280×720 桌面视口逐页核验 9 页，无内容溢出、图片断链或控制台错误。
