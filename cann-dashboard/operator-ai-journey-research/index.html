@@ -933,6 +933,14 @@
       .agent-flow-figure { margin: 15px 0 0; overflow-x: auto; border: 1px solid var(--l); border-radius: 14px; background: #fbfcfd; }
       #agentCapabilityFlow { display: block; min-width: 900px; width: 100%; }
       .agent-flow-figure figcaption { padding: 10px 15px 12px; border-top: 1px solid var(--l); color: #677581; font-size: 11px; line-height: 1.5; }
+      .content-carrier-matrix { margin-top: 12px; overflow-x: auto; border: 1px solid var(--l); border-radius: 12px; background: #fff; }
+      .content-carrier-matrix table { width: 100%; min-width: 900px; border-collapse: collapse; table-layout: fixed; }
+      .content-carrier-matrix th { padding: 10px 12px; border-bottom: 1px solid var(--l); background: #f4f6f7; color: #566570; font-size: 10px; font-weight: 800; text-align: left; letter-spacing: .05em; }
+      .content-carrier-matrix td { padding: 11px 12px; border-bottom: 1px solid #e8ecef; color: #586672; font-size: 11px; line-height: 1.48; vertical-align: top; }
+      .content-carrier-matrix tr:last-child td { border-bottom: 0; }
+      .content-carrier-matrix td b { display: block; margin-bottom: 3px; color: #26323c; font-size: 12px; }
+      .content-carrier-matrix td strong { color: #287b61; }
+      .content-carrier-matrix td em { color: #a36a20; font-style: normal; font-weight: 700; }
       .carrier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
       .carrier-card { min-height: 146px; padding: 14px 15px; border: 1px solid var(--l); border-radius: 10px; background: #fff; }
       .carrier-card .object-tag { margin-bottom: 9px; }
@@ -4618,22 +4626,32 @@
         </div>
         <div class="agent-model">
           <div class="agent-model-head">
-            <div><span class="label">AGENT CAPABILITY ARCHITECTURE · 内容不等于一种 AI 载体</span><h3>按“稳定性 × 是否要执行 × 是否连实时系统”选择承载方式</h3></div>
-            <p>不按“社区 / GitCode / 文档”一刀切：同一 Add 样例既要作为可检索知识，也可能被流程调用；Agent 需要实时检查 NPU 时则必须连接运行环境。下图给出一次任务中各层的协作边界。</p>
+            <div><span class="label">CONTENT-TO-AGENT DELIVERY · 将社区内容转为 AI 可调用服务</span><h3>先识别内容类型，再选择最适合的调用与获取形态</h3></div>
+            <p>研究对象是现有文档、GitCode、Issue、案例和站外经验如何转化，提升 AI 调用质量与开发者获取效率。判断不取决于内容来自哪里，而取决于它是否需要被检索、按步骤执行、读取实时状态、在工作现场呈现，或经过验证与责任判定。</p>
           </div>
           <figure class="agent-flow-figure">
-            <svg id="agentCapabilityFlow" role="img" aria-label="Ascend C Add 算子任务中，知识库、流程组件、系统连接、工作台和治理如何被 Agent 编排"></svg>
-            <figcaption>阅读方式：上方是输入资产；中间是 Agent 的任务编排；下方各层按“知识、动作、连接、工作台、验证与治理”承担不同职责。只有带版本、范围和验证记录的结果才回流为可信资产。</figcaption>
+            <svg id="agentCapabilityFlow" role="img" aria-label="社区内容转为不同 AI 可调用和开发者可获取形态的流程图"></svg>
+            <figcaption>图中不是按站点分流，而是按内容工作方式分流：稳定事实进入知识库；可复用步骤进入 Skill / 工作流；实时系统通过连接器调用；用户需要操作的内容进入工作台或插件；高风险结论进入验证与治理。一个资产可产生多种交付形态。</figcaption>
           </figure>
-          <div class="carrier-grid">
-            <article class="carrier-card"><span class="object-tag"><i data-lucide="database"></i>知识库 / 检索索引</span><h4>沉淀“可引用事实”</h4><p>官方文档、API 参考、GitCode README、样例说明、已验证案例、Issue 结论都应带来源、版本、芯片、框架、维护状态和验证记录进入版本化知识库。</p><small>适合：稳定、需被问答 / RAG 引用的内容。GitCode 源码保留在仓，索引其 README、接口、变更与验证摘要。</small></article>
-            <article class="carrier-card skill-card"><span class="object-tag"><i data-lucide="list-checks"></i>流程组件 / Skill</span><h4>沉淀“如何做判断”</h4><p>把可复用、可审计的任务规则封装为流程：需求拆解、路径选择、环境预检规则、编译诊断、精度排障、复现包生成、结果总结。</p><small>不适合：大篇原始文档或频繁变化的状态。现有 Agent 的开发工作流、环境检查、调试 / 精度调试正属于这一层。</small></article>
-            <article class="carrier-card connector-card"><span class="object-tag"><i data-lucide="plug-zap"></i>连接器 / MCP / API</span><h4>读取状态，触发真实动作</h4><p>连接 GitCode 的仓库 / Issue / PR，文档版本服务，IDE / 命令行，CI，NPU 真机，日志与制品库；让 Agent 看到当前分支、环境、执行结果并发起受控操作。</p><small>适合：实时、带权限、需执行或写回的系统。接口选择取决于目标系统能力，不是所有内容都要做成 MCP。</small></article>
-            <article class="carrier-card"><span class="object-tag"><i data-lucide="panel-left-open"></i>工作台 / 插件 / 模板</span><h4>在开发现场呈现与接续</h4><p>在社区、文档、IDE 或 CLI 中展示任务简报、路径卡、验证状态、待补信息和下一步；项目模板、脚手架和代码生成把推荐直接带入工程。</p><small>适合：用户需要看、改、确认或继续任务的界面与起步资产；不是知识和连接层的替代。</small></article>
-            <article class="carrier-card state-store-card"><span class="object-tag"><i data-lucide="git-fork"></i>任务状态 / 案例图谱</span><h4>保存“这件事进行到哪里”</h4><p>将目标、环境、日志、已尝试动作、验证结果、未解条件、责任人与复用关系保存为任务对象，而非散落在聊天记录、评论和工单里。</p><small>适合：跨入口接续、问题状态机、案例回流和影响追踪；它是任务会话能够持续存在的服务底座。</small></article>
-            <article class="carrier-card govern-card"><span class="object-tag"><i data-lucide="badge-check"></i>验证服务 / 治理工作流</span><h4>把“建议”变成“可采用结果”</h4><p>真机 / CI 验证、测试基线、版本兼容矩阵、问题状态机、专家升级、Issue / 工单路由、维护责任与回流审核共同提供可信边界。</p><small>适合：高风险、高成本或需责任人介入的事项；不应交给通用 Agent 自行断言。</small></article>
+          <div class="content-carrier-matrix" aria-label="社区内容到AI服务形态映射">
+            <table>
+              <thead><tr><th style="width:17%">现有内容类型</th><th style="width:24%">典型社区 / GitCode 资产</th><th style="width:23%">优先转化形态</th><th style="width:18%">Agent 如何调用</th><th style="width:18%">开发者如何获取</th></tr></thead>
+              <tbody>
+                <tr><td><b>权威定义与参考事实</b>相对稳定，但受版本约束</td><td>API 参考、安装要求、芯片 / CANN 兼容关系、版本变更说明</td><td><strong>版本化知识库 + 结构化检索</strong><br>保留来源、版本、范围、维护人</td><td>检索后引用；回答中附适用范围与出处</td><td>任务搜索、文档内问答、路径卡的“为什么推荐”</td></tr>
+                <tr><td><b>可重复的任务方法</b>有明确前后顺序与判断分支</td><td>自定义算子开发流程、环境预检、编译排障、精度调试、最小复现打包</td><td><strong>Skill / 工作流 / 规则包</strong><br>把步骤、输入输出、停止条件写清</td><td>由任务状态触发；串联检查与下一步，而非全文检索</td><td>AI 陪跑、CLI / IDE 命令、任务清单</td></tr>
+                <tr><td><b>可运行资产</b>代码、脚本、配置与验证命令</td><td>GitCode Add 样例、CMake、测试脚本、容器配置、项目脚手架</td><td><strong>模板 / 脚手架 + 可执行配方</strong><br><em>源码仍由仓库承载</em></td><td>选择匹配版本后生成 / 拉取；将命令交给执行器</td><td>一键生成工程、复制到 IDE、按步骤运行</td></tr>
+                <tr><td><b>实时状态与协作记录</b>会随分支、运行、Issue 状态变化</td><td>仓库分支、PR / Issue、CI 结果、NPU 环境、日志、制品</td><td><strong>连接器 / MCP / API</strong><br>带权限、审计与最小操作边界</td><td>按需读取当前状态；受控创建 Issue、触发 CI、提交执行</td><td>任务页同步状态；IDE / CLI 内查看或授权操作</td></tr>
+                <tr><td><b>经验案例与解决记录</b>条件强、需保留正反例与后续状态</td><td>Issue 讨论、CSDN 实践、客户问题、已验证 / 未解案例</td><td><strong>案例图谱 + 问题状态服务</strong><br>关联环境、日志、方案、验证和影响</td><td>按条件匹配相似案例；提示“已验证 / 部分解 / 未解”</td><td>报错诊断、相似案例、跨入口接续与订阅</td></tr>
+                <tr><td><b>高风险结论与共建责任</b>不能由模型独自确认</td><td>兼容性承诺、性能结论、版本修复、贡献合并、社区治理</td><td><strong>验证服务 + 人机协作工作流</strong><br>CI / 真机、评审、专家升级、责任人</td><td>提交验证请求、汇总证据、按风险升级；不自行宣告结论</td><td>看到验证状态、责任归属、预计动作与回流结果</td></tr>
+              </tbody>
+            </table>
           </div>
-          <div class="agent-evidence"><b>依据：</b>现有 Ascend C Agent 已将“完整开发工作流、环境检查、文档检索、通用调试、精度调试”做成流程组件；编排器再启动开发 / 测试 / 评估角色，并通过 Docker 与 NPU 环境执行、产生日志。由此可见，推荐架构不是“把知识全部做成 Skill”，而是用流程组件编排知识、连接、验证和治理。</div>
+          <div class="carrier-grid">
+            <article class="carrier-card skill-card"><span class="object-tag"><i data-lucide="list-checks"></i>Skill 的边界</span><h4>适合“方法”，不适合“原始内容”</h4><p>优先把有固定顺序、输入输出、判断规则和完成标准的内容做成 Skill，例如环境预检、排障、精度调试和复现包生成。</p><small>每个 Skill 必须引用版本化知识和实时连接，而不是复制一份会过期的文档。</small></article>
+            <article class="carrier-card connector-card"><span class="object-tag"><i data-lucide="plug-zap"></i>MCP / API 的边界</span><h4>适合“访问与动作”，不适合“沉淀知识”</h4><p>优先接入 GitCode、CI、NPU、日志、制品和工单等实时系统，提供受控读取、执行与写回。</p><small>接口应按权限和风险分级：先只读诊断，再授权执行，最后才允许创建 / 修改外部对象。</small></article>
+            <article class="carrier-card state-store-card"><span class="object-tag"><i data-lucide="git-fork"></i>社区的新服务底座</span><h4>任务状态与案例图谱</h4><p>把上述形态的结果统一沉淀到任务对象：什么条件下用过什么知识和流程、运行了什么、谁验证、结果怎样。</p><small>它使 AI 和开发者不必每次从头开始，也让社区可衡量真实复用和问题解决质量。</small></article>
+          </div>
+          <div class="agent-evidence"><b>依据：</b>现有 Ascend C Agent 已将“完整开发工作流、环境检查、文档检索、通用调试、精度调试”做成流程组件；编排器再启动开发 / 测试 / 评估角色，并通过 Docker 与 NPU 环境执行、产生日志。因此本建议不是抽象分类，而是将现有 Agent 已验证的“流程 + 执行 + 评估”机制扩展到社区、GitCode 与开发者工作流。</div>
         </div>
         <div class="demo-application">
           <div class="demo-application-head">
