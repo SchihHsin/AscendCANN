@@ -3616,7 +3616,51 @@
           txt(702,584,"否 / 证据不足",{fill:p.orange,size:9.5,weight:800}); txt(624,531,"是",{fill:p.green,size:10,weight:800}); txt(715,680,"通过后进入总结",{fill:p.orange,size:9.5,weight:800});
           const note=svg.append("g").attr("transform","translate(52,704)"); note.append("rect").attr("width",285).attr("height",103).attr("rx",10).attr("fill","#f7f9fa").attr("stroke","#d6dfe5"); note.append("text").attr("x",14).attr("y",21).attr("fill",p.ink).attr("font-size",10).attr("font-weight",800).text("事实与推导的边界"); note.append("text").attr("x",14).attr("y",42).attr("fill",p.muted).attr("font-size",10).text("蓝灰：公开工具调用机制 + 当前 Ascend C Agent 实现"); note.append("text").attr("x",14).attr("y",61).attr("fill",p.purple).attr("font-size",10).text("紫绿：面向社区的产品化建议，需下一轮研究验证"); note.append("text").attr("x",14).attr("y",82).attr("fill",p.orange).attr("font-size",10).text("橙：必须保留运行证据或责任升级，不能由模型宣告");
         };
-        renderAgentWorkflow();
+        const renderCommunityServiceWorkflow = () => {
+          if (!window.d3) return;
+          const svg = d3.select("#agentCapabilityFlow");
+          if (svg.empty()) return;
+          const W = 1080, H = 910, cx = 540;
+          const p = {ink:"#26343f",muted:"#647381",line:"#aebbc5",blue:"#466c96",blueSoft:"#eff4fa",slate:"#4c5b68",slateSoft:"#eef1f4",green:"#287b61",greenSoft:"#eaf7f1",orange:"#a36a20",orangeSoft:"#fff5e8",purple:"#6b5b93",purpleSoft:"#f7f4fb"};
+          svg.attr("viewBox",`0 0 ${W} ${H}`).attr("preserveAspectRatio","xMidYMid meet").selectAll("*").remove();
+          const defs=svg.append("defs");
+          [["cs-arrow",p.line],["cs-green",p.green],["cs-orange",p.orange],["cs-purple",p.purple]].forEach(([id,c])=>defs.append("marker").attr("id",id).attr("viewBox","0 -5 10 10").attr("refX",8).attr("refY",0).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto").append("path").attr("d","M0,-5L10,0L0,5").attr("fill",c));
+          const links=svg.append("g").attr("fill","none");
+          const arrow=(x1,y1,x2,y2,color=p.line,mark="cs-arrow",dash=null)=>links.append("path").attr("d",`M${x1},${y1} C${x1},${y1+(y2-y1)*.44} ${x2},${y2-(y2-y1)*.44} ${x2},${y2}`).attr("stroke",color).attr("stroke-width",1.45).attr("stroke-dasharray",dash).attr("marker-end",`url(#${mark})`);
+          const txt=(x,y,s,o={})=>svg.append("text").attr("x",x).attr("y",y).attr("text-anchor",o.anchor||"start").attr("fill",o.fill||p.muted).attr("font-size",o.size||10.5).attr("font-weight",o.weight||500).text(s);
+          const copy=(g,x,y,items,o={})=>items.forEach((s,i)=>g.append("text").attr("x",x).attr("y",y+i*(o.gap||14)).attr("fill",o.fill||p.muted).attr("font-size",o.size||10).text(s));
+          const box=n=>{const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`);g.append("rect").attr("width",n.w).attr("height",n.h).attr("rx",10).attr("fill",n.fill).attr("stroke",n.stroke);g.append("text").attr("x",14).attr("y",19).attr("fill",n.accent).attr("font-size",9).attr("font-weight",800).attr("letter-spacing",".08em").text(n.kicker);g.append("text").attr("x",14).attr("y",42).attr("fill",p.ink).attr("font-size",14).attr("font-weight",800).text(n.title);copy(g,14,64,n.lines,{size:10.1});};
+          const mini=n=>{const g=svg.append("g").attr("transform",`translate(${n.x},${n.y})`);g.append("rect").attr("width",n.w).attr("height",n.h).attr("rx",8).attr("fill",n.fill).attr("stroke",n.stroke);g.append("text").attr("x",11).attr("y",18).attr("fill",n.accent).attr("font-size",8.5).attr("font-weight",800).attr("letter-spacing",".07em").text(n.kicker);g.append("text").attr("x",11).attr("y",38).attr("fill",p.ink).attr("font-size",12).attr("font-weight",800).text(n.title);copy(g,11,56,n.lines,{size:9.3,gap:12});};
+          const diamond=(x,y,a,b)=>{const g=svg.append("g").attr("transform",`translate(${x},${y})`);g.append("path").attr("d","M0,35 L62,0 L124,35 L62,70 Z").attr("fill","#fff").attr("stroke",p.line);g.append("text").attr("x",62).attr("y",30).attr("text-anchor","middle").attr("fill",p.ink).attr("font-size",10.5).attr("font-weight",800).text(a);g.append("text").attr("x",62).attr("y",45).attr("text-anchor","middle").attr("fill",p.muted).attr("font-size",8.7).text(b);};
+          txt(30,31,"社区任务服务工作流：Agent 循环嵌在任务推进过程里",{fill:p.ink,size:15,weight:800});
+          txt(30,50,"外层回答任务如何被服务推进；内层回答 Agent 如何反复选择工具。两者互补，不是两套互斥流程。",{size:10.5});
+          box({x:390,y:75,w:300,h:78,kicker:"START · 开发者进入",title:"发起任务，建立任务会话",lines:["从搜索、文档、IDE、对话或 GitCode 进入","收集目标、环境、代码 / 日志与当前状态"],fill:"#fff",stroke:"#c7d2dc",accent:p.blue});
+          box({x:390,y:187,w:300,h:66,kicker:"01 · COMMUNITY SERVICE",title:"识别任务缺口与风险",lines:["补齐版本、芯片、框架、最小复现等必要条件"],fill:p.blueSoft,stroke:"#b8c9dd",accent:p.blue});
+          const loop=svg.append("g").attr("transform","translate(185,292)");
+          loop.append("rect").attr("width",710).attr("height",255).attr("rx",14).attr("fill","#fafbfc").attr("stroke","#b8c9d7").attr("stroke-width",1.3);
+          loop.append("text").attr("x",18).attr("y",23).attr("fill",p.purple).attr("font-size",10).attr("font-weight",800).attr("letter-spacing",".09em").text("02 · AGENT LOOP · 任务中的可重复子循环");
+          loop.append("text").attr("x",18).attr("y",41).attr("fill",p.muted).attr("font-size",10).text("与 opknow「Agent 循环架构」同一层：计划 → 工具路由 → tool_result → 证据判断 → 继续 / 收敛");
+          const lbox=n=>{const g=loop.append("g").attr("transform",`translate(${n.x},${n.y})`);g.append("rect").attr("width",n.w).attr("height",n.h).attr("rx",8).attr("fill",n.fill).attr("stroke",n.stroke);g.append("text").attr("x",11).attr("y",19).attr("fill",n.accent).attr("font-size",8.5).attr("font-weight",800).text(n.kicker);g.append("text").attr("x",11).attr("y",39).attr("fill",p.ink).attr("font-size",12).attr("font-weight",800).text(n.title);copy(g,11,57,n.lines,{size:9.2,gap:12});};
+          const lArrow=(x1,y1,x2,y2,color=p.line,mark="cs-arrow",dash=null)=>loop.append("path").attr("d",`M${x1},${y1} C${x1},${y1+(y2-y1)*.45} ${x2},${y2-(y2-y1)*.45} ${x2},${y2}`).attr("fill","none").attr("stroke",color).attr("stroke-width",1.3).attr("stroke-dasharray",dash).attr("marker-end",`url(#${mark})`);
+          lbox({x:230,y:58,w:250,h:68,kicker:"PLAN / ROUTE",title:"解析任务，选择下一种工具",lines:["缺事实、缺方法、缺状态或缺工程？"],fill:p.blueSoft,stroke:"#b8c9dd",accent:p.blue});
+          lbox({x:230,y:153,w:250,h:68,kicker:"TOOL CALL + RESULT",title:"调用并读取工具结果",lines:["把来源、执行结果、错误与条件写回会话"],fill:p.slateSoft,stroke:"#cbd4dc",accent:p.slate});
+          const dg=loop.append("g").attr("transform","translate(283,225)");dg.append("path").attr("d","M0,18 L72,0 L144,18 L72,36 Z").attr("fill","#fff").attr("stroke",p.line);dg.append("text").attr("x",72).attr("y",16).attr("text-anchor","middle").attr("fill",p.ink).attr("font-size",9.5).attr("font-weight",800).text("证据已足够？");dg.append("text").attr("x",72).attr("y",29).attr("text-anchor","middle").attr("fill",p.muted).attr("font-size",8).text("继续或收敛");
+          lArrow(355,126,355,153);lArrow(355,221,355,225);lArrow(283,243,126,92,p.purple,"cs-purple","4 4");
+          loop.append("text").attr("x",182).attr("y",220).attr("fill",p.purple).attr("font-size",8.5).attr("font-weight",800).text("否：换工具 / 补条件后继续");
+          mini({x:14,y:79,w:180,h:76,kicker:"缺权威事实",title:"知识库 / 文档检索",lines:["API、版本、兼容范围","返回来源与适用条件"],fill:p.blueSoft,stroke:"#b8c9dd",accent:p.blue});
+          mini({x:516,y:79,w:180,h:76,kicker:"缺可重复方法",title:"Skill / 工作流",lines:["环境预检、编译 / 精度排障","返回步骤、分支与停止条件"],fill:p.slateSoft,stroke:"#cbd4dc",accent:p.slate});
+          mini({x:14,y:166,w:180,h:76,kicker:"缺工程或现场入口",title:"模板 / 插件 / CLI",lines:["样例、配置、IDE 中的操作","返回可运行工程与命令"],fill:p.purpleSoft,stroke:"#d4c8e3",accent:p.purple});
+          mini({x:516,y:166,w:180,h:76,kicker:"缺实时状态或外部动作",title:"MCP / API",lines:["GitCode、CI、NPU、日志","返回实时结果与审计记录"],fill:p.greenSoft,stroke:"#bcd8cc",accent:p.green});
+          lArrow(194,117,230,92,p.blue);lArrow(516,117,480,92,p.slate);lArrow(194,204,230,187,p.purple,"cs-purple");lArrow(516,204,480,187,p.green,"cs-green");
+          box({x:390,y:584,w:300,h:82,kicker:"03 · EXECUTE",title:"开发者与环境执行 / 复核",lines:["在 IDE、CLI、容器、CI 或真机中运行；记录实际输出","AI 可陪跑，但不替代对本地结果的验证"],fill:p.purpleSoft,stroke:"#d4c8e3",accent:p.purple});
+          diamond(478,703,"验证通过？","有运行证据吗");
+          box({x:390,y:806,w:300,h:65,kicker:"END · VERIFIED OUTCOME",title:"已验证解决 / 已升级",lines:["成功回流为可信知识与案例；失败保留复现包、责任人和下一步"],fill:p.greenSoft,stroke:"#bcd8cc",accent:p.green});
+          mini({x:740,y:687,w:286,h:95,kicker:"未通过 / 高风险",title:"问题恢复与责任升级",lines:["调试 Skill 形成复现包；按风险进入 CI、真机、Issue 或专家","状态持续留在任务会话中，不让用户从头描述"],fill:p.orangeSoft,stroke:"#e8cfa6",accent:p.orange});
+          arrow(cx,153,cx,187);arrow(cx,253,cx,292);arrow(cx,547,cx,584,p.purple,"cs-purple");arrow(cx,666,cx,703);arrow(cx,773,cx,806,p.green,"cs-green");arrow(602,738,740,734,p.orange,"cs-orange");arrow(740,758,690,838,p.orange,"cs-orange");
+          txt(615,698,"是",{fill:p.green,size:9.5,weight:800});txt(667,729,"否 / 风险高",{fill:p.orange,size:9.5,weight:800});
+          const note=svg.append("g").attr("transform","translate(54,610)");note.append("rect").attr("width",282).attr("height",153).attr("rx",10).attr("fill","#f7f9fa").attr("stroke","#d6dfe5");note.append("text").attr("x",14).attr("y",21).attr("fill",p.ink).attr("font-size",10).attr("font-weight",800).text("这张图与 opknow 图的关系");note.append("text").attr("x",14).attr("y",44).attr("fill",p.purple).attr("font-size",10).text("opknow：Agent 内部循环怎么运行");note.append("text").attr("x",14).attr("y",65).attr("fill",p.blue).attr("font-size",10).text("本图：循环如何嵌入社区任务服务");note.append("text").attr("x",14).attr("y",92).attr("fill",p.muted).attr("font-size",9.7).text("当前 Ascend C Agent 已实现 workflow、文档检索、");note.append("text").attr("x",14).attr("y",108).attr("fill",p.muted).attr("font-size",9.7).text("环境检查、调试与 Docker/NPU 执行；MCP/API、");note.append("text").attr("x",14).attr("y",124).attr("fill",p.muted).attr("font-size",9.7).text("模板/插件是面向社区的产品化建议，待验证。");note.append("text").attr("x",14).attr("y",143).attr("fill",p.orange).attr("font-size",9.5).text("关键边界：没有运行证据，Agent 不宣告任务解决。");
+        };
+        renderCommunityServiceWorkflow();
         const unsupported = document.querySelector(
           'i[data-lucide="map-pin-question"]',
         );
@@ -4681,7 +4725,7 @@
           </div>
           <figure class="agent-flow-figure">
             <svg id="agentCapabilityFlow" role="img" aria-label="从任务开始到验证结束的 Agent 工具调用工作流"></svg>
-            <figcaption><b>图示依据。</b>通用主循环依据 <a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">OpenAI Function Calling</a> 与 <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">Anthropic Tool Use</a> 的公开机制：模型判断是否调用工具，读取工具结果后继续处理直至完成；领域阶段依据本仓 <code>ascendc-agent-main/CLAUDE.md</code> 与 <code>.claude/skills/ascendc-kernel-develop-workflow/SKILL.md</code> 的六阶段流程（方案设计 → 算子实现 → 构建测试 → 问题处理 → 结果总结 → 文档编写）。图中的 MCP / API、模板 / 插件为社区产品化建议，不宣称为当前 Agent 已有实现。</figcaption>
+            <figcaption><b>两层关系，而非替代。</b><a href="file:///Users/hsin/Documents/Coding/opknow/20_human_ai_journey.html#s4">opknow 的 Agent 循环架构</a>解释 Agent 内部如何“计划 → 工具路由 → tool result → 证据判断 → 继续 / 收敛”；本图解释这个循环如何嵌入社区任务服务：从开发者进入、到本地执行验证、再到失败恢复与结果回流。通用循环依据 <a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">OpenAI Function Calling</a> 与 <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">Anthropic Tool Use</a>；领域阶段依据本仓 <code>ascendc-agent-main/CLAUDE.md</code> 与 <code>.claude/skills/ascendc-kernel-develop-workflow/SKILL.md</code>。MCP / API、模板 / 插件为社区产品化建议，不宣称为当前 Agent 已有实现。</figcaption>
           </figure>
           <div class="content-carrier-matrix" aria-label="社区内容到AI服务形态映射">
             <table>

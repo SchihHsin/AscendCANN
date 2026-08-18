@@ -1305,3 +1305,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `#agentCapabilityFlow` 现改为单一纵向主干：接收任务与上下文 → 理解任务并决定是否调用工具 → 调用能力并把结果写回任务 → “证据足够？” → 执行验证或携带上下文恢复 → 已验证解决 / 已升级。知识库 / 文档、Skill / 工作流、模板 / 脚手架 / 插件、MCP / API 与调试 / 专家升级均作为在特定条件下接入主干的侧分支。
 - 图示依据分两层并直接写入 caption：通用工具调用循环引用 OpenAI Function Calling 和 Anthropic Tool Use 的公开文档（模型判断是否调用工具、读取工具结果、继续处理直到完成）；领域阶段引用本仓 `ascendc-agent-main/CLAUDE.md` 与 `ascendc-kernel-develop-workflow/SKILL.md` 的六阶段强制流程及阶段性 Skill 调用、Docker + NPU 构建测试事实。
 - 通过“事实与推导的边界”图例明确：蓝灰为公开机制 / 当前 Agent 实现；模板、插件、MCP / API 等紫绿侧支为面向社区的产品化建议，尚需后续用户研究验证；橙色为不能由模型单独宣告的运行验证与责任升级。桌面预览确认主干与 End 连续可读、SVG 无控制台报错。
+
+### 2026-08-18（与 opknow Agent 循环架构的互补关系）
+
+- 用户指出 `opknow/20_human_ai_journey.html` 的“Agent 循环架构”更成熟，并澄清它与报告中的流程图不应互斥。经对照，opknow 4.3 是 Agent 内部的工具调用循环（计划 / 工具路由 / tool result / 证据判断 / 继续或收敛）；报告原图若再画同一循环会形成重复。
+- 报告图改为“社区任务服务工作流”，将 Agent 循环作为中部明确标注的可重复子循环嵌入外层任务：开发者进入 → 社区识别缺口与风险 → Agent 循环调用知识库、Skill、模板 / 插件、MCP / API → 开发者与环境执行 / 复核 → 验证或失败恢复 → 已验证解决 / 已升级。
+- 因而两图分工清晰：opknow 解释 Agent 内部如何运转；本报告解释循环怎样与社区资产、开发者、本地环境和责任服务协作。图下注释加入指向 opknow `#s4` 的本地链接，桌面预览确认嵌套循环与外层 Start / End 主线均可读、无控制台错误。
