@@ -952,6 +952,36 @@
       .content-carrier-matrix td b { display: block; margin-bottom: 3px; color: #26323c; font-size: 12px; }
       .content-carrier-matrix td strong { color: #287b61; }
       .content-carrier-matrix td em { color: #a36a20; font-style: normal; font-weight: 700; }
+      .asset-proof-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-top: 22px; }
+      .asset-proof-head h3 { margin: 7px 0 0; color: #202a33; font-size: 19px; }
+      .asset-proof-head p { max-width: 550px; margin: 0; color: #5b6975; font-size: 12px; line-height: 1.55; }
+      .asset-proof-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 12px; }
+      .asset-proof-card { overflow: hidden; min-width: 0; border: 1px solid #d7dfe5; border-radius: 12px; background: #fff; }
+      .asset-proof-visual { position: relative; display: block; height: 178px; overflow: hidden; border-bottom: 1px solid #dfe5eb; background: #edf1f4; }
+      .asset-proof-visual img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+      .asset-proof-visual .evidence-marker { font-size: 9px; }
+      .asset-proof-visual .evidence-marker.m1 { top: 12px; left: 12px; }
+      .asset-proof-visual .evidence-marker.m2 { right: 12px; bottom: 12px; }
+      .skill-source-visual { height: 178px; padding: 16px 18px; background: #1b232a; color: #dde5ea; }
+      .skill-source-visual .source-file { display: inline-flex; align-items: center; gap: 5px; color: #aab8c4; font: 700 10px/1.2 Inter, sans-serif; letter-spacing: .03em; }
+      .skill-source-visual .source-file .licon { width: 14px; height: 14px; color: #9db0c3; }
+      .skill-source-visual pre { margin: 13px 0 0; overflow: hidden; color: #dbe5ec; font: 11px/1.55 SFMono-Regular, Consolas, monospace; white-space: pre-wrap; }
+      .skill-source-visual .syntax-key { color: #9fbaf8; }
+      .skill-source-visual .syntax-value { color: #9fdbbd; }
+      .asset-proof-body { padding: 13px 15px 15px; }
+      .asset-proof-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .asset-proof-top .object-tag { margin: 0; }
+      .proof-state { flex: 0 0 auto; padding: 3px 6px; border-radius: 4px; background: #f0f3f5; color: #65737f; font: 800 9px/1 Inter, sans-serif; letter-spacing: .04em; }
+      .proof-state.proposal { background: #fff5e8; color: #a36a20; }
+      .asset-proof-body h4 { margin: 9px 0 6px; color: #26323c; font-size: 15px; line-height: 1.35; }
+      .asset-proof-body p { margin: 0; color: #5e6c78; font-size: 11px; line-height: 1.55; }
+      .asset-proof-call { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #e4e9ed; }
+      .asset-proof-call b { color: #3c4c59; font-size: 10px; line-height: 1.45; }
+      .asset-proof-call span { color: #63727e; font-size: 10px; line-height: 1.45; }
+      .asset-proof-links { display: flex; flex-wrap: wrap; gap: 5px 10px; margin-top: 11px; }
+      .asset-proof-links a { display: inline-flex; align-items: center; gap: 4px; min-width: 0; color: #315f9b; font-size: 10px; line-height: 1.35; }
+      .asset-proof-links i { width: 12px; height: 12px; flex: 0 0 auto; }
+      .asset-proof-links code { overflow: hidden; max-width: 100%; color: inherit; font: 10px/1.35 SFMono-Regular, Consolas, monospace; text-overflow: ellipsis; white-space: nowrap; }
       .carrier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
       .carrier-card { min-height: 146px; padding: 14px 15px; border: 1px solid var(--l); border-radius: 10px; background: #fff; }
       .carrier-card .object-tag { margin-bottom: 9px; }
@@ -992,8 +1022,11 @@
         .cost-ledger,
         .service-surface,
         .research-roadmap,
-        .carrier-grid { grid-template-columns: 1fr; }
+        .carrier-grid,
+        .asset-proof-grid { grid-template-columns: 1fr; }
         .demo-application-head { display: block; }
+        .asset-proof-head { display: block; }
+        .asset-proof-head p { margin-top: 7px; }
         .demo-application-head p { margin-top: 7px; }
         .agent-model-head { display: block; }
         .agent-model-head p { margin-top: 7px; }
@@ -4875,6 +4908,96 @@
                 <tr><td><b>高风险结论与共建责任</b>不能由模型独自确认</td><td>兼容性承诺、性能结论、版本修复、贡献合并、社区治理</td><td><strong>验证服务 + 人机协作工作流</strong><br>CI / 真机、评审、专家升级、责任人</td><td>提交验证请求、汇总证据、按风险升级；不自行宣告结论</td><td>看到验证状态、责任归属、预计动作与回流结果</td></tr>
               </tbody>
             </table>
+          </div>
+          <div class="asset-proof-head">
+            <div><span class="label">REAL ASSET EXAMPLES · 真实资产示例</span><h3>不是抽象分类：六类已有内容，分别进入最适合的 AI 服务形态</h3></div>
+            <p>每张卡从已采集页面或仓库文件取证。图片中的标注指出该资产的关键信号；“建议形态”说明如何让 AI 调用与开发者获取，而不把原始页面和代码迁移或重复复制。</p>
+          </div>
+          <div class="asset-proof-grid" aria-label="真实资产到AI服务形态的实例">
+            <article class="asset-proof-card">
+              <a class="asset-proof-visual" href="evidence/04-ascend-operator-journey.png" aria-label="查看昇腾算子开发场景完整截图">
+                <img src="evidence/crops/operator-entry-routes.png" alt="昇腾算子开发场景页面，包含 Ascend C、CATLASS、Triton 路径以及学习阶段" />
+                <span class="evidence-markers" aria-hidden="true"><span class="evidence-marker m1"><b>1</b>路径先于内容</span><span class="evidence-marker m2"><b>2</b>阶段化资源</span></span>
+              </a>
+              <div class="asset-proof-body">
+                <div class="asset-proof-top"><span class="object-tag"><i data-lucide="database"></i>版本化知识库</span><span class="proof-state">已存在资产</span></div>
+                <h4>官方算子开发场景与路径定义</h4>
+                <p>页面先要求选择 Ascend C / CATLASS / Triton，再进入对应成长阶段。这类“定义、入口、适用范围”应被拆为带来源与版本标签的知识元，而非写进固定工作流。</p>
+                <div class="asset-proof-call"><b>Agent 调用</b><span>按任务目标、芯片、版本检索并引用；回答携带原始路径与适用条件。</span></div>
+                <div class="asset-proof-call"><b>开发者获取</b><span>搜索、文档内问答或任务路径卡直接落回官方页面。</span></div>
+                <div class="asset-proof-links"><a href="https://www.hiascend.com/cn/developer/operator?tab=ascendc" target="_blank" rel="noreferrer"><i data-lucide="external-link"></i><code>hiascend.com/cn/developer/operator?tab=ascendc</code></a></div>
+              </div>
+            </article>
+            <article class="asset-proof-card">
+              <a class="asset-proof-visual" href="evidence/crops/ascendc-agent-six-stage-flow.png" aria-label="查看 Ascend C Agent 六阶段执行流程截图">
+                <img src="evidence/crops/ascendc-agent-six-stage-flow.png" alt="Ascend C Agent 运行原理页面，展示从建批次、开发到 Docker NPU 构建测试、日志与评估的六阶段流程" />
+                <span class="evidence-markers" aria-hidden="true"><span class="evidence-marker m1"><b>1</b>流程被强制执行</span><span class="evidence-marker m2"><b>2</b>Docker + NPU</span></span>
+              </a>
+              <div class="asset-proof-body">
+                <div class="asset-proof-top"><span class="object-tag"><i data-lucide="list-checks"></i>Skill / 工作流</span><span class="proof-state">已存在资产</span></div>
+                <h4>Ascend C 算子开发六阶段工作流</h4>
+                <p>仓内 Skill 明确了阶段顺序、协作 Skill、错误分支、检查清单和完成条件；这是“方法”而非一页静态技术知识，适合由 Agent 在任务状态中触发。</p>
+                <div class="asset-proof-call"><b>Agent 调用</b><span>创建算子任务时加载流程；编译失败和精度异常时分别路由调试 Skill。</span></div>
+                <div class="asset-proof-call"><b>开发者获取</b><span>在 AI 陪跑、IDE 任务清单或 CLI 中看到当前阶段、待做检查与下一步。</span></div>
+                <div class="asset-proof-links"><a href="file:///Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ascendc-agent-main/.claude/skills/ascendc-kernel-develop-workflow/SKILL.md"><i data-lucide="file-code-2"></i><code>ascendc-kernel-develop-workflow/SKILL.md</code></a><a href="file:///Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ascendc-agent-main/%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86.html"><i data-lucide="workflow"></i>运行原理</a></div>
+              </div>
+            </article>
+            <article class="asset-proof-card">
+              <a class="asset-proof-visual" href="evidence/02-gitcode-add-example.png" aria-label="查看 GitCode Add 样例完整截图">
+                <img src="evidence/crops/gitcode-add-build.png" alt="GitCode Add 算子直调样例目录，含 CMakeLists、README 与 add.asc" />
+                <span class="evidence-markers" aria-hidden="true"><span class="evidence-marker m1"><b>1</b>工程目录</span><span class="evidence-marker m2"><b>2</b>构建 + 实现</span></span>
+              </a>
+              <div class="asset-proof-body">
+                <div class="asset-proof-top"><span class="object-tag"><i data-lucide="folder-git-2"></i>模板 / 脚手架</span><span class="proof-state proposal">建议转化</span></div>
+                <h4>GitCode Add 直调样例：工程应保持在仓库</h4>
+                <p>截图中的 <code>add.asc</code>、<code>CMakeLists.txt</code>、README 是一个能被拉取和构建的工程单元。AI 不应把源码复制进 Skill；应按版本返回仓库模板和可执行配方。</p>
+                <div class="asset-proof-call"><b>Agent 调用</b><span>匹配 CANN / 芯片条件后选择样例版本，生成或拉取工程，并交给本地执行器。</span></div>
+                <div class="asset-proof-call"><b>开发者获取</b><span>一键初始化工程、在 IDE 打开，或以 CLI 按 README 继续运行。</span></div>
+                <div class="asset-proof-links"><a href="https://gitcode.com/cann/asc-devkit/tree/9.0.0/examples/01_simd_cpp_api/00_introduction/01_add/basic_api_tque_add" target="_blank" rel="noreferrer"><i data-lucide="external-link"></i><code>gitcode.com/cann/asc-devkit · 9.0.0 Add</code></a></div>
+              </div>
+            </article>
+            <article class="asset-proof-card">
+              <a class="asset-proof-visual" href="evidence/05-gitcode-community.png" aria-label="查看 CANN community 完整截图">
+                <img src="evidence/05-gitcode-community.png" alt="CANN community 仓库页面，包含 Issues、Pull Requests 和 Actions 入口" />
+                <span class="evidence-markers" aria-hidden="true"><span class="evidence-marker m1"><b>1</b>Issue / PR</span><span class="evidence-marker m2"><b>2</b>Actions 状态</span></span>
+              </a>
+              <div class="asset-proof-body">
+                <div class="asset-proof-top"><span class="object-tag"><i data-lucide="plug-zap"></i>连接器 / MCP / API</span><span class="proof-state proposal">建议转化</span></div>
+                <h4>GitCode 的协作状态：读取与受控动作</h4>
+                <p>Issue、Pull Request、Actions 会持续变化，并且常受权限约束；它们不是“知识库文本”，更适合通过连接器获取实时状态，并对创建 / 修改动作分级授权。</p>
+                <div class="asset-proof-call"><b>Agent 调用</b><span>读取 Issue、分支、PR、构建状态；用户授权后创建 Issue 或触发已许可动作，保留审计记录。</span></div>
+                <div class="asset-proof-call"><b>开发者获取</b><span>在任务会话、IDE 或 CLI 中看到实时进度，而非离开当前任务反复查站。</span></div>
+                <div class="asset-proof-links"><a href="https://gitcode.com/cann/community?tab=md" target="_blank" rel="noreferrer"><i data-lucide="external-link"></i><code>gitcode.com/cann/community</code></a></div>
+              </div>
+            </article>
+            <article class="asset-proof-card">
+              <a class="asset-proof-visual" href="evidence/crops/github-issue-154.png" aria-label="查看公开 Issue #154 截图">
+                <img src="evidence/crops/github-issue-154.png" alt="Ascend pytorch #154 问题页面，展示 GitCode 同步、环境信息和最小复现脚本" />
+                <span class="evidence-markers" aria-hidden="true"><span class="evidence-marker m1"><b>1</b>环境 + 版本</span><span class="evidence-marker m2"><b>2</b>最小复现</span></span>
+              </a>
+              <div class="asset-proof-body">
+                <div class="asset-proof-top"><span class="object-tag"><i data-lucide="git-fork"></i>案例图谱 / 问题状态</span><span class="proof-state">已存在内容</span></div>
+                <h4>公开 Issue #154：不是一段“解决经验”</h4>
+                <p>页面可见 GitCode 同步链接、操作系统、硬件、CANN / 框架版本和最小复现脚本；后续状态还涉及不同模型规模是否解决。这些条件必须保存在可接续的问题对象中。</p>
+                <div class="asset-proof-call"><b>Agent 调用</b><span>按环境、报错、模型规模检索相似案例，并明确提示已验证、部分解或未解分支。</span></div>
+                <div class="asset-proof-call"><b>开发者获取</b><span>从报错诊断进入案例，带着已有日志继续补条件、订阅状态或升级给维护者。</span></div>
+                <div class="asset-proof-links"><a href="https://github.com/Ascend/pytorch/issues/154" target="_blank" rel="noreferrer"><i data-lucide="external-link"></i><code>github.com/Ascend/pytorch/issues/154</code></a><a href="https://gitcode.com/Ascend/pytorch/issues/3067" target="_blank" rel="noreferrer"><i data-lucide="external-link"></i><code>GitCode 同步 Issue #3067</code></a></div>
+              </div>
+            </article>
+            <article class="asset-proof-card">
+              <a class="asset-proof-visual" href="evidence/02-gitcode-add-example.png" aria-label="查看 GitCode Add 样例完整截图">
+                <img src="evidence/crops/gitcode-add-assets.png" alt="GitCode Add 样例页面，显示 9.0.0 版本、样例目录及代码和构建相关资产" />
+                <span class="evidence-markers" aria-hidden="true"><span class="evidence-marker m1"><b>1</b>版本约束</span><span class="evidence-marker m2"><b>2</b>样例资产</span></span>
+              </a>
+              <div class="asset-proof-body">
+                <div class="asset-proof-top"><span class="object-tag"><i data-lucide="badge-check"></i>验证服务 / 人机协作</span><span class="proof-state proposal">建议转化</span></div>
+                <h4>样例中的构建资产：用于验证，不是用于“宣告成功”</h4>
+                <p>版本化样例能给出构建与运行入口，但兼容性、精度与性能仍要在具体 NPU / CI 条件中产生实际输出。高风险结论应回写验证记录，而不是由模型口头确认。</p>
+                <div class="asset-proof-call"><b>Agent 调用</b><span>提交构建 / 精度验证任务，汇总日志与预期输出；失败时携带复现包进入专家或 Issue 升级。</span></div>
+                <div class="asset-proof-call"><b>开发者获取</b><span>看到“何版本、何硬件、何命令已验证”及当前责任人和下一步。</span></div>
+                <div class="asset-proof-links"><a href="https://gitcode.com/cann/asc-devkit/tree/9.0.0/examples/01_simd_cpp_api/00_introduction/01_add/basic_api_tque_add" target="_blank" rel="noreferrer"><i data-lucide="external-link"></i><code>GitCode Add 样例与版本入口</code></a></div>
+              </div>
+            </article>
           </div>
           <div class="carrier-grid">
             <article class="carrier-card skill-card"><span class="object-tag"><i data-lucide="list-checks"></i>Skill 的边界</span><h4>适合“方法”，不适合“原始内容”</h4><p>优先把有固定顺序、输入输出、判断规则和完成标准的内容做成 Skill，例如环境预检、排障、精度调试和复现包生成。</p><small>每个 Skill 必须引用版本化知识和实时连接，而不是复制一份会过期的文档。</small></article>

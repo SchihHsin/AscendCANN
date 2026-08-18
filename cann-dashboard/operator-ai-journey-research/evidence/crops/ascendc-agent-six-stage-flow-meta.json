@@ -1,0 +1,18 @@
+{
+  "url": "file:///Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ascendc-agent-main/%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86.html",
+  "servedForCaptureAt": "http://127.0.0.1:4174/ascendc-agent-main/%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86.html",
+  "title": "ascendc-agent-main · 运行原理",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "capturedAt": "2026-08-18T06:31:44.942Z",
+  "browserMetrics": {
+    "innerHeight": 720,
+    "innerWidth": 1280,
+    "scrollHeight": 6238,
+    "scrollWidth": 1308,
+    "scrollY": 1762.5
+  },
+  "stateNote": "本地 Ascend C Agent 运行原理页面；截图为六阶段流程所在首屏裁切"
+}
