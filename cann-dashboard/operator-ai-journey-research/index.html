@@ -647,6 +647,212 @@
       }
       .journey-delta .licon { width: 18px; height: 18px; }
       .journey-delta b { color: #202a33; }
+      /* Future service model: knowledge and problems are the two durable work objects, not another channel taxonomy. */
+      .future-intro {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .work-object {
+        min-height: 212px;
+        padding: 20px;
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .work-object h3 {
+        margin: 10px 0 6px;
+        color: #1b232a;
+        font-size: 20px;
+      }
+      .work-object > p {
+        margin: 0;
+        color: var(--t);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      .object-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 7px;
+        border-radius: 99px;
+        background: #f0f3f5;
+        color: #4d5c6a;
+        font: 800 10px/1 Inter, sans-serif;
+        letter-spacing: .06em;
+      }
+      .object-tag .licon { width: 14px; height: 14px; }
+      .object-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 14px;
+      }
+      .object-tags span {
+        padding: 4px 7px;
+        border: 1px solid #dce3e8;
+        border-radius: 5px;
+        color: #52616e;
+        font-size: 11px;
+      }
+      .work-object.problem { background: #fbfcfd; }
+      .work-object.problem .object-tag { background: #fff1f1; color: #a0444a; }
+      .future-question-grid {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 14px;
+        margin-top: 16px;
+      }
+      .future-panel {
+        overflow: hidden;
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .future-panel-head {
+        padding: 16px 18px 13px;
+        border-bottom: 1px solid var(--l);
+      }
+      .future-panel-head .label { display: block; margin-bottom: 6px; }
+      .future-panel-head h3 { margin: 0; color: #1b232a; font-size: 18px; }
+      .future-panel-head p { margin: 6px 0 0; color: var(--t); font-size: 12px; line-height: 1.5; }
+      .trust-chain {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        min-height: 190px;
+      }
+      .trust-step {
+        position: relative;
+        padding: 17px 13px;
+        border-right: 1px solid var(--l);
+      }
+      .trust-step:last-child { border-right: 0; }
+      .trust-step:not(:last-child):after {
+        content: "→";
+        position: absolute;
+        z-index: 1;
+        top: calc(50% - 12px);
+        right: -12px;
+        display: grid;
+        width: 24px;
+        height: 24px;
+        place-items: center;
+        border: 1px solid var(--l);
+        border-radius: 50%;
+        background: #fff;
+        color: #71808d;
+        font-size: 14px;
+      }
+      .trust-step .licon { width: 19px; height: 19px; color: #3d4c59; }
+      .trust-step b { display: block; margin-top: 11px; color: #26313c; font-size: 13px; }
+      .trust-step span { display: block; margin-top: 5px; color: #60707d; font-size: 11px; line-height: 1.45; }
+      .trust-step small { display: block; margin-top: 11px; color: #287b61; font-size: 10px; font-weight: 800; }
+      .state-board {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(112px, 1fr));
+        min-width: 650px;
+      }
+      .state-scroll { overflow-x: auto; }
+      .state-card {
+        position: relative;
+        min-height: 190px;
+        padding: 15px 12px;
+        border-right: 1px solid var(--l);
+      }
+      .state-card:last-child { border-right: 0; }
+      .state-card:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 3px;
+        background: #697784;
+      }
+      .state-card.active:after { background: #b8792c; }
+      .state-card.verified:after { background: #287b61; }
+      .state-card.blocked:after { background: #c05259; }
+      .state-card .state-no { color: #8995a1; font: 800 10px/1 Inter, sans-serif; letter-spacing: .08em; }
+      .state-card b { display: block; margin-top: 9px; color: #293642; font-size: 13px; }
+      .state-card p { margin: 7px 0 0; color: #5d6b77; font-size: 11px; line-height: 1.45; }
+      .state-card span { display: inline-flex; margin-top: 11px; padding: 3px 5px; border-radius: 4px; background: #f1f4f6; color: #667480; font-size: 10px; }
+      .state-card.active span { background: #fff5e8; color: #a36a20; }
+      .state-card.verified span { background: #eaf7f1; color: #287b61; }
+      .state-card.blocked span { background: #fff0f1; color: #b8464d; }
+      .collab-model {
+        display: grid;
+        grid-template-columns: 1fr 168px 1fr;
+        gap: 14px;
+        align-items: stretch;
+        margin-top: 16px;
+      }
+      .collab-lane {
+        padding: 18px;
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .collab-lane h3 { margin: 9px 0 6px; color: #1d2933; font-size: 18px; }
+      .collab-lane > p { margin: 0; color: var(--t); font-size: 12px; line-height: 1.52; }
+      .collab-list { margin: 14px 0 0; padding: 0; list-style: none; }
+      .collab-list li { position: relative; margin: 8px 0; padding-left: 14px; color: #52616e; font-size: 12px; line-height: 1.45; }
+      .collab-list li:before { content: ""; position: absolute; left: 0; top: .52em; width: 5px; height: 5px; border-radius: 50%; background: #607180; }
+      .collab-lane.ai { background: #f7f9fa; }
+      .collab-lane.ai .object-tag { background: #eaf7f1; color: #287b61; }
+      .collab-lane.service .object-tag { background: #eef1f4; color: #43515e; }
+      .collab-core {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 9px;
+        padding: 14px;
+        border-radius: 14px;
+        background: #202a33;
+        color: #fff;
+        text-align: center;
+      }
+      .collab-core .licon { width: 26px; height: 26px; margin: 0 auto; color: #d7e0e7; }
+      .collab-core b { font-size: 14px; }
+      .collab-core span { color: #c2cbd3; font-size: 11px; line-height: 1.4; }
+      .cost-ledger {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr 1fr;
+        margin-top: 16px;
+        overflow: hidden;
+        border: 1px solid var(--l);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .cost-ledger > div { min-height: 120px; padding: 15px 16px; border-right: 1px solid var(--l); }
+      .cost-ledger > div:last-child { border-right: 0; }
+      .cost-ledger h3 { margin: 0 0 8px; color: #26313c; font-size: 15px; }
+      .cost-ledger p { margin: 0; color: #5c6a76; font-size: 12px; line-height: 1.5; }
+      .cost-ledger .cost-kind { display: inline-flex; margin-bottom: 8px; padding: 3px 6px; border-radius: 4px; font: 800 10px/1 Inter,sans-serif; }
+      .cost-kind.low { background: #eaf7f1; color: #287b61; }
+      .cost-kind.medium { background: #fff5e8; color: #a36a20; }
+      .cost-kind.high { background: #fff0f1; color: #b8464d; }
+      .future-verdict {
+        margin-top: 14px;
+        padding: 16px 19px;
+        border: 1px solid #26313c;
+        border-radius: 12px;
+        background: #26313c;
+        color: #e8edf1;
+        font-size: 14px;
+        line-height: 1.55;
+      }
+      .future-verdict b { color: #fff; }
+      .future-verdict code { color: #d6e2e9; font-size: 12px; }
+      @media (max-width: 850px) {
+        .future-intro,
+        .future-question-grid,
+        .collab-model,
+        .cost-ledger { grid-template-columns: 1fr; }
+        .collab-core { min-height: 118px; }
+        .cost-ledger > div { border-right: 0; border-bottom: 1px solid var(--l); }
+        .cost-ledger > div:last-child { border-bottom: 0; }
+      }
       @media (max-width: 850px) {
         .journey-map-head { align-items: flex-start; flex-direction: column; }
       }
@@ -3173,6 +3379,7 @@
           ><a href="#position">社区定位</a><a href="#benchmark">AI 对照</a
           ><a href="#stack-compare">旅程对比</a
           ><a href="#service-design">服务设计</a
+          ><a href="#future-model">协同模式</a
           ><a href="#research">研究验证</a>
         </nav>
       </div>
@@ -4232,6 +4439,68 @@
             <div class="demo-step"><i data-lucide="life-buoy"></i><div><b>失败升级</b><small>自动携带版本、日志和已尝试动作</small></div><em class="attention">条件缺失</em></div>
           </div>
         </div>
+      </section>
+      <section id="future-model">
+        <div class="head">
+          <div class="eye">10 · FUTURE SERVICE COLLABORATION MODEL</div>
+          <h2>未来工作流只管理两类对象：知识与问题</h2>
+          <p>不再按“文档、论坛、工单、AI 工具”分割服务，而是围绕知识能否被可信采用、问题能否被持续解决来组织 AI、社区服务、工具与专家。</p>
+        </div>
+        <div class="future-intro">
+          <article class="work-object">
+            <span class="object-tag"><i data-lucide="book-open-check"></i>对象一 · 知识</span>
+            <h3>让 AI 找得到，也让人敢采用</h3>
+            <p>知识不是一篇孤立内容，而是一条有来源、版本、适用范围、验证记录和维护责任的可引用路径。</p>
+            <div class="object-tags"><span>官方定义</span><span>样例与命令</span><span>版本 / 芯片</span><span>验证记录</span><span>维护状态</span></div>
+          </article>
+          <article class="work-object problem">
+            <span class="object-tag"><i data-lucide="circle-help"></i>对象二 · 问题</span>
+            <h3>让问题有状态，并能带着上下文走完闭环</h3>
+            <p>问题不是一条帖子或一张工单，而是一个持续对象：记录环境、证据、已尝试动作、解决分支、未解条件与实际影响。</p>
+            <div class="object-tags"><span>任务目标</span><span>日志 / 复现</span><span>当前状态</span><span>规模条件</span><span>解决证据</span></div>
+          </article>
+        </div>
+        <div class="future-question-grid">
+          <article class="future-panel">
+            <div class="future-panel-head"><span class="label">QUESTION 01 · AI 可发现性与使用可信</span><h3>AI 的答案要从“文本回答”变成“有证据的路径”</h3><p>对应本轮 3 个 AI 检索任务：入口可达并不是主要差距，版本锁定、最小步骤和验证信号才决定是否可用。</p></div>
+            <div class="trust-chain">
+              <div class="trust-step"><i data-lucide="search"></i><b>被发现</b><span>以任务语言被搜索和 AI 定位，而非只靠产品目录。</span><small>需要：开放索引</small></div>
+              <div class="trust-step"><i data-lucide="quote"></i><b>被引用</b><span>每条建议附来源、版本、硬件范围和维护状态。</span><small>需要：知识元数据</small></div>
+              <div class="trust-step"><i data-lucide="badge-check"></i><b>被验证</b><span>给出命令、预期输出和已验证条件，允许反证与更新。</span><small>需要：验证记录</small></div>
+            </div>
+          </article>
+          <article class="future-panel">
+            <div class="future-panel-head"><span class="label">QUESTION 02 · 问题状态呈现与解决</span><h3>把“发帖求助”升级为可跟踪的问题生命周期</h3><p>15 个公开案例反复出现版本、硬件、日志与规模条件；#154 也说明“有方案”不等于在目标规模已解决。</p></div>
+            <div class="state-scroll"><div class="state-board">
+              <div class="state-card"><span class="state-no">P0</span><b>已提出</b><p>任务、环境、日志和预期被结构化接收。</p><span>信息完整度</span></div>
+              <div class="state-card active"><span class="state-no">P1</span><b>正在诊断</b><p>AI 聚合候选路径，标记待补条件与风险。</p><span>候选方案</span></div>
+              <div class="state-card"><span class="state-no">P2</span><b>等待验证</b><p>在指定版本、硬件与规模条件中运行。</p><span>执行证据</span></div>
+              <div class="state-card verified"><span class="state-no">P3</span><b>已验证解决</b><p>记录有效方案、条件、反例与维护者。</p><span>可复用案例</span></div>
+              <div class="state-card blocked"><span class="state-no">P4</span><b>未解 / 部分解</b><p>保留未解规模、版本分支和下一次动作。</p><span>持续跟踪</span></div>
+            </div></div>
+          </article>
+        </div>
+        <div class="collab-model">
+          <article class="collab-lane ai">
+            <span class="object-tag"><i data-lucide="bot"></i>AI 的低成本层</span>
+            <h3>理解、组织、陪跑</h3>
+            <p>对用户而言，AI 是进入服务的工作界面；它缩短理解和组织成本，但不替代证据与执行。</p>
+            <ul class="collab-list"><li>将自然语言目标和日志转为任务简报</li><li>检索、比对、摘要多源知识并暴露出处</li><li>生成步骤、检查缺失字段、解释失败现象</li><li>按问题状态提醒下一步，而非重复对话</li></ul>
+          </article>
+          <div class="collab-core"><i data-lucide="workflow"></i><b>任务会话</b><span>知识、问题、运行证据和人员协作的共同上下文</span></div>
+          <article class="collab-lane service">
+            <span class="object-tag"><i data-lucide="shield-check"></i>服务与工具的高价值层</span>
+            <h3>判定、验证、升级、治理</h3>
+            <p>社区不与 AI 竞争聊天入口，而提供 AI 无法自行保证的可信约束、验证能力和责任闭环。</p>
+            <ul class="collab-list"><li>维护知识的来源、版本、适用范围和责任人</li><li>提供真机 / CI 验证、预期输出与可复现记录</li><li>将高风险问题升级到专家、Issue、工单与版本计划</li><li>治理问题状态、案例复用与贡献影响反馈</li></ul>
+          </article>
+        </div>
+        <div class="cost-ledger">
+          <div><span class="cost-kind low">低边际成本 · AI 优先</span><h3>理解与路由</h3><p>解释概念、抽取日志、检索与聚合、生成任务简报、发现缺失条件。衡量的是采纳率、字段补全率和无效跳转减少。</p></div>
+          <div><span class="cost-kind medium">中等成本 · 产品化服务</span><h3>可信与状态</h3><p>知识元数据、版本矩阵、路径卡、状态机、跨触点上下文、通知与案例索引。衡量的是可验证路径采用率和恢复时间。</p></div>
+          <div><span class="cost-kind high">高成本 · 有限投入</span><h3>执行与责任闭环</h3><p>真机 / CI、专家诊断、版本修复、规模性能复现与治理。只在高风险、高价值或 AI 无法判定时介入，衡量的是解决质量和复用影响。</p></div>
+        </div>
+        <div class="future-verdict"><b>对未来产品形态的判断：</b>不是“社区 + 一个聊天机器人”，也不是把现有能力包装成 <code>MCP / Skill</code>；而是以<strong>任务会话</strong>为核心的协同服务——AI 负责低成本地理解与编排，知识服务负责可信边界，验证工具和专家服务负责高成本判定，问题状态把所有触点和投入连成可持续的闭环。</div>
       </section>
       <section>
         <div class="head">
