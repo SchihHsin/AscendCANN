@@ -1469,3 +1469,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 目前四页已改为 deck 原生排版：三个问题、4 个公开案例、15 个样本和三波研究验证路线均保留底稿事实，但使用当前报告的灰底分析组件呈现，避免整份研究底稿被嵌入。
 - Add 首跑总览与四张步骤 Demo 降为附录，不进入主 deck 的导航与页码，避免简单 Demo 抢占真实案例论证；资产形态与 Agent 架构仍保留为主线核心。
 - 已完成静态桌面首屏检查（1440×900）；未能用浏览器内嵌控制完成本地 `file://` 逐页截图，Chrome headless 对带 iframe 的 hash 页在当前环境未稳定返回内容，需用户在本地浏览器打开 deck 复核嵌入页视觉。
+
+### 2026-08-19（Workflow 原生重绘）
+
+- 用户明确要求不再嵌入 Opknow 或其他报告页面，Workflow 改为 `operator-ai-journey-deck/index.html` 内部原生绘制；保留两个互补 Tab，但不再依赖外部 iframe。
+- “Agent 内部循环：判断与调用”采用固定三列结构：左侧 `START → CONTEXT → EXECUTE → VERIFY → END` 主干，中间是按缺口路由的知识库、Skill / 工作流、模板 / 插件、MCP / API、案例状态、验证服务，右侧是结果证据包与责任升级；失败或条件不足回写问题状态并进入下一轮。
+- “社区供给闭环：资产如何进入任务”采用固定五列结构：社区已有资产 → 按任务缺口分流 → 任务可以继续；底部回流条明确验证结论更新知识、失败上下文更新问题状态，新的方法和模板进入下一轮 Agent 调用。
+- 两张图的脚注明确依据：左图参考 Anthropic Messages API Tool Use 的模型判断 / 工具调用 / 返回结果 / 再判断机制；右图结合 15 个公开案例和本仓 `ascendc-agent-main` 六阶段 workflow 推导，不冒充现成产品功能。
+- 1280×720 桌面截图验证两种 Tab：箭头均落在相邻流程组之间，第二个 Tab 不再出现卡片堆叠和底部裁切；报告代码中已无 Workflow iframe 元素。
