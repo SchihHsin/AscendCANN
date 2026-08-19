@@ -354,5 +354,57 @@
       if(window.lucide)window.lucide.createIcons();
     })();
   </script>
+  <script>
+    /* #8 Workflow: concrete runtime actions; one short capability connector per action. */
+    (()=>{
+      const mount=document.getElementById('horizontal-workflow-mount');
+      if(!mount)return;
+      mount.innerHTML=`<div class="horizontal-workflow" role="img" aria-label="Agent runtime 的具体动作：读取现场、加载可装配能力、构造请求、调用模型、判断响应、校验并执行、写入工具结果，之后进入下一轮或返回最终结果。">
+        <svg viewBox="0 0 1500 570" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs>
+            <marker id="w-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#718091"/></marker>
+            <marker id="w-blue" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#4f6fc1"/></marker>
+            <marker id="w-purple" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#7958a9"/></marker>
+            <marker id="w-green" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#2d8069"/></marker>
+            <marker id="w-orange" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#a86d28"/></marker>
+          </defs>
+          <rect class="wf-harness" x="150" y="24" width="1190" height="500" rx="22"/>
+          <text class="wf-harness-label" x="178" y="51">HARNESS · 开发者配置的能力在这里被加载、调用、校验和回写</text>
+          <text class="wf-harness-copy" x="178" y="69">主线是实际运行动作；彩色节点是可直接装配的能力，短箭头标出它参与哪一步</text>
+
+          <!-- Main actions: deliberately neutral to distinguish them from capability nodes. -->
+          <g><rect x="20" y="280" width="110" height="92" rx="13" fill="#f1fbf5" stroke="#86c4a5" stroke-width="1.5"/><text class="wf-stage-k" x="38" y="305">START</text><text class="wf-stage-title" x="38" y="332">接收任务</text><text class="wf-stage-copy" x="38" y="353">prompt / repo / 日志</text></g>
+          <g><rect x="175" y="260" width="128" height="132" rx="12" fill="#fbfcfd" stroke="#aeb9c5" stroke-width="1.4"/><text class="wf-stage-k" x="190" y="286">01 · READ</text><text class="wf-stage-title" x="190" y="315">读取现场</text><text class="wf-stage-copy" x="190" y="338">文件、git diff、</text><text class="wf-stage-copy" x="190" y="356">环境、报错日志</text></g>
+          <g><rect x="330" y="260" width="128" height="132" rx="12" fill="#fbfcfd" stroke="#aeb9c5" stroke-width="1.4"/><text class="wf-stage-k" x="345" y="286">02 · LOAD</text><text class="wf-stage-title" x="345" y="315">加载能力</text><text class="wf-stage-copy" x="345" y="338">规则、指令、Skill</text><text class="wf-stage-copy" x="345" y="356">Command、插件定义</text></g>
+          <g><rect x="485" y="260" width="128" height="132" rx="12" fill="#fbfcfd" stroke="#aeb9c5" stroke-width="1.4"/><text class="wf-stage-k" x="500" y="286">03 · BUILD</text><text class="wf-stage-title" x="500" y="315">构造请求</text><text class="wf-stage-copy" x="500" y="338">写 messages、tools</text><text class="wf-stage-copy" x="500" y="356">schema、权限、历史</text></g>
+          <g><rect x="640" y="260" width="128" height="132" rx="12" fill="#fbfcfd" stroke="#aeb9c5" stroke-width="1.4"/><text class="wf-stage-k" x="655" y="286">04 · CALL</text><text class="wf-stage-title" x="655" y="315">调用模型</text><text class="wf-stage-copy" x="655" y="338">发送 request</text><text class="wf-stage-copy" x="655" y="356">接收 model response</text></g>
+          <g><path d="M848 258L908 326L848 394L788 326Z" fill="#fbfcfd" stroke="#aeb9c5" stroke-width="1.4"/><text class="wf-stage-k" x="815" y="312">05 · DECIDE</text><text class="wf-stage-title" x="812" y="337">是否 tool call？</text><text class="wf-stage-copy" x="817" y="355">final / action</text></g>
+          <g><rect x="945" y="260" width="128" height="132" rx="12" fill="#fbfcfd" stroke="#aeb9c5" stroke-width="1.4"/><text class="wf-stage-k" x="960" y="286">06 · CHECK</text><text class="wf-stage-title" x="960" y="315">校验 action</text><text class="wf-stage-copy" x="960" y="338">工具可用、权限、</text><text class="wf-stage-copy" x="960" y="356">JSON 参数是否完整</text></g>
+          <g><rect x="1100" y="260" width="128" height="132" rx="12" fill="#fbfcfd" stroke="#aeb9c5" stroke-width="1.4"/><text class="wf-stage-k" x="1115" y="286">07 · ACT</text><text class="wf-stage-title" x="1115" y="315">执行 action</text><text class="wf-stage-copy" x="1115" y="338">检索、命令、读写</text><text class="wf-stage-copy" x="1115" y="356">MCP、Hook、子任务</text></g>
+          <g><rect x="1255" y="260" width="70" height="132" rx="12" fill="#fbfcfd" stroke="#aeb9c5" stroke-width="1.4"/><text class="wf-stage-k" x="1265" y="286">08</text><text class="wf-stage-title" x="1265" y="315">写回</text><text class="wf-stage-copy" x="1265" y="338">tool</text><text class="wf-stage-copy" x="1265" y="356">result</text></g>
+          <g><rect x="1370" y="280" width="110" height="92" rx="13" fill="#f1fbf5" stroke="#86c4a5" stroke-width="1.5"/><text class="wf-stage-k" x="1388" y="305">END</text><text class="wf-stage-title" x="1388" y="332">返回 final</text><text class="wf-stage-copy" x="1388" y="353">答复、引用</text></g>
+          <path class="wf-main-link" d="M130 326H175M303 326H330M458 326H485M613 326H640M768 326H788M908 326H945M1073 326H1100M1228 326H1255" marker-end="url(#w-arr)"/>
+          <path class="wf-main-link" d="M848 258V205H1425V280" marker-end="url(#w-arr)"/><text class="wf-attach-label" x="1115" y="198">final</text>
+          <path class="wf-return" d="M1290 392V468H549V392" marker-end="url(#w-purple)"/><text class="wf-return-label" x="737" y="463">把 tool result 追加到 messages，重新构造 request</text>
+
+          <!-- Top capabilities: only vertical, local connectors. -->
+          <g><rect class="wf-cap" x="175" y="96" width="128" height="56" rx="10" fill="#e8efff" stroke="#4f6fc1"/><g class="wf-cap-icon wf-blue" transform="translate(190 111)"><path d="M1 2h10v10H1zM3 5h6M3 8h4"/></g><text class="wf-cap-title wf-blue-text" x="212" y="120">模板 / 脚手架</text><text class="wf-cap-copy" x="212" y="139">初始化工程</text><path class="wf-attach wf-blue" d="M239 152V260" marker-end="url(#w-blue)"/></g>
+          <g><rect class="wf-cap" x="330" y="96" width="128" height="56" rx="10" fill="#e8efff" stroke="#4f6fc1"/><g class="wf-cap-icon wf-blue" transform="translate(345 111)"><path d="M1 2h10v10H1zM3 5h6M3 8h4"/></g><text class="wf-cap-title wf-blue-text" x="367" y="120">项目规则</text><text class="wf-cap-copy" x="367" y="139">加载约束</text><path class="wf-attach wf-blue" d="M394 152V260" marker-end="url(#w-blue)"/></g>
+          <g><rect class="wf-cap" x="485" y="96" width="128" height="56" rx="10" fill="#eef2f6" stroke="#718292"/><g class="wf-cap-icon wf-slate" transform="translate(500 111)"><path d="M1 2h10v8H5l-3 3V2zM3 5h6"/></g><text class="wf-cap-title wf-slate-text" x="522" y="120">会话指令</text><text class="wf-cap-copy" x="522" y="139">写入 request</text><path class="wf-attach wf-slate" d="M549 152V260" marker-end="url(#w-arr)"/></g>
+          <g><rect class="wf-cap" x="640" y="96" width="128" height="56" rx="10" fill="#f1e9ff" stroke="#7958a9"/><g class="wf-cap-icon wf-purple" transform="translate(655 111)"><path d="M2 1h8v11H2zM4 4h4M4 7h4"/></g><text class="wf-cap-title wf-purple-text" x="677" y="120">Skill / Workflow</text><text class="wf-cap-copy" x="677" y="139">步骤与停止条件</text><path class="wf-attach wf-purple" d="M704 152V225H549V260" marker-end="url(#w-purple)"/></g>
+          <g><rect class="wf-cap" x="795" y="96" width="128" height="56" rx="10" fill="#eef2f6" stroke="#718292"/><g class="wf-cap-icon wf-slate" transform="translate(810 111)"><path d="M2 2h8v10H2zM4 5h4M4 8h2"/></g><text class="wf-cap-title wf-slate-text" x="832" y="120">Command</text><text class="wf-cap-copy" x="832" y="139">写入任务参数</text><path class="wf-attach wf-slate" d="M859 152V205H549V260" marker-end="url(#w-arr)"/></g>
+          <g><rect class="wf-cap" x="950" y="96" width="128" height="56" rx="10" fill="#e4f6ee" stroke="#2d8069"/><g class="wf-cap-icon wf-green" transform="translate(965 111)"><path d="M5 1v10M1 5h10"/><circle cx="5" cy="5" r="2"/></g><text class="wf-cap-title wf-green-text" x="987" y="120">Plugin / Extension</text><text class="wf-cap-copy" x="987" y="139">注册 tools</text><path class="wf-attach wf-green" d="M1014 152V220H549V260" marker-end="url(#w-green)"/></g>
+
+          <!-- Bottom capabilities: one direct connector to Check / Act. -->
+          <g><rect class="wf-cap" x="660" y="430" width="128" height="56" rx="10" fill="#f1e9ff" stroke="#7958a9"/><g class="wf-cap-icon wf-purple" transform="translate(675 445)"><circle cx="6" cy="4" r="3"/><path d="M1 12c1-3 3-4 5-4s4 1 5 4"/></g><text class="wf-cap-title wf-purple-text" x="697" y="454">Custom Agent</text><text class="wf-cap-copy" x="697" y="473">预设角色</text><path class="wf-attach wf-purple" d="M724 430V394H848" marker-end="url(#w-purple)"/></g>
+          <g><rect class="wf-cap" x="815" y="430" width="128" height="56" rx="10" fill="#fff0e7" stroke="#a86d28"/><g class="wf-cap-icon wf-orange" transform="translate(830 445)"><circle cx="4" cy="4" r="2"/><circle cx="9" cy="8" r="2"/><path d="M5.5 5.5l2 1.2"/></g><text class="wf-cap-title wf-orange-text" x="852" y="454">子 Agent</text><text class="wf-cap-copy" x="852" y="473">委派与回传</text><path class="wf-attach wf-orange" d="M879 430V410H848V394" marker-end="url(#w-orange)"/></g>
+          <g><rect class="wf-cap" x="970" y="430" width="128" height="56" rx="10" fill="#e8efff" stroke="#4f6fc1"/><g class="wf-cap-icon wf-blue" transform="translate(985 445)"><ellipse cx="6" cy="3" rx="4" ry="2"/><path d="M2 3v6c0 1 2 2 4 2s4-1 4-2V3"/></g><text class="wf-cap-title wf-blue-text" x="1007" y="454">知识库 / 检索</text><text class="wf-cap-copy" x="1007" y="473">返回引用事实</text><path class="wf-attach wf-blue" d="M1034 430V392" marker-end="url(#w-blue)"/></g>
+          <g><rect class="wf-cap" x="1125" y="430" width="128" height="56" rx="10" fill="#e4f6ee" stroke="#2d8069"/><g class="wf-cap-icon wf-green" transform="translate(1140 445)"><path d="M4 2v4M8 6V2M3 6h6v5H3z"/></g><text class="wf-cap-title wf-green-text" x="1162" y="454">MCP / Connector</text><text class="wf-cap-copy" x="1162" y="473">外部动作 / 状态</text><path class="wf-attach wf-green" d="M1189 430V392" marker-end="url(#w-green)"/></g>
+          <g><rect class="wf-cap" x="1205" y="172" width="115" height="56" rx="10" fill="#fff3e3" stroke="#a86d28"/><g class="wf-cap-icon wf-orange" transform="translate(1220 187)"><path d="M6 1v4M2.5 3.5l2.8 2.8M1 8h4"/><path d="M7 5l4 4-4 4"/></g><text class="wf-cap-title wf-orange-text" x="1242" y="196">Hook</text><text class="wf-cap-copy" x="1242" y="215">前后置动作</text><path class="wf-attach wf-orange" d="M1262 228V260" marker-end="url(#w-orange)"/></g>
+          <text class="wf-source" x="177" y="548">箭头只表示能力的直接接入点；回路仅在执行完成后，把 tool result 写回下一轮 request。</text>
+        </svg>
+      </div>`;
+    })();
+  </script>
 </body>
 </html>
