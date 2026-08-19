@@ -1717,3 +1717,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出“主线后再强制分成检索 / MCP / 子 Agent 三支”不符合真实 Agent 运行。#8 已改为单一 Agent 循环：`任务 / 上下文 → 模型请求 → response(final / tool_call) → 应用侧解析校验 → 工具路由器 → tool_result 消息 → 下一轮模型请求`；final 才进入唯一 End。
 - 知识库 / 检索、MCP / Connector、子 Agent 不再是三条必经业务分支，改为“按 tool name 由 Router 从已注册工具中选择”的实现集合；Router 可根据模型返回的一个或多个 tool call 顺序或并行调用这些实现。
 - 调用校验失败也写为 error tool_result 并回到下一轮模型请求；Custom Agent 保留为角色配置，Hook 只在工具调用前触发预检。
+
+### 2026-08-20（Workflow 两套浅色视觉方案）
+
+- 用户否定主流程节点的黑色底，并选择同时查看方案一、方案二。报告现在保留连续两页、相同真实机制的视觉对照；刷新原 `#7` 即显示方案一，下一页显示方案二，不再保留第三张黑色重复页。
+- 方案一采用冷灰页底、白色动作节点、彩色小圆点编码和单一 Tool Router；知识库、MCP、子 Agent 作为三项浅色注册工具，`tool_result + call_id` 以轻量消息带回到下一轮模型请求。
+- 方案二采用请求与响应、应用侧 Tool Router、能力注册区三块浅色泳道；所有节点保持白色或极浅语义底，强调系统边界和“按 tool name 选择实现”的装配关系。
