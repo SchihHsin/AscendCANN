@@ -1760,3 +1760,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 回写线底部向 Model 上行的折返点从 `x=738` 左移至 `x=680`，与 Hook 卡片左边缘拉开距离，避免视觉上像从 Hook 旁边拐出。
 - `tool_result` 回写线线宽由 `1.55px` 提升至 `2px`，与前向主流程灰蓝箭头保持相同视觉重量。
 - Response 判断节点由模糊的 `final / tool_call？` 改为明确判断 `包含工具调用项？`，并在节点内标出跨平台字段依据 `tool_call / tool_use`；无工具调用沿水平线进入 final response，包含一个或多个工具调用则向下进入 Application。
+- 判断节点文字放大时同步扩大菱形：主标题恢复为 `15px`、字段依据提升为 `10px`，菱形由约 `180×154` 扩至 `220×166`，三条连接线同步调整端点，避免文字放大后挤压节点。
