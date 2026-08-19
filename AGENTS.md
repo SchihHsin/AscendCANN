@@ -1728,3 +1728,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户明确要求“只改节点视觉，不能改变内容”。已移除两页中误加的简化版 Workflow，`#7` 与下一页现在复用同一份完整横向 SVG：节点、字段、能力集合、箭头、Harness 边界和真实 tool-calling 机制完全相同。
 - 方案一仅使用白色节点 + 彩色圆点与中性描边；方案二仅使用极浅灰 / 紫 / 蓝 / 绿语义色节点。两页不再因视觉比较而删减节点或改写流程。
+
+### 2026-08-20（Workflow 节点与连线细节收口）
+
+- 彩色圆点从节点右上角改为主标题前的内联语义点，避免漂浮感；所有矩形主节点的标题区统一加高，分割线下移，正文同步下调，解决标题贴线问题。
+- 顶部项目规则 / Skill / Command / Plugin 分别进入 Context 或 Model 的独立端口；知识库、MCP、子 Agent 分别进入 Router 的不同底部端口，取消共用汇流段。
+- `tool_result` 回写虚线改从 Message 右侧绕到能力卡下方再返回 Model，不再穿过 MCP / 子 Agent 卡；能力卡标题字号统一收窄，避免 `MCP / Connector` 等长标题越界。
