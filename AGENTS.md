@@ -1557,3 +1557,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Harness / Agent Runtime 保留为单独一行，五个平台都标为橙色“内置且可间接配置”：开发者可以通过规则、工具、MCP、权限、Agent 或 Hook 影响其编排；自建 Agent 时才会通过 SDK / 框架直接编写 Harness。避免把它误成不存在或同 Skill 一样的独立安装项。
 - 根据用户截图反馈，移除状态圆点的白色描边，并将格内左侧状态符号与文本的间距加大。红色现实际落在三处已确认“无同类入口”：WorkBuddy 无 Plugin / Extension，Codex 与 Cursor 无开发者自定义 Subagent 入口；橙色仅用于存在替代形态或内置且边界不同的能力。
 - 用户要求将各能力的跨平台覆盖率直接画在行标题上，而非补一段百分比文字。现每个行标题右侧加入微型环形图：中心显示同类入口覆盖数（如 `4/5`），外环按五个平台的绿色 / 橙色 / 红色 / 灰色状态分段；Harness 显示 `5/5` 且外环全橙，表示五个平台均有运行时但形态为内置 / 间接配置。
+- 用户指出沙盘状态色不符合 Report PPT Skill。已按 Skill 灰底分析页 token 收敛：绿色 `--c-green #39B982`、橙色 `--c-orange #F47A4B`、红色 `--c-red #F05A68`、中性 `--c-neutral #9BA5B4`；状态格改回轻透纯色底 + 3px 色条，环形图复用同一 token，不再使用自行加深的高饱和色和整格渐变。
