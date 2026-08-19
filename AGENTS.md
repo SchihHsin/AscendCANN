@@ -1782,3 +1782,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将“包含工具调用项？”改为协议层判断“响应包含 `tool_call`？”：它只决定是否进入工具执行分支，不代表任务是否完成。
 - 新增应用 / 业务层判断“任务满足完成条件？”；依据为目标、结果与验证证据。只有验收通过才进入唯一 End，未通过则补充上下文或继续一轮。
 - 依据页 `cann-dashboard/agent-tool-calling-reference.html` 同步说明：`tool_calls` / `function_call` / `tool_use` 是 API 分流字段，API 本身不判断业务任务是否完成；`final response` 只是候选交付，不能直接等同于验收通过。
+- 修复“任务满足完成条件？→ 否”回路被下方工具节点遮挡的问题：回路改为在工具节点上方走独立折线，明确回到 `02 · MODEL REQUEST`，并将“否 · 补充上下文或继续一轮”标签贴在线路旁。
