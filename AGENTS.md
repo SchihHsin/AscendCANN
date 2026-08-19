@@ -1681,3 +1681,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出 Workflow 中“模板 / 脚手架”并非前页平台能力沙盘的直接装配能力。已完成集合核对：沙盘只包含项目规则、知识库 / 检索、Harness、Skill、Command / Prompt、MCP、Plugin、Custom Agent / Subagent、Hook。Harness 为运行框架，prompt 留在任务输入，均不单列为能力卡。
 - #8 已移除“模板 / 脚手架”和“会话指令”两张能力卡；按接入的动作而非名称顺序重排顶部能力节点：项目规则、Skill 紧邻并直接接入“加载能力”，Command、Plugin 紧邻并接入“构造请求”。
+
+### 2026-08-19（Workflow 真实分支重绘）
+
+- 用户指出 Agent 运行不应被画成一条单线，需要依据真实机制表达不同实现路径，但不能为了“多个判断”机械增加节点。
+- #8 已重绘为“共享主线 + 两个真实判断 + 三条执行分支”：`接收任务 → 读取现场 → 加载能力 → 构造请求 → 调用模型 → 直接回答？`；final 直接到 End，tool call 进入第二个判断 `action 可执行？`。
+- action 校验失败仅进入“补全参数 / 拒绝并返回错误”的恢复路径；校验通过后按实际能力分为三条互斥执行支线：知识库 / 检索（返回引用事实）、MCP / Connector（读写 GitCode、CI、NPU 并返回实时状态）、运行时委派（子 Agent）（拆分专职子任务并回传）。三条结果汇合至 `写回 tool result`，再追加 messages 进入下一轮 request。
+- `Agent 定义`（Custom Agent）作为预先配置的角色定义接入模型规划；子 Agent 作为 Harness 运行时委派实例单独出现在执行分支。Hook 保持前置预检与后置采集的生命周期连接，不作为平行主流程分支。
+
+### 2026-08-19（Deck 刷新页码恢复）
+
+- 修复网页 PPT 在刷新 `#页码` 地址后偶尔先被 IntersectionObserver 写回第一页的问题：初始化阶段先锁定 observer，连续两帧无动画定位到 hash 对应 slide，布局稳定后再恢复 observer。没有合法 hash 时才默认第一张。
