@@ -1518,3 +1518,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户认为 Mermaid 异常后的三步降级图信息严重不足，确认不再使用 Mermaid。汇报版 #6 现完全采用与 `opknow/20_human_ai_journey.html` 架构图相同的原生 SVG 实现方式：手写节点、菱形判断、箭头、汇合与虚线回路，不依赖自动布局库。
 - 本研究图完整呈现：任务进入 → 上下文补齐 → 缺口判断 → 六类服务分流（知识库、Skill / 工作流、模板 / 插件 / CLI、MCP / API / 连接器、案例图谱 / 问题状态、验证服务 / 人机协作）→ 结果写回任务上下文 → 真实环境执行 → 证据判断 → 已验证交付或升级回到缺口判断。
 - Mermaid CDN 已从报告移除；Opknow Tab 继续仅嵌入已存在的 Agent 循环架构图，作为“模型如何调用工具并继续循环”的互补解释。
+
+### 2026-08-19（AI 开发平台能力沙盘）
+
+- 用户要求将“开发者使用 AI 时实际可以直接调用 / 配置什么”的分析进入汇报，并按 Codex、Claude Code、Cursor、Trae、WorkBuddy 形成平台能力沙盘。
+- `cann-dashboard/operator-ai-journey-deck/index.html` 在“15 个样本”与“Agent Workflow”之间新增两页：
+  1. **可装配能力**：将开发者直接装配的能力明确为项目规则 / 指令、Skill、Command / Prompt、MCP / Connector、Plugin / Extension、Custom Agent / Subagent、Hook / Automation；IDE、CLI、容器、CI、NPU 为运行底座，API 为连接器或插件的底层实现，不再错误并列为“开发者直接调用物”。
+  2. **平台能力沙盘**：横向比较五个平台，以“直接配置 / 安装或接入 / 平台能力但有边界 / 待核实”四态呈现。Codex 聚焦 `AGENTS.md`、Skills、MCP、Plugins；Claude Code 聚焦 `CLAUDE.md` / Rules、Skills、Slash Commands、MCP、Plugins、Subagents、Hooks；Cursor 聚焦 Project Rules、Commands、MCP 与 IDE Extensions，并将后台 / 云 Agent 与可自定义 Subagent 严格区分。
+- Trae、WorkBuddy 不以宣传文案推断其配置能力；公开资料未确认的单元均保守标注“待核实”。平台页的结论是：社区资产不应先被问“是否做成 Skill”，而应根据开发者所在的平台、权限、触发方式和任务缺口，进入跨平台通用入口或平台增强入口。
