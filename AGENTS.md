@@ -1637,3 +1637,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出“跨平台最稳的接入面 / 下一步如何使用沙盘”放在能力矩阵下方突兀。已从“平台能力沙盘”底部移除，并新增独立页“跨平台优先入口”。
 - 新页以“通用入口优先、增强入口适配”为结论：项目规则、可引用知识、MCP 连接作为跨平台优先建设面；Skill / Workflow、Command、Plugin / Extension、Custom / 子 Agent、Hook / Automation 作为按平台装配面适配的后续供给。
+
+### 2026-08-19（横向 Workflow 关系表达与视觉层级）
+
+- 用户明确：调用时机与作用不能再写成能力卡内的“何时调用”标签，必须由节点接入主流程的位置、箭头方向和结果回流关系表达。#8 已改为原生 SVG 横向流程：`Start → Context → Model → Host Execute → End`；项目规则、会话指令、Command、Skill、Plugin、模板以箭头接入 Context / Model，Custom Agent 接入 Model，子 Agent 以“委派 / 回传”双向关系接入 Model，知识库与 MCP 以请求 / 返回双箭头接入 Execute，Hook 以前后两条线接入执行与回写。
+- Harness 改为低强调的灰蓝虚线运行范围，仅完整包住 `Context → Model → Execute` 三个运行时节点；Start、End 和所有可调用能力节点均在框外。框线不再穿过或叠压任何节点。
+- 可调用能力节点统一新增业务线性 SVG 图标，并使用蓝 / 紫 / 绿 / 橙等低饱和浅色底、彩色细描边与轻阴影区别于主流程节点；主节点维持功能性的低饱和色块，避免整页白卡。
