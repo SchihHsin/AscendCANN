@@ -1750,3 +1750,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-08-20（Workflow 整图放大）
 
 - 根据桌面全屏截图，Workflow 四周仍有较多空白；保持 SVG 内部节点、文字和连线坐标不变，以中心点将整图等比放大 15%，提升页面占用率和阅读清晰度。
+
+### 2026-08-20（tool_result 回写出口修正）
+
+- `追加 tool_result` 的回写虚线不再从节点右下角绕出；改为从 Message 节点底部中点明确出发，先横移到 MCP 与子 Agent 卡片之间的空隙，再下行至能力卡下方并返回 Model Request，确保来源清楚且不穿过能力卡。
