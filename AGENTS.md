@@ -1629,3 +1629,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求移除 #8 左上角 Workflow Tab，并将图拆为两页进行版式比较。已在 `cann-dashboard/operator-ai-journey-deck/index.html` 删除 Tab、Opknow iframe 与切换脚本；新增连续两页：方案 1「能力直接写入竖向主流程节点」、方案 2「Harness 主流程 + 按阶段对齐的能力泳道」。
 - 两页共用同一机制边界，但不再合并层级：Context 是 Host 每轮装配的输入；项目规则 / 指令是 Context 内的长期约束；Command 是显式任务入口；Skill / Workflow 是方法；Custom Agent 是预定义专职角色；子 Agent 由 Harness 按需创建并回传；知识库 / 检索、MCP / Connector 仅在 tool call 后由 Host 执行；Hook / Automation 在调用前后自动运行；Plugin / Extension 是集成入口。
 - 流程均保持单向 Start → Context → 模型推理 → 判断 → Host 执行 / End；恢复只作为最后的失败或证据不足分支，不再采用围绕主线的环形布局或外侧跨图连接。
+- 方案 2 中 `Custom Agent` 与 `子 Agent` 已拆为相邻但独立的两行：前者是开发者预先定义的专职角色与边界，后者是 Harness 运行时按需创建的执行单元；不再以斜杠合并概念。
