@@ -14,7 +14,7 @@
 <body><main>
 <div class="eyebrow">REFERENCE · AGENT TOOL CALLING</div>
 <h1>真实 API 的共同机制：工具调用不是“指向能力卡”</h1>
-<p class="lead">模型先返回响应；只有响应包含工具调用时，应用侧才解析、校验并执行工具。工具输出作为中间消息回传模型，模型后续生成的 final response 才是开发者看到的最终交付。</p>
+<p class="lead">模型先返回响应；只有响应包含工具调用时，应用侧才解析、校验并执行工具。工具输出作为中间消息回传模型，模型后续生成的 final response 是候选交付；是否真正完成任务，还要由应用侧按目标、结果与验证证据验收。</p>
 
 <section class="section"><div class="section-head"><h2>跨平台共同循环</h2><p>厂商字段名称不同，但“模型请求 → tool call → 应用执行 → tool result → 下一轮请求”是同一协议关系。</p></div>
 <div class="loop">
@@ -25,7 +25,7 @@
 <div class="step tool"><span class="n">05 · EXECUTE</span><b>执行具体工具</b><span>检索、外部连接、命令或委派</span></div>
 <div class="step message"><span class="n">06 · MESSAGE</span><b>回传 tool result</b><span>携带 call_id / tool_use_id</span></div>
 <div class="step end"><span class="n">07 · END</span><b>最终响应</b><span>模型基于工具结果生成答案</span></div>
-</div><div class="note"><b>边界：</b>知识库、MCP、子 Agent 是工具实现；tool_result 是发给模型的中间消息。二者都不是最终交付结果。</div></section>
+</div><div class="note"><b>边界：</b>知识库、MCP、子 Agent 是工具实现；tool_result 是发给模型的中间消息。二者都不是最终交付结果。API 层只分流 tool call 与 message / final，不负责判断业务任务是否完成。</div></section>
 
 <section class="section"><div class="section-head"><h2>公开 API 字段对照</h2><p>只保留决定流程走向的字段。不能把某一家 API 的专有字段直接写成跨平台通用节点。</p></div>
 <div class="api-grid">
@@ -49,8 +49,8 @@ tool.tool_call_id + content
 </div></section>
 
 <section class="section"><div class="section-head"><h2>对报告 Workflow 的硬约束</h2></div><div class="truth">
-<article><b>必须画出的关系</b><ul><li>模型响应和工具执行之间有应用侧解析与校验</li><li>能力卡只连接具体执行动作</li><li>所有工具分支回到同一个 tool result 消息节点</li><li>tool result 回到下一轮模型请求</li></ul></article>
-<article><b>不能出现的表达</b><ul><li>把知识库、MCP 或子 Agent 画成最终结果</li><li>把 tool_result 和 final response 画成两个 End</li><li>用单一厂商的 stop_reason 代表所有 API</li><li>让 Hook 长线穿过流程节点</li></ul></article>
+<article><b>必须画出的关系</b><ul><li>模型响应和工具执行之间有应用侧解析与校验</li><li>能力卡只连接具体执行动作</li><li>所有工具分支回到同一个 tool result 消息节点</li><li>tool result 回到下一轮模型请求</li><li>final / message 之后仍需应用侧验收任务完成条件</li></ul></article>
+<article><b>不能出现的表达</b><ul><li>把知识库、MCP 或子 Agent 画成最终结果</li><li>把 tool_result 和 final response 画成两个 End</li><li>用单一厂商的 stop_reason 代表所有 API</li><li>让 Hook 长线穿过流程节点</li><li>把 final response 直接等同于任务已经验收通过</li></ul></article>
 </div></section>
 
 <section class="section"><div class="section-head"><h2>MCP 与子 Agent 的关系</h2><p>二者没有固定前后顺序：Host 根据 tool name 选择执行器；子 Agent 内部可以再次发起自己的模型与工具循环。</p></div><div class="relation">
