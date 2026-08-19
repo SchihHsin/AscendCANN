@@ -1761,3 +1761,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `tool_result` 回写线线宽由 `1.55px` 提升至 `2px`，与前向主流程灰蓝箭头保持相同视觉重量。
 - Response 判断节点由模糊的 `final / tool_call？` 改为明确判断 `包含工具调用项？`，并在节点内标出跨平台字段依据 `tool_call / tool_use`；无工具调用沿水平线进入 final response，包含一个或多个工具调用则向下进入 Application。
 - 判断节点文字放大时同步扩大菱形：主标题恢复为 `15px`、字段依据提升为 `10px`，菱形由约 `180×154` 扩至 `220×166`，三条连接线同步调整端点，避免文字放大后挤压节点。
+- 重新排序能力输入端口以消除交叉：Command 接 Model 左侧端口、Plugin 接右侧端口，并错开转折高度；知识库、MCP、子 Agent 按左中右顺序接入 Router，MCP 与子 Agent 的横向段分别使用 `y=524` 与 `y=510`，不再互相穿越。
