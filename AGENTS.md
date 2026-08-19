@@ -1597,3 +1597,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出上次收紧时误删了图内必要信息。已恢复能力条的作用范围、final 交付内容、Host 执行内容和 tool result 回传含义，并恢复完整主图高度。
 - 此页的收紧边界固定为：只删除图外长说明与图内重复来源；流程节点、能力解释、分流和回传机制均保留在图中。
+
+### 2026-08-19（Harness 层级重构）
+
+- 用户指出 Harness 被写成 `Host / Harness` 的标签，仍像流程节点而非运行时框架。#8 已改为最外层的大框：Harness / Agent Runtime 包住任务状态、上下文窗口、权限、模型调用、工具注册、结果回写、重试与子 Agent 编排。
+- Host 改为 Harness 内的两个模块：`Context` 负责组装请求，`Execute` 负责受控工具调用；模型 API 位于 Harness 外部，只承担推理并返回 final 或 tool call。
+- 规则 / Command、Plugin、Custom Agent 明确为开发者挂载给 Harness 的能力；知识库、Skill、MCP、Hook 明确为 Host 在任务执行阶段按条件触发的能力。tool result 先进入状态恢复，再带更新后的上下文回到模型；final 则直接交付给开发者。
+- 二次审视后，模型 API 进一步移出 Harness 大框：Harness 是宿主运行时，调用外部模型 API；模型不属于运行时模块。图中 Harness 内只保留 Context、Execute 与 State / Recovery 三种模块，避免再次混淆运行时、应用模块、模型服务与开发者可挂载能力。
