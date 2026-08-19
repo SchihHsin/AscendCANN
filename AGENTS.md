@@ -1756,4 +1756,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `追加 tool_result` 的回写虚线不再从节点右下角绕出；改为从 Message 节点底部中点明确出发，先横移到 MCP 与子 Agent 卡片之间的空隙，再下行至能力卡下方并返回 Model Request，确保来源清楚且不穿过能力卡。
 - Model Request 底部使用两个独立输入端口：左侧接收 `Agent 定义` 的预配置，右侧接收 `tool_result` 的运行结果回填；两个箭头不再重合。
 - 进一步消除两条输入线的交叉：`Agent 定义` 移到 Model 正下方并垂直直连；`tool_result` 从 MCP 与子 Agent 之间下行、沿卡片下方左移，再从 Agent 与 Hook 之间的空隙上行接入 Model 右侧端口。
-- `tool_result` 回填继续使用紫色虚线，以区别于前向执行主线；出口改为 Message 节点右侧中点，沿扩大的 Harness 右侧内边缘下行后回到 Model。Harness 右边界同步外扩，End 仍保持在框外。
+- `tool_result` 回填最终改为紫色实线，作为明确的消息回填路径；出口从 Message 节点右侧中点指出。回填线右侧竖段、Harness 边界与 End 节点重新拉开间距，End 同步右移但仍保持在 Harness 外。
