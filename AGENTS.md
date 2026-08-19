@@ -1610,3 +1610,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出“不是一种工具”属于多余解释性 / 辩解式语言，已从 Harness 标题中删除。
 - #8 改为明确的主线结构：`START → Context 装配 → 外部模型 API → final / tool call 判断 → END`；`tool call` 才进入 Host Execute，结果写入 State / Recovery。
 - Harness 作为包住主线的运行时大框；仅在 tool result 不足或失败时，以一条弱化橙色虚线从 State / Recovery 回到 Context 开启下一轮，避免让整张图被误读为无起止的环形流程。
+
+### 2026-08-19（竖向主干保留完整信息）
+
+- 用户要求流程图必须真正从上到下，同时不能因改为竖向而删减内容。#8 的中轴固定为 `START → Context → 外部模型 API → 响应判断`；判断后 `final → END`，`tool call → Host Execute → State / Recovery`。
+- 已在不改变竖向主干的前提下，恢复任务输入、Context 装配内容、模型“仅返回响应”的边界、End 的交付物、Execute 的审计内容，以及两侧可装配能力的完整作用说明：规则 / Prompt / Plugin / Custom Agent 与知识库 / Skill / MCP / Hook。
+- 恢复回路仍仅用于失败或证据不足，回写证据、日志、问题状态、复现包与责任升级；不作为主干的一部分。

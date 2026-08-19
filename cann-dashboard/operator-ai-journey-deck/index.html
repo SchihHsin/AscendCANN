@@ -331,31 +331,31 @@
       const tab=document.querySelector('[data-title="Agent Workflow"] .flow-tab');
       if(!pane||!tab)return;
       tab.textContent='本研究：社区资产如何进入任务';tab.dataset.pane='research-loop';pane.id='research-loop';
-      pane.innerHTML=`<div class="native-workflow"><svg viewBox="0 0 1240 620" role="img" aria-label="Harness 包住从任务进入、上下文装配、模型调用、工具执行到结果回写的主流程；成功进入 End，工具结果不足时才回到下一轮">
+      pane.innerHTML=`<div class="native-workflow"><svg viewBox="0 0 1240 620" role="img" aria-label="自上而下的 Harness 工作流：任务进入、上下文装配、模型调用和响应判断位于主干；final 进入 End，tool call 进入 Host 执行，结果不足时才回到下一轮">
         <defs><marker id="wf-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#8b97a6"/></marker><marker id="wf-arrow-green" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2a7a68"/></marker><marker id="wf-arrow-warm" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#b46858"/></marker></defs>
-        <text x="620" y="20" text-anchor="middle" class="wf-note">主流程：START → 装配上下文 → 模型判断 → final / tool call → END；仅失败时进入下一轮</text>
-        <rect x="108" y="54" width="1024" height="512" rx="22" fill="rgba(255,255,255,.34)" stroke="#7587c7" stroke-width="2" stroke-dasharray="8 5"/>
-        <rect x="135" y="70" width="298" height="31" rx="16" fill="#e9edff"/><text x="156" y="91" class="wf-title" fill="#4e60a9">HARNESS / AGENT RUNTIME</text>
-        <text x="136" y="120" class="wf-small">任务状态、上下文、权限、模型调用、工具注册、回写、重试与子 Agent 编排</text>
-        <rect x="141" y="145" width="176" height="60" rx="12" fill="#eaf8f0" stroke="#9fceb3"/><text x="164" y="171" class="wf-title" fill="#256b50">START</text><text x="164" y="192" class="wf-copy">开发者任务进入</text>
-        <path d="M229 205 V223" class="wf-link" marker-end="url(#wf-arrow)"/>
-        <rect x="141" y="230" width="312" height="104" rx="14" fill="#edf1ff" stroke="#9eafe0" stroke-width="1.6"/><text x="166" y="260" class="wf-title" fill="#637aa1">HOST · CONTEXT</text><text x="166" y="291" class="wf-main">装配 messages + tools</text><text x="166" y="314" class="wf-copy">代码、日志、版本、权限与规则</text>
-        <path d="M453 282 H507 V180 H539" class="wf-link" marker-end="url(#wf-arrow)"/><text x="469" y="269" class="wf-edge-label">请求</text>
-        <rect x="539" y="133" width="326" height="94" rx="14" fill="#f4efff" stroke="#c5b4e5" stroke-width="1.7"/><text x="565" y="161" class="wf-title" fill="#7656ac">EXTERNAL MODEL API</text><text x="565" y="191" class="wf-main">推理并返回响应</text><text x="565" y="212" class="wf-copy">final 或结构化 tool call</text>
-        <path d="M702 227 V259" class="wf-link" marker-end="url(#wf-arrow)"/><text x="716" y="248" class="wf-edge-label">模型响应</text>
-        <path d="M702 263 L786 310 L702 357 L618 310 Z" fill="#f7f4ff" stroke="#bba8df" stroke-width="1.9"/>
-        <text x="702" y="306" text-anchor="middle" class="wf-main" style="font-size:16px">final？</text><text x="702" y="327" text-anchor="middle" class="wf-copy">还是 tool call</text>
-        <path d="M618 310 H543 V479 H438" class="wf-link" marker-end="url(#wf-arrow-green)"/><text x="558" y="299" class="wf-edge-label" fill="#2a7a68">final</text>
-        <rect x="220" y="484" width="218" height="54" rx="12" fill="#eaf8f0" stroke="#9fceb3"/><text x="244" y="507" class="wf-title" fill="#256b50">END · DELIVERY</text><text x="244" y="526" class="wf-copy">结论、来源与下一步</text>
-        <path d="M786 310 H871" class="wf-link" marker-end="url(#wf-arrow)"/><text x="800" y="299" class="wf-edge-label">tool call</text>
-        <rect x="871" y="257" width="216" height="104" rx="14" fill="#eefaf7" stroke="#9ecfc3" stroke-width="1.6"/><text x="895" y="287" class="wf-title" fill="#287b61">HOST · EXECUTE</text><text x="895" y="318" class="wf-main">按权限执行工具</text><text x="895" y="341" class="wf-copy">检索、运行、读写外部系统</text>
-        <rect x="141" y="365" width="312" height="63" rx="12" fill="#f8fafb" stroke="#cbd3dc"/><text x="166" y="390" class="wf-title" fill="#657382">开发者挂载到 Harness</text><text x="166" y="414" class="wf-small">规则 / Command · Plugin · Custom Agent</text>
-        <path d="M296 365 V334" class="wf-attach" marker-end="url(#wf-arrow)"/>
-        <rect x="871" y="383" width="216" height="63" rx="12" fill="#f8fafb" stroke="#cbd3dc"/><text x="895" y="408" class="wf-title" fill="#657382">按任务触发</text><text x="895" y="432" class="wf-small">知识库 · Skill · MCP · Hook</text>
-        <path d="M979 383 V361" class="wf-attach-green" marker-end="url(#wf-arrow-green)"/>
-        <path d="M979 361 V468 H786" class="wf-link-dash" marker-end="url(#wf-arrow-warm)"/>
-        <rect x="602" y="454" width="184" height="84" rx="14" fill="#fff6ee" stroke="#e1b07a"/><text x="626" y="482" class="wf-title" fill="#a36a20">STATE / RECOVERY</text><text x="626" y="509" class="wf-main">回写 tool result</text><text x="626" y="528" class="wf-copy">证据、日志、状态</text>
-        <path d="M602 496 H520 V426 H453" class="wf-link-dash" marker-end="url(#wf-arrow-warm)"/><text x="473" y="447" class="wf-edge-label" fill="#aa554b">不足时更新上下文，下一轮</text>
+        <text x="620" y="20" text-anchor="middle" class="wf-note">主干从上到下：START → Context → 模型调用 → 响应判断；工具执行与重试只在判断之后发生</text>
+        <rect x="323" y="47" width="594" height="524" rx="22" fill="rgba(255,255,255,.34)" stroke="#7587c7" stroke-width="2" stroke-dasharray="8 5"/>
+        <rect x="347" y="62" width="270" height="31" rx="16" fill="#e9edff"/><text x="368" y="83" class="wf-title" fill="#4e60a9">HARNESS / AGENT RUNTIME</text>
+        <text x="348" y="111" class="wf-small">管理任务状态、上下文窗口、权限、模型调用、工具注册、结果回写、重试与子 Agent 编排</text>
+        <rect x="482" y="128" width="276" height="52" rx="12" fill="#eaf8f0" stroke="#9fceb3"/><text x="507" y="150" class="wf-title" fill="#256b50">START · TASK</text><text x="507" y="169" class="wf-copy">目标、代码、环境、日志进入任务会话</text>
+        <path d="M620 180 V199" class="wf-link" marker-end="url(#wf-arrow)"/>
+        <rect x="441" y="205" width="358" height="82" rx="14" fill="#edf1ff" stroke="#9eafe0" stroke-width="1.6"/><text x="467" y="232" class="wf-title" fill="#637aa1">HOST · CONTEXT</text><text x="467" y="259" class="wf-main">装配 messages + tools</text><text x="467" y="278" class="wf-copy">任务、代码、日志、版本、规则、工具清单与权限边界</text>
+        <rect x="58" y="202" width="322" height="88" rx="12" fill="#f8fafb" stroke="#cbd3dc"/><text x="82" y="227" class="wf-title" fill="#657382">开发者挂载到 Harness</text><text x="82" y="249" class="wf-small">项目规则 / 持久上下文 · Command / Prompt</text><text x="82" y="266" class="wf-small">Plugin / Extension · Custom Agent / Subagent</text><text x="82" y="283" class="wf-small">约束本轮上下文，或由 Harness 分派专职任务</text>
+        <path d="M354 246 H441" class="wf-attach" marker-end="url(#wf-arrow)"/>
+        <path d="M620 287 V304" class="wf-link" marker-end="url(#wf-arrow)"/>
+        <rect x="467" y="310" width="306" height="78" rx="14" fill="#f4efff" stroke="#c5b4e5" stroke-width="1.7"/><text x="493" y="336" class="wf-title" fill="#7656ac">CALL EXTERNAL MODEL API</text><text x="493" y="364" class="wf-main">模型推理并返回响应</text><text x="493" y="382" class="wf-copy">返回 final 或结构化 tool call；模型不直接执行外部动作</text>
+        <path d="M620 388 V405" class="wf-link" marker-end="url(#wf-arrow)"/>
+        <path d="M620 409 L700 454 L620 499 L540 454 Z" fill="#f7f4ff" stroke="#bba8df" stroke-width="1.9"/>
+        <text x="620" y="450" text-anchor="middle" class="wf-main" style="font-size:16px">响应类型？</text><text x="620" y="471" text-anchor="middle" class="wf-copy">final 还是 tool call</text>
+        <path d="M540 454 H393 V510" class="wf-link" marker-end="url(#wf-arrow-green)"/><text x="464" y="443" class="wf-edge-label" fill="#2a7a68">final</text>
+        <rect x="230" y="509" width="297" height="52" rx="12" fill="#eaf8f0" stroke="#9fceb3"/><text x="254" y="531" class="wf-title" fill="#256b50">END · DELIVERY</text><text x="254" y="550" class="wf-copy">Host 呈现结论、引用来源、适用限制与下一步</text>
+        <path d="M700 454 H847 V489" class="wf-link" marker-end="url(#wf-arrow)"/><text x="731" y="443" class="wf-edge-label">tool call</text>
+        <rect x="835" y="483" width="268" height="78" rx="14" fill="#eefaf7" stroke="#9ecfc3" stroke-width="1.6"/><text x="859" y="507" class="wf-title" fill="#287b61">HOST · EXECUTE</text><text x="859" y="533" class="wf-main">按权限执行工具</text><text x="859" y="552" class="wf-copy">读取结果、执行动作，并记录命令、输入输出与审计轨迹</text>
+        <rect x="929" y="291" width="252" height="108" rx="12" fill="#f8fafb" stroke="#cbd3dc"/><text x="952" y="316" class="wf-title" fill="#657382">按任务触发的执行能力</text><text x="952" y="338" class="wf-small">知识库 / 检索：事实、版本、来源</text><text x="952" y="355" class="wf-small">Skill：步骤、分支、停止条件</text><text x="952" y="372" class="wf-small">MCP：GitCode、CI、NPU、日志</text><text x="952" y="389" class="wf-small">Hook：生命周期检查与自动回写</text>
+        <path d="M968 388 V494" class="wf-attach-green" marker-end="url(#wf-arrow-green)"/>
+        <path d="M969 561 V582 H802 V571" class="wf-link-dash" marker-end="url(#wf-arrow-warm)"/>
+        <rect x="538" y="518" width="264" height="51" rx="12" fill="#fff6ee" stroke="#e1b07a"/><text x="562" y="540" class="wf-title" fill="#a36a20">STATE / RECOVERY · 回写结果</text><text x="562" y="559" class="wf-copy">证据、日志、问题状态、复现包与责任升级</text>
+        <path d="M538 544 H478 V287" class="wf-link-dash" marker-end="url(#wf-arrow-warm)"/><text x="348" y="574" class="wf-edge-label" fill="#aa554b">仅在证据不足 / 失败时：带新上下文进入下一轮；高风险结论进入验证与责任升级</text>
       </svg></div>`;
     })();
   </script>
