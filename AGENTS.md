@@ -1580,3 +1580,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 图中明确区分模型与 Host：模型不直接执行外部系统动作；知识库、Skill、MCP / Connector、Hook 均在 Host 执行段发挥作用。规则、Command / Prompt、Plugin 位于请求装配前；Custom Agent / Subagent 位于 Harness 的规划 / 分派；Harness 是贯穿性的运行时，不作为独立 tool。
 - 案例、验证、人机协作、问题状态统一置于执行之后的结果 / 治理：CI、NPU、日志形成 tool result；证据不足才形成复现包与责任升级并回到下一轮判断，不再与工具类型并列。
 - 图脚注明参考来源：OpenAI Function Calling / Responses API、Anthropic Tool Use、DeepSeek Function Calling、Kimi Open Platform 工具调用文档；Opknow 原图继续保留在第二 Tab，不重画。
+
+### 2026-08-19（Workflow 主图放大）
+
+- 用户指出 API Workflow 图过小、文字过挤；根因是把“主循环”与右侧大块能力映射同时塞入 SVG，导致主图没有占满画布。
+- 已移除右侧外置能力映射区，保留并放大 API 主循环至整张画布宽度：请求装配 → 模型响应 → final / tool call 判断 → Host 执行 → tool result 回传 → 再判断。
+- 能力映射压缩为主图内两处：规则 / Command / Plugin 标于请求装配；知识库 / Skill / MCP / Hook 标于 Host 执行。Harness、子 Agent、验证与升级只以底部一句阶段说明表达，避免与主循环争夺视觉面积。
