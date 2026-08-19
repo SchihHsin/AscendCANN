@@ -1783,3 +1783,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增应用 / 业务层判断“任务满足完成条件？”；依据为目标、结果与验证证据。只有验收通过才进入唯一 End，未通过则补充上下文或继续一轮。
 - 依据页 `cann-dashboard/agent-tool-calling-reference.html` 同步说明：`tool_calls` / `function_call` / `tool_use` 是 API 分流字段，API 本身不判断业务任务是否完成；`final response` 只是候选交付，不能直接等同于验收通过。
 - 修复“任务满足完成条件？→ 否”回路被下方工具节点遮挡的问题：回路改为在工具节点上方走独立折线，明确回到 `02 · MODEL REQUEST`，并将“否 · 补充上下文或继续一轮”标签贴在线路旁。
+- 第 10 页“资产分流”清理旧的“案例状态对象 / 执行证据 / 责任闭环”能力行；这些属于任务对象或执行产出，保留在后续状态与验证页。该页现在只展示知识库、Skill、模板 / Command、Plugin / MCP、Custom Agent / Subagent、Hook / Harness 等可装配能力，并同步更新表头与图例。
