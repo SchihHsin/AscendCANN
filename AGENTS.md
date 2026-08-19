@@ -1538,3 +1538,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 汇报版“平台能力沙盘”补齐 Trae 公开入口：Rules、Skills、Commands、MCP Server、Extensions、Custom Agent、Subagents、Hooks，均按产品文档标示为开发者可直接配置或可安装。
 - WorkBuddy 按其任务型 AI 工作平台性质标示：Skills 市场 / 自定义 Skill、连接器（包含自定义连接器及 MCP）、任务模板、专家 / 专家团和定时自动化。
 - 边界固定：WorkBuddy 的任务提示词 / 记忆不等于代码项目 Rule；专家团属于可召唤的多 Agent 任务执行机制，不等于开发者可自定义的 Subagent；定时自动化不等于 IDE 生命周期 Hook；其扩展以 Skill 与连接器为主，不能虚构为 Plugin / Extension。
+
+### 2026-08-19（补足知识库与术语边界）
+
+- “可装配能力”由七类改为八类，单列“知识库 / 检索范围”：用于提供可检索、可引用的事实、版本与兼容资料；Skill 用于提供可重复的方法与停止条件，二者不得混同。
+- “项目规则 / 指令”更名为“项目规则 / 持久上下文”，避免把自动加载的项目约束与当次任务指令混在同一能力单元；Command / 任务提示词明确为用户显式启动任务的入口，其中 Command 是固定入口，提示词给出本次目标。
+- 平台沙盘补充知识库 / 检索范围一行：Cursor 标示 @Docs；Trae 标示代码库索引 / 文档上下文；Codex、Claude Code 标示项目文件与 MCP 可配置检索范围；WorkBuddy 标示任务授权的本地文件 / Skills。此处呈现的是各平台可直接接入资料的方式，不将它们硬称为同一种内置知识库。
