@@ -1740,3 +1740,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将 `response(final / tool_call)` 的 final 分支改为从判断节点水平直达唯一 End；只有 tool_call 分支向下进入 Application 校验、Router 执行、Message 回填，再循环到下一轮 Model Request。
 - `Agent 定义 / Custom Agent` 从错误的 Application 接口改为接入 Model Request，表达角色、指令与工具边界参与请求构造；Hook 从顶部移至 Application 下方，以短线接入调用前校验，不再跨越 final 主线。
 - Harness 右边界收回到 End 左侧，Start / End 均位于运行框架外；最终响应箭头穿出 Harness 后直接进入 End，边界不再与 End 节点重叠。
+
+### 2026-08-20（Workflow 方案定稿与节点自适应）
+
+- 用户选择方案一。已删除“极浅语义色节点”对照页，报告只保留白色主节点 + 彩色圆点的正式 Workflow 页面；标题和页脚从方案比较文案改为真实机制结论。
+- 按各节点最长一行重新分配 SVG 宽度：Context 200、Model 190、Application / Router 210、Message 190、Start 130、End 150；判断节点、主线箭头、tool_call 下行、tool_result 回写和 Harness 边界同步重排。
+- `Plugin / Extension` 与 `MCP / Connector` 能力卡单独加宽，避免长标题越界；没有通过继续缩小正文来压缩内容。
