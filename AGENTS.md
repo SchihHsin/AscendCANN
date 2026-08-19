@@ -1652,3 +1652,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出“组装请求 / 推理与规划 / 受控执行”过于笼统。#8 主节点已改为实际可观察的 API 调用行为：`任务输入（prompt / repo / 日志）→ 构造 messages + tools（system / user、上下文片段、tool schema、权限、历史结果）→ Call Model API 并解析 response（final 或 tool name + JSON arguments / 委派指令）→ 校验并执行 action（授权、参数、命令 / 检索 / 读写，返回 JSON / 日志 / diff / 状态）→ 返回交付物（结论、引用、变更）`。
 - Harness 说明和回传线同步明确为：将 API response 的 `tool result`（JSON 结果、引用、日志、diff、状态、子任务输出）追加到 messages，进入下一轮模型调用。
+
+### 2026-08-19（Workflow 改为动作节点）
+
+- 用户进一步明确：不需要把“Context / Model / Execute”三个抽象阶段加注释，而是需要流程本身由 Agent 实际执行的动作节点构成。#8 已改为左至右动作序列：`接收任务 → 读取工作区 → 加载任务约束 → 写入 API 请求 → 请求模型 → 解析行动请求 → 调用并执行 → 返回 final`。
+- 节点分别说明对应行为：读取文件 / git diff / 环境 / 错误日志；加载规则 / 指令 / Skill / Command / 工具定义；将 messages、tools schema、权限与历史写进请求；解析 `tool name + 参数` 或子任务委派；执行检索、命令、MCP 读写与 Hook 生命周期动作；将结果作为 `tool result` 追加到下一轮 messages。
