@@ -1604,3 +1604,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Host 改为 Harness 内的两个模块：`Context` 负责组装请求，`Execute` 负责受控工具调用；模型 API 位于 Harness 外部，只承担推理并返回 final 或 tool call。
 - 规则 / Command、Plugin、Custom Agent 明确为开发者挂载给 Harness 的能力；知识库、Skill、MCP、Hook 明确为 Host 在任务执行阶段按条件触发的能力。tool result 先进入状态恢复，再带更新后的上下文回到模型；final 则直接交付给开发者。
 - 二次审视后，模型 API 进一步移出 Harness 大框：Harness 是宿主运行时，调用外部模型 API；模型不属于运行时模块。图中 Harness 内只保留 Context、Execute 与 State / Recovery 三种模块，避免再次混淆运行时、应用模块、模型服务与开发者可挂载能力。
+
+### 2026-08-19（Workflow 主线与循环层级）
+
+- 用户指出“不是一种工具”属于多余解释性 / 辩解式语言，已从 Harness 标题中删除。
+- #8 改为明确的主线结构：`START → Context 装配 → 外部模型 API → final / tool call 判断 → END`；`tool call` 才进入 Host Execute，结果写入 State / Recovery。
+- Harness 作为包住主线的运行时大框；仅在 tool result 不足或失败时，以一条弱化橙色虚线从 State / Recovery 回到 Context 开启下一轮，避免让整张图被误读为无起止的环形流程。
