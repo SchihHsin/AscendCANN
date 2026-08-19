@@ -1643,3 +1643,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户明确：调用时机与作用不能再写成能力卡内的“何时调用”标签，必须由节点接入主流程的位置、箭头方向和结果回流关系表达。#8 已改为原生 SVG 横向流程：`Start → Context → Model → Host Execute → End`；项目规则、会话指令、Command、Skill、Plugin、模板以箭头接入 Context / Model，Custom Agent 接入 Model，子 Agent 以“委派 / 回传”双向关系接入 Model，知识库与 MCP 以请求 / 返回双箭头接入 Execute，Hook 以前后两条线接入执行与回写。
 - Harness 改为低强调的灰蓝虚线运行范围，仅完整包住 `Context → Model → Execute` 三个运行时节点；Start、End 和所有可调用能力节点均在框外。框线不再穿过或叠压任何节点。
 - 可调用能力节点统一新增业务线性 SVG 图标，并使用蓝 / 紫 / 绿 / 橙等低饱和浅色底、彩色细描边与轻阴影区别于主流程节点；主节点维持功能性的低饱和色块，避免整页白卡。
+
+### 2026-08-19（Harness 边界统一）
+
+- 用户确认 Harness 表示开发者配置并运行 Agent 的整体边界，因此 #8 的 Harness 虚线范围已扩展：完整包住所有可调用能力节点及 `Context → Model → Host Execute` 主运行链；Start / End 保持在边界外。知识库与 MCP 是边界内由 Harness 调用的入口，其箭头所代表的检索 / 外部动作可穿出至外部系统，但能力配置本身归属于 Harness。
