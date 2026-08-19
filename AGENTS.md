@@ -1631,3 +1631,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 流程均保持单向 Start → Context → 模型推理 → 判断 → Host 执行 / End；恢复只作为最后的失败或证据不足分支，不再采用围绕主线的环形布局或外侧跨图连接。
 - 方案 2 中 `Custom Agent` 与 `子 Agent` 已拆为相邻但独立的两行：前者是开发者预先定义的专职角色与边界，后者是 Harness 运行时按需创建的执行单元；不再以斜杠合并概念。
 - 用户进一步强调可调用能力会在不同时间发挥作用，不能嵌在阶段卡或以合并卡表达。两种方案均改为“一张卡只承载一种能力”，并按实际介入位置接入：项目规则、会话指令、Command、Skill、Plugin、模板在 Context 装配；Custom Agent、子 Agent 在模型规划 / 委派；知识库、MCP、Hook 在 Host 收到 tool call 后执行或作用于执行生命周期。
+
+### 2026-08-19（平台沙盘结论拆页）
+
+- 用户指出“跨平台最稳的接入面 / 下一步如何使用沙盘”放在能力矩阵下方突兀。已从“平台能力沙盘”底部移除，并新增独立页“跨平台优先入口”。
+- 新页以“通用入口优先、增强入口适配”为结论：项目规则、可引用知识、MCP 连接作为跨平台优先建设面；Skill / Workflow、Command、Plugin / Extension、Custom / 子 Agent、Hook / Automation 作为按平台装配面适配的后续供给。
