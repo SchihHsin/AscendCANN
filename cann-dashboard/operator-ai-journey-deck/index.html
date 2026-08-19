@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/IKKI2000/harmonyos-fonts@master/css/harmonyos_sans_sc.css" />
   <script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
   <style>
     :root{--fs-h1:clamp(20px,1.7vw,30px);--fs-h2:clamp(16px,1.25vw,22px);--fs-h3:clamp(15.5px,1.2vw,19px);--fs-body:clamp(15px,1.12vw,18px);--fs-sm:clamp(12px,.82vw,14.5px);--fs-xs:clamp(9px,.62vw,11px);--paper:#e9ebee;--card:#fff;--card2:#f1f3f6;--ink:#16191e;--ink2:#5e646e;--ink3:#929aa6;--line:#d4d8df;--indigo:#5b5bd6;--blue:#4b8dff;--teal:#28a8d8;--green:#39b982;--orange:#f47a4b;--red:#f05a68;--purple:#8d63d8;--gink:linear-gradient(140deg,#22262f,#14171c);--gaccent:linear-gradient(135deg,#6674e6,#7c3aed)}
     *{box-sizing:border-box;margin:0;padding:0}html,body{width:100%;height:100%;font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;background:#08090c;color:var(--ink);-webkit-font-smoothing:antialiased}html{scroll-snap-type:y mandatory;scroll-behavior:smooth}body{overflow:hidden auto;scroll-snap-type:y mandatory;scrollbar-width:thin;scrollbar-color:transparent transparent}body.scrolling{scrollbar-color:rgba(120,130,148,.5) transparent}body::-webkit-scrollbar{width:9px}body::-webkit-scrollbar-thumb{background:transparent;border:3px solid transparent;border-radius:8px;background-clip:padding-box}body.scrolling::-webkit-scrollbar-thumb{background:rgba(120,130,148,.48);background-clip:padding-box}body.on-dark.scrolling::-webkit-scrollbar-thumb{background:rgba(255,255,255,.34);background-clip:padding-box}
@@ -46,6 +45,7 @@
     .rf-decision{display:flex;align-items:center;justify-content:space-between;gap:1vw;padding:.7vh 1vw;border-color:#c9b9e9;background:linear-gradient(135deg,#f4efff,#fff)}.rf-decision b{font-size:var(--fs-h3)}.rf-decision span{color:#7656ac;font-size:var(--fs-xs);font-weight:800}.rf-branch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65vw;width:100%;margin:.65vh 0}.rf-branch{position:relative;min-height:87px;padding:.75vh .7vw;border:1px solid #d2d9e0;border-radius:9px;background:rgba(255,255,255,.72);box-shadow:0 7px 16px -16px rgba(30,40,70,.3)}.rf-branch:before{position:absolute;top:-9px;left:50%;width:1px;height:9px;background:#9aa4af;content:""}.rf-branch:after{position:absolute;top:-9px;left:50%;border-top:4px solid #9aa4af;border-right:3px solid transparent;border-left:3px solid transparent;content:"";transform:translate(-3px,-1px) rotate(180deg)}.rf-branch b{display:block;margin-top:.26vh;color:#293542;font-size:var(--fs-sm);line-height:1.15}.rf-branch p{margin-top:.2vh;color:#687581;font-size:var(--fs-xs);line-height:1.25}.rf-branch.kb{border-color:#a8c3ef}.rf-branch.kb .rf-k i{color:#3777cf}.rf-branch.skill{border-color:#c8d0d9}.rf-branch.skill .rf-k i{color:#5e6b79}.rf-branch.tpl{border-color:#d1c0ec}.rf-branch.tpl .rf-k i{color:#7656ac}.rf-branch.mcp{border-color:#a8d5c1}.rf-branch.mcp .rf-k i{color:#287b61}.rf-merge{display:flex;align-items:center;justify-content:center;width:62%;min-height:30px;padding:.45vh .7vw;border-style:dashed;background:#f7f8fa;color:#697582;font-size:var(--fs-xs);text-align:center}.rf-outcomes{display:grid;grid-template-columns:1fr 1fr;gap:.7vw;width:min(760px,100%);margin-top:.65vh}.rf-outcome{padding:.7vh .8vw;border:1px solid #a9d8be;border-radius:9px;background:#eef9f3}.rf-outcome.fail{border-color:#e2b3a9;background:#fff3ef}.rf-outcome b{display:block;color:#256b50;font-size:var(--fs-sm)}.rf-outcome.fail b{color:#9c493e}.rf-outcome p{margin-top:.2vh;color:#5d7168;font-size:var(--fs-xs);line-height:1.25}.rf-outcome.fail p{color:#87625a}.rf-loop{width:min(760px,100%);margin-top:.65vh;padding:.55vh .8vw;border-style:dashed;border-color:#d28c83;background:#fff5f2;color:#8e5149;font-size:var(--fs-xs);line-height:1.25;text-align:center}.rf-loop strong{color:#9c493e}
     @media(max-width:900px){.rf-branch-grid{grid-template-columns:repeat(2,minmax(0,1fr));overflow:auto}.research-flow{justify-content:flex-start;padding-top:1vh}.rf-node,.rf-decision,.rf-merge,.rf-outcomes,.rf-loop{width:100%}}
     .mermaid-pane{display:flex;flex:1;min-height:0;align-items:center;justify-content:center;width:100%;overflow:hidden;padding:0 1vw}.research-mermaid{width:min(1120px,100%);padding:1.2vh 1vw;border:1px solid rgba(255,255,255,.82);border-radius:14px;background:rgba(255,255,255,.57);box-shadow:0 12px 32px -22px rgba(30,40,70,.28)}.research-mermaid .mermaid{display:flex;align-items:center;justify-content:center;width:100%;min-height:0}.research-mermaid svg{display:block;width:100%;max-height:63vh;font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif}.research-mermaid .edgeLabel{background:#e9ebee!important;color:#5e646e!important}.research-mermaid .label foreignObject div{font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif!important;line-height:1.25}.research-mermaid .node rect,.research-mermaid .node polygon,.research-mermaid .node path{stroke-width:1.2px}.research-mermaid .flow-source{margin-top:.5vh;color:#7a8590;font:var(--fs-xs)/1.3 'JetBrains Mono',monospace;text-align:right}
+    .native-workflow{display:flex;flex:1;min-height:0;align-items:center;justify-content:center;width:100%;padding:.3vh 1vw}.native-workflow svg{display:block;width:min(1210px,100%);max-height:56vh;font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif}.native-workflow .wf-title{font-size:12px;font-weight:800;letter-spacing:.08em}.native-workflow .wf-main{font-size:15px;font-weight:800;fill:#202a33}.native-workflow .wf-copy{font-size:10px;fill:#697785}.native-workflow .wf-cap{font-size:9px;font-weight:800;letter-spacing:.05em}.native-workflow .wf-branch{font-size:12px;font-weight:800;fill:#293542}.native-workflow .wf-small{font-size:9px;fill:#6b7885}.native-workflow .wf-edge-label{font-size:9px;font-weight:700;fill:#758291}.native-workflow .wf-outcome{font-size:12px;font-weight:800}.native-workflow .wf-note{font-size:9px;fill:#7b8793}.native-workflow .wf-link{fill:none;stroke:#8b97a6;stroke-width:1.25}.native-workflow .wf-link-dash{fill:none;stroke:#c8685e;stroke-width:1.35;stroke-dasharray:5 4}
   </style>
 </head>
 <body>
@@ -278,7 +278,7 @@
       const tabs=[...shell.querySelectorAll('.flow-tab')];
       const researchTab=tabs[0], opknowTab=tabs[1];
       const researchPane=shell.querySelector('#agent-loop'), opknowPane=shell.querySelector('#community-loop');
-      if(researchTab&&researchPane){researchTab.textContent='本研究：社区资产如何进入任务';researchTab.dataset.pane='research-loop';researchPane.id='research-loop';researchPane.innerHTML='<div class="research-flow"><article class="rf-node start"><div class="rf-k"><i data-lucide="play-circle"></i>START · TASK</div><b>任务进入任务会话</b><p>目标 / 报错 + 芯片、版本、代码、日志进入同一上下文。</p></article><div class="rf-arrow"></div><article class="rf-node"><div class="rf-k"><i data-lucide="scan-search"></i>01 · CONTEXT</div><b>补齐最小必要条件</b><p>AI 先确认环境和缺失字段，不在条件不足时直接给结论。</p></article><div class="rf-arrow"></div><div class="rf-decision"><b>02 · 判断当前缺口</b><span>缺什么，才调用什么</span></div><div class="rf-branch-grid"><article class="rf-branch kb"><div class="rf-k"><i data-lucide="database"></i>缺权威事实</div><b>知识库 / 文档检索</b><p>API、版本、兼容范围 → 返回来源。</p></article><article class="rf-branch skill"><div class="rf-k"><i data-lucide="list-checks"></i>缺可重复方法</div><b>Skill / 工作流</b><p>预检、编译、排障 → 返回步骤与停止条件。</p></article><article class="rf-branch tpl"><div class="rf-k"><i data-lucide="folder-cog"></i>缺工程入口</div><b>模板 / 插件 / CLI</b><p>样例、配置、命令 → 返回可运行工程。</p></article><article class="rf-branch mcp"><div class="rf-k"><i data-lucide="plug-zap"></i>缺实时状态</div><b>MCP / API / 连接器</b><p>GitCode、CI、NPU、日志 → 返回实时结果。</p></article></div><div class="rf-merge">四类调用结果写回任务上下文，再进入同一执行现场</div><div class="rf-arrow"></div><article class="rf-node exec"><div class="rf-k"><i data-lucide="terminal"></i>03 · EXECUTE</div><b>在真实环境执行</b><p>IDE / CLI / 容器 / CI / NPU 运行代码，命令、输出和错误自动留痕。</p></article><div class="rf-arrow"></div><div class="rf-decision"><b>04 · 证据是否足够？</b><span>功能 / 精度 / 性能</span></div><div class="rf-outcomes"><article class="rf-outcome"><b><i data-lucide="check-circle-2"></i>是：交付并回流</b><p>形成带版本、环境、命令和结果的可引用结论，沉淀为案例 / 知识。</p></article><article class="rf-outcome fail"><b><i data-lucide="circle-alert"></i>否：保留状态并升级</b><p>生成复现包，进入问题状态、CI / 真机或专家责任链。</p></article></div><div class="rf-loop"><strong>失败回路：</strong>日志、已尝试动作和未解条件回写任务 → 回到“判断当前缺口”，继续调用</div></div>';window.lucide&&lucide.createIcons();}
+      if(false&&researchTab&&researchPane){/* legacy HTML workflow removed in favor of the native SVG below */}
       if(opknowTab&&opknowPane){
         opknowTab.textContent='Opknow：Agent 循环架构';
         opknowTab.dataset.pane='opknow-loop';
@@ -295,57 +295,48 @@
     })();
   </script>
   <script>
-    // Mermaid 11 returns errors asynchronously. Render the research workflow explicitly so a parse failure never leaves an error panel in the deck.
-    window.addEventListener('DOMContentLoaded',()=>setTimeout(async()=>{
-      const pane=document.querySelector('[data-title="Agent Workflow"] #research-loop');
-      if(!pane||!window.mermaid)return;
-      const graph=`flowchart TD
-        A[START：任务进入] --> B[补齐最小上下文<br/>芯片、版本、代码、日志]
-        B --> C{当前缺口？}
-        C -->|缺权威事实| K[知识库／文档检索<br/>API、版本、兼容范围]
-        C -->|缺可重复方法| S[Skill／工作流<br/>预检、编译、排障]
-        C -->|缺工程入口| T[模板／插件／CLI<br/>样例、配置、命令]
-        C -->|缺实时状态| M[MCP／API／连接器<br/>GitCode、CI、NPU、日志]
-        C -->|需要高风险判定| H[验证服务／人机协作<br/>运行证据、专家判定]
-        K --> R[调用结果写回任务上下文]
-        S --> R
-        T --> R
-        M --> R
-        H --> R
-        R --> E[真实环境执行<br/>IDE、CLI、容器、CI、NPU]
-        E --> V{证据是否足够？<br/>功能、精度、性能}
-        V -->|是| D[END：已验证交付<br/>结论、命令、环境、版本可追溯]
-        V -->|否／风险高| U[问题状态与责任升级<br/>复现包、CI、真机、Issue、专家]
-        U -.->|保留上下文并再次判断| C
-        classDef start fill:#edf1ff,stroke:#9eafe0,color:#202a33,stroke-width:1.2px
-        classDef context fill:#f4efff,stroke:#c5b4e5,color:#202a33,stroke-width:1.2px
-        classDef knowledge fill:#eef4ff,stroke:#9ebce9,color:#202a33
-        classDef skill fill:#f3f5f7,stroke:#b8c3cf,color:#202a33
-        classDef template fill:#f7f1ff,stroke:#c6afe6,color:#202a33
-        classDef mcp fill:#edf9f5,stroke:#9ecfbd,color:#202a33
-        classDef human fill:#fff6e9,stroke:#e2bd7e,color:#202a33
-        classDef execute fill:#eefaf7,stroke:#9ecfc3,color:#202a33,stroke-width:1.2px
-        classDef end fill:#eaf8f0,stroke:#9fceb3,color:#256b50,stroke-width:1.2px
-        classDef risk fill:#fff3ef,stroke:#dfa79c,color:#8e5149,stroke-width:1.2px
-        class A start
-        class B context
-        class K knowledge
-        class S skill
-        class T template
-        class M mcp
-        class H human
-        class R,E execute
-        class D end
-        class U risk`;
-      const fallback=`<div class="research-flow"><article class="rf-node start"><div class="rf-k">START · TASK</div><b>任务进入并补齐上下文</b><p>目标、芯片、版本、代码与日志进入同一任务。</p></article><div class="rf-arrow"></div><div class="rf-decision"><b>判断当前缺口并调用相应能力</b><span>知识 / 方法 / 工程 / 状态 / 验证</span></div><div class="rf-arrow"></div><article class="rf-node exec"><div class="rf-k">EXECUTE · VERIFY</div><b>真实环境执行、验证或升级</b><p>命令、结果与未解条件写回任务，继续下一轮判断。</p></article></div>`;
-      pane.innerHTML='<div class="mermaid-pane"><div class="research-mermaid"><div class="mermaid" id="research-workflow-graph"></div><div class="flow-source">本研究绘制 · Mermaid 11 · 基于公开案例与 Ascend C Agent 六阶段 workflow</div></div></div>';
-      try{
-        window.mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:'base',flowchart:{htmlLabels:true,curve:'basis',nodeSpacing:28,rankSpacing:30,padding:8},themeVariables:{fontFamily:'HarmonyOS Sans SC, Inter, Noto Sans SC, sans-serif',fontSize:'14px',lineColor:'#8995a4',primaryTextColor:'#202a33',edgeLabelBackground:'#e9ebee'}});
-        const rendered=await window.mermaid.render('research-workflow-svg',graph);
-        document.getElementById('research-workflow-graph').innerHTML=rendered.svg;
-        rendered.bindFunctions&&rendered.bindFunctions(document.getElementById('research-workflow-graph'));
-      }catch(error){pane.innerHTML=fallback}
-    },80),{once:true});
+    // Native SVG workflow: the same explicit-node / explicit-arrow approach as the Opknow architecture.
+    (()=>{
+      const pane=document.querySelector('[data-title="Agent Workflow"] #agent-loop');
+      const tab=document.querySelector('[data-title="Agent Workflow"] .flow-tab');
+      if(!pane||!tab)return;
+      tab.textContent='本研究：社区资产如何进入任务';tab.dataset.pane='research-loop';pane.id='research-loop';
+      pane.innerHTML=`<div class="native-workflow"><svg viewBox="0 0 1240 620" role="img" aria-label="社区资产如何按任务缺口进入 AI 开发任务：任务进入、补上下文、判断缺口、调用知识库 Skill 模板 MCP 或验证服务、汇合执行、证据判断、交付或升级回路">
+        <defs>
+          <marker id="wf-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8b97a6"/></marker>
+          <marker id="wf-arrow-green" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#2a7a68"/></marker>
+          <marker id="wf-arrow-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c8685e"/></marker>
+        </defs>
+        <text x="620" y="18" text-anchor="middle" class="wf-note">一次任务中，Agent 先判断缺口，再调用合适的社区服务；真实执行结果决定交付或升级</text>
+        <rect x="454" y="35" width="332" height="62" rx="10" fill="#edf1ff" stroke="#9eafe0" stroke-width="1.4"/>
+        <text x="474" y="56" class="wf-title" fill="#637aa1">START · TASK</text><text x="474" y="78" class="wf-main">任务进入</text><text x="474" y="92" class="wf-copy">目标 / 报错 + 代码、芯片、版本、日志</text>
+        <path d="M620 97 V120" class="wf-link" marker-end="url(#wf-arrow)"/>
+        <rect x="454" y="124" width="332" height="62" rx="10" fill="#f4efff" stroke="#c5b4e5" stroke-width="1.4"/>
+        <text x="474" y="145" class="wf-title" fill="#7656ac">CONTEXT</text><text x="474" y="167" class="wf-main">补齐最小上下文</text><text x="474" y="181" class="wf-copy">显式标出缺失条件，不在条件不足时直接下结论</text>
+        <path d="M620 186 V207" class="wf-link" marker-end="url(#wf-arrow)"/>
+        <path d="M620 211 L704 253 L620 295 L536 253 Z" fill="#f7f4ff" stroke="#bba8df" stroke-width="1.5"/>
+        <text x="620" y="249" text-anchor="middle" class="wf-main" style="font-size:13px">当前缺什么？</text><text x="620" y="264" text-anchor="middle" class="wf-copy">按缺口路由</text>
+        <path d="M620 295 V309 H110 M620 309 H1120" class="wf-link"/>
+        <path d="M110 309 V320 M312 309 V320 M514 309 V320 M716 309 V320 M918 309 V320 M1120 309 V320" class="wf-link" marker-end="url(#wf-arrow)"/>
+        <text x="110" y="304" text-anchor="middle" class="wf-edge-label">权威事实</text><text x="312" y="304" text-anchor="middle" class="wf-edge-label">可重复方法</text><text x="514" y="304" text-anchor="middle" class="wf-edge-label">工程入口</text><text x="716" y="304" text-anchor="middle" class="wf-edge-label">实时状态</text><text x="918" y="304" text-anchor="middle" class="wf-edge-label">相似案例</text><text x="1120" y="304" text-anchor="middle" class="wf-edge-label">高风险判定</text>
+        <g><rect x="20" y="324" width="180" height="70" rx="9" fill="#eef4ff" stroke="#9ebce9"/><text x="34" y="344" class="wf-cap" fill="#3777cf">缺权威事实</text><text x="34" y="365" class="wf-branch">知识库 / 文档检索</text><text x="34" y="381" class="wf-small">API、版本、兼容范围、来源</text></g>
+        <g><rect x="222" y="324" width="180" height="70" rx="9" fill="#f3f5f7" stroke="#b8c3cf"/><text x="236" y="344" class="wf-cap" fill="#5e6b79">缺可重复方法</text><text x="236" y="365" class="wf-branch">Skill / 工作流</text><text x="236" y="381" class="wf-small">预检、编译、排障、停止条件</text></g>
+        <g><rect x="424" y="324" width="180" height="70" rx="9" fill="#f7f1ff" stroke="#c6afe6"/><text x="438" y="344" class="wf-cap" fill="#7656ac">缺工程入口</text><text x="438" y="365" class="wf-branch">模板 / 插件 / CLI</text><text x="438" y="381" class="wf-small">样例、配置、命令、IDE 入口</text></g>
+        <g><rect x="626" y="324" width="180" height="70" rx="9" fill="#edf9f5" stroke="#9ecfbd"/><text x="640" y="344" class="wf-cap" fill="#287b61">缺实时状态</text><text x="640" y="365" class="wf-branch">MCP / API / 连接器</text><text x="640" y="381" class="wf-small">GitCode、CI、NPU、日志</text></g>
+        <g><rect x="828" y="324" width="180" height="70" rx="9" fill="#fff1f3" stroke="#e2b7bf"/><text x="842" y="344" class="wf-cap" fill="#b45664">缺相似案例 / 接续状态</text><text x="842" y="365" class="wf-branch">案例图谱 / 问题状态</text><text x="842" y="381" class="wf-small">条件、日志、已尝试动作、责任</text></g>
+        <g><rect x="1030" y="324" width="180" height="70" rx="9" fill="#fff6e9" stroke="#e2bd7e"/><text x="1044" y="344" class="wf-cap" fill="#a36a20">需要高风险判定</text><text x="1044" y="365" class="wf-branch">验证服务 / 人机协作</text><text x="1044" y="381" class="wf-small">运行证据、评审、责任人</text></g>
+        <path d="M110 394 V418 H1120 M312 394 V418 M514 394 V418 M716 394 V418 M918 394 V418 M1120 394 V418" class="wf-link"/>
+        <path d="M620 418 V423" class="wf-link" marker-end="url(#wf-arrow)"/>
+        <rect x="454" y="423" width="332" height="40" rx="8" fill="#f7f8fa" stroke="#cbd3dc" stroke-dasharray="4 3"/><text x="620" y="448" text-anchor="middle" class="wf-main" style="font-size:12px">调用结果写回同一任务上下文</text>
+        <path d="M620 463 V482" class="wf-link" marker-end="url(#wf-arrow)"/>
+        <rect x="454" y="486" width="332" height="58" rx="10" fill="#eefaf7" stroke="#9ecfc3" stroke-width="1.4"/><text x="474" y="507" class="wf-title" fill="#287b61">EXECUTE</text><text x="474" y="528" class="wf-main">进入真实执行现场</text><text x="474" y="541" class="wf-copy">IDE / CLI / 容器 / CI / NPU；命令与输出留痕</text>
+        <path d="M786 515 H866" class="wf-link" marker-end="url(#wf-arrow)"/>
+        <path d="M924 478 L982 515 L924 552 L866 515 Z" fill="#fff8ed" stroke="#e2bd7e" stroke-width="1.5"/><text x="924" y="511" text-anchor="middle" class="wf-main" style="font-size:12px">证据足够？</text><text x="924" y="526" text-anchor="middle" class="wf-copy">功能 / 精度 / 性能</text>
+        <path d="M982 515 H1045" class="wf-link" marker-end="url(#wf-arrow-green)"/><text x="998" y="505" class="wf-edge-label" fill="#2a7a68">是</text>
+        <rect x="1049" y="482" width="171" height="66" rx="10" fill="#eaf8f0" stroke="#9fceb3"/><text x="1064" y="504" class="wf-outcome" fill="#256b50">END · 已验证交付</text><text x="1064" y="521" class="wf-small">结论、环境、命令、版本</text><text x="1064" y="535" class="wf-small">可追溯，并回流为资产</text>
+        <path d="M924 552 V579 H620 V295" class="wf-link-dash" marker-end="url(#wf-arrow-red)"/><text x="637" y="573" class="wf-edge-label" fill="#aa554b">否 / 风险高：问题状态、复现包与责任升级 → 保留上下文，再次判断</text>
+      </svg></div>`;
+    })();
   </script>
 </body>
 </html>

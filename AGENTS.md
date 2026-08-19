@@ -1512,3 +1512,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户截图发现汇报版 #6 的 Mermaid 图显示 `Syntax error in text`。原因是旧实现使用 Mermaid 自动扫描与异步 `run()`，图文本中的回路标注语法报错后没有捕获，错误面板留在页面。
 - 已改为显式 `mermaid.render()` 生成 SVG，并将回路写法改为 Mermaid 11 支持的 `U -.->|标注| C`；渲染异常时自动回落至原生顺序工作流，避免再次出现空白或错误面板。
+
+### 2026-08-19（Workflow 改为原生 SVG）
+
+- 用户认为 Mermaid 异常后的三步降级图信息严重不足，确认不再使用 Mermaid。汇报版 #6 现完全采用与 `opknow/20_human_ai_journey.html` 架构图相同的原生 SVG 实现方式：手写节点、菱形判断、箭头、汇合与虚线回路，不依赖自动布局库。
+- 本研究图完整呈现：任务进入 → 上下文补齐 → 缺口判断 → 六类服务分流（知识库、Skill / 工作流、模板 / 插件 / CLI、MCP / API / 连接器、案例图谱 / 问题状态、验证服务 / 人机协作）→ 结果写回任务上下文 → 真实环境执行 → 证据判断 → 已验证交付或升级回到缺口判断。
+- Mermaid CDN 已从报告移除；Opknow Tab 继续仅嵌入已存在的 Agent 循环架构图，作为“模型如何调用工具并继续循环”的互补解释。
