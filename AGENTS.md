@@ -1586,3 +1586,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出 API Workflow 图过小、文字过挤；根因是把“主循环”与右侧大块能力映射同时塞入 SVG，导致主图没有占满画布。
 - 已移除右侧外置能力映射区，保留并放大 API 主循环至整张画布宽度：请求装配 → 模型响应 → final / tool call 判断 → Host 执行 → tool result 回传 → 再判断。
 - 能力映射压缩为主图内两处：规则 / Command / Plugin 标于请求装配；知识库 / Skill / MCP / Hook 标于 Host 执行。Harness、子 Agent、验证与升级只以底部一句阶段说明表达，避免与主循环争夺视觉面积。
+
+### 2026-08-19（Workflow 底部空间收紧）
+
+- 用户指出 #8 Workflow 下方存在过多说明层，挤占主图空间。已删除图内重复的 Harness / 来源注释和图下长说明，仅在页脚保留一行公开 API 来源。
+- 主图画布由 `1240 × 620` 收紧为 `1240 × 520`：保留请求装配、模型判断、final / tool call 分流、Host 执行与 tool result 回传的完整顺序；删除各结果卡的重复解释行，压缩能力条与回传标注，减少下半区文字占位。
+- SVG 从顶部对齐，避免在 Workflow 容器中垂直居中留白；释放的空间优先用于提高主流程节点与箭头的可读性。
