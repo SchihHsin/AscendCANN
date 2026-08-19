@@ -285,7 +285,7 @@
         opknowPane.id='opknow-loop';
         opknowPane.innerHTML='<iframe class="opknow-frame" title="Opknow Agent 循环架构原图" src="../operator-ai-journey-research/evidence/opknow-agent-loop-original.html" loading="eager"></iframe>';
       }
-      if(researchPane){
+      if(false&&researchPane){
         const fallbackResearch=researchPane.innerHTML;
         const mermaidMarkup='<div class="mermaid-pane"><div class="research-mermaid"><div class="mermaid">flowchart TD\n  A["START · 任务进入"] --> B["01 · 补齐最小上下文\\n芯片 / 版本 / 代码 / 日志"]\n  B --> C{"02 · 当前缺口是什么？"}\n  C -->|"缺权威事实"| K["知识库 / 文档检索\\nAPI、版本、兼容范围"]\n  C -->|"缺可重复方法"| S["Skill / 工作流\\n预检、编译、排障"]\n  C -->|"缺工程入口"| T["模板 / 插件 / CLI\\n样例、配置、命令"]\n  C -->|"缺实时状态"| M["MCP / API / 连接器\\nGitCode、CI、NPU、日志"]\n  C -->|"需要高风险判定"| H["验证服务 / 人机协作\\n运行证据、专家判定"]\n  K --> R["调用结果写回任务上下文"]\n  S --> R\n  T --> R\n  M --> R\n  H --> R\n  R --> E["03 · 真实环境执行\\nIDE / CLI / 容器 / CI / NPU"]\n  E --> V{"04 · 证据是否足够？\\n功能 / 精度 / 性能"}\n  V -->|"是"| D["END · 已验证交付\\n结论、命令、环境、版本可追溯"]\n  V -->|"否 / 风险高"| U["问题状态与责任升级\\n复现包、CI / 真机 / Issue / 专家"]\n  U -. "保留上下文，回到缺口判断" .-> C\n  classDef start fill:#edf1ff,stroke:#9eafe0,color:#202a33,stroke-width:1.2px\n  classDef context fill:#f4efff,stroke:#c5b4e5,color:#202a33,stroke-width:1.2px\n  classDef knowledge fill:#eef4ff,stroke:#9ebce9,color:#202a33\n  classDef skill fill:#f3f5f7,stroke:#b8c3cf,color:#202a33\n  classDef template fill:#f7f1ff,stroke:#c6afe6,color:#202a33\n  classDef mcp fill:#edf9f5,stroke:#9ecfbd,color:#202a33\n  classDef human fill:#fff6e9,stroke:#e2bd7e,color:#202a33\n  classDef execute fill:#eefaf7,stroke:#9ecfc3,color:#202a33,stroke-width:1.2px\n  classDef end fill:#eaf8f0,stroke:#9fceb3,color:#256b50,stroke-width:1.2px\n  classDef risk fill:#fff3ef,stroke:#dfa79c,color:#8e5149,stroke-width:1.2px\n  class A start\n  class B context\n  class K knowledge\n  class S skill\n  class T template\n  class M mcp\n  class H human\n  class R,E execute\n  class D end\n  class U risk</div><div class="flow-source">本研究绘制 · Mermaid 11 · 基于公开案例与 Ascend C Agent 六阶段 workflow</div></div></div>';
         const renderResearchMermaid=()=>{if(!window.mermaid){researchPane.innerHTML=fallbackResearch;return false}researchPane.innerHTML=mermaidMarkup;window.mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:'base',flowchart:{htmlLabels:true,curve:'basis',nodeSpacing:28,rankSpacing:30,padding:8},themeVariables:{fontFamily:'HarmonyOS Sans SC, Inter, Noto Sans SC, sans-serif',fontSize:'14px',lineColor:'#8995a4',primaryTextColor:'#202a33',clusterBkg:'#f7f8fa',clusterBorder:'#cbd3dc',edgeLabelBackground:'#e9ebee'}});window.mermaid.run({nodes:[researchPane.querySelector('.mermaid')]});return true};if(!renderResearchMermaid())window.addEventListener('DOMContentLoaded',renderResearchMermaid,{once:true});
@@ -293,6 +293,59 @@
       const note=shell.querySelector('.workflow-note');
       if(note)note.innerHTML='Tab 1 是本研究的社区服务 Workflow：解释知识、Skill、模板、MCP、案例状态与验证如何进入一次算子开发任务。Tab 2 是 Opknow 已有的 Agent 循环架构：解释模型如何判断、调用工具、接收结果并继续循环。Opknow 图来源于 <a href="../../../opknow/20_human_ai_journey.html#archView" target="_blank">Opknow 20_human_ai_journey.html</a> 的原始架构图切片。';
     })();
+  </script>
+  <script>
+    // Mermaid 11 returns errors asynchronously. Render the research workflow explicitly so a parse failure never leaves an error panel in the deck.
+    window.addEventListener('DOMContentLoaded',()=>setTimeout(async()=>{
+      const pane=document.querySelector('[data-title="Agent Workflow"] #research-loop');
+      if(!pane||!window.mermaid)return;
+      const graph=`flowchart TD
+        A[START：任务进入] --> B[补齐最小上下文<br/>芯片、版本、代码、日志]
+        B --> C{当前缺口？}
+        C -->|缺权威事实| K[知识库／文档检索<br/>API、版本、兼容范围]
+        C -->|缺可重复方法| S[Skill／工作流<br/>预检、编译、排障]
+        C -->|缺工程入口| T[模板／插件／CLI<br/>样例、配置、命令]
+        C -->|缺实时状态| M[MCP／API／连接器<br/>GitCode、CI、NPU、日志]
+        C -->|需要高风险判定| H[验证服务／人机协作<br/>运行证据、专家判定]
+        K --> R[调用结果写回任务上下文]
+        S --> R
+        T --> R
+        M --> R
+        H --> R
+        R --> E[真实环境执行<br/>IDE、CLI、容器、CI、NPU]
+        E --> V{证据是否足够？<br/>功能、精度、性能}
+        V -->|是| D[END：已验证交付<br/>结论、命令、环境、版本可追溯]
+        V -->|否／风险高| U[问题状态与责任升级<br/>复现包、CI、真机、Issue、专家]
+        U -.->|保留上下文并再次判断| C
+        classDef start fill:#edf1ff,stroke:#9eafe0,color:#202a33,stroke-width:1.2px
+        classDef context fill:#f4efff,stroke:#c5b4e5,color:#202a33,stroke-width:1.2px
+        classDef knowledge fill:#eef4ff,stroke:#9ebce9,color:#202a33
+        classDef skill fill:#f3f5f7,stroke:#b8c3cf,color:#202a33
+        classDef template fill:#f7f1ff,stroke:#c6afe6,color:#202a33
+        classDef mcp fill:#edf9f5,stroke:#9ecfbd,color:#202a33
+        classDef human fill:#fff6e9,stroke:#e2bd7e,color:#202a33
+        classDef execute fill:#eefaf7,stroke:#9ecfc3,color:#202a33,stroke-width:1.2px
+        classDef end fill:#eaf8f0,stroke:#9fceb3,color:#256b50,stroke-width:1.2px
+        classDef risk fill:#fff3ef,stroke:#dfa79c,color:#8e5149,stroke-width:1.2px
+        class A start
+        class B context
+        class K knowledge
+        class S skill
+        class T template
+        class M mcp
+        class H human
+        class R,E execute
+        class D end
+        class U risk`;
+      const fallback=`<div class="research-flow"><article class="rf-node start"><div class="rf-k">START · TASK</div><b>任务进入并补齐上下文</b><p>目标、芯片、版本、代码与日志进入同一任务。</p></article><div class="rf-arrow"></div><div class="rf-decision"><b>判断当前缺口并调用相应能力</b><span>知识 / 方法 / 工程 / 状态 / 验证</span></div><div class="rf-arrow"></div><article class="rf-node exec"><div class="rf-k">EXECUTE · VERIFY</div><b>真实环境执行、验证或升级</b><p>命令、结果与未解条件写回任务，继续下一轮判断。</p></article></div>`;
+      pane.innerHTML='<div class="mermaid-pane"><div class="research-mermaid"><div class="mermaid" id="research-workflow-graph"></div><div class="flow-source">本研究绘制 · Mermaid 11 · 基于公开案例与 Ascend C Agent 六阶段 workflow</div></div></div>';
+      try{
+        window.mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:'base',flowchart:{htmlLabels:true,curve:'basis',nodeSpacing:28,rankSpacing:30,padding:8},themeVariables:{fontFamily:'HarmonyOS Sans SC, Inter, Noto Sans SC, sans-serif',fontSize:'14px',lineColor:'#8995a4',primaryTextColor:'#202a33',edgeLabelBackground:'#e9ebee'}});
+        const rendered=await window.mermaid.render('research-workflow-svg',graph);
+        document.getElementById('research-workflow-graph').innerHTML=rendered.svg;
+        rendered.bindFunctions&&rendered.bindFunctions(document.getElementById('research-workflow-graph'));
+      }catch(error){pane.innerHTML=fallback}
+    },80),{once:true});
   </script>
 </body>
 </html>
