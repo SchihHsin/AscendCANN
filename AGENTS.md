@@ -1572,3 +1572,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户截图确认“平台能力沙盘”在常用桌面视口底部被裁：`Custom Agent / Subagent` 仅露出部分，`Hook / Automation` 行和来源口径被遮挡。
 - 保持正文与状态标识字号不变，压缩该分析页的标题区、图例区、表头 / 单元格纵向留白、结论区与页脚位置，使 9 行能力项、两栏结论和来源口径在单页中完整出现。
+
+### 2026-08-19（Workflow 回到公开 API 工具调用机制）
+
+- 用户指出 #8 架构图表达仍不清，要求先以 Anthropic、OpenAI、DeepSeek、Kimi 等公开 API 对大模型 / 工具调用的解释为依据，而不是按本研究自行拼能力流程。
+- 经讨论确认并重绘汇报版 #8 的本研究 Tab：主骨架严格采用 API 共同闭环——Host / Harness 组装 `messages + tools` → 模型返回 `final` 或结构化 `tool call` → Host 在权限范围内执行 → 以 `tool result` 回传 `messages` → 模型继续判断或结束。
+- 图中明确区分模型与 Host：模型不直接执行外部系统动作；知识库、Skill、MCP / Connector、Hook 均在 Host 执行段发挥作用。规则、Command / Prompt、Plugin 位于请求装配前；Custom Agent / Subagent 位于 Harness 的规划 / 分派；Harness 是贯穿性的运行时，不作为独立 tool。
+- 案例、验证、人机协作、问题状态统一置于执行之后的结果 / 治理：CI、NPU、日志形成 tool result；证据不足才形成复现包与责任升级并回到下一轮判断，不再与工具类型并列。
+- 图脚注明参考来源：OpenAI Function Calling / Responses API、Anthropic Tool Use、DeepSeek Function Calling、Kimi Open Platform 工具调用文档；Opknow 原图继续保留在第二 Tab，不重画。
