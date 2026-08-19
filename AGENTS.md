@@ -1754,3 +1754,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-08-20（tool_result 回写出口修正）
 
 - `追加 tool_result` 的回写虚线不再从节点右下角绕出；改为从 Message 节点底部中点明确出发，先横移到 MCP 与子 Agent 卡片之间的空隙，再下行至能力卡下方并返回 Model Request，确保来源清楚且不穿过能力卡。
+- Model Request 底部使用两个独立输入端口：左侧接收 `Agent 定义` 的预配置，右侧接收 `tool_result` 的运行结果回填；两个箭头不再重合。
