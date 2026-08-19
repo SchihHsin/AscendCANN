@@ -1630,3 +1630,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 两页共用同一机制边界，但不再合并层级：Context 是 Host 每轮装配的输入；项目规则 / 指令是 Context 内的长期约束；Command 是显式任务入口；Skill / Workflow 是方法；Custom Agent 是预定义专职角色；子 Agent 由 Harness 按需创建并回传；知识库 / 检索、MCP / Connector 仅在 tool call 后由 Host 执行；Hook / Automation 在调用前后自动运行；Plugin / Extension 是集成入口。
 - 流程均保持单向 Start → Context → 模型推理 → 判断 → Host 执行 / End；恢复只作为最后的失败或证据不足分支，不再采用围绕主线的环形布局或外侧跨图连接。
 - 方案 2 中 `Custom Agent` 与 `子 Agent` 已拆为相邻但独立的两行：前者是开发者预先定义的专职角色与边界，后者是 Harness 运行时按需创建的执行单元；不再以斜杠合并概念。
+- 用户进一步强调可调用能力会在不同时间发挥作用，不能嵌在阶段卡或以合并卡表达。两种方案均改为“一张卡只承载一种能力”，并按实际介入位置接入：项目规则、会话指令、Command、Skill、Plugin、模板在 Context 装配；Custom Agent、子 Agent 在模型规划 / 委派；知识库、MCP、Hook 在 Host 收到 tool call 后执行或作用于执行生命周期。
