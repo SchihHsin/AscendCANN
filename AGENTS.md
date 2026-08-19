@@ -1663,3 +1663,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出能力连线交叉、动作与能力节点样式混淆、主线仍缺判断动作。#8 已将主线动作节点统一为中性灰白流程块；只有可调用能力使用彩色底、彩色 icon、彩色描边与轻阴影。
 - 每项能力只保留一条短箭头，接入唯一实际动作：模板→读取现场；项目规则→加载能力；会话指令 / Skill / Command / Plugin→构造请求；Custom Agent / 子 Agent→判断响应；知识库 / MCP→执行 action；Hook→执行前后。删除原先跨图汇流线。
 - 主线补齐 `是否 tool call？` 判断菱形、`校验 action`（工具可用 / 权限 / JSON 参数完整性）、`写回 tool result`。final 从判断节点直接前往 End；action 经过校验与执行后，tool result 回写到构造请求进入下一轮。
+
+### 2026-08-19（构造请求的输入端口分离）
+
+- 用户指出上方能力连线在“构造请求”处重叠，无法辨识来源与落点。已将项目规则、会话指令、Skill、Command、Plugin 的连接路径拆到不同水平高度和不同输入端口：项目规则 / Skill 进入“加载能力”的不同顶部端口；会话指令、Command、Plugin 分别从构造请求的左、中、右顶部端口进入。各路径不再共用末端竖线。
