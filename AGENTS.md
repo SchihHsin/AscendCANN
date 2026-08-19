@@ -1623,3 +1623,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `Skill / Workflow` 连接 Context：作为任务方法进入 messages，提供预检、步骤、分支、工具顺序、输入输出与停止条件；它不直接读写外部系统。
 - `知识库 / 检索` 连接 Host Execute：在任务缺事实时检索，返回 API、版本、兼容范围与可引用来源，再作为 tool result 回到 messages。`MCP / Connector` 同样由 Host 调用，但用途是受控读写 GitCode、CI、NPU、日志与状态，返回结构化结果和审计记录。
 - `Hook / Automation` 贴在执行生命周期：调用前预检、调用后收集日志与自动回写；不是模型每轮显式选择的一类 tool call。
+
+### 2026-08-19（Workflow 双方案对照）
+
+- 用户要求移除 #8 左上角 Workflow Tab，并将图拆为两页进行版式比较。已在 `cann-dashboard/operator-ai-journey-deck/index.html` 删除 Tab、Opknow iframe 与切换脚本；新增连续两页：方案 1「能力直接写入竖向主流程节点」、方案 2「Harness 主流程 + 按阶段对齐的能力泳道」。
+- 两页共用同一机制边界，但不再合并层级：Context 是 Host 每轮装配的输入；项目规则 / 指令是 Context 内的长期约束；Command 是显式任务入口；Skill / Workflow 是方法；Custom Agent 是预定义专职角色；子 Agent 由 Harness 按需创建并回传；知识库 / 检索、MCP / Connector 仅在 tool call 后由 Host 执行；Hook / Automation 在调用前后自动运行；Plugin / Extension 是集成入口。
+- 流程均保持单向 Start → Context → 模型推理 → 判断 → Host 执行 / End；恢复只作为最后的失败或证据不足分支，不再采用围绕主线的环形布局或外侧跨图连接。
