@@ -1616,3 +1616,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求流程图必须真正从上到下，同时不能因改为竖向而删减内容。#8 的中轴固定为 `START → Context → 外部模型 API → 响应判断`；判断后 `final → END`，`tool call → Host Execute → State / Recovery`。
 - 已在不改变竖向主干的前提下，恢复任务输入、Context 装配内容、模型“仅返回响应”的边界、End 的交付物、Execute 的审计内容，以及两侧可装配能力的完整作用说明：规则 / Prompt / Plugin / Custom Agent 与知识库 / Skill / MCP / Hook。
 - 恢复回路仍仅用于失败或证据不足，回写证据、日志、问题状态、复现包与责任升级；不作为主干的一部分。
+
+### 2026-08-19（Skill / MCP / 知识库 / Hook 的介入边界）
+
+- 用户指出不能把知识库、Skill、MCP、Hook 收成 Host 旁的一行次要文字。#8 已将它们拆成独立能力卡并用连线标出实际介入位置。
+- `Skill / Workflow` 连接 Context：作为任务方法进入 messages，提供预检、步骤、分支、工具顺序、输入输出与停止条件；它不直接读写外部系统。
+- `知识库 / 检索` 连接 Host Execute：在任务缺事实时检索，返回 API、版本、兼容范围与可引用来源，再作为 tool result 回到 messages。`MCP / Connector` 同样由 Host 调用，但用途是受控读写 GitCode、CI、NPU、日志与状态，返回结构化结果和审计记录。
+- `Hook / Automation` 贴在执行生命周期：调用前预检、调用后收集日志与自动回写；不是模型每轮显式选择的一类 tool call。
