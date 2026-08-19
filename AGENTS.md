@@ -1766,3 +1766,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按真实 Host / tool-calling 机制进一步拆分 #8：请求侧改为读取任务现场、加载指令与历史、发现并登记能力、构造请求载荷、调用模型 API；工具侧改为拆出调用项、校验参数与授权、按名称查找实现、选择执行器、捕获输出 / 错误、构造并追加 tool_result。
 - 明确 MCP 与子 Agent 没有固定先后顺序：二者是 tool registry 中可按名称选择的不同执行器；子 Agent 启动独立 Agent loop，并可在自己的授权范围内再次调用 MCP 或其他工具。
 - `cann-dashboard/agent-tool-calling-reference.html` 新增 MCP Host / Client / Server 与子 Agent 嵌套循环关系，并留存 OpenAI、Anthropic、MCP、Claude Code、DeepSeek、Kimi 的公开依据链接，作为 PPT 外的机制复核页。
+- 将最新可调用能力口径贯通到后续页面：知识库、Skill / Workflow、模板、Command、Plugin、MCP、Subagent、Hook、Harness 作为可装配能力；案例状态改为任务对象，验证结果改为执行证据，不再与工具节点混写。
+- 更新服务模型、资产映射、Add 任务 Demo 与验证 / 恢复页面，使调用时机和结果语义与 #8 一致；社区分工表新增 Harness / Subagent / Hook 的平台运行编排责任。
+- 重写体验部规划边界：体验部负责任务模型、调用体验、研究验证、体验指标和跨团队优先级；资料、平台、开发、测试等能力 Owner 负责质量运营、版本 SLA、修复上线和生产值守，体验部不再承担这些责任。
+
+### 2026-08-20（全 deck 能力口径收口）
+
+- 目录页不再把资产规划概括为“六类服务形态”，改为“可装配能力与执行证据”；阅读顺序同步改为“能力装配与任务闭环”。
+- 隐藏 / 动态 AI 旅程、泳道和 Add 首跑总览同步列出规则、知识库、Skill、模板、Command、Plugin、MCP、子 Agent 等能力，并把运行输出写成验证证据、Issue / 经验写成案例状态。
+- 资产分流表的列名、真实资产映射页和页脚统一使用“进入的能力 / 证据”“能力分流判断”，避免把案例对象或验证产出误认为直接调用工具。
