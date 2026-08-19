@@ -1746,3 +1746,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户选择方案一。已删除“极浅语义色节点”对照页，报告只保留白色主节点 + 彩色圆点的正式 Workflow 页面；标题和页脚从方案比较文案改为真实机制结论。
 - 按各节点最长一行重新分配 SVG 宽度：Context 200、Model 190、Application / Router 210、Message 190、Start 130、End 150；判断节点、主线箭头、tool_call 下行、tool_result 回写和 Harness 边界同步重排。
 - `Plugin / Extension` 与 `MCP / Connector` 能力卡单独加宽，避免长标题越界；没有通过继续缩小正文来压缩内容。
+
+### 2026-08-20（Workflow 整图放大）
+
+- 根据桌面全屏截图，Workflow 四周仍有较多空白；保持 SVG 内部节点、文字和连线坐标不变，以中心点将整图等比放大 15%，提升页面占用率和阅读清晰度。
