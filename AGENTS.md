@@ -1763,3 +1763,6 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 判断节点文字放大时同步扩大菱形：主标题恢复为 `15px`、字段依据提升为 `10px`，菱形由约 `180×154` 扩至 `220×166`，三条连接线同步调整端点，避免文字放大后挤压节点。
 - 重新排序能力输入端口以消除交叉：Command 接 Model 左侧端口、Plugin 接右侧端口，并错开转折高度；知识库、MCP、子 Agent 按左中右顺序接入 Router，MCP 与子 Agent 的横向段分别使用 `y=524` 与 `y=510`，不再互相穿越。
 - 继续以节点位置而非增加绕线路径整理能力连线：顶部项目规则、Skill、Command、Plugin 调整为等间距序列，四条输入线按目标端口的左右顺序排列；底部知识库、MCP、子 Agent 整组左移，MCP 与子 Agent 使用更短且高度分离的折线路径，减少视觉交叉。
+- 按真实 Host / tool-calling 机制进一步拆分 #8：请求侧改为读取任务现场、加载指令与历史、发现并登记能力、构造请求载荷、调用模型 API；工具侧改为拆出调用项、校验参数与授权、按名称查找实现、选择执行器、捕获输出 / 错误、构造并追加 tool_result。
+- 明确 MCP 与子 Agent 没有固定先后顺序：二者是 tool registry 中可按名称选择的不同执行器；子 Agent 启动独立 Agent loop，并可在自己的授权范围内再次调用 MCP 或其他工具。
+- `cann-dashboard/agent-tool-calling-reference.html` 新增 MCP Host / Client / Server 与子 Agent 嵌套循环关系，并留存 OpenAI、Anthropic、MCP、Claude Code、DeepSeek、Kimi 的公开依据链接，作为 PPT 外的机制复核页。

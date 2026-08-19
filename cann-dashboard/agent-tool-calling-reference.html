@@ -7,6 +7,9 @@
 <style>
 :root{--ink:#17222d;--muted:#657381;--line:#d6dde5;--paper:#edf0f3;--blue:#4568bf;--purple:#674b91;--green:#2d7b65;--orange:#aa702d}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:HarmonyOS Sans SC,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{width:min(1440px,100%);margin:auto;padding:42px 52px 70px}.eyebrow{color:var(--blue);font:800 12px/1.2 ui-monospace,monospace;letter-spacing:.12em}h1{margin:12px 0 8px;font-size:42px;letter-spacing:-.04em}h2{margin:0;font-size:22px}p{margin:0;color:var(--muted);line-height:1.55}.lead{max-width:960px;font-size:16px}.section{margin-top:38px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:14px}.section-head p{max-width:700px;font-size:13px}.loop{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.step{position:relative;min-height:130px;padding:14px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 8px 22px rgba(40,52,64,.07)}.step:not(:last-child):after{position:absolute;z-index:2;top:52px;right:-17px;color:#718091;content:"→";font-size:20px}.step .n{color:#7b8794;font:800 10px/1.2 ui-monospace,monospace;letter-spacing:.1em}.step b{display:block;margin-top:10px;font-size:15px}.step span{display:block;margin-top:7px;color:var(--muted);font-size:12px;line-height:1.42}.step.model{border-color:#cbb9e3;background:#f8f4fd}.step.tool{border-color:#abd5c4;background:#eef8f4}.step.message{background:#f6f8fa}.step.end{border-color:#a3cfb6;background:#eaf7f0}.note{margin-top:16px;padding:13px 16px;border:1px solid #ead2b1;border-radius:10px;background:#fff8ed;color:#7e5931;font-size:12px;line-height:1.55}.api-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.api-card{min-height:260px;padding:18px;border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:12px;background:#fff}.api-card.anthropic{border-top-color:var(--purple)}.api-card.compat{border-top-color:var(--green)}.api-card.kimi{border-top-color:var(--orange)}.api-card h3{margin:9px 0 5px;font-size:17px}.tag{display:inline-flex;padding:3px 7px;border-radius:999px;background:#edf0f5;color:#637183;font:800 10px/1.2 ui-monospace,monospace;letter-spacing:.06em}.api-card p{margin:10px 0;font-size:12px}.api-card code{display:block;padding:12px;border-radius:8px;background:#202b36;color:#edf2f6;white-space:pre-wrap;font:11px/1.55 ui-monospace,monospace}.truth{display:grid;grid-template-columns:1fr 1fr;gap:14px}.truth article{padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}.truth b{display:block;margin-bottom:7px}.truth ul{margin:0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.65}.sources{font-size:12px;line-height:1.8}.sources a{color:var(--blue);text-decoration:none}@media(max-width:1050px){main{padding:28px 24px}.loop{grid-template-columns:repeat(4,1fr)}.step:nth-child(4):after{display:none}.api-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){h1{font-size:32px}.loop,.api-grid,.truth{grid-template-columns:1fr}.step:after{display:none!important}}
 </style>
+<style>
+.relation{display:grid;grid-template-columns:1fr 1fr;gap:14px}.relation article{padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}.relation h3{margin:0 0 8px;font-size:17px}.relation p{font-size:13px}.relation code{display:block;margin-top:12px;padding:12px;border-radius:8px;background:#202b36;color:#edf2f6;white-space:pre-wrap;font:11px/1.55 ui-monospace,monospace}.doc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.doc-card{padding:16px;border:1px solid var(--line);border-radius:10px;background:#fff}.doc-card b{display:block;margin-bottom:6px;font-size:14px}.doc-card p{font-size:12px}.doc-card a{display:inline-block;margin-top:10px;color:var(--blue);font-size:12px;text-decoration:none}@media(max-width:1050px){.doc-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.relation,.doc-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body><main>
 <div class="eyebrow">REFERENCE · AGENT TOOL CALLING</div>
@@ -48,6 +51,28 @@ tool.tool_call_id + content
 <section class="section"><div class="section-head"><h2>对报告 Workflow 的硬约束</h2></div><div class="truth">
 <article><b>必须画出的关系</b><ul><li>模型响应和工具执行之间有应用侧解析与校验</li><li>能力卡只连接具体执行动作</li><li>所有工具分支回到同一个 tool result 消息节点</li><li>tool result 回到下一轮模型请求</li></ul></article>
 <article><b>不能出现的表达</b><ul><li>把知识库、MCP 或子 Agent 画成最终结果</li><li>把 tool_result 和 final response 画成两个 End</li><li>用单一厂商的 stop_reason 代表所有 API</li><li>让 Hook 长线穿过流程节点</li></ul></article>
+</div></section>
+
+<section class="section"><div class="section-head"><h2>MCP 与子 Agent 的关系</h2><p>二者没有固定前后顺序：Host 根据 tool name 选择执行器；子 Agent 内部可以再次发起自己的模型与工具循环。</p></div><div class="relation">
+<article><h3>MCP 是连接协议与执行适配器</h3><p>AI 应用作为 MCP Host，为每个 Server 建立 MCP Client。请求构造前可通过发现 / tools/list 获得工具定义；模型选中该工具后，Host 再通过 Client 调用 Server 的 tools/call。</p><code>Host discovers MCP tools
+→ model request includes schemas
+→ tool call selects MCP adapter
+→ MCP Client → Server tools/call
+→ result returns to Host</code></article>
+<article><h3>子 Agent 是嵌套的 Agent 运行循环</h3><p>主 Agent 将一个有边界的子任务委派给子 Agent。子 Agent 拥有独立上下文、指令与工具权限；它可以只靠模型完成，也可以继续调用本地工具或 MCP，最后把子任务结果回传主 Agent。</p><code>Main Agent delegates task
+→ Subagent starts its own loop
+→ optional local / MCP tool calls
+→ subagent result
+→ main Agent tool_result</code></article>
+</div></section>
+
+<section class="section"><div class="section-head"><h2>本次流程拆分的依据文件</h2><p>报告只保留结构化结论；公开文档链接与对应判断留存在本页，便于后续复核。</p></div><div class="doc-grid">
+<article class="doc-card"><b>OpenAI · Function Calling</b><p>支持“模型返回 tool call、应用执行、带 call_id 回传输出、继续请求”的共同循环。</p><a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Anthropic · Implement Tool Use</b><p>支持 tool_use / tool_result 的消息顺序，以及 tool_use_id 的关联关系。</p><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Model Context Protocol · Architecture</b><p>支持 Host / Client / Server 架构、能力发现，以及 tools/list 与 tools/call 的位置。</p><a href="https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Claude Code · Subagents</b><p>支持子 Agent 的独立上下文、专用角色与可限制工具权限；它不是 MCP 调用后的固定步骤。</p><a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>DeepSeek · Function Calling</b><p>用于校对 OpenAI-compatible 的 tools / tool_calls / tool_call_id 结构。</p><a href="https://api-docs.deepseek.com/guides/function_calling" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Kimi API</b><p>用于确认兼容接口仍遵循应用执行工具并回传结果的协议关系。</p><a href="https://platform.moonshot.cn/docs/guide/use-kimi-api" target="_blank" rel="noreferrer">查看公开文档</a></article>
 </div></section>
 
 <section class="section sources"><h2>公开来源</h2><p>
