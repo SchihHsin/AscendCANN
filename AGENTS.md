@@ -1483,3 +1483,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出两个 Tab 的关系不清，实际需求是“一个本研究图 + 一个 Opknow 图”，而不是两张本研究流程图。
 - 研究底稿 `operator-ai-journey-research/index.html` 的 Tab 已明确命名为“Opknow：Agent 循环架构（原图）”与“本研究：社区任务服务闭环”，并在图注中分别说明：前者解释 Agent 内部工具调用 / 证据判断 / 回环，后者解释社区资产如何接入一次开发任务。
 - 报告 `operator-ai-journey-deck/index.html` 同步为“本研究：社区资产如何进入任务”与“Opknow：Agent 循环架构”两个 Tab；Opknow Tab 使用现有架构图切片，仅呈现架构图，不嵌入整份 Opknow 报告。
+
+### 2026-08-19（移除汇报版用户旅程页）
+
+- 用户要求去掉汇报版中的用户旅程单页。`operator-ai-journey-deck/index.html` 已将“AI 任务旅程”从可见页面、页码计数、右侧导航点和概览网格中排除。
+- 研究底稿中的旅程源码保留，公开案例、Agent Workflow、资产分流和研究验证继续作为主叙事；目录中的“旅程如何变化”仅保留为研究问题锚点，不再指向独立页面。
