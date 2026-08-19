@@ -1734,3 +1734,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 彩色圆点从节点右上角改为主标题前的内联语义点，避免漂浮感；所有矩形主节点的标题区统一加高，分割线下移，正文同步下调，解决标题贴线问题。
 - 顶部项目规则 / Skill / Command / Plugin 分别进入 Context 或 Model 的独立端口；知识库、MCP、子 Agent 分别进入 Router 的不同底部端口，取消共用汇流段。
 - `tool_result` 回写虚线改从 Message 右侧绕到能力卡下方再返回 Model，不再穿过 MCP / 子 Agent 卡；能力卡标题字号统一收窄，避免 `MCP / Connector` 等长标题越界。
+
+### 2026-08-20（Workflow 运行逻辑再校准）
+
+- 将 `response(final / tool_call)` 的 final 分支改为从判断节点水平直达唯一 End；只有 tool_call 分支向下进入 Application 校验、Router 执行、Message 回填，再循环到下一轮 Model Request。
+- `Agent 定义 / Custom Agent` 从错误的 Application 接口改为接入 Model Request，表达角色、指令与工具边界参与请求构造；Hook 从顶部移至 Application 下方，以短线接入调用前校验，不再跨越 final 主线。
+- Harness 右边界收回到 End 左侧，Start / End 均位于运行框架外；最终响应箭头穿出 Harness 后直接进入 End，边界不再与 End 节点重叠。
