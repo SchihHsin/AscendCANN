@@ -254,5 +254,24 @@
     document.addEventListener('click',e=>{const t=e.target.closest('.flow-tab');if(t){const owner=t.closest('.workflow-shell');owner.querySelectorAll('.flow-tab').forEach(b=>{const on=b===t;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on))});owner.querySelectorAll('.workflow-pane').forEach(p=>{const on=p.id===t.dataset.pane;p.classList.toggle('active',on);p.hidden=!on})}});document.addEventListener('mousemove',e=>{controls.classList.toggle('show',e.clientY>innerHeight-120);dotsHost.classList.toggle('show',e.clientX>innerWidth-120)});document.addEventListener('mouseleave',()=>{controls.classList.remove('show');dotsHost.classList.remove('show')});
     addEventListener('message',e=>{if(e.data&&e.data.__deckWheel){e.data.__deckWheel>0?next():prev()}});addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(n>=1&&n<=slides.length)go(n-1)});const initial=parseInt(location.hash.slice(1),10);if(initial>=1&&initial<=slides.length){idx=initial-1;go(idx,'auto')}else window.scrollTo(0,0);update(idx);window.addEventListener('DOMContentLoaded',()=>window.lucide&&lucide.createIcons());
   </script>
+  <script>
+    // The two views compare this research workflow with the existing Opknow Agent loop.
+    (()=>{
+      const shell=document.querySelector('[data-title="Agent Workflow"] .workflow-shell');
+      if(!shell)return;
+      const tabs=[...shell.querySelectorAll('.flow-tab')];
+      const researchTab=tabs[0], opknowTab=tabs[1];
+      const researchPane=shell.querySelector('#agent-loop'), opknowPane=shell.querySelector('#community-loop');
+      if(researchTab&&researchPane){researchTab.textContent='本研究：社区资产如何进入任务';researchTab.dataset.pane='research-loop';researchPane.id='research-loop';}
+      if(opknowTab&&opknowPane){
+        opknowTab.textContent='Opknow：Agent 循环架构';
+        opknowTab.dataset.pane='opknow-loop';
+        opknowPane.id='opknow-loop';
+        opknowPane.innerHTML='<iframe class="opknow-frame" title="Opknow Agent 循环架构原图" src="../operator-ai-journey-research/evidence/opknow-agent-loop-original.html" loading="eager"></iframe>';
+      }
+      const note=shell.querySelector('.workflow-note');
+      if(note)note.innerHTML='Tab 1 是本研究的社区服务 Workflow：解释知识、Skill、模板、MCP、案例状态与验证如何进入一次算子开发任务。Tab 2 是 Opknow 已有的 Agent 循环架构：解释模型如何判断、调用工具、接收结果并继续循环。Opknow 图来源于 <a href="../../../opknow/20_human_ai_journey.html#archView" target="_blank">Opknow 20_human_ai_journey.html</a> 的原始架构图切片。';
+    })();
+  </script>
 </body>
 </html>

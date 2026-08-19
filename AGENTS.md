@@ -1477,3 +1477,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - “社区供给闭环：资产如何进入任务”采用固定五列结构：社区已有资产 → 按任务缺口分流 → 任务可以继续；底部回流条明确验证结论更新知识、失败上下文更新问题状态，新的方法和模板进入下一轮 Agent 调用。
 - 两张图的脚注明确依据：左图参考 Anthropic Messages API Tool Use 的模型判断 / 工具调用 / 返回结果 / 再判断机制；右图结合 15 个公开案例和本仓 `ascendc-agent-main` 六阶段 workflow 推导，不冒充现成产品功能。
 - 1280×720 桌面截图验证两种 Tab：箭头均落在相邻流程组之间，第二个 Tab 不再出现卡片堆叠和底部裁切；报告代码中已无 Workflow iframe 元素。
+
+### 2026-08-19（Workflow 双 Tab 职责澄清）
+
+- 用户指出两个 Tab 的关系不清，实际需求是“一个本研究图 + 一个 Opknow 图”，而不是两张本研究流程图。
+- 研究底稿 `operator-ai-journey-research/index.html` 的 Tab 已明确命名为“Opknow：Agent 循环架构（原图）”与“本研究：社区任务服务闭环”，并在图注中分别说明：前者解释 Agent 内部工具调用 / 证据判断 / 回环，后者解释社区资产如何接入一次开发任务。
+- 报告 `operator-ai-journey-deck/index.html` 同步为“本研究：社区资产如何进入任务”与“Opknow：Agent 循环架构”两个 Tab；Opknow Tab 使用现有架构图切片，仅呈现架构图，不嵌入整份 Opknow 报告。
