@@ -1704,3 +1704,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出流程图不能把能力卡当成流程落点，也不能把 `tool_result` 和最终交付都画成“结果”。已按真实 API 语义调整：模型响应节点表达 `stop_reason = end_turn / tool_call`；tool_call 经过 `name / arguments / 权限` 校验后调用工具；工具执行返回 `tool_result`，携带 `call_id` 追加到 messages，再发起下一轮模型请求。
 - 07A / 07B / 07C 现在是“调用检索工具 / 调用外部连接 / 启动子 Agent”的执行动作；知识库、MCP、子 Agent 卡片仅作为能力实现入口，通过短连接线接入各自动作。
 - End 节点改为唯一的 `END · FINAL / 最终响应`；原 08 节点降级为 `08 · MESSAGE / 追加中间消息`，明确它不是用户可见结果。
+
+### 2026-08-19（机制底稿与 Workflow 全量检查）
+
+- 新增独立参考页 `cann-dashboard/agent-tool-calling-reference.html`：以共同运行循环和公开 API 字段对照呈现 OpenAI Chat Completions、OpenAI Responses、Anthropic Messages 及 DeepSeek / Kimi 的 OpenAI-compatible tool calling，作为报告 Workflow 的机制校准依据；参考页不嵌入 PPT。
+- 全量审查 #8 后，将旧的重复 SVG 渲染脚本失效化，避免遗留的“模板 / 脚手架、会话指令、旧回写”机制再次覆盖或干扰当前图；页面只显示一套新 Workflow。
+- 当前图改用跨平台语义 `final / tool_call / tool_result`，不再把单一厂商 `stop_reason` 当作通用机制；Hook 仅表示调用前预检，不再以长线跨越全图到回写。
+- 按用户视觉方向，主流程深色标题区统一收敛为近黑色；取消大面积深蓝、深紫、深绿，改由节点右上小圆点表达输入、组装、模型、检索、连接、委派、结束等语义色，能力卡保留浅色区分。
+
+### 2026-08-19（Workflow 改为工具路由模型）
+
+- 用户指出“主线后再强制分成检索 / MCP / 子 Agent 三支”不符合真实 Agent 运行。#8 已改为单一 Agent 循环：`任务 / 上下文 → 模型请求 → response(final / tool_call) → 应用侧解析校验 → 工具路由器 → tool_result 消息 → 下一轮模型请求`；final 才进入唯一 End。
+- 知识库 / 检索、MCP / Connector、子 Agent 不再是三条必经业务分支，改为“按 tool name 由 Router 从已注册工具中选择”的实现集合；Router 可根据模型返回的一个或多个 tool call 顺序或并行调用这些实现。
+- 调用校验失败也写为 error tool_result 并回到下一轮模型请求；Custom Agent 保留为角色配置，Hook 只在工具调用前触发预检。

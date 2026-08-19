@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent Tool Calling · 真实机制参考</title>
+<style>
+:root{--ink:#17222d;--muted:#657381;--line:#d6dde5;--paper:#edf0f3;--blue:#4568bf;--purple:#674b91;--green:#2d7b65;--orange:#aa702d}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:HarmonyOS Sans SC,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{width:min(1440px,100%);margin:auto;padding:42px 52px 70px}.eyebrow{color:var(--blue);font:800 12px/1.2 ui-monospace,monospace;letter-spacing:.12em}h1{margin:12px 0 8px;font-size:42px;letter-spacing:-.04em}h2{margin:0;font-size:22px}p{margin:0;color:var(--muted);line-height:1.55}.lead{max-width:960px;font-size:16px}.section{margin-top:38px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:14px}.section-head p{max-width:700px;font-size:13px}.loop{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.step{position:relative;min-height:130px;padding:14px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 8px 22px rgba(40,52,64,.07)}.step:not(:last-child):after{position:absolute;z-index:2;top:52px;right:-17px;color:#718091;content:"→";font-size:20px}.step .n{color:#7b8794;font:800 10px/1.2 ui-monospace,monospace;letter-spacing:.1em}.step b{display:block;margin-top:10px;font-size:15px}.step span{display:block;margin-top:7px;color:var(--muted);font-size:12px;line-height:1.42}.step.model{border-color:#cbb9e3;background:#f8f4fd}.step.tool{border-color:#abd5c4;background:#eef8f4}.step.message{background:#f6f8fa}.step.end{border-color:#a3cfb6;background:#eaf7f0}.note{margin-top:16px;padding:13px 16px;border:1px solid #ead2b1;border-radius:10px;background:#fff8ed;color:#7e5931;font-size:12px;line-height:1.55}.api-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.api-card{min-height:260px;padding:18px;border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:12px;background:#fff}.api-card.anthropic{border-top-color:var(--purple)}.api-card.compat{border-top-color:var(--green)}.api-card.kimi{border-top-color:var(--orange)}.api-card h3{margin:9px 0 5px;font-size:17px}.tag{display:inline-flex;padding:3px 7px;border-radius:999px;background:#edf0f5;color:#637183;font:800 10px/1.2 ui-monospace,monospace;letter-spacing:.06em}.api-card p{margin:10px 0;font-size:12px}.api-card code{display:block;padding:12px;border-radius:8px;background:#202b36;color:#edf2f6;white-space:pre-wrap;font:11px/1.55 ui-monospace,monospace}.truth{display:grid;grid-template-columns:1fr 1fr;gap:14px}.truth article{padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}.truth b{display:block;margin-bottom:7px}.truth ul{margin:0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.65}.sources{font-size:12px;line-height:1.8}.sources a{color:var(--blue);text-decoration:none}@media(max-width:1050px){main{padding:28px 24px}.loop{grid-template-columns:repeat(4,1fr)}.step:nth-child(4):after{display:none}.api-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){h1{font-size:32px}.loop,.api-grid,.truth{grid-template-columns:1fr}.step:after{display:none!important}}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">REFERENCE · AGENT TOOL CALLING</div>
+<h1>真实 API 的共同机制：工具调用不是“指向能力卡”</h1>
+<p class="lead">模型先返回响应；只有响应包含工具调用时，应用侧才解析、校验并执行工具。工具输出作为中间消息回传模型，模型后续生成的 final response 才是开发者看到的最终交付。</p>
+
+<section class="section"><div class="section-head"><h2>跨平台共同循环</h2><p>厂商字段名称不同，但“模型请求 → tool call → 应用执行 → tool result → 下一轮请求”是同一协议关系。</p></div>
+<div class="loop">
+<div class="step"><span class="n">01 · INPUT</span><b>任务与现场</b><span>用户目标、代码、环境、历史消息</span></div>
+<div class="step"><span class="n">02 · REQUEST</span><b>发送模型请求</b><span>messages + tools / function schema</span></div>
+<div class="step model"><span class="n">03 · RESPONSE</span><b>模型返回响应</b><span>final text，或一个 / 多个 tool call</span></div>
+<div class="step"><span class="n">04 · VALIDATE</span><b>应用侧校验</b><span>工具名、参数、权限与风险</span></div>
+<div class="step tool"><span class="n">05 · EXECUTE</span><b>执行具体工具</b><span>检索、外部连接、命令或委派</span></div>
+<div class="step message"><span class="n">06 · MESSAGE</span><b>回传 tool result</b><span>携带 call_id / tool_use_id</span></div>
+<div class="step end"><span class="n">07 · END</span><b>最终响应</b><span>模型基于工具结果生成答案</span></div>
+</div><div class="note"><b>边界：</b>知识库、MCP、子 Agent 是工具实现；tool_result 是发给模型的中间消息。二者都不是最终交付结果。</div></section>
+
+<section class="section"><div class="section-head"><h2>公开 API 字段对照</h2><p>只保留决定流程走向的字段。不能把某一家 API 的专有字段直接写成跨平台通用节点。</p></div>
+<div class="api-grid">
+<article class="api-card"><span class="tag">OPENAI · CHAT COMPLETIONS</span><h3>tool_calls / tool_call_id</h3><p>assistant message 携带 tool_calls；应用执行后，以 tool message 回传对应 tool_call_id。</p><code>assistant.tool_calls[]
+→ execute(name, arguments)
+tool.tool_call_id + content
+→ next messages request</code></article>
+<article class="api-card"><span class="tag">OPENAI · RESPONSES API</span><h3>function_call / function_call_output</h3><p>调用和输出是 response items；应用执行 function_call 后，以相同 call_id 回传 function_call_output。</p><code>response.output: function_call
+→ execute(name, arguments)
+function_call_output + call_id
+→ next response request</code></article>
+<article class="api-card anthropic"><span class="tag">ANTHROPIC · MESSAGES</span><h3>tool_use / tool_result</h3><p>assistant content 出现 tool_use block；下一条 user message 放入关联 tool_use_id 的 tool_result block。</p><code>assistant.content: tool_use
+→ execute(name, input)
+user.content: tool_result
++ tool_use_id
+→ next messages request</code></article>
+<article class="api-card compat"><span class="tag">DEEPSEEK / KIMI</span><h3>OpenAI-compatible tool calling</h3><p>公开接口沿用 tools、tool_calls、tool_call_id 结构；平台差异不改变“执行后回传再请求”的关系。</p><code>assistant.tool_calls[]
+→ application executes tool
+tool.tool_call_id + content
+→ next chat request</code></article>
+</div></section>
+
+<section class="section"><div class="section-head"><h2>对报告 Workflow 的硬约束</h2></div><div class="truth">
+<article><b>必须画出的关系</b><ul><li>模型响应和工具执行之间有应用侧解析与校验</li><li>能力卡只连接具体执行动作</li><li>所有工具分支回到同一个 tool result 消息节点</li><li>tool result 回到下一轮模型请求</li></ul></article>
+<article><b>不能出现的表达</b><ul><li>把知识库、MCP 或子 Agent 画成最终结果</li><li>把 tool_result 和 final response 画成两个 End</li><li>用单一厂商的 stop_reason 代表所有 API</li><li>让 Hook 长线穿过流程节点</li></ul></article>
+</div></section>
+
+<section class="section sources"><h2>公开来源</h2><p>
+OpenAI Function Calling：<a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">platform.openai.com/docs/guides/function-calling</a><br>
+Anthropic Tool Use：<a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">platform.claude.com/docs · Implement tool use</a><br>
+DeepSeek Function Calling：<a href="https://api-docs.deepseek.com/guides/function_calling" target="_blank" rel="noreferrer">api-docs.deepseek.com/guides/function_calling</a><br>
+Kimi API：<a href="https://platform.moonshot.cn/docs/guide/use-kimi-api" target="_blank" rel="noreferrer">platform.moonshot.cn/docs/guide/use-kimi-api</a>
+</p></section>
+</main></body></html>
