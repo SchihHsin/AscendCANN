@@ -1647,3 +1647,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-08-19（Harness 边界统一）
 
 - 用户确认 Harness 表示开发者配置并运行 Agent 的整体边界，因此 #8 的 Harness 虚线范围已扩展：完整包住所有可调用能力节点及 `Context → Model → Host Execute` 主运行链；Start / End 保持在边界外。知识库与 MCP 是边界内由 Harness 调用的入口，其箭头所代表的检索 / 外部动作可穿出至外部系统，但能力配置本身归属于 Harness。
+
+### 2026-08-19（Workflow 从阶段名改为数据与动作）
+
+- 用户指出“组装请求 / 推理与规划 / 受控执行”过于笼统。#8 主节点已改为实际可观察的 API 调用行为：`任务输入（prompt / repo / 日志）→ 构造 messages + tools（system / user、上下文片段、tool schema、权限、历史结果）→ Call Model API 并解析 response（final 或 tool name + JSON arguments / 委派指令）→ 校验并执行 action（授权、参数、命令 / 检索 / 读写，返回 JSON / 日志 / diff / 状态）→ 返回交付物（结论、引用、变更）`。
+- Harness 说明和回传线同步明确为：将 API response 的 `tool result`（JSON 结果、引用、日志、diff、状态、子任务输出）追加到 messages，进入下一轮模型调用。
