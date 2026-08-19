@@ -1676,3 +1676,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-08-19（Workflow 判断与端点深色化）
 
 - 用户指出判断菱形仍是白色、Start / End 未进入主线的两层视觉语法。#8 的“是否 tool call？”判断已改为整块深靛菱形、白字；Start 和 End 均改为深绿动作头 + 浅色信息区，统一主流程的视觉节奏。
+
+### 2026-08-19（Workflow 能力集合与排布对齐沙盘）
+
+- 用户指出 Workflow 中“模板 / 脚手架”并非前页平台能力沙盘的直接装配能力。已完成集合核对：沙盘只包含项目规则、知识库 / 检索、Harness、Skill、Command / Prompt、MCP、Plugin、Custom Agent / Subagent、Hook。Harness 为运行框架，prompt 留在任务输入，均不单列为能力卡。
+- #8 已移除“模板 / 脚手架”和“会话指令”两张能力卡；按接入的动作而非名称顺序重排顶部能力节点：项目规则、Skill 紧邻并直接接入“加载能力”，Command、Plugin 紧邻并接入“构造请求”。
