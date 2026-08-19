@@ -1757,3 +1757,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Model Request 底部使用两个独立输入端口：左侧接收 `Agent 定义` 的预配置，右侧接收 `tool_result` 的运行结果回填；两个箭头不再重合。
 - 进一步消除两条输入线的交叉：`Agent 定义` 移到 Model 正下方并垂直直连；`tool_result` 从 MCP 与子 Agent 之间下行、沿卡片下方左移，再从 Agent 与 Hook 之间的空隙上行接入 Model 右侧端口。
 - `tool_result` 回填最终改为与前向主流程一致的中性灰蓝实线和灰蓝箭头，因为它属于 Agent 主运行循环而非紫色能力输入；紫色仅保留给 Skill / Agent 定义等能力节点。出口从 Message 节点右侧中点指出，且与 Harness 边界、End 保持清晰间距。
+- 回写线底部向 Model 上行的折返点从 `x=738` 左移至 `x=680`，与 Hook 卡片左边缘拉开距离，避免视觉上像从 Hook 旁边拐出。
