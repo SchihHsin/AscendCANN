@@ -1532,3 +1532,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求 Workflow 不只列出能力名，必须看出项目规则、Skill、Command、MCP、Plugin、Custom Agent / Subagent、Hook / Automation 在 AI 的实际运行机制中何时发挥作用。
 - 汇报版 Workflow 改为“任务主干 + 能力附着”表达：**实线**仅描述任务进入 → 上下文与规划 → 按缺口调用 → 结果写回 → 真实执行 → 证据判断 → 交付或升级回路；**虚线**才表示可装配能力作用在对应节点，避免把 Plugin、Hook 误画成独立任务步骤。
 - 节点映射已固定：项目规则 / 指令全程约束任务；Plugin / Extension 在任务开始前安装与发现，用于打包规则、Skill、Command、MCP；Custom Agent / Subagent 在上下文与规划阶段拆分专职任务；Skill 在缺可重复方法时调用；Command / Prompt 在开发者显式发起固定任务时调用；MCP / Connector 在需实时状态或受控动作时调用；Hook / Automation 在真实执行和结果回写的生命周期点自动触发。
+
+### 2026-08-19（Trae 与 WorkBuddy 平台能力补证）
+
+- 汇报版“平台能力沙盘”补齐 Trae 公开入口：Rules、Skills、Commands、MCP Server、Extensions、Custom Agent、Subagents、Hooks，均按产品文档标示为开发者可直接配置或可安装。
+- WorkBuddy 按其任务型 AI 工作平台性质标示：Skills 市场 / 自定义 Skill、连接器（包含自定义连接器及 MCP）、任务模板、专家 / 专家团和定时自动化。
+- 边界固定：WorkBuddy 的任务提示词 / 记忆不等于代码项目 Rule；专家团属于可召唤的多 Agent 任务执行机制，不等于开发者可自定义的 Subagent；定时自动化不等于 IDE 生命周期 Hook；其扩展以 Skill 与连接器为主，不能虚构为 Plugin / Extension。
