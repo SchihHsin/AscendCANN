@@ -1465,6 +1465,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出传统 / AI 两张用户旅程论证力不足，报告主线不应从旅程推断开始，而应从真实公开案例进入，再承接 Agent 架构、资产形态与建设规划。原旅程页从主导航隐藏，保留源代码备查。
 - `operator-ai-journey-deck/index.html` 主顺序调整为：研究问题 → 公开案例 → 15 个案例样本 → Agent Workflow → 资产分流 → 真实资产映射 → 状态与验证资产 → 社区新角色 → 服务模型 → 体验部供给侧工作 → 后续研究。
-- 为遵循 Report PPT Skill 的“原件优先复用”规则，新增 `operator-ai-journey-research/evidence-embed.html` 作为研究底稿裁切副本，通过 `?sec=answers|cases|corpus|research` 只露目标 section；PPT 以 iframe 懒加载嵌入，不重画已有问题卡、案例卡、样本矩阵和研究规划。
+- 初次尝试以 `evidence-embed.html` 裁切嵌入研究底稿，但本地 `file://` 场景下 iframe 裁切不稳定，会露出相邻 section；用户明确要求停止嵌入，已删除该副本。
+- 目前四页已改为 deck 原生排版：三个问题、4 个公开案例、15 个样本和三波研究验证路线均保留底稿事实，但使用当前报告的灰底分析组件呈现，避免整份研究底稿被嵌入。
 - Add 首跑总览与四张步骤 Demo 降为附录，不进入主 deck 的导航与页码，避免简单 Demo 抢占真实案例论证；资产形态与 Agent 架构仍保留为主线核心。
 - 已完成静态桌面首屏检查（1440×900）；未能用浏览器内嵌控制完成本地 `file://` 逐页截图，Chrome headless 对带 iframe 的 hash 页在当前环境未稳定返回内容，需用户在本地浏览器打开 deck 复核嵌入页视觉。
