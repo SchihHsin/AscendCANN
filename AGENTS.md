@@ -1785,4 +1785,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修复“任务满足完成条件？→ 否”回路被下方工具节点遮挡的问题：回路改为在工具节点上方走独立折线，明确回到 `02 · MODEL REQUEST`，并将“否 · 补充上下文或继续一轮”标签贴在线路旁。
 - 第 10 页“资产分流”清理旧的“案例状态对象 / 执行证据 / 责任闭环”能力行；这些属于任务对象或执行产出，保留在后续状态与验证页。该页现在只展示知识库、Skill、模板 / Command、Plugin / MCP、Custom Agent / Subagent、Hook / Harness 等可装配能力，并同步更新表头与图例。
 - 用户确认应把任务验收与 API / Host 流程分层呈现。Workflow 页恢复为纯 Host / Harness tool-calling 循环：无 `tool_call` 时直接输出 `message / final`，不再绘制“任务满足完成条件？”节点；应用侧验收不再被表述为 API 事实。
-- 在 Workflow 后新增两页：`三层边界` 区分 API / Protocol、Host / Harness、Application / Task 三层的职责与依据；`双边界闭环` 将 Host 的候选交付与应用侧可选任务验收分为独立边界，验收未通过以补充任务 / 证据需求反馈回 Host 循环。
+- 将原先拆开的“ 三层边界 / 双边界闭环”合并为一页：上半部解释 API、Host / Harness、Application / Task 三层，下半部标出第 8 页主图覆盖的 L1↔L2 交界，以及应用层可选验收如何接住候选交付。
+- 定位修正：第 8 页不是单独的 L2，而是 L1 API / Protocol 与 L2 Host / Harness 的交界图；Opknow 的流程图主要属于 L3 Application / Task 的产品工作流视角，底层仍由 L2 / L1 承接。
