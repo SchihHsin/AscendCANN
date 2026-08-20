@@ -1794,3 +1794,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 右侧以左指向定位卡标注：本材料的 Agent Workflow 覆盖 L1 API / Protocol 与 L2 Host / Harness 的交界；Opknow / OpenHarmony 的应用任务流程主要属于 L3 Application / Task。
 - L2 明确为解析 API 的 `tool_call`、受控执行并回填 `tool_result` 到下一轮；L3 的规则 / Skill 可选承担业务验收，验收不通过则形成补充任务交回 Host。
 - Workflow 的白色节点语义圆点提高饱和度与亮度，不改变节点、连线与页面的中性视觉方案。
+
+### 2026-08-20（三层协同可视化）
+
+- 将“三层边界”页从三条文字说明卡改为三条水平协同泳道：L1 API / Protocol、L2 Host / Harness、L3 Application / Task 分别呈现其可见节点。
+- 以跨层箭头明确展示任务目标 / 规则下传、Host 请求模型 API、`tool_call` 回到 Host Router、`tool_result + call_id` 回填下一轮请求、`message / final` 交给应用，以及验收不通过形成补充任务回到 Host 的闭环。
+- 用线型和颜色区分 Host 内部流、工具调用、结果回填和跨层协同；页面保留“本材料 #8 主图”位于 L1↔L2、“Opknow / OpenHarmony”位于 L3 的定位信息。
