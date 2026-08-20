@@ -1820,3 +1820,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户选择保留左侧来源定位卡，但要求与右侧流程节点显著区分；两张定位卡改为近黑色锚点卡，白色主体文字，移除浅色节点式背景、边框和阴影语言。
 - 仅以蓝色（本材料 Agent Workflow）与绿色（此前 AI 可发现性流程图）小圆点、文字、指向箭头区分来源，右侧运行节点继续采用浅色机制卡。
+
+### 2026-08-20（Anthropic 专属 Tool Use 流程）
+
+- 新增“Anthropic Tool Use”页，和跨平台 Host / Harness 图分开；页面只按照 Anthropic 公开 Messages API Tool Use 文档绘制：`messages + tools` → assistant `tool_use` content block（`id`、`name`、`input`）→ `stop_reason: tool_use` → 客户端执行 → 下一条 user `tool_result` block（`tool_use_id`）→ 下一次 Messages 请求；`stop_reason: end_turn` 进入 assistant 最终文本。
+- 明确没有把 MCP、Skill、Hook、子 Agent、工具路由、权限校验或业务验收画成 Anthropic API 的固有节点；这些均标为客户端实现选择。
+- `agent-tool-calling-reference.html` 新增同一流程的字段 / 边界对照，全部引用 Anthropic 公开文档，不使用非公开或泄露资料。
