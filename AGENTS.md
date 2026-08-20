@@ -1800,3 +1800,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将“三层边界”页从三条文字说明卡改为三条水平协同泳道：L1 API / Protocol、L2 Host / Harness、L3 Application / Task 分别呈现其可见节点。
 - 以跨层箭头明确展示任务目标 / 规则下传、Host 请求模型 API、`tool_call` 回到 Host Router、`tool_result + call_id` 回填下一轮请求、`message / final` 交给应用，以及验收不通过形成补充任务回到 Host 的闭环。
 - 用线型和颜色区分 Host 内部流、工具调用、结果回填和跨层协同；页面保留“本材料 #8 主图”位于 L1↔L2、“Opknow / OpenHarmony”位于 L3 的定位信息。
+
+### 2026-08-20（报告收敛）
+
+- 按用户要求从正式阅读序列、目录和导航点中移除“三个核心问题”“公开案例显示”“15 个公开案例”三页；不保留空白页。
+- 目录改为：可装配能力 → 服务架构 → 资产与服务 → 建设与验证，报告从能力与运行机制直接进入后续服务与规划内容。
