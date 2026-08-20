@@ -1826,3 +1826,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增“Anthropic Tool Use”页，和跨平台 Host / Harness 图分开；页面只按照 Anthropic 公开 Messages API Tool Use 文档绘制：`messages + tools` → assistant `tool_use` content block（`id`、`name`、`input`）→ `stop_reason: tool_use` → 客户端执行 → 下一条 user `tool_result` block（`tool_use_id`）→ 下一次 Messages 请求；`stop_reason: end_turn` 进入 assistant 最终文本。
 - 明确没有把 MCP、Skill、Hook、子 Agent、工具路由、权限校验或业务验收画成 Anthropic API 的固有节点；这些均标为客户端实现选择。
 - `agent-tool-calling-reference.html` 新增同一流程的字段 / 边界对照，全部引用 Anthropic 公开文档，不使用非公开或泄露资料。
+
+### 2026-08-20（Anthropic 页与通用 Workflow 对齐）
+
+- 用户指出 Anthropic 专属页与 #6 通用 Workflow 的循环关系应保持一致。两页现统一为“请求 → 模型响应 → `tool_use` / `tool_call` 分流 → 客户端 / Host 执行 → 结果回填 → 下一轮请求；无调用则最终文本”的同一骨架；差别仅在前者使用 Anthropic Messages API 的真实字段。
+- Anthropic 页将原先过于笼统的“调用可由客户端按其策略处理”展开为可见的客户端动作：逐个读取 `tool_use.id / name / input`，以 `name` 匹配已注册实现，将 JSON `input` 传给实现并收集输出或错误；逐条创建 `tool_result`，以 `tool_use_id = tool_use.id` 关联后写入下一条 user message。
+- 同步更新 `cann-dashboard/agent-tool-calling-reference.html`，明确上述执行链和“映射、参数 / 权限校验、重试、串并行策略属于客户端实现，非 Anthropic API 强制”的事实边界。
