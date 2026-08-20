@@ -1832,3 +1832,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出 Anthropic 专属页与 #6 通用 Workflow 的循环关系应保持一致。两页现统一为“请求 → 模型响应 → `tool_use` / `tool_call` 分流 → 客户端 / Host 执行 → 结果回填 → 下一轮请求；无调用则最终文本”的同一骨架；差别仅在前者使用 Anthropic Messages API 的真实字段。
 - Anthropic 页将原先过于笼统的“调用可由客户端按其策略处理”展开为可见的客户端动作：逐个读取 `tool_use.id / name / input`，以 `name` 匹配已注册实现，将 JSON `input` 传给实现并收集输出或错误；逐条创建 `tool_result`，以 `tool_use_id = tool_use.id` 关联后写入下一条 user message。
 - 同步更新 `cann-dashboard/agent-tool-calling-reference.html`，明确上述执行链和“映射、参数 / 权限校验、重试、串并行策略属于客户端实现，非 Anthropic API 强制”的事实边界。
+
+### 2026-08-20（跨平台 Agent 运行机制对照）
+
+- 用户确认沿用 #6 的横向“请求 → 模型 → 分流 / Host → 执行 → 结果回填 → 下一轮 / End”图形语法，为不同平台分别表达实际运行差异，而不是只做 API 字段表。
+- 报告新增 Claude Code、Codex、DeepSeek API、OpenCode 和“社区目标运行形态”五张同版式机制图，以及一张运行机制差异矩阵。Claude Code 重点呈现 Rules / Skills / MCP / Subagents / Hooks；Codex 呈现 `AGENTS.md`、Skills、工具与工作区结果回填；DeepSeek 保留 API / 客户端边界；OpenCode 作为可审阅、可改造的开源 Host / Harness 对照，呈现 Agents / Skills / Commands / MCP / Plugins；社区目标图标出规则、Skill、MCP、可引用知识和验证工具各自接入的位置。
+- 证据口径改为三类而非“公开 / 未公开”二分：①公开文档；②实证·未公开（有可复核运行记录、请求响应、源码、可信技术材料或用户提供接口资料支持，允许画入主图）；③待验证假设。只有第三类采用弱化 / 待验证标记，第二类不因未公开而降级为推断。
+- `cann-dashboard/agent-tool-calling-reference.html` 增加机制图证据口径，并新增 OpenCode Docs（Agents / Skills / MCP / Plugins）作为依据来源。

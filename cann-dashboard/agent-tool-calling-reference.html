@@ -16,6 +16,8 @@
 <h1>真实 API 的共同机制：工具调用不是“指向能力卡”</h1>
 <p class="lead">模型先返回响应；只有响应包含工具调用时，应用侧才解析、校验并执行工具。工具输出作为中间消息回传模型，模型后续生成的 final response 是候选交付；是否真正完成任务，还要由应用侧按目标、结果与验证证据验收。</p>
 
+<section class="section"><div class="section-head"><h2>机制图的证据口径</h2><p>“未公开”不等于“不真实”。平台对照图可同时记录公开协议、可实证的运行机制和待验证假设，但三者必须用不同标记表达。</p></div><div class="truth"><article><b>可直接画入机制图的两类事实</b><ul><li><strong>公开文档：</strong>厂商 API / 产品文档可直接核对，例如 <code>tool_use</code>、<code>tool_result</code>、<code>tools</code> 与 <code>tool_call_id</code>。</li><li><strong>实证·未公开：</strong>虽非厂商公开承诺，但有可复核的一手运行证据、请求 / 响应记录、可审阅代码、可信技术材料或用户提供的接口资料支持。</li><li>图中应注明证据类型与来源位置；第二类不应被写成“官方 API 字段”，但可以作为真实运行机制参与对照。</li></ul></article><article><b>不能直接当作事实的内容</b><ul><li><strong>待验证假设：</strong>仅由结果或体验反推、没有可复核来源的内部策略，例如具体系统提示、模型选工具阈值、重试 / 并发调度算法。</li><li>这类内容可作为实验假设或虚线节点出现，并写明需要什么日志、抓包、源码或复现实验来验证。</li><li>比较“谁编程更强”还需要同任务集实测，不能只由机制图推出。</li></ul></article></div></section>
+
 <section class="section"><div class="section-head"><h2>跨平台共同循环</h2><p>厂商字段名称不同，但“模型请求 → tool call → 应用执行 → tool result → 下一轮请求”是同一协议关系。</p></div>
 <div class="loop">
 <div class="step"><span class="n">01 · INPUT</span><b>任务与现场</b><span>用户目标、代码、环境、历史消息</span></div>
@@ -73,6 +75,7 @@ tool.tool_call_id + content
 <article class="doc-card"><b>Anthropic · Implement Tool Use</b><p>支持 tool_use / tool_result 的消息顺序，以及 tool_use_id 的关联关系。</p><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>Model Context Protocol · Architecture</b><p>支持 Host / Client / Server 架构、能力发现，以及 tools/list 与 tools/call 的位置。</p><a href="https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>Claude Code · Subagents</b><p>支持子 Agent 的独立上下文、专用角色与可限制工具权限；它不是 MCP 调用后的固定步骤。</p><a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>OpenCode · Agents / Skills / MCP / Plugins</b><p>用于校对开源 Host 中的 Agent 上下文、工具调用回合及 MCP、Skills、Commands、Plugins 的可配置接入面。</p><a href="https://opencode.ai/docs" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>DeepSeek · Function Calling</b><p>用于校对 OpenAI-compatible 的 tools / tool_calls / tool_call_id 结构。</p><a href="https://api-docs.deepseek.com/guides/function_calling" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>Kimi API</b><p>用于确认兼容接口仍遵循应用执行工具并回传结果的协议关系。</p><a href="https://platform.moonshot.cn/docs/guide/use-kimi-api" target="_blank" rel="noreferrer">查看公开文档</a></article>
 </div></section>
@@ -81,6 +84,7 @@ tool.tool_call_id + content
 OpenAI Function Calling：<a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">platform.openai.com/docs/guides/function-calling</a><br>
 Anthropic Tool Use：<a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">platform.claude.com/docs · Implement tool use</a><br>
 DeepSeek Function Calling：<a href="https://api-docs.deepseek.com/guides/function_calling" target="_blank" rel="noreferrer">api-docs.deepseek.com/guides/function_calling</a><br>
-Kimi API：<a href="https://platform.moonshot.cn/docs/guide/use-kimi-api" target="_blank" rel="noreferrer">platform.moonshot.cn/docs/guide/use-kimi-api</a>
+Kimi API：<a href="https://platform.moonshot.cn/docs/guide/use-kimi-api" target="_blank" rel="noreferrer">platform.moonshot.cn/docs/guide/use-kimi-api</a><br>
+OpenCode Docs：<a href="https://opencode.ai/docs" target="_blank" rel="noreferrer">opencode.ai/docs</a>
 </p></section>
 </main></body></html>
