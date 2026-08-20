@@ -1845,3 +1845,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户明确“未公开”不是排除条件：只要有可信、可复核的运行证据，就可进入平台机制图；区别应是证据强度，而不是公开与否。
 - Claude Code、Codex、DeepSeek API、OpenCode 四张机制图统一在节点上使用 `H / M / L`：`H` 为公开文档或可复核事实，`M` 为可信运行观察 / 实证未公开机制，`L` 为待验证假设；图右上加入简洁图例，不在页底堆叠说明。
 - Claude Code / Codex 的“规划下一步”“是否执行动作”等运行行为保留为 `M`，不再因其不是公开 API 字段而从图中删除；同时不将其当作模型能力排名的直接证据。
+
+### 2026-08-20（平台机制差异标注）
+
+- 用户指出四张平台图共用工具调用骨架后视觉过于相似。各平台图保留共同骨架，但仅用 3 个编号高亮真实差异节点，并在图底部用对应短解释直述差异含义。
+- Claude Code：项目方法进入上下文、Pre / PostToolUse 生命周期约束、子 Agent 独立回传；Codex：`AGENTS.md` / Skill、权限与沙箱、工作区证据回填；DeepSeek：协议 / 客户端边界、`name / arguments` 路由、`tool_call_id` 回填；OpenCode：可配置 Agent 上下文、可审阅 Host 路由、可改造权限规则。
