@@ -1787,3 +1787,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认应把任务验收与 API / Host 流程分层呈现。Workflow 页恢复为纯 Host / Harness tool-calling 循环：无 `tool_call` 时直接输出 `message / final`，不再绘制“任务满足完成条件？”节点；应用侧验收不再被表述为 API 事实。
 - 将原先拆开的“ 三层边界 / 双边界闭环”合并为一页：上半部解释 API、Host / Harness、Application / Task 三层，下半部标出第 8 页主图覆盖的 L1↔L2 交界，以及应用层可选验收如何接住候选交付。
 - 定位修正：第 8 页不是单独的 L2，而是 L1 API / Protocol 与 L2 Host / Harness 的交界图；Opknow 的流程图主要属于 L3 Application / Task 的产品工作流视角，底层仍由 L2 / L1 承接。
+
+### 2026-08-20（三层边界合并收口）
+
+- 将原先三层说明中的重复双边界展开流程删除并收敛为单页，避免同一机制在报告中重复绘制。
+- 右侧以左指向定位卡标注：本材料的 Agent Workflow 覆盖 L1 API / Protocol 与 L2 Host / Harness 的交界；Opknow / OpenHarmony 的应用任务流程主要属于 L3 Application / Task。
+- L2 明确为解析 API 的 `tool_call`、受控执行并回填 `tool_result` 到下一轮；L3 的规则 / Skill 可选承担业务验收，验收不通过则形成补充任务交回 Host。
+- Workflow 的白色节点语义圆点提高饱和度与亮度，不改变节点、连线与页面的中性视觉方案。
