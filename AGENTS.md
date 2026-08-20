@@ -1839,3 +1839,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 报告新增 Claude Code、Codex、DeepSeek API、OpenCode 和“社区目标运行形态”五张同版式机制图，以及一张运行机制差异矩阵。Claude Code 重点呈现 Rules / Skills / MCP / Subagents / Hooks；Codex 呈现 `AGENTS.md`、Skills、工具与工作区结果回填；DeepSeek 保留 API / 客户端边界；OpenCode 作为可审阅、可改造的开源 Host / Harness 对照，呈现 Agents / Skills / Commands / MCP / Plugins；社区目标图标出规则、Skill、MCP、可引用知识和验证工具各自接入的位置。
 - 证据口径改为三类而非“公开 / 未公开”二分：①公开文档；②实证·未公开（有可复核运行记录、请求响应、源码、可信技术材料或用户提供接口资料支持，允许画入主图）；③待验证假设。只有第三类采用弱化 / 待验证标记，第二类不因未公开而降级为推断。
 - `cann-dashboard/agent-tool-calling-reference.html` 增加机制图证据口径，并新增 OpenCode Docs（Agents / Skills / MCP / Plugins）作为依据来源。
+
+### 2026-08-20（平台机制图证据置信度）
+
+- 用户明确“未公开”不是排除条件：只要有可信、可复核的运行证据，就可进入平台机制图；区别应是证据强度，而不是公开与否。
+- Claude Code、Codex、DeepSeek API、OpenCode 四张机制图统一在节点上使用 `H / M / L`：`H` 为公开文档或可复核事实，`M` 为可信运行观察 / 实证未公开机制，`L` 为待验证假设；图右上加入简洁图例，不在页底堆叠说明。
+- Claude Code / Codex 的“规划下一步”“是否执行动作”等运行行为保留为 `M`，不再因其不是公开 API 字段而从图中删除；同时不将其当作模型能力排名的直接证据。
