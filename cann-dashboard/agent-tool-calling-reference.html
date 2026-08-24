@@ -74,8 +74,9 @@ tool.tool_call_id + content
 <article class="doc-card"><b>OpenAI · Function Calling</b><p>支持“模型返回 tool call、应用执行、带 call_id 回传输出、继续请求”的共同循环。</p><a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>Anthropic · Implement Tool Use</b><p>支持 tool_use / tool_result 的消息顺序，以及 tool_use_id 的关联关系。</p><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>Model Context Protocol · Architecture</b><p>支持 Host / Client / Server 架构、能力发现，以及 tools/list 与 tools/call 的位置。</p><a href="https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture" target="_blank" rel="noreferrer">查看公开文档</a></article>
-	<article class="doc-card"><b>Claude Code · Subagents</b><p>支持子 Agent 的独立上下文、专用角色与可限制工具权限；它不是 MCP 调用后的固定步骤。</p><a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noreferrer">查看公开文档</a></article>
-	<article class="doc-card"><b>OpenAI · Codex Plugins</b><p>用于校对 Codex Plugin 是可安装的扩展包：可把 Skills、MCP Server 或 App 带入 Host；Plugin 不是 MCP 的同义词，后者负责外部系统的工具连接与调用。</p><a href="https://developers.openai.com/codex/plugins/" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Claude Code · Subagents</b><p>支持子 Agent 的独立上下文、专用角色与可限制工具权限；它不是 MCP 调用后的固定步骤。</p><a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Claude Code · Loop</b><p><code>/loop</code> 是用户配置的定时提示能力：按给定间隔再次发送 prompt，因而接入“结果回填 → 再规划”的重复运行；它不同于每个工具调用都必有的底层回填回合。</p><a href="https://code.claude.com/docs/en/interactive-mode#loop" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>OpenAI · Codex Plugins</b><p>用于校对 Codex Plugin 是可安装的扩展包：可把 Skills、MCP Server 或 App 带入 Host；Plugin 不是 MCP 的同义词，后者负责外部系统的工具连接与调用。</p><a href="https://developers.openai.com/codex/plugins/" target="_blank" rel="noreferrer">查看公开文档</a></article>
 	<article class="doc-card"><b>OpenCode · Agents / Skills / MCP / Plugins</b><p>用于校对开源 Host 中的 Agent 上下文、工具调用回合及 MCP、Skills、Commands、Plugins 的可配置接入面。</p><a href="https://opencode.ai/docs" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>DeepSeek · Function Calling</b><p>用于校对 OpenAI-compatible 的 tools / tool_calls / tool_call_id 结构。</p><a href="https://api-docs.deepseek.com/guides/function_calling" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>Kimi API</b><p>用于确认兼容接口仍遵循应用执行工具并回传结果的协议关系。</p><a href="https://platform.moonshot.cn/docs/guide/use-kimi-api" target="_blank" rel="noreferrer">查看公开文档</a></article>
@@ -84,6 +85,7 @@ tool.tool_call_id + content
 <section class="section sources"><h2>公开来源</h2><p>
 OpenAI Function Calling：<a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">platform.openai.com/docs/guides/function-calling</a><br>
 Anthropic Tool Use：<a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">platform.claude.com/docs · Implement tool use</a><br>
+Claude Code Loop：<a href="https://code.claude.com/docs/en/interactive-mode#loop" target="_blank" rel="noreferrer">code.claude.com/docs · /loop</a><br>
 DeepSeek Function Calling：<a href="https://api-docs.deepseek.com/guides/function_calling" target="_blank" rel="noreferrer">api-docs.deepseek.com/guides/function_calling</a><br>
 	Kimi API：<a href="https://platform.moonshot.cn/docs/guide/use-kimi-api" target="_blank" rel="noreferrer">platform.moonshot.cn/docs/guide/use-kimi-api</a><br>
 	Codex Plugins：<a href="https://developers.openai.com/codex/plugins/" target="_blank" rel="noreferrer">developers.openai.com/codex/plugins</a><br>

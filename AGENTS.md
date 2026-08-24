@@ -1999,3 +1999,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出平台机制对照的 Codex 页遗漏了真实存在的 Plugin 能力。Codex 机制图现新增独立 `Plugin / Extension` 能力卡，并以独立绿色连线接入 `04 · SELECT / 形成工具动作`，不与 MCP / 工具混为同一张卡或同一条能力线。
 - 图中明确边界：Plugin 是安装到 Codex Host 的能力包，可携带 Skills、MCP Server 或 App；MCP 是连接外部系统并调用工具的协议。能力卡、选择节点与“关键差异”说明均同步更新。
 - `agent-tool-calling-reference.html` 新增 OpenAI Codex Plugins 官方来源卡和链接，作为该能力卡的可复核依据。
+
+### 2026-08-24（Claude Code 的可配置 Loop）
+
+- 需严格区分：所有 Agent Host 的 `tool result → 再请求 / 再规划` 是底层运行回环；Claude Code 的 `/loop` 则是用户可配置的定时提示能力，按间隔再次发起 prompt，不可混为同一概念。
+- Claude Code 机制图新增独立 `Loop（/loop）` 能力卡，直接连入结果回填后的回环；Codex、DeepSeek API、OpenCode 不以同名原生能力画入。机制依据页新增对应官方文档卡。
