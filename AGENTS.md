@@ -78,7 +78,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 ---
 
-## 当前完整交接快照（2026-08-24）
+## 当前完整交接快照（2026-08-25）
 
 > 这是新会话的优先入口。下方“历史记录”完整保留已发生的业务、研究和实现决策；不得因维护本快照而删除或概括掉历史中仍具业务价值的信息。若快照与历史不一致，以日期更新的一方为准，并在本节补充最新结论。
 
@@ -184,6 +184,56 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 - 当前工作区长期可能含无关改动 / 未跟踪物，例如 `.DS_Store`、`cann-dashboard/智能学习方案-张宸梓访谈分析.html`、`CANN学习高保真离线标注/`、`cann/`、`cann.zip`、项目封面 meta JSON、研究截图裁切物等；在未确认来源和范围前均不得清理、重置、提交或覆盖。
 - 根仓 GitHub Pages 根地址为 `https://schihhsin.github.io/AscendCANN/`。常用交付链接需以实际发布文件拼接；例如学习汇报为 `/ascend-community-progress.html`。不同历史子项目可能有各自 Pages，不能假设所有 `cann-dashboard/` 文件都已独立发布。
 - 本仓根目录也有 `CLAUDE.md`、`cann-dashboard/context.md`、`backend-context.md`、`process-log.md` 等辅助材料。它们可补充事实，但 `AGENTS.md` 是 Codex 新会话的总交接文件；更新时应同步吸收新增业务信息，而不是让关键决策只散落在其他文件。
+
+### 8. 上下文无损保全矩阵（2026-08-25 审计）
+
+本节是交接入口，不替代源文件；源文件不得删除、覆盖或被“整理”成只剩结论。凡是对业务判断、数据解释、页面职责、运行机制、证据边界、用户决策或后续工作有影响的内容，都必须在本文件留下可执行的摘要和源文件路径。
+
+| 源文档 | 保留的业务信息 | 权威关系 |
+|---|---|---|
+| `cann-dashboard/context.md` | 看板目标、角色 / 场景 / 旅程、评分维度、痛点字段、VOD 分布、已定设计方向和待确认问题 | 历史看板骨架；与本文件冲突时以本文件较新日期为准，原文保留用于回溯 |
+| `cann-dashboard/process-log.md` | 从需求、选型、否定原因到实现结果的过程决策，尤其是用户对视觉、信息密度、连线、层级和责任边界的反馈 | 设计决策原始记录；不得只保留最终截图而删除被否定原因 |
+| `cann-dashboard/backend-context.md` | GitCode 观测、评分 / 报告数据文件、脚本、报告规则、证据追溯和后端待办 | 后端数据线的补充事实；不改变产品 / 体验层决策 |
+| `CLAUDE.md` | Claude 会话交接、看板与学习 Demo 的历史实现细节、提交记录和运行限制 | 与本文件并行的旧代理交接；Codex 新会话以 `AGENTS.md` 为入口，不能让 CLAUDE.md 覆盖本文件 |
+
+#### 后端 / 评测线的完整交接事实
+
+- GitCode `cann` 组织曾完成 **65 个公开仓库**的全量元数据、README、目录、脚本 / 测试 / build 入口观测；观测与覆盖结果分别落在 `cann-agentic-observations.json`、`cann-agentic-summary.json`、`cann-repo-coverage.json`、`repo-scan-summary.json` 及 `repo-scan/`。这些文件是证据，不是模拟 KPI。
+- 后端脚本职责固定为：`scripts/analyze_cann_repos.py`（仓库分析）、`scripts/render_agentic_report.py`（Agentic 报告）、`scripts/render_ux_journey_report.py`（UX 旅程报告）、`scripts/render_context_journey_report.py`（按 context 骨架生成报告）。报告输出包含 `journey-agentic-report.*` 和 `context-journey-report.*`；后者允许用新分析补全 context 缺失内容，但必须标明“context 骨架 / 新分析补全 / 阶段名来自 context，内容来自新分析”。
+- 后端报告的呈现优先级是：角色 / 场景最低分 → 最差旅程阶段 → 原因证据；覆盖率只作辅助证据。证据链接必须指向实际纳入版本库的文件；分数是主信息，仓库名、地址和少量覆盖信息用于解释，不得用“最高 / 最低阶段”另占一排制造空洞结论。
+- `ascendc-agent-main` 的真实运行链是：`orchestrator.py` 批量调度 → 独立 Claude 会话 / 8 个专职 Agent → Skill 与本地文档检索 → 编译 / 测试 / 调试 / 性能 → evaluator 日志分析 → 报告与 OBS 汇总。完整开发阶段必须是“方案设计 → 算子实现 → 构建测试 → 问题处理 → 结果总结 → 文档编写”。
+- 该系统的关键硬约束必须保留：使用基础矢量 API，不能用高阶封装；硬件参数动态读取，不能写死 blockDim；35 个算子由 `operator_catalog.yaml` 管理，`evaluation_config.yaml` 管理单算子最长 1 小时 / 批次最长 24 小时；本地 Ascend C 指南超过 4000 页。
+- 本机不能声称完成真实 NPU 验证：完整运行需要 Linux、真实 Ascend 910B、驱动 / 固件、`/dev/davinci*`、aarch64、Docker、私有 CANN 镜像、Claude CLI 和 Anthropic token。无 NPU 时只能做日志 evaluator、token / 耗时、痛点归因、页面与结构研究；编译成功率、用例通过率、模型开箱、PyTorch API 通过率、0 Day 和性能必须接真实 NPU。
+- 成本判断仍有效：单个 L1 算子约 20–50 万 tokens（约 `$1–3`），35 个全批次约 `$40–100+`；L2/L3 失败迭代可能 `$5–10/个`。系统已有多 token 轮换和 `cached_tokens` / Prompt Cache；最低成本试跑命令为 `python3 evaluation_system/orchestrator.py --full-pipeline --limit 1 --difficulty L1`。
+
+#### 当前 Agent 机制汇报的有效入口
+
+- 主材料：`cann-dashboard/operator-ai-journey-deck/index.html`。正式阅读序列从“可装配能力 / 平台能力沙盘”进入“跨平台优先入口 → Agent Workflow → Anthropic Tool Use → Claude Code / Codex / DeepSeek / OpenCode 机制 → 运行机制差异 → 机制差异意味着什么 → 三层边界 → 资产分流 → 真实资产映射 → 状态与验证资产 → 服务与建设规划”。早期“三个核心问题 / 公开案例显示 / 15 个公开案例”页已从正式序列移除；源代码中的旧模板片段仅作历史备查，不能重新加入导航。
+- 机制复核页：`cann-dashboard/agent-tool-calling-reference.html`。它保存 OpenAI Function Calling、Anthropic Tool Use、MCP Architecture、Claude Code Subagents / Loop、Codex Plugins、OpenCode、DeepSeek 和 Kimi 的公开来源与字段边界；修改主图前先复核此页。
+- 主图覆盖的是 **L1 API / Protocol 与 L2 Host / Harness 的交界**；它表达 `messages + tools → tool_call / tool_use 分流 → Host 解析 / 校验 / 路由 → 执行 → tool_result / 日志 / diff 回填 → 再请求或候选 final`。L3 Application / Task 的业务目标、完成条件和验收必须另行表达，不能把 API `final` 当成任务验收。
+- 真实能力必须拆开：项目规则 / 持久上下文、知识库 / 检索、Skill / Workflow、Command / Prompt、模板 / 脚手架、Plugin / Extension、Custom Agent / Subagent、MCP / Connector、Hook / Automation、Harness / Agent Runtime。案例状态、执行证据和责任闭环是任务对象 / 执行产出，不是可调用能力卡。
+- 最新平台差异：Codex 图单独包含 `Plugin / Extension`（安装包可携带 Skill、MCP Server 或 App），MCP 仍表示外部系统连接；Claude Code 图单独包含用户可配置的 `Loop（/loop）`，表示按间隔再次发起 prompt。所有平台共有的 `tool result → 再规划` 只是底层运行回环，不能与 Claude `/loop` 混为一谈；其他平台不得凭空画成同名原生 Loop。
+- 证据置信度固定为：`H` 公开或可复核事实；`M` 可信运行观察 / 实证但未公开；`L` 待验证假设。未公开不等于不真实，但没有可复核材料的内部策略、阈值、调度算法不能画成事实，也不能据图宣称某模型必然更强。
+
+#### 不可回退的跨会话用户决策
+
+- 用户要求流程图从左到右，最左 `START`、最右 `END`；主流程和支线必须有真实语义，不允许把多个能力塞进一个卡片，不允许用一条竖直主线假装所有实现方式相同。
+- 主动作节点与可调用能力节点必须视觉区分；能力卡要有图标、鲜明但克制的颜色和明确连线。Harness 边界使用弱化虚线，不得穿过节点、与出口重合或覆盖文字；线应从正确的节点边缘出入，避免重合、交叉和无来源箭头。
+- 节点文字必须表达具体动作、输入 / 输出或判断依据；不要用“组装请求、推理与规划、受控执行”这类过度抽象阶段替代真实节点。节点宽度要适应内容，圆点置于节点内文字前，白色节点的分割线和文字留出足够间距。
+- 视觉差异只用于表达机制差异：普通节点使用低饱和底色；差异节点用荧光黄高亮；定位卡与流程节点必须明显区分。内容不可因视觉改版而减少节点或替换成未经依据的机制。
+- 刷新必须保留当前 hash / 页码，不应回到第一页；删页或调整正式序列后要同步目录、导航点和 hash 映射。
+
+#### 仍未完成或必须先确认的事项
+
+- 看板模拟数据尚未整体替换为真实数据；需要确认 NPU 服务器 / 驱动 / CANN 版本，才能接入开发成功率、用例通过率、PyTorch API、模型开箱、0 Day 和性能数据。
+- 应用开发者场景、入门开发者 S2–S5 任务列表仍未定稿；不得用虚构数据填充为已验证结论。
+- 研究报告中的公开案例、AI 可用性对照、截图裁切和用户回放仍需按统一任务集持续复核；CANN × CUDA 差异结论只代表当前样本，不代表生态总体满意度或模型总体能力。
+- 机制图中任何新增平台能力都必须先查公开文档或可复核运行材料，标注 `H / M / L`，同步 `agent-tool-calling-reference.html` 和本文件；不能只因为用户提出名称就把它当成平台事实。
+- 页面视觉验证优先使用桌面视口；若本地浏览器策略阻止官方页面访问，不得绕过策略或把未打开的链接当作已验证事实，应保留不确定性并使用可复核的本地 / CLI 证据。
+
+### 9. 交接更新协议
+
+每次新会话结束时，必须在本文件追加日期条目，至少说明：变更文件、业务目的、证据来源 / 置信度、是否影响页面序列或 API / Host / Application 层边界、验证命令、commit / push 结果和未决事项。禁止只写“已完成”或只记录视觉结果；不得清理用户已有脏文件，不得用 `git reset --hard`、`git checkout --` 覆盖未知改动。
 
 ---
 
@@ -2004,3 +2054,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 需严格区分：所有 Agent Host 的 `tool result → 再请求 / 再规划` 是底层运行回环；Claude Code 的 `/loop` 则是用户可配置的定时提示能力，按间隔再次发起 prompt，不可混为同一概念。
 - Claude Code 机制图新增独立 `Loop（/loop）` 能力卡，直接连入结果回填后的回环；Codex、DeepSeek API、OpenCode 不以同名原生能力画入。机制依据页新增对应官方文档卡。
+
+### 2026-08-25（上下文无损交接审计）
+
+- 审计并更新 `AGENTS.md`：保留 `context.md`、`process-log.md`、`backend-context.md`、`CLAUDE.md` 中所有对业务目标、数据口径、实现边界、用户决策、证据来源和待办有价值的信息；新增源文档保全矩阵、后端 / 评测事实、当前机制材料入口、不可回退的视觉与语义决策、未完成事项和交接更新协议。
+- 本次仅修改交接文档，不改变任何页面内容、导航、模拟数据或运行机制；工作区中已有 `.DS_Store`、未跟踪研究资产和其他用户改动均保留，不纳入本次提交。
