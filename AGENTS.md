@@ -253,6 +253,16 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 - 验证：Chrome Headless 1600×900 重新逐页截图 33 页，0 console / page error、0 可见元素越界；正文区域中心落在页面垂直中线附近，长表格与产品 Mockup 未碰撞页脚；内联 JS `node --check` 和 `git diff --check` 均通过。
 - Commit / push：布局修正提交 `4f6834a`（`fix: vertically center report slide content`）已成功推送 `origin/main`；本条回填随后以交接提交再次推送。
 
+### 2026-08-26（AI 编码平台机制流程图深化）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。响应“流程图过于简单、必须使用开源库”的反馈，将第 10–16 页原 CSS 摘要框图全部替换为开源 Mermaid 11 浏览器端流程图，并在来源页补充 Mermaid 项目链接。
+- 通用图从 7 个线性节点扩展为 L1 Model API / Protocol、L2 Host / Harness、L3 Application / Task 三层完整回环：Task Envelope、Context 装配、模型响应分流、参数 / 权限 / 预算判断、串并行路由、执行面、结果归一化、上下文回填、停止 / 压缩和业务验收均显式呈现。
+- 六平台图按 4–5 个语义泳道绘制：Claude Code 包含 Skills / Plugins、tool_use、Pre / Post / Stop Hooks、权限、MCP、Subagent 与 `/loop` 外部触发；Codex 包含分层 AGENTS.md、Plugin 装配、动作分流、Approval / Sandbox、证据回填与任务验收；OpenCode 按 `instruction.ts`、`tools.ts`、`prompt.ts`、`LLM.stream`、`permission.ask`、plugin before / after、tool parts、continue / stop / compact 展开；Cursor 包含 model-adapted Agent、queued steering、checkpoint、并行 Subagents、本地 / Cloud VM 双运行时与多类证据；Trae 包含计划确认、Custom Agent / Subagent、完整 Hook 链、Tool Panels、DiffView / Preview 与 Stop 验收；WorkBuddy 包含成本确认、团长拆解、并行 Experts、六类任务状态、Results 与继续处理 / 归档。
+- 证据边界未改变：OpenCode 源码链为 H；闭源平台仅画公开文档或外部可观察机制，内部工具选择、重试和调度仍保留 M；API 的无 tool-call / final 不等于 L3 业务验收完成。没有修改 33 页序列和社区策略结论。
+- 视觉实现：平台页改为“顶部证据说明条 + 全宽 Mermaid 图”，避免侧栏压缩；图内用上下文 / 协议、判断 / 权限、执行 / 证据、任务边界四类语义色，并使用 subgraph 泳道和真实回流连线。
+- 验证：Chrome Headless 1600×900 全 33 页回归通过；7/7 Mermaid 源均生成 SVG，0 Mermaid error、0 console / page error、0 可见元素越界；Overview 三列中 7 张 SVG 保持渲染；两个内联脚本 `node --check` 与 `git diff --check` 通过。
+- Commit / push：待本次流程图深化提交后回填。
+
 ---
 
 ## 历史记录（完整保留，按需回溯）

@@ -61,6 +61,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 /* mechanisms */
 .universal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.65vw;align-items:stretch;position:relative}.universal::after{content:"";position:absolute;left:21%;right:14%;bottom:-2.6vh;height:2.1vh;border:1px dashed rgba(91,91,214,.42);border-top:0;border-radius:0 0 12px 12px}.flow-node{position:relative;min-width:0;min-height:16vh;padding:1.4vh .85vw;border-radius:13px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column}.flow-node:not(:last-child)::after{content:"→";position:absolute;right:-.62vw;top:48%;z-index:2;color:var(--ink-3);font-size:var(--fs-h3)}.flow-node .step{font:650 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.1em;color:var(--ink-3)}.flow-node b{font-size:var(--fs-h3);line-height:1.25;margin:.8vh 0}.flow-node p{font-size:var(--fs-sm);line-height:1.45;color:var(--ink-2)}.flow-node.model{background:#f1efff;border-color:#c9c4ef}.flow-node.exec{background:#edf8f4;border-color:#b9dccf}.flow-node.gate{background:#fff5e9;border-color:#ecd1ad}.flow-node.end{background:var(--g-ink);border-color:#222;color:#fff}.flow-node.end p,.flow-node.end .step{color:rgba(255,255,255,.62)}
 .mech{display:grid;grid-template-columns:.33fr .67fr;gap:1.3vw;min-height:0}.mech-summary{display:flex;flex-direction:column;gap:1vh}.mech-summary .call{padding:1.2vh .9vw;border-radius:12px;background:var(--g-ink);color:#fff}.mech-summary .call b{display:block;font-size:var(--fs-h3);margin-bottom:.4vh}.mech-summary .call p{font-size:var(--fs-sm);line-height:1.48;color:rgba(255,255,255,.66)}.mech-summary ul{padding-left:1.1em;display:grid;gap:.55vh}.mech-summary li{font-size:var(--fs-body);line-height:1.48;color:var(--ink-2)}.mech-flow{min-width:0;min-height:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:.72vw}.mnode{position:relative;min-width:0;min-height:0;padding:1.1vh .75vw;border-radius:12px;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.9);display:flex;flex-direction:column;justify-content:center}.mnode b{font-size:var(--fs-h3);line-height:1.25}.mnode span{font-size:var(--fs-sm);line-height:1.42;color:var(--ink-2);margin-top:.45vh}.mnode:nth-child(-n+7)::after{content:"→";position:absolute;right:-.58vw;top:46%;z-index:2;color:var(--accent)}.mnode:nth-child(4)::after{content:"↓";right:50%;top:auto;bottom:-1.2vh}.mnode:nth-child(n+5){grid-row:2}.mnode:nth-child(5){grid-column:4}.mnode:nth-child(6){grid-column:3}.mnode:nth-child(7){grid-column:2}.mnode:nth-child(8){grid-column:1}.mnode:nth-child(5)::after,.mnode:nth-child(6)::after,.mnode:nth-child(7)::after{content:"←";right:auto;left:-.58vw}.mnode.context{background:#eff3ff}.mnode.plan{background:#f2efff}.mnode.gate{background:#fff5e8}.mnode.exec{background:#ebf8f3}.mnode.result{background:#eef6fb}.mnode.end{background:var(--g-ink);color:#fff;border-color:#222}.mnode.end span{color:rgba(255,255,255,.62)}.cap-row{grid-column:1/-1;display:flex;gap:.45vw;flex-wrap:wrap;align-self:end}.cap-row span{font-size:var(--fs-xs);font-weight:700;padding:.35vh .55vw;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ink-2)}
+.mermaid-layout{grid-template-columns:.21fr .79fr;gap:1vw;align-items:stretch}.mermaid-layout .mech-summary{justify-content:center}.mermaid-layout .mech-summary li{font-size:var(--fs-sm);line-height:1.42}.platform-diagram{display:flex!important;flex-direction:column}.diagram-summary-strip{display:flex;align-items:center;gap:.75vw;margin-bottom:.75vh;padding:.65vh .75vw;border-radius:11px;background:rgba(255,255,255,.56);border:1px solid rgba(255,255,255,.86)}.diagram-summary-strip p{font-size:var(--fs-sm);line-height:1.35;color:var(--ink-2)}.diagram-summary-strip b{color:var(--ink)}.mermaid-shell{height:57vh;min-width:0;min-height:0;padding:.65vh .5vw;border:1px solid rgba(255,255,255,.9);border-radius:15px;background:rgba(255,255,255,.64);box-shadow:0 16px 40px -28px rgba(30,40,70,.34);overflow:hidden;display:flex;align-items:center;justify-content:center}.platform-diagram .mermaid-shell{height:60vh}.mermaid-shell.wide{height:59vh}.mermaid{width:100%;height:100%;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center}.mermaid svg{display:block;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important}.mermaid .nodeLabel,.mermaid .edgeLabel{font-family:'HarmonyOS Sans SC','Inter',sans-serif!important}.mermaid .nodeLabel p{line-height:1.28!important}.mermaid .edgeLabel{font-size:12px!important}.mermaid .cluster-label{font-weight:800!important}.diagram-key{display:flex;align-items:center;justify-content:center;gap:.7vw;margin-top:.8vh;font-size:var(--fs-xs);color:var(--ink-3)}.diagram-key span{display:inline-flex;align-items:center;gap:.3vw}.diagram-key i{width:8px;height:8px;border-radius:50%;background:#eef0ff;border:1px solid #858bd7}.diagram-key .exec{background:#e7f7f1;border-color:#55a889}.diagram-key .gate{background:#fff2df;border-color:#d3a563}.diagram-key .task{background:#252a33;border-color:#252a33}
 .compare-table{display:grid;grid-template-columns:1.15fr repeat(6,1fr);border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.85);background:rgba(255,255,255,.58)}.compare-table>div{min-width:0;padding:.75vh .55vw;border-right:1px solid rgba(120,130,150,.14);border-bottom:1px solid rgba(120,130,150,.14);font-size:var(--fs-sm);line-height:1.3}.compare-table .th{font-weight:850;background:#eef1f6;text-align:center}.compare-table .row{font-weight:800;background:#f7f8fa}.compare-table .focus{background:#eef0ff;color:#4b4ba9;font-weight:700}
 .ability{display:grid;grid-template-columns:.8fr 1.2fr;gap:1.4vw}.ability-equation{background:var(--g-ink);border-radius:16px;padding:2.3vh 1.5vw;color:#fff;display:flex;flex-direction:column;justify-content:center}.ability-equation .eq{font-size:clamp(24px,2.6vw,42px);font-weight:250;line-height:1.35}.ability-equation .eq b{font-weight:800;color:#aeb6ff}.ability-equation p{margin-top:1.5vh;font-size:var(--fs-body);line-height:1.6;color:rgba(255,255,255,.62)}.factor-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75vw}.factor{padding:1.1vh .8vw;border-radius:11px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.86)}.factor b{display:block;font-size:var(--fs-h3)}.factor span{display:block;margin-top:.35vh;font-size:var(--fs-sm);line-height:1.4;color:var(--ink-2)}
 
@@ -175,45 +176,454 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 </main><footer class="foot">机会不在再做一份“能力商店”，而在统一能力发现、执行、证据和状态。</footer></div></section>
 
 <!-- 10 UNIVERSAL LOOP -->
-<section class="slide s-gray" data-title="通用 Host 循环"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">主图覆盖 L1 API / Protocol 与 L2 Host / Harness 的交界</div><div class="ttl">通用 Agent 运行循环：模型提议，Host 执行并回填</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area"><div class="universal">
-  <div class="flow-node"><span class="step">START</span><b>任务与现场</b><p>目标、工作区、用户约束、环境</p></div><div class="flow-node"><span class="step">HOST</span><b>装配 Context</b><p>指令、历史、工具 schema、权限、证据</p></div><div class="flow-node model"><span class="step">MODEL API</span><b>生成下一步</b><p>文本，或 tool_call / tool_use</p></div><div class="flow-node gate"><span class="step">BRANCH</span><b>是否调用工具？</b><p>无调用→候选文本；有调用→Host 分支</p></div><div class="flow-node"><span class="step">HOST</span><b>解析与授权</b><p>按名称路由；校验参数、权限、并发</p></div><div class="flow-node exec"><span class="step">RUNTIME</span><b>执行能力</b><p>文件、Shell、浏览器、MCP、服务</p></div><div class="flow-node end"><span class="step">END?</span><b>回填与再规划</b><p>tool_result / error / diff / log → 下一轮</p></div>
-  </div><div class="card" style="margin-top:4vh;padding:1.2vh 1vw"><div class="legend"><span class="tag h">H</span><span>协议/公开实现可验证</span><span class="tag m">M</span><span>并发、阈值、重试等多为 Host 或内部策略</span><span class="tag l">L</span><span>无 tool-call ≠ 业务验收完成</span></div></div>
+<section class="slide s-gray" data-title="通用 Host 循环"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">主图覆盖 L1 API / Protocol、L2 Host / Harness 与 L3 任务验收</div><div class="ttl">通用 Agent 运行循环：模型提议，Host 执行，任务层验收</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area">
+  <div class="mermaid-shell wide"><pre class="mermaid">
+flowchart LR
+  subgraph APP["L3 · Application / Task"]
+    direction TB
+    A(["START<br/>目标 + 工作区现场"])
+    B["Task Envelope<br/>环境 · 预算 · 权限 · 已有证据"]
+    V{"业务完成条件满足？<br/>测试 / 性能 / 产物 / Owner"}
+    DONE(["END<br/>Evidence Receipt"])
+    R["恢复 / 改路径 / 升级专家"]
+    A --> B
+    V -->|通过| DONE
+    V -->|未通过| R
+  end
+  subgraph HOST["L2 · Host / Harness"]
+    direction TB
+    C["Context 装配<br/>规则 · 历史 · 工作区 · tools schema"]
+    P["解析响应项<br/>文本 / tool_call / tool_use"]
+    T{"包含工具调用？"}
+    G{"参数、权限、预算<br/>是否允许？"}
+    X["按名称路由<br/>串行 / 并行由 Host 决定"]
+    E["执行面<br/>文件 · Shell · Browser · MCP · Service"]
+    N["结果归一化<br/>status · error · log · diff · artifact"]
+    F["回填下一轮 Context<br/>tool_result + 新现场"]
+    STOP{"停止 / 继续 / 压缩？"}
+    P --> T
+    T -->|是| G
+    G -->|允许| X --> E --> N --> F --> STOP
+    G -->|拒绝 / 待确认| N
+    STOP -->|继续| C
+  end
+  subgraph API["L1 · Model API / Protocol"]
+    direction TB
+    Q["messages + tools"]
+    M["模型生成下一步"]
+    O["assistant response<br/>text / tool call items"]
+    Q --> M --> O
+  end
+  B --> C --> Q
+  O --> P
+  T -->|否：候选 final| V
+  STOP -->|候选收口| V
+  R --> C
+  classDef context fill:#eef1ff,stroke:#858bd7,color:#171a20;
+  classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
+  classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
+  classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  class C,Q,F context; class T,G,STOP,V gate; class X,E,N exec; class A,DONE task;
+  </pre></div>
+  <div class="diagram-key"><span><i></i>上下文 / 协议</span><span><i class="gate"></i>判断与权限</span><span><i class="exec"></i>执行与证据</span><span><i class="task"></i>任务边界</span><span class="tag h">Mermaid · H/M/L 分层</span></div>
 </main><footer class="foot">Application / Task 层另行定义完成条件：测试通过、性能达标、环境匹配、Owner 确认等。</footer></div></section>
 
 <!-- 11 CLAUDE CODE -->
-<section class="slide s-gray" data-title="Claude Code 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">强项是把规则、技能、子上下文与生命周期控制嵌入编码循环</div><div class="ttl">Claude Code：可装配的终端编码 Agent</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area mech">
-  <aside class="mech-summary"><span class="tag h">H · PUBLIC DOCS / REPO</span><div class="call"><b>机制定位</b><p>Anthropic tool use 协议之上，由 Claude Code Host 装配项目上下文、权限、工具与生命周期机制。</p></div><ul><li>CLAUDE.md / Rules 约束项目行为</li><li>Skills、Commands、Plugins 提供可复用方法与入口</li><li>Subagents 隔离上下文与工具权限</li><li>Hooks 在生命周期节点执行校验或自动化</li><li>/loop 是定时再次发 prompt，不是底层 tool-result 循环</li></ul></aside>
-  <div class="mech-flow"><div class="mnode context"><b>CLAUDE.md + 会话</b><span>项目规则、历史、工作区现场</span></div><div class="mnode plan"><b>模型规划下一步</b><span>输出文本或 tool_use</span></div><div class="mnode gate"><b>权限与 Hook</b><span>调用前检查、阻断或补充约束</span></div><div class="mnode exec"><b>工具 / Subagent</b><span>Shell、文件、MCP、Skill、子任务</span></div><div class="mnode result"><b>tool_result</b><span>日志、diff、错误、子任务结果</span></div><div class="mnode plan"><b>继续规划</b><span>基于新证据修复、测试或收口</span></div><div class="mnode gate"><b>Stop Hook / 验收</b><span>可触发检查；业务完成条件仍由任务层定义</span></div><div class="mnode end"><b>候选交付</b><span>代码变更、解释与验证证据</span></div><div class="cap-row"><span>Rules</span><span>Skills</span><span>Commands</span><span>Plugins</span><span>Subagents</span><span>Hooks</span><span>MCP</span></div></div>
+<section class="slide s-gray" data-title="Claude Code 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">Rules / Skills 决定上下文；Hooks / Subagents 改变执行回路</div><div class="ttl">Claude Code：从 tool_use 到 Stop Hook 的完整回环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · PUBLIC DOCS / REPO</span><p><b>关键差异：</b>Subagent 使用独立上下文；Pre / Post / Stop Hook 可校验或阻断；<code>/loop</code> 是定时新 prompt，不等于单次 tool_result 回环。</p></div>
+  <div class="mermaid-shell"><pre class="mermaid">
+flowchart LR
+  subgraph C1["1 · CONTEXT"]
+    direction TB
+    S(["用户目标 / Repo"])
+    SK["Skills / Commands / Plugins<br/>按需发现与加载"]
+    CTX["Context 装配<br/>CLAUDE.md · Rules · History"]
+    S --> CTX
+    SK --> CTX
+  end
+  subgraph C2["2 · MODEL RESPONSE"]
+    direction TB
+    API["Anthropic API<br/>messages + tools"]
+    DEC{"响应类型？"}
+    API --> DEC
+  end
+  subgraph C3["3 · CONTROL & ROUTING"]
+    direction TB
+    PRE["PreToolUse Hook<br/>检查 / 改写 / 阻断"]
+    PERM{"工具权限允许？"}
+    ROUTE{"调用目标？"}
+    DENY["permission denied<br/>作为 tool_result 回填"]
+    PRE --> PERM
+    PERM -->|是| ROUTE
+    PERM -->|否| DENY
+  end
+  subgraph C4["4 · EXECUTION"]
+    direction TB
+    TOOL["Read / Edit / Bash / Test"]
+    MCP["外部 MCP Server"]
+    SUB["Subagent<br/>独立 Context + 限定 Tools"]
+    POST["PostToolUse Hook"]
+    TOOL --> POST
+    MCP --> POST
+    SUB --> POST
+  end
+  subgraph C5["5 · FEEDBACK & ACCEPTANCE"]
+    direction TB
+    RES["tool_result<br/>stdout · diff · error · summary"]
+    STOP["Stop Hook<br/>可触发测试或拒绝停止"]
+    CHECK{"任务验收满足？"}
+    OUT(["候选交付 + 验证证据"])
+    STOP --> CHECK -->|是| OUT
+  end
+  CTX --> API
+  DEC -->|tool_use| PRE
+  DEC -->|text / no tool_use| STOP
+  ROUTE -->|内置工具| TOOL
+  ROUTE -->|MCP| MCP
+  ROUTE -->|Subagent| SUB
+  POST --> RES
+  DENY --> RES
+  RES --> CTX
+  CHECK -->|否| CTX
+  LOOP["/loop 定时器<br/>间隔后再次发起 prompt"] -.新会话触发.-> S
+  classDef context fill:#eef1ff,stroke:#858bd7,color:#171a20;
+  classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
+  classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
+  classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  class CTX,SK,API,RES context; class DEC,PRE,PERM,ROUTE,STOP,CHECK gate; class TOOL,MCP,SUB,POST exec; class S,OUT task;
+  </pre></div>
 </main><footer class="foot">边界：Claude Code Runtime 本体未完整开源；工具选择阈值、内部并发与重试策略不作为 H 事实。</footer></div></section>
 
 <!-- 12 CODEX -->
-<section class="slide s-gray" data-title="Codex 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">以工作区证据、权限边界和可审阅变更组织执行</div><div class="ttl">Codex：工作区现场驱动的编码 Agent</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area mech">
-  <aside class="mech-summary"><span class="tag h">H · OFFICIAL CAPABILITIES</span><div class="call"><b>机制定位</b><p>项目指令、Skills、Plugins、MCP 与权限 / 沙箱构成外部可验证约束；执行证据持续回填工作上下文。</p></div><ul><li>AGENTS.md 分层传递仓库约束</li><li>Skill 将方法、脚本与资产按需装配</li><li>Plugin 可携带 Skill、MCP Server 或 App</li><li>审批与沙箱控制文件、命令和外部动作</li><li>diff、test、log、error 不是装饰，而是再规划输入</li></ul></aside>
-  <div class="mech-flow"><div class="mnode context"><b>AGENTS.md + 工作区</b><span>指令、文件、历史、Skill / Plugin</span></div><div class="mnode plan"><b>规划任务</b><span>识别目标、依赖、风险与验证方式</span></div><div class="mnode gate"><b>动作选择</b><span>文件 / 命令 / MCP，或候选 final</span></div><div class="mnode gate"><b>审批与沙箱</b><span>校验作用域、风险与用户授权</span></div><div class="mnode exec"><b>执行动作</b><span>编辑、构建、测试、查询外部服务</span></div><div class="mnode result"><b>现场证据回填</b><span>diff、test、log、error、产物</span></div><div class="mnode plan"><b>重规划 / 修复</b><span>依据结果继续或改变路径</span></div><div class="mnode end"><b>候选交付</b><span>变更 + 检查结果 + 边界说明</span></div><div class="cap-row"><span>AGENTS.md</span><span>Skills</span><span>Plugins</span><span>MCP</span><span>Approval</span><span>Sandbox</span><span>Workspace evidence</span></div></div>
+<section class="slide s-gray" data-title="Codex 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">指令发现、能力装配、审批沙箱与工作区证据构成外部约束</div><div class="ttl">Codex：每次动作都回到可审阅的工作区现场</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL CAPABILITIES</span><p><b>关键差异：</b>AGENTS.md 按目录形成适用范围；Plugin 可装配 Skill、MCP Server 或 App；审批 / 沙箱先于执行，diff / test / log 持续回填。</p></div>
+  <div class="mermaid-shell"><pre class="mermaid">
+flowchart LR
+  subgraph X1["1 · INSTRUCTION DISCOVERY"]
+    direction TB
+    S(["任务 + Workspace"])
+    DISC["指令发现<br/>全局 → 仓库根 → 深层 AGENTS.md"]
+    LOAD["按需加载能力<br/>Skill / Plugin / MCP schema"]
+    PLUG["Plugin package<br/>Skill · MCP Server · App"]
+    S --> DISC --> LOAD
+    PLUG -.装配.-> LOAD
+  end
+  subgraph X2["2 · PLAN & ACTION"]
+    direction TB
+    PLAN["计划任务<br/>目标 · 依赖 · 风险 · 验证方式"]
+    ACT{"下一动作？"}
+    PLAN --> ACT
+  end
+  subgraph X3["3 · POLICY GATE"]
+    direction TB
+    FILE["File<br/>read / search / apply_patch"]
+    CMD["Command<br/>build / test / lint / git"]
+    EXT["MCP / App<br/>外部系统调用"]
+    POLICY{"Approval policy<br/>+ Sandbox 允许？"}
+    USER["请求用户授权<br/>保留待执行动作"]
+    FILE --> POLICY
+    CMD --> POLICY
+    EXT --> POLICY
+    POLICY -->|待确认| USER
+  end
+  subgraph X4["4 · EXECUTION & EVIDENCE"]
+    direction TB
+    RUN["受控执行"]
+    EVID["Evidence update<br/>diff · stdout · test · log · artifact"]
+    REPLAN{"结果满足计划？"}
+    RUN --> EVID --> REPLAN
+  end
+  subgraph X5["5 · TASK ACCEPTANCE"]
+    direction TB
+    VERIFY{"Application 验收？"}
+    OUT(["交付变更<br/>检查结果 + 边界"])
+    VERIFY -->|是| OUT
+  end
+  LOAD --> PLAN
+  ACT -->|文件操作| FILE
+  ACT -->|命令| CMD
+  ACT -->|MCP / App| EXT
+  ACT -->|候选 final| VERIFY
+  USER -->|批准| RUN
+  POLICY -->|允许| RUN
+  POLICY -->|拒绝| EVID
+  REPLAN -->|否：修复 / 换路径| PLAN
+  REPLAN -->|是| VERIFY
+  VERIFY -->|否| PLAN
+  classDef context fill:#eef1ff,stroke:#858bd7,color:#171a20;
+  classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
+  classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
+  classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  class DISC,LOAD,PLUG,PLAN,EVID context; class ACT,POLICY,REPLAN,VERIFY gate; class FILE,CMD,EXT,RUN,USER exec; class S,OUT task;
+  </pre></div>
 </main><footer class="foot"><span class="tag m">M</span> 内部规划、工具选择和重试顺序未完整公开；本页只把外部可观察约束画为事实。</footer></div></section>
 
 <!-- 13 OPENCODE -->
-<section class="slide s-gray" data-title="OpenCode 源码机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">可审阅 Host / Harness 对照：从 prompt.ts、processor.ts、tools.ts 还原</div><div class="ttl">OpenCode：源码级可追踪的 Agent 循环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area mech">
-  <aside class="mech-summary"><span class="tag h">H · OPEN SOURCE</span><div class="call"><b>为什么是关键参照</b><p>不是猜测“Agent 大概怎样跑”，而是可以从源码查看工具装配、权限询问、插件事件、结果回填和 compact / stop。</p></div><ul><li>Built-in tools：read / edit / bash / LSP / search 等</li><li>Primary agents：Build / Plan；Subagents：General / Explore</li><li>Allow / Ask / Deny 权限模型</li><li>Plugin 在 tool.execute.before / after 注入逻辑</li><li>Skills、Commands、MCP 进入统一工具表</li></ul></aside>
-  <div class="mech-flow"><div class="mnode context"><b>Instruction / Agent / History</b><span>instruction.ts 装配规则与上下文</span></div><div class="mnode plan"><b>LLM.stream</b><span>流式生成文本与 tool-call</span></div><div class="mnode gate"><b>permission.ask</b><span>Allow / Ask / Deny 决策</span></div><div class="mnode gate"><b>tool.execute.before</b><span>插件可观察、修改或阻断</span></div><div class="mnode exec"><b>执行工具</b><span>Built-in / MCP / Plugin tool</span></div><div class="mnode result"><b>tool-result / error</b><span>结构化回填 Session Processor</span></div><div class="mnode gate"><b>tool.execute.after</b><span>记录、扩展或后置检查</span></div><div class="mnode end"><b>Continue / Stop / Compact</b><span>继续循环、收口或压缩上下文</span></div><div class="cap-row"><span>prompt.ts</span><span>processor.ts</span><span>tools.ts</span><span>instruction.ts</span><span>plugin events</span></div></div>
+<section class="slide s-gray" data-title="OpenCode 源码机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">prompt.ts、processor.ts、tools.ts、instruction.ts 能把调用前后链路追到源码</div><div class="ttl">OpenCode：权限、插件事件和上下文压缩都在 Host 中显式发生</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · OPEN SOURCE</span><p><b>源码级链路：</b>instruction.ts / tools.ts 装配 → prompt.ts → LLM.stream → permission.ask → plugin before / after → tool parts → continue / stop / compact。</p></div>
+  <div class="mermaid-shell"><pre class="mermaid">
+flowchart LR
+  subgraph O1["1 · SESSION INPUT"]
+    direction TB
+    S(["Session input"])
+    INST["instruction.ts<br/>Agent instruction + project rules"]
+    HIST["Session history<br/>message parts / tool parts"]
+    TOOLSET["tools.ts<br/>Built-in + MCP + Plugin tools"]
+    S --> INST
+  end
+  subgraph O2["2 · PROMPT & STREAM"]
+    direction TB
+    PROMPT["prompt.ts<br/>组装 messages / model / tools"]
+    STREAM["LLM.stream"]
+    EVT{"Processor event？"}
+    PROMPT --> STREAM --> EVT
+  end
+  subgraph O3["3 · PERMISSION & HOOK"]
+    direction TB
+    ASK["permission.ask<br/>Allow / Ask / Deny"]
+    BEFORE["tool.execute.before<br/>Plugin hook"]
+    ROUTE{"工具来源？"}
+    ERR["tool-error part"]
+    ASK -->|Allow| BEFORE --> ROUTE
+    ASK -->|Deny| ERR
+  end
+  subgraph O4["4 · TOOL EXECUTION"]
+    direction TB
+    BUILT["Built-in<br/>read / edit / bash / LSP / search"]
+    MCP["MCP tool execute"]
+    SUB["Task tool<br/>General / Explore Subagent"]
+    AFTER["tool.execute.after<br/>Plugin hook"]
+    BUILT --> AFTER
+    MCP --> AFTER
+    SUB --> AFTER
+  end
+  subgraph O5["5 · PROCESSOR STATE"]
+    direction TB
+    PART["写入 text / reasoning part"]
+    RESULT["tool-result / tool-error part"]
+    END{"finish reason / limit？"}
+    COMPACT["Compact session<br/>压缩后继续"]
+    OUT(["Session output"])
+    PART --> END
+    END -->|上下文逼近阈值| COMPACT
+    END -->|停止| OUT
+  end
+  INST --> PROMPT
+  HIST --> PROMPT
+  TOOLSET --> PROMPT
+  EVT -->|text / reasoning| PART
+  EVT -->|tool-call| ASK
+  ROUTE -->|Built-in| BUILT
+  ROUTE -->|MCP| MCP
+  ROUTE -->|Task| SUB
+  AFTER --> RESULT
+  ERR --> RESULT
+  RESULT --> HIST
+  END -->|继续| HIST
+  COMPACT --> HIST
+  classDef context fill:#eef1ff,stroke:#858bd7,color:#171a20;
+  classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
+  classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
+  classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  class INST,HIST,PROMPT,TOOLSET,PART,RESULT,COMPACT context; class EVT,ASK,ROUTE,END gate; class BEFORE,BUILT,MCP,SUB,AFTER,ERR exec; class S,OUT task;
+  </pre></div>
 </main><footer class="foot">来源：github.com/anomalyco/opencode · packages/opencode/src/session/；源码事实不代表所有闭源平台都使用相同内部实现。</footer></div></section>
 
 <!-- 14 CURSOR -->
-<section class="slide s-gray" data-title="Cursor 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">本地 IDE 循环与隔离 Cloud VM 形成双运行时</div><div class="ttl">Cursor：可 steering 的 IDE / Cloud Agent</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area mech">
-  <aside class="mech-summary"><span class="tag h">H · CURRENT OFFICIAL DOCS</span><div class="call"><b>机制定位</b><p>Instructions + Tools + Model 是 Agent 三组件；平台按不同 frontier model 调整 instructions 与 tools。</p></div><ul><li>代码搜索、Web、文件、Shell、Browser、Image 等工具</li><li>Queued messages、checkpoints、tool-call 边界 steering</li><li>Subagents 独立上下文，可并行并指定模型 / 工具</li><li>Hooks 覆盖 tool、shell、MCP、subagent、compact、stop</li><li>Cloud Agent 在隔离 VM 中构建、测试并产出截图 / 视频 / PR</li></ul></aside>
-  <div class="mech-flow"><div class="mnode context"><b>Rules + Codebase</b><span>.cursor/rules、AGENTS.md、检索上下文</span></div><div class="mnode plan"><b>Model-adapted Agent</b><span>按模型装配 instructions 与 tools</span></div><div class="mnode gate"><b>Plan / Queue / Steering</b><span>用户可排队消息、回到 checkpoint</span></div><div class="mnode gate"><b>Hooks / 权限</b><span>观察、阻断或修改 Agent loop</span></div><div class="mnode exec"><b>本地或 Cloud VM</b><span>编辑、Shell、Browser、MCP、Subagents</span></div><div class="mnode result"><b>验证产物</b><span>diff、测试、截图、视频、日志、PR</span></div><div class="mnode plan"><b>继续 / 恢复</b><span>证据驱动修复，或从 checkpoint 恢复</span></div><div class="mnode end"><b>交付与接管</b><span>用户审阅变更并继续 steering</span></div><div class="cap-row"><span>Rules</span><span>Skills</span><span>Plugins</span><span>Subagents</span><span>Hooks</span><span>Cloud Agents</span></div></div>
+<section class="slide s-gray" data-title="Cursor 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">双运行时、并行子 Agent、Checkpoint 与用户 steering 共同改变长任务</div><div class="ttl">Cursor：本地 IDE 与 Cloud VM 共享证据回环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · CURRENT OFFICIAL DOCS</span><p><b>关键差异：</b>Queued message 在工具边界 steering；Subagents 可并行；Cloud VM 负责真实构建、测试及截图 / 视频 / 日志 / PR 证据。</p></div>
+  <div class="mermaid-shell"><pre class="mermaid">
+flowchart LR
+  subgraph R1["1 · CONTEXT"]
+    direction TB
+    S(["Goal / Chat / Repo"])
+    CTX["Context build<br/>Rules · AGENTS.md · code search"]
+    ADAPT["Model-adapted Agent<br/>按模型配置 instructions + tools"]
+    S --> CTX --> ADAPT
+  end
+  subgraph R2["2 · PLAN & STEERING"]
+    direction TB
+    PLAN["Plan + /goal<br/>建立 checkpoint"]
+    QUEUE["Queued message / Steering<br/>在 tool-call 边界进入"]
+    PAR{"是否委派？"}
+    QUEUE -.影响下一轮.-> PLAN
+    PLAN --> PAR
+  end
+  subgraph R3["3 · AGENT CONTROL"]
+    direction TB
+    SUB["并行 Subagents<br/>Explore / Bash / Browser / Custom"]
+    HOOK["Pre-tool Hook / Permission"]
+    RUNTIME{"运行位置？"}
+    SUB --> HOOK --> RUNTIME
+  end
+  subgraph R4["4 · DUAL RUNTIME"]
+    direction TB
+    LOCAL["Local IDE<br/>Edit · Shell · Search · Browser · MCP"]
+    CLOUD["Cloud Agent / 隔离 VM<br/>build · test · browser / desktop"]
+    POST["Post-tool / File / Shell / MCP Hook"]
+    LOCAL --> POST
+    CLOUD --> POST
+  end
+  subgraph R5["5 · EVIDENCE & RECOVERY"]
+    direction TB
+    EVID["Evidence<br/>diff · test · screenshot · video · log · PR"]
+    GOAL{"目标与验证满足？"}
+    CHOICE{"继续、回到 checkpoint<br/>或用户接管？"}
+    STOP["Stop Hook / Review"]
+    OUT(["交付并允许继续 steering"])
+    EVID --> GOAL
+    GOAL -->|否| CHOICE
+    GOAL -->|是| STOP --> OUT
+  end
+  ADAPT --> PLAN
+  PAR -->|是| SUB
+  PAR -->|否| HOOK
+  RUNTIME -->|Local IDE| LOCAL
+  RUNTIME -->|Cloud Agent| CLOUD
+  POST --> EVID
+  CHOICE -->|继续| PLAN
+  CHOICE -->|回滚| CTX
+  classDef context fill:#eef1ff,stroke:#858bd7,color:#171a20;
+  classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
+  classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
+  classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  class CTX,ADAPT,PLAN,QUEUE,EVID context; class PAR,HOOK,RUNTIME,GOAL,CHOICE,STOP gate; class SUB,LOCAL,CLOUD,POST exec; class S,OUT task;
+  </pre></div>
 </main><footer class="foot">Cursor 官方文档强调：没有可运行开发环境，Agent 无法完成“写代码→测试→验证”的闭环。</footer></div></section>
 
 <!-- 15 TRAE -->
-<section class="slide s-gray" data-title="Trae 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">计划确认、工具面板与结束前验收 Hook 形成工程执行链</div><div class="ttl">Trae：SOLO 工程模式下的计划—执行—预览</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area mech">
-  <aside class="mech-summary"><span class="tag h">H · CURRENT OFFICIAL DOCS</span><div class="call"><b>机制定位</b><p>Built-in Agent 先结合目标与项目上下文生成 actionable plan，确认后逐步执行；SOLO 把任务、对话、工具面板组织在同一工程界面。</p></div><ul><li>任务拆解、设计、实现、重构与修复</li><li>Editor / Docs / Browser Tool Panels</li><li>Rules 可导入 AGENTS.md / CLAUDE.md</li><li>Custom Agents、Subagents、Skills、Commands、MCP</li><li>PreToolUse / PostToolUse / Stop Hook 可做验收</li></ul></aside>
-  <div class="mech-flow"><div class="mnode context"><b>Goal + Project Context</b><span>Rules、代码、文档、会话</span></div><div class="mnode plan"><b>生成 Actionable Plan</b><span>需求拆解与执行步骤</span></div><div class="mnode gate"><b>用户确认</b><span>确认计划，再进入逐步执行</span></div><div class="mnode gate"><b>Hook / Agent 路由</b><span>Custom Agent、Subagent、MCP 与权限</span></div><div class="mnode exec"><b>Tool Panels 执行</b><span>Editor、Docs、Browser、命令与并行任务</span></div><div class="mnode result"><b>DiffView / Preview</b><span>变更、预览、运行结果回填</span></div><div class="mnode gate"><b>Stop Hook 验收</b><span>可在结束前自动运行测试</span></div><div class="mnode end"><b>交付任务结果</b><span>可继续修订或切换并行任务</span></div><div class="cap-row"><span>SOLO</span><span>Rules</span><span>Skills</span><span>Commands</span><span>Agents</span><span>Subagents</span><span>Hooks</span><span>MCP</span></div></div>
+<section class="slide s-gray" data-title="Trae 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">计划必须先确认；Tool Panels 执行动作；Stop Hook 可在结束前验收</div><div class="ttl">Trae：SOLO 把任务管理、Agent 与工程预览串成闭环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · CURRENT OFFICIAL DOCS</span><p><b>关键差异：</b>Actionable Plan 先由用户确认；Custom Agent / Subagent 进入 PreToolUse；Tool Panels 执行；Stop Hook 可在结束前运行验收。</p></div>
+  <div class="mermaid-shell"><pre class="mermaid">
+flowchart LR
+  subgraph T1["1 · SESSION & CONTEXT"]
+    direction TB
+    S(["Goal + Project"])
+    START["SessionStart Hook"]
+    CTX["Context<br/>Rules · code · docs · chat"]
+    PROMPT["UserPromptSubmit Hook"]
+    S --> START --> CTX --> PROMPT
+  end
+  subgraph T2["2 · PLAN CONFIRMATION"]
+    direction TB
+    PLAN["Built-in Agent<br/>生成 actionable plan"]
+    CONF{"用户确认计划？"}
+    ROUTE{"执行编排？"}
+    PLAN --> CONF
+    CONF -->|修改| PLAN
+    CONF -->|确认| ROUTE
+  end
+  subgraph T3["3 · AGENT & HOOK"]
+    direction TB
+    CUSTOM["Custom Agent<br/>模型 / Tools / MCP"]
+    SUB["Subagents<br/>独立上下文并行执行"]
+    PRE["PreToolUse Hook"]
+    CUSTOM --> PRE
+    SUB --> PRE
+  end
+  subgraph T4["4 · TOOL PANELS"]
+    direction TB
+    PANEL{"Tool Panel / Action"}
+    EDIT["Editor<br/>代码与文件变更"]
+    DOC["Docs<br/>文档查看 / 引用"]
+    WEB["Browser<br/>浏览与页面验证"]
+    EXT["Command / MCP<br/>命令与外部服务"]
+    POST["PostToolUse Hook"]
+    PANEL --> EDIT --> POST
+    PANEL --> DOC --> POST
+    PANEL --> WEB --> POST
+    PANEL --> EXT --> POST
+  end
+  subgraph T5["5 · PREVIEW & ACCEPTANCE"]
+    direction TB
+    VIEW["DiffView + Preview + Result"]
+    STOP["Stop Hook<br/>可自动执行验收测试"]
+    OK{"完成条件满足？"}
+    OUT(["任务交付 / 并行任务汇总"])
+    VIEW --> STOP --> OK -->|是| OUT
+  end
+  PROMPT --> PLAN
+  ROUTE -->|主 Agent| PRE
+  ROUTE -->|Custom Agent| CUSTOM
+  ROUTE -->|Subagents| SUB
+  PRE --> PANEL
+  POST --> VIEW
+  OK -->|否：修订 / 恢复| PLAN
+  classDef context fill:#eef1ff,stroke:#858bd7,color:#171a20;
+  classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
+  classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
+  classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  class CTX,PROMPT,PLAN,VIEW context; class START,CONF,ROUTE,PRE,PANEL,POST,STOP,OK gate; class CUSTOM,SUB,EDIT,DOC,WEB,EXT exec; class S,OUT task;
+  </pre></div>
 </main><footer class="foot">公开资料来自 docs.trae.ai；普通 SSR 正文抓取不稳定，结论以页面路由数据与可访问文档为准。</footer></div></section>
 
 <!-- 16 WORKBUDDY -->
-<section class="slide s-gray" data-title="WorkBuddy 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">把对话隐藏到任务后面：目标、状态、产物和继续处理成为主对象</div><div class="ttl">WorkBuddy：跨应用任务工作台的交付机制</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area mech">
-  <aside class="mech-summary"><span class="tag h">H · OFFICIAL PRODUCT DOCS</span><div class="call"><b>为何值得放入比较</b><p>它不直接证明编码更强，但清晰展示“问题状态 + 多 Agent 团队 + 结果区”怎样成为产品主轴。</p></div><ul><li>一句话目标，自主规划并交付可验收产物</li><li>状态：规划中 / 进行中 / 待处理 / 已完成 / 失败 / 已归档</li><li>失败和已完成任务都可继续处理</li><li>Expert Team 由团长拆解、多专家并行、整合交付</li><li>公开提醒：Team 成本通常为单专家数倍</li></ul></aside>
-  <div class="mech-flow"><div class="mnode context"><b>目标 + 工作目录</b><span>文件、截图、规则、Memory</span></div><div class="mnode plan"><b>任务规划</b><span>模型、Skill、Expert 或 Expert Team</span></div><div class="mnode gate"><b>任务状态</b><span>规划中 / 进行中 / 待处理</span></div><div class="mnode exec"><b>跨应用执行</b><span>Connector / MCP / 文件 / 自动化</span></div><div class="mnode result"><b>结果区</b><span>产物、全部文件、变更、预览</span></div><div class="mnode gate"><b>成功或失败</b><span>两种结果都保留现场并允许继续</span></div><div class="mnode plan"><b>继续处理 / 归档</b><span>补充信息、修订或形成可复用任务</span></div><div class="mnode end"><b>可验收交付</b><span>结果与状态，而非只有聊天消息</span></div><div class="cap-row"><span>Skills</span><span>Experts</span><span>Expert Team</span><span>Connectors</span><span>Automation</span><span>Memory</span></div></div>
+<section class="slide s-gray" data-title="WorkBuddy 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">任务状态、Expert Team、结果区和继续处理共同构成交付工作台</div><div class="ttl">WorkBuddy：多 Agent 成本与任务状态在产品层显式呈现</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL PRODUCT DOCS</span><p><b>产品层机制：</b>规划中 / 进行中 / 待处理 / 完成 / 失败 / 归档显式呈现；Expert Team 在成本确认后并行；失败与完成都进入 Results 并可继续。</p></div>
+  <div class="mermaid-shell"><pre class="mermaid">
+flowchart LR
+  subgraph W1["1 · TASK CONTEXT"]
+    direction TB
+    S(["一句话目标"])
+    AUTO["Automation<br/>时间规则 + 模型 + Skill"]
+    CTX["工作目录 Context<br/>文件 · 截图 · Rules · Memory"]
+    PLAN["状态：规划中<br/>拆解步骤与预期产物"]
+    S --> CTX --> PLAN
+    AUTO -.触发.-> CTX
+  end
+  subgraph W2["2 · COST-AWARE ROUTING"]
+    direction TB
+    MODE{"执行模式？"}
+    COST{"确认多 Agent 成本？"}
+    ONE["单 Expert<br/>人设 + 方法 + 工具链"]
+    MODE -->|单 Expert| ONE
+    MODE -->|Expert Team| COST
+    COST -->|否| ONE
+  end
+  subgraph W3["3 · EXPERT TEAM"]
+    direction TB
+    LEAD["团长 Agent<br/>拆任务 / 分派 / 汇总"]
+    E1["Expert A 并行任务"]
+    E2["Expert B 并行任务"]
+    E3["Expert C 并行任务"]
+    LEAD --> E1
+    LEAD --> E2
+    LEAD --> E3
+  end
+  subgraph W4["4 · CROSS-APP EXECUTION"]
+    direction TB
+    EXEC["Skills + Connector / MCP<br/>文件与跨应用动作"]
+    STATE{"执行状态？"}
+    WAIT["待处理<br/>保留现场并通知用户"]
+    FAIL["失败<br/>日志与产物仍进入结果区"]
+    DONE["已完成"]
+    EXEC --> STATE
+    STATE -->|需授权 / 信息| WAIT --> EXEC
+    STATE -->|失败| FAIL
+    STATE -->|完成| DONE
+  end
+  subgraph W5["5 · RESULTS & CONTINUATION"]
+    direction TB
+    RESULT["Results<br/>产物 · 全部文件 · 变更 · 预览"]
+    NEXT{"下一步？"}
+    ARCH(["已归档 / 可复用任务"])
+    RESULT --> NEXT -->|归档| ARCH
+  end
+  PLAN --> MODE
+  COST -->|是| LEAD
+  ONE --> EXEC
+  E1 --> EXEC
+  E2 --> EXEC
+  E3 --> EXEC
+  FAIL --> RESULT
+  DONE --> RESULT
+  NEXT -->|继续处理| PLAN
+  classDef context fill:#eef1ff,stroke:#858bd7,color:#171a20;
+  classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
+  classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
+  classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  class CTX,AUTO,PLAN,RESULT context; class MODE,COST,STATE,WAIT,NEXT gate; class ONE,LEAD,E1,E2,E3,EXEC,FAIL,DONE exec; class S,ARCH task;
+  </pre></div>
 </main><footer class="foot">产品启示：AI 工作台的主导航可以是任务状态和结果，不必永远围绕聊天线程。</footer></div></section>
 
 <!-- 17 COMPARISON -->
@@ -337,7 +747,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   <article class="source-card"><b>Trae</b><a href="https://docs.trae.ai/ide/solo-mode?_lang=en">SOLO Mode</a><a href="https://docs.trae.ai/ide/built-in-agent">Built-in Agent</a><a href="https://docs.trae.ai/ide/automate-actions-with-hooks">Hooks</a><a href="https://docs.trae.ai/ide/subagents">Subagents</a></article>
   <article class="source-card"><b>WorkBuddy</b><a href="https://workbuddy.ai/docs/zh/workbuddy/Overview">Overview</a><a href="https://workbuddy.ai/docs/zh/workbuddy/Task-Management">Task Management</a><a href="https://workbuddy.ai/docs/zh/workbuddy/Results">Results</a></article>
   <article class="source-card"><b>CANN 研究证据</b><p>operator-ai-journey-research/evidence/ai-usability/ai-usability-run-20260818.md<br>scores_20260818.json · case-corpus-20260818.json</p></article>
-  <article class="source-card"><b>解释限制</b><p><span class="tag h">H</span> 公开 / 源码　<span class="tag m">M</span> 运行观察　<span class="tag l">L</span> 待验证。当前无真实 NPU 验证；样本不外推生态总体。</p></article>
+  <article class="source-card"><b>流程图库与解释限制</b><a href="https://github.com/mermaid-js/mermaid">Mermaid 11 · Open-source diagramming</a><p><span class="tag h">H</span> 公开 / 源码　<span class="tag m">M</span> 运行观察　<span class="tag l">L</span> 待验证。当前无真实 NPU 验证；样本不外推生态总体。</p></article>
   </div></main><footer class="foot">研究时间：2026-08-26 · 新建独立单文件，不复用旧 PPT · 公开资料能力随产品更新可能变化。</footer></div></section>
 
 </div>
@@ -351,6 +761,22 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   <button id="fullscreenBtn" title="全屏" aria-label="全屏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad:true,
+  securityLevel:'loose',
+  theme:'base',
+  deterministicIds:true,
+  fontFamily:"HarmonyOS Sans SC, Inter, sans-serif",
+  flowchart:{htmlLabels:true,curve:'basis',nodeSpacing:18,rankSpacing:28,padding:8,useMaxWidth:false},
+  themeVariables:{
+    fontSize:'13px',lineColor:'#7d8491',primaryColor:'#ffffff',primaryTextColor:'#171a20',primaryBorderColor:'#c9ced7',
+    secondaryColor:'#eef1ff',tertiaryColor:'#f6f7f9',clusterBkg:'#f3f5f8',clusterBorder:'#cfd4dd',edgeLabelBackground:'#e9ebee'
+  },
+  themeCSS:'.cluster rect{rx:12px;ry:12px;fill-opacity:.72}.cluster-label text,.cluster-label span{font-weight:800!important;color:#4d5562!important}.edgeLabel{background-color:#e9ebee!important;color:#626a76!important}.flowchart-link{stroke-width:1.35px}.marker{fill:#7d8491!important;stroke:#7d8491!important}'
+});
+</script>
 <script>
 (() => {
   const slides = [...document.querySelectorAll('.slide')];
