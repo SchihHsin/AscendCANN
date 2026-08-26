@@ -261,7 +261,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 - 证据边界未改变：OpenCode 源码链为 H；闭源平台仅画公开文档或外部可观察机制，内部工具选择、重试和调度仍保留 M；API 的无 tool-call / final 不等于 L3 业务验收完成。没有修改 33 页序列和社区策略结论。
 - 视觉实现：平台页改为“顶部证据说明条 + 全宽 Mermaid 图”，避免侧栏压缩；图内用上下文 / 协议、判断 / 权限、执行 / 证据、任务边界四类语义色，并使用 subgraph 泳道和真实回流连线。
 - 验证：Chrome Headless 1600×900 全 33 页回归通过；7/7 Mermaid 源均生成 SVG，0 Mermaid error、0 console / page error、0 可见元素越界；Overview 三列中 7 张 SVG 保持渲染；两个内联脚本 `node --check` 与 `git diff --check` 通过。
-- Commit / push：待本次流程图深化提交后回填。
+- Commit / push：流程图深化提交 `92a1b73`（`feat: deepen AI platform mechanism diagrams`）已成功推送 `origin/main`；本条回填随后以交接提交再次推送。
 
 ---
 
