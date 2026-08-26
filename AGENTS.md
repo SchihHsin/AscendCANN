@@ -235,6 +235,17 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 每次新会话结束时，必须在本文件追加日期条目，至少说明：变更文件、业务目的、证据来源 / 置信度、是否影响页面序列或 API / Host / Application 层边界、验证命令、commit / push 结果和未决事项。禁止只写“已完成”或只记录视觉结果；不得清理用户已有脏文件，不得用 `git reset --hard`、`git checkout --` 覆盖未知改动。
 
+### 2026-08-26（AI 编码平台机制深研 B 版）
+
+- 新建独立单文件网页 PPT `cann-dashboard/ai-coding-platform-mechanism-report.html`，共 33 页；没有复用、覆盖或改写 `operator-ai-journey-deck/index.html` 等旧汇报。页面保留纵向 scroll-snap、右侧导航点、底部隐藏控制栏、三列 Overview、全屏、键盘翻页与 `#页码` 刷新恢复。
+- 业务目的：对 Claude Code、OpenCode、Codex、Cursor、Trae、WorkBuddy 的可调用能力、Host / Harness 运行循环、可运行环境、验证与问题状态机制进行对照，并回答 CANN / Mind 系列开源后社区如何从内容入口转为“可信任务完成网络 / 协作层”。WorkBuddy 只作为跨应用任务状态与交付参照，不进入同类 Coding IDE 强弱排名。
+- 机制事实更新：Cursor 与 Trae 按当前公开资料纳入 Rules / Skills / Subagents / Hooks / MCP 及 Cloud VM 或 SOLO / Tool Panels 等能力；OpenCode 按 `prompt.ts`、`processor.ts`、`tools.ts`、`instruction.ts` 还原可审阅源码循环；Codex、Claude Code 继续遵守公开能力与内部策略边界。`Claude Code 编码更强` 仅标为 L 假设，需在同任务、同模型 / 预算 / 权限 / 环境条件下用“原生最佳体验 + 机制隔离”双轨 benchmark 验证。
+- 证据边界：继续使用 H（公开文档 / 源码）、M（可信运行观察 / 本地证据）、L（待验证假设）。沿用 2026-08-18 CANN × CUDA 三任务 AI 可用性对照与 15 个公开 Issue 样本，明确这些只代表当前公开样本；本机无匹配 NPU / CANN 环境，不声称完成真实硬件验证。OpenAI Codex 官方页面本轮抓取返回 403，Codex 事实以已验证官方链接、OpenAI Docs Skill 与 `agent-tool-calling-reference.html` 为边界。
+- 产品结论：用户前台的一等对象收敛为“知识 + 问题”；后台需要统一 `Task Envelope`、`Capability Contract`、`Evidence Receipt` 与问题 `State Transition`。MCP、Skill、API、CLI、网页和专家只是不同交付通道；用户 AI 负责意图、用户上下文和权限确认，昇腾服务负责权威知识、版本 / 硬件匹配、预检、构建测试、Profiling、NPU 验证、Owner / SLA、失败升级和证据回执。核心指标转向 verified completion rate、首次验证时间、恢复率、证据复用率和 cost per verified task。
+- 层级边界：未改变既有 API / Protocol、Host / Harness、Application / Task 三层定义；PPT 明确 API 的 final / message 只是候选交付，业务完成由任务层的测试、性能、产物或 Owner 规则判定。新文件新增独立 33 页序列，不影响旧汇报导航与 hash。
+- 验证：`python3` HTMLParser 解析通过；抽取内联 JS 后 `node --check` 通过；`git diff --check` 通过；Google Chrome Headless 在 1600×900 对 33 页逐页截图检查，0 个 console / page error、0 个可见元素越界候选；另验证 Overview 三列缩放、缩略图点击回页、页码 / hash 同步与 `#12` 初始恢复。
+- Commit / push：待本条与新页面提交后回填。未决事项：六平台能力会随产品更新，应按同一任务集持续复核；CANN 真实构建、性能、NPU 验证与用户回放仍需有对应环境和样本后补充。
+
 ---
 
 ## 历史记录（完整保留，按需回溯）
