@@ -251,7 +251,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 - 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。修复 `.slide-inner` 未占满页面内容区导致 `body-area` 的居中规则只在内容自身高度内生效的问题；灰底页现在在标题与底部安全区之间垂直居中，黑底页在整页内容安全区居中。
 - 实现边界：按 Report PPT Skill 的 flex / grid 卫生规则，正文使用自身高度并通过上下 `auto` margin 分配剩余空间，没有使用 `flex:1` 拉伸内容；因此矩阵、机制卡、旅程、Roadmap 与来源页保持原有卡片高度，不产生“高而空”的注水卡片。未修改任何研究文案、33 页顺序、runtime、H/M/L 证据口径或 API / Host / Application 三层边界。
 - 验证：Chrome Headless 1600×900 重新逐页截图 33 页，0 console / page error、0 可见元素越界；正文区域中心落在页面垂直中线附近，长表格与产品 Mockup 未碰撞页脚；内联 JS `node --check` 和 `git diff --check` 均通过。
-- Commit / push：待本次布局修正提交后回填。
+- Commit / push：布局修正提交 `4f6834a`（`fix: vertically center report slide content`）已成功推送 `origin/main`；本条回填随后以交接提交再次推送。
 
 ---
 
