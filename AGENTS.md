@@ -244,7 +244,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 - 产品结论：用户前台的一等对象收敛为“知识 + 问题”；后台需要统一 `Task Envelope`、`Capability Contract`、`Evidence Receipt` 与问题 `State Transition`。MCP、Skill、API、CLI、网页和专家只是不同交付通道；用户 AI 负责意图、用户上下文和权限确认，昇腾服务负责权威知识、版本 / 硬件匹配、预检、构建测试、Profiling、NPU 验证、Owner / SLA、失败升级和证据回执。核心指标转向 verified completion rate、首次验证时间、恢复率、证据复用率和 cost per verified task。
 - 层级边界：未改变既有 API / Protocol、Host / Harness、Application / Task 三层定义；PPT 明确 API 的 final / message 只是候选交付，业务完成由任务层的测试、性能、产物或 Owner 规则判定。新文件新增独立 33 页序列，不影响旧汇报导航与 hash。
 - 验证：`python3` HTMLParser 解析通过；抽取内联 JS 后 `node --check` 通过；`git diff --check` 通过；Google Chrome Headless 在 1600×900 对 33 页逐页截图检查，0 个 console / page error、0 个可见元素越界候选；另验证 Overview 三列缩放、缩略图点击回页、页码 / hash 同步与 `#12` 初始恢复。
-- Commit / push：待本条与新页面提交后回填。未决事项：六平台能力会随产品更新，应按同一任务集持续复核；CANN 真实构建、性能、NPU 验证与用户回放仍需有对应环境和样本后补充。
+- Commit / push：功能提交 `78dce46`（`feat: add AI coding platform mechanism report`）已成功推送 `origin/main`；本条回填随后以交接提交再次推送。未决事项：六平台能力会随产品更新，应按同一任务集持续复核；CANN 真实构建、性能、NPU 验证与用户回放仍需有对应环境和样本后补充。
 
 ---
 
