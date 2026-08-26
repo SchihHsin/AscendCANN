@@ -2094,3 +2094,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户认可当前流程内容丰富度，但认为图中文字偏小；放大方案尚待用户选择。候选方向为：A. 单页改成上下两段阅读流；B. 每个平台拆成主循环 / 执行与恢复两页；C. 保持单页并增加全屏缩放。未确认前不得缩减节点或重画流程结构。
 - 回归环境为 Chrome 1440×900：33 页均无横纵向溢出，7 / 7 Mermaid 均生成 SVG，0 Mermaid error、0 page error；7 个 `.mermaid-shell` 计算样式均为透明背景、0px 边框、无阴影。
 - 本次只影响流程图容器视觉，不影响页面序列、deck runtime、API / Host / Application 三层边界或平台机制内容；其余用户已有脏文件保持不动。
+
+### 2026-08-26（AI 编码平台汇报 · 方案 A 放大与 Report PPT 模板自查）
+
+- 主文件继续为 `cann-dashboard/ai-coding-platform-mechanism-report.html`；本轮没有复用或覆盖其他汇报文件，也没有改动 33 页正式序列。
+- 用户确认流程图放大采用方案 A：7 张 Mermaid 图继续保持单页、从 `START` 到 `END` 的横向完整机制，不删节点；图高提升至约 `64–65vh`，Mermaid 使用 `fontSize: 16.5px`、`nodeSpacing: 8`、`rankSpacing: 12`、`padding: 4`、`wrappingWidth: 112`、`useMaxWidth: false`。流程图外层继续透明，直接落在 PPT 冷灰背景上；相对旧版实际像素字号约提升 36%–50%。
+- 第 5 页嵌入用户提供的 Claude Code、OpenCode、Codex、Cursor、Trae、WorkBuddy 六个真实 Logo；素材完成裁切、去白边与 WebP 压缩后以内嵌 Base64 保持单文件。卡片顶部渐变分别跟随品牌色；WorkBuddy 统一按 AI Coding 产品呈现，不再用“不同类”定位。Logo 延迟赋值改用 `data-logo-key`，避免浏览器把占位符当成路径产生 404。
+- 按 Report PPT Skill 自查并迁移模板：第 3 页三类决策问题使用白 / 蓝紫 / 墨色层级；第 6 页改为分层架构；第 9、24 页改为四张以上同级卡规范；第 18 页由八张零散因素卡合并为四组；第 20、21 页按 User Journey Skill 使用“阶段 / 触点 / 行为 / 情绪 / 痛点 / 机会点”六行旅程；第 22 页为切角玻璃数据卡；第 25 页为白 / 蓝紫 / 墨色卡；第 30 页为用户价值 × 实现成本的 2×2 机会优先级矩阵；第 31 页为 0–18 个月甘特 Roadmap，并补齐 M1 / M2 / M3 里程碑与完整标签。
+- 视觉检查覆盖全部 33 页；Chrome 1440×900 回归结果为 33 页、33 个导航点、7 / 7 Mermaid SVG、0 Mermaid error、0 页面溢出、6 / 6 Logo 解码成功、0 资源 / 页面错误。Overview 三列概览、Esc 退出、方向键翻页、hash 刷新定位、导航点跳转和全屏进入 / 退出均通过。
+- 本轮不改变 H / M / L 证据边界，也不改变 L1 API / Protocol、L2 Host / Harness、L3 Application / Task 三层边界。只暂存本 HTML 与 `AGENTS.md`，完成 `git diff --check` 后提交并立即推送 `main`；其余用户已有脏文件与未跟踪资产保持不动。
