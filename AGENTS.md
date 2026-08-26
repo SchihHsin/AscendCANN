@@ -246,6 +246,13 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 - 验证：`python3` HTMLParser 解析通过；抽取内联 JS 后 `node --check` 通过；`git diff --check` 通过；Google Chrome Headless 在 1600×900 对 33 页逐页截图检查，0 个 console / page error、0 个可见元素越界候选；另验证 Overview 三列缩放、缩略图点击回页、页码 / hash 同步与 `#12` 初始恢复。
 - Commit / push：功能提交 `78dce46`（`feat: add AI coding platform mechanism report`）已成功推送 `origin/main`；本条回填随后以交接提交再次推送。未决事项：六平台能力会随产品更新，应按同一任务集持续复核；CANN 真实构建、性能、NPU 验证与用户回放仍需有对应环境和样本后补充。
 
+### 2026-08-26（AI 编码机制 PPT 垂直居中修正）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。修复 `.slide-inner` 未占满页面内容区导致 `body-area` 的居中规则只在内容自身高度内生效的问题；灰底页现在在标题与底部安全区之间垂直居中，黑底页在整页内容安全区居中。
+- 实现边界：按 Report PPT Skill 的 flex / grid 卫生规则，正文使用自身高度并通过上下 `auto` margin 分配剩余空间，没有使用 `flex:1` 拉伸内容；因此矩阵、机制卡、旅程、Roadmap 与来源页保持原有卡片高度，不产生“高而空”的注水卡片。未修改任何研究文案、33 页顺序、runtime、H/M/L 证据口径或 API / Host / Application 三层边界。
+- 验证：Chrome Headless 1600×900 重新逐页截图 33 页，0 console / page error、0 可见元素越界；正文区域中心落在页面垂直中线附近，长表格与产品 Mockup 未碰撞页脚；内联 JS `node --check` 和 `git diff --check` 均通过。
+- Commit / push：待本次布局修正提交后回填。
+
 ---
 
 ## 历史记录（完整保留，按需回溯）
