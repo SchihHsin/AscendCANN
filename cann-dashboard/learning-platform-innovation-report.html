@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>昇腾社区学习平台下一代创新方向</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/IKKI2000/harmonyos-fonts@master/css/harmonyos_sans_sc.css">
+<style>
+/* ===== 设计 token ===== */
+:root{
+  --fs-h1:clamp(20px,1.7vw,30px); --fs-h2:clamp(16px,1.25vw,22px); --fs-h3:clamp(15.5px,1.2vw,19px);
+  --fs-body:clamp(15px,1.12vw,18px); --fs-sm:clamp(12px,.82vw,14.5px); --fs-xs:clamp(9px,.62vw,11px);  /* body=舒适阅读档；密集形式见 .pf/.pp/.up 局部回小 */
+  --paper:#E9EBEE; --card:#fff; --card-2:#F1F3F6;
+  --ink:#16191e; --ink-2:#5e646e; --ink-3:#929aa6; --line:#d4d8df;
+  --accent:#5B5BD6; --accent-soft:#ECECFB; --red:#E60012;
+  --c-red:#F05A68; --c-orange:#F47A4B; --c-amber:#F4B450; --c-yellow:#D9B52C; --c-lime:#91BD48; --c-green:#39B982; --c-mint:#36BFA2; --c-teal:#28A8D8; --c-blue:#4B8DFF; --c-indigo:#5B5BD6; --c-purple:#8D63D8; --c-pink:#D95F9D; --c-rose:#E76C88; --c-neutral:#9BA5B4; --c-ink:#22262F;
+  --g-red:linear-gradient(120deg,#FF5A6E,#FF6F55); --g-orange:linear-gradient(120deg,#FF9A55,#F47A4B); --g-amber:linear-gradient(120deg,#FBBF60,#F59E0B); --g-yellow:linear-gradient(120deg,#F4D35E,#D9B52C); --g-lime:linear-gradient(120deg,#B8DC62,#91BD48); --g-green:linear-gradient(120deg,#23CFA0,#45D65A); --g-mint:linear-gradient(120deg,#42D4B8,#36BFA2); --g-teal:linear-gradient(120deg,#38C9D7,#4FACFE); --g-blue:linear-gradient(120deg,#2F6FED,#4B8DFF); --g-indigo:linear-gradient(120deg,#6674E6,#5B5BD6); --g-purple:linear-gradient(120deg,#A78BFA,#7C3AED); --g-pink:linear-gradient(120deg,#FF4FA3,#FF7AC8); --g-rose:linear-gradient(120deg,#F37A9A,#E76C88); --g-neutral:linear-gradient(120deg,#E4E8EF,#CBD3DF);
+  --dark:var(--c-ink); --g-ink:linear-gradient(140deg,#22262F,#14171C); --g-accent:linear-gradient(135deg,var(--c-indigo),#7C3AED);
+  /* 黑底光晕（每页可被 inline 变量覆盖，实现一章一色）*/
+  --glow-h:234; --glow-h2:291; --glow-sat:95%; --glow-light:40%; --glow-spread:35; --glow-color-int:.68; --glow-white-int:.58;
+}
+/* 用户画像是高密度特殊形式：body/h3 局部冻回紧凑档，不随全局正文放大 */
+.pf,.pp,.up{--fs-h3:clamp(13px,.95vw,16px);--fs-body:clamp(12px,.82vw,15px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+html,body{width:100%;height:100%;margin:0;background:#0c0a0b;color:var(--ink);
+  font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;-webkit-font-smoothing:antialiased}
+/* 纵向翻页：body 作滚动容器 + 原生 scroll-snap（划时短暂两页，松手吸附到整页）*/
+body{overflow:hidden auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+/* 滚动条：细、半透、默认隐藏，滚动时（body.scrolling）才淡入；亮/暗随 body.on-dark */
+body{scrollbar-width:thin;scrollbar-color:transparent transparent}
+body.scrolling{scrollbar-color:rgba(140,140,160,.45) transparent}
+body::-webkit-scrollbar{width:9px}
+body::-webkit-scrollbar-track{background:transparent}
+body::-webkit-scrollbar-thumb{background:transparent;border-radius:9px;border:3px solid transparent;background-clip:padding-box;transition:background .25s}
+body.scrolling::-webkit-scrollbar-thumb{background:rgba(140,140,160,.45);background-clip:padding-box}
+body.on-dark.scrolling{scrollbar-color:rgba(255,255,255,.32) transparent}
+body.on-dark.scrolling::-webkit-scrollbar-thumb{background:rgba(255,255,255,.32);background-clip:padding-box}
+#deck{position:relative;width:100vw;display:block}
+.slide{position:relative;width:100vw;height:100vh;overflow:hidden;font-size:var(--fs-body);scroll-snap-align:start;scroll-snap-stop:always}
+
+/* ===== 总览（Overview）：缩略图网格（按当前视窗比例，不强制 16:9）===== */
+body.overview{scroll-snap-type:none;background:#15151a;padding:30px 30px 64px}
+body.overview #deck{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:auto;max-width:1480px;margin:0 auto;align-items:start}
+body.overview .slide{position:relative!important;width:auto!important;min-height:0!important;padding:0!important;margin:0!important;display:block!important;overflow:hidden!important;border-radius:12px;cursor:pointer;scroll-snap-align:none;box-shadow:0 12px 34px -14px rgba(0,0,0,.6);outline:2px solid transparent;transition:outline-color .18s,transform .18s}
+body.overview .slide:hover{transform:translateY(-4px);outline-color:var(--accent)}
+body.overview .slide-inner{position:absolute;top:0;left:0;width:100vw;height:100vh;transform-origin:top left;overflow:hidden;pointer-events:none;box-sizing:border-box}
+body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5vh 4vw}
+body.overview .s-glow .slide-inner{padding:7vh 6vw}
+body.overview .s-cover .slide-inner{padding:0}
+
+/* ===== 翻页过渡（可切换）=====
+   默认 slide=纵向 scroll-snap；其余走「受控叠层」(body.ctrl)：所有页叠同位、只 .active 显示
+   TRANSITION / ?t= : slide(默认) | fade | cut | slide-h | magic */
+body.ctrl{overflow:hidden;scroll-snap-type:none}
+body.ctrl #deck{position:fixed;inset:0;width:100vw}
+body.ctrl .slide{position:absolute;inset:0;opacity:0;visibility:hidden;scroll-snap-align:none;scroll-snap-stop:normal}
+body.ctrl .slide.active{opacity:1;visibility:visible;z-index:2}
+body.ctrl .slide.leaving{visibility:visible;z-index:1}
+body[data-transition=fade] .slide{transition:opacity .5s ease}
+body[data-transition=fade] .slide.leaving{opacity:0}
+body[data-transition=cut] .slide{transition:none}
+body[data-transition=cut] .slide.leaving{opacity:0}
+body[data-transition=slide-h] .slide{transition:transform .56s cubic-bezier(.77,0,.175,1),opacity .4s ease}
+body[data-transition=slide-h] .slide.active{opacity:1}
+body[data-transition=slide-h] .slide.leaving{opacity:1}
+body[data-transition=magic] .slide{transition:opacity .6s ease}
+body[data-transition=magic] .slide.leaving{opacity:0}
+body.overview.ctrl{overflow:hidden auto}
+body.overview.ctrl #deck{position:static}
+body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibility:visible!important;transform:none!important}
+
+/* ============ 基调②：灰底分析篇 ============ */
+.s-gray{color:var(--ink);padding:5vh 4vw;display:flex;flex-direction:column;background:var(--paper);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 480' preserveAspectRatio='none'%3E%3Cpath d='M0 320 C 380 250 760 330 1080 195 C 1280 140 1380 185 1440 130 L1440 480 L0 480 Z' fill='%237e8696' fill-opacity='0.07'/%3E%3Cpath d='M0 372 C 430 305 820 405 1180 245 C 1340 198 1402 240 1440 190 L1440 480 L0 480 Z' fill='%23949bab' fill-opacity='0.08'/%3E%3C/svg%3E"),linear-gradient(125deg,rgba(120,128,145,.05),transparent 50%);
+  background-position:bottom center,0 0;background-size:100% 50%,100% 100%;background-repeat:no-repeat,no-repeat}
+.head{display:flex;align-items:flex-start;justify-content:space-between;flex:0 0 auto;margin-bottom:3.4vh}
+.head-l{display:flex;flex-direction:column-reverse;gap:.8vh}  /* 小副标(.subttl)在上、大标题在下：column-reverse 反转视觉顺序，HTML 仍 .brand 在前 .subttl 在后 */
+.brand{display:flex;align-items:center;gap:.5em}
+.brand .logo{height:clamp(19px,1.7vw,25px);width:auto;display:block;flex-shrink:0}  /* ⛔ 标题前只放 CANN logo（无合适 logo 就删掉 img 留空），绝不换成 Lucide/通用 icon */
+.brand .ttl{font-weight:800;font-size:var(--fs-h1);letter-spacing:-.01em}      /* 标题=结论 */
+.subttl{font-weight:300;font-size:var(--fs-sm);color:var(--ink-2)}
+/* 右上章节 Tab：横向列出整份汇报章节，当前章节用深色胶囊高亮；不再放孤立的小字页码。 */
+.section-tabs{display:flex;align-items:center;gap:5px;flex:0 0 auto;margin-left:auto;padding:.45vh .48vw;border:1px solid rgba(127,137,157,.18);border-radius:999px;background:rgba(255,255,255,.46)}
+.section-tabs span{padding:.42vh .6vw;border-radius:999px;font:600 var(--fs-sm)/1.2 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;color:var(--ink-3);white-space:nowrap}
+.section-tabs span.active{background:var(--g-ink);color:#fff;box-shadow:0 3px 10px -6px rgba(20,25,35,.5)}
+/* 目录：4 章单行；3 / 5 / 6 章的完整数量路由见 components.md §18 与模板库。 */
+.contents-slide .body-area{justify-content:center}
+.contents-directory{width:min(1120px,100%);margin:0 auto;display:grid;gap:1vw;align-items:stretch}
+.contents-directory.contents-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.directory-card{--dir:var(--c-indigo);position:relative;min-width:0;min-height:31vh;overflow:hidden;padding:1.8vh 1.25vw 1.35vh;display:flex;flex-direction:column;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.88);border-radius:14px;box-shadow:0 18px 42px -25px rgba(20,25,35,.22),inset 0 1px 0 rgba(255,255,255,.94)}
+.directory-card::after{content:"";position:absolute;right:-25%;bottom:-24%;width:90%;height:46%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--dir) 16%,transparent),transparent 70%);pointer-events:none}
+.directory-card.research{--dir:var(--c-indigo)}.directory-card.competitor{--dir:var(--c-blue)}.directory-card.persona{--dir:var(--c-teal)}.directory-card.roadmap{--dir:var(--c-pink)}
+.directory-no,.directory-name,.directory-en,.directory-items,.directory-note{position:relative;z-index:1}
+.directory-no{font-family:'Barlow Condensed','Inter',sans-serif;font-size:clamp(54px,5.4vw,86px);line-height:.82;letter-spacing:-.035em;font-weight:300;color:var(--dir);text-shadow:0 0 28px color-mix(in srgb,var(--dir) 24%,transparent)}
+.directory-name{margin-top:1.35vh;font-size:var(--fs-h2);line-height:1.2;font-weight:950;color:var(--ink);overflow-wrap:anywhere}
+.directory-en{margin-top:.42vh;font-family:'Inter',sans-serif;font-size:var(--fs-sm);font-weight:700;color:color-mix(in srgb,var(--dir) 76%,#596575);overflow-wrap:anywhere}
+.directory-items{display:grid;gap:.52vh;margin-top:2.65vh}.directory-items span{font-size:var(--fs-body);line-height:1.36;color:var(--ink-2);overflow-wrap:anywhere}
+.directory-items span::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;vertical-align:middle;margin:-2px .48em 0 0;background:var(--dir);box-shadow:0 0 12px color-mix(in srgb,var(--dir) 42%,transparent)}
+.directory-note{margin-top:auto;padding-top:1.25vh;border-top:1px solid rgba(47,61,99,.14);font-size:var(--fs-sm);font-weight:900;line-height:1.35;color:color-mix(in srgb,var(--dir) 72%,#465364);overflow-wrap:anywhere}
+/* padding-bottom 给绝对定位的 .foot/.ucd 留位，否则居中卡会紧贴页尾（见 pitfalls.md）*/
+.body-area{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+/* 居中型页（内容是个居中块、四周留白）加 .vc：JS balanceHeads() 按实际页眉高度补 padding-bottom，
+   抵消"页眉占空间、页脚(.foot/.ucd 绝对定位)不占空间"的不平衡，让内容落到整页真正正中（任意窗口都准）。
+   固定 vh 猜测值在不同页眉高度/窗口宽高比下对不上，见 pitfalls.md。
+   填满型页（旅程/VOC/画像表格等用满整页的）不加 .vc */
+.body-area.vc{padding-bottom:0}
+.card{background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.7);border-radius:16px;box-shadow:0 10px 30px -16px rgba(30,40,70,.2),inset 0 1px 0 rgba(255,255,255,.85);padding:2.2vh 1.6vw}
+
+/* 甘特 roadmap（精调件②）：玻璃大卡 + 浮动条 + 虚线网格底纹 */
+.rm{position:relative;flex:1;min-height:0;margin-top:1vh;background:rgba(255,255,255,.55);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border:1px solid rgba(255,255,255,.7);border-radius:18px;box-shadow:0 12px 34px -16px rgba(30,40,70,.22),inset 0 1px 0 rgba(255,255,255,.85)}
+.rm-pad{position:absolute;top:6vh;left:3.2vw;right:3.2vw;bottom:4vh}            /* 内层容器：绝对定位的条/刻度相对它，padding 才生效 */
+.rm-pad::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0H0V40' fill='none' stroke='%237e8696' stroke-opacity='0.18' stroke-width='1' stroke-dasharray='2,4'/%3E%3C/svg%3E");background-size:40px 40px}
+.rm-date{position:absolute;top:0;transform:translateX(-50%);font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;color:var(--ink-3);white-space:nowrap}
+.rm-now-pill{position:absolute;top:1.6%;transform:translateX(-50%);font-size:var(--fs-xs);font-weight:600;color:#fff;background:rgba(91,91,214,.92);padding:3px 11px;border-radius:9px;box-shadow:0 3px 10px rgba(60,52,137,.32);z-index:3}
+.rm-now-line{position:absolute;top:9%;height:84%;width:2px;background:linear-gradient(rgba(91,91,214,.85),rgba(91,91,214,.35));box-shadow:0 0 12px rgba(91,91,214,.5);z-index:1}
+.rm-now-tri{position:absolute;top:7.2%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid var(--accent);z-index:2}
+.rm-bar{position:absolute;height:8.5%;min-height:30px;max-height:46px;border-radius:13px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:var(--fs-body);font-weight:500;backdrop-filter:blur(2px) saturate(130%);-webkit-backdrop-filter:blur(2px) saturate(130%);z-index:2}
+.rm-bar .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rm-badge{font-size:var(--fs-xs);font-weight:600;padding:3px 9px;border-radius:7px;white-space:nowrap;margin-left:10px;flex:none}
+.rm-bar.white{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.75);color:var(--ink);box-shadow:0 8px 22px rgba(30,40,70,.1),inset 0 1px 0 rgba(255,255,255,.8)}
+.rm-bar.white .rm-badge{background:var(--dark);color:#fff}
+.rm-bar.dark{background:var(--g-ink);border:1px solid rgba(255,255,255,.22);color:#fff;box-shadow:0 8px 26px rgba(20,25,35,.32),inset 0 1px 0 rgba(255,255,255,.28)}
+.rm-bar.dark .rm-badge{background:rgba(255,255,255,.92);color:var(--dark)}
+.rm-bar.accent{background:var(--g-accent);border:1px solid rgba(255,255,255,.34);color:#fff;box-shadow:0 10px 28px rgba(91,91,214,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+.rm-bar.accent .rm-badge{background:#fff;color:#5B21B6}
+.rm-diamond{position:absolute;width:18px;height:18px;transform:rotate(45deg);background:var(--g-ink);border:1px solid rgba(255,255,255,.3);border-radius:3px;box-shadow:0 5px 14px rgba(0,0,0,.22);z-index:3}
+.rm-ms{position:absolute;font-size:var(--fs-sm);font-weight:500;color:var(--ink-2)}
+
+/* 关键指标：多彩渐变胶囊 + 极细超大数字（精调件①）*/
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3.4vw;flex:1;min-height:0;align-items:center}
+.stat-col{display:flex;flex-direction:column;gap:2vh}
+.stat-bar-area{position:relative}
+.stat-marks{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10.5px;color:var(--ink-3);margin-bottom:.7vh;position:relative;height:18px;align-items:flex-end}
+.stat-tri{position:absolute;font-size:9px;transform:translateX(-50%);color:var(--ink-2);bottom:0;line-height:1}
+.stat-pills{display:flex;gap:5px;height:6vh} .stat-pill{border-radius:999px;flex-shrink:0}
+.stat-num{font-family:'Inter';font-weight:200;font-size:min(8.4vw,13.8vh);line-height:.88;letter-spacing:-.04em;color:var(--ink);margin-top:.4vh}
+.stat-num .u{font-size:.35em;font-weight:300;color:var(--ink-2);margin-left:.05em}
+.stat-desc{font-size:var(--fs-body);color:var(--ink-2);line-height:1.58;max-width:26ch}
+
+/* 竞品对照：三卡大段论述 + 图沉卡底（order:2）+ 对策深色条 */
+.compare{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw;flex:0 0 auto}
+.cmp{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.cmp-img{order:2;flex:0 0 auto;padding:0 .9vw .9vw;margin-top:auto}
+.cmp-img img{width:100%;height:auto;display:block;border-radius:9px;border:1px solid var(--line)}
+.cmp-cap{font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--ink-3);text-align:center;letter-spacing:.02em;margin-top:.7vh}
+.cmp-body{order:1;padding:2vh 1.4vw .8vh;flex:0 0 auto;display:flex;flex-direction:column;gap:1.7vh}
+.cmp-h{font-weight:700;font-size:var(--fs-h2);letter-spacing:-.01em;line-height:1.3;color:var(--ink)}
+.cmp-h .hk{display:block;font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.5vh}
+.cmp-desc{font-size:var(--fs-body);line-height:1.72;color:var(--ink-2)}
+.cmp-desc b{color:var(--ink);font-weight:600;background:linear-gradient(transparent 60%,rgba(91,91,214,.16) 0)}
+.verdict{flex:0 0 auto;margin-top:1.6vh;display:grid;grid-template-columns:auto 1fr;gap:1.2vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:12px;padding:1.8vh 1.6vw}
+.verdict .vk{font-size:var(--fs-h3);font-weight:700;color:var(--ink);background:#fff;border-radius:12px;padding:6px 15px;white-space:nowrap}
+.verdict .vv{font-size:var(--fs-body);line-height:1.55} .verdict .vv b{font-weight:700}
+
+/* 用户画像·形式一（左栏人物 + 右四区）。⚠️ 与形式二是两套方案【二选一】，按用户输入择优 */
+.pf{--b:#385CFF;--bs:rgba(56,92,255,.1);flex:0 1 auto;min-height:0;display:grid;grid-template-columns:23% 1fr;gap:1.5vw;align-items:stretch}
+.pf-side{background:#EFEFF1;border-radius:16px;padding:1.7vh 1.2vw;display:flex;flex-direction:column;gap:.85vh;overflow:hidden}
+.pf-portrait{width:100%;aspect-ratio:1/.86;border-radius:12px;overflow:hidden;background:#fff;flex:0 0 auto}
+.pf-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-sb{border-radius:11px;padding:.95vh .9vw;flex:0 0 auto}
+.pf-sb.head{background:var(--bs);padding-top:.85vh;padding-bottom:.85vh}
+.pf-sb.head .nm{font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC';font-weight:800;font-size:var(--fs-h2);color:#1a1a1a;line-height:1.2}
+.pf-sb.head .rl{font-size:var(--fs-body);color:var(--b);font-weight:600;margin-top:.1vh}
+.pf-sb.white{background:#fff}
+.pf-sb .sbh{font-size:var(--fs-xs);color:#999;font-weight:700;margin-bottom:.25vh}
+.pf-sb .sbt{font-size:var(--fs-body);color:#333;line-height:1.5}
+.pf-chips{display:flex;flex-wrap:wrap;gap:.4vw}
+.pf-chips span{font-size:var(--fs-sm);color:var(--b);background:var(--bs);border-radius:6px;padding:.4vh .65vw}
+.pf-quote{font-size:var(--fs-body);color:#333;font-weight:600;line-height:1.5;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c2c7d0}
+.pf-r{display:flex;flex-direction:column;gap:1.1vh;min-height:0}
+.pf-row{display:grid;grid-template-columns:.82fr 1.7fr;gap:1.8vw;align-items:start}
+.pf-block{display:flex;flex-direction:column;min-width:0}
+.pf-h2{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;background:var(--b);color:#fff;border-radius:20px;padding:.3vh .9vw .3vh .3vh;font-weight:700;font-size:var(--fs-h3);margin-bottom:.8vh}
+.pf-h2 .ico{width:clamp(21px,1.8vw,27px);height:clamp(21px,1.8vw,27px);border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pf-h2 .ico svg{width:56%;height:56%;display:block}
+.pf-sub{font-weight:700;font-size:var(--fs-sm);color:#333;margin:.1vh 0 .4vh .2vw}
+.pf-rings{display:flex;gap:2vw;padding-left:.3vw}
+.pf-rg{display:flex;flex-direction:column;align-items:center;gap:.4vh;text-align:center;width:min(13vw,150px)}
+.pf-rg .dn{width:clamp(46px,4.4vw,62px);height:clamp(46px,4.4vw,62px);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}
+.pf-rg .dn::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--b) 0 var(--p),#D6DAE4 0)}
+.pf-rg .dn::after{content:'';position:absolute;inset:23%;border-radius:50%;background:var(--paper)}
+.pf-rg .dn b{position:relative;z-index:1;font-weight:700;font-size:var(--fs-h3);color:#1a1a1a}
+.pf-rg .rl2{font-size:var(--fs-sm);color:#555;line-height:1.4}
+.pf-flow{display:flex;align-items:stretch;gap:.25vw}
+.pf-fc{flex:1;background:var(--bs);border-radius:10px;padding:.85vh .75vw;display:flex;flex-direction:column;gap:.35vh;min-width:0}
+.pf-fc .ft{font-weight:700;font-size:var(--fs-sm);color:var(--b)}
+.pf-fc .fl{font-size:var(--fs-xs);color:#444;line-height:1.4;display:flex;gap:.3em}
+.pf-fc .fl::before{content:'·';color:var(--b);font-weight:700;flex-shrink:0}
+.pf-fa{display:flex;align-items:center;color:var(--b);font-size:var(--fs-sm);flex-shrink:0}
+.pf-fc .fkpi{margin-top:.5vh;padding-top:.5vh;border-top:1px dashed rgba(56,92,255,.35);display:flex;flex-wrap:wrap;gap:.2em .55em;align-items:center}
+.pf-fc .fkpi .kl{font-size:var(--fs-xs);color:#999;font-weight:700;background:#fff;border-radius:4px;padding:.1vh .4vw}
+.pf-fc .fkpi b{font-size:var(--fs-xs);color:var(--b);font-weight:700}
+.pf-scs{display:grid;grid-template-columns:repeat(4,1fr);gap:.7vw}
+.pf-sc{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:.9vh .75vw;display:flex;flex-direction:column;gap:.55vh}
+.pf-sc .st{font-weight:700;font-size:var(--fs-body);color:#1a1a1a}
+.pf-sc .sd{font-size:var(--fs-sm);color:#666;line-height:1.45}
+.pf-pains{display:flex;flex-direction:column;gap:.4vh}
+.pf-pain{font-size:var(--fs-body);line-height:1.5;color:#333;display:flex;gap:.5em;align-items:flex-start}
+.pf-pain::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--b);flex-shrink:0;margin-top:.55em}
+.pf-pain b{color:var(--b);font-weight:600}
+.pf-mk{flex:0 0 auto;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;border:1px solid #E0E3EA;background:#F6F8FC;display:flex;flex-direction:column}
+.pf-mk .bar{display:flex;align-items:center;gap:3px;padding:2px 5px;background:#EBEEF4;border-bottom:1px solid #E0E3EA;flex-shrink:0}
+.pf-mk .bar i{width:3.5px;height:3.5px;border-radius:50%;background:#C4CAD6}
+.pf-mk .bd{flex:1;padding:4px 5px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.mkl{height:2.5px;border-radius:1.5px;background:#D3D8E2;display:block;flex-shrink:0}
+.mkl.b{background:var(--b)} .mkl.o{background:#E8896B}
+
+/* ============ 基调①：封面（真实素材）============ */
+.s-cover{color:#fff;background:#0c0a0b;padding:0}
+.cv-bg{position:absolute;inset:0;background:url("cover-bg.png") center/cover no-repeat;z-index:0}   /* 换成你的封面图 */
+.cv-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(10,8,9,.92),rgba(10,8,9,.55) 30%,rgba(10,8,9,0) 58%)}
+.cv-content{position:relative;z-index:1;height:100vh;padding:6vh 6vw;display:flex;flex-direction:column;justify-content:space-between}
+.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}
+.cv-huawei{display:flex;align-items:center;gap:.7em;font-weight:600;font-size:16px;letter-spacing:.04em;align-self:flex-start}
+.cv-huawei .petal{width:19px;height:19px;flex-shrink:0}
+.cv-meta{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;opacity:.55}
+.cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:60vw}
+.cv-kicker{font-family:'JetBrains Mono';font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1vh}
+.cv-logo{display:flex}
+.cv-logo img{height:min(17vh,12vw);width:auto;display:block}  /* 深色封面用白色版 logo */
+.cv-sub{font-weight:300;font-size:min(3vw,5vh);line-height:1.1;color:rgba(255,255,255,.92)}
+.cv-lead{font-weight:300;font-size:max(15px,1.2vw);line-height:1.6;color:rgba(255,255,255,.6);max-width:36ch;margin-top:1.4vh}
+.cv-ucd{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.6em}
+.cv-ucd .sq{width:12px;height:12px;border:1.5px solid currentColor;display:inline-block}
+
+/* ============ 基调③：黑底设计点（光晕 + 渐变标题字）============ */
+.s-glow{background:#06060a;color:#fff;padding:7vh 6vw}
+.s-glow .glow{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none}
+.s-glow .glow::before,.s-glow .glow::after{content:"";position:absolute;inset:0;mix-blend-mode:screen}
+.s-glow .glow::before{background:radial-gradient(ellipse 78% 96% at 22% 112%,hsla(var(--glow-h),var(--glow-sat),calc(var(--glow-light) + 12%),var(--glow-color-int)) 0%,hsla(var(--glow-h),var(--glow-sat),var(--glow-light),0) 92%)}
+.s-glow .glow::after{background:radial-gradient(ellipse 78% 96% at 78% 112%,hsla(var(--glow-h2),var(--glow-sat),calc(var(--glow-light) + 12%),calc(var(--glow-color-int)*.9)) 0%,hsla(var(--glow-h2),var(--glow-sat),var(--glow-light),0) 90%)}
+.s-glow .glow-white{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(to top,hsla(var(--glow-h),22%,90%,var(--glow-white-int)) 0%,hsla(var(--glow-h),30%,80%,0) 84%)}
+.s-glow .chrome{position:absolute;top:5vh;left:6vw;right:6vw;z-index:1;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.s-glow .inner{position:relative;z-index:1;height:100%;display:grid;grid-template-columns:0.5fr 1.5fr;gap:2vw;align-items:center}  /* 设计点版式①（默认）左文右图：图占~65% */
+.kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:hsl(var(--glow-h),var(--glow-sat),72%);margin-bottom:2.6vh;display:flex;align-items:center;gap:.8em}
+.kicker::before{content:"";width:28px;height:1px;background:currentColor;opacity:.7}
+.h-title{font-weight:700;font-size:min(3.5vw,6vh);line-height:1.15;letter-spacing:-.01em;margin-bottom:1.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),78%),hsl(var(--glow-h2),var(--glow-sat),72%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.h-title .light{font-weight:200}
+.body{font-weight:300;font-size:var(--fs-body);line-height:1.75;color:rgba(255,255,255,.62);max-width:40ch;margin-bottom:4vh}
+.body b{color:#fff;font-weight:600}  /* 正文主次：默认细体 + <b> 加粗提亮 */
+.points{display:flex;flex-direction:column;gap:2.2vh}
+.point{display:grid;grid-template-columns:auto 1fr;gap:1.2em;align-items:start}
+.point .dot{width:9px;height:9px;margin-top:.7em;border-radius:50%;background:hsl(var(--glow-h),var(--glow-sat),62%);box-shadow:0 0 12px 2px hsla(var(--glow-h),var(--glow-sat),60%,.7);flex-shrink:0}
+.point .pt-title{font-weight:500;font-size:var(--fs-h3);color:#fff;margin-bottom:.4vh}
+.point .pt-desc{font-weight:300;font-size:var(--fs-sm);line-height:1.6;color:rgba(255,255,255,.5)}
+.shot{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px -20px hsla(var(--glow-h),var(--glow-sat),30%,.5);display:flex;align-items:center;justify-content:center}  /* 16:9 匹配 1920×1080 截图 */
+.shot .ph{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* 设计点版式② 上下堆叠 hero（大图型）：title+body 薄薄一条（无 kicker/无要点）+ 16:9 大图填高居中（~75-78%）*/
+.s-glow .inner.stack{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:2.6vh;align-items:stretch}
+.inner.stack .stack-head{display:grid;grid-template-columns:1.35fr 1fr;gap:3.4vw;align-items:end}
+.inner.stack .stack-head .h-title{margin-bottom:0;font-size:min(2.9vw,4.6vh);line-height:1.2}
+.inner.stack .stack-head .body{margin:0;max-width:46ch;padding-bottom:.4vh}
+.inner.stack .shot{aspect-ratio:16/9;height:100%;width:auto;max-width:100%;margin:0 auto}  /* 真 16:9、按高填满、居中、不裁 */
+.chapter-cover .inner{grid-template-columns:1fr;align-content:center}
+.cover-block{max-width:62vw}
+.ch-no{font-family:'Inter';font-weight:200;font-size:min(11vw,17vh);line-height:.9;letter-spacing:-.04em;opacity:.45;background:linear-gradient(120deg,hsl(var(--glow-h),var(--glow-sat),82%),hsl(var(--glow-h2),var(--glow-sat),70%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1vh}
+.ch-cover-title{font-weight:700;font-size:min(6vw,10vh);line-height:1.05;letter-spacing:-.01em;margin-bottom:2.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),85%),hsl(var(--glow-h2),var(--glow-sat),74%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.ch-cover-sub{font-weight:300;font-size:max(15px,1.2vw);line-height:1.65;color:rgba(255,255,255,.6);max-width:46ch}
+
+/* 调色面板（仅黑底章节封面显示，色值持久记忆）*/
+#panel{position:absolute;top:3.8vh;right:calc(6vw + 58px);z-index:60;width:280px;background:linear-gradient(155deg,rgba(58,58,80,.30),rgba(14,14,22,.40));backdrop-filter:blur(34px) saturate(1.7);-webkit-backdrop-filter:blur(34px) saturate(1.7);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:18px 20px;color:#fff;box-shadow:0 24px 64px -16px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.28)}
+#panel h4{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:14px}
+.preset-row{display:flex;gap:6px;margin-bottom:16px}
+.preset{flex:1;height:30px;border-radius:7px;border:1px solid rgba(255,255,255,.18);cursor:pointer;transition:transform .15s}
+.preset:hover{transform:scale(1.08)}
+.ctrl{margin-bottom:13px}
+.ctrl label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.62);margin-bottom:6px;font-family:'JetBrains Mono'}
+.ctrl label .val{color:#fff}
+.ctrl input[type=range]{width:100%;height:6px;-webkit-appearance:none;border-radius:4px;outline:none;cursor:pointer;background:rgba(255,255,255,.14)}
+.ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.5)}
+#toggle{position:absolute;top:3.8vh;right:6vw;z-index:61;width:46px;height:46px;border-radius:14px;background:linear-gradient(155deg,rgba(58,58,80,.4),rgba(14,14,22,.5));backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.82);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 32px -8px rgba(0,0,0,.5)}
+#toggle:hover{color:#fff}#toggle svg{width:22px;height:22px}
+
+/* ===== 导航 ===== */
+/* 右侧竖排导航点（鼠标到底部才显隐；亮/暗随当前页）*/
+.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:7px;padding:10px 7px;border-radius:999px;background:rgba(150,150,170,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
+.nav-dots.show{opacity:1}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:rgba(40,45,60,.28);cursor:pointer;border:0;padding:0;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.nav-dot:hover{background:rgba(40,45,60,.5);transform:scale(1.25)}
+.nav-dot.active{background:var(--accent);height:18px;border-radius:4px}
+body.on-dark .nav-dots{background:rgba(255,255,255,.1)}
+body.on-dark .nav-dot{background:rgba(255,255,255,.3)}
+body.on-dark .nav-dot.active{background:#fff}
+/* 底部居中控制栏：小而透，默认隐藏，鼠标到底部才出现 */
+#controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;background:rgba(22,25,30,.42);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);color:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.4);opacity:0;transition:opacity .25s}
+#controls.show{opacity:.92}
+#controls button{background:transparent;color:#fff;border:0;cursor:pointer;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;opacity:.7;transition:opacity .15s,background .15s}
+#controls button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.12)}
+#controls button:disabled{opacity:.28;cursor:default}
+#controls button svg{width:14px;height:14px}
+.ctrl-counter{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.08em;min-width:48px;text-align:center;opacity:.7;user-select:none}
+.ctrl-sep{width:1px;height:13px;background:rgba(255,255,255,.18)}
+body.overview #panel,body.overview #toggle{display:none!important}
+
+/* ===== Learning Platform Innovation Report ===== */
+.lp-cover .cv-bg{background-image:url("learning-platform-innovation-research/evidence/current/07-hidevlab-split.png");background-position:center;background-size:cover;filter:saturate(.72)}
+.lp-cover .cv-bg::after{background:linear-gradient(100deg,rgba(6,6,10,.97),rgba(6,6,10,.82) 38%,rgba(6,6,10,.3) 72%),linear-gradient(0deg,rgba(6,6,10,.72),transparent 42%)}
+.lp-cover .cv-huawei img{height:30px;width:auto;filter:brightness(0) invert(1)}
+.lp-cover-logo img{height:min(8vh,7vw);filter:brightness(0) invert(1)}
+.lp-foot{position:absolute;left:4vw;right:4vw;bottom:2.2vh;display:flex;justify-content:space-between;gap:2vw;font-size:var(--fs-xs);color:var(--ink-3);font-family:'JetBrains Mono';letter-spacing:.04em}
+.contents-directory.contents-5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.contents-directory.contents-5 .directory-card{min-height:31vh}
+.lp-triad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4vw;width:100%;align-items:stretch}
+.lp-triad-card{min-width:0;min-height:42vh;border-radius:18px;padding:3.2vh 2vw;display:flex;flex-direction:column;justify-content:center;box-shadow:0 18px 38px -24px rgba(20,25,35,.3)}
+.lp-triad-card span{display:inline-flex;align-self:flex-start;width:fit-content;padding:.45vh .75vw;border-radius:999px;font-size:var(--fs-sm);font-weight:800;margin-bottom:2vh}
+.lp-triad-card h2{font-size:var(--fs-h1);line-height:1.2;margin-bottom:2vh}.lp-triad-card p{font-size:var(--fs-body);line-height:1.7}
+.lp-triad-card.neutral{background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.9)}.lp-triad-card.neutral span{background:#eef1f5;color:#59616c}.lp-triad-card.neutral p{color:var(--ink-2)}
+.lp-triad-card.accent{background:var(--g-accent);color:#fff}.lp-triad-card.accent span{background:rgba(255,255,255,.18)}.lp-triad-card.accent p{color:rgba(255,255,255,.78)}
+.lp-triad-card.ink{background:var(--g-ink);color:#fff}.lp-triad-card.ink span{background:#fff;color:var(--ink)}.lp-triad-card.ink p{color:rgba(255,255,255,.7)}
+.lp-evidence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:1.2vw;height:67vh;min-height:0}
+.lp-evidence{min-width:0;min-height:0;border-radius:14px;overflow:hidden;background:#fff;border:1px solid rgba(20,25,35,.12);position:relative}.lp-evidence img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}.lp-evidence figcaption{position:absolute;left:1vw;bottom:1.2vh;display:flex;gap:.7vw;align-items:center;background:rgba(10,12,16,.78);backdrop-filter:blur(10px);color:#fff;padding:.72vh .9vw;border-radius:10px;font-size:var(--fs-sm)}.lp-evidence figcaption span{color:rgba(255,255,255,.66)}
+.lp-cap-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1vw;min-height:0}.lp-cap-grid article{min-width:0;min-height:12vh;padding:1.5vh 1.1vw;border-radius:14px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.86);display:flex;flex-direction:column;justify-content:center;gap:.8vh}.lp-cap-grid article span{font-size:var(--fs-xs);font-weight:800;color:var(--c-green);text-transform:uppercase;letter-spacing:.08em}.lp-cap-grid article strong{font-size:var(--fs-h3)}
+.lp-threshold{margin-top:1.4vh;display:grid;grid-template-columns:auto 1fr;gap:1vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:12px;padding:1.45vh 1.4vw}.lp-threshold b{background:#fff;color:var(--ink);padding:.55vh .75vw;border-radius:999px;font-size:var(--fs-sm)}.lp-threshold span{font-size:var(--fs-body);line-height:1.5}
+.lp-gap-map{display:grid;grid-template-columns:1fr auto 1fr;gap:1vw 1.4vw;width:100%;align-items:stretch}.lp-gap-map article{min-height:13vh;border-radius:14px;padding:1.5vh 1.4vw;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.86)}.lp-gap-map article span{font-size:var(--fs-xs);font-weight:800;color:var(--ink-3)}.lp-gap-map article strong{display:block;font-size:var(--fs-h2);margin:.5vh 0}.lp-gap-map article p{font-size:var(--fs-sm);color:var(--ink-2);line-height:1.45}.lp-gap-map article.to{background:linear-gradient(135deg,rgba(91,91,214,.14),rgba(79,172,254,.11));border-color:rgba(91,91,214,.24)}.lp-gap-map i{align-self:center;font-style:normal;font-size:var(--fs-h1);color:var(--accent)}
+.lp-compare-slide .body-area{padding-bottom:2.5vh;justify-content:center}.lp-compare{align-items:stretch}.lp-compare .cmp{min-height:0}.cmp.focus{border:2px solid var(--accent);box-shadow:0 12px 32px -12px rgba(91,91,214,.4)}.lp-compare .cmp-body{padding:1.45vh 1.1vw .7vh;gap:.75vh}.lp-compare .cmp-desc{line-height:1.52}.lp-compare .cmp-img{padding:0 .7vw .7vw}.lp-compare .cmp-img img{box-shadow:0 7px 22px -15px rgba(20,25,35,.42)}.lp-compare .cmp-cap{display:flex;justify-content:space-between;gap:.6vw;text-align:left}.lp-compare .cmp-cap span:last-child{color:var(--ink-3);white-space:nowrap}
+.lp-schematic{padding:3vh 2.2vw;background:linear-gradient(155deg,rgba(255,255,255,.08),rgba(255,255,255,.025));display:flex}.lp-flow{width:100%;display:flex;flex-direction:column;justify-content:center;gap:1.25vh}.lp-flow-node{position:relative;min-height:12vh;border-radius:13px;padding:1.4vh 1.2vw 1.4vh 4.2vw;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);display:flex;flex-direction:column;justify-content:center}.lp-flow-node:not(:last-child)::after{content:"";position:absolute;left:2.05vw;bottom:-1.3vh;width:1px;height:1.35vh;background:rgba(255,255,255,.28)}.lp-flow-node>span{position:absolute;left:1vw;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono';font-size:var(--fs-h2);color:hsl(var(--glow-h),90%,74%)}.lp-flow-node strong{font-size:var(--fs-h3);color:#fff}.lp-flow-node small{font-size:var(--fs-sm);color:rgba(255,255,255,.55);margin-top:.4vh}
+.lp-matrix{display:grid;grid-template-columns:1fr;width:100%;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.84);border-radius:16px;overflow:hidden}.lp-matrix-head,.lp-matrix-row{display:grid;grid-template-columns:1.6fr repeat(6,1fr);align-items:center}.lp-matrix-head{background:var(--g-ink);color:#fff}.lp-matrix-head span,.lp-matrix-row>*{padding:1.25vh .8vw;text-align:center;font-size:var(--fs-sm)}.lp-matrix-head span:first-child,.lp-matrix-row strong{text-align:left}.lp-matrix-row{border-bottom:1px solid rgba(20,25,35,.08)}.lp-matrix-row:last-child{border-bottom:0}.lp-matrix-row strong{font-size:var(--fs-body)}.lp-matrix-row span{margin:.55vh .75vw;border-radius:8px;font-weight:800}.lp-matrix-row .v1{background:rgba(155,165,180,.14);color:#7e8794}.lp-matrix-row .v2{background:rgba(75,141,255,.15);color:#346fce}.lp-matrix-row .v3{background:rgba(57,185,130,.17);color:#20845d}
+.lp-object-shift{display:grid;grid-template-columns:1fr .62fr 1fr;gap:1.5vw;align-items:center;width:100%}.lp-object-shift>div{min-width:0}.lp-object-shift .from,.lp-object-shift .to{min-height:35vh;border-radius:18px;padding:3.2vh 2vw;display:flex;flex-direction:column;justify-content:center}.lp-object-shift .from{background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.9)}.lp-object-shift .to{background:var(--g-ink);color:#fff}.lp-object-shift span{font-size:var(--fs-sm);font-weight:800;color:var(--ink-3)}.lp-object-shift h2{font-size:var(--fs-h1);margin:1.2vh 0}.lp-object-shift p{font-size:var(--fs-body);color:var(--ink-2);line-height:1.5}.lp-object-shift .to p{color:rgba(255,255,255,.66)}.shift-arrow{text-align:center}.shift-arrow b{display:block;font-size:var(--fs-sm);color:var(--accent)}.shift-arrow i{display:block;font-style:normal;font-size:clamp(46px,5vw,74px);font-weight:200;color:var(--accent)}.shift-arrow small{font-size:var(--fs-sm);color:var(--ink-3)}.lp-session-strip{margin-top:2vh;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:.65vw}.lp-session-strip span{min-width:0;padding:1vh .6vw;border-radius:10px;background:rgba(91,91,214,.1);font-size:var(--fs-sm);font-weight:700;text-align:center}.lp-session-strip b{display:block;font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--accent);margin-bottom:.35vh}
+.lp-layers{display:flex;flex-direction:column;gap:1.1vh;width:100%;max-width:1120px;margin:auto}.lp-layers article{display:grid;grid-template-columns:1fr 2fr 2fr;gap:1.5vw;align-items:center;border-radius:14px;padding:1.7vh 1.6vw;min-height:12vh}.lp-layers span{font-size:var(--fs-sm);font-weight:900}.lp-layers strong{font-size:var(--fs-h2)}.lp-layers p{font-size:var(--fs-sm);line-height:1.5}.lp-layers .l1{background:rgba(255,255,255,.72)}.lp-layers .l2{background:rgba(91,91,214,.13)}.lp-layers .l3{background:rgba(40,168,216,.13)}.lp-layers .l4{background:var(--g-ink);color:#fff}.lp-layers .l4 p{color:rgba(255,255,255,.65)}
+.lp-opportunity{display:grid;grid-template-columns:.72fr 1.28fr;gap:2vw;align-items:stretch;min-height:0}.lp-opp-copy{display:flex;flex-direction:column;justify-content:center;gap:1.7vh}.lp-opp-copy h2{font-size:var(--fs-h1);line-height:1.3}.lp-opp-copy p{font-size:var(--fs-body);line-height:1.7;color:var(--ink-2)}.lp-key{display:flex;gap:.6vw;flex-wrap:wrap}.lp-key span{padding:.6vh .75vw;border-radius:999px;font-size:var(--fs-sm);font-weight:800}.q1{background:rgba(57,185,130,.16);color:#238760}.q2{background:rgba(91,91,214,.15);color:#4a4ab9}.q3{background:rgba(155,165,180,.16);color:#697382}.lp-opp-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:12px;min-height:58vh}.lp-opp-grid .cell{position:relative;border-radius:16px;overflow:hidden;padding:1.2vh 1vw}.lp-opp-grid .cell b{font-size:var(--fs-h3)}.lp-opp-grid .cell span{position:absolute;transform:translate(-50%,-50%) rotate(-2deg);padding:1.1vh .9vw;border-radius:6px;background:#fff7b8;box-shadow:0 8px 18px -10px rgba(20,25,35,.4);font-size:var(--fs-sm);font-weight:800}.lp-opp-grid .win{background:rgba(57,185,130,.12)}.lp-opp-grid .invest{background:rgba(91,91,214,.11)}.lp-opp-grid .later{background:rgba(244,180,80,.12)}.lp-opp-grid .ecosystem{background:rgba(240,90,104,.1)}
+.lp-combo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2vw;width:100%}.lp-combo-grid article{min-height:27vh;padding:2.1vh 1.6vw;border-radius:16px;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.88);display:flex;flex-direction:column;gap:.7vh}.lp-combo-grid article.recommended{background:linear-gradient(135deg,rgba(91,91,214,.95),rgba(124,58,237,.9));color:#fff}.lp-combo-grid span{display:inline-flex;align-self:flex-start;width:fit-content;padding:.4vh .65vw;border-radius:999px;background:rgba(20,25,35,.07);font-size:var(--fs-xs);font-weight:900}.lp-combo-grid .recommended span{background:rgba(255,255,255,.18)}.lp-combo-grid h2{font-size:var(--fs-h1)}.lp-combo-grid p{font-family:'JetBrains Mono';font-size:var(--fs-sm);color:var(--accent)}.lp-combo-grid .recommended p{color:rgba(255,255,255,.72)}.lp-combo-grid strong{font-size:var(--fs-body);line-height:1.55}.lp-combo-grid small{margin-top:auto;font-size:var(--fs-sm);color:var(--ink-3)}.lp-combo-grid .recommended small{color:rgba(255,255,255,.65)}
+.lp-reco-shot{overflow:visible}.lp-reco-shot img{border-radius:14px}.lp-shot-note{position:absolute;z-index:2;background:rgba(15,17,22,.88);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:.8vh .8vw;box-shadow:0 12px 24px -14px #000}.lp-shot-note b{display:block;font-size:var(--fs-sm)}.lp-shot-note span{font-size:var(--fs-xs);color:rgba(255,255,255,.65)}.lp-shot-note.n1{left:-3%;top:12%}.lp-shot-note.n2{right:-3%;top:43%}.lp-shot-note.n3{left:19%;bottom:-5%}
+.lp-metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1vw;width:100%}.lp-metric-grid article{min-height:24vh;padding:1.8vh 1.2vw;border-radius:15px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.86);display:flex;flex-direction:column;justify-content:center}.lp-metric-grid article span{font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--accent)}.lp-metric-grid article strong{font-size:var(--fs-h3);margin:.8vh 0}.lp-metric-grid article p{font-size:var(--fs-sm);color:var(--ink-2);line-height:1.5}
+.lp-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1vw;width:100%}.lp-source{min-width:0;min-height:18vh;padding:1.3vh 1vw;border-radius:13px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.86);display:grid;grid-template-columns:auto 1fr;gap:.8vw}.lp-source>span{font-family:'Barlow Condensed';font-size:var(--fs-h1);font-weight:300;color:var(--accent)}.lp-source strong{font-size:var(--fs-h3)}.lp-source p{font-size:var(--fs-sm);color:var(--ink-2);margin:.45vh 0;line-height:1.4}.lp-source a{display:block;font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--accent);text-decoration:none;word-break:break-all}
+.lp-limit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.3vw}.lp-limit-grid article{min-height:40vh;border-radius:17px;padding:2.5vh 1.7vw;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.88);display:flex;flex-direction:column;justify-content:center}.lp-limit-grid span{font-size:var(--fs-sm);font-weight:900;color:var(--accent)}.lp-limit-grid h2{font-size:var(--fs-h1);line-height:1.25;margin:1.2vh 0}.lp-limit-grid p{font-size:var(--fs-body);line-height:1.65;color:var(--ink-2)}
+@media(max-width:1100px){.section-tabs{display:none}.lp-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lp-cap-grid,.lp-metric-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+</style>
+</head>
+<body>
+<div id="deck">
+
+<section class="slide s-cover lp-cover">
+  <div class="cv-bg"></div>
+  <div class="cv-content">
+    <div class="cv-top"><div class="cv-huawei"><img src="../Ascendlogo.svg" alt="Ascend"></div><div class="cv-meta">Learning Platform Innovation · 2026</div></div>
+    <div class="cv-center"><div class="cv-kicker">ASCEND COMMUNITY · PRODUCT RESEARCH</div><div class="cv-logo lp-cover-logo"><img src="../CANNlogo.png" alt="CANN"></div><div class="cv-sub">昇腾社区学习平台<br>下一代创新方向</div><div class="cv-lead">从“AI 学习功能集合”升级为可信、可验证、可回流的任务完成网络。现状下钻 × 18 个案例 × 6 个前沿方向。</div></div>
+    <div class="cv-bot"><div class="cv-ucd"><span class="sq"></span>UCD / Developer Experience</div><div class="cv-meta">2026-08-26</div></div>
+  </div>
+</section>
+
+<section class="slide s-gray contents-slide"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">目录</span></div><div class="subttl">创新研究汇报</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="contents-directory contents-5">
+  <article class="directory-card research"><div class="directory-no">01</div><h2 class="directory-name">现状审计</h2><div class="directory-en">Current Experience</div><div class="directory-items"><span>首页到实验下钻</span><span>已有能力覆盖</span></div><div class="directory-note">先确认哪些能力不应重复设计</div></article>
+  <article class="directory-card competitor"><div class="directory-no">02</div><h2 class="directory-name">机制对照</h2><div class="directory-en">18 Cases</div><div class="directory-items"><span>每方向 3 个案例</span><span>官方页面证据</span></div><div class="directory-note">不以同类网站作为唯一边界</div></article>
+  <article class="directory-card persona"><div class="directory-no">03</div><h2 class="directory-name">前沿方向</h2><div class="directory-en">Six Directions</div><div class="directory-items"><span>验证 / 环境 / Agent</span><span>技能 / 贡献 / 同行</span></div><div class="directory-note">每个方向都改变平台核心机制</div></article>
+  <article class="directory-card roadmap"><div class="directory-no">04</div><h2 class="directory-name">组合策略</h2><div class="directory-en">Portfolio Options</div><div class="directory-items"><span>四种产品组合</span><span>价值 × 成本</span></div><div class="directory-note">给下一轮概念设计明确选择</div></article>
+  <article class="directory-card overview"><div class="directory-no">05</div><h2 class="directory-name">验证计划</h2><div class="directory-en">Experiments</div><div class="directory-items"><span>90 天原型路线</span><span>任务完成指标</span></div><div class="directory-note">先验证机制，再扩展平台</div></article>
+</div></div><div class="lp-foot"><span>五章 · 30 页</span><span>H / M / L 分层</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">现有 Demo 不缺功能，缺的是统一的“可验证任务会话”</span></div><div class="subttl">现状审计</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="lp-triad">
+  <article class="lp-triad-card neutral"><span>事实 M</span><h2>能力已经很丰富</h2><p>AI 路径、视频联动、代码实践、本机预检、HiDevLab、图谱、出题、档案都已出现。</p></article>
+  <article class="lp-triad-card accent"><span>关键断点</span><h2>能力仍是并列入口</h2><p>每个模块各自工作，但没有一个对象持续携带目标、环境、失败、证据与技能变化。</p></article>
+  <article class="lp-triad-card ink"><span>创新判断</span><h2>把路径升级为任务会话</h2><p>平台要能判断下一步该学、跑、修、验证还是贡献，而不是只推荐下一节点。</p></article>
+</div></div><div class="lp-foot"><span>基于本轮本地交互与截图</span><span>M · 本地可复核观察</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">现状链路已从内容入口延伸到执行，但验收与回流仍在链路之外</span></div><div class="subttl">现状审计</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="lp-evidence-grid">
+  <figure class="lp-evidence"><img src="learning-platform-innovation-research/evidence/current/01-learn-home.png"><figcaption><b>01 任务入口</b><span>AI 生成路径 + 典型场景</span></figcaption></figure>
+  <figure class="lp-evidence"><img src="learning-platform-innovation-research/evidence/current/02-task-selection.png"><figcaption><b>02 任务分流</b><span>目标 × 水平 × 成本</span></figcaption></figure>
+  <figure class="lp-evidence"><img src="learning-platform-innovation-research/evidence/current/04-path-detail.png"><figcaption><b>03 路径与内容</b><span>17 节 + 视频段联动</span></figcaption></figure>
+  <figure class="lp-evidence"><img src="learning-platform-innovation-research/evidence/current/07-hidevlab-split.png"><figcaption><b>04 执行现场</b><span>学习 × HiDevLab 分屏</span></figcaption></figure>
+</div></div><div class="lp-foot"><span>截图：Codex in-app Browser · 1280×720</span><span>M · 本轮实际页面状态</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">十二项现有能力已覆盖“学—练—问”，新方向必须越过这条基线</span></div><div class="subttl">现状审计</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="lp-cap-grid">
+<article><span>已具备</span><strong>任务输入</strong></article><article><span>已具备</span><strong>AI 生成路径</strong></article><article><span>已具备</span><strong>典型场景分流</strong></article><article><span>已具备</span><strong>课程 / 路径推荐</strong></article><article><span>已具备</span><strong>17 节结构化路径</strong></article><article><span>已具备</span><strong>视频章节联动</strong></article><article><span>已具备</span><strong>连续内容与代码</strong></article><article><span>已具备</span><strong>本机版本预检</strong></article><article><span>已具备</span><strong>HiDevLab 分屏</strong></article><article><span>已具备</span><strong>上下文 AI 助手</strong></article><article><span>已具备</span><strong>知识图谱 / 出题</strong></article><article><span>已具备</span><strong>学习档案 / 进度</strong></article>
+</div><div class="lp-threshold"><b>淘汰规则</b><span>如果一个“创新方向”只是增加另一种推荐、问答、图谱、测验、Notebook 或学习记录，则不进入下一轮概念设计。</span></div></div><div class="lp-foot"><span>现有能力基线</span><span>H / M / L 分层</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">四个结构性缺口决定了下一代平台的创新空间</span></div><div class="subttl">现状审计</div></div><div class="section-tabs" aria-label="当前章节"><span class="active">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="lp-gap-map">
+  <article><span>现在</span><strong>节点完成</strong><p>完成度主要来自学习进度</p></article><i>→</i><article class="to"><span>下一代</span><strong>证据验收</strong><p>由测试、环境、产物和解释共同判定</p></article>
+  <article><span>现在</span><strong>单次实验</strong><p>打开 Notebook 后独立操作</p></article><i>→</i><article class="to"><span>下一代</span><strong>版本化会话</strong><p>可快照、重放、分支与复现</p></article>
+  <article><span>现在</span><strong>被动问答</strong><p>用户发问，AI 给解释或建议</p></article><i>→</i><article class="to"><span>下一代</span><strong>形成性教练</strong><p>依据执行证据调节提示强度</p></article>
+  <article><span>现在</span><strong>个人记录</strong><p>进度、图谱与错题留在个人侧</p></article><i>→</i><article class="to"><span>下一代</span><strong>社区资产</strong><p>验证后的成果和失败模式回流生态</p></article>
+</div></div><div class="lp-foot"><span>差距来自当前链路，而非竞品功能清单</span><span>M → L</span></div></section>
+
+<section class="slide s-gray lp-compare-slide"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">任务验收被前置后，学习才从内容消费变成能力证明</span></div><div class="subttl">方向一 · 机制对照</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="active">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="compare lp-compare"><article class="cmp focus"><div class="cmp-body"><div class="cmp-h"><span class="hk">REAL-WORLD CREDENTIAL</span>Microsoft Applied Skills</div><div class="cmp-desc">真实 AI / Cloud 场景对应一项聚焦凭证。<b>凭证绑定可证明的任务能力</b>，而不是只绑定课时。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/01-microsoft-applied-skills.png" alt="Microsoft Applied Skills 官方页面截图"><div class="cmp-cap"><span>任务场景 → 评估 → 凭证</span><span>learn.microsoft.com</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">IDE + AUTOGRADING</span>CodeGrade</div><div class="cmp-desc">IDE、自动评分和受控 AI 同处一套环境。<b>写代码、运行、测试与反馈连续发生</b>。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/02-codegrade-autograding.png" alt="CodeGrade 官方页面截图"><div class="cmp-cap"><span>编码 → 测试 → 即时反馈</span><span>codegrade.com</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">SKILL VALIDATION</span>Skillable</div><div class="cmp-desc">虚拟实验、技能验证和实验数据统一在可观测会话中。<b>训练与评测使用同一环境</b>。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/03-skillable.png" alt="Skillable 官方页面截图"><div class="cmp-cap"><span>实验会话 → 技能数据</span><span>skillable.com</span></div></div></article></div><div class="verdict"><span class="vk">方向 01</span><span class="vv">昇腾应把“开始学习”改造成<b>接受任务合约</b>：目标、环境、输入、产物、测试与解释标准在开始前明确。</span></div></div><div class="lp-foot"><span>官方页面截图 · 1440×900 · 2026-08-26</span><span>H · 机制证据，不代表效果</span></div></section>
+<section class="slide s-glow lp-design" data-chapter="1" style="--glow-h:234;--glow-h2:291;--glow-sat:90%;--glow-light:42%;--glow-spread:42;--glow-color-int:.68;--glow-white-int:.5"><div class="glow-white"></div><div class="glow"></div><div class="chrome"><div>前沿方向 01 · DESIGN DIRECTION</div><div>超越现有能力</div></div><div class="inner"><div><div class="kicker">DIRECTION 01</div><h1 class="h-title">可验证任务合约<br><span class="light">Verified Task Contract</span></h1><p class="body">路径生成后先出现一份<b>可执行合约</b>，任务每一步产生证据回执；完成度从“看过多少节点”改为“多少关键验收项已通过”。</p><div class="points"><div class="point"><div class="dot"></div><div><div class="pt-title">任务合约</div><div class="pt-desc">目标、版本、硬件、输入与完成条件可见。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">证据回执</div><div class="pt-desc">命令、输出、日志、diff 与产物持续关联。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">可解释完成</div><div class="pt-desc">不仅测试通过，还能证明为何通过、适用哪里。</div></div></div></div></div><div class="shot lp-schematic"><div class="lp-flow"><div class="lp-flow-node"><span>01</span><strong>任务简报</strong><small>目标与边界</small></div><div class="lp-flow-node"><span>02</span><strong>环境锁定</strong><small>版本 / 硬件</small></div><div class="lp-flow-node"><span>03</span><strong>执行与采证</strong><small>日志 / diff / 产物</small></div><div class="lp-flow-node"><span>04</span><strong>验收回执</strong><small>通过 / 待修 / 升级</small></div></div></div></div></section>
+
+<section class="slide s-gray lp-compare-slide"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">真实环境的先进性不在“能运行”，而在状态可恢复、结果可复现</span></div><div class="subttl">方向二 · 机制对照</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="active">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="compare lp-compare"><article class="cmp focus"><div class="cmp-body"><div class="cmp-h"><span class="hk">HANDS-ON CLOUD</span>Google Cloud Training</div><div class="cmp-desc">官方把实操实验连接到真实云资源。<b>练习发生在可操作环境</b>，不是观看后再迁移。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/04-google-cloud-training.png" alt="Google Cloud Training 官方页面截图"><div class="cmp-cap"><span>实操 → 真实资源 → 徽章</span><span>cloud.google.com</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">ACCELERATED COMPUTING</span>NVIDIA DLI</div><div class="cmp-desc">专家内容、hands-on 环境与证书形成连续闭环，覆盖 AI、数据科学和加速计算。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/05-nvidia-dli.png" alt="NVIDIA DLI 官方页面截图"><div class="cmp-cap"><span>课程 → GPU 实验 → 证书</span><span>nvidia.com</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">IMMERSIVE SCENARIO</span>AWS Immersive Learning</div><div class="cmp-desc">Builder Labs 与场景挑战把学习者放进真实 AWS 环境。<b>情境与沙箱状态</b>成为教学媒介。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/06-aws-immersive-learning.png" alt="AWS Immersive Learning 官方页面截图"><div class="cmp-cap"><span>情境 → 沙箱 → 挑战</span><span>aws.amazon.com</span></div></div></article></div><div class="verdict"><span class="vk">方向 02</span><span class="vv">HiDevLab 下一步不应只扩容 Notebook，而应成为<b>版本化 NPU 数字孪生实验舱</b>。</span></div></div><div class="lp-foot"><span>官方页面截图 · 1440×900 · 2026-08-26</span><span>H · 机制证据，不代表效果</span></div></section>
+<section class="slide s-glow lp-design" data-chapter="1" style="--glow-h:198;--glow-h2:246;--glow-sat:90%;--glow-light:42%;--glow-spread:42;--glow-color-int:.68;--glow-white-int:.5"><div class="glow-white"></div><div class="glow"></div><div class="chrome"><div>前沿方向 02 · DESIGN DIRECTION</div><div>超越现有能力</div></div><div class="inner"><div><div class="kicker">DIRECTION 02</div><h1 class="h-title">版本化 NPU 数字孪生<br><span class="light">Versioned Lab Twin</span></h1><p class="body">为每个任务建立与版本、芯片、框架绑定的环境副本；失败现场可以保存、重放、分支并分享最小复现。</p><div class="points"><div class="point"><div class="dot"></div><div><div class="pt-title">环境指纹</div><div class="pt-desc">先判断本机、推荐镜像或不兼容。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">状态快照</div><div class="pt-desc">任何关键步骤都能保存和恢复现场。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">故障分支</div><div class="pt-desc">主动注入典型错误，练习诊断而非只跑通。</div></div></div></div></div><div class="shot lp-schematic"><div class="lp-flow"><div class="lp-flow-node"><span>01</span><strong>环境指纹</strong><small>扫描与匹配</small></div><div class="lp-flow-node"><span>02</span><strong>启动副本</strong><small>锁定版本矩阵</small></div><div class="lp-flow-node"><span>03</span><strong>快照 / 分支</strong><small>保留失败现场</small></div><div class="lp-flow-node"><span>04</span><strong>复现包</strong><small>一键交给 AI / 同行</small></div></div></div></div></section>
+
+<section class="slide s-gray lp-compare-slide"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">先进 AI 教学的分水岭，是维持思考而不是更快给答案</span></div><div class="subttl">方向三 · 机制对照</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="active">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="compare lp-compare"><article class="cmp focus"><div class="cmp-body"><div class="cmp-h"><span class="hk">SOCRATIC TUTOR</span>Khanmigo</div><div class="cmp-desc">AI tutor 以追问和协作推动学习者思考，目标不是立即给出最终答案。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/07-khanmigo.png" alt="Khanmigo 学习者页面截图"><div class="cmp-cap"><span>追问 → 提示 → 反思</span><span>khanmigo.ai</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">ROLEPLAY PRACTICE</span>Duolingo Max</div><div class="cmp-desc">Roleplay 把语言知识放进角色互动。AI 的价值是<b>制造可重复的任务情境</b>。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/08-duolingo-max.png" alt="Duolingo Max 官方介绍截图"><div class="cmp-cap"><span>角色任务 → 个性反馈</span><span>blog.duolingo.com</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">ADAPTIVE THINKING</span>Brilliant Koji</div><div class="cmp-desc">交互问题、视觉引导与逐步卡点反馈，让学习者在尝试中建立理解。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/09-brilliant-koji.png" alt="Brilliant Koji 官方页面截图"><div class="cmp-cap"><span>尝试 → 卡点 → 引导</span><span>brilliant.org</span></div></div></article></div><div class="verdict"><span class="vk">方向 03</span><span class="vv">将现有上下文助手升级为<b>苏格拉底式共学 Agent</b>：先预测、再执行、后解释，提示随掌握逐步撤除。</span></div></div><div class="lp-foot"><span>官方页面截图 · 1440×900 · 2026-08-26</span><span>H · 机制证据，不代表效果</span></div></section>
+<section class="slide s-glow lp-design" data-chapter="1" style="--glow-h:282;--glow-h2:328;--glow-sat:90%;--glow-light:42%;--glow-spread:42;--glow-color-int:.68;--glow-white-int:.5"><div class="glow-white"></div><div class="glow"></div><div class="chrome"><div>前沿方向 03 · DESIGN DIRECTION</div><div>超越现有能力</div></div><div class="inner"><div><div class="kicker">DIRECTION 03</div><h1 class="h-title">苏格拉底式共学 Agent<br><span class="light">Cognitive Apprenticeship</span></h1><p class="body">Agent 不以回答问题为终点，而持续观察代码、运行和错误证据，控制何时追问、何时给提示、何时撤掉脚手架。</p><div class="points"><div class="point"><div class="dot"></div><div><div class="pt-title">先预测</div><div class="pt-desc">运行前要求用户判断输出、风险或性能。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">最小提示</div><div class="pt-desc">失败后只给足够跨过当前障碍的线索。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">提示衰减</div><div class="pt-desc">连续成功后主动减少帮助，验证独立完成。</div></div></div></div></div><div class="shot lp-schematic"><div class="lp-flow"><div class="lp-flow-node"><span>01</span><strong>提出假设</strong><small>预测结果</small></div><div class="lp-flow-node"><span>02</span><strong>执行任务</strong><small>代码 / 环境</small></div><div class="lp-flow-node"><span>03</span><strong>观察证据</strong><small>输出 / 错误</small></div><div class="lp-flow-node"><span>04</span><strong>调节脚手架</strong><small>追问 / 提示 / 撤除</small></div></div></div></div></section>
+
+<section class="slide s-gray lp-compare-slide"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">技能图谱只有绑定最新任务证据，才配得上“个性化”</span></div><div class="subttl">方向四 · 机制对照</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="active">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="compare lp-compare"><article class="cmp focus"><div class="cmp-body"><div class="cmp-h"><span class="hk">VERIFIED SIGNAL</span>Workera</div><div class="cmp-desc">用可验证技能信号连接评估与发展。<b>技能画像来自证据</b>，而非课时或自报。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/10-workera.png" alt="Workera 官方页面截图"><div class="cmp-cap"><span>评估 → Verified Signal</span><span>workera.ai</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">ASSESS + RECOMMEND</span>Pluralsight Skill IQ</div><div class="cmp-desc">评估后立即连接学习推荐、实验与沙箱，把“知道缺口”推进到针对性实践。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/11-pluralsight-skill-iq.png" alt="Pluralsight Skill IQ 官方页面截图"><div class="cmp-cap"><span>Skill IQ → 缺口 → Lab</span><span>pluralsight.com</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">CERTIFIED ASSESSMENT</span>CodeSignal</div><div class="cmp-desc">研究型技能评估验证“实际能做什么”，并把技能结果用于发展和岗位决策。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/12-codesignal-skills-assessment.png" alt="CodeSignal Skills Assessments 官方页面截图"><div class="cmp-cap"><span>任务评估 → 能力证明</span><span>codesignal.com</span></div></div></article></div><div class="verdict"><span class="vk">方向 04</span><span class="vv">把“已学 5/17”升级为<b>证据型技能孪生</b>：记录能在何种版本和硬件条件下独立完成什么。</span></div></div><div class="lp-foot"><span>官方页面截图 · 1440×900 · 2026-08-26</span><span>H · 机制证据，不代表效果</span></div></section>
+<section class="slide s-glow lp-design" data-chapter="1" style="--glow-h:156;--glow-h2:208;--glow-sat:90%;--glow-light:42%;--glow-spread:42;--glow-color-int:.68;--glow-white-int:.5"><div class="glow-white"></div><div class="glow"></div><div class="chrome"><div>前沿方向 04 · DESIGN DIRECTION</div><div>超越现有能力</div></div><div class="inner"><div><div class="kicker">DIRECTION 04</div><h1 class="h-title">证据型技能孪生<br><span class="light">Evidence-based Skill Twin</span></h1><p class="body">技能节点不再由课程完成点亮，而由真实任务证据更新，并携带适用范围、置信度和失效时间。</p><div class="points"><div class="point"><div class="dot"></div><div><div class="pt-title">能力带范围</div><div class="pt-desc">同一技能区分 CANN、芯片、框架与任务规模。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">证据有时效</div><div class="pt-desc">版本变化后自动降置信度，而非永久点亮。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">推荐由缺口驱动</div><div class="pt-desc">目标技能缺口 × 当前证据强度决定下一步。</div></div></div></div></div><div class="shot lp-schematic"><div class="lp-flow"><div class="lp-flow-node"><span>01</span><strong>任务证据</strong><small>测试 / 产物</small></div><div class="lp-flow-node"><span>02</span><strong>技能映射</strong><small>多节点归因</small></div><div class="lp-flow-node"><span>03</span><strong>置信度更新</strong><small>范围 / 时效</small></div><div class="lp-flow-node"><span>04</span><strong>下一任务</strong><small>补最关键缺口</small></div></div></div></div></section>
+
+<section class="slide s-gray lp-compare-slide"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">学习平台一旦接入真实挑战，课程就不再是终点</span></div><div class="subttl">方向五 · 机制对照</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="active">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="compare lp-compare"><article class="cmp focus"><div class="cmp-body"><div class="cmp-h"><span class="hk">COURSE + CHALLENGE</span>Kaggle Learn</div><div class="cmp-desc">学习资源、Notebook、数据集与竞赛处于同一生态，课程可以直接进入公开挑战。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/13-kaggle-learn.png" alt="Kaggle Learn 官方页面截图"><div class="cmp-cap"><span>学习 → 资产 → 竞赛</span><span>kaggle.com</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">OPEN AI ECOSYSTEM</span>Hugging Face Learn</div><div class="cmp-desc">课程与 Models、Datasets、Spaces、Cookbook 和社区相连。<b>学完即可复用与发布</b>。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/14-hugging-face-learn.png" alt="Hugging Face Learn 官方页面截图"><div class="cmp-cap"><span>Course → Asset → Space</span><span>huggingface.co</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">LEARN IN WORKFLOW</span>GitHub Skills</div><div class="cmp-desc">练习发生在真实仓库中，Issue、PR、Actions 与 Codespaces 直接成为教学媒介。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/15-github-skills.png" alt="GitHub Skills 官方页面截图"><div class="cmp-cap"><span>Issue → Commit → Actions</span><span>github.com/skills</span></div></div></article></div><div class="verdict"><span class="vk">方向 05</span><span class="vv">建立<b>开放挑战到贡献网络</b>：学习者从真实 Issue、模型、算子和优化任务进入，成果经验证后回流社区。</span></div></div><div class="lp-foot"><span>官方页面截图 · 1440×900 · 2026-08-26</span><span>H · 机制证据，不代表效果</span></div></section>
+<section class="slide s-glow lp-design" data-chapter="1" style="--glow-h:28;--glow-h2:75;--glow-sat:90%;--glow-light:42%;--glow-spread:42;--glow-color-int:.68;--glow-white-int:.5"><div class="glow-white"></div><div class="glow"></div><div class="chrome"><div>前沿方向 05 · DESIGN DIRECTION</div><div>超越现有能力</div></div><div class="inner"><div><div class="kicker">DIRECTION 05</div><h1 class="h-title">开放挑战到贡献网络<br><span class="light">Challenge-to-Contribution</span></h1><p class="body">把精选 Issue、模型、算子、样例和优化挑战变成可学习的真实任务；完成后直接进入审核、复用和合并流程。</p><div class="points"><div class="point"><div class="dot"></div><div><div class="pt-title">挑战可领取</div><div class="pt-desc">版本、硬件、基线、Owner 与 SLA 明确。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">成果可验证</div><div class="pt-desc">diff、日志、benchmark 与 Notebook 随任务提交。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">贡献可回流</div><div class="pt-desc">通过审核的资产进入样例、FAQ、课程或仓库。</div></div></div></div></div><div class="shot lp-schematic"><div class="lp-flow"><div class="lp-flow-node"><span>01</span><strong>选择挑战</strong><small>真实生态任务</small></div><div class="lp-flow-node"><span>02</span><strong>学习补丁</strong><small>只补当前缺口</small></div><div class="lp-flow-node"><span>03</span><strong>提交证据</strong><small>diff / benchmark</small></div><div class="lp-flow-node"><span>04</span><strong>社区回流</strong><small>审核 / 合并 / 复用</small></div></div></div></div></section>
+
+<section class="slide s-gray lp-compare-slide"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">失败经过复现与同行验证后，会成为生态最有价值的学习资产</span></div><div class="subttl">方向六 · 机制对照</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="active">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="compare lp-compare"><article class="cmp focus"><div class="cmp-body"><div class="cmp-h"><span class="hk">MULTI-SOLUTION REVIEW</span>Codewars</div><div class="cmp-desc">浏览器内测试即时反馈；完成后比较他人方案并讨论，暴露“同题不同质量”。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/16-codewars.png" alt="Codewars 官方页面截图"><div class="cmp-cap"><span>Kata → 测试 → 多解</span><span>codewars.com</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">CURRICULUM HELP</span>freeCodeCamp Forum</div><div class="cmp-desc">课程问题进入按标签组织的社区现场，提问、答复与历史讨论形成可搜索的学习记忆。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/17-freecodecamp-forum.png" alt="freeCodeCamp Forum 页面截图"><div class="cmp-cap"><span>问题 → 同行答复 → 复用</span><span>forum.freecodecamp.org</span></div></div></article><article class="cmp"><div class="cmp-body"><div class="cmp-h"><span class="hk">ANSWERED DISCUSSIONS</span>GitHub Discussions</div><div class="cmp-desc">分类、标签、投票和 Answered 状态把社区讨论从一次对话变成可追踪的问题资产。</div></div><div class="cmp-img"><img src="learning-platform-innovation-research/evidence/competitors/18-github-discussions.png" alt="GitHub Community Discussions 页面截图"><div class="cmp-cap"><span>讨论 → Answered → 归档</span><span>github.com</span></div></div></article></div><div class="verdict"><span class="vk">方向 06</span><span class="vv">将个人报错升级为<b>失败记忆与同行评审</b>：相似案例匹配、复现验证和专家审核形成可复用故障图谱。</span></div></div><div class="lp-foot"><span>官方页面截图 · 1440×900 · 2026-08-26</span><span>H · 机制证据，不代表效果</span></div></section>
+<section class="slide s-glow lp-design" data-chapter="1" style="--glow-h:345;--glow-h2:20;--glow-sat:90%;--glow-light:42%;--glow-spread:42;--glow-color-int:.68;--glow-white-int:.5"><div class="glow-white"></div><div class="glow"></div><div class="chrome"><div>前沿方向 06 · DESIGN DIRECTION</div><div>超越现有能力</div></div><div class="inner"><div><div class="kicker">DIRECTION 06</div><h1 class="h-title">失败记忆与同行评审<br><span class="light">Failure Memory & Peer Review</span></h1><p class="body">错误不再停留在一次性对话。平台自动生成脱敏诊断包，同行修复必须在同环境复跑通过，才沉淀为可复用失败模式。</p><div class="points"><div class="point"><div class="dot"></div><div><div class="pt-title">失败可携带</div><div class="pt-desc">环境、版本、命令、日志与已尝试动作一起提交。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">相似案例可匹配</div><div class="pt-desc">先复用已验证路径，再升级 AI、同行或专家。</div></div></div><div class="point"><div class="dot"></div><div><div class="pt-title">修复可验证</div><div class="pt-desc">经验只有复跑成功并标明适用范围后才进入知识库。</div></div></div></div></div><div class="shot lp-schematic"><div class="lp-flow"><div class="lp-flow-node"><span>01</span><strong>生成诊断包</strong><small>脱敏与结构化</small></div><div class="lp-flow-node"><span>02</span><strong>匹配案例</strong><small>版本 / 错误模式</small></div><div class="lp-flow-node"><span>03</span><strong>同行修复</strong><small>多方案比较</small></div><div class="lp-flow-node"><span>04</span><strong>复跑验证</strong><small>升级为社区资产</small></div></div></div></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">18 个案例共同指向六种机制，而不是六套新功能</span></div><div class="subttl">跨案例收敛</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="active">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="lp-matrix"><div class="lp-matrix-head"><span>案例簇</span><span>任务合约</span><span>真实环境</span><span>形成反馈</span><span>技能证据</span><span>开放贡献</span><span>同行验证</span></div>
+<div class="lp-matrix-row"><strong>Applied Skills / CodeGrade / Skillable</strong><span class="v3">强</span><span class="v2">中</span><span class="v2">中</span><span class="v3">强</span><span class="v1">弱</span><span class="v1">弱</span></div><div class="lp-matrix-row"><strong>Google / NVIDIA / AWS</strong><span class="v2">中</span><span class="v3">强</span><span class="v2">中</span><span class="v2">中</span><span class="v1">弱</span><span class="v1">弱</span></div><div class="lp-matrix-row"><strong>Khanmigo / Duolingo / Brilliant</strong><span class="v1">弱</span><span class="v1">弱</span><span class="v3">强</span><span class="v2">中</span><span class="v1">弱</span><span class="v1">弱</span></div><div class="lp-matrix-row"><strong>Workera / Pluralsight / CodeSignal</strong><span class="v2">中</span><span class="v1">弱</span><span class="v2">中</span><span class="v3">强</span><span class="v1">弱</span><span class="v1">弱</span></div><div class="lp-matrix-row"><strong>Kaggle / Hugging Face / GitHub</strong><span class="v2">中</span><span class="v2">中</span><span class="v2">中</span><span class="v2">中</span><span class="v3">强</span><span class="v2">中</span></div><div class="lp-matrix-row"><strong>Codewars / freeCodeCamp / GitHub Discussions</strong><span class="v1">弱</span><span class="v2">中</span><span class="v3">强</span><span class="v2">中</span><span class="v2">中</span><span class="v3">强</span></div>
+</div><div class="lp-threshold"><b>共同结论</b><span>下一代学习平台的差异化，不是内容更多或 AI 更像聊天，而是任务、环境、反馈、技能、贡献和同行六种机制被一个会话贯通。</span></div></div><div class="lp-foot"><span>定性编码 · 非市场份额或用户满意度评分</span><span>H → 研究归纳</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">平台的一等对象需要从“路径”迁移到“可验证任务会话”</span></div><div class="subttl">跨案例收敛</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="active">03 方向</span><span class="">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="lp-object-shift">
+  <div class="from"><span>当前主对象</span><h2>课程 / 路径 / 节点</h2><p>内容组织、推荐、播放、练习、进度</p></div>
+  <div class="shift-arrow"><b>对象迁移</b><i>→</i><small>保留内容，但不再以内容为终点</small></div>
+  <div class="to"><span>下一代主对象</span><h2>Verified Task Session</h2><p>目标 · 环境 · 证据 · 失败 · 技能 · 贡献</p></div>
+</div><div class="lp-session-strip"><span><b>01</b>任务简报</span><span><b>02</b>环境指纹</span><span><b>03</b>能力缺口</span><span><b>04</b>执行状态</span><span><b>05</b>证据回执</span><span><b>06</b>失败升级</span><span><b>07</b>技能变化</span><span><b>08</b>贡献回流</span></div></div><div class="lp-foot"><span>产品对象定义</span><span>L · 待原型验证</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">六个方向不是六个 Tab，而是任务会话的六层能力</span></div><div class="subttl">组合策略</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="active">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="lp-layers">
+  <article class="l1"><span>用户前台</span><strong>任务简报 · 下一动作 · 证据回执</strong><p>只呈现用户此刻需要理解与决定的内容。</p></article>
+  <article class="l2"><span>学习编排</span><strong>共学 Agent · 技能孪生</strong><p>依据目标、证据和提示依赖动态调整路径。</p></article>
+  <article class="l3"><span>执行与验证</span><strong>版本化 Lab Twin · Task Contract</strong><p>环境、命令、产物、测试和失败状态统一记录。</p></article>
+  <article class="l4"><span>社区协作</span><strong>Challenge Network · Failure Memory</strong><p>真实挑战、同行评审、专家升级和资产回流。</p></article>
+</div></div><div class="lp-foot"><span>六方向架构关系</span><span>H / M / L 分层</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">先做可验证首跑，再扩展技能孪生与开放协作</span></div><div class="subttl">组合策略</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="active">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="lp-opportunity">
+  <div class="lp-opp-copy"><h2>高价值、低依赖的快赢集中在方向 1–3</h2><p>任务合约、环境指纹与形成性提示都能直接复用当前路径、预检和 HiDevLab；开放贡献与失败记忆价值高，但需要 Owner、审核与 SLA。</p><div class="lp-key"><span class="q1">快赢</span><span class="q2">重点投入</span><span class="q3">后续扩展</span></div></div>
+  <div class="lp-opp-grid">
+    <div class="cell win"><b>快赢</b><span style="left:18%;top:28%">01 任务合约</span><span style="left:44%;top:52%">03 共学 Agent</span></div>
+    <div class="cell invest"><b>重点投入</b><span style="left:20%;top:25%">02 Lab Twin</span><span style="left:51%;top:54%">04 技能孪生</span></div>
+    <div class="cell later"><b>后续扩展</b><span style="left:24%;top:44%">体验微调</span></div>
+    <div class="cell ecosystem"><b>生态建设</b><span style="left:18%;top:25%">05 挑战网络</span><span style="left:46%;top:58%">06 失败记忆</span></div>
+  </div>
+</div></div><div class="lp-foot"><span>优先级为研究建议，不是研发排期</span><span>L · 价值 × 依赖判断</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">四种产品组合给下一轮概念设计明确选择</span></div><div class="subttl">组合策略</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="active">04 组合</span><span class="">05 验证</span></div></div><div class="body-area"><div class="lp-combo-grid">
+  <article class="recommended"><span>A · 推荐起点</span><h2>Verified First Run</h2><p>方向 1 + 2 + 3</p><strong>聚焦首次跑通、版本匹配、失败恢复与证据回执。</strong><small>最近当前 Demo · 90 天可验证</small></article>
+  <article><span>B · 长期成长</span><h2>Skill Twin OS</h2><p>方向 1 + 3 + 4</p><strong>把任务证据转成持续更新的技能状态与个性化下一步。</strong><small>适合学习中心 / 认证升级</small></article>
+  <article><span>C · 社区差异化</span><h2>Open Challenge Network</h2><p>方向 1 + 5 + 6</p><strong>真实挑战、同行评审和验证资产回流，建立贡献飞轮。</strong><small>差异化最大 · 组织依赖更高</small></article>
+  <article><span>D · 目标形态</span><h2>Trusted Task Network</h2><p>六方向统一</p><strong>学习、实践、验证、技能与贡献成为同一任务网络。</strong><small>价值最高 · 分阶段建设</small></article>
+</div></div><div class="lp-foot"><span>视觉 / 产品方向选项 · 未直接改现有 Demo</span><span>L · 等待选择</span></div></section>
+
+<section class="slide s-glow lp-design" data-chapter="1" style="--glow-h:234;--glow-h2:291;--glow-sat:94%;--glow-light:42%;--glow-spread:45;--glow-color-int:.72;--glow-white-int:.54"><div class="glow-white"></div><div class="glow"></div><div class="chrome"><div>推荐组合 A · VERIFIED FIRST RUN</div><div>90 天旗舰实验</div></div><div class="inner stack"><div class="stack-head"><div class="sh-l"><h1 class="h-title">第一次跑通<span class="light">，必须带回可验证证据</span></h1></div><p class="body">把现有<b>路径、预检、HiDevLab 与 AI 助手</b>收敛为一次可恢复的首跑任务：用户看到的不是多个工具入口，而是一条持续判断“下一步”的证据流。</p></div><div class="shot lp-reco-shot"><img src="learning-platform-innovation-research/evidence/current/07-hidevlab-split.png"><div class="lp-shot-note n1"><b>任务合约</b><span>先声明环境与验收</span></div><div class="lp-shot-note n2"><b>状态回执</b><span>输出 / 日志 / 产物持续关联</span></div><div class="lp-shot-note n3"><b>形成性提示</b><span>先追问，再给最小线索</span></div></div></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">90 天只验证三件事：会话能否连续、证据能否可信、提示能否衰减</span></div><div class="subttl">验证计划</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="active">05 验证</span></div></div><div class="body-area"><div class="rm"><div class="rm-pad">
+  <div class="rm-date" style="left:3%">W1</div><div class="rm-date" style="left:25%">W4</div><div class="rm-date" style="left:50%">W8</div><div class="rm-date" style="left:75%">W12</div><div class="rm-date" style="left:97%">W13</div>
+  <div class="rm-now-pill" style="left:4%">START</div><div class="rm-now-line" style="left:4%"></div><div class="rm-now-tri" style="left:4%"></div>
+  <div class="rm-bar accent" style="left:4%;width:28%;top:18%"><span class="lbl">任务合约 + Evidence Receipt</span><span class="rm-badge">Prototype</span></div>
+  <div class="rm-bar white" style="left:20%;width:38%;top:36%"><span class="lbl">环境指纹 + HiDevLab 状态快照</span><span class="rm-badge">Integrate</span></div>
+  <div class="rm-bar dark" style="left:42%;width:38%;top:54%"><span class="lbl">共学 Agent + 提示强度策略</span><span class="rm-badge">Pilot</span></div>
+  <div class="rm-bar white" style="left:66%;width:29%;top:72%"><span class="lbl">12–20 人同任务对照</span><span class="rm-badge">Validate</span></div>
+  <div class="rm-diamond" style="left:94%;top:76%"></div><div class="rm-ms" style="left:83%;top:88%">Gate：是否扩展到 Skill Twin / Challenge Network</div>
+</div></div></div><div class="lp-foot"><span>建议试验路线 · 非正式排期</span><span>L · 需研发与 NPU 环境评估</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">指标必须从“看了多少”转向“是否独立、可信地完成”</span></div><div class="subttl">验证计划</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="active">05 验证</span></div></div><div class="body-area"><div class="lp-metric-grid">
+<article><span>01</span><strong>Verified completion rate</strong><p>满足明确验收条件的任务比例</p></article><article><span>02</span><strong>Time to first verified run</strong><p>进入平台到首次有效证据的耗时</p></article><article><span>03</span><strong>Recovery success rate</strong><p>不离开任务会话即可恢复成功的比例</p></article><article><span>04</span><strong>Hint dependency decay</strong><p>随掌握提升，高强度提示依赖是否下降</p></article><article><span>05</span><strong>Evidence-backed skill coverage</strong><p>技能图谱有有效证据支持的节点比例</p></article><article><span>06</span><strong>Contribution acceptance rate</strong><p>成果被复用、验证或合并的比例</p></article><article><span>07</span><strong>Failure memory reuse rate</strong><p>已验证失败案例被成功复用的比例</p></article><article><span>08</span><strong>Answer–evidence consistency</strong><p>AI 建议与实际验证结果的一致程度</p></article>
+</div></div><div class="lp-foot"><span>指标定义 · 当前均为待采集</span><span>H / M / L 分层</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">公开来源 01–09：验证、实验与形成性反馈</span></div><div class="subttl">来源与边界</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="active">05 验证</span></div></div><div class="body-area"><div class="lp-source-grid">
+<article class="lp-source"><span>01</span><div><strong>Microsoft Applied Skills</strong><p>真实 AI / Cloud 场景能力与短凭证</p><a href="https://learn.microsoft.com/en-us/credentials/applied-skills/">learn.microsoft.com/en-us/credentials/applied-skills/</a></div></article><article class="lp-source"><span>02</span><div><strong>CodeGrade</strong><p>IDE、自动评分与受控 AI</p><a href="https://www.codegrade.com/">codegrade.com/</a></div></article><article class="lp-source"><span>03</span><div><strong>Skillable</strong><p>虚拟实验与技能验证</p><a href="https://www.skillable.com/">www.skillable.com/</a></div></article><article class="lp-source"><span>04</span><div><strong>Google Cloud Training</strong><p>Hands-on cloud training</p><a href="https://cloud.google.com/learn/training">cloud.google.com/learn/training</a></div></article><article class="lp-source"><span>05</span><div><strong>NVIDIA DLI</strong><p>加速计算 hands-on training 与证书</p><a href="https://www.nvidia.com/en-us/training/">www.nvidia.com/en-us/training/</a></div></article><article class="lp-source"><span>06</span><div><strong>AWS Immersive Learning</strong><p>沉浸式学习与 Builder Labs</p><a href="https://aws.amazon.com/training/digital/immersive-learning/">aws.amazon.com/training/digital/immersive-learning/</a></div></article><article class="lp-source"><span>07</span><div><strong>Khanmigo</strong><p>不直接给答案的 AI tutor</p><a href="https://www.khanmigo.ai/learners">www.khanmigo.ai/learners</a></div></article><article class="lp-source"><span>08</span><div><strong>Duolingo Max</strong><p>AI Roleplay / 情境互动</p><a href="https://blog.duolingo.com/duolingo-max/">blog.duolingo.com/duolingo-max/</a></div></article><article class="lp-source"><span>09</span><div><strong>Brilliant Koji</strong><p>交互问题、视觉引导与卡点反馈</p><a href="https://brilliant.org/">brilliant.org/</a></div></article>
+</div></div><div class="lp-foot"><span>访问日期：2026-08-26</span><span>H · 官方公开页面</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">公开来源 10–18：技能、贡献与同行验证</span></div><div class="subttl">来源与边界</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="active">05 验证</span></div></div><div class="body-area"><div class="lp-source-grid">
+<article class="lp-source"><span>10</span><div><strong>Workera</strong><p>Verified skills signal</p><a href="https://workera.ai/">workera.ai/</a></div></article><article class="lp-source"><span>11</span><div><strong>Pluralsight Skills Assessment</strong><p>Skill IQ、推荐、Labs / Sandboxes</p><a href="https://www.pluralsight.com/product/skills-assessment">www.pluralsight.com/product/skills-assessment</a></div></article><article class="lp-source"><span>12</span><div><strong>CodeSignal Skills Assessments</strong><p>研究型技能评估与能力验证</p><a href="https://codesignal.com/skills-assessments/">codesignal.com/skills-assessments/</a></div></article><article class="lp-source"><span>13</span><div><strong>Kaggle Learn</strong><p>课程、Notebook 与竞赛生态</p><a href="https://www.kaggle.com/learn">www.kaggle.com/learn</a></div></article><article class="lp-source"><span>14</span><div><strong>Hugging Face Learn</strong><p>课程、开放资产、Spaces 与社区</p><a href="https://huggingface.co/learn">huggingface.co/learn</a></div></article><article class="lp-source"><span>15</span><div><strong>GitHub Skills</strong><p>在 GitHub 工作流中学习 GitHub</p><a href="https://github.com/skills">github.com/skills</a></div></article><article class="lp-source"><span>16</span><div><strong>Codewars</strong><p>测试反馈、多解比较与讨论</p><a href="https://www.codewars.com/">codewars.com/</a></div></article><article class="lp-source"><span>17</span><div><strong>freeCodeCamp Forum</strong><p>课程问答、标签与历史讨论</p><a href="https://forum.freecodecamp.org/">forum.freecodecamp.org/</a></div></article><article class="lp-source"><span>18</span><div><strong>GitHub Discussions</strong><p>分类、标签与 Answered 状态</p><a href="https://github.com/orgs/community/discussions">github.com/orgs/community/discussions</a></div></article>
+</div></div><div class="lp-foot"><span>访问日期：2026-08-26</span><span>H · 官方公开页面</span></div></section>
+
+<section class="slide s-gray"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">这些方向是设计假设，不是已经实现或证明有效的结论</span></div><div class="subttl">来源与边界</div></div><div class="section-tabs" aria-label="当前章节"><span class="">01 现状</span><span class="">02 对照</span><span class="">03 方向</span><span class="">04 组合</span><span class="active">05 验证</span></div></div><div class="body-area"><div class="lp-limit-grid">
+  <article><span>公开证据 H</span><h2>能确认机制，不证明效果</h2><p>产品页与官方文档支持功能和定位判断，不代表完整体验、商业效果或用户满意度。</p></article>
+  <article><span>本地观察 M</span><h2>能确认页面状态，不证明真机结果</h2><p>本轮走查了现有 Demo 的首页、路径、预检、分屏和助手；本机无匹配 NPU / CANN 真机。</p></article>
+  <article><span>设计假设 L</span><h2>必须通过同任务实验验证</h2><p>任务合约、证据回执、提示衰减、技能置信度与贡献回流均需真实任务和用户回放。</p></article>
+</div><div class="lp-threshold"><b>下一步决策</b><span>先从 A · Verified First Run、B · Skill Twin OS、C · Open Challenge Network、D · Trusted Task Network 中选择一个概念组合，再进入三版视觉探索与原型。</span></div></div><div class="lp-foot"><span>证据边界</span><span>H / M / L 分层</span></div></section>
+
+<section class="slide s-glow chapter-cover" data-chapter="1"><div class="glow-white"></div><div class="glow"></div><div class="chrome"><div>DECISION</div><div>Ascend Learning Platform</div></div><div class="inner"><div class="cover-block"><div class="ch-no">06</div><h1 class="ch-cover-title">下一步不再增加功能<br>而是选择平台要成为哪一种任务网络</h1><p class="ch-cover-sub">推荐先验证 A · Verified First Run：它最能复用当前路径、预检、HiDevLab 与 AI 助手，同时补上最关键的可信完成闭环。</p></div></div></section>
+
+</div>
+
+<!-- 调色面板（JS 会把它挂到当前黑底章节封面页内）-->
+<div id="panel" style="display:none">
+  <h4>底部光晕调色</h4>
+  <div class="preset-row">
+    <div class="preset" data-p="255,85,58" style="background:linear-gradient(90deg,hsl(255,85%,58%),hsl(300,85%,58%))"></div>
+    <div class="preset" data-p="160,80,56" style="background:linear-gradient(90deg,hsl(160,80%,56%),hsl(205,80%,56%))"></div>
+    <div class="preset" data-p="30,88,58" style="background:linear-gradient(90deg,hsl(30,88%,58%),hsl(75,88%,58%))"></div>
+    <div class="preset" data-p="200,82,60" style="background:linear-gradient(90deg,hsl(200,82%,60%),hsl(245,82%,60%))"></div>
+  </div>
+  <div class="ctrl"><label>色相 HUE <span class="val" id="v-h">234</span></label><input type="range" id="s-h" min="0" max="360" value="234"></div>
+  <div class="ctrl"><label>色相跨度 GAP <span class="val" id="v-gap">57°</span></label><input type="range" id="s-gap" min="0" max="180" value="57"></div>
+  <div class="ctrl"><label>饱和度 SAT <span class="val" id="v-sat">95%</span></label><input type="range" id="s-sat" min="0" max="100" value="95"></div>
+  <div class="ctrl"><label>亮度 LIGHT <span class="val" id="v-light">40%</span></label><input type="range" id="s-light" min="20" max="80" value="40"></div>
+  <div class="ctrl"><label>扩散 SPREAD <span class="val" id="v-spread">35vh</span></label><input type="range" id="s-spread" min="20" max="90" value="35"></div>
+  <div class="ctrl"><label>彩色亮度 COLOR <span class="val" id="v-cint">0.68</span></label><input type="range" id="s-cint" min="0" max="100" value="68"></div>
+  <div class="ctrl"><label>白色亮度 WHITE <span class="val" id="v-wint">0.58</span></label><input type="range" id="s-wint" min="0" max="100" value="58"></div>
+</div>
+<button id="toggle" style="display:none" title="调色面板"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="10" cy="7" r="2.4"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="15" cy="17" r="2.4"/></svg></button>
+
+<nav class="nav-dots" id="navDots"></nav>
+<!-- 底部居中控制栏（默认隐藏，鼠标移到底部才出现）-->
+<div id="controls">
+  <button id="prevBtn" title="上一页 ↑/←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg></button>
+  <span class="ctrl-counter" id="counter">01 / 01</span>
+  <button id="nextBtn" title="下一页 ↓/→"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+  <span class="ctrl-sep"></span>
+  <button id="ovBtn" title="概览 O"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+  <button id="fsBtn" title="全屏 F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+</div>
+
+<script>
+const root=document.documentElement;
+const deck=document.getElementById('deck');
+const slides=[...document.querySelectorAll('.slide')];
+let idx=0;
+
+/* ===== 翻页过渡（可切换）：slide(默认) | fade | cut | slide-h | magic =====
+   改默认改这行兜底值；或地址加 ?t=fade / ?t=cut / ?t=slide-h / ?t=magic 临时切换、不用改代码 */
+const TRANSITION = (new URLSearchParams(location.search).get('t')) || 'slide';
+const CTRL = TRANSITION!=='slide';
+if(CTRL){ document.body.classList.add('ctrl'); document.body.dataset.transition=TRANSITION; }
+const TDUR=600;
+function setActive(i){ slides.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.remove('leaving');s.style.transform='';s.style.opacity='';}); }
+function showSlide(i,dir){
+  const cur=slides.find(s=>s.classList.contains('active'));
+  const nxt=slides[i]; if(!nxt||nxt===cur)return; dir=dir||'fwd';
+  if(TRANSITION==='magic'&&cur){ magicMove(cur,nxt); return; }
+  if(TRANSITION==='slide-h'){
+    nxt.style.transition='none'; nxt.style.visibility='visible'; nxt.style.opacity='1';
+    nxt.style.transform='translateX('+(dir==='fwd'?'100%':'-100%')+')';
+    void nxt.offsetWidth; nxt.style.transition=''; nxt.classList.add('active'); nxt.style.transform='';
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving');
+      cur.style.transform='translateX('+(dir==='fwd'?'-100%':'100%')+')';
+      const c=cur; setTimeout(()=>{c.classList.remove('leaving');c.style.transform='';},TDUR); }
+  } else {
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving'); const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR); }
+    nxt.classList.add('active');
+  }
+}
+/* Keynote 式神奇移动：相邻两页中 data-key 相同的元素 FLIP 位移/缩放（用 Web Animations API）*/
+function magicMove(cur,nxt){
+  const out={}; cur.querySelectorAll('[data-key]').forEach(el=>{out[el.dataset.key]=el.getBoundingClientRect();});
+  cur.classList.remove('active'); cur.classList.add('leaving'); nxt.classList.add('active');
+  nxt.querySelectorAll('[data-key]').forEach(el=>{
+    const o=out[el.dataset.key]; if(!o)return; const n=el.getBoundingClientRect(); if(!n.width||!n.height)return;
+    const dx=o.left-n.left, dy=o.top-n.top, sx=o.width/n.width, sy=o.height/n.height;
+    if(Math.abs(dx)<1&&Math.abs(dy)<1&&Math.abs(sx-1)<.02&&Math.abs(sy-1)<.02)return;
+    el.style.zIndex='3';
+    el.animate([{transformOrigin:'top left',transform:'translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')'},
+                {transformOrigin:'top left',transform:'none'}],
+               {duration:620,easing:'cubic-bezier(.4,0,.2,1)'}).onfinish=()=>{el.style.zIndex='';};
+  });
+  const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR);
+}
+
+/* ===== 黑底光晕：每章一组色值，可调 + localStorage 持久记忆 ===== */
+const chapters={'1':{h:234,gap:57,sat:95,light:40,spread:35,cint:68,wint:58}};
+const GLOW_KEY='ascend-learning-innovation-glow';
+try{const sv=localStorage.getItem(GLOW_KEY);if(sv){const o=JSON.parse(sv);Object.keys(o).forEach(k=>{if(chapters[k])Object.assign(chapters[k],o[k]);});}}catch(e){}
+function saveChapters(){try{localStorage.setItem(GLOW_KEY,JSON.stringify(chapters));}catch(e){}}
+function curChap(){return chapters[slides[idx].dataset.chapter];}
+const S={h:'s-h',gap:'s-gap',sat:'s-sat',light:'s-light',spread:'s-spread',cint:'s-cint',wint:'s-wint'};
+const V={h:'v-h',gap:'v-gap',sat:'v-sat',light:'v-light',spread:'v-spread',cint:'v-cint',wint:'v-wint'};
+function paintSlide(s){const c=chapters[s.dataset.chapter];if(!c)return;
+  s.style.setProperty('--glow-h',c.h);s.style.setProperty('--glow-h2',(c.h+c.gap)%360);
+  s.style.setProperty('--glow-sat',c.sat+'%');s.style.setProperty('--glow-light',c.light+'%');
+  s.style.setProperty('--glow-spread',c.spread);s.style.setProperty('--glow-color-int',(c.cint/100).toFixed(2));
+  s.style.setProperty('--glow-white-int',(c.wint/100).toFixed(2));}
+function apply(){slides.forEach(paintSlide);saveChapters();const c=curChap();if(!c)return;
+  root.style.setProperty('--glow-h',c.h);root.style.setProperty('--glow-h2',(c.h+c.gap)%360);}
+function syncPanel(){const c=curChap();if(!c)return;
+  for(const k in S){const el=document.getElementById(S[k]),v=document.getElementById(V[k]);if(!el)continue;el.value=c[k];
+    v.textContent=(k==='sat'||k==='light')?c[k]+'%':k==='spread'?c[k]+'vh':k==='gap'?c[k]+'°':(k==='cint'||k==='wint')?(c[k]/100).toFixed(2):c[k];}}
+for(const k in S){const el=document.getElementById(S[k]);if(el)el.addEventListener('input',()=>{const c=curChap();if(!c)return;c[k]=+el.value;
+  const v=document.getElementById(V[k]);v.textContent=(k==='sat'||k==='light')?el.value+'%':k==='spread'?el.value+'vh':k==='gap'?el.value+'°':(k==='cint'||k==='wint')?(el.value/100).toFixed(2):el.value;apply();});}
+document.querySelectorAll('.preset').forEach(p=>p.onclick=()=>{const c=curChap();if(!c)return;const[h,sat,light]=p.dataset.p.split(',').map(Number);Object.assign(c,{h,sat,light});apply();syncPanel();});
+function setPanelOpen(open){const p=document.getElementById('panel');if(p)p.style.display=open?'block':'none';}
+document.addEventListener('click',e=>{const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');if(!panel||!toggle)return;
+  if(toggle.contains(e.target)){setPanelOpen(panel.style.display!=='block');syncPanel();return;}
+  if(panel.contains(e.target))return; setPanelOpen(false);});
+
+/* ===== 纵向 scroll-snap 翻页 + 右侧点 + 控制栏 + 总览 + 全屏 ===== */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+/* 滚动条默认隐藏，滚动时淡入、停 700ms 后淡出（body 是滚动容器，事件挂 body 不是 window；wheel 兜底）*/
+let scrollbarTimer;
+function flashScrollbar(){document.body.classList.add('scrolling');clearTimeout(scrollbarTimer);scrollbarTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700);}
+document.body.addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('wheel',flashScrollbar,{passive:true});
+const navDots=document.getElementById('navDots'), controls=document.getElementById('controls'), counter=document.getElementById('counter');
+const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn'), ovBtn=document.getElementById('ovBtn'), fsBtn=document.getElementById('fsBtn');
+const pad=n=>String(n).padStart(2,'0');
+const dots=slides.map((s,i)=>{const b=document.createElement('button');b.className='nav-dot';b.title=pad(i+1)+' / '+pad(slides.length);b.onclick=()=>go(i);navDots.appendChild(b);return b;});
+let runtimeReady=false;
+
+function updateCurrent(i){
+  idx=i; const s=slides[idx];
+  dots.forEach((d,k)=>d.classList.toggle('active',k===idx));
+  counter.textContent=pad(idx+1)+' / '+pad(slides.length);
+  prevBtn.disabled=idx<=0; nextBtn.disabled=idx>=slides.length-1;
+  document.body.classList.toggle('on-dark', s.classList.contains('s-cover')||s.classList.contains('s-glow'));
+  const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');
+  if(s.dataset.chapter && s.classList.contains('chapter-cover')){ if(panel)s.appendChild(panel); if(toggle){s.appendChild(toggle);toggle.style.display='flex';} setPanelOpen(false); apply(); syncPanel(); }
+  else if(toggle){ toggle.style.display='none'; setPanelOpen(false); }
+  if(!document.body.classList.contains('overview') && location.hash!=='#'+(idx+1)) history.replaceState(null,'','#'+(idx+1));
+}
+/* slide 模式：谁滚进视口 ≥55% 谁就是当前页。受控模式无滚动，不用 IO */
+if(!CTRL){
+  const io=new IntersectionObserver(es=>{if(!runtimeReady||document.body.classList.contains('overview'))return;es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>=0.55){const i=slides.indexOf(e.target);if(i>=0&&i!==idx)updateCurrent(i);}});},{threshold:[0.55]});
+  slides.forEach(s=>io.observe(s));
+}
+
+function go(n){ if(document.body.classList.contains('overview'))return; const i=Math.max(0,Math.min(slides.length-1,n));
+  if(CTRL){ const dir=i>idx?'fwd':'back'; showSlide(i,dir); updateCurrent(i); }
+  else slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+}
+function next(){go(idx+1);} function prev(){go(idx-1);}
+prevBtn.onclick=prev; nextBtn.onclick=next;
+/* 受控模式：滚轮 / 触控板翻页（无原生滚动，需拦截 + 节流）*/
+if(CTRL){
+  let wlock=false;
+  addEventListener('wheel',e=>{ if(document.body.classList.contains('overview'))return; e.preventDefault();
+    if(wlock||Math.abs(e.deltaY)<6)return; wlock=true; setTimeout(()=>wlock=false,620);
+    if(e.deltaY>0)next(); else prev();
+  },{passive:false});
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  else if(e.key==='o'||e.key==='O'){toggleOverview();}
+  else if(e.key==='f'||e.key==='F'){toggleFullscreen();}
+  else if(e.key==='Escape'){ if(document.body.classList.contains('overview')) exitOverview(); }
+});
+
+/* 全屏（进入后图标变退出全屏）*/
+const ICON_MAX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+const ICON_MIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+function syncFsIcon(){const fs=!!document.fullscreenElement;fsBtn.innerHTML=fs?ICON_MIN:ICON_MAX;fsBtn.title=fs?'退出全屏 F':'全屏 F';}
+function toggleFullscreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});}else{document.exitFullscreen();} }
+fsBtn.onclick=toggleFullscreen;
+function reanchor(){ if(CTRL||document.body.classList.contains('overview'))return; slides[idx].scrollIntoView({block:'start',behavior:'auto'}); }
+document.addEventListener('fullscreenchange',()=>{syncFsIcon();setTimeout(reanchor,90);});
+syncFsIcon();
+
+/* 总览 Overview：每页包进 .slide-inner 缩放成缩略图，排网格（按当前视窗比例）*/
+function applyOverviewScale(){if(!document.body.classList.contains('overview'))return;const cellW=slides[0].getBoundingClientRect().width,scale=cellW/window.innerWidth;slides.forEach(s=>{s.style.height=(window.innerHeight*scale)+'px';const inner=s.querySelector(':scope>.slide-inner');if(inner)inner.style.transform='scale('+scale+')';});}
+let overviewPage=0;
+function enterOverview(){overviewPage=idx;slides.forEach(s=>{if(!s.querySelector(':scope>.slide-inner')){const w=document.createElement('div');w.className='slide-inner';while(s.firstChild)w.appendChild(s.firstChild);s.appendChild(w);}});document.body.classList.add('overview');requestAnimationFrame(applyOverviewScale);}
+function exitOverview(){
+  const target=overviewPage;
+  slides.forEach(s=>{const w=s.querySelector(':scope>.slide-inner');if(w){while(w.firstChild)s.insertBefore(w.firstChild,w);w.remove();}s.style.height='';});
+  document.body.classList.remove('overview');balanceHeads();
+  if(CTRL){setActive(target);}
+  else{
+    runtimeReady=false;
+    requestAnimationFrame(()=>{
+      const oldBehavior=document.body.style.scrollBehavior;
+      const oldRootBehavior=document.documentElement.style.scrollBehavior;
+      document.body.style.scrollBehavior='auto';
+      document.documentElement.style.scrollBehavior='auto';
+      slides[target].scrollIntoView({block:'start',behavior:'auto'});
+      updateCurrent(target);
+      requestAnimationFrame(()=>{
+        document.body.style.scrollBehavior=oldBehavior;
+        document.documentElement.style.scrollBehavior=oldRootBehavior;
+        setTimeout(()=>{runtimeReady=true;},180);
+      });
+    });
+  }
+}
+function toggleOverview(){document.body.classList.contains('overview')?exitOverview():enterOverview();}
+ovBtn.onclick=toggleOverview;
+document.body.addEventListener('click',e=>{if(!document.body.classList.contains('overview'))return;const sl=e.target.closest('.slide');if(sl){const i=slides.indexOf(sl);if(i>=0){idx=i;exitOverview();}}});
+addEventListener('resize',()=>{if(document.body.classList.contains('overview'))applyOverviewScale();else reanchor();balanceHeads();});
+
+/* ===== 居中型页竖向平衡：直接量"页眉下沿→内容"和"内容→页脚上沿"两个可见空白，让它们相等 =====
+   ⚠️ 别拿页眉高度当 padding-bottom（试过，会系统性补过头）：页眉的留白已经是它自己的 margin-bottom，
+   不需要重复补；真正缺的只是页脚那一截（.foot 绝对定位、不占流式空间，但视觉上离底边有自己的 inset）。
+   两个空白差是 P 的线性函数、斜率恰为 -1（justify-content:center 对称分担），所以不用试错：
+   newPad = 当前 padding-bottom + (topGap − botGap)，一步算出让两个空白相等的正确值。
+   只作用于标了 .vc 的居中型页；填满型页不动 */
+function balanceHeads(){
+  if(document.body.classList.contains('overview'))return;
+  document.querySelectorAll('.body-area.vc').forEach(function(ba){
+    var head=ba.parentElement.querySelector('.head');
+    var foot=ba.parentElement.querySelector('.foot');
+    var kids=ba.children; if(!head||!foot||!kids.length)return;
+    var firstTop=kids[0].getBoundingClientRect().top;
+    var lastBottom=kids[kids.length-1].getBoundingClientRect().bottom;
+    var topGap=firstTop-head.getBoundingClientRect().bottom;
+    var botGap=foot.getBoundingClientRect().top-lastBottom;
+    var curPad=parseFloat(getComputedStyle(ba).paddingBottom)||0;
+    ba.style.paddingBottom=Math.max(0,curPad+(topGap-botGap))+'px';
+  });
+}
+requestAnimationFrame(balanceHeads);
+
+/* 底部控制栏 / 右侧导航点各自独立显隐：移到底部出底部栏、移到右侧出右侧点，离开该区即淡出 */
+document.addEventListener('mousemove',e=>{
+  controls.classList.toggle('show', e.clientY > window.innerHeight - 120);
+  navDots.classList.toggle('show', e.clientX > window.innerWidth - 120);
+});
+document.addEventListener('mouseleave',()=>{ controls.classList.remove('show'); navDots.classList.remove('show'); });
+
+function pageFromHash(){const m=location.hash.match(/^#(\d+)$/);return m?Math.max(0,Math.min(slides.length-1,Number(m[1])-1)):0;}
+addEventListener('hashchange',()=>{const target=pageFromHash();if(target!==idx)go(target);});
+const initialPage=pageFromHash();
+slides.forEach(paintSlide);
+updateCurrent(initialPage);
+if(CTRL){setActive(initialPage);runtimeReady=true;}
+else{
+  slides[initialPage].scrollIntoView({block:'start',behavior:'auto'});
+  requestAnimationFrame(()=>{
+    slides[initialPage].scrollIntoView({block:'start',behavior:'auto'});
+    setTimeout(()=>{runtimeReady=true;},80);
+  });
+}
+</script>
+</body>
+</html>
