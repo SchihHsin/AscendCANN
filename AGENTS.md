@@ -2087,3 +2087,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 审计并更新 `AGENTS.md`：保留 `context.md`、`process-log.md`、`backend-context.md`、`CLAUDE.md` 中所有对业务目标、数据口径、实现边界、用户决策、证据来源和待办有价值的信息；新增源文档保全矩阵、后端 / 评测事实、当前机制材料入口、不可回退的视觉与语义决策、未完成事项和交接更新协议。
 - 本次仅修改交接文档，不改变任何页面内容、导航、模拟数据或运行机制；工作区中已有 `.DS_Store`、未跟踪研究资产和其他用户改动均保留，不纳入本次提交。
+
+### 2026-08-26（AI 编码平台汇报 · 流程图去除外层白底）
+
+- `cann-dashboard/ai-coding-platform-mechanism-report.html` 第 10–16 页的 Mermaid 机制图移除外层白色大卡、描边、圆角和阴影，改为透明容器，直接落在冷灰 PPT 背景上；节点、subgraph 泳道、语义配色与 H / M / L 证据边界均未改变。
+- 用户认可当前流程内容丰富度，但认为图中文字偏小；放大方案尚待用户选择。候选方向为：A. 单页改成上下两段阅读流；B. 每个平台拆成主循环 / 执行与恢复两页；C. 保持单页并增加全屏缩放。未确认前不得缩减节点或重画流程结构。
+- 回归环境为 Chrome 1440×900：33 页均无横纵向溢出，7 / 7 Mermaid 均生成 SVG，0 Mermaid error、0 page error；7 个 `.mermaid-shell` 计算样式均为透明背景、0px 边框、无阴影。
+- 本次只影响流程图容器视觉，不影响页面序列、deck runtime、API / Host / Application 三层边界或平台机制内容；其余用户已有脏文件保持不动。
