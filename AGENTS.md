@@ -2103,3 +2103,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按 Report PPT Skill 自查并迁移模板：第 3 页三类决策问题使用白 / 蓝紫 / 墨色层级；第 6 页改为分层架构；第 9、24 页改为四张以上同级卡规范；第 18 页由八张零散因素卡合并为四组；第 20、21 页按 User Journey Skill 使用“阶段 / 触点 / 行为 / 情绪 / 痛点 / 机会点”六行旅程；第 22 页为切角玻璃数据卡；第 25 页为白 / 蓝紫 / 墨色卡；第 30 页为用户价值 × 实现成本的 2×2 机会优先级矩阵；第 31 页为 0–18 个月甘特 Roadmap，并补齐 M1 / M2 / M3 里程碑与完整标签。
 - 视觉检查覆盖全部 33 页；Chrome 1440×900 回归结果为 33 页、33 个导航点、7 / 7 Mermaid SVG、0 Mermaid error、0 页面溢出、6 / 6 Logo 解码成功、0 资源 / 页面错误。Overview 三列概览、Esc 退出、方向键翻页、hash 刷新定位、导航点跳转和全屏进入 / 退出均通过。
 - 本轮不改变 H / M / L 证据边界，也不改变 L1 API / Protocol、L2 Host / Harness、L3 Application / Task 三层边界。只暂存本 HTML 与 `AGENTS.md`，完成 `git diff --check` 后提交并立即推送 `main`；其余用户已有脏文件与未跟踪资产保持不动。
+
+### 2026-08-26（学习平台创新方向 · 18 案例图文竞品汇报）
+
+- 新增独立 30 页网页 PPT `cann-dashboard/learning-platform-innovation-report.html` 与研究证据目录 `cann-dashboard/learning-platform-innovation-research/`；没有修改 `cann-website-v2.html`、`cann-app.js`、`cann-website-v2.css` 或既有学习交互。研究先实走 `#learn` 首页、任务选择、路径详情、节点内容、本机预检、HiDevLab 分屏与上下文 AI，并保存 9 张本地状态截图，确认 AI 路径、图谱、出题、助手和实验入口已存在，不再把它们作为新增创新方向。
+- 汇报按 Report PPT Skill 的图文竞品模板组织为 6 个前沿方向 × 每方向 3 个案例：可验证任务合约（Microsoft Applied Skills / CodeGrade / Skillable）、版本化 NPU 数字孪生实验舱（Google Cloud Training / NVIDIA DLI / AWS Immersive Learning）、苏格拉底式共学 Agent（Khanmigo / Duolingo Max / Brilliant Koji）、证据型技能孪生（Workera / Pluralsight Skill IQ / CodeSignal）、开放挑战到贡献网络（Kaggle Learn / Hugging Face Learn / GitHub Skills）、失败记忆与同行评审（Codewars / freeCodeCamp Forum / GitHub Discussions）。每张竞品页使用 3 张对应官方公开页面截图、机制路径、来源域名和昇腾设计响应，不再以纯文字列表代替证据。
+- 证据目录保存 18 张 1440×900 官方公开页面截图及 URL / 页面状态元数据。GitHub Classroom 因官方页面提示退役，以仍在提供 IDE + 自动评分机制的 CodeGrade 替换；HackerRank 因当前环境只返回 Access Denied，以可核验页面的 CodeSignal 替换；Scrimba / 普通课程页改为 freeCodeCamp Forum 与 GitHub Discussions，以更直接支撑可搜索失败记忆、Answered 状态和同行验证。公开页面只支持机制判断，不代表完整付费体验、商业效果或用户满意度。
+- 证据边界继续采用 H / M / L：H 为公开产品页面与官方说明；M 为本轮对现有 Demo 的本地走查和截图；L 为任务合约、证据回执、版本化 Lab Twin、提示衰减、技能置信度、挑战回流和失败复跑等设计假设。本机无匹配 NPU / CANN 真机环境，不能声称构建、精度、性能或 NPU 任务已验证；API / Host / Application 三层边界与其他机制汇报均未改变。
+- 视觉与运行回归使用 Chrome 1600×900：重点检查 6 张图文竞品页、6 张黑底方向页、来源 / 边界 / 结尾页；30 页无单页横纵溢出，18 个图片引用均存在。修复 hash 初始定位被 IntersectionObserver 抢回封面的问题，以及 Overview 退出后未回到原页的问题；`#12` 刷新恢复、方向键、30 页 Overview 与原页恢复均通过。HTMLParser、内联 JS `node --check`、`git diff --check` 均通过。
+- 功能与证据提交 `9c05303`（`feat: add visual learning platform innovation report`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。下一步不是继续堆功能，而是由用户在 A · Verified First Run、B · Skill Twin OS、C · Open Challenge Network、D · Trusted Task Completion Network 中选择概念组合，再进入 2–4 个视觉方案探索。
