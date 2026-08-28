@@ -2112,3 +2112,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界继续采用 H / M / L：H 为公开产品页面与官方说明；M 为本轮对现有 Demo 的本地走查和截图；L 为任务合约、证据回执、版本化 Lab Twin、提示衰减、技能置信度、挑战回流和失败复跑等设计假设。本机无匹配 NPU / CANN 真机环境，不能声称构建、精度、性能或 NPU 任务已验证；API / Host / Application 三层边界与其他机制汇报均未改变。
 - 视觉与运行回归使用 Chrome 1600×900：重点检查 6 张图文竞品页、6 张黑底方向页、来源 / 边界 / 结尾页；30 页无单页横纵溢出，18 个图片引用均存在。修复 hash 初始定位被 IntersectionObserver 抢回封面的问题，以及 Overview 退出后未回到原页的问题；`#12` 刷新恢复、方向键、30 页 Overview 与原页恢复均通过。HTMLParser、内联 JS `node --check`、`git diff --check` 均通过。
 - 功能与证据提交 `9c05303`（`feat: add visual learning platform innovation report`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。下一步不是继续堆功能，而是由用户在 A · Verified First Run、B · Skill Twin OS、C · Open Challenge Network、D · Trusted Task Completion Network 中选择概念组合，再进入 2–4 个视觉方案探索。
+
+### 2026-08-28（AI 学习路径全旅程 Demo · 练习工作台改版）
+
+- 新增并继续迭代独立 React / Vite 交互原型 `cann-dashboard/ai-learning-path-journey-demo/`。用户确认后续不再制作 Figma 静态稿，采用“HTML 交互原型 → 浏览器截图评审”的单一交付链，以减少重复设计、重复实现和 Token 消耗；HTML 同时承担设计评审、交互演示与截图汇报职责。
+- 用户否定学习子页面顶部常驻的完整路径横栏，以及“大白卡中只有一个小内容块、四周空间浪费”的练习布局。完整路径现在只属于路径总览；六个场景均不再渲染顶部路径横栏，聚焦页用当前节点 / 活动的紧凑上下文返回关系承接。
+- `#scene-3` 从空终端式单卡改为铺满主要画布的任务工作台：左侧任务与环境，中间命令、终端、运行及日志，右侧验证信号与 AI 证据解释。运行前已经展示命令、环境、安全边界、预期信号和连接状态；运行按钮位于终端内部，不再使用独立底部悬浮操作条。
+- 运行交互会在同一工作台更新任务状态、两项 PASS / 一项 FAIL、ErrorCode 507001 与 AI 最小修复判断；再次操作进入 `#scene-4` 失败诊断，再承接路径 diff 和验证回执。布局随阶段变化：路径总览、知识学习、任务工作台、失败诊断、路径调整、验证完成各自使用不同页面构图，不复用一个固定框架。
+- 设计 QA 记录在 `cann-dashboard/ai-learning-path-journey-demo/design-qa.md`。浏览器 1280×720 实测六个 hash 场景均可加载、无顶部完整路径栏，练习页主画布 1232px / 工作台 1204px、无横向溢出；运行前后和失败跳转通过， fresh session 无 console error。另修复预检命令补丁符号与路径总览连接线窄屏溢出。
+- 验证：`npm run build` 通过；`npm run test:sites` 4 / 4 通过；`git diff --check` 通过。本轮不改变既有 H / M / L 证据口径，也不改变 API / Host / Application 三层边界；未接真实 NPU，运行日志仍是交互演示数据。Commit / push 结果在提交完成后回填；其余用户脏文件不纳入。
