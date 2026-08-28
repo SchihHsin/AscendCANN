@@ -1,0 +1,35 @@
+{
+  "date": "2026-08-29",
+  "viewport": "1440x900",
+  "report": "cann-dashboard/learning-platform-innovation-report.html",
+  "policy": "优先使用官方具体页面；原始桌面截图在卡片中不可读时，裁取仍保留产品上下文的关键证据区域；官方页面无法呈现目标交互时再使用官方 YouTube 演示帧。",
+  "cards": [
+    {"direction": 1, "product": "roadmap.sh AI Tutor", "claim": "自由目标输入与多种生成对象", "evidence": "interaction-competitors/19-roadmap-ai.png", "result": "保留，实际卡片尺寸可见输入框与对象类型"},
+    {"direction": 1, "product": "Memrise", "claim": "考试、工作、关系等真实用途", "evidence": "interaction-competitors/32b-memrise-purpose.png", "result": "由首页全图改为目的文案聚焦图"},
+    {"direction": 1, "product": "Hyperskill", "claim": "project-first、80% practice", "evidence": "interaction-competitors/27b-hyperskill-project.png", "result": "由首页全图改为项目起点聚焦图"},
+    {"direction": 2, "product": "roadmap.sh AI", "claim": "Plan、Roadmap、Course、Guide、Quiz 生成对象", "evidence": "interaction-competitors/19-roadmap-ai.png", "result": "保留；节点级共编作为昇腾创新机会单独提出"},
+    {"direction": 2, "product": "Sana Learn", "claim": "Create、Learn、Manage、Analyze 的 AI-native 平台结构", "evidence": "interaction-competitors/20b-sana-learn.png", "result": "由整页改为 Sana Learn 平台结构聚焦图"},
+    {"direction": 2, "product": "CodeSignal Learn", "claim": "Learning Paths、Collections 与 Cosmo", "evidence": "interaction-competitors/22b-codesignal-paths.png", "result": "由整页改为路径与 AI 入口聚焦图"},
+    {"direction": 3, "product": "Scrimba", "claim": "文件、主画布、Terminal、Preview 与 Explain 同屏", "evidence": "interaction-competitors/21d-scrimba-preview.png", "result": "保留，具体公开 Preview 工作区"},
+    {"direction": 3, "product": "KodeKloud", "claim": "任务与真实 Terminal 同屏", "evidence": "interaction-competitors/33-kodekloud.png", "result": "保留，产品界面与文案直接对应"},
+    {"direction": 3, "product": "CodeGrade", "claim": "IDE、Autograder、inline feedback 与 Learning Assistant", "evidence": "competitors/02-codegrade-autograding.png", "result": "保留，产品界面与文案直接对应"},
+    {"direction": 4, "product": "Khanmigo", "claim": "Deep learning, no answers 与追问式引导", "evidence": "interaction-competitors/07c-khanmigo-guidance.png", "result": "改为 no-answers 与用户原声聚焦图"},
+    {"direction": 4, "product": "Duolingo Max", "claim": "Roleplay 角色场景、真实对话与 Side Quest", "evidence": "interaction-competitors/08c-duolingo-roleplay-detail.png", "result": "改为会话界面与 Roleplay 说明聚焦图"},
+    {"direction": 4, "product": "Brilliant", "claim": "追问、视觉引导与卡点适应", "evidence": "interaction-competitors/09c-brilliant-guided-question.png", "result": "改为 Built to make you think 与交互题目聚焦图"},
+    {"direction": 5, "product": "Frontend Mentor", "claim": "真实项目、AI code review、技能画像与同行反馈", "evidence": "interaction-competitors/34b-frontend-mentor-review.png", "result": "改为相关首页段落与产物界面聚焦图"},
+    {"direction": 5, "product": "Codewars", "claim": "完成后比较多解并讨论最佳实践", "evidence": "interaction-competitors/16c-codewars-compare.png", "result": "改为 collective wisdom 聚焦图"},
+    {"direction": 5, "product": "GitHub Discussions", "claim": "标签、投票、Answered 与 Unanswered 状态", "evidence": "competitors/18b-github-answered.png", "result": "改为讨论列表状态聚焦图"},
+    {"direction": 6, "product": "Workera", "claim": "可验证任意技能、角色和时间点", "evidence": "competitors/10b-workera-verified.png", "result": "改为 verified assessment 官方定位聚焦图"},
+    {"direction": 6, "product": "Pluralsight", "claim": "Skill IQ、知识缺口与 tailored learning recommendations", "evidence": "competitors/11b-pluralsight-skill-iq.png", "result": "改为 Skill IQ 与推荐聚焦图"},
+    {"direction": 6, "product": "Microsoft Applied Skills", "claim": "real-world AI and cloud scenarios 与 Applied Skills 凭证", "evidence": "competitors/01-microsoft-applied-skills.png", "result": "保留，首屏已直接呈现场景与凭证关系"}
+  ],
+  "page_qa": [
+    "audit/report-slide-07-20260829.png",
+    "audit/report-slide-09-20260829.png",
+    "audit/report-slide-11-20260829.png",
+    "audit/report-slide-13-20260829.png",
+    "audit/report-slide-15-20260829.png",
+    "audit/report-slide-17-20260829.png"
+  ],
+  "youtube": "本轮 18 张卡均已从官方页面获得可直接对应的界面或文案证据，因此未使用第三方评测视频；后续遇到登录态或动态交互证据缺失时，继续优先选择官方产品频道演示帧。"
+}
