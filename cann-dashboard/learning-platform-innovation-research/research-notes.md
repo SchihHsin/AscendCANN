@@ -1,150 +1,186 @@
-# 昇腾社区学习平台创新研究笔记
+# 昇腾社区学习平台 · 交互创新竞品研究笔记
 
-> 研究日期：2026-08-26  
-> 研究对象：`cann-website-v2.html#learn` 的学习首页、路径详情、节点内容、本机预检、HiDevLab 分屏与上下文助手。  
-> 证据分级：H = 公开页面 / 官方文档；M = 本轮本地交互与截图观察；L = 待验证的设计假设。
+更新时间：2026-08-28
 
-## 核心判断
+## 研究目的
 
-现有 Demo 已经覆盖 AI 路径生成、典型场景入口、课程/路径推荐、17 节学习路径、视频章节联动、连续内容、代码实践、本机环境预检、HiDevLab 云端实验、AI 助手、知识图谱、随堂出题和学习档案。下一阶段如果只是继续增加问答、推荐、图谱或实验入口，创新幅度有限。
+本轮不再按“学习平台有哪些功能”组织竞品，而是从用户体验工程视角研究：用户如何在一条完整旅程中与目标、AI、学习路径、内容、代码、运行环境、失败状态和学习证据持续互动。
 
-真正需要改变的是平台的一等对象：从“课程 / 路径 / 节点”升级为“可验证任务会话”。任务会话应持续携带目标、环境、版本、练习状态、失败分支、验证证据、技能变化和社区回流，让平台能够判断下一步应该学、跑、修、验证还是提交成果。
+要回答的核心问题：
 
-## 现有体验审计（M）
+1. 用户从 Landing Page 进入时，如何用真实任务而不是课程分类表达意图？
+2. 系统生成路径前如何暴露理解和假设；生成后用户如何审阅、修改、分支和回滚？
+3. 视频、讲解、代码、运行和诊断是否应该共用固定页面框架？
+4. AI 如何锚定当前内容、代码选择、运行结果和学习阶段，而不是作为独立聊天窗？
+5. 失败后如何经历定位、提示、修复、复跑、验证和再规划？
+6. 用户离开后回来，如何恢复任务现场、证据、未决问题和下一动作？
 
-| 步骤 | 当前板块 / 内容 | 健康度 | 主要判断 |
+## 与上一版的差异
+
+上一版六个方向是能力 / 产品机制口径：可验证任务合约、版本化 NPU 数字孪生、苏格拉底式共学 Agent、证据型技能孪生、开放挑战网络、失败记忆与同行评审。
+
+它们能解释平台长期能力，却不能直接决定一个界面此刻如何变化。本轮将分析单位改为六个“关键交互时刻”：
+
+1. 意图协商式入口
+2. 可共同编辑的活路径
+3. 活动驱动的自适应画布
+4. 锚定上下文的 AI 介入
+5. 从失败到恢复的可见反馈闭环
+6. 带证据的继续学习入口
+
+技能孪生、开放挑战和社区贡献仍可作为长期能力，但暂不进入 Landing / 学习旅程的优先原型。
+
+## 端到端用户旅程
+
+| 阶段 | 用户目标 | 主要触点 | 关键交互问题 |
 |---|---|---|---|
-| 1 | 学习首页 Hero：任务输入 + AI 生成路径 | 良好 | 任务导向清晰，但生成后缺少可验证的完成条件预告。 |
-| 2 | 五类典型场景 + 目标/水平筛选 | 良好 | 已从课程货架转向开发场景；筛选结果仍以内容推荐为终点。 |
-| 3 | 系统学习 + 我的学习 | 一般 | 课程、路径、进度并存，连续成长可见；完成度仍以节点为主。 |
-| 4 | 17 节路径 + 视频章节联动 | 良好 | 路径结构、阶段和当前内容清楚；路径与任务验收的联系不够强。 |
-| 5 | 本机版本预检 + 分流 | 很好 | 已开始把版本、环境和失败恢复纳入学习，这是可验证任务会话的雏形。 |
-| 6 | HiDevLab 右侧分屏 | 良好 | 学习与执行在同一视野；目前更像实验工具窗口，缺少状态回执、快照和复现资产。 |
-| 7 | 上下文 AI 助手 | 一般 | 能感知当前节点并提供解释/练习；仍以被动问答为主，没有持续观察执行证据和控制提示强度。 |
-| 8 | 知识图谱 / 随堂出题 / 学习档案 | 一般 | 辅助能力齐全；尚未形成由任务证据驱动的技能状态与社区协作闭环。 |
+| 1. 表达目标 | 把真实任务说清 | Landing、自然语言输入、用途 / 项目入口 | 用户需要写多具体；系统如何补问 |
+| 2. 预览与生成 | 理解系统准备生成什么 | 任务简报、假设、路径骨架 | 生成依据是否可见；成本和风险是否清楚 |
+| 3. 审阅与调整 | 取得路径控制权 | 路径编辑、Diff、分支 | 能否锁定节点；修改是否局部生效 |
+| 4. 学习与运行 | 边理解边验证 | 视频、讲解、代码、HiDevLab | 页面是否随活动变化；AI 是否锚定上下文 |
+| 5. 失败与再规划 | 在当前现场恢复 | 错误、提示、诊断、复跑 | 是否逐级提示；失败是否更新路径 |
+| 6. 验证与续学 | 带着证据继续 | 验收回执、继续学习入口 | 是否恢复现场；下一动作是否有理由 |
 
-可见的可访问性风险：大量纯图标浮动入口需要检查可见标签、键盘焦点顺序和目标尺寸；左右分屏与浮窗叠加时需测试 200% 缩放、键盘陷阱和内容重排。截图不能证明完整 WCAG 合规。
+当前旅程图是基于 Demo 走查和公开竞品的启发式判断（M / L），不是用户研究事实；后续需要真实用户回放校准情绪和问题强度。
 
-## 六个前沿方向与 18 个对照案例
+## 六个交互方向与竞品证据
 
-### 方向一：可验证任务合约（Verified Task Contract）
+### 方向 1 · 意图协商式入口
 
-将“学习目标”变成可执行合约：明确环境、输入、产物、测试、性能或解释标准，并在完成时生成证据回执。
-
-| 案例 | 公开机制（H） | 可借鉴点 | 不直接照搬 |
+| 竞品 | 已验证页面信号 | 可借鉴的交互原则 | 证据 |
 |---|---|---|---|
-| Microsoft Applied Skills | 以真实 AI / Cloud 场景证明使用技术的能力，凭证更短、更聚焦。 | 让凭证绑定真实任务与产物，而不是只绑定课时。 | 微软的凭证目录不能直接替代昇腾的版本/硬件验证。 |
-| CodeGrade | 将 IDE、自动评分与受控 AI 助手放在同一代码学习环境，并对运行结果即时反馈。 | 编码、测试、反馈和教师可见性形成连续会话。 | 教学自动评分仍不足以覆盖 NPU 环境、精度和性能证据。 |
-| Skillable | 虚拟实验、技能验证、实验数据与分析。 | 将训练、上手和评测统一在可观测实验会话中。 | 企业培训交付模型较重，社区端需轻量化。 |
+| roadmap.sh AI Tutor | 中央问“你想学什么”，提示更多细节会产生更个性化路线 | 允许用自由目标开始；先表达、后结构化 | H |
+| Memrise | 先问考试、工作、关系、保持活跃等真实用途 | 目的先于课程目录 | H |
+| Hyperskill | Project-first；用真实项目承载学习 | 目标产物也可以是意图输入 | H |
 
-设计响应（L）：在路径生成后先展示任务合约；每一步产生 `Evidence Receipt`，包含环境指纹、命令、关键输出、日志锚点、产物链接和验证状态。路径完成度改为“关键验收项通过率”。
+方向判断（L）：Landing 应允许目标、用途或目标产物进入；系统把输入转为可见任务简报，只追问会改变路径的问题。用户不必先写“完美 Prompt”。
 
-### 方向二：版本化 NPU 数字孪生实验舱（Versioned Lab Twin）
+### 方向 2 · 可共同编辑的活路径
 
-从“打开一个 Notebook”升级为“打开与任务匹配的可恢复环境副本”，支持版本锁定、状态快照、失败注入、分支练习和一键复现。
-
-| 案例 | 公开机制（H） | 可借鉴点 | 不直接照搬 |
+| 竞品 | 已验证页面信号 | 证据边界 | 证据 |
 |---|---|---|---|
-| Google Cloud Training / Google Skills | 官方强调 hands-on training，并将云资源练习与技能成长连接。 | 真实资源、任务化实验、完成后可沉淀技能信号。 | 云资源相对统一，昇腾需要处理芯片、CANN、框架和驱动组合。 |
-| NVIDIA DLI | 面向 AI、数据科学和加速计算的 hands-on training 与证书。 | 教程、GPU 环境、专家知识和认证形成连续闭环。 | 不能只复制课程目录，需要突出版本配套和失败恢复。 |
-| AWS Immersive Learning | Builder Labs、Jam / 场景化练习等沉浸式数字训练。 | 用真实情境、受控沙箱和挑战推进能力形成。 | AWS 场景偏云运维，昇腾需覆盖本机迁移、NPU 性能与算子问题。 |
+| roadmap.sh AI | 同一入口可生成 Plan、Roadmap、Course、Guide、Quiz | 支持“路径是可生成对象”，未证明节点 Diff | H |
+| Sana Learn | AI-native learning 平台定位 | 公开营销页不能证明拖拽、分支、回滚 | H（定位） |
+| CodeSignal Learn | Learning Paths、Collections 与 Cosmo 对话入口并存 | 未显示路径共同编辑 | H |
 
-设计响应（L）：每个任务启动前生成 `Environment Fingerprint`；平台给出“推荐镜像 / 本机迁移 / 不兼容”三分流，支持保存失败现场、重放修复过程和分享最小复现。
+方向判断（L）：当前公开证据未找到同时具备“自然语言目标 + 结构化路径 + 节点级操纵 + 版本 Diff”的完整范式。这是本轮最明确的市场空白。
 
-### 方向三：苏格拉底式共学 Agent（Cognitive Apprenticeship Agent）
+目标交互：
 
-从“给答案的助手”升级为会调节提示强度的教练：先让学习者预测、解释、执行和诊断，再根据证据逐层给提示；掌握后主动撤掉脚手架。
+- 生成前预览任务简报和路径骨架。
+- 节点可锁定、删除、移动、替换和分支。
+- 修改后显示新增 / 移除 / 成本 / 风险 Diff。
+- 失败只触发受影响分支的局部重规划。
+- 用户确认过的节点不会被 AI 静默覆盖。
 
-| 案例 | 公开机制（H） | 可借鉴点 | 不直接照搬 |
+### 方向 3 · 活动驱动的自适应画布
+
+| 竞品 | 已验证页面信号 | 可借鉴的交互原则 | 证据 |
 |---|---|---|---|
-| Khanmigo | 官方强调不直接给答案，而是促使学习者深入思考；提供实时反馈、辩论和协作。 | AI 的目标是维持思考，而不是最快完成。 | 通识学科的启发式问答需改造成代码、日志和环境证据驱动。 |
-| Duolingo Max | 以 AI Roleplay / Video Call 等情境练习提供个性化互动。 | 通过角色与情境让知识在任务中被调用。 | 语言练习短、反馈标准明确；开发任务更长且结果多样。 |
-| Brilliant Koji | 交互式问题、逐步引导、跟踪掌握与卡点并围绕缺口生成练习。 | “问题—尝试—提示—掌握”的节奏清晰。 | 可视化数学问题与真实 NPU 工程任务的证据类型不同。 |
+| Scrimba | 从 Fullstack Path 点击 Watch Preview 后进入文件、主画布、Terminal、运行预览与 Explain 同屏的课程工作区 | 内容直接变成可操作现场 | H |
+| KodeKloud | 任务 / 提示与 Terminal 同屏；Build · Break · Fix · Learn | 运行环境成为主画布 | H |
+| CodeGrade | IDE、测试、评分和反馈连续发生 | 反馈贴近刚刚完成的动作 | H |
 
-设计响应（L）：Agent 读取当前节点、代码 diff、运行输出和错误分支；先要求预测或解释，再给最小提示；连续成功后降低提示，连续失败后触发知识补丁、环境诊断或专家升级。
+方向判断（L）：保持路径上下文，但不固定三栏宽度。看视频时视频最大，读概念时正文最大，运行时 Lab 最大，诊断时错误链和证据最大；用户可以固定常用布局。
 
-### 方向四：证据型技能孪生（Evidence-based Skill Twin）
+### 方向 4 · 锚定上下文的 AI 介入
 
-从“已学 5/17 节”升级为“能在什么版本、硬件和任务条件下独立完成什么”，技能状态只由最新证据更新，并保留置信度和失效时间。
-
-| 案例 | 公开机制（H） | 可借鉴点 | 不直接照搬 |
+| 竞品 | 已验证页面信号 | 可借鉴的交互原则 | 证据 |
 |---|---|---|---|
-| Workera | 以可验证的技能信号连接评估、人才决策和持续发展。 | 技能画像不是自报，也不是课时，而是被验证的能力信号。 | 企业人才系统的组织视角不应压过社区开发者的个人成长。 |
-| Pluralsight Skill IQ | 技能评估、个性化推荐、实验与沙箱组合。 | 评估后立即连接针对性学习与实践。 | 选择题式评估不能替代 NPU 真机任务证据。 |
-| CodeSignal Skills Assessments | 以研究型技能评估验证“实际能做什么”，覆盖技术与岗位相关能力。 | 技能结果可用于发展与决策，而不是只记录课程完成。 | 通用技能评估不能覆盖昇腾版本、硬件、性能与工程复现。 |
+| Khanmigo | “Deep learning, no answers”板块明确说明引导解题和追问，而不是直接给答案 | 维持思考过程 | H |
+| Duolingo Max | Roleplay 板块展示会话入口，并说明挑战与学习路径并列 | AI 反馈发生在情境内 | H |
+| Brilliant | “Built to make you think / Adapts to exactly where you are”板块将可操作题目与引导文案并置 | 提示贴着当前卡点出现 | H |
 
-设计响应（L）：技能节点包含 `scope/version/hardware/evidence/confidence/expires_at`；一次任务可以点亮多个技能，也可以因版本变化降置信度。推荐依据“目标技能缺口 × 当前证据强度”，而不是课程相似度。
+方向判断（L）：AI 介入应绑定当前讲解、代码选区、运行结果和路径节点，并按“诊断问题 → 最小线索 → 局部示例 → 完整解释”逐级展开。采用或拒绝的提示会影响后续提示强度和路径。
 
-### 方向五：开放挑战到贡献网络（Challenge-to-Contribution Network）
+### 方向 5 · 从失败到恢复的可见反馈闭环
 
-从平台内部练习升级为真实生态任务：精选 Issue、模型、算子、样例和优化挑战；学习者完成后可生成可复用资产，并进入社区审核与合并流程。
-
-| 案例 | 公开机制（H） | 可借鉴点 | 不直接照搬 |
+| 竞品 | 已验证页面信号 | 可借鉴的交互原则 | 证据 |
 |---|---|---|---|
-| Kaggle Learn / Competitions | 实用课程、Notebook、数据集和竞赛处于同一生态。 | 学习可以直接进入真实挑战、可运行资产和公开成绩。 | 竞赛排名不能替代版本适配、维护质量和社区 Owner 审核。 |
-| Hugging Face Learn | 课程与 Models、Datasets、Spaces、社区、Cookbook 连成开放生态。 | 学完即可复用模型资产、发布 Demo、贡献 Notebook 或课程。 | 资产开放度高但硬件验证条件较弱，昇腾需补强 NPU 证据。 |
-| GitHub Skills | 在 GitHub 内通过交互练习学习 GitHub，练习本身就是仓库与工作流。 | 学习发生在真实协作对象中，Issue、PR、Actions 都可成为教学媒介。 | GitHub Skills 主要教平台使用；昇腾要承接算子、模型、性能和兼容任务。 |
+| Frontend Mentor | 真实项目、AI code review、技能画像和同行反馈 | 反馈锚定具体产物 | H |
+| Codewars | “Compare your solution with others after each kata”板块明确连接多解比较、讨论与最佳实践 | “通过”之后仍可理解策略差异 | H |
+| GitHub Discussions | 分类、标签、Answered 状态 | 恢复经验具有明确问题状态 | H |
 
-设计响应（L）：建立 `Challenge Board`，每项挑战带版本/硬件、基线、验收脚本、Owner、SLA 和贡献路径；完成后的 diff、日志、benchmark、Notebook 或 FAQ 可回流为社区资产。
+方向判断（L）：错误必须经历定位、最小提示、修复、复跑、验证和更新路径。成功修复后，证据、适用条件和已尝试动作留在当前任务现场。
 
-### 方向六：失败记忆与同行评审（Failure Memory & Peer Review）
+### 方向 6 · 带证据的继续学习入口
 
-从“个人报错—AI 回答”升级为“可复现失败案例—相似案例匹配—同行诊断—验证后沉淀”。错误不再是一次性对话，而是社区可复用的学习资产。
-
-| 案例 | 公开机制（H） | 可借鉴点 | 不直接照搬 |
+| 竞品 | 已验证页面信号 | 可借鉴的交互原则 | 证据 |
 |---|---|---|---|
-| Codewars | 浏览器内测试即时反馈；完成后比较他人方案、讨论并帮助其他学习者。 | 同题多解、比较与解释能暴露更深层的能力差异。 | Kata 规模小，不覆盖环境与跨仓依赖。 |
-| freeCodeCamp Forum | 课程问题按类别和标签进入社区，答复与历史讨论形成可搜索记录。 | 将个人卡点转成可复用的课程帮助记忆。 | 论坛答复并不自动带运行环境与复现证据。 |
-| GitHub Discussions | 分类、标签、投票与 Answered 状态将社区讨论沉淀为可追踪的问题资产。 | 让问题从一次对话进入明确状态与社区归档。 | Answered 不等于已在相同 NPU 环境复跑验证。 |
+| Workera | Verified skill signal 与能力发展关联 | 用证据解释下一步 | H |
+| Pluralsight | Skill IQ 连接推荐、Labs 和 Sandboxes | 能力状态驱动下一动作 | H |
+| Microsoft Applied Skills | 真实任务能力与聚焦凭证关联 | 任务证据可以跨会话保留 | H |
 
-设计响应（L）：失败时自动生成脱敏诊断包，匹配相似案例；同行或专家提交修复路径后必须经过同环境复跑，验证通过才升级为“可复用失败模式”，并记录适用版本与失效条件。
+方向判断（L）：继续学习页优先恢复最后现场、已经通过的证据、未决问题、路径变化和建议下一动作；“完成 43%”是次要信息。
 
-## 跨案例结论
+## 跨案例规律
 
-十八个案例并不指向“更多内容”，而共同强调六种机制：任务合约、真实环境、形成性反馈、证据型技能、开放贡献、同行验证。昇腾已有学习内容、HiDevLab、AI 助手和图谱，最稀缺的是把这些能力组织成一个可持续、可验证、可回流的任务会话。
+1. 任务语言优于课程语言：目的、目标产物和真实项目更接近用户心智。
+2. 反馈越靠近动作越有效：提示、测试和诊断应贴着内容、代码和运行结果出现。
+3. 控制权需要渐进交接：AI 可以先生成，但用户必须能审阅、锁定、修改并理解影响。
+4. 恢复比推荐稀缺：多数产品会推荐下一课，较少产品能恢复失败现场、路径变化与证据。
 
-## 建议的四种产品组合（待用户选择）
+## 优先级建议
 
-1. **A · Verified First Run**：方向 1 + 2 + 3。聚焦首次跑通和失败恢复，最接近当前 Demo，验证成本最低。
-2. **B · Skill Twin OS**：方向 1 + 3 + 4。聚焦长期成长与个性化，适合学习中心与认证体系升级。
-3. **C · Open Challenge Network**：方向 1 + 5 + 6。聚焦社区活力、贡献与专家协作，差异化最大。
-4. **D · Trusted Task Completion Network**：六方向统一，形成学习、实践、验证、贡献的一体化平台；价值最高，建设周期最长。
+六个关键时刻都应保留在完整旅程中，但下一轮核心原型只验证三组交互：
 
-推荐先以 A 验证统一任务会话与证据回执，再根据真实任务完成率和贡献回流率决定扩展到 B 或 C。
+1. **活路径**：合并“意图协商 + 路径共编”。这是当前 Demo 最核心的未解问题，也是公开竞品中最明显的空白。
+2. **活画布**：活动驱动布局，直接回应固定框架和空间浪费问题。
+3. **可恢复 AI**：合并“上下文介入 + 失败恢复”。AI 不单独做聊天功能，而是帮助用户恢复并局部调整路径。
 
-## 建议指标
+“续学恢复”作为以上三组交互共同产生的结果，不单独做孤立功能。
 
-- Verified completion rate：满足明确验收条件的任务比例。
-- Time to first verified run：从进入平台到第一次证据有效的耗时。
-- Recovery success rate：失败后在不离开任务会话的情况下恢复成功的比例。
-- Hint dependency decay：随掌握提升，用户对高强度提示的依赖是否下降。
-- Evidence-backed skill coverage：技能图谱中有有效证据支持的节点比例。
-- Contribution acceptance rate：学习产出被社区复用、合并或验证通过的比例。
-- Failure memory reuse rate：已验证失败案例被成功复用的比例。
+下一版 Demo 建议由六个不同界面承载：
 
-## 公开来源（H）
+1. 学习 Landing
+2. 任务简报与路径预览
+3. 路径共编
+4. 自适应学习画布
+5. 诊断与恢复画布
+6. 验证与继续学习
 
-1. Microsoft Applied Skills — https://learn.microsoft.com/en-us/credentials/applied-skills/
-2. CodeGrade — https://www.codegrade.com/
-3. Skillable — https://www.skillable.com/
-4. Google Cloud Training — https://cloud.google.com/learn/training
-5. NVIDIA DLI — https://www.nvidia.com/en-us/training/
-6. AWS Immersive Learning — https://aws.amazon.com/training/digital/immersive-learning/
-7. Khanmigo — https://www.khanmigo.ai/learners
-8. Duolingo Max — https://blog.duolingo.com/duolingo-max/
-9. Brilliant — https://brilliant.org/
-10. Workera — https://workera.ai/
-11. Pluralsight Technical Skills Assessments — https://www.pluralsight.com/product/skills-assessment
-12. CodeSignal Skills Assessments — https://codesignal.com/skills-assessments/
-13. Kaggle Learn — https://www.kaggle.com/learn
-14. Hugging Face Learn — https://huggingface.co/learn
-15. GitHub Skills — https://github.com/skills
-16. Codewars — https://www.codewars.com/
-17. freeCodeCamp Forum — https://forum.freecodecamp.org/
-18. GitHub Discussions — https://github.com/orgs/community/discussions
+这些界面共享任务和路径状态，但不共享一套固定页面框架，也不需要在顶部用横栏展示流程步骤。
 
-## 证据限制
+## 新增截图与来源
 
-- 公开页面支持机制层判断，不代表完整产品体验、商业效果或用户满意度。
-- 本轮没有登录竞品账户，也没有对付费功能进行端到端实测；登录后状态、反馈质量和评测严谨性仍需单独验证。
-- 本机没有匹配的 NPU / CANN 真机环境；昇腾方案中的性能、精度、构建和 NPU 证据均是待验证设计，不是已实现结果。
+截图目录：`evidence/interaction-competitors/`
+
+| 文件 | URL | 状态 |
+|---|---|---|
+| 19-roadmap-ai.png | https://roadmap.sh/ai/roadmap | 成功；实际 AI Tutor 界面 |
+| 20-sana-ai.png | https://sanalabs.com/ | 成功；公开营销页，仅支持定位判断 |
+| 21-scrimba.png | https://scrimba.com/ | 成功；课程 / 路径 / Explain 界面 |
+| 22-codesignal-learn.png | https://codesignal.com/learn/course-paths | 成功；Learning Paths / Collections / Cosmo |
+| 25-kinnu.png | https://www.kinnu.xyz/ | 成功；营销页，未纳入核心证据 |
+| 26-mimo.png | https://mimo.org/ | 成功；营销页，未纳入核心证据 |
+| 27-hyperskill.png | https://hyperskill.org/ | 成功；Project-first 页面 |
+| 28-exercism.png | https://exercism.org/ | Cloudflare 验证页；排除 |
+| 29-codecademy.png | https://www.codecademy.com/ | 成功；学习工作台信号不足，未纳入核心证据 |
+| 30-freecodecamp-learn.png | https://www.freecodecamp.org/learn | 成功；固定 curriculum 对照，未纳入核心页 |
+| 31-sololearn.png | https://www.sololearn.com/en/ | 成功；营销页，未纳入核心证据 |
+| 32-memrise.png | https://www.memrise.com/ | 成功；真实用途入口 |
+| 33-kodekloud.png | https://kodekloud.com/ | 成功；任务 / 提示 / Terminal 强证据 |
+| 34-frontend-mentor.png | https://www.frontendmentor.io/ | 成功；项目 / AI review / 同行反馈 |
+| 21d-scrimba-preview.png | https://scrimba.com/fullstack-path-c0fullstack | 成功；点击 Watch Preview 后的课程工作区 |
+| 07b-khanmigo-no-answers.png | https://www.khanmigo.ai/learners | 成功；下钻到 Deep learning, no answers 板块 |
+| 08b-duolingo-roleplay.png | https://blog.duolingo.com/duolingo-max/ | 成功；下钻到 Roleplay 板块 |
+| 09b-brilliant-adapts.png | https://brilliant.org/ | 成功；下钻到 tutor / adaptive guidance 板块 |
+| 16b-codewars-solutions.png | https://www.codewars.com/ | 成功；下钻到多解比较板块 |
+
+每张新增截图均有同名 JSON 元数据，目标视口为 1440×900。
+
+## 访问失败与禁止推断
+
+- OpenAI Study Mode 与 Google Learn About 本轮浏览器 / 截图超时，没有可复核页面，不纳入证据。
+- Exercism 截图是 Cloudflare 验证页，不能用于产品机制判断。
+- 未登录竞品账户，也未完成付费功能端到端实测。公开页面没有展示的拖拽、Diff、回滚、提示策略和恢复逻辑，不得写成竞品事实。
+- 所有方向页均为设计假设（L），不是已经实现或证明有效的结论。
+- 本机没有匹配 NPU / CANN 真机环境，不能声称运行、性能或精度已验证。
+
+## 建议验证
+
+1. 生成后路径调整：对比“重新生成”与“节点编辑 + Diff”。
+2. 固定布局 vs 活动画布：比较视频、代码、运行和诊断任务中的切换成本与空间利用。
+3. AI 提示与失败恢复：制造同一版本冲突，对比自由聊天、上下文提示阶梯和完整恢复闭环；隔日继续同一任务。
+
+先用 8–12 位不同基础的开发者做定性测试，再用约 20 人同任务对照验证方向信号。
