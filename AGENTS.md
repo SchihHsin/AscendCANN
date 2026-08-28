@@ -2120,4 +2120,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `#scene-3` 从空终端式单卡改为铺满主要画布的任务工作台：左侧任务与环境，中间命令、终端、运行及日志，右侧验证信号与 AI 证据解释。运行前已经展示命令、环境、安全边界、预期信号和连接状态；运行按钮位于终端内部，不再使用独立底部悬浮操作条。
 - 运行交互会在同一工作台更新任务状态、两项 PASS / 一项 FAIL、ErrorCode 507001 与 AI 最小修复判断；再次操作进入 `#scene-4` 失败诊断，再承接路径 diff 和验证回执。布局随阶段变化：路径总览、知识学习、任务工作台、失败诊断、路径调整、验证完成各自使用不同页面构图，不复用一个固定框架。
 - 设计 QA 记录在 `cann-dashboard/ai-learning-path-journey-demo/design-qa.md`。浏览器 1280×720 实测六个 hash 场景均可加载、无顶部完整路径栏，练习页主画布 1232px / 工作台 1204px、无横向溢出；运行前后和失败跳转通过， fresh session 无 console error。另修复预检命令补丁符号与路径总览连接线窄屏溢出。
-- 验证：`npm run build` 通过；`npm run test:sites` 4 / 4 通过；`git diff --check` 通过。本轮不改变既有 H / M / L 证据口径，也不改变 API / Host / Application 三层边界；未接真实 NPU，运行日志仍是交互演示数据。Commit / push 结果在提交完成后回填；其余用户脏文件不纳入。
+- 验证：`npm run build` 通过；`npm run test:sites` 4 / 4 通过；`git diff --check` 通过。本轮不改变既有 H / M / L 证据口径，也不改变 API / Host / Application 三层边界；未接真实 NPU，运行日志仍是交互演示数据。功能提交 `cee0c18`（`feat: add adaptive AI learning journey demo`）已成功推送 `origin/main`；本条交接回填随后单独提交并推送，其余用户脏文件不纳入。
