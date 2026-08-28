@@ -2128,4 +2128,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 评审页按同一内容基线展示 3 个 1440×1024 高保真方向：方案 1“开放任务意图画布”（真实任务输入优先）、方案 2“可验证任务广场”（任务发现与复跑证据优先）、方案 3“自适应学习驾驶舱”（继续任务与历史上下文优先）。三者都明确处于学习路径生成之前，不出现顶部路径横栏或生成后的节点图。
 - 视觉资产保存于 `cann-dashboard/ai-learning-landing-directions-assets/`；由 Product Design / ImageGen 以用户提供的既有页面截图作为 Ascend 品牌、顶栏、渐变背景与字体层级参考生成。三张图属于视觉探索假设（L），用于方向选择，不代表既有产品能力或用户验证结论。
 - HTML 提供三图同屏概览、三个全屏方向页、顶部导航、卡片跳转、上下页、方向键、全屏与 hash 恢复。浏览器 1280×720 实测 4 页、6 个图片引用均加载，0 横向溢出、0 console error；HTMLParser、内联 JS `node --check`、`git diff --check` 均通过。
-- 用户再次确认不制作 Figma；视觉探索与后续实现继续采用 HTML + 浏览器截图的单一交付链。Commit / push 结果在提交完成后回填；其余用户已有脏文件不纳入。
+- 用户再次确认不制作 Figma；视觉探索与后续实现继续采用 HTML + 浏览器截图的单一交付链。功能提交 `827b49be`（`feat: add learning landing direction gallery`）已成功推送 `origin/main`；本条交接回填随后单独提交并推送，其余用户已有脏文件不纳入。
