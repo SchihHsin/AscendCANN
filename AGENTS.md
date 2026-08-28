@@ -2178,3 +2178,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界未改变：现有 Demo 页面观察仍为 M；意图协商、节点锁定 / 分支 / 回滚 / Diff、画布变形、提示阶梯、跨会话现场恢复仍为 L；未声称真实 NPU / CANN 构建、精度或性能已验证，也未改变 API / Host / Application 三层边界。
 - 验证：HTMLParser、内联 JS 语法与 `git diff --check` 通过；正式序列仍为 27 页且不再包含“上一版 / 这一版 / 本版”文案。应用内浏览器 1600×900 复核封面、目录、第 3、4、6 页：两栏现有设计、四卡新增设计和六卡总览均无卡片内容溢出或底部结论条遮挡。
 - 提交 / push：功能提交 `5b5cd329`（`refine learning report around current and next design`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪研究资产保持原状，未纳入提交。
+
+### 2026-08-29（学习平台竞品证据 · 全文图文对应整改）
+
+- 变更文件：`cann-dashboard/learning-platform-innovation-report.html`；新增 12 张从既有官方桌面截图裁取的关键证据区域图，位于 `learning-platform-innovation-research/evidence/interaction-competitors/` 与 `evidence/competitors/`；新增 `evidence/audit/screenshot-evidence-audit-20260829.json` 和 6 张正式竞品页 1440×900 QA 截图。未修改学习 Demo、27 页正式序列、hash / Overview / 全屏逻辑或隐藏旧模板的运行边界。
+- 业务目的：回应用户指出的“截图只截首页、图文对不上”和反驳式文案问题。正式 18 张竞品卡逐卡核对“文字主张 → 图内可见证据 → 原始链接”，并在真实卡片尺寸下复核；Memrise、Hyperskill、Sana Learn、CodeSignal Learn、Khanmigo、Duolingo Max、Brilliant、Frontend Mentor、Codewars、GitHub Discussions、Workera、Pluralsight 改为关键板块聚焦图，Microsoft Applied Skills 等原图已直接对应的案例保留。
+- 文案原则：创新主张保持强度，路径共编、节点级 Diff、失败触发局部重规划、活动驱动画布和带证据续学仍作为 L 级创新方向；竞品截图只承担相邻机制的 H 级证明，页面下方“创新突破点 / UX 启示”负责提出昇腾组合创新。正式序列中的“不是……而是……”“不应只……”等反驳式表达已改为正向设计陈述；未通过收窄创新方向来迁就弱截图。
+- 证据来源：本轮 18 张卡均已从官方具体页面获得可直接对应的界面、状态或官方说明，故没有采用第三方 YouTube 评测画面。后续若官方页面受登录态或动态交互限制，优先采用官方产品频道的 YouTube 演示帧，并在卡片标注“官方演示视频帧”和原视频链接。截图裁切坐标、卡片主张与保留 / 替换判断记录在审计 JSON 中。
+- 验证：HTMLParser 通过；内联 JS 语法检查通过；JSON 校验通过；`git diff --check` 通过；正式序列仍为 27 页、18 张竞品卡和 18 个可点击原始链接，全部图片引用存在。应用内浏览器 1440×900 人工复核 `#7/#9/#11/#13/#15/#17`，六页的关键图内文字或状态在卡片尺寸下可辨识，console 0 warning / error。未改变 H / M / L 证据口径、真实 NPU 边界或 API / Host / Application 三层边界。
+- 提交 / push：功能与证据提交 `ba9849ef`（`fix: align competitor screenshots with UX claims`）已成功推送 `origin/main`；本条交接回填随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、未采用竞品截图、其他研究目录与大型未跟踪文件保持原状，未纳入提交。
