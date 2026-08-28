@@ -2161,3 +2161,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界继续采用 H / M / L：H 为公开页面中实际可见的控件、板块和官方说明；M 为当前 Demo 走查；L 为路径锁定 / 分支 / 回滚 / Diff、活动驱动画布、提示阶梯、失败局部重规划与续学恢复等设计假设。公开营销页不代表登录后完整交互或用户效果；本机无匹配 NPU / CANN 环境，不声称真实构建、精度或性能已经验证，也未改变 API / Host / Application 三层边界。
 - 验证：HTMLParser 通过；内联 JS `node --check` 通过；`git diff --check` 通过；Chrome 1600×900 对 27 页逐页截图，27 页 / 27 导航点、全部图片解码成功、0 可见溢出、0 console / page error；Overview 三列缩略图 27 页可见。重点人工复核第 11、13、15、17 页，确认 Scrimba、Khanmigo、Duolingo、Brilliant、Codewars、Workera / Pluralsight / Applied Skills 的截图实际显示到文案所述界面或板块。
 - 提交 / push：功能与证据提交 `17072718`（`feat: reframe learning benchmark around interaction patterns`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、未采用截图、其他研究目录和大型未跟踪文件均保留原状，未纳入提交。
+
+### 2026-08-28（学习平台竞品卡 · 增加原始页面链接）
+
+- 变更文件：`cann-dashboard/learning-platform-innovation-report.html`。仅修改 `</template>` 后进入 27 页 runtime 的正式竞品卡；旧版隐藏 `template`、学习 Demo、页面序列、Overview、hash、全屏与键盘翻页逻辑均未改变。
+- 业务目的：回应用户“截图和描述之外应能直接查看原页面”的要求。在 6 个交互方向、共 18 张正式竞品卡的截图说明行右侧增加清晰可点击的站点链接和外链标识；统一使用 `target="_blank"`、`rel="noopener noreferrer"` 与可见键盘焦点样式。Scrimba、CodeSignal、Khanmigo、Duolingo Max、Pluralsight、Microsoft Applied Skills 等优先链接到截图对应的路径、说明或凭证深层页面，不统一退回首页。
+- 证据边界未改变：链接只提高公开页面证据的可追溯性，不扩展 H / M / L 判断，也不代表登录后完整体验、商业效果或用户满意度；API / Host / Application 三层边界不受影响。
+- 验证：HTMLParser 通过；内联 JS 语法检查通过；`git diff --check` 通过；正式序列检测到 18 / 18 个 `.cmp-link`，全部为 HTTPS、`_blank` 与 `noopener noreferrer`。应用内浏览器 1600×900 逐页人工复核 `#7`、`#9`、`#11`、`#13`、`#15`、`#17`：链接与截图对象一致，卡片、截图、说明行和底部 UX 结论条均无溢出或遮挡。
+- 提交 / push：功能提交 `b8ba7dd2`（`feat: link competitor cards to source pages`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、未采用截图、研究目录与大型未跟踪文件保持原状，不纳入提交。
