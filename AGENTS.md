@@ -2151,3 +2151,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Design QA：源图 1487×1058 归一化到 1280×720，与浏览器实现组成 2560×756 同屏对照；字体、布局节奏、色彩、资产、文案和交互表面均无未解决 P0 / P1 / P2，`design-qa.md` 为 `final result: passed`。静态 Pages 构建实测任务选择仍停留 `#landing`、补问选择生效、生成状态出现、2.2 秒后进入 `#scene-1`，Logo / 背景相对子路径加载成功，1280px 无横向溢出，console 0 warning / error。
 - 发布实现：Vite 使用相对 `base: "./"`，JSX 公共资产通过 `import.meta.env.BASE_URL` 解析；静态产物位于 `cann-dashboard/ai-learning-path-journey-demo-pages/`，避免 GitHub Pages 仓库子路径下脚本、样式和图片 404。验证命令：`npm run build`、`npm run test:sites`（4 / 4）、Pages 专用 Vite build、`git diff --check`。
 - 提交 / push：功能与静态发布提交 `564b6c1a`（`feat: add verified task learning landing`）已成功推送 `origin/main`，首轮交接回填 `a3c126eb` 也已推送；本条线上复核结果随后单独提交。其余 `.DS_Store`、访谈 HTML、研究目录和大型未跟踪文件继续保留，未纳入提交。发布后线上复核通过：Demo HTML、JS、背景 PNG 与既有竞品汇报均返回 HTTP 200；Demo 线上 HTML 已包含正确标题和相对 JS / CSS 路径。
+
+### 2026-08-28（学习平台竞品报告 · 从功能方向改为交互方向）
+
+- 重写 `cann-dashboard/learning-platform-innovation-report.html` 的正式阅读序列：用户指出上一版偏功能 / 平台架构，且多张截图只截首页、不能证明旁边的具体交互。本版改为 27 页“交互创新研究”，以完整旅程中的六个关键时刻组织：意图协商、路径共编、画布变形、上下文介入、失败恢复、续学恢复；旧版功能导向内容仅保留在不进入 runtime 的 `template` 中供源码追溯。Demo 源码和 GitHub Pages 静态 Demo 本轮均未修改。
+- 端到端旅程固定为六阶段：表达目标 → 预览与生成 → 审阅与调整 → 学习与运行 → 失败与再规划 → 验证与续学。旅程页按 User Journey Skill 使用阶段、触点、行为、情绪、痛点、机会点六行结构；情绪线相邻格公共边界连续。页面明确“生成路径只是第二步”，下一版原型应由学习 Landing、任务简报与路径预览、路径共编、自适应学习画布、诊断与恢复、验证与继续学习六个不同界面承载，不使用顶部横栏强行展示流程，也不复用固定三栏框架。
+- 每个交互方向仍保留 3 个竞品案例与相邻截图，但证据句法改为“画面展示什么 → 支持什么判断 → 不支持什么推断”。新增 / 采用 roadmap.sh、Memrise、Hyperskill、Sana、CodeSignal Learn、Scrimba、KodeKloud、Frontend Mentor 等 1440×900 页面证据；针对截图与文字不对应的问题，进一步下钻并重新截取 Scrimba 课程 Preview 工作区、Khanmigo `Deep learning, no answers`、Duolingo Max Roleplay、Brilliant adaptive tutor、Codewars 多解比较具体板块。Sana 公开页只保留 AI-native 定位结论，不声称已验证路径拖拽、分支或 Diff；Exercism Cloudflare 验证页、OpenAI Study Mode / Google Learn About 超时页面均不进入报告证据。
+- 研究结论从六个方向收敛为三组下一轮核心交互实验：①“意图协商 + 路径共编”组成可操纵活路径；②活动驱动的自适应画布；③“上下文 AI + 失败恢复”组成可恢复 AI。续学恢复作为三组交互共同产生的结果；技能孪生、开放挑战与社区贡献暂缓，不再作为本轮 Landing / 学习旅程的独立原型方向。研究笔记同步更新到 `cann-dashboard/learning-platform-innovation-research/research-notes.md`。
+- 证据边界继续采用 H / M / L：H 为公开页面中实际可见的控件、板块和官方说明；M 为当前 Demo 走查；L 为路径锁定 / 分支 / 回滚 / Diff、活动驱动画布、提示阶梯、失败局部重规划与续学恢复等设计假设。公开营销页不代表登录后完整交互或用户效果；本机无匹配 NPU / CANN 环境，不声称真实构建、精度或性能已经验证，也未改变 API / Host / Application 三层边界。
+- 验证：HTMLParser 通过；内联 JS `node --check` 通过；`git diff --check` 通过；Chrome 1600×900 对 27 页逐页截图，27 页 / 27 导航点、全部图片解码成功、0 可见溢出、0 console / page error；Overview 三列缩略图 27 页可见。重点人工复核第 11、13、15、17 页，确认 Scrimba、Khanmigo、Duolingo、Brilliant、Codewars、Workera / Pluralsight / Applied Skills 的截图实际显示到文案所述界面或板块。
+- 提交 / push：功能与证据提交 `17072718`（`feat: reframe learning benchmark around interaction patterns`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、未采用截图、其他研究目录和大型未跟踪文件均保留原状，未纳入提交。
