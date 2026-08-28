@@ -2121,3 +2121,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 运行交互会在同一工作台更新任务状态、两项 PASS / 一项 FAIL、ErrorCode 507001 与 AI 最小修复判断；再次操作进入 `#scene-4` 失败诊断，再承接路径 diff 和验证回执。布局随阶段变化：路径总览、知识学习、任务工作台、失败诊断、路径调整、验证完成各自使用不同页面构图，不复用一个固定框架。
 - 设计 QA 记录在 `cann-dashboard/ai-learning-path-journey-demo/design-qa.md`。浏览器 1280×720 实测六个 hash 场景均可加载、无顶部完整路径栏，练习页主画布 1232px / 工作台 1204px、无横向溢出；运行前后和失败跳转通过， fresh session 无 console error。另修复预检命令补丁符号与路径总览连接线窄屏溢出。
 - 验证：`npm run build` 通过；`npm run test:sites` 4 / 4 通过；`git diff --check` 通过。本轮不改变既有 H / M / L 证据口径，也不改变 API / Host / Application 三层边界；未接真实 NPU，运行日志仍是交互演示数据。功能提交 `cee0c18`（`feat: add adaptive AI learning journey demo`）已成功推送 `origin/main`；本条交接回填随后单独提交并推送，其余用户脏文件不纳入。
+
+### 2026-08-28（学习 Landing Page · 三方向视觉评审）
+
+- 用户指出现有旅程从“AI 路径已生成”开始，缺少首次进入学习板块、表达目标与生成前状态；同时仅凭文字无法判断三个 Landing Page 方向。新增独立视觉评审页 `cann-dashboard/ai-learning-landing-directions.html`，不修改 `ai-learning-path-journey-demo/` 现有六场景。
+- 评审页按同一内容基线展示 3 个 1440×1024 高保真方向：方案 1“开放任务意图画布”（真实任务输入优先）、方案 2“可验证任务广场”（任务发现与复跑证据优先）、方案 3“自适应学习驾驶舱”（继续任务与历史上下文优先）。三者都明确处于学习路径生成之前，不出现顶部路径横栏或生成后的节点图。
+- 视觉资产保存于 `cann-dashboard/ai-learning-landing-directions-assets/`；由 Product Design / ImageGen 以用户提供的既有页面截图作为 Ascend 品牌、顶栏、渐变背景与字体层级参考生成。三张图属于视觉探索假设（L），用于方向选择，不代表既有产品能力或用户验证结论。
+- HTML 提供三图同屏概览、三个全屏方向页、顶部导航、卡片跳转、上下页、方向键、全屏与 hash 恢复。浏览器 1280×720 实测 4 页、6 个图片引用均加载，0 横向溢出、0 console error；HTMLParser、内联 JS `node --check`、`git diff --check` 均通过。
+- 用户再次确认不制作 Figma；视觉探索与后续实现继续采用 HTML + 浏览器截图的单一交付链。Commit / push 结果在提交完成后回填；其余用户已有脏文件不纳入。
