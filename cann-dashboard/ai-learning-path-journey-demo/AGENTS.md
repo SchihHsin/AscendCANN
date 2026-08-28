@@ -14,3 +14,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Layout changes with the learning phase. Knowledge learning may use video/content composition, hands-on work uses a task workbench, and debugging may use an immersive terminal. Do not reuse one fixed three-column shell for the whole journey.
 - A pre-run state must still contain useful task, command, environment, and validation context. Do not make a large empty terminal or empty white canvas the visual focus.
 - Primary actions belong to the surface they affect. Run controls live inside the lab/terminal, not in a separate floating action bar below the work area.
+- The first journey scene is a real learning Landing Page, not an already-generated path. Use the selected “可验证任务广场” direction: search or choose a task with acceptance criteria, trusted sources, and rerun evidence before personalization begins.
+- Do not introduce a separate path-generation workbench. Keep task selection, four necessary clarifications, and the short generating state on the Landing Page; when generation finishes, enter the path overview.
+- The end-to-end demo has seven stages and stable hashes: `#landing` → `#scene-1` through `#scene-6`. Preserve these deep links when changing navigation.
+- GitHub Pages builds must use relative assets because the demo is served from a repository subdirectory. Keep Vite `base: "./"` and use `import.meta.env.BASE_URL` for public assets referenced from JSX.

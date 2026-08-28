@@ -2141,3 +2141,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户认为专门的“任务定义与路径生成工作台”过重，该方向不再采用。路径生成是短暂过渡状态，不应新增一个长期页面对象或固定工作台框架。
 - 推荐收敛为两层：方案 2 Landing Page 原地完成任务选择、必要补问和轻量生成状态；生成完成后直接进入独立学习路径总览。选中的任务区域可展开为全宽确认区，其他任务内容弱化；AI 只补问设备 / 版本 / 基础 / 时间等缺失条件，生成时在同一区域显示动态状态，完成后跳转 `/learn/path/{pathId}`。
 - 路径调整属于生成后的路径总览，不塞入 Landing Page。对于自定义目标且信息缺失较多的情况，仍使用 Landing 内的轻量展开层或侧边 Sheet，不新增独立工作台 route。当前仅更新交互决策，未修改 HTML，等待用户确认轻量链路后再实现。
+
+### 2026-08-28（可验证任务广场落地与 GitHub Pages 发布）
+
+- 变更文件：`cann-dashboard/ai-learning-path-journey-demo/src/App.jsx`、`src/styles.css`、`index.html`、`vite.config.mjs`、`design-qa.md`、项目内 `AGENTS.md`；新增可直接由 GitHub Pages 托管的静态构建 `cann-dashboard/ai-learning-path-journey-demo-pages/` 与 3 张 Landing 视觉 QA 证据图。未改动原竞品汇报 `cann-dashboard/learning-platform-innovation-report.html` 及其 18 张竞品证据。
+- 业务目的：把用户选定的方案 2“可验证任务广场”接到原有学习全旅程。新链路为 `#landing` 发现 / 搜索 / 选择真实任务 → 同页确认设备、版本、时间、学习优先级 → 同页轻量生成状态 → 自动进入 `#scene-1` 路径总览 → 学习、运行、失败恢复、路径调整和验证完成；不新增独立路径生成工作台。
+- 页面序列由 6 步扩为 7 步：找到任务、看懂路径、学习节点、动手运行、处理失败、调整路径、验证完成；`#landing` 与原 `#scene-1`–`#scene-6` 深链职责保持稳定。Landing 采用 Ascend 现有品牌 Logo、背景资产与 Phosphor 图标，展示 Qwen3 推荐任务、完成标准、可信来源、近 30 天复跑证据、本周验证任务与角色目标筛选。
+- 证据与边界：Landing 视觉以用户选中的方案 2 截图为设计真值；任务、复跑次数和成功率仍是高保真交互演示数据（L），不代表现网统计或 NPU 真机验证。没有改变 H / M / L 口径，也没有改变 API / Host / Application 三层边界。
+- Design QA：源图 1487×1058 归一化到 1280×720，与浏览器实现组成 2560×756 同屏对照；字体、布局节奏、色彩、资产、文案和交互表面均无未解决 P0 / P1 / P2，`design-qa.md` 为 `final result: passed`。静态 Pages 构建实测任务选择仍停留 `#landing`、补问选择生效、生成状态出现、2.2 秒后进入 `#scene-1`，Logo / 背景相对子路径加载成功，1280px 无横向溢出，console 0 warning / error。
+- 发布实现：Vite 使用相对 `base: "./"`，JSX 公共资产通过 `import.meta.env.BASE_URL` 解析；静态产物位于 `cann-dashboard/ai-learning-path-journey-demo-pages/`，避免 GitHub Pages 仓库子路径下脚本、样式和图片 404。验证命令：`npm run build`、`npm run test:sites`（4 / 4）、Pages 专用 Vite build、`git diff --check`。
+- 提交 / push：本条需与功能文件仅按本任务范围暂存并立即推送 `main`；其余 `.DS_Store`、访谈 HTML、研究目录和大型未跟踪文件继续保留，不纳入提交。发布后需实际打开 Demo 与既有竞品汇报两个 GitHub Pages 地址复核。

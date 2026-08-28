@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  ArrowLeft, ArrowRight, BookOpenText, Brain, CaretDown, CaretRight, Check,
-  CheckCircle, Clock, Copy, FileText, GitDiff, Info, Lightbulb, ListChecks,
-  LockSimple, PaperPlaneTilt, Play, Robot, ShieldCheck, Sparkle, TerminalWindow,
-  TrendUp, WarningCircle, X,
+  ArrowLeft, ArrowRight, ArrowsLeftRight, Atom, BookOpenText, Brain, CaretDown,
+  CaretRight, ChartBar, Check, CheckCircle, CheckSquare, CircleNotch, Clock, Code,
+  Copy, Cube, FileText, Gauge, GitDiff, Info, Lightbulb, ListChecks, LockSimple,
+  MagnifyingGlass, PaperPlaneTilt, Play, Pulse, Question, Robot, RocketLaunch,
+  SealCheck, ShieldCheck, Sparkle, Target, TerminalWindow, TrendUp, UsersThree,
+  WarningCircle, X,
 } from '@phosphor-icons/react';
 
 const pathNodes = [
@@ -16,7 +18,8 @@ const pathNodes = [
   { id: 7, title: '性能与交付', duration: '约 3–5 小时' },
 ];
 
-const demoSteps = ['看懂路径', '学习节点', '动手运行', '处理失败', '调整路径', '验证完成'];
+const demoSteps = ['找到任务', '看懂路径', '学习节点', '动手运行', '处理失败', '调整路径', '验证完成'];
+const assetUrl = fileName => `${import.meta.env.BASE_URL}assets/${fileName}`;
 
 function IconButton({ label, children, onClick, disabled }) {
   return <button className="icon-button" aria-label={label} title={label} onClick={onClick} disabled={disabled}>{children}</button>;
@@ -25,7 +28,7 @@ function IconButton({ label, children, onClick, disabled }) {
 function TopNavigation() {
   return (
     <header className="top-nav">
-      <div className="brand-lockup"><img src="/assets/Ascendlogo.svg" alt="Ascend" /><strong>开发者</strong></div>
+      <div className="brand-lockup"><img src={assetUrl('Ascendlogo.svg')} alt="Ascend" /><strong>开发者</strong></div>
       <nav aria-label="主导航">
         <a href="#home">主页</a><a href="#develop">开发</a><a href="#docs">文档</a><a href="#events">活动</a>
         <a href="#learn" className="active">学习</a><a href="#forum">论坛</a><a href="#blog">博客</a><a href="#plan">开发者计划</a>
@@ -33,6 +36,99 @@ function TopNavigation() {
       <div className="nav-actions"><button>下载 <CaretDown size={14} /></button><button>支持</button><button>积分兑换 <span>NEW</span></button></div>
     </header>
   );
+}
+
+const verifiedTasks = [
+  { title: 'ONNX 模型转换', copy: '将模型从 ONNX 转换为昇腾离线模型 OM', time: '预计 8–12 小时', reruns: '复跑 12 次', icon: ArrowsLeftRight },
+  { title: '自定义 Add 算子', copy: '开发并注册自定义 Add 算子，完成编译与验证', time: '预计 12–16 小时', reruns: '复跑 9 次', icon: Code },
+  { title: 'PyTorch 训练迁移', copy: '将 PyTorch 训练任务迁移到昇腾平台并验证收敛', time: '预计 24–36 小时', reruns: '复跑 7 次', icon: Pulse },
+];
+
+const roleFilters = [
+  { title: '首次跑通', copy: '快速验证环境与样例，确保能运行起来', icon: RocketLaunch },
+  { title: '应用交付', copy: '构建可用应用或服务，完成端到端交付', icon: Cube },
+  { title: '迁移适配', copy: '将现有模型或代码迁移到昇腾平台', icon: ArrowsLeftRight },
+  { title: '性能调优', copy: '提升吞吐与时延，优化资源利用率', icon: Gauge },
+];
+
+function LandingScene({ go }) {
+  const [stage, setStage] = useState('browse');
+  const [query, setQuery] = useState('');
+  const [task, setTask] = useState('在 Ascend 910B 上部署 Qwen3');
+  const [answers, setAnswers] = useState({ device: 'Ascend 910B 单卡', version: 'CANN 8.0.RC2', time: '一周内', goal: '先跑通再深入' });
+
+  useEffect(() => {
+    if (stage !== 'generating') return undefined;
+    const timer = window.setTimeout(() => go(1), 2200);
+    return () => window.clearTimeout(timer);
+  }, [stage, go]);
+
+  const selectTask = title => {
+    setTask(title);
+    setStage('clarify');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const matchTask = event => {
+    event?.preventDefault();
+    selectTask(query.trim() || '在 Ascend 910B 上部署 Qwen3');
+  };
+
+  const headline = stage === 'browse' ? '从一个真实任务开始学习' : stage === 'clarify' ? '只确认生成路径所需的信息' : '正在生成可审阅的学习路径';
+  const subline = stage === 'browse'
+    ? '每个任务都有可验证的完成标准、参考资料与社区复跑证据，帮助你稳步推进、学以致用。'
+    : stage === 'clarify'
+      ? '任务已经确定。AI 只补齐环境、基础、时间与优先目标，不让你填写一张冗长表单。'
+      : '正在匹配完成标准、能力缺口、练习与验证信号；完成后直接进入路径总览。';
+
+  return <main className={`landing-scene landing-${stage}`}>
+    <section className="landing-hero">
+      <div className="landing-intro">
+        <div className="landing-pill"><SealCheck size={17} weight="fill" /><b>昇腾社区学习平台</b><span>可验证任务广场</span></div>
+        <h1>{headline}</h1>
+        <p>{subline}</p>
+        {stage === 'browse' && <><form className="mission-search" onSubmit={matchTask}><MagnifyingGlass size={23} /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索任务，或直接描述你想完成的目标" /><button className="primary" type="submit">匹配任务</button></form><button className="define-task" onClick={() => { setQuery('在 Ascend 910B 上部署 Qwen3，并学会定位常见错误'); matchTask(); }}><Sparkle size={17} weight="fill" />让 AI 帮我定义任务</button></>}
+      </div>
+      <aside className="landing-mechanism" aria-label="生成机制说明">
+        <div className={`${stage === 'browse' ? 'active' : 'done'}`}><span><Target size={23} weight="bold" /></span><p><b>找到真实任务</b><small>基于你的目标与环境，推荐可验证的任务</small></p></div>
+        <div className={`${stage === 'clarify' ? 'active' : stage === 'generating' ? 'done' : ''}`}><span><Question size={23} weight="bold" /></span><p><b>回答必要问题</b><small>澄清环境与约束，完善任务边界</small></p></div>
+        <div className={stage === 'generating' ? 'active' : ''}><span><CheckSquare size={23} weight="bold" /></span><p><b>生成你的学习路径</b><small>获得定制化步骤与资源，开始执行</small></p></div>
+      </aside>
+    </section>
+
+    {stage === 'browse' ? <>
+      <section className="landing-discovery">
+        <article className="featured-mission">
+          <span className="mission-ribbon">推荐任务</span>
+          <div className="featured-main"><div className="mission-symbol"><Atom size={42} weight="duotone" /></div><div><h2>在 Ascend 910B 上部署 Qwen3</h2><p>在 Ascend 910B 推理服务器上部署 Qwen3-32B，提供稳定的推理服务并通过健康检查。</p><div className="acceptance-tags"><span><CheckCircle size={15} weight="fill" />服务启动 /health 200</span><span><CheckCircle size={15} weight="fill" />推理结果通过</span><span><CheckCircle size={15} weight="fill" />可复用诊断包</span></div></div></div>
+          <div className="mission-detail-row"><div className="mission-meta"><span><Clock size={16} />预计 18–24 小时</span><span><ChartBar size={16} />中等</span><span><TerminalWindow size={16} />昇腾 910B</span><span><UsersThree size={16} />社区复跑 18 次</span></div><aside className="evidence-mini"><b>验证证据（近 30 天）</b><span><CheckCircle size={15} weight="fill" />成功 18 次 <strong>95%</strong></span><span className="failed"><X size={15} weight="bold" />失败 1 次 <strong>5%</strong></span><small>主要失败原因：环境配置不一致（1）</small></aside></div>
+          <div className="mission-sources"><span>来源与参考</span><button><FileText size={15} />官方文档</button><button><ShieldCheck size={15} />兼容矩阵</button><button><UsersThree size={15} />社区示例</button></div>
+          <div className="featured-actions"><button className="primary" onClick={() => selectTask('在 Ascend 910B 上部署 Qwen3')}>查看详情并开始匹配</button><button className="secondary">保存稍后做</button></div>
+        </article>
+
+        <aside className="verified-list"><div className="list-heading"><h2>本周被验证的任务</h2><button>查看全部 <CaretRight size={15} /></button></div>{verifiedTasks.map(item => { const TaskIcon = item.icon; return <button className="verified-task" key={item.title} onClick={() => selectTask(item.title)}><span><TaskIcon size={28} weight="duotone" /></span><p><b>{item.title}</b><small>{item.copy}</small><em>{item.time} · {item.reruns}</em></p><CaretRight size={17} /></button>; })}</aside>
+      </section>
+      <section className="role-strip"><h2>按你的角色与目标筛选</h2><div>{roleFilters.map((item, index) => { const RoleIcon = item.icon; return <button key={item.title} className={index === 0 ? 'selected' : ''}><RoleIcon size={27} weight="duotone" /><span><b>{item.title}</b><small>{item.copy}</small></span><CaretRight size={15} /></button>; })}<button className="custom-goal" onClick={() => document.querySelector('.mission-search input')?.focus()}>自定义目标 <Sparkle size={16} /></button></div></section>
+      <div className="landing-trust"><ShieldCheck size={18} />所有任务均来自官方与社区可验证来源；完成后可复盘证据并分享结果，帮助更多开发者。</div>
+    </> : <section className="landing-match-area">
+      <div className="selected-task-head"><div><span className="eyebrow">已匹配真实任务</span><h2>{task}</h2><p>目标交付：推理服务启动、健康检查通过，并形成可复用排错记录。</p></div>{stage === 'clarify' && <button className="secondary" onClick={() => setStage('browse')}>重新选择任务</button>}</div>
+      {stage === 'clarify' ? <>
+        <div className="clarify-layout">
+          <div className="clarify-questions">
+            <div className="clarify-heading"><Robot size={23} weight="fill" /><span><b>AI 只需要你确认 4 项</b><small>已从任务和历史记录中预填，可直接生成，也可以修改。</small></span></div>
+            {[
+              ['device', '运行设备', ['Ascend 910B 单卡', 'Atlas 800I A2', '暂不确定']],
+              ['version', '软件环境', ['CANN 8.0.RC2', 'CANN 8.0.0', '自动识别']],
+              ['time', '可用时间', ['一周内', '只有周末', '两周内']],
+              ['goal', '学习优先级', ['先跑通再深入', '系统学习原理', '优先解决排错']],
+            ].map(([key, label, options]) => <div className="clarify-row" key={key}><b>{label}</b><div>{options.map(option => <button className={answers[key] === option ? 'selected' : ''} key={option} onClick={() => setAnswers(current => ({ ...current, [key]: option }))}>{answers[key] === option && <Check size={14} weight="bold" />}{option}</button>)}</div></div>)}
+          </div>
+          <aside className="generation-preview"><span className="eyebrow">将生成什么</span><h3>18–24 小时 · 7 个任务节点</h3><div><CheckCircle size={18} weight="fill" /><p><b>每个节点有完成标准</b><small>不以“看完内容”代替任务完成</small></p></div><div><ShieldCheck size={18} /><p><b>绑定版本与验证证据</b><small>{answers.device} · {answers.version}</small></p></div><div><GitDiff size={18} /><p><b>生成后仍可调整</b><small>修改时间或基础时先展示路径 Diff</small></p></div></aside>
+        </div>
+        <div className="generate-inline"><span><Info size={17} />生成后直接进入路径总览；这里不会变成一个独立工作台。</span><button className="primary" onClick={() => setStage('generating')}><Sparkle size={18} weight="fill" />生成学习路径</button></div>
+      </> : <div className="generation-state"><CircleNotch size={46} weight="bold" /><h3>正在把任务转成可执行的学习路径</h3><p>保留当前任务、环境与时间约束，完成后直接进入路径总览。</p><div><span className="done"><Check size={16} weight="bold" />完成标准与来源已匹配</span><span className="done"><Check size={16} weight="bold" />能力缺口与前置依赖已识别</span><span className="active"><CircleNotch size={16} weight="bold" />正在绑定练习与验证信号</span></div></div>}
+    </section>}
+  </main>;
 }
 
 function GoalHeader({ onEvidence }) {
@@ -176,14 +272,15 @@ function CompletionScene({ go }) {
 }
 
 function DemoController({ scene, go }) {
-  return <aside className="demo-controller" aria-label="旅程演示控制"><span><b>旅程演示</b><small>{String(scene + 1).padStart(2, '0')} / 06 · {demoSteps[scene]}</small></span><div><IconButton label="上一步" disabled={scene === 0} onClick={() => go(scene - 1)}><ArrowLeft size={17} /></IconButton><IconButton label="下一步" disabled={scene === 5} onClick={() => go(scene + 1)}><ArrowRight size={17} /></IconButton></div></aside>;
+  return <aside className="demo-controller" aria-label="旅程演示控制"><span><b>旅程演示</b><small>{String(scene + 1).padStart(2, '0')} / 07 · {demoSteps[scene]}</small></span><div><IconButton label="上一步" disabled={scene === 0} onClick={() => go(scene - 1)}><ArrowLeft size={17} /></IconButton><IconButton label="下一步" disabled={scene === 6} onClick={() => go(scene + 1)}><ArrowRight size={17} /></IconButton></div></aside>;
 }
 
 export function App() {
-  const initial = useMemo(() => { const match = window.location.hash.match(/scene-(\d)/); return match ? Math.max(0, Math.min(5, Number(match[1]) - 1)) : 0; }, []);
+  const initial = useMemo(() => { const match = window.location.hash.match(/scene-(\d)/); return match ? Math.max(1, Math.min(6, Number(match[1]))) : 0; }, []);
   const [scene, setScene] = useState(initial); const [evidenceOpen, setEvidenceOpen] = useState(false);
-  const go = next => { const safe = Math.max(0, Math.min(5, next)); setScene(safe); setEvidenceOpen(false); window.location.hash = `scene-${safe + 1}`; window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const go = next => { const safe = Math.max(0, Math.min(6, next)); setScene(safe); setEvidenceOpen(false); window.location.hash = safe === 0 ? 'landing' : `scene-${safe}`; window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const pathGo = next => go(next + 1);
   useEffect(() => { const onKey = event => { if (event.key === 'ArrowRight') go(scene + 1); if (event.key === 'ArrowLeft') go(scene - 1); }; window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey); }, [scene]);
-  return <div className={`app scene-${scene + 1}`}><TopNavigation />
-    {scene === 0 && <OverviewScene go={go} evidenceOpen={evidenceOpen} setEvidenceOpen={setEvidenceOpen} />}{scene === 1 && <LearnScene go={go} />}{scene === 2 && <PracticeScene go={go} />}{scene === 3 && <FailureScene go={go} />}{scene === 4 && <ReplanScene go={go} />}{scene === 5 && <CompletionScene go={go} />}<DemoController scene={scene} go={go} /></div>;
+  return <div className={`app journey-${scene}`}><TopNavigation />
+    {scene === 0 && <LandingScene go={go} />}{scene === 1 && <OverviewScene go={pathGo} evidenceOpen={evidenceOpen} setEvidenceOpen={setEvidenceOpen} />}{scene === 2 && <LearnScene go={pathGo} />}{scene === 3 && <PracticeScene go={pathGo} />}{scene === 4 && <FailureScene go={pathGo} />}{scene === 5 && <ReplanScene go={pathGo} />}{scene === 6 && <CompletionScene go={pathGo} />}<DemoController scene={scene} go={go} /></div>;
 }
