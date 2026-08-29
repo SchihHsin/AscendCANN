@@ -2204,3 +2204,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 交互规则：鼠标点击或键盘聚焦后按 Enter / Space 打开深色遮罩大图；原图按视口完整 `contain` 显示，保留对应 alt 说明；点击遮罩空白、右上关闭按钮或按 Esc 关闭。大图打开期间隐藏翻页控件并阻止方向键翻页，关闭后恢复原图片焦点和原页 hash。双图卡的两个状态分别打开各自原图。
 - 验证：HTMLParser、内联 JS `node --check`、`git diff --check` 通过。Playwright / Chrome 1440×900 在 `#11` 验证 4 张可放大图；单图点击、双图第二状态 Enter 打开、Esc / 遮罩关闭、焦点恢复均通过；打开大图时 ArrowDown 不改变 `#11`，关闭后当前页 top 为 0，console / page error 为 0。未修改竞品文案、证据边界、27 页序列、H / M / L 口径、真实 NPU 边界或 API / Host / Application 三层边界。
 - 提交 / push：功能提交 `2340b26b`（`feat: add competitor image lightbox`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪资产保持原状，未纳入提交。
+
+### 2026-08-29（学习旅程六阶段 · 低保真界面草图）
+
+- 变更文件：`cann-dashboard/learning-platform-innovation-report.html`。用户确认高保真方向尚未确定，希望先在用户旅程图中为每个阶段画更详细的草图；本轮没有修改学习 Demo、竞品文案、27 页正式序列、H / M / L 证据口径或 API / Host / Application 三层边界。
+- 旅程页继续遵守 User Journey Skill 的六列六行结构，将“触点 / TOUCH”行具体化为“界面 / SKETCH”行。六个阶段分别绘制 Landing 任务入口、任务简报与生成状态、可共同编辑的学习路径、自适应学习与运行画布、失败诊断与局部再规划、验证回执与续学恢复；总览内保持低密度 mini UI，点击后显示 1320×720 的详细灰阶线框，避免高保真未定时提前锁死视觉框架。
+- 放大草图补齐真实操作现场：任务发现、可信来源与历史任务；系统假设、关键补问理由、生成依据与成本；节点依赖、锁定 / 分支 / Diff / 回滚；讲解、代码、Terminal、预期输出与上下文 AI；错误证据链、提示阶梯、修复复跑与局部路径更新；Verified Receipt、跨会话现场快照、未决证据与下一动作理由。上述界面与数据均为待原型测试的设计假设（L），不代表现网功能或真实 NPU 验证结果。
+- 大图交互复用原竞品 Lightbox：六张草图支持鼠标点击与 Enter / Space 打开，Esc、遮罩或关闭按钮退出；关闭后保留 `#5`、旅程页滚动位置与原草图焦点。竞品截图仍以原图模式打开，未与草图画布模式混淆。
+- 验证：HTMLParser、内联 JS `node --check`、`git diff --check` 通过；Playwright / Chrome 1600×900 对 27 页整套回归，27 页 / 27 导航点、全部图片解码成功、0 页面溢出、0 console / page error；六张放大草图逐张检查均为 1320×720、0 内容溢出，Esc 关闭后 hash 与焦点恢复；竞品图片大图回归也通过。功能提交 `5602036a`（`feat: add journey stage wireframe demos`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、未跟踪研究资产和大型目录保持原状，未纳入提交。
