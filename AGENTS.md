@@ -2197,3 +2197,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文案与创新方向：roadmap.sh 继续限定为“路径可以是 AI 生成对象，但公开界面未证明节点级 Diff”；Sana 为方向信号而非编辑证据；CodeSignal 未显示路径共同编辑；方向二结论恢复为“市场空白”。路径锁定 / 分支 / 回滚 / Diff、活动驱动画布、提示阶梯、失败局部重规划和带证据续学继续作为 L 级设计机会，没有因截图边界而弱化。仅将用户明确不接受的反驳式设计句法改为正向陈述。
 - 验证：HTMLParser 通过；内联 JS `node --check` 通过；审计 JSON 解析为 18 张卡；52 个 HTML 图片引用全部存在；正式 6 页仍为 18 张卡且每卡有可点击来源。Playwright / Chrome 1440×900 复核 `#7/#9/#11/#13/#15/#17`，图片全部解码，卡片、结论条和页脚 0 横纵溢出；人工确认实际交互在卡片尺寸下可辨识。`git diff --check` 通过。未改变 H / M / L 总口径、真实 NPU 边界或 API / Host / Application 三层边界。
 - 提交 / push：功能与证据提交 `3cb4836e`（`fix: align learning competitor evidence with UX claims`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、未采用截图、研究目录与大型未跟踪文件保持原状，未纳入提交。
+
+### 2026-08-29（学习平台竞品截图 · 点击查看大图）
+
+- 变更文件：`cann-dashboard/learning-platform-innovation-report.html`。为正式 6 个交互方向、18 张竞品卡中的所有单图和双图状态增加大图查看；Logo、装饰图、Demo 示意和隐藏旧模板不绑定该功能，避免扩大交互范围。
+- 交互规则：鼠标点击或键盘聚焦后按 Enter / Space 打开深色遮罩大图；原图按视口完整 `contain` 显示，保留对应 alt 说明；点击遮罩空白、右上关闭按钮或按 Esc 关闭。大图打开期间隐藏翻页控件并阻止方向键翻页，关闭后恢复原图片焦点和原页 hash。双图卡的两个状态分别打开各自原图。
+- 验证：HTMLParser、内联 JS `node --check`、`git diff --check` 通过。Playwright / Chrome 1440×900 在 `#11` 验证 4 张可放大图；单图点击、双图第二状态 Enter 打开、Esc / 遮罩关闭、焦点恢复均通过；打开大图时 ArrowDown 不改变 `#11`，关闭后当前页 top 为 0，console / page error 为 0。未修改竞品文案、证据边界、27 页序列、H / M / L 口径、真实 NPU 边界或 API / Host / Application 三层边界。
+- 提交 / push：功能提交 `2340b26b`（`feat: add competitor image lightbox`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪资产保持原状，未纳入提交。
