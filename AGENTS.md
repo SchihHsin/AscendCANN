@@ -2187,3 +2187,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据来源：本轮 18 张卡均已从官方具体页面获得可直接对应的界面、状态或官方说明，故没有采用第三方 YouTube 评测画面。后续若官方页面受登录态或动态交互限制，优先采用官方产品频道的 YouTube 演示帧，并在卡片标注“官方演示视频帧”和原视频链接。截图裁切坐标、卡片主张与保留 / 替换判断记录在审计 JSON 中。
 - 验证：HTMLParser 通过；内联 JS 语法检查通过；JSON 校验通过；`git diff --check` 通过；正式序列仍为 27 页、18 张竞品卡和 18 个可点击原始链接，全部图片引用存在。应用内浏览器 1440×900 人工复核 `#7/#9/#11/#13/#15/#17`，六页的关键图内文字或状态在卡片尺寸下可辨识，console 0 warning / error。未改变 H / M / L 证据口径、真实 NPU 边界或 API / Host / Application 三层边界。
 - 提交 / push：功能与证据提交 `ba9849ef`（`fix: align competitor screenshots with UX claims`）已成功推送 `origin/main`；本条交接回填随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、未采用竞品截图、其他研究目录与大型未跟踪文件保持原状，未纳入提交。
+
+### 2026-08-29（学习平台竞品证据 · 实际界面二次校正）
+
+- 变更文件：`cann-dashboard/learning-platform-innovation-report.html`、`learning-platform-innovation-research/evidence/audit/screenshot-evidence-audit-20260829.json`；新增 17 张实际产品界面 / 演示帧，位于 `evidence/interaction-competitors/`。本轮只整改 6 个交互方向的 18 张正式竞品卡，没有修改 27 页顺序、学习 Demo、hash / Overview / 全屏 runtime 或隐藏旧模板。
+- 业务目的：用户指出上一轮仍有多张图只显示入口或营销板块，无法证明相邻文案。本轮逐卡恢复截图整改前的创新文案强度，并以“图内必须直接看到文案所述交互、状态或反馈”为准更换证据；需要呈现连续关系的 Memrise、CodeSignal、CodeGrade、Khanmigo、Codewars、Pluralsight、Microsoft Applied Skills 使用双图状态，卡片继续保留可点击深层页面或演示链接。
+- 关键证据更新：Hyperskill 改为 AI Engineering 课程的实际项目列表；Sana Learn 裁到课程创作画布、多人光标与 Publish 状态，只作为 AI-native 方向信号，不证明路径拖拽 / 分支 / 回滚；CodeSignal 使用路径课程序列 + Cosmo 在代码编辑器旁的反馈；KodeKloud 使用任务 + Terminal Lab；CodeGrade 使用 IDE + 失败测试 Expected / Actual；Frontend Mentor 使用 AI code review 评分与建议；Workera 使用 Capability Deep Dive；Pluralsight 使用 Skill IQ 结果 + Continue learning；Microsoft 使用具体生成式 AI 凭证 + 45 分钟交互评估 Lab。
+- 来源与边界：优先官方实际页面和官方产品图；Memrise、CodeSignal 使用官方演示视频帧。Codewars 因公开页面没有实际多解列表，采用第三方操作演示中的“通过 5/5 后出现 View Solutions / Discuss”入口，并与官方“Compare your solution with others after each kata”说明组成双证据，明确标注 `H/M`，不得写成截图已经展示真正多解列表。审计 JSON 现在逐卡记录 `claim / visibleEvidence / sourceUrl / asset / sourceType / isEntryOnly / evidenceLevel / limitation`。
+- 文案与创新方向：roadmap.sh 继续限定为“路径可以是 AI 生成对象，但公开界面未证明节点级 Diff”；Sana 为方向信号而非编辑证据；CodeSignal 未显示路径共同编辑；方向二结论恢复为“市场空白”。路径锁定 / 分支 / 回滚 / Diff、活动驱动画布、提示阶梯、失败局部重规划和带证据续学继续作为 L 级设计机会，没有因截图边界而弱化。仅将用户明确不接受的反驳式设计句法改为正向陈述。
+- 验证：HTMLParser 通过；内联 JS `node --check` 通过；审计 JSON 解析为 18 张卡；52 个 HTML 图片引用全部存在；正式 6 页仍为 18 张卡且每卡有可点击来源。Playwright / Chrome 1440×900 复核 `#7/#9/#11/#13/#15/#17`，图片全部解码，卡片、结论条和页脚 0 横纵溢出；人工确认实际交互在卡片尺寸下可辨识。`git diff --check` 通过。未改变 H / M / L 总口径、真实 NPU 边界或 API / Host / Application 三层边界。
+- 提交 / push：功能与证据提交 `3cb4836e`（`fix: align learning competitor evidence with UX claims`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、未采用截图、研究目录与大型未跟踪文件保持原状，未纳入提交。
