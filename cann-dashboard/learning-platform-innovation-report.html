@@ -370,6 +370,8 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .ix-moments{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1vw;width:100%}.ix-moments article{min-height:20vh;padding:1.5vh 1.15vw;border-radius:15px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.88);display:flex;flex-direction:column;gap:.6vh}.ix-moments span{font:700 var(--fs-xs)/1 'JetBrains Mono';color:var(--accent)}.ix-moments strong{font-size:var(--fs-h3)}.ix-moments p{font-size:var(--fs-body);line-height:1.48;color:var(--ink-2)}
 .ix-compare{min-height:0;align-items:stretch}.ix-compare .cmp{min-height:0}.ix-compare .cmp-body{padding:1.35vh 1.1vw .65vh;gap:.8vh}.ix-compare .cmp-desc{font-size:var(--fs-body);line-height:1.45}.ix-compare .cmp-img{padding:0 .75vw .7vw}.ix-compare .cmp-img>img{width:100%;height:25vh;object-fit:cover;object-position:top}.ix-compare .cmp-cap{display:flex;align-items:center;justify-content:space-between;gap:.5vw;font-size:var(--fs-xs)}
 .cmp-visuals{display:grid;width:100%;height:25vh;gap:.35vw;min-width:0;min-height:0}.cmp-visuals.cols{grid-template-columns:repeat(2,minmax(0,1fr))}.cmp-visuals.stack{grid-template-rows:repeat(2,minmax(0,1fr))}.cmp-visual{position:relative;overflow:hidden;min-width:0;min-height:0;border:1px solid var(--line);border-radius:9px;background:#eef0f5}.ix-compare .cmp-visual img{display:block;width:100%;height:100%;border:0;border-radius:0;box-shadow:none;object-fit:cover;object-position:top}.cmp-visual small{position:absolute;left:6px;bottom:6px;max-width:calc(100% - 12px);padding:3px 7px;border-radius:999px;background:rgba(20,25,35,.78);color:#fff;font:700 var(--fs-xs)/1.15 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cmp-links{display:inline-flex;align-items:center;justify-content:flex-end;gap:.42vw;min-width:0}
+.ix-compare .cmp-img img{cursor:zoom-in}.ix-compare .cmp-img img:focus-visible{outline:3px solid var(--accent);outline-offset:-4px}.image-lightbox[hidden]{display:none}.image-lightbox{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:4vh 4vw;background:rgba(7,9,15,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);opacity:0;transition:opacity .18s ease}.image-lightbox.open{opacity:1}.image-lightbox-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2vh;width:min(92vw,1680px);height:min(88vh,980px);min-width:0;min-height:0}.image-lightbox-stage img{display:block;max-width:100%;max-height:calc(100% - 4.5vh);width:auto;height:auto;object-fit:contain;border:1px solid rgba(255,255,255,.28);border-radius:12px;background:#fff;box-shadow:0 28px 80px rgba(0,0,0,.48)}.image-lightbox-caption{display:flex;align-items:center;justify-content:center;gap:1em;max-width:92vw;color:#fff;font-size:var(--fs-body);line-height:1.45;text-align:center}.image-lightbox-caption span:last-child{color:rgba(255,255,255,.58);font-size:var(--fs-sm)}.image-lightbox-close{position:absolute;top:2.4vh;right:2.2vw;width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;transition:background .16s ease,transform .16s ease}.image-lightbox-close:hover{background:rgba(255,255,255,.2);transform:scale(1.04)}.image-lightbox-close:focus-visible{outline:2px solid #fff;outline-offset:3px}.image-lightbox-close svg{width:20px;height:20px}.lightbox-open #controls,.lightbox-open .nav-dots{pointer-events:none;opacity:0!important}
+.lightbox-open{overflow:hidden}
 .ix-compare .cmp-link{display:inline-flex;align-items:center;width:fit-content;color:var(--accent);font-weight:800;text-decoration:none;white-space:nowrap}
 .ix-compare .cmp-link:hover{text-decoration:underline;text-underline-offset:2px}.ix-compare .cmp-link:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
 .ix-evidence{display:inline-flex;align-self:flex-start;width:fit-content;padding:.35vh .55vw;border-radius:999px;background:rgba(91,91,214,.09);font-size:var(--fs-xs);font-weight:800;color:var(--accent)}
@@ -738,6 +740,14 @@ body.overview #panel,body.overview #toggle{display:none!important}
 </div>
 <button id="toggle" style="display:none" title="调色面板"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="10" cy="7" r="2.4"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="15" cy="17" r="2.4"/></svg></button>
 
+<div class="image-lightbox" id="imageLightbox" role="dialog" aria-modal="true" aria-labelledby="imageLightboxCaption" aria-hidden="true" hidden>
+  <button class="image-lightbox-close" id="imageLightboxClose" type="button" aria-label="关闭大图" title="关闭 Esc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <div class="image-lightbox-stage">
+    <img id="imageLightboxImage" alt="">
+    <div class="image-lightbox-caption" id="imageLightboxCaption"><span id="imageLightboxTitle"></span><span>点击空白处或按 Esc 关闭</span></div>
+  </div>
+</div>
+
 <nav class="nav-dots" id="navDots"></nav>
 <!-- 底部居中控制栏（默认隐藏，鼠标移到底部才出现）-->
 <div id="controls">
@@ -857,16 +867,44 @@ function go(n){ if(document.body.classList.contains('overview'))return; const i=
 }
 function next(){go(idx+1);} function prev(){go(idx-1);}
 prevBtn.onclick=prev; nextBtn.onclick=next;
+
+/* 竞品证据大图：只绑定正式交互竞品卡，双图分别查看原图 */
+const imageLightbox=document.getElementById('imageLightbox');
+const imageLightboxImage=document.getElementById('imageLightboxImage');
+const imageLightboxTitle=document.getElementById('imageLightboxTitle');
+const imageLightboxClose=document.getElementById('imageLightboxClose');
+let lightboxOpener=null,lightboxCloseTimer=null;
+function openImageLightbox(img){
+  if(!img||document.body.classList.contains('overview'))return;
+  clearTimeout(lightboxCloseTimer);lightboxOpener=img;
+  imageLightboxImage.src=img.currentSrc||img.src;imageLightboxImage.alt=img.alt||'竞品界面大图';
+  imageLightboxTitle.textContent=img.alt||'竞品界面大图';
+  imageLightbox.hidden=false;imageLightbox.setAttribute('aria-hidden','false');document.body.classList.add('lightbox-open');
+  requestAnimationFrame(()=>imageLightbox.classList.add('open'));imageLightboxClose.focus({preventScroll:true});
+}
+function closeImageLightbox(){
+  if(imageLightbox.hidden)return;
+  imageLightbox.classList.remove('open');imageLightbox.setAttribute('aria-hidden','true');document.body.classList.remove('lightbox-open');
+  lightboxCloseTimer=setTimeout(()=>{imageLightbox.hidden=true;imageLightboxImage.removeAttribute('src');if(lightboxOpener)lightboxOpener.focus({preventScroll:true});lightboxOpener=null;},180);
+}
+document.querySelectorAll('.ix-compare .cmp-img img').forEach(img=>{
+  img.tabIndex=0;img.title='点击查看大图';img.setAttribute('role','button');img.setAttribute('aria-label','查看大图：'+(img.alt||'竞品界面'));
+  img.addEventListener('click',e=>{if(document.body.classList.contains('overview'))return;e.preventDefault();e.stopPropagation();openImageLightbox(img);});
+  img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();}});
+  img.addEventListener('keyup',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();openImageLightbox(img);}});
+});
+imageLightbox.addEventListener('click',e=>{if(e.target.closest('.image-lightbox-stage img')||e.target.closest('.image-lightbox-caption'))return;closeImageLightbox();});
 /* 受控模式：滚轮 / 触控板翻页（无原生滚动，需拦截 + 节流）*/
 if(CTRL){
   let wlock=false;
-  addEventListener('wheel',e=>{ if(document.body.classList.contains('overview'))return; e.preventDefault();
+  addEventListener('wheel',e=>{ if(document.body.classList.contains('overview')||!imageLightbox.hidden)return; e.preventDefault();
     if(wlock||Math.abs(e.deltaY)<6)return; wlock=true; setTimeout(()=>wlock=false,620);
     if(e.deltaY>0)next(); else prev();
   },{passive:false});
 }
 
 document.addEventListener('keydown',e=>{
+  if(!imageLightbox.hidden){e.preventDefault();if(e.key==='Escape')closeImageLightbox();return;}
   if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
   if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
   else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
