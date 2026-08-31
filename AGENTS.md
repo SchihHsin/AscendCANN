@@ -2280,3 +2280,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修复：新增 `body.overview .slide[hidden]{display:none!important;counter-increment:none}`，保证隐藏历史页在总览模式仍不显示、也不参与缩略页码；未修改 50 页正式内容、顺序、缩放算法、H / M / L 证据口径或 API / Host / Application 层级边界。
 - 验证：静态断言确认 Overview 隐藏规则存在、正式 runtime 仍为 50 页、隐藏旧页仍只保留 1 张；内联 JS `node --check` 与 `git diff --check` 通过。应用内浏览器对本地 `file://` 刷新仍被 URL 安全策略拒绝，未绕过限制；最终视觉由用户刷新现有标签并重新进入总览确认。
 - 提交 / push：修复提交 `29387ecd`（`fix: keep hidden slides out of overview`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪资产保持原状。
+
+### 2026-08-31（AI 编码机制报告 · 移除右侧圆点导航）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。用户认为右侧悬浮页码圆点没有实际价值，明确要求移除；本轮完整删除其 DOM、CSS 和 JavaScript 创建、激活、显隐与鼠标热区逻辑。
+- 底部控制栏的上一页 / 下一页、当前页码、总览、全屏仍保留；键盘翻页、hash 页码恢复和 50 页正式 `reportOrder` 不变。鼠标移至右侧不再触发底部控制栏，底部热区仍可唤出控制栏。
+- 未修改报告内容、页面顺序、H / M / L 证据口径、API / Host / Application 三层边界或昇腾供给结论。
+- 验证：确认 `navDots / nav-dots / nav-dot / dotEls` 无残留；HTMLParser 通过；正式 runtime 顺序仍为 50 页；底部六个控制元素均存在；内联 JS `node --check` 与 `git diff --check` 通过。最终视觉由用户刷新当前本地页面确认。
+- 提交 / push：修复提交 `808ebaa8`（`fix: remove redundant slide navigation dots`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪资产保持原状。
