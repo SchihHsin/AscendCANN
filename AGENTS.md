@@ -2237,3 +2237,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 层级和证据边界未改变：API final / message 仍只是候选交付，业务验收属于 Application / Task 层；报告不声称本机完成 NPU / CANN 真机验证，也不把目标蓝图写成已上线事实。CANN × CUDA 三任务和 15 个公开 Issue 样本仍只代表当前公开样本。
 - 验证：HTMLParser 通过；46 个 DOM slide 标题唯一，45 个正式 `reportOrder` 全部命中，仅旧重复页被排除；内联 JS `node --check` 与 `git diff --check` 通过。应用内浏览器对本地 `file://` reload 仍被安全策略拒绝，按 Browser Skill 未绕过或切换替代浏览器，因此本轮没有声称完成浏览器视觉 QA；用户需在已打开页面刷新后做最终视觉确认。
 - 提交 / push：报告提交 `9b84f299`（`refactor: connect platform mechanisms to Ascend AI coding strategy`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、研究目录、截图和大型未跟踪资产均未清理、覆盖或纳入提交。
+
+### 2026-08-31（AI 编码机制报告 · 六平台流程图改为观点图）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。用户确认平台流程图是报告最重要的分析，但旧图偏“机制复原”，不易看出观点及其与后续昇腾供给的关系；本轮采用已讨论的“统一比较坐标 + 差异聚光”方案，没有改动平台事实、45 页正式总数或 deck runtime。
+- 六个平台完整流程图从附录移回核心主线，位于“六环节差异聚光”总览之后、“平台差异带来的效果”综合页之前，正式页码为 Claude Code #8、Codex #9、OpenCode #10、Cursor #11、Trae #12、WorkBuddy #13。附录改为平台定位、能力矩阵、扩展推导和来源边界，不再错误宣称完整流程图位于附录。
+- 每张平台页统一为“结论标题 → 本页观点条 → 完整 Mermaid 流程 → 3 个荧光黄编号控制点 → 3 条机制 / 可能作用 / 证据与供给映射”。完整流程与普通节点继续保留，荧光黄只标真正需要比较的节点；影响文案严格区分 H 机制事实与待 Benchmark 的效果，不因高亮而把平台口碑写成因果结论。
+- Claude Code 聚焦 Context 中的 CLAUDE.md / Rules、独立 Subagent、Stop Hook；Codex 聚焦目录指令发现、Approval / Sandbox、diff / test / log 证据；OpenCode 聚焦统一 tools.ts、permission.ask、Compact session；Cursor 聚焦 tool-call 边界 Steering、Cloud VM、Checkpoint / 用户接管；Trae 聚焦 Plan confirmation、Tool Panel、Stop Hook；WorkBuddy 聚焦多 Agent 成本确认、执行状态、Results。WorkBuddy 继续只作任务状态与交付产品化参照，不进入同类 Coding IDE 强弱排名。
+- 后续关系已直接写在图下：Context / Method 对应 Context Pack、Knowledge / Workflow；权限与计划门槛对应 Capability Contract；真实运行对应 Trusted Execution Gateway；Stop / Preview / diff / log / Results 对应 Evidence Layer；Checkpoint / 待处理 / 继续处理对应 State Transition。平台差异综合页继续负责把这些控制点推到用户效果与昇腾可控变量。
+- 证据与层级边界未改变：Claude Code Runtime 内部策略、Codex 内部规划、平台效果与编码能力排名仍非 H 事实；API final / message 仍只是候选交付，业务验收属于 Application / Task 层；本机仍不声称完成真实 NPU / CANN 验证。
+- 验证：HTMLParser 通过；46 个 DOM slide / 45 个正式标题唯一且全部命中，旧重复“Claude Code 更强吗”仍不进入 runtime；六张平台页均检测到 spotlight class 与 takeaway 组；内联 JS `node --check`、`git diff --check` 通过。应用内浏览器的本地 `file://` 安全限制仍未绕过，最终视觉由用户刷新已打开页面复核。
+- 提交 / push：功能提交 `23ae78c5`（`refine: turn platform flows into mechanism arguments`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余用户已有脏文件与未跟踪资产保持原状。
