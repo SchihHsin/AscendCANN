@@ -2224,3 +2224,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界保持 H / M / L：六平台公开文档 / 源码与现有 CANN × CUDA、15 个公开 Issue 样本边界未扩张；新增协同与运营页属于目标产品蓝图（L），不声称已经上线或完成真实 NPU 验证。页面序列和 hash 自动适配 35 页，控制栏初始计数同步为 `01 / 35`。
 - 验证：HTMLParser 解析通过，35 页且 35 个标题唯一；4 段内联 JS 经 `node --check` 通过；`git diff --check` 通过；旧冲突词与旧页数检索无残留。应用内浏览器因本地 `file://` URL 安全策略拒绝新开报告页，未绕过策略或改用替代浏览器，因此第 28、29 页仍需用户在本地打开后做最终视觉确认；不能将本轮记为已完成浏览器视觉 QA。
 - 提交 / push：报告提交 `3a1a9e35`（`feat: strengthen AI service collaboration report`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、研究目录、截图与大型未跟踪资产保持原状，未纳入提交。
+
+### 2026-08-31（AI 编码机制报告 · 从平台罗列重构为决策链）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。正式阅读序列由 35 页重构为 45 页核心 + 附录结构；DOM 仍保留 46 张 slide，其中旧“Claude Code 更强吗”重复页从正式 runtime 隐藏，用新的 H / M / L 组合归因和双轨验证替代。六个平台完整机制图、能力矩阵、传统旅程、协同架构、产品形态和来源均保留并下沉附录，没有因叙事改版删除真实机制内容。
+- 主线现在严格串联：一句话结论 → 三个领导问题与证据边界 → 通用 Host 循环 → 六环节差异聚光 → 机制差异带来的用户效果 → Claude Code 组合归因 → 公平验证 → CANN 实证 → 昇腾可控变量 → 五个跨平台产品包 → 交付通道与四份合同 → 六平台适配 → AI 时代旅程 → 知识 / 问题 / 状态 → 协同蓝图 → 五个体验关键时刻 → 责任、成本、机会、Roadmap 与最终决策。
+- Claude Code 口径不可回退：当前没有证据把体验优势单独归因于 Harness；更合理的解释是 `Model × Harness Defaults × Environment × Verification × Method Assets ÷ Cost & Friction`。H 为 CLAUDE.md / Rules、Skills、Subagents、Hooks、工具与真实 Shell / 文件 / 测试回环；M 为长任务中工作区、测试、错误现场可能衔接更连续的待扩样观察；L 为工具 schema、上下文压缩、重规划及模型 × Harness 联合调优等未公开策略。功能入口数量、口碑或单平台默认结果不能推出客观排名。
+- 新的跨平台比较统一落在六个环节：Context、Plan、Action、Environment、Verify、Recover / Continue。高亮只表示公开机制中显著的产品化环节，不表示内部算法优劣。WorkBuddy 只作为任务状态与交付工作台参照，不进入 Coding IDE 强弱排名。公平验证必须使用两条轨道：A 原生最佳体验回答用户实际得到什么；B 统一模型、任务、预算、权限、环境与知识供给，隔离 Host / Harness 贡献。指标至少含测试 / 业务验收、首次可运行时间、恢复、人工接管、证据完整和总成本。
+- 昇腾建设结论具体化为五个跨平台产品包：① `Ascend Context Pack` 输出环境指纹与 Task Envelope；② `Version-aware Knowledge Pack` 提供带版本、硬件、适用 / 失效范围、原文锚点和冲突关系的最小知识单元；③ `Ascend Workflow / Skill Pack` 提供诊断、构建、精度、性能等状态触发流程及输入、取证、停止、恢复和产物；④ `Trusted Execution Gateway` 提供预检、兼容、样例、构建、测试、Profiling、NPU 和诊断包；⑤ `Evidence & Evaluation Layer` 统一 Evidence Receipt、状态、Owner / SLA、验收与跨平台 Benchmark。
+- 提供方式固定为“统一领域内核 + 轻量平台适配”：Claude Code 使用 CLAUDE.md + Skill + MCP / Hook；Codex 使用 AGENTS.md + Skill / Plugin + MCP；OpenCode 使用 Instruction + Agent / Command + MCP；Cursor 使用 Rules + Skill + MCP / Cloud；Trae 使用 Project Rules + Agent + MCP；其他 AI 通过 OpenAPI / CLI / Web / Expert。MCP、Skill、Plugin、API、CLI 和网页只是通道，底层 `Task Envelope / Capability Contract / Evidence Receipt / State Transition` 四份合同必须一致。
+- 用户体验重点明确为五个关键时刻：知识是否适用、为什么选择路径、调用前权限 / 成本 / 修改范围是否可控、失败后状态 / Owner / SLA / 恢复是否可见、最终完成与证据是否可验收。体验部负责任务模型、补问、状态与成本呈现、授权控制、恢复、跨工具连续性、研究和指标；领域 Owner 负责知识真实性、版本 SLA、服务能力、错误语义、验收、专家接管与修复上线。指标统一为首次验证时间、恢复率、人工干预、证据完整、跨工具上下文保留、Verified Completion Rate 与 Cost per Verified Task。
+- 层级和证据边界未改变：API final / message 仍只是候选交付，业务验收属于 Application / Task 层；报告不声称本机完成 NPU / CANN 真机验证，也不把目标蓝图写成已上线事实。CANN × CUDA 三任务和 15 个公开 Issue 样本仍只代表当前公开样本。
+- 验证：HTMLParser 通过；46 个 DOM slide 标题唯一，45 个正式 `reportOrder` 全部命中，仅旧重复页被排除；内联 JS `node --check` 与 `git diff --check` 通过。应用内浏览器对本地 `file://` reload 仍被安全策略拒绝，按 Browser Skill 未绕过或切换替代浏览器，因此本轮没有声称完成浏览器视觉 QA；用户需在已打开页面刷新后做最终视觉确认。
+- 提交 / push：报告提交 `9b84f299`（`refactor: connect platform mechanisms to Ascend AI coding strategy`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余 `.DS_Store`、访谈 HTML、研究目录、截图和大型未跟踪资产均未清理、覆盖或纳入提交。
