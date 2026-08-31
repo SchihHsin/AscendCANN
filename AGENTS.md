@@ -2288,3 +2288,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 未修改报告内容、页面顺序、H / M / L 证据口径、API / Host / Application 三层边界或昇腾供给结论。
 - 验证：确认 `navDots / nav-dots / nav-dot / dotEls` 无残留；HTMLParser 通过；正式 runtime 顺序仍为 50 页；底部六个控制元素均存在；内联 JS `node --check` 与 `git diff --check` 通过。最终视觉由用户刷新当前本地页面确认。
 - 提交 / push：修复提交 `808ebaa8`（`fix: remove redundant slide navigation dots`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪资产保持原状。
+
+### 2026-08-31（AI 时代昇腾社区 · 领导审视版）
+
+- 新建独立副本 `cann-dashboard/ai-coding-platform-mechanism-report-leadership.html`，没有覆盖或改写原始 `ai-coding-platform-mechanism-report.html`。目标受众是负责跨领域用户体验、但不熟悉昇腾业务与技术的部门领导；核心问题固定为“社区是给人还是给 Agent、Agent 到底读取什么、AI 时代社区与体验设计的新增价值在哪里”。
+- 对原材料的领导视角审计结论：原版的机制事实与供给设计较完整，但 50 页主线将领导答案埋在平台技术细节中；“给 Agent 看”仍缺少可直观理解的读取对象；没有清晰表达人和 Agent 的双界面与单一事实源；体验部的新增设计对象、部门边界、领导待决策事项与 90 天试点不够前置。因此副本按“为什么变 → 发现什么 → 怎样设计 → 体验价值 → 依据”重构。
+- 新增 8 张领导主线页：`领导一页结论 / 为什么社区必须改变 / Agent 读取对象 / 人与 Agent 双界面 / Agent 任务旅程 / 昇腾当前缺口 / 用户体验价值迁移 / 领导决策`。正式序列为 45 页，其中前 28 页是可口头汇报的决策主线；第 29 页起是附录。六个平台完整机制图、能力矩阵、形态合同、三层架构和来源边界全部保留在附录，没有为了压缩主线而丢失依据。
+- 核心产品判断：社区不是从“给人看”改成“只给 Agent 看”，而是由同一版本化权威源生成两类界面。人类界面负责解释、比较、授权、审阅与决策；Agent 界面负责结构化判断、调用和回填。Agent 需要读取六类对象：`Task Envelope / Scope & Preconditions / Knowledge Unit / Skill Contract / MCP or API Contract / Evidence Receipt & State`；“给 Agent 看”不等于去掉网页样式或增加更长文档。
+- 体验价值口径：社区从页面与搜索入口扩展为跨平台可信任务供给层；体验部从栏目、页面与点击流程扩展到 Task Taxonomy、Trigger Map、Knowledge / Skill / MCP Contract UX、Permission Ladder、State UX、Evidence Metrics 与 Golden Tasks。领域 Owner 继续对技术事实、知识版本、运行能力、NPU / 构建 / 测试、SLA 与验收规则负责；体验部不替代领域 Owner 做技术质量运营。
+- 领导待决策事项固定为三项：确立“Agent 可消费的可信任务供给”为社区基础能力；建立体验、资料、开发、平台、测试和支持的联合 Owner；批准环境、构建、日志诊断三类高频任务的 90 天跨平台试点。建议试点结果为首批版本化 Knowledge Unit、2 个只读 / 低风险 MCP、2 个恢复型 Skill，以及 2–3 个 Agent 平台的同任务验证与成本复盘；均为 <span class="tag l">L</span> 目标方案，不是既成能力。
+- 证据边界未改变：六平台机制继续区分 H / M / L；Claude Code 体验优势仍是模型、Harness、环境、验证回路与方法资产的组合归因假设，不能单独归因为 Harness；CANN × CUDA 三任务和 15 个公开 Issue 只代表当前公开样本；本机不声称完成真实 NPU / CANN 验证；API final / message 仍不是业务验收。
+- 视觉与叙事按 Report PPT Skill 处理：新增页采用结论标题、结构化流程、双界面图、四缺口卡和白 / 蓝紫 / 近黑三层决策卡；右侧圆点导航继续遵循用户已确认的移除决定，保留底部控制栏、键盘、hash、总览和全屏。
+- 验证：HTMLParser 通过；59 个 DOM slide 标题唯一、45 个正式 `reportOrder` 全部命中且顺序断言通过；内联 JS `node --check` 与 `git diff --check` 通过。Playwright + Google Chrome 在 1600×900 检查 45 页，0 个 page error、0 个可见文本 / 卡片越界；抽查 14 张关键页截图；验证 `#27` 刷新恢复、`27 / 45` 页码、Overview 3 列 / 45 个可见正式页、右侧 `navDots` 为 0。
+- 提交 / push：新报告提交 `8409bbe3`（`feat: add leadership edition of AI community report`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余用户已有 `.DS_Store`、访谈 HTML、研究目录、截图与大型未跟踪资产保持原状，未纳入提交。
