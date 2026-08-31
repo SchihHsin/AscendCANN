@@ -2248,3 +2248,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与层级边界未改变：Claude Code Runtime 内部策略、Codex 内部规划、平台效果与编码能力排名仍非 H 事实；API final / message 仍只是候选交付，业务验收属于 Application / Task 层；本机仍不声称完成真实 NPU / CANN 验证。
 - 验证：HTMLParser 通过；46 个 DOM slide / 45 个正式标题唯一且全部命中，旧重复“Claude Code 更强吗”仍不进入 runtime；六张平台页均检测到 spotlight class 与 takeaway 组；内联 JS `node --check`、`git diff --check` 通过。应用内浏览器的本地 `file://` 安全限制仍未绕过，最终视觉由用户刷新已打开页面复核。
 - 提交 / push：功能提交 `23ae78c5`（`refine: turn platform flows into mechanism arguments`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余用户已有脏文件与未跟踪资产保持原状。
+
+### 2026-08-31（AI 编码机制报告 · 45 页叙事顺序重排）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。用户指出原顺序把平台定位、通用能力栈、共同规律、机制对照、传统旅程和新产品形态放到后段或附录，导致读者尚未建立比较坐标就进入六张复杂流程图，并在机制、昇腾现状、旅程、供给与产品之间来回跳转。本轮只重排正式阅读序列、章节名、目录和附录导航，没有删除或改写任何平台流程、机制事实、研究数据和产品结论。
+- 新的核心主线固定为：领导问题与证据边界 → 六平台定位 / 通用能力 / 共同规律 → 通用 Host 与六环节比较坐标 → 六个平台完整机制图 → 机制对照 / 用户效果 / 能力公式 / Claude 组合归因与公平验证 → CANN 实证 → 传统旅程与 AI 旅程 → 知识 / 问题 / 状态 → 昇腾跨平台供给与合同 → 协同运行、体验、运营、成本、产品形态、机会、Roadmap 与最终答案。六平台机制图继续是核心分析，不下沉附录。
+- 章节导航由“01 答案 / 02 差异 / 03 供给 / 04 体验 / A 依据”改为“01 决策 / 02 平台 / 03 昇腾 / 04 落地 / A 依据”。目录五卡同步表达“先明确决策 → 建立平台比较坐标 → 用 CANN 证据推导昇腾供给 → 把供给转成产品落地”。`新产品形态` 从附录移回核心主线；`传统开发者旅程` 置于 `AI 时代开发者旅程` 之前；`机制对照` 和 `编码能力差异公式` 紧跟六个平台流程。
+- 附录现在只保留两张详细能力矩阵、协同架构、服务能力契约和来源边界；平台定位、共同规律、机制结论、旅程和产品形态不再作为附录中的新观点。WorkBuddy 仍只作为任务状态 / 交付参照，不进入 Coding IDE 强弱排名；旧隐藏页“Claude Code 更强吗”仍保留 DOM 供源码追溯，但不进入 45 页 runtime。
+- 证据与层级边界未改变：H / M / L 口径保持；API final / message 仍只是候选交付，业务验收属于 Application / Task 层；CANN × CUDA 三任务与 15 个公开 Issue 只代表当前样本；本机不声称完成真实 NPU / CANN 验证。
+- 验证：HTMLParser 解析通过；DOM 46 页、正式 `reportOrder` 45 页，全部命中且无重复；断言平台定位早于六平台流程、机制对照紧随流程、传统旅程早于 AI 旅程、新产品形态早于最终答案；内联 JS `node --check` 和 `git diff --check` 通过。本轮为顺序与导航修改，未绕过应用内浏览器对本地 `file://` 的限制，最终视觉由用户刷新已打开页面复核。
+- 提交 / push：报告提交 `4de40119`（`refactor: reorder AI coding report narrative`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有 `.DS_Store`、访谈 HTML、研究目录、截图与大型未跟踪文件均保持原状，未纳入提交。
