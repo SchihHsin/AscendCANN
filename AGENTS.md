@@ -2273,3 +2273,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与层级边界未改变：上述昇腾供给系统、Skill 与 MCP 清单均为 L 级目标设计；MCP 协议边界为 H；CANN × CUDA 三任务和 15 个公开 Issue 仍只代表当前样本；本机不声称完成真实 NPU / CANN 验证，API final / message 仍只是候选交付，业务验收属于 Application / Task 层。
 - 验证：HTMLParser 通过，51 个 DOM slide 标题唯一，50 个 `reportOrder` 全部命中无重复；供给页顺序断言通过；12 个 MCP 工具完整；内联 JS `node --check` 和 `git diff --check` 通过。按 Browser Skill 尝试刷新应用内浏览器中的本地 `file://` 报告时被 URL 安全策略拒绝，未绕过或改用替代浏览器，因此最终视觉仍由用户刷新已打开页面复核。
 - 提交 / push：报告提交 `7beca966`（`feat: define Ascend knowledge supply system`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余用户已有 `.DS_Store`、访谈 HTML、研究目录、截图与大型未跟踪文件保持原状，未纳入提交。
+
+### 2026-08-31（AI 编码机制报告 · 总览隐藏页布局修复）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。用户截图显示 Overview 中第一格出现未缩放的超长窄页，后续三列网格被整体顶乱。根因是 `body.overview .slide{display:block!important}` 的优先级高于通用 `.slide[hidden]{display:none!important}`，使已从 50 页正式序列排除、仅保留源码追溯的旧页“Claude Code 更强吗”在总览中重新显示；该旧页不在 runtime 的 `slides` 缩放列表中，因此保持 100vw × 100vh 内画布而未设置缩略高度。
+- 修复：新增 `body.overview .slide[hidden]{display:none!important;counter-increment:none}`，保证隐藏历史页在总览模式仍不显示、也不参与缩略页码；未修改 50 页正式内容、顺序、缩放算法、H / M / L 证据口径或 API / Host / Application 层级边界。
+- 验证：静态断言确认 Overview 隐藏规则存在、正式 runtime 仍为 50 页、隐藏旧页仍只保留 1 张；内联 JS `node --check` 与 `git diff --check` 通过。应用内浏览器对本地 `file://` 刷新仍被 URL 安全策略拒绝，未绕过限制；最终视觉由用户刷新现有标签并重新进入总览确认。
+- 提交 / push：修复提交 `29387ecd`（`fix: keep hidden slides out of overview`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪资产保持原状。
