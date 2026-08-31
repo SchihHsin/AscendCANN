@@ -146,7 +146,6 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .slide[data-title$="机制"] .head,.slide[data-title="通用 Host 循环"] .head{margin-bottom:1.55vh}
 
 /* controls */
-.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:7px;padding:10px 7px;border-radius:999px;background:rgba(150,150,170,.16);backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}.nav-dots.show{opacity:1}.nav-dot{width:7px;height:7px;border-radius:50%;background:rgba(40,45,60,.28);cursor:pointer;border:0;padding:0;transition:all .25s}.nav-dot:hover{transform:scale(1.25)}.nav-dot.active{background:var(--accent);height:18px;border-radius:4px}body.on-dark .nav-dots{background:rgba(255,255,255,.1)}body.on-dark .nav-dot{background:rgba(255,255,255,.3)}body.on-dark .nav-dot.active{background:#fff}
 #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;background:rgba(22,25,30,.42);backdrop-filter:blur(10px) saturate(1.2);color:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.4);opacity:0;transition:opacity .25s}#controls.show{opacity:.92}#controls button{background:transparent;color:#fff;border:0;cursor:pointer;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;opacity:.7}#controls button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.12)}#controls button:disabled{opacity:.28}#controls button svg{width:14px;height:14px}.ctrl-counter{font:500 10px/1 'JetBrains Mono';letter-spacing:.08em;min-width:48px;text-align:center;opacity:.7}.ctrl-sep{width:1px;height:13px;background:rgba(255,255,255,.18)}
 @media(max-width:1050px){.section-tabs{display:none}.contents-directory{gap:.5vw}.matrix>div{padding:.48vh .32vw}.matrix{grid-template-columns:1.05fr repeat(6,1fr)}}
 </style>
@@ -1007,7 +1006,6 @@ flowchart LR
 
 </div>
 
-<nav class="nav-dots" id="navDots" aria-label="页面导航"></nav>
 <div id="controls" aria-label="演示控制">
   <button id="prevBtn" title="上一页" aria-label="上一页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
   <button id="nextBtn" title="下一页" aria-label="下一页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
@@ -1071,7 +1069,6 @@ mermaid.initialize({
   });
 
   const slides = [...document.querySelectorAll('.slide:not([hidden])')];
-  const dots = document.getElementById('navDots');
   const controls = document.getElementById('controls');
   const counter = document.getElementById('counter');
   const prevBtn = document.getElementById('prevBtn');
@@ -1081,18 +1078,13 @@ mermaid.initialize({
   let current = 0, overview = false, uiTimer, scrollTimer, hashLock = false;
 
   slides.forEach((slide, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'nav-dot'; dot.title = `${String(i + 1).padStart(2,'0')} · ${slide.dataset.title || ''}`;
-    dot.setAttribute('aria-label', dot.title); dot.addEventListener('click', () => go(i)); dots.appendChild(dot);
     slide.addEventListener('click', () => { if (overview) exitOverview(i); });
   });
-  const dotEls = [...dots.children];
 
   function update(i, writeHash = true) {
     current = Math.max(0, Math.min(slides.length - 1, i));
     counter.textContent = `${String(current + 1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
     prevBtn.disabled = current === 0; nextBtn.disabled = current === slides.length - 1;
-    dotEls.forEach((d, n) => d.classList.toggle('active', n === current));
     document.body.classList.toggle('on-dark', slides[current].classList.contains('s-cover') || slides[current].classList.contains('s-glow'));
     if (writeHash && !overview) { hashLock = true; history.replaceState(null, '', `#${current + 1}`); hashLock = false; }
   }
@@ -1106,17 +1098,17 @@ mermaid.initialize({
     slides.forEach(s => { s.style.height = `${innerHeight * scale}px`; const inner = s.querySelector('.slide-inner'); inner.style.transform = `scale(${scale})`; });
   }
   function enterOverview() {
-    overview = true; document.documentElement.classList.add('overview'); document.body.classList.add('overview'); dots.style.display = 'none';
+    overview = true; document.documentElement.classList.add('overview'); document.body.classList.add('overview');
     requestAnimationFrame(() => { fitOverview(); slides[current].scrollIntoView({behavior:'instant', block:'center'}); });
   }
   function exitOverview(i = current) {
-    overview = false; document.documentElement.classList.remove('overview'); document.body.classList.remove('overview'); dots.style.display = '';
+    overview = false; document.documentElement.classList.remove('overview'); document.body.classList.remove('overview');
     slides.forEach(s => { s.style.height = ''; s.querySelector('.slide-inner').style.transform = ''; });
     update(i); requestAnimationFrame(() => go(i, 'instant'));
   }
   function toggleOverview(){ overview ? exitOverview(current) : enterOverview(); }
   function toggleFullscreen(){ if (!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); }
-  function showUI(){ controls.classList.add('show'); dots.classList.add('show'); clearTimeout(uiTimer); uiTimer=setTimeout(()=>{controls.classList.remove('show');dots.classList.remove('show')},1800); }
+  function showUI(){ controls.classList.add('show'); clearTimeout(uiTimer); uiTimer=setTimeout(()=>controls.classList.remove('show'),1800); }
 
   const observer = new IntersectionObserver(entries => {
     if (overview) return;
@@ -1137,7 +1129,7 @@ mermaid.initialize({
     if (e.key === 'Home') { e.preventDefault(); go(0); }
     if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
   });
-  addEventListener('mousemove', e => { if (e.clientY > innerHeight - 100 || e.clientX > innerWidth - 70) showUI(); });
+  addEventListener('mousemove', e => { if (e.clientY > innerHeight - 100) showUI(); });
   addEventListener('touchstart', showUI, {passive:true});
   addEventListener('scroll', () => { document.body.classList.add('scrolling'); clearTimeout(scrollTimer); scrollTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700); }, {passive:true});
   addEventListener('resize', () => { if (overview) fitOverview(); });
