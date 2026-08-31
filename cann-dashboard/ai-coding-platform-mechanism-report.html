@@ -62,7 +62,8 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 /* mechanisms */
 .universal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.65vw;align-items:stretch;position:relative}.universal::after{content:"";position:absolute;left:21%;right:14%;bottom:-2.6vh;height:2.1vh;border:1px dashed rgba(91,91,214,.42);border-top:0;border-radius:0 0 12px 12px}.flow-node{position:relative;min-width:0;min-height:16vh;padding:1.4vh .85vw;border-radius:13px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column}.flow-node:not(:last-child)::after{content:"→";position:absolute;right:-.62vw;top:48%;z-index:2;color:var(--ink-3);font-size:var(--fs-h3)}.flow-node .step{font:650 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.1em;color:var(--ink-3)}.flow-node b{font-size:var(--fs-h3);line-height:1.25;margin:.8vh 0}.flow-node p{font-size:var(--fs-sm);line-height:1.45;color:var(--ink-2)}.flow-node.model{background:#f1efff;border-color:#c9c4ef}.flow-node.exec{background:#edf8f4;border-color:#b9dccf}.flow-node.gate{background:#fff5e9;border-color:#ecd1ad}.flow-node.end{background:var(--g-ink);border-color:#222;color:#fff}.flow-node.end p,.flow-node.end .step{color:rgba(255,255,255,.62)}
 .mech{display:grid;grid-template-columns:.33fr .67fr;gap:1.3vw;min-height:0}.mech-summary{display:flex;flex-direction:column;gap:1vh}.mech-summary .call{padding:1.2vh .9vw;border-radius:12px;background:var(--g-ink);color:#fff}.mech-summary .call b{display:block;font-size:var(--fs-h3);margin-bottom:.4vh}.mech-summary .call p{font-size:var(--fs-sm);line-height:1.48;color:rgba(255,255,255,.66)}.mech-summary ul{padding-left:1.1em;display:grid;gap:.55vh}.mech-summary li{font-size:var(--fs-body);line-height:1.48;color:var(--ink-2)}.mech-flow{min-width:0;min-height:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:.72vw}.mnode{position:relative;min-width:0;min-height:0;padding:1.1vh .75vw;border-radius:12px;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.9);display:flex;flex-direction:column;justify-content:center}.mnode b{font-size:var(--fs-h3);line-height:1.25}.mnode span{font-size:var(--fs-sm);line-height:1.42;color:var(--ink-2);margin-top:.45vh}.mnode:nth-child(-n+7)::after{content:"→";position:absolute;right:-.58vw;top:46%;z-index:2;color:var(--accent)}.mnode:nth-child(4)::after{content:"↓";right:50%;top:auto;bottom:-1.2vh}.mnode:nth-child(n+5){grid-row:2}.mnode:nth-child(5){grid-column:4}.mnode:nth-child(6){grid-column:3}.mnode:nth-child(7){grid-column:2}.mnode:nth-child(8){grid-column:1}.mnode:nth-child(5)::after,.mnode:nth-child(6)::after,.mnode:nth-child(7)::after{content:"←";right:auto;left:-.58vw}.mnode.context{background:#eff3ff}.mnode.plan{background:#f2efff}.mnode.gate{background:#fff5e8}.mnode.exec{background:#ebf8f3}.mnode.result{background:#eef6fb}.mnode.end{background:var(--g-ink);color:#fff;border-color:#222}.mnode.end span{color:rgba(255,255,255,.62)}.cap-row{grid-column:1/-1;display:flex;gap:.45vw;flex-wrap:wrap;align-self:end}.cap-row span{font-size:var(--fs-xs);font-weight:700;padding:.35vh .55vw;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ink-2)}
-.mermaid-layout{grid-template-columns:.21fr .79fr;gap:1vw;align-items:stretch}.mermaid-layout .mech-summary{justify-content:center}.mermaid-layout .mech-summary li{font-size:var(--fs-sm);line-height:1.42}.mechanism-slide .head{margin-bottom:1.55vh}.platform-diagram{position:relative;display:flex!important;flex-direction:column}.diagram-summary-strip{display:flex;align-items:center;gap:.65vw;margin-bottom:.35vh;padding:.44vh .62vw;border-radius:10px;background:rgba(255,255,255,.46);border:1px solid rgba(255,255,255,.76)}.diagram-summary-strip p{font-size:var(--fs-sm);line-height:1.28;color:var(--ink-2)}.diagram-summary-strip b{color:var(--ink)}.mermaid-shell{height:64vh;min-width:0;min-height:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden;display:flex;align-items:center;justify-content:center}.platform-diagram .mermaid-shell{height:65vh}.mermaid-shell.wide{height:65vh}.mermaid{width:100%;height:100%;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center}.mermaid svg{display:block;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important}.mermaid .nodeLabel,.mermaid .edgeLabel{font-family:'HarmonyOS Sans SC','Inter',sans-serif!important}.mermaid .nodeLabel p{line-height:1.18!important}.mermaid .edgeLabel{font-size:13px!important}.mermaid .cluster-label{font-weight:850!important}.diagram-key{display:flex;align-items:center;justify-content:center;gap:.62vw;margin-top:.15vh;font-size:var(--fs-xs);color:var(--ink-3)}.diagram-key span{display:inline-flex;align-items:center;gap:.28vw}.diagram-key i{width:8px;height:8px;border-radius:50%;background:#eef0ff;border:1px solid #858bd7}.diagram-key .exec{background:#e7f7f1;border-color:#55a889}.diagram-key .gate{background:#fff2df;border-color:#d3a563}.diagram-key .task{background:#252a33;border-color:#252a33}
+.mermaid-layout{grid-template-columns:.21fr .79fr;gap:1vw;align-items:stretch}.mermaid-layout .mech-summary{justify-content:center}.mermaid-layout .mech-summary li{font-size:var(--fs-sm);line-height:1.42}.mechanism-slide .head{margin-bottom:1.55vh}.platform-diagram{position:relative;display:flex!important;flex-direction:column;justify-content:flex-start!important;margin-top:0;margin-bottom:auto}.diagram-summary-strip{display:flex;align-items:center;gap:.65vw;margin-bottom:.35vh;padding:.44vh .62vw;border-radius:10px;background:rgba(255,255,255,.46);border:1px solid rgba(255,255,255,.76)}.diagram-summary-strip p{font-size:var(--fs-sm);line-height:1.28;color:var(--ink-2)}.diagram-summary-strip b{color:var(--ink)}.mermaid-shell{height:64vh;min-width:0;min-height:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden;display:flex;align-items:center;justify-content:center}.platform-diagram .mermaid-shell{height:47vh;flex:0 1 auto}.mermaid-shell.wide{height:65vh}.mermaid{width:100%;height:100%;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center}.mermaid svg{display:block;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important}.mermaid .nodeLabel,.mermaid .edgeLabel{font-family:'HarmonyOS Sans SC','Inter',sans-serif!important}.mermaid .nodeLabel p{line-height:1.18!important}.mermaid .edgeLabel{font-size:13px!important}.mermaid .cluster-label{font-weight:850!important}.diagram-key{display:flex;align-items:center;justify-content:center;gap:.62vw;margin-top:.15vh;font-size:var(--fs-xs);color:var(--ink-3)}.diagram-key span{display:inline-flex;align-items:center;gap:.28vw}.diagram-key i{width:8px;height:8px;border-radius:50%;background:#eef0ff;border:1px solid #858bd7}.diagram-key .exec{background:#e7f7f1;border-color:#55a889}.diagram-key .gate{background:#fff2df;border-color:#d3a563}.diagram-key .task{background:#252a33;border-color:#252a33}
+.platform-takeaways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.72vw;margin-top:.45vh;flex:0 0 auto}.platform-takeaway{min-width:0;min-height:10.4vh;padding:.8vh .7vw;border-radius:11px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.86);display:grid;grid-template-columns:2.25vw 1fr;gap:.55vw;align-items:start}.platform-takeaway .pt-no{width:2.1vw;height:2.1vw;min-width:28px;min-height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#efff43;color:#24280d;font:800 var(--fs-sm)/1 'JetBrains Mono';box-shadow:0 0 0 4px rgba(238,255,67,.18)}.platform-takeaway b{display:block;font-size:var(--fs-h3);line-height:1.2}.platform-takeaway p{margin-top:.28vh;font-size:var(--fs-sm);line-height:1.35;color:var(--ink-2)}.platform-takeaway small{display:block;margin-top:.35vh;font-size:var(--fs-xs);line-height:1.25;color:var(--ink-3)}
 .compare-table{display:grid;grid-template-columns:1.15fr repeat(6,1fr);border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.85);background:rgba(255,255,255,.58)}.compare-table>div{min-width:0;padding:.75vh .55vw;border-right:1px solid rgba(120,130,150,.14);border-bottom:1px solid rgba(120,130,150,.14);font-size:var(--fs-sm);line-height:1.3}.compare-table .th{font-weight:850;background:#eef1f6;text-align:center}.compare-table .row{font-weight:800;background:#f7f8fa}.compare-table .focus{background:#eef0ff;color:#4b4ba9;font-weight:700}
 .ability{display:grid;grid-template-columns:.8fr 1.2fr;gap:1.4vw}.ability-equation{background:var(--g-ink);border-radius:16px;padding:2.3vh 1.5vw;color:#fff;display:flex;flex-direction:column;justify-content:center}.ability-equation .eq{font-size:clamp(24px,2.6vw,42px);font-weight:250;line-height:1.35}.ability-equation .eq b{font-weight:800;color:#aeb6ff}.ability-equation p{margin-top:1.5vh;font-size:var(--fs-body);line-height:1.6;color:rgba(255,255,255,.62)}.factor-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75vw}.factor{--tone:var(--c-indigo);position:relative;overflow:hidden;padding:1.25vh .9vw;border-radius:12px;background:rgba(255,255,255,.56);border:1px solid rgba(255,255,255,.86)}.factor::before{content:"";position:absolute;left:0;right:0;top:0;height:38%;background:linear-gradient(90deg,color-mix(in srgb,var(--tone) 16%,transparent),transparent 58%)}.factor>*{position:relative;z-index:1}.factor b{display:block;font-size:var(--fs-h3)}.factor span{display:block;margin-top:.35vh;font-size:var(--fs-body);line-height:1.4;color:var(--ink-2)}
 
@@ -162,7 +163,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
     <article class="directory-card"><div class="directory-no">02</div><div class="directory-name">差异</div><div class="directory-en">WHY DIFFERENT</div><div class="directory-items"><span>通用 Agent 循环</span><span>六环节机制差异</span><span>Claude Code 组合归因</span></div><div class="directory-note">差异 → 效果 → 验证</div></article>
     <article class="directory-card"><div class="directory-no">03</div><div class="directory-name">供给</div><div class="directory-en">WHAT ASCEND PROVIDES</div><div class="directory-items"><span>昇腾可控变量</span><span>五个跨平台产品包</span><span>交付合同与适配</span></div><div class="directory-note">不依赖单一 Harness</div></article>
     <article class="directory-card"><div class="directory-no">04</div><div class="directory-name">体验</div><div class="directory-en">HOW IT FEELS</div><div class="directory-items"><span>AI 时代开发者旅程</span><span>五个关键体验时刻</span><span>责任、成本与指标</span></div><div class="directory-note">从回答转向可信完成</div></article>
-    <article class="directory-card"><div class="directory-no">A</div><div class="directory-name">依据</div><div class="directory-en">EVIDENCE APPENDIX</div><div class="directory-items"><span>能力矩阵</span><span>六平台完整机制图</span><span>来源与 H / M / L</span></div><div class="directory-note">支撑追问，不打断主线</div></article>
+    <article class="directory-card"><div class="directory-no">A</div><div class="directory-name">依据</div><div class="directory-en">EVIDENCE APPENDIX</div><div class="directory-items"><span>能力矩阵与平台定位</span><span>扩展推导与产品蓝图</span><span>来源与 H / M / L</span></div><div class="directory-note">支撑追问，不打断主线</div></article>
   </div>
 </main><footer class="foot">核心判断：体验优势不是单一模型或 Harness 的功劳；昇腾要把领域约束、运行能力和验证证据做成所有用户 AI 都能消费的跨平台供给。</footer></div></section>
 
@@ -282,15 +283,15 @@ flowchart LR
 </main><footer class="foot">Application / Task 层另行定义完成条件：测试通过、性能达标、环境匹配、Owner 确认等。</footer></div></section>
 
 <!-- 11 CLAUDE CODE -->
-<section class="slide s-gray" data-title="Claude Code 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">Rules / Skills 决定上下文；Hooks / Subagents 改变执行回路</div><div class="ttl">Claude Code：从 tool_use 到 Stop Hook 的完整回环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
-  <div class="diagram-summary-strip"><span class="tag h">H · PUBLIC DOCS / REPO</span><p><b>关键差异：</b>Subagent 使用独立上下文；Pre / Post / Stop Hook 可校验或阻断；<code>/loop</code> 是定时新 prompt，不等于单次 tool_result 回环。</p></div>
+<section class="slide s-gray" data-title="Claude Code 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄只标本页要解释的三个控制点</div><div class="ttl">Claude Code 的特点是把方法、委派和结束前检查嵌入同一回环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · PUBLIC MECHANISM</span><p><b>本页观点：</b>优势如果存在，更可能来自三个控制点连续衔接，而不是“工具更多”；其效果仍需同任务实验验证。</p></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph C1["1 · CONTEXT"]
     direction TB
     S(["用户目标 / Repo"])
     SK["Skills / Commands / Plugins<br/>按需发现与加载"]
-    CTX["Context 装配<br/>CLAUDE.md · Rules · History"]
+    CTX["01 · Context 装配<br/>CLAUDE.md · Rules · History"]
     S --> CTX
     SK --> CTX
   end
@@ -314,7 +315,7 @@ flowchart LR
     direction TB
     TOOL["Read / Edit / Bash / Test"]
     MCP["外部 MCP Server"]
-    SUB["Subagent<br/>独立 Context + 限定 Tools"]
+    SUB["02 · Subagent<br/>独立 Context + 限定 Tools"]
     POST["PostToolUse Hook"]
     TOOL --> POST
     MCP --> POST
@@ -323,7 +324,7 @@ flowchart LR
   subgraph C5["5 · FEEDBACK & ACCEPTANCE"]
     direction TB
     RES["tool_result<br/>stdout · diff · error · summary"]
-    STOP["Stop Hook<br/>可触发测试或拒绝停止"]
+    STOP["03 · Stop Hook<br/>可触发测试或拒绝停止"]
     CHECK{"任务验收满足？"}
     OUT(["候选交付 + 验证证据"])
     STOP --> CHECK -->|是| OUT
@@ -343,19 +344,22 @@ flowchart LR
   classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
   classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
   classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  classDef spotlight fill:#F1FF4F,stroke:#AAB500,color:#171a20,stroke-width:2px;
   class CTX,SK,API,RES context; class DEC,PRE,PERM,ROUTE,STOP,CHECK gate; class TOOL,MCP,SUB,POST exec; class S,OUT task;
+  class CTX,SUB,STOP spotlight;
   </pre></div>
+  <div class="platform-takeaways"><article class="platform-takeaway"><span class="pt-no">01</span><div><b>方法在请求前进入 Context</b><p>项目规则与 Skill 先约束版本、步骤和工具选择，可能减少第一轮偏航。</p><small>H · 机制可复核；效果需 Benchmark</small></div></article><article class="platform-takeaway"><span class="pt-no">02</span><div><b>独立上下文承接子任务</b><p>Subagent 隔离探索或执行细节，可能降低主线程上下文污染。</p><small>H · 独立上下文；效果为 L</small></div></article><article class="platform-takeaway"><span class="pt-no">03</span><div><b>结束前仍能检查与阻断</b><p>Stop Hook 可运行测试或拒绝停止，但业务验收仍属于任务层。</p><small>H · Hook；对应 Evidence Layer</small></div></article></div>
 </main><footer class="foot">边界：Claude Code Runtime 本体未完整开源；工具选择阈值、内部并发与重试策略不作为 H 事实。</footer></div></section>
 
 <!-- 12 CODEX -->
-<section class="slide s-gray" data-title="Codex 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">指令发现、能力装配、审批沙箱与工作区证据构成外部约束</div><div class="ttl">Codex：每次动作都回到可审阅的工作区现场</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
-  <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL CAPABILITIES</span><p><b>关键差异：</b>AGENTS.md 按目录形成适用范围；Plugin 可装配 Skill、MCP Server 或 App；审批 / 沙箱先于执行，diff / test / log 持续回填。</p></div>
+<section class="slide s-gray" data-title="Codex 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄聚焦指令范围、动作门槛与工作区证据</div><div class="ttl">Codex 的特点是让每次动作都受控，并回到可审阅的工作区现场</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL MECHANISM</span><p><b>本页观点：</b>Codex 的差异不是“自动做更多”，而是用目录指令、审批 / 沙箱和 diff / test / log 形成受控证据链。</p></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph X1["1 · INSTRUCTION DISCOVERY"]
     direction TB
     S(["任务 + Workspace"])
-    DISC["指令发现<br/>全局 → 仓库根 → 深层 AGENTS.md"]
+    DISC["01 · 指令发现<br/>全局 → 仓库根 → 深层 AGENTS.md"]
     LOAD["按需加载能力<br/>Skill / Plugin / MCP schema"]
     PLUG["Plugin package<br/>Skill · MCP Server · App"]
     S --> DISC --> LOAD
@@ -372,7 +376,7 @@ flowchart LR
     FILE["File<br/>read / search / apply_patch"]
     CMD["Command<br/>build / test / lint / git"]
     EXT["MCP / App<br/>外部系统调用"]
-    POLICY{"Approval policy<br/>+ Sandbox 允许？"}
+    POLICY{"02 · Approval policy<br/>+ Sandbox 允许？"}
     USER["请求用户授权<br/>保留待执行动作"]
     FILE --> POLICY
     CMD --> POLICY
@@ -382,7 +386,7 @@ flowchart LR
   subgraph X4["4 · EXECUTION & EVIDENCE"]
     direction TB
     RUN["受控执行"]
-    EVID["Evidence update<br/>diff · stdout · test · log · artifact"]
+    EVID["03 · Evidence update<br/>diff · stdout · test · log · artifact"]
     REPLAN{"结果满足计划？"}
     RUN --> EVID --> REPLAN
   end
@@ -407,13 +411,16 @@ flowchart LR
   classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
   classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
   classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  classDef spotlight fill:#F1FF4F,stroke:#AAB500,color:#171a20,stroke-width:2px;
   class DISC,LOAD,PLUG,PLAN,EVID context; class ACT,POLICY,REPLAN,VERIFY gate; class FILE,CMD,EXT,RUN,USER exec; class S,OUT task;
+  class DISC,POLICY,EVID spotlight;
   </pre></div>
+  <div class="platform-takeaways"><article class="platform-takeaway"><span class="pt-no">01</span><div><b>目录范围决定指令适用性</b><p>AGENTS.md 从全局到深层目录逐级生效，让局部工程约束靠近代码。</p><small>H · 对应 Context Pack</small></div></article><article class="platform-takeaway"><span class="pt-no">02</span><div><b>外部作用先过权限门槛</b><p>审批策略与沙箱把自主动作变成用户可控制的风险边界。</p><small>H · 对应 Capability Contract</small></div></article><article class="platform-takeaway"><span class="pt-no">03</span><div><b>证据持续回到工作区</b><p>diff、test、stdout、log 与 artifact 支撑下一轮修复和最终审阅。</p><small>H/M · 对应 Evidence Layer</small></div></article></div>
 </main><footer class="foot"><span class="tag m">M</span> 内部规划、工具选择和重试顺序未完整公开；本页只把外部可观察约束画为事实。</footer></div></section>
 
 <!-- 13 OPENCODE -->
-<section class="slide s-gray" data-title="OpenCode 源码机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">prompt.ts、processor.ts、tools.ts、instruction.ts 能把调用前后链路追到源码</div><div class="ttl">OpenCode：权限、插件事件和上下文压缩都在 Host 中显式发生</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
-  <div class="diagram-summary-strip"><span class="tag h">H · OPEN SOURCE</span><p><b>源码级链路：</b>instruction.ts / tools.ts 装配 → prompt.ts → LLM.stream → permission.ask → plugin before / after → tool parts → continue / stop / compact。</p></div>
+<section class="slide s-gray" data-title="OpenCode 源码机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄聚焦可审阅的工具面、权限与长会话处理</div><div class="ttl">OpenCode 的价值是把 Host 决策暴露为可审阅、可修改的源码机制</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · OPEN SOURCE</span><p><b>本页观点：</b>OpenCode 不证明结果一定更好，但能把工具注册、权限询问、插件事件和上下文压缩从黑箱变为工程可控变量。</p></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph O1["1 · SESSION INPUT"]
@@ -421,7 +428,7 @@ flowchart LR
     S(["Session input"])
     INST["instruction.ts<br/>Agent instruction + project rules"]
     HIST["Session history<br/>message parts / tool parts"]
-    TOOLSET["tools.ts<br/>Built-in + MCP + Plugin tools"]
+    TOOLSET["01 · tools.ts<br/>Built-in + MCP + Plugin tools"]
     S --> INST
   end
   subgraph O2["2 · PROMPT & STREAM"]
@@ -433,7 +440,7 @@ flowchart LR
   end
   subgraph O3["3 · PERMISSION & HOOK"]
     direction TB
-    ASK["permission.ask<br/>Allow / Ask / Deny"]
+    ASK["02 · permission.ask<br/>Allow / Ask / Deny"]
     BEFORE["tool.execute.before<br/>Plugin hook"]
     ROUTE{"工具来源？"}
     ERR["tool-error part"]
@@ -455,7 +462,7 @@ flowchart LR
     PART["写入 text / reasoning part"]
     RESULT["tool-result / tool-error part"]
     END{"finish reason / limit？"}
-    COMPACT["Compact session<br/>压缩后继续"]
+    COMPACT["03 · Compact session<br/>压缩后继续"]
     OUT(["Session output"])
     PART --> END
     END -->|上下文逼近阈值| COMPACT
@@ -478,13 +485,16 @@ flowchart LR
   classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
   classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
   classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  classDef spotlight fill:#F1FF4F,stroke:#AAB500,color:#171a20,stroke-width:2px;
   class INST,HIST,PROMPT,TOOLSET,PART,RESULT,COMPACT context; class EVT,ASK,ROUTE,END gate; class BEFORE,BUILT,MCP,SUB,AFTER,ERR exec; class S,OUT task;
+  class TOOLSET,ASK,COMPACT spotlight;
   </pre></div>
+  <div class="platform-takeaways"><article class="platform-takeaway"><span class="pt-no">01</span><div><b>工具面可以追到注册来源</b><p>Built-in、MCP 与 Plugin tools 在统一工具表中装配，便于审阅和替换。</p><small>H · 对应跨平台适配层</small></div></article><article class="platform-takeaway"><span class="pt-no">02</span><div><b>权限与插件事件显式发生</b><p>Allow / Ask / Deny 及 before / after Hook 让策略和扩展点可检查。</p><small>H · 对应 Capability Contract</small></div></article><article class="platform-takeaway"><span class="pt-no">03</span><div><b>上下文压缩成为可见机制</b><p>接近阈值时压缩后继续，利于长会话工程治理；质量影响仍需测量。</p><small>H · 机制；效果为 L</small></div></article></div>
 </main><footer class="foot">来源：github.com/anomalyco/opencode · packages/opencode/src/session/；源码事实不代表所有闭源平台都使用相同内部实现。</footer></div></section>
 
 <!-- 14 CURSOR -->
-<section class="slide s-gray" data-title="Cursor 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">双运行时、并行子 Agent、Checkpoint 与用户 steering 共同改变长任务</div><div class="ttl">Cursor：本地 IDE 与 Cloud VM 共享证据回环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
-  <div class="diagram-summary-strip"><span class="tag h">H · CURRENT OFFICIAL DOCS</span><p><b>关键差异：</b>Queued message 在工具边界 steering；Subagents 可并行；Cloud VM 负责真实构建、测试及截图 / 视频 / 日志 / PR 证据。</p></div>
+<section class="slide s-gray" data-title="Cursor 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄聚焦用户 Steering、真实运行环境与恢复控制</div><div class="ttl">Cursor 的特点是把 Agent 接到完整运行环境，并允许用户在长任务中持续纠偏</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL MECHANISM</span><p><b>本页观点：</b>Cursor 的显著差异发生在环境和连续性：工具边界可 Steering、Cloud VM 能真实运行、Checkpoint 支持恢复或用户接管。</p></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph R1["1 · CONTEXT"]
@@ -497,7 +507,7 @@ flowchart LR
   subgraph R2["2 · PLAN & STEERING"]
     direction TB
     PLAN["Plan + /goal<br/>建立 checkpoint"]
-    QUEUE["Queued message / Steering<br/>在 tool-call 边界进入"]
+    QUEUE["01 · Queued message / Steering<br/>在 tool-call 边界进入"]
     PAR{"是否委派？"}
     QUEUE -.影响下一轮.-> PLAN
     PLAN --> PAR
@@ -512,7 +522,7 @@ flowchart LR
   subgraph R4["4 · DUAL RUNTIME"]
     direction TB
     LOCAL["Local IDE<br/>Edit · Shell · Search · Browser · MCP"]
-    CLOUD["Cloud Agent / 隔离 VM<br/>build · test · browser / desktop"]
+    CLOUD["02 · Cloud Agent / 隔离 VM<br/>build · test · browser / desktop"]
     POST["Post-tool / File / Shell / MCP Hook"]
     LOCAL --> POST
     CLOUD --> POST
@@ -521,7 +531,7 @@ flowchart LR
     direction TB
     EVID["Evidence<br/>diff · test · screenshot · video · log · PR"]
     GOAL{"目标与验证满足？"}
-    CHOICE{"继续、回到 checkpoint<br/>或用户接管？"}
+    CHOICE{"03 · 继续、回到 checkpoint<br/>或用户接管？"}
     STOP["Stop Hook / Review"]
     OUT(["交付并允许继续 steering"])
     EVID --> GOAL
@@ -540,13 +550,16 @@ flowchart LR
   classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
   classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
   classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  classDef spotlight fill:#F1FF4F,stroke:#AAB500,color:#171a20,stroke-width:2px;
   class CTX,ADAPT,PLAN,QUEUE,EVID context; class PAR,HOOK,RUNTIME,GOAL,CHOICE,STOP gate; class SUB,LOCAL,CLOUD,POST exec; class S,OUT task;
+  class QUEUE,CLOUD,CHOICE spotlight;
   </pre></div>
+  <div class="platform-takeaways"><article class="platform-takeaway"><span class="pt-no">01</span><div><b>用户能在工具边界纠偏</b><p>Queued message 在下一轮规划前进入，降低长任务偏离后只能全部重来的风险。</p><small>H · 对应跨工具控制体验</small></div></article><article class="platform-takeaway"><span class="pt-no">02</span><div><b>Cloud VM 提供真实执行面</b><p>构建、测试、浏览器和桌面环境能产生截图、视频、日志与 PR 证据。</p><small>H · 对应 Trusted Execution</small></div></article><article class="platform-takeaway"><span class="pt-no">03</span><div><b>恢复和接管是显式选择</b><p>继续、回到 Checkpoint 或用户接管，让失败现场不必完全丢失。</p><small>H/M · 对应 State Transition</small></div></article></div>
 </main><footer class="foot">Cursor 官方文档强调：没有可运行开发环境，Agent 无法完成“写代码→测试→验证”的闭环。</footer></div></section>
 
 <!-- 15 TRAE -->
-<section class="slide s-gray" data-title="Trae 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">计划必须先确认；Tool Panels 执行动作；Stop Hook 可在结束前验收</div><div class="ttl">Trae：SOLO 把任务管理、Agent 与工程预览串成闭环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
-  <div class="diagram-summary-strip"><span class="tag h">H · CURRENT OFFICIAL DOCS</span><p><b>关键差异：</b>Actionable Plan 先由用户确认；Custom Agent / Subagent 进入 PreToolUse；Tool Panels 执行；Stop Hook 可在结束前运行验收。</p></div>
+<section class="slide s-gray" data-title="Trae 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄聚焦计划确认、显式执行面与结束前检查</div><div class="ttl">Trae 的特点是把计划、执行面板和工程预览做成三个用户可见检查点</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL MECHANISM</span><p><b>本页观点：</b>Trae 的产品化重点是控制感：执行前确认计划，执行中通过 Tool Panels 看动作，结束前通过 Preview / Hook 检查结果。</p></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph T1["1 · SESSION & CONTEXT"]
@@ -560,7 +573,7 @@ flowchart LR
   subgraph T2["2 · PLAN CONFIRMATION"]
     direction TB
     PLAN["Built-in Agent<br/>生成 actionable plan"]
-    CONF{"用户确认计划？"}
+    CONF{"01 · 用户确认计划？"}
     ROUTE{"执行编排？"}
     PLAN --> CONF
     CONF -->|修改| PLAN
@@ -576,7 +589,7 @@ flowchart LR
   end
   subgraph T4["4 · TOOL PANELS"]
     direction TB
-    PANEL{"Tool Panel / Action"}
+    PANEL{"02 · Tool Panel / Action"}
     EDIT["Editor<br/>代码与文件变更"]
     DOC["Docs<br/>文档查看 / 引用"]
     WEB["Browser<br/>浏览与页面验证"]
@@ -590,7 +603,7 @@ flowchart LR
   subgraph T5["5 · PREVIEW & ACCEPTANCE"]
     direction TB
     VIEW["DiffView + Preview + Result"]
-    STOP["Stop Hook<br/>可自动执行验收测试"]
+    STOP["03 · Stop Hook<br/>可自动执行验收测试"]
     OK{"完成条件满足？"}
     OUT(["任务交付 / 并行任务汇总"])
     VIEW --> STOP --> OK -->|是| OUT
@@ -606,13 +619,16 @@ flowchart LR
   classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
   classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
   classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  classDef spotlight fill:#F1FF4F,stroke:#AAB500,color:#171a20,stroke-width:2px;
   class CTX,PROMPT,PLAN,VIEW context; class START,CONF,ROUTE,PRE,PANEL,POST,STOP,OK gate; class CUSTOM,SUB,EDIT,DOC,WEB,EXT exec; class S,OUT task;
+  class CONF,PANEL,STOP spotlight;
   </pre></div>
+  <div class="platform-takeaways"><article class="platform-takeaway"><span class="pt-no">01</span><div><b>执行前先确认可行动计划</b><p>用户可修改再确认，减少 Agent 在错误目标上进行高成本动作。</p><small>H · 对应路径解释与授权</small></div></article><article class="platform-takeaway"><span class="pt-no">02</span><div><b>动作发生在可见 Tool Panel</b><p>编辑、文档、浏览器、命令与 MCP 具有明确执行位置和结果入口。</p><small>H · 对应 Trusted Execution</small></div></article><article class="platform-takeaway"><span class="pt-no">03</span><div><b>预览与 Hook 构成结束门槛</b><p>DiffView、Preview 和 Stop Hook 让交付前检查成为显式环节。</p><small>H · 对应 Evidence Layer</small></div></article></div>
 </main><footer class="foot">公开资料来自 docs.trae.ai；普通 SSR 正文抓取不稳定，结论以页面路由数据与可访问文档为准。</footer></div></section>
 
 <!-- 16 WORKBUDDY -->
-<section class="slide s-gray" data-title="WorkBuddy 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">任务状态、Expert Team、结果区和继续处理共同构成交付工作台</div><div class="ttl">WorkBuddy：多 Agent 成本与任务状态在产品层显式呈现</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
-  <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL PRODUCT DOCS</span><p><b>产品层机制：</b>规划中 / 进行中 / 待处理 / 完成 / 失败 / 归档显式呈现；Expert Team 在成本确认后并行；失败与完成都进入 Results 并可继续。</p></div>
+<section class="slide s-gray" data-title="WorkBuddy 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">它不是同类 Coding IDE 排名对象，而是任务状态与交付产品化参照</div><div class="ttl">WorkBuddy 说明成本、状态和结果可以成为聊天之外的一等对象</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · PRODUCT REFERENCE</span><p><b>本页观点：</b>WorkBuddy 的参考价值不在代码能力排名，而在调用前确认多 Agent 成本、执行中呈现状态、结束后保留 Results 并继续处理。</p></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph W1["1 · TASK CONTEXT"]
@@ -627,7 +643,7 @@ flowchart LR
   subgraph W2["2 · COST-AWARE ROUTING"]
     direction TB
     MODE{"执行模式？"}
-    COST{"确认多 Agent 成本？"}
+    COST{"01 · 确认多 Agent 成本？"}
     ONE["单 Expert<br/>人设 + 方法 + 工具链"]
     MODE -->|单 Expert| ONE
     MODE -->|Expert Team| COST
@@ -646,7 +662,7 @@ flowchart LR
   subgraph W4["4 · CROSS-APP EXECUTION"]
     direction TB
     EXEC["Skills + Connector / MCP<br/>文件与跨应用动作"]
-    STATE{"执行状态？"}
+    STATE{"02 · 执行状态？"}
     WAIT["待处理<br/>保留现场并通知用户"]
     FAIL["失败<br/>日志与产物仍进入结果区"]
     DONE["已完成"]
@@ -657,7 +673,7 @@ flowchart LR
   end
   subgraph W5["5 · RESULTS & CONTINUATION"]
     direction TB
-    RESULT["Results<br/>产物 · 全部文件 · 变更 · 预览"]
+    RESULT["03 · Results<br/>产物 · 全部文件 · 变更 · 预览"]
     NEXT{"下一步？"}
     ARCH(["已归档 / 可复用任务"])
     RESULT --> NEXT -->|归档| ARCH
@@ -675,8 +691,11 @@ flowchart LR
   classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
   classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
   classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
+  classDef spotlight fill:#F1FF4F,stroke:#AAB500,color:#171a20,stroke-width:2px;
   class CTX,AUTO,PLAN,RESULT context; class MODE,COST,STATE,WAIT,NEXT gate; class ONE,LEAD,E1,E2,E3,EXEC,FAIL,DONE exec; class S,ARCH task;
+  class COST,STATE,RESULT spotlight;
   </pre></div>
+  <div class="platform-takeaways"><article class="platform-takeaway"><span class="pt-no">01</span><div><b>高成本协作先获得确认</b><p>Expert Team 启动前确认成本，说明多 Agent 不是无条件默认升级。</p><small>H · 对应成本与升级门槛</small></div></article><article class="platform-takeaway"><span class="pt-no">02</span><div><b>待处理和失败都有持续状态</b><p>授权、补信息或失败不会消失在消息流中，现场仍可继续推进。</p><small>H · 对应 State Transition</small></div></article><article class="platform-takeaway"><span class="pt-no">03</span><div><b>结果区独立承载交付证据</b><p>产物、全部文件、变更与预览进入 Results，可继续处理或归档复用。</p><small>H · 对应 Evidence Receipt</small></div></article></div>
 </main><footer class="foot">产品启示：AI 工作台的主导航可以是任务状态和结果，不必永远围绕聊天线程。</footer></div></section>
 
 <!-- 17 COMPARISON -->
@@ -922,7 +941,7 @@ flowchart LR
   <div class="ux-boundary"><div><b>体验部负责：</b>任务模型、补问体验、状态与成本呈现、授权控制、失败恢复、跨工具连续性、研究验证与体验指标。</div><div><b>领域 Owner 负责：</b>知识真实性与版本 SLA、服务可用性、构建 / 测试 / NPU 能力、错误语义、验收规则、专家接管与修复上线。</div></div>
 </main><footer class="foot">核心体验指标：首次验证时间、恢复率、人工干预、证据完整度、跨工具上下文保留、Verified Completion Rate 与 Cost per Verified Task。</footer></div></section>
 
-<section class="slide s-gray" data-title="附录导航"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">以下页面用于回答“能力到底有没有、流程具体怎么走、依据在哪里”</div><div class="ttl">附录保留完整平台机制，不与核心决策链混写</div></div><div class="section-tabs"><span>01 答案</span><span>02 差异</span><span>03 供给</span><span>04 体验</span><span class="active">A 依据</span></div></header><main class="body-area appendix-index"><article class="appendix-card"><div class="n">A1</div><h3>能力与定位</h3><p>六平台定位、通用能力栈、上下文 / 动作与编排 / 可信矩阵。</p></article><article class="appendix-card"><div class="n">A2</div><h3>完整机制图</h3><p>Claude Code、Codex、OpenCode、Cursor、Trae、WorkBuddy 的 Host 循环。</p></article><article class="appendix-card"><div class="n">A3</div><h3>扩展推导</h3><p>机制对照、能力差异公式、传统旅程、协同架构与产品形态。</p></article><article class="appendix-card"><div class="n">A4</div><h3>来源与边界</h3><p>公开文档、开源源码、CANN 实测样本、H / M / L 与未验证条件。</p></article></main><footer class="foot">附录不是另一条叙事；删除附录不会改变核心建议，但会降低对平台细节与证据边界的可追溯性。</footer></div></section>
+<section class="slide s-gray" data-title="附录导航"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整平台流程已经进入核心主线；附录只保留支撑追问的扩展材料</div><div class="ttl">附录提供能力范围、扩展推导和来源边界</div></div><div class="section-tabs"><span>01 答案</span><span>02 差异</span><span>03 供给</span><span>04 体验</span><span class="active">A 依据</span></div></header><main class="body-area appendix-index"><article class="appendix-card"><div class="n">A1</div><h3>平台定位</h3><p>六个平台的产品形态、主要场景与比较边界。</p></article><article class="appendix-card"><div class="n">A2</div><h3>能力矩阵</h3><p>通用能力栈、上下文 / 动作与编排 / 可信入口。</p></article><article class="appendix-card"><div class="n">A3</div><h3>扩展推导</h3><p>机制对照、能力差异公式、传统旅程、协同架构与产品形态。</p></article><article class="appendix-card"><div class="n">A4</div><h3>来源与边界</h3><p>公开文档、开源源码、CANN 实测样本、H / M / L 与未验证条件。</p></article></main><footer class="foot">附录不是另一条叙事；核心流程图的三个聚光点均可在这里追溯到平台能力范围或公开来源。</footer></div></section>
 
 <!-- 33 SOURCES -->
 <section class="slide s-gray" data-title="来源与边界"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">公开事实、开源实现、实测样本与待验证假设分开保留</div><div class="ttl">主要来源与证据边界</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span>03 机制</span><span>04 旅程</span><span class="active">05 机会</span></div></header><main class="body-area fill"><div class="sources">
@@ -973,11 +992,11 @@ mermaid.initialize({
 (() => {
   const reportOrder = [
     '封面','目录','领导问题与结论','三个决策问题','研究范围与证据',
-    '通用 Host 循环','六环节差异聚光','平台差异带来的效果','Claude Code 组合归因','Claude Code 公平验证','CANN 实证',
+    '通用 Host 循环','六环节差异聚光','Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','平台差异带来的效果','Claude Code 组合归因','Claude Code 公平验证','CANN 实证',
     '昇腾可控变量','跨平台供给栈','供给形态与合同','跨平台适配矩阵',
     'AI 时代开发者旅程','知识与问题','AI 可发现性与可信','问题状态机','协同运行蓝图','用户体验五个关键时刻','设计与业务运营闭环','成本模型','机会矩阵','Roadmap','最终答案',
     '附录导航','六平台定位','通用能力栈','能力矩阵：上下文与动作','能力矩阵：编排与可信','共同规律',
-    'Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','编码能力差异公式','传统开发者旅程','协同架构','服务能力契约','新产品形态','来源与边界'
+    '机制对照','编码能力差异公式','传统开发者旅程','协同架构','服务能力契约','新产品形态','来源与边界'
   ];
   const deck = document.getElementById('deck');
   const byTitle = new Map([...deck.querySelectorAll('.slide')].map(slide => [slide.dataset.title, slide]));
@@ -987,7 +1006,7 @@ mermaid.initialize({
 
   const chapterTitles = {
     '01':new Set(['领导问题与结论','三个决策问题','研究范围与证据']),
-    '02':new Set(['通用 Host 循环','六环节差异聚光','平台差异带来的效果','Claude Code 组合归因','Claude Code 公平验证','CANN 实证']),
+    '02':new Set(['通用 Host 循环','六环节差异聚光','Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','平台差异带来的效果','Claude Code 组合归因','Claude Code 公平验证','CANN 实证']),
     '03':new Set(['昇腾可控变量','跨平台供给栈','供给形态与合同','跨平台适配矩阵']),
     '04':new Set(['AI 时代开发者旅程','知识与问题','AI 可发现性与可信','问题状态机','协同运行蓝图','用户体验五个关键时刻','设计与业务运营闭环','成本模型','机会矩阵','Roadmap','最终答案'])
   };
