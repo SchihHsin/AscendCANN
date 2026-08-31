@@ -2258,3 +2258,18 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与层级边界未改变：H / M / L 口径保持；API final / message 仍只是候选交付，业务验收属于 Application / Task 层；CANN × CUDA 三任务与 15 个公开 Issue 只代表当前样本；本机不声称完成真实 NPU / CANN 验证。
 - 验证：HTMLParser 解析通过；DOM 46 页、正式 `reportOrder` 45 页，全部命中且无重复；断言平台定位早于六平台流程、机制对照紧随流程、传统旅程早于 AI 旅程、新产品形态早于最终答案；内联 JS `node --check` 和 `git diff --check` 通过。本轮为顺序与导航修改，未绕过应用内浏览器对本地 `file://` 的限制，最终视觉由用户刷新已打开页面复核。
 - 提交 / push：报告提交 `4de40119`（`refactor: reorder AI coding report narrative`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有 `.DS_Store`、访谈 HTML、研究目录、截图与大型未跟踪文件均保持原状，未纳入提交。
+
+### 2026-08-31（AI 编码机制报告 · 昇腾知识供给系统具体化）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。用户指出原报告虽提出知识、Skill、MCP、执行与证据，但仍偏知识使用侧，无法有力回答“昇腾供给侧具体做什么、提供怎样的 Skill / MCP、知识怎样服务下一代开发者、体验部下一步交付什么”。本轮将核心结论收紧为：**不再只建设供人搜索的知识门户，而是建设面向所有 Agent 的昇腾知识供应系统**。
+- 正式序列由 45 页增至 50 页，DOM 51 页；旧隐藏“Claude Code 更强吗”仍不进入 runtime。昇腾供给章节连续位于第 28–36 页：昇腾可控变量 → 知识供给总纲 → 知识单元设计 → Skill 供给设计 → MCP 供给设计 → 知识供给运行回路 → 供给侧体验工作 → 供给形态与合同 → 跨平台适配矩阵。目录、领导结论、最终答案、机会矩阵、Roadmap、页码和章节映射全部同步。
+- 目标供给模型固定为三项系统能力：`Knowledge Compiler` 负责把官方文档、代码、样例、兼容矩阵、Issue、测试和专家规则编译为最小知识单元；`Capability Registry` 管理 Knowledge Unit、Skill 与 MCP Tool 的版本、范围、权限、成本和 Owner；`Evidence Feedback` 用采用、误触发、无匹配、执行失败、人工修正、验证和成本信号驱动修订、降级与退役。文档继续作为人类审阅界面，但不再是 Agent 的唯一供给单元。
+- Knowledge Unit 目标 Schema 至少包含 identity、scope、trigger、claim、preconditions、procedure、provenance、verification、relations；发布门槛为 Scope、Source、Owner、Expected Signal、Verification 五项齐全。不得把整页文档简单切块后视为高置信知识；范围未知时返回 `unknown`，冲突、替代和退役关系必须可追溯。
+- 首批五类 Skill 方案：`ascend-env-triage`、`ascend-build-recover`、`ascend-precision-triage`、`ascend-performance-profile`、`ascend-migration-plan`。每个 Skill 必须声明 Trigger / Inputs / Branches / Stop / Outputs / Quality，包含适用与禁止触发状态、判断与恢复分支、成功 / 无证据 / 超预算 / 高风险停止条件、Evidence Receipt、Golden Tasks、Owner、SLA 与退役条件；不做“万能 CANN Skill”。
+- MCP 目标工具面按权限分四组共 12 项：发现与匹配（`resolve_environment / search_knowledge / check_compatibility`）、诊断与准备（`run_preflight / diagnose_log / fetch_minimal_sample`）、真实执行（`build_and_test / profile_workload / validate_on_npu`）、恢复与升级（`create_diagnostic_bundle / open_support_case / get_case_status`）。所有 `ascend.*` 名称均是 L 级产品提案，不是现有公开 API；协议工具 / 资源边界参考 MCP Architecture（H）。统一回执字段为 status、scope_match、citations、commands、logs、artifacts、cost、confidence、next_actions、evidence_id。
+- 供给运行机制固定为：Task Envelope → Scope / 适用性门 → 在 Knowledge Unit、Skill、MCP / API 中选择最小供给 → 按风险和成本授权执行 → Evidence Gate → 交付、换路径或携证据升级 Owner / 专家 → Evidence Feedback 回到 Knowledge Compiler。模型生成 final / message 仍不代表业务完成；无适用知识时必须返回 unknown 并收集缺失字段。
+- 体验部的供给侧交付物明确为 `Task Taxonomy / Trigger Map / Contract UX / Permission Ladder / Receipt Spec / Golden Tasks`。体验部设计任务分类、触发路由、合同可理解表达、权限成本梯度、失败与证据语义及跨平台评测；领域 Owner 继续负责知识真实性、构建 / 测试 / NPU 服务、SLA 和业务验收。本轮保留后续“用户体验五个关键时刻”页，供给侧设计成为其前置机制而非被使用侧替代。
+- 优先级与 Roadmap 同步：P0 先交付 Knowledge Unit Schema、环境 / 兼容只读 MCP、环境 / 构建 Skill；随后建设 Action MCP 的构建测试、Profiling、NPU 和专家能力，再扩展平台适配与双轨评测。机会矩阵不再把泛泛的“AI 可发现性”作为 P0 终点。
+- 证据与层级边界未改变：上述昇腾供给系统、Skill 与 MCP 清单均为 L 级目标设计；MCP 协议边界为 H；CANN × CUDA 三任务和 15 个公开 Issue 仍只代表当前样本；本机不声称完成真实 NPU / CANN 验证，API final / message 仍只是候选交付，业务验收属于 Application / Task 层。
+- 验证：HTMLParser 通过，51 个 DOM slide 标题唯一，50 个 `reportOrder` 全部命中无重复；供给页顺序断言通过；12 个 MCP 工具完整；内联 JS `node --check` 和 `git diff --check` 通过。按 Browser Skill 尝试刷新应用内浏览器中的本地 `file://` 报告时被 URL 安全策略拒绝，未绕过或改用替代浏览器，因此最终视觉仍由用户刷新已打开页面复核。
+- 提交 / push：报告提交 `7beca966`（`feat: define Ascend knowledge supply system`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余用户已有 `.DS_Store`、访谈 HTML、研究目录、截图与大型未跟踪文件保持原状，未纳入提交。
