@@ -2412,3 +2412,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`。第 10 页主标题由反驳式的“平台差异集中在六个环节，功能数量本身解释不了体验”改为正向结论“六个关键环节共同塑造 Agent Coding 的体验差异”。
 - 业务目的：遵守 Report PPT Skill 的“标题直接表达本页主要发现”规则，让读者先获得该页观点；公开机制与荧光黄的使用边界继续由副标题说明。
 - 边界：未改页面序列、平台机制内容、H / M / L 口径、API / Host / Application 分层、视觉组件或 runtime；另外两份报告未修改。
+
+### 2026-09-01（主报告第 9 页 · Agent 全循环泳道重构）
+
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`；遵守“后续只维护主报告”的用户决定，未同步另外两份报告。正式第 9 页保留 `data-title="通用 Host 循环"` 和原页序，但主标题改为“Agent 的能力来自 Context 装配与行动反馈的持续循环”。
+- 内容从旧版三块不等宽 Mermaid 子图重构为完整 Agent 机制：L3 任务与工作区现场 → L2 将 Task / Workspace、Rules / Skill、Memory / History、Knowledge、Tools Schema 与 Observation 装配为当前 Context → L1 LLM 产生 Answer 或 Tool Call → L2 校验权限 / 参数 / 预算并执行 → Observation / Tool Result 回填下一轮 → L3 按测试、性能、产物或 Owner 规则验收。Skill 明确为 Context 来源之一，不被误写成推理主体或整页唯一主题。
+- 对话中的 Memory / Cache 与可观测性结论被收在页底：Memory / Conversation 是信息来源；Prompt Cache / KV Cache 只减少重复计算；可观测对象包括本轮 Context、加载 Skill、工具动作、Observation、循环轮次和任务状态。该共享对话仅作为概念梳理，不替代公开文档 / 源码证据，也不改变 H / M / L 口径。
+- 视觉规则：L1 / L2 / L3 三条横向泳道完全等宽等高，时间从左向右；层级标签固定在最左端统一标签列。泳道背景按 L1 → L3 从较深蓝紫过渡到浅灰白；Context / LLM 用蓝紫、执行门禁用琥珀、Observation 用薄荷、L3 验收用近黑突出。Tool Result 回环限定在 L2 下沿，Answer 支线沿图顶部进入 L3 验收，不穿过节点。
+- 验证：HTMLParser 通过；4 个内联脚本可编译；`git diff --check` 通过。应用内浏览器在 1280×720 实测三条泳道均为 `1177.6 × 129.7 px`，三个左侧标题块均为 `112.6 × 118.8 px` 且左边缘一致；截图确认节点、文字和连线均在页内，无节点被连线穿过。

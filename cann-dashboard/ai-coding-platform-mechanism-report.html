@@ -205,6 +205,39 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .sr-node.finish{background:var(--evidence-grad);color:var(--ink);border-color:rgba(54,191,162,.18)}
 .sr-node.finish small{color:#25715c}
 .sr-node.finish p{color:var(--ink-2)}
+
+/* Page 9 · equal swimlanes, left-to-right time, semantic node emphasis. */
+.agent-lane-layout{display:grid;grid-template-rows:auto auto;gap:.9vh;min-height:0}
+.agent-swimlanes{position:relative;display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:.62vh;min-height:46vh}
+.agent-swimlane{position:relative;z-index:1;min-width:0;min-height:0;display:grid;grid-template-columns:8.8vw repeat(6,minmax(0,1fr));gap:.52vw;padding:.62vh .58vw;border:1px solid rgba(255,255,255,.78);border-radius:13px;overflow:hidden}
+.agent-swimlane.l1{background:linear-gradient(90deg,rgba(91,91,214,.18),rgba(91,91,214,.08))}
+.agent-swimlane.l2{background:linear-gradient(90deg,rgba(91,91,214,.11),rgba(91,91,214,.045))}
+.agent-swimlane.l3{background:linear-gradient(90deg,rgba(255,255,255,.66),rgba(239,242,247,.55))}
+.agent-lane-label{position:relative;z-index:3;grid-column:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:.55vh .58vw;border-radius:10px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.78)}
+.agent-lane-label span{font:300 clamp(31px,2.9vw,46px)/1 'Barlow Condensed';color:var(--accent)}
+.agent-lane-label b{font-size:var(--fs-sm);line-height:1.2;margin-top:.38vh}.agent-lane-label small{font-size:var(--fs-xs);color:var(--ink-3);margin-top:.16vh}
+.agent-lane-node{position:relative;z-index:3;min-width:0;min-height:0;align-self:stretch;padding:.72vh .64vw;border-radius:10px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.88);box-shadow:0 8px 20px -18px rgba(24,31,54,.38);display:flex;flex-direction:column;justify-content:center}
+.agent-lane-node small{font:700 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.06em;color:var(--accent)}
+.agent-lane-node b{font-size:var(--fs-h3);line-height:1.2;margin:.28vh 0}.agent-lane-node p{font-size:var(--fs-sm);line-height:1.34;color:var(--ink-2)}
+.agent-lane-node.task{grid-column:2}.agent-lane-node.context{grid-column:3;background:var(--g-accent);border-color:rgba(255,255,255,.28);color:#fff}
+.agent-lane-node.llm{grid-column:4;background:linear-gradient(135deg,#343a92,#5b5bd6);border-color:rgba(255,255,255,.25);color:#fff}
+.agent-lane-node.runtime{grid-column:5;background:var(--gate-grad);border-color:rgba(244,180,80,.22)}
+.agent-lane-node.observation{grid-column:6;background:var(--evidence-grad);border-color:rgba(54,191,162,.2)}
+.agent-lane-node.accept{grid-column:7;background:var(--g-ink);border-color:rgba(255,255,255,.12);color:#fff}
+.agent-lane-node.context small,.agent-lane-node.llm small{color:#d1d6ff}.agent-lane-node.context p,.agent-lane-node.llm p,.agent-lane-node.accept p{color:rgba(255,255,255,.72)}
+.agent-context-chips{display:grid;grid-template-columns:1fr 1fr;gap:.28vh .25vw;margin-top:.34vh}
+.agent-context-chips span{padding:.26vh .3vw;border-radius:6px;background:rgba(255,255,255,.11);font-size:var(--fs-xs);font-weight:680;color:rgba(255,255,255,.83)}
+.agent-context-chips .skill{background:rgba(239,255,74,.18);color:#f7ffc2}
+.agent-decision-tags{display:flex;gap:.3vw;margin-top:.38vh}.agent-decision-tags span{padding:.26vh .38vw;border-radius:999px;background:rgba(255,255,255,.12);font-size:var(--fs-xs);font-weight:750;color:#fff}
+.agent-lane-node.runtime .gate{margin-top:.38vh;font-size:var(--fs-xs);font-weight:780;color:#8b5c20}
+.agent-lane-node.observation .receipt{margin-top:.38vh;font-size:var(--fs-xs);font-weight:780;color:#25715c}
+.agent-lane-node.accept .proof{margin-top:.38vh;font-size:var(--fs-xs);font-weight:760;color:#cbd2ff}
+.agent-lane-connectors{position:absolute;z-index:2;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.agent-lane-connectors path{fill:none;stroke:#727b90;stroke-width:1.45;vector-effect:non-scaling-stroke}.agent-lane-connectors path.tool{stroke:var(--accent);stroke-width:1.8}.agent-lane-connectors path.answer{stroke:#8e96a8;stroke-dasharray:5 5}.agent-lane-connectors path.loop{stroke:#4e9e84;stroke-dasharray:5 4}
+.agent-lane-connectors text{font:700 10px 'JetBrains Mono';fill:#727b90;letter-spacing:.06em}.agent-lane-connectors text.loop-label{fill:#347a65}
+.agent-loop-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.68vw;min-width:0}
+.agent-loop-note{min-width:0;padding:.65vh .7vw;border-radius:9px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.78);display:grid;grid-template-columns:auto 1fr;gap:.6vw;align-items:center}
+.agent-loop-note b{font-size:var(--fs-sm)}.agent-loop-note p{font-size:var(--fs-sm);line-height:1.34;color:var(--ink-2)}.agent-loop-note:nth-child(2) b{color:var(--c-teal)}.agent-loop-note:nth-child(3) b{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -300,57 +333,26 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 </main><footer class="foot">机会不在再做一份“能力商店”，而在统一能力发现、执行、证据和状态。</footer></div></section>
 
 <!-- 10 UNIVERSAL LOOP -->
-<section class="slide s-gray" data-title="通用 Host 循环"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">主图覆盖 L1 API / Protocol、L2 Host / Harness 与 L3 任务验收</div><div class="ttl">通用 Agent 运行循环：模型提议，Host 执行，任务层验收</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area">
-  <div class="mermaid-shell wide"><pre class="mermaid">
-flowchart LR
-  subgraph APP["L3 · Application / Task"]
-    direction TB
-    A(["START<br/>目标 + 工作区现场"])
-    B["Task Envelope<br/>环境 · 预算 · 权限 · 已有证据"]
-    V{"业务完成条件满足？<br/>测试 / 性能 / 产物 / Owner"}
-    DONE(["END<br/>Evidence Receipt"])
-    R["恢复 / 改路径 / 升级专家"]
-    A --> B
-    V -->|通过| DONE
-    V -->|未通过| R
-  end
-  subgraph HOST["L2 · Host / Harness"]
-    direction TB
-    C["Context 装配<br/>规则 · 历史 · 工作区 · tools schema"]
-    P["解析响应项<br/>文本 / tool_call / tool_use"]
-    T{"包含工具调用？"}
-    G{"参数、权限、预算<br/>是否允许？"}
-    X["按名称路由<br/>串行 / 并行由 Host 决定"]
-    E["执行面<br/>文件 · Shell · Browser · MCP · Service"]
-    N["结果归一化<br/>status · error · log · diff · artifact"]
-    F["回填下一轮 Context<br/>tool_result + 新现场"]
-    STOP{"停止 / 继续 / 压缩？"}
-    P --> T
-    T -->|是| G
-    G -->|允许| X --> E --> N --> F --> STOP
-    G -->|拒绝 / 待确认| N
-    STOP -->|继续| C
-  end
-  subgraph API["L1 · Model API / Protocol"]
-    direction TB
-    Q["messages + tools"]
-    M["模型生成下一步"]
-    O["assistant response<br/>text / tool call items"]
-    Q --> M --> O
-  end
-  B --> C --> Q
-  O --> P
-  T -->|否：候选 final| V
-  STOP -->|候选收口| V
-  R --> C
-  classDef context fill:#eef1ff,stroke:#858bd7,color:#171a20;
-  classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
-  classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
-  classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
-  class C,Q,F context; class T,G,STOP,V gate; class X,E,N exec; class A,DONE task;
-  </pre></div>
-  <div class="diagram-key"><span><i></i>上下文 / 协议</span><span><i class="gate"></i>判断与权限</span><span><i class="exec"></i>执行与证据</span><span><i class="task"></i>任务边界</span><span class="tag h">Mermaid · H/M/L 分层</span></div>
-</main><footer class="foot">Application / Task 层另行定义完成条件：测试通过、性能达标、环境匹配、Owner 确认等。</footer></div></section>
+<section class="slide s-gray" data-title="通用 Host 循环"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">三层职责等宽呈现；Skill、Memory、History、Knowledge 与 Tools 在 Host 中装配为当前 Context</div><div class="ttl">Agent 的能力来自 Context 装配与行动反馈的持续循环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area agent-lane-layout">
+  <div class="agent-swimlanes">
+    <svg class="agent-lane-connectors" viewBox="0 0 1200 360" preserveAspectRatio="none" aria-hidden="true">
+      <defs><marker id="agentArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z" fill="#727b90"/></marker><marker id="agentArrowAccent" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z" fill="#5B5BD6"/></marker><marker id="agentArrowLoop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z" fill="#4e9e84"/></marker></defs>
+      <path class="tool" marker-end="url(#agentArrowAccent)" d="M270 300 C305 300 315 180 345 180"/>
+      <path class="tool" marker-end="url(#agentArrowAccent)" d="M455 180 C490 180 500 60 530 60"/>
+      <path class="tool" marker-end="url(#agentArrowAccent)" d="M635 60 C670 60 680 180 710 180"/>
+      <path class="tool" marker-end="url(#agentArrowAccent)" d="M815 180 H885"/>
+      <path class="tool" marker-end="url(#agentArrowAccent)" d="M995 180 C1030 180 1025 300 1055 300"/>
+      <path class="answer" marker-end="url(#agentArrow)" d="M620 42 C735 10 1040 10 1110 48 L1110 258"/>
+      <text x="782" y="23">ANSWER · 候选交付</text>
+      <path class="loop" marker-end="url(#agentArrowLoop)" d="M925 226 C925 252 395 252 395 226"/>
+      <text class="loop-label" x="574" y="248">TOOL RESULT + 新现场 → 下一轮 CONTEXT</text>
+    </svg>
+    <section class="agent-swimlane l1"><div class="agent-lane-label"><span>L1</span><b>Model API</b><small>协议与生成</small></div><article class="agent-lane-node llm"><small>03 · DECIDE</small><b>LLM 选择下一步</b><p>当前 Context 与模型能力共同决定回答、补问或工具调用。</p><div class="agent-decision-tags"><span>ANSWER</span><span>TOOL CALL</span></div></article></section>
+    <section class="agent-swimlane l2"><div class="agent-lane-label"><span>L2</span><b>Host / Harness</b><small>装配、执行与回填</small></div><article class="agent-lane-node context"><small>02 · ASSEMBLE</small><b>组装当前 Context</b><div class="agent-context-chips"><span>Task / Workspace</span><span class="skill">Rules / Skill</span><span>Memory / History</span><span>Knowledge</span><span>Tools Schema</span><span>Observation</span></div></article><article class="agent-lane-node runtime"><small>04 · EXECUTE</small><b>校验并执行</b><p>检查参数、权限与预算，调用文件、Shell、Browser、MCP 或 Service。</p><div class="gate">GATE · 可拒绝 / 待确认</div></article><article class="agent-lane-node observation"><small>05 · OBSERVE</small><b>结果成为新状态</b><p>status、error、log、diff、artifact 与环境变化被归一化并回填。</p><div class="receipt">OBSERVATION → REPLAN</div></article></section>
+    <section class="agent-swimlane l3"><div class="agent-lane-label"><span>L3</span><b>Application / Task</b><small>目标与业务验收</small></div><article class="agent-lane-node task"><small>01 · FRAME</small><b>任务与工作区现场</b><p>目标、环境、版本、权限、预算、已有证据和完成条件。</p></article><article class="agent-lane-node accept"><small>06 · ACCEPT</small><b>按证据验收任务</b><p>测试、性能、产物或 Owner 规则决定通过、恢复、换路或升级。</p><div class="proof">Evidence Receipt · L3</div></article></section>
+  </div>
+  <div class="agent-loop-notes"><article class="agent-loop-note"><b>Skill 的位置</b><p>Skill 提供方法、约束、脚本和资源，是 Context 来源之一；推理由 LLM 完成。</p></article><article class="agent-loop-note"><b>Memory 与 Cache</b><p>Memory / Conversation 提供信息；Prompt Cache / KV Cache 只减少重复计算。</p></article><article class="agent-loop-note"><b>可观测对象</b><p>应记录本轮 Context、加载的 Skill、工具动作、Observation、循环轮次与任务状态。</p></article></div>
+</main><footer class="foot">统一模型：Agent = LLM + Context Sources + Runtime + Tools + Environment；平台差异主要发生在加载、裁剪、执行、观察与重规划策略。</footer></div></section>
 
 <!-- 11 CLAUDE CODE -->
 <section class="slide s-gray" data-title="Claude Code 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">官方文档 + 公开 CLI 分发包 v2.1.199；区分 API 协议与 Claude Code Host</div><div class="ttl">Claude Code 将规则、方法、委派与检查按作用域串成完整生命周期</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
