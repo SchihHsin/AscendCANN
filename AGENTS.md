@@ -2359,3 +2359,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界保持：四类生命周期接口标为 H，可由公开文档复核；其对结果的实际贡献仍标为 L，不能仅凭机制图宣称 Claude Code 必然更强。API / Protocol、Host / Harness、Application / Task 三层边界与“API final 只是候选交付”口径均未改变。Report PPT Skill 的四栏推导流影响了本页信息结构：页面直接承接前一页的平台差异，并把结论导向后续昇腾供给页。
 - 验证：三份 HTML 经 HTMLParser；每份恰有 4 个 control / behavior / result / build 单元，旧 `Observed Agent Coding` 文案无残留；三份 deck 的 6 个内联脚本均可编译；`git diff --check` 通过。应用内浏览器对本地 `file://` 刷新被 URL 安全策略拒绝，本轮未绕过；正式视觉由用户刷新已打开页面复核。
 - 提交 / push：报告提交 `61ce23a7`（`refactor: clarify Claude Code mechanism attribution`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有 `.DS_Store`、访谈 HTML、研究目录、截图和大型未跟踪文件保持原状，未纳入提交。
+
+### 2026-09-01（Claude Code 深度归因 · 从机制假设到条件化昇腾供给）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-leadership.html`、`ai-coding-platform-mechanism-report.html`、`ai-coding-end-to-end-mechanism-synthesis.html`。用户指出此前仍未深入回答“Claude 为什么可能做得更好”，且不能预设“Claude 有 Skill → 昇腾也做 Skill”；本轮将原单页归因扩展为七页连续分析，并同步三份报告的正式顺序与章节映射。
+- 七页正式链路固定为：`Claude Code 组合归因 → Claude 默认 Harness → Claude 上下文控制 → Claude 恢复与验证 → Claude 因果假设 → Claude Code 公平验证 → Claude 机制到昇腾`。它先区分开箱基线与用户配置，再检查模型、Host / Harness、Observation / Replan 和验证停止机制，最后才将实验信号映射为建设项。
+- 四层归因模型：①模型与工具使用先验；②默认 Host / Harness 的 Prompt、Tool Schema、Context、压缩、权限和执行编排；③动作—观察—修正反馈闭环，包括日志、错误、diff、test 与结果回填；④ `CLAUDE.md`、Skill、Subagent、Hook、MCP 等用户配置资产。不可回退口径是：可选配置只能解释配置后的增益，不能单独解释零配置基线；“Claude 开箱更强”仍是 L 级假设。
+- 新增四条可证伪假设：H1 模型—工具联合适配、H2 Context 加载时机与约束保留、H3 Observation 粒度与失败重规划、H4 默认验证倾向与停止策略。每条同时写出机制信号、预期可观察行为、指标与推翻条件；公开文档只能确认部分机制存在，不能直接证明质量优势。
+- 公平验证改为四组机制隔离：同模型 / 不同 Host 隔离 Harness；同 Host / 不同模型隔离模型；Claude 配置逐项消融隔离 `CLAUDE.md / Skill / Subagent / Hook / MCP`；昇腾供给逐项消融比较原始文档、Knowledge Unit、Skill、只读 MCP、执行 MCP / Receipt 与验证门禁。共同指标包括首次工具选择正确率、无效参数 / 调用、约束保持、失败有效换路、主动测试、无证据结束、测试通过、人工接管和 Token / 时延 / NPU 成本。
+- 昇腾建设项改为实验信号驱动：工具理解差时交付 `Tool Contract Pack`；长任务漂移时交付 `Context Manifest + Knowledge Unit`；失败不会换路时交付 `Diagnostic MCP + Evidence Receipt`；过早结束时交付 `Verification Gate`；领域方法无法复用时交付状态触发 Skill + 专项 Subagent。每项均明确内部字段、触发、输入、分支、权限、Expected Signal、Stop、Escalation、结构化输出、Owner、Golden Tasks 与验收指标；Skill 数量不得作为脱离效果的建设 KPI。
+- 层级与证据边界未改变：Anthropic Messages API 仍只定义 `messages + tools → tool_use → client execution → tool_result`；Claude Code 配置和生命周期机制属于 Host；API final / message 只是候选交付，业务验收属于 Application / Task。本机无匹配 NPU / CANN 环境，不声称已有 Claude × 其他平台因果结果或真实硬件验证。
+- Report PPT Skill 影响了本轮结构与视觉：采用灰底高密度分析页、四层归因、六节点循环、上下文时间线、恢复与验证流程、因果矩阵、四组消融实验和条件化供给表；新增样式全部限定在 `.claude-*` 作用域，正文使用统一字号 token，没有影响其他页面组件。
+- 验证：三份 HTML 经 HTMLParser；DOM `data-title` 唯一；三份 `reportOrder` 全部命中、无重复并完整包含七页新链路；每份 4 个内联脚本均可编译；旧 `Observed Agent Coding` 与旧 H / M / L 过渡句无残留；`git diff --check` 通过。应用内浏览器安全策略阻止本地 `file://` 页面重新加载，本轮没有绕过或切换浏览器表面，因此最终桌面视觉验收仍待发布页或用户刷新后复核。
+- 提交 / push：报告提交 `9d91b454`（`refactor: deepen Claude mechanism analysis`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有 `.DS_Store`、访谈 HTML、研究目录、截图和大型未跟踪文件保持原状，未纳入提交。
