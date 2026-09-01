@@ -2429,3 +2429,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 视觉层级更新：七个可装配能力节点使用主题蓝紫、MCP 薄荷、Subagent 蓝色与 Hook 琥珀色的高对比描边 / 光环；02 Context 与 03 LLM 从深色面降为浅蓝紫主流程节点，避免抢夺能力入口焦点。Ink 仅保留给 L3 任务验收终点，未重新引入荧光黄。
 - 机制边界不变：Skill 交付方法 / 约束 / 脚本与验收；MCP 连接实时事实和受控动作；Plugin 是 Host 扩展载体，可注册 Skill、工具、Hook 或 App；Subagent 使用独立 Context；Hook 在生命周期节点检查或阻断。它们不能被画成同一种模型 tool call。
 - 验证：HTMLParser 通过；机制图静态检查得到 13 个节点（6 个主流程 + 7 个能力入口），全部位于画布内且无节点矩形重叠；内联 JS 经 `node --check`；`git diff --check` 通过。应用内浏览器按安全策略拒绝自动访问本地 `file://` 页面，本轮未绕过或切换浏览器表面，最终视觉需用户刷新 GitHub Pages 复核。
+
+### 2026-09-01（主报告 Agent 六环节统一 · L2 扩容与连线整理）
+
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`；继续遵守“只维护主报告”的用户决定，未同步领导方法论版与端到端合并版。正式序列仍为 49 页，`通用 Host 循环` 后紧接 `六环节差异聚光`，未改变其他页面顺序或三层事实边界。
+- 两页统一使用六个真实运行环节：`CONTEXT / ASSEMBLE → DECIDE / PLAN → GATE / ROUTE → ACTION / EXECUTE → OBSERVE / VERIFY → REPLAN / CONTINUE`。第 9 页保持流程图和三层泳道，第 10 页使用相同六列比较 Claude Code、Codex、OpenCode、Cursor、Trae、WorkBuddy；Environment 不再充当顺序步骤，而作为 Action 与 Verify 的跨环节底座单独比较。
+- 第 9 页能力节点扩为 Rules、Knowledge、Memory、Skill、Command、Template、Plugin、Permission / Sandbox、Hook、Built-in Tools、MCP / Connector、Custom Agent、Subagent、Automation / Loop；Evidence Receipt、Application Acceptance 与 Task State 继续作为任务产出 / 状态，不混入可装配能力。每个能力保持独立节点并连接到实际介入环节。
+- 用户确认 L2 信息量大，可高于 L1 / L3；较新视觉口径覆盖此前“三条泳道等高”决定。当前三条泳道仍同宽、左端标题对齐，但 1600×900 下实测高度约为 L1 `94px`、L2 `196px`、L3 `89px`。小能力节点利用增加的高度改为名称 / 作用两行，主流程横向位置未改变。
+- 连线重新路由：Gate 到 Built-in Tools / MCP / Custom Agent / Subagent 使用四个分离分支，四类执行结果分别进入 Observe 的不同入点；Hook 沿 L2 底部到验证点，Replan 回环沿泳道底部返回 Context，Answer 支线仍走 L1 上方，不再穿过能力节点或挤在同一入点。
+- 验证：HTMLParser 通过；CSS 花括号 `1039 / 1039`；6 个内联脚本均可编译；Playwright 桌面视口确认 23 个节点无文字溢出、无矩形重叠、0 个 console / page error；相邻对照页 `body 403 / scrollHeight 403`，Environment 底座未碰页脚；`git diff --check` 通过。主报告提交 `99bd1c7e`（`refactor: align agent loop and platform stages`）已推送 `origin/main`；其他用户已有脏文件未暂存、未修改。
