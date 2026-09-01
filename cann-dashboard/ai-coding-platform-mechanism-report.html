@@ -172,7 +172,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 <!-- 02 CONTENTS -->
 <section class="slide s-gray contents-slide" data-template="contents-directory" data-title="目录"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">先建立比较坐标，再用平台差异推导昇腾供给与产品落地</div><div class="ttl">一条从机制证据到业务决策的连续主线</div></div><div class="section-tabs"><span class="active">OVERVIEW</span></div></header><main class="body-area">
   <div class="contents-directory">
-    <article class="directory-card"><div class="directory-no">01</div><div class="directory-name">决策</div><div class="directory-en">THE DECISION</div><div class="directory-items"><span>领导问题与核心判断</span><span>三个决策问题</span><span>研究范围与证据边界</span></div><div class="directory-note">先明确要回答什么</div></article>
+    <article class="directory-card"><div class="directory-no">01</div><div class="directory-name">决策</div><div class="directory-en">THE DECISION</div><div class="directory-items"><span>核心问题与判断</span><span>三个决策问题</span><span>研究范围与证据边界</span></div><div class="directory-note">先明确要回答什么</div></article>
     <article class="directory-card"><div class="directory-no">02</div><div class="directory-name">平台机制</div><div class="directory-en">PLATFORM MECHANISMS</div><div class="directory-items"><span>平台定位与共同底座</span><span>六个平台运行机制</span><span>差异、效果与验证</span></div><div class="directory-note">基础 → 流程 → 归因</div></article>
     <article class="directory-card"><div class="directory-no">03</div><div class="directory-name">昇腾供给</div><div class="directory-en">ASCEND SUPPLY</div><div class="directory-items"><span>CANN 现状与任务变化</span><span>知识供应链与运行回路</span><span>Skill / MCP 具体设计</span></div><div class="directory-note">原始知识如何变成可信能力</div></article>
     <article class="directory-card"><div class="directory-no">04</div><div class="directory-name">产品落地</div><div class="directory-en">PRODUCT DELIVERY</div><div class="directory-items"><span>协同运行与体验时刻</span><span>运营责任与成本</span><span>产品形态与路线图</span></div><div class="directory-note">供给如何成为产品</div></article>
@@ -889,7 +889,7 @@ flowchart LR
 </main></div></section>
 
 <!-- NEW CORE · DECISION FIRST -->
-<section class="slide s-gray" data-title="领导问题与结论"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">先给判断，再用平台机制、CANN 实证与供给系统设计逐层证明</div><div class="ttl">真正要建设的不是另一个 AI 入口，而是面向 Agent 的昇腾知识供应系统</div></div><div class="section-tabs"><span class="active">01 决策</span><span>02 平台</span><span>03 昇腾</span><span>04 落地</span><span>A 依据</span></div></header><main class="body-area decision-hero">
+<section class="slide s-gray" data-title="核心问题与结论"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">先给判断，再用平台机制、CANN 实证与供给系统设计逐层证明</div><div class="ttl">真正要建设的不是另一个 AI 入口，而是面向 Agent 的昇腾知识供应系统</div></div><div class="section-tabs"><span class="active">01 决策</span><span>02 平台</span><span>03 昇腾</span><span>04 落地</span><span>A 依据</span></div></header><main class="body-area decision-hero">
   <article class="decision-claim"><div><span class="eyebrow">ONE-SENTENCE ANSWER</span><h2>把昇腾知识从“供人阅读的页面”升级为<strong>供 Agent 判断、调用、验证和持续治理的知识供应链</strong>。</h2></div><p>Claude Code 的体验差异仍需验证；昇腾当前可立即控制的是领域供给：用 Knowledge Unit 固化约束，用 Skill 固化方法，用 MCP 连接实时环境与真实执行，用 Evidence Receipt 驱动更新与验收。</p></article>
   <div class="decision-chain"><article class="decision-step"><div class="no">01</div><b>先确认差异发生在哪</b><p>上下文、规划、动作、环境、验证、恢复 / 连续性六个环节，而不是比较功能总数。</p></article><article class="decision-step"><div class="no">02</div><b>把原始知识编译成能力</b><p>统一版本、硬件、适用范围、来源、触发、拒绝、Expected Signal 与生命周期。</p></article><article class="decision-step hot"><div class="no">03</div><b>具体发布 Skill 与 MCP</b><p>Skill 承载状态触发的方法分支；MCP 承载实时查询、受控执行、证据回执与专家升级。</p></article><article class="decision-step"><div class="no">04</div><b>用供给质量与可信完成验收</b><p>适用命中、触发准确、调用成功 / 拒绝、恢复、证据完整与 Cost per Verified Task。</p></article></div>
 </main><footer class="foot">本页是整份报告的决策索引：后续依次回答“平台差异在哪里 → 昇腾怎样生产知识供给 → Skill / MCP 具体提供什么 → 怎样运行、治理和验证”。</footer></div></section>
@@ -1039,7 +1039,7 @@ mermaid.initialize({
 <script>
 (() => {
   const reportOrder = [
-    '封面','目录','领导问题与结论','三个决策问题','研究范围与证据',
+    '封面','目录','核心问题与结论','三个决策问题','研究范围与证据',
     '六平台定位','通用能力栈','共同规律','通用 Host 循环','六环节差异聚光',
     'Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制',
     '机制对照','平台差异带来的效果','编码能力差异公式','Claude Code 组合归因','Claude Code 公平验证',
@@ -1055,7 +1055,7 @@ mermaid.initialize({
   reportOrder.forEach(title => { const slide = byTitle.get(title); if (slide) deck.appendChild(slide); });
 
   const chapterTitles = {
-    '01':new Set(['领导问题与结论','三个决策问题','研究范围与证据']),
+    '01':new Set(['核心问题与结论','三个决策问题','研究范围与证据']),
     '02':new Set(['六平台定位','通用能力栈','共同规律','通用 Host 循环','六环节差异聚光','Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','平台差异带来的效果','编码能力差异公式','Claude Code 组合归因','Claude Code 公平验证']),
     '03':new Set(['CANN 实证','传统开发者旅程','AI 时代开发者旅程','知识与问题','AI 可发现性与可信','问题状态机','昇腾可控变量','知识供给总纲','知识单元设计','Skill 供给设计','MCP 供给设计','知识供给运行回路','供给侧体验工作','供给形态与合同','跨平台适配矩阵']),
     '04':new Set(['协同运行蓝图','用户体验五个关键时刻','设计与业务运营闭环','成本模型','新产品形态','机会矩阵','Roadmap','最终答案'])
