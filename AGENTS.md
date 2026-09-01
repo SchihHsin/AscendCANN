@@ -2350,3 +2350,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新的正式文案原则：主标题、页面观点与结论卡优先正向说明“是什么、何时发生、怎样协同”；比较对象与证据限制集中放入副标题、脚注或边界卡，避免一页连续出现“不是 / 不等于 / 不能”。必要的风险与证据边界仍保留，但不再充当页面主叙事。
 - Claude Code 机制页标题改为“将规则、方法、委派与检查按作用域串成完整生命周期”；三张结论卡改为“能力发现与正文加载分两步 / Subagent 使用独立 Context / 指导机制与执行门禁协同”。下游双轨 Benchmark、平台差异效果和组合归因页同步改成正向变量表达；参考页把“Skill 不是全部启动加载”等句式改为“两阶段加载 / 多机制协作”。
 - 验证：四个 HTML 经 HTMLParser；三份 deck 内联 JS 经 `node --check`；`git diff --check` 通过；检索确认截图中的六组反驳式旧句无残留。提交 `f97dbb2d`（`refine: use affirmative mechanism copy`）已推送 `origin/main`。本轮仅文案改写，新标题和卡片文字长度不超过原版本；应用内浏览器对本地 file URL 的既有限制未绕过，最终视觉由用户刷新已打开页面复核。
+
+### 2026-09-01（Claude Code 组合归因页 · 机制到供给的因果重构）
+
+- 用户指出原“Claude Code 组合归因”页只有 H / M / L 分类卡和 `Observed Agent Coding` 抽象乘法公式，无法回答 Claude Code 在哪些环节不同、这些机制怎样影响 Agent Coding、昇腾应对应提供什么。本轮同步重构 `cann-dashboard/ai-coding-platform-mechanism-report-leadership.html`、`ai-coding-platform-mechanism-report.html` 与 `ai-coding-end-to-end-mechanism-synthesis.html` 的同名页面；没有增加或删除页面，也没有改变正式序列、hash 映射或 runtime。
+- 页面主张改为“Claude Code 用四个工程控制点，持续约束 Agent 的偏航、误执行与过早交付”。原四张置信度卡与黑色大公式完整移除，换成四列、四行的推导矩阵：`Claude 控制点 → Agent 行为改变 → 可测结果 → 昇腾供给动作`。四条因果链分别为：规则分层 / Skill 按需加载 → Knowledge Unit + 状态触发 Skill；Subagent 独立 Context → 可委派领域方法包；PreToolUse / Permission → MCP Capability Contract；Tool Result / Stop / SubagentStop → Evidence Receipt + 验收规则。
+- 可测结果明确为版本 / 路径误选、首轮有效动作、任务漂移、返工轮次、拒绝准确率、无效调用成本、首次测试通过率与证据完整度。页底 Benchmark 继续要求同任务、同模型 / 预算 / 权限 / 环境，对比人工干预与单位可信完成成本；下一页机制隔离实验保持原职责。
+- 证据边界保持：四类生命周期接口标为 H，可由公开文档复核；其对结果的实际贡献仍标为 L，不能仅凭机制图宣称 Claude Code 必然更强。API / Protocol、Host / Harness、Application / Task 三层边界与“API final 只是候选交付”口径均未改变。Report PPT Skill 的四栏推导流影响了本页信息结构：页面直接承接前一页的平台差异，并把结论导向后续昇腾供给页。
+- 验证：三份 HTML 经 HTMLParser；每份恰有 4 个 control / behavior / result / build 单元，旧 `Observed Agent Coding` 文案无残留；三份 deck 的 6 个内联脚本均可编译；`git diff --check` 通过。应用内浏览器对本地 `file://` 刷新被 URL 安全策略拒绝，本轮未绕过；正式视觉由用户刷新已打开页面复核。
+- 提交 / push：报告提交 `61ce23a7`（`refactor: clarify Claude Code mechanism attribution`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有 `.DS_Store`、访谈 HTML、研究目录、截图和大型未跟踪文件保持原状，未纳入提交。
