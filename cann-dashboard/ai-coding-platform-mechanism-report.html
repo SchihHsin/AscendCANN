@@ -209,7 +209,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
 /* Agent mechanism map · six shared phases, three equal swimlanes, explicit capability nodes. */
 .agent-lane-layout{display:block;min-height:0}
-.agent-mechanism-map{position:relative;width:100%;height:58vh;min-height:0}
+.agent-mechanism-map{position:relative;width:100%;height:60vh;min-height:0}
 .agent-map-stage-rail{position:absolute;z-index:6;left:10.45%;right:1.1%;top:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.45vw;height:6.2%}
 .agent-map-stage{min-width:0;padding:0 .35vw .45vh;border-bottom:2px solid rgba(91,91,214,.24);display:flex;align-items:flex-end;gap:.38vw}
 .agent-map-stage small{font:750 var(--fs-xs)/1 'JetBrains Mono';color:var(--accent)}.agent-map-stage b{font-size:var(--fs-xs);line-height:1.05;color:var(--ink-2);white-space:nowrap}
@@ -217,8 +217,8 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .agent-map-grid span{border-left:1px dashed rgba(91,101,122,.13)}.agent-map-grid span:last-child{border-right:1px dashed rgba(91,101,122,.13)}
 .agent-map-lane{position:absolute;z-index:0;left:0;right:0;border:1px solid rgba(255,255,255,.8);border-radius:13px;overflow:hidden}
 .agent-map-lane.l1{top:9.5%;height:18%;background:linear-gradient(90deg,rgba(91,91,214,.16),rgba(91,91,214,.065))}
-.agent-map-lane.l2{top:29.5%;height:37.5%;background:linear-gradient(90deg,rgba(91,91,214,.1),rgba(91,91,214,.03))}
-.agent-map-lane.l3{top:69%;height:17%;background:linear-gradient(90deg,rgba(255,255,255,.72),rgba(236,239,245,.58))}
+.agent-map-lane.l2{top:29%;height:40%;background:linear-gradient(90deg,rgba(91,91,214,.1),rgba(91,91,214,.03))}
+.agent-map-lane.l3{top:71%;height:18.5%;background:linear-gradient(90deg,rgba(255,255,255,.72),rgba(236,239,245,.58))}
 .agent-map-label{position:absolute;z-index:4;left:.6%;width:8.4%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:.35vh .5vw}
 .agent-map-label span{font:300 clamp(27px,2.55vw,40px)/.9 'Barlow Condensed';color:var(--accent)}
 .agent-map-label b{font-size:var(--fs-sm);line-height:1.12;margin-top:.32vh}.agent-map-label small{font-size:var(--fs-xs);line-height:1.15;color:var(--ink-3);margin-top:.12vh}
@@ -243,7 +243,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .agent-map-connectors path{fill:none;stroke:#727b90;stroke-width:1.45;vector-effect:non-scaling-stroke}.agent-map-connectors path.main{stroke:#5b5bd6;stroke-width:1.85}.agent-map-connectors path.cap{stroke:#6c6ccc;stroke-width:1.3}.agent-map-connectors path.ext{stroke:#6c6ccc;stroke-width:1.25;stroke-dasharray:5 4}.agent-map-connectors path.action{stroke:#009f9a;stroke-width:1.6}.agent-map-connectors path.hook{stroke:#ba7b24;stroke-width:1.35;stroke-dasharray:4 3}.agent-map-connectors path.answer{stroke:#727b90;stroke-dasharray:5 4}.agent-map-connectors path.loop{stroke:#3e8f75;stroke-width:1.55}
 .agent-map-connectors marker path{stroke:none;stroke-width:0}.agent-map-connectors #agentMapArrow path{fill:#727b90}.agent-map-connectors #agentMapArrowAccent path{fill:#5b5bd6}.agent-map-connectors #agentMapArrowCap path{fill:#6c6ccc}.agent-map-connectors #agentMapArrowAction path{fill:#009f9a}.agent-map-connectors #agentMapArrowHook path{fill:#ba7b24}.agent-map-connectors #agentMapArrowLoop path{fill:#3e8f75}
 .agent-map-connectors text{font:700 9.5px 'JetBrains Mono';fill:#687186;letter-spacing:.045em}.agent-map-connectors text.action-label{fill:#187b6e}.agent-map-connectors text.loop-label{fill:#347a65}.agent-map-connectors text.answer-label{fill:#656e80}
-.agent-env-band{position:absolute;z-index:4;left:54.6%;width:28.7%;top:88.2%;height:6.1%;padding:.3vh .55vw;border:1px solid rgba(55,122,210,.3);border-radius:8px;background:linear-gradient(90deg,rgba(229,239,252,.92),rgba(239,247,250,.9));display:flex;align-items:center;gap:.55vw;color:#4e6073}
+.agent-env-band{position:absolute;z-index:4;left:54.6%;width:28.7%;top:91%;height:6.1%;padding:.3vh .55vw;border:1px solid rgba(55,122,210,.3);border-radius:8px;background:linear-gradient(90deg,rgba(229,239,252,.92),rgba(239,247,250,.9));display:flex;align-items:center;gap:.55vw;color:#4e6073}
 .agent-env-band b{font:750 var(--fs-xs)/1 'JetBrains Mono';color:#37699f}.agent-env-band span{font-size:var(--fs-xs);white-space:nowrap}
 .agent-map-legend{position:absolute;z-index:5;left:10.8%;right:1%;bottom:-1.65vh;display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-xs);color:var(--ink-3)}
 .agent-map-legend b{color:var(--accent)}.agent-map-legend span:last-child{text-align:right}
@@ -358,55 +358,55 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         <marker id="agentMapArrowHook" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z"/></marker>
         <marker id="agentMapArrowLoop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z"/></marker>
       </defs>
-      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M214 309 V278"/>
-      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M294 251 C310 251 300 80 317 80"/>
-      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M464 90 C480 90 472 232 488 232"/>
+      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M214 317 V285"/>
+      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M294 254 C310 254 300 80 317 80"/>
+      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M464 90 C480 90 472 244 488 244"/>
       <text x="463" y="122">TOOL CALL</text>
-      <path class="answer" marker-end="url(#agentMapArrow)" d="M464 80 C650 25 930 36 954 309"/>
+      <path class="answer" marker-end="url(#agentMapArrow)" d="M464 80 C650 25 930 36 954 317"/>
       <text class="answer-label" x="690" y="29">ANSWER · 候选交付</text>
 
-      <path class="cap" d="M134 150 H126 V251 H134" marker-end="url(#agentMapArrowCap)"/>
+      <path class="cap" d="M134 150 H126 V254 H134" marker-end="url(#agentMapArrowCap)"/>
       <path class="cap" d="M134 179 H126"/><path class="cap" d="M134 208 H126"/>
-      <path class="cap" d="M294 150 H302 V251 H294" marker-end="url(#agentMapArrowCap)"/>
+      <path class="cap" d="M294 150 H302 V254 H294" marker-end="url(#agentMapArrowCap)"/>
       <path class="cap" d="M294 179 H302"/><path class="cap" d="M294 208 H302"/>
 
-      <path class="ext" marker-end="url(#agentMapArrowCap)" d="M525 174 V211"/>
-      <path class="hook" marker-end="url(#agentMapArrowHook)" d="M605 174 V211"/>
+      <path class="ext" marker-end="url(#agentMapArrowCap)" d="M525 174 V210"/>
+      <path class="hook" marker-end="url(#agentMapArrowHook)" d="M605 174 V210"/>
       <path class="hook" marker-end="url(#agentMapArrowHook)" d="M566 208 V278 H915 V251"/>
 
-      <path class="main" d="M644 239 H650"/>
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 239 V169 H660"/>
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 239 V169 H739"/>
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 239 V227 H660"/>
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 239 V227 H739"/>
+      <path class="main" d="M644 244 H650"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 244 V169 H660"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 244 V169 H739"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 244 V227 H660"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 244 V227 H739"/>
       <path class="action" marker-end="url(#agentMapArrowAction)" d="M734 169 C780 169 802 181 838 185"/>
       <path class="action" marker-end="url(#agentMapArrowAction)" d="M813 169 C824 169 830 191 838 198"/>
       <path class="action" marker-end="url(#agentMapArrowAction)" d="M734 227 C780 227 802 223 838 220"/>
       <path class="action" marker-end="url(#agentMapArrowAction)" d="M813 227 C824 227 830 232 838 235"/>
 
       <path class="main" marker-end="url(#agentMapArrowAccent)" d="M991 208 H1013"/>
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M915 251 C915 276 875 290 875 309"/>
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M912 334 H917"/>
-      <path class="answer" marker-end="url(#agentMapArrow)" d="M991 334 H1013"/>
-      <path class="loop" marker-end="url(#agentMapArrowLoop)" d="M1090 236 C1090 272 214 274 214 278"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M915 251 C915 280 875 296 875 317"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M912 345 H917"/>
+      <path class="answer" marker-end="url(#agentMapArrow)" d="M991 345 H1013"/>
+      <path class="loop" marker-end="url(#agentMapArrowLoop)" d="M1090 236 C1090 276 214 280 214 285"/>
       <text class="loop-label" x="610" y="272">新证据 → REPLAN → 下一轮 CONTEXT</text>
       <path class="loop" marker-end="url(#agentMapArrowLoop)" d="M1090 242 V236"/>
     </svg>
-    <article class="agent-map-node main task" style="--x:11.2;--y:71.8;--w:13.3;--h:11.5"><small>FRAME</small><b>任务与工作区现场</b><p>目标、版本、权限、预算与完成条件。</p></article>
+    <article class="agent-map-node main task" style="--x:11.2;--y:73.6;--w:13.3;--h:13.3"><small>FRAME</small><b>任务与工作区现场</b><p>目标、版本、权限、预算与完成条件。</p></article>
     <article class="agent-map-node capability mini stack rules" style="--x:11.2;--y:31.9;--w:6.2;--h:6"><b>Rules</b><p>版本边界</p></article>
     <article class="agent-map-node capability mini stack knowledge" style="--x:18.2;--y:31.9;--w:6.3;--h:6"><b>Knowledge</b><p>可信事实</p></article>
     <article class="agent-map-node capability mini stack memory" style="--x:11.2;--y:38.6;--w:6.2;--h:6"><b>Memory</b><p>历史状态</p></article>
     <article class="agent-map-node capability mini stack skill" style="--x:18.2;--y:38.6;--w:6.3;--h:6"><b>Skill</b><p>方法分支</p></article>
     <article class="agent-map-node capability mini stack command" style="--x:11.2;--y:45.3;--w:6.2;--h:6"><b>Command</b><p>显式入口</p></article>
     <article class="agent-map-node capability mini stack template" style="--x:18.2;--y:45.3;--w:6.3;--h:6"><b>Template</b><p>工程起点</p></article>
-    <article class="agent-map-node main context" style="--x:11.2;--y:52.2;--w:13.3;--h:12.4"><small>CONTEXT / ASSEMBLE</small><b>装配当前 Context</b><p>任务、规则、知识、方法、历史与 tools schema。</p></article>
+    <article class="agent-map-node main context" style="--x:11.2;--y:51.8;--w:13.3;--h:14.4"><small>CONTEXT / ASSEMBLE</small><b>装配当前 Context</b><p>任务、规则、知识、方法、历史与 tools schema。</p></article>
 
     <article class="agent-map-node main llm" style="--x:26.4;--y:11.9;--w:12.3;--h:13.2"><small>DECIDE / PLAN</small><b>LLM 选择下一步</b><p>回答、补问，或产生工具 / 委派请求。</p></article>
 
     <article class="agent-map-node capability mini stack plugin" style="--x:40.7;--y:33.5;--w:6.1;--h:7"><b>Plugin</b><p>注册能力</p></article>
     <article class="agent-map-node capability mini stack permission" style="--x:47.3;--y:33.5;--w:6.4;--h:7"><b>Permission</b><p>授权 / 沙箱</p></article>
     <article class="agent-map-node capability mini hook" style="--x:40.7;--y:41.3;--w:13;--h:7"><b>Hook</b><p>执行前后与结束检查</p></article>
-    <article class="agent-map-node main runtime" style="--x:40.7;--y:49.2;--w:13;--h:12.8"><small>GATE / ROUTE</small><b>校验参数并选择执行器</b><p>权限、风险、成本与工具合同共同决定是否执行。</p></article>
+    <article class="agent-map-node main runtime" style="--x:40.7;--y:48.8;--w:13;--h:15.7"><small>GATE / ROUTE</small><b>校验参数并选择执行器</b><p>权限、风险、成本与工具合同共同决定是否执行。</p></article>
 
     <article class="agent-map-node capability builtin" style="--x:55;--y:33.2;--w:6.2;--h:12.4"><b>Built-in Tools</b><p>文件、Shell、Browser</p></article>
     <article class="agent-map-node capability mcp" style="--x:61.6;--y:33.2;--w:6.2;--h:12.4"><b>MCP / Connector</b><p>实时事实与受控动作</p></article>
@@ -414,12 +414,12 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
     <article class="agent-map-node capability subagent" style="--x:61.6;--y:46.6;--w:6.2;--h:12.4"><b>Subagent</b><p>独立 Context 子任务</p></article>
 
     <article class="agent-map-node main observation" style="--x:69.8;--y:38.3;--w:12.8;--h:20"><small>OBSERVE / VERIFY</small><b>形成可判断的执行结果</b><p>status、error、diff、test、log 与产物进入证据链。</p></article>
-    <article class="agent-map-node receipt" style="--x:69.8;--y:71.8;--w:6.2;--h:11.5"><small>EVIDENCE</small><b>结构化回执</b><p>环境、命令、信号与限制。</p></article>
-    <article class="agent-map-node main accept" style="--x:76.4;--y:71.8;--w:6.2;--h:11.5"><small>ACCEPT</small><b>应用验收</b><p>业务条件决定是否通过。</p></article>
+    <article class="agent-map-node receipt" style="--x:69.8;--y:73.6;--w:6.2;--h:13.3"><small>EVIDENCE</small><b>结构化回执</b><p>环境、命令、信号与限制。</p></article>
+    <article class="agent-map-node main accept" style="--x:76.4;--y:73.6;--w:6.2;--h:13.3"><small>ACCEPT</small><b>应用验收</b><p>业务条件决定是否通过。</p></article>
 
     <article class="agent-map-node main replan" style="--x:84.4;--y:39.8;--w:12.8;--h:15.2"><small>REPLAN / CONTINUE</small><b>换路径、补信息或结束</b><p>用新证据修正假设，并决定下一轮。</p></article>
     <article class="agent-map-node capability mini stack automation" style="--x:84.4;--y:56.2;--w:12.8;--h:6.3"><b>Automation / Loop</b><p>按时间、事件或状态再次发起</p></article>
-    <article class="agent-map-node outcome" style="--x:84.4;--y:71.8;--w:12.8;--h:11.5"><small>TASK STATE</small><b>完成 / 恢复 / 升级</b><p>保留 Checkpoint、Owner、SLA 与未验证项。</p></article>
+    <article class="agent-map-node outcome" style="--x:84.4;--y:73.6;--w:12.8;--h:13.3"><small>TASK STATE</small><b>完成 / 恢复 / 升级</b><p>保留 Checkpoint、Owner、SLA 与未验证项。</p></article>
 
     <div class="agent-env-band"><b>EXECUTION ENVIRONMENT</b><span>Workspace · IDE · Local · Container · CI · Cloud VM · NPU</span></div>
     <div class="agent-map-legend"><span><b>高对比节点</b>＝可设计、交付或配置的能力入口</span><span>Environment 是 Action 与 Verify 的运行底座</span></div>
