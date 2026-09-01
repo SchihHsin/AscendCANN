@@ -2468,3 +2468,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出流程图混用曲线和直角线，且多条连线被节点遮挡，无法追溯起终点。本轮只修改主报告机制图：27 条连线全部改为水平 / 垂直段加 SVG `Q` 小圆角，不再使用 `C` 贝塞尔曲线；线端仍使用同色实心小箭头。
 - 固定线路通道：Answer 走 L1 顶部并从 Observe / Replan 间隙下行到 Application Acceptance；Replan 从 Replan 左侧进入 L2 底部通道再回到 Context；Built-in、MCP、Custom Agent、Subagent 的输入 / 输出分别走节点上方、下方及右侧间隙，进入 Observe 的不同端口。Plugin 和 Permission 原来穿过 Hook 的竖线分别改从 Hook 左右绕入 Gate；Hook 自身只保留到 Gate 的短连接。
 - Playwright 对每条 SVG path 进行 1%–99% 路径采样并与 23 个节点矩形求交，结果为 0 条连线穿过节点；27 条 path 中 `C` 曲线数量为 0，节点文字溢出为 0，console / page error 为 0。HTMLParser、6 个内联脚本与 `git diff --check` 通过，桌面 1600×900、2×截图完成视觉复核。提交 `dd31f52b`（`refactor: route agent flow with rounded orthogonal lines`）已推送 `origin/main`。
+
+### 2026-09-02（主报告 Answer 与四类 Action 路线分离）
+
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`；继续遵守“只维护主报告”的用户决定，未同步领导方法论版与端到端合并版。`ANSWER · 候选交付` 不再绕行六环节标题区，而是从 LLM 右侧沿 L1 中部水平前进，再经 Observe / Replan 间隙下行至 Application Acceptance。
+- 用户否决把 Built-in Tools、MCP / Connector、Custom Agent、Subagent 收敛为一条执行总线，因为总线会抹掉四类能力不同的调用与结果回填路径。最终保留 **4 条调用路线 + 4 条回填路线**：每一类能力仍可从 Gate 追踪到自身节点，再单独进入 Observe。
+- 为解决多条绿色线混在一起的问题，四类线路分别跟随对应能力卡颜色：Built-in 为蓝紫、MCP 为薄荷、Custom Agent 为亮蓝、Subagent 为深蓝；每条线使用同色实心小箭头。交叉处增加浅灰色断桥底线，使视觉上明确为跨越而非汇合；下游 Evidence Receipt 等共用 Action 线路继续使用薄荷色。
+- 验证：HTMLParser 通过；CSS 花括号 `966 / 966`；内联脚本经 `node --check`；`git diff --check` 通过。静态 SVG 几何检查覆盖 23 个节点和 27 条可见 path，结果为 0 条线穿过节点；8 条独立能力路线均有对应断桥底线，`C` 贝塞尔命令为 0。应用内浏览器按安全策略拒绝新导航到本地 `file://` 主报告，本轮未绕过或切换浏览器表面；线路通道以用户截图和 SVG 坐标检查为依据。主报告提交 `4cf58bf7`（`refine: separate answer and action routes`）已推送 `origin/main`。
