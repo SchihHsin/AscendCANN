@@ -2456,3 +2456,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - L1 的 LLM 节点组上移到泳道垂直中心；L3 的任务现场、Evidence Receipt、Application Acceptance、Task State 节点组下移到泳道垂直中心；L2 左侧 Context 组同步微调到泳道中心，相关主线、能力线、Answer、Evidence 与回环端点全部重算。
 - Context 节点改为 `CONTEXT / ASSEMBLE → 装配当前 Context → 任务、规则、知识、方法、历史与 tools schema`，高度为 `12.4%`，与 Gate / Observe / Replan 采用相同信息层级。未改变六环节、节点横向顺序、三层事实边界或相邻平台对照页。
 - HTMLParser、6 个内联脚本与 `git diff --check` 通过；Playwright 实测 L1 中心偏差 `0px`、L3 约 `0.3px`，Context 节点约 `65px` 高，23 个节点无溢出、无矩形重叠、0 个 console / page error。提交 `1c485b25`（`fix: center lane groups and complete context node`）已推送 `origin/main`。
+
+### 2026-09-02（主报告 L2 / L3 泳道与主节点增高）
+
+- 用户指出 Context、Gate 和 L3 全部任务节点仍略显拥挤。本轮仅修改 `cann-dashboard/ai-coding-platform-mechanism-report.html`：机制图整体从 `58vh` 增至 `60vh`，L2 泳道增至 `40%`，L3 增至 `18.5%`；L1、六环节、横向结构、平台对照页与三层事实边界未改变。
+- Context 节点增至 `14.4%` 高，Gate 增至 `15.7%`；L3 的 Task Frame、Evidence Receipt、Application Acceptance、Task State 统一增至 `13.3%`，并继续以泳道中心对齐。Environment 底座下移至 `91%`，与 L3 保留明确间距；全部主线、能力线、回环和任务验收锚点同步重算。
+- 1600×900 实测：L2 约 `216px`、L3 约 `100px`，Context 约 `78px`、Gate 约 `85px`、L3 节点约 `72px`；23 个节点无文字溢出、无矩形重叠，Environment 与 L3 间距约 `8px`，距页脚仍有安全区，0 个 console / page error。HTMLParser、6 个内联脚本和 `git diff --check` 通过。提交 `ec0573ff`（`fix: expand L2 and L3 lane spacing`）已推送 `origin/main`。
