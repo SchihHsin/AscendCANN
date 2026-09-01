@@ -112,6 +112,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
 .stage-rail{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.65vw}.stage-cell{position:relative;min-width:0;padding:1.1vh .72vw;border-radius:12px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.86)}.stage-cell:not(:last-child)::after{content:"→";position:absolute;right:-.55vw;top:42%;z-index:3;color:var(--ink-3);font-weight:800}.stage-cell small{font:650 var(--fs-xs)/1.2 'JetBrains Mono';color:var(--ink-3)}.stage-cell b{display:block;font-size:var(--fs-h3);margin:.45vh 0}.stage-cell p{font-size:var(--fs-sm);line-height:1.4;color:var(--ink-2)}
 .diff-map{margin-top:1.1vh;display:grid;grid-template-columns:7.3vw repeat(6,minmax(0,1fr));gap:4px;padding:5px;border-radius:15px;background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.84)}.diff-map>div{min-width:0;min-height:0;padding:.64vh .5vw;border-radius:8px;background:rgba(255,255,255,.46);font-size:var(--fs-xs);line-height:1.25;color:var(--ink-2);display:flex;align-items:center}.diff-map .dh{justify-content:center;text-align:center;background:#e8ebf1;font-weight:850;color:var(--ink)}.diff-map .dr{font-weight:850;color:var(--ink);background:#f1f3f6}.diff-map .signal{position:relative;background:linear-gradient(135deg,#fffcb0,#efff42);color:#25280f;font-weight:800;border:1px solid rgba(194,199,30,.32)}.diff-map .signal::before{content:"";width:7px;height:7px;flex:0 0 auto;border-radius:50%;background:#d5df00;margin-right:.35vw;box-shadow:0 0 0 3px rgba(229,238,0,.2)}.diff-map .base{color:var(--ink-3)}
+.environment-compare{margin-top:.58vh;display:grid;grid-template-columns:7.3vw repeat(6,minmax(0,1fr));gap:4px;padding:4px;border-radius:11px;background:rgba(230,238,248,.58);border:1px solid rgba(114,143,181,.18)}.environment-compare>div{min-width:0;padding:.5vh .45vw;border-radius:7px;background:rgba(255,255,255,.5);font-size:var(--fs-xs);line-height:1.2;color:#647184;display:flex;align-items:center}.environment-compare .env-head{font-weight:850;color:#37699f;background:rgba(222,234,249,.72)}
 
 .impact-board{display:grid;grid-template-columns:1fr 1fr;gap:.85vw}.impact-row{display:grid;grid-template-columns:1fr 36px 1.03fr 36px 1.05fr;align-items:stretch;min-height:11.4vh;padding:.7vh .65vw;border-radius:14px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.84)}.impact-box{padding:.8vh .68vw;border-radius:10px;background:rgba(255,255,255,.62);display:flex;flex-direction:column;justify-content:center}.impact-box b{font-size:var(--fs-h3);line-height:1.2}.impact-box span{margin-top:.35vh;font-size:var(--fs-xs);line-height:1.35;color:var(--ink-2)}.impact-box.platform{background:#eef0ff}.impact-box.effect{background:#edf8f4}.impact-arrow{display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-weight:850}.impact-note{margin-top:1vh;padding:1vh 1vw;border-radius:12px;background:var(--g-ink);color:#fff;display:grid;grid-template-columns:auto 1fr;gap:1vw;align-items:center}.impact-note b{font-size:var(--fs-h3)}.impact-note p{font-size:var(--fs-body);line-height:1.45;color:rgba(255,255,255,.66)}
 
@@ -206,35 +207,44 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .sr-node.finish small{color:#25715c}
 .sr-node.finish p{color:var(--ink-2)}
 
-/* Agent mechanism map · equal swimlanes, explicit capability nodes. */
+/* Agent mechanism map · six shared phases, three equal swimlanes, explicit capability nodes. */
 .agent-lane-layout{display:block;min-height:0}
-.agent-mechanism-map{position:relative;width:100%;height:54vh;min-height:0}
-.agent-map-lane{position:absolute;z-index:0;left:0;right:0;height:31.2%;border:1px solid rgba(255,255,255,.8);border-radius:13px;overflow:hidden}
-.agent-map-lane.l1{top:0;background:linear-gradient(90deg,rgba(91,91,214,.18),rgba(91,91,214,.075))}
-.agent-map-lane.l2{top:34.4%;background:linear-gradient(90deg,rgba(91,91,214,.11),rgba(91,91,214,.035))}
-.agent-map-lane.l3{top:68.8%;background:linear-gradient(90deg,rgba(255,255,255,.7),rgba(236,239,245,.58))}
-.agent-map-label{position:absolute;z-index:4;left:.6%;width:8.4%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:.4vh .5vw}
-.agent-map-label span{font:300 clamp(30px,2.8vw,44px)/.9 'Barlow Condensed';color:var(--accent)}
-.agent-map-label b{font-size:var(--fs-sm);line-height:1.16;margin-top:.38vh}.agent-map-label small{font-size:var(--fs-xs);line-height:1.2;color:var(--ink-3);margin-top:.16vh}
-.agent-map-node{position:absolute;z-index:3;left:calc(var(--x) * 1%);top:calc(var(--y) * 1%);width:calc(var(--w) * 1%);height:calc(var(--h) * 1%);min-width:0;min-height:0;padding:.52vh .5vw;border-radius:9px;background:rgba(255,255,255,.86);border:1px solid rgba(91,101,122,.17);box-shadow:0 9px 22px -18px rgba(24,31,54,.45);display:flex;flex-direction:column;justify-content:center}
-.agent-map-node small{font:720 var(--fs-xs)/1.05 'JetBrains Mono';letter-spacing:.055em;color:var(--accent)}
-.agent-map-node b{font-size:var(--fs-sm);line-height:1.14;margin:.2vh 0}.agent-map-node p{font-size:var(--fs-xs);line-height:1.22;color:var(--ink-2)}
-.agent-map-node.main{border-color:rgba(91,91,214,.16)}
-.agent-map-node.context,.agent-map-node.llm{background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(235,237,252,.96));border-color:rgba(91,91,214,.34);color:var(--ink);box-shadow:0 10px 24px -18px rgba(53,53,154,.42)}
-.agent-map-node.context small,.agent-map-node.llm small{color:var(--accent)}.agent-map-node.context p,.agent-map-node.llm p{color:var(--ink-2)}
-.agent-map-node.runtime{background:var(--gate-grad);border-color:rgba(244,180,80,.28)}
-.agent-map-node.observation{background:var(--evidence-grad);border-color:rgba(54,191,162,.25)}
-.agent-map-node.accept{background:var(--g-ink);border-color:rgba(255,255,255,.12);color:#fff}.agent-map-node.accept small{color:#cbd2ff}.agent-map-node.accept p{color:rgba(255,255,255,.72)}
-.agent-map-node.capability{border-width:1.6px;border-color:rgba(91,91,214,.58);background:linear-gradient(135deg,#fff,rgba(235,235,255,.94));box-shadow:0 0 0 2px rgba(91,91,214,.07),0 12px 26px -18px rgba(53,53,154,.62)}
-.agent-map-node.capability b{font-size:var(--fs-sm);color:#35359a}.agent-map-node.capability p{color:#50576a}
-.agent-map-node.capability::after{content:"";position:absolute;right:.42vw;top:.5vh;width:5px;height:5px;border-radius:50%;background:#5b5bd6;box-shadow:0 0 0 4px rgba(91,91,214,.11)}
-.agent-map-node.capability.mcp{border-color:rgba(0,159,154,.62);background:linear-gradient(135deg,#f9fffe,#e6f8f4)}.agent-map-node.capability.mcp b{color:#16796e}.agent-map-node.capability.mcp::after{background:#009f9a;box-shadow:0 0 0 4px rgba(0,159,154,.11)}
-.agent-map-node.capability.subagent{border-color:rgba(55,122,210,.62);background:linear-gradient(135deg,#fbfdff,#e8f2ff)}.agent-map-node.capability.subagent b{color:#2f68ad}.agent-map-node.capability.subagent::after{background:#377ad2;box-shadow:0 0 0 4px rgba(55,122,210,.11)}
-.agent-map-node.capability.hook{border-color:rgba(205,139,46,.68);background:linear-gradient(135deg,#fffdf7,#fff1d6)}.agent-map-node.capability.hook b{color:#925e17}.agent-map-node.capability.hook::after{background:#cd8b2e;box-shadow:0 0 0 4px rgba(205,139,46,.12)}
+.agent-mechanism-map{position:relative;width:100%;height:58vh;min-height:0}
+.agent-map-stage-rail{position:absolute;z-index:6;left:10.45%;right:1.1%;top:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.45vw;height:6.2%}
+.agent-map-stage{min-width:0;padding:0 .35vw .45vh;border-bottom:2px solid rgba(91,91,214,.24);display:flex;align-items:flex-end;gap:.38vw}
+.agent-map-stage small{font:750 var(--fs-xs)/1 'JetBrains Mono';color:var(--accent)}.agent-map-stage b{font-size:var(--fs-xs);line-height:1.05;color:var(--ink-2);white-space:nowrap}
+.agent-map-grid{position:absolute;z-index:1;left:10.45%;right:1.1%;top:7.4%;bottom:4.5%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));pointer-events:none}
+.agent-map-grid span{border-left:1px dashed rgba(91,101,122,.13)}.agent-map-grid span:last-child{border-right:1px dashed rgba(91,101,122,.13)}
+.agent-map-lane{position:absolute;z-index:0;left:0;right:0;border:1px solid rgba(255,255,255,.8);border-radius:13px;overflow:hidden}
+.agent-map-lane.l1{top:9.5%;height:18%;background:linear-gradient(90deg,rgba(91,91,214,.16),rgba(91,91,214,.065))}
+.agent-map-lane.l2{top:29.5%;height:37.5%;background:linear-gradient(90deg,rgba(91,91,214,.1),rgba(91,91,214,.03))}
+.agent-map-lane.l3{top:69%;height:17%;background:linear-gradient(90deg,rgba(255,255,255,.72),rgba(236,239,245,.58))}
+.agent-map-label{position:absolute;z-index:4;left:.6%;width:8.4%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:.35vh .5vw}
+.agent-map-label span{font:300 clamp(27px,2.55vw,40px)/.9 'Barlow Condensed';color:var(--accent)}
+.agent-map-label b{font-size:var(--fs-sm);line-height:1.12;margin-top:.32vh}.agent-map-label small{font-size:var(--fs-xs);line-height:1.15;color:var(--ink-3);margin-top:.12vh}
+.agent-map-node{position:absolute;z-index:3;left:calc(var(--x) * 1%);top:calc(var(--y) * 1%);width:calc(var(--w) * 1%);height:calc(var(--h) * 1%);min-width:0;min-height:0;padding:.45vh .45vw;border-radius:8px;background:rgba(255,255,255,.88);border:1px solid rgba(91,101,122,.18);box-shadow:0 9px 22px -18px rgba(24,31,54,.45);display:flex;flex-direction:column;justify-content:center}
+.agent-map-node small{font:720 var(--fs-xs)/1.02 'JetBrains Mono';letter-spacing:.045em;color:var(--accent)}
+.agent-map-node b{font-size:var(--fs-sm);line-height:1.12;margin:.16vh 0}.agent-map-node p{font-size:var(--fs-xs);line-height:1.18;color:var(--ink-2)}
+.agent-map-node.main{border-color:rgba(91,91,214,.22)}
+.agent-map-node.context,.agent-map-node.llm,.agent-map-node.replan{background:linear-gradient(135deg,rgba(255,255,255,.97),rgba(235,237,252,.97));border-color:rgba(91,91,214,.38);color:var(--ink);box-shadow:0 10px 24px -18px rgba(53,53,154,.42)}
+.agent-map-node.runtime{background:var(--gate-grad);border-color:rgba(210,143,47,.34)}
+.agent-map-node.observation,.agent-map-node.receipt{background:var(--evidence-grad);border-color:rgba(54,191,162,.28)}
+.agent-map-node.outcome{background:linear-gradient(135deg,#f6f7f9,#e8ebf0);border-color:rgba(91,101,122,.22)}
+.agent-map-node.capability{border-width:1.5px;border-color:rgba(91,91,214,.58);background:linear-gradient(135deg,#fff,rgba(235,235,255,.95));box-shadow:0 0 0 2px rgba(91,91,214,.06),0 12px 26px -18px rgba(53,53,154,.55)}
+.agent-map-node.capability b{color:#35359a}.agent-map-node.capability p{color:#50576a}
+.agent-map-node.capability::after{content:"";position:absolute;right:.34vw;top:.42vh;width:4px;height:4px;border-radius:50%;background:#5b5bd6;box-shadow:0 0 0 3px rgba(91,91,214,.1)}
+.agent-map-node.capability.mini{padding:.22vh .3vw;flex-direction:row;align-items:center;justify-content:flex-start;gap:.26vw}
+.agent-map-node.capability.mini b,.agent-map-node.capability.mini p{font-size:var(--fs-xs);line-height:1;white-space:nowrap;margin:0}.agent-map-node.capability.mini p{color:#687084}.agent-map-node.capability.mini::after{display:none}
+.agent-map-node.capability.mini.stack{flex-direction:column;align-items:flex-start;justify-content:center;gap:.1vh}.agent-map-node.capability.mini.stack b,.agent-map-node.capability.mini.stack p{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.agent-map-node.capability.mcp{border-color:rgba(0,159,154,.62);background:linear-gradient(135deg,#f9fffe,#e6f8f4)}.agent-map-node.capability.mcp b{color:#16796e}.agent-map-node.capability.mcp::after{background:#009f9a;box-shadow:0 0 0 3px rgba(0,159,154,.1)}
+.agent-map-node.capability.subagent,.agent-map-node.capability.custom-agent{border-color:rgba(55,122,210,.62);background:linear-gradient(135deg,#fbfdff,#e8f2ff)}.agent-map-node.capability.subagent b,.agent-map-node.capability.custom-agent b{color:#2f68ad}.agent-map-node.capability.subagent::after,.agent-map-node.capability.custom-agent::after{background:#377ad2;box-shadow:0 0 0 3px rgba(55,122,210,.1)}
+.agent-map-node.capability.hook,.agent-map-node.capability.permission{border-color:rgba(205,139,46,.68);background:linear-gradient(135deg,#fffdf7,#fff1d6)}.agent-map-node.capability.hook b,.agent-map-node.capability.permission b{color:#925e17}.agent-map-node.capability.hook::after,.agent-map-node.capability.permission::after{background:#cd8b2e;box-shadow:0 0 0 3px rgba(205,139,46,.11)}
 .agent-map-connectors{position:absolute;z-index:2;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.agent-map-connectors path{fill:none;stroke:#727b90;stroke-width:1.55;vector-effect:non-scaling-stroke}.agent-map-connectors path.main{stroke:#5b5bd6;stroke-width:1.9}.agent-map-connectors path.cap{stroke:#6c6ccc;stroke-width:1.45}.agent-map-connectors path.ext{stroke:#6c6ccc;stroke-width:1.35;stroke-dasharray:5 4}.agent-map-connectors path.action{stroke:#009f9a;stroke-width:1.7}.agent-map-connectors path.hook{stroke:#ba7b24;stroke-width:1.5;stroke-dasharray:4 3}.agent-map-connectors path.answer{stroke:#727b90;stroke-dasharray:5 4}.agent-map-connectors path.loop{stroke:#3e8f75;stroke-width:1.65}
-.agent-map-connectors text{font:700 10px 'JetBrains Mono';fill:#687186;letter-spacing:.05em}.agent-map-connectors text.action-label{fill:#187b6e}.agent-map-connectors text.loop-label{fill:#347a65}.agent-map-connectors text.answer-label{fill:#656e80}
-.agent-map-legend{position:absolute;z-index:5;left:10.8%;right:1%;bottom:-2.6vh;display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-xs);color:var(--ink-3)}
+.agent-map-connectors path{fill:none;stroke:#727b90;stroke-width:1.45;vector-effect:non-scaling-stroke}.agent-map-connectors path.main{stroke:#5b5bd6;stroke-width:1.85}.agent-map-connectors path.cap{stroke:#6c6ccc;stroke-width:1.3}.agent-map-connectors path.ext{stroke:#6c6ccc;stroke-width:1.25;stroke-dasharray:5 4}.agent-map-connectors path.action{stroke:#009f9a;stroke-width:1.6}.agent-map-connectors path.hook{stroke:#ba7b24;stroke-width:1.35;stroke-dasharray:4 3}.agent-map-connectors path.answer{stroke:#727b90;stroke-dasharray:5 4}.agent-map-connectors path.loop{stroke:#3e8f75;stroke-width:1.55}
+.agent-map-connectors text{font:700 9.5px 'JetBrains Mono';fill:#687186;letter-spacing:.045em}.agent-map-connectors text.action-label{fill:#187b6e}.agent-map-connectors text.loop-label{fill:#347a65}.agent-map-connectors text.answer-label{fill:#656e80}
+.agent-env-band{position:absolute;z-index:4;left:54.6%;width:28.7%;top:88.2%;height:6.1%;padding:.3vh .55vw;border:1px solid rgba(55,122,210,.3);border-radius:8px;background:linear-gradient(90deg,rgba(229,239,252,.92),rgba(239,247,250,.9));display:flex;align-items:center;gap:.55vw;color:#4e6073}
+.agent-env-band b{font:750 var(--fs-xs)/1 'JetBrains Mono';color:#37699f}.agent-env-band span{font-size:var(--fs-xs);white-space:nowrap}
+.agent-map-legend{position:absolute;z-index:5;left:10.8%;right:1%;bottom:-1.65vh;display:flex;justify-content:space-between;align-items:center;font-size:var(--fs-xs);color:var(--ink-3)}
 .agent-map-legend b{color:var(--accent)}.agent-map-legend span:last-child{text-align:right}
 </style>
 </head>
@@ -331,12 +341,14 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 </main><footer class="foot">机会不在再做一份“能力商店”，而在统一能力发现、执行、证据和状态。</footer></div></section>
 
 <!-- 10 UNIVERSAL LOOP -->
-<section class="slide s-gray" data-title="通用 Host 循环"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">Rules、项目知识、Skill、Plugin、MCP、Subagent 与 Hook 各自拥有独立节点、作用与连接位置</div><div class="ttl">七类可装配能力分别进入 Agent 的 Context、执行与生命周期</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area agent-lane-layout">
+<section class="slide s-gray" data-title="通用 Host 循环"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">Rules、Knowledge、Memory、Skill、Command、Template、Plugin、MCP、Agent、Hook 与 Automation 分别接入对应环节</div><div class="ttl">Agent 通过六个统一环节把 Context、行动与验证连成闭环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area agent-lane-layout">
   <div class="agent-mechanism-map">
+    <div class="agent-map-stage-rail" aria-label="六个统一运行环节"><div class="agent-map-stage"><small>01</small><b>CONTEXT · ASSEMBLE</b></div><div class="agent-map-stage"><small>02</small><b>DECIDE · PLAN</b></div><div class="agent-map-stage"><small>03</small><b>GATE · ROUTE</b></div><div class="agent-map-stage"><small>04</small><b>ACTION · EXECUTE</b></div><div class="agent-map-stage"><small>05</small><b>OBSERVE · VERIFY</b></div><div class="agent-map-stage"><small>06</small><b>REPLAN · CONTINUE</b></div></div>
+    <div class="agent-map-grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
     <section class="agent-map-lane l1"><div class="agent-map-label"><span>L1</span><b>Model API</b><small>协议与生成</small></div></section>
     <section class="agent-map-lane l2"><div class="agent-map-label"><span>L2</span><b>Host / Harness</b><small>装配、执行与回填</small></div></section>
     <section class="agent-map-lane l3"><div class="agent-map-label"><span>L3</span><b>Application / Task</b><small>目标与业务验收</small></div></section>
-    <svg class="agent-map-connectors" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true">
+    <svg class="agent-map-connectors" viewBox="0 0 1200 430" preserveAspectRatio="none" aria-hidden="true">
       <defs>
         <marker id="agentMapArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z" fill="#727b90"/></marker>
         <marker id="agentMapArrowAccent" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z" fill="#5B5BD6"/></marker>
@@ -344,50 +356,73 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         <marker id="agentMapArrowHook" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z" fill="#ba7b24"/></marker>
         <marker id="agentMapArrowLoop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z" fill="#3e8f75"/></marker>
       </defs>
-      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M280 350 C305 350 300 212 315 212"/>
-      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M465 202 C500 202 495 70 535 70"/>
-      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M695 70 C730 70 700 185 718 185"/>
-      <text x="695" y="101">TOOL CALL</text>
-      <path class="answer" marker-end="url(#agentMapArrow)" d="M695 46 C820 12 1090 20 1090 315"/>
-      <text class="answer-label" x="825" y="22">ANSWER · 候选交付</text>
+      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M214 298 V267"/>
+      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M294 249 C310 249 300 90 317 90"/>
+      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M464 90 C480 90 472 232 488 232"/>
+      <text x="463" y="122">TOOL CALL</text>
+      <path class="answer" marker-end="url(#agentMapArrow)" d="M464 80 C650 25 930 36 954 298"/>
+      <text class="answer-label" x="690" y="29">ANSWER · 候选交付</text>
 
-      <path class="cap" marker-end="url(#agentMapArrowAccent)" d="M260 168 H300 C307 168 307 190 315 190"/>
-      <path class="cap" marker-end="url(#agentMapArrowAccent)" d="M260 210 H315"/>
-      <path class="cap" marker-end="url(#agentMapArrowAccent)" d="M260 251 H300 C307 251 307 232 315 232"/>
-      <path class="ext" marker-end="url(#agentMapArrowAccent)" d="M655 202 H675 C688 202 690 190 700 190"/>
-      <path class="ext" marker-end="url(#agentMapArrowAccent)" d="M585 181 C585 138 420 143 410 179"/>
+      <path class="cap" d="M134 157 H126 V249 H134" marker-end="url(#agentMapArrowAccent)"/>
+      <path class="cap" d="M134 186 H126"/><path class="cap" d="M134 215 H126"/>
+      <path class="cap" d="M294 157 H302 V249 H294" marker-end="url(#agentMapArrowAccent)"/>
+      <path class="cap" d="M294 186 H302"/><path class="cap" d="M294 215 H302"/>
 
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M860 183 C880 183 875 168 895 168"/>
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M860 204 C880 204 875 232 895 232"/>
-      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M860 194 H1030"/>
-      <text class="action-label" x="885" y="202">BUILT-IN TOOL</text>
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M1015 168 H1024 C1028 168 1028 187 1030 187"/>
-      <path class="action" marker-end="url(#agentMapArrowAction)" d="M1015 232 H1024 C1028 232 1028 215 1030 215"/>
+      <path class="ext" marker-end="url(#agentMapArrowAccent)" d="M525 174 V211"/>
+      <path class="hook" marker-end="url(#agentMapArrowHook)" d="M605 174 V211"/>
+      <path class="hook" marker-end="url(#agentMapArrowHook)" d="M566 208 V278 H915 V251"/>
 
-      <path class="hook" marker-end="url(#agentMapArrowHook)" d="M780 267 V230"/>
-      <path class="hook" marker-end="url(#agentMapArrowHook)" d="M850 267 C930 286 1000 300 1040 315"/>
-      <text x="854" y="282">STOP CHECK</text>
+      <path class="main" d="M644 239 H650"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 239 V169 H660"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 239 V169 H739"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 239 V223 H660"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M650 239 V223 H739"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M734 169 C780 169 802 181 838 185"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M813 169 C824 169 830 191 838 198"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M734 223 C780 223 802 219 838 216"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M813 223 C824 223 830 229 838 232"/>
 
-      <path class="loop" marker-end="url(#agentMapArrowLoop)" d="M1090 247 C1090 278 430 286 390 248"/>
-      <text class="loop-label" x="620" y="278">OBSERVATION / TOOL RESULT → 更新现场并重装 CONTEXT</text>
+      <path class="main" marker-end="url(#agentMapArrowAccent)" d="M991 208 H1013"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M915 251 C915 270 875 281 875 298"/>
+      <path class="action" marker-end="url(#agentMapArrowAction)" d="M912 323 H917"/>
+      <path class="answer" marker-end="url(#agentMapArrow)" d="M991 323 H1013"/>
+      <path class="loop" marker-end="url(#agentMapArrowLoop)" d="M1090 236 C1090 272 214 274 214 267"/>
+      <text class="loop-label" x="610" y="272">新证据 → REPLAN → 下一轮 CONTEXT</text>
+      <path class="loop" marker-end="url(#agentMapArrowLoop)" d="M1090 242 V236"/>
     </svg>
+    <article class="agent-map-node main task" style="--x:11.2;--y:69.2;--w:13.3;--h:11.5"><small>FRAME</small><b>任务与工作区现场</b><p>目标、版本、权限、预算与完成条件。</p></article>
+    <article class="agent-map-node capability mini stack rules" style="--x:11.2;--y:33.5;--w:6.2;--h:6"><b>Rules</b><p>版本边界</p></article>
+    <article class="agent-map-node capability mini stack knowledge" style="--x:18.2;--y:33.5;--w:6.3;--h:6"><b>Knowledge</b><p>可信事实</p></article>
+    <article class="agent-map-node capability mini stack memory" style="--x:11.2;--y:40.2;--w:6.2;--h:6"><b>Memory</b><p>历史状态</p></article>
+    <article class="agent-map-node capability mini stack skill" style="--x:18.2;--y:40.2;--w:6.3;--h:6"><b>Skill</b><p>方法分支</p></article>
+    <article class="agent-map-node capability mini stack command" style="--x:11.2;--y:46.9;--w:6.2;--h:6"><b>Command</b><p>显式入口</p></article>
+    <article class="agent-map-node capability mini stack template" style="--x:18.2;--y:46.9;--w:6.3;--h:6"><b>Template</b><p>工程起点</p></article>
+    <article class="agent-map-node main context" style="--x:11.2;--y:54;--w:13.3;--h:8"><b>ASSEMBLE · 形成当前 Context</b></article>
 
-    <article class="agent-map-node main task" style="--x:12;--y:76;--w:11.3;--h:17"><small>01 · FRAME</small><b>任务与工作区现场</b><p>目标、环境、版本、权限和完成条件。</p></article>
-    <article class="agent-map-node capability rules" style="--x:10.8;--y:35.5;--w:10.8;--h:8.2"><b>Rules / 项目规则</b><p>持续约束版本、范围与禁区</p></article>
-    <article class="agent-map-node capability knowledge" style="--x:10.8;--y:45.5;--w:10.8;--h:8.2"><b>项目知识</b><p>提供代码库、接口与版本事实</p></article>
-    <article class="agent-map-node capability skill" style="--x:10.8;--y:55.4;--w:10.8;--h:8.2"><b>Skill / Workflow</b><p>按任务加载方法、步骤与验收</p></article>
-    <article class="agent-map-node main context" style="--x:26.25;--y:42.3;--w:12.5;--h:17.8"><small>02 · ASSEMBLE</small><b>装配当前 Context</b><p>把任务现场、约束、方法、知识与历史组织为本轮输入。</p></article>
-    <article class="agent-map-node main llm" style="--x:44.6;--y:6.7;--w:13.3;--h:18"><small>03 · DECIDE</small><b>LLM 选择下一步</b><p>回答、补问，或生成工具调用。</p></article>
-    <article class="agent-map-node capability plugin" style="--x:44.6;--y:43;--w:10;--h:14"><b>Plugin / Extension</b><p>向 Host 注册 Skill、工具、Hook 或 App</p></article>
-    <article class="agent-map-node main runtime" style="--x:59.8;--y:38.7;--w:11.8;--h:15"><small>04 · GATE</small><b>校验、授权与路由</b><p>检查参数、权限、预算，再选择执行器。</p></article>
-    <article class="agent-map-node capability hook" style="--x:59.8;--y:56.2;--w:11.8;--h:8.2"><b>Hook / Lifecycle</b><p>执行前后及结束时检查或阻断</p></article>
-    <article class="agent-map-node capability mcp" style="--x:74.6;--y:35.5;--w:10;--h:10"><b>MCP / Connector</b><p>读取实时事实并执行受控动作</p></article>
-    <article class="agent-map-node capability subagent" style="--x:74.6;--y:50.7;--w:10;--h:10"><b>Subagent</b><p>用独立 Context 承接专项子任务</p></article>
-    <article class="agent-map-node main observation" style="--x:86;--y:41.7;--w:12.5;--h:17.5"><small>05 · OBSERVE</small><b>回填结果与新状态</b><p>status、error、log、diff 与产物进入下一轮。</p></article>
-    <article class="agent-map-node main accept" style="--x:85;--y:75;--w:13.5;--h:18"><small>06 · ACCEPT</small><b>按证据验收任务</b><p>测试、性能、产物或 Owner 规则决定通过、恢复或升级。</p></article>
-    <div class="agent-map-legend"><span><b>高对比节点</b>＝昇腾可以设计和交付的装配入口</span><span>实线＝本轮运行 · 虚线＝注册 / 生命周期影响</span></div>
+    <article class="agent-map-node main llm" style="--x:26.4;--y:14;--w:12.3;--h:13.2"><small>DECIDE / PLAN</small><b>LLM 选择下一步</b><p>回答、补问，或产生工具 / 委派请求。</p></article>
+
+    <article class="agent-map-node capability mini stack plugin" style="--x:40.7;--y:33.5;--w:6.1;--h:7"><b>Plugin</b><p>注册能力</p></article>
+    <article class="agent-map-node capability mini stack permission" style="--x:47.3;--y:33.5;--w:6.4;--h:7"><b>Permission</b><p>授权 / 沙箱</p></article>
+    <article class="agent-map-node capability mini hook" style="--x:40.7;--y:41.3;--w:13;--h:7"><b>Hook</b><p>执行前后与结束检查</p></article>
+    <article class="agent-map-node main runtime" style="--x:40.7;--y:49.2;--w:13;--h:12.8"><small>GATE / ROUTE</small><b>校验参数并选择执行器</b><p>权限、风险、成本与工具合同共同决定是否执行。</p></article>
+
+    <article class="agent-map-node capability builtin" style="--x:55;--y:33.8;--w:6.2;--h:11.2"><b>Built-in Tools</b><p>文件、Shell、Browser</p></article>
+    <article class="agent-map-node capability mcp" style="--x:61.6;--y:33.8;--w:6.2;--h:11.2"><b>MCP / Connector</b><p>实时事实与受控动作</p></article>
+    <article class="agent-map-node capability custom-agent" style="--x:55;--y:46.2;--w:6.2;--h:11.2"><b>Custom Agent</b><p>固定角色与工具边界</p></article>
+    <article class="agent-map-node capability subagent" style="--x:61.6;--y:46.2;--w:6.2;--h:11.2"><b>Subagent</b><p>独立 Context 子任务</p></article>
+
+    <article class="agent-map-node main observation" style="--x:69.8;--y:38.3;--w:12.8;--h:20"><small>OBSERVE / VERIFY</small><b>形成可判断的执行结果</b><p>status、error、diff、test、log 与产物进入证据链。</p></article>
+    <article class="agent-map-node receipt" style="--x:69.8;--y:69.2;--w:6.2;--h:11.5"><small>EVIDENCE</small><b>结构化回执</b><p>环境、命令、信号与限制。</p></article>
+    <article class="agent-map-node main accept" style="--x:76.4;--y:69.2;--w:6.2;--h:11.5"><small>ACCEPT</small><b>应用验收</b><p>业务条件决定是否通过。</p></article>
+
+    <article class="agent-map-node main replan" style="--x:84.4;--y:39.8;--w:12.8;--h:15.2"><small>REPLAN / CONTINUE</small><b>换路径、补信息或结束</b><p>用新证据修正假设，并决定下一轮。</p></article>
+    <article class="agent-map-node capability mini stack automation" style="--x:84.4;--y:56.2;--w:12.8;--h:6.3"><b>Automation / Loop</b><p>按时间、事件或状态再次发起</p></article>
+    <article class="agent-map-node outcome" style="--x:84.4;--y:69.2;--w:12.8;--h:11.5"><small>TASK STATE</small><b>完成 / 恢复 / 升级</b><p>保留 Checkpoint、Owner、SLA 与未验证项。</p></article>
+
+    <div class="agent-env-band"><b>EXECUTION ENVIRONMENT</b><span>Workspace · IDE · Local · Container · CI · Cloud VM · NPU</span></div>
+    <div class="agent-map-legend"><span><b>高对比节点</b>＝可设计、交付或配置的能力入口</span><span>Environment 是 Action 与 Verify 的运行底座</span></div>
   </div>
-</main><footer class="foot">Skill 定义方法，MCP 连接实时事实与动作，Plugin 扩展 Host；每项能力都需要独立的输入输出合同与验证指标。</footer></div></section>
+</main><footer class="foot">下一页沿用完全相同的六个环节，逐平台比较差异发生在哪里；Environment 作为跨环节底座单独比较。</footer></div></section>
 
 <!-- 11 CLAUDE CODE -->
 <section class="slide s-gray" data-title="Claude Code 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">官方文档 + 公开 CLI 分发包 v2.1.199；区分 API 协议与 Claude Code Host</div><div class="ttl">Claude Code 将规则、方法、委派与检查按作用域串成完整生命周期</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
@@ -993,17 +1028,18 @@ flowchart LR
   <div class="decision-chain"><article class="decision-step"><div class="no">01</div><b>先确认差异发生在哪</b><p>上下文、规划、动作、环境、验证、恢复 / 连续性六个环节，而不是比较功能总数。</p></article><article class="decision-step"><div class="no">02</div><b>把原始知识编译成能力</b><p>统一版本、硬件、适用范围、来源、触发、拒绝、Expected Signal 与生命周期。</p></article><article class="decision-step hot"><div class="no">03</div><b>具体发布 Skill 与 MCP</b><p>Skill 承载状态触发的方法分支；MCP 承载实时查询、受控执行、证据回执与专家升级。</p></article><article class="decision-step"><div class="no">04</div><b>用供给质量与可信完成验收</b><p>适用命中、触发准确、调用成功 / 拒绝、恢复、证据完整与 Cost per Verified Task。</p></article></div>
 </main><footer class="foot">本页是整份报告的决策索引：后续依次回答“平台差异在哪里 → 昇腾怎样生产知识供给 → Skill / MCP 具体提供什么 → 怎样运行、治理和验证”。</footer></div></section>
 
-<section class="slide s-gray" data-title="六环节差异聚光"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">荧光黄只标公开机制中相对显著的产品化环节；空白不表示平台没有底层实现</div><div class="ttl">六个关键环节共同塑造 Agent Coding 的体验差异</div></div><div class="section-tabs"><span>01 答案</span><span class="active">02 差异</span><span>03 供给</span><span>04 体验</span><span>A 依据</span></div></header><main class="body-area">
-  <div class="stage-rail"><article class="stage-cell"><small>01 CONTEXT</small><b>装配现场</b><p>规则、仓库、版本、工具 schema</p></article><article class="stage-cell"><small>02 PLAN</small><b>拆解与选择</b><p>计划、委派、成本与权限门槛</p></article><article class="stage-cell"><small>03 ACTION</small><b>作用工作区</b><p>文件、Shell、浏览器、连接器</p></article><article class="stage-cell"><small>04 ENVIRONMENT</small><b>真实环境</b><p>本地、容器、Cloud VM、NPU</p></article><article class="stage-cell"><small>05 VERIFY</small><b>形成证据</b><p>diff、test、log、preview、artifact</p></article><article class="stage-cell"><small>06 RECOVER</small><b>恢复与连续</b><p>Hook、Checkpoint、状态、Owner</p></article></div>
-  <div class="diff-map"><div class="dh">平台</div><div class="dh">CONTEXT</div><div class="dh">PLAN</div><div class="dh">ACTION</div><div class="dh">ENVIRONMENT</div><div class="dh">VERIFY</div><div class="dh">RECOVER / CONTINUE</div>
-    <div class="dr">Claude Code</div><div class="signal">CLAUDE.md + Skills</div><div class="base">模型 / Host 规划</div><div class="signal">Subagents + 工具</div><div class="base">终端 / IDE 现场</div><div class="signal">测试、日志、Stop Hook</div><div class="signal">Hooks + 方法资产</div>
-    <div class="dr">Codex</div><div class="signal">AGENTS.md + Skills / Plugins</div><div class="base">模型 / Host 规划</div><div class="signal">审批 + 沙箱动作</div><div class="base">工作区 / 云任务</div><div class="signal">diff / test / log 回填</div><div class="base">线程 / 工作区连续</div>
-    <div class="dr">OpenCode</div><div class="signal">Instruction / Agent</div><div class="base">模型规划</div><div class="signal">统一 tools + 权限</div><div class="base">Host 所在环境</div><div class="base">result / error</div><div class="signal">Plugin events + compaction</div>
-    <div class="dr">Cursor</div><div class="signal">Rules + Codebase</div><div class="signal">并行 Subagents</div><div class="signal">IDE + Browser / Shell</div><div class="signal">本地 + Cloud VM</div><div class="signal">截图 / 视频 / PR</div><div class="signal">Steering + Checkpoint</div>
-    <div class="dr">Trae</div><div class="base">Project / Goal</div><div class="signal">Plan confirm</div><div class="signal">Tool Panels + Subagents</div><div class="base">IDE / SOLO 工程</div><div class="signal">DiffView / Preview / Stop Hook</div><div class="base">任务 / 工程连续</div>
-    <div class="dr">WorkBuddy</div><div class="base">Directory + Memory</div><div class="signal">模式 / Expert Team</div><div class="base">Connector / Automation</div><div class="base">跨应用环境</div><div class="signal">结果区 / 变更 / 预览</div><div class="signal">状态 + 继续处理</div>
+<section class="slide s-gray" data-title="六环节差异聚光"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">沿用上一页的六个真实运行环节；荧光黄只标公开机制中相对显著的产品化差异</div><div class="ttl">同一六个环节揭示 Agent Coding 的平台差异发生在哪里</div></div><div class="section-tabs"><span>01 答案</span><span class="active">02 差异</span><span>03 供给</span><span>04 体验</span><span>A 依据</span></div></header><main class="body-area">
+  <div class="stage-rail"><article class="stage-cell"><small>01 CONTEXT</small><b>Frame / Assemble</b><p>任务、规则、知识、方法与历史</p></article><article class="stage-cell"><small>02 DECIDE</small><b>Plan</b><p>理解、拆解、工具与委派选择</p></article><article class="stage-cell"><small>03 GATE</small><b>Route</b><p>schema、参数、权限、风险与成本</p></article><article class="stage-cell"><small>04 ACTION</small><b>Execute</b><p>文件、Shell、Browser、MCP、Agent</p></article><article class="stage-cell"><small>05 OBSERVE</small><b>Verify</b><p>result、diff、test、log 与证据</p></article><article class="stage-cell"><small>06 REPLAN</small><b>Continue</b><p>换路、Checkpoint、状态与升级</p></article></div>
+  <div class="diff-map"><div class="dh">平台</div><div class="dh">CONTEXT<br>ASSEMBLE</div><div class="dh">DECIDE<br>PLAN</div><div class="dh">GATE<br>ROUTE</div><div class="dh">ACTION<br>EXECUTE</div><div class="dh">OBSERVE<br>VERIFY</div><div class="dh">REPLAN<br>CONTINUE</div>
+    <div class="dr">Claude Code</div><div class="signal">CLAUDE.md + Skills</div><div class="base">模型 / Host 规划</div><div class="signal">Permission + PreToolUse</div><div class="signal">Tools / MCP / Subagents</div><div class="signal">result + test / log</div><div class="signal">Hooks + 方法资产</div>
+    <div class="dr">Codex</div><div class="signal">AGENTS.md + Skills</div><div class="base">模型 / Host 规划</div><div class="signal">审批 + 沙箱</div><div class="signal">工作区 / MCP / Plugin 工具</div><div class="signal">diff / test / log 回填</div><div class="base">线程 / 工作区连续</div>
+    <div class="dr">OpenCode</div><div class="signal">Instructions / Agent / Skills</div><div class="base">模型规划</div><div class="signal">工具表 + allow / ask / deny</div><div class="signal">Built-in / MCP / Plugin</div><div class="base">result / error</div><div class="signal">Plugin events + compaction</div>
+    <div class="dr">Cursor</div><div class="signal">Rules + Codebase</div><div class="signal">规划 + 并行任务</div><div class="signal">Approval / Hooks / Cloud 边界</div><div class="signal">IDE + Browser / Shell / Subagents</div><div class="signal">截图 / 视频 / PR</div><div class="signal">Steering + Checkpoint</div>
+    <div class="dr">Trae</div><div class="base">Project / Goal</div><div class="signal">Plan confirm</div><div class="signal">Permission / Hooks / Tool Panel</div><div class="signal">Tools + Subagents</div><div class="signal">DiffView / Preview / Stop Hook</div><div class="base">任务 / 工程连续</div>
+    <div class="dr">WorkBuddy</div><div class="base">Directory + Memory</div><div class="signal">模式 / Expert Team</div><div class="base">Connector 授权与启停</div><div class="base">Connector / Automation / Expert</div><div class="signal">结果区 / 变更 / 预览</div><div class="signal">状态 + 继续处理</div>
   </div>
-</main><footer class="foot">H：公开文档 / 源码能确认这些入口与流程；高亮代表显著产品机制，不代表内部算法优劣或最终排名。WorkBuddy 仅作任务状态与交付工作台参照，不进入同类 Coding IDE 强弱排名。</footer></div></section>
+  <div class="environment-compare"><div class="env-head">ENVIRONMENT<br>跨环节底座</div><div>Claude · Terminal / IDE / CI</div><div>Codex · Workspace / Cloud task</div><div>OpenCode · Local Host</div><div>Cursor · Local / Cloud VM</div><div>Trae · IDE / SOLO</div><div>WorkBuddy · Cross-app</div></div>
+</main><footer class="foot">H：公开文档 / 源码能确认这些入口与流程；高亮代表显著产品机制，不代表内部算法优劣或最终排名。Environment 独立为运行底座。</footer></div></section>
 
 <section class="slide s-gray" data-title="平台差异带来的效果"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">从机制差异推到可观察效果；效果仍需在同任务、同环境中实测</div><div class="ttl">真正影响 Agent Coding 的，是差异怎样改变错误、证据与恢复</div></div><div class="section-tabs"><span>01 答案</span><span class="active">02 差异</span><span>03 供给</span><span>04 体验</span><span>A 依据</span></div></header><main class="body-area">
   <div class="impact-board"><div class="impact-row"><div class="impact-box"><b>规则与方法按作用域装配</b><span>启动规则 · 条件规则 · Skill 描述 / 正文</span></div><div class="impact-arrow">→</div><div class="impact-box platform"><b>Claude、Codex、Cursor</b><span>都能装配 Context，生命周期细节不同</span></div><div class="impact-arrow">→</div><div class="impact-box effect"><b>可能减少版本与路径偏航</b><span>真实效果必须用同任务 Benchmark 验证</span></div></div>
