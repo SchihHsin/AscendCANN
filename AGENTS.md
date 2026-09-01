@@ -2397,3 +2397,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`。用户指出正式第 38 页“知识供给运行回路”中的 Ink 卡并非全页重点；复核后确认“交付或升级”虽位于六节点主流程末端，但仍包含换路径、补资料和升级专家，且继续进入 Evidence Feedback，因此不是严格终点或最终结论。
 - 将 `.sr-node.finish` 从 `--g-ink` 改为低饱和薄荷证据色 `--evidence-grad`，文字恢复深色；它现在表达状态 / 证据输出，不再与全页结论争夺焦点。真正的 END、最终结论和总结条仍可使用 Ink，未改变上一条卡片颜色语义。
 - 验证：HTMLParser 通过；CSS 花括号配对；确认后置规则覆盖旧 Ink 样式；4 个内联脚本可编译；`git diff --check` 通过。主报告提交 `31919626`（`refine: demote supply runtime terminal emphasis`）已推送 `origin/main`；另外两份报告未修改。
+
+### 2026-09-01（主报告收口旧第 4 / 5 章 · 章节 Tab 可点击）
+
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`。用户确认第 4、5 章源于早期版本；Git 历史复核表明传统 / AI 旅程、社区机会与产品形态等页面确实在首版 33 页材料中已存在，后来新增 Claude 深度归因与昇腾知识供给系统后，旧落地页未同步收口，造成第三章之后重新开启旧主线。
+- 正式序列从 55 页收敛为 49 页。删除正式序列中的六张重复旧页：`协同运行蓝图`、`设计与业务运营闭环`、`新产品形态`、`机会矩阵`、`协同架构`、`服务能力契约`；源 DOM 继续保留作历史追溯，但页面被隐藏且不进入页码、导航、Overview 或 hash。第四章只保留 `用户体验五个关键时刻 → 成本模型 → Roadmap → 最终答案`，承担从供给设计到用户判断、资源门槛、推进计划和最终决策的收束。
+- `A 依据` 明确改为独立“附录”，不是第五章。目录页的第四章改名为“落地推进 / Delivery & Validation”；附录从四项减为三项，只保留两张详细能力矩阵和来源 / 置信度 / 限制。第三章末页 `跨平台适配矩阵` 的页脚改为明确预告第四章的三个落地问题，增强章节承接。
+- Report PPT Skill 只规定右上角章节 Tab 的一致顺序与当前章节高亮，没有要求必须可点击，也没有禁止交互。当前报告此前用 `<span>` 生成视觉 Tab 且无点击事件，属于实现遗漏。本轮改为原生 `<button>`，点击 `01 决策 / 02 平台 / 03 昇腾 / 04 落地 / 附录` 可跳到各自首页并由既有 runtime 同步页码与 hash；补充 hover、focus-visible、键盘可达与附录视觉分隔，且全局翻页快捷键在按钮获得焦点时不抢占 Space / Enter。
+- 验证：HTMLParser 通过；56 个源 DOM slide 标题唯一，49 个正式 `reportOrder` 全部命中且无重复；六张旧页均不在正式序列；尾部顺序断言为 `跨平台适配矩阵 → 用户体验五个关键时刻 → 成本模型 → Roadmap → 最终答案 → 附录导航 → 两张能力矩阵 → 来源与边界`；CSS 花括号配对；4 个内联脚本可编译；`git diff --check` 通过。
+- Commit / push：主报告提交 `cb9dbd3c`（`refactor: streamline closing chapters and enable tabs`）已推送 `origin/main`；另外两份报告未修改。本条交接记录随后单独提交并推送。
