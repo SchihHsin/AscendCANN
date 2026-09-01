@@ -2443,3 +2443,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户刷新后指出 Built-in Tools、MCP / Connector、Custom Agent、Subagent 仍略显拥挤。本轮只将四个节点从 `11.2%` 增至 `12.4%` 高，并同步下移下排节点及其连线锚点；未改变泳道、六环节、横向节点位置或平台对照页。
 - 1600×900 下四个节点实测均约 `65px` 高，文字无溢出，23 个节点无矩形重叠；HTMLParser、6 个内联脚本编译与 `git diff --check` 均通过。提交 `931314dc`（`fix: add breathing room to action nodes`）已推送 `origin/main`。
+
+### 2026-09-01（主报告 Agent 流程箭头语义统一）
+
+- 用户指出流程图箭头没有随线色变化、视觉为空心且偏大。根因是 `.agent-map-connectors path{fill:none}` 同时覆盖了 SVG marker 内部 path 的填充；Context 能力连接还错误复用了主流程蓝紫箭头。
+- 新增 marker 专属覆盖，基础灰、主流程蓝紫、能力紫、Action 薄荷、Hook 琥珀、Loop 绿色六类箭头均与对应连线颜色一致；箭头改为无描边的实心三角，`markerWidth / markerHeight` 从 `6` 降至 `5`。能力线使用独立 `agentMapArrowCap`，未改变节点与连线路径。
+- HTMLParser、6 个内联脚本与 `git diff --check` 通过；Playwright 计算样式确认六种 marker 均为非 `none` 填充、`stroke:none`、尺寸 `5×5`，桌面截图完成视觉复核。提交 `d92ea6e4`（`fix: match solid arrowheads to connector colors`）已推送 `origin/main`。
