@@ -2462,3 +2462,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出 Context、Gate 和 L3 全部任务节点仍略显拥挤。本轮仅修改 `cann-dashboard/ai-coding-platform-mechanism-report.html`：机制图整体从 `58vh` 增至 `60vh`，L2 泳道增至 `40%`，L3 增至 `18.5%`；L1、六环节、横向结构、平台对照页与三层事实边界未改变。
 - Context 节点增至 `14.4%` 高，Gate 增至 `15.7%`；L3 的 Task Frame、Evidence Receipt、Application Acceptance、Task State 统一增至 `13.3%`，并继续以泳道中心对齐。Environment 底座下移至 `91%`，与 L3 保留明确间距；全部主线、能力线、回环和任务验收锚点同步重算。
 - 1600×900 实测：L2 约 `216px`、L3 约 `100px`，Context 约 `78px`、Gate 约 `85px`、L3 节点约 `72px`；23 个节点无文字溢出、无矩形重叠，Environment 与 L3 间距约 `8px`，距页脚仍有安全区，0 个 console / page error。HTMLParser、6 个内联脚本和 `git diff --check` 通过。提交 `ec0573ff`（`fix: expand L2 and L3 lane spacing`）已推送 `origin/main`。
+
+### 2026-09-02（主报告 Agent 连线统一为直角圆角且避开节点）
+
+- 用户指出流程图混用曲线和直角线，且多条连线被节点遮挡，无法追溯起终点。本轮只修改主报告机制图：27 条连线全部改为水平 / 垂直段加 SVG `Q` 小圆角，不再使用 `C` 贝塞尔曲线；线端仍使用同色实心小箭头。
+- 固定线路通道：Answer 走 L1 顶部并从 Observe / Replan 间隙下行到 Application Acceptance；Replan 从 Replan 左侧进入 L2 底部通道再回到 Context；Built-in、MCP、Custom Agent、Subagent 的输入 / 输出分别走节点上方、下方及右侧间隙，进入 Observe 的不同端口。Plugin 和 Permission 原来穿过 Hook 的竖线分别改从 Hook 左右绕入 Gate；Hook 自身只保留到 Gate 的短连接。
+- Playwright 对每条 SVG path 进行 1%–99% 路径采样并与 23 个节点矩形求交，结果为 0 条连线穿过节点；27 条 path 中 `C` 曲线数量为 0，节点文字溢出为 0，console / page error 为 0。HTMLParser、6 个内联脚本与 `git diff --check` 通过，桌面 1600×900、2×截图完成视觉复核。提交 `dd31f52b`（`refactor: route agent flow with rounded orthogonal lines`）已推送 `origin/main`。
