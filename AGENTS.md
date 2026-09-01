@@ -2301,3 +2301,15 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 视觉与叙事按 Report PPT Skill 处理：新增页采用结论标题、结构化流程、双界面图、四缺口卡和白 / 蓝紫 / 近黑三层决策卡；右侧圆点导航继续遵循用户已确认的移除决定，保留底部控制栏、键盘、hash、总览和全屏。
 - 验证：HTMLParser 通过；59 个 DOM slide 标题唯一、45 个正式 `reportOrder` 全部命中且顺序断言通过；内联 JS `node --check` 与 `git diff --check` 通过。Playwright + Google Chrome 在 1600×900 检查 45 页，0 个 page error、0 个可见文本 / 卡片越界；抽查 14 张关键页截图；验证 `#27` 刷新恢复、`27 / 45` 页码、Overview 3 列 / 45 个可见正式页、右侧 `navDots` 为 0。
 - 提交 / push：新报告提交 `8409bbe3`（`feat: add leadership edition of AI community report`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其余用户已有 `.DS_Store`、访谈 HTML、研究目录、截图与大型未跟踪资产保持原状，未纳入提交。
+
+### 2026-09-01（领导审视版 · 跨领域人 × Agent 体验方法论）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-leadership.html`。继续只修改领导版副本，没有覆盖原始 `ai-coding-platform-mechanism-report.html`。用户补充受众是负责昇腾、终端、汽车、云等多个领域体验设计的领导，主要关心体验共性而非昇腾技术细节；因此报告定位从“AI 时代昇腾社区怎样为 Agent 设计”升级为“AI 时代跨领域人 × Agent 体验设计方法论”，昇腾改为首个验证场而非唯一应用场。
+- 按 Report PPT Skill 重构正式主线为 `01 体验变化 → 02 案例发现 → 03 通用方法 → 04 体验治理 → A 依据`。正式 `reportOrder` 从 45 页增为 49 页；核心主线仍控制在前 28 页，`CANN 实证 / 知识单元设计 / Skill 供给设计 / MCP 供给设计` 等具体实现下沉附录，六平台机制、能力矩阵与来源完整保留。原始 DOM 仍保留 63 张模板页供追溯，正式序列无重复、无缺页。
+- 新增四张结构化方法页：`通用体验方法论` 用六问表达 Goal / Context / Scope / Capability / Permission / Evidence；`跨领域应用映射` 把同一语义映射到昇腾开发、手机终端、智能汽车和华为云的任务、现场、动作、风险与证据；`跨领域体验原则` 固定为可发现、可解释、可控制、可恢复、可验证；`跨领域体验组织模型` 固定为跨领域体验团队定义方法、各领域体验团队完成场景映射、领域 Owner 对事实 / 能力 / 安全 / 成本 / SLA 负责。
+- 跨领域口径不可回退：共性不是统一 UI 或统一使用 MCP / Skill，而是统一 `Task / Contract / Permission / State / Evidence` 体验语义；各领域必须单独注入用户语言、真实能力、风险级别与验收规则。终端、车与云映射全部标为 L 级目标体验，不得误写成华为现有能力；车场景优先从只读、解释和确认机制验证，不直接从高风险执行开始。
+- 主线同步重写领导结论、领域服务变化、Agent 读取对象、双界面、Agent 旅程、协同运行蓝图、体验价值迁移、供给侧体验工作、设计与业务运营闭环、18 个月 Roadmap、领导决策和最终答案。领导决策收敛为三项：确立跨领域人 × Agent 可信任务体验方向；建立“共性体验方法 + 领域体验映射 + 领域 Owner”三层机制；批准昇腾 + 终端或云双领域试点。90 天目标为共性规范、两个领域试点、跨 Agent / 跨入口 Golden Tasks、统一体验指标与单位可信完成成本复盘。
+- 昇腾供给内容仍保留业务价值：Knowledge Unit、Skill、MCP、Evidence Receipt 继续作为首个落地范例；报告明确终端、车和云可使用自己的知识、流程、设备接口或云 API，只复用适用性、权限、状态、证据和恢复合同。H / M / L 证据边界、API final 不等于业务验收、本机无真实 NPU 验证等事实口径均未改变。
+- 运行稳定性修复：Mermaid 改为先完成 49 页正式序列筛选 / 重排，再显式渲染可见流程图，消除隐藏页参与自动初始化产生的 `translate(undefined, NaN)` 错误；右侧圆点导航仍为 0，底部控制栏、键盘、hash、Overview 与全屏保留。
+- 验证：HTMLParser 通过；63 个 DOM slide 标题唯一，49 个 `reportOrder` 全部命中且无重复；断言 `昇腾当前缺口 → 通用体验方法论 → 跨领域应用映射 → 跨领域体验原则 → 跨领域体验组织模型 → 知识供给总纲` 顺序通过；`git diff --check` 通过。Playwright + Google Chrome 在 1600×900 检查 49 页，0 个 page / console error、0 个 slide / inner / body 越界；7 张 Mermaid 图均成功渲染；抽查目录、领导结论、新增四页、领导决策与最终答案；验证 `#16` 刷新恢复、`16 / 49` 页码和 Overview 3 列。
+- 提交 / push：报告提交 `d2bf58b9`（`feat: generalize leadership report across domains`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有 `.DS_Store`、访谈 HTML、研究目录、截图和大型未跟踪文件均保持原状，未纳入提交。
