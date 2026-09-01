@@ -261,6 +261,8 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cp-connectors{position:absolute;z-index:2;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}.cp-connectors path{fill:none;stroke:#727b90;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}.cp-connectors path.main{stroke:#5b5bd6;stroke-width:1.8}.cp-connectors path.context{stroke:#6c6ccc;stroke-width:1.3}.cp-connectors path.gate{stroke:#ba7b24;stroke-width:1.35}.cp-connectors path.action{stroke:#377ad2;stroke-width:1.45}.cp-connectors path.result{stroke:#009f9a;stroke-width:1.55}.cp-connectors path.loop{stroke:#3e8f75;stroke-width:1.45}.cp-connectors path.answer{stroke:#727b90;stroke-dasharray:5 4}.cp-connectors marker path{stroke:none;stroke-width:0}.cp-connectors marker.cp-arrow-main path{fill:#5b5bd6}.cp-connectors marker.cp-arrow-context path{fill:#6c6ccc}.cp-connectors marker.cp-arrow-gate path{fill:#ba7b24}.cp-connectors marker.cp-arrow-action path{fill:#377ad2}.cp-connectors marker.cp-arrow-result path{fill:#009f9a}.cp-connectors marker.cp-arrow-loop path{fill:#3e8f75}.cp-connectors marker.cp-arrow-answer path{fill:#727b90}.cp-connectors text{font:730 9px 'JetBrains Mono';letter-spacing:.04em;fill:#687186}
 .cp-slot{position:absolute;z-index:1;top:30.5%;height:42.8%;border:1px dashed rgba(91,91,214,.15);border-radius:10px;background:rgba(255,255,255,.16)}.cp-slot::before{content:attr(data-slot);position:absolute;left:.38vw;top:.35vh;font:700 8px/1 'JetBrains Mono';letter-spacing:.04em;color:rgba(91,91,214,.42)}
 .cp-map.rigid .cp-node.stage-main{height:16.2%;top:51.2%}.cp-map.rigid .cp-node.cap{height:8.8%;top:36.1%}.cp-map.flexible .cp-node{box-shadow:0 9px 20px -18px rgba(24,31,54,.48)}
+.platform-coordinate-shell{height:42.5vh;flex:0 0 auto;min-width:0;min-height:0}.platform-coordinate-shell .cp-map{height:100%}.platform-coordinate-shell .cp-node{padding:.28vh .34vw}.platform-coordinate-shell .cp-node b{font-size:var(--fs-xs);line-height:1.08}.platform-coordinate-shell .cp-node p{font-size:var(--fs-xs);line-height:1.08}.platform-coordinate-shell .cp-node small{font-size:var(--fs-xs)}
+.platform-diagram>.mermaid-shell{display:none}
 </style>
 </head>
 <body>
@@ -503,6 +505,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 <!-- 11 CLAUDE CODE -->
 <section class="slide s-gray" data-title="Claude Code 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">官方文档 + 公开 CLI 分发包 v2.1.199；区分 API 协议与 Claude Code Host</div><div class="ttl">Claude Code 将规则、方法、委派与检查按作用域串成完整生命周期</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
   <div class="diagram-summary-strip"><span class="tag h">H · PUBLIC MECHANISM</span><p><b>本页观点：</b>Claude Code 将能力发现、方法加载、独立委派与动作 / 停止门禁拆成明确接口；其他平台也有相近能力，稳定性影响仍待同任务验证。</p></div>
+  <div class="platform-coordinate-shell"><div class="cp-map flexible platform-map" data-mechanism-map="claude" aria-label="Claude Code 六环节三层机制图"></div></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph C1["1 · DISCOVER"]
@@ -577,6 +580,7 @@ flowchart LR
 <!-- 12 CODEX -->
 <section class="slide s-gray" data-title="Codex 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄聚焦指令范围、动作门槛与工作区证据</div><div class="ttl">Codex 的特点是让每次动作都受控，并回到可审阅的工作区现场</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
   <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL MECHANISM</span><p><b>本页观点：</b>Codex 的差异不是“自动做更多”，而是用目录指令、审批 / 沙箱和 diff / test / log 形成受控证据链。</p></div>
+  <div class="platform-coordinate-shell"><div class="cp-map flexible platform-map" data-mechanism-map="codex" aria-label="Codex 六环节三层机制图"></div></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph X1["1 · INSTRUCTION DISCOVERY"]
@@ -644,6 +648,7 @@ flowchart LR
 <!-- 13 OPENCODE -->
 <section class="slide s-gray" data-title="OpenCode 源码机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄聚焦可审阅的工具面、权限与长会话处理</div><div class="ttl">OpenCode 的价值是把 Host 决策暴露为可审阅、可修改的源码机制</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
   <div class="diagram-summary-strip"><span class="tag h">H · OPEN SOURCE</span><p><b>本页观点：</b>OpenCode 不证明结果一定更好，但能把工具注册、权限询问、插件事件和上下文压缩从黑箱变为工程可控变量。</p></div>
+  <div class="platform-coordinate-shell"><div class="cp-map flexible platform-map" data-mechanism-map="opencode" aria-label="OpenCode 六环节三层机制图"></div></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph O1["1 · SESSION INPUT"]
@@ -718,6 +723,7 @@ flowchart LR
 <!-- 14 CURSOR -->
 <section class="slide s-gray" data-title="Cursor 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄聚焦用户 Steering、真实运行环境与恢复控制</div><div class="ttl">Cursor 的特点是把 Agent 接到完整运行环境，并允许用户在长任务中持续纠偏</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
   <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL MECHANISM</span><p><b>本页观点：</b>Cursor 的显著差异发生在环境和连续性：工具边界可 Steering、Cloud VM 能真实运行、Checkpoint 支持恢复或用户接管。</p></div>
+  <div class="platform-coordinate-shell"><div class="cp-map flexible platform-map" data-mechanism-map="cursor" aria-label="Cursor 六环节三层机制图"></div></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph R1["1 · CONTEXT"]
@@ -783,6 +789,7 @@ flowchart LR
 <!-- 15 TRAE -->
 <section class="slide s-gray" data-title="Trae 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄聚焦计划确认、显式执行面与结束前检查</div><div class="ttl">Trae 的特点是把计划、执行面板和工程预览做成三个用户可见检查点</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
   <div class="diagram-summary-strip"><span class="tag h">H · OFFICIAL MECHANISM</span><p><b>本页观点：</b>Trae 的产品化重点是控制感：执行前确认计划，执行中通过 Tool Panels 看动作，结束前通过 Preview / Hook 检查结果。</p></div>
+  <div class="platform-coordinate-shell"><div class="cp-map flexible platform-map" data-mechanism-map="trae" aria-label="Trae 六环节三层机制图"></div></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph T1["1 · SESSION & CONTEXT"]
@@ -852,6 +859,7 @@ flowchart LR
 <!-- 16 WORKBUDDY -->
 <section class="slide s-gray" data-title="WorkBuddy 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">它不是同类 Coding IDE 排名对象，而是任务状态与交付产品化参照</div><div class="ttl">WorkBuddy 说明成本、状态和结果可以成为聊天之外的一等对象</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
   <div class="diagram-summary-strip"><span class="tag h">H · PRODUCT REFERENCE</span><p><b>本页观点：</b>WorkBuddy 的参考价值不在代码能力排名，而在调用前确认多 Agent 成本、执行中呈现状态、结束后保留 Results 并继续处理。</p></div>
+  <div class="platform-coordinate-shell"><div class="cp-map flexible platform-map" data-mechanism-map="workbuddy" aria-label="WorkBuddy 六环节三层机制图"></div></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
   subgraph W1["1 · TASK CONTEXT"]
@@ -1245,7 +1253,7 @@ flowchart LR
 <div id="controls" aria-label="演示控制">
   <button id="prevBtn" title="上一页" aria-label="上一页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
   <button id="nextBtn" title="下一页" aria-label="下一页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
-  <span class="ctrl-counter" id="counter">01 / 50</span><span class="ctrl-sep"></span>
+  <span class="ctrl-counter" id="counter">01 / 49</span><span class="ctrl-sep"></span>
   <button id="overviewBtn" title="概览" aria-label="概览"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button>
   <button id="fullscreenBtn" title="全屏" aria-label="全屏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
 </div>
@@ -1272,11 +1280,96 @@ mermaid.initialize({
   themeCSS:'.cluster rect{rx:12px;ry:12px;fill-opacity:.72}.cluster-label text,.cluster-label span{font-weight:800!important;color:#4d5562!important}.edgeLabel{background-color:#e9ebee!important;color:#626a76!important}.flowchart-link{stroke-width:1.35px}.marker{fill:#7d8491!important;stroke:#7d8491!important}'
 });
 </script>
+<script type="application/json" id="mechanismMapData">
+{
+  "claude":{"label":"Claude Code Host","nodes":[
+    {"id":"task","x":9.5,"y":81,"w":11.5,"h":10,"c":"task","s":"TASK","t":"用户任务与工作区","p":"目标、权限、完成条件"},
+    {"id":"rules","x":9.5,"y":34,"w":5.8,"h":8.5,"c":"cap skill hot","t":"CLAUDE.md","p":"按作用域常驻"},{"id":"meta","x":15.8,"y":34,"w":6,"h":8.5,"c":"cap skill hot","t":"能力描述","p":"Skill / Agent 可发现"},{"id":"ctx","x":9.5,"y":52,"w":12.3,"h":15,"c":"context","s":"CONTEXT","t":"形成主 Context","p":"规则、历史、描述与 tools"},
+    {"id":"model","x":24.8,"y":13,"w":12.3,"h":12.5,"c":"plan","s":"MODEL","t":"Claude 选择下一步","p":"answer / skill / tool / agent"},{"id":"skill","x":23,"y":39,"w":10.5,"h":10,"c":"cap skill hot","s":"ON INVOKE","t":"加载完整 Skill 正文","p":"按需进入当前 Context"},{"id":"decide","x":39.5,"y":13,"w":12.5,"h":12.5,"c":"plan","s":"DECIDE","t":"输出类型与调用目标","p":"文本或外部作用请求"},
+    {"id":"pre","x":39.5,"y":37,"w":6.1,"h":9,"c":"cap hook","t":"PreToolUse","p":"允许、修改或阻断"},{"id":"perm","x":46.2,"y":37,"w":6.1,"h":9,"c":"cap hook","t":"Permission","p":"工具与风险边界"},{"id":"route","x":39.5,"y":54,"w":12.8,"h":13.5,"c":"gate","s":"ROUTE","t":"按调用类型选择执行器","p":"Tool / MCP 与 Agent 分流"},
+    {"id":"tool","x":55,"y":35,"w":6.7,"h":10.5,"c":"cap mcp hot","t":"Tool / MCP","p":"主 Context 中执行"},{"id":"sub","x":62.2,"y":35,"w":6.7,"h":10.5,"c":"cap agent hot","t":"Subagent","p":"fork 独立 Context"},{"id":"exec","x":55,"y":54,"w":13.9,"h":13.5,"c":"action","s":"EXECUTE","t":"两种不同作用方式","p":"工具结果 / 独立任务结果"},
+    {"id":"post","x":70.3,"y":37,"w":6.1,"h":9,"c":"cap hook","t":"PostToolUse","p":"检查工具结果"},{"id":"substop","x":76.9,"y":37,"w":6.1,"h":9,"c":"cap hook","t":"SubagentStop","p":"检查委派结果"},{"id":"result","x":70.3,"y":54,"w":12.7,"h":13.5,"c":"observe","s":"OBSERVE","t":"不同结果回到主循环","p":"result、错误、diff 与证据"},
+    {"id":"stop","x":84.8,"y":35,"w":6,"h":10,"c":"cap hook hot","t":"Stop Hook","p":"结束前允许或阻断"},{"id":"compact","x":91.2,"y":35,"w":6,"h":10,"c":"cap skill","t":"Compact","p":"长 Context 压缩"},{"id":"replan","x":84.8,"y":54,"w":12.4,"h":13.5,"c":"replan","s":"REPLAN","t":"继续、压缩或候选结束","p":"Hook 与结果决定下一轮"},{"id":"accept","x":84.8,"y":81,"w":12.4,"h":10,"c":"accept","s":"APPLICATION","t":"候选交付与业务验收","p":"测试 / 性能 / Owner 规则"}
+  ],"edges":[
+    {"f":"task","t":"ctx","c":"main","m":"up"},{"f":"rules","t":"ctx","c":"context","m":"down"},{"f":"meta","t":"ctx","c":"context","m":"down"},{"c":"main","d":"M262 255 H264 Q270 255 270 249 V80 Q270 74 276 74 H298"},{"f":"model","t":"decide","c":"main"},{"c":"context","d":"M474 100 H462 Q456 100 456 106 V184 Q456 190 450 190 H402"},{"c":"context","d":"M276 190 H270 Q264 190 264 196 V238 Q264 244 262 244"},{"c":"gate","d":"M549 110 V145 Q549 151 543 151 H510 Q504 151 504 159"},{"f":"pre","t":"perm","c":"gate"},{"f":"perm","t":"route","c":"gate","m":"down"},{"c":"gate","d":"M628 259 H632 Q638 259 638 253 V181 Q638 175 644 175 H660"},{"c":"gate","d":"M628 273 H644 Q650 273 650 267 V214 Q650 208 656 208 H746"},{"c":"action","d":"M700 150 V138 Q700 132 706 132 H880 Q886 132 886 138 V159"},{"c":"action","d":"M786 196 V208 Q786 214 792 214 H1002 Q1008 214 1008 208 V181 Q1008 175 1002 175 H996"},{"f":"post","t":"result","c":"result","m":"down"},{"f":"substop","t":"result","c":"result","m":"down"},{"f":"result","t":"replan","c":"result"},{"c":"loop","d":"M1028 290 V309 Q1028 315 1022 315 H192 Q186 315 186 309 V288"},{"c":"answer","d":"M624 74 H1048 Q1054 74 1054 80 V150"},{"f":"stop","t":"replan","c":"gate","m":"down"},{"c":"answer","d":"M1018 175 H1008 Q1002 175 1002 181 V330 Q1002 336 1008 336 H1086 Q1092 336 1092 342 V348"},{"f":"compact","t":"replan","c":"loop","m":"down"},{"f":"replan","t":"accept","c":"loop","m":"down"}
+  ]},
+  "codex":{"label":"Codex Host / Workspace","nodes":[
+    {"id":"task","x":9.5,"y":81,"w":11.5,"h":10,"c":"task","s":"TASK","t":"任务与 Workspace","p":"目标、仓库、权限、验证"},{"id":"agents","x":9.5,"y":35,"w":5.8,"h":10,"c":"cap skill hot","t":"AGENTS.md","p":"全局→根→深层目录"},{"id":"caps","x":15.8,"y":35,"w":6,"h":10,"c":"cap skill","t":"Skill / Plugin","p":"MCP / App 能力装配"},{"id":"ctx","x":9.5,"y":53,"w":12.3,"h":14,"c":"context","s":"CONTEXT","t":"作用域指令进入现场","p":"规则、能力与工作区证据"},
+    {"id":"plan","x":24.8,"y":13,"w":12.3,"h":12.5,"c":"plan","s":"PLAN","t":"计划目标与验证方式","p":"依赖、风险、预期信号"},{"id":"decide","x":39.5,"y":13,"w":12.5,"h":12.5,"c":"plan","s":"DECIDE","t":"选择下一项工作区动作","p":"文件 / 命令 / MCP / final"},{"id":"approval","x":39.5,"y":35,"w":6.1,"h":10,"c":"cap hook hot","t":"Approval","p":"需要时请求用户授权"},{"id":"sandbox","x":46.2,"y":35,"w":6.1,"h":10,"c":"cap hook hot","t":"Sandbox","p":"限制外部作用范围"},{"id":"gate","x":39.5,"y":53,"w":12.8,"h":14,"c":"gate","s":"GATE","t":"动作先过策略与沙箱","p":"允许、拒绝或保留待执行"},
+    {"id":"file","x":55,"y":34,"w":13.8,"h":8.5,"c":"cap agent","t":"File","p":"read / search / apply_patch"},{"id":"cmd","x":55,"y":45,"w":13.8,"h":8.5,"c":"cap agent","t":"Command","p":"build / test / lint / git"},{"id":"mcp","x":55,"y":56,"w":13.8,"h":8.5,"c":"cap mcp","t":"MCP / App","p":"调用外部系统"},{"id":"observe","x":70.3,"y":38,"w":12.7,"h":28,"c":"observe hot","s":"EVIDENCE UPDATE","t":"工作区证据持续回填","p":"diff · stdout · test · log · artifact"},
+    {"id":"verify","x":84.8,"y":34,"w":12.4,"h":10,"c":"cap hook hot","t":"Application 验收","p":"结果是否满足计划与业务条件"},{"id":"replan","x":84.8,"y":48,"w":12.4,"h":18,"c":"replan","s":"REPLAN","t":"修复、换路径或交付","p":"证据不足则回到计划"},{"id":"accept","x":84.8,"y":81,"w":12.4,"h":10,"c":"accept","s":"DELIVERY","t":"交付变更与检查边界","p":"保留已验证和未验证项"}
+  ],"edges":[
+    {"f":"task","t":"ctx","c":"main","m":"up"},{"f":"agents","t":"ctx","c":"context","m":"down"},{"f":"caps","t":"ctx","c":"context","m":"down"},{"c":"main","d":"M262 258 H270 Q276 258 276 252 V82 Q276 76 282 76 H298"},{"f":"plan","t":"decide","c":"main"},{"c":"gate","d":"M549 108 V144 Q549 150 543 150 H510 Q504 150 504 151"},{"f":"approval","t":"sandbox","c":"gate"},{"f":"sandbox","t":"gate","c":"gate","m":"down"},
+    {"c":"action","d":"M628 226 H640 Q646 226 646 220 V164 Q646 158 652 158 H660"},{"c":"action","d":"M628 246 H650 Q656 246 656 240 V217 Q656 211 660 211"},{"c":"action","d":"M628 266 H660"},{"c":"result","d":"M826 164 H836 Q842 164 842 170 H844"},{"c":"result","d":"M826 211 H836 Q842 211 842 217 H844"},{"c":"result","d":"M826 258 H844"},{"f":"observe","t":"replan","c":"result"},{"f":"replan","t":"verify","c":"loop","m":"up"},{"f":"verify","t":"accept","c":"answer","m":"custom","d":"M1166 168 H1174 Q1180 168 1180 174 V338 Q1180 344 1174 344 H1092 V348"},{"c":"loop","d":"M1092 284 V310 Q1092 316 1086 316 H192 Q186 316 186 310 V288"},{"c":"answer","d":"M624 74 H1092 Q1098 74 1098 80 V146"}
+  ]},
+  "opencode":{"label":"OpenCode Host / Source","nodes":[
+    {"id":"task","x":9.5,"y":81,"w":11.5,"h":10,"c":"task","s":"SESSION","t":"Session input","p":"用户消息与工程现场"},{"id":"inst","x":9.5,"y":33,"w":5.8,"h":8.5,"c":"cap skill","t":"instruction.ts","p":"Agent + project rules"},{"id":"hist","x":15.8,"y":33,"w":6,"h":8.5,"c":"cap skill","t":"Session history","p":"message / tool parts"},{"id":"toolset","x":9.5,"y":44,"w":12.3,"h":7.5,"c":"cap mcp hot","t":"tools.ts · 统一工具表","p":"Built-in + MCP + Plugin tools"},{"id":"ctx","x":9.5,"y":55,"w":12.3,"h":12,"c":"context","s":"PROMPT.TS","t":"组装 messages / model / tools","p":"源码中可审阅的 Context"},
+    {"id":"stream","x":24.8,"y":13,"w":12.3,"h":12.5,"c":"plan","s":"MODEL","t":"LLM.stream","p":"流式产生 text / reasoning / call"},{"id":"event","x":39.5,"y":13,"w":12.5,"h":12.5,"c":"plan","s":"PROCESSOR","t":"识别 Processor event","p":"文本、工具调用或 finish"},{"id":"ask","x":39.5,"y":35,"w":6.1,"h":10,"c":"cap hook hot","t":"permission.ask","p":"Allow / Ask / Deny"},{"id":"before","x":46.2,"y":35,"w":6.1,"h":10,"c":"cap hook","t":"before Hook","p":"Plugin 执行前事件"},{"id":"route","x":39.5,"y":53,"w":12.8,"h":14,"c":"gate","s":"ROUTE","t":"按注册来源选择工具","p":"Built-in / MCP / Task"},
+    {"id":"built","x":55,"y":34,"w":13.8,"h":8.5,"c":"cap agent","t":"Built-in","p":"read / edit / bash / LSP / search"},{"id":"mcp","x":55,"y":45,"w":13.8,"h":8.5,"c":"cap mcp","t":"MCP","p":"外部工具执行"},{"id":"sub","x":55,"y":56,"w":13.8,"h":8.5,"c":"cap agent","t":"Task tool","p":"General / Explore Subagent"},{"id":"after","x":70.3,"y":32,"w":12.7,"h":8.5,"c":"cap hook","t":"tool.execute.after","p":"Plugin 执行后事件"},{"id":"observe","x":70.3,"y":44,"w":12.7,"h":22,"c":"observe","s":"PROCESSOR STATE","t":"写入结果与错误 part","p":"tool-result / tool-error / text"},
+    {"id":"finish","x":84.8,"y":34,"w":6,"h":10,"c":"cap hook","t":"finish reason","p":"停止或继续"},{"id":"compact","x":91.2,"y":34,"w":6,"h":10,"c":"cap skill hot","t":"Compact","p":"接近阈值时压缩"},{"id":"replan","x":84.8,"y":50,"w":12.4,"h":16,"c":"replan","s":"CONTINUE","t":"压缩后继续或结束","p":"结果重新进入 Session history"},{"id":"accept","x":84.8,"y":81,"w":12.4,"h":10,"c":"accept","s":"OUTPUT","t":"Session output","p":"应用层再判断任务完成"}
+  ],"edges":[
+    {"f":"task","t":"ctx","c":"main","m":"up"},{"c":"context","d":"M149 178 H108 Q102 178 102 184 V247 Q102 253 108 253 H114"},{"c":"context","d":"M226 178 H264 Q270 178 270 184 V247 Q270 253 264 253 H262"},{"f":"toolset","t":"ctx","c":"context","m":"down"},{"c":"main","d":"M262 262 H270 Q276 262 276 256 V82 Q276 76 282 76 H298"},{"f":"stream","t":"event","c":"main"},{"c":"gate","d":"M549 108 V144 Q549 150 543 150 H510 Q504 150 504 151"},{"f":"ask","t":"before","c":"gate"},{"f":"before","t":"route","c":"gate","m":"down"},
+    {"c":"action","d":"M628 226 H640 Q646 226 646 220 V164 Q646 158 652 158 H660"},{"c":"action","d":"M628 246 H650 Q656 246 656 240 V217 Q656 211 660 211"},{"c":"action","d":"M628 266 H660"},{"c":"action","d":"M826 164 H832 Q838 164 838 158 V145 Q838 139 844 139"},{"c":"action","d":"M826 211 H834 Q840 211 840 205 V154 Q840 148 844 148"},{"c":"action","d":"M826 258 H836 Q842 258 842 252 V163 Q842 157 844 157"},{"f":"after","t":"observe","c":"result","m":"down"},{"f":"observe","t":"replan","c":"result"},{"f":"finish","t":"replan","c":"loop","m":"down"},{"f":"compact","t":"replan","c":"loop","m":"down"},{"c":"loop","d":"M1018 278 H1008 Q1002 278 1002 284 V310 Q1002 316 996 316 H192 Q186 316 186 310 V288"},{"f":"replan","t":"accept","c":"answer","m":"down"},{"c":"answer","d":"M624 74 H1054 Q1060 74 1060 80 V146"}
+  ]},
+  "cursor":{"label":"Cursor Agent / Runtime","nodes":[
+    {"id":"task","x":9.5,"y":81,"w":11.5,"h":10,"c":"task","s":"GOAL","t":"Goal / Chat / Repo","p":"用户目标与代码库现场"},{"id":"rules","x":9.5,"y":35,"w":5.8,"h":10,"c":"cap skill","t":"Rules / AGENTS","p":"项目约束"},{"id":"search","x":15.8,"y":35,"w":6,"h":10,"c":"cap skill","t":"Code search","p":"代码库 Context"},{"id":"ctx","x":9.5,"y":53,"w":12.3,"h":14,"c":"context","s":"CONTEXT","t":"Model-adapted Context","p":"按模型配置 instructions + tools"},
+    {"id":"plan","x":24.8,"y":13,"w":12.3,"h":12.5,"c":"plan","s":"PLAN","t":"Plan + /goal + checkpoint","p":"建立可恢复的执行起点"},{"id":"queue","x":24.8,"y":37,"w":12.3,"h":10,"c":"cap skill hot","t":"Queued message / Steering","p":"在 tool-call 边界进入下一轮"},{"id":"decide","x":39.5,"y":13,"w":12.5,"h":12.5,"c":"plan","s":"DECIDE","t":"是否委派与运行位置","p":"主 Agent / Subagent / Runtime"},{"id":"hook","x":39.5,"y":35,"w":6.1,"h":10,"c":"cap hook","t":"Pre-tool Hook","p":"权限与工具控制"},{"id":"runtime","x":46.2,"y":35,"w":6.1,"h":10,"c":"cap hook","t":"Runtime gate","p":"Local 或 Cloud VM"},{"id":"gate","x":39.5,"y":53,"w":12.8,"h":14,"c":"gate","s":"ROUTE","t":"委派并选择运行环境","p":"用户 Steering 可影响下一轮"},
+    {"id":"sub","x":55,"y":34,"w":13.8,"h":8.5,"c":"cap agent","t":"Parallel Subagents","p":"Explore / Bash / Browser / Custom"},{"id":"local","x":55,"y":45,"w":13.8,"h":8.5,"c":"cap agent","t":"Local IDE","p":"Edit / Shell / Search / Browser / MCP"},{"id":"cloud","x":55,"y":56,"w":13.8,"h":8.5,"c":"cap mcp hot","t":"Cloud Agent · 隔离 VM","p":"build / test / browser / desktop"},{"id":"post","x":70.3,"y":32,"w":12.7,"h":8.5,"c":"cap hook","t":"Post-tool / File / Shell / MCP Hook","p":"动作后事件"},{"id":"observe","x":70.3,"y":44,"w":12.7,"h":22,"c":"observe hot","s":"EVIDENCE","t":"真实运行环境产生证据","p":"diff · test · screenshot · video · log · PR"},
+    {"id":"goal","x":84.8,"y":34,"w":12.4,"h":10,"c":"cap hook","t":"目标与验证满足？","p":"结束前 Review / Stop Hook"},{"id":"replan","x":84.8,"y":50,"w":12.4,"h":16,"c":"replan hot","s":"RECOVERY","t":"继续、Checkpoint 或用户接管","p":"保留失败现场与控制权"},{"id":"accept","x":84.8,"y":81,"w":12.4,"h":10,"c":"accept","s":"DELIVERY","t":"交付并允许继续 Steering","p":"应用层保留任务连续性"}
+  ],"edges":[
+    {"f":"task","t":"ctx","c":"main","m":"up"},{"f":"rules","t":"ctx","c":"context","m":"down"},{"f":"search","t":"ctx","c":"context","m":"down"},{"c":"main","d":"M262 258 H270 Q276 258 276 252 V82 Q276 76 282 76 H298"},{"f":"queue","t":"plan","c":"context","m":"up"},{"f":"plan","t":"decide","c":"main"},{"c":"gate","d":"M549 108 V144 Q549 150 543 150 H510 Q504 150 504 151"},{"f":"hook","t":"runtime","c":"gate"},{"f":"runtime","t":"gate","c":"gate","m":"down"},
+    {"c":"action","d":"M628 226 H640 Q646 226 646 220 V164 Q646 158 652 158 H660"},{"c":"action","d":"M628 246 H650 Q656 246 656 240 V217 Q656 211 660 211"},{"c":"action","d":"M628 266 H660"},{"c":"result","d":"M826 164 H832 Q838 164 838 158 V145 Q838 139 844 139"},{"c":"result","d":"M826 211 H834 Q840 211 840 205 V154 Q840 148 844 148"},{"c":"result","d":"M826 258 H836 Q842 258 842 252 V163 Q842 157 844 157"},{"f":"post","t":"observe","c":"result","m":"down"},{"f":"observe","t":"replan","c":"result"},{"c":"loop","d":"M1018 278 H1008 Q1002 278 1002 284 V310 Q1002 316 996 316 H192 Q186 316 186 310 V288"},{"f":"replan","t":"accept","c":"answer","m":"down"},{"c":"answer","d":"M624 74 H1092 Q1098 74 1098 80 V146"}
+  ]},
+  "trae":{"label":"Trae IDE / SOLO Host","nodes":[
+    {"id":"task","x":9.5,"y":81,"w":11.5,"h":10,"c":"task","s":"GOAL","t":"Goal + Project","p":"任务目标与工程现场"},{"id":"start","x":9.5,"y":35,"w":5.8,"h":10,"c":"cap hook","t":"SessionStart","p":"会话启动 Hook"},{"id":"prompt","x":15.8,"y":35,"w":6,"h":10,"c":"cap hook","t":"UserPromptSubmit","p":"用户输入 Hook"},{"id":"ctx","x":9.5,"y":53,"w":12.3,"h":14,"c":"context","s":"CONTEXT","t":"Rules · code · docs · chat","p":"项目与对话共同进入 Context"},
+    {"id":"plan","x":24.8,"y":13,"w":12.3,"h":12.5,"c":"plan","s":"PLAN","t":"生成 actionable plan","p":"Built-in Agent 先拆解任务"},{"id":"confirm","x":24.8,"y":37,"w":12.3,"h":10,"c":"cap hook hot","t":"用户确认计划","p":"可修改后再进入高成本动作"},{"id":"decide","x":39.5,"y":13,"w":12.5,"h":12.5,"c":"plan","s":"DECIDE","t":"选择主 Agent 或委派","p":"Custom Agent / Subagents"},{"id":"pre","x":39.5,"y":35,"w":12.8,"h":10,"c":"cap hook","t":"PreToolUse Hook","p":"执行前权限与输入检查"},{"id":"gate","x":39.5,"y":53,"w":12.8,"h":14,"c":"gate","s":"ROUTE","t":"编排 Agent 与 Tool Panel","p":"计划确认后才进入行动"},
+    {"id":"custom","x":55,"y":34,"w":13.8,"h":8.5,"c":"cap agent","t":"Custom Agent","p":"模型 / Tools / MCP"},{"id":"sub","x":55,"y":45,"w":13.8,"h":8.5,"c":"cap agent","t":"Subagents","p":"独立上下文并行执行"},{"id":"panel","x":55,"y":56,"w":13.8,"h":8.5,"c":"cap mcp hot","t":"Tool Panels","p":"Editor / Docs / Browser / Command / MCP"},{"id":"post","x":70.3,"y":32,"w":12.7,"h":8.5,"c":"cap hook","t":"PostToolUse Hook","p":"动作后检查与结果回填"},{"id":"observe","x":70.3,"y":44,"w":12.7,"h":22,"c":"observe hot","s":"PREVIEW","t":"DiffView + Preview + Result","p":"把工程变化变成可见证据"},
+    {"id":"stop","x":84.8,"y":34,"w":12.4,"h":10,"c":"cap hook hot","t":"Stop Hook","p":"可自动执行结束前验收测试"},{"id":"replan","x":84.8,"y":50,"w":12.4,"h":16,"c":"replan","s":"ACCEPTANCE","t":"完成条件满足？","p":"否则修订、恢复并回到计划"},{"id":"accept","x":84.8,"y":81,"w":12.4,"h":10,"c":"accept","s":"DELIVERY","t":"任务交付 / 并行汇总","p":"应用层确认最终完成"}
+  ],"edges":[
+    {"f":"task","t":"ctx","c":"main","m":"up"},{"f":"start","t":"ctx","c":"context","m":"down"},{"f":"prompt","t":"ctx","c":"context","m":"down"},{"c":"main","d":"M262 258 H270 Q276 258 276 252 V82 Q276 76 282 76 H298"},{"f":"confirm","t":"plan","c":"gate","m":"up"},{"f":"plan","t":"decide","c":"main"},{"c":"gate","d":"M549 108 V151"},{"f":"pre","t":"gate","c":"gate","m":"down"},
+    {"c":"action","d":"M628 226 H640 Q646 226 646 220 V164 Q646 158 652 158 H660"},{"c":"action","d":"M628 246 H650 Q656 246 656 240 V217 Q656 211 660 211"},{"c":"action","d":"M628 266 H660"},{"c":"result","d":"M826 164 H832 Q838 164 838 158 V145 Q838 139 844 139"},{"c":"result","d":"M826 211 H834 Q840 211 840 205 V154 Q840 148 844 148"},{"c":"result","d":"M826 258 H836 Q842 258 842 252 V163 Q842 157 844 157"},{"f":"post","t":"observe","c":"result","m":"down"},{"f":"observe","t":"replan","c":"result"},{"f":"stop","t":"replan","c":"gate","m":"down"},{"c":"loop","d":"M1018 278 H1008 Q1002 278 1002 284 V310 Q1002 316 996 316 H356 Q350 316 350 310 V202"},{"f":"replan","t":"accept","c":"answer","m":"down"},{"c":"answer","d":"M624 74 H1092 Q1098 74 1098 80 V146"}
+  ]},
+  "workbuddy":{"label":"WorkBuddy Task Host","nodes":[
+    {"id":"task","x":9.5,"y":81,"w":11.5,"h":10,"c":"task","s":"GOAL","t":"一句话目标","p":"工作目录与预期产物"},{"id":"auto","x":9.5,"y":35,"w":5.8,"h":10,"c":"cap skill","t":"Automation","p":"时间规则 + 模型 + Skill"},{"id":"memory","x":15.8,"y":35,"w":6,"h":10,"c":"cap skill","t":"Files / Rules","p":"截图、Memory 与工作目录"},{"id":"ctx","x":9.5,"y":53,"w":12.3,"h":14,"c":"context","s":"CONTEXT","t":"状态：规划中","p":"拆解步骤、产物与执行现场"},
+    {"id":"mode","x":24.8,"y":13,"w":12.3,"h":12.5,"c":"plan","s":"PLAN","t":"选择执行模式","p":"单 Expert 或 Expert Team"},{"id":"cost","x":24.8,"y":37,"w":12.3,"h":10,"c":"cap hook hot","t":"确认多 Agent 成本","p":"高成本协作启动前确认"},{"id":"decide","x":39.5,"y":13,"w":12.5,"h":12.5,"c":"plan","s":"DECIDE","t":"分派角色、方法和工具链","p":"单 Agent 或团长 Agent"},{"id":"gate","x":39.5,"y":53,"w":12.8,"h":14,"c":"gate","s":"GATE","t":"成本、授权与缺失信息门槛","p":"高成本动作不默认升级"},
+    {"id":"one","x":55,"y":34,"w":13.8,"h":8.5,"c":"cap agent","t":"Single Expert","p":"人设 + 方法 + 工具链"},{"id":"team","x":55,"y":45,"w":13.8,"h":8.5,"c":"cap agent hot","t":"Expert Team","p":"团长拆任务 / 并行 / 汇总"},{"id":"exec","x":55,"y":56,"w":13.8,"h":8.5,"c":"cap mcp","t":"Skills + Connector / MCP","p":"文件与跨应用动作"},{"id":"results","x":70.3,"y":34,"w":12.7,"h":9,"c":"cap mcp hot","t":"Results","p":"产物、全部文件、变更与预览"},{"id":"observe","x":70.3,"y":48,"w":12.7,"h":18,"c":"observe hot","s":"STATE","t":"待处理 / 失败 / 已完成","p":"授权、信息与失败现场持续存在"},
+    {"id":"next","x":84.8,"y":34,"w":12.4,"h":10,"c":"cap hook","t":"下一步？","p":"继续处理或归档复用"},{"id":"replan","x":84.8,"y":50,"w":12.4,"h":16,"c":"replan","s":"CONTINUE","t":"结果进入下一轮任务状态","p":"保留现场、通知与成本"},{"id":"accept","x":84.8,"y":81,"w":12.4,"h":10,"c":"accept","s":"ARCHIVE","t":"已归档 / 可复用任务","p":"结果与状态成为产品对象"}
+  ],"edges":[
+    {"f":"task","t":"ctx","c":"main","m":"up"},{"f":"auto","t":"ctx","c":"context","m":"down"},{"f":"memory","t":"ctx","c":"context","m":"down"},{"c":"main","d":"M262 258 H270 Q276 258 276 252 V82 Q276 76 282 76 H298"},{"f":"cost","t":"mode","c":"gate","m":"up"},{"f":"mode","t":"decide","c":"main"},{"c":"gate","d":"M549 108 V228"},
+    {"c":"action","d":"M628 226 H640 Q646 226 646 220 V164 Q646 158 652 158 H660"},{"c":"action","d":"M628 246 H650 Q656 246 656 240 V217 Q656 211 660 211"},{"c":"action","d":"M628 266 H660"},{"c":"result","d":"M826 164 H836 Q842 164 842 170 H844"},{"c":"result","d":"M826 211 H836 Q842 211 842 217 H844"},{"c":"result","d":"M826 258 H844"},{"f":"observe","t":"results","c":"result","m":"up"},{"f":"results","t":"next","c":"result"},{"f":"next","t":"replan","c":"loop","m":"down"},{"c":"loop","d":"M1018 278 H1008 Q1002 278 1002 284 V310 Q1002 316 996 316 H192 Q186 316 186 310 V288"},{"f":"replan","t":"accept","c":"answer","m":"down"},{"c":"answer","d":"M624 74 H1092 Q1098 74 1098 80 V146"}
+  ]}
+}
+</script>
+<script>
+(() => {
+  const data = JSON.parse(document.getElementById('mechanismMapData').textContent);
+  const phases = [['01','CONTEXT'],['02','PLAN'],['03','GATE'],['04','ACTION'],['05','OBSERVE'],['06','REPLAN']];
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const markerClass = {main:'cp-arrow-main',context:'cp-arrow-context',gate:'cp-arrow-gate',action:'cp-arrow-action',result:'cp-arrow-result',loop:'cp-arrow-loop',answer:'cp-arrow-answer'};
+  const nodeBox = node => ({x:node.x*12,y:node.y*4.3,w:node.w*12,h:node.h*4.3});
+  const autoPath = (from,to,mode='auto') => {
+    const a=nodeBox(from), b=nodeBox(to);
+    if(mode==='down'){const sx=a.x+a.w/2,sy=a.y+a.h,ex=b.x+b.w/2,ey=b.y;return `M${sx} ${sy} V${ey}`;}
+    if(mode==='up'){const sx=a.x+a.w/2,sy=a.y,ex=b.x+b.w/2,ey=b.y+b.h;return `M${sx} ${sy} V${ey}`;}
+    const sx=a.x+a.w,sy=a.y+a.h/2,ex=b.x,ey=b.y+b.h/2,mid=(sx+ex)/2,dir=ey>=sy?1:-1;
+    if(Math.abs(ey-sy)<1)return `M${sx} ${sy} H${ex}`;
+    return `M${sx} ${sy} H${mid-5} Q${mid} ${sy} ${mid} ${sy+dir*5} V${ey-dir*5} Q${mid} ${ey} ${mid+5} ${ey} H${ex}`;
+  };
+  document.querySelectorAll('[data-mechanism-map]').forEach(map => {
+    const key=map.dataset.mechanismMap, cfg=data[key]; if(!cfg)return;
+    const nodes=new Map(cfg.nodes.map(node=>[node.id,node]));
+    const markers=Object.keys(markerClass).map(cls=>`<marker id="${key}-${cls}" class="${markerClass[cls]}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>`).join('');
+    const edges=cfg.edges.map(edge=>{const cls=edge.c||'main',d=edge.d||autoPath(nodes.get(edge.f),nodes.get(edge.t),edge.m);return `<path class="${cls}" marker-end="url(#${key}-${cls})" d="${d}"/>`;}).join('');
+    const nodeMarkup=cfg.nodes.map(node=>`<article class="cp-node ${esc(node.c)}" data-node-id="${esc(node.id)}" style="--x:${node.x};--y:${node.y};--w:${node.w};--h:${node.h}">${node.s?`<small>${esc(node.s)}</small>`:''}<b>${esc(node.t)}</b>${node.p?`<p>${esc(node.p)}</p>`:''}</article>`).join('');
+    map.innerHTML=`<div class="cp-stage-rail">${phases.map(([n,t])=>`<div class="cp-stage"><small>${n}</small><b>${t}</b></div>`).join('')}</div><div class="cp-grid" aria-hidden="true">${'<span></span>'.repeat(6)}</div><section class="cp-lane l1"><div class="cp-lane-label"><span>L1</span><b>Model API</b><small>协议与生成</small></div></section><section class="cp-lane l2"><div class="cp-lane-label"><span>L2</span><b>${esc(cfg.label)}</b><small>装配与执行</small></div></section><section class="cp-lane l3"><div class="cp-lane-label"><span>L3</span><b>Application</b><small>目标与验收</small></div></section><svg class="cp-connectors" viewBox="0 0 1200 430" preserveAspectRatio="none" aria-hidden="true"><defs>${markers}</defs>${edges}</svg>${nodeMarkup}`;
+  });
+})();
+</script>
 <script>
 (() => {
   const reportOrder = [
     '封面','目录','核心问题与结论','三个决策问题','研究范围与证据',
-    '六平台定位','通用能力栈','共同规律','通用 Host 循环','Claude 统一模板原型','Claude 统一坐标原型','六环节差异聚光',
+    '六平台定位','通用能力栈','共同规律','通用 Host 循环','六环节差异聚光',
     'Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制',
     '机制对照','平台差异带来的效果','编码能力差异公式','Claude Code 组合归因','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 因果假设','Claude Code 公平验证','Claude 机制到昇腾',
     'CANN 实证','传统开发者旅程','AI 时代开发者旅程','知识与问题','AI 可发现性与可信','问题状态机',
@@ -1292,7 +1385,7 @@ mermaid.initialize({
 
   const chapterTitles = {
     '01':new Set(['核心问题与结论','三个决策问题','研究范围与证据']),
-    '02':new Set(['六平台定位','通用能力栈','共同规律','通用 Host 循环','Claude 统一模板原型','Claude 统一坐标原型','六环节差异聚光','Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','平台差异带来的效果','编码能力差异公式','Claude Code 组合归因','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 因果假设','Claude Code 公平验证']),
+    '02':new Set(['六平台定位','通用能力栈','共同规律','通用 Host 循环','六环节差异聚光','Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','平台差异带来的效果','编码能力差异公式','Claude Code 组合归因','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 因果假设','Claude Code 公平验证']),
     '03':new Set(['Claude 机制到昇腾','CANN 实证','传统开发者旅程','AI 时代开发者旅程','知识与问题','AI 可发现性与可信','问题状态机','昇腾可控变量','知识供给总纲','知识单元设计','Skill 供给设计','MCP 供给设计','知识供给运行回路','供给侧体验工作','供给形态与合同','跨平台适配矩阵']),
     '04':new Set(['用户体验五个关键时刻','成本模型','Roadmap','最终答案'])
   };
