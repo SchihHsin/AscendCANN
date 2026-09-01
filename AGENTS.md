@@ -2483,3 +2483,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 第 11 页 `Claude 统一坐标原型` 保留相同六环节、L1 / L2 / L3 和颜色语义，但允许节点数量、位置、分支与回环按 Claude Code 公开机制展开：CLAUDE.md 与能力描述进入主 Context；Skill 调用后加载完整正文再回到 Context；Tool / MCP 在主 Context 执行，Subagent fork 独立 Context；PostToolUse 与 SubagentStop 分别检查结果；无 tool use 的候选 Answer 进入 Stop Hook，阻断或 Compact 可重新进入下一轮。两页使用同一批 H 级公开机制事实，差异仅是图形组织语法，不是两套事实结论。
 - 业务目的：让用户直接比较“完全统一图形”与“统一比较坐标”两种策略，再决定是否批量改造 Claude Code、Codex、OpenCode、Cursor、Trae、WorkBuddy 的正式平台机制页。本轮没有改写六个平台现有 Mermaid 机制图，尚未做批量迁移。
 - 验证：HTMLParser 通过；CSS 花括号 `1031 / 1031`；51 个正式标题唯一且顺序断言为 `通用 Host 循环 → Claude 统一模板原型 → Claude 统一坐标原型 → 六环节差异聚光`；6 个内联脚本经 `node --check`；`git diff --check` 通过。方案一为 19 个节点 / 20 条连线，方案二为 20 个节点 / 23 条连线；两页静态 SVG 几何检查均为 0 个节点重叠、0 条线穿过节点。主报告提交 `b25bf5b7`（`feat: compare Claude mechanism diagram grammars`）已推送 `origin/main`；等待用户按 GitHub Pages 实际视觉效果选择后再批量重构。
+
+### 2026-09-02（六平台采用方案二统一机制坐标）
+
+- 用户确认采用“方案二”：六个平台统一使用 `CONTEXT → PLAN → GATE → ACTION → OBSERVE → REPLAN` 六环节和 `L1 Model API / L2 Host Runtime / L3 Application` 三层坐标，但节点数量、作用位置、分支和回环必须按各平台真实机制分别展开，不能为了版式同构把不同能力收敛成同一总线。
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步领导方法论版与端到端合并版。Claude Code、Codex、OpenCode、Cursor、Trae、WorkBuddy 六张正式平台机制页已替换为统一坐标图；旧 Mermaid 图保留在 DOM 中作为事实追溯源，但在正式页面隐藏，不再参与视觉呈现。
+- 平台差异继续保留为独立机制节点：Claude Code 的 Skill 按需加载、Subagent 独立 Context、Pre / Post / Stop / SubagentStop；Codex 的 AGENTS.md、Approval、Sandbox、File / Command / MCP 与工作区证据；OpenCode 的 `tools.ts`、`permission.ask`、Plugin before / after 与 Compact；Cursor 的 Steering、Subagents、Local IDE、Cloud VM 与 Checkpoint / 接管；Trae 的计划确认、Custom Agent / Subagents、Tool Panel、Preview 与 Stop Hook；WorkBuddy 的成本确认、Single Expert / Expert Team、显式状态、Results 与归档。
+- 两张方案对照原型退出正式 `reportOrder`、导航、Overview 和 hash 页码，源 DOM 仅作历史追溯；正式序列恢复为 49 页，机制主线固定为 `通用 Host 循环 → 六环节差异聚光 → Claude Code → Codex → OpenCode → Cursor → Trae → WorkBuddy → 机制对照`。
+- 连线使用水平 / 垂直段加 `Q` 小圆角，不使用 `C` 贝塞尔；工具、MCP、Subagent、不同运行环境和结果回填保留独立路径。六张图的回环与候选交付使用不同出口，多条 Action / Result 线路使用分离通道，避免重叠、穿过节点或因合流丢失机制语义；箭头继续保持同色、实心、小尺寸。
+- 证据边界未改变：统一坐标只是比较语法，不新增平台事实；旧图中的 H / M / L 口径、API / Host / Application 三层边界和“候选输出不等于业务验收”结论继续有效。
+- 验证：HTMLParser、CSS 花括号、六平台 JSON 与 49 页正式顺序检查通过；7 个内联脚本可编译。静态 SVG 几何检查覆盖六平台共 106 个节点、123 条连线，结果为 0 个节点重叠、0 条线穿过节点、0 组超过 8px 的共线重叠、0 条 `C` 曲线；`git diff --check` 通过。应用内浏览器此前按安全策略拒绝本地 `file://` 自动复核，本轮未绕过或切换浏览器表面，发布页最终视觉由用户刷新 GitHub Pages 后复核。
+- Commit / push：主报告提交 `e1da71b9`（`refactor: unify platform mechanism coordinates`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪研究材料保持原状，未纳入提交。
