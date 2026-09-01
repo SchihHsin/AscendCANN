@@ -2420,3 +2420,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 对话中的 Memory / Cache 与可观测性结论被收在页底：Memory / Conversation 是信息来源；Prompt Cache / KV Cache 只减少重复计算；可观测对象包括本轮 Context、加载 Skill、工具动作、Observation、循环轮次和任务状态。该共享对话仅作为概念梳理，不替代公开文档 / 源码证据，也不改变 H / M / L 口径。
 - 视觉规则：L1 / L2 / L3 三条横向泳道完全等宽等高，时间从左向右；层级标签固定在最左端统一标签列。泳道背景按 L1 → L3 从较深蓝紫过渡到浅灰白；Context / LLM 用蓝紫、执行门禁用琥珀、Observation 用薄荷、L3 验收用近黑突出。Tool Result 回环限定在 L2 下沿，Answer 支线沿图顶部进入 L3 验收，不穿过节点。
 - 验证：HTMLParser 通过；4 个内联脚本可编译；`git diff --check` 通过。应用内浏览器在 1280×720 实测三条泳道均为 `1177.6 × 129.7 px`，三个左侧标题块均为 `112.6 × 118.8 px` 且左边缘一致；截图确认节点、文字和连线均在页内，无节点被连线穿过。
+
+### 2026-09-01（主报告第 9 页 · 七类能力进入 Agent 循环的位置）
+
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`；继续遵守“只维护主报告”的用户决定，未同步领导方法论版与端到端合并版。正式序列、`data-title="通用 Host 循环"`、hash 和三层边界保持不变。
+- 用户指出旧图把 Rules / Skill / Knowledge 等放进 Context 芯片集合，无法看出 Skill、MCP、Plugin、Subagent、Hook 等能力分别在哪里介入、发挥什么作用；同时底部解释卡削弱了机制图。新版保留完整 Agent 主循环，但将七类能力拆成七个独立高对比节点并逐一连线：Rules、项目知识、Skill → Context 装配；Plugin → Host 的 Context / 路由扩展；MCP 与 Subagent → 工具调用后的受控行动分支；Hook → 执行门禁与结束检查。
+- 三条 L1 / L2 / L3 泳道继续等宽等高，层级标题固定在最左端。主循环为 `任务现场 → Context → LLM → 校验 / 授权 / 路由 → Built-in Tool / MCP / Subagent → Observation → 下一轮 Context`，Answer 单独进入 L3 验收。七个能力节点分别写出作用，不再由一张沙盘卡或一个“能力包”替代；旧底部三张解释卡已移除。
+- 视觉层级更新：七个可装配能力节点使用主题蓝紫、MCP 薄荷、Subagent 蓝色与 Hook 琥珀色的高对比描边 / 光环；02 Context 与 03 LLM 从深色面降为浅蓝紫主流程节点，避免抢夺能力入口焦点。Ink 仅保留给 L3 任务验收终点，未重新引入荧光黄。
+- 机制边界不变：Skill 交付方法 / 约束 / 脚本与验收；MCP 连接实时事实和受控动作；Plugin 是 Host 扩展载体，可注册 Skill、工具、Hook 或 App；Subagent 使用独立 Context；Hook 在生命周期节点检查或阻断。它们不能被画成同一种模型 tool call。
+- 验证：HTMLParser 通过；机制图静态检查得到 13 个节点（6 个主流程 + 7 个能力入口），全部位于画布内且无节点矩形重叠；内联 JS 经 `node --check`；`git diff --check` 通过。应用内浏览器按安全策略拒绝自动访问本地 `file://` 页面，本轮未绕过或切换浏览器表面，最终视觉需用户刷新 GitHub Pages 复核。
