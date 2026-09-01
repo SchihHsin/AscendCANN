@@ -2372,3 +2372,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Report PPT Skill 影响了本轮结构与视觉：采用灰底高密度分析页、四层归因、六节点循环、上下文时间线、恢复与验证流程、因果矩阵、四组消融实验和条件化供给表；新增样式全部限定在 `.claude-*` 作用域，正文使用统一字号 token，没有影响其他页面组件。
 - 验证：三份 HTML 经 HTMLParser；DOM `data-title` 唯一；三份 `reportOrder` 全部命中、无重复并完整包含七页新链路；每份 4 个内联脚本均可编译；旧 `Observed Agent Coding` 与旧 H / M / L 过渡句无残留；`git diff --check` 通过。应用内浏览器安全策略阻止本地 `file://` 页面重新加载，本轮没有绕过或切换浏览器表面，因此最终桌面视觉验收仍待发布页或用户刷新后复核。
 - 提交 / push：报告提交 `9d91b454`（`refactor: deepen Claude mechanism analysis`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有 `.DS_Store`、访谈 HTML、研究目录、截图和大型未跟踪文件保持原状，未纳入提交。
+
+### 2026-09-01（主报告荧光黄收敛 · 后续单文件维护）
+
+- 用户确认采用“方案一”：灰底分析页恢复 Report PPT Skill 的冷灰、白玻璃、蓝紫重点与近黑结论层级；荧光黄只用于真正会改变判断的关键差异或决策转折，不再用来表示普通重要步骤、字段、推荐项或流程当前节点。
+- 本轮只提交 `cann-dashboard/ai-coding-platform-mechanism-report.html`。用户明确要求后续修改默认只维护并发布该主报告；`ai-coding-platform-mechanism-report-leadership.html` 与 `ai-coding-end-to-end-mechanism-synthesis.html` 不再自动同步，以减少重复修改与 token 消耗。除非用户再次明确指定，后续不得把主报告改动复制到另外两份。
+- 新的有效颜色语义：浅蓝紫表示普通重点；近黑表示结论；低饱和薄荷表示 observation / evidence；低饱和琥珀表示 gate / risk；荧光黄只保留在“六环节差异聚光”的跨平台差异信号，以及“Claude Code 公平验证”中从机制研究转向昇腾建设决策的“昇腾供给逐项消融”卡片。
+- Claude 七页中的黄色已收敛：组合归因的模型 / Harness 改为浅蓝紫；默认 Harness 的 Observation 改为薄荷；Context 条件加载改为浅蓝紫；恢复与验证门禁改为低饱和琥珀；因果假设的局部黄色取消；公平验证只保留一个关键实验黄卡；“Claude 机制到昇腾”五种建设项统一为同层级蓝紫，避免在实验前伪造优先级。
+- 主报告其他正式页同步遵守同一规则：知识供给、Knowledge Unit、Skill、MCP、运行回路、供给形态和跨平台适配中的普通黄色重点均通过末尾语义覆盖规则改为蓝紫 / 近黑体系；原始 CSS 保留作组件追溯，发布时以后置规则为最终视觉。
+- 验证：HTMLParser 解析通过；56 个 DOM slide、55 个正式 `reportOrder` 标题唯一且全部命中；Claude 新链路仍为正式第 20–26 页；4 个内联脚本均可编译；`git diff --check` 通过；GitHub Pages 已获取到新颜色规则。应用内浏览器对发布页的自动视觉审计连续在渲染阶段超时，本轮不声称桌面视觉已自动通过，需用户刷新发布页复核。
+- 提交 / push：主报告提交 `337bacf6`（`refine: reserve fluorescent yellow for key pivots`）已成功推送 `origin/main`；另外两份报告本轮无 diff、无提交。本条交接记录随后单独提交并推送。
