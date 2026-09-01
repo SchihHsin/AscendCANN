@@ -2449,3 +2449,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出流程图箭头没有随线色变化、视觉为空心且偏大。根因是 `.agent-map-connectors path{fill:none}` 同时覆盖了 SVG marker 内部 path 的填充；Context 能力连接还错误复用了主流程蓝紫箭头。
 - 新增 marker 专属覆盖，基础灰、主流程蓝紫、能力紫、Action 薄荷、Hook 琥珀、Loop 绿色六类箭头均与对应连线颜色一致；箭头改为无描边的实心三角，`markerWidth / markerHeight` 从 `6` 降至 `5`。能力线使用独立 `agentMapArrowCap`，未改变节点与连线路径。
 - HTMLParser、6 个内联脚本与 `git diff --check` 通过；Playwright 计算样式确认六种 marker 均为非 `none` 填充、`stroke:none`、尺寸 `5×5`，桌面截图完成视觉复核。提交 `d92ea6e4`（`fix: match solid arrowheads to connector colors`）已推送 `origin/main`。
+
+### 2026-09-01（主报告泳道组内居中 · Context 节点语法补齐）
+
+- 用户指出 L1 节点贴泳道下沿、L3 节点贴泳道上沿，以及 `ASSEMBLE · 形成当前 Context` 只有单一粗体、未遵守主流程节点的 `small + b + p` 语法。根因是此前扩大 L2 后改变了泳道边界，但 L1 / L3 仍保留旧绝对 Y 坐标；Context 又被误当成能力汇聚标签而非正式主流程节点。
+- L1 的 LLM 节点组上移到泳道垂直中心；L3 的任务现场、Evidence Receipt、Application Acceptance、Task State 节点组下移到泳道垂直中心；L2 左侧 Context 组同步微调到泳道中心，相关主线、能力线、Answer、Evidence 与回环端点全部重算。
+- Context 节点改为 `CONTEXT / ASSEMBLE → 装配当前 Context → 任务、规则、知识、方法、历史与 tools schema`，高度为 `12.4%`，与 Gate / Observe / Replan 采用相同信息层级。未改变六环节、节点横向顺序、三层事实边界或相邻平台对照页。
+- HTMLParser、6 个内联脚本与 `git diff --check` 通过；Playwright 实测 L1 中心偏差 `0px`、L3 约 `0.3px`，Context 节点约 `65px` 高，23 个节点无溢出、无矩形重叠、0 个 console / page error。提交 `1c485b25`（`fix: center lane groups and complete context node`）已推送 `origin/main`。
