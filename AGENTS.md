@@ -2324,3 +2324,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界继续使用 H（公开 / 可复核事实）、M（可信运行观察或实测证据）、L（目标模型 / 待验证假设）。API `final` 仍只是候选交付；业务完成必须由任务层的测试、NPU、性能、产物或 Owner 规则验收。本机无版本匹配的 NPU / CANN 环境，不声称硬件验证。
 - 验证：HTMLParser 解析 60 个源页面、48 个正式页面，正式页标题全部唯一且存在；无重复 id；抽取内联脚本后 `node --check` 通过；`git diff --check` 通过。发布后在 GitHub Pages 以 1280×720 桌面视口验证 48 页运行时、`#1` hash 恢复与页面边界，0 个文字 / 内容溢出；五层机制页完成截图目视核验。原平台机制版、领导版、AI 检索原报告与合并稿 Pages 均返回 HTTP 200。
 - Commit / push：合并报告提交 `9e60f1a2`（`feat: synthesize AI retrieval and coding mechanisms`）已推送 `origin/main`；本条交接记录随后单独提交并推送。未决事项：检索任务与六平台公开能力会持续变化，需要按同一任务集、同环境和同预算复测；真实 CANN 构建、NPU、精度与性能验证仍需具备相应环境后补充。
+
+### 2026-09-01（正式材料移除内部受众称呼）
+
+- 用户指出“领导审视版”属于讨论过程和内部文件区分，不应成为正式材料的读者可见文案。本轮同步修改 `ai-coding-platform-mechanism-report-leadership.html`、`ai-coding-platform-mechanism-report.html` 与 `ai-coding-end-to-end-mechanism-synthesis.html`，未改文件路径和 Pages 地址，避免破坏既有链接。
+- 统一替换：`领导审视版 → 跨领域体验研究`、`领导一页结论 → 核心结论`、`领导问题与结论 → 核心问题与结论`、`领导决策 → 关键决策`、`需要领导拍板 → 需要明确`、`领导主线 → 核心主线`。三个正式报告的标题、正文、目录、`data-title`、`reportOrder` 和章节映射中已无“领导”字样；内部交接文件仍可记录受众与讨论过程。
+- 未修改报告观点、平台事实、H / M / L、API / Host / Application 边界、页数和正式顺序。验证：领导方法论版 49 页、端到端合并版 48 页、平台机制版 50 页全部命中且标题唯一；内联 JS `node --check` 与 `git diff --check` 通过。
+- Commit / push：修复提交 `29d01768`（`fix: remove internal audience wording from reports`）已推送 `origin/main`；本条交接记录随后单独提交并推送。
