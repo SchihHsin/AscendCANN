@@ -2343,3 +2343,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据：官方 `https://code.claude.com/docs/en/memory`、`/skills`、`/sub-agents`、`/hooks`；公开 npm 分发包 `@anthropic-ai/claude-code 2.1.199` 的类型 / CLI 分发内容可复核 `InstructionsLoaded`、`PreToolUse`、`SubagentStop`、`stop_hook_active` 等实现痕迹。官方文档为 H；公开分发包实现观察按 M 记录，不称“泄露源码”，也不替代厂商 API 承诺。
 - 报告中的 Claude Code 机制图改为真实时序：会话规则与能力描述发现 → 主 Context / Anthropic API → Skill 正文按需加载或 Agent / `context: fork` 独立委派 → PreToolUse / Permission 门禁 → Tool / MCP 或 Subagent 执行 → result 回填 → Stop / SubagentStop allow 或 block → 候选交付 → 独立 L3 应用验收。下游“Claude 是否更强”“平台差异效果”“组合归因”“跨平台适配”页面同步改为生命周期口径，删除“方法在请求前进入 Context”等旧句。
 - 验证：四个 HTML 均经 HTMLParser；三份 deck 的内联 JS 均经 `node --check`；`git diff --check` 通过；全局检索确认“方法在请求前进入 Context / 项目规则与 Skill 先约束 / 方法资产进入 Context”无残留。报告提交 `2352279a`（`fix: clarify Claude Code skill lifecycle`）已推送 `origin/main`，GitHub Pages 已检索到新标题与正文。应用内浏览器对本地 `file://` 导航被安全策略拒绝，发布页自动截图又因 Mermaid 页加载超时未取得可靠视觉证据，未将其写成视觉通过；需用户刷新已打开页面复核新图的最终排布。
+
+### 2026-09-01（Claude Code 机制页 · 正向陈述统一）
+
+- 用户截图指出 Claude Code 机制页连续使用“不是更早……”“被发现不等于……”“委派不是……”等反驳式句法，阅读感像在回应争论，削弱正式汇报的解释力。本轮同步修改领导方法论版、平台机制版、端到端合并版和机制依据页；机制事实、节点、连线、页序、hash、H / M / L 与 API / Host / Application 边界均未改变。
+- 新的正式文案原则：主标题、页面观点与结论卡优先正向说明“是什么、何时发生、怎样协同”；比较对象与证据限制集中放入副标题、脚注或边界卡，避免一页连续出现“不是 / 不等于 / 不能”。必要的风险与证据边界仍保留，但不再充当页面主叙事。
+- Claude Code 机制页标题改为“将规则、方法、委派与检查按作用域串成完整生命周期”；三张结论卡改为“能力发现与正文加载分两步 / Subagent 使用独立 Context / 指导机制与执行门禁协同”。下游双轨 Benchmark、平台差异效果和组合归因页同步改成正向变量表达；参考页把“Skill 不是全部启动加载”等句式改为“两阶段加载 / 多机制协作”。
+- 验证：四个 HTML 经 HTMLParser；三份 deck 内联 JS 经 `node --check`；`git diff --check` 通过；检索确认截图中的六组反驳式旧句无残留。提交 `f97dbb2d`（`refine: use affirmative mechanism copy`）已推送 `origin/main`。本轮仅文案改写，新标题和卡片文字长度不超过原版本；应用内浏览器对本地 file URL 的既有限制未绕过，最终视觉由用户刷新已打开页面复核。
