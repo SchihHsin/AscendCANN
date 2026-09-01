@@ -2406,3 +2406,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Report PPT Skill 只规定右上角章节 Tab 的一致顺序与当前章节高亮，没有要求必须可点击，也没有禁止交互。当前报告此前用 `<span>` 生成视觉 Tab 且无点击事件，属于实现遗漏。本轮改为原生 `<button>`，点击 `01 决策 / 02 平台 / 03 昇腾 / 04 落地 / 附录` 可跳到各自首页并由既有 runtime 同步页码与 hash；补充 hover、focus-visible、键盘可达与附录视觉分隔，且全局翻页快捷键在按钮获得焦点时不抢占 Space / Enter。
 - 验证：HTMLParser 通过；56 个源 DOM slide 标题唯一，49 个正式 `reportOrder` 全部命中且无重复；六张旧页均不在正式序列；尾部顺序断言为 `跨平台适配矩阵 → 用户体验五个关键时刻 → 成本模型 → Roadmap → 最终答案 → 附录导航 → 两张能力矩阵 → 来源与边界`；CSS 花括号配对；4 个内联脚本可编译；`git diff --check` 通过。
 - Commit / push：主报告提交 `cb9dbd3c`（`refactor: streamline closing chapters and enable tabs`）已推送 `origin/main`；另外两份报告未修改。本条交接记录随后单独提交并推送。
+
+### 2026-09-01（主报告第 10 页结论标题修正）
+
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`。第 10 页主标题由反驳式的“平台差异集中在六个环节，功能数量本身解释不了体验”改为正向结论“六个关键环节共同塑造 Agent Coding 的体验差异”。
+- 业务目的：遵守 Report PPT Skill 的“标题直接表达本页主要发现”规则，让读者先获得该页观点；公开机制与荧光黄的使用边界继续由副标题说明。
+- 边界：未改页面序列、平台机制内容、H / M / L 口径、API / Host / Application 分层、视觉组件或 runtime；另外两份报告未修改。
