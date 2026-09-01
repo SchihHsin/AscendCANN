@@ -2391,3 +2391,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保留的 Ink 均承担明确语义，例如结论条、核心主张、代码 / 合同承载面和流程终点；保留的黄绿色仅限差异信号、小型标记或文字强调，不再作为信息卡底色。`Claude Code 公平验证` 的“昇腾供给逐项消融”不再以荧光黄预设为唯一重点，因此上条交接中“公平验证保留一个黄卡”的说明已被本条较新决定替代。
 - 验证：HTMLParser 通过；56 个 DOM slide、55 个正式 `reportOrder` 标题唯一且全部命中；CSS 花括号 `874 / 874`；4 个内联脚本均可编译；`git diff --check` 通过。无头 Chrome 本轮只截到初始化前黑屏；应用内浏览器又按既有安全策略拒绝本地 `file://` 导航，未绕过策略，因此不声称自动视觉验收已通过，需刷新 GitHub Pages 或用户当前页面复核实际渲染。
 - Commit / push：主报告提交 `8bbdbf16`（`refine: unify card hierarchy across main report`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有 `.DS_Store`、访谈 HTML、研究目录、截图与大型未跟踪文件保持原状，未纳入提交。
+
+### 2026-09-01（主报告第 38 页 · 状态节点降级）
+
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`。用户指出正式第 38 页“知识供给运行回路”中的 Ink 卡并非全页重点；复核后确认“交付或升级”虽位于六节点主流程末端，但仍包含换路径、补资料和升级专家，且继续进入 Evidence Feedback，因此不是严格终点或最终结论。
+- 将 `.sr-node.finish` 从 `--g-ink` 改为低饱和薄荷证据色 `--evidence-grad`，文字恢复深色；它现在表达状态 / 证据输出，不再与全页结论争夺焦点。真正的 END、最终结论和总结条仍可使用 Ink，未改变上一条卡片颜色语义。
+- 验证：HTMLParser 通过；CSS 花括号配对；确认后置规则覆盖旧 Ink 样式；4 个内联脚本可编译；`git diff --check` 通过。主报告提交 `31919626`（`refine: demote supply runtime terminal emphasis`）已推送 `origin/main`；另外两份报告未修改。
