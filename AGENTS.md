@@ -2438,3 +2438,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认 L2 信息量大，可高于 L1 / L3；较新视觉口径覆盖此前“三条泳道等高”决定。当前三条泳道仍同宽、左端标题对齐，但 1600×900 下实测高度约为 L1 `94px`、L2 `196px`、L3 `89px`。小能力节点利用增加的高度改为名称 / 作用两行，主流程横向位置未改变。
 - 连线重新路由：Gate 到 Built-in Tools / MCP / Custom Agent / Subagent 使用四个分离分支，四类执行结果分别进入 Observe 的不同入点；Hook 沿 L2 底部到验证点，Replan 回环沿泳道底部返回 Context，Answer 支线仍走 L1 上方，不再穿过能力节点或挤在同一入点。
 - 验证：HTMLParser 通过；CSS 花括号 `1039 / 1039`；6 个内联脚本均可编译；Playwright 桌面视口确认 23 个节点无文字溢出、无矩形重叠、0 个 console / page error；相邻对照页 `body 403 / scrollHeight 403`，Environment 底座未碰页脚；`git diff --check` 通过。主报告提交 `99bd1c7e`（`refactor: align agent loop and platform stages`）已推送 `origin/main`；其他用户已有脏文件未暂存、未修改。
+
+### 2026-09-01（主报告 L2 四个执行节点增高）
+
+- 用户刷新后指出 Built-in Tools、MCP / Connector、Custom Agent、Subagent 仍略显拥挤。本轮只将四个节点从 `11.2%` 增至 `12.4%` 高，并同步下移下排节点及其连线锚点；未改变泳道、六环节、横向节点位置或平台对照页。
+- 1600×900 下四个节点实测均约 `65px` 高，文字无溢出，23 个节点无矩形重叠；HTMLParser、6 个内联脚本编译与 `git diff --check` 均通过。提交 `931314dc`（`fix: add breathing room to action nodes`）已推送 `origin/main`。
