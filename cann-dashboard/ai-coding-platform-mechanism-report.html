@@ -162,7 +162,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .claude-supply-layout{display:grid;grid-template-rows:auto auto;gap:.9vh}.claude-supply-table{min-width:0;display:grid;grid-template-columns:10vw 1.02fr 1.45fr 9vw;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.87);background:rgba(255,255,255,.57)}.claude-supply-table>div{min-width:0;min-height:0;padding:.76vh .68vw;border-right:1px solid rgba(120,130,150,.14);border-bottom:1px solid rgba(120,130,150,.14);display:flex;flex-direction:column;justify-content:center}.claude-supply-table .sh{background:#e8ebf1;font-size:var(--fs-h3);font-weight:850}.claude-supply-table .sr{background:#f2f4f7;font-size:var(--fs-h3);font-weight:850}.claude-supply-table .sb{background:#eef0ff}.claude-supply-table .hot{background:linear-gradient(135deg,#fffdb8,#f1ff5b)}.claude-supply-table b{font-size:var(--fs-h3);line-height:1.22}.claude-supply-table p{margin-top:.25vh;font-size:var(--fs-body);line-height:1.36;color:var(--ink-2)}.claude-supply-gate{padding:.85vh .8vw;border-radius:10px;background:var(--g-ink);color:#fff;display:grid;grid-template-columns:auto 1fr;gap:.8vw;align-items:center}.claude-supply-gate b{font-size:var(--fs-h3)}.claude-supply-gate p{font-size:var(--fs-body);line-height:1.42;color:rgba(255,255,255,.68)}
 
 /* Color semantics: blue-violet = normal focus; ink = conclusion; amber = gate/risk.
-   Fluorescent yellow remains only on cross-platform difference signals and the pivotal supply-ablation experiment. */
+   Fluorescent yellow is excluded from card fills and remains only on non-card comparison signals. */
 :root{--focus-soft:#eef0ff;--focus-grad:linear-gradient(135deg,#f5f6ff,#e6e9ff);--evidence-grad:linear-gradient(135deg,#effaf7,#def1eb);--gate-grad:linear-gradient(135deg,#fff8e8,#ffedcf);--ink-highlight:#c8d0ff}
 .decision-step.hot,.claude-cell.control,.on-item:nth-child(1),.delivery-grid .best,.adapter .entry,.supply-stage.hot,.ku-rule,.mcp-group.action,.supply-ux-item.hot,.claude-layer-row.hot,.claude-context-stage.hot{background:var(--focus-grad);border-color:rgba(91,91,214,.2)}
 .decision-step.hot .no,.claude-layer-row.hot .n,.supply-stage.hot .n{color:var(--accent)}
@@ -172,6 +172,36 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .claude-hypothesis-table .hm{background:rgba(255,255,255,.57)}
 .claude-supply-table .hot{background:var(--focus-soft)}
 .supply-os-claim h2 em,.claude-thesis h2 em,.ku-object pre b,.contract-slots b,.mcp-contract span{color:var(--ink-highlight)}
+
+/* Full card-hierarchy audit: parallel cards stay light; theme color marks an active mechanism;
+   ink is reserved for claims, conclusions and terminal states. */
+.qcard:nth-child(2){background:radial-gradient(circle at 14% 0%,rgba(91,91,214,.15),transparent 44%),rgba(255,255,255,.64);border-color:rgba(255,255,255,.9)}
+.qcard:nth-child(3){background:radial-gradient(circle at 14% 0%,rgba(59,169,224,.14),transparent 44%),rgba(255,255,255,.64);border-color:rgba(255,255,255,.9)}
+.qcard:nth-child(n+2) b{color:var(--ink)}
+.qcard:nth-child(n+2) p{color:var(--ink-2)}
+.qcard:nth-child(n+2) .no{color:rgba(91,91,214,.22)}
+.state-note .card:nth-child(2){background:radial-gradient(circle at 12% 0%,rgba(91,91,214,.14),transparent 45%),rgba(255,255,255,.64);border-color:rgba(255,255,255,.9)}
+.state-note .card:nth-child(3){background:radial-gradient(circle at 12% 0%,rgba(59,169,224,.13),transparent 45%),rgba(255,255,255,.64);border-color:rgba(255,255,255,.9)}
+.state-note .card:nth-child(n+2) b{color:var(--ink)}
+.state-note .card:nth-child(n+2) p{color:var(--ink-2)}
+.ops-col:nth-child(2){background:radial-gradient(circle at 15% 0%,rgba(91,91,214,.14),transparent 43%),rgba(255,255,255,.62);border-color:rgba(255,255,255,.88);color:var(--ink)}
+.ops-col:nth-child(3){background:radial-gradient(circle at 15% 0%,rgba(59,169,224,.13),transparent 43%),rgba(255,255,255,.62);border-color:rgba(255,255,255,.88);color:var(--ink)}
+.ops-col:nth-child(2) *,.ops-col:nth-child(3) *{color:inherit}
+.ops-col:nth-child(2)>p,.ops-col:nth-child(3)>p,.ops-col:nth-child(2) .ops-item,.ops-col:nth-child(3) .ops-item{color:var(--ink-2)}
+.ops-col:nth-child(2) .ops-item,.ops-col:nth-child(3) .ops-item{background:rgba(91,91,214,.06)}
+.ops-col:nth-child(2) .ops-no,.ops-col:nth-child(3) .ops-no{color:var(--accent)}
+.claude-cell.behavior,.claude-host-node.action{background:var(--g-accent)}
+.claude-context-stage.dark{background:var(--focus-grad);color:var(--ink);border-color:rgba(91,91,214,.2)}
+.claude-context-stage.dark small{color:var(--accent)}
+.claude-context-stage.dark p{color:var(--ink-2)}
+.claude-boundary-card:nth-child(2){background:var(--focus-grad);color:var(--ink);border-color:rgba(91,91,214,.2)}
+.claude-boundary-card:nth-child(3){background:linear-gradient(135deg,#f4f6f9,#e6eaf0);color:var(--ink);border-color:rgba(92,103,122,.16)}
+.claude-boundary-card:nth-child(n+2) p{color:var(--ink-2)}
+.claude-boundary-card:nth-child(2) .tag{background:rgba(91,91,214,.1);color:var(--accent)}
+.claude-boundary-card:nth-child(3) .tag{background:rgba(92,103,122,.1);color:var(--ink-2)}
+.claude-isolation-card:nth-child(3){background:linear-gradient(135deg,#f1faf8,#e5f2ef);color:var(--ink)}
+.claude-isolation-card:nth-child(4){background:linear-gradient(135deg,#f8f4fc,#eee9f7);color:var(--ink)}
+.claude-isolation-card:nth-child(3) p,.claude-isolation-card:nth-child(3) li{color:var(--ink-2)}
 </style>
 </head>
 <body>
@@ -960,7 +990,7 @@ flowchart LR
 
 <section class="slide s-gray" data-title="Claude 恢复与验证"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">协议回填、Host 门禁与业务验收分层；默认验证行为和用户 Hook 也要分开</div><div class="ttl">长任务差异最终落在失败后能否换路径，以及缺少证据时能否结束</div></div><div class="section-tabs"><span>01 答案</span><span class="active">02 差异</span><span>03 供给</span><span>04 体验</span><span>A 依据</span></div></header><main class="body-area claude-recovery-layout">
   <div class="claude-recovery-map"><div class="claude-recovery-main"><article class="claude-recovery-node"><small>01</small><b>执行动作</b><p>读取、编辑、Shell、MCP、测试或 Subagent。</p></article><article class="claude-recovery-node"><small>02</small><b>回填结果</b><p>tool_result、错误、日志、diff、状态与产物。</p></article><article class="claude-recovery-node gate"><small>03</small><b>结果可用？</b><p>成功、失败、blocked、unknown 或需要补上下文。</p></article><article class="claude-recovery-node"><small>04</small><b>更新计划</b><p>继续验证、换修复路径、撤销动作、补问或升级。</p></article><article class="claude-recovery-node gate"><small>05</small><b>证据齐全？</b><p>测试、预期信号、未验证项和风险是否明确。</p></article><article class="claude-recovery-node end"><small>06</small><b>候选交付</b><p>返回结果、证据、限制和下一动作；业务层再验收。</p></article></div><div class="claude-recovery-branch"><b>失败 / unknown 分支</b><p>保留环境、主要错误、证据行和已尝试动作 → 修改假设 → 选择不同工具或请求缺失事实 → 重新进入动作回合。</p><span>恢复质量比首轮正确更能区分长任务</span></div></div>
-  <aside class="claude-recovery-boundary"><article class="claude-boundary-card"><span class="tag l">L · 默认行为</span><b>模型是否主动验证</b><p>修改后是否运行测试、读取失败并继续修复，是开箱体验的重要候选变量。</p></article><article class="claude-boundary-card"><span class="tag h" style="background:rgba(255,255,255,.14);color:#fff">H · 可配置门禁</span><b>PreToolUse / Stop</b><p>用户可在动作前拒绝或改写调用，也可在候选结束时 block 并把 reason 送回下一轮。</p></article><article class="claude-boundary-card"><span class="tag l" style="background:rgba(255,255,255,.12);color:#fff">L3 · 任务验收</span><b>应用完成条件</b><p>测试、性能、NPU、产物或 Owner 规则决定业务完成；Host 的 Stop 不等于最终验收。</p></article></aside>
+  <aside class="claude-recovery-boundary"><article class="claude-boundary-card"><span class="tag l">L · 默认行为</span><b>模型是否主动验证</b><p>修改后是否运行测试、读取失败并继续修复，是开箱体验的重要候选变量。</p></article><article class="claude-boundary-card"><span class="tag h">H · 可配置门禁</span><b>PreToolUse / Stop</b><p>用户可在动作前拒绝或改写调用，也可在候选结束时 block 并把 reason 送回下一轮。</p></article><article class="claude-boundary-card"><span class="tag l">L3 · 任务验收</span><b>应用完成条件</b><p>测试、性能、NPU、产物或 Owner 规则决定业务完成；Host 的 Stop 不等于最终验收。</p></article></aside>
 </main><footer class="foot">关键指标：失败后有效换路率、同错重复率、主动测试率、测试失败后的继续修复率、无证据结束率和人工接管次数。</footer></div></section>
 
 <section class="slide s-gray" data-title="Claude 因果假设"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">每条解释都同时给出可观察行为、验证指标与能够推翻它的结果</div><div class="ttl">四条因果假设把“感觉更强”转成可以被证伪的机制问题</div></div><div class="section-tabs"><span>01 答案</span><span class="active">02 差异</span><span>03 供给</span><span>04 体验</span><span>A 依据</span></div></header><main class="body-area claude-hypothesis-layout">
