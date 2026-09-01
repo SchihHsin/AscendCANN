@@ -306,73 +306,78 @@ flowchart LR
 </main><footer class="foot">Application / Task 层另行定义完成条件：测试通过、性能达标、环境匹配、Owner 确认等。</footer></div></section>
 
 <!-- 11 CLAUDE CODE -->
-<section class="slide s-gray" data-title="Claude Code 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄只标本页要解释的三个控制点</div><div class="ttl">Claude Code 的特点是把方法、委派和结束前检查嵌入同一回环</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
-  <div class="diagram-summary-strip"><span class="tag h">H · PUBLIC MECHANISM</span><p><b>本页观点：</b>优势如果存在，更可能来自三个控制点连续衔接，而不是“工具更多”；其效果仍需同任务实验验证。</p></div>
+<section class="slide s-gray" data-title="Claude Code 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">官方文档 + 公开 CLI 分发包 v2.1.199；区分 API 协议与 Claude Code Host</div><div class="ttl">Claude Code 的可见差异是“按作用域装配生命周期”，不是更早把 Skill 塞进 Context</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
+  <div class="diagram-summary-strip"><span class="tag h">H · PUBLIC MECHANISM</span><p><b>本页观点：</b>其他平台同样装配 Context；Claude Code 公开的是一组更细的发现、加载、委派与阻断接口。是否因此更稳定，仍是待测假设。</p></div>
   <div class="mermaid-shell"><pre class="mermaid">
 flowchart LR
-  subgraph C1["1 · CONTEXT"]
+  subgraph C1["1 · DISCOVER"]
     direction TB
-    S(["用户目标 / Repo"])
-    SK["Skills / Commands / Plugins<br/>按需发现与加载"]
-    CTX["01 · Context 装配<br/>CLAUDE.md · Rules · History"]
-    S --> CTX
-    SK --> CTX
+    S(["会话启动 / 用户任务"])
+    RULE["启动加载<br/>CLAUDE.md · 无条件 Rules"]
+    META["能力目录进入主 Context<br/>Skill description<br/>Subagent description"]
+    LAZY["条件加载<br/>嵌套 CLAUDE.md · path Rules"]
+    S --> RULE
+    S --> META
   end
-  subgraph C2["2 · MODEL RESPONSE"]
+  subgraph C2["2 · MAIN CONTEXT / API"]
     direction TB
-    API["Anthropic API<br/>messages + tools"]
-    DEC{"响应类型？"}
-    API --> DEC
+    CTX["主会话 Context<br/>规则 · 历史 · tools schema"]
+    API["Anthropic Messages API<br/>messages + tools"]
+    DEC{"assistant content？"}
+    CTX --> API --> DEC
   end
-  subgraph C3["3 · CONTROL & ROUTING"]
+  subgraph C3["3 · LOAD / DELEGATE"]
     direction TB
-    PRE["PreToolUse Hook<br/>检查 / 改写 / 阻断"]
-    PERM{"工具权限允许？"}
-    ROUTE{"调用目标？"}
-    DENY["permission denied<br/>作为 tool_result 回填"]
-    PRE --> PERM
-    PERM -->|是| ROUTE
-    PERM -->|否| DENY
+    BODY["Skill tool：完整 SKILL.md<br/>注入当前 Context并跨轮保留<br/>allowed-tools 仅当前调用轮次"]
+    PRE["PreToolUse Hook<br/>allow · deny · ask · defer<br/>可改写 input / 加入 Context"]
+    PERM{"权限通过？"}
+    ROUTE{"执行目标？"}
+    DEC -->|Skill| BODY
+    DEC -->|Tool · MCP · Agent| PRE --> PERM
+    PERM -->|允许| ROUTE
   end
-  subgraph C4["4 · EXECUTION"]
+  subgraph C4["4 · EXECUTE / FORK"]
     direction TB
-    TOOL["Read / Edit / Bash / Test"]
-    MCP["外部 MCP Server"]
-    SUB["02 · Subagent<br/>独立 Context + 限定 Tools"]
+    TOOL["Tool / MCP<br/>Read · Edit · Bash · Test"]
     POST["PostToolUse Hook"]
+    SUB["Subagent 独立 Context<br/>system prompt + 配置的完整 Skills<br/>独立 Tools / Permission"]
+    SUBSTOP["SubagentStop Hook<br/>allow 或 block + reason"]
     TOOL --> POST
-    MCP --> POST
-    SUB --> POST
+    SUB --> SUBSTOP
+    SUBSTOP -->|block| SUB
   end
-  subgraph C5["5 · FEEDBACK & ACCEPTANCE"]
+  subgraph C5["5 · FEEDBACK / STOP"]
     direction TB
-    RES["tool_result<br/>stdout · diff · error · summary"]
-    STOP["03 · Stop Hook<br/>可触发测试或拒绝停止"]
-    CHECK{"任务验收满足？"}
-    OUT(["候选交付 + 验证证据"])
-    STOP --> CHECK -->|是| OUT
+    RES["结果回填当前 Agent Context<br/>tool_result · diff · log · summary"]
+    STOP["Stop Hook<br/>检查 last assistant message"]
+    BLOCK{"block？"}
+    OUT(["候选交付"])
+    APP["L3 · 应用任务验收<br/>测试 · 性能 · Owner 规则"]
+    STOP --> BLOCK
+    BLOCK -->|allow| OUT --> APP
   end
-  CTX --> API
-  DEC -->|tool_use| PRE
-  DEC -->|text / no tool_use| STOP
-  ROUTE -->|内置工具| TOOL
-  ROUTE -->|MCP| MCP
-  ROUTE -->|Subagent| SUB
+  RULE --> CTX
+  META --> CTX
+  LAZY -.读取匹配目录 / 文件时.-> CTX
+  BODY --> CTX
+  ROUTE -->|Tool / MCP| TOOL
+  ROUTE -->|Agent / context: fork| SUB
   POST --> RES
-  DENY --> RES
+  PERM -->|拒绝 / 询问| RES
+  SUBSTOP -->|allow| RES
   RES --> CTX
-  CHECK -->|否| CTX
-  LOOP["/loop 定时器<br/>间隔后再次发起 prompt"] -.新会话触发.-> S
+  DEC -->|text / no action| STOP
+  BLOCK -->|block + reason| CTX
   classDef context fill:#eef1ff,stroke:#858bd7,color:#171a20;
   classDef gate fill:#fff2df,stroke:#d3a563,color:#171a20;
   classDef exec fill:#e7f7f1,stroke:#55a889,color:#171a20;
   classDef task fill:#252a33,stroke:#252a33,color:#ffffff;
   classDef spotlight fill:#F1FF4F,stroke:#AAB500,color:#171a20,stroke-width:2px;
-  class CTX,SK,API,RES context; class DEC,PRE,PERM,ROUTE,STOP,CHECK gate; class TOOL,MCP,SUB,POST exec; class S,OUT task;
-  class CTX,SUB,STOP spotlight;
+  class RULE,META,LAZY,CTX,API,BODY,RES context; class DEC,PRE,PERM,ROUTE,SUBSTOP,STOP,BLOCK gate; class TOOL,SUB,POST exec; class S,OUT,APP task;
+  class BODY,SUB,PRE,STOP spotlight;
   </pre></div>
-  <div class="platform-takeaways"><article class="platform-takeaway"><span class="pt-no">01</span><div><b>方法在请求前进入 Context</b><p>项目规则与 Skill 先约束版本、步骤和工具选择，可能减少第一轮偏航。</p><small>H · 机制可复核；效果需 Benchmark</small></div></article><article class="platform-takeaway"><span class="pt-no">02</span><div><b>独立上下文承接子任务</b><p>Subagent 隔离探索或执行细节，可能降低主线程上下文污染。</p><small>H · 独立上下文；效果为 L</small></div></article><article class="platform-takeaway"><span class="pt-no">03</span><div><b>结束前仍能检查与阻断</b><p>Stop Hook 可运行测试或拒绝停止，但业务验收仍属于任务层。</p><small>H · Hook；对应 Evidence Layer</small></div></article></div>
-</main><footer class="foot">边界：Claude Code Runtime 本体未完整开源；工具选择阈值、内部并发与重试策略不作为 H 事实。</footer></div></section>
+  <div class="platform-takeaways"><article class="platform-takeaway"><span class="pt-no">01</span><div><b>“被发现”不等于“正文已加载”</b><p>启动时进入 Context 的是规则与能力描述；完整 SKILL.md 仅在调用时注入，条件规则也会延迟加载。</p><small>H · Memory / Skills 文档</small></div></article><article class="platform-takeaway"><span class="pt-no">02</span><div><b>委派不是复制主 Context</b><p>Agent 或 context: fork 启动独立 Context；Subagent 读取自己的 system prompt、配置的完整 Skills 与工具权限。</p><small>H · Subagents / Skills 文档</small></div></article><article class="platform-takeaway"><span class="pt-no">03</span><div><b>指导与强制执行分属两层</b><p>CLAUDE.md / Skill 影响模型选择；权限、PreToolUse、Stop / SubagentStop 才能确定性拒绝或阻止结束。</p><small>H · Hooks 文档；效果需 Benchmark</small></div></article></div>
+</main><footer class="foot">边界：API 只规定 tool_use / tool_result；图中其余为 Claude Code Host 机制。公开材料未披露模型选工具阈值、内部调度与重试策略。</footer></div></section>
 
 <!-- 12 CODEX -->
 <section class="slide s-gray" data-title="Codex 机制"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">完整流程保留；荧光黄聚焦指令范围、动作门槛与工作区证据</div><div class="ttl">Codex 的特点是让每次动作都受控，并回到可审阅的工作区现场</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area platform-diagram">
@@ -741,7 +746,7 @@ flowchart LR
 
 <!-- 19 CLAUDE STRONG? -->
 <section class="slide s-gray" data-title="Claude Code 更强吗"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">不能把口碑、模型偏好或能力入口数量直接写成事实结论</div><div class="ttl">“Claude Code 编码更强？”——目前只能是可检验假设</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span class="active">03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area grid-2">
-  <article class="card"><span class="tag l">L · HYPOTHESIS</span><h3>为什么用户可能感到它更强</h3><ul><li>模型与编码任务适配可能更好</li><li>CLAUDE.md、Skills、Subagents、Hooks 形成较成熟的方法装配</li><li>终端工作流贴近真实仓库与测试</li><li>默认策略、工具 schema 与上下文压缩可能更契合长任务</li></ul><p style="margin-top:1vh">这些解释可形成假设，但不能脱离同任务实验得出因果。</p></article>
+  <article class="card"><span class="tag l">L · HYPOTHESIS</span><h3>为什么用户可能感到它更强</h3><ul><li>模型与编码任务适配可能更好</li><li>规则层级、Skill 描述→正文按需加载、独立委派与 Hook 门禁形成连续生命周期</li><li>终端工作流贴近真实仓库与测试</li><li>默认策略、工具 schema 与上下文压缩可能更契合长任务</li></ul><p style="margin-top:1vh">这些解释可形成假设，但不能脱离同任务实验得出因果。</p></article>
   <article class="card"><span class="k">DUAL-TRACK BENCHMARK</span><h3>怎样公平验证</h3><ul><li><b>轨道 A｜原生最佳体验：</b>各平台用官方推荐模型、默认 Harness 与最佳实践，测用户真实可获得的结果。</li><li><b>轨道 B｜机制隔离：</b>尽量统一模型、任务、预算、权限、环境和知识供给，只比较 Host / Harness。</li><li><b>指标：</b>首次可运行时间、测试通过率、恢复次数、人工干预、证据完整度、总成本。</li><li><b>任务：</b>同仓库修 bug、跨文件重构、依赖升级、前端视觉验证、CANN 环境诊断。</li></ul></article>
 </main><footer class="foot">只有双轨结果都显示优势，才可能把“平台更强”从 L 假设提升为 M 观察；仍需明确样本边界。</footer></div></section>
 
@@ -917,7 +922,7 @@ flowchart LR
 </main><footer class="foot">H：公开文档 / 源码能确认这些入口与流程；高亮代表显著产品机制，不代表内部算法优劣或最终排名。WorkBuddy 仅作任务状态与交付工作台参照，不进入同类 Coding IDE 强弱排名。</footer></div></section>
 
 <section class="slide s-gray" data-title="平台差异带来的效果"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">从机制差异推到可观察效果；效果仍需在同任务、同环境中实测</div><div class="ttl">真正影响 Agent Coding 的，是差异怎样改变错误、证据与恢复</div></div><div class="section-tabs"><span>01 答案</span><span class="active">02 差异</span><span>03 供给</span><span>04 体验</span><span>A 依据</span></div></header><main class="body-area">
-  <div class="impact-board"><div class="impact-row"><div class="impact-box"><b>方法资产进入 Context</b><span>Rules / CLAUDE.md / AGENTS.md / Skills</span></div><div class="impact-arrow">→</div><div class="impact-box platform"><b>Claude、Codex、Cursor</b><span>把项目约束与领域步骤前置</span></div><div class="impact-arrow">→</div><div class="impact-box effect"><b>更少选错版本与路径</b><span>减少第一轮即偏航的概率</span></div></div>
+  <div class="impact-board"><div class="impact-row"><div class="impact-box"><b>规则与方法按作用域装配</b><span>启动规则 · 条件规则 · Skill 描述 / 正文</span></div><div class="impact-arrow">→</div><div class="impact-box platform"><b>Claude、Codex、Cursor</b><span>都能装配 Context，生命周期细节不同</span></div><div class="impact-arrow">→</div><div class="impact-box effect"><b>可能减少版本与路径偏航</b><span>真实效果必须用同任务 Benchmark 验证</span></div></div>
     <div class="impact-row"><div class="impact-box"><b>动作连接真实环境</b><span>Shell、Browser、Cloud VM、Tool Panels</span></div><div class="impact-arrow">→</div><div class="impact-box platform"><b>Cursor、Trae、Claude</b><span>代码生成后立即作用于工程现场</span></div><div class="impact-arrow">→</div><div class="impact-box effect"><b>从“看起来对”变为“实际跑”</b><span>更早暴露依赖、权限与环境错误</span></div></div>
     <div class="impact-row"><div class="impact-box"><b>验证被做成循环门槛</b><span>test / log / diff / preview / Stop Hook</span></div><div class="impact-arrow">→</div><div class="impact-box platform"><b>Claude、Codex、Trae</b><span>结果证据重新进入规划上下文</span></div><div class="impact-arrow">→</div><div class="impact-box effect"><b>减少“API final = 完成”误判</b><span>候选交付与业务验收分开</span></div></div>
     <div class="impact-row"><div class="impact-box"><b>状态与恢复显式化</b><span>Checkpoint、Hooks、Owner、继续处理</span></div><div class="impact-arrow">→</div><div class="impact-box platform"><b>Cursor、OpenCode、WorkBuddy</b><span>保留失败现场并允许换路径</span></div><div class="impact-arrow">→</div><div class="impact-box effect"><b>长任务更不易中断</b><span>减少重复描述与人工接管成本</span></div></div></div>
@@ -925,7 +930,7 @@ flowchart LR
 </main><footer class="foot">机制 → 效果属于有依据的推论，不是已完成因果实验；下一页单独拆解 Claude Code 的 H / M / L 归因。</footer></div></section>
 
 <section class="slide s-gray" data-title="Claude Code 组合归因"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">公开机制、可信观察与内部策略假设分层，避免把口碑写成事实</div><div class="ttl">Claude Code 可能更好，不是“Harness 更强”一句话能解释</div></div><div class="section-tabs"><span>01 答案</span><span class="active">02 差异</span><span>03 供给</span><span>04 体验</span><span>A 依据</span></div></header><main class="body-area attribution">
-  <div class="attr-stack"><article class="attr-layer h"><div class="kind">H · FACT</div><div><b>公开可见的工程机制</b><p>CLAUDE.md / Rules、Skills、Subagents、Hooks、工具调用与真实 Shell / 文件 / 测试回环，可把方法约束和执行证据持续带进任务。</p></div><span class="tag h">可复核</span></article><article class="attr-layer m"><div class="kind">M · OBSERVE</div><div><b>需要稳定复现的体验观察</b><p>长任务中更常持续检查工作区、测试与错误现场；上下文、动作、验证和恢复的衔接可能更连续。</p></div><span class="tag m">待扩样</span></article><article class="attr-layer l"><div class="kind">L · HYPOTHESIS</div><div><b>尚未公开的内部策略</b><p>默认工具 schema、上下文压缩、计划 / 重规划、模型与 Harness 的联合调优，可能更适合编码；当前不能画成平台事实。</p></div><span class="tag l">需实验</span></article><article class="attr-layer l"><div class="kind">L · CAUSAL</div><div><b>“因此 Claude 必然更强”</b><p>还受到模型版本、Token / 时间预算、权限、环境、任务类型与操作者熟练度影响，不能由功能入口推导排名。</p></div><span class="tag l">不成立</span></article></div>
+  <div class="attr-stack"><article class="attr-layer h"><div class="kind">H · FACT</div><div><b>公开可见的是生命周期接口</b><p>启动 / 条件规则、Skill 描述→正文按需加载、独立 Subagent Context，以及 PreToolUse / Stop 门禁把“指导—动作—检查”拆成可配置阶段；并非 Claude 独有 Context 装配。</p></div><span class="tag h">可复核</span></article><article class="attr-layer m"><div class="kind">M · OBSERVE</div><div><b>需要稳定复现的体验观察</b><p>长任务中更常持续检查工作区、测试与错误现场；上下文、动作、验证和恢复的衔接可能更连续。</p></div><span class="tag m">待扩样</span></article><article class="attr-layer l"><div class="kind">L · HYPOTHESIS</div><div><b>尚未公开的内部策略</b><p>默认工具 schema、上下文压缩、计划 / 重规划、模型与 Harness 的联合调优，可能更适合编码；当前不能画成平台事实。</p></div><span class="tag l">需实验</span></article><article class="attr-layer l"><div class="kind">L · CAUSAL</div><div><b>“因此 Claude 必然更强”</b><p>还受到模型版本、Token / 时间预算、权限、环境、任务类型与操作者熟练度影响，不能由功能入口推导排名。</p></div><span class="tag l">不成立</span></article></div>
   <aside class="attr-result"><div class="formula">Observed Agent Coding<br>= <b>Model</b> × <b>Harness Defaults</b><br>× <b>Environment</b> × <b>Verification</b><br>× <b>Method Assets</b><br>÷ Cost &amp; Friction</div><p>任一环节接近 0，整体表现都会坍塌。公开能力说明“可能怎样工作”，同任务实验才说明“是否真的更好”。</p><div class="guard">对昇腾最重要：模型与内部调度不可控；领域上下文、方法资产、运行环境、验证回执和成本门槛可控。</div></aside>
 </main><footer class="foot">结论强度：目前能确认“组合机制完整”，不能确认“Harness 单独造成优势”，也不能把 Claude Code 的口碑外推为所有任务的客观排名。</footer></div></section>
 
@@ -991,7 +996,7 @@ flowchart LR
 </main><footer class="foot">MCP 适合实时受控调用，Skill 适合方法与脚本装配，API / CLI 适合稳定系统动作，网页 / 专家适合审阅与高不确定性处理；四份合同必须跨通道一致。</footer></div></section>
 
 <section class="slide s-gray" data-title="跨平台适配矩阵"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">平台入口不同，但都指向同一昇腾领域内核；避免每个平台重复建设一套知识与运行服务</div><div class="ttl">跨平台策略：轻适配各自优势，重建设统一领域内核</div></div><div class="section-tabs"><span>01 答案</span><span>02 差异</span><span class="active">03 供给</span><span>04 体验</span><span>A 依据</span></div></header><main class="body-area">
-  <div class="adapter-map"><article class="adapter"><h3>Claude Code</h3><div class="entry">CLAUDE.md + Skill + MCP</div><p>把昇腾约束装入 Context / Workflow；用 Hook 检查是否取得必要证据。</p><footer>强项：方法装配与回环</footer></article><article class="adapter"><h3>Codex</h3><div class="entry">AGENTS.md + Skill / Plugin + MCP</div><p>用 Plugin 打包 Skills、MCP Server 或 App；依靠审批、沙箱、diff / test / log 保留现场。</p><footer>强项：受控动作与工作区证据</footer></article><article class="adapter"><h3>OpenCode</h3><div class="entry">Instruction + Agent / Command + MCP</div><p>把权限、Plugin events、工具表和压缩边界显式化，便于审阅与定制。</p><footer>强项：Host 可审阅可改造</footer></article><article class="adapter"><h3>Cursor</h3><div class="entry">Rules + Skill + MCP / Cloud</div><p>利用代码库语境、Cloud VM、Browser、Subagents 与 Checkpoint 承接长任务。</p><footer>强项：环境与 Steering</footer></article><article class="adapter"><h3>Trae</h3><div class="entry">Project Rules + Agent + MCP</div><p>把计划确认、Tool Panels、DiffView / Preview 与 Stop Hook 连接昇腾验收。</p><footer>强项：计划与工程预览</footer></article><article class="adapter"><h3>其他用户 AI</h3><div class="entry">OpenAPI / CLI / Web / Expert</div><p>即使没有原生 Skill 或 MCP，也能提交 Task Envelope 并获得同样的回执和状态。</p><footer>底线：不绑定平台</footer></article></div>
+  <div class="adapter-map"><article class="adapter"><h3>Claude Code</h3><div class="entry">CLAUDE.md + Skill + MCP</div><p>将规则、Skill 描述 / 正文与昇腾工具按作用域装配；用 PreToolUse / Stop Hook 检查权限和必要证据。</p><footer>强项：生命周期接口细分</footer></article><article class="adapter"><h3>Codex</h3><div class="entry">AGENTS.md + Skill / Plugin + MCP</div><p>用 Plugin 打包 Skills、MCP Server 或 App；依靠审批、沙箱、diff / test / log 保留现场。</p><footer>强项：受控动作与工作区证据</footer></article><article class="adapter"><h3>OpenCode</h3><div class="entry">Instruction + Agent / Command + MCP</div><p>把权限、Plugin events、工具表和压缩边界显式化，便于审阅与定制。</p><footer>强项：Host 可审阅可改造</footer></article><article class="adapter"><h3>Cursor</h3><div class="entry">Rules + Skill + MCP / Cloud</div><p>利用代码库语境、Cloud VM、Browser、Subagents 与 Checkpoint 承接长任务。</p><footer>强项：环境与 Steering</footer></article><article class="adapter"><h3>Trae</h3><div class="entry">Project Rules + Agent + MCP</div><p>把计划确认、Tool Panels、DiffView / Preview 与 Stop Hook 连接昇腾验收。</p><footer>强项：计划与工程预览</footer></article><article class="adapter"><h3>其他用户 AI</h3><div class="entry">OpenAPI / CLI / Web / Expert</div><p>即使没有原生 Skill 或 MCP，也能提交 Task Envelope 并获得同样的回执和状态。</p><footer>底线：不绑定平台</footer></article></div>
   <div class="adapter-base"><b>统一 Ascend Knowledge Supply Core</b><p>Knowledge Compiler + Knowledge Unit / Skill Registry + MCP Tool Plane + Evidence Feedback；平台适配层只负责转换 Task Envelope、呈现授权，并把统一回执交还用户。</p></div>
 </main><footer class="foot">平台最佳实践不同，不应强行用同一种入口；跨平台一致性来自数据合同、能力语义和验证证据，而不是 UI 或文件名一致。</footer></div></section>
 
@@ -1004,7 +1009,7 @@ flowchart LR
 
 <!-- 33 SOURCES -->
 <section class="slide s-gray" data-title="来源与边界"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">公开事实、开源实现、实测样本与待验证假设分开保留</div><div class="ttl">主要来源与证据边界</div></div><div class="section-tabs"><span>01 问题</span><span>02 能力</span><span>03 机制</span><span>04 旅程</span><span class="active">05 机会</span></div></header><main class="body-area fill"><div class="sources">
-  <article class="source-card"><b>Claude Code / Anthropic</b><a href="https://github.com/anthropics/claude-code">github.com/anthropics/claude-code</a><a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview">Anthropic Tool Use</a></article>
+  <article class="source-card"><b>Claude Code / Anthropic</b><a href="https://code.claude.com/docs/en/memory">Memory / Rules</a><a href="https://code.claude.com/docs/en/skills">Skills lifecycle</a><a href="https://code.claude.com/docs/en/sub-agents">Subagents</a><a href="https://code.claude.com/docs/en/hooks">Hooks</a><p>CLI 分发包复核：<code>@anthropic-ai/claude-code 2.1.199</code>；实现观察与官方 API 承诺分开。</p></article>
   <article class="source-card"><b>OpenCode</b><a href="https://opencode.ai/docs/tools/">opencode.ai/docs/tools</a><a href="https://github.com/anomalyco/opencode">github.com/anomalyco/opencode</a></article>
   <article class="source-card"><b>Codex / OpenAI</b><a href="https://developers.openai.com/codex/guides/agents-md/">AGENTS.md guide</a><a href="https://developers.openai.com/codex/skills/">Skills</a><a href="https://developers.openai.com/codex/plugins/">Plugins</a><p>本轮官方页面抓取出现 403；事实以已验证链接与本地机制复核页为边界。</p></article>
   <article class="source-card"><b>Cursor</b><a href="https://cursor.com/docs/agent/overview">Agent overview</a><a href="https://cursor.com/docs/cloud-agent">Cloud Agents</a><a href="https://cursor.com/docs/hooks">Hooks</a><a href="https://cursor.com/docs/subagents">Subagents</a></article>

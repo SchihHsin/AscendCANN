@@ -52,6 +52,19 @@ tool.tool_call_id + content
 
 <section class="section"><div class="section-head"><h2>Anthropic 专属流程图：字段与边界</h2><p>用于报告新增页；只描述 Messages API 公开协议，不把客户端实现选择写成 Anthropic API 固有步骤。</p></div><div class="truth"><article><b>公开协议直接规定</b><ul><li>请求含 <code>messages</code>，并可提供 <code>tools</code> 定义。</li><li>assistant 的 content 可以含一个或多个 <code>tool_use</code> block，包含 <code>id</code>、<code>name</code> 与 <code>input</code>。</li><li><code>stop_reason: tool_use</code> 表示需要客户端执行工具；<code>end_turn</code> 是本轮 assistant 响应结束的一种结果。</li><li>工具结果在下一条 user message 中以 <code>tool_result</code> block 回传，并以 <code>tool_use_id</code> 关联。</li></ul></article><article><b>客户端如何实际处理一个 <code>tool_use</code></b><ul><li>读取每个 block 的 <code>id / name / input</code>；按 <code>name</code> 匹配客户端已注册的函数、连接器或子流程。</li><li>客户端可校验 <code>input</code>、权限与运行条件，然后把该 JSON 输入传给匹配实现；成功输出或失败信息都收集为结果。</li><li>为每一个调用创建一个 <code>tool_result</code> block，令 <code>tool_use_id = tool_use.id</code>，并把所有结果放进下一条 user message。</li><li>多个 tool use 是并行还是串行、错误是否重试，以及 MCP、Skill、Hook、子 Agent 是否参与，均是客户端实现策略。</li><li>将 assistant 文本视为业务交付，或如何验收任务成功，也属于应用层。</li></ul></article></div></section>
 
+<section class="section"><div class="section-head"><h2>Claude Code：方法约束的真实生命周期</h2><p>这是 Claude Code Host 的产品实现，不是 Anthropic Messages API 新增的协议字段。关键区别是“规则、能力描述、方法正文、委派上下文和强制门禁”在不同时间进入不同作用域。</p></div>
+<div class="loop">
+<div class="step"><span class="n">01 · START</span><b>启动规则</b><span><code>CLAUDE.md</code>、无条件 Rules 与 Auto Memory 在会话启动时进入主 Context；它们是指导，不是强制配置。</span></div>
+<div class="step"><span class="n">02 · DISCOVER</span><b>只暴露能力描述</b><span>Skill 与 Subagent 的 description 进入主 Context，供模型选择；完整正文尚未加载。</span></div>
+<div class="step"><span class="n">03 · LAZY RULES</span><b>按路径补规则</b><span>嵌套 <code>CLAUDE.md</code> 与 path-scoped Rules 在读取匹配目录或文件时延迟进入 Context。</span></div>
+<div class="step model"><span class="n">04 · SKILL</span><b>调用后加载正文</b><span>完整 <code>SKILL.md</code> 作为消息进入当前 Context 并跨轮保留；<code>allowed-tools</code> 只授权当前调用轮次。</span></div>
+<div class="step tool"><span class="n">05 · DELEGATE</span><b>创建独立 Context</b><span><code>Agent</code> 或 <code>context: fork</code> 启动 Subagent；其 system prompt、配置的完整 Skills、Tools 与 Permission 独立。</span></div>
+<div class="step"><span class="n">06 · ACTION GATE</span><b>动作前强制门禁</b><span><code>PreToolUse</code> 可 allow / deny / ask / defer、改写 input 或加入 Context；随后仍受权限设置约束。</span></div>
+<div class="step end"><span class="n">07 · STOP GATE</span><b>阻止过早结束</b><span><code>Stop</code> / <code>SubagentStop</code> 可返回 block + reason；reason 进入下一轮，Agent 继续工作。</span></div>
+</div>
+<div class="truth" style="margin-top:14px"><article><b>Skill 不是“启动时全部进入 Context”</b><ul><li>普通 Skill 默认只有 description 常驻，完整正文在用户或模型调用时加载。</li><li><code>disable-model-invocation: true</code> 会把 Skill 从模型的自动发现面移除，只允许用户显式调用。</li><li>相同正文重复调用不会再次复制；参数或动态注入改变时才追加新内容。</li><li>自动压缩后，最近调用的 Skill 可按预算重附：每个最多保留 5,000 tokens，合计 25,000 tokens；较旧 Skill 可能被丢弃。</li></ul></article><article><b>连续约束来自不同机制协作，不是一条提示词</b><ul><li><code>CLAUDE.md / Rules</code> 提供持续指导；模型仍可能不遵循或在冲突规则间任意选择。</li><li>Skill 把任务方法按需带入当前或 forked Context；Subagent 隔离上下文与权限。</li><li>Skill frontmatter Hook 调用后默认可在后续会话中持续；Subagent frontmatter Hook 只在该 Subagent 生命周期存在。</li><li>真正确定性阻断依赖 Permission、同步 <code>PreToolUse</code>、<code>Stop</code> 与 <code>SubagentStop</code>。异步 Hook 无法阻断已经继续的动作。</li></ul></article></div>
+<div class="note"><b>比较边界：</b>Codex、Cursor、OpenCode 等也有 Context 规则、Skill / Agent 或 Hook 类能力。Claude Code 公开材料能确认的是它对加载时机、作用域和生命周期事件的接口定义更细；这是否更稳定地减少偏航，必须用同任务、同模型 / 预算 / 权限 / 环境的 Benchmark 验证。</div></section>
+
 <section class="section"><div class="section-head"><h2>对报告 Workflow 的硬约束</h2></div><div class="truth">
 <article><b>必须画出的关系</b><ul><li>模型响应和工具执行之间有应用侧解析与校验</li><li>能力卡只连接具体执行动作</li><li>所有工具分支回到同一个 tool result 消息节点</li><li>tool result 回到下一轮模型请求</li><li>final / message 之后仍需应用侧验收任务完成条件</li></ul></article>
 <article><b>不能出现的表达</b><ul><li>把知识库、MCP 或子 Agent 画成最终结果</li><li>把 tool_result 和 final response 画成两个 End</li><li>用单一厂商的 stop_reason 代表所有 API</li><li>让 Hook 长线穿过流程节点</li><li>把 final response 直接等同于任务已经验收通过</li></ul></article>
@@ -75,6 +88,10 @@ tool.tool_call_id + content
 <article class="doc-card"><b>Anthropic · Implement Tool Use</b><p>支持 tool_use / tool_result 的消息顺序，以及 tool_use_id 的关联关系。</p><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>Model Context Protocol · Architecture</b><p>支持 Host / Client / Server 架构、能力发现，以及 tools/list 与 tools/call 的位置。</p><a href="https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>Claude Code · Subagents</b><p>支持子 Agent 的独立上下文、专用角色与可限制工具权限；它不是 MCP 调用后的固定步骤。</p><a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Claude Code · Memory / Rules</b><p>用于核对启动加载、嵌套目录与 path-scoped Rules 的延迟加载，以及 InstructionsLoaded 观察事件。</p><a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Claude Code · Skills</b><p>用于核对 description 常驻、正文按需加载、跨轮保留、compact 预算、allowed-tools 与 context: fork。</p><a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Claude Code · Hooks</b><p>用于核对 PreToolUse、Stop、SubagentStop 的输入、allow / deny / block 行为与生命周期。</p><a href="https://code.claude.com/docs/en/hooks" target="_blank" rel="noreferrer">查看公开文档</a></article>
+<article class="doc-card"><b>Claude Code · 公开 npm 分发包</b><p><code>@anthropic-ai/claude-code 2.1.199</code> 的公开类型与 CLI 分发内容可复核 InstructionsLoaded、PreToolUse、SubagentStop、stop_hook_active 等实现痕迹；作为 M 级实现观察，不替代官方 API 承诺。</p><a href="https://www.npmjs.com/package/@anthropic-ai/claude-code" target="_blank" rel="noreferrer">查看公开分发包</a></article>
 <article class="doc-card"><b>Claude Code · Loop</b><p><code>/loop</code> 是用户配置的定时提示能力：按给定间隔再次发送 prompt，因而接入“结果回填 → 再规划”的重复运行；它不同于每个工具调用都必有的底层回填回合。</p><a href="https://code.claude.com/docs/en/interactive-mode#loop" target="_blank" rel="noreferrer">查看公开文档</a></article>
 <article class="doc-card"><b>OpenAI · Codex Plugins</b><p>用于校对 Codex Plugin 是可安装的扩展包：可把 Skills、MCP Server 或 App 带入 Host；Plugin 不是 MCP 的同义词，后者负责外部系统的工具连接与调用。</p><a href="https://developers.openai.com/codex/plugins/" target="_blank" rel="noreferrer">查看公开文档</a></article>
 	<article class="doc-card"><b>OpenCode · Agents / Skills / MCP / Plugins</b><p>用于校对开源 Host 中的 Agent 上下文、工具调用回合及 MCP、Skills、Commands、Plugins 的可配置接入面。</p><a href="https://opencode.ai/docs" target="_blank" rel="noreferrer">查看公开文档</a></article>
@@ -85,6 +102,10 @@ tool.tool_call_id + content
 <section class="section sources"><h2>公开来源</h2><p>
 OpenAI Function Calling：<a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">platform.openai.com/docs/guides/function-calling</a><br>
 Anthropic Tool Use：<a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">platform.claude.com/docs · Implement tool use</a><br>
+Claude Code Memory / Rules：<a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noreferrer">code.claude.com/docs · Memory</a><br>
+Claude Code Skills：<a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noreferrer">code.claude.com/docs · Skills</a><br>
+Claude Code Subagents：<a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noreferrer">code.claude.com/docs · Subagents</a><br>
+Claude Code Hooks：<a href="https://code.claude.com/docs/en/hooks" target="_blank" rel="noreferrer">code.claude.com/docs · Hooks</a><br>
 Claude Code Loop：<a href="https://code.claude.com/docs/en/interactive-mode#loop" target="_blank" rel="noreferrer">code.claude.com/docs · /loop</a><br>
 DeepSeek Function Calling：<a href="https://api-docs.deepseek.com/guides/function_calling" target="_blank" rel="noreferrer">api-docs.deepseek.com/guides/function_calling</a><br>
 	Kimi API：<a href="https://platform.moonshot.cn/docs/guide/use-kimi-api" target="_blank" rel="noreferrer">platform.moonshot.cn/docs/guide/use-kimi-api</a><br>
