@@ -2313,3 +2313,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 运行稳定性修复：Mermaid 改为先完成 49 页正式序列筛选 / 重排，再显式渲染可见流程图，消除隐藏页参与自动初始化产生的 `translate(undefined, NaN)` 错误；右侧圆点导航仍为 0，底部控制栏、键盘、hash、Overview 与全屏保留。
 - 验证：HTMLParser 通过；63 个 DOM slide 标题唯一，49 个 `reportOrder` 全部命中且无重复；断言 `昇腾当前缺口 → 通用体验方法论 → 跨领域应用映射 → 跨领域体验原则 → 跨领域体验组织模型 → 知识供给总纲` 顺序通过；`git diff --check` 通过。Playwright + Google Chrome 在 1600×900 检查 49 页，0 个 page / console error、0 个 slide / inner / body 越界；7 张 Mermaid 图均成功渲染；抽查目录、领导结论、新增四页、领导决策与最终答案；验证 `#16` 刷新恢复、`16 / 49` 页码和 Overview 3 列。
 - 提交 / push：报告提交 `d2bf58b9`（`feat: generalize leadership report across domains`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有 `.DS_Store`、访谈 HTML、研究目录、截图和大型未跟踪文件均保持原状，未纳入提交。
+
+### 2026-09-01（AI 检索 × Agent 机制端到端合并报告）
+
+- 新建独立副本 `cann-dashboard/ai-coding-end-to-end-mechanism-synthesis.html`，共 48 个正式页面；保留且不覆盖 `ai-coding-platform-mechanism-report.html`、`ai-coding-platform-mechanism-report-leadership.html` 与外部仓 `ascend-vs-nvidia-ux/reports/synthesis/index-ux-stages.html`。合并稿 GitHub Pages 为 `https://schihhsin.github.io/AscendCANN/cann-dashboard/ai-coding-end-to-end-mechanism-synthesis.html`。
+- 业务目的：把 AI 检索研究与 AI Coding 平台机制研究放入同一条开发任务链，回答“知识怎样进入 Agent、Agent 怎样把知识变成受控动作、真实环境怎样返回证据、昇腾供给侧应该建设什么”。材料不机械拼接 34 页检索报告与 50 页机制报告，而是用 48 页连续主线重组：机制坐标 → 知识进入 → Agent 行动 → 可信完成与昇腾供给 → 证据附录。
+- 新增五层责任模型：L1 用户任务与业务验收、L2 Agent Host / Harness 编排、L3 知识检索与机器理解、L4 领域知识与能力供给、L5 真实执行与证据验证。平台机制报告主要覆盖 L2 并连接 L1 / L5；AI 检索报告主要覆盖 L3 并连接 L4；两份研究共同指向 L4 的知识与能力供给。此五层是端到端责任边界，不替代既有 API / Protocol、Host / Harness、Application / Task 三层事实边界。
+- AI 检索证据沿用外部原报告的当轮样本与限制：26 项扩展任务、首次检索 CANN `3.58` / CUDA `4.42`、二次检索需求 `12 / 5`、模型先验 CANN `56.9` / CUDA `90.8`（差 `−33.8`）、自定义算子 `Δ .47`、错误码 `Δ .44`、动态 Shape / Tiling `Δ .31`、自定义算子操作教程正文抓取为 `0`。这些数值只代表当轮任务、问句、检索环境和材料，不外推生态总体质量、规模或满意度。
+- 综合结论新增“可信完成乘法链”：Knowledge × Orchestration × Execution × Verification × Recovery。它是待试点测量的产品模型（L），不是当前统计公式；任一环节接近 0，模型能力、文档数量或工具数量都不能转化为 Verified Completion。端到端失败地图将五段断点分别映射到 Knowledge Unit、Task Envelope / Skill Contract、MCP / API / CLI、Evidence Receipt、状态机 / Owner / SLA 与经验回流。
+- 证据边界继续使用 H（公开 / 可复核事实）、M（可信运行观察或实测证据）、L（目标模型 / 待验证假设）。API `final` 仍只是候选交付；业务完成必须由任务层的测试、NPU、性能、产物或 Owner 规则验收。本机无版本匹配的 NPU / CANN 环境，不声称硬件验证。
+- 验证：HTMLParser 解析 60 个源页面、48 个正式页面，正式页标题全部唯一且存在；无重复 id；抽取内联脚本后 `node --check` 通过；`git diff --check` 通过。发布后在 GitHub Pages 以 1280×720 桌面视口验证 48 页运行时、`#1` hash 恢复与页面边界，0 个文字 / 内容溢出；五层机制页完成截图目视核验。原平台机制版、领导版、AI 检索原报告与合并稿 Pages 均返回 HTTP 200。
+- Commit / push：合并报告提交 `9e60f1a2`（`feat: synthesize AI retrieval and coding mechanisms`）已推送 `origin/main`；本条交接记录随后单独提交并推送。未决事项：检索任务与六平台公开能力会持续变化，需要按同一任务集、同环境和同预算复测；真实 CANN 构建、NPU、精度与性能验证仍需具备相应环境后补充。
