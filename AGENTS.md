@@ -2475,3 +2475,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户否决把 Built-in Tools、MCP / Connector、Custom Agent、Subagent 收敛为一条执行总线，因为总线会抹掉四类能力不同的调用与结果回填路径。最终保留 **4 条调用路线 + 4 条回填路线**：每一类能力仍可从 Gate 追踪到自身节点，再单独进入 Observe。
 - 为解决多条绿色线混在一起的问题，四类线路分别跟随对应能力卡颜色：Built-in 为蓝紫、MCP 为薄荷、Custom Agent 为亮蓝、Subagent 为深蓝；每条线使用同色实心小箭头。交叉处增加浅灰色断桥底线，使视觉上明确为跨越而非汇合；下游 Evidence Receipt 等共用 Action 线路继续使用薄荷色。
 - 验证：HTMLParser 通过；CSS 花括号 `966 / 966`；内联脚本经 `node --check`；`git diff --check` 通过。静态 SVG 几何检查覆盖 23 个节点和 27 条可见 path，结果为 0 条线穿过节点；8 条独立能力路线均有对应断桥底线，`C` 贝塞尔命令为 0。应用内浏览器按安全策略拒绝新导航到本地 `file://` 主报告，本轮未绕过或切换浏览器表面；线路通道以用户截图和 SVG 坐标检查为依据。主报告提交 `4cf58bf7`（`refine: separate answer and action routes`）已推送 `origin/main`。
+
+### 2026-09-02（Claude Code 两种机制图语法对照原型）
+
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步领导方法论版与端到端合并版。用户无法仅凭文字区分“所有平台完全同构”与“统一坐标但保留不同拓扑”，因此在通用 Host 循环之后、六环节差异聚光之前加入两张 Claude Code 对照原型页，正式序列由 49 页增至 51 页。
+- 第 10 页 `Claude 统一模板原型` 使用完全固定的六列卡槽、节点尺寸和主线路径。CLAUDE.md、Skill、PreToolUse、Permission、Tool、MCP、Subagent、PostToolUse、tool_result、Stop Hook 与 Compact 仍是独立节点，但被归入固定 Context / Plan / Gate / Action / Observe / Replan 卡槽；该方案突出横向可比性，同时明确其会压缩 Skill 的发现—加载、Subagent 独立 Context 和 Hook 多生命周期位置。
+- 第 11 页 `Claude 统一坐标原型` 保留相同六环节、L1 / L2 / L3 和颜色语义，但允许节点数量、位置、分支与回环按 Claude Code 公开机制展开：CLAUDE.md 与能力描述进入主 Context；Skill 调用后加载完整正文再回到 Context；Tool / MCP 在主 Context 执行，Subagent fork 独立 Context；PostToolUse 与 SubagentStop 分别检查结果；无 tool use 的候选 Answer 进入 Stop Hook，阻断或 Compact 可重新进入下一轮。两页使用同一批 H 级公开机制事实，差异仅是图形组织语法，不是两套事实结论。
+- 业务目的：让用户直接比较“完全统一图形”与“统一比较坐标”两种策略，再决定是否批量改造 Claude Code、Codex、OpenCode、Cursor、Trae、WorkBuddy 的正式平台机制页。本轮没有改写六个平台现有 Mermaid 机制图，尚未做批量迁移。
+- 验证：HTMLParser 通过；CSS 花括号 `1031 / 1031`；51 个正式标题唯一且顺序断言为 `通用 Host 循环 → Claude 统一模板原型 → Claude 统一坐标原型 → 六环节差异聚光`；6 个内联脚本经 `node --check`；`git diff --check` 通过。方案一为 19 个节点 / 20 条连线，方案二为 20 个节点 / 23 条连线；两页静态 SVG 几何检查均为 0 个节点重叠、0 条线穿过节点。主报告提交 `b25bf5b7`（`feat: compare Claude mechanism diagram grammars`）已推送 `origin/main`；等待用户按 GitHub Pages 实际视觉效果选择后再批量重构。
