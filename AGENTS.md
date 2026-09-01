@@ -2494,3 +2494,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界未改变：统一坐标只是比较语法，不新增平台事实；旧图中的 H / M / L 口径、API / Host / Application 三层边界和“候选输出不等于业务验收”结论继续有效。
 - 验证：HTMLParser、CSS 花括号、六平台 JSON 与 49 页正式顺序检查通过；7 个内联脚本可编译。静态 SVG 几何检查覆盖六平台共 106 个节点、123 条连线，结果为 0 个节点重叠、0 条线穿过节点、0 组超过 8px 的共线重叠、0 条 `C` 曲线；`git diff --check` 通过。应用内浏览器此前按安全策略拒绝本地 `file://` 自动复核，本轮未绕过或切换浏览器表面，发布页最终视觉由用户刷新 GitHub Pages 后复核。
 - Commit / push：主报告提交 `e1da71b9`（`refactor: unify platform mechanism coordinates`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪研究材料保持原状，未纳入提交。
+
+### 2026-09-02（主报告恢复平台能力沙盘总览）
+
+- 用户纠正了沙盘版本关系：早期版是单页“平台能力沙盘”，使用深色平台表头、轻透状态格与彩色圆点；后期版是“平台能力沙盘 + 跨平台优先入口”两页，不是当前附录中的两张能力矩阵。此前将“新版沙盘”等同于能力矩阵属于错误理解。
+- 最终结构采用“沙盘做总览，矩阵做下钻”。只修改 `cann-dashboard/ai-coding-platform-mechanism-report.html`：正文在 `通用能力栈` 后恢复一页 `平台能力沙盘`，紧接 `共同规律`；后期沙盘的第二张“跨平台优先入口”不重复恢复，因为现有 `共同规律` 已承担从入口差异提炼跨平台结论的职责。两张 `能力矩阵：上下文与动作 / 编排与可信` 继续保留在附录，承担详细事实核对。
+- 新沙盘复用早期版视觉语法，但更新为当前六平台事实，列为 Claude Code、OpenCode、Codex、Cursor、Trae、WorkBuddy；九行覆盖项目规则 / 持久上下文、知识库 / 检索范围、Harness / Agent Runtime、Skill / Workflow、Command / Prompt、MCP / Connector、Plugin / Extension、Custom Agent / Subagent、Hook / Automation。状态分为直接配置、安装 / 接入、替代形态 / 有边界、无同类入口；它表示入口形态，不是模型或平台质量评分。
+- Harness 行继续遵守不可回退口径：所有平台都有内部 Runtime，但不因此计为开发者可直接装配能力；OpenCode 标为“源码可审阅改造、非独立配置物”，避免再次出现“存在 Runtime 就等于 5/5 或 6/6 直接支持”的误读。
+- 正式序列由 49 页变为 50 页，平台章节开头顺序为 `六平台定位 → 通用能力栈 → 平台能力沙盘 → 共同规律 → 通用 Host 循环 → 六环节差异聚光`。另外两份领导方法论版与端到端合并版未修改。
+- 验证：HTMLParser、CSS 花括号、六平台机制 JSON 与 7 个内联脚本检查通过；沙盘为 7 列 × 10 行共 70 个直接子格；50 个正式标题唯一、全部命中，沙盘与共同规律顺序断言通过；`git diff --check` 通过。应用内浏览器此前按安全策略拒绝本地 `file://` 自动复核，本轮未绕过或切换浏览器表面，最终桌面视觉由用户刷新 GitHub Pages 后复核。
+- Commit / push：主报告提交 `80ebcdf7`（`feat: restore platform capability sandbox`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件和未跟踪研究材料保持原状。
