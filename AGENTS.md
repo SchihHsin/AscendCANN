@@ -2514,3 +2514,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 卡片渐变规则统一：平台定位卡、四因子卡和同层级 peer card 的色彩层从固定 `38% / 42%` 高度改为覆盖完整卡面；沙盘状态格、Claude 组合归因重点卡和问题状态机说明卡使用跨全卡的低饱和同色渐变，不再出现颜色在卡片中部硬断开的效果。未新增荧光黄或 Ink 重点卡。
 - 证据和三层边界未变化；本轮只是删减叙事冗余、合并既有推论和修复视觉连续性。验证：HTMLParser 通过；正式 45 页标题唯一且五张删除页均不在 `reportOrder`；7 个内联脚本经 `node --check`；`git diff --check` 通过。应用内浏览器按安全策略拒绝自动访问本地 `file://` 页面，本轮未绕过，发布视觉需刷新 GitHub Pages 复核。
 - Commit / push：主报告提交 `3a18c0e7`（`refactor: streamline AI mechanism report narrative`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪研究材料保持原状。
+
+### 2026-09-02（主报告从深入测试收敛为机制发现）
+
+- 用户确认汇报目的应停在“发现了什么、这些发现怎样推出昇腾供给”，不需要继续展开模型 / Host 隔离、配置消融或更深入的公平验证方案。只修改 `cann-dashboard/ai-coding-platform-mechanism-report.html`，未同步领导方法论版与端到端合并版。
+- 原正式第 26 页 `Claude Code 公平验证` 已从 `reportOrder` 和源 HTML 中删除，相关 `claude-isolation-*` CSS 同步删除；正式序列由 45 页收敛为 44 页。原 `Claude 因果假设` 改为第 25 页 `Claude 机制发现`，按模型—工具适配、Context 生命周期、Observation / 重规划、验证 / 停止门禁四项呈现公开或可观察信号、可能作用与结论边界；第 26 页直接将平台机制发现与 CANN 当前样本映射为 Tool Contract、Context Manifest / Knowledge Unit、Diagnostic MCP / Evidence Receipt、Verification Gate、状态触发 Skill / Subagent。
+- 正式序列内残留的“待隔离、长任务实验、双轨 Benchmark”等执行方案式措辞一并收口：Roadmap 改为机制证据复核与采用 / 失效 / 成本治理；最终答案明确公开证据不足以把 Claude 的可能优势归于单一因素，不再把下一轮实验作为领导材料的行动项。H / M / L 置信度、API / Host / Application 三层边界和“候选输出不等于业务验收”口径未改变。
+- Claude Code、Codex、OpenCode、Cursor、Trae、WorkBuddy 六张正式平台机制页继续共用统一坐标图，并将 `.platform-diagram` 从顶部对齐改为在标题与页脚安全区之间上下居中；六页仍保留各自独立节点、分支、回环和结果路线，不改变平台事实或流程拓扑。
+- 验证：HTMLParser 通过；正式 44 页标题唯一且全部命中，计数器为 `01 / 44`；六个平台页均命中同一居中规则；CSS 花括号配对；5 个 JavaScript 类型内联脚本经 `node --check`；正式页中的深入测试叙事扫描为 0；`git diff --check` 通过。应用内浏览器按安全策略拒绝本地 `file://` 导航，本轮未绕过；GitHub Pages 线上文件只读复核返回 200、完整下载 `394141` bytes，并确认 `01 / 44`、`Claude 机制发现` 存在、`Claude Code 公平验证` 为 0、平台居中规则已发布。
+- Commit / push：主报告提交 `4a64c87f`（`refactor: focus report on mechanism findings`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪研究材料保持原状，未纳入提交。
