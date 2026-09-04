@@ -2555,3 +2555,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 目录与右上章节导航统一为 `01 问题 / 02 平台 / 03 现状 / 04 建设 / 05 衡量 / A 依据`，六个 Tab 均可点击并跳到对应章节首屏。最终结论更新为：昇腾不是从零建设能力，下一步也不是继续堆数量，而是将已有 258 个 Skill 与 20 Tools + 5 Resources 装入可发现、可判定、可执行、可验证、可恢复的跨平台领域 Harness。
 - 证据边界不变：平台官方事实为 H，第三方可复核 Claude 客户端快照为 M，机制效果与未来产品方案为 L；本机无版本匹配的 NPU / CANN 环境，不声称真实硬件验证。来源页新增 CANNBot Skills 与 npm 包可点击入口，并标明本地复核版本和实际注册数。
 - 验证：HTMLParser 通过，源文件 68 个 slide 均有标题且无重复 id；正式 `reportOrder` 为 38 个唯一标题且全部存在；5 个可执行内联脚本（排除外部脚本与 `application/json` 数据）经 `node --check`；`git diff --check` 通过。应用内浏览器按安全策略拒绝自动打开本地 `file://` 主报告，本轮未绕过，发布后需在 GitHub Pages 刷新复核视觉和交互。
+- Commit / push：主报告与本条交接记录已提交为 `41329c52`（`refactor: connect platform findings to Ascend supply`）并成功推送 `origin/main`；其他用户已有脏文件与未跟踪研究材料未暂存、未覆盖、未清理。
