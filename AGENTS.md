@@ -2523,3 +2523,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Claude Code、Codex、OpenCode、Cursor、Trae、WorkBuddy 六张正式平台机制页继续共用统一坐标图，并将 `.platform-diagram` 从顶部对齐改为在标题与页脚安全区之间上下居中；六页仍保留各自独立节点、分支、回环和结果路线，不改变平台事实或流程拓扑。
 - 验证：HTMLParser 通过；正式 44 页标题唯一且全部命中，计数器为 `01 / 44`；六个平台页均命中同一居中规则；CSS 花括号配对；5 个 JavaScript 类型内联脚本经 `node --check`；正式页中的深入测试叙事扫描为 0；`git diff --check` 通过。应用内浏览器按安全策略拒绝本地 `file://` 导航，本轮未绕过；GitHub Pages 线上文件只读复核返回 200、完整下载 `394141` bytes，并确认 `01 / 44`、`Claude 机制发现` 存在、`Claude Code 公平验证` 为 0、平台居中规则已发布。
 - Commit / push：主报告提交 `4a64c87f`（`refactor: focus report on mechanism findings`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪研究材料保持原状，未纳入提交。
+
+### 2026-09-04（Claude Code Harness 深层机制研究）
+
+- 变更文件：仅修改 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版与合并版。正式阅读序列仍为 44 页，重构的是第 22–26 页的 Claude 归因、Context、恢复、机制结论与昇腾映射。
+- 研究来源：复核第三方仓库 `Austin1serb/anthropic-leaked-source-code` 的 commit `3fa80a4417103f205c97e7468337703094c0e3c1`。该仓库不是 Anthropic 官方源码；README 声明内容由 JavaScript source maps 逆向恢复，因此报告统一标为 `M · 第三方 source-map 客户端代码快照`，只用于解释 Claude Code 客户端 Host / Harness，不代表模型训练、服务端策略或 Anthropic API 承诺。
+- 深层机制发现：Claude Code 的优势候选不只来自 Context 按需加载，而是五个可能相乘的 Host 机制：① `Rules → Schema → validateInput → PreToolUse Hook → Permission` 的约束连续性；②安全读取并行、有状态动作串行、按依赖取消的动作语义调度；③结果排序 / 裁剪、PostToolUse 改写、错误标记与 LSP diagnostics 回注形成的 Observation 塑形；④ synthetic `tool_result`、tombstone、不完整回合清理和 fallback 后重建执行器形成的协议与状态修复；⑤默认验证要求与 Stop / TaskCompleted / TeammateIdle Hook 形成的验证与停止门禁。
+- 结论边界：上述客户端结构为 M 级可复核实现观察；“因此更稳 / 更强”仍是 L 级作用推论。不得据此宣称 Claude 必然强于 Codex、Cursor 或其他平台，也不得把 Host Stop 等同于 L3 业务验收；真实贡献率需要同任务、同模型 / 预算 / 权限 / 环境条件下的机制隔离 Benchmark。
+- 昇腾供给映射：第 26 页将五个机制乘数逐项翻译为跨平台领域控制面：`Capability Registry + deferred schema`、`CANN Action Gate + Execution Policy`、`Diagnostic Adapter + Evidence Receipt`、`Typed Recovery Policy + Context Manifest`、`Verification / Cost Gate + Skill Contract`。核心建设对象是发现、执行、回执、恢复、完成五套可移植合同，而不是简单增加 Skill / MCP 数量；可通过 Rules / Skill、MCP、Plugin、API / CLI 或网页服务适配不同 Agent。
+- 关键实现文件依据包括 `services/tools/toolOrchestration.ts`、`StreamingToolExecutor.ts`、`toolExecution.ts`、`query.ts`、`query/stopHooks.ts`、`query/tokenBudget.ts`、`services/compact/*`、`tools/SkillTool/*`、`tools/ToolSearchTool/*`、`services/lsp/*`、`utils/attachments.ts`、`tools/AgentTool/*` 与 `services/api/withRetry.ts`。来源页已加入仓库性质、commit 和适用边界。
+- 验证：HTMLParser 通过；内联 JavaScript 语法通过（跳过 `application/json` 数据块）；`reportOrder` 为 44 个唯一标题且全部存在；`git diff --check` 通过；1440×720 浏览器复核第 22–26 页与第 44 页无可见溢出，第 26 页产品边界条与页脚已分离。
+- Commit / push：报告提交 `a92607cd`（`docs: deepen Claude Code harness analysis`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。未决事项仍是用故障注入与同任务隔离测试验证五个机制乘数各自及组合的真实效果，不在当前材料中把推论写成已证实排名。
