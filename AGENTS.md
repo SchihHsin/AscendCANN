@@ -2556,3 +2556,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界不变：平台官方事实为 H，第三方可复核 Claude 客户端快照为 M，机制效果与未来产品方案为 L；本机无版本匹配的 NPU / CANN 环境，不声称真实硬件验证。来源页新增 CANNBot Skills 与 npm 包可点击入口，并标明本地复核版本和实际注册数。
 - 验证：HTMLParser 通过，源文件 68 个 slide 均有标题且无重复 id；正式 `reportOrder` 为 38 个唯一标题且全部存在；5 个可执行内联脚本（排除外部脚本与 `application/json` 数据）经 `node --check`；`git diff --check` 通过。应用内浏览器按安全策略拒绝自动打开本地 `file://` 主报告，本轮未绕过，发布后需在 GitHub Pages 刷新复核视觉和交互。
 - Commit / push：主报告与本条交接记录已提交为 `41329c52`（`refactor: connect platform findings to Ascend supply`）并成功推送 `origin/main`；其他用户已有脏文件与未跟踪研究材料未暂存、未覆盖、未清理。
+
+### 2026-09-04（现有可调用能力：资产版图 + Harness 覆盖图）
+
+- 变更文件：仅修改 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版和合并版。业务目的：把后半段“现有 Skill / MCP 有什么、覆盖到任务哪里、缺口如何推导建设项”的文字盘查改成可直接阅读的可视化证据链。
+- 正式序列仍为 38 页，页序、标题键、章节 Tab、Overview、hash、键盘与全屏 runtime 均未改变；重构 #22–#26 为五页连续视图：供给全景生命周期图 → 258 个 Skill 数量 Treemap → 20 Tools + 5 Resources 的 MCP 地铁线路图 → DISCOVER / GATE / EXECUTE / OBSERVE / RECOVER / STOP Harness 结构覆盖热力图 → 现有资产到五项领域控制对象的接线缺口图。
+- 事实与证据：Skill 数量来自 `https://atomgit.com/cann/cannbot-skills.git` 仓库盘查，分类为 community plugin 119、ops 79、official plugin 22、model 19、graph 10、infra 5、tools 3、runtime 1；Treemap 面积只表示数量，不表达成熟度。跨平台 manifests 为 Claude 20、Codex 1、Cursor 1，只表示当前封装分布。代表性成熟工作流继续使用 `ascendc-env-check`、`ascendc-precision-debug`、`ops-profiling`、`runtime_migration`。
+- MCP 事实来自本地包 `/Users/hsin/Documents/Coding/ascend-vs-nvidia-ux/node_modules/@opencxd/ascend-doc-mcp` `0.0.1-alpha-6` 的 `dist/index.js.map` / `src/register-tools.ts`：20 个 Tools、5 个 Resources，全部 `readOnlyHint: true`，具备严格输入 Schema、异常包装和降级建议；当前不能执行环境预检、构建、测试、Profiling 或 NPU 验证，输出以 Markdown 文本为主。覆盖热力图明确标为“结构覆盖判断”，不是质量评分或实测成功率。
+- 推导边界：没有改变 API / Protocol、Host / Harness、Application / Task 三层定义。五项建设 `Task Registry`、`Scope Resolver`、`Action Plane`、`Evidence Receipt`、`State & Recovery` 是由平台 Harness 六控制点与现有资产断点交叉得到的目标设计（L），不是对当前系统已上线能力的陈述。
+- 视觉决策：现有能力使用蓝紫 / 蓝色，缺失使用浅灰、虚线与空心断点；没有使用大面积荧光黄或普通 Ink 重点卡。数量、结构判断与建设推论分开呈现；MCP 页保留全部 20 个真实工具名，未把多个动作能力虚构为已存在。
+- 验证：HTMLParser 通过；38 个正式标题均存在且唯一；5 个可执行内联脚本经 Node `vm.Script` 语法检查通过；258 分类求和及 20 个 MCP 工具名检查通过；`git diff --check` 通过。应用内浏览器因本地 `file://` URL 安全策略拒绝自动视觉检查，未绕过策略；自动 Headless Chrome 截图仅得到黑屏，未把它作为视觉通过证据。
+- Commit / push：报告提交 `d06fb5ec`（`feat: visualize Ascend capability coverage`）已推送 `origin/main`。未决事项：发布后应在用户浏览器 1600×900 下复核 #22–#26 的文字换行、Treemap 长尾区和 MCP 工具站点密度；若发现局部拥挤，只调高度 / 间距，不回退为文字卡片墙。
