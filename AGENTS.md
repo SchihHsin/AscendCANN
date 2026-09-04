@@ -2534,3 +2534,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 关键实现文件依据包括 `services/tools/toolOrchestration.ts`、`StreamingToolExecutor.ts`、`toolExecution.ts`、`query.ts`、`query/stopHooks.ts`、`query/tokenBudget.ts`、`services/compact/*`、`tools/SkillTool/*`、`tools/ToolSearchTool/*`、`services/lsp/*`、`utils/attachments.ts`、`tools/AgentTool/*` 与 `services/api/withRetry.ts`。来源页已加入仓库性质、commit 和适用边界。
 - 验证：HTMLParser 通过；内联 JavaScript 语法通过（跳过 `application/json` 数据块）；`reportOrder` 为 44 个唯一标题且全部存在；`git diff --check` 通过；1440×720 浏览器复核第 22–26 页与第 44 页无可见溢出，第 26 页产品边界条与页脚已分离。
 - Commit / push：报告提交 `a92607cd`（`docs: deepen Claude Code harness analysis`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。未决事项仍是用故障注入与同任务隔离测试验证五个机制乘数各自及组合的真实效果，不在当前材料中把推论写成已证实排名。
+
+### 2026-09-04（Claude 主架构图同步深层 Harness 机制）
+
+- 用户确认采用“节点轻量脚注 + 页底可点击来源”的证据呈现方案：机制节点不再重复显示 H / M，以免证据等级干扰主流程；Claude 机制页底部用 ¹–⁵ 对应 Context、动作门禁、语义调度、反馈塑形、状态修复 / Stop Gate，并直接链接到固定 commit 的实现文件。
+- 变更文件仅为 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版与合并版。正式序列仍为 44 页，其他五个平台机制图、六环节与 L1 / L2 / L3 统一比较坐标不变。
+- Claude 主图由公开功能生命周期深化为 Host 控制链：ToolSearch / Skill 延迟发现与正文加载、Context 预算和 Compact / Rehydrate；`Schema → validateInput → Hook → Permission` 动作前门禁；Streaming Executor 的安全读取并行 / 有状态动作串行与依赖失败取消；结果排序 / 裁剪 / 错误标记、Hook 改写与 LSP diagnostics 回注；synthetic result、tombstone、fallback 和 Stop Gate 共同组成恢复 / 停止路径。
+- 页面标题与三张解释卡同步改为“动作前 → 执行中 → 异常与结束”的连续观点；节点只显示 ¹–⁵ 小脚注，页面最底部保留 7 个可点击永久链接，分别指向 `ToolSearchTool.ts`、`autoCompact.ts`、`toolExecution.ts`、`toolOrchestration.ts`、`passiveFeedback.ts`、`query.ts` 与 `query/stopHooks.ts`。证据性质和 H / M / L 完整解释仍由研究范围页与来源附录承担。
+- 证据边界不变：第三方 source-map 仓库 commit `3fa80a4417103f205c97e7468337703094c0e3c1` 仍只解释客户端 Host / Harness；图中机制不代表 Anthropic 服务端或模型训练事实，“更稳 / 更强”仍是需要验证的作用推论。
+- 验证：HTMLParser、机制 JSON、5 个 JavaScript 类型内联脚本、44 页唯一正式顺序和 `git diff --check` 均通过；1280×720 应用内浏览器实测 20 个 Claude 节点无文字溢出、无节点矩形重叠，页底来源无横向溢出，7 个链接均可见、使用固定 commit permalink 并在新页打开。提交 `91c6733f`（`docs: expand Claude Code mechanism diagram`）已推送 `origin/main`；本条交接记录随后单独提交并推送。
