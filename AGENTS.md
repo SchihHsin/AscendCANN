@@ -2594,3 +2594,15 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与层级边界未变化：H / M / L 仍分别表示公开或可复核事实、可信运行观察 / 第三方客户端快照、待验证推论；API / Protocol、Host / Harness、Application / Task 三层定义不变，Host Stop 与 API final 仍不等于 L3 业务验收。
 - 验证：HTMLParser 通过；68 个源 slide 标题唯一；正式 `reportOrder` 为 37 个唯一标题且全部存在；CSS 花括号 `2069 / 2069`；5 个可执行内联 JavaScript 经 `node --check`；`git diff --check` 通过。通过本地 HTTP 与应用内浏览器逐页复核 #10–#14、#22、#24、#28、#32–#34、#36：关系线均位于轨道、卡间留白或状态总线中，#24 无横向越界，#32 等高，去重矩阵可读。
 - Commit / push：主报告提交 `f7f402f8`（`refine mechanism report visual flows`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料未暂存、未覆盖、未清理。
+
+### 2026-09-05（体验关键时刻下钻与自进化双环）
+
+- 变更文件：只修改主报告 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版和端到端合并版。业务目的：把后半段从单页“体验关键时刻”扩展为可直接指导体验设计、评价与持续创新的视觉链路，并回答已有自进化 Harness 后体验部仍负责什么。
+- 正式结构从 37 页增至 39 页：`五个关键时刻总览 → 行动前体验设计 → 行动后体验设计 → 能力体验指标 → 持续改进闭环 → 最终答案`。总览用“适用判断 → 路径理解 → 行动控制 → 失败恢复 → 证据验收”连续信任链，前三项解释用户为什么敢开始，后两项解释用户为什么敢相信结果并继续。
+- 两页下钻改为具体体验对象而非文字卡片墙：行动前依次展示 Scope 回执、路径比较、Action Preview，并明确分为 `GO / ASK / STOP`；行动后从 Action Result 真实分叉为失败恢复线和证据验收线，分别落到 `RECOVERING · OWNER / SLA` 与 `VERIFIED / PARTIAL / BLOCKED / UNKNOWN`。API final / Host Stop 仍不等于 L3 业务完成。
+- 衡量页改为三层 Fitness System：优化目标（Verified Completion、首次验证时间、恢复率、单位验证成本）、不可牺牲的体验门禁（权限理解、撤回 / 接管、安全隐私、证据一致、可访问性）和探索信号（放弃、犹豫、人工接管、绕行、跨平台断裂、新工作方式）。核心边界是不能让自进化系统只最大化单一北极星指标。
+- 持续改进页改为“体验创新—能力自进化”内外双环。内环在当前目标空间内读取轨迹、诊断 Prompt / Skill / Tool / Context / 执行逻辑、生成修改并自动评价；外环由体验部发现系统尚未定义的问题、重构用户 AI / 昇腾服务 / 专家 / 组织关系、验证新产品模式并重设 Task Model、Experience Contract、Fitness、Guardrails 与探索方向。HarnessEvolve 论文只作为“此类自进化能力已存在”的实例来源，不作为产品机制或体验职责的定论。
+- 职责结论：自进化 Harness 优化“在既定目标中怎样完成”；体验部负责发现新问题、重定义任务与服务关系，并把体验意图编译为机器可读合同、门禁与评价空间；领域 Owner 继续负责技术真值、版本 SLA 和业务验收。最终页第三项已同步该口径，产品定位仍为“跨平台的昇腾领域 Harness 与可信任务完成层”。
+- 证据和三层边界未变化：H / M / L 继续区分公开事实、可信运行观察和目标方案；本机无匹配 NPU / CANN 环境，不声称真实硬件验证。来源页新增 HarnessEvolve 链接并明确其用途边界。
+- 验证：HTMLParser 通过；正式 `reportOrder` 为 39 个唯一标题且全部存在；控制栏为 `01 / 39`；5 个可执行内联 JavaScript 语法通过；CSS 花括号 `1799 / 1799`；`git diff --check` 通过；GitHub Pages 线上文件确认包含两张新增页与 39 页计数。应用内浏览器对大型单文件页的 AX 读取连续超时，因此本轮不声称完成截图级视觉 QA；关系线已按独立轨道和卡间留白实现，发布后若发现局部拥挤只调整高度 / 间距 / 节点位置。
+- Commit / push：主结构提交 `eb16ae08`（`reframe UX moments and evolution loops`）与分支连线提交 `39a15f70`（`clarify UX flow branching`）均已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料未暂存、未覆盖、未清理。
