@@ -2573,3 +2573,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 视觉决策：现有能力使用蓝紫 / 蓝色，缺失使用浅灰、虚线与空心断点；没有使用大面积荧光黄或普通 Ink 重点卡。数量、结构判断与建设推论分开呈现；MCP 页保留全部 20 个真实工具名，未把多个动作能力虚构为已存在。
 - 验证：HTMLParser 通过；38 个正式标题均存在且唯一；5 个可执行内联脚本经 Node `vm.Script` 语法检查通过；258 分类求和及 20 个 MCP 工具名检查通过；`git diff --check` 通过。应用内浏览器因本地 `file://` URL 安全策略拒绝自动视觉检查，未绕过策略；自动 Headless Chrome 截图仅得到黑屏，未把它作为视觉通过证据。
 - Commit / push：报告提交 `d06fb5ec`（`feat: visualize Ascend capability coverage`）已推送 `origin/main`。未决事项：发布后应在用户浏览器 1600×900 下复核 #22–#26 的文字换行、Treemap 长尾区和 MCP 工具站点密度；若发现局部拥挤，只调高度 / 间距，不回退为文字卡片墙。
+
+### 2026-09-04（平台机制、现状接线与体验衡量语义重画）
+
+- 变更文件：仅修改主报告 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版和端到端合并版。业务目的：将此前错位或偏文字化的机制页、现状建设页和衡量页改为能直接表达因果关系的图形，而不是仅做装饰性可视化。
+- 正式序列仍为 38 页，章节、标题键、Overview、hash、右上可点击导航、键盘和全屏 runtime 均未改变。重画范围为 #10–#14、#22、#24、#28、#32–#34：Claude Code 六环节总览；动作跨 Harness 多层门禁；Context 按需装入、逐级降级与不变量重建；故障分类到恢复结果；五个机制乘数汇聚；Skill / MCP 接入六环节任务链；MCP 四类知识分支与 Action / Evidence / Verify / Recover 断点；六项建设对象连接 Task State Bus；用户信任阶梯；Verified Completion 指标树；真实持续改进环形闭环。
+- 新增视觉根类为 `claude-overview-visual`、`action-control-visual`、`context-lifecycle-visual`、`recovery-router`、`mechanism-multiplier-visual`、`asset-chain-map`、`mcp-route-map`、`trust-staircase`、`metric-tree`、`improvement-cycle`。各页统一的是视觉语法、任务阶段与语义坐标，不要求所有图机械排成六列。
+- 连线修正：#22 的主线和节点圆点共享 `--rail-y: 4.7vh`；#24 的并行知识分支从节点垂直中心出入并保持不同作用路线；#28 的主线和节点圆点共享 `--rail-y: 3.8vh`。Context 页取消会导致箭头与节点错位的阶梯位移，继续用信息预算渐变表达状态变化。蓝紫 / 蓝色表示现有或目标能力，浅灰虚线表示缺口；未用荧光黄或 Ink 承担普通卡片强调。
+- 内容和证据边界未变化：继续区分 H（公开或可复核事实）、M（可信运行观察 / 第三方可复核客户端快照）和 L（机制作用与产品方案推论）；继续遵守 API / Protocol、Host / Harness、Application / Task 三层边界，平台 API 的 final / message 仍只是候选交付，Verified Completion 由任务层证据判定。
+- 验证：HTMLParser 通过；68 个源 slide 标题唯一、无重复 ID；正式 `reportOrder` 为 38 个唯一标题且全部存在；#10–#14、#22、#24、#28、#32–#34 页码映射正确；5 个可执行内联 JavaScript 通过语法检查；CSS 花括号 `1645 / 1645` 配对；`git diff --check` 通过。GitHub Pages 线上文件已确认包含全部新增视觉类。应用内浏览器读取大型单文件页面连续超时，因此本轮只记录结构与线上内容验证通过，不声称完成截图级视觉 QA；若用户刷新后发现局部拥挤，只调整高度、间距和节点位置，不回退为文字卡片墙。
+- Commit / push：主报告提交 `75501766`（`refactor: visualize platform and measurement logic`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料未暂存、未覆盖、未清理。
