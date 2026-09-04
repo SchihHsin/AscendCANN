@@ -2583,3 +2583,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 内容和证据边界未变化：继续区分 H（公开或可复核事实）、M（可信运行观察 / 第三方可复核客户端快照）和 L（机制作用与产品方案推论）；继续遵守 API / Protocol、Host / Harness、Application / Task 三层边界，平台 API 的 final / message 仍只是候选交付，Verified Completion 由任务层证据判定。
 - 验证：HTMLParser 通过；68 个源 slide 标题唯一、无重复 ID；正式 `reportOrder` 为 38 个唯一标题且全部存在；#10–#14、#22、#24、#28、#32–#34 页码映射正确；5 个可执行内联 JavaScript 通过语法检查；CSS 花括号 `1645 / 1645` 配对；`git diff --check` 通过。GitHub Pages 线上文件已确认包含全部新增视觉类。应用内浏览器读取大型单文件页面连续超时，因此本轮只记录结构与线上内容验证通过，不声称完成截图级视觉 QA；若用户刷新后发现局部拥挤，只调整高度、间距和节点位置，不回退为文字卡片墙。
 - Commit / push：主报告提交 `75501766`（`refactor: visualize platform and measurement logic`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料未暂存、未覆盖、未清理。
+
+### 2026-09-05（主报告关系线校正与附录矩阵去重）
+
+- 变更文件：只修改主报告 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版与端到端合并版。业务目的：修复关系线穿卡、节点错位、单页信息失衡和附录重复，让平台机制、现有供给、建设控制链与体验衡量保持同一条阅读逻辑。
+- #10 Claude Code 总览将六阶段主线移到卡片上方的独立轨道，节点圆点悬挂在轨道并短接卡片，卡间方向箭头只占用留白；#14 将五个机制乘数改为五张等权机制节点，以乘号和下方汇聚结论表达组合效应，H / M / L 与业务验收边界收到底部轻量证据条。
+- #22 现有供给总览将阶段轨道、节点和卡片分层，Skill / MCP 资产只通过卡间留白接入六阶段；#24 显式固定 Grid 列与行，恢复 `ASCEND DOC MCP → 四类并行只读能力 → CURRENT OUTPUT → CONTROL CHAIN GAP` 的正确方向，避免四类工具被自动排版到右侧越界；#28 删除穿卡横线，六张建设卡分别通过独立垂直线读写 Task State Bus，阶段顺序仍用卡间箭头表达。
+- #32 按用户要求恢复等高五卡，保持“找到适用知识 → 解释路径 → 行动前控制 → 失败恢复 → 证据验收”的五个关键时刻；#33 指标树与 #34 失败事件驱动的持续改进环继续承担体验衡量可视化。没有缩小正文字号硬塞，也没有新增荧光黄或普通 Ink 重点卡。
+- 附录去重：正文“平台能力沙盘”继续回答可装配入口；原两张重复能力矩阵退出正式序列，附录只保留一张 `运行控制与可信差异`，补充权限 / 沙箱、可运行环境、任务状态、恢复 / 继续、证据产物和业务验收。正式 `reportOrder` 从 38 页收敛为 37 页；源 DOM 的旧矩阵仍作历史备查，不进入 Overview、导航、页码或章节跳转。
+- 证据与层级边界未变化：H / M / L 仍分别表示公开或可复核事实、可信运行观察 / 第三方客户端快照、待验证推论；API / Protocol、Host / Harness、Application / Task 三层定义不变，Host Stop 与 API final 仍不等于 L3 业务验收。
+- 验证：HTMLParser 通过；68 个源 slide 标题唯一；正式 `reportOrder` 为 37 个唯一标题且全部存在；CSS 花括号 `2069 / 2069`；5 个可执行内联 JavaScript 经 `node --check`；`git diff --check` 通过。通过本地 HTTP 与应用内浏览器逐页复核 #10–#14、#22、#24、#28、#32–#34、#36：关系线均位于轨道、卡间留白或状态总线中，#24 无横向越界，#32 等高，去重矩阵可读。
+- Commit / push：主报告提交 `f7f402f8`（`refine mechanism report visual flows`）已成功推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料未暂存、未覆盖、未清理。
