@@ -2650,3 +2650,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界不变：四页标明为基于公开机制的任务推演，不是六平台同条件 Benchmark；没有成功率、耗时、质量分或强弱排名。WorkBuddy 仍只作任务状态与交付产品化参照；API final / Host Stop 仍不等于 L3 业务验收，本机没有真实 NPU / CANN 条件，不声称 Add 算子已运行验证。
 - 验证：正式 `reportOrder` 为 43 个唯一标题且全部存在；四个新标题各唯一；5 个可执行内联脚本语法通过；CSS 花括号平衡；`git diff --check` 通过。应用内浏览器按安全策略拒绝打开本地 `file://`，未绕过；GitHub Pages 发布后已在应用内浏览器逐页复核 #6–#9，质量关口、平台矩阵、故障路由和三乘数图均完整可见，卡片无文字溢出，关系线位于节点间隙。
 - Commit / push：主报告提交 `75c300b5`（`refine agent code quality walkthrough`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料保持原状。
+
+### 2026-09-07（代码质量案例按信息语义补充图形与 Demo）
+
+- 变更文件：只修改主报告 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版与合并版。用户要求卡片不再大面积使用纯文字，但也不能把信息机械替换成 Icon，因此本轮按每张卡的实际职责选择图形形式。
+- #6 `代码质量关口` 保留七道质量关口及检查字段，在每个关口内部增加语义 Lucide Icon，并以 14% → 100% 的成熟度轨道表达递进；Icon 只帮助扫读，检查项、依赖和证据仍由文字说明。
+- 原 #7 `六平台质量路径` 因与后续逐平台分析重复且没有结合昇腾业务，退出正式序列并删除其专属 CSS。新 #7 `昇腾供给如何改变代码` 使用同一个 Add 算子任务和同一段 V0 代码，展示三种供给条件：只有通用模型、模型 + 昇腾知识 / Skill、再加 MCP / Runtime / 领域验收。每条生产线都包含实际供给模块、代码 / 回执 Demo 和 1 / 7、3 / 7、7 / 7 质量关口停靠点；这是机制推演，不是平台 Benchmark 或真实 NPU 运行结果。
+- #8 `失败如何改进代码` 保留 V0 → 编译失败 → 故障路由 → V1 → 再验证的因果结构，为四个主节点增加代码、告警、分支、已修正代码图标，并将底部复验链改为编译 / 功能 / 边界 / 性能 / 回执的语义图标；不同故障分支没有合并。
+- #9 `代码质量的三个乘数` 不使用统一装饰图标：正确约束改用 CANN / 芯片 / 项目规则版本栈，闭环质量改用运行—错误—修正—重跑微流程，领域验收改用编译 / 功能 / 性能检查列，结果卡增加 code.diff、build.log、tests、scope 回执 Demo。Report PPT Skill 促使本轮将配图限定为内容相关的小型示意，而不是标题装饰或 Icon 墙。
+- 正式序列仍为 43 页，`reportOrder` 与章节映射已同步新标题；API / Protocol、Host / Harness、Application / Task 三层边界和 H / M / L 证据口径均未变化。本机仍无匹配 NPU / CANN 环境，因此 Demo 字段只表达目标回执结构，不声称 Add 算子已经编译或通过测试。
+- 验证：HTMLParser 通过；43 个正式标题均存在且目标标题唯一；CSS 花括号平衡；5 个可执行内联 JavaScript 经 `vm.Script` 检查通过；`git diff --check` 通过；GitHub Pages 已可检索到新标题。应用内浏览器对线上大型单文件页连续超时，本地 `file://` 又受安全策略限制，因此本轮不声称完成截图级视觉 QA。
+- Commit / push：主报告提交 `4a7ad3a1`（`refactor: visualize Ascend code quality supply`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料保持原状。
