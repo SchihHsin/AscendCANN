@@ -2630,3 +2630,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界不变：#11 仍为 M 级第三方 source-map 客户端快照，只解释 Claude Code Host / Harness；“更稳 / 更强”仍是需要同任务 Benchmark 的 L 级作用推论。未改变 API / Host / Application 三层边界。
 - 验证：39 个正式标题存在且唯一；1 个 Style 块花括号平衡；5 个可执行内联脚本均通过 `vm.Script` 语法检查；`git diff --check` 通过；GitHub Pages 已能拉取到新标题。应用内浏览器在发布页截图调用中连续超时，因此本轮没有把未获得的截图写成视觉通过证据。
 - Commit / push：主报告提交 `6468f0fd`（`fix: redraw report relation lines`）已推送 `origin/main`；本条交接随后单独提交并推送。
+
+### 2026-09-07（观众视角的同题案例主线）
+
+- 变更文件：只修改 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版或合并版。用户明确要求从不懂技术的领导视角组织内容，并尽量可视化、避免大片文字。
+- 正式序列由 39 页增至 43 页。在 `六平台定位` 后新增四页观众主线：`同一任务如何被接手 → 首次失败后的分化 → 完成之后交付什么 → 从案例看到的体验差异`；原有能力栈、沙盘、Host 循环和平台机制整体后移，作为对已观察现象的解释。
+- 统一案例为“把一个模型迁移到昇腾并证明能跑”，起始条件包含环境未知、版本待确认、需要真实运行和首次失败可恢复，完成标准为最小样例通过、日志可复核、未验证项明确。案例回放不使用成功率、耗时或平台排名，明确标注为基于当前公开机制的体验推演，而非同环境 Benchmark。
+- 四页视觉语法分别为：任务便笺 + 六个平台三步接手路径；首次失败信号 + 六条最小恢复路径；六张可撕口 Evidence Receipt；理解现场 / 控制行动 / 失败后继续 / 证明完成四个体验时刻。技术名词只以小标签对应 Context、Rules、Permission、Hook、Recovery、Evidence 等，不作为首屏主叙事。
+- 目录同步改为“先看同一任务怎样被推进，再解释体验差异背后的平台机制”。技术机制继续保持 H / M / L 与 API / Host / Application 三层边界；WorkBuddy 仍只作为任务状态与结果产品化参照，不进入同类 Coding Agent 质量排名。
+- 验证：HTMLParser 通过；43 个正式标题全部存在且唯一，新增页位于 #6–#9；1 个 Style 块花括号平衡；5 个可执行内联脚本通过 `vm.Script` 语法检查；`git diff --check` 通过；GitHub Pages 已能检索到新增案例标题。应用内浏览器和本机 Headless Chrome 对大型发布页渲染均连续超时，未将未生成的截图写成视觉通过证据。
+- Commit / push：主报告提交 `7bcec55e`（`feat: lead platform mechanisms with task walkthrough`）已推送 `origin/main`；本条交接随后单独提交并推送。
