@@ -2606,3 +2606,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据和三层边界未变化：H / M / L 继续区分公开事实、可信运行观察和目标方案；本机无匹配 NPU / CANN 环境，不声称真实硬件验证。来源页新增 HarnessEvolve 链接并明确其用途边界。
 - 验证：HTMLParser 通过；正式 `reportOrder` 为 39 个唯一标题且全部存在；控制栏为 `01 / 39`；5 个可执行内联 JavaScript 语法通过；CSS 花括号 `1799 / 1799`；`git diff --check` 通过；GitHub Pages 线上文件确认包含两张新增页与 39 页计数。应用内浏览器对大型单文件页的 AX 读取连续超时，因此本轮不声称完成截图级视觉 QA；关系线已按独立轨道和卡间留白实现，发布后若发现局部拥挤只调整高度 / 间距 / 节点位置。
 - Commit / push：主结构提交 `eb16ae08`（`reframe UX moments and evolution loops`）与分支连线提交 `39a15f70`（`clarify UX flow branching`）均已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料未暂存、未覆盖、未清理。
+
+### 2026-09-07（#12 Context 生命周期卡片等高）
+
+- 变更文件：只修改主报告 `cann-dashboard/ai-coding-platform-mechanism-report.html`，未同步 leadership 版与合并版。#12 `Claude 上下文控制` 的六张生命周期卡此前使用 `align-items:start` 且只有 `min-height`，因此不同文案行数会把卡片撑成不同实际高度。
+- 按用户确认改为“以最高卡片为基准自动等高”：`.context-lifecycle-flow` 使用 `align-items:stretch`，`.context-lifecycle-stage` 使用 `height:100%`；标签、标题、说明和底部结论的内部结构、六阶段顺序及上方信息预算轴不变。
+- 未改变 Claude Harness 研究结论、H / M / L 证据边界、39 页正式序列或 API / Host / Application 三层定义。HTMLParser、5 个可执行内联 JavaScript、`git diff --check` 均通过。
+- Commit / push：`e76a8577`（`align Claude context lifecycle cards`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料保持原状。
