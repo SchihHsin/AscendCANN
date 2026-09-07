@@ -2661,3 +2661,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 正式序列仍为 43 页，`reportOrder` 与章节映射已同步新标题；API / Protocol、Host / Harness、Application / Task 三层边界和 H / M / L 证据口径均未变化。本机仍无匹配 NPU / CANN 环境，因此 Demo 字段只表达目标回执结构，不声称 Add 算子已经编译或通过测试。
 - 验证：HTMLParser 通过；43 个正式标题均存在且目标标题唯一；CSS 花括号平衡；5 个可执行内联 JavaScript 经 `vm.Script` 检查通过；`git diff --check` 通过；GitHub Pages 已可检索到新标题。应用内浏览器对线上大型单文件页连续超时，本地 `file://` 又受安全策略限制，因此本轮不声称完成截图级视觉 QA。
 - Commit / push：主报告提交 `4a7ad3a1`（`refactor: visualize Ascend code quality supply`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料保持原状。
+
+### 2026-09-07（#6 代码质量关口栅格与垂直节奏校正）
+
+- 变更文件：只修改主报告 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版和合并版。用户截图显示 #6 上层任务摘要与下层七道关口的边界不一致，进度线、箭头和标题挤在同一水平带，七张高卡中部留白过多，整体在标题与页脚间呈现错位感。
+- 几何合同改为同一七列栅格：上层三张摘要卡严格跨 `3 / 2 / 2` 列，并与下层共用 `.62vw` 间距，因此左右边界分别对齐到第 3、5、7 道关口；不再使用此前的 `1.22fr / .92fr / 1fr` 任意比例。
+- 关口进度线与卡间箭头统一移动到标签和图标之间的顶部轨道，不再漂浮在卡片空白区中央，也不再贴近标题。下层关口高度随信息量从原 49.5vh 总组收紧到 42vh；通过 `.quality-page-body` 的 7.5vh 底部补偿保持整个正文在页眉与页脚可见安全区之间平衡，没有缩小文字或改变七道关口内容。
+- 正式 43 页序列、标题、章节映射、runtime、H / M / L 证据口径和 API / Host / Application 三层边界均未变化。HTMLParser、CSS 花括号、5 个可执行内联 JavaScript 与 `git diff --check` 均通过。
+- Commit / push：主报告提交 `3f7ec99d`（`fix: align code quality gate layout`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料保持原状。
