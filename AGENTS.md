@@ -2613,3 +2613,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户确认改为“以最高卡片为基准自动等高”：`.context-lifecycle-flow` 使用 `align-items:stretch`，`.context-lifecycle-stage` 使用 `height:100%`；标签、标题、说明和底部结论的内部结构、六阶段顺序及上方信息预算轴不变。
 - 未改变 Claude Harness 研究结论、H / M / L 证据边界、39 页正式序列或 API / Host / Application 三层定义。HTMLParser、5 个可执行内联 JavaScript、`git diff --check` 均通过。
 - Commit / push：`e76a8577`（`align Claude context lifecycle cards`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料保持原状。
+
+### 2026-09-07（#13 Claude Typed Recovery 路由图）
+
+- 变更文件：只修改主报告 `cann-dashboard/ai-coding-platform-mechanism-report.html`；未同步 leadership 版和合并版。按用户选择将 #13 `Claude 恢复与验证` 从 4×4 文字表格改为故障路由器图。
+- 新图保持四条事实映射，但改为可视化控制链：参数 / 权限、执行 / 协议、Context / 容量、完成门禁四类信号进入中央 `Typed Recovery Router`，分别经过最小修复、受保护不变量和结果状态；结果为 `CONTINUE`、`REPAIR / RETRY`、`FALLBACK / ESCALATE`、`VERIFY / STOP`。
+- 视觉语义固定：故障信号使用低饱和琥珀，中央分类器使用 Ink，最小恢复动作用蓝紫，保护对象用青绿盾牌图形，结果使用浅色状态节点；关系线只位于列间留白。页面核心结论强化为 `CLASSIFY → MINIMUM REPAIR ≠ BLIND RETRY`，没有用小字号保留原表格长文。
+- 未改变 M 级客户端快照的证据性质、Claude 稳定性仍需验证的 L 级边界、39 页正式序列或 API / Host / Application 三层定义。HTMLParser、5 个可执行内联 JavaScript、CSS 花括号和 `git diff --check` 通过；本机 Chrome 截图仍只返回黑屏，未将其作为视觉通过证据。
+- Commit / push：`1c96d6b7`（`visualize Claude typed recovery routing`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料保持原状。
