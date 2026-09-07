@@ -2621,3 +2621,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 视觉语义固定：故障信号使用低饱和琥珀，中央分类器使用 Ink，最小恢复动作用蓝紫，保护对象用青绿盾牌图形，结果使用浅色状态节点；关系线只位于列间留白。页面核心结论强化为 `CLASSIFY → MINIMUM REPAIR ≠ BLIND RETRY`，没有用小字号保留原表格长文。
 - 未改变 M 级客户端快照的证据性质、Claude 稳定性仍需验证的 L 级边界、39 页正式序列或 API / Host / Application 三层定义。HTMLParser、5 个可执行内联 JavaScript、CSS 花括号和 `git diff --check` 通过；本机 Chrome 截图仍只返回黑屏，未将其作为视觉通过证据。
 - Commit / push：`1c96d6b7`（`visualize Claude typed recovery routing`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料保持原状。
+
+### 2026-09-07（#11 动作管制走廊与正式页连线合同）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。仅修改主报告，没有同步 leadership 版或合并版；正式阅读序列仍为 39 页。
+- #11 `Claude 默认 Harness` 从七张同形卡 + 卡后连续底线重构为“Tool Call Payload → Schema Gate → Value Gate → Hook Gate → Permission Gate → 双轨 Scheduler → Observation Receipt”的动作管制走廊。四类失败出口分别表达参数修正、Hook 阻断解释、用户授权与拒绝换路；回填走页面底部外围通道。标题同步改为“Claude 把模型建议变成真实动作前，要连续通过四道确定性门禁”。
+- 全文连线合同固化为：关系线只能位于卡片间留白、独立汇流区或外围回环；从来源节点边缘开始，在目标节点边缘结束；不得使用半透明卡覆盖连续背景线。按此合同同步修正正式页中的五个关键时刻信任链、昇腾可控变量辐射线、跨平台适配线和持续改进双环；已经使用卡间短箭头或顶部独立轨道的页面保持不动。
+- 证据边界不变：#11 仍为 M 级第三方 source-map 客户端快照，只解释 Claude Code Host / Harness；“更稳 / 更强”仍是需要同任务 Benchmark 的 L 级作用推论。未改变 API / Host / Application 三层边界。
+- 验证：39 个正式标题存在且唯一；1 个 Style 块花括号平衡；5 个可执行内联脚本均通过 `vm.Script` 语法检查；`git diff --check` 通过；GitHub Pages 已能拉取到新标题。应用内浏览器在发布页截图调用中连续超时，因此本轮没有把未获得的截图写成视觉通过证据。
+- Commit / push：主报告提交 `6468f0fd`（`fix: redraw report relation lines`）已推送 `origin/main`；本条交接随后单独提交并推送。
