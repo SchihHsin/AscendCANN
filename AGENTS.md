@@ -2669,3 +2669,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 关口进度线与卡间箭头统一移动到标签和图标之间的顶部轨道，不再漂浮在卡片空白区中央，也不再贴近标题。下层关口高度随信息量从原 49.5vh 总组收紧到 42vh；通过 `.quality-page-body` 的 7.5vh 底部补偿保持整个正文在页眉与页脚可见安全区之间平衡，没有缩小文字或改变七道关口内容。
 - 正式 43 页序列、标题、章节映射、runtime、H / M / L 证据口径和 API / Host / Application 三层边界均未变化。HTMLParser、CSS 花括号、5 个可执行内联 JavaScript 与 `git diff --check` 均通过。
 - Commit / push：主报告提交 `3f7ec99d`（`fix: align code quality gate layout`）已推送 `origin/main`；本条交接记录随后单独提交并推送。其他用户已有脏文件与未跟踪材料保持原状。
+
+### 2026-09-08（学习体验活动驱动全旅程蓝图）
+
+- 新建独立交互蓝图 `cann-dashboard/learning-activity-driven-journey-blueprint.html`，不修改 `cann-website-v2.html`、`cann-app.js` 或既有竞品汇报。用户确认“活动驱动”方向后，明确指出此前只讨论详情页活动状态、没有把路径生成纳入全旅程；本文件据此作为 V2 改造前的信息架构和转场确认材料。
+- 蓝图定义两个页面主线与七个可点击活动状态：Landing 的探索与进入、表达目标、生成并审阅路径、回执与续学；详情页的理解与跟练、运行与验证、诊断并调整。左侧索引仅是蓝图浏览控件，产品原型内未使用固定顶部步骤栏。
+- Landing 以同一页面的自然变形承载任务简报与路径共编，避免创建单独重型路径工作台；路径显示任务依据、节点可调、可选分支和变更影响。详情页保留 V2 的路径、视频、讲解、练习、HiDevLab、预检和工具基础，新增活动驱动画布、任务条、证据锚定 AI、运行检查、验证回执、分层诊断、局部路径 Diff 与续学现场恢复。
+- 设计均为 L 级体验假设；不将现有 V2 能力包装为新能力，也不声称完成 NPU/CANN 真实运行验证。后续需用户确认该页面—状态—转场蓝图，再分批改动 V2：优先 Landing 的“任务表达→路径审阅”，以及详情页的“学习态→实践态→诊断态”。
+- 验证：HTMLParser、内联 JavaScript `node --check`、`git diff --check` 通过；对 7 个状态及所有 `data-goto` 转场做静态完整性校验。应用内浏览器安全策略拒绝 `file://` 本地预览，未绕过该限制或声称完成截图级视觉 QA。Commit / push 结果见本条后续更新。
