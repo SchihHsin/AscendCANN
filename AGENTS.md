@@ -2676,4 +2676,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 蓝图定义两个页面主线与七个可点击活动状态：Landing 的探索与进入、表达目标、生成并审阅路径、回执与续学；详情页的理解与跟练、运行与验证、诊断并调整。左侧索引仅是蓝图浏览控件，产品原型内未使用固定顶部步骤栏。
 - Landing 以同一页面的自然变形承载任务简报与路径共编，避免创建单独重型路径工作台；路径显示任务依据、节点可调、可选分支和变更影响。详情页保留 V2 的路径、视频、讲解、练习、HiDevLab、预检和工具基础，新增活动驱动画布、任务条、证据锚定 AI、运行检查、验证回执、分层诊断、局部路径 Diff 与续学现场恢复。
 - 设计均为 L 级体验假设；不将现有 V2 能力包装为新能力，也不声称完成 NPU/CANN 真实运行验证。后续需用户确认该页面—状态—转场蓝图，再分批改动 V2：优先 Landing 的“任务表达→路径审阅”，以及详情页的“学习态→实践态→诊断态”。
-- 验证：HTMLParser、内联 JavaScript `node --check`、`git diff --check` 通过；对 7 个状态及所有 `data-goto` 转场做静态完整性校验。应用内浏览器安全策略拒绝 `file://` 本地预览，未绕过该限制或声称完成截图级视觉 QA。Commit / push 结果见本条后续更新。
+- 验证：HTMLParser、内联 JavaScript `node --check`、`git diff --check` 通过；对 7 个状态及所有 `data-goto` 转场做静态完整性校验。应用内浏览器安全策略拒绝 `file://` 本地预览；发布后 GitHub Pages 返回 HTTP 200，但应用内浏览器在刷新时超时 / 缓存为 Page not found，未绕过该限制或声称完成截图级视觉 QA。
+- Commit / push：蓝图与本条初始记录已随 `f2f1ea88`（`feat: add activity-driven learning journey blueprint`）推送 `origin/main`；本条发布验证补充随后单独提交并推送。其他用户已有脏文件和未跟踪材料保持原状。
