@@ -1,0 +1,12 @@
+{
+  "url": "http://127.0.0.1:8789/cann-dashboard/ploy-interaction-lab/proactive-research.html?full=1#18",
+  "title": "诊断之后，把下一次可验证的实验准备好",
+  "capturedAt": "2026-09-14",
+  "viewport": {"width": 1280, "height": 720},
+  "screenshot": "18-experiment-1280.png",
+  "stateNote": "Local design-concept QA, initial experiment state. No real NPU or code execution. Not competitor evidence.",
+  "captureType": "single slide viewport; intentionally not full 27-page document",
+  "browserMetrics": {"iframeContentWidth": 754, "iframeMainClientHeight": 403, "iframeMainScrollHeight": 403},
+  "visibleCookieText": false,
+  "loginState": "local unauthenticated prototype"
+}
