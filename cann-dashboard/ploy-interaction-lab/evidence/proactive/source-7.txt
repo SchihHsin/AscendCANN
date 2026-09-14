@@ -1,0 +1,288 @@
+URL: https://ploy.ai/library/the-joy-of-ploy-webinar-recap
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+Webinar replay
+The Joy of Ploy: full setup, use cases, and what is possible
+A section-by-section recap of our first live webinar — the site slurp, redesign, PloyBooks, ad creatives as code, ABM, and going live. Watch the replay, or jump straight to the timestamps below.
+Ploy
+·
+June 30, 2026
+·
+6 min read
+For Growth, GTM, and marketing teams evaluating Ploy
+We ran our first live webinar — an hour of walking through the whole product,
+from importing an existing site to shipping pages, redesigning a brand, running
+growth PloyBooks, building ad creatives, and personalizing pages for named
+accounts. Bryant, Will, and Q hosted, people dialed in from four continents, and
+somebody in New Zealand joined at 6 a.m.
+Here’s the full replay, and the notes below recap each section the way it
+happened.
+Jump to a section
+3:12 — Onboarding onto Ploy
+4:03 — The slurp: how it works
+7:52 — PloyBooks overview
+10:48 — How to edit your site
+12:27 — Publishing your page
+15:35 — SEO and AEO
+17:43 — How Ploy has taste in design
+24:56 — Conversion rate optimization
+27:08 — Ad creatives and landing pages
+33:41 — Outbound and account-based marketing
+37:29 — Customer marketing and testimonials
+40:00 — Q&A
+The slurp: getting your site into Ploy
+The demo opened where a new user opens — onboarding. Ploy reads the domain tied
+to your email and kicks off a site import the team calls the slurp. Q, the
+engineer behind it, explained the idea behind its codename, Rosetta:
+“
+Given any website on the internet, its bare components are HTML and CSS. How can we translate that into something Ploy can work with?
+”
+Q
+Engineering, Ploy
+Watch at 4:03
+ →
+He compared it to what Apple did with Apple Silicon — a translation layer — and
+was candid that most of it deliberately isn’t AI, because no model reliably
+handles every CSS rule, responsive breakpoint, and hover state. The honest
+framing everyone appreciated:
+“
+A site slurp is not meant to be a one-to-one clone. It&#x27;s best effort — but best-in-class — at codifying your existing site into a design system you can actually build on.
+”
+Q
+Engineering, Ploy
+Watch at 4:03
+ →
+The import is the front door to the
+AI Website Builder
+.
+Editing and going live
+Once a site is in, changes happen two ways. There’s the annotation tool — hover
+any element, describe the change, send it to chat (keyboard shortcut
+C
+). And
+there’s the code itself, which comes out clean and production-quality. Bryant’s
+point on why that matters:
+“
+You get true production-quality code, as if a developer wrote it. It&#x27;s easier for agents to work with — but it&#x27;s also easier for humans to work with.
+”
+Bryant Chou
+Co-founder & CEO, Ploy
+Watch at 10:48
+ →
+Then Will asked the question every marketer asks — do I need to loop in IT to
+publish? Bryant’s answer: hosting is built in. Add a custom domain and the agent
+walks you through connecting analytics and Search Console, checking the sitemap,
+and cutting over DNS with no downtime. And because there’s a built-in reverse
+proxy, you can keep your existing site and serve only the pages you choose from
+Ploy. Will pushed on the timeline:
+“
+So you&#x27;re telling me if I&#x27;m in this webinar right now, I can make a page and have it live on my domain tomorrow? — Essentially, yes.
+”
+Will Gao & Bryant Chou
+Ploy
+Watch at 12:27
+ →
+More on go-live in
+Hosting
+.
+Redesign: not another AI-vibed site
+This was the section the room leaned into. Looking at a generic redesign, Will
+called it straight:
+“
+I look at this and it looks like your classic AI-vibed-out site.
+”
+Will Gao
+Head of Growth, Ploy
+Watch at 17:43
+ →
+Q explained how Ploy avoids that: it grounds the design flow in how people
+actually design — starting from real references, not a blank prompt. He used the
+Lookbook, Ploy’s curated collection of design directions, and compared choosing
+a look to reading a menu:
+“
+Similar to interior design, or even food — if you see a menu of things you might like, you can pick one or two. It&#x27;s hard to answer &#x27;what would you like?&#x27; from nothing.
+”
+Q
+Engineering, Ploy
+Watch at 17:43
+ →
+He also owned up to the occupational hazard of the job — “I dream of websites,
+it’s that bad” — which got a laugh. The through-line, from Will: taste isn’t
+going away because of AI.
+“
+When the floor gets raised by tools like this, the ceiling gets raised as well.
+”
+Will Gao
+Head of Growth, Ploy
+Watch at 17:43
+ →
+PloyBooks: repeatable growth motions
+PloyBooks are human-curated workflows the agent runs end to end. The demo ran an
+above-the-fold optimization that audits a hero and rebuilds it, and an SEO/AEO
+gap report that researches competitors, keyword rankings, and where a brand shows
+up in AI answers — then turns the recommendations into builds. Bryant’s take on
+what that replaces:
+“
+This is a report that, in other roles I&#x27;ve had, I&#x27;d have to spend six figures to get from an agency.
+”
+Bryant Chou
+Co-founder & CEO, Ploy
+Watch at 15:35
+ →
+The full set lives in
+PloyBooks
+, and the gap report ties into
+Answer Engine Optimization
+.
+Conversion, and why the design system matters
+Spinning up demo-page and landing-page variants stays on brand automatically —
+fonts, colors, components, even motion — because the design system is maintained
+for you. Will named the pain that solves, and every brand person in the chat felt
+it:
+“
+Every brand person has a war story where they changed the corner radius on their buttons, then spent hours chasing down the pages where the change didn&#x27;t make it through. The agent carries that for us now.
+”
+Will Gao
+Head of Growth, Ploy
+Watch at 24:56
+ →
+Ad creatives as code
+The moment that got the biggest reaction: building an ad creative as code.
+Because a creative is a real page, it renders deterministically — no
+uncanny-valley artifacts, no extra fingers — and every element becomes a prop, so
+you can generate variations of copy, layout, and background instantly. Bryant put
+the claim plainly:
+“
+This is probably the only product out there that can build an ad creative as if a visual designer built it.
+”
+Bryant Chou
+Co-founder & CEO, Ploy
+Watch at 27:08
+ →
+From there you push the creatives into your ad platforms with the right tracking,
+with a matching landing page behind them. The full workflow is in
+Ploy Ads
+.
+Account-based marketing
+The last growth section was ABM — researching a named account, reusing your
+existing case studies instead of duplicating content, and building a personalized
+page in minutes. Bryant framed why it’s usually so painful:
+“
+ABM has traditionally been this voodoo-magic thing where you stitch together a bunch of tools, wire it to your CRM, and do all this difficult website personalization.
+”
+Bryant Chou
+Co-founder & CEO, Ploy
+Watch at 33:41
+ →
+A neat aside: sales teams are also using it to draft proposals — drop in a call
+transcript, get a hyper on-brand page positioned to the prospect. More in
+Account-Based Marketing
+.
+The one that stuck: a wall of love
+To close, Bryant shared the build he keeps coming back to — not the flashiest
+page, but the one that mattered most. A founder had a Google Sheet with thousands
+of testimonials collected from a QR code, and Ploy connected to the sheet and
+turned it into a wall-of-love page.
+“
+It&#x27;s not the most incredible page in terms of visuals or animation — but it&#x27;s the human voice in the page that shines through.
+”
+Bryant Chou
+Co-founder & CEO, Ploy
+Watch at 37:29
+ →
+That’s the note the recap portion ended on — websites aren’t dead, they’re
+getting more personal. Then we opened it up to the room.
+Q&A: the questions worth replaying
+The last twenty minutes were live questions, and Bryant’s answers were some of
+the most useful parts of the session. Here’s each one, and where to find it in
+the replay.
+Do you have to run your whole site on Ploy, or can you embed it alongside an existing CMS?
+You don’t have to move everything. Ploy’s built-in reverse proxy serves your
+Ploy-built pages while every other page keeps running on your existing CMS —
+Webflow, WordPress, whatever you’re on. Several customers already run exactly
+this way, and if you later want to migrate the rest, Ploy can help you do it.
+(Bryant also teased a native Ploy CMS — a flat-file version exists today, with a
+richer one on the way.)
+Watch at 40:00 →
+Does Ploy handle site maintenance automatically — SSL, broken links, caching, image compression?
+You skip the onerous upkeep of a typical WordPress site. Ploy doesn’t silently
+change things for you; instead it surfaces suggestions — a missing tracking
+pixel, a traffic dip, a content gap — and you click run to fix them. Connect
+Google Analytics, Search Console, and a rank tracker, and the proactive system
+keeps working on the site between logins. As Bryant put it, it’s the whole
+website working while you sleep.
+Watch at 41:16 →
+When I publish, do changes go to my live homepage or to a new redirected page?
+The cleanest path is to point your DNS at Ploy and set up the reverse proxy, so
+the requests you don’t want Ploy to serve are routed accordingly. It’s a bit
+technical, but it’s documented — and you can adopt Ploy piecemeal, page by page,
+rather than in one big cutover.
+Watch at 43:04 →
+I haven’t done anything with SEO or AEO yet — where should I start?
+Just sign up and see what Ploy recommends. The models are capable enough now that
+anyone can start from wherever they are. Bryant flagged a big Lookbook update for
+redesigning from scratch, plus PloyBooks to help migrate an existing site over.
+Watch at 44:13 →
+What do I give up by not hosting everything on Ploy? Is the goal to migrate it all?
+Many customers start small and migrate over time — one moved a custom Next.js
+site across in a single afternoon, agentically. Hosting with Ploy is what unlocks
+the flywheels: client-side events, analytics, and visitor enrichment — seeing
+which companies visit, then triggering a PloyBook that researches the account and
+emails the right person. Skip hosting and you skip those loops.
+Watch at 45:18 →
+How does analytics and event instrumentation work — do I add Google Tag Manager?
+You can bring your existing GTM, but Ploy also ships analytics out of the box,
+auto-instrumented — sessions, pageviews, scroll depth, and clicks, all tied to an
+anonymous ID. That matters for ad tracking: you get the raw client- and
+server-side data to build a true picture of where spend goes, and you can ask
+Ploy to compile a report, drop it in Slack, or email it daily.
+Watch at 47:04 →
+Where does Ploy get its copy and design best practices — my brand, or its own strategies?
+Both. Out of the box you get the team’s copywriting and web-design skills, held
+to Ploy’s own bar — its taste, imbued in the product. Then you shape it with
+workspace memory: tell Ploy your preferences once and it codifies them into a
+document added to every context window, so they’re remembered going forward.
+Watch at 48:25 →
+What integrations does Ploy have — including CRM?
+A lot. Design through Figma (how agencies bring a brand’s fonts and assets in),
+analytics tools, CRM connections with Attio, HubSpot, and Salesforce, spreadsheets
+and the rest of G Suite, Zoom for meeting recordings, LinkedIn and X for posting.
+Two things that surprised the room: you can put PloyBooks on a schedule (one
+community member runs a business-development PloyBook every morning), and
+webhooks can trigger PloyBooks programmatically. And because everything in Ploy
+is multiplayer, you can invite teammates into the same chat.
+Watch at 50:04 →
+Won’t Google penalize AI slop? How do you handle that?
+It’s built into Ploy’s skills. There’s an anti-slop skill that catches the usual
+AI tells — em-dash overuse, the self-contradictory “it’s not this, it’s that”
+copy pattern — and on the design side, the entire thesis behind the Lookbook is
+building something bespoke rather than the same out-of-the-box template.
+Watch at 53:18 →
+What kind of results have people been seeing?
+On the organic side, Ploy’s own site went from barely ranking to broadly indexed,
+with a real surge in interest as pages got picked up. On paid, teams have seen
+meaningful lifts in landing-page conversions when the page is genuinely optimized
+for the ad behind it.
+Watch at 54:22 →
+Want the same setup for your site?
+Sign up for an account
+ and
+see what Ploy recommends for yours.
+Where this fits in Ploy
+AI Website Builder
+·
+Answer Engine Optimization
+·
+Account-Based Marketing
+·
+Ploy Ads
+·
+Hosting
+More from the Library
+How a design studio ships pixel-perfect client sites with AI
+Visux builds branded, animation-heavy product sites with an AI website builder — keeping full code ownership and one-to-one Figma fidelity. Here is the workflow.
+Why every website change feels like a project — and how teams fix it
+Every campaign page, headline test, and microsite turns into a production cycle. Visux explains the shift to a website operating model that moves at the speed of the business.
+#Webinar
+#Product

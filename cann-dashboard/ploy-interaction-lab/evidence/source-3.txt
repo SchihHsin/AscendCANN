@@ -1,0 +1,134 @@
+
+Quick Start | Ploy Support Docs
+Search docs…
+⌘K
+Support
+Log in
+Start Free
+Getting Started
+Home
+Introduction
+Quick Start
+Tips &amp; Tricks
+Core Concepts
+Working with a Team
+For Agencies
+Platform
+Ploy&#x27;s Agent
+Site Builder
+Form Submissions
+Database
+CMS &amp; Blogging
+Analytics
+Environment Variables
+Publishing &amp; Deploys
+Ploybooks
+Audience
+CLI &amp; Agents
+Ploy CLI
+Hosting
+Migration Cost Calculator
+Custom Domains
+Reverse Proxy
+Fallback Origins
+Account &amp; Billing
+Credits
+Integrations
+Integrations
+Webhooks
+Trust &amp; Security
+Security &amp; Compliance
+Advanced Controls
+Support
+FAQ &amp; Troubleshooting
+More
+Community
+YouTube
+X
+LinkedIn
+Facebook
+Instagram
+Quick Start
+Get your first site live in under 5 minutes.
+This guide walks you through creating a workspace, building your first site, and publishing it — all from inside the Ploy dashboard.
+Prerequisites
+A Ploy account. If you don&#x27;t have one yet,
+get started at ploy.ai
+.
+Your company&#x27;s website URL (helpful but not required).
+Step 1: Create Your Workspace
+After signing in, you&#x27;ll land in your workspace. This is your home base — it holds your sites, documents, assets, brand design system, and integrations.
+If you have an existing website, Ploy can extract your brand (colors, fonts, logo) automatically during setup.
+Step 2: Build or Clone a Site
+You have two ways to get started:
+Option A: Clone an Existing Site
+If you already have a website you want to bring into Ploy:
+Open a new Ploy (chat) from the dashboard.
+Paste your website URL and ask Ploy&#x27;s Agent to clone it.
+Ploy&#x27;s Agent will import the design, content, and structure — plus extract your brand design system.
+Option B: Bring an Existing Astro Repository
+If you already have an Astro codebase, read
+Bring your own repo
+ before importing it. The guide covers the required package versions, patchable Astro config shape, Cloudflare Workers runtime, prerendering, Code Sync, and publish workflow.
+Option C: Build from Scratch
+If you&#x27;re starting fresh:
+Open a new Ploy from the dashboard.
+Describe what you want — &quot;Build me a landing page for [product]&quot; or &quot;Create a marketing site with a hero, features section, pricing, and FAQ.&quot;
+Ploy&#x27;s Agent will design and build the pages, applying your brand automatically.
+Typical time:
+ 1–3 minutes for a clone, 2–5 minutes for a new build depending on complexity.
+Step 3: Preview and Iterate
+Your site is instantly available in the live preview panel. From here you can:
+Refine the design
+ — &quot;Make the hero bolder&quot; or &quot;Use a dark background on the pricing section.&quot;
+Update copy
+ — &quot;Rewrite the headline to focus on speed&quot; or &quot;Make the CTA more urgent.&quot;
+Add pages
+ — &quot;Add an About page&quot; or &quot;Create a blog.&quot;
+Adjust layout
+ — &quot;Move testimonials above pricing&quot; or &quot;Add a sticky nav.&quot;
+Ploy&#x27;s Agent makes changes in real time. You&#x27;ll see updates in the preview as it works.
+Step 4: Publish
+When you&#x27;re happy with the result:
+Click
+Publish
+ in the dashboard.
+Your site goes live on a Ploy-hosted URL immediately.
+To use your own domain, head to
+Site Settings
+, then
+Hosting
+ and follow the
+Custom Domain Setup
+ guide.
+Every publish is saved as a deploy. You can roll back to any previous version at any time from the Deploys panel.
+What&#x27;s Next?
+Understand the platform
+ — Read
+Core Concepts
+ for a glossary of key terms.
+Explore what Ploy&#x27;s Agent can do
+ — See the
+Ploy&#x27;s Agent
+ guide for tips on getting the best results.
+Get more out of Ploy
+ — Read
+Tips &amp; Tricks
+ for field-tested habits that lead to fast, on-brand results.
+Migrate an Astro codebase
+ — Follow
+Bring your own repo
+ before importing and publishing.
+Connect your tools
+ — Set up
+Integrations
+ to link GitHub, Figma, GA4, and more.
+Go live on your domain
+ — Follow the
+Custom Domain Setup
+ guide.
+Powered by
+P
+l
+o
+y

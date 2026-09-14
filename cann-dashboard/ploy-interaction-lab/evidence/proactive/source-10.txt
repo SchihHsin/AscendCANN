@@ -1,0 +1,270 @@
+URL: https://ploy.ai/ploybooks/email-icp-website-visitors
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+Email Your ICP Website Visitors | Ploy
+Product
+Resources
+Solutions
+Company
+Pricing
+The Ploy Effect
+Log in
+Start Free
+Product
+&gt;
+Resources
+&gt;
+Solutions
+&gt;
+Company
+&gt;
+AI Website Builder
+Visitor Identification
+Account-Based Marketing
+Analytics
+Answer Engine Optimization
+Hosting
+Product
+Resources
+Solutions
+Company
+Pricing
+T
+h
+e
+P
+l
+o
+y
+E
+f
+f
+e
+c
+t
+Log in
+S
+t
+a
+r
+t
+F
+r
+e
+e
+Email ICP Website Visitors
+Ploy turns identified visitor data into a small outbound queue — best-fit companies, one verified contact each, reviewed Gmail drafts, and a clean export. Drafts only, never auto-sent.
+By
+Emre Kavaloglu
+GTM Expert
+R
+u
+n
+t
+h
+i
+s
+P
+l
+o
+y
+b
+o
+o
+k
+S
+e
+e
+a
+l
+l
+P
+l
+o
+y
+b
+o
+o
+k
+s
+How it runs
+Ploy runs this Ploybook in 5 phases.
+01
+Scope the run
+Confirm the site, time window, ICP definition, destination, and draft policy — and check Gmail is connected before spending any contact credits.
+02
+Pull + rank visitors
+Ploy reads identified-visitor breakdowns, scores companies by ICP fit and intent, and drops obvious non-fits like competitors and vendors.
+03
+Resolve one contact each
+For each shortlisted company, Ploy picks one sensible contact and resolves a verified work email — never fabricated, only deliverable addresses go to drafts.
+04
+Draft for review
+Concise, role-aware emails with one low-friction CTA, saved as Gmail drafts. Visitor-identification mechanics are never exposed in the copy.
+05
+Export the queue
+Every company — including no-email rows — persisted to your CRM, a sheet, or a Ploy doc with fit rationale, intent signal, and draft status.
+Concrete outputs every time Ploy runs this.
+Visitor identification is on and you want outbound from companies already on your site. You want one sensible contact per company, not a scraped blast list. You want drafts to review and an export, not auto-sent email.
+A ranked company shortlist
+Identified visitors scored by ICP fit and intent, with non-fits dropped — sized to your time window rather than an arbitrary top-ten batch.
+One verified contact per company
+A single sensible contact resolved per company with a deliverable work email, so outreach goes to a real person, not a catch-all inbox.
+Reviewable Gmail drafts
+Role-aware, single-CTA emails staged in your Drafts folder for review — created, never auto-sent, with visitor mechanics kept out of the copy.
+A clean export
+Every shortlisted company, including no-email rows, written to your CRM, a sheet, or a Ploy doc with fit rationale, intent signal, and status.
+About the expert
+Emre Kavaloglu
+GTM Expert
+Emre is a go-to-market operator who turns positioning and intent signals into repeatable pipeline. His Ploybooks focus on practical outbound and account-based workflows — qualifying high-fit visitors, building targeted rosters, and shipping reviewable outreach that connects marketing signals to sales outcomes.
+More from
+Emre
+→
+Run together
+Ploybooks that pair with Email ICP Website Visitors.
+S
+e
+e
+a
+l
+l
+P
+l
+o
+y
+b
+o
+o
+k
+s
+Company Swarm
+CRM & Visitor Ops
+Turn one high-fit visitor or named account into a coordinated, persona-tailored outreach motion — qualified, drafted, and staggered for review before a single send.
+By
+Emre Kavaloglu
+GSC Keyword Optimization
+SEO & AEO
+Find keywords already earning impressions on a page but missing from the copy — then weave them in to lift CTR and rankings. No CSV exports.
+By
+Bryant Chou
+Analyse Web Traffic & Visitor Engagement
+Analytics & Insights
+Ploy reads your traffic, visitor quality, and engagement signals — and tells you what&#x27;s working, what&#x27;s weak, and what to fix next.
+By
+Bryant Chou
+Powers these in Ploy:
+Visitor identification
+·
+Account-based marketing
+Run Email ICP Website Visitors today.
+Slurp your existing site in 60 seconds, plug in your stack, and let Ploy run Email ICP Website Visitors end-to-end. The first output lands before you finish onboarding.
+Run this Ploybook
+Ploy builds, tests, and optimizes your website. Automatically.
+→
+Contact us
+Want the short version?
+Ask AI for a summary of Ploy, comparable solutions, and the value of running your growth stack on shared context and data.
+ChatGPT
+Claude
+Google AI Mode
+Grok
+Perplexity
+Product
+AI Website Builder
+Visitor Identification
+Account-Based Marketing
+Analytics
+Answer Engine Optimization
+Hosting
+Migration Cost Calculator
+Integrations
+Ploybooks
+Solutions
+For Startups
+For Enterprise
+For Agencies
+Compare
+Ploy vs Marketing Stack
+Ploy vs Framer
+Ploy vs Vercel
+Ploy vs Lovable
+Ploy vs Bolt
+Ploy vs v0
+Ploy vs Claude
+Alternatives
+Company
+Get a demo
+FAQ
+The Ploy Effect
+Careers
+Docs
+Contact
+Latest
+All blog posts
+AI Web Design with Opus and Sol
+Migrating a production AI agent to GPT-5.6
+Browse the library
+The Joy of Ploy webinar recap
+Integrations
+Airtable
+·
+Attio
+·
+ClickHouse
+·
+Dropbox
+·
+Figma
+·
+GitHub
+·
+Gmail
+·
+Google Ads
+·
+Google Analytics 4
+·
+Google Calendar
+·
+Google Docs
+·
+Google Drive
+·
+Google Meet
+·
+Google Search Console
+·
+Google Sheets
+·
+Google Slides
+·
+HubSpot
+·
+Intercom
+·
+Mailchimp
+·
+Notion
+·
+PostHog
+·
+Semrush
+·
+Slack
+·
+Supabase
+·
+YouTube
+·
+Zoom
+©
+2026
+,
+Ploy
+Privacy Policy
+Terms of Service
+Trust
+Status
+Made on Ploy by

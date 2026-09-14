@@ -1,0 +1,89 @@
+URL: https://docs.ploy.ai/analytics
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+Analytics
+Track traffic and connect your analytics stack.
+Ploy includes built-in analytics out of the box — no extra setup required. For deeper insights, connect Google Analytics 4 and Google Search Console directly from the dashboard.
+Built-in Analytics
+Every published Ploy site automatically tracks:
+Pageviews
+ — Total and unique views per page
+Traffic sources
+ — Where visitors are coming from (direct, organic, referral, social)
+Top pages
+ — Your most-visited pages ranked by traffic
+Trends
+ — Daily, weekly, and custom date range comparisons
+Dashboards & Charts
+Create custom dashboards with charts to visualize your data:
+Line charts
+ — Track trends over time
+Bar charts
+ — Compare pages or sources
+Metric cards
+ — Highlight key numbers (total visitors, pageviews, unique visitors)
+Tables
+ — Detailed breakdowns with sorting and filtering
+Pie charts
+ — Traffic source distribution
+Area charts
+ — Cumulative trends
+Ask Ploy&#x27;s Agent to create charts for you — &quot;Show me a chart of pageviews over the last 30 days&quot; or &quot;Create a dashboard with our top pages and traffic sources.&quot;
+Google Analytics 4
+Connect your GA4 property to query your Google Analytics data directly from Ploy.
+Setup
+Go to
+Settings → Integrations
+ in the Ploy dashboard.
+Click
+Connect
+ next to Google Analytics.
+Authorize with your Google account that has access to the GA4 property.
+Select the property you want to connect.
+What You Can Do
+Once connected, ask Ploy&#x27;s Agent to pull GA4 data:
+&quot;How many active users did we have this month?&quot;
+&quot;What are our top landing pages by sessions?&quot;
+&quot;Show me user acquisition by channel for the last 30 days&quot;
+Google Search Console
+Connect GSC to monitor your search performance — impressions, clicks, rankings, and indexing status.
+Setup
+Go to
+Settings → Integrations
+ in the Ploy dashboard.
+Click
+Connect
+ next to Google Search Console.
+Authorize with your Google account.
+Select the site property you want to connect.
+What You Can Do
+Once connected:
+&quot;What keywords are we ranking for?&quot;
+&quot;Show me our top queries by clicks this month&quot;
+&quot;Check if our new blog post is indexed&quot;
+&quot;What&#x27;s our average position for [keyword]?&quot;
+Asking Ploy&#x27;s Agent About Analytics
+You don&#x27;t need to navigate dashboards manually. Ploy&#x27;s Agent can answer analytics questions conversationally:
+&quot;How&#x27;s our traffic trending this week vs. last week?&quot;
+&quot;Which blog posts get the most organic traffic?&quot;
+&quot;Create a dashboard showing pageviews, top pages, and visitor companies&quot;
+&quot;What&#x27;s our click-through rate on Google for our top 10 keywords?&quot;
+What&#x27;s Next?
+Go live
+ — Read
+Publishing & Deploys
+ to understand how publishing works.
+Connect more tools
+ — See the
+Integrations
+ overview for the full list of available connections.
+Troubleshoot
+ — Check the
+FAQ & Troubleshooting
+ page for common issues.
+Powered by
+P
+l
+o
+y

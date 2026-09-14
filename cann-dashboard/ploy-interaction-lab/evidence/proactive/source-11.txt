@@ -1,0 +1,265 @@
+URL: https://ploy.ai/ploybooks/gsc-keyword-optimization
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+GSC Keyword Optimization Workflow | Ploy
+Product
+Resources
+Solutions
+Company
+Pricing
+The Ploy Effect
+Log in
+Start Free
+Product
+&gt;
+Resources
+&gt;
+Solutions
+&gt;
+Company
+&gt;
+AI Website Builder
+Visitor Identification
+Account-Based Marketing
+Analytics
+Answer Engine Optimization
+Hosting
+Product
+Resources
+Solutions
+Company
+Pricing
+T
+h
+e
+P
+l
+o
+y
+E
+f
+f
+e
+c
+t
+Log in
+S
+t
+a
+r
+t
+F
+r
+e
+e
+GSC Keyword Optimization
+Ploy reads Google Search Console directly, finds the keywords your pages already earn impressions for but haven&#x27;t targeted in copy, and weaves them in.
+By
+Bryant Chou
+Founder & CEO at Ploy
+R
+u
+n
+t
+h
+i
+s
+P
+l
+o
+y
+b
+o
+o
+k
+S
+e
+e
+a
+l
+l
+P
+l
+o
+y
+b
+o
+o
+k
+s
+How it runs
+Ploy runs this Ploybook in 4 phases.
+01
+Pull GSC performance
+Ploy reads impressions, CTR, and average position per query directly from the connected Search Console — no CSV in the middle.
+02
+Find the gap
+Queries the page earns impressions for, but doesn&#x27;t use in title, meta, headings, or body — surfaced as a ranked opportunity list.
+03
+Weave the keywords in
+Ploy rewrites title, meta, headings, and copy to incorporate the gap keywords naturally — no stuffing, no awkward phrasing.
+04
+Ship + monitor
+Edits commit cleanly, then Ploy watches the next 14–28 days of GSC for CTR and rank movement.
+Concrete outputs every time Ploy runs this.
+You have pages earning impressions but underperforming on CTR or rank. You want quick on-page wins without commissioning new content. Google Search Console is connected to your workspace.
+A list of gap keywords per page
+Queries each page already earns impressions for but never targets in its title, meta, or copy — surfaced as a ranked, ready-to-act opportunity list.
+On-page edits applied
+Title, meta, headings, and body rewritten to fold the gap keywords in naturally — real shipped edits, with no keyword stuffing or awkward phrasing.
+A monitoring window
+Ploy watches the next 14–28 days of Search Console and reports back on CTR and rank movement, so you know whether the edits actually paid off.
+About the expert
+Bryant Chou
+Founder & CEO at Ploy
+Bryant co-founded Webflow and architected the platform that now powers more than 1% of the active web. Along the way, he started and led the company&#x27;s growth, marketing, sales, and data teams — scaling Webflow from $1MM to $100MM in revenue.
+More from
+Bryant
+→
+Run together
+Ploybooks that pair with GSC Keyword Optimization.
+S
+e
+e
+a
+l
+l
+P
+l
+o
+y
+b
+o
+o
+k
+s
+SEO & AEO Strategy System
+SEO & AEO
+The full APTK framework — keyword research, topic clustering, technical audits, on-page optimization, and AI-search visibility — for dedicated SEO engagements.
+By
+Omid Ghiam
+Build a Content Page
+Site Building
+Two-phase workflow for shipping content-driven pages — comparison guides, listicles, how-tos, pillar pages — with the research baked into the page.
+By
+Bryant Chou
+Analyse Web Traffic & Visitor Engagement
+Analytics & Insights
+Ploy reads your traffic, visitor quality, and engagement signals — and tells you what&#x27;s working, what&#x27;s weak, and what to fix next.
+By
+Bryant Chou
+Powers these in Ploy:
+Answer Engine Optimization
+·
+Analytics
+Run GSC Keyword Optimization today.
+Slurp your existing site in 60 seconds, plug in your stack, and let Ploy run GSC Keyword Optimization end-to-end. The first output lands before you finish onboarding.
+Run this Ploybook
+Ploy builds, tests, and optimizes your website. Automatically.
+→
+Contact us
+Want the short version?
+Ask AI for a summary of Ploy, comparable solutions, and the value of running your growth stack on shared context and data.
+ChatGPT
+Claude
+Google AI Mode
+Grok
+Perplexity
+Product
+AI Website Builder
+Visitor Identification
+Account-Based Marketing
+Analytics
+Answer Engine Optimization
+Hosting
+Migration Cost Calculator
+Integrations
+Ploybooks
+Solutions
+For Startups
+For Enterprise
+For Agencies
+Compare
+Ploy vs Marketing Stack
+Ploy vs Framer
+Ploy vs Vercel
+Ploy vs Lovable
+Ploy vs Bolt
+Ploy vs v0
+Ploy vs Claude
+Alternatives
+Company
+Get a demo
+FAQ
+The Ploy Effect
+Careers
+Docs
+Contact
+Latest
+All blog posts
+AI Web Design with Opus and Sol
+Migrating a production AI agent to GPT-5.6
+Browse the library
+The Joy of Ploy webinar recap
+Integrations
+Airtable
+·
+Attio
+·
+ClickHouse
+·
+Dropbox
+·
+Figma
+·
+GitHub
+·
+Gmail
+·
+Google Ads
+·
+Google Analytics 4
+·
+Google Calendar
+·
+Google Docs
+·
+Google Drive
+·
+Google Meet
+·
+Google Search Console
+·
+Google Sheets
+·
+Google Slides
+·
+HubSpot
+·
+Intercom
+·
+Mailchimp
+·
+Notion
+·
+PostHog
+·
+Semrush
+·
+Slack
+·
+Supabase
+·
+YouTube
+·
+Zoom
+©
+2026
+,
+Ploy
+Privacy Policy
+Terms of Service
+Trust
+Status
+Made on Ploy by

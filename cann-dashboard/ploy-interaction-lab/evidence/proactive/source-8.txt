@@ -1,0 +1,345 @@
+URL: https://ploy.ai/features/visitor-identification
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+Website Visitor Identification Software for B2B | Ploy
+Product
+Resources
+Solutions
+Company
+Pricing
+The Ploy Effect
+Log in
+Start Free
+Product
+&gt;
+Resources
+&gt;
+Solutions
+&gt;
+Company
+&gt;
+AI Website Builder
+Visitor Identification
+Account-Based Marketing
+Analytics
+Answer Engine Optimization
+Hosting
+Product
+Resources
+Solutions
+Company
+Pricing
+T
+h
+e
+P
+l
+o
+y
+E
+f
+f
+e
+c
+t
+Log in
+S
+t
+a
+r
+t
+F
+r
+e
+e
+Visitor Identification
+Anonymous traffic,
+real people.
+Website visitor identification software that resolves anonymous U.S. traffic to companies and likely contacts,
+scores buying intent
+, and syncs qualified accounts to your
+CRM
+.
+S
+t
+a
+r
+t
+F
+r
+e
+e
+Trusted by high-horsepower founding teams at
+Leadbay
+Taiga
+Volca
+Once
+Raspire
+Indie Health
+CodeCrafters
+Datost
+Hex
+TNT Growth
+Tonik
+Leadbay
+Taiga
+Volca
+Once
+Raspire
+Indie Health
+CodeCrafters
+Datost
+Hex
+TNT Growth
+Tonik
+How to identify
+website visitors.
+Website visitor identification resolves eligible anonymous traffic to companies and likely contacts, enriches each account with firmographics, scores buying intent from on-site behavior, and syncs qualified accounts to your CRM. In Ploy, those four steps run automatically.
+01
+Resolve.
+Anonymous IPs resolved to company in milliseconds — no SDK install, no JavaScript fingerprinting.
+02
+Enrich.
+Firmographics, headcount, funding stage, and likely contacts with LinkedIn profiles attached to every account.
+03
+Score intent.
+Page paths, dwell time, scroll depth, and repeat visits feed an intent score so hot accounts surface first.
+04
+Sync.
+Named accounts pushed to Attio or HubSpot with firmographics and intent metadata attached.
+The data you actually get
+Every visit, named and contextual.
+Each company that lands on your site gets a profile that updates with every visit — what they read, how long they stayed, how often they come back, and how that compares to your existing pipeline.
+Firmographics
+Company name, domain, industry, headcount, and funding stage on every account.
+Weighted page paths
+Every page a company viewed, scored by intent — pricing counts for more than blog.
+Intent score, explained
+A live score with the reason this account is hot right now, not just a number.
+Visit timeline
+The full trajectory over time, so reps see momentum instead of a single snapshot.
+See how identification powers ABM
+For founders
+See your first identified visitor in 60 seconds.
+Bring your existing site over with one URL paste. Free tier shows you your first named account before you ever put in a credit card.
+S
+t
+a
+r
+t
+F
+r
+e
+e
+10-minute setup · 60-second slurp
+Who’s Ploy for?
+For teams that ship, measure, and win.
+Startups
+Run growth before there&#x27;s a marketing team to hire one.
+See which companies hit your site before they fill a form
+Send founder-led outreach the same day, with context
+Push named accounts straight to your inbox or Attio
+No SDK install, no enrichment vendor, no manual export
+S
+t
+a
+r
+t
+F
+r
+e
+e
+Coming soon
+Agencies
+Scale AI marketing across every client site you manage.
+Identify visitors across every client site from one dashboard
+White-label reports your clients can log into
+Intent-scored named accounts hand-delivered to client SDRs
+PloyBooks watch each site and surface in-market accounts weekly
+S
+t
+a
+r
+t
+F
+r
+e
+e
+Sales-led teams
+Turn anonymous traffic into named accounts your reps can work.
+Resolve homepage and pricing visits to named companies in milliseconds
+Score intent from page paths, dwell time, and repeat visits
+Sync hot accounts to Attio or HubSpot with metadata
+Daily list of in-market accounts ready for SDR queues
+S
+t
+a
+r
+t
+F
+r
+e
+e
+Privacy & compliance
+Built on consent, not scraping.
+Ploy resolves visitors only when they&#x27;re U.S.-located and present in an opted-in partner network where consumers explicitly consented to third-party marketing. Every identified contact carries a verifiable consent record — CAN-SPAM compliant, SOC 2 Type II, Spamhaus-aligned, CCPA opt-out honored. Your job as a Ploy customer is to keep three things in place.
+Opt-out
+Opt-out link in every email
+Every marketing email you send to an identified contact needs a clear, working unsubscribe link. CAN-SPAM requires it; Spamhaus enforces it.
+Disclosure
+Privacy policy disclosure
+Update your site privacy policy to disclose that you use a third-party identity graph to recognize business visitors. Ploy provides recommended language you can paste in.
+Consent
+Cookie banner enforcement
+Wire your cookie banner so visitors who decline are excluded from identification. Ploy honors the Do Not Track signal at the resolution layer once the banner is connected.
+Privacy FAQ
+Visitor identification, answered.
+Is Ploy&#x27;s visitor identification compliant with privacy regulations?
+Yes. Privacy and compliance are built into Ploy&#x27;s visitor identification from day one, with multiple safeguards so that identity resolution only proceeds when it is legally permissible.
+CAN-SPAM:
+All identity data comes from an opted-in partner network. Verifiable consent records — timestamp, source, and IP — are maintained for every contact, aligned with Spamhaus best practices to avoid spam traps.
+CCPA:
+California residents can opt out of the sale of their personal information through a dedicated opt-out form. Ploy customers can also flag opt-out requests directly through the established Do Not Sell process.
+GDPR:
+Ploy does not collect or share net-new anonymous visitor data in GDPR-regulated regions such as the EU and UK. If your brand already has an existing relationship with a user — for example someone from Canada or the EU who opted in on your site — that identity can be resolved, but only when the relationship already exists.
+Security:
+Ploy maintains industry-standard compliance with SOC 2 Type II controls. Audit reports and certifications are available on request for Enterprise customers.
+CAN-SPAM
+CCPA
+GDPR-Safe
+SOC 2 Type II
+Spamhaus Aligned
+Where does the identity data come from?
+From an opted-in partner network of websites where consumers have agreed to share their information for third-party marketing. When one of those consented individuals visits your site, the underlying identity graph resolves the visit to a person and company. No data is purchased from scraped sources, no LinkedIn fingerprinting is performed, and no SDK is installed on visitor devices to capture identifying information.
+Does Ploy identify visitors outside the United States?
+For net-new anonymous visitors, no — identities are only resolved when the visitor is located in the United States, enforced through geofencing on the resolution endpoint. The exception is when your brand already has an existing relationship with the visitor (e.g. they previously opted in on your site); in that case the identity can be resolved regardless of location.
+What about visitors who decline cookies or enable Do Not Track?
+When a visitor declines cookies on your banner — or signals Do Not Track / Global Privacy Control — Ploy suppresses identification for that visitor. The signal is honored at the resolution layer, not just on the cookie itself, so a declined visitor is never resolved to a person even if they would otherwise match the opted-in network. Your cookie banner is the gate.
+How do consumers opt out?
+Identified consumers can exercise their CCPA rights — including the right to opt out of sale or sharing and the right to deletion — through a public opt-out form maintained by the data provider. Once a consumer opts out, their identity is removed from the network and will not be resolved on any downstream site, including yours. Ploy passes through CCPA requests automatically; you don&#x27;t need to handle them yourself.
+What should you look for in B2B website visitor identification software?
+Look for five things: company and person-level resolution for the traffic you are eligible to identify, useful firmographic enrichment, intent scoring from real page behavior, direct CRM routing, and clear consent and geographic controls. The best fit is the platform that turns an eligible anonymous visit into an account your team can evaluate and work without a manual export.
+Can Ploy identify people or only companies?
+Ploy can resolve eligible U.S. traffic to a company and likely contacts when the visitor matches its opted-in partner network. Each matched account can include firmographics, headcount, industry, funding stage, and likely contacts with LinkedIn profiles. When a person-level match is not available, the company-level visit and its on-site behavior can still be used for account scoring.
+What are my responsibilities as a Ploy customer?
+Three things. (1) Include a clear, working opt-out link in every marketing email you send to identified contacts — CAN-SPAM requires it and Spamhaus enforces it. (2) Update your website privacy policy with language disclosing that you use a third-party identity graph to recognize business visitors; Ploy provides recommended language you can paste in. (3) Configure your cookie banner so visitors who decline cookies are excluded from identification — Ploy&#x27;s Do Not Track integration handles the enforcement once the signal is wired up.
+See your first identified visitor today.
+Slurp your existing site in 60 seconds. Connect your CRM. Watch named accounts land in your pipeline before you&#x27;ve finished onboarding.
+S
+t
+a
+r
+t
+F
+r
+e
+e
+Or book a demo
+Ploy builds, tests, and optimizes your website. Automatically.
+→
+Contact us
+Want the short version?
+Ask AI for a summary of Ploy, comparable solutions, and the value of running your growth stack on shared context and data.
+ChatGPT
+Claude
+Google AI Mode
+Grok
+Perplexity
+Product
+AI Website Builder
+Visitor Identification
+Account-Based Marketing
+Analytics
+Answer Engine Optimization
+Hosting
+Migration Cost Calculator
+Integrations
+Ploybooks
+Solutions
+For Startups
+For Enterprise
+For Agencies
+Compare
+Ploy vs Marketing Stack
+Ploy vs Framer
+Ploy vs Vercel
+Ploy vs Lovable
+Ploy vs Bolt
+Ploy vs v0
+Ploy vs Claude
+Alternatives
+Company
+Get a demo
+FAQ
+The Ploy Effect
+Careers
+Docs
+Contact
+Latest
+All blog posts
+AI Web Design with Opus and Sol
+Migrating a production AI agent to GPT-5.6
+Browse the library
+The Joy of Ploy webinar recap
+Integrations
+Airtable
+·
+Attio
+·
+ClickHouse
+·
+Dropbox
+·
+Figma
+·
+GitHub
+·
+Gmail
+·
+Google Ads
+·
+Google Analytics 4
+·
+Google Calendar
+·
+Google Docs
+·
+Google Drive
+·
+Google Meet
+·
+Google Search Console
+·
+Google Sheets
+·
+Google Slides
+·
+HubSpot
+·
+Intercom
+·
+Mailchimp
+·
+Notion
+·
+PostHog
+·
+Semrush
+·
+Slack
+·
+Supabase
+·
+YouTube
+·
+Zoom
+©
+2026
+,
+Ploy
+Privacy Policy
+Terms of Service
+Trust
+Status
+Made on Ploy by

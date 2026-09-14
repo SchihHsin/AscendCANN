@@ -1,0 +1,195 @@
+
+Publishing &amp; Deploys | Ploy Support Docs
+Search docs…
+⌘K
+Support
+Log in
+Start Free
+Getting Started
+Home
+Introduction
+Quick Start
+Tips &amp; Tricks
+Core Concepts
+Working with a Team
+For Agencies
+Platform
+Ploy&#x27;s Agent
+Site Builder
+Form Submissions
+Database
+CMS &amp; Blogging
+Analytics
+Environment Variables
+Publishing &amp; Deploys
+Launch Checklist
+Trusted
+iframe
+ Embedding
+Ploybooks
+Audience
+CLI &amp; Agents
+Ploy CLI
+Hosting
+Migration Cost Calculator
+Custom Domains
+Reverse Proxy
+Fallback Origins
+Account &amp; Billing
+Credits
+Integrations
+Integrations
+Webhooks
+Trust &amp; Security
+Security &amp; Compliance
+Advanced Controls
+Support
+FAQ &amp; Troubleshooting
+More
+Community
+YouTube
+X
+LinkedIn
+Facebook
+Instagram
+Publishing &amp; Deploys
+Ship your site, manage versions, and go live on a custom domain.
+When you&#x27;re ready to make your site public, Ploy handles publishing, hosting, SSL, and CDN delivery. Every publish creates a versioned deploy you can roll back to at any time.
+How Publishing Works
+Build
+ — When you click Publish (or ask Ploy&#x27;s Agent to publish), Ploy builds your site into optimized static assets.
+Deploy
+ — The build is deployed to Ploy&#x27;s global hosting infrastructure.
+Live
+ — Your site is immediately available at its Ploy URL (and your custom domain, if configured).
+Every deploy is a
+snapshot
+ — a complete, immutable version of your site at that point in time.
+Typical deploy time:
+ A few seconds for most sites.
+Automatic Publishing
+Give Ploy standing permission to publish site changes without asking you to click Publish each time. Automatic publishing is configured per site and is off by default for existing sites.
+Configure automatic publishing
+Open the site dashboard and go to
+Advanced
+.
+Turn on
+Automatic publishing
+.
+Choose the publishing scope you want to allow.
+Preview only
+Recommended
+ — Ploy can publish preview deployments automatically. Publishing to production still requires your confirmation.
+Preview + Production
+ — Ploy can publish preview deployments and your live site without an additional confirmation. Use this option only when you are comfortable giving Ploy that level of publishing autonomy.
+You can turn automatic publishing off at any time from
+Advanced
+. Changing the scope for production uses Ploy&#x27;s existing confirmation step-up flow.
+Automatic publishing is configured per site in
+Advanced
+. Preview only is the recommended scope; Preview + Production can publish to your live site without confirmation.
+What to expect
+Automatic publishing is limited to the targets allowed by the scope you selected. If a change needs a higher permission level, Ploy falls back to the regular manual Publish flow.
+While a publish is running, the status card shows the state of each target. Use the gear icon on the card to review or edit the permission in
+Advanced
+.
+Only one publish operation can run at a time. If another publish is already in progress, wait for it to finish before retrying.
+Schedule a future production publish
+A scheduled
+Ploybook
+ can prepare a production publish or publish at its scheduled run time when that action is part of the workflow. The schedule itself does not make every run publish automatically.
+Before scheduling a Ploybook that should publish to production, an owner or admin must open the site and allow automatic publishing to production in
+Site → Advanced
+. If production automatic publishing is not enabled when the scheduled run reaches the publish step, the run must stop for a manual publish instead.
+Review a staging-only page
+For a page that needs review before it goes live:
+Use a test path such as
+/test/slug
+.
+Add a
+noindex
+ directive so search engines do not index the page.
+Publish to
+Preview only
+, then share the preview URL for review.
+Preview publishing is separate from production publishing. You do not need to publish to production to review the page, and a preview-only publish does not update the live site.
+Managing Deploys
+Viewing Deploy History
+Open your site dashboard and navigate to
+Deploys
+. You&#x27;ll see a list of every publish, with:
+Timestamp
+What changed (commit message)
+Status (live, previous, or failed)
+Rolling Back
+To revert to an earlier version:
+Open
+Deploys
+ in the site dashboard.
+Find the version you want to restore.
+Click
+Promote
+ to make it the live deploy.
+Rollbacks are instant — the previous version is already built and cached. There&#x27;s no rebuild step.
+Tip:
+ You can also ask Ploy&#x27;s Agent — &quot;Roll back to the previous deploy&quot; or &quot;Promote the version from yesterday.&quot;
+Custom Domains
+By default, your site is available on a Ploy-hosted URL. To use your own domain:
+Go to Sites, select your site, then open Dashboard then Hosting.
+You will need to upgrade your Plan to enable Custom Domains
+Click
+Add Domain
+ and enter your domain.
+Click an existing
+Domain
+ card to manage its
+Routing Rules
+Follow the setup flow — automatic (one-click via Entri) or manual DNS configuration.
+Ploy verifies DNS and provisions an SSL certificate automatically.
+After you add the records at your registrar, come back to
+Sites → Settings → Hosting
+ to finish the setup. DNS changes can take a while to propagate, so it is normal for a domain not to go live immediately. If you would like a hand with any of this, email
+support@ploy.ai
+.
+Tip:
+ If you are unsure about the status of your domain, open a new Ploy conversation and ask. Ploy can retrieve the current status, and if something is configured incorrectly, it can give you the instructions to fix it.
+For detailed instructions covering Cloudflare, Route 53, GoDaddy, Namecheap, Porkbun, and other registrars, see the full
+Custom Domain Setup
+ guide.
+SSL Certificates
+Ploy automatically provisions and renews SSL certificates for every custom domain. No configuration needed — certificates are issued via ACME challenge as soon as your DNS records verify.
+Your site is always served over HTTPS.
+Going Live Checklist
+Before sharing your site publicly, run through this checklist:
+Preview on desktop and mobile
+ — Make sure the design looks good at all breakpoints.
+Check all links
+ — Verify internal and external links work correctly.
+Review SEO basics
+ — Page titles, meta descriptions, and Open Graph tags are set for key pages.
+Test page speed
+ — Ask Ploy&#x27;s Agent to run a Lighthouse audit.
+Set up analytics
+ — Confirm your built-in analytics are tracking (they are by default), and connect GA4/GSC if desired.
+Configure your domain
+ — Add a custom domain and verify SSL is active.
+Publish
+ — Hit publish and verify the live site loads correctly.
+What&#x27;s Next?
+Connect a domain
+ — Follow the
+Custom Domain Setup
+ guide for step-by-step DNS instructions.
+Track performance
+ — Set up
+Analytics
+ to monitor traffic after launch.
+Troubleshoot
+ — Check the
+FAQ &amp; Troubleshooting
+ page if you hit any issues.
+Powered by
+P
+l
+o
+y

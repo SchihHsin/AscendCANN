@@ -1,0 +1,138 @@
+
+Tips &amp; Tricks | Ploy Support Docs
+Search docs…
+⌘K
+Support
+Log in
+Start Free
+Getting Started
+Home
+Introduction
+Quick Start
+Tips &amp; Tricks
+Core Concepts
+Working with a Team
+For Agencies
+Platform
+Ploy&#x27;s Agent
+Site Builder
+Form Submissions
+Database
+CMS &amp; Blogging
+Analytics
+Environment Variables
+Publishing &amp; Deploys
+Ploybooks
+Audience
+CLI &amp; Agents
+Ploy CLI
+Hosting
+Migration Cost Calculator
+Custom Domains
+Reverse Proxy
+Fallback Origins
+Account &amp; Billing
+Credits
+Integrations
+Integrations
+Webhooks
+Trust &amp; Security
+Security &amp; Compliance
+Advanced Controls
+Support
+FAQ &amp; Troubleshooting
+More
+Community
+YouTube
+X
+LinkedIn
+Facebook
+Instagram
+Tips &amp; Tricks
+Ten habits that separate a quick, on-brand result from a generic one — plus two gotchas worth knowing before they bite you.
+1. Ask Korra first, docs second
+Korra — Ploy&#x27;s Agent — has live context on your workspace, sites, and deploys, and she can
+act
+, not just answer. Reach for her first. This help site only covers the things she can&#x27;t fix from inside the app.
+Learn more:
+Ploy&#x27;s Agent — capabilities and tips
+2. Be specific and scoped, not evaluative
+&quot;Make the site better&quot; gets generic output. &quot;Add a testimonials section below the hero with 3 customer quotes on a light gray background&quot; gets what you actually wanted.
+Lead with business context
+ — &quot;we&#x27;re B2B SaaS targeting engineering leaders.&quot;
+Reference real examples
+ — &quot;like the hero on stripe.com.&quot;
+Learn more:
+Ploy&#x27;s Agent — how to prompt effectively
+3. Iterate in layers — one goal per ploy
+Build → refine the hero → change the CTA → add social proof, as separate turns. Each chat is a scoped workflow; stuffing four goals into one prompt is where quality drops. And ask for options (&quot;give me 2 headline variants&quot;) instead of re-rolling the whole thing.
+Learn more:
+Ploy&#x27;s Agent — working in scoped ploys
+4. Clone, then adapt — the fastest start
+Clone a competitor&#x27;s site — or a single page or section — and ask Korra to rebrand it. A clone takes 1–3 minutes versus 2–5 for a from-scratch build. Just don&#x27;t ship an unadapted clone.
+Learn more:
+Site Builder — cloning and adapting sites
+5. Change the design system, not individual pages
+Say &quot;change our primary color to navy&quot; once and the tokens propagate everywhere. Don&#x27;t hand-specify fonts, spacing, or hex codes per section — that fights the system and is a top cause of off-brand output.
+Learn more:
+Site Builder — the design system
+6. Make “done” mean tested
+Before you launch, ask Korra to verify the published experience. A quick check of your key pages, buttons, forms, and sign-in flows helps catch small issues before visitors do — so you can ship with confidence.
+7. If it goes quiet, nudge it
+&quot;Agent silently stops mid-task&quot; came up many times in the past. We&#x27;ve shipped fixes for it, but it can still happen in the odd edge case. If it does, a short &quot;continue&quot; usually resumes the work — and please also drop a note to
+support@ploy.ai
+ so we know it happened. That&#x27;s what helps us close out the remaining edge cases.
+Separately, a &quot;Failed JSON&quot; error usually just means your session expired — refresh the page.
+8. Publish often, roll back freely
+Deploys take seconds and every publish is an immutable snapshot. To roll back, use the
+Version
+ button just to the left of the
+Publish
+ button while previewing your site — pick an earlier version from there. Or just ask Korra to &quot;roll back to yesterday&#x27;s deploy.&quot; Run the go-live checklist first: mobile preview, links, meta/OG tags, Lighthouse, analytics, and domain SSL.
+Note: your work auto-saves as a snapshot every 3 seconds, so you don&#x27;t need to publish just to save — publishing is only for pushing changes live.
+Learn more:
+Publishing &amp; Deploys — versions and rollbacks
+Learn more:
+Launch Checklist — the full go-live list
+9. Connect integrations early
+Integrations expand what Korra can do — GA4, Search Console, GitHub, Notion, Slack, HubSpot. Then query conversationally:
+&quot;Check the
+acme/api
+ GitHub repo against our current docs — do we have gaps in the billing-system documentation?&quot;
+&quot;Look through Slack and Notion for the new features we shipped this week, then draft me a blog post about them.&quot;
+&quot;What keywords are we ranking for, and which pages are slipping?&quot;
+&quot;Who visited our site this week, and which companies look like a fit?&quot;
+The real power shows up when Korra combines integrations — pulling from your repo, docs, Slack, and analytics in a single request.
+Visitor ID is on by default and cookie-free, so there&#x27;s no extra consent banner to manage.
+Learn more:
+Integrations — connect GitHub, Notion, Slack, and more
+Learn more:
+Visitor Identification — cookie-free visitor data
+10. Automate recurring work with scheduled Ploybooks
+You don&#x27;t need to build Ploybooks or schedules by hand. Just open a chat and ask — for example, &quot;Every morning, get yesterday&#x27;s visitors and send a summary to my Slack #channel.&quot; Korra creates the Ploybook and sets up the schedule for you. Review and adjust it anytime in the
+Ploybooks
+ section in the left sidebar.
+Each scheduled run uses credits, so run the Ploybook manually first to make sure the output is right. Start with a daily schedule instead of a high-frequency schedule such as every 15 minutes, then increase the frequency only when the workflow truly needs it. Ploy uses this same approach to automate work on its own marketing site.
+(First connect Slack under
+Avatar → Workspace Settings → Integrations
+ so Korra can post to your channels.)
+Security tip:
+ use a dedicated Slack login so the integration only sees the channels you invite it to.
+Learn more:
+Ploybooks — saving and scheduling workflows
+Two gotchas worth knowing
+Review oversized files before publishing
+Ploy checks for oversized public files before publishing and shows actionable publishing checks when it finds them. Review the affected paths and file sizes, resolve the issue or ask Ploy to help, then run the checks again before publishing. See
+Publishing &amp; Deploys
+ for the full publishing workflow.
+Custom-domain SSL needs the right DNS record
+On custom domains, the
+_acme-challenge
+ CNAME must exist and be DNS-only (gray cloud) on Cloudflare — otherwise the SSL certificate will never be issued.
+Learn more:
+Custom Domains — DNS setup
+Powered by
+P
+l
+o
+y

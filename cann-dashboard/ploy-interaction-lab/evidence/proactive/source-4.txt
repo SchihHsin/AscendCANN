@@ -1,0 +1,164 @@
+URL: https://docs.ploy.ai/integrations
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+Integrations
+Connect the tools you already use to your Ploy workspace.
+Ploy connects to 40+ external services so your marketing site can read from and write to the tools your team already runs on. Connect an integration once from
+Settings → Integrations
+ in the Ploy dashboard, and Ploy&#x27;s Agent can pull data, sync records, draft messages, and trigger workflows on your behalf.
+Available Integrations
+Browse by category — expand any group to see what each integration does.
+Design & Brand
+Integration
+What It Does
+Figma
+Extract brand tokens (colors, typography, spacing) from a Figma file, export frames and images, and use Figma designs as reference for Ploy&#x27;s Agent when building pages.
+Analytics & SEO
+Integration
+What It Does
+Google Analytics 4
+Query your GA4 data from inside Ploy — active users, sessions, top pages, acquisition channels, and more.
+Google Search Console
+Monitor search performance — keyword rankings, impressions, clicks, CTR, and indexing status.
+Semrush
+Pull keyword, ranking, and competitor data to inform content, on-page optimization, and AEO strategy for your pages.
+PostHog
+Connect your PostHog project for product and web analytics — event volumes and trends, funnel and conversion health, and behavioral signals that feed optimization decisions.
+ClickHouse
+Query large event and signals datasets directly for high-volume analytics behind visitor identification, traffic analysis, and custom reporting.
+Ploy Site Development
+Each Ploy Site gets its own repository hosted under the
+github.com/ployspace/
+ org — one repo per site, built on Astro and Tailwind. This is managed entirely by Ploy and is separate from any GitHub account or organization you own.
+Integration
+What It Does
+Code Sync (via GitHub)
+Sync your site&#x27;s
+@ployspace
+ repository locally
+, iterate on your Ploy site in your own editor, then sync your changes back up to Ploy when you&#x27;re happy with them. Ploy&#x27;s Agent commits its edits to the same repo, so your dev team and the Agent stay in lockstep. Requires the Pro plan.
+CRM & Sales
+Integration
+What It Does
+HubSpot
+Two-way sync with your HubSpot CRM — contacts, companies, and deals. Enrich identified site visitors against existing records, log new leads captured from your pages, and react to deal-stage changes.
+Attio
+Sync company and people records. Ploy can upsert companies by domain and people by email, so identified visitors and form submissions flow straight into your pipeline.
+Email & Outreach
+Integration
+What It Does
+Gmail
+Connect your Google Workspace inbox so Ploy can draft and send personalized emails — outreach to identified visitors, replies to form submissions, follow-ups — and save them as drafts for human review first.
+Mailchimp
+Sync newsletter and waitlist sign-ups captured on your Ploy site into the right audience, and keep subscriber records in step with form activity.
+Advertising
+Integration
+What It Does
+Google Ads
+Pull spend, clicks, and conversions into reports, attribute landing-page performance, and keep conversion tracking aligned with the pages Ploy builds.
+Meta Ads
+Read campaign, ad set, and creative performance for Facebook/Instagram, and reconcile paid traffic against the landing pages and conversions on your Ploy site.
+LinkedIn Ads
+Pull campaign performance and conversion data for B2B paid social, and tie spend back to the pages and leads it generated.
+Reddit Ads
+Read campaign and conversion metrics so Reddit spend can sit alongside your other channels in cross-platform reporting.
+Content & Productivity
+Integration
+What It Does
+Notion
+Read briefs, docs, and databases to source content for pages, or push structured content back into Notion for your team.
+Google Docs
+Pull existing copy, briefs, and long-form content directly into Ploy pages, or export drafted content into a Doc for review.
+Google Sheets
+Read structured data — lead lists, content calendars, account targets — to drive page generation and reporting, and write results back into a sheet.
+Google Slides
+Read and generate presentation content — repurpose decks into web pages or pull messaging from sales material.
+Airtable
+Use base records as a lightweight content or account source to drive pages and campaigns, and sync results back into your base.
+Google Drive
+Pull documents, assets, and exports stored in Drive into your Ploy workflows.
+Dropbox
+Retrieve brand assets, documents, and media stored in Dropbox for use across your site.
+Social
+Integration
+What It Does
+LinkedIn
+Read post and profile performance, draft platform-native content, and repurpose posts into pages or campaigns. Pairs with LinkedIn Ads for combined organic + paid reporting.
+Twitter (X)
+Track follower growth, post performance, and brand mentions, generate on-brand posts, and feed organic-social signals into reporting.
+Facebook
+Read organic Page performance — followers, reach, impressions, top posts — create post content, and pair with Meta Ads to see organic and paid side by side.
+Instagram
+Read organic metrics from your Business account, generate captions and creative concepts, and pair with Meta Ads for paid performance on the same account.
+Reddit
+Monitor brand mentions and relevant activity, draft community-appropriate content, and pair with Reddit Ads to view organic and paid together.
+Collaboration & Scheduling
+Integration
+What It Does
+Slack
+Post automated digests, alerts, and deal celebrations to channels, and route notifications to the right team.
+Google Calendar
+Read and create events — useful for scheduling, meeting-driven workflows, and demo coordination.
+Google Meet
+Create and manage meeting links tied to scheduling and demo workflows.
+Zoom
+Create and manage Zoom meetings, supporting demo and call scheduling alongside calendar workflows.
+How to Connect
+Navigate to
+Settings → Integrations
+ in the Ploy dashboard.
+Find the integration you want and click
+Connect
+.
+Complete the OAuth authorization flow with the service provider.
+Once connected, the integration is available immediately — Ploy&#x27;s Agent can read from (and in some cases write to) the connected service.
+Tip:
+ You can also ask Ploy&#x27;s Agent to connect an integration — &quot;Connect our Google Analytics&quot; or &quot;Link our Figma file.&quot;
+Using Integrations with Ploy&#x27;s Agent
+Once connected, integrations become part of Ploy&#x27;s Agent&#x27;s toolkit. Examples:
+Figma:
+ &quot;Extract our brand from this Figma file: [URL]&quot;
+GA4:
+ &quot;How many sessions did we get this week?&quot;
+GSC:
+ &quot;What keywords are we ranking for on the blog?&quot;
+Code Sync:
+ &quot;Sync from GitHub&quot; — pulls your team&#x27;s latest local commits into the Ploy sandbox
+HubSpot:
+ &quot;Enrich this week&#x27;s visitors against our CRM&quot;
+Notion:
+ &quot;Pull our support docs from Notion&quot;
+Slack:
+ &quot;Post a daily traffic digest to #marketing&quot;
+Ad platforms:
+ &quot;Summarize last week&#x27;s spend and conversions across Google, Meta, and LinkedIn&quot;
+Ploy&#x27;s Agent knows which integrations are connected and will suggest connecting new ones when they&#x27;d be useful.
+Permissions & Security
+Each integration uses
+OAuth
+ — Ploy never stores your passwords.
+You can
+disconnect
+ any integration at any time from Settings.
+Integrations request only the permissions they need (e.g., read-only for analytics, read-write for GitHub).
+What&#x27;s Next?
+Set up analytics
+ — Connect GA4 and GSC via the
+Analytics
+ guide.
+Extract your brand
+ — Connect Figma and read the
+Site Builder
+ guide for design system setup.
+Get help
+ — Check the
+FAQ & Troubleshooting
+ page or email
+support@ploy.ai
+.
+Powered by
+P
+l
+o
+y

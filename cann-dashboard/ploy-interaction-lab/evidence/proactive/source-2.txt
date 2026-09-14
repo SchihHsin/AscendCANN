@@ -1,0 +1,156 @@
+URL: https://docs.ploy.ai/cli/documents-ploybooks
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+Documents and Ploybooks
+Copy for LLM
+Workspace documents
+Command
+What it does
+ploy documents list [--json]
+List up to 50 document summaries.
+ploy documents get (--id &lt;id&gt; | --path &lt;path&gt;) [--json]
+Print Markdown content, or the complete response envelope as JSON.
+ploy documents set &lt;path&gt; [--title &lt;title&gt;] [--json]
+Read Markdown from stdin and create or update the exact path.
+Work with documents
+Copy
+ploy documents list
+ploy documents get --path /briefs/launch.md
+ploy documents get --id &lt;document-id&gt; --json
+ploy documents set /briefs/launch.md --title &quot;Launch brief&quot; &lt; launch.md
+Document paths start with
+/
+, contain no blank segments, and end in a segment of at most 200 characters. Titles are non-blank and at most 200 characters. Content is limited to 1,000,000 characters.
+Document object
+Copy
+{
+  &quot;id&quot;: &quot;&lt;document-id&gt;&quot;,
+  &quot;title&quot;: &quot;Launch brief&quot;,
+  &quot;path&quot;: &quot;/briefs/launch.md&quot;,
+  &quot;content&quot;: &quot;# Launch brief\n&quot;,
+  &quot;tags&quot;: [],
+  &quot;createdBy&quot;: &quot;&lt;user-id&gt;&quot;,
+  &quot;createdAt&quot;: &quot;&lt;ISO-8601 timestamp&gt;&quot;,
+  &quot;updatedAt&quot;: &quot;&lt;ISO-8601 timestamp&gt;&quot;
+}
+List responses omit
+content
+ and include
+limit
+ and
+hasMore
+. Set responses contain
+document
+ and
+operation: &quot;created&quot; | &quot;updated&quot;
+. Document commands do not support
+--dry-run
+.
+Read Ploybooks
+Ploybook commands require an effective workspace and workspace membership. They print pretty-formatted JSON.
+Command
+Use it for
+ploy ploybooks list
+Return
+{ &quot;ploybooks&quot;: [...] }
+.
+ploy ploybook get &lt;id&gt;
+Read a line slice of Markdown content.
+ploy ploybook read &lt;id&gt;
+Alias of
+get
+.
+ploy ploybook outline &lt;id&gt;
+Return a Markdown heading tree with stable section paths.
+ploy ploybook read-section &lt;id&gt; &lt;path&gt;
+Read one section by a path emitted from
+outline
+.
+Read Ploybooks
+Copy
+ploy ploybooks list
+ploy ploybook outline &lt;ploybook-id&gt;
+ploy ploybook read-section &lt;ploybook-id&gt; phase-1/setup
+ploy ploybook get &lt;ploybook-id&gt; --offset 0 --limit 500
+offset
+ defaults to
+0
+ and must be non-negative.
+limit
+ defaults to
+500
+ and accepts
+1
+ through
+500
+.
+Create and update Ploybooks
+Create or update a Ploybook
+Copy
+ploy ploybook create \
+  --title &quot;Weekly traffic digest&quot; \
+  --content-file ./weekly-traffic.md \
+  --description &quot;Summarize traffic and post the result&quot; \
+  --tag analytics \
+  --tag reporting
+ploy ploybook update &lt;ploybook-id&gt; --content-file - &lt; weekly-traffic.md
+ploy ploybook update &lt;ploybook-id&gt; --clear-tags
+Title: 1–200 characters.
+Description: at most 1,000 characters.
+Tags: at most 20; each at most 50 characters.
+Content: non-empty UTF-8; at most 500,000 characters.
+--tag
+ may be repeated.
+--clear-tags
+ conflicts with
+--tag
+.
+Apply exact edits
+ploy ploybook edit
+ applies 1–10 exact text replacements from inline JSON or a file.
+edits.json
+Copy
+[
+  {
+    &quot;old_string&quot;: &quot;exact text to replace&quot;,
+    &quot;new_string&quot;: &quot;replacement text&quot;
+  }
+]
+Edit a Ploybook
+Copy
+ploy ploybook edit &lt;ploybook-id&gt; --edits-file edits.json
+ploy ploybook edit &lt;ploybook-id&gt; --edits &#x27;[{&quot;old_string&quot;:&quot;old&quot;,&quot;new_string&quot;:&quot;new&quot;}]&#x27;
+Delete a Ploybook
+Delete a Ploybook
+Copy
+ploy ploybook delete &lt;ploybook-id&gt;
+Create, update, edit, delete, and schedule mutations support global
+--dry-run
+. During a dry run, the CLI does not read content or edit files and does not make mutation requests.
+Schedules
+Manage schedules
+Copy
+ploy ploybook schedule list &lt;ploybook-id&gt;
+ploy ploybook schedule create &lt;ploybook-id&gt; --cron &quot;0 9 * * 1-5&quot; --timezone America/New_York
+ploy ploybook schedule update &lt;ploybook-id&gt; &lt;schedule-id&gt; --disabled
+ploy ploybook schedule delete &lt;ploybook-id&gt; &lt;schedule-id&gt;
+Cron uses a valid five-field expression up to 200 characters. Timezone uses a valid IANA identifier up to 100 characters and defaults to UTC. New schedules are enabled unless
+--disabled
+ is passed.
+Keep going
+Check the complete CLI contract
+ for global options, environment variables, saved state, and exit codes.
+Bring an existing Astro repository
+ into Ploy using the supported toolchain and publish contract.
+Manage workspaces and sites
+, including domains, routing, publishing, and Code Sync.
+Equip local agents with Ploy skills
+ and inspect a site&#x27;s design-system context.
+Run the CLI from remote agents and CI
+ with API tokens and non-interactive commands.
+Powered by
+P
+l
+o
+y

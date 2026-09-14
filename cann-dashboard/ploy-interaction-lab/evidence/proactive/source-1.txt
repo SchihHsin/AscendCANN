@@ -1,0 +1,343 @@
+URL: https://docs.ploy.ai/webhooks
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+Webhooks
+Send events from any external system into your Ploy workspace, write them to PloyDB, and trigger Ploybooks automatically.
+Ploy webhooks are
+inbound
+: external systems (Clay, Stripe, Zapier, your own backend, partner APIs) POST events to a per-endpoint URL in your workspace. Each accepted event is stored, searchable, and can optionally run a
+Ploybook
+ with the event payload as prompt context.
+How It Works
+Create an endpoint
+ in
+Workspace Settings → Webhooks
+. Ploy mints an ingest URL and an API key.
+Configure the sender
+ (Clay, Stripe, your backend) to POST JSON to the ingest URL with your API key in the
+Authorization
+ header.
+(Optional) Wire a Ploybook trigger
+ so every accepted event runs a workflow with the payload as context.
+Inspect events
+ in the dashboard or by asking Ploy&#x27;s Agent — every received event is stored with its full payload.
+Tip:
+ Endpoints are scoped to a workspace, not a site — one endpoint can drive workflows that touch multiple sites.
+Creating an Endpoint
+Open
+Workspace Settings → Webhooks
+.
+Click
+New endpoint
+ and give it a description (e.g.
+Clay enrichment
+ or
+Stripe events
+).
+Ploy mints the endpoint and shows its
+API key once
+. Copy it now — it can&#x27;t be retrieved later. If lost, rotate the endpoint and reconfigure the sender.
+Copy the ingest URL. It has the shape:
+https://ploy.ai/api/v1/webhook/{endpointSlug}
+Tip:
+ You can also ask Ploy&#x27;s Agent — &quot;Create a webhook endpoint for Clay enrichment.&quot; Ploy&#x27;s Agent will surface the URL and key in chat.
+Authentication
+Send the API key as a bearer token in the
+Authorization
+ header on every request:
+Authorization: Bearer {apiKey}
+Requests without a valid key are rejected with
+401 Unauthorized
+.
+Keys are scoped to a single endpoint. Disabling or rotating an endpoint invalidates its key immediately.
+Treat keys like passwords. Store them in your sender&#x27;s secret manager — never commit them to source control.
+Sending Events
+Send an HTTP
+POST
+ with a JSON body to the ingest URL:
+curl -X POST https://ploy.ai/api/v1/webhook/ENDPOINT_SLUG \
+  -H &quot;Authorization: Bearer YOUR_API_KEY&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{
+    &quot;event&quot;: &quot;lead.enriched&quot;,
+    &quot;email&quot;: &quot;alex@acme.com&quot;,
+    &quot;company&quot;: &quot;Acme Inc.&quot;,
+    &quot;title&quot;: &quot;VP Marketing&quot;
+  }&#x27;
+Request Format
+Field
+Requirement
+Method
+POST
+ only.
+Content-Type
+application/json
+. Other content types are rejected with
+415
+.
+Body
+Any well-formed JSON object. Schema is up to you — Ploy stores the payload verbatim.
+Payload size
+Up to
+1 MB
+. Larger payloads return
+413 Payload Too Large
+.
+Auth
+Authorization: Bearer {apiKey}
+ required on every request.
+Response Codes
+Status
+Meaning
+202 Accepted
+Event stored. If a Ploybook trigger is wired, it&#x27;s queued asynchronously.
+400 Bad Request
+Body is not valid JSON.
+401 Unauthorized
+Missing or invalid
+Authorization
+ header.
+403 Forbidden
+Endpoint is paused or disabled.
+404 Not Found
+Endpoint slug doesn&#x27;t exist.
+413 Payload Too Large
+Body exceeds 1 MB.
+415 Unsupported Media Type
+Content-Type is not
+application/json
+.
+429 Too Many Requests
+Endpoint is being rate limited. Back off and retry.
+Sender Retry Guidance
+Ploy returns
+202 Accepted
+ as soon as the event is stored. If you get a non-2xx response, the event was
+not
+ stored — your sender should retry with exponential backoff. Most sources (Clay, Stripe, Zapier) handle this automatically. For custom backends, retry on
+5xx
+ and
+429
+ with jitter; do not retry on
+4xx
+ other than
+429
+.
+Triggering a Ploybook
+The most powerful pattern is wiring an endpoint to a
+Ploybook
+. Every accepted event runs the Ploybook with the payload injected as prompt context — so a webhook becomes a workflow trigger.
+Create the Ploybook you want to run (e.g.
+Generate ABM page for prospect
+).
+In
+Workspace Settings → Webhooks
+, open the endpoint and set
+Ploybook trigger
+ to your Ploybook.
+Each future event runs that Ploybook in the background. Pass
+null
+ to clear the trigger and go back to store-only mode.
+Tip:
+ Just ask Ploy&#x27;s Agent — &quot;Trigger the
+Generate ABM page for prospect
+ Ploybook on the Clay endpoint.&quot; It&#x27;ll wire it up.
+Writing Webhook Data to a PloyDB Table
+A webhook endpoint stores every accepted event in webhook history. To also create or update a record in a
+PloyDB
+ table, connect the endpoint to a Ploybook that validates the payload and writes the mapped values to the table.
+Create a webhook.
+ Go to the workspace settings page for
+Webhooks
+and either create a webhook or select an existing one.
+Copy the curl command below and update it based on the data you plan on mapping:
+curl -X POST &quot;https://ploy.ai/api/v1/webhook/[webhook_id]&quot; \
+  -H &quot;Authorization: Bearer [webhook api key]&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  --data &#x27;{&quot;hello&quot;:&quot;world&quot;}&#x27;
+Send one test event using the curl command with a realistic shape of data.
+ Confirm the webhook accepts the event before connecting it to PloyDB.
+Attach the webhook to the PloyDB instance you created.
+ Open the webhook in
+Workspace Settings → Webhooks
+ and select the PloyDB instance as its destination.
+Send another test event.
+ Run the updated curl command again to ensure everything is working properly, then open PloyDB and confirm that the expected data exists in the table.
+{
+  &quot;event&quot;: &quot;lead.created&quot;,
+  &quot;event_id&quot;: &quot;evt_01JABC123&quot;,
+  &quot;email&quot;: &quot;alex@acme.com&quot;,
+  &quot;company&quot;: &quot;Acme Inc.&quot;,
+  &quot;title&quot;: &quot;VP Marketing&quot;,
+  &quot;received_at&quot;: &quot;2026-09-03T14:30:00Z&quot;
+}
+Payload field
+PloyDB column
+Write behavior
+event_id
+Event ID
+Use as the unique match key for an upsert.
+email
+Email
+Validate before writing.
+company
+Company
+Write as text.
+title
+Title
+Write as text when present.
+received_at
+Received at
+Write as a date and time.
+Tip:
+ Include a stable event ID and use an upsert instead of an unconditional insert. If the sender retries the same event, the Ploybook updates the existing record instead of creating a duplicate.
+Keep credentials out of the payload. The external sender only needs the webhook endpoint&#x27;s API key; Ploy handles the connection to the attached PloyDB instance.
+Example: Clay Enrichment → ABM Landing Page
+A high-leverage setup: Clay enriches a list of target accounts, posts each enriched row to Ploy, and Ploy runs a Ploybook that generates a personalized ABM landing page for the prospect — pre-loaded with their company name, industry, and pain points. Drop the URL into your outbound sequence so every prospect lands on a page built for them.
+1. Create the endpoint
+In
+Workspace Settings → Webhooks
+, create an endpoint described as
+Clay enrichment
+. Copy the URL and key.
+2. Configure Clay
+In your Clay table, add an
+HTTP API
+ action:
+Method:
+POST
+URL:
+https://ploy.ai/api/v1/webhook/{endpointSlug}
+Headers:
+Authorization: Bearer YOUR_API_KEY
+ ·
+Content-Type: application/json
+Body:
+ a JSON object referencing Clay&#x27;s enriched columns. Press
+/
+ inside the Body field to open Clay&#x27;s column picker and insert the right field — Clay wraps each one in a typed token so the value flows through on every run.
+{
+  &quot;event&quot;: &quot;clay.account_enriched&quot;,
+  &quot;company&quot;: &quot;{{company}}&quot;,
+  &quot;company_domain&quot;: &quot;{{domain}}&quot;,
+  &quot;industry&quot;: &quot;{{industry}}&quot;,
+  &quot;headcount&quot;: &quot;{{headcount}}&quot;,
+  &quot;tech_stack&quot;: &quot;{{tech_stack}}&quot;,
+  &quot;recent_news&quot;: &quot;{{recent_news}}&quot;,
+  &quot;primary_contact_first_name&quot;: &quot;{{first_name}}&quot;,
+  &quot;primary_contact_title&quot;: &quot;{{title}}&quot;
+}
+Clay&#x27;s HTTP API action — Method, Endpoint, Body with column tokens, and Authorization header.
+3. Wire the Ploybook
+Build a Ploybook called
+Generate ABM page for prospect
+ with steps like: clone your ABM page template → rewrite the hero, value props, and social proof to match the prospect&#x27;s industry and recent news → publish at a unique slug like
+/for/
+{company-slug}
+ → return the URL. Set this Ploybook as the trigger on the Clay endpoint.
+4. Run Clay & sequence the URL
+Each row Clay sends fires the Ploybook with the full payload as context. Pages publish within a couple of minutes — write the published URL back to a Clay column, then reference it in your outbound copy (e.g.
+{{abm_page_url}}
+) so every prospect clicks through to a page built for them.
+Tip:
+ Test with a single Clay row first. Watch the event land in
+Workspace Settings → Webhooks → Events
+, confirm the Ploybook run finishes successfully, and review the generated page before turning Clay loose on the full account list.
+Inspecting Received Events
+Every accepted event is stored with its full payload, timestamp, and source endpoint. You can:
+Browse events in
+Workspace Settings → Webhooks → Events
+ — filter by endpoint, time range, or substring search across the payload.
+Click into any event to see the full request body and the resulting Ploybook run (if a trigger is wired).
+Ask Ploy&#x27;s Agent — &quot;Show me the last 10 events on the Clay endpoint&quot; or &quot;Find webhook events containing alex@acme.com.&quot; Ploy&#x27;s Agent queries event history directly.
+Pausing & Rotating Endpoints
+Pause
+ — Disable an endpoint to immediately stop accepting events. Senders receive
+403 Forbidden
+. Re-enable any time.
+Resume
+ — Re-enables event acceptance. Existing API keys stay valid.
+Rotate
+ — If a key leaks, create a new endpoint, update the sender, then disable the old one. Keys are shown once and can&#x27;t be retrieved.
+Delete
+ — Permanently removes the endpoint and its event history.
+Tip:
+ When debugging a flaky sender, pause the endpoint instead of deleting it — paused endpoints preserve all prior events and can be resumed without reconfiguring the sender.
+Limits & Behavior
+Property
+Value
+Payload size
+1 MB max per request.
+Content type
+application/json
+ only.
+Methods
+POST
+ only.
+Auth
+Authorization: Bearer {apiKey}
+ required on every request.
+Storage
+Every accepted event is stored with its full payload, timestamp, and endpoint.
+Ploybook execution
+Runs asynchronously after
+202 Accepted
+ is returned. Failures are logged on the event detail view.
+Retries
+Sender-driven. Ploy does not retry inbound events — your sender should retry on
+5xx
+ and
+429
+.
+Troubleshooting
+401 Unauthorized
+ — Check the
+Authorization
+ header. It must be
+Bearer {apiKey}
+ with a single space and no quotes around the key.
+403 Forbidden
+ — Endpoint is paused. Re-enable in
+Workspace Settings → Webhooks
+.
+404 Not Found
+ — The endpoint slug in the URL doesn&#x27;t exist or was deleted. Confirm the URL matches the one shown on the endpoint detail page.
+413 Payload Too Large
+ — Trim the body below 1 MB. For bulk loads, send one event per row instead of batching.
+415 Unsupported Media Type
+ — Set
+Content-Type: application/json
+. Form-encoded and multipart bodies are not accepted.
+Ploybook didn&#x27;t run
+ — Confirm the trigger is set on the endpoint and the Ploybook itself isn&#x27;t disabled. Check the event detail view for the run status and any error.
+Lost the API key
+ — Keys are shown once. Create a new endpoint, update the sender, and disable the old one.
+What&#x27;s Next?
+Store structured records
+ — Read the
+PloyDB
+ guide to create tables and manage the records your webhook workflow writes.
+Build the workflow
+ — Read the
+Ploy&#x27;s Agent & Ploybooks
+ guide to design the Ploybook your endpoint will trigger.
+Connect more tools
+ — See the
+Integrations
+ directory for first-class connections (HubSpot, Notion, GitHub, and more).
+Review security
+ — How Ploy protects your data is covered in
+Security & Compliance
+.
+Get help
+ — Check the
+FAQ & Troubleshooting
+ page or email
+support@ploy.ai
+.
+Powered by
+P
+l
+o
+y

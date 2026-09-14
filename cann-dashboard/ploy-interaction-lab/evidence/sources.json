@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "url": "https://ploy.ai/",
+    "retrieved": "2026-09-14",
+    "file": "source-1.txt",
+    "title": "AI Marketing Platform for Website Growth | Ploy"
+  },
+  {
+    "id": 2,
+    "url": "https://ploy.ai/features/ai-website-builder",
+    "retrieved": "2026-09-14",
+    "file": "source-2.txt",
+    "title": "AI Website Builder for Marketing Teams | Ploy"
+  },
+  {
+    "id": 3,
+    "url": "https://docs.ploy.ai/quick-start",
+    "retrieved": "2026-09-14",
+    "file": "source-3.txt",
+    "title": "Quick Start | Ploy Support Docs"
+  },
+  {
+    "id": 4,
+    "url": "https://docs.ploy.ai/site-builder",
+    "retrieved": "2026-09-14",
+    "file": "source-4.txt",
+    "title": "Site Builder | Ploy Support Docs"
+  },
+  {
+    "id": 5,
+    "url": "https://docs.ploy.ai/korra",
+    "retrieved": "2026-09-14",
+    "file": "source-5.txt",
+    "title": "Ploy&#x27;s Agent — Your AI Assistant | Ploy Support Docs"
+  },
+  {
+    "id": 6,
+    "url": "https://docs.ploy.ai/tips-and-tricks",
+    "retrieved": "2026-09-14",
+    "file": "source-6.txt",
+    "title": "Tips &amp; Tricks | Ploy Support Docs"
+  },
+  {
+    "id": 7,
+    "url": "https://docs.ploy.ai/ploybooks",
+    "retrieved": "2026-09-14",
+    "file": "source-7.txt",
+    "title": "Ploybooks | Ploy Support Docs"
+  },
+  {
+    "id": 8,
+    "url": "https://docs.ploy.ai/publishing",
+    "retrieved": "2026-09-14",
+    "file": "source-8.txt",
+    "title": "Publishing &amp; Deploys | Ploy Support Docs"
+  },
+  {
+    "id": 9,
+    "url": "https://ploy.ai/library/the-joy-of-ploy-webinar-recap",
+    "retrieved": "2026-09-14",
+    "file": "source-9.txt",
+    "title": "The Joy of Ploy: full setup, use cases, and what is possible"
+  }
+]

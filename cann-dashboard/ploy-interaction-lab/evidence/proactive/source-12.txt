@@ -1,0 +1,493 @@
+URL: https://docs.ploy.ai/cli/workspaces-sites
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+Workspaces, sites, domains, and publishing
+Copy for LLM
+Choose the right context, manage a site and its domains, configure routing, and publish production safely.
+Select a workspace
+Workspace commands
+Copy
+ploy workspace list
+ploy workspace use --id &lt;workspace-id&gt;
+ploy workspace use
+ploy workspace current
+ploy --workspace &lt;workspace-id&gt; workspace current
+workspace list
+ automatically pages through every accessible, non-frozen workspace.
+workspace current
+ prints the effective workspace and its source:
+flag
+,
+env
+, or
+stored
+.
+Interactive selection requires a TTY. With
+--dry-run
+,
+workspace use
+ requires an explicit
+--id
+.
+ploy workspace create
+ also creates a starter site named
+My Site
+. The CLI cannot delete that generated site. Remove it from the site dashboard if you do not need it.
+Workspace resolution
+--workspace &lt;id&gt;
+PLOY_WORKSPACE_ID
+The workspace saved by
+ploy workspace use
+No workspace
+Flags and environment variables do not change saved selection. Saving a different workspace clears the saved site.
+Select a site
+Site selection
+Copy
+ploy site list
+ploy site use --id &lt;site-id&gt;
+ploy site use
+site list
+ returns up to 100 sites in the effective workspace.
+site use
+ saves a site but does not change the effective workspace; the site must belong to the saved current workspace.
+Interactive selection requires a TTY. With
+--dry-run
+,
+site use
+ requires
+--id
+.
+ploy site init
+Create a blank Astro site, import a publicly reachable site, or seed a new site from a compatible local Astro repository.
+Create or import a site
+Copy
+ploy site init [--name &lt;title&gt;] [--slurp &lt;public-url&gt; | --from &lt;path&gt;] [--wait] [--json]
+Option
+Behavior
+--name &lt;title&gt;
+Set a title up to 200 characters. Ploy derives one when omitted.
+--slurp &lt;public-url&gt;
+Import a public HTTP(S) site. Embedded URL credentials are rejected.
+--from &lt;path&gt;
+Seed a new site from a local Astro repository after validating the Ploy repository contract.
+--wait
+Poll for up to 15 minutes and succeed only when the site is ready.
+--json
+Print machine-readable output; with
+--wait
+, print one final status object.
+Any workspace member can create a blank Astro site. Importing with
+--slurp
+ requires the workspace owner role. The command does not modify local files or select the new site.
+--dry-run
+ is not supported.
+--from
+ requires a root
+package.json
+ named exactly
+ploy-web
+, Astro 6.x and the Ploy starter package majors, plus a committed root
+astro.config.mjs
+ that exports a plain
+defineConfig(
+{...}
+)
+ object with literal
+site
+,
+build.assets
+,
+cacheDir
+, and
+vite.cacheDir
+ fields. See
+Bring your own repo
+ for the complete validation and Workers runtime contract.
+Each
+site init --from
+ invocation seeds a new site. It does not update a site created by an earlier import. Without Code Sync there is no way to push a second commit, so every code change on the free plan requires another newly seeded site.
+JSON creation response
+Copy
+{
+  &quot;site&quot;: { &quot;id&quot;: &quot;&lt;site-id&gt;&quot;, &quot;title&quot;: &quot;My site&quot; },
+  &quot;state&quot;: &quot;pending&quot;,
+  &quot;dispatch&quot;: &quot;accepted&quot;,
+  &quot;workflowId&quot;: &quot;&lt;workflow-id&gt;&quot;
+}
+dispatch
+ and
+workflowId
+ appear only for imports. If import dispatch cannot be confirmed, Ploy retains and prints the created site and workflow ID with
+state: &quot;status-unavailable&quot;
+ and
+dispatch: &quot;unconfirmed&quot;
+.
+Do not rerun init after an uncertain dispatch. Inspect the retained site with
+ploy --workspace &lt;workspace-id&gt; site status --id &lt;site-id&gt;
+.
+ploy site status
+Read site readiness
+Copy
+ploy site status [--id &lt;site-id&gt;] [--json]
+--id
+ temporarily overrides the selected site without changing selection. Site state is
+pending
+,
+ready
+,
+failed
+, or
+status-unavailable
+.
+Imported-site status
+Copy
+{
+  &quot;site&quot;: { &quot;id&quot;: &quot;&lt;site-id&gt;&quot;, &quot;title&quot;: &quot;My site&quot; },
+  &quot;state&quot;: &quot;pending&quot;,
+  &quot;stage&quot;: &quot;cloning&quot;,
+  &quot;sandbox&quot;: { &quot;status&quot;: &quot;creating&quot;, &quot;startupStep&quot;: &quot;starting&quot; },
+  &quot;clone&quot;: { &quot;status&quot;: &quot;running&quot;, &quot;step&quot;: &quot;crawl&quot;, &quot;message&quot;: &quot;…&quot; }
+}
+Sandbox status is
+ok
+,
+creating
+,
+degraded
+, or
+failed
+. Blank sites omit the
+clone
+ object.
+ploy site publish
+Publish production
+Copy
+ploy site publish [--wait] [--json]
+The command always targets production. There is no target flag, staging mode, or unpublish command. A selected workspace and site are required.
+Retries safely rejoin the same operation or an already-active publish for the site.
+Accepted publish
+Copy
+{
+  &quot;operationId&quot;: &quot;&lt;operation-id&gt;&quot;,
+  &quot;reused&quot;: false,
+  &quot;workflowStarted&quot;: true
+}
+A reused response also includes
+reuseReason: &quot;operation_key&quot;
+ or
+&quot;active_site&quot;
+.
+Wait for production
+With
+--wait
+, the CLI polls for up to nine minutes and exits
+0
+ only when production reaches
+ready
+. The poll loop can currently hit
+CLI token rate limited
+ and abort the wait even though the publish or site initialization continues in the background. Wait about one minute, then re-check with
+ploy site publish-status &lt;operation-id&gt;
+ or
+ploy site status --id &lt;site-id&gt;
+.
+1
+: production reached a terminal failure.
+4
+: polling timed out; the publish is still running.
+5
+: API contact was lost; the publish is still running.
+With
+--json
+, every outcome prints exactly one JSON object on stdout containing
+operationId
+.
+Preview a publish
+Dry-run production publish
+Copy
+ploy --dry-run site publish
+Dry-run response
+Copy
+{
+  &quot;dryRun&quot;: true,
+  &quot;target&quot;: &quot;production&quot;,
+  &quot;workspaceId&quot;: &quot;&lt;workspace-id&gt;&quot;,
+  &quot;siteId&quot;: &quot;&lt;site-id&gt;&quot;
+}
+ploy site publish-status
+Read a publish operation
+Copy
+ploy site publish-status &lt;operation-id&gt; [--json]
+The operation must belong to the selected workspace and site pair. Exit
+0
+ means the read succeeded; inspect
+status
+ and deployment rows to determine the publish outcome.
+--dry-run
+ is not supported.
+Publish operation
+Copy
+{
+  &quot;operationId&quot;: &quot;&lt;operation-id&gt;&quot;,
+  &quot;status&quot;: &quot;in_progress&quot;,
+  &quot;deployments&quot;: [
+    {
+      &quot;target&quot;: &quot;production&quot;,
+      &quot;status&quot;: &quot;building&quot;,
+      &quot;currentStep&quot;: &quot;Building site&quot;,
+      &quot;url&quot;: null,
+      &quot;error&quot;: null
+    }
+  ]
+}
+Operation status is
+in_progress
+,
+succeeded
+, or
+failed
+. Deployment status is
+queued
+,
+building
+,
+ready
+,
+error
+, or
+cancelled
+.
+The build log returned by
+publish-status
+ is currently truncated to about 1 KB. Open the site in the Ploy dashboard, then go to
+Deploys
+, open the failed deployment, and view its full build log there.
+Custom domains
+ploy domain list [--json]
+Lists every custom domain configured for the selected site.
+List custom domains
+Copy
+ploy domain list
+ploy domain list --json
+--json
+ prints
+{ &quot;domains&quot;: [...] }
+ instead of human-readable hostname and state lines. Each domain object includes:
+id
+ and
+hostname
+state
+ and
+sslStatus
+dnsVerified
+ and
+kvSynced
+lastError
+ploy domain add &lt;hostname&gt; [--json]
+Starts custom-domain setup or continues setup after the required DNS records have propagated.
+Connect a custom domain
+Copy
+ploy domain add www.example.com
+# Add the returned DNS records and wait for propagation, then run it again:
+ploy domain add www.example.com --json
+This command is intentionally repeatable. The first invocation may return required DNS records. After propagation, run the same command again to connect the domain.
+The DNS plan can include the requested hostname and an apex or
+www
+ companion. Possible phases are:
+Phase
+Meaning
+dns_pending
+DNS records still need to be added or propagated.
+provisioning
+DNS is ready and domain provisioning has started.
+connected
+The domain is connected.
+The JSON result includes the primary hostname and either the required DNS records or the affected domain objects.
+Adding a custom domain requires workspace admin or owner access and the workspace&#x27;s custom-domain capability.
+ploy domain status &lt;hostname&gt; [--json]
+Shows the provisioning and connection status of one hostname on the selected site.
+Inspect a domain
+Copy
+ploy domain status www.example.com --json
+Without
+--json
+, the command prints the hostname and state, followed by the most recent error when one exists. JSON output contains the complete domain object.
+ploy domain remove &lt;hostname&gt; [--json]
+Removes a draft or non-live custom domain from the selected site.
+Remove a non-live domain
+Copy
+ploy domain remove www.example.com --json
+--json
+ prints
+{ &quot;removed&quot;: true, &quot;hostname&quot;: &quot;...&quot; }
+. The command removes only the named hostname.
+The CLI refuses to remove a hostname currently serving live traffic because that operation requires fresh step-up authentication. Removing a domain requires workspace admin or owner access.
+Routing rules
+Routing rules belong to the selected site&#x27;s effective custom domain.
+ploy site routing get [--hostname &lt;hostname&gt;] [--json]
+Prints the selected site&#x27;s complete editable routing-rules document.
+Read routing rules
+Copy
+ploy site routing get
+ploy site routing get --hostname www.example.com
+Option
+Meaning
+--hostname &lt;hostname&gt;
+Selects a connected hostname when the site does not yet have an unambiguous default hostname.
+--json
+Uses structured JSON errors. Successful output is already the routing document as formatted JSON.
+Routing document
+Copy
+{
+  &quot;rules&quot;: [],
+  &quot;defaultFallback&quot;: {}
+}
+defaultFallback
+ is optional. The printed document can be edited and passed directly to
+ploy site routing set
+.
+How hostname selection works
+If the site has an elected default custom domain, that domain is used.
+If no default exists and exactly one hostname is connected, that hostname is unambiguous.
+If no default exists and several hostnames are connected, use
+--hostname
+.
+Once a default exists, an explicit
+--hostname
+ must name that default. Other hostnames redirect to it and do not own independent routing rules.
+ploy site routing set --file &lt;path&gt; [options]
+Replaces the selected site&#x27;s entire routing-rules document.
+Replace routing rules
+Copy
+ploy site routing get &gt; routing.json
+# Edit routing.json, then validate the complete replacement:
+ploy site routing set --file routing.json --dry-run
+# Apply it:
+ploy site routing set --file routing.json --json
+# Standard input is also supported:
+cat routing.json | ploy site routing set --file -
+Option
+Meaning
+--file &lt;path&gt;
+Required JSON document. Use
+-
+ to read from standard input.
+--hostname &lt;hostname&gt;
+Selects a connected hostname when the site has no unambiguous default.
+--dry-run
+Validates the complete replacement and reports the rule-count change without changing the database or hosting configuration. It currently requires a connected custom domain.
+--json
+Prints structured success, preview, and error output.
+The file must be a JSON object containing a
+rules
+ array:
+Routing replacement file
+Copy
+{
+  &quot;rules&quot;: [
+    {
+      &quot;match&quot;: {},
+      &quot;action&quot;: {}
+    }
+  ],
+  &quot;defaultFallback&quot;: {}
+}
+A redirect rule uses this action shape:
+Redirect routing rule
+Copy
+{
+  &quot;pathPrefix&quot;: &quot;/old-path&quot;,
+  &quot;action&quot;: {
+    &quot;type&quot;: &quot;redirect&quot;,
+    &quot;destination&quot;: &quot;/new-path&quot;,
+    &quot;statusCode&quot;: 301
+  }
+}
+This is a complete replacement, not a patch. Read the current document, modify it, and pass the full result back to
+routing set
+. The shared routing schema allows a maximum of 20 total rules. A dry run currently works only after a custom domain is connected.
+Dry-run checks and output
+A dry run performs the same server-side checks as a real write:
+Document validation and admin authorization
+Hostname selection and hosting configuration ownership
+Publication eligibility
+Enhanced-security step-up requirements
+Without
+--json
+, the CLI prints the current and proposed rule counts:
+Human-readable dry run
+Copy
+Would replace routing on www.example.com (rule count: 1 → 2).
+With
+--json
+, it prints:
+JSON dry run
+Copy
+{
+  &quot;dryRun&quot;: true,
+  &quot;hostname&quot;: &quot;www.example.com&quot;,
+  &quot;currentRuleCount&quot;: 1,
+  &quot;nextRuleCount&quot;: 2
+}
+Recover from an edge sync failure
+After a real write, the server synchronizes the routing document with Ploy&#x27;s hosting infrastructure. If synchronization fails after the database update:
+The command exits with code
+1
+.
+The CLI tells you to retry the same complete
+routing set
+ command.
+With
+--json
+, it prints the structured response, including
+kvSyncError
+, before failing.
+Repeating the same command is safe and is the supported recovery path.
+Code Sync
+Code Sync is included with every paid plan. Its commands use the site selected by
+ploy site use
+ and require that site to belong to the effective workspace. They are human-readable only: no
+--json
+ or
+--dry-run
+.
+ploy site code-sync init
+Initialize Code Sync
+Copy
+ploy site code-sync init
+Connect GitHub to Ploy through the OAuth step in the dashboard first. Then Ploy prepares the selected site&#x27;s repository, creating it when needed, and prints connection status, setup links, and HTTPS and SSH clone commands.
+The first sync immediately after connecting GitHub can return
+Internal server error
+. Retry
+ploy site code-sync sync
+ once.
+Code Sync workflow
+Copy
+git clone https://github.com/&lt;owner&gt;/&lt;repo&gt;.git
+cd &lt;repo&gt;
+# make changes on main
+git pull --rebase origin main
+git push origin main
+ploy site code-sync sync
+ploy site code-sync sync
+Import GitHub main into Ploy
+Copy
+ploy site code-sync sync
+On success, the CLI prints the imported GitHub commit and resulting Ploy site-workspace commit. If changes conflict, resolve them in the editor and retry.
+Keep going
+Check the complete CLI contract
+ for global options, environment variables, saved state, and exit codes.
+Bring an existing Astro repository
+ into Ploy using the supported toolchain and publish contract.
+Manage workspaces and sites
+, including domains, routing, publishing, and Code Sync.
+Equip local agents with Ploy skills
+ and inspect a site&#x27;s design-system context.
+Run the CLI from remote agents and CI
+ with API tokens and non-interactive commands.
+Powered by
+P
+l
+o
+y

@@ -1,0 +1,146 @@
+URL: https://docs.ploy.ai/ploybooks
+Retrieved: 2026-09-14
+Evidence: public page text, not logged-in product test
+
+Ploybooks
+Save a workflow once, then run it again — on demand or on a schedule.
+A
+Ploybook
+ is a reusable, step-by-step playbook that Ploy&#x27;s Agent follows to get a job done. Think of it as a saved recipe for work you do more than once — build an ABM landing page for a prospect, draft replies to new contact-form submissions, post a weekly traffic report to Slack. Instead of re-explaining the process every time, you capture it as a Ploybook and run it whenever you need it, or put it on a schedule so it runs itself.
+What a Ploybook Is
+Every Ploybook is a plain-language guide — broken into phases and checklist steps — that describes the outcome you want and how to get there. When you run one, Ploy&#x27;s Agent reads the guide and executes the steps with the same tools it uses in a normal chat: building pages, researching, querying analytics, drafting emails, calling your connected integrations, and more.
+Reusable
+ — Written once, run any number of times with fresh inputs.
+Adaptable
+ — A Ploybook is a guide, not a rigid macro. Ploy&#x27;s Agent adapts each run to the specific context, account, or data it&#x27;s given.
+Schedulable
+ — Attach a schedule and a Ploybook runs on its own — hourly, daily, weekly, or any cron cadence.
+Triggerable
+ — Wire a Ploybook to a
+Webhook
+ so an external event (a new lead, a closed deal, a CMS change) kicks it off automatically.
+Tip:
+ If you find yourself typing the same multi-step request into Ploy&#x27;s Agent more than once, that&#x27;s a Ploybook waiting to happen.
+When to Use One
+Ploybooks shine anywhere a process repeats. A few patterns teams reach for:
+Use case
+What the Ploybook does
+Account-based pages
+Generate a personalized landing page for each target account from a list or a webhook payload.
+Inbound triage
+Pull new contact-form submissions, filter spam, and draft a tailored reply for each as a Gmail draft for human review.
+Recurring reports
+Summarize traffic, ad spend, or product analytics on a cadence and post a plain-English digest to Slack.
+Outbound from signals
+Turn identified site visitors into a ranked, reviewed outreach queue.
+Content & SEO
+Audit a page, find missing keywords, and weave them in — repeatably, across many pages.
+If a task is genuinely one-off, you don&#x27;t need a Ploybook — just ask Ploy&#x27;s Agent directly. Reach for a Ploybook when the
+shape
+ of the work stays the same and only the inputs change.
+Creating a Ploybook from a Ploy Conversation
+The easiest way to author a Ploybook is to let Ploy&#x27;s Agent generalize work you&#x27;ve already done. Run the task once in a normal chat (a
+ploy
+), confirm the result is what you want, then ask Ploy&#x27;s Agent to save it:
+&quot;Save this as a Ploybook so I can run it again next week.&quot;
+&quot;Turn this workflow into a reusable Ploybook for any prospect.&quot;
+&quot;Make a Ploybook out of what we just did, but parameterize the company name.&quot;
+Ploy&#x27;s Agent rewrites the specific run into a generalized, phased guide — replacing the concrete details (company names, URLs, dates) with placeholders so each future run takes fresh inputs. After a piece of work wraps, Ploy&#x27;s Agent will often
+offer
+ to save it as a Ploybook on its own; just say yes.
+You can also create one from scratch by describing the workflow in plain language:
+&quot;Create a Ploybook that pulls yesterday&#x27;s ad spend across Meta and Google and posts a summary to Slack.&quot;
+Review before you rely on it.
+ A freshly authored Ploybook is a draft. Read through its steps once and do a test run before scheduling it or pointing it at live data — the same way you&#x27;d review any teammate&#x27;s runbook.
+Running a Ploybook
+Once saved, a Ploybook can run three ways:
+On demand
+ — Ask Ploy&#x27;s Agent to run it (&quot;Run the ABM page Ploybook for Acme Inc.&quot;), or launch it from your saved Ploybooks. Each run happens in its own ploy so you can watch the steps and review the output.
+On a schedule
+ — Attach a recurring schedule and it runs automatically (see below).
+On a trigger
+ — Wire it to a
+Webhook
+ so an external event runs it with the event payload as context.
+Scheduling a Ploybook
+Any Ploybook can run on a recurring schedule — no one has to remember to kick it off. A schedule is a
+cron expression
+ plus a
+timezone
+, so reports land before your team&#x27;s morning and digests fire at the right local hour.
+The simplest way is to just ask:
+&quot;Run this Ploybook every weekday at 9am Eastern.&quot;
+&quot;Schedule the traffic digest for Mondays at 7am Pacific.&quot;
+&quot;Run the contact-reply Ploybook twice a day, at 9am and 5pm.&quot;
+Ploy&#x27;s Agent translates that into a schedule and wires it up. Under the hood, a schedule is:
+Field
+What it controls
+Cron expression
+A 5-field cron string for the cadence — e.g.
+0 9 * * 1-5
+ (weekdays at 9am) or
+0 7 * * 1
+ (Mondays at 7am).
+Timezone
+An IANA timezone like
+America/New_York
+ so the time is local, not UTC.
+Enabled
+Whether the schedule is active. Pause it any time without deleting it.
+A Ploybook can have more than one schedule — for example a single digest Ploybook that posts a daily summary every morning and an extended week-over-week summary on Mondays. You can update the cadence, change the timezone, pause, or delete a schedule any time by asking Ploy&#x27;s Agent.
+Tip:
+ Scheduled runs happen in the background and produce their own ploy each time, so you always have a record of exactly what ran and what it produced.
+Schedule a future production publish
+A scheduled Ploybook can prepare a production publish or publish at its run time when publishing is part of the workflow. Scheduling a Ploybook does not make every run publish automatically.
+Before scheduling a workflow that should publish to production, an owner or admin must allow automatic publishing to production in
+Site → Advanced
+. If that permission is not enabled when the scheduled run reaches the publish step, the run must stop for a manual publish instead. See
+Publishing & Deploys
+ for setup details.
+Working memory
+Working memory is optional. When enabled, recurring Ploybook runs can reuse a shared working document so the work builds on useful context from earlier runs. Custom Ploybooks start with working memory turned off.
+It is useful for recurring research, content, and operational workflows where prior findings or decisions should carry forward. Enable it only when retaining context from earlier runs helps the next run do better work.
+Managing & Editing Ploybooks
+Ploybooks are living documents — refine them as your process evolves:
+Edit
+ — &quot;Add a step to the ABM Ploybook that writes the published URL back to the CRM.&quot;
+Rename or re-scope
+ — Update the title, description, and tags so the right Ploybook is easy to find later.
+Delete
+ — Remove a Ploybook you no longer use. (Schedules attached to it stop too.)
+Because each run executes against the
+current
+ version of the guide, improving a Ploybook once improves every future run — manual, scheduled, and triggered alike.
+Keep a human in the loop for anything that sends.
+ For Ploybooks that draft outbound email or post publicly, have them produce drafts for review rather than auto-sending. Review the steps before scheduling, and start a new Ploybook against test data first.
+Ploybooks & Webhooks
+Schedules answer
+&quot;run this on a clock.&quot;
+Webhooks
+ answer
+&quot;run this when something happens.&quot;
+ Wire a Ploybook as the trigger on a webhook endpoint and every accepted event runs the Ploybook with the payload injected as context — so a new enriched lead, a closed deal, or a CMS update can kick off a full workflow with no one at the keyboard. See
+Webhooks
+ for the full setup.
+What&#x27;s Next?
+Meet your operator
+ —
+Ploy&#x27;s Agent
+ is what runs every Ploybook — start there for how to work with it.
+Trigger on events
+ — Use
+Webhooks
+ to run Ploybooks from external systems.
+Connect your tools
+ — Browse
+Integrations
+ for the services a Ploybook can act on.
+Get help
+ — Check the
+FAQ & Troubleshooting
+ page if a run doesn&#x27;t go as expected.
+Powered by
+P
+l
+o
+y

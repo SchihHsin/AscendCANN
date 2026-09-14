@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {initialNodes,propose,applyChanges,validOrder,restoreProgress} from './model.mjs';
+const n=initialNodes();
+assert.equal(validOrder(n),true);
+const p=propose(n,['serve'],'三天内，暂缓服务化部署');
+assert.equal(p.changes.length,1);assert.equal(applyChanges(n,p).length,4);assert.equal(n.length,5);
+assert.equal(propose(n,['convert'],'暂缓服务化').changes.length,0);
+const locked=initialNodes();locked[4].locked=true;assert.equal(propose(locked,[],'暂缓服务化').changes.length,0);
+const completed=initialNodes();completed[4].done=true;assert.equal(propose(completed,[],'暂缓服务化').changes.length,0);
+const cloud=applyChanges(n,propose(n,['env'],'改为云端环境'));assert.match(cloud[1].title,/云端/);assert.equal(cloud[1].minutes,20);
+const inserted=applyChanges(n,propose(n,['run'],'修复输入兼容问题'));assert.equal(inserted.length,6);assert.equal(validOrder(inserted),true);
+assert.equal(propose(inserted,['run'],'修复输入兼容问题').changes.length,0);
+const wrong=[n[1],n[0],...n.slice(2)];assert.equal(validOrder(wrong),false);
+inserted.find(x=>x.id==='repair').done=true;inserted[0].done=true;
+const restored=restoreProgress(n,inserted);assert.equal(restored.find(x=>x.id==='repair').done,true);assert.equal(restored[0].done,true);
+assert.equal(propose(n,[],'随便改一点').changes.length,0);
+console.log('PASS: 14 assertions; scoped edits, protection, dependency order, recovery, unsupported commands');

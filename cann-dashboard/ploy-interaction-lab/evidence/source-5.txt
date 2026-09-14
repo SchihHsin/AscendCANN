@@ -1,0 +1,127 @@
+
+Ploy&#x27;s Agent — Your AI Assistant | Ploy Support Docs
+Search docs…
+⌘K
+Support
+Log in
+Start Free
+Getting Started
+Home
+Introduction
+Quick Start
+Tips &amp; Tricks
+Core Concepts
+Working with a Team
+For Agencies
+Platform
+Ploy&#x27;s Agent
+Ploy Lite
+Site Builder
+Form Submissions
+Database
+CMS &amp; Blogging
+Analytics
+Environment Variables
+Publishing &amp; Deploys
+Ploybooks
+Audience
+CLI &amp; Agents
+Ploy CLI
+Hosting
+Migration Cost Calculator
+Custom Domains
+Reverse Proxy
+Fallback Origins
+Account &amp; Billing
+Credits
+Integrations
+Integrations
+Webhooks
+Trust &amp; Security
+Security &amp; Compliance
+Advanced Controls
+Support
+FAQ &amp; Troubleshooting
+More
+Community
+YouTube
+X
+LinkedIn
+Facebook
+Instagram
+Ploy&#x27;s Agent — Your AI Assistant
+Build, design, write, research, and ship — all through chat.
+Ploy&#x27;s Agent is the AI assistant that lives inside the Ploy dashboard. It can build entire websites, write marketing copy, run competitive research, analyze your analytics, generate images, and manage your deploys — all through natural conversation.
+What Ploy&#x27;s Agent Can Do
+Capability
+Examples
+Build pages
+&quot;Build me a landing page for our new product launch&quot; · &quot;Add a pricing page with three tiers&quot; · &quot;Clone this competitor&#x27;s site and adapt it to our brand&quot;
+Design &amp; style
+&quot;Make the hero section bolder with a dark background&quot; · &quot;Update our brand colors to match this Figma file&quot; · &quot;Add scroll animations to the features section&quot;
+Write copy
+&quot;Rewrite the headline to focus on ROI&quot; · &quot;Draft a blog post about our Series A&quot; · &quot;Make the CTAs more urgent&quot;
+Research
+&quot;Analyze our top 3 competitors&#x27; positioning&quot; · &quot;Find keywords we should target for SEO&quot; · &quot;What are the top-performing pages on our site?&quot;
+Analytics
+&quot;How much traffic did we get this week?&quot; · &quot;Show me our top pages by pageviews&quot; · &quot;Which companies visited our site?&quot;
+Images
+&quot;Generate a hero image for the about page&quot; · &quot;Remove the background from this product photo&quot; · &quot;Find brand assets that match our color scheme&quot;
+Integrations
+&quot;Pull our latest blog posts from Notion&quot; · &quot;Check our Google Search Console rankings&quot; · &quot;What&#x27;s our Lighthouse score?&quot;
+Publish
+&quot;Publish the site&quot; · &quot;Set up a custom domain&quot; · &quot;Roll back to the previous deploy&quot;
+How to Work with Ploy&#x27;s Agent
+Start a Ploy
+Open the Ploy dashboard and start a new chat. Every conversation is a
+ploy
+ — a focused workflow where you and Ploy&#x27;s Agent collaborate on a goal.
+Be Specific
+Ploy&#x27;s Agent works best when you&#x27;re clear about what you want. Compare:
+&quot;Make the site better&quot;
+&quot;Add a testimonials section below the hero with 3 customer quotes, and make the background light gray&quot;
+Iterate
+You don&#x27;t need to get everything right in one prompt. Start broad, then refine:
+&quot;Build a landing page for our AI product&quot;
+&quot;Make the hero more visual — add a product screenshot&quot;
+&quot;Change the CTA from &#x27;Get Started&#x27; to &#x27;Start Free Trial&#x27;&quot;
+&quot;Add social proof — show the logos of 5 customers&quot;
+Let It Handle the Details
+You don&#x27;t need to specify fonts, spacing, colors, or code. Ploy&#x27;s Agent pulls from your
+design system
+ automatically and makes design decisions that stay on-brand.
+Tips for Best Results
+Give context up front.
+ &quot;We&#x27;re a B2B SaaS company targeting engineering leaders&quot; helps Ploy&#x27;s Agent make better design and copy decisions.
+Reference examples.
+ &quot;Make it look like the hero on stripe.com&quot; or &quot;Use the same layout as our competitors page&quot; gives Ploy&#x27;s Agent a concrete target.
+Ask for options.
+ &quot;Give me 2 headline options for the pricing page&quot; lets you pick instead of iterating from scratch.
+Use it for research first.
+ Before building, ask Ploy&#x27;s Agent to research competitors, keywords, or design references. Better inputs → better outputs.
+Delegated work
+For straightforward, focused work such as research, analysis, and focused implementation, you can ask for
+Ploy Lite
+. For complex, multi-part work, you can ask for the fuller
+Ploy
+profile. Choose
+Ultra
+ only when you explicitly want it for unusually demanding work.
+What&#x27;s Next?
+Start building
+ — Follow the
+Quick Start
+ guide to build your first site.
+Understand the tech
+ — Read
+Site Builder
+ to learn how pages, components, and the design system work.
+Get answers
+ — Check the
+FAQ &amp; Troubleshooting
+ page for common questions.
+Powered by
+P
+l
+o
+y

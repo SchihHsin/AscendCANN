@@ -1,0 +1,213 @@
+
+Site Builder | Ploy Support Docs
+Search docs…
+⌘K
+Support
+Log in
+Start Free
+Getting Started
+Home
+Introduction
+Quick Start
+Tips &amp; Tricks
+Core Concepts
+Working with a Team
+For Agencies
+Platform
+Ploy&#x27;s Agent
+Site Builder
+Form Submissions
+Database
+CMS &amp; Blogging
+Analytics
+Environment Variables
+Publishing &amp; Deploys
+Ploybooks
+Audience
+CLI &amp; Agents
+Ploy CLI
+Hosting
+Migration Cost Calculator
+Custom Domains
+Reverse Proxy
+Fallback Origins
+Account &amp; Billing
+Credits
+Integrations
+Integrations
+Webhooks
+Trust &amp; Security
+Security &amp; Compliance
+Advanced Controls
+Support
+FAQ &amp; Troubleshooting
+More
+Community
+YouTube
+X
+LinkedIn
+Facebook
+Instagram
+Site Builder
+How Ploy sites are built, structured, and styled.
+Every Ploy site runs on a modern web stack —
+Astro
+,
+React
+,
+TypeScript
+, and
+Tailwind CSS
+. You don&#x27;t need to know any of this to use Ploy. Ploy&#x27;s Agent handles the implementation. This page explains how things work under the hood for users who want to understand the architecture or make manual edits.
+How Sites Are Structured
+A Ploy site is organized into
+pages
+,
+sections
+, and
+components
+:
+Concept
+Description
+Page
+A route on your site (e.g.
+/
+,
+/about
+,
+/pricing
+). Each page is an Astro file that composes sections together.
+Section
+A reusable block of content — hero, features grid, testimonials, pricing table, FAQ, footer, etc. Sections are React components with props for customization.
+Component
+Smaller UI building blocks used inside sections — buttons, cards, badges, inputs. Pulled from a shared component library.
+Example Structure
+src/
+├── pages/
+│   ├── index.astro        (homepage)
+│   ├── about.astro         (about page)
+│   └── pricing.astro       (pricing page)
+├── sections/
+│   ├── Hero.tsx
+│   ├── Features.tsx
+│   ├── Testimonials.tsx
+│   └── Pricing.tsx
+└── components/
+    ├── Button.tsx
+    ├── Card.tsx
+     └── Badge.tsx
+Design System
+Your brand&#x27;s visual identity is stored as a
+design system
+ — a set of tokens that control colors, typography, spacing, border radius, and shadows across your entire site.
+What&#x27;s Included
+Colors
+ — Primary, secondary, accent, neutral, and semantic colors in light and dark mode.
+Typography
+ — Heading and body font families, weights, and a type scale from
+xs
+ to
+9xl
+.
+Spacing
+ — Consistent spacing tokens for margins, padding, and gaps.
+Border Radius
+ — Configurable for buttons, cards, inputs, and global defaults.
+Shadows
+ — Shadow color and elevation tokens.
+How It Works
+The design system is defined in your workspace and compiled into CSS custom properties (Tailwind theme tokens). Every section and component references these tokens, so changing a color in your design system updates it everywhere instantly.
+Updating Your Design System
+From chat:
+ Ask Ploy&#x27;s Agent — &quot;Change our primary color to navy blue&quot; or &quot;Use Inter for headings.&quot;
+From Figma:
+ Connect a Figma file and Ploy&#x27;s Agent will extract your brand tokens automatically.
+From a website:
+ When you clone a site, Ploy extracts the design system from the source.
+Creating Pages
+Ask Ploy&#x27;s Agent to create a page and it&#x27;ll handle the rest:
+&quot;Add an about page with our team story, values, and a team photo grid&quot;
+&quot;Create a pricing page with three tiers: Free, Pro, and Enterprise&quot;
+&quot;Build a blog with posts from our Notion database&quot;
+Ploy&#x27;s Agent will create the page file, build or reuse sections, apply your design system, and add it to your site&#x27;s navigation if appropriate.
+Adding Search to Your Site
+This guidance is for adding search to a site you build with Ploy.
+We strongly recommend
+Pagefind
+ for adding search to static Ploy sites.
+ It scans your site&#x27;s generated HTML after each build, creates a compact search index, and runs queries in the visitor&#x27;s browser without requiring a hosted search service or database.
+Pagefind&#x27;s Component UI provides accessible, customizable search modals and search boxes that can be added with standard HTML, JavaScript, and CSS. Other search libraries will also work, provided they support sites built with standard HTML, JavaScript, and CSS.
+Example prompt:
+ “Add full-text search to my Ploy site using Pagefind&#x27;s Component UI. Index all published page content, add an accessible search trigger to the site header, support
+⌘K
+ and
+Ctrl+K
+, style it to match my design system, and generate the search index during production builds.”
+Cloning Sites
+Ploy can clone an existing website from a URL:
+Full site clone
+ — Imports the entire site&#x27;s design, content, and structure, plus extracts the brand design system.
+Page clone
+ — Import a specific page from any URL into your site.
+Section clone
+ — Grab a specific section (hero, nav, footer) from any page and add it as a reusable component.
+Tip:
+ Cloning a competitor&#x27;s site and then asking Ploy&#x27;s Agent to adapt it to your brand is one of the fastest ways to get started.
+FAQ — External Content
+Serving Existing Static HTML Assets
+Yes — we can import your existing static HTML assets. Just ask Ploy&#x27;s Agent to serve them from the project&#x27;s
+publicDir
+. See more in the
+Astro publicDir configuration reference
+.
+If your static HTML assumes it is served from a base URL, any absolute paths for referenced resources may need to be adjusted to match the Ploy project&#x27;s file layout.
+Client-Side Scripts
+Yes — anything that works with a normal web page will work with Astro, including third-party analytics scripts and graphics-processing libraries such as
+Three.js
+. See the
+Astro client-side scripts guide
+ for more details.
+Bringing an Outside Repo
+We do not recommend bringing in an outside repo built with an arbitrary framework. It may not be compatible with Ploy&#x27;s hosting infrastructure, and we cannot guarantee a successful conversion.
+Attempting to convert an outside project to Astro is also less token-efficient than asking Ploy to slurp your site. Just give us the URL, and Ploy can rebuild it to our specifications.
+Bringing in Public Git Repos as Context
+Any publicly accessible Git repository from a major provider — including GitHub, GitLab, and Bitbucket — can be brought in as context. This is useful when your project depends on, or you want to vendor source from, a third party.
+One way to do this is to ask Ploy&#x27;s Agent to bring in the publicly available repository using its HTTPS URL as a new
+git submodule
+. From there, your site edits can reference the submodule because it is available in the same sandbox.
+Preview &amp; Iteration
+Every site has a
+live preview
+ in the dashboard that updates in real time as Ploy&#x27;s Agent makes changes. You can:
+See desktop and mobile views
+Click through pages
+Watch changes appear as Ploy&#x27;s Agent implements them
+Take screenshots for review
+Edit Text Directly in Preview
+To make a quick copy change, click the text in the preview and edit it directly. This is ideal for last-mile updates such as fixing a typo, tightening a headline, or changing a button label. Direct text edits do not use AI credits in most cases.
+If text is hidden behind another element or implemented in a way that cannot be edited deterministically, Ploy may fall back to an AI edit. The product will handle that change through Ploy&#x27;s Agent instead.
+Click text in the preview to make quick copy changes without starting an AI edit.
+What&#x27;s Next?
+Go live
+ — Read
+Publishing &amp; Deploys
+ to understand how publishing works.
+Manage form responses
+ — Review captured entries and set up email alerts in
+Form Submissions
+.
+Track performance
+ — Set up
+Analytics
+ to monitor traffic, and use
+Visitor Identification
+ to see who&#x27;s visiting.
+Connect your tools
+ — See
+Integrations
+ to link Figma, GitHub, and more.
+Powered by
+P
+l
+o
+y
