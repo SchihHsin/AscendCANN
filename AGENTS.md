@@ -2727,3 +2727,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户明确要求“每次改完都要推送”，覆盖先前仅本地的临时限制。发布范围限定为本任务累积的 `cann-dashboard/ploy-interaction-lab/`、`cann-dashboard/learning-platform-innovation-report.html` 动画修改和本交接记录；无关访谈文档、图片裁切、系统文件及未跟踪项目保持原状。
 - Ploy 汇报中的当前发布标记移除“未推送 / 未发布”；历史研究日志保留当时事实。本次未改变设计方向、证据口径、页面序列或模拟执行边界。
 - 检查：Demo JavaScript、4 个 HTML 内联脚本、依赖文件存在性、14 项模型断言、git diff --check 通过；沿用上轮桌面视觉 QA，本次仅更新发布标签。提交与远端结果完成后在下条补充。
+- 功能提交 `3557a08e` 已成功推送 `origin/main`，共 50 个本任务文件。首次暂存检查发现公开文本归档的行尾空白，已仅做空白格式清理后重新通过检查，未改动证据文字。本条发布回执随后单独提交并推送。
