@@ -1,5 +1,6 @@
 /* Frontend-only concept scenes. No model, filesystem, email or NPU actions. */
 (()=>{'use strict';
+if(window.vsConceptActive)return;
 const scenes=['lesson','ide','experiment','return','handoff','mastery','guide','delegation'];
 const titles=['用当前项目理解视频','在错误现场接手帮助','准备下一次隔离实验','离开后的返回简报','网页到 IDE 的现场交接','后续任务中的独立尝试','把成功过程存成指南','按动作控制长期委托'];
 const requested=new URLSearchParams(location.search).get('scene');const scene=scenes.includes(requested)?requested:'lesson';
