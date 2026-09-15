@@ -2825,3 +2825,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户选定方案 2 空间画布，要求先画图，按操作步骤组织，每步可含多个设计点，确认后再做代码。
 - 保存 `cann-dashboard/ploy-interaction-lab/storyboards/spatial-canvas/` 八张生成图片及 README：A1–A4 主动学习、B1–B4 开发途中学习。所有执行数据为模拟，README 记录对话、任务标题及张量代码待校准项，图片尚非技术实现规格。
 - 未改变报告序列及机制边界；未完成的 canvas-workspace 与 canvas-assets 保持未跟踪，代码暂停。检查文件存在和 git diff --check 后仅提交本轮图片、索引与交接并推送；无关修改保留。
+
+### 2026-09-15（含画布管理的两条完整学习故事线）
+
+- 新建 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html`，24 页网页 PPT、10 张新的 ImageGen 状态图。每个场景五步，每步采用完整大图页 + 设计说明页，包含操作、响应、设计点、管理动作和下一步。保留既有代码 Demo。
+- 主动学习：表达目标、审阅路径、理解内容、跟练验证、完成保存。开发中学习：发现问题、原任务展开、隔离练习、确认 Diff、返回项目检查。共用轻分组、临时对照、固定参考、折叠、收纳、原位恢复；阅读过程中不自动移动对象。
+- 使用 Report PPT 模板及旅程组件，大图 83vh、contain 完整显示且可点击放大；原研究 `proactive-research.html` #17 / #18 增加新材料入口，原 27 页序列不变。
+- 全部为 L 级设计提案，AI、视频、运行数据均模拟。项目输入检查与完整推理分开，后者待执行；未改变 API / Host / Application 边界。旅程情绪待用户回放验证。
+- 验证见新目录 QA.md：1600×900 边界、加载、视觉抽查、放大、深链和概览导航；修复概览滚动吸附造成跳页。全屏保留但未确认内置浏览器原生全屏成功。
+- 仅新材料目录、原研究入口与本记录暂存，语法及 diff 检查后提交推送 origin/main；保留无关脏文件。后续待用户确认图示，再实现交互 Demo。

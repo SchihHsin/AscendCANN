@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>空间画布学习体验 · 两条完整故事线</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/IKKI2000/harmonyos-fonts@master/css/harmonyos_sans_sc.css">
+<style>
+/* ===== 设计 token ===== */
+:root{
+  --fs-h1:clamp(20px,1.7vw,30px); --fs-h2:clamp(16px,1.25vw,22px); --fs-h3:clamp(15.5px,1.2vw,19px);
+  --fs-body:clamp(15px,1.12vw,18px); --fs-sm:clamp(12px,.82vw,14.5px); --fs-xs:clamp(9px,.62vw,11px);  /* body=舒适阅读档；密集形式见 .pf/.pp/.up 局部回小 */
+  --paper:#E9EBEE; --card:#fff; --card-2:#F1F3F6;
+  --ink:#16191e; --ink-2:#5e646e; --ink-3:#929aa6; --line:#d4d8df;
+  --accent:#5B5BD6; --accent-soft:#ECECFB; --red:#E60012;
+  --c-red:#F05A68; --c-orange:#F47A4B; --c-amber:#F4B450; --c-yellow:#D9B52C; --c-lime:#91BD48; --c-green:#39B982; --c-mint:#36BFA2; --c-teal:#28A8D8; --c-blue:#4B8DFF; --c-indigo:#5B5BD6; --c-purple:#8D63D8; --c-pink:#D95F9D; --c-rose:#E76C88; --c-neutral:#9BA5B4; --c-ink:#22262F;
+  --g-red:linear-gradient(120deg,#FF5A6E,#FF6F55); --g-orange:linear-gradient(120deg,#FF9A55,#F47A4B); --g-amber:linear-gradient(120deg,#FBBF60,#F59E0B); --g-yellow:linear-gradient(120deg,#F4D35E,#D9B52C); --g-lime:linear-gradient(120deg,#B8DC62,#91BD48); --g-green:linear-gradient(120deg,#23CFA0,#45D65A); --g-mint:linear-gradient(120deg,#42D4B8,#36BFA2); --g-teal:linear-gradient(120deg,#38C9D7,#4FACFE); --g-blue:linear-gradient(120deg,#2F6FED,#4B8DFF); --g-indigo:linear-gradient(120deg,#6674E6,#5B5BD6); --g-purple:linear-gradient(120deg,#A78BFA,#7C3AED); --g-pink:linear-gradient(120deg,#FF4FA3,#FF7AC8); --g-rose:linear-gradient(120deg,#F37A9A,#E76C88); --g-neutral:linear-gradient(120deg,#E4E8EF,#CBD3DF);
+  --dark:var(--c-ink); --g-ink:linear-gradient(140deg,#22262F,#14171C); --g-accent:linear-gradient(135deg,var(--c-indigo),#7C3AED);
+  /* 黑底光晕（每页可被 inline 变量覆盖，实现一章一色）*/
+  --glow-h:234; --glow-h2:291; --glow-sat:95%; --glow-light:40%; --glow-spread:35; --glow-color-int:.68; --glow-white-int:.58;
+}
+/* 用户画像是高密度特殊形式：body/h3 局部冻回紧凑档，不随全局正文放大 */
+.pf,.pp,.up{--fs-h3:clamp(13px,.95vw,16px);--fs-body:clamp(12px,.82vw,15px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+html,body{width:100%;height:100%;margin:0;background:#0c0a0b;color:var(--ink);
+  font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;-webkit-font-smoothing:antialiased}
+/* 纵向翻页：body 作滚动容器 + 原生 scroll-snap（划时短暂两页，松手吸附到整页）*/
+body{overflow:hidden auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+/* 滚动条：细、半透、默认隐藏，滚动时（body.scrolling）才淡入；亮/暗随 body.on-dark */
+body{scrollbar-width:thin;scrollbar-color:transparent transparent}
+body.scrolling{scrollbar-color:rgba(140,140,160,.45) transparent}
+body::-webkit-scrollbar{width:9px}
+body::-webkit-scrollbar-track{background:transparent}
+body::-webkit-scrollbar-thumb{background:transparent;border-radius:9px;border:3px solid transparent;background-clip:padding-box;transition:background .25s}
+body.scrolling::-webkit-scrollbar-thumb{background:rgba(140,140,160,.45);background-clip:padding-box}
+body.on-dark.scrolling{scrollbar-color:rgba(255,255,255,.32) transparent}
+body.on-dark.scrolling::-webkit-scrollbar-thumb{background:rgba(255,255,255,.32);background-clip:padding-box}
+#deck{position:relative;width:100vw;display:block}
+.slide{position:relative;width:100vw;height:100vh;overflow:hidden;font-size:var(--fs-body);scroll-snap-align:start;scroll-snap-stop:always}
+
+/* ===== 总览（Overview）：缩略图网格（按当前视窗比例，不强制 16:9）===== */
+body.overview{scroll-snap-type:none;background:#15151a;padding:30px 30px 64px}
+body.overview #deck{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:auto;max-width:1480px;margin:0 auto;align-items:start}
+body.overview .slide{position:relative!important;width:auto!important;min-height:0!important;padding:0!important;margin:0!important;display:block!important;overflow:hidden!important;border-radius:12px;cursor:pointer;scroll-snap-align:none;box-shadow:0 12px 34px -14px rgba(0,0,0,.6);outline:2px solid transparent;transition:outline-color .18s,transform .18s}
+body.overview .slide:hover{transform:translateY(-4px);outline-color:var(--accent)}
+body.overview .slide-inner{position:absolute;top:0;left:0;width:100vw;height:100vh;transform-origin:top left;overflow:hidden;pointer-events:none;box-sizing:border-box}
+body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5vh 4vw}
+body.overview .s-glow .slide-inner{padding:7vh 6vw}
+body.overview .s-cover .slide-inner{padding:0}
+
+/* ===== 翻页过渡（可切换）=====
+   默认 slide=纵向 scroll-snap；其余走「受控叠层」(body.ctrl)：所有页叠同位、只 .active 显示
+   TRANSITION / ?t= : slide(默认) | fade | cut | slide-h | magic */
+body.ctrl{overflow:hidden;scroll-snap-type:none}
+body.ctrl #deck{position:fixed;inset:0;width:100vw}
+body.ctrl .slide{position:absolute;inset:0;opacity:0;visibility:hidden;scroll-snap-align:none;scroll-snap-stop:normal}
+body.ctrl .slide.active{opacity:1;visibility:visible;z-index:2}
+body.ctrl .slide.leaving{visibility:visible;z-index:1}
+body[data-transition=fade] .slide{transition:opacity .5s ease}
+body[data-transition=fade] .slide.leaving{opacity:0}
+body[data-transition=cut] .slide{transition:none}
+body[data-transition=cut] .slide.leaving{opacity:0}
+body[data-transition=slide-h] .slide{transition:transform .56s cubic-bezier(.77,0,.175,1),opacity .4s ease}
+body[data-transition=slide-h] .slide.active{opacity:1}
+body[data-transition=slide-h] .slide.leaving{opacity:1}
+body[data-transition=magic] .slide{transition:opacity .6s ease}
+body[data-transition=magic] .slide.leaving{opacity:0}
+body.overview.ctrl{overflow:hidden auto}
+body.overview.ctrl #deck{position:static}
+body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibility:visible!important;transform:none!important}
+
+/* ============ 基调②：灰底分析篇 ============ */
+.s-gray{color:var(--ink);padding:5vh 4vw;display:flex;flex-direction:column;background:var(--paper);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 480' preserveAspectRatio='none'%3E%3Cpath d='M0 320 C 380 250 760 330 1080 195 C 1280 140 1380 185 1440 130 L1440 480 L0 480 Z' fill='%237e8696' fill-opacity='0.07'/%3E%3Cpath d='M0 372 C 430 305 820 405 1180 245 C 1340 198 1402 240 1440 190 L1440 480 L0 480 Z' fill='%23949bab' fill-opacity='0.08'/%3E%3C/svg%3E"),linear-gradient(125deg,rgba(120,128,145,.05),transparent 50%);
+  background-position:bottom center,0 0;background-size:100% 50%,100% 100%;background-repeat:no-repeat,no-repeat}
+.head{display:flex;align-items:flex-start;justify-content:space-between;flex:0 0 auto;margin-bottom:3.4vh}
+.head-l{display:flex;flex-direction:column-reverse;gap:.8vh}  /* 小副标(.subttl)在上、大标题在下：column-reverse 反转视觉顺序，HTML 仍 .brand 在前 .subttl 在后 */
+.brand{display:flex;align-items:center;gap:.5em}
+.brand .logo{height:clamp(19px,1.7vw,25px);width:auto;display:block;flex-shrink:0}  /* ⛔ 标题前只放 CANN logo（无合适 logo 就删掉 img 留空），绝不换成 Lucide/通用 icon */
+.brand .ttl{font-weight:800;font-size:var(--fs-h1);letter-spacing:-.01em}      /* 标题=结论 */
+.subttl{font-weight:300;font-size:var(--fs-sm);color:var(--ink-2)}
+/* 右上章节 Tab：横向列出整份汇报章节，当前章节用深色胶囊高亮；不再放孤立的小字页码。 */
+.section-tabs{display:flex;align-items:center;gap:5px;flex:0 0 auto;margin-left:auto;padding:.45vh .48vw;border:1px solid rgba(127,137,157,.18);border-radius:999px;background:rgba(255,255,255,.46)}
+.section-tabs span{padding:.42vh .6vw;border-radius:999px;font:600 var(--fs-sm)/1.2 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;color:var(--ink-3);white-space:nowrap}
+.section-tabs span.active{background:var(--g-ink);color:#fff;box-shadow:0 3px 10px -6px rgba(20,25,35,.5)}
+/* 目录：4 章单行；3 / 5 / 6 章的完整数量路由见 components.md §18 与模板库。 */
+.contents-slide .body-area{justify-content:center}
+.contents-directory{width:min(1120px,100%);margin:0 auto;display:grid;gap:1vw;align-items:stretch}
+.contents-directory.contents-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.directory-card{--dir:var(--c-indigo);position:relative;min-width:0;min-height:31vh;overflow:hidden;padding:1.8vh 1.25vw 1.35vh;display:flex;flex-direction:column;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.88);border-radius:14px;box-shadow:0 18px 42px -25px rgba(20,25,35,.22),inset 0 1px 0 rgba(255,255,255,.94)}
+.directory-card::after{content:"";position:absolute;right:-25%;bottom:-24%;width:90%;height:46%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--dir) 16%,transparent),transparent 70%);pointer-events:none}
+.directory-card.research{--dir:var(--c-indigo)}.directory-card.competitor{--dir:var(--c-blue)}.directory-card.persona{--dir:var(--c-teal)}.directory-card.roadmap{--dir:var(--c-pink)}
+.directory-no,.directory-name,.directory-en,.directory-items,.directory-note{position:relative;z-index:1}
+.directory-no{font-family:'Barlow Condensed','Inter',sans-serif;font-size:clamp(54px,5.4vw,86px);line-height:.82;letter-spacing:-.035em;font-weight:300;color:var(--dir);text-shadow:0 0 28px color-mix(in srgb,var(--dir) 24%,transparent)}
+.directory-name{margin-top:1.35vh;font-size:var(--fs-h2);line-height:1.2;font-weight:950;color:var(--ink);overflow-wrap:anywhere}
+.directory-en{margin-top:.42vh;font-family:'Inter',sans-serif;font-size:var(--fs-sm);font-weight:700;color:color-mix(in srgb,var(--dir) 76%,#596575);overflow-wrap:anywhere}
+.directory-items{display:grid;gap:.52vh;margin-top:2.65vh}.directory-items span{font-size:var(--fs-body);line-height:1.36;color:var(--ink-2);overflow-wrap:anywhere}
+.directory-items span::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;vertical-align:middle;margin:-2px .48em 0 0;background:var(--dir);box-shadow:0 0 12px color-mix(in srgb,var(--dir) 42%,transparent)}
+.directory-note{margin-top:auto;padding-top:1.25vh;border-top:1px solid rgba(47,61,99,.14);font-size:var(--fs-sm);font-weight:900;line-height:1.35;color:color-mix(in srgb,var(--dir) 72%,#465364);overflow-wrap:anywhere}
+/* padding-bottom 给绝对定位的 .foot/.ucd 留位，否则居中卡会紧贴页尾（见 pitfalls.md）*/
+.body-area{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+/* 居中型页（内容是个居中块、四周留白）加 .vc：JS balanceHeads() 按实际页眉高度补 padding-bottom，
+   抵消"页眉占空间、页脚(.foot/.ucd 绝对定位)不占空间"的不平衡，让内容落到整页真正正中（任意窗口都准）。
+   固定 vh 猜测值在不同页眉高度/窗口宽高比下对不上，见 pitfalls.md。
+   填满型页（旅程/VOC/画像表格等用满整页的）不加 .vc */
+.body-area.vc{padding-bottom:0}
+.card{background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.7);border-radius:16px;box-shadow:0 10px 30px -16px rgba(30,40,70,.2),inset 0 1px 0 rgba(255,255,255,.85);padding:2.2vh 1.6vw}
+
+/* 甘特 roadmap（精调件②）：玻璃大卡 + 浮动条 + 虚线网格底纹 */
+.rm{position:relative;flex:1;min-height:0;margin-top:1vh;background:rgba(255,255,255,.55);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border:1px solid rgba(255,255,255,.7);border-radius:18px;box-shadow:0 12px 34px -16px rgba(30,40,70,.22),inset 0 1px 0 rgba(255,255,255,.85)}
+.rm-pad{position:absolute;top:6vh;left:3.2vw;right:3.2vw;bottom:4vh}            /* 内层容器：绝对定位的条/刻度相对它，padding 才生效 */
+.rm-pad::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0H0V40' fill='none' stroke='%237e8696' stroke-opacity='0.18' stroke-width='1' stroke-dasharray='2,4'/%3E%3C/svg%3E");background-size:40px 40px}
+.rm-date{position:absolute;top:0;transform:translateX(-50%);font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;color:var(--ink-3);white-space:nowrap}
+.rm-now-pill{position:absolute;top:1.6%;transform:translateX(-50%);font-size:var(--fs-xs);font-weight:600;color:#fff;background:rgba(91,91,214,.92);padding:3px 11px;border-radius:9px;box-shadow:0 3px 10px rgba(60,52,137,.32);z-index:3}
+.rm-now-line{position:absolute;top:9%;height:84%;width:2px;background:linear-gradient(rgba(91,91,214,.85),rgba(91,91,214,.35));box-shadow:0 0 12px rgba(91,91,214,.5);z-index:1}
+.rm-now-tri{position:absolute;top:7.2%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid var(--accent);z-index:2}
+.rm-bar{position:absolute;height:8.5%;min-height:30px;max-height:46px;border-radius:13px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:var(--fs-body);font-weight:500;backdrop-filter:blur(2px) saturate(130%);-webkit-backdrop-filter:blur(2px) saturate(130%);z-index:2}
+.rm-bar .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rm-badge{font-size:var(--fs-xs);font-weight:600;padding:3px 9px;border-radius:7px;white-space:nowrap;margin-left:10px;flex:none}
+.rm-bar.white{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.75);color:var(--ink);box-shadow:0 8px 22px rgba(30,40,70,.1),inset 0 1px 0 rgba(255,255,255,.8)}
+.rm-bar.white .rm-badge{background:var(--dark);color:#fff}
+.rm-bar.dark{background:var(--g-ink);border:1px solid rgba(255,255,255,.22);color:#fff;box-shadow:0 8px 26px rgba(20,25,35,.32),inset 0 1px 0 rgba(255,255,255,.28)}
+.rm-bar.dark .rm-badge{background:rgba(255,255,255,.92);color:var(--dark)}
+.rm-bar.accent{background:var(--g-accent);border:1px solid rgba(255,255,255,.34);color:#fff;box-shadow:0 10px 28px rgba(91,91,214,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+.rm-bar.accent .rm-badge{background:#fff;color:#5B21B6}
+.rm-diamond{position:absolute;width:18px;height:18px;transform:rotate(45deg);background:var(--g-ink);border:1px solid rgba(255,255,255,.3);border-radius:3px;box-shadow:0 5px 14px rgba(0,0,0,.22);z-index:3}
+.rm-ms{position:absolute;font-size:var(--fs-sm);font-weight:500;color:var(--ink-2)}
+
+/* 关键指标：多彩渐变胶囊 + 极细超大数字（精调件①）*/
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3.4vw;flex:1;min-height:0;align-items:center}
+.stat-col{display:flex;flex-direction:column;gap:2vh}
+.stat-bar-area{position:relative}
+.stat-marks{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10.5px;color:var(--ink-3);margin-bottom:.7vh;position:relative;height:18px;align-items:flex-end}
+.stat-tri{position:absolute;font-size:9px;transform:translateX(-50%);color:var(--ink-2);bottom:0;line-height:1}
+.stat-pills{display:flex;gap:5px;height:6vh} .stat-pill{border-radius:999px;flex-shrink:0}
+.stat-num{font-family:'Inter';font-weight:200;font-size:min(8.4vw,13.8vh);line-height:.88;letter-spacing:-.04em;color:var(--ink);margin-top:.4vh}
+.stat-num .u{font-size:.35em;font-weight:300;color:var(--ink-2);margin-left:.05em}
+.stat-desc{font-size:var(--fs-body);color:var(--ink-2);line-height:1.58;max-width:26ch}
+
+/* 竞品对照：三卡大段论述 + 图沉卡底（order:2）+ 对策深色条 */
+.compare{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw;flex:0 0 auto}
+.cmp{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.cmp-img{order:2;flex:0 0 auto;padding:0 .9vw .9vw;margin-top:auto}
+.cmp-img img{width:100%;height:auto;display:block;border-radius:9px;border:1px solid var(--line)}
+.cmp-cap{font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--ink-3);text-align:center;letter-spacing:.02em;margin-top:.7vh}
+.cmp-body{order:1;padding:2vh 1.4vw .8vh;flex:0 0 auto;display:flex;flex-direction:column;gap:1.7vh}
+.cmp-h{font-weight:700;font-size:var(--fs-h2);letter-spacing:-.01em;line-height:1.3;color:var(--ink)}
+.cmp-h .hk{display:block;font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.5vh}
+.cmp-desc{font-size:var(--fs-body);line-height:1.72;color:var(--ink-2)}
+.cmp-desc b{color:var(--ink);font-weight:600;background:linear-gradient(transparent 60%,rgba(91,91,214,.16) 0)}
+.verdict{flex:0 0 auto;margin-top:1.6vh;display:grid;grid-template-columns:auto 1fr;gap:1.2vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:12px;padding:1.8vh 1.6vw}
+.verdict .vk{font-size:var(--fs-h3);font-weight:700;color:var(--ink);background:#fff;border-radius:12px;padding:6px 15px;white-space:nowrap}
+.verdict .vv{font-size:var(--fs-body);line-height:1.55} .verdict .vv b{font-weight:700}
+
+/* 用户画像·形式一（左栏人物 + 右四区）。⚠️ 与形式二是两套方案【二选一】，按用户输入择优 */
+.pf{--b:#385CFF;--bs:rgba(56,92,255,.1);flex:0 1 auto;min-height:0;display:grid;grid-template-columns:23% 1fr;gap:1.5vw;align-items:stretch}
+.pf-side{background:#EFEFF1;border-radius:16px;padding:1.7vh 1.2vw;display:flex;flex-direction:column;gap:.85vh;overflow:hidden}
+.pf-portrait{width:100%;aspect-ratio:1/.86;border-radius:12px;overflow:hidden;background:#fff;flex:0 0 auto}
+.pf-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-sb{border-radius:11px;padding:.95vh .9vw;flex:0 0 auto}
+.pf-sb.head{background:var(--bs);padding-top:.85vh;padding-bottom:.85vh}
+.pf-sb.head .nm{font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC';font-weight:800;font-size:var(--fs-h2);color:#1a1a1a;line-height:1.2}
+.pf-sb.head .rl{font-size:var(--fs-body);color:var(--b);font-weight:600;margin-top:.1vh}
+.pf-sb.white{background:#fff}
+.pf-sb .sbh{font-size:var(--fs-xs);color:#999;font-weight:700;margin-bottom:.25vh}
+.pf-sb .sbt{font-size:var(--fs-body);color:#333;line-height:1.5}
+.pf-chips{display:flex;flex-wrap:wrap;gap:.4vw}
+.pf-chips span{font-size:var(--fs-sm);color:var(--b);background:var(--bs);border-radius:6px;padding:.4vh .65vw}
+.pf-quote{font-size:var(--fs-body);color:#333;font-weight:600;line-height:1.5;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c2c7d0}
+.pf-r{display:flex;flex-direction:column;gap:1.1vh;min-height:0}
+.pf-row{display:grid;grid-template-columns:.82fr 1.7fr;gap:1.8vw;align-items:start}
+.pf-block{display:flex;flex-direction:column;min-width:0}
+.pf-h2{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;background:var(--b);color:#fff;border-radius:20px;padding:.3vh .9vw .3vh .3vh;font-weight:700;font-size:var(--fs-h3);margin-bottom:.8vh}
+.pf-h2 .ico{width:clamp(21px,1.8vw,27px);height:clamp(21px,1.8vw,27px);border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pf-h2 .ico svg{width:56%;height:56%;display:block}
+.pf-sub{font-weight:700;font-size:var(--fs-sm);color:#333;margin:.1vh 0 .4vh .2vw}
+.pf-rings{display:flex;gap:2vw;padding-left:.3vw}
+.pf-rg{display:flex;flex-direction:column;align-items:center;gap:.4vh;text-align:center;width:min(13vw,150px)}
+.pf-rg .dn{width:clamp(46px,4.4vw,62px);height:clamp(46px,4.4vw,62px);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}
+.pf-rg .dn::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--b) 0 var(--p),#D6DAE4 0)}
+.pf-rg .dn::after{content:'';position:absolute;inset:23%;border-radius:50%;background:var(--paper)}
+.pf-rg .dn b{position:relative;z-index:1;font-weight:700;font-size:var(--fs-h3);color:#1a1a1a}
+.pf-rg .rl2{font-size:var(--fs-sm);color:#555;line-height:1.4}
+.pf-flow{display:flex;align-items:stretch;gap:.25vw}
+.pf-fc{flex:1;background:var(--bs);border-radius:10px;padding:.85vh .75vw;display:flex;flex-direction:column;gap:.35vh;min-width:0}
+.pf-fc .ft{font-weight:700;font-size:var(--fs-sm);color:var(--b)}
+.pf-fc .fl{font-size:var(--fs-xs);color:#444;line-height:1.4;display:flex;gap:.3em}
+.pf-fc .fl::before{content:'·';color:var(--b);font-weight:700;flex-shrink:0}
+.pf-fa{display:flex;align-items:center;color:var(--b);font-size:var(--fs-sm);flex-shrink:0}
+.pf-fc .fkpi{margin-top:.5vh;padding-top:.5vh;border-top:1px dashed rgba(56,92,255,.35);display:flex;flex-wrap:wrap;gap:.2em .55em;align-items:center}
+.pf-fc .fkpi .kl{font-size:var(--fs-xs);color:#999;font-weight:700;background:#fff;border-radius:4px;padding:.1vh .4vw}
+.pf-fc .fkpi b{font-size:var(--fs-xs);color:var(--b);font-weight:700}
+.pf-scs{display:grid;grid-template-columns:repeat(4,1fr);gap:.7vw}
+.pf-sc{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:.9vh .75vw;display:flex;flex-direction:column;gap:.55vh}
+.pf-sc .st{font-weight:700;font-size:var(--fs-body);color:#1a1a1a}
+.pf-sc .sd{font-size:var(--fs-sm);color:#666;line-height:1.45}
+.pf-pains{display:flex;flex-direction:column;gap:.4vh}
+.pf-pain{font-size:var(--fs-body);line-height:1.5;color:#333;display:flex;gap:.5em;align-items:flex-start}
+.pf-pain::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--b);flex-shrink:0;margin-top:.55em}
+.pf-pain b{color:var(--b);font-weight:600}
+.pf-mk{flex:0 0 auto;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;border:1px solid #E0E3EA;background:#F6F8FC;display:flex;flex-direction:column}
+.pf-mk .bar{display:flex;align-items:center;gap:3px;padding:2px 5px;background:#EBEEF4;border-bottom:1px solid #E0E3EA;flex-shrink:0}
+.pf-mk .bar i{width:3.5px;height:3.5px;border-radius:50%;background:#C4CAD6}
+.pf-mk .bd{flex:1;padding:4px 5px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.mkl{height:2.5px;border-radius:1.5px;background:#D3D8E2;display:block;flex-shrink:0}
+.mkl.b{background:var(--b)} .mkl.o{background:#E8896B}
+
+/* ============ 基调①：封面（真实素材）============ */
+.s-cover{color:#fff;background:#0c0a0b;padding:0}
+.cv-bg{position:absolute;inset:0;background:url("cover-bg.png") center/cover no-repeat;z-index:0}   /* 换成你的封面图 */
+.cv-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(10,8,9,.92),rgba(10,8,9,.55) 30%,rgba(10,8,9,0) 58%)}
+.cv-content{position:relative;z-index:1;height:100vh;padding:6vh 6vw;display:flex;flex-direction:column;justify-content:space-between}
+.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}
+.cv-huawei{display:flex;align-items:center;gap:.7em;font-weight:600;font-size:16px;letter-spacing:.04em;align-self:flex-start}
+.cv-huawei .petal{width:19px;height:19px;flex-shrink:0}
+.cv-meta{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;opacity:.55}
+.cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:60vw}
+.cv-kicker{font-family:'JetBrains Mono';font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1vh}
+.cv-logo{display:flex}
+.cv-logo img{height:min(17vh,12vw);width:auto;display:block}  /* 深色封面用白色版 logo */
+.cv-sub{font-weight:300;font-size:min(3vw,5vh);line-height:1.1;color:rgba(255,255,255,.92)}
+.cv-lead{font-weight:300;font-size:max(15px,1.2vw);line-height:1.6;color:rgba(255,255,255,.6);max-width:36ch;margin-top:1.4vh}
+.cv-ucd{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.6em}
+.cv-ucd .sq{width:12px;height:12px;border:1.5px solid currentColor;display:inline-block}
+
+/* ============ 基调③：黑底设计点（光晕 + 渐变标题字）============ */
+.s-glow{background:#06060a;color:#fff;padding:7vh 6vw}
+.s-glow .glow{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none}
+.s-glow .glow::before,.s-glow .glow::after{content:"";position:absolute;inset:0;mix-blend-mode:screen}
+.s-glow .glow::before{background:radial-gradient(ellipse 78% 96% at 22% 112%,hsla(var(--glow-h),var(--glow-sat),calc(var(--glow-light) + 12%),var(--glow-color-int)) 0%,hsla(var(--glow-h),var(--glow-sat),var(--glow-light),0) 92%)}
+.s-glow .glow::after{background:radial-gradient(ellipse 78% 96% at 78% 112%,hsla(var(--glow-h2),var(--glow-sat),calc(var(--glow-light) + 12%),calc(var(--glow-color-int)*.9)) 0%,hsla(var(--glow-h2),var(--glow-sat),var(--glow-light),0) 90%)}
+.s-glow .glow-white{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(to top,hsla(var(--glow-h),22%,90%,var(--glow-white-int)) 0%,hsla(var(--glow-h),30%,80%,0) 84%)}
+.s-glow .chrome{position:absolute;top:5vh;left:6vw;right:6vw;z-index:1;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.s-glow .inner{position:relative;z-index:1;height:100%;display:grid;grid-template-columns:0.5fr 1.5fr;gap:2vw;align-items:center}  /* 设计点版式①（默认）左文右图：图占~65% */
+.kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:hsl(var(--glow-h),var(--glow-sat),72%);margin-bottom:2.6vh;display:flex;align-items:center;gap:.8em}
+.kicker::before{content:"";width:28px;height:1px;background:currentColor;opacity:.7}
+.h-title{font-weight:700;font-size:min(3.5vw,6vh);line-height:1.15;letter-spacing:-.01em;margin-bottom:1.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),78%),hsl(var(--glow-h2),var(--glow-sat),72%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.h-title .light{font-weight:200}
+.body{font-weight:300;font-size:var(--fs-body);line-height:1.75;color:rgba(255,255,255,.62);max-width:40ch;margin-bottom:4vh}
+.body b{color:#fff;font-weight:600}  /* 正文主次：默认细体 + <b> 加粗提亮 */
+.points{display:flex;flex-direction:column;gap:2.2vh}
+.point{display:grid;grid-template-columns:auto 1fr;gap:1.2em;align-items:start}
+.point .dot{width:9px;height:9px;margin-top:.7em;border-radius:50%;background:hsl(var(--glow-h),var(--glow-sat),62%);box-shadow:0 0 12px 2px hsla(var(--glow-h),var(--glow-sat),60%,.7);flex-shrink:0}
+.point .pt-title{font-weight:500;font-size:var(--fs-h3);color:#fff;margin-bottom:.4vh}
+.point .pt-desc{font-weight:300;font-size:var(--fs-sm);line-height:1.6;color:rgba(255,255,255,.5)}
+.shot{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px -20px hsla(var(--glow-h),var(--glow-sat),30%,.5);display:flex;align-items:center;justify-content:center}  /* 16:9 匹配 1920×1080 截图 */
+.shot .ph{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* 设计点版式② 上下堆叠 hero（大图型）：title+body 薄薄一条（无 kicker/无要点）+ 16:9 大图填高居中（~75-78%）*/
+.s-glow .inner.stack{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:2.6vh;align-items:stretch}
+.inner.stack .stack-head{display:grid;grid-template-columns:1.35fr 1fr;gap:3.4vw;align-items:end}
+.inner.stack .stack-head .h-title{margin-bottom:0;font-size:min(2.9vw,4.6vh);line-height:1.2}
+.inner.stack .stack-head .body{margin:0;max-width:46ch;padding-bottom:.4vh}
+.inner.stack .shot{aspect-ratio:16/9;height:100%;width:auto;max-width:100%;margin:0 auto}  /* 真 16:9、按高填满、居中、不裁 */
+.chapter-cover .inner{grid-template-columns:1fr;align-content:center}
+.cover-block{max-width:62vw}
+.ch-no{font-family:'Inter';font-weight:200;font-size:min(11vw,17vh);line-height:.9;letter-spacing:-.04em;opacity:.45;background:linear-gradient(120deg,hsl(var(--glow-h),var(--glow-sat),82%),hsl(var(--glow-h2),var(--glow-sat),70%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1vh}
+.ch-cover-title{font-weight:700;font-size:min(6vw,10vh);line-height:1.05;letter-spacing:-.01em;margin-bottom:2.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),85%),hsl(var(--glow-h2),var(--glow-sat),74%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.ch-cover-sub{font-weight:300;font-size:max(15px,1.2vw);line-height:1.65;color:rgba(255,255,255,.6);max-width:46ch}
+
+/* 调色面板（仅黑底章节封面显示，色值持久记忆）*/
+#panel{position:absolute;top:3.8vh;right:calc(6vw + 58px);z-index:60;width:280px;background:linear-gradient(155deg,rgba(58,58,80,.30),rgba(14,14,22,.40));backdrop-filter:blur(34px) saturate(1.7);-webkit-backdrop-filter:blur(34px) saturate(1.7);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:18px 20px;color:#fff;box-shadow:0 24px 64px -16px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.28)}
+#panel h4{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:14px}
+.preset-row{display:flex;gap:6px;margin-bottom:16px}
+.preset{flex:1;height:30px;border-radius:7px;border:1px solid rgba(255,255,255,.18);cursor:pointer;transition:transform .15s}
+.preset:hover{transform:scale(1.08)}
+.ctrl{margin-bottom:13px}
+.ctrl label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.62);margin-bottom:6px;font-family:'JetBrains Mono'}
+.ctrl label .val{color:#fff}
+.ctrl input[type=range]{width:100%;height:6px;-webkit-appearance:none;border-radius:4px;outline:none;cursor:pointer;background:rgba(255,255,255,.14)}
+.ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.5)}
+#toggle{position:absolute;top:3.8vh;right:6vw;z-index:61;width:46px;height:46px;border-radius:14px;background:linear-gradient(155deg,rgba(58,58,80,.4),rgba(14,14,22,.5));backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.82);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 32px -8px rgba(0,0,0,.5)}
+#toggle:hover{color:#fff}#toggle svg{width:22px;height:22px}
+
+/* ===== 导航 ===== */
+/* 右侧竖排导航点（鼠标到底部才显隐；亮/暗随当前页）*/
+.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:7px;padding:10px 7px;border-radius:999px;background:rgba(150,150,170,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
+.nav-dots.show{opacity:1}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:rgba(40,45,60,.28);cursor:pointer;border:0;padding:0;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.nav-dot:hover{background:rgba(40,45,60,.5);transform:scale(1.25)}
+.nav-dot.active{background:var(--accent);height:18px;border-radius:4px}
+body.on-dark .nav-dots{background:rgba(255,255,255,.1)}
+body.on-dark .nav-dot{background:rgba(255,255,255,.3)}
+body.on-dark .nav-dot.active{background:#fff}
+/* 底部居中控制栏：小而透，默认隐藏，鼠标到底部才出现 */
+#controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;background:rgba(22,25,30,.42);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);color:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.4);opacity:0;transition:opacity .25s}
+#controls.show{opacity:.92}
+#controls button{background:transparent;color:#fff;border:0;cursor:pointer;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;opacity:.7;transition:opacity .15s,background .15s}
+#controls button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.12)}
+#controls button:disabled{opacity:.28;cursor:default}
+#controls button svg{width:14px;height:14px}
+.ctrl-counter{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.08em;min-width:48px;text-align:center;opacity:.7;user-select:none}
+.ctrl-sep{width:1px;height:13px;background:rgba(255,255,255,.18)}
+body.overview #panel,body.overview #toggle{display:none!important}
+
+/* Story deck additions are scoped; complete Report PPT runtime remains below. */
+.story-deck *{min-width:0;min-height:0}
+html:has(body.story-deck.overview){scroll-snap-type:none;scroll-behavior:auto}
+body.story-deck.overview{scroll-behavior:auto}
+.story-deck .s-glow{--glow-color-int:.22;--glow-white-int:.08}
+.story-deck .hero-step{padding:0}
+.story-deck .hero-inner{position:absolute;inset:2.4vh 3vw 2vh;display:grid;grid-template-rows:6.8vh minmax(0,1fr) 2.6vh;gap:1vh;z-index:1}
+.story-deck .hero-heading{display:flex;align-items:center;justify-content:space-between;gap:2vw}
+.story-deck .hero-heading h1{font-size:var(--fs-h1);line-height:1.2;color:#e5dcff;font-weight:650}
+.story-deck .step-meta{font-size:var(--fs-sm);color:#a5a0b4;margin-bottom:.35vh}
+.story-deck .hero-heading a,.story-deck .hero-foot a{color:#c4b8f9;text-decoration:none;font-size:var(--fs-sm)}
+.story-deck .hero-shot{border:0;background:none;display:flex;align-items:center;justify-content:center;cursor:zoom-in;width:100%;height:83vh;padding:0}
+.story-deck .hero-shot img{display:block;max-width:100%;width:auto;height:100%;object-fit:contain;border-radius:9px}
+.story-deck .hero-foot{display:flex;justify-content:space-between;align-items:center;color:#95919f;font-size:var(--fs-sm)}
+.story-deck .detail-step{padding:8vh 3vw 4vh}
+.story-deck .detail-step .chrome{top:3vh;left:3vw;right:3vw;font-size:var(--fs-sm);letter-spacing:.04em}
+.story-deck .detail-step .inner{grid-template-columns:.52fr 1.48fr;gap:2vw;align-items:center}
+.story-deck .detail-step .h-title{font-size:var(--fs-h1);line-height:1.32}
+.story-deck .detail-step .body{font-size:var(--fs-body);margin-bottom:2vh;line-height:1.6}
+.story-deck .detail-step .points{gap:1.5vh}
+.story-deck .detail-step .point{display:block}
+.story-deck .detail-step .pt-title{font-size:var(--fs-h3);font-weight:650;margin-bottom:.35vh}
+.story-deck .detail-step .pt-desc{font-size:var(--fs-body);line-height:1.55;color:#bbb7c7}
+.story-deck .detail-step .shot{aspect-ratio:auto;width:100%;height:78vh;overflow:hidden;background:none;border:0;box-shadow:none}
+.story-deck .detail-step .shot img{position:static;max-width:100%;width:100%;height:100%;object-fit:contain}
+.story-deck .detail-step .continuity{border-top:1px solid #393540;margin-top:1.8vh;padding-top:1.3vh;font-size:var(--fs-body);line-height:1.5;color:#aaa6b7}
+.story-deck .detail-step .continuity b{color:#ddd5f4;font-weight:600}
+.story-deck .detail-step .detail-image{width:100%;border:0;background:none;cursor:zoom-in}
+.story-deck .journey-slide .head{margin-bottom:1.2vh}
+.story-deck .journey-body{height:76vh;display:flex;align-items:center}
+.jrn-wrap{--jrn-cols:5;width:100%;display:flex;flex-direction:column;min-height:0}.jrn-grid{display:grid;grid-template-columns:58px repeat(var(--jrn-cols),minmax(0,1fr));gap:0;min-width:0}.jrn-rl{display:flex;flex-direction:column;justify-content:center;padding-right:10px;text-align:right}.jrn-rn{font-size:var(--fs-sm);font-weight:700;color:var(--ink-2);line-height:1.3}.jrn-re{font:500 var(--fs-xs)/1.25 'JetBrains Mono';letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+.jrn-pw,.jrn-tw,.jrn-fw,.jrn-ew,.jrn-pw2,.jrn-ow{padding-right:6px;min-width:0;display:flex;flex-direction:column}.jrn-ph{position:relative;min-height:11.2vh;flex:1;overflow:hidden;border-radius:11px 11px 0 0;padding:1.25vh .9vw 1.6vh;background:var(--g-ink)}.jrn-ph::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--stage,#5b5bd6)}.pn{font:700 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.14em;color:rgba(255,255,255,.32)}.pt{min-height:2.6em;display:flex;align-items:flex-end;margin-top:.5vh;font-size:var(--fs-body);font-weight:800;line-height:1.3;color:#fff}.ptm{display:inline-flex;margin-top:.45vh;padding:2px 6px;border-radius:99px;background:rgba(255,255,255,.09);font:500 var(--fs-xs)/1.2 'JetBrains Mono';color:rgba(255,255,255,.56)}
+.jrn-tc,.jrn-fc,.jrn-ec,.jrn-pc,.jrn-oc{min-width:0;flex:1;border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.42);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4)}.jrn-tc{min-height:9.4vh;padding:1vh .9vw;display:flex;flex-direction:column;justify-content:center;gap:.55vh}.jrn-touch{display:flex;gap:.4em;align-items:flex-start;font-size:var(--fs-sm);line-height:1.35;color:var(--ink)}.jrn-touch::before{content:"";width:4px;height:4px;margin-top:.55em;border-radius:50%;background:var(--ink-3);flex:0 0 auto}
+.jrn-fc{min-height:18.8vh;padding:1vh .9vw;display:flex;flex-direction:column;gap:.7vh}.jrn-scr{height:10.7vh;flex:0 0 auto;overflow:hidden;border:1px solid rgba(110,120,136,.22);border-radius:6px;background:#f8f9fb}.jrn-sb{height:13px;padding:4px 5px;display:flex;gap:3px;background:#eceef2;border-bottom:1px solid rgba(110,120,136,.16)}.jrn-sd{width:4px;height:4px;border-radius:50%}.jrn-sc{padding:6px;display:flex;flex-direction:column;gap:4px}.jmb{height:3px;border-radius:4px;background:#dce1ea}.jrn-fl{font-size:var(--fs-sm);line-height:1.42;color:var(--ink)}
+.jrn-grid.je{height:15.5vh;flex:0 0 auto}.jrn-ec{position:relative;overflow:hidden}.jrn-ec svg{position:absolute;inset:0;width:100%;height:100%}.jrn-ec .dot{position:absolute;left:50%;top:var(--y);width:9px;height:9px;border:2px solid #fff;border-radius:50%;transform:translate(-50%,-50%);background:var(--stage);box-shadow:0 1px 5px rgba(0,0,0,.2)}.jrn-ec .face{position:absolute;left:50%;top:calc(var(--y) - 27px);transform:translateX(-50%);font-size:14px;line-height:1}.jrn-ec .emotion{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);white-space:nowrap;font:700 var(--fs-xs)/1.2 'JetBrains Mono';color:var(--stage)}
+.jrn-pc,.jrn-oc{min-height:12vh;padding:.95vh .9vw;display:flex;flex-direction:column;justify-content:center;gap:.65vh}.jrn-pc{background:linear-gradient(160deg,rgba(254,236,236,.72),rgba(255,247,240,.58))}.jrn-oc{border-radius:0 0 10px 10px;background:linear-gradient(160deg,rgba(220,252,231,.7),rgba(240,253,244,.55))}.jrn-pc.empty,.jrn-oc.empty{background:rgba(255,255,255,.24)}.jrn-item{display:flex;gap:5px;align-items:flex-start}.jrn-mark{display:flex;align-items:center;justify-content:center;flex:0 0 16px;width:16px;height:16px;margin-top:1px;border-radius:4px;background:#fef3c7;color:#92400e}.jrn-mark svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.jrn-text{font-size:var(--fs-sm);line-height:1.45;color:#7f1d1d}.jrn-odot{flex:0 0 7px;width:7px;height:7px;margin-top:5px;border-radius:50%;background:#10b981}.jrn-ot{font-size:var(--fs-sm);line-height:1.45;color:#064e3b}.jrn-text b,.jrn-ot b{font-weight:700}
+
+.story-deck .jrn-wrap{width:100%;--jrn-cols:5}
+.story-deck .jrn-ph{min-height:8vh;padding:1.1vh .9vw}
+.story-deck .jrn-ph .pt{min-height:0;font-size:var(--fs-h3);margin-top:.4vh}
+.story-deck .jrn-tc{min-height:8vh}
+.story-deck .jrn-touch,.story-deck .jrn-fl,.story-deck .jrn-text,.story-deck .jrn-ot{font-size:var(--fs-body);line-height:1.4}
+.story-deck .jrn-fc{min-height:21vh}
+.story-deck .jrn-scr{height:12vh;border:0;background:none}
+.story-deck .jrn-scr img{width:100%;height:100%;object-fit:contain}
+.story-deck .jrn-grid.je{height:6vh}
+.story-deck .jrn-ec{display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:var(--fs-sm)}
+.story-deck .jrn-pc,.story-deck .jrn-oc{min-height:9vh}
+.story-deck .jrn-rn{font-size:var(--fs-sm)}
+.story-deck .journey-sub{font-size:var(--fs-body);color:var(--ink-2);max-width:76ch;line-height:1.55}
+.story-deck .journey-slide .foot{font-size:var(--fs-sm);letter-spacing:0;left:4vw;right:4vw}
+.story-deck .summary-wrap{display:grid;gap:2vh;width:100%;align-content:center}
+.story-deck .summary-table{border-collapse:separate;border-spacing:0;width:100%;background:rgba(255,255,255,.65);border:1px solid #fff;border-radius:14px;overflow:hidden}
+.story-deck .summary-table th,.story-deck .summary-table td{text-align:left;padding:1.7vh 1.3vw;font-size:var(--fs-body);line-height:1.5;border-bottom:1px solid #dce0e7}
+.story-deck .summary-table th{background:#22262f;color:#fff;font-weight:500}
+.story-deck .summary-table td:first-child{font-weight:650;white-space:nowrap}
+.story-deck .summary-table tr:last-child td{border-bottom:0}
+.story-deck .summary-note{font-size:var(--fs-body);line-height:1.65;color:var(--ink-2)}
+.story-deck .s-cover .cv-bg{background:linear-gradient(90deg,rgba(8,6,18,.97) 0%,rgba(8,6,18,.87) 44%,rgba(8,6,18,.18)),url('images/A3.png') center/cover}
+.story-deck .s-cover .cv-logo{height:5vh;width:auto;filter:brightness(0) invert(1)}
+.story-deck .s-cover .cv-name{font-size:clamp(42px,4.4vw,76px);line-height:1.14;max-width:13ch;letter-spacing:-.03em}
+.story-deck .s-cover .cv-name span{display:block;color:#c4b3ff}
+.story-deck .s-cover .cv-lead{font-size:var(--fs-h2);max-width:31em;line-height:1.7}
+.story-deck .cover-links{display:flex;gap:1vw;margin-top:3vh}
+.story-deck .cover-links a{border:1px solid #827896;background:rgba(255,255,255,.07);padding:1vh 1.3vw;border-radius:99px;color:#f0eaff;text-decoration:none;font-size:var(--fs-body)}
+.story-deck .cover-links a:hover{background:#6551a9}
+.story-deck #lightbox{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;background:#09090dee;border:0;padding:4vh 2vw;z-index:9999;color:#fff}
+.story-deck #lightbox::backdrop{background:#09090d}
+.story-deck #lightbox[open]{display:flex;align-items:center;justify-content:center}
+.story-deck #lightbox img{max-width:96vw;max-height:92vh;object-fit:contain}
+.story-deck #lightbox button{position:absolute;top:1vh;right:2vw;background:#292532;color:#fff;border:1px solid #666;border-radius:9px;padding:.8vh 1vw;font-size:var(--fs-body);cursor:pointer}
+.story-deck #lightbox a{position:absolute;top:1.5vh;left:2vw;color:#ddd;font-size:var(--fs-sm)}
+body.overview.story-deck .hero-step .slide-inner{padding:0}
+body.overview.story-deck .detail-step .slide-inner{padding:8vh 3vw 4vh}
+body.overview.story-deck .hero-shot,body.overview.story-deck .detail-image{pointer-events:none}
+@media print{body.story-deck{overflow:visible;height:auto;background:#fff}.story-deck #controls,.story-deck #navDots{display:none}.story-deck .slide{break-after:page;height:100vh}.story-deck #lightbox{display:none}}
+
+</style>
+</head>
+<body class="story-deck">
+<div id="deck">
+<section class="slide s-cover" data-title="学习发生在任务中，内容留在可管理的画布里"><div class="cv-bg"></div><div class="cv-overlay"></div><div class="cv-content"><div class="cv-top"><img class="cv-logo" src="../../../Ascendlogo.svg" alt="昇腾"></div><div class="cv-center"><div class="cv-kicker">SPATIAL LEARNING WORKSPACE</div><h1 class="cv-name">学习发生在任务中<span>画布随过程展开</span></h1><p class="cv-lead">主动学习与开发中学习的两条完整故事线<br>每一步：用户操作 · 界面响应 · 设计点 · 画布管理</p><div class="cover-links"><a href="#2">主动学习 →</a><a href="#13">开发中学习 →</a><a href="#24">共用机制 →</a></div></div><div class="cv-bot"><span>10 张关键状态图 · 24 页 · 大图与设计说明配对</span><span>设计提案 / 所有执行与数据均为模拟</span></div></div></section>
+<section class="slide s-gray journey-slide" data-title="主动学习 · 目标旅程" data-template="user-journey">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">从学习目标出发，完成一段可验证的学习</span></div><div class="subttl">主动学习 · 目标体验提案</div></div><div class="section-tabs"><span class="active">01 主动学习</span><span class="">02 开发中学习</span><span class="">03 共用机制</span></div></div>
+  <p class="journey-sub">学习目标：学会图像输入预处理；终点：完成讲解、跟练与输入检查，保存可恢复的学习记录。</p><div class="journey-body"><div class="jrn-wrap">
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">阶段</div><div class="jrn-re">STEP</div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">A1</div><div class="pt">表达目标</div></div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">A2</div><div class="pt">调整路径</div></div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">A3</div><div class="pt">理解内容</div></div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">A4</div><div class="pt">跟练验证</div></div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">A5</div><div class="pt">完成保存</div></div></div></div>
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">触点</div><div class="jrn-re">TOUCH</div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">学习入口、对话、路径预览</div></div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">路径节点、调整预览</div></div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">视频片段、张量图解</div></div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">图解、练习副本、检查反馈</div></div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">完成记录、内容收纳浮层</div></div></div></div>
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">行为</div><div class="jrn-re">ACTION</div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#3"><img src="images/A1.png" alt="表达目标状态图"></a><div class="jrn-fl">进入“学习”，输入基础、目标和时间；也可选用已有路径。</div></div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#5"><img src="images/A2.png" alt="调整路径状态图"></a><div class="jrn-fl">告诉 AI“环境已准备好，跳过环境配置”；查看被影响的节点。</div></div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#7"><img src="images/A3.png" alt="理解内容状态图"></a><div class="jrn-fl">观看讲解，在不理解的字幕处提问，再固定或移动图解。</div></div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#9"><img src="images/A4.png" alt="跟练验证状态图"></a><div class="jrn-fl">把轴顺序改成 2,0,1，补充 batch 维度，运行练习。</div></div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#11"><img src="images/A5.png" alt="完成保存状态图"></a><div class="jrn-fl">完成输入检查，保存学习记录与练习内容。</div></div></div></div>
+  <div class="jrn-grid je"><div class="jrn-rl"><div class="jrn-rn">情绪</div><div class="jrn-re">EMOTION</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div></div>
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">风险</div><div class="jrn-re">PAIN</div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">入口选择多，容易不知道从何开始。</div></div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">生成结果难判断，也担心修改失控。</div></div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">切换解释时容易丢失视频上下文。</div></div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">图解、尝试与反馈分散，难以对照。</div></div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">材料越积越多，完成后难以找回。</div></div></div></div>
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">设计响应</div><div class="jrn-re">RESPONSE</div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">表达目标与浏览路径并行。</div></div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">在节点上显示调整并确认。</div></div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">从当前片段展开关联图解。</div></div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">临时对照与内联反馈。</div></div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">整组收纳、索引与恢复。</div></div></div></div>
+  </div></div><div class="foot">目标旅程，不代表实测行为或情绪数据。点击阶段缩略图进入大图；每一步后附设计说明。</div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="A1 · 表达目标 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">主动学习 / A1 / 表达目标</div><h1>从目标或现成路径进入，画布随意图展开</h1></div><a href="#4">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/A1.png" aria-label="查看A1原图"><img src="images/A1.png" alt="从目标或现成路径进入，画布随意图展开" decoding="async"></button>
+<div class="hero-foot"><span>双入口汇合 · 意图可见 · 按需展开</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="A1 · 表达目标 · 设计说明"><div class="glow"></div><div class="chrome"><span>主动学习 · A1 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">表达目标<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>进入“学习”，输入基础、目标和时间；也可选用已有路径。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. 双入口汇合</h2><p class="pt-desc">对话提目标与浏览现有路径，共同进入可编辑的路径草案，支持明确目标和探索式进入。</p></div><div class="point"><h2 class="pt-title">2. 意图可见</h2><p class="pt-desc">基础与时间贴在目标旁，用户能检查 AI 使用了哪些信息，并直接修改。</p></div><div class="point"><h2 class="pt-title">3. 按需展开</h2><p class="pt-desc">初访画布保留空间，课程预览作为独立对象存在；后续内容围绕选择展开。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>初始只展开目标和少量相关预览；“本任务内容”保持关闭。</p><p class="continuity"><b>下一步</b><br>点击“生成学习路径”或“选用路径”，进入同一份可审阅草案。</p></div>
+<button class="detail-image shot" data-enlarge="images/A1.png" aria-label="放大A1界面"><img src="images/A1.png" alt="目标成为画布上的可编辑对象，现有路径提供图形预览；此时尚未生成个人路径。"></button></div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="A2 · 调整路径 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">主动学习 / A2 / 调整路径</div><h1>对话与直接操作，共同修改眼前这条路径</h1></div><a href="#6">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/A2.png" aria-label="查看A2原图"><img src="images/A2.png" alt="对话与直接操作，共同修改眼前这条路径" decoding="async"></button>
+<div class="hero-foot"><span>AI 操作落在对象上 · 两种编辑共用预览 · 确认后再生效</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="A2 · 调整路径 · 设计说明"><div class="glow"></div><div class="chrome"><span>主动学习 · A2 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">调整路径<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>告诉 AI“环境已准备好，跳过环境配置”；查看被影响的节点。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. AI 操作落在对象上</h2><p class="pt-desc">在路径节点上显示选中、定位与拟变更状态，让用户看见 AI 正在改哪里。</p></div><div class="point"><h2 class="pt-title">2. 两种编辑共用预览</h2><p class="pt-desc">对话修改与节点直接操作都产生同一份变更预览；本图展示跳过，拖动排序沿用此规则。</p></div><div class="point"><h2 class="pt-title">3. 确认后再生效</h2><p class="pt-desc">“拟跳过”和确认／取消把草案与正式路径区分开；已有学习记录随节点保留。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>路径是画布中的可移动对象；选择节点才出现操作条，修改不重排其他参考。</p><p class="continuity"><b>下一步</b><br>确认并开始后，沿保留的“理解 → 跟练 → 验证”进入学习。</p></div>
+<button class="detail-image shot" data-enlarge="images/A2.png" aria-label="放大A2界面"><img src="images/A2.png" alt="拟跳过节点变灰；选中边框与 AI 操作指示呈现调整位置；变更先停留在预览。"></button></div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="A3 · 理解内容 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">主动学习 / A3 / 理解内容</div><h1>视频与图解就地关联，阅读位置由用户安排</h1></div><a href="#8">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/A3.png" aria-label="查看A3原图"><img src="images/A3.png" alt="视频与图解就地关联，阅读位置由用户安排" decoding="async"></button>
+<div class="hero-foot"><span>从内容发起解释 · 自由组织参考 · 节点自然接续</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="A3 · 理解内容 · 设计说明"><div class="glow"></div><div class="chrome"><span>主动学习 · A3 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">理解内容<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>观看讲解，在不理解的字幕处提问，再固定或移动图解。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. 从内容发起解释</h2><p class="pt-desc">疑问绑定当前视频片段和概念，图解与字幕保持可见关联，减少反复描述。</p></div><div class="point"><h2 class="pt-title">2. 自由组织参考</h2><p class="pt-desc">图解有选中边框和就地工具条；可固定、放大或移到视频旁，阅读时位置稳定。</p></div><div class="point"><h2 class="pt-title">3. 节点自然接续</h2><p class="pt-desc">在当前内容下提供“继续跟练”；目标和完成标准沿用已确认路径，无需再次制定。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>视频、笔记、图解属于轻分组；对象可拖动、缩放、固定，无常驻功能 Tab。</p><p class="continuity"><b>下一步</b><br>点击“继续跟练”，当前图解可作为参考带入练习。</p></div>
+<button class="detail-image shot" data-enlarge="images/A3.png" aria-label="放大A3界面"><img src="images/A3.png" alt="图解在当前视频旁展开，关系线指回具体内容；上下文留在同一对话。"></button></div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="A4 · 跟练验证 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">主动学习 / A4 / 跟练验证</div><h1>临时对照帮助跟练，结果直接留在本次尝试下面</h1></div><a href="#10">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/A4.png" aria-label="查看A4原图"><img src="images/A4.png" alt="临时对照帮助跟练，结果直接留在本次尝试下面" decoding="async"></button>
+<div class="hero-foot"><span>临时聚焦 · 反馈归属本次尝试 · 按结果继续</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="A4 · 跟练验证 · 设计说明"><div class="glow"></div><div class="chrome"><span>主动学习 · A4 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">跟练验证<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>把轴顺序改成 2,0,1，补充 batch 维度，运行练习。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. 临时聚焦</h2><p class="pt-desc">选定材料进入对照，减少视线往返；退出后恢复自由布局，聚焦不改变空间组织。</p></div><div class="point"><h2 class="pt-title">2. 反馈归属本次尝试</h2><p class="pt-desc">通过或失败直接跟在代码下面，上次结果折叠保留，便于比较修改和结果。</p></div><div class="point"><h2 class="pt-title">3. 按结果继续</h2><p class="pt-desc">通过后给出下一节点；失败时在当前内容中重试或补解释，不要求用户切换学习模式。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>“退出对照”恢复对象原位；前一学习组折叠，固定的参考仍可见。</p><p class="continuity"><b>下一步</b><br>检查通过后继续输入检查；若失败，就地提示并重试，原练习现场保留。</p></div>
+<button class="detail-image shot" data-enlarge="images/A4.png" aria-label="放大A4界面"><img src="images/A4.png" alt="图解和练习临时并排，检查结果附着在代码下；上次失败保留为可展开记录。"></button></div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="A5 · 完成保存 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">主动学习 / A5 / 完成保存</div><h1>学习完成后收纳过程，保留能找回的成果</h1></div><a href="#12">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/A5.png" aria-label="查看A5原图"><img src="images/A5.png" alt="学习完成后收纳过程，保留能找回的成果" decoding="async"></button>
+<div class="hero-foot"><span>完成与证据相连 · 收纳保留上下文 · 建议可选择</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="A5 · 完成保存 · 设计说明"><div class="glow"></div><div class="chrome"><span>主动学习 · A5 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">完成保存<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>完成输入检查，保存学习记录与练习内容。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. 完成与证据相连</h2><p class="pt-desc">完成摘要列出学过的内容和输入形状，区分“看过”与“练习检查通过”。</p></div><div class="point"><h2 class="pt-title">2. 收纳保留上下文</h2><p class="pt-desc">按组保存讲解、图解、练习与记录；恢复的是原对象及关系，不再复制一套内容。</p></div><div class="point"><h2 class="pt-title">3. 建议可选择</h2><p class="pt-desc">后续实践建议独立、可关闭；完成当前学习后，用户决定是否开启下一任务。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>收纳浮层按需打开；恢复返回同一组及原位置，撤销可立即找回。</p><p class="continuity"><b>下一步</b><br>下次从“本任务内容”恢复原位；是否进入推理任务由用户选择。</p></div>
+<button class="detail-image shot" data-enlarge="images/A5.png" aria-label="放大A5界面"><img src="images/A5.png" alt="显示完成节点和验证依据；过程内容按组收纳，学习记录与产物仍可查看。"></button></div></section>
+<section class="slide s-gray journey-slide" data-title="开发中学习 · 目标旅程" data-template="user-journey">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">围绕当前问题学习，再返回原项目验证</span></div><div class="subttl">开发中学习 · 目标体验提案</div></div><div class="section-tabs"><span class="">01 主动学习</span><span class="active">02 开发中学习</span><span class="">03 共用机制</span></div></div>
+  <p class="journey-sub">开发任务：部署图像推理服务；插入学习：理解并修正输入维度。学习完成后返回开发，完整推理仍是下一项任务。</p><div class="journey-body"><div class="jrn-wrap">
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">阶段</div><div class="jrn-re">STEP</div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">B1</div><div class="pt">发现问题</div></div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">B2</div><div class="pt">展开学习</div></div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">B3</div><div class="pt">隔离跟练</div></div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">B4</div><div class="pt">应用修改</div></div></div><div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">B5</div><div class="pt">返回验证</div></div></div></div>
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">触点</div><div class="jrn-re">TOUCH</div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">原文件、运行日志、诊断回复</div></div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">原文件、局部路径、图解</div></div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">临时对照、隔离副本</div></div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">原文件差异、练习结果</div></div></div><div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">项目检查、日志、内容收纳</div></div></div></div>
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">行为</div><div class="jrn-re">ACTION</div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#14"><img src="images/B1.png" alt="发现问题状态图"></a><div class="jrn-fl">运行失败后请求诊断；选择“解释并跟练”，也可以直接查看修复。</div></div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#16"><img src="images/B2.png" alt="展开学习状态图"></a><div class="jrn-fl">要求先理解并练习，同时明确原文件暂不修改。</div></div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#18"><img src="images/B3.png" alt="隔离跟练状态图"></a><div class="jrn-fl">修改通道顺序并补 batch 维度，运行练习检查。</div></div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#20"><img src="images/B4.png" alt="应用修改状态图"></a><div class="jrn-fl">要求把练习用于原文件，检查差异并确认应用。</div></div></div><div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#22"><img src="images/B5.png" alt="返回验证状态图"></a><div class="jrn-fl">确认应用，重新进行项目输入检查，然后收纳学习组。</div></div></div></div>
+  <div class="jrn-grid je"><div class="jrn-rl"><div class="jrn-rn">情绪</div><div class="jrn-re">EMOTION</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div><div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div></div>
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">风险</div><div class="jrn-re">PAIN</div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">直接给修复，可能无法理解原因。</div></div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">跳入独立课程后容易丢失任务现场。</div></div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">练习成功与项目修复容易混淆。</div></div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">不清楚修改范围，不敢直接应用。</div></div></div><div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">应用修改后，容易遗漏原项目验证。</div></div></div></div>
+  <div class="jrn-grid "><div class="jrn-rl"><div class="jrn-rn">设计响应</div><div class="jrn-re">RESPONSE</div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">错误处提供可选的学习入口。</div></div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">学习组挂在当前开发任务。</div></div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">副本验证与原项目状态分开。</div></div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">差异预览与显式确认。</div></div></div><div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">项目检查与后续任务分层。</div></div></div></div>
+  </div></div><div class="foot">目标旅程，不代表实测行为或情绪数据。点击阶段缩略图进入大图；每一步后附设计说明。</div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="B1 · 发现问题 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">开发中学习 / B1 / 发现问题</div><h1>学习入口贴近错误现场，用户决定是否展开</h1></div><a href="#15">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/B1.png" aria-label="查看B1原图"><img src="images/B1.png" alt="学习入口贴近错误现场，用户决定是否展开" decoding="async"></button>
+<div class="hero-foot"><span>主动建议有依据 · 入口由用户控制 · 绑定具体现场</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="B1 · 发现问题 · 设计说明"><div class="glow"></div><div class="chrome"><span>开发中学习 · B1 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">发现问题<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>运行失败后请求诊断；选择“解释并跟练”，也可以直接查看修复。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. 主动建议有依据</h2><p class="pt-desc">建议紧邻诊断回复，错误日志与代码有可见关联，用户能理解为什么建议学这一段。</p></div><div class="point"><h2 class="pt-title">2. 入口由用户控制</h2><p class="pt-desc">“解释并跟练”“直接看修复”和关闭共存，学习建议不占常驻顶部位置。</p></div><div class="point"><h2 class="pt-title">3. 绑定具体现场</h2><p class="pt-desc">问题指向选中代码与实际／预期形状，进入学习时沿用这些上下文。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>初始只保留原文件和日志；展开学习由用户触发，原位置不变。</p><p class="continuity"><b>下一步</b><br>选择学习后，在当前任务中展开局部学习组。</p></div>
+<button class="detail-image shot" data-enlarge="images/B1.png" aria-label="放大B1界面"><img src="images/B1.png" alt="日志中的实际与需要形状关联到代码行；学习建议出现在相关回复下，并可关闭。"></button></div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="B2 · 展开学习 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">开发中学习 / B2 / 展开学习</div><h1>局部学习围绕原文件展开，原任务身份保持不变</h1></div><a href="#17">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/B2.png" aria-label="查看B2原图"><img src="images/B2.png" alt="局部学习围绕原文件展开，原任务身份保持不变" decoding="async"></button>
+<div class="hero-foot"><span>任务连续 · 原件与副本可辨 · 轻分组组织材料</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="B2 · 展开学习 · 设计说明"><div class="glow"></div><div class="chrome"><span>开发中学习 · B2 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">展开学习<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>要求先理解并练习，同时明确原文件暂不修改。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. 任务连续</h2><p class="pt-desc">左侧仍选中开发任务，中间沿用当前对话；学习是任务内的一段活动。</p></div><div class="point"><h2 class="pt-title">2. 原件与副本可辨</h2><p class="pt-desc">原文件、错误现场与练习副本分别标明身份，学习操作的影响范围可见。</p></div><div class="point"><h2 class="pt-title">3. 轻分组组织材料</h2><p class="pt-desc">相关图解和局部路径属于同组；可整体收起，同时允许独立摆放参考。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>学习组使用轻边界，内部内容可调整位置；原文件固定在组旁。</p><p class="continuity"><b>下一步</b><br>点击“开始隔离练习”，在副本中尝试。</p></div>
+<button class="detail-image shot" data-enlarge="images/B2.png" aria-label="放大B2界面"><img src="images/B2.png" alt="原文件保留为参考，局部学习组显示理解、试改和验证；错误现场折叠保存。"></button></div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="B3 · 隔离跟练 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">开发中学习 / B3 / 隔离跟练</div><h1>在副本中验证理解，项目文件继续保持原状</h1></div><a href="#19">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/B3.png" aria-label="查看B3原图"><img src="images/B3.png" alt="在副本中验证理解，项目文件继续保持原状" decoding="async"></button>
+<div class="hero-foot"><span>安全试错 · 结果边界明确 · 随时回到现场</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="B3 · 隔离跟练 · 设计说明"><div class="glow"></div><div class="chrome"><span>开发中学习 · B3 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">隔离跟练<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>修改通道顺序并补 batch 维度，运行练习检查。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. 安全试错</h2><p class="pt-desc">修改发生在隔离副本；练习失败可以重试，不影响项目原文件。</p></div><div class="point"><h2 class="pt-title">2. 结果边界明确</h2><p class="pt-desc">通过信息显示输入形状，同时显示原项目未修改，避免把练习结果当成交付结果。</p></div><div class="point"><h2 class="pt-title">3. 随时回到现场</h2><p class="pt-desc">退出对照恢复自由布局；查看修改建议连接原文件，学习与开发之间有明确返回点。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>进入对照只影响选中的图解和练习；原文件及错误现场原位保留。</p><p class="continuity"><b>下一步</b><br>点击“查看修改建议”回到项目修改审阅。</p></div>
+<button class="detail-image shot" data-enlarge="images/B3.png" aria-label="放大B3界面"><img src="images/B3.png" alt="图解与练习临时聚焦；结果明确“练习通过，原项目尚未修改”。"></button></div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="B4 · 应用修改 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">开发中学习 / B4 / 应用修改</div><h1>把练习转成可审阅的 Diff，确认后才写入项目</h1></div><a href="#21">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/B4.png" aria-label="查看B4原图"><img src="images/B4.png" alt="把练习转成可审阅的 Diff，确认后才写入项目" decoding="async"></button>
+<div class="hero-foot"><span>变更具体可见 · 验证依据可对照 · 确认具有边界</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="B4 · 应用修改 · 设计说明"><div class="glow"></div><div class="chrome"><span>开发中学习 · B4 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">应用修改<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>要求把练习用于原文件，检查差异并确认应用。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. 变更具体可见</h2><p class="pt-desc">删除和新增代码分开显示，用户可以定位影响范围，理解练习如何转成项目修改。</p></div><div class="point"><h2 class="pt-title">2. 验证依据可对照</h2><p class="pt-desc">练习结果保留在差异旁，为审阅提供上下文；不必重新打开整个学习组。</p></div><div class="point"><h2 class="pt-title">3. 确认具有边界</h2><p class="pt-desc">确认应用与取消作用于这次项目修改；收起学习材料不等于应用，也不等于删除。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>学习组折叠，Diff 成为当前焦点；练习结果固定为参考，不重新铺满画布。</p><p class="continuity"><b>下一步</b><br>确认后写入原文件，再进行项目输入检查；取消则保持项目不变。</p></div>
+<button class="detail-image shot" data-enlarge="images/B4.png" aria-label="放大B4界面"><img src="images/B4.png" alt="变更行与练习结果同屏呈现；原文件显示未修改，等待确认。"></button></div></section>
+<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="B5 · 返回验证 · 大图">
+<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">开发中学习 / B5 / 返回验证</div><h1>验证原项目的输入，再把学习过程收入任务记忆</h1></div><a href="#23">本步设计说明 →</a></header>
+<button class="hero-shot" data-enlarge="images/B5.png" aria-label="查看B5原图"><img src="images/B5.png" alt="验证原项目的输入，再把学习过程收入任务记忆" decoding="async"></button>
+<div class="hero-foot"><span>回到原任务验证 · 完成状态分层 · 收纳后仍可复用</span><span>设计示意 · 点击图片放大</span></div></div></section>
+<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="B5 · 返回验证 · 设计说明"><div class="glow"></div><div class="chrome"><span>开发中学习 · B5 设计说明</span><span>界面提案 / 非实际运行</span></div>
+<div class="inner"><div><h1 class="h-title">返回验证<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>确认应用，重新进行项目输入检查，然后收纳学习组。</p>
+<div class="points"><div class="point"><h2 class="pt-title">1. 回到原任务验证</h2><p class="pt-desc">使用项目中的修改后文件检查输入，结果与项目日志相连，完成从练习到实际文件的交接。</p></div><div class="point"><h2 class="pt-title">2. 完成状态分层</h2><p class="pt-desc">练习通过、修改应用、项目输入通过分别呈现；完整推理尚待执行。</p></div><div class="point"><h2 class="pt-title">3. 收纳后仍可复用</h2><p class="pt-desc">学习组从当前画布移出，任务保留其索引和原位置；需要时整组恢复。</p></div></div>
+<p class="continuity"><b>画布管理</b><br>原文件与项目结果留在画布；学习组进入可关闭的收纳浮层，支持恢复／撤销。</p><p class="continuity"><b>下一步</b><br>继续运行完整推理；若出现新的问题，在同一任务中再次展开相关学习。</p></div>
+<button class="detail-image shot" data-enlarge="images/B5.png" aria-label="放大B5界面"><img src="images/B5.png" alt="显示项目输入检查结果与日志；学习组可恢复，完整推理仍标记待运行。"></button></div></section>
+<section class="slide s-gray" data-title="一套画布管理动作，贯穿两条学习故事线"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">一套画布管理动作，贯穿两条学习故事线</span></div><div class="subttl">共用机制</div></div><div class="section-tabs"><span class="">01 主动学习</span><span class="">02 开发中学习</span><span class="active">03 共用机制</span></div></div><div class="body-area"><div class="summary-wrap"><table class="summary-table"><thead><tr><th>交互</th><th>何时发生</th><th>用户能看见与控制什么</th><th>对应步骤</th></tr></thead><tbody><tr><td>自由展开</td><td>从当前问题或路径节点打开内容</td><td>新内容在相关对象附近展开；拖动／缩放由用户控制</td><td>A1、A3、B1、B2</td></tr><tr><td>轻分组</td><td>同一段学习包含多个对象</td><td>保留组名和关联；内部对象可自由排放</td><td>A3、B2</td></tr><tr><td>临时聚焦</td><td>用户选择需要并排对照的对象</td><td>仅选中内容进入对照；退出恢复原位置</td><td>A4、B3</td></tr><tr><td>固定参考</td><td>操作时需要保留原文件或结果</td><td>参考留在可见位置，不随下一步被自动收起</td><td>A3、B2–B4</td></tr><tr><td>折叠／收纳</td><td>完成当前活动或主动整理</td><td>折叠在画布留摘要；收纳移出画布但保留索引</td><td>A5、B4、B5</td></tr><tr><td>恢复／撤销</td><td>需要复习，或刚才收错内容</td><td>返回同一组及其关系、原位置；当前内容不被替换</td><td>A5、B5</td></tr></tbody></table><p class="summary-note"><b>稳定性规则：</b>阅读时不自动移动对象；完成、继续、退出对照或手动整理后才调整布局。收纳不等于删除，确认路径不等于应用项目代码。<br><b>验证重点：</b>用户能否找到原文件、区分副本与正式修改、恢复收纳内容，以及说清当前通过的是哪一项检查。</p></div></div><div class="foot">设计提案 · 尚未实现自由画布运行时 · <a href="../proactive-research.html#17">返回 Ploy 研究材料</a></div></section>
+</div>
+<!-- 调色面板（JS 会把它挂到当前黑底章节封面页内）-->
+<div id="panel" style="display:none">
+  <h4>底部光晕调色</h4>
+  <div class="preset-row">
+    <div class="preset" data-p="255,85,58" style="background:linear-gradient(90deg,hsl(255,85%,58%),hsl(300,85%,58%))"></div>
+    <div class="preset" data-p="160,80,56" style="background:linear-gradient(90deg,hsl(160,80%,56%),hsl(205,80%,56%))"></div>
+    <div class="preset" data-p="30,88,58" style="background:linear-gradient(90deg,hsl(30,88%,58%),hsl(75,88%,58%))"></div>
+    <div class="preset" data-p="200,82,60" style="background:linear-gradient(90deg,hsl(200,82%,60%),hsl(245,82%,60%))"></div>
+  </div>
+  <div class="ctrl"><label>色相 HUE <span class="val" id="v-h">234</span></label><input type="range" id="s-h" min="0" max="360" value="234"></div>
+  <div class="ctrl"><label>色相跨度 GAP <span class="val" id="v-gap">57°</span></label><input type="range" id="s-gap" min="0" max="180" value="57"></div>
+  <div class="ctrl"><label>饱和度 SAT <span class="val" id="v-sat">95%</span></label><input type="range" id="s-sat" min="0" max="100" value="95"></div>
+  <div class="ctrl"><label>亮度 LIGHT <span class="val" id="v-light">40%</span></label><input type="range" id="s-light" min="20" max="80" value="40"></div>
+  <div class="ctrl"><label>扩散 SPREAD <span class="val" id="v-spread">35vh</span></label><input type="range" id="s-spread" min="20" max="90" value="35"></div>
+  <div class="ctrl"><label>彩色亮度 COLOR <span class="val" id="v-cint">0.68</span></label><input type="range" id="s-cint" min="0" max="100" value="68"></div>
+  <div class="ctrl"><label>白色亮度 WHITE <span class="val" id="v-wint">0.58</span></label><input type="range" id="s-wint" min="0" max="100" value="58"></div>
+</div>
+<button id="toggle" style="display:none" title="调色面板"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="10" cy="7" r="2.4"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="15" cy="17" r="2.4"/></svg></button>
+
+<nav class="nav-dots" id="navDots"></nav>
+<!-- 底部居中控制栏（默认隐藏，鼠标移到底部才出现）-->
+<div id="controls">
+  <button id="prevBtn" title="上一页 ↑/←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg></button>
+  <span class="ctrl-counter" id="counter">01 / 01</span>
+  <button id="nextBtn" title="下一页 ↓/→"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+  <span class="ctrl-sep"></span>
+  <button id="ovBtn" title="概览 O"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+  <button id="fsBtn" title="全屏 F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+</div>
+
+<script>
+const root=document.documentElement;
+const deck=document.getElementById('deck');
+const slides=[...document.querySelectorAll('.slide')];
+let idx=0;let restoringSlide=false;
+
+/* ===== 翻页过渡（可切换）：slide(默认) | fade | cut | slide-h | magic =====
+   改默认改这行兜底值；或地址加 ?t=fade / ?t=cut / ?t=slide-h / ?t=magic 临时切换、不用改代码 */
+const TRANSITION = (new URLSearchParams(location.search).get('t')) || 'slide';
+const CTRL = TRANSITION!=='slide';
+if(CTRL){ document.body.classList.add('ctrl'); document.body.dataset.transition=TRANSITION; }
+const TDUR=600;
+function setActive(i){ slides.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.remove('leaving');s.style.transform='';s.style.opacity='';}); }
+function showSlide(i,dir){
+  const cur=slides.find(s=>s.classList.contains('active'));
+  const nxt=slides[i]; if(!nxt||nxt===cur)return; dir=dir||'fwd';
+  if(TRANSITION==='magic'&&cur){ magicMove(cur,nxt); return; }
+  if(TRANSITION==='slide-h'){
+    nxt.style.transition='none'; nxt.style.visibility='visible'; nxt.style.opacity='1';
+    nxt.style.transform='translateX('+(dir==='fwd'?'100%':'-100%')+')';
+    void nxt.offsetWidth; nxt.style.transition=''; nxt.classList.add('active'); nxt.style.transform='';
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving');
+      cur.style.transform='translateX('+(dir==='fwd'?'-100%':'100%')+')';
+      const c=cur; setTimeout(()=>{c.classList.remove('leaving');c.style.transform='';},TDUR); }
+  } else {
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving'); const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR); }
+    nxt.classList.add('active');
+  }
+}
+/* Keynote 式神奇移动：相邻两页中 data-key 相同的元素 FLIP 位移/缩放（用 Web Animations API）*/
+function magicMove(cur,nxt){
+  const out={}; cur.querySelectorAll('[data-key]').forEach(el=>{out[el.dataset.key]=el.getBoundingClientRect();});
+  cur.classList.remove('active'); cur.classList.add('leaving'); nxt.classList.add('active');
+  nxt.querySelectorAll('[data-key]').forEach(el=>{
+    const o=out[el.dataset.key]; if(!o)return; const n=el.getBoundingClientRect(); if(!n.width||!n.height)return;
+    const dx=o.left-n.left, dy=o.top-n.top, sx=o.width/n.width, sy=o.height/n.height;
+    if(Math.abs(dx)<1&&Math.abs(dy)<1&&Math.abs(sx-1)<.02&&Math.abs(sy-1)<.02)return;
+    el.style.zIndex='3';
+    el.animate([{transformOrigin:'top left',transform:'translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')'},
+                {transformOrigin:'top left',transform:'none'}],
+               {duration:620,easing:'cubic-bezier(.4,0,.2,1)'}).onfinish=()=>{el.style.zIndex='';};
+  });
+  const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR);
+}
+
+/* ===== 黑底光晕：每章一组色值，可调 + localStorage 持久记忆 ===== */
+const chapters={'1':{h:234,gap:57,sat:95,light:40,spread:35,cint:68,wint:58}};
+const GLOW_KEY='deck-glow-chapters';
+try{const sv=localStorage.getItem(GLOW_KEY);if(sv){const o=JSON.parse(sv);Object.keys(o).forEach(k=>{if(chapters[k])Object.assign(chapters[k],o[k]);});}}catch(e){}
+function saveChapters(){try{localStorage.setItem(GLOW_KEY,JSON.stringify(chapters));}catch(e){}}
+function curChap(){return chapters[slides[idx].dataset.chapter];}
+const S={h:'s-h',gap:'s-gap',sat:'s-sat',light:'s-light',spread:'s-spread',cint:'s-cint',wint:'s-wint'};
+const V={h:'v-h',gap:'v-gap',sat:'v-sat',light:'v-light',spread:'v-spread',cint:'v-cint',wint:'v-wint'};
+function paintSlide(s){const c=chapters[s.dataset.chapter];if(!c)return;
+  s.style.setProperty('--glow-h',c.h);s.style.setProperty('--glow-h2',(c.h+c.gap)%360);
+  s.style.setProperty('--glow-sat',c.sat+'%');s.style.setProperty('--glow-light',c.light+'%');
+  s.style.setProperty('--glow-spread',c.spread);s.style.setProperty('--glow-color-int',(c.cint/100).toFixed(2));
+  s.style.setProperty('--glow-white-int',(c.wint/100).toFixed(2));}
+function apply(){slides.forEach(paintSlide);saveChapters();const c=curChap();if(!c)return;
+  root.style.setProperty('--glow-h',c.h);root.style.setProperty('--glow-h2',(c.h+c.gap)%360);}
+function syncPanel(){const c=curChap();if(!c)return;
+  for(const k in S){const el=document.getElementById(S[k]),v=document.getElementById(V[k]);if(!el)continue;el.value=c[k];
+    v.textContent=(k==='sat'||k==='light')?c[k]+'%':k==='spread'?c[k]+'vh':k==='gap'?c[k]+'°':(k==='cint'||k==='wint')?(c[k]/100).toFixed(2):c[k];}}
+for(const k in S){const el=document.getElementById(S[k]);if(el)el.addEventListener('input',()=>{const c=curChap();if(!c)return;c[k]=+el.value;
+  const v=document.getElementById(V[k]);v.textContent=(k==='sat'||k==='light')?el.value+'%':k==='spread'?el.value+'vh':k==='gap'?el.value+'°':(k==='cint'||k==='wint')?(el.value/100).toFixed(2):el.value;apply();});}
+document.querySelectorAll('.preset').forEach(p=>p.onclick=()=>{const c=curChap();if(!c)return;const[h,sat,light]=p.dataset.p.split(',').map(Number);Object.assign(c,{h,sat,light});apply();syncPanel();});
+function setPanelOpen(open){const p=document.getElementById('panel');if(p)p.style.display=open?'block':'none';}
+document.addEventListener('click',e=>{const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');if(!panel||!toggle)return;
+  if(toggle.contains(e.target)){setPanelOpen(panel.style.display!=='block');syncPanel();return;}
+  if(panel.contains(e.target))return; setPanelOpen(false);});
+
+/* ===== 纵向 scroll-snap 翻页 + 右侧点 + 控制栏 + 总览 + 全屏 ===== */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+/* 滚动条默认隐藏，滚动时淡入、停 700ms 后淡出（body 是滚动容器，事件挂 body 不是 window；wheel 兜底）*/
+let scrollbarTimer;
+function flashScrollbar(){document.body.classList.add('scrolling');clearTimeout(scrollbarTimer);scrollbarTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700);}
+document.body.addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('wheel',flashScrollbar,{passive:true});
+const navDots=document.getElementById('navDots'), controls=document.getElementById('controls'), counter=document.getElementById('counter');
+const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn'), ovBtn=document.getElementById('ovBtn'), fsBtn=document.getElementById('fsBtn');
+const pad=n=>String(n).padStart(2,'0');
+const dots=slides.map((s,i)=>{const b=document.createElement('button');b.className='nav-dot';b.title=pad(i+1)+' / '+pad(slides.length);b.onclick=()=>go(i);navDots.appendChild(b);return b;});
+
+function updateCurrent(i){
+  idx=i; const s=slides[idx];
+  if(!document.body.classList.contains("overview")) history.replaceState(null,"","#"+(idx+1));
+  dots.forEach((d,k)=>d.classList.toggle('active',k===idx));
+  counter.textContent=pad(idx+1)+' / '+pad(slides.length);
+  prevBtn.disabled=idx<=0; nextBtn.disabled=idx>=slides.length-1;
+  document.body.classList.toggle('on-dark', s.classList.contains('s-cover')||s.classList.contains('s-glow'));
+  const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');
+  if(s.dataset.chapter && s.classList.contains('chapter-cover')){ if(panel)s.appendChild(panel); if(toggle){s.appendChild(toggle);toggle.style.display='flex';} setPanelOpen(false); apply(); syncPanel(); }
+  else if(toggle){ toggle.style.display='none'; setPanelOpen(false); }
+}
+/* slide 模式：谁滚进视口 ≥55% 谁就是当前页。受控模式无滚动，不用 IO */
+if(!CTRL){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(!restoringSlide&&!document.body.classList.contains("overview")&&e.isIntersecting&&e.intersectionRatio>=0.55&&Math.abs(e.target.getBoundingClientRect().top)<innerHeight*.45){const i=slides.indexOf(e.target);if(i>=0&&i!==idx)updateCurrent(i);}});},{threshold:[0.55]});
+  slides.forEach(s=>io.observe(s));
+}
+
+function go(n){ if(document.body.classList.contains('overview'))return; const i=Math.max(0,Math.min(slides.length-1,n));
+  if(CTRL){ const dir=i>idx?'fwd':'back'; showSlide(i,dir); updateCurrent(i); }
+  else slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+}
+function next(){go(idx+1);} function prev(){go(idx-1);}
+prevBtn.onclick=prev; nextBtn.onclick=next;
+/* 受控模式：滚轮 / 触控板翻页（无原生滚动，需拦截 + 节流）*/
+if(CTRL){
+  let wlock=false;
+  addEventListener('wheel',e=>{ if(document.body.classList.contains('overview'))return; e.preventDefault();
+    if(wlock||Math.abs(e.deltaY)<6)return; wlock=true; setTimeout(()=>wlock=false,620);
+    if(e.deltaY>0)next(); else prev();
+  },{passive:false});
+}
+
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('lightbox').open)return;
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  else if(e.key==='o'||e.key==='O'){toggleOverview();}
+  else if(e.key==='f'||e.key==='F'){toggleFullscreen();}
+  else if(e.key==='Escape'){ if(document.body.classList.contains('overview')) exitOverview(); }
+});
+
+/* 全屏（进入后图标变退出全屏）*/
+const ICON_MAX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+const ICON_MIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+function syncFsIcon(){const fs=!!document.fullscreenElement;fsBtn.innerHTML=fs?ICON_MIN:ICON_MAX;fsBtn.title=fs?'退出全屏 F':'全屏 F';}
+function toggleFullscreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});}else{document.exitFullscreen();} }
+fsBtn.onclick=toggleFullscreen;
+function reanchor(){ if(CTRL||document.body.classList.contains('overview'))return; slides[idx].scrollIntoView({block:'start',behavior:'auto'}); }
+document.addEventListener('fullscreenchange',()=>{syncFsIcon();setTimeout(reanchor,90);});
+syncFsIcon();
+
+/* 总览 Overview：每页包进 .slide-inner 缩放成缩略图，排网格（按当前视窗比例）*/
+function applyOverviewScale(){if(!document.body.classList.contains('overview'))return;const cellW=slides[0].getBoundingClientRect().width,scale=cellW/window.innerWidth;slides.forEach(s=>{s.style.height=(window.innerHeight*scale)+'px';const inner=s.querySelector(':scope>.slide-inner');if(inner)inner.style.transform='scale('+scale+')';});}
+function enterOverview(){slides.forEach(s=>{if(!s.querySelector(':scope>.slide-inner')){const w=document.createElement('div');w.className='slide-inner';while(s.firstChild)w.appendChild(s.firstChild);s.appendChild(w);}});document.body.classList.add('overview');requestAnimationFrame(applyOverviewScale);}
+function exitOverview(){const target=idx;restoringSlide=true;slides.forEach(s=>{const w=s.querySelector(':scope>.slide-inner');if(w){while(w.firstChild)s.insertBefore(w.firstChild,w);w.remove();}s.style.height='';});document.body.classList.remove('overview');balanceHeads();if(CTRL)setActive(target);else slides[target].scrollIntoView({block:'start',behavior:'instant'});updateCurrent(target);requestAnimationFrame(()=>requestAnimationFrame(()=>{restoringSlide=false;}));}
+function toggleOverview(){document.body.classList.contains('overview')?exitOverview():enterOverview();}
+ovBtn.onclick=toggleOverview;
+document.body.addEventListener('click',e=>{if(!document.body.classList.contains('overview'))return;const sl=e.target.closest('.slide');if(sl){const i=slides.indexOf(sl);if(i>=0){idx=i;exitOverview();updateCurrent(i);}}});
+addEventListener('resize',()=>{if(document.body.classList.contains('overview'))applyOverviewScale();else reanchor();balanceHeads();});
+
+/* ===== 居中型页竖向平衡：直接量"页眉下沿→内容"和"内容→页脚上沿"两个可见空白，让它们相等 =====
+   ⚠️ 别拿页眉高度当 padding-bottom（试过，会系统性补过头）：页眉的留白已经是它自己的 margin-bottom，
+   不需要重复补；真正缺的只是页脚那一截（.foot 绝对定位、不占流式空间，但视觉上离底边有自己的 inset）。
+   两个空白差是 P 的线性函数、斜率恰为 -1（justify-content:center 对称分担），所以不用试错：
+   newPad = 当前 padding-bottom + (topGap − botGap)，一步算出让两个空白相等的正确值。
+   只作用于标了 .vc 的居中型页；填满型页不动 */
+function balanceHeads(){
+  if(document.body.classList.contains('overview'))return;
+  document.querySelectorAll('.body-area.vc').forEach(function(ba){
+    var head=ba.parentElement.querySelector('.head');
+    var foot=ba.parentElement.querySelector('.foot');
+    var kids=ba.children; if(!head||!foot||!kids.length)return;
+    var firstTop=kids[0].getBoundingClientRect().top;
+    var lastBottom=kids[kids.length-1].getBoundingClientRect().bottom;
+    var topGap=firstTop-head.getBoundingClientRect().bottom;
+    var botGap=foot.getBoundingClientRect().top-lastBottom;
+    var curPad=parseFloat(getComputedStyle(ba).paddingBottom)||0;
+    ba.style.paddingBottom=Math.max(0,curPad+(topGap-botGap))+'px';
+  });
+}
+requestAnimationFrame(balanceHeads);
+
+/* 底部控制栏 / 右侧导航点各自独立显隐：移到底部出底部栏、移到右侧出右侧点，离开该区即淡出 */
+document.addEventListener('mousemove',e=>{
+  controls.classList.toggle('show', e.clientY > window.innerHeight - 120);
+  navDots.classList.toggle('show', e.clientX > window.innerWidth - 120);
+});
+document.addEventListener('mouseleave',()=>{ controls.classList.remove('show'); navDots.classList.remove('show'); });
+
+const initial=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1),10)||1)-1));
+window.scrollTo(0,0);slides.forEach(paintSlide);updateCurrent(initial);
+if(CTRL) setActive(initial);else requestAnimationFrame(()=>slides[initial].scrollIntoView({block:'start',behavior:'instant'}));
+addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(n>=1&&n<=slides.length)go(n-1);});
+</script>
+<dialog id="lightbox" aria-label="界面大图"><button id="closeLightbox" aria-label="关闭大图">关闭 ×</button><a id="originalImage" target="_blank" rel="noopener">打开原始图片 ↗</a><img id="largeImage" alt="学习 Workspace 界面大图"></dialog>
+<script>
+const lightbox=document.getElementById('lightbox');let imageTrigger;
+document.addEventListener('click',e=>{const b=e.target.closest('[data-enlarge]');if(!b||document.body.classList.contains('overview'))return;imageTrigger=b;document.getElementById('largeImage').src=b.dataset.enlarge;document.getElementById('originalImage').href=b.dataset.enlarge;lightbox.showModal();});
+document.getElementById('closeLightbox').onclick=()=>lightbox.close();
+lightbox.addEventListener('click',e=>{if(e.target===lightbox)lightbox.close();});
+lightbox.addEventListener('close',()=>imageTrigger?.focus({preventScroll:true}));
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{if(document.body.classList.contains('overview'))return;const n=parseInt(a.hash.slice(1),10);if(Number.isFinite(n)){e.preventDefault();go(n-1);}}));
+</script>
+</body>
+</html>

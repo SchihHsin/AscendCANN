@@ -1,0 +1,70 @@
+{
+  "mode": "built-in image_gen",
+  "date": "2026-09-15",
+  "common": "Create production-quality beautiful Chinese desktop UI screenshot mockup 1792x1024 landscape. ONE full screen, app only, no slide border, no captions/annotations outside UI, no browser/device chrome. Reference is visual STYLE: Ascend Space general AI workspace, narrow left sidebar 12%, middle continuous AI conversation 23%, right broad 65% infinite dotted canvas. White pale lavender elegant UI, purple accent, fine line Lucide-like icons, clear readable Chinese, refined shadows. Canvas objects loosely staggered, DIFFERENT sizes with real meaningful imagery/content, soft irregular tinted group halos without enclosing rectangular dashboards; only sparse semantic curved connectors. Top canvas title and 本任务内容 button, bottom right small minimap zoom and fit controls. Free spatial objects can be moved/resized using selected-object handles and contextual toolbar. No fixed tabs, top stepper or permanent alert above chat. Task sidebar retains 新建任务 / 我的任务 / 学习 / project tasks. Storage CLOSED unless specifically requested; when open use small FLOATING closable library panel, not permanent fourth full-height column. Group collapse/restore preserves positions. Contextual recommendations dismissible and adjacent to the relevant response. No arbitrary results/metrics. Tiny footer in app: 设计示意 · 模拟内容. Do not use CUDA, real NPU completion claims, fake dates. Code must be minimal technically coherent: image is HWC 224x224x3; chw = image.transpose(2, 0, 1); input_data = chw[None, ...]; expected 1x3x224x224. State must match original vs practice vs applied file. Focus on requested single step. All text Chinese except code filenames/dimensions. Keep entire screen uncropped. User avatar differs from AI avatar.",
+  "prompts": [
+    [
+      "A1",
+      "主动学习：进入与表达目标",
+      "Selected sidebar category 学习, selected task 学会图像输入预处理. Chat user 我有 Python 基础，想学会图像输入预处理。每天半小时。 Assistant 将结合你的基础准备学习路径，你也可以选用已有路径。 Canvas is airy learning entry with large elegant title 从一个目标开始学习, a beautiful RGB tensor preview loose upper-right, a sizeable goal composer center-left containing 学会图像输入预处理 and 生成学习路径 button. Lower two compact browse objects 图像预处理入门 and 模型部署基础 with tiny actual diagram thumbnails and 选用路径 links. No generated path yet! A short separate collapsed 最近学习 note near lower-left. 本任务内容 · 2 top button closed. No node details or code yet. Free canvas not a grid landing card wall."
+    ],
+    [
+      "A2",
+      "主动学习：审阅并调整路径",
+      "Same learning task 学会图像输入预处理. Chat user 环境已经准备好了，跳过环境配置，把跟练提前。 Assistant 预览调整：跳过环境配置，保留理解、跟练和验证。确认后生效。 Canvas main artifact is learning path flowing organically left-to-right with four readable connected nodes: 环境配置 small gray struck-through labeled 拟跳过, 理解输入维度, 动手调整通道, 验证输入. Paths are spatial nodes not a fixed top stepper. Selected 动手调整通道 has drag handle and context toolbar 移动 / 调整 / …; subtle purple AI cursor labeled AI 调整中 near affected node. A FLOATING small pending diff card adjacent 显示调整预览 with 跳过 环境配置 and buttons 确认调整 / 取消. Small reference 时间预算：每天 30 分钟. One source thumbnail RGB tensor beside path. Primary learning path button 开始学习 disabled visually until confirmation; use 确认并开始 as primary in diff instead. 本任务内容 closed. No already completed learning."
+    ],
+    [
+      "A3",
+      "主动学习：看讲解与图解",
+      "Same learning task 学会图像输入预处理. Chat user 这里的通道顺序是什么意思？ Assistant 图解已关联到当前讲解。可以固定图解，或拖到视频旁边。 Canvas soft loose group 理解输入维度. Large video player left-middle with real educational visual: image of cat broken into red green blue planes, readable player timeline 02:14 / 06:30 and pause icon, title 图像为什么有三个通道. Separate larger transparent RGB exploded tensor right slightly higher with labels HWC (224,224,3) and CHW (3,224,224), a thin relation line from selected subtitle 通道顺序 to tensor. Small current chapter note underneath video HWC 与 CHW. Selected tensor with corner handles and contextual toolbar 固定参考 / 对照 / 收纳. Compact path overview at upper-left shows 理解输入维度 当前 and 动手调整通道 下一步, not permanent sidebar. Bottom near lesson natural action 继续跟练. Library closed. No fake code execution."
+    ],
+    [
+      "A4",
+      "主动学习：跟练并处理反馈",
+      "Same learning task 学会图像输入预处理. Chat user 我先试一下，把轴顺序改成 2,0,1。 Assistant 本次练习形状正确，可以进入最后的输入检查。 Canvas a TEMPORARY focused comparison island with subtle shared top toolbar 图解与练习 · 退出对照; left RGB diagram labeled HWC → CHW; right code practice preprocess_exercise.py with code chw = image.transpose(2, 0, 1) newline input_data = chw[None, ...] newline print(input_data.shape). Attached BELOW code in SAME object inline result 练习检查通过 · (1, 3, 224, 224) and buttons 继续输入检查 / 再试一次. Small preceding attempt expandable 上次尝试：轴顺序不匹配 (collapsed, not current error). Behind focus at lower-left retain dimmed collapsed 理解输入维度 group in original location; dot canvas surrounding. This is local practice success only not real NPU/project verification. Library closed, focus stage temporary rather than all-canvas fixed panel."
+    ],
+    [
+      "A5",
+      "主动学习：完成并保存",
+      "Same learning task 学会图像输入预处理. Chat user 检查通过了，帮我保存这次学习，下次还能找到。 Assistant 已保存学习记录、练习副本和验证结果。下次可以从这里继续。 Canvas main loose artifact 学习完成 · 图像输入预处理 with three checked rows 理解输入维度 / 动手调整通道 / 验证输入 and short completion evidence 输入形状 (1,3,224,224), no NPU claim. Separate medium code artifact preprocess_exercise.py · 已保存, another small optional dismissible suggestion 将预处理接入推理任务 with 查看建议 and X (not automatically started). OPEN compact floating library at upper-right 本任务内容 X with miniature RGB+code thumbnails entry 图像输入预处理 · 已收纳 and 恢复原位 button plus 学习记录.md. Collapsed path thumbnail retains complete status. Small toast 已收纳学习内容 · 撤销. Canvas spacious. No expanded RGB learning group duplicate in canvas. Learning scope is this narrow goal completed, not all model deployment."
+    ],
+    [
+      "B1",
+      "开发中学习：遇到问题",
+      "Selected sidebar project task 部署图像推理服务, project image-inference; 学习 category remains available unselected. Chat user 运行失败了，帮我看一下。 Assistant 当前输入的维度与模型要求不一致。 Directly under that response small dismissible recommendation 要先理解通道顺序吗？ with 解释并跟练 / 直接看修复 and X. Canvas loose original file preprocess.py · 原文件 · 未修改 with code image = load_image() newline input_data = image[None, ...], attached separate error log lower-right 输入形状不匹配 / 实际 (1,224,224,3) / 需要 (1,3,224,224). Thin connector from selected input_data to error line. Only these two artifacts. Context toolbar on selected line 解释这里 / 固定 / … . No learning route or tensor expanded yet. Library closed."
+    ],
+    [
+      "B2",
+      "开发中学习：就地展开局部学习",
+      "Same selected task 部署图像推理服务, project image-inference (NEVER rename to learning task). Chat user 带我理解并练一下，原文件先别改。 Assistant 将在隔离副本中学习，原文件和错误现场保留。 Canvas original preprocess.py · 原文件 · 未修改 pinned upper-left, code input_data = image[None, ...]. Soft irregular group 理解输入维度 extends across middle-right with a beautiful RGB tensor floating and small organically connected learning nodes 理解 → 试改 → 验证 (inside group, not a fixed page stepper). Fine purple connector from original selected code to tensor. Small original error log lower-left collapsed 保留错误现场. Near learning group primary 开始隔离练习. Selected visual with drag/resize handles and 固定参考 / 对照 / 收纳. Library closed. No project edits or success."
+    ],
+    [
+      "B3",
+      "开发中学习：隔离跟练",
+      "Same task 部署图像推理服务, project image-inference. Chat user 我改成 2,0,1，再补一个 batch 维度。 Assistant 练习检查已通过。项目原文件保持不变，你可以审阅修改。 Canvas temporary comparison island with top 退出对照, left beautiful RGB tensor HWC → CHW, right preprocess_exercise.py · 隔离副本 with two-line corrected code chw = image.transpose(2, 0, 1) newline input_data = chw[None, ...]. Inline bottom result 练习通过 (1,3,224,224), explicit 原项目尚未修改 and primary 查看修改建议. Outside island upper-left small pinned original preprocess.py original input_data = image[None, ...], lower-left collapsed 原始错误现场. No project run success. Storage closed, meaningful free spatial context visible. Clean focus layout only user-requested temporary."
+    ],
+    [
+      "B4",
+      "开发中学习：审阅并应用修改",
+      "Same task 部署图像推理服务, project image-inference. Chat user 把刚才学到的修改用于原文件，我先确认一下。 Assistant 将仅修改输入预处理。请审阅差异，确认后写入项目。 Canvas large floating diff artifact preprocess.py · 待确认, two clear before/after sections: red removed input_data = image[None, ...]; green added chw = image.transpose(2, 0, 1) and input_data = chw[None, ...]. Buttons 确认应用 / 取消. Small supporting pinned learning result card left-bottom 练习检查通过 · (1,3,224,224) and collapsed group 理解输入维度 behind, library closed. Highlight affected file in selected project navigation subtly but keep general workspace. No auto applied label, no project success; explicit 原文件未修改 until confirm. No full fixed grid. A subtle selected-line anchor connects code change to learning result."
+    ],
+    [
+      "B5",
+      "开发中学习：回到项目验证",
+      "Same task 部署图像推理服务, project image-inference. Chat user 确认应用，然后重新验证输入。 Assistant 修改已应用，项目输入检查通过。完整推理仍待运行。 Canvas original preprocess.py · 已应用 shows corrected two lines, staggered main result artifact 项目输入检查通过 with actual/expected (1,3,224,224) matching and clear next state 完整推理 · 待运行 plus primary 运行完整推理. Do not claim NPU or whole project success, do not use CUDA commands. Small saved file result input-check.log. Learning group is CLOSED and stored, no huge tensor duplicate. OPEN small floating library upper-right 本任务内容 X, thumbnail row 理解输入维度 · 已收纳 and 恢复原位, other row 学习记录 · 查看. Bottom toast 学习组已收纳 · 撤销. Plenty dotted canvas visible; library not permanent column. Visual links only between original file and its project input check. Returning task progress is hero, learned material retrievable."
+    ]
+  ],
+  "finalImages": {
+    "A1": "cf49a812-01a9-4cf9-82cc-e39b205a79a9",
+    "A2": "eca6c7e5-26ec-49c5-b834-036258ad165a",
+    "A3": "3f7cf15e-377d-4159-b06c-1aed9ca4ba73",
+    "A4": "04392e7d-b7ad-4315-84d2-b4cbfd2c9da7",
+    "A5": "d934e34a-7467-4770-be99-70f048106037",
+    "B1": "768c32bd-b192-4325-9596-bbdd6ac2ba0c",
+    "B2": "83c38d8b-1bd4-47f0-bb5e-afdb394d223b",
+    "B3": "873b420d-7560-43ca-b143-bb50a8800f02",
+    "B4": "2bc465d8-e13d-47ba-b09a-35b82d2039be",
+    "B5": "f0eaac3c-d19c-4177-9b79-eba40163140b"
+  },
+  "corrections": "A2–A5：统一主动学习任务名为图像输入预处理；A2 取消未被画出的提前跟练表达与重复确认；A3 移除 YouTube 图标；A4 删除无关推理背景；A5 收纳组保留完整材料。"
+}
