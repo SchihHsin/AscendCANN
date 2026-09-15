@@ -1,0 +1,9 @@
+{
+  "url": "http://127.0.0.1:8789/cann-dashboard/ploy-interaction-lab/proactive-research.html?real=1#5",
+  "title": "Ploy 主动交互研究：第 5 页图文核验",
+  "capturedAt": "2026-09-15T09:50:20+08:00",
+  "viewport": {"width": 1280, "height": 720},
+  "browserMetrics": {"innerWidth": 1280, "innerHeight": 720, "scrollWidth": 1280},
+  "stateNote": "本地报告单页桌面 QA；非网页全页截图，非竞品原图。无登录或 Cookie 遮罩。",
+  "screenshot": "report-05-1280.png"
+}
