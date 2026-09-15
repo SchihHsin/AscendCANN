@@ -2817,6 +2817,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-09-15（空间画布故事线初稿）
 
+### 2026-09-15（画布管理连续状态补充）
+
+- 用户要求保持自由画布，以少量连续图片解释管理方式。新增 storyboards/spatial-canvas/C1-free.png、C2-focus.png、C3-store.png 及 canvas-management.md，分别展示自由展开、临时对照、浮层收纳恢复。
+- 使用 ImageGen 概念图，非真实运行；文档记录生成内容偏差。保持原代码 Demo、报告页序和机制边界不变。仅本轮文件检查后提交推送，无关修改保留。
+
 - 用户选定方案 2 空间画布，要求先画图，按操作步骤组织，每步可含多个设计点，确认后再做代码。
 - 保存 `cann-dashboard/ploy-interaction-lab/storyboards/spatial-canvas/` 八张生成图片及 README：A1–A4 主动学习、B1–B4 开发途中学习。所有执行数据为模拟，README 记录对话、任务标题及张量代码待校准项，图片尚非技术实现规格。
 - 未改变报告序列及机制边界；未完成的 canvas-workspace 与 canvas-assets 保持未跟踪，代码暂停。检查文件存在和 git diff --check 后仅提交本轮图片、索引与交接并推送；无关修改保留。
