@@ -2775,3 +2775,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 这是基于 VS Code 常见结构的 L 级交互提案，不是 VS Code 官方截图或已实现的扩展。代码、分支修改、运行日志全为前端模拟，无真实文件、模型或 NPU 执行；文件树/导航主要用于呈现现场，不是完整编辑器实现。
 - 验证：两段 JS 的 node --check、git diff --check 通过；浏览器逐步点按定位、Diff、接受、运行 PASS 和撤销恢复；1280×720 独立场景及报告 #17 截图检查，修复内嵌小高度时终端按钮被遮挡。已有五个非 IDE 场景逻辑保留，未重测全部动作。不影响 API / Host / Application 边界。
 - 完成后仅暂存四个本任务文件及本记录并推送 origin/main；无关脏文件保留。剩余竞品截图缺口仍按上一条记录，不因本轮 Demo 更新视为补齐。
+
+### 2026-09-15（IDE 活动栏统一 Lucide 图标）
+
+- 用户要求左侧活动栏使用 Lucide。`vscode-concept.js` 将五个字符替换为官方 Lucide files / search / git-branch / bug-play / blocks 内联 SVG；CSS 统一 23px、1.7 描边、48px 图标槽与左侧选中线，补中文名称和悬停提示。
+- 图标来源为 lucide-icons/lucide 官方仓库，许可证保留在 `LUCIDE-LICENSE.txt`，不依赖外部运行时。仅改活动栏视觉，不新增导航功能、不改报告页码或设计文案。
+- node --check、git diff --check 和浏览器截图核对通过。只提交本次 JS/CSS、许可证和交接记录，检查后立即推送 origin/main；其他脏文件不动。
