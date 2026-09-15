@@ -1,9 +1,12 @@
 /* VS Code-shaped learning concept; no real filesystem or process execution. */
 (()=>{
+if(window.workspaceActive)return;
 const scene=new URLSearchParams(location.search).get('scene');
 if(!['ide','experiment','handoff'].includes(scene))return;
 window.vsConceptActive=true;
 let state=scene==='experiment'?2:0,muted=false,note='',timer;
+const workspaceState=new URLSearchParams(location.search).get('wsState');
+if(workspaceState!==null&&['0','1','2','3','4'].includes(workspaceState))state=Number(workspaceState);
 const app=document.getElementById('pcApp');
 const button=(text,action)=>'<button data-vs="'+action+'">'+text+'</button>';
 function render(){
@@ -25,6 +28,7 @@ if(scene==='experiment'){
  const accept=app.querySelector('[data-vs="accept"]');if(accept)accept.textContent='接受到隔离分支';
  const result=app.querySelector('.vs-result');if(result)result.insertAdjacentHTML('afterbegin','<b>隔离实验 · 主项目未修改</b><br>');
 }
+if(new URLSearchParams(location.search).get('view')==='code')parent.postMessage({wsCodeState:state},location.origin);
 }
 function act(a){
 note='';

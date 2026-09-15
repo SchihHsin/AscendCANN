@@ -2781,3 +2781,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求左侧活动栏使用 Lucide。`vscode-concept.js` 将五个字符替换为官方 Lucide files / search / git-branch / bug-play / blocks 内联 SVG；CSS 统一 23px、1.7 描边、48px 图标槽与左侧选中线，补中文名称和悬停提示。
 - 图标来源为 lucide-icons/lucide 官方仓库，许可证保留在 `LUCIDE-LICENSE.txt`，不依赖外部运行时。仅改活动栏视觉，不新增导航功能、不改报告页码或设计文案。
 - node --check、git diff --check 和浏览器截图核对通过。只提交本次 JS/CSS、许可证和交接记录，检查后立即推送 origin/main；其他脏文件不动。
+
+### 2026-09-15（任务 Workspace 交互提案）
+
+- 用户确认将 IDE 概念升级为任务 Workspace。新增 `task-workspace.js` / `task-workspace.css`，由 `proactive-concepts.html` 加载；报告 #17、18、21 对应运行遇阻、隔离实验和任务接续，保留 27 页序列及既有竞品证据。
+- 左侧对话携带路径、文件与日志，右侧展示维度动画、实验 Diff、结果对照、学习材料和代码子视图；VS Code 为任务材料之一。支持预演、接受、模拟运行、撤销、保存回执推进节点 04，代码子视图与任务状态同步。对话仅按示例关键词路由，不接真实模型。
+- 全部新增能力为 L 级设计提案：非真实 Ploy / Codex 产品截图，未执行真实代码或 NPU 测试；不改变 API / Host / Application 边界，其他五个场景未重构。
+- 检查：两份 JS 的 node --check、git diff --check；浏览器检查报告 #17 / #18，验证实验接受与模拟运行、节点推进、代码返回保留节点 04、撤销及对话打开可视化。保留原有页面滚动和独立大尺寸入口。
+- 本轮仅提交上述五个产品文件与本交接记录，检查后推送 origin/main；无关脏文件保持原样。真实 AI、真实执行和学习进度持久化仍未接入。
