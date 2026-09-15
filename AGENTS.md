@@ -2814,3 +2814,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 开发建议依据入口放回诊断回复并可关闭；模拟返回后的变化摘要可独立关闭，授权与历史不被删除。设置从对话标题区进入，两个场景共用。
 - 浏览器实测并排、维度动画、关闭恢复、授权返回与关闭摘要、练习内联结果；两份 JS 语法与 git diff --check 通过。报告页序及竞品证据不变，所有执行仍为模拟。
 - 仅本轮五个文件检查后提交并推送 origin/main，无关修改保留。
+
+### 2026-09-15（空间画布故事线初稿）
+
+- 用户选定方案 2 空间画布，要求先画图，按操作步骤组织，每步可含多个设计点，确认后再做代码。
+- 保存 `cann-dashboard/ploy-interaction-lab/storyboards/spatial-canvas/` 八张生成图片及 README：A1–A4 主动学习、B1–B4 开发途中学习。所有执行数据为模拟，README 记录对话、任务标题及张量代码待校准项，图片尚非技术实现规格。
+- 未改变报告序列及机制边界；未完成的 canvas-workspace 与 canvas-assets 保持未跟踪，代码暂停。检查文件存在和 git diff --check 后仅提交本轮图片、索引与交接并推送；无关修改保留。
