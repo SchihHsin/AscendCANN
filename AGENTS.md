@@ -2932,3 +2932,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：设计背景 / 问题假设，L 级，不表述为已验证的普遍行为；不改变 API / Host / Application 层边界。
 - 验证：`node build.mjs`、`node --check build.mjs`、`git diff --check`；生成 31 页并推送成功。无关脏文件未暂存、未清理。
 - Commit / push：`43f98d7c`（`content: refine AI learning problem statement`）已推送至 `origin/main`。未决事项：无。
+
+### 2026-09-16（优化问题页为上下叙事与可视化转场）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/build.mjs`、生成页 `index.html`。将问题页标题与正文改为上下阅读布局；底部把“完成当前任务 → 形成可迁移的理解”与“接下来：让学习进入任务过程”呈现为两个视觉节点和箭头，31 页序列不变。
+- 依据与置信度：纯视觉与信息层级调整，承接既有 L 级设计背景假设；不新增产品事实，不改变 API / Host / Application 层边界。
+- 验证：在页面目录执行 `node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、`git diff --check`；生成 31 页并推送成功。无关脏文件未暂存、未清理。
+- Commit / push：`e9b8d1e3`（`style: visualize learning transition on problem page`）已推送至 `origin/main`。未决事项：无。
