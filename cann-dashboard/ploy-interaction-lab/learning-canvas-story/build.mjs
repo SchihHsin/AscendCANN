@@ -64,8 +64,9 @@ ${jcss}
 .story-deck .summary-note{font-size:var(--fs-body);line-height:1.65;color:var(--ink-2)}
 .story-deck .s-cover .cv-bg{background:linear-gradient(90deg,rgba(8,6,18,.97) 0%,rgba(8,6,18,.87) 44%,rgba(8,6,18,.45)),url('images/A1.png') center/cover}
 .story-deck .s-cover .cv-logo{height:5vh;width:auto;filter:brightness(0) invert(1)}
-.story-deck .s-cover .cv-name{font-size:clamp(42px,4.4vw,76px);line-height:1.14;max-width:13ch;letter-spacing:-.03em}
+.story-deck .s-cover .cv-name{font-size:clamp(42px,4.4vw,76px);line-height:1.14;max-width:18ch;letter-spacing:-.03em}
 .story-deck .s-cover .cv-name span{display:block;color:#c4b3ff}
+.story-deck .s-cover .cv-name .cv-line{display:block;color:#fff;white-space:nowrap}
 .story-deck .s-cover .cv-lead{font-size:var(--fs-h2);max-width:31em;line-height:1.7}
 .story-deck .cover-links{display:flex;gap:1vw;margin-top:3vh}
 .story-deck .cover-links a{border:1px solid #827896;background:rgba(255,255,255,.07);padding:1vh 1.3vw;border-radius:99px;color:#f0eaff;text-decoration:none;font-size:var(--fs-body)}
@@ -106,7 +107,7 @@ const detail=(story,s,i)=>`<section class="slide s-glow detail-step" data-templa
 <div class="points">${s.points.map((p,j)=>`<div class="point"><h2 class="pt-title">${j+1}. ${esc(p[0])}</h2><p class="pt-desc">${esc(p[1])}</p></div>`).join('')}</div>
 <p class="continuity"><b>画布管理</b><br>${esc(s.canvas)}</p><p class="continuity"><b>下一步</b><br>${esc(s.next)}</p></div>
 <button class="detail-image shot" data-enlarge="images/${s.id}.png" aria-label="放大${s.id}界面"><img src="images/${s.id}.png" alt="${esc(s.response)}"></button></div></section>`;
-const cover=`<section class="slide s-cover" data-title="让学习在合适的时机发生"><div class="cv-bg"></div><div class="cv-overlay"></div><div class="cv-inner"><div class="cv-top"><img class="cv-logo" src="../../../Ascendlogo.svg" alt="昇腾"></div><div class="cv-main"><div class="cv-kicker">SPATIAL LEARNING WORKSPACE</div><h1 class="cv-name">让学习在合适的时机<span>发生</span></h1><p class="cv-lead">主动学习与开发中学习的两条完整故事线<br>每一步：用户操作 · 界面响应 · 设计点 · 画布管理</p><div class="cover-links"><a href="#2">主动学习 →</a><a href="#13">开发中学习 →</a><a href="#24">共用机制 →</a></div></div><div class="cv-bot"><span>10 张关键状态图 · 24 页 · 大图与设计说明配对</span></div></div></section>`;
+const cover=`<section class="slide s-cover" data-title="让学习在合适的时机发生"><div class="cv-bg"></div><div class="cv-overlay"></div><div class="cv-inner"><div class="cv-top"><img class="cv-logo" src="../../../Ascendlogo.svg" alt="昇腾"></div><div class="cv-main"><div class="cv-kicker">SPATIAL LEARNING WORKSPACE</div><h1 class="cv-name"><span class="cv-line">让学习在合适的时机</span><span>发生</span></h1><p class="cv-lead">主动学习与开发中学习的两条完整故事线<br>每一步：用户操作 · 界面响应 · 设计点 · 画布管理</p><div class="cover-links"><a href="#2">主动学习 →</a><a href="#13">开发中学习 →</a><a href="#24">共用机制 →</a></div></div><div class="cv-bot"><span>10 张关键状态图 · 24 页 · 大图与设计说明配对</span></div></div></section>`;
 const rules=[
  ['自由展开','从当前问题或路径节点打开内容','新内容在相关对象附近展开；拖动／缩放由用户控制','A1、A3、B1、B2'],
  ['轻分组','同一段学习包含多个对象','保留组名和关联；内部对象可自由排放','A3、B2'],
