@@ -1,6 +1,7 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {stories} from './story-data.mjs';
+import {introPages,introCSS} from './intro.mjs';
 const root=fileURLToPath(new URL('.',import.meta.url));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let template=await readFile(root+'source/deck-template.html','utf8');
@@ -80,8 +81,8 @@ body.overview.story-deck .detail-step .slide-inner{padding:8vh 3vw 4vh}
 body.overview.story-deck .hero-shot,body.overview.story-deck .detail-image{pointer-events:none}
 @media print{body.story-deck{overflow:visible;height:auto;background:#fff}.story-deck #controls,.story-deck #navDots{display:none}.story-deck .slide{break-after:page;height:100vh}.story-deck #lightbox{display:none}}
 `;
-const chapterTabs=active=>`<div class="section-tabs"><span class="${active==='A'?'active':''}">01 主动学习</span><span class="${active==='B'?'active':''}">02 开发中学习</span><span class="${active==='C'?'active':''}">03 共用机制</span></div>`;
-const phaseStart={A:3,B:14};
+const chapterTabs=active=>`<div class="section-tabs"><span class="${active==='P'?'active':''}">主动交互</span><span class="${active==='A'?'active':''}">主动学习</span><span class="${active==='B'?'active':''}">开发中学习</span><span class="${active==='C'?'active':''}">共用机制</span></div>`;
+const phaseStart={A:7,B:18};
 const journey = story => {
   const cells=story.steps;
   const row=(name,en,cls,inner)=>`<div class="jrn-grid ${cls}"><div class="jrn-rl"><div class="jrn-rn">${name}</div><div class="jrn-re">${en}</div></div>${cells.map(inner).join('')}</div>`;
@@ -115,7 +116,7 @@ const rules=[
  ['恢复／撤销','需要复习，或刚才收错内容','返回同一组及其关系、原位置；当前内容不被替换','A5、B5']
 ];
 const summary=`<section class="slide s-gray" data-title="一套画布管理动作，贯穿两条学习故事线"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">一套画布管理动作，贯穿两条学习故事线</span></div><div class="subttl">共用机制</div></div>${chapterTabs('C')}</div><div class="body-area"><div class="summary-wrap"><table class="summary-table"><thead><tr><th>交互</th><th>何时发生</th><th>用户能看见与控制什么</th><th>对应步骤</th></tr></thead><tbody>${rules.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table><p class="summary-note"><b>稳定性规则：</b>阅读时不自动移动对象；完成、继续、退出对照或手动整理后才调整布局。收纳不等于删除，确认路径不等于应用项目代码。<br><b>验证重点：</b>用户能否找到原文件、区分副本与正式修改、恢复收纳内容，以及说清当前通过的是哪一项检查。</p></div></div><div class="foot">设计提案 · 尚未实现自由画布运行时 · <a href="../proactive-research.html#17">返回 Ploy 研究材料</a></div></section>`;
-const sections=[cover];
+const sections=[cover.replace('href="#2"','href="#6"').replace('href="#13"','href="#17"').replace('href="#24"','href="#28"').replace('24 页','28 页'),...introPages(chapterTabs)];
 for(const story of stories){sections.push(journey(story));story.steps.forEach((s,i)=>sections.push(hero(story,s,i),detail(story,s,i)));}
 sections.push(summary);
 template=template.replace('<title>汇报 PPT 模板</title>','<title>空间画布学习体验 · 两条完整故事线</title>').replace('<body>','<body class="story-deck">');
@@ -123,7 +124,7 @@ const start=template.indexOf('<div id="deck">');
 const end=template.indexOf('<!-- 调色面板',start);
 template=template.slice(0,start)+`<div id="deck">\n${sections.join('\n')}\n</div>\n`+template.slice(end);
 template=template.replace('class="cv-inner"','class="cv-content"').replace('class="cv-main"','class="cv-center"');
-template=template.replace('</style>',theme+'\n</style>');
+template=template.replace('</style>',theme+introCSS+'\n</style>');
 // The distributed template lacks the documented hash hook. Extend its existing runtime.
 template=template.replace('idx=i; const s=slides[idx];','idx=i; const s=slides[idx];\n  if(!document.body.classList.contains("overview")) history.replaceState(null,"","#"+(idx+1));');
 template=template.replace('let idx=0;','let idx=0;let restoringSlide=false;');

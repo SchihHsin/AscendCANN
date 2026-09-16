@@ -2826,6 +2826,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保存 `cann-dashboard/ploy-interaction-lab/storyboards/spatial-canvas/` 八张生成图片及 README：A1–A4 主动学习、B1–B4 开发途中学习。所有执行数据为模拟，README 记录对话、任务标题及张量代码待校准项，图片尚非技术实现规格。
 - 未改变报告序列及机制边界；未完成的 canvas-workspace 与 canvas-assets 保持未跟踪，代码暂停。检查文件存在和 git diff --check 后仅提交本轮图片、索引与交接并推送；无关修改保留。
 
+### 2026-09-16（学习画布前置 Ploy 主动交互分析）
+
+- 用户确认 Ploy 主线是主动交互。学习故事材料新增 #2–5：主动建议、授权分层、任务型 Workspace、学习画布承接；总页数 28，主动学习入口改为 #6，开发中学习 #17。既有故事与图片保留。
+- 新增 learning-canvas-story/intro.mjs，修改 build.mjs、生成 index.html、README；原 proactive-research.html 两处入口同步新页码。
+- Ploy 使用既有官方视频 company-42m27.png 的两处建议局部，以及官方发布权限截图，均可点击原图与来源。H 仅限画面可见状态，不声称实测执行。Workspace 与画布使用本方案图，明确 L 设计判断，不宣称 IDE 已被替代。
+- 1600×900 核验新增页边界、Ploy 两页图文、图片放大及28页结构；脚本语法及 diff 检查后仅本轮文件提交推送 origin/main。未更新代码 Demo、无 NPU 执行，不影响 API / Host / Application 边界。
+
 ### 2026-09-15（含画布管理的两条完整学习故事线）
 
 - 新建 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html`，24 页网页 PPT、10 张新的 ImageGen 状态图。每个场景五步，每步采用完整大图页 + 设计说明页，包含操作、响应、设计点、管理动作和下一步。保留既有代码 Demo。
