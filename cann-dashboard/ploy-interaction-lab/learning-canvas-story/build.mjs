@@ -63,7 +63,7 @@ ${jcss}
 .story-deck .summary-table tr:last-child td{border-bottom:0}
 .story-deck .summary-note{font-size:var(--fs-body);line-height:1.65;color:var(--ink-2)}
 .story-deck .problem-wrap{width:min(100%,1100px);display:flex;flex-direction:column;gap:0;align-items:flex-start}
-.story-deck .problem-title{font-size:clamp(34px,4vw,68px);line-height:1.18;letter-spacing:-.04em;max-width:20ch;color:var(--ink)}
+.story-deck .problem-title{font-size:clamp(34px,4vw,68px);line-height:1.18;letter-spacing:-.04em;max-width:none;white-space:nowrap;color:var(--ink)}
 .story-deck .problem-copy{font-size:var(--fs-h2);line-height:1.7;color:var(--ink-2);max-width:34em;margin-top:1.5vh}
 .story-deck .problem-bottom{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:1.2vw;border-top:1px solid #cfd4dc;padding-top:2.2vh;margin-top:5vh;color:#7561cf;font-size:var(--fs-body)}
 .story-deck .problem-bottom span{border:1px solid #c8c1e7;background:rgba(255,255,255,.62);border-radius:12px;padding:1.6vh 1.2vw;line-height:1.45}
