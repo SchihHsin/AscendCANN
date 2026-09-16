@@ -2911,3 +2911,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计素材与边界：图 1 提供代码选中、参数试改、运行练习、编号提示和结果连线等交互点；图 2 提供右侧画布框架。最终 `B6-task-try.png` 保留图 2 的视频卡、解释卡、张量图、代码 / 练习结构和底部缩略图，仅嵌入图 1 的交互点。整张图为 L 级设计提案，文件、运行结果和控件均为模拟，不代表真实产品能力或执行验证；未改变 API / Host / Application 层边界。
 - 验证：ImageGen 生成后人工检查结构；`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、HTMLParser、`git diff --check`；确认生成 30 页，B6 资源存在，原 A3 已恢复。
 - Commit / push：`7421e508`（`feat: add B route task try design point`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：当前浏览器 `file://` 预览未刷新核验，但生成图与页面资源检查通过。
+
+### 2026-09-16（改用用户确认的 B6 原图）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/images/B6-task-try.png`。将 B6 任务中试改设计点替换为用户最新提供的原图（1672×941），不重新生成，不改动 A3、页面内容或 30 页序列。
+- 依据与置信度：用户提供的原图为 B6 设计点的指定视觉素材，属于 L 级设计提案；不新增产品事实，不改变 API / Host / Application 层边界。
+- 验证：`sips -g pixelWidth -g pixelHeight` 确认尺寸，`git diff --check` 通过；无关脏文件未暂存、未清理。
+- Commit / push：`79ec76f8`（`fix: use approved B6 task try image`）已推送至 `origin/main`。未决事项：无。
