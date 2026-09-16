@@ -2,7 +2,7 @@
 
 [打开网页 PPT](https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html)
 
-28 页；新增 #2–5 主动交互与 Workspace 设计依据。Ploy 官方视频与权限截图逐项对应分析，支持放大与来源跳转；后两页是我们的设计推导。每一步仍先看完整大图，再看设计说明。既有 Ploy 研究 #17 / #18 提供入口，原交互 Demo 保留。
+28 页；#2–5 均为真实产品参考分析：用户提供的 Ploy Overview、官方权限设置、对话与产物同屏、对象标注。支持放大与来源跳转；封面也不再使用自有设计图。#6 起进入用户旅程，#7 起展示方案大图。既有 Ploy 研究 #17 / #18 提供入口，原交互 Demo 保留。
 
 | 内容 | 页码 |
 |---|---|

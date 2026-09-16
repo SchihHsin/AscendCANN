@@ -62,7 +62,7 @@ ${jcss}
 .story-deck .summary-table td:first-child{font-weight:650;white-space:nowrap}
 .story-deck .summary-table tr:last-child td{border-bottom:0}
 .story-deck .summary-note{font-size:var(--fs-body);line-height:1.65;color:var(--ink-2)}
-.story-deck .s-cover .cv-bg{background:linear-gradient(90deg,rgba(8,6,18,.97) 0%,rgba(8,6,18,.87) 44%,rgba(8,6,18,.18)),url('images/A3.png') center/cover}
+.story-deck .s-cover .cv-bg{background:linear-gradient(90deg,rgba(8,6,18,.97) 0%,rgba(8,6,18,.87) 44%,rgba(8,6,18,.45)),url('images/ploy-overview-user.png') center/cover}
 .story-deck .s-cover .cv-logo{height:5vh;width:auto;filter:brightness(0) invert(1)}
 .story-deck .s-cover .cv-name{font-size:clamp(42px,4.4vw,76px);line-height:1.14;max-width:13ch;letter-spacing:-.03em}
 .story-deck .s-cover .cv-name span{display:block;color:#c4b3ff}
