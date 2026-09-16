@@ -2869,3 +2869,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：Codex Workspace 图来自用户提供的界面截图，仅作为视觉 / 叙事参考；“Vibe Coding 推动开发者围绕目标与 AI 协作”的表述是 L 级设计背景判断，不宣称 Codex 官方功能全集、迁移比例或真实运行证据。未新增 Ploy 能力事实，不改变 API / Host / Application 层边界。
 - 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；浏览器核验第 4 页无溢出且第 5 页承接正常。
 - Commit / push：`2399d79b`（`feat: add Codex workspace context to Ploy story`）已推送至 `origin/main`。本轮仅提交故事页相关四项文件，无关脏文件未暂存、未清理。未决事项：无。
+
+### 2026-09-16（移除 Intro labels）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/intro.mjs`、生成页 `index.html`。按用户要求移除第 2–5 页图片上的 Intro labels 叠加标签，同时删除对应 CSS 与模板冗余参数；图片、caption、来源说明、放大查看和 28 页序列保持不变。
+- 依据与置信度：属于用户明确的视觉调整，不新增产品能力、竞品事实或研究结论，不影响 API / Host / Application 层边界。
+- 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`，并确认生成页不再包含 `intro-labels`。
+- Commit / push：`a839b1c2`（`style: remove intro image labels`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
