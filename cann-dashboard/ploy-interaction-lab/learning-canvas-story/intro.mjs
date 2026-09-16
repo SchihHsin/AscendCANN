@@ -6,7 +6,7 @@ export const introCSS=`
 .story-deck .intro-page p{font-size:var(--fs-body);line-height:1.7;color:var(--ink-2)}
 .story-deck .intro-page .cx-concl{background:var(--g-ink);color:white;border-radius:12px;padding:1.7vh 1.4vw;font-size:var(--fs-body);line-height:1.6}
 .story-deck .intro-media{display:flex;flex-direction:column;justify-content:center;gap:1.2vh}
-.story-deck .intro-shot{border:1px solid #d7d9e2;border-radius:14px;background:#fff;overflow:hidden;display:block;width:100%;height:53vh;cursor:zoom-in;padding:0}
+.story-deck .intro-shot{border:0;border-radius:0;background:transparent;overflow:visible;display:block;width:100%;height:53vh;cursor:zoom-in;padding:0}
 .story-deck .intro-shot img,.story-deck .intro-shot svg{width:100%;height:100%;object-fit:contain;display:block}
 .story-deck .intro-caption{font-size:var(--fs-sm);line-height:1.6;color:var(--ink-2)}
 .story-deck .intro-labels{display:flex;gap:.7vw;flex-wrap:wrap}
