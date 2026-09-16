@@ -2848,3 +2848,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 全部为 L 级设计提案，AI、视频、运行数据均模拟。项目输入检查与完整推理分开，后者待执行；未改变 API / Host / Application 边界。旅程情绪待用户回放验证。
 - 验证见新目录 QA.md：1600×900 边界、加载、视觉抽查、放大、深链和概览导航；修复概览滚动吸附造成跳页。全屏保留但未确认内置浏览器原生全屏成功。
 - 仅新材料目录、原研究入口与本记录暂存，语法及 diff 检查后提交推送 origin/main；保留无关脏文件。后续待用户确认图示，再实现交互 Demo。
+
+### 2026-09-16（Ploy 分析页去除图片外框）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/intro.mjs`、`build.mjs`、生成页 `index.html`。第 2–5 页的 `.intro-shot` 改为透明背景、无边框、无圆角、可见溢出，使证据图直接落在灰底页面上；第 1 页移除右下角“设计提案 / 所有执行与数据均为模拟”文字。页面序列仍为 28 页，未改变图片内容、放大行为或 API / Host / Application 层边界。
+- 依据与置信度：白框来源为本地 CSS 的容器样式，后续黑底设计点页已有无边框透明容器作为视觉参照；属于 H 级代码 / 页面呈现事实，不新增产品能力或研究结论。
+- 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；浏览器实测第 2 页截图及第 2–5 页 computed style 均为透明背景 / 0px 边框 / 0px 圆角，第 1 页页脚文字已移除。
+- Commit / push：`8b3a2ac3`（`fix: remove intro image frames`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
