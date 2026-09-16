@@ -2904,3 +2904,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：纯视觉排版修正，不新增产品能力、竞品事实或研究结论，不影响页面序列及 API / Host / Application 层边界。
 - 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、HTMLParser、`git diff --check`；确认生成页包含 `.cv-line` 和完整第一行标题。
 - Commit / push：`74273fdc`（`fix: keep cover title line intact`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
+
+### 2026-09-16（新增 B 路线任务中试改设计点）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/images/A3.png`、新增 `images/B6-task-try.png`、`build.mjs`、生成页 `index.html`、`README.md`。撤销此前对 A3 的错误替换，新增 B6“任务中试改”大图页与设计说明页，置于 B5 之后、共用机制之前；总页数由 28 页增至 30 页，封面共用机制入口同步为 #30。
+- 设计素材与边界：图 1 提供代码选中、参数试改、运行练习、编号提示和结果连线等交互点；图 2 提供右侧画布框架。最终 `B6-task-try.png` 保留图 2 的视频卡、解释卡、张量图、代码 / 练习结构和底部缩略图，仅嵌入图 1 的交互点。整张图为 L 级设计提案，文件、运行结果和控件均为模拟，不代表真实产品能力或执行验证；未改变 API / Host / Application 层边界。
+- 验证：ImageGen 生成后人工检查结构；`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、HTMLParser、`git diff --check`；确认生成 30 页，B6 资源存在，原 A3 已恢复。
+- Commit / push：`7421e508`（`feat: add B route task try design point`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：当前浏览器 `file://` 预览未刷新核验，但生成图与页面资源检查通过。
