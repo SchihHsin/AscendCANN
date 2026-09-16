@@ -2897,3 +2897,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：`images/A1.png` 为本项目既有设计示意图，属于 L 级方案表达，不代表已实现产品或真实运行证据；未新增竞品事实，不改变 API / Host / Application 层边界。
 - 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、HTMLParser、`git diff --check`；确认生成页包含新标题和 `images/A1.png` 封面背景。
 - Commit / push：`da3a3832`（`style: refresh learning story cover`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
+
+### 2026-09-16（修正封面标题断行）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/build.mjs`、生成页 `index.html`。将封面标题第一行“让学习在合适的时机”包裹为不换行文本，第二行保留“发生”，并放宽标题容器宽度，避免中文标题在“时 / 机”之间断开。
+- 依据与置信度：纯视觉排版修正，不新增产品能力、竞品事实或研究结论，不影响页面序列及 API / Host / Application 层边界。
+- 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、HTMLParser、`git diff --check`；确认生成页包含 `.cv-line` 和完整第一行标题。
+- Commit / push：`74273fdc`（`fix: keep cover title line intact`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
