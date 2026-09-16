@@ -2883,3 +2883,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：属于用户明确的视觉 / 信息布局调整，不新增产品能力、竞品事实或研究结论，不影响 API / Host / Application 层边界。
 - 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；确认生成页仅在 `div.foot` 中包含 `intro-foot-caption`，不再包含 `intro-caption`。
 - Commit / push：`148c620e`（`style: move intro captions into footer`）已推送至 `origin/main`。本地预览工具因 `file://` URL 策略未能刷新当前标签，未影响源码与生成页检查；无关脏文件未暂存、未清理。未决事项：无。
+
+### 2026-09-16（恢复第 5 页 Ploy Workspace 观察页）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/intro.mjs`、生成页 `index.html`。按用户要求将第 5 页从对象级标注页恢复为旧版“Workspace 将任务对话与产物放在同一现场”，使用既有 Ploy 官方演示 `ready-06m26.png` 局部图，并恢复产品观察、协作重心扩展、学习启发与分析判断；第 4 页 Codex Workspace 保留，28 页序列不变。
+- 依据与置信度：`ready-06m26.png` 为既有 Ploy 官方演示局部证据，H 仅限画面可见的对话 / 意图选项 / 页面预览布局；“Workspace 承接任务协作”及学习迁移属于分析判断 / 设计启发，不代表开发者迁移比例，不改变 API / Host / Application 层边界。Intro labels 未恢复，caption 仍在页脚。
+- 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；确认生成页包含第 5 页旧标题与 `ready-06m26.png`，不包含 `annotation-11m25`。
+- Commit / push：`69354cee`（`content: restore Ploy workspace intro page`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：本地预览工具仍受 `file://` URL 刷新策略限制。
