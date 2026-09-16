@@ -33,6 +33,7 @@
 
 ## 文件与复现
 
+- `images/codex-workspace-user.png`：用户提供的 Codex Workspace 界面参考，用于第 4 页的 Vibe Coding / AI Workspace 背景说明。
 - `images/A1.png`–`A5.png`、`B1.png`–`B5.png`：新的完整故事线图片；旧稿不覆盖。
 - `story-data.mjs`：每步操作、响应、设计点、画布规则和下一步。
 - `source/image-prompts.json`：内置 ImageGen 提示词、最终图映射及修正记录。
