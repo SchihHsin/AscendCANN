@@ -2925,3 +2925,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：属于设计背景 / 问题假设，L 级，不将其表述为已验证的开发者普遍行为；不改变 API / Host / Application 层边界。
 - 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、`git diff --check`；确认生成页共 31 页且问题页内容存在。浏览器 `file://` 导航仍受本地预览策略限制。
 - Commit / push：`e7313c0a`（`feat: add AI learning internalization problem page`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
+
+### 2026-09-16（调整 AI 学习内化问题页文案）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/build.mjs`、生成页 `index.html`。按用户确认，将问题页改为“AI 加速了开发，也带来了知识内化的新问题”，正文采用“查找—理解—实践”与“描述目标—生成—验证”的路径对照，并移除页面序号；31 页序列不变。
+- 依据与置信度：设计背景 / 问题假设，L 级，不表述为已验证的普遍行为；不改变 API / Host / Application 层边界。
+- 验证：`node build.mjs`、`node --check build.mjs`、`git diff --check`；生成 31 页并推送成功。无关脏文件未暂存、未清理。
+- Commit / push：`43f98d7c`（`content: refine AI learning problem statement`）已推送至 `origin/main`。未决事项：无。
