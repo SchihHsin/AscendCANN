@@ -2946,3 +2946,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：用户确认的文案方案，属于设计表达调整；不新增产品事实，不改变 API / Host / Application 层边界，31 页序列不变。
 - 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、`git diff --check`；生成 31 页并推送成功。无关脏文件未暂存、未清理。
 - Commit / push：`5113963d`（`content: sharpen learning problem headline`）已推送至 `origin/main`。未决事项：无。
+
+### 2026-09-16（保持问题页主标题单行）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/build.mjs`、生成页 `index.html`。移除问题页主标题的字符宽度限制并设置单行显示，确保“代码完成了，知识不一定留下”在宽屏页面中完整呈现。
+- 依据与置信度：纯视觉排版修正，不新增产品事实，不改变页面序列或 API / Host / Application 层边界。
+- 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、`git diff --check`；生成 31 页并推送成功。无关脏文件未暂存、未清理。
+- Commit / push：`4e9ddeab`（`fix: keep problem headline on one line`）已推送至 `origin/main`。未决事项：无。
