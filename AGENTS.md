@@ -2918,3 +2918,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：用户提供的原图为 B6 设计点的指定视觉素材，属于 L 级设计提案；不新增产品事实，不改变 API / Host / Application 层边界。
 - 验证：`sips -g pixelWidth -g pixelHeight` 确认尺寸，`git diff --check` 通过；无关脏文件未暂存、未清理。
 - Commit / push：`79ec76f8`（`fix: use approved B6 task try image`）已推送至 `origin/main`。未决事项：无。
+
+### 2026-09-16（封面后新增 AI 学习内化问题页）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/build.mjs`、生成页 `index.html`。在封面后新增问题陈述页“AI 让开发更快，但知识未必留下”，说明 AI 开发结果与知识内化之间的断点，并引出后续两条学习路线；总页数由 30 页增至 31 页，入口锚点同步更新。
+- 依据与置信度：属于设计背景 / 问题假设，L 级，不将其表述为已验证的开发者普遍行为；不改变 API / Host / Application 层边界。
+- 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、`git diff --check`；确认生成页共 31 页且问题页内容存在。浏览器 `file://` 导航仍受本地预览策略限制。
+- Commit / push：`e7313c0a`（`feat: add AI learning internalization problem page`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
