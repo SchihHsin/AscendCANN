@@ -2,7 +2,7 @@
 
 [打开网页 PPT](https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html)
 
-28 页；#2–5 均为真实产品参考分析：用户提供的 Ploy Overview、官方权限设置、对话与产物同屏、对象标注。支持放大与来源跳转；封面也不再使用自有设计图。#6 起进入用户旅程，#7 起展示方案大图。既有 Ploy 研究 #17 / #18 提供入口，原交互 Demo 保留。
+30 页；#2–5 均为真实产品参考分析：用户提供的 Ploy Overview、官方权限设置、对话与产物同屏、对象标注。支持放大与来源跳转；封面使用方案设计图 A1。#6 起进入用户旅程，#7 起展示方案大图；B 路线末尾新增 B6“任务中试改”设计点。既有 Ploy 研究 #17 / #18 提供入口，原交互 Demo 保留。
 
 | 内容 | 页码 |
 |---|---|
@@ -21,7 +21,8 @@
 | B3 隔离跟练 | 22–23 |
 | B4 应用修改 | 24–25 |
 | B5 返回验证 | 26–27 |
-| 共用画布管理机制 | 28 |
+| B6 任务中试改 | 28–29 |
+| 共用画布管理机制 | 30 |
 
 ## 内容边界
 
@@ -34,7 +35,7 @@
 ## 文件与复现
 
 - `images/codex-workspace-user.png`：用户提供的 Codex Workspace 界面参考，用于第 4 页的 Vibe Coding / AI Workspace 背景说明。
-- `images/A1.png`–`A5.png`、`B1.png`–`B5.png`：新的完整故事线图片；旧稿不覆盖。
+- `images/A1.png`–`A5.png`、`B1.png`–`B5.png`：新的完整故事线图片；`images/B6-task-try.png`：开发中学习新增的任务中试改设计点。
 - `story-data.mjs`：每步操作、响应、设计点、画布规则和下一步。
 - `source/image-prompts.json`：内置 ImageGen 提示词、最终图映射及修正记录。
 - `source/deck-template.html`、`source/user-journey-template.html`：Report PPT Skill 原始模板快照。
