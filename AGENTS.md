@@ -2855,3 +2855,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：白框来源为本地 CSS 的容器样式，后续黑底设计点页已有无边框透明容器作为视觉参照；属于 H 级代码 / 页面呈现事实，不新增产品能力或研究结论。
 - 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；浏览器实测第 2 页截图及第 2–5 页 computed style 均为透明背景 / 0px 边框 / 0px 圆角，第 1 页页脚文字已移除。
 - Commit / push：`8b3a2ac3`（`fix: remove intro image frames`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
+
+### 2026-09-16（Intro 证据图放大与叠加标注）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/intro.mjs`、生成页 `index.html`。按用户选择 C 方案，将第 2–5 页证据图高度由 `53vh` 提升至 `61vh`；Intro labels 改为图片底部右侧的半透明叠加标注，Intro caption 仍保留在图片下方。未改变图文内容、放大行为、页面序列或 API / Host / Application 层边界。
+- 依据与置信度：用户提供的页面截图显示原布局图片占比偏小；当前改动属于 L 级视觉提案调整，不新增竞品事实或产品能力，证据来源与边界说明仍保留。
+- 验证：重新执行 `node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；浏览器逐页核验第 2–5 页，确认图片放大、标签叠加、caption 可见且四页均无页面溢出。
+- Commit / push：`62f99ab8`（`style: enlarge intro evidence visuals`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
