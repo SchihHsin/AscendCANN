@@ -2939,3 +2939,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：纯视觉与信息层级调整，承接既有 L 级设计背景假设；不新增产品事实，不改变 API / Host / Application 层边界。
 - 验证：在页面目录执行 `node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、`git diff --check`；生成 31 页并推送成功。无关脏文件未暂存、未清理。
 - Commit / push：`e9b8d1e3`（`style: visualize learning transition on problem page`）已推送至 `origin/main`。未决事项：无。
+
+### 2026-09-16（采用问题页 B 方案）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/build.mjs`、生成页 `index.html`。左上角保留完整标题“AI 加速了开发，也带来了知识内化的新问题”，页面主视觉改为“代码完成了，知识不一定留下”，消除重复并形成正式问题与直观结论的层级。
+- 依据与置信度：用户确认的文案方案，属于设计表达调整；不新增产品事实，不改变 API / Host / Application 层边界，31 页序列不变。
+- 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、`git diff --check`；生成 31 页并推送成功。无关脏文件未暂存、未清理。
+- Commit / push：`5113963d`（`content: sharpen learning problem headline`）已推送至 `origin/main`。未决事项：无。
