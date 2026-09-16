@@ -2876,3 +2876,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：属于用户明确的视觉调整，不新增产品能力、竞品事实或研究结论，不影响 API / Host / Application 层边界。
 - 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`，并确认生成页不再包含 `intro-labels`。
 - Commit / push：`a839b1c2`（`style: remove intro image labels`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
+
+### 2026-09-16（Intro caption 合并至页脚）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/intro.mjs`、生成页 `index.html`。按用户要求清空图片下方的 `intro-caption` 位置，将原图片说明与来源 / 跳转信息统一放入 `div.foot`，并在页脚内左右分栏；图片、放大查看和 28 页序列保持不变。
+- 依据与置信度：属于用户明确的视觉 / 信息布局调整，不新增产品能力、竞品事实或研究结论，不影响 API / Host / Application 层边界。
+- 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；确认生成页仅在 `div.foot` 中包含 `intro-foot-caption`，不再包含 `intro-caption`。
+- Commit / push：`148c620e`（`style: move intro captions into footer`）已推送至 `origin/main`。本地预览工具因 `file://` URL 策略未能刷新当前标签，未影响源码与生成页检查；无关脏文件未暂存、未清理。未决事项：无。
