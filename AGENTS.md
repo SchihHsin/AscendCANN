@@ -2862,3 +2862,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：用户提供的页面截图显示原布局图片占比偏小；当前改动属于 L 级视觉提案调整，不新增竞品事实或产品能力，证据来源与边界说明仍保留。
 - 验证：重新执行 `node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；浏览器逐页核验第 2–5 页，确认图片放大、标签叠加、caption 可见且四页均无页面溢出。
 - Commit / push：`62f99ab8`（`style: enlarge intro evidence visuals`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
+
+### 2026-09-16（第 4 页先讲 Codex Workspace，再承接 Ploy）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/intro.mjs`、生成页 `index.html`、`README.md`，新增用户提供的参考图 `images/codex-workspace-user.png`。第 4 页改为“Vibe Coding 让开发者从 IDE 进入 AI Workspace”，先解释任务、对话、Diff 与结果在同一现场的背景；第 5 页继续进入 Ploy 的对象级交互，28 页序列及页码跳转不变。
+- 依据与置信度：Codex Workspace 图来自用户提供的界面截图，仅作为视觉 / 叙事参考；“Vibe Coding 推动开发者围绕目标与 AI 协作”的表述是 L 级设计背景判断，不宣称 Codex 官方功能全集、迁移比例或真实运行证据。未新增 Ploy 能力事实，不改变 API / Host / Application 层边界。
+- 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；浏览器核验第 4 页无溢出且第 5 页承接正常。
+- Commit / push：`2399d79b`（`feat: add Codex workspace context to Ploy story`）已推送至 `origin/main`。本轮仅提交故事页相关四项文件，无关脏文件未暂存、未清理。未决事项：无。
