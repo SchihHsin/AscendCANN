@@ -2890,3 +2890,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：`ready-06m26.png` 为既有 Ploy 官方演示局部证据，H 仅限画面可见的对话 / 意图选项 / 页面预览布局；“Workspace 承接任务协作”及学习迁移属于分析判断 / 设计启发，不代表开发者迁移比例，不改变 API / Host / Application 层边界。Intro labels 未恢复，caption 仍在页脚。
 - 验证：`node build.mjs`、`node --check intro.mjs`、`node --check build.mjs`、HTMLParser、`git diff --check`；确认生成页包含第 5 页旧标题与 `ready-06m26.png`，不包含 `annotation-11m25`。
 - Commit / push：`69354cee`（`content: restore Ploy workspace intro page`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：本地预览工具仍受 `file://` URL 刷新策略限制。
+
+### 2026-09-16（更新学习故事封面标题与设计图）
+
+- 变更文件：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/build.mjs`、生成页 `index.html`。封面主标题由“学习发生在任务中，画布随过程展开”改为“让学习在合适的时机发生”，背景由 Ploy 产品截图换为现有方案图 `images/A1.png`，以覆盖主动学习与开发中学习两条路线的共同空间；28 页及导航锚点不变。
+- 依据与置信度：`images/A1.png` 为本项目既有设计示意图，属于 L 级方案表达，不代表已实现产品或真实运行证据；未新增竞品事实，不改变 API / Host / Application 层边界。
+- 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、HTMLParser、`git diff --check`；确认生成页包含新标题和 `images/A1.png` 封面背景。
+- Commit / push：`da3a3832`（`style: refresh learning story cover`）已推送至 `origin/main`。无关脏文件未暂存、未清理。未决事项：无。
