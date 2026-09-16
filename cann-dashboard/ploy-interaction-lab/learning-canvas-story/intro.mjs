@@ -8,12 +8,13 @@ export const introCSS=`
 .story-deck .intro-media{position:relative;display:flex;flex-direction:column;justify-content:center;gap:1.2vh}
 .story-deck .intro-shot{border:0;border-radius:0;background:transparent;overflow:visible;display:block;width:100%;height:61vh;cursor:zoom-in;padding:0}
 .story-deck .intro-shot img,.story-deck .intro-shot svg{width:100%;height:100%;object-fit:contain;display:block}
-.story-deck .intro-caption{font-size:var(--fs-sm);line-height:1.6;color:var(--ink-2)}
-.story-deck .intro-page .foot{font-size:var(--fs-sm);letter-spacing:0;left:4vw;right:4vw}
+.story-deck .intro-page .foot{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:2vw;align-items:start;font-size:var(--fs-sm);line-height:1.5;letter-spacing:0;left:4vw;right:4vw}
+.story-deck .intro-foot-caption{color:var(--ink-2)}
+.story-deck .intro-foot-meta{text-align:right}
 `;
 export function introPages(tabs){
 const img=(src,alt)=>`<button class="intro-shot" data-enlarge="${src}" aria-label="放大：${alt}"><img src="${src}" alt="${alt}"></button>`;
-const page=(title,headline,body,conclusion,visual,caption,footer)=>`<section class="slide s-gray intro-page" data-title="${title}" data-template="image-text-sm2"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">${title}</span></div><div class="subttl">主动交互 · 从产品观察到设计选择</div></div>${tabs('P')}</div><div class="body-area"><div class="sm2"><div class="sm2-left"><h2>${headline}</h2>${body}<div class="cx-concl">${conclusion}</div></div><div class="intro-media">${visual}<div class="intro-caption">${caption}</div></div></div></div><div class="foot">${footer}</div></section>`;
+const page=(title,headline,body,conclusion,visual,caption,footer)=>`<section class="slide s-gray intro-page" data-title="${title}" data-template="image-text-sm2"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">${title}</span></div><div class="subttl">主动交互 · 从产品观察到设计选择</div></div>${tabs('P')}</div><div class="body-area"><div class="sm2"><div class="sm2-left"><h2>${headline}</h2>${body}<div class="cx-concl">${conclusion}</div></div><div class="intro-media">${visual}</div></div></div><div class="foot"><span class="intro-foot-caption">${caption}</span><span class="intro-foot-meta">${footer}</span></div></section>`;
 const overview=img('images/ploy-overview-user.png','用户提供的 Ploy Overview：For you 主动建议、Recents、Scheduled Ploybooks');
 const crop=(file,box,id,alt)=>`<button class="intro-shot" data-enlarge="../evidence/${file}" aria-label="放大：${alt}"><svg viewBox="${box}" role="img" aria-label="${alt}"><defs><clipPath id="${id}"><rect x="${box.split(' ')[0]}" y="${box.split(' ')[1]}" width="${box.split(' ')[2]}" height="${box.split(' ')[3]}"/></clipPath></defs><image href="../evidence/${file}" width="1228" height="768" clip-path="url(#${id})"/></svg></button>`;
 return [
