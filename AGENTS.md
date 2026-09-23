@@ -3144,3 +3144,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTMLParser 解析两个文件通过；目标 deck 与时序图副本的可执行内联 JS 分别 5 段通过 `vm.Script` 语法检查；51 个 `reportOrder` 标题均有对应页面，新页序确认为 #5 / #6；嵌入图副本与源 `seq-d3.html` 字节一致；`git diff --check` 通过。未做截图级目视复核；遵守本地预览策略，没有用其他浏览器或命令行截图绕过。
 - Commit / push：功能提交 `273871f6`（`feat: pair concrete task timeline with agent drilldown`）已推送到 `origin/main`。
 - 未决事项：需在允许的本地预览中检查时序图在整页中的实际字号与空间占比；静态检查不能替代该目视验证。
+
+### 2026-09-24（确认新副本先呈现时序图，再展开 Agent 泳道）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`AGENTS.md`。新副本的正式播放顺序已经由 `reportOrder` 控制为：封面 → 目录 → #3 多方开发时序 → #4 Agent 泳道下钻；时序页说明参与者如何交接，下一页只放大 Agent 内部机制。源码模板段落虽按 Agent、时序排列，但浏览器运行时会按正式序列重排，因此不为维护外观移动大段页面源码。
+- 导航修正：章节 Tab 的“依据”入口由“研究范围与证据”改为“附录导航”，让读者先看到附录分组，而不是跳入附录中段。
+- 层级 / 证据：复用既有自定义算子 P1–P7 多方时序图；Agent 机制仍以独立下钻页表达，未将参与者时序与 Agent 内部机制混为一张图，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：静态断言确认 66 个正式页面标题均存在且无重复，目录 #2、时序 #3、Agent 下钻 #4、附录导航 #46；5 段可执行内联脚本通过语法解析，附录导航目标正确，`git diff --check` 通过。尝试在桌面浏览器打开本地新副本时被 Browser Use URL policy 拦截；遵守限制，没有改用其他浏览器或截图方式绕过，因此未完成截图级视觉复核。
+- Commit / push：待完成本轮限定文件提交与推送。
+- 未决事项：用户可在本地预览副本；后续若需要改实际播放顺序，应同步核对 `reportOrder`、章节起始导航和目录。
