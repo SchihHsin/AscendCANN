@@ -2953,3 +2953,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：纯视觉排版修正，不新增产品事实，不改变页面序列或 API / Host / Application 层边界。
 - 验证：`node build.mjs`、`node --check build.mjs`、`node --check intro.mjs`、`git diff --check`；生成 31 页并推送成功。无关脏文件未暂存、未清理。
 - Commit / push：`4e9ddeab`（`fix: keep problem headline on one line`）已推送至 `origin/main`。未决事项：无。
+
+### 2026-09-23（整合 AI 开发协作与知识内化叙事）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。重排为 57 页阅读序列：具体开发任务与证据 → 知识可用性 / AI 亲和原则 → 平台 Harness 机制 → 昇腾现状 → 协作体验设计与持续改进 → 任务完成后的知识内化与学习画布 → 结论 / 依据。调整封面、目录与结论；新增 5 页，把亲和原则和学习提案置于主线中，并复用既有 B1–B5 设计图，没有修改学习画布原报告。将学习设计明确标为提案，不称为已实现或实测结果。
+- 依据与置信度：CANN × CUDA 任务证据与平台机制继续沿用原材料及其 H / M / L 边界；亲和原则页复用既有研究；学习页复用 `ploy-interaction-lab/learning-canvas-story/images/B1.png`–`B5.png`，属于 L 级设计提案。未新增平台事实，未改变 API / Protocol、Host / Harness、Application / Task 三层定义；主线结论从“验收”回到“设计开发者与 Agent 如何共同推进任务，并让经验留下来”。
+- 页面与导航：目录和章标签调整为“任务 / 机制 / 现状 / 设计 / 学习 / 依据”；章节 Tab 与右侧逐页导航均可跳转，hash 保持页码恢复。修复“现有 MCP 改造重点”图的网格列错位，确保知识面、动作面和结构化回执按预期分区。
+- 验证：HTMLParser、内联 JavaScript `node --check`、`git diff --check`；Playwright 1600×900 检查 57 页、学习图资源、页码点与章节跳转，未发现 JS 错误或图片加载失败。MCP 图修复后无溢出；“通用 Host 循环”图有约 15px 的容器 scroll-height 差，来自图例有意延伸到图框下方；截图未见内容遮挡，后续若视觉复核发现问题再调整。
+- Commit / push：`e6c412b0`（`content: reshape AI coding report around collaboration`）已推送至 `origin/main`。未提交其他已有修改或未跟踪文件。未决事项：学习方案仍待实际开发者任务验证。
