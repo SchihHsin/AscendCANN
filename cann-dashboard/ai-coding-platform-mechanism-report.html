@@ -460,63 +460,84 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 /* Relation-line contract: sequence rails live only in card gutters. */
 .ux-trust-chain::before{display:none}.ux-trust-node:not(:last-child)::after{content:"›";position:absolute;z-index:4;left:100%;top:50%;width:1vw;height:2px;background:var(--tone);color:var(--tone);font-size:16px;font-weight:900;line-height:1px;text-align:right;transform:translateY(-50%)}.payload-object em{min-width:0;overflow:hidden;text-overflow:ellipsis;font-style:normal;color:#364250}
 
-/* Opening task map: main path, cross-cutting control and three distinct loops. */
-.task-rel-page{--rm-blue:#3f78bb;--rm-violet:#5b5bd6;--rm-teal:#238b86;--rm-amber:#bd7b2e;--rm-green:#2e8b66}
-.task-rel-page .head{margin-bottom:1.35vh}
-.task-rel-page .rm-body{display:grid;grid-template-rows:minmax(0,1fr) auto auto auto;gap:.72vh;flex:1 1 auto;min-height:0;margin:0;padding-bottom:4vh;justify-content:stretch}
-.task-rel-page .rm-main{display:grid;grid-template-columns:1fr 1.45fr 1.1fr 1.1fr 1.1fr;gap:.68vw;min-width:0;min-height:0}
-.task-rel-page .rm-phase{--tone:var(--rm-blue);position:relative;min-width:0;min-height:0;padding:.82vh .58vw .55vh;border-top:2px solid var(--tone);border-radius:8px;background:rgba(255,255,255,.42);display:flex;flex-direction:column;justify-content:space-between;gap:.5vh}
-.task-rel-page .rm-phase.knowledge{--tone:var(--rm-blue)}.task-rel-page .rm-phase.action{--tone:var(--rm-violet)}.task-rel-page .rm-phase.control{--tone:#6652a8}.task-rel-page .rm-phase.recover{--tone:var(--rm-amber)}.task-rel-page .rm-phase.proof{--tone:var(--rm-green)}
-.task-rel-page .rm-phase:not(:last-child)::after{content:"›";position:absolute;z-index:2;right:-.61vw;top:1.3vh;width:.55vw;color:var(--tone);font-size:21px;font-weight:850;line-height:1;text-align:center}
-.task-rel-page .rm-phase-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.42vw;align-items:center;min-height:4.8vh;padding-bottom:.55vh;border-bottom:1px solid rgba(91,99,115,.16)}
-.task-rel-page .rm-phase-head .num{font:300 clamp(25px,2.4vw,37px)/.9 'Barlow Condensed',sans-serif;color:var(--tone)}
-.task-rel-page .rm-phase-head b{display:block;font-size:var(--fs-h3);line-height:1.17}
-.task-rel-page .rm-phase-head small{display:block;margin-top:.2vh;color:var(--ink-3);font:700 var(--fs-xs)/1.1 'JetBrains Mono',monospace;letter-spacing:.045em}
-.task-rel-page .rm-flow-list{display:grid;gap:.28vh;min-width:0}
-.task-rel-page .rm-flow-item{position:relative;display:grid;grid-template-columns:1.05vw minmax(0,1fr);gap:.36vw;align-items:start;min-width:0;padding:.38vh .34vw;border-radius:6px;background:rgba(255,255,255,.68)}
-.task-rel-page .rm-flow-item:not(:last-child)::after{position:absolute;left:.79vw;top:calc(100% - .05vh);height:.34vh;border-left:1px solid color-mix(in srgb,var(--tone) 48%,transparent);content:""}
-.task-rel-page .rm-flow-item i{display:grid;place-items:center;width:.95vw;height:.95vw;min-width:13px;min-height:13px;border-radius:50%;background:color-mix(in srgb,var(--tone) 13%,white);color:var(--tone);font:750 10px/1 'JetBrains Mono',monospace;font-style:normal}
-.task-rel-page .rm-flow-item b{display:block;font-size:clamp(12.5px,.86vw,14px);line-height:1.2}
-.task-rel-page .rm-flow-item span{display:block;margin-top:.12vh;color:var(--ink-2);font-size:clamp(11.5px,.75vw,12.5px);line-height:1.24}
-.task-rel-page .rm-subhead{margin:.12vh 0 .16vh;color:var(--ink-3);font:750 var(--fs-xs)/1.1 'JetBrains Mono',monospace;letter-spacing:.06em}
-.task-rel-page .rm-unit{min-width:0;padding:.42vh .42vw;border-radius:6px;background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.82)}
-.task-rel-page .rm-unit strong{display:block;margin-bottom:.16vh;font-size:clamp(12.5px,.86vw,14px);line-height:1.18}
-.task-rel-page .rm-unit p{color:var(--ink-2);font-size:clamp(11.5px,.75vw,12.5px);line-height:1.25}
-.task-rel-page .rm-chip-row{display:flex;flex-wrap:wrap;gap:.2vw;margin-top:.2vh}
-.task-rel-page .rm-chip{display:inline-flex;align-items:center;max-width:100%;padding:.15vh .3vw;border-radius:999px;background:rgba(91,91,214,.09);color:#4d4d9f;font-size:clamp(10.5px,.68vw,11.5px);font-weight:720;line-height:1.2}
-.task-rel-page .rm-phase.recover .rm-chip{background:rgba(189,123,46,.11);color:#885719}.task-rel-page .rm-phase.proof .rm-chip{background:rgba(46,139,102,.1);color:#287451}
-.task-rel-page .rm-research{margin-top:auto;padding:.42vh .42vw;border-radius:7px;background:#edf2f8;border:1px solid rgba(63,120,187,.12)}
-.task-rel-page .rm-research>b{display:block;margin-bottom:.25vh;font-size:clamp(11.5px,.75vw,12.5px)}
-.task-rel-page .rm-research-grid{display:grid;grid-template-columns:1fr 1fr;gap:.18vh .22vw}
-.task-rel-page .rm-research-grid span{padding:.18vh .2vw;border-radius:4px;background:rgba(255,255,255,.75);color:#445a72;font-size:clamp(10px,.64vw,11px);line-height:1.18}
-.task-rel-page .rm-task-samples{display:flex;gap:.22vw;flex-wrap:wrap;margin-top:.24vh;color:#476481;font-size:clamp(10px,.63vw,10.8px);font-weight:750}
-.task-rel-page .rm-task-samples span{padding:.12vh .22vw;border-bottom:1px solid rgba(63,120,187,.25)}
-.task-rel-page .rm-plugin-band{padding:.3vh .38vw;border-radius:5px;background:#f0eef9;color:#53478c;font-size:clamp(10.5px,.68vw,11.5px);line-height:1.2}
-.task-rel-page .rm-hook-line{padding:.4vh .42vw;border-radius:6px;background:#f3effa;color:#5b4b8d;font-size:clamp(10.5px,.69vw,11.5px);line-height:1.23}
-.task-rel-page .rm-hook-line b{display:block;margin-bottom:.14vh}
-.task-rel-page .rm-control-rail{display:grid;grid-template-columns:10.5vw repeat(3,minmax(0,1fr));gap:.4vw;align-items:center;min-width:0;padding:.52vh .58vw;border:1px solid rgba(91,91,214,.2);border-radius:8px;background:linear-gradient(90deg,rgba(91,91,214,.11),rgba(91,91,214,.045))}
-.task-rel-page .rm-control-title b{display:block;color:#494996;font-size:var(--fs-sm);line-height:1.2}
-.task-rel-page .rm-control-title span{display:block;margin-top:.12vh;color:var(--ink-3);font-size:var(--fs-xs);line-height:1.15}
-.task-rel-page .rm-control-point{padding-left:.42vw;border-left:1px solid rgba(91,91,214,.2);font-size:clamp(11.5px,.76vw,12.5px);line-height:1.23;color:var(--ink-2)}
-.task-rel-page .rm-control-point b{color:var(--ink)}
-.task-rel-page .rm-loop-row{display:grid;grid-template-columns:1.55fr 1fr;gap:.55vw;min-width:0}
-.task-rel-page .rm-runtime-loop,.task-rel-page .rm-clock-loop{display:grid;grid-template-columns:8.5vw minmax(0,1fr);gap:.45vw;align-items:center;min-width:0;padding:.42vh .52vw;border-radius:7px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.88)}
-.task-rel-page .rm-runtime-loop{border-color:rgba(91,91,214,.16)}.task-rel-page .rm-clock-loop{border-color:rgba(40,139,134,.18);background:rgba(235,247,245,.68)}
-.task-rel-page .rm-loop-label b{display:block;font-size:clamp(11.5px,.78vw,13px);line-height:1.16}.task-rel-page .rm-loop-label span{display:block;margin-top:.12vh;color:var(--ink-3);font-size:var(--fs-xs);line-height:1.12}
-.task-rel-page .rm-loop-steps{display:flex;align-items:center;justify-content:space-between;gap:.2vw;min-width:0}
-.task-rel-page .rm-loop-steps span{position:relative;display:inline-flex;align-items:center;min-width:0;padding:.26vh .28vw;border-radius:5px;background:#f0effb;color:#4f4d95;font-size:clamp(10.5px,.68vw,11.5px);font-weight:720;line-height:1.15}
-.task-rel-page .rm-loop-steps span:not(:last-child)::after{content:"›";position:absolute;left:calc(100% + .01vw);color:#6666b5;font-size:15px;font-weight:850}
-.task-rel-page .rm-clock-loop .rm-loop-steps span{background:#e3f3f0;color:#276d68}
-.task-rel-page .rm-clock-loop .rm-loop-steps span:not(:last-child)::after{color:#39847e}
-.task-rel-page .rm-learning-loop{display:grid;grid-template-columns:10.5vw minmax(0,1fr);grid-template-rows:auto auto;gap:.28vh .48vw;align-items:center;min-width:0;padding:.48vh .58vw;border-radius:7px;background:var(--g-ink);color:#fff}
-.task-rel-page .rm-learning-loop>b{grid-column:1;grid-row:1/3}
-.task-rel-page .rm-learning-loop .rm-loop-steps{grid-column:2;grid-row:1;justify-content:flex-start;flex-wrap:nowrap;gap:.25vh .42vw}
-.task-rel-page .rm-learning-loop b{font-size:clamp(11.5px,.78vw,13px);line-height:1.15}.task-rel-page .rm-learning-loop p{font-size:clamp(11px,.73vw,12px);line-height:1.2;color:rgba(255,255,255,.76)}
-.task-rel-page .rm-learning-loop .rm-loop-steps span{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9)}
-.task-rel-page .rm-learning-loop .rm-loop-steps span:not(:last-child)::after{color:#aeb7ff}
-.task-rel-page .rm-learning-note{grid-column:2;grid-row:2;color:#c7cafa;font-size:var(--fs-xs);white-space:normal;line-height:1.15}
-@media(max-width:1100px){.task-rel-page .rm-main{grid-template-columns:.98fr 1.35fr 1.02fr 1.02fr 1.02fr;gap:.45vw}.task-rel-page .rm-phase{padding-left:.42vw;padding-right:.42vw}.task-rel-page .rm-phase:not(:last-child)::after{right:-.42vw;width:.4vw;font-size:17px}.task-rel-page .rm-control-rail{grid-template-columns:9vw repeat(3,minmax(0,1fr))}.task-rel-page .rm-runtime-loop,.task-rel-page .rm-clock-loop{grid-template-columns:7.5vw minmax(0,1fr)}}
-@media(max-height:760px){.task-rel-page .rm-main{grid-template-columns:1fr 1.35fr 1.02fr 1.02fr 1.02fr}.task-rel-page .rm-phase{gap:.32vh;padding-top:.55vh}.task-rel-page .rm-flow-list{gap:.17vh}.task-rel-page .rm-flow-item,.task-rel-page .rm-unit{padding-top:.28vh;padding-bottom:.28vh}.task-rel-page .rm-body{gap:.48vh}}
+/* Opening relationship diagram · same stage rail and L1/L2/L3 swimlanes as page 17. */
+.task-rel-page{--task-violet:#5b5bd6;--task-green:#3e8f75;--task-teal:#009f9a;--task-amber:#ba7b24}
+.task-rel-page .head{margin-bottom:1.1vh}
+.task-flow-body{gap:.42vh}
+.task-rel-page .agent-mechanism-map{height:55.5vh}
+.task-rel-page .agent-map-stage-rail{grid-template-columns:repeat(6,minmax(0,1fr));gap:.45vw}
+.task-rel-page .agent-map-stage{position:relative}
+.task-rel-page .agent-map-stage:not(:last-child)::after{content:"›";position:absolute;right:-.37vw;bottom:.26vh;color:rgba(91,91,214,.58);font-size:16px;font-weight:850;line-height:1}
+.task-rel-page .agent-map-stage b{font-size:var(--fs-xs)}
+.task-rel-page .agent-map-lane.l1{top:9.5%;height:16.5%;background:linear-gradient(90deg,rgba(91,91,214,.15),rgba(91,91,214,.055))}
+.task-rel-page .agent-map-lane.l2{top:28%;height:51%;background:linear-gradient(90deg,rgba(91,91,214,.09),rgba(91,91,214,.025))}
+.task-rel-page .agent-map-lane.l3{top:81%;height:14.7%;background:linear-gradient(90deg,rgba(255,255,255,.76),rgba(236,239,245,.6))}
+.task-rel-page .agent-map-grid{top:7.4%;bottom:4.2%}
+.task-rel-page .agent-map-node{padding:.3vh .34vw;border-radius:7px;box-shadow:0 4px 14px -12px rgba(24,31,54,.44)}
+.task-rel-page .agent-map-node.main{border-width:1.5px;box-shadow:0 0 0 2px rgba(91,91,214,.045),0 6px 15px -12px rgba(24,31,54,.52)}
+.task-rel-page .agent-map-node.capability{box-shadow:0 2px 10px -9px rgba(24,31,54,.38)}
+.task-rel-page .agent-map-node b{font-size:var(--fs-sm);line-height:1.08}
+.task-rel-page .agent-map-node p{font-size:var(--fs-xs);line-height:1.12}
+.task-rel-page .agent-map-node.capability.mini.stack{gap:.07vh}
+.task-rel-page .agent-map-node.capability.mini.stack b{font-size:var(--fs-xs);line-height:1.02}
+.task-rel-page .agent-map-node.capability.mini.stack p{font-size:var(--fs-xs);line-height:1.02}
+.task-rel-page .agent-map-node.knowledge-step{padding:.22vh .28vw;border-color:rgba(63,120,187,.35);background:linear-gradient(135deg,#fff,#edf4fb);text-align:center}
+.task-rel-page .agent-map-node.knowledge-step b{color:#355e86}
+.task-rel-page .agent-map-node.knowledge-step p{color:#526a82}
+.task-rel-page .agent-map-node.capability.plugin{border-color:rgba(91,91,214,.48);background:linear-gradient(135deg,#fbfaff,#eeedfb)}
+.task-rel-page .agent-map-node.capability.plugin b{color:#514a98}
+.task-rel-page .agent-map-node.distribution-node p{white-space:normal;line-height:1.02;text-overflow:clip}
+.task-rel-page .agent-map-node.capability.command{border-color:rgba(91,91,214,.52);background:linear-gradient(135deg,#fbfaff,#eeedfb)}
+.task-rel-page .agent-map-node.capability.automation{border-color:rgba(0,159,154,.5);background:linear-gradient(135deg,#f7fffd,#e6f7f3)}
+.task-rel-page .agent-map-node.capability.automation b{color:#16796e}
+.task-rel-page .agent-map-node.recovery{border-color:rgba(186,123,36,.4);background:linear-gradient(135deg,#fffdf8,#fbf1df)}
+.task-rel-page .agent-map-node.governance{border-color:rgba(62,143,117,.4);background:linear-gradient(135deg,#f8fcfa,#e9f4ef)}
+.task-rel-page .agent-env-band{top:70.8%;height:5.8%;left:54.6%;width:28.7%;padding:.25vh .42vw;gap:.35vw}
+.task-rel-page .agent-env-band b,.task-rel-page .agent-env-band span{font-size:var(--fs-xs)}
+.task-rel-page .task-research-lens{display:grid;grid-template-columns:1.18fr repeat(4,minmax(0,1fr)) 1.45fr;align-items:center;gap:.34vw;min-height:3.7vh;padding:.36vh .55vw;border:1px solid rgba(91,101,122,.14);border-radius:9px;background:rgba(255,255,255,.53);color:var(--ink-2)}
+.task-rel-page .task-research-lens b{font-size:var(--fs-xs);color:var(--ink);white-space:nowrap}
+.task-rel-page .task-research-lens span{position:relative;padding-left:.45vw;border-left:1px solid rgba(91,91,214,.24);font-size:var(--fs-xs);line-height:1.1;white-space:nowrap}
+.task-rel-page .task-research-lens span strong{color:var(--accent);font-weight:800}
+.task-rel-page .task-research-lens small{font-size:var(--fs-xs);line-height:1.1;color:var(--ink-3);text-align:right;white-space:nowrap}
+.task-rel-page .task-map-connectors{position:absolute;z-index:2;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.task-rel-page .task-map-connectors path{fill:none;stroke:#727b90;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.task-rel-page .task-map-connectors path.flow{stroke:var(--task-violet);stroke-width:2.35}
+.task-rel-page .task-map-connectors path.knowledge{stroke:#6c6ccc;stroke-width:1.3}
+.task-rel-page .task-map-connectors path.distribution{stroke:#766bb6;stroke-width:1.25;stroke-dasharray:4 3}
+.task-rel-page .task-map-connectors path.action{stroke:var(--task-teal);stroke-width:1.55}
+.task-rel-page .task-map-connectors path.route-builtin{stroke:#5b5bd6}
+.task-rel-page .task-map-connectors path.route-mcp{stroke:#009f9a}
+.task-rel-page .task-map-connectors path.route-custom{stroke:#377ad2}
+.task-rel-page .task-map-connectors path.route-subagent{stroke:#245b9e}
+.task-rel-page .task-map-connectors path.control{stroke:var(--task-amber);stroke-width:1.3;stroke-dasharray:4 3}
+.task-rel-page .task-map-connectors path.runtime-loop{stroke:var(--task-green);stroke-width:1.55}
+.task-rel-page .task-map-connectors path.schedule-loop{stroke:var(--task-teal);stroke-width:1.35;stroke-dasharray:4 4}
+.task-rel-page .task-map-connectors path.answer{stroke:#727b90;stroke-width:1.25;stroke-dasharray:5 4}
+.task-rel-page .task-map-connectors marker path{stroke:none;stroke-width:0}
+.task-rel-page .task-map-connectors #taskArrowFlow path{fill:var(--task-violet)}
+.task-rel-page .task-map-connectors #taskArrowKnowledge path{fill:#6c6ccc}
+.task-rel-page .task-map-connectors #taskArrowDistribution path{fill:#766bb6}
+.task-rel-page .task-map-connectors #taskArrowAction path{fill:var(--task-teal)}
+.task-rel-page .task-map-connectors #taskArrowActionBuiltin path{fill:#5b5bd6}
+.task-rel-page .task-map-connectors #taskArrowActionMcp path{fill:#009f9a}
+.task-rel-page .task-map-connectors #taskArrowActionCustom path{fill:#377ad2}
+.task-rel-page .task-map-connectors #taskArrowActionSubagent path{fill:#245b9e}
+.task-rel-page .task-map-connectors #taskArrowControl path{fill:var(--task-amber)}
+.task-rel-page .task-map-connectors #taskArrowLoop path{fill:var(--task-green)}
+.task-rel-page .task-map-connectors #taskArrowSchedule path{fill:var(--task-teal)}
+.task-rel-page .task-map-connectors #taskArrowAnswer path{fill:#727b90}
+.task-rel-page .task-map-connectors text{font:700 9px 'JetBrains Mono';letter-spacing:.035em;fill:#687186}
+.task-rel-page .task-map-connectors text.loop-label{fill:#347a65}
+.task-rel-page .task-map-connectors text.schedule-label{fill:#16796e}
+.task-rel-page .task-map-connectors text.answer-label{fill:#656e80}
+.task-rel-page .task-map-connectors text.distribution-label{fill:#766bb6;font-size:8px}
+.task-rel-page .task-learning-loop{display:flex;align-items:center;justify-content:center;gap:.5vw;min-height:3.6vh;padding:.28vh .55vw;border-top:1px dashed rgba(85,91,112,.32);color:#555b70;white-space:nowrap}
+.task-rel-page .task-learning-loop b{font-size:var(--fs-xs);color:#3d4656}
+.task-rel-page .task-learning-loop span{font-size:var(--fs-xs)}
+.task-rel-page .task-learning-loop i{font-style:normal;color:#555b70;font-weight:800}
+.task-rel-page .task-learning-loop small{margin-left:.35vw;color:var(--ink-3);font-size:var(--fs-xs)}
+@media(max-width:1100px){.task-rel-page .agent-map-stage b{font-size:9px}.task-rel-page .agent-map-label{width:8.1%}.task-rel-page .agent-env-band span{font-size:9px}.task-rel-page .task-research-lens{grid-template-columns:1fr repeat(4,minmax(0,1fr));}.task-rel-page .task-research-lens small{display:none}}
+@media(max-height:760px){.task-rel-page .agent-mechanism-map{height:52vh}.task-rel-page .agent-map-node{padding:.2vh .28vw}.task-rel-page .agent-map-node p{line-height:1.02}.task-rel-page .agent-env-band{top:70%;height:5.4%}.task-rel-page .task-research-lens{min-height:3.2vh}.task-rel-page .task-learning-loop{min-height:3vh}}
 </style>
 </head>
 <body>
@@ -540,68 +561,120 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
 <!-- 02 TASK RELATIONSHIP MAP -->
 <section class="slide s-gray task-rel-page" data-title="任务关系总览"><div class="slide-inner">
-  <header class="head"><div class="head-l"><div class="subttl">TASK RELATIONSHIP MAP · 主任务流、开发者控制与三类循环</div><div class="ttl">AI 开发任务要让知识、行动、控制、恢复与证据形成闭环</div></div></header>
-  <main class="body-area rm-body" aria-label="Agent 开发任务关系图">
-    <div class="rm-main">
-      <section class="rm-phase knowledge">
-        <div class="rm-phase-head"><span class="num">01</span><div><b>知识能被 Agent 找到</b><small>KNOWLEDGE ACCESS</small></div></div>
-        <div class="rm-flow-list">
-          <div class="rm-flow-item"><i>1</i><div><b>发现来源</b><span>文档、代码、样例、Issue</span></div></div>
-          <div class="rm-flow-item"><i>2</i><div><b>读取关键信息</b><span>步骤、参数、错误码与结构</span></div></div>
-          <div class="rm-flow-item"><i>3</i><div><b>判断适用范围</b><span>CANN、芯片、框架、版本</span></div></div>
-          <div class="rm-flow-item"><i>4</i><div><b>形成可执行路径</b><span>命令、前置条件、预期结果</span></div></div>
-          <div class="rm-flow-item"><i>5</i><div><b>保留来源并核验</b><span>引用位置、验证信号、边界</span></div></div>
-        </div>
-        <div class="rm-research"><b>AI 可用性研究怎么量</b><div class="rm-research-grid"><span>获取状态</span><span>任务支撑</span><span>回答质量</span><span>获取成本</span></div><div class="rm-task-samples"><span>Add 算子</span><span>ONNX 转换</span><span>性能分析</span></div></div>
-      </section>
+  <header class="head"><div class="head-l"><div class="subttl">从一个开发任务出发，看知识、能力、控制与证据怎样接入同一条运行链</div><div class="ttl">Agent 任务是六阶段主流程，开发者控制与三类循环共同构成闭环</div></div></header>
+  <main class="body-area task-flow-body" aria-label="Agent 开发任务六阶段流程与三层泳道图">
+    <div class="task-research-lens" aria-label="AI 可用性研究的四个观察维度"><b>AI 可用性研究观察</b><span><strong>获取状态</strong>：找到权威来源</span><span><strong>任务支撑</strong>：步骤能否执行</span><span><strong>回答质量</strong>：代码是否正确完整</span><span><strong>获取成本</strong>：时间与往返</span><small>样本：Add · ONNX · 性能分析</small></div>
+    <div class="agent-mechanism-map">
+      <div class="agent-map-stage-rail" aria-label="六个统一运行环节"><div class="agent-map-stage"><small>01</small><b>CONTEXT · ASSEMBLE</b></div><div class="agent-map-stage"><small>02</small><b>DECIDE · PLAN</b></div><div class="agent-map-stage"><small>03</small><b>GATE · ROUTE</b></div><div class="agent-map-stage"><small>04</small><b>ACTION · EXECUTE</b></div><div class="agent-map-stage"><small>05</small><b>OBSERVE · VERIFY</b></div><div class="agent-map-stage"><small>06</small><b>REPLAN · CONTINUE</b></div></div>
+      <div class="agent-map-grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <section class="agent-map-lane l1"><div class="agent-map-label"><span>L1</span><b>Model API</b><small>协议与生成</small></div></section>
+      <section class="agent-map-lane l2"><div class="agent-map-label"><span>L2</span><b>Host / Harness</b><small>装配、执行与回填</small></div></section>
+      <section class="agent-map-lane l3"><div class="agent-map-label"><span>L3</span><b>Application / Task</b><small>目标与业务验收</small></div></section>
+      <svg class="task-map-connectors" viewBox="0 0 1200 430" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <marker id="taskArrowFlow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowKnowledge" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowDistribution" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowAction" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowActionBuiltin" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowActionMcp" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowActionCustom" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowActionSubagent" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowControl" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowLoop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowSchedule" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+          <marker id="taskArrowAnswer" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker>
+        </defs>
+        <!-- 用户目标与 Context：上下游关系在泳道边界处相接 -->
+        <path class="flow" marker-end="url(#taskArrowFlow)" d="M214 354 V289"/>
+        <path class="knowledge" marker-end="url(#taskArrowKnowledge)" d="M208 151 H214 V230"/><path class="knowledge" d="M208 180 H214"/><path class="knowledge" d="M208 209 H214"/>
+        <path class="knowledge" d="M294 151 H300 V258 H294" marker-end="url(#taskArrowKnowledge)"/><path class="knowledge" d="M294 180 H300"/><path class="knowledge" d="M294 209 H300"/>
+        <!-- Context 送入 API；无工具分支仍只是候选回答 -->
+        <path class="flow" marker-end="url(#taskArrowFlow)" d="M294 258 H304 Q310 258 310 252 V86 Q310 80 316 80 H317"/>
+        <path class="flow" marker-end="url(#taskArrowFlow)" d="M464 90 H476 Q482 90 482 96 V232 Q482 238 488 238"/>
+        <path class="knowledge" marker-end="url(#taskArrowKnowledge)" d="M353 137 V108"/>
+        <path class="knowledge" marker-end="url(#taskArrowKnowledge)" d="M431 137 V108"/>
+        <text x="464" y="119">TOOL CALL</text>
+        <path class="answer" marker-end="url(#taskArrowAnswer)" d="M464 67 H830 Q836 67 836 73 V80 H838"/>
+        <path class="answer" marker-end="url(#taskArrowAnswer)" d="M991 80 H1004 Q1010 80 1010 86 V338 Q1010 344 1004 344 H960 Q954 344 954 350 V354"/>
+        <text class="answer-label" x="650" y="51">ANSWER · 候选交付，不等于业务验收</text>
+        <!-- Plugin 是安装 / 分发入口：与运行主链分开，连接到它装配的能力 -->
+        <path class="distribution" marker-end="url(#taskArrowDistribution)" d="M488 151 H391"/>
+        <path class="distribution" marker-end="url(#taskArrowDistribution)" d="M525 137 V116 H776 V138"/>
+        <text class="distribution-label" x="557" y="113">PLUGIN INSTALL / DISTRIBUTE</text>
+        <!-- Permission 与 Hook 独立约束 Gate，不伪装成必须逐一经过的主流程步骤 -->
+        <path class="control" marker-end="url(#taskArrowControl)" d="M606 137 V124 H480 V220 H488"/>
+        <path class="control" marker-end="url(#taskArrowControl)" d="M566 203 V210"/>
+        <!-- Gate 进入 Harness 路由，再分叉到四种独立执行能力 -->
+        <path class="action" marker-end="url(#taskArrowAction)" d="M644 238 H652"/>
+        <path class="action" d="M652 132 V279"/>
+        <path class="action route-builtin" marker-end="url(#taskArrowActionBuiltin)" d="M652 165 H660"/>
+        <path class="action route-mcp" marker-end="url(#taskArrowActionMcp)" d="M652 132 H776 V138"/>
+        <path class="action route-custom" marker-end="url(#taskArrowActionCustom)" d="M652 279 H697 V258"/>
+        <path class="action route-subagent" marker-end="url(#taskArrowActionSubagent)" d="M652 270 H776 V258"/>
+        <!-- 四类能力进入各自运行环境，再把可观察结果送到 Verify -->
+        <path class="action route-builtin" marker-end="url(#taskArrowActionBuiltin)" d="M734 180 H736 V304"/>
+        <path class="action route-mcp" marker-end="url(#taskArrowActionMcp)" d="M813 165 H820 V304"/>
+        <path class="action route-custom" marker-end="url(#taskArrowActionCustom)" d="M697 258 V304"/>
+        <path class="action route-subagent" marker-end="url(#taskArrowActionSubagent)" d="M776 258 V304"/>
+        <path class="action" marker-end="url(#taskArrowAction)" d="M824 316 H825 V208 H838"/>
+        <path class="flow" marker-end="url(#taskArrowFlow)" d="M991 190 H1004 Q1010 190 1010 184 V177 Q1010 171 1013 171"/>
+        <path class="flow" marker-end="url(#taskArrowFlow)" d="M875 251 V354"/>
+        <path class="flow" marker-end="url(#taskArrowFlow)" d="M912 381 H917"/>
+        <!-- 故障处理单独回到重规划；升级路径进入任务状态，不并入正常内环 -->
+        <path class="control" marker-end="url(#taskArrowControl)" d="M991 240 H1013"/>
+        <path class="control" marker-end="url(#taskArrowControl)" d="M1090 208 V200"/>
+        <path class="control" marker-end="url(#taskArrowControl)" d="M1166 231 H1174 V381 H1166"/>
+        <!-- Agent 运行内环：新证据回到 Context，驱动下一轮，不是定时触发 -->
+        <path class="runtime-loop" marker-end="url(#taskArrowLoop)" d="M1013 178 H997 V332 H256 Q250 332 250 326 V289"/>
+        <text class="loop-label" x="590" y="322">运行内环 · 新证据 → 重规划 → 下一轮 Context</text>
+        <!-- 定时 Loop：独立于工具重试，由时间/事件再次发起 Prompt -->
+        <path class="schedule-loop" marker-end="url(#taskArrowSchedule)" d="M1166 280 H1187 V35 H476 Q470 35 470 41 V80 H464"/>
+        <text class="schedule-label" x="880" y="48">定时 / 事件触发 · Claude Code /loop</text>
+        <!-- 开发者观察与接管控制 -->
+        <path class="control" marker-end="url(#taskArrowControl)" d="M566 354 V278"/>
+        <path class="control" marker-end="url(#taskArrowControl)" d="M737 329 V354"/>
+      </svg>
+      <article class="agent-map-node main task" style="--x:11.2;--y:82.5;--w:13.3;--h:12.5"><small>START · DEVELOPER TASK</small><b>目标与工程现场</b><p>目标、代码、版本、错误与完成条件。</p></article>
+      <article class="agent-map-node capability mini stack rules" style="--x:11.2;--y:31.9;--w:6.2;--h:6.3"><b>Rules</b><p>项目边界</p></article>
+      <article class="agent-map-node capability mini stack knowledge" style="--x:18.2;--y:31.9;--w:6.3;--h:6.3"><b>知识库 / RAG</b><p>文档·API·样例</p></article>
+      <article class="agent-map-node capability mini stack memory" style="--x:11.2;--y:38.6;--w:6.2;--h:6.3"><b>Memory</b><p>项目与会话态</p></article>
+      <article class="agent-map-node capability mini stack mcp" style="--x:18.2;--y:38.6;--w:6.3;--h:6.3"><b>MCP Resource</b><p>实时查询</p></article>
+      <article class="agent-map-node capability mini stack workspace" style="--x:11.2;--y:45.3;--w:6.2;--h:6.3"><b>Workspace Index</b><p>代码与构建入口</p></article>
+      <article class="agent-map-node capability mini stack template" style="--x:18.2;--y:45.3;--w:6.3;--h:6.3"><b>Template</b><p>工程起点</p></article>
+      <article class="agent-map-node main context" style="--x:11.2;--y:53.6;--w:13.3;--h:13.7"><small>CONTEXT / ASSEMBLE</small><b>装配任务上下文</b><p>目标、约束、知识、历史、方法与工具合同。</p></article>
 
-      <section class="rm-phase action">
-        <div class="rm-phase-head"><span class="num">02</span><div><b>Agent 据此采取行动</b><small>CONTEXT → METHOD → ACTION</small></div></div>
-        <div class="rm-unit"><strong>模型接收任务 Context</strong><p>用户目标与 Workspace + 项目 Rules / Memory + 检索到的知识；返回文本或工具调用</p></div>
-        <div class="rm-unit"><strong>选择方法与入口</strong><p>Skill / Workflow · Command / Prompt · 任务模板</p><div class="rm-chip-row"><span class="rm-chip">Claude：描述先常驻</span><span class="rm-chip">调用时加载正文</span></div></div>
-        <div class="rm-unit"><strong>选择执行能力</strong><p>内置 File / Shell / Browser · MCP / Connector（资源与工具）</p><div class="rm-chip-row"><span class="rm-chip">Custom Agent</span><span class="rm-chip">Subagent：独立子任务</span></div></div>
-        <div class="rm-unit"><strong>经过 Host / Harness 路由</strong><p>解析工具合同 → 权限 / Sandbox 检查 → 本机、容器、Cloud、CI 或 NPU 环境</p></div>
-        <div class="rm-plugin-band"><b>Plugin / Extension</b> · 打包、安装并接入 Skill、MCP 或 App；属于分发入口，不是任务中的一步。</div>
-      </section>
+      <article class="agent-map-node main llm" style="--x:26.4;--y:11.9;--w:12.3;--h:13.2"><small>DECIDE / PLAN</small><b>模型选择下一步</b><p>补问、规划、工具调用或回答。</p></article>
+      <article class="agent-map-node capability mini stack skill" style="--x:26.4;--y:31.9;--w:6.2;--h:6.3"><b>Skill / Workflow</b><p>按需装入方法</p></article>
+      <article class="agent-map-node capability mini stack command" style="--x:33.2;--y:31.9;--w:5.5;--h:6.3"><b>Command</b><p>显式任务入口</p></article>
+      <article class="agent-map-node capability mini stack plugin distribution-node" style="--x:40.7;--y:31.9;--w:6.1;--h:7"><b>Plugin</b><p>分发 Skill / MCP</p></article>
+      <article class="agent-map-node capability permission" style="--x:47.3;--y:31.9;--w:6.4;--h:7"><b>Permission / Sandbox</b><p>授权边界与风险拦截</p></article>
+      <article class="agent-map-node capability mini hook" style="--x:40.7;--y:40;--w:13;--h:7"><b>Hook</b><p>PreTool / PostTool / Stop 检查</p></article>
+      <article class="agent-map-node main runtime" style="--x:40.7;--y:48.8;--w:13;--h:15.7"><small>GATE / ROUTE</small><b>校验并选择执行器</b><p>工具合同、权限、风险与成本共同决定是否执行。</p></article>
 
-      <section class="rm-phase control">
-        <div class="rm-phase-head"><span class="num">03</span><div><b>开发者理解和控制</b><small>VISIBLE · STEERABLE</small></div></div>
-        <div class="rm-unit"><strong>行动前｜看懂再授权</strong><p>目标、适用范围、计划路径、权限与成本</p></div>
-        <div class="rm-unit"><strong>行动中｜看见并能干预</strong><p>当前进度、正在调用什么、返回了什么；可引导、暂停或接管</p></div>
-        <div class="rm-unit"><strong>行动后｜审阅再决定</strong><p>查看 Diff、测试与未完成项；继续、接受或交回任务</p></div>
-        <div class="rm-hook-line"><b>Hook / 生命周期事件（平台提供时）</b>SessionStart → PreToolUse → PostToolUse → Stop / SubagentStop</div>
-      </section>
+      <article class="agent-map-node capability builtin" style="--x:55;--y:32.2;--w:6.2;--h:12.4"><b>Built-in Tools</b><p>文件、Shell、Browser</p></article>
+      <article class="agent-map-node capability mcp" style="--x:61.6;--y:32.2;--w:6.2;--h:12.4"><b>MCP / Connector</b><p>外部事实与受控动作</p></article>
+      <article class="agent-map-node capability custom-agent" style="--x:55;--y:47.6;--w:6.2;--h:12.4"><b>Custom Agent</b><p>固定角色与工具边界</p></article>
+      <article class="agent-map-node capability subagent" style="--x:61.6;--y:47.6;--w:6.2;--h:12.4"><b>Subagent</b><p>独立 Context 子任务</p></article>
 
-      <section class="rm-phase recover">
-        <div class="rm-phase-head"><span class="num">04</span><div><b>失败后能继续处理</b><small>RECOVER · REPLAN</small></div></div>
-        <div class="rm-flow-list">
-          <div class="rm-flow-item"><i>1</i><div><b>识别故障类型</b><span>参数、权限、环境、构建或测试</span></div></div>
-          <div class="rm-flow-item"><i>2</i><div><b>保留任务现场</b><span>阶段、历史、日志、Diff 与证据</span></div></div>
-          <div class="rm-flow-item"><i>3</i><div><b>选择恢复路径</b><span>修正、查知识/Skill、换工具/环境、委派或升级</span></div></div>
-          <div class="rm-flow-item"><i>4</i><div><b>恢复后重新验证</b><span>证据不足就继续；无安全路径则停止并说明原因</span></div></div>
-        </div>
-        <div class="rm-chip-row"><span class="rm-chip">Checkpoint</span><span class="rm-chip">Context 重建</span><span class="rm-chip">Retry / Fallback</span><span class="rm-chip">回到 01 知识 / 02 行动</span></div>
-      </section>
+      <article class="agent-map-node main observation" style="--x:69.8;--y:38.3;--w:12.8;--h:20"><small>OBSERVE / VERIFY</small><b>把执行变成可判断结果</b><p>状态、错误、Diff、测试、日志；回填下一轮。</p></article>
+      <article class="agent-map-node main llm" style="--x:69.8;--y:11.9;--w:12.8;--h:13.2"><small>MODEL RESPONSE</small><b>候选回答</b><p>文本仍需回执与业务条件验收。</p></article>
 
-      <section class="rm-phase proof">
-        <div class="rm-phase-head"><span class="num">05</span><div><b>结果有证据可验收</b><small>VERIFY · ACCEPT</small></div></div>
-        <div class="rm-unit"><strong>按任务条件验证</strong><p>构建 / 测试 / 正确性；需要时再看精度、性能与兼容性</p></div>
-        <div class="rm-unit"><strong>形成 Evidence Receipt</strong><p>版本与环境 · 来源与命令 · 输出、日志、Diff 与验证状态</p></div>
-        <div class="rm-unit"><strong>判断是否真正完成</strong><p>业务条件与 Owner 规则通过才交付；模型 final 本身不是验收</p></div>
-        <div class="rm-chip-row"><span class="rm-chip">通过 → 交付 / 复用</span><span class="rm-chip">未通过 → 回到 04 恢复</span></div>
-      </section>
+      <article class="agent-map-node main replan" style="--x:84.4;--y:36;--w:12.8;--h:10.5"><small>REPLAN</small><b>补信息、换路径或停止</b><p>以新证据更新判断。</p></article>
+      <article class="agent-map-node recovery" style="--x:84.4;--y:48.5;--w:12.8;--h:10.5"><small>RECOVER</small><b>识别故障并保留现场</b><p>修正、重试、委派或升级。</p></article>
+      <article class="agent-map-node capability mini stack automation" style="--x:84.4;--y:61.5;--w:12.8;--h:7.5"><b>定时 Loop / Automation</b><p>时间或事件再次发起 Prompt</p></article>
+
+      <article class="agent-map-node main task" style="--x:40.7;--y:82.5;--w:13;--h:12.5"><small>BEFORE ACTION</small><b>理解计划再授权</b><p>先看范围、风险、权限与成本。</p></article>
+      <article class="agent-map-node main task" style="--x:55;--y:82.5;--w:13;--h:12.5"><small>DURING ACTION</small><b>看进度并能介入</b><p>引导、暂停或接回任务。</p></article>
+      <article class="agent-map-node receipt" style="--x:69.8;--y:82.5;--w:6.2;--h:12.5"><small>RECEIPT</small><b>任务回执</b><p>环境、命令、信号。</p></article>
+      <article class="agent-map-node main accept" style="--x:76.4;--y:82.5;--w:6.2;--h:12.5"><small>ACCEPT</small><b>业务验收</b><p>按完成条件判断。</p></article>
+      <article class="agent-map-node outcome" style="--x:84.4;--y:82.5;--w:12.8;--h:12.5"><small>END · TASK STATE</small><b>完成 / 恢复 / 升级</b><p>保留 Owner、Checkpoint 与未完成项。</p></article>
+
+      <div class="agent-env-band" style="left:54.6%;width:14.1%"><b>ENVIRONMENT</b><span>Local · Container · CI · Cloud · NPU</span></div>
     </div>
-
-    <div class="rm-control-rail"><div class="rm-control-title"><b>开发者控制带</b><span>贯穿行动前—中—后</span></div><div class="rm-control-point"><b>行动前</b> 看范围、计划、成本与权限</div><div class="rm-control-point"><b>行动中</b> 看进度、引导、暂停或接管</div><div class="rm-control-point"><b>行动后</b> 审阅证据、决定继续或接受</div></div>
-
-    <div class="rm-loop-row">
-      <div class="rm-runtime-loop"><div class="rm-loop-label"><b>Agent 运行内环</b><span>工具结果驱动下一轮</span></div><div class="rm-loop-steps"><span>Tool call</span><span>执行</span><span>结果 / 日志 / Diff 回填</span><span>重新判断与规划 ↻</span></div></div>
-      <div class="rm-clock-loop"><div class="rm-loop-label"><b>定时 Loop / Automation</b><span>时间触发，不等于故障重试</span></div><div class="rm-loop-steps"><span>到达设定时间</span><span>再次发起 Prompt</span><span>Claude Code <code>/loop</code></span></div></div>
-    </div>
-
-    <div class="rm-learning-loop"><b>任务外环｜经验回流与改进</b><div class="rm-loop-steps"><span>成功 / 失败证据</span><span>开发者理解与迁移</span><span>改进知识、方法与体验目标</span><span>下一任务 ↺ 回到 01</span></div><span class="rm-learning-note">改进需有治理与验证，不等同于系统自动自进化。</span></div>
+    <div class="task-learning-loop" aria-label="任务外环：经人工治理的经验回流"><b>任务外环 · 经治理的经验回流</b><span>成功 / 失败证据</span><i>→</i><span>开发者理解并迁移</span><i>→</i><span>更新知识、Skill 与体验目标</span><i>→</i><span>下一任务 ↺</span><small>不是自动自进化</small></div>
   </main>
-  <footer class="foot">AI 可用性任务与研究维度沿用既有 CANN × CUDA 分析；Claude /loop 是平台特定定时触发。任务外环是设计框架，不代表现状已经自动实现。</footer>
+  <footer class="foot">连线：紫＝任务主线｜青＝工具路由｜橙＝授权 / 故障恢复｜绿＝运行内环｜灰紫虚线＝Plugin / Extension 分发 Skill、MCP 与 App｜青虚线＝定时触发。工具结果重规划、故障恢复、定时 /loop 与经治理的经验回流彼此独立。</footer>
 </div></section>
 
 <!-- 02 CONTENTS -->
