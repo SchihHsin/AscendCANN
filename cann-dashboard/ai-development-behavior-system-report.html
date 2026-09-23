@@ -50,14 +50,6 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .contents-slide .body-area{justify-content:center}.contents-directory{width:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.8vw;align-items:stretch}.directory-card{--dir:var(--c-indigo);position:relative;min-width:0;min-height:38vh;overflow:hidden;padding:1.8vh 1.05vw 1.35vh;display:flex;flex-direction:column;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.88);border-radius:14px;box-shadow:0 18px 42px -25px rgba(20,25,35,.22),inset 0 1px 0 rgba(255,255,255,.94)}.directory-card::after{content:"";position:absolute;right:-25%;bottom:-24%;width:90%;height:46%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--dir) 16%,transparent),transparent 70%)}.directory-card:nth-child(2){--dir:var(--c-blue)}.directory-card:nth-child(3){--dir:var(--c-purple)}.directory-card:nth-child(4){--dir:var(--c-teal)}.directory-card:nth-child(5){--dir:var(--c-green)}.directory-no,.directory-name,.directory-en,.directory-items,.directory-note{position:relative;z-index:1}.directory-no{font-family:'Barlow Condensed';font-size:clamp(52px,5vw,80px);font-weight:300;line-height:.82;color:var(--dir)}.directory-name{margin-top:1.3vh;font-size:var(--fs-h2);font-weight:900}.directory-en{margin-top:.4vh;font-size:var(--fs-sm);font-weight:700;color:color-mix(in srgb,var(--dir) 74%,#596575)}.directory-items{display:grid;gap:.55vh;margin-top:2.3vh}.directory-items span{font-size:var(--fs-body);line-height:1.35;color:var(--ink-2)}.directory-note{margin-top:auto;padding-top:1.1vh;border-top:1px solid rgba(47,61,99,.14);font-size:var(--fs-sm);font-weight:800;color:color-mix(in srgb,var(--dir) 72%,#465364)}
 
 /* New behavior-system narrative: scoped components for the duplicated report only. */
-.contents-directory.contents-6{grid-template-columns:repeat(3,minmax(0,1fr));gap:.85vw}
-.contents-directory.contents-6 .directory-card{min-height:20vh;padding:1.25vh 1vw 1vh}
-.contents-directory.contents-6 .directory-no{font-size:clamp(34px,3.5vw,56px)}
-.contents-directory.contents-6 .directory-name{margin-top:.65vh;font-size:var(--fs-h3)}
-.contents-directory.contents-6 .directory-en{margin-top:.2vh;font-size:var(--fs-xs)}
-.contents-directory.contents-6 .directory-items{grid-template-columns:repeat(3,minmax(0,1fr));gap:.4vw;margin-top:1vh}
-.contents-directory.contents-6 .directory-items span{font-size:var(--fs-sm);line-height:1.28}
-.contents-directory.contents-6 .directory-note{padding-top:.55vh;font-size:var(--fs-xs)}
 .behavior-lifecycle{display:grid;grid-template-columns:minmax(0,1fr) 1.7vw minmax(0,1fr) 1.7vw minmax(0,1fr) 1.7vw minmax(0,1fr);align-items:stretch;gap:.45vw}
 .behavior-phase{--phase:var(--c-indigo);min-width:0;min-height:45vh;padding:1.4vh .95vw 1.2vh;border:1px solid rgba(255,255,255,.9);border-radius:16px;background:linear-gradient(150deg,color-mix(in srgb,var(--phase) 12%,white),rgba(255,255,255,.68) 64%);box-shadow:0 12px 28px -22px rgba(20,25,35,.3);display:flex;flex-direction:column;gap:1vh}
 .behavior-phase:nth-of-type(2){--phase:var(--c-blue)}.behavior-phase:nth-of-type(3){--phase:var(--c-teal)}.behavior-phase:nth-of-type(4){--phase:var(--c-green)}
@@ -89,6 +81,22 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .system-layer-insight{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:1.1vh;padding:1.7vh 1.25vw;border-radius:16px;background:var(--g-ink);color:#fff}
 .system-layer-insight small{color:#a9b8ff;font:600 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.1em}.system-layer-insight h3{font-size:var(--fs-h2);line-height:1.3}.system-layer-insight p{font-size:var(--fs-body);line-height:1.45;color:rgba(255,255,255,.7)}
 .system-layer-insight .layer-outcomes{display:grid;gap:.48vh}.system-layer-insight .layer-outcomes span{padding:.65vh .7vw;border-radius:8px;background:rgba(255,255,255,.08);font-size:var(--fs-sm)}
+.framework-composition{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(17vw,.8fr);gap:.9vw;align-items:stretch}
+.framework-matrix-panel{min-width:0;padding:1.15vh .9vw;border-radius:16px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.82)}
+.framework-matrix-title{display:flex;align-items:baseline;justify-content:space-between;gap:.8vw;margin-bottom:.8vh}.framework-matrix-title b{font-size:var(--fs-h3)}.framework-matrix-title span{font-size:var(--fs-xs);color:var(--ink-3)}
+.framework-matrix{display:grid;grid-template-columns:8.2vw repeat(4,minmax(0,1fr));gap:.38vw;align-items:stretch}
+.framework-matrix>div{min-width:0;min-height:7.2vh;padding:.6vh .48vw;border-radius:9px;background:rgba(255,255,255,.77)}
+.framework-matrix .fm-corner{display:flex;align-items:center;justify-content:center;text-align:center;background:#e8ebf1;color:var(--ink-3);font-size:var(--fs-xs);line-height:1.25;font-weight:750}
+.framework-matrix .fm-phase{display:flex;align-items:center;justify-content:center;text-align:center;background:var(--g-ink);color:#fff;font-size:var(--fs-sm);line-height:1.25;font-weight:800}
+.framework-matrix .fm-layer{display:flex;flex-direction:column;justify-content:center;gap:.2vh;background:#eef0ff}.framework-matrix .fm-layer b{font-size:var(--fs-sm);line-height:1.2}.framework-matrix .fm-layer small{font-size:var(--fs-xs);color:var(--ink-3)}
+.framework-matrix .fm-layer.team{background:#f3effb}.framework-matrix .fm-layer.ecosystem{background:#eaf7f6}
+.framework-matrix .fm-cell{display:flex;align-items:center;justify-content:center;gap:.32vw;background:rgba(255,255,255,.65)}
+.framework-matrix .fm-cell i,.framework-legend i{display:block;width:8px;height:8px;flex:0 0 auto;border-radius:50%;background:var(--flow)}
+.framework-matrix .fm-cell i:nth-child(1),.framework-legend span:nth-child(1) i{--flow:var(--c-indigo)}.framework-matrix .fm-cell i:nth-child(2),.framework-legend span:nth-child(2) i{--flow:var(--c-blue)}.framework-matrix .fm-cell i:nth-child(3),.framework-legend span:nth-child(3) i{--flow:var(--c-teal)}.framework-matrix .fm-cell i:nth-child(4),.framework-legend span:nth-child(4) i{--flow:var(--c-purple)}.framework-matrix .fm-cell i:nth-child(5),.framework-legend span:nth-child(5) i{--flow:var(--c-orange)}.framework-matrix .fm-cell i:nth-child(6),.framework-legend span:nth-child(6) i{--flow:var(--c-green)}
+.framework-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.42vh .5vw;margin-top:.75vh}.framework-legend span{display:flex;align-items:center;gap:.35vw;min-width:0;font-size:var(--fs-xs);line-height:1.25;color:var(--ink-2)}
+.framework-matrix-note{margin-top:.72vh;padding:.62vh .7vw;border-radius:8px;background:rgba(91,91,214,.07);font-size:var(--fs-xs);line-height:1.35;color:var(--ink-3)}
+.framework-prompts{min-width:0;padding:1.2vh .9vw;border-radius:16px;background:var(--g-ink);color:#fff;display:flex;flex-direction:column;gap:.6vh}.framework-prompts>small{font:650 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.08em;color:#b9c2ff}.framework-prompts h3{font-size:var(--fs-h3);line-height:1.25;margin-bottom:.2vh}
+.framework-prompt{display:grid;grid-template-columns:1.45vw 1fr;gap:.45vw;align-items:center;min-height:4.5vh;padding:.55vh .55vw;border-radius:8px;background:rgba(255,255,255,.08)}.framework-prompt b{font:700 var(--fs-xs)/1 'JetBrains Mono';color:#b9c2ff}.framework-prompt span{font-size:var(--fs-sm);line-height:1.25;color:rgba(255,255,255,.8)}
 .risk-matrix{display:grid;grid-template-columns:10.5vw repeat(4,minmax(0,1fr));gap:.5vw;align-items:stretch}
 .risk-phase{display:flex;align-items:center;justify-content:center;min-height:4.3vh;padding:.45vh .35vw;border-radius:9px;background:rgba(255,255,255,.58);color:var(--ink-3);text-align:center;font-size:var(--fs-xs);font-weight:750;line-height:1.2}
 .risk-lane-label{display:flex;flex-direction:column;justify-content:center;gap:.28vh;padding:.8vh .65vw;border-radius:12px;background:var(--g-ink);color:#fff}.risk-lane-label b{font-size:var(--fs-sm);line-height:1.2}.risk-lane-label small{color:rgba(255,255,255,.62);font-size:var(--fs-xs)}
@@ -98,8 +106,8 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .risk-item b{display:block;font-size:var(--fs-sm);line-height:1.22}.risk-item small{display:block;margin-top:.12vh;color:var(--ink-3);font-size:var(--fs-xs);line-height:1.22}
 .risk-boundary{display:flex;align-items:center;justify-content:space-between;gap:1vw;margin-top:.8vh;padding:.7vh .8vw;border-radius:10px;background:rgba(244,180,80,.13);color:#765320;font-size:var(--fs-xs);line-height:1.35}
 .risk-boundary b{color:#654713}
-.shape-case-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.85vw;align-items:stretch}
-.shape-case-step{position:relative;min-width:0;min-height:39vh;padding:1.35vh .85vw 1vh;border-radius:15px;background:rgba(255,255,255,.67);border:1px solid rgba(255,255,255,.9);box-shadow:0 12px 28px -22px rgba(20,25,35,.3)}
+.shape-case-flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.72vw;align-items:stretch}
+.shape-case-step{position:relative;min-width:0;min-height:39vh;padding:1.15vh .68vw .9vh;border-radius:15px;background:rgba(255,255,255,.67);border:1px solid rgba(255,255,255,.9);box-shadow:0 12px 28px -22px rgba(20,25,35,.3)}
 .shape-case-step:not(:last-child)::after{content:'›';position:absolute;right:-.76vw;top:48%;z-index:2;display:grid;place-items:center;width:1.45vw;height:1.45vw;border-radius:50%;background:#f5f6f8;color:#59677e;font-size:var(--fs-h2)}
 .shape-case-step small{display:block;color:var(--accent);font:650 var(--fs-xs)/1.25 'JetBrains Mono';letter-spacing:.07em}.shape-case-step h3{margin:.7vh 0;font-size:var(--fs-h3);line-height:1.23}.shape-case-step p{color:var(--ink-2);font-size:var(--fs-sm);line-height:1.4}
 .shape-case-data{display:grid;gap:.4vh;margin-top:1vh}.shape-case-data span{padding:.52vh .48vw;border-radius:8px;background:#f2f4f7;color:var(--ink-2);font-size:var(--fs-xs);line-height:1.25}
@@ -685,7 +693,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
 <!-- AGENT MECHANISM DRILL-DOWN -->
 <section class="slide s-gray task-rel-page" data-title="Agent 机制下钻"><div class="slide-inner">
-  <header class="head"><div class="head-l"><div class="subttl">承接上一页的多方时序：这里只放大 Agent 泳道，开发者仍负责目标、授权与结果判断</div><div class="ttl">放大 Agent 内部：Context → Plan → Gate → Act / Observe</div></div><div class="section-tabs"></div></header>
+  <header class="head"><div class="head-l"><div class="subttl">承接上一页的自定义算子时序，放大 Agent 在任务中的上下文、计划、授权、执行、验证与可选恢复</div><div class="ttl">沿着任务时序，看 Agent 如何与开发者交接</div></div><div class="section-tabs"></div></header>
   <div class="body-area" aria-label="Agent运行机制四个观察点中的人机协作">
     <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 的机制观察图，四列是运行观察点而非任务阶段，失败后恢复为可选分支">
       <div class="cb-axis"><small>机制观察点</small><b>运行时视角</b><span>不是 P1–P7</span></div>
@@ -795,35 +803,34 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
     </div>
   </div>
-  <footer class="foot">四列是 Agent 运行机制的观察点，不等于上一页 P1–P7 任务阶段；平台机制供给因产品而异。Agent Loop 是工具结果回填后的正常迭代，非 /loop 定时提示；失败恢复仍是验收后的可选分支。</footer>
+  <footer class="foot">这是对时序中 Agent 一侧的机制下钻，不代表各平台都以相同方式提供这些能力。四列是运行观察点，不等于开发生命周期阶段；Agent Loop 是工具结果回填后的正常迭代，失败恢复仍是可选分支。</footer>
 </div></section>
 
 <!-- MULTI-ACTOR TASK TIMELINE -->
 <section class="slide s-gray task-timeline-page" data-title="算子开发全链路时序"><div class="slide-inner">
-  <header class="head"><div class="head-l"><div class="subttl">先看一个具体开发任务中，开发者、Agent、昇腾社区、第三方平台与本机工具怎样在阶段间交接</div><div class="ttl">自定义算子开发不是 Agent 单线推进：五方贯穿 P1–P7</div></div><div class="section-tabs"></div></header>
+  <header class="head"><div class="head-l"><div class="subttl">先从一次自定义算子任务看完整过程：目标、方案、执行、协作与交付；开发不等于写代码，也不预设某一环节最重要</div><div class="ttl">一次算子开发中，五方沿 P1–P7 交接推进</div></div><div class="section-tabs"></div></header>
   <main class="body-area">
     <div class="task-timeline-shell">
       <div class="task-timeline-frame"><iframe src="seq-d3-ux-task.html?full=1&amp;compact=1" title="自定义算子开发中五类参与者的 P1–P7 全链路时序图"></iframe></div>
-      <div class="task-timeline-bridge"><b>本页看全链路</b><span>谁在什么阶段提供知识、行动或反馈；时序中的角色不等同于 Agent 内部机制。</span><strong>下一页 → 放大 Agent 泳道</strong></div>
+      <div class="task-timeline-bridge"><b>本页先看全链路</b><span>谁在什么阶段提供知识、行动或反馈；先不假定某一个环节最重要。</span><strong>下一页 → 放大 Agent 泳道</strong></div>
     </div>
   </main>
-  <footer class="foot">时序图复用自 AI 可用性研究材料 #15；示例范围：一次自定义算子开发。P1–P7 是此任务的阶段划分，不表示所有开发任务都必须采用相同路径。</footer>
+  <footer class="foot">时序图复用自 AI 可用性研究材料 #15；P1–P7 是该自定义算子任务的阶段划分，用于展示参与者交接，不替代通用开发生命周期，也不表示所有任务都固定采用相同路径。</footer>
 </div></section>
 
 <!-- 02 CONTENTS -->
-<section class="slide s-gray contents-slide" data-template="contents-directory" data-title="目录"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">先看参与者如何完成一次开发任务，再逐层展开系统机制、体验设计与学习影响</div><div class="ttl">从任务时序出发，理解 AI 开发行为系统</div></div><div class="section-tabs"><span class="active">OVERVIEW</span></div></header><main class="body-area">
-  <div class="contents-directory contents-6">
-    <article class="directory-card"><div class="directory-no">01</div><div class="directory-name">任务时序</div><div class="directory-en">TASK TIMELINE</div><div class="directory-items"><span>先看五方 P1–P7 全链路</span><span>紧接着放大 Agent 泳道</span><span>抽象完整开发生命周期</span></div><div class="directory-note">从具体任务开始</div></article>
-    <article class="directory-card"><div class="directory-no">02</div><div class="directory-name">行为系统框架</div><div class="directory-en">SYSTEM LENS</div><div class="directory-items"><span>六条贯穿流</span><span>个人、团队与生态三层</span><span>九类风险作为待验证假设</span></div><div class="directory-note">确定“看什么、怎么研究”</div></article>
-    <article class="directory-card"><div class="directory-no">03</div><div class="directory-name">平台机制</div><div class="directory-en">PLATFORM & HARNESS</div><div class="directory-items"><span>各平台如何组织 Agent</span><span>哪些机制支撑任务推进</span><span>差异与证据边界</span></div><div class="directory-note">机制是解释，不是研究起点</div></article>
-    <article class="directory-card"><div class="directory-no">04</div><div class="directory-name">昇腾现状</div><div class="directory-en">CURRENT ASCEND SUPPLY</div><div class="directory-items"><span>现有 Skill / MCP 能力</span><span>已有资产覆盖哪些任务</span><span>从系统风险定位断点</span></div><div class="directory-note">先盘现状，再决定建设</div></article>
-    <article class="directory-card"><div class="directory-no">05</div><div class="directory-name">体验设计</div><div class="directory-en">DESIGN THE COLLABORATION</div><div class="directory-items"><span>目标、路径与行动控制</span><span>过程可见、交接与证据</span><span>衡量并持续改进</span></div><div class="directory-note">把机制转化为用户体验</div></article>
-    <article class="directory-card"><div class="directory-no">06</div><div class="directory-name">知识内化</div><div class="directory-en">LEARNING AFTER THE TASK</div><div class="directory-items"><span>任务完成后学到了什么</span><span>开发中学习的画布方案</span><span>练习如何回到项目验证</span></div><div class="directory-note">从一次交付延伸到成长</div></article>
+<section class="slide s-gray contents-slide" data-template="contents-directory" data-title="目录"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">先定义完整开发行为，再用分析框架发现问题，最后映射平台角色与体验设计</div><div class="ttl">研究开发者如何完成任务，再决定系统应该怎样支持</div></div><div class="section-tabs"><span class="active">OVERVIEW</span></div></header><main class="body-area">
+  <div class="contents-directory contents-5">
+    <article class="directory-card"><div class="directory-no">01</div><div class="directory-name">开发行为</div><div class="directory-en">BEHAVIOR SYSTEM</div><div class="directory-items"><span>真实任务时序与 Agent 分工</span><span>生命周期 × 六条流 × 三个层级</span><span>风险推导与任务示例</span></div><div class="directory-note">先看任务，再抽象系统</div></article>
+    <article class="directory-card"><div class="directory-no">02</div><div class="directory-name">平台机制</div><div class="directory-en">PLATFORM & HARNESS</div><div class="directory-items"><span>六个平台怎样组织 Agent</span><span>Harness 如何支撑任务推进</span><span>Agent 内部机制下钻</span></div><div class="directory-note">机制是支撑，不是起点</div></article>
+    <article class="directory-card"><div class="directory-no">03</div><div class="directory-name">昇腾现状</div><div class="directory-en">CURRENT ASCEND SUPPLY</div><div class="directory-items"><span>现有 Skill / MCP 资产</span><span>任务覆盖与连续性断点</span><span>从框架映射到现状</span></div><div class="directory-note">先盘点，再判断缺口</div></article>
+    <article class="directory-card"><div class="directory-no">04</div><div class="directory-name">研究与体验设计</div><div class="directory-en">RESEARCH → DESIGN</div><div class="directory-items"><span>用真实任务验证风险</span><span>明确人机协作的设计对象</span><span>衡量、改进与责任分工</span></div><div class="directory-note">从证据走向体验方案</div></article>
+    <article class="directory-card"><div class="directory-no">05</div><div class="directory-name">知识内化</div><div class="directory-en">LEARNING AFTER THE TASK</div><div class="directory-items"><span>任务完成后学到了什么</span><span>开发中学习的画布方案</span><span>练习如何回到项目验证</span></div><div class="directory-note">从一次交付延伸到成长</div></article>
   </div>
-</main><footer class="foot">阅读顺序：多方任务时序 → Agent 泳道展开 → 开发行为框架 → 平台机制 → 昇腾现状 → 体验设计与知识内化。</footer></div></section>
+</main><footer class="foot">阅读顺序：先看真实任务与 Agent 分工 → 抽象完整开发行为 → 用六条流和三个层级分析 → 推导待验证问题 → 比较平台机制与昇腾现状 → 形成体验设计和改进闭环 → 延伸到知识内化。</footer></div></section>
 
 <!-- DEVELOPMENT BEHAVIOR SYSTEM FRAMEWORK -->
-<section class="slide s-gray behavior-lifecycle-page" data-title="开发生命周期全景"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">从 P1–P7 的具体时序抽象出可迁移的任务生命周期；不同任务可能跳步、返工或并行</div><div class="ttl">开发行为贯穿目标、执行、交付与下一次任务</div></div><div class="section-tabs"></div></header><main class="body-area">
+<section class="slide s-gray behavior-lifecycle-page" data-title="开发生命周期全景"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">从具体任务回到一般规律：开发不等同于写代码，而是从目标产生延伸到运行反馈与知识回流</div><div class="ttl">一次完整开发，从目标定义延伸到下一次任务</div></div><div class="section-tabs"></div></header><main class="body-area">
   <div class="behavior-lifecycle" aria-label="一次完整开发行为的四个阶段与十二个步骤">
     <article class="behavior-phase"><div class="behavior-phase-head"><span class="behavior-phase-no">01</span><div><b>定义任务</b><small>从需求到可判断的问题</small></div></div><div class="behavior-steps"><div class="behavior-step"><span>01</span><div><b>产生目标</b><small>为什么现在要做？</small></div></div><div class="behavior-step"><span>02</span><div><b>理解问题</b><small>真实问题、优先级与边界</small></div></div><div class="behavior-step"><span>03</span><div><b>获取上下文</b><small>代码、环境、版本、数据、历史</small></div></div></div></article>
     <div class="behavior-phase-arrow" aria-hidden="true">→</div>
@@ -859,6 +866,23 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   </div><aside class="system-layer-insight"><small>SYSTEM EFFECT · NOT A KPI CLAIM</small><h3>一次任务可能出现三种不同结果</h3><p>下面是需要研究验证的可能情形，不是当前已测事实。</p><div class="layer-outcomes"><span><b>个人</b>：完成更快，但未必理解原因</span><span><b>团队</b>：代码已交接，决策背景可能丢失</span><span><b>生态</b>：问题已解决，经验未必回流</span></div></aside></div>
 </main><footer class="foot">三个层级用于定位影响与责任边界；同一开发行为可以在个人层有效率收益、在团队层增加理解成本、在生态层留下反馈缺口。</footer></div></section>
 
+<section class="slide s-gray" data-title="三维组合分析框架"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">生命周期定位“什么时候”，六条流定位“什么在流动”，三个层级定位“影响到谁”</div><div class="ttl">把三维框架交叉，形成可复用的任务走查方法</div></div><div class="section-tabs"></div></header><main class="body-area framework-composition">
+  <section class="framework-matrix-panel" aria-label="生命周期、六条贯穿流与三个系统层级交叉矩阵">
+    <div class="framework-matrix-title"><b>每个阶段 × 每个层级，都追踪同样六条流</b><span>分析框架，不代表这些问题已在每格发生</span></div>
+    <div class="framework-matrix">
+      <div class="fm-corner">阶段<br>×<br>层级</div><div class="fm-phase">定义任务</div><div class="fm-phase">形成方案</div><div class="fm-phase">完成工作</div><div class="fm-phase">延伸结果</div>
+      <div class="fm-layer"><b>L1 · 个人 + AI</b><small>当前任务</small></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="fm-layer team"><b>L2 · 团队 + 项目</b><small>共同理解与责任</small></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="fm-layer ecosystem"><b>L3 · 平台 + 生态</b><small>长期能力回流</small></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="fm-cell" aria-label="六条流"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="framework-legend"><span><i></i>意图与约束</span><span><i></i>上下文与知识</span><span><i></i>能力与资源</span><span><i></i>行动、控制与状态</span><span><i></i>证据与信任</span><span><i></i>责任、反馈与学习</span></div>
+    <div class="framework-matrix-note">读法：先定位任务阶段，再横看信息与责任是否连续；最后纵向检查个人、团队、生态是否分别获得理解、证据和反馈。</div>
+  </section>
+  <aside class="framework-prompts"><small>REPEATABLE REVIEW</small><h3>每个交叉格都问同一组问题</h3>
+    <div class="framework-prompt"><b>01</b><span>真实目标与完成结果是什么？</span></div><div class="framework-prompt"><b>02</b><span>还需要哪些上下文与知识？</span></div><div class="framework-prompt"><b>03</b><span>需要哪些能力、工具与资源？</span></div><div class="framework-prompt"><b>04</b><span>谁行动、判断、批准并负责？</span></div><div class="framework-prompt"><b>05</b><span>凭什么证据判断结果完成？</span></div><div class="framework-prompt"><b>06</b><span>失败后如何接手、恢复或回退？</span></div><div class="framework-prompt"><b>07</b><span>结果如何进入团队与生态？</span></div>
+  </aside>
+</main><footer class="foot">生命周期 × 六条流 × 三个层级不是 216 个独立指标，而是一种定位问题的方法；发现后再记录证据、责任人与待验证范围。</footer></div></section>
+
 <section class="slide s-gray system-risk-page" data-title="待验证的系统性风险"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">从生命周期、六条流和三个层级推导研究假设；必须通过真实任务观察再判断是否成立</div><div class="ttl">AI 能力增强，也会把九类系统风险推到台前</div></div><div class="section-tabs"></div></header><main class="body-area">
   <div class="risk-matrix" aria-label="九类待验证风险在任务阶段与系统层级中的位置">
     <div></div><div class="risk-phase">任务定义<br>与上下文</div><div class="risk-phase">方案选择<br>与执行</div><div class="risk-phase">验证交付<br>与协作</div><div class="risk-phase">运行维护<br>与知识回流</div>
@@ -877,29 +901,30 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   <div class="risk-boundary"><span><b>证据边界：</b>九项是由框架推导的风险假设，不是已确认的昇腾用户痛点或平台缺陷。</span><span>下一步：按任务采集行为、产物与决策证据</span></div>
 </main><footer class="foot">优先研究目标、上下文、行动状态、验证证据与团队/生态回流；问题是否存在、频率多高、影响多大都需要实证。</footer></div></section>
 
-<section class="slide s-gray dynamic-shape-page" data-title="动态 Shape 优化示例"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">把系统框架放进一个具体任务：示意如何观察目标、方案、工具、证据与交接，不代表真实运行结果</div><div class="ttl">动态 Shape 性能优化，先要说清“优化什么”</div></div><div class="section-tabs"></div></header><main class="body-area">
-  <div class="shape-case-flow" aria-label="动态Shape性能优化任务的五段分析路径">
-    <article class="shape-case-step"><small>01 · DEFINE</small><h3>定义优化目标</h3><p>“更快”还不够：先明确真正关键的负载、性能基线与不可牺牲的约束。</p><div class="shape-case-data"><span>端到端时延，还是单算子时延？</span><span>哪些 Shape / dtype 是关键负载？</span><span>精度、兼容、代码复杂度允许怎样取舍？</span></div></article>
-    <article class="shape-case-step"><small>02 · UNDERSTAND</small><h3>还原真实现场</h3><p>让 AI 和开发者看到相同的版本、数据与历史依据。</p><div class="shape-case-data"><span>芯片 · CANN · 编译器版本</span><span>真实 Shape 分布 · 当前实现</span><span>Profile · 精度要求 · 既有实验</span></div></article>
-    <article class="shape-case-step"><small>03 · COMPARE</small><h3>比较候选方案</h3><p>方案需要说明适用范围和代价，不把某种优化写成默认答案。</p><div class="shape-case-data"><span>多核切分 / 专项 Tiling</span><span>数据搬运 / Double Buffer</span><span>近似计算：性能与精度权衡</span></div></article>
-    <article class="shape-case-step"><small>04 · EXPERIMENT</small><h3>隔离实验并留痕</h3><p>一次只验证清楚的假设，保留修改、参数、环境与可复现入口。</p><div class="shape-case-data"><span>候选版本 + 参数配置</span><span>构建与运行日志</span><span>基线对照 + 重复测量</span></div></article>
-    <article class="shape-case-step"><small>05 · PROVE & HAND OFF</small><h3>用证据决定去留</h3><p>结果回到项目 Review；结论、限制和下一步一起交给团队。</p><div class="shape-case-data"><span>Shape 覆盖 · 精度</span><span>性能收益 · 回退场景</span><span>硬件 / 版本 · 复现方式</span></div></article>
+<section class="slide s-gray dynamic-shape-page" data-title="动态 Shape 优化示例"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">把三维框架放进一个具体任务：依次观察问题、上下文、取舍、实验、验证与团队回流</div><div class="ttl">动态 Shape 优化要从真实负载一路追到团队复用</div></div><div class="section-tabs"></div></header><main class="body-area">
+  <div class="shape-case-flow" aria-label="动态 Shape 性能优化的六个分析步骤">
+    <article class="shape-case-step"><small>01 · DEFINE</small><h3>为什么要优化</h3><p>先区分用户真实目标与表面需求。</p><div class="shape-case-data"><span>端到端时延还是单算子时延？</span><span>关键负载与性能基线是什么？</span><span>精度、兼容和复杂度边界？</span></div></article>
+    <article class="shape-case-step"><small>02 · UNDERSTAND</small><h3>还原当前状态</h3><p>确认人与 AI 看到的是同一现场。</p><div class="shape-case-data"><span>芯片 · CANN · 编译器版本</span><span>真实 Shape / dtype 分布</span><span>代码 · Profile · 精度要求 · 历史</span></div></article>
+    <article class="shape-case-step"><small>03 · DECIDE</small><h3>比较候选方案</h3><p>把收益、适用范围和代价一起说明。</p><div class="shape-case-data"><span>多核切分 / 专项 Tiling</span><span>数据搬运 / Double Buffer</span><span>精度、性能与复杂度权衡</span></div></article>
+    <article class="shape-case-step"><small>04 · EXPERIMENT</small><h3>执行并留痕</h3><p>一次验证一个假设，保留可复现现场。</p><div class="shape-case-data"><span>隔离候选版本与参数</span><span>记录构建、运行与 Profile</span><span>保存基线、日志与实验结果</span></div></article>
+    <article class="shape-case-step"><small>05 · VERIFY</small><h3>验证是否成立</h3><p>不让单点收益掩盖边界和回退。</p><div class="shape-case-data"><span>代表性 Shape / dtype 覆盖</span><span>精度、稳定性与性能</span><span>回退场景与重复测量</span></div></article>
+    <article class="shape-case-step"><small>06 · HAND OFF</small><h3>进入团队与生态</h3><p>把个人结论转成共同可理解的经验。</p><div class="shape-case-data"><span>Review 能读懂取舍与限制</span><span>沉淀测试、文档与复用方法</span><span>反馈到产品、Skill 或社区案例</span></div></article>
   </div>
-  <div class="shape-case-result"><b>研究要追踪的不是“AI 用了什么功能”</b><span>而是目标如何被定义、依据如何进入方案、实验如何被控制、证据如何改变决策，以及结果能否被团队理解和复用。</span></div>
+  <div class="shape-case-result"><b>研究焦点</b><span>追踪目标、上下文、能力、控制、证据与回流怎样穿过个人—团队—生态三个层级；图中步骤是分析示意，不是实测结论。</span></div>
 </main><footer class="foot">分析示意，不是性能结论、实测数据或推荐方案；性能、精度和硬件结果需在匹配的真实 CANN/NPU 环境中验证。</footer></div></section>
 
-<section class="slide s-gray behavior-research-page" data-title="任务研究如何取证"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">问题成立与否不能由框架本身证明；按真实开发任务追踪完整过程并交叉核验证据</div><div class="ttl">用任务观察把“九类风险”变成可验证的问题</div></div><div class="section-tabs"></div></header><main class="body-area">
+<section class="slide s-gray behavior-research-page" data-title="任务研究如何取证"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">先有行为系统框架与平台盘查，再回到任务采集过程证据，验证风险是否成立</div><div class="ttl">从任务开始追到知识回流，才能判断真正该改哪里</div></div><div class="section-tabs"></div></header><main class="body-area">
   <div class="research-path"><article class="research-block"><small>01 · TASKS</small><h3>选择典型开发任务</h3><div class="research-task-list"><span>新算子开发</span><span>精度问题诊断</span><span>性能优化</span><span>版本迁移 / 环境搭建</span></div></article>
-    <div class="research-block"><small>02 · TRACE THE WORK</small><h3>从开始跟到交付与回流</h3><div class="research-evidence-list"><span><b>现场观察</b>屏幕、操作、重复输入、求助与接管时刻</span><span><b>AI 过程</b>会话、提示、计划、工具调用与权限确认</span><span><b>工程证据</b>代码提交、构建 / 测试 / Profile、日志与产物</span><span><b>协作证据</b>Review、工单、复盘与知识更新</span></div></div>
-    <article class="research-block"><small>03 · SYNTHESIZE</small><h3>产出可回溯的体验地图</h3><div class="research-output-list"><span>开发行为与参与者时序</span><span>关键决策点、控制权与责任</span><span>上下文来源、断点与证据流</span><span>团队 / 平台反馈回路与设计机会</span></div></article>
+    <div class="research-block"><small>02 · TRACE THE WORK</small><h3>从开始跟到交付与回流</h3><div class="research-evidence-list"><span><b>现场观察</b>屏幕、操作、重复输入、犹豫、求助与接管时刻</span><span><b>AI 过程</b>会话、计划、工具调用、权限确认与失败恢复</span><span><b>工程证据</b>代码提交、构建 / 测试 / Profile、日志与产物</span><span><b>协作证据</b>Review、工单、复盘与知识更新</span></div></div>
+    <article class="research-block"><small>03 · SYNTHESIZE</small><h3>产出六类可回溯研究材料</h3><div class="research-output-list"><span>开发行为全景图</span><span>人—AI—工具—知识关系图</span><span>关键决策点与责任地图</span><span>上下文与证据流图</span><span>断裂的团队 / 生态反馈循环</span><span>系统性机会地图</span></div></article>
   </div><div class="research-disclaimer">先观察任务，再判断哪个系统载体应该改；不按社区、IDE、文档或工具团队预先切分问题。</div>
 </main><footer class="foot">建议把访谈与真实过程材料结合；单次样本只能支撑案例洞察，频率和影响范围需要更广样本验证。</footer></div></section>
 
-<!-- 03 THREE QUESTIONS -->
-<section class="slide s-gray" data-title="三个决策问题"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">把行为系统分析收束为体验设计必须回答的用户问题</div><div class="ttl">设计要回答：Agent 理解什么、用户掌控什么、团队留下什么</div></div><div class="section-tabs"></div></header><main class="body-area question-layout">
-  <div><div class="big-quote">目标清楚，<em>行动可控</em>，经验能留下。</div><p class="side-note" style="margin-top:2vh">文档、Skills、MCP、IDE、验证环境和专家支持是不同支撑载体；它们要围绕同一项开发任务协同，而不是各自成为研究起点。</p></div>
-  <div class="question-stack"><article class="qcard"><span class="no">01</span><b>开发者与 Agent 是否理解同一项任务？</b><p>目标、版本、硬件、约束与完成标准是否在当前上下文中清楚可见、可以补全？</p></article><article class="qcard"><span class="no">02</span><b>用户能否理解并引导 Agent 的行动？</b><p>计划、工具、影响和当前状态是否可见；何时确认、暂停、纠偏或接手是否明确？</p></article><article class="qcard"><span class="no">03</span><b>结果能否验证、交接并形成学习？</b><p>证据和未验证边界能否支撑 Review；失败现场、决策与经验能否继续留在任务中？</p></article></div>
-</main><footer class="foot">设计目标：围绕一个开发任务，让人知道“要达成什么、Agent 正在做什么、我何时介入、凭什么接受结果、经验会去哪里”。</footer></div></section>
+<!-- RESEARCH QUESTION -->
+<section class="slide s-gray" data-title="研究总问题"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">从具体任务与系统框架收束出平台分析问题：哪些机制真正帮助人和 Agent 把任务推进到可交付？</div><div class="ttl">人、Agent、团队、知识与工具怎样共同推进一项开发任务？</div></div><div class="section-tabs"></div></header><main class="body-area question-layout">
+  <div><div class="big-quote">任务完成，<em>不等于系统变好</em>。</div><p class="side-note" style="margin-top:2vh">要看哪些原流程被替代、哪些反馈闭环被打断，以及哪些新的任务定义、控制、验证、协作和责任问题出现。</p></div>
+  <div class="question-stack"><article class="qcard"><span class="no">01</span><b>任务如何从目标变成共同理解的计划？</b><p>人和 Agent 是否看到同样的问题、上下文、边界与完成标准？哪些判断仍由人做？</p></article><article class="qcard"><span class="no">02</span><b>能力、行动与证据怎样在过程中协同？</b><p>模型、工具、环境与知识如何被组织；用户何时能理解、确认、暂停、接管与验证？</p></article><article class="qcard"><span class="no">03</span><b>结果和知识怎样进入团队与生态？</b><p>决策、失败、修正和新经验如何被交接；下一次任务能否因此少走弯路？</p></article></div>
+</main><footer class="foot">进一步才问：昇腾社区、IDE、文档、工具与能力平台分别承担什么角色，才能支持开发者正确、高效、可控、可信并可持续地完成任务？</footer></div></section>
 
 <!-- 04 SCOPE -->
 <section class="slide s-gray" data-title="研究范围与证据"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">公开机制、可审阅源码与本地证据分层呈现</div><div class="ttl">研究范围与证据边界</div></div><div class="section-tabs"><span class="active">01 问题</span><span>02 能力</span><span>03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area scope-grid">
@@ -2027,11 +2052,10 @@ mermaid.initialize({
 (() => {
   const reportOrder = [
     '封面','目录',
-    '算子开发全链路时序','Agent 机制下钻','开发生命周期全景',
-    '六条贯穿流','三个系统层级','待验证的系统性风险','动态 Shape 优化示例','任务研究如何取证',
+    '算子开发全链路时序','Agent 机制下钻','开发生命周期全景','六条贯穿流','三个系统层级','三维组合分析框架','待验证的系统性风险','动态 Shape 优化示例','研究总问题',
     '六平台定位','平台能力沙盘','共同规律','通用能力栈','通用 Host 循环','机制对照','Harness 机制如何影响任务',
     '现有供给总览','现有 Skill 能力','现有 MCP 能力','CANN 实证','现有能力断点','Harness 与现状交叉',
-    '三个决策问题','体验设计核心主张','用户体验五个关键时刻','协同架构','协同运行蓝图','服务能力契约','行动前体验设计','行动后体验设计','昇腾可控变量','新产品形态','设计与业务运营闭环','机会矩阵','接下来建设五件事','Roadmap','能力体验指标','持续改进闭环',
+    '任务研究如何取证','体验设计核心主张','用户体验五个关键时刻','协同架构','协同运行蓝图','服务能力契约','行动前体验设计','行动后体验设计','昇腾可控变量','新产品形态','设计与业务运营闭环','机会矩阵','接下来建设五件事','Roadmap','能力体验指标','持续改进闭环',
     '知识内化问题','AI 亲和原则','开发中学习旅程','学习入口与隔离跟练','练习到项目验证','最终答案','附录导航',
     'Add 算子任务示例','Harness 如何接住失败','研究范围与证据','AI 时代开发者旅程','Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','Claude Code 组合归因','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 机制发现','Claude 机制到昇腾','运行控制与可信差异','能力矩阵：编排与可信','知识供给总纲','来源与边界'
   ];
@@ -2042,20 +2066,19 @@ mermaid.initialize({
   reportOrder.forEach(title => { const slide = byTitle.get(title); if (slide) deck.appendChild(slide); });
 
   const chapterTitles = {
-    '01':new Set(['算子开发全链路时序','Agent 机制下钻','开发生命周期全景']),
-    '02':new Set(['六条贯穿流','三个系统层级','待验证的系统性风险','动态 Shape 优化示例','任务研究如何取证']),
-    '03':new Set(['六平台定位','平台能力沙盘','共同规律','通用能力栈','通用 Host 循环','机制对照','Harness 机制如何影响任务']),
-    '04':new Set(['CANN 实证','现有供给总览','现有 Skill 能力','现有 MCP 能力','现有能力断点','Harness 与现状交叉']),
-    '05':new Set(['三个决策问题','体验设计核心主张','用户体验五个关键时刻','协同架构','协同运行蓝图','服务能力契约','行动前体验设计','行动后体验设计','昇腾可控变量','知识供给总纲','知识单元设计','Skill 供给设计','Skill 改造重点','MCP 供给设计','MCP 改造重点','知识供给运行回路','供给形态与合同','供给侧体验工作','跨平台适配矩阵','新产品形态','设计与业务运营闭环','机会矩阵','接下来建设五件事','Roadmap','成本模型','能力体验指标','持续改进闭环']),
-    '06':new Set(['知识内化问题','AI 亲和原则','开发中学习旅程','学习入口与隔离跟练','练习到项目验证','最终答案'])
+    '01':new Set(['算子开发全链路时序','Agent 机制下钻','开发生命周期全景','六条贯穿流','三个系统层级','三维组合分析框架','待验证的系统性风险','动态 Shape 优化示例']),
+    '02':new Set(['研究总问题','六平台定位','平台能力沙盘','共同规律','通用能力栈','通用 Host 循环','机制对照','Harness 机制如何影响任务']),
+    '03':new Set(['现有供给总览','现有 Skill 能力','现有 MCP 能力','CANN 实证','现有能力断点','Harness 与现状交叉']),
+    '04':new Set(['任务研究如何取证','体验设计核心主张','用户体验五个关键时刻','协同架构','协同运行蓝图','服务能力契约','行动前体验设计','行动后体验设计','昇腾可控变量','知识供给总纲','知识单元设计','Skill 供给设计','Skill 改造重点','MCP 供给设计','MCP 改造重点','知识供给运行回路','供给形态与合同','供给侧体验工作','跨平台适配矩阵','新产品形态','设计与业务运营闭环','机会矩阵','接下来建设五件事','Roadmap','成本模型','能力体验指标','持续改进闭环']),
+    '05':new Set(['知识内化问题','AI 亲和原则','开发中学习旅程','学习入口与隔离跟练','练习到项目验证','最终答案'])
   };
-  const tabLabels = {'01':'01 时序','02':'02 框架','03':'03 平台','04':'04 昇腾','05':'05 设计','06':'06 学习','A':'A 依据'};
-  const tabMarkup = key => ['01','02','03','04','05','06','A'].map(k => `<button type="button" data-chapter="${k}" class="${k===key?'active ':''}${k==='A'?'appendix':''}" ${k===key?'aria-current="page"':''} aria-label="跳转到${tabLabels[k]}">${tabLabels[k]}</button>`).join('');
+  const tabLabels = {'01':'01 行为','02':'02 平台','03':'03 昇腾','04':'04 研究 / 设计','05':'05 学习','A':'A 依据'};
+  const tabMarkup = key => ['01','02','03','04','05','A'].map(k => `<button type="button" data-chapter="${k}" class="${k===key?'active ':''}${k==='A'?'appendix':''}" ${k===key?'aria-current="page"':''} aria-label="跳转到${tabLabels[k]}">${tabLabels[k]}</button>`).join('');
   reportOrder.forEach(title => {
     const slide = byTitle.get(title); if (!slide || title==='封面' || title==='目录') return;
     let key = 'A'; for (const [candidate, titles] of Object.entries(chapterTitles)) if (titles.has(title)) key = candidate;
     const tabs = slide.querySelector('.section-tabs'); if (tabs) tabs.innerHTML = tabMarkup(key);
-    const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · EVIDENCE APPENDIX' : `${key} · ${key==='01'?'TASK TIMELINE':key==='02'?'BEHAVIOR SYSTEM':key==='03'?'PLATFORM MECHANISMS':key==='04'?'ASCEND SUPPLY':key==='05'?'EXPERIENCE DESIGN':'LEARNING & TRANSFER'}`;
+    const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · EVIDENCE APPENDIX' : `${key} · ${key==='01'?'DEVELOPMENT BEHAVIOR':key==='02'?'PLATFORM MECHANISMS':key==='03'?'ASCEND SUPPLY':key==='04'?'RESEARCH & EXPERIENCE DESIGN':'LEARNING & TRANSFER'}`;
   });
 
   const slides = [...document.querySelectorAll('.slide:not([hidden])')];
@@ -2069,7 +2092,7 @@ mermaid.initialize({
     navDots.appendChild(dot);
     return dot;
   });
-  const chapterStarts = {'01':'算子开发全链路时序','02':'六条贯穿流','03':'六平台定位','04':'CANN 实证','05':'三个决策问题','06':'知识内化问题','A':'附录导航'};
+  const chapterStarts = {'01':'算子开发全链路时序','02':'研究总问题','03':'现有供给总览','04':'任务研究如何取证','05':'知识内化问题','A':'附录导航'};
   const controls = document.getElementById('controls');
   const counter = document.getElementById('counter');
   const prevBtn = document.getElementById('prevBtn');
