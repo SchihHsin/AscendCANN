@@ -3125,3 +3125,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTMLParser 解析通过，断言四个阶段节点仍采用编号在左、文字在右的两列网格且背景使用 `--g-ink`；`git diff --check` 通过。未做截图级目视复核。
 - Commit / push：功能提交 `f7ddf479`（`style: restore stage number leading layout`）已推送至 `origin/main`；本交接记录随独立提交推送。
 - 未决事项：Loop 的整体呈现仍待继续讨论 / 修改；本轮不涉及。
+
+### 2026-09-24（整体重画副本第 5 页的机制与装配行）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。移除 Plugin / Extension 到多个运行能力节点的分叉线，将其明确为独立的、依平台和扩展包定义的安装 / 分发入口；运行时机制仍分别位于四阶段下。机制节点总数为 18 个，Skill 的加载、执行指导、核验清单分别落在三个阶段触点；Rules 的载入与执行期遵循分开表达；PreTool、PostTool、Stop Hook 各自独立；Subagent 说明拥有自己的子任务循环。
+- 正常 Agent Loop 新增绿色回路：工具调用 → 结果回填 → 观察 / 更新计划 → 继续行动；与 Agent 泳道中橙色的可选故障恢复分开，并标明不是 Claude Code 的 `/loop` 定时提示。机制行增高 2vh、Agent 行相应缩短 2vh，关系图总高度不变。
+- 依据：机制复核页 `cann-dashboard/agent-tool-calling-reference.html` 中的平台文档 / 协议与 MCP / Subagent 关系；Plugin 打包分发的口径以 Codex 公开文档为 H 级事实，节点文案限定“部分平台 / 内容依平台定义”，没有泛化为所有 Plugin 都包含相同能力。Agent 工具结果循环与 Claude Code `/loop` 按通用工具回合与定时提示分别表达。
+- 层级 / 页序：只重排副本第 5 页机制与装配关系，不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界；体验观察指标与恢复支线不变。
+- 验证：HTMLParser 解析通过；结构断言确认 18 个独立机制节点、3 个 Skill 触点、各自独立的 Hook 事件、无 Plugin 扇出线、正常与嵌套 Loop 都存在；`git diff --check` 通过。未做截图级目视复核；不使用其他浏览器或命令行渲染绕过本地预览 URL policy。
+- Commit / push：功能提交 `13555a9d`（`redesign mechanism and assembly lane`）已推送至 `origin/main`；本交接记录随独立提交推送。
+- 未决事项：正常 Loop 与机制作用点已纳入第 5 页；页面的截图级密度 / 节点视觉复核仍待本地预览策略允许时完成。
