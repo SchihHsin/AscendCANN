@@ -459,6 +459,64 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
 /* Relation-line contract: sequence rails live only in card gutters. */
 .ux-trust-chain::before{display:none}.ux-trust-node:not(:last-child)::after{content:"›";position:absolute;z-index:4;left:100%;top:50%;width:1vw;height:2px;background:var(--tone);color:var(--tone);font-size:16px;font-weight:900;line-height:1px;text-align:right;transform:translateY(-50%)}.payload-object em{min-width:0;overflow:hidden;text-overflow:ellipsis;font-style:normal;color:#364250}
+
+/* Opening task map: main path, cross-cutting control and three distinct loops. */
+.task-rel-page{--rm-blue:#3f78bb;--rm-violet:#5b5bd6;--rm-teal:#238b86;--rm-amber:#bd7b2e;--rm-green:#2e8b66}
+.task-rel-page .head{margin-bottom:1.35vh}
+.task-rel-page .rm-body{display:grid;grid-template-rows:minmax(0,1fr) auto auto auto;gap:.72vh;flex:1 1 auto;min-height:0;margin:0;padding-bottom:4vh;justify-content:stretch}
+.task-rel-page .rm-main{display:grid;grid-template-columns:1fr 1.45fr 1.1fr 1.1fr 1.1fr;gap:.68vw;min-width:0;min-height:0}
+.task-rel-page .rm-phase{--tone:var(--rm-blue);position:relative;min-width:0;min-height:0;padding:.82vh .58vw .55vh;border-top:2px solid var(--tone);border-radius:8px;background:rgba(255,255,255,.42);display:flex;flex-direction:column;justify-content:space-between;gap:.5vh}
+.task-rel-page .rm-phase.knowledge{--tone:var(--rm-blue)}.task-rel-page .rm-phase.action{--tone:var(--rm-violet)}.task-rel-page .rm-phase.control{--tone:#6652a8}.task-rel-page .rm-phase.recover{--tone:var(--rm-amber)}.task-rel-page .rm-phase.proof{--tone:var(--rm-green)}
+.task-rel-page .rm-phase:not(:last-child)::after{content:"›";position:absolute;z-index:2;right:-.61vw;top:1.3vh;width:.55vw;color:var(--tone);font-size:21px;font-weight:850;line-height:1;text-align:center}
+.task-rel-page .rm-phase-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.42vw;align-items:center;min-height:4.8vh;padding-bottom:.55vh;border-bottom:1px solid rgba(91,99,115,.16)}
+.task-rel-page .rm-phase-head .num{font:300 clamp(25px,2.4vw,37px)/.9 'Barlow Condensed',sans-serif;color:var(--tone)}
+.task-rel-page .rm-phase-head b{display:block;font-size:var(--fs-h3);line-height:1.17}
+.task-rel-page .rm-phase-head small{display:block;margin-top:.2vh;color:var(--ink-3);font:700 var(--fs-xs)/1.1 'JetBrains Mono',monospace;letter-spacing:.045em}
+.task-rel-page .rm-flow-list{display:grid;gap:.28vh;min-width:0}
+.task-rel-page .rm-flow-item{position:relative;display:grid;grid-template-columns:1.05vw minmax(0,1fr);gap:.36vw;align-items:start;min-width:0;padding:.38vh .34vw;border-radius:6px;background:rgba(255,255,255,.68)}
+.task-rel-page .rm-flow-item:not(:last-child)::after{position:absolute;left:.79vw;top:calc(100% - .05vh);height:.34vh;border-left:1px solid color-mix(in srgb,var(--tone) 48%,transparent);content:""}
+.task-rel-page .rm-flow-item i{display:grid;place-items:center;width:.95vw;height:.95vw;min-width:13px;min-height:13px;border-radius:50%;background:color-mix(in srgb,var(--tone) 13%,white);color:var(--tone);font:750 10px/1 'JetBrains Mono',monospace;font-style:normal}
+.task-rel-page .rm-flow-item b{display:block;font-size:clamp(12.5px,.86vw,14px);line-height:1.2}
+.task-rel-page .rm-flow-item span{display:block;margin-top:.12vh;color:var(--ink-2);font-size:clamp(11.5px,.75vw,12.5px);line-height:1.24}
+.task-rel-page .rm-subhead{margin:.12vh 0 .16vh;color:var(--ink-3);font:750 var(--fs-xs)/1.1 'JetBrains Mono',monospace;letter-spacing:.06em}
+.task-rel-page .rm-unit{min-width:0;padding:.42vh .42vw;border-radius:6px;background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.82)}
+.task-rel-page .rm-unit strong{display:block;margin-bottom:.16vh;font-size:clamp(12.5px,.86vw,14px);line-height:1.18}
+.task-rel-page .rm-unit p{color:var(--ink-2);font-size:clamp(11.5px,.75vw,12.5px);line-height:1.25}
+.task-rel-page .rm-chip-row{display:flex;flex-wrap:wrap;gap:.2vw;margin-top:.2vh}
+.task-rel-page .rm-chip{display:inline-flex;align-items:center;max-width:100%;padding:.15vh .3vw;border-radius:999px;background:rgba(91,91,214,.09);color:#4d4d9f;font-size:clamp(10.5px,.68vw,11.5px);font-weight:720;line-height:1.2}
+.task-rel-page .rm-phase.recover .rm-chip{background:rgba(189,123,46,.11);color:#885719}.task-rel-page .rm-phase.proof .rm-chip{background:rgba(46,139,102,.1);color:#287451}
+.task-rel-page .rm-research{margin-top:auto;padding:.42vh .42vw;border-radius:7px;background:#edf2f8;border:1px solid rgba(63,120,187,.12)}
+.task-rel-page .rm-research>b{display:block;margin-bottom:.25vh;font-size:clamp(11.5px,.75vw,12.5px)}
+.task-rel-page .rm-research-grid{display:grid;grid-template-columns:1fr 1fr;gap:.18vh .22vw}
+.task-rel-page .rm-research-grid span{padding:.18vh .2vw;border-radius:4px;background:rgba(255,255,255,.75);color:#445a72;font-size:clamp(10px,.64vw,11px);line-height:1.18}
+.task-rel-page .rm-task-samples{display:flex;gap:.22vw;flex-wrap:wrap;margin-top:.24vh;color:#476481;font-size:clamp(10px,.63vw,10.8px);font-weight:750}
+.task-rel-page .rm-task-samples span{padding:.12vh .22vw;border-bottom:1px solid rgba(63,120,187,.25)}
+.task-rel-page .rm-plugin-band{padding:.3vh .38vw;border-radius:5px;background:#f0eef9;color:#53478c;font-size:clamp(10.5px,.68vw,11.5px);line-height:1.2}
+.task-rel-page .rm-hook-line{padding:.4vh .42vw;border-radius:6px;background:#f3effa;color:#5b4b8d;font-size:clamp(10.5px,.69vw,11.5px);line-height:1.23}
+.task-rel-page .rm-hook-line b{display:block;margin-bottom:.14vh}
+.task-rel-page .rm-control-rail{display:grid;grid-template-columns:10.5vw repeat(3,minmax(0,1fr));gap:.4vw;align-items:center;min-width:0;padding:.52vh .58vw;border:1px solid rgba(91,91,214,.2);border-radius:8px;background:linear-gradient(90deg,rgba(91,91,214,.11),rgba(91,91,214,.045))}
+.task-rel-page .rm-control-title b{display:block;color:#494996;font-size:var(--fs-sm);line-height:1.2}
+.task-rel-page .rm-control-title span{display:block;margin-top:.12vh;color:var(--ink-3);font-size:var(--fs-xs);line-height:1.15}
+.task-rel-page .rm-control-point{padding-left:.42vw;border-left:1px solid rgba(91,91,214,.2);font-size:clamp(11.5px,.76vw,12.5px);line-height:1.23;color:var(--ink-2)}
+.task-rel-page .rm-control-point b{color:var(--ink)}
+.task-rel-page .rm-loop-row{display:grid;grid-template-columns:1.55fr 1fr;gap:.55vw;min-width:0}
+.task-rel-page .rm-runtime-loop,.task-rel-page .rm-clock-loop{display:grid;grid-template-columns:8.5vw minmax(0,1fr);gap:.45vw;align-items:center;min-width:0;padding:.42vh .52vw;border-radius:7px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.88)}
+.task-rel-page .rm-runtime-loop{border-color:rgba(91,91,214,.16)}.task-rel-page .rm-clock-loop{border-color:rgba(40,139,134,.18);background:rgba(235,247,245,.68)}
+.task-rel-page .rm-loop-label b{display:block;font-size:clamp(11.5px,.78vw,13px);line-height:1.16}.task-rel-page .rm-loop-label span{display:block;margin-top:.12vh;color:var(--ink-3);font-size:var(--fs-xs);line-height:1.12}
+.task-rel-page .rm-loop-steps{display:flex;align-items:center;justify-content:space-between;gap:.2vw;min-width:0}
+.task-rel-page .rm-loop-steps span{position:relative;display:inline-flex;align-items:center;min-width:0;padding:.26vh .28vw;border-radius:5px;background:#f0effb;color:#4f4d95;font-size:clamp(10.5px,.68vw,11.5px);font-weight:720;line-height:1.15}
+.task-rel-page .rm-loop-steps span:not(:last-child)::after{content:"›";position:absolute;left:calc(100% + .01vw);color:#6666b5;font-size:15px;font-weight:850}
+.task-rel-page .rm-clock-loop .rm-loop-steps span{background:#e3f3f0;color:#276d68}
+.task-rel-page .rm-clock-loop .rm-loop-steps span:not(:last-child)::after{color:#39847e}
+.task-rel-page .rm-learning-loop{display:grid;grid-template-columns:10.5vw minmax(0,1fr);grid-template-rows:auto auto;gap:.28vh .48vw;align-items:center;min-width:0;padding:.48vh .58vw;border-radius:7px;background:var(--g-ink);color:#fff}
+.task-rel-page .rm-learning-loop>b{grid-column:1;grid-row:1/3}
+.task-rel-page .rm-learning-loop .rm-loop-steps{grid-column:2;grid-row:1;justify-content:flex-start;flex-wrap:nowrap;gap:.25vh .42vw}
+.task-rel-page .rm-learning-loop b{font-size:clamp(11.5px,.78vw,13px);line-height:1.15}.task-rel-page .rm-learning-loop p{font-size:clamp(11px,.73vw,12px);line-height:1.2;color:rgba(255,255,255,.76)}
+.task-rel-page .rm-learning-loop .rm-loop-steps span{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9)}
+.task-rel-page .rm-learning-loop .rm-loop-steps span:not(:last-child)::after{color:#aeb7ff}
+.task-rel-page .rm-learning-note{grid-column:2;grid-row:2;color:#c7cafa;font-size:var(--fs-xs);white-space:normal;line-height:1.15}
+@media(max-width:1100px){.task-rel-page .rm-main{grid-template-columns:.98fr 1.35fr 1.02fr 1.02fr 1.02fr;gap:.45vw}.task-rel-page .rm-phase{padding-left:.42vw;padding-right:.42vw}.task-rel-page .rm-phase:not(:last-child)::after{right:-.42vw;width:.4vw;font-size:17px}.task-rel-page .rm-control-rail{grid-template-columns:9vw repeat(3,minmax(0,1fr))}.task-rel-page .rm-runtime-loop,.task-rel-page .rm-clock-loop{grid-template-columns:7.5vw minmax(0,1fr)}}
+@media(max-height:760px){.task-rel-page .rm-main{grid-template-columns:1fr 1.35fr 1.02fr 1.02fr 1.02fr}.task-rel-page .rm-phase{gap:.32vh;padding-top:.55vh}.task-rel-page .rm-flow-list{gap:.17vh}.task-rel-page .rm-flow-item,.task-rel-page .rm-unit{padding-top:.28vh;padding-bottom:.28vh}.task-rel-page .rm-body{gap:.48vh}}
 </style>
 </head>
 <body>
@@ -478,6 +536,72 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
     <div class="cv-center"><div class="cv-kicker">FROM TASK COLLABORATION TO LEARNING</div><h1 class="cv-title">AI 开发协作<br><span>体验设计与知识内化</span></h1><div class="cv-sub">平台机制 × 昇腾现状 × 学习画布</div><p class="cv-lead">研究焦点：如何让开发者理解、引导并接管 Agent 的任务行动，并把任务经验转化为可迁移的知识。</p></div>
     <div class="cv-bot"><div class="cv-ucd">B · PLATFORM MECHANISM DEEP DIVE</div><div class="cv-meta">NEW FILE · INDEPENDENT DECK</div></div>
   </div>
+</div></section>
+
+<!-- 02 TASK RELATIONSHIP MAP -->
+<section class="slide s-gray task-rel-page" data-title="任务关系总览"><div class="slide-inner">
+  <header class="head"><div class="head-l"><div class="subttl">TASK RELATIONSHIP MAP · 主任务流、开发者控制与三类循环</div><div class="ttl">AI 开发任务要让知识、行动、控制、恢复与证据形成闭环</div></div></header>
+  <main class="body-area rm-body" aria-label="Agent 开发任务关系图">
+    <div class="rm-main">
+      <section class="rm-phase knowledge">
+        <div class="rm-phase-head"><span class="num">01</span><div><b>知识能被 Agent 找到</b><small>KNOWLEDGE ACCESS</small></div></div>
+        <div class="rm-flow-list">
+          <div class="rm-flow-item"><i>1</i><div><b>发现来源</b><span>文档、代码、样例、Issue</span></div></div>
+          <div class="rm-flow-item"><i>2</i><div><b>读取关键信息</b><span>步骤、参数、错误码与结构</span></div></div>
+          <div class="rm-flow-item"><i>3</i><div><b>判断适用范围</b><span>CANN、芯片、框架、版本</span></div></div>
+          <div class="rm-flow-item"><i>4</i><div><b>形成可执行路径</b><span>命令、前置条件、预期结果</span></div></div>
+          <div class="rm-flow-item"><i>5</i><div><b>保留来源并核验</b><span>引用位置、验证信号、边界</span></div></div>
+        </div>
+        <div class="rm-research"><b>AI 可用性研究怎么量</b><div class="rm-research-grid"><span>获取状态</span><span>任务支撑</span><span>回答质量</span><span>获取成本</span></div><div class="rm-task-samples"><span>Add 算子</span><span>ONNX 转换</span><span>性能分析</span></div></div>
+      </section>
+
+      <section class="rm-phase action">
+        <div class="rm-phase-head"><span class="num">02</span><div><b>Agent 据此采取行动</b><small>CONTEXT → METHOD → ACTION</small></div></div>
+        <div class="rm-unit"><strong>模型接收任务 Context</strong><p>用户目标与 Workspace + 项目 Rules / Memory + 检索到的知识；返回文本或工具调用</p></div>
+        <div class="rm-unit"><strong>选择方法与入口</strong><p>Skill / Workflow · Command / Prompt · 任务模板</p><div class="rm-chip-row"><span class="rm-chip">Claude：描述先常驻</span><span class="rm-chip">调用时加载正文</span></div></div>
+        <div class="rm-unit"><strong>选择执行能力</strong><p>内置 File / Shell / Browser · MCP / Connector（资源与工具）</p><div class="rm-chip-row"><span class="rm-chip">Custom Agent</span><span class="rm-chip">Subagent：独立子任务</span></div></div>
+        <div class="rm-unit"><strong>经过 Host / Harness 路由</strong><p>解析工具合同 → 权限 / Sandbox 检查 → 本机、容器、Cloud、CI 或 NPU 环境</p></div>
+        <div class="rm-plugin-band"><b>Plugin / Extension</b> · 打包、安装并接入 Skill、MCP 或 App；属于分发入口，不是任务中的一步。</div>
+      </section>
+
+      <section class="rm-phase control">
+        <div class="rm-phase-head"><span class="num">03</span><div><b>开发者理解和控制</b><small>VISIBLE · STEERABLE</small></div></div>
+        <div class="rm-unit"><strong>行动前｜看懂再授权</strong><p>目标、适用范围、计划路径、权限与成本</p></div>
+        <div class="rm-unit"><strong>行动中｜看见并能干预</strong><p>当前进度、正在调用什么、返回了什么；可引导、暂停或接管</p></div>
+        <div class="rm-unit"><strong>行动后｜审阅再决定</strong><p>查看 Diff、测试与未完成项；继续、接受或交回任务</p></div>
+        <div class="rm-hook-line"><b>Hook / 生命周期事件（平台提供时）</b>SessionStart → PreToolUse → PostToolUse → Stop / SubagentStop</div>
+      </section>
+
+      <section class="rm-phase recover">
+        <div class="rm-phase-head"><span class="num">04</span><div><b>失败后能继续处理</b><small>RECOVER · REPLAN</small></div></div>
+        <div class="rm-flow-list">
+          <div class="rm-flow-item"><i>1</i><div><b>识别故障类型</b><span>参数、权限、环境、构建或测试</span></div></div>
+          <div class="rm-flow-item"><i>2</i><div><b>保留任务现场</b><span>阶段、历史、日志、Diff 与证据</span></div></div>
+          <div class="rm-flow-item"><i>3</i><div><b>选择恢复路径</b><span>修正、查知识/Skill、换工具/环境、委派或升级</span></div></div>
+          <div class="rm-flow-item"><i>4</i><div><b>恢复后重新验证</b><span>证据不足就继续；无安全路径则停止并说明原因</span></div></div>
+        </div>
+        <div class="rm-chip-row"><span class="rm-chip">Checkpoint</span><span class="rm-chip">Context 重建</span><span class="rm-chip">Retry / Fallback</span><span class="rm-chip">回到 01 知识 / 02 行动</span></div>
+      </section>
+
+      <section class="rm-phase proof">
+        <div class="rm-phase-head"><span class="num">05</span><div><b>结果有证据可验收</b><small>VERIFY · ACCEPT</small></div></div>
+        <div class="rm-unit"><strong>按任务条件验证</strong><p>构建 / 测试 / 正确性；需要时再看精度、性能与兼容性</p></div>
+        <div class="rm-unit"><strong>形成 Evidence Receipt</strong><p>版本与环境 · 来源与命令 · 输出、日志、Diff 与验证状态</p></div>
+        <div class="rm-unit"><strong>判断是否真正完成</strong><p>业务条件与 Owner 规则通过才交付；模型 final 本身不是验收</p></div>
+        <div class="rm-chip-row"><span class="rm-chip">通过 → 交付 / 复用</span><span class="rm-chip">未通过 → 回到 04 恢复</span></div>
+      </section>
+    </div>
+
+    <div class="rm-control-rail"><div class="rm-control-title"><b>开发者控制带</b><span>贯穿行动前—中—后</span></div><div class="rm-control-point"><b>行动前</b> 看范围、计划、成本与权限</div><div class="rm-control-point"><b>行动中</b> 看进度、引导、暂停或接管</div><div class="rm-control-point"><b>行动后</b> 审阅证据、决定继续或接受</div></div>
+
+    <div class="rm-loop-row">
+      <div class="rm-runtime-loop"><div class="rm-loop-label"><b>Agent 运行内环</b><span>工具结果驱动下一轮</span></div><div class="rm-loop-steps"><span>Tool call</span><span>执行</span><span>结果 / 日志 / Diff 回填</span><span>重新判断与规划 ↻</span></div></div>
+      <div class="rm-clock-loop"><div class="rm-loop-label"><b>定时 Loop / Automation</b><span>时间触发，不等于故障重试</span></div><div class="rm-loop-steps"><span>到达设定时间</span><span>再次发起 Prompt</span><span>Claude Code <code>/loop</code></span></div></div>
+    </div>
+
+    <div class="rm-learning-loop"><b>任务外环｜经验回流与改进</b><div class="rm-loop-steps"><span>成功 / 失败证据</span><span>开发者理解与迁移</span><span>改进知识、方法与体验目标</span><span>下一任务 ↺ 回到 01</span></div><span class="rm-learning-note">改进需有治理与验证，不等同于系统自动自进化。</span></div>
+  </main>
+  <footer class="foot">AI 可用性任务与研究维度沿用既有 CANN × CUDA 分析；Claude /loop 是平台特定定时触发。任务外环是设计框架，不代表现状已经自动实现。</footer>
 </div></section>
 
 <!-- 02 CONTENTS -->
@@ -1608,7 +1732,7 @@ mermaid.initialize({
 <script>
 (() => {
   const reportOrder = [
-    '封面','目录',
+    '封面','任务关系总览','目录',
     '代码质量关口','昇腾供给如何改变代码','失败如何改进代码','代码质量的三个乘数','CANN 实证','研究范围与证据',
     '传统开发者旅程','AI 时代开发者旅程','AI 亲和原则','知识与问题',
     '六平台定位','通用能力栈','平台能力沙盘','通用 Host 循环',
@@ -1637,7 +1761,7 @@ mermaid.initialize({
   const tabLabels = {'01':'01 任务','02':'02 机制','03':'03 现状','04':'04 设计','05':'05 学习','A':'A 依据'};
   const tabMarkup = key => ['01','02','03','04','05','A'].map(k => `<button type="button" data-chapter="${k}" class="${k===key?'active ':''}${k==='A'?'appendix':''}" ${k===key?'aria-current="page"':''} aria-label="跳转到${tabLabels[k]}">${tabLabels[k]}</button>`).join('');
   reportOrder.forEach(title => {
-    const slide = byTitle.get(title); if (!slide || title==='封面' || title==='目录') return;
+    const slide = byTitle.get(title); if (!slide || title==='封面' || title==='目录' || title==='任务关系总览') return;
     let key = 'A'; for (const [candidate, titles] of Object.entries(chapterTitles)) if (titles.has(title)) key = candidate;
     const tabs = slide.querySelector('.section-tabs'); if (tabs) tabs.innerHTML = tabMarkup(key);
     const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · EVIDENCE APPENDIX' : `${key} · ${key==='01'?'TASK & EVIDENCE':key==='02'?'PLATFORM MECHANISMS':key==='03'?'CURRENT ASCEND SUPPLY':key==='04'?'COLLABORATION DESIGN':'LEARNING & TRANSFER'}`;
