@@ -153,6 +153,8 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
 .slide[data-title$="机制"] .head,.slide[data-title="通用 Host 循环"] .head{margin-bottom:1.55vh}
 
+/* right-side page navigation */
+#navDots{position:fixed;right:9px;top:50%;z-index:999;display:flex;flex-direction:column;align-items:center;gap:4px;max-height:72vh;overflow:auto;padding:8px 5px;border-radius:999px;opacity:0;pointer-events:none;transform:translateY(-50%);transition:opacity .2s;background:rgba(22,25,30,.34);backdrop-filter:blur(8px)}#navDots.show{opacity:.9;pointer-events:auto}#navDots button{position:relative;display:block;flex:0 0 6px;width:6px;height:6px;min-height:6px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.54);cursor:pointer;transition:width .16s,background .16s}#navDots button:hover{background:#fff}#navDots button[aria-current="page"]{width:14px;background:#fff}#navDots button:focus-visible{outline:2px solid #fff;outline-offset:3px}
 /* controls */
 #controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;background:rgba(22,25,30,.42);backdrop-filter:blur(10px) saturate(1.2);color:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.4);opacity:0;transition:opacity .25s}#controls.show{opacity:.92}#controls button{background:transparent;color:#fff;border:0;cursor:pointer;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;opacity:.7}#controls button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.12)}#controls button:disabled{opacity:.28}#controls button svg{width:14px;height:14px}.ctrl-counter{font:500 10px/1 'JetBrains Mono';letter-spacing:.08em;min-width:48px;text-align:center;opacity:.7}.ctrl-sep{width:1px;height:13px;background:rgba(255,255,255,.18)}
 @media(max-width:1050px){.section-tabs{display:none}.contents-directory{gap:.5vw}.matrix>div{padding:.48vh .32vw}.matrix{grid-template-columns:1.05fr repeat(6,1fr)}}
@@ -473,21 +475,21 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   </svg>
   <div class="cv-content">
     <div class="cv-top"><div class="cv-brand"><span class="mark"></span>ASCEND · AI CODING RESEARCH</div><div class="cv-meta">MECHANISM STUDY · 2026.08</div></div>
-    <div class="cv-center"><div class="cv-kicker">FROM CODE GENERATION TO VERIFIED COMPLETION</div><h1 class="cv-title">AI 编码平台<br><span>服务协同与产品模式深研</span></h1><div class="cv-sub">Claude Code · OpenCode · Codex · Cursor · Trae · WorkBuddy</div><p class="cv-lead">研究不止比较谁会写代码，更要回答知识与问题如何成为服务对象、用户 AI 与昇腾能力如何按成本协同，并形成可验证的产品闭环。</p></div>
+    <div class="cv-center"><div class="cv-kicker">FROM TASK COLLABORATION TO LEARNING</div><h1 class="cv-title">AI 开发协作<br><span>体验设计与知识内化</span></h1><div class="cv-sub">平台机制 × 昇腾现状 × 学习画布</div><p class="cv-lead">研究焦点：如何让开发者理解、引导并接管 Agent 的任务行动，并把任务经验转化为可迁移的知识。</p></div>
     <div class="cv-bot"><div class="cv-ucd">B · PLATFORM MECHANISM DEEP DIVE</div><div class="cv-meta">NEW FILE · INDEPENDENT DECK</div></div>
   </div>
 </div></section>
 
 <!-- 02 CONTENTS -->
-<section class="slide s-gray contents-slide" data-template="contents-directory" data-title="目录"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">先看同一个任务怎样被推进，再解释体验差异背后的平台机制</div><div class="ttl">一条从真实任务到机制证据，再到业务决策的连续主线</div></div><div class="section-tabs"><span class="active">OVERVIEW</span></div></header><main class="body-area">
+<section class="slide s-gray contents-slide" data-template="contents-directory" data-title="目录"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">先从开发任务理解协作，再看体验设计如何承接任务与学习</div><div class="ttl">从任务现场出发，走到协作体验与知识内化</div></div><div class="section-tabs"><span class="active">OVERVIEW</span></div></header><main class="body-area">
   <div class="contents-directory">
-    <article class="directory-card"><div class="directory-no">01</div><div class="directory-name">研究问题</div><div class="directory-en">THE QUESTIONS</div><div class="directory-items"><span>知识怎样被 AI 可信使用</span><span>问题怎样被持续推进</span><span>用户 AI 与服务怎样协同</span></div><div class="directory-note">先明确要回答什么</div></article>
-    <article class="directory-card"><div class="directory-no">02</div><div class="directory-name">平台机制</div><div class="directory-en">PLATFORM MECHANISMS</div><div class="directory-items"><span>同一任务的三个关键时刻</span><span>六个平台怎样推进任务</span><span>体验差异背后的机制</span></div><div class="directory-note">先看发生什么，再解释为什么</div></article>
-    <article class="directory-card"><div class="directory-no">03</div><div class="directory-name">现有供给</div><div class="directory-en">CURRENT ASCEND SUPPLY</div><div class="directory-items"><span>258 个 Skill 的能力结构</span><span>20 Tools + 5 Resources</span><span>现有能力在哪些环节断开</span></div><div class="directory-note">先盘清已有资产</div></article>
-    <article class="directory-card"><div class="directory-no">04</div><div class="directory-name">建设方向</div><div class="directory-en">WHAT TO BUILD</div><div class="directory-items"><span>接入 Harness 控制点</span><span>改造 Skill 与 MCP 合同</span><span>建立跨平台领域内核</span></div><div class="directory-note">把缺口翻译为建设项</div></article>
-    <article class="directory-card"><div class="directory-no">05</div><div class="directory-name">体验闭环</div><div class="directory-en">UX IMPROVEMENT LOOP</div><div class="directory-items"><span>五个关键体验时刻</span><span>任务链指标与证据</span><span>持续发现与改进机制</span></div><div class="directory-note">从一次建设走向运营</div></article>
+    <article class="directory-card"><div class="directory-no">01</div><div class="directory-name">具体任务</div><div class="directory-en">ONE DEVELOPER TASK</div><div class="directory-items"><span>同一段代码，质量为何不同</span><span>从生成到运行验证</span><span>错误怎样变成改进线索</span></div><div class="directory-note">先看任务现场发生什么</div></article>
+    <article class="directory-card"><div class="directory-no">02</div><div class="directory-name">研究与机制</div><div class="directory-en">EVIDENCE & HARNESS</div><div class="directory-items"><span>知识可用性与 AI 亲和原则</span><span>六个平台怎样推进任务</span><span>机制如何影响用户协作</span></div><div class="directory-note">再解释差异从哪里来</div></article>
+    <article class="directory-card"><div class="directory-no">03</div><div class="directory-name">昇腾现状</div><div class="directory-en">CURRENT ASCEND SUPPLY</div><div class="directory-items"><span>258 个 Skill 的能力结构</span><span>20 Tools + 5 Resources</span><span>已有资产覆盖到哪里</span></div><div class="directory-note">盘清已有基础与断点</div></article>
+    <article class="directory-card"><div class="directory-no">04</div><div class="directory-name">协作体验设计</div><div class="directory-en">DESIGN THE COLLABORATION</div><div class="directory-items"><span>目标、路径与行动控制</span><span>过程可见、接管与恢复</span><span>衡量并持续改进</span></div><div class="directory-note">把后台机制变成体验</div></article>
+    <article class="directory-card"><div class="directory-no">05</div><div class="directory-name">知识内化</div><div class="directory-en">LEARNING AFTER THE TASK</div><div class="directory-items"><span>任务结束后，知识留下了吗</span><span>开发中学习的画布方案</span><span>练习后回到项目验证</span></div><div class="directory-note">让经验能被理解与迁移</div></article>
   </div>
-</main><footer class="foot">核心判断：体验优势不是单一模型或 Harness 的功劳；昇腾要把领域约束、运行能力和验证证据做成所有用户 AI 都能消费的跨平台供给。</footer></div></section>
+</main><footer class="foot">核心主张：体验设计要组织开发者与 Agent 如何共同推进任务，并让有价值的经验能在任务结束后继续被理解和使用。</footer></div></section>
 
 <!-- 03 THREE QUESTIONS -->
 <section class="slide s-gray" data-title="三个决策问题"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">未来不是多一个 AI 入口，而是服务关系被重新定义</div><div class="ttl">三个问题共同指向：围绕任务状态重组昇腾服务</div></div><div class="section-tabs"><span class="active">01 问题</span><span>02 能力</span><span>03 机制</span><span>04 旅程</span><span>05 机会</span></div></header><main class="body-area question-layout">
@@ -1272,9 +1274,9 @@ flowchart LR
   </div></div></main><footer class="foot">责任边界：体验部定义任务模型、状态呈现和度量；知识、开发、平台、测试与支持 Owner 分别承担资产、运行能力、SLA 和验收质量。</footer></div></section>
 
 <!-- 32 FINAL ANSWERS -->
-<section class="slide s-glow" style="--gh:228;--gh2:288" data-title="最终答案"><div class="slide-inner"><div class="chrome"><span>CONCLUSION</span><span>FROM ASSETS TO VERIFIED TASKS</span></div><main class="glow-inner"><h2 class="glow-title">下一步不是继续堆能力，<br>而是把现有能力装进可信任务控制链</h2><p class="glow-lead">昇腾已经有 258 个 Skill 和 20 Tools + 5 Resources；真正需要建设的是让它们在不同 Agent 中被正确发现、判定适用、受控执行、凭证验收并在失败后继续。</p><div class="answer-grid">
-  <article class="answer"><div class="no">01</div><h3>为什么 Claude Code 可能更稳</h3><p>模型之外，约束连续、语义调度、Observation 塑形、状态修复与停止门禁共同减少错误扩散；这给出的是 Harness 建设坐标，而不是平台崇拜。</p></article><article class="answer"><div class="no">02</div><h3>昇腾具体建设什么</h3><p>用 Task Registry、Scope Resolver、Action Plane、Evidence Receipt 与 Task State 连接现有 Skill / MCP；优先改造六条高频任务链，再扩展资产。</p></article><article class="answer"><div class="no">03</div><h3>自进化时代体验部做什么</h3><p>自进化 Harness 优化能力实现；体验部发现新问题、重定义任务与服务关系，并把体验目标编译成合同、门禁与评价空间；领域 Owner 负责技术真值和业务验收。</p></article>
-  </div><div class="dark-card" style="margin-top:1.2vh"><p style="text-align:center;color:rgba(255,255,255,.72)">产品定位：<b style="color:#fff">跨平台的昇腾领域 Harness 与可信任务完成层</b>　·　协同方式：<b style="color:#fff">体验部定义任务与交互合同，领域 Owner 对知识、动作与验收质量负责</b></p></div>
+<section class="slide s-glow" style="--gh:228;--gh2:288" data-title="最终答案"><div class="slide-inner"><div class="chrome"><span>CONCLUSION</span><span>COLLABORATION DESIGN → LEARNING TRANSFER</span></div><main class="glow-inner"><h2 class="glow-title">体验设计要让开发者与 Agent<br>共同推进任务，也让经验留下来</h2><p class="glow-lead">设计对象不只是一个聊天入口或最终验收页，而是任务开始前的对齐、过程中的理解与控制、失败后的接手与恢复，以及任务结束后把关键依据转化为可回看的学习材料。</p><div class="answer-grid">
+  <article class="answer"><div class="no">01</div><h3>任务开始前：对齐与授权</h3><p>呈现目标、环境、方案依据和行动影响；信息不足时补问，风险不清时先停下来确认。</p></article><article class="answer"><div class="no">02</div><h3>任务进行中：看见与接管</h3><p>让用户看见当前进展、证据和下一步；失败时保留现场，让人能接手、换路或继续。</p></article><article class="answer"><div class="no">03</div><h3>任务结束后：复核与内化</h3><p>区分练习、修改和项目验证状态；把有用的解释与经验留在任务中，供开发者回看和迁移。</p></article>
+  </div><div class="dark-card" style="margin-top:1.2vh"><p style="text-align:center;color:rgba(255,255,255,.72)">体验部负责：<b style="color:#fff">定义任务中的用户问题、交互与控制边界</b>　·　协同团队负责：<b style="color:#fff">提供知识、运行能力、验证规则与真实证据</b></p></div>
 </main></div></section>
 
 <!-- NEW CORE · DECISION FIRST -->
@@ -1403,6 +1405,26 @@ flowchart LR
 
 <section class="slide s-gray" data-title="附录导航"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">附录不参与正文主线，只用于复核运行控制差异与证据边界</div><div class="ttl">附录只保留去重后的运行证据与来源边界</div></div><div class="section-tabs"><span>01 问题</span><span>02 平台</span><span>03 现状</span><span>04 建设</span><span>05 衡量</span><span class="active">A 依据</span></div></header><main class="body-area appendix-index"><article class="appendix-card"><div class="n">A1</div><h3>运行控制与可信差异</h3><p>逐平台核对权限、环境、状态、恢复、证据与业务验收边界。</p></article><article class="appendix-card"><div class="n">A2</div><h3>来源、置信度与限制</h3><p>复核公开文档、开源源码、CANN 样本、H / M / L 与尚未验证的条件。</p></article></main><footer class="foot">这里不重复正文的能力入口；只补充运行后怎样控制、恢复和验收。</footer></div></section>
 
+<style>
+.affinity-chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1vw;align-items:stretch}.affinity-step{position:relative;min-width:0;min-height:25vh;padding:2vh 1.05vw;border-radius:15px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.88);display:flex;flex-direction:column;justify-content:center}.affinity-step:not(:last-child)::after{content:"";position:absolute;right:-1.02vw;top:50%;width:1vw;height:2px;background:var(--accent);z-index:2}.affinity-step .n{font:300 clamp(34px,3.6vw,56px)/1 'Barlow Condensed';color:var(--accent)}.affinity-step b{font-size:var(--fs-h2);margin:.7vh 0}.affinity-step p{font-size:var(--fs-body);line-height:1.45;color:var(--ink-2)}.affinity-step:last-child{background:var(--focus-grad);border-color:rgba(91,91,214,.2)}.affinity-conclusion{margin-top:1.15vh;padding:1.05vh 1vw;border-radius:11px;background:var(--g-ink);color:#fff;display:grid;grid-template-columns:auto 1fr;gap:.8vw;align-items:center}.affinity-conclusion b{font-size:var(--fs-h3)}.affinity-conclusion p{font-size:var(--fs-body);line-height:1.4;color:rgba(255,255,255,.72)}
+.learning-question-layout{display:grid;grid-template-columns:.78fr 1.22fr;gap:1.2vw;align-items:stretch}.learning-question-claim{min-width:0;padding:2.4vh 1.55vw;border-radius:18px;background:var(--g-ink);color:#fff;display:flex;flex-direction:column;justify-content:center}.learning-question-claim small{font:700 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.13em;color:#c6ccff}.learning-question-claim h2{font-size:clamp(30px,3vw,48px);line-height:1.12;margin:1.2vh 0}.learning-question-claim p{font-size:var(--fs-body);line-height:1.55;color:rgba(255,255,255,.68)}.learning-question-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8vw;align-items:stretch}.learning-question-stage{min-width:0;min-height:30vh;padding:1.7vh .95vw;border-radius:14px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.88);display:flex;flex-direction:column;justify-content:center}.learning-question-stage small{font:700 var(--fs-xs)/1.2 'JetBrains Mono';color:var(--accent)}.learning-question-stage b{font-size:var(--fs-h3);line-height:1.28;margin:.7vh 0}.learning-question-stage p{font-size:var(--fs-sm);line-height:1.45;color:var(--ink-2)}.learning-question-stage:last-child{background:var(--focus-grad)}
+.dev-learning-journey{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.78vw;align-items:stretch}.dl-step{position:relative;min-width:0;min-height:0;display:flex;flex-direction:column}.dl-step:not(:last-child)::after{content:"→";position:absolute;right:-.62vw;top:33%;z-index:3;color:var(--accent);font-size:18px;font-weight:900}.dl-shot{width:100%;height:19vh;object-fit:contain;display:block;border-radius:8px;background:rgba(255,255,255,.38)}.dl-no{margin-top:1vh;font:700 var(--fs-xs)/1.2 'JetBrains Mono';color:var(--accent)}.dl-step b{font-size:var(--fs-h3);line-height:1.24;margin:.4vh 0}.dl-step p{font-size:var(--fs-sm);line-height:1.38;color:var(--ink-2)}
+.learning-control-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1vw;align-items:stretch}.learning-control-item{min-width:0;min-height:0;display:flex;flex-direction:column}.learning-control-item img{width:100%;height:33vh;object-fit:contain;display:block;border-radius:9px;background:rgba(255,255,255,.34)}.learning-control-item small{margin-top:.8vh;font:700 var(--fs-xs)/1.2 'JetBrains Mono';color:var(--accent)}.learning-control-item b{font-size:var(--fs-h3);margin:.3vh 0}.learning-control-item p{font-size:var(--fs-sm);line-height:1.35;color:var(--ink-2)}.learning-invariants{margin-top:1vh;padding:.9vh .8vw;border-top:1px solid rgba(100,110,130,.2);display:flex;justify-content:space-between;gap:.7vw}.learning-invariants span{font-size:var(--fs-sm);font-weight:760;color:var(--ink-2)}.learning-invariants b{color:var(--accent)}
+.learning-return-layout{display:grid;grid-template-columns:1fr 1fr;gap:1vw;align-items:stretch}.learning-return-item{min-width:0;display:flex;flex-direction:column}.learning-return-item img{width:100%;height:33vh;object-fit:contain;display:block;border-radius:9px;background:rgba(255,255,255,.34)}.learning-return-item small{margin-top:.7vh;font:700 var(--fs-xs)/1.2 'JetBrains Mono';color:var(--accent)}.learning-return-item b{font-size:var(--fs-h3);margin:.3vh 0}.learning-return-item p{font-size:var(--fs-sm);line-height:1.35;color:var(--ink-2)}.learning-status-chain{margin-top:1.1vh;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7vw;align-items:center}.learning-status{position:relative;min-width:0;padding:.85vh .7vw;border-radius:10px;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.88);font-size:var(--fs-sm);font-weight:800;text-align:center}.learning-status:not(:last-child)::after{content:"→";position:absolute;right:-.62vw;top:43%;z-index:2;color:var(--accent)}.learning-status.pending{background:#f2f3f6;color:var(--ink-2)}
+@media(max-width:1050px){.learning-control-item img,.learning-return-item img{height:27vh}.dl-shot{height:16vh}}
+.mcp-system>.mcp-entry{grid-column:1;grid-row:1/3}.mcp-system>.mcp-plane-row{grid-column:2}.mcp-system>.mcp-receipt{grid-column:3;grid-row:1/3}
+</style>
+
+<section class="slide s-gray" data-title="AI 亲和原则"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">承接既有知识可用性研究：Agent 获得知识，需要走完从发现到核验的完整路径</div><div class="ttl">知识要对 AI 友好，必须从“找得到”一直做到“核得准”</div></div><div class="section-tabs"></div></header><main class="body-area"><div class="affinity-chain"><article class="affinity-step"><span class="n">01</span><b>可发现</b><p>Agent 能定位相关知识，而不是只看到页面入口。</p></article><article class="affinity-step"><span class="n">02</span><b>可读取</b><p>内容结构清楚，关键步骤和字段不丢失。</p></article><article class="affinity-step"><span class="n">03</span><b>可理解</b><p>适用条件、版本和上下文说得明白。</p></article><article class="affinity-step"><span class="n">04</span><b>可引用</b><p>结论能回到明确来源与原文位置。</p></article><article class="affinity-step"><span class="n">05</span><b>可核验</b><p>有预期信号、结果和适用边界。</p></article></div><div class="affinity-conclusion"><b>接到任务里</b><p>这五项原则描述的是知识如何进入 Agent 的工作；Harness 再负责把它放到合适的任务时机，并连接到行动与证据。</p></div></main><footer class="foot">复用既有《亲和原则》研究结论；不是本报告新增的实测结果。<a href="https://liminshuo.github.io/ascend-ai/principles-overview.html" target="_blank" rel="noopener">打开亲和原则原材料 ↗</a></footer></div></section>
+
+<section class="slide s-gray" data-title="知识内化问题"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">从开发协作继续追问：任务交付之外，开发者是否留下了可迁移的理解？</div><div class="ttl">任务完成是结果；知识内化还需要再走一步</div></div><div class="section-tabs"></div></header><main class="body-area"><div class="learning-question-layout"><article class="learning-question-claim"><small>AFTER THE TASK</small><h2>代码完成了，<br>知识留下了吗？</h2><p>开发者是否理解“为什么这样改、适用于什么条件、下次如何判断”，是任务结束后仍需设计的问题。</p></article><div class="learning-question-flow"><article class="learning-question-stage"><small>01 · DELIVER</small><b>拿到可用产物</b><p>代码、运行结果或修复已经交付。</p></article><article class="learning-question-stage"><small>02 · UNDERSTAND</small><b>说得清为什么</b><p>关键依据、适用条件和修改影响能被理解。</p></article><article class="learning-question-stage"><small>03 · TRANSFER</small><b>下次能迁移</b><p>遇到相似问题时，能更快判断或继续处理。</p></article></div></div></main><footer class="foot">这是由既有研究与设计推导出的待验证问题，不把“AI 一定削弱学习”写成已证实结论。</footer></div></section>
+
+<section class="slide s-gray" data-title="开发中学习旅程"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">复用《学习画布故事线》的开发中学习 B1–B5 原设计图</div><div class="ttl">学习从具体问题中展开，完成练习后再回到原任务</div></div><div class="section-tabs"></div></header><main class="body-area"><div class="dev-learning-journey"><article class="dl-step"><img class="dl-shot" src="ploy-interaction-lab/learning-canvas-story/images/B1.png" alt="错误现场和学习入口" loading="lazy"><small class="dl-no">01 · NOTICE</small><b>发现问题</b><p>从错误日志与代码现场发起解释或修复。</p></article><article class="dl-step"><img class="dl-shot" src="ploy-interaction-lab/learning-canvas-story/images/B2.png" alt="原任务旁展开学习内容" loading="lazy"><small class="dl-no">02 · OPEN</small><b>展开学习</b><p>保留原任务，明确学习内容与原文件的边界。</p></article><article class="dl-step"><img class="dl-shot" src="ploy-interaction-lab/learning-canvas-story/images/B3.png" alt="在隔离副本中跟练" loading="lazy"><small class="dl-no">03 · PRACTICE</small><b>安全跟练</b><p>在副本中修改和验证，不把练习当成交付。</p></article><article class="dl-step"><img class="dl-shot" src="ploy-interaction-lab/learning-canvas-story/images/B4.png" alt="将练习转成待确认的代码差异" loading="lazy"><small class="dl-no">04 · APPLY</small><b>审阅变更</b><p>把理解转成 Diff，用户确认后才写入项目。</p></article><article class="dl-step"><img class="dl-shot" src="ploy-interaction-lab/learning-canvas-story/images/B5.png" alt="返回原项目重新验证" loading="lazy"><small class="dl-no">05 · RETURN</small><b>回到任务</b><p>重新验证原项目，并保留可恢复的学习记录。</p></article></div></main><footer class="foot">设计提案，尚未实现或实测；<a href="ploy-interaction-lab/learning-canvas-story/index.html#18" target="_blank" rel="noopener">打开完整开发中学习故事线 ↗</a></footer></div></section>
+
+<section class="slide s-gray" data-title="学习入口与隔离跟练"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">三张原设计图展示用户如何进入学习，并在不影响原任务的情况下试错</div><div class="ttl">学习应贴着问题发生，但练习边界必须清楚</div></div><div class="section-tabs"></div></header><main class="body-area"><div class="learning-control-grid"><article class="learning-control-item"><img src="ploy-interaction-lab/learning-canvas-story/images/B1.png" alt="错误现场提供学习入口" loading="lazy"><small>ENTRY · B1</small><b>入口绑定当前问题</b><p>日志、代码和实际／预期形状一起保留；学习、直接修复或关闭由用户选择。</p></article><article class="learning-control-item"><img src="ploy-interaction-lab/learning-canvas-story/images/B2.png" alt="原任务旁展开学习内容" loading="lazy"><small>CONTEXT · B2</small><b>原任务保持可见</b><p>学习是任务中的一段活动，原文件与学习副本身份分开呈现。</p></article><article class="learning-control-item"><img src="ploy-interaction-lab/learning-canvas-story/images/B3.png" alt="在隔离副本中修改和练习" loading="lazy"><small>PRACTICE · B3</small><b>先在副本里理解</b><p>练习修改、运行和结果都留在隔离范围，不冒充项目验证结果。</p></article></div><div class="learning-invariants"><span><b>问题上下文</b> 不丢</span><span><b>项目原件</b> 不被练习改动</span><span><b>学习入口</b> 由用户选择</span></div></main><footer class="foot">设计提案，尚未实现或实测；<a href="ploy-interaction-lab/learning-canvas-story/index.html#19" target="_blank" rel="noopener">查看 B1 原设计说明 ↗</a></footer></div></section>
+
+<section class="slide s-gray" data-title="练习到项目验证"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">复用 B4 / B5 原图：学习副本的结果回到项目后，仍要经过用户确认和真实验证</div><div class="ttl">练习通过、修改应用、项目验证，是三个不同状态</div></div><div class="section-tabs"></div></header><main class="body-area"><div class="learning-return-layout"><article class="learning-return-item"><img src="ploy-interaction-lab/learning-canvas-story/images/B4.png" alt="将练习内容转为 Diff 并由用户确认" loading="lazy"><small>APPLY · B4</small><b>先审阅差异，再决定是否应用</b><p>练习结果放在 Diff 旁解释；取消、确认和折叠学习材料彼此独立。</p></article><article class="learning-return-item"><img src="ploy-interaction-lab/learning-canvas-story/images/B5.png" alt="回到原项目进行输入检查并收纳学习内容" loading="lazy"><small>RETURN & VERIFY · B5</small><b>回到原项目重新验证</b><p>验证使用项目修改后的文件；学习内容可收纳恢复，完整推理仍需继续运行。</p></article></div><div class="learning-status-chain"><div class="learning-status">练习通过</div><div class="learning-status">Diff 经确认应用</div><div class="learning-status">项目输入检查通过</div><div class="learning-status pending">完整推理待运行</div></div></main><footer class="foot">状态区分取自既有设计图；这是一项体验设计提案，不是已实现功能或真实运行证明。<a href="ploy-interaction-lab/learning-canvas-story/index.html#25" target="_blank" rel="noopener">打开 B4 原设计页 ↗</a></footer></div></section>
+
 <!-- 33 SOURCES -->
 <!-- CURRENT ASCEND SUPPLY -->
 <section class="slide s-gray" data-title="现有供给总览"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">现状不是“只有一个 MCP”，也不是“从零开始做 Skill”</div><div class="ttl">昇腾已经有可观的能力资产，缺的是一条统一的任务控制链</div></div><div class="section-tabs"></div></header><main class="body-area">
@@ -1467,6 +1489,7 @@ flowchart LR
 
 </div>
 
+<nav id="navDots" aria-label="页面导航"></nav>
 <div id="controls" aria-label="演示控制">
   <button id="prevBtn" title="上一页" aria-label="上一页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
   <button id="nextBtn" title="下一页" aria-label="下一页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
@@ -1585,15 +1608,18 @@ mermaid.initialize({
 <script>
 (() => {
   const reportOrder = [
-    '封面','目录','三个决策问题','研究范围与证据',
-    '六平台定位','代码质量关口','昇腾供给如何改变代码','失败如何改进代码','代码质量的三个乘数',
-    '通用能力栈','平台能力沙盘','共同规律','通用 Host 循环',
-    'Claude Code 机制','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 机制发现',
-    'Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','平台差异带来的效果',
-    '现有供给总览','现有 Skill 能力','现有 MCP 能力','现有能力断点',
-    'Harness 与现状交叉','昇腾可控变量','接下来建设五件事','Skill 改造重点','MCP 改造重点','跨平台适配矩阵',
-    '用户体验五个关键时刻','行动前体验设计','行动后体验设计','能力体验指标','持续改进闭环','最终答案',
-    '运行控制与可信差异','来源与边界'
+    '封面','目录',
+    '代码质量关口','昇腾供给如何改变代码','失败如何改进代码','代码质量的三个乘数','CANN 实证','研究范围与证据',
+    '传统开发者旅程','AI 时代开发者旅程','AI 亲和原则','知识与问题',
+    '六平台定位','通用能力栈','平台能力沙盘','通用 Host 循环',
+    'Claude Code 机制','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','平台差异带来的效果',
+    'Claude Code 组合归因','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 机制发现',
+    '现有供给总览','现有 Skill 能力','现有 MCP 能力','现有能力断点','Harness 与现状交叉',
+    '用户体验五个关键时刻','行动前体验设计','行动后体验设计',
+    '昇腾可控变量','知识供给总纲','知识单元设计','Skill 供给设计','Skill 改造重点','MCP 供给设计','MCP 改造重点','知识供给运行回路','供给形态与合同','跨平台适配矩阵','接下来建设五件事',
+    '能力体验指标','持续改进闭环',
+    '知识内化问题','开发中学习旅程','学习入口与隔离跟练','练习到项目验证',
+    '最终答案','运行控制与可信差异','来源与边界'
   ];
   const deck = document.getElementById('deck');
   const byTitle = new Map([...deck.querySelectorAll('.slide')].map(slide => [slide.dataset.title, slide]));
@@ -1602,23 +1628,33 @@ mermaid.initialize({
   reportOrder.forEach(title => { const slide = byTitle.get(title); if (slide) deck.appendChild(slide); });
 
   const chapterTitles = {
-    '01':new Set(['三个决策问题','研究范围与证据']),
-    '02':new Set(['六平台定位','代码质量关口','昇腾供给如何改变代码','失败如何改进代码','代码质量的三个乘数','通用能力栈','平台能力沙盘','共同规律','通用 Host 循环','Claude Code 机制','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 机制发现','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','平台差异带来的效果']),
-    '03':new Set(['现有供给总览','现有 Skill 能力','现有 MCP 能力','现有能力断点']),
-    '04':new Set(['Harness 与现状交叉','昇腾可控变量','接下来建设五件事','Skill 改造重点','MCP 改造重点','跨平台适配矩阵']),
-    '05':new Set(['用户体验五个关键时刻','行动前体验设计','行动后体验设计','能力体验指标','持续改进闭环','最终答案'])
+    '01':new Set(['代码质量关口','昇腾供给如何改变代码','失败如何改进代码','代码质量的三个乘数','CANN 实证','研究范围与证据']),
+    '02':new Set(['传统开发者旅程','AI 时代开发者旅程','AI 亲和原则','知识与问题','六平台定位','通用能力栈','平台能力沙盘','共同规律','通用 Host 循环','Claude Code 机制','Claude Code 组合归因','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 机制发现','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','平台差异带来的效果']),
+    '03':new Set(['现有供给总览','现有 Skill 能力','现有 MCP 能力','现有能力断点','Harness 与现状交叉']),
+    '04':new Set(['用户体验五个关键时刻','行动前体验设计','行动后体验设计','昇腾可控变量','知识供给总纲','知识单元设计','Skill 供给设计','Skill 改造重点','MCP 供给设计','MCP 改造重点','知识供给运行回路','供给形态与合同','跨平台适配矩阵','接下来建设五件事','能力体验指标','持续改进闭环']),
+    '05':new Set(['知识内化问题','开发中学习旅程','学习入口与隔离跟练','练习到项目验证','最终答案'])
   };
-  const tabLabels = {'01':'01 问题','02':'02 平台','03':'03 现状','04':'04 建设','05':'05 衡量','A':'A 依据'};
+  const tabLabels = {'01':'01 任务','02':'02 机制','03':'03 现状','04':'04 设计','05':'05 学习','A':'A 依据'};
   const tabMarkup = key => ['01','02','03','04','05','A'].map(k => `<button type="button" data-chapter="${k}" class="${k===key?'active ':''}${k==='A'?'appendix':''}" ${k===key?'aria-current="page"':''} aria-label="跳转到${tabLabels[k]}">${tabLabels[k]}</button>`).join('');
   reportOrder.forEach(title => {
     const slide = byTitle.get(title); if (!slide || title==='封面' || title==='目录') return;
     let key = 'A'; for (const [candidate, titles] of Object.entries(chapterTitles)) if (titles.has(title)) key = candidate;
     const tabs = slide.querySelector('.section-tabs'); if (tabs) tabs.innerHTML = tabMarkup(key);
-    const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · EVIDENCE APPENDIX' : `${key} · ${key==='01'?'RESEARCH QUESTIONS':key==='02'?'PLATFORM MECHANISMS':key==='03'?'CURRENT ASCEND SUPPLY':key==='04'?'WHAT TO BUILD':'UX IMPROVEMENT LOOP'}`;
+    const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · EVIDENCE APPENDIX' : `${key} · ${key==='01'?'TASK & EVIDENCE':key==='02'?'PLATFORM MECHANISMS':key==='03'?'CURRENT ASCEND SUPPLY':key==='04'?'COLLABORATION DESIGN':'LEARNING & TRANSFER'}`;
   });
 
   const slides = [...document.querySelectorAll('.slide:not([hidden])')];
-  const chapterStarts = {'01':'三个决策问题','02':'六平台定位','03':'现有供给总览','04':'Harness 与现状交叉','05':'用户体验五个关键时刻','A':'运行控制与可信差异'};
+  const navDots = document.getElementById('navDots');
+  const navDotButtons = slides.map((slide, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.title = `${String(i + 1).padStart(2,'0')} · ${slide.dataset.title}`;
+    dot.setAttribute('aria-label', `跳转到第 ${i + 1} 页：${slide.dataset.title}`);
+    dot.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); go(i,'instant'); });
+    navDots.appendChild(dot);
+    return dot;
+  });
+  const chapterStarts = {'01':'代码质量关口','02':'传统开发者旅程','03':'现有供给总览','04':'用户体验五个关键时刻','05':'知识内化问题','A':'运行控制与可信差异'};
   const controls = document.getElementById('controls');
   const counter = document.getElementById('counter');
   const prevBtn = document.getElementById('prevBtn');
@@ -1634,6 +1670,7 @@ mermaid.initialize({
   function update(i, writeHash = true) {
     current = Math.max(0, Math.min(slides.length - 1, i));
     counter.textContent = `${String(current + 1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+    navDotButtons.forEach((dot, index) => { if (index === current) dot.setAttribute('aria-current','page'); else dot.removeAttribute('aria-current'); });
     prevBtn.disabled = current === 0; nextBtn.disabled = current === slides.length - 1;
     document.body.classList.toggle('on-dark', slides[current].classList.contains('s-cover') || slides[current].classList.contains('s-glow'));
     if (writeHash && !overview) { hashLock = true; history.replaceState(null, '', `#${current + 1}`); hashLock = false; }
@@ -1647,7 +1684,7 @@ mermaid.initialize({
       event.preventDefault(); event.stopPropagation();
       const targetTitle = chapterStarts[button.dataset.chapter];
       const targetIndex = slides.findIndex(slide => slide.dataset.title === targetTitle);
-      if (targetIndex >= 0) go(targetIndex);
+      if (targetIndex >= 0) go(targetIndex,'instant');
     });
   });
   function fitOverview() {
@@ -1687,7 +1724,7 @@ mermaid.initialize({
     if (e.key === 'Home') { e.preventDefault(); go(0); }
     if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
   });
-  addEventListener('mousemove', e => { if (e.clientY > innerHeight - 100) showUI(); });
+  addEventListener('mousemove', e => { if (e.clientY > innerHeight - 100) showUI(); if (e.clientX > innerWidth - 70) navDots.classList.add('show'); else if (!navDots.matches(':hover')) navDots.classList.remove('show'); });
   addEventListener('touchstart', showUI, {passive:true});
   addEventListener('scroll', () => { document.body.classList.add('scrolling'); clearTimeout(scrollTimer); scrollTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700); }, {passive:true});
   addEventListener('resize', () => { if (overview) fitOverview(); });
