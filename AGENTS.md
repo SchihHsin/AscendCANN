@@ -3163,3 +3163,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：静态检查确认 67 页正式播放顺序存在且无重复、21 个非正式源页面仍由 runtime 隐藏；前 13 页顺序、章节入口与 5 段可执行内联脚本语法通过；`git diff --check` 通过。未完成截图级目视复核；继续遵守本地页面预览的 Browser Use URL policy，没有尝试绕过。
 - Commit / push：主修改提交 `007980a8`（`fix: align report narrative with behavior framework`）已推送至 `origin/main`；本条交接提交随后单独推送。
 - 未决事项：可在安全允许的本地预览中复核实际切页和图页空间表现；本轮没有重绘或替换既有时序图。
+
+### 2026-09-24（平衡版正文与九条逐页问题）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`；更新本记录。原报告与其他副本未修改。
+- 正文正式序列控制在 36 页（附录导航及依据不计入正文）：具体开发时序与 Agent 下钻 → 开发生命周期和信息流 → 平台 Harness 机制 → 昇腾 Skill / MCP / 现状证据 → 九个待验证问题 → 人机协作设计、Roadmap 与体验衡量 → 知识内化和学习方案。原有平台机制细节、系统框架、补充设计和学习交互页保留在附录，没有删除。
+- 九个问题分别独立成页；每页左上标题带 01–09 序号，并用各自的关系图、流程图或证据结构解释问题形成方式、潜在影响和研究问题。所有问题继续标明为待验证命题，不作为已证实的昇腾痛点或平台结论。
+- 目录重排为六章；内容页右上章节 Tab 同步为六章加“依据”，并移除窄屏下隐藏 Tab 的规则。修正实际标题节点 `.head-l .ttl` 的字号选择器，使 H1 token 生效。
+- 层级 / 证据：复用用户提供的九条系统性风险作为研究命题；本次没有新增平台事实、实测结果，也未改变 API / Protocol、Host / Harness、Application / Task 的既有边界。
+- 验证：5 段可执行内联 JavaScript 语法检查通过；Python HTMLParser 接受文档；静态断言确认正文 36 页、问题页 9 页且各自只有一个验证问题并带编号标题；`git diff --check` 通过。Browser Use URL policy 阻止直接检查本地预览，本轮未绕过限制，因此没有完成截图级视觉复核。
+- Commit / push：报告修改 `c59cf287`（`feat: rebalance development behavior report`）已推送至 `origin/main`；本交接记录随后单独提交并推送。
+- 未决事项：需要在允许的本地预览中确认 36 页正文的实际视觉密度、卡片高度和章节 Tab 在当前窗口宽度下的呈现。
