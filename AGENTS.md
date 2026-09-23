@@ -3080,3 +3080,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTMLParser 检查通过，确认阶段标题 4 个均无图标、开发者动作节点 4 个各有 1 个图标；`git diff --check` 通过。未做截图目视复核；本地文件预览受 Browser Use URL policy 限制，未绕过。
 - Commit / push：待完成后填写。
 - 未决事项：无。
+
+### 2026-09-24（强化阶段标题并减弱 Agent 深色节点）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。副本第 5 页四个顶部阶段标题改为深色阶段底与白色文字，保留阶段色相区分；Agent 可信知识流末端的深蓝底白字 Context 结果节点改为浅蓝底深色字，避免单个节点过度突出。其他节点和页面未改。
+- 依据：用户希望用深色标题区分阶段主路径，同时避免 Agent 内容出现与其他节点相比过于突出的深底白字组合。
+- 层级 / 页序：仅修改副本第 5 页样式，不影响页序、关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；复核 diff 确认只修改阶段标题底色 / 文字颜色，以及 Agent Context 结果节点的浅底 / 深字样式。未做截图目视复核；本地文件预览受 Browser Use URL policy 限制，未绕过。
+- Commit / push：待完成后填写。
+- 未决事项：无。
