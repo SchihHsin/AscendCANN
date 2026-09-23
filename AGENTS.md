@@ -3026,3 +3026,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 研究与证据：沿用既有 AI 可用性研究，把获取状态 / 成本、任务支撑、回答质量标为实测维度；把路径理解 / 行动可控、失败恢复 / 接续标为待验证的体验设计指标。未新增实测结论、平台机制事实或来源；未改变 API / Protocol、Host / Harness、Application / Task 三层边界。使用 Report PPT Skill 的空间图示与页面样式作用域规则，避免卡片平铺和后续 Harness 运行流程图重复。
 - 验证：HTMLParser 结构检查、5 个可执行内联 JS 块语法检查、阶段 / 交接 / 机制 / 指标结构断言及 `git diff --check` 均通过；确认“任务关系总览”仍为副本第 5 页。未做截图级浏览器复核（此前本地文件预览受限，未使用其他浏览器或自动化绕过）。
 - Commit / push：报告提交 `2c399976`（`redesign task collaboration blueprint`）已推送至 `origin/main`；仅提交副本文件，工作区其他已有改动和未跟踪文件未暂存、未清理。未决事项：待允许本地预览后目视复核信息密度与连线排布。
+
+### 2026-09-24（将副本第 5 页恢复改为可选分支并强化阶段分区）
+
+- 变更文件：仅更新 `cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。主报告原件、正式页序、页数与 hash 导航均未改变。
+- 信息结构：主路径改为四阶段：可信获取 → 采取行动 → 理解与控制 → 证据验收。失败恢复不再是必经阶段；验收通过可结束，只有未通过 / 缺少证据时才进入橙色可选分支：保留现场 → 补线索 / 重试 / 换路 / 升级给领域负责人 → 回到相关行动。
+- 视觉调整：按用户选择为四个阶段分别使用克制的蓝、紫、青、绿低饱和色；阶段色贯穿阶段标题、开发者与 Agent 节点、机制落点和观察指标，橙色仅用于恢复支线。两条泳道的所有节点、机制节点、证据字段和观察指标均增加内边距与间距；阶段标题、行动审批和可选分支增加 Lucide 图标作为文字注释，图标不替代信息。
+- 内容映射：保留可信来源筛选、Rules / Project Knowledge / Knowledge Base / MCP Resources、Skill / Built-in Tools / MCP Connector / Subagent、Permission / Sandbox / PreTool Hook、PostTool / Stop Hook、Build / Test、Evidence Receipt 与 Checkpoint 等独立机制节点。AI 可用性实测维度仍是获取状态 / 成本、任务支撑、回答质量 / 证据一致；可控性及恢复成功率 / 接续耗时仍标为待验证，不新增实验结果或平台机制事实。
+- 层级边界：这是任务协作关系与版式调整，不改变 API / Protocol、Host / Harness、Application / Task 三层定义，也不把模型候选响应写成业务验收结果。
+- 验证：内联可执行 JavaScript 语法、HTMLParser、四阶段 / 双泳道 / 机制与指标列 / 可选恢复三节点结构断言及 `git diff --check` 均通过。尝试读取已打开的本地副本页仍被 Browser Use URL policy 拦截；遵守策略，没有改用其他浏览器、命令行渲染或其他方式绕过，因此未完成截图级目视复核。
+- Commit / push：`6e09d109`（`redesign collaboration map stages`）已推送至 `origin/main`。仅提交该副本文件；其他已有修改与未跟踪文件均未暂存或清理。未决事项：浏览器策略允许读取本地副本后，仍需目视复核节点留白、支线箭头与全页密度。
