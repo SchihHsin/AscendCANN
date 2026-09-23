@@ -2961,3 +2961,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 页面与导航：目录和章标签调整为“任务 / 机制 / 现状 / 设计 / 学习 / 依据”；章节 Tab 与右侧逐页导航均可跳转，hash 保持页码恢复。修复“现有 MCP 改造重点”图的网格列错位，确保知识面、动作面和结构化回执按预期分区。
 - 验证：HTMLParser、内联 JavaScript `node --check`、`git diff --check`；Playwright 1600×900 检查 57 页、学习图资源、页码点与章节跳转，未发现 JS 错误或图片加载失败。MCP 图修复后无溢出；“通用 Host 循环”图有约 15px 的容器 scroll-height 差，来自图例有意延伸到图框下方；截图未见内容遮挡，后续若视觉复核发现问题再调整。
 - Commit / push：`e6c412b0`（`content: reshape AI coding report around collaboration`）已推送至 `origin/main`。未提交其他已有修改或未跟踪文件。未决事项：学习方案仍待实际开发者任务验证。
+
+### 2026-09-23（新增任务关系总览图）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。在封面后、目录前新增“任务关系总览”第 2 页，呈现五段用户可理解的任务主线：知识获取 → Agent 行动 → 开发者理解与控制 → 失败恢复 → 证据验收；细化 AI 可用性研究维度、Rules / Memory、Skill / Workflow、Command、Template、Built-in Tools、MCP / Connector、Custom Agent / Subagent、Plugin / Extension、Host / Harness、权限 / Sandbox、运行环境与 Hooks。
+- 结构与证据边界：五段主线是任务体验阶段，不替代 API / Protocol、Host / Harness、Application / Task 三层责任边界。分别呈现 Agent 工具调用运行内环、定时 Loop / Automation、任务经验与体验改进外环；Claude Code `/loop` 是平台特定的时间触发示例，任务外环是设计框架，不暗示当前系统已自动自进化。AI 可用性指标沿用既有 CANN × CUDA 研究；未新增平台事实。
+- 页面与导航：图页插在封面与目录之间，旧页顺延，总页数从 57 增至 58；目录、右侧导航点、页码 hash 同步。
+- 验证：`git diff --check` 通过；抽取并解析 5 个内联 JavaScript 块通过；本地浏览器确认图页为 `#2`、目录为 `#3`、导航共 58 页，并目视检查 1280×720 视口内主线、控制带及三类 Loop 的呈现。
+- Commit / push：报告文件提交 `1cb4f463`（`feat: add task relationship overview diagram`）已推送至 `origin/main`；本交接更新另行提交推送。其他既有修改与未跟踪文件均未暂存或清理。未决事项：无。
