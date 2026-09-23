@@ -3107,3 +3107,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：机制区 HTML 片段标签配对检查通过；结构核对确认 5 个装配目标节点对应 5 个带箭头分支，旧说明条类已删除；目标 HTML 与 `AGENTS.md` 的 `git diff --check` 通过。未做截图目视复核；本地页面预览仍遵守 Browser Use URL policy，未通过其他截图方式绕过。
 - Commit / push：功能提交 `a5647c7c` 已推送至 `origin/main`；本条交接状态更新随独立记录提交推送。
 - 未决事项：需要刷新本地第 5 页进行视觉复核；正常 Agent Loop 仍待单独讨论 / 调整。
+
+### 2026-09-24（将副本第 5 页四阶段标题改为 Ink 深底）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。四个阶段标题卡片统一使用 Report PPT Skill 的 `--g-ink` 渐变深底；阶段区分色收敛到卡片上方的编号胶囊，不加整条顶描边。阶段名称、说明、阶段顺序与协作图结构不变。
+- 依据：用户选择第一种配色方案，并指定使用 Report PPT Skill 的 Ink。按 Skill `references/type-and-color.md`，`--g-ink` 是所有深色大色块的统一渐变 token；阶段色只作为小面积语义标记使用。
+- 层级 / 页序：只改副本第 5 页四阶段主路径的外观，不改变任务关系、机制连线、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。正常 Agent Loop 本次未改。
+- 验证：HTMLParser 解析通过，确认 4 个阶段标题节点仍在且 Ink / 阶段色标记样式存在；`git diff --check` 通过。尝试读取当前本地副本仍被 Browser Use URL policy 拦截；未通过其他方式绕过，未完成截图级目视复核。
+- Commit / push：功能提交 `37ea0030`（`style: use ink tone for collaboration stages`）已推送至 `origin/main`；本交接记录随独立提交推送。
+- 未决事项：Loop 的整体呈现仍待继续讨论 / 修改；本轮不涉及。
