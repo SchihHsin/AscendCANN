@@ -3182,3 +3182,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：Python HTMLParser 通过；5 段可执行内联 JavaScript 语法通过；静态断言确认封面含六个行为阶段；`git diff --check` 通过。浏览器直接打开本地报告被 Browser Use URL policy 拦截，未绕过，故未完成截图级视觉复核。
 - Commit / push：待提交并推送本次封面与本记录。
 - 未决事项：需要用户在本地预览确认封面曲线路径、标题与各节点的实际空间关系。
+
+### 2026-09-24（修复开发行为报告两页的错位）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`AGENTS.md`。问题 05「代码生成越来越便宜，验证可能成为主要瓶颈」的证据流补齐“候选产物 → 验证与解释”箭头，并为比例列添加 `minmax(0, …)`，让 5 个内容轨道与 5 个网格列一一对应，避免候选卡挤窄、文字竖排和流程断点。Agent 机制下钻页增加 4:3 及更窄窗口适配，压缩阶段行高并将阶段编号、标题和说明改为纵向排布，减少标题挤压和标签错位。
+- 内容 / 页序：两页的节点文字、关系含义与正式播放顺序不变；不新增平台机制事实，不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：HTML 解析、5 段内联 JavaScript 语法、证据流 5 个网格子项结构断言及 `git diff --check` 通过。因当前本地预览被 Browser Use URL policy 拦截，未绕过策略；截图对应的问题已检查，修改后的桌面浏览器截图级复核尚未完成。
+- Commit / push：待提交并推送到 `origin/main`。
+- 未决事项：仍需在允许的本地预览中确认改后两页在用户当前窗口比例下的实际留白与文字换行。
