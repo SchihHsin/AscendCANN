@@ -3135,3 +3135,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTMLParser 解析通过；结构断言确认 18 个独立机制节点、3 个 Skill 触点、各自独立的 Hook 事件、无 Plugin 扇出线、正常与嵌套 Loop 都存在；`git diff --check` 通过。未做截图级目视复核；不使用其他浏览器或命令行渲染绕过本地预览 URL policy。
 - Commit / push：功能提交 `13555a9d`（`redesign mechanism and assembly lane`）已推送至 `origin/main`；本交接记录随独立提交推送。
 - 未决事项：正常 Loop 与机制作用点已纳入第 5 页；页面的截图级密度 / 节点视觉复核仍待本地预览策略允许时完成。
+
+### 2026-09-24（将具体任务时序与 Agent 机制下钻配对）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`、`cann-dashboard/seq-d3-ux-task.html`。复用用户提供的 `index-ux-stages.html#15` 所调用的原时序图 `seq-d3.html`，以原文件副本嵌入，不重画关系图。
+- 叙事与证据：副本 #5 为一次自定义算子开发的 P1–P7 全链路，显示开发者、AI Agent、昇腾社区、第三方平台、本机工具五类参与者；页脚明确它是一个任务示例，不把七阶段泛化到所有任务。副本 #6 将此前关系图改为 Agent 运行机制下钻：Context、Plan、Gate、Act / Observe 是机制观察点，不是 P1–P7；Loop 表达工具返回后的正常迭代，失败恢复仍是验收后的可选分支。来源图是既有研究材料，本次不声称重新验证其底层实证。
+- 页序 / 层级：#5 插在 Add 算子示例后，#6 作为机制章节入口，章节目录同步更新。没有改变 API / Protocol、Host / Harness、Application / Task 的定义或边界；为嵌入图添加只接受当前页 iframe 的滚轮翻页桥接。
+- 验证：HTMLParser 解析两个文件通过；目标 deck 与时序图副本的可执行内联 JS 分别 5 段通过 `vm.Script` 语法检查；51 个 `reportOrder` 标题均有对应页面，新页序确认为 #5 / #6；嵌入图副本与源 `seq-d3.html` 字节一致；`git diff --check` 通过。未做截图级目视复核；遵守本地预览策略，没有用其他浏览器或命令行截图绕过。
+- Commit / push：功能提交 `273871f6`（`feat: pair concrete task timeline with agent drilldown`）已推送到 `origin/main`。
+- 未决事项：需在允许的本地预览中检查时序图在整页中的实际字号与空间占比；静态检查不能替代该目视验证。
