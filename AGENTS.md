@@ -3062,3 +3062,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；复核 CSS 差异确认只移除了 `.cb-human-lane` 与 `.cb-agent-lane` 外层的背景、边框和圆角，内部阶段节点与连线规则未改。未做截图目视复核；遵守本地预览的 Browser Use URL policy，未尝试绕过。
 - Commit / push：待完成后填写。
 - 未决事项：无。
+
+### 2026-09-24（将可选恢复并入 Agent 泳道）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。移除独立的“可选恢复”整行，把“未通过 / 缺证据 → 可选恢复（补线索 / 重试 / 换路 / 升级）→ 回到相关行动”收进 Agent 第四阶段的证据节点；保留待验证的恢复成功率与接续耗时指标。删除原独立恢复行后，机制、观察和平台供给行上移，Agent 行加高以容纳分支。其他页面与主报告未改。
+- 依据：用户明确希望可选恢复作为 Agent 的一条线表达，不单独占横行。
+- 层级 / 页序：仅改副本第 5 页关系图排布，不影响 API / Protocol、Host / Harness、Application / Task 边界或页序。
+- 验证：`git diff --check` 通过；CSS / DOM 复核确认恢复支线已嵌入 Agent 的第四阶段节点，旧 `.cb-loop-rail` / `.cb-loop-point` / `.cb-loop-label` 及对应独立行均已删除，机制 / 观察 / 供给行改为第 5–7 行。未做目视截图复核；本地文件预览受 Browser Use URL policy 限制，没有绕过。
+- Commit / push：待完成后填写。
+- 未决事项：无。
