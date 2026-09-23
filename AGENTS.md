@@ -3116,3 +3116,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTMLParser 解析通过，确认 4 个阶段标题节点仍在且 Ink / 阶段色标记样式存在；`git diff --check` 通过。尝试读取当前本地副本仍被 Browser Use URL policy 拦截；未通过其他方式绕过，未完成截图级目视复核。
 - Commit / push：功能提交 `37ea0030`（`style: use ink tone for collaboration stages`）已推送至 `origin/main`；本交接记录随独立提交推送。
 - 未决事项：Loop 的整体呈现仍待继续讨论 / 修改；本轮不涉及。
+
+### 2026-09-24（恢复四阶段标题的编号前置布局）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。恢复四个阶段卡原来的“左侧编号、右侧阶段名与说明”结构；保留上一轮确认的 `--g-ink` 深底和各阶段编号的阶段色，不再把编号放到文案上方，也移除编号胶囊。
+- 依据：用户指出上一轮只确认了配色，不希望改变原有阅读结构；本轮仅恢复编号与文字的相对位置。
+- 层级 / 页序：仅改副本第 5 页阶段标题卡的布局，不改阶段顺序、节点关系、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：HTMLParser 解析通过，断言四个阶段节点仍采用编号在左、文字在右的两列网格且背景使用 `--g-ink`；`git diff --check` 通过。未做截图级目视复核。
+- Commit / push：功能提交 `f7ddf479`（`style: restore stage number leading layout`）已推送至 `origin/main`；本交接记录随独立提交推送。
+- 未决事项：Loop 的整体呈现仍待继续讨论 / 修改；本轮不涉及。
