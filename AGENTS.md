@@ -2993,3 +2993,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 页面与机制边界：报告是新增独立页面，不改动既有汇报序列；未改变 API / Protocol、Host / Harness、Application / Task 的既有定义。
 - 验证：HTMLParser 解析通过；9 页、运行时控件锚点和页码 hash 代码存在；42 个 HTML ID 无重复，SVG/CSS 引用无缺失；内联 JavaScript `node --check` 通过。截图级浏览器 QA 未完成：本机浏览器安全策略拒绝打开本地 `file://` 页面，未改用其他浏览器或命令行渲染绕过。提交前执行 `git diff --cached --check`。
 - Commit / push：本报告与本交接条目一并提交并推送至 `origin/main`；仅暂存这两个任务文件，未纳入其他已有修改或未跟踪文件。未决事项：若材料用于外部发表，需补齐 ref 0–4 的原始来源、题目口径与方法信息；浏览器允许本地预览后再做目视复核。
+
+### 2026-09-23（新建任务过程叙事副本）
+
+- 变更文件：新建 `cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`，从当前 51 页主报告复制后独立调整；`ai-coding-platform-mechanism-report.html` 原件保持不变。副本正式序列为 50 页，原 HTML 片段仍可在副本内追溯，但不进入正式序列。
+- 叙事与页面：顺序改为“目录 → 开发任务流程与断点 → Add 算子失败 / 恢复示例 → L1/L2/L3 任务关系图 → 平台机制 → 机制可能影响任务的推论 → 昇腾现状 → 体验设计 / 衡量 → 知识内化”。原“代码质量关口”改为七阶段任务流程，覆盖目标、现场、路径、改动、运行、恢复和交接；原供给差异页改为假设性 Add 案例，明确非 NPU 实测；“代码质量三乘数”退出正式序列，避免预设领域验收为核心结论。Claude 详细机制页移到跨平台比较之前。
+- 证据边界：平台机制事实仍按原 H / M / L 口径；“上下文、行动控制、反馈回流、失败恢复可能改善任务推进”明确标为待验证推论，不据此排名。没有新增技术事实或实验结果，也未改变 API / Protocol、Host / Harness、Application / Task 三层定义。
+- 验证：正式序列 50 个标题均唯一且存在；开头页序、Claude 深析 / 横向比较次序、章节跳转标题均通过结构检查；5 个可执行内联脚本 `node --check` 通过；HTMLParser 解析与新增改动间 `git diff --no-index --check` 通过。浏览器策略拒绝本地文件预览，未尝试绕过，因此未完成截图级 QA。
+- Commit / push：待完成。无关工作区更改与未跟踪文件未暂存或清理。未决事项：待浏览器策略允许本地预览后核对视觉布局。
