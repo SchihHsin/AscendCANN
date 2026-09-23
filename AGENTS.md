@@ -3018,3 +3018,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 层级边界：这是人机职责与交接关系的设计表达，不改变 API / Protocol、Host / Harness、Application / Task 定义，不改其他页面。
 - 验证：HTMLParser 解析通过；5 个可执行内联 JS 块语法通过；结构断言确认 5 阶段、4 条职责行与知识来源 / 机制 / 研究维度齐备；`git diff --check` 通过。未完成浏览器截图目视复核。
 - Commit / push：`b227081d`（`refine task collaboration blueprint page`）已推送至 `origin/main`；仅提交副本文件，其他既有修改和未跟踪文件未暂存、未清理。未决事项：需在浏览器可用时复核实际字号与拥挤程度。
+
+### 2026-09-23（重画副本第 5 页为五阶段双泳道协作图）
+
+- 变更文件：仅修改 `cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`；主报告原件不变，副本正式页序、页数和 hash 导航不变。按用户选择的“五阶段双泳道协作图”替换原服务蓝图式卡片 / 表格排布；五阶段等宽，开发者与 Agent 两条连续泳道通过方向明确的交接箭头衔接。
+- 图示内容：知识获取阶段绘出官方文档、GitCode / 样例、Issue / 社区多源信息汇入，经来源、版本、芯片与适用范围筛选后进入带引用的任务 Context；阶段 2–5 分别呈现 Agent 行动、开发者控制、失败分流与证据回执。新增独立 Loop 回返轨：验证未通过 / 缺证据 → 恢复处理 → 返回行动。Rules、Project Knowledge、Knowledge Base / RAG、MCP Resources、Skill / Workflow、Built-in Tools、MCP Connector、Subagent、Permission / Sandbox、PreTool / PostTool / Stop Hooks、Checkpoint、Build / Test 与 Evidence Receipt 均为独立机制节点并按参与阶段放置；Plugin / Extension 单独表示为跨阶段分发方式，而非运行步骤。
+- 研究与证据：沿用既有 AI 可用性研究，把获取状态 / 成本、任务支撑、回答质量标为实测维度；把路径理解 / 行动可控、失败恢复 / 接续标为待验证的体验设计指标。未新增实测结论、平台机制事实或来源；未改变 API / Protocol、Host / Harness、Application / Task 三层边界。使用 Report PPT Skill 的空间图示与页面样式作用域规则，避免卡片平铺和后续 Harness 运行流程图重复。
+- 验证：HTMLParser 结构检查、5 个可执行内联 JS 块语法检查、阶段 / 交接 / 机制 / 指标结构断言及 `git diff --check` 均通过；确认“任务关系总览”仍为副本第 5 页。未做截图级浏览器复核（此前本地文件预览受限，未使用其他浏览器或自动化绕过）。
+- Commit / push：报告提交 `2c399976`（`redesign task collaboration blueprint`）已推送至 `origin/main`；仅提交副本文件，工作区其他已有改动和未跟踪文件未暂存、未清理。未决事项：待允许本地预览后目视复核信息密度与连线排布。
