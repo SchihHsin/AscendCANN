@@ -2969,3 +2969,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 页面与导航：图页插在封面与目录之间，旧页顺延，总页数从 57 增至 58；目录、右侧导航点、页码 hash 同步。
 - 验证：`git diff --check` 通过；抽取并解析 5 个内联 JavaScript 块通过；本地浏览器确认图页为 `#2`、目录为 `#3`、导航共 58 页，并目视检查 1280×720 视口内主线、控制带及三类 Loop 的呈现。
 - Commit / push：报告文件提交 `1cb4f463`（`feat: add task relationship overview diagram`）已推送至 `origin/main`；本交接更新另行提交推送。其他既有修改与未跟踪文件均未暂存或清理。未决事项：无。
+
+### 2026-09-23（按第 17 页样式修正任务总览流程图）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。按用户指定的“通用 Host 循环”图作为视觉参照，将封面后的第 2 页从五组阶段内容重组为真正的六阶段 × L1/L2/L3 泳道运行流程；主任务路径用更醒目的正交实线串联，入口、执行器、环境、验证、回执、验收和状态由箭头明确关联。该条更新覆盖上一条中“五段主线”的图示表述。
+- 机制表达：Rules、Knowledge / RAG、Memory、Workspace Index、Skill、Command、Template、Plugin / Extension、MCP Resource / Connector、Built-in Tools、Custom Agent、Subagent、Permission / Sandbox、Hook、运行环境与 Claude Code `/loop` 保留为独立节点。Plugin 以虚线连接其分发能力；Permission 与 Hook 作为 Gate 的独立约束，不再画成必须按序经过的节点。Agent 工具运行内环、故障恢复、定时 Loop、候选回答 / 业务验收，以及经治理的任务经验外环分别表达；未新增平台机制事实，也未改变 API / Protocol、Host / Harness、Application / Task 的边界。
+- 证据与导航：AI 可用性四项观察维度及 Add / ONNX / 性能分析样本沿用既有 CANN × CUDA 研究；图仍位于封面后、目录前，58 页序列和 hash 导航不变。
+- 验证：HTMLParser 解析通过，5 个可执行内联 JS 块 `node --check` 通过；SVG XML 解析、箭头 marker 引用、29 个节点坐标和互不重叠检查通过；确认图页 / 目录 / 总页数为第 2 / 第 3 / 58 页；`git diff --check` 通过。本轮未完成新的桌面截图目视复核（在用浏览器 tab 的读取请求超时），结论基于结构、语法与几何校验。
+- Commit / push：`cb0348df`（`refine task overview flow diagram`）已推送至 `origin/main`；本条交接记录随后单独提交推送。无关工作区更改和未跟踪文件未暂存或清理。未决事项：需要在浏览器中最终目视确认图面密度与阅读顺序。
