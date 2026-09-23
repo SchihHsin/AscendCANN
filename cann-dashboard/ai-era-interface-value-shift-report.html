@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>界面价值迁移：AI 时代的社区、IDE 与体验设计</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/IKKI2000/harmonyos-fonts@master/css/harmonyos_sans_sc.css">
+<style>
+/* ===== 设计 token ===== */
+:root{
+  --fs-h1:clamp(20px,1.7vw,30px); --fs-h2:clamp(16px,1.25vw,22px); --fs-h3:clamp(15.5px,1.2vw,19px);
+  --fs-body:clamp(15px,1.12vw,18px); --fs-sm:clamp(12px,.82vw,14.5px); --fs-xs:clamp(9px,.62vw,11px);  /* body=舒适阅读档；密集形式见 .pf/.pp/.up 局部回小 */
+  --paper:#E9EBEE; --card:#fff; --card-2:#F1F3F6;
+  --ink:#16191e; --ink-2:#5e646e; --ink-3:#929aa6; --line:#d4d8df;
+  --accent:#5B5BD6; --accent-soft:#ECECFB; --red:#E60012;
+  --c-red:#F05A68; --c-orange:#F47A4B; --c-amber:#F4B450; --c-yellow:#D9B52C; --c-lime:#91BD48; --c-green:#39B982; --c-mint:#36BFA2; --c-teal:#28A8D8; --c-blue:#4B8DFF; --c-indigo:#5B5BD6; --c-purple:#8D63D8; --c-pink:#D95F9D; --c-rose:#E76C88; --c-neutral:#9BA5B4; --c-ink:#22262F;
+  --g-red:linear-gradient(120deg,#FF5A6E,#FF6F55); --g-orange:linear-gradient(120deg,#FF9A55,#F47A4B); --g-amber:linear-gradient(120deg,#FBBF60,#F59E0B); --g-yellow:linear-gradient(120deg,#F4D35E,#D9B52C); --g-lime:linear-gradient(120deg,#B8DC62,#91BD48); --g-green:linear-gradient(120deg,#23CFA0,#45D65A); --g-mint:linear-gradient(120deg,#42D4B8,#36BFA2); --g-teal:linear-gradient(120deg,#38C9D7,#4FACFE); --g-blue:linear-gradient(120deg,#2F6FED,#4B8DFF); --g-indigo:linear-gradient(120deg,#6674E6,#5B5BD6); --g-purple:linear-gradient(120deg,#A78BFA,#7C3AED); --g-pink:linear-gradient(120deg,#FF4FA3,#FF7AC8); --g-rose:linear-gradient(120deg,#F37A9A,#E76C88); --g-neutral:linear-gradient(120deg,#E4E8EF,#CBD3DF);
+  --dark:var(--c-ink); --g-ink:linear-gradient(140deg,#22262F,#14171C); --g-accent:linear-gradient(135deg,var(--c-indigo),#7C3AED);
+  /* 黑底光晕（每页可被 inline 变量覆盖，实现一章一色）*/
+  --glow-h:234; --glow-h2:291; --glow-sat:95%; --glow-light:40%; --glow-spread:35; --glow-color-int:.68; --glow-white-int:.58;
+}
+/* 用户画像是高密度特殊形式：body/h3 局部冻回紧凑档，不随全局正文放大 */
+.pf,.pp,.up{--fs-h3:clamp(13px,.95vw,16px);--fs-body:clamp(12px,.82vw,15px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+html,body{width:100%;height:100%;margin:0;background:#0c0a0b;color:var(--ink);
+  font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;-webkit-font-smoothing:antialiased}
+/* 纵向翻页：body 作滚动容器 + 原生 scroll-snap（划时短暂两页，松手吸附到整页）*/
+body{overflow:hidden auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+/* 滚动条：细、半透、默认隐藏，滚动时（body.scrolling）才淡入；亮/暗随 body.on-dark */
+body{scrollbar-width:thin;scrollbar-color:transparent transparent}
+body.scrolling{scrollbar-color:rgba(140,140,160,.45) transparent}
+body::-webkit-scrollbar{width:9px}
+body::-webkit-scrollbar-track{background:transparent}
+body::-webkit-scrollbar-thumb{background:transparent;border-radius:9px;border:3px solid transparent;background-clip:padding-box;transition:background .25s}
+body.scrolling::-webkit-scrollbar-thumb{background:rgba(140,140,160,.45);background-clip:padding-box}
+body.on-dark.scrolling{scrollbar-color:rgba(255,255,255,.32) transparent}
+body.on-dark.scrolling::-webkit-scrollbar-thumb{background:rgba(255,255,255,.32);background-clip:padding-box}
+#deck{position:relative;width:100vw;display:block}
+.slide{position:relative;width:100vw;height:100vh;overflow:hidden;font-size:var(--fs-body);scroll-snap-align:start;scroll-snap-stop:always}
+
+/* ===== 总览（Overview）：缩略图网格（按当前视窗比例，不强制 16:9）===== */
+body.overview{scroll-snap-type:none;background:#15151a;padding:30px 30px 64px}
+body.overview #deck{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:auto;max-width:1480px;margin:0 auto;align-items:start}
+body.overview .slide{position:relative!important;width:auto!important;min-height:0!important;padding:0!important;margin:0!important;display:block!important;overflow:hidden!important;border-radius:12px;cursor:pointer;scroll-snap-align:none;box-shadow:0 12px 34px -14px rgba(0,0,0,.6);outline:2px solid transparent;transition:outline-color .18s,transform .18s}
+body.overview .slide:hover{transform:translateY(-4px);outline-color:var(--accent)}
+body.overview .slide-inner{position:absolute;top:0;left:0;width:100vw;height:100vh;transform-origin:top left;overflow:hidden;pointer-events:none;box-sizing:border-box}
+body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5vh 4vw}
+body.overview .s-glow .slide-inner{padding:7vh 6vw}
+body.overview .s-cover .slide-inner{padding:0}
+
+/* ===== 翻页过渡（可切换）=====
+   默认 slide=纵向 scroll-snap；其余走「受控叠层」(body.ctrl)：所有页叠同位、只 .active 显示
+   TRANSITION / ?t= : slide(默认) | fade | cut | slide-h | magic */
+body.ctrl{overflow:hidden;scroll-snap-type:none}
+body.ctrl #deck{position:fixed;inset:0;width:100vw}
+body.ctrl .slide{position:absolute;inset:0;opacity:0;visibility:hidden;scroll-snap-align:none;scroll-snap-stop:normal}
+body.ctrl .slide.active{opacity:1;visibility:visible;z-index:2}
+body.ctrl .slide.leaving{visibility:visible;z-index:1}
+body[data-transition=fade] .slide{transition:opacity .5s ease}
+body[data-transition=fade] .slide.leaving{opacity:0}
+body[data-transition=cut] .slide{transition:none}
+body[data-transition=cut] .slide.leaving{opacity:0}
+body[data-transition=slide-h] .slide{transition:transform .56s cubic-bezier(.77,0,.175,1),opacity .4s ease}
+body[data-transition=slide-h] .slide.active{opacity:1}
+body[data-transition=slide-h] .slide.leaving{opacity:1}
+body[data-transition=magic] .slide{transition:opacity .6s ease}
+body[data-transition=magic] .slide.leaving{opacity:0}
+body.overview.ctrl{overflow:hidden auto}
+body.overview.ctrl #deck{position:static}
+body.overview.ctrl .slide{position:relative!important;opacity:1!important;visibility:visible!important;transform:none!important}
+
+/* ============ 基调②：灰底分析篇 ============ */
+.s-gray{color:var(--ink);padding:5vh 4vw;display:flex;flex-direction:column;background:var(--paper);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 480' preserveAspectRatio='none'%3E%3Cpath d='M0 320 C 380 250 760 330 1080 195 C 1280 140 1380 185 1440 130 L1440 480 L0 480 Z' fill='%237e8696' fill-opacity='0.07'/%3E%3Cpath d='M0 372 C 430 305 820 405 1180 245 C 1340 198 1402 240 1440 190 L1440 480 L0 480 Z' fill='%23949bab' fill-opacity='0.08'/%3E%3C/svg%3E"),linear-gradient(125deg,rgba(120,128,145,.05),transparent 50%);
+  background-position:bottom center,0 0;background-size:100% 50%,100% 100%;background-repeat:no-repeat,no-repeat}
+.head{display:flex;align-items:flex-start;justify-content:space-between;flex:0 0 auto;margin-bottom:3.4vh}
+.head-l{display:flex;flex-direction:column-reverse;gap:.8vh}  /* 小副标(.subttl)在上、大标题在下：column-reverse 反转视觉顺序，HTML 仍 .brand 在前 .subttl 在后 */
+.brand{display:flex;align-items:center;gap:.5em}
+.brand .logo{height:clamp(19px,1.7vw,25px);width:auto;display:block;flex-shrink:0}  /* ⛔ 标题前只放 CANN logo（无合适 logo 就删掉 img 留空），绝不换成 Lucide/通用 icon */
+.brand .ttl{font-weight:800;font-size:var(--fs-h1);letter-spacing:-.01em}      /* 标题=结论 */
+.subttl{font-weight:300;font-size:var(--fs-sm);color:var(--ink-2)}
+/* 右上章节 Tab：横向列出整份汇报章节，当前章节用深色胶囊高亮；不再放孤立的小字页码。 */
+.section-tabs{display:flex;align-items:center;gap:5px;flex:0 0 auto;margin-left:auto;padding:.45vh .48vw;border:1px solid rgba(127,137,157,.18);border-radius:999px;background:rgba(255,255,255,.46)}
+.section-tabs span{padding:.42vh .6vw;border-radius:999px;font:600 var(--fs-sm)/1.2 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;color:var(--ink-3);white-space:nowrap}
+.section-tabs span.active{background:var(--g-ink);color:#fff;box-shadow:0 3px 10px -6px rgba(20,25,35,.5)}
+/* 目录：4 章单行；3 / 5 / 6 章的完整数量路由见 components.md §18 与模板库。 */
+.contents-slide .body-area{justify-content:center}
+.contents-directory{width:min(1120px,100%);margin:0 auto;display:grid;gap:1vw;align-items:stretch}
+.contents-directory.contents-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.directory-card{--dir:var(--c-indigo);position:relative;min-width:0;min-height:31vh;overflow:hidden;padding:1.8vh 1.25vw 1.35vh;display:flex;flex-direction:column;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.88);border-radius:14px;box-shadow:0 18px 42px -25px rgba(20,25,35,.22),inset 0 1px 0 rgba(255,255,255,.94)}
+.directory-card::after{content:"";position:absolute;right:-25%;bottom:-24%;width:90%;height:46%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--dir) 16%,transparent),transparent 70%);pointer-events:none}
+.directory-card.research{--dir:var(--c-indigo)}.directory-card.competitor{--dir:var(--c-blue)}.directory-card.persona{--dir:var(--c-teal)}.directory-card.roadmap{--dir:var(--c-pink)}
+.directory-no,.directory-name,.directory-en,.directory-items,.directory-note{position:relative;z-index:1}
+.directory-no{font-family:'Barlow Condensed','Inter',sans-serif;font-size:clamp(54px,5.4vw,86px);line-height:.82;letter-spacing:-.035em;font-weight:300;color:var(--dir);text-shadow:0 0 28px color-mix(in srgb,var(--dir) 24%,transparent)}
+.directory-name{margin-top:1.35vh;font-size:var(--fs-h2);line-height:1.2;font-weight:950;color:var(--ink);overflow-wrap:anywhere}
+.directory-en{margin-top:.42vh;font-family:'Inter',sans-serif;font-size:var(--fs-sm);font-weight:700;color:color-mix(in srgb,var(--dir) 76%,#596575);overflow-wrap:anywhere}
+.directory-items{display:grid;gap:.52vh;margin-top:2.65vh}.directory-items span{font-size:var(--fs-body);line-height:1.36;color:var(--ink-2);overflow-wrap:anywhere}
+.directory-items span::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;vertical-align:middle;margin:-2px .48em 0 0;background:var(--dir);box-shadow:0 0 12px color-mix(in srgb,var(--dir) 42%,transparent)}
+.directory-note{margin-top:auto;padding-top:1.25vh;border-top:1px solid rgba(47,61,99,.14);font-size:var(--fs-sm);font-weight:900;line-height:1.35;color:color-mix(in srgb,var(--dir) 72%,#465364);overflow-wrap:anywhere}
+/* padding-bottom 给绝对定位的 .foot/.ucd 留位，否则居中卡会紧贴页尾（见 pitfalls.md）*/
+.body-area{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+/* 居中型页（内容是个居中块、四周留白）加 .vc：JS balanceHeads() 按实际页眉高度补 padding-bottom，
+   抵消"页眉占空间、页脚(.foot/.ucd 绝对定位)不占空间"的不平衡，让内容落到整页真正正中（任意窗口都准）。
+   固定 vh 猜测值在不同页眉高度/窗口宽高比下对不上，见 pitfalls.md。
+   填满型页（旅程/VOC/画像表格等用满整页的）不加 .vc */
+.body-area.vc{padding-bottom:0}
+.card{background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(15px) saturate(1.4);backdrop-filter:blur(15px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.7);border-radius:16px;box-shadow:0 10px 30px -16px rgba(30,40,70,.2),inset 0 1px 0 rgba(255,255,255,.85);padding:2.2vh 1.6vw}
+
+/* 甘特 roadmap（精调件②）：玻璃大卡 + 浮动条 + 虚线网格底纹 */
+.rm{position:relative;flex:1;min-height:0;margin-top:1vh;background:rgba(255,255,255,.55);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border:1px solid rgba(255,255,255,.7);border-radius:18px;box-shadow:0 12px 34px -16px rgba(30,40,70,.22),inset 0 1px 0 rgba(255,255,255,.85)}
+.rm-pad{position:absolute;top:6vh;left:3.2vw;right:3.2vw;bottom:4vh}            /* 内层容器：绝对定位的条/刻度相对它，padding 才生效 */
+.rm-pad::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0H0V40' fill='none' stroke='%237e8696' stroke-opacity='0.18' stroke-width='1' stroke-dasharray='2,4'/%3E%3C/svg%3E");background-size:40px 40px}
+.rm-date{position:absolute;top:0;transform:translateX(-50%);font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;color:var(--ink-3);white-space:nowrap}
+.rm-now-pill{position:absolute;top:1.6%;transform:translateX(-50%);font-size:var(--fs-xs);font-weight:600;color:#fff;background:rgba(91,91,214,.92);padding:3px 11px;border-radius:9px;box-shadow:0 3px 10px rgba(60,52,137,.32);z-index:3}
+.rm-now-line{position:absolute;top:9%;height:84%;width:2px;background:linear-gradient(rgba(91,91,214,.85),rgba(91,91,214,.35));box-shadow:0 0 12px rgba(91,91,214,.5);z-index:1}
+.rm-now-tri{position:absolute;top:7.2%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid var(--accent);z-index:2}
+.rm-bar{position:absolute;height:8.5%;min-height:30px;max-height:46px;border-radius:13px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:var(--fs-body);font-weight:500;backdrop-filter:blur(2px) saturate(130%);-webkit-backdrop-filter:blur(2px) saturate(130%);z-index:2}
+.rm-bar .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rm-badge{font-size:var(--fs-xs);font-weight:600;padding:3px 9px;border-radius:7px;white-space:nowrap;margin-left:10px;flex:none}
+.rm-bar.white{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.75);color:var(--ink);box-shadow:0 8px 22px rgba(30,40,70,.1),inset 0 1px 0 rgba(255,255,255,.8)}
+.rm-bar.white .rm-badge{background:var(--dark);color:#fff}
+.rm-bar.dark{background:var(--g-ink);border:1px solid rgba(255,255,255,.22);color:#fff;box-shadow:0 8px 26px rgba(20,25,35,.32),inset 0 1px 0 rgba(255,255,255,.28)}
+.rm-bar.dark .rm-badge{background:rgba(255,255,255,.92);color:var(--dark)}
+.rm-bar.accent{background:var(--g-accent);border:1px solid rgba(255,255,255,.34);color:#fff;box-shadow:0 10px 28px rgba(91,91,214,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+.rm-bar.accent .rm-badge{background:#fff;color:#5B21B6}
+.rm-diamond{position:absolute;width:18px;height:18px;transform:rotate(45deg);background:var(--g-ink);border:1px solid rgba(255,255,255,.3);border-radius:3px;box-shadow:0 5px 14px rgba(0,0,0,.22);z-index:3}
+.rm-ms{position:absolute;font-size:var(--fs-sm);font-weight:500;color:var(--ink-2)}
+
+/* 关键指标：多彩渐变胶囊 + 极细超大数字（精调件①）*/
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3.4vw;flex:1;min-height:0;align-items:center}
+.stat-col{display:flex;flex-direction:column;gap:2vh}
+.stat-bar-area{position:relative}
+.stat-marks{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:10.5px;color:var(--ink-3);margin-bottom:.7vh;position:relative;height:18px;align-items:flex-end}
+.stat-tri{position:absolute;font-size:9px;transform:translateX(-50%);color:var(--ink-2);bottom:0;line-height:1}
+.stat-pills{display:flex;gap:5px;height:6vh} .stat-pill{border-radius:999px;flex-shrink:0}
+.stat-num{font-family:'Inter';font-weight:200;font-size:min(8.4vw,13.8vh);line-height:.88;letter-spacing:-.04em;color:var(--ink);margin-top:.4vh}
+.stat-num .u{font-size:.35em;font-weight:300;color:var(--ink-2);margin-left:.05em}
+.stat-desc{font-size:var(--fs-body);color:var(--ink-2);line-height:1.58;max-width:26ch}
+
+/* 竞品对照：三卡大段论述 + 图沉卡底（order:2）+ 对策深色条 */
+.compare{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw;flex:0 0 auto}
+.cmp{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.cmp-img{order:2;flex:0 0 auto;padding:0 .9vw .9vw;margin-top:auto}
+.cmp-img img{width:100%;height:auto;display:block;border-radius:9px;border:1px solid var(--line)}
+.cmp-cap{font-family:'JetBrains Mono';font-size:var(--fs-xs);color:var(--ink-3);text-align:center;letter-spacing:.02em;margin-top:.7vh}
+.cmp-body{order:1;padding:2vh 1.4vw .8vh;flex:0 0 auto;display:flex;flex-direction:column;gap:1.7vh}
+.cmp-h{font-weight:700;font-size:var(--fs-h2);letter-spacing:-.01em;line-height:1.3;color:var(--ink)}
+.cmp-h .hk{display:block;font-family:'JetBrains Mono';font-size:var(--fs-xs);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.5vh}
+.cmp-desc{font-size:var(--fs-body);line-height:1.72;color:var(--ink-2)}
+.cmp-desc b{color:var(--ink);font-weight:600;background:linear-gradient(transparent 60%,rgba(91,91,214,.16) 0)}
+.verdict{flex:0 0 auto;margin-top:1.6vh;display:grid;grid-template-columns:auto 1fr;gap:1.2vw;align-items:center;background:var(--g-ink);color:#fff;border-radius:12px;padding:1.8vh 1.6vw}
+.verdict .vk{font-size:var(--fs-h3);font-weight:700;color:var(--ink);background:#fff;border-radius:12px;padding:6px 15px;white-space:nowrap}
+.verdict .vv{font-size:var(--fs-body);line-height:1.55} .verdict .vv b{font-weight:700}
+
+/* 用户画像·形式一（左栏人物 + 右四区）。⚠️ 与形式二是两套方案【二选一】，按用户输入择优 */
+.pf{--b:#385CFF;--bs:rgba(56,92,255,.1);flex:0 1 auto;min-height:0;display:grid;grid-template-columns:23% 1fr;gap:1.5vw;align-items:stretch}
+.pf-side{background:#EFEFF1;border-radius:16px;padding:1.7vh 1.2vw;display:flex;flex-direction:column;gap:.85vh;overflow:hidden}
+.pf-portrait{width:100%;aspect-ratio:1/.86;border-radius:12px;overflow:hidden;background:#fff;flex:0 0 auto}
+.pf-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-sb{border-radius:11px;padding:.95vh .9vw;flex:0 0 auto}
+.pf-sb.head{background:var(--bs);padding-top:.85vh;padding-bottom:.85vh}
+.pf-sb.head .nm{font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC';font-weight:800;font-size:var(--fs-h2);color:#1a1a1a;line-height:1.2}
+.pf-sb.head .rl{font-size:var(--fs-body);color:var(--b);font-weight:600;margin-top:.1vh}
+.pf-sb.white{background:#fff}
+.pf-sb .sbh{font-size:var(--fs-xs);color:#999;font-weight:700;margin-bottom:.25vh}
+.pf-sb .sbt{font-size:var(--fs-body);color:#333;line-height:1.5}
+.pf-chips{display:flex;flex-wrap:wrap;gap:.4vw}
+.pf-chips span{font-size:var(--fs-sm);color:var(--b);background:var(--bs);border-radius:6px;padding:.4vh .65vw}
+.pf-quote{font-size:var(--fs-body);color:#333;font-weight:600;line-height:1.5;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c2c7d0}
+.pf-r{display:flex;flex-direction:column;gap:1.1vh;min-height:0}
+.pf-row{display:grid;grid-template-columns:.82fr 1.7fr;gap:1.8vw;align-items:start}
+.pf-block{display:flex;flex-direction:column;min-width:0}
+.pf-h2{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;background:var(--b);color:#fff;border-radius:20px;padding:.3vh .9vw .3vh .3vh;font-weight:700;font-size:var(--fs-h3);margin-bottom:.8vh}
+.pf-h2 .ico{width:clamp(21px,1.8vw,27px);height:clamp(21px,1.8vw,27px);border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pf-h2 .ico svg{width:56%;height:56%;display:block}
+.pf-sub{font-weight:700;font-size:var(--fs-sm);color:#333;margin:.1vh 0 .4vh .2vw}
+.pf-rings{display:flex;gap:2vw;padding-left:.3vw}
+.pf-rg{display:flex;flex-direction:column;align-items:center;gap:.4vh;text-align:center;width:min(13vw,150px)}
+.pf-rg .dn{width:clamp(46px,4.4vw,62px);height:clamp(46px,4.4vw,62px);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}
+.pf-rg .dn::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--b) 0 var(--p),#D6DAE4 0)}
+.pf-rg .dn::after{content:'';position:absolute;inset:23%;border-radius:50%;background:var(--paper)}
+.pf-rg .dn b{position:relative;z-index:1;font-weight:700;font-size:var(--fs-h3);color:#1a1a1a}
+.pf-rg .rl2{font-size:var(--fs-sm);color:#555;line-height:1.4}
+.pf-flow{display:flex;align-items:stretch;gap:.25vw}
+.pf-fc{flex:1;background:var(--bs);border-radius:10px;padding:.85vh .75vw;display:flex;flex-direction:column;gap:.35vh;min-width:0}
+.pf-fc .ft{font-weight:700;font-size:var(--fs-sm);color:var(--b)}
+.pf-fc .fl{font-size:var(--fs-xs);color:#444;line-height:1.4;display:flex;gap:.3em}
+.pf-fc .fl::before{content:'·';color:var(--b);font-weight:700;flex-shrink:0}
+.pf-fa{display:flex;align-items:center;color:var(--b);font-size:var(--fs-sm);flex-shrink:0}
+.pf-fc .fkpi{margin-top:.5vh;padding-top:.5vh;border-top:1px dashed rgba(56,92,255,.35);display:flex;flex-wrap:wrap;gap:.2em .55em;align-items:center}
+.pf-fc .fkpi .kl{font-size:var(--fs-xs);color:#999;font-weight:700;background:#fff;border-radius:4px;padding:.1vh .4vw}
+.pf-fc .fkpi b{font-size:var(--fs-xs);color:var(--b);font-weight:700}
+.pf-scs{display:grid;grid-template-columns:repeat(4,1fr);gap:.7vw}
+.pf-sc{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:.9vh .75vw;display:flex;flex-direction:column;gap:.55vh}
+.pf-sc .st{font-weight:700;font-size:var(--fs-body);color:#1a1a1a}
+.pf-sc .sd{font-size:var(--fs-sm);color:#666;line-height:1.45}
+.pf-pains{display:flex;flex-direction:column;gap:.4vh}
+.pf-pain{font-size:var(--fs-body);line-height:1.5;color:#333;display:flex;gap:.5em;align-items:flex-start}
+.pf-pain::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--b);flex-shrink:0;margin-top:.55em}
+.pf-pain b{color:var(--b);font-weight:600}
+.pf-mk{flex:0 0 auto;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;border:1px solid #E0E3EA;background:#F6F8FC;display:flex;flex-direction:column}
+.pf-mk .bar{display:flex;align-items:center;gap:3px;padding:2px 5px;background:#EBEEF4;border-bottom:1px solid #E0E3EA;flex-shrink:0}
+.pf-mk .bar i{width:3.5px;height:3.5px;border-radius:50%;background:#C4CAD6}
+.pf-mk .bd{flex:1;padding:4px 5px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.mkl{height:2.5px;border-radius:1.5px;background:#D3D8E2;display:block;flex-shrink:0}
+.mkl.b{background:var(--b)} .mkl.o{background:#E8896B}
+
+/* ============ 基调①：封面（真实素材）============ */
+.s-cover{color:#fff;background:#0c0a0b;padding:0}
+.cv-bg{position:absolute;inset:0;background:url("cover-bg.png") center/cover no-repeat;z-index:0}   /* 换成你的封面图 */
+.cv-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(10,8,9,.92),rgba(10,8,9,.55) 30%,rgba(10,8,9,0) 58%)}
+.cv-content{position:relative;z-index:1;height:100vh;padding:6vh 6vw;display:flex;flex-direction:column;justify-content:space-between}
+.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}
+.cv-huawei{display:flex;align-items:center;gap:.7em;font-weight:600;font-size:16px;letter-spacing:.04em;align-self:flex-start}
+.cv-huawei .petal{width:19px;height:19px;flex-shrink:0}
+.cv-meta{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;opacity:.55}
+.cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:60vw}
+.cv-kicker{font-family:'JetBrains Mono';font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1vh}
+.cv-logo{display:flex}
+.cv-logo img{height:min(17vh,12vw);width:auto;display:block}  /* 深色封面用白色版 logo */
+.cv-sub{font-weight:300;font-size:min(3vw,5vh);line-height:1.1;color:rgba(255,255,255,.92)}
+.cv-lead{font-weight:300;font-size:max(15px,1.2vw);line-height:1.6;color:rgba(255,255,255,.6);max-width:36ch;margin-top:1.4vh}
+.cv-ucd{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:.6em}
+.cv-ucd .sq{width:12px;height:12px;border:1.5px solid currentColor;display:inline-block}
+
+/* ============ 基调③：黑底设计点（光晕 + 渐变标题字）============ */
+.s-glow{background:#06060a;color:#fff;padding:7vh 6vw}
+.s-glow .glow{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none}
+.s-glow .glow::before,.s-glow .glow::after{content:"";position:absolute;inset:0;mix-blend-mode:screen}
+.s-glow .glow::before{background:radial-gradient(ellipse 78% 96% at 22% 112%,hsla(var(--glow-h),var(--glow-sat),calc(var(--glow-light) + 12%),var(--glow-color-int)) 0%,hsla(var(--glow-h),var(--glow-sat),var(--glow-light),0) 92%)}
+.s-glow .glow::after{background:radial-gradient(ellipse 78% 96% at 78% 112%,hsla(var(--glow-h2),var(--glow-sat),calc(var(--glow-light) + 12%),calc(var(--glow-color-int)*.9)) 0%,hsla(var(--glow-h2),var(--glow-sat),var(--glow-light),0) 90%)}
+.s-glow .glow-white{position:absolute;left:0;right:0;bottom:0;height:calc(var(--glow-spread)*1vh);z-index:0;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(to top,hsla(var(--glow-h),22%,90%,var(--glow-white-int)) 0%,hsla(var(--glow-h),30%,80%,0) 84%)}
+.s-glow .chrome{position:absolute;top:5vh;left:6vw;right:6vw;z-index:1;display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.s-glow .inner{position:relative;z-index:1;height:100%;display:grid;grid-template-columns:0.5fr 1.5fr;gap:2vw;align-items:center}  /* 设计点版式①（默认）左文右图：图占~65% */
+.kicker{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.24em;text-transform:uppercase;color:hsl(var(--glow-h),var(--glow-sat),72%);margin-bottom:2.6vh;display:flex;align-items:center;gap:.8em}
+.kicker::before{content:"";width:28px;height:1px;background:currentColor;opacity:.7}
+.h-title{font-weight:700;font-size:min(3.5vw,6vh);line-height:1.15;letter-spacing:-.01em;margin-bottom:1.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),78%),hsl(var(--glow-h2),var(--glow-sat),72%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.h-title .light{font-weight:200}
+.body{font-weight:300;font-size:var(--fs-body);line-height:1.75;color:rgba(255,255,255,.62);max-width:40ch;margin-bottom:4vh}
+.body b{color:#fff;font-weight:600}  /* 正文主次：默认细体 + <b> 加粗提亮 */
+.points{display:flex;flex-direction:column;gap:2.2vh}
+.point{display:grid;grid-template-columns:auto 1fr;gap:1.2em;align-items:start}
+.point .dot{width:9px;height:9px;margin-top:.7em;border-radius:50%;background:hsl(var(--glow-h),var(--glow-sat),62%);box-shadow:0 0 12px 2px hsla(var(--glow-h),var(--glow-sat),60%,.7);flex-shrink:0}
+.point .pt-title{font-weight:500;font-size:var(--fs-h3);color:#fff;margin-bottom:.4vh}
+.point .pt-desc{font-weight:300;font-size:var(--fs-sm);line-height:1.6;color:rgba(255,255,255,.5)}
+.shot{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px -20px hsla(var(--glow-h),var(--glow-sat),30%,.5);display:flex;align-items:center;justify-content:center}  /* 16:9 匹配 1920×1080 截图 */
+.shot .ph{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* 设计点版式② 上下堆叠 hero（大图型）：title+body 薄薄一条（无 kicker/无要点）+ 16:9 大图填高居中（~75-78%）*/
+.s-glow .inner.stack{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);gap:2.6vh;align-items:stretch}
+.inner.stack .stack-head{display:grid;grid-template-columns:1.35fr 1fr;gap:3.4vw;align-items:end}
+.inner.stack .stack-head .h-title{margin-bottom:0;font-size:min(2.9vw,4.6vh);line-height:1.2}
+.inner.stack .stack-head .body{margin:0;max-width:46ch;padding-bottom:.4vh}
+.inner.stack .shot{aspect-ratio:16/9;height:100%;width:auto;max-width:100%;margin:0 auto}  /* 真 16:9、按高填满、居中、不裁 */
+.chapter-cover .inner{grid-template-columns:1fr;align-content:center}
+.cover-block{max-width:62vw}
+.ch-no{font-family:'Inter';font-weight:200;font-size:min(11vw,17vh);line-height:.9;letter-spacing:-.04em;opacity:.45;background:linear-gradient(120deg,hsl(var(--glow-h),var(--glow-sat),82%),hsl(var(--glow-h2),var(--glow-sat),70%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1vh}
+.ch-cover-title{font-weight:700;font-size:min(6vw,10vh);line-height:1.05;letter-spacing:-.01em;margin-bottom:2.4vh;background:linear-gradient(100deg,hsl(var(--glow-h),var(--glow-sat),85%),hsl(var(--glow-h2),var(--glow-sat),74%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.ch-cover-sub{font-weight:300;font-size:max(15px,1.2vw);line-height:1.65;color:rgba(255,255,255,.6);max-width:46ch}
+
+/* 调色面板（仅黑底章节封面显示，色值持久记忆）*/
+#panel{position:absolute;top:3.8vh;right:calc(6vw + 58px);z-index:60;width:280px;background:linear-gradient(155deg,rgba(58,58,80,.30),rgba(14,14,22,.40));backdrop-filter:blur(34px) saturate(1.7);-webkit-backdrop-filter:blur(34px) saturate(1.7);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:18px 20px;color:#fff;box-shadow:0 24px 64px -16px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.28)}
+#panel h4{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:14px}
+.preset-row{display:flex;gap:6px;margin-bottom:16px}
+.preset{flex:1;height:30px;border-radius:7px;border:1px solid rgba(255,255,255,.18);cursor:pointer;transition:transform .15s}
+.preset:hover{transform:scale(1.08)}
+.ctrl{margin-bottom:13px}
+.ctrl label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.62);margin-bottom:6px;font-family:'JetBrains Mono'}
+.ctrl label .val{color:#fff}
+.ctrl input[type=range]{width:100%;height:6px;-webkit-appearance:none;border-radius:4px;outline:none;cursor:pointer;background:rgba(255,255,255,.14)}
+.ctrl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.5)}
+#toggle{position:absolute;top:3.8vh;right:6vw;z-index:61;width:46px;height:46px;border-radius:14px;background:linear-gradient(155deg,rgba(58,58,80,.4),rgba(14,14,22,.5));backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.82);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 32px -8px rgba(0,0,0,.5)}
+#toggle:hover{color:#fff}#toggle svg{width:22px;height:22px}
+
+/* ===== 导航 ===== */
+/* 右侧竖排导航点（鼠标到底部才显隐；亮/暗随当前页）*/
+.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:7px;padding:10px 7px;border-radius:999px;background:rgba(150,150,170,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .25s}
+.nav-dots.show{opacity:1}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:rgba(40,45,60,.28);cursor:pointer;border:0;padding:0;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.nav-dot:hover{background:rgba(40,45,60,.5);transform:scale(1.25)}
+.nav-dot.active{background:var(--accent);height:18px;border-radius:4px}
+body.on-dark .nav-dots{background:rgba(255,255,255,.1)}
+body.on-dark .nav-dot{background:rgba(255,255,255,.3)}
+body.on-dark .nav-dot.active{background:#fff}
+/* 底部居中控制栏：小而透，默认隐藏，鼠标到底部才出现 */
+#controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:999px;background:rgba(22,25,30,.42);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);color:#fff;box-shadow:0 6px 18px -10px rgba(0,0,0,.4);opacity:0;transition:opacity .25s}
+#controls.show{opacity:.92}
+#controls button{background:transparent;color:#fff;border:0;cursor:pointer;width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;opacity:.7;transition:opacity .15s,background .15s}
+#controls button:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.12)}
+#controls button:disabled{opacity:.28;cursor:default}
+#controls button svg{width:14px;height:14px}
+.ctrl-counter{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.08em;min-width:48px;text-align:center;opacity:.7;user-select:none}
+.ctrl-sep{width:1px;height:13px;background:rgba(255,255,255,.18)}
+body.overview #panel,body.overview #toggle{display:none!important}
+
+/* ===== AI era interface value-shift report ===== */
+.mx-cover .cv-bg{overflow:hidden;background:none}
+.mx-cover .cv-bg::after{background:linear-gradient(90deg,rgba(8,9,15,.98),rgba(8,9,15,.86) 37%,rgba(8,9,15,.18) 78%,rgba(8,9,15,.08))}
+.mx-cover-art{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mx-cover .cv-content{padding:7vh 6vw}
+.mx-cover .cv-top{align-items:center}
+.mx-cover .cv-center{max-width:59vw;gap:2.1vh}
+.mx-cover .cv-logo{display:none}
+.mx-cover .cv-sub{font-size:clamp(42px,5vw,76px);line-height:1.18;font-weight:700;letter-spacing:-.04em;color:#fff}
+.mx-cover .cv-lead{font-size:var(--fs-h2);line-height:1.55;color:rgba(255,255,255,.68);max-width:38ch;margin-top:.2vh}
+.mx-cover .cv-bot{align-items:center}
+.mx-cover .cv-ucd{font-size:var(--fs-sm);letter-spacing:.08em;text-transform:none}
+.mx-body{justify-content:center;padding-bottom:2.4vh;min-width:0}
+.mx-value-map{width:100%;display:flex;flex-direction:column;gap:1.1vh;min-height:0}
+.mx-lane-label{display:flex;align-items:baseline;gap:1vw;color:var(--ink-2);font-size:var(--fs-sm)}
+.mx-lane-label span{font-family:'JetBrains Mono';font-size:var(--fs-xs);letter-spacing:.16em;color:var(--ink-3);text-transform:uppercase}
+.mx-lane-label b{font-size:var(--fs-h3);font-weight:650;color:var(--ink)}
+.mx-old-flow,.mx-new-flow{display:flex;align-items:center;justify-content:center;gap:1vw;min-height:8.2vh;padding:.6vh 1vw}
+.mx-node,.mx-agent,.mx-resource-set{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:6.8vh;padding:.8vh 1.2vw;border:1px solid rgba(100,110,130,.24);border-radius:13px;background:rgba(255,255,255,.55);box-shadow:0 8px 24px -20px rgba(20,25,35,.35);font-size:var(--fs-h3);font-weight:650;line-height:1.32;white-space:nowrap}
+.mx-node.human{border-color:rgba(91,91,214,.3);background:rgba(255,255,255,.72)}
+.mx-node small,.mx-agent small{font-size:var(--fs-xs);font-weight:500;color:var(--ink-2);margin-top:.35vh}
+.mx-agent{min-width:12vw;border:1px solid rgba(101,103,215,.45);background:var(--g-accent);color:#fff;box-shadow:0 14px 32px -18px rgba(72,65,170,.65)}
+.mx-agent small{color:rgba(255,255,255,.72)}
+.mx-arrow{font-size:clamp(20px,2vw,30px);font-weight:300;color:#939baa}
+.mx-actions{display:flex;gap:.45vw;align-items:center}
+.mx-actions i,.mx-resource-set i{font-style:normal;padding:.45vh .68vw;border-radius:999px;border:1px solid rgba(120,130,148,.22);background:rgba(255,255,255,.47);font-size:var(--fs-sm);color:var(--ink-2);white-space:nowrap}
+.mx-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(104,112,130,.28),transparent);position:relative;margin:.2vh 0}
+.mx-divider span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--paper);padding:0 1vw;font-size:var(--fs-xs);color:var(--ink-3);letter-spacing:.05em}
+.mx-resource-set{min-width:19vw;gap:.75vh;background:rgba(255,255,255,.63)}
+.mx-resource-set b{font-size:var(--fs-sm);font-weight:650;color:var(--ink-2)}
+.mx-resource-set>div{display:flex;gap:.38vw}
+.mx-resource-set i{font-size:var(--fs-xs);padding:.35vh .55vw}
+.mx-value-axis{position:relative;display:grid;grid-template-columns:10vw 1fr 7vw;align-items:center;gap:.8vw;margin-top:.4vh;padding:.5vh 0 0;border-top:1px solid rgba(105,115,132,.15)}
+.mx-axis-title{font-size:var(--fs-sm);font-weight:650;color:var(--ink-2)}
+.mx-value-axis svg{width:100%;height:13.5vh;overflow:visible}
+.mx-svg-label{font:600 16px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#4d5664}
+.mx-svg-muted{font:500 13px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#89919e}
+.mx-axis-note{font-size:var(--fs-xs);color:var(--ink-3);text-align:right;writing-mode:vertical-rl}
+.mx-community{width:100%;height:100%;display:flex;flex-direction:column;min-height:0}
+.mx-community>svg{width:100%;flex:1 1 auto;min-height:0;max-height:54vh;overflow:visible}
+.mx-cycle-node circle{fill:rgba(255,255,255,.92);stroke:#7779da;stroke-width:2}
+.mx-cycle-node.green circle{stroke:#39aa91}
+.mx-cycle-node text{font:600 13px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#262a34;text-anchor:middle}
+.mx-cycle-node .no{font:500 11px 'JetBrains Mono',sans-serif;fill:#81899a}
+.mx-cycle-core{fill:rgba(255,255,255,.68);stroke:rgba(91,91,214,.28);stroke-width:1.4}
+.mx-core-title{font:750 25px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#222631}
+.mx-core-sub{font:500 13px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#737b89}
+.mx-community-legend{display:flex;justify-content:center;gap:3vw;align-items:center;margin-top:.5vh}
+.mx-community-legend>div{display:flex;align-items:center;gap:.55vw;font-size:var(--fs-sm);color:var(--ink-2)}
+.mx-community-legend b{font-size:var(--fs-sm);color:var(--ink);font-weight:700}
+.mx-legend-mark{width:22px;height:3px;border-radius:2px;background:#9da4b0}
+.mx-legend-mark.live{background:linear-gradient(90deg,#6769d8,#39aa91)}
+.mx-footnote{margin-top:.7vh;text-align:center;font-size:var(--fs-xs);line-height:1.45;color:#818998}
+.mx-ide{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.mx-ide-topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.3vh;color:var(--ink-2);font-size:var(--fs-sm)}
+.mx-ide-topline span:first-child{font:600 var(--fs-xs) 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.mx-ide>svg{width:100%;max-height:50vh;overflow:visible}
+.mx-ide-stage circle{fill:rgba(255,255,255,.85);stroke:#aab0bc;stroke-width:2}
+.mx-ide-stage.active circle{fill:rgba(91,91,214,.12);stroke:#6567cc;stroke-width:2.5}
+.mx-ide-stage.human circle{fill:#222630;stroke:#222630}
+.mx-ide-stage .n{font:600 15px 'JetBrains Mono',monospace;fill:#626a78;text-anchor:middle}
+.mx-ide-stage.human .n{fill:#fff}
+.mx-ide-stage .stage-title{font:700 21px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#232730;text-anchor:middle}
+.mx-ide-stage .stage-copy{font:500 15px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#68717f;text-anchor:middle}
+.mx-ide-stage .stage-meta{font:650 15px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#5a5fc2;text-anchor:middle}
+.mx-ide-stage .drop{stroke:#a8afbb;stroke-width:1.5;stroke-dasharray:4 5}
+.mx-ide-return{stroke-dasharray:6 7}
+.mx-return-label{font:500 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#6d7785}
+.mx-ide-note{display:flex;justify-content:center;align-items:center;gap:.8vw;margin-top:.8vh;font-size:var(--fs-body);color:var(--ink-2)}
+.mx-ide-note b{font-size:var(--fs-h3);color:#292d38}
+.mx-role-map{width:100%;height:100%;display:flex;flex-direction:column;min-height:0}
+.mx-role-head{display:grid;grid-template-columns:25% 50% 25%;padding:.4vh 1.2vw .7vh;color:#828a98;font:600 var(--fs-xs) 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.mx-role-head span:nth-child(2){text-align:center}
+.mx-role-head span:last-child{text-align:left;padding-left:1.2vw}
+.mx-role-map svg{width:100%;flex:1;min-height:0;max-height:58vh;overflow:visible}
+.mx-role-flow>text{font:600 20px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#454d5a}
+.mx-role-flow>text:nth-of-type(2n){font-weight:700;fill:#252b35}
+.mx-role-flow>path{fill:none;stroke:url(#mxRoleLine);stroke-width:2}
+.mx-role-flow circle{fill:#6368cf;stroke:#fff;stroke-width:2}
+.mx-role-axis{stroke:#b9bec8;stroke-width:1;stroke-dasharray:4 5}
+.mx-role-axis-label{font:500 13px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#89919e}
+.mx-role-caption{text-align:center;margin-top:.8vh;color:var(--ink-2);font-size:var(--fs-sm)}
+.mx-role-caption b{margin-left:.7vw;color:#2a2e38;font-size:var(--fs-h3)}
+.mx-trust{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.mx-trust-intro{text-align:center;margin-bottom:.8vh}
+.mx-trust-source{font:600 var(--fs-xs) 'JetBrains Mono',monospace;letter-spacing:.09em;color:#696bd0;text-transform:uppercase}
+.mx-trust-intro p{margin-top:.45vh;font-size:var(--fs-body);color:var(--ink-2)}
+.mx-trust>svg{width:100%;max-height:44vh;overflow:visible}
+.mx-bar-grid line{stroke:rgba(92,102,120,.14);stroke-width:1;stroke-dasharray:3 5}
+.mx-bar-grid text{font:500 12px 'JetBrains Mono',monospace;fill:#8a92a0;text-anchor:middle}
+.mx-bar-row .label{font:600 18px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#454c59}
+.mx-bar-row .track{fill:rgba(114,124,144,.12)}
+.mx-bar-row .bar{opacity:.9}
+.mx-bar-row .bar.purple{fill:url(#mxBarPurple)}
+.mx-bar-row .bar.rose{fill:url(#mxBarRose)}
+.mx-bar-row .bar.teal{fill:url(#mxBarTeal)}
+.mx-bar-row .value{font:700 22px 'Inter','HarmonyOS Sans SC',sans-serif;fill:#272c36}
+.mx-trust-conclusion{display:flex;align-items:center;justify-content:center;gap:.9vw;margin-top:.6vh}
+.mx-trust-conclusion span{padding:.45vh .75vw;border-radius:999px;background:#262a33;color:#fff;font-size:var(--fs-xs);font-weight:650}
+.mx-trust-conclusion b{font-size:var(--fs-h3);color:#292e39;font-weight:700}
+.mx-trust .mx-footnote{max-width:88ch;margin:.6vh auto 0}
+.mx-gates-content .mx-dark-heading{margin-bottom:0}
+.mx-dark-content{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;min-height:0}
+.mx-dark-heading{flex:0 0 auto;text-align:center;margin:2.2vh auto 1.6vh;max-width:70vw}
+.mx-dark-heading .kicker{justify-content:center;margin-bottom:.8vh}
+.mx-dark-heading .h-title{font-size:clamp(30px,3vw,48px);margin-bottom:.6vh}
+.mx-dark-heading p{font-size:var(--fs-body);line-height:1.5;color:rgba(255,255,255,.58)}
+.mx-layer-map{width:100%;flex:1 1 auto;min-height:0;max-height:58vh}
+.mx-layer-node circle{fill:rgba(255,255,255,.055);stroke:#8289ff;stroke-width:2.2}
+.mx-layer-node.violet circle{stroke:#b07ef0}
+.mx-layer-node.teal circle{stroke:#52c8b5}
+.mx-layer-node.knowledge circle{stroke:#94a6ff}
+.mx-layer-node .num{font:500 15px 'JetBrains Mono',monospace;fill:#9299ff;text-anchor:middle}
+.mx-layer-node .name{font:700 26px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#fff;text-anchor:middle}
+.mx-layer-node .question{font:600 17px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#e7e8f2;text-anchor:middle}
+.mx-layer-node .output{font:500 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#a9aec2;text-anchor:middle}
+.mx-layer-core{fill:#f0f2ff;stroke:#9ca6ff;stroke-width:1}
+.mx-layer-core-text{font:700 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#222633}
+.mx-layer-bottom{display:flex;justify-content:center;align-items:center;gap:1vw;flex:0 0 auto;margin-top:-.5vh;color:rgba(255,255,255,.52);font-size:var(--fs-sm)}
+.mx-layer-bottom i{width:7px;height:7px;border-radius:50%;background:#8b8df5;box-shadow:0 0 9px rgba(135,134,255,.7)}
+.mx-gates{width:100%;flex:1 1 auto;min-height:0;max-height:61vh}
+.mx-gate .gate-shape{fill:rgba(255,255,255,.07);stroke:#8989ff;stroke-width:2}
+.mx-gate.violet .gate-shape{stroke:#ba8cf6}
+.mx-gate.teal .gate-shape{stroke:#5bcab5}
+.mx-gate .gate-no{font:500 15px 'JetBrains Mono',monospace;fill:#aab0ff;text-anchor:middle}
+.mx-gate .gate-title{font:700 22px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#fff;text-anchor:middle}
+.mx-gate .gate-question{font:650 18px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#f0f1fa;text-anchor:middle}
+.mx-gate .gate-artifact{font:500 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#a9afc2;text-anchor:middle}
+.mx-gate-outcome{fill:#f0f2ff;stroke:#8f98ff;stroke-width:2}
+.mx-gate .outcome{font:700 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#272a35}
+.mx-gate-foot{font:500 15px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#9aa2b7}
+.mx-source-map{height:100%;display:flex;flex-direction:column;justify-content:center;min-height:0;gap:2.2vh}
+.mx-source-top{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:stretch}
+.mx-source-lane{min-width:0;border-top:2px solid #6568d2;padding-top:1.1vh}
+.mx-source-lane.claims{border-color:#a7aeba}
+.mx-source-kicker{font:600 var(--fs-xs) 'JetBrains Mono',monospace;letter-spacing:.09em;color:#696bd0;text-transform:uppercase}
+.mx-source-lane.claims .mx-source-kicker{color:#7c8593}
+.mx-source-lane svg{width:100%;height:25vh;margin-top:1.4vh}
+.mx-source-lane svg circle{fill:#6568d2}
+.mx-source-lane svg .mx-source-spine{stroke:#c4c8d1;stroke-width:1.5}
+.mx-source-lane svg text{font:600 18px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#333944}
+.mx-source-caption{margin-top:.2vh;font-size:var(--fs-sm);line-height:1.48;color:var(--ink-2)}
+.mx-source-caption.warn{color:#8d5934;margin-top:.7vh}
+.mx-reference-list{margin-top:1.5vh}
+.mx-reference-list>div{display:grid;grid-template-columns:3.2vw 1fr;align-items:start;gap:.7vw;padding:.8vh 0;border-bottom:1px solid rgba(110,120,136,.18);font-size:var(--fs-sm);line-height:1.4}
+.mx-reference-list b{font:600 var(--fs-xs) 'JetBrains Mono',monospace;color:#6568d2}
+.mx-reference-list span{color:#434b57}
+.mx-citation-pipeline{display:flex;align-items:center;justify-content:center;gap:.7vw;flex-wrap:wrap;padding:1.4vh 1.2vw;border-top:1px solid rgba(110,120,136,.2);border-bottom:1px solid rgba(110,120,136,.2)}
+.mx-citation-pipeline span{font-size:var(--fs-sm);font-weight:600;color:#4c5360}
+.mx-citation-pipeline i{font-style:normal;color:#777f8d}
+.mx-citation-pipeline b{flex-basis:100%;text-align:center;margin-top:.4vh;color:#4b55a8;font-size:var(--fs-body)}
+@media(max-width:1100px){
+  .mx-cover .cv-center{max-width:75vw}
+  .mx-old-flow,.mx-new-flow{gap:.5vw}
+  .mx-node,.mx-agent,.mx-resource-set{padding:.65vh .8vw}
+  .mx-resource-set{min-width:16vw}
+  .mx-ide-stage .stage-copy{font-size:13px}
+  .mx-role-flow>text{font-size:18px}
+}
+
+
+</style>
+</head>
+<body>
+<div id="deck">
+
+  <!-- 01 封面 -->
+  <section class="slide s-cover mx-cover">
+    <div class="cv-bg">
+      <svg class="mx-cover-art" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <radialGradient id="mxCoverGlow" cx="76%" cy="48%" r="62%">
+            <stop offset="0" stop-color="#534cba" stop-opacity=".55"/>
+            <stop offset=".48" stop-color="#25294f" stop-opacity=".34"/>
+            <stop offset="1" stop-color="#08090f" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="mxCoverLine" x1="0" y1="0" x2="1" y2="1">
+            <stop stop-color="#7aa7ff" stop-opacity=".08"/>
+            <stop offset=".55" stop-color="#a78bfa" stop-opacity=".68"/>
+            <stop offset="1" stop-color="#4bd6d0" stop-opacity=".24"/>
+          </linearGradient>
+          <filter id="mxBlur"><feGaussianBlur stdDeviation="20"/></filter>
+        </defs>
+        <rect width="1600" height="900" fill="#090a11"/>
+        <rect width="1600" height="900" fill="url(#mxCoverGlow)"/>
+        <circle cx="1190" cy="455" r="198" fill="#6866f4" opacity=".11" filter="url(#mxBlur)"/>
+        <g fill="none" stroke="url(#mxCoverLine)" stroke-width="1.4">
+          <path d="M775 460 C890 460 930 250 1080 250 S1260 385 1405 385"/>
+          <path d="M775 460 C900 460 935 620 1080 620 S1275 500 1418 500"/>
+          <path d="M775 460 C960 460 1000 760 1190 760 S1320 650 1460 650"/>
+          <path d="M1080 250 C1120 370 1115 500 1080 620"/>
+          <path d="M1190 760 C1245 660 1280 540 1260 385"/>
+          <path d="M985 460 H1420"/>
+          <path d="M1160 170 V750"/>
+        </g>
+        <g fill="#0d111d" stroke="#a6b7ff" stroke-opacity=".62">
+          <circle cx="775" cy="460" r="45"/>
+          <circle cx="1080" cy="250" r="31"/>
+          <circle cx="1080" cy="620" r="31"/>
+          <circle cx="1260" cy="385" r="23"/>
+          <circle cx="1190" cy="760" r="26"/>
+          <circle cx="1410" cy="500" r="38"/>
+        </g>
+        <g fill="#dce4ff" font-family="Inter, sans-serif" font-size="16" letter-spacing="3" opacity=".72">
+          <text x="775" y="466" text-anchor="middle">HUMAN</text>
+          <text x="1080" y="255" text-anchor="middle">INTENT</text>
+          <text x="1080" y="626" text-anchor="middle">EVIDENCE</text>
+          <text x="1260" y="390" text-anchor="middle">TOOLS</text>
+          <text x="1190" y="766" text-anchor="middle">KNOWLEDGE</text>
+          <text x="1410" y="506" text-anchor="middle">AGENT</text>
+        </g>
+        <g fill="#c8d2ef" opacity=".35">
+          <circle cx="900" cy="322" r="3"/><circle cx="958" cy="548" r="2.5"/>
+          <circle cx="1350" cy="300" r="2.5"/><circle cx="1370" cy="708" r="3"/>
+          <circle cx="1010" cy="700" r="2"/><circle cx="1480" cy="420" r="2"/>
+        </g>
+      </svg>
+    </div>
+    <div class="cv-content">
+      <div class="cv-top">
+        <div class="cv-meta">AI ERA · EXPERIENCE DESIGN</div>
+        <div class="cv-meta">COMMUNITY × IDE × AGENT</div>
+      </div>
+      <div class="cv-center">
+        <div class="cv-kicker">DESIGN RESEARCH / SYNTHESIS</div>
+        <div class="cv-sub">界面没有消失，<br>价值正在迁移</div>
+        <div class="cv-lead">从操作界面，走向意图表达、过程监督、结果验证与知识治理。</div>
+      </div>
+      <div class="cv-bot">
+        <div class="cv-ucd"><span class="sq"></span>人 × AI × 工具 × 知识</div>
+        <div class="cv-meta">2026 · ANALYSIS</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 核心判断 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">界面价值从高频操作，迁向关键时刻的判断</span></div>
+        <div class="subttl">核心判断 · Value Migration</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span class="active">01 判断</span><span>02 场景</span><span>03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-value-map">
+        <div class="mx-lane-label"><span>过去</span><b>开发者亲自操作每一步</b></div>
+        <div class="mx-old-flow" aria-label="传统开发链路">
+          <div class="mx-node human">开发者</div><span class="mx-arrow">→</span>
+          <div class="mx-node">社区 / 文档 / IDE</div><span class="mx-arrow">→</span>
+          <div class="mx-actions"><i>搜索</i><i>筛选</i><i>复制</i><i>编辑</i><i>运行</i></div>
+        </div>
+        <div class="mx-divider"><span>AI 代理成为执行中介</span></div>
+        <div class="mx-lane-label now"><span>现在</span><b>人表达目标，代理跨工具行动</b></div>
+        <div class="mx-new-flow" aria-label="AI代理开发链路">
+          <div class="mx-node human">人的目标<br><small>约束 · 验收</small></div><span class="mx-arrow">→</span>
+          <div class="mx-agent">AI 代理<br><small>计划 · 调用 · 执行</small></div><span class="mx-arrow">↔</span>
+          <div class="mx-resource-set"><b>知识与工具环境</b><div><i>社区</i><i>文档</i><i>代码仓</i><i>IDE</i><i>API</i></div></div>
+          <span class="mx-arrow">→</span><div class="mx-node human">人类监督<br><small>审查 · 决策</small></div>
+        </div>
+        <div class="mx-value-axis">
+          <div class="mx-axis-title">界面价值重心</div>
+          <svg viewBox="0 0 1200 138" role="img" aria-label="常规操作频率下降，异常和高风险时的决策价值上升">
+            <defs>
+              <linearGradient id="mxCurveA" x1="0" x2="1"><stop stop-color="#7c8492"/><stop offset="1" stop-color="#9aa3b2"/></linearGradient>
+              <linearGradient id="mxCurveB" x1="0" x2="1"><stop stop-color="#9295ff"/><stop offset="1" stop-color="#37bfa2"/></linearGradient>
+            </defs>
+            <path d="M150 25 C360 26 410 68 600 79 S900 108 1080 112" fill="none" stroke="url(#mxCurveA)" stroke-width="3"/>
+            <path d="M150 112 C350 108 430 88 600 72 S900 36 1080 22" fill="none" stroke="url(#mxCurveB)" stroke-width="4"/>
+            <circle cx="150" cy="25" r="5" fill="#8f98a8"/><circle cx="1080" cy="112" r="5" fill="#8f98a8"/>
+            <circle cx="150" cy="112" r="5" fill="#9295ff"/><circle cx="1080" cy="22" r="5" fill="#37bfa2"/>
+            <text x="150" y="11" class="mx-svg-label">直接操作的出现频率</text>
+            <text x="150" y="135" class="mx-svg-label">关键节点的判断价值</text>
+            <text x="600" y="132" text-anchor="middle" class="mx-svg-muted">常规执行</text>
+            <text x="1080" y="132" text-anchor="end" class="mx-svg-muted">异常 · 高风险 · 未知</text>
+          </svg>
+          <div class="mx-axis-note">趋势示意，不代表量化数据</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 社区 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">社区从答案入口，转为可信知识循环</span></div>
+        <div class="subttl">场景迁移 · Community</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span class="active">02 场景</span><span>03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-community">
+        <svg viewBox="0 0 1400 520" role="img" aria-label="AI查询社区知识、在任务中验证并回流新知识的循环">
+          <defs>
+            <marker id="mxLoopArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#6567cc"/></marker>
+            <marker id="mxLoopArrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#36a88f"/></marker>
+            <linearGradient id="mxLoopGrad" x1="0" x2="1"><stop stop-color="#6263cc"/><stop offset="1" stop-color="#35b49a"/></linearGradient>
+          </defs>
+          <path class="mx-cycle-line" d="M700 66 C968 66 1135 154 1135 260 C1135 370 963 454 700 454 C435 454 265 370 265 260 C265 150 436 66 700 66" fill="none" stroke="url(#mxLoopGrad)" stroke-width="3" marker-end="url(#mxLoopArrowGreen)"/>
+          <path d="M860 80 C980 92 1065 130 1104 184" fill="none" stroke="#6567cc" stroke-width="3" marker-end="url(#mxLoopArrow)"/>
+          <path d="M1120 330 C1062 390 973 422 882 438" fill="none" stroke="#6567cc" stroke-width="3" marker-end="url(#mxLoopArrow)"/>
+          <path d="M520 438 C406 416 321 372 286 327" fill="none" stroke="#6567cc" stroke-width="3" marker-end="url(#mxLoopArrow)"/>
+          <path d="M282 184 C320 129 411 94 508 79" fill="none" stroke="#6567cc" stroke-width="3" marker-end="url(#mxLoopArrow)"/>
+          <g class="mx-cycle-node" transform="translate(700 66)"><circle r="42"/><text y="-2" class="no">01</text><text y="19">任务提问</text></g>
+          <g class="mx-cycle-node" transform="translate(1135 195)"><circle r="42"/><text y="-2" class="no">02</text><text y="19">代理检索</text></g>
+          <g class="mx-cycle-node" transform="translate(1055 383)"><circle r="42"/><text y="-2" class="no">03</text><text y="19">真实任务使用</text></g>
+          <g class="mx-cycle-node green" transform="translate(700 454)"><circle r="42"/><text y="-2" class="no">04</text><text y="19">发现新边界</text></g>
+          <g class="mx-cycle-node green" transform="translate(345 383)"><circle r="42"/><text y="-2" class="no">05</text><text y="19">草稿经人审核</text></g>
+          <g class="mx-cycle-node green" transform="translate(265 195)"><circle r="42"/><text y="-2" class="no">06</text><text y="19">验证并更新</text></g>
+          <circle class="mx-cycle-core" cx="700" cy="260" r="112"/>
+          <text x="700" y="244" text-anchor="middle" class="mx-core-title">可信知识</text>
+          <text x="700" y="274" text-anchor="middle" class="mx-core-sub">带适用条件 · 可追溯 · 可更新</text>
+          <text x="700" y="300" text-anchor="middle" class="mx-core-sub">供人理解，也供代理调用</text>
+        </svg>
+        <div class="mx-community-legend">
+          <div><span class="mx-legend-mark muted"></span><b>弱化</b><span>搜索结果、筛选、翻页、复制答案</span></div>
+          <div><span class="mx-legend-mark live"></span><b>加强</b><span>贡献、验证、失效反馈、面向 AI 的知识接口</span></div>
+        </div>
+        <div class="mx-footnote">材料引述 Stack Overflow for Agents 作为 API-first 知识交换案例；原始链接未随材料提供，暂作方向例证。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 IDE -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">IDE 从代码操作台转向代理控制塔</span></div>
+        <div class="subttl">场景迁移 · IDE</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span class="active">02 场景</span><span>03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-ide">
+        <div class="mx-ide-topline"><span>代理执行链</span><span>界面要让人看见状态、证据与接管点</span></div>
+        <svg viewBox="0 0 1400 420" role="img" aria-label="IDE代理从理解任务到人工验收的执行和监督流程">
+          <defs>
+            <marker id="mxIdeArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#778091"/></marker>
+            <linearGradient id="mxIdeRail" x1="0" x2="1"><stop stop-color="#a4a8f6"/><stop offset=".5" stop-color="#6467d7"/><stop offset="1" stop-color="#3cb69c"/></linearGradient>
+          </defs>
+          <path d="M112 96 H1275" fill="none" stroke="#b7bec9" stroke-width="2.5" marker-end="url(#mxIdeArrow)"/>
+          <path d="M112 96 H1275" fill="none" stroke="url(#mxIdeRail)" stroke-width="4" opacity=".45"/>
+          <g class="mx-ide-stage human" transform="translate(112 96)">
+            <circle r="35"/><text y="5" class="n">01</text>
+            <text y="77" class="stage-title">表达任务</text><text y="103" class="stage-copy">目标 · 约束 · 验收条件</text>
+            <path d="M0 124 V169" class="drop"/>
+            <text y="198" class="stage-meta">让 AI 正确理解</text>
+          </g>
+          <g class="mx-ide-stage" transform="translate(347 96)">
+            <circle r="35"/><text y="5" class="n">02</text>
+            <text y="77" class="stage-title">展示计划</text><text y="103" class="stage-copy">模块 · 步骤 · 假设 · 不确定项</text>
+            <path d="M0 124 V169" class="drop"/>
+            <text y="198" class="stage-meta">事前可审查</text>
+          </g>
+          <g class="mx-ide-stage active" transform="translate(582 96)">
+            <circle r="35"/><text y="5" class="n">03</text>
+            <text y="77" class="stage-title">执行行动</text><text y="103" class="stage-copy">文件 · 命令 · 工具 · 外部访问</text>
+            <path d="M0 124 V169" class="drop"/>
+            <text y="198" class="stage-meta">过程可观察</text>
+          </g>
+          <g class="mx-ide-stage active" transform="translate(817 96)">
+            <circle r="35"/><text y="5" class="n">04</text>
+            <text y="77" class="stage-title">反馈状态</text><text y="103" class="stage-copy">进度 · 阻塞 · 改变计划 · 资源</text>
+            <path d="M0 124 V169" class="drop"/>
+            <text y="198" class="stage-meta">异常可接管</text>
+          </g>
+          <g class="mx-ide-stage active" transform="translate(1052 96)">
+            <circle r="35"/><text y="5" class="n">05</text>
+            <text y="77" class="stage-title">呈现结果</text><text y="103" class="stage-copy">语义差异 · 影响 · 测试 · 未验证项</text>
+            <path d="M0 124 V169" class="drop"/>
+            <text y="198" class="stage-meta">结果可核验</text>
+          </g>
+          <g class="mx-ide-stage human" transform="translate(1287 96)">
+            <circle r="35"/><text y="5" class="n">06</text>
+            <text y="77" class="stage-title">人类决策</text><text y="103" class="stage-copy">继续 · 批准 · 中止 · 回滚</text>
+            <path d="M0 124 V169" class="drop"/>
+            <text y="198" class="stage-meta">责任留在人手中</text>
+          </g>
+          <path class="mx-ide-return" d="M1275 335 C1200 395 880 395 810 335" fill="none" stroke="#39aa91" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#mxIdeArrow)"/>
+          <text x="1040" y="390" text-anchor="middle" class="mx-return-label">审查结果可回到计划、继续执行或恢复现场</text>
+        </svg>
+        <div class="mx-ide-note">
+          <span>界面价值不再由操作次数衡量</span>
+          <b>而由关键时刻能否看懂、接管、撤销和验收衡量</b>
+        </div>
+        <div class="mx-footnote">材料引述 GitHub Copilot 代理工作流说明；页面、日志与权限细节随产品版本变化，原始链接待补。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 四层体验 -->
+  <section class="slide s-glow mx-glow" data-chapter="1">
+    <div class="glow"></div><div class="glow-white"></div>
+    <div class="chrome"><span>03 / DESIGN RESPONSE</span><span>HUMAN–AI COLLABORATION</span></div>
+    <div class="mx-dark-content">
+      <div class="mx-dark-heading">
+        <div class="kicker">FOUR EXPERIENCE LAYERS</div>
+        <h1 class="h-title">设计对象从页面，扩展为协作系统</h1>
+        <p>四层体验共同把模糊目标转成可监督、可验收、可持续更新的任务。</p>
+      </div>
+      <svg class="mx-layer-map" viewBox="0 0 1400 560" role="img" aria-label="意图、编排、信任和知识四层组成协作体验闭环">
+        <defs>
+          <linearGradient id="mxLayerLine" x1="0" x2="1"><stop stop-color="#727cff"/><stop offset=".52" stop-color="#9d79ed"/><stop offset="1" stop-color="#44c6b0"/></linearGradient>
+          <marker id="mxLayerArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#89a2ff"/></marker>
+        </defs>
+        <path d="M268 206 C380 120 500 120 610 206 S840 292 952 206 S1160 120 1265 206" fill="none" stroke="url(#mxLayerLine)" stroke-width="4" marker-end="url(#mxLayerArrow)"/>
+        <path d="M1265 330 C1142 430 1058 430 952 330 S718 230 610 330 S386 430 268 330" fill="none" stroke="url(#mxLayerLine)" stroke-width="2.5" stroke-dasharray="7 8" opacity=".8" marker-end="url(#mxLayerArrow)"/>
+        <g class="mx-layer-node" transform="translate(268 270)">
+          <circle r="70"/><text y="-11" class="num">01</text><text y="19" class="name">意图</text>
+          <text y="117" class="question">目标 · 约束 · 完成条件</text>
+          <text y="146" class="output">任务 brief / 验收标准</text>
+        </g>
+        <g class="mx-layer-node violet" transform="translate(610 270)">
+          <circle r="70"/><text y="-11" class="num">02</text><text y="19" class="name">编排</text>
+          <text y="117" class="question">如何拆分、分工、交接？</text>
+          <text y="146" class="output">角色 / 权限 / 上下文边界</text>
+        </g>
+        <g class="mx-layer-node teal" transform="translate(952 270)">
+          <circle r="70"/><text y="-11" class="num">03</text><text y="19" class="name">信任</text>
+          <text y="117" class="question">凭什么相信结果？</text>
+          <text y="146" class="output">来源 / 测试 / 风险 / 恢复</text>
+        </g>
+        <g class="mx-layer-node knowledge" transform="translate(1265 270)">
+          <circle r="70"/><text y="-11" class="num">04</text><text y="19" class="name">知识</text>
+          <text y="117" class="question">人和代理如何理解并更新？</text>
+          <text y="146" class="output">结构 / 元数据 / 版本 / 溯源</text>
+        </g>
+        <circle class="mx-layer-core" cx="770" cy="505" r="33"/>
+        <text x="770" y="512" text-anchor="middle" class="mx-layer-core-text">可验收的任务</text>
+        <path d="M268 420 C400 500 620 520 732 506 M1265 420 C1135 500 930 520 808 506" fill="none" stroke="#aeb9ff" stroke-opacity=".44" stroke-width="1.5"/>
+      </svg>
+      <div class="mx-layer-bottom"><span>意图被理解</span><i></i><span>行动可监督</span><i></i><span>结果有证据</span><i></i><span>知识能回流</span></div>
+    </div>
+  </section>
+
+  <!-- 06 设计师角色 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">设计师从画页面，转向设计协作规则与证据</span></div>
+        <div class="subttl">设计回应 · Role Shift</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span>02 场景</span><span class="active">03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-role-map">
+        <div class="mx-role-head"><span>传统关注点</span><span>设计重心迁移</span><span>AI 时代新的设计对象</span></div>
+        <svg viewBox="0 0 1380 500" role="img" aria-label="传统设计职责向人机协作系统、代理编排、双重知识架构和证据治理迁移">
+          <defs>
+            <linearGradient id="mxRoleLine" x1="0" x2="1"><stop stop-color="#b2b8c4"/><stop offset=".55" stop-color="#7477dc"/><stop offset="1" stop-color="#39aa91"/></linearGradient>
+          </defs>
+          <g class="mx-role-flow">
+            <text x="24" y="58">页面与界面设计</text><path d="M315 52 C470 52 480 52 630 52"/><circle cx="630" cy="52" r="4"/><path d="M630 52 C790 52 830 52 1010 52"/><text x="1040" y="58">人—AI协作系统</text>
+            <text x="24" y="132">交互流程设计</text><path d="M315 126 C470 126 480 126 630 126"/><circle cx="630" cy="126" r="4"/><path d="M630 126 C790 126 830 126 1010 126"/><text x="1040" y="132">任务委托与代理编排</text>
+            <text x="24" y="206">信息架构 / 内容设计</text><path d="M315 200 C470 200 480 200 630 200"/><circle cx="630" cy="200" r="4"/><path d="M630 200 C790 200 830 200 1010 200"/><text x="1040" y="206">人类与机器双重知识架构</text>
+            <text x="24" y="280">可用性研究</text><path d="M315 274 C470 274 480 274 630 274"/><circle cx="630" cy="274" r="4"/><path d="M630 274 C790 274 830 274 1010 274"/><text x="1040" y="280">协同效果与风险研究</text>
+            <text x="24" y="354">视觉与数据表达</text><path d="M315 348 C470 348 480 348 630 348"/><circle cx="630" cy="348" r="4"/><path d="M630 348 C790 348 830 348 1010 348"/><text x="1040" y="354">状态、风险与证据可视化</text>
+            <text x="24" y="428">服务与组织流程</text><path d="M315 422 C470 422 480 422 630 422"/><circle cx="630" cy="422" r="4"/><path d="M630 422 C790 422 830 422 1010 422"/><text x="1040" y="428">责任、接管与回流机制</text>
+          </g>
+          <path class="mx-role-axis" d="M630 34 V446"/>
+          <text x="630" y="482" text-anchor="middle" class="mx-role-axis-label">能力延伸，不是简单替代</text>
+        </svg>
+        <div class="mx-role-caption"><span>传统 UI 能力仍然重要</span><b>但单独把页面画清楚，已不足以覆盖新的体验问题</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 信任证据 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">生成能力普及后，判断与验证成为体验瓶颈</span></div>
+        <div class="subttl">设计回应 · Trust Signals</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span>02 场景</span><span class="active">03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-trust">
+        <div class="mx-trust-intro">
+          <div class="mx-trust-source">材料转述 · Stack Overflow Developer Survey 2025</div>
+          <p>四项比例共同指向“验证负担”，但它们来自不同题项，不能串成一条转化漏斗。</p>
+        </div>
+        <svg viewBox="0 0 1380 390" role="img" aria-label="材料所引2025 Stack Overflow调查的四项AI使用与信任比例">
+          <defs>
+            <linearGradient id="mxBarPurple" x1="0" x2="1"><stop stop-color="#827cf0"/><stop offset="1" stop-color="#5b5bd6"/></linearGradient>
+            <linearGradient id="mxBarRose" x1="0" x2="1"><stop stop-color="#ee8f9b"/><stop offset="1" stop-color="#d95f78"/></linearGradient>
+            <linearGradient id="mxBarTeal" x1="0" x2="1"><stop stop-color="#55cbb5"/><stop offset="1" stop-color="#36a88f"/></linearGradient>
+          </defs>
+          <g class="mx-bar-grid">
+            <line x1="455" y1="20" x2="455" y2="350"/><line x1="655" y1="20" x2="655" y2="350"/><line x1="855" y1="20" x2="855" y2="350"/><line x1="1055" y1="20" x2="1055" y2="350"/><line x1="1255" y1="20" x2="1255" y2="350"/>
+            <text x="455" y="377">0</text><text x="655" y="377">25</text><text x="855" y="377">50</text><text x="1055" y="377">75</text><text x="1255" y="377">100%</text>
+          </g>
+          <g class="mx-bar-row">
+            <text x="20" y="66" class="label">使用或计划使用开发类 AI 工具</text><rect x="455" y="38" width="672" height="40" rx="20" class="track"/><rect x="455" y="38" width="564" height="40" rx="20" class="bar purple"/><text x="1040" y="67" class="value">84%</text>
+            <text x="20" y="147" class="label">主动不信任 AI 输出准确性</text><rect x="455" y="119" width="672" height="40" rx="20" class="track"/><rect x="455" y="119" width="309" height="40" rx="20" class="bar rose"/><text x="785" y="148" class="value">46%</text>
+            <text x="20" y="228" class="label">常遇到“几乎正确、但不完全正确”</text><rect x="455" y="200" width="672" height="40" rx="20" class="track"/><rect x="455" y="200" width="443" height="40" rx="20" class="bar rose"/><text x="918" y="229" class="value">66%</text>
+            <text x="20" y="309" class="label">不信任时仍会寻求真人帮助</text><rect x="455" y="281" width="672" height="40" rx="20" class="track"/><rect x="455" y="281" width="504" height="40" rx="20" class="bar teal"/><text x="979" y="310" class="value">75%</text>
+          </g>
+        </svg>
+        <div class="mx-trust-conclusion"><span>设计任务</span><b>减少验证成本：给出来源、假设、适用范围、测试证据、风险与责任路径。</b></div>
+        <div class="mx-footnote">原文引用标记 ref 2 未包含 URL、题目原文和样本口径；以上比例是材料转述，未在本次工作中独立核验。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 设计检查点 -->
+  <section class="slide s-glow mx-glow" data-chapter="1">
+    <div class="glow"></div><div class="glow-white"></div>
+    <div class="chrome"><span>03 / DESIGN RESPONSE</span><span>FROM INTENT TO VERIFIED OUTCOME</span></div>
+    <div class="mx-dark-content mx-gates-content">
+      <div class="mx-dark-heading">
+        <div class="kicker">THREE DESIGN QUESTIONS</div>
+        <h1 class="h-title">把体验设计落到三个可检查的关口</h1>
+        <p>设计质量，体现在人能否确认任务、看住行动，并验收结果。</p>
+      </div>
+      <svg class="mx-gates" viewBox="0 0 1400 500" role="img" aria-label="意图确认、过程监督和结果验证三个关口组成任务验收链">
+        <defs>
+          <linearGradient id="mxGateLine" x1="0" x2="1"><stop stop-color="#8f82ff"/><stop offset=".55" stop-color="#657be8"/><stop offset="1" stop-color="#45c2a7"/></linearGradient>
+          <marker id="mxGateArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#6acdb4"/></marker>
+        </defs>
+        <path d="M110 175 H1290" stroke="url(#mxGateLine)" stroke-width="4" fill="none" marker-end="url(#mxGateArrow)"/>
+        <g class="mx-gate" transform="translate(300 175)">
+          <path class="gate-shape" d="M0 -90 L75 0 L0 90 L-75 0 Z"/>
+          <text y="-10" class="gate-no">01</text><text y="25" class="gate-title">意图确认</text>
+          <text y="142" class="gate-question">AI 是否理解目标？</text>
+          <text y="177" class="gate-artifact">目标 · 约束 · 验收条件</text>
+        </g>
+        <g class="mx-gate violet" transform="translate(700 175)">
+          <path class="gate-shape" d="M0 -90 L75 0 L0 90 L-75 0 Z"/>
+          <text y="-10" class="gate-no">02</text><text y="25" class="gate-title">过程监督</text>
+          <text y="142" class="gate-question">人能看懂并控制行动？</text>
+          <text y="177" class="gate-artifact">计划 · 权限 · 轨迹 · 接管</text>
+        </g>
+        <g class="mx-gate teal" transform="translate(1100 175)">
+          <path class="gate-shape" d="M0 -90 L75 0 L0 90 L-75 0 Z"/>
+          <text y="-10" class="gate-no">03</text><text y="25" class="gate-title">结果验证</text>
+          <text y="142" class="gate-question">结果是否有证据支撑？</text>
+          <text y="177" class="gate-artifact">差异 · 测试 · 来源 · 责任</text>
+        </g>
+        <path d="M300 283 V345 H1100 V283" fill="none" stroke="#d9dcff" stroke-opacity=".45" stroke-width="1.6"/>
+        <circle cx="700" cy="345" r="34" class="mx-gate-outcome"/>
+        <text x="700" y="351" text-anchor="middle" class="outcome">任务可验收</text>
+        <text x="700" y="424" text-anchor="middle" class="mx-gate-foot">社区负责知识循环 · IDE 负责行动可观察 · 组织明确权限与责任</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 09 证据边界 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">方向判断来自材料综合，外部引用仍需补证</span></div>
+        <div class="subttl">证据边界 · Source Traceability</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span>02 场景</span><span class="active">03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-source-map">
+        <div class="mx-source-top">
+          <div class="mx-source-lane">
+            <span class="mx-source-kicker">可用于讨论的综合判断</span>
+            <svg viewBox="0 0 620 220" role="img" aria-label="由材料综合得到的三个方向判断">
+              <path d="M52 34 V188" class="mx-source-spine"/>
+              <circle cx="52" cy="48" r="7"/><text x="82" y="54">社区：答案入口 → 可信知识基础设施</text>
+              <circle cx="52" cy="110" r="7"/><text x="82" y="116">IDE：代码操作台 → 代理控制塔</text>
+              <circle cx="52" cy="172" r="7"/><text x="82" y="178">设计：界面交互 → 人机协作系统</text>
+            </svg>
+            <div class="mx-source-caption">这是对所提供文本的结构化归纳，不等于独立调研结论。</div>
+          </div>
+          <div class="mx-source-lane claims">
+            <span class="mx-source-kicker">材料中出现的外部事实引述</span>
+            <div class="mx-reference-list">
+              <div><b>ref 0</b><span>Stack Overflow for Agents · 产品案例 / 2026</span></div>
+              <div><b>ref 1</b><span>GitHub Copilot · 代理工作流与日志</span></div>
+              <div><b>ref 2</b><span>Stack Overflow Developer Survey 2025 · 四项比例</span></div>
+              <div><b>ref 3</b><span>89 项研究的系统性综述 · IDE 中 AI 的收益与风险</span></div>
+              <div><b>ref 4</b><span>MCP · 数据、工具与工作流的连接协议</span></div>
+            </div>
+            <div class="mx-source-caption warn">原文仅保留 chatgpt-content-reference 占位符，未提供可打开的 URL；以上项目需回到原文补齐正式引用。</div>
+          </div>
+        </div>
+        <div class="mx-citation-pipeline">
+          <span>观点</span><i>→</i><span>来源标题</span><i>→</i><span>原始 URL</span><i>→</i><span>发布日期 / 版本</span><i>→</i><span>样本 / 方法 / 适用范围</span>
+          <b>补齐后再用于外部事实陈述或量化结论</b>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- 调色面板（JS 会把它挂到当前黑底章节封面页内）-->
+<div id="panel" style="display:none">
+  <h4>底部光晕调色</h4>
+  <div class="preset-row">
+    <div class="preset" data-p="255,85,58" style="background:linear-gradient(90deg,hsl(255,85%,58%),hsl(300,85%,58%))"></div>
+    <div class="preset" data-p="160,80,56" style="background:linear-gradient(90deg,hsl(160,80%,56%),hsl(205,80%,56%))"></div>
+    <div class="preset" data-p="30,88,58" style="background:linear-gradient(90deg,hsl(30,88%,58%),hsl(75,88%,58%))"></div>
+    <div class="preset" data-p="200,82,60" style="background:linear-gradient(90deg,hsl(200,82%,60%),hsl(245,82%,60%))"></div>
+  </div>
+  <div class="ctrl"><label>色相 HUE <span class="val" id="v-h">234</span></label><input type="range" id="s-h" min="0" max="360" value="234"></div>
+  <div class="ctrl"><label>色相跨度 GAP <span class="val" id="v-gap">57°</span></label><input type="range" id="s-gap" min="0" max="180" value="57"></div>
+  <div class="ctrl"><label>饱和度 SAT <span class="val" id="v-sat">95%</span></label><input type="range" id="s-sat" min="0" max="100" value="95"></div>
+  <div class="ctrl"><label>亮度 LIGHT <span class="val" id="v-light">40%</span></label><input type="range" id="s-light" min="20" max="80" value="40"></div>
+  <div class="ctrl"><label>扩散 SPREAD <span class="val" id="v-spread">35vh</span></label><input type="range" id="s-spread" min="20" max="90" value="35"></div>
+  <div class="ctrl"><label>彩色亮度 COLOR <span class="val" id="v-cint">0.68</span></label><input type="range" id="s-cint" min="0" max="100" value="68"></div>
+  <div class="ctrl"><label>白色亮度 WHITE <span class="val" id="v-wint">0.58</span></label><input type="range" id="s-wint" min="0" max="100" value="58"></div>
+</div>
+<button id="toggle" style="display:none" title="调色面板"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="10" cy="7" r="2.4"/><line x1="4" y1="17" x2="20" y2="17"/><circle cx="15" cy="17" r="2.4"/></svg></button>
+
+<nav class="nav-dots" id="navDots"></nav>
+<!-- 底部居中控制栏（默认隐藏，鼠标移到底部才出现）-->
+<div id="controls">
+  <button id="prevBtn" title="上一页 ↑/←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg></button>
+  <span class="ctrl-counter" id="counter">01 / 01</span>
+  <button id="nextBtn" title="下一页 ↓/→"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+  <span class="ctrl-sep"></span>
+  <button id="ovBtn" title="概览 O"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+  <button id="fsBtn" title="全屏 F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+</div>
+
+<script>
+const root=document.documentElement;
+const deck=document.getElementById('deck');
+const slides=[...document.querySelectorAll('.slide')];
+const hashMatch=location.hash.match(/^#(\d+)$/);
+let idx=hashMatch?Math.max(0,Math.min(slides.length-1,Number(hashMatch[1])-1)):0;
+
+/* ===== 翻页过渡（可切换）：slide(默认) | fade | cut | slide-h | magic =====
+   改默认改这行兜底值；或地址加 ?t=fade / ?t=cut / ?t=slide-h / ?t=magic 临时切换、不用改代码 */
+const TRANSITION = (new URLSearchParams(location.search).get('t')) || 'slide';
+const CTRL = TRANSITION!=='slide';
+if(CTRL){ document.body.classList.add('ctrl'); document.body.dataset.transition=TRANSITION; }
+const TDUR=600;
+function setActive(i){ slides.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.remove('leaving');s.style.transform='';s.style.opacity='';}); }
+function showSlide(i,dir){
+  const cur=slides.find(s=>s.classList.contains('active'));
+  const nxt=slides[i]; if(!nxt||nxt===cur)return; dir=dir||'fwd';
+  if(TRANSITION==='magic'&&cur){ magicMove(cur,nxt); return; }
+  if(TRANSITION==='slide-h'){
+    nxt.style.transition='none'; nxt.style.visibility='visible'; nxt.style.opacity='1';
+    nxt.style.transform='translateX('+(dir==='fwd'?'100%':'-100%')+')';
+    void nxt.offsetWidth; nxt.style.transition=''; nxt.classList.add('active'); nxt.style.transform='';
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving');
+      cur.style.transform='translateX('+(dir==='fwd'?'-100%':'100%')+')';
+      const c=cur; setTimeout(()=>{c.classList.remove('leaving');c.style.transform='';},TDUR); }
+  } else {
+    if(cur){ cur.classList.remove('active'); cur.classList.add('leaving'); const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR); }
+    nxt.classList.add('active');
+  }
+}
+/* Keynote 式神奇移动：相邻两页中 data-key 相同的元素 FLIP 位移/缩放（用 Web Animations API）*/
+function magicMove(cur,nxt){
+  const out={}; cur.querySelectorAll('[data-key]').forEach(el=>{out[el.dataset.key]=el.getBoundingClientRect();});
+  cur.classList.remove('active'); cur.classList.add('leaving'); nxt.classList.add('active');
+  nxt.querySelectorAll('[data-key]').forEach(el=>{
+    const o=out[el.dataset.key]; if(!o)return; const n=el.getBoundingClientRect(); if(!n.width||!n.height)return;
+    const dx=o.left-n.left, dy=o.top-n.top, sx=o.width/n.width, sy=o.height/n.height;
+    if(Math.abs(dx)<1&&Math.abs(dy)<1&&Math.abs(sx-1)<.02&&Math.abs(sy-1)<.02)return;
+    el.style.zIndex='3';
+    el.animate([{transformOrigin:'top left',transform:'translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')'},
+                {transformOrigin:'top left',transform:'none'}],
+               {duration:620,easing:'cubic-bezier(.4,0,.2,1)'}).onfinish=()=>{el.style.zIndex='';};
+  });
+  const c=cur; setTimeout(()=>c.classList.remove('leaving'),TDUR);
+}
+
+/* ===== 黑底光晕：每章一组色值，可调 + localStorage 持久记忆 ===== */
+const chapters={'1':{h:234,gap:57,sat:95,light:40,spread:35,cint:68,wint:58}};
+const GLOW_KEY='deck-glow-chapters';
+try{const sv=localStorage.getItem(GLOW_KEY);if(sv){const o=JSON.parse(sv);Object.keys(o).forEach(k=>{if(chapters[k])Object.assign(chapters[k],o[k]);});}}catch(e){}
+function saveChapters(){try{localStorage.setItem(GLOW_KEY,JSON.stringify(chapters));}catch(e){}}
+function curChap(){return chapters[slides[idx].dataset.chapter];}
+const S={h:'s-h',gap:'s-gap',sat:'s-sat',light:'s-light',spread:'s-spread',cint:'s-cint',wint:'s-wint'};
+const V={h:'v-h',gap:'v-gap',sat:'v-sat',light:'v-light',spread:'v-spread',cint:'v-cint',wint:'v-wint'};
+function paintSlide(s){const c=chapters[s.dataset.chapter];if(!c)return;
+  s.style.setProperty('--glow-h',c.h);s.style.setProperty('--glow-h2',(c.h+c.gap)%360);
+  s.style.setProperty('--glow-sat',c.sat+'%');s.style.setProperty('--glow-light',c.light+'%');
+  s.style.setProperty('--glow-spread',c.spread);s.style.setProperty('--glow-color-int',(c.cint/100).toFixed(2));
+  s.style.setProperty('--glow-white-int',(c.wint/100).toFixed(2));}
+function apply(){slides.forEach(paintSlide);saveChapters();const c=curChap();if(!c)return;
+  root.style.setProperty('--glow-h',c.h);root.style.setProperty('--glow-h2',(c.h+c.gap)%360);}
+function syncPanel(){const c=curChap();if(!c)return;
+  for(const k in S){const el=document.getElementById(S[k]),v=document.getElementById(V[k]);if(!el)continue;el.value=c[k];
+    v.textContent=(k==='sat'||k==='light')?c[k]+'%':k==='spread'?c[k]+'vh':k==='gap'?c[k]+'°':(k==='cint'||k==='wint')?(c[k]/100).toFixed(2):c[k];}}
+for(const k in S){const el=document.getElementById(S[k]);if(el)el.addEventListener('input',()=>{const c=curChap();if(!c)return;c[k]=+el.value;
+  const v=document.getElementById(V[k]);v.textContent=(k==='sat'||k==='light')?el.value+'%':k==='spread'?el.value+'vh':k==='gap'?el.value+'°':(k==='cint'||k==='wint')?(el.value/100).toFixed(2):el.value;apply();});}
+document.querySelectorAll('.preset').forEach(p=>p.onclick=()=>{const c=curChap();if(!c)return;const[h,sat,light]=p.dataset.p.split(',').map(Number);Object.assign(c,{h,sat,light});apply();syncPanel();});
+function setPanelOpen(open){const p=document.getElementById('panel');if(p)p.style.display=open?'block':'none';}
+document.addEventListener('click',e=>{const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');if(!panel||!toggle)return;
+  if(toggle.contains(e.target)){setPanelOpen(panel.style.display!=='block');syncPanel();return;}
+  if(panel.contains(e.target))return; setPanelOpen(false);});
+
+/* ===== 纵向 scroll-snap 翻页 + 右侧点 + 控制栏 + 总览 + 全屏 ===== */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+/* 滚动条默认隐藏，滚动时淡入、停 700ms 后淡出（body 是滚动容器，事件挂 body 不是 window；wheel 兜底）*/
+let scrollbarTimer;
+function flashScrollbar(){document.body.classList.add('scrolling');clearTimeout(scrollbarTimer);scrollbarTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700);}
+document.body.addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('scroll',flashScrollbar,{passive:true});
+addEventListener('wheel',flashScrollbar,{passive:true});
+const navDots=document.getElementById('navDots'), controls=document.getElementById('controls'), counter=document.getElementById('counter');
+const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn'), ovBtn=document.getElementById('ovBtn'), fsBtn=document.getElementById('fsBtn');
+const pad=n=>String(n).padStart(2,'0');
+const dots=slides.map((s,i)=>{const b=document.createElement('button');b.className='nav-dot';b.title=pad(i+1)+' / '+pad(slides.length);b.onclick=()=>go(i);navDots.appendChild(b);return b;});
+
+function updateCurrent(i){
+  idx=i; const s=slides[idx];
+  dots.forEach((d,k)=>d.classList.toggle('active',k===idx));
+  counter.textContent=pad(idx+1)+' / '+pad(slides.length);
+  const pageHash='#'+(idx+1);
+  if(location.hash!==pageHash){try{history.replaceState(null,'',location.pathname+location.search+pageHash);}catch(e){location.hash=pageHash;}}
+  prevBtn.disabled=idx<=0; nextBtn.disabled=idx>=slides.length-1;
+  document.body.classList.toggle('on-dark', s.classList.contains('s-cover')||s.classList.contains('s-glow'));
+  const panel=document.getElementById('panel'),toggle=document.getElementById('toggle');
+  if(s.dataset.chapter && s.classList.contains('chapter-cover')){ if(panel)s.appendChild(panel); if(toggle){s.appendChild(toggle);toggle.style.display='flex';} setPanelOpen(false); apply(); syncPanel(); }
+  else if(toggle){ toggle.style.display='none'; setPanelOpen(false); }
+}
+/* slide 模式：谁滚进视口 ≥55% 谁就是当前页。受控模式无滚动，不用 IO */
+if(!CTRL){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>=0.55){const i=slides.indexOf(e.target);if(i>=0&&i!==idx)updateCurrent(i);}});},{threshold:[0.55]});
+  slides.forEach(s=>io.observe(s));
+}
+
+function go(n){ if(document.body.classList.contains('overview'))return; const i=Math.max(0,Math.min(slides.length-1,n));
+  if(CTRL){ const dir=i>idx?'fwd':'back'; showSlide(i,dir); updateCurrent(i); }
+  else slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+}
+addEventListener('hashchange',()=>{const m=location.hash.match(/^#(\d+)$/);if(!m)return;const i=Number(m[1])-1;if(i>=0&&i<slides.length&&i!==idx)go(i);});
+function next(){go(idx+1);} function prev(){go(idx-1);}
+prevBtn.onclick=prev; nextBtn.onclick=next;
+/* 受控模式：滚轮 / 触控板翻页（无原生滚动，需拦截 + 节流）*/
+if(CTRL){
+  let wlock=false;
+  addEventListener('wheel',e=>{ if(document.body.classList.contains('overview'))return; e.preventDefault();
+    if(wlock||Math.abs(e.deltaY)<6)return; wlock=true; setTimeout(()=>wlock=false,620);
+    if(e.deltaY>0)next(); else prev();
+  },{passive:false});
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  else if(e.key==='o'||e.key==='O'){toggleOverview();}
+  else if(e.key==='f'||e.key==='F'){toggleFullscreen();}
+  else if(e.key==='Escape'){ if(document.body.classList.contains('overview')) exitOverview(); }
+});
+
+/* 全屏（进入后图标变退出全屏）*/
+const ICON_MAX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+const ICON_MIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+function syncFsIcon(){const fs=!!document.fullscreenElement;fsBtn.innerHTML=fs?ICON_MIN:ICON_MAX;fsBtn.title=fs?'退出全屏 F':'全屏 F';}
+function toggleFullscreen(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});}else{document.exitFullscreen();} }
+fsBtn.onclick=toggleFullscreen;
+function reanchor(){ if(CTRL||document.body.classList.contains('overview'))return; slides[idx].scrollIntoView({block:'start',behavior:'auto'}); }
+document.addEventListener('fullscreenchange',()=>{syncFsIcon();setTimeout(reanchor,90);});
+syncFsIcon();
+
+/* 总览 Overview：每页包进 .slide-inner 缩放成缩略图，排网格（按当前视窗比例）*/
+function applyOverviewScale(){if(!document.body.classList.contains('overview'))return;const cellW=slides[0].getBoundingClientRect().width,scale=cellW/window.innerWidth;slides.forEach(s=>{s.style.height=(window.innerHeight*scale)+'px';const inner=s.querySelector(':scope>.slide-inner');if(inner)inner.style.transform='scale('+scale+')';});}
+function enterOverview(){slides.forEach(s=>{if(!s.querySelector(':scope>.slide-inner')){const w=document.createElement('div');w.className='slide-inner';while(s.firstChild)w.appendChild(s.firstChild);s.appendChild(w);}});document.body.classList.add('overview');requestAnimationFrame(applyOverviewScale);}
+function exitOverview(){slides.forEach(s=>{const w=s.querySelector(':scope>.slide-inner');if(w){while(w.firstChild)s.insertBefore(w.firstChild,w);w.remove();}s.style.height='';});document.body.classList.remove('overview');balanceHeads();if(CTRL){setActive(idx);}else setTimeout(()=>slides[idx].scrollIntoView({block:'start',behavior:'auto'}),20);}
+function toggleOverview(){document.body.classList.contains('overview')?exitOverview():enterOverview();}
+ovBtn.onclick=toggleOverview;
+document.body.addEventListener('click',e=>{if(!document.body.classList.contains('overview'))return;const sl=e.target.closest('.slide');if(sl){const i=slides.indexOf(sl);if(i>=0){idx=i;exitOverview();}}});
+addEventListener('resize',()=>{if(document.body.classList.contains('overview'))applyOverviewScale();else reanchor();balanceHeads();});
+
+/* ===== 居中型页竖向平衡：直接量"页眉下沿→内容"和"内容→页脚上沿"两个可见空白，让它们相等 =====
+   ⚠️ 别拿页眉高度当 padding-bottom（试过，会系统性补过头）：页眉的留白已经是它自己的 margin-bottom，
+   不需要重复补；真正缺的只是页脚那一截（.foot 绝对定位、不占流式空间，但视觉上离底边有自己的 inset）。
+   两个空白差是 P 的线性函数、斜率恰为 -1（justify-content:center 对称分担），所以不用试错：
+   newPad = 当前 padding-bottom + (topGap − botGap)，一步算出让两个空白相等的正确值。
+   只作用于标了 .vc 的居中型页；填满型页不动 */
+function balanceHeads(){
+  if(document.body.classList.contains('overview'))return;
+  document.querySelectorAll('.body-area.vc').forEach(function(ba){
+    var head=ba.parentElement.querySelector('.head');
+    var foot=ba.parentElement.querySelector('.foot');
+    var kids=ba.children; if(!head||!foot||!kids.length)return;
+    var firstTop=kids[0].getBoundingClientRect().top;
+    var lastBottom=kids[kids.length-1].getBoundingClientRect().bottom;
+    var topGap=firstTop-head.getBoundingClientRect().bottom;
+    var botGap=foot.getBoundingClientRect().top-lastBottom;
+    var curPad=parseFloat(getComputedStyle(ba).paddingBottom)||0;
+    ba.style.paddingBottom=Math.max(0,curPad+(topGap-botGap))+'px';
+  });
+}
+requestAnimationFrame(balanceHeads);
+
+/* 底部控制栏 / 右侧导航点各自独立显隐：移到底部出底部栏、移到右侧出右侧点，离开该区即淡出 */
+document.addEventListener('mousemove',e=>{
+  controls.classList.toggle('show', e.clientY > window.innerHeight - 120);
+  navDots.classList.toggle('show', e.clientX > window.innerWidth - 120);
+});
+document.addEventListener('mouseleave',()=>{ controls.classList.remove('show'); navDots.classList.remove('show'); });
+
+if(!CTRL)slides[idx].scrollIntoView({block:'start',behavior:'auto'});
+slides.forEach(paintSlide);
+updateCurrent(idx);
+if(CTRL) setActive(idx);
+</script>
+</body>
+</html>
