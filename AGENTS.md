@@ -3188,5 +3188,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`AGENTS.md`。问题 05「代码生成越来越便宜，验证可能成为主要瓶颈」的证据流补齐“候选产物 → 验证与解释”箭头，并为比例列添加 `minmax(0, …)`，让 5 个内容轨道与 5 个网格列一一对应，避免候选卡挤窄、文字竖排和流程断点。Agent 机制下钻页增加 4:3 及更窄窗口适配，压缩阶段行高并将阶段编号、标题和说明改为纵向排布，减少标题挤压和标签错位。
 - 内容 / 页序：两页的节点文字、关系含义与正式播放顺序不变；不新增平台机制事实，不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：HTML 解析、5 段内联 JavaScript 语法、证据流 5 个网格子项结构断言及 `git diff --check` 通过。因当前本地预览被 Browser Use URL policy 拦截，未绕过策略；截图对应的问题已检查，修改后的桌面浏览器截图级复核尚未完成。
-- Commit / push：待提交并推送到 `origin/main`。
+- Commit / push：修改已由 `413b72d7`（`fix: align development behavior report layouts`）提交并推送到 `origin/main`；当时交接条目尚未回填，本次一并补齐。
 - 未决事项：仍需在允许的本地预览中确认改后两页在用户当前窗口比例下的实际留白与文字换行。
+
+### 2026-09-24（在第 3→4 页切换间聚焦 Agent 泳道）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。第 3 页向第 4 页导航时，先高亮时序图的 Agent 生命线、Agent 参与的节点与交互，其余参与者交互降亮；停留约 0.85 秒后平滑切至第 4 页下钻。覆盖下一页按钮、键盘、整页滚轮 / 触屏滑动和嵌入时序图内键盘 / 滚轮 / 触屏滑动；减少动态效果时缩短聚焦停留。导航取消、反向滚动、打开概览或离开目标页时恢复原时序图状态；翻页期间锁定重复触发，避免连续输入重新播放聚焦。
+- 证据 / 内容边界：仅用既有时序图中的 Agent 泳道、`data-pair` 参与关系及现有节点关系做视觉聚焦，不增删任务节点、不引入新的平台机制结论；保持多方时序图先于 Agent 机制下钻的叙事，不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：两个 HTML 均通过 HTMLParser；各 5 段可执行内联脚本通过 `vm.Script`；静态断言确认 #3→#4 触发、850ms 聚焦后平滑切页、减少动态效果路径、重复滚动锁、键盘 / 滚轮 / 触屏导航、反向导航清理、Agent 泳道与参与节点筛选，以及 SVG 原内联样式恢复；`git diff --check` 通过。截图级预览仍受本地 Browser Use URL policy 限制；不以其他浏览器或截图手段绕过。
+- Commit / push：功能提交 `2baadf3e`（`feat: add agent focus transition between task pages`）已推送到 `origin/main`；本条交接记录随后单独提交并推送。
+- 未决事项：因预览限制尚不能确认最终焦点视觉强度与平滑翻页观感；可在用户允许的本地预览中检查。
