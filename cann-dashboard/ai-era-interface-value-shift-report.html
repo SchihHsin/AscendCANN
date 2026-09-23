@@ -349,6 +349,24 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .mx-legend-mark{width:22px;height:3px;border-radius:2px;background:#9da4b0}
 .mx-legend-mark.live{background:linear-gradient(90deg,#6769d8,#39aa91)}
 .mx-footnote{margin-top:.7vh;text-align:center;font-size:var(--fs-xs);line-height:1.45;color:#818998}
+.mx-staleness{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.mx-staleness-label{display:flex;align-items:baseline;gap:.8vw;margin:0 0 .2vh 2vw}
+.mx-staleness-label span,.mx-staleness-conclusion span{font-size:var(--fs-xs);font-weight:700;letter-spacing:.1em;color:#a4545d}
+.mx-staleness-label b{font-size:var(--fs-h3);color:#37343b}
+.mx-staleness svg{width:100%;max-height:50vh;overflow:visible}
+.mx-stale-node circle{fill:rgba(255,255,255,.88);stroke:#b8a7aa;stroke-width:1.8}
+.mx-stale-node text,.mx-fresh-node text{font:650 15px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#3f434d;text-anchor:middle}
+.mx-stale-warning{font:600 16px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#a4545d}
+.mx-stale-result{font:700 18px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#9d444f}
+.mx-flow-title{font:700 18px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#399b87}
+.mx-fresh-node circle{fill:#f5fffb;stroke:#55b59f;stroke-width:1.8}
+.mx-fresh-node.terminal circle{fill:#35a991;stroke:#35a991}
+.mx-fresh-node.terminal text{fill:#fff}
+.mx-stale-return{font:500 13px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#738579}
+.mx-staleness-conclusion{display:flex;align-items:baseline;justify-content:center;gap:.8vw;margin-top:.3vh}
+.mx-staleness-conclusion span{padding:.45vh .75vw;border-radius:999px;background:#f6e8e8}
+.mx-staleness-conclusion b{font-size:var(--fs-h2);color:#282c35}
+.mx-staleness-conclusion small{font-size:var(--fs-sm);color:var(--ink-2)}
 .mx-ide{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;min-height:0}
 .mx-ide-topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.3vh;color:var(--ink-2);font-size:var(--fs-sm)}
 .mx-ide-topline span:first-child{font:600 var(--fs-xs) 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
@@ -364,6 +382,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .mx-ide-stage .drop{stroke:#a8afbb;stroke-width:1.5;stroke-dasharray:4 5}
 .mx-ide-return{stroke-dasharray:6 7}
 .mx-return-label{font:500 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#6d7785}
+.mx-control-spectrum{display:flex;align-items:center;justify-content:center;gap:.65vw;margin-top:.2vh;color:#555f6d;font-size:var(--fs-sm)}
+.mx-control-spectrum i{width:6px;height:6px;border-radius:50%;background:#7578d5}
+.mx-control-spectrum small{margin-left:1vw;color:#88909d;font-size:var(--fs-xs)}
 .mx-ide-note{display:flex;justify-content:center;align-items:center;gap:.8vw;margin-top:.8vh;font-size:var(--fs-body);color:var(--ink-2)}
 .mx-ide-note b{font-size:var(--fs-h3);color:#292d38}
 .mx-role-map{width:100%;height:100%;display:flex;flex-direction:column;min-height:0}
@@ -372,7 +393,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .mx-role-head span:last-child{text-align:left;padding-left:1.2vw}
 .mx-role-map svg{width:100%;flex:1;min-height:0;max-height:58vh;overflow:visible}
 .mx-role-flow>text{font:600 20px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#454d5a}
-.mx-role-flow>text:nth-of-type(2n){font-weight:700;fill:#252b35}
+.mx-role-flow>text:nth-of-type(2n){font-size:18px;font-weight:700;fill:#252b35}
 .mx-role-flow>path{fill:none;stroke:url(#mxRoleLine);stroke-width:2}
 .mx-role-flow circle{fill:#6368cf;stroke:#fff;stroke-width:2}
 .mx-role-axis{stroke:#b9bec8;stroke-width:1;stroke-dasharray:4 5}
@@ -397,6 +418,20 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .mx-trust-conclusion span{padding:.45vh .75vw;border-radius:999px;background:#262a33;color:#fff;font-size:var(--fs-xs);font-weight:650}
 .mx-trust-conclusion b{font-size:var(--fs-h3);color:#292e39;font-weight:700}
 .mx-trust .mx-footnote{max-width:88ch;margin:.6vh auto 0}
+.mx-review{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.mx-review svg{width:100%;max-height:56vh;overflow:visible}
+.mx-review-evidence{fill:#252a34;stroke:#252a34;stroke-width:1.5}
+.mx-review-number{font:750 64px 'Inter','HarmonyOS Sans SC',sans-serif;fill:#fff;text-anchor:middle}
+.mx-review-evidence-text{font:650 17px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#fff;text-anchor:middle}
+.mx-review-evidence-sub{font:500 13px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#aeb4c2;text-anchor:middle}
+.mx-review-line{stroke:#979eac;stroke-width:2;fill:none}
+.mx-review-benefit{fill:#f2f4ff;stroke:#7779d4;stroke-width:2}
+.mx-review-risk{fill:#fff8f7;stroke:#d4868b;stroke-width:1.8}
+.mx-review-response{fill:#f1fffb;stroke:#52ad99;stroke-width:1.8}
+.mx-review-label{font:700 18px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#343a46;text-anchor:middle}
+.mx-review-copy{font:500 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#727b88;text-anchor:middle}
+.mx-review-section{font:650 13px 'JetBrains Mono',monospace;letter-spacing:.08em;fill:#828a98}
+.mx-review .mx-footnote{max-width:100ch;margin:.4vh auto 0}
 .mx-gates-content .mx-dark-heading{margin-bottom:0}
 .mx-dark-content{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;min-height:0}
 .mx-dark-heading{flex:0 0 auto;text-align:center;margin:2.2vh auto 1.6vh;max-width:70vw}
@@ -416,6 +451,57 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .mx-layer-core-text{font:700 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#222633}
 .mx-layer-bottom{display:flex;justify-content:center;align-items:center;gap:1vw;flex:0 0 auto;margin-top:-.5vh;color:rgba(255,255,255,.52);font-size:var(--fs-sm)}
 .mx-layer-bottom i{width:7px;height:7px;border-radius:50%;background:#8b8df5;box-shadow:0 0 9px rgba(135,134,255,.7)}
+.mx-layer-foot{text-align:center;margin-top:.65vh;font-size:var(--fs-xs);color:rgba(255,255,255,.36)}
+.mx-intent{width:100%;height:100%;display:flex;align-items:center;min-height:0}
+.mx-intent svg{width:100%;max-height:57vh;overflow:visible}
+.mx-diagram-kicker{font:600 13px 'JetBrains Mono',monospace;letter-spacing:.1em;fill:#737b89;text-transform:uppercase}
+.mx-intent-input{fill:rgba(255,255,255,.78);stroke:#aeb4c0;stroke-width:1.5}
+.mx-intent-quote{font:700 26px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#343945}
+.mx-intent-caption{font:500 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#858d99}
+.mx-intent-link,.mx-intent-join{fill:none;stroke:#7779d4;stroke-width:2}
+.mx-intent-spine{stroke:#b9beca;stroke-width:1.5}
+.mx-intent-question circle{fill:#686bd1}
+.mx-intent-question text{font:550 18px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#525a67}
+.mx-intent-question .key{font-weight:750;fill:#282e3a}
+.mx-brief-rule{stroke:#d0d4dc;stroke-width:1.5}
+.mx-brief-field{font:650 17px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#353b46}
+.mx-intent-foot{font:500 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#747d8a;text-anchor:middle}
+.mx-orchestration{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.mx-orchestration-tag{text-align:right;font-size:var(--fs-xs);letter-spacing:.04em;color:#868e9b}
+.mx-orchestration svg{width:100%;max-height:56vh;overflow:visible}
+.mx-orch-brief{fill:rgba(255,255,255,.78);stroke:#a8adba;stroke-width:1.5}
+.mx-orch-title{font:700 17px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#303641}
+.mx-orch-sub{font:500 13px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#77808e}
+.mx-orch-line{fill:none;stroke:#939bab;stroke-width:1.7}
+.mx-orch-agent circle{fill:rgba(255,255,255,.8);stroke:#7779d4;stroke-width:2}
+.mx-orch-agent.purple circle{stroke:#a27bda}.mx-orch-agent.teal circle{stroke:#43ae9a}.mx-orch-agent.dark circle{fill:#292d38;stroke:#292d38}
+.mx-orch-agent text{font:700 17px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#454b57;text-anchor:middle}
+.mx-orch-agent.dark text{fill:#fff}
+.mx-orch-detail{font:550 14px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#697280}
+.mx-orch-feedback{fill:none;stroke:#aab0bc;stroke-width:1.5}
+.mx-orch-merge{stroke:#7779d4;stroke-width:2}
+.mx-orch-integrate{fill:rgba(103,105,210,.12);stroke:#7779d4;stroke-width:1.7}
+.mx-orch-human{font:700 17px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#333944}
+.mx-orch-share{stroke:#36a88f;stroke-width:2}.mx-orch-isolate{stroke:#d79c51;stroke-width:2;stroke-dasharray:5 5}
+.mx-orch-boundary{font:600 13px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#73808c}
+.mx-dual-knowledge{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.mx-dual-knowledge svg{width:100%;max-height:52vh;overflow:visible}
+.mx-knowledge-kicker{font:600 13px 'JetBrains Mono',monospace;letter-spacing:.1em;fill:#7c8491}
+.mx-knowledge-source{fill:#252a34;stroke:#252a34}
+.mx-knowledge-source-title{font:700 18px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#fff}
+.mx-knowledge-lane{font:700 16px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#565dc1}
+.mx-knowledge-lane.ai{fill:#318f7c}
+.mx-knowledge-line{stroke:#8e91d7;stroke-width:2.3;fill:none}
+.mx-knowledge-line.ai-line{stroke:#50b49f}
+.mx-knowledge-step circle{fill:#fff;stroke:#7779d4;stroke-width:2}
+.mx-knowledge-step.ai-step circle{fill:#f4fffb;stroke:#42ab95}
+.mx-knowledge-step text{font:600 15px 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;fill:#515966;text-anchor:middle}
+.mx-knowledge-step.end circle{fill:#6769d5;stroke:#6769d5}
+.mx-knowledge-step.ai-step.end circle{fill:#39a991;stroke:#39a991}
+.mx-knowledge-step.end text{fill:#fff}
+.mx-knowledge-contract{display:flex;align-items:center;justify-content:center;gap:.55vw;margin-top:.5vh;color:#626b78;font-size:var(--fs-sm)}
+.mx-knowledge-contract span{font-weight:700;color:#323843}.mx-knowledge-contract b{font-weight:600}.mx-knowledge-contract i{font-style:normal;color:#a3aab5}
+.mx-knowledge-note{text-align:center;margin-top:.6vh;color:#828b98;font-size:var(--fs-xs)}
 .mx-gates{width:100%;flex:1 1 auto;min-height:0;max-height:61vh}
 .mx-gate .gate-shape{fill:rgba(255,255,255,.07);stroke:#8989ff;stroke-width:2}
 .mx-gate.violet .gate-shape{stroke:#ba8cf6}
@@ -624,7 +710,53 @@ body.overview #panel,body.overview #toggle{display:none!important}
     </div>
   </section>
 
-  <!-- 04 IDE -->
+  <!-- 04 社区知识回流风险 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">AI 不断消费公共知识，知识却可能停止更新</span></div>
+        <div class="subttl">场景迁移 · Knowledge Return</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span class="active">02 场景</span><span>03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-staleness">
+        <div class="mx-staleness-label risk"><span>单向消费</span><b>知识被调用，经验没有回到社区</b></div>
+        <svg viewBox="0 0 1400 430" role="img" aria-label="对比知识单向消费导致内容陈旧与通过审核验证形成持续更新闭环">
+          <defs>
+            <marker id="mxStaleArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#a17a7c"/></marker>
+            <marker id="mxFreshArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#39a98f"/></marker>
+          </defs>
+          <path d="M180 100 H1070" stroke="#b6a8ab" stroke-width="2.5" fill="none" marker-end="url(#mxStaleArrow)"/>
+          <g class="mx-stale-node" transform="translate(180 100)"><circle r="40"/><text y="6">社区知识</text></g>
+          <g class="mx-stale-node" transform="translate(475 100)"><circle r="40"/><text y="6">AI 检索</text></g>
+          <g class="mx-stale-node" transform="translate(770 100)"><circle r="40"/><text y="6">任务完成</text></g>
+          <path d="M830 100 H960" stroke="#c26a72" stroke-width="3" stroke-dasharray="8 7"/>
+          <path d="M947 78 L969 122 M969 78 L947 122" stroke="#c26a72" stroke-width="4"/>
+          <text x="1090" y="86" class="mx-stale-warning">没有贡献 · 没有失效反馈</text>
+          <text x="1090" y="116" class="mx-stale-result">版本变旧，边界失真</text>
+          <path d="M1265 148 C1265 208 1120 221 1028 252" fill="none" stroke="#c26a72" stroke-width="1.8" stroke-dasharray="5 6" marker-end="url(#mxStaleArrow)"/>
+          <text x="1204" y="201" class="mx-stale-warning">陈旧答案再次被调用</text>
+
+          <text x="50" y="273" class="mx-flow-title">可信更新闭环</text>
+          <path d="M170 335 H1220" stroke="#7ecbb9" stroke-width="3" fill="none" marker-end="url(#mxFreshArrow)"/>
+          <g class="mx-fresh-node" transform="translate(170 335)"><circle r="33"/><text y="5">任务使用</text></g>
+          <g class="mx-fresh-node" transform="translate(380 335)"><circle r="33"/><text y="5">暴露新问题</text></g>
+          <g class="mx-fresh-node" transform="translate(590 335)"><circle r="33"/><text y="5">整理草稿</text></g>
+          <g class="mx-fresh-node" transform="translate(800 335)"><circle r="33"/><text y="5">人类审核</text></g>
+          <g class="mx-fresh-node" transform="translate(1010 335)"><circle r="33"/><text y="5">持续验证</text></g>
+          <g class="mx-fresh-node terminal" transform="translate(1220 335)"><circle r="33"/><text y="5">知识更新</text></g>
+          <path d="M1220 378 C1220 420 170 420 170 378" fill="none" stroke="#39a98f" stroke-width="1.8" stroke-dasharray="5 6" marker-end="url(#mxFreshArrow)"/>
+          <text x="700" y="416" text-anchor="middle" class="mx-stale-return">验证结果、适用范围与失效反馈回到下一次检索</text>
+        </svg>
+        <div class="mx-staleness-conclusion"><span>核心风险</span><b>知识越常被调用，更新责任越不能消失。</b><small>贡献、验证、治理与面向 AI 的知识接口，成为社区新的关键体验。</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 IDE -->
   <section class="slide s-gray">
     <div class="head">
       <div class="head-l">
@@ -653,9 +785,9 @@ body.overview #panel,body.overview #toggle{display:none!important}
           </g>
           <g class="mx-ide-stage" transform="translate(347 96)">
             <circle r="35"/><text y="5" class="n">02</text>
-            <text y="77" class="stage-title">展示计划</text><text y="103" class="stage-copy">模块 · 步骤 · 假设 · 不确定项</text>
+            <text y="77" class="stage-title">展示计划</text><text y="103" class="stage-copy">范围 · 步骤 · 假设 · 方案理由</text>
             <path d="M0 124 V169" class="drop"/>
-            <text y="198" class="stage-meta">事前可审查</text>
+            <text y="198" class="stage-meta">让未决问题也可见</text>
           </g>
           <g class="mx-ide-stage active" transform="translate(582 96)">
             <circle r="35"/><text y="5" class="n">03</text>
@@ -665,25 +797,26 @@ body.overview #panel,body.overview #toggle{display:none!important}
           </g>
           <g class="mx-ide-stage active" transform="translate(817 96)">
             <circle r="35"/><text y="5" class="n">04</text>
-            <text y="77" class="stage-title">反馈状态</text><text y="103" class="stage-copy">进度 · 阻塞 · 改变计划 · 资源</text>
+            <text y="77" class="stage-title">反馈状态</text><text y="103" class="stage-copy">进度 · 阻塞 · 重规划 · 时间/算力</text>
             <path d="M0 124 V169" class="drop"/>
-            <text y="198" class="stage-meta">异常可接管</text>
+            <text y="198" class="stage-meta">过程可观察 · 异常可接管</text>
           </g>
           <g class="mx-ide-stage active" transform="translate(1052 96)">
             <circle r="35"/><text y="5" class="n">05</text>
-            <text y="77" class="stage-title">呈现结果</text><text y="103" class="stage-copy">语义差异 · 影响 · 测试 · 未验证项</text>
+            <text y="77" class="stage-title">呈现结果</text><text y="103" class="stage-copy">行为 · 接口 · 依赖 · 测试证据</text>
             <path d="M0 124 V169" class="drop"/>
-            <text y="198" class="stage-meta">结果可核验</text>
+            <text y="198" class="stage-meta">风险与未验证项可定位</text>
           </g>
           <g class="mx-ide-stage human" transform="translate(1287 96)">
             <circle r="35"/><text y="5" class="n">06</text>
             <text y="77" class="stage-title">人类决策</text><text y="103" class="stage-copy">继续 · 批准 · 中止 · 回滚</text>
             <path d="M0 124 V169" class="drop"/>
-            <text y="198" class="stage-meta">责任留在人手中</text>
+            <text y="198" class="stage-meta">事前确认 · 事后审查 · 人工执行</text>
           </g>
           <path class="mx-ide-return" d="M1275 335 C1200 395 880 395 810 335" fill="none" stroke="#39aa91" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#mxIdeArrow)"/>
           <text x="1040" y="390" text-anchor="middle" class="mx-return-label">审查结果可回到计划、继续执行或恢复现场</text>
         </svg>
+        <div class="mx-control-spectrum"><span>自主执行</span><i></i><span>执行后审查</span><i></i><span>事前确认</span><i></i><span>必须人工</span><small>按操作风险设定接管边界</small></div>
         <div class="mx-ide-note">
           <span>界面价值不再由操作次数衡量</span>
           <b>而由关键时刻能否看懂、接管、撤销和验收衡量</b>
@@ -693,7 +826,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
     </div>
   </section>
 
-  <!-- 05 四层体验 -->
+  <!-- 06 四层体验 -->
   <section class="slide s-glow mx-glow" data-chapter="1">
     <div class="glow"></div><div class="glow-white"></div>
     <div class="chrome"><span>03 / DESIGN RESPONSE</span><span>HUMAN–AI COLLABORATION</span></div>
@@ -735,10 +868,135 @@ body.overview #panel,body.overview #toggle{display:none!important}
         <path d="M268 420 C400 500 620 520 732 506 M1265 420 C1135 500 930 520 808 506" fill="none" stroke="#aeb9ff" stroke-opacity=".44" stroke-width="1.5"/>
       </svg>
       <div class="mx-layer-bottom"><span>意图被理解</span><i></i><span>行动可监督</span><i></i><span>结果有证据</span><i></i><span>知识能回流</span></div>
+      <div class="mx-layer-foot">四个相互支撑的体验设计面，不代表技术栈或运行时分层。</div>
     </div>
   </section>
 
-  <!-- 06 设计师角色 -->
+  <!-- 07 意图体验 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">自然语言要先澄清，才能成为可执行任务</span></div>
+        <div class="subttl">设计回应 · Intent</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span>02 场景</span><span class="active">03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-intent">
+        <svg viewBox="0 0 1400 470" role="img" aria-label="从模糊请求经澄清目标、优先级、范围、约束和验收条件，形成结构化任务简报">
+          <defs>
+            <marker id="mxIntentArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#7075d5"/></marker>
+          </defs>
+          <text x="70" y="50" class="mx-diagram-kicker">模糊表达</text>
+          <rect x="70" y="110" width="255" height="165" rx="18" class="mx-intent-input"/>
+          <text x="198" y="174" text-anchor="middle" class="mx-intent-quote">“优化一下”</text>
+          <text x="198" y="216" text-anchor="middle" class="mx-intent-caption">自然语言只是起点</text>
+          <path d="M325 192 H430" class="mx-intent-link" marker-end="url(#mxIntentArrow)"/>
+          <text x="465" y="50" class="mx-diagram-kicker">关键澄清</text>
+          <path d="M444 104 V390" class="mx-intent-spine"/>
+          <g class="mx-intent-question"><circle cx="444" cy="112" r="6"/><text x="470" y="119"><tspan class="key">目标：</tspan>想改善什么结果？</text></g>
+          <g class="mx-intent-question"><circle cx="444" cy="166" r="6"/><text x="470" y="173"><tspan class="key">优先级：</tspan>速度、成本还是稳定性？</text></g>
+          <g class="mx-intent-question"><circle cx="444" cy="220" r="6"/><text x="470" y="227"><tspan class="key">范围：</tspan>哪些模块可以调整？</text></g>
+          <g class="mx-intent-question"><circle cx="444" cy="274" r="6"/><text x="470" y="281"><tspan class="key">约束：</tspan>哪些文件、接口或兼容性不能破坏？</text></g>
+          <g class="mx-intent-question"><circle cx="444" cy="328" r="6"/><text x="470" y="335"><tspan class="key">上下文：</tspan>环境、版本和已尝试动作是什么？</text></g>
+          <g class="mx-intent-question"><circle cx="444" cy="382" r="6"/><text x="470" y="389"><tspan class="key">验收：</tspan>什么信号足以说明完成？</text></g>
+          <path d="M830 112 H916 M830 166 H916 M830 220 H916 M830 274 H916 M830 328 H916 M830 382 H916 M916 112 V382 M916 247 H1010" class="mx-intent-join" marker-end="url(#mxIntentArrow)"/>
+          <text x="1030" y="50" class="mx-diagram-kicker">结构化任务简报</text>
+          <path d="M1040 112 H1320 M1040 166 H1272 M1040 220 H1310 M1040 274 H1288 M1040 328 H1320 M1040 382 H1290" class="mx-brief-rule"/>
+          <text x="1040" y="99" class="mx-brief-field">目标</text><text x="1040" y="153" class="mx-brief-field">优先级</text><text x="1040" y="207" class="mx-brief-field">范围</text><text x="1040" y="261" class="mx-brief-field">约束与权限</text><text x="1040" y="315" class="mx-brief-field">环境与上下文</text><text x="1040" y="369" class="mx-brief-field">验收标准</text>
+          <text x="1010" y="435" class="mx-intent-foot">任务模板 · 追问顺序 · 上下文输入 · 验收标准，共同构成意图体验。</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 编排体验 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">多代理协作要设计分工、上下文边界与冲突处理</span></div>
+        <div class="subttl">设计回应 · Orchestration</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span>02 场景</span><span class="active">03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-orchestration">
+        <div class="mx-orchestration-tag">未来协作形态示意 · 需明确产品与组织责任</div>
+        <svg viewBox="0 0 1400 480" role="img" aria-label="人设定目标并监督前端、后端、测试、安全和代码审查代理，处理信息共享、冲突和失败升级">
+          <defs><marker id="mxOrchArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#8289a0"/></marker></defs>
+          <rect x="510" y="28" width="380" height="72" rx="16" class="mx-orch-brief"/>
+          <text x="700" y="58" text-anchor="middle" class="mx-orch-title">人：目标 · 优先级 · 最终责任</text>
+          <text x="700" y="82" text-anchor="middle" class="mx-orch-sub">共享任务简报与验收条件</text>
+          <path d="M700 100 V142 M130 142 H1270 M130 142 V176 M415 142 V176 M700 142 V176 M985 142 V176 M1270 142 V176" class="mx-orch-line" marker-end="url(#mxOrchArrow)"/>
+          <g class="mx-orch-agent" transform="translate(130 221)"><circle r="40"/><text y="6">前端</text></g>
+          <g class="mx-orch-agent purple" transform="translate(415 221)"><circle r="40"/><text y="6">后端</text></g>
+          <g class="mx-orch-agent teal" transform="translate(700 221)"><circle r="40"/><text y="6">测试</text></g>
+          <g class="mx-orch-agent dark" transform="translate(985 221)"><circle r="40"/><text y="6">安全审查</text></g>
+          <g class="mx-orch-agent purple" transform="translate(1270 221)"><circle r="40"/><text y="6">代码审查</text></g>
+          <text x="130" y="286" text-anchor="middle" class="mx-orch-detail">模块职责</text><text x="415" y="286" text-anchor="middle" class="mx-orch-detail">接口契约</text><text x="700" y="286" text-anchor="middle" class="mx-orch-detail">测试证据</text><text x="985" y="286" text-anchor="middle" class="mx-orch-detail">风险边界</text><text x="1270" y="286" text-anchor="middle" class="mx-orch-detail">变更审查</text>
+          <path d="M130 300 C130 340 390 342 560 342 M415 300 C415 325 580 330 650 342 M700 300 V322 M985 300 C985 325 820 330 750 342 M1270 300 C1270 340 1010 342 840 342" class="mx-orch-feedback" marker-end="url(#mxOrchArrow)"/>
+          <path d="M560 342 H840" class="mx-orch-merge"/>
+          <rect x="545" y="322" width="310" height="64" rx="14" class="mx-orch-integrate"/>
+          <text x="700" y="349" text-anchor="middle" class="mx-orch-title">集成与冲突处理</text>
+          <text x="700" y="372" text-anchor="middle" class="mx-orch-sub">接口冲突 · 取舍 · 失败转交</text>
+          <path d="M700 386 V421" class="mx-orch-line" marker-end="url(#mxOrchArrow)"/>
+          <text x="700" y="456" text-anchor="middle" class="mx-orch-human">人介入：定取舍 · 改分工 · 交给另一代理或接手</text>
+          <path d="M70 322 H430" class="mx-orch-share"/><text x="70" y="310" class="mx-orch-boundary">可共享：规格、接口、测试结果与证据</text>
+          <path d="M970 322 H1330" class="mx-orch-isolate"/><text x="970" y="310" class="mx-orch-boundary">按需隔离：凭据、私密上下文与权限</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 人类与 AI 双重知识可用性 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">同一份知识要同时满足人类阅读与 AI 使用</span></div>
+        <div class="subttl">设计回应 · Knowledge UX</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span>02 场景</span><span class="active">03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-dual-knowledge">
+        <svg viewBox="0 0 1400 460" role="img" aria-label="同一个含有版本、适用范围、警告、示例和来源的知识对象，分别支持人类理解和 AI 检索调用">
+          <defs>
+            <marker id="mxKnowledgeArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#7276d2"/></marker>
+            <marker id="mxKnowledgeGreenArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#39a991"/></marker>
+          </defs>
+          <text x="700" y="32" text-anchor="middle" class="mx-knowledge-kicker">同一份权威知识源</text>
+          <path d="M700 48 V78 M700 78 H330 V105 M700 78 H1070 V299" fill="none" stroke="#aab1c0" stroke-width="2"/>
+          <rect x="480" y="52" width="440" height="58" rx="16" class="mx-knowledge-source"/>
+          <text x="700" y="88" text-anchor="middle" class="mx-knowledge-source-title">API / 文档 / 示例 / 工具说明</text>
+          <text x="70" y="147" class="mx-knowledge-lane human">Human Usability · 人能理解、浏览、比较与判断</text>
+          <path d="M120 200 H1280" class="mx-knowledge-line" marker-end="url(#mxKnowledgeArrow)"/>
+          <g class="mx-knowledge-step"><circle cx="170" cy="200" r="24"/><text x="170" y="247">发现内容</text></g>
+          <g class="mx-knowledge-step"><circle cx="455" cy="200" r="24"/><text x="455" y="247">读懂结构</text></g>
+          <g class="mx-knowledge-step"><circle cx="740" cy="200" r="24"/><text x="740" y="247">比较方案</text></g>
+          <g class="mx-knowledge-step"><circle cx="1025" cy="200" r="24"/><text x="1025" y="247">判断适用性</text></g>
+          <g class="mx-knowledge-step end"><circle cx="1280" cy="200" r="24"/><text x="1280" y="247">做出决策</text></g>
+          <text x="70" y="305" class="mx-knowledge-lane ai">AI Usability · AI 能发现、解析、引用、调用与执行</text>
+          <path d="M120 359 H1280" class="mx-knowledge-line ai-line" marker-end="url(#mxKnowledgeGreenArrow)"/>
+          <g class="mx-knowledge-step ai-step"><circle cx="170" cy="359" r="24"/><text x="170" y="408">定位段落</text></g>
+          <g class="mx-knowledge-step ai-step"><circle cx="455" cy="359" r="24"/><text x="455" y="408">识别警告与示例</text></g>
+          <g class="mx-knowledge-step ai-step"><circle cx="740" cy="359" r="24"/><text x="740" y="408">匹配版本与环境</text></g>
+          <g class="mx-knowledge-step ai-step"><circle cx="1025" cy="359" r="24"/><text x="1025" y="408">返回引用与参数</text></g>
+          <g class="mx-knowledge-step ai-step end"><circle cx="1280" cy="359" r="24"/><text x="1280" y="408">调用工具</text></g>
+          <path d="M330 105 V176 M1070 110 V335" stroke="#aab1c0" stroke-dasharray="4 5"/>
+        </svg>
+        <div class="mx-knowledge-contract"><span>知识契约</span><b>版本</b><i>·</i><b>硬件 / 框架</b><i>·</i><b>适用范围</b><i>·</i><b>警告 / 示例</b><i>·</i><b>来源锚点</b><i>·</i><b>验证与失效状态</b></div>
+        <div class="mx-knowledge-note">MCP 等协议可以连接数据、工具与工作流；内容结构、上下文、参数说明和可靠引用仍需共同设计。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 设计师角色 -->
   <section class="slide s-gray">
     <div class="head">
       <div class="head-l">
@@ -752,27 +1010,28 @@ body.overview #panel,body.overview #toggle{display:none!important}
     <div class="body-area mx-body">
       <div class="mx-role-map">
         <div class="mx-role-head"><span>传统关注点</span><span>设计重心迁移</span><span>AI 时代新的设计对象</span></div>
-        <svg viewBox="0 0 1380 500" role="img" aria-label="传统设计职责向人机协作系统、代理编排、双重知识架构和证据治理迁移">
+        <svg viewBox="0 0 1380 520" role="img" aria-label="七类传统设计职责分别迁移为协作系统、代理编排、双重知识架构、协同风险研究、证据可视化、组织责任设计和机器可读内容设计">
           <defs>
             <linearGradient id="mxRoleLine" x1="0" x2="1"><stop stop-color="#b2b8c4"/><stop offset=".55" stop-color="#7477dc"/><stop offset="1" stop-color="#39aa91"/></linearGradient>
           </defs>
           <g class="mx-role-flow">
-            <text x="24" y="58">页面与界面设计</text><path d="M315 52 C470 52 480 52 630 52"/><circle cx="630" cy="52" r="4"/><path d="M630 52 C790 52 830 52 1010 52"/><text x="1040" y="58">人—AI协作系统</text>
-            <text x="24" y="132">交互流程设计</text><path d="M315 126 C470 126 480 126 630 126"/><circle cx="630" cy="126" r="4"/><path d="M630 126 C790 126 830 126 1010 126"/><text x="1040" y="132">任务委托与代理编排</text>
-            <text x="24" y="206">信息架构 / 内容设计</text><path d="M315 200 C470 200 480 200 630 200"/><circle cx="630" cy="200" r="4"/><path d="M630 200 C790 200 830 200 1010 200"/><text x="1040" y="206">人类与机器双重知识架构</text>
-            <text x="24" y="280">可用性研究</text><path d="M315 274 C470 274 480 274 630 274"/><circle cx="630" cy="274" r="4"/><path d="M630 274 C790 274 830 274 1010 274"/><text x="1040" y="280">协同效果与风险研究</text>
-            <text x="24" y="354">视觉与数据表达</text><path d="M315 348 C470 348 480 348 630 348"/><circle cx="630" cy="348" r="4"/><path d="M630 348 C790 348 830 348 1010 348"/><text x="1040" y="354">状态、风险与证据可视化</text>
-            <text x="24" y="428">服务与组织流程</text><path d="M315 422 C470 422 480 422 630 422"/><circle cx="630" cy="422" r="4"/><path d="M630 422 C790 422 830 422 1010 422"/><text x="1040" y="428">责任、接管与回流机制</text>
+            <text x="24" y="48">页面和界面设计师</text><path d="M315 42 C470 42 480 42 630 42"/><circle cx="630" cy="42" r="4"/><path d="M630 42 C750 42 790 42 900 42"/><text x="930" y="48">人—AI 协作系统设计师</text>
+            <text x="24" y="116">交互流程设计师</text><path d="M315 110 C470 110 480 110 630 110"/><circle cx="630" cy="110" r="4"/><path d="M630 110 C750 110 790 110 900 110"/><text x="930" y="116">任务委托与代理编排设计师</text>
+            <text x="24" y="184">信息架构师</text><path d="M315 178 C470 178 480 178 630 178"/><circle cx="630" cy="178" r="4"/><path d="M630 178 C750 178 790 178 900 178"/><text x="930" y="184">人类与机器双重知识架构师</text>
+            <text x="24" y="252">可用性研究员</text><path d="M315 246 C470 246 480 246 630 246"/><circle cx="630" cy="246" r="4"/><path d="M630 246 C750 246 790 246 900 246"/><text x="930" y="252">人机协同效果与风险研究员</text>
+            <text x="24" y="320">视觉设计师</text><path d="M315 314 C470 314 480 314 630 314"/><circle cx="630" cy="314" r="4"/><path d="M630 314 C750 314 790 314 900 314"/><text x="930" y="320">状态、风险、证据和复杂信息可视化设计师</text>
+            <text x="24" y="388">服务设计师</text><path d="M315 382 C470 382 480 382 630 382"/><circle cx="630" cy="382" r="4"/><path d="M630 382 C750 382 790 382 900 382"/><text x="930" y="388">AI 参与后的组织流程与责任设计师</text>
+            <text x="24" y="456">内容设计师</text><path d="M315 450 C470 450 480 450 630 450"/><circle cx="630" cy="450" r="4"/><path d="M630 450 C750 450 790 450 900 450"/><text x="930" y="456">意图、上下文、规格与机器可读内容设计师</text>
           </g>
-          <path class="mx-role-axis" d="M630 34 V446"/>
-          <text x="630" y="482" text-anchor="middle" class="mx-role-axis-label">能力延伸，不是简单替代</text>
+          <path class="mx-role-axis" d="M630 24 V468"/>
+          <text x="630" y="500" text-anchor="middle" class="mx-role-axis-label">能力延伸，不是简单替代</text>
         </svg>
         <div class="mx-role-caption"><span>传统 UI 能力仍然重要</span><b>但单独把页面画清楚，已不足以覆盖新的体验问题</b></div>
       </div>
     </div>
   </section>
 
-  <!-- 07 信任证据 -->
+  <!-- 11 信任调查数据 -->
   <section class="slide s-gray">
     <div class="head">
       <div class="head-l">
@@ -812,7 +1071,70 @@ body.overview #panel,body.overview #toggle{display:none!important}
     </div>
   </section>
 
-  <!-- 08 设计检查点 -->
+  <!-- 12 系统综述揭示的信任张力 -->
+  <section class="slide s-gray">
+    <div class="head">
+      <div class="head-l">
+        <div class="brand"><span class="ttl">效率提升并不会自动消除验证负担</span></div>
+        <div class="subttl">设计回应 · Trust & Verification</div>
+      </div>
+      <div class="section-tabs" aria-label="当前章节">
+        <span>01 判断</span><span>02 场景</span><span class="active">03 设计回应</span>
+      </div>
+    </div>
+    <div class="body-area mx-body">
+      <div class="mx-review">
+        <svg viewBox="0 0 1380 470" role="img" aria-label="材料转述的89项 IDE 人工智能研究综述：效率提升潜力与验证负担、自动化偏见、过度依赖并存，需要解释、验证机制和自适应控制">
+          <defs>
+            <marker id="mxReviewArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#9299a7"/></marker>
+            <marker id="mxReviewGreenArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#42a88f"/></marker>
+          </defs>
+          <rect x="36" y="112" width="252" height="184" rx="22" class="mx-review-evidence"/>
+          <text x="162" y="184" class="mx-review-number">89</text>
+          <text x="162" y="222" class="mx-review-evidence-text">项相关研究的综述</text>
+          <text x="162" y="254" class="mx-review-evidence-sub">材料转述 · IDE 中的 AI</text>
+
+          <text x="390" y="60" class="mx-review-section">综述所讨论的 IDE 场景</text>
+          <path d="M288 204 C330 204 340 244 380 244" class="mx-review-line" marker-end="url(#mxReviewArrow)"/>
+          <rect x="400" y="204" width="220" height="80" rx="18" class="mx-review-benefit"/>
+          <text x="510" y="239" class="mx-review-label">AI 进入 IDE</text>
+          <text x="510" y="264" class="mx-review-copy">同一变化，收益与风险并存</text>
+          <path d="M620 244 H650 M650 85 V385" class="mx-review-line"/>
+          <path d="M650 85 H680 M650 180 H680 M650 280 H680 M650 380 H680" class="mx-review-line" marker-end="url(#mxReviewArrow)"/>
+
+          <rect x="700" y="50" width="270" height="70" rx="16" class="mx-review-benefit"/>
+          <text x="835" y="80" class="mx-review-label">效率提升潜力</text>
+          <text x="835" y="104" class="mx-review-copy">生成与执行可能更快</text>
+
+          <rect x="700" y="145" width="270" height="70" rx="16" class="mx-review-risk"/>
+          <text x="835" y="175" class="mx-review-label">验证负担</text>
+          <text x="835" y="199" class="mx-review-copy">需要判断输出是否正确</text>
+          <rect x="700" y="245" width="270" height="70" rx="16" class="mx-review-risk"/>
+          <text x="835" y="275" class="mx-review-label">自动化偏见</text>
+          <text x="835" y="299" class="mx-review-copy">可能过度采信自动建议</text>
+          <rect x="700" y="345" width="270" height="70" rx="16" class="mx-review-risk"/>
+          <text x="835" y="375" class="mx-review-label">过度依赖</text>
+          <text x="835" y="399" class="mx-review-copy">判断与控制可能被外包</text>
+
+          <path d="M970 180 H1010 M970 280 H1010 M970 380 H1010" class="mx-review-line" marker-end="url(#mxReviewGreenArrow)"/>
+          <rect x="1030" y="145" width="310" height="70" rx="16" class="mx-review-response"/>
+          <text x="1185" y="175" class="mx-review-label">解释与不确定性</text>
+          <text x="1185" y="199" class="mx-review-copy">来源 · 假设 · 适用边界</text>
+          <rect x="1030" y="245" width="310" height="70" rx="16" class="mx-review-response"/>
+          <text x="1185" y="275" class="mx-review-label">验证机制</text>
+          <text x="1185" y="299" class="mx-review-copy">测试 · 证据 · 责任路径</text>
+          <rect x="1030" y="345" width="310" height="70" rx="16" class="mx-review-response"/>
+          <text x="1185" y="375" class="mx-review-label">自适应控制</text>
+          <text x="1185" y="399" class="mx-review-copy">确认 · 接管 · 能力边界</text>
+
+          <text x="850" y="454" class="mx-review-section" text-anchor="middle">设计要把判断交还给人：让依据可见、验证可做、控制可调整</text>
+        </svg>
+        <div class="mx-footnote">材料称该综述覆盖 89 项研究，并概括了效率收益与上述风险；原文没有综述题名、URL 和方法信息，未在本次独立核验。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 设计检查点 -->
   <section class="slide s-glow mx-glow" data-chapter="1">
     <div class="glow"></div><div class="glow-white"></div>
     <div class="chrome"><span>03 / DESIGN RESPONSE</span><span>FROM INTENT TO VERIFIED OUTCOME</span></div>
@@ -854,7 +1176,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
     </div>
   </section>
 
-  <!-- 09 证据边界 -->
+  <!-- 14 证据边界 -->
   <section class="slide s-gray">
     <div class="head">
       <div class="head-l">
