@@ -3001,3 +3001,20 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界：平台机制事实仍按原 H / M / L 口径；“上下文、行动控制、反馈回流、失败恢复可能改善任务推进”明确标为待验证推论，不据此排名。没有新增技术事实或实验结果，也未改变 API / Protocol、Host / Harness、Application / Task 三层定义。
 - 验证：正式序列 50 个标题均唯一且存在；开头页序、Claude 深析 / 横向比较次序、章节跳转标题均通过结构检查；5 个可执行内联脚本 `node --check` 通过；HTMLParser 解析与新增改动间 `git diff --no-index --check` 通过。浏览器策略拒绝本地文件预览，未尝试绕过，因此未完成截图级 QA。
 - Commit / push：`8cad52eb`（`content: add task-first report copy`）已推送至 `origin/main`；本条交接记录随后提交并推送。无关工作区更改与未跟踪文件未暂存或清理。未决事项：待浏览器策略允许本地预览后核对视觉布局。
+
+### 2026-09-23（补回 AI 时代界面价值分析遗漏的重点）
+
+- 变更文件：修订 `cann-dashboard/ai-era-interface-value-shift-report.html`，并更新本交接记录。用户指出上一版遗漏“AI 持续消费公共知识、但社区内容可能停止更新”的关键判断；本次逐段回查原始材料，扩充报告内容。
+- 补回内容：社区单向消费导致知识陈旧的风险及“任务使用 → 新问题 → 草稿 → 人工审核 → 持续验证 → 知识更新”回流闭环；知识对象需携带版本、硬件 / 框架、适用范围、警告 / 示例、来源锚点、验证 / 失效状态；信任章节单独图解材料所述 89 项 IDE 研究综述中的效率收益潜力、验证负担、自动化偏见和过度依赖，以及解释、验证、自适应控制的设计回应；设计师七类职责均分别映射，信息架构和内容设计不再合并；多代理图补入代码审查角色。报告正式序列更新为 14 页（含封面），hash 与总览仍由通用 deck runtime 按正式序列动态生成。
+- 证据边界：以上为用户提供材料的结构化归纳，不代表独立研究结论。原文 Stack Overflow 调查、89 项综述、产品案例和 MCP 等引述仍缺原始 URL / 方法，页面明确标为材料转述或待补证；不据此新增平台事实，也未改变 API / Protocol、Host / Harness、Application / Task 定义。
+- 验证：HTML 结构解析、内联 JavaScript 语法、21 个 SVG XML、重复 ID 与片段引用检查、`git diff --check` 均通过。通过现有 in-app browser 打开本地页面时被 Browser Use URL policy 拒绝，本轮未改用其他浏览器或命令行渲染；因此未完成截图级视觉复核。
+- Commit / push：待本轮提交后回填。只暂存本报告与本文件；其他既有修改和未跟踪文件保持原样。未决事项：浏览器策略允许本地预览后再做目视排版复核；外部引用补证沿用原待办。
+
+### 2026-09-23（将副本第 5 页改为人机协作服务蓝图）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。按用户确认的“协作服务蓝图”重做副本第 5 页；主报告 `ai-coding-platform-mechanism-report.html` 未改，副本页序、总页数和 hash 导航不变。
+- 页面表达：以用户最初的五个任务节点为横向阶段，按“开发者 / Agent / 支撑机制 / 交接与观察”分行；知识发现列加宽并突出官方文档、GitCode / 样例、Issue / 社区经验，以及来源、版本、芯片和适用范围筛选。逐步标出 Rules / 项目知识、Skill / Workflow、MCP、Hooks、Plugin / Extension、Permission / Sandbox、Checkpoint、Subagent 等机制，避免与后续 Harness 运行流程图重复。
+- 研究联系：沿用既有 AI 可用性分析，将获取状态、任务支撑、获取成本、回答质量映射到对应任务节点；没有新增实测结果。Plugin / Extension 标为因平台而异的分发层，不把它画成必经运行步骤。
+- 层级边界：这是人机职责与交接关系的设计表达，不改变 API / Protocol、Host / Harness、Application / Task 定义，不改其他页面。
+- 验证：HTMLParser 解析通过；5 个可执行内联 JS 块语法通过；结构断言确认 5 阶段、4 条职责行与知识来源 / 机制 / 研究维度齐备；`git diff --check` 通过。未完成浏览器截图目视复核。
+- Commit / push：`b227081d`（`refine task collaboration blueprint page`）已推送至 `origin/main`；仅提交副本文件，其他既有修改和未跟踪文件未暂存、未清理。未决事项：需在浏览器可用时复核实际字号与拥挤程度。
