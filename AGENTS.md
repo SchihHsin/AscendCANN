@@ -3098,3 +3098,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；复核 HTML / CSS 结构确认独立供给行与标签已移除，Plugin / Extension 分发说明现位于机制区第二行。未做截图目视复核；HTML Tidy 版本不识别文档中的 HTML5 `<section>` / SVG 元素，故不以其输出作为页面错误依据；本地预览仍遵守 Browser Use URL policy，未尝试绕过。
 - Commit / push：功能提交 `0b3e79ff` 已推送至 `origin/main`；本条交接状态更新随独立记录提交推送。
 - 未决事项：Loop 是否以及如何作为正常 Agent 内循环呈现仍需单独修改与验证。
+
+### 2026-09-24（将 Plugin / Extension 明确画为跨阶段装配节点）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。第 5 页把 Plugin / Extension 从机制区内的说明文字改为独立浅色节点，并用一条分配总线分出 5 个独立箭头，分别落到 MCP Resources、Skill / Workflow、MCP Connector、Hook · PreTool、Hook · PostTool / Stop 节点；这些目标仍留在原任务阶段中，未被合并成一个能力节点。节点文案限定为“按平台支持”，不暗示平台间能力组合相同。为装入这个跨阶段节点并保留阶段节点呼吸空间，机制区增高 1.8vh，整张关系图增高 1.5vh。
+- 依据：用户确认采用“跨阶段装配节点”；Plugin / Extension 表示打包 / 安装 / 分发入口，和被分发的运行时机制保持不同层级。分支线在机制节点间的留白和节点上边缘连接，不穿越节点文字或卡片。
+- 层级 / 页序：只调整副本第 5 页机制区的图形关系，不新增平台事实，不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界；正常 Agent Loop 本次未改。
+- 验证：机制区 HTML 片段标签配对检查通过；结构核对确认 5 个装配目标节点对应 5 个带箭头分支，旧说明条类已删除；目标 HTML 与 `AGENTS.md` 的 `git diff --check` 通过。未做截图目视复核；本地页面预览仍遵守 Browser Use URL policy，未通过其他截图方式绕过。
+- Commit / push：待本次检查完成后回填。
+- 未决事项：需要刷新本地第 5 页进行视觉复核；正常 Agent Loop 仍待单独讨论 / 调整。
