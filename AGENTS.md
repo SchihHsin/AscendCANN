@@ -3161,5 +3161,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 原文覆盖：完整生命周期仍按目标、理解、上下文、方案、资源、分工、执行、调试验证、评审集成、发布运行、后续问题、知识沉淀呈现；六条流、三个系统层级及其组合方法仍保持原文的定义与顺序。先用具体任务与 Agent 分工建立观众的场景，再抽象系统分析维度；待验证风险仍标为假设，不提前把验收设为唯一重点。
 - 证据与层级边界：P1–P7 继续复用既有自定义算子任务时序，仅说明该任务示例，不泛化到所有任务；本轮不新增平台事实或实验结论，也未改变 API / Protocol、Host / Harness、Application / Task 的层级边界。
 - 验证：静态检查确认 67 页正式播放顺序存在且无重复、21 个非正式源页面仍由 runtime 隐藏；前 13 页顺序、章节入口与 5 段可执行内联脚本语法通过；`git diff --check` 通过。未完成截图级目视复核；继续遵守本地页面预览的 Browser Use URL policy，没有尝试绕过。
-- Commit / push：待完成后回填。
+- Commit / push：主修改提交 `007980a8`（`fix: align report narrative with behavior framework`）已推送至 `origin/main`；本条交接提交随后单独推送。
 - 未决事项：可在安全允许的本地预览中复核实际切页和图页空间表现；本轮没有重绘或替换既有时序图。
