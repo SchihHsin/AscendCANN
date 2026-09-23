@@ -2977,3 +2977,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与导航：AI 可用性四项观察维度及 Add / ONNX / 性能分析样本沿用既有 CANN × CUDA 研究；图仍位于封面后、目录前，58 页序列和 hash 导航不变。
 - 验证：HTMLParser 解析通过，5 个可执行内联 JS 块 `node --check` 通过；SVG XML 解析、箭头 marker 引用、29 个节点坐标和互不重叠检查通过；确认图页 / 目录 / 总页数为第 2 / 第 3 / 58 页；`git diff --check` 通过。本轮未完成新的桌面截图目视复核（在用浏览器 tab 的读取请求超时），结论基于结构、语法与几何校验。
 - Commit / push：`cb0348df`（`refine task overview flow diagram`）已推送至 `origin/main`；本条交接记录随后单独提交推送。无关工作区更改和未跟踪文件未暂存或清理。未决事项：需要在浏览器中最终目视确认图面密度与阅读顺序。
+
+### 2026-09-23（移除报告第 8–13 页与第 15 页）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report.html`。按当前正式页序移除“CANN 实证”“研究范围与证据”“传统开发者旅程”“AI 时代开发者旅程”“AI 亲和原则”“知识与问题”“通用能力栈”7 页；保留原 HTML 内容但不纳入正式 `reportOrder`，便于后续查找 / 恢复。正式序列由 58 页变为 51 页。
+- 阅读路径：目录第 02 章改为“平台机制”，仅保留仍在主线的 Harness / 平台分析锚点；02 章章节 Tab 的跳转入口由已移除的旅程页改为“六平台定位”（新第 8 页）。右侧导航点、页码与 hash 由正式页序动态生成，无需单独维护静态编号。
+- 依据与边界：按用户明确给出的原页码范围执行；未新增或删改机制结论，不改变 API / Protocol、Host / Harness、Application / Task 三层定义或 H / M / L 证据口径。
+- 验证：正式页序 51 个标题均在源 DOM 中唯一存在；7 个删除标题不在正式页序；02 章入口对应第 8 页；5 个可执行内联脚本 `node --check` 通过；`git diff --check` 通过。未进行截图级浏览器 QA，本轮变更限于页序、目录文案与章节跳转目标。
+- Commit / push：报告变更提交 `b5cabc4a`（`content: remove outdated report pages`）已推送至 `origin/main`；本条交接记录随后提交并推送。无关工作区更改与未跟踪文件未暂存、未清理。未决事项：无。
