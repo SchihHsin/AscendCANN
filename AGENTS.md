@@ -3151,5 +3151,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 导航修正：章节 Tab 的“依据”入口由“研究范围与证据”改为“附录导航”，让读者先看到附录分组，而不是跳入附录中段。
 - 层级 / 证据：复用既有自定义算子 P1–P7 多方时序图；Agent 机制仍以独立下钻页表达，未将参与者时序与 Agent 内部机制混为一张图，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：静态断言确认 66 个正式页面标题均存在且无重复，目录 #2、时序 #3、Agent 下钻 #4、附录导航 #46；5 段可执行内联脚本通过语法解析，附录导航目标正确，`git diff --check` 通过。尝试在桌面浏览器打开本地新副本时被 Browser Use URL policy 拦截；遵守限制，没有改用其他浏览器或截图方式绕过，因此未完成截图级视觉复核。
-- Commit / push：待完成本轮限定文件提交与推送。
+- Commit / push：主交付提交 `44f21589`（`feat: add development behavior system report copy`）已推送至 `origin/main`；本行结果回填将随独立交接提交推送。
 - 未决事项：用户可在本地预览副本；后续若需要改实际播放顺序，应同步核对 `reportOrder`、章节起始导航和目录。
