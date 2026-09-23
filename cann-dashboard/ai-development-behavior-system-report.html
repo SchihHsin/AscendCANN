@@ -2216,7 +2216,18 @@ mermaid.initialize({
   reportOrder.forEach(title => {
     const slide = byTitle.get(title); if (!slide || title==='封面' || title==='目录') return;
     let key = 'A'; for (const [candidate, titles] of Object.entries(chapterTitles)) if (titles.has(title)) key = candidate;
-    const tabs = slide.querySelector('.section-tabs'); if (tabs) tabs.innerHTML = tabMarkup(key);
+    const head = slide.querySelector('.head');
+    let tabs = slide.querySelector('.section-tabs');
+    if (!tabs && head && slide.classList.contains('s-gray')) {
+      tabs = document.createElement('nav');
+      tabs.className = 'section-tabs';
+      head.appendChild(tabs);
+    }
+    if (tabs) {
+      tabs.setAttribute('role','navigation');
+      tabs.setAttribute('aria-label','报告章节导航');
+      tabs.innerHTML = tabMarkup(key);
+    }
     const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · EVIDENCE APPENDIX' : `${key} · ${key==='01'?'DEVELOPMENT BEHAVIOR':key==='02'?'PLATFORM MECHANISMS':key==='03'?'ASCEND SUPPLY':key==='04'?'NINE HYPOTHESES':key==='05'?'EXPERIENCE DESIGN':'LEARNING & TRANSFER'}`;
   });
 
