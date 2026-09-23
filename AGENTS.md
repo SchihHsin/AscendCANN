@@ -3105,5 +3105,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户确认采用“跨阶段装配节点”；Plugin / Extension 表示打包 / 安装 / 分发入口，和被分发的运行时机制保持不同层级。分支线在机制节点间的留白和节点上边缘连接，不穿越节点文字或卡片。
 - 层级 / 页序：只调整副本第 5 页机制区的图形关系，不新增平台事实，不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界；正常 Agent Loop 本次未改。
 - 验证：机制区 HTML 片段标签配对检查通过；结构核对确认 5 个装配目标节点对应 5 个带箭头分支，旧说明条类已删除；目标 HTML 与 `AGENTS.md` 的 `git diff --check` 通过。未做截图目视复核；本地页面预览仍遵守 Browser Use URL policy，未通过其他截图方式绕过。
-- Commit / push：待本次检查完成后回填。
+- Commit / push：功能提交 `a5647c7c` 已推送至 `origin/main`；本条交接状态更新随独立记录提交推送。
 - 未决事项：需要刷新本地第 5 页进行视觉复核；正常 Agent Loop 仍待单独讨论 / 调整。
