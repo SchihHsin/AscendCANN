@@ -3089,3 +3089,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；复核 diff 确认只修改阶段标题底色 / 文字颜色，以及 Agent Context 结果节点的浅底 / 深字样式。未做截图目视复核；本地文件预览受 Browser Use URL policy 限制，未绕过。
 - Commit / push：待完成后填写。
 - 未决事项：无。
+
+### 2026-09-24（合并副本第 5 页的机制落点与平台供给）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。将左侧“机制落点”改为“机制与装配”，副标题说明“运行时参与 · 跨阶段分发”；移除单独的“平台供给”行，把 Plugin / Extension 说明嵌入机制区域，横跨四阶段机制节点。保留 Plugin 可分发 Skills、MCP Servers、Hooks 的信息，并明确其是装配入口而非运行步骤。加高机制区域以容纳说明，整页高度不变。
+- 依据：用户追问此前指出的“机制落点”和“平台供给”信息重合为何尚未改；沿用此前讨论的整合方向，区分任务运行机制与跨阶段打包 / 安装入口，不把两者误画成两个连续阶段或重复供给清单。
+- 层级 / 页序：只改副本第 5 页的分组与版式，不新增平台事实，不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界；Loop / 可选恢复的关系本次未改。
+- 验证：`git diff --check` 通过；复核 HTML / CSS 结构确认独立供给行与标签已移除，Plugin / Extension 分发说明现位于机制区第二行。未做截图目视复核；HTML Tidy 版本不识别文档中的 HTML5 `<section>` / SVG 元素，故不以其输出作为页面错误依据；本地预览仍遵守 Browser Use URL policy，未尝试绕过。
+- Commit / push：待完成后填写。
+- 未决事项：完成本地结构调整后需按仓库约定推送；Loop 是否以及如何作为正常 Agent 内循环呈现仍需单独修改与验证。
