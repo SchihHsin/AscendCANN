@@ -465,7 +465,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .task-rel-page .head{margin-bottom:1.2vh}
 .task-rel-page .body-area{align-items:stretch}
 @scope (.task-rel-page) {
-.collab-blueprint{width:100%;height:65.5vh;min-width:0;min-height:0;display:grid;grid-template-columns:7.3vw minmax(0,1fr);grid-template-rows:5.8vh 10.8vh 2.6vh 22.8vh 16.2vh 4.2vh;gap:.22vw}
+.collab-blueprint{width:100%;height:65.5vh;min-width:0;min-height:0;display:grid;grid-template-columns:7.3vw minmax(0,1fr);grid-template-rows:5.8vh 10.8vh 2.6vh 20.8vh 18.2vh 4.2vh;gap:.22vw}
 .cb-axis,.cb-row-label{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:.25vh .35vw}
 .cb-axis small,.cb-row-label small{font:740 var(--fs-xs)/1.1 'JetBrains Mono';letter-spacing:.05em;color:var(--ink-3)}
 .cb-axis b,.cb-row-label b{margin:.18vh 0;font-size:var(--fs-sm);line-height:1.1;color:var(--ink)}
@@ -540,19 +540,27 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-recovery-inline>i{font-style:normal;text-align:center;font-size:var(--fs-sm);line-height:1;color:var(--phase-recovery);font-weight:850}
 .cb-recovery-foot{font-size:var(--fs-xs);line-height:1.05;text-align:right;color:#907a61}
 .cb-mech-label{align-items:center}.cb-mech-label b{font-size:var(--fs-xs)}
-.cb-mechanism-rail{grid-row:5;position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:3.8vh minmax(0,1fr);gap:.38vh 0}
-.cb-assembly-node{grid-column:1;grid-row:1;z-index:3;justify-self:center;align-self:center;min-width:0;max-width:92%;display:flex;align-items:center;gap:.5vw;padding:.34vh .68vw;border:1px solid rgba(91,91,214,.24);border-radius:9px;background:rgba(255,255,255,.94);box-shadow:0 4px 12px -10px rgba(56,54,115,.35)}
-.cb-assembly-node b{flex:0 0 auto;font-size:var(--fs-sm);line-height:1.1;color:#4d4c98}
-.cb-assembly-node span{min-width:0;font-size:var(--fs-xs);line-height:1.12;color:#687382}
-.cb-assembly-links{position:absolute;z-index:2;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
-.cb-assembly-links>path{fill:none;stroke:#7773b2;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.cb-mechanism-stages{grid-column:1;grid-row:2;position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7vw;min-width:0;min-height:0}
-.cb-mechanism-stage{position:relative;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:.38vh .34vw;padding:.42vh;border:1px solid color-mix(in srgb,var(--phase) 15%,#fff);border-radius:9px;background:color-mix(in srgb,var(--phase) 6%,#fff)}
-.cb-mechanism-stage.few{grid-template-rows:repeat(2,minmax(0,1fr))}
-.cb-mech-node{min-width:0;min-height:0;padding:.42vh .42vw;display:flex;flex-direction:column;justify-content:center;border-radius:7px;background:rgba(255,255,255,.82);border:1px solid color-mix(in srgb,var(--phase) 16%,#fff)}
-.cb-mech-node b{font-size:var(--fs-xs);line-height:1.05;color:#465160}
-.cb-mech-node span{margin-top:.22vh;font-size:var(--fs-xs);line-height:1.12;color:#788391}
-.cb-mech-node.is-extension-target{position:relative;z-index:3}
+.cb-mechanism-rail{grid-row:5;position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:2.65vh minmax(0,1fr) 4.2vh;gap:.28vh 0}
+.cb-assembly-node{grid-column:1;grid-row:1;min-width:0;max-width:none;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:.42vw;padding:.22vh .58vw;border:1px solid rgba(90,100,116,.16);border-radius:7px;background:rgba(255,255,255,.62)}
+.cb-assembly-node b{font-size:var(--fs-xs);line-height:1.1;color:#565f6b;white-space:nowrap}
+.cb-assembly-node span{min-width:0;font-size:var(--fs-xs);line-height:1.12;color:#707b89}
+.cb-mechanism-stages{grid-column:1;grid-row:2;position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7vw;min-width:0;min-height:0}
+.cb-mechanism-stage{position:relative;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:.32vh .3vw;padding:.34vh;border:1px solid color-mix(in srgb,var(--phase) 15%,#fff);border-radius:9px;background:color-mix(in srgb,var(--phase) 6%,#fff)}
+.cb-mechanism-stage.dense{grid-template-rows:repeat(3,minmax(0,1fr))}
+.cb-mechanism-stage.dense .cb-mech-node:last-child{grid-column:1/-1}
+.cb-mechanism-stage.six .cb-mech-node:last-child{grid-column:auto}
+.cb-mechanism-stage.few{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr))}
+.cb-mech-node{min-width:0;min-height:0;padding:.08vh .34vw;display:flex;flex-direction:column;justify-content:center;border-radius:6px;background:rgba(255,255,255,.84);border:1px solid color-mix(in srgb,var(--phase) 16%,#fff)}
+.cb-mech-node b{font-size:var(--fs-xs);line-height:1;color:#465160}
+.cb-mech-node span{margin-top:.06vh;font-size:var(--fs-xs);line-height:1;color:#788391}
+.cb-agent-loop{grid-column:1;grid-row:3;min-width:0;display:grid;grid-template-columns:7.2vw minmax(0,1fr) auto;grid-template-rows:minmax(0,1fr) .75vh;align-items:center;gap:.05vh .42vw;padding:.06vh .35vw;border:1px solid rgba(57,185,130,.18);border-radius:7px;background:rgba(57,185,130,.055);color:#277d61}
+.cb-agent-loop>strong{grid-column:1;grid-row:1;font-size:var(--fs-xs);line-height:1.05;white-space:nowrap}
+.cb-agent-loop>small{grid-column:3;grid-row:1;font-size:var(--fs-xs);line-height:1.05;color:#738178;white-space:nowrap}
+.cb-agent-loop-flow{grid-column:2;grid-row:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:.42vw;white-space:nowrap}
+.cb-agent-loop-flow span{font-size:var(--fs-xs);line-height:1.05;font-weight:760;color:#37745f}
+.cb-agent-loop-flow i{font-style:normal;font-size:var(--fs-sm);line-height:1;color:#54a284}
+.cb-agent-loop-return{grid-column:2;grid-row:2;width:100%;height:.75vh;overflow:visible}
+.cb-agent-loop-return>.return-rail{fill:none;stroke:#55a486;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .cb-measure-label{align-items:center}.cb-measure-label b{font-size:var(--fs-xs)}
 .cb-measure-rail{grid-row:6;align-items:center}
 .cb-measure{min-width:0;padding:.42vh .54vw;border:1px solid color-mix(in srgb,var(--phase) 15%,#fff);border-radius:8px;background:color-mix(in srgb,var(--phase) 8%,#fff);display:flex;flex-direction:column;justify-content:center}
@@ -664,38 +672,42 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         </article>
       </div>
 
-      <div class="cb-row-label cb-mech-label"><small>MECH. + DISTR.</small><b>机制与装配</b><span>运行时参与 · 跨阶段分发</span></div>
-      <div class="cb-mechanism-rail" aria-label="Plugin / Extension 作为跨阶段装配节点，分发至平台支持的 Skill、MCP 与 Hook 机制">
-        <div class="cb-assembly-node"><b>Plugin / Extension</b><span>跨阶段打包 / 安装 · Skills、MCP Servers、Hooks（按平台支持）</span></div>
-        <svg class="cb-assembly-links" viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true">
-          <defs><marker id="cb-assembly-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L6 3L0 6Z" fill="#7773b2"/></marker></defs>
-          <path d="M500 84V95"/><path d="M62 95H819"/>
-          <path d="M62 95V111" marker-end="url(#cb-assembly-arrow)"/><path d="M315 95V111" marker-end="url(#cb-assembly-arrow)"/>
-          <path d="M433 95V111" marker-end="url(#cb-assembly-arrow)"/><path d="M567 95V111" marker-end="url(#cb-assembly-arrow)"/><path d="M819 95V111" marker-end="url(#cb-assembly-arrow)"/>
-        </svg>
+      <div class="cb-row-label cb-mech-label"><small>RUNTIME + SETUP</small><b>机制与装配</b><span>作用点与安装入口分开</span></div>
+      <div class="cb-mechanism-rail" aria-label="机制按任务阶段展示，Plugin 或 Extension 是独立的安装分发入口，正常 Agent Loop 单独呈现">
+        <div class="cb-assembly-node"><b>Plugin / Extension · 安装分发</b><span>部分平台用扩展包携带 Skill、MCP Server 或 App；具体内容由平台定义，不代表运行时横跨所有阶段。</span></div>
         <div class="cb-mechanism-stages" aria-label="机制在四个任务阶段中的运行作用">
-          <div class="cb-mechanism-stage is-source">
-            <div class="cb-mech-node is-extension-target"><b>MCP · Resources</b><span>读取外部资料</span></div>
-            <div class="cb-mech-node"><b>Rules</b><span>注入任务约束</span></div>
+          <div class="cb-mechanism-stage dense is-source">
+            <div class="cb-mech-node"><b>Rules · LOAD</b><span>带入持续约束</span></div>
             <div class="cb-mech-node"><b>Project Knowledge</b><span>带入本地约定</span></div>
             <div class="cb-mech-node"><b>Knowledge Base / RAG</b><span>检索可信来源</span></div>
+            <div class="cb-mech-node"><b>MCP · Resources</b><span>读取外部资料</span></div>
+            <div class="cb-mech-node"><b>Skill · LOAD</b><span>按任务加载方法</span></div>
           </div>
-          <div class="cb-mechanism-stage is-action">
-            <div class="cb-mech-node is-extension-target"><b>Skill / Workflow</b><span>给出任务步骤</span></div>
-            <div class="cb-mech-node is-extension-target"><b>MCP · Connector</b><span>连接外部动作</span></div>
+          <div class="cb-mechanism-stage dense is-action">
+            <div class="cb-mech-node"><b>Rules · APPLY</b><span>执行时持续约束</span></div>
+            <div class="cb-mech-node"><b>Skill · GUIDE</b><span>组织多步行动</span></div>
             <div class="cb-mech-node"><b>Built-in Tools</b><span>读写 / Shell / Browser</span></div>
-            <div class="cb-mech-node"><b>Subagent</b><span>隔离并行子任务</span></div>
+            <div class="cb-mech-node"><b>MCP · Connector</b><span>连接外部动作</span></div>
+            <div class="cb-mech-node"><b>Subagent</b><span>独立 Context · 子任务循环</span></div>
           </div>
           <div class="cb-mechanism-stage few is-control">
-            <div class="cb-mech-node is-extension-target"><b>Hook · PreTool</b><span>执行前检查 / 拦截</span></div>
+            <div class="cb-mech-node"><b>Hook · PreTool</b><span>执行前检查 / 拦截</span></div>
             <div class="cb-mech-node"><b>Permission / Sandbox</b><span>授权并隔离执行</span></div>
           </div>
-          <div class="cb-mechanism-stage is-evidence">
-            <div class="cb-mech-node is-extension-target"><b>Hook · PostTool / Stop</b><span>回填状态与结果</span></div>
+          <div class="cb-mechanism-stage dense six is-evidence">
+            <div class="cb-mech-node"><b>Skill · CHECK</b><span>提供核验清单</span></div>
+            <div class="cb-mech-node"><b>Hook · PostTool</b><span>处理工具返回后续动作</span></div>
+            <div class="cb-mech-node"><b>Hook · Stop</b><span>检查是否可结束 / 继续</span></div>
             <div class="cb-mech-node"><b>Build / Test</b><span>产生验证信号</span></div>
             <div class="cb-mech-node"><b>Evidence Receipt</b><span>汇总证据与边界</span></div>
             <div class="cb-mech-node"><b>Checkpoint</b><span>为可选恢复保存现场</span></div>
           </div>
+        </div>
+        <div class="cb-agent-loop" aria-label="正常 Agent 内循环：工具调用、结果回填、观察和重新规划后继续行动；不同于失败恢复">
+          <strong>AGENT LOOP</strong>
+          <div class="cb-agent-loop-flow"><span>工具调用</span><i>→</i><span>结果回填</span><i>→</i><span>观察 / 更新计划</span><i>→</i><span>继续行动</span></div>
+          <small>工具回合 · 非 /loop 定时提示</small>
+          <svg class="cb-agent-loop-return" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="cb-loop-return-arrow" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#55a486"/></marker></defs><path class="return-rail" d="M970 1V6Q970 12 960 12H40Q30 12 30 6V1" marker-end="url(#cb-loop-return-arrow)"/></svg>
         </div>
       </div>
 
@@ -709,7 +721,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
     </div>
   </div>
-  <footer class="foot">阶段色只用于区分任务环节，不表示能力强弱；橙色支线仅在验收未通过时触发。蓝紫分支表示 Plugin / Extension 按平台支持范围分发至相应机制节点；它不是运行步骤。</footer>
+  <footer class="foot">Agent Loop 是工具结果回填后的正常执行回合，非 Claude Code /loop 定时提示；橙色仅表示未通过时的可选恢复。Skill 按定义可参与加载、执行或核验；Plugin / Extension 仅为平台相关的安装分发入口。</footer>
 </div></section>
 
 <!-- 02 CONTENTS -->
