@@ -479,8 +479,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-stage.is-evidence,.cb-lane-cell.is-evidence,.cb-mechanism-stage.is-evidence,.cb-measure.is-evidence{--phase:var(--phase-evidence)}
 .cb-stage{min-width:0;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:.5vw;align-content:center;padding:.55vh .68vw;border:1px solid color-mix(in srgb,var(--phase) 22%,#fff);border-radius:10px;background:color-mix(in srgb,var(--phase) 11%,#fff)}
 .cb-stage small{grid-row:1/3;align-self:center;font:650 var(--fs-h2)/1 'Barlow Condensed';color:var(--phase)}
-.cb-stage b{display:flex;align-items:center;gap:.32vw;font-size:var(--fs-h3);line-height:1.08;color:color-mix(in srgb,var(--phase) 82%,#26313b)}
-.cb-stage b svg{width:15px;height:15px;flex:0 0 auto;stroke-width:1.9;color:var(--phase)}
+.cb-stage b{font-size:var(--fs-h3);line-height:1.08;color:color-mix(in srgb,var(--phase) 82%,#26313b)}
 .cb-stage span{margin-top:.22vh;font-size:var(--fs-xs);line-height:1.12;color:var(--ink-2)}
 .cb-row-label{grid-column:1;padding-left:.05vw;border-right:1px solid rgba(101,112,130,.16)}
 .cb-row-label b{font-size:var(--fs-sm)}.cb-row-label span{max-width:7.1vw}
@@ -492,6 +491,9 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-lane-cell:not(:last-child)::after{content:"";position:absolute;z-index:5;right:-.58vw;top:50%;width:.43vw;border-top:1.5px solid #8994a3}
 .cb-lane-cell:not(:last-child)::before{content:"";position:absolute;z-index:6;right:-.62vw;top:calc(50% - 3px);border-left:5px solid #8994a3;border-top:3px solid transparent;border-bottom:3px solid transparent}
 .cb-human-step b,.cb-step-heading{font-size:var(--fs-body);line-height:1.2;color:#29313b}
+.cb-human-step b{display:flex;align-items:center;gap:.38vw}
+.cb-human-step b svg{width:16px;height:16px;flex:0 0 auto;stroke-width:1.9;color:var(--phase)}
+.cb-human-step b span{min-width:0}
 .cb-human-step p{margin-top:.46vh;font-size:var(--fs-sm);line-height:1.34;color:var(--ink-2)}
 .cb-token-row{display:flex;flex-wrap:wrap;gap:.22vw;margin-top:.4vh}
 .cb-token-row span{padding:.3vh .42vw;border-radius:999px;background:rgba(255,255,255,.82);border:1px solid rgba(109,122,145,.12);font-size:var(--fs-xs);line-height:1.1;font-weight:700;color:#586577}
@@ -604,18 +606,18 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
     <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 的四阶段双泳道协作图，验收未通过时进入可选恢复分支">
       <div class="cb-axis"><small>任务阶段</small><b>四段主路径</b><span>责任接力</span></div>
       <div class="cb-stage-rail">
-        <div class="cb-stage is-source"><small>01</small><b><i data-lucide="book-open-check"></i>可信获取</b><span>可信知识进入任务 Context</span></div>
-        <div class="cb-stage is-action"><small>02</small><b><i data-lucide="workflow"></i>采取行动</b><span>Agent 组织计划并执行低风险动作</span></div>
-        <div class="cb-stage is-control"><small>03</small><b><i data-lucide="shield-check"></i>理解与控制</b><span>人能看懂、授权或调整</span></div>
-        <div class="cb-stage is-evidence"><small>04</small><b><i data-lucide="receipt-text"></i>证据验收</b><span>依据运行结果判断是否完成</span></div>
+        <div class="cb-stage is-source"><small>01</small><b>可信获取</b><span>可信知识进入任务 Context</span></div>
+        <div class="cb-stage is-action"><small>02</small><b>采取行动</b><span>Agent 组织计划并执行低风险动作</span></div>
+        <div class="cb-stage is-control"><small>03</small><b>理解与控制</b><span>人能看懂、授权或调整</span></div>
+        <div class="cb-stage is-evidence"><small>04</small><b>证据验收</b><span>依据运行结果判断是否完成</span></div>
       </div>
 
       <div class="cb-row-label cb-human-label"><small>HUMAN LANE</small><b>开发者</b><span>设目标 · 判断 · 接管</span></div>
       <div class="cb-lane cb-human-lane" aria-label="开发者泳道">
-        <article class="cb-lane-cell cb-human-step is-source"><b>提出目标与现场</b><p>说明任务目标，并提供芯片 / CANN / 框架版本、日志与已尝试动作。</p></article>
-        <article class="cb-lane-cell cb-human-step is-action"><b>界定完成条件</b><p>讲清预期结果、不可改动的边界，以及需要的验证信号。</p></article>
-        <article class="cb-lane-cell cb-human-step is-control"><b>审阅计划并作决定</b><p>看影响范围与风险；继续、暂停、补充信息或调整方向。</p></article>
-        <article class="cb-lane-cell cb-human-step is-evidence"><b>判断结果与状态</b><p>对照业务目标和证据；通过则确认，未通过则进入可选恢复。</p></article>
+        <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>提出目标与现场</span></b><p>说明任务目标，并提供芯片 / CANN / 框架版本、日志与已尝试动作。</p></article>
+        <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>界定完成条件</span></b><p>讲清预期结果、不可改动的边界，以及需要的验证信号。</p></article>
+        <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>审阅计划并作决定</span></b><p>看影响范围与风险；继续、暂停、补充信息或调整方向。</p></article>
+        <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>判断结果与状态</span></b><p>对照业务目标和证据；通过则确认，未通过则进入可选恢复。</p></article>
       </div>
 
       <div class="cb-row-label cb-handoff-label"><b>交接物</b></div>

@@ -3071,3 +3071,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；CSS / DOM 复核确认恢复支线已嵌入 Agent 的第四阶段节点，旧 `.cb-loop-rail` / `.cb-loop-point` / `.cb-loop-label` 及对应独立行均已删除，机制 / 观察 / 供给行改为第 5–7 行。未做目视截图复核；本地文件预览受 Browser Use URL policy 限制，没有绕过。
 - Commit / push：待完成后填写。
 - 未决事项：无。
+
+### 2026-09-24（将阶段图标移到开发者动作节点）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。副本第 5 页四段主路径标题去掉图标；将原四个 Lucide 图标移到开发者泳道各阶段动作标题前，并按阶段色着色。图标作为动作注释，不替代文字；Agent 泳道及其他页不变。
+- 依据：用户指出图标应属于开发者行节点，而不是第一行四段主路径。
+- 层级 / 页序：仅调整副本第 5 页图标位置，不影响页序、关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：HTMLParser 检查通过，确认阶段标题 4 个均无图标、开发者动作节点 4 个各有 1 个图标；`git diff --check` 通过。未做截图目视复核；本地文件预览受 Browser Use URL policy 限制，未绕过。
+- Commit / push：待完成后填写。
+- 未决事项：无。
