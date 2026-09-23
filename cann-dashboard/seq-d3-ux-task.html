@@ -1148,7 +1148,7 @@ function renderV(){
     const y=Y(d.xi);
     if(d.kind==="decision"){
       const x=LX[d.lane];
-      const gx=svg.append("g").attr("data-kind","node").attr("data-phase",PHASE.findIndex(ph=>d.xi>=ph.a&&d.xi<=ph.b)).attr("data-pair",brSrc[d.id]||null).attr("data-msg",d.id).attr("transform",`translate(${x},${y})`).style("cursor","pointer")
+      const gx=svg.append("g").attr("data-kind","node").attr("data-phase",PHASE.findIndex(ph=>d.xi>=ph.a&&d.xi<=ph.b)).attr("data-lane",d.lane).attr("data-pair",brSrc[d.id]||null).attr("data-msg",d.id).attr("transform",`translate(${x},${y})`).style("cursor","pointer")
         .on("mousemove",(e)=>showTip(e,d)).on("mouseleave",hideTip).on("click",(e)=>pinTip(e,d));
       drawBarV(gx,d);                       // 菱形按 dtier 深浅
       // 决策标题：放菱形左上方(单行,去「决策：」前缀)——用户要求朝左,右边被箭头挤、不易看
@@ -1160,7 +1160,7 @@ function renderV(){
     const f=FLOW[d.id]; if(!f) return;
     const frm=role(f.frm), to=role(f.to), x1=LX[frm];
     if(to==="self" || frm===to){            // 自身动作 / 档②③ 交付·回灌塌缩为同侧
-      const gx=svg.append("g").attr("data-kind","node").attr("data-phase",PHASE.findIndex(ph=>d.xi>=ph.a&&d.xi<=ph.b)).attr("transform",`translate(${x1},${y})`).style("cursor","pointer")
+      const gx=svg.append("g").attr("data-kind","node").attr("data-phase",PHASE.findIndex(ph=>d.xi>=ph.a&&d.xi<=ph.b)).attr("data-lane",frm).attr("transform",`translate(${x1},${y})`).style("cursor","pointer")
         .on("mousemove",(e)=>showTip(e,d)).on("mouseleave",hideTip).on("click",(e)=>pinTip(e,d));
       drawMarker(gx,d,PCOL[frm],false);
       sideLabel(gx,d, !(frm==="hu"||frm==="tool"));   // AI/社区侧→标题朝右；人/工具侧→朝左
@@ -1178,7 +1178,7 @@ function renderV(){
     const tt=svg.append("text").attr("data-kind","message").attr("data-phase",phaseIndex).attr("data-pair",pair).attr("data-msg",d.id).attr("x",(x1+x2)/2).attr("y",y-7).attr("text-anchor","middle")
       .attr("font-size",seqFont(13.5)).attr("font-weight",600).attr("fill", f.blocked?"#C8102E":"#333");
     tt.append("tspan").text(d.t);
-    const gx=svg.append("g").attr("data-kind","node").attr("data-phase",phaseIndex).attr("data-pair",pair).attr("data-msg",d.id).attr("transform",`translate(${x1},${y})`).style("cursor","pointer")
+    const gx=svg.append("g").attr("data-kind","node").attr("data-phase",phaseIndex).attr("data-lane",frm).attr("data-pair",pair).attr("data-msg",d.id).attr("transform",`translate(${x1},${y})`).style("cursor","pointer")
       .on("mousemove",(e)=>showTip(e,d)).on("mouseleave",hideTip).on("click",(e)=>pinTip(e,d));
     drawMarker(gx,d,PCOL[frm],f.blocked);
     if(f.blocked){                          // 红色空返回 + ✕（核心发现可视化）+ 对应矩阵分
@@ -2001,6 +2001,7 @@ html.fullseq #seqctrl{bottom:14px;right:18px;gap:8px}
 html.fullseq #seqctrl .sqbtn{width:32px;height:32px;border-radius:9px;font-size:19px}
 html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
 #journey [data-pair],#journey [data-lane],#journey [data-kind]{transition:opacity .28s,stroke-width .28s,filter .28s}
+@media(prefers-reduced-motion:reduce){#journey [data-pair],#journey [data-lane],#journey [data-kind]{transition:none!important}}
 #seqctrl{position:fixed;bottom:8px;right:12px;z-index:60;display:flex;gap:6px;align-items:center;font-family:'Noto Sans SC',sans-serif}
 #seqctrl .sqbtn{width:24px;height:24px;border-radius:7px;border:1px solid #d4d8df;background:rgba(255,255,255,.85);color:#444;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 #seqctrl .sqbtn:hover{background:#fff;border-color:#5B5BD6;color:#5B5BD6}
@@ -2029,7 +2030,7 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
     {name:'开发者 ↔ 昇腾社区 · 基础体验', pairs:['hu-off']}
   ];
   var step=0, hoverMsg=null, pinnedMsg=null, initialFocus=null;  // 0=全亮；hoverMsg=悬浮临时聚焦；pinnedMsg=点击钉住
-  var methodFocus=null, phaseFocus=null, triggerFocus=null;
+  var methodFocus=null, phaseFocus=null, triggerFocus=null, agentTransitionFocus=false, agentTransitionSnapshot=null;
   var TASK_MSG={D:'sD',M:'sM',X:'sX',O:'sO',L:'sL'};
   function curFocus(){return hoverMsg!=null?hoverMsg:pinnedMsg;}  // 有效聚焦：悬浮优先，否则用钉住的
   function lanesOf(g){var s={};g.pairs.forEach(function(p){p.split('-').forEach(function(l){s[l]=1;});});return s;}
@@ -2037,7 +2038,37 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
   function notifyHover(){try{if(window.parent&&window.parent!==window)window.parent.postMessage({__seqHover:curFocus()},'*');}catch(e){}}
   function updLbl(){var lbl=document.getElementById('sqLbl');if(!lbl)return;
     lbl.textContent=step<1?'默认 · 完整时序图':('模式 '+step+' · '+GROUPS[step-1].name);}
+  function applyAgentTransitionFocus(){
+    var svgEl=document.getElementById('journey'); if(!svgEl)return;
+    if(!agentTransitionSnapshot)agentTransitionSnapshot=Array.prototype.map.call(svgEl.children,function(el){
+      return {el:el,opacity:el.style.opacity,filter:el.style.filter,stroke:el.style.stroke,strokeWidth:el.style.strokeWidth,strokeOpacity:el.style.strokeOpacity};
+    });
+    Array.prototype.forEach.call(svgEl.children,function(el){
+      var kind=el.getAttribute&&el.getAttribute('data-kind');
+      var lane=el.getAttribute&&el.getAttribute('data-lane');
+      var pair=(el.getAttribute&&el.getAttribute('data-pair')||'').split('-');
+      var isAgentLane=lane==='ai';
+      var touchesAgent=isAgentLane||pair.indexOf('ai')>=0;
+      el.style.opacity=touchesAgent?'1':'.1';
+      el.style.filter=touchesAgent?'drop-shadow(0 0 4px rgba(107,91,168,.48))':'';
+      if(kind==='lane'&&el.tagName==='line'&&isAgentLane){
+        el.style.stroke='#6B5BA8'; el.style.strokeWidth='4'; el.style.strokeOpacity='1';
+      }else if(touchesAgent&&el.tagName==='line'&&(kind==='message'||kind==='block'||kind==='branch')){
+        el.style.strokeWidth='3';
+      }
+    });
+    var lbl=document.getElementById('sqLbl'); if(lbl)lbl.textContent='聚焦 · Agent 泳道';
+  }
+  function clearAgentTransitionFocus(){
+    if(!agentTransitionSnapshot)return;
+    agentTransitionSnapshot.forEach(function(s){
+      s.el.style.opacity=s.opacity; s.el.style.filter=s.filter; s.el.style.stroke=s.stroke;
+      s.el.style.strokeWidth=s.strokeWidth; s.el.style.strokeOpacity=s.strokeOpacity;
+    });
+    agentTransitionSnapshot=null;
+  }
   function applyHi(){
+    if(agentTransitionFocus){applyAgentTransitionFocus();return;}
     if(phaseFocus!=null){applyPhaseFocus(phaseFocus);return;}
     if(methodFocus){applyMethodFocus(methodFocus);return;}
     if(triggerFocus){applyTriggerFocus(triggerFocus);return;}
@@ -2174,6 +2205,13 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
   function go(n){var N=GROUPS.length;phaseFocus=null;methodFocus=null;triggerFocus=null;step=((n%(N+1))+(N+1))%(N+1);hoverMsg=null;pinnedMsg=null;applyHi();}
   window.addEventListener('message',function(e){
     var d=e&&e.data;
+    if(!d||!('__seqAgentFocus' in d))return;
+    agentTransitionFocus=!!d.__seqAgentFocus;
+    if(!agentTransitionFocus)clearAgentTransitionFocus();
+    applyHi();
+  });
+  window.addEventListener('message',function(e){
+    var d=e&&e.data;
     if(!d||!('__seqFocusLetter' in d))return;
     var letter=(d.__seqFocusLetter||'').toString().toUpperCase();
     hoverMsg=TASK_MSG[letter]||null;
@@ -2233,7 +2271,25 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
     }
     try{if(window.parent&&window.parent!==window)window.parent.postMessage({__seqPhaseReady:true},'*');}catch(e){}
   }
+  var deckTouchStartY=null;
+  window.addEventListener('touchstart',function(e){
+    deckTouchStartY=IS_FULL_SEQ&&window.parent&&window.parent!==window&&e.touches.length===1?e.touches[0].clientY:null;
+  },{passive:true,capture:true});
+  window.addEventListener('touchmove',function(e){
+    if(deckTouchStartY===null||e.touches.length!==1)return;
+    var deltaY=deckTouchStartY-e.touches[0].clientY;
+    if(Math.abs(deltaY)<24)return;
+    deckTouchStartY=null; e.preventDefault(); e.stopPropagation();
+    try{window.parent.postMessage({__deckWheel:deltaY>0?120:-120},'*');}catch(_){}
+  },{passive:false,capture:true});
+  window.addEventListener('touchend',function(){deckTouchStartY=null;},{passive:true});
+  window.addEventListener('touchcancel',function(){deckTouchStartY=null;},{passive:true});
   window.addEventListener('keydown',function(e){
+    if(IS_FULL_SEQ&&window.parent&&window.parent!==window&&['ArrowRight','ArrowDown','PageDown',' ','ArrowLeft','ArrowUp','PageUp'].indexOf(e.key)>=0){
+      e.preventDefault(); e.stopPropagation();
+      try{window.parent.postMessage({__deckWheel:['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key)>=0?120:-120},'*');}catch(_){}
+      return;
+    }
     if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(step+1);}
     else if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();go(step-1);}
   });
