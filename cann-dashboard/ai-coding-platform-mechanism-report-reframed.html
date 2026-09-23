@@ -460,7 +460,18 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 /* Relation-line contract: sequence rails live only in card gutters. */
 .ux-trust-chain::before{display:none}.ux-trust-node:not(:last-child)::after{content:"›";position:absolute;z-index:4;left:100%;top:50%;width:1vw;height:2px;background:var(--tone);color:var(--tone);font-size:16px;font-weight:900;line-height:1px;text-align:right;transform:translateY(-50%)}.payload-object em{min-width:0;overflow:hidden;text-overflow:ellipsis;font-style:normal;color:#364250}
 
-/* Opening page · four-stage human/agent collaboration map with an optional recovery branch. */
+/* Concrete task timeline · preserve the source sequence diagram as the broad, multi-actor view. */
+.task-timeline-page .head{margin-bottom:1.1vh}
+.task-timeline-page .body-area{height:70vh;min-height:0}
+.task-timeline-shell{width:100%;height:68vh;min-width:0;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:.65vh}
+.task-timeline-frame{min-width:0;min-height:0;overflow:hidden;border:1px solid rgba(255,255,255,.92);border-radius:15px;background:rgba(255,255,255,.64);box-shadow:0 12px 32px -22px rgba(28,38,60,.32)}
+.task-timeline-frame iframe{display:block;width:100%;height:100%;border:0;background:transparent}
+.task-timeline-bridge{min-width:0;display:grid;grid-template-columns:auto 1fr auto;gap:.65vw;align-items:center;padding:.65vh .82vw;border-radius:10px;background:#292d36;color:#fff}
+.task-timeline-bridge b{font-size:var(--fs-sm);white-space:nowrap;color:#c7c4ff}
+.task-timeline-bridge span{font-size:var(--fs-sm);line-height:1.25;color:rgba(255,255,255,.76)}
+.task-timeline-bridge strong{font-size:var(--fs-sm);white-space:nowrap;color:#a9ddcf}
+
+/* Agent mechanism drill-down · four runtime observation points, not task phases. */
 .task-rel-page{--phase-source:#3f77b7;--phase-action:#7558b7;--phase-control:#258e98;--phase-evidence:#438b69;--phase-recovery:#bd783b}
 .task-rel-page .head{margin-bottom:1.2vh}
 .task-rel-page .body-area{align-items:stretch}
@@ -609,36 +620,36 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   </div>
 </div></section>
 
-<!-- 02 TASK RELATIONSHIP MAP -->
-<section class="slide s-gray task-rel-page" data-title="任务关系总览"><div class="slide-inner">
-  <header class="head"><div class="head-l"><div class="subttl">不是再画一遍 Agent 的运行步骤，而是看每个任务时刻由谁负责、用什么支撑、交出什么</div><div class="ttl">任务由人和 Agent 接力完成：目标与判断在人，发现与执行由 Agent 协助</div></div></header>
-  <div class="body-area" aria-label="开发任务四阶段人机协作流程">
-    <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 的四阶段双泳道协作图，验收未通过时进入可选恢复分支">
-      <div class="cb-axis"><small>任务阶段</small><b>四段主路径</b><span>责任接力</span></div>
+<!-- AGENT MECHANISM DRILL-DOWN -->
+<section class="slide s-gray task-rel-page" data-title="Agent 机制下钻"><div class="slide-inner">
+  <header class="head"><div class="head-l"><div class="subttl">承接上一页的多方时序：这里只放大 Agent 泳道，开发者仍负责目标、授权与结果判断</div><div class="ttl">放大 Agent 内部：Context → Plan → Gate → Act / Observe</div></div><div class="section-tabs"></div></header>
+  <div class="body-area" aria-label="Agent运行机制四个观察点中的人机协作">
+    <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 的机制观察图，四列是运行观察点而非任务阶段，失败后恢复为可选分支">
+      <div class="cb-axis"><small>机制观察点</small><b>运行时视角</b><span>不是 P1–P7</span></div>
       <div class="cb-stage-rail">
-        <div class="cb-stage is-source"><small>01</small><b>可信获取</b><span>可信知识进入任务 Context</span></div>
-        <div class="cb-stage is-action"><small>02</small><b>采取行动</b><span>Agent 组织计划并执行低风险动作</span></div>
-        <div class="cb-stage is-control"><small>03</small><b>理解与控制</b><span>人能看懂、授权或调整</span></div>
-        <div class="cb-stage is-evidence"><small>04</small><b>证据验收</b><span>依据运行结果判断是否完成</span></div>
+        <div class="cb-stage is-source"><small>01 · CONTEXT</small><b>装配任务现场</b><span>目标、规则、知识与环境进入当前上下文</span></div>
+        <div class="cb-stage is-action"><small>02 · PLAN</small><b>形成行动方案</b><span>拆解子任务，选择工具或执行路径</span></div>
+        <div class="cb-stage is-control"><small>03 · GATE</small><b>检查并授权</b><span>按风险、权限与边界决定是否放行</span></div>
+        <div class="cb-stage is-evidence"><small>04 · ACT / OBSERVE</small><b>执行并观察</b><span>读取返回，累积证据，再决定下一步</span></div>
       </div>
 
       <div class="cb-row-label cb-human-label"><small>HUMAN LANE</small><b>开发者</b><span>设目标 · 判断 · 接管</span></div>
       <div class="cb-lane cb-human-lane" aria-label="开发者泳道">
-        <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>提出目标与现场</span></b><p>说明任务目标，并提供芯片 / CANN / 框架版本、日志与已尝试动作。</p></article>
-        <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>界定完成条件</span></b><p>讲清预期结果、不可改动的边界，以及需要的验证信号。</p></article>
-        <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>审阅计划并作决定</span></b><p>看影响范围与风险；继续、暂停、补充信息或调整方向。</p></article>
-        <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>判断结果与状态</span></b><p>对照业务目标和证据；通过则确认，未通过则进入可选恢复。</p></article>
+        <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>提供目标与现场</span></b><p>说明任务目标，并补充芯片 / CANN / 框架版本、日志与已尝试动作。</p></article>
+        <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>界定方案边界</span></b><p>讲清预期结果、不可改动的范围，以及希望 Agent 先做什么。</p></article>
+        <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>审阅并决定放行</span></b><p>看影响范围与风险；继续、暂停、补充信息或调整方向。</p></article>
+        <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>判断结果并接回</span></b><p>对照目标和证据；确认完成，或选择是否进入可选恢复。</p></article>
       </div>
 
       <div class="cb-row-label cb-handoff-label"><b>交接物</b></div>
-      <div class="cb-handoff-rail" aria-label="阶段交接方向">
-        <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>任务 + 环境</span></div>
-        <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 + 完成条件</span></div>
+      <div class="cb-handoff-rail" aria-label="机制观察点之间的人机交接">
+        <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 + 环境 + 约束</span></div>
+        <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>计划 + 工具选择</span></div>
         <div class="cb-handoff is-control"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M5 2v13M2 5l3-3 3 3M11 16V3M8 6l3-3 3 3"/></svg><span>行动预览 ↔ 放行决策</span></div>
-        <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>验证证据</span></div>
+        <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>工具返回 + 执行证据</span></div>
       </div>
 
-      <div class="cb-row-label cb-agent-label"><small>AGENT LANE</small><b>Agent</b><span>发现 · 组织 · 执行</span></div>
+      <div class="cb-row-label cb-agent-label"><small>AGENT LANE</small><b>Agent</b><span>装配 · 规划 · 执行</span></div>
       <div class="cb-lane cb-agent-lane" aria-label="Agent 泳道">
         <article class="cb-lane-cell cb-agent-step is-source">
           <div class="cb-source-flow">
@@ -649,7 +660,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
           </div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-action">
-          <div class="cb-vertical-flow"><span>理解规则与目标</span><i>↓</i><span>拆解计划 / 选择工具或子任务</span><i>↓</i><span class="cb-agent-callout">执行低风险动作，读取返回</span></div>
+          <div class="cb-vertical-flow"><span>理解目标与约束</span><i>↓</i><span>拆解计划 / 选择工具或子任务</span><i>↓</i><span class="cb-agent-callout">形成可执行方案，等待进入执行</span></div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-control">
           <div class="cb-preview-stack">
@@ -659,7 +670,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         </article>
         <article class="cb-lane-cell cb-agent-step is-evidence">
           <div class="cb-proof-flow">
-            <div class="cb-proof-signal">执行验证，整理可复核结果</div>
+            <div class="cb-proof-signal">调用工具，读取执行结果</div>
             <div class="cb-proof-items"><span>代码 Diff</span><span>Build / Test 信号</span><span>日志与产物</span><span>知识来源</span></div>
             <div class="cb-proof-result">Evidence Receipt · 已验证 / 尚未验证</div>
             <div class="cb-recovery-inline" aria-label="Agent 可选恢复分支：未通过或缺少证据时，补充线索、重试、换路或升级给领域负责人，并返回相关行动">
@@ -673,9 +684,9 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       </div>
 
       <div class="cb-row-label cb-mech-label"><small>RUNTIME + SETUP</small><b>机制与装配</b><span>作用点与安装入口分开</span></div>
-      <div class="cb-mechanism-rail" aria-label="机制按任务阶段展示，Plugin 或 Extension 是独立的安装分发入口，正常 Agent Loop 单独呈现">
+      <div class="cb-mechanism-rail" aria-label="机制按 Agent 运行观察点展示，Plugin 或 Extension 是独立的安装分发入口，正常 Agent Loop 单独呈现">
         <div class="cb-assembly-node"><b>Plugin / Extension · 安装分发</b><span>部分平台用扩展包携带 Skill、MCP Server 或 App；具体内容由平台定义，不代表运行时横跨所有阶段。</span></div>
-        <div class="cb-mechanism-stages" aria-label="机制在四个任务阶段中的运行作用">
+        <div class="cb-mechanism-stages" aria-label="机制在四个运行观察点中的作用；平台供给因产品而异">
           <div class="cb-mechanism-stage dense is-source">
             <div class="cb-mech-node"><b>Rules · LOAD</b><span>带入持续约束</span></div>
             <div class="cb-mech-node"><b>Project Knowledge</b><span>带入本地约定</span></div>
@@ -703,10 +714,10 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
             <div class="cb-mech-node"><b>Checkpoint</b><span>为可选恢复保存现场</span></div>
           </div>
         </div>
-        <div class="cb-agent-loop" aria-label="正常 Agent 内循环：工具调用、结果回填、观察和重新规划后继续行动；不同于失败恢复">
+        <div class="cb-agent-loop" aria-label="正常 Agent 内循环：工具调用、结果回填、观察和重新规划后继续行动；横跨规划与执行观察，不同于失败恢复">
           <strong>AGENT LOOP</strong>
           <div class="cb-agent-loop-flow"><span>工具调用</span><i>→</i><span>结果回填</span><i>→</i><span>观察 / 更新计划</span><i>→</i><span>继续行动</span></div>
-          <small>工具回合 · 非 /loop 定时提示</small>
+          <small>横跨 Plan 与 Act / Observe · 非 /loop 定时提示</small>
           <svg class="cb-agent-loop-return" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="cb-loop-return-arrow" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#55a486"/></marker></defs><path class="return-rail" d="M970 1V6Q970 12 960 12H40Q30 12 30 6V1" marker-end="url(#cb-loop-return-arrow)"/></svg>
         </div>
       </div>
@@ -721,14 +732,26 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
     </div>
   </div>
-  <footer class="foot">Agent Loop 是工具结果回填后的正常执行回合，非 Claude Code /loop 定时提示；橙色仅表示未通过时的可选恢复。Skill 按定义可参与加载、执行或核验；Plugin / Extension 仅为平台相关的安装分发入口。</footer>
+  <footer class="foot">四列是 Agent 运行机制的观察点，不等于上一页 P1–P7 任务阶段；平台机制供给因产品而异。Agent Loop 是工具结果回填后的正常迭代，非 /loop 定时提示；失败恢复仍是验收后的可选分支。</footer>
+</div></section>
+
+<!-- MULTI-ACTOR TASK TIMELINE -->
+<section class="slide s-gray task-timeline-page" data-title="算子开发全链路时序"><div class="slide-inner">
+  <header class="head"><div class="head-l"><div class="subttl">先看一个具体开发任务中，开发者、Agent、昇腾社区、第三方平台与本机工具怎样在阶段间交接</div><div class="ttl">自定义算子开发不是 Agent 单线推进：五方贯穿 P1–P7</div></div><div class="section-tabs"></div></header>
+  <main class="body-area">
+    <div class="task-timeline-shell">
+      <div class="task-timeline-frame"><iframe src="seq-d3-ux-task.html?full=1&amp;compact=1" title="自定义算子开发中五类参与者的 P1–P7 全链路时序图"></iframe></div>
+      <div class="task-timeline-bridge"><b>本页看全链路</b><span>谁在什么阶段提供知识、行动或反馈；时序中的角色不等同于 Agent 内部机制。</span><strong>下一页 → 放大 Agent 泳道</strong></div>
+    </div>
+  </main>
+  <footer class="foot">时序图复用自 AI 可用性研究材料 #15；示例范围：一次自定义算子开发。P1–P7 是此任务的阶段划分，不表示所有开发任务都必须采用相同路径。</footer>
 </div></section>
 
 <!-- 02 CONTENTS -->
 <section class="slide s-gray contents-slide" data-template="contents-directory" data-title="目录"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">先从开发任务理解协作，再看体验设计如何承接任务与学习</div><div class="ttl">从任务现场出发，走到协作体验与知识内化</div></div><div class="section-tabs"><span class="active">OVERVIEW</span></div></header><main class="body-area">
   <div class="contents-directory">
-    <article class="directory-card"><div class="directory-no">01</div><div class="directory-name">开发任务过程</div><div class="directory-en">TASK FLOW & FRICTION</div><div class="directory-items"><span>任务从理解到交接</span><span>问题可能在哪个环节发生</span><span>Add 算子失败与恢复示例</span></div><div class="directory-note">先看任务怎样推进、哪里会卡住</div></article>
-    <article class="directory-card"><div class="directory-no">02</div><div class="directory-name">平台机制</div><div class="directory-en">PLATFORM & HARNESS</div><div class="directory-items"><span>六个平台怎样推进任务</span><span>Harness 如何组织上下文与行动</span><span>机制如何影响用户协作</span></div><div class="directory-note">再解释差异从哪里来</div></article>
+    <article class="directory-card"><div class="directory-no">01</div><div class="directory-name">开发任务过程</div><div class="directory-en">TASK FLOW & FRICTION</div><div class="directory-items"><span>任务从理解到交接</span><span>Add 算子失败与恢复示例</span><span>五方参与者的 P1–P7 时序</span></div><div class="directory-note">先看任务怎样推进、哪里会卡住</div></article>
+    <article class="directory-card"><div class="directory-no">02</div><div class="directory-name">平台机制</div><div class="directory-en">PLATFORM & HARNESS</div><div class="directory-items"><span>先放大 Agent 内部运行机制</span><span>再看六个平台怎样组织任务</span><span>机制如何影响用户协作</span></div><div class="directory-note">从具体协作下钻到机制差异</div></article>
     <article class="directory-card"><div class="directory-no">03</div><div class="directory-name">昇腾现状</div><div class="directory-en">CURRENT ASCEND SUPPLY</div><div class="directory-items"><span>258 个 Skill 的能力结构</span><span>20 Tools + 5 Resources</span><span>已有资产覆盖到哪里</span></div><div class="directory-note">盘清已有基础与断点</div></article>
     <article class="directory-card"><div class="directory-no">04</div><div class="directory-name">协作体验设计</div><div class="directory-en">DESIGN THE COLLABORATION</div><div class="directory-items"><span>目标、路径与行动控制</span><span>过程可见、接管与恢复</span><span>衡量并持续改进</span></div><div class="directory-note">把后台机制变成体验</div></article>
     <article class="directory-card"><div class="directory-no">05</div><div class="directory-name">知识内化</div><div class="directory-en">LEARNING AFTER THE TASK</div><div class="directory-items"><span>任务结束后，知识留下了吗</span><span>开发中学习的画布方案</span><span>练习后回到项目验证</span></div><div class="directory-note">让经验能被理解与迁移</div></article>
@@ -1866,7 +1889,7 @@ mermaid.initialize({
 <script>
 (() => {
   const reportOrder = [
-    '封面','目录','开发任务流程与断点','Add 算子任务示例','任务关系总览',
+    '封面','目录','开发任务流程与断点','Add 算子任务示例','算子开发全链路时序','Agent 机制下钻',
     '六平台定位','平台能力沙盘','通用 Host 循环',
     'Claude Code 机制','Claude Code 组合归因','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 机制发现',
     'Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','Harness 如何接住失败','Harness 机制如何影响任务',
@@ -1884,8 +1907,8 @@ mermaid.initialize({
   reportOrder.forEach(title => { const slide = byTitle.get(title); if (slide) deck.appendChild(slide); });
 
   const chapterTitles = {
-    '01':new Set(['开发任务流程与断点','Add 算子任务示例']),
-    '02':new Set(['任务关系总览','六平台定位','平台能力沙盘','共同规律','通用 Host 循环','Claude Code 机制','Claude Code 组合归因','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 机制发现','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','Harness 如何接住失败','Harness 机制如何影响任务']),
+    '01':new Set(['开发任务流程与断点','Add 算子任务示例','算子开发全链路时序']),
+    '02':new Set(['Agent 机制下钻','六平台定位','平台能力沙盘','共同规律','通用 Host 循环','Claude Code 机制','Claude Code 组合归因','Claude 默认 Harness','Claude 上下文控制','Claude 恢复与验证','Claude 机制发现','Codex 机制','OpenCode 源码机制','Cursor 机制','Trae 机制','WorkBuddy 机制','机制对照','Harness 如何接住失败','Harness 机制如何影响任务']),
     '03':new Set(['现有供给总览','现有 Skill 能力','现有 MCP 能力','现有能力断点','Harness 与现状交叉']),
     '04':new Set(['用户体验五个关键时刻','行动前体验设计','行动后体验设计','昇腾可控变量','知识供给总纲','知识单元设计','Skill 供给设计','Skill 改造重点','MCP 供给设计','MCP 改造重点','知识供给运行回路','供给形态与合同','跨平台适配矩阵','接下来建设五件事','能力体验指标','持续改进闭环']),
     '05':new Set(['知识内化问题','开发中学习旅程','学习入口与隔离跟练','练习到项目验证','最终答案'])
@@ -1893,7 +1916,7 @@ mermaid.initialize({
   const tabLabels = {'01':'01 任务','02':'02 机制','03':'03 昇腾','04':'04 体验设计','05':'05 知识内化','A':'A 依据'};
   const tabMarkup = key => ['01','02','03','04','05','A'].map(k => `<button type="button" data-chapter="${k}" class="${k===key?'active ':''}${k==='A'?'appendix':''}" ${k===key?'aria-current="page"':''} aria-label="跳转到${tabLabels[k]}">${tabLabels[k]}</button>`).join('');
   reportOrder.forEach(title => {
-    const slide = byTitle.get(title); if (!slide || title==='封面' || title==='目录' || title==='任务关系总览') return;
+    const slide = byTitle.get(title); if (!slide || title==='封面' || title==='目录') return;
     let key = 'A'; for (const [candidate, titles] of Object.entries(chapterTitles)) if (titles.has(title)) key = candidate;
     const tabs = slide.querySelector('.section-tabs'); if (tabs) tabs.innerHTML = tabMarkup(key);
     const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · EVIDENCE APPENDIX' : `${key} · ${key==='01'?'TASK FLOW':key==='02'?'PLATFORM MECHANISMS':key==='03'?'ASCEND SUPPLY':key==='04'?'EXPERIENCE DESIGN':'LEARNING & TRANSFER'}`;
@@ -1910,7 +1933,7 @@ mermaid.initialize({
     navDots.appendChild(dot);
     return dot;
   });
-  const chapterStarts = {'01':'开发任务流程与断点','02':'六平台定位','03':'现有供给总览','04':'用户体验五个关键时刻','05':'知识内化问题','A':'运行控制与可信差异'};
+  const chapterStarts = {'01':'开发任务流程与断点','02':'Agent 机制下钻','03':'现有供给总览','04':'用户体验五个关键时刻','05':'知识内化问题','A':'运行控制与可信差异'};
   const controls = document.getElementById('controls');
   const counter = document.getElementById('counter');
   const prevBtn = document.getElementById('prevBtn');
@@ -1935,6 +1958,17 @@ mermaid.initialize({
     if (overview) return exitOverview(i);
     slides[Math.max(0, Math.min(slides.length - 1, i))].scrollIntoView({behavior, block:'start'});
   }
+  let iframeWheelLock = false;
+  addEventListener('message', event => {
+    const delta = event.data && event.data.__deckWheel;
+    if (typeof delta !== 'number' || Math.abs(delta) < 18 || iframeWheelLock) return;
+    const activeSlide = slides[current];
+    const activeFrame = [...activeSlide.querySelectorAll('iframe')].some(frame => frame.contentWindow === event.source);
+    if (!activeFrame) return;
+    iframeWheelLock = true;
+    setTimeout(() => { iframeWheelLock = false; }, 640);
+    go(current + (delta > 0 ? 1 : -1));
+  });
   document.querySelectorAll('.section-tabs button[data-chapter]').forEach(button => {
     button.addEventListener('click', event => {
       event.preventDefault(); event.stopPropagation();
