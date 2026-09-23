@@ -35,11 +35,11 @@ body.overview .slide-inner{position:absolute;top:0;left:0;width:100vw;height:100
 body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5vh 4vw}body.overview .s-glow .slide-inner{padding:7vh 6vw}body.overview .s-cover .slide-inner{padding:0}
 
 /* cover */
-.s-cover{color:#fff;background:#07080b;padding:0}.cv-bg{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 74% 42%,rgba(91,91,214,.34),transparent 28%),radial-gradient(circle at 60% 82%,rgba(40,168,216,.18),transparent 31%),linear-gradient(130deg,#08090d,#11131b 58%,#07080b)}
-.cv-bg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(90deg,transparent 32%,#000)}
-.cover-flow{position:absolute;right:4vw;top:14vh;width:54vw;height:62vh;opacity:.88}.cover-flow path{fill:none;stroke:rgba(125,146,255,.5);stroke-width:1.4}.cover-flow .node{fill:rgba(20,23,34,.88);stroke:rgba(255,255,255,.22);stroke-width:1.2}.cover-flow .hot{fill:rgba(91,91,214,.3);stroke:#8d8df0}.cover-flow text{fill:rgba(255,255,255,.72);font-family:'JetBrains Mono';font-size:12px;letter-spacing:.08em}
-.cv-content{position:relative;z-index:2;height:100vh;padding:6vh 6vw;display:flex;flex-direction:column;justify-content:space-between}.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}.cv-brand{display:flex;align-items:center;gap:.65em;font-weight:750;font-size:var(--fs-body);letter-spacing:.06em}.cv-brand .mark{width:18px;height:18px;border:1.5px solid #fff;transform:rotate(45deg);box-shadow:8px -8px 0 -4px #5b5bd6}.cv-meta{font:500 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.19em;text-transform:uppercase;color:rgba(255,255,255,.52)}
-.cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:61vw}.cv-kicker{font:500 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.3em;text-transform:uppercase;color:#a9b8ff}.cv-title{font-size:clamp(42px,5.2vw,82px);font-weight:780;line-height:1.02;letter-spacing:-.045em}.cv-title span{font-weight:240;color:rgba(255,255,255,.62)}.cv-sub{font-size:clamp(20px,2vw,32px);font-weight:300;line-height:1.28;color:rgba(255,255,255,.86)}.cv-lead{font-size:var(--fs-body);line-height:1.7;color:rgba(255,255,255,.58);max-width:44ch}.cv-ucd{font:500 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.48)}
+.s-cover{color:#19241f;background:#f1efe7;padding:0}.cv-bg{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 79% 42%,rgba(114,177,145,.19),transparent 31%),radial-gradient(ellipse at 95% 87%,rgba(225,133,89,.16),transparent 30%),linear-gradient(112deg,#f4f1e9 0%,#f3f1e9 45%,#e9eee7 100%)}
+.cv-bg::before{content:"";position:absolute;right:-9vw;top:-22vh;width:58vw;height:88vh;border:1px solid rgba(33,79,61,.07);border-radius:48% 52% 60% 40%;transform:rotate(-17deg)}
+.cover-journey{position:absolute;z-index:1;right:0;top:13vh;width:53vw;height:70vh;overflow:visible}.cover-journey text{font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif}.cover-route-shadow,.cover-route{fill:none;stroke-linecap:round;stroke-linejoin:round}.cover-route-shadow{stroke:rgba(26,58,43,.08);stroke-width:19}.cover-route{stroke:#426f59;stroke-width:4}.cover-return{fill:none;stroke:#9caa93;stroke-width:2.2;stroke-dasharray:7 9;stroke-linecap:round;stroke-linejoin:round}.cover-arrow{fill:#426f59}.cover-station{fill:#f7f4ec;stroke:#426f59;stroke-width:3}.cover-station.warm{stroke:#d9825e}.cover-station.cool{stroke:#518bb1}.cover-station.green{stroke:#4f9875}.cover-station-core{fill:#426f59}.cover-station-core.warm{fill:#d9825e}.cover-station-core.cool{fill:#518bb1}.cover-station-core.green{fill:#4f9875}.cover-step-no{fill:#87928a;font:700 15px 'JetBrains Mono';letter-spacing:.1em}.cover-step-title{fill:#1f2d25;font-size:26px;font-weight:800;letter-spacing:-.03em}.cover-step-detail{fill:#66736b;font-size:16px;font-weight:550}.cover-role{fill:#f7f4ec;stroke:rgba(42,73,55,.17);stroke-width:1}.cover-role-text{fill:#54645a;font-size:14px;font-weight:700}.cover-loop-label{fill:#54725e;font-size:15px;font-weight:750;letter-spacing:.05em}
+.cv-content{position:relative;z-index:2;height:100vh;padding:5.6vh 5.5vw 5vh;display:flex;flex-direction:column;justify-content:space-between}.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}.cv-brand{display:flex;align-items:center;gap:.8vw;color:#2c3931;font-weight:750;font-size:var(--fs-sm);letter-spacing:.08em}.cv-brand img{display:block;width:88px;height:auto;object-fit:contain}.cv-meta{font:600 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.15em;text-transform:uppercase;color:#78827a}
+.cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:39vw}.cv-kicker{font:650 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.25em;text-transform:uppercase;color:#63816d}.cv-title{font-size:clamp(42px,5.1vw,78px);font-weight:820;line-height:1.04;letter-spacing:-.045em;color:#17221b}.cv-title span{font-weight:350;color:#637068}.cv-sub{font-size:clamp(20px,1.9vw,30px);font-weight:650;line-height:1.32;color:#34453a}.cv-lead{font-size:var(--fs-body);line-height:1.68;color:#69746d;max-width:39ch}.cv-ucd{font:650 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase;color:#7a857c}
 
 /* gray analysis pages */
 .s-gray{color:var(--ink);padding:5vh 4vw;display:flex;flex-direction:column;background:var(--paper);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 480' preserveAspectRatio='none'%3E%3Cpath d='M0 320 C 380 250 760 330 1080 195 C 1280 140 1380 185 1440 130 L1440 480 L0 480 Z' fill='%237e8696' fill-opacity='0.07'/%3E%3Cpath d='M0 372 C 430 305 820 405 1180 245 C 1340 198 1402 240 1440 190 L1440 480 L0 480 Z' fill='%23949bab' fill-opacity='0.08'/%3E%3C/svg%3E"),linear-gradient(125deg,rgba(120,128,145,.05),transparent 50%);background-position:bottom center,0 0;background-size:100% 50%,100% 100%;background-repeat:no-repeat}
@@ -695,16 +695,35 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 <!-- 01 COVER -->
 <section class="slide s-cover" data-title="封面"><div class="slide-inner">
   <div class="cv-bg"></div>
-  <svg class="cover-flow" viewBox="0 0 780 520" aria-hidden="true">
-    <path d="M45 260 H160 M252 260 H340 M445 260 H535 M635 260 H730"/><path d="M205 220 V120 H390 V220 M390 300 V405 H585 V300"/><path d="M390 120 H640 V210"/>
-    <rect class="node" x="45" y="225" width="115" height="70" rx="14"/><rect class="hot" x="160" y="220" width="92" height="80" rx="16"/><rect class="node" x="340" y="220" width="105" height="80" rx="16"/><rect class="hot" x="535" y="220" width="100" height="80" rx="16"/><rect class="node" x="690" y="225" width="72" height="70" rx="14"/>
-    <rect class="node" x="315" y="78" width="150" height="62" rx="13"/><rect class="node" x="570" y="178" width="140" height="62" rx="13"/><rect class="node" x="510" y="385" width="150" height="62" rx="13"/>
-    <text x="74" y="266">GOAL</text><text x="178" y="265">CONTEXT</text><text x="361" y="265">AGENT</text><text x="555" y="265">EXECUTE</text><text x="706" y="266">PROOF</text><text x="341" y="114">KNOWLEDGE</text><text x="594" y="215">CAPABILITY</text><text x="533" y="422">RECOVERY</text>
+  <svg class="cover-journey" viewBox="0 0 1000 620" role="img" aria-labelledby="coverJourneyTitle coverJourneyDesc">
+    <title id="coverJourneyTitle">开发者与 Agent 共同推进任务的行为链路</title>
+    <desc id="coverJourneyDesc">从产生目标、理解问题、获取上下文、比较方案、执行验证到经验回流；开发者与 Agent 在关键决策点交接。</desc>
+    <path class="cover-route-shadow" d="M80 360 C145 360 145 238 230 238 S330 360 395 360 S485 230 560 230 S660 360 730 360 S820 248 900 248"/>
+    <path class="cover-route" d="M80 360 C145 360 145 238 230 238 S330 360 395 360 S485 230 560 230 S660 360 730 360 S820 248 900 248"/>
+    <path class="cover-return" d="M900 278 C900 493 772 530 520 530 S128 520 80 405"/>
+    <path class="cover-arrow" d="M69 407 L80 382 L91 408 Z"/>
+    <g aria-hidden="true">
+      <circle class="cover-station warm" cx="80" cy="360" r="24"/><circle class="cover-station-core warm" cx="80" cy="360" r="7"/>
+      <circle class="cover-station cool" cx="230" cy="238" r="24"/><circle class="cover-station-core cool" cx="230" cy="238" r="7"/>
+      <circle class="cover-station" cx="395" cy="360" r="24"/><circle class="cover-station-core" cx="395" cy="360" r="7"/>
+      <circle class="cover-station warm" cx="560" cy="230" r="24"/><circle class="cover-station-core warm" cx="560" cy="230" r="7"/>
+      <circle class="cover-station cool" cx="730" cy="360" r="24"/><circle class="cover-station-core cool" cx="730" cy="360" r="7"/>
+      <circle class="cover-station green" cx="900" cy="248" r="24"/><circle class="cover-station-core green" cx="900" cy="248" r="7"/>
+    </g>
+    <g text-anchor="middle">
+      <text class="cover-step-no" x="80" y="423">01 · INTENT</text><text class="cover-step-title" x="80" y="456">产生目标</text><text class="cover-step-detail" x="80" y="482">开发者定义要完成什么</text>
+      <text class="cover-step-no" x="230" y="169">02 · UNDERSTAND</text><text class="cover-step-title" x="230" y="201">理解问题</text><text class="cover-step-detail" x="230" y="226">人与 Agent 补齐边界</text>
+      <text class="cover-step-no" x="395" y="423">03 · CONTEXT</text><text class="cover-step-title" x="395" y="456">获取上下文</text><text class="cover-step-detail" x="395" y="482">文档 · 代码 · 社区经验</text>
+      <text class="cover-step-no" x="560" y="161">04 · DECIDE</text><text class="cover-step-title" x="560" y="193">比较方案</text><text class="cover-step-detail" x="560" y="218">AI 提议，开发者选择</text>
+      <text class="cover-step-no" x="730" y="423">05 · DELIVER</text><text class="cover-step-title" x="730" y="456">执行与验证</text><text class="cover-step-detail" x="730" y="482">Agent 行动，人判断证据</text>
+      <text class="cover-step-no" x="900" y="179">06 · LEARN</text><text class="cover-step-title" x="900" y="211">经验回流</text><text class="cover-step-detail" x="900" y="236">沉淀为团队与平台资产</text>
+    </g>
+    <text class="cover-loop-label" x="500" y="570" text-anchor="middle">验证结果 · 失败经验 · 方案取舍 → 进入下一轮任务</text>
   </svg>
   <div class="cv-content">
-    <div class="cv-top"><div class="cv-brand"><span class="mark"></span>ASCEND · AI DEVELOPMENT RESEARCH</div><div class="cv-meta">BEHAVIOR SYSTEM · 2026.09</div></div>
+    <div class="cv-top"><div class="cv-brand"><img src="../CANNlogo.png" alt="CANN"><span>AI DEVELOPMENT RESEARCH</span></div><div class="cv-meta">BEHAVIOR SYSTEM · 2026.09</div></div>
     <div class="cv-center"><div class="cv-kicker">FROM TASK TIMELINE TO SYSTEM DESIGN</div><h1 class="cv-title">AI 介入下的<br><span>开发行为系统</span></h1><div class="cv-sub">任务时序 × Agent 协作 × 体验设计</div><p class="cv-lead">从开发者与 Agent 怎样共同完成真实任务出发，再判断平台机制、昇腾供给与学习体验应该承担什么角色。</p></div>
-    <div class="cv-bot"><div class="cv-ucd">DEVELOPMENT BEHAVIOR · HARNESS · UX</div><div class="cv-meta">NEW COPY · SOURCE REPORT PRESERVED</div></div>
+    <div class="cv-bot"><div class="cv-ucd">DEVELOPMENT BEHAVIOR · HARNESS · UX</div><div class="cv-meta">CANN DEVELOPER EXPERIENCE</div></div>
   </div>
 </div></section>
 
@@ -2220,7 +2239,7 @@ mermaid.initialize({
     counter.textContent = `${String(current + 1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
     navDotButtons.forEach((dot, index) => { if (index === current) dot.setAttribute('aria-current','page'); else dot.removeAttribute('aria-current'); });
     prevBtn.disabled = current === 0; nextBtn.disabled = current === slides.length - 1;
-    document.body.classList.toggle('on-dark', slides[current].classList.contains('s-cover') || slides[current].classList.contains('s-glow'));
+    document.body.classList.toggle('on-dark', slides[current].classList.contains('s-glow'));
     if (writeHash && !overview) { hashLock = true; history.replaceState(null, '', `#${current + 1}`); hashLock = false; }
   }
   function go(i, behavior = 'smooth') {

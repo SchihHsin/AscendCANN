@@ -3174,3 +3174,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：5 段可执行内联 JavaScript 语法检查通过；Python HTMLParser 接受文档；静态断言确认正文 36 页、问题页 9 页且各自只有一个验证问题并带编号标题；`git diff --check` 通过。Browser Use URL policy 阻止直接检查本地预览，本轮未绕过限制，因此没有完成截图级视觉复核。
 - Commit / push：报告修改 `c59cf287`（`feat: rebalance development behavior report`）已推送至 `origin/main`；本交接记录随后单独提交并推送。
 - 未决事项：需要在允许的本地预览中确认 36 页正文的实际视觉密度、卡片高度和章节 Tab 在当前窗口宽度下的呈现。
+
+### 2026-09-24（更换开发行为系统报告封面）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`AGENTS.md`。用户选择“开发行为链路”方向后，将原有暗色网格 / 蓝紫光晕 / 抽象节点封面替换为浅色编辑式构图，并以 SVG 连续路径表现“产生目标 → 理解问题 → 获取上下文 → 比较方案 → 执行与验证 → 经验回流”；标题区与路径图分区，使用仓库既有 `CANNlogo.png`。
+- 设计 / 内容边界：用标注表达开发者、Agent 与二者协作的职责；虚线回流代表经验进入下一轮任务。封面示意，不新增平台机制或研究结论；正文页序、API / Protocol、Host / Harness、Application / Task 边界均未改变。没有生成或下载外部图像。
+- 验证：Python HTMLParser 通过；5 段可执行内联 JavaScript 语法通过；静态断言确认封面含六个行为阶段；`git diff --check` 通过。浏览器直接打开本地报告被 Browser Use URL policy 拦截，未绕过，故未完成截图级视觉复核。
+- Commit / push：待提交并推送本次封面与本记录。
+- 未决事项：需要用户在本地预览确认封面曲线路径、标题与各节点的实际空间关系。
