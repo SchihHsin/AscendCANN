@@ -3053,3 +3053,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；复核 diff 确认只移除 `.cb-stage` 的 `border-top` 声明。未做截图目视复核；本地文件预览曾受 Browser Use URL policy 限制，因此没有用其他方式绕过。
 - Commit / push：待完成后填写。
 - 未决事项：无；后续若继续改 Loop 与机制供给的呈现，仍按上一条记录等待用户确认。
+
+### 2026-09-24（移除副本第 5 页人机泳道的横向底色）
+
+- 变更文件：`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html`。移除开发者与 Agent 泳道外层横向铺开的底色和整行边框；保留各阶段内的独立节点底色 / 边框、阶段分区、交接箭头及其余结构。主报告和其他页未改。
+- 依据：用户要求开发者和 Agent 两行都不要有横向拉通的底色。外层泳道仅承担空间对齐，行身份由左侧 HUMAN / AGENT 标签和内部各阶段节点体现。
+- 层级 / 页序：只做第 5 页样式调整，不影响页序、节点关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；复核 CSS 差异确认只移除了 `.cb-human-lane` 与 `.cb-agent-lane` 外层的背景、边框和圆角，内部阶段节点与连线规则未改。未做截图目视复核；遵守本地预览的 Browser Use URL policy，未尝试绕过。
+- Commit / push：待完成后填写。
+- 未决事项：无。
