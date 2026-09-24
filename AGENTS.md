@@ -3502,5 +3502,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`cann-dashboard/assets/agent-stage-3d/`。为 Need、Search、Generate、Decide、Execute 分别加入目标与上下文、资料检索、代码生成、方案判断、执行回执主题的 3D PNG 插图；替换原有 Lucide 组合图标。阶段卡右侧插图改为单张透明背景图，并适配窄屏尺寸。
 - 依据 / 边界：按用户提出的无背景 3D 插图方向生成并采用五张图像资产。只改第 5 页阶段卡右侧视觉及该页插图样式，不改文字、阶段顺序、其他信息行、能力连线或页面序列；不影响 API / Host / Application 层边界。
 - 验证：五张图片均为 512×512 RGBA PNG，Alpha 范围为 `(0, 255)`；`git diff --check` 通过。未进行截图级页面视觉复核：本地 `file://` 报告页的浏览器预览受 URL 策略限制，没有绕过该限制。
-- Commit / push：待完成功能提交并推送至 `origin/main`。
+- Commit / push：功能提交 `d03dbeb8`（`style: add 3D illustrations to task stages`）已推送至 `origin/main`；本条交接记录随后补充并推送。
 - 未决事项：请刷新第 5 页确认插图比例与卡片正文空间。
