@@ -358,7 +358,7 @@ pre.code .f{color:#6fb6e0}/* 函数/方法 */
   <div class="lvlbox">
     <div class="lvlhead">AI 自主度 · 3 档协作模式 <span style="font-weight:400;color:#999;font-size:11px">（悬浮档位看说明）</span></div>
     <input type="range" min="0" max="2" step="1" value="0" id="lvl" class="lvlslider" aria-label="AI 自主度档位">
-    <div class="lvlticks"><span class="on" data-lvl="0">开发者主笔·AI 辅助</span><span data-lvl="1">AI 主写·开发者审核</span><span data-lvl="2">开发者委派·AI 自管</span></div>
+    <div class="lvlticks"><span class="on" data-lvl="0">开发者主笔·AI 辅助</span><span data-lvl="1">AI 主写·人审</span><span data-lvl="2">开发者委派·AI 自管</span></div>
   </div>
 </div>
 <div class="lvldesc" id="lvlDesc"></div>
@@ -961,14 +961,15 @@ const LVL=[
  {name:"开发者主笔，AI 辅助", exec:"开发者", decide:"开发者",
   covers:"问 ChatGPT/Claude、Copilot 全套(补全 / inline chat / 解释)、IDE AI 助手",
   desc:"代码由人编写、本地由人运行、决策由人裁定；AI 从旁提供片段 / 补全 / 解释。检索需人主动发起。"},
- {name:"AI 主写，开发者审核", exec:"AI", decide:"开发者",
+ {name:"AI 主写，人审", exec:"AI", decide:"开发者",
   covers:"<b>Vibe Coding</b>——Cursor / Claude Code 的 <b>agent 模式</b>：AI 自己改文件 / 跑命令 / 读报错自迭代",
   desc:"AI 成段生成代码、自行调用工具运行、读取报错自迭代，开发者审核查结果并修正。<b>执行转交 AI</b>；但<b>决策仍归人</b>、受阻时人仍会去社区核查（<b>安全网保留</b>，前提是 AI 暴露受阻、不静默退第三方平台）。"},
  {name:"开发者委派，AI 自主完成", exec:"AI", decide:"AI",
   covers:"Devin(异步)、spec 驱动、多智能体——内部实现不同，对人均为「委派→获取结果」",
   desc:"开发者委派整体任务(或预先编写规格)，AI 自主执行并提交 PR，人仅作最终验收。<b>决策亦归 AI</b>；深水区(D)知识有缺口时风险最高、而人介入最少。"}
 ];
-let curLvl=0;
+const requestedLvl=Number(new URLSearchParams(location.search).get("lvl"));
+let curLvl=Number.isInteger(requestedLvl)&&requestedLvl>=0&&requestedLvl<LVL.length?requestedLvl:0;
 /* 某动作在某档位归谁——只看 kind，与当前 lane 无关；lvl0 复现实测 */
 function laneAt(n,lvl){
   if(n.kind==="start"||n.kind==="deliver") return "hu";   // 立项 / 终交付恒人
@@ -1244,6 +1245,7 @@ function draw(){
   renderV();
 }
 const slider=document.getElementById("lvl");
+slider.value=String(curLvl);
 slider.addEventListener("input", e=>{ curLvl=+e.target.value; hideTip(); draw(); });
 slider.addEventListener("mousemove", e=>showModeCard(e,curLvl));
 slider.addEventListener("mouseleave", hideTip);

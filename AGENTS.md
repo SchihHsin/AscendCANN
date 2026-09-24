@@ -3223,3 +3223,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：5 段可执行内联 JavaScript 语法通过；HTMLParser 通过；静态断言确认聚焦逻辑不含 setTimeout / clearTimeout / 自动延时参数、离开两页后清除状态、第二次前进路径存在；`git diff --check` 通过。未做截图级预览。
 - Commit / push：待提交并推送。
 - 未决事项：需在本地预览中确认鼠标滚轮连续事件和触屏手势的实际节奏符合“聚焦停留、再次操作才继续”的预期。
+
+### 2026-09-24（第 3 页切换为 AI 主写、人审时序视图）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。报告第 3 页将嵌入图初始化为 `AI 主写、人审` 档；时序图副本新增可选 `lvl` 查询参数并同步滑块值，其他未指定档位的嵌入仍保持原默认。第 3 页标注当前模式，并说明 AI 执行、开发者保留关键判断、验收与交付。
+- 图形约束：复用 `opknow/20_human_ai_journey.html` 的算子任务时序骨架；生命线仍按本报告现有顺序“开发者 → AI → 昇腾社区 → 本机工具 → 第三方平台”展示，节点仅显示标识首字母。`AI 主写、人审` 档表示执行交给 AI、决策仍归开发者；第 3→4 页 Agent 泳道聚焦交互保持不变。
+- 证据 / 边界：来源图为既有研究材料；本次是视图档位与表现形式调整，不新增研究实证或平台机制结论，不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：报告与时序图副本共 10 段可执行内联脚本通过 `vm.Script` 语法检查；静态断言确认报告仅指定 `lvl=1`、图内参与者顺序不变、节点标记使用首字母、滑块与档位同步、Agent 聚焦消息仍存在；`git diff --check` 通过。未做截图级视觉复核；按本地页面预览策略未尝试其他浏览器或命令行截图绕过。
+- Commit / push：待提交并推送至 `origin/main`。
+- 未决事项：仍需在允许的本地预览中确认嵌入图的字号、缩放和当前窗口下的可读性。
