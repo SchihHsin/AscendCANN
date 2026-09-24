@@ -1141,6 +1141,17 @@ function renderV(){
       .attr("font-size",seqFont(13.5)).attr("font-weight",600).attr("fill","#333")
       .each(function(){ wrapText(d3.select(this), d.t, 9, IS_FULL_SEQ?19:16, (toRight?1:-1)*(IS_FULL_SEQ?34:28), true); }).attr("y",0);
   };
+  const focusExpansion=(g,d)=>{
+    const words={n1:["Need",38],sD:["Search",46],sD2:["Search",46],gD:["Generate",58],eD:["Execute",49],dSoc:["Decide",43]};
+    const item=words[d.id]; if(!item)return;
+    const [word,w]=item;
+    const tag=g.append("g").attr("data-focus-expansion","").attr("data-focus-msg",d.id)
+      .attr("transform","translate(20,-20)").style("display","none").style("pointer-events","none");
+    tag.append("rect").attr("x",0).attr("y",-9).attr("width",w).attr("height",17).attr("rx",8.5)
+      .attr("fill","#fff").attr("fill-opacity",.97).attr("stroke","#d9d4e4").attr("stroke-width",.8);
+    tag.append("text").attr("x",w/2).attr("y",3.5).attr("text-anchor","middle")
+      .attr("font-size",seqFont(10.5,true)).attr("font-weight",700).attr("fill","#5b4b86").text(word);
+  };
 
   /* 每步＝一条消息（标题在箭头上方）；决策＝执行者线上的菱形。nodeScore(矩阵指标分小字)已按用户要求不再渲染——数据保留备用，悬浮 tip 仍可显示 */
   const NS=SCENARIOS[curScen].nodeScore||{};
@@ -1152,6 +1163,7 @@ function renderV(){
       const gx=svg.append("g").attr("data-kind","node").attr("data-phase",PHASE.findIndex(ph=>d.xi>=ph.a&&d.xi<=ph.b)).attr("data-lane",d.lane).attr("data-pair",brSrc[d.id]||null).attr("data-msg",d.id).attr("transform",`translate(${x},${y})`).style("cursor","pointer")
         .on("mousemove",(e)=>showTip(e,d)).on("mouseleave",hideTip).on("click",(e)=>pinTip(e,d));
       drawBarV(gx,d);                       // 菱形按 dtier 深浅
+      focusExpansion(gx,d);
       // 决策标题：放菱形左上方(单行,去「决策：」前缀)——用户要求朝左,右边被箭头挤、不易看
       gx.append("text").attr("text-anchor","end").attr("x",-20).attr("y",-11)
         .attr("font-size",seqFont(11)).attr("font-weight",600).attr("fill","#555")
@@ -1163,7 +1175,9 @@ function renderV(){
     if(to==="self" || frm===to){            // 自身动作 / 档②③ 交付·回灌塌缩为同侧
       const gx=svg.append("g").attr("data-kind","node").attr("data-phase",PHASE.findIndex(ph=>d.xi>=ph.a&&d.xi<=ph.b)).attr("data-lane",frm).attr("transform",`translate(${x1},${y})`).style("cursor","pointer")
         .on("mousemove",(e)=>showTip(e,d)).on("mouseleave",hideTip).on("click",(e)=>pinTip(e,d));
+      gx.attr("data-msg",d.id);
       drawMarker(gx,d,PCOL[frm],false);
+      focusExpansion(gx,d);
       sideLabel(gx,d, !(frm==="hu"||frm==="tool"));   // AI/社区侧→标题朝右；人/工具侧→朝左
       return;
     }
@@ -1182,6 +1196,7 @@ function renderV(){
     const gx=svg.append("g").attr("data-kind","node").attr("data-phase",phaseIndex).attr("data-lane",frm).attr("data-pair",pair).attr("data-msg",d.id).attr("transform",`translate(${x1},${y})`).style("cursor","pointer")
       .on("mousemove",(e)=>showTip(e,d)).on("mouseleave",hideTip).on("click",(e)=>pinTip(e,d));
     drawMarker(gx,d,PCOL[frm],f.blocked);
+    focusExpansion(gx,d);
     if(f.blocked){                          // 红色空返回 + ✕（核心发现可视化）+ 对应矩阵分
       const ry=y+15;
       svg.append("line").attr("data-kind","block").attr("data-phase",phaseIndex).attr("data-pair",pair).attr("data-msg",d.id).attr("x1",x2-dir*3).attr("y1",ry).attr("x2",x1+dir*14).attr("y2",ry)
@@ -2067,6 +2082,10 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
         el.style.strokeWidth='2.8'; el.style.strokeOpacity='1';
       }
     });
+    Array.prototype.forEach.call(svgEl.querySelectorAll('[data-focus-expansion]'),function(el){
+      var msg=el.getAttribute('data-focus-msg');
+      el.style.display=firstCycleMsgs.indexOf(msg)>=0?'':'none';
+    });
     var lbl=document.getElementById('sqLbl'); if(lbl)lbl.textContent='聚焦 · 首轮任务循环（P1–P2）';
   }
   function clearAgentTransitionFocus(){
@@ -2075,6 +2094,8 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
       s.el.style.opacity=s.opacity; s.el.style.filter=s.filter; s.el.style.stroke=s.stroke;
       s.el.style.strokeWidth=s.strokeWidth; s.el.style.strokeOpacity=s.strokeOpacity;
     });
+    var svgEl=document.getElementById('journey');
+    if(svgEl)Array.prototype.forEach.call(svgEl.querySelectorAll('[data-focus-expansion]'),function(el){el.style.display='none';});
     agentTransitionSnapshot=null;
   }
   function applyHi(){
