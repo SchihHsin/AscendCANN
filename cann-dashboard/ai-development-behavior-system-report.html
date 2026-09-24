@@ -716,7 +716,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 }
 </style>
 <style>
-/* 问题章节：每题按“截图观察 → 可交互 Demo”成对阅读。 */
+/* 问题章节：现状截图标出证据位置，方案页以编号设计点回应问题。 */
 .problem-page{--problem-tone:var(--c-indigo)}.problem-page[data-hypothesis="02"],.problem-page[data-hypothesis="03"]{--problem-tone:var(--c-blue)}.problem-page[data-hypothesis="04"],.problem-page[data-hypothesis="05"]{--problem-tone:var(--c-orange)}.problem-page[data-hypothesis="06"],.problem-page[data-hypothesis="07"]{--problem-tone:var(--c-teal)}.problem-page[data-hypothesis="08"],.problem-page[data-hypothesis="09"]{--problem-tone:var(--c-purple)}
 .problem-page .head{margin-bottom:1.7vh}.problem-page .body-area{gap:1.05vh}.problem-page .ttl{font-size:clamp(26px,1.9vw,36px);line-height:1.18}
 .problem-kicker{display:flex;align-items:center;gap:.6vw;color:var(--ink-3);font:650 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.06em}.problem-kicker::before{content:"";width:1.35vw;height:3px;border-radius:99px;background:var(--problem-tone)}.problem-kicker b{color:var(--ink-2);font:750 var(--fs-sm)/1.25 'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;letter-spacing:0}.problem-kicker .state{margin-left:auto;padding:.38vh .65vw;border-radius:999px;background:color-mix(in srgb,var(--problem-tone) 11%,white);color:color-mix(in srgb,var(--problem-tone) 70%,#333);font:700 var(--fs-xs)/1.2 'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;letter-spacing:0}
@@ -750,6 +750,56 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .problem-status-page .problem-shot-viewport img{width:100%;height:100%;object-fit:contain;object-position:center center;background:transparent}
 .problem-status-page .problem-shot-caption{flex:0 0 auto;padding:.5vh .1vw 0}
 @media(max-width:1180px){.problem-status-page .problem-evidence-layout{grid-template-columns:minmax(0,1.55fr) minmax(230px,.85fr)}.problem-status-page .problem-shot-viewport{height:auto}}
+
+/* Evidence + design-point annotations: numbered frames on the actual screenshot/mockup. */
+.problem-image-stage{position:relative;flex:0 0 auto;overflow:visible}
+.problem-image-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+.problem-evidence-stage{width:100%;aspect-ratio:8/5}
+.problem-focus{--focus-tone:var(--problem-tone);position:absolute;left:var(--focus-x);top:var(--focus-y);width:var(--focus-w);height:var(--focus-h);z-index:2;border:2px solid color-mix(in srgb,var(--focus-tone) 78%,white);border-radius:7px;background:color-mix(in srgb,var(--focus-tone) 8%,transparent);box-shadow:0 0 0 1px rgba(255,255,255,.76),0 2px 14px rgba(24,31,44,.14);pointer-events:none}
+.problem-focus b{position:absolute;left:-11px;top:-11px;display:grid;place-items:center;width:26px;height:26px;border:2px solid #fff;border-radius:50%;background:var(--focus-tone);color:#fff;font:800 11px/1 'JetBrains Mono';box-shadow:0 3px 9px rgba(18,22,30,.28)}
+.problem-status-page .problem-shot-viewport{display:flex;align-items:center;justify-content:center;overflow:visible}
+.problem-status-page .problem-evidence-stage{width:min(100%,120vh);max-width:100%;height:auto}
+.problem-solution-page{--glow-h:var(--problem-hue,235);--glow-h2:292;--glow-sat:86%;--glow-light:42%;--glow-spread:38;--glow-color-int:.58;--glow-white-int:.32;color:#fff;background:#06060a;padding:0}
+.problem-solution-page>.slide-inner{position:relative;display:flex;flex-direction:column;height:100%;min-height:0;padding:0 3.2vw 1.6vh;isolation:isolate}
+.problem-solution-page>.slide-inner::before,.problem-solution-page>.slide-inner::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42vh;z-index:-1;pointer-events:none;mix-blend-mode:screen}
+.problem-solution-page>.slide-inner::before{background:radial-gradient(ellipse 68% 96% at 20% 112%,hsla(var(--glow-h),88%,55%,.38),transparent 88%),radial-gradient(ellipse 68% 96% at 80% 112%,hsla(var(--glow-h2),86%,56%,.3),transparent 88%)}
+.problem-solution-page>.slide-inner::after{background:linear-gradient(to top,rgba(238,241,255,.17),transparent 82%)}
+.problem-solution-page .problem-chrome{position:absolute;top:3.1vh;left:3.2vw;right:3.2vw;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:1vw;min-height:2.6vh;color:rgba(255,255,255,.55);font:600 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.12em;text-transform:uppercase}
+.problem-solution-page .chrome-label{white-space:nowrap}
+.problem-solution-page .section-tabs{margin-left:auto;padding:.25vh .3vw;border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.06);backdrop-filter:blur(12px)}
+.problem-solution-page .section-tabs button{color:rgba(255,255,255,.5)}
+.problem-solution-page .section-tabs button.active{background:rgba(255,255,255,.92);color:#16191e;box-shadow:none}
+.problem-solution-page .section-tabs button.appendix{border-left-color:rgba(255,255,255,.14)}
+.solution-content{position:relative;z-index:1;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:.85vh;width:100%;height:100%;min-height:0;padding-top:7.4vh;padding-bottom:1vh}
+.solution-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.4vh 1vw;align-items:end;min-width:0}
+.solution-heading .solution-meta{grid-column:1/-1;display:flex;align-items:center;gap:.65vw;color:rgba(255,255,255,.55);font-size:var(--fs-xs);line-height:1.2}
+.solution-heading .solution-meta b{color:color-mix(in srgb,var(--problem-tone) 72%,white);font-size:var(--fs-sm)}
+.solution-heading h1{min-width:0;font-size:clamp(30px,2.25vw,40px);line-height:1.15;letter-spacing:-.025em;font-weight:780;background:linear-gradient(100deg,color-mix(in srgb,var(--problem-tone) 76%,white),#d9d0ff 62%,#c4e5ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.solution-heading .platform-tag{align-self:end;justify-self:end;max-width:18vw;padding:.5vh .7vw;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.76);font-size:var(--fs-sm);font-weight:700;white-space:nowrap}
+.solution-layout{display:grid;grid-template-columns:minmax(0,5.5fr) minmax(0,1fr);gap:1.05vw;align-items:stretch;min-width:0;min-height:0}
+.solution-figure{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;margin:0;overflow:visible}
+.solution-image-stage{width:min(100%,142vh);aspect-ratio:1672/941;border:1px solid rgba(255,255,255,.2);border-radius:12px;overflow:visible;background:rgba(255,255,255,.035);box-shadow:0 24px 64px -28px hsla(var(--glow-h),82%,32%,.55)}
+.solution-image-stage img{border-radius:11px}
+.solution-focus{--focus-tone:color-mix(in srgb,var(--problem-tone) 82%,white);border-color:var(--focus-tone);background:color-mix(in srgb,var(--problem-tone) 10%,transparent);box-shadow:0 0 0 1px rgba(7,8,12,.45),0 0 18px color-mix(in srgb,var(--problem-tone) 28%,transparent)}
+.solution-focus b{left:-12px;top:-12px;width:28px;height:28px;border-color:#090a10;background:var(--problem-tone);font-size:11px}
+.solution-points{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:.55vh;min-width:0;min-height:0;padding:.2vh .1vw .1vh .2vw}
+.solution-points-head{display:flex;align-items:baseline;justify-content:space-between;gap:.5vw;padding-bottom:.45vh;border-bottom:1px solid rgba(255,255,255,.17)}
+.solution-points-head b{font-size:var(--fs-h3);line-height:1.2;color:#fff}
+.solution-points-head span{font:650 var(--fs-xs)/1.2 'JetBrains Mono';color:rgba(255,255,255,.45);white-space:nowrap}
+.solution-point-list{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:.2vh;min-width:0;min-height:0}
+.solution-point{--point-tone:var(--problem-tone);display:grid;grid-template-columns:1fr;align-content:start;gap:.24vh;min-width:0;min-height:0;padding:.5vh .42vw;border-bottom:1px solid rgba(255,255,255,.12);background:linear-gradient(100deg,color-mix(in srgb,var(--point-tone) 9%,transparent),transparent 78%)}
+.solution-point-head{display:flex;align-items:center;gap:.42vw;min-width:0;margin-bottom:.12vh}
+.solution-point-head .num{display:grid;place-items:center;flex:0 0 auto;width:1.35vw;height:1.35vw;min-width:21px;min-height:21px;border-radius:50%;background:color-mix(in srgb,var(--point-tone) 25%,#171922);color:color-mix(in srgb,var(--point-tone) 68%,white);font:800 var(--fs-xs)/1 'JetBrains Mono'}
+.solution-point-head b{font-size:var(--fs-sm);line-height:1.2;color:#fff}
+.solution-point dl{display:grid;gap:.18vh;min-width:0}
+.solution-point dl>div{display:grid;grid-template-columns:3.5em minmax(0,1fr);gap:.25vw;align-items:start;min-width:0;font-size:var(--fs-xs);line-height:1.24}
+.solution-point dt{color:rgba(255,255,255,.43);white-space:nowrap}
+.solution-point dd{min-width:0;color:rgba(255,255,255,.76)}
+.solution-point dl>div:last-child dd{color:color-mix(in srgb,var(--point-tone) 62%,white);font-weight:650}
+.solution-boundary{padding-top:.35vh;color:rgba(255,255,255,.48);font-size:var(--fs-xs);line-height:1.25}
+.solution-boundary b{color:rgba(255,255,255,.68)}
+@media(max-width:1180px){.problem-solution-page>.slide-inner{padding-inline:2.4vw}.problem-solution-page .problem-chrome{left:2.4vw;right:2.4vw}.solution-content{padding-top:8vh}.solution-layout{grid-template-columns:minmax(0,4.5fr) minmax(0,1fr);gap:.8vw}.solution-heading h1{font-size:clamp(27px,2.4vw,34px)}.solution-point{padding:.35vh .35vw}}
+.problem-fact p{font-size:var(--fs-body)}.problem-question-box b{font-size:var(--fs-body);line-height:1.32}.solution-point dl>div{font-size:var(--fs-body)}.solution-point dt{font-size:var(--fs-xs)}
 </style>
 </head>
 <body>
@@ -2426,6 +2476,54 @@ mermaid.initialize({
     '09': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/09-codex-responsibility-gate.png',solutionAlt:'Codex 工作台中区分建议、执行、批准和结果责任人的高影响动作确认概念图',solutionBoundary:'高影响动作前明确执行权限与批准人，事后保留责任记录；这是工作台设计提案，不是 Codex 现成功能。'}
   };
   problemCases.forEach(item=>Object.assign(item,solutionMockups[item.n]));
+  const problemVisualAnnotations = {
+    '01':{evidenceMarks:[{x:7,y:39,w:63,h:26},{x:7,y:72,w:63,h:21}],designPoints:[
+      {title:'先把任务说完整',choice:'目标、负载、约束与完成条件结构化',problem:'初始提示可能含糊或缺项',mechanism:'缺项先补问；确认后才执行',benefit:'人与 Agent 共享同一成功标准',mark:{x:24,y:27,w:49,h:44}},
+      {title:'把当前工程现场带进来',choice:'简报旁显示项目、文件与环境',problem:'目标容易脱离实际工程条件',mechanism:'从工作区带入现场信息并允许修订',benefit:'更早发现目标与环境不一致',mark:{x:74,y:12,w:24,h:69}},
+      {title:'明确开始任务的时机',choice:'保留“确认开始 / 补充信息”入口',problem:'信息未对齐就进入执行',mechanism:'确认前不启动工程动作',benefit:'开发者保留任务启动决定权',mark:{x:24,y:82,w:25,h:8}}
+    ]},
+    '02':{evidenceMarks:[{x:7,y:21,w:66,h:14},{x:8,y:54,w:65,h:28}],designPoints:[
+      {title:'先固定当前环境',choice:'页首显示芯片与 CANN 版本',problem:'相似问题可能来自不同软硬件组合',mechanism:'把任务现场作为适用性比较基准',benefit:'用户知道每条建议对应哪个环境',mark:{x:57,y:28,w:39,h:12}},
+      {title:'逐条判断知识范围',choice:'来源表并列适用范围与验证状态',problem:'版本线索不等于当前任务可用',mechanism:'标出匹配、冲突与待核对项',benefit:'用户能区分可参考与不可照搬的内容',mark:{x:19,y:44,w:78,h:40}},
+      {title:'让用户能回到原始依据',choice:'建议与原文入口并列呈现',problem:'只看摘要难以核验推断边界',mechanism:'保留来源、版本与原文跳转',benefit:'开发者可以复核后再采用',mark:{x:19,y:86,w:78,h:12}}
+    ]},
+    '03':{evidenceMarks:[{x:7,y:21,w:65,h:13},{x:7,y:55,w:64,h:30}],designPoints:[
+      {title:'先问任务是什么',choice:'按任务类型开始装配',problem:'用户容易把模型、Agent 与 Harness 混为一谈',mechanism:'先用任务目标筛选适配能力',benefit:'减少从空白能力清单起步的负担',mark:{x:24,y:13,w:46,h:15}},
+      {title:'解释推荐的能力组合',choice:'列出 Skill、检索、MCP 与验证工具',problem:'工具多，但选择依据不清楚',mechanism:'逐项说明用途并允许增删',benefit:'开发者看得懂组合理由，也能调整',mark:{x:25,y:28,w:46,h:55}},
+      {title:'把权限影响摆在确认前',choice:'区分只读能力与有副作用的动作',problem:'工具选择可能隐含环境或代码风险',mechanism:'显示权限需求并对高风险操作二次确认',benefit:'用户能在授权前判断影响范围',mark:{x:72,y:14,w:24,h:77}}
+    ]},
+    '04':{evidenceMarks:[{x:7,y:21,w:66,h:15},{x:7,y:40,w:66,h:24}],designPoints:[
+      {title:'让当前进度有位置',choice:'显示阶段、正在做的事与下一步',problem:'等待时无法判断任务是否已启动',mechanism:'进度节点随执行状态更新',benefit:'用户知道 Agent 做到哪里、在等什么',mark:{x:21,y:15,w:54,h:15}},
+      {title:'保留近期行动与变更',choice:'并列显示日志摘要和文件 Diff',problem:'自动执行后难以理解发生了什么',mechanism:'把动作、文件和结果串成可读记录',benefit:'异常时能定位变化并决定如何接手',mark:{x:21,y:30,w:55,h:55}},
+      {title:'把暂停与恢复放在现场',choice:'提供暂停、重试与检查点回退',problem:'出错后可能只能从头开始',mechanism:'保存稳定点、变更和失败记录',benefit:'开发者可继续、纠偏或回到安全状态',mark:{x:77,y:14,w:20,h:67}}
+    ]},
+    '05':{evidenceMarks:[{x:7,y:21,w:66,h:14},{x:7,y:71,w:64,h:21}],designPoints:[
+      {title:'把验证项逐项列出',choice:'功能、精度、Shape 与性能分开检查',problem:'部分测试通过可能被误读成整体通过',mechanism:'每项记录状态、范围与关联产物',benefit:'用户看清哪些结论已有证据',mark:{x:2,y:37,w:69,h:51}},
+      {title:'明确缺少的验证证据',choice:'单列未运行、缺覆盖与需真机项',problem:'未执行的检查容易从汇总中消失',mechanism:'将缺项与运行结果区别显示',benefit:'开发者知道还不能下什么结论',mark:{x:72,y:47,w:26,h:37}},
+      {title:'让交付状态跟着证据走',choice:'证据不完整时暂停合入',problem:'“代码已生成”被当作“任务已完成”',mechanism:'只有满足约定条件才开放合入',benefit:'Reviewer 能据证据决定继续或放行',mark:{x:72,y:83,w:26,h:11}}
+    ]},
+    '06':{evidenceMarks:[{x:7,y:39,w:64,h:17},{x:7,y:62,w:64,h:27}],designPoints:[
+      {title:'交接方案选择理由',choice:'把设计理由附在变更旁',problem:'Reviewer 只能从 Diff 猜为什么这样改',mechanism:'摘要说明目标与关键取舍',benefit:'评审者能按意图检查实现',mark:{x:58,y:35,w:40,h:13}},
+      {title:'留下比较与失败路径',choice:'记录备选方案和排除原因',problem:'失败尝试容易留在私人会话里',mechanism:'将尝试、修正和证据并入评审上下文',benefit:'团队不必重复探索已排除路线',mark:{x:58,y:48,w:40,h:25}},
+      {title:'标明尚未验证的风险',choice:'给未验证项和边界单独留位',problem:'未完成事项可能被误当成已覆盖',mechanism:'Reviewer 摘要突出待确认风险',benefit:'维护者知道后续应验证什么',mark:{x:58,y:73,w:40,h:12}}
+    ]},
+    '07':{evidenceMarks:[{x:1,y:27,w:78,h:10},{x:1,y:37,w:78,h:14}],designPoints:[
+      {title:'把解释贴近当前错误',choice:'提供“为什么这样改 / 适用边界”',problem:'任务完成不代表开发者理解了原因',mechanism:'围绕当前代码和错误按需展开解释',benefit:'用户可在需要时看懂关键原理',mark:{x:21,y:14,w:27,h:54}},
+      {title:'在隔离副本中练习',choice:'并排展示只读原文件与练习副本',problem:'直接试错可能影响真实项目',mechanism:'改动只写入独立练习区',benefit:'开发者可安全验证自己的理解',mark:{x:49,y:21,w:48,h:38}},
+      {title:'用迁移检查回到项目',choice:'练习后检查边界并返回原任务',problem:'看过讲解不等于能迁移应用',mechanism:'以新条件小练习，再由用户审阅修改',benefit:'保护原现场，同时观察是否理解',mark:{x:49,y:59,w:48,h:35}}
+    ]},
+    '08':{evidenceMarks:[{x:7,y:39,w:65,h:21},{x:7,y:60,w:65,h:16}],designPoints:[
+      {title:'先由用户选择分享内容',choice:'分项勾选环境、错误、尝试与结果',problem:'平台看不到任务中形成的新经验',mechanism:'提交前允许增删各类信息',benefit:'用户清楚哪些经验会离开工作区',mark:{x:2,y:25,w:49,h:71}},
+      {title:'先脱敏，再展示草稿',choice:'预览已脱敏的反馈内容',problem:'共享信息可能带入凭据或个人路径',mechanism:'标出隐私字段并提供修改入口',benefit:'用户能确认公开内容是否安全',mark:{x:52,y:25,w:46,h:68}},
+      {title:'明确授权后再提交',choice:'使用单独同意与创建草稿动作',problem:'用户难以判断数据去向或是否自动公开',mechanism:'先授权生成草稿，不自动发布',benefit:'分享可控、可审阅，也更容易回流',mark:{x:2,y:91,w:96,h:8}}
+    ]},
+    '09':{evidenceMarks:[{x:7,y:39,w:65,h:22},{x:7,y:64,w:65,h:24}],designPoints:[
+      {title:'区分四种权责',choice:'分别记录建议者、执行者、批准者与 Owner',problem:'共享权限难以归属到具体行动',mechanism:'按角色留名，责任不由一次点击推定',benefit:'团队知道谁提出、谁执行、谁承担结果',mark:{x:63,y:29,w:34,h:36}},
+      {title:'高影响动作先说明风险',choice:'执行前展示变更范围与影响',problem:'用户可能未理解共享环境或代码影响',mechanism:'高风险操作停在明确批准门',benefit:'开发者能在行动前选择批准或拒绝',mark:{x:63,y:11,w:34,h:17}},
+      {title:'批准后保留操作记录',choice:'记录批准结果与变更摘要',problem:'事后难以还原决定过程',mechanism:'把批准、执行与结果摘要连在一起',benefit:'Reviewer 和 Owner 可追溯责任链',mark:{x:63,y:64,w:34,h:31}}
+    ]}
+  };
+  problemCases.forEach(item=>Object.assign(item,problemVisualAnnotations[item.n]||{}));
   const newProblemAnalyses = [
     {n:'01',title:'问题01分析：任务目标怎样变成共同约定',phase:'行动前 · 目标与完成条件',headline:'目标缺项会把关键工程判断留给 Agent 暗中补全',source:'OpenHands issue #17496 记录过含糊、不完整需求引发额外澄清或偏离意图；下方是据此提出的待验证机制链，不代表发生率。',body:`<div class="qa-diagram qa-goal-flow"><div class="qa-node focus"><small>INPUT · 开发者目标</small><b>“优化一下这个算子”</b><span>有方向，还不等于可执行的任务约定</span></div><div class="qa-arrow">→</div><div class="qa-node"><small>NEEDS · 未显式条件</small><b>目标边界需要补齐</b><div class="qa-hidden-conditions"><span>真实负载 / Shape</span><span>dtype / 芯片</span><span>性能与精度取舍</span><span>完成与回归标准</span></div></div><div class="qa-arrow">→</div><div class="qa-node"><small>AGENT · 只能先作假设</small><b>选择可执行路径</b><span>默认目标、范围和验证口径</span></div><div class="qa-arrow">→</div><div class="qa-node alert"><small>RISK · 返工放大</small><b>局部变好 ≠ 任务完成</b><span>优化目标可能不匹配真实业务</span></div></div><div class="qa-rail"><b class="qa-rail-label">开工前需共同确认</b><div class="qa-rail-items"><span>目标负载</span><span>工程约束</span><span>可接受取舍</span><span>Done when</span></div></div><div class="qa-conclusion"><b>分析判断：</b><span>需要验证的不是“用户有没有写提示词”，而是系统能否在执行前暴露缺项、澄清假设并让人确认完成条件。</span></div>`},
     {n:'05',title:'问题05分析：候选代码如何变成可信交付',phase:'结果交付后 · 验证证据',headline:'代码候选只是起点，可信交付要跨过一条证据链',source:'这是按算子任务质量要求整理的验证路径，不是本机 NPU 实测，也不声称每项检查在所有任务中都相同。',body:`<div class="qa-diagram qa-proof-chain"><div class="qa-proof-step candidate"><small>01 · CANDIDATE</small><b>代码候选</b><p>生成 / 修改，不等于正确</p></div><div class="qa-arrow">→</div><div class="qa-proof-step"><small>02 · BUILD</small><b>构建</b><p>接口、依赖与编译环境</p></div><div class="qa-arrow">→</div><div class="qa-proof-step"><small>03 · CORRECTNESS</small><b>功能 / 精度</b><p>结果与基线是否一致</p></div><div class="qa-arrow">→</div><div class="qa-proof-step"><small>04 · COVERAGE</small><b>Shape / dtype</b><p>边界与动态输入覆盖</p></div><div class="qa-arrow">→</div><div class="qa-proof-step"><small>05 · PERFORMANCE</small><b>同环境对比</b><p>确认收益可复现、无回退</p></div><div class="qa-arrow">→</div><div class="qa-proof-step receipt"><small>06 · RECEIPT</small><b>证据回执</b><p>结论、限制与未测项</p></div></div><div class="qa-proof-caption"><div><b>产物：</b>一份可运行的代码变更</div><div><b>证据：</b>环境、命令、覆盖范围、结果和基线</div><div><b>决策：</b>由开发者 / 任务 Owner 判断是否达到目标</div></div><div class="qa-conclusion"><b>分析判断：</b><span>当生成变快，用户真正需要被支撑的可能转向选择验证范围、读懂证据并判断能否停止。</span></div>`},
@@ -2468,17 +2566,27 @@ mermaid.initialize({
     return `<div class="proto-app" data-demo="accountability"><div class="proto-topline"><b>高影响动作责任记录</b><span>动作前确认 · 动作后留痕</span></div><div class="proto-roles"><label class="proto-role"><b>建议方案</b><select data-role="suggestedBy"><option>AI Agent</option><option>开发者</option></select></label><label class="proto-role"><b>执行修改</b><select data-role="executedBy"><option>AI Agent</option><option>开发者</option></select></label><label class="proto-role"><b>批准动作</b><select data-role="approvedBy"><option>开发者</option><option>模块 Owner</option><option>无需批准</option></select></label><label class="proto-role"><b>结果 Owner</b><select data-role="owner"><option>模块 Owner</option><option>开发者</option><option>项目负责人</option></select></label></div><div class="proto-output warn"><label class="proto-check"><input type="checkbox" data-field="highRisk" checked>高风险动作：合并代码 / 修改共享环境</label><strong data-bind="approval-state">需要人类明确批准</strong><p data-bind="responsibility-summary">—</p></div><div class="proto-actions"><button type="button" class="proto-btn accent" data-action="approve-action">记录批准并继续</button><span class="proto-note" data-bind="approval-log">尚未批准，执行不会继续。</span></div></div>`;
   };
   const makeProblemSlide=(item,kind)=>{
-    const slide=document.createElement('section');slide.className='slide s-gray problem-page';slide.dataset.title=kind==='status'?problemStatus(item):problemSolution(item);slide.dataset.hypothesis=item.n;
-    const content=kind==='status'?`<div class="problem-kicker"><b>现状截图 · 一条可观察线索</b><span class="state">待验证命题 · 非发生率结论</span></div><div class="problem-evidence-layout"><figure class="problem-shot-frame"><div class="problem-shot-bar"><span class="problem-shot-dots"><i></i><i></i><i></i></span><span class="problem-shot-url">${problemEsc(item.url||item.source)}</span></div><div class="problem-shot-viewport"><img class="${item.fit==='cover'?'cover-top':''}" src="${problemEsc(item.image)}" alt="${problemEsc(item.alt)}" loading="lazy"></div><figcaption class="problem-shot-caption"><span>${problemEsc(item.source)} · 既有研究截图</span>${item.url?`<a href="${problemEsc(item.url)}" target="_blank" rel="noopener noreferrer">打开来源 ↗</a>`:'<span>内部材料 · 不对外发布</span>'}</figcaption></figure><aside class="problem-observation"><h3>这张图能看到什么</h3>${item.facts.map((fact,index)=>`<div class="problem-fact"><span class="index">0${index+1}</span><p>${problemEsc(fact)}</p></div>`).join('')}<div class="problem-boundary"><b>证据边界：</b>${problemEsc(item.boundary)}</div><div class="problem-question-box"><small>本页要验证的问题 ${item.n}</small><b>${problemEsc(item.question)}</b></div></aside></div>`:`<div class="problem-kicker"><b>解决方案 · 平台内界面概念图</b><span class="state">设计提案 · 非现成功能</span></div><div class="problem-demo-layout"><figure class="problem-demo-visual"><img src="${problemEsc(item.solutionImage)}" alt="${problemEsc(item.solutionAlt)}" loading="lazy"></figure><aside class="problem-demo-spec"><span class="problem-platform-tag">呈现位置 · ${problemEsc(item.platform)}</span><h3>设计回应</h3><p>${problemEsc(item.explain)}</p><div class="demo-benefit"><b>体验目标</b><br>${problemEsc(item.benefit)}</div><div class="problem-source-note"><b>概念图边界：</b>${problemEsc(item.solutionBoundary)}</div></aside></div>`;
-    const subtitle=kind==='status'?'现状截图与可观察线索':'解决方案 · 平台内界面概念图';
-    slide.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">问题 ${item.n} · ${subtitle}｜${problemEsc(item.phase)}</div><div class="ttl">${item.n} · ${kind==='status'?'现状：':'方案：'}${problemEsc(kind==='status'?item.headline:item.solution)}</div></div><nav class="section-tabs"></nav></header><main class="body-area">${content}</main><footer class="foot">${kind==='status'?'截图呈现公开页面或既有材料中的可观察事实；风险结论仍是研究命题，需要真实任务观察、回放与数据验证。':'平台内概念图仅表达界面方向，不表示平台已有该能力；下一步应在代表性任务中测试是否减少补充说明、误用能力、接管成本或协作损耗。'}</footer></div>`;
+    const isStatus=kind==='status';
+    const slide=document.createElement('section');
+    slide.className=`slide ${isStatus?'s-gray problem-status-page':'s-glow problem-solution-page'} problem-page`;
+    slide.dataset.title=isStatus?problemStatus(item):problemSolution(item);
+    slide.dataset.hypothesis=item.n;
+    const focusMarkup=(marks,solution=false)=>(marks||[]).map((mark,index)=>`<span class="problem-focus ${solution?'solution-focus':''}" style="--focus-x:${mark.x}%;--focus-y:${mark.y}%;--focus-w:${mark.w}%;--focus-h:${mark.h}%" aria-hidden="true"><b>${String(index+1).padStart(2,'0')}</b></span>`).join('');
+    if(isStatus){
+      slide.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">问题 ${item.n} · 现状截图与可观察线索｜${problemEsc(item.phase)}</div><div class="ttl">${item.n} · 现状：${problemEsc(item.headline)}</div></div><nav class="section-tabs"></nav></header><main class="body-area"><div class="problem-kicker"><b>公开材料截图 · 具体问题线索</b><span class="state">单个案例 · 不代表普遍发生率</span></div><div class="problem-evidence-layout"><figure class="problem-shot-frame"><div class="problem-shot-bar"><span class="problem-shot-dots"><i></i><i></i><i></i></span><span class="problem-shot-url">${problemEsc(item.url||item.source)}</span></div><div class="problem-shot-viewport"><div class="problem-image-stage problem-evidence-stage"><img class="${item.fit==='cover'?'cover-top':''}" src="${problemEsc(item.image)}" alt="${problemEsc(item.alt)}" loading="lazy">${focusMarkup(item.evidenceMarks)}</div></div><figcaption class="problem-shot-caption"><span>${problemEsc(item.source)} · 图上序号与右侧观察对应</span>${item.url?`<a href="${problemEsc(item.url)}" target="_blank" rel="noopener noreferrer">打开来源 ↗</a>`:'<span>内部材料 · 不对外发布</span>'}</figcaption></figure><aside class="problem-observation"><h3>截图中的可观察线索</h3>${item.facts.map((fact,index)=>`<div class="problem-fact"><span class="index">${String(index+1).padStart(2,'0')}</span><p>${problemEsc(fact)}</p></div>`).join('')}<div class="problem-boundary"><b>证据边界：</b>${problemEsc(item.boundary)}</div><div class="problem-question-box"><small>待验证问题 ${item.n}</small><b>${problemEsc(item.question)}</b></div></aside></div></main><footer class="foot">截图支持的是一个具体问题线索，不代表其普遍发生率；仍需在昇腾真实任务中观察与验证。</footer></div>`;
+      return slide;
+    }
+    const designPointMarkup=(item.designPoints||[]).map((point,index)=>`<article class="solution-point"><header class="solution-point-head"><span class="num">${String(index+1).padStart(2,'0')}</span><b>${problemEsc(point.title)}</b></header><dl><div><dt>设计选择</dt><dd>${problemEsc(point.choice)}</dd></div><div><dt>对应问题</dt><dd>${problemEsc(point.problem)}</dd></div><div><dt>作用机制</dt><dd>${problemEsc(point.mechanism)}</dd></div><div><dt>用户收益</dt><dd>${problemEsc(point.benefit)}</dd></div></dl></article>`).join('');
+    const solutionHue=({'01':235,'02':218,'03':216,'04':32,'05':32,'06':174,'07':174,'08':262,'09':262})[item.n]||235;
+    slide.style.setProperty('--problem-hue',solutionHue);
+    slide.innerHTML=`<div class="slide-inner"><header class="chrome problem-chrome"><div class="chrome-label">DESIGN POINT ${item.n} · ${problemEsc(item.name)}</div><nav class="section-tabs"></nav></header><main class="solution-content"><div class="solution-heading"><div class="solution-meta"><b>问题 ${item.n}</b><span>${problemEsc(item.phase)}</span><span>·</span><span>设计提案</span></div><h1>${problemEsc(item.solution)}</h1><span class="platform-tag">${problemEsc(item.platform)} · 概念图</span></div><div class="solution-layout"><figure class="solution-figure"><div class="problem-image-stage solution-image-stage"><img src="${problemEsc(item.solutionImage)}" alt="${problemEsc(item.solutionAlt)}" loading="lazy">${focusMarkup((item.designPoints||[]).map(point=>point.mark),true)}</div></figure><aside class="solution-points"><div class="solution-points-head"><b>体验设计点</b><span>图上 01—03</span></div><div class="solution-point-list">${designPointMarkup}</div><div class="solution-boundary"><b>概念边界：</b>${problemEsc(item.solutionBoundary)}</div></aside></div><footer class="solution-boundary solution-foot">待在代表性开发任务中验证用户收益；图中界面为设计提案，不代表平台现成功能。</footer></main></div>`;
     return slide;
   };
   const deck=document.getElementById('deck');
   const oldProblemSlides=[...deck.querySelectorAll('.slide[data-hypothesis]')];
   const problemAnchor=[...deck.querySelectorAll('.slide')].find(slide=>slide.dataset.title==='动态 Shape 优化示例');
   oldProblemSlides.forEach(slide=>slide.remove());
-  const problemPages=document.createDocumentFragment();problemCases.forEach(item=>{const status=makeProblemSlide(item,'status');status.classList.add('problem-status-page');status.querySelector('.problem-shot-bar')?.remove();const caption=status.querySelector('.problem-shot-caption>span');if(caption)caption.textContent=`${item.source} · 新采公开页面截图`;const kicker=status.querySelector('.problem-kicker>b');if(kicker)kicker.textContent='公开材料截图 · 具体问题线索';const state=status.querySelector('.problem-kicker .state');if(state)state.textContent='单个案例 · 不代表普遍发生率';const solution=makeProblemSlide(item,'solution');problemPages.append(status,solution);});deck.insertBefore(problemPages,problemAnchor||null);
+  const problemPages=document.createDocumentFragment();problemCases.forEach(item=>{const status=makeProblemSlide(item,'status');status.querySelector('.problem-shot-bar')?.remove();const solution=makeProblemSlide(item,'solution');problemPages.append(status,solution);});deck.insertBefore(problemPages,problemAnchor||null);
   const analysisPages=document.createDocumentFragment();newProblemAnalyses.forEach(item=>analysisPages.append(makeProblemAnalysisSlide(item)));deck.insertBefore(analysisPages,problemAnchor||null);
   const byOriginalTitle=new Map([...deck.querySelectorAll('.slide')].map(slide=>[slide.dataset.title,slide]));
   reusedAnalysisMeta.forEach(item=>{
