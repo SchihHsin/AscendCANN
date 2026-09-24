@@ -3357,3 +3357,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTMLParser 解析通过，7 段可执行内联 JavaScript 均通过 `node --check`，9 张图片路径存在，`git diff --check` 通过。由于本地 `file://` 预览安全限制未作截图级页面复核。
 - Commit / push：功能提交 `5d7c3412`（`feat: add platform-specific solution mockups`）已推送至 `origin/main`；只提交本轮平台概念图资产与方案页渲染修改，未包含报告文件此前已有的未提交修改或其他脏文件。
 - 未决事项：在允许的预览环境中查看九个方案页的图片缩放与右侧文字排版；如要把学习辅助能力作为 Codex 插件或集成能力实现，仍需另行定义产品边界与技术方案。
+
+
+### 2026-09-24（Need 装配上下文，Generate 生成候选方案）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页阶段调整为 Need（提出目标并装配初始上下文）→ Search / Fetch → Generate → Decide → Execute；AddCustom 业务任务映射、开发者 / Agent 泳道、交接物、机制卡、体验观察与痛点列按五阶段重新对应。Search 仍单独成列；Generate 只生成带来源与未决项的工程路径 / 参数草稿，工程起步仍在 Execute。
+- 边界：只调整第 5 页已有五列的内容归属与阶段用语，不改架构、样式、页面顺序或 API / Host / Application 层边界；不宣称本机真实运行 msopgen 或 NPU 验证。
+- 验证：`git diff --check` 通过；未做浏览器截图级复核。
+- Commit / push：功能提交 `67d10aaf`（`fix: align need and generate stages`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
+- 未决事项：用户刷新本地报告第 5 页后确认新阶段排列及正文排版。
