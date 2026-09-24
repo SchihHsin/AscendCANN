@@ -3493,5 +3493,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。删除封面背景 `.cv-bg::before` 椭圆描边（定位于画布上方，形成从顶边垂下的曲线）；保留封面渐变背景、回环网络 SVG、标题、Logo 与其他内容。
 - 依据 / 边界：按用户明确要求移除此一条装饰曲线；不改主视觉中的流程回环、节点或封面文案，也不影响页面序列和机制边界。
 - 验证：`git diff --check` 通过；源码确认 `.cv-bg::before` 已移除，`cover-journey` 主视觉仍在。截图复核受本地 `file://` 浏览器 URL 策略限制，未绕过策略。
-- Commit / push：本轮功能提交后回填。
+- Commit / push：功能提交 `a5435f1b`（`style: remove top arc from cover`）已推送至 `origin/main`；本条交接在随后提交中回填。
 - 未决事项：请刷新封面确认顶部曲线已消失且其余主视觉保持原样。
