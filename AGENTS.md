@@ -3567,3 +3567,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；CSS 几何检查确认左右列卡片的顶边中心均为线路起点，横向线路终点与阶段中央主干对齐。
 - Commit / push：功能提交 `733fa851`（`fix: join top-center mechanism connectors`）已推送至 `origin/main`；本条交接随后补充并推送。
 - 未决事项：刷新第 5 页检查各卡片顶部出线与中央主干的实际视觉衔接。
+
+### 2026-09-24（第 5 页阶段插图按阶段主题色区分）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html` 与 `cann-dashboard/assets/agent-stage-3d/` 下 Search、Generate、Decide、Execute 四张插图。Need 蓝色插图保留；Search 调为紫色、Generate 单独调为橙色、Decide 调为青色、Execute 调为绿色，并给 Generate 阶段色标单独设置橙色。
+- 依据 / 边界：遵循用户要求让插图对应阶段主题色，并明确 Search 与 Generate 不能同色。使用 ImageGen 编辑既有插图，保留对象构图、3D 材质和透明底。仅调整第 5 页阶段图像及 Generate 色标，不改内容行、页面结构、其他页面或页面序列，不影响 API / Host / Application 层边界。
+- 验证：`git diff --check` 和暂存区差异检查通过；HTMLParser 解析通过；五张 PNG 均验证为 RGBA 且保留透明像素。已逐张查看生成图；未做整页截图复核，本地 `file://` 页面截图访问沿用既有浏览器 URL 策略限制。
+- Commit / push：功能提交 `dba97318`（`style: align stage illustrations with phase colors`）已推送至 `origin/main`；本条交接记录随后补充并推送。
+- 未决事项：刷新报告第 5 页确认新配色在当前浏览器视口中的整体观感。
