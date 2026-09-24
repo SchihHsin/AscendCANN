@@ -3394,3 +3394,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；未做浏览器截图级复核。
 - Commit / push：功能提交 `0ef9ff8d`（`fix: connect mechanisms to agent activities`）已推送至 `origin/main`；本条交接随后单独提交并推送。
 - 未决事项：用户刷新本地第 5 页，确认阶段能力箭头实际指向和节点排布。
+
+
+### 2026-09-24（突出已完成的 AI 可用性研究）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页 Search / Fetch 体验观察卡增加灰色完成态：灰底与灰边框、深灰 `AI可用性研究` 标签和 `✓ 已完成` 标记；其他四列的研究标签与现有待研究样式不变。
+- 验证：`git diff --check` 通过；未做浏览器截图级复核。
+- Commit / push：功能提交 `e0ecdd18`（`style: emphasize completed AI usability study`）已推送至 `origin/main`；本条交接随后单独提交并推送。
+- 未决事项：用户刷新本地第 5 页，确认完成态相对其他四列足够醒目。
