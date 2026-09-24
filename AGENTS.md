@@ -3325,3 +3325,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：5 段可执行内联 JavaScript 语法通过；静态断言确认 P2 卡与标题标记、聚焦态样式和原状态恢复逻辑存在；`git diff --check` 通过。CUA 拒绝直接打开本地 `file://` 页面，未完成截图级目视复核，未使用命令行浏览器绕过。
 - Commit / push：功能提交 `a520933b`（`fix: highlight P2 in agent focus state`）已推送至 `origin/main`；本条交接记录随后单独提交并推送，未纳入报告文件的其他未提交改动。
 - 未决事项：需在允许的本地预览中确认 P2 突出程度与图内统计标记的可读性。
+
+### 2026-09-24（Agent 聚焦态文字可见性修正）
+
+- 变更文件：`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。修正聚焦态把 Need / Search / Generate / Execute / Decide 全称标签一并隐藏的 CSS 选择器；P2 长标题改为两行并上移，字号使用 SVG 视口单位，避免与统计条重叠。阶段顺序与首轮节点聚焦范围不变。
+- 验证：内联 JavaScript 语法、HTML 解析和 `git diff --check` 通过。已尝试通过当前本地浏览器标签查看，但 Browser Use 策略拒绝 `file://` 页面导航；未使用命令行浏览器绕过，故截图级视觉复核仍待用户刷新确认。
+- Commit / push：功能提交 `0ed14bf3`（`fix: restore focus labels and P2 title`）已推送至 `origin/main`；交接记录随后单独提交并推送，未纳入其他已有未提交改动。
+- 未决事项：用户刷新本地报告并进入聚焦态后，确认标签完整可读、P2 两行标题不与统计图形相叠。
