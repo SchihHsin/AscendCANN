@@ -3430,3 +3430,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；本地浏览器策略不允许对该文件执行截图级视觉复核。
 - Commit / push：`style: darken report cover`，推送至 `origin/main`。
 - 未决事项：用户刷新封面确认深色效果。
+
+
+### 2026-09-24（机制能力节点分别连到 Agent 动作）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。机制与装配区的每张阶段能力卡增加独立短接线，分别接入该阶段两侧的汇流线，再由多处向上箭头指向对应 Agent 动作，表达多能力共同支撑阶段行为。
+- 边界：阶段容器保持无底色；不改变能力卡内容及 Need、Search、Generate、Decide、Execute 五阶段顺序。Agent Loop 与 Plugin / Extension 仍作为独立跨阶段能力呈现；未改变 API / Host / Application 层边界。
+- 验证：`git diff --check` 通过；未进行截图级复核，本地报告页的 `file://` 浏览访问曾被 URL 策略拦截。
+- Commit / push：`fix: connect each capability node to agent actions`，推送至 `origin/main`。
+- 未决事项：刷新报告第 5 页确认连线密度与落点。
