@@ -3332,3 +3332,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：内联 JavaScript 语法、HTML 解析和 `git diff --check` 通过。已尝试通过当前本地浏览器标签查看，但 Browser Use 策略拒绝 `file://` 页面导航；未使用命令行浏览器绕过，故截图级视觉复核仍待用户刷新确认。
 - Commit / push：功能提交 `0ed14bf3`（`fix: restore focus labels and P2 title`）已推送至 `origin/main`；交接记录随后单独提交并推送，未纳入其他已有未提交改动。
 - 未决事项：用户刷新本地报告并进入聚焦态后，确认标签完整可读、P2 两行标题不与统计图形相叠。
+
+### 2026-09-24（Agent 聚焦态全称标签放大）
+
+- 变更文件：`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。按用户反馈将 Need / Search / Generate / Execute / Decide 标签从 13.8 左右的 SVG 单位提高到 18（完整序列下约 19.1），胶囊按词长增加宽度与高度；受阻 Search 标签再右移，避免遮挡红色受阻标记。
+- 验证：内联 JavaScript 语法、HTML 解析、标签尺寸静态断言和 `git diff --check` 通过。当前本地 `file://` 页面仍被 Browser Use 策略阻止打开，无法截图复核。
+- Commit / push：功能提交 `9a62a25d`（`fix: enlarge agent focus labels`）已推送至 `origin/main`；交接记录随后单独提交并推送，未纳入其他已有未提交改动。
+- 未决事项：刷新 `#4-focus` 后确认标签字号与周围节点距离；必要时再按实际视口微调。
