@@ -852,15 +852,25 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 </div></section>
 
 <!-- MULTI-ACTOR TASK TIMELINE -->
+<section class="slide s-gray task-timeline-page" data-title="开发者主执行·AI辅助"><div class="slide-inner">
+  <header class="head"><div class="head-l"><div class="subttl">协作方式对照 · 开发者编写并在本机执行，AI负责检索、整理信息和提供代码草稿</div><div class="ttl">开发者仍是主要执行者，AI提供检索与起草</div></div><div class="section-tabs"></div></header>
+  <main class="body-area">
+    <div class="task-timeline-shell">
+      <div class="task-timeline-frame"><iframe src="seq-d3-ux-task.html?full=1&amp;compact=1&amp;lvl=0" title="开发者主执行、AI辅助模式下，自定义算子开发中五类参与者的 P1–P7 全链路时序图"></iframe></div>
+      <div class="task-timeline-bridge"><b>基线 · 开发者主执行</b><span>AI可检索并提供草稿；代码编写、本机运行、关键决策和交付主要由开发者承担。</span><strong>下一页 → AI接手执行</strong></div>
+    </div>
+  </main>
+  <footer class="foot">与下一页使用同一算子任务和参与者顺序；此页呈现开发者执行主导的协作模式。两页是模式示意对照，不是对开发者行为变化的因果实测。</footer>
+</div></section>
 <section class="slide s-gray task-timeline-page" data-title="算子开发全链路时序"><div class="slide-inner">
-  <header class="head"><div class="head-l"><div class="subttl">先从一次自定义算子任务看完整过程：目标、方案、执行、协作与交付；开发不等于写代码，也不预设某一环节最重要</div><div class="ttl">一次算子开发中，五方沿 P1–P7 交接推进</div></div><div class="section-tabs"></div></header>
+  <header class="head"><div class="head-l"><div class="subttl">协作方式变化 · AI主写、人审：执行动作也转由 AI 完成，关键决策、验收与交付仍由开发者负责</div><div class="ttl">执行交给 AI 后，开发者转为审查与决策</div></div><div class="section-tabs"></div></header>
   <main class="body-area">
     <div class="task-timeline-shell">
       <div class="task-timeline-frame"><iframe src="seq-d3-ux-task.html?full=1&amp;compact=1&amp;lvl=1" title="AI 主写、人审模式下，自定义算子开发中五类参与者的 P1–P7 全链路时序图"></iframe></div>
-      <div class="task-timeline-bridge"><b>AI 主写 · 人审</b><span>AI 查找、生成并执行；开发者保留关键判断、验收与交付。生命线顺序沿用当前图。</span><strong>下一页 → 放大 Agent 泳道</strong></div>
+      <div class="task-timeline-bridge"><b>AI 主写 · 人审</b><span>与上一页同一任务、同一生命线顺序；执行主体更集中到 AI，开发者仍把关决策、验收和交付。</span><strong>下一页 → 放大 Agent 泳道</strong></div>
     </div>
   </main>
-  <footer class="foot">时序图复用自 AI 可用性研究材料 #15；P1–P7 是该自定义算子任务的阶段划分，用于展示参与者交接，不替代通用开发生命周期，也不表示所有任务都固定采用相同路径。</footer>
+  <footer class="foot">时序图复用自 AI 可用性研究材料 #15；P1–P7 是该自定义算子任务的阶段划分，不替代通用开发生命周期。两页展示执行权配置差异，不代表所有开发任务都按相同模式运行。</footer>
 </div></section>
 
 <!-- 02 CONTENTS -->
@@ -2188,7 +2198,7 @@ mermaid.initialize({
 (() => {
   const reportOrder = [
     '封面','目录',
-    '算子开发全链路时序','Agent 机制下钻','开发生命周期全景','六条贯穿流',
+    '开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻','开发生命周期全景','六条贯穿流',
     '平台能力沙盘','通用 Host 循环','机制对照','Harness 机制如何影响任务',
     '现有供给总览','现有 Skill 能力','现有 MCP 能力','CANN 实证','Harness 与现状交叉',
     '问题01：任务定义','问题02：上下文适用性','问题03：能力选择与组合','问题04：过程状态与接管','问题05：验证成为瓶颈','问题06：团队共同理解','问题07：开发者能力增长','问题08：反馈回流','问题09：责任边界',
@@ -2204,7 +2214,7 @@ mermaid.initialize({
   reportOrder.forEach(title => { const slide = byTitle.get(title); if (slide) deck.appendChild(slide); });
 
   const chapterTitles = {
-    '01':new Set(['算子开发全链路时序','Agent 机制下钻','开发生命周期全景','六条贯穿流']),
+    '01':new Set(['开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻','开发生命周期全景','六条贯穿流']),
     '02':new Set(['平台能力沙盘','通用 Host 循环','机制对照','Harness 机制如何影响任务']),
     '03':new Set(['现有供给总览','现有 Skill 能力','现有 MCP 能力','CANN 实证','Harness 与现状交叉']),
     '04':new Set(['问题01：任务定义','问题02：上下文适用性','问题03：能力选择与组合','问题04：过程状态与接管','问题05：验证成为瓶颈','问题06：团队共同理解','问题07：开发者能力增长','问题08：反馈回流','问题09：责任边界']),
@@ -2242,7 +2252,7 @@ mermaid.initialize({
     navDots.appendChild(dot);
     return dot;
   });
-  const chapterStarts = {'01':'算子开发全链路时序','02':'平台能力沙盘','03':'现有供给总览','04':'问题01：任务定义','05':'协同架构','06':'知识内化问题','A':'附录导航'};
+  const chapterStarts = {'01':'开发者主执行·AI辅助','02':'平台能力沙盘','03':'现有供给总览','04':'问题01：任务定义','05':'协同架构','06':'知识内化问题','A':'附录导航'};
   const controls = document.getElementById('controls');
   const counter = document.getElementById('counter');
   const prevBtn = document.getElementById('prevBtn');
