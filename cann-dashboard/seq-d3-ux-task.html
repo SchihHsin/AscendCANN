@@ -1142,15 +1142,15 @@ function renderV(){
       .each(function(){ wrapText(d3.select(this), d.t, 9, IS_FULL_SEQ?19:16, (toRight?1:-1)*(IS_FULL_SEQ?34:28), true); }).attr("y",0);
   };
   const focusExpansion=(g,d)=>{
-    const words={n1:["Need",38],sD:["Search",46],sD2:["Search",46],gD:["Generate",58],eD:["Execute",49],dSoc:["Decide",43]};
+    const words={n1:["Need",43],sD:["Search",56],sD2:["Search",56],gD:["Generate",74],eD:["Execute",64],dSoc:["Decide",56]};
     const item=words[d.id]; if(!item)return;
     const [word,w]=item;
     const tag=g.append("g").attr("data-focus-expansion","").attr("data-focus-msg",d.id)
-      .attr("transform","translate(20,-20)").style("display","none").style("pointer-events","none");
-    tag.append("rect").attr("x",0).attr("y",-9).attr("width",w).attr("height",17).attr("rx",8.5)
+      .attr("transform","translate(20,-21)").style("display","none").style("pointer-events","none");
+    tag.append("rect").attr("x",0).attr("y",-11).attr("width",w).attr("height",22).attr("rx",11)
       .attr("fill","#fff").attr("fill-opacity",.97).attr("stroke","#d9d4e4").attr("stroke-width",.8);
-    tag.append("text").attr("x",w/2).attr("y",3.5).attr("text-anchor","middle")
-      .attr("font-size",seqFont(10.5,true)).attr("font-weight",700).attr("fill","#5b4b86").text(word);
+    tag.append("text").attr("x",w/2).attr("y",4.5).attr("text-anchor","middle")
+      .attr("font-size",seqFont(13,true)).attr("font-weight",700).attr("fill","#5b4b86").text(word);
   };
 
   /* 每步＝一条消息（标题在箭头上方）；决策＝执行者线上的菱形。nodeScore(矩阵指标分小字)已按用户要求不再渲染——数据保留备用，悬浮 tip 仍可显示 */
