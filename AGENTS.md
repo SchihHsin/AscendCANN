@@ -3317,3 +3317,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：5 段可执行内联 JavaScript 语法通过；静态检查确认 9 组配对页相邻、问题页标题完整、报告顺序共 86 页、截图文件均存在；`git diff --check` 通过。CUA 拒绝直接打开本地 `file://` 页面，未完成截图级目视复核，未使用命令行浏览器绕过。
 - Commit / push：功能提交 `f3584aba`（`feat: pair behavior hypotheses with demos`）已推送至 `origin/main`；只暂存本轮问题页结构 / 样式及交接记录，未纳入报告中本轮之前的未提交改动或其他脏文件。
 - 未决事项：需在允许的本地预览中目视检查 18 页的截图裁切、方案控件排版和大字号下的溢出情况。
+
+### 2026-09-24（Agent 聚焦态强调 P2 阶段）
+
+- 变更文件：`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。时序图进入 Agent 首轮循环聚焦态时，P2 阶段卡与标题采用更明确的紫色底、边框、阴影和加粗字；其余 P1–P2 首轮节点 / 连线高亮范围保持不变，离开聚焦态后由既有快照恢复原样。
+- 依据 / 边界：按用户要求强化聚焦态中的前置 P2 阶段；P2 对应 `PHASE` 第二项（索引 1）。仅突出阶段栏，不扩大到其他阶段事件，不修改阶段顺序、时序任务内容、焦点触发和报告页码；不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：5 段可执行内联 JavaScript 语法通过；静态断言确认 P2 卡与标题标记、聚焦态样式和原状态恢复逻辑存在；`git diff --check` 通过。CUA 拒绝直接打开本地 `file://` 页面，未完成截图级目视复核，未使用命令行浏览器绕过。
+- Commit / push：功能提交 `a520933b`（`fix: highlight P2 in agent focus state`）已推送至 `origin/main`；本条交接记录随后单独提交并推送，未纳入报告文件的其他未提交改动。
+- 未决事项：需在允许的本地预览中确认 P2 突出程度与图内统计标记的可读性。
