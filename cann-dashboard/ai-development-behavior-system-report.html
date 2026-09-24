@@ -669,6 +669,10 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-measure{min-width:0;padding:.42vh .54vw;border:1px solid color-mix(in srgb,var(--phase) 15%,#fff);border-radius:8px;background:color-mix(in srgb,var(--phase) 8%,#fff);display:flex;flex-direction:column;justify-content:center}
 .cb-measure small{font:700 var(--fs-xs)/1 'JetBrains Mono';color:#7b8490}
 .cb-measure span{margin-top:.16vh;font-size:var(--fs-xs);line-height:1.08;color:#596574}
+.cb-measure.completed{border:1.5px solid #87919d;background:linear-gradient(145deg,#e1e5e9,#f0f2f4);box-shadow:inset 0 0 0 1px rgba(255,255,255,.78),0 2px 8px rgba(64,74,86,.12)}
+.cb-measure.completed small{display:flex;align-items:center;justify-content:space-between;gap:.35vw;color:#4e5966;font-weight:800}
+.cb-measure.completed small b{flex:0 0 auto;padding:.16vh .36vw;border-radius:999px;background:#687482;color:#fff;font:750 var(--fs-xs)/1 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;white-space:nowrap}
+.cb-measure.completed>span{color:#46515d}
 .cb-measure.proven small{color:#476783}
 .cb-measure.proposed small{color:#716143}
 /* Keep explanatory copy legible and at a consistent size across the five task columns. */
@@ -906,7 +910,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-row-label cb-measure-label"><small>MEASURES</small><b>体验观察</b><span>研究记录 / 待验证</span></div>
       <div class="cb-measure-rail" aria-label="AddCustom Need、Search、Generate、Decide、Execute 五阶段对应的研究记录与待验证体验指标">
         <div class="cb-measure proposed is-source"><small>桌面与用户研究</small><span>目标、芯片 / 版本与工程现场是否齐全</span></div>
-        <div class="cb-measure is-action"><small>AI可用性研究</small><span>官方正文取回 · 补充来源成本</span></div>
+        <div class="cb-measure completed is-action"><small>AI可用性研究 <b>✓ 已完成</b></small><span>官方正文取回 · 补充来源成本</span></div>
         <div class="cb-measure proposed is-action"><small>桌面与用户研究</small><span>生成草案是否附来源并标出未决项</span></div>
         <div class="cb-measure proposed is-control"><small>桌面与用户研究</small><span>来源版本适用性 · 工程路径依据</span></div>
         <div class="cb-measure proposed is-evidence"><small>桌面与用户研究</small><span>引用与版本一致性 · 工程起步支撑</span></div>
