@@ -3230,7 +3230,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 图形约束：复用 `opknow/20_human_ai_journey.html` 的算子任务时序骨架；生命线仍按本报告现有顺序“开发者 → AI → 昇腾社区 → 本机工具 → 第三方平台”展示，节点仅显示标识首字母。`AI 主写、人审` 档表示执行交给 AI、决策仍归开发者；第 3→4 页 Agent 泳道聚焦交互保持不变。
 - 证据 / 边界：来源图为既有研究材料；本次是视图档位与表现形式调整，不新增研究实证或平台机制结论，不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：报告与时序图副本共 10 段可执行内联脚本通过 `vm.Script` 语法检查；静态断言确认报告仅指定 `lvl=1`、图内参与者顺序不变、节点标记使用首字母、滑块与档位同步、Agent 聚焦消息仍存在；`git diff --check` 通过。未做截图级视觉复核；按本地页面预览策略未尝试其他浏览器或命令行截图绕过。
-- Commit / push：功能提交 `be910dcf`（`fix: distinguish agent focus page state`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
+- Commit / push：待提交并推送至 `origin/main`。
 - 未决事项：仍需在允许的本地预览中确认嵌入图的字号、缩放和当前窗口下的可读性。
 
 ### 2026-09-24（拆分开发者主执行与 AI 主写两种时序模式）
@@ -3298,7 +3298,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 导航行为：初次打开 `#4-focus` 或手动切换到该 hash 会恢复时序图聚焦；`#4` 会清除聚焦。hash 导航直接定位目标页，不触发第 4→5 页的中间聚焦拦截。控制栏同步呈现聚焦状态，并为读屏提供状态标签。
 - 依据 / 边界：这是现有聚焦交互的地址与页码状态表达，不新增报告内容或研究结论；未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：5 段可执行内联 JavaScript 语法通过；静态断言覆盖 `#4`、`#4-focus`、无效页码与非目标页聚焦 hash；`git diff --check` 通过。遵守本地页面预览限制，未做截图级视觉复核。
-- Commit / push：待提交并推送至 `origin/main`。
+- Commit / push：功能提交 `be910dcf`（`fix: distinguish agent focus page state`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
 - 未决事项：需在允许的本地预览中确认控制栏新增聚焦标签的宽度与实际显示效果。
 
 ### 2026-09-24（Agent 机制页新增 Need → Search → Need → Decide → Execute 业务路径）
@@ -3307,5 +3307,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 结构与样式：保留原页面阶段卡、开发者 / Agent 泳道、交接物、机制卡、Agent Loop 与体验观察区；新增一行对应的五步节点和连接符，并同步宽屏 / 窄视口网格行轨道，不改 `reportOrder`、页码或时序图。
 - 依据 / 边界：节点顺序按用户指定，并映射前一页首轮 Need、Search、Decide、Execute 节点语义；任务细节沿用既有 AddCustom P1–P2 切片。本机工程起步属于路径说明，未声称在匹配 Ascend 环境完成实机验证；不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过；HTMLParser 解析通过；静态断言确认五步顺序及宽 / 窄视口行轨道。未做桌面目视复核，遵守本地页面预览限制。
-- Commit / push：待提交并推送至 `origin/main`。
+- Commit / push：功能提交 `782a645b`（`docs: add AddCustom task behavior mapping`）已推送至 `origin/main`；本条交接记录另行提交并推送。
 - 未决事项：需在允许的本地预览中核对新行实际字号与高度。
