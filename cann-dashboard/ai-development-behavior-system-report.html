@@ -738,117 +738,117 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
 <!-- AGENT MECHANISM DRILL-DOWN -->
 <section class="slide s-gray task-rel-page" data-title="Agent 机制下钻"><div class="slide-inner">
-  <header class="head"><div class="head-l"><div class="subttl">承接上一页的自定义算子时序，放大 Agent 在任务中的上下文、计划、授权、执行、验证与可选恢复</div><div class="ttl">沿着任务时序，看 Agent 如何与开发者交接</div></div><div class="section-tabs"></div></header>
-  <div class="body-area" aria-label="Agent运行机制四个观察点中的人机协作">
-    <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 的机制观察图，四列是运行观察点而非任务阶段，失败后恢复为可选分支">
-      <div class="cb-axis"><small>机制观察点</small><b>运行时视角</b><span>不是 P1–P7</span></div>
+  <header class="head"><div class="head-l"><div class="subttl">聚焦 P1–P2 红框：把 AddCustom 接入 PyTorch 的目标、资料检索、上下文装配与工程起步连成一段真实任务</div><div class="ttl">AddCustom 接入 PyTorch：从教程检索到工程起步</div></div><div class="section-tabs"></div></header>
+  <div class="body-area" aria-label="AddCustom 接入 PyTorch 的 P1–P2 业务片段：任务目标、Search / Fetch、Context Assembly 与 msopgen 工程起步">
+    <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 共同完成 AddCustom 接入 PyTorch 的 P1–P2 任务片段；Search / Fetch 与 Context Assembly 分开呈现，本机失败后可选恢复">
+      <div class="cb-axis"><small>业务切片</small><b>P1–P2</b><span>选型 · 工程起步</span></div>
       <div class="cb-stage-rail">
-        <div class="cb-stage is-source"><small>01 · CONTEXT</small><b>装配任务现场</b><span>目标、规则、知识与环境进入当前上下文</span></div>
-        <div class="cb-stage is-action"><small>02 · PLAN</small><b>形成行动方案</b><span>拆解子任务，选择工具或执行路径</span></div>
-        <div class="cb-stage is-control"><small>03 · GATE</small><b>检查并授权</b><span>按风险、权限与边界决定是否放行</span></div>
-        <div class="cb-stage is-evidence"><small>04 · ACT / OBSERVE</small><b>执行并观察</b><span>读取返回，累积证据，再决定下一步</span></div>
+        <div class="cb-stage is-source"><small>01 · P1 GOAL</small><b>明确算子与接入目标</b><span>Ascend C AddCustom → PyTorch</span></div>
+        <div class="cb-stage is-action"><small>02 · SEARCH / FETCH</small><b>查自定义算子教程</b><span>确认正文取回状态与资料来源</span></div>
+        <div class="cb-stage is-control"><small>03 · CONTEXT ASSEMBLY</small><b>筛资料并合并任务现场</b><span>来源、版本、目标芯片与本机工程</span></div>
+        <div class="cb-stage is-evidence"><small>04 · P2 BOOTSTRAP</small><b>准备 msopgen 工程起步</b><span>核对 soc_version，回填本机结果</span></div>
       </div>
 
-      <div class="cb-row-label cb-human-label"><small>HUMAN LANE</small><b>开发者</b><span>设目标 · 判断 · 接管</span></div>
+      <div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b><span>定目标 · 补现场 · 复核</span></div>
       <div class="cb-lane cb-human-lane" aria-label="开发者泳道">
-        <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>提供目标与现场</span></b><p>说明任务目标，并补充芯片 / CANN / 框架版本、日志与已尝试动作。</p></article>
-        <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>界定方案边界</span></b><p>讲清预期结果、不可改动的范围，以及希望 Agent 先做什么。</p></article>
-        <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>审阅并决定放行</span></b><p>看影响范围与风险；继续、暂停、补充信息或调整方向。</p></article>
-        <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>判断结果并接回</span></b><p>对照目标和证据；确认完成，或选择是否进入可选恢复。</p></article>
+        <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>说明目标与已知环境</span></b><p>希望用 Ascend C 实现 AddCustom，并由 PyTorch / torch_npu 调用；提供目标芯片及已知软件版本。</p></article>
+        <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>确认教程与来源缺口</span></b><p>官方自定义算子教程正文未取回时，判断是否转查社区 / 第三方资料，并保留来源和版本。</p></article>
+        <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>核对合并后的上下文</span></b><p>补齐 soc_version、CANN / 框架版本和本机仓库线索；未知字段明确标记待核，不推断版本。</p></article>
+        <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>复核工程起步动作</span></b><p>检查 msopgen 目标目录与待改文件；本机命令、返回码和日志回到下一轮继续判断。</p></article>
       </div>
 
       <div class="cb-row-label cb-handoff-label"><b>交接物</b></div>
-      <div class="cb-handoff-rail" aria-label="机制观察点之间的人机交接">
-        <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 + 环境 + 约束</span></div>
-        <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>计划 + 工具选择</span></div>
-        <div class="cb-handoff is-control"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M5 2v13M2 5l3-3 3 3M11 16V3M8 6l3-3 3 3"/></svg><span>行动预览 ↔ 放行决策</span></div>
-        <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>工具返回 + 执行证据</span></div>
+      <div class="cb-handoff-rail" aria-label="业务切片之间的人机交接">
+        <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 + 已知环境</span></div>
+        <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>教程取回状态 + 来源</span></div>
+        <div class="cb-handoff is-control"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M5 2v13M2 5l3-3 3 3M11 16V3M8 6l3-3 3 3"/></svg><span>来源适用性 ↔ 版本匹配</span></div>
+        <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>工程骨架 + 命令 / 日志</span></div>
       </div>
 
-      <div class="cb-row-label cb-agent-label"><small>AGENT LANE</small><b>Agent</b><span>装配 · 规划 · 执行</span></div>
+      <div class="cb-row-label cb-agent-label"><small>AGENT LANE</small><b>Agent</b><span>检索 · 装配 · 准备动作</span></div>
       <div class="cb-lane cb-agent-lane" aria-label="Agent 泳道">
         <article class="cb-lane-cell cb-agent-step is-source">
           <div class="cb-source-flow">
-            <div class="cb-source-nodes"><span>官方文档</span><span>GitCode / 样例</span><span>Issue / 社区</span></div>
-            <div class="cb-source-merge"><span>多源信息汇入</span></div>
-            <div class="cb-trust-gate"><b>筛适用性，而不是只做搜索</b><span>核来源 · 版本 · 芯片 · 适用范围</span></div>
-            <div class="cb-context-result">带引用的知识片段 → 当前 Context</div>
+            <div class="cb-source-nodes"><span>AddCustom → PyTorch</span><span>目标芯片 / soc_version</span><span>CANN / 框架版本</span></div>
+            <div class="cb-source-merge"><span>任务简报汇入</span></div>
+            <div class="cb-trust-gate"><b>未知字段标记待核</b><span>不推断 soc_version 或软件版本</span></div>
+            <div class="cb-context-result">目标 + 已知现场 → 初始 Context</div>
           </div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-action">
-          <div class="cb-vertical-flow"><span>理解目标与约束</span><i>↓</i><span>拆解计划 / 选择工具或子任务</span><i>↓</i><span class="cb-agent-callout">形成可执行方案，等待进入执行</span></div>
+          <div class="cb-vertical-flow"><span>Search：查官方自定义算子教程</span><i>↓</i><span>Fetch：尝试取回正文与示例</span><i>↓</i><span class="cb-agent-callout">正文未取回 → 转社区 / 第三方补充</span></div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-control">
           <div class="cb-preview-stack">
-            <div class="cb-preview"><small>HIGH-IMPACT ACTION · PREVIEW</small><b>先说明影响，再请求放行</b><ul><li>改哪些文件</li><li>调用什么工具</li><li>影响与成本</li><li>需要何种权限</li></ul></div>
-            <div class="cb-wait-gate"><i data-lucide="pause-circle"></i>等待确认 · 随时可暂停</div>
+            <div class="cb-preview"><small>CONTEXT ASSEMBLY · 本轮更新</small><b>筛来源与版本，再合并本机现场</b><ul><li>AddCustom → PyTorch 目标</li><li>官方正文状态 / 外部来源</li><li>soc_version / CANN / 框架</li><li>仓库结构 / 代码 / 命令</li></ul></div>
+            <div class="cb-wait-gate"><i data-lucide="pause-circle"></i>版本缺项先补问 · 再准备工程动作</div>
           </div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-evidence">
           <div class="cb-proof-flow">
-            <div class="cb-proof-signal">调用工具，读取执行结果</div>
-            <div class="cb-proof-items"><span>代码 Diff</span><span>Build / Test 信号</span><span>日志与产物</span><span>知识来源</span></div>
-            <div class="cb-proof-result">Evidence Receipt · 已验证 / 尚未验证</div>
-            <div class="cb-recovery-inline" aria-label="Agent 可选恢复分支：未通过或缺少证据时，补充线索、重试、换路或升级给领域负责人，并返回相关行动">
-              <div><b>未通过 / 缺证据</b><span>触发条件</span></div><i>→</i>
-              <div><b>可选恢复</b><span>补线索 · 重试 · 换路 · 升级给领域负责人</span></div><i>↶</i>
-              <div><b>回到相关行动</b><span>保留现场继续</span></div>
+            <div class="cb-proof-signal">准备工程起步，并读取本机返回</div>
+            <div class="cb-proof-items"><span>msopgen 工程骨架</span><span>soc_version 核对状态</span><span>核函数文件与目录</span><span>命令 / 返回码 / 日志</span></div>
+            <div class="cb-proof-result">状态回执 · 待执行 / 已生成 / 失败</div>
+            <div class="cb-recovery-inline" aria-label="AddCustom 工程生成失败或 soc_version、版本信息缺失时，核对版本、补充环境、换用可追溯资料或升级处理，并保留工程现场继续">
+              <div><b>生成失败 / 缺环境字段</b><span>触发条件</span></div><i>→</i>
+              <div><b>可选恢复</b><span>核版本 · 补环境 · 换来源 · 升级处理</span></div><i>↶</i>
+              <div><b>回到工程起步</b><span>保留任务现场继续</span></div>
             </div>
-            <div class="cb-recovery-foot">待验证：恢复成功率 · 接续耗时</div>
+            <div class="cb-recovery-foot">待验证：首个工程成功率 · 接续耗时</div>
           </div>
         </article>
       </div>
 
-      <div class="cb-row-label cb-mech-label"><small>RUNTIME + SETUP</small><b>机制与装配</b><span>作用点与安装入口分开</span></div>
-      <div class="cb-mechanism-rail" aria-label="机制按 Agent 运行观察点展示，Plugin 或 Extension 是独立的安装分发入口，正常 Agent Loop 单独呈现">
-        <div class="cb-assembly-node"><b>Plugin / Extension · 安装分发</b><span>部分平台用扩展包携带 Skill、MCP Server 或 App；具体内容由平台定义，不代表运行时横跨所有阶段。</span></div>
-        <div class="cb-mechanism-stages" aria-label="机制在四个运行观察点中的作用；平台供给因产品而异">
+      <div class="cb-row-label cb-mech-label"><small>RUNTIME + SETUP</small><b>机制与装配</b><span>对应 AddCustom 起步动作</span></div>
+      <div class="cb-mechanism-rail" aria-label="机制对应 AddCustom P1–P2 目标输入、资料检索、Context Assembly 与工程起步；扩展安装入口与正常 Agent Loop 单独呈现">
+        <div class="cb-assembly-node"><b>Plugin / Extension · 安装分发</b><span>扩展包可能携带算子 Skill 或文档 MCP；是否可用取决于开发工具配置，不等同于自动完成 msopgen 或编译。</span></div>
+        <div class="cb-mechanism-stages" aria-label="机制在 AddCustom P1–P2 任务中的可能作用；平台供给因产品而异">
           <div class="cb-mechanism-stage dense is-source">
-            <div class="cb-mech-node"><b>Rules · LOAD</b><span>带入持续约束</span></div>
-            <div class="cb-mech-node"><b>Project Knowledge</b><span>带入本地约定</span></div>
-            <div class="cb-mech-node"><b>Knowledge Base / RAG</b><span>检索可信来源</span></div>
-            <div class="cb-mech-node"><b>MCP · Resources</b><span>读取外部资料</span></div>
-            <div class="cb-mech-node"><b>Skill · LOAD</b><span>按任务加载方法</span></div>
+            <div class="cb-mech-node"><b>Rules · LOAD</b><span>带入算子工程约束</span></div>
+            <div class="cb-mech-node"><b>Project Knowledge</b><span>读取本仓目录与规范</span></div>
+            <div class="cb-mech-node"><b>Knowledge Base / RAG</b><span>查算子 API 与适用版本</span></div>
+            <div class="cb-mech-node"><b>MCP · Resources</b><span>取教程正文与版本表</span></div>
+            <div class="cb-mech-node"><b>Skill · LOAD</b><span>加载 AddCustom 起步步骤</span></div>
           </div>
           <div class="cb-mechanism-stage dense is-action">
-            <div class="cb-mech-node"><b>Rules · APPLY</b><span>执行时持续约束</span></div>
-            <div class="cb-mech-node"><b>Skill · GUIDE</b><span>组织多步行动</span></div>
-            <div class="cb-mech-node"><b>Built-in Tools</b><span>读写 / Shell / Browser</span></div>
-            <div class="cb-mech-node"><b>MCP · Connector</b><span>连接外部动作</span></div>
-            <div class="cb-mech-node"><b>Subagent</b><span>独立 Context · 子任务循环</span></div>
+            <div class="cb-mech-node"><b>Rules · APPLY</b><span>要求检索保留来源与版本</span></div>
+            <div class="cb-mech-node"><b>Skill · GUIDE</b><span>组织 Search → Fetch 顺序</span></div>
+            <div class="cb-mech-node"><b>Built-in Tools</b><span>搜索并打开算子教程</span></div>
+            <div class="cb-mech-node"><b>MCP · Connector</b><span>读取文档正文 / 版本目录</span></div>
+            <div class="cb-mech-node"><b>Subagent</b><span>可选：并行核对教程与样例</span></div>
           </div>
           <div class="cb-mechanism-stage few is-control">
-            <div class="cb-mech-node"><b>Hook · PreTool</b><span>执行前检查 / 拦截</span></div>
-            <div class="cb-mech-node"><b>Permission / Sandbox</b><span>授权并隔离执行</span></div>
+            <div class="cb-mech-node"><b>Hook · PreTool</b><span>读取前检查目标与范围</span></div>
+            <div class="cb-mech-node"><b>Permission / Sandbox</b><span>约束网络与工作区读写</span></div>
           </div>
           <div class="cb-mechanism-stage dense six is-evidence">
-            <div class="cb-mech-node"><b>Skill · CHECK</b><span>提供核验清单</span></div>
-            <div class="cb-mech-node"><b>Hook · PostTool</b><span>处理工具返回后续动作</span></div>
-            <div class="cb-mech-node"><b>Hook · Stop</b><span>检查是否可结束 / 继续</span></div>
-            <div class="cb-mech-node"><b>Build / Test</b><span>产生验证信号</span></div>
-            <div class="cb-mech-node"><b>Evidence Receipt</b><span>汇总证据与边界</span></div>
-            <div class="cb-mech-node"><b>Checkpoint</b><span>为可选恢复保存现场</span></div>
+            <div class="cb-mech-node"><b>Skill · CHECK</b><span>核对 soc_version 与工程输入</span></div>
+            <div class="cb-mech-node"><b>Hook · PostTool</b><span>回填 msopgen 命令与日志状态</span></div>
+            <div class="cb-mech-node"><b>Hook · Stop</b><span>未执行时不得标记已生成</span></div>
+            <div class="cb-mech-node"><b>Build / Test</b><span>记录工程生成 / 编译信号</span></div>
+            <div class="cb-mech-node"><b>Evidence Receipt</b><span>汇总来源、版本与命令状态</span></div>
+            <div class="cb-mech-node"><b>Checkpoint</b><span>保存工程目录与检索现场</span></div>
           </div>
         </div>
-        <div class="cb-agent-loop" aria-label="正常 Agent 内循环：工具调用、结果回填、观察和重新规划后继续行动；横跨规划与执行观察，不同于失败恢复">
+        <div class="cb-agent-loop" aria-label="正常 Agent 内循环：Search / Fetch 或 msopgen 工具调用、正文或本机结果回填 Context、更新 AddCustom 工程起步状态后继续查找、补字段或准备命令；不同于失败恢复">
           <strong>AGENT LOOP</strong>
-          <div class="cb-agent-loop-flow"><span>工具调用</span><i>→</i><span>结果回填</span><i>→</i><span>观察 / 更新计划</span><i>→</i><span>继续行动</span></div>
-          <small>横跨 Plan 与 Act / Observe · 非 /loop 定时提示</small>
+          <div class="cb-agent-loop-flow"><span>检索 / 命令调用</span><i>→</i><span>正文 / 本机结果回填</span><i>→</i><span>更新 Context</span><i>→</i><span>继续查 / 起步 / 停下</span></div>
+          <small>贯穿 Search 与工程起步 · 非 /loop 定时提示</small>
           <svg class="cb-agent-loop-return" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="cb-loop-return-arrow" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#55a486"/></marker></defs><path class="return-rail" d="M970 1V6Q970 12 960 12H40Q30 12 30 6V1" marker-end="url(#cb-loop-return-arrow)"/></svg>
         </div>
       </div>
 
-      <div class="cb-row-label cb-measure-label"><small>MEASURES</small><b>体验观察</b><span>实测 / 待验证</span></div>
-      <div class="cb-measure-rail" aria-label="研究维度与待验证体验指标">
-        <div class="cb-measure proven is-source"><small>AI 可用性实测</small><span>获取状态 · 获取成本</span></div>
-        <div class="cb-measure proven is-action"><small>AI 可用性实测</small><span>任务支撑</span></div>
-        <div class="cb-measure proposed is-control"><small>体验设计待验证</small><span>路径是否理解 · 动作是否可控</span></div>
-        <div class="cb-measure proven is-evidence"><small>AI 可用性实测</small><span>回答质量 · 证据是否一致</span></div>
+      <div class="cb-row-label cb-measure-label"><small>MEASURES</small><b>体验观察</b><span>研究记录 / 待验证</span></div>
+      <div class="cb-measure-rail" aria-label="AddCustom P1–P2 检索研究记录与后续待验证体验指标">
+        <div class="cb-measure proven is-source"><small>AI 可用性实测</small><span>官方正文取回状态 · 补充来源成本</span></div>
+        <div class="cb-measure proven is-action"><small>AI 可用性实测</small><span>AddCustom 教程到工程起步的任务支撑</span></div>
+        <div class="cb-measure proposed is-control"><small>体验设计待验证</small><span>来源 / 版本适用性 · 本机动作可控性</span></div>
+        <div class="cb-measure proven is-evidence"><small>AI 可用性实测</small><span>教程引用与版本条件是否一致</span></div>
       </div>
 
     </div>
   </div>
-  <footer class="foot">这是对时序中 Agent 一侧的机制下钻，不代表各平台都以相同方式提供这些能力。四列是运行观察点，不等于开发生命周期阶段；Agent Loop 是工具结果回填后的正常迭代，失败恢复仍是可选分支。</footer>
+  <footer class="foot">范围仅为时序图 P1–P2 红框：AddCustom 接入 PyTorch 的选型、教程检索与工程起步。Search / Fetch 负责发现和取回资料；Context Assembly 单独筛选来源与版本，并合入任务目标、芯片 / soc_version 和本机工程现场。教程取回状态来自研究记录；本机生成工程等后续动作是路径还原，未在匹配 Ascend 环境实测。各平台机制供给仍有差异。</footer>
 </div></section>
 
 <!-- MULTI-ACTOR TASK TIMELINE -->

@@ -3281,3 +3281,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：5 段可执行内联 JavaScript 语法通过；静态断言确认字号与标签尺寸增大；`git diff --check` 通过。未做截图级目视复核。
 - Commit / push：功能提交 `34e6dfac`（`fix: enlarge focused timeline abbreviations`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
 - 未决事项：需在允许的本地预览中确认放大后的标签仍与节点、线条保持足够间距。
+
+
+### 2026-09-24（Agent 机制页映射到 AddCustom P1–P2 业务切片）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`AGENTS.md`。将 Agent 机制下钻页的抽象四列文案改为时序图红框内的真实业务动作：P1 明确 Ascend C AddCustom 接入 PyTorch 的目标；Search / Fetch 查询自定义算子教程并记录正文未取回状态；Context Assembly 独立筛来源 / 版本，并合入任务、目标芯片 / `soc_version` 与本机工程现场；P2 准备 `msopgen` 工程起步并回填命令 / 日志。
+- 结构与序列：保留原四列、开发者 / Agent 泳道、交接物、机制卡、Agent Loop、指标区、CSS 与 DOM 结构；不改 `reportOrder`、页码、时序图 iframe 或页面顺序。Search / Fetch 与 Context Assembly 分开表达。
+- 依据 / 边界：按用户提供的红框时序图和既有 AI 可用性研究记录写作。教程取回状态属于研究记录；本机生成工程、核对 `soc_version` 等步骤属于路径还原，未在匹配 Ascend NPU 环境实机验证；不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`git diff --check` 通过；HTMLParser 确认目标页 DOM 标签 / 属性结构事件数为 460，且与基线一致；确认修改仅在目标页文案。桌面目视复核未完成：本地 `file://` 页面被 CUA 浏览器 URL 策略拒绝，且策略禁止换浏览器或命令行截图绕过；以静态结构检查继续。
+- Commit / push：待提交并推送至 `origin/main`。
+- 未决事项：匹配 Ascend / CANN 环境下的工程生成与核函数运行仍需实机验证。
