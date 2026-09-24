@@ -3348,3 +3348,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：只读核对 GitHub issue / PR 标题与正文；HTMLParser 解析通过，5 段内联 JavaScript 均通过 `node --check`，9 张截图引用均存在且尺寸为 1440×900，截图样式静态断言与 `git diff --check` 通过。CUA 明确拒绝本地 `file://` 页面导航并禁止通过其他浏览器 / 命令行绕过，因此未完成报告页截图级目视复核。
 - Commit / push：功能提交 `f79af6f5`（`feat: replace problem evidence with relevant captures`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。报告 HTML 中本轮以前已有的其他未提交改动未纳入功能提交。
 - 未决事项：在允许的本地预览环境中确认问题 01–09 现状页截图实际缩放、文字可读性和右侧观察栏布局；当前被浏览器安全策略阻止，未作视觉验收结论。
+
+### 2026-09-24（问题方案页改为按平台呈现的图像概念稿）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`cann-dashboard/ai-development-behavior-system-report-evidence/solution-mockups/`、`AGENTS.md`。九个问题方案页改为直接展示 ImageGen 生成的界面概念图，并在说明栏标出承载平台：01 / 03 / 04 / 07 / 09 为 Codex 工作台，02 为昇腾开发者官网，05 / 06 / 08 为 GitCode。页面顺序不变。
+- 第 07 页专门呈现为 Codex 编码工作台内的边做边学体验：学习入口贴着错误现场，原文件只读、隔离副本练习、查看修改建议后再回到项目验证；承接 `ploy-interaction-lab/learning-canvas-story/index.html` 的 B1–B5。页面明确这是设计提案，不代表 Codex 已具备此功能，也不是独立学习产品。
+- 证据 / 边界：九张 PNG 都是方案概念图而非平台现状证据；仅第 07 页复用了 Learning Canvas Story 的既有设计逻辑。未改变问题页配对顺序、页码，或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：HTMLParser 解析通过，7 段可执行内联 JavaScript 均通过 `node --check`，9 张图片路径存在，`git diff --check` 通过。由于本地 `file://` 预览安全限制未作截图级页面复核。
+- Commit / push：功能提交 `5d7c3412`（`feat: add platform-specific solution mockups`）已推送至 `origin/main`；只提交本轮平台概念图资产与方案页渲染修改，未包含报告文件此前已有的未提交修改或其他脏文件。
+- 未决事项：在允许的预览环境中查看九个方案页的图片缩放与右侧文字排版；如要把学习辅助能力作为 Codex 插件或集成能力实现，仍需另行定义产品边界与技术方案。
