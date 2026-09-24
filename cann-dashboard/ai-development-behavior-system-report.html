@@ -582,8 +582,9 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-stage small{align-self:flex-start;font:700 var(--fs-xs)/1 'Barlow Condensed';letter-spacing:.025em;color:color-mix(in srgb,var(--phase) 45%,#fff);white-space:nowrap}
 .cb-stage b{font-size:var(--fs-h3);line-height:1.08;color:#fff;white-space:nowrap}
 .cb-stage span{margin-top:.08vh;font-size:var(--fs-xs);line-height:1.1;color:rgba(255,255,255,.68);white-space:nowrap}
-.cb-stage-visual{justify-self:center;width:clamp(52px,4.2vw,64px);height:clamp(52px,6.4vh,58px);display:grid;place-items:center}
-.cb-stage-visual img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(5,8,14,.2))}
+.cb-stage-visual{position:relative;isolation:isolate;justify-self:center;width:clamp(52px,4.2vw,64px);height:clamp(52px,6.4vh,58px);display:grid;place-items:center}
+.cb-stage-visual::before{content:"";position:absolute;z-index:-1;inset:4%;border-radius:50%;background:radial-gradient(ellipse at 50% 54%,color-mix(in srgb,var(--phase) 30%,transparent) 0%,color-mix(in srgb,var(--phase) 12%,transparent) 44%,transparent 76%);pointer-events:none}
+.cb-stage-visual img{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(5,8,14,.2))}
 .cb-row-label{grid-column:1;align-items:flex-start;border-right:1px solid rgba(101,112,130,.16)}
 .cb-row-label b{font-size:var(--fs-sm)}.cb-row-label span{max-width:7.1vw}
 .cb-painpoint-label b{font-size:var(--fs-sm);margin:0}
