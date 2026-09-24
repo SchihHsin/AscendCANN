@@ -3575,3 +3575,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 和暂存区差异检查通过；HTMLParser 解析通过；五张 PNG 均验证为 RGBA 且保留透明像素。已逐张查看生成图；未做整页截图复核，本地 `file://` 页面截图访问沿用既有浏览器 URL 策略限制。
 - Commit / push：功能提交 `dba97318`（`style: align stage illustrations with phase colors`）已推送至 `origin/main`；本条交接记录随后补充并推送。
 - 未决事项：刷新报告第 5 页确认新配色在当前浏览器视口中的整体观感。
+
+### 2026-09-24（补全 Search / Generate 的整列主题色区分）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。将 Generate 从 Search 共用的 `is-action` 单独拆为 `is-generate`，并设为橙色；Search 继续使用紫色。区分覆盖阶段卡、开发者泳道、交接物、Agent 泳道、机制节点连线、体验观察六处对齐行。
+- 修正原因：上一轮只改了插图和阶段色标，未拆开各行复用的阶段主题；用户指出视觉上主题色仍相同。本次按五列阶段映射拆出独立主题变量，不改变布局、文案、列顺序、Pain Point 通用红色表达、其他页面或页面序列，不影响 API / Host / Application 边界。
+- 验证：`git diff --check` 通过；HTMLParser 解析通过；结构检查确认六个 Generate 对齐元素全部使用独立主题类，Search 仍为紫色。未做整页截图复核，本地 `file://` 页面截图访问受浏览器 URL 策略限制。
+- Commit / push：功能提交 `e7fa71d6`（`style: separate Generate phase color`）已推送至 `origin/main`；本条交接随后补充并推送。
+- 未决事项：刷新报告第 5 页确认整列色彩在当前浏览器视口下的观感。
