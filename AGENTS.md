@@ -3376,3 +3376,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；本轮未做浏览器截图级复核。
 - Commit / push：`705db207`（痛点按开发者 / Agent 视角拆分）和 `1e62b5ca`（研究类型与已完成标识）已推送至 `origin/main`；本条交接随后单独提交并推送。
 - 未决事项：刷新本地报告第 5 页后确认痛点可读性与研究标签颜色。
+
+
+### 2026-09-24（跨阶段能力卡统一名称与用途格式）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页 Agent Loop 与 Plugin / Extension 改用和 Rules、Skill 等可装配能力相同的能力名称 + 用途卡片；两项继续作为彼此独立的跨阶段能力并列呈现，不挂到某个单一阶段，也不表达总分关系。
+- 边界：只统一机制卡呈现与该行“阶段 / 跨阶段”说明，不改变 Agent Loop 与定时 `/loop` 的事实区分，不改变 Plugin / Extension 的扩展机制定义、页面结构顺序或 API / Host / Application 层边界。
+- 验证：`git diff --check` 通过；未做浏览器截图级复核。
+- Commit / push：功能提交 `660e54a4`（`fix: unify cross-stage capability cards`）已推送至 `origin/main`；本条交接随后单独提交并推送。
+- 未决事项：用户刷新本地第 5 页，确认跨阶段能力卡与阶段能力卡的视觉一致性。
