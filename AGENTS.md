@@ -3411,3 +3411,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；本地浏览器标签的 `file://` 页面访问被浏览器 URL 策略阻止，未进行截图级复核。
 - Commit / push：提交 `cda1a07f`（`fix: remove duplicate five-step row`）已推送至 `origin/main`。
 - 未决事项：用户刷新本地报告第 5 页后确认。
+
+
+### 2026-09-24（九个问题按“现状—分析—方案”重组）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`AGENTS.md`。问题章节逐题连续呈现“现状截图 → 分析 → 方案图”，并在九题结束后增加问题关系总览；主章节为开发行为、问题与分析、体验设计、知识与学习，平台机制与供给细节归入对应问题或附录。
+- 材料归位：问题 02 纳入 CANN 任务级 AI 可用性对照与 AI 亲和原则；问题 03 纳入六个平台的能力装配比较、昇腾现有供给与任务链断点；问题 04 纳入 Host / Harness 运行循环和任务状态 / 接管影响；问题 07 分析交付、理解与迁移差异；问题 09 纳入平台控制机制与组织责任边界。另为问题 01、05、06、08、09 补充目标缺项流、可信交付证据链、评审信息交接、平台反馈回路和权责路径图。
+- 依据 / 边界：复用公开案例、平台机制材料、CANN 任务对照及既有学习设计；单个 Issue 或平台机制仅作为具体线索，不外推为普遍发生率。九题继续标为待验证命题，新增结构图不代表实测结果。未改变 API / Protocol、Host / Harness、Application / Task 层级边界。
+- 验证：5 段内联脚本语法检查通过；静态映射确认报告顺序 90 页、9 个问题均映射到现状 / 分析 / 方案且无未映射标题；截图、方案图和学习画布图片路径存在；`git diff --check` 通过。Browser Use 策略拒绝本地 `file://` 页面，未进行截图级视觉复核，也未使用其他浏览器绕过。
+- Commit / push：结构重排包含在 `0ef9ff8d`（`fix: connect mechanisms to agent activities`），已推送至 `origin/main`；本条交接记录随后的文档提交一并推送。
+- 未决事项：在允许预览的环境逐页检查九题截图裁切、分析图密度与章节导航状态。
