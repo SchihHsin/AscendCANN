@@ -3608,5 +3608,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据 / 置信度：第二状态图由 ImageGen 依据对应平台风格和现有方案图生成，均为设计提案，不代表 Codex、昇腾官网或 GitCode 已有此功能，也不代表真实 CANN / NPU 测试结果。问题 05 明确保留“非真实 CI / 需要真实 NPU”边界；问题 04 恢复路径为可选且由开发者选择。
 - 交互 / 页面边界：方案页仍是一题一页；第二状态可用 `#页码-demo2` 直接定位，页码总数不变。未改变 API / Protocol、Host / Harness、Application / Task 的既有边界，也未改变正式页面序列。
 - 验证：6 段内联脚本均通过 `new Function` 解析；9 题共 18 个状态图片引用全部存在；`git diff --check` 通过。尝试本地浏览器视觉复核时，Chrome 截屏为黑屏且 Firefox headless 未能完成启动，未绕过 `file://` 浏览器访问策略；因此没有整页截图级布局结论。
-- Commit / push：待完成本次功能提交后回填。
+- Commit / push：功能提交 `9917612b`（`feat: add manual solution demo states`）已推送至 `origin/main`；本交接回填随后单独提交。
 - 未决事项：在用户当前浏览器刷新报告，核对状态栏占用、图片可读性和逐题焦点框位置。
