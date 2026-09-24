@@ -3255,5 +3255,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。第 4→5 页的首轮任务循环聚焦状态下，在首轮字母节点旁显示对应英文全称：N / Need、S / Search、G / Generate、D / Decide、E / Execute；退出聚焦后恢复为仅显示原字母，避免默认图面拥挤。未改节点顺序和报告页面序列。
 - 依据 / 边界：按现有节点 ID / kind 语义展开字母，仅解释已有标记，不新增任务节点、研究结论或平台机制事实；API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：时序图副本 5 段可执行内联 JavaScript 语法通过；静态断言确认首轮缩写映射与焦点显示 / 隐藏逻辑存在；`git diff --check` 通过。未做截图级视觉复核，遵守本地页面预览策略。
-- Commit / push：待提交并推送至 `origin/main`。
+- Commit / push：功能提交 `fd00db82`（`feat: expand focused timeline node abbreviations`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
 - 未决事项：需在允许的本地预览中确认各小标签在首轮节点附近不与箭头标题或阶段标签重叠。
