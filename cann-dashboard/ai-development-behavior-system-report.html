@@ -609,6 +609,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-handoff.is-source{--phase:var(--phase-source)}.cb-handoff.is-action{--phase:var(--phase-action)}.cb-handoff.is-control{--phase:var(--phase-control)}.cb-handoff.is-evidence{--phase:var(--phase-evidence)}
 .cb-handoff svg{width:12px;height:15px;flex:0 0 auto;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .cb-handoff span{font-size:var(--fs-xs);line-height:1.08;font-weight:760;white-space:nowrap}
+.cb-handoff.is-evidence span{min-width:0;white-space:normal;line-height:1.02;text-align:center}
 .cb-agent-step{justify-content:flex-start;padding:.9vh .72vw}
 .cb-source-flow{width:100%;height:100%;min-width:0;display:grid;grid-template-rows:auto 1.8vh auto auto;gap:.25vh;align-content:center}
 .cb-source-nodes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.18vw}
@@ -805,7 +806,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>教程取回状态 + 来源</span></div>
         <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>候选路径 + 参数草稿</span></div>
         <div class="cb-handoff is-control"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M5 2v13M2 5l3-3 3 3M11 16V3M8 6l3-3 3 3"/></svg><span>适用性判断 + 工程路径</span></div>
-        <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>工程骨架 + 命令 / 日志</span></div>
+        <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>工程骨架 + 执行回执</span></div>
       </div>
 
       <div class="cb-row-label cb-agent-label"><small>AGENT</small><b>智能体</b></div>

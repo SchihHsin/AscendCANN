@@ -3448,3 +3448,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；未做截图级视觉复核。
 - Commit / push：`fix: simplify task page row labels`，推送至 `origin/main`。
 - 未决事项：用户刷新第 5 页确认标题文案。
+
+
+### 2026-09-24（修复 Execute 交接物标签溢出）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。将 Execute 交接标签由“工程骨架 + 命令 / 日志”缩短为“工程骨架 + 执行回执”，并允许该标签在窄列内换行，避免与相邻列重叠。
+- 边界：仅修改第 5 页 Execute 交接物标签，不调整其他列、页面布局或任务内容。
+- 验证：`git diff --check` 通过；未进行截图级复核。
+- Commit / push：`fix: prevent execute handoff label overlap`，推送至 `origin/main`。
+- 未决事项：刷新报告第 5 页确认 Execute 交接标签不再重叠。
