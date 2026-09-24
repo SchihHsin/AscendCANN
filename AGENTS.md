@@ -3592,3 +3592,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTML 解析、连线脚本 `node --check` 与 `git diff --cached --check` 通过。浏览器工具阻止本地 `file://` 页面的截图访问，因此以用户截图和第 20 页源码样式完成对照，未做修改后的整页截图复核。
 - Commit / push：功能提交 `7ef94fb5`（`fix: anchor rounded mechanism connectors`）已推送至 `origin/main`；本交接条目随后单独补交。
 - 未决事项：刷新报告第 5 页确认圆形箭头与各节点的实际视觉衔接。
+
+
+### 2026-09-24（第 5 页阶段插图添加主题色光晕）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。为 Need、Search、Generate、Decide、Execute 阶段卡的透明底插图增加柔和径向渐变，直接继承各阶段已有的主题色变量；渐变限制在插图区，不改变黑卡、文案和插图尺寸。
+- 依据 / 边界：用户要求在黑卡插图后垫阶段主题色淡渐变。只改第 5 页阶段插图背景层，不更改卡片结构、阶段内容、其他页面或页面序列，不影响 API / Host / Application 边界。
+- 验证：HTML 解析与 `git diff --cached --check` 通过；未做修改后整页截图复核，本地 `file://` 页面的截图访问受浏览器 URL 策略限制。
+- Commit / push：功能提交 `32e77567`（`style: add phase glow behind stage art`）已推送至 `origin/main`；本交接条目随后单独补交。
+- 未决事项：刷新报告第 5 页确认光晕强度与当前视口观感。
