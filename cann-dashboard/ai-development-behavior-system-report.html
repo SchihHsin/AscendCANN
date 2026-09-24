@@ -661,11 +661,17 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-mechanism-stage.dense .cb-mech-node:last-child{grid-column:1/-1;width:calc(50% - .15vw);justify-self:center}
 .cb-mechanism-stage.six .cb-mech-node:last-child{grid-column:auto;width:auto}
 .cb-mechanism-stage.few{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,6.5vh);align-content:center}
-.cb-mech-node{position:relative;z-index:2;min-width:0;min-height:0;padding:.05vh .22vw;display:flex;flex-direction:column;justify-content:center;gap:0;border-radius:6px;background:rgba(255,255,255,.84);border:1px solid color-mix(in srgb,var(--phase) 16%,#fff)}
+.cb-mech-node{--cap-tone:#5b5bd6;position:relative;z-index:2;min-width:0;min-height:0;padding:.34vh .38vw;display:flex;flex-direction:column;justify-content:center;gap:.08vh;border-radius:8px;background:linear-gradient(135deg,#fff,color-mix(in srgb,var(--cap-tone) 8%,#fff));border:1.5px solid color-mix(in srgb,var(--cap-tone) 58%,#fff);box-shadow:0 0 0 1px color-mix(in srgb,var(--cap-tone) 7%,transparent),0 8px 18px -15px rgba(24,31,54,.48)}
+.cb-mech-node.cap-blue{--cap-tone:#377ad2;background:linear-gradient(135deg,#fbfdff,#e8f2ff)}
+.cb-mech-node.cap-teal{--cap-tone:#009f9a;background:linear-gradient(135deg,#f9fffe,#e6f8f4)}
+.cb-mech-node.cap-amber{--cap-tone:#cd8b2e;background:linear-gradient(135deg,#fffdf7,#fff1d6)}
+.cb-mech-node.cap-green{--cap-tone:#3e8f75;background:linear-gradient(135deg,#f8fffc,#e8f6f0)}
+.cb-mech-node.cap-neutral{--cap-tone:#788394;background:linear-gradient(135deg,#fafbfc,#eceff4)}
+.cb-mech-node b{padding-right:7px;font-size:var(--fs-sm);line-height:1.08;color:color-mix(in srgb,var(--cap-tone) 82%,#252c38)}
+.cb-mech-node span{font-size:var(--fs-xs);line-height:1.1;color:#687084}
+.cb-mech-dot{position:absolute;top:.34vh;right:.34vw;width:5px;height:5px;border-radius:50%;background:var(--cap-tone);box-shadow:0 0 0 3px color-mix(in srgb,var(--cap-tone) 10%,transparent)}
 .cb-mech-node:nth-child(odd)::before,.cb-mech-node:nth-child(even)::after{content:"";position:absolute;top:50%;width:.26vw;border-top:1px solid color-mix(in srgb,var(--phase) 48%,#a6afbb);pointer-events:none}
 .cb-mech-node:nth-child(odd)::before{right:100%}.cb-mech-node:nth-child(even)::after{left:100%}
-.cb-mech-node b{font-size:var(--fs-xs);line-height:1.08;color:#465160}
-.cb-mech-node span{font-size:var(--fs-xs);line-height:1.12;color:#788391}
 .cb-mechanism-meta{grid-column:1;grid-row:2;display:flex;justify-content:center;gap:.7vw;min-width:0;min-height:0}
 .cb-mechanism-meta>.cb-mech-node{flex:0 1 18%}
 .cb-measure-label b{font-size:var(--fs-sm)}
@@ -912,45 +918,45 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-mechanism-rail" aria-label="阶段能力节点通过箭头指向上方对应的 Agent 动作；Plugin / Extension 与 Agent Loop 是独立跨阶段能力，不归到单一阶段">
         <div class="cb-mechanism-stages" aria-label="机制在 Need、Search、Generate、Decide、Execute 五阶段中的可能作用；平台供给因产品而异">
           <div class="cb-mechanism-stage few is-source">
-            <div class="cb-mech-node"><b>Rules</b><span>LOAD · 带入算子工程约束</span></div>
-            <div class="cb-mech-node"><b>Project Context</b><span>读取仓库规范</span></div>
+            <div class="cb-mech-node"><b>Rules</b><span>LOAD · 带入算子工程约束</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node"><b>Project Context</b><span>读取仓库规范</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
             <span class="cb-mechanism-output is-left" aria-hidden="true"></span><span class="cb-mechanism-output is-right" aria-hidden="true"></span>
           </div>
           <div class="cb-mechanism-stage dense six is-action">
-            <div class="cb-mech-node"><b>Knowledge Base</b><span>检索 API / 版本</span></div>
-            <div class="cb-mech-node"><b>MCP Resources</b><span>取教程 / 版本表</span></div>
-            <div class="cb-mech-node"><b>Built-in Tools</b><span>搜索并打开教程</span></div>
-            <div class="cb-mech-node"><b>MCP Connector</b><span>读取正文 / 版本</span></div>
-            <div class="cb-mech-node"><b>Skill</b><span>编排 Search → Fetch</span></div>
-            <div class="cb-mech-node"><b>Subagent</b><span>并行核对教程 / 样例</span></div>
+            <div class="cb-mech-node"><b>Knowledge Base</b><span>检索 API / 版本</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-teal"><b>MCP Resources</b><span>取教程 / 版本表</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node"><b>Built-in Tools</b><span>搜索并打开教程</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-teal"><b>MCP Connector</b><span>读取正文 / 版本</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node"><b>Skill</b><span>编排 Search → Fetch</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-blue"><b>Subagent</b><span>并行核对教程 / 样例</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
             <span class="cb-mechanism-output is-left" aria-hidden="true"></span><span class="cb-mechanism-output is-right" aria-hidden="true"></span>
           </div>
           <div class="cb-mechanism-stage few is-action">
-            <div class="cb-mech-node"><b>Skill</b><span>生成带来源的候选步骤</span></div>
-            <div class="cb-mech-node"><b>Template</b><span>组织工程路径 / 参数草稿</span></div>
+            <div class="cb-mech-node"><b>Skill</b><span>生成带来源的候选步骤</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node"><b>Template</b><span>组织工程路径 / 参数草稿</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
             <span class="cb-mechanism-output is-left" aria-hidden="true"></span><span class="cb-mechanism-output is-right" aria-hidden="true"></span>
           </div>
           <div class="cb-mechanism-stage few is-control">
-            <div class="cb-mech-node"><b>Sandbox</b><span>限制网络 / 文件读写</span></div>
-            <div class="cb-mech-node"><b>Hook</b><span>PreTool · 读取前校验</span></div>
+            <div class="cb-mech-node cap-amber"><b>Sandbox</b><span>限制网络 / 文件读写</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-amber"><b>Hook</b><span>PreTool · 读取前校验</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
             <span class="cb-mechanism-output is-left" aria-hidden="true"></span><span class="cb-mechanism-output is-right" aria-hidden="true"></span>
           </div>
           <div class="cb-mechanism-stage dense six is-evidence">
-            <div class="cb-mech-node"><b>Skill</b><span>核对 soc_version</span></div>
-            <div class="cb-mech-node"><b>Build / Test</b><span>记录生成 / 编译状态</span></div>
-            <div class="cb-mech-node"><b>Hook</b><span>PostTool · 回填命令 / 日志</span></div>
-            <div class="cb-mech-node"><b>Hook</b><span>Stop · 阻止虚报已生成</span></div>
-            <div class="cb-mech-node"><b>Evidence Receipt</b><span>汇总来源 / 状态</span></div>
-            <div class="cb-mech-node"><b>Checkpoint</b><span>保存工程 / 检索现场</span></div>
+            <div class="cb-mech-node"><b>Skill</b><span>核对 soc_version</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-blue"><b>Build / Test</b><span>记录生成 / 编译状态</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-amber"><b>Hook</b><span>PostTool · 回填命令 / 日志</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-amber"><b>Hook</b><span>Stop · 阻止虚报已生成</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-green"><b>Evidence Receipt</b><span>汇总来源 / 状态</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-neutral"><b>Checkpoint</b><span>保存工程 / 检索现场</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
             <span class="cb-mechanism-output is-left" aria-hidden="true"></span><span class="cb-mechanism-output is-right" aria-hidden="true"></span>
           </div>
         </div>
         <div class="cb-mechanism-meta" aria-label="跨阶段能力卡片，与阶段能力卡采用相同的名称和用途形式">
           <div class="cb-mech-node" aria-label="Agent Loop：工具调用结果回填后继续判断或停止，不代表定时循环">
-            <b>Agent Loop</b><span>工具调用结果回填后继续判断 / 停止</span>
+            <b>Agent Loop</b><span>工具调用结果回填后继续判断 / 停止</span><i class="cb-mech-dot" aria-hidden="true"></i>
           </div>
-          <div class="cb-mech-node" aria-label="Plugin / Extension：独立扩展机制，本任务片段未见实际调用">
-            <b>Plugin / Extension</b><span>安装 / 启用扩展入口 · 本任务未见调用</span>
+          <div class="cb-mech-node cap-blue" aria-label="Plugin / Extension：独立扩展机制，本任务片段未见实际调用">
+            <b>Plugin / Extension</b><span>安装 / 启用扩展入口 · 本任务未见调用</span><i class="cb-mech-dot" aria-hidden="true"></i>
           </div>
         </div>
       </div>
