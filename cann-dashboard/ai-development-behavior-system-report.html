@@ -575,6 +575,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-stage.is-action,.cb-lane-cell.is-action,.cb-mechanism-stage.is-action,.cb-measure.is-action{--phase:var(--phase-action)}
 .cb-stage.is-control,.cb-lane-cell.is-control,.cb-mechanism-stage.is-control,.cb-measure.is-control{--phase:var(--phase-control)}
 .cb-stage.is-evidence,.cb-lane-cell.is-evidence,.cb-mechanism-stage.is-evidence,.cb-measure.is-evidence{--phase:var(--phase-evidence)}
+.cb-stage-rail>.cb-stage:nth-child(3){--phase:#F47A4B}
 .cb-stage{min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(52px,4vw,68px);align-items:center;gap:.35vw;padding:.42vh .58vw;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:var(--g-ink)}
 .cb-stage-copy{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.12vh;text-align:left}
 .cb-stage small{align-self:flex-start;font:700 var(--fs-xs)/1 'Barlow Condensed';letter-spacing:.025em;color:color-mix(in srgb,var(--phase) 45%,#fff);white-space:nowrap}
