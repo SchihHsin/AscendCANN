@@ -559,7 +559,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .task-timeline-bridge strong{font-size:var(--fs-sm);white-space:nowrap;color:#a9ddcf}
 
 /* Agent mechanism drill-down · four runtime observation points, not task phases. */
-.task-rel-page{--phase-source:#3f77b7;--phase-action:#7558b7;--phase-control:#258e98;--phase-evidence:#438b69;--phase-recovery:#bd783b;--fs-h1:clamp(19px,1.6vw,28px);--fs-h2:clamp(15px,1.18vw,21px);--fs-h3:clamp(14.5px,1.14vw,18px);--fs-body:clamp(14px,1.06vw,17px);--fs-sm:clamp(11px,.78vw,13.5px);--fs-xs:clamp(8.5px,.58vw,10.5px);--cb-copy-size:clamp(12px,.84vw,14px)}
+.task-rel-page{--phase-source:#3f77b7;--phase-action:#7558b7;--phase-generate:#F47A4B;--phase-control:#258e98;--phase-evidence:#438b69;--phase-recovery:#bd783b;--fs-h1:clamp(19px,1.6vw,28px);--fs-h2:clamp(15px,1.18vw,21px);--fs-h3:clamp(14.5px,1.14vw,18px);--fs-body:clamp(14px,1.06vw,17px);--fs-sm:clamp(11px,.78vw,13.5px);--fs-xs:clamp(8.5px,.58vw,10.5px);--cb-copy-size:clamp(12px,.84vw,14px)}
 .task-rel-page .head{margin-bottom:1.2vh}
 .task-rel-page .body-area{align-items:stretch}
 @scope (.task-rel-page) {
@@ -575,7 +575,8 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-stage.is-action,.cb-lane-cell.is-action,.cb-mechanism-stage.is-action,.cb-measure.is-action{--phase:var(--phase-action)}
 .cb-stage.is-control,.cb-lane-cell.is-control,.cb-mechanism-stage.is-control,.cb-measure.is-control{--phase:var(--phase-control)}
 .cb-stage.is-evidence,.cb-lane-cell.is-evidence,.cb-mechanism-stage.is-evidence,.cb-measure.is-evidence{--phase:var(--phase-evidence)}
-.cb-stage-rail>.cb-stage:nth-child(3){--phase:#F47A4B}
+.cb-stage.is-generate,.cb-lane-cell.is-generate,.cb-mechanism-stage.is-generate,.cb-measure.is-generate{--phase:var(--phase-generate)}
+.cb-handoff.is-generate{--phase:var(--phase-generate)}
 .cb-stage{min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(52px,4vw,68px);align-items:center;gap:.35vw;padding:.42vh .58vw;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:var(--g-ink)}
 .cb-stage-copy{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.12vh;text-align:left}
 .cb-stage small{align-self:flex-start;font:700 var(--fs-xs)/1 'Barlow Condensed';letter-spacing:.025em;color:color-mix(in srgb,var(--phase) 45%,#fff);white-space:nowrap}
@@ -846,7 +847,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-stage-rail" aria-label="五个任务阶段：Need（提出目标并装配初始上下文）、Search / Fetch、Generate、Decide、Execute">
         <div class="cb-stage is-source"><div class="cb-stage-copy"><small>01 · NEED + CONTEXT</small><b>提出目标与上下文</b><span>装配环境、约束与工作区现场</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/need-context.png" alt=""></div></div>
         <div class="cb-stage is-action"><div class="cb-stage-copy"><small>02 · SEARCH / FETCH</small><b>检索与取回</b><span>发现并取得相关信息</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/search-fetch.png" alt=""></div></div>
-        <div class="cb-stage is-action"><div class="cb-stage-copy"><small>03 · GENERATE</small><b>生成候选方案</b><span>整理路径、参数与工程草稿</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/generate.png" alt=""></div></div>
+        <div class="cb-stage is-generate"><div class="cb-stage-copy"><small>03 · GENERATE</small><b>生成候选方案</b><span>整理路径、参数与工程草稿</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/generate.png" alt=""></div></div>
         <div class="cb-stage is-control"><div class="cb-stage-copy"><small>04 · DECIDE</small><b>判断方案</b><span>核验条件并选择路径</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/decide.png" alt=""></div></div>
         <div class="cb-stage is-evidence"><div class="cb-stage-copy"><small>05 · EXECUTE</small><b>执行任务</b><span>行动、状态与结果回传</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/execute.png" alt=""></div></div>
       </div>
@@ -855,7 +856,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-lane cb-human-lane" aria-label="开发者泳道">
         <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>说明目标与初始上下文</span></b><p>提出用 Ascend C 实现 AddCustom 并由 PyTorch / torch_npu 调用；提供目标芯片、软件版本及本机仓库线索。</p></article>
         <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>确认教程与来源缺口</span></b><p>官方自定义算子教程正文未取回时，判断是否转查社区 / 第三方资料，并保留来源和版本。</p></article>
-        <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="sparkles"></i><span>复核生成草案</span></b><p>检查候选工程路径、参数与来源依据；发现未满足的版本或环境条件时补充说明。</p></article>
+        <article class="cb-lane-cell cb-human-step is-generate"><b><i data-lucide="sparkles"></i><span>复核生成草案</span></b><p>检查候选工程路径、参数与来源依据；发现未满足的版本或环境条件时补充说明。</p></article>
         <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>判断资料适用并定路径</span></b><p>核对教程与本机版本、工程目录和生成方式，确认 msopgen 目标路径；条件不全时先补问。</p></article>
         <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>复核工程起步动作</span></b><p>检查 msopgen 目标目录与待改文件；本机命令、返回码和日志回到下一轮继续判断。</p></article>
       </div>
@@ -864,7 +865,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-handoff-rail" aria-label="五步任务之间的人机交接">
         <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 + 初始 Context</span></div>
         <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>教程取回状态 + 来源</span></div>
-        <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>候选路径 + 参数草稿</span></div>
+        <div class="cb-handoff down is-generate"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>候选路径 + 参数草稿</span></div>
         <div class="cb-handoff is-control"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M5 2v13M2 5l3-3 3 3M11 16V3M8 6l3-3 3 3"/></svg><span>适用性判断 + 工程路径</span></div>
         <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>工程骨架 + 执行回执</span></div>
       </div>
@@ -882,7 +883,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         <article class="cb-lane-cell cb-agent-step is-action">
           <div class="cb-vertical-flow"><span>Search：查官方算子教程</span><i>↓</i><span>Fetch：取回正文与示例</span><i>↓</i><span class="cb-agent-callout">正文未取回 → 转查外部资料</span></div>
         </article>
-        <article class="cb-lane-cell cb-agent-step is-action">
+        <article class="cb-lane-cell cb-agent-step is-generate">
           <div class="cb-preview-stack">
             <div class="cb-preview"><small>GENERATE · 候选方案草拟</small><b>结合教程与 Context 生成工程起步草稿</b><ul><li>拟用接口与示例依据</li><li>soc_version / 版本信息</li><li>msopgen 参数与目标目录</li><li>待创建文件与检查点</li></ul></div>
             <div class="cb-wait-gate"><i data-lucide="sparkles"></i>草稿带来源与未决项 · 尚未执行</div>
@@ -924,7 +925,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
             <div class="cb-mech-node"><b>Skill</b><span>编排 Search → Fetch</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
             <div class="cb-mech-node cap-blue"><b>Subagent</b><span>并行核对教程 / 样例</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
           </div>
-          <div class="cb-mechanism-stage few is-action">
+          <div class="cb-mechanism-stage few is-generate">
             <div class="cb-mech-node"><b>Skill</b><span>生成带来源的候选步骤</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
             <div class="cb-mech-node"><b>Template</b><span>组织工程路径 / 参数草稿</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
           </div>
@@ -955,7 +956,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-measure-rail" aria-label="AddCustom Need、Search、Generate、Decide、Execute 五阶段对应的研究记录与待验证体验指标">
         <div class="cb-measure proposed is-source"><small>桌面与用户研究</small><span>目标、芯片 / 版本与工程现场是否齐全</span></div>
         <div class="cb-measure completed is-action"><small>AI可用性研究 <b>✓ 已完成</b></small><span>官方正文取回 · 补充来源成本</span></div>
-        <div class="cb-measure proposed is-action"><small>桌面与用户研究</small><span>生成草案是否附来源并标出未决项</span></div>
+        <div class="cb-measure proposed is-generate"><small>桌面与用户研究</small><span>生成草案是否附来源并标出未决项</span></div>
         <div class="cb-measure proposed is-control"><small>桌面与用户研究</small><span>来源版本适用性 · 工程路径依据</span></div>
         <div class="cb-measure proposed is-evidence"><small>桌面与用户研究</small><span>引用与版本一致性 · 工程起步支撑</span></div>
       </div>
