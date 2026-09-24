@@ -908,25 +908,26 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-row-label cb-painpoint-label">
         <div><small>PAIN SIGNAL</small><b>痛点线索</b><span>按阶段归组</span></div>
       </div>
-      <div class="cb-painpoint-rail" aria-label="痛点线索按 Need、Search、Generate、Decide、Execute 五阶段归组，承接任务定义、上下文适用性、能力选择与组合、过程状态与接管、结果验证和责任边界等问题主题">
-        <div class="cb-painpoint-node" aria-label="Need 阶段，对应目标定义与初始上下文装配">
-          <div class="cb-painpoint-item"><span>目标缺少 Shape / dtype 与完成条件</span></div>
-          <div class="cb-painpoint-item"><span>芯片 / 软件版本或工作区现场缺项</span></div>
+      <div class="cb-painpoint-rail" aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组，并对应后续任务定义、上下文适用性、能力选择、过程接管、验证、团队理解、能力增长、反馈回流和责任边界问题">
+        <div class="cb-painpoint-node" aria-label="Need 阶段，对应后续任务定义、上下文适用性与责任边界">
+          <div class="cb-painpoint-item"><span><b>开发者</b>：目标和完成条件不清，任务开始前反复补充。</span></div>
+          <div class="cb-painpoint-item"><span><b>Agent</b>：上下文不足，难判断该追问什么、哪些动作可做。</span></div>
         </div>
-        <div class="cb-painpoint-node" aria-label="Search / Fetch 阶段，对应资料检索与取回状态">
-          <div class="cb-painpoint-item"><span>官方正文未取回，补充来源成本与范围需确认</span></div>
+        <div class="cb-painpoint-node" aria-label="Search / Fetch 阶段，对应后续上下文适用性">
+          <div class="cb-painpoint-item"><span><b>Agent</b>：来源分散或检索不全，难形成可信依据。</span></div>
+          <div class="cb-painpoint-item"><span><b>开发者</b>：要跨入口查找，并核对信息是否适用。</span></div>
         </div>
-        <div class="cb-painpoint-node" aria-label="Generate 阶段，对应能力组合与候选内容生成">
-          <div class="cb-painpoint-item"><span>候选方案如何组合能力、依据是否可追溯待验证</span></div>
-          <div class="cb-painpoint-item"><span>生成草案中的未知参数需明确标记</span></div>
+        <div class="cb-painpoint-node" aria-label="Generate 阶段，对应后续能力选择与组合、验证和开发者能力增长">
+          <div class="cb-painpoint-item"><span><b>开发者</b>：能力选择与配置更费力，任务完成也未必学会迁移。</span></div>
+          <div class="cb-painpoint-item"><span><b>Agent</b>：能力如何组合、生成依据与不确定项难说明。</span></div>
         </div>
-        <div class="cb-painpoint-node" aria-label="Decide 阶段，对应上下文适用性和责任边界">
-          <div class="cb-painpoint-item"><span>来源与目标版本的适配关系需确认</span></div>
-          <div class="cb-painpoint-item"><span>谁补环境、谁定路径、谁放行执行需明确</span></div>
+        <div class="cb-painpoint-node" aria-label="Decide 阶段，对应后续团队共同理解和责任边界">
+          <div class="cb-painpoint-item"><span><b>开发者</b>：建议、执行、批准和责任边界不清，关键动作仍要兜底。</span></div>
+          <div class="cb-painpoint-item"><span><b>团队</b>：决策理由和失败尝试留在会话，评审要重建背景。</span></div>
         </div>
-        <div class="cb-painpoint-node" aria-label="Execute 阶段，对应过程状态与接管、结果验证">
-          <div class="cb-painpoint-item"><span>命令状态 / 日志需回填，失败后要能接手</span></div>
-          <div class="cb-painpoint-item"><span>工程生成不等于构建 / 测试通过</span></div>
+        <div class="cb-painpoint-node" aria-label="Execute 阶段，对应后续过程状态与接管、结果验证和反馈回流">
+          <div class="cb-painpoint-item"><span><b>开发者</b>：进度和验证状态不清，异常时难接管、确认完成。</span></div>
+          <div class="cb-painpoint-item"><span><b>Agent / 平台</b>：结果与失败经验难经授权回流，后续不易复用。</span></div>
         </div>
       </div>
 
