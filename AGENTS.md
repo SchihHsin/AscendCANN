@@ -3279,5 +3279,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。首轮聚焦时节点旁英文全称从约 11px 放大至约 14px，并同步扩大浅底标签高度与宽度以保证可读；非聚焦态仍隐藏标签。
 - 依据 / 边界：回应用户“全拼的字有点小，看不清楚”；只调字与承载标签尺寸，不改节点、连线、焦点范围或页面结构，也不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：5 段可执行内联 JavaScript 语法通过；静态断言确认字号与标签尺寸增大；`git diff --check` 通过。未做截图级目视复核。
-- Commit / push：待提交并推送至 `origin/main`。
+- Commit / push：功能提交 `34e6dfac`（`fix: enlarge focused timeline abbreviations`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
 - 未决事项：需在允许的本地预览中确认放大后的标签仍与节点、线条保持足够间距。
