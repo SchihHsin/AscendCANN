@@ -559,7 +559,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .task-timeline-bridge strong{font-size:var(--fs-sm);white-space:nowrap;color:#a9ddcf}
 
 /* Agent mechanism drill-down · four runtime observation points, not task phases. */
-.task-rel-page{--phase-source:#3f77b7;--phase-action:#7558b7;--phase-control:#258e98;--phase-evidence:#438b69;--phase-recovery:#bd783b;--cb-copy-size:clamp(13px,.9vw,15px)}
+.task-rel-page{--phase-source:#3f77b7;--phase-action:#7558b7;--phase-control:#258e98;--phase-evidence:#438b69;--phase-recovery:#bd783b;--fs-h1:clamp(19px,1.6vw,28px);--fs-h2:clamp(15px,1.18vw,21px);--fs-h3:clamp(14.5px,1.14vw,18px);--fs-body:clamp(14px,1.06vw,17px);--fs-sm:clamp(11px,.78vw,13.5px);--fs-xs:clamp(8.5px,.58vw,10.5px);--cb-copy-size:clamp(12px,.84vw,14px)}
 .task-rel-page .head{margin-bottom:1.2vh}
 .task-rel-page .body-area{align-items:stretch}
 @scope (.task-rel-page) {
@@ -650,7 +650,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-mech-label b{font-size:var(--fs-sm)}
 .cb-mechanism-rail{grid-row:5;position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 3.8vh;gap:.28vh 0}
 .cb-mechanism-stages{grid-column:1;grid-row:1;position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0}
-.cb-mechanism-stage{position:relative;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));align-content:center;gap:.2vh .3vw;padding:.16vh .26vw;border:0;border-radius:0;background:transparent}
+.cb-mechanism-stage{position:relative;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));align-content:center;gap:.52vh .3vw;padding:.16vh .26vw;border:0;border-radius:0;background:transparent}
 .cb-mechanism-stage::before{content:"";position:absolute;z-index:0;top:-.52vh;bottom:.24vh;left:50%;border-left:1.5px solid color-mix(in srgb,var(--phase) 65%,#8994a3);pointer-events:none}
 .cb-mechanism-stage::after{content:"";position:absolute;z-index:1;top:-.52vh;left:calc(50% - 4px);border-bottom:5px solid color-mix(in srgb,var(--phase) 76%,#8994a3);border-left:4px solid transparent;border-right:4px solid transparent;pointer-events:none}
 .cb-mechanism-stage.dense .cb-mech-node:last-child{grid-column:1/-1;width:calc(50% - .15vw);justify-self:center}
@@ -665,8 +665,8 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-mech-node b{padding-right:7px;font-size:var(--fs-sm);line-height:1.08;color:color-mix(in srgb,var(--cap-tone) 82%,#252c38)}
 .cb-mech-node span{font-size:var(--fs-xs);line-height:1.1;color:#687084}
 .cb-mech-dot{position:absolute;top:.34vh;right:.34vw;width:5px;height:5px;border-radius:50%;background:var(--cap-tone);box-shadow:0 0 0 3px color-mix(in srgb,var(--cap-tone) 10%,transparent)}
-.cb-mechanism-stage>.cb-mech-node:nth-child(odd)::before,.cb-mechanism-stage>.cb-mech-node:nth-child(even)::after{content:"";position:absolute;top:-.2vh;left:50%;height:.2vh;border-left:1.5px solid color-mix(in srgb,var(--phase) 65%,#8994a3);pointer-events:none}
-.cb-mechanism-stage>.cb-mech-node:nth-child(odd)::after,.cb-mechanism-stage>.cb-mech-node:nth-child(even)::before{content:"";position:absolute;top:-.2vh;width:.15vw;border-top:1.5px solid color-mix(in srgb,var(--phase) 65%,#8994a3);pointer-events:none}
+.cb-mechanism-stage>.cb-mech-node:nth-child(odd)::before,.cb-mechanism-stage>.cb-mech-node:nth-child(even)::after{content:"";position:absolute;top:-.42vh;left:50%;height:.42vh;border-left:1.5px solid color-mix(in srgb,var(--phase) 65%,#8994a3);pointer-events:none}
+.cb-mechanism-stage>.cb-mech-node:nth-child(odd)::after,.cb-mechanism-stage>.cb-mech-node:nth-child(even)::before{content:"";position:absolute;top:-.42vh;width:.15vw;border-top:1.5px solid color-mix(in srgb,var(--phase) 65%,#8994a3);pointer-events:none}
 .cb-mechanism-stage>.cb-mech-node:nth-child(odd)::after{left:100%}.cb-mechanism-stage>.cb-mech-node:nth-child(even)::before{right:100%}
 .cb-mechanism-meta{grid-column:1;grid-row:2;display:flex;justify-content:center;gap:.7vw;min-width:0;min-height:0}
 .cb-mechanism-meta>.cb-mech-node{flex:0 1 18%}
