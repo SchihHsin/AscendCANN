@@ -3601,3 +3601,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTML 解析与 `git diff --cached --check` 通过；未做修改后整页截图复核，本地 `file://` 页面的截图访问受浏览器 URL 策略限制。
 - Commit / push：功能提交 `32e77567`（`style: add phase glow behind stage art`）已推送至 `origin/main`；本交接条目随后单独补交。
 - 未决事项：刷新报告第 5 页确认光晕强度与当前视口观感。
+
+### 2026-09-24（九题方案页增加手动双状态演示）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html` 与 `cann-dashboard/ai-development-behavior-system-report-evidence/solution-mockups/` 中九张新增状态图。各题保留原概念界面作为状态一，并新增状态二；由手动状态按钮或左右键切换，不自动播放、不增加正式页数。状态二分别表达任务确认、知识范围复核、异常后人工选择、证据门禁、评审背景、学习迁移、反馈草稿与责任留痕。
+- 依据 / 置信度：第二状态图由 ImageGen 依据对应平台风格和现有方案图生成，均为设计提案，不代表 Codex、昇腾官网或 GitCode 已有此功能，也不代表真实 CANN / NPU 测试结果。问题 05 明确保留“非真实 CI / 需要真实 NPU”边界；问题 04 恢复路径为可选且由开发者选择。
+- 交互 / 页面边界：方案页仍是一题一页；第二状态可用 `#页码-demo2` 直接定位，页码总数不变。未改变 API / Protocol、Host / Harness、Application / Task 的既有边界，也未改变正式页面序列。
+- 验证：6 段内联脚本均通过 `new Function` 解析；9 题共 18 个状态图片引用全部存在；`git diff --check` 通过。尝试本地浏览器视觉复核时，Chrome 截屏为黑屏且 Firefox headless 未能完成启动，未绕过 `file://` 浏览器访问策略；因此没有整页截图级布局结论。
+- Commit / push：待完成本次功能提交后回填。
+- 未决事项：在用户当前浏览器刷新报告，核对状态栏占用、图片可读性和逐题焦点框位置。

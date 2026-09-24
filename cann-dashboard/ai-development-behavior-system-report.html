@@ -777,10 +777,23 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-heading h1{min-width:0;font-size:clamp(30px,2.25vw,40px);line-height:1.15;letter-spacing:-.025em;font-weight:780;background:linear-gradient(100deg,color-mix(in srgb,var(--problem-tone) 76%,white),#d9d0ff 62%,#c4e5ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .solution-heading .platform-tag{align-self:end;justify-self:end;max-width:18vw;padding:.5vh .7vw;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.76);font-size:var(--fs-sm);font-weight:700;white-space:nowrap}
 .solution-layout{display:grid;grid-template-columns:minmax(0,3.55fr) minmax(0,1fr);gap:1.1vw;align-items:stretch;min-width:0;min-height:0}
-.solution-figure{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;margin:0;overflow:visible}
+.solution-figure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65vh;min-width:0;min-height:0;margin:0;overflow:visible}
 .solution-image-stage{width:min(100%,142vh);aspect-ratio:1672/941;border:1px solid rgba(255,255,255,.2);border-radius:12px;overflow:visible;background:rgba(255,255,255,.035);box-shadow:0 24px 64px -28px hsla(var(--glow-h),82%,32%,.55)}
-.solution-image-stage img{border-radius:11px}
+.solution-image-stage img{border-radius:11px;transition:opacity .18s ease}
+.solution-image-stage img.is-switching{opacity:.16}
+.solution-demo-controls{display:flex;align-items:center;gap:.55vw;width:min(100%,142vh);min-height:4.1vh;padding:.2vh .15vw 0}
+.solution-demo-step{display:flex;align-items:center;gap:.42vw;min-width:0;padding:.55vh .65vw;border:1px solid rgba(255,255,255,.16);border-radius:8px;background:rgba(255,255,255,.055);color:rgba(255,255,255,.62);font:650 var(--fs-sm)/1.2 'HarmonyOS Sans SC',sans-serif;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease}
+.solution-demo-step:hover{border-color:rgba(255,255,255,.3);color:#fff}
+.solution-demo-step[aria-pressed="true"]{border-color:color-mix(in srgb,var(--problem-tone) 62%,white);background:color-mix(in srgb,var(--problem-tone) 18%,rgba(255,255,255,.08));color:#fff}
+.solution-demo-step .step-no{color:color-mix(in srgb,var(--problem-tone) 74%,white);font:750 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.04em}
+.solution-demo-step .step-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.solution-demo-connector{flex:1 1 1vw;height:1px;min-width:.7vw;background:linear-gradient(90deg,rgba(255,255,255,.22),color-mix(in srgb,var(--problem-tone) 58%,transparent))}
+.solution-demo-nav{display:flex;align-items:center;gap:.25vw;margin-left:auto;padding-left:.25vw;color:rgba(255,255,255,.58);font:650 var(--fs-xs)/1 'JetBrains Mono';white-space:nowrap}
+.solution-demo-nav button{display:grid;place-items:center;width:2vw;height:2vw;min-width:28px;min-height:28px;padding:0;border:1px solid rgba(255,255,255,.16);border-radius:7px;background:rgba(255,255,255,.055);color:#fff;font-size:18px;line-height:1;cursor:pointer}
+.solution-demo-nav button:disabled{opacity:.34;cursor:default}
+.solution-demo-nav button:not(:disabled):hover{background:rgba(255,255,255,.14)}
 .solution-focus{--focus-tone:color-mix(in srgb,var(--problem-tone) 82%,white);border-color:var(--focus-tone);background:color-mix(in srgb,var(--problem-tone) 10%,transparent);box-shadow:0 0 0 1px rgba(7,8,12,.45),0 0 18px color-mix(in srgb,var(--problem-tone) 28%,transparent)}
+.solution-focus.is-muted{opacity:.22}
 .solution-focus b{left:-12px;top:-12px;width:28px;height:28px;border-color:#090a10;background:var(--problem-tone);font-size:11px}
 .solution-points{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:.75vh;min-width:0;min-height:0;padding:.2vh .1vw .1vh .2vw}
 .solution-points-head{display:flex;align-items:baseline;justify-content:space-between;gap:.5vw;padding-bottom:.45vh;border-bottom:1px solid rgba(255,255,255,.17)}
@@ -788,6 +801,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-points-head span{font:650 var(--fs-xs)/1.2 'JetBrains Mono';color:rgba(255,255,255,.45);white-space:nowrap}
 .solution-point-list{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:.42vh;min-width:0;min-height:0}
 .solution-point{--point-tone:var(--problem-tone);display:grid;grid-template-columns:1fr;align-content:start;gap:.52vh;min-width:0;min-height:0;padding:.8vh .52vw;border-bottom:1px solid rgba(255,255,255,.14);background:linear-gradient(100deg,color-mix(in srgb,var(--point-tone) 10%,transparent),transparent 82%)}
+.solution-point.is-muted{opacity:.48}
 .solution-point-head{display:flex;align-items:center;gap:.48vw;min-width:0;margin-bottom:.12vh}
 .solution-point-head .num{display:grid;place-items:center;flex:0 0 auto;width:1.65vw;height:1.65vw;min-width:25px;min-height:25px;border-radius:50%;background:color-mix(in srgb,var(--point-tone) 25%,#171922);color:color-mix(in srgb,var(--point-tone) 72%,white);font:800 var(--fs-sm)/1 'JetBrains Mono'}
 .solution-point-head b{font-size:var(--fs-h3);line-height:1.2;color:#fff}
@@ -798,7 +812,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-point-bullets li.benefit{color:color-mix(in srgb,var(--point-tone) 72%,white);font-weight:700}
 .solution-boundary{padding-top:.35vh;color:rgba(255,255,255,.68);font-size:var(--fs-sm);line-height:1.3}
 .solution-boundary b{color:rgba(255,255,255,.68)}
-@media(max-width:1180px){.problem-solution-page>.slide-inner{padding-inline:2.4vw}.problem-solution-page .problem-chrome{left:2.4vw;right:2.4vw}.solution-content{padding-top:8vh}.solution-layout{grid-template-columns:minmax(0,2.8fr) minmax(0,1fr);gap:.8vw}.solution-heading h1{font-size:clamp(27px,2.4vw,34px)}.solution-point{padding:.65vh .42vw}}
+@media(max-width:1180px){.problem-solution-page>.slide-inner{padding-inline:2.4vw}.problem-solution-page .problem-chrome{left:2.4vw;right:2.4vw}.solution-content{padding-top:8vh}.solution-layout{grid-template-columns:minmax(0,2.8fr) minmax(0,1fr);gap:.8vw}.solution-heading h1{font-size:clamp(27px,2.4vw,34px)}.solution-point{padding:.65vh .42vw}.solution-demo-controls{width:100%}}
 .problem-fact p{font-size:var(--fs-body)}.problem-question-box b{font-size:var(--fs-body);line-height:1.32}
 </style>
 </head>
@@ -2460,15 +2474,42 @@ mermaid.initialize({
   const problemSolution = item => `${problemBase(item)}·方案`;
   const problemHeader = (item,kind) => `<header class="head"><div class="head-l"><div class="subttl">问题 ${item.n} · ${kind==='status'?'现状截图与可观察线索':'解决方案 · 平台内界面概念图'}｜${problemEsc(item.phase)}</div><div class="ttl">${item.n} · ${kind==='status'?'现状：':'方案：'}${problemEsc(kind==='status'?item.headline:item.solution)}</div></div><nav class="section-tabs"></nav></header>`;
   const solutionMockups = {
-    '01': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/01-codex-task-brief.png',solutionAlt:'Codex 工作台中的算子优化任务简报概念图',solutionBoundary:'任务目标、负载、约束与完成条件在执行前共同确认；这是设计提案，不是 Codex 现成功能。'},
-    '02': {platform:'昇腾开发者官网',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/02-cann-source-fit.png',solutionAlt:'昇腾开发者官网中的知识来源与当前芯片、版本适用性概念图',solutionBoundary:'把来源、版本与适用范围并列呈现；这是官网体验提案，不代表现有官网已提供该判断。'},
-    '03': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/03-codex-capability-assembly.png',solutionAlt:'Codex 工作台按任务推荐 Skill、MCP 与工具组合的概念图',solutionBoundary:'能力组合随任务建议并由开发者确认；这是工作台设计提案，不是 Codex 现成功能。'},
-    '04': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/04-codex-run-control.png',solutionAlt:'Codex 工作台中可查看进度、暂停、恢复与回退的执行现场概念图',solutionBoundary:'状态、操作记录与恢复点位于工作台执行现场；这是设计提案，不是 Codex 现成功能。'},
-    '05': {platform:'GitCode',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/05-gitcode-verification.png',solutionAlt:'GitCode 合并请求中关联测试、精度与性能证据的概念图',solutionBoundary:'验证证据与代码变更一同供评审；这是 GitCode 协作流程提案，不代表现有产品已有该界面。'},
-    '06': {platform:'GitCode',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/06-gitcode-review-context.png',solutionAlt:'GitCode 合并请求中展示方案理由、替代方案与风险的概念图',solutionBoundary:'将关键决策背景附在代码评审上下文中；这是 GitCode 协作流程提案，不是现成功能。'},
-    '07': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/07-codex-learning-canvas.png',solutionAlt:'Codex 编码工作台中贴着错误现场展开学习、隔离跟练并回到项目的概念图',solutionBoundary:'承接 Learning Canvas Story B1–B5：从当前错误进入理解与隔离练习，再审阅修改并回到项目验证。学习入口嵌在 Codex 编码工作台内；这是设计提案，不是 Codex 现成功能。'},
-    '08': {platform:'GitCode',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/08-gitcode-feedback-draft.png',solutionAlt:'GitCode 中检查脱敏内容并创建经验反馈草稿的概念图',solutionBoundary:'任务经验先由开发者检查脱敏并同意，再创建草稿；这是 GitCode 回流提案，不代表现有产品已有该流程。'},
-    '09': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/09-codex-responsibility-gate.png',solutionAlt:'Codex 工作台中区分建议、执行、批准和结果责任人的高影响动作确认概念图',solutionBoundary:'高影响动作前明确执行权限与批准人，事后保留责任记录；这是工作台设计提案，不是 Codex 现成功能。'}
+    '01': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/01-codex-task-brief.png',solutionAlt:'Codex 工作台中的算子优化任务简报概念图',solutionBoundary:'任务目标、负载、约束与完成条件在执行前共同确认；这是设计提案，不是 Codex 现成功能。',solutionStates:[
+      {label:'补齐任务目标',image:'ai-development-behavior-system-report-evidence/solution-mockups/01-codex-task-brief.png',alt:'Codex 工作台中填写性能目标、Shape、约束与完成条件的任务简报',focusPoints:[0,1]},
+      {label:'确认后再启动',image:'ai-development-behavior-system-report-evidence/solution-mockups/01-codex-task-brief-confirmed.png',alt:'开发者确认任务范围后，Codex 工作台展示已锁定的目标与开始执行入口',focusPoints:[2]}
+    ]},
+    '02': {platform:'昇腾开发者官网',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/02-cann-source-fit.png',solutionAlt:'昇腾开发者官网中的知识来源与当前芯片、版本适用性概念图',solutionBoundary:'把来源、版本与适用范围并列呈现；这是官网体验提案，不代表现有官网已提供该判断。',solutionStates:[
+      {label:'对照当前环境',image:'ai-development-behavior-system-report-evidence/solution-mockups/02-cann-source-fit.png',alt:'昇腾开发者官网中依据芯片与 CANN 版本比较文档、样例和社区来源',focusPoints:[0,1]},
+      {label:'带着来源继续',image:'ai-development-behavior-system-report-evidence/solution-mockups/02-cann-source-fit-reviewed.png',alt:'知识来源比较后选中一条版本范围匹配依据，并标出两项待核对内容',focusPoints:[2]}
+    ]},
+    '03': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/03-codex-capability-assembly.png',solutionAlt:'Codex 工作台按任务推荐 Skill、MCP 与工具组合的概念图',solutionBoundary:'能力组合随任务建议并由开发者确认；这是工作台设计提案，不是 Codex 现成功能。',solutionStates:[
+      {label:'推荐能力组合',image:'ai-development-behavior-system-report-evidence/solution-mockups/03-codex-capability-assembly.png',alt:'Codex 工作台按性能优化任务推荐 Skill、检索与 MCP，并显示可选工具和权限范围',focusPoints:[0,1]},
+      {label:'确认权限并待启动',image:'ai-development-behavior-system-report-evidence/solution-mockups/03-codex-capability-assembly-ready.png',alt:'Codex 工作台中开发者确认能力组合后，任务进入执行准备就绪但尚未开始的状态',focusPoints:[2]}
+    ]},
+    '04': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/04-codex-run-control.png',solutionAlt:'Codex 工作台中可查看进度、暂停、恢复与回退的执行现场概念图',solutionBoundary:'状态、操作记录与恢复点位于工作台执行现场；这是设计提案，不是 Codex 现成功能。',solutionStates:[
+      {label:'查看执行现场',image:'ai-development-behavior-system-report-evidence/solution-mockups/04-codex-run-control.png',alt:'Codex 工作台展示算子任务进度、最近动作、文件差异和恢复点',focusPoints:[0,1]},
+      {label:'失败后由人决定',image:'ai-development-behavior-system-report-evidence/solution-mockups/04-codex-run-control-paused.png',alt:'动态 Shape 测试失败后现场已暂停并保留日志，开发者可选择重试、回退或接手',focusPoints:[2]}
+    ]},
+    '05': {platform:'GitCode',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/05-gitcode-verification.png',solutionAlt:'GitCode 合并请求中关联测试、精度与性能证据的概念图',solutionBoundary:'验证证据与代码变更一同供评审；这是 GitCode 协作流程提案，不代表现有产品已有该界面。',solutionStates:[
+      {label:'展开验证清单',image:'ai-development-behavior-system-report-evidence/solution-mockups/05-gitcode-verification.png',alt:'GitCode 合并请求中列出功能、精度、Shape 和性能验证项及缺失证据',focusPoints:[0,1]},
+      {label:'证据不齐先不合入',image:'ai-development-behavior-system-report-evidence/solution-mockups/05-gitcode-verification-partial.png',alt:'GitCode 概念界面展示两项示例通过、Shape 边界待补、真实性能需 NPU 验证并保持合入门禁',focusPoints:[2]}
+    ]},
+    '06': {platform:'GitCode',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/06-gitcode-review-context.png',solutionAlt:'GitCode 合并请求中展示方案理由、替代方案与风险的概念图',solutionBoundary:'将关键决策背景附在代码评审上下文中；这是 GitCode 协作流程提案，不是现成功能。',solutionStates:[
+      {label:'补充决策与尝试',image:'ai-development-behavior-system-report-evidence/solution-mockups/06-gitcode-review-context.png',alt:'GitCode 合并请求中记录方案理由、替代方案、失败尝试与未验证风险',focusPoints:[0,1]},
+      {label:'评审接住风险背景',image:'ai-development-behavior-system-report-evidence/solution-mockups/06-gitcode-review-context-attached.png',alt:'评审者在 GitCode 变更页看到随 Diff 附带的决策与尝试记录，并指出真实性能仍待验证',focusPoints:[2]}
+    ]},
+    '07': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/07-codex-learning-canvas.png',solutionAlt:'Codex 编码工作台中贴着错误现场展开学习、隔离跟练并回到项目的概念图',solutionBoundary:'承接 Learning Canvas Story B1–B5：从当前错误进入理解与隔离练习，再审阅修改并回到项目验证。学习入口嵌在 Codex 编码工作台内；这是设计提案，不是 Codex 现成功能。',solutionStates:[
+      {label:'从错误进入隔离练习',image:'ai-development-behavior-system-report-evidence/solution-mockups/07-codex-learning-canvas.png',alt:'Codex 工作台从输入形状错误进入解释与隔离练习，原文件只读',focusPoints:[0,1]},
+      {label:'完成迁移检查再返回',image:'ai-development-behavior-system-report-evidence/solution-mockups/07-codex-learning-transfer.png',alt:'隔离练习完成后出现新 Shape 迁移检查，原项目保持未修改并提供返回验证入口',focusPoints:[2]}
+    ]},
+    '08': {platform:'GitCode',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/08-gitcode-feedback-draft.png',solutionAlt:'GitCode 中检查脱敏内容并创建经验反馈草稿的概念图',solutionBoundary:'任务经验先由开发者检查脱敏并同意，再创建草稿；这是 GitCode 回流提案，不代表现有产品已有该流程。',solutionStates:[
+      {label:'选择并预览分享内容',image:'ai-development-behavior-system-report-evidence/solution-mockups/08-gitcode-feedback-draft.png',alt:'GitCode 中开发者勾选要分享的任务经验，并预览脱敏后的反馈草稿',focusPoints:[0,1]},
+      {label:'草稿保存但不公开',image:'ai-development-behavior-system-report-evidence/solution-mockups/08-gitcode-feedback-draft-created.png',alt:'GitCode 反馈草稿经开发者审阅后仅保存为未公开草稿，提交到社区仍需单独操作',focusPoints:[2]}
+    ]},
+    '09': {platform:'Codex 工作台',solutionImage:'ai-development-behavior-system-report-evidence/solution-mockups/09-codex-responsibility-gate.png',solutionAlt:'Codex 工作台中区分建议、执行、批准和结果责任人的高影响动作确认概念图',solutionBoundary:'高影响动作前明确执行权限与批准人，事后保留责任记录；这是工作台设计提案，不是 Codex 现成功能。',solutionStates:[
+      {label:'批准前分清四种角色',image:'ai-development-behavior-system-report-evidence/solution-mockups/09-codex-responsibility-gate.png',alt:'Codex 工作台中分别显示建议者、执行者、批准者、结果 Owner 和待批准风险',focusPoints:[0,1]},
+      {label:'批准后保留操作链',image:'ai-development-behavior-system-report-evidence/solution-mockups/09-codex-responsibility-recorded.png',alt:'开发者批准后，Codex 工作台保留建议、批准、分支执行记录与结果 Owner，变更仍未合并',focusPoints:[2]}
+    ]}
   };
   problemCases.forEach(item=>Object.assign(item,solutionMockups[item.n]));
   const problemVisualAnnotations = {
@@ -2566,15 +2607,20 @@ mermaid.initialize({
     slide.className=`slide ${isStatus?'s-gray problem-status-page':'s-glow problem-solution-page'} problem-page`;
     slide.dataset.title=isStatus?problemStatus(item):problemSolution(item);
     slide.dataset.hypothesis=item.n;
-    const focusMarkup=(marks,solution=false)=>(marks||[]).map((mark,index)=>`<span class="problem-focus ${solution?'solution-focus':''}" style="--focus-x:${mark.x}%;--focus-y:${mark.y}%;--focus-w:${mark.w}%;--focus-h:${mark.h}%" aria-hidden="true"><b>${String(index+1).padStart(2,'0')}</b></span>`).join('');
+    const focusMarkup=(marks,solution=false)=>(marks||[]).map((mark,index)=>`<span class="problem-focus ${solution?'solution-focus':''}" data-solution-focus="${index}" style="--focus-x:${mark.x}%;--focus-y:${mark.y}%;--focus-w:${mark.w}%;--focus-h:${mark.h}%" aria-hidden="true"><b>${String(index+1).padStart(2,'0')}</b></span>`).join('');
     if(isStatus){
       slide.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">问题 ${item.n} · 现状截图与可观察线索｜${problemEsc(item.phase)}</div><div class="ttl">${item.n} · 现状：${problemEsc(item.headline)}</div></div><nav class="section-tabs"></nav></header><main class="body-area"><div class="problem-kicker"><b>公开材料截图 · 具体问题线索</b><span class="state">单个案例 · 不代表普遍发生率</span></div><div class="problem-evidence-layout"><figure class="problem-shot-frame"><div class="problem-shot-bar"><span class="problem-shot-dots"><i></i><i></i><i></i></span><span class="problem-shot-url">${problemEsc(item.url||item.source)}</span></div><div class="problem-shot-viewport"><div class="problem-image-stage problem-evidence-stage"><img class="${item.fit==='cover'?'cover-top':''}" src="${problemEsc(item.image)}" alt="${problemEsc(item.alt)}" loading="lazy">${focusMarkup(item.evidenceMarks)}</div></div><figcaption class="problem-shot-caption"><span>${problemEsc(item.source)} · 图上序号与右侧观察对应</span>${item.url?`<a href="${problemEsc(item.url)}" target="_blank" rel="noopener noreferrer">打开来源 ↗</a>`:'<span>内部材料 · 不对外发布</span>'}</figcaption></figure><aside class="problem-observation"><h3>截图中的可观察线索</h3>${item.facts.map((fact,index)=>`<div class="problem-fact"><span class="index">${String(index+1).padStart(2,'0')}</span><p>${problemEsc(fact)}</p></div>`).join('')}<div class="problem-boundary"><b>证据边界：</b>${problemEsc(item.boundary)}</div><div class="problem-question-box"><small>待验证问题 ${item.n}</small><b>${problemEsc(item.question)}</b></div></aside></div></main><footer class="foot">截图支持的是一个具体问题线索，不代表其普遍发生率；仍需在昇腾真实任务中观察与验证。</footer></div>`;
       return slide;
     }
-    const designPointMarkup=(item.designPoints||[]).map((point,index)=>`<article class="solution-point"><header class="solution-point-head"><span class="num">${String(index+1).padStart(2,'0')}</span><b>${problemEsc(point.title)}</b></header><ul class="solution-point-bullets"><li>${problemEsc(point.choice)}</li><li>${problemEsc(point.problem)} <span class="solution-point-arrow">→</span> ${problemEsc(point.mechanism)}</li><li class="benefit">${problemEsc(point.benefit)}</li></ul></article>`).join('');
+    const designPointMarkup=(item.designPoints||[]).map((point,index)=>`<article class="solution-point" data-solution-point="${index}"><header class="solution-point-head"><span class="num">${String(index+1).padStart(2,'0')}</span><b>${problemEsc(point.title)}</b></header><ul class="solution-point-bullets"><li>${problemEsc(point.choice)}</li><li>${problemEsc(point.problem)} <span class="solution-point-arrow">→</span> ${problemEsc(point.mechanism)}</li><li class="benefit">${problemEsc(point.benefit)}</li></ul></article>`).join('');
     const solutionHue=({'01':235,'02':218,'03':216,'04':32,'05':32,'06':174,'07':174,'08':262,'09':262})[item.n]||235;
+    const solutionStates=item.solutionStates||[{label:'设计方案',image:item.solutionImage,alt:item.solutionAlt}];
+    const initialState=solutionStates[0];
+    const solutionStepper=solutionStates.length>1?`<div class="solution-demo-controls" data-solution-stepper role="group" aria-label="方案界面状态切换">${solutionStates.map((state,index)=>`<button type="button" class="solution-demo-step" data-solution-step="${index}" aria-pressed="${index===0?'true':'false'}"><span class="step-no">${String(index+1).padStart(2,'0')}</span><span class="step-label">${problemEsc(state.label)}</span></button>${index<solutionStates.length-1?'<span class="solution-demo-connector" aria-hidden="true"></span>':''}`).join('')}<div class="solution-demo-nav"><button type="button" data-solution-prev aria-label="上一状态" disabled>‹</button><span data-solution-count aria-live="polite">01 / ${String(solutionStates.length).padStart(2,'0')}</span><button type="button" data-solution-next aria-label="下一状态">›</button></div></div>`:'';
     slide.style.setProperty('--problem-hue',solutionHue);
-    slide.innerHTML=`<div class="slide-inner"><header class="chrome problem-chrome"><div class="chrome-label">DESIGN POINT ${item.n} · ${problemEsc(item.name)}</div><nav class="section-tabs"></nav></header><main class="solution-content"><div class="solution-heading"><div class="solution-meta"><b>问题 ${item.n}</b><span>${problemEsc(item.phase)}</span><span>·</span><span>设计提案</span></div><h1>${problemEsc(item.solution)}</h1><span class="platform-tag">${problemEsc(item.platform)} · 概念图</span></div><div class="solution-layout"><figure class="solution-figure"><div class="problem-image-stage solution-image-stage"><img src="${problemEsc(item.solutionImage)}" alt="${problemEsc(item.solutionAlt)}" loading="lazy">${focusMarkup((item.designPoints||[]).map(point=>point.mark),true)}</div></figure><aside class="solution-points"><div class="solution-points-head"><b>体验设计点</b><span>图上 01—03</span></div><div class="solution-point-list">${designPointMarkup}</div><div class="solution-boundary"><b>概念边界：</b>${problemEsc(item.solutionBoundary)}</div></aside></div><footer class="solution-boundary solution-foot">待在代表性开发任务中验证用户收益；图中界面为设计提案，不代表平台现成功能。</footer></main></div>`;
+    slide._solutionStates=solutionStates;
+    slide.dataset.solutionStep='1';
+    slide.innerHTML=`<div class="slide-inner"><header class="chrome problem-chrome"><div class="chrome-label">DESIGN POINT ${item.n} · ${problemEsc(item.name)}</div><nav class="section-tabs"></nav></header><main class="solution-content"><div class="solution-heading"><div class="solution-meta"><b>问题 ${item.n}</b><span>${problemEsc(item.phase)}</span><span>·</span><span>设计提案</span></div><h1>${problemEsc(item.solution)}</h1><span class="platform-tag">${problemEsc(item.platform)} · 概念图</span></div><div class="solution-layout"><figure class="solution-figure"><div class="problem-image-stage solution-image-stage"><img data-solution-image src="${problemEsc(initialState.image)}" alt="${problemEsc(initialState.alt||item.solutionAlt)}" loading="lazy">${focusMarkup((item.designPoints||[]).map(point=>point.mark),true)}</div>${solutionStepper}</figure><aside class="solution-points"><div class="solution-points-head"><b>体验设计点</b><span>图上 01—03</span></div><div class="solution-point-list">${designPointMarkup}</div><div class="solution-boundary"><b>概念边界：</b>${problemEsc(item.solutionBoundary)}</div></aside></div><footer class="solution-boundary solution-foot">待在代表性开发任务中验证用户收益；图中界面为设计提案，不代表平台现成功能。</footer></main></div>`;
     return slide;
   };
   const deck=document.getElementById('deck');
@@ -2594,6 +2640,33 @@ mermaid.initialize({
   const questionOverview=makeProblemOverview();
   const experienceAnchor=[...deck.querySelectorAll('.slide')].find(slide=>slide.dataset.title==='协同架构');
   deck.insertBefore(questionOverview,experienceAnchor||null);
+  const setSolutionState=(slide,requestedIndex)=>{
+    const states=slide?._solutionStates;
+    if(!states?.length)return null;
+    const index=Math.max(0,Math.min(states.length-1,Number(requestedIndex)||0));
+    const state=states[index],img=slide.querySelector('[data-solution-image]'),stepper=slide.querySelector('[data-solution-stepper]');
+    slide.dataset.solutionStep=String(index+1);
+    if(img){
+      img.alt=state.alt||img.alt;
+      if(img.getAttribute('src')!==state.image){
+        img.classList.add('is-switching');
+        const preload=new Image();
+        preload.onload=()=>{img.src=state.image;requestAnimationFrame(()=>img.classList.remove('is-switching'));};
+        preload.onerror=()=>img.classList.remove('is-switching');
+        preload.src=state.image;
+      }
+    }
+    if(stepper){
+      stepper.querySelectorAll('[data-solution-step]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.solutionStep)===index)));
+      const count=stepper.querySelector('[data-solution-count]');if(count)count.textContent=`${String(index+1).padStart(2,'0')} / ${String(states.length).padStart(2,'0')}`;
+      const prev=stepper.querySelector('[data-solution-prev]'),next=stepper.querySelector('[data-solution-next]');
+      if(prev)prev.disabled=index===0;if(next)next.disabled=index===states.length-1;
+    }
+    const focusPoints=new Set((state.focusPoints||[]).map(Number));
+    slide.querySelectorAll('[data-solution-focus]').forEach(mark=>mark.classList.toggle('is-muted',focusPoints.size>0&&!focusPoints.has(Number(mark.dataset.solutionFocus))));
+    slide.querySelectorAll('[data-solution-point]').forEach(point=>point.classList.toggle('is-muted',focusPoints.size>0&&!focusPoints.has(Number(point.dataset.solutionPoint))));
+    return index;
+  };
   const updateProblemDemo=app=>{
     if(!app)return;const value=name=>app.querySelector(`[data-field="${name}"]`)?.value||'';
     if(app.dataset.demo==='brief'){
@@ -2752,12 +2825,20 @@ mermaid.initialize({
     prevBtn.disabled = current === 0; nextBtn.disabled = current === slides.length - 1;
     document.body.classList.toggle('on-dark', slides[current].classList.contains('s-glow'));
     if (writeHash && !overview) {
-      const hash = `#${current + 1}${isFocusedPage ? '-focus' : ''}`;
+      const demoStep=Number(slides[current].dataset.solutionStep||0);
+      const hash = `#${current + 1}${demoStep>1?`-demo${demoStep}`:isFocusedPage?'-focus':''}`;
       hashLock = true;
       try { history.replaceState(null, '', hash); }
       catch (error) { location.hash = hash; }
       hashLock = false;
     }
+  }
+  function shiftSolutionState(delta){
+    const slide=slides[current],states=slide?._solutionStates;
+    if(!states?.length)return false;
+    const target=Number(slide.dataset.solutionStep||1)-1+delta;
+    if(target<0||target>=states.length)return false;
+    setSolutionState(slide,target);update(current);return true;
   }
   function go(i, behavior = 'smooth') {
     if (overview) return exitOverview(i);
@@ -2819,6 +2900,16 @@ mermaid.initialize({
 
   prevBtn.onclick = () => go(current - 1); nextBtn.onclick = () => go(current + 1);
   overviewBtn.onclick = toggleOverview; fullscreenBtn.onclick = toggleFullscreen;
+  deck.addEventListener('click',event=>{
+    const step=event.target.closest('[data-solution-step],[data-solution-prev],[data-solution-next]');
+    if(!step)return;
+    const slide=step.closest('.problem-solution-page');if(!slide?._solutionStates?.length)return;
+    event.preventDefault();event.stopPropagation();
+    const currentStep=Number(slide.dataset.solutionStep||1)-1;
+    const target=step.hasAttribute('data-solution-prev')?currentStep-1:step.hasAttribute('data-solution-next')?currentStep+1:Number(step.dataset.solutionStep);
+    setSolutionState(slide,target);
+    if(slides[current]===slide)update(current);
+  });
   addEventListener('wheel', event => {
     if (overview || taskTimelineIndex < 0 || taskAgentIndex < 0) return;
     if (agentFocusActive) {
@@ -2859,6 +2950,8 @@ mermaid.initialize({
     if (e.key === 'Escape' && overview) return exitOverview(current);
     if (e.key.toLowerCase() === 'o') return toggleOverview();
     if (e.key.toLowerCase() === 'f') return toggleFullscreen();
+    if (e.key==='ArrowRight'&&shiftSolutionState(1)) { e.preventDefault(); return; }
+    if (e.key==='ArrowLeft'&&shiftSolutionState(-1)) { e.preventDefault(); return; }
     if (['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); go(current + 1); }
     if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); go(current - 1); }
     if (e.key === 'Home') { e.preventDefault(); go(0); }
@@ -2869,10 +2962,10 @@ mermaid.initialize({
   addEventListener('scroll', () => { document.body.classList.add('scrolling'); clearTimeout(scrollTimer); scrollTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700); }, {passive:true});
   addEventListener('resize', () => { if (overview) fitOverview(); });
   function parseDeckHash(hash) {
-    const match = /^#(\d+)(-focus)?$/.exec(hash || '');
+    const match = /^#(\d+)(-focus|-demo(\d+))?$/.exec(hash || '');
     if (!match) return null;
     const page = Number(match[1]);
-    return Number.isInteger(page) && page >= 1 && page <= slides.length ? {page, focus: Boolean(match[2])} : null;
+    return Number.isInteger(page) && page >= 1 && page <= slides.length ? {page, focus: match[2]==='-focus', demoStep:match[3]?Number(match[3]):null} : null;
   }
   addEventListener('hashchange', () => {
     if (hashLock || overview) return;
@@ -2881,6 +2974,7 @@ mermaid.initialize({
     const target = route.page - 1;
     agentFocusActive = route.focus && target === taskTimelineIndex;
     sendTimelineAgentFocus(agentFocusActive);
+    if(route.demoStep)setSolutionState(slides[target],route.demoStep-1);
     slides[target].scrollIntoView({behavior:'instant',block:'start'});
     update(target, true);
   });
@@ -2888,6 +2982,7 @@ mermaid.initialize({
   const initial = initialRoute ? initialRoute.page - 1 : 0;
   agentFocusActive = Boolean(initialRoute?.focus && initial === taskTimelineIndex);
   if (agentFocusActive) sendTimelineAgentFocus(true);
+  if(initialRoute?.demoStep)setSolutionState(slides[initial],initialRoute.demoStep-1);
   update(initial, Boolean(initialRoute?.focus && !agentFocusActive));
   requestAnimationFrame(() => go(current, 'instant')); showUI();
 })();
