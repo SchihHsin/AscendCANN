@@ -3247,5 +3247,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。第 4→5 页手动聚焦不再高亮整条 AI 生命线及全程 AI 触点，改为突出首轮任务循环（P1 立项 + P2 写核函数 / 首次查教程）：开发者提出任务、首次检索与补充、AI 草稿、本机执行、版本决策，以及直接相关的社区分支。P3–P7 其余步骤保留在图中但降为背景；生命线不额外染色或加粗。
 - 依据 / 边界：按用户提供的时序图截图和已有 P1–P2 节点 / 阶段定义收窄聚焦范围；不改任务事件顺序、节点内容、页面导航，亦不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：时序图副本 5 段可执行内联 JavaScript 语法通过；`git diff --check` 通过。遵守本地页面预览策略，未做截图级视觉复核。
-- Commit / push：待提交并推送至 `origin/main`。
+- Commit / push：功能提交 `ecf0529d`（`fix: focus first task loop in timeline transition`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
 - 未决事项：需在允许的本地预览中确认首轮循环与后续阶段的视觉主次是否恰当。
