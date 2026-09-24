@@ -3263,5 +3263,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。首轮循环聚焦状态下，P1 阶段色带和 Need 节点仍高亮，但开发者独立“找入口·选型”社区虚线分支（`b0`）不再高亮；其他首轮事件 / 分支及既有全称标签逻辑不变。
 - 依据 / 边界：按用户对高亮语义的进一步限定，仅调整这条分支在聚焦时的视觉状态，不删除事件或改变时序图内容、结构、页面顺序及 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：5 段可执行内联 JavaScript 语法通过；静态断言确认 `b0` 从高亮集合排除，并豁免阶段色带选择器对该分支的点亮；`git diff --check` 通过。未做截图级视觉复核。
-- Commit / push：待提交并推送至 `origin/main`。
+- Commit / push：功能提交 `63dc6be0`（`fix: keep entry-selection branch dim in focus`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
 - 未决事项：需在允许的本地预览中确认 `b0` 虚线与阶段色带仍有足够清晰的视觉区分。
