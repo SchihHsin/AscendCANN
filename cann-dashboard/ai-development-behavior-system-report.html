@@ -652,9 +652,9 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-mech-label b{font-size:var(--fs-sm)}
 .cb-mechanism-rail{grid-row:5;position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 3.8vh;gap:.28vh 0}
 .cb-mechanism-stages{grid-column:1;grid-row:1;position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0}
-.cb-mechanism-stage{position:relative;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));align-content:center;gap:.52vh .3vw;padding:.16vh .26vw;border:0;border-radius:0;background:transparent}
-.cb-mechanism-stage::before{content:"";position:absolute;z-index:0;top:-.52vh;bottom:.24vh;left:50%;border-left:1.5px solid color-mix(in srgb,var(--phase) 65%,#8994a3);pointer-events:none}
-.cb-mechanism-stage::after{content:"";position:absolute;z-index:1;top:-.52vh;left:calc(50% - 4px);border-bottom:5px solid color-mix(in srgb,var(--phase) 76%,#8994a3);border-left:4px solid transparent;border-right:4px solid transparent;pointer-events:none}
+.cb-mechanism-stage{position:relative;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));align-content:center;gap:.52vh .48vw;padding:1.05vh .26vw .16vh;border:0;border-radius:0;background:transparent}
+.cb-mech-connectors{position:absolute;z-index:1;left:0;width:100%;pointer-events:none;overflow:visible}
+.cb-mech-connectors path{fill:none;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .cb-mechanism-stage.dense .cb-mech-node:last-child{grid-column:1/-1;width:calc(50% - .15vw);justify-self:center}
 .cb-mechanism-stage.six .cb-mech-node:last-child{grid-column:auto;width:auto}
 .cb-mechanism-stage.few{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,6.5vh);align-content:center}
@@ -667,9 +667,6 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-mech-node b{padding-right:7px;font-size:var(--fs-sm);line-height:1.08;color:color-mix(in srgb,var(--cap-tone) 82%,#252c38)}
 .cb-mech-node span{font-size:var(--fs-xs);line-height:1.1;color:#687084}
 .cb-mech-dot{position:absolute;top:.34vh;right:.34vw;width:5px;height:5px;border-radius:50%;background:var(--cap-tone);box-shadow:0 0 0 3px color-mix(in srgb,var(--cap-tone) 10%,transparent)}
-.cb-mechanism-stage>.cb-mech-node:nth-child(odd)::before,.cb-mechanism-stage>.cb-mech-node:nth-child(even)::after{content:"";position:absolute;top:-.42vh;left:50%;height:.42vh;border-left:1.5px solid color-mix(in srgb,var(--phase) 65%,#8994a3);pointer-events:none}
-.cb-mechanism-stage>.cb-mech-node:nth-child(odd)::after,.cb-mechanism-stage>.cb-mech-node:nth-child(even)::before{content:"";position:absolute;top:-.42vh;width:.15vw;border-top:1.5px solid color-mix(in srgb,var(--phase) 65%,#8994a3);pointer-events:none}
-.cb-mechanism-stage>.cb-mech-node:nth-child(odd)::after{left:50%;width:calc(50% + .15vw)}.cb-mechanism-stage>.cb-mech-node:nth-child(even)::before{right:50%;width:calc(50% + .15vw)}
 .cb-mechanism-meta{grid-column:1;grid-row:2;display:flex;justify-content:center;gap:.7vw;min-width:0;min-height:0}
 .cb-mechanism-meta>.cb-mech-node{flex:0 1 18%}
 .cb-measure-label b{font-size:var(--fs-sm)}
@@ -2892,6 +2889,97 @@ mermaid.initialize({
   if (agentFocusActive) sendTimelineAgentFocus(true);
   update(initial, Boolean(initialRoute?.focus && !agentFocusActive));
   requestAnimationFrame(() => go(current, 'instant')); showUI();
+})();
+</script>
+<script>
+(() => {
+  const blueprint = document.querySelector('.task-rel-page .collab-blueprint');
+  if (!blueprint) return;
+  const stages = [...blueprint.querySelectorAll('.cb-mechanism-stages > .cb-mechanism-stage')];
+  const targets = [...blueprint.querySelectorAll('.cb-agent-lane > .cb-agent-step')];
+  const ns = 'http://www.w3.org/2000/svg';
+  let frame = 0;
+
+  const roundedPath = (points, radius = 3) => {
+    const fmt = n => Number(n.toFixed(2));
+    let d = `M ${fmt(points[0][0])} ${fmt(points[0][1])}`;
+    for (let i = 1; i < points.length - 1; i++) {
+      const [px, py] = points[i - 1], [x, y] = points[i], [nx, ny] = points[i + 1];
+      const before = Math.hypot(x - px, y - py), after = Math.hypot(nx - x, ny - y);
+      if (before < .01 || after < .01) { d += ` L ${fmt(x)} ${fmt(y)}`; continue; }
+      const r = Math.min(radius, before / 2, after / 2);
+      const ix = x - (x - px) / before * r, iy = y - (y - py) / before * r;
+      const ox = x + (nx - x) / after * r, oy = y + (ny - y) / after * r;
+      d += ` L ${fmt(ix)} ${fmt(iy)} Q ${fmt(x)} ${fmt(y)} ${fmt(ox)} ${fmt(oy)}`;
+    }
+    const [x, y] = points.at(-1);
+    return `${d} L ${fmt(x)} ${fmt(y)}`;
+  };
+
+  const draw = () => {
+    frame = 0;
+    stages.forEach((stage, stageIndex) => {
+      const target = targets[stageIndex];
+      const nodes = [...stage.querySelectorAll(':scope > .cb-mech-node')];
+      if (!target || !nodes.length || !stage.offsetWidth || !stage.offsetHeight) return;
+      let svg = stage.querySelector(':scope > svg.cb-mech-connectors');
+      if (!svg) {
+        svg = document.createElementNS(ns, 'svg');
+        svg.setAttribute('class', 'cb-mech-connectors');
+        svg.setAttribute('aria-hidden', 'true');
+        stage.prepend(svg);
+      }
+
+      const sr = stage.getBoundingClientRect(), tr = target.getBoundingClientRect();
+      const sx = sr.width / stage.offsetWidth || 1, sy = sr.height / stage.offsetHeight || 1;
+      const width = stage.offsetWidth, height = (sr.bottom - tr.bottom) / sy;
+      const top = (tr.bottom - sr.top) / sy;
+      if (height <= 0) return;
+      svg.style.top = `${top}px`;
+      svg.style.height = `${height}px`;
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.setAttribute('preserveAspectRatio', 'none');
+
+      const rects = nodes.map(node => node.getBoundingClientRect());
+      const columns = [];
+      rects.forEach((rect, nodeIndex) => {
+        const x = (rect.left + rect.width / 2 - sr.left) / sx;
+        let column = columns.find(item => Math.abs(item.x - x) < 3);
+        if (!column) columns.push(column = {x, nodes: []});
+        column.nodes.push({nodeIndex, top: rect.top});
+      });
+      const laneOffset = new Map();
+      columns.forEach(column => {
+        column.nodes.sort((a, b) => a.top - b.top);
+        column.nodes.forEach((item, index) => {
+          laneOffset.set(item.nodeIndex, (index - (column.nodes.length - 1) / 2) * 8);
+        });
+      });
+      const defs = [];
+      const paths = [];
+
+      nodes.forEach((node, nodeIndex) => {
+        const r = rects[nodeIndex];
+        const x = (r.left + r.width / 2 - sr.left) / sx;
+        const startY = (r.top - tr.bottom) / sy;
+        const turnY = Math.max(0, startY - Math.min(7, startY * .5));
+        const targetX = Math.max(2, Math.min(width - 2, x + (laneOffset.get(nodeIndex) || 0)));
+        const tone = getComputedStyle(node).getPropertyValue('--cap-tone').trim() || '#5b5bd6';
+        const markerId = `cb-round-arrow-${stageIndex}-${nodeIndex}`;
+        const d = roundedPath([[x,startY],[x,turnY],[targetX,turnY],[targetX,0]],4);
+        defs.push(`<marker id="${markerId}" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><circle cx="5" cy="5" r="4.2" fill="#f5f6f8" stroke="${tone}" stroke-width="1.1"/><path d="M 4.2 3.5 L 6.1 5 L 4.2 6.5" fill="none" stroke="${tone}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></marker>`);
+        paths.push(`<path d="${d}" stroke="${tone}" marker-end="url(#${markerId})"/>`);
+      });
+      svg.innerHTML = `<defs>${defs.join('')}</defs>${paths.join('')}`;
+    });
+  };
+
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(draw); };
+  addEventListener('resize', schedule, {passive:true});
+  if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(blueprint);
+  if ('MutationObserver' in window) new MutationObserver(schedule).observe(document.documentElement, {attributes:true,attributeFilter:['class']});
+  if (document.fonts?.ready) document.fonts.ready.then(schedule);
+  schedule();
 })();
 </script>
 </body>
