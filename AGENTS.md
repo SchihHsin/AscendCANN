@@ -3214,3 +3214,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：静态检查确认 76 个正式页面标题均存在，70 个浅底内容页具备运行时导航容器与页眉，7 个章节入口目标存在；5 段可执行内联 JavaScript 语法通过，`git diff --check` 通过。尝试截图检查时本地页面预览受到 Browser Use URL policy 限制；未再尝试绕过，因此截图级视觉复核未完成。
 - Commit / push：待提交并推送。
 - 未决事项：需在允许的本地预览中确认标签在当前窗口宽度下的实际间距、折行与点击反馈。
+
+### 2026-09-24（Agent 泳道聚焦改为手动停留）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`AGENTS.md`。第 3 页第一次前进时只高亮 AI Agent 竖向泳道并停留；聚焦状态不再用 850ms 自动翻页，也不再于切到第 4 页后 1.3 秒自动清除。第二次明确前进才进入第 4 页；从第 4 页返回时保留高亮，离开这两页、反向取消或打开概览时才复原。
+- 交互覆盖：下一页按钮、键盘、滚轮、触屏和时序图 iframe 的滚轮桥接均采用同一两步状态逻辑；键盘长按重复事件不会代替第二次明确操作。移除与焦点停留有关的定时器 / 重发轮询，保留 iframe 就绪后按当前状态补发聚焦消息。
+- 层级 / 内容：仅修改展示时序与高亮状态，不改变任务节点、章节顺序、平台机制事实或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：5 段可执行内联 JavaScript 语法通过；HTMLParser 通过；静态断言确认聚焦逻辑不含 setTimeout / clearTimeout / 自动延时参数、离开两页后清除状态、第二次前进路径存在；`git diff --check` 通过。未做截图级预览。
+- Commit / push：待提交并推送。
+- 未决事项：需在本地预览中确认鼠标滚轮连续事件和触屏手势的实际节奏符合“聚焦停留、再次操作才继续”的预期。

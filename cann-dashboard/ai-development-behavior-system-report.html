@@ -2252,48 +2252,25 @@ mermaid.initialize({
   let current = 0, overview = false, uiTimer, scrollTimer, hashLock = false;
   const taskTimelineIndex = slides.findIndex(slide => slide.dataset.title === '算子开发全链路时序');
   const taskAgentIndex = slides.findIndex(slide => slide.dataset.title === 'Agent 机制下钻');
-  let agentFocusPending = false, agentFocusNavigating = false, agentFocusTimer = 0, agentNavigateTimer = 0, agentResetTimer = 0, timelineFrameReady = false;
+  let agentFocusActive = false;
   function sendTimelineAgentFocus(active) {
     const frame = slides[taskTimelineIndex]?.querySelector('.task-timeline-frame iframe');
     if (!frame?.contentWindow) return;
     frame.contentWindow.postMessage({__seqAgentFocus:active}, '*');
-    if (active && !timelineFrameReady) [180,360,540,720,900,1080,1260,1440].forEach(delay => setTimeout(() => {
-      if (agentFocusPending && !timelineFrameReady) frame.contentWindow?.postMessage({__seqAgentFocus:true}, '*');
-    }, delay));
   }
 
   function resetAgentFocus() {
-    clearTimeout(agentFocusTimer); clearTimeout(agentNavigateTimer); clearTimeout(agentResetTimer);
-    agentFocusPending = false; agentFocusNavigating = false;
-    agentFocusTimer = 0; agentNavigateTimer = 0; agentResetTimer = 0;
-    const source = slides[taskTimelineIndex];
-    if (!source) return;
+    if (!agentFocusActive) return;
+    agentFocusActive = false;
     sendTimelineAgentFocus(false);
   }
-  function focusAgentThenAdvance() {
-    if (agentFocusPending || agentFocusNavigating || taskTimelineIndex < 0 || taskAgentIndex < 0) return;
+  function focusAgentLane() {
+    if (agentFocusActive || taskTimelineIndex < 0 || taskAgentIndex < 0) return;
     const source = slides[taskTimelineIndex];
     const frame = source.querySelector('.task-timeline-frame iframe');
     if (!frame) { slides[taskAgentIndex].scrollIntoView({behavior:'smooth',block:'start'}); return; }
-    agentFocusPending = true;
+    agentFocusActive = true;
     sendTimelineAgentFocus(true);
-    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const focusHold = reduceMotion ? 120 : 850;
-    const focusStart = performance.now();
-    const maxWait = reduceMotion ? 350 : 1600;
-    const advanceAfterFocus = () => {
-      if (!agentFocusPending || overview) return;
-      const elapsed = performance.now() - focusStart;
-      if (elapsed < focusHold || (!timelineFrameReady && elapsed < maxWait)) {
-        agentFocusTimer = setTimeout(advanceAfterFocus, 100);
-        return;
-      }
-      agentFocusPending = false;
-      agentFocusNavigating = true;
-      slides[taskAgentIndex].scrollIntoView({behavior:'smooth',block:'start'});
-      agentNavigateTimer = setTimeout(resetAgentFocus, 2400);
-    };
-    agentFocusTimer = setTimeout(advanceAfterFocus, focusHold);
   }
 
   slides.forEach((slide, i) => {
@@ -2302,11 +2279,7 @@ mermaid.initialize({
 
   function update(i, writeHash = true) {
     current = Math.max(0, Math.min(slides.length - 1, i));
-    if (current === taskAgentIndex && agentFocusNavigating) {
-      agentFocusNavigating = false;
-      clearTimeout(agentNavigateTimer); agentNavigateTimer = 0;
-      agentResetTimer = setTimeout(resetAgentFocus, 1300);
-    }
+    if (agentFocusActive && current !== taskTimelineIndex && current !== taskAgentIndex) resetAgentFocus();
     counter.textContent = `${String(current + 1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
     navDotButtons.forEach((dot, index) => { if (index === current) dot.setAttribute('aria-current','page'); else dot.removeAttribute('aria-current'); });
     prevBtn.disabled = current === 0; nextBtn.disabled = current === slides.length - 1;
@@ -2316,20 +2289,16 @@ mermaid.initialize({
   function go(i, behavior = 'smooth') {
     if (overview) return exitOverview(i);
     const target = Math.max(0, Math.min(slides.length - 1, i));
-    if (agentFocusPending && target !== taskAgentIndex) resetAgentFocus();
-    if (agentFocusNavigating) {
-      if (target === taskAgentIndex) return slides[target].scrollIntoView({behavior, block:'start'});
-      resetAgentFocus();
-    }
-    if (current === taskTimelineIndex && target === taskAgentIndex) return focusAgentThenAdvance();
+    const withinAgentFocusPair = (current === taskTimelineIndex && target === taskAgentIndex) || (current === taskAgentIndex && target === taskTimelineIndex);
+    if (agentFocusActive && !withinAgentFocusPair) resetAgentFocus();
+    if (current === taskTimelineIndex && target === taskAgentIndex && !agentFocusActive) return focusAgentLane();
     slides[target].scrollIntoView({behavior, block:'start'});
   }
   let iframeWheelLock = false;
   addEventListener('message', event => {
     const timelineFrame = slides[taskTimelineIndex]?.querySelector('.task-timeline-frame iframe');
     if (event.source === timelineFrame?.contentWindow && event.data?.__seqPhaseReady) {
-      timelineFrameReady = true;
-      if (agentFocusPending) timelineFrame.contentWindow.postMessage({__seqAgentFocus:true}, '*');
+      if (agentFocusActive) timelineFrame.contentWindow.postMessage({__seqAgentFocus:true}, '*');
       return;
     }
     const delta = event.data && event.data.__deckWheel;
@@ -2379,17 +2348,21 @@ mermaid.initialize({
   overviewBtn.onclick = toggleOverview; fullscreenBtn.onclick = toggleFullscreen;
   addEventListener('wheel', event => {
     if (overview || taskTimelineIndex < 0 || taskAgentIndex < 0) return;
-    if (agentFocusPending) {
-      if (event.deltaY < 0) resetAgentFocus();
-      else { event.preventDefault(); return; }
-    }
-    if (agentFocusNavigating) {
-      if (event.deltaY < 0) resetAgentFocus();
-      else { event.preventDefault(); return; }
+    if (agentFocusActive) {
+      if (current === taskTimelineIndex) {
+        if (event.deltaY < 0) resetAgentFocus();
+        else if (event.deltaY > 0) { event.preventDefault(); go(taskAgentIndex); }
+        return;
+      }
+      if (current === taskAgentIndex) {
+        if (event.deltaY > 0) resetAgentFocus();
+        return;
+      }
+      resetAgentFocus();
     }
     if (current === taskTimelineIndex && event.deltaY > 0) {
       event.preventDefault();
-      focusAgentThenAdvance();
+      focusAgentLane();
     }
   }, {passive:false,capture:true});
   let touchStartY = null;
@@ -2403,11 +2376,13 @@ mermaid.initialize({
     touchStartY = null;
     if (deltaY > 0) {
       event.preventDefault();
-      if (!agentFocusPending && !agentFocusNavigating) focusAgentThenAdvance();
-    } else if (agentFocusPending || agentFocusNavigating) resetAgentFocus();
+      if (agentFocusActive) go(taskAgentIndex);
+      else focusAgentLane();
+    } else if (agentFocusActive) resetAgentFocus();
   }, {passive:false,capture:true});
   addEventListener('keydown', e => {
     if (['INPUT','TEXTAREA','BUTTON'].includes(document.activeElement.tagName)) return;
+    if (agentFocusActive && e.repeat && ['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); return; }
     if (e.key === 'Escape' && overview) return exitOverview(current);
     if (e.key.toLowerCase() === 'o') return toggleOverview();
     if (e.key.toLowerCase() === 'f') return toggleFullscreen();
