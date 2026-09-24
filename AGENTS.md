@@ -3339,3 +3339,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：内联 JavaScript 语法、HTML 解析、标签尺寸静态断言和 `git diff --check` 通过。当前本地 `file://` 页面仍被 Browser Use 策略阻止打开，无法截图复核。
 - Commit / push：功能提交 `9a62a25d`（`fix: enlarge agent focus labels`）已推送至 `origin/main`；交接记录随后单独提交并推送，未纳入其他已有未提交改动。
 - 未决事项：刷新 `#4-focus` 后确认标签字号与周围节点距离；必要时再按实际视口微调。
+
+### 2026-09-24（九个问题页替换为直接相关的公开证据）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/`、`AGENTS.md`。九个“现状”页改用本轮新采集的 1440×900 公开页面截图：OpenHands 任务描述、Harness 入口、任务卡与状态、测试超时误报、评审背景、跨运行记忆和 RBAC 案例；Ascend/pytorch 环境版本故障报告；以及 22 名新手的一周后学习回测研究。来源、截图时间和边界记录在截图目录的 `README.md`。
+- 版式：截图外层容器、边框、圆角、白底、阴影及假浏览器栏均移除；原始截图直接贴在灰底页面上，并填满标题与右侧观察文字以外的主体空间。保持截图完整显示（`object-fit: contain`），保留来源链接、事实说明与证据边界。第 8 题表述收紧为“经验证的任务经验能否回到项目知识并被下一次任务复用”，避免把一项记忆提案说成平台回流率证据。
+- 依据 / 置信度：GitHub issue / PR 截图为公开单案例或提案（仅作具体线索，不能外推发生率）；arXiv 2604.18538 摘要显示样本为 22 名新手，AI 条件回测差异未达统计显著。所有页面仍把风险标为待验证命题。未改变 18 页问题 / 方案配对顺序、API / Protocol、Host / Harness、Application / Task 层级边界。
+- 验证：只读核对 GitHub issue / PR 标题与正文；HTMLParser 解析通过，5 段内联 JavaScript 均通过 `node --check`，9 张截图引用均存在且尺寸为 1440×900，截图样式静态断言与 `git diff --check` 通过。CUA 明确拒绝本地 `file://` 页面导航并禁止通过其他浏览器 / 命令行绕过，因此未完成报告页截图级目视复核。
+- Commit / push：功能提交 `f79af6f5`（`feat: replace problem evidence with relevant captures`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。报告 HTML 中本轮以前已有的其他未提交改动未纳入功能提交。
+- 未决事项：在允许的本地预览环境中确认问题 01–09 现状页截图实际缩放、文字可读性和右侧观察栏布局；当前被浏览器安全策略阻止，未作视觉验收结论。
