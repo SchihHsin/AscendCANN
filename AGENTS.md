@@ -3291,3 +3291,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；HTMLParser 确认目标页 DOM 标签 / 属性结构事件数为 460，且与基线一致；确认修改仅在目标页文案。桌面目视复核未完成：本地 `file://` 页面被 CUA 浏览器 URL 策略拒绝，且策略禁止换浏览器或命令行截图绕过；以静态结构检查继续。
 - Commit / push：功能提交 `eb0057cb`（`docs: ground agent drilldown in AddCustom task`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
 - 未决事项：匹配 Ascend / CANN 环境下的工程生成与核函数运行仍需实机验证。
+
+### 2026-09-24（Agent 聚焦态使用独立页码标记）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`AGENTS.md`。第 4 页时序图进入 Agent 聚焦态时，控制栏显示 `04·聚焦 / 77`，地址改为 `#4-focus`；退出聚焦回到 `#4`，进入第 5 页则显示普通 `05 / 77`。实际幻灯片数量与导航点不变。
+- 导航行为：初次打开 `#4-focus` 或手动切换到该 hash 会恢复时序图聚焦；`#4` 会清除聚焦。hash 导航直接定位目标页，不触发第 4→5 页的中间聚焦拦截。控制栏同步呈现聚焦状态，并为读屏提供状态标签。
+- 依据 / 边界：这是现有聚焦交互的地址与页码状态表达，不新增报告内容或研究结论；未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：5 段可执行内联 JavaScript 语法通过；静态断言覆盖 `#4`、`#4-focus`、无效页码与非目标页聚焦 hash；`git diff --check` 通过。遵守本地页面预览限制，未做截图级视觉复核。
+- Commit / push：待提交并推送至 `origin/main`。
+- 未决事项：需在允许的本地预览中确认控制栏新增聚焦标签的宽度与实际显示效果。

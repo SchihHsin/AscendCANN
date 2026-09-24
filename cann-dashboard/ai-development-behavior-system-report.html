@@ -1995,6 +1995,7 @@ flowchart LR
 <section class="slide s-gray" data-title="附录导航"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">附录不参与正文主线，保留细节材料、证据来源与可追溯的研究边界</div><div class="ttl">正文讲系统与设计判断，附录保留可复核的依据</div></div><div class="section-tabs"></div></header><main class="body-area appendix-index"><article class="appendix-card"><div class="n">A1</div><h3>平台机制与现状细节</h3><p>六个平台机制、完整能力矩阵、权限与环境差异、昇腾能力断点，以及 Claude Code 机制下钻。</p></article><article class="appendix-card"><div class="n">A2</div><h3>研究材料、学习设计与来源</h3><p>任务与开发者旅程、CANN × CUDA AI 可用性证据、开发中学习的完整设计页，以及官方文档、开源实现与 H / M / L 边界。</p></article></main><footer class="foot">附录用于复核“平台具体怎么做、现状证据来自哪里、学习方案怎样展开”；不把待验证假设写成体验效果结论。</footer></div></section>
 
 <style>
+#counter{white-space:nowrap}
 .affinity-chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1vw;align-items:stretch}.affinity-step{position:relative;min-width:0;min-height:25vh;padding:2vh 1.05vw;border-radius:15px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.88);display:flex;flex-direction:column;justify-content:center}.affinity-step:not(:last-child)::after{content:"";position:absolute;right:-1.02vw;top:50%;width:1vw;height:2px;background:var(--accent);z-index:2}.affinity-step .n{font:300 clamp(34px,3.6vw,56px)/1 'Barlow Condensed';color:var(--accent)}.affinity-step b{font-size:var(--fs-h2);margin:.7vh 0}.affinity-step p{font-size:var(--fs-body);line-height:1.45;color:var(--ink-2)}.affinity-step:last-child{background:var(--focus-grad);border-color:rgba(91,91,214,.2)}.affinity-conclusion{margin-top:1.15vh;padding:1.05vh 1vw;border-radius:11px;background:var(--g-ink);color:#fff;display:grid;grid-template-columns:auto 1fr;gap:.8vw;align-items:center}.affinity-conclusion b{font-size:var(--fs-h3)}.affinity-conclusion p{font-size:var(--fs-body);line-height:1.4;color:rgba(255,255,255,.72)}
 .learning-question-layout{display:grid;grid-template-columns:.78fr 1.22fr;gap:1.2vw;align-items:stretch}.learning-question-claim{min-width:0;padding:2.4vh 1.55vw;border-radius:18px;background:var(--g-ink);color:#fff;display:flex;flex-direction:column;justify-content:center}.learning-question-claim small{font:700 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.13em;color:#c6ccff}.learning-question-claim h2{font-size:clamp(30px,3vw,48px);line-height:1.12;margin:1.2vh 0}.learning-question-claim p{font-size:var(--fs-body);line-height:1.55;color:rgba(255,255,255,.68)}.learning-question-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8vw;align-items:stretch}.learning-question-stage{min-width:0;min-height:30vh;padding:1.7vh .95vw;border-radius:14px;background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.88);display:flex;flex-direction:column;justify-content:center}.learning-question-stage small{font:700 var(--fs-xs)/1.2 'JetBrains Mono';color:var(--accent)}.learning-question-stage b{font-size:var(--fs-h3);line-height:1.28;margin:.7vh 0}.learning-question-stage p{font-size:var(--fs-sm);line-height:1.45;color:var(--ink-2)}.learning-question-stage:last-child{background:var(--focus-grad)}
 .dev-learning-journey{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.78vw;align-items:stretch}.dl-step{position:relative;min-width:0;min-height:0;display:flex;flex-direction:column}.dl-step:not(:last-child)::after{content:"→";position:absolute;right:-.62vw;top:33%;z-index:3;color:var(--accent);font-size:18px;font-weight:900}.dl-shot{width:100%;height:19vh;object-fit:contain;display:block;border-radius:8px;background:rgba(255,255,255,.38)}.dl-no{margin-top:1vh;font:700 var(--fs-xs)/1.2 'JetBrains Mono';color:var(--accent)}.dl-step b{font-size:var(--fs-h3);line-height:1.24;margin:.4vh 0}.dl-step p{font-size:var(--fs-sm);line-height:1.38;color:var(--ink-2)}
@@ -2273,6 +2274,7 @@ mermaid.initialize({
     if (!agentFocusActive) return;
     agentFocusActive = false;
     sendTimelineAgentFocus(false);
+    if (!overview) update(current);
   }
   function focusAgentLane() {
     if (agentFocusActive || taskTimelineIndex < 0 || taskAgentIndex < 0) return;
@@ -2281,6 +2283,7 @@ mermaid.initialize({
     if (!frame) { slides[taskAgentIndex].scrollIntoView({behavior:'smooth',block:'start'}); return; }
     agentFocusActive = true;
     sendTimelineAgentFocus(true);
+    update(current);
   }
 
   slides.forEach((slide, i) => {
@@ -2289,12 +2292,26 @@ mermaid.initialize({
 
   function update(i, writeHash = true) {
     current = Math.max(0, Math.min(slides.length - 1, i));
-    if (agentFocusActive && current !== taskTimelineIndex && current !== taskAgentIndex) resetAgentFocus();
-    counter.textContent = `${String(current + 1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+    if (agentFocusActive && current !== taskTimelineIndex && current !== taskAgentIndex) {
+      agentFocusActive = false;
+      sendTimelineAgentFocus(false);
+    }
+    const page = String(current + 1).padStart(2,'0');
+    const total = String(slides.length).padStart(2,'0');
+    const isFocusedPage = agentFocusActive && current === taskTimelineIndex;
+    counter.textContent = `${page}${isFocusedPage ? '·聚焦' : ''} / ${total}`;
+    counter.title = isFocusedPage ? `第 ${current + 1} 页 · AI 机制聚焦` : `第 ${current + 1} 页`;
+    counter.setAttribute('aria-label', counter.title);
     navDotButtons.forEach((dot, index) => { if (index === current) dot.setAttribute('aria-current','page'); else dot.removeAttribute('aria-current'); });
     prevBtn.disabled = current === 0; nextBtn.disabled = current === slides.length - 1;
     document.body.classList.toggle('on-dark', slides[current].classList.contains('s-glow'));
-    if (writeHash && !overview) { hashLock = true; history.replaceState(null, '', `#${current + 1}`); hashLock = false; }
+    if (writeHash && !overview) {
+      const hash = `#${current + 1}${isFocusedPage ? '-focus' : ''}`;
+      hashLock = true;
+      try { history.replaceState(null, '', hash); }
+      catch (error) { location.hash = hash; }
+      hashLock = false;
+    }
   }
   function go(i, behavior = 'smooth') {
     if (overview) return exitOverview(i);
@@ -2405,8 +2422,27 @@ mermaid.initialize({
   addEventListener('touchstart', showUI, {passive:true});
   addEventListener('scroll', () => { document.body.classList.add('scrolling'); clearTimeout(scrollTimer); scrollTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700); }, {passive:true});
   addEventListener('resize', () => { if (overview) fitOverview(); });
-  addEventListener('hashchange', () => { if (hashLock || overview) return; const n=parseInt(location.hash.slice(1),10); if (n>=1&&n<=slides.length) go(n-1,'instant'); });
-  const initial = parseInt(location.hash.slice(1), 10); update(Number.isFinite(initial) && initial >= 1 && initial <= slides.length ? initial - 1 : 0, false);
+  function parseDeckHash(hash) {
+    const match = /^#(\d+)(-focus)?$/.exec(hash || '');
+    if (!match) return null;
+    const page = Number(match[1]);
+    return Number.isInteger(page) && page >= 1 && page <= slides.length ? {page, focus: Boolean(match[2])} : null;
+  }
+  addEventListener('hashchange', () => {
+    if (hashLock || overview) return;
+    const route = parseDeckHash(location.hash);
+    if (!route) return;
+    const target = route.page - 1;
+    agentFocusActive = route.focus && target === taskTimelineIndex;
+    sendTimelineAgentFocus(agentFocusActive);
+    slides[target].scrollIntoView({behavior:'instant',block:'start'});
+    update(target, true);
+  });
+  const initialRoute = parseDeckHash(location.hash);
+  const initial = initialRoute ? initialRoute.page - 1 : 0;
+  agentFocusActive = Boolean(initialRoute?.focus && initial === taskTimelineIndex);
+  if (agentFocusActive) sendTimelineAgentFocus(true);
+  update(initial, Boolean(initialRoute?.focus && !agentFocusActive));
   requestAnimationFrame(() => go(current, 'instant')); showUI();
 })();
 </script>
