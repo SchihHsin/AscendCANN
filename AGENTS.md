@@ -3549,3 +3549,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；源码确认每张卡由顶部中心引出垂直段，并由对应列的水平段接入阶段主干。
 - Commit / push：功能提交 `58beeb92`（`style: route mechanism links from node tops`）已推送至 `origin/main`；本条交接随后补充并推送。
 - 未决事项：刷新第 5 页确认顶部引出线与主干的连接位置。
+
+
+### 2026-09-24（修正第 5 页能力卡顶部连线的实际起点）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。依据用户截图复核后，发现顶部短竖段与横段原先分别从卡片中心和卡片侧边起点绘制，视觉上仍像从侧边出线。现将横段起点改为卡片顶边中心，并延伸至阶段主干，使两段形成连续直角线路。
+- 边界：只修正第 5 页机制节点线路的几何连接，不改卡片文案、节点布局或其他页面。
+- 验证：`git diff --check` 通过；CSS 几何检查确认左右列卡片的顶边中心均为线路起点，横向线路终点与阶段中央主干对齐。
+- Commit / push：功能提交 `733fa851`（`fix: join top-center mechanism connectors`）已推送至 `origin/main`；本条交接随后补充并推送。
+- 未决事项：刷新第 5 页检查各卡片顶部出线与中央主干的实际视觉衔接。
