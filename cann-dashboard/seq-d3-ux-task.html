@@ -2062,7 +2062,7 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
     });
     /* 只聚焦第一次任务循环：开发者提出任务 → 首次检索 / 补充 → 形成草稿 → 本机执行与版本决策。
        它跨 P1 立项与 P2 写核函数；后续重复出现的检索 / 执行仍留在图中，但不抢焦点。 */
-    var firstCycleMsgs=['n1','b0','sD','sD2','b1','gD','eD','dSoc','bSoc'];
+    var firstCycleMsgs=['n1','sD','sD2','b1','gD','eD','dSoc','bSoc'];
     var firstCyclePhases=[0,1];
     Array.prototype.forEach.call(svgEl.children,function(el){
       var kind=el.getAttribute&&el.getAttribute('data-kind');
@@ -2071,7 +2071,7 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
       var phaseRaw=el.getAttribute&&el.getAttribute('data-phase');
       var phase=phaseRaw==null||phaseRaw===''?null:Number(phaseRaw);
       var hitMsg=firstCycleMsgs.indexOf(msg)>=0;
-      var hitPhase=phase!==null&&firstCyclePhases.indexOf(phase)>=0;
+      var hitPhase=phase!==null&&firstCyclePhases.indexOf(phase)>=0&&msg!=='b0';
       var isLane=kind==='lane';
       var hit=hitMsg||hitPhase;
       el.style.opacity=hit?'1':(isLane?(el.tagName==='line'?'.2':'.58'):'.11');
