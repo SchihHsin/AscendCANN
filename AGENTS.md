@@ -3583,3 +3583,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；HTMLParser 解析通过；结构检查确认六个 Generate 对齐元素全部使用独立主题类，Search 仍为紫色。未做整页截图复核，本地 `file://` 页面截图访问受浏览器 URL 策略限制。
 - Commit / push：功能提交 `e7fa71d6`（`style: separate Generate phase color`）已推送至 `origin/main`；本条交接随后补充并推送。
 - 未决事项：刷新报告第 5 页确认整列色彩在当前浏览器视口下的观感。
+
+
+### 2026-09-24（修正第 5 页机制与装配连线）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。删除阶段中间的空白汇流线；每个能力节点单独从卡片上边缘连至对应 Agent 阶段卡，连线及圆形箭头继承来源节点颜色，转角使用圆角路径。
+- 依据 / 边界：按用户截图定位悬空箭头，并对照报告第 20 页步骤卡间的圆形箭头样式。只改第 5 页“机制与装配”连线，不更改节点内容、阶段与其他页面，不影响 API / Host / Application 边界。
+- 验证：HTML 解析、连线脚本 `node --check` 与 `git diff --cached --check` 通过。浏览器工具阻止本地 `file://` 页面的截图访问，因此以用户截图和第 20 页源码样式完成对照，未做修改后的整页截图复核。
+- Commit / push：功能提交 `7ef94fb5`（`fix: anchor rounded mechanism connectors`）已推送至 `origin/main`；本交接条目随后单独补交。
+- 未决事项：刷新报告第 5 页确认圆形箭头与各节点的实际视觉衔接。
