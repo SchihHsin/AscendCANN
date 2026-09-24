@@ -3402,3 +3402,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；未做浏览器截图级复核。
 - Commit / push：功能提交 `e0ecdd18`（`style: emphasize completed AI usability study`）已推送至 `origin/main`；本条交接随后单独提交并推送。
 - 未决事项：用户刷新本地第 5 页，确认完成态相对其他四列足够醒目。
+
+
+### 2026-09-24（移除第 5 页重复的五步顺序行）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。删除第 5 页重复映射 Need → Search → Generate → Decide → Execute 的“五步顺序”整行及专属样式；开发者、交接物、Agent、机制与装配、体验观察、痛点线索各行顺接前移，腾出的高度补给痛点行，保持现有页面结构与视觉样式。
+- 边界：仅影响第 5 页本地网格排布，不改五阶段栏、其他页面、页面序列或 API / Host / Application 层边界。
+- 验证：`git diff --check` 通过；本地浏览器标签的 `file://` 页面访问被浏览器 URL 策略阻止，未进行截图级复核。
+- Commit / push：提交 `fix: remove duplicate five-step row`，推送目标为 `origin/main`。
+- 未决事项：用户刷新本地报告第 5 页后确认。

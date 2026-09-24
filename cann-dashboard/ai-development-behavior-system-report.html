@@ -564,7 +564,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .task-rel-page .head{margin-bottom:1.2vh}
 .task-rel-page .body-area{align-items:stretch}
 @scope (.task-rel-page) {
-.collab-blueprint{width:100%;height:80vh;min-width:0;min-height:0;display:grid;grid-template-columns:7.3vw minmax(0,1fr);grid-template-rows:8vh 4.2vh 10.5vh 3vh 19vh 17vh 7.3vh 8vh;gap:.22vw}
+.collab-blueprint{width:100%;height:80vh;min-width:0;min-height:0;display:grid;grid-template-columns:7.3vw minmax(0,1fr);grid-template-rows:8vh 10.5vh 3vh 19vh 17vh 7.3vh 12.2vh;gap:.22vw}
 .cb-axis,.cb-row-label{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:.25vh .35vw}
 .cb-axis small,.cb-row-label small{font:740 var(--fs-xs)/1.1 'JetBrains Mono';letter-spacing:.05em;color:var(--ink-3)}
 .cb-axis b,.cb-row-label b{margin:.18vh 0;font-size:var(--fs-sm);line-height:1.1;color:var(--ink)}
@@ -582,21 +582,15 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-stage span{margin-top:.08vh;font-size:var(--fs-xs);line-height:1.1;color:rgba(255,255,255,.68);white-space:nowrap}
 .cb-row-label{grid-column:1;align-items:flex-start;border-right:1px solid rgba(101,112,130,.16)}
 .cb-row-label b{font-size:var(--fs-sm)}.cb-row-label span{max-width:7.1vw}
-.cb-task-bridge-label{grid-row:2;justify-content:center}.cb-task-bridge-label>div,.cb-painpoint-label>div{display:flex;flex-direction:column;align-items:flex-start;gap:.08vh}.cb-task-bridge-label b,.cb-painpoint-label b{font-size:var(--fs-sm);margin:0}.cb-task-bridge-label span,.cb-painpoint-label span{font-size:var(--fs-xs);line-height:1.05}
-.cb-human-label{grid-row:3}.cb-handoff-label{grid-row:4}.cb-agent-label{grid-row:5}.cb-mech-label{grid-row:6}.cb-measure-label{grid-row:7}.cb-painpoint-label{grid-row:8}
-.cb-task-bridge{grid-column:2;grid-row:2;display:grid;grid-template-rows:minmax(0,1fr);min-width:0;min-height:0}
-.cb-task-map-rail{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0;align-items:stretch}
-.cb-task-map-node{--phase:var(--phase-source);position:relative;min-width:0;min-height:0;padding:.28vh .48vw;display:flex;flex-direction:column;justify-content:center;border:1px solid color-mix(in srgb,var(--phase) 20%,#fff);border-radius:7px;background:color-mix(in srgb,var(--phase) 7%,#fff)}
-.cb-task-map-node.is-action{--phase:var(--phase-action)}.cb-task-map-node.is-control{--phase:var(--phase-control)}.cb-task-map-node.is-evidence{--phase:var(--phase-evidence)}
-.cb-task-map-node:not(:last-child)::after{content:"›";position:absolute;z-index:3;right:-.53vw;top:50%;transform:translate(50%,-52%);color:var(--phase);font-size:var(--fs-h3);font-weight:900;line-height:1}
-.cb-task-map-node small{font:740 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.035em;color:var(--phase)}.cb-task-map-node b{margin-top:.12vh;font-size:var(--fs-body);line-height:1.08;color:#37414e;white-space:nowrap}
-.cb-painpoint-rail{grid-column:2;grid-row:8;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0;align-items:stretch}
+.cb-painpoint-label>div{display:flex;flex-direction:column;align-items:flex-start;gap:.08vh}.cb-painpoint-label b{font-size:var(--fs-sm);margin:0}.cb-painpoint-label span{font-size:var(--fs-xs);line-height:1.05}
+.cb-human-label{grid-row:2}.cb-handoff-label{grid-row:3}.cb-agent-label{grid-row:4}.cb-mech-label{grid-row:5}.cb-measure-label{grid-row:6}.cb-painpoint-label{grid-row:7}
+.cb-painpoint-rail{grid-column:2;grid-row:7;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0;align-items:stretch}
 .cb-painpoint-node{min-width:0;min-height:0;padding:.22vh .38vw;display:flex;flex-direction:column;justify-content:center;gap:.32vh;border:1px solid color-mix(in srgb,var(--c-red) 20%,#fff);border-radius:7px;background:color-mix(in srgb,var(--c-red) 6%,#fff)}
 .cb-painpoint-item{min-width:0;display:grid;grid-template-columns:4px minmax(0,1fr);align-items:start;gap:.28vw}
 .cb-painpoint-item::before{content:"";width:4px;height:4px;margin-top:.4em;border-radius:50%;background:var(--c-red)}
 .cb-painpoint-item span{min-width:0;font-size:var(--fs-xs);line-height:1.12;color:#574936}
-.cb-human-lane{grid-row:3;align-items:stretch}
-.cb-agent-lane{grid-row:5;align-items:stretch}
+.cb-human-lane{grid-row:2;align-items:stretch}
+.cb-agent-lane{grid-row:4;align-items:stretch}
 .cb-lane{position:relative}
 .cb-lane-cell{position:relative;z-index:1;min-width:0;min-height:0;padding:.9vh .72vw;display:flex;flex-direction:column;justify-content:center;border:1px solid color-mix(in srgb,var(--phase) 20%,#fff);border-radius:9px;background:color-mix(in srgb,var(--phase) 7%,#fff)}
 .cb-lane-cell:not(:last-child)::after{content:"";position:absolute;z-index:5;right:-.58vw;top:50%;width:.43vw;border-top:1.5px solid #8994a3}
@@ -610,7 +604,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-token-row span{padding:.3vh .42vw;border-radius:999px;background:rgba(255,255,255,.82);border:1px solid rgba(109,122,145,.12);font-size:var(--fs-xs);line-height:1.1;font-weight:700;color:#586577}
 .cb-human-step .cb-token-row span{white-space:nowrap}
 .cb-handoff-label b{font-size:var(--fs-sm)}
-.cb-handoff-rail{grid-row:4;align-items:center}
+.cb-handoff-rail{grid-row:3;align-items:center}
 .cb-handoff{--phase:var(--phase-source);min-width:0;display:flex;align-items:center;justify-content:center;gap:.32vw;color:var(--phase)}
 .cb-handoff.is-source{--phase:var(--phase-source)}.cb-handoff.is-action{--phase:var(--phase-action)}.cb-handoff.is-control{--phase:var(--phase-control)}.cb-handoff.is-evidence{--phase:var(--phase-evidence)}
 .cb-handoff svg{width:12px;height:15px;flex:0 0 auto;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
@@ -651,7 +645,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-recovery-inline>i{font-style:normal;text-align:center;font-size:var(--fs-sm);line-height:1;color:var(--phase-recovery);font-weight:850}
 .cb-recovery-foot{font-size:var(--fs-xs);line-height:1.05;text-align:right;color:#907a61}
 .cb-mech-label b{font-size:var(--fs-sm)}
-.cb-mechanism-rail{grid-row:6;position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 3.8vh;gap:.28vh 0}
+.cb-mechanism-rail{grid-row:5;position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 3.8vh;gap:.28vh 0}
 .cb-mechanism-stages{grid-column:1;grid-row:1;position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0}
 .cb-mechanism-stage{position:relative;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));align-content:center;gap:.2vh .3vw;padding:.16vh .26vw;border:0;border-radius:0;background:transparent}
 .cb-mechanism-stage::before{content:"";position:absolute;z-index:0;left:50%;top:-.52vh;bottom:.24vh;border-left:1px dashed color-mix(in srgb,var(--phase) 48%,#a6afbb);pointer-events:none}
@@ -665,7 +659,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-mechanism-meta{grid-column:1;grid-row:2;display:flex;justify-content:center;gap:.7vw;min-width:0;min-height:0}
 .cb-mechanism-meta>.cb-mech-node{flex:0 1 18%}
 .cb-measure-label b{font-size:var(--fs-sm)}
-.cb-measure-rail{grid-row:7;align-items:center}
+.cb-measure-rail{grid-row:6;align-items:center}
 .cb-measure{min-width:0;padding:.42vh .54vw;border:1px solid color-mix(in srgb,var(--phase) 15%,#fff);border-radius:8px;background:color-mix(in srgb,var(--phase) 8%,#fff);display:flex;flex-direction:column;justify-content:center}
 .cb-measure small{font:700 var(--fs-xs)/1 'JetBrains Mono';color:#7b8490}
 .cb-measure span{margin-top:.16vh;font-size:var(--fs-xs);line-height:1.08;color:#596574}
@@ -698,15 +692,14 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .task-case-takeaway{display:grid;grid-template-columns:auto 1fr;gap:.58vw;align-items:center;padding:.55vh .72vw;border-radius:10px;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.9)}.task-case-takeaway b{font-size:var(--fs-sm);color:#4e5e78}.task-case-takeaway span{font-size:var(--fs-sm);line-height:1.2;color:var(--ink-2)}
 @media(max-height:760px){.task-flow{height:53vh}.task-flow-stage{padding:.48vh .4vw;gap:.28vh}.task-flow-stage p{line-height:1.12}.task-flow-risk{line-height:1.1}.task-case{height:52vh}.task-case-step{padding:.55vh .5vw;gap:.36vh}.task-case-step p{line-height:1.15}}
 @media(max-aspect-ratio:4/3){
-  .task-rel-page .collab-blueprint{height:58.6vh;grid-template-columns:minmax(88px,7.3vw) minmax(0,1fr);grid-template-rows:8vh 3.8vh 8vh 2.2vh 13.5vh 13.5vh 4vh 3.8vh;gap:.2vw}
+  .task-rel-page .collab-blueprint{height:58.6vh;grid-template-columns:minmax(88px,7.3vw) minmax(0,1fr);grid-template-rows:8vh 8vh 2.2vh 13.5vh 13.5vh 4vh 7.6vh;gap:.2vw}
   .task-rel-page .cb-stage{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:.12vh;padding:.28vh .58vw}
   .task-rel-page .cb-stage small{grid-row:auto;align-self:auto;font-size:var(--fs-xs);line-height:1}
   .task-rel-page .cb-stage b{font-size:var(--fs-body);line-height:1.08}
   .task-rel-page .cb-stage span{margin-top:0;font-size:var(--cb-copy-size);line-height:1.08}
   .task-rel-page .cb-axis,.task-rel-page .cb-row-label{padding:.2vh .35vw}
   .task-rel-page .cb-row-label span{max-width:none;line-height:1.1}
-  .task-rel-page .cb-stage b,.task-rel-page .cb-stage span,.task-rel-page .cb-task-map-node b{white-space:normal}
-  .task-rel-page .cb-task-map-node b{font-size:var(--fs-body);line-height:1.08}
+  .task-rel-page .cb-stage b,.task-rel-page .cb-stage span{white-space:normal}
 }
 </style>
 <style>
@@ -792,19 +785,6 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         <div class="cb-stage is-action"><small>03 · GENERATE</small><b>生成候选方案</b><span>整理路径、参数与工程草稿</span></div>
         <div class="cb-stage is-control"><small>04 · DECIDE</small><b>判断方案</b><span>核验条件并选择路径</span></div>
         <div class="cb-stage is-evidence"><small>05 · EXECUTE</small><b>执行任务</b><span>行动、状态与结果回传</span></div>
-      </div>
-
-      <div class="cb-row-label cb-task-bridge-label">
-        <div><small>TASK FLOW</small><b>五步顺序</b></div>
-      </div>
-      <div class="cb-task-bridge" aria-label="对应前一页首轮任务节点的五步业务顺序">
-        <div class="cb-task-map-rail" aria-label="五步任务顺序：Need 提出 AddCustom 接入目标并装配已知环境，Search 检索官方自定义算子教程，Generate 生成候选工程路径与参数草稿，Decide 核验 soc_version 与工程路径，Execute 准备 msopgen 工程起步">
-          <div class="cb-task-map-node is-source"><small>01 · NEED</small><b>提出接入目标并装配环境上下文</b></div>
-          <div class="cb-task-map-node is-action"><small>02 · SEARCH</small><b>检索官方算子教程</b></div>
-          <div class="cb-task-map-node is-action"><small>03 · GENERATE</small><b>生成候选路径与参数草稿</b></div>
-          <div class="cb-task-map-node is-control"><small>04 · DECIDE</small><b>确认 soc_version 与路径</b></div>
-          <div class="cb-task-map-node is-evidence"><small>05 · EXECUTE</small><b>准备 msopgen 工程</b></div>
-        </div>
       </div>
 
       <div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b><span>定目标 · 给现场 · 复核</span></div>
