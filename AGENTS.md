@@ -3531,3 +3531,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；源码确认本页阶段正文容器设置 `text-align:left`。
 - Commit / push：功能提交 `d6c315c8`（`style: left-align task stage copy`）已推送至 `origin/main`；本条交接随后补充并推送。
 - 未决事项：刷新第 5 页确认阶段标题、说明均左对齐。
+
+
+### 2026-09-24（第 5 页机制节点连线改从顶部引出）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。机制与装配区每张能力卡的连接线现在从卡片上边缘垂直引出，再以直角接入本阶段主干并向上连接 Agent 动作；不再从卡片左右边缘引出。
+- 边界：只调整第 5 页机制节点连接线的引出方向与短路由，不改变节点、连线归属、页面布局或其他页面。
+- 验证：`git diff --check` 通过；源码确认每张卡由顶部中心引出垂直段，并由对应列的水平段接入阶段主干。
+- Commit / push：功能提交 `58beeb92`（`style: route mechanism links from node tops`）已推送至 `origin/main`；本条交接随后补充并推送。
+- 未决事项：刷新第 5 页确认顶部引出线与主干的连接位置。
