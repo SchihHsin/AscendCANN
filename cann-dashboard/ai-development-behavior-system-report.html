@@ -2642,7 +2642,7 @@ mermaid.initialize({
   document.querySelectorAll('.proto-app').forEach(updateProblemDemo);
   const reportOrder = [
     '封面','目录',
-    '开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻','开发生命周期全景','六条贯穿流',
+    '开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻',
     problemStatus(problemCases[0]),newProblemAnalyses[0].title,problemSolution(problemCases[0]),
     problemStatus(problemCases[1]),'问题02分析：CANN 任务样本中的知识适用性','问题02分析：知识要从可发现走到可核验',problemSolution(problemCases[1]),
     problemStatus(problemCases[2]),'问题03分析：六个平台的能力装配入口','问题03分析：昇腾已有资产覆盖到任务哪一步','问题03分析：能力资产在哪些控制点中断','问题03分析：平台 Harness 与昇腾供给如何接合',problemSolution(problemCases[2]),
@@ -2667,7 +2667,7 @@ mermaid.initialize({
   reportOrder.forEach(title => { const slide = byTitle.get(title); if (slide) deck.appendChild(slide); });
 
   const chapterTitles = {
-    '01':new Set(['开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻','开发生命周期全景','六条贯穿流']),
+    '01':new Set(['开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻']),
     '02':new Set(['九个问题总览',...problemCases.flatMap(item=>[problemStatus(item),problemSolution(item)]),...newProblemAnalyses.map(item=>item.title),...reusedAnalysisMeta.map(item=>item.title)]),
     '03':new Set(['体验设计核心主张','协同架构','用户体验五个关键时刻','协同运行蓝图','行动前体验设计','行动后体验设计','服务能力契约','设计与业务运营闭环','成本模型','新产品形态','机会矩阵','Roadmap','接下来建设五件事','能力体验指标','持续改进闭环']),
     '04':new Set(['开发中学习旅程','学习入口与隔离跟练','练习到项目验证','最终答案'])
