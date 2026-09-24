@@ -3421,3 +3421,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：5 段内联脚本语法检查通过；静态映射确认报告顺序 90 页、9 个问题均映射到现状 / 分析 / 方案且无未映射标题；截图、方案图和学习画布图片路径存在；`git diff --check` 通过。Browser Use 策略拒绝本地 `file://` 页面，未进行截图级视觉复核，也未使用其他浏览器绕过。
 - Commit / push：结构重排包含在 `0ef9ff8d`（`fix: connect mechanisms to agent activities`），已推送至 `origin/main`；本条交接记录随后的文档提交一并推送。
 - 未决事项：在允许预览的环境逐页检查九题截图裁切、分析图密度与章节导航状态。
+
+
+### 2026-09-24（报告封面切换为深色蓝紫主题）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。封面底色改为深蓝黑渐变，保留淡蓝紫光晕与抽象节点回环；标题、正文、元信息与品牌标识改为适配深色背景的高对比浅色。
+- 边界：只调整封面颜色与原有抽象图形的对比度，不改封面布局、插图结构、后续页面或页面序列，不影响 API / Host / Application 层边界。
+- 验证：`git diff --check` 通过；本地浏览器策略不允许对该文件执行截图级视觉复核。
+- Commit / push：`style: darken report cover`，推送至 `origin/main`。
+- 未决事项：用户刷新封面确认深色效果。
