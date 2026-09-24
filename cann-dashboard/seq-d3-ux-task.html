@@ -1099,10 +1099,10 @@ function renderV(){
     .attr("font-size",10).attr("font-weight",800).attr("fill","#555").text("阶段·开发者/AI");
   PHASE.forEach((d,i)=>{
     const y0=Y(d.a)-dyV/2+5, h=(d.b-d.a)*dyV + dyV-10, cy=(Y(d.a)+Y(d.b))/2, cxp=phX+phW/2, st=phaseStats(d);
-    svg.append("rect").attr("data-phase",i).attr("x",phX).attr("y",y0).attr("width",phW).attr("height",h)
+    svg.append("rect").attr("data-phase",i).attr("data-p2-card",i===1?"true":null).attr("x",phX).attr("y",y0).attr("width",phW).attr("height",h)
       .attr("rx",8).attr("fill",phaseColors[i]).attr("opacity",.6).style("cursor","help")
       .on("mousemove",e=>showPhaseTip(e,i)).on("mouseleave",hideTip).on("click",e=>pinPhaseTip(e,i));
-    const lab=svg.append("text").attr("data-phase",i).attr("text-anchor","middle").attr("font-size",9.5).attr("font-weight",700).attr("fill","#555");
+    const lab=svg.append("text").attr("data-phase",i).attr("data-p2-card",i===1?"true":null).attr("text-anchor","middle").attr("font-size",9.5).attr("font-weight",700).attr("fill","#555");
     wrapText(lab, d.n, 6, 11, cxp, false); lab.attr("y",cy-24);
     drawRatioBar(svg, cxp, cy-6, Math.min(phW-14,84), st);
     drawCount(svg, cxp, cy+10, st);
@@ -2018,8 +2018,10 @@ html.fullseq #seqctrl{bottom:14px;right:18px;gap:8px}
 html.fullseq #seqctrl .sqbtn{width:32px;height:32px;border-radius:9px;font-size:19px}
 html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
 #journey [data-pair],#journey [data-lane],#journey [data-kind]{transition:opacity .28s,stroke-width .28s,filter .28s}
-#journey.agent-cycle-focus text:not([data-node-mark]){opacity:0!important}
+#journey.agent-cycle-focus text:not([data-node-mark]):not([data-p2-card]){opacity:0!important}
 #journey.agent-cycle-focus [data-focus-expansion] text{opacity:1!important}
+#journey.agent-cycle-focus rect[data-p2-card="true"]{fill:#D9D2F2!important;stroke:#6B5BA8!important;stroke-width:2.5!important;opacity:1!important;filter:drop-shadow(0 2px 6px rgba(107,91,168,.34))!important}
+#journey.agent-cycle-focus text[data-p2-card="true"]{fill:#49387B!important;font-size:12px!important;font-weight:900!important;opacity:1!important}
 @media(prefers-reduced-motion:reduce){#journey [data-pair],#journey [data-lane],#journey [data-kind]{transition:none!important}}
 #seqctrl{position:fixed;bottom:8px;right:12px;z-index:60;display:flex;gap:6px;align-items:center;font-family:'Noto Sans SC',sans-serif}
 #seqctrl .sqbtn{width:24px;height:24px;border-radius:7px;border:1px solid #d4d8df;background:rgba(255,255,255,.85);color:#444;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
@@ -2073,9 +2075,10 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
       var hitNode=kind==='node'&&inCycle;
       var hitLine=el.tagName==='line'&&inCycle&&['message','block','branch'].indexOf(kind)>=0;
       var isLane=kind==='lane';
+      var isP2Card=el.hasAttribute&&el.hasAttribute('data-p2-card');
       var hit=hitNode||hitLine;
-      el.style.opacity=hit?'1':(isLane&&el.tagName==='line'?'.2':'.1');
-      el.style.filter=hit?'drop-shadow(0 0 2px rgba(107,91,168,.32))':'';
+      el.style.opacity=hit||isP2Card?'1':(isLane&&el.tagName==='line'?'.2':'.1');
+      el.style.filter=hit?'drop-shadow(0 0 2px rgba(107,91,168,.32))':(isP2Card?'drop-shadow(0 2px 6px rgba(107,91,168,.34))':'');
       /* 只强调首轮节点和路径线；生命线 / 阶段底图退为背景。 */
       if(el.tagName==='line'&&isLane){el.style.stroke='';el.style.strokeWidth='';el.style.strokeOpacity='';}
       else if(hitLine){
