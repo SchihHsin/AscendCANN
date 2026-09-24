@@ -3457,3 +3457,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；未进行截图级复核。
 - Commit / push：`fix: prevent execute handoff label overlap`，推送至 `origin/main`。
 - 未决事项：刷新报告第 5 页确认 Execute 交接标签不再重叠。
+
+
+### 2026-09-24（第 5 页阶段卡加入任务可视化图标）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。按用户选定的“折中延续”方向，在 Need、Search、Generate、Decide、Execute 五张深色阶段卡右侧增加与任务动作对应的 Lucide 图标组合，作为小型视觉提示；卡片文本继续保留原位置与内容。
+- 依据 / 边界：参考用户提供的阶段插图样式与其确认方向。只调整第 5 页阶段卡内部排布；保留五列、其余信息行、能力连线和页面顺序，不影响 API / Host / Application 层边界。
+- 验证：`git diff --check` 通过；由于本地 `file://` 页面预览受浏览器 URL 策略限制，未绕过策略做截图级视觉复核。
+- Commit / push：功能提交 `f9e2fd69`（`style: add visual cues to task stages`）已推送至 `origin/main`；本条交接随后单独提交并推送。
+- 未决事项：刷新第 5 页确认各图标在当前屏幕尺寸下的视觉比例。
