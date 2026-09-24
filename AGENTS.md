@@ -3504,3 +3504,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：五张图片均为 512×512 RGBA PNG，Alpha 范围为 `(0, 255)`；`git diff --check` 通过。未进行截图级页面视觉复核：本地 `file://` 报告页的浏览器预览受 URL 策略限制，没有绕过该限制。
 - Commit / push：功能提交 `d03dbeb8`（`style: add 3D illustrations to task stages`）已推送至 `origin/main`；本条交接记录随后补充并推送。
 - 未决事项：请刷新第 5 页确认插图比例与卡片正文空间。
+
+
+### 2026-09-24（第 5 页机制与装配连线改用直角汇流）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。机制节点各自从卡片内侧以短直角支线接入阶段主干；每阶段保留一条实线主干和向上箭头，替换原来沿阶段边界的双虚线及小横线，参照第 22 页连线的直角路由与清楚的箭头端点。
+- 依据 / 边界：用户指定本报告 `#22` 连线为视觉参考。只改第 5 页“机制与装配”区连线；不改能力节点文案、卡片样式、阶段内容、其他页面或页面序列，不影响 API / Host / Application 层边界。独立跨阶段能力节点仍保持独立。
+- 验证：`git diff --check` 与暂存区差异检查通过；源码确认每个阶段能力节点按左右列汇入同阶段主干，五个旧双边界输出元素已移除。未进行截图级页面视觉复核：本地 `file://` 报告页访问受浏览器 URL 策略限制，未绕过该限制。
+- Commit / push：功能提交 `e05120a3`（`style: route mechanism connectors cleanly`）已推送至 `origin/main`；本条交接记录随后补充并推送。
+- 未决事项：刷新第 5 页确认实线汇流在当前视口下的密度与箭头落点。
