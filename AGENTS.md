@@ -3366,3 +3366,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；未做浏览器截图级复核。
 - Commit / push：功能提交 `67d10aaf`（`fix: align need and generate stages`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
 - 未决事项：用户刷新本地报告第 5 页后确认新阶段排列及正文排版。
+
+
+### 2026-09-24（痛点按角色重写，体验观察标注研究类型）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页痛点从具体算子字段 / Agent 执行动作改为开发者、Agent、团队或平台面临的通用体验损耗；按 Need、Search、Generate、Decide、Execute 对齐后续九个问题主题，继续使用红色圆点列表，不加序号。
+- 体验观察行：Search / Fetch 列改为灰色 `AI可用性研究`，表达相关检索研究已在其他材料完成；其余列标记 `桌面与用户研究`。正文观察项保留。
+- 证据边界：痛点保持为需验证的研究线索，不把公开单案例写成普遍发生率。未改变页面架构、序列或 API / Host / Application 边界。
+- 验证：`git diff --check` 通过；本轮未做浏览器截图级复核。
+- Commit / push：`705db207`（痛点按开发者 / Agent 视角拆分）和 `1e62b5ca`（研究类型与已完成标识）已推送至 `origin/main`；本条交接随后单独提交并推送。
+- 未决事项：刷新本地报告第 5 页后确认痛点可读性与研究标签颜色。
