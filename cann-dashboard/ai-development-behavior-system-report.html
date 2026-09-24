@@ -775,30 +775,34 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-heading .solution-meta b{color:color-mix(in srgb,var(--problem-tone) 72%,white);font-size:var(--fs-sm)}
 .solution-heading h1{min-width:0;font-size:clamp(30px,2.25vw,40px);line-height:1.15;letter-spacing:-.025em;font-weight:780;background:linear-gradient(100deg,color-mix(in srgb,var(--problem-tone) 76%,white),#d9d0ff 62%,#c4e5ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .solution-heading .platform-tag{align-self:end;justify-self:end;max-width:18vw;padding:.5vh .7vw;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.76);font-size:var(--fs-sm);font-weight:700;white-space:nowrap}
-.solution-layout{display:grid;grid-template-columns:minmax(0,5.5fr) minmax(0,1fr);gap:1.05vw;align-items:stretch;min-width:0;min-height:0}
+.solution-layout{display:grid;grid-template-columns:minmax(0,3.55fr) minmax(0,1fr);gap:1.1vw;align-items:stretch;min-width:0;min-height:0}
 .solution-figure{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;margin:0;overflow:visible}
 .solution-image-stage{width:min(100%,142vh);aspect-ratio:1672/941;border:1px solid rgba(255,255,255,.2);border-radius:12px;overflow:visible;background:rgba(255,255,255,.035);box-shadow:0 24px 64px -28px hsla(var(--glow-h),82%,32%,.55)}
 .solution-image-stage img{border-radius:11px}
 .solution-focus{--focus-tone:color-mix(in srgb,var(--problem-tone) 82%,white);border-color:var(--focus-tone);background:color-mix(in srgb,var(--problem-tone) 10%,transparent);box-shadow:0 0 0 1px rgba(7,8,12,.45),0 0 18px color-mix(in srgb,var(--problem-tone) 28%,transparent)}
 .solution-focus b{left:-12px;top:-12px;width:28px;height:28px;border-color:#090a10;background:var(--problem-tone);font-size:11px}
-.solution-points{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:.55vh;min-width:0;min-height:0;padding:.2vh .1vw .1vh .2vw}
+.solution-points{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:.75vh;min-width:0;min-height:0;padding:.2vh .1vw .1vh .2vw}
 .solution-points-head{display:flex;align-items:baseline;justify-content:space-between;gap:.5vw;padding-bottom:.45vh;border-bottom:1px solid rgba(255,255,255,.17)}
 .solution-points-head b{font-size:var(--fs-h3);line-height:1.2;color:#fff}
 .solution-points-head span{font:650 var(--fs-xs)/1.2 'JetBrains Mono';color:rgba(255,255,255,.45);white-space:nowrap}
-.solution-point-list{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:.2vh;min-width:0;min-height:0}
-.solution-point{--point-tone:var(--problem-tone);display:grid;grid-template-columns:1fr;align-content:start;gap:.24vh;min-width:0;min-height:0;padding:.5vh .42vw;border-bottom:1px solid rgba(255,255,255,.12);background:linear-gradient(100deg,color-mix(in srgb,var(--point-tone) 9%,transparent),transparent 78%)}
-.solution-point-head{display:flex;align-items:center;gap:.42vw;min-width:0;margin-bottom:.12vh}
-.solution-point-head .num{display:grid;place-items:center;flex:0 0 auto;width:1.35vw;height:1.35vw;min-width:21px;min-height:21px;border-radius:50%;background:color-mix(in srgb,var(--point-tone) 25%,#171922);color:color-mix(in srgb,var(--point-tone) 68%,white);font:800 var(--fs-xs)/1 'JetBrains Mono'}
-.solution-point-head b{font-size:var(--fs-sm);line-height:1.2;color:#fff}
-.solution-point dl{display:grid;gap:.18vh;min-width:0}
-.solution-point dl>div{display:grid;grid-template-columns:3.5em minmax(0,1fr);gap:.25vw;align-items:start;min-width:0;font-size:var(--fs-xs);line-height:1.24}
-.solution-point dt{color:rgba(255,255,255,.43);white-space:nowrap}
-.solution-point dd{min-width:0;color:rgba(255,255,255,.76)}
-.solution-point dl>div:last-child dd{color:color-mix(in srgb,var(--point-tone) 62%,white);font-weight:650}
-.solution-boundary{padding-top:.35vh;color:rgba(255,255,255,.48);font-size:var(--fs-xs);line-height:1.25}
+.solution-point-list{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:.42vh;min-width:0;min-height:0}
+.solution-point{--point-tone:var(--problem-tone);display:grid;grid-template-columns:1fr;align-content:start;gap:.52vh;min-width:0;min-height:0;padding:.8vh .52vw;border-bottom:1px solid rgba(255,255,255,.14);background:linear-gradient(100deg,color-mix(in srgb,var(--point-tone) 10%,transparent),transparent 82%)}
+.solution-point-head{display:flex;align-items:center;gap:.48vw;min-width:0;margin-bottom:.12vh}
+.solution-point-head .num{display:grid;place-items:center;flex:0 0 auto;width:1.65vw;height:1.65vw;min-width:25px;min-height:25px;border-radius:50%;background:color-mix(in srgb,var(--point-tone) 25%,#171922);color:color-mix(in srgb,var(--point-tone) 72%,white);font:800 var(--fs-sm)/1 'JetBrains Mono'}
+.solution-point-head b{font-size:var(--fs-h3);line-height:1.2;color:#fff}
+.solution-point-details{display:grid;gap:.5vh;min-width:0}
+.solution-point-row{display:grid;grid-template-columns:5.3em minmax(0,1fr);gap:.42vw;align-items:start;min-width:0;font-size:var(--fs-body);line-height:1.28}
+.solution-point-row>span{color:rgba(255,255,255,.68);font-size:var(--fs-sm);font-weight:700;white-space:nowrap}
+.solution-point-row p{min-width:0;margin:0;color:rgba(255,255,255,.88)}
+.solution-point-row.cause p{color:rgba(255,255,255,.84)}
+.solution-point-row.cause b{color:color-mix(in srgb,var(--point-tone) 72%,white);font-weight:800}
+.solution-point-row.benefit{padding-top:.42vh;border-top:1px solid rgba(255,255,255,.1)}
+.solution-point-row.benefit>span{color:color-mix(in srgb,var(--point-tone) 74%,white)}
+.solution-point-row.benefit p{color:color-mix(in srgb,var(--point-tone) 72%,white);font-weight:700}
+.solution-boundary{padding-top:.35vh;color:rgba(255,255,255,.68);font-size:var(--fs-sm);line-height:1.3}
 .solution-boundary b{color:rgba(255,255,255,.68)}
-@media(max-width:1180px){.problem-solution-page>.slide-inner{padding-inline:2.4vw}.problem-solution-page .problem-chrome{left:2.4vw;right:2.4vw}.solution-content{padding-top:8vh}.solution-layout{grid-template-columns:minmax(0,4.5fr) minmax(0,1fr);gap:.8vw}.solution-heading h1{font-size:clamp(27px,2.4vw,34px)}.solution-point{padding:.35vh .35vw}}
-.problem-fact p{font-size:var(--fs-body)}.problem-question-box b{font-size:var(--fs-body);line-height:1.32}.solution-point dl>div{font-size:var(--fs-body)}.solution-point dt{font-size:var(--fs-xs)}
+@media(max-width:1180px){.problem-solution-page>.slide-inner{padding-inline:2.4vw}.problem-solution-page .problem-chrome{left:2.4vw;right:2.4vw}.solution-content{padding-top:8vh}.solution-layout{grid-template-columns:minmax(0,2.8fr) minmax(0,1fr);gap:.8vw}.solution-heading h1{font-size:clamp(27px,2.4vw,34px)}.solution-point{padding:.65vh .42vw}.solution-point-row{grid-template-columns:5em minmax(0,1fr);gap:.34vw}}
+.problem-fact p{font-size:var(--fs-body)}.problem-question-box b{font-size:var(--fs-body);line-height:1.32}
 </style>
 </head>
 <body>
@@ -2570,7 +2574,7 @@ mermaid.initialize({
       slide.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">问题 ${item.n} · 现状截图与可观察线索｜${problemEsc(item.phase)}</div><div class="ttl">${item.n} · 现状：${problemEsc(item.headline)}</div></div><nav class="section-tabs"></nav></header><main class="body-area"><div class="problem-kicker"><b>公开材料截图 · 具体问题线索</b><span class="state">单个案例 · 不代表普遍发生率</span></div><div class="problem-evidence-layout"><figure class="problem-shot-frame"><div class="problem-shot-bar"><span class="problem-shot-dots"><i></i><i></i><i></i></span><span class="problem-shot-url">${problemEsc(item.url||item.source)}</span></div><div class="problem-shot-viewport"><div class="problem-image-stage problem-evidence-stage"><img class="${item.fit==='cover'?'cover-top':''}" src="${problemEsc(item.image)}" alt="${problemEsc(item.alt)}" loading="lazy">${focusMarkup(item.evidenceMarks)}</div></div><figcaption class="problem-shot-caption"><span>${problemEsc(item.source)} · 图上序号与右侧观察对应</span>${item.url?`<a href="${problemEsc(item.url)}" target="_blank" rel="noopener noreferrer">打开来源 ↗</a>`:'<span>内部材料 · 不对外发布</span>'}</figcaption></figure><aside class="problem-observation"><h3>截图中的可观察线索</h3>${item.facts.map((fact,index)=>`<div class="problem-fact"><span class="index">${String(index+1).padStart(2,'0')}</span><p>${problemEsc(fact)}</p></div>`).join('')}<div class="problem-boundary"><b>证据边界：</b>${problemEsc(item.boundary)}</div><div class="problem-question-box"><small>待验证问题 ${item.n}</small><b>${problemEsc(item.question)}</b></div></aside></div></main><footer class="foot">截图支持的是一个具体问题线索，不代表其普遍发生率；仍需在昇腾真实任务中观察与验证。</footer></div>`;
       return slide;
     }
-    const designPointMarkup=(item.designPoints||[]).map((point,index)=>`<article class="solution-point"><header class="solution-point-head"><span class="num">${String(index+1).padStart(2,'0')}</span><b>${problemEsc(point.title)}</b></header><dl><div><dt>设计选择</dt><dd>${problemEsc(point.choice)}</dd></div><div><dt>对应问题</dt><dd>${problemEsc(point.problem)}</dd></div><div><dt>作用机制</dt><dd>${problemEsc(point.mechanism)}</dd></div><div><dt>用户收益</dt><dd>${problemEsc(point.benefit)}</dd></div></dl></article>`).join('');
+    const designPointMarkup=(item.designPoints||[]).map((point,index)=>`<article class="solution-point"><header class="solution-point-head"><span class="num">${String(index+1).padStart(2,'0')}</span><b>${problemEsc(point.title)}</b></header><div class="solution-point-details"><div class="solution-point-row choice"><span>设计选择</span><p>${problemEsc(point.choice)}</p></div><div class="solution-point-row cause"><span>问题 → 机制</span><p>${problemEsc(point.problem)} <b>→</b> ${problemEsc(point.mechanism)}</p></div><div class="solution-point-row benefit"><span>用户收益</span><p>${problemEsc(point.benefit)}</p></div></div></article>`).join('');
     const solutionHue=({'01':235,'02':218,'03':216,'04':32,'05':32,'06':174,'07':174,'08':262,'09':262})[item.n]||235;
     slide.style.setProperty('--problem-hue',solutionHue);
     slide.innerHTML=`<div class="slide-inner"><header class="chrome problem-chrome"><div class="chrome-label">DESIGN POINT ${item.n} · ${problemEsc(item.name)}</div><nav class="section-tabs"></nav></header><main class="solution-content"><div class="solution-heading"><div class="solution-meta"><b>问题 ${item.n}</b><span>${problemEsc(item.phase)}</span><span>·</span><span>设计提案</span></div><h1>${problemEsc(item.solution)}</h1><span class="platform-tag">${problemEsc(item.platform)} · 概念图</span></div><div class="solution-layout"><figure class="solution-figure"><div class="problem-image-stage solution-image-stage"><img src="${problemEsc(item.solutionImage)}" alt="${problemEsc(item.solutionAlt)}" loading="lazy">${focusMarkup((item.designPoints||[]).map(point=>point.mark),true)}</div></figure><aside class="solution-points"><div class="solution-points-head"><b>体验设计点</b><span>图上 01—03</span></div><div class="solution-point-list">${designPointMarkup}</div><div class="solution-boundary"><b>概念边界：</b>${problemEsc(item.solutionBoundary)}</div></aside></div><footer class="solution-boundary solution-foot">待在代表性开发任务中验证用户收益；图中界面为设计提案，不代表平台现成功能。</footer></main></div>`;
