@@ -3315,5 +3315,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`AGENTS.md`。每题拆成相邻两页：先用既有研究截图呈现可观察现状与待验证问题，再用可交互代码原型展示设计回应；九题共 18 页，更新报告顺序、章节 Tab 和章节起始页，整份报告 86 页。方案 Demo 涵盖任务简报、上下文适用性、能力装配、执行接管、证据回执、团队交接、边做边学、经验回流和责任记录。
 - 设计与证据边界：截图来自既有研究中的公开页面与案例；第 4 题使用内部 Agent 流程图并明确标为非公开产品 UI。截图只作为观察线索，不把单条截图外推成问题普遍性或发生率；风险仍标为待验证命题。Demo 明确为未上线原型，不连接真实 Agent、服务、CANN 或 NPU。未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：5 段可执行内联 JavaScript 语法通过；静态检查确认 9 组配对页相邻、问题页标题完整、报告顺序共 86 页、截图文件均存在；`git diff --check` 通过。CUA 拒绝直接打开本地 `file://` 页面，未完成截图级目视复核，未使用命令行浏览器绕过。
-- Commit / push：待完成；由于报告文件同时包含本轮之前的未提交改动，提交前须选择性暂存本轮 CSS / 问题页序列与交接记录，不能混入其他工作区改动。
+- Commit / push：功能提交 `f3584aba`（`feat: pair behavior hypotheses with demos`）已推送至 `origin/main`；只暂存本轮问题页结构 / 样式及交接记录，未纳入报告中本轮之前的未提交改动或其他脏文件。
 - 未决事项：需在允许的本地预览中目视检查 18 页的截图裁切、方案控件排版和大字号下的溢出情况。
