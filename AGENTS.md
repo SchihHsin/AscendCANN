@@ -3475,5 +3475,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据 / 边界：现状材料取自九个公开 issue、PR 或论文页面；其内容是单例线索，不代表发生率。方案图是分别沿用 Codex、昇腾官网或 GitCode 视觉风格的设计提案，不代表这些平台已有对应功能；设计收益仍待真实开发任务验证。
 - 页面序列与机制边界：现状 / 方案仍按每题两页成对排列；不改变九问题顺序、导航映射或 API / Host / Application 层边界。
 - 验证：HTMLParser、5 段内联 JavaScript 语法检查、9 张方案图存在性、27 个设计点映射、`git diff --check` 及 `git diff --cached --check` 通过；图片来源尺寸为 1440×900、方案图为 1672×941。未进行整页浏览器截图复核：本地 `file://` 页面访问被浏览器 URL 策略拦截，未绕过该限制。
-- Commit / push：本轮功能提交完成后回填。
+- Commit / push：功能提交 `7d8fe5ed`（`design: clarify problem evidence and solutions`）已推送至 `origin/main`；本条交接在随后提交中回填。
 - 未决事项：请在报告中复核 01–09 方案页侧栏文字与大图在实际桌面视口下的呼吸空间；若有拥挤，优先精简文案，不缩小正文。
