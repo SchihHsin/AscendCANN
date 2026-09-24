@@ -3522,3 +3522,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 与暂存区差异检查通过；源码确认每个阶段能力节点按左右列汇入同阶段主干，五个旧双边界输出元素已移除。未进行截图级页面视觉复核：本地 `file://` 报告页访问受浏览器 URL 策略限制，未绕过该限制。
 - Commit / push：功能提交 `e05120a3`（`style: route mechanism connectors cleanly`）已推送至 `origin/main`；本条交接记录随后补充并推送。
 - 未决事项：刷新第 5 页确认实线汇流在当前视口下的密度与箭头落点。
+
+
+### 2026-09-24（第 5 页阶段卡文字左对齐）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。为当前报告页的 `.cb-stage-copy` 显式设置左对齐，覆盖通用 `.cb-stage` 的居中继承，统一 Need、Search、Generate、Decide、Execute 阶段卡中的文字对齐。
+- 边界：只影响本页五张阶段卡正文，不改变其他页面使用的同名通用阶段组件、卡片内容、插图或布局。
+- 验证：`git diff --check` 通过；源码确认本页阶段正文容器设置 `text-align:left`。
+- Commit / push：功能提交 `d6c315c8`（`style: left-align task stage copy`）已推送至 `origin/main`；本条交接随后补充并推送。
+- 未决事项：刷新第 5 页确认阶段标题、说明均左对齐。
