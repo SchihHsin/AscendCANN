@@ -3439,3 +3439,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过；未进行截图级复核，本地报告页的 `file://` 浏览访问曾被 URL 策略拦截。
 - Commit / push：`fix: connect each capability node to agent actions`，推送至 `origin/main`。
 - 未决事项：刷新报告第 5 页确认连线密度与落点。
+
+
+### 2026-09-24（精简第 5 页左侧行标题）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页左侧行标题统一为英文标签 + 中文标题，删除补充描述；首行改为 `STAGE / 阶段`，末行按用户澄清改为 `PAIN POINT / 痛点`。
+- 边界：仅简化左侧标签文案，不调整行顺序、内容卡片、布局样式、页面序列或 API / Host / Application 层边界。
+- 验证：`git diff --check` 通过；未做截图级视觉复核。
+- Commit / push：`fix: simplify task page row labels`，推送至 `origin/main`。
+- 未决事项：用户刷新第 5 页确认标题文案。

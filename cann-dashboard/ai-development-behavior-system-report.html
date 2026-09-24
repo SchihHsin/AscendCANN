@@ -582,7 +582,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-stage span{margin-top:.08vh;font-size:var(--fs-xs);line-height:1.1;color:rgba(255,255,255,.68);white-space:nowrap}
 .cb-row-label{grid-column:1;align-items:flex-start;border-right:1px solid rgba(101,112,130,.16)}
 .cb-row-label b{font-size:var(--fs-sm)}.cb-row-label span{max-width:7.1vw}
-.cb-painpoint-label>div{display:flex;flex-direction:column;align-items:flex-start;gap:.08vh}.cb-painpoint-label b{font-size:var(--fs-sm);margin:0}.cb-painpoint-label span{font-size:var(--fs-xs);line-height:1.05}
+.cb-painpoint-label b{font-size:var(--fs-sm);margin:0}
 .cb-human-label{grid-row:2}.cb-handoff-label{grid-row:3}.cb-agent-label{grid-row:4}.cb-mech-label{grid-row:5}.cb-measure-label{grid-row:6}.cb-painpoint-label{grid-row:7}
 .cb-painpoint-rail{grid-column:2;grid-row:7;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0;align-items:stretch}
 .cb-painpoint-node{min-width:0;min-height:0;padding:.22vh .38vw;display:flex;flex-direction:column;justify-content:center;gap:.32vh;border:1px solid color-mix(in srgb,var(--c-red) 20%,#fff);border-radius:7px;background:color-mix(in srgb,var(--c-red) 6%,#fff)}
@@ -781,7 +781,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   <header class="head"><div class="head-l"><div class="subttl">聚焦 P1–P2 红框：把 AddCustom 接入 PyTorch 的目标、资料检索、上下文装配与工程起步连成一段真实任务</div><div class="ttl">AddCustom 接入 PyTorch：从教程检索到工程起步</div></div><div class="section-tabs"></div></header>
   <div class="body-area" aria-label="AddCustom 接入 PyTorch 的 P1–P2 业务片段：Need 装配目标与上下文、Search 检索、Generate 生成候选方案、Decide 核验、Execute 工程起步">
     <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 共同完成 AddCustom 接入 PyTorch 的 P1–P2 任务片段；Need 包含提出目标与装配初始上下文，随后依次 Search、Generate、Decide、Execute；各列对应本任务痛点线索与后续待验证问题，本机失败后可选恢复">
-      <div class="cb-axis"><small>业务切片</small><b>P1–P2</b><span>选型 · 工程起步</span></div>
+      <div class="cb-axis"><small>STAGE</small><b>阶段</b></div>
       <div class="cb-stage-rail" aria-label="五个任务阶段：Need（提出目标并装配初始上下文）、Search / Fetch、Generate、Decide、Execute">
         <div class="cb-stage is-source"><small>01 · NEED + CONTEXT</small><b>提出目标与上下文</b><span>装配环境、约束与工作区现场</span></div>
         <div class="cb-stage is-action"><small>02 · SEARCH / FETCH</small><b>检索与取回</b><span>发现并取得相关信息</span></div>
@@ -790,7 +790,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         <div class="cb-stage is-evidence"><small>05 · EXECUTE</small><b>执行任务</b><span>行动、状态与结果回传</span></div>
       </div>
 
-      <div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b><span>定目标 · 给现场 · 复核</span></div>
+      <div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>
       <div class="cb-lane cb-human-lane" aria-label="开发者泳道">
         <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>说明目标与初始上下文</span></b><p>提出用 Ascend C 实现 AddCustom 并由 PyTorch / torch_npu 调用；提供目标芯片、软件版本及本机仓库线索。</p></article>
         <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>确认教程与来源缺口</span></b><p>官方自定义算子教程正文未取回时，判断是否转查社区 / 第三方资料，并保留来源和版本。</p></article>
@@ -799,7 +799,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>复核工程起步动作</span></b><p>检查 msopgen 目标目录与待改文件；本机命令、返回码和日志回到下一轮继续判断。</p></article>
       </div>
 
-      <div class="cb-row-label cb-handoff-label"><b>交接物</b></div>
+      <div class="cb-row-label cb-handoff-label"><small>HANDOFF</small><b>交接物</b></div>
       <div class="cb-handoff-rail" aria-label="五步任务之间的人机交接">
         <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 + 初始 Context</span></div>
         <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>教程取回状态 + 来源</span></div>
@@ -808,7 +808,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>工程骨架 + 命令 / 日志</span></div>
       </div>
 
-      <div class="cb-row-label cb-agent-label"><small>AGENT LANE</small><b>Agent</b><span>装配 · 检索 · 生成 · 执行</span></div>
+      <div class="cb-row-label cb-agent-label"><small>AGENT</small><b>智能体</b></div>
       <div class="cb-lane cb-agent-lane" aria-label="Agent 泳道">
         <article class="cb-lane-cell cb-agent-step is-source">
           <div class="cb-source-flow">
@@ -848,7 +848,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         </article>
       </div>
 
-      <div class="cb-row-label cb-mech-label"><small>RUNTIME + SETUP</small><b>机制与装配</b><span>能力指向对应动作</span></div>
+      <div class="cb-row-label cb-mech-label"><small>MECHANISM</small><b>机制与装配</b></div>
       <div class="cb-mechanism-rail" aria-label="阶段能力节点通过箭头指向上方对应的 Agent 动作；Plugin / Extension 与 Agent Loop 是独立跨阶段能力，不归到单一阶段">
         <div class="cb-mechanism-stages" aria-label="机制在 Need、Search、Generate、Decide、Execute 五阶段中的可能作用；平台供给因产品而异">
           <div class="cb-mechanism-stage few is-source">
@@ -895,7 +895,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         </div>
       </div>
 
-      <div class="cb-row-label cb-measure-label"><small>MEASURES</small><b>体验观察</b><span>研究记录 / 待验证</span></div>
+      <div class="cb-row-label cb-measure-label"><small>OBSERVATION</small><b>体验观察</b></div>
       <div class="cb-measure-rail" aria-label="AddCustom Need、Search、Generate、Decide、Execute 五阶段对应的研究记录与待验证体验指标">
         <div class="cb-measure proposed is-source"><small>桌面与用户研究</small><span>目标、芯片 / 版本与工程现场是否齐全</span></div>
         <div class="cb-measure completed is-action"><small>AI可用性研究 <b>✓ 已完成</b></small><span>官方正文取回 · 补充来源成本</span></div>
@@ -903,9 +903,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         <div class="cb-measure proposed is-control"><small>桌面与用户研究</small><span>来源版本适用性 · 工程路径依据</span></div>
         <div class="cb-measure proposed is-evidence"><small>桌面与用户研究</small><span>引用与版本一致性 · 工程起步支撑</span></div>
       </div>
-      <div class="cb-row-label cb-painpoint-label">
-        <div><small>PAIN SIGNAL</small><b>痛点线索</b><span>按阶段归组</span></div>
-      </div>
+      <div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>
       <div class="cb-painpoint-rail" aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组，并对应后续任务定义、上下文适用性、能力选择、过程接管、验证、团队理解、能力增长、反馈回流和责任边界问题">
         <div class="cb-painpoint-node" aria-label="Need 阶段，对应后续任务定义、上下文适用性与责任边界">
           <div class="cb-painpoint-item"><span><b>开发者</b>：目标和完成条件不清，任务开始前反复补充。</span></div>
