@@ -1025,7 +1025,7 @@ function drawNodeShape(sel,d){
     sel.append("text").attr("x",18).attr("y",-16).attr("font-size",19).attr("font-weight",900)
       .attr("fill","#C8102E").text("✕");
   }
-  sel.append("text").attr("text-anchor","middle").attr("dy",4)
+  sel.append("text").attr("data-node-mark","").attr("text-anchor","middle").attr("dy",4)
     .attr("font-size",15).attr("font-weight",800)
     .attr("fill", d.kind==="decision"?(d.dtier==="A"?"#4d3a06":"#8a6d1a"):stroke(d)).text(nodeMark(d.id));
 }
@@ -1134,7 +1134,7 @@ function renderV(){
   const drawMarker=(g,d,color,blocked)=>{
     if(blocked){ g.append("circle").attr("r",18).attr("fill","none").attr("stroke","#C8102E").attr("stroke-width",2.2); }
     g.append("circle").attr("r",15).attr("fill","#fff").attr("stroke",color).attr("stroke-width",2);
-    g.append("text").attr("text-anchor","middle").attr("dy",IS_FULL_SEQ?5:4).attr("font-size",seqFont(13.5)).attr("font-weight",800).attr("fill",color).text(nodeMark(d.id));
+    g.append("text").attr("data-node-mark","").attr("text-anchor","middle").attr("dy",IS_FULL_SEQ?5:4).attr("font-size",seqFont(13.5)).attr("font-weight",800).attr("fill",color).text(nodeMark(d.id));
   };
   const sideLabel=(g,d,toRight)=>{
     g.append("text").attr("text-anchor", toRight?"start":"end")
@@ -2018,6 +2018,8 @@ html.fullseq #seqctrl{bottom:14px;right:18px;gap:8px}
 html.fullseq #seqctrl .sqbtn{width:32px;height:32px;border-radius:9px;font-size:19px}
 html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
 #journey [data-pair],#journey [data-lane],#journey [data-kind]{transition:opacity .28s,stroke-width .28s,filter .28s}
+#journey.agent-cycle-focus text:not([data-node-mark]){opacity:0!important}
+#journey.agent-cycle-focus [data-focus-expansion] text{opacity:1!important}
 @media(prefers-reduced-motion:reduce){#journey [data-pair],#journey [data-lane],#journey [data-kind]{transition:none!important}}
 #seqctrl{position:fixed;bottom:8px;right:12px;z-index:60;display:flex;gap:6px;align-items:center;font-family:'Noto Sans SC',sans-serif}
 #seqctrl .sqbtn{width:24px;height:24px;border-radius:7px;border:1px solid #d4d8df;background:rgba(255,255,255,.85);color:#444;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
@@ -2060,25 +2062,23 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
     if(!agentTransitionSnapshot)agentTransitionSnapshot=Array.prototype.map.call(svgEl.children,function(el){
       return {el:el,opacity:el.style.opacity,filter:el.style.filter,stroke:el.style.stroke,strokeWidth:el.style.strokeWidth,strokeOpacity:el.style.strokeOpacity};
     });
+    svgEl.classList.add('agent-cycle-focus');
     /* 只聚焦第一次任务循环：开发者提出任务 → 首次检索 / 补充 → 形成草稿 → 本机执行与版本决策。
        它跨 P1 立项与 P2 写核函数；后续重复出现的检索 / 执行仍留在图中，但不抢焦点。 */
     var firstCycleMsgs=['n1','sD','sD2','b1','gD','eD','dSoc','bSoc'];
-    var firstCyclePhases=[0,1];
     Array.prototype.forEach.call(svgEl.children,function(el){
       var kind=el.getAttribute&&el.getAttribute('data-kind');
-      var lane=el.getAttribute&&el.getAttribute('data-lane');
       var msg=el.getAttribute&&el.getAttribute('data-msg');
-      var phaseRaw=el.getAttribute&&el.getAttribute('data-phase');
-      var phase=phaseRaw==null||phaseRaw===''?null:Number(phaseRaw);
-      var hitMsg=firstCycleMsgs.indexOf(msg)>=0;
-      var hitPhase=phase!==null&&firstCyclePhases.indexOf(phase)>=0&&msg!=='b0';
+      var inCycle=firstCycleMsgs.indexOf(msg)>=0;
+      var hitNode=kind==='node'&&inCycle;
+      var hitLine=el.tagName==='line'&&inCycle&&['message','block','branch'].indexOf(kind)>=0;
       var isLane=kind==='lane';
-      var hit=hitMsg||hitPhase;
-      el.style.opacity=hit?'1':(isLane?(el.tagName==='line'?'.2':'.58'):'.11');
+      var hit=hitNode||hitLine;
+      el.style.opacity=hit?'1':(isLane&&el.tagName==='line'?'.2':'.1');
       el.style.filter=hit?'drop-shadow(0 0 2px rgba(107,91,168,.32))':'';
-      /* 生命线只作空间参照，不单独加粗或染色；强调落在首轮事件与阶段带上。 */
+      /* 只强调首轮节点和路径线；生命线 / 阶段底图退为背景。 */
       if(el.tagName==='line'&&isLane){el.style.stroke='';el.style.strokeWidth='';el.style.strokeOpacity='';}
-      else if(hit&&el.tagName==='line'&&(kind==='message'||kind==='block'||kind==='branch')){
+      else if(hitLine){
         el.style.strokeWidth='2.8'; el.style.strokeOpacity='1';
       }
     });
@@ -2090,11 +2090,12 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
   }
   function clearAgentTransitionFocus(){
     if(!agentTransitionSnapshot)return;
+    var svgEl=document.getElementById('journey');
+    if(svgEl)svgEl.classList.remove('agent-cycle-focus');
     agentTransitionSnapshot.forEach(function(s){
       s.el.style.opacity=s.opacity; s.el.style.filter=s.filter; s.el.style.stroke=s.stroke;
       s.el.style.strokeWidth=s.strokeWidth; s.el.style.strokeOpacity=s.strokeOpacity;
     });
-    var svgEl=document.getElementById('journey');
     if(svgEl)Array.prototype.forEach.call(svgEl.querySelectorAll('[data-focus-expansion]'),function(el){el.style.display='none';});
     agentTransitionSnapshot=null;
   }

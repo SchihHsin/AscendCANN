@@ -3265,3 +3265,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：5 段可执行内联 JavaScript 语法通过；静态断言确认 `b0` 从高亮集合排除，并豁免阶段色带选择器对该分支的点亮；`git diff --check` 通过。未做截图级视觉复核。
 - Commit / push：功能提交 `63dc6be0`（`fix: keep entry-selection branch dim in focus`）已推送至 `origin/main`；本条交接记录随后单独提交并推送。
 - 未决事项：需在允许的本地预览中确认 `b0` 虚线与阶段色带仍有足够清晰的视觉区分。
+
+### 2026-09-24（首轮聚焦简化为节点与连线）
+
+- 变更文件：`cann-dashboard/seq-d3-ux-task.html`、`AGENTS.md`。聚焦首轮循环时只强调相应节点与消息 / 分支连线；阶段背景、生命线等退为背景，隐藏连线说明、阶段说明、参与者标签及决策长标签，仅保留节点字母和其 Need / Search / Generate / Decide / Execute 全称。退出聚焦后文字与原图恢复。
+- 依据 / 边界：响应用户关于聚焦态文字过乱的反馈。只改变展示层，不改节点内容、时序、页面序列，亦不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：时序图副本 5 段可执行内联 JavaScript 语法通过；静态断言确认聚焦只命中节点 / 线、说明文字由聚焦 CSS 隐藏且全称标签保留；`git diff --check` 通过。未做截图级视觉复核。
+- Commit / push：待提交并推送至 `origin/main`。
+- 未决事项：需在允许的本地预览中确认标签与路径节点不拥挤，退出聚焦后所有说明文字恢复正常。
