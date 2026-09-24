@@ -2045,21 +2045,29 @@ html.fullseq #seqctrl .sqlbl{font-size:14px;border-radius:10px;padding:8px 14px}
     if(!agentTransitionSnapshot)agentTransitionSnapshot=Array.prototype.map.call(svgEl.children,function(el){
       return {el:el,opacity:el.style.opacity,filter:el.style.filter,stroke:el.style.stroke,strokeWidth:el.style.strokeWidth,strokeOpacity:el.style.strokeOpacity};
     });
+    /* 只聚焦第一次任务循环：开发者提出任务 → 首次检索 / 补充 → 形成草稿 → 本机执行与版本决策。
+       它跨 P1 立项与 P2 写核函数；后续重复出现的检索 / 执行仍留在图中，但不抢焦点。 */
+    var firstCycleMsgs=['n1','b0','sD','sD2','b1','gD','eD','dSoc','bSoc'];
+    var firstCyclePhases=[0,1];
     Array.prototype.forEach.call(svgEl.children,function(el){
       var kind=el.getAttribute&&el.getAttribute('data-kind');
       var lane=el.getAttribute&&el.getAttribute('data-lane');
-      var pair=(el.getAttribute&&el.getAttribute('data-pair')||'').split('-');
-      var isAgentLane=lane==='ai';
-      var touchesAgent=isAgentLane||pair.indexOf('ai')>=0;
-      el.style.opacity=touchesAgent?'1':'.1';
-      el.style.filter=touchesAgent?'drop-shadow(0 0 4px rgba(107,91,168,.48))':'';
-      if(kind==='lane'&&el.tagName==='line'&&isAgentLane){
-        el.style.stroke='#6B5BA8'; el.style.strokeWidth='4'; el.style.strokeOpacity='1';
-      }else if(touchesAgent&&el.tagName==='line'&&(kind==='message'||kind==='block'||kind==='branch')){
-        el.style.strokeWidth='3';
+      var msg=el.getAttribute&&el.getAttribute('data-msg');
+      var phaseRaw=el.getAttribute&&el.getAttribute('data-phase');
+      var phase=phaseRaw==null||phaseRaw===''?null:Number(phaseRaw);
+      var hitMsg=firstCycleMsgs.indexOf(msg)>=0;
+      var hitPhase=phase!==null&&firstCyclePhases.indexOf(phase)>=0;
+      var isLane=kind==='lane';
+      var hit=hitMsg||hitPhase;
+      el.style.opacity=hit?'1':(isLane?(el.tagName==='line'?'.2':'.58'):'.11');
+      el.style.filter=hit?'drop-shadow(0 0 2px rgba(107,91,168,.32))':'';
+      /* 生命线只作空间参照，不单独加粗或染色；强调落在首轮事件与阶段带上。 */
+      if(el.tagName==='line'&&isLane){el.style.stroke='';el.style.strokeWidth='';el.style.strokeOpacity='';}
+      else if(hit&&el.tagName==='line'&&(kind==='message'||kind==='block'||kind==='branch')){
+        el.style.strokeWidth='2.8'; el.style.strokeOpacity='1';
       }
     });
-    var lbl=document.getElementById('sqLbl'); if(lbl)lbl.textContent='聚焦 · Agent 泳道';
+    var lbl=document.getElementById('sqLbl'); if(lbl)lbl.textContent='聚焦 · 首轮任务循环（P1–P2）';
   }
   function clearAgentTransitionFocus(){
     if(!agentTransitionSnapshot)return;
