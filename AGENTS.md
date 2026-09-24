@@ -3473,7 +3473,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。将第 5 页“机制与装配”节点改为第 22 页能力卡的呈现语言：更清楚地区分能力名称与用途，使用类型色描边、浅色底、轻阴影与状态点；MCP、Subagent、Hook、执行 / 验收及状态节点各用对应色系。
 - 依据 / 边界：用户指定本报告 `#22` 与所附图作样式参考。只改第 5 页节点卡的视觉样式；保留五阶段归属、能力文案、节点关系和现有连线，不改变页面序列或 API / Host / Application 层边界。
 - 验证：`git diff --check` 通过；本地 `file://` 页面此前受浏览器策略限制，本次未绕过策略做截图级视觉复核。
-- Commit / push：功能改动提交与推送结果待功能提交完成后回填。
+- Commit / push：功能提交 `44e83528`（`style: restyle mechanism capability nodes`）已推送至 `origin/main`；本条交接随后单独提交并推送。
 - 未决事项：刷新第 5 页查看密集列中的能力名称、说明与色彩层级是否清楚。
 
 
