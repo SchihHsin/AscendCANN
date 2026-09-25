@@ -3610,3 +3610,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：6 段内联脚本均通过 `new Function` 解析；9 题共 18 个状态图片引用全部存在；`git diff --check` 通过。尝试本地浏览器视觉复核时，Chrome 截屏为黑屏且 Firefox headless 未能完成启动，未绕过 `file://` 浏览器访问策略；因此没有整页截图级布局结论。
 - Commit / push：功能提交 `9917612b`（`feat: add manual solution demo states`）已推送至 `origin/main`；本交接回填随后单独提交。
 - 未决事项：在用户当前浏览器刷新报告，核对状态栏占用、图片可读性和逐题焦点框位置。
+
+
+### 2026-09-25（增强第 5 页阶段插图光晕可见度）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。根据用户截图，原光晕范围过窄、色层偏弱且处于负层级，黑卡上难以辨认。将渐变层放到插图下方的可见层级，扩大椭圆范围并提高主题色浓度。
+- 边界：只调整第 5 页五张阶段卡的插图背景光晕；黑卡、文案、图片大小和其它页面保持不变，不影响 API / Host / Application 边界。
+- 验证：HTML 解析与 `git diff --cached --check` 通过；本轮未做改后截图复核，本地 `file://` 页面的浏览器截图访问受策略限制。
+- Commit / push：功能提交 `9a8ef12b`（`fix: make stage art glow visible`）已推送至 `origin/main`；本交接条目随后单独补交。
+- 未决事项：刷新报告第 5 页确认光晕显著度和边界强度。
