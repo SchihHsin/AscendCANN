@@ -683,6 +683,9 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-measure.proposed small{color:#716143}
 /* Keep explanatory copy legible and at a consistent size across the five task columns. */
 .cb-stage span,.cb-human-step p,.cb-handoff span,.cb-trust-gate span,.cb-context-result,.cb-vertical-flow>span,.cb-preview li,.cb-wait-gate,.cb-proof-signal,.cb-proof-items span,.cb-proof-result,.cb-measure span,.cb-painpoint-item span{font-size:var(--cb-copy-size)}
+/* Keep Agent lane copy uniform and below body size; supporting labels stay compact. */
+.cb-agent-lane{--cb-agent-copy-size:clamp(11px,.78vw,12.5px)}
+.cb-agent-lane .cb-source-merge,.cb-agent-lane .cb-trust-gate b,.cb-agent-lane .cb-trust-gate span,.cb-agent-lane .cb-context-result,.cb-agent-lane .cb-vertical-flow>span,.cb-agent-lane .cb-vertical-flow>i,.cb-agent-lane .cb-preview b,.cb-agent-lane .cb-preview li,.cb-agent-lane .cb-wait-gate,.cb-agent-lane .cb-proof-signal,.cb-agent-lane .cb-proof-items span,.cb-agent-lane .cb-proof-result,.cb-agent-lane .cb-recovery-inline>i{font-size:var(--cb-agent-copy-size)}
 }
 .body-area.task-flow-page,.body-area.task-case-page{align-items:center}
 .task-flow{width:100%;height:51vh;display:grid;grid-template-rows:6.2vh 1fr 5.4vh;gap:.8vh;min-width:0;min-height:0}

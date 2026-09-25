@@ -3640,3 +3640,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页「机制与装配」节点描边的主题色混合比例从 58% 调低到 34%，使边框更淡；节点填色、文字、连线和页面结构不变。
 - 业务目的：降低能力节点边框的视觉重量，保留按节点主题色区分的能力分类。只涉及页面样式，不影响页面序列或 API / Host / Application 层边界。
 - 验证：`git diff --check` 通过；本次只暂存描边规则及本记录。待提交并推送。
+
+### 2026-09-25（智能体行字号统一）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页智能体泳道的主要说明文字统一使用 11–12.5px 的自适应字号，低于该页正文最小字号 14px；上下文标签仍保留较小字号以区分层级。
+- 业务目的：收敛智能体行内文字大小差异，并确保主文案不大于正文字体。仅影响该行排版，不改变内容、阶段、其他页面或 API / Host / Application 层边界。
+- 验证：`git diff --check` 待执行；本次只暂存智能体行字号规则与本记录。
