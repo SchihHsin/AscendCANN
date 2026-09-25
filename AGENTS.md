@@ -3619,3 +3619,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTML 解析与 `git diff --cached --check` 通过；本轮未做改后截图复核，本地 `file://` 页面的浏览器截图访问受策略限制。
 - Commit / push：功能提交 `9a8ef12b`（`fix: make stage art glow visible`）已推送至 `origin/main`；本交接条目随后单独补交。
 - 未决事项：刷新报告第 5 页确认光晕显著度和边界强度。
+
+
+### 2026-09-25（第 5 页机制连线箭头移除圆形底）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。机制节点连接器的箭头头部从圆圈底改为空心箭头；箭头仍继承来源节点颜色，线条与箭头尖端保留圆角。
+- 边界：仅调整第 5 页“机制与装配”的 SVG 箭头标记，不改变连线路径、节点、页面结构或其他页面。
+- 验证：HTML 解析、连线脚本 `node --check` 与 `git diff --cached --check` 通过。
+- Commit / push：功能提交 `7942af1b`（`style: remove circle from mechanism arrows`）已推送至 `origin/main`；本交接条目随后单独补交。
+- 未决事项：刷新报告第 5 页确认箭头尖端在当前缩放下的可读性。
