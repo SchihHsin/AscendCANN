@@ -3063,7 +3063,7 @@ mermaid.initialize({
         const tone = getComputedStyle(node).getPropertyValue('--cap-tone').trim() || '#5b5bd6';
         const markerId = `cb-round-arrow-${stageIndex}-${nodeIndex}`;
         const d = roundedPath([[x,startY],[x,turnY],[targetX,turnY],[targetX,0]],4);
-        defs.push(`<marker id="${markerId}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M 1 1 L 7 4 L 1 7" fill="none" stroke="${tone}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></marker>`);
+        defs.push(`<marker id="${markerId}" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M 2 0 L 6 4 L 2 8" fill="none" stroke="${tone}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></marker>`);
         paths.push(`<path d="${d}" stroke="${tone}" marker-end="url(#${markerId})"/>`);
       });
       svg.innerHTML = `<defs>${defs.join('')}</defs>${paths.join('')}`;
