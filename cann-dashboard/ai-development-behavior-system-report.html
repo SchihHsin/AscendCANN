@@ -591,9 +591,14 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-human-label{grid-row:2}.cb-handoff-label{grid-row:3}.cb-agent-label{grid-row:4}.cb-mech-label{grid-row:5}.cb-measure-label{grid-row:6}.cb-painpoint-label{grid-row:7}
 .cb-painpoint-rail{grid-column:2;grid-row:7;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0;align-items:stretch}
 .cb-painpoint-node{min-width:0;min-height:0;padding:.22vh .38vw;display:flex;flex-direction:column;justify-content:center;gap:.32vh;border:1px solid color-mix(in srgb,var(--c-red) 20%,#fff);border-radius:7px;background:color-mix(in srgb,var(--c-red) 6%,#fff)}
-.cb-painpoint-item{min-width:0;display:grid;grid-template-columns:4px minmax(0,1fr);align-items:start;gap:.28vw}
-.cb-painpoint-item::before{content:"";width:4px;height:4px;margin-top:.4em;border-radius:50%;background:var(--c-red)}
+.cb-painpoint-item{min-width:0;display:grid;grid-template-columns:14px minmax(0,1fr);align-items:start;gap:.24vw}
+.cb-painpoint-item::before{content:none}
 .cb-painpoint-item span{min-width:0;font-size:var(--fs-xs);line-height:1.12;color:#574936}
+.cb-actor-icon{display:block;width:12px;height:12px;margin-top:.08em;stroke-width:2;flex:0 0 auto}
+.cb-actor-icon.is-developer{color:#377ad2}.cb-actor-icon.is-agent{color:#7558b7}.cb-actor-icon.is-team{color:#258e98}.cb-actor-icon.is-platform{color:#687482}
+.cb-actor-group{width:14px;display:flex;align-items:center;gap:0;margin-top:.08em}
+.cb-actor-group .cb-actor-icon{width:8px;height:10px;margin:0}
+.cb-painpoint-item span b{font-weight:800;color:#963f49}
 .cb-human-lane{grid-row:2;align-items:stretch}
 .cb-agent-lane{grid-row:4;align-items:stretch}
 .cb-lane{position:relative}
@@ -978,24 +983,24 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>
       <div class="cb-painpoint-rail" aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组，并对应后续任务定义、上下文适用性、能力选择、过程接管、验证、团队理解、能力增长、反馈回流和责任边界问题">
         <div class="cb-painpoint-node" aria-label="Need 阶段，对应后续任务定义、上下文适用性与责任边界">
-          <div class="cb-painpoint-item"><span><b>开发者</b>：目标和完成条件不清，任务开始前反复补充。</span></div>
-          <div class="cb-painpoint-item"><span><b>Agent</b>：上下文不足，难判断该追问什么、哪些动作可做。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span><b>目标和完成条件不清</b>，任务开始前反复补充。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="智能体痛点"><i class="cb-actor-icon is-agent" data-lucide="bot" aria-hidden="true"></i><span><b>上下文不足</b>，难判断该追问什么、哪些动作可做。</span></div>
         </div>
         <div class="cb-painpoint-node" aria-label="Search / Fetch 阶段，对应后续上下文适用性">
-          <div class="cb-painpoint-item"><span><b>Agent</b>：来源分散或检索不全，难形成可信依据。</span></div>
-          <div class="cb-painpoint-item"><span><b>开发者</b>：要跨入口查找，并核对信息是否适用。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="智能体痛点"><i class="cb-actor-icon is-agent" data-lucide="bot" aria-hidden="true"></i><span><b>来源分散或检索不全</b>，难形成可信依据。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span>要<b>跨入口查找</b>，并核对信息是否适用。</span></div>
         </div>
         <div class="cb-painpoint-node" aria-label="Generate 阶段，对应后续能力选择与组合、验证和开发者能力增长">
-          <div class="cb-painpoint-item"><span><b>开发者</b>：能力选择与配置更费力，任务完成也未必学会迁移。</span></div>
-          <div class="cb-painpoint-item"><span><b>Agent</b>：能力如何组合、生成依据与不确定项难说明。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span><b>能力选择与配置更费力</b>，任务完成也未必学会迁移。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="智能体痛点"><i class="cb-actor-icon is-agent" data-lucide="bot" aria-hidden="true"></i><span><b>能力如何组合</b>、<b>生成依据与不确定项</b>难说明。</span></div>
         </div>
         <div class="cb-painpoint-node" aria-label="Decide 阶段，对应后续团队共同理解和责任边界">
-          <div class="cb-painpoint-item"><span><b>开发者</b>：建议、执行、批准和责任边界不清，关键动作仍要兜底。</span></div>
-          <div class="cb-painpoint-item"><span><b>团队</b>：决策理由和失败尝试留在会话，评审要重建背景。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span><b>建议、执行、批准和责任边界不清</b>，关键动作仍要兜底。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="团队痛点"><i class="cb-actor-icon is-team" data-lucide="users-round" aria-hidden="true"></i><span><b>决策理由和失败尝试留在会话</b>，评审要重建背景。</span></div>
         </div>
         <div class="cb-painpoint-node" aria-label="Execute 阶段，对应后续过程状态与接管、结果验证和反馈回流">
-          <div class="cb-painpoint-item"><span><b>开发者</b>：进度和验证状态不清，异常时难接管、确认完成。</span></div>
-          <div class="cb-painpoint-item"><span><b>Agent / 平台</b>：结果与失败经验难经授权回流，后续不易复用。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span><b>进度和验证状态不清</b>，异常时难接管、确认完成。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="智能体与平台痛点"><span class="cb-actor-group" aria-hidden="true"><i class="cb-actor-icon is-agent" data-lucide="bot"></i><i class="cb-actor-icon is-platform" data-lucide="server"></i></span><span><b>结果与失败经验难经授权回流</b>，后续不易复用。</span></div>
         </div>
       </div>
 

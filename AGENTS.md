@@ -3646,3 +3646,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页智能体泳道的主要说明文字统一使用 11–12.5px 的自适应字号，低于该页正文最小字号 14px；上下文标签仍保留较小字号以区分层级。
 - 业务目的：收敛智能体行内文字大小差异，并确保主文案不大于正文字体。仅影响该行排版，不改变内容、阶段、其他页面或 API / Host / Application 层边界。
 - 验证：`git diff --check` 通过；本次只暂存智能体行字号规则与本记录。
+
+### 2026-09-25（痛点行角色图标与重点词）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页痛点行将开发者、智能体、团队及智能体 / 平台文字标签替换为对应线性图标（组合来源用双图标）；保留痛点句子，并加粗各项关键短语。
+- 业务目的：更快识别每条痛点的提出主体，突出问题重点。只影响痛点行呈现，不改变阶段归属、研究结论、页面序列或 API / Host / Application 层边界。
+- 验证：`git diff --check` 通过；本次只暂存痛点行样式 / 内容与本记录。
