@@ -3634,3 +3634,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页机制与装配连线的箭头头部改为更张开的圆角 V 形，参照交接物箭头头部；保留节点主题色、连线路径与无外圈样式。
 - 业务目的：让能力节点指向阶段的箭头更清晰、形状与交接物箭头统一。证据为用户提供的本地报告参考页与页面内交接物样式；不涉及 API / Host / Application 机制口径，也不改变页面序列。
 - 验证：HTML 解析、连线脚本 `node --check`、`git diff --cached --check` 均已通过。功能提交 `8b7527d4` 已创建；SSH 连接超时，HTTPS 推送持续无响应后中止，当前仍待推送。工作区其余改动未纳入本任务。
+
+### 2026-09-25（机制与装配节点描边）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页「机制与装配」节点描边的主题色混合比例从 58% 调低到 34%，使边框更淡；节点填色、文字、连线和页面结构不变。
+- 业务目的：降低能力节点边框的视觉重量，保留按节点主题色区分的能力分类。只涉及页面样式，不影响页面序列或 API / Host / Application 层边界。
+- 验证：`git diff --check` 通过；本次只暂存描边规则及本记录。待提交并推送。
