@@ -3628,3 +3628,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTML 解析、连线脚本 `node --check` 与 `git diff --cached --check` 通过。
 - Commit / push：功能提交 `7942af1b`（`style: remove circle from mechanism arrows`）已推送至 `origin/main`；本交接条目随后单独补交。
 - 未决事项：刷新报告第 5 页确认箭头尖端在当前缩放下的可读性。
+
+### 2026-09-25（机制与装配连线箭头头部）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。第 5 页机制与装配连线的箭头头部改为更张开的圆角 V 形，参照交接物箭头头部；保留节点主题色、连线路径与无外圈样式。
+- 业务目的：让能力节点指向阶段的箭头更清晰、形状与交接物箭头统一。证据为用户提供的本地报告参考页与页面内交接物样式；不涉及 API / Host / Application 机制口径，也不改变页面序列。
+- 验证：HTML 解析、连线脚本 `node --check`、`git diff --cached --check` 均已通过。功能提交 `8b7527d4` 已创建；SSH 连接超时，HTTPS 推送持续无响应后中止，当前仍待推送。工作区其余改动未纳入本任务。
