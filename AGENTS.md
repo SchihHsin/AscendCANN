@@ -3659,5 +3659,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 分析口径：区分 Agent 的工具结果回填—再规划执行内环、Claude Code `/loop` 的同会话间隔提示，以及 Codex App Automations / Heartbeat、Cursor Cloud Automations、WorkBuddy 自动化的计划 / 事件触发任务。OpenCode、Trae 的本轮公开资料未确认计划式 Loop，标作证据缺口而非能力不存在。Codex App 仅作本地可见产品层观察（M），不外推到 Codex CLI；Claude Code、Cursor、WorkBuddy 依据公开材料（H）。
 - 页面与机制边界：未增删页、未改报告导航 / hash，也未改变 API / Protocol、Host / Harness、Application / Task 边界；Hook 生命周期事件与定时任务不再混为一项。
 - 验证：HTML tokenization、6 段内联 JavaScript 语法、平台矩阵 77 单元（11 行 × 7 列）及 `git diff --check` 通过。浏览器对本地文件的打开请求被 URL policy 拒绝；遵守策略，未使用其他浏览器或命令行渲染绕过，因此无截图级视觉复核。
-- Commit / push：待完成；仅提交本次报告改动与本记录，不纳入目标 HTML 中原有未提交的 CSS 调整或工作区其他脏文件。
+- Commit / push：功能提交 `60df79b8`（`feat: compare loop modes across coding platforms`）已推送至 `origin/main`；仅纳入本次报告改动，目标 HTML 中原有未提交的 CSS 调整与工作区其他脏文件未提交。
 - 未决事项：若产品公开文档后续增加 OpenCode / Trae 的计划任务入口，需更新“本轮未确认”状态与证据链接。
