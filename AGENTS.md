@@ -3801,6 +3801,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`git diff --check` 通过，差异仅为分色方案四条行轨道新增透明背景／无边框／无阴影规则；本地 `file://` URL policy 限制截图级复核。
 - Commit / push：`f5595ef0`（`design: remove row-wide backgrounds from multicolor preview`）已单文件提交并推送 `origin/main`；本交接记录另行提交推送。未决：用户刷新 `#2` 后比较与 `#1` 的效果，正式第 5 页尚未迁移。
 
+### 2026-09-28（平台沙盘到建设方向的推导缺口）
+
+- 本轮按用户质疑重新核对正式报告第 14 页沙盘的 10 类行：项目规则／持久上下文、领域知识库／检索源、Harness／Agent Runtime、Skill／Workflow、Command／Prompt、MCP／Connector、Plugin／Extension、Custom Agent／Subagent、Hook／Lifecycle、任务内 Agent Loop。它们不是十项同层级建设目标：知识、方法、领域工具可由昇腾提供；规则、Command、Plugin、Agent 配置、Hook 等主要是各 Host 不同的装配入口；Harness 与任务内 Loop 主要属于平台内核，不是昇腾应复制的能力。
+- 关键纠偏：从沙盘可直接推导的是“维护可复用领域供给，并通过各平台实际入口接入”；“任务合同”不是沙盘中的独立能力，而是多种能力在同一开发任务内接续时提出的设计推论，应由后续资产盘点与任务控制链分析进一步支持，不能与前两条一起写成沙盘已经证明的三项结论。现第 15 页把三者并列，缺少筛选依据与证据等级，需待用户选择视觉叙事方案后修改。
+- 本轮仅核对和讨论，没有修改汇报 HTML、页序、hash 或 API／Host／Application 分层；依据为第 14 页沙盘条目及 Report PPT Skill 的“事实—推论—方案分开”原则。未新增平台运行证据或 NPU 实测，故无页面视觉验证需求。建议选项为单页筛选／归类图，或两页聚光灯解释；后续以用户选择为准。
+- 验证：`git diff --check`；本交接记录单独提交并推送 `origin/main`，不暂存并行工作的文件。
+
 ### 2026-09-28（分色减框用户旅程加白底）
 
 - 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。用户先提议给同色减框整张用户旅程加白底，随即纠正为分色减框；最终仅 `#2` 分色减框的完整五阶段旅程矩阵使用白色底面、圆角和轻阴影，`#1` 同色减框维持原样。正式报告、五列七行布局、内容与连线未改。
