@@ -3909,4 +3909,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。将机制与装配行 Plugin / Extension 节点从“本任务未见调用”改为 AddCustom 教程检索成功的说明性示例，并在辅助说明中写清这是“假设已启用扩展并调用其 MCP 检索能力”，不表示本任务实测。
 - 证据与边界：这是用户要求的机制示例，不作为运行证据；Plugin / Extension 仍表示独立安装分发入口，未改变其与 Skill、MCP 的层级关系、页面结构或连线。
 - 验证：`git diff --check`；检查可见文案及 aria-label 均标明示例属性。
-- Commit / push：待提交。
+- Commit / push：功能提交 `cc8fc656`（`docs: show successful plugin use as an example`）已推送 `origin/main`；本条交接记录随后单独提交并推送。
