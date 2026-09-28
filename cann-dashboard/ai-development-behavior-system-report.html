@@ -444,24 +444,34 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .platform-build-visual{display:grid;grid-template-rows:auto 1fr;gap:1vh;width:100%;height:50vh;min-height:0}.platform-hub{position:relative;min-width:0;min-height:0;border-radius:19px;background:rgba(255,255,255,.36);border:1px solid rgba(255,255,255,.72);overflow:hidden}.platform-hub svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.platform-hub svg path{fill:none;stroke:#a7b0bd;stroke-width:1.25;stroke-linecap:round}.platform-core{position:absolute;z-index:2;left:50%;top:53%;width:43vw;min-height:20vh;transform:translate(-50%,-50%);padding:1.15vh 1vw;border-radius:18px;background:linear-gradient(145deg,rgba(91,91,214,.14),rgba(53,160,181,.09));border:1px solid rgba(91,91,214,.2);display:grid;grid-template-rows:auto 1fr;gap:.9vh;text-align:center}.platform-core>div:first-child small{font:750 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.06em;color:var(--accent)}.platform-core>div:first-child b{display:block;margin:.45vh 0;font-size:var(--fs-h2)}.platform-core>div:first-child p{font-size:var(--fs-body);line-height:1.35;color:var(--ink-2)}.platform-core-slots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw}.platform-core-slots span{display:flex;align-items:center;justify-content:center;padding:.62vh .38vw;border-radius:9px;background:rgba(255,255,255,.7);font-size:var(--fs-sm);font-weight:750;color:#4a5380}.platform-adapter{position:absolute;z-index:3;width:13.5vw;min-height:7.6vh;padding:.65vh .58vw;border-radius:12px;background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.94);box-shadow:0 10px 24px -20px rgba(25,33,53,.48);display:flex;flex-direction:column;justify-content:center;text-align:center}.platform-adapter b{font-size:var(--fs-h3)}.platform-adapter span{margin-top:.25vh;font-size:var(--fs-xs);line-height:1.2;color:var(--ink-3)}.platform-adapter.claude{left:4%;top:7%}.platform-adapter.codex{left:23%;top:3%}.platform-adapter.cursor{right:23%;top:3%}.platform-adapter.opencode{right:4%;top:7%}.platform-adapter.trae{left:12%;bottom:5%}.platform-adapter.other{right:12%;bottom:5%}.adapter-contract{position:absolute;z-index:4;left:50%;bottom:4.2%;transform:translateX(-50%);padding:.48vh .72vw;border-radius:999px;background:#292d36;color:#fff;font-size:var(--fs-xs);line-height:1.15;font-weight:740;white-space:nowrap}.adapter-contract b{color:#bebaff}
 .skill-package{grid-template-columns:repeat(6,minmax(0,1fr))}.skill-node.observe{--tone:#35a0b5}.skill-node.branch{--tone:#559d9d}.skill-recovery{grid-column:2/7}
 
-/* Sandbox takeaway: why these three capability layers matter, then what they contain. */
-.ascend-role-map{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:1.1vh;width:100%;height:55vh;min-height:0}
-.ascend-role-main{display:grid;grid-template-columns:1.12fr .88fr 1fr;gap:2.1vw;min-height:0}
-.ascend-role-col{--role-tone:var(--c-indigo);position:relative;min-width:0;min-height:0;padding:1.1vh .9vw;border-radius:15px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.9);display:flex;flex-direction:column;gap:.65vh}
-.ascend-role-col.contract{--role-tone:var(--c-blue)}.ascend-role-col.platform{--role-tone:var(--c-mint)}
-.ascend-role-col:not(:last-child)::after{content:"→";position:absolute;z-index:2;left:100%;top:49%;width:2.1vw;transform:translateY(-50%);text-align:center;font-size:var(--fs-h1);line-height:1;color:#686db8}
-.ascend-role-head{display:flex;align-items:baseline;gap:.6vw}.ascend-role-head small{font:760 var(--fs-xs)/1 'JetBrains Mono';color:var(--role-tone)}.ascend-role-head h3{font-size:var(--fs-h2);line-height:1.15}
-.ascend-role-why{display:grid;grid-template-columns:auto 1fr;gap:.45vw;align-items:start;min-height:6.3vh;padding:.75vh .65vw;border-radius:9px;background:color-mix(in srgb,var(--role-tone) 12%,#fff)}.ascend-role-why small{font:780 var(--fs-xs)/1.25 'JetBrains Mono';color:var(--role-tone)}.ascend-role-why p{font-size:var(--fs-body);line-height:1.3;color:#354153}
-.ascend-role-label{font-size:var(--fs-xs);font-weight:800;letter-spacing:.04em;color:color-mix(in srgb,var(--role-tone) 78%,#293748)}
-.ascend-role-item{--tone:#5b5bd6;display:grid;grid-template-columns:2.15vw 1fr;gap:.55vw;align-items:center;min-height:7.6vh;padding:.6vh .6vw;border-radius:10px;background:color-mix(in srgb,var(--tone) 10%,#fff);border:1px solid color-mix(in srgb,var(--tone) 16%,#fff)}
-.ascend-role-item.method{--tone:#438fd3}.ascend-role-item.service{--tone:#2a9b8e}
-.ascend-role-item i{display:flex;align-items:center;justify-content:center;width:2.15vw;height:2.15vw;border-radius:8px;background:color-mix(in srgb,var(--tone) 16%,#fff);color:var(--tone);font-size:var(--fs-h3);font-style:normal;font-weight:850}
-.ascend-role-item b{display:block;font-size:var(--fs-h3);line-height:1.16}.ascend-role-item span{display:block;margin-top:.2vh;font-size:var(--fs-sm);line-height:1.25;color:var(--ink-2)}
-.ascend-contract{display:grid;gap:.58vh;margin:.3vh 0}.ascend-contract div{display:grid;grid-template-columns:auto 1fr;gap:.45vw;align-items:start;padding:.56vh .48vw;border-radius:8px;background:#eff0fa}.ascend-contract b{font-size:var(--fs-sm);line-height:1.22;color:#4d50a7}.ascend-contract span{font-size:var(--fs-sm);line-height:1.22;color:#4f5a6d}
-.ascend-entry-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5vh .42vw;margin:.35vh 0}.ascend-entry-grid span{display:flex;align-items:center;min-height:4.7vh;padding:.42vh .48vw;border-radius:8px;background:#eeeffa;font-size:var(--fs-sm);font-weight:760;line-height:1.18;color:#5053a8}.ascend-entry-grid span::before{content:"•";margin-right:.32vw;color:#7b7cdb;font-size:1.2em}
-.ascend-runtime{margin-top:auto;padding:.65vh .58vw;border-radius:9px;background:#e9ecf2;font-size:var(--fs-sm);line-height:1.3;color:#566073}.ascend-runtime b{color:#2a3442}
-.ascend-role-note{display:grid;grid-template-columns:auto 1fr;gap:.7vw;align-items:center;padding:.75vh .85vw;border-radius:9px;background:rgba(255,255,255,.55);border:1px solid rgba(105,111,149,.15)}.ascend-role-note small{font:750 var(--fs-xs)/1 'JetBrains Mono';color:#656ab1}.ascend-role-note p{font-size:var(--fs-sm);line-height:1.3;color:#657084}.ascend-role-note b{color:#3e485d}
-
+/* Sandbox conclusion: reuse the layered-architecture rail to summarize access, variation and runtime ownership. */
+.sandbox-summary-slide .body-area{height:59vh;min-height:0;gap:1.2vh}
+.sandbox-summary-slide .sandbox-arc{width:100%;height:49vh;min-height:0;grid-template-rows:repeat(3,minmax(0,1fr));gap:1vh;margin:0}
+.sandbox-summary-slide .arc-row{grid-template-columns:10.4vw minmax(0,1fr);gap:1vw;min-width:0;min-height:0}
+.sandbox-summary-slide .arc-lbl{min-width:0;min-height:0;padding:.5vh 0;gap:.35vh}
+.sandbox-summary-slide .arc-lbl .zh{font-size:var(--fs-h2);line-height:1.16}
+.sandbox-summary-slide .arc-lbl .en{font-size:var(--fs-xs)}
+.sandbox-summary-slide .arc-cells{min-width:0;min-height:0}
+.sandbox-summary-slide .arc-band{--tone:var(--c-indigo);display:grid;grid-template-columns:11.5vw minmax(0,1fr);align-items:center;gap:.85vw;min-width:0;min-height:0;width:100%;padding:1.15vh 1.05vw;border-radius:14px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.9);box-shadow:0 12px 28px -22px rgba(20,25,35,.32)}
+.sandbox-summary-slide .arc-band.diff{--tone:var(--c-blue)}
+.sandbox-summary-slide .arc-band.runtime{--tone:var(--c-neutral);background:var(--g-ink);border-color:rgba(255,255,255,.16);color:#fff}
+.sandbox-summary-slide .arc-h{display:flex;flex-direction:column;gap:.45vh;min-width:0;font-size:var(--fs-h3);line-height:1.17}
+.sandbox-summary-slide .arc-h small{font:700 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.06em;color:var(--tone)}
+.sandbox-summary-slide .arc-h b{font-size:var(--fs-h3);line-height:1.18}
+.sandbox-summary-slide .runtime .arc-h small{color:#bfc8e0}
+.sandbox-summary-slide .sandbox-items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;height:100%}
+.sandbox-summary-slide .sandbox-items.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sandbox-summary-slide .sandbox-item{display:flex;flex-direction:column;justify-content:center;gap:.42vh;min-width:0;min-height:0;padding:.45vh .8vw;border-left:1px solid rgba(70,83,112,.16)}
+.sandbox-summary-slide .sandbox-item b{font-size:var(--fs-body);line-height:1.22;color:var(--ink)}
+.sandbox-summary-slide .sandbox-item span{font-size:var(--fs-sm);line-height:1.3;color:var(--ink-2)}
+.sandbox-summary-slide .runtime .sandbox-item{border-left-color:rgba(255,255,255,.16)}
+.sandbox-summary-slide .runtime .sandbox-item b{color:#fff}
+.sandbox-summary-slide .runtime .sandbox-item span{color:rgba(255,255,255,.7)}
+.sandbox-summary-slide .sandbox-takeaway{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:1.05vw;align-items:center;min-width:0;min-height:7.5vh;padding:.9vh 1vw;border-radius:11px;background:rgba(255,255,255,.64);border:1px solid rgba(91,91,214,.17)}
+.sandbox-summary-slide .sandbox-takeaway>strong{font-size:var(--fs-h3);color:var(--accent)}
+.sandbox-summary-slide .sandbox-takeaway>p{font-size:var(--fs-body);line-height:1.38;color:#3f4b60}
+.sandbox-summary-slide .sandbox-next{display:flex;align-items:center;gap:.5vw;max-width:17vw;padding-left:1vw;border-left:1px solid rgba(71,83,112,.18);font-size:var(--fs-sm);line-height:1.3;font-weight:700;color:#4b5272}
+.sandbox-summary-slide .sandbox-next b{font:800 var(--fs-sm)/1 'JetBrains Mono';color:var(--accent)}
 /* Question 03 · evidence overview between the platform-derived direction and gap analysis. */
 .ascend-inventory-map{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto auto;gap:1.05vh;width:100%;height:51vh;min-width:0;min-height:0}
 .inventory-map-label{display:flex;align-items:center;gap:.7vw;font-size:var(--fs-sm);font-weight:800;color:#4c5370}.inventory-map-label::after{content:"";height:1px;flex:1;background:rgba(87,97,122,.2)}
@@ -2204,26 +2214,14 @@ flowchart LR
 
 <!-- 33 SOURCES -->
 <!-- CURRENT ASCEND SUPPLY -->
-<section class="slide s-gray" data-title="现有供给总览"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">六平台沙盘后的方向判断；下一页再盘点昇腾现有资产</div><div class="ttl">平台运行 Agent，昇腾需要提供可装配的领域支撑</div></div><div class="section-tabs"></div></header><main class="body-area">
-  <div class="ascend-role-map" aria-label="从平台机制推导的三类昇腾建设对象：领域供给、任务合同、跨平台接入；每类先呈现建设理由，再呈现具体能力"><div class="ascend-role-main">
-    <section class="ascend-role-col domain"><div class="ascend-role-head"><small>01 · COMMUNITY</small><h3>领域供给</h3></div>
-      <div class="ascend-role-why"><small>WHY</small><p>平台负责运行 Agent，却不维护昇腾知识的版本、芯片和任务适用性。</p></div><small class="ascend-role-label">建设对象 · 可复用的领域资产</small>
-      <div class="ascend-role-item"><i>知</i><div><b>领域知识库 / 检索源</b><span>让 Agent 找到带来源、版本和芯片范围的依据</span></div></div>
-      <div class="ascend-role-item method"><i>法</i><div><b>Skill / Workflow</b><span>让领域方法能够随任务被发现和调用</span></div></div>
-      <div class="ascend-role-item service"><i>服</i><div><b>MCP / Connector</b><span>让知识查询与工具服务有受控的接入方式</span></div></div>
-    </section>
-    <section class="ascend-role-col contract"><div class="ascend-role-head"><small>02 · SHARED CONTRACT</small><h3>任务合同</h3></div>
-      <div class="ascend-role-why"><small>WHY</small><p>一次任务会跨知识、Skill 与工具；交接需要共同的输入、状态和结果语义。</p></div><small class="ascend-role-label">建设对象 · 贯穿任务的共同约定</small>
-      <div class="ascend-contract"><div><b>任务索引</b><span>依据目标与环境发现能力</span></div><div><b>适用门禁</b><span>判断版本、硬件与权限条件</span></div><div><b>结果回执</b><span>统一状态、日志、产物与验证证据</span></div><div><b>恢复交接</b><span>失败分类、下一动作与责任人</span></div></div>
-    </section>
-    <section class="ascend-role-col platform"><div class="ascend-role-head"><small>03 · THIN ADAPTER</small><h3>跨平台接入</h3></div>
-      <div class="ascend-role-why"><small>WHY</small><p>六平台的装配入口并不相同；同一领域能力需要进入各平台可用的入口。</p></div><small class="ascend-role-label">建设对象 · 按平台支持情况选择入口</small>
-      <div class="ascend-entry-grid"><span>项目规则 / Context</span><span>Skill / Workflow</span><span>MCP / Connector</span><span>Command / Prompt</span><span>Plugin / Extension</span><span>Agent 配置 / Hook</span></div>
-      <div class="ascend-runtime"><b>边界：</b>Harness / Runtime、任务内 Agent Loop、具体权限与界面由平台负责；昇腾通过可配置入口提供领域能力。</div>
-    </section>
-  </div><div class="ascend-role-note"><small>下一步 · 看现状</small><p>这三类是<b>由平台能力边界推导的建设方向</b>；先盘点昇腾已有供给，再判断具体需要补什么。</p></div></div>
-</main><footer class="foot">平台入口并不完全相同，Harness / Runtime 与任务内 Agent Loop 仍由各平台负责；本页不预判昇腾资产缺口或建设优先级。</footer></div></section>
-
+<section class="slide s-gray sandbox-summary-slide" data-template="layered-architecture" data-title="现有供给总览"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">第 14 页六平台能力沙盘的直接观察</div><div class="ttl">平台提供接入入口，但装配方式与运行控制权不同</div></div><div class="section-tabs"></div></header><main class="body-area">
+  <div class="arc sandbox-arc" aria-label="沙盘结论分三层：六平台均有对应入口；Command、Plugin、Custom Agent 与 Hook 的装配形态不同；Harness 和任务内 Agent Loop 由平台运行">
+    <div class="arc-row"><div class="arc-lbl"><span class="zh">共通接入</span><span class="en">01 · SHARED</span></div><div class="arc-cells"><div class="arc-band common"><div class="arc-h"><small>6 / 6 PLATFORMS</small><b>均有对应入口</b></div><div class="sandbox-items"><div class="sandbox-item"><b>项目规则</b><span>持久上下文</span></div><div class="sandbox-item"><b>知识／检索</b><span>文档、代码与样例</span></div><div class="sandbox-item"><b>Skill／Workflow</b><span>任务方法</span></div><div class="sandbox-item"><b>MCP／Connector</b><span>外部系统与工具</span></div></div></div></div></div>
+    <div class="arc-row"><div class="arc-lbl"><span class="zh">差异装配</span><span class="en">02 · VARIABLE</span></div><div class="arc-cells"><div class="arc-band diff"><div class="arc-h"><small>PLATFORM SPECIFIC</small><b>形态与配置程度不同</b></div><div class="sandbox-items"><div class="sandbox-item"><b>Command／Prompt</b><span>4 个直接配置；2 个由其他入口承接</span></div><div class="sandbox-item"><b>Plugin／Extension</b><span>5 个可安装；1 个无同类入口</span></div><div class="sandbox-item"><b>Custom Agent</b><span>5 个可配置；1 个有边界</span></div><div class="sandbox-item"><b>Hook／Lifecycle</b><span>4 个确认入口；2 个本轮未确认</span></div></div></div></div></div>
+    <div class="arc-row"><div class="arc-lbl"><span class="zh">平台内核</span><span class="en">03 · HOST OWNED</span></div><div class="arc-cells"><div class="arc-band runtime"><div class="arc-h"><small>BUILT INTO HOST</small><b>不是独立装配项</b></div><div class="sandbox-items two"><div class="sandbox-item"><b>Harness／Agent Runtime</b><span>六平台均内置；OpenCode 源码可审阅改造。</span></div><div class="sandbox-item"><b>任务内 Agent Loop</b><span>行动—观察—再决策／停止；运行条件由各 Host 负责。</span></div></div></div></div></div>
+  </div>
+  <div class="sandbox-takeaway"><strong>沙盘结论</strong><p>能力可以进入平台，但不能假定共用同一封装；平台内置的运行循环也不是昇腾可直接装配的能力。</p><div class="sandbox-next"><b>#16</b><span>下一步：盘点昇腾现有资产能接入哪些入口</span></div></div>
+</main><footer class="foot">只比较入口与控制边界，不据此判断安装、调用或任务效果；建设方向需等现有资产与任务断点分析后再提出。</footer></div></section>
 <section class="slide s-gray" data-title="现有资产总览"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">本轮本地资产盘点｜仅呈现已观察到的内容、方法、接口与封装</div><div class="ttl">已有 Skill 与只读 MCP，跨平台目前只确认部分封装</div></div><div class="section-tabs"></div></header><main class="body-area">
   <div class="ascend-inventory-map" aria-label="昇腾现有资产总览：内容知识、258个Skill、只读MCP的20个Tools和5个Resources，以及已盘点的平台封装manifest">
     <div class="inventory-map-label">昇腾侧 · 已观察到的领域供给</div>
@@ -2642,7 +2640,7 @@ mermaid.initialize({
     {old:'CANN 实证',title:'问题02分析：CANN 任务样本中的知识适用性',n:'02',phase:'知识来源与适用条件',headline:'三项任务对照显示，知识支持还要覆盖版本、验证信号与恢复路径'},
     {old:'AI 亲和原则',title:'问题02分析：知识要从可发现走到可核验',n:'02',phase:'知识进入 Agent 工作的完整链条',headline:'知识友好度不止是找得到，还要能引用并验证'},
     {old:'平台能力沙盘',title:'问题03分析：六个平台的能力装配入口',n:'03',phase:'能力发现、选择与组合',headline:'六个平台都有能力入口，但可配置程度和组合方式不同'},
-    {old:'现有供给总览',title:'问题03分析：沙盘引出的昇腾建设方向',n:'03',phase:'从平台机制推导方向与理由',headline:'平台运行 Agent，昇腾需要提供可装配的领域支撑'},
+    {old:'现有供给总览',title:'问题03分析：平台接入入口与运行边界',n:'03',phase:'沙盘直接结论 · 入口、差异与边界',headline:'平台提供接入入口，但装配方式与运行控制权不同'},
     {old:'现有资产总览',title:'问题03分析：昇腾现有资产盘点',n:'03',phase:'领域内容、方法、接口与封装的现状',headline:'已有 Skill 与只读 MCP，跨平台目前只确认部分封装'},
     {old:'现有能力断点',title:'问题03分析：现有资产与任务目标的差距',n:'03',phase:'资产覆盖与证据边界',headline:'领域资产已形成，但共享任务状态在本轮盘点中尚未观察到'},
     {old:'Harness 与现状交叉',title:'问题03分析：从现状缺口推导建设动作',n:'03',phase:'具体建设对象与平台接入方式',headline:'把领域资产接到任务控制点，再按平台入口薄适配'},
@@ -2706,7 +2704,7 @@ mermaid.initialize({
     slide.dataset.title=item.title;slide.dataset.hypothesis=item.n;slide.classList.add('problem-analysis-reuse');
     const subttl=slide.querySelector('.head .subttl');if(subttl)subttl.textContent=`问题 ${item.n} · 分析｜${item.phase}`;
     const ttl=slide.querySelector('.head .ttl');if(ttl)ttl.textContent=`${item.n} · ${item.headline}`;
-    const foot=slide.querySelector('.foot');if(foot)foot.append(document.createTextNode(`　｜　本页归入问题 ${item.n} 的分析环节；机制事实与用户效果推论分别看待。`));
+    const foot=slide.querySelector('.foot');if(foot && item.old!=='现有供给总览')foot.append(document.createTextNode(`　｜　本页归入问题 ${item.n} 的分析环节；机制事实与用户效果推论分别看待。`));
   });
   const questionOverview=makeProblemOverview();
   const experienceAnchor=[...deck.querySelectorAll('.slide')].find(slide=>slide.dataset.title==='协同架构');
@@ -2785,7 +2783,7 @@ mermaid.initialize({
     '开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻',
     problemStatus(problemCases[0]),newProblemAnalyses[0].title,problemSolution(problemCases[0]),
     problemStatus(problemCases[1]),'问题02分析：CANN 任务样本中的知识适用性','问题02分析：知识要从可发现走到可核验',problemSolution(problemCases[1]),
-    problemStatus(problemCases[2]),'问题03分析：六个平台的能力装配入口','问题03分析：沙盘引出的昇腾建设方向','问题03分析：昇腾现有资产盘点','问题03分析：现有资产与任务目标的差距','问题03分析：从现状缺口推导建设动作',problemSolution(problemCases[2]),
+    problemStatus(problemCases[2]),'问题03分析：六个平台的能力装配入口','问题03分析：平台接入入口与运行边界','问题03分析：昇腾现有资产盘点','问题03分析：现有资产与任务目标的差距','问题03分析：从现状缺口推导建设动作',problemSolution(problemCases[2]),
     problemStatus(problemCases[3]),'问题04分析：Harness 怎样维持任务运行状态','问题04分析：机制怎样改变任务推进体验',problemSolution(problemCases[3]),
     problemStatus(problemCases[4]),newProblemAnalyses[1].title,problemSolution(problemCases[4]),
     problemStatus(problemCases[5]),newProblemAnalyses[2].title,problemSolution(problemCases[5]),
