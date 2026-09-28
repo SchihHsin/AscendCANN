@@ -3779,3 +3779,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 业务目的与边界：让用户在同一五列七行、相同业务文字与能力连线下分别比较「颜色数量」和「描边数量」两个视觉变量。预览的矩阵 DOM 与改动前 HEAD 逐字一致；正式报告未改；无新机制事实、正式页面序列或 API／Host／Application 分层变化。
 - 验证：HTMLParser 与 3 段内联 JS `node --check` 通过，三方案切换结构存在，`git diff --check` 通过。本地 `file://` 仍受浏览器 URL policy 限制，未绕过策略做截图级视觉复核。
 - Commit / push：`bb372433`（`design: compare monochrome outlines and multicolor low-border styles`）已单文件提交并推送 `origin/main`；本交接记录另行提交推送。未决：用户在 `#1`、`#2`、`#3` 中比较后决定正式第 5 页的方向。
+
+### 2026-09-28（纠正第 5 页视觉方案名称与数量）
+
+- 用户明确纠正：目标是比较「同色减框」与「不同颜色减框」，不是「同色线框」。此前三方案中的「同色线框」属于误听。本轮仅修改 `cann-dashboard/ai-development-behavior-visual-options.html`：移除错误的线框方案与第三个切换入口；预览现只有 `#1` 同色减框、`#2` 分色减框，按钮和键盘 1／2 一致。旧 `#3` 深链在载入后归一到 `#1`，避免显示与地址不一致。
+- 业务与证据边界：两版都保留减框处理，只比较五阶段是否采用同一种主题色；五列七行、任务文案、能力节点与连线源 DOM 未变，正式报告未改，无新研究事实、页面序列或 API／Host／Application 分层变化。
+- 验证：矩阵 DOM 与改动前 HEAD 逐字一致，HTMLParser、内联 JS `node --check`、两方案按钮检查与 `git diff --check` 均通过。本地 `file://` 浏览器 URL policy 仍不允许截图级复核。
+- Commit / push：`7308b25e`（`fix: compare only same-color and multicolor low-border styles`）已单文件提交并推送 `origin/main`；本交接记录另行提交推送。未决：用户刷新后比较 `#1`／`#2`，再决定正式第 5 页样式。
