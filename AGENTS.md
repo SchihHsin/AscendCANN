@@ -3819,3 +3819,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。仅扩大 `#2` 分色减框整张用户旅程白底四周的视觉留白，采用白色外扩层而不改变五列七行的网格尺寸、文字、卡片和连线位置；`#1` 同色减框及正式报告未改。
 - 业务与证据边界：依据用户对预览白底 padding 的直接反馈，只调整视觉样式；无新增业务事实、正式页序或 API／Host／Application 分层变化。
 - 验证：`git diff --check` 通过；本地 `file://` URL policy 限制截图级复核。功能提交 `92958599`（`design: add breathing room around multicolor journey`）已推送 `origin/main`；本交接条目另行提交推送。未决：用户查看预览 `#2` 的留白宽度后决定是否继续微调或迁移正式第 5 页。
+
+### 2026-09-28（第 5 页预览补跨阶段节点连线）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。原连线脚本只遍历五阶段内的能力节点，未处理底部 Agent Loop 与 Plugin / Extension，造成两张卡悬空。本轮仅在预览中将 Plugin / Extension 以淡色虚线连向 Search Agent 动作的可接入位置，将 Agent Loop 以实线连向 Decide Agent 的再判断动作；两线从各自卡片上边中心出发，箭头形状及颜色继承现有机制节点规则。
+- 业务与证据边界：Plugin 与 Skill 仍是独立能力，不画总分关系；Plugin 的虚线只表示可接入示意，卡片继续标明本任务未见实际调用。Agent Loop 表示工具结果回填后的继续判断或停止，不等于定时任务。五列七行结构、正式报告页序、API／Host／Application 分层及研究事实未变。
+- 验证：`git diff --check` 和 3 段内联 JS 的 `node --check` 通过；本地 `file://` URL policy 限制截图级复核。功能提交 `257bda9c`（`design: connect cross-stage mechanism nodes in page five preview`）已推送 `origin/main`；本交接条目另行提交推送。未决：用户刷新预览 `#1`／`#2` 后确认两条箭头的视觉路径，再决定是否迁移正式第 5 页。
+
+### 2026-09-28（第 15 页建设理由重新论证，暂停改页）
+
+- 用户明确指出：仅把第 14 页十类能力归属为“领域供给／平台入口／平台内核”，仍不能说明为什么昇腾应建设选中的能力。此前“沙盘直接推出两项建设方向”的说法不充分；沙盘只能证明六平台可用入口与控制权边界，建设必要性还须同时来自前一页的真实任务需要，以及昇腾维护版本、芯片、方法和领域服务的职责。具体优先级要在现有资产与断点分析后提出。
+- 本轮曾尝试替换正式报告第 15 页，但用户要求先讨论逻辑再入稿；未完成修改已用 `apply_patch` 全部撤回。`cann-dashboard/ai-development-behavior-system-report.html` 仍保留进入本轮前已有的两处并行 CSS 差异，未改正式页序、hash、API／Host／Application 分层，也未添加新事实或 NPU 实测。
+- 待讨论的一页论证框架：任务问题说明为什么需要可信事实、方法和可执行服务；沙盘说明知识／规则／Skill／MCP 等入口的跨平台覆盖与 Command／Plugin／Agent／Hook 的异构性，以及 Harness／Loop 的平台内核属性；昇腾职责决定哪些领域真值可由己方维护。三者交叉后才可提出候选方向，资产盘点和任务断点再决定具体建设动作。“任务合同”保留为待验证推论，不作为沙盘事实。
+- 验证：`git diff --check` 通过；正式报告的本轮改动已回退至进入本轮前状态，本交接记录单独提交并推送 `origin/main`。未决：用户先确认第 15 页的论证口径与视觉叙事，再实施修改。
