@@ -1038,6 +1038,10 @@ body:is([data-variant="three"],[data-variant="five"]) .cb-actor-icon{color:#d657
 
 /* Different stage colors on the shared low-border treatment. */
 body[data-variant="five"] .task-rel-page{--phase-source:#3f77b7;--phase-action:#7558b7;--phase-generate:#dc8055;--phase-control:#258e98;--phase-evidence:#438b69;background:radial-gradient(ellipse at 72% 1%,rgba(161,173,219,.11),transparent 40%),#edf0f5}
+body[data-variant="five"] .cb-human-lane,
+body[data-variant="five"] .cb-agent-lane,
+body[data-variant="five"] .cb-mechanism-rail,
+body[data-variant="five"] .cb-measure-rail{background:transparent;border:0;border-radius:0;box-shadow:none}
 body[data-variant="five"] .cb-stage{background:linear-gradient(130deg,#283344,color-mix(in srgb,var(--phase) 33%,#253041))}
 body[data-variant="five"] .cb-stage small{color:color-mix(in srgb,var(--phase) 49%,#fff)}
 body[data-variant="five"] .cb-stage-visual::before{background:radial-gradient(ellipse,color-mix(in srgb,var(--phase) 54%,transparent),color-mix(in srgb,var(--phase) 18%,transparent) 52%,transparent 76%)}
