@@ -3894,4 +3894,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。分色减框下将 Need 的目标 / Context 装配提示、Search 取回提示、Generate / Decide 候选与等待提示、Execute 工程回执的强调色、浅色底及描边统一改为读取各列 `--phase` 主题色，修正后加通用 CSS 把多个列统一成蓝紫色的问题。正文仍用深色保持阅读对比。
 - 设计边界：保留痛点行的红色、已完成研究的灰色和可选恢复的语义橙色；能力节点继续按阶段 / 能力语义样式显示。未改布局、高度、内容、页序 / hash 或 API／Host／Application 边界。证据为用户提供的分色减框截图及源 CSS 的固定色值与阶段变量；属于直接视觉反馈，不新增业务事实。
 - 验证：`git diff --check` 通过；4 个内联 CSS 块括号配对，3 段内联 JS 通过 `node --check`。本地 `file://` 页面截图验证受浏览器 URL policy 阻止，未尝试绕过。
-- Commit / push：待提交。
+- Commit / push：功能提交 `fe85e15d`（`fix: apply phase colors to segmented journey details`）已推送 `origin/main`；本条交接记录随后单独提交并推送。
