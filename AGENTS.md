@@ -3910,3 +3910,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与边界：这是用户要求的机制示例，不作为运行证据；Plugin / Extension 仍表示独立安装分发入口，未改变其与 Skill、MCP 的层级关系、页面结构或连线。
 - 验证：`git diff --check`；检查可见文案及 aria-label 均标明示例属性。
 - Commit / push：示例提交 `cc8fc656`（`docs: show successful plugin use as an example`）和措辞修正 `e3152cc7`（`refine plugin example capability wording`）均已推送 `origin/main`；交接记录提交 `3580ebd4` 已推送，本次记录更新单独提交并推送。
+
+
+### 2026-09-28（阶段卡按旧版排布去说明）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。根据用户澄清，新增默认选中的“旧版去说明”阶段卡方案 D：沿用旧版左侧文字、右侧插图的布局，只隐藏五张阶段卡的中文副说明；恢复 A / B / C 三种新排布原有的副说明文案，以便分别对照。阶段行仍为原高度，Need、Search、Generate、Decide、Execute 五列及其他各行未改。
+- 设计与事实边界：沿用历史提交 `8558a987` 中的阶段卡基线结构，不改正式报告、视觉主题方案或 API／Host／Application 叙事；无新增业务事实。旧 `#1`／`#2` 默认展示 D，`#1-a` 至 `#2-d` 可切换两种主题下四种排布；键盘 A / B / C / D 可切换排布。
+- 验证：`git diff --check`、HTML 结构解析及 3 段内联 JS 的 `node --check` 通过。未作截图级复核；未绕过本地 `file://` 页面访问限制。
+- Commit / push：功能提交 `b335c56f`（`design: compare original stage cards without subtitles`）已推送 `origin/main`；本条交接记录随后单独提交并推送。
