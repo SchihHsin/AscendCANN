@@ -3857,3 +3857,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。用户觉得第一行五张阶段卡在同色、分色下都拥挤，并决定把三种提案都做出来比较。预览新增独立的阶段卡排布切换：A 卡内重排（插图缩小居右上，说明独占底行）；B 插图作背景（文字获得整卡宽度，插图淡化到右侧）；C 说明外置（深色卡保留编号、标题和插图，说明置于卡片下方）。每种排布均可与 `#1` 同色减框、`#2` 分色减框组合，形成 2×3 组合；按钮与键盘 1／2、A／B／C 切换，hash 使用 `#1-a` 至 `#2-c`，旧 `#1`／`#2` 继续可用。
 - 业务与证据边界：只探索阶段卡内部排版，不改五列七行结构、业务文字、能力节点与连线、正式报告页序或 API／Host／Application 分层；无新增研究事实。A 是此前讨论的推荐方向，但正式选型仍待用户在预览中比较。
 - 验证：`git diff --check`、HTMLParser 结构读取与 3 段内联 JS 的 `node --check` 通过；本地 `file://` URL policy 限制截图级复核。功能提交 `8558a987`（`design: compare three stage card layouts across color themes`）已推送 `origin/main`；本交接条目另行提交推送。未决：用户比较 6 种组合的第一行可读性后，再决定进一步微调与是否迁移正式第 5 页。
+
+### 2026-09-28（阶段卡保持行高并移除说明）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。用户进一步要求阶段行高度不变并移除卡片说明。五张阶段卡均删除中文副说明，保留英文阶段名、中文标题和 3D 插图；行高沿用原来的 8vh。A 继续比较卡内重排，B 比较淡化背景插图，原来“说明外置”的 C 调整为“图文分区”（插图左、标题右），避免去掉说明后 C 失去比较意义。任务细节仍在下方行中。
+- 业务与证据边界：只调整预览阶段卡的可见内容和内部排布，五列七行结构、任务细节行、机制节点与连线、正式报告页序及 API／Host／Application 分层未变；无新增研究事实。
+- 验证：`git diff --check` 与 3 段内联 JS `node --check` 通过；本地 `file://` URL policy 限制截图级复核。功能提交 `9aadec5c`（`design: keep stage height and remove card descriptions`）已推送 `origin/main`；本交接条目另行提交推送。未决：用户比较更新后的 6 种组合，再决定后续微调或迁移正式第 5 页。
