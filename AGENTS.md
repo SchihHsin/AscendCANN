@@ -3845,3 +3845,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 业务与证据边界：第 15 页说明六平台均有项目规则、知识／检索、Skill／Workflow、MCP／Connector 的对应入口，但不等于协议或效果一致；Command、Plugin、Custom Agent、Hook 的装配形态不同，其中两个 Hook 入口只是本轮未确认，不能写成不存在。Harness 与任务内 Agent Loop 属于各平台运行内核，OpenCode 源码可审阅改造不等于独立装配能力。本页不预断昇腾建设项、任务合同或优先级；依据为第 14 页已列沙盘及其 H／M 证据口径，无新增平台事实或 NPU 实测。Report PPT Skill 的分层架构图与事实—推论—方案分离原则用于收束视觉和叙事。
 - 验证：六段内联 JS 分别通过 `node --check`；`git diff --cached --check` 通过；1600×900 Chrome 放映截图核对第 15 页标题、三层信息、结论与页码可见。保留本文件原有两处并行 CSS 脏改动和仓内其他无关文件，未将其纳入提交。
 - Commit / push：正式报告提交 `85b49271`（`refine sandbox conclusion as platform access boundary`）已推送 `origin/main`；本交接记录单独提交并推送。未决：第 16–18 页后续建设论证是否需要再收紧，应结合任务证据与现有资产盘点讨论，不能由第 14 页沙盘直接得出。
+
+### 2026-09-28（讨论第 16 页资产结论并入第 15 页聚焦）
+
+- 用户询问是否可用第 15 页的动效／聚焦来呈现现第 16 页“已有 Skill 与只读 MCP，跨平台目前只确认部分封装”的结论。本轮只讨论，未改报告 HTML、页序、hash 或 API／Host／Application 边界。
+- 建议方向：保留同一张“共通接入／差异装配／平台内核”底图；先展示六平台沙盘结论，再由用户手动切换到昇腾资产聚焦态，只高亮知识内容、258 个 Skill、20 Tools + 5 Resources 的只读 MCP，以及 Claude 20／Codex 1／Cursor 1 个 manifest 的封装观察；平台内核退后。第二态须明确标注“本地资产盘点”，不得把它误写为沙盘直接推论，manifest 数也不证明安装、调用或任务效果。
+- 依据与边界：第 15 页沙盘结论、第 16 页本地资产盘点，以及 Report PPT Skill 的证据聚光灯、手动翻页和事实／推论分离原则；无新增实测事实。尚待用户选择是否将当前第 16 页替换为同图聚焦态，或保留独立资产页。验证：仅复核源页面文案及章节结构；本交接记录单独提交并推送。
