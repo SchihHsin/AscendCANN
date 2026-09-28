@@ -3670,3 +3670,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTML tokenization、内联 JS / JSON 解析、沙盘 10 行 × 7 列与来源页 8 卡结构检查、重复归纳元素移除检查和 `git diff --check` 均通过。遵守此前本地 `file://` URL policy 限制，本轮未做整页截图级视觉复核；用户原有的第 5 页两处 CSS 未提交。
 - Commit / push：功能提交 `4d24d8cc`（`fix: define agent loop consistently in report`）已推送至 `origin/main`；本交接条目随后单独提交并推送。
 - 未决事项：如需比较 Trae / WorkBuddy 的内部模型回合与停止策略，仍需官方技术资料或可复核运行轨迹；第 14 页的实际屏幕排版待用户在当前浏览器刷新复核。
+
+### 2026-09-28（第 5 页痛点行关键词与图标颜色修正）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。按用户反馈将痛点行各条的整句加粗收窄为一两个短关键词；加粗文字继承原正文颜色；开发者、Agent、团队与平台图标统一使用痛点红色。
+- 业务目的与依据：用户明确指出加粗范围过大、加粗文字颜色不一致及图标应为红色；本轮为呈现修正，不新增研究事实。阶段、内容含义、页面序列及 API / Host / Application 三层边界均不变。
+- 验证：`git diff --check` 与 `git diff --cached --check` 通过；此前本地 `file://` 页面被浏览器 URL policy 阻止截图，本轮未绕过策略做视觉截图。仅暂存第 5 页痛点行相关 hunk，工作区其他未提交改动未纳入。
+- Commit / push：功能提交 `5e091ed3`（`style: focus painpoint keywords and red icons`）已推送 `origin/main`；本交接记录另行提交推送。未决：用户刷新第 5 页后可继续反馈实际投屏字号与间距。
