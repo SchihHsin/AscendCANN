@@ -3918,3 +3918,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计与事实边界：沿用历史提交 `8558a987` 中的阶段卡基线结构，不改正式报告、视觉主题方案或 API／Host／Application 叙事；无新增业务事实。旧 `#1`／`#2` 默认展示 D，`#1-a` 至 `#2-d` 可切换两种主题下四种排布；键盘 A / B / C / D 可切换排布。
 - 验证：`git diff --check`、HTML 结构解析及 3 段内联 JS 的 `node --check` 通过。未作截图级复核；未绕过本地 `file://` 页面访问限制。
 - Commit / push：功能提交 `b335c56f`（`design: compare original stage cards without subtitles`）已推送 `origin/main`；本条交接记录随后单独提交并推送。
+
+
+### 2026-09-28（Plugin 示例明确落到 Search / Fetch）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。用户指出只标注 Plugin“成功”看不出发挥位置。本示例改成：官方教程正文未取回后，假设启用算子开发扩展，在 Search / Fetch 中调用其教程检索能力并成功取回社区资料；Agent 行对应改为成功返回状态，Plugin 节点用虚线箭头连到这一具体动作。
+- 机制与证据边界：该连线只表达本案例中的假设调用，不表示所有 Plugin 都执行 Search，也不预设 Plugin 必须包含 MCP；Plugin / Extension 仍是独立安装分发入口。本任务真实运行记录和正式报告未修改。
+- 验证：`git diff --check`、HTML 结构解析及 3 段内联 JS 的 `node --check` 通过。未作截图级复核；未绕过本地 `file://` 页面访问限制。
+- Commit / push：功能提交 `41cad930`（`design: connect plugin success example to search action`）已推送 `origin/main`；本条交接记录随后单独提交并推送。
