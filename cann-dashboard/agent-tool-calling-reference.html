@@ -27,7 +27,7 @@
 <div class="step tool"><span class="n">05 · EXECUTE</span><b>执行具体工具</b><span>检索、外部连接、命令或委派</span></div>
 <div class="step message"><span class="n">06 · MESSAGE</span><b>回传 tool result</b><span>携带 call_id / tool_use_id</span></div>
 <div class="step end"><span class="n">07 · END</span><b>最终响应</b><span>模型基于工具结果生成答案</span></div>
-</div><div class="note"><b>边界：</b>知识库、MCP、子 Agent 是工具实现；tool_result 是发给模型的中间消息。二者都不是最终交付结果。API 层只分流 tool call 与 message / final，不负责判断业务任务是否完成。</div></section>
+</div><div class="note"><b>定义与边界：</b>这里的 Agent Loop 是同一任务中由 Host / Harness 编排的重复回合：模型决定行动 → Host 执行 → 结果作为观察回填 → 再请求模型，直到模型结束、用户中断或运行约束使其停止。API 的 tool call / tool result 字段只支撑一次回合，不自动构成循环；知识库、MCP、子 Agent 是可能参与的能力，不是 Loop 本身。定时 <code>/loop</code>、Hook 事件和跨任务的 Harness 自进化是另外三类机制。最终文本也不等于业务验收。</div></section>
 
 <section class="section"><div class="section-head"><h2>公开 API 字段对照</h2><p>只保留决定流程走向的字段。不能把某一家 API 的专有字段直接写成跨平台通用节点。</p></div>
 <div class="api-grid">
@@ -102,6 +102,7 @@ tool.tool_call_id + content
 <section class="section sources"><h2>公开来源</h2><p>
 OpenAI Function Calling：<a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noreferrer">platform.openai.com/docs/guides/function-calling</a><br>
 Anthropic Tool Use：<a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" target="_blank" rel="noreferrer">platform.claude.com/docs · Implement tool use</a><br>
+Anthropic Agent Loop：<a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noreferrer">anthropic.com/engineering · Building effective agents</a><br>
 Claude Code Memory / Rules：<a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noreferrer">code.claude.com/docs · Memory</a><br>
 Claude Code Skills：<a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noreferrer">code.claude.com/docs · Skills</a><br>
 Claude Code Subagents：<a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noreferrer">code.claude.com/docs · Subagents</a><br>
