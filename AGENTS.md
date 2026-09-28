@@ -3879,3 +3879,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 可落图关系：Plugin 保持独立的安装 / 分发入口；只有在明确具体扩展包及其携带内容时，才以虚线连到实际装配的机制节点，并标为分发关系。Agent Loop 应表达为跨阶段的结果回流轨；在当前任务路径重建中，Search / Fetch 结果进入后续 Generate 模型回合，Execute 回执进入后续 Decide / 继续或恢复判断。两者是基于机制的路径还原，不等于本任务观测到实际插件调用或匹配 Ascend 环境下的实际循环。
 - 依据：`cann-dashboard/agent-tool-calling-reference.html` 对共同工具回合及 Loop / `/loop` 区别的说明和其公开来源链接；`cann-dashboard/ai-development-behavior-system-report.html` 的平台能力沙盘；`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html` 已采用的独立安装分发节点与横向 Agent Loop 回流轨。能力定义引用公开资料（H）；AddCustom 任务内的具体调用关系未观察，故保持假设 / 路径重建边界。
 - 未决：用户确认后再决定是否把上述连线语义应用到视觉预览；本轮没有变更待合并。
+
+
+### 2026-09-28（第 5 页预览修正 Plugin / Agent Loop 关系）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。Plugin / Extension 保留为独立安装 / 分发卡，移除指向 Search Agent 动作的虚线；Agent Loop 改为跨三列的回流映射卡，分别表示 Search / Fetch 回执进入 Generate 下一轮、Execute 回执回到 Decide / 恢复判断。阶段能力节点到 Agent 动作的既有箭头保持不变。
+- 业务依据：沿用前条研究结论与 `agent-tool-calling-reference.html` 对 Host 工具回合的边界；Plugin 打包 / 分发和 Skill、MCP 等运行能力分开，任务内通用 Agent Loop 是结果回填后的跨阶段再请求。本任务没有实际 Plugin 调用；Execute 分支仍属路径还原，不是匹配 Ascend 环境下的实测。页面五阶段、正文、整页高度、页序 / hash 与 API／Host／Application 边界未变。
+- 验证：3 段内联 JS 均通过 `node --check`；`git diff --check` 通过。截图复核受本地 `file://` URL policy 阻止；未尝试绕过，故本轮没有截图级视觉确认。
+- Commit / push：待提交。
