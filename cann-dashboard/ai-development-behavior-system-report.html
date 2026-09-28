@@ -444,34 +444,16 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .platform-build-visual{display:grid;grid-template-rows:auto 1fr;gap:1vh;width:100%;height:50vh;min-height:0}.platform-hub{position:relative;min-width:0;min-height:0;border-radius:19px;background:rgba(255,255,255,.36);border:1px solid rgba(255,255,255,.72);overflow:hidden}.platform-hub svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.platform-hub svg path{fill:none;stroke:#a7b0bd;stroke-width:1.25;stroke-linecap:round}.platform-core{position:absolute;z-index:2;left:50%;top:53%;width:43vw;min-height:20vh;transform:translate(-50%,-50%);padding:1.15vh 1vw;border-radius:18px;background:linear-gradient(145deg,rgba(91,91,214,.14),rgba(53,160,181,.09));border:1px solid rgba(91,91,214,.2);display:grid;grid-template-rows:auto 1fr;gap:.9vh;text-align:center}.platform-core>div:first-child small{font:750 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.06em;color:var(--accent)}.platform-core>div:first-child b{display:block;margin:.45vh 0;font-size:var(--fs-h2)}.platform-core>div:first-child p{font-size:var(--fs-body);line-height:1.35;color:var(--ink-2)}.platform-core-slots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw}.platform-core-slots span{display:flex;align-items:center;justify-content:center;padding:.62vh .38vw;border-radius:9px;background:rgba(255,255,255,.7);font-size:var(--fs-sm);font-weight:750;color:#4a5380}.platform-adapter{position:absolute;z-index:3;width:13.5vw;min-height:7.6vh;padding:.65vh .58vw;border-radius:12px;background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.94);box-shadow:0 10px 24px -20px rgba(25,33,53,.48);display:flex;flex-direction:column;justify-content:center;text-align:center}.platform-adapter b{font-size:var(--fs-h3)}.platform-adapter span{margin-top:.25vh;font-size:var(--fs-xs);line-height:1.2;color:var(--ink-3)}.platform-adapter.claude{left:4%;top:7%}.platform-adapter.codex{left:23%;top:3%}.platform-adapter.cursor{right:23%;top:3%}.platform-adapter.opencode{right:4%;top:7%}.platform-adapter.trae{left:12%;bottom:5%}.platform-adapter.other{right:12%;bottom:5%}.adapter-contract{position:absolute;z-index:4;left:50%;bottom:4.2%;transform:translateX(-50%);padding:.48vh .72vw;border-radius:999px;background:#292d36;color:#fff;font-size:var(--fs-xs);line-height:1.15;font-weight:740;white-space:nowrap}.adapter-contract b{color:#bebaff}
 .skill-package{grid-template-columns:repeat(6,minmax(0,1fr))}.skill-node.observe{--tone:#35a0b5}.skill-node.branch{--tone:#559d9d}.skill-recovery{grid-column:2/7}
 
-/* Sandbox conclusion: reuse the layered-architecture rail to summarize access, variation and runtime ownership. */
-.sandbox-summary-slide .body-area{height:59vh;min-height:0;gap:1.2vh}
-.sandbox-summary-slide .sandbox-arc{width:100%;height:49vh;min-height:0;grid-template-rows:repeat(3,minmax(0,1fr));gap:1vh;margin:0}
-.sandbox-summary-slide .arc-row{grid-template-columns:10.4vw minmax(0,1fr);gap:1vw;min-width:0;min-height:0}
-.sandbox-summary-slide .arc-lbl{min-width:0;min-height:0;padding:.5vh 0;gap:.35vh}
-.sandbox-summary-slide .arc-lbl .zh{font-size:var(--fs-h2);line-height:1.16}
-.sandbox-summary-slide .arc-lbl .en{font-size:var(--fs-xs)}
-.sandbox-summary-slide .arc-cells{min-width:0;min-height:0}
-.sandbox-summary-slide .arc-band{--tone:var(--c-indigo);display:grid;grid-template-columns:11.5vw minmax(0,1fr);align-items:center;gap:.85vw;min-width:0;min-height:0;width:100%;padding:1.15vh 1.05vw;border-radius:14px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.9);box-shadow:0 12px 28px -22px rgba(20,25,35,.32)}
-.sandbox-summary-slide .arc-band.diff{--tone:var(--c-blue)}
-.sandbox-summary-slide .arc-band.runtime{--tone:var(--c-neutral);background:var(--g-ink);border-color:rgba(255,255,255,.16);color:#fff}
-.sandbox-summary-slide .arc-h{display:flex;flex-direction:column;gap:.45vh;min-width:0;font-size:var(--fs-h3);line-height:1.17}
-.sandbox-summary-slide .arc-h small{font:700 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.06em;color:var(--tone)}
-.sandbox-summary-slide .arc-h b{font-size:var(--fs-h3);line-height:1.18}
-.sandbox-summary-slide .runtime .arc-h small{color:#bfc8e0}
-.sandbox-summary-slide .sandbox-items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;height:100%}
-.sandbox-summary-slide .sandbox-items.two{grid-template-columns:repeat(2,minmax(0,1fr))}
-.sandbox-summary-slide .sandbox-item{display:flex;flex-direction:column;justify-content:center;gap:.42vh;min-width:0;min-height:0;padding:.45vh .8vw;border-left:1px solid rgba(70,83,112,.16)}
-.sandbox-summary-slide .sandbox-item b{font-size:var(--fs-body);line-height:1.22;color:var(--ink)}
-.sandbox-summary-slide .sandbox-item span{font-size:var(--fs-sm);line-height:1.3;color:var(--ink-2)}
-.sandbox-summary-slide .runtime .sandbox-item{border-left-color:rgba(255,255,255,.16)}
-.sandbox-summary-slide .runtime .sandbox-item b{color:#fff}
-.sandbox-summary-slide .runtime .sandbox-item span{color:rgba(255,255,255,.7)}
-.sandbox-summary-slide .sandbox-takeaway{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:1.05vw;align-items:center;min-width:0;min-height:7.5vh;padding:.9vh 1vw;border-radius:11px;background:rgba(255,255,255,.64);border:1px solid rgba(91,91,214,.17)}
-.sandbox-summary-slide .sandbox-takeaway>strong{font-size:var(--fs-h3);color:var(--accent)}
-.sandbox-summary-slide .sandbox-takeaway>p{font-size:var(--fs-body);line-height:1.38;color:#3f4b60}
-.sandbox-summary-slide .sandbox-next{display:flex;align-items:center;gap:.5vw;max-width:17vw;padding-left:1vw;border-left:1px solid rgba(71,83,112,.18);font-size:var(--fs-sm);line-height:1.3;font-weight:700;color:#4b5272}
-.sandbox-summary-slide .sandbox-next b{font:800 var(--fs-sm)/1 'JetBrains Mono';color:var(--accent)}
+/* Page 15 reuses page 14's evidence matrix; only the selected rows and one nearby explanation change. */
+.sandbox-focus-slide .body-area{height:60vh;min-height:0}
+.sandbox-focus-slide .sandbox-spot-wrap{display:flex;flex-direction:column;gap:.8vh;width:100%;min-width:0;min-height:0;transform:translateY(-2.9vh)}
+.sandbox-focus-slide .sandbox-spot-callout{display:grid;grid-template-columns:6.9vw minmax(0,1fr) auto;gap:1vw;align-items:center;min-width:0;min-height:7.7vh;padding:.75vh .9vw;border-radius:12px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.92);box-shadow:0 9px 24px -19px rgba(25,35,55,.3)}
+.sandbox-focus-slide .sandbox-spot-count{font:800 var(--fs-h3)/1.1 'JetBrains Mono';color:var(--spot-tone)}
+.sandbox-focus-slide .sandbox-spot-copy{min-width:0;min-height:0}.sandbox-focus-slide .sandbox-spot-copy strong{display:block;font-size:var(--fs-h2);line-height:1.18;color:var(--ink)}.sandbox-focus-slide .sandbox-spot-copy p{margin-top:.35vh;font-size:var(--fs-body);line-height:1.3;color:var(--ink-2)}
+.sandbox-focus-slide .sandbox-spot-steps{display:flex;gap:.36vw;align-items:center}.sandbox-focus-slide .sandbox-spot-steps button{appearance:none;cursor:pointer;border:1px solid rgba(105,117,140,.18);border-radius:999px;padding:.45vh .55vw;background:#f1f3f6;color:#6a7381;font-size:var(--fs-sm);font-weight:750;white-space:nowrap;transition:background .2s ease,color .2s ease,border-color .2s ease}.sandbox-focus-slide .sandbox-spot-steps button[aria-current="step"]{background:var(--g-ink);border-color:#22262f;color:#fff}.sandbox-focus-slide .sandbox-spot-steps button:focus-visible{outline:2px solid var(--spot-tone);outline-offset:2px}
+.sandbox-focus-slide .sandbox-spot-card{position:relative;min-width:0;min-height:0;width:100%}.sandbox-focus-slide .sandbox-focus-grid{width:100%}.sandbox-focus-slide .sandbox-focus-grid>div{transition:opacity .28s ease,filter .28s ease,background .28s ease,box-shadow .28s ease}.sandbox-focus-slide .sandbox-focus-grid>div:not(.psb-head):not(.sandbox-spot-on){opacity:.2;filter:grayscale(.8)}.sandbox-focus-slide .sandbox-focus-grid>.psb-head{opacity:.7}.sandbox-focus-slide .sandbox-focus-grid>.sandbox-spot-on{opacity:1;filter:none}.sandbox-focus-slide .sandbox-focus-grid>.psb-rowhead.sandbox-spot-on{background:color-mix(in srgb,var(--spot-tone) 17%,#fff);box-shadow:inset 4px 0 var(--spot-tone)}.sandbox-focus-slide .sandbox-focus-grid>.psb-cell.sandbox-spot-on{background:color-mix(in srgb,var(--spot-tone) 10%,#fff)}
+.sandbox-focus-slide .sandbox-spot-rings{position:absolute;inset:0;pointer-events:none}.sandbox-focus-slide .sandbox-spot-ring{position:absolute;box-sizing:border-box;border:2px dotted var(--spot-tone);border-radius:6px;pointer-events:none}
+@media(max-width:1100px){.sandbox-focus-slide .sandbox-spot-callout{grid-template-columns:6.5vw minmax(0,1fr)}.sandbox-focus-slide .sandbox-spot-steps{grid-column:1/-1;justify-content:flex-end}.sandbox-focus-slide .sandbox-spot-callout{min-height:9vh}}
 /* Question 03 · evidence overview between the platform-derived direction and gap analysis. */
 .ascend-inventory-map{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto auto;gap:1.05vh;width:100%;height:51vh;min-width:0;min-height:0}
 .inventory-map-label{display:flex;align-items:center;gap:.7vw;font-size:var(--fs-sm);font-weight:800;color:#4c5370}.inventory-map-label::after{content:"";height:1px;flex:1;background:rgba(87,97,122,.2)}
@@ -2214,14 +2196,12 @@ flowchart LR
 
 <!-- 33 SOURCES -->
 <!-- CURRENT ASCEND SUPPLY -->
-<section class="slide s-gray sandbox-summary-slide" data-template="layered-architecture" data-title="现有供给总览"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">第 14 页六平台能力沙盘的直接观察</div><div class="ttl">平台提供接入入口，但装配方式与运行控制权不同</div></div><div class="section-tabs"></div></header><main class="body-area">
-  <div class="arc sandbox-arc" aria-label="沙盘结论分三层：六平台均有对应入口；Command、Plugin、Custom Agent 与 Hook 的装配形态不同；Harness 和任务内 Agent Loop 由平台运行">
-    <div class="arc-row"><div class="arc-lbl"><span class="zh">共通接入</span><span class="en">01 · SHARED</span></div><div class="arc-cells"><div class="arc-band common"><div class="arc-h"><small>6 / 6 PLATFORMS</small><b>均有对应入口</b></div><div class="sandbox-items"><div class="sandbox-item"><b>项目规则</b><span>持久上下文</span></div><div class="sandbox-item"><b>知识／检索</b><span>文档、代码与样例</span></div><div class="sandbox-item"><b>Skill／Workflow</b><span>任务方法</span></div><div class="sandbox-item"><b>MCP／Connector</b><span>外部系统与工具</span></div></div></div></div></div>
-    <div class="arc-row"><div class="arc-lbl"><span class="zh">差异装配</span><span class="en">02 · VARIABLE</span></div><div class="arc-cells"><div class="arc-band diff"><div class="arc-h"><small>PLATFORM SPECIFIC</small><b>形态与配置程度不同</b></div><div class="sandbox-items"><div class="sandbox-item"><b>Command／Prompt</b><span>4 个直接配置；2 个由其他入口承接</span></div><div class="sandbox-item"><b>Plugin／Extension</b><span>5 个可安装；1 个无同类入口</span></div><div class="sandbox-item"><b>Custom Agent</b><span>5 个可配置；1 个有边界</span></div><div class="sandbox-item"><b>Hook／Lifecycle</b><span>4 个确认入口；2 个本轮未确认</span></div></div></div></div></div>
-    <div class="arc-row"><div class="arc-lbl"><span class="zh">平台内核</span><span class="en">03 · HOST OWNED</span></div><div class="arc-cells"><div class="arc-band runtime"><div class="arc-h"><small>BUILT INTO HOST</small><b>不是独立装配项</b></div><div class="sandbox-items two"><div class="sandbox-item"><b>Harness／Agent Runtime</b><span>六平台均内置；OpenCode 源码可审阅改造。</span></div><div class="sandbox-item"><b>任务内 Agent Loop</b><span>行动—观察—再决策／停止；运行条件由各 Host 负责。</span></div></div></div></div></div>
+<section class="slide s-gray sandbox-focus-slide" data-template="evidence-spotlight-matrix" data-title="现有供给总览"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">第 14 页六平台沙盘的逐步聚焦</div><div class="ttl">平台提供接入入口，但装配方式与运行控制权不同</div></div><div class="section-tabs"></div></header><main class="body-area platform-sandbox-overview">
+  <div class="sandbox-spot-wrap" aria-label="沿同一六平台沙盘，分三步聚焦共通接入、差异装配和平台内核">
+    <div class="sandbox-spot-callout" role="status" aria-live="polite"><span class="sandbox-spot-count">01 / 03</span><div class="sandbox-spot-copy"><strong>六个平台都有四类对应入口</strong><p>项目规则、知识／检索、Skill 与 MCP／Connector 均有对应面；入口存在不等于协议或效果一致。</p></div><div class="sandbox-spot-steps" aria-label="沙盘聚焦步骤"><button type="button" data-sandbox-step="0" aria-current="step">共通接入</button><button type="button" data-sandbox-step="1">差异装配</button><button type="button" data-sandbox-step="2">平台内核</button></div></div>
+    <div class="sandbox-spot-card"><div class="psb-grid sandbox-focus-grid-slot" aria-label="与第 14 页相同的六平台能力沙盘"></div><div class="sandbox-spot-rings" aria-hidden="true"></div></div>
   </div>
-  <div class="sandbox-takeaway"><strong>沙盘结论</strong><p>能力可以进入平台，但不能假定共用同一封装；平台内置的运行循环也不是昇腾可直接装配的能力。</p><div class="sandbox-next"><b>#16</b><span>下一步：盘点昇腾现有资产能接入哪些入口</span></div></div>
-</main><footer class="foot">只比较入口与控制边界，不据此判断安装、调用或任务效果；建设方向需等现有资产与任务断点分析后再提出。</footer></div></section>
+</main><footer class="foot">本页只从上一页的入口与控制边界归纳，不判断安装、调用或任务效果；下一页再盘点昇腾现有资产。</footer></div></section>
 <section class="slide s-gray" data-title="现有资产总览"><div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">本轮本地资产盘点｜仅呈现已观察到的内容、方法、接口与封装</div><div class="ttl">已有 Skill 与只读 MCP，跨平台目前只确认部分封装</div></div><div class="section-tabs"></div></header><main class="body-area">
   <div class="ascend-inventory-map" aria-label="昇腾现有资产总览：内容知识、258个Skill、只读MCP的20个Tools和5个Resources，以及已盘点的平台封装manifest">
     <div class="inventory-map-label">昇腾侧 · 已观察到的领域供给</div>
@@ -2706,6 +2686,20 @@ mermaid.initialize({
     const ttl=slide.querySelector('.head .ttl');if(ttl)ttl.textContent=`${item.n} · ${item.headline}`;
     const foot=slide.querySelector('.foot');if(foot && item.old!=='现有供给总览')foot.append(document.createTextNode(`　｜　本页归入问题 ${item.n} 的分析环节；机制事实与用户效果推论分别看待。`));
   });
+  const sandboxSource=byOriginalTitle.get('平台能力沙盘');
+  const sandboxFocusSlide=byOriginalTitle.get('现有供给总览');
+  const sandboxGrid=sandboxSource?.querySelector('.psb-grid')?.cloneNode(true);
+  const sandboxGridSlot=sandboxFocusSlide?.querySelector('.sandbox-focus-grid-slot');
+  if(sandboxGrid && sandboxGridSlot){
+    sandboxGrid.classList.remove('sandbox-focus-grid-slot');
+    sandboxGrid.classList.add('sandbox-focus-grid');
+    const rowGroups={shared:new Set([1,2,4,6]),variable:new Set([5,7,8,9]),runtime:new Set([3,10])};
+    [...sandboxGrid.children].forEach((cell,index)=>{
+      const row=Math.floor(index/7);
+      for(const [group,rows] of Object.entries(rowGroups))if(rows.has(row))cell.dataset.sandboxGroup=group;
+    });
+    sandboxGridSlot.replaceWith(sandboxGrid);
+  }
   const questionOverview=makeProblemOverview();
   const experienceAnchor=[...deck.querySelectorAll('.slide')].find(slide=>slide.dataset.title==='协同架构');
   deck.insertBefore(questionOverview,experienceAnchor||null);
@@ -2851,6 +2845,57 @@ mermaid.initialize({
   let current = 0, overview = false, uiTimer, scrollTimer, hashLock = false;
   const taskTimelineIndex = slides.findIndex(slide => slide.dataset.title === '算子开发全链路时序');
   const taskAgentIndex = slides.findIndex(slide => slide.dataset.title === 'Agent 机制下钻');
+  const sandboxFocusIndex=slides.indexOf(sandboxFocusSlide);
+  const sandboxFocusDefs=[
+    {group:'shared',tone:'var(--c-indigo)',title:'六个平台都有四类对应入口',copy:'项目规则、知识／检索、Skill 与 MCP／Connector 均有对应面；入口存在不等于协议或效果一致。',ranges:[[1,2],[4,4],[6,6]]},
+    {group:'variable',tone:'var(--c-blue)',title:'四类能力的装配方式随平台而变',copy:'Command：4 直接／2 承接；Plugin：5 安装／1 无同类；Agent：5 配置／1 有边界；Hook：4 确认／2 未确认。',ranges:[[5,5],[7,9]]},
+    {group:'runtime',tone:'var(--c-ink)',title:'Harness 与任务内 Agent Loop 属于平台内核',copy:'六平台都有运行机制，但它们不是独立装配项；OpenCode 源码可审阅改造，不等于直接配置 Runtime。',ranges:[[3,3],[10,10]]}
+  ];
+  let sandboxFocusStep=0,sandboxWheelLockUntil=0;
+  function renderSandboxRings(){
+    if(sandboxFocusIndex<0)return;
+    const card=sandboxFocusSlide.querySelector('.sandbox-spot-card');
+    const grid=sandboxFocusSlide.querySelector('.sandbox-focus-grid');
+    const layer=sandboxFocusSlide.querySelector('.sandbox-spot-rings');
+    if(!card||!grid||!layer)return;
+    layer.replaceChildren();
+    const cardBox=card.getBoundingClientRect();
+    sandboxFocusDefs[sandboxFocusStep].ranges.forEach(([start,end])=>{
+      const first=grid.children[start*7],last=grid.children[end*7+6];
+      if(!first||!last)return;
+      const a=first.getBoundingClientRect(),b=last.getBoundingClientRect();
+      const ring=document.createElement('span');ring.className='sandbox-spot-ring';
+      ring.style.left=`${a.left-cardBox.left+2}px`;
+      ring.style.top=`${a.top-cardBox.top+2}px`;
+      ring.style.width=`${b.right-a.left-4}px`;
+      ring.style.height=`${b.bottom-a.top-4}px`;
+      layer.appendChild(ring);
+    });
+  }
+  function setSandboxFocusState(index){
+    if(sandboxFocusIndex<0)return;
+    sandboxFocusStep=Math.max(0,Math.min(sandboxFocusDefs.length-1,index));
+    const state=sandboxFocusDefs[sandboxFocusStep];
+    sandboxFocusSlide.dataset.sandboxStep=String(sandboxFocusStep+1);
+    sandboxFocusSlide.style.setProperty('--spot-tone',state.tone);
+    const callout=sandboxFocusSlide.querySelector('.sandbox-spot-callout');
+    callout.querySelector('.sandbox-spot-count').textContent=`0${sandboxFocusStep+1} / 03`;
+    callout.querySelector('.sandbox-spot-copy strong').textContent=state.title;
+    callout.querySelector('.sandbox-spot-copy p').textContent=state.copy;
+    sandboxFocusSlide.querySelectorAll('.sandbox-focus-grid>[data-sandbox-group]').forEach(cell=>cell.classList.toggle('sandbox-spot-on',cell.dataset.sandboxGroup===state.group));
+    sandboxFocusSlide.querySelectorAll('[data-sandbox-step]').forEach(button=>{
+      if(Number(button.dataset.sandboxStep)===sandboxFocusStep)button.setAttribute('aria-current','step');
+      else button.removeAttribute('aria-current');
+    });
+    requestAnimationFrame(renderSandboxRings);
+  }
+  function shiftSandboxFocusState(delta){
+    if(current!==sandboxFocusIndex)return false;
+    const next=sandboxFocusStep+delta;
+    if(next<0||next>=sandboxFocusDefs.length)return false;
+    setSandboxFocusState(next);update(current);return true;
+  }
+  setSandboxFocusState(0);
   let agentFocusActive = false;
   function sendTimelineAgentFocus(active) {
     const frame = slides[taskTimelineIndex]?.querySelector('.task-timeline-frame iframe');
@@ -2887,15 +2932,16 @@ mermaid.initialize({
     const page = String(current + 1).padStart(2,'0');
     const total = String(slides.length).padStart(2,'0');
     const isFocusedPage = agentFocusActive && current === taskTimelineIndex;
-    counter.textContent = `${page}${isFocusedPage ? '·聚焦' : ''} / ${total}`;
-    counter.title = isFocusedPage ? `第 ${current + 1} 页 · AI 机制聚焦` : `第 ${current + 1} 页`;
+    const isSandboxFocus=current===sandboxFocusIndex;
+    counter.textContent = `${page}${isSandboxFocus?`.${sandboxFocusStep+1}`:isFocusedPage?'·聚焦':''} / ${total}`;
+    counter.title = isSandboxFocus?`第 ${current + 1} 页 · 沙盘聚焦 ${sandboxFocusStep+1}/3`:isFocusedPage ? `第 ${current + 1} 页 · AI 机制聚焦` : `第 ${current + 1} 页`;
     counter.setAttribute('aria-label', counter.title);
     navDotButtons.forEach((dot, index) => { if (index === current) dot.setAttribute('aria-current','page'); else dot.removeAttribute('aria-current'); });
     prevBtn.disabled = current === 0; nextBtn.disabled = current === slides.length - 1;
     document.body.classList.toggle('on-dark', slides[current].classList.contains('s-glow'));
     if (writeHash && !overview) {
       const demoStep=Number(slides[current].dataset.solutionStep||0);
-      const hash = `#${current + 1}${demoStep>1?`-demo${demoStep}`:isFocusedPage?'-focus':''}`;
+      const hash = `#${current + 1}${isSandboxFocus?`-spot${sandboxFocusStep+1}`:demoStep>1?`-demo${demoStep}`:isFocusedPage?'-focus':''}`;
       hashLock = true;
       try { history.replaceState(null, '', hash); }
       catch (error) { location.hash = hash; }
@@ -2912,6 +2958,12 @@ mermaid.initialize({
   function go(i, behavior = 'smooth') {
     if (overview) return exitOverview(i);
     const target = Math.max(0, Math.min(slides.length - 1, i));
+    if(current===sandboxFocusIndex && target===current+1 && shiftSandboxFocusState(1))return;
+    if(current===sandboxFocusIndex && target===current-1 && shiftSandboxFocusState(-1))return;
+    if(target===sandboxFocusIndex && current!==target){
+      setSandboxFocusState(current<target?0:sandboxFocusDefs.length-1);
+      sandboxWheelLockUntil=Date.now()+700;
+    }
     const withinAgentFocusPair = (current === taskTimelineIndex && target === taskAgentIndex) || (current === taskAgentIndex && target === taskTimelineIndex);
     if (agentFocusActive && !withinAgentFocusPair) resetAgentFocus();
     if (current === taskTimelineIndex && target === taskAgentIndex && !agentFocusActive) return focusAgentLane();
@@ -2963,13 +3015,27 @@ mermaid.initialize({
   const observer = new IntersectionObserver(entries => {
     if (overview) return;
     const visible = entries.filter(e => e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
-    if (visible) update(slides.indexOf(visible.target));
+    if (visible){
+      const target=slides.indexOf(visible.target);
+      if(target===sandboxFocusIndex && current!==target){
+        setSandboxFocusState(current<target?0:sandboxFocusDefs.length-1);
+        sandboxWheelLockUntil=Date.now()+700;
+      }
+      update(target);
+    }
   }, {threshold:[.55,.72,.9]});
   slides.forEach(s => observer.observe(s));
 
   prevBtn.onclick = () => go(current - 1); nextBtn.onclick = () => go(current + 1);
   overviewBtn.onclick = toggleOverview; fullscreenBtn.onclick = toggleFullscreen;
   deck.addEventListener('click',event=>{
+    const sandboxButton=event.target.closest('[data-sandbox-step]');
+    if(sandboxButton && !overview){
+      event.preventDefault();event.stopPropagation();
+      setSandboxFocusState(Number(sandboxButton.dataset.sandboxStep));
+      if(current===sandboxFocusIndex)update(current);
+      return;
+    }
     const step=event.target.closest('[data-solution-step],[data-solution-prev],[data-solution-next]');
     if(!step)return;
     const slide=step.closest('.problem-solution-page');if(!slide?._solutionStates?.length)return;
@@ -2980,7 +3046,16 @@ mermaid.initialize({
     if(slides[current]===slide)update(current);
   });
   addEventListener('wheel', event => {
-    if (overview || taskTimelineIndex < 0 || taskAgentIndex < 0) return;
+    if(overview)return;
+    if(current===sandboxFocusIndex && Math.abs(event.deltaY)>14){
+      event.preventDefault();
+      if(Date.now()<sandboxWheelLockUntil)return;
+      sandboxWheelLockUntil=Date.now()+650;
+      const direction=event.deltaY>0?1:-1;
+      if(!shiftSandboxFocusState(direction))go(current+direction);
+      return;
+    }
+    if(taskTimelineIndex < 0 || taskAgentIndex < 0)return;
     if (agentFocusActive) {
       if (current === taskTimelineIndex) {
         if (event.deltaY < 0) resetAgentFocus();
@@ -2999,10 +3074,21 @@ mermaid.initialize({
     }
   }, {passive:false,capture:true});
   let touchStartY = null;
+  let sandboxTouchStartY=null;
   addEventListener('touchstart', event => {
     touchStartY = !overview && current === taskTimelineIndex && event.touches.length === 1 ? event.touches[0].clientY : null;
+    sandboxTouchStartY = !overview && current === sandboxFocusIndex && event.touches.length === 1 ? event.touches[0].clientY : null;
   }, {passive:true,capture:true});
   addEventListener('touchmove', event => {
+    if(sandboxTouchStartY!==null && current===sandboxFocusIndex && event.touches.length===1){
+      const delta=sandboxTouchStartY-event.touches[0].clientY;
+      if(Math.abs(delta)>=24){
+        sandboxTouchStartY=null;event.preventDefault();
+        const direction=delta>0?1:-1;
+        if(!shiftSandboxFocusState(direction))go(current+direction);
+        return;
+      }
+    }
     if (touchStartY === null || overview || current !== taskTimelineIndex || event.touches.length !== 1) return;
     const deltaY = touchStartY - event.touches[0].clientY;
     if (Math.abs(deltaY) < 24) return;
@@ -3014,7 +3100,7 @@ mermaid.initialize({
     } else if (agentFocusActive) resetAgentFocus();
   }, {passive:false,capture:true});
   addEventListener('keydown', e => {
-    if (['INPUT','TEXTAREA','BUTTON'].includes(document.activeElement.tagName)) return;
+    if (['INPUT','TEXTAREA'].includes(document.activeElement.tagName) || (document.activeElement.tagName==='BUTTON' && !document.activeElement.hasAttribute('data-sandbox-step'))) return;
     if (agentFocusActive && e.repeat && ['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); return; }
     if (e.key === 'Escape' && overview) return exitOverview(current);
     if (e.key.toLowerCase() === 'o') return toggleOverview();
@@ -3029,12 +3115,12 @@ mermaid.initialize({
   addEventListener('mousemove', e => { if (e.clientY > innerHeight - 100) showUI(); if (e.clientX > innerWidth - 70) navDots.classList.add('show'); else if (!navDots.matches(':hover')) navDots.classList.remove('show'); });
   addEventListener('touchstart', showUI, {passive:true});
   addEventListener('scroll', () => { document.body.classList.add('scrolling'); clearTimeout(scrollTimer); scrollTimer=setTimeout(()=>document.body.classList.remove('scrolling'),700); }, {passive:true});
-  addEventListener('resize', () => { if (overview) fitOverview(); });
+  addEventListener('resize', () => { if (overview) fitOverview(); requestAnimationFrame(renderSandboxRings); });
   function parseDeckHash(hash) {
-    const match = /^#(\d+)(-focus|-demo(\d+))?$/.exec(hash || '');
+    const match = /^#(\d+)(-focus|-demo(\d+)|-spot([1-3]))?$/.exec(hash || '');
     if (!match) return null;
     const page = Number(match[1]);
-    return Number.isInteger(page) && page >= 1 && page <= slides.length ? {page, focus: match[2]==='-focus', demoStep:match[3]?Number(match[3]):null} : null;
+    return Number.isInteger(page) && page >= 1 && page <= slides.length ? {page, focus: match[2]==='-focus', demoStep:match[3]?Number(match[3]):null,spotStep:match[4]?Number(match[4]):null} : null;
   }
   addEventListener('hashchange', () => {
     if (hashLock || overview) return;
@@ -3044,6 +3130,7 @@ mermaid.initialize({
     agentFocusActive = route.focus && target === taskTimelineIndex;
     sendTimelineAgentFocus(agentFocusActive);
     if(route.demoStep)setSolutionState(slides[target],route.demoStep-1);
+    if(target===sandboxFocusIndex)setSandboxFocusState((route.spotStep||1)-1);
     slides[target].scrollIntoView({behavior:'instant',block:'start'});
     update(target, true);
   });
@@ -3052,6 +3139,7 @@ mermaid.initialize({
   agentFocusActive = Boolean(initialRoute?.focus && initial === taskTimelineIndex);
   if (agentFocusActive) sendTimelineAgentFocus(true);
   if(initialRoute?.demoStep)setSolutionState(slides[initial],initialRoute.demoStep-1);
+  if(initial===sandboxFocusIndex)setSandboxFocusState((initialRoute?.spotStep||1)-1);
   update(initial, Boolean(initialRoute?.focus && !agentFocusActive));
   requestAnimationFrame(() => go(current, 'instant')); showUI();
 })();
