@@ -3793,3 +3793,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 业务与证据边界：两版都保留减框处理，只比较五阶段是否采用同一种主题色；五列七行、任务文案、能力节点与连线源 DOM 未变，正式报告未改，无新研究事实、页面序列或 API／Host／Application 分层变化。
 - 验证：矩阵 DOM 与改动前 HEAD 逐字一致，HTMLParser、内联 JS `node --check`、两方案按钮检查与 `git diff --check` 均通过。本地 `file://` 浏览器 URL policy 仍不允许截图级复核。
 - Commit / push：`7308b25e`（`fix: compare only same-color and multicolor low-border styles`）已单文件提交并推送 `origin/main`；本交接记录另行提交推送。未决：用户刷新后比较 `#1`／`#2`，再决定正式第 5 页样式。
+
+### 2026-09-28（分色减框去除中间四行整行背景）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。用户认为 `#1` 同色减框目前效果最好，并要求 `#2` 分色减框去掉“中间四行每一行统一的背景”。本轮仅对分色减框取消开发者、智能体、机制与装配、体验观察四条整行轨道的白色／浅色底与外层阴影；各阶段格内的淡色区分、阶段卡、痛点红色底、已完成研究的灰色状态均保留。同色减框未改。
+- 业务与证据边界：只调整预览中一种样式的行级底色，不改五列七行结构、文字、能力节点、连线源、正式报告页序或 API／Host／Application 分层；无新研究事实。
+- 验证：`git diff --check` 通过，差异仅为分色方案四条行轨道新增透明背景／无边框／无阴影规则；本地 `file://` URL policy 限制截图级复核。
+- Commit / push：`f5595ef0`（`design: remove row-wide backgrounds from multicolor preview`）已单文件提交并推送 `origin/main`；本交接记录另行提交推送。未决：用户刷新 `#2` 后比较与 `#1` 的效果，正式第 5 页尚未迁移。
