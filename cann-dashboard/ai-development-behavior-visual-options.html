@@ -679,6 +679,8 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-mechanism-stage{position:relative;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));align-content:center;gap:.52vh .48vw;padding:1.05vh .26vw .16vh;border:0;border-radius:0;background:transparent}
 .cb-mech-connectors{position:absolute;z-index:1;left:0;width:100%;pointer-events:none;overflow:visible}
 .cb-mech-connectors path{fill:none;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.cb-plugin-connector{position:absolute;z-index:1;left:0;width:100%;pointer-events:none;overflow:visible}
+.cb-plugin-connector path{fill:none;stroke-width:1.22;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .cb-mechanism-stage.dense .cb-mech-node:last-child{grid-column:1/-1;width:calc(50% - .15vw);justify-self:center}
 .cb-mechanism-stage.six .cb-mech-node:last-child{grid-column:auto;width:auto}
 .cb-mechanism-stage.few{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,6.5vh);align-content:center}
@@ -1183,7 +1185,7 @@ body[data-stage-layout="d"] .cb-stage span{display:none}
           </div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-action">
-          <div class="cb-vertical-flow"><span>Search：查官方算子教程</span><i>↓</i><span>Fetch：取回正文与示例</span><i>↓</i><span class="cb-agent-callout">正文未取回 → 转查外部资料</span></div>
+          <div class="cb-vertical-flow"><span>Search：检索官方算子教程</span><i>↓</i><span>Fetch：官方正文未取回</span><i>↓</i><span class="cb-agent-callout" data-plugin-target>Plugin 示例：转查社区资料 · 成功返回</span></div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-generate">
           <div class="cb-preview-stack">
@@ -1213,7 +1215,7 @@ body[data-stage-layout="d"] .cb-stage span{display:none}
       </div>
 
       <div class="cb-row-label cb-mech-label"><small>MECHANISM</small><b>机制与装配</b></div>
-      <div class="cb-mechanism-rail" aria-label="阶段能力节点指向对应 Agent 动作；Plugin / Extension 表示独立安装分发入口；Agent Loop 映射工具结果回填后的跨阶段下一轮">
+      <div class="cb-mechanism-rail" aria-label="阶段能力节点指向对应 Agent 动作；Plugin / Extension 是独立安装分发入口，本示例假设扩展提供的 AddCustom 教程检索能力在 Search / Fetch 成功使用；Agent Loop 映射工具结果回填后的跨阶段下一轮">
         <div class="cb-mechanism-stages" aria-label="机制在 Need、Search、Generate、Decide、Execute 五阶段中的可能作用；平台供给因产品而异">
           <div class="cb-mechanism-stage few is-source">
             <div class="cb-mech-node"><b>Rules</b><span>LOAD · 带入算子工程约束</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
@@ -1244,9 +1246,9 @@ body[data-stage-layout="d"] .cb-stage span{display:none}
             <div class="cb-mech-node cap-neutral"><b>Checkpoint</b><span>保存工程 / 检索现场</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
           </div>
         </div>
-        <div class="cb-mechanism-meta" aria-label="跨阶段机制：Plugin / Extension 是安装分发入口；此处展示假设插件内的 AddCustom 教程检索成功，不代表本任务实测。Agent Loop 展示 Search 结果和 Execute 回执进入下一轮判断的路径映射">
-          <div class="cb-mech-node cap-blue cb-mech-plugin" aria-label="Plugin / Extension 示例：假设已启用算子开发扩展，并调用其提供的 AddCustom 教程检索能力成功取回教程；这是说明性示例，不是本任务的实际运行记录">
-            <b>Plugin / Extension</b><span>示例 · AddCustom 教程检索成功</span><i class="cb-mech-dot" aria-hidden="true"></i>
+        <div class="cb-mechanism-meta" aria-label="跨阶段机制：Plugin / Extension 是安装分发入口；本示例假设启用算子开发扩展后，在 Search / Fetch 中成功检索 AddCustom 社区教程，不代表本任务实测。Agent Loop 展示 Search 结果和 Execute 回执进入下一轮判断的路径映射">
+          <div class="cb-mech-node cap-blue cb-mech-plugin" aria-label="Plugin / Extension 示例：假设启用算子开发扩展后，其 AddCustom 教程检索能力在 Search / Fetch 中成功取回社区教程；这是说明性示例，不是本任务的实际运行记录">
+            <b>Plugin / Extension</b><span>示例 · 社区教程检索成功</span><i class="cb-mech-dot" aria-hidden="true"></i>
           </div>
           <div class="cb-mech-node cap-green cb-agent-loop-summary" aria-label="Agent Loop 路径映射：Search / Fetch 结果回填后进入 Generate 下一轮；Execute 回执回填后返回 Decide 或恢复判断。此处是机制路径还原，不是本任务的实际运行记录，也不代表定时循环">
             <div class="cb-agent-loop-title"><b>Agent Loop</b><span>结果回填 · 跨阶段</span></div>
@@ -1338,6 +1340,9 @@ body[data-stage-layout="d"] .cb-stage span{display:none}
   if (!blueprint) return;
   const stages = [...blueprint.querySelectorAll('.cb-mechanism-stages > .cb-mechanism-stage')];
   const targets = [...blueprint.querySelectorAll('.cb-agent-lane > .cb-agent-step')];
+  const mechanismRail = blueprint.querySelector('.cb-mechanism-rail');
+  const plugin = blueprint.querySelector('.cb-mech-plugin');
+  const pluginTarget = blueprint.querySelector('[data-plugin-target]');
   const ns = 'http://www.w3.org/2000/svg';
   let frame = 0;
 
@@ -1414,7 +1419,37 @@ body[data-stage-layout="d"] .cb-stage span{display:none}
       svg.innerHTML = `<defs>${defs.join('')}</defs>${paths.join('')}`;
     });
 
-    // Plugin / Extension 是分发入口，不是任务动作；Agent Loop 是跨阶段回流，单独呈现路径映射。
+    if (mechanismRail && plugin && pluginTarget && mechanismRail.offsetWidth) {
+      let svg = mechanismRail.querySelector(':scope > svg.cb-plugin-connector');
+      if (!svg) {
+        svg = document.createElementNS(ns, 'svg');
+        svg.setAttribute('class', 'cb-plugin-connector');
+        svg.setAttribute('aria-hidden', 'true');
+        mechanismRail.prepend(svg);
+      }
+      const rr = mechanismRail.getBoundingClientRect();
+      const pr = plugin.getBoundingClientRect(), tr = pluginTarget.getBoundingClientRect();
+      const sx = rr.width / mechanismRail.offsetWidth || 1;
+      const sy = rr.height / mechanismRail.offsetHeight || 1;
+      const width = mechanismRail.offsetWidth;
+      const startX = (pr.left + pr.width / 2 - rr.left) / sx;
+      const endX = (tr.left + tr.width / 2 - rr.left) / sx;
+      const startY = (pr.top - rr.top) / sy;
+      const endY = (tr.bottom - rr.top) / sy;
+      const height = startY - endY;
+      if (height > 0) {
+        svg.style.top = `${endY}px`;
+        svg.style.height = `${height}px`;
+        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        svg.setAttribute('preserveAspectRatio', 'none');
+        const tone = getComputedStyle(plugin).getPropertyValue('--cap-tone').trim() || '#377ad2';
+        const markerId = 'cb-plugin-example-arrow';
+        const d = `M ${Number(startX.toFixed(2))} ${Number(height.toFixed(2))} L ${Number(endX.toFixed(2))} 0`;
+        svg.innerHTML = `<defs><marker id="${markerId}" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M 2 0 L 6 4 L 2 8" fill="none" stroke="${tone}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><path d="${d}" stroke="${tone}" stroke-dasharray="4 3" marker-end="url(#${markerId})"/>`;
+      }
+    }
+
+    // The dashed Plugin example line connects the extension entry to its successful Search / Fetch use.
   };
 
   const schedule = () => { if (!frame) frame = requestAnimationFrame(draw); };
