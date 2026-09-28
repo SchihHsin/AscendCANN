@@ -3870,3 +3870,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 交互与证据边界：各步只圈出对应矩阵行，非连续行分组圈选，其他行退后；解释紧贴矩阵，无自动计时。按钮、方向键、翻页控件、滚轮及触摸可逐步推进；URL `#15-spot1`／`#15-spot2`／`#15-spot3` 与页码 `15.1`／`15.2`／`15.3` 区分状态并支持刷新直达。内容只归纳第 14 页的 H／M 沙盘证据；“Hook 本轮未确认”不等于平台不存在 Hook，OpenCode 源码可审阅不等于 Runtime 可直接装配，未提前推导昇腾建设项。Report PPT Skill 的既有证据矩阵聚光灯与手动状态规则用于实现。
 - 验证：六段内联 JS 分别通过 `node --check`，`git diff --cached --check` 通过；1600×900 三态与 1440×810 桌面截图均无裁切，矩阵与第 14 页的位置基本对齐。键盘从 `#14` 依次进入三态再到 `#16`，从 `#16` 返回第三态、点击步骤、滚轮切换及 `#15-spot2` 刷新恢复均通过，0 个页面脚本错误。原报告文件中的两处并行 CSS 脏改动未纳入本次提交。
 - Commit / push：功能提交 `72818deb`（`design: spotlight sandbox conclusions on shared matrix`）已推送 `origin/main`；本交接记录单独提交并推送。未决：用户现场查看三态聚焦的节奏与强调程度后可继续调整，但不得把第 16 页资产混入沙盘直接结论。
+
+
+### 2026-09-28（复核第 5 页 Plugin / Agent Loop 连线语义）
+
+- 本轮为只读研究；未修改 `cann-dashboard/ai-development-behavior-visual-options.html` 或正式报告、未调整布局、页序及 API／Host／Application 边界。
+- 预览现状：Plugin / Extension 虚线指向 Search Agent 动作；Agent Loop 实线指向 Decide Agent 动作。按机制含义，这两处落点都不成立为确定关系：Plugin 是可安装 / 分发入口，可能携带 Skill、MCP Server 或 App，不是 Search 执行器；本任务也未见插件实际调用。Agent Loop 是 Host 对“工具调用 → 执行 → 结果回填 → 下一轮模型请求”的跨阶段编排，不是指向 Decide 的单点能力。
+- 可落图关系：Plugin 保持独立的安装 / 分发入口；只有在明确具体扩展包及其携带内容时，才以虚线连到实际装配的机制节点，并标为分发关系。Agent Loop 应表达为跨阶段的结果回流轨；在当前任务路径重建中，Search / Fetch 结果进入后续 Generate 模型回合，Execute 回执进入后续 Decide / 继续或恢复判断。两者是基于机制的路径还原，不等于本任务观测到实际插件调用或匹配 Ascend 环境下的实际循环。
+- 依据：`cann-dashboard/agent-tool-calling-reference.html` 对共同工具回合及 Loop / `/loop` 区别的说明和其公开来源链接；`cann-dashboard/ai-development-behavior-system-report.html` 的平台能力沙盘；`cann-dashboard/ai-coding-platform-mechanism-report-reframed.html` 已采用的独立安装分发节点与横向 Agent Loop 回流轨。能力定义引用公开资料（H）；AddCustom 任务内的具体调用关系未观察，故保持假设 / 路径重建边界。
+- 未决：用户确认后再决定是否把上述连线语义应用到视觉预览；本轮没有变更待合并。
