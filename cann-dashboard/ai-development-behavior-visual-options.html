@@ -1098,11 +1098,12 @@ body[data-variant="five"] .cb-mechanism-stage .cb-mech-node b{color:color-mix(in
 body[data-variant="five"] .cb-mechanism-stage .cb-mech-dot{background:var(--phase)}
 body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in srgb,var(--phase) 8%,#fff);border:0;border-radius:8px}
 
-/* Three ways to arrange the same title and illustration within the unchanged stage height. */
-body[data-stage-layout="a"] .cb-stage{grid-template-columns:minmax(0,1fr) clamp(42px,3.4vw,54px);grid-template-rows:auto auto;column-gap:.2vw;row-gap:.12vh;align-content:center;padding:.5vh .58vw .55vh}
+/* A/B/C are the new arrangements; D keeps the original left-copy / right-illustration layout without subtitles. */
+body[data-stage-layout="a"] .cb-stage{grid-template-columns:minmax(0,1fr) clamp(42px,3.4vw,54px);grid-template-rows:auto auto minmax(0,1fr);column-gap:.2vw;row-gap:.12vh;align-content:stretch;padding:.5vh .58vw .55vh}
 body[data-stage-layout="a"] .cb-stage-copy{display:contents}
 body[data-stage-layout="a"] .cb-stage small{grid-column:1;grid-row:1}
 body[data-stage-layout="a"] .cb-stage b{grid-column:1;grid-row:2}
+body[data-stage-layout="a"] .cb-stage span{grid-column:1/-1;grid-row:3;align-self:end}
 body[data-stage-layout="a"] .cb-stage-visual{grid-column:2;grid-row:1/3;align-self:center;width:clamp(42px,3.4vw,54px);height:clamp(38px,4.8vh,46px)}
 
 body[data-stage-layout="b"] .cb-stage{position:relative;display:flex;align-items:center;padding:.58vh .67vw}
@@ -1113,13 +1114,15 @@ body[data-stage-layout="c"] .cb-stage{grid-template-columns:clamp(42px,3.7vw,56p
 body[data-stage-layout="c"] .cb-stage-copy{grid-column:2;grid-row:1;display:flex;flex-direction:column;justify-content:center;gap:.18vh}
 body[data-stage-layout="c"] .cb-stage-visual{grid-column:1;grid-row:1;width:clamp(42px,3.7vw,56px);height:clamp(40px,5.2vh,50px)}
 body[data-stage-layout="c"] .cb-stage-visual::before{inset:-8% -12%}
+body[data-stage-layout="d"] .cb-stage span{display:none}
 </style>
 </head>
-<body data-variant="three" data-stage-layout="a">
+<body data-variant="three" data-stage-layout="d">
 <div class="preview-toolbar">
   <nav class="preview-switch stage-layout-switch" aria-label="阶段卡排布方案切换">
     <span class="stage-layout-switch-label">阶段卡</span>
-    <button class="preview-choice" type="button" data-layout="a" aria-pressed="true">A 卡内重排</button>
+    <button class="preview-choice" type="button" data-layout="d" aria-pressed="true">旧版去说明</button>
+    <button class="preview-choice" type="button" data-layout="a" aria-pressed="false">A 卡内重排</button>
     <button class="preview-choice" type="button" data-layout="b" aria-pressed="false">B 插图作背景</button>
     <button class="preview-choice" type="button" data-layout="c" aria-pressed="false">C 图文分区</button>
   </nav>
@@ -1144,11 +1147,11 @@ body[data-stage-layout="c"] .cb-stage-visual::before{inset:-8% -12%}
       </div>
       <div class="cb-axis"><small>STAGE</small><b>阶段</b></div>
       <div class="cb-stage-rail" aria-label="五个任务阶段：Need（提出目标并装配初始上下文）、Search / Fetch、Generate、Decide、Execute">
-        <div class="cb-stage is-source"><div class="cb-stage-copy"><small>01 · NEED + CONTEXT</small><b>提出目标与上下文</b></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/need-context.png" alt=""></div></div>
-        <div class="cb-stage is-action"><div class="cb-stage-copy"><small>02 · SEARCH / FETCH</small><b>检索与取回</b></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/search-fetch.png" alt=""></div></div>
-        <div class="cb-stage is-generate"><div class="cb-stage-copy"><small>03 · GENERATE</small><b>生成候选方案</b></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/generate.png" alt=""></div></div>
-        <div class="cb-stage is-control"><div class="cb-stage-copy"><small>04 · DECIDE</small><b>判断方案</b></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/decide.png" alt=""></div></div>
-        <div class="cb-stage is-evidence"><div class="cb-stage-copy"><small>05 · EXECUTE</small><b>执行任务</b></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/execute.png" alt=""></div></div>
+        <div class="cb-stage is-source"><div class="cb-stage-copy"><small>01 · NEED + CONTEXT</small><b>提出目标与上下文</b><span>装配环境、约束与工作区现场</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/need-context.png" alt=""></div></div>
+        <div class="cb-stage is-action"><div class="cb-stage-copy"><small>02 · SEARCH / FETCH</small><b>检索与取回</b><span>发现并取得相关信息</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/search-fetch.png" alt=""></div></div>
+        <div class="cb-stage is-generate"><div class="cb-stage-copy"><small>03 · GENERATE</small><b>生成候选方案</b><span>整理路径、参数与工程草稿</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/generate.png" alt=""></div></div>
+        <div class="cb-stage is-control"><div class="cb-stage-copy"><small>04 · DECIDE</small><b>判断方案</b><span>核验条件并选择路径</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/decide.png" alt=""></div></div>
+        <div class="cb-stage is-evidence"><div class="cb-stage-copy"><small>05 · EXECUTE</small><b>执行任务</b><span>行动、状态与结果回传</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/execute.png" alt=""></div></div>
       </div>
 
       <div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>
@@ -1298,12 +1301,12 @@ body[data-stage-layout="c"] .cb-stage-visual::before{inset:-8% -12%}
   const colorButtons = [...document.querySelectorAll('[data-choice]')];
   const layoutButtons = [...document.querySelectorAll('[data-layout]')];
   const parseHash = () => {
-    const match = /^#([12])(?:-([abc]))?$/.exec(location.hash.toLowerCase());
-    return {variant: match?.[1] === '2' ? 'five' : 'three', layout: match?.[2] || 'a', valid: Boolean(match) || !location.hash};
+    const match = /^#([12])(?:-([abcd]))?$/.exec(location.hash.toLowerCase());
+    return {variant: match?.[1] === '2' ? 'five' : 'three', layout: match?.[2] || 'd', valid: Boolean(match) || !location.hash};
   };
   const setPreview = (variant, layout, updateHash = true) => {
     const nextVariant = variant === 'five' ? 'five' : 'three';
-    const nextLayout = ['a','b','c'].includes(layout) ? layout : 'a';
+    const nextLayout = ['a','b','c','d'].includes(layout) ? layout : 'd';
     document.body.dataset.variant = nextVariant;
     document.body.dataset.stageLayout = nextLayout;
     colorButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.choice === nextVariant)));
@@ -1321,7 +1324,7 @@ body[data-stage-layout="c"] .cb-stage-visual::before{inset:-8% -12%}
     if (event.metaKey || event.ctrlKey || event.altKey) return;
     if (event.key === '1') setPreview('three', document.body.dataset.stageLayout);
     if (event.key === '2') setPreview('five', document.body.dataset.stageLayout);
-    if (['a','b','c'].includes(event.key.toLowerCase())) setPreview(document.body.dataset.variant, event.key.toLowerCase());
+    if (['a','b','c','d'].includes(event.key.toLowerCase())) setPreview(document.body.dataset.variant, event.key.toLowerCase());
   });
   const selected = parseHash();
   setPreview(selected.variant, selected.layout, !selected.valid);
