@@ -963,7 +963,7 @@ body[data-variant="two"] .cb-painpoint-item span{color:#f2dfe3}
 body[data-variant="two"] .cb-actor-icon{color:#ff7e8e}
 </style>
 <style>
-/* 3 · One accent for all five columns; remove repeated outlines at every row. */
+/* Shared low-border treatment for the two color comparisons. */
 .preview-switch-label{display:none}
 body:is([data-variant="three"],[data-variant="five"]) .task-rel-page{
   --phase-source:#6c7ed4;--phase-action:#6c7ed4;--phase-generate:#6c7ed4;
@@ -1036,60 +1036,7 @@ body:is([data-variant="three"],[data-variant="five"]) .cb-painpoint-node{backgro
 body:is([data-variant="three"],[data-variant="five"]) .cb-painpoint-item span{color:#684f55}
 body:is([data-variant="three"],[data-variant="five"]) .cb-actor-icon{color:#d65768}
 
-/* 1 · Same-color linework. Only first-level cells and capability nodes have strokes. */
-body[data-variant="four"] .task-rel-page{--phase-source:#6c7ed4;--phase-action:#6c7ed4;--phase-generate:#6c7ed4;--phase-control:#6c7ed4;--phase-evidence:#6c7ed4;background:#f4f6fa}
-body[data-variant="four"] .task-rel-page .head-l .ttl{color:#232d3e}
-body[data-variant="four"] .task-rel-page .subttl{color:#748094;font-weight:480}
-body[data-variant="four"] .collab-blueprint{background:transparent;border:0;box-shadow:none}
-body[data-variant="four"] .cb-phase-tracks{display:none}
-body[data-variant="four"] .cb-axis,
-body[data-variant="four"] .cb-row-label{background:transparent;border:0;padding-left:.2vw}
-body[data-variant="four"] .cb-axis b,
-body[data-variant="four"] .cb-row-label b{color:#354258;font-weight:820}
-body[data-variant="four"] .cb-axis small,
-body[data-variant="four"] .cb-row-label small{color:#8490a5;letter-spacing:.08em}
-body[data-variant="four"] .cb-stage{background:linear-gradient(130deg,#fff,#f2f4ff);border:1.5px solid #9ba8e2;border-radius:9px;box-shadow:none}
-body[data-variant="four"] .cb-stage small{color:#6476c7;font-weight:800}
-body[data-variant="four"] .cb-stage b{color:#253452}
-body[data-variant="four"] .cb-stage span{color:#62708c}
-body[data-variant="four"] .cb-stage-visual::before{background:radial-gradient(ellipse,rgba(119,134,222,.31),transparent 72%)}
-body[data-variant="four"] .cb-stage-visual img{filter:grayscale(1) sepia(1) hue-rotate(190deg) saturate(2.3) brightness(1.08) drop-shadow(0 4px 6px rgba(33,44,90,.18))}
-body[data-variant="four"] .cb-human-lane,
-body[data-variant="four"] .cb-agent-lane,
-body[data-variant="four"] .cb-mechanism-rail,
-body[data-variant="four"] .cb-measure-rail{background:transparent;border:0;box-shadow:none}
-body[data-variant="four"] .cb-lane-cell{background:#fff;border:1px solid #d1d9ed;border-radius:8px;box-shadow:none}
-body[data-variant="four"] .cb-human-step b{color:#30405e;font-weight:800}
-body[data-variant="four"] .cb-human-step p{color:#667186}
-body[data-variant="four"] .cb-handoff-rail{background:transparent;border:0}
-body[data-variant="four"] .cb-handoff{color:#697ac9}
-body[data-variant="four"] .cb-source-nodes span,
-body[data-variant="four"] .cb-vertical-flow>span,
-body[data-variant="four"] .cb-preview,
-body[data-variant="four"] .cb-proof-items span{background:#f5f6fb;border:0;border-radius:5px;box-shadow:none}
-body[data-variant="four"] .cb-source-merge span{background:#fff}
-body[data-variant="four"] .cb-trust-gate,
-body[data-variant="four"] .cb-context-result,
-body[data-variant="four"] .cb-proof-result{background:#edf0fa;border:0;border-radius:6px}
-body[data-variant="four"] .cb-vertical-flow .cb-agent-callout{background:#eef0fa;border:0}
-body[data-variant="four"] .cb-mechanism-stage{background:transparent}
-body[data-variant="four"] .cb-mech-node,
-body[data-variant="four"] .cb-mech-node.cap-blue,
-body[data-variant="four"] .cb-mech-node.cap-teal,
-body[data-variant="four"] .cb-mech-node.cap-amber,
-body[data-variant="four"] .cb-mech-node.cap-green,
-body[data-variant="four"] .cb-mech-node.cap-neutral{--cap-tone:#6c7ed4;background:#fff;border:1px solid #aab5e5;border-radius:8px;box-shadow:none}
-body[data-variant="four"] .cb-mech-node b{color:#384c84}
-body[data-variant="four"] .cb-mech-node span{color:#6a7691}
-body[data-variant="four"] .cb-mech-dot{box-shadow:none}
-body[data-variant="four"] .cb-mech-connectors path{stroke-width:1.2;opacity:.8}
-body[data-variant="four"] .cb-measure{background:#fff;border:1px solid #d1d9ed;border-radius:8px;box-shadow:none}
-body[data-variant="four"] .cb-measure.completed{background:#dce2ea;border:1px solid #8895a5;box-shadow:none}
-body[data-variant="four"] .cb-painpoint-rail{background:#fffafb;border:1px solid #e8bdc4;border-radius:9px;box-shadow:none}
-body[data-variant="four"] .cb-painpoint-node{background:transparent;border:0;border-radius:0;padding:.33vh .45vw;box-shadow:none}
-body[data-variant="four"] .cb-painpoint-item span{color:#684f55}
-
-/* 2 · Different stage colors, with the low-border material of option 3. */
+/* Different stage colors on the shared low-border treatment. */
 body[data-variant="five"] .task-rel-page{--phase-source:#3f77b7;--phase-action:#7558b7;--phase-generate:#dc8055;--phase-control:#258e98;--phase-evidence:#438b69;background:radial-gradient(ellipse at 72% 1%,rgba(161,173,219,.11),transparent 40%),#edf0f5}
 body[data-variant="five"] .cb-stage{background:linear-gradient(130deg,#283344,color-mix(in srgb,var(--phase) 33%,#253041))}
 body[data-variant="five"] .cb-stage small{color:color-mix(in srgb,var(--phase) 49%,#fff)}
@@ -1111,12 +1058,11 @@ body[data-variant="five"] .cb-mechanism-stage .cb-mech-dot{background:var(--phas
 body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in srgb,var(--phase) 8%,#fff);border:0;border-radius:8px}
 </style>
 </head>
-<body data-variant="four">
+<body data-variant="three">
 <nav class="preview-switch" aria-label="第 5 页视觉方案切换">
   <span class="preview-switch-label">第 5 页视觉对照</span>
-  <button class="preview-choice" type="button" data-choice="four" aria-pressed="true">1 同色线框</button>
+  <button class="preview-choice" type="button" data-choice="three" aria-pressed="true">1 同色减框</button>
   <button class="preview-choice" type="button" data-choice="five" aria-pressed="false">2 分色减框</button>
-  <button class="preview-choice" type="button" data-choice="three" aria-pressed="false">3 同色减框</button>
 </nav>
 <div id="deck">
 <!-- AGENT MECHANISM DRILL-DOWN -->
@@ -1283,20 +1229,19 @@ body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in sr
 (() => {
   const buttons = [...document.querySelectorAll('.preview-choice')];
   const setVariant = (variant, updateHash = true) => {
-    const next = variant === 'three' ? 'three' : variant === 'five' ? 'five' : 'four';
+    const next = variant === 'five' ? 'five' : 'three';
     document.body.dataset.variant = next;
     buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.choice === next)));
-    if (updateHash) history.replaceState(null, '', next === 'three' ? '#3' : next === 'five' ? '#2' : '#1');
+    if (updateHash) history.replaceState(null, '', next === 'five' ? '#2' : '#1');
     requestAnimationFrame(() => dispatchEvent(new Event('resize')));
   };
   buttons.forEach(button => button.addEventListener('click', () => setVariant(button.dataset.choice)));
-  addEventListener('hashchange', () => setVariant(location.hash === '#3' ? 'three' : location.hash === '#2' ? 'five' : 'four', false));
+  addEventListener('hashchange', () => setVariant(location.hash === '#2' ? 'five' : 'three'));
   addEventListener('keydown', event => {
-    if (event.key === '1') setVariant('four');
+    if (event.key === '1') setVariant('three');
     if (event.key === '2') setVariant('five');
-    if (event.key === '3') setVariant('three');
   });
-  setVariant(location.hash === '#3' ? 'three' : location.hash === '#2' ? 'five' : 'four', false);
+  setVariant(location.hash === '#2' ? 'five' : 'three');
 })();
 
 </script>
