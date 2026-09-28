@@ -1891,7 +1891,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   function setSandboxFocusState(index){
     if(sandboxFocusIndex<0)return;
     sandboxFocusStep=Math.max(-1,Math.min(sandboxFocusDefs.length-1,index));
-    const state=sandboxFocusStep<0?{group:null,tone:'var(--c-ink)',title:'先看全貌，再看三条结论',copy:'同一张沙盘：共通接入 → 差异装配 → 平台内核。点击步骤或逐步翻页，无自动定时。'}:sandboxFocusDefs[sandboxFocusStep];
+    const state=sandboxFocusStep<0?{group:null,tone:'var(--c-ink)',title:'六个平台的能力入口与运行边界',copy:'项目规则、知识检索、Skill 与 MCP 等均有对应入口；Plugin、Command、Agent 和 Hook 的装配方式各不相同。'}:sandboxFocusDefs[sandboxFocusStep];
     sandboxFocusSlide.classList.toggle('is-overview',sandboxFocusStep<0);
     sandboxFocusSlide.dataset.sandboxStep=String(sandboxFocusStep+1);
     sandboxFocusSlide.style.setProperty('--spot-tone',state.tone);
