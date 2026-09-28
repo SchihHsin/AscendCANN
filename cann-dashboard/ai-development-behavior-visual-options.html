@@ -831,12 +831,133 @@ body[data-variant="two"] .cb-painpoint-rail{background:#fff4f4;border-color:#efd
 }
 
 </style>
+<style>
+/* Second round: two genuinely different information structures. The source matrix below
+   stays in the document as the exact content source for both explorations. */
+#deck{display:none!important}
+.preview-switch{top:2.8vh;right:3.4vw;padding:5px;background:#fff;border:1px solid #dce2eb;box-shadow:0 8px 28px rgba(25,35,58,.1)}
+.preview-choice{font-size:12px;padding:9px 14px}
+.preview-switch-label{padding-left:5px;font-size:11px}
+.visual-app{display:none;width:100vw;height:100vh;overflow:hidden;padding:3.6vh 3.4vw 3.2vh;color:#202b3b;background:#f1f3f6;font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif}
+body[data-variant="one"] #visual-one,body[data-variant="two"] #visual-two{display:grid}
+.visual-app *{min-width:0;min-height:0}
+.visual-app button{font-family:inherit}
+.va-header{display:flex;flex-direction:column;justify-content:center;gap:.55vh;padding-right:28vw}
+.va-kicker{font:780 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.12em;color:#677489}
+.va-header h1{font-size:clamp(24px,1.88vw,31px);line-height:1.15;letter-spacing:-.025em;color:#1e2a3a}
+.va-header p{font-size:14px;line-height:1.3;color:#6a788a}
+.va-section-label{font:760 10px/1.2 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#8390a1}
+.va-section-label strong{margin-left:.5vw;font:750 13px/1.2 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;letter-spacing:0;color:#506076}
+.visual-app strong,.visual-app b{font-weight:780}
+.va-pick{cursor:pointer;appearance:none;border:0;text-align:left;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.va-pick:hover{transform:translateY(-2px)}
+.va-pick:focus-visible{outline:3px solid #6472df;outline-offset:2px}
+.va-stage-no{font:760 12px/1 'JetBrains Mono',monospace;letter-spacing:.06em}
+.va-stage-en{font:780 10px/1.2 'JetBrains Mono',monospace;letter-spacing:.07em}
+.va-stage-name{font-size:clamp(15px,1.12vw,19px);font-weight:820;line-height:1.16}
+.va-stage-desc{font-size:12px;line-height:1.25}
+.va-panel{background:#fff;border:1px solid #dfe5ed;border-radius:15px;box-shadow:0 9px 26px -23px rgba(26,40,64,.42)}
+.va-panel-head{display:flex;align-items:baseline;gap:.5vw;margin-bottom:1.3vh}
+.va-panel-head em{font:750 10px/1 'JetBrains Mono',monospace;font-style:normal;letter-spacing:.11em;color:#96a1ae}
+.va-panel-head b{font-size:15px;color:#273548}
+.va-panel p{font-size:14px;line-height:1.43;color:#5a6879}
+.va-human-title{font-size:clamp(17px,1.28vw,21px);line-height:1.26;color:#202d40;margin-bottom:1.1vh}
+.va-handoff{display:flex;align-items:center;gap:.55vw;margin-top:auto;padding:1.1vh .78vw;border-radius:9px;background:#edf2f9;color:#3f536d;font-size:13px;line-height:1.25}
+.va-handoff svg{width:16px;height:16px;flex:none;stroke:#5e71d2;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.va-cap-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55vh .45vw;align-content:start}
+.va-cap{display:flex;flex-direction:column;justify-content:center;gap:.2vh;padding:.65vh .53vw;border:1px solid #e5e9f0;border-radius:8px;background:#f8fafc}
+.va-cap b{font-size:12px;line-height:1.12;color:#2c3950}
+.va-cap span{font-size:11px;line-height:1.18;color:#6b7684}
+.va-cross{display:grid;grid-template-columns:1fr 1fr;gap:.45vw;margin-top:auto;padding-top:1vh;border-top:1px solid #e8ecf1}
+.va-cross .va-cap{background:#f3f4fa}
+.va-agent-story{height:100%;display:flex;flex-direction:column;gap:1.1vh}
+.va-agent-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6vw;align-items:stretch}
+.va-agent-step{position:relative;display:flex;flex-direction:column;justify-content:center;gap:.55vh;padding:1.25vh .72vw;border:1px solid #e3e9f1;border-radius:10px;background:#f7f9fc;font-size:13px;line-height:1.3;color:#334155}
+.va-agent-step small{font:740 10px/1.2 'JetBrains Mono',monospace;color:#8895a5}
+.va-agent-flow .va-agent-step:not(:last-child)::after{content:'→';position:absolute;right:-.51vw;top:calc(50% - 9px);z-index:2;color:#8491a3;font-size:19px;font-weight:800}
+.va-agent-main{font-size:16px;font-weight:790;line-height:1.34;color:#26364d}
+.va-agent-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6vh .5vw}
+.va-agent-chips span{padding:.8vh .55vw;border:1px solid #e5e9ef;border-radius:8px;background:#f7f9fc;font-size:13px;line-height:1.25;color:#405066}
+.va-agent-status{margin-top:auto;padding:.85vh .65vw;border-radius:8px;background:#eef2fa;color:#445a79;font-size:12px;font-weight:680;line-height:1.27}
+.va-agent-warning{padding:.85vh .65vw;border-radius:8px;background:#fff3e8;color:#8b5b2f;font-size:12px;line-height:1.28}
+.va-agent-chain{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6vw}
+.va-agent-chain>div{padding:.8vh .5vw;border:1px solid #eadfd4;border-radius:8px;background:#fffaf6}
+.va-agent-chain b{display:block;font-size:12px;color:#6e4b35}
+.va-agent-chain span{font-size:11px;color:#876c5b}
+.va-observation{display:flex;align-items:center;gap:.7vw;height:100%;font-size:13px;line-height:1.28;color:#4c5a6c}
+.va-observation strong{display:inline-flex;align-items:center;justify-content:center;flex:none;padding:.54vh .6vw;border-radius:7px;background:#eef1f5;font-size:11px;color:#607084}
+.va-observation.is-done strong{background:#dde3ea;color:#3d4857;box-shadow:inset 0 0 0 1px #a5afbd}
+.va-pains{display:grid;grid-template-columns:1fr 1fr;gap:.45vw}
+.va-pain{display:flex;align-items:flex-start;gap:.45vw;padding:.65vh .55vw;border-radius:8px;background:#fff3f3;color:#5c4450;font-size:12px;line-height:1.3}
+.va-pain svg{width:15px;height:15px;flex:none;color:#d84d59;stroke-width:2}
+.va-pain b{color:inherit}
+
+/* 方案一：横向阶段导航 + 单阶段工作台。 */
+#visual-one{grid-template-rows:11vh 12vh minmax(0,1fr) 11vh;gap:1.35vh;background:radial-gradient(ellipse at 70% -20%,rgba(141,153,230,.12),transparent 52%),#f1f3f6}
+.va-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.75vw}
+.va-step{--tone:#6a71d8;position:relative;display:grid;grid-template-columns:1fr 68px;align-items:center;gap:.35vw;overflow:hidden;padding:1.1vh .75vw;border:1px solid #2c3546;border-radius:13px;background:#242d3d;color:#f9fbff}
+.va-step::before{content:'';position:absolute;right:-16px;top:-28px;width:112px;height:112px;background:radial-gradient(circle,color-mix(in srgb,var(--tone) 42%,transparent),transparent 70%);opacity:.38}
+.va-step[aria-pressed="true"]{border-color:var(--tone);box-shadow:0 0 0 2px color-mix(in srgb,var(--tone) 30%,transparent),0 14px 26px -17px var(--tone)}
+.va-step img{position:relative;width:68px;height:68px;object-fit:contain;justify-self:end;filter:drop-shadow(0 8px 7px rgba(0,0,0,.18))}
+.va-step .va-stage-no{color:color-mix(in srgb,var(--tone) 74%,white)}
+.va-step .va-stage-name{display:block;margin:.55vh 0 .4vh;color:#fff}
+.va-step .va-stage-desc{color:#b9c4d5}
+.va-workspace{display:grid;grid-template-columns:27% minmax(0,1fr) 27%;gap:.8vw}
+.va-workspace .va-panel{display:flex;flex-direction:column;padding:1.7vh 1.1vw;overflow:hidden}
+.va-workspace .va-panel.agent{border-color:#cbd5e4;box-shadow:0 11px 26px -18px rgba(27,46,78,.27)}
+.va-workspace .va-panel.mechanism{background:#fcfdff}
+.va-footline{display:grid;grid-template-columns:37% minmax(0,1fr);gap:.8vw}
+.va-footline .va-panel{padding:1.25vh .95vw;overflow:hidden}
+.va-footline .va-panel-head{margin-bottom:.4vh}
+
+/* 方案二：五阶段叙事主线 + 固定细节检视区。 */
+#visual-two{grid-template-rows:11vh minmax(0,1fr);gap:1.8vh;background:linear-gradient(140deg,#eef2f6,#f6f7f9 70%)}
+.vb-body{display:grid;grid-template-columns:minmax(0,1.78fr) minmax(360px,.82fr);gap:1.35vw}
+.vb-map{display:grid;grid-template-rows:3.4vh repeat(5,minmax(0,1fr));gap:.65vh}
+.vb-map-labels{display:grid;grid-template-columns:22% 31% 30% 17%;padding:0 1.05vw;align-items:center;font-size:11px;font-weight:770;color:#8591a1;letter-spacing:.04em}
+.vb-row{--tone:#6a71d8;display:grid;grid-template-columns:22% 31% 30% 17%;align-items:center;gap:0;padding:.6vh 1.05vw;border:1px solid #dce3ec;border-radius:12px;background:#fff;box-shadow:0 6px 21px -19px rgba(30,47,77,.4)}
+.vb-row[aria-pressed="true"]{border-color:color-mix(in srgb,var(--tone) 53%,#dce3ec);box-shadow:0 0 0 2px color-mix(in srgb,var(--tone) 13%,transparent),0 10px 24px -20px rgba(30,47,77,.35)}
+.vb-row>span{height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 .7vw;border-left:1px solid #eef1f5;font-size:13px;line-height:1.3;color:#4a596c}
+.vb-row>span:first-child{padding-left:0;border-left:0}
+.vb-stage{display:grid!important;grid-template-columns:29px 1fr;column-gap:.5vw;align-content:center!important;justify-content:start!important}
+.vb-stage .va-stage-no{grid-row:1/3;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:color-mix(in srgb,var(--tone) 14%,white);color:var(--tone)}
+.vb-stage .va-stage-en{color:var(--tone)}
+.vb-stage .va-stage-name{font-size:16px;color:#26354a}
+.vb-row .vb-handoff{font-size:12px;color:#617189}
+.vb-inspector{--tone:#6a71d8;display:grid;grid-template-rows:11.4vh minmax(0,1fr);overflow:hidden;border:1px solid #d6dee9;border-radius:16px;background:#fff;box-shadow:0 13px 36px -28px rgba(23,42,75,.35)}
+.vb-inspector-head{display:grid;grid-template-columns:1fr 91px;align-items:center;padding:1.2vh 1.1vw;color:#fff;background:linear-gradient(115deg,#202a3a,color-mix(in srgb,var(--tone) 20%,#202a3a))}
+.vb-inspector-head small{font:730 11px/1.2 'JetBrains Mono',monospace;color:color-mix(in srgb,var(--tone) 55%,white)}
+.vb-inspector-head h2{margin:.45vh 0;font-size:20px;line-height:1.1}
+.vb-inspector-head p{font-size:12px;line-height:1.18;color:#c6cfde}
+.vb-inspector-head img{width:87px;height:87px;object-fit:contain;filter:drop-shadow(0 9px 9px rgba(0,0,0,.2))}
+.vb-inspector-scroll{overflow:auto;padding:1.35vh 1vw;scrollbar-width:thin;scrollbar-color:#c5ccd8 transparent}
+.vb-detail-section{padding-bottom:1.1vh;margin-bottom:1.1vh;border-bottom:1px solid #e8ecf1}
+.vb-detail-section:last-child{border-bottom:0;margin-bottom:0}
+.vb-detail-section .va-panel-head{margin-bottom:.8vh}
+.vb-detail-section .va-human-title{font-size:15px;margin-bottom:.6vh}
+.vb-detail-section p{font-size:12.5px;line-height:1.35;color:#59687b}
+.vb-detail-section .va-agent-main{font-size:14px}
+.vb-detail-section .va-agent-step{font-size:11.5px;padding:.7vh .4vw}
+.vb-detail-section .va-agent-chips span{font-size:11.5px;padding:.6vh .4vw}
+.vb-detail-section .va-agent-chain b{font-size:11px}
+.vb-detail-section .va-agent-chain span{font-size:10px}
+.vb-detail-section .va-agent-status,.vb-detail-section .va-agent-warning{font-size:11px;margin-top:.4vh;padding:.6vh .5vw}
+.vb-detail-section .va-cap-list{gap:.4vh .35vw}
+.vb-detail-section .va-cap{padding:.5vh .4vw}
+.vb-detail-section .va-cap b{font-size:11px}
+.vb-detail-section .va-cap span{font-size:10.5px}
+.vb-detail-section .va-pains{display:grid;grid-template-columns:1fr;gap:.4vh}
+.vb-detail-section .va-pain{font-size:11.5px;padding:.55vh .4vw}
+.vb-detail-section .va-observation{font-size:11.5px}
+.vb-global{padding:.7vh .5vw;border-radius:8px;background:#f5f6fa;font-size:11px;line-height:1.3;color:#667287}
+@media(max-width:1000px){.va-step{grid-template-columns:1fr 45px}.va-step img{width:45px;height:45px}.vb-body{grid-template-columns:minmax(0,1.55fr) minmax(300px,.9fr)}.va-workspace{grid-template-columns:30% 40% 30%}.va-panel p{font-size:12px}}
+</style>
 </head>
 <body data-variant="one">
 <nav class="preview-switch" aria-label="第 5 页视觉方案切换">
   <span class="preview-switch-label">第 5 页视觉对照</span>
-  <button class="preview-choice" type="button" data-choice="one" aria-pressed="true">1 清爽秩序</button>
-  <button class="preview-choice" type="button" data-choice="two" aria-pressed="false">2 阶段色贯穿</button>
+  <button class="preview-choice" type="button" data-choice="one" aria-pressed="true">1 聚焦工作台</button>
+  <button class="preview-choice" type="button" data-choice="two" aria-pressed="false">2 旅程总览</button>
 </nav>
 <div id="deck">
 <!-- AGENT MECHANISM DRILL-DOWN -->
@@ -996,6 +1117,16 @@ body[data-variant="two"] .cb-painpoint-rail{background:#fff4f4;border-color:#efd
   </div>
 </div></section>
 </div>
+<main class="visual-app" id="visual-one" aria-label="方案一：聚焦工作台">
+  <header class="va-header"><div class="va-kicker">方案 1 · 聚焦工作台 / FOCUS WORKSPACE</div><h1>AddCustom 接入 PyTorch：从教程检索到工程起步</h1><p>五阶段保留在顶部；一次展开一个阶段，让开发者、智能体、能力、观察与痛点形成清晰的阅读顺序。</p></header>
+  <nav class="va-steps" id="focus-steps" aria-label="选择任务阶段"></nav>
+  <div class="va-workspace" id="focus-workspace"></div>
+  <div class="va-footline" id="focus-footline"></div>
+</main>
+<main class="visual-app" id="visual-two" aria-label="方案二：旅程总览">
+  <header class="va-header"><div class="va-kicker">方案 2 · 旅程总览 / JOURNEY OVERVIEW</div><h1>AddCustom 接入 PyTorch：从教程检索到工程起步</h1><p>五阶段主线同时可见；每行只放关键动作与交接物，选中阶段后在右侧查看机制、观察和痛点。</p></header>
+  <div class="vb-body"><section class="vb-map" id="overview-map" aria-label="五阶段任务主线"></section><aside class="vb-inspector" id="overview-inspector" aria-label="选中阶段的完整内容"></aside></div>
+</main>
 <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 <script>if(window.lucide)lucide.createIcons({attrs:{'aria-hidden':'true'}});</script>
 <script>
@@ -1111,6 +1242,100 @@ body[data-variant="two"] .cb-painpoint-rail{background:#fff4f4;border-color:#efd
   schedule();
 })();
 
+</script>
+<script>
+/* Both directions reuse the same exact stage content from the hidden source matrix. */
+(() => {
+  const root = document.querySelector('.collab-blueprint');
+  if (!root) return;
+  const all = selector => [...root.querySelectorAll(selector)];
+  const one = (element, selector) => element?.querySelector(selector);
+  const tx = element => (element?.textContent || '').replace(/\s+/g, ' ').trim();
+  const esc = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const tones = ['#8981e9','#5a92db','#ba79d9','#e3a765','#54b7a3'];
+  const shortAgent = [
+    '汇入目标、芯片与工程现场；缺失信息先标记待补',
+    'Search 查教程 → Fetch 取正文；未取回时转查其他来源',
+    '结合教程与 Context，草拟接口、参数和工程路径',
+    '核对来源、版本、权限，再确定可执行的工程路径',
+    '准备工程并读取状态回执；失败时保留现场继续'
+  ];
+  const stages = all('.cb-stage-rail .cb-stage');
+  const humans = all('.cb-human-lane .cb-human-step');
+  const handoffs = all('.cb-handoff-rail .cb-handoff');
+  const agents = all('.cb-agent-lane .cb-agent-step');
+  const mechanisms = all('.cb-mechanism-stages .cb-mechanism-stage');
+  const observations = all('.cb-measure-rail .cb-measure');
+  const painGroups = all('.cb-painpoint-rail .cb-painpoint-node');
+  const globalCaps = all('.cb-mechanism-meta .cb-mech-node').map(el => ({name:tx(one(el,'b')),use:tx(one(el,'span'))}));
+  const data = stages.map((stage,index) => ({
+    index, tone:tones[index], en:tx(one(stage,'small')), name:tx(one(stage,'b')),
+    description:tx(one(stage,'.cb-stage-copy span')), image:one(stage,'img')?.getAttribute('src') || '',
+    humanTitle:tx(one(humans[index],'b span')), humanText:tx(one(humans[index],'p')),
+    handoff:tx(one(handoffs[index],'span')), agent:agents[index], agentShort:shortAgent[index],
+    capabilities:[...mechanisms[index].querySelectorAll(':scope > .cb-mech-node')].map(el => ({name:tx(one(el,'b')),use:tx(one(el,'span'))})),
+    observationKind:tx(one(observations[index],'small')), observation:tx(one(observations[index],'span')),
+    observationDone:observations[index].classList.contains('completed'),
+    pains:[...painGroups[index].querySelectorAll('.cb-painpoint-item')].map(el => ({
+      actor:el.getAttribute('aria-label') || '痛点',
+      html:one(el,'span:last-child')?.innerHTML || esc(tx(el)),
+      icon:el.querySelector('.is-team') ? 'users-round' : el.querySelector('.is-agent') ? 'bot' : 'user-round'
+    }))
+  }));
+  const header = (code,label) => `<div class="va-panel-head"><em>${code}</em><b>${label}</b></div>`;
+  const capMarkup = caps => `<div class="va-cap-list">${caps.map(cap => `<div class="va-cap"><b>${esc(cap.name)}</b><span>${esc(cap.use)}</span></div>`).join('')}</div>`;
+  const painMarkup = items => `<div class="va-pains">${items.map(item => `<div class="va-pain" aria-label="${esc(item.actor)}"><i data-lucide="${item.icon}" aria-hidden="true"></i><span>${item.html}</span></div>`).join('')}</div>`;
+  const obsMarkup = d => `<div class="va-observation ${d.observationDone?'is-done':''}"><strong>${esc(d.observationKind)}</strong><span>${esc(d.observation)}</span></div>`;
+  const crossMarkup = () => `<div class="va-cross">${globalCaps.map(cap => `<div class="va-cap"><b>${esc(cap.name)}</b><span>${esc(cap.use)}</span></div>`).join('')}</div>`;
+  const agentMarkup = d => {
+    const el = d.agent;
+    if (d.index === 0) {
+      const inputs = [...el.querySelectorAll('.cb-source-nodes span')].map(node => tx(node));
+      return `<div class="va-agent-story"><div class="va-agent-main">${esc(tx(one(el,'.cb-source-merge')))}</div><div class="va-agent-chips">${inputs.map(item => `<span>${esc(item)}</span>`).join('')}</div><div class="va-agent-warning"><b>${esc(tx(one(el,'.cb-trust-gate b')))}</b> · ${esc(tx(one(el,'.cb-trust-gate span')))}</div><div class="va-agent-status">${esc(tx(one(el,'.cb-context-result')))}</div></div>`;
+    }
+    if (d.index === 1) {
+      const steps = [...el.querySelectorAll('.cb-vertical-flow > span')].map(node => tx(node));
+      return `<div class="va-agent-story"><div class="va-agent-flow">${steps.map((item,i) => `<div class="va-agent-step"><small>0${i+1}</small>${esc(item)}</div>`).join('')}</div><div class="va-agent-status">教程取回状态与来源进入下一阶段</div></div>`;
+    }
+    if (d.index === 2 || d.index === 3) {
+      const preview = one(el,'.cb-preview');
+      const items = [...preview.querySelectorAll('li')].map(node => tx(node));
+      return `<div class="va-agent-story"><div class="va-agent-main">${esc(tx(one(preview,'b')))}</div><div class="va-agent-chips">${items.map(item => `<span>${esc(item)}</span>`).join('')}</div><div class="va-agent-status">${esc(tx(one(el,'.cb-wait-gate')))}</div></div>`;
+    }
+    const proof = one(el,'.cb-proof-flow');
+    const outputs = [...proof.querySelectorAll('.cb-proof-items span')].map(node => tx(node));
+    const recovery = [...proof.querySelectorAll('.cb-recovery-inline > div')].map(node => ({name:tx(one(node,'b')),use:tx(one(node,'span'))}));
+    return `<div class="va-agent-story"><div class="va-agent-main">${esc(tx(one(proof,'.cb-proof-signal')))}</div><div class="va-agent-chips">${outputs.map(item => `<span>${esc(item)}</span>`).join('')}</div><div class="va-agent-status">${esc(tx(one(proof,'.cb-proof-result')))}</div><div class="va-agent-chain">${recovery.map(item => `<div><b>${esc(item.name)}</b><span>${esc(item.use)}</span></div>`).join('')}</div><div class="va-agent-warning">${esc(tx(one(proof,'.cb-recovery-foot')))}</div></div>`;
+  };
+  const focusSteps = document.getElementById('focus-steps');
+  const overviewMap = document.getElementById('overview-map');
+  focusSteps.innerHTML = data.map(d => `<button class="va-pick va-step" type="button" data-stage-index="${d.index}" style="--tone:${d.tone}" aria-label="查看${esc(d.name)}阶段"><span><span class="va-stage-no">${String(d.index+1).padStart(2,'0')}</span><span class="va-stage-name">${esc(d.name)}</span><span class="va-stage-desc">${esc(d.description)}</span></span><img src="${esc(d.image)}" alt=""></button>`).join('');
+  overviewMap.innerHTML = `<div class="vb-map-labels"><span>阶段</span><span>开发者</span><span>智能体</span><span>交接物</span></div>` + data.map(d => `<button class="va-pick vb-row" type="button" data-stage-index="${d.index}" style="--tone:${d.tone}" aria-label="查看${esc(d.name)}阶段的详细内容"><span class="vb-stage"><span class="va-stage-no">${String(d.index+1).padStart(2,'0')}</span><span class="va-stage-en">${esc(d.en.split('·').at(-1).trim())}</span><span class="va-stage-name">${esc(d.name)}</span></span><span>${esc(d.humanTitle)}</span><span>${esc(d.agentShort)}</span><span class="vb-handoff">${esc(d.handoff)}</span></button>`).join('');
+  const focusWorkspace = document.getElementById('focus-workspace');
+  const focusFootline = document.getElementById('focus-footline');
+  const inspector = document.getElementById('overview-inspector');
+  let active = 0;
+  const render = index => {
+    active = Math.max(0,Math.min(data.length-1,index));
+    const d = data[active];
+    document.querySelectorAll('[data-stage-index]').forEach(button => button.setAttribute('aria-pressed',String(Number(button.dataset.stageIndex) === active)));
+    focusWorkspace.innerHTML = `<section class="va-panel developer">${header('01 / DEVELOPER','开发者')}<h2 class="va-human-title">${esc(d.humanTitle)}</h2><p>${esc(d.humanText)}</p><div class="va-handoff"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg><span><b>交接物</b> · ${esc(d.handoff)}</span></div></section><section class="va-panel agent">${header('02 / AGENT','智能体')}${agentMarkup(d)}</section><section class="va-panel mechanism">${header('03 / CAPABILITIES','机制与装配')}${capMarkup(d.capabilities)}${crossMarkup()}</section>`;
+    focusFootline.innerHTML = `<section class="va-panel">${header('04 / OBSERVATION','体验观察')}${obsMarkup(d)}</section><section class="va-panel">${header('05 / PAIN POINT','痛点')}${painMarkup(d.pains)}</section>`;
+    inspector.style.setProperty('--tone',d.tone);
+    inspector.innerHTML = `<div class="vb-inspector-head"><div><small>${esc(d.en)}</small><h2>${esc(d.name)}</h2><p>${esc(d.description)}</p></div><img src="${esc(d.image)}" alt=""></div><div class="vb-inspector-scroll"><section class="vb-detail-section">${header('01 / DEVELOPER','开发者')}<h3 class="va-human-title">${esc(d.humanTitle)}</h3><p>${esc(d.humanText)}</p><div class="va-handoff"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg><span><b>交接物</b> · ${esc(d.handoff)}</span></div></section><section class="vb-detail-section">${header('02 / AGENT','智能体')}${agentMarkup(d)}</section><section class="vb-detail-section">${header('03 / CAPABILITIES','机制与装配')}${capMarkup(d.capabilities)}</section><section class="vb-detail-section">${header('04 / OBSERVATION','体验观察')}${obsMarkup(d)}</section><section class="vb-detail-section">${header('05 / PAIN POINT','痛点')}${painMarkup(d.pains)}</section><div class="vb-global">跨阶段：${globalCaps.map(cap => `${esc(cap.name)} · ${esc(cap.use)}`).join('　/　')}</div></div>`;
+    if (window.lucide) lucide.createIcons({attrs:{'aria-hidden':'true'}});
+  };
+  document.addEventListener('click',event => {
+    const button = event.target.closest('[data-stage-index]');
+    if (button) render(Number(button.dataset.stageIndex));
+  });
+  addEventListener('keydown',event => {
+    if (event.target instanceof HTMLElement && /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
+    if (event.key === 'ArrowRight') render(active+1);
+    if (event.key === 'ArrowLeft') render(active-1);
+  });
+  render(0);
+})();
 </script>
 </body>
 </html>
