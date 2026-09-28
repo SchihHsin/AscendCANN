@@ -3661,3 +3661,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTML tokenization、6 段内联 JavaScript 语法、平台矩阵 77 单元（11 行 × 7 列）及 `git diff --check` 通过。浏览器对本地文件的打开请求被 URL policy 拒绝；遵守策略，未使用其他浏览器或命令行渲染绕过，因此无截图级视觉复核。
 - Commit / push：功能提交 `60df79b8`（`feat: compare loop modes across coding platforms`）已推送至 `origin/main`；仅纳入本次报告改动，目标 HTML 中原有未提交的 CSS 调整与工作区其他脏文件未提交。
 - 未决事项：若产品公开文档后续增加 OpenCode / Trae 的计划任务入口，需更新“本轮未确认”状态与证据链接。
+
+### 2026-09-28（收紧 Agent Loop 定义并修正平台沙盘）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`、`cann-dashboard/agent-tool-calling-reference.html`。第 14 页将此前混写的 `Loop / 计划任务` 改为任务内 `Agent Loop`：模型决策 → 行动 → 观察结果回填 → 再决策或停止；删除沙盘下方重复的 Loop 归纳整行及样式，六个平台在同一比较口径下呈现。来源页补充 OpenCode `prompt.ts` / `processor.ts` 及 Agent Loop 概念来源。
+- 修正原因与证据：上一轮把“是否有用户可配置的定时 / 事件任务入口”误当成 Agent Loop 判据，因此错误地把 OpenCode、Trae 标为未确认。Anthropic《Building effective agents》将 Agent 描述为基于环境反馈循环使用工具（H）；OpenCode `SessionPrompt.runLoop` 源码可复核回填、继续与退出条件（H）。Trae、WorkBuddy 仅按产品可见的多步任务行为描述，内部回填和停止算法未公开，未将其推测为确定实现（H/M 边界）。
+- 层级边界：Loop 是 Host / Harness 层对同一任务的重复模型回合，不是 Skill / MCP 一类可独立装配能力；单次 API tool call / result 只提供回合消息，不自行形成循环。Claude Code `/loop`、Hook 生命周期事件、计划任务和跨任务 Harness 自进化分别属于其他机制，不再混入该行。页面序列、导航和 hash 不变；API / Host / Application 三层边界未改。
+- 验证：HTML tokenization、内联 JS / JSON 解析、沙盘 10 行 × 7 列与来源页 8 卡结构检查、重复归纳元素移除检查和 `git diff --check` 均通过。遵守此前本地 `file://` URL policy 限制，本轮未做整页截图级视觉复核；用户原有的第 5 页两处 CSS 未提交。
+- Commit / push：功能提交 `4d24d8cc`（`fix: define agent loop consistently in report`）已推送至 `origin/main`；本交接条目随后单独提交并推送。
+- 未决事项：如需比较 Trae / WorkBuddy 的内部模型回合与停止策略，仍需官方技术资料或可复核运行轨迹；第 14 页的实际屏幕排版待用户在当前浏览器刷新复核。
