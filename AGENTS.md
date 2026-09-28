@@ -3998,4 +3998,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计遵循 Report PPT Skill：用行为路径对应 VOC 替换弱相关截图，图像上的编号与右侧设计点联动；旅程突出 Decide／Execute 及跨阶段个人成长，红度是研究关注而非实测痛苦分。按用户既有要求保留原旅程骨架。问题02 新增内置 imagegen 生成的 `solution-mockups/02-codex-decision-guidance.png`，Codex 风格概念界面串联错误事实、路线比较、判断确认，两态手动聚焦同图，不伪造执行成功；生成规格及用途记入证据索引。其他方案沿用原平台风格图像。
 - 保留 `#4-focus`、沙盘 `#8-spot1/2/3`、全部 Demo 状态、Overview、全屏、截图放大、Tab 与刷新恢复；无自动定时。API／Protocol、Host／Harness、Application／Task 三层边界不变，方案收益仍需实验。
 - 验证：4 段内联脚本语法通过；26 页在 1600×900、1440×810 逐页截图与边界核验，无坏图、越界或运行时错误；108 项交互／布局检查全部通过。额外核验 iframe 实际 Agent 聚焦及本地证据链接；`git diff --check` 通过。QA 记录在 `/tmp/ascend-six-qa/`，非交付资产。
-- Commit／push：本条与精简版和新素材一起提交，仅暂存本任务文件；推送结果随后回填。未决：定性问题的普遍性、装配收益、真实硬件效果及长期学习／回流仍需验证。
+- Commit／push：功能提交 `be91cdfe`（`design: refocus concise report on six evidence-backed problems`）已通过 GitHub SSH 443 临时参数成功推送 `origin/main`，未改永久配置；仅提交本任务文件，本条结果随后单独提交推送。额外检查确认 iframe 有实际 Agent 聚焦、34 个本地引用无缺失。未决：定性问题的普遍性、装配收益、真实硬件效果及长期学习／回流仍需验证。
