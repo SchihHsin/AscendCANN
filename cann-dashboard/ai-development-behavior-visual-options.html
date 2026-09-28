@@ -758,6 +758,8 @@ body{background:#edf1f5}
 .task-rel-page{height:100vh}
 .task-rel-page .section-tabs{display:none}
 .task-rel-page .head-l{padding-right:20vw}
+.preview-toolbar{position:fixed;z-index:1000;top:.75vh;right:4vw;display:flex;align-items:center;gap:8px}
+.preview-toolbar .preview-switch{position:static}
 .preview-switch{position:fixed;z-index:1000;top:.75vh;right:4vw;display:flex;align-items:center;gap:3px;padding:4px 5px 4px 10px;border:1px solid rgba(87,99,118,.15);border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 5px 19px rgba(32,43,65,.13);font-family:'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif}
 .preview-switch-label{margin-right:6px;color:#778293;font-size:10px;font-weight:760;letter-spacing:.04em;white-space:nowrap}
 .preview-choice{appearance:none;border:0;border-radius:999px;background:transparent;padding:7px 11px;color:#667487;cursor:pointer;font:760 11px/1.1 'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;white-space:nowrap}
@@ -970,6 +972,8 @@ body[data-variant="two"] .cb-actor-icon{color:#ff7e8e}
 <style>
 /* Shared low-border treatment for the two color comparisons. */
 .preview-switch-label{display:none}
+.stage-layout-switch{padding-left:10px}
+.stage-layout-switch-label{margin-right:5px;color:#778293;font-size:10px;font-weight:760;white-space:nowrap}
 body:is([data-variant="three"],[data-variant="five"]) .task-rel-page{
   --phase-source:#6c7ed4;--phase-action:#6c7ed4;--phase-generate:#6c7ed4;
   --phase-control:#6c7ed4;--phase-evidence:#6c7ed4;
@@ -1068,14 +1072,41 @@ body[data-variant="five"] .cb-mechanism-stage .cb-mech-node{--cap-tone:var(--pha
 body[data-variant="five"] .cb-mechanism-stage .cb-mech-node b{color:color-mix(in srgb,var(--phase) 66%,#29334c)}
 body[data-variant="five"] .cb-mechanism-stage .cb-mech-dot{background:var(--phase)}
 body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in srgb,var(--phase) 8%,#fff);border:0;border-radius:8px}
+
+/* Three ways to give the first row more room, shared by both color variants. */
+body[data-stage-layout="a"] .cb-stage{grid-template-columns:minmax(0,1fr) clamp(42px,3.4vw,54px);grid-template-rows:auto auto minmax(0,1fr);column-gap:.2vw;row-gap:.12vh;align-content:stretch;padding:.5vh .58vw .55vh}
+body[data-stage-layout="a"] .cb-stage-copy{display:contents}
+body[data-stage-layout="a"] .cb-stage small{grid-column:1;grid-row:1}
+body[data-stage-layout="a"] .cb-stage b{grid-column:1;grid-row:2}
+body[data-stage-layout="a"] .cb-stage span{grid-column:1/-1;grid-row:3;align-self:end;white-space:nowrap}
+body[data-stage-layout="a"] .cb-stage-visual{grid-column:2;grid-row:1/3;align-self:center;width:clamp(42px,3.4vw,54px);height:clamp(38px,4.8vh,46px)}
+
+body[data-stage-layout="b"] .cb-stage{position:relative;display:flex;align-items:center;padding:.58vh .67vw}
+body[data-stage-layout="b"] .cb-stage-copy{position:relative;z-index:2;width:100%;gap:.2vh}
+body[data-stage-layout="b"] .cb-stage span{max-width:100%;white-space:nowrap}
+body[data-stage-layout="b"] .cb-stage-visual{position:absolute;z-index:1;right:-.25vw;top:50%;transform:translateY(-50%);width:clamp(68px,6vw,96px);height:clamp(64px,8vh,84px);opacity:.34}
+
+body[data-stage-layout="c"] .cb-stage{position:relative;overflow:visible;height:6.2vh;align-self:start;grid-template-columns:minmax(0,1fr) clamp(42px,3.7vw,56px);gap:.28vw;padding:.48vh .58vw;box-shadow:0 5px 12px -10px rgba(28,38,70,.45)}
+body[data-stage-layout="c"] .cb-stage-copy{position:static}
+body[data-stage-layout="c"] .cb-stage span{position:absolute;top:calc(100% + .27vh);left:.08vw;width:calc(100% - .08vw);margin:0;color:#657287;white-space:nowrap;line-height:1.1}
+body[data-stage-layout="c"] .cb-stage-visual{width:clamp(42px,3.7vw,56px);height:clamp(40px,5.2vh,50px)}
+body[data-stage-layout="c"] .cb-stage-visual::before{inset:-8% -12%}
 </style>
 </head>
-<body data-variant="three">
-<nav class="preview-switch" aria-label="第 5 页视觉方案切换">
-  <span class="preview-switch-label">第 5 页视觉对照</span>
-  <button class="preview-choice" type="button" data-choice="three" aria-pressed="true">1 同色减框</button>
-  <button class="preview-choice" type="button" data-choice="five" aria-pressed="false">2 分色减框</button>
-</nav>
+<body data-variant="three" data-stage-layout="a">
+<div class="preview-toolbar">
+  <nav class="preview-switch stage-layout-switch" aria-label="阶段卡排布方案切换">
+    <span class="stage-layout-switch-label">阶段卡</span>
+    <button class="preview-choice" type="button" data-layout="a" aria-pressed="true">A 卡内重排</button>
+    <button class="preview-choice" type="button" data-layout="b" aria-pressed="false">B 插图作背景</button>
+    <button class="preview-choice" type="button" data-layout="c" aria-pressed="false">C 说明外置</button>
+  </nav>
+  <nav class="preview-switch" aria-label="第 5 页视觉方案切换">
+    <span class="preview-switch-label">第 5 页视觉对照</span>
+    <button class="preview-choice" type="button" data-choice="three" aria-pressed="true">1 同色减框</button>
+    <button class="preview-choice" type="button" data-choice="five" aria-pressed="false">2 分色减框</button>
+  </nav>
+</div>
 <div id="deck">
 <!-- AGENT MECHANISM DRILL-DOWN -->
 <section class="slide s-gray task-rel-page" data-title="Agent 机制下钻"><div class="slide-inner">
@@ -1239,21 +1270,36 @@ body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in sr
 <script>
 
 (() => {
-  const buttons = [...document.querySelectorAll('.preview-choice')];
-  const setVariant = (variant, updateHash = true) => {
-    const next = variant === 'five' ? 'five' : 'three';
-    document.body.dataset.variant = next;
-    buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.choice === next)));
-    if (updateHash) history.replaceState(null, '', next === 'five' ? '#2' : '#1');
+  const colorButtons = [...document.querySelectorAll('[data-choice]')];
+  const layoutButtons = [...document.querySelectorAll('[data-layout]')];
+  const parseHash = () => {
+    const match = /^#([12])(?:-([abc]))?$/.exec(location.hash.toLowerCase());
+    return {variant: match?.[1] === '2' ? 'five' : 'three', layout: match?.[2] || 'a', valid: Boolean(match) || !location.hash};
+  };
+  const setPreview = (variant, layout, updateHash = true) => {
+    const nextVariant = variant === 'five' ? 'five' : 'three';
+    const nextLayout = ['a','b','c'].includes(layout) ? layout : 'a';
+    document.body.dataset.variant = nextVariant;
+    document.body.dataset.stageLayout = nextLayout;
+    colorButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.choice === nextVariant)));
+    layoutButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.layout === nextLayout)));
+    if (updateHash) history.replaceState(null, '', `#${nextVariant === 'five' ? '2' : '1'}-${nextLayout}`);
     requestAnimationFrame(() => dispatchEvent(new Event('resize')));
   };
-  buttons.forEach(button => button.addEventListener('click', () => setVariant(button.dataset.choice)));
-  addEventListener('hashchange', () => setVariant(location.hash === '#2' ? 'five' : 'three'));
-  addEventListener('keydown', event => {
-    if (event.key === '1') setVariant('three');
-    if (event.key === '2') setVariant('five');
+  colorButtons.forEach(button => button.addEventListener('click', () => setPreview(button.dataset.choice, document.body.dataset.stageLayout)));
+  layoutButtons.forEach(button => button.addEventListener('click', () => setPreview(document.body.dataset.variant, button.dataset.layout)));
+  addEventListener('hashchange', () => {
+    const selected = parseHash();
+    setPreview(selected.variant, selected.layout, !selected.valid);
   });
-  setVariant(location.hash === '#2' ? 'five' : 'three');
+  addEventListener('keydown', event => {
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    if (event.key === '1') setPreview('three', document.body.dataset.stageLayout);
+    if (event.key === '2') setPreview('five', document.body.dataset.stageLayout);
+    if (['a','b','c'].includes(event.key.toLowerCase())) setPreview(document.body.dataset.variant, event.key.toLowerCase());
+  });
+  const selected = parseHash();
+  setPreview(selected.variant, selected.layout, !selected.valid);
 })();
 
 </script>
