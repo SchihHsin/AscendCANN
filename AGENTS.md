@@ -3800,3 +3800,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 业务与证据边界：只调整预览中一种样式的行级底色，不改五列七行结构、文字、能力节点、连线源、正式报告页序或 API／Host／Application 分层；无新研究事实。
 - 验证：`git diff --check` 通过，差异仅为分色方案四条行轨道新增透明背景／无边框／无阴影规则；本地 `file://` URL policy 限制截图级复核。
 - Commit / push：`f5595ef0`（`design: remove row-wide backgrounds from multicolor preview`）已单文件提交并推送 `origin/main`；本交接记录另行提交推送。未决：用户刷新 `#2` 后比较与 `#1` 的效果，正式第 5 页尚未迁移。
+
+### 2026-09-28（分色减框用户旅程加白底）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。用户先提议给同色减框整张用户旅程加白底，随即纠正为分色减框；最终仅 `#2` 分色减框的完整五阶段旅程矩阵使用白色底面、圆角和轻阴影，`#1` 同色减框维持原样。正式报告、五列七行布局、内容与连线未改。
+- 业务与证据边界：这是基于用户视觉反馈的样式调整，无新增研究事实，不影响正式页序、hash 或 API／Host／Application 分层。先前误加在同色方案的本地提交已在推送前修正，没有发布错误版本。
+- 验证：`git diff --check` 通过；本地 `file://` URL policy 限制截图级复核。功能提交 `b4760b9b`（`design: give multicolor journey a white surface`）已推送 `origin/main`；本交接条目另行提交推送。未决：用户在预览 `#2` 查看白底效果后决定是否进一步调整或迁移正式第 5 页。
