@@ -3677,3 +3677,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 业务目的与依据：用户明确指出加粗范围过大、加粗文字颜色不一致及图标应为红色；本轮为呈现修正，不新增研究事实。阶段、内容含义、页面序列及 API / Host / Application 三层边界均不变。
 - 验证：`git diff --check` 与 `git diff --cached --check` 通过；此前本地 `file://` 页面被浏览器 URL policy 阻止截图，本轮未绕过策略做视觉截图。仅暂存第 5 页痛点行相关 hunk，工作区其他未提交改动未纳入。
 - Commit / push：功能提交 `5e091ed3`（`style: focus painpoint keywords and red icons`）已推送 `origin/main`；本交接记录另行提交推送。未决：用户刷新第 5 页后可继续反馈实际投屏字号与间距。
+
+### 2026-09-28（平台沙盘后“昇腾可作用面”总结页方案待选）
+
+- 本轮未改汇报 HTML；用户希望沙盘下一页总结：哪些是昇腾社区／昇腾知识提供方可发挥作用的可装配、可配置能力。叙事判断是将沙盘十行分为三类：核心领域供给（知识检索、Skill / Workflow、MCP / Connector）、平台装配入口（项目规则、Command / Prompt、Plugin / Extension、Custom Agent / Subagent、Hook）和平台内置机制（Harness / Runtime、Agent Loop）。社区应维护可信知识和领域方法，与工具 Owner 联合提供受控服务，再通过平台入口适配分发；不把 Host / Loop 写成社区可直接装配的资产。
+- 阅读序列核对：当前沙盘页后紧接“昇腾已有资产覆盖到任务哪一步”，再后为“能力资产在哪些控制点中断”。优先方案是改造现有下一页为三层作用面总结，并保留 258 个 Skill、20 Tools + 5 Resources 的现状证据，不增正式页数；备选是新插一页完整总结，现有供给页不变。按仓库视觉协作规则，先等用户选定方向再实施。
+- 证据／边界：仅基于本报告的平台沙盘、现有资产页与机制分层进行叙事整理；不是新增平台能力或真实 NPU 验证。页面序列和 API / Host / Application 层边界本轮均未改变。验证为源码阅读与正式 `reportOrder` 顺序核对，无视觉截图需求。
+- Commit / push：本条作为讨论交接单独提交并推送；未决事项是用户选择“改造现有下一页”或“新增总结页”，随后再按 Report PPT Skill 制作与验证。
