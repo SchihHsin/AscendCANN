@@ -3772,3 +3772,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 业务目的与边界：检验统一阶段色与减少矩形线框能否改善五列七行的整体秩序。预览的矩阵 DOM、内容、连线源节点与行列位置未变；正式报告未改；无新研究事实、页面序列变化或 API／Host／Application 分层变化。旧方案 1／2 暂留作对照。
 - 验证：将预览 `#deck` 矩阵 DOM 与改动前 HEAD 逐字比较，完全一致；HTMLParser、3 段内联 JS `node --check`、五阶段与 `#3` 切换结构、`git diff --check` 均通过。本地 `file://` 仍受浏览器 URL policy 限制，未绕过策略做截图级视觉复核。
 - Commit / push：`d2270d04`（`design: add monochrome low-border page five preview`）已单文件提交并推送 `origin/main`；本交接记录另行提交推送。未决：用户刷新预览并查看 `#3` 后再决定进一步调整或迁移正式第 5 页。
+
+### 2026-09-28（第 5 页补同色线框与分色减框对照）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。用户要求除已有「同色减框」外，同时尝试「同色线框」与「不同颜色减框」。预览现将 `#1` 改为同色线框：五阶段及机制节点统一蓝紫色，阶段／开发者／智能体／观察的第一层单元使用一致的细描边，格内小元素不再套线框；将 `#2` 改为分色减框：五阶段恢复各自主题色与原色 3D 插图，沿用低描边、大幅浅底的处理；`#3` 继续保留同色减框。旧「编辑式矩阵／深色蓝图」不再作为可选方案。按钮与键盘 1／2／3、hash 1／2／3 对应新三版。
+- 业务目的与边界：让用户在同一五列七行、相同业务文字与能力连线下分别比较「颜色数量」和「描边数量」两个视觉变量。预览的矩阵 DOM 与改动前 HEAD 逐字一致；正式报告未改；无新机制事实、正式页面序列或 API／Host／Application 分层变化。
+- 验证：HTMLParser 与 3 段内联 JS `node --check` 通过，三方案切换结构存在，`git diff --check` 通过。本地 `file://` 仍受浏览器 URL policy 限制，未绕过策略做截图级视觉复核。
+- Commit / push：`bb372433`（`design: compare monochrome outlines and multicolor low-border styles`）已单文件提交并推送 `origin/main`；本交接记录另行提交推送。未决：用户在 `#1`、`#2`、`#3` 中比较后决定正式第 5 页的方向。
