@@ -3813,3 +3813,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。用户先提议给同色减框整张用户旅程加白底，随即纠正为分色减框；最终仅 `#2` 分色减框的完整五阶段旅程矩阵使用白色底面、圆角和轻阴影，`#1` 同色减框维持原样。正式报告、五列七行布局、内容与连线未改。
 - 业务与证据边界：这是基于用户视觉反馈的样式调整，无新增研究事实，不影响正式页序、hash 或 API／Host／Application 分层。先前误加在同色方案的本地提交已在推送前修正，没有发布错误版本。
 - 验证：`git diff --check` 通过；本地 `file://` URL policy 限制截图级复核。功能提交 `b4760b9b`（`design: give multicolor journey a white surface`）已推送 `origin/main`；本交接条目另行提交推送。未决：用户在预览 `#2` 查看白底效果后决定是否进一步调整或迁移正式第 5 页。
+
+### 2026-09-28（分色减框白底扩大留白）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。仅扩大 `#2` 分色减框整张用户旅程白底四周的视觉留白，采用白色外扩层而不改变五列七行的网格尺寸、文字、卡片和连线位置；`#1` 同色减框及正式报告未改。
+- 业务与证据边界：依据用户对预览白底 padding 的直接反馈，只调整视觉样式；无新增业务事实、正式页序或 API／Host／Application 分层变化。
+- 验证：`git diff --check` 通过；本地 `file://` URL policy 限制截图级复核。功能提交 `92958599`（`design: add breathing room around multicolor journey`）已推送 `origin/main`；本交接条目另行提交推送。未决：用户查看预览 `#2` 的留白宽度后决定是否继续微调或迁移正式第 5 页。
