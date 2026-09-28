@@ -3935,4 +3935,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 第 08 方案新增第三态 `#35-demo3`，内置 imagegen 生成并保存 `solution-mockups/08-gitcode-knowledge-reused.png`，沿用 GitCode 风格，补齐确认分享、维护者核对、发布索引与后来者检索；明确概念／示例非现成功能。三态设计点和图中编号联动，前两态保持原义。提示要点与整体论证见 `problem-narrative-revision-20260928.md`。
 - 交互：现状截图可放大核对，Esc 关闭且放大时不翻页；修复关闭弹窗后焦点留在按钮导致方向键失效；方案预载图增加状态检查防止快速切换回写旧图。保留 `#4-focus`、`#15-spot1/2/3`、Overview、全屏及页码恢复。API／Host／Application 边界未改变。
 - 验证：6 段内联 JS 与 1 段 JSON 解析通过；24 个问题相关页面在 1600×900、1440×810 核查，无 body／图文／方案区域越界、无 page error；人工截图发现并修复第 07 题两条结果说明重叠，放大第 08 题时间线的关键原文。弹窗、方向键切换三态、刷新 `#35-demo3`、Agent／沙盘聚焦、Overview 与全屏均通过；`git diff --check` 通过。
-- 仓库卫生：保留主文件本轮之前已有的两处 CSS 差异（`.cb-mech-dot` 后空行及窄比例 `.cb-mechanism-stage` padding），不纳入本任务提交；不提交或清理其他对话改动。报告提交与推送状态随后回填。未决：九题普遍性、发生率、任务效果及真实硬件结果仍需后续实验。
+- 仓库卫生：保留主文件本轮之前已有的两处 CSS 差异（`.cb-mech-dot` 后空行及窄比例 `.cb-mechanism-stage` padding），不纳入本任务提交；不提交或清理其他对话改动。功能提交 `a6829866`（`design: explain nine AI development problems through visual narratives`）已成功推送 `origin/main`，本条状态回填单独提交推送。未决：九题普遍性、发生率、任务效果及真实硬件结果仍需后续实验。
