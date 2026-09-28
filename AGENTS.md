@@ -3926,3 +3926,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 机制与证据边界：该连线只表达本案例中的假设调用，不表示所有 Plugin 都执行 Search，也不预设 Plugin 必须包含 MCP；Plugin / Extension 仍是独立安装分发入口。本任务真实运行记录和正式报告未修改。
 - 验证：`git diff --check`、HTML 结构解析及 3 段内联 JS 的 `node --check` 通过。未作截图级复核；未绕过本地 `file://` 页面访问限制。
 - Commit / push：功能提交 `41cad930`（`design: connect plugin success example to search action`）已推送 `origin/main`；本条交接记录随后单独提交并推送。
+
+### 2026-09-28（九题以行为变化、断点与真实旁证重构）
+
+- 用户确认整体重构，并要求尽量避免文字与卡片平铺。修改 `cann-dashboard/ai-development-behavior-system-report.html`：九题现状改为行为路径、任务双轨回放、信息分叉与断点图；01／05／06／07／08／09 的分析改为对应关系、权责分界及公共讨论时间线。遵循 Report PPT Skill 的叙事与证据／推论／方案分离规范，保留现状—分析—方案结构、问题编号与右上章节 Tab，不改正式页序。
+- 第 08 题明确为“公共经验回流”，不是 Agent 项目记忆。新采 Ascend/pytorch #133（主动公开排障供后来者和 AI 检索）与 #29（2024-04 原提问者确认、2024-11 后来者追问、2025-08 后来者引用环境配置再确认）；分析页显示带重点框的真实评论局部。第 02 题重采 #144 具体失败片段，明确该公开故障不能证明 AI 推荐错误。完整截图、metadata、采集脚本和边界存于报告 evidence/problem-screenshots/，索引为 `public-knowledge-scope-evidence-20260928.md`。
+- 第 05 题收窄为“验证与交付”：OpenHands #16988 只能支持项目 CI 汇总缺陷，不能证明 Agent 会话虚报或验证成本已成瓶颈；同步附录措辞。第 06 是团队获得设计背景，第 07 是个人的解释／迁移能力，第 08 是公共知识与后来者复用，三者分开。04／05 明示场景重建、非真实运行日志；07 的 22 人研究差异未显著；没有新增 NPU 实测。H 为公开记录，作者报告未独立复现，AI 的总体影响仍为 L 待验证命题。
+- 第 08 方案新增第三态 `#35-demo3`，内置 imagegen 生成并保存 `solution-mockups/08-gitcode-knowledge-reused.png`，沿用 GitCode 风格，补齐确认分享、维护者核对、发布索引与后来者检索；明确概念／示例非现成功能。三态设计点和图中编号联动，前两态保持原义。提示要点与整体论证见 `problem-narrative-revision-20260928.md`。
+- 交互：现状截图可放大核对，Esc 关闭且放大时不翻页；修复关闭弹窗后焦点留在按钮导致方向键失效；方案预载图增加状态检查防止快速切换回写旧图。保留 `#4-focus`、`#15-spot1/2/3`、Overview、全屏及页码恢复。API／Host／Application 边界未改变。
+- 验证：6 段内联 JS 与 1 段 JSON 解析通过；24 个问题相关页面在 1600×900、1440×810 核查，无 body／图文／方案区域越界、无 page error；人工截图发现并修复第 07 题两条结果说明重叠，放大第 08 题时间线的关键原文。弹窗、方向键切换三态、刷新 `#35-demo3`、Agent／沙盘聚焦、Overview 与全屏均通过；`git diff --check` 通过。
+- 仓库卫生：保留主文件本轮之前已有的两处 CSS 差异（`.cb-mech-dot` 后空行及窄比例 `.cb-mechanism-stage` padding），不纳入本任务提交；不提交或清理其他对话改动。报告提交与推送状态随后回填。未决：九题普遍性、发生率、任务效果及真实硬件结果仍需后续实验。

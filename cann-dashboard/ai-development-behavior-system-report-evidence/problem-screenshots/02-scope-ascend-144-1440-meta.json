@@ -1,0 +1,84 @@
+{
+  "url": "https://github.com/Ascend/pytorch/issues/144",
+  "title": "torch_npu 2.10 + CANN 9.0 on soc_version 104: torch.nn.functional.linear fails with MatMul/TransData · Issue #144 · Ascend/pytorch",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "deviceScaleFactor": 1
+  },
+  "capturedAt": "2026-09-28T09:26:29.323Z",
+  "browserMetrics": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "devicePixelRatio": 1,
+    "clientWidth": 1440,
+    "documentScrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "scrollHeight": 5125,
+    "horizontalOverflow": false,
+    "visibleCookieText": false,
+    "visibleDialogs": []
+  },
+  "loginState": "signed out; public GitHub issue",
+  "stateNote": "Independent temporary Playwright Chrome profile. No page content, styling or overlays modified. Full-page lazy-load scroll completed. Clips are browser screenshots of actual DOM regions.",
+  "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/02-scope-ascend-144-1440-full.png",
+  "viewportScreenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/02-scope-ascend-144-1440-viewport.png",
+  "savedImage": {
+    "width": 1440,
+    "height": 5125
+  },
+  "viewportSavedImage": {
+    "width": 1440,
+    "height": 900
+  },
+  "regions": [
+    {
+      "label": "environment",
+      "meaning": "作者提供 PyTorch、torch_npu、CANN、NPU 型号与 soc_version，展示适用条件需要组合判断。",
+      "quote": "OS: openEuler 24.03 (LTS-SP2) (aarch64)\nPython: 3.11.15\nPyTorch: 2.10.0+cpu\ntorch_npu: 2.10.0\nCANN: 9.0.0\nvLLM: 0.20.2\nvLLM Ascend image: quay.io/ascend/vllm-ascend:v0.20.2rc1 based local image\nNPU: 910B 32GB\nnpu-smi: 25.5.2\ntorch_npu.npu.get_soc_version(): 104\n",
+      "clip": {
+        "x": 113,
+        "y": 401,
+        "width": 894,
+        "height": 334
+      },
+      "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/02-scope-ascend-144-environment-clip.png",
+      "savedImage": {
+        "width": 894,
+        "height": 334
+      }
+    },
+    {
+      "label": "failure",
+      "meaning": "作者说明将 soc_version 104 暂时当 A2 绕过检查后仍然出现算子失败；没有记录 AI 参与。",
+      "quote": "What happened\n\nOn upstream vLLM Ascend, the first error is:\n\nRuntimeError: Can not support soc_version: 104.\n\n\nThis matches the currently open issue vllm-project/vllm-ascend#6796.\n\nFor debugging only, I temporarily treated soc_version == 104 as AscendDeviceType.A2 in vllm_ascend/utils.py to get past the device-type guard. After that, Qwen3-0.6B can get further, but it fails during the first dummy/profile forward in qkv_proj, eventually reaching torch.nn.functional.linear.\n\nThe important part is that this is not only a vLLM model-startup failure: a minimal standalone PyTorch torch.nn.functional.linear repro also fails on NPU with soc_version 104.\n\n",
+      "clip": {
+        "x": 113,
+        "y": 1689,
+        "width": 894,
+        "height": 331
+      },
+      "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/02-scope-ascend-144-failure-clip.png",
+      "savedImage": {
+        "width": 894,
+        "height": 331
+      }
+    },
+    {
+      "label": "scope-request",
+      "meaning": "作者请求澄清支持范围，并提醒不能只把 104 映射成 A2 作为方案。",
+      "quote": "Please clarify whether soc_version == 104 is supposed to be supported by vLLM Ascend / torch_npu / CANN 9.0 on 910B.\nIf it should be supported, torch.nn.functional.linear with a small FP16 matrix should work on NPU.\nIf it is not supported, vLLM Ascend should document this and avoid recommending workarounds that simply map 104 to A2, because later operator selection still fails.",
+      "clip": {
+        "x": 113,
+        "y": 4492,
+        "width": 894,
+        "height": 147
+      },
+      "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/02-scope-ascend-144-scope-request-clip.png",
+      "savedImage": {
+        "width": 894,
+        "height": 147
+      }
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "url": "https://github.com/Ascend/pytorch/issues/133",
+  "title": "torch_npu profiler 输出的 trace JSON 与 Perfetto 不兼容：ts 为字符串类型 + 绝对时间戳导致精度丢失 · Issue #133 · Ascend/pytorch",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "deviceScaleFactor": 1
+  },
+  "capturedAt": "2026-09-28T09:27:26.090Z",
+  "browserMetrics": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "devicePixelRatio": 1,
+    "clientWidth": 1440,
+    "documentScrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "scrollHeight": 4696,
+    "horizontalOverflow": false,
+    "visibleCookieText": false,
+    "visibleDialogs": []
+  },
+  "loginState": "signed out; public GitHub issue",
+  "stateNote": "Independent temporary Playwright Chrome profile. No page content, styling or overlays modified. Full-page lazy-load scroll completed. Clips are browser screenshots of actual DOM regions.",
+  "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/08-public-knowledge-ascend-133-1440-full.png",
+  "viewportScreenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/08-public-knowledge-ascend-133-1440-viewport.png",
+  "savedImage": {
+    "width": 1440,
+    "height": 4696
+  },
+  "viewportSavedImage": {
+    "width": 1440,
+    "height": 900
+  },
+  "regions": [
+    {
+      "label": "opening",
+      "meaning": "作者明确主动公开问题、分析和解决方案，供同学与 AI 索引；只证明这条公开回流路径存在。",
+      "quote": "严格来说这个不算是bug,只是把我发现的问题+分析结论+解决方案贴在这里,供遇到类似问题的同学/AI索引解决类似的问题 *",
+      "clip": {
+        "x": 113,
+        "y": 401,
+        "width": 894,
+        "height": 37
+      },
+      "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/08-public-knowledge-ascend-133-opening-clip.png",
+      "savedImage": {
+        "width": 894,
+        "height": 37
+      }
+    },
+    {
+      "label": "opening-context",
+      "meaning": "作者信息、公开贡献目的与问题现象；可作为第08问题页的主截图。",
+      "quote": "严格来说这个不算是bug,只是把我发现的问题+分析结论+解决方案贴在这里,供遇到类似问题的同学/AI索引解决类似的问题 *",
+      "clip": {
+        "x": 113,
+        "y": 341,
+        "width": 894,
+        "height": 270
+      },
+      "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/08-public-knowledge-ascend-133-opening-context-clip.png",
+      "savedImage": {
+        "width": 894,
+        "height": 270
+      }
+    },
+    {
+      "label": "fix",
+      "meaning": "帖子提供三条可执行修复步骤，展示公开经验中存在可复用的修正方案。未由本机复现。",
+      "quote": "可以执行的修复方案\n\nts 使用数字类型，不要加引号\n使用相对时间戳（减去 profiling 起始时间），使数值降到 10^6~10^9 量级，彻底避免 float64 精度问题\nFlow id 控制在 2^53 以内，或使用字符串类型 id（Perfetto 支持 \"id\": \"string_id\"）\n\n",
+      "clip": {
+        "x": 113,
+        "y": 3212,
+        "width": 894,
+        "height": 127
+      },
+      "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/08-public-knowledge-ascend-133-fix-clip.png",
+      "savedImage": {
+        "width": 894,
+        "height": 127
+      }
+    }
+  ]
+}

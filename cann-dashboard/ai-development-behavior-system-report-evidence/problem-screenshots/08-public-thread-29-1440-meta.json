@@ -1,0 +1,72 @@
+{
+  "url": "https://github.com/Ascend/pytorch/issues/29",
+  "title": "pytorch_npu-2.1 可以推理，训练出错，tbe.common无法加载 · Issue #29 · Ascend/pytorch",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "deviceScaleFactor": 1
+  },
+  "capturedAt": "2026-09-28T09:32:28.949Z",
+  "browserMetrics": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "devicePixelRatio": 1,
+    "clientWidth": 1440,
+    "documentScrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "scrollHeight": 3685,
+    "horizontalOverflow": false,
+    "visibleCookieText": false,
+    "visibleDialogs": []
+  },
+  "loginState": "signed out; public GitHub issue",
+  "stateNote": "Independent temporary Playwright Chrome profile. No page content, styling or overlays modified. Full-page lazy-load scroll completed. Clips are browser screenshots of actual DOM regions.",
+  "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/08-public-thread-29-1440-full.png",
+  "viewportScreenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/08-public-thread-29-1440-viewport.png",
+  "savedImage": {
+    "width": 1440,
+    "height": 3685
+  },
+  "viewportSavedImage": {
+    "width": 1440,
+    "height": 900
+  },
+  "regions": [
+    {
+      "label": "original-resolution",
+      "meaning": "2024年的排障原因与解决确认；公开评论使排障经过留存。",
+      "quote": "yunyiyun commented \nyunyiyun\nLast edited by yunyiyun\n\n出现这种问题一般为你的python环境和cann环境不匹配，建议你参考社区资料重新安装cann包。\n同时你可以python进入解释器import tbe.common看下是否正常。\n\n👍\nReact with 👍\n1\nReacted by Block233\n\nsly123197811 commented \nsly123197811\nAuthor\n\n出现这种问题一般为你的python环境和cann环境不匹配，建议你参考社区资料重新安装cann包。 同时你可以python进入解释器import tbe.common看下是否正常。\n\n谢谢，问题解决了，确实是python版本的问题。\n另外，由于服务器是多用户的，以下这个警告是否影响训练过程\n/home/cnki/miniconda3/envs/cann/lib/python3.9/site-packages/torch_npu/utils/path_manager.py:77: UserWarning: Warning: The /usr/local/Ascend/ascend-toolkit/latest owner does not match the current user.\n\n👍\nReact with 👍\n1\nReacted by Wei He",
+      "sourceUrl": "https://github.com/Ascend/pytorch/issues/29#issuecomment-2044025963",
+      "confirmationUrl": "https://github.com/Ascend/pytorch/issues/29#issuecomment-2044068003",
+      "clip": {
+        "x": 97,
+        "y": 2116,
+        "width": 926,
+        "height": 436
+      },
+      "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/08-public-thread-29-original-resolution-clip.png",
+      "savedImage": {
+        "width": 926,
+        "height": 436
+      }
+    },
+    {
+      "label": "later-reuse",
+      "meaning": "后来的开发者在同一线程引用 PYTHONPATH 建议并确认解决；展示公共经验被后续任务实际复用。",
+      "quote": "hz920120 commented \nhz920120\n\nPYTHONPATH=/usr/local/Ascend/ascend-toolkit/latest/python/site-packages:\n\npycharm中加入该环境变量，已解决",
+      "sourceUrl": "https://github.com/Ascend/pytorch/issues/29#issuecomment-3227277246",
+      "confirmationUrl": null,
+      "clip": {
+        "x": 97,
+        "y": 3364,
+        "width": 926,
+        "height": 155
+      },
+      "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ai-development-behavior-system-report-evidence/problem-screenshots/08-public-thread-29-later-reuse-clip.png",
+      "savedImage": {
+        "width": 926,
+        "height": 155
+      }
+    }
+  ]
+}
