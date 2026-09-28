@@ -3980,3 +3980,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户将 #11 的“Choose your Agent 曾让人误解……”理解为材料制作纠正记录。核对现有来源后，明确这是 OpenHands #15419 的公开产品反馈；正文改为“能力入口缺少说明，开发者难以判断选项的实际作用”，补充其实际指向执行框架选择，去掉“后面的六平台沙盘……”讲稿式提示。
 - 来源与截图继续只支持入口理解问题，任务装配成本仍待验证；没有增加平台事实或改变页序。本轮为局部文案修改，`git diff --check` 通过，随本次提交推送。
+
+### 2026-09-28（初始报告第 5 页采用分色减框旧版去说明）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。将预览页已选的“2 分色减框 + 旧版去说明”迁入初始报告第 5 页：沿用阶段卡左右图文和既有行列高度，隐藏阶段卡副说明；旅程白底加宽留白；阶段色应用到人机泳道、交接物、机制节点与观察行，减少统一线框。Need 蓝、Search 紫、Generate 橙、Decide 青、Execute 绿。
+- Plugin 改为成功调用示例：官方正文未取回后，假设算子开发扩展在 Search / Fetch 中成功检索 AddCustom 社区教程；Plugin 卡放在 Search 列并以虚线圆角箭头指向该 Agent 动作。可见文案标注“示例”，辅助说明明确不是实测、不是平台事实；Agent Loop 用 Search / Fetch 回执到 Generate、Execute 回执到 Decide／恢复的路径映射呈现。
+- 内容参照 `cann-dashboard/ai-development-behavior-visual-options.html#2` 中用户选定状态；新增 Plugin 调用是说明性路径重建（L／假设），未新增机制证据或声称真实运行。页面行列结构、正式页序以及 API／Protocol、Host／Harness、Application／Task 边界未改变。
+- 验证：HTML 解析通过；6 段内联 JavaScript 通过 `node --check`；Plugin 锚点与连线脚本存在；`git diff --cached --check` 通过。桌面浏览器的安全策略拒绝访问本地 `file://` 地址，因此本轮无法截图核对；未通过其他方式绕过该限制。原文件中既有的两处 CSS 差异及所有其他工作区脏文件均未纳入提交。
+- Commit／push：功能提交 `93ff09ca`（`design: apply phase-colored journey to report`）已推送 `origin/main`；本交接条目将在后续单独提交推送。待后续在用户本机打开 #5 做视觉复核；Plugin 成功仅为图示假设。
