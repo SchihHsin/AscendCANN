@@ -3838,3 +3838,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户纠正：第 15 页承接第 14 页沙盘时，直接结论应是“平台允许从哪里接入”：六平台均有知识、规则、Skill、MCP／Connector 等入口；Command、Plugin、Agent、Hook 的装配方式各异；Harness 与任务内 Agent Loop 主要由平台运行。这只说明能力进入平台的通道与控制边界，不直接推导昇腾该建设哪几项能力。
 - 正确叙事顺序：第 14 页沙盘 → 第 15 页仅总结平台接入与归属边界 → 第 16 页盘点昇腾现有资产 → 第 17 页分析资产对任务链的覆盖／缺口 → 第 18 页才讨论具体建设。任务需求与昇腾领域职责用于后段综合判断，不能倒灌为沙盘本身的发现；“任务合同”也不在第 15 页先定论。
 - 本轮仅讨论与修正论证口径，没有改正式 HTML、页序、hash 或 API／Host／Application 边界；依据为已核对的第 14 页本地沙盘和 Report PPT Skill 的证据／推论／方案分层，不新增平台事实或真机实测。验证：`git diff --check`；本交接记录单独提交并推送 `origin/main`。未决：与用户确认第 15 页表达后再实施。
+
+### 2026-09-28（第 15 页改为沙盘直接结论）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。用户确认后，正式第 15 页由“沙盘引出的昇腾建设方向”改为“平台接入入口与运行边界”，按共通接入、差异装配、平台内核三层呈现第 14 页沙盘的直接观察；第 16 页仍盘点昇腾现有资产，第 17 页分析任务链缺口，第 18 页才进入具体建设。页数、顺序与 `#15` hash 均未改变。
+- 业务与证据边界：第 15 页说明六平台均有项目规则、知识／检索、Skill／Workflow、MCP／Connector 的对应入口，但不等于协议或效果一致；Command、Plugin、Custom Agent、Hook 的装配形态不同，其中两个 Hook 入口只是本轮未确认，不能写成不存在。Harness 与任务内 Agent Loop 属于各平台运行内核，OpenCode 源码可审阅改造不等于独立装配能力。本页不预断昇腾建设项、任务合同或优先级；依据为第 14 页已列沙盘及其 H／M 证据口径，无新增平台事实或 NPU 实测。Report PPT Skill 的分层架构图与事实—推论—方案分离原则用于收束视觉和叙事。
+- 验证：六段内联 JS 分别通过 `node --check`；`git diff --cached --check` 通过；1600×900 Chrome 放映截图核对第 15 页标题、三层信息、结论与页码可见。保留本文件原有两处并行 CSS 脏改动和仓内其他无关文件，未将其纳入提交。
+- Commit / push：正式报告提交 `85b49271`（`refine sandbox conclusion as platform access boundary`）已推送 `origin/main`；本交接记录单独提交并推送。未决：第 16–18 页后续建设论证是否需要再收紧，应结合任务证据与现有资产盘点讨论，不能由第 14 页沙盘直接得出。
