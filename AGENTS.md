@@ -3886,4 +3886,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。Plugin / Extension 保留为独立安装 / 分发卡，移除指向 Search Agent 动作的虚线；Agent Loop 改为跨三列的回流映射卡，分别表示 Search / Fetch 回执进入 Generate 下一轮、Execute 回执回到 Decide / 恢复判断。阶段能力节点到 Agent 动作的既有箭头保持不变。
 - 业务依据：沿用前条研究结论与 `agent-tool-calling-reference.html` 对 Host 工具回合的边界；Plugin 打包 / 分发和 Skill、MCP 等运行能力分开，任务内通用 Agent Loop 是结果回填后的跨阶段再请求。本任务没有实际 Plugin 调用；Execute 分支仍属路径还原，不是匹配 Ascend 环境下的实测。页面五阶段、正文、整页高度、页序 / hash 与 API／Host／Application 边界未变。
 - 验证：3 段内联 JS 均通过 `node --check`；`git diff --check` 通过。截图复核受本地 `file://` URL policy 阻止；未尝试绕过，故本轮没有截图级视觉确认。
-- Commit / push：待提交。
+- Commit / push：功能提交 `2cff9f12`（`design: correct plugin and agent loop connectors`）已推送 `origin/main`；本条交接记录单独提交并推送。
