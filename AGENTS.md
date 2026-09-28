@@ -3732,3 +3732,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 业务目的与依据：用户希望在新的 HTML 中比较两种视觉方案，重点解决第 5 页的杂乱感；方案仅改变视觉层级，不减少节点或业务内容，也不改变正式报告页序、导航及 API / Host / Application 层边界。
 - 验证：HTML 结构解析通过；5 张插图路径均存在；3 段内联 JS `node --check` 通过；`git diff --cached --check` 通过。浏览器对本地 `file://` 页面仍有 URL policy 限制，未绕过策略做截图级复核。
 - Commit / push：预览文件提交 `131294e0`（`feat: add page five visual options preview`）已推送 `origin/main`；本交接条目另行提交推送。未决：用户对照两版后选定方向，再回到正式第 5 页实施。
+
+### 2026-09-28（第 15 页恢复“为什么建设／建设什么”的论证层级）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。用户指出上一版把第 15 页原有信息替换成建设步骤，导致页面只剩“怎么做”。本轮恢复“领域供给 → 任务合同 → 跨平台接入”三列，每列先写来自平台沙盘的建设理由，再列具体能力对象：领域知识库／检索源、Skill／Workflow、MCP 查询；任务索引、适用门禁、结果回执、恢复交接；六类平台配置入口及 Harness／Runtime／Agent Loop 的平台边界。“同一份领域知识、任务方法和服务接口”的薄适配解释降为备注，建设方式只作次要提示。
+- 叙事与证据边界：此页是从六平台可装配机制推导的建设方向，不提前宣称昇腾资产缺口。后续 Skill、MCP、Plugin 及控制点现状分析完成后，再提出论证缺口。258 个 Skill 与只读 MCP 的 20 Tools + 5 Resources 属本地盘点（M）；三类建设对象及任务合同属于设计推论（L）。未改变正式页序或 API／Host／Application 三层边界，更新了第 15 页运行时标题。
+- 验证：`git diff --check`、HTMLParser（98 个 slide、目标 slide 唯一）、6 段内联 JS 语法解析均通过。浏览器对本地 `file://` 页有 URL policy 限制，未绕过策略做截图级视觉复核；HTML 内两处原有未提交 CSS 改动保持未暂存。
+- Commit / push：共享工作区中另一并行提交 `fb140278`（`design: rework page five visual options as focus and journey layouts`）在本轮单独提交前将已暂存的第 15 页改动一并提交并推送至 `origin/main`；本交接条目单独提交推送。未决：用户在第 15 页实际投屏后确认可读性；跨平台接入的现状证据仍需继续核查，不能由封装数量推断可用性。
