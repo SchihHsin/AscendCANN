@@ -944,6 +944,42 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 @media(max-aspect-ratio:4/3){.problem-story-page .story-main{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:1.8vw}.problem-story-page .story-diagram{height:47vh}.problem-story-page .story-evidence-image{height:24vh}}
 @media(prefers-reduced-motion:reduce){.problem-evidence-dialog::backdrop{backdrop-filter:none}}
 </style>
+<style>
+/* Six-question evidence narrative: diagram + anchored VOC, not a card wall. */
+.voc-evidence-page .evidence-composition{display:grid;grid-template-rows:1fr 1fr auto;gap:2vh;width:100%;height:66vh;min-height:0}
+.voc-evidence-page .evidence-lane{display:grid;grid-template-columns:1.1fr 1fr;gap:2vw;align-items:center;min-height:0;min-width:0;border-bottom:1px solid #cbd0d9;padding-bottom:1.3vh}
+.voc-evidence-page .evidence-path{min-width:0;--path-tone:#5962a6}
+.voc-evidence-page .evidence-path.risk{--path-tone:#b1474c}.voc-evidence-page .evidence-path.positive{--path-tone:#277667}
+.voc-evidence-page .path-label{font-size:var(--fs-body);font-weight:750;color:var(--path-tone);margin-bottom:2.5vh}
+.voc-evidence-page .path-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2vw;align-items:start}
+.voc-evidence-page .path-step{position:relative;min-width:0;padding:.6vh 0}
+.voc-evidence-page .path-step small{display:block;color:var(--path-tone);font-size:var(--fs-sm);margin-bottom:1vh}
+.voc-evidence-page .path-step b{font-size:var(--fs-h3);line-height:1.4;display:block}
+.voc-evidence-page .path-step:not(:last-child)::after{content:'→';position:absolute;right:-1.65vw;top:3.9vh;font-size:var(--fs-h3);color:#87909d}
+.voc-evidence-page .voc-card{break-inside:avoid;border-radius:15px;padding:1.7vh 1.5vw;position:relative;display:flex;flex-direction:column;gap:.8vh;background:rgba(255,255,255,.78);border:1px solid #fff;box-shadow:0 10px 30px -22px #667080;min-width:0;min-height:0;margin:0}
+.voc-evidence-page .qm{font:700 38px/.65 Georgia,serif;color:#7970bb;opacity:.5}
+.voc-evidence-page .voc-q{font-size:var(--fs-h3);line-height:1.5;margin:0;color:#343b49}
+.voc-evidence-page .voc-q strong{color:#292a69;font-weight:800}
+.voc-evidence-page .voc-meta{display:flex;align-items:end;justify-content:space-between;gap:1vw;margin-top:.5vh}
+.voc-evidence-page .voc-nm{font-size:var(--fs-sm)}.voc-evidence-page .voc-rl,.voc-evidence-page .voc-meta a{font-size:var(--fs-xs);color:#687383;margin-top:.4vh}
+.voc-evidence-page .evidence-takeaway{font-size:var(--fs-h3);font-weight:750;line-height:1.4;padding:1vh 0;color:#343955}
+.task-rel-page .cb-painpoint-node.priority-low{background:#f0f1f3;border-color:#dadde2;color:#69707c}
+.task-rel-page .cb-painpoint-node.priority-medium{background:#fae8e5;border-color:#e5b4ad;color:#93473e}
+.task-rel-page .cb-painpoint-node.priority-high{background:#f3cbca;border-color:#cf8887;color:#8d252d}
+.task-rel-page .cb-painpoint-node small{font-size:var(--fs-xs);font-weight:750;line-height:1.2}
+.task-rel-page .cb-painpoint-node>b{font-size:var(--fs-body);line-height:1.32}
+.task-rel-page .journey-cross{display:flex;gap:1.1vw;align-items:center;margin-top:.9vh;font-size:var(--fs-sm);color:#6a717e}
+.task-rel-page .journey-cross>b{white-space:nowrap}.task-rel-page .journey-cross .cross-key{color:#a13a42;font-weight:750}
+.six-question-summary{display:grid;width:100%;gap:0;font-size:var(--fs-body)}
+.six-question-summary .summary-head,.six-question-summary .summary-row{display:grid;grid-template-columns:1.45fr 1fr 1.35fr 1fr;gap:1.5vw;align-items:center;padding:1.5vh .6vw;border-bottom:1px solid #cbd0d9;min-width:0}
+.six-question-summary .summary-head{color:#626b7c;background:#dde1e8}.six-question-summary .summary-row>b{display:flex;gap:.75vw;align-items:baseline;font-size:var(--fs-body);line-height:1.45}.six-question-summary small{font:700 var(--fs-body) monospace;color:#6864ad}.six-question-summary p{font-size:var(--fs-body);line-height:1.45;margin:0}.six-question-summary span{display:block;font-size:var(--fs-sm);color:#737a88;margin-top:.4vh}
+.experiment-compare{display:grid;grid-template-columns:.85fr 1.45fr 1fr;align-items:center;gap:2vw;width:100%;min-width:0}
+.experiment-compare b{font-size:var(--fs-h3);line-height:1.4}.experiment-compare p{font-size:var(--fs-body);line-height:1.6;margin-top:1vh}.experiment-arms{display:grid;gap:1.3vh;border-left:1px solid #b9bfcd;padding-left:2vw}.experiment-arms>div{padding:1.2vh 1vw;background:rgba(255,255,255,.55);border-radius:10px}.experiment-reading p{margin:2.5vh 0}.experiment-reading b{display:block;color:#5955a6}
+.problem-solution-page .solution-image-stage{background:transparent;border:0;box-shadow:none;border-radius:0}.problem-solution-page .solution-image-stage img{border-radius:0}
+.retrieval-research .body-area{display:grid;grid-template-columns:1.05fr 1fr;gap:3vw;align-items:center;flex:0 1 auto;margin-top:auto;margin-bottom:auto}
+.retrieval-research .retrieval-chart{padding:2vh 0;min-height:0}.retrieval-research .score-stack{display:grid;gap:1.5vh;margin:2vh 0}.retrieval-research .score-row b,.retrieval-research .score-row span{font-size:var(--fs-body)}
+.retrieval-research .retrieval-chain{display:grid;gap:1.5vh}.retrieval-research .retrieval-chain>div{display:grid;grid-template-columns:3vw 1fr;gap:1vw;align-items:start;padding-bottom:1.5vh;border-bottom:1px solid #cbd0d9}.retrieval-research .retrieval-chain strong{font-size:var(--fs-h2);color:#6962c5}.retrieval-research .retrieval-chain b{font-size:var(--fs-h3)}.retrieval-research .retrieval-chain p{font-size:var(--fs-body);line-height:1.55;margin-top:.5vh}
+</style>
 </head>
 <body>
 <div id="deck">
@@ -1448,7 +1484,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   ];
   problemCases.forEach((item, index) => Object.assign(item, problemEvidenceOverrides[index] || {}));
   const problemEsc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  const problemBase = item => `问题${item.n}：${item.name}`;
+  const problemBase = item => `问题${item.displayNo||item.n}：${item.name}`;
   const problemStatus = item => `${problemBase(item)}·现状`;
   const problemSolution = item => `${problemBase(item)}·方案`;
   const problemHeader = (item,kind) => `<header class="head"><div class="head-l"><div class="subttl">问题 ${item.n} · ${kind==='status'?'现状截图与可观察线索':'解决方案 · 平台内界面概念图'}｜${problemEsc(item.phase)}</div><div class="ttl">${item.n} · ${kind==='status'?'现状：':'方案：'}${problemEsc(kind==='status'?item.headline:item.solution)}</div></div><nav class="section-tabs"></nav></header>`;
@@ -1503,7 +1539,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       {title:'让用户能回到原始依据',choice:'建议与原文入口并列呈现',problem:'只看摘要难以核验推断边界',mechanism:'保留来源、版本与原文跳转',benefit:'开发者可以复核后再采用',mark:{x:19,y:86,w:78,h:12}}
     ]},
     '03':{evidenceMarks:[{x:7,y:21,w:65,h:13},{x:7,y:55,w:64,h:30}],designPoints:[
-      {title:'先问任务是什么',choice:'按任务类型开始装配',problem:'用户容易把模型、Agent 与 Harness 混为一谈',mechanism:'先用任务目标筛选适配能力',benefit:'减少从空白能力清单起步的负担',mark:{x:24,y:13,w:46,h:15}},
+      {title:'先问任务是什么',choice:'按任务类型开始装配',problem:'任务用途与所需领域方法没有明确对应',mechanism:'先用任务目标筛选适配能力',benefit:'减少从空白能力清单起步的负担',mark:{x:24,y:13,w:46,h:15}},
       {title:'解释推荐的能力组合',choice:'列出 Skill、检索、MCP 与验证工具',problem:'工具多，但选择依据不清楚',mechanism:'逐项说明用途并允许增删',benefit:'开发者看得懂组合理由，也能调整',mark:{x:25,y:28,w:46,h:55}},
       {title:'把权限影响摆在确认前',choice:'区分只读能力与有副作用的动作',problem:'工具选择可能隐含环境或代码风险',mechanism:'显示权限需求并对高风险操作二次确认',benefit:'用户能在授权前判断影响范围',mark:{x:72,y:14,w:24,h:77}}
     ]},
@@ -1795,31 +1831,158 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     if(action==='approve-action')app.querySelector('[data-bind="approval-log"]').textContent=app.querySelector('[data-field="highRisk"]').checked?'已记录开发者批准；批准人与时间进入操作记录。':'普通动作继续；结果 Owner 与执行记录仍保留。';
   });
   document.querySelectorAll('.proto-app').forEach(updateProblemDemo);
+  // Confirmed six-question narrative. Legacy IDs only address existing image assets.
+  const focusQuestions = [
+    {id:'03',no:'01',name:'可装配能力难以按任务选配并有效使用',phase:'方法与工具进入任务',evidence:'领域方法需求＋平台／资产盘点',response:'按任务选配、检查接入与生效',place:'AI 工作台＋昇腾领域供给',test:'内容收益与装配收益分开测'},
+    {id:'04',no:'02',name:'开发者难以判断和选择下一步行动',phase:'判断与纠错',evidence:'换 AI 重试与经验纠错的 VOC',response:'错误事实、路线比较与判断确认',place:'Codex 工作台',test:'能否给出有依据的下一步'},
+    {id:'05',no:'03',name:'生成结果的可信性难以验证',phase:'结果核验',evidence:'常规测试与边界补测的 VOC',response:'覆盖范围、补测与证据回执',place:'GitCode＋真实测试环境',test:'边界覆盖与结论证据一致性'},
+    {id:'07',no:'04',name:'任务完成不等于开发者能力增长',phase:'贯穿任务的理解与迁移',evidence:'参与、强化与知识内化的 VOC',response:'Learning Canvas 隔离跟练',place:'Codex 工作台',test:'新条件下的独立解释与迁移'},
+    {id:'06',no:'05',name:'团队难以共享完整的决策背景',phase:'团队评审与交接',evidence:'公开评审提案，局部支持',response:'随变更交接理由、尝试与风险',place:'GitCode',test:'评审追问与背景重建成本'},
+    {id:'08',no:'06',name:'真实任务经验难以沉淀为可复用知识',phase:'任务后的公共知识沉淀',evidence:'公开经验发布与后来者复用',response:'确认分享、核验发布与检索',place:'GitCode＋社区知识库',test:'新经验实际发布与后续复用'}
+  ];
+  const evidenceRoot='ai-development-behavior-system-report-evidence/interview-focus-20260928/';
+  const stableHeading=(slide,q,kind)=>{
+    const title=slide.querySelector('.ttl,.solution-heading h1');if(title)title.textContent=`${q.no} · ${q.name}`;
+    const sub=slide.querySelector('.subttl');if(sub)sub.textContent=`问题 ${q.no} · ${kind}`;
+    const chrome=slide.querySelector('.chrome-label');if(chrome)chrome.textContent=`问题 ${q.no} · 解决方案`;
+    const meta=slide.querySelector('.solution-meta');if(meta)meta.innerHTML=`<b>问题 ${q.no}</b><span>${q.phase}</span><span>· 设计提案</span>`;
+  };
+  const voc=(quote,file,page,time,label)=>`<article class="voc-card"><div class="qm open">“</div><blockquote class="voc-q">${quote}</blockquote><div class="voc-meta"><div><b class="voc-nm">张辰梓 · ${label}</b><div class="voc-rl">2026.08.02 · 文件${file} / p.${page} · ${time}</div></div><a href="${evidenceRoot}part-${file}-page-${page}.png" target="_blank" rel="noopener">原文 ↗</a></div></article>`;
+  const flow=(label,steps,tone='')=>`<div class="evidence-path ${tone}"><div class="path-label">${label}</div><div class="path-steps">${steps.map((s,i)=>`<div class="path-step"><small>0${i+1}</small><b>${s}</b></div>`).join('')}</div></div>`;
+  const lane=(path,quote)=>`<div class="evidence-lane">${path}${quote}</div>`;
+  const vocBodies={
+    '03':{
+      body:lane(flow('领域知识与任务方法',['通用 AI 接到任务','补充昇腾 Skill','按领域方法推进']),voc('所以我们需要做一些 <strong>skill</strong> 去做一些辅助支撑。',1,3,'00:11:35','领域方法需求'))+
+        lane(flow('审核标准进入开发过程',['已有审核规范','交给 AI 审核','检查生成代码'],'positive'),voc('这个审核规范也是<strong>给到 ai 让 ai 去审 ai 写的代码</strong>。',2,3,'00:14:51','工作方式自述')),
+      take:'需要的不只是安装入口，而是把领域依据、方法和工具接到具体任务中。',
+      limit:'原声支持领域供给需求及使用方式；选配成本、触发成功率与任务收益还需实验验证。'
+    },
+    '04':{
+      body:lane(flow('缺少诊断方向：结果不符合预期',['不知道怎样改','换一个 AI','重新生成'],'risk'),voc('他们就会，大概率会选择放弃，<strong>找一个新的 ai</strong>，然后把任务丢给他，让他重新跑。',2,2,'00:06:40','对学弟学妹情境的判断'))+
+        lane(flow('有经验的介入：AI 反复报错',['查看报错','给出经验判断','转向新分支'],'positive'),voc('你就大概看看报错，然后跟他说，说<strong>你的经验判断</strong>，他可以顺着你的经验判断走一条新的分支。',1,3,'00:15:53','本人纠错经验')),
+      take:'能重新生成，不等于知道下一步为什么这样做；诊断经验影响任务如何继续。',
+      limit:'两条路径根据同一受访者的叙述重建，不是两组用户实验；不推算普遍发生率。'
+    },
+    '05':{
+      body:lane(flow('第一轮：常见输入的成功信号',['生成实现','常规测试','常见输入通过']),voc('模型会偷懒它的 test test bench，<strong>它会写一些比较经典的那些输入输出</strong>。',1,4,'00:17:51','本人测试经验'))+
+        lane(flow('继续核验：开发者补充边界',['提出特殊输入','重写测试','暴露问题再修正'],'risk'),voc('你需要让他考虑一些<strong>特殊的边界条件，特殊的输入输出</strong>。再让他去重写 test bench 这时候 test 出来的问题才是真正的问题',1,4,'00:18:14','本人补测经验')),
+      take:'“通过”必须说明测试了什么；未覆盖的边界不能被常规成功替代。',
+      limit:'访谈未附测试代码与日志，支持补测需求，不计算漏测率，也不推断验证已成为最大成本。'
+    },
+    '07':{
+      body:lane(flow('任务产出：AI 可以代替查找与整理',['AI 查找资料','整理方案','交付结果']),voc('零散是一回事儿。零散是一回事，更主要的是<strong>你没有参与到找资料的过程，你没有那种强化的过程在</strong>。',2,2,'00:08:47','学习过程的观察与判断'))+
+        lane(flow('人的能力：还需要自己的理解与实践',['解释为什么','在新条件下练习','独立判断与迁移'],'positive'),voc('但你人的能力并没有，并没有同步的，随着 ai 能力变强。<strong>有时候遇到 ai 解决不了的问题，你就解决不了</strong>。',2,2,'00:09:40','对能力内化的判断')),
+      take:'把“任务完成”与“人能解释、判断和迁移”分开检查。',
+      limit:'原声揭示交付与内化的区别；没有能力前后测，不将其写成 AI 已造成能力下降。'
+    }
+  };
+  const focusNodes=new Map();
+  focusQuestions.forEach(q=>{
+    const item=problemCases.find(x=>x.n===q.id);
+    const status=[...deck.children].find(s=>s.dataset.title===problemStatus(item));
+    const oldSolution=[...deck.children].find(s=>s.dataset.title===problemSolution(item));
+    Object.assign(item,{displayNo:q.no,name:q.name,phase:q.phase,headline:q.name});
+    if(q.id==='04'){
+      item.solutionImage='ai-development-behavior-system-report-evidence/solution-mockups/02-codex-decision-guidance.png';
+      item.solutionAlt='Codex 风格决策辅助概念图：错误事实、诊断路线比较与确认下一步';
+      item.solutionBoundary='诊断依据需来自真实日志与代码；建议是待验证假设，开发者确认范围后再执行。概念图不代表现成功能。';
+      item.designPoints=[
+        {title:'先看错误与已尝试动作',choice:'把错误、失败输入和已尝试修改放在一起',problem:'重复生成没有新增判断依据',mechanism:'用任务事实缩小排查范围',benefit:'知道还缺哪些证据',mark:{x:17,y:19,w:31,h:49}},
+        {title:'比较路线而不是只给答案',choice:'并列下一步的依据、缺项与影响',problem:'不知道为什么选这条路',mechanism:'把建议和已确认事实分开',benefit:'能有理由地选路或补证',mark:{x:51,y:19,w:46,h:49}},
+        {title:'把人的判断带回执行',choice:'确认检查对象与不允许修改的范围',problem:'重试容易扩大变更',mechanism:'将明确判断作为下一步指令',benefit:'沿选定方向继续并核验',mark:{x:17,y:74,w:80,h:20}}
+      ];
+      item.solutionStates=[{label:'比较事实与路线',image:item.solutionImage,alt:item.solutionAlt,focusPoints:[0,1]},{label:'确认下一步范围',image:item.solutionImage,alt:item.solutionAlt,focusPoints:[2]}];
+    }
+    if(vocBodies[q.id]){
+      const d=vocBodies[q.id];status.className='slide s-gray problem-page voc-evidence-page';
+      status.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl"></div><div class="ttl"></div></div><nav class="section-tabs"></nav></header><main class="body-area evidence-composition">${d.body}<div class="evidence-takeaway">${d.take}</div></main><footer class="foot">${d.limit} 来源：同一位受访者的一次访谈，分两份逐字稿。</footer></div>`;
+    }
+    status.dataset.title=problemStatus(item);stableHeading(status,q,'现状与分析');
+    const solution=makeProblemSlide(item,'solution');stableHeading(solution,q,'解决方案');oldSolution.replaceWith(solution);setSolutionState(solution,0);
+    status.querySelector('[data-story-evidence]')?.setAttribute('aria-label',`放大问题${q.no}原始证据`);
+    focusNodes.set(q.no,{q,item,status,solution});
+  });
+  const q1=focusQuestions[0];
+  const reuseAnalysis=[...deck.children].find(s=>s.dataset.title===newProblemAnalyses[3].title);
+  const reuseAnalysisTitle=`问题06：${focusQuestions[5].name}·公开复用案例`;
+  if(reuseAnalysis){stableHeading(reuseAnalysis,focusQuestions[5],'公开经验复用案例');reuseAnalysis.dataset.title=reuseAnalysisTitle;}
+  const attachQ1=(old,kind)=>{
+    const s=[...deck.children].find(s=>s.dataset.title===old);if(!s)return old;
+    s.dataset.title=`问题01：${q1.name}·${kind}`;stableHeading(s,q1,kind);return s.dataset.title;
+  };
+  const sandboxTitle=attachQ1('问题03分析：平台接入入口与运行边界','平台沙盘');
+  const assetTitle=attachQ1('已有资产与验证缺口','现有资产');
+  const buildTitle=attachQ1('建设方向由问题与资产共同推导','供给建设');
+  const roleTitle=attachQ1('工作台与昇腾的分工','协作分工');
+  const experimentTitle=attachQ1('同任务对照验证能力收益','实验验证');
+  const build=[...deck.children].find(s=>s.dataset.title===buildTitle);
+  build.querySelector('.ending-direction-table').innerHTML=`<div class="th">使用时需要回答</div><div class="th">供给对象</div><div class="th">具体完善方向</div>
+    <div>哪些约束应持续遵循？</div><div class="row">项目规则</div><div>项目通用约束、指令范围与验收模板</div>
+    <div>当前任务可以依据什么？</div><div class="row">知识库</div><div>来源、版本、芯片、适用范围与维护状态</div>
+    <div>这类任务怎样开展与纠错？</div><div class="row">Skill</div><div>任务触发、输入、判断分支、恢复与停止条件</div>
+    <div>哪些查询与动作能真正调用？</div><div class="row">MCP 服务</div><div>从只读查询起步，统一返回条件、状态与证据</div>`;
+  build.querySelector('.ending-note').textContent='建设候选来自领域需求与资产盘点；优先级和有效性由真实调用与对照结果决定。';
+  const exp=[...deck.children].find(s=>s.dataset.title===experimentTitle);
+  exp.querySelector('.body-area').innerHTML=`<div class="experiment-compare"><div class="experiment-fixed"><b>固定任务与起点</b><p>同一平台、模型、代码、环境、预算与验收条件；每次重置会话与工作区。</p></div><div class="experiment-arms"><div><b>A · 原始资料</b><p>提供普通原始资料与常规工具</p></div><div><b>B · 整理后的资料</b><p>增加结构化方法与文档，以普通文件提供</p></div><div><b>C · 真实能力装配</b><p>与 B 相同的内容，经项目规则、Skill 或 MCP 接入</p></div></div><div class="experiment-reading"><p><b>A ↔ B</b> 检查内容整理的收益</p><p><b>B ↔ C</b> 检查接入与装配的收益</p></div></div><div class="ending-measures"><b>先查是否实际使用</b><span>加载／触发／调用记录</span><span>完成证据、返工与人工介入</span></div><p class="ending-note">三组对照尚未执行。先分别测单项能力，再测组合与跨平台；MCP 组需对齐 B 组可获得的信息，避免混入额外服务能力。</p>`;
+  exp.querySelector('.foot').textContent='依据 2026-09-24 试验方案与 09-28 证据复核。单案预演没有 MCP 调用、代码修改、真实构建或 NPU 运行，不能作为能力收益证据。';
+  const retrieval=byOriginalTitle.get('CANN 实证');retrieval.dataset.title='已有检索研究';
+  retrieval.querySelector('.subttl').textContent='检索研究 · 已完成的三任务对照';
+  retrieval.querySelector('.ttl').textContent='社区 AI 可用性：资料能否支撑连续的任务答复';
+  retrieval.classList.add('retrieval-research');
+  const retrievalScores=retrieval.querySelector('.score-stack').outerHTML;
+  retrieval.querySelector('.body-area').innerHTML=`<div class="retrieval-chart"><h3>3 个对等检索任务 · 综合置信度</h3>${retrievalScores}<p>本轮 CANN 与 CUDA 的任务级检索对照。分数沿用原研究口径，不代表生态总体质量。</p><a href="operator-ai-journey-research/evidence/ai-usability/ai-usability-run-20260818.md" target="_blank">任务问句、来源与评分记录 ↗</a></div><div class="retrieval-chain"><div><strong>01</strong><section><b>找到并取回正文</b><p>不仅有入口，还要能读到支撑任务的文档、样例和解释。</p></section></div><div><strong>02</strong><section><b>保留适用条件</b><p>版本、芯片和依赖关系应随引用一起进入答复。</p></section></div><div><strong>03</strong><section><b>支持连续行动</b><p>最小命令、验证信号与失败恢复路径，决定能否继续推进。</p></section></div></div>`;
+  retrieval.querySelector('.foot').textContent='2026-08-18：自定义 Add、ONNX 转换、性能分析三任务检索记录。只代表本轮样本；不是硬件实测，也不另立“上下文”问题。';
+  const journey=byOriginalTitle.get('Agent 机制下钻');
+  journey.querySelector('.subttl').textContent='AddCustom P1–P2 任务图；痛点叠加访谈与研究映射，非该任务的实测痛苦评分';
+  const pains=[
+    ['low','任务起点','目标与条件继续观察，不列为本轮独立问题。'],
+    ['low','已完成研究','社区 AI 可用性：正文取回、来源与连续任务支持。'],
+    ['medium','01 · 重点分析',focusQuestions[0].name],
+    ['high','02 · 核心重点',focusQuestions[1].name],
+    ['high','03 · 核心重点',focusQuestions[2].name]
+  ];
+  journey.querySelector('.cb-painpoint-rail').innerHTML=pains.map(([level,label,copy])=>`<div class="cb-painpoint-node priority-${level}"><small>${label}</small><b>${copy}</b></div>`).join('');
+  journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','按研究关注重点分级，深红为判断与验证，非发生率评分');
+  const cross=document.createElement('div');cross.className='journey-cross';cross.innerHTML=`<b>跨阶段与任务之后</b><span class="cross-key">04 · ${focusQuestions[3].name}</span><span>05 · ${focusQuestions[4].name}</span><span>06 · ${focusQuestions[5].name}</span>`;journey.querySelector('.body-area').append(cross);
+  const obs=journey.querySelectorAll('.cb-measure');
+  obs[2].innerHTML='<small>访谈＋平台盘点</small><span>方法需求与可装配能力</span>';
+  obs[3].innerHTML='<small>访谈原声</small><span>换 AI 重试／经验指导纠错</span>';
+  obs[4].innerHTML='<small>访谈原声</small><span>常规输入／人工边界补测</span>';
+  const summarySlide=[...deck.children].find(s=>s.dataset.title==='九个问题总览');summarySlide.dataset.title='六个问题总览';
+  summarySlide.querySelector('.subttl').textContent='总览 · 证据、设计回应与验证';summarySlide.querySelector('.ttl').textContent='六个问题：从任务推进到长期价值';
+  summarySlide.querySelector('.body-area').innerHTML=`<div class="six-question-summary"><div class="summary-head"><b>问题</b><b>关键依据</b><b>方案与落点</b><b>仍需验证</b></div>${focusQuestions.map(q=>`<div class="summary-row"><b><small>${q.no}</small>${q.name}</b><p>${q.evidence}</p><p>${q.response}<span>${q.place}</span></p><p>${q.test}</p></div>`).join('')}</div>`;
+  summarySlide.querySelector('.foot').textContent='访谈原声、公开案例、平台盘点支持的范围不同；方案效果仍需验证，不将单人访谈或单一案例外推为总体发生率。';
+  const source=[...deck.children].find(s=>s.dataset.title==='来源与完整版入口');
+  source.querySelector('.ttl').textContent='来源与研究边界';source.querySelector('.subttl').textContent='资料 · 可追溯的研究依据';
+  const cards=source.querySelectorAll('.source-card');
+  cards[0].innerHTML=`<b>访谈原声与问题对应</b><a href="${evidenceRoot}evidence-review.md" target="_blank">本轮证据索引与取舍记录 ↗</a><a href="${evidenceRoot}part-1-page-3.png" target="_blank">Skill 与经验纠错 · 文件1 p.3</a><a href="${evidenceRoot}part-1-page-4.png" target="_blank">边界补测 · 文件1 p.4</a><a href="${evidenceRoot}part-2-page-2.png" target="_blank">换 AI 重试与能力内化 · 文件2 p.2</a><p>2026-08-02，同一位受访者的一次访谈，分两份逐字稿；没有录音听校。</p>`;
+  cards[3].innerHTML=`<b>检索研究、平台机制与全文</b><a href="operator-ai-journey-research/evidence/ai-usability/ai-usability-run-20260818.md" target="_blank">CANN × CUDA 三任务检索记录</a><a href="ai-development-behavior-system-report.html#14" target="_blank">既有六平台沙盘</a><a href="ai-development-behavior-system-report.html#1" target="_blank">完整版与历史研究</a><p>15 个模拟案例不作真实用户证据；三组能力实验尚未执行。概念图不是现成功能。</p>`;
+  source.querySelector('.foot').textContent='本轮新材料来源：ai-dev-behavior-pilot-20260924/report.html；采用其中可追溯的访谈材料与实验设计，不把模拟成绩当作用户或 NPU 实测。';
+  const contents=byOriginalTitle.get('目录');contents.querySelector('.ttl').textContent='目录';contents.querySelector('.subttl').textContent='';
+  const directory=[['开发行为','DEVELOPMENT BEHAVIOR','人主执行与 Agent 主执行','旅程与重点痛点','理解行为变化'],['检索研究','RETRIEVAL RESEARCH','社区 AI 可用性','已完成的三任务对照','承接已有研究'],['六个问题','SIX QUESTIONS','证据、分析与解决方案','可装配能力的建设与验证','逐题形成完整回应'],['总览','SYNTHESIS','六个问题与设计落点','证据边界与后续验证','收束重点与下一步']];
+  contents.querySelector('.contents-directory').innerHTML=directory.map((d,i)=>`<article class="directory-card"><div class="directory-no">0${i+1}</div><div class="directory-name">${d[0]}</div><div class="directory-en">${d[1]}</div><div class="directory-items"><span>${d[2]}</span><span>${d[3]}</span></div><div class="directory-note">${d[4]}</div></article>`).join('');
+  contents.querySelector('.foot').textContent='开发行为 → 已有检索研究 → 六个问题及各自方案 → 总览。可装配能力的建设、分工与实验归入问题01。';
   const reportOrder = [
     '封面','目录','开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻',
-    problemStatus(problemCases[0]),problemSolution(problemCases[0]),
-    problemStatus(problemCases[1]),'问题02分析：CANN 任务样本中的知识适用性',problemSolution(problemCases[1]),
-    problemStatus(problemCases[2]),'问题03分析：平台接入入口与运行边界',problemSolution(problemCases[2]),
-    problemStatus(problemCases[3]),problemSolution(problemCases[3]),
-    problemStatus(problemCases[4]),problemSolution(problemCases[4]),
-    problemStatus(problemCases[5]),problemSolution(problemCases[5]),
-    problemStatus(problemCases[6]),problemSolution(problemCases[6]),
-    problemStatus(problemCases[7]),newProblemAnalyses[3].title,problemSolution(problemCases[7]),
-    problemStatus(problemCases[8]),problemSolution(problemCases[8]),'九个问题总览',
-    '已有资产与验证缺口','建设方向由问题与资产共同推导','工作台与昇腾的分工','同任务对照验证能力收益','来源与完整版入口'
+    '已有检索研究',
+    problemStatus(problemCases[2]),sandboxTitle,assetTitle,buildTitle,problemSolution(problemCases[2]),roleTitle,experimentTitle,
+    ...focusQuestions.slice(1).flatMap(q=>{const item=problemCases.find(x=>x.n===q.id);return [problemStatus(item),...(q.id==='08'?[reuseAnalysisTitle]:[]),problemSolution(item)];}),
+    '六个问题总览','来源与完整版入口'
   ];
   const byTitle = new Map([...deck.querySelectorAll('.slide')].map(slide => [slide.dataset.title, slide]));
   const included = new Set(reportOrder);
   [...deck.querySelectorAll('.slide')].forEach(slide => { if (!included.has(slide.dataset.title)) slide.remove(); });
   reportOrder.forEach(title => { const slide = byTitle.get(title); if (slide) deck.appendChild(slide); });
+  deck.querySelector('.cv-kicker').textContent=`CONCISE EDITION · ${reportOrder.length} PAGES`;
+  deck.querySelector('.cv-lead').textContent='从开发者与 Agent 的协作过程出发，以访谈、任务记录与公开案例识别六个问题，并逐一回应。';
 
   const chapterTitles = {
     '01':new Set(['开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻']),
-    '02':new Set(reportOrder.slice(5,27)),
-    '03':new Set(reportOrder.slice(27,30)),
-    '04':new Set(['同任务对照验证能力收益'])
+    '02':new Set(['已有检索研究']),
+    '03':new Set(reportOrder.slice(6,-2)),
+    '04':new Set(['六个问题总览'])
   };
-  const tabLabels = {'01':'01 行为','02':'02 问题','03':'03 建设','04':'04 验证','A':'A 资料'};
+  const tabLabels = {'01':'01 行为','02':'02 检索','03':'03 问题','04':'04 总览','A':'A 资料'};
   const tabMarkup = key => ['01','02','03','04','A'].map(k => `<button type="button" data-chapter="${k}" class="${k===key?'active ':''}${k==='A'?'appendix':''}" ${k===key?'aria-current="page"':''} aria-label="跳转到${tabLabels[k]}">${tabLabels[k]}</button>`).join('');
   reportOrder.forEach(title => {
     const slide = byTitle.get(title); if (!slide || title==='封面' || title==='目录') return;
@@ -1836,7 +1999,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       tabs.setAttribute('aria-label','报告章节导航');
       tabs.innerHTML = tabMarkup(key);
     }
-    const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · SOURCES & LIMITS' : `${key} · ${key==='01'?'DEVELOPMENT BEHAVIOR':key==='02'?'NINE QUESTIONS':key==='03'?'ASCEND SUPPLY':'TASK VALIDATION'}`;
+    const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · SOURCES & LIMITS' : `${key} · ${key==='01'?'DEVELOPMENT BEHAVIOR':key==='02'?'RETRIEVAL RESEARCH':key==='03'?'SIX QUESTIONS':'SYNTHESIS'}`;
   });
 
   const slides = [...document.querySelectorAll('.slide:not([hidden])')];
@@ -1850,7 +2013,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     navDots.appendChild(dot);
     return dot;
   });
-  const chapterStarts = {'01':'开发者主执行·AI辅助','02':problemStatus(problemCases[0]),'03':'已有资产与验证缺口','04':'同任务对照验证能力收益','A':'来源与完整版入口'};
+  const chapterStarts = {'01':'开发者主执行·AI辅助','02':'已有检索研究','03':problemStatus(problemCases[2]),'04':'六个问题总览','A':'来源与完整版入口'};
   const controls = document.getElementById('controls');
   const counter = document.getElementById('counter');
   const prevBtn = document.getElementById('prevBtn');
@@ -1891,7 +2054,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   function setSandboxFocusState(index){
     if(sandboxFocusIndex<0)return;
     sandboxFocusStep=Math.max(-1,Math.min(sandboxFocusDefs.length-1,index));
-    const state=sandboxFocusStep<0?{group:null,tone:'var(--c-ink)',title:'六个平台的能力入口与运行边界',copy:'项目规则、知识检索、Skill 与 MCP 等均有对应入口；Plugin、Command、Agent 和 Hook 的装配方式各不相同。'}:sandboxFocusDefs[sandboxFocusStep];
+    const state=sandboxFocusStep<0?{group:null,tone:'var(--c-ink)',title:'六个平台的可装配能力与运行边界',copy:'项目规则、知识库、Skill 与 MCP 等均有对应接入方式；Plugin、Command、Agent 和 Hook 的装配方式各不相同。'}:sandboxFocusDefs[sandboxFocusStep];
     sandboxFocusSlide.classList.toggle('is-overview',sandboxFocusStep<0);
     sandboxFocusSlide.dataset.sandboxStep=String(sandboxFocusStep+1);
     sandboxFocusSlide.style.setProperty('--spot-tone',state.tone);

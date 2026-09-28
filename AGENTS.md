@@ -3988,3 +3988,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 内容参照 `cann-dashboard/ai-development-behavior-visual-options.html#2` 中用户选定状态；新增 Plugin 调用是说明性路径重建（L／假设），未新增机制证据或声称真实运行。页面行列结构、正式页序以及 API／Protocol、Host／Harness、Application／Task 边界未改变。
 - 验证：HTML 解析通过；6 段内联 JavaScript 通过 `node --check`；Plugin 锚点与连线脚本存在；`git diff --cached --check` 通过。桌面浏览器的安全策略拒绝访问本地 `file://` 地址，因此本轮无法截图核对；未通过其他方式绕过该限制。原文件中既有的两处 CSS 差异及所有其他工作区脏文件均未纳入提交。
 - Commit／push：功能提交 `93ff09ca`（`design: apply phase-colored journey to report`）已推送 `origin/main`；本交接条目将在后续单独提交推送。待后续在用户本机打开 #5 做视觉复核；Plugin 成功仅为图示假设。
+
+### 2026-09-28（精简版按访谈证据重构为六问题、26 页）
+
+- 用户确认整体改动后，仅修改 `cann-dashboard/ai-development-behavior-system-report-concise.html`，完整版及其他工作区改动保持原状。固定六个问题名称：01 可装配能力难以按任务选配并有效使用；02 开发者难以判断和选择下一步行动；03 生成结果的可信性难以验证；04 任务完成不等于开发者能力增长；05 团队难以共享完整的决策背景；06 真实任务经验难以沉淀为可复用知识。现状、方案、目录和总览沿用同名，不再另起主题。
+- 正式序列 26 页：#1–5 行为转变与重点旅程；#6 已完成检索研究；#7–13 问题01（VOC、沙盘、现有资产、建设、工作台方案、分工、实验）；#14–15 决策；#16–17 验证；#18–19 成长；#20–21 团队背景；#22–24 公共经验与后来者复用；#25 总览；#26 来源。删除任务定义、过程接管、责任边界的独立题；原上下文题归回检索研究，不在结尾再单列建设章。
+- 采用用户提供的 `opknow/experiments/ai-dev-behavior-pilot-20260924/report.html` 与访谈原页。新增证据目录 `ai-development-behavior-system-report-evidence/interview-focus-20260928/`，保存四张原 PDF 页影像与 `evidence-review.md`。姓名按用户确认写张辰梓，原逐字稿署名张宸梓；2026-08-02 同一人一次访谈分两份，不算两个样本，未听校录音。VOC 支持领域方法需求、换 AI 重试与经验纠错、边界补测、参与强化与知识内化；保留“对学弟学妹情境的判断”和“大概率”，不把受访者判断伪装为观察实验，也不因其谈他人就排除这条重要论据。
+- 证据边界：访谈是定性论据，不证明发生率或因果效果；团队题保留 OpenHands #17273 局部支持，公共经验题保留 Ascend/pytorch #133／#29，不能宣称 AI 已导致回流下降。原三任务检索分数、258 Skill、MCP 20 Tools + 5 Resources、manifest 20／1／1 沿用历史快照；未新证实平台最新全量能力。新报告的 15 模拟案例与 71 模拟检查不作为真人痛点证据。A 原始资料／B 整理文档／C 同内容真实装配对照仍未执行，单案预演未调用 MCP、修改代码、构建或运行 NPU。
+- 设计遵循 Report PPT Skill：用行为路径对应 VOC 替换弱相关截图，图像上的编号与右侧设计点联动；旅程突出 Decide／Execute 及跨阶段个人成长，红度是研究关注而非实测痛苦分。按用户既有要求保留原旅程骨架。问题02 新增内置 imagegen 生成的 `solution-mockups/02-codex-decision-guidance.png`，Codex 风格概念界面串联错误事实、路线比较、判断确认，两态手动聚焦同图，不伪造执行成功；生成规格及用途记入证据索引。其他方案沿用原平台风格图像。
+- 保留 `#4-focus`、沙盘 `#8-spot1/2/3`、全部 Demo 状态、Overview、全屏、截图放大、Tab 与刷新恢复；无自动定时。API／Protocol、Host／Harness、Application／Task 三层边界不变，方案收益仍需实验。
+- 验证：4 段内联脚本语法通过；26 页在 1600×900、1440×810 逐页截图与边界核验，无坏图、越界或运行时错误；108 项交互／布局检查全部通过。额外核验 iframe 实际 Agent 聚焦及本地证据链接；`git diff --check` 通过。QA 记录在 `/tmp/ascend-six-qa/`，非交付资产。
+- Commit／push：本条与精简版和新素材一起提交，仅暂存本任务文件；推送结果随后回填。未决：定性问题的普遍性、装配收益、真实硬件效果及长期学习／回流仍需验证。
