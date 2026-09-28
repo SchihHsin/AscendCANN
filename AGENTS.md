@@ -3863,3 +3863,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-visual-options.html`。用户进一步要求阶段行高度不变并移除卡片说明。五张阶段卡均删除中文副说明，保留英文阶段名、中文标题和 3D 插图；行高沿用原来的 8vh。A 继续比较卡内重排，B 比较淡化背景插图，原来“说明外置”的 C 调整为“图文分区”（插图左、标题右），避免去掉说明后 C 失去比较意义。任务细节仍在下方行中。
 - 业务与证据边界：只调整预览阶段卡的可见内容和内部排布，五列七行结构、任务细节行、机制节点与连线、正式报告页序及 API／Host／Application 分层未变；无新增研究事实。
 - 验证：`git diff --check` 与 3 段内联 JS `node --check` 通过；本地 `file://` URL policy 限制截图级复核。功能提交 `9aadec5c`（`design: keep stage height and remove card descriptions`）已推送 `origin/main`；本交接条目另行提交推送。未决：用户比较更新后的 6 种组合，再决定后续微调或迁移正式第 5 页。
+
+### 2026-09-28（第 15 页改为第 14 页沙盘的三步聚焦）
+
+- 用户纠正前轮讨论：要叠加在第 14 页六平台沙盘上的，是**第 15 页的平台入口与运行边界结论**，不是第 16 页的昇腾资产。此前“第 16 页资产叠到第 15 页”的提议作废。变更文件为 `cann-dashboard/ai-development-behavior-system-report.html`；第 14 页原矩阵保持不变，第 15 页复用同一矩阵，替换原三层卡片为共通接入（项目规则、知识、Skill、MCP）、差异装配（Command、Plugin、Agent、Hook）、平台内核（Harness、任务内 Agent Loop）三次手动聚焦。第 16 页仍独立盘点昇腾现有资产，正式页数与顺序未改变。
+- 交互与证据边界：各步只圈出对应矩阵行，非连续行分组圈选，其他行退后；解释紧贴矩阵，无自动计时。按钮、方向键、翻页控件、滚轮及触摸可逐步推进；URL `#15-spot1`／`#15-spot2`／`#15-spot3` 与页码 `15.1`／`15.2`／`15.3` 区分状态并支持刷新直达。内容只归纳第 14 页的 H／M 沙盘证据；“Hook 本轮未确认”不等于平台不存在 Hook，OpenCode 源码可审阅不等于 Runtime 可直接装配，未提前推导昇腾建设项。Report PPT Skill 的既有证据矩阵聚光灯与手动状态规则用于实现。
+- 验证：六段内联 JS 分别通过 `node --check`，`git diff --cached --check` 通过；1600×900 三态与 1440×810 桌面截图均无裁切，矩阵与第 14 页的位置基本对齐。键盘从 `#14` 依次进入三态再到 `#16`，从 `#16` 返回第三态、点击步骤、滚轮切换及 `#15-spot2` 刷新恢复均通过，0 个页面脚本错误。原报告文件中的两处并行 CSS 脏改动未纳入本次提交。
+- Commit / push：功能提交 `72818deb`（`design: spotlight sandbox conclusions on shared matrix`）已推送 `origin/main`；本交接记录单独提交并推送。未决：用户现场查看三态聚焦的节奏与强调程度后可继续调整，但不得把第 16 页资产混入沙盘直接结论。
