@@ -675,10 +675,13 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-recovery-foot{font-size:var(--fs-xs);line-height:1.05;text-align:right;color:#907a61}
 .cb-mech-label b{font-size:var(--fs-sm)}
 .cb-mechanism-rail{grid-row:5;position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 3.8vh;gap:.28vh 0}
-.cb-mechanism-stages{grid-column:1;grid-row:1;position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0}
+.cb-mechanism-stages{grid-column:1;grid-row:1;position:relative;z-index:2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0}
 .cb-mechanism-stage{position:relative;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));align-content:center;gap:.52vh .48vw;padding:1.05vh .26vw .16vh;border:0;border-radius:0;background:transparent}
 .cb-mech-connectors{position:absolute;z-index:1;left:0;width:100%;pointer-events:none;overflow:visible}
 .cb-mech-connectors path{fill:none;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.cb-mech-meta-connectors{position:absolute;z-index:1;left:0;width:100%;pointer-events:none;overflow:visible}
+.cb-mech-meta-connectors path{fill:none;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.cb-mech-meta-connectors path.is-optional{stroke-dasharray:4 3;opacity:.72}
 .cb-mechanism-stage.dense .cb-mech-node:last-child{grid-column:1/-1;width:calc(50% - .15vw);justify-self:center}
 .cb-mechanism-stage.six .cb-mech-node:last-child{grid-column:auto;width:auto}
 .cb-mechanism-stage.few{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,6.5vh);align-content:center}
@@ -692,8 +695,10 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .cb-mech-node span{font-size:var(--fs-xs);line-height:1.1;color:#687084}
 .cb-mech-dot{position:absolute;top:.34vh;right:.34vw;width:5px;height:5px;border-radius:50%;background:var(--cap-tone);box-shadow:0 0 0 3px color-mix(in srgb,var(--cap-tone) 10%,transparent)}
 
-.cb-mechanism-meta{grid-column:1;grid-row:2;display:flex;justify-content:center;gap:.7vw;min-width:0;min-height:0}
-.cb-mechanism-meta>.cb-mech-node{flex:0 1 18%}
+.cb-mechanism-meta{grid-column:1;grid-row:2;position:relative;z-index:2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55vw;min-width:0;min-height:0}
+.cb-mechanism-meta>.cb-mech-node{min-width:0}
+.cb-mechanism-meta>[data-cross-link="plugin"]{grid-column:2}
+.cb-mechanism-meta>[data-cross-link="loop"]{grid-column:4}
 .cb-measure-label b{font-size:var(--fs-sm)}
 .cb-measure-rail{grid-row:6;align-items:center}
 .cb-measure{min-width:0;padding:.42vh .54vw;border:1px solid color-mix(in srgb,var(--phase) 15%,#fff);border-radius:8px;background:color-mix(in srgb,var(--phase) 8%,#fff);display:flex;flex-direction:column;justify-content:center}
@@ -1121,7 +1126,7 @@ body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in sr
             <div class="cb-context-result">任务目标 + 初始 Context</div>
           </div>
         </article>
-        <article class="cb-lane-cell cb-agent-step is-action">
+        <article class="cb-lane-cell cb-agent-step is-action" data-cross-target="plugin">
           <div class="cb-vertical-flow"><span>Search：查官方算子教程</span><i>↓</i><span>Fetch：取回正文与示例</span><i>↓</i><span class="cb-agent-callout">正文未取回 → 转查外部资料</span></div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-generate">
@@ -1130,7 +1135,7 @@ body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in sr
             <div class="cb-wait-gate"><i data-lucide="sparkles"></i>草稿带来源与未决项 · 尚未执行</div>
           </div>
         </article>
-        <article class="cb-lane-cell cb-agent-step is-control">
+        <article class="cb-lane-cell cb-agent-step is-control" data-cross-target="loop">
           <div class="cb-preview-stack">
             <div class="cb-preview"><small>DECIDE · 适用性判断</small><b>核验教程版本后确定工程路径</b><ul><li>官方来源或补充来源</li><li>目标芯片与软件版本匹配</li><li>msopgen 目标目录与生成方式</li><li>本机权限与动作范围</li></ul></div>
             <div class="cb-wait-gate"><i data-lucide="pause-circle"></i>条件明确后再进入工程执行</div>
@@ -1152,7 +1157,7 @@ body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in sr
       </div>
 
       <div class="cb-row-label cb-mech-label"><small>MECHANISM</small><b>机制与装配</b></div>
-      <div class="cb-mechanism-rail" aria-label="阶段能力节点通过箭头指向上方对应的 Agent 动作；Plugin / Extension 与 Agent Loop 是独立跨阶段能力，不归到单一阶段">
+      <div class="cb-mechanism-rail" aria-label="阶段能力节点通过箭头指向上方对应的 Agent 动作；跨阶段 Agent Loop 指向结果回填后的再判断，Plugin / Extension 以虚线指向可接入的 Search 动作，不表示本任务实际调用">
         <div class="cb-mechanism-stages" aria-label="机制在 Need、Search、Generate、Decide、Execute 五阶段中的可能作用；平台供给因产品而异">
           <div class="cb-mechanism-stage few is-source">
             <div class="cb-mech-node"><b>Rules</b><span>LOAD · 带入算子工程约束</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
@@ -1183,12 +1188,12 @@ body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in sr
             <div class="cb-mech-node cap-neutral"><b>Checkpoint</b><span>保存工程 / 检索现场</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
           </div>
         </div>
-        <div class="cb-mechanism-meta" aria-label="跨阶段能力卡片，与阶段能力卡采用相同的名称和用途形式">
-          <div class="cb-mech-node" aria-label="Agent Loop：工具调用结果回填后继续判断或停止，不代表定时循环">
-            <b>Agent Loop</b><span>工具调用结果回填后继续判断 / 停止</span><i class="cb-mech-dot" aria-hidden="true"></i>
-          </div>
-          <div class="cb-mech-node cap-blue" aria-label="Plugin / Extension：独立扩展机制，本任务片段未见实际调用">
+        <div class="cb-mechanism-meta" aria-label="跨阶段能力卡片；Plugin / Extension 的虚线表示可接入位置，Agent Loop 指向 Agent 的再判断动作">
+          <div class="cb-mech-node cap-blue" data-cross-link="plugin" aria-label="Plugin / Extension：独立扩展机制，虚线表示可接入位置，本任务片段未见实际调用">
             <b>Plugin / Extension</b><span>安装 / 启用扩展入口 · 本任务未见调用</span><i class="cb-mech-dot" aria-hidden="true"></i>
+          </div>
+          <div class="cb-mech-node" data-cross-link="loop" aria-label="Agent Loop：工具调用结果回填后继续判断或停止，不代表定时循环">
+            <b>Agent Loop</b><span>结果回填后继续判断 / 停止</span><i class="cb-mech-dot" aria-hidden="true"></i>
           </div>
         </div>
       </div>
@@ -1334,6 +1339,42 @@ body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in sr
       });
       svg.innerHTML = `<defs>${defs.join('')}</defs>${paths.join('')}`;
     });
+
+    const rail = blueprint.querySelector('.cb-mechanism-rail');
+    const loopTarget = blueprint.querySelector('[data-cross-target="loop"]');
+    if (!rail || !loopTarget || !rail.offsetWidth || !rail.offsetHeight) return;
+    let crossSvg = rail.querySelector(':scope > svg.cb-mech-meta-connectors');
+    if (!crossSvg) {
+      crossSvg = document.createElementNS(ns, 'svg');
+      crossSvg.setAttribute('class', 'cb-mech-meta-connectors');
+      crossSvg.setAttribute('aria-hidden', 'true');
+      rail.prepend(crossSvg);
+    }
+    const rr = rail.getBoundingClientRect(), lr = loopTarget.getBoundingClientRect();
+    const scaleX = rr.width / rail.offsetWidth || 1, scaleY = rr.height / rail.offsetHeight || 1;
+    const top = (lr.bottom - rr.top) / scaleY;
+    const width = rail.offsetWidth, height = rail.offsetHeight - top;
+    crossSvg.style.top = `${top}px`;
+    crossSvg.style.height = `${height}px`;
+    crossSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    crossSvg.setAttribute('preserveAspectRatio', 'none');
+    const crossDefs = [], crossPaths = [];
+    for (const kind of ['plugin', 'loop']) {
+      const source = rail.querySelector(`[data-cross-link="${kind}"]`);
+      const target = blueprint.querySelector(`[data-cross-target="${kind}"]`);
+      if (!source || !target) continue;
+      const sr = source.getBoundingClientRect(), tr = target.getBoundingClientRect();
+      const startX = (sr.left + sr.width / 2 - rr.left) / scaleX;
+      const startY = (sr.top - rr.top) / scaleY - top;
+      const endX = (tr.left + tr.width / 2 - rr.left) / scaleX;
+      const endY = (tr.bottom - rr.top) / scaleY - top;
+      const tone = getComputedStyle(source).getPropertyValue('--cap-tone').trim() || '#6c7ed4';
+      const markerId = `cb-cross-arrow-${kind}`;
+      const points = [[startX,startY],[endX,endY]];
+      crossDefs.push(`<marker id="${markerId}" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M 2 0 L 6 4 L 2 8" fill="none" stroke="${tone}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></marker>`);
+      crossPaths.push(`<path class="${kind === 'plugin' ? 'is-optional' : ''}" d="${roundedPath(points,4)}" stroke="${tone}" marker-end="url(#${markerId})"/>`);
+    }
+    crossSvg.innerHTML = `<defs>${crossDefs.join('')}</defs>${crossPaths.join('')}`;
   };
 
   const schedule = () => { if (!frame) frame = requestAnimationFrame(draw); };
