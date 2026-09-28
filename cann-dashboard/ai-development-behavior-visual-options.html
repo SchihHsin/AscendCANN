@@ -965,83 +965,157 @@ body[data-variant="two"] .cb-actor-icon{color:#ff7e8e}
 <style>
 /* 3 · One accent for all five columns; remove repeated outlines at every row. */
 .preview-switch-label{display:none}
-body[data-variant="three"] .task-rel-page{
+body:is([data-variant="three"],[data-variant="five"]) .task-rel-page{
   --phase-source:#6c7ed4;--phase-action:#6c7ed4;--phase-generate:#6c7ed4;
   --phase-control:#6c7ed4;--phase-evidence:#6c7ed4;
   background:radial-gradient(ellipse at 78% 1%,rgba(142,151,224,.12),transparent 39%),#edf0f5
 }
-body[data-variant="three"] .task-rel-page .head-l .ttl{color:#222b3c;letter-spacing:-.025em}
-body[data-variant="three"] .task-rel-page .subttl{color:#778395;font-weight:480}
-body[data-variant="three"] .collab-blueprint{background:transparent;border:0;box-shadow:none}
-body[data-variant="three"] .cb-phase-tracks{display:none}
-body[data-variant="three"] .cb-axis,
-body[data-variant="three"] .cb-row-label{background:transparent;border:0;padding-left:.2vw}
-body[data-variant="three"] .cb-axis small,
-body[data-variant="three"] .cb-row-label small{color:#8993a4;font-weight:760;letter-spacing:.07em}
-body[data-variant="three"] .cb-axis b,
-body[data-variant="three"] .cb-row-label b{color:#364254;font-weight:820}
-body[data-variant="three"] .cb-stage{overflow:hidden;background:linear-gradient(132deg,#29344f,#303b59);border:0;border-radius:12px;box-shadow:0 10px 19px -15px rgba(28,38,70,.56)}
-body[data-variant="three"] .cb-stage small{color:#b4bdf6;font-weight:780;letter-spacing:.06em}
-body[data-variant="three"] .cb-stage b{color:#fff}
-body[data-variant="three"] .cb-stage span{color:#c5cbde}
-body[data-variant="three"] .cb-stage-visual::before{inset:-24% -36%;background:radial-gradient(ellipse,rgba(127,143,239,.62),rgba(127,143,239,.16) 50%,transparent 77%);filter:blur(2px)}
-body[data-variant="three"] .cb-stage-visual img{filter:grayscale(1) sepia(1) hue-rotate(190deg) saturate(2.3) brightness(1.08) drop-shadow(0 5px 7px rgba(18,28,62,.24))}
-body[data-variant="three"] .cb-human-lane,
-body[data-variant="three"] .cb-agent-lane,
-body[data-variant="three"] .cb-mechanism-rail,
-body[data-variant="three"] .cb-measure-rail{background:rgba(255,255,255,.82);border:0;border-radius:12px;box-shadow:0 7px 19px -18px rgba(33,47,74,.32)}
-body[data-variant="three"] .cb-mechanism-rail{background:#f8f9fd}
-body[data-variant="three"] .cb-lane-cell{background:transparent;border:0;border-radius:0;box-shadow:none}
-body[data-variant="three"] .cb-human-step b{color:#2b374a;font-weight:790}
-body[data-variant="three"] .cb-human-step p{color:#637084}
-body[data-variant="three"] .cb-handoff-rail{background:transparent;border:0}
-body[data-variant="three"] .cb-handoff{color:#7482cd}
-body[data-variant="three"] .cb-source-nodes span,
-body[data-variant="three"] .cb-vertical-flow>span,
-body[data-variant="three"] .cb-preview,
-body[data-variant="three"] .cb-proof-items span{background:#f0f2fa;border:0;border-radius:7px;box-shadow:none}
-body[data-variant="three"] .cb-source-nodes span{color:#4b5c83}
-body[data-variant="three"] .cb-source-merge span{background:#fff;color:#6576c7}
-body[data-variant="three"] .cb-trust-gate,
-body[data-variant="three"] .cb-context-result,
-body[data-variant="three"] .cb-proof-result{background:#e8ecfa;border:0;border-radius:7px;box-shadow:none}
-body[data-variant="three"] .cb-trust-gate b,
-body[data-variant="three"] .cb-context-result,
-body[data-variant="three"] .cb-proof-result{color:#4f60ab}
-body[data-variant="three"] .cb-vertical-flow .cb-agent-callout{background:#e7eafb;border:0;color:#5263a5}
-body[data-variant="three"] .cb-preview b{color:#3d4e74}
-body[data-variant="three"] .cb-preview small{color:#7b87a9}
-body[data-variant="three"] .cb-wait-gate,
-body[data-variant="three"] .cb-proof-signal{color:#6474b8}
-body[data-variant="three"] .cb-recovery-inline{background:rgba(237,230,218,.48);border-top:1px solid #ded4c5}
-body[data-variant="three"] .cb-mechanism-stage{background:transparent}
-body[data-variant="three"] .cb-mech-node,
-body[data-variant="three"] .cb-mech-node.cap-blue,
-body[data-variant="three"] .cb-mech-node.cap-teal,
-body[data-variant="three"] .cb-mech-node.cap-amber,
-body[data-variant="three"] .cb-mech-node.cap-green,
-body[data-variant="three"] .cb-mech-node.cap-neutral{--cap-tone:#6c7ed4;background:#e9ecf8;border:0;border-radius:8px;box-shadow:none}
-body[data-variant="three"] .cb-mech-node b{color:#394971;font-weight:790}
-body[data-variant="three"] .cb-mech-node span{color:#6a7490}
-body[data-variant="three"] .cb-mech-dot{background:#7989d6;box-shadow:none}
-body[data-variant="three"] .cb-mech-connectors path{stroke-width:1.1;opacity:.65}
-body[data-variant="three"] .cb-measure{background:transparent;border:0;border-radius:0;box-shadow:none}
-body[data-variant="three"] .cb-measure small{color:#69779a}
-body[data-variant="three"] .cb-measure span{color:#616d80}
-body[data-variant="three"] .cb-measure.completed{background:#dbe1e9;border:0;border-radius:8px;box-shadow:none}
-body[data-variant="three"] .cb-measure.completed small{color:#4e5967}
-body[data-variant="three"] .cb-measure.completed small b{background:#657180;color:#fff}
-body[data-variant="three"] .cb-painpoint-rail{background:#fff0f1;border:0;border-radius:11px;box-shadow:none}
-body[data-variant="three"] .cb-painpoint-node{background:transparent;border:0;border-radius:0;padding:.34vh .47vw;box-shadow:none}
-body[data-variant="three"] .cb-painpoint-item span{color:#684f55}
-body[data-variant="three"] .cb-actor-icon{color:#d65768}
+body:is([data-variant="three"],[data-variant="five"]) .task-rel-page .head-l .ttl{color:#222b3c;letter-spacing:-.025em}
+body:is([data-variant="three"],[data-variant="five"]) .task-rel-page .subttl{color:#778395;font-weight:480}
+body:is([data-variant="three"],[data-variant="five"]) .collab-blueprint{background:transparent;border:0;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-phase-tracks{display:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-axis,
+body:is([data-variant="three"],[data-variant="five"]) .cb-row-label{background:transparent;border:0;padding-left:.2vw}
+body:is([data-variant="three"],[data-variant="five"]) .cb-axis small,
+body:is([data-variant="three"],[data-variant="five"]) .cb-row-label small{color:#8993a4;font-weight:760;letter-spacing:.07em}
+body:is([data-variant="three"],[data-variant="five"]) .cb-axis b,
+body:is([data-variant="three"],[data-variant="five"]) .cb-row-label b{color:#364254;font-weight:820}
+body:is([data-variant="three"],[data-variant="five"]) .cb-stage{overflow:hidden;background:linear-gradient(132deg,#29344f,#303b59);border:0;border-radius:12px;box-shadow:0 10px 19px -15px rgba(28,38,70,.56)}
+body:is([data-variant="three"],[data-variant="five"]) .cb-stage small{color:#b4bdf6;font-weight:780;letter-spacing:.06em}
+body:is([data-variant="three"],[data-variant="five"]) .cb-stage b{color:#fff}
+body:is([data-variant="three"],[data-variant="five"]) .cb-stage span{color:#c5cbde}
+body:is([data-variant="three"],[data-variant="five"]) .cb-stage-visual::before{inset:-24% -36%;background:radial-gradient(ellipse,rgba(127,143,239,.62),rgba(127,143,239,.16) 50%,transparent 77%);filter:blur(2px)}
+body:is([data-variant="three"],[data-variant="five"]) .cb-stage-visual img{filter:grayscale(1) sepia(1) hue-rotate(190deg) saturate(2.3) brightness(1.08) drop-shadow(0 5px 7px rgba(18,28,62,.24))}
+body:is([data-variant="three"],[data-variant="five"]) .cb-human-lane,
+body:is([data-variant="three"],[data-variant="five"]) .cb-agent-lane,
+body:is([data-variant="three"],[data-variant="five"]) .cb-mechanism-rail,
+body:is([data-variant="three"],[data-variant="five"]) .cb-measure-rail{background:rgba(255,255,255,.82);border:0;border-radius:12px;box-shadow:0 7px 19px -18px rgba(33,47,74,.32)}
+body:is([data-variant="three"],[data-variant="five"]) .cb-mechanism-rail{background:#f8f9fd}
+body:is([data-variant="three"],[data-variant="five"]) .cb-lane-cell{background:transparent;border:0;border-radius:0;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-human-step b{color:#2b374a;font-weight:790}
+body:is([data-variant="three"],[data-variant="five"]) .cb-human-step p{color:#637084}
+body:is([data-variant="three"],[data-variant="five"]) .cb-handoff-rail{background:transparent;border:0}
+body:is([data-variant="three"],[data-variant="five"]) .cb-handoff{color:#7482cd}
+body:is([data-variant="three"],[data-variant="five"]) .cb-source-nodes span,
+body:is([data-variant="three"],[data-variant="five"]) .cb-vertical-flow>span,
+body:is([data-variant="three"],[data-variant="five"]) .cb-preview,
+body:is([data-variant="three"],[data-variant="five"]) .cb-proof-items span{background:#f0f2fa;border:0;border-radius:7px;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-source-nodes span{color:#4b5c83}
+body:is([data-variant="three"],[data-variant="five"]) .cb-source-merge span{background:#fff;color:#6576c7}
+body:is([data-variant="three"],[data-variant="five"]) .cb-trust-gate,
+body:is([data-variant="three"],[data-variant="five"]) .cb-context-result,
+body:is([data-variant="three"],[data-variant="five"]) .cb-proof-result{background:#e8ecfa;border:0;border-radius:7px;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-trust-gate b,
+body:is([data-variant="three"],[data-variant="five"]) .cb-context-result,
+body:is([data-variant="three"],[data-variant="five"]) .cb-proof-result{color:#4f60ab}
+body:is([data-variant="three"],[data-variant="five"]) .cb-vertical-flow .cb-agent-callout{background:#e7eafb;border:0;color:#5263a5}
+body:is([data-variant="three"],[data-variant="five"]) .cb-preview b{color:#3d4e74}
+body:is([data-variant="three"],[data-variant="five"]) .cb-preview small{color:#7b87a9}
+body:is([data-variant="three"],[data-variant="five"]) .cb-wait-gate,
+body:is([data-variant="three"],[data-variant="five"]) .cb-proof-signal{color:#6474b8}
+body:is([data-variant="three"],[data-variant="five"]) .cb-recovery-inline{background:rgba(237,230,218,.48);border-top:1px solid #ded4c5}
+body:is([data-variant="three"],[data-variant="five"]) .cb-mechanism-stage{background:transparent}
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-node,
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-node.cap-blue,
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-node.cap-teal,
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-node.cap-amber,
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-node.cap-green,
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-node.cap-neutral{--cap-tone:#6c7ed4;background:#e9ecf8;border:0;border-radius:8px;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-node b{color:#394971;font-weight:790}
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-node span{color:#6a7490}
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-dot{background:#7989d6;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-mech-connectors path{stroke-width:1.1;opacity:.65}
+body:is([data-variant="three"],[data-variant="five"]) .cb-measure{background:transparent;border:0;border-radius:0;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-measure small{color:#69779a}
+body:is([data-variant="three"],[data-variant="five"]) .cb-measure span{color:#616d80}
+body:is([data-variant="three"],[data-variant="five"]) .cb-measure.completed{background:#dbe1e9;border:0;border-radius:8px;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-measure.completed small{color:#4e5967}
+body:is([data-variant="three"],[data-variant="five"]) .cb-measure.completed small b{background:#657180;color:#fff}
+body:is([data-variant="three"],[data-variant="five"]) .cb-painpoint-rail{background:#fff0f1;border:0;border-radius:11px;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-painpoint-node{background:transparent;border:0;border-radius:0;padding:.34vh .47vw;box-shadow:none}
+body:is([data-variant="three"],[data-variant="five"]) .cb-painpoint-item span{color:#684f55}
+body:is([data-variant="three"],[data-variant="five"]) .cb-actor-icon{color:#d65768}
+
+/* 1 · Same-color linework. Only first-level cells and capability nodes have strokes. */
+body[data-variant="four"] .task-rel-page{--phase-source:#6c7ed4;--phase-action:#6c7ed4;--phase-generate:#6c7ed4;--phase-control:#6c7ed4;--phase-evidence:#6c7ed4;background:#f4f6fa}
+body[data-variant="four"] .task-rel-page .head-l .ttl{color:#232d3e}
+body[data-variant="four"] .task-rel-page .subttl{color:#748094;font-weight:480}
+body[data-variant="four"] .collab-blueprint{background:transparent;border:0;box-shadow:none}
+body[data-variant="four"] .cb-phase-tracks{display:none}
+body[data-variant="four"] .cb-axis,
+body[data-variant="four"] .cb-row-label{background:transparent;border:0;padding-left:.2vw}
+body[data-variant="four"] .cb-axis b,
+body[data-variant="four"] .cb-row-label b{color:#354258;font-weight:820}
+body[data-variant="four"] .cb-axis small,
+body[data-variant="four"] .cb-row-label small{color:#8490a5;letter-spacing:.08em}
+body[data-variant="four"] .cb-stage{background:linear-gradient(130deg,#fff,#f2f4ff);border:1.5px solid #9ba8e2;border-radius:9px;box-shadow:none}
+body[data-variant="four"] .cb-stage small{color:#6476c7;font-weight:800}
+body[data-variant="four"] .cb-stage b{color:#253452}
+body[data-variant="four"] .cb-stage span{color:#62708c}
+body[data-variant="four"] .cb-stage-visual::before{background:radial-gradient(ellipse,rgba(119,134,222,.31),transparent 72%)}
+body[data-variant="four"] .cb-stage-visual img{filter:grayscale(1) sepia(1) hue-rotate(190deg) saturate(2.3) brightness(1.08) drop-shadow(0 4px 6px rgba(33,44,90,.18))}
+body[data-variant="four"] .cb-human-lane,
+body[data-variant="four"] .cb-agent-lane,
+body[data-variant="four"] .cb-mechanism-rail,
+body[data-variant="four"] .cb-measure-rail{background:transparent;border:0;box-shadow:none}
+body[data-variant="four"] .cb-lane-cell{background:#fff;border:1px solid #d1d9ed;border-radius:8px;box-shadow:none}
+body[data-variant="four"] .cb-human-step b{color:#30405e;font-weight:800}
+body[data-variant="four"] .cb-human-step p{color:#667186}
+body[data-variant="four"] .cb-handoff-rail{background:transparent;border:0}
+body[data-variant="four"] .cb-handoff{color:#697ac9}
+body[data-variant="four"] .cb-source-nodes span,
+body[data-variant="four"] .cb-vertical-flow>span,
+body[data-variant="four"] .cb-preview,
+body[data-variant="four"] .cb-proof-items span{background:#f5f6fb;border:0;border-radius:5px;box-shadow:none}
+body[data-variant="four"] .cb-source-merge span{background:#fff}
+body[data-variant="four"] .cb-trust-gate,
+body[data-variant="four"] .cb-context-result,
+body[data-variant="four"] .cb-proof-result{background:#edf0fa;border:0;border-radius:6px}
+body[data-variant="four"] .cb-vertical-flow .cb-agent-callout{background:#eef0fa;border:0}
+body[data-variant="four"] .cb-mechanism-stage{background:transparent}
+body[data-variant="four"] .cb-mech-node,
+body[data-variant="four"] .cb-mech-node.cap-blue,
+body[data-variant="four"] .cb-mech-node.cap-teal,
+body[data-variant="four"] .cb-mech-node.cap-amber,
+body[data-variant="four"] .cb-mech-node.cap-green,
+body[data-variant="four"] .cb-mech-node.cap-neutral{--cap-tone:#6c7ed4;background:#fff;border:1px solid #aab5e5;border-radius:8px;box-shadow:none}
+body[data-variant="four"] .cb-mech-node b{color:#384c84}
+body[data-variant="four"] .cb-mech-node span{color:#6a7691}
+body[data-variant="four"] .cb-mech-dot{box-shadow:none}
+body[data-variant="four"] .cb-mech-connectors path{stroke-width:1.2;opacity:.8}
+body[data-variant="four"] .cb-measure{background:#fff;border:1px solid #d1d9ed;border-radius:8px;box-shadow:none}
+body[data-variant="four"] .cb-measure.completed{background:#dce2ea;border:1px solid #8895a5;box-shadow:none}
+body[data-variant="four"] .cb-painpoint-rail{background:#fffafb;border:1px solid #e8bdc4;border-radius:9px;box-shadow:none}
+body[data-variant="four"] .cb-painpoint-node{background:transparent;border:0;border-radius:0;padding:.33vh .45vw;box-shadow:none}
+body[data-variant="four"] .cb-painpoint-item span{color:#684f55}
+
+/* 2 · Different stage colors, with the low-border material of option 3. */
+body[data-variant="five"] .task-rel-page{--phase-source:#3f77b7;--phase-action:#7558b7;--phase-generate:#dc8055;--phase-control:#258e98;--phase-evidence:#438b69;background:radial-gradient(ellipse at 72% 1%,rgba(161,173,219,.11),transparent 40%),#edf0f5}
+body[data-variant="five"] .cb-stage{background:linear-gradient(130deg,#283344,color-mix(in srgb,var(--phase) 33%,#253041))}
+body[data-variant="five"] .cb-stage small{color:color-mix(in srgb,var(--phase) 49%,#fff)}
+body[data-variant="five"] .cb-stage-visual::before{background:radial-gradient(ellipse,color-mix(in srgb,var(--phase) 54%,transparent),color-mix(in srgb,var(--phase) 18%,transparent) 52%,transparent 76%)}
+body[data-variant="five"] .cb-stage-visual img{filter:drop-shadow(0 5px 7px rgba(18,28,62,.24))}
+body[data-variant="five"] .cb-human-step,
+body[data-variant="five"] .cb-agent-step{background:color-mix(in srgb,var(--phase) 7%,#fff);border:0;border-radius:8px}
+body[data-variant="five"] .cb-handoff{color:var(--phase)}
+body[data-variant="five"] .cb-source-nodes span,
+body[data-variant="five"] .cb-vertical-flow>span,
+body[data-variant="five"] .cb-preview,
+body[data-variant="five"] .cb-proof-items span{background:color-mix(in srgb,var(--phase) 10%,#fff)}
+body[data-variant="five"] .cb-trust-gate,
+body[data-variant="five"] .cb-context-result,
+body[data-variant="five"] .cb-proof-result{background:color-mix(in srgb,var(--phase) 15%,#fff)}
+body[data-variant="five"] .cb-mechanism-stage .cb-mech-node{--cap-tone:var(--phase);background:color-mix(in srgb,var(--phase) 15%,#fff);border:0;box-shadow:none}
+body[data-variant="five"] .cb-mechanism-stage .cb-mech-node b{color:color-mix(in srgb,var(--phase) 66%,#29334c)}
+body[data-variant="five"] .cb-mechanism-stage .cb-mech-dot{background:var(--phase)}
+body[data-variant="five"] .cb-measure:not(.completed){background:color-mix(in srgb,var(--phase) 8%,#fff);border:0;border-radius:8px}
 </style>
 </head>
-<body data-variant="one">
+<body data-variant="four">
 <nav class="preview-switch" aria-label="第 5 页视觉方案切换">
   <span class="preview-switch-label">第 5 页视觉对照</span>
-  <button class="preview-choice" type="button" data-choice="one" aria-pressed="true">1 编辑式矩阵</button>
-  <button class="preview-choice" type="button" data-choice="two" aria-pressed="false">2 深色蓝图</button>
+  <button class="preview-choice" type="button" data-choice="four" aria-pressed="true">1 同色线框</button>
+  <button class="preview-choice" type="button" data-choice="five" aria-pressed="false">2 分色减框</button>
   <button class="preview-choice" type="button" data-choice="three" aria-pressed="false">3 同色减框</button>
 </nav>
 <div id="deck">
@@ -1209,20 +1283,20 @@ body[data-variant="three"] .cb-actor-icon{color:#d65768}
 (() => {
   const buttons = [...document.querySelectorAll('.preview-choice')];
   const setVariant = (variant, updateHash = true) => {
-    const next = variant === 'three' ? 'three' : variant === 'two' ? 'two' : 'one';
+    const next = variant === 'three' ? 'three' : variant === 'five' ? 'five' : 'four';
     document.body.dataset.variant = next;
     buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.choice === next)));
-    if (updateHash) history.replaceState(null, '', next === 'three' ? '#3' : next === 'two' ? '#2' : '#1');
+    if (updateHash) history.replaceState(null, '', next === 'three' ? '#3' : next === 'five' ? '#2' : '#1');
     requestAnimationFrame(() => dispatchEvent(new Event('resize')));
   };
   buttons.forEach(button => button.addEventListener('click', () => setVariant(button.dataset.choice)));
-  addEventListener('hashchange', () => setVariant(location.hash === '#3' ? 'three' : location.hash === '#2' ? 'two' : 'one', false));
+  addEventListener('hashchange', () => setVariant(location.hash === '#3' ? 'three' : location.hash === '#2' ? 'five' : 'four', false));
   addEventListener('keydown', event => {
-    if (event.key === '1') setVariant('one');
-    if (event.key === '2') setVariant('two');
+    if (event.key === '1') setVariant('four');
+    if (event.key === '2') setVariant('five');
     if (event.key === '3') setVariant('three');
   });
-  setVariant(location.hash === '#3' ? 'three' : location.hash === '#2' ? 'two' : 'one', false);
+  setVariant(location.hash === '#3' ? 'three' : location.hash === '#2' ? 'five' : 'four', false);
 })();
 
 </script>
