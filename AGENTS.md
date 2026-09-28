@@ -3780,6 +3780,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTMLParser 与 3 段内联 JS `node --check` 通过，三方案切换结构存在，`git diff --check` 通过。本地 `file://` 仍受浏览器 URL policy 限制，未绕过策略做截图级视觉复核。
 - Commit / push：`bb372433`（`design: compare monochrome outlines and multicolor low-border styles`）已单文件提交并推送 `origin/main`；本交接记录另行提交推送。未决：用户在 `#1`、`#2`、`#3` 中比较后决定正式第 5 页的方向。
 
+### 2026-09-28（问题 03 采用平衡版证据顺序）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report.html`。用户选定“平衡版”：六平台沙盘之后先概述昇腾应提供的三类支撑及理由，再盘点已有资产，再对照目标判断缺口，最后提出具体建设动作。本轮把正式序列改为“平台能力沙盘 → 建设方向 → 新增现有资产总览 → 现有能力断点 → Harness 与现状交叉 → 问题 03 方案 Demo”，只新增一页；详细 Skill / MCP 原页仍留附录。第 15 页移除 258 Skill、MCP 20+5 等现状数字及具体改造文案，避免提前进入分析与方案。新增资产总览用领域知识、Skill、只读 MCP 与平台 manifest 封装的分层关系图呈现本轮盘点事实。
+- 业务目的与证据边界：方向页是根据平台装配能力做出的设计推论（L）；资产页的 258 Skill、20 Tools + 5 Resources、Claude 20 / Codex 1 / Cursor 1 个 manifest 来自本地结构盘点（M），只说明观察到的资产，不代表跨平台可用性或真实 NPU 任务完成。知识内容本轮未统一计量。差距页把“本轮未观察到共享任务状态”与“跨平台实际安装、调用、回执尚待核查”分开表述；建设页复用五个任务控制对象并补充按平台入口薄适配。API／Host／Application 三层边界未变。
+- 验证：`git diff --check`、`git diff --cached --check`、HTMLParser（99 个 slide，新增资产页唯一）、6 段内联 JS 语法解析和四张问题 03 核心页的运行时标题／正式序列一致性检查通过。因本地 `file://` 的浏览器 URL policy 限制，未绕过策略做截图级视觉复核。HTML 中两处既有未提交 CSS 改动继续保持未暂存。
+- Commit / push：功能提交 `8d79622a`（`refactor: sequence problem three from direction to evidence and build`）已推送 `origin/main`；本交接记录另行提交推送。未决：用户刷新 #15–#18 核对投屏可读性；跨平台接入要靠同任务实测补证据，不由 manifest 数量推断。
+
 ### 2026-09-28（纠正第 5 页视觉方案名称与数量）
 
 - 用户明确纠正：目标是比较「同色减框」与「不同颜色减框」，不是「同色线框」。此前三方案中的「同色线框」属于误听。本轮仅修改 `cann-dashboard/ai-development-behavior-visual-options.html`：移除错误的线框方案与第三个切换入口；预览现只有 `#1` 同色减框、`#2` 分色减框，按钮和键盘 1／2 一致。旧 `#3` 深链在载入后归一到 `#1`，避免显示与地址不一致。
