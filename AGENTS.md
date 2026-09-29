@@ -3989,6 +3989,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTML 解析通过；6 段内联 JavaScript 通过 `node --check`；Plugin 锚点与连线脚本存在；`git diff --cached --check` 通过。桌面浏览器的安全策略拒绝访问本地 `file://` 地址，因此本轮无法截图核对；未通过其他方式绕过该限制。原文件中既有的两处 CSS 差异及所有其他工作区脏文件均未纳入提交。
 - Commit／push：功能提交 `93ff09ca`（`design: apply phase-colored journey to report`）已推送 `origin/main`；本交接条目将在后续单独提交推送。待后续在用户本机打开 #5 做视觉复核；Plugin 成功仅为图示假设。
 
+### 2026-09-29（将 93ff09ca 旅程样式迁入精简版）
+
+- 用户指出精简版第 5 页仍是旧旅程样式。原因是 `93ff09ca` 只改了完整版，而精简版创建时复制了旧 CSS；上一轮精简只重排问题内容，没有迁入该样式。
+- 将 `93ff09ca` 的 `task-rel-page` 样式迁到 `cann-dashboard/ai-development-behavior-system-report-concise.html`：浅灰底、白色画布、Need / Search / Generate / Decide / Execute 阶段色、低边框泳道及机制节点；同步 Generate 色值。保留精简版第 5 页的痛点优先级红度、旅程交叉问题和内容数据。
+- 检查：本地 Chrome 在 1440×810 打开精简版 `#5`，确认阶段色、泳道底色和浅灰背景已生效，0 页面脚本错误；`git diff --check` 通过。样式只影响精简版的旅程页，不改变页序、证据内容或 API／Host／Application 边界。
+- Commit／push：随本次提交推送到 `origin/main`，结果待回填。
+
 ### 2026-09-28（精简版按访谈证据重构为六问题、26 页）
 
 - 用户确认整体改动后，仅修改 `cann-dashboard/ai-development-behavior-system-report-concise.html`，完整版及其他工作区改动保持原状。固定六个问题名称：01 可装配能力难以按任务选配并有效使用；02 开发者难以判断和选择下一步行动；03 生成结果的可信性难以验证；04 任务完成不等于开发者能力增长；05 团队难以共享完整的决策背景；06 真实任务经验难以沉淀为可复用知识。现状、方案、目录和总览沿用同名，不再另起主题。
