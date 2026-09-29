@@ -1038,6 +1038,12 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .voc-evidence-page .evidence-takeaway{font-size:var(--fs-h3);font-weight:750;line-height:1.4;padding:1vh 0;color:#343955}
 .task-rel-page .cb-painpoint-node{display:flex;flex-direction:column;justify-content:center;gap:.2vh;padding:.1vh .22vw;background:transparent;border:0;border-radius:0;box-shadow:none}
 .task-rel-page .cb-painpoint-entry{min-width:0;padding:.14vh .42vw;display:flex;flex-direction:column;gap:.1vh;border:1px solid transparent;border-radius:7px}
+.task-rel-page .cb-painpoint-entry-head{display:flex;align-items:center;justify-content:space-between;gap:.4vw;min-width:0}
+.task-rel-page .cb-painpoint-actor{display:inline-flex;align-items:center;gap:.18vw;font-size:var(--fs-xs);font-weight:750;line-height:1.15;color:#445166}
+.task-rel-page .cb-painpoint-actor svg{width:10px;height:10px;stroke-width:1.9;flex:0 0 auto}
+.task-rel-page .cb-painpoint-actor.is-developer svg{color:#3977b8}
+.task-rel-page .cb-painpoint-actor.is-agent svg{color:#765bb4}
+.task-rel-page .cb-painpoint-entry-head small{font-size:var(--fs-xs);font-weight:750;line-height:1.15;color:inherit;white-space:nowrap}
 .task-rel-page .cb-painpoint-entry.priority-low{background:#f0f1f3;border-color:#dadde2;color:#69707c}
 .task-rel-page .cb-painpoint-entry.priority-medium{background:#fae8e5;border-color:#e5b4ad;color:#93473e}
 .task-rel-page .cb-painpoint-entry.priority-high{background:#f3cbca;border-color:#cf8887;color:#8d252d}
@@ -2008,28 +2014,33 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   retrieval.querySelector('.body-area').innerHTML=`<div class="retrieval-chart"><h3>3 个对等检索任务 · 综合置信度</h3>${retrievalScores}<p>本轮 CANN 与 CUDA 的任务级检索对照。分数沿用原研究口径，不代表生态总体质量。</p><a href="operator-ai-journey-research/evidence/ai-usability/ai-usability-run-20260818.md" target="_blank">任务问句、来源与评分记录 ↗</a></div><div class="retrieval-chain"><div><strong>01</strong><section><b>找到并取回正文</b><p>不仅有入口，还要能读到支撑任务的文档、样例和解释。</p></section></div><div><strong>02</strong><section><b>保留适用条件</b><p>版本、芯片和依赖关系应随引用一起进入答复。</p></section></div><div><strong>03</strong><section><b>支持连续行动</b><p>最小命令、验证信号与失败恢复路径，决定能否继续推进。</p></section></div></div>`;
   retrieval.querySelector('.foot').textContent='2026-08-18：自定义 Add、ONNX 转换、性能分析三任务检索记录。只代表本轮样本；不是硬件实测，也不另立“上下文”问题。';
   const journey=byOriginalTitle.get('Agent 机制下钻');
-  journey.querySelector('.subttl').textContent='AddCustom P1–P2 开发任务：从目标与能力装配，到工程执行与结果核验';
+  journey.querySelector('.subttl').textContent='AddCustom P1–P2 开发任务：按阶段区分开发者 / Agent 痛点，颜色表示相对重要程度';
   const pains=[
     [
-      ['medium','01 · 重点分析',focusQuestions[0].name],
-      ['low','起步条件','目标、芯片 / 软件版本与工程现场需同步明确。']
+      ['medium','developer',focusQuestions[0].name],
+      ['low','developer','目标、芯片 / 软件版本与工程现场需同步明确。']
     ],
     [
-      ['medium','来源适用性','取回正文后，还需核对版本、芯片与依赖条件。'],
-      ['low','连续推进','最小命令、验证信号与失败恢复仍需接续。']
+      ['medium','agent','正文取回后，来源与版本适用范围仍需补全。'],
+      ['low','developer','需跨入口核对命令、验证信号和恢复路径。']
     ],
     [
-      ['medium','测试生成','生成的测试偏向典型输入，特殊边界需要补测。']
+      ['medium','agent','自动生成的测试偏向典型输入。'],
+      ['low','developer','特殊边界仍需开发者补测。']
     ],
     [
-      ['high','02 · 核心重点',focusQuestions[1].name]
+      ['high','developer','结果不符预期时，常换模型重跑。']
     ],
     [
-      ['high','03 · 核心重点',focusQuestions[2].name]
+      ['medium','agent','常规用例通过，不等于边界覆盖充分。'],
+      ['high','developer','补测后才能判断是否暴露真正问题。']
     ]
   ];
-  journey.querySelector('.cb-painpoint-rail').innerHTML=pains.map(group=>`<div class="cb-painpoint-node">${group.map(([level,label,copy])=>`<div class="cb-painpoint-entry priority-${level}"><small>${label}</small><b>${copy}</b></div>`).join('')}</div>`).join('');
-  journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','按开发阶段归纳多个痛点线索，以灰、浅红、深红表示研究关注层级，不表示发生率');
+  const painActor={developer:{label:'开发者',icon:'user-round'},agent:{label:'Agent',icon:'bot'}};
+  const painLevel={low:'次要',medium:'关注',high:'重点'};
+  journey.querySelector('.cb-painpoint-rail').innerHTML=pains.map(group=>`<div class="cb-painpoint-node">${group.map(([level,actor,copy])=>`<div class="cb-painpoint-entry priority-${level}"><div class="cb-painpoint-entry-head"><span class="cb-painpoint-actor is-${actor}"><i data-lucide="${painActor[actor].icon}" aria-hidden="true"></i>${painActor[actor].label}</span><small>${painLevel[level]}</small></div><b>${copy}</b></div>`).join('')}</div>`).join('');
+  if(window.lucide)lucide.createIcons({attrs:{'aria-hidden':'true'}});
+  journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','每阶段可以有多条痛点，分别标明开发者或 Agent，并以灰、浅红、深红表示次要、关注、重点');
   const cross=document.createElement('div');cross.className='journey-cross';cross.innerHTML=`<b>跨阶段与任务之后</b><span class="cross-key">04 · ${focusQuestions[3].name}</span><span>05 · ${focusQuestions[4].name}</span><span>06 · ${focusQuestions[5].name}</span>`;journey.querySelector('.body-area').append(cross);
   const obs=journey.querySelectorAll('.cb-measure');
   obs[2].innerHTML='<small>访谈＋平台盘点</small><span>方法需求与可装配能力</span>';
