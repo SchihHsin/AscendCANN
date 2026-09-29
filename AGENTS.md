@@ -4149,3 +4149,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 视觉使用Report PPT Skill的A3关系图、语义分组与既有VOC组件：任务深底、候选共板、两层淡红判断区；没有新增四张独立同级卡。窄比例时任务区置顶，保留向下连线，正文空间不足允许内部滚动而非缩字／截断。新增CSS限定q1专属组件，其他页不受影响。
 - 验证：4段内联JS语法编译、差异检查通过；离线jsdom92/92、0运行错误、0重复ID。对照固定HEAD `4ebed213`，第1–5与7–27共26页运行后DOM逐字不变；六题名、27页序、Tab、聚焦／方案hash及本地资源检查通过。独立源码审查检查候选非顺序、箭头方向及样式作用域；浏览器限制未绕过，实际显示、窄屏滚动及iframe仍未视觉验收。
 - 同步 `q1-assembly-20260929/verification.md`，保留上次27页与首版26页历史记录。仅提交精简HTML、验证说明和AGENTS，完整版与无关脏文件不动；检查后立即提交推送`origin/main`，结果随后回填。待用户实际阅读反馈，真实任务效果实验仍未执行。
+- Commit／push结果：`a25fa09f`（`design: expose capability selection judgments on problem page`）已成功推送`origin/main`，最终离线检查92/92；临时使用GitHub SSH 443参数，未改永久配置。结果回填独立提交并立即推送。
