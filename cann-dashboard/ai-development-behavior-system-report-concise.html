@@ -1040,8 +1040,6 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .task-rel-page .cb-painpoint-item.priority-low span,.task-rel-page .cb-painpoint-item.priority-low .cb-actor-icon{color:#8d7d82}
 .task-rel-page .cb-painpoint-item.priority-high span{color:#a13a42}
 .task-rel-page .cb-painpoint-item.priority-high .cb-actor-icon{color:#c83e52}
-.task-rel-page .journey-cross{position:relative;z-index:1;display:flex;gap:1.1vw;align-items:center;margin-top:.9vh;font-size:var(--fs-sm);color:#6a717e}
-.task-rel-page .journey-cross>b{white-space:nowrap}.task-rel-page .journey-cross .cross-key{color:#a13a42;font-weight:750}
 .six-question-summary{display:grid;width:100%;gap:0;font-size:var(--fs-body)}
 .six-question-summary .summary-head,.six-question-summary .summary-row{display:grid;grid-template-columns:1.45fr 1fr 1.35fr 1fr;gap:1.5vw;align-items:center;padding:1.5vh .6vw;border-bottom:1px solid #cbd0d9;min-width:0}
 .six-question-summary .summary-head{color:#626b7c;background:#dde1e8}.six-question-summary .summary-row>b{display:flex;gap:.75vw;align-items:baseline;font-size:var(--fs-body);line-height:1.45}.six-question-summary small{font:700 var(--fs-body) monospace;color:#6864ad}.six-question-summary p{font-size:var(--fs-body);line-height:1.45;margin:0}.six-question-summary span{display:block;font-size:var(--fs-sm);color:#737a88;margin-top:.4vh}
@@ -1117,9 +1115,9 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 </div></section>
 
 <section class="slide s-gray task-rel-page" data-title="Agent 机制下钻"><div class="slide-inner">
-  <header class="head"><div class="head-l"><div class="subttl">聚焦 P1–P2 红框：把 AddCustom 接入 PyTorch 的目标、资料检索、上下文装配与工程起步连成一段真实任务</div><div class="ttl">AddCustom 接入 PyTorch：从教程检索到工程起步</div></div><div class="section-tabs"></div></header>
-  <div class="body-area" aria-label="AddCustom 接入 PyTorch 的 P1–P2 业务片段：Need 装配目标与上下文、Search 检索、Generate 生成候选方案、Decide 核验、Execute 工程起步">
-    <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 共同完成 AddCustom 接入 PyTorch 的 P1–P2 任务片段；Need 包含提出目标、提供环境与按任务选配可装配能力，随后依次 Search、Generate、Decide、Execute；各列对应本任务痛点线索与后续待验证问题，本机失败后可选恢复">
+  <header class="head"><div class="head-l"><div class="subttl">以 AddCustom 开发为例，沿任务动作定位能力选配、理解、判断、验证与复用中的问题</div><div class="ttl">AddCustom 开发协作：从任务准备到验证与复用</div></div><div class="section-tabs"></div></header>
+  <div class="body-area" aria-label="AddCustom 开发协作示意：Need 准备目标与能力、Search 检索、Generate 生成与理解、Decide 判断并留存依据、Execute 执行验证与整理经验">
+    <div class="collab-blueprint" role="group" aria-label="六个研究问题按主要发生或承接位置映射到五类任务动作，不表示阶段独占或同一次任务的实测结论；能力增长贯穿检索、理解与实践，决策依据和执行经验延伸到团队交接与授权回流">
       <div class="cb-axis"><small>STAGE</small><b>阶段</b></div>
       <div class="cb-stage-rail" aria-label="五个任务阶段：Need（提出目标并装配初始上下文）、Search / Fetch、Generate、Decide、Execute">
         <div class="cb-stage is-source"><div class="cb-stage-copy"><small>01 · NEED + CONTEXT</small><b>提出目标与上下文</b><span>装配环境、约束与工作区现场</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/need-context.png" alt=""></div></div>
@@ -1133,18 +1131,18 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-lane cb-human-lane" aria-label="开发者泳道">
         <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>明确目标并选配能力</span></b><p>明确 AddCustom 接入目标、芯片 / 版本与仓库；按任务选配规则、知识库、Skill、MCP 等。</p></article>
         <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>确认教程与来源缺口</span></b><p>官方自定义算子教程正文未取回时，判断是否转查社区 / 第三方资料，并保留来源和版本。</p></article>
-        <article class="cb-lane-cell cb-human-step is-generate"><b><i data-lucide="sparkles"></i><span>复核生成草案</span></b><p>检查候选工程路径、参数与来源依据；发现未满足的版本或环境条件时补充说明。</p></article>
-        <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>判断资料适用并定路径</span></b><p>核对教程与本机版本、工程目录和生成方式，确认 msopgen 目标路径；条件不全时先补问。</p></article>
-        <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>复核工程起步动作</span></b><p>检查 msopgen 目标目录与待改文件；本机命令、返回码和日志回到下一轮继续判断。</p></article>
+        <article class="cb-lane-cell cb-human-step is-generate"><b><i data-lucide="sparkles"></i><span>理解原理并复核草案</span></b><p>复核接口、参数与适用条件；解释关键设计依据，通过修改和验证形成自己的判断。</p></article>
+        <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>选择路径并留存依据</span></b><p>结合日志判断排查方向；记录选择理由、失败尝试与未决风险，供团队评审和接手。</p></article>
+        <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>核验结果并整理经验</span></b><p>核对运行与测试证据；整理环境、失败与修复过程，确认可交接或授权分享的经验。</p></article>
       </div>
 
       <div class="cb-row-label cb-handoff-label"><small>HANDOFF</small><b>交接物</b></div>
       <div class="cb-handoff-rail" aria-label="五步任务之间的人机交接">
         <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 / 环境 + 能力配置</span></div>
         <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>教程取回状态 + 来源</span></div>
-        <div class="cb-handoff down is-generate"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>候选路径 + 参数草稿</span></div>
-        <div class="cb-handoff is-control"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M5 2v13M2 5l3-3 3 3M11 16V3M8 6l3-3 3 3"/></svg><span>适用性判断 + 工程路径</span></div>
-        <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>工程骨架 + 执行回执</span></div>
+        <div class="cb-handoff down is-generate"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>候选方案 + 原理 / 边界</span></div>
+        <div class="cb-handoff is-control"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M5 2v13M2 5l3-3 3 3M11 16V3M8 6l3-3 3 3"/></svg><span>选定路径 + 决策依据</span></div>
+        <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>执行证据 + 复用线索</span></div>
       </div>
 
       <div class="cb-row-label cb-agent-label"><small>AGENT</small><b>智能体</b></div>
@@ -1162,27 +1160,27 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
         </article>
         <article class="cb-lane-cell cb-agent-step is-generate">
           <div class="cb-preview-stack">
-            <div class="cb-preview"><small>GENERATE · 候选方案草拟</small><b>结合教程与 Context 生成工程起步草稿</b><ul><li>拟用接口与示例依据</li><li>soc_version / 版本信息</li><li>msopgen 参数与目标目录</li><li>待创建文件与检查点</li></ul></div>
+            <div class="cb-preview"><small>GENERATE · 候选方案草拟</small><b>结合任务条件生成方案与解释</b><ul><li>接口选择与原理</li><li>版本 / 芯片适用条件</li><li>msopgen 参数与工程草稿</li><li>待验证假设与检查点</li></ul></div>
             <div class="cb-wait-gate"><i data-lucide="sparkles"></i>草稿带来源与未决项 · 尚未执行</div>
           </div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-control">
           <div class="cb-preview-stack">
-            <div class="cb-preview"><small>DECIDE · 适用性判断</small><b>核验教程版本后确定工程路径</b><ul><li>官方来源或补充来源</li><li>目标芯片与软件版本匹配</li><li>msopgen 目标目录与生成方式</li><li>本机权限与动作范围</li></ul></div>
-            <div class="cb-wait-gate"><i data-lucide="pause-circle"></i>条件明确后再进入工程执行</div>
+            <div class="cb-preview"><small>DECIDE · 路径与依据</small><b>结合资料与日志比较候选路径</b><ul><li>事实证据与缺失信息</li><li>候选路径的依据与风险</li><li>已尝试方案 / 未决项</li><li>待确认范围与权限</li></ul></div>
+            <div class="cb-wait-gate"><i data-lucide="pause-circle"></i>留存判断依据 · 确认范围再执行</div>
           </div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-evidence">
           <div class="cb-proof-flow">
-            <div class="cb-proof-signal">准备工程起步，并读取本机返回</div>
-            <div class="cb-proof-items"><span>msopgen 工程骨架</span><span>soc_version 核对状态</span><span>核函数文件与目录</span><span>命令 / 返回码 / 日志</span></div>
-            <div class="cb-proof-result">状态回执 · 待执行 / 已生成 / 失败</div>
+            <div class="cb-proof-signal">执行工程动作，回传结果与现场</div>
+            <div class="cb-proof-items"><span>msopgen 工程与改动</span><span>版本 / 芯片 / 依赖</span><span>测试覆盖 / 失败条件</span><span>命令 / 返回码 / 日志</span></div>
+            <div class="cb-proof-result">状态回执 · 成功 / 失败 / 待验证</div>
             <div class="cb-recovery-inline" aria-label="AddCustom 工程生成失败或 soc_version、版本信息缺失时，核对版本、补充环境、换用可追溯资料或升级处理，并保留工程现场继续">
               <div><b>生成失败 / 缺环境字段</b><span>触发条件</span></div><i>→</i>
               <div><b>可选恢复</b><span>核版本 · 补环境 · 换来源 · 升级处理</span></div><i>↶</i>
               <div><b>回到工程起步</b><span>保留任务现场继续</span></div>
             </div>
-            <div class="cb-recovery-foot">待验证：首个工程成功率 · 接续耗时</div>
+            <div class="cb-recovery-foot">结果与复现线索留在任务现场</div>
           </div>
         </article>
       </div>
@@ -2005,10 +2003,11 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   retrieval.querySelector('.body-area').innerHTML=`<div class="retrieval-chart"><h3>3 个对等检索任务 · 综合置信度</h3>${retrievalScores}<p>本轮 CANN 与 CUDA 的任务级检索对照。分数沿用原研究口径，不代表生态总体质量。</p><a href="operator-ai-journey-research/evidence/ai-usability/ai-usability-run-20260818.md" target="_blank">任务问句、来源与评分记录 ↗</a></div><div class="retrieval-chain"><div><strong>01</strong><section><b>找到并取回正文</b><p>不仅有入口，还要能读到支撑任务的文档、样例和解释。</p></section></div><div><strong>02</strong><section><b>保留适用条件</b><p>版本、芯片和依赖关系应随引用一起进入答复。</p></section></div><div><strong>03</strong><section><b>支持连续行动</b><p>最小命令、验证信号与失败恢复路径，决定能否继续推进。</p></section></div></div>`;
   retrieval.querySelector('.foot').textContent='2026-08-18：自定义 Add、ONNX 转换、性能分析三任务检索记录。只代表本轮样本；不是硬件实测，也不另立“上下文”问题。';
   const journey=byOriginalTitle.get('Agent 机制下钻');
-  journey.querySelector('.subttl').textContent='AddCustom P1–P2 开发任务：按阶段区分开发者 / Agent 痛点，颜色表示相对重要程度';
+  journey.querySelector('.subttl').textContent='以 AddCustom 开发为例，沿任务动作定位能力选配、理解、判断、验证与复用中的问题';
+  const mainPain=(index,actor='developer',detail='')=>['high',actor,focusQuestions[index].name,detail,focusQuestions[index].no];
   const pains=[
     [
-      ['medium','developer',focusQuestions[0].name],
+      mainPain(0),
       ['low','developer','目标与芯片 / 版本信息不齐，需反复补充。']
     ],
     [
@@ -2016,28 +2015,30 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       ['low','developer','需跨入口核对命令、验证信号和恢复路径。']
     ],
     [
+      mainPain(3),
       ['medium','agent','自动生成的测试偏向典型输入。'],
       ['low','developer','特殊边界仍需开发者补测。']
     ],
     [
-      ['high','developer',focusQuestions[1].name,'缺少原理与诊断知识，难定位原因、判断怎样改。']
+      mainPain(1,'developer','缺少原理与诊断知识，难定位原因、判断怎样改。'),
+      mainPain(4,'team')
     ],
     [
+      mainPain(2),
       ['medium','agent','常规用例通过，不等于边界覆盖充分。'],
-      ['high','developer',focusQuestions[2].name,'测试覆盖不清，难判断是否真正可用。']
+      mainPain(5)
     ]
   ];
-  const painActor={developer:{label:'开发者',icon:'user-round'},agent:{label:'Agent',icon:'bot'}};
+  const painActor={developer:{label:'开发者',icon:'user-round'},agent:{label:'Agent',icon:'bot'},team:{label:'开发者 / 团队',icon:'users-round'}};
   const painLevel={low:'次要',medium:'关注',high:'重点'};
-  journey.querySelector('.cb-painpoint-rail').innerHTML=pains.map(group=>`<div class="cb-painpoint-node">${group.map(([level,actor,copy,detail])=>`<div class="cb-painpoint-item priority-${level}" role="group" aria-label="${painActor[actor].label}痛点 · ${painLevel[level]}" title="${painActor[actor].label} · ${painLevel[level]}"><i class="cb-actor-icon is-${actor}" data-lucide="${painActor[actor].icon}" aria-hidden="true"></i><span>${level==='high'?`<b>${copy}</b>`:copy}${detail?`<br>${detail}`:''}</span></div>`).join('')}</div>`).join('');
+  journey.querySelector('.cb-painpoint-rail').innerHTML=pains.map(group=>`<div class="cb-painpoint-node">${group.map(([level,actor,copy,detail,no])=>`<div class="cb-painpoint-item priority-${level}"${no?` data-question="${no}"`:''} role="group" aria-label="${painActor[actor].label}痛点 · ${painLevel[level]}" title="${painActor[actor].label} · ${painLevel[level]}"><i class="cb-actor-icon is-${actor}" data-lucide="${painActor[actor].icon}" aria-hidden="true"></i><span>${level==='high'?`<b>${no?`${no} · `:''}${copy}</b>`:copy}${detail?`<br>${detail}`:''}</span></div>`).join('')}</div>`).join('');
   if(window.lucide)lucide.createIcons({attrs:{'aria-hidden':'true'}});
-  journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','每阶段可以有多条痛点，以人形或机器人图标区分开发者与 Agent，以文字红度表示相对重要程度');
-  const cross=document.createElement('div');cross.className='journey-cross';cross.innerHTML=`<b>跨阶段与任务之后</b><span class="cross-key">04 · ${focusQuestions[3].name}</span><span>05 · ${focusQuestions[4].name}</span><span>06 · ${focusQuestions[5].name}</span>`;journey.querySelector('.body-area').append(cross);
+  journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','六个重点问题以红色显示在主要发生或承接阶段：Need 对应01，Generate对应04，Decide对应02与05，Execute对应03与06；角色图标区分开发者、Agent与团队，其他痛点次一级强调');
   const obs=journey.querySelectorAll('.cb-measure');
   obs[0].innerHTML='<small>访谈＋平台盘点</small><span>任务方法需求与能力选配</span>';
-  obs[2].innerHTML='<small>访谈原声</small><span>自动生成测试偏向典型输入</span>';
-  obs[3].innerHTML='<small>访谈原声</small><span>知识与经验影响诊断及纠错</span>';
-  obs[4].innerHTML='<small>访谈原声</small><span>常规输入／人工边界补测</span>';
+  obs[2].innerHTML='<small>访谈原声</small><span>参与、理解与知识内化</span>';
+  obs[3].innerHTML='<small>访谈＋公开案例</small><span>诊断判断／决策背景交接</span>';
+  obs[4].innerHTML='<small>访谈＋公开案例</small><span>边界补测／公开经验复用</span>';
   const summarySlide=[...deck.children].find(s=>s.dataset.title==='九个问题总览');summarySlide.dataset.title='六个问题总览';
   summarySlide.querySelector('.subttl').textContent='总览 · 证据、设计回应与验证';summarySlide.querySelector('.ttl').textContent='六个问题：从任务推进到长期价值';
   summarySlide.querySelector('.body-area').innerHTML=`<div class="six-question-summary"><div class="summary-head"><b>问题</b><b>关键依据</b><b>方案与落点</b><b>仍需验证</b></div>${focusQuestions.map(q=>`<div class="summary-row"><b><small>${q.no}</small>${q.name}</b><p>${q.evidence}</p><p>${q.response}<span>${q.place}</span></p><p>${q.test}</p></div>`).join('')}</div>`;
