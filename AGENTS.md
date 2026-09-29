@@ -3994,7 +3994,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出精简版第 5 页仍是旧旅程样式。原因是 `93ff09ca` 只改了完整版，而精简版创建时复制了旧 CSS；上一轮精简只重排问题内容，没有迁入该样式。
 - 将 `93ff09ca` 的 `task-rel-page` 样式迁到 `cann-dashboard/ai-development-behavior-system-report-concise.html`：浅灰底、白色画布、Need / Search / Generate / Decide / Execute 阶段色、低边框泳道及机制节点；同步 Generate 色值。保留精简版第 5 页的痛点优先级红度、旅程交叉问题和内容数据。
 - 检查：本地 Chrome 在 1440×810 打开精简版 `#5`，确认阶段色、泳道底色和浅灰背景已生效，0 页面脚本错误；`git diff --check` 通过。样式只影响精简版的旅程页，不改变页序、证据内容或 API／Host／Application 边界。
-- Commit／push：随本次提交推送到 `origin/main`，结果待回填。
+- Commit／push：功能提交 `72ba9547`（`style: migrate phase-colored journey to concise report`）已成功推送到 `origin/main`，使用 GitHub SSH 443 临时参数，未改永久配置；本条回填随后单独提交推送。
 
 ### 2026-09-28（精简版按访谈证据重构为六问题、26 页）
 
