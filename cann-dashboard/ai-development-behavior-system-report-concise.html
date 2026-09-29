@@ -932,7 +932,12 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-image-stage{width:min(100%,142vh);aspect-ratio:1672/941;border:1px solid rgba(255,255,255,.2);border-radius:12px;overflow:visible;background:rgba(255,255,255,.035);box-shadow:0 24px 64px -28px hsla(var(--glow-h),82%,32%,.55)}
 .solution-image-stage img{border-radius:11px;transition:opacity .18s ease}
 .solution-image-stage img.is-switching{opacity:.16}
-.solution-demo-controls{display:flex;align-items:center;gap:.55vw;width:min(100%,142vh);min-height:4.1vh;padding:.2vh .15vw 0}
+.solution-image-controls{display:flex;align-items:center;gap:.55vw;width:min(100%,142vh);min-height:4.1vh;padding:.2vh .15vw 0}
+.solution-annotation-controls{display:flex;align-items:center;justify-content:flex-end;gap:.35vw;flex:0 0 auto;width:auto;min-height:0;white-space:nowrap}
+.solution-annotation-controls [data-solution-annotation-mode]{padding:.45vh .72vw;border:1px solid rgba(255,255,255,.17);border-radius:7px;background:rgba(255,255,255,.055);color:rgba(255,255,255,.68);font:650 var(--fs-sm)/1.2 'HarmonyOS Sans SC',sans-serif;cursor:pointer;transition:background .16s ease,border-color .16s ease,color .16s ease}
+.solution-annotation-controls [data-solution-annotation-mode][aria-pressed="true"]{border-color:color-mix(in srgb,var(--problem-tone) 70%,white);background:color-mix(in srgb,var(--problem-tone) 22%,rgba(255,255,255,.08));color:#fff}
+.solution-annotation-controls [data-solution-annotation-mode]:focus-visible,.solution-point[role="button"]:focus-visible{outline:2px solid color-mix(in srgb,var(--problem-tone) 74%,white);outline-offset:3px}
+.solution-demo-controls{display:flex;align-items:center;gap:.55vw;flex:1 1 auto;min-width:0;width:auto;min-height:0;padding:0}
 .solution-demo-step{display:flex;align-items:center;gap:.42vw;min-width:0;padding:.55vh .65vw;border:1px solid rgba(255,255,255,.16);border-radius:8px;background:rgba(255,255,255,.055);color:rgba(255,255,255,.62);font:650 var(--fs-sm)/1.2 'HarmonyOS Sans SC',sans-serif;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease}
 .solution-demo-step:hover{border-color:rgba(255,255,255,.3);color:#fff}
 .solution-demo-step[aria-pressed="true"]{border-color:color-mix(in srgb,var(--problem-tone) 62%,white);background:color-mix(in srgb,var(--problem-tone) 18%,rgba(255,255,255,.08));color:#fff}
@@ -944,8 +949,10 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-demo-nav button:disabled{opacity:.34;cursor:default}
 .solution-demo-nav button:not(:disabled):hover{background:rgba(255,255,255,.14)}
 .solution-focus{--focus-tone:color-mix(in srgb,var(--problem-tone) 82%,white);border-color:var(--focus-tone);background:color-mix(in srgb,var(--problem-tone) 10%,transparent);box-shadow:0 0 0 1px rgba(7,8,12,.45),0 0 18px color-mix(in srgb,var(--problem-tone) 28%,transparent)}
-.solution-focus.is-muted{opacity:.22}
-.solution-focus b{left:-12px;top:-12px;width:28px;height:28px;border-color:#090a10;background:var(--problem-tone);font-size:11px}
+.problem-solution-page .solution-focus{visibility:hidden;opacity:0;transition:opacity .16s ease}
+.problem-solution-page .solution-focus.is-active{visibility:visible;opacity:1}
+.problem-solution-page .solution-focus{background:transparent;box-shadow:none}
+.problem-solution-page .solution-focus b{display:none}
 .solution-points{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:.75vh;min-width:0;min-height:0;padding:.2vh .1vw .1vh .2vw}
 .solution-points-head{display:flex;align-items:baseline;justify-content:space-between;gap:.5vw;padding-bottom:.45vh;border-bottom:1px solid rgba(255,255,255,.17)}
 .solution-points-head b{font-size:var(--fs-h3);line-height:1.2;color:#fff}
@@ -953,6 +960,9 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-point-list{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:.42vh;min-width:0;min-height:0}
 .solution-point{--point-tone:var(--problem-tone);display:grid;grid-template-columns:1fr;align-content:start;gap:.52vh;min-width:0;min-height:0;padding:.8vh .52vw;border-bottom:1px solid rgba(255,255,255,.14);background:linear-gradient(100deg,color-mix(in srgb,var(--point-tone) 10%,transparent),transparent 82%)}
 .solution-point.is-muted{opacity:.48}
+.problem-solution-page .solution-point[role="button"]{cursor:pointer;transition:opacity .16s ease,background-color .16s ease}
+.problem-solution-page .solution-point[aria-disabled="true"]{cursor:default}
+.problem-solution-page .solution-point[aria-pressed="true"]{background:linear-gradient(100deg,color-mix(in srgb,var(--point-tone) 20%,transparent),transparent 82%)}
 .solution-point-head{display:flex;align-items:center;gap:.48vw;min-width:0;margin-bottom:.12vh}
 .solution-point-head .num{display:grid;place-items:center;flex:0 0 auto;width:1.65vw;height:1.65vw;min-width:25px;min-height:25px;border-radius:50%;background:color-mix(in srgb,var(--point-tone) 25%,#171922);color:color-mix(in srgb,var(--point-tone) 72%,white);font:800 var(--fs-sm)/1 'JetBrains Mono'}
 .solution-point-head b{font-size:var(--fs-h3);line-height:1.2;color:#fff}
@@ -963,7 +973,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-point-bullets li.benefit{color:color-mix(in srgb,var(--point-tone) 72%,white);font-weight:700}
 .solution-boundary{padding-top:.35vh;color:rgba(255,255,255,.68);font-size:var(--fs-sm);line-height:1.3}
 .solution-boundary b{color:rgba(255,255,255,.68)}
-@media(max-width:1180px){.problem-solution-page>.slide-inner{padding-inline:2.4vw}.problem-solution-page .problem-chrome{left:2.4vw;right:2.4vw}.solution-content{padding-top:8vh}.solution-layout{grid-template-columns:minmax(0,2.8fr) minmax(0,1fr);gap:.8vw}.solution-heading h1{font-size:clamp(27px,2.4vw,34px)}.solution-point{padding:.65vh .42vw}.solution-demo-controls{width:100%}}
+@media(max-width:1180px){.problem-solution-page>.slide-inner{padding-inline:2.4vw}.problem-solution-page .problem-chrome{left:2.4vw;right:2.4vw}.solution-content{padding-top:8vh}.solution-layout{grid-template-columns:minmax(0,2.8fr) minmax(0,1fr);gap:.8vw}.solution-heading h1{font-size:clamp(27px,2.4vw,34px)}.solution-point{padding:.65vh .42vw}.solution-image-controls{flex-wrap:wrap}.solution-demo-controls{flex:1 1 100%;min-width:100%}}
 .problem-fact p{font-size:var(--fs-body)}.problem-question-box b{font-size:var(--fs-body);line-height:1.32}
 </style>
 <style id="problem-narrative-styles">
@@ -1849,7 +1859,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     slide.dataset.hypothesis=item.n;
     const focusMarkup=(marks,solution=false)=>(marks||[]).map((mark,index)=>`<span class="problem-focus ${solution?'solution-focus':''}" data-solution-focus="${index}" style="--focus-x:${mark.x}%;--focus-y:${mark.y}%;--focus-w:${mark.w}%;--focus-h:${mark.h}%" aria-hidden="true"><b>${String(index+1).padStart(2,'0')}</b></span>`).join('');
     if(isStatus) return makeNarrativeStatus(item);
-    const designPointMarkup=(item.designPoints||[]).map((point,index)=>`<article class="solution-point" data-solution-point="${index}"><header class="solution-point-head"><span class="num">${String(index+1).padStart(2,'0')}</span><b>${problemEsc(point.title)}</b></header><ul class="solution-point-bullets"><li>${problemEsc(point.choice)}</li><li>${problemEsc(point.problem)} <span class="solution-point-arrow">→</span> ${problemEsc(point.mechanism)}</li><li class="benefit">${problemEsc(point.benefit)}</li></ul></article>`).join('');
+    const designPointMarkup=(item.designPoints||[]).map((point,index)=>`<article class="solution-point" data-solution-point="${index}" role="button" tabindex="-1" aria-pressed="false" aria-disabled="true"><header class="solution-point-head"><span class="num">${String(index+1).padStart(2,'0')}</span><b>${problemEsc(point.title)}</b></header><ul class="solution-point-bullets"><li>${problemEsc(point.choice)}</li><li>${problemEsc(point.problem)} <span class="solution-point-arrow">→</span> ${problemEsc(point.mechanism)}</li><li class="benefit">${problemEsc(point.benefit)}</li></ul></article>`).join('');
     const solutionHue=({'01':235,'02':218,'03':216,'04':32,'05':32,'06':174,'07':174,'08':262,'09':262})[item.n]||235;
     const solutionStates=item.solutionStates||[{label:'设计方案',image:item.solutionImage,alt:item.solutionAlt}];
     const initialState=solutionStates[0];
@@ -1858,7 +1868,10 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     slide._solutionStates=solutionStates;
     slide._solutionDefaultPoints=item.designPoints||[];
     slide.dataset.solutionStep='1';
-    slide.innerHTML=`<div class="slide-inner"><header class="chrome problem-chrome"><div class="chrome-label">DESIGN POINT ${item.n} · ${problemEsc(item.name)}</div><nav class="section-tabs"></nav></header><main class="solution-content"><div class="solution-heading"><div class="solution-meta"><b>问题 ${item.n}</b><span>${problemEsc(item.phase)}</span><span>·</span><span>设计提案</span></div><h1>${problemEsc(item.solution)}</h1><span class="platform-tag">${problemEsc(item.platform)} · 概念图</span></div><div class="solution-layout"><figure class="solution-figure"><div class="problem-image-stage solution-image-stage"><img data-solution-image src="${problemEsc(initialState.image)}" alt="${problemEsc(initialState.alt||item.solutionAlt)}" loading="lazy">${focusMarkup((item.designPoints||[]).map(point=>point.mark),true)}</div>${solutionStepper}</figure><aside class="solution-points"><div class="solution-points-head"><b>体验设计点</b><span>图上 01—03</span></div><div class="solution-point-list">${designPointMarkup}</div><div class="solution-boundary"><b>概念边界：</b>${problemEsc(item.solutionBoundary)}</div></aside></div><footer class="solution-boundary solution-foot">待在代表性开发任务中验证用户收益；图中界面为设计提案，不代表平台现成功能。</footer></main></div>`;
+    slide.dataset.solutionAnnotationMode='full';
+    slide.dataset.solutionSelectedPoint='';
+    const annotationControls=`<div class="solution-annotation-controls" data-solution-annotation-controls role="group" aria-label="设计图显示方式"><button type="button" data-solution-annotation-mode="full" aria-pressed="true">完整界面</button><button type="button" data-solution-annotation-mode="annotated" aria-pressed="false">讲解标注</button></div>`;
+    slide.innerHTML=`<div class="slide-inner"><header class="chrome problem-chrome"><div class="chrome-label">DESIGN POINT ${item.n} · ${problemEsc(item.name)}</div><nav class="section-tabs"></nav></header><main class="solution-content"><div class="solution-heading"><div class="solution-meta"><b>问题 ${item.n}</b><span>${problemEsc(item.phase)}</span><span>·</span><span>设计提案</span></div><h1>${problemEsc(item.solution)}</h1><span class="platform-tag">${problemEsc(item.platform)} · 概念图</span></div><div class="solution-layout"><figure class="solution-figure"><div class="problem-image-stage solution-image-stage"><img data-solution-image src="${problemEsc(initialState.image)}" alt="${problemEsc(initialState.alt||item.solutionAlt)}" loading="lazy">${focusMarkup((item.designPoints||[]).map(point=>point.mark),true)}</div><div class="solution-image-controls">${solutionStepper}${annotationControls}</div></figure><aside class="solution-points"><div class="solution-points-head"><b>体验设计点</b></div><div class="solution-point-list">${designPointMarkup}</div><div class="solution-boundary"><b>概念边界：</b>${problemEsc(item.solutionBoundary)}</div></aside></div><footer class="solution-boundary solution-foot">待在代表性开发任务中验证用户收益；图中界面为设计提案，不代表平台现成功能。</footer></main></div>`;
     return slide;
   };
   const deck=document.getElementById('deck');
@@ -1917,25 +1930,48 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   const questionOverview=makeProblemOverview();
   const experienceAnchor=[...deck.querySelectorAll('.slide')].find(slide=>slide.dataset.title==='协同架构');
   deck.insertBefore(questionOverview,experienceAnchor||null);
+  const applySolutionAnnotation=slide=>{
+    if(!slide)return;
+    const isAnnotated=slide.dataset.solutionAnnotationMode==='annotated';
+    const selectedRaw=slide.dataset.solutionSelectedPoint;
+    const selected=selectedRaw===''?null:Number(selectedRaw);
+    const canShow= isAnnotated&&slide.dataset.solutionImagePending!=='true'&&slide.dataset.solutionImageError!=='true';
+    slide.querySelectorAll('[data-solution-annotation-mode]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.solutionAnnotationMode===(isAnnotated?'annotated':'full'))));
+    slide.querySelectorAll('[data-solution-focus]').forEach(mark=>mark.classList.toggle('is-active',canShow&&Number.isInteger(selected)&&Number(mark.dataset.solutionFocus)===selected&&!mark.classList.contains('is-unpositioned')));
+    slide.querySelectorAll('[data-solution-point]').forEach(point=>{
+      const active=Number(point.dataset.solutionPoint)===selected;
+      point.setAttribute('aria-disabled',String(!isAnnotated));
+      point.setAttribute('aria-pressed',String(isAnnotated&&active));
+      point.tabIndex=isAnnotated?0:-1;
+      point.classList.toggle('is-muted',isAnnotated&&Number.isInteger(selected)&&!active);
+    });
+  };
   const setSolutionState=(slide,requestedIndex)=>{
     const states=slide?._solutionStates;
     if(!states?.length)return null;
     const index=Math.max(0,Math.min(states.length-1,Number(requestedIndex)||0));
     const state=states[index],img=slide.querySelector('[data-solution-image]'),stepper=slide.querySelector('[data-solution-stepper]');
+    const imageRequest=(Number(slide.dataset.solutionImageRequest)||0)+1;
+    slide.dataset.solutionImageRequest=String(imageRequest);
+    slide.dataset.solutionImagePending='false';
+    slide.dataset.solutionImageError='false';
     slide.dataset.solutionStep=String(index+1);
+    const defaultFocus=(state.focusPoints||[]).map(Number).find(Number.isInteger);
+    slide.dataset.solutionSelectedPoint=String(defaultFocus??0);
     const points=state.points||slide._solutionDefaultPoints||[];
     const pointList=slide.querySelector('.solution-point-list');
-    if(pointList)pointList.innerHTML=points.map((point,i)=>`<article class="solution-point" data-solution-point="${i}"><header class="solution-point-head"><span class="num">${String(i+1).padStart(2,'0')}</span><b>${problemEsc(point.title)}</b></header><ul class="solution-point-bullets"><li>${problemEsc(point.choice)}</li><li>${problemEsc(point.problem)} <span class="solution-point-arrow">→</span> ${problemEsc(point.mechanism)}</li><li class="benefit">${problemEsc(point.benefit)}</li></ul></article>`).join('');
-    slide.querySelectorAll('[data-solution-focus]').forEach((mark,i)=>{const rect=state.marks?.[i]||slide._solutionDefaultPoints?.[i]?.mark;if(rect){mark.style.setProperty('--focus-x',`${rect.x}%`);mark.style.setProperty('--focus-y',`${rect.y}%`);mark.style.setProperty('--focus-w',`${rect.w}%`);mark.style.setProperty('--focus-h',`${rect.h}%`);}});
+    if(pointList)pointList.innerHTML=points.map((point,i)=>`<article class="solution-point" data-solution-point="${i}" role="button" tabindex="-1" aria-pressed="false" aria-disabled="true"><header class="solution-point-head"><span class="num">${String(i+1).padStart(2,'0')}</span><b>${problemEsc(point.title)}</b></header><ul class="solution-point-bullets"><li>${problemEsc(point.choice)}</li><li>${problemEsc(point.problem)} <span class="solution-point-arrow">→</span> ${problemEsc(point.mechanism)}</li><li class="benefit">${problemEsc(point.benefit)}</li></ul></article>`).join('');
+    slide.querySelectorAll('[data-solution-focus]').forEach((mark,i)=>{const rect=state.marks?.[i]||slide._solutionDefaultPoints?.[i]?.mark;if(rect){mark.classList.remove('is-unpositioned');mark.style.setProperty('--focus-x',`${rect.x}%`);mark.style.setProperty('--focus-y',`${rect.y}%`);mark.style.setProperty('--focus-w',`${rect.w}%`);mark.style.setProperty('--focus-h',`${rect.h}%`);}else{mark.classList.add('is-unpositioned');['--focus-x','--focus-y','--focus-w','--focus-h'].forEach(property=>mark.style.removeProperty(property));}});
     if(img){
       img.alt=state.alt||img.alt;
       if(img.getAttribute('src')!==state.image){
+        slide.dataset.solutionImagePending='true';
         img.classList.add('is-switching');
         const preload=new Image();
-        preload.onload=()=>{if(slide.dataset.solutionStep!==String(index+1))return;img.src=state.image;requestAnimationFrame(()=>img.classList.remove('is-switching'));};
-        preload.onerror=()=>img.classList.remove('is-switching');
+        preload.onload=()=>{if(slide.dataset.solutionImageRequest!==String(imageRequest)||slide.dataset.solutionStep!==String(index+1))return;img.src=state.image;slide.dataset.solutionImagePending='false';slide.dataset.solutionImageError='false';applySolutionAnnotation(slide);requestAnimationFrame(()=>img.classList.remove('is-switching'));};
+        preload.onerror=()=>{if(slide.dataset.solutionImageRequest!==String(imageRequest)||slide.dataset.solutionStep!==String(index+1))return;slide.dataset.solutionImagePending='false';slide.dataset.solutionImageError='true';applySolutionAnnotation(slide);img.classList.remove('is-switching');};
         preload.src=state.image;
-      }
+      }else img.classList.remove('is-switching');
     }
     if(stepper){
       stepper.querySelectorAll('[data-solution-step]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.solutionStep)===index)));
@@ -1943,9 +1979,8 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       const prev=stepper.querySelector('[data-solution-prev]'),next=stepper.querySelector('[data-solution-next]');
       if(prev)prev.disabled=index===0;if(next)next.disabled=index===states.length-1;
     }
-    const focusPoints=new Set((state.focusPoints||[]).map(Number));
-    slide.querySelectorAll('[data-solution-focus]').forEach(mark=>mark.classList.toggle('is-muted',focusPoints.size>0&&!focusPoints.has(Number(mark.dataset.solutionFocus))));
-    slide.querySelectorAll('[data-solution-point]').forEach(point=>point.classList.toggle('is-muted',focusPoints.size>0&&!focusPoints.has(Number(point.dataset.solutionPoint))));
+    if(!slide.dataset.solutionAnnotationMode)slide.dataset.solutionAnnotationMode='full';
+    applySolutionAnnotation(slide);
     return index;
   };
   const updateProblemDemo=app=>{
@@ -2045,17 +2080,17 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     Object.assign(item,{displayNo:q.no,name:q.name,phase:q.phase,headline:q.name});
     if(q.id==='03'){
       item.platform='Codex · AI 工作台';
-      item.solutionImage=`${q1DemoRoot}01-codex-task-capability-selection-v1.png`;
+      item.solutionImage=`${q1DemoRoot}01-codex-task-capability-selection-typography-v3.png`;
       item.solutionAlt='Codex 风格能力选配概念图：先确认任务条件，选择领域方法与文档查询，并界定只读权限';
       item.solutionBoundary='方法载入、工具调用与真机验证分开记录；MCP 示例只涉及文档查询，不承担构建或 NPU 评测。';
       item.designPoints=[
-        {title:'先匹配任务，再推荐组合',choice:'先确认版本、芯片与验收条件',problem:'同名能力未必适用',mechanism:'标出缺项与推荐依据',benefit:'知道为什么选、还缺什么',mark:{x:18.5,y:28,w:50.2,h:15}},
-        {title:'把能力名称翻译成用途',choice:'说明用途、输入与适用条件',problem:'仅看名称难判断',mechanism:'按任务需要呈现候选',benefit:'选择互补组合，不全量加载',mark:{x:18.5,y:46,w:50.2,h:52}},
-        {title:'加载不等于授权执行',choice:'修改、构建和评测单独授权',problem:'选中不代表开始执行',mechanism:'在确认点分清权限',benefit:'明确本次允许做什么',mark:{x:71.3,y:11,w:27.5,h:74}}
+        {title:'先匹配任务，再推荐组合',choice:'先确认版本、芯片与验收条件',problem:'同名能力未必适用',mechanism:'标出缺项与推荐依据',benefit:'知道为什么选、还缺什么',mark:{x:18.5,y:27.5,w:50.2,h:15.3}},
+        {title:'把能力名称翻译成用途',choice:'说明用途、输入与适用条件',problem:'仅看名称难判断',mechanism:'按任务需要呈现候选',benefit:'选择互补组合，不全量加载',mark:{x:18.5,y:45.2,w:50.2,h:51.6}},
+        {title:'加载不等于授权执行',choice:'修改、构建和评测单独授权',problem:'选中不代表开始执行',mechanism:'在确认点分清权限',benefit:'明确本次允许做什么',mark:{x:71.3,y:5.6,w:27.5,h:83.5}}
       ];
       item.solutionStates=[
         {label:'按任务选配',image:item.solutionImage,alt:item.solutionAlt},
-        {label:'查看使用与验证记录',image:`${q1DemoRoot}02-codex-capability-usage-record-v1.png`,alt:'同一 Codex 任务的使用记录概念图：Skill 加载示例、文档查询回执示例和未运行的 NPU 评测',marks:[{x:23.8,y:28.5,w:44.8,h:21},{x:23.8,y:52,w:44.8,h:28},{x:23.8,y:83,w:44.8,h:14}],points:[
+        {label:'查看使用与验证记录',image:`${q1DemoRoot}02-codex-capability-usage-record-typography-v3.png`,alt:'同一 Codex 任务的使用记录概念图：Skill 加载示例、文档查询回执示例和未运行的 NPU 评测',marks:[{x:23.8,y:28.5,w:44.8,h:21},{x:23.8,y:52,w:44.8,h:28},{x:23.8,y:83,w:44.8,h:14}],points:[
           {title:'分开记录载入与执行',choice:'Skill 载入和命令运行分别留痕',problem:'安装不等于使用',mechanism:'明确已发生与未发生的步骤',benefit:'看清能力是否进入开发过程'},
           {title:'查询结果带回依据',choice:'展示原文、版本与匹配状态',problem:'单段答案难核对',mechanism:'保留引用与适用条件',benefit:'可以复核建议依据'},
           {title:'用验证证据结束任务',choice:'缺少匹配 NPU 时显示未运行',problem:'加载不证明性能改善',mechanism:'实际评测独立验收',benefit:'区分接入成功与任务成功'}
@@ -2063,13 +2098,13 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       ];
     }
     if(q.id==='04'){
-      item.solutionImage='ai-development-behavior-system-report-evidence/solution-mockups/02-codex-decision-guidance.png';
+      item.solutionImage='ai-development-behavior-system-report-evidence/solution-mockups/02-codex-decision-guidance-typography-v2.png';
       item.solutionAlt='Codex 风格决策辅助概念图：错误事实、诊断路线比较与确认下一步';
       item.solutionBoundary='诊断依据需来自真实日志与代码；建议是待验证假设，开发者确认范围后再执行。概念图不代表现成功能。';
       item.designPoints=[
-        {title:'先看错误与已尝试动作',choice:'把错误、失败输入和已尝试修改放在一起',problem:'重复生成没有新增判断依据',mechanism:'用任务事实缩小排查范围',benefit:'知道还缺哪些证据',mark:{x:17,y:19,w:31,h:49}},
-        {title:'比较路线而不是只给答案',choice:'并列下一步的依据、缺项与影响',problem:'不知道为什么选这条路',mechanism:'把建议和已确认事实分开',benefit:'能有理由地选路或补证',mark:{x:51,y:19,w:46,h:49}},
-        {title:'把人的判断带回执行',choice:'确认检查对象与不允许修改的范围',problem:'重试容易扩大变更',mechanism:'将明确判断作为下一步指令',benefit:'沿选定方向继续并核验',mark:{x:17,y:74,w:80,h:20}}
+        {title:'先看错误与已尝试动作',choice:'把错误、失败输入和已尝试修改放在一起',problem:'重复生成没有新增判断依据',mechanism:'用任务事实缩小排查范围',benefit:'知道还缺哪些证据',mark:{x:16.5,y:14.2,w:37.1,h:59.2}},
+        {title:'比较路线而不是只给答案',choice:'并列下一步的依据、缺项与影响',problem:'不知道为什么选这条路',mechanism:'把建议和已确认事实分开',benefit:'能有理由地选路或补证',mark:{x:54.7,y:14.2,w:43.7,h:59.2}},
+        {title:'把人的判断带回执行',choice:'确认检查对象与不允许修改的范围',problem:'重试容易扩大变更',mechanism:'将明确判断作为下一步指令',benefit:'沿选定方向继续并核验',mark:{x:16.5,y:74.9,w:81.9,h:22.1}}
       ];
       item.solutionStates=[{label:'比较事实与路线',image:item.solutionImage,alt:item.solutionAlt,focusPoints:[0,1]},{label:'确认下一步范围',image:item.solutionImage,alt:item.solutionAlt,focusPoints:[2]}];
     }
@@ -2493,6 +2528,23 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       if(current===sandboxFocusIndex)update(current);
       return;
     }
+    const solutionSlide=event.target.closest('.problem-solution-page');
+    const annotationMode=event.target.closest('button[data-solution-annotation-mode]');
+    if(annotationMode&&solutionSlide){
+      event.preventDefault();event.stopPropagation();
+      solutionSlide.dataset.solutionAnnotationMode=annotationMode.dataset.solutionAnnotationMode;
+      applySolutionAnnotation(solutionSlide);
+      return;
+    }
+    const designPoint=event.target.closest('[data-solution-point]');
+    if(designPoint&&solutionSlide){
+      event.preventDefault();event.stopPropagation();
+      if(solutionSlide.dataset.solutionAnnotationMode==='annotated'){
+        solutionSlide.dataset.solutionSelectedPoint=designPoint.dataset.solutionPoint;
+        applySolutionAnnotation(solutionSlide);
+      }
+      return;
+    }
     const step=event.target.closest('[data-solution-step],[data-solution-prev],[data-solution-next]');
     if(!step)return;
     const slide=step.closest('.problem-solution-page');if(!slide?._solutionStates?.length)return;
@@ -2501,6 +2553,12 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     const target=step.hasAttribute('data-solution-prev')?currentStep-1:step.hasAttribute('data-solution-next')?currentStep+1:Number(step.dataset.solutionStep);
     setSolutionState(slide,target);
     if(slides[current]===slide)update(current);
+  });
+  deck.addEventListener('keydown',event=>{
+    const point=event.target.closest?.('.problem-solution-page [data-solution-point]');
+    if(!point||!['Enter',' '].includes(event.key))return;
+    event.preventDefault();event.stopPropagation();
+    if(point.closest('.problem-solution-page').dataset.solutionAnnotationMode==='annotated')point.click();
   });
   addEventListener('wheel', event => {
     if(overview)return;
