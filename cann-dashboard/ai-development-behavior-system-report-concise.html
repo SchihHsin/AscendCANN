@@ -1071,32 +1071,70 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .q1-evidence-anchor .voc-card{padding:1.15vh 1.3vw;gap:.3vh}.q1-evidence-anchor .qm{position:absolute;right:1vw;top:1vh;font-size:54px;opacity:.15}
 .q1-evidence-anchor .voc-q{font-size:var(--fs-h3)}.q1-evidence-anchor .voc-meta{margin-top:.5vh}
 .q1-evidence-reading{font-size:var(--fs-body);color:#5f6576;line-height:1.65}.q1-evidence-reading b{color:#333953}
-.q1-map{position:relative;width:100%;height:51vh;min-height:340px;max-height:530px;display:grid;grid-template-columns:1.1fr .28fr 1fr .28fr .86fr;grid-template-rows:4.5vh 1fr;align-items:stretch;min-width:0}
-.q1-map-label{font-size:var(--fs-body);font-weight:800;letter-spacing:.04em;color:#515873;align-self:start}
-.q1-map-label:first-child{grid-column:1}.q1-map-label:nth-child(2){grid-column:3}.q1-map-label:nth-child(3){grid-column:5}
-.q1-domain{grid-column:1;grid-row:2;display:grid;grid-template-rows:repeat(4,minmax(0,1fr));gap:1.2vh;min-width:0}
-.q1-domain-node{position:relative;min-width:0;min-height:0;padding:.7vh 1vw;border-left:3px solid var(--domain-tone);background:linear-gradient(90deg,color-mix(in srgb,var(--domain-tone) 9%,transparent),transparent 90%);display:flex;flex-direction:column;justify-content:center}
-.q1-domain-node b{font-size:var(--fs-h3);line-height:1.2;color:#2b3245}.q1-domain-node p{font-size:var(--fs-body);line-height:1.4;color:#626b7b;margin-top:.5vh}.q1-domain-node .q1-count{color:var(--domain-tone);font-weight:850;font-size:1.2em}
-.q1-domain-node.pending{border-left-style:dashed;background:transparent}
-.q1-map-bridge{grid-row:2;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#6b7385;font-size:var(--fs-sm);text-align:center;line-height:1.45;padding:0 .3vw}
-.q1-map-bridge::after{content:'';position:absolute;top:58%;left:0;right:0;border-top:2px dashed #a7aebf}
-.q1-map-bridge span{margin-top:-8vh;background:var(--paper);z-index:1}
-.q1-packaging{grid-column:3;grid-row:2;position:relative;border:1px solid #b6b5cf;border-radius:18px;padding:2.3vh 1.3vw;display:flex;flex-direction:column;justify-content:space-between;gap:1vh;min-width:0}
-.q1-packaging h3{font-size:var(--fs-h2);line-height:1.4;color:#48476d}.q1-package-platforms{display:flex;justify-content:space-between;gap:.5vw;border-block:1px solid #c6c5d8;padding:1.8vh 0}
-.q1-package-platforms>div{display:flex;flex-direction:column;gap:.6vh;text-align:center;font-size:var(--fs-body);color:#454b64}.q1-package-platforms strong{font-size:clamp(25px,2.5vw,39px);font-weight:500;color:#635ca2}
-.q1-packaging p{font-size:var(--fs-body);line-height:1.5;color:#62677c}.q1-packaging small{font-size:var(--fs-sm);color:#777b8d;line-height:1.4}
-.q1-task-use{grid-column:5;grid-row:2;display:flex;flex-direction:column;justify-content:center;min-width:0;padding-left:.4vw}
-.q1-task-use h3{font-size:var(--fs-h2);line-height:1.3;margin-bottom:2vh}.q1-use-step{position:relative;display:grid;grid-template-columns:2.4vw 1fr;gap:.7vw;align-items:start;min-height:10.5vh}
-.q1-use-step:not(:last-child)::after{content:'';position:absolute;left:1.15vw;top:2.7vw;bottom:.3vh;width:1px;background:#bfc5d1}
-.q1-use-step i{font-style:normal;display:grid;place-items:center;width:2.4vw;height:2.4vw;min-width:24px;min-height:24px;border:1.5px solid #9ca7bb;border-radius:50%;font-size:var(--fs-sm);color:#7b85a0}
-.q1-use-step b{font-size:var(--fs-h3);line-height:1.35}.q1-use-step p{font-size:var(--fs-body);line-height:1.45;color:#737b8a;margin-top:.4vh}
-.q1-map-caption{display:flex;align-items:baseline;gap:1vw;font-size:var(--fs-body);line-height:1.5;border-top:1px solid #c6ccd6;padding-top:1.2vh;color:#646b7b}.q1-map-caption b{color:#3f4765;font-size:var(--fs-h3);white-space:nowrap}
-.q1-map.is-proposal .q1-domain-node{border-color:#5b5bd6;background:linear-gradient(90deg,#dcdcf6b0,transparent)}
-.q1-map.is-proposal .q1-domain-node b{color:#4c4596}.q1-map.is-proposal .q1-packaging{border:2px solid #7770c0;background:#f0eff980}
-.q1-map.is-proposal .q1-use-step i{background:#5b5bd6;color:white;border-color:#5b5bd6}.q1-map.is-proposal .q1-map-bridge::after{border-color:#7973bd}
-.q1-map.is-proposal .q1-package-platforms{padding:1.1vh 0}.q1-map.is-proposal .q1-package-platforms strong{font-size:var(--fs-h3);font-weight:750}
+/* Reuse the original inventory composition; counts are not maturity scores. */
+.q1-inventory .ascend-inventory-map{height:53vh;gap:1.2vh}
+.q1-inventory .inventory-supply{grid-template-columns:1fr 1.2fr 1.08fr;box-shadow:0 12px 30px -23px rgba(30,40,70,.25)}
+.q1-inventory .inventory-supply article{padding:1.6vh 1.35vw}
+.q1-inventory .inventory-fact{gap:.65vw;margin:1.15vh 0}
+.q1-inventory .inventory-fact strong{font-size:clamp(42px,4.2vw,66px);white-space:nowrap}
+.q1-inventory .inventory-fact.inventory-mcp-fact{gap:1vw}
+.inventory-mcp-fact>div{display:flex;align-items:baseline;gap:.35vw;min-width:0;min-height:0}
+.inventory-mcp-fact>i{font-style:normal;font-weight:400;font-size:var(--fs-h2);color:#849d9a}
+.q1-inventory .inventory-mcp-fact b{font-size:var(--fs-sm);font-weight:650}
+.inventory-skill-key{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55vh .7vw;margin-top:.8vh}
+.inventory-skill-key span{display:flex;align-items:center;gap:.4vw;font-size:var(--fs-sm);line-height:1.3;color:#57677d}
+.inventory-skill-key i{width:8px;height:8px;border-radius:2px;background:var(--key-tone);flex:0 0 auto}
+.q1-inventory .inventory-packaging{grid-template-columns:14vw repeat(3,minmax(0,1fr)) 21vw}
+.q1-inventory .inventory-supply .inventory-source-types{margin-top:1.8vh}
+/* Two pages share the same task / method / evidence / platform regions. */
+.q1-workboard{--method:#438fd3;--knowledge:#5b5bd6;--service:#2a9b8e;display:grid;gap:1.1vh;min-width:0;min-height:0;width:100%}
+.q1-process .body-area{gap:1.1vh}
+.q1-workboard *{min-width:0;min-height:0}
+.q1-context-band{display:grid;grid-template-columns:18vw minmax(0,1fr) 24vw;gap:1.5vw;align-items:center;padding:1.35vh 1.35vw;border-radius:13px;background:linear-gradient(105deg,#e1e1f4,#f4f4fa);border:1px solid rgba(255,255,255,.9)}
+.q1-context-band b{font-size:var(--fs-h3);color:#474b72}.q1-context-band p{font-size:var(--fs-body);line-height:1.4;color:#535d70}
+.q1-context-tags{display:flex;gap:.55vw;flex-wrap:wrap}.q1-context-tags span{padding:.45vh .65vw;border-radius:7px;background:rgba(255,255,255,.75);color:#575d7e;font-size:var(--fs-body);font-weight:650}
+.q1-workflow{display:grid;grid-template-columns:minmax(0,3.35fr) minmax(0,1fr);gap:1.8vw;align-items:stretch;font-size:var(--fs-h3)}
+.q1-method-panel{position:relative;padding:1.45vh 1.1vw 1.5vh;border:1px solid rgba(255,255,255,.95);border-radius:16px;background:linear-gradient(135deg,#d9e9f7,#edf4fa);box-shadow:0 10px 25px -22px rgba(40,65,100,.3)}
+.q1-group-heading{display:flex;justify-content:space-between;align-items:baseline;gap:1vw;margin-bottom:1.65vh;line-height:1.3}
+.q1-group-heading b{font-size:var(--fs-h3);color:#346b98}.q1-group-heading span{font-size:var(--fs-sm);color:#627d91}
+.q1-method-chain{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.7vw}
+.q1-method-node{position:relative;display:grid;grid-template-rows:auto auto auto 1fr auto;gap:.65vh;padding:0 .2vw}
+.q1-method-node:not(:last-child)::after{content:'';position:absolute;width:1.1vw;right:-1.4vw;top:2vh;border-top:2px solid #6e9dc2}
+.q1-method-node:not(:last-child)::before{content:'';position:absolute;right:-1.4vw;top:2vh;width:6px;height:6px;border-top:2px solid #6e9dc2;border-right:2px solid #6e9dc2;transform:translateY(-2px) rotate(45deg)}
+.q1-node-number{font:400 clamp(27px,2.6vw,42px)/1 'Barlow Condensed',sans-serif;color:#6999c2}
+.q1-method-node h3,.q1-result-panel h3{font-size:var(--fs-h2);line-height:1.3;color:#294d70}
+.q1-method-node a{font:650 var(--fs-sm)/1.3 'JetBrains Mono',monospace;overflow-wrap:anywhere;color:#476581;text-underline-offset:3px}
+.q1-method-node p{font-size:var(--fs-body);line-height:1.4;color:#4d6479;margin:.35vh 0 .7vh}
+.q1-handoff{border-top:1px solid #b4cde1;padding-top:.9vh;font-size:var(--fs-body);font-weight:750;line-height:1.35;color:#2c5c86}
+.q1-handoff small{display:block;font-size:var(--fs-xs);font-weight:550;line-height:1.4;margin-bottom:.3vh;color:#6e8298}
+.q1-result-panel{position:relative;padding:calc(3.1vh + 1.3em) 1.2vw 1.5vh;border-radius:16px;background:var(--g-ink);color:#fff;display:flex;flex-direction:column;gap:.9vh}
+.q1-result-panel::before{content:'';position:absolute;width:1.8vw;right:100%;top:calc(5.1vh + 1.3em);border-top:2px solid #6999c2}
+.q1-result-panel::after{content:'';position:absolute;right:100%;top:calc(5.1vh + 1.3em);width:7px;height:7px;border-top:2px solid #6999c2;border-right:2px solid #6999c2;transform:translateY(-2.5px) rotate(45deg)}
+.q1-result-panel .q1-node-number{color:#96a9c0}.q1-result-panel h3{color:#fff}
+.q1-result-panel p{font-size:var(--fs-body);line-height:1.4;color:#d0d9e5}
+.q1-result-proof{display:flex;flex-direction:column;gap:.6vh;margin-top:auto;padding-top:1.1vh;border-top:1px solid #515d6c;font-size:var(--fs-body);line-height:1.35;color:#ecf1f9}
+.q1-result-proof small{font-size:var(--fs-sm);color:#9cacbf}
+.q1-relations{position:relative;height:3.1vh;min-height:24px;font-size:var(--fs-sm);color:#647b90}
+.q1-query-link{position:absolute;left:22%;top:-1.1vh;bottom:-1.1vh;border-left:2px solid #6ea99c}
+.q1-query-link::before,.q1-query-link::after{content:'';position:absolute;left:-4px;width:6px;height:6px;border-left:2px solid #6ea99c;border-top:2px solid #6ea99c}
+.q1-query-link::before{top:0;transform:rotate(45deg)}.q1-query-link::after{bottom:0;transform:rotate(225deg)}
+.q1-query-link span{position:absolute;right:.8vw;top:50%;transform:translateY(-50%);white-space:nowrap;color:#477f73}
+.q1-feedback-link{position:absolute;left:calc((100% - 1.8vw) * .385057);right:calc((100% - 1.8vw) * .114943);top:-1.1vh;height:3.2vh;border:1.5px solid #93a4b4;border-top:0;border-radius:0 0 9px 9px}
+.q1-feedback-link::before{content:'';position:absolute;left:-3.5px;top:0;width:6px;height:6px;border-top:1.5px solid #93a4b4;border-left:1.5px solid #93a4b4;transform:rotate(45deg)}
+.q1-feedback-link span{position:absolute;left:50%;bottom:0;transform:translate(-50%,50%);padding:0 .7vw;white-space:nowrap;background:var(--paper)}
+.q1-query-band{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);gap:1.5vw;align-items:center;padding:1.25vh 1.35vw;border-radius:14px;border:1px solid rgba(255,255,255,.95);background:linear-gradient(115deg,#ddede9,#eef6f3)}
+.q1-query-band>div+div{border-left:1px solid #bcd7d0;padding-left:1.5vw}
+.q1-query-band b{display:block;font-size:var(--fs-h3);line-height:1.3;color:#277c71}
+.q1-query-band p{font-size:var(--fs-body);line-height:1.4;color:#50736d;margin-top:.45vh}
+.q1-query-band code{font-size:var(--fs-sm);font-weight:650;color:#31786c}
+.q1-platform-band{display:grid;grid-template-columns:15vw minmax(0,1fr) 26vw;gap:1.2vw;align-items:center;padding:1.2vh 1.35vw;border-radius:12px;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.9)}
+.q1-platform-band b{font-size:var(--fs-h3);color:#4d527b}.q1-platform-band p{font-size:var(--fs-body);line-height:1.4;color:#646c7c}
+.q1-platform-ports{display:flex;gap:.6vw;align-items:center;flex-wrap:wrap}.q1-platform-ports span{border:1px solid #c5c7d7;padding:.45vh .6vw;border-radius:6px;font-size:var(--fs-sm);color:#575f76;background:#f5f5fa}
+.q1-workboard.is-proposal .q1-handoff{color:#296c60;border-color:#afcdbd}
+.q1-workboard.is-proposal .q1-result-proof{color:#bce7db}
+.q1-board-boundary{font-size:var(--fs-sm);line-height:1.35;color:#697587}
 .q1-sample.problem-solution-page .solution-boundary{font-size:var(--fs-sm)}
-@media(max-aspect-ratio:4/3){.q1-map{height:47vh;min-height:330px}.q1-task-step{padding-left:3.8vw}.q1-task-strip{gap:1vw}.q1-evidence-anchor{gap:1.5vw}.q1-map-caption{align-items:start}}
+@media(max-aspect-ratio:4/3){.q1-task-step{padding-left:3.8vw}.q1-task-strip{gap:1vw}.q1-evidence-anchor{gap:1.5vw}.q1-context-band{grid-template-columns:1fr 1.8fr}.q1-context-band>p{grid-column:1/-1}.q1-platform-band{grid-template-columns:1fr 2fr}.q1-platform-band>p{grid-column:1/-1}.q1-inventory .inventory-packaging{grid-template-columns:1fr repeat(3,minmax(0,1fr))}.q1-inventory .inventory-packaging>p{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -2072,39 +2110,50 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   const experimentTitle=attachQ1('同任务对照验证能力收益','实验验证');
   const build=[...deck.children].find(s=>s.dataset.title===buildTitle);
   const asset=[...deck.children].find(s=>s.dataset.title===assetTitle);
-  const capabilitySupplyMap=proposal=>{
-    const domains=proposal?[
-      ['#898997','项目规则','明确持续约束的项目范围<br>按平台指令文件交付'],
-      ['#578aab','知识库','把来源、版本与适用范围<br>随检索结果一起交付'],
-      ['#7762ba','Skill','按任务展示已有触发与输入<br>补齐缺失分支、核对产物承接'],
-      ['#2b9290','MCP 服务','查询返回来源与匹配状态<br>动作能力另核实服务及授权']
+  const usage=asset.cloneNode(true);
+  const usageTitle=`问题01：${q1.name}·作用机制`;
+  usage.dataset.title=usageTitle;stableHeading(usage,q1,'作用机制');deck.appendChild(usage);
+  const capabilityTaskMap=proposal=>{
+    const methods=proposal?[
+      ['按任务呈现适用条件','ascendc-env-check','environment','把已有触发条件、环境要求与所需权限，放到选配时可见的位置。','选配依据','知道为什么选这一项'],
+      ['核对前后数据衔接','ops-profiling','profiling','检查测量数据、Shape / DType 与运行条件，能否一起进入优化分析。','交接要求','输入、输出与转换步骤'],
+      ['补齐已确认的分支','ascendc-perf-optimize','optimization','保留现有优化方法，补齐仍为空的核间流水分支，并增加适用样例。','方法完善','可用分支与未覆盖范围']
     ]:[
-      ['#898997','项目规则','本轮未统一盘点<br>不能据此断言没有'],
-      ['#578aab','知识内容','官方文档、样例与方法参考<br>未对知识单元统一计数'],
-      ['#7762ba','Skill','<span class="q1-count">270</span> 份 SKILL.md · 09.29 快照<br>包含说明、脚本与工作流'],
-      ['#2b9290','文档 MCP','本轮核查 <span class="q1-count">1</span> 个服务 · <b>20 Tools + 5 Resources</b><br>0.0.1-alpha-6 · 只读查询']
+      ['确认运行条件','ascendc-env-check','environment','检查驱动、CANN、设备与架构，先判断能否开展任务。','输出供后续使用','环境报告 · 架构 JSON'],
+      ['获取性能数据','ops-profiling','profiling','采集基线并定位瓶颈，保留每组 Shape / DType 的测量。','输出供优化判断','性能数据 · 瓶颈报告'],
+      ['制定优化策略','ascendc-perf-optimize','optimization','结合代码、算子类型与测量结果，选择 Tiling 等优化分支。','输出供执行','优化策略 · 修改建议']
     ];
-    const checks=proposal?[
-      ['载入记录','哪项规则 / 方法进入任务'],['调用记录','参数、授权与结果来源'],['验收记录','实际测试与未验证项']
-    ]:[['加载是否生效？','有文件 ≠ 本任务已加载'],['查询是否适用？','已连接 ≠ 返回适用依据'],['结果是否改善？','已调用 ≠ 验收已通过']];
-    return `<div class="q1-map ${proposal?'is-proposal':''}" aria-label="${proposal?'供给完善建议':'现有供给与待验证连接'}：领域资产、平台接入、任务使用。虚线为待核对或待验证关系，不表示已跑通。">
-      <div class="q1-map-label">01 · 昇腾领域供给</div><div class="q1-map-label">02 · 按平台接入</div><div class="q1-map-label">03 · 进入具体任务</div>
-      <div class="q1-domain">${domains.map(([tone,title,body],i)=>`<div class="q1-domain-node ${!proposal&&i===0?'pending':''}" style="--domain-tone:${tone}"><b>${title}</b><p>${body}</p></div>`).join('')}</div>
-      <div class="q1-map-bridge" style="grid-column:2"><span>${proposal?'同一领域资产<br>分平台适配':'逐项映射<br>待核对'}</span></div>
-      <section class="q1-packaging"><h3>${proposal?'复用领域内容<br>适配入口与权限':'部分平台封装样本<br>尚不代表接入成功'}</h3>
-        <div class="q1-package-platforms">${(proposal?[['规则格式','项目指令'],['方法目录','Skill'],['连接配置','MCP']]:[['20','Claude'],['1','Codex'],['1','Cursor']]).map(([n,label])=>`<div><strong>${n}</strong><span>${label}</span></div>`).join('')}</div>
-        <p>${proposal?'分别核对安装、触发、权限和结果呈现；按各平台实际支持的方式交付。':'规则、Skill、MCP 可从各自入口接入；Plugin 不是必经层。'}</p>
-        <small>${proposal?'Command、Plugin、Agent、Hook 是按需适配面，不要求全部另建。':'数字为上轮 manifest 文件数量，不是调用次数；具体资产对应关系待核对。'}</small>
-      </section>
-      <div class="q1-map-bridge" style="grid-column:4"><span>${proposal?'逐平台<br>实际验证':'安装与调用<br>待实测'}</span></div>
-      <section class="q1-task-use"><h3>Ascend C<br>性能优化任务</h3>${checks.map(([title,body],i)=>`<div class="q1-use-step"><i>0${i+1}</i><div><b>${title}</b><p>${body}</p></div></div>`).join('')}</section>
+    return `<div class="q1-workboard ${proposal?'is-proposal':''}" aria-label="${proposal?'沿任务链完善能力的建设建议':'依据真实 Skill 输入输出推演的作用机制，尚未实测'}">
+      <div class="q1-context-band" data-region="context"><b>Ascend C 性能优化</b><div class="q1-context-tags"><span>代码 / 算子类型</span><span>Shape / DType</span><span>环境 / 目标</span></div><p>${proposal?'项目规则：呈现已配置的约束，避免选配与项目要求冲突。':'项目规则（如已配置）：提供持续约束，与任务条件共同限定方法。'}</p></div>
+      <div class="q1-workflow">
+        <section class="q1-method-panel" data-region="method"><div class="q1-group-heading"><b>${proposal?'Skill · 沿既有任务链完善':'Skill · 给 AI 提供任务方法'}</b><span>${proposal?'已有触发与步骤，重点是选配和衔接':'工作台按方法调用已授权工具'}</span></div><div class="q1-method-chain">${methods.map(([title,name,anchor,desc,label,output],i)=>`<article class="q1-method-node"><div class="q1-node-number">0${i+1}</div><h3>${title}</h3><a href="${q1EvidenceRoot}real-skill-mcp-evidence.md#${anchor}" target="_blank">${name} ↗</a><p>${desc}</p><div class="q1-handoff"><small>${label}</small>${output}</div></article>`).join('')}</div></section>
+        <section class="q1-result-panel" data-region="verification"><div class="q1-node-number">04</div><h3>${proposal?'记录实际使用与结果':'执行修改，再复测'}</h3><p>${proposal?'分别记录载入、调用与测试，避免把“已安装”当成“已生效”。':'修改后做正确性 / 精度测试；重复第 02 步，比较前后性能。'}</p><div class="q1-result-proof">${proposal?'<span>加载 / 调用记录</span><span>验证结果 / 未验证项</span><small>同任务对照检验收益</small>':'<span>精度是否保持？</span><span>性能是否改善？</span><small>需要真实工具与运行环境</small>'}</div></section>
+      </div>
+      <div class="q1-relations"><div class="q1-query-link"><span>按需查询 / 原文回填</span></div><div class="q1-feedback-link"><span>修改后回到 02 复测性能</span></div></div>
+      <section class="q1-query-band" data-region="knowledge-service"><div><b>${proposal?'知识内容 · 保留适用条件':'知识内容 · 提供领域依据'}</b><p>${proposal?'来源、版本和适用范围<br>随内容一起维护':'文档、样例、故障知识<br>供任务中核对与引用'}</p></div><div><b>${proposal?'文档 MCP · 返回可核对的引用':'文档 MCP · 按需搜索和取回'}</b><p><code>search_docs → get_doc_content</code><br>${proposal?'版本筛选 ≠ 已匹配全部现场条件':'需要依据时调用，不承担 NPU 执行'}</p></div><div><b>${proposal?'让每次采用都有依据':'回到当前任务，支撑判断'}</b><p>${proposal?'检查引用是否支持当前判断<br>保留无法确认的条件':'原文与出处 → 方法选择<br>不是测试或性能验收结果'}</p></div></section>
+      <div class="q1-platform-band" data-region="platform"><b>${proposal?'跨平台 · 逐项适配':'跨平台 · 分别接入'}</b><div class="q1-platform-ports"><span>项目规则 → 指令文件</span><span>Skill → 方法目录</span><span>MCP → 连接配置</span></div><p>${proposal?'同一份领域内容，按平台核对安装、触发、权限与结果呈现。':'入口由平台定义；Plugin 可封装部分能力，但不是必经层。'}</p></div>
     </div>`;
   };
-  [asset,build].forEach(s=>s.classList.add('q1-sample'));
-  asset.querySelector('.body-area').innerHTML=`<div class="q1-lead">已有<em>方法与查询接口</em>，还需核对它们怎样进入真实任务。</div>${capabilitySupplyMap(false)}<div class="q1-map-caption"><b>一个实际的衔接边界</b><span><code>ops-profiling</code> 明确提示：<code>PROF_GROUP_*</code> 归档不能直接交给可视化子技能。能力已有，不代表产物可以任意互通。</span></div>`;
-  asset.querySelector('.foot').innerHTML=`Skill：CANNBot 591e5fd，完整 Git 树计数 270（不等于质量或有效性）。MCP 与 manifest 沿用各自快照。<a href="${q1EvidenceRoot}real-skill-mcp-evidence.md" target="_blank">原文、版本与数量口径 ↗</a>`;
-  build.querySelector('.body-area').innerHTML=`<div class="q1-lead">沿着同一条接入链，完善<em>选得对、接得上、能核验</em>的条件。</div>${capabilitySupplyMap(true)}<div class="q1-map-caption"><b>为什么优先这四类</b><span>沙盘确认共通接入面；现有领域资产可沿这些入口复用。跨平台适配负责交付，平台继续负责 Harness / Loop。</span></div>`;
-  build.querySelector('.foot').innerHTML=`建设建议，不是全部能力均缺失：如 perf-optimize 的核间流水分支明确标为待补全；收益需在同任务对照中验证。<a href="${q1EvidenceRoot}source-excerpts.md" target="_blank">具体原文 ↗</a>`;
+  [asset,usage,build].forEach(s=>s.classList.add('q1-sample'));
+  [usage,build].forEach(s=>s.classList.add('q1-process'));
+  asset.classList.add('q1-inventory');
+  asset.querySelector('.body-area').innerHTML=`<div class="q1-lead">已有<em>知识、任务方法和查询接口</em>，部分资产已有平台封装。</div>
+    <div class="ascend-inventory-map" aria-label="昇腾现有资产总览：知识内容，270份SKILL.md，一个只读文档MCP中的20个Tools和5个Resources，以及历史平台封装文件">
+      <div class="inventory-map-label">昇腾侧 · 领域供给</div>
+      <div class="inventory-supply">
+        <article class="knowledge"><small>KNOWLEDGE · 内容</small><h3>领域知识内容</h3><p>文档、样例与故障知识，供开发者和 AI 获取任务依据。</p><div class="inventory-source-types"><span>文档</span><span>样例</span><span>故障知识</span></div></article>
+        <article class="method"><small>METHOD · 方法</small><div class="inventory-fact"><strong>270</strong><b>份 SKILL.md</b></div><p>覆盖多个技术域；包含知识说明、脚本与任务工作流。</p><div class="inventory-skill-bar" aria-label="目录构成：community 120、ops 79、official 22、其余49"><i style="flex:120"></i><i style="flex:79"></i><i style="flex:22"></i><i style="flex:49"></i></div><div class="inventory-skill-key"><span style="--key-tone:#5b5bd6"><i></i>社区插件 120</span><span style="--key-tone:#438fd3"><i></i>Ops 79</span><span style="--key-tone:#7a9fcb"><i></i>官方插件 22</span><span style="--key-tone:#aab8cf"><i></i>其他目录 49</span></div></article>
+        <article class="service"><small>SERVICE · 接口</small><div class="inventory-fact inventory-mcp-fact"><div><strong>20</strong><b>Tools</b></div><i>+</i><div><strong>5</strong><b>Resources</b></div></div><p>本轮核查的 1 个文档 MCP：查询产品、版本与正文，注册接口均为只读。</p></article>
+      </div>
+      <div class="inventory-flow">部分资产已有平台封装；安装、调用与任务效果仍需分别验证</div>
+      <div class="inventory-packaging"><div><b>平台封装</b><span>上轮 manifest 文件盘点</span></div><div class="inventory-manifest"><strong>20</strong><span>Claude</span></div><div class="inventory-manifest"><strong>1</strong><span>Codex</span></div><div class="inventory-manifest"><strong>1</strong><span>Cursor</span></div><p>封装文件数，不是调用或成功数；与本轮 Skill 快照分别统计。</p></div>
+      <div class="inventory-boundary">知识内容与项目规则未统一计量；文件数表示资产规模，不代表可用性、成熟度或已验证的效果。</div>
+    </div>`;
+  asset.querySelector('.foot').innerHTML=`Skill：CANNBot 591e5fd · 2026-09-29 Git 树计数。MCP：@opencxd/ascend-doc-mcp 0.0.1-alpha-6。<a href="${q1EvidenceRoot}real-skill-mcp-evidence.md" target="_blank">来源、快照与数量口径 ↗</a>`;
+  usage.querySelector('.body-area').innerHTML=`<div class="q1-lead">Skill 指导任务动作，MCP 按需提供依据，<em>执行结果需要复测</em>。</div>${capabilityTaskMap(false)}<p class="q1-board-boundary">依据真实 Skill 输入输出组织的任务示意；本轮没有执行完整组合、MCP 查询或 NPU 测试。</p>`;
+  usage.querySelector('.foot').innerHTML=`Skill 的指令不等于执行结果；工具执行由工作台负责，业务验收依赖真实测量。<a href="${q1EvidenceRoot}source-excerpts.md" target="_blank">任务方法与接口原文 ↗</a>`;
+  build.querySelector('.body-area').innerHTML=`<div class="q1-lead">在已有资产上完善<em>选配依据、数据衔接与验证记录</em>。</div>${capabilityTaskMap(true)}<p class="q1-board-boundary">建设建议：保留已有方法，补齐已确认的局部缺口，并通过实际任务验证组合效果；不另造通用 Harness / Loop。</p>`;
+  build.querySelector('.foot').innerHTML=`已确认的局部边界：若另做可视化报告，PROF_GROUP_* 归档不能直接交给可视化子技能；perf-optimize 核间流水分支待补。<a href="${q1EvidenceRoot}source-excerpts.md" target="_blank">原文与适用范围 ↗</a>`;
   const exp=[...deck.children].find(s=>s.dataset.title===experimentTitle);
   exp.querySelector('.body-area').innerHTML=`<div class="experiment-compare"><div class="experiment-fixed"><b>固定任务与起点</b><p>同一平台、模型、代码、环境、预算与验收条件；每次重置会话与工作区。</p></div><div class="experiment-arms"><div><b>A · 原始资料</b><p>提供普通原始资料与常规工具</p></div><div><b>B · 整理后的资料</b><p>增加结构化方法与文档，以普通文件提供</p></div><div><b>C · 真实能力装配</b><p>与 B 相同的内容，经项目规则、Skill 或 MCP 接入</p></div></div><div class="experiment-reading"><p><b>A ↔ B</b> 检查内容整理的收益</p><p><b>B ↔ C</b> 检查接入与装配的收益</p></div></div><div class="ending-measures"><b>先查是否实际使用</b><span>加载／触发／调用记录</span><span>完成证据、返工与人工介入</span></div><p class="ending-note">三组对照尚未执行。先分别测单项能力，再测组合与跨平台；MCP 组需对齐 B 组可获得的信息，避免混入额外服务能力。</p>`;
   exp.querySelector('.foot').textContent='依据 2026-09-24 试验方案与 09-28 证据复核。单案预演没有 MCP 调用、代码修改、真实构建或 NPU 运行，不能作为能力收益证据。';
@@ -2168,7 +2217,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   contents.querySelector('.contents-directory').innerHTML=directory.map((d,i)=>`<article class="directory-card"><div class="directory-no">${i===3?'A':`0${i+1}`}</div><div class="directory-name">${d[0]}</div><div class="directory-en">${d[1]}</div><div class="directory-items"><span>${d[2]}</span><span>${d[3]}</span></div><div class="directory-note">${d[4]}</div></article>`).join('');
   contents.querySelector('.foot').textContent='开发行为 → 用户旅程与重点痛点 → 六个问题及各自方案 → 总览。研究明细见附录。';
   const questionOrder = [
-    problemStatus(problemCases[2]),sandboxTitle,assetTitle,buildTitle,problemSolution(problemCases[2]),
+    problemStatus(problemCases[2]),sandboxTitle,assetTitle,usageTitle,buildTitle,problemSolution(problemCases[2]),
     ...focusQuestions.slice(1).flatMap(q=>{const item=problemCases.find(x=>x.n===q.id);return [problemStatus(item),...(q.id==='08'?[reuseAnalysisTitle]:[]),problemSolution(item)];}),
   ];
   const appendixOrder=['已有检索研究',roleTitle,experimentTitle,'来源与完整版入口'];
