@@ -1055,18 +1055,33 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .q1-sample .body-area{gap:1.8vh;margin-top:auto;margin-bottom:auto;min-width:0;min-height:0}
 .q1-lead{font-size:clamp(22px,2vw,30px);line-height:1.32;font-weight:780;letter-spacing:-.02em;color:#292f49}
 .q1-lead em{font-style:normal;color:#5b5bd6}
-.q1-task-strip{display:flex;align-items:center;gap:1.5vw;padding:1.25vh 0;border-block:1px solid #c6ccd6;font-size:var(--fs-body);line-height:1.5}
-.q1-task-strip b{font-size:var(--fs-h3);color:#393655}.q1-task-strip span{color:#697080}
-.q1-task-route{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4vw;padding:1.8vh 0 .6vh;min-width:0}
-.q1-task-step{position:relative;min-width:0;padding-left:3.4vw}
-.q1-task-step:not(:last-child)::after{content:'→';position:absolute;right:-3vw;top:5.7vh;color:#999eae;font-size:30px;font-weight:350}
-.q1-step-no{position:absolute;left:0;top:0;font:300 clamp(34px,3.3vw,52px)/1 'Barlow Condensed',sans-serif;color:#7772bc}
-.q1-task-step h3{font-size:var(--fs-h2);margin-bottom:1vh;line-height:1.3}
-.q1-task-step a{display:block;font-size:var(--fs-body);font-weight:750;overflow-wrap:anywhere;color:#4c55ad;text-underline-offset:4px}
-.q1-task-step p{font-size:var(--fs-body);color:#606977;line-height:1.5;margin-top:.85vh}
-.q1-task-step .q1-question{position:relative;margin-top:1.7vh;padding-top:1.2vh;border-top:2px solid #cb7661;color:#9c4f39;font-weight:720}
-.q1-query-rail{display:flex;gap:1.2vw;align-items:center;margin-top:1vh;border-left:3px solid #557baa;padding:.85vh 1vw;background:#dce4ef80;font-size:var(--fs-body);line-height:1.5}
-.q1-query-rail a{color:#416396;font-weight:700}.q1-query-rail span{color:#606b7c}
+.q1-selection-page .q1-lead em{color:#b24a59}
+.q1-selection-map{--selection-gap:2vw;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,2.25fr) minmax(0,1fr);gap:var(--selection-gap);align-items:stretch;min-width:0;min-height:0}
+.q1-selection-map *{min-width:0;min-height:0}
+.q1-task-goal{position:relative;display:flex;flex-direction:column;justify-content:center;gap:1.7vh;padding:2vh 1.35vw;border-radius:16px;background:var(--g-ink);color:#fff}
+.q1-task-goal>small{font-size:var(--fs-sm);color:#aebbd0}.q1-task-goal h2{font-size:var(--fs-h1);line-height:1.32;font-weight:750}.q1-task-goal p{font-size:var(--fs-body);line-height:1.5;color:#d3ddeb}
+.q1-task-conditions{display:grid;gap:.65vh;padding-top:1.5vh;border-top:1px solid #515a6c;font-size:var(--fs-body);line-height:1.4;color:#d3ddeb}.q1-task-conditions b{font-size:var(--fs-sm);font-weight:500;color:#9aaac2}
+.q1-candidate-pool{position:relative;border-radius:16px;border:1px solid #fff;background:linear-gradient(130deg,#e2edf8,#f6f8fb);box-shadow:0 10px 28px -23px rgba(35,55,85,.28)}
+.q1-candidate-pool::before,.q1-usage-question::before{content:'';position:absolute;right:100%;top:50%;width:var(--selection-gap);border-top:2px solid #ad7a85}
+.q1-candidate-pool::after,.q1-usage-question::after{content:'';position:absolute;right:100%;top:50%;width:7px;height:7px;border-top:2px solid #ad7a85;border-right:2px solid #ad7a85;transform:translateY(-2.5px) rotate(45deg)}
+.q1-selection-question{padding:1.4vh 1.3vw;border-bottom:1px solid #e3c1c7;border-radius:15px 15px 0 0;background:linear-gradient(105deg,#f5dce1,#f8edf0)}
+.q1-selection-question h3{font-size:var(--fs-h2);font-weight:800;color:#a34253;line-height:1.3}
+.q1-selection-criteria{display:flex;align-items:center;gap:1vw;margin-top:.7vh;font-size:var(--fs-body);font-weight:700;line-height:1.35;color:#a34253}
+.q1-selection-criteria span+span{padding-left:1vw;border-left:1px solid #d9aeb7}
+.q1-candidate-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:.2vh .4vw}
+.q1-candidate{padding:1.5vh .95vw;display:grid;grid-template-rows:auto auto 1fr auto;gap:.55vh}
+.q1-candidate:nth-child(even){border-left:1px solid #c7d8e8}.q1-candidate:nth-child(n+3){border-top:1px solid #c7d8e8}
+.q1-candidate h4{font-size:var(--fs-h2);font-weight:750;line-height:1.3;color:#355e86}.q1-candidate h4 small{margin-left:.45vw;font-size:var(--fs-sm);font-weight:500;color:#6e87a1}
+.q1-candidate a{font:500 var(--fs-sm)/1.35 'JetBrains Mono',monospace;overflow-wrap:anywhere;color:#647b91;text-underline-offset:3px}
+.q1-candidate p{font-size:var(--fs-body);line-height:1.4;color:#52677b}
+.q1-candidate .q1-candidate-condition{font-size:var(--fs-body);line-height:1.4;color:#314961;font-weight:650}.q1-candidate-condition span{color:#77889a;font-weight:400}
+.q1-usage-question{position:relative;display:flex;flex-direction:column;padding:1.65vh 1.25vw;border-radius:16px;background:linear-gradient(140deg,#f7e5e8,#fcf5f6);border:1px solid #fff}
+.q1-usage-question h3{font-size:var(--fs-h2);line-height:1.35;color:#a34253}
+.q1-use-levels{display:flex;flex-direction:column;justify-content:center;gap:.55vh;flex:1;min-height:0;padding:1vh 0}
+.q1-use-level{font-size:var(--fs-h3);font-weight:750;line-height:1.4;color:#514652}
+.q1-use-level small{display:block;margin-top:.4vh;font-size:var(--fs-body);font-weight:400;color:#816d79;line-height:1.4}
+.q1-use-not-equal{font:400 clamp(24px,2.25vw,34px)/1 'Inter',sans-serif;color:#bd6a79;margin:.4vh 0}
+.q1-usage-question>p{padding-top:1vh;border-top:1px solid #dfbdc5;font-size:var(--fs-body);font-weight:700;line-height:1.45;color:#a34253}
 .q1-evidence-anchor{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:2.5vw;margin-top:1vh;border-top:1px solid #c7ced9;padding-top:1.4vh}
 .q1-evidence-anchor .voc-card{padding:1.15vh 1.3vw;gap:.3vh}.q1-evidence-anchor .qm{position:absolute;right:1vw;top:1vh;font-size:54px;opacity:.15}
 .q1-evidence-anchor .voc-q{font-size:var(--fs-h3)}.q1-evidence-anchor .voc-meta{margin-top:.5vh}
@@ -1134,7 +1149,13 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .q1-workboard.is-proposal .q1-result-proof{color:#bce7db}
 .q1-board-boundary{font-size:var(--fs-sm);line-height:1.35;color:#697587}
 .q1-sample.problem-solution-page .solution-boundary{font-size:var(--fs-sm)}
-@media(max-aspect-ratio:4/3){.q1-task-step{padding-left:3.8vw}.q1-task-strip{gap:1vw}.q1-evidence-anchor{gap:1.5vw}.q1-context-band{grid-template-columns:1fr 1.8fr}.q1-context-band>p{grid-column:1/-1}.q1-platform-band{grid-template-columns:1fr 2fr}.q1-platform-band>p{grid-column:1/-1}.q1-inventory .inventory-packaging{grid-template-columns:1fr repeat(3,minmax(0,1fr))}.q1-inventory .inventory-packaging>p{grid-column:1/-1}}
+@media(max-aspect-ratio:4/3){.q1-evidence-anchor{gap:1.5vw}.q1-selection-map{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}.q1-task-goal{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:.7vh 1.5vw}.q1-task-goal>small{grid-column:1}.q1-task-goal h2{grid-column:1}.q1-task-goal p{grid-column:1}.q1-task-conditions{grid-column:2;grid-row:1/4;border-top:0;border-left:1px solid #515a6c;padding:0 0 0 1.5vw}.q1-candidate-pool::before,.q1-candidate-pool::after{display:none}.q1-context-band{grid-template-columns:1fr 1.8fr}.q1-context-band>p{grid-column:1/-1}.q1-platform-band{grid-template-columns:1fr 2fr}.q1-platform-band>p{grid-column:1/-1}.q1-inventory .inventory-packaging{grid-template-columns:1fr repeat(3,minmax(0,1fr))}.q1-inventory .inventory-packaging>p{grid-column:1/-1}}
+@media(max-aspect-ratio:4/3){
+  .q1-selection-page .body-area{flex:1 1 auto;justify-content:flex-start;margin:0;overflow-y:auto;overscroll-behavior-y:contain}
+  .q1-selection-page .body-area>*{flex-shrink:0}
+  .q1-selection-page .q1-candidate-pool::before{display:block;left:50%;right:auto;top:calc(-1 * var(--selection-gap));width:0;height:var(--selection-gap);border-top:0;border-left:2px solid #ad7a85}
+  .q1-selection-page .q1-candidate-pool::after{display:block;left:50%;right:auto;top:-7px;transform:translateX(-2.5px) rotate(135deg)}
+}
 </style>
 </head>
 <body>
@@ -2075,18 +2096,24 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       status.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl"></div><div class="ttl"></div></div><nav class="section-tabs"></nav></header><main class="body-area evidence-composition">${d.body}<div class="evidence-takeaway">${d.take}</div></main><footer class="foot">${d.limit} 来源：同一位受访者的一次访谈，分两份逐字稿。</footer></div>`;
     }
     if(q.id==='03'){
-      status.className='slide s-gray problem-page voc-evidence-page q1-sample';
+      status.className='slide s-gray problem-page voc-evidence-page q1-sample q1-selection-page';
       status.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl"></div><div class="ttl"></div></div><nav class="section-tabs"></nav></header><main class="body-area">
-        <div class="q1-lead">已经有领域能力，<em>怎么选、怎么接、是否生效</em>仍要回到任务判断。</div>
-        <div class="q1-task-strip"><b>任务：优化一个 Ascend C 算子的性能</b><span>代码与 Shape</span><span>芯片 / CANN 版本</span><span>现有基线与验收目标</span></div>
-        <div class="q1-task-route" aria-label="性能优化任务的三个选配判断：环境检查、性能分析、优化方法。箭头表示建议核对的任务先后，不代表已完成运行。">
-          <section class="q1-task-step"><span class="q1-step-no">01</span><h3>先确认能否开展</h3><a href="${q1EvidenceRoot}real-skill-mcp-evidence.md#environment" target="_blank">ascendc-env-check ↗</a><p>核查环境与依赖<br>已有检查要求和报告产物</p><p class="q1-question">当前环境与权限<br>满足这项方法的前提吗？</p></section>
-          <section class="q1-task-step"><span class="q1-step-no">02</span><h3>再定位性能瓶颈</h3><a href="${q1EvidenceRoot}real-skill-mcp-evidence.md#profiling" target="_blank">ops-profiling ↗</a><p>采集、解析性能数据<br>输出耗时与瓶颈线索</p><p class="q1-question">需要哪些现场数据？<br>产物能交给下一步吗？</p></section>
-          <section class="q1-task-step"><span class="q1-step-no">03</span><h3>据此选择优化方法</h3><a href="${q1EvidenceRoot}real-skill-mcp-evidence.md#optimization" target="_blank">ascendc-perf-optimize ↗</a><p>按算子类型与数据选择分支<br>策略落地后回到 02 复测</p><p class="q1-question">选中与载入之后，<br>真的执行、验证了吗？</p></section>
+        <div class="q1-lead">任务已经明确，<em>选哪些、怎样配、是否用上</em>仍需专业判断。</div>
+        <div class="q1-selection-map" role="group" aria-label="能力选配判断图：一个开发任务面对用途与条件不同的真实候选；需要判断任务匹配、前提与组合，并区分载入、实际执行和结果验证。候选排列不表示执行顺序。">
+          <section class="q1-task-goal"><small>开发者任务</small><h2>优化这个<br>Ascend C 算子</h2><p>在保证精度的前提下，<br>改善运行性能。</p><div class="q1-task-conditions"><b>任务条件</b><span>已有代码与计算逻辑</span><span>指定 Shape / DType</span><span>芯片与 CANN 版本</span></div></section>
+          <section class="q1-candidate-pool" aria-label="选配时的判断与四项候选能力">
+            <header class="q1-selection-question"><h3>选配时：选什么，怎样配？</h3><div class="q1-selection-criteria"><span>用途匹配？</span><span>满足前提？</span><span>怎样组合？</span></div></header>
+            <div class="q1-candidate-grid">
+              <article class="q1-candidate" data-capability="optimization"><h4>优化策略<small>Skill</small></h4><a href="${q1EvidenceRoot}real-skill-mcp-evidence.md#optimization" target="_blank">ascendc-perf-optimize ↗</a><p>根据代码与测量，制定优化策略。</p><div class="q1-candidate-condition"><span>需要：</span>算子代码、任务条件<br>与 profiling 数据</div></article>
+              <article class="q1-candidate" data-capability="profiling"><h4>性能采集<small>Skill</small></h4><a href="${q1EvidenceRoot}real-skill-mcp-evidence.md#profiling" target="_blank">ops-profiling ↗</a><p>采集耗时，形成性能瓶颈线索。</p><div class="q1-candidate-condition"><span>标准采集需要：</span><br>可运行的算子与参数</div></article>
+              <article class="q1-candidate" data-capability="environment"><h4>环境检查<small>Skill</small></h4><a href="${q1EvidenceRoot}real-skill-mcp-evidence.md#environment" target="_blank">ascendc-env-check ↗</a><p>检查 CANN、设备与 NPU 架构。</p><div class="q1-candidate-condition"><span>边界：</span>架构探测依赖<br>驱动与 CANN 环境</div></article>
+              <article class="q1-candidate" data-capability="mcp"><h4>文档查询<small>MCP</small></h4><a href="${q1EvidenceRoot}real-skill-mcp-evidence.md#mcp" target="_blank">search_docs / get_doc_content ↗</a><p>搜索文档，读取原文与版本线索。</p><div class="q1-candidate-condition"><span>边界：</span>只读查询，不执行<br>构建、测试或性能采集</div></article>
+            </div>
+          </section>
+          <section class="q1-usage-question" aria-label="使用后的确认：载入不等于执行，执行不等于通过验收"><h3>使用后：<br>是否真正发挥作用？</h3><div class="q1-use-levels"><div class="q1-use-level">已选中 / 已载入<small>能力进入候选或任务上下文</small></div><div class="q1-use-not-equal" aria-hidden="true">≠</div><div class="q1-use-level">实际按方法执行<small>查看动作、调用与执行产物</small></div><div class="q1-use-not-equal" aria-hidden="true">≠</div><div class="q1-use-level">结果通过验证<small>核对精度、性能与任务目标</small></div></div><p>需要区分“有能力”、<br>“用了能力”和“用出效果”。</p></section>
         </div>
-        <div class="q1-query-rail"><b>需要查依据时</b><a href="${q1EvidenceRoot}real-skill-mcp-evidence.md#mcp" target="_blank">文档 MCP：search_docs → get_doc_content ↗</a><span>搜索与取回正文；不是性能评测工具。</span></div>
-        <div class="q1-evidence-anchor">${voc('所以我们需要做一些 <strong>skill</strong> 去做一些辅助支撑。',1,3,'00:11:35','领域方法需求')}<p class="q1-evidence-reading"><b>领域支撑有真实需求，现有资产也已有方法。</b><br>下一步要把任务条件、能力用法与使用记录对上，才能检验“用对能力是否有帮助”。</p></div>
-      </main><footer class="foot">VOC 支持领域方法需求；任务路径根据真实 Skill 推演，并非选配失败或收益实测。<a href="${q1EvidenceRoot}real-skill-mcp-evidence.md" target="_blank">官方源码摘录与证据边界 ↗</a></footer></div>`;
+        <div class="q1-evidence-anchor">${voc('所以我们需要做一些 <strong>skill</strong> 去做一些辅助支撑。',1,3,'00:11:35','领域方法需求')}<p class="q1-evidence-reading"><b>这些能力并非同类替代项。</b><br>仅知道名称还不够；选配需要理解用途、输入条件与前后依赖，使用后还需核对实际执行与结果。</p></div>
+      </main><footer class="foot">候选用途与条件来自固定源码；VOC 支持领域方法需求。图示解释选配中的判断，不是用户失败回放或收益实测。<a href="${q1EvidenceRoot}real-skill-mcp-evidence.md" target="_blank">真实资产原文与边界 ↗</a></footer></div>`;
     }
     status.dataset.title=problemStatus(item);stableHeading(status,q,'现状与分析');
     const solution=makeProblemSlide(item,'solution');stableHeading(solution,q,'解决方案');oldSolution.replaceWith(solution);setSolutionState(solution,0);
