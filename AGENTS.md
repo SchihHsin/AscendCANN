@@ -4053,3 +4053,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：既有访谈索引 `ai-development-behavior-system-report-evidence/interview-focus-20260928/evidence-review.md`、问题02两段原声、问题03边界补测原声及三任务检索记录。该轮是内容层级与映射修正，不是新增实验，不把行为例子或要求当成痛点结论，不新增普遍性／因果数据或 NPU 结果。
 - 验证：`git diff --check`、4 段内联脚本语法检查通过；1440×810、1600×900 均保留26页与 #5，9条痛点／9个角色图标无溢出，六个固定问题均可见，跨阶段行通过遮挡检查，0 页面脚本错误。问题02 VOC 保留“找一个新的 ai”原文；截图 `/tmp/ascend-journey-pain-audit-1440.png`、`/tmp/ascend-journey-pain-audit-1600.png`、`/tmp/ascend-decision-pain-audit.png`。
 - Commit／push：修正提交 `0dd56cb8`（`content: distinguish decision pain from retry behavior`）已成功推送 `origin/main`，本条结果另作交接提交；只纳入精简版与本交接记录。
+
+### 2026-09-29（只读核查六问题与第5页旅程对应）
+
+- 用户要求检查后续问题是否都进入用户旅程痛点。本轮只核查精简版，不修改报告页面。对照 `focusQuestions`、第5页 `pains` 和 `journey-cross`，确认“六个名称可见”不等于“六个问题均已对应旅程阶段”。
+- 已进入阶段痛点行：01 可装配能力难以按任务选配并有效使用 → Need；02 开发者难以判断和选择下一步行动 → Decide；03 生成结果的可信性难以验证 → Execute，Generate 有典型输入／边界补测相关线索。
+- 尚未完成阶段映射：04 任务完成不等于开发者能力增长、05 团队难以共享完整的决策背景、06 真实任务经验难以沉淀为可复用知识。目前仅在图下方“跨阶段与任务之后”列名。04 可贯穿检索、生成、判断；05 涉及决策背景记录及后续评审交接；06 涉及任务后的经验沉淀和回流，不能假装当前图已有这些阶段。
+- 结构原因：第5页本来是 AddCustom P1–P2 工程起步片段，不是覆盖评审、交接、知识回流的完整开发旅程。后续修改应解决范围与阶段对应，不应只把更多题名挤进现有痛点格，更不得恢复逐条卡片或改动固定问题名称。如何呈现后续阶段本轮尚未实施。
+- 验证依据为现行源码与上一轮已验证的实际显示；本轮无新增证据、无页面序列或 API／Host／Application 边界变化。仅维护本交接记录，`git diff --check` 检查后以独立文档提交推送 `origin/main`；报告HTML保持不变。
