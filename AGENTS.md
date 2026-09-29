@@ -4042,4 +4042,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保留当前9条痛点及阶段归属，开发者／Agent 仍通过人形／机器人图标区分，悬停提示和可访问名称保留角色及等级。痛点主次只用文字红度和重点加粗表达，不再另加卡片。Need 选配能力行为、交接物和 Agent 接收内容不变；没有改问题名称、证据、页序或运行时交互。
 - 按 Report PPT Skill 的现有精调组件复用原则及用户旅程 Skill 的逐列对应要求，直接对照 `git show 93ff09ca` 的历史页面并在浏览器渲染核对，而非重新设计。历史参考截图 `/tmp/ascend-pain-reference-93ff09ca.png`，本轮截图 `/tmp/ascend-pain-restored-1440.png` 与 `/tmp/ascend-pain-restored-1600.png`。
 - 验证：`git diff --check`、4 段内联 JavaScript 语法检查通过；1440×810 与1600×900 保持 #5 与26页，均为9条无边框痛点及9个角色图标，文字无溢出，0 页面脚本错误。原版HTML及其他工作区修改未纳入；无新增业务证据或 API／Host／Application 层边界变更。
-- Commit／push：本轮样式修复检查后提交并立即推送，结果待回填。
+- Commit／push：样式修复提交 `95e6b37e`（`style: restore original journey painpoint row`）已成功推送 `origin/main`，使用 GitHub SSH 443 临时参数，未改永久配置；本条结果另作交接提交。
