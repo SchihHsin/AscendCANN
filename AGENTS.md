@@ -4052,4 +4052,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 能力增长、团队决策背景、经验沉淀原已放在图下方，但被白色画布外扩阴影遮住上半行；仅调整该行叠放顺序，使三个固定问题完整可见，不改变布局尺寸。保留 `93ff09ca` 的浅粉整行背景、无边框条目、角色图标和字号；未增加卡片或等级标签，未重新加入已移除的过程接管、任务定义或责任边界独立问题。
 - 依据：既有访谈索引 `ai-development-behavior-system-report-evidence/interview-focus-20260928/evidence-review.md`、问题02两段原声、问题03边界补测原声及三任务检索记录。该轮是内容层级与映射修正，不是新增实验，不把行为例子或要求当成痛点结论，不新增普遍性／因果数据或 NPU 结果。
 - 验证：`git diff --check`、4 段内联脚本语法检查通过；1440×810、1600×900 均保留26页与 #5，9条痛点／9个角色图标无溢出，六个固定问题均可见，跨阶段行通过遮挡检查，0 页面脚本错误。问题02 VOC 保留“找一个新的 ai”原文；截图 `/tmp/ascend-journey-pain-audit-1440.png`、`/tmp/ascend-journey-pain-audit-1600.png`、`/tmp/ascend-decision-pain-audit.png`。
-- Commit／push：本轮修正检查后提交并立即推送，结果待回填；只纳入精简版与本交接记录。
+- Commit／push：修正提交 `0dd56cb8`（`content: distinguish decision pain from retry behavior`）已成功推送 `origin/main`，本条结果另作交接提交；只纳入精简版与本交接记录。
