@@ -4012,3 +4012,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出第5页“痛点”行主文案过大。原因是 `.cb-painpoint-node>b` 使用 `--fs-body`（当前视口约 15px），与小标签字号落差明显。改为 `clamp(12.5px,.92vw,14px)` 并稍收行高；保留编号、重点色与小标签层级。
 - 在 1440×810 的 Chrome 截图确认主文案约 13.25px、布局仍可读，0 页面脚本错误；`git diff --check` 通过。只影响精简版第5页痛点行字号。
 - Commit／push：功能提交 `09e5fd51`（`style: reduce journey painpoint text size`）已成功推送 `origin/main`，使用 GitHub SSH 443 临时参数，未改永久配置；本条回填随后单独提交推送。
+
+### 2026-09-29（旅程按阶段容纳多条、分级痛点）
+
+- 用户指出同一阶段可以有多个重要程度不同的痛点。调整精简版第5页：Need 并列问题01和起步条件；Search 并列资料适用性与连续推进；Generate 补入生成测试偏向典型输入；Decide／Execute 保留问题02／03重点。灰、浅红、深红区分关注程度，解除“一阶段只能放一个问题”的排布假设。
+- 删除“目标与条件继续观察，不列为本轮独立问题”及副标题中的痛苦评分制作说明；副标题改为 AddCustom P1–P2 任务推进描述。保留 Need 起步顺序与 Search 研究归属。
+- 在 1440×810 与 1600×900 的 Chrome 截图核对各列多项显示，条目未溢出、页面无脚本错误；`git diff --check` 通过。页序、来源证据与 API／Host／Application 边界不变。
+- Commit／push：随本次提交推送 `origin/main`，结果待回填。

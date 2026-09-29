@@ -1036,11 +1036,13 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .voc-evidence-page .voc-meta{display:flex;align-items:end;justify-content:space-between;gap:1vw;margin-top:.5vh}
 .voc-evidence-page .voc-nm{font-size:var(--fs-sm)}.voc-evidence-page .voc-rl,.voc-evidence-page .voc-meta a{font-size:var(--fs-xs);color:#687383;margin-top:.4vh}
 .voc-evidence-page .evidence-takeaway{font-size:var(--fs-h3);font-weight:750;line-height:1.4;padding:1vh 0;color:#343955}
-.task-rel-page .cb-painpoint-node.priority-low{background:#f0f1f3;border-color:#dadde2;color:#69707c}
-.task-rel-page .cb-painpoint-node.priority-medium{background:#fae8e5;border-color:#e5b4ad;color:#93473e}
-.task-rel-page .cb-painpoint-node.priority-high{background:#f3cbca;border-color:#cf8887;color:#8d252d}
-.task-rel-page .cb-painpoint-node small{font-size:var(--fs-xs);font-weight:750;line-height:1.2}
-.task-rel-page .cb-painpoint-node>b{font-size:clamp(12.5px,.92vw,14px);line-height:1.28}
+.task-rel-page .cb-painpoint-node{display:flex;flex-direction:column;justify-content:center;gap:.2vh;padding:.1vh .22vw;background:transparent;border:0;border-radius:0;box-shadow:none}
+.task-rel-page .cb-painpoint-entry{min-width:0;padding:.14vh .42vw;display:flex;flex-direction:column;gap:.1vh;border:1px solid transparent;border-radius:7px}
+.task-rel-page .cb-painpoint-entry.priority-low{background:#f0f1f3;border-color:#dadde2;color:#69707c}
+.task-rel-page .cb-painpoint-entry.priority-medium{background:#fae8e5;border-color:#e5b4ad;color:#93473e}
+.task-rel-page .cb-painpoint-entry.priority-high{background:#f3cbca;border-color:#cf8887;color:#8d252d}
+.task-rel-page .cb-painpoint-entry small{font-size:var(--fs-xs);font-weight:750;line-height:1.2}
+.task-rel-page .cb-painpoint-entry>b{font-size:clamp(12.5px,.92vw,14px);line-height:1.24}
 .task-rel-page .journey-cross{display:flex;gap:1.1vw;align-items:center;margin-top:.9vh;font-size:var(--fs-sm);color:#6a717e}
 .task-rel-page .journey-cross>b{white-space:nowrap}.task-rel-page .journey-cross .cross-key{color:#a13a42;font-weight:750}
 .six-question-summary{display:grid;width:100%;gap:0;font-size:var(--fs-body)}
@@ -2006,16 +2008,28 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   retrieval.querySelector('.body-area').innerHTML=`<div class="retrieval-chart"><h3>3 个对等检索任务 · 综合置信度</h3>${retrievalScores}<p>本轮 CANN 与 CUDA 的任务级检索对照。分数沿用原研究口径，不代表生态总体质量。</p><a href="operator-ai-journey-research/evidence/ai-usability/ai-usability-run-20260818.md" target="_blank">任务问句、来源与评分记录 ↗</a></div><div class="retrieval-chain"><div><strong>01</strong><section><b>找到并取回正文</b><p>不仅有入口，还要能读到支撑任务的文档、样例和解释。</p></section></div><div><strong>02</strong><section><b>保留适用条件</b><p>版本、芯片和依赖关系应随引用一起进入答复。</p></section></div><div><strong>03</strong><section><b>支持连续行动</b><p>最小命令、验证信号与失败恢复路径，决定能否继续推进。</p></section></div></div>`;
   retrieval.querySelector('.foot').textContent='2026-08-18：自定义 Add、ONNX 转换、性能分析三任务检索记录。只代表本轮样本；不是硬件实测，也不另立“上下文”问题。';
   const journey=byOriginalTitle.get('Agent 机制下钻');
-  journey.querySelector('.subttl').textContent='AddCustom P1–P2 任务图；痛点叠加访谈与研究映射，非该任务的实测痛苦评分';
+  journey.querySelector('.subttl').textContent='AddCustom P1–P2 开发任务：从目标与能力装配，到工程执行与结果核验';
   const pains=[
-    ['low','任务起点','目标与条件继续观察，不列为本轮独立问题。'],
-    ['low','已完成研究','社区 AI 可用性：正文取回、来源与连续任务支持。'],
-    ['medium','01 · 重点分析',focusQuestions[0].name],
-    ['high','02 · 核心重点',focusQuestions[1].name],
-    ['high','03 · 核心重点',focusQuestions[2].name]
+    [
+      ['medium','01 · 重点分析',focusQuestions[0].name],
+      ['low','起步条件','目标、芯片 / 软件版本与工程现场需同步明确。']
+    ],
+    [
+      ['medium','来源适用性','取回正文后，还需核对版本、芯片与依赖条件。'],
+      ['low','连续推进','最小命令、验证信号与失败恢复仍需接续。']
+    ],
+    [
+      ['medium','测试生成','生成的测试偏向典型输入，特殊边界需要补测。']
+    ],
+    [
+      ['high','02 · 核心重点',focusQuestions[1].name]
+    ],
+    [
+      ['high','03 · 核心重点',focusQuestions[2].name]
+    ]
   ];
-  journey.querySelector('.cb-painpoint-rail').innerHTML=pains.map(([level,label,copy])=>`<div class="cb-painpoint-node priority-${level}"><small>${label}</small><b>${copy}</b></div>`).join('');
-  journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','按研究关注重点分级，深红为判断与验证，非发生率评分');
+  journey.querySelector('.cb-painpoint-rail').innerHTML=pains.map(group=>`<div class="cb-painpoint-node">${group.map(([level,label,copy])=>`<div class="cb-painpoint-entry priority-${level}"><small>${label}</small><b>${copy}</b></div>`).join('')}</div>`).join('');
+  journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','按开发阶段归纳多个痛点线索，以灰、浅红、深红表示研究关注层级，不表示发生率');
   const cross=document.createElement('div');cross.className='journey-cross';cross.innerHTML=`<b>跨阶段与任务之后</b><span class="cross-key">04 · ${focusQuestions[3].name}</span><span>05 · ${focusQuestions[4].name}</span><span>06 · ${focusQuestions[5].name}</span>`;journey.querySelector('.body-area').append(cross);
   const obs=journey.querySelectorAll('.cb-measure');
   obs[2].innerHTML='<small>访谈＋平台盘点</small><span>方法需求与可装配能力</span>';
