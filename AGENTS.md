@@ -4011,4 +4011,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出第5页“痛点”行主文案过大。原因是 `.cb-painpoint-node>b` 使用 `--fs-body`（当前视口约 15px），与小标签字号落差明显。改为 `clamp(12.5px,.92vw,14px)` 并稍收行高；保留编号、重点色与小标签层级。
 - 在 1440×810 的 Chrome 截图确认主文案约 13.25px、布局仍可读，0 页面脚本错误；`git diff --check` 通过。只影响精简版第5页痛点行字号。
-- Commit／push：随本次提交推送 `origin/main`，结果待回填。
+- Commit／push：功能提交 `09e5fd51`（`style: reduce journey painpoint text size`）已成功推送 `origin/main`，使用 GitHub SSH 443 临时参数，未改永久配置；本条回填随后单独提交推送。
