@@ -4006,3 +4006,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保留 `#4-focus`、沙盘 `#8-spot1/2/3`、全部 Demo 状态、Overview、全屏、截图放大、Tab 与刷新恢复；无自动定时。API／Protocol、Host／Harness、Application／Task 三层边界不变，方案收益仍需实验。
 - 验证：4 段内联脚本语法通过；26 页在 1600×900、1440×810 逐页截图与边界核验，无坏图、越界或运行时错误；108 项交互／布局检查全部通过。额外核验 iframe 实际 Agent 聚焦及本地证据链接；`git diff --check` 通过。QA 记录在 `/tmp/ascend-six-qa/`，非交付资产。
 - Commit／push：功能提交 `be91cdfe`（`design: refocus concise report on six evidence-backed problems`）已通过 GitHub SSH 443 临时参数成功推送 `origin/main`，未改永久配置；仅提交本任务文件，本条结果随后单独提交推送。额外检查确认 iframe 有实际 Agent 聚焦、34 个本地引用无缺失。未决：定性问题的普遍性、装配收益、真实硬件效果及长期学习／回流仍需验证。
+
+### 2026-09-29（缩小精简版旅程痛点文案）
+
+- 用户指出第5页“痛点”行主文案过大。原因是 `.cb-painpoint-node>b` 使用 `--fs-body`（当前视口约 15px），与小标签字号落差明显。改为 `clamp(12.5px,.92vw,14px)` 并稍收行高；保留编号、重点色与小标签层级。
+- 在 1440×810 的 Chrome 截图确认主文案约 13.25px、布局仍可读，0 页面脚本错误；`git diff --check` 通过。只影响精简版第5页痛点行字号。
+- Commit／push：随本次提交推送 `origin/main`，结果待回填。
