@@ -1128,7 +1128,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 <section class="slide s-gray task-rel-page" data-title="Agent 机制下钻"><div class="slide-inner">
   <header class="head"><div class="head-l"><div class="subttl">聚焦 P1–P2 红框：把 AddCustom 接入 PyTorch 的目标、资料检索、上下文装配与工程起步连成一段真实任务</div><div class="ttl">AddCustom 接入 PyTorch：从教程检索到工程起步</div></div><div class="section-tabs"></div></header>
   <div class="body-area" aria-label="AddCustom 接入 PyTorch 的 P1–P2 业务片段：Need 装配目标与上下文、Search 检索、Generate 生成候选方案、Decide 核验、Execute 工程起步">
-    <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 共同完成 AddCustom 接入 PyTorch 的 P1–P2 任务片段；Need 包含提出目标与装配初始上下文，随后依次 Search、Generate、Decide、Execute；各列对应本任务痛点线索与后续待验证问题，本机失败后可选恢复">
+    <div class="collab-blueprint" role="group" aria-label="开发者与 Agent 共同完成 AddCustom 接入 PyTorch 的 P1–P2 任务片段；Need 包含提出目标、提供环境与按任务选配可装配能力，随后依次 Search、Generate、Decide、Execute；各列对应本任务痛点线索与后续待验证问题，本机失败后可选恢复">
       <div class="cb-axis"><small>STAGE</small><b>阶段</b></div>
       <div class="cb-stage-rail" aria-label="五个任务阶段：Need（提出目标并装配初始上下文）、Search / Fetch、Generate、Decide、Execute">
         <div class="cb-stage is-source"><div class="cb-stage-copy"><small>01 · NEED + CONTEXT</small><b>提出目标与上下文</b><span>装配环境、约束与工作区现场</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/need-context.png" alt=""></div></div>
@@ -1140,7 +1140,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
       <div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>
       <div class="cb-lane cb-human-lane" aria-label="开发者泳道">
-        <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>说明目标与初始上下文</span></b><p>提出用 Ascend C 实现 AddCustom 并由 PyTorch / torch_npu 调用；提供目标芯片、软件版本及本机仓库线索。</p></article>
+        <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>明确目标并选配能力</span></b><p>明确 AddCustom 接入目标、芯片 / 版本与仓库；按任务选配规则、知识库、Skill、MCP 等。</p></article>
         <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>确认教程与来源缺口</span></b><p>官方自定义算子教程正文未取回时，判断是否转查社区 / 第三方资料，并保留来源和版本。</p></article>
         <article class="cb-lane-cell cb-human-step is-generate"><b><i data-lucide="sparkles"></i><span>复核生成草案</span></b><p>检查候选工程路径、参数与来源依据；发现未满足的版本或环境条件时补充说明。</p></article>
         <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>判断资料适用并定路径</span></b><p>核对教程与本机版本、工程目录和生成方式，确认 msopgen 目标路径；条件不全时先补问。</p></article>
@@ -1149,7 +1149,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
       <div class="cb-row-label cb-handoff-label"><small>HANDOFF</small><b>交接物</b></div>
       <div class="cb-handoff-rail" aria-label="五步任务之间的人机交接">
-        <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 + 初始 Context</span></div>
+        <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 / 环境 + 能力配置</span></div>
         <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>教程取回状态 + 来源</span></div>
         <div class="cb-handoff down is-generate"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>候选路径 + 参数草稿</span></div>
         <div class="cb-handoff is-control"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M5 2v13M2 5l3-3 3 3M11 16V3M8 6l3-3 3 3"/></svg><span>适用性判断 + 工程路径</span></div>
@@ -1160,10 +1160,10 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
       <div class="cb-lane cb-agent-lane" aria-label="Agent 泳道">
         <article class="cb-lane-cell cb-agent-step is-source">
           <div class="cb-source-flow">
-            <div class="cb-source-nodes"><span>AddCustom → PyTorch</span><span>芯片 / 软件版本</span><span>仓库与工程现场</span></div>
-            <div class="cb-source-merge"><span>目标 + 现场信息汇入</span></div>
+            <div class="cb-source-nodes"><span>AddCustom → PyTorch</span><span>芯片 / 版本 / 工作区</span><span>所选能力与配置</span></div>
+            <div class="cb-source-merge"><span>目标、现场与能力配置汇入</span></div>
             <div class="cb-trust-gate"><b>缺失字段标记待补</b><span>不推断芯片或软件版本</span></div>
-            <div class="cb-context-result">任务目标 + 初始 Context</div>
+            <div class="cb-context-result">初始 Context + 能力配置</div>
           </div>
         </article>
         <article class="cb-lane-cell cb-agent-step is-action">
@@ -2043,7 +2043,8 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','每阶段可以有多条痛点，分别标明开发者或 Agent，并以灰、浅红、深红表示次要、关注、重点');
   const cross=document.createElement('div');cross.className='journey-cross';cross.innerHTML=`<b>跨阶段与任务之后</b><span class="cross-key">04 · ${focusQuestions[3].name}</span><span>05 · ${focusQuestions[4].name}</span><span>06 · ${focusQuestions[5].name}</span>`;journey.querySelector('.body-area').append(cross);
   const obs=journey.querySelectorAll('.cb-measure');
-  obs[2].innerHTML='<small>访谈＋平台盘点</small><span>方法需求与可装配能力</span>';
+  obs[0].innerHTML='<small>访谈＋平台盘点</small><span>任务方法需求与能力选配</span>';
+  obs[2].innerHTML='<small>访谈原声</small><span>自动生成测试偏向典型输入</span>';
   obs[3].innerHTML='<small>访谈原声</small><span>换 AI 重试／经验指导纠错</span>';
   obs[4].innerHTML='<small>访谈原声</small><span>常规输入／人工边界补测</span>';
   const summarySlide=[...deck.children].find(s=>s.dataset.title==='九个问题总览');summarySlide.dataset.title='六个问题总览';

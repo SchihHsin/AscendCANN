@@ -4018,7 +4018,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出同一阶段可以有多个重要程度不同的痛点。调整精简版第5页：Need 并列问题01和起步条件；Search 并列资料适用性与连续推进；Generate 补入生成测试偏向典型输入；Decide／Execute 保留问题02／03重点。灰、浅红、深红区分关注程度，解除“一阶段只能放一个问题”的排布假设。
 - 删除“目标与条件继续观察，不列为本轮独立问题”及副标题中的痛苦评分制作说明；副标题改为 AddCustom P1–P2 任务推进描述。保留 Need 起步顺序与 Search 研究归属。
 - 在 1440×810 与 1600×900 的 Chrome 截图核对各列多项显示，条目未溢出、页面无脚本错误；`git diff --check` 通过。页序、来源证据与 API／Host／Application 边界不变。
-- Commit／push：功能提交 `029e1a8d`（`content: restore developer and agent painpoint roles`）已成功推送 `origin/main`，使用 GitHub SSH 443 临时参数，未改永久配置；本条回填随后单独提交推送。
+- Commit／push：功能提交 `392821da`（`content: group journey pains by stage and priority`）已成功推送 `origin/main`，使用 GitHub SSH 443 临时参数，未改永久配置。
 
 ### 2026-09-29（恢复旅程中开发者与 Agent 痛点区分）
 
@@ -4026,4 +4026,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按阶段补齐角色分布：Need 展示开发者能力选配与起步条件；Search 区分 Agent 来源适用性与开发者核对；Generate 区分 Agent 的典型输入测试与开发者边界补测；Decide 标明开发者遇到生成偏差时的换模型行为；Execute 区分 Agent 常规覆盖证据与开发者最终核验。没有把角色归因伪装成统计结果。
 - 页面副标题直接说明本页按阶段区分角色、颜色表示相对重要程度。动态插入 Lucide 图标后重新初始化图标渲染。
 - 检查：1440×810、1600×900 均显示 9 个角色图标和完整文字，无横纵溢出、0 页面脚本错误；`git diff --check` 通过。页序与证据边界不变。
-- Commit／push：随本次提交推送 `origin/main`，结果待回填。
+- Commit／push：功能提交 `029e1a8d`（`content: restore developer and agent painpoint roles`）及交接回填 `a52d95d0` 已成功推送 `origin/main`。
+
+### 2026-09-29（Need 阶段补齐开发者选配能力的行为）
+
+- 用户指出第5页首阶段不仅有能力选配痛点，也应有对应的开发者行为。仅修改精简版 `cann-dashboard/ai-development-behavior-system-report-concise.html`：开发者标题改为“明确目标并选配能力”，描述提供目标、芯片／版本和仓库，并按任务选配规则、知识库、Skill、MCP 等。
+- 按用户旅程 Skill 的逐列对应要求，同步交接物“目标／环境 + 能力配置”、Agent 接收的“所选能力与配置”及初始 Context；能力选配观察移到 Need，Generate 观察对应访谈中的典型输入测试。沿用现有版式、角色区分、多条痛点与优先级，未调整页序。
+- 本轮是用户确认的旅程行为补全与研究映射，不是新增实测。起步选配不代表已经触发或成功调用；后续阶段中的加载／调用位置保留。无新增 NPU 验证或 API／Host／Application 边界变更。
+- 验证：4 段内联脚本语法检查与 `git diff --check` 通过；Chrome 1440×810、1600×900 均恢复到 #5、保持26页且无页面脚本错误。截图核对首列文字与交接内容完整；泳道边缘箭头不计作正文溢出。QA 截图在 `/tmp/ascend-need-capability-1440.png` 和 `/tmp/ascend-need-capability-1600.png`。
+- 同步纠正前两条交接记录的提交号归属。Commit／push：本轮功能与记录检查后提交并推送，结果待回填；其他工作区改动不纳入。
