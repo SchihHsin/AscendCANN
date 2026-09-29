@@ -4035,3 +4035,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本轮是用户确认的旅程行为补全与研究映射，不是新增实测。起步选配不代表已经触发或成功调用；后续阶段中的加载／调用位置保留。无新增 NPU 验证或 API／Host／Application 边界变更。
 - 验证：4 段内联脚本语法检查与 `git diff --check` 通过；Chrome 1440×810、1600×900 均恢复到 #5、保持26页且无页面脚本错误。截图核对首列文字与交接内容完整；泳道边缘箭头不计作正文溢出。QA 截图在 `/tmp/ascend-need-capability-1440.png` 和 `/tmp/ascend-need-capability-1600.png`。
 - 同步纠正前两条交接记录的提交号归属。Commit／push：功能提交 `212c34a4`（`content: add capability selection to journey need stage`）已成功推送 `origin/main`，本条结果另作交接提交；其他工作区改动未纳入。
+
+### 2026-09-29（精简版痛点行恢复 93ff09ca 样式）
+
+- 用户明确要求第5页痛点行沿用 `93ff09ca`，不要擅改。仅修改 `cann-dashboard/ai-development-behavior-system-report-concise.html`：删除后来增加的逐条描边卡片、独立角色／等级标签行和全句统一加粗，恢复原提交的浅粉整行背景、无边框条目、角色小图标与正文布局；复用原有字号、间距和列内居中样式。
+- 保留当前9条痛点及阶段归属，开发者／Agent 仍通过人形／机器人图标区分，悬停提示和可访问名称保留角色及等级。痛点主次只用文字红度和重点加粗表达，不再另加卡片。Need 选配能力行为、交接物和 Agent 接收内容不变；没有改问题名称、证据、页序或运行时交互。
+- 按 Report PPT Skill 的现有精调组件复用原则及用户旅程 Skill 的逐列对应要求，直接对照 `git show 93ff09ca` 的历史页面并在浏览器渲染核对，而非重新设计。历史参考截图 `/tmp/ascend-pain-reference-93ff09ca.png`，本轮截图 `/tmp/ascend-pain-restored-1440.png` 与 `/tmp/ascend-pain-restored-1600.png`。
+- 验证：`git diff --check`、4 段内联 JavaScript 语法检查通过；1440×810 与1600×900 保持 #5 与26页，均为9条无边框痛点及9个角色图标，文字无溢出，0 页面脚本错误。原版HTML及其他工作区修改未纳入；无新增业务证据或 API／Host／Application 层边界变更。
+- Commit／push：本轮样式修复检查后提交并立即推送，结果待回填。

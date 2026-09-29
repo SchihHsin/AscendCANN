@@ -1036,19 +1036,10 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .voc-evidence-page .voc-meta{display:flex;align-items:end;justify-content:space-between;gap:1vw;margin-top:.5vh}
 .voc-evidence-page .voc-nm{font-size:var(--fs-sm)}.voc-evidence-page .voc-rl,.voc-evidence-page .voc-meta a{font-size:var(--fs-xs);color:#687383;margin-top:.4vh}
 .voc-evidence-page .evidence-takeaway{font-size:var(--fs-h3);font-weight:750;line-height:1.4;padding:1vh 0;color:#343955}
-.task-rel-page .cb-painpoint-node{display:flex;flex-direction:column;justify-content:center;gap:.2vh;padding:.1vh .22vw;background:transparent;border:0;border-radius:0;box-shadow:none}
-.task-rel-page .cb-painpoint-entry{min-width:0;padding:.14vh .42vw;display:flex;flex-direction:column;gap:.1vh;border:1px solid transparent;border-radius:7px}
-.task-rel-page .cb-painpoint-entry-head{display:flex;align-items:center;justify-content:space-between;gap:.4vw;min-width:0}
-.task-rel-page .cb-painpoint-actor{display:inline-flex;align-items:center;gap:.18vw;font-size:var(--fs-xs);font-weight:750;line-height:1.15;color:#445166}
-.task-rel-page .cb-painpoint-actor svg{width:10px;height:10px;stroke-width:1.9;flex:0 0 auto}
-.task-rel-page .cb-painpoint-actor.is-developer svg{color:#3977b8}
-.task-rel-page .cb-painpoint-actor.is-agent svg{color:#765bb4}
-.task-rel-page .cb-painpoint-entry-head small{font-size:var(--fs-xs);font-weight:750;line-height:1.15;color:inherit;white-space:nowrap}
-.task-rel-page .cb-painpoint-entry.priority-low{background:#f0f1f3;border-color:#dadde2;color:#69707c}
-.task-rel-page .cb-painpoint-entry.priority-medium{background:#fae8e5;border-color:#e5b4ad;color:#93473e}
-.task-rel-page .cb-painpoint-entry.priority-high{background:#f3cbca;border-color:#cf8887;color:#8d252d}
-.task-rel-page .cb-painpoint-entry small{font-size:var(--fs-xs);font-weight:750;line-height:1.2}
-.task-rel-page .cb-painpoint-entry>b{font-size:clamp(12.5px,.92vw,14px);line-height:1.24}
+/* Keep the 93ff09ca pain-row layout; priority changes text emphasis only. */
+.task-rel-page .cb-painpoint-item.priority-low span,.task-rel-page .cb-painpoint-item.priority-low .cb-actor-icon{color:#8d7d82}
+.task-rel-page .cb-painpoint-item.priority-high span{color:#a13a42}
+.task-rel-page .cb-painpoint-item.priority-high .cb-actor-icon{color:#c83e52}
 .task-rel-page .journey-cross{display:flex;gap:1.1vw;align-items:center;margin-top:.9vh;font-size:var(--fs-sm);color:#6a717e}
 .task-rel-page .journey-cross>b{white-space:nowrap}.task-rel-page .journey-cross .cross-key{color:#a13a42;font-weight:750}
 .six-question-summary{display:grid;width:100%;gap:0;font-size:var(--fs-body)}
@@ -2038,9 +2029,9 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   ];
   const painActor={developer:{label:'开发者',icon:'user-round'},agent:{label:'Agent',icon:'bot'}};
   const painLevel={low:'次要',medium:'关注',high:'重点'};
-  journey.querySelector('.cb-painpoint-rail').innerHTML=pains.map(group=>`<div class="cb-painpoint-node">${group.map(([level,actor,copy])=>`<div class="cb-painpoint-entry priority-${level}"><div class="cb-painpoint-entry-head"><span class="cb-painpoint-actor is-${actor}"><i data-lucide="${painActor[actor].icon}" aria-hidden="true"></i>${painActor[actor].label}</span><small>${painLevel[level]}</small></div><b>${copy}</b></div>`).join('')}</div>`).join('');
+  journey.querySelector('.cb-painpoint-rail').innerHTML=pains.map(group=>`<div class="cb-painpoint-node">${group.map(([level,actor,copy])=>`<div class="cb-painpoint-item priority-${level}" role="group" aria-label="${painActor[actor].label}痛点 · ${painLevel[level]}" title="${painActor[actor].label} · ${painLevel[level]}"><i class="cb-actor-icon is-${actor}" data-lucide="${painActor[actor].icon}" aria-hidden="true"></i><span>${level==='high'?`<b>${copy}</b>`:copy}</span></div>`).join('')}</div>`).join('');
   if(window.lucide)lucide.createIcons({attrs:{'aria-hidden':'true'}});
-  journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','每阶段可以有多条痛点，分别标明开发者或 Agent，并以灰、浅红、深红表示次要、关注、重点');
+  journey.querySelector('.cb-painpoint-rail').setAttribute('aria-label','每阶段可以有多条痛点，以人形或机器人图标区分开发者与 Agent，以文字红度表示相对重要程度');
   const cross=document.createElement('div');cross.className='journey-cross';cross.innerHTML=`<b>跨阶段与任务之后</b><span class="cross-key">04 · ${focusQuestions[3].name}</span><span>05 · ${focusQuestions[4].name}</span><span>06 · ${focusQuestions[5].name}</span>`;journey.querySelector('.body-area').append(cross);
   const obs=journey.querySelectorAll('.cb-measure');
   obs[0].innerHTML='<small>访谈＋平台盘点</small><span>任务方法需求与能力选配</span>';
