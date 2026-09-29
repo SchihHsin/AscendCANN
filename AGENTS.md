@@ -4106,3 +4106,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 方案图使用内置imagegen生成两张原生1672×941 PNG，路径 `solution-mockups/q1-assembly-20260929/`：任务选配与只读确认、使用记录与待验证项；保留一致Codex风格，图片直接放背景，框注编号对应简洁设计点。概念图不代表Codex现成功能，明确载入不等于执行、MCP回执是示例、NPU未运行。完整提示词与框注坐标保存在`generation-notes.md`。
 - 验证：4段内联脚本`node --check`、`git diff --check`通过；离线jsdom最终62/62、0运行错误，覆盖26页、Tab、#4-focus、#7三聚焦、#10两状态及纯页码重置、本地资源。HEAD对照确认页1/3/4/5和其余五题内容除Tab外一致。浏览器策略仍拒绝本地file访问，未绕过；因此本版真实页面排版／溢出和iframe内部未重新视觉验收，不能把合成几何的DOM检查当作视觉通过。
 - 提交范围限定精简HTML、本轮证据／生成／验证说明、2个PNG及AGENTS；完整版本和所有无关脏文件保留不动。功能及交接一起提交后立即推送`origin/main`；commit／push结果在完成后追加。未决：用户样章视觉确认与真实任务效果验证。
+- Commit／push结果：样章提交 `dab05e74`（`redesign: rebuild capability selection sample chapter`）已成功推送 `origin/main`。首次SSH同步无响应，结束该次推送后以GitHub SSH 443及限时保活参数重试成功，未修改永久Git配置；本条结果随后作独立交接提交并立即推送。
