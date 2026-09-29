@@ -4239,3 +4239,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 主代理验收捕获标注模式selector误匹配祖先slide，导致业务步骤与选点点击被吞；Luna已修为button限定selector。图片切换使用请求token防竞态，加载中/失败不显示框，陈旧onload/onerror不能恢复错位标注。
 - 最终3张图接入后主代理独立复跑离线jsdom **239/239通过、0运行错误**；27页序不变，仅方案页11/13/15/17/19/22变化，其余21页相对`a0551622`的runtime DOM逐字相同，尤其第9/10旧三列不动。内联JS语法与差异检查通过；图片路径、全部demo/hash、概览/导航、标注键盘/单点与加载失败/竞态已测。浏览器限制未绕过，整页真实排版/溢出/窄屏与iframe仍未重新视觉验收，不以合成几何当通过。
 - 生成提示词、最终资产清单及验收记录位于`ai-development-behavior-system-report-evidence/solution-mockups/typography-20260929/README.md`和`verification.md`。原始证据与API／Host／Application边界均不变。只暂存精简HTML、3张采用的新图、两份记录和本交接，检查后commit并立即push main；提交结果后续回填。
+- 交付结果：`dd960fc3`（`design: add clean solution views and refine mockup typography`）已推送`origin/main`；首次SSH传输超时，确认远端仍在旧提交后重试成功。提交前最终工具行布局、3张图及框位置版本经主代理独立回归仍为239/239、4段内联JS语法通过。标注开关与演示步骤共用图下工具行，避免多占图上空间。本条结果记录随后单独提交并立即推送。
