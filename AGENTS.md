@@ -4034,4 +4034,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户旅程 Skill 的逐列对应要求，同步交接物“目标／环境 + 能力配置”、Agent 接收的“所选能力与配置”及初始 Context；能力选配观察移到 Need，Generate 观察对应访谈中的典型输入测试。沿用现有版式、角色区分、多条痛点与优先级，未调整页序。
 - 本轮是用户确认的旅程行为补全与研究映射，不是新增实测。起步选配不代表已经触发或成功调用；后续阶段中的加载／调用位置保留。无新增 NPU 验证或 API／Host／Application 边界变更。
 - 验证：4 段内联脚本语法检查与 `git diff --check` 通过；Chrome 1440×810、1600×900 均恢复到 #5、保持26页且无页面脚本错误。截图核对首列文字与交接内容完整；泳道边缘箭头不计作正文溢出。QA 截图在 `/tmp/ascend-need-capability-1440.png` 和 `/tmp/ascend-need-capability-1600.png`。
-- 同步纠正前两条交接记录的提交号归属。Commit／push：本轮功能与记录检查后提交并推送，结果待回填；其他工作区改动不纳入。
+- 同步纠正前两条交接记录的提交号归属。Commit／push：功能提交 `212c34a4`（`content: add capability selection to journey need stage`）已成功推送 `origin/main`，本条结果另作交接提交；其他工作区改动未纳入。
