@@ -4220,3 +4220,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 遵循Report PPT Skill的原图复用与有语义的底色分区；未新增截图或AI图。独立事实复核确认两页正文与原稿一致，未扩大缺失断言。源码布局审查发现高视口内部vh间距增长与图560px封顶存在冲突，已对1080px以上桌面视口解除该图高度上限，不影响其他页。
 - 验证：4段内联JS语法编译、`git diff --check`通过；离线jsdom **177/177通过、0运行错误**。固定基线`c170ebcd9eb160c283f31eece67817f9ab24414f`下，其余25页outerHTML逐字不变；页码、Tab、全部聚焦／方案状态和本地资源通过。源码检查三列位置一致、样式作用域仅命中9／10、深底文字颜色明确。浏览器限制没有绕过，实际排版／溢出／窄屏滚动与iframe仍未视觉验收，合成几何不作视觉通过依据。
 - 同步`q1-assembly-20260929/verification.md`并保留历史记录。只提交精简HTML、本轮验证说明与AGENTS；完整版及所有无关脏文件保持原样。检查后立即提交推送`origin/main`，结果随后回填。
+- Commit／push结果：`72338ad5`（`design: restore three-column capability maps with grouped backgrounds`）已成功推送`origin/main`。高视口修正后的最终离线回归仍为177／177，只有第9／10页变化；本条交付结果另作记录提交并立即推送。
