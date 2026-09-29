@@ -4043,3 +4043,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按 Report PPT Skill 的现有精调组件复用原则及用户旅程 Skill 的逐列对应要求，直接对照 `git show 93ff09ca` 的历史页面并在浏览器渲染核对，而非重新设计。历史参考截图 `/tmp/ascend-pain-reference-93ff09ca.png`，本轮截图 `/tmp/ascend-pain-restored-1440.png` 与 `/tmp/ascend-pain-restored-1600.png`。
 - 验证：`git diff --check`、4 段内联 JavaScript 语法检查通过；1440×810 与1600×900 保持 #5 与26页，均为9条无边框痛点及9个角色图标，文字无溢出，0 页面脚本错误。原版HTML及其他工作区修改未纳入；无新增业务证据或 API／Host／Application 层边界变更。
 - Commit／push：样式修复提交 `95e6b37e`（`style: restore original journey painpoint row`）已成功推送 `origin/main`，使用 GitHub SSH 443 临时参数，未改永久配置；本条结果另作交接提交。
+
+### 2026-09-29（区分决策痛点与用户应对行为，核查旅程遗漏）
+
+- 用户明确：“换模型重跑”只是访谈中的一个应对例子，不是独立痛点；问题本质是相关原理和诊断知识不足，开发者不知道怎样决策、排查和修改。固定题名仍为“开发者难以判断和选择下一步行动”，不得缩成模型切换问题，也不得擅自改名。
+- 修改精简版 `cann-dashboard/ai-development-behavior-system-report-concise.html`：第5页 Decide 痛点直接使用问题02固定名称，并说明“缺少原理与诊断知识，难定位原因、判断怎样改”；体验观察对应知识与经验对诊断、纠错的影响。换 AI 的例子只保留在问题02现状页的原声与行为链，结论补清背后的知识和诊断困难，原声内容与证据边界不变。
+- 同步核查六问题的旅程映射：Need 保留能力选配，并把次要条件条目写成“信息不齐、需反复补充”的障碍；Execute 从“补测”这个动作补明“生成结果的可信性难以验证”及覆盖不清的原因。Search 的连续资料与适用性、Generate 的典型测试和人工边界补测仍保留。
+- 能力增长、团队决策背景、经验沉淀原已放在图下方，但被白色画布外扩阴影遮住上半行；仅调整该行叠放顺序，使三个固定问题完整可见，不改变布局尺寸。保留 `93ff09ca` 的浅粉整行背景、无边框条目、角色图标和字号；未增加卡片或等级标签，未重新加入已移除的过程接管、任务定义或责任边界独立问题。
+- 依据：既有访谈索引 `ai-development-behavior-system-report-evidence/interview-focus-20260928/evidence-review.md`、问题02两段原声、问题03边界补测原声及三任务检索记录。该轮是内容层级与映射修正，不是新增实验，不把行为例子或要求当成痛点结论，不新增普遍性／因果数据或 NPU 结果。
+- 验证：`git diff --check`、4 段内联脚本语法检查通过；1440×810、1600×900 均保留26页与 #5，9条痛点／9个角色图标无溢出，六个固定问题均可见，跨阶段行通过遮挡检查，0 页面脚本错误。问题02 VOC 保留“找一个新的 ai”原文；截图 `/tmp/ascend-journey-pain-audit-1440.png`、`/tmp/ascend-journey-pain-audit-1600.png`、`/tmp/ascend-decision-pain-audit.png`。
+- Commit／push：本轮修正检查后提交并立即推送，结果待回填；只纳入精简版与本交接记录。
