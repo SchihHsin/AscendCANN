@@ -4270,3 +4270,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 候选位置仅供讨论：现有第10页建设方向之后、开发者Demo之前；未改变问题01名称、现有27页序或附录协作分工。后续需先确认原页与位置，再执行报告修改。
 - 为满足截图请求，搜索仓库与既有`/tmp`报告截图未找到该页；在用户已打开的完整版tab上尝试正常选取时，CUA因`file://`协议不在允许范围而拒绝。没有改用其他浏览器、代理、CDP或渲染路径绕过；没有伪造原页截图。只能据源码给出候选标题、结构与页序定位，截图尚未取得。
 - 无新增实测、研究结论或API／Host／Application边界变化；本轮仅保留本交接记录，经差异检查后单独提交并立即推送，报告文件不提交。
+
+### 2026-09-30（访谈证据措辞微调）
+
+- 按用户要求更新精简报告`cann-dashboard/ai-development-behavior-system-report-concise.html`问题04两处表述：“有经验的介入：AI 反复报错”改为“有经验的介入：开发者基于自身经验对AI进行引导”；“对学弟学妹情境的判断”改为“对学弟学妹的观察”。逐字稿引用与事实内容未改，页面序列、证据文件及API／Host／Application边界不变。此前交接对旧标签的记录保留为历史，现以本条用户新决定为准。
+- 本轮仅处理用户指定的文案，不新增证据或结论；`git diff --check -- cann-dashboard/ai-development-behavior-system-report-concise.html`通过。
+- Commit／push：`692fefad`（`copy: clarify interview evidence labels`）已推送`origin/main`。本交接记录单独提交并立即推送；其他既有未提交文件未纳入。
