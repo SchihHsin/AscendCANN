@@ -4373,3 +4373,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保留用户确认的新标题与页序，同步更新`reportOrder`、章节映射；旅程页节点和聚焦目标改用稳定的`.task-rel-page` class定位，标题更名不再破坏聚焦流程。`#4-focus`作为第4页中间状态，下一次滚动再进入第5页；不改变研究内容、证据或API／Protocol、Host／Harness、Application／Task边界。
 - 检查：结构断言确认旅程页仍进入报告序列、章节映射与聚焦定位均指向新页；HTMLParser解析通过，4段内联JS通过`node --check`，`git diff --check`通过。未做浏览器滚轮实测；遵守本地`file://`限制。
 - Commit／push：`f6854ee9`（`fix: restore timeline focus step after rename`）已推送`origin/main`。本交接记录单独提交推送，其他并行与既有脏文件未纳入。
+
+### 2026-09-30（方案页先展示讲解标注再翻页）
+
+- 用户指出设计方案页翻页应先从完整图切到同图讲解标注，再进入下一页；原键盘右箭头调用`shiftSolutionState`切换另一张方案界面图，并触发`.is-switching`半透明加载态，滚轮也未把标注模式作为中间状态。
+- 统一非直达翻页顺序：完整图→讲解标注→下一页；反向为上一页→讲解标注→完整图。覆盖方向键、上下页控件、滚轮和触屏；滚轮累积小幅Delta并按连续手势锁定，避免触控板惯性一次跨越两态。页面底部状态按钮仍可手动切换不同界面图；聚焦按钮时方向键仍切换界面状态。页序、标题、研究内容和API／Protocol、Host／Harness、Application／Task边界不变。
+- 检查：HTMLParser解析通过，4段内联JS通过`node --check`，静态检查确认完整图／标注前进后退、滚轮与触屏路径存在，`git diff --check`通过。未做浏览器交互复验；遵守本地`file://`限制。
+- Commit／push：`ffa3fbec`（`fix: step through solution annotations before paging`）已推送`origin/main`。本交接记录单独提交推送，其他并行与既有脏文件未纳入。
