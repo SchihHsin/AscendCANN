@@ -4327,3 +4327,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户要求，从精简报告问题01选配页删除候选用途、VOC与非实测边界说明，并移除该页脚内的“真实资产原文与边界”链接。页面主体、问题内容、题目、插图和页序不变。
 - 检查：Python `HTMLParser`解析通过，4段内联JavaScript经`node --check`通过，指定说明已从源码移除，`git diff --check`通过。未做浏览器截图复验；遵守本地`file://`访问限制。
 - 本次只暂存精简报告与本交接记录，其他工作区脏文件不纳入。
+
+### 2026-09-30（清理精简报告页脚并移除封面CANN Logo）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report-concise.html`。移除封面左上CANN图片Logo，保留“AI DEVELOPMENT RESEARCH”文字；清理目录页以外各页的`.foot`与`.solution-foot`说明，保留目录阅读顺序；同时删去分析页“证据 / 推导边界见页下注”提示并收回对应底部留白。正文证据、图注、来源链接、页面序列和研究结论不变。
+- 证据与边界：仅落实用户对视觉和说明文字的明确反馈，无新增研究证据或主张；不改变API／Protocol、Host／Harness或Application／Task边界。用户已有其他脏文件均未暂存。
+- 检查：Python `HTMLParser`解析通过；4段内联JavaScript均通过`node --check`；`git diff --check`通过。未做浏览器截图复验，继续遵守本地`file://`访问限制。
+- Commit／push：`f37d261f`（`style: remove report footnotes and cover logo`）已推送`origin/main`。待实际浏览器打开后目视确认封面排版。
