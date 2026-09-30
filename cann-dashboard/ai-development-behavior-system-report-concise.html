@@ -37,7 +37,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 /* cover */
 .s-cover{--cover-ink:#f4f5ff;--cover-muted:#aab4ce;--cover-indigo:#a5b2ff;--cover-purple:#b69aef;--cover-blue:#8fc2ff;--cover-soft:#12182a;color:var(--cover-ink);background:#111626;padding:0}.cv-bg{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 78% 35%,rgba(94,119,214,.2),transparent 34%),radial-gradient(ellipse at 91% 83%,rgba(137,101,197,.19),transparent 36%),linear-gradient(112deg,#101626 0%,#18172b 48%,#111b2b 100%)}
 .cover-journey{position:absolute;z-index:1;right:0;top:13vh;width:53vw;height:70vh;overflow:visible}.cover-glow{fill:url(#coverGlow)}.cover-orbit{fill:none;stroke:#9caaf0;stroke-width:1.2;stroke-opacity:.2}.cover-thread{fill:none;stroke:url(#coverFlow);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;opacity:.82}.cover-thread.secondary{stroke-width:2.2;opacity:.56}.cover-node{fill:#171d31;stroke:#aab8ff;stroke-width:2.2}.cover-node.core{fill:#b091ef;stroke:#c0a8ff}.cover-node.blue{fill:#182941;stroke:#8fc2ff}.cover-node-ring{fill:none;stroke:#aebaf8;stroke-width:1.2;stroke-opacity:.7}.cover-satellite{fill:#c0c9ff;opacity:.76}
-.cv-content{position:relative;z-index:2;height:100vh;padding:5.6vh 5.5vw 5vh;display:flex;flex-direction:column;justify-content:space-between}.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}.cv-brand{display:flex;align-items:center;gap:.8vw;color:#edf0ff;font-weight:750;font-size:var(--fs-sm);letter-spacing:.08em}.cv-brand img{display:block;width:88px;height:auto;object-fit:contain;filter:brightness(0) invert(1)}.cv-meta{font:600 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.15em;text-transform:uppercase;color:#9ba5c1}
+.cv-content{position:relative;z-index:2;height:100vh;padding:5.6vh 5.5vw 5vh;display:flex;flex-direction:column;justify-content:space-between}.cv-top,.cv-bot{display:flex;justify-content:space-between;align-items:flex-end}.cv-brand{display:flex;align-items:center;color:#edf0ff;font-weight:750;font-size:var(--fs-sm);letter-spacing:.08em}.cv-meta{font:600 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.15em;text-transform:uppercase;color:#9ba5c1}
 .cv-center{display:flex;flex-direction:column;gap:1.8vh;max-width:39vw}.cv-kicker{font:650 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.25em;text-transform:uppercase;color:#a8b5f6}.cv-title{font-size:clamp(42px,5.1vw,78px);font-weight:820;line-height:1.04;letter-spacing:-.045em;color:#f6f7ff}.cv-title span{font-weight:350;color:#c0c8ff}.cv-sub{font-size:clamp(20px,1.9vw,30px);font-weight:650;line-height:1.32;color:#d9def2}.cv-lead{font-size:var(--fs-body);line-height:1.68;color:#adb6ce;max-width:39ch}.cv-ucd{font:650 var(--fs-xs)/1 'JetBrains Mono';letter-spacing:.14em;text-transform:uppercase;color:#9fa9c4}
 
 /* gray analysis pages */
@@ -1204,6 +1204,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .six-question-preview .question-preview-no{display:grid;place-items:center;flex:0 0 auto;width:1.8vw;height:1.8vw;min-width:27px;min-height:27px;border-radius:50%;background:color-mix(in srgb,var(--preview-tone) 15%,white);color:color-mix(in srgb,var(--preview-tone) 76%,#27303c);font:750 var(--fs-xs)/1 'JetBrains Mono'}
 .six-question-preview .question-preview-copy h3{font-size:clamp(15px,1.16vw,20px);font-weight:820;line-height:1.28;overflow-wrap:anywhere;color:var(--ink)}
 @media(max-width:1100px){.six-question-preview .body-area{overflow-y:auto;overscroll-behavior-y:contain}.six-question-preview .question-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(18vh,1fr));flex-shrink:0}.six-question-preview .question-preview-card{min-height:18vh}.six-question-preview .question-preview-art img{max-height:18vh}}
+.problem-overview .body-area,.problem-analysis .body-area,.problem-analysis-reuse .body-area,.problem-status-page .body-area{margin-bottom:0}
 </style>
 
 </head>
@@ -1233,7 +1234,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
     </g>
   </svg>
   <div class="cv-content">
-    <div class="cv-top"><div class="cv-brand"><img src="../CANNlogo.png" alt="CANN"><span>AI DEVELOPMENT RESEARCH</span></div><div class="cv-meta">BEHAVIOR SYSTEM · 2026.09</div></div>
+    <div class="cv-top"><div class="cv-brand"><span>AI DEVELOPMENT RESEARCH</span></div><div class="cv-meta">BEHAVIOR SYSTEM · 2026.09</div></div>
     <div class="cv-center"><div class="cv-kicker">CONCISE EDITION · 32 PAGES</div><h1 class="cv-title">AI 介入下的<br><span>开发行为系统</span></h1><div class="cv-sub">任务时序 × Agent 协作 × 体验设计</div><p class="cv-lead">从开发者与 Agent 怎样共同完成真实任务出发，再判断平台机制、昇腾供给与学习体验应该承担什么角色。</p></div>
     <div class="cv-bot"><div class="cv-ucd">DEVELOPMENT BEHAVIOR · HARNESS · UX</div><div class="cv-meta">CANN DEVELOPER EXPERIENCE</div></div>
   </div>
@@ -1974,7 +1975,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   };
   const makeProblemAnalysisSlide=item=>{
     const slide=document.createElement('section');slide.className='slide s-gray problem-page problem-analysis';slide.dataset.title=item.title;slide.dataset.hypothesis=item.n;
-    slide.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">问题 ${item.n} · 分析｜${item.phase}</div><div class="ttl">${item.n} · ${item.headline}</div></div><nav class="section-tabs"></nav></header><main class="body-area"><div class="problem-kicker"><b>机制分析 · 解释问题如何发生</b><span class="state">证据 / 推导边界见页下注</span></div>${item.body}<div class="qa-source">${item.source}</div></main><footer class="foot">分析页用于连接现状线索与后续设计回应；它不是问题普遍性或平台效果的实证结论。</footer></div>`;
+    slide.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">问题 ${item.n} · 分析｜${item.phase}</div><div class="ttl">${item.n} · ${item.headline}</div></div><nav class="section-tabs"></nav></header><main class="body-area"><div class="problem-kicker"><b>机制分析 · 解释问题如何发生</b></div>${item.body}<div class="qa-source">${item.source}</div></main><footer class="foot">分析页用于连接现状线索与后续设计回应；它不是问题普遍性或平台效果的实证结论。</footer></div>`;
     return slide;
   };
   const makeProblemSlide=(item,kind)=>{
@@ -2448,6 +2449,9 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     }
     const chrome = slide.querySelector('.chrome span:first-child'); if (chrome) chrome.textContent = key==='A' ? 'A · RESEARCH APPENDIX' : `${key} · ${key==='01'?'DEVELOPMENT BEHAVIOR':key==='02'?'SIX QUESTIONS':'SYNTHESIS'}`;
   });
+
+  // Keep the reading path on the contents page; remove repeated per-slide footnotes.
+  deck.querySelectorAll('.foot, .solution-foot').forEach(note => { if (!contents.contains(note)) note.remove(); });
 
   const slides = [...document.querySelectorAll('.slide:not([hidden])')];
   const navDots = document.getElementById('navDots');
