@@ -4347,3 +4347,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户指定，仅修改精简报告两处模式标题：“开发者仍是主要执行者，AI提供检索与起草”改为“Copilot模式：开发者仍是主要执行者，AI提供检索与起草”；“执行交给 AI 后，开发者转为审查与决策”改为“Agent模式：执行交给 AI 后，开发者转为审查与决策”。副标题及其他标题（包括并行对话中的修改）均保留。
 - 这是命名文案调整，不新增研究主张，不改变页面序列或API／Protocol、Host／Harness、Application／Task边界。`git diff --check`通过；未运行测试或浏览器视觉验收。
 - Commit／push：`afa9a12d`（`copy: label copilot and agent collaboration modes`）已推送`origin/main`。本交接记录单独提交推送，其他已有及并行修改不纳入。
+
+### 2026-09-30（用户旅程页标题定名）
+
+- 用户选择标题方案1：将精简报告旅程页主标题与导航名统一为“AI协作开发者旅程图”，副标题改为“以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点”。AddCustom 保留为示例，不再主导页面命名；旅程内容、页面序列与其他材料均不变。
+- 这是用户确认后的文案调整，无新增研究证据或结论，不改变API／Protocol、Host／Harness、Application／Task边界。目标页标题与副标题检查通过，4段内联脚本语法通过，`git diff --check`通过；未做浏览器目视验证，遵守本地`file://`访问限制。
+- Commit／push 结果将在提交后补录；其他已有脏文件不纳入。
