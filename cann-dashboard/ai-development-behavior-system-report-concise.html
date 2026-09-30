@@ -932,6 +932,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.4vh 1vw;align-items:end;min-width:0}
 .solution-heading .solution-meta{grid-column:1/-1;display:flex;align-items:center;gap:.65vw;color:rgba(255,255,255,.55);font-size:var(--fs-xs);line-height:1.2}
 .solution-heading .solution-meta b{color:color-mix(in srgb,var(--problem-tone) 72%,white);font-size:var(--fs-sm)}
+.problem-solution-page .solution-meta .learning-option{display:inline-flex;align-items:center;padding:.32vh .5vw;border:1px solid rgba(225,191,126,.4);border-radius:999px;background:rgba(205,155,72,.13);color:#f2d9a8;font-size:var(--fs-sm);font-weight:750;white-space:nowrap}
 .solution-heading h1{min-width:0;font-size:clamp(30px,2.25vw,40px);line-height:1.15;letter-spacing:-.025em;font-weight:780;background:linear-gradient(100deg,color-mix(in srgb,var(--problem-tone) 76%,white),#d9d0ff 62%,#c4e5ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .problem-solution-page .solution-heading h1.title-type-heading{background:none;-webkit-text-fill-color:initial;color:#fff}
 .problem-solution-page .solution-heading h1 .title-type-copy{background:linear-gradient(100deg,color-mix(in srgb,var(--problem-tone) 76%,white),#d9d0ff 62%,#c4e5ff);background-clip:text;-webkit-text-fill-color:transparent}
@@ -2166,7 +2167,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     {id:'03',no:'01',name:'可装配能力难以按任务选配并有效使用',phase:'方法与工具进入任务',evidence:'领域方法需求＋平台／资产盘点',response:'按任务选配、检查接入与生效',place:'AI 工作台＋昇腾领域供给',test:'内容收益与装配收益分开测'},
     {id:'04',no:'02',name:'开发者难以判断和选择下一步行动',phase:'判断与纠错',evidence:'换 AI 重试与经验纠错的 VOC',response:'错误事实、路线比较与判断确认',place:'Codex 工作台',test:'能否给出有依据的下一步'},
     {id:'05',no:'03',name:'生成结果的可信性难以验证',phase:'结果核验',evidence:'常规测试与边界补测的 VOC',response:'覆盖范围、补测与证据回执',place:'GitCode＋真实测试环境',test:'边界覆盖与结论证据一致性'},
-    {id:'07',no:'04',name:'任务完成不等于开发者能力增长',phase:'贯穿任务的理解与迁移',evidence:'参与、强化与知识内化的 VOC',response:'Learning Canvas 隔离跟练',place:'Codex 工作台',test:'新条件下的独立解释与迁移'},
+    {id:'07',no:'04',name:'任务完成不等于开发者能力增长',phase:'贯穿任务的理解与迁移',evidence:'参与、强化与知识内化的 VOC',response:'错误现场展开学习；隔离跟练或任务中试改',place:'开发中学习 · 空间画布提案',test:'新条件下的独立解释与迁移'},
     {id:'06',no:'05',name:'团队难以共享完整的决策背景',phase:'团队评审与交接',evidence:'公开评审提案，局部支持',response:'随变更交接理由、尝试与风险',place:'GitCode',test:'评审追问与背景重建成本'},
     {id:'08',no:'06',name:'真实任务经验难以沉淀为可复用知识',phase:'任务后的公共知识沉淀',evidence:'公开经验发布与后来者复用',response:'确认分享、核验发布与检索',place:'GitCode＋社区知识库',test:'新经验实际发布与后续复用'}
   ];
@@ -2215,6 +2216,39 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       limit:'原声揭示交付与内化的区别；没有能力前后测，不将其写成 AI 已造成能力下降。'
     }
   };
+  const learningCanvasPages=[
+    {id:'B1',stage:'发现问题',mode:'',image:'B1.png',alt:'运行错误与代码行关联，并在诊断回复旁提供可选的解释与跟练入口',points:[
+      {title:'入口贴着错误现场',choice:'把实际与预期形状连到对应代码行',problem:'学习建议可能脱离当前问题',mechanism:'错误日志、选中代码和建议同时可见',benefit:'开发者知道为什么此处值得学习',mark:{x:38,y:28,w:60,h:39}},
+      {title:'是否学习由用户决定',choice:'并列“解释并跟练”“直接看修复”和关闭',problem:'学习不应变成强制流程',mechanism:'让用户选择理解、修复或继续排查',benefit:'保留解决问题的主动权',mark:{x:13,y:35,w:22,h:19}},
+      {title:'进入时带上问题依据',choice:'沿用选中代码与实际／预期形状',problem:'重新描述会丢失任务现场',mechanism:'把错误上下文带入后续讲解',benefit:'直接从当前疑问开始理解',mark:{x:72,y:39,w:24,h:26}}
+    ]},
+    {id:'B2',stage:'展开学习',mode:'',image:'B2.png',alt:'原文件、错误现场与围绕当前任务展开的局部学习组同屏呈现',points:[
+      {title:'学习仍属于原任务',choice:'保留当前项目、文件和对话',problem:'跳入独立课程容易丢失任务身份',mechanism:'把局部学习内容挂在当前开发任务下',benefit:'理解与开发不必切换场景',mark:{x:1,y:27,w:11,h:12}},
+      {title:'原件与练习副本可辨',choice:'分别标明只读原文件和练习副本',problem:'学习试改可能被误认为正式修改',mechanism:'清楚区分材料身份与影响范围',benefit:'知道练习不会直接改动原文件',mark:{x:35,y:20,w:25,h:29}},
+      {title:'相关材料围绕问题组织',choice:'将理解图解、试改和验证收在局部学习组',problem:'内容分散会增加往返查找',mechanism:'按需展开或收起，原文件继续可见',benefit:'需要时能找到相关学习材料',mark:{x:60,y:13,w:37,h:49}}
+    ]},
+    {id:'B3',stage:'隔离跟练',mode:'两种试改方式任选其一 · A 隔离副本',image:'B3.png',alt:'在隔离副本中修改并检查输入维度，界面明确显示原项目文件尚未修改',points:[
+      {title:'在副本中安全试错',choice:'只修改隔离练习副本',problem:'直接试错可能影响真实项目',mechanism:'练习失败可重试，原文件保持不变',benefit:'开发者可先验证自己的理解',mark:{x:35,y:34,w:62,h:50}},
+      {title:'练习通过不等于项目修复',choice:'同时显示练习结果和原项目状态',problem:'容易把练习成功当作交付成功',mechanism:'标出结果形状及“原项目尚未修改”',benefit:'清楚知道通过的是哪一步',mark:{x:63,y:52,w:31,h:25}},
+      {title:'从练习返回项目审阅',choice:'提供查看修改建议的明确出口',problem:'练习与真实改动之间可能断开',mechanism:'退出对照后回到原错误现场',benefit:'由开发者决定是否把理解用于项目',mark:{x:81,y:64,w:15,h:13}}
+    ]},
+    {id:'B6',stage:'任务中试改',mode:'两种试改方式任选其一 · B 任务中试改',image:'B6-task-try.png',alt:'在当前任务选中的代码行上试改通道顺序，并同步查看形状变化和本步练习结果',points:[
+      {title:'在选中代码行就地试改',choice:'参数控件贴近当前代码行',problem:'离开任务会增加重建上下文的成本',mechanism:'直接调整通道顺序并运行本步练习',benefit:'在原任务现场探索修改方向',mark:{x:39,y:18,w:55,h:28}},
+      {title:'代码与形状变化同步可见',choice:'并列当前输入与模型期望形状',problem:'维度顺序不易仅凭代码理解',mechanism:'用张量图示呈现 NHWC 到 NCHW 的变化',benefit:'看懂试改改变了什么',mark:{x:39,y:45,w:57,h:39}},
+      {title:'单步结果单独核对',choice:'运行本步练习并查看对应结果',problem:'局部练习不代表完整项目已验证',mechanism:'把本步练习反馈与后续任务分开',benefit:'知道当前检查通过到哪一层',mark:{x:78,y:15,w:17,h:14}}
+    ]},
+    {id:'B4',stage:'应用修改',mode:'',image:'B4.png',alt:'项目修改以 Diff 呈现，练习结果作为参照，原文件等待开发者确认后再应用',points:[
+      {title:'先审阅改动范围',choice:'并列显示修改前与修改后代码',problem:'不清楚练习如何转成正式改动',mechanism:'Diff 标明新增和删除的代码',benefit:'能判断修改是否符合预期',mark:{x:62,y:19,w:35,h:54}},
+      {title:'保留练习结果作参照',choice:'将练习检查结果放在 Diff 附近',problem:'脱离依据难以评估改动',mechanism:'审阅时仍能看到对应输入检查结果',benefit:'理解修改与检查结果的关系',mark:{x:37,y:50,w:20,h:34}},
+      {title:'确认后才写入项目',choice:'提供清晰的确认应用与取消操作',problem:'不应未经确认覆盖原文件',mechanism:'确认写入，取消则保持原状',benefit:'开发者掌握正式修改的边界',mark:{x:63,y:64,w:20,h:10}}
+    ]},
+    {id:'B5',stage:'返回验证',mode:'',image:'B5.png',alt:'已应用修改的原项目重新进行输入检查，学习组与练习记录仍可找回',points:[
+      {title:'回到原项目重新验证',choice:'用项目中的修改后文件检查输入',problem:'练习通过不能替代项目检查',mechanism:'将项目输入结果与日志关联',benefit:'确认理解已落实到真实文件',mark:{x:64,y:32,w:33,h:40}},
+      {title:'区分不同完成状态',choice:'分别显示练习通过、修改已应用和项目检查',problem:'单一“完成”状态会掩盖未完成步骤',mechanism:'将完整推理保留为待运行',benefit:'准确知道任务还差什么',mark:{x:42,y:62,w:22,h:25}},
+      {title:'收纳学习过程但保留恢复',choice:'学习组可收纳、查看或恢复',problem:'完成后材料可能难以找回',mechanism:'保留与任务的关联及学习记录',benefit:'之后遇到相似问题仍可回看',mark:{x:75,y:7,w:22,h:22}}
+    ]}
+  ];
+  const learningPageTitles=[];
   const focusNodes=new Map();
   focusQuestions.forEach(q=>{
     const item=problemCases.find(x=>x.n===q.id);
@@ -2276,6 +2310,25 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       </main></div>`;
     }
     status.dataset.title=problemStatus(item);stableHeading(status,q,'现状与分析');
+    if(q.id==='07'){
+      const learningPages=learningCanvasPages.map(spec=>{
+        const image=`ploy-interaction-lab/learning-canvas-story/images/${spec.image}`;
+        const pageItem={...item,platform:'Ascend Space 空间画布',solutionImage:image,solutionAlt:spec.alt,solutionBoundary:'来源：Learning Canvas Story「开发中学习」界面提案。空间画布与交互尚未实现；示意不代表 Codex 或昇腾平台现成功能。',designPoints:spec.points,solutionStates:[{label:spec.stage,image,alt:spec.alt}]};
+        const solution=makeProblemSlide(pageItem,'solution');
+        stableHeading(solution,q,'解决方案');
+        solution.dataset.title=`问题04：${q.name}·${spec.id} ${spec.stage}`;
+        const meta=solution.querySelector('.solution-meta');
+        meta.innerHTML=`<b>问题 ${q.no}</b><span>${problemEsc(q.phase)}</span><span>· ${problemEsc(spec.id)} ${problemEsc(spec.stage)}</span>${spec.mode?`<span class="learning-option">${problemEsc(spec.mode)}</span>`:''}`;
+        solution.querySelector('.platform-tag').textContent='Ascend Space · 设计示意';
+        setSolutionState(solution,0);
+        learningPageTitles.push(solution.dataset.title);
+        return solution;
+      });
+      oldSolution.replaceWith(...learningPages);
+      status.querySelector('[data-story-evidence]')?.setAttribute('aria-label',`放大问题${q.no}原始证据`);
+      focusNodes.set(q.no,{q,item,status,solution:learningPages[0],solutions:learningPages});
+      return;
+    }
     const solution=makeProblemSlide(item,'solution');stableHeading(solution,q,'解决方案');oldSolution.replaceWith(solution);setSolutionState(solution,0);
     if(q.id==='03')solution.classList.add('q1-sample');
     status.querySelector('[data-story-evidence]')?.setAttribute('aria-label',`放大问题${q.no}原始证据`);
@@ -2426,7 +2479,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   contents.querySelector('.foot').textContent='开发行为 → 用户旅程与重点痛点 → 六个问题及各自方案 → 总览。研究明细见附录。';
   const questionOrder = [
     '六个问题导读',problemStatus(problemCases[2]),sandboxTitle,assetTitle,usageTitle,buildTitle,problemSolution(problemCases[2]),fitnessTitle,experimentTitle,
-    ...focusQuestions.slice(1).flatMap(q=>{const item=problemCases.find(x=>x.n===q.id);return [problemStatus(item),...(q.id==='08'?[reuseAnalysisTitle]:[]),problemSolution(item)];}),
+    ...focusQuestions.slice(1).flatMap(q=>{const item=problemCases.find(x=>x.n===q.id);return [problemStatus(item),...(q.id==='08'?[reuseAnalysisTitle]:[]),...(q.id==='07'?learningPageTitles:[problemSolution(item)])];}),
   ];
   const appendixOrder=['已有检索研究',roleTitle,'来源与完整版入口'];
   const reportOrder = [
