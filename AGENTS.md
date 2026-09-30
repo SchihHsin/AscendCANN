@@ -4392,3 +4392,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 目的与边界：让触控板惯性事件不再无限延长方案页翻页锁，保留完整图→标注图→下一页的一手势分步意图。只改滚轮交互，没有新增研究证据、修改标题或页面序列，也不影响API／Protocol、Host／Harness、Application／Task边界。
 - 检查：Python `HTMLParser`解析通过，4段内联JavaScript经`node --check`通过，目标文件`git diff --check`通过。未做浏览器滚轮实测；遵守本地`file://`访问限制。
 - Commit／push：`efdc8c30`（`fix: release wheel paging lock on long gestures`）已提交，交接记录待同批推送。其他工作区脏文件未纳入。
+
+### 2026-09-30（标注图同时显示全部设计点与序号）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report-concise.html`。方案状态原先从`focusPoints`中只选第一项作为默认焦点，导致标注图仅显示一个区域、其余设计点变暗；方案图 CSS 还隐藏了区域编号。现改为讲解标注状态同时显示所有有定位的标注框，框内左上角呈现与右侧列表对应的`01、02…`序号，所有列表项保持同等亮度；没有默认选中某一设计点。
+- 证据与边界：序号来自现有设计点数组顺序，不新增研究证据或主张，不改变页面序列、标题、API／Protocol、Host／Harness、Application／Task边界。
+- 检查：Python `HTMLParser`解析通过，4段内联JavaScript经`node --check`通过，结构断言和`git diff --check`通过。未做浏览器视觉实测；遵守本地`file://`访问限制。同一 HTML 文件中的并行内容改动保持未暂存、未纳入本次提交。
+- Commit／push：`06a0f453`（`fix: show all numbered design annotations`）已提交；交接记录待同批推送。
