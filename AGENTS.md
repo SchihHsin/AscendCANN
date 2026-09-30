@@ -4256,3 +4256,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将`.solution-image-stage`与`.solution-image-controls`最大宽度从`142vh`收至`112vh`，控制16:9界面图高度约不超过视口63%，为标题、图下控件与页脚留出空间，并保留原图比例。未更改页面序列、图像内容、注释交互或API／Host／Application边界。
 - 证据置信度：M。用户截图直接呈现遮挡；本轮未新增外部资料，也未声称修复后浏览器已实测。`git diff --check -- cann-dashboard/ai-development-behavior-system-report-concise.html`通过。精简报告是本地`file://`页面，内置浏览器策略拒绝该协议；遵守限制，未改用其他浏览器方式绕过。修复后的真实排版仍待可用浏览器目视确认。
 - Commit／push：`93f8e97e`（`fix: keep solution mockups clear of titles`）已推送`origin/main`。本交接记录随后独立提交并立即推送；不包含仓库中其他既有脏文件。
+
+### 2026-09-30（按用户反馈将方案图上限调至130vh）
+
+- 用户反馈`112vh`导致图过小，要求试`130vh`。在`cann-dashboard/ai-development-behavior-system-report-concise.html`中同步将主图与图下控件上限调为`130vh`，并将注释更新为16:9屏幕约73vh的图高上限。共享模板覆盖各问题方案页；页面顺序、图片资源、交互和API／Host／Application边界不变。
+- 本轮证据为用户对上一版尺寸的反馈（M），未新增事实或设计主张。`git diff --check -- cann-dashboard/ai-development-behavior-system-report-concise.html`通过；未做截图复验，内置浏览器对本地`file://`的安全阻止仍适用且未绕过。
+- Commit／push：`aa8b415d`（`fix: enlarge solution mockups to 130vh`）已推送`origin/main`。交接记录单独提交并立即推送；既有无关脏文件未纳入。
