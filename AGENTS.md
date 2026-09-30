@@ -4413,4 +4413,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更文件：`cann-dashboard/ai-development-behavior-system-report-concise.html`。将精简版第06个重点问题由“真实任务经验难以沉淀为可复用知识”更新为“从论坛发帖到与 AI 对话，问题与解答不再自然沉淀于社区”；名称由用户此前讨论提出，本次只调整统一名称，不改证据、方案、页序或编号映射。
 - 证据与边界：这是用户认可的议题表述，不是新增研究事实；仍以公开经验发布与后来者复用作为证据方向，不能仅凭标题断言 AI 必然导致社区经验流失。未改变 API／Protocol、Host／Harness、Application／Task 边界。
 - 检查：确认精简版问题总览由同一 `focusQuestions` 名称驱动，旧名称只出现在被替换字段；`git diff --check` 通过。未做浏览器视觉实测，遵守本地 `file://` 页面访问限制。
-- Commit／push：待提交与推送；其他既有工作区改动不得纳入。
+- Commit／push：`7de4d6a5`（`docs: rename Q06 community knowledge issue`）已推送 `origin/main`；本交接结果由后续 AGENTS 记录提交同步。其他既有工作区改动未纳入。
