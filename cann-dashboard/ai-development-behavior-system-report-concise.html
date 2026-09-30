@@ -1150,6 +1150,20 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   .q1-selection-page .q1-candidate-pool::after{display:block;left:50%;right:auto;top:-7px;transform:translateX(-2.5px) rotate(135deg)}
 }
 </style>
+<style id="six-question-preview-styles">
+.six-question-preview .head{margin-bottom:2vh}
+.six-question-preview .body-area{flex:1 1 auto;min-height:0;justify-content:stretch;margin:0 0 2.8vh}
+.six-question-preview .question-preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:.9vw;width:100%;height:100%;min-width:0;min-height:0}
+.six-question-preview .question-preview-card{--preview-tone:var(--c-blue);position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:.5vw;align-items:center;min-width:0;min-height:0;padding:.65vh .7vw;border:1px solid color-mix(in srgb,var(--preview-tone) 19%,white);border-radius:15px;background:linear-gradient(145deg,color-mix(in srgb,var(--preview-tone) 8%,white),rgba(255,255,255,.78));box-shadow:0 12px 28px -22px rgba(30,40,70,.26);overflow:hidden}
+.six-question-preview .question-preview-card::after{content:"";position:absolute;z-index:-1;right:-17%;bottom:-42%;width:70%;height:90%;border-radius:50%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--preview-tone) 13%,transparent),transparent 70%);pointer-events:none}
+.six-question-preview .question-preview-art{display:grid;place-items:center;min-width:0;min-height:0;height:100%}
+.six-question-preview .question-preview-art img{display:block;width:100%;height:100%;max-height:27vh;object-fit:contain}
+.six-question-preview .question-preview-copy{display:flex;flex-direction:column;gap:.7vh;min-width:0;position:relative;z-index:1}
+.six-question-preview .question-preview-phase{display:flex;align-items:center;gap:.5vw;min-width:0;color:color-mix(in srgb,var(--preview-tone) 78%,#303744);font-size:var(--fs-sm);font-weight:700;line-height:1.25}
+.six-question-preview .question-preview-no{display:grid;place-items:center;flex:0 0 auto;width:1.8vw;height:1.8vw;min-width:27px;min-height:27px;border-radius:50%;background:color-mix(in srgb,var(--preview-tone) 15%,white);color:color-mix(in srgb,var(--preview-tone) 76%,#27303c);font:750 var(--fs-xs)/1 'JetBrains Mono'}
+.six-question-preview .question-preview-copy h3{font-size:clamp(15px,1.16vw,20px);font-weight:820;line-height:1.28;overflow-wrap:anywhere;color:var(--ink)}
+@media(max-width:1100px){.six-question-preview .body-area{overflow-y:auto;overscroll-behavior-y:contain}.six-question-preview .question-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(18vh,1fr));flex-shrink:0}.six-question-preview .question-preview-card{min-height:18vh}.six-question-preview .question-preview-art img{max-height:18vh}}
+</style>
 </head>
 <body>
 <div id="deck">
@@ -2257,6 +2271,22 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   summarySlide.querySelector('.subttl').textContent='总览 · 证据、设计回应与验证';summarySlide.querySelector('.ttl').textContent='六个问题：从任务推进到长期价值';
   summarySlide.querySelector('.body-area').innerHTML=`<div class="six-question-summary"><div class="summary-head"><b>问题</b><b>关键依据</b><b>方案与落点</b><b>仍需验证</b></div>${focusQuestions.map(q=>`<div class="summary-row"><b><small>${q.no}</small>${q.name}</b><p>${q.evidence}</p><p>${q.response}<span>${q.place}</span></p><p>${q.test}</p></div>`).join('')}</div>`;
   summarySlide.querySelector('.foot').textContent='访谈原声、公开案例、平台盘点支持的范围不同；方案效果仍需验证，不将单人访谈或单一案例外推为总体发生率。';
+  const questionArtRoot='ai-development-behavior-system-report-evidence/question-summary-3d/';
+  const questionArt={
+    '01':{file:'01-capability-selection.png',alt:'多种开发能力模块围绕一个任务组合的3D概念插图'},
+    '02':{file:'02-next-action-guidance.png',alt:'开发者依据经验引导AI沿一条排障路径前进的3D概念插图'},
+    '03':{file:'03-result-verification.png',alt:'用放大镜检查生成结果并查看验证信号的3D概念插图'},
+    '04':{file:'04-learning-transfer.png',alt:'开发者理解已完成任务并尝试迁移到新条件的3D概念插图'},
+    '05':{file:'05-team-handoff.png',alt:'团队成员交接方案理由与风险背景的3D概念插图'},
+    '06':{file:'06-knowledge-reuse.png',alt:'任务经验进入共享知识并被后来者复用的3D概念插图'}
+  };
+  const previewTones={'01':'var(--c-indigo)','02':'var(--c-orange)','03':'var(--c-teal)','04':'var(--c-purple)','05':'var(--c-blue)','06':'var(--c-green)'};
+  const previewCards=focusQuestions.map(q=>{const art=questionArt[q.no];return `<article class="question-preview-card" style="--preview-tone:${previewTones[q.no]}"><div class="question-preview-art"><img src="${questionArtRoot}${art.file}" alt="${problemEsc(art.alt)}" loading="lazy"></div><div class="question-preview-copy"><div class="question-preview-phase"><span class="question-preview-no">${problemEsc(q.no)}</span><span>${problemEsc(q.phase)}</span></div><h3>${problemEsc(q.name)}</h3></div></article>`;}).join('');
+  const questionPreviewSlide=document.createElement('section');
+  questionPreviewSlide.className='slide s-gray six-question-preview';
+  questionPreviewSlide.dataset.title='六个问题导读';
+  questionPreviewSlide.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">用户旅程之后 · 问题导读</div><div class="ttl">接下来要聚焦的六个问题</div></div><nav class="section-tabs"></nav></header><main class="body-area"><div class="question-preview-grid">${previewCards}</div></main><footer class="foot">3D图为主题概念示意，不作为研究证据；六题是后续章节的提问框架，不预设普遍发生率或因果关系。</footer></div>`;
+  deck.append(questionPreviewSlide);
   const source=[...deck.children].find(s=>s.dataset.title==='来源与完整版入口');
   source.querySelector('.ttl').textContent='来源与研究边界';source.querySelector('.subttl').textContent='资料 · 可追溯的研究依据';
   const cards=source.querySelectorAll('.source-card');
@@ -2269,7 +2299,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   contents.querySelector('.contents-directory').innerHTML=directory.map((d,i)=>`<article class="directory-card"><div class="directory-no">${i===3?'A':`0${i+1}`}</div><div class="directory-name">${d[0]}</div><div class="directory-en">${d[1]}</div><div class="directory-items"><span>${d[2]}</span><span>${d[3]}</span></div><div class="directory-note">${d[4]}</div></article>`).join('');
   contents.querySelector('.foot').textContent='开发行为 → 用户旅程与重点痛点 → 六个问题及各自方案 → 总览。研究明细见附录。';
   const questionOrder = [
-    problemStatus(problemCases[2]),sandboxTitle,assetTitle,usageTitle,buildTitle,problemSolution(problemCases[2]),
+    '六个问题导读',problemStatus(problemCases[2]),sandboxTitle,assetTitle,usageTitle,buildTitle,problemSolution(problemCases[2]),
     ...focusQuestions.slice(1).flatMap(q=>{const item=problemCases.find(x=>x.n===q.id);return [problemStatus(item),...(q.id==='08'?[reuseAnalysisTitle]:[]),problemSolution(item)];}),
   ];
   const appendixOrder=['已有检索研究',roleTitle,experimentTitle,'来源与完整版入口'];
@@ -2321,7 +2351,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     navDots.appendChild(dot);
     return dot;
   });
-  const chapterStarts = {'01':'开发者主执行·AI辅助','02':problemStatus(problemCases[2]),'03':'六个问题总览','A':'已有检索研究'};
+  const chapterStarts = {'01':'开发者主执行·AI辅助','02':'六个问题导读','03':'六个问题总览','A':'已有检索研究'};
   const controls = document.getElementById('controls');
   const counter = document.getElementById('counter');
   const prevBtn = document.getElementById('prevBtn');
