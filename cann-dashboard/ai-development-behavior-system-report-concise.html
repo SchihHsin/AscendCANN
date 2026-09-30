@@ -929,10 +929,11 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-heading .platform-tag{align-self:end;justify-self:end;max-width:18vw;padding:.5vh .7vw;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.76);font-size:var(--fs-sm);font-weight:700;white-space:nowrap}
 .solution-layout{display:grid;grid-template-columns:minmax(0,3.55fr) minmax(0,1fr);gap:1.1vw;align-items:stretch;min-width:0;min-height:0}
 .solution-figure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65vh;min-width:0;min-height:0;margin:0;overflow:visible}
-.solution-image-stage{width:min(100%,142vh);aspect-ratio:1672/941;border:1px solid rgba(255,255,255,.2);border-radius:12px;overflow:visible;background:rgba(255,255,255,.035);box-shadow:0 24px 64px -28px hsla(var(--glow-h),82%,32%,.55)}
+/* Keep the 16:9 mockup below the title on 16:9 screens, leaving room for controls and footer. */
+.solution-image-stage{width:min(100%,112vh);aspect-ratio:1672/941;border:1px solid rgba(255,255,255,.2);border-radius:12px;overflow:visible;background:rgba(255,255,255,.035);box-shadow:0 24px 64px -28px hsla(var(--glow-h),82%,32%,.55)}
 .solution-image-stage img{border-radius:11px;transition:opacity .18s ease}
 .solution-image-stage img.is-switching{opacity:.16}
-.solution-image-controls{display:flex;align-items:center;gap:.55vw;width:min(100%,142vh);min-height:4.1vh;padding:.2vh .15vw 0}
+.solution-image-controls{display:flex;align-items:center;gap:.55vw;width:min(100%,112vh);min-height:4.1vh;padding:.2vh .15vw 0}
 .solution-annotation-controls{display:flex;align-items:center;justify-content:flex-end;gap:.35vw;flex:0 0 auto;width:auto;min-height:0;white-space:nowrap}
 .solution-annotation-controls [data-solution-annotation-mode]{padding:.45vh .72vw;border:1px solid rgba(255,255,255,.17);border-radius:7px;background:rgba(255,255,255,.055);color:rgba(255,255,255,.68);font:650 var(--fs-sm)/1.2 'HarmonyOS Sans SC',sans-serif;cursor:pointer;transition:background .16s ease,border-color .16s ease,color .16s ease}
 .solution-annotation-controls [data-solution-annotation-mode][aria-pressed="true"]{border-color:color-mix(in srgb,var(--problem-tone) 70%,white);background:color-mix(in srgb,var(--problem-tone) 22%,rgba(255,255,255,.08));color:#fff}
