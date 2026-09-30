@@ -4276,3 +4276,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户要求更新精简报告`cann-dashboard/ai-development-behavior-system-report-concise.html`问题04两处表述：“有经验的介入：AI 反复报错”改为“有经验的介入：开发者基于自身经验对AI进行引导”；“对学弟学妹情境的判断”改为“对学弟学妹的观察”。逐字稿引用与事实内容未改，页面序列、证据文件及API／Host／Application边界不变。此前交接对旧标签的记录保留为历史，现以本条用户新决定为准。
 - 本轮仅处理用户指定的文案，不新增证据或结论；`git diff --check -- cann-dashboard/ai-development-behavior-system-report-concise.html`通过。
 - Commit／push：`692fefad`（`copy: clarify interview evidence labels`）已推送`origin/main`。本交接记录单独提交并立即推送；其他既有未提交文件未纳入。
+
+### 2026-09-30（用户明确候选为完整版第53页，讨论是否纳入）
+
+- 用户纠正：希望讨论的是完整版`ai-development-behavior-system-report.html#53`，即`data-title="接下来建设五件事"`，不是此前误指的第109页“供给侧体验工作”。源标题为“领域 Harness 不是五项并列功能，而是一条持续读写任务状态的控制链”；六环节依次为Task Registry、Scope Resolver、Action Plane、Evidence Receipt、State & Recovery、Acceptance Gate，下方共享Task State Bus。第五建设对象拆为05A／05B，并非六项已落地系统。
+- 本轮建议有必要纳入问题01：现有第10页说明领域能力与跨平台接入的建设方向，#53补充这些能力如何按任务与状态共同工作，开发者Demo展示其使用体验。候选位置为第10页之后、Demo之前，仍为讨论建议，用户尚未授权实施。未改报告页面、图片、固定问题名称或页序。
+- 若后续采用，建议将题意表述为领域任务服务的组织与衔接，明确为拟议建设，避免把“领域Harness”误解为昇腾接管各AI工作台运行内核。体验部定义任务分类、适用信息表达、授权与反馈、恢复和验收体验；领域Owner提供真实服务及技术验收标准。该页不能直接当作体验部独立承建全部系统的责任清单。
+- 证据、恢复、状态与其他问题有联系，但该页讲服务建设关系，后文讲具体用户体验；这里保留衔接，不重复展开各题方案。结论基于当前源内容比较，无新增研究／运行证据，不改变API／Host／Application边界。仅本交接经差异检查、独立提交并立即推送，未再次尝试被阻止的浏览器截图。
