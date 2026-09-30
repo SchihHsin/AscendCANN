@@ -4334,3 +4334,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与边界：仅落实用户对视觉和说明文字的明确反馈，无新增研究证据或主张；不改变API／Protocol、Host／Harness或Application／Task边界。用户已有其他脏文件均未暂存。
 - 检查：Python `HTMLParser`解析通过；4段内联JavaScript均通过`node --check`；`git diff --check`通过。未做浏览器截图复验，继续遵守本地`file://`访问限制。
 - Commit／push：`f37d261f`（`style: remove report footnotes and cover logo`）已推送`origin/main`。待实际浏览器打开后目视确认封面排版。
+
+### 2026-09-30（问题页副标题改为按类型着色的标题标签）
+
+- 依用户意见，将问题页类别副标题移到主标题末尾作彩色标签；去除重复的“问题01”等标签前缀。标签正文约15–18px，按内容随主标题换行。非问题页的解释性副标题保持原样。
+- 类型色跨问题保持一致：现状蓝、分析青、方案与建设紫、评价琥珀。标题和标签使用 flex 同行排布，长标题时自然换行。黑底方案页保留原渐变标题文字，并增加适配黑底的标签配色。标签文案来自现有类型字段，例如“现状”“平台沙盘”“供给建设”“方案”“评价总纲”。
+- 本次仅为标题信息层级调整，无新增证据或页面序列变化，不改变API／Protocol、Host／Harness、Application／Task边界。运行`git diff --check`通过；未运行测试或浏览器视觉验收。内置浏览器此前拒绝本地`file://`资源，未绕过。
+- Commit／push：`ab058c3a`（`style: add color-coded problem type labels`）已推送`origin/main`。本条交接随后单独提交推送，其他并行及既有工作文件未纳入。
