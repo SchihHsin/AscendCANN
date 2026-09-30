@@ -4399,3 +4399,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与边界：序号来自现有设计点数组顺序，不新增研究证据或主张，不改变页面序列、标题、API／Protocol、Host／Harness、Application／Task边界。
 - 检查：Python `HTMLParser`解析通过，4段内联JavaScript经`node --check`通过，结构断言和`git diff --check`通过。未做浏览器视觉实测；遵守本地`file://`访问限制。同一 HTML 文件中的并行内容改动保持未暂存、未纳入本次提交。
 - Commit／push：`06a0f453`（`fix: show all numbered design annotations`）已提交；交接记录待同批推送。
+
+### 2026-09-30（问题04纳入“开发中学习”六张单图方案页）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report-concise.html`。将问题04原先一张混合两态的方案页替换为来自 `ploy-interaction-lab/learning-canvas-story/images/` 的六张设计点页，顺序为 B1 错误入口、B2 展开学习、B3 隔离跟练、B6 任务中试改、B4 审阅应用、B5 回项目验证。每页仅呈现一张对应界面图与三项设计点；B3 / B6 标明为两种试改方式任选其一，而非连续步骤。问题名称保持“任务完成不等于开发者能力增长”。
+- 目的与证据：让设计回应覆盖从错误现场进入学习、任务连续性、练习边界、修改审阅与回归验证；设计点取自 Learning Canvas Story `story-data.mjs` / `index.html`。截图属于 Ascend Space 空间画布设计提案，页面明确标注未实现且不代表 Codex 或昇腾平台现成功能；没有新增用户研究结论。
+- 页序：问题04的解决方案由一页扩为六页，自动纳入目录、导航与哈希页码映射；其他问题、证据页与 API／Protocol、Host／Harness、Application／Task 边界不变。六页总览中的问题04方案摘要同步说明隔离练习与任务中试改。
+- 检查：HTMLParser 解析通过；4 段内联 JavaScript 语法检查通过；六个源图存在、页序与可选练习标签静态断言通过；`git diff --check` 通过。未做浏览器视觉实测，遵守本地 `file://` 页面访问限制。
+- 报告提交／push：`0e722c84`（`feat: add Q04 learning canvas design pages`）已推送 `origin/main`。本交接记录随后单独提交推送；其他既有工作区改动不纳入。
