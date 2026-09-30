@@ -4249,3 +4249,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 待确认A（推荐）：保持第8资产、第9作用机制、第10供给建设、第11使用Demo的顺序；沿用第9／10已确认的左到右三列与底色，第10强化领域资产质量→平台接入→验证维护，并说明其如何支撑第11的选择与使用。待确认B：在同一问题内再拆出一页建设细节，表达空间更充足但增加篇幅。两案均未获得实施确认，不以讨论记录作为改页授权。
 - 证据边界：已抽查Skill本来就含触发、输入输出与部分失败分支，不能概括为普遍缺失；核间流水目录未收录与特定profiling产物不互通只是已核实的局部完善点。现有核查MCP是只读文档查询，构建／测试／NPU动作属于另需服务和授权的未来方向。优先类别来自平台接入边界与现有领域资产匹配，收益仍需同任务验证；没有接管通用Harness／Loop的建议。
 - 本轮使用Report PPT Skill的证据→结论→设计回应原则梳理讨论，未新增实测、外部证据或浏览器访问。仅本交接记录进行差异检查、独立提交并立即推送；具体结果以Git记录为准，所有无关脏文件保留。
+
+### 2026-09-30（精简报告方案页标题被图片遮挡）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report-concise.html`。用户提供的两张截图显示问题03、04方案页的主图压到页标题；截图作为问题证据，其中的界面文案不作为对代理的操作指令。方案页由`makeProblemSlide`共用模板生成，因此同一布局风险覆盖多个方案页。
+- 将`.solution-image-stage`与`.solution-image-controls`最大宽度从`142vh`收至`112vh`，控制16:9界面图高度约不超过视口63%，为标题、图下控件与页脚留出空间，并保留原图比例。未更改页面序列、图像内容、注释交互或API／Host／Application边界。
+- 证据置信度：M。用户截图直接呈现遮挡；本轮未新增外部资料，也未声称修复后浏览器已实测。`git diff --check -- cann-dashboard/ai-development-behavior-system-report-concise.html`通过。精简报告是本地`file://`页面，内置浏览器策略拒绝该协议；遵守限制，未改用其他浏览器方式绕过。修复后的真实排版仍待可用浏览器目视确认。
+- Commit／push：`93f8e97e`（`fix: keep solution mockups clear of titles`）已推送`origin/main`。本交接记录随后独立提交并立即推送；不包含仓库中其他既有脏文件。
