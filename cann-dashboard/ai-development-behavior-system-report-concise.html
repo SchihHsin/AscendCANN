@@ -870,6 +870,13 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 /* 问题章节：现状截图标出证据位置，方案页以编号设计点回应问题。 */
 .problem-page{--problem-tone:var(--c-indigo)}.problem-page[data-hypothesis="02"],.problem-page[data-hypothesis="03"]{--problem-tone:var(--c-blue)}.problem-page[data-hypothesis="04"],.problem-page[data-hypothesis="05"]{--problem-tone:var(--c-orange)}.problem-page[data-hypothesis="06"],.problem-page[data-hypothesis="07"]{--problem-tone:var(--c-teal)}.problem-page[data-hypothesis="08"],.problem-page[data-hypothesis="09"]{--problem-tone:var(--c-purple)}
 .problem-page .head{margin-bottom:1.7vh}.problem-page .body-area{gap:1.05vh}.problem-page .ttl{font-size:clamp(26px,1.9vw,36px);line-height:1.18}
+.title-type-heading{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:.62em;row-gap:.24em;min-width:0}
+.title-type-copy{flex:0 1 auto;min-width:0}
+.page-type-tag{display:inline-flex;align-items:center;flex:0 0 auto;padding:.24em .58em;border:1px solid color-mix(in srgb,var(--page-type-color) 24%,white);border-radius:999px;background:color-mix(in srgb,var(--page-type-color) 12%,white);color:color-mix(in srgb,var(--page-type-color) 80%,#27303c);-webkit-text-fill-color:currentColor;font-size:var(--fs-body);font-weight:760;line-height:1.2;letter-spacing:0;white-space:nowrap;vertical-align:baseline}
+.page-type-tag[data-page-type="state"]{--page-type-color:var(--c-blue)}
+.page-type-tag[data-page-type="analysis"]{--page-type-color:var(--c-teal)}
+.page-type-tag[data-page-type="solution"]{--page-type-color:var(--c-purple)}
+.page-type-tag[data-page-type="evaluation"]{--page-type-color:var(--c-amber)}
 .problem-kicker{display:flex;align-items:center;gap:.6vw;color:var(--ink-3);font:650 var(--fs-xs)/1.2 'JetBrains Mono';letter-spacing:.06em}.problem-kicker::before{content:"";width:1.35vw;height:3px;border-radius:99px;background:var(--problem-tone)}.problem-kicker b{color:var(--ink-2);font:750 var(--fs-sm)/1.25 'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;letter-spacing:0}.problem-kicker .state{margin-left:auto;padding:.38vh .65vw;border-radius:999px;background:color-mix(in srgb,var(--problem-tone) 11%,white);color:color-mix(in srgb,var(--problem-tone) 70%,#333);font:700 var(--fs-xs)/1.2 'HarmonyOS Sans SC','Inter','Noto Sans SC',sans-serif;letter-spacing:0}
 .problem-evidence-layout{display:grid;grid-template-columns:minmax(0,1.58fr) minmax(20vw,.82fr);gap:1vw;align-items:stretch;min-width:0}.problem-shot-frame{display:flex;flex-direction:column;min-width:0;min-height:0;padding:.62vh .62vw .7vh;border:1px solid rgba(255,255,255,.94);border-radius:15px;background:rgba(255,255,255,.68);box-shadow:0 12px 30px -23px rgba(20,25,35,.27)}
 .problem-shot-bar{display:flex;align-items:center;gap:.45vw;min-width:0;height:3.4vh;padding:0 .38vw .52vh;color:var(--ink-3);font-size:var(--fs-xs)}.problem-shot-dots{display:flex;gap:3px;flex:0 0 auto}.problem-shot-dots i{width:7px;height:7px;border-radius:50%;background:#d6d9df}.problem-shot-dots i:first-child{background:#e79591}.problem-shot-dots i:nth-child(2){background:#e4c17d}.problem-shot-dots i:nth-child(3){background:#8fc8a7}.problem-shot-url{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;padding:.38vh .55vw;border-radius:5px;background:#f0f2f5}
@@ -926,6 +933,9 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .solution-heading .solution-meta{grid-column:1/-1;display:flex;align-items:center;gap:.65vw;color:rgba(255,255,255,.55);font-size:var(--fs-xs);line-height:1.2}
 .solution-heading .solution-meta b{color:color-mix(in srgb,var(--problem-tone) 72%,white);font-size:var(--fs-sm)}
 .solution-heading h1{min-width:0;font-size:clamp(30px,2.25vw,40px);line-height:1.15;letter-spacing:-.025em;font-weight:780;background:linear-gradient(100deg,color-mix(in srgb,var(--problem-tone) 76%,white),#d9d0ff 62%,#c4e5ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.problem-solution-page .solution-heading h1.title-type-heading{background:none;-webkit-text-fill-color:initial;color:#fff}
+.problem-solution-page .solution-heading h1 .title-type-copy{background:linear-gradient(100deg,color-mix(in srgb,var(--problem-tone) 76%,white),#d9d0ff 62%,#c4e5ff);background-clip:text;-webkit-text-fill-color:transparent}
+.problem-solution-page .page-type-tag{border-color:color-mix(in srgb,var(--page-type-color) 50%,transparent);background:color-mix(in srgb,var(--page-type-color) 22%,rgba(255,255,255,.06));color:color-mix(in srgb,var(--page-type-color) 52%,white);-webkit-text-fill-color:currentColor}
 .solution-heading .platform-tag{align-self:end;justify-self:end;max-width:18vw;padding:.5vh .7vw;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.76);font-size:var(--fs-sm);font-weight:700;white-space:nowrap}
 .solution-layout{display:grid;grid-template-columns:minmax(0,3.55fr) minmax(0,1fr);gap:1.1vw;align-items:stretch;min-width:0;min-height:0}
 .solution-figure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65vh;min-width:0;min-height:0;margin:0;overflow:visible}
@@ -2165,8 +2175,15 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   const q1EvidenceRoot='ai-development-behavior-system-report-evidence/q1-assembly-20260929/';
   const q1DemoRoot='ai-development-behavior-system-report-evidence/solution-mockups/q1-assembly-20260929/';
   const stableHeading=(slide,q,kind)=>{
-    const title=slide.querySelector('.ttl,.solution-heading h1');if(title)title.textContent=`${q.no} · ${q.name}`;
-    const sub=slide.querySelector('.subttl');if(sub)sub.textContent=`问题 ${q.no} · ${kind}`;
+    const title=slide.querySelector('.ttl,.solution-heading h1');
+    if(title){
+      const type= /现状/.test(kind)?'state':/方案|建设/.test(kind)?'solution':/评价|验证|实验/.test(kind)?'evaluation':'analysis';
+      const label=kind==='现状与分析'?'现状':kind==='解决方案'?'方案':kind;
+      const copy=document.createElement('span');copy.className='title-type-copy';copy.textContent=`${q.no} · ${q.name}`;
+      const tag=document.createElement('span');tag.className='page-type-tag';tag.dataset.pageType=type;tag.textContent=label;
+      title.classList.add('title-type-heading');title.replaceChildren(copy,tag);
+    }
+    const sub=slide.querySelector('.subttl');if(sub)sub.remove();
     const chrome=slide.querySelector('.chrome-label');if(chrome)chrome.textContent=`问题 ${q.no} · 解决方案`;
     const meta=slide.querySelector('.solution-meta');if(meta)meta.innerHTML=`<b>问题 ${q.no}</b><span>${q.phase}</span><span>· 设计提案</span>`;
   };
