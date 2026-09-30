@@ -4341,3 +4341,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 类型色跨问题保持一致：现状蓝、分析青、方案与建设紫、评价琥珀。标题和标签使用 flex 同行排布，长标题时自然换行。黑底方案页保留原渐变标题文字，并增加适配黑底的标签配色。标签文案来自现有类型字段，例如“现状”“平台沙盘”“供给建设”“方案”“评价总纲”。
 - 本次仅为标题信息层级调整，无新增证据或页面序列变化，不改变API／Protocol、Host／Harness、Application／Task边界。运行`git diff --check`通过；未运行测试或浏览器视觉验收。内置浏览器此前拒绝本地`file://`资源，未绕过。
 - Commit／push：`ab058c3a`（`style: add color-coded problem type labels`）已推送`origin/main`。本条交接随后单独提交推送，其他并行及既有工作文件未纳入。
+
+### 2026-09-30（标注 Copilot 与 Agent 协作模式）
+
+- 按用户指定，仅修改精简报告两处模式标题：“开发者仍是主要执行者，AI提供检索与起草”改为“Copilot模式：开发者仍是主要执行者，AI提供检索与起草”；“执行交给 AI 后，开发者转为审查与决策”改为“Agent模式：执行交给 AI 后，开发者转为审查与决策”。副标题及其他标题（包括并行对话中的修改）均保留。
+- 这是命名文案调整，不新增研究主张，不改变页面序列或API／Protocol、Host／Harness、Application／Task边界。`git diff --check`通过；未运行测试或浏览器视觉验收。
+- Commit／push：`afa9a12d`（`copy: label copilot and agent collaboration modes`）已推送`origin/main`。本交接记录单独提交推送，其他已有及并行修改不纳入。
