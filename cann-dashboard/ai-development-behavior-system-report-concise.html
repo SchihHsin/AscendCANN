@@ -1193,7 +1193,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 
 <style id="six-question-preview-styles">
 .six-question-preview .head{margin-bottom:2vh}
-.six-question-preview .body-area{flex:1 1 auto;min-height:0;justify-content:stretch;margin:0 0 2.8vh}
+.six-question-preview .body-area{flex:1 1 auto;min-height:0;justify-content:stretch;margin:0}
 .six-question-preview .question-preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:.9vw;width:100%;height:100%;min-width:0;min-height:0}
 .six-question-preview .question-preview-card{--preview-tone:var(--c-blue);position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:.5vw;align-items:center;min-width:0;min-height:0;padding:.65vh .7vw;border:1px solid color-mix(in srgb,var(--preview-tone) 19%,white);border-radius:15px;background:linear-gradient(145deg,color-mix(in srgb,var(--preview-tone) 8%,white),rgba(255,255,255,.78));box-shadow:0 12px 28px -22px rgba(30,40,70,.26);overflow:hidden}
 .six-question-preview .question-preview-card::after{content:"";position:absolute;z-index:-1;right:-17%;bottom:-42%;width:70%;height:90%;border-radius:50%;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--preview-tone) 13%,transparent),transparent 70%);pointer-events:none}
@@ -2394,7 +2394,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   const questionPreviewSlide=document.createElement('section');
   questionPreviewSlide.className='slide s-gray six-question-preview';
   questionPreviewSlide.dataset.title='六个问题导读';
-  questionPreviewSlide.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">用户旅程之后 · 问题导读</div><div class="ttl">接下来要聚焦的六个问题</div></div><nav class="section-tabs"></nav></header><main class="body-area"><div class="question-preview-grid">${previewCards}</div></main><footer class="foot">3D图为主题概念示意，不作为研究证据；六题是后续章节的提问框架，不预设普遍发生率或因果关系。</footer></div>`;
+  questionPreviewSlide.innerHTML=`<div class="slide-inner"><header class="head"><div class="head-l"><div class="subttl">用户旅程之后 · 问题导读</div><div class="ttl">接下来要聚焦的六个问题</div></div><nav class="section-tabs"></nav></header><main class="body-area"><div class="question-preview-grid">${previewCards}</div></main></div>`;
   deck.append(questionPreviewSlide);
   const source=[...deck.children].find(s=>s.dataset.title==='来源与完整版入口');
   source.querySelector('.ttl').textContent='来源与研究边界';source.querySelector('.subttl').textContent='资料 · 可追溯的研究依据';

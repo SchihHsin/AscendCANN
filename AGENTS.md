@@ -4315,3 +4315,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 层级边界：不改变API／Protocol、Host／Harness或Application／Task口径；概念图不增加能力已实现或任务已验证的主张。工作区中原有问题01评价页及实验展开页改动未纳入本次提交，保持未提交原状。
 - 验证：Python `HTMLParser`解析通过；暂存版4段内联JavaScript经`node --check`通过；六个图片引用均存在；`git diff --cached --check`通过。未做浏览器截图复验：遵守此前本地`file://`页面访问限制，没有改用其他方式绕过。
 - Commit／push：`9fa52e39`（`feat: add six-question 3D overview slide`）已推送`origin/main`。本条交接记录将单独检查、提交并推送；其他既有脏文件不纳入。
+
+### 2026-09-30（移除六题导读页脚说明）
+
+- 按用户要求，从`cann-dashboard/ai-development-behavior-system-report-concise.html`六题导读页移除“3D图为主题概念示意，不作为研究证据；六题是后续章节的提问框架，不预设普遍发生率或因果关系。”整行说明，并取消为页脚预留的底部间距。其他页面的文字、六题内容、图片与页面顺序不变。
+- 检查：Python `HTMLParser`解析通过，4段内联JavaScript经`node --check`通过，目标文字已从页面源码移除，`git diff --check`通过。未做浏览器截图复验；继续遵守本地`file://`访问限制。
+- 本次目标文件与交接记录单独暂存、提交并推送；仓库中的其他脏文件不纳入。
