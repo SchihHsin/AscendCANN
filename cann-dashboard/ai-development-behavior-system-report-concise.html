@@ -2741,25 +2741,37 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     event.preventDefault();event.stopPropagation();
     if(point.closest('.problem-solution-page').dataset.solutionAnnotationMode==='annotated')point.click();
   });
-  let solutionWheelDelta=0,solutionWheelLocked=false,solutionWheelTimer;
+  let solutionWheelDelta=0,solutionWheelLocked=false,solutionWheelIdleTimer,solutionWheelMaxTimer;
+  const releaseSolutionWheelLock=()=>{
+    clearTimeout(solutionWheelIdleTimer);clearTimeout(solutionWheelMaxTimer);
+    solutionWheelLocked=false;solutionWheelDelta=0;
+  };
+  const armSolutionWheelIdle=()=>{
+    clearTimeout(solutionWheelIdleTimer);
+    solutionWheelIdleTimer=setTimeout(releaseSolutionWheelLock,520);
+  };
+  const lockSolutionWheel=()=>{
+    solutionWheelLocked=true;
+    clearTimeout(solutionWheelMaxTimer);
+    solutionWheelMaxTimer=setTimeout(releaseSolutionWheelLock,1800);
+    armSolutionWheelIdle();
+  };
   addEventListener('wheel', event => {
     if(overview)return;
     if(solutionWheelLocked&&event.deltaY!==0){
       event.preventDefault();
-      clearTimeout(solutionWheelTimer);
-      solutionWheelTimer=setTimeout(()=>{solutionWheelLocked=false;solutionWheelDelta=0;},520);
+      armSolutionWheelIdle();
       return;
     }
     const solutionPage=isProblemSolutionSlide(slides[current]);
     const reverseIntoSolution=!solutionPage&&event.deltaY<0&&isProblemSolutionSlide(slides[current-1]);
     if(event.deltaY!==0&&(solutionPage||reverseIntoSolution)){
       event.preventDefault();
-      clearTimeout(solutionWheelTimer);
-      solutionWheelTimer=setTimeout(()=>{solutionWheelLocked=false;solutionWheelDelta=0;},520);
+      armSolutionWheelIdle();
       solutionWheelDelta+=event.deltaY;
       if(Math.abs(solutionWheelDelta)<22)return;
       const direction=solutionWheelDelta>0?1:-1;
-      solutionWheelDelta=0;solutionWheelLocked=true;
+      solutionWheelDelta=0;lockSolutionWheel();
       go(solutionPage?current+direction:current-1);
       return;
     }
