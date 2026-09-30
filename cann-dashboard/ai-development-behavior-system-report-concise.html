@@ -2357,7 +2357,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   const retrievalScores=retrieval.querySelector('.score-stack').outerHTML;
   retrieval.querySelector('.body-area').innerHTML=`<div class="retrieval-chart"><h3>3 个对等检索任务 · 综合置信度</h3>${retrievalScores}<p>本轮 CANN 与 CUDA 的任务级检索对照。分数沿用原研究口径，不代表生态总体质量。</p><a href="operator-ai-journey-research/evidence/ai-usability/ai-usability-run-20260818.md" target="_blank">任务问句、来源与评分记录 ↗</a></div><div class="retrieval-chain"><div><strong>01</strong><section><b>找到并取回正文</b><p>不仅有入口，还要能读到支撑任务的文档、样例和解释。</p></section></div><div><strong>02</strong><section><b>保留适用条件</b><p>版本、芯片和依赖关系应随引用一起进入答复。</p></section></div><div><strong>03</strong><section><b>支持连续行动</b><p>最小命令、验证信号与失败恢复路径，决定能否继续推进。</p></section></div></div>`;
   retrieval.querySelector('.foot').textContent='2026-08-18：自定义 Add、ONNX 转换、性能分析三任务检索记录。只代表本轮样本；不是硬件实测。';
-  const journey=byOriginalTitle.get('Agent 机制下钻');
+  const journey=deck.querySelector('.task-rel-page');
   journey.querySelector('.subttl').textContent='以 AddCustom 开发为例，沿任务动作定位能力选配、理解、判断、验证与复用中的问题';
   const mainPain=(index,actor='developer',detail='')=>['high',actor,focusQuestions[index].name,detail,focusQuestions[index].no];
   const pains=[
@@ -2431,7 +2431,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   ];
   const appendixOrder=['已有检索研究',roleTitle,'来源与完整版入口'];
   const reportOrder = [
-    '封面','目录','开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻',
+    '封面','目录','开发者主执行·AI辅助','算子开发全链路时序','AI协作开发者旅程图',
     ...questionOrder,'六个问题总览',...appendixOrder
   ];
   const byTitle = new Map([...deck.querySelectorAll('.slide')].map(slide => [slide.dataset.title, slide]));
@@ -2442,7 +2442,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   deck.querySelector('.cv-lead').textContent='从开发者与 Agent 的协作过程出发，以访谈、任务记录与公开案例识别六个问题，并逐一回应。';
 
   const chapterTitles = {
-    '01':new Set(['开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻']),
+    '01':new Set(['开发者主执行·AI辅助','算子开发全链路时序','AI协作开发者旅程图']),
     '02':new Set(questionOrder),
     '03':new Set(['六个问题总览']),
     'A':new Set(appendixOrder)
@@ -2490,7 +2490,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   const fullscreenBtn = document.getElementById('fullscreenBtn');
   let current = 0, overview = false, uiTimer, scrollTimer, hashLock = false;
   const taskTimelineIndex = slides.findIndex(slide => slide.dataset.title === '算子开发全链路时序');
-  const taskAgentIndex = slides.findIndex(slide => slide.dataset.title === 'Agent 机制下钻');
+  const taskAgentIndex = slides.findIndex(slide => slide.classList.contains('task-rel-page'));
   const sandboxFocusIndex=slides.indexOf(sandboxFocusSlide);
   const sandboxFocusDefs=[
     {group:'shared',tone:'var(--c-indigo)',title:'共通接入面 → 优先复用四类领域供给',copy:'项目规则、知识库、Skill、MCP 均有对应面：昇腾可沿这些入口提供约束、依据、方法与查询服务；效果另需验证。',ranges:[[1,2],[4,4],[6,6]]},
