@@ -4360,3 +4360,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 建议将核心B1–B5流程压为三张设计点＋图页，替换当前一页方案：B1/B2合并为“错误处可选进入学习、保留任务现场”；B3说明“隔离副本跟练、练习结果不等于项目结果”；B4/B5合并为“审阅Diff并确认、回原项目验证与留存学习”。本次仅为待用户确认的方案，不改报告或页序。B6“任务中试改”属于补充设计点，建议暂不混入主流程。
 - 源图为 Ascend Space 空间画布，现有问题04方案为 Codex 工作台；建议借用交互与设计点，实施时沿用现有 Codex 视觉框架，避免平台壳混杂，最终选择待用户确认。无新增证据或 API／Protocol、Host／Harness、Application／Task 边界变化。
 - 本轮只读检查页面源与 B1–B6 原图；未修改报告、没有浏览器访问。Commit／push：`c99c4538`（`docs: record learning flow placement proposal`）已推送`origin/main`。其他工作区脏文件不纳入。
+
+### 2026-09-30（修复第4页跳过聚焦状态）
+
+- 用户反馈精简报告从第4页滚动时直接进入第5页，未出现`#4-focus`。原因是并行对话按用户确认将旅程页`data-title`改为“AI协作开发者旅程图”，但报告初始化仍用旧标题“Agent 机制下钻”取页，并在`reportOrder`与章节映射中引用旧名；取页失败会中断初始化，聚焦目标索引也会落为`-1`。
+- 保留用户确认的新标题与页序，同步更新`reportOrder`、章节映射；旅程页节点和聚焦目标改用稳定的`.task-rel-page` class定位，标题更名不再破坏聚焦流程。`#4-focus`作为第4页中间状态，下一次滚动再进入第5页；不改变研究内容、证据或API／Protocol、Host／Harness、Application／Task边界。
+- 检查：结构断言确认旅程页仍进入报告序列、章节映射与聚焦定位均指向新页；HTMLParser解析通过，4段内联JS通过`node --check`，`git diff --check`通过。未做浏览器滚轮实测；遵守本地`file://`限制。
+- Commit／push：`f6854ee9`（`fix: restore timeline focus step after rename`）已推送`origin/main`。本交接记录单独提交推送，其他并行与既有脏文件未纳入。
