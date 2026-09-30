@@ -1142,6 +1142,46 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 @media(min-height:1080px) and (min-aspect-ratio:4/3){.q1-map{max-height:none}}
 @media(max-aspect-ratio:4/3){.q1-process .body-area{flex:1 1 auto;justify-content:flex-start;margin:0;overflow-y:auto;overscroll-behavior-y:contain}.q1-map{height:auto;min-height:0;max-height:none;grid-template-rows:auto auto;row-gap:1.4vh;flex-shrink:0}.q1-domain{grid-template-rows:repeat(4,minmax(min-content,1fr))}.q1-domain-node p{overflow-wrap:anywhere}.q1-task-use{justify-content:flex-start}.q1-use-step{min-height:0;padding-bottom:2.5vh}.q1-map-caption{align-items:start}}
 .q1-sample.problem-solution-page .solution-boundary{font-size:var(--fs-sm)}
+/* Evaluation: reuse the original three-layer figure, then apply it to one task. */
+.q1-evaluation-page .body-area{gap:1.4vh;max-height:73vh;overflow-y:auto;overscroll-behavior-y:contain;justify-content:flex-start}
+.q1-evaluation-page .body-area>*{flex-shrink:0}
+.q1-evaluation-page .fitness-system{height:auto;min-height:49vh;grid-template-rows:repeat(3,minmax(min-content,1fr));gap:1vh}
+.q1-evaluation-page .fitness-layer{min-height:0;padding:1.3vh 1vw}
+.q1-evaluation-page .fitness-label{min-width:0;min-height:0}
+.q1-evaluation-page .fitness-label p{font-size:var(--fs-body);line-height:1.4;color:var(--ink-2)}
+.q1-evaluation-page .fitness-item b,.q1-evaluation-page .fitness-layer.signal .fitness-item b{font-size:var(--fs-body);line-height:1.3}
+.q1-evaluation-page .fitness-item span{font-size:var(--fs-sm);line-height:1.35;color:var(--ink-2)}
+.evaluation-owner{padding-top:1vh;border-top:1px solid #c9ceda;font-size:var(--fs-body);line-height:1.45;color:var(--ink-2)}
+.evaluation-owner b{color:#414b65}
+.eval-study{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,2fr);gap:1.8vw;padding:1.4vh 1.2vw;border-radius:15px;background:var(--g-ink);color:#f4f6fa;min-width:0;min-height:0}
+.eval-task,.eval-comparison,.eval-arm{min-width:0;min-height:0}
+.eval-task>small{font-size:var(--fs-sm);color:#b4c0e8}.eval-task h3{font-size:var(--fs-h2);line-height:1.3;margin:.4vh 0}
+.eval-task p{font-size:var(--fs-body);line-height:1.4;color:#c3ccd9}
+.eval-arms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1vw}
+.eval-arm:not(:first-child){border-left:1px solid #4f586d;padding-left:1vw}
+.eval-arm b{display:flex;align-items:baseline;gap:.5vw;font-size:var(--fs-h3);line-height:1.3}
+.eval-arm b i{font-style:normal;color:#bdc7ff}.eval-arm p{font-size:var(--fs-body);line-height:1.4;color:#d6dce5;margin-top:.4vh}
+.eval-comparisons{display:flex;flex-wrap:wrap;gap:.4vh 1.4vw;margin-top:1vh;padding-top:.8vh;border-top:1px solid #4f586d;font-size:var(--fs-body);line-height:1.35;color:#c6d0f4}
+.eval-lanes{display:grid;gap:.8vh;min-width:0;min-height:0}
+.eval-lane-head,.eval-lane{display:grid;grid-template-columns:10vw minmax(0,1fr) 1.8vw minmax(0,1.12fr) 1.8vw minmax(0,1.12fr);column-gap:.7vw;align-items:center;min-width:0;min-height:0;padding-inline:1.1vw}
+.eval-lane-head{color:#697488;font-size:var(--fs-sm);line-height:1.25;font-weight:700}
+.eval-lane-head span:nth-child(2){grid-column:2}.eval-lane-head span:nth-child(3){grid-column:4}.eval-lane-head span:nth-child(4){grid-column:6}
+.eval-lane{--eval-tone:#5b5bd6;padding-block:1.3vh;border:1px solid color-mix(in srgb,var(--eval-tone) 20%,#fff);border-radius:14px;background:linear-gradient(100deg,color-mix(in srgb,var(--eval-tone) 12%,#fff),rgba(255,255,255,.76))}
+.eval-lane.guard{--eval-tone:#4787cf}.eval-lane.signal{--eval-tone:#2d9b91}
+.eval-lane-label,.eval-step{min-width:0;min-height:0}
+.eval-lane-label small{display:block;font:750 var(--fs-sm)/1.3 'JetBrains Mono';color:var(--eval-tone)}
+.eval-lane-label h3{font-size:var(--fs-h2);line-height:1.25;margin-top:.35vh}
+.eval-step h4{font-size:var(--fs-h3);line-height:1.3;color:#28354b;font-weight:750}
+.eval-step p{font-size:var(--fs-body);line-height:1.4;color:var(--ink-2);margin-top:.4vh;overflow-wrap:anywhere}
+.eval-arrow{font-size:var(--fs-h2);color:var(--eval-tone);text-align:center}
+@media(max-aspect-ratio:4/3){
+  .q1-evaluation-page .body-area{flex:1 1 auto;margin:0;max-height:none;padding-bottom:2.5vh}
+  .q1-evaluation-page .fitness-layer{grid-template-columns:19vw minmax(0,1fr)}
+  .q1-evaluation-page .fitness-layer.target{margin-inline:4vw}.q1-evaluation-page .fitness-layer.guard{margin-inline:2vw}
+  .q1-evaluation-page .fitness-layer.target .fitness-items,.q1-evaluation-page .fitness-layer.guard .fitness-items{grid-template-columns:repeat(2,minmax(0,1fr))}.q1-evaluation-page .fitness-layer.signal .fitness-items{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .eval-study{grid-template-columns:1fr;gap:1.3vh}
+  .eval-lanes{overflow-x:auto;padding-bottom:.5vh}.eval-lane-head,.eval-lane{min-width:1000px;grid-template-columns:112px minmax(0,1fr) 24px minmax(0,1.12fr) 24px minmax(0,1.12fr);column-gap:10px}
+}
 @media(max-aspect-ratio:4/3){.q1-evidence-anchor{gap:1.5vw}.q1-selection-map{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}.q1-task-goal{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:.7vh 1.5vw}.q1-task-goal>small{grid-column:1}.q1-task-goal h2{grid-column:1}.q1-task-goal p{grid-column:1}.q1-task-conditions{grid-column:2;grid-row:1/4;border-top:0;border-left:1px solid #515a6c;padding:0 0 0 1.5vw}.q1-candidate-pool::before,.q1-candidate-pool::after{display:none}.q1-inventory .inventory-packaging{grid-template-columns:1fr repeat(3,minmax(0,1fr))}.q1-inventory .inventory-packaging>p{grid-column:1/-1}}
 @media(max-aspect-ratio:4/3){
   .q1-selection-page .body-area{flex:1 1 auto;justify-content:flex-start;margin:0;overflow-y:auto;overscroll-behavior-y:contain}
@@ -1150,6 +1190,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   .q1-selection-page .q1-candidate-pool::after{display:block;left:50%;right:auto;top:-7px;transform:translateX(-2.5px) rotate(135deg)}
 }
 </style>
+
 <style id="six-question-preview-styles">
 .six-question-preview .head{margin-bottom:2vh}
 .six-question-preview .body-area{flex:1 1 auto;min-height:0;justify-content:stretch;margin:0 0 2.8vh}
@@ -1164,6 +1205,7 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .six-question-preview .question-preview-copy h3{font-size:clamp(15px,1.16vw,20px);font-weight:820;line-height:1.28;overflow-wrap:anywhere;color:var(--ink)}
 @media(max-width:1100px){.six-question-preview .body-area{overflow-y:auto;overscroll-behavior-y:contain}.six-question-preview .question-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(18vh,1fr));flex-shrink:0}.six-question-preview .question-preview-card{min-height:18vh}.six-question-preview .question-preview-art img{max-height:18vh}}
 </style>
+
 </head>
 <body>
 <div id="deck">
@@ -1482,25 +1524,94 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
   </div>
 </section>
 
-<section class="slide s-gray concise-ending" data-title="同任务对照验证能力收益">
+<section class="slide s-gray q1-evaluation-page" data-title="能力体验指标">
   <div class="slide-inner">
-    <header class="head"><div class="head-l"><div class="subttl">04 实验验证 · 最小试点</div><div class="ttl">在同一任务中只改变一项能力，先验证有用再推广</div></div><nav class="section-tabs"></nav></header>
-    <main class="body-area ending-stack">
-      <svg class="ending-experiment-diagram" viewBox="0 0 1280 320" role="img" aria-label="固定同一任务，分为常规基线与仅增加一项供给的实验，比较实际使用、完成证据、耗时返工和人工介入">
-        <defs><marker id="experiment-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#9099ab"/></marker></defs>
-        <text x="10" y="39" class="exp-note">01 · 固定条件</text><text x="386" y="39" class="exp-note">02 · 只改变一项供给</text><text x="968" y="39" class="exp-note">03 · 比较实际表现</text>
-        <text x="10" y="123" class="exp-title">同一任务与起点</text><text x="10" y="163">环境排障 / 算子修改</text><text x="10" y="206" class="exp-note">平台、模型、代码、环境</text><text x="10" y="238" class="exp-note">预算与验收条件一致</text>
-        <path class="exp-path" d="M266 178H303V108H361M303 178V233H361" marker-end="url(#experiment-arrow)"/>
-        <path class="exp-path" d="M303 108H361" marker-end="url(#experiment-arrow)"/>
-        <rect x="378" y="68" width="400" height="83" rx="12" fill="#f6f7f9" stroke="#cbd1dc"/><text x="402" y="102" class="exp-title">A · 基线</text><text x="402" y="133" class="exp-note">常规任务与工具</text>
-        <rect x="378" y="188" width="400" height="94" rx="12" fill="#e4e6fb" stroke="#b9bdec"/><text x="402" y="222" class="exp-title">B · 单项增强</text><text x="402" y="255" class="exp-note">项目规则 / 知识 / Skill / MCP 分别试</text>
-        <path class="exp-path" d="M794 108H857V178H933M794 233H857V178"/><path class="exp-path" d="M857 178H933" marker-end="url(#experiment-arrow)"/>
-        <text x="968" y="111" class="exp-title">先确认是否实际使用</text><text x="968" y="156">完成与证据是否一致</text><text x="968" y="197">耗时、返工与人工介入</text><text x="968" y="238" class="exp-note">重置现场与会话后重复运行</text><text x="968" y="270" class="exp-note">保留失败与结果变异</text>
-      </svg>
-      <div class="ending-measures"><b>依据结果决定</b><span>有收益 → 组合与跨平台复验</span><span>无收益 → 调整或停止</span></div>
-      <p class="ending-note">内容与入口方式分开验证；理解迁移、团队交接和公共经验复用需后续观察，不能用一次任务成功代替。</p>
+    <header class="head"><div class="head-l"><div class="subttl">问题 01 · 评价总纲</div><div class="ttl">01 · 可装配能力难以按任务选配并有效使用</div></div><nav class="section-tabs"></nav></header>
+    <main class="body-area">
+      <div class="q1-lead">体验部定义能力改进的<em>目标、体验底线与探索方向</em></div>
+      <div class="fitness-system" aria-label="三层评价：优化目标、体验底线与探索信号">
+        <section class="fitness-layer target" data-evaluation-layer="optimize">
+          <div class="fitness-label"><small>L1 · OPTIMIZE</small><b>优化目标</b><p>任务能否更快、更稳、更省地可信完成</p></div>
+          <div class="fitness-items">
+            <div class="fitness-item"><b>可信完成率</b><span>证据满足任务验收</span></div>
+            <div class="fitness-item"><b>首次验证时间</b><span>开始 → 首个通过的验证信号</span></div>
+            <div class="fitness-item"><b>恢复成功率</b><span>失败后继续完成</span></div>
+            <div class="fitness-item"><b>单位验证成本</b><span>模型 + 服务 + 人工</span></div>
+          </div>
+        </section>
+        <section class="fitness-layer guard" data-evaluation-layer="guardrails">
+          <div class="fitness-label"><small>L2 · GUARDRAILS</small><b>体验底线</b><p>效率增益不能以这些体验底线为代价</p></div>
+          <div class="fitness-items">
+            <div class="fitness-item"><b>权限理解</b><span>预期与实际一致</span></div>
+            <div class="fitness-item"><b>可撤回 / 接管</b><span>用户保有控制</span></div>
+            <div class="fitness-item"><b>安全 / 隐私</b><span>风险与数据边界</span></div>
+            <div class="fitness-item"><b>证据一致</b><span>声明匹配实际结果</span></div>
+            <div class="fitness-item"><b>可访问性</b><span>不同能力用户可用</span></div>
+          </div>
+        </section>
+        <section class="fitness-layer signal" data-evaluation-layer="discover">
+          <div class="fitness-label"><small>L3 · DISCOVER</small><b>探索信号</b><p>从行为中发现既有指标未覆盖的问题与机会</p></div>
+          <div class="fitness-items">
+            <div class="fitness-item"><b>放弃</b><span>为何不再继续</span></div>
+            <div class="fitness-item"><b>犹豫</b><span>为何反复确认</span></div>
+            <div class="fitness-item"><b>人工接管</b><span>何时需要人介入</span></div>
+            <div class="fitness-item"><b>绕行</b><span>为何离开流程</span></div>
+            <div class="fitness-item"><b>跨平台断裂</b><span>上下文难以延续</span></div>
+            <div class="fitness-item"><b>新工作方式</b><span>计划之外的用法</span></div>
+          </div>
+        </section>
+      </div>
+      <p class="evaluation-owner"><b>体验部</b>定义体验标准、解释行为原因、提出改进优先级；<b>领域团队</b>负责能力质量与技术验收。</p>
     </main>
-    <footer class="foot">无匹配 NPU／CANN 环境时，只验证检索、方案、静态检查与过程表现；真实编译、精度和性能须在对应环境复跑。</footer>
+    <footer class="foot">拟议评价框架，非实测结论。日志与用户观察共同取证；人工接管、犹豫等信号不直接等同失败。</footer>
+  </div>
+</section>
+
+<section class="slide s-gray q1-evaluation-page" data-title="同任务对照验证能力收益">
+  <div class="slide-inner">
+    <header class="head"><div class="head-l"><div class="subttl">问题 01 · 任务评价与改进</div><div class="ttl">01 · 可装配能力难以按任务选配并有效使用</div></div><nav class="section-tabs"></nav></header>
+    <main class="body-area">
+      <div class="q1-lead">用同一项性能优化任务，把评价转成<em>具体改进</em></div>
+      <div class="eval-study">
+        <div class="eval-task"><small>拟议实验 · Ascend C</small><h3>性能提升，精度不退步</h3><p>固定平台、模型、代码、硬件环境、预算与验收条件。</p></div>
+        <div class="eval-comparison">
+          <div class="eval-arms" aria-label="三组平行对照">
+            <div class="eval-arm" data-arm="A"><b><i>A</i> 原始资料</b><p>普通原始资料<br>与常规工具</p></div>
+            <div class="eval-arm" data-arm="B"><b><i>B</i> 整理后的资料</b><p>整理好的方法与文档<br>以普通文件提供</p></div>
+            <div class="eval-arm" data-arm="C"><b><i>C</i> 能力装配</b><p>与 B 相同的内容<br>经规则、Skill 或 MCP 接入</p></div>
+          </div>
+          <div class="eval-comparisons"><span><b>A ↔ B</b> 内容整理收益</span><span><b>B ↔ C</b> 接入与装配收益 · 信息与工具权限对齐</span></div>
+        </div>
+      </div>
+      <div class="eval-lanes" aria-label="从评价问题，经取证到改进动作">
+        <div class="eval-lane-head" aria-hidden="true"><span>评价层</span><span>看什么</span><span>怎么取证</span><span>发现后改什么</span></div>
+        <section class="eval-lane target" data-evaluation-layer="optimize">
+          <div class="eval-lane-label"><small>L1 · OPTIMIZE</small><h3>优化目标</h3></div>
+          <div class="eval-step"><h4>是否更好完成任务</h4><p>精度达标后的性能提升、完成率、验证时间、恢复率与成本。</p></div>
+          <span class="eval-arrow" aria-hidden="true">→</span>
+          <div class="eval-step"><h4>调用、测试与成本记录</h4><p>核实载入、触发、调用；重置复跑，保留失败、耗时与费用。</p></div>
+          <span class="eval-arrow" aria-hidden="true">→</span>
+          <div class="eval-step"><h4>修正能力失效的环节</h4><p>未触发查入口；已用但无效查适用条件、方法与工具结果。</p></div>
+        </section>
+        <section class="eval-lane guard" data-evaluation-layer="guardrails">
+          <div class="eval-lane-label"><small>L2 · GUARDRAILS</small><h3>体验底线</h3></div>
+          <div class="eval-step"><h4>收益是否伴随越界</h4><p>越权执行、擅改精度阈值、把“未测试”说成“已通过”。</p></div>
+          <span class="eval-arrow" aria-hidden="true">→</span>
+          <div class="eval-step"><h4>授权 + 变更 + 结果对照</h4><p>对照授权记录、代码变更、测试证据与界面声明。</p></div>
+          <span class="eval-arrow" aria-hidden="true">→</span>
+          <div class="eval-step"><h4>先修底线，再评收益</h4><p>改授权与状态反馈；领域团队确认不可放宽的技术约束。</p></div>
+        </section>
+        <section class="eval-lane signal" data-evaluation-layer="discover">
+          <div class="eval-lane-label"><small>L3 · DISCOVER</small><h3>探索信号</h3></div>
+          <div class="eval-step"><h4>哪些行为值得追问</h4><p>反复换 Skill、犹豫或放弃、绕行接管，以及新的用法。</p></div>
+          <span class="eval-arrow" aria-hidden="true">→</span>
+          <div class="eval-step"><h4>日志定位 + 回放访谈</h4><p>回看行为发生的时刻，询问原因，不把接管直接判为失败。</p></div>
+          <span class="eval-arrow" aria-hidden="true">→</span>
+          <div class="eval-step"><h4>按原因提出改进项</h4><p>若看不懂差异，补选配依据；若不知是否生效，补使用反馈。</p></div>
+        </section>
+      </div>
+    </main>
+    <footer class="foot">三组实验尚未执行；先测单项，再测组合与跨平台。B/C 须对齐信息与服务可用范围，避免把新增服务误算为装配收益。真实精度与性能须在匹配 NPU/CANN 环境验证；本例不覆盖全部底线与探索信号。</footer>
   </div>
 </section>
 
@@ -2166,7 +2277,8 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   const assetTitle=attachQ1('已有资产与验证缺口','现有资产');
   const buildTitle=attachQ1('建设方向由问题与资产共同推导','供给建设');
   const roleTitle=attachQ1('工作台与昇腾的分工','协作分工');
-  const experimentTitle=attachQ1('同任务对照验证能力收益','实验验证');
+  const fitnessTitle=attachQ1('能力体验指标','评价总纲');
+  const experimentTitle=attachQ1('同任务对照验证能力收益','任务评价与改进');
   const build=[...deck.children].find(s=>s.dataset.title===buildTitle);
   const asset=[...deck.children].find(s=>s.dataset.title===assetTitle);
   const usage=asset.cloneNode(true);
@@ -2220,9 +2332,6 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   usage.querySelector('.foot').innerHTML=`Skill：CANNBot 591e5fd，完整 Git 树计数 270（不等于质量或有效性）。MCP 与 manifest 沿用各自快照。<a href="${q1EvidenceRoot}real-skill-mcp-evidence.md" target="_blank">原文、版本与数量口径 ↗</a>`;
   build.querySelector('.body-area').innerHTML=`<div class="q1-lead">沿着同一条接入链，完善<em>选得对、接得上、能核验</em>的条件。</div>${capabilitySupplyMap(true)}<div class="q1-map-caption"><b>为什么优先这四类</b><span>沙盘确认共通接入面；现有领域资产可沿这些入口复用。跨平台适配负责交付，平台继续负责 Harness / Loop。</span></div>`;
   build.querySelector('.foot').innerHTML=`建设建议，不是全部能力均缺失：如 perf-optimize 的核间流水分支明确标为待补全；收益需在同任务对照中验证。<a href="${q1EvidenceRoot}source-excerpts.md" target="_blank">具体原文 ↗</a>`;
-  const exp=[...deck.children].find(s=>s.dataset.title===experimentTitle);
-  exp.querySelector('.body-area').innerHTML=`<div class="experiment-compare"><div class="experiment-fixed"><b>固定任务与起点</b><p>同一平台、模型、代码、环境、预算与验收条件；每次重置会话与工作区。</p></div><div class="experiment-arms"><div><b>A · 原始资料</b><p>提供普通原始资料与常规工具</p></div><div><b>B · 整理后的资料</b><p>增加结构化方法与文档，以普通文件提供</p></div><div><b>C · 真实能力装配</b><p>与 B 相同的内容，经项目规则、Skill 或 MCP 接入</p></div></div><div class="experiment-reading"><p><b>A ↔ B</b> 检查内容整理的收益</p><p><b>B ↔ C</b> 检查接入与装配的收益</p></div></div><div class="ending-measures"><b>先查是否实际使用</b><span>加载／触发／调用记录</span><span>完成证据、返工与人工介入</span></div><p class="ending-note">三组对照尚未执行。先分别测单项能力，再测组合与跨平台；MCP 组需对齐 B 组可获得的信息，避免混入额外服务能力。</p>`;
-  exp.querySelector('.foot').textContent='依据 2026-09-24 试验方案与 09-28 证据复核。单案预演没有 MCP 调用、代码修改、真实构建或 NPU 运行，不能作为能力收益证据。';
   const retrieval=byOriginalTitle.get('CANN 实证');retrieval.dataset.title='已有检索研究';
   retrieval.querySelector('.subttl').textContent='检索研究 · 已完成的三任务对照';
   retrieval.querySelector('.ttl').textContent='社区 AI 可用性：资料能否支撑连续的任务答复';
@@ -2295,14 +2404,14 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
   cards[3].innerHTML=`<b>检索研究、平台机制与全文</b><a href="operator-ai-journey-research/evidence/ai-usability/ai-usability-run-20260818.md" target="_blank">CANN × CUDA 三任务检索记录</a><a href="ai-development-behavior-system-report.html#14" target="_blank">既有六平台沙盘</a><a href="ai-development-behavior-system-report.html#1" target="_blank">完整版与历史研究</a><p>15 个模拟案例不作真实用户证据；三组能力实验尚未执行。概念图不是现成功能。</p>`;
   source.querySelector('.foot').textContent='本轮新材料来源：ai-dev-behavior-pilot-20260924/report.html；采用其中可追溯的访谈材料与实验设计，不把模拟成绩当作用户或 NPU 实测。';
   const contents=byOriginalTitle.get('目录');contents.querySelector('.ttl').textContent='目录';contents.querySelector('.subttl').textContent='';
-  const directory=[['开发行为','DEVELOPMENT BEHAVIOR','人主执行与 Agent 主执行','旅程与重点痛点','理解行为变化'],['六个问题','SIX QUESTIONS','具体问题与真实证据','平台、资产与设计回应','从任务判断走向方案'],['总览','SYNTHESIS','六个问题与设计落点','证据边界与后续验证','收束重点与下一步'],['研究资料','RESEARCH APPENDIX','已有检索研究与来源','问题01分工与实验设计','保留可复核的细节']];
+  const directory=[['开发行为','DEVELOPMENT BEHAVIOR','人主执行与 Agent 主执行','旅程与重点痛点','理解行为变化'],['六个问题','SIX QUESTIONS','具体问题与真实证据','平台、资产与设计回应','从任务判断走向方案'],['总览','SYNTHESIS','六个问题与设计落点','证据边界与后续验证','收束重点与下一步'],['研究资料','RESEARCH APPENDIX','已有检索研究与来源','问题01协作分工','保留可复核的细节']];
   contents.querySelector('.contents-directory').innerHTML=directory.map((d,i)=>`<article class="directory-card"><div class="directory-no">${i===3?'A':`0${i+1}`}</div><div class="directory-name">${d[0]}</div><div class="directory-en">${d[1]}</div><div class="directory-items"><span>${d[2]}</span><span>${d[3]}</span></div><div class="directory-note">${d[4]}</div></article>`).join('');
   contents.querySelector('.foot').textContent='开发行为 → 用户旅程与重点痛点 → 六个问题及各自方案 → 总览。研究明细见附录。';
   const questionOrder = [
-    '六个问题导读',problemStatus(problemCases[2]),sandboxTitle,assetTitle,usageTitle,buildTitle,problemSolution(problemCases[2]),
+    '六个问题导读',problemStatus(problemCases[2]),sandboxTitle,assetTitle,usageTitle,buildTitle,problemSolution(problemCases[2]),fitnessTitle,experimentTitle,
     ...focusQuestions.slice(1).flatMap(q=>{const item=problemCases.find(x=>x.n===q.id);return [problemStatus(item),...(q.id==='08'?[reuseAnalysisTitle]:[]),problemSolution(item)];}),
   ];
-  const appendixOrder=['已有检索研究',roleTitle,experimentTitle,'来源与完整版入口'];
+  const appendixOrder=['已有检索研究',roleTitle,'来源与完整版入口'];
   const reportOrder = [
     '封面','目录','开发者主执行·AI辅助','算子开发全链路时序','Agent 机制下钻',
     ...questionOrder,'六个问题总览',...appendixOrder
