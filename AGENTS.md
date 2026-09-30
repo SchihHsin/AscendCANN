@@ -4321,3 +4321,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户要求，从`cann-dashboard/ai-development-behavior-system-report-concise.html`六题导读页移除“3D图为主题概念示意，不作为研究证据；六题是后续章节的提问框架，不预设普遍发生率或因果关系。”整行说明，并取消为页脚预留的底部间距。其他页面的文字、六题内容、图片与页面顺序不变。
 - 检查：Python `HTMLParser`解析通过，4段内联JavaScript经`node --check`通过，目标文字已从页面源码移除，`git diff --check`通过。未做浏览器截图复验；继续遵守本地`file://`访问限制。
 - 本次目标文件与交接记录单独暂存、提交并推送；仓库中的其他脏文件不纳入。
+
+### 2026-09-30（移除问题01选配页脚说明）
+
+- 按用户要求，从精简报告问题01选配页删除候选用途、VOC与非实测边界说明，并移除该页脚内的“真实资产原文与边界”链接。页面主体、问题内容、题目、插图和页序不变。
+- 检查：Python `HTMLParser`解析通过，4段内联JavaScript经`node --check`通过，指定说明已从源码移除，`git diff --check`通过。未做浏览器截图复验；遵守本地`file://`访问限制。
+- 本次只暂存精简报告与本交接记录，其他工作区脏文件不纳入。

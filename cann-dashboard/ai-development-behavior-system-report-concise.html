@@ -2256,7 +2256,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
           <section class="q1-usage-question" aria-label="使用后的确认：载入不等于执行，执行不等于通过验收"><h3>使用后：<br>是否真正发挥作用？</h3><div class="q1-use-levels"><div class="q1-use-level">已选中 / 已载入<small>能力进入候选或任务上下文</small></div><div class="q1-use-not-equal" aria-hidden="true">≠</div><div class="q1-use-level">实际按方法执行<small>查看动作、调用与执行产物</small></div><div class="q1-use-not-equal" aria-hidden="true">≠</div><div class="q1-use-level">结果通过验证<small>核对精度、性能与任务目标</small></div></div><p>需要区分“有能力”、<br>“用了能力”和“用出效果”。</p></section>
         </div>
         <div class="q1-evidence-anchor">${voc('所以我们需要做一些 <strong>skill</strong> 去做一些辅助支撑。',1,3,'00:11:35','领域方法需求')}<p class="q1-evidence-reading"><b>这些能力并非同类替代项。</b><br>仅知道名称还不够；选配需要理解用途、输入条件与前后依赖，使用后还需核对实际执行与结果。</p></div>
-      </main><footer class="foot">候选用途与条件来自固定源码；VOC 支持领域方法需求。图示解释选配中的判断，不是用户失败回放或收益实测。<a href="${q1EvidenceRoot}real-skill-mcp-evidence.md" target="_blank">真实资产原文与边界 ↗</a></footer></div>`;
+      </main></div>`;
     }
     status.dataset.title=problemStatus(item);stableHeading(status,q,'现状与分析');
     const solution=makeProblemSlide(item,'solution');stableHeading(solution,q,'解决方案');oldSolution.replaceWith(solution);setSolutionState(solution,0);
