@@ -4385,3 +4385,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 统一非直达翻页顺序：完整图→讲解标注→下一页；反向为上一页→讲解标注→完整图。覆盖方向键、上下页控件、滚轮和触屏；滚轮累积小幅Delta并按连续手势锁定，避免触控板惯性一次跨越两态。页面底部状态按钮仍可手动切换不同界面图；聚焦按钮时方向键仍切换界面状态。页序、标题、研究内容和API／Protocol、Host／Harness、Application／Task边界不变。
 - 检查：HTMLParser解析通过，4段内联JS通过`node --check`，静态检查确认完整图／标注前进后退、滚轮与触屏路径存在，`git diff --check`通过。未做浏览器交互复验；遵守本地`file://`限制。
 - Commit／push：`ffa3fbec`（`fix: step through solution annotations before paging`）已推送`origin/main`。本交接记录单独提交推送，其他并行与既有脏文件未纳入。
+
+### 2026-09-30（修复第13页触控板滚轮锁滞留）
+
+- 变更文件：`cann-dashboard/ai-development-behavior-system-report-concise.html`。方案页滚轮锁此前在每个惯性滚动事件上重置520ms解锁计时；持续滚动时计时不断后延，锁还会拦截之后普通页的翻页。改为保留“滚动停顿520ms解锁”，并增加从锁定开始计时、不会被事件续期的1800ms最长锁定时间。
+- 目的与边界：让触控板惯性事件不再无限延长方案页翻页锁，保留完整图→标注图→下一页的一手势分步意图。只改滚轮交互，没有新增研究证据、修改标题或页面序列，也不影响API／Protocol、Host／Harness、Application／Task边界。
+- 检查：Python `HTMLParser`解析通过，4段内联JavaScript经`node --check`通过，目标文件`git diff --check`通过。未做浏览器滚轮实测；遵守本地`file://`访问限制。
+- Commit／push：`efdc8c30`（`fix: release wheel paging lock on long gestures`）已提交，交接记录待同批推送。其他工作区脏文件未纳入。
