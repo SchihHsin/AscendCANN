@@ -4548,3 +4548,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 当前问题02等待用户评审底图效果；后续右侧装饰默认保持空，左侧/中间背景仍不占位。提交和push结果在完成后回填。
 
 - Commit/push：装饰底图源码、两张透明PNG、完整提示词、视觉证据、Pages产物及交接提交 `0422518d`（`feat: apply ambient backdrop images to Ascend Studio`）已成功推送origin/main；`git diff --cached --check`通过，仅纳入本轮22个文件。当前本地Demo已显示两处底图，GitHub Pages构建由此次push触发。本回执单独提交并立即push。
+
+
+### 2026-10-09（Ascend Studio：收起胶囊与标题底图位置）
+
+- 用户要求左侧项目栏可收起，在右边缘上下中间放小胶囊；同时要求底图更清楚，并用截图明确对话底图属于header.panel-header.conversation-header。已将对话PNG移到标题容器内部，保持absolute背景，不占位；左侧透明度25%，对话32%，保留渐消和右侧无装饰。
+- App.jsx加入独立sidebar-shell与收起状态、可访问性名称/aria-controls/aria-expanded。胶囊中性灰白18×52px，桌面收起保留18px窄边，重点击恢复；保留项目/任务和对话状态。窄屏纵向布局保留40px展开入口，原移动端composer规则不改。
+- styles.css与根仓ascstudio静态产物已同步构建。In-app Browser显示展开、收起、再次展开；底图实际父节点为conversation-header，胶囊位于工作区垂直中间。截图为ascend-studio/evidence/20261009-sidebar-{expanded,collapsed}.jpg。未新增或运行测试；没有改变研究结论、其他题目或API/Host/Application边界。
+- 用户询问push并继续要求三栏可拖拽宽度。本阶段完成后立即提交推送，再继续三栏拖拽；不混入已有无关脏文件。阶段推送回执随下一阶段交接补充。

@@ -17,6 +17,7 @@ import {
   IconBook,
   IconBooks,
   IconChevronDown,
+  IconChevronLeft,
   IconChevronRight,
   IconCircleCheck,
   IconCircleX,
@@ -109,6 +110,7 @@ function App() {
   const flow = useTaskFlow({ onRecord: (title, summary, kind, isDemo) => wb.addRecord({ title, summary, kind, isDemo }, MAIN_TASK) });
   const canvas = useCanvasState();
   const [precisionContext, setPrecisionContext] = useState(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const previousFlow = useRef({ attempts: 0, proposal: null, applied: null });
   const [taskContentsOpen, setTaskContentsOpen] = useState(false);
   const [suggestionDismissed, setSuggestionDismissed] = useState(false);
@@ -195,8 +197,9 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className="workspace-grid">
-        <aside className="sidebar" aria-label="项目与任务">
+      <div className={"workspace-grid" + (sidebarCollapsed ? " is-sidebar-collapsed" : "")}>
+        <div className={"sidebar-shell" + (sidebarCollapsed ? " is-collapsed" : "")}>
+        <aside id="project-sidebar" className="sidebar" aria-label="项目与任务" hidden={sidebarCollapsed}>
           <img className="ambient-art ambient-art--archive" src={`${import.meta.env.BASE_URL}assets/project-archive-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <div className="primary-nav">
             <button className="new-task-button" type="button" onClick={() => openDialog("newTask")}>
@@ -242,15 +245,27 @@ function App() {
           </div>
           <div className="sidebar-footer"><IconLock size={14} /><span>当前任务与项目上下文关联</span></div>
         </aside>
+        <button
+          className="sidebar-toggle"
+          type="button"
+          aria-controls="project-sidebar"
+          aria-expanded={!sidebarCollapsed}
+          aria-label={sidebarCollapsed ? "展开项目栏" : "收起项目栏"}
+          title={sidebarCollapsed ? "展开项目栏" : "收起项目栏"}
+          onClick={() => { setSidebarCollapsed(value => !value); wb.setMenu(null); }}
+        >
+          {sidebarCollapsed ? <IconChevronRight size={13} /> : <IconChevronLeft size={13} />}
+        </button>
+        </div>
 
         <section className="conversation-panel" aria-label="任务对话">
-          <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <header className="panel-header conversation-header">
             <div><h2>对话</h2><span className="conversation-context" title={selectedTask}>{selectedTask}</span></div>
             <div className="header-actions">
               <button className="light-button" type="button" onClick={wb.startConversation}><IconPlus size={16} />新对话</button>
               <button className="icon-button" type="button" aria-label="更多对话操作" data-menu-trigger aria-expanded={wb.menu?.name === "chat"} onClick={(event) => openMenu("chat", event)}><IconDots size={18} /></button>
             </div>
+            <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           </header>
           <div className="conversation-scroll" ref={wb.conversationRef}>
             {session.showIntro && isMainTask && <>
