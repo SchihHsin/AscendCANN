@@ -145,4 +145,5 @@ final result: passed
 
 - 完整源码和静态产物提交 `64e934ad` 已推送origin/main，GitHub Pages构建状态built，无构建错误。
 - 用户纠正源码不应归在CANN Dashboard下，现迁到根仓 `ascend-studio/`，与 `cann-dashboard/` 平级；Pages静态入口仍为根仓 `ascstudio/`。输出路径同步为 `../ascstudio`，仅调整组织位置，不改UI或交互。
-- 未新增或运行测试套件；重新构建与线上HTTP检查结果随发布记录回填。
+- 新路径下 `npm run build:pages` 通过；线上入口、JS、CSS、Logo与装饰图均可访问，响应内容与本地产物一致；本地预览已改从根仓权威源码启动，HTTP 200。未新增或运行测试套件。
+- 平级迁移提交 `1a42a00a` 已推送origin/main；GitHub Pages入口现可供问题02评审。
