@@ -4524,3 +4524,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 使用内置ImageGen，实际附上一张功能对应图及已保存的彩色材质参考，生成1张修订。保留项目/档案叠片、对话/交汇回应、画布/开放延展，降低可见强度与边缘对比，以透明浅彩、柔和折痕与渐隐融入背景。文字和已有控件位置保持，叠片可见于页脚文字下方，未新增专用插画空间。该图仅用于视觉评审，生成文字仍以实际HTML为准。
 - 保存 `ascend-studio/design-explorations/ambient-background-20261009/refined.png`、README.md和完整prompt.json，更新 `ascend-studio/AGENTS.md`。后续落地规则为背景层不参与布局、不接收点击、不扩大区域/间距，文字及卡片保持清晰，装饰边缘渐隐。
 - 本轮仅提交图稿、提示词与交接，未修改App/静态产物、其他问题或报告页序；不新增研究/功能/硬件结论，不改变API/Host/Application边界。执行文档git diff检查，不新增或运行测试，不重建未变页面；等待用户评审淡化与渐消程度。
+
+- Commit/push：上一轮氛围背景图稿、完整提示词与交接提交 `9ad893e4`（`design: soften decoration into atmospheric backgrounds`）已成功推送origin/main，`git diff --cached --check`通过；发布回执于本轮补充。当前App未应用该候选。
+
+
+### 2026-10-09（Ascend Studio：画布底部连接纹理）
+
+- 用户限定右侧画布的装饰：不采用实色体块，可作为底部花纹，不占位，表达连接感。此决定覆盖右侧实色/开放弧面提案；左侧档案叠片、中间交汇回应及低对比背景渐隐规则延续。
+- 使用内置ImageGen，实际附上一张氛围背景图与已保存的彩色材质参考，单张局部修订右侧：移除右缘填色曲面，底部加入浅淡连续曲线的交汇、分叉和延伸，向上与外缘渐隐。图中三栏与已有内容延续，背景细线不带节点、箭头或标签，不作为真实对象关系或运行功能。
+- 保存 `ascend-studio/design-explorations/canvas-bottom-pattern-20261009/refined.png`、README.md和完整prompt.json，更新 `ascend-studio/AGENTS.md`。后续落地仍为不参与内容流、不接收点击的背景层，不能挤占内容区域，保持正文、卡片、小地图和工具清晰。
+- 本轮仅提交图稿、提示词与交接，未修改App/静态产物、其他问题或报告页序；不新增研究/功能/硬件结论，不改变API/Host/Application边界。执行文档git diff检查，不新增或运行测试，不重建未变页面；等待用户评审底部连接纹理。
