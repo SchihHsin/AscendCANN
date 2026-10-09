@@ -197,6 +197,7 @@ function App() {
 
       <div className="workspace-grid">
         <aside className="sidebar" aria-label="项目与任务">
+          <img className="ambient-art ambient-art--archive" src={`${import.meta.env.BASE_URL}assets/project-archive-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <div className="primary-nav">
             <button className="new-task-button" type="button" onClick={() => openDialog("newTask")}>
               <IconPlus size={18} /><span>新建任务</span>
@@ -243,6 +244,7 @@ function App() {
         </aside>
 
         <section className="conversation-panel" aria-label="任务对话">
+          <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <header className="panel-header conversation-header">
             <div><h2>对话</h2><span className="conversation-context" title={selectedTask}>{selectedTask}</span></div>
             <div className="header-actions">

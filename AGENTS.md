@@ -4536,3 +4536,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本轮仅提交图稿、提示词与交接，未修改App/静态产物、其他问题或报告页序；不新增研究/功能/硬件结论，不改变API/Host/Application边界。执行文档git diff检查，不新增或运行测试，不重建未变页面；等待用户评审底部连接纹理。
 
 - Commit/push：图稿、完整提示词、评审说明与交接提交 `6460ce58`（`design: use a connective pattern at the canvas bottom`）已成功推送origin/main；`git diff --cached --check`通过。本回执单独提交并立即推送，仅纳入根AGENTS.md，未混入已有报告或其他脏文件。当前原型尚未应用本图，等待用户评审连接感与纹理存在感。
+
+
+### 2026-10-09（Ascend Studio：装饰底图应用到HTML，右侧无装饰）
+
+- 用户明确右侧画布不再放装饰图，并授权将当前左侧和中间装饰应用到HTML Demo；随后更正“装饰地图”为“装饰底图”。此决定覆盖右侧底部连接纹理提案，本轮直接落地已选方向，不重新选型，也不开始下一题。
+- 内置ImageGen以已保存的canvas-bottom-pattern图及配色参考制作两个独立RGBA素材，保存为ascend-studio/public/assets/project-archive-ambient.png（档案叠片，1086×1448）与dialog-exchange-ambient.png（冷暖回应，2172×724）。完整提示词、来源与消费说明保存于design-explorations/ambient-assets-20261009/。未覆盖旧候选。
+- 变更ascend-studio/src/App.jsx与styles.css：两张底图absolute、真实透明、低透明度与边缘渐消，放在内容下层，不参与flex布局，不接收点击、拖动或可访问性朗读；保留原三栏、项目间距、文字与控件位置。右侧不挂载装饰，清除未使用diagnostic-art遗留CSS，保留功能性画布点阵及小地图。对话交汇点初版被气泡挡住，已上移并调整淡化程度。
+- 更新原型AGENTS、README与design-qa；截图保存为evidence/20261009-ambient-*。In-app Browser临时1672×941桌面视口，与同状态HTML基准、选定素材参考及局部图比较；最终本轮视觉检查passed。装饰已加载，absolute与pointer-events:none读值确认，右侧装饰元素为0。原预览停止期间有历史Vite WebSocket日志，已从根仓ascend-studio重新启动本地预览并刷新；不声称全程零错误。没有新增或运行测试，也没有重复全部自由画布交互回归。
+- npm run build:pages通过，静态产物同步至根仓ascstudio；源码品牌与装饰路径继续使用BASE_URL。只暂存本任务源码、素材、产物、证据和交接，立即commit/push，不混入已有报告或其他脏文件。未改变其他题目、报告页序或API/Host/Application边界；仍无真实AI、NPU、项目写入和持久化连接。
+- 当前问题02等待用户评审底图效果；后续右侧装饰默认保持空，左侧/中间背景仍不占位。提交和push结果在完成后回填。

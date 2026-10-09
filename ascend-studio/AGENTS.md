@@ -125,3 +125,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 连接感是装饰寓意，不画节点、箭头、端点圆点、标签或连接真实卡片的线。背景不参与布局、不接收点击；内容块、小地图、工具栏和文字保持清晰。
 - 内置ImageGen仅修订上一张图的右侧背景，新图为 `design-explorations/canvas-bottom-pattern-20261009/refined.png`，同目录README和prompt.json记录来源、状态与完整提示词。可见右侧实色曲面移除，底部出现细线纹理，左侧/中间及三栏结构延续。
 - 本轮只保存图稿与偏好并push，尚待用户评审，未修改App或Pages，不新增功能、技术或硬件结论；不运行测试或重建未变页面。
+
+
+## 2026-10-09 · 装饰底图落地，右侧无装饰
+
+- 用户明确右侧画布不再放装饰图，并授权把现有左侧与对话装饰应用到HTML Demo；“装饰地图”为笔误，正确含义是装饰底图。本条覆盖此前右侧底部连接纹理提案，不再等待新一轮选型。
+- 使用内置ImageGen从已确认的氛围图制作两张独立RGBA背景素材：public/assets/project-archive-ambient.png（有序档案薄片）及dialog-exchange-ambient.png（冷暖交汇/回应）。完整提示词与来源见design-explorations/ambient-assets-20261009/。
+- App只在.sidebar和.conversation-panel加入alt为空、aria-hidden、禁止拖动的absolute图片；背景z-index:0、pointer-events:none，flex内容层z-index:1。素材保持真实透明通道，CSS低透明度和渐消遮罩；不加入占位容器，不改文字、列表间距、分栏或控件位置，不覆盖composer移动端sticky。
+- 右侧没有装饰元素；清除未挂载的diagnostic-art遗留CSS，保留画布功能性点阵和内容关系。不要因移除装饰而去掉小地图、对象或功能连线。
+- 对话背景交汇点最初被用户气泡覆盖，已上移并调整为18%透明度；左侧16%。当前仅处理问题02，继续等待用户评审，不开始下一题。
+- Pages构建通过；桌面1672×941同状态图与局部截图已核对，详见design-qa.md。未新增或运行测试，不重复执行全交互回归。当前本地预览由本目录启动；源码、素材、Pages产物与交接一起提交并立即push。
