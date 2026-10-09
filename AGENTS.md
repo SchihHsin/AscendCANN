@@ -4488,3 +4488,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 使用内置ImageGen，附现有桌面截图 `ascend-studio/evidence/20261009-free-canvas-default.jpg` 作为编辑基准，独立生成3张图片，按对话显示顺序编号并保存至 `ascend-studio/design-explorations/compute-decoration-20261009/option-{1,2,3}.png`；同目录README和prompts.json记录源图、完整提示词、内置工具模式及评审边界。更新 `ascend-studio/AGENTS.md` 的持久偏好。
 - 视觉检视：三张均没有珍珠或头像，保留三栏、紧凑项目任务、AI文本铺背景、右侧用户气泡和中性选中；分别在标题、页脚及画布边缘增加计算相关小图。第3张生成的GPU/NPU小字只是装饰候选内容，后续若选中须移除或改为无字抽象轨迹，不能当作硬件或运行事实。生成文字仍以实际HTML为准。
 - 本轮只交付问题02视觉候选待评审，未应用任何方案，未改页面源码、静态产物、其他题目或报告页序；不新增研究结论，不改变API/Host/Application边界。图稿与交接一起提交并立即push；未新增或运行测试，静态文档执行git diff检查。当前线上原型继续保留已发布的设计。
+- Commit/push：图稿、完整提示词、评审说明与偏好记录提交 `f5d166c9`（`design: explore computation-focused Ascend Studio decoration`）已成功推送origin/main；本回执随后提交并立即推送。仅纳入本轮7个文件，未混入已有报告或其他脏文件。未决事项为用户选择或进一步细化新的3版视觉候选。
