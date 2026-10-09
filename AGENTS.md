@@ -4566,3 +4566,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 同一In-app Browser1672×941页面显示两次实际拖动：367.84/717.28/586.87变为306.84/778.28/586.87，再变为306.84/693.28/671.87。每次仅相邻两栏变化，截图保存为ascend-studio/evidence/20261009-three-column-resized.jpg。胶囊与对话标题内的25%/32%底图沿用上一阶段，不新增右侧装饰。
 - npm run build:pages通过，静态产物同步根仓ascstudio；未新增或运行测试套件，没有重复自由画布全流程、键盘或移动端行为回归。源码、产物、证据与交接仅暂存本任务文件并立即push。没有改变报告页序、研究事实、API/Host/Application边界；当前仍无真实AI/NPU/持久化或真实项目写入。
 - 当前问题02继续等待用户评审。阶段push结果完成后回填。
+
+- Commit/push：三栏拖拽源码、Pages产物、视觉证据和交接提交 `ef43823c`（`feat: support draggable Ascend Studio column widths`）已成功推送origin/main；JS语法检查、Pages构建与暂存diff检查通过。前一阶段 `d26c3a64` 亦已推送，本回执单独提交并立即push；未混入原有报告或其他脏文件。
