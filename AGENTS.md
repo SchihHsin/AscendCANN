@@ -4454,3 +4454,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据边界：仍是本地交互/数学演算，[16,32]通过、[17,33]失败、precision mismatch位于custom_op.cpp:128，改编译参数位置未变；尾块只是线索。范围演算和用户CSV不确认真实根因、精度或NPU通过；代码只在示例副本应用，不写入附件/真实项目；AI、持久化、调度、NPU未连接。未新增研究事实，API/Host/Application边界不变。
 - 构建与浏览：`npm run build`通过；In-app Browser默认1280×720实际操作标题拖动、角落调尺寸、空白平移、键盘微调、固定、临时对照退出恢复、折叠/收纳恢复、索引定位、尝试→Diff取消/再生成/确认→范围复核、误差→保存复核→动态记录卡、任务切换与重置。父画布scrollTop复核为0，最终刷新后未捕获console error；未新增或运行自动化测试。本轮未单独覆盖Ctrl/Command滚轮缩放、移动端或剪贴板。截图为原型 `evidence/20261009-free-canvas-{default,explanation,overview}.jpg`，前轮QA已追加更正，当前状态待用户评审。
 - Commit/push：本交接提交 `fdc60063`（`docs: record q02 free canvas implementation`）已成功推送origin/main；本结果回填随后单独提交推送。原型源码继续在本任务可视化目录，不混入根仓已有无关改动。未决事项：用户评审问题02；装饰方案选择；真实服务与硬件连接。
+
+
+### 2026-10-09（核对 Ascend Studio 原型发布地址）
+
+- 用户询问ascstudio的GitHub Pages地址。核对当前问题02原型交接和仓库文件后，原型仍在仓库外可视化目录，当前可用预览为 `http://127.0.0.1:5173/`；此前 `fdc60063` / `e91729dd` 推送的是交接记录，没有发布原型静态产物，因此不能提供或猜造其GitHub Pages地址。GitHub只读查询未发现SchihHsin/ascstudio仓库，账户仓库列表中也未发现Studio名称项目。
+- 本轮没有部署原型、修改报告或页面序列，没有新增研究结论或改变API/Host/Application边界；不运行测试。上一轮应用户要求打开原报告时创建的浏览器Tab实际停在报告 `#1`，读取浏览器上下文两次超时，未确认已定位问题02，不应声称打开了具体问题页。
+- 本条仅更新交接文件，静态文本检查后单独提交并立即推送；发布地址问题的结论为尚无GitHub Pages地址，用户如继续要求发布再处理原型产物与相对子路径。
