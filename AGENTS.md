@@ -4506,3 +4506,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 使用内置ImageGen，实际附用户截图为编辑目标及已保存的彩色材质参考，生成1张修订：左下角紧凑尖角折面、对话上方低矮横向光带、画布右缘纵向弧面；统一浅亮渐变和通透材质，形状/方向/尺度各自适配空间。检视可见三处轮廓已区分，原三栏、面包屑、紧凑项目分组、AI平铺文本与右对齐用户气泡保留。
 - 文件保存于 `ascend-studio/design-explorations/location-shaped-20261009/`：refined.png、用户edit-source.png、README.md及完整prompt.json。更新 `ascend-studio/AGENTS.md` 的持久造型规则。旧候选保留追溯，没有覆盖。
 - 本轮仅提交图稿、源参考、提示词和交接；未修改App/静态产物、其他问题或报告页序，当前线上页面仍为原实现。生成图是设计评审，不新增研究或硬件/性能事实，不改变API/Host/Application边界。文档执行git diff检查，不新增或运行测试，不重建未变页面；等待用户评审本张修订后再进入实现。
+- Commit/push：修订图、用户源图、完整提示词与交接提交 `407d12af`（`design: tailor decorative shapes to workspace positions`）已成功推送origin/main；`git diff --cached --check`通过，本回执随后单独提交并立即push。仅纳入本轮6个文件，未混入已有报告或其他脏文件。未决事项为用户评审本张修订与后续是否应用。
