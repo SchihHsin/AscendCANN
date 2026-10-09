@@ -74,3 +74,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户纠正Ascend Studio不应放在CANN Dashboard下。源码已移到根仓 `ascend-studio/`，与 `cann-dashboard/` 平级；根仓 `ascstudio/` 继续只放Pages静态产物。
 - `build:pages`输出路径同步为 `../ascstudio`，线上入口仍为 `https://schihhsin.github.io/AscendCANN/ascstudio/`。不改UI、交互或其他问题的承载平台。
+
+
+## 2026-10-09 · 计算场景装饰重新探索
+
+- 用户否定此前3版装饰候选，明确珍珠与计算场景无关。后续装饰须从张量、矩阵、算子图、数据路径或并行计算轨迹取形；不再使用珍珠、首饰、漂浮圆球等无场景关联的意象。可以保留细腻的半透明材质，但应有明确计算含义。
+- 使用内置ImageGen与Product Design ideate，以 `evidence/20261009-free-canvas-default.jpg` 的现有桌面三栏为基准，独立生成3张候选，按主对话实际显示顺序编号。候选保存于 `design-explorations/compute-decoration-20261009/option-{1,2,3}.png`，完整提示词保存在同目录 `prompts.json`。
+- 新3版维持三栏、紧凑项目分组、中性选中、克制冷蓝紫、无对话头像、AI文字铺背景与右对齐用户气泡；装饰主要位于画布标题、左侧页脚与画布空白边缘。候选图属于视觉提案，生成文字不能作为新功能、硬件、性能或根因事实。第3张的GPU/NPU小字是生成插画细节，若选择该方向应移除或改为无字抽象轨迹。
+- 当前等待用户评审，未把任何新候选套用到源码或线上页面；前一组珍珠候选不再作为可选方向。只保存本次图稿与交接并push，不运行测试或重建未改动的页面。

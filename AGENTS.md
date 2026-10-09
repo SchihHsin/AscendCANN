@@ -4480,3 +4480,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 业务目的为独立组织Ascend Studio工作台。只调整文件位置与发布路径，问题02三栏自由画布、设计状态和演示边界均不变；不改其他报告及页序，不新增研究事实，不改变API/Host/Application边界。
 - 构建/发布检查：新目录下 `npm run build:pages` 通过，静态产物与已发布版本一致；入口、JS、CSS、Logo与装饰图均可访问且响应内容与本地产物一致。本地预览已从根仓 `ascend-studio/` 启动，HTTP 200。`git diff --cached --check` 通过，未新增或运行自动化测试。
 - Commit/push：源码平级迁移 `1a42a00a` 已成功推送origin/main；发布交接回执随后单独提交并立即推送，仅纳入本任务文档，其他既有脏文件未纳入。线上可评审地址为 `https://schihhsin.github.io/AscendCANN/ascstudio/`，当前问题02仍待用户评审。
+
+
+### 2026-10-09（Ascend Studio：计算相关装饰候选重做）
+
+- 用户否定此前视觉品质探索，指出珍珠装饰与计算无关。此前3张候选均未被选中；装饰的取形改为张量/矩阵、算子数据流、并行计算轨迹，低饱和、细腻材质与明确场景关联结合。珍珠、首饰和漂浮圆球不应再次进入方案。
+- 使用内置ImageGen，附现有桌面截图 `ascend-studio/evidence/20261009-free-canvas-default.jpg` 作为编辑基准，独立生成3张图片，按对话显示顺序编号并保存至 `ascend-studio/design-explorations/compute-decoration-20261009/option-{1,2,3}.png`；同目录README和prompts.json记录源图、完整提示词、内置工具模式及评审边界。更新 `ascend-studio/AGENTS.md` 的持久偏好。
+- 视觉检视：三张均没有珍珠或头像，保留三栏、紧凑项目任务、AI文本铺背景、右侧用户气泡和中性选中；分别在标题、页脚及画布边缘增加计算相关小图。第3张生成的GPU/NPU小字只是装饰候选内容，后续若选中须移除或改为无字抽象轨迹，不能当作硬件或运行事实。生成文字仍以实际HTML为准。
+- 本轮只交付问题02视觉候选待评审，未应用任何方案，未改页面源码、静态产物、其他题目或报告页序；不新增研究结论，不改变API/Host/Application边界。图稿与交接一起提交并立即push；未新增或运行测试，静态文档执行git diff检查。当前线上原型继续保留已发布的设计。
