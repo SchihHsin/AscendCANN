@@ -4442,3 +4442,15 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与边界：迁移交互提案，不新增研究主张。图像预处理的通道/batch例子未转写为AddCustom技术结论；默认561/32范围算例中整块访问会涉及15个范围外索引，有效元素策略范围外为0，这些只是数学演示，不能确认真实越界、精度根因或NPU通过。用户附件与实际项目文件不被修改，AI、调度、持久化与NPU服务未连接。API/Host/Application边界不变。
 - 构建/浏览：`npm run build`通过；In-app Browser在1584×994查看上述主流程、确认/取消/撤销、收纳恢复、独立草案、固定/对照/折叠/缩放、键盘材料换位、原核对入口和任务切换。新增Hook期间热更新产生过旧Hook顺序错误，完整刷新后正常，后续未捕获新增console error；未新增或运行自动化测试，未实际拖动或重新覆盖移动视口。默认态与解释态全图、局部字号比较和Diff/验证/索引截图在原型`evidence/20261009-*`；`design-qa.md`记录修正后结果为passed。
 - Commit/push：原型源码不在本仓，仅本交接记录单独提交；`0a5d6555`（`docs: record q02 task flow interaction integration`）已推送`origin/main`，本结果回填随后单独提交推送。未决事项：用户评审问题02，装饰方案选择；真实服务/硬件连接仍未实现。
+
+
+### 2026-10-09（问题02：按用户选择实现右侧自由画布）
+
+- 用户指出上一轮是固定窗口而非画布，明确选择“自由画布：代码、解释、结果、Diff 都是可移动、缩放、固定的内容块”。上一条固定步骤工作区的检查结果不能证明实现了画布。本轮只替换当前问题02右侧容器，保持Ascend Studio左侧项目任务、中间对话、右侧内容；本题等待用户评审，不开始下一题，不改变其他问题的平台或源报告页序。
+- 原型仍位于仓库外 `/Users/hsin/.codex/visualizations/2026/09/30/01a0f0fa-7e78-7c81-a14c-994e31ca9b7b/q02-judgment-workbench`，预览 `http://127.0.0.1:5173/`。新增 `src/useCanvasState.js`、`TaskCanvas.jsx`/CSS、`CanvasMaterials.jsx`/CSS、`CanvasIndex.jsx`/CSS，更新 `App.jsx`、`ActionWorkspace.jsx`、`useTaskFlow.js`及原型交接/QA；App不再挂载固定步骤版TaskPracticeFlow和遮罩式TaskContents。根仓本轮只改本交接文件，未纳入已有报告或其他脏文件。
+- 来源为 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#19`、`story-data.mjs`和`build.mjs`的B1–B6与共用机制，属于设计提案。二维画布初始100%显示来源示例与现场判断，解释、草案、参数、尝试结果、Diff、范围复核、误差核对和复核记录按需展开；空白/抓手/滚轮平移，Ctrl/Command滚轮及控件缩放（15–150%）、标题拖动、角落调尺寸、键盘微调、固定、小地图、适应全部、独立折叠摘要、收纳恢复。索引为画布内小浮层；记录可成为动态内容块。新增对象仅调整自己，既有对象原位保留；临时对照退出恢复坐标、尺寸、可见性、折叠和视口，固定对象不被重排。
+- Diff保存生成时基准，应用后仍可查看原增删差异；取消保留草案和尝试，可重新生成，本轮未新增取消提案历史。误差/复核卡共享演算依据，保存记录携带范围、误差数量、容差及来源；演算期间锁定输入，恢复初始状态清理卡内表单、结果和待执行计时器。修正浏览器卡内按钮定位引起父画布原生滚动的问题，使用overflow:clip并保留卡内滚动。
+- 继承紧凑项目分组、新建任务/自动化任务/能力库、无头像、AI文字铺背景、用户气泡靠右、中性选中、克制冷蓝紫、无左色条和文字描边；没有学习中心/学习组。新ImageGen装饰候选仍未选择，本轮未擅自应用。
+- 证据边界：仍是本地交互/数学演算，[16,32]通过、[17,33]失败、precision mismatch位于custom_op.cpp:128，改编译参数位置未变；尾块只是线索。范围演算和用户CSV不确认真实根因、精度或NPU通过；代码只在示例副本应用，不写入附件/真实项目；AI、持久化、调度、NPU未连接。未新增研究事实，API/Host/Application边界不变。
+- 构建与浏览：`npm run build`通过；In-app Browser默认1280×720实际操作标题拖动、角落调尺寸、空白平移、键盘微调、固定、临时对照退出恢复、折叠/收纳恢复、索引定位、尝试→Diff取消/再生成/确认→范围复核、误差→保存复核→动态记录卡、任务切换与重置。父画布scrollTop复核为0，最终刷新后未捕获console error；未新增或运行自动化测试。本轮未单独覆盖Ctrl/Command滚轮缩放、移动端或剪贴板。截图为原型 `evidence/20261009-free-canvas-{default,explanation,overview}.jpg`，前轮QA已追加更正，当前状态待用户评审。
+- Commit/push：本交接记录待单独提交并立即推送origin/main；推送结果随后回填。原型源码继续在本任务可视化目录，不混入根仓已有无关改动。未决事项：用户评审问题02；装饰方案选择；真实服务与硬件连接。
