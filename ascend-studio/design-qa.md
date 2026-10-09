@@ -139,3 +139,10 @@ final result: passed
 
 - 将同一原型源码与既有证据纳入根仓，UI和交互设计不变。品牌资源改为BASE_URL解析，Pages构建使用相对base，避免仓库子路径404。
 - 本轮不新增或运行测试套件；沿用上轮本地画布操作的观察，发布后的可访问性另由HTTP和部署回执确认。
+
+
+## 2026-10-09 · 根仓平级目录与发布回执
+
+- 完整源码和静态产物提交 `64e934ad` 已推送origin/main，GitHub Pages构建状态built，无构建错误。
+- 用户纠正源码不应归在CANN Dashboard下，现迁到根仓 `ascend-studio/`，与 `cann-dashboard/` 平级；Pages静态入口仍为根仓 `ascstudio/`。输出路径同步为 `../ascstudio`，仅调整组织位置，不改UI或交互。
+- 未新增或运行测试套件；重新构建与线上HTTP检查结果随发布记录回填。

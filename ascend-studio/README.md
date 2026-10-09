@@ -2,7 +2,7 @@
 
 在线预览：https://schihhsin.github.io/AscendCANN/ascstudio/
 
-源码：`cann-dashboard/ascend-studio/`。GitHub Pages静态产物：根仓 `ascstudio/`。
+源码：根仓 `ascend-studio/`，与 `cann-dashboard/` 平级。GitHub Pages静态产物：根仓 `ascstudio/`。
 
 ## 本地开发与发布
 

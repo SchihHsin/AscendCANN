@@ -4471,3 +4471,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 业务与证据边界：发布同一问题02原型，没有新增视觉设计、题目或功能；保持三栏自由画布和此前用户决策。只是本地演示，不接AI/NPU，不写实际项目；所有交互状态仍在当前页面内存，刷新恢复初始状态。未改精简/完整报告、原学习方案或其页序，API/Host/Application边界不变。
 - 构建/检查：`npm ci`完成，`npm run build:pages`通过；HTML中JS/CSS相对路径及实际文件、Logo产物存在性检查通过；未运行自动化测试。原本地画布交互观察仍见上一条QA，发布后可访问性与部署结果另回填。源码和静态产物随本交接一起提交并立即推送，仅包含本任务文件。
 - 后续规则：每次改动都同时提交源码、重新构建的ascstudio静态产物与交接记录；不能再次只推交接文档。部署回执和线上HTTP结果待推送后补充。
+
+
+### 2026-10-09（Ascend Studio源码平级与发布回执）
+
+- 用户明确Ascend Studio不应位于CANN Dashboard下。源码由 `cann-dashboard/ascend-studio/` 移至根仓 `ascend-studio/`，与 `cann-dashboard/` 平级；旧路径已移除，历史记录只作回溯，以本条路径为准。Pages静态产物保持根仓 `ascstudio/`，线上地址 `https://schihhsin.github.io/AscendCANN/ascstudio/` 与看板目录平级。
+- 原型完整源码与Pages产物提交 `64e934ad` 已成功推送origin/main，GitHub Pages对应构建built且error为null。此次迁移同步源码README、AGENTS、QA及build:pages输出路径 `../ascstudio`；本地预览从新的权威源码启动。不得再次只推交接文件或回到仓外快照修改。
+- 业务目的为独立组织Ascend Studio工作台。只调整文件位置与发布路径，问题02三栏自由画布、设计状态和演示边界均不变；不改其他报告及页序，不新增研究事实，不改变API/Host/Application边界。
+- 构建、线上HTTP与本次迁移commit/push结果完成后回填；未新增或运行自动化测试。

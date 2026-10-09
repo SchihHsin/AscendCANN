@@ -64,7 +64,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ## 2026-10-09 · 纳入根仓并发布GitHub Pages
 
 - 用户再次强调每次修改后立即push；此前只推交接记录是执行错误，不能以可视化目录在仓库外为由不推源码。
-- 当前权威源码已迁入 `/Users/hsin/Documents/Coding/AscendCANN/cann-dashboard/ascend-studio/`，后续修改在此进行；历史仓外目录保留作快照。
+- 当前权威源码位于 `/Users/hsin/Documents/Coding/AscendCANN/ascend-studio/`，后续修改在此进行；历史仓外目录保留作快照。
 - Pages产物在根仓 `/Users/hsin/Documents/Coding/AscendCANN/ascstudio/`，线上入口为 `https://schihhsin.github.io/AscendCANN/ascstudio/`。源码品牌资产按BASE_URL解析，Pages构建使用相对base；不改变UI、交互或研究边界。
 - 修改后构建 `npm run build:pages`，只暂存本任务源码/产物与交接记录并立即push；不得再次只提交交接文档。
 - 保留原Sites可选模板文件；本轮使用用户指定的GitHub Pages，不调用Sites发布。
+
+
+## 2026-10-09 · 独立于CANN Dashboard的工作台
+
+- 用户纠正Ascend Studio不应放在CANN Dashboard下。源码已移到根仓 `ascend-studio/`，与 `cann-dashboard/` 平级；根仓 `ascstudio/` 继续只放Pages静态产物。
+- `build:pages`输出路径同步为 `../ascstudio`，线上入口仍为 `https://schihhsin.github.io/AscendCANN/ascstudio/`。不改UI、交互或其他问题的承载平台。
