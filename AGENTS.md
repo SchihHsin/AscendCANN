@@ -4546,3 +4546,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新原型AGENTS、README与design-qa；截图保存为evidence/20261009-ambient-*。In-app Browser临时1672×941桌面视口，与同状态HTML基准、选定素材参考及局部图比较；最终本轮视觉检查passed。装饰已加载，absolute与pointer-events:none读值确认，右侧装饰元素为0。原预览停止期间有历史Vite WebSocket日志，已从根仓ascend-studio重新启动本地预览并刷新；不声称全程零错误。没有新增或运行测试，也没有重复全部自由画布交互回归。
 - npm run build:pages通过，静态产物同步至根仓ascstudio；源码品牌与装饰路径继续使用BASE_URL。只暂存本任务源码、素材、产物、证据和交接，立即commit/push，不混入已有报告或其他脏文件。未改变其他题目、报告页序或API/Host/Application边界；仍无真实AI、NPU、项目写入和持久化连接。
 - 当前问题02等待用户评审底图效果；后续右侧装饰默认保持空，左侧/中间背景仍不占位。提交和push结果在完成后回填。
+
+- Commit/push：装饰底图源码、两张透明PNG、完整提示词、视觉证据、Pages产物及交接提交 `0422518d`（`feat: apply ambient backdrop images to Ascend Studio`）已成功推送origin/main；`git diff --cached --check`通过，仅纳入本轮22个文件。当前本地Demo已显示两处底图，GitHub Pages构建由此次push触发。本回执单独提交并立即push。
