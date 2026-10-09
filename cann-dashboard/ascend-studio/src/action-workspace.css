@@ -1,0 +1,94 @@
+.action-workspace { min-width: 0; min-height: 0; height: 100%; background: #fff; color: #363741; }
+.action-workspace[hidden] { display: none; }
+.action-workspace-scroll { padding-bottom: 20px; }
+.action-workspace .action-workspace-header { gap: 12px; min-height: 72px; padding: 9px 0 12px; background: transparent; }
+.action-workspace-header > div { min-width: 0; }
+.action-workspace-header h2 { font-size: 15px; }
+.action-workspace-header > div > span { display: block; margin-top: 4px; color: #898991; font-size: 10px; line-height: 1.45; }
+.aw-back { display: inline-flex; align-items: center; justify-content: center; gap: 4px; flex-shrink: 0; padding: 6px 0; border: 0; background: transparent; color: #696a74; font-size: 10px; cursor: pointer; }
+.aw-back:hover { color: #474c80; }
+.aw-tabs { display: flex; align-items: center; gap: 4px; padding: 5px; margin: 15px 0 13px; border: 1px solid #e8e7e5; border-radius: 9px; background: #fafaf8; }
+.aw-tab { display: flex; justify-content: center; align-items: center; gap: 5px; flex: 1; min-width: 0; padding: 8px 3px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #82838b; font-size: 11px; cursor: pointer; white-space: nowrap; }
+.aw-tab.is-active { background: #fff; border-color: #e5e4e1; color: #393b45; box-shadow: 0 1px 3px #302f4010; }
+.aw-tab:hover { color: #41424c; }
+.aw-boundary { display: flex; align-items: center; gap: 7px; padding: 9px 10px; border: 1px solid #ece8de; border-radius: 7px; background: #faf8f1; color: #807665; font-size: 10px; line-height: 1.5; margin-bottom: 19px; }
+.aw-boundary svg { flex-shrink: 0; }
+.aw-panel { min-width: 0; }
+.aw-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.aw-section-heading h3, .aw-form > h3 { margin: 0; font-size: 12px; font-weight: 650; }
+.aw-section-heading h3 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aw-badge { display: inline-flex; align-items: center; padding: 3px 6px; background: #f3f3f0; border-radius: 4px; font-size: 9px; color: #83838b; white-space: nowrap; }
+.aw-description { margin: 6px 0 12px; color: #8a8b93; font-size: 10px; line-height: 1.7; overflow-wrap: anywhere; }
+.aw-code-window { margin: 12px 0 18px; overflow: hidden; border: 1px solid #e4e5e8; border-radius: 8px; background: #f7f8fa; }
+.aw-code-caption { display: flex; align-items: center; gap: 6px; padding: 8px 11px; border-bottom: 1px solid #e6e7e9; color: #767a8a; font-size: 10px; }
+.aw-code-window pre { max-height: 260px; margin: 0; padding: 12px 11px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #d6d6d3 transparent; color: #61677d; font-size: 10px; line-height: 1.9; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2; }
+.aw-code-window code { padding: 0; color: inherit; font-family: "SFMono-Regular", Consolas, monospace; background: transparent; }
+.aw-form { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.aw-form > h3 + .aw-description { margin-top: -5px; margin-bottom: 0; }
+.aw-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.aw-fields > label, .aw-csv-label, .aw-observation { display: flex; flex-direction: column; gap: 7px; min-width: 0; color: #74767f; font-size: 10px; line-height: 1.6; }
+.aw-fields input, .aw-csv-input, .aw-observation textarea { width: 100%; min-width: 0; border: 1px solid #dedee1; border-radius: 6px; outline: none; background: #fff; color: #464851; padding: 9px 10px; font-family: inherit; font-size: 11px; line-height: 1.7; box-sizing: border-box; }
+.aw-fields input:focus, .aw-csv-input:focus, .aw-observation textarea:focus { border-color: #a9abc1; box-shadow: 0 0 0 2px #67698e0d; }
+.aw-csv-label > span { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.aw-csv-label em { color: #9798a0; font-style: normal; font-size: 9px; }
+.aw-csv-input { min-height: 138px; resize: vertical; font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; line-height: 1.8; }
+.aw-observation textarea { min-height: 116px; resize: vertical; }
+.aw-csv-input::placeholder, .aw-observation textarea::placeholder { color: #a3a4ac; }
+.aw-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 35px; padding: 8px 11px; border: 1px solid #dedee3; border-radius: 7px; font-size: 11px; font-weight: 500; cursor: pointer; transition: background .15s; }
+.aw-button-primary { color: #505675; border-color: #d9dbe5; background: #f1f2f8; }
+.aw-button-primary:hover { background: #e8eaf3; }
+.aw-button:disabled { cursor: wait; opacity: .6; }
+.aw-button-next { justify-content: space-between; margin-top: 19px; color: #6b6e7c; background: #fff; border-color: #e7e7e7; }
+.aw-button-next:hover { background: #f8f8f6; }
+.aw-inline-button { display: inline-flex; align-items: center; gap: 5px; padding: 3px 0; border: 0; color: #696e92; background: transparent; font-size: 10px; cursor: pointer; }
+.aw-inline-button:hover { color: #42486d; text-decoration: underline; text-underline-offset: 3px; }
+.aw-result-card { margin-top: 15px; padding: 13px; border: 1px solid #e6e6e6; border-radius: 8px; background: #fcfcfa; min-width: 0; }
+.aw-result-title { display: flex; align-items: center; gap: 6px; color: #626879; font-size: 11px; }
+.aw-result-title strong { color: #4b4e59; font-weight: 600; }
+.aw-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+.aw-metrics > div { min-width: 0; }
+.aw-metrics dt { color: #93939b; font-size: 10px; }
+.aw-metrics dd { margin: 3px 0 0; font-size: 18px; line-height: 1.4; color: #555a75; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.aw-formula { margin: -4px 0 0; color: #92939c; font-size: 9px; line-height: 1.7; overflow-wrap: anywhere; }
+.aw-result-summary { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 14px; margin: 12px 0; color: #8b8c95; font-size: 10px; }
+.aw-result-summary strong { color: #9a7567; font-weight: 600; }
+.aw-result-summary > span:last-child { flex-basis: 100%; font-size: 9px; }
+.aw-table-wrap { max-height: 264px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #d6d6d3 transparent; border: 1px solid #e9e9e6; border-radius: 6px; }
+.aw-table { width: 100%; border-collapse: collapse; font-size: 9px; line-height: 1.6; table-layout: fixed; font-variant-numeric: tabular-nums; }
+.aw-table th { position: sticky; top: 0; padding: 7px 5px; background: #f2f2ef; color: #8a8b93; text-align: left; font-weight: 500; border-bottom: 1px solid #e8e8e5; }
+.aw-table th:first-child { width: 14%; }
+.aw-table th:nth-child(2), .aw-table th:nth-child(3) { width: 32%; }
+.aw-table th:last-child { width: 22%; }
+.aw-table td { padding: 7px 5px; color: #6c6f7b; border-bottom: 1px solid #ededeb; vertical-align: top; overflow-wrap: anywhere; }
+.aw-table tr:last-child td { border-bottom: 0; }
+.aw-table td > span { display: block; }
+.aw-table td small { display: block; color: #a0a1aa; font-size: 8px; }
+.aw-status { padding: 2px 3px; border-radius: 3px; background: #f1f3f0; color: #7c897b; font-size: 8px; text-align: center; }
+.aw-status.is-failed { background: #f7eeea; color: #9a796d; }
+.aw-checks { display: flex; flex-direction: column; gap: 9px; padding: 12px; margin: 0; border: 1px solid #e6e6e4; border-radius: 7px; background: #fafaf8; }
+.aw-checks legend { padding: 0 4px; color: #777984; font-size: 10px; }
+.aw-checks label { display: flex; align-items: flex-start; gap: 8px; color: #727580; font-size: 10px; line-height: 1.6; cursor: pointer; }
+.aw-checks input { flex-shrink: 0; width: 13px; height: 13px; margin: 2px 0 0; accent-color: #81849b; cursor: pointer; }
+.aw-review-context { padding: 10px 11px; border-radius: 6px; background: #f5f5f3; color: #90909a; font-size: 10px; line-height: 1.7; }
+.aw-review-context > span { color: #777985; }
+.aw-review-context p { margin: 4px 0 0; }
+.aw-review-text { margin: 11px 0 9px; color: #777b88; font-size: 10px; line-height: 1.85; white-space: pre-wrap; overflow-wrap: anywhere; }
+.aw-error { margin: 0; padding: 8px 10px; border-radius: 6px; color: #9d766c; background: #fbf0ed; font-size: 10px; line-height: 1.7; }
+.aw-notice { min-height: 19px; margin-top: 12px; color: #778272; font-size: 10px; line-height: 1.7; }
+.aw-sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.aw-spinner { animation: aw-spin 1s linear infinite; }
+.action-workspace button:focus-visible { outline: 2px solid #aeb1c4; outline-offset: 3px; }
+@keyframes aw-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .aw-spinner { animation: none; } }
+@media (max-width: 720px) { .action-workspace { min-height: 680px; } .aw-tabs { gap: 2px; } .aw-tab { font-size: 10px; gap: 4px; } }
+
+/* Shared task-flow entry points; original source remains read-only. */
+.action-workspace-header .aw-header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 0 0 auto; }
+.aw-contents-button { display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 6px 7px; border: 1px solid #e4e5e3; border-radius: 6px; color: #858b9b; background: #fafbf8; font-size: 9px; white-space: nowrap; cursor: pointer; }
+.aw-contents-button:hover { background: #f0f1ed; border-color: #d8dce3; color: #686f83; }
+.aw-flow-launch { margin-top: -7px; margin-bottom: 17px; }
+.aw-flow-launch-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.aw-source-action { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 30px; padding: 6px 9px; border: 1px solid #dddfe5; border-radius: 6px; color: #798297; background: #fbfcfa; font-size: 10px; font-weight: 500; cursor: pointer; }
+.aw-source-action:hover { background: #eef0f0; border-color: #d0d5df; color: #626d85; }
+.aw-flow-launch p { margin: 7px 1px 0; color: #a0a4ae; font-size: 9px; line-height: 1.65; }
+@media (max-width: 560px) { .action-workspace-header .aw-header-actions { flex-wrap: wrap; gap: 2px 8px; max-width: 152px; } }

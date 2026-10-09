@@ -4461,3 +4461,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户询问ascstudio的GitHub Pages地址。核对当前问题02原型交接和仓库文件后，原型仍在仓库外可视化目录，当前可用预览为 `http://127.0.0.1:5173/`；此前 `fdc60063` / `e91729dd` 推送的是交接记录，没有发布原型静态产物，因此不能提供或猜造其GitHub Pages地址。GitHub只读查询未发现SchihHsin/ascstudio仓库，账户仓库列表中也未发现Studio名称项目。
 - 本轮没有部署原型、修改报告或页面序列，没有新增研究结论或改变API/Host/Application边界；不运行测试。上一轮应用户要求打开原报告时创建的浏览器Tab实际停在报告 `#1`，读取浏览器上下文两次超时，未确认已定位问题02，不应声称打开了具体问题页。
 - 本条仅更新交接文件，`git diff --check`通过；提交 `6c5ace8a` 已成功推送origin/main，本回执随后提交推送。发布地址问题的结论为尚无GitHub Pages地址，用户如继续要求发布再处理原型产物与相对子路径。
+
+
+### 2026-10-09（落实立即push：Ascend Studio源码与Pages产物入仓）
+
+- 用户追问“为什么不push”，明确指出此前只推交接记录没有落实每次修改后立即push。已纠正这一执行错误，不能再以可视化目录位于仓库外作为不推原型的理由。
+- 当前权威源码迁入 `cann-dashboard/ascend-studio/`，完整保留src、public、依赖锁、开发/可选Sites模板、既有设计证据与QA；本地node_modules、dist、系统文件和日志忽略。历史仓外q02目录保留作快照，后续修改使用仓内源码。
+- 新增根仓静态入口 `ascstudio/`，计划线上地址 `https://schihhsin.github.io/AscendCANN/ascstudio/`。GitHub Pages只读配置确认main根目录legacy构建。新增 `npm run build:pages`，使用相对base输出静态产物；品牌图标改为BASE_URL解析，避免仓库子路径下图片/脚本404。只发布client静态文件，不需要Sites Worker或另建仓库。
+- 业务与证据边界：发布同一问题02原型，没有新增视觉设计、题目或功能；保持三栏自由画布和此前用户决策。只是本地演示，不接AI/NPU，不写实际项目；所有交互状态仍在当前页面内存，刷新恢复初始状态。未改精简/完整报告、原学习方案或其页序，API/Host/Application边界不变。
+- 构建/检查：`npm ci`完成，`npm run build:pages`通过；HTML中JS/CSS相对路径及实际文件、Logo产物存在性检查通过；未运行自动化测试。原本地画布交互观察仍见上一条QA，发布后可访问性与部署结果另回填。源码和静态产物随本交接一起提交并立即推送，仅包含本任务文件。
+- 后续规则：每次改动都同时提交源码、重新构建的ascstudio静态产物与交接记录；不能再次只推交接文档。部署回执和线上HTTP结果待推送后补充。

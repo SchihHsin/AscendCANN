@@ -1,0 +1,38 @@
+.cidx { display: flex; flex-direction: column; max-height: min(640px, 68vh); background: #fff; color: #565b67; }
+.cidx header { display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid #eeefeb; }
+.cidx h3 { margin: 0; font-size: 13px; font-weight: 600; }
+.cidx header span { display: block; margin-top: 4px; color: #898d98; font-size: 10px; }
+.cidx header > button { display: grid; place-items: center; align-self: flex-start; border: 0; margin-left: auto; padding: 3px; background: transparent; color: #898d98; cursor: pointer; }
+.cidx-scroll { overflow: auto; min-height: 0; padding: 10px; scrollbar-width: thin; }
+.cidx h4 { margin: 2px 2px 8px; font-size: 11px; font-weight: 550; }
+.cidx h4:not(:first-child) { margin-top: 18px; }
+.cidx h4 span { margin-left: 5px; color: #9598a1; font-weight: 400; }
+.cidx-list { display: flex; flex-direction: column; gap: 4px; }
+.cidx-row { display: flex; border: 1px solid #e8e8e4; border-radius: 6px; background: #fff; }
+.cidx-row.is-selected { background: #f4f4f1; }
+.cidx-locate, .cidx-record { display: flex; align-items: center; gap: 7px; border: 0; padding: 8px; min-width: 0; flex: 1; background: transparent; color: #747b89; text-align: left; cursor: pointer; }
+.cidx-locate > span, .cidx-record > span { flex: 1; min-width: 0; }
+.cidx strong { display: block; color: #5a606c; font-size: 11px; font-weight: 500; line-height: 1.6; overflow-wrap: anywhere; }
+.cidx small { display: block; color: #898d98; font-size: 10px; line-height: 1.6; }
+.cidx-locate:disabled { opacity: .5; cursor: default; }
+.cidx-locate > svg, .cidx-record > svg { flex-shrink: 0; }
+.cidx-archive { flex-shrink: 0; margin-right: 5px; border: 0; padding: 3px; background: transparent; color: #898d98; cursor: pointer; }
+.cidx-record { border: 1px solid #e8e8e4; border-radius: 6px; width: 100%; }
+.cidx-record:hover, .cidx-row:hover { background: #f7f7f4; }
+.cidx-undo { display: flex; align-items: center; gap: 5px; border: 0; padding: 7px 3px; background: transparent; color: #70778d; font-size: 11px; cursor: pointer; }
+.cidx-empty { font-size: 11px; line-height: 1.7; color: #898d98; padding: 5px; }
+.cidx footer { border-top: 1px solid #eeefeb; padding: 8px 12px; color: #898d98; font-size: 10px; }
+.cidx button:focus-visible { outline: 2px solid #b7bbca; outline-offset: 1px; }
+.canvas-record-detail { padding: 12px; font-size: 12px; line-height: 1.8; color: #646b78; }
+.canvas-record-detail > span { display: block; color: #898d98; font-size: 10px; }
+.canvas-record-detail p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.tc-card-content .action-workspace { height: 100%; }
+.tc-card-content .action-workspace-header, .tc-card-content .aw-tabs { display: none; }
+.tc-card-content .action-workspace-scroll { height: auto; overflow: visible; padding: 0; }
+
+/* Reuse evidence tools inside independent canvas cards. */
+.tc-card-content .aw-description, .tc-card-content .aw-review-text, .tc-card-content .aw-checks label { font-size: 12px; color: #727986; }
+.tc-card-content .aw-table, .tc-card-content .aw-formula, .tc-card-content .aw-table td small, .tc-card-content .aw-status { font-size: 10px; }
+.tc-card-content .aw-fields > label, .tc-card-content .aw-csv-label, .tc-card-content .aw-observation, .tc-card-content .aw-inline-button, .tc-card-content .aw-button { font-size: 11px; }
+.tc-card-content .aw-csv-input { font-size: 11px; }
+.chat-canvas-action { margin-top: 7px; }
