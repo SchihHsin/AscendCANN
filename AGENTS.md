@@ -4414,3 +4414,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与边界：这是用户认可的议题表述，不是新增研究事实；仍以公开经验发布与后来者复用作为证据方向，不能仅凭标题断言 AI 必然导致社区经验流失。未改变 API／Protocol、Host／Harness、Application／Task 边界。
 - 检查：确认精简版问题总览由同一 `focusQuestions` 名称驱动，旧名称只出现在被替换字段；`git diff --check` 通过。未做浏览器视觉实测，遵守本地 `file://` 页面访问限制。
 - Commit／push：`7de4d6a5`（`docs: rename Q06 community knowledge issue`）已推送 `origin/main`；本交接结果由后续 AGENTS 记录提交同步。其他既有工作区改动未纳入。
+
+### 2026-10-09（问题02判断与纠错原型补齐交互）
+
+- 用户要求现有固定界面可以点击并连续操作。本次继续仅处理问题02，供用户评审后再开始下一题。原型位于仓库外 `/Users/hsin/.codex/visualizations/2026/09/30/01a0f0fa-7e78-7c81-a14c-994e31ca9b7b/q02-judgment-workbench`，预览为 `http://127.0.0.1:5173/`；没有修改精简报告、完整报告或其页面序列。
+- 新增 / 集成 `src/useWorkbenchState.js`、`prototype-data.js`、`ActionWorkspace.jsx` / CSS、`WorkbenchDialogs.jsx` / CSS、`interaction.css`，更新 `App.jsx` 与原型交接 / QA。支持项目分组收起、搜索 / 筛选、任务切换与创建、每任务独立对话与记录、文本输入和代码 / 文件 / 图片关联、能力库、AI演示配置、新对话 / 历史恢复 / 复制 / JSON导出、证据详情、自动化状态及演示运行。右侧可连续核对示例 / 用户代码、计算索引范围、粘贴CSV计算误差与容差、保存复核记录并回到原任务对话。
+- 继承用户明确决策：工作台名称为 Ascend Studio；左侧项目任务、中间对话、右侧内容的三栏结构保持；左侧保留新建任务 / 自动化任务 / 能力库；任务按项目紧凑分组；不新增学习中心或“学习组”标签。AI回答铺在背景上、没有对话头像，用户气泡靠右。暖白 / 浅灰为主，克制使用冷蓝紫，选中态保持中性、不带左色条或高饱和描边、文字无描边。GitCode / 昇腾官网等其他问题的承载平台仍应按题目分别判断，不能全改为工作台。
+- 装饰探索已用 ImageGen 提供三张候选，记录在原型 `AGENTS.md`；用户尚未选择，本次交互补齐没有擅自套用新装饰方案。
+- 证据与边界：这是设计提案与本地演示，不新增研究结论。已知现场仍为 `[16,32]` 通过、`[17,33]` 失败、`precision mismatch` 位于 `custom_op.cpp:128`，修改编译参数后位置未变；尾块仅为待核查线索。AI回复与自动化未连接真实服务，CSV只计算用户粘贴的数据，不能声称算子 / NPU 已验证。没有改变API／Protocol、Host／Harness、Application／Task边界。
+- 构建与预览：`npm run build` 通过；In-app Browser 1584×994查看默认三栏和连续核对 / 复核记录、任务上下文、创建 / 能力 / 附件 / 历史 / 自动化 / AI重试状态，未捕获console error。未新增或运行自动化测试。原型会话状态刷新后恢复默认。
+- Commit／push：原型源码位于仓库外，没有将其或已有脏文件混入仓库；本交接记录单独提交并推送 `origin/main`。未决事项：用户评审问题02交互；装饰方案尚待选定；真实AI、任务持久化、调度及NPU连接不在本次原型范围。
