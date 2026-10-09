@@ -5,6 +5,7 @@ import { WorkbenchDialogs } from "./WorkbenchDialogs";
 import { ActionWorkspace } from "./ActionWorkspace";
 import { useTaskFlow } from "./useTaskFlow";
 import { useCanvasState } from "./useCanvasState";
+import { useWorkbenchLayout } from "./useWorkbenchLayout";
 import { TaskCanvas } from "./TaskCanvas";
 import { CanvasMaterial } from "./CanvasMaterials";
 import { CanvasIndex } from "./CanvasIndex";
@@ -111,6 +112,7 @@ function App() {
   const canvas = useCanvasState();
   const [precisionContext, setPrecisionContext] = useState(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const layout = useWorkbenchLayout({ sidebarCollapsed });
   const previousFlow = useRef({ attempts: 0, proposal: null, applied: null });
   const [taskContentsOpen, setTaskContentsOpen] = useState(false);
   const [suggestionDismissed, setSuggestionDismissed] = useState(false);
@@ -197,7 +199,7 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid" + (sidebarCollapsed ? " is-sidebar-collapsed" : "")}>
+      <div className={"workspace-grid" + (sidebarCollapsed ? " is-sidebar-collapsed" : "") + (layout.dragging ? " is-resizing" : "")} ref={layout.workspaceRef} style={layout.style}>
         <div className={"sidebar-shell" + (sidebarCollapsed ? " is-collapsed" : "")}>
         <aside id="project-sidebar" className="sidebar" aria-label="项目与任务" hidden={sidebarCollapsed}>
           <img className="ambient-art ambient-art--archive" src={`${import.meta.env.BASE_URL}assets/project-archive-ambient.png`} alt="" aria-hidden="true" draggable={false} />
@@ -257,6 +259,7 @@ function App() {
           {sidebarCollapsed ? <IconChevronRight size={13} /> : <IconChevronLeft size={13} />}
         </button>
         </div>
+        {!sidebarCollapsed && <div className="workspace-divider workspace-divider--projects" role="separator" tabIndex={0} aria-label="调整项目栏宽度" title="拖动调整项目栏宽度；双击恢复默认布局" {...layout.separatorProps("projects")} />}
 
         <section className="conversation-panel" aria-label="任务对话">
           <header className="panel-header conversation-header">
@@ -362,6 +365,7 @@ function App() {
           <input hidden type="file" multiple accept="image/*" ref={wb.imageRef} onChange={(event) => wb.readFiles(event, "image")} aria-label="选择截图附件" />
         </section>
 
+        <div className="workspace-divider workspace-divider--conversation" role="separator" tabIndex={0} aria-label="调整对话与画布宽度" title="拖动调整对话与画布宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />
         <aside className="diagnostic-panel" aria-label={isMainTask ? "任务画布" : "任务简报"}>
           <TaskCanvas key={flow.state.resetVersion} visible={isMainTask} flow={flow} canvas={canvas} onBack={() => showCanvasCard("evidence")} onOpenContents={() => setTaskContentsOpen(value => !value)} onAttachCode={() => openDialog("code")} renderMaterial={renderCanvasMaterial} contentsOpen={taskContentsOpen && isMainTask} contents={<CanvasIndex canvas={canvas} flow={flow} records={session.records} onClose={() => setTaskContentsOpen(false)} onLocate={showCanvasCard} onOpenRecord={openCanvasRecord} />} />
           {!isMainTask && <div className="diagnostic-scroll">

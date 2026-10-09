@@ -4556,3 +4556,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - App.jsx加入独立sidebar-shell与收起状态、可访问性名称/aria-controls/aria-expanded。胶囊中性灰白18×52px，桌面收起保留18px窄边，重点击恢复；保留项目/任务和对话状态。窄屏纵向布局保留40px展开入口，原移动端composer规则不改。
 - styles.css与根仓ascstudio静态产物已同步构建。In-app Browser显示展开、收起、再次展开；底图实际父节点为conversation-header，胶囊位于工作区垂直中间。截图为ascend-studio/evidence/20261009-sidebar-{expanded,collapsed}.jpg。未新增或运行测试；没有改变研究结论、其他题目或API/Host/Application边界。
 - 用户询问push并继续要求三栏可拖拽宽度。本阶段完成后立即提交推送，再继续三栏拖拽；不混入已有无关脏文件。阶段推送回执随下一阶段交接补充。
+
+
+### 2026-10-09（Ascend Studio：三栏拖拽宽度）
+
+- 前一阶段收起胶囊、底图加深及标题容器定位提交d26c3a64已成功推送origin/main。用户随后明确三栏宽度应可拖拽，本轮补齐两处分隔线，继续只改问题02，不开启其他题目。
+- 新增ascend-studio/src/useWorkbenchLayout.js；App.jsx接入布局状态，styles.css加入不占grid轨道的绝对定位分隔线。左边界只改变项目栏及相邻对话宽度，右边界只改变对话及画布宽度。采用Pointer Capture，抬起/取消/失去capture结束拖动，窗口变化和折叠结束正在进行的手势；ResizeObserver适配实际容器。
+- 默认宽度按原22vw/260px导航、55:45或52:48以及500/420px画布最小值还原；手动调宽时项目栏200–520px，对话至少300px、画布至少360px。项目收起保留18px入口和用户展开宽度，中右保持已选比例；再次展开恢复。左右键16px、Shift64px、Home/End到边界；双击任一分隔线恢复整套默认布局。状态只在当前页面，刷新恢复初始；窄屏延续原纵向布局，隐藏横向宽度分隔线。
+- 同一In-app Browser1672×941页面显示两次实际拖动：367.84/717.28/586.87变为306.84/778.28/586.87，再变为306.84/693.28/671.87。每次仅相邻两栏变化，截图保存为ascend-studio/evidence/20261009-three-column-resized.jpg。胶囊与对话标题内的25%/32%底图沿用上一阶段，不新增右侧装饰。
+- npm run build:pages通过，静态产物同步根仓ascstudio；未新增或运行测试套件，没有重复自由画布全流程、键盘或移动端行为回归。源码、产物、证据与交接仅暂存本任务文件并立即push。没有改变报告页序、研究事实、API/Host/Application边界；当前仍无真实AI/NPU/持久化或真实项目写入。
+- 当前问题02继续等待用户评审。阶段push结果完成后回填。

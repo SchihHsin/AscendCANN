@@ -142,3 +142,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 左侧用右边缘中点的小胶囊收起/展开，展开18×52px中性灰白；桌面收起保留18px窄边，窄屏保留40px展开入口。状态仅当前页面，保留原任务、分组与对话数据。
 - 对话装饰必须位于header.panel-header.conversation-header内，不能铺在下方对话正文容器。用户要求更清楚：左侧PNG透明度25%、对话32%，保持渐消、absolute、pointer-events:none和右侧无装饰。
 - 已构建Pages，保存展开/收起截图，不新增或运行测试。用户随后要求三栏可拖拽宽度，下一阶段继续实现。
+
+
+## 2026-10-09 · 三栏可拖拽宽度
+
+- 两个role=separator控件覆盖原栏边界，不占额外grid轨道。项目边界只调项目/对话，对话边界只调对话/画布；胶囊仍在左栏右缘垂直中点。
+- useWorkbenchLayout.js保存展开项目宽度与中右比例。收起留18px入口，展开恢复已选宽度；拖拽有最小可用宽度，窄屏保持原纵向布局并隐藏分隔线。
+- Pointer Capture、键盘左右/Shift/Home/End均有实现；双击任一分隔线恢复全部默认宽度。仅当前页面状态，不新增localStorage或改变会话演示边界。
+- Pages构建通过，桌面已显示两条边界拖动后的实际宽度与截图。未新增或运行测试套件，不把本轮展示描述为全交互回归。用户询问push后，前一阶段提交d26c3a64已立即推送；本阶段完成也立即推送。

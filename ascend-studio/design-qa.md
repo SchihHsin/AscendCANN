@@ -179,3 +179,16 @@ final result: passed
 - 当前仍是浏览器演示，AI、真实项目写入、持久化和NPU未连接。装饰不产生新功能、研究证据或技术根因结论。
 
 final result: passed
+
+
+## 2026-10-09 · 收起胶囊、标题底图与三栏宽度
+
+- 本轮目标来自用户明确指令：左侧可收起，在右缘中点有小胶囊；底图更清楚；对话底图必须在header.panel-header.conversation-header；三栏宽度可拖拽。
+- 图片、字体、正文和任务数据保持原实现。左侧PNG透明度25%、对话32%；对话图实际父节点为conversation-header，高度与标题容器一致61px，absolute且不接收点击。右侧无装饰。
+- 展开/收起截图：evidence/20261009-sidebar-expanded.jpg、sidebar-collapsed.jpg。胶囊18×52px，中性灰白，位于工作区垂直中点；收起后入口仍可见，项目内容从可访问性树隐藏，展开恢复。
+- 三栏截图：evidence/20261009-three-column-resized.jpg。同一1672×941视口实际拖动左边界后，三栏宽度由367.84/717.28/586.87变为306.84/778.28/586.87；再拖动右边界后为306.84/693.28/671.87。左/右操作仅影响相邻栏，文字正常换行，输入框及画布工具仍在各自栏内。
+- 分隔线覆盖既有边界，不占位；Pointer Capture确保拖动持续，结束清除is-resizing；role=separator与aria数值提供键盘/可访问性入口。默认窄屏规则仍为纵向结构；手动宽度只存在当前页面。
+- npm run build:pages通过。未新增或运行测试套件；键盘、doubleclick、窄屏和调宽后的完整画布流程本轮未单独操作，不声称已覆盖这些行为。没有新增研究、根因或NPU结论。
+- 当前展示未见本次范围内阻碍布局或阅读的问题，等待用户评审。
+
+final result: passed
