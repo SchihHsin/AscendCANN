@@ -4516,3 +4516,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保存 `ascend-studio/design-explorations/function-matched-20261009/refined.png`、README.md与完整prompt.json；来源图和配色参考指向已保存的前两组文件，没有覆盖旧图。更新 `ascend-studio/AGENTS.md`。视觉检视可见重复平面和冷暖交汇的区别，仍待用户评审其语义是否充分。
 - 本轮只提交视觉修订、提示词与交接，不改App/静态产物、其他问题或报告页序，不新增研究、功能或硬件/性能结论，不改变API/Host/Application边界。执行文档git diff检查，不新增或运行测试，不重建未变页面；评审后再实现。
 - Commit/push：功能对应修订图、完整提示词与交接提交 `be912e5a`（`design: connect decoration to project and conversation roles`）已成功推送origin/main；`git diff --cached --check`通过，本回执随后单独提交并立即push。仅纳入本轮5个文件，未混入已有报告或其他脏文件。未决事项为用户评审项目/档案与对话/回应的对应是否到位，再决定应用。
+
+
+### 2026-10-09（Ascend Studio：氛围背景装饰与渐消）
+
+- 用户要求装饰融入较淡的底色，可叠在文字下面、不占位，边缘不清晰并渐消，不突出，主要是氛围性装饰。该反馈补充/覆盖之前只在空白角落放独立插画的处理方式；保留功能对应的造型与浅亮彩色材质。
+- 使用内置ImageGen，实际附上一张功能对应图及已保存的彩色材质参考，生成1张修订。保留项目/档案叠片、对话/交汇回应、画布/开放延展，降低可见强度与边缘对比，以透明浅彩、柔和折痕与渐隐融入背景。文字和已有控件位置保持，叠片可见于页脚文字下方，未新增专用插画空间。该图仅用于视觉评审，生成文字仍以实际HTML为准。
+- 保存 `ascend-studio/design-explorations/ambient-background-20261009/refined.png`、README.md和完整prompt.json，更新 `ascend-studio/AGENTS.md`。后续落地规则为背景层不参与布局、不接收点击、不扩大区域/间距，文字及卡片保持清晰，装饰边缘渐隐。
+- 本轮仅提交图稿、提示词与交接，未修改App/静态产物、其他问题或报告页序；不新增研究/功能/硬件结论，不改变API/Host/Application边界。执行文档git diff检查，不新增或运行测试，不重建未变页面；等待用户评审淡化与渐消程度。
