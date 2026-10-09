@@ -4586,3 +4586,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新原型AGENTS/README/design-qa和素材README；前后截图为ascend-studio/evidence/20261009-header-glow-before.jpg及header-glow-final.jpg。同一1672×941页面共同检视，M级本地展示：标题与按钮清晰，柔光集中左上，右侧渐消，文字/栏边界/画布内容位置保持。不是全交互或可访问性认证。
 - npm run build:pages通过，根仓ascstudio静态产物同步。未新增或运行测试，未重新操作分栏拖动、键盘、移动端或画布全流程。没有新功能/根因/NPU/研究事实，不改变其他题目、报告序列或API/Host/Application边界；保留未知根因与浏览器演示边界。
 - 仅暂存本次源码、产物、截图和交接并立即commit/push；实际回执完成后补记。问题02继续待用户评审柔光强度。
+
+- Commit/push：C方案源码、同步Pages产物、前后截图及交接提交f73588f5已成功推送origin/main（0eafd035..f73588f5）；Pages构建和暂存diff检查通过，共11个本任务文件，未混入原有脏文件。本回执随后单独提交并立即push；未将push成功描述为线上最新部署已核验。
