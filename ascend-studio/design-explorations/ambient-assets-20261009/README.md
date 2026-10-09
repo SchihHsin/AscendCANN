@@ -10,8 +10,8 @@
 
 ## 在Demo中的消费
 
-App.jsx使用BASE_URL加载图片。styles.css将它们作为absolute背景层，z-index:0；内容层z-index:1。左侧25%透明度，对话32%，使用渐消遮罩；不接收点击、不占位、不撑大面板、不修改文字与间距。
+App.jsx使用BASE_URL加载图片。styles.css将它们作为absolute背景层，z-index:0；内容层z-index:1。左侧25%透明度，对话24%，使用渐消遮罩；不接收点击、不占位、不撑大面板、不修改文字与间距。用户最新选C：对话图固定760px宽，左移/上移后局部裁切、22px模糊，仅保留左上角柔光，形状不再重要。
 
-底图已应用到当前原型，Pages静态产物已同步构建。实际效果见../../evidence/20261009-ambient-final.jpg，视觉观察见../../design-qa.md。用户已明确右侧不放装饰；此前底部连接纹理保留为历史图稿。
+底图已应用到当前原型，Pages静态产物已同步构建。最新对话柔光效果见../../evidence/20261009-header-glow-final.jpg，初始应用见../../evidence/20261009-ambient-final.jpg，视觉观察见../../design-qa.md。用户已明确右侧不放装饰；此前底部连接纹理保留为历史图稿。
 
 对话底图位于 header.panel-header.conversation-header 内，不位于下方对话正文容器。

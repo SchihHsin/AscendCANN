@@ -4578,3 +4578,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 只维护根/原型交接与讨论截图，不运行测试、不构建未改页面、不推进其他题目，不改变报告序列、研究事实或API/Host/Application边界。问题02仍等待用户选择与评审，提交/push回执完成后补记。
 
 - Commit/push：讨论记录与当前截图提交89af67af已成功推送origin/main（b665c3c6..89af67af）；暂存diff检查通过，只纳入本轮3个文件。页面未改，本回执单独提交并立即push，不将push成功称为Pages最新部署已核验。
+
+### 2026-10-09（Ascend Studio：已选C，左上角柔光落地）
+
+- 用户明确选择C，说明形状并不重要。覆盖上一轮推荐A与此前强调对话/回应具体曲面的倾向；对话装饰仍在conversation-header，未移到topbar，只处理问题02供评审。
+- 修改ascend-studio/src/styles.css：复用现有ImageGen透明PNG，固定760px宽/原比例，top:-110px、left:-170px，blur22px、opacity24%，用偏左上渐消遮罩形成浅蓝紫/淡粉柔光。弱化完整居中波带，素材尺度不随栏宽拉伸；保持absolute、内容下层、不占位、不接收点击，左档案/右画布规则沿用。
+- 更新原型AGENTS/README/design-qa和素材README；前后截图为ascend-studio/evidence/20261009-header-glow-before.jpg及header-glow-final.jpg。同一1672×941页面共同检视，M级本地展示：标题与按钮清晰，柔光集中左上，右侧渐消，文字/栏边界/画布内容位置保持。不是全交互或可访问性认证。
+- npm run build:pages通过，根仓ascstudio静态产物同步。未新增或运行测试，未重新操作分栏拖动、键盘、移动端或画布全流程。没有新功能/根因/NPU/研究事实，不改变其他题目、报告序列或API/Host/Application边界；保留未知根因与浏览器演示边界。
+- 仅暂存本次源码、产物、截图和交接并立即commit/push；实际回执完成后补记。问题02继续待用户评审柔光强度。
