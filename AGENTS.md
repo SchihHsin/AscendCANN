@@ -4812,3 +4812,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Luna 完成 image-inference.css 与 range-structure.css 的窄栏规则，未运行测试/构建/提交；主代理在验收后将范围结构改为窄栏上下重排，避免固定510px SVG的横滚。主代理手动验收1280×720、1600×900、390×844，拖窄工作区至360px、宽工作区至约1049px：图解/尝试窄栏堆叠，并排窄栏上下/宽栏左右；正文宽栏760px居中；左栏收起/展开、栏宽拖动、任务往返恢复、画布移动/调整尺寸/固定/收纳恢复与关闭返回均已操作。390px页面scrollWidth=390；360px工作区图解无横向溢出；浏览器error日志为空。未新增自动测试套件。
 - 构建/语法/差异检查：npm run build:pages 成功，node --check 对 useImageInference/useExplanationSession/useContentWorkspace/useCanvasState 通过，git diff --check 通过。同步 ascstudio/ Pages静态产物；实际提交与推送回执后续补记，不把构建成功等同线上部署完成。
 - 交付截图与详细验收矩阵见 ascend-studio/design-qa.md 和 evidence/20261010-two-cases-{addcustom,image,attempts,narrow}.jpg。仅提交本轮原型/产物/交接，保留其他报告、图片、DS_Store等无关脏文件。待用户评审两个案例的图解密度与交互，真实运行/刷新持久化仍未接入。
+
+- Commit/push：整合提交02906078（46个原型/资产/产物/交接文件）已成功推送origin/main（f0601bfc..02906078）。仅纳入本轮授权范围；无关报告、图片、DS_Store保持原状。此回执随交接提交立即推送；Pages部署状态另核对，不以push代替上线验证。
