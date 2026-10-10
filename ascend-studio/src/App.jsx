@@ -322,6 +322,7 @@ function App() {
             <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           </header>
           <div className="conversation-scroll" ref={wb.conversationRef}>
+            <div className="conversation-flow">
             {session.showIntro && isMainTask && <>
             <article className="message-row user-message">
               <div className="message-content">
@@ -392,6 +393,7 @@ function App() {
               </article>
             ))}
             {session.replying && <div className="replying-indicator" role="status"><span /><span /><span /><small>正在整理演示答复…</small></div>}
+            </div>
           </div>
           <form className="composer" onSubmit={sendMessage}>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0) && <div className="composer-context-chips">

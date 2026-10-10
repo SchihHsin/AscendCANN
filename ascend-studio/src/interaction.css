@@ -2,10 +2,12 @@
 .task-inline-suggestion { margin: 14px 0; padding-block: 10px; border-block: 1px solid #eeedea; }
 .task-inline-suggestion > div:first-child { display: flex; align-items: flex-start; gap: 7px; }
 .task-inline-suggestion > div:first-child > svg { margin-top: 2px; color: #777b8e; flex-shrink: 0; }
-.task-inline-suggestion > div:first-child > span { flex: 1; }
+.task-inline-suggestion > div:first-child > span { flex: 1; min-width: 0; }
+.task-inline-suggestion > div:first-child > button { flex-shrink: 0; }
 .task-inline-suggestion strong { display: block; font-size: 12px; font-weight: 550; }
 .task-inline-suggestion small { display: block; margin-top: 4px; color: #92939b; font-size: 11px; }
-.task-suggestion-actions { display: flex; align-items: center; gap: 11px; margin-top: 9px; }
+.task-suggestion-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 11px; margin-top: 9px; }
+.task-suggestion-actions > button { flex-shrink: 0; white-space: nowrap; }
 .task-plain-button, .uncertainty-explain { display: inline-flex; align-items: center; gap: 6px; padding: 4px 0; border: 0; background: transparent; color: #6c7183; font-size: 11px; cursor: pointer; }
 .task-plain-button:hover, .uncertainty-explain:hover { color: #434b69; }
 .uncertainty-explain { margin-left: 24px; margin-top: 5px; }
@@ -26,6 +28,7 @@
 .attachment-chip > span { min-width: 0; max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .attachment-chip > button { display: grid; place-items: center; border: 0; padding: 0; width: 17px; height: 17px; border-radius: 3px; color: #85858c; background: transparent; cursor: pointer; }
 .attachment-chip > button:hover { background: #e9e9e6; color: #34363d; }
+.attachment-chip > svg, .attachment-chip > button, .message-attachments button > svg { flex-shrink: 0; }
 .message-attachments { margin-top: 9px; }
 .message-attachments button { display: inline-flex; align-items: center; gap: 5px; min-width: 0; max-width: 100%; padding: 4px 7px; border: 1px solid #dddee2; border-radius: 5px; background: #f9f9fa; color: #676b76; font-size: 10px; overflow-wrap: anywhere; cursor: pointer; }
 .replying-indicator { display: flex; align-items: center; gap: 4px; min-height: 28px; color: #94949c; }
@@ -71,4 +74,3 @@ button.evidence-row > svg:last-child { margin-left: auto; color: #b0b1b7; }
 .notification-row small { display: block; margin-top: 5px; font-size: 10px; color: #999ba3; }
 @keyframes replyPulse { 0%, 80%, 100% { opacity: .35; } 40% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .replying-indicator > span, .workbench-menu { animation: none; } }
-@media (min-width: 981px) and (max-width: 1400px) { .composer-tools { gap: 3px; } .tool-chip { padding-inline: 5px; } .model-button { max-width: 92px; padding-inline: 5px; } }
