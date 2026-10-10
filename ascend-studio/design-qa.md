@@ -231,3 +231,8 @@ final result: passed
 证据：evidence/20261010-content-workspace-{default,split,canvas-restored,diff,browser}.png。前一轮源视觉为evidence/20261010-header-shape-final.jpg；本轮只改变右侧组织/导航，继续复用其三栏与视觉。
 
 构建：npm run build:pages；JS语法与git diff检查。未新增或运行测试套件，未全面重复自由画布手势、复制、前进/后退或窄屏行为。截图是M级当前页面展示，不是生产服务或硬件验证。
+
+
+## 2026-10-10 · 装饰底图淡度一致
+
+对话从50%不透明度降至25%，两处底图共享.ambient-art的opacity .25。In-app Browser 1280×720读值均0.25；before/final截图位于evidence/20261010-ambient-opacity-{before,final}.png。保留现有曲面、颜色、渐消与布局；没有重做交互或窄屏检查。Pages构建及diff检查通过，无测试套件。

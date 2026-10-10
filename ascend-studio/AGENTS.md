@@ -203,3 +203,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 主体三栏、栏宽拖拽、项目栏收起、左/中装饰底图、无头像/AI铺背景/用户靠右、中性选中保持；右侧无装饰图。不新增学习中心/学习组，不改其他问题、报告页序、研究事实或API/Host/Application边界。仍是浏览器演示，无真实AI/NPU、项目写入或持久化；尾块是未确认线索。源码和Pages产物随本轮提交并立即push，实际回执随后补充；待用户评审问题02。
 
 - Commit/push：源码、Pages产物、五张展示截图和交接提交bd4397af已成功推送origin/main（afcf4a2c..bd4397af），共27个本任务文件；Pages构建、JS语法与暂存diff检查通过，未混入已有无关脏文件。本回执单独提交并立即push；push成功不等于线上最新部署已核验。
+
+
+## 2026-10-10 · 对话与项目底图统一不透明度
+
+- 用户指出中间对话装饰过深，要求与左侧同一淡度。实际读取为左档案opacity .25、对话opacity .50；本条覆盖此前对话50%的强度。
+- 修改src/styles.css：在共享.ambient-art规则统一opacity .25，移除两处独立覆盖。保留对话左上位置、760px尺度、轻微曲面、blur1.5px/saturate1.2及各自渐消；不改变布局、内容、交互或右侧无装饰规则。更新README和素材说明的当前参数。
+- In-app Browser默认1280×720读到两处computed opacity均0.25，并保存evidence/20261010-ambient-opacity-before.png、ambient-opacity-final.png；标题和按钮清晰，浅蓝紫/粉杏及曲面仍有少量露出。不同PNG自身透明和遮罩不同，因此相同CSS值不等于逐像素颜色相同。M级本地视觉展示，非硬件或全面交互验证。
+- npm run build:pages与git diff检查通过；未新增或运行测试，不改其他问题、报告顺序、研究事实或API/Host/Application边界。源码、同步Pages产物、证据和交接只纳入本任务并立即push，实际回执随后补记。
