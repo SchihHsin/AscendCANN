@@ -4814,3 +4814,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 交付截图与详细验收矩阵见 ascend-studio/design-qa.md 和 evidence/20261010-two-cases-{addcustom,image,attempts,narrow}.jpg。仅提交本轮原型/产物/交接，保留其他报告、图片、DS_Store等无关脏文件。待用户评审两个案例的图解密度与交互，真实运行/刷新持久化仍未接入。
 
 - Commit/push：整合提交02906078（46个原型/资产/产物/交接文件）已成功推送origin/main（f0601bfc..02906078）。仅纳入本轮授权范围；无关报告、图片、DS_Store保持原状。此回执随交接提交立即推送；Pages部署状态另核对，不以push代替上线验证。
+
+
+### 2026-10-10（Ascend Studio：中间对话栏自适应修复）
+
+- 用户指出中间对话栏自适应异常，并明确要求 Luna 子 agent 处理；Luna 修改 src/styles.css 与 src/useWorkbenchState.js，主代理复现、审阅补丁并最终验收。用户附件只作为问题线索，不把气泡部分滚出视口直接判成宽度错误。
+- 已确认桌面 app-frame 强制 min-height:640px 与 body overflow:hidden 会在短窗口裁切输入框；改为实际动态视口高度，头部/操作不收缩，消息区使用剩余高度独立滚动。极短桌面窗口采用有界420px最低高度，允许页面滚到超出的部分；主代理否定首版height:auto导致930px内容撑高的回退。
+- 已确认切换已有消息任务时 selectTask 的顶部定位与旧自动滚底 effect 竞争。改为每任务保存/恢复对话 scrollTop；只有当前任务确实追加消息（含第一条）才滚底，清理待执行动画帧。新对话、恢复历史、重置显式回顶部，不被自动滚底覆盖。切材料/打开关闭画布保持当前对话位置。
+- 主代理手动验收1280×720、1400×620、1280×480、1280×360、1600×900与390×844；中栏最窄300px时正文275px、输入框275px，无正文/工具条横溢出，480px窗口输入框底部466px。极宽中栏1222px时正文/输入框760px且居中。360px高时页面420px，未按内容撑开；390px页面scrollWidth=390。实际鼠标拖分隔线、左栏收起/展开已操作。
+- 首条提问与演示答复滚至底部；任务往返恢复360px阅读位置；右侧进入/关闭画布保持360px；新对话/恢复历史/重置均为0。完整刷新后无新增浏览器error；开发期间新增Hook引起两次Vite热更新顺序错误，完整刷新后消失，不能把历史日志说成全程为空。
+- node --check src/useWorkbenchState.js、npm run build:pages与git diff --check通过；未新增/运行自动测试套件。同步根ascstudio/产物，截图与验收细节见 ascend-studio/design-qa.md及evidence/20261010-chat-responsive-{default,narrow}.jpg。
+- 不调整已选视觉方向、左侧组织、两案例图解、报告页序或API/Host/Application边界；仅M级浏览器交互观察，未新增AI/模型/NPU运行。仅暂存本任务源文件、Pages、截图与交接，保留其他报告/图片/DS_Store等无关改动。提交后立即推送origin/main，实际回执后补。

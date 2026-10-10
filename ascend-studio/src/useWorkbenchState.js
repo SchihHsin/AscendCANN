@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply } from "./prototype-data";
 
 export const MAIN_TASK = "AddCustom 精度异常";
@@ -40,6 +40,10 @@ export function useWorkbenchState() {
   const imageRef = useRef(null);
   const menuRef = useRef(null);
   const session = sessions[selectedTask] || blank();
+  const conversationScrollState = useRef({ task: selectedTask, messages: session.messages });
+  const conversationScrollPositions = useRef(new Map());
+  const previousConversationTask = useRef(selectedTask);
+  const scrollConversationToTop = useRef(null);
   const task = meta[selectedTask] || { question: "开始任务", reply: "请补充任务上下文。", goal: "补充目标和材料。" };
   const currentGroup = groups.find((group) => group.tasks.includes(selectedTask));
   const model = modelOptions.find((item) => item.id === selectedModel) || modelOptions[0];
@@ -62,7 +66,8 @@ export function useWorkbenchState() {
     const box = event.currentTarget.getBoundingClientRect();
     setMenu((old) => old?.name === name ? null : { name, left: Math.max(8, Math.min(innerWidth - 252, box.right - 240)), top: box.bottom + 7, bottom: box.bottom + 260 > innerHeight ? innerHeight - box.top + 7 : null });
   };
-  const selectTask = (name) => { if (!sessions[name]) updateTask(name, {}); setSelectedTask(name); setActionView(null); setMenu(null); requestAnimationFrame(() => conversationRef.current?.scrollTo({ top: 0 })); };
+  const saveConversationScroll = () => conversationScrollPositions.current.set(selectedTask, conversationRef.current?.scrollTop || 0);
+  const selectTask = (name) => { if (name !== selectedTask) saveConversationScroll(); if (!sessions[name]) updateTask(name, {}); setSelectedTask(name); setActionView(null); setMenu(null); };
   const toggleGroup = (id) => setOpenedGroups((items) => items.includes(id) ? items.filter((item) => item !== id) : [...items, id]);
   const setSelectedRoute = (id) => { patchSession({ selectedRoute: id }); setActionView(null); };
   const setDraft = (draft) => patchSession({ draft });
@@ -74,7 +79,28 @@ export function useWorkbenchState() {
     document.addEventListener("keydown", close); document.addEventListener("pointerdown", outside);
     return () => { document.removeEventListener("keydown", close); document.removeEventListener("pointerdown", outside); };
   }, []);
-  useEffect(() => { if (session.messages.length) requestAnimationFrame(() => conversationRef.current?.scrollTo({ top: conversationRef.current.scrollHeight, behavior: "smooth" })); }, [selectedTask, session.messages.length]);
+  useLayoutEffect(() => {
+    if (scrollConversationToTop.current === selectedTask) {
+      scrollConversationToTop.current = null;
+      previousConversationTask.current = selectedTask;
+      conversationScrollPositions.current.set(selectedTask, 0);
+      conversationRef.current?.scrollTo({ top: 0 });
+      conversationScrollState.current = { task: selectedTask, messages: session.messages };
+      return;
+    }
+    if (previousConversationTask.current === selectedTask) return;
+    previousConversationTask.current = selectedTask;
+    conversationRef.current?.scrollTo({ top: conversationScrollPositions.current.get(selectedTask) || 0 });
+  }, [selectedTask, session.messages]);
+  useEffect(() => {
+    const previous = conversationScrollState.current;
+    const previousLast = previous.messages.at(-1);
+    const hasNewMessage = previous.task === selectedTask && session.messages.length > previous.messages.length && (!previousLast || session.messages[previous.messages.length - 1]?.id === previousLast.id);
+    conversationScrollState.current = { task: selectedTask, messages: session.messages };
+    if (!hasNewMessage) return undefined;
+    const frame = requestAnimationFrame(() => conversationRef.current?.scrollTo({ top: conversationRef.current.scrollHeight, behavior: "smooth" }));
+    return () => cancelAnimationFrame(frame);
+  }, [selectedTask, session.messages]);
   useEffect(() => () => {
     clearTimeout(toastTimer.current);
     for (const pending of replyTimers.current.values()) clearTimeout(pending.timer);
@@ -90,7 +116,7 @@ export function useWorkbenchState() {
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
     const link = document.createElement("a"); link.href = url; link.download = selectedTask + "-任务记录.json"; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); setMenu(null); notify("已导出任务记录");
   };
-  const resetTask = () => { cancelReply(selectedTask); patchSession(blank()); setActionView(null); setMenu(null); notify("当前任务已恢复初始状态"); };
+  const resetTask = () => { cancelReply(selectedTask); scrollConversationToTop.current = selectedTask; patchSession(blank()); setActionView(null); setMenu(null); notify("当前任务已恢复初始状态"); };
   const sendMessage = (event) => {
     event?.preventDefault();
     const text = session.draft.trim() || (session.attachments.length ? "请结合这些附件整理下一步检查。" : "");
@@ -136,14 +162,15 @@ export function useWorkbenchState() {
     if (groups.some((item) => item.tasks.includes(title))) { notify("已有同名任务，请换一个名称"); return false; }
     setGroups((all) => all.map((item) => item.id === groupId ? { ...item, tasks: [...item.tasks, title] } : item));
     setMeta((all) => ({ ...all, [title]: { project: group.name, goal: goal.trim() || "补充目标、输入材料和完成条件。", question: goal.trim() || "开始整理这项任务的上下文。", reply: "已建立任务。可以继续补充代码、日志或具体问题，再选择下一步检查方向。当前尚无运行证据。", status: "waiting" } }));
-    updateTask(title, {}); setSelectedTask(title); setOpenedGroups((all) => all.includes(groupId) ? all : [...all, groupId]); setQuery(""); setFilterScope("all"); setActionView(null); setDialog(null); notify("任务已创建"); return true;
+    saveConversationScroll(); updateTask(title, {}); setSelectedTask(title); setOpenedGroups((all) => all.includes(groupId) ? all : [...all, groupId]); setQuery(""); setFilterScope("all"); setActionView(null); setDialog(null); notify("任务已创建"); return true;
   };
   const startConversation = () => {
     cancelReply(selectedTask);
+    scrollConversationToTop.current = selectedTask;
     patchSession((old) => ({ history: [{ id: uid(), title: old.showIntro ? "初始诊断对话" : (old.messages.find((item) => item.role === "user")?.text.slice(0, 24) || "任务对话"), time: timeNow(), showIntro: old.showIntro, messages: old.messages }, ...old.history], showIntro: false, messages: [{ id: uid(), role: "assistant", text: "已开始新对话。当前任务的证据和核对记录仍可在右侧查看。你可以继续提出具体的检查目标。" }], draft: "", attachments: [], replying: false }));
     setMenu(null); draftRef.current?.focus();
   };
-  const restoreConversation = (id) => { const item = session.history.find((entry) => entry.id === id); if (item) { cancelReply(selectedTask); patchSession({ showIntro: item.showIntro, messages: item.messages, replying: false }); } setDialog(null); };
+  const restoreConversation = (id) => { const item = session.history.find((entry) => entry.id === id); if (item) { cancelReply(selectedTask); scrollConversationToTop.current = selectedTask; patchSession({ showIntro: item.showIntro, messages: item.messages, replying: false }); } setDialog(null); };
   const attachCode = ({ name, content }) => { const file = { id: uid(), name, content, type: "code", size: content.length, receivedOrder: ++attachmentOrder.current }; patchSession((old) => ({ attachments: [...old.attachments, file] })); setDialog(null); notify("代码片段已加入当前任务"); };
   const readFiles = async (event, type) => {
     const taskName = selectedTask, input = event.target, files = Array.from(input.files || []);

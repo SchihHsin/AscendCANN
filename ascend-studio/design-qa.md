@@ -372,3 +372,24 @@ final result: passed
 - evidence/20261010-two-cases-narrow.jpg：360px工作区张量上下重排。
 - 本地交互证据为M，不是NPU实证。生成照片与原方案概念配图分别标注；概念配图猫照片不同，不宣称当前照片的真实张量。片段是动态交互示例而非官方视频。数学/形状检查与真实项目/模型验证分别表达。
 - Luna只修改两份图解CSS；主代理承担整合、修正与上述手动验收。仍待用户设计评审，不将“可操作”当成全部六题已完成。
+
+
+## 2026-10-10 · 中间对话栏自适应修复验收
+
+Luna负责代码修复，主代理负责复现与最终手动检查。本轮没有重新设计工作台，保留普通宽度铺满、极宽760px居中、AI铺背景与用户靠右规则。
+
+| 场景 | 实际观察 |
+| --- | --- |
+| 1400×620 | 修复前frame640px、输入框底626px超出viewport；修复后frame620px |
+| 1280×480，中栏300px | 正文/输入框宽275px，正文scrollWidth275；工具条换行，输入框底466px |
+| 1280×360 | frame与全页420px，可滚动多出的60px；消息仍独立滚动。否定初版height:auto的930px内容展开 |
+| 1600×900，收起左栏，中栏1222px | 正文/输入框760px、同轴居中；实际鼠标拖分隔线能改变宽度 |
+| 390×844 | 页面scrollWidth390，正文约359px；维持窄屏上下组织 |
+| 首条提问/演示答复 | 同任务追加后scrollTop380，scrollHeight873、clientHeight493，位于底部 |
+| 两任务往返 | AddCustom scrollTop360 → 图像0 → AddCustom360 |
+| 进入/关闭画布 | 两次均保持对话scrollTop360 |
+| 新对话/恢复历史/重置 | 三次定位顶部scrollTop0，无互相覆盖 |
+
+源码仅styles.css/useWorkbenchState.js；完整刷新后无新增error。编辑新增Hook期间存在HMR顺序报错，重新加载后无重现。npm run build:pages、node --check与diff空白检查通过；未新增/运行自动测试套件。
+
+证据：evidence/20261010-chat-responsive-default.jpg（恢复默认1280×720）；evidence/20261010-chat-responsive-narrow.jpg（300px中栏、480px高）。附件顶部气泡裁切只能说明已有滚动状态；本轮确认并修复的是短视口裁切和任务切换滚动竞争。没有真实AI或NPU验收。
