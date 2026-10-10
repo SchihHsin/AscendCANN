@@ -4689,3 +4689,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 待选方向A（建议优先）：普通解释页的代码与整块/尾块/有效区间图联动，参数改变图形同步；B：同参数尝试前后对照、结果与Diff关联、误差分布/异常点定位；C：按需画布补实际材料关系，普通视图提供来源索引。推荐A→B→C，但用户尚未选择或授权下一轮实现。维持无学习中心/学习组、无头像/AI铺背景、中性选中和右画布按需，不重做三栏壳、不开始其他问题。
 - 1280×720两步截图已保存并实际打开检视：ascend-studio/evidence/20261010-visual-gap-01-default.png、02-explanation.png；详细对照与截图见ascend-studio/design-qa.md。M级当前页面观察，源图是提案，不是AddCustom根因/NPU证据；本轮未生成新图、未构建、未运行测试，也不宣称完整可访问性或全流程审阅。
 - 仅提交讨论交接、审阅记录及两张截图并立即push，实际回执随后补记。不影响报告页序、研究事实或API/Host/Application边界，待用户继续讨论补回优先级。
+
+- Commit/push：可视化迁移缺口审阅d2a53b91已成功推送origin/main（4e965c36..d2a53b91），仅根/原型交接、design-qa及两张当前截图五个文件，暂存diff检查通过；原型和Pages未改。该回执单独提交并立即push，A/B/C尚待讨论。
