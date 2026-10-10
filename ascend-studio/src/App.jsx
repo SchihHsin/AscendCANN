@@ -4,6 +4,7 @@ import { capabilities, modelOptions } from "./prototype-data";
 import { WorkbenchDialogs } from "./WorkbenchDialogs";
 import { ActionWorkspace } from "./ActionWorkspace";
 import { useTaskFlow } from "./useTaskFlow";
+import { useExplanationSession } from "./useExplanationSession";
 import { useCanvasState } from "./useCanvasState";
 import { useContentWorkspace } from "./useContentWorkspace";
 import { MATERIAL_DEFINITIONS, getMaterialMeta } from "./workspace-materials";
@@ -13,7 +14,10 @@ import { useWorkbenchLayout } from "./useWorkbenchLayout";
 import { TaskCanvas } from "./TaskCanvas";
 import { CanvasMaterial } from "./CanvasMaterials";
 import { CanvasIndex } from "./CanvasIndex";
+import { IMAGE_TASK, IMAGE_MATERIALS, useImageInference } from "./useImageInference";
+import { ImageInferenceMaterial } from "./ImageInference";
 import "./interaction.css";
+import "./visual-focus.css";
 import {
   IconAdjustmentsHorizontal,
   IconAlertTriangle,
@@ -114,6 +118,7 @@ function App() {
   const wb = useWorkbenchState();
   const flow = useTaskFlow({ onRecord: (title, summary, kind, isDemo) => wb.addRecord({ title, summary, kind, isDemo }, MAIN_TASK) });
   const canvas = useCanvasState({ startEmpty: true });
+  const imageCanvas = useCanvasState({ startEmpty: true, cardDefinitions: IMAGE_MATERIALS });
   const [precisionContext, setPrecisionContext] = useState(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const layout = useWorkbenchLayout({ sidebarCollapsed });
@@ -130,14 +135,25 @@ function App() {
   const selectedRouteData = routes.find((route) => route.id === selectedRoute) || routes[0];
   const feedback = (value) => wb.patchSession({ feedback: session.feedback === value ? null : value });
   const closeMenuAnd = (action) => { wb.setMenu(null); action(); };
-  const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask });
+  const isImageTask = selectedTask === IMAGE_TASK;
+  const isInteractiveTask = isMainTask || isImageTask;
+  const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask });
+  const imageVisible = isImageTask && workspace.state.activeId !== "canvas" && [workspace.state.activeId, workspace.state.splitId].some(id => id === "image-explanation");
+  const inference = useImageInference({ visible: imageVisible, onRecord: record => wb.addRecord(record, IMAGE_TASK) });
+  const explanationVisible = isMainTask && workspace.state.activeId !== "canvas" && (workspace.state.activeId === "explanation" || workspace.state.splitId === "explanation");
+  const explanation = useExplanationSession({ resetVersion: flow.state.resetVersion, visible: explanationVisible });
   const mainSession = wb.getSession(MAIN_TASK);
+  const imageSession = wb.getSession(IMAGE_TASK);
+  const imageAttachment = [...imageSession.messages.flatMap(item => item.attachments || []), ...imageSession.attachments].filter(file => file.content && (file.type === "code" || /\.py$/i.test(file.name))).sort((a, b) => (a.receivedOrder || 0) - (b.receivedOrder || 0)).at(-1);
   const mainAttachment = [...mainSession.messages.flatMap(item => item.attachments || []), ...mainSession.attachments]
     .filter(file => file.content && (file.type === "code" || /\.(cpp|h|py)$/i.test(file.name)))
     .sort((a, b) => (a.receivedOrder || 0) - (b.receivedOrder || 0)).at(-1);
   const openContent = (id, options = {}) => {
-    if (!isMainTask && id !== "task-brief") return;
+    if (!isInteractiveTask && id !== "task-brief") return;
+    if (isImageTask && !id.startsWith("image-") && !id.startsWith("record:") && id !== "canvas") return;
     if (options.close) workspace.actions.close(options.close);
+    if ((id === "explanation" || id === "source") && options.anchor) explanation.actions.focusConcept(options.anchor);
+    if (id === "explanation" && (options.time !== undefined || options.video)) explanation.actions.openAt({ focus: options.anchor || explanation.state.focus, time: options.time, video: options.video });
     if (id === "compare") {
       workspace.actions.open("source");
       workspace.actions.splitWith("draft");
@@ -148,25 +164,35 @@ function App() {
     }
     setTaskContentsOpen(false);
   };
+  const compareExplanation = () => {
+    workspace.actions.open("source");
+    workspace.actions.splitWith("explanation");
+    setTaskContentsOpen(false);
+  };
+  const askExplanation = (context) => {
+    wb.askFromExplanation(context);
+  };
   const openCanvas = () => {
-    if (!isMainTask) return;
+    if (!isInteractiveTask) return;
     workspace.actions.openCanvas();
     setTaskContentsOpen(false);
   };
   const arrangeMaterials = (ids) => {
-    if (!isMainTask) return;
+    if (!isInteractiveTask) return;
+    const targetCanvas = isImageTask ? imageCanvas : canvas;
+    const targetSession = isImageTask ? imageSession : mainSession;
     const uniqueIds = [...new Set(ids)].filter(id => id !== "canvas");
     if (uniqueIds.includes("diff") && !flow.state.proposedCode) flow.actions.prepareDiff();
     uniqueIds.forEach(id => {
-      const card = canvas.state.cards.find(item => item.id === id);
-      if (card) canvas.actions.showCard(id, { focus: false });
+      const card = targetCanvas.state.cards.find(item => item.id === id);
+      if (card) targetCanvas.actions.showCard(id, { focus: false });
       else {
-        const record = mainSession.records.find(item => "record:" + item.id === id);
-        canvas.actions.addCard({ ...getMaterialMeta(id, record ? { title: record.title } : {}), width: 440, height: 340 }, { focus: false });
+        const record = targetSession.records.find(item => "record:" + item.id === id);
+        targetCanvas.actions.addCard({ ...getMaterialMeta(id, record ? { title: record.title } : {}), width: 440, height: 340 }, { focus: false });
       }
     });
     openCanvas();
-    if (uniqueIds.length) requestAnimationFrame(() => canvas.actions.fitCanvas());
+    if (uniqueIds.length) requestAnimationFrame(() => targetCanvas.actions.fitCanvas());
   };
   const locateCanvasMaterial = (id) => {
     if (id === "diff" && !flow.state.proposedCode) flow.actions.prepareDiff();
@@ -197,6 +223,13 @@ function App() {
   </div>;
   const renderMaterial = (id, presentation = "canvas", ownerId = MAIN_TASK) => {
     if (id === "task-brief") return renderBrief(ownerId);
+    if (ownerId === IMAGE_TASK) {
+      if (id.startsWith("record:")) {
+        const record = imageSession.records.find(item => "record:" + item.id === id);
+        return record ? <article className="canvas-record-detail"><span>{record.time} · 示例记录</span><p>{record.summary}</p></article> : null;
+      }
+      return <ImageInferenceMaterial key={inference.state.resetVersion} id={id} inference={inference} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} presentation={presentation} codeAttachment={imageAttachment} />;
+    }
     if (ownerId !== MAIN_TASK) return null;
     if (id.startsWith("record:")) {
       const record = mainSession.records.find(item => "record:" + item.id === id);
@@ -205,18 +238,27 @@ function App() {
     if (id === "reference") return presentation === "canvas" ? <div className="cm-stack"><p className="cm-body-copy">Ascend C 官方文档</p><p className="cm-note">用于理解概念与使用范围，实际版本与根因仍需核对。</p><button className="cm-button" type="button" onClick={() => openContent("reference")}>打开参考网页<IconArrowRight size={14} /></button></div> : <ReferenceBrowser resetVersion={flow.state.resetVersion} />;
     if (presentation === "canvas" && (id === "precision" || id === "review")) return <div className="cm-stack"><p className="cm-body-copy">{id === "precision" ? "逐元素误差与容差依据" : "检查清单、观察与待补证据"}</p><p className="cm-note">{precisionContext ? `已保留 ${precisionContext.count ?? precisionContext.rows?.length ?? "本次"} 项误差核对依据。` : "尚未保存误差计算。真实项目根因待确认。"}</p><button className="cm-button" type="button" onClick={() => openContent(id)}>展开核对<IconArrowRight size={14} /></button></div>;
     if (id === "precision" || id === "review") return <ActionWorkspace key={flow.state.resetVersion} embedded view={id} onChangeView={changeActionView} onBack={() => openContent("evidence")} onRecord={(record) => wb.addRecord(record, MAIN_TASK)} precisionContext={precisionContext} onPrecisionContext={setPrecisionContext} rangeContext={latestAttempt ? { total: latestAttempt.total, tile: latestAttempt.tileSize } : null} />;
-    return <CanvasMaterial key={flow.state.resetVersion} id={id} presentation={presentation} flow={{ ...flow, codeAttachment: mainAttachment }} onShowCard={openContent} onAttachCode={() => openDialog("code")} />;
+    return <CanvasMaterial key={flow.state.resetVersion} id={id} presentation={presentation} flow={{ ...flow, codeAttachment: mainAttachment }} onShowCard={openContent} onAttachCode={() => openDialog("code")} explanation={explanation} onAsk={askExplanation} onCompare={compareExplanation} />;
   };
   const availableMaterials = isMainTask ? [
-    ...Object.values(MATERIAL_DEFINITIONS).filter(item => item.id !== "canvas" && item.id !== "task-brief").map(item => ({
+    ...Object.values(MATERIAL_DEFINITIONS).filter(item => item.id !== "canvas" && item.id !== "task-brief" && !item.id.startsWith("image-")).map(item => ({
       ...item,
       available: item.id === "attempts" || item.id === "diff" ? flow.state.attempts.length > 0 : item.id === "validation" ? Boolean(flow.state.appliedCode) : true,
       disabledReason: item.id === "validation" ? "应用示例修改后可用" : "运行一次范围算例后可用",
     })),
     ...mainSession.records.map(record => ({ ...getMaterialMeta("record:" + record.id, { title: record.title }), description: record.time + " · " + (record.isDemo ? "示例记录" : "待验证") })),
-  ] : [MATERIAL_DEFINITIONS["task-brief"]];
+  ] : isImageTask ? [...IMAGE_MATERIALS.map(item => ({ ...item, available: item.id === "image-attempts" || item.id === "image-diff" ? inference.state.attempts.length > 0 : item.id === "image-validation" ? Boolean(inference.state.applied) : true, disabledReason: "完成示例尝试后可用" })), ...imageSession.records.map(record => getMaterialMeta("record:" + record.id, { title: record.title }))] : [MATERIAL_DEFINITIONS["task-brief"]];
+  const materialConnections = [
+    { id: "source-explanation", from: "source", to: "explanation", label: "范围示例图解" },
+    { id: "evidence-explanation", from: "evidence", to: "explanation", label: "待核查线索" },
+    { id: "explanation-parameters", from: "explanation", to: "parameters", label: "沿用参数试算" },
+    ...(flow.state.attempts.length ? [{ id: "parameters-attempts", from: "parameters", to: "attempts", label: "已保存尝试" }] : []),
+    ...(flow.state.proposedCode ? [{ id: "attempts-diff", from: "attempts", to: "diff", label: "所选尝试的提案" }] : []),
+    ...(flow.state.appliedCode ? [{ id: "diff-validation", from: "diff", to: "validation", label: "示例应用后复核" }] : []),
+  ];
   const resetCurrentTask = () => {
     if (isMainTask) { flow.actions.reset(); canvas.actions.reset(); setPrecisionContext(null); setSuggestionDismissed(false); }
+    if (isImageTask) { inference.actions.reset(); imageCanvas.actions.reset(); }
     workspace.actions.reset();
     setTaskContentsOpen(false);
     wb.resetTask();
@@ -339,20 +381,19 @@ function App() {
               <div className="message-content">
                 <div className="message-meta">Ascend Studio</div>
                 <div className="assistant-response">
-                  <p className="assistant-lead">目前确认：[16,32] 可以通过，[17,33] 失败；报错为 <code>precision mismatch</code>，位置在 <code>custom_op.cpp:128</code>。修改编译参数后，错误仍出现在同一位置。</p>
-                  <p>现有信息只能说明失败与非整块输入同时出现。尾块边界是值得核对的线索，但还不能据此认定根因；也可能与索引范围或精度计算有关。</p>
-                  <p>编译参数的调整没有带来新的定位信号。下一步应从重复尝试配置转向核对代码路径和误差证据；尾块判断目前只决定排查顺序，不能当作结论。</p>
-                  <p>还需要核对两次运行除输入形状外的条件是否一致，并查看失败元素的逐项误差。当前没有这些记录，所以判断暂时停在“优先核查尾块路径”，不归因到具体实现。</p>
+                  <p className="assistant-lead">尾块索引范围值得优先核对，根因尚未确认。</p>
+                  <p>已知：<span className="chat-fact is-pass">[16,32] 通过</span>；<span className="chat-fact is-fail">[17,33] 失败</span>。修改编译参数后，错误位置未变。</p>
+                  <p>还需：实际循环、两次运行条件与逐元素误差证据。</p>
                   <button className="rationale-button" type="button" aria-expanded={rationaleOpen} onClick={() => setRationaleOpen((value) => !value)}>
                     <IconBook size={16} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={15} />
                   </button>
                   {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => openContent("evidence")}>打开现场与判断<IconArrowRight size={13} /></button></div>}
-                  <p className="assistant-next">建议先只读检查对应循环的索引范围和有效元素数；如果没有发现边界异常，再补充逐元素误差证据。当前还没有真实 NPU 验证结果。</p>
+                  <p className="assistant-next">先理解有效元素与访问范围，再决定下一步。</p>
                   {!suggestionDismissed && <div className="task-inline-suggestion">
                     <div><IconBook size={15} /><span><strong>先看懂这条线索，再决定是否修改</strong><small>展开范围示例，保留当前任务与错误现场。</small></span><button type="button" className="icon-button compact-icon" aria-label="关闭解释建议" onClick={() => setSuggestionDismissed(true)}><IconX size={14} /></button></div>
-                    <div className="task-suggestion-actions"><button type="button" className="light-button" onClick={() => openTaskFlow("understand")}>理解并试改<IconArrowRight size={14} /></button><button type="button" className="task-plain-button" onClick={() => changeActionView("code")}>直接核对代码</button><button type="button" className="task-plain-button" onClick={() => arrangeMaterials(["source", "evidence", "explanation"])}>在画布中整理</button></div>
+                    <div className="task-suggestion-actions"><button type="button" className="light-button" onClick={() => openTaskFlow("understand")}>查看图解并试改<IconArrowRight size={14} /></button><button type="button" className="task-plain-button" onClick={() => changeActionView("code")}>直接核对代码</button><button type="button" className="task-plain-button" onClick={() => arrangeMaterials(["source", "evidence", "explanation"])}>在画布中整理</button></div>
                   </div>}
-                  <div className="chat-next-actions" aria-label="可能的下一步方向">
+                  <details className="chat-next-disclosure"><summary>比较其他排查方向</summary><div className="chat-next-actions" aria-label="可能的下一步方向">
                     <div className="chat-next-heading">可能的下一步方向</div>
                     {routes.map((route, index) => (
                       <button
@@ -367,7 +408,7 @@ function App() {
                       </button>
                     ))}
                     <button className="light-button chat-canvas-action" type="button" onClick={confirmWorkspaceRoute}>{selectedRouteData.id === "retry" ? "保留现场并重新评估" : selectedRouteData.id === "tail" ? "查看索引范围示例" : "打开误差核对"}<IconArrowRight size={14} /></button>
-                  </div>
+                  </div></details>
                 </div>
                 <div className="message-feedback">
                   <button type="button" aria-label="复制回答" onClick={() => wb.copyText(task.reply)}><IconCopy size={16} /></button>
@@ -379,7 +420,7 @@ function App() {
             </>}
             {session.showIntro && !isMainTask && <>
               <article className="message-row user-message"><div className="message-content"><div className="message-meta">你</div><div className="user-bubble">{task.question}</div></div></article>
-              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response"><p>{task.reply}</p></div></div></article>
+              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response">{task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}{isImageTask && <div className="task-inline-suggestion"><div><IconBook size={15} /><span><strong>从图像到输入张量，先看懂再试</strong><small>原代码只读，练习与尝试保留在本任务。</small></span></div><div className="task-suggestion-actions"><button className="light-button" type="button" onClick={() => openContent("image-explanation")}>查看图解<IconArrowRight size={14} /></button><button className="task-plain-button" type="button" onClick={() => { inference.actions.explore(); openContent("image-practice"); }}>在副本中试一下</button></div></div>}</div></div></article>
             </>}
             {messages.map((message) => (
               <article className={"message-row " + (message.role === "user" ? "user-message" : "assistant-message")} key={message.id}>
@@ -388,6 +429,7 @@ function App() {
                   <div className={message.role === "user" ? "user-bubble" : "assistant-response extra-message"}>{message.text.split("\n\n").map((paragraph, i) => <p className="message-paragraph" key={i}>{paragraph}</p>)}
                     {message.attachments?.length > 0 && <div className="message-attachments">{message.attachments.map((file) => <button type="button" key={file.id} onClick={() => openDialog("evidence", { title: file.name, body: "本次任务的本地附件，尚未独立验证。", log: file.content || "已关联文件名称，尚无可读取的文本内容。" })}><IconPaperclip size={13} />{file.name}</button>)}</div>}
                   </div>
+                  {message.sourceContext && <div className="message-source-links"><button type="button" onClick={() => { if (message.sourceContext.kind === "image") { inference.actions.seek(message.sourceContext.time); if (!inference.state.lessonOpen) inference.actions.lesson(); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus, time: message.sourceContext.time, video: true }); }}><IconPlayerPlay size={12} /><span>讲解示例 {message.sourceContext.stamp} · 返回片段</span></button>{message.role === "assistant" && <button type="button" onClick={() => { if (message.sourceContext.kind === "image") { inference.actions.focus(message.sourceContext.focus); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus }); }}><IconBook size={12} />查看关联图解</button>}</div>}
                   {message.role === "assistant" && <div className="message-feedback"><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={16} /></button></div>}
                 </div>
               </article>
@@ -420,9 +462,9 @@ function App() {
 
         <div className="workspace-divider workspace-divider--conversation" role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />
         <aside className="diagnostic-panel" aria-label="任务工作区">
-          <TaskWorkspace taskId={selectedTask} workspace={workspace} isMainTask={isMainTask} materials={availableMaterials} onOpen={openContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials}
+          <TaskWorkspace taskId={selectedTask} workspace={workspace} isMainTask={isInteractiveTask} materials={availableMaterials} onOpen={openContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials}
             renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)}
-            renderCanvas={(visible, ownerId) => ownerId === MAIN_TASK ? <TaskCanvas key={flow.state.resetVersion} embedded visible={visible} flow={flow} canvas={canvas} onBack={() => openContent("evidence")} onOpenContents={() => setTaskContentsOpen(value => !value)} onOpenContent={openContent} onAttachCode={() => openDialog("code")} renderMaterial={id => renderMaterial(id, "canvas")} contentsOpen={taskContentsOpen && visible} contents={<CanvasIndex canvas={canvas} flow={flow} records={mainSession.records} onClose={() => setTaskContentsOpen(false)} onLocate={locateCanvasMaterial} onOpenRecord={record => locateCanvasMaterial("record:" + record.id)} />} /> : null}
+            renderCanvas={(visible, ownerId) => ownerId === MAIN_TASK ? <TaskCanvas key={flow.state.resetVersion} embedded visible={visible} flow={flow} canvas={canvas} onBack={() => openContent("evidence")} onOpenContents={() => setTaskContentsOpen(value => !value)} onOpenContent={openContent} onAttachCode={() => openDialog("code")} connections={materialConnections} renderMaterial={id => renderMaterial(id, "canvas")} contentsOpen={taskContentsOpen && visible} contents={<CanvasIndex canvas={canvas} flow={flow} records={mainSession.records} onClose={() => setTaskContentsOpen(false)} onLocate={locateCanvasMaterial} onOpenRecord={record => locateCanvasMaterial("record:" + record.id)} />} /> : ownerId === IMAGE_TASK ? <TaskCanvas key={inference.state.resetVersion} embedded visible={visible} canvas={imageCanvas} comparisonIds={["image-source", "image-practice"]} onBack={() => openContent("image-explanation")} onOpenContents={() => setTaskContentsOpen(value => !value)} onOpenContent={openContent} connections={[{ id: "image-code-diagram", from: "image-source", to: "image-explanation", label: "通道与维度" }, { id: "image-diagram-practice", from: "image-explanation", to: "image-practice", label: "参数试改" }, { id: "image-practice-result", from: "image-practice", to: "image-attempts", label: "形状快照" }]} renderMaterial={id => renderMaterial(id, "canvas", IMAGE_TASK)} contentsOpen={taskContentsOpen && visible} contents={<div className="image-canvas-index"><header>本任务内容<button type="button" onClick={() => setTaskContentsOpen(false)} aria-label="关闭图像任务内容"><IconX size={14} /></button></header>{IMAGE_MATERIALS.map(item => <button key={item.id} type="button" onClick={() => { imageCanvas.actions.showCard(item.id); setTaskContentsOpen(false); }}>{item.title}<IconArrowRight size={13} /></button>)}</div>} /> : null}
           />
         </aside>
       </div>

@@ -1,4 +1,7 @@
+import { IMAGE_MATERIALS } from "./useImageInference";
+
 export const MATERIAL_DEFINITIONS = Object.freeze({
+  ...Object.fromEntries(IMAGE_MATERIALS.map(item => [item.id, item])),
   source: { id: "source", type: "code", title: "索引范围示例" },
   draft: { id: "draft", type: "code", title: "示例工作副本" },
   evidence: { id: "evidence", type: "preview", title: "现场与判断" },

@@ -65,6 +65,18 @@
 .aw-table td small { display: block; color: #a0a1aa; font-size: 8px; }
 .aw-status { padding: 2px 3px; border-radius: 3px; background: #f1f3f0; color: #7c897b; font-size: 8px; text-align: center; }
 .aw-status.is-failed { background: #f7eeea; color: #9a796d; }
+.aw-precision-result { background: #fcfcfd; }
+.aw-precision-result .aw-result-summary > span:last-child, .aw-csv-label em, .aw-formula { font-size: 10px; }
+.aw-precision-result .aw-table, .aw-precision-result .aw-table td small, .aw-precision-result .aw-status { font-size: 10px; }
+.aw-table-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 8px; margin: 11px 0 7px; color: #8e96a6; font-size: 10px; }
+.aw-table-heading strong { color: #737d93; font-weight: 500; }
+.aw-precision-result .aw-table th { z-index: 1; }
+.aw-precision-result .aw-table tbody tr { cursor: pointer; }
+.aw-precision-result .aw-table tbody tr:hover td { background: #f7f8fb; }
+.aw-precision-result .aw-table tbody tr.is-selected td { background: #f0f2f6; color: #5c6983; }
+.aw-index-button { padding: 1px 0; border: 0; border-radius: 3px; color: #7b86a4; background: transparent; font-family: inherit; font-size: 10px; font-variant-numeric: tabular-nums; text-align: left; cursor: pointer; }
+.aw-index-button[aria-pressed="true"] { color: #606d89; font-weight: 600; }
+.aw-index-button:hover { text-decoration: underline; text-underline-offset: 3px; }
 .aw-checks { display: flex; flex-direction: column; gap: 9px; padding: 12px; margin: 0; border: 1px solid #e6e6e4; border-radius: 7px; background: #fafaf8; }
 .aw-checks legend { padding: 0 4px; color: #777984; font-size: 10px; }
 .aw-checks label { display: flex; align-items: flex-start; gap: 8px; color: #727580; font-size: 10px; line-height: 1.6; cursor: pointer; }

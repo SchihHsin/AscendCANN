@@ -1,0 +1,31 @@
+.pp-precision-plot { min-width: 0; margin: 13px 0; padding: 12px; border: 1px solid #e2e5ed; border-radius: 8px; background: #fff; color: #6e778e; font-family: inherit; font-size: 11px; line-height: 1.6; }
+.pp-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 3px 10px; }
+.pp-heading strong { color: #616c86; font-size: 11px; font-weight: 500; }
+.pp-heading > span { color: #8a94a8; font-size: 10px; }
+.pp-chart-host { min-width: 0; margin-top: 7px; }
+.pp-chart { display: block; width: 100%; height: 210px; overflow: visible; }
+.pp-axis-line { fill: none; stroke: #d5dbe7; stroke-width: 1; }
+.pp-grid-line { fill: none; stroke: #eef0f6; stroke-width: 1; }
+.pp-threshold-line { fill: none; stroke: #9398bd; stroke-width: 1.1; stroke-dasharray: 4 4; }
+.pp-axis-label { fill: #8f98a9; font-family: inherit; font-size: 10px; }
+.pp-axis-label.is-threshold { fill: #727ba0; }
+.pp-point { cursor: pointer; outline: none; }
+.pp-point-hit { fill: transparent; stroke: none; }
+.pp-point-shape { stroke: #737eaf; stroke-width: 1; }
+.pp-point.is-passed .pp-point-shape { fill: #c3cfee; stroke: #9aaacd; }
+.pp-point.is-failed .pp-point-shape { stroke: #796aaa; }
+.pp-selection-ring { fill: #fff; fill-opacity: .75; stroke: #68718c; stroke-width: 1.2; }
+.pp-point:hover .pp-point-shape, .pp-point:focus-visible .pp-point-shape { stroke: #525e8d; stroke-width: 2; }
+.pp-point:focus-visible .pp-selection-ring { stroke: #596683; stroke-width: 2; }
+.pp-legend { display: flex; flex-wrap: wrap; gap: 4px 13px; color: #8992a5; font-size: 10px; }
+.pp-threshold-key { color: #7983a3; }
+.pp-scale-note { margin: 7px 0 0; color: #939aaa; font-size: 10px; line-height: 1.7; overflow-wrap: anywhere; }
+.pp-scale-note.is-capped { color: #8d8095; }
+.pp-point-detail { margin-top: 10px; padding: 9px 10px; border: 1px solid #e6e8ef; border-radius: 6px; background: #fafbfe; }
+.pp-detail-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; color: #717d97; font-size: 11px; }
+.pp-detail-heading strong { font-weight: 500; }
+.pp-detail-heading > span { font-size: 10px; color: #8b83a3; }
+.pp-point-detail dl { margin: 7px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 12px; }
+.pp-point-detail dl > div { min-width: 0; }
+.pp-point-detail dt { color: #9ba2b1; font-size: 10px; }
+.pp-point-detail dd { margin: 2px 0 0; color: #73819c; font-size: 10px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }

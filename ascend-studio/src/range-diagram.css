@@ -1,0 +1,81 @@
+.rd-range-diagram { container-type: inline-size; container-name: range-diagram; min-width: 0; display: flex; flex-direction: column; gap: 12px; font-family: inherit; color: #5e6477; font-size: 12px; line-height: 1.6; }
+.rd-heading { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 7px 12px; }
+.rd-heading > div { min-width: 0; }
+.rd-heading h4 { margin: 0 0 3px; color: #454d62; font-size: 12px; font-weight: 600; }
+.rd-heading > div > span { color: #858a9b; font-size: 10px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rd-strategy { display: inline-flex; flex-shrink: 0; padding: 2px 6px; border: 1px solid #e5e6ec; border-radius: 4px; color: #777e90; background: #fafafb; font-size: 10px; }
+.rd-focus-controls { display: flex; gap: 3px; padding: 3px; border: 1px solid #e5e6ed; border-radius: 7px; background: #f3f4f6; }
+.rd-focus-controls button { flex: 1; min-width: 0; padding: 6px 5px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: #83899a; font-family: inherit; font-size: 10px; line-height: 1.4; cursor: pointer; }
+.rd-focus-controls button[aria-pressed="true"] { border-color: #e1e3e9; background: #fff; color: #596276; box-shadow: 0 1px 2px #242c4010; }
+.rd-focus-controls button:hover { color: #515b72; }
+.rd-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0 2px; }
+.rd-metrics > div { min-width: 0; }
+.rd-metrics dt { color: #9397a4; font-size: 10px; }
+.rd-metrics dd { margin: 3px 0 0; color: #5d6682; font-size: 15px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.4; overflow-wrap: anywhere; }
+.rd-plot { display: flex; flex-direction: column; gap: 9px; width: 100%; min-width: 0; padding: 12px; border: 1px solid #e6e7ed; border-radius: 9px; background: #fcfcfd; color: inherit; font-family: inherit; font-size: inherit; text-align: left; line-height: inherit; cursor: pointer; }
+.rd-plot:hover { border-color: #d1d6e2; background: #fff; }
+.rd-plot.is-focused { border-color: #cbd1df; background: #fff; box-shadow: 0 2px 8px #434b6810; }
+.rd-plot-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 3px 8px; }
+.rd-plot-heading strong { color: #626a80; font-size: 11px; font-weight: 500; }
+.rd-plot-heading > span { color: #9298a8; font-size: 10px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rd-block-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 5px; }
+.rd-block { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; min-height: 40px; gap: 2px; padding: 4px 2px; border: 1px solid #dce2f1; border-radius: 5px; background: linear-gradient(125deg, #e9effd, #e8e6f8); color: #707ca3; }
+.rd-block > span { font-size: 11px; font-weight: 500; line-height: 1.3; overflow-wrap: anywhere; }
+.rd-block small { display: block; font-size: 10px; color: #8390b1; line-height: 1.4; text-align: center; overflow-wrap: anywhere; }
+.rd-block.is-last { border-color: #a6afd4; background: linear-gradient(125deg, #d5e1fd, #ddd4f5); color: #606d9b; }
+.rd-block-omitted { border-style: dashed; border-color: #dedfe7; background: #f6f6f9; color: #9ca2b1; }
+.rd-block-omitted small { color: #989eae; }
+.rd-position-grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; }
+.rd-position { display: flex; align-items: center; justify-content: center; flex-direction: column; min-width: 0; min-height: 32px; padding: 3px 1px; border: 1px solid #dbe0f1; border-radius: 4px; color: #6273a8; background: linear-gradient(140deg, #dce8ff, #e1d9fa); }
+.rd-position > span { font-size: 10px; line-height: 1.4; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rd-position small { font-size: 8px; line-height: 1; color: #8d98c0; }
+.rd-position.is-outside { color: #9b8353; border-color: #e5d8bb; background: repeating-linear-gradient(135deg, #f9f2e2 0, #f9f2e2 5px, #efe4cc 5px, #efe4cc 6px); }
+.rd-position.is-outside small { color: #ae9363; font-size: 10px; }
+.rd-position.is-inactive { color: #a2a7b5; border: 1px dashed #d2d7e2; background: #fafbfd; }
+.rd-position.is-inactive small { color: #aeb4c0; font-size: 10px; }
+.rd-tail-ranges { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 12px; }
+.rd-tail-ranges > span { color: #707a91; font-size: 10px; overflow-wrap: anywhere; }
+.rd-tail-ranges > span > span { display: block; margin-top: 2px; color: #9198a7; font-size: 10px; font-variant-numeric: tabular-nums; }
+.rd-key { display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 2px; vertical-align: baseline; }
+.rd-key.is-valid { border: 1px solid #aeb8dd; background: linear-gradient(135deg, #aac2f5, #bdaae8); }
+.rd-key.is-outside { border: 1px solid #d9c89f; background: repeating-linear-gradient(135deg, #f7ecd4 0, #f7ecd4 3px, #d5bf8b 3px, #d5bf8b 4px); }
+.rd-key.is-inactive { border: 1px dashed #bcc5d8; background: #fff; }
+.rd-plot-caption { display: block; color: #939aa9; font-size: 10px; line-height: 1.6; }
+.rd-range-bar { display: block; width: 100%; height: auto; min-height: 35px; overflow: visible; }
+.rd-bar-track { fill: #f0f2f7; }
+.rd-bar-unused { stroke: #abb5d0; stroke-width: 1; stroke-dasharray: 4 3; }
+.rd-access-line { fill: none; stroke: #929cb9; stroke-width: 1.6; stroke-linecap: round; }
+.rd-valid-end { fill: none; stroke: #757fa1; stroke-width: 1.4; stroke-dasharray: 3 2; }
+.rd-access-start { fill: #929cb9; }
+.rd-access-labels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; color: #9299a8; font-size: 10px; }
+.rd-access-labels > span { min-width: 0; }
+.rd-access-labels strong { display: block; margin-top: 2px; color: #737e99; font-size: 11px; font-weight: 500; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rd-focus-copy { margin: 0; padding: 1px 2px; color: #798197; font-size: 11px; line-height: 1.8; overflow-wrap: anywhere; }
+.rd-focus-copy code { padding: 2px 4px; color: #6d7aa1; background: #f0f2fa; border-radius: 3px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 10px; }
+.rd-boundary { margin: 0; color: #969cab; font-size: 10px; line-height: 1.6; }
+.rd-range-diagram button:focus-visible { outline: 2px solid #aab4cf; outline-offset: 2px; }
+.rd-invalid { padding: 14px; border: 1px dashed #dddfe7; border-radius: 8px; color: #838b9d; }
+.rd-invalid strong { color: #646e86; font-size: 12px; font-weight: 500; }
+.rd-invalid p { margin: 0; font-size: 11px; }
+.rd-range-diagram.is-compact { gap: 4px; }
+.rd-range-diagram.is-compact .rd-heading h4 { margin: 0; font-size: 11px; }
+.rd-range-diagram.is-compact .rd-heading > div > span { display: none; }
+.rd-range-diagram.is-compact .rd-focus-controls { padding: 2px; }
+.rd-range-diagram.is-compact .rd-strategy { padding: 1px 5px; font-size: 10px; }
+.rd-range-diagram.is-compact .rd-focus-controls button { padding-block: 3px; font-size: 10px; }
+.rd-range-diagram.is-compact .rd-plot { padding: 8px; gap: 5px; box-shadow: none; }
+.rd-range-diagram.is-compact .rd-block-grid { grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+.rd-range-diagram.is-compact .rd-block { min-height: 24px; padding-block: 3px; }
+.rd-range-diagram.is-compact .rd-block > span { font-size: 10px; }
+.rd-range-diagram.is-compact .rd-block small { font-size: 10px; }
+.rd-range-diagram.is-compact .rd-position-grid { grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 3px; }
+.rd-range-diagram.is-compact .rd-position { min-height: 20px; padding: 1px; }
+.rd-range-diagram.is-compact .rd-position > span { font-size: 10px; }
+.rd-range-diagram.is-compact .rd-position small { display: none; }
+.rd-range-diagram.is-compact .rd-tail-ranges > span > span { display: none; }
+.rd-range-diagram.is-compact .rd-range-bar { max-height: 42px; }
+.rd-range-diagram.is-compact .rd-boundary { font-size: 10px; }
+@container range-diagram (max-width: 370px) { .rd-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 12px; } .rd-plot { padding: 10px; } .rd-block-grid { gap: 4px; } .rd-position-grid { gap: 3px; } .rd-tail-ranges { gap: 7px; } }
+@container range-diagram (max-width: 260px) { .rd-position-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } .rd-block-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } .rd-tail-ranges { grid-template-columns: 1fr; } .rd-focus-controls button { padding-inline: 2px; } }
+
+@container range-diagram (max-width: 370px) { .rd-range-diagram.is-compact .rd-position-grid { grid-template-columns:repeat(8,minmax(0,1fr)); } }

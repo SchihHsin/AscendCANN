@@ -17,8 +17,8 @@ const initialCards = (startEmpty = false) => [
   { id: "validation", title: "示例范围复核", x: 1420, y: 608, width: 500, height: 390, pinned: false, visible: false, selected: false },
 ].map((card) => ({ ...card, visible: startEmpty ? false : card.visible, collapsed: false, opened: startEmpty ? false : card.visible }));
 
-const initialState = (startEmpty = false) => ({
-  cards: initialCards(startEmpty),
+const initialState = (startEmpty = false, cardDefinitions) => ({
+  cards: cardDefinitions ? cardDefinitions.map((card, index) => ({ x: 28 + (index % 2) * 450, y: 28 + Math.floor(index / 2) * 390, width: 420, height: 360, pinned: false, visible: false, selected: false, collapsed: false, opened: false, ...card })) : initialCards(startEmpty),
   selectedCardId: null,
   lastHiddenId: null,
   comparing: false,
@@ -68,8 +68,8 @@ function bringToFront(cards, id) {
   return [...cards.filter((card) => card.id !== id).map((card) => ({ ...card, selected: false })), { ...selected, selected: true }];
 }
 
-export function useCanvasState({ startEmpty = false } = {}) {
-  const [state, setState] = useState(() => initialState(startEmpty));
+export function useCanvasState({ startEmpty = false, cardDefinitions } = {}) {
+  const [state, setState] = useState(() => initialState(startEmpty, cardDefinitions));
   const current = useRef(state);
   const surfaceSize = useRef(null);
   const hiddenHistory = useRef([]);
@@ -241,7 +241,7 @@ export function useCanvasState({ startEmpty = false } = {}) {
     hiddenHistory.current = [];
     placedCards.current = new Set(startEmpty ? [] : ["source", "evidence"]);
     comparisonSnapshot.current = null;
-    update(initialState(startEmpty));
+    update(initialState(startEmpty, cardDefinitions));
   };
 
   return {

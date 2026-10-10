@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { getMaterialMeta } from "./workspace-materials";
 
-function initialState(isMainTask) {
-  const initial = { ...getMaterialMeta(isMainTask ? "source" : "task-brief"), unread: false };
+function initialState(isMainTask, taskId) {
+  const initial = { ...getMaterialMeta(taskId === "图像推理调试" ? "image-source" : isMainTask ? "source" : "task-brief"), unread: false };
   return {
     tabs: [initial],
     visitedTabs: [initial],
@@ -56,11 +56,11 @@ function activatedState(previous, id) {
 export function useContentWorkspace({ taskId, isMainTask }) {
   const tasks = useRef(new Map());
   const [, setRevision] = useState(0);
-  if (!tasks.current.has(taskId)) tasks.current.set(taskId, initialState(isMainTask));
+  if (!tasks.current.has(taskId)) tasks.current.set(taskId, initialState(isMainTask, taskId));
   const state = tasks.current.get(taskId);
 
   const update = (change, ownerId = taskId, ownerIsMainTask = isMainTask) => {
-    const previous = tasks.current.get(ownerId) || initialState(ownerIsMainTask);
+    const previous = tasks.current.get(ownerId) || initialState(ownerIsMainTask, ownerId);
     const next = change(previous);
     if (next === previous) return;
     tasks.current.set(ownerId, next);
@@ -141,7 +141,7 @@ export function useContentWorkspace({ taskId, isMainTask }) {
   };
 
   const endSplit = () => update((previous) => previous.splitId ? { ...previous, splitId: null, lastSplitId: null } : previous);
-  const reset = () => update(() => initialState(isMainTask));
+  const reset = () => update(() => initialState(isMainTask, taskId));
 
   return { state, actions: { open, activate, close, openCanvas, splitWith, endSplit, reset } };
 }

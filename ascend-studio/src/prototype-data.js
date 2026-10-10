@@ -7,7 +7,7 @@ export const initialGroups = [
   {
     id: "inference",
     name: "模型推理",
-    tasks: ["Image inference debugging", "Model preprocessing", "Vision model test"],
+    tasks: ["图像推理调试", "Model preprocessing", "Vision model test"],
   },
   {
     id: "other",
@@ -31,11 +31,11 @@ export const taskDetails = {
     reply: "先约定 batch dimension 的位置、输入与输出形状、是否允许广播，以及各维度的有效范围。随后可以列出最小输入、整块输入和非整块输入的检查清单。\n\n这里还没有算子代码或运行记录，当前只建立任务简报；实现是否正确需要后续代码与验证证据。",
     status: "waiting",
   },
-  "Image inference debugging": {
+  "图像推理调试": {
     project: "模型推理",
-    goal: "区分图像推理问题来自输入处理、模型转换还是推理执行。",
-    question: "图像推理结果不符合预期，先从哪里检查？",
-    reply: "先保留一张可复现的输入图像、预期输出和实际输出，再对齐预处理、模型版本及运行环境。应分别记录每个阶段的输入形状、数据类型和报错，避免把不同阶段的问题混在一起。\n\n尚未提供本任务的运行结果，因此目前可以整理排查顺序，不能确认故障位置。",
+    goal: "对照图像通道与模型输入约定，在示例副本中理解并尝试维度转换。",
+    question: "模型示例要求 NCHW [1,3,224,224]，现在是 NHWC [1,224,224,3]。先帮我理解通道顺序，原文件先别改。",
+    reply: "先把图像和代码对起来看：图像以 HWC 读入，而这个示例的模型约定为 NCHW。可以查看 RGB 分层图，再在练习副本中调整轴顺序、补充 batch 维度。\n\n原文件保持只读。形状检查只验证这个示例的维度约定，真实模型签名、归一化及推理结果仍需核对。",
     status: "waiting",
   },
   "Model preprocessing": {

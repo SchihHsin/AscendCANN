@@ -108,8 +108,9 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], o
         const selectedTask = ownerTaskId === taskId;
         const current = view.state;
         const currentCanvas = current.activeId === "canvas";
+        const diagramSplit = current.splitId && [current.activeId, current.splitId].some(id => id === "explanation" || id.startsWith("image-"));
         const canvasVisited = view.visited.some((tab) => tab.id === "canvas");
-        return <div className={"tw-task-body" + (current.splitId && !currentCanvas ? " has-split" : "")} key={ownerTaskId} hidden={!selectedTask}>
+        return <div className={"tw-task-body" + (current.splitId && !currentCanvas ? " has-split" : "") + (diagramSplit ? " is-diagram-split" : "")} key={ownerTaskId} hidden={!selectedTask}>
           {view.visited.filter((tab) => tab.id !== "canvas").map((tab) => {
             const primary = current.activeId === tab.id && !currentCanvas;
             const secondary = current.splitId === tab.id && !currentCanvas;

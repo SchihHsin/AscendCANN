@@ -84,3 +84,10 @@
 .tw-picker-footer > button:disabled { color: #b4bdcb; border-color: #e5e8ee; cursor: default; }
 .task-workspace button:focus-visible { outline: 2px solid #aab3c9; outline-offset: 2px; }
 @media (max-width: 1180px) { .tw-header { padding-inline: 12px; } .tw-heading > span { display: none; } .tw-view-toolbar { padding-inline: 10px; } .tw-view-kind small { display: none; } .tw-view-toolbar > div { gap: 8px; } .tw-pane-content { padding-inline: 13px; } }
+
+/* Preserve readable code and diagrams when their shared work area is narrow. */
+.task-workspace { container-type: inline-size; container-name: task-content; }
+@container task-content (max-width: 640px) {
+  .tw-task-body.has-split.is-diagram-split .tw-pane.is-primary { inset: 0 0 50%; border-right: 0; border-bottom: 1px solid #e0e3eb; }
+  .tw-task-body.has-split.is-diagram-split .tw-pane.is-secondary { inset: 50% 0 0; }
+}

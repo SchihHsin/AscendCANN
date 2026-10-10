@@ -1,0 +1,48 @@
+/* Neutral controls; colour is reserved for diagram semantics and actual states. */
+.cm-button-primary, .cm-button-primary:hover:not(:disabled),
+.aw-button-primary, .aw-button-primary:hover:not(:disabled),
+.task-suggestion-actions .light-button, .task-suggestion-actions .light-button:hover,
+.ex-trial-actions .ex-primary-button, .ex-trial-actions .ex-primary-button:hover {
+  background:#24252a; border-color:#24252a; color:#fff; box-shadow:none;
+}
+.chat-canvas-action, .chat-canvas-action:hover,
+.ex-heading-actions .ex-primary-button, .ex-heading-actions .ex-primary-button:hover {
+  background:#fff; border-color:#e1e2e6; color:#454951; box-shadow:none;
+}
+.ex-heading-actions .ex-primary-button > span { color:#81858e; }
+.task-inline-suggestion { background:#fafafa; border-color:#e5e6e9; }
+.task-inline-suggestion > div > svg, .tw-heading > svg { color:#737982; }
+.message-source-links button { color:#68707c; }
+.message-source-links button:hover { color:#333943; }
+.tw-view-toolbar button, .tw-material-open, .tw-picker-footer > button { color:#616874; }
+.cm-stat-grid dd { color:#535a6b; }
+.chat-fact { font-weight:550; }
+.chat-fact.is-pass { color:#4a7d64; }
+.chat-fact.is-fail { color:#a86362; }
+.chat-next-disclosure { margin-top:14px; padding-top:10px; border-top:1px solid #e5e6e9; }
+.chat-next-disclosure > summary { font-size:11px; color:#737782; cursor:pointer; }
+.ex-diagram-panel { background:#fdfdfe; border-color:#e7e8ec; border-radius:8px; box-shadow:none; }
+.ex-diagram-panel .rd-heading { display:none; }
+.ex-lesson-scene { background:#f9f9fc; }
+.ex-trial-panel { background:#fff; border-radius:8px; }
+.ex-heading h2, .im-heading h2 { color:#30343d; }
+.ex-heading p, .im-heading p { color:#737984; }
+.pp-heading strong, .pp-detail-heading, .aw-table-heading strong { color:#414a5d; font-size:12px; }
+.pp-point-detail dd, .aw-table td { color:#4e586b; font-size:11px; }
+.pp-point-detail dt, .pp-scale-note, .pp-legend, .aw-description, .aw-formula { color:#767f8f; }
+.aw-table td small { color:#7b8391; }
+.aw-status { color:#52765c; background:#eff5f0; }
+.aw-status.is-failed { color:#9a625d; background:#faf0ed; }
+.aw-index-button, .aw-inline-button { color:#5f687b; }
+.image-canvas-index { padding:12px; background:#fff; color:#697181; width:230px; border:1px solid #e3e5eb; border-radius:8px; box-shadow:0 5px 18px #30344110; }
+.image-canvas-index header { display:flex; align-items:center; justify-content:space-between; margin-bottom:9px; font-size:12px; font-weight:600; }
+.image-canvas-index button { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; border:0; border-radius:4px; background:transparent; color:#677080; padding:8px 3px; font-size:11px; cursor:pointer; }
+.image-canvas-index header button { width:auto; padding:3px; }
+.image-canvas-index button:hover { background:#f4f4f6; }
+.tw-view-toolbar { flex-wrap:wrap; }
+.tw-view-toolbar > div { flex-wrap:wrap; }
+@container task-content (max-width:390px) {
+  .tw-view-toolbar > div { gap:7px 10px; }
+  .tw-pane-content { padding-inline:11px; }
+  .ex-primary-button { white-space:normal; }
+}

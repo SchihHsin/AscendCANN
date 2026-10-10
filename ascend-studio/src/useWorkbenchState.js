@@ -20,7 +20,7 @@ export function useWorkbenchState() {
   const [openedGroups, setOpenedGroups] = useState(["operator", "inference"]);
   const [selectedTask, setSelectedTask] = useState(MAIN_TASK);
   const [sessions, setSessions] = useState({ [MAIN_TASK]: blank() });
-  const [rationaleOpen, setRationaleOpen] = useState(true);
+  const [rationaleOpen, setRationaleOpen] = useState(false);
   const [actionView, setActionView] = useState(null);
   const [menu, setMenu] = useState(null);
   const [dialog, setDialog] = useState(null);
@@ -105,6 +105,31 @@ export function useWorkbenchState() {
       updateTask(taskName, (old) => ({ replying: false, messages: [...old.messages, { id: uid(), role: "assistant", text: cleanReply(buildAssistantReply({ text, taskName, modelLabel, attachments, records })), model: modelLabel, isDemo: true }] }));
     }, 650);
   };
+  const askFromExplanation = (context) => {
+    if (session.replying || replyTimers.current.has(selectedTask)) { notify("当前答复完成后可以继续解释这句。"); return; }
+    if (context.kind === "image") {
+      const focus = ["channels", "layout", "batch"].includes(context.focus) ? context.focus : "layout";
+      const seconds = Math.max(0, Math.min(60, Number(context.time) || 0));
+      const stamp = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
+      const sourceContext = { ...context, focus, time: seconds, stamp, isDemo: true };
+      const text = { channels: "每个像素包含 R、G、B 三个数值，HWC 的最后一维 C=3。分层张量图帮助区分通道，透视示意不表示真实内存结构。", layout: "HWC 输入的轴 0、1、2 分别对应 H、W、C。transpose(2,0,1) 改成 C、H、W，得到 [3,224,224]。图解里的尺寸随轴一起移动。", batch: "CHW [3,224,224] 前增加样本数 N=1，就成为 NCHW [1,3,224,224]。这里只核对示例输入约定，真实模型签名、dtype 和归一化仍需确认。" }[focus];
+      updateTask(selectedTask, old => ({ messages: [...old.messages, { id: uid(), role: "user", text: `请解释 ${stamp} 这句：“${context.subtitle}”`, sourceContext }, { id: uid(), role: "assistant", text, isDemo: true, sourceContext }] }));
+      return;
+    }
+    const focus = ["total", "tail", "access"].includes(context.focus) ? context.focus : "tail";
+    const seconds = Math.max(0, Math.min(60, Number(context.time) || 0));
+    const stamp = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
+    const sourceContext = { title: context.title || "非整块输入的范围讲解", subtitle: context.subtitle || "", focus, time: seconds, stamp, isDemo: true };
+    const replies = {
+      total: "这个范围示例把 [17,33] 展开为 561 个元素。每块 32 个，先得到 17 个完整块，共 544 个元素，最后还剩 17 个。图解里的完整块和最后一块分别对应 total 与 blocks 的计算。",
+      tail: "最后一块从索引 544 开始，有效元素到索引 560 为止，共 17 个。baseIndex 决定起点，剩余数量决定有效元素数。图解放大的是这段范围；实际项目是否采用相同路径仍需核对源码。",
+      access: "示例若让最后一块也循环 32 次，会访问索引 544–575，其中 561–575 的 15 个位置超出有效范围。仅访问剩余有效元素时，访问上限是 560。可以在图解中切换策略比较；这段演示不能单独证明真实 AddCustom 的精度根因。",
+    };
+    updateTask(selectedTask, (old) => ({ messages: [...old.messages,
+      { id: uid(), role: "user", text: `请解释 ${stamp} 这句：“${sourceContext.subtitle}”`, sourceContext },
+      { id: uid(), role: "assistant", text: replies[focus], isDemo: true, sourceContext },
+    ] }));
+  };
   const createTask = ({ name, groupId, goal }) => {
     const title = name.trim(), group = groups.find((item) => item.id === groupId);
     if (!group || !title) return false;
@@ -151,5 +176,5 @@ export function useWorkbenchState() {
     .filter((file) => file.content && (file.type === "code" || /\.(cpp|h|py)$/i.test(file.name)))
     .sort((a, b) => (a.receivedOrder || 0) - (b.receivedOrder || 0)).at(-1);
   const attempts = [...(isMainTask ? [{ title: "修改编译参数", summary: "错误仍在 custom_op.cpp:128，未新增定位信号。", time: "已知现场" }] : []), ...session.records.filter((item) => item.kind === "attempt")];
-  return { getSession: (name) => sessions[name] || blank(), getTask: (name) => meta[name] || { goal: "补充目标和材料。" }, groups, task, session, query, setQuery, filterScope, setFilterScope, openedGroups, setOpenedGroups, selectedTask, rationaleOpen, setRationaleOpen, actionView, setActionView, menu, setMenu, menuRef, openMenu, dialog, dialogData, openDialog, closeDialog, selectedModel, model, automations, setAutomations, notifications, toast, notify, conversationRef, draftRef, fileRef, imageRef, currentGroup, isMainTask, visibleGroups, patchSession, toggleGroup, selectTask, setSelectedRoute, setDraft, copyText, conversationText, exportTask, resetTask, sendMessage, createTask, startConversation, restoreConversation, attachCode, readFiles, useCapability, addRecord, confirmRoute, chooseModel, runAutomation, attachmentCode, attempts };
+  return { getSession: (name) => sessions[name] || blank(), getTask: (name) => meta[name] || { goal: "补充目标和材料。" }, groups, task, session, query, setQuery, filterScope, setFilterScope, openedGroups, setOpenedGroups, selectedTask, rationaleOpen, setRationaleOpen, actionView, setActionView, menu, setMenu, menuRef, openMenu, dialog, dialogData, openDialog, closeDialog, selectedModel, model, automations, setAutomations, notifications, toast, notify, conversationRef, draftRef, fileRef, imageRef, currentGroup, isMainTask, visibleGroups, patchSession, toggleGroup, selectTask, setSelectedRoute, setDraft, copyText, conversationText, exportTask, resetTask, sendMessage, askFromExplanation, createTask, startConversation, restoreConversation, attachCode, readFiles, useCapability, addRecord, confirmRoute, chooseModel, runAutomation, attachmentCode, attempts };
 }

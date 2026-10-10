@@ -1,0 +1,19 @@
+/* Blue-violet marks content hierarchy; navigation selections remain neutral. */
+:root {
+  --task-focus-gradient: linear-gradient(115deg, #5b6bb8, #7c60b5);
+  --task-focus-soft: linear-gradient(125deg, #f0f4ff, #f7f1fc);
+  --task-focus-ink: #6066a2;
+}
+.cm-button-primary { background: var(--task-focus-gradient); border-color: #7075ad; color: #fff; box-shadow: 0 2px 5px #60649b14; }
+.cm-button-primary:hover:not(:disabled) { background: linear-gradient(115deg, #5262aa, #7055a8); border-color: #68679f; color: #fff; }
+.task-inline-suggestion { background: var(--task-focus-soft); border-color: #e4e5ef; }
+.task-inline-suggestion > div > svg { color: #7572b1; }
+.task-suggestion-actions .light-button, .chat-canvas-action { background: linear-gradient(115deg, #f0f3fd, #f5f0fa); border-color: #dcdfee; color: #69669b; }
+.task-suggestion-actions .light-button:hover, .chat-canvas-action:hover { background: #eaeefa; color: #55578d; }
+.tw-heading > svg { color: #7771ab; }
+.tw-new-results > span, .tw-unread-dot { background: linear-gradient(110deg, #7785c5, #9478c4); }
+.cm-stat-grid dd { color: #6e70a2; }
+.message-source-links { display: flex; flex-wrap: wrap; gap: 7px 12px; margin-top: 10px; }
+.message-source-links button { display: inline-flex; align-items: center; gap: 4px; padding: 3px 0; border: 0; background: transparent; color: #7673a2; font-family: inherit; font-size: 10px; line-height: 1.7; cursor: pointer; }
+.message-source-links button:hover { color: #52588c; text-decoration: underline; text-underline-offset: 3px; }
+.message-source-links button:focus-visible { outline: 2px solid #b4b7d2; outline-offset: 3px; }

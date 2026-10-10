@@ -358,3 +358,15 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户已确认两案例范围，本轮整理组织与切换规则，不实现尚待评审的图解状态，不新增其他题目/平台。仅根/原型AGENTS暂存diff检查后commit/push，未改源码/Pages，未生成图或构建/新增/运行测试；前序WIP保持，报告序列及API/Host/Application边界不变。
 
 - Commit/push：两案例及任务切换决策a7b314eb已成功推送origin/main（59dcca5b..a7b314eb），仅两个AGENTS，暂存diff检查通过；源码/Pages未提交，本轮为范围与交互组织确认。本回执随交接提交立即push。
+
+### 2026-10-10（Ascend Studio：两案例图解与任务状态整合）
+
+- 用户同意在现有项目列表中切换 AddCustom 与图像推理，并授权 Luna 子 agent 处理简单任务，主代理负责自适应与最终验收。本轮把前序未提交的可视化 WIP 整合进原型；只处理这两个案例，不推进其他正式题目或统一成所有方案都在 Studio。
+- 源码变更位于 ascend-studio/src：新增 RangeDiagram/RangeStructure、ExplainPanel/useExplanationSession、PrecisionPlot、ImageInference/useImageInference、code-concepts 和对应 CSS；整合 App、CanvasMaterials、ActionWorkspace、TaskWorkspace、useContentWorkspace/useCanvasState/useWorkbenchState、材料与项目数据。新增 prototype-polish.css 将主要按钮改为黑色、次级按钮中性，提亮图解内容面与数值层次，状态绿/红只表达已知状态，保留蓝紫的图形语义。
+- AddCustom：代码行与整体分块/尾块/访问边界对应；二维输入与每块32元素的分组可点选，访问过程可单步/播放/拖进度；讲解片段、字幕提问携带时间与来源；试改参数实时更新图形，每次范围尝试保存快照，前后图形可对照，Diff 与分层复核继续接回原任务。默认普通内容，比较时临时并排，需要整理多材料才主动打开自由画布。
+- 图像推理：preprocess.py 只读示例 → RGB通道/维度图解 → 代码旁调轴和batch → 形状尝试 → Diff取消/应用/撤销 → 返回任务核对。示例输入 HWC [224,224,3]，轴2,0,1与batch得到NCHW [1,3,224,224]；重复轴保存为无效尝试且禁用修改预览。固定参考不覆盖当前练习参数；离开讲解、切换任务或进入画布暂停播放。两个任务的对话、普通/并排/画布、参数、尝试与记录分别保存于浏览器当前会话，刷新重置。
+- 资产：public/assets/inference-input-cat.png 为内置 ImageGen 生成的输入照片；RGB通道由浏览器从该照片逐像素提取。public/assets/inference-rgb-tensor.png 复用 learning-canvas-story 原概念配图，明确非当前照片数据，不能当作实时张量或设备内存图。右侧不加装饰底图，左/中既有氛围底图保留。
+- 来源与边界：行为精简报告正式02/#15–16的判断与04/#19–22理解共用AddCustom；学习方案A3/#12–13、A4/#14–15、B2/#21–22、B6/#29–30提供图解/字幕/参数/尝试联动提案。M级本地交互观察，示例范围与形状为浏览器数学演算，片段为动态讲解示例，没有真实视频、AI、Python/C++、模型/NPU或项目文件写入。没有改变报告页序与 API/Host/Application 三层事实边界。
+- Luna 完成 image-inference.css 与 range-structure.css 的窄栏规则，未运行测试/构建/提交；主代理在验收后将范围结构改为窄栏上下重排，避免固定510px SVG的横滚。主代理手动验收1280×720、1600×900、390×844，拖窄工作区至360px、宽工作区至约1049px：图解/尝试窄栏堆叠，并排窄栏上下/宽栏左右；正文宽栏760px居中；左栏收起/展开、栏宽拖动、任务往返恢复、画布移动/调整尺寸/固定/收纳恢复与关闭返回均已操作。390px页面scrollWidth=390；360px工作区图解无横向溢出；浏览器error日志为空。未新增自动测试套件。
+- 构建/语法/差异检查：npm run build:pages 成功，node --check 对 useImageInference/useExplanationSession/useContentWorkspace/useCanvasState 通过，git diff --check 通过。同步 ascstudio/ Pages静态产物；实际提交与推送回执后续补记，不把构建成功等同线上部署完成。
+- 交付截图与详细验收矩阵见 ascend-studio/design-qa.md 和 evidence/20261010-two-cases-{addcustom,image,attempts,narrow}.jpg。仅提交本轮原型/产物/交接，保留其他报告、图片、DS_Store等无关脏文件。待用户评审两个案例的图解密度与交互，真实运行/刷新持久化仍未接入。

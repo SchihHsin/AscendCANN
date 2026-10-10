@@ -13,6 +13,7 @@ import {
   IconLoader2,
   IconPlus,
 } from "@tabler/icons-react";
+import { PrecisionPlot } from "./PrecisionPlot";
 import "./action-workspace.css";
 
 const DEMO_CSV = `index,expected,actual
@@ -76,6 +77,7 @@ export function ActionWorkspace({ view, onChangeView, onBack, onRecord, codeAtta
   const [relativeTolerance, setRelativeTolerance] = useState("0.001");
   const [precisionError, setPrecisionError] = useState("");
   const [precisionResult, setPrecisionResult] = useState(null);
+  const [selectedPrecisionIndex, setSelectedPrecisionIndex] = useState(null);
   const [checks, setChecks] = useState([]);
   const [observation, setObservation] = useState("");
   const [reviewError, setReviewError] = useState("");
@@ -83,9 +85,12 @@ export function ActionWorkspace({ view, onChangeView, onBack, onRecord, codeAtta
   const [busy, setBusy] = useState(null);
   const [notice, setNotice] = useState("");
   const timer = useRef(null);
+  const precisionTableRef = useRef(null);
+  const precisionRowRefs = useRef(new Map());
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
   useEffect(() => { if (embedded && view === "precision") onPrecisionContext?.(precisionResult); }, [precisionResult, embedded, view, onPrecisionContext]);
+  useEffect(() => { setSelectedPrecisionIndex(precisionResult?.rows.find((row) => !row.passed)?.index ?? precisionResult?.rows[0]?.index ?? null); }, [precisionResult]);
   const activePrecision = embedded && view === "review" ? precisionContext : precisionResult;
   const activeRange = embedded && view === "review" ? rangeContext : rangeResult;
 
@@ -119,17 +124,36 @@ export function ActionWorkspace({ view, onChangeView, onBack, onRecord, codeAtta
     });
   };
 
+  const invalidatePrecision = (message = "输入已变化，请重新计算误差。") => {
+    setPrecisionResult(null);
+    setSelectedPrecisionIndex(null);
+    setPrecisionError("");
+    setNotice(message);
+  };
+
+  const selectPrecisionRow = (index, locateInTable = false) => {
+    setSelectedPrecisionIndex(index);
+    if (!locateInTable) return;
+    const container = precisionTableRef.current;
+    const row = precisionRowRefs.current.get(index);
+    if (!container || !row) return;
+    const containerRect = container.getBoundingClientRect();
+    const rowRect = row.getBoundingClientRect();
+    const headerHeight = container.querySelector("thead")?.getBoundingClientRect().height || 0;
+    const visibleTop = containerRect.top + headerHeight + 1;
+    if (rowRect.top < visibleTop) container.scrollTop += rowRect.top - visibleTop;
+    else if (rowRect.bottom > containerRect.bottom - 1) container.scrollTop += rowRect.bottom - containerRect.bottom + 1;
+  };
+
   const loadDemo = () => {
     setCSV(DEMO_CSV);
     setSourceIsDemo(true);
-    setPrecisionResult(null);
-    setPrecisionError("");
-    setNotice("已载入 8 行演示数据，可修改后计算。");
+    invalidatePrecision("已载入 8 行演示数据，可修改后计算。");
   };
 
   const calculatePrecision = (event) => {
     event.preventDefault();
-    setPrecisionError("");
+    invalidatePrecision("");
     const atol = Number(absoluteTolerance);
     const rtol = Number(relativeTolerance);
     if (!absoluteTolerance.trim() || !relativeTolerance.trim() || !Number.isFinite(atol) || !Number.isFinite(rtol) || atol < 0 || rtol < 0) {
@@ -230,13 +254,21 @@ for (int i = 0; i < validCount; ++i) {
             <div className="aw-section-heading"><h3>逐元素误差</h3><button className="aw-inline-button" type="button" disabled={Boolean(busy)} onClick={loadDemo}>载入示例数据</button></div>
             <p className="aw-description">粘贴 CSV：index,expected,actual。当前仅计算你提供的数值，未连接运行环境。</p>
             <form className="aw-form" onSubmit={calculatePrecision}>
-              <label className="aw-csv-label"><span>输入数据 <em>{sourceIsDemo ? "演示数据" : "用户提供 · 未独立验证"}</em></span><textarea disabled={Boolean(busy)} className="aw-csv-input" value={csv} onChange={(event) => { setCSV(event.target.value); setSourceIsDemo(false); setPrecisionResult(null); setPrecisionError(""); }} placeholder={"index,expected,actual\n0,1.25,1.25\n1,2.5,2.500001"} rows={7} spellCheck={false} /></label>
-              <div className="aw-fields"><label>绝对容差 atol<input disabled={Boolean(busy)} type="number" min="0" step="any" value={absoluteTolerance} onChange={(event) => { setAbsoluteTolerance(event.target.value); setPrecisionResult(null); }} required /></label><label>相对容差 rtol<input disabled={Boolean(busy)} type="number" min="0" step="any" value={relativeTolerance} onChange={(event) => { setRelativeTolerance(event.target.value); setPrecisionResult(null); }} required /></label></div>
+              <label className="aw-csv-label"><span>输入数据 <em>{sourceIsDemo ? "演示数据" : "用户提供 · 未独立验证"}</em></span><textarea disabled={Boolean(busy)} className="aw-csv-input" value={csv} onChange={(event) => { setCSV(event.target.value); setSourceIsDemo(false); invalidatePrecision(); }} placeholder={"index,expected,actual\n0,1.25,1.25\n1,2.5,2.500001"} rows={7} spellCheck={false} /></label>
+              <div className="aw-fields"><label>绝对容差 atol<input disabled={Boolean(busy)} type="number" min="0" step="any" value={absoluteTolerance} onChange={(event) => { setAbsoluteTolerance(event.target.value); invalidatePrecision("容差已变化，旧结果已清除，请重新计算。"); }} required /></label><label>相对容差 rtol<input disabled={Boolean(busy)} type="number" min="0" step="any" value={relativeTolerance} onChange={(event) => { setRelativeTolerance(event.target.value); invalidatePrecision("容差已变化，旧结果已清除，请重新计算。"); }} required /></label></div>
               <p className="aw-formula">超差条件：|actual − expected| &gt; atol + rtol × |expected|</p>
               {precisionError && <p className="aw-error" role="alert">{precisionError}</p>}
               <button className="aw-button aw-button-primary" type="submit" disabled={Boolean(busy)}>{busy === "precision" ? <IconLoader2 className="aw-spinner" size={15} /> : <IconChartDots size={15} />}计算误差</button>
             </form>
-            {precisionResult && <div className="aw-result-card"><div className="aw-result-title"><IconCheck size={15} /><strong>{precisionResult.isDemo ? "演示数据结果" : "用户数据计算结果"}</strong></div><div className="aw-result-summary"><span>{precisionResult.rows.length} 个元素</span><strong>{precisionResult.failed} 个超差</strong><span>atol {formatNumber(precisionResult.atol)} · rtol {formatNumber(precisionResult.rtol)}</span></div><div className="aw-table-wrap"><table className="aw-table"><caption className="aw-sr-only">逐元素误差与容差对照</caption><thead><tr><th>索引</th><th>预期 / 实际</th><th>误差 / 阈值</th><th>判定</th></tr></thead><tbody>{precisionResult.rows.map((row) => <tr key={row.index}><td>{row.index}</td><td><span>{formatNumber(row.expected)}</span><small>{formatNumber(row.actual)}</small></td><td><span>{formatNumber(row.error)}</span><small>{formatNumber(row.threshold)}</small></td><td><span className={"aw-status" + (row.passed ? "" : " is-failed")}>{row.passed ? "范围内" : "超差"}</span></td></tr>)}</tbody></table></div><p className="aw-description">仅判断本次粘贴元素是否在所设容差内，不能代表整体精度通过，也不能确认根因。</p><button className="aw-inline-button" type="button" onClick={() => record({ title: precisionResult.isDemo ? "演示误差计算" : "逐元素误差计算", summary: `${precisionResult.isDemo ? "演示" : "用户提供"}数据：${precisionResult.rows.length} 个元素，${precisionResult.failed} 个超差；atol ${precisionResult.atol}，rtol ${precisionResult.rtol}。未独立验证数据来源，根因尚未确认，待 NPU 验证。`, kind: "precision", isDemo: precisionResult.isDemo })}><IconPlus size={14} />加入复核记录</button></div>}
+            {precisionResult && <div className="aw-result-card aw-precision-result">
+              <div className="aw-result-title"><IconCheck size={15} /><strong>{precisionResult.isDemo ? "演示数据结果" : "用户数据计算结果"}</strong></div>
+              <div className="aw-result-summary"><span>{precisionResult.rows.length} 个元素</span><strong>{precisionResult.failed} 个超差</strong><span>atol {formatNumber(precisionResult.atol)} · rtol {formatNumber(precisionResult.rtol)}</span></div>
+              <PrecisionPlot result={precisionResult} selectedIndex={selectedPrecisionIndex} onSelect={(index) => selectPrecisionRow(index, true)} />
+              <div className="aw-table-heading"><strong>逐项数据</strong><span>点击索引与图中的点对应</span></div>
+              <div className="aw-table-wrap" ref={precisionTableRef}><table className="aw-table"><caption className="aw-sr-only">逐元素误差与容差对照；选择索引可在上方图中查看对应数据点</caption><thead><tr><th>索引</th><th>预期 / 实际</th><th>误差 / 阈值</th><th>判定</th></tr></thead><tbody>{precisionResult.rows.map((row) => <tr key={row.index} ref={(element) => { if (element) precisionRowRefs.current.set(row.index, element); else precisionRowRefs.current.delete(row.index); }} className={selectedPrecisionIndex === row.index ? "is-selected" : ""} aria-selected={selectedPrecisionIndex === row.index} onClick={() => selectPrecisionRow(row.index)}><td><button className="aw-index-button" type="button" aria-pressed={selectedPrecisionIndex === row.index} aria-label={`选择索引 ${row.index}，在误差图中查看`} onClick={(event) => { event.stopPropagation(); selectPrecisionRow(row.index); }}>{row.index}</button></td><td><span>{formatNumber(row.expected)}</span><small>{formatNumber(row.actual)}</small></td><td><span>{formatNumber(row.error)}</span><small>{formatNumber(row.threshold)}</small></td><td><span className={"aw-status" + (row.passed ? "" : " is-failed")}>{row.passed ? "○ 范围内" : "◇ 超差"}</span></td></tr>)}</tbody></table></div>
+              <p className="aw-description">仅判断本次粘贴元素是否在所设容差内，不能代表整体精度通过，也不能确认根因。</p>
+              <button className="aw-inline-button" type="button" onClick={() => record({ title: precisionResult.isDemo ? "演示误差计算" : "逐元素误差计算", summary: `${precisionResult.isDemo ? "演示" : "用户提供"}数据：${precisionResult.rows.length} 个元素，${precisionResult.failed} 个超差；atol ${precisionResult.atol}，rtol ${precisionResult.rtol}。未独立验证数据来源，根因尚未确认，待 NPU 验证。`, kind: "precision", isDemo: precisionResult.isDemo })}><IconPlus size={14} />加入复核记录</button>
+            </div>}
             <button className="aw-button aw-button-next" type="button" onClick={() => onChangeView("review")}>整理观察与待验证项<IconArrowRight size={15} /></button>
           </section>
         )}
