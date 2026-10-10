@@ -4691,3 +4691,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅提交讨论交接、审阅记录及两张截图并立即push，实际回执随后补记。不影响报告页序、研究事实或API/Host/Application边界，待用户继续讨论补回优先级。
 
 - Commit/push：可视化迁移缺口审阅d2a53b91已成功推送origin/main（4e965c36..d2a53b91），仅根/原型交接、design-qa及两张当前截图五个文件，暂存diff检查通过；原型和Pages未改。该回执单独提交并立即push，A/B/C尚待讨论。
+
+
+### 2026-10-10（Ascend Studio：可视化设计点来源澄清）
+
+- 用户询问此前所说可视化设计点的具体材料来源。本轮只澄清引用，不实施A/B/C方向、不改原型源码或Pages。
+- 原材料是用户指定的cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#19“开发中学习”故事线：B1（第19页，images/B1.png）为选中代码与错误日志、实际/预期形状关联；B2（第21页，images/B2.png）为原文件关联张量图解及局部路径；B6（第29页，images/B6-task-try.png）为参数控件、代码、张量形状与结果同步。对应设计说明分别在后一页。依据为现有HTML和本轮之前已查看的方案图，属于设计提案，不是运行实证。
+- 原方案场景是图像推理输入维度/通道顺序。此前建议的整块/尾块范围图、误差分布图是针对当前AddCustom问题02提出的迁移与补充方向，原材料没有这些具体图；用户尚未授权实施。后续必须区分原方案已有机制与新增场景设计。
+- 只维护根/原型AGENTS；不影响报告页序、研究事实、API/Host/Application边界。未构建或运行测试；本轮文档diff检查后立即提交/push，回执随后补记。

@@ -250,3 +250,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 保持现有三栏与响应、底图25%、AI铺背景/用户靠右/无头像、无学习中心/学习组、中性选中；只做问题02待评审。原张量维度图仅迁移交互机制，不是本题技术实证；根因/NPU未验证。本轮未构建或运行测试，不改报告序列、研究事实或API/Host/Application边界。只提交记录与截图并立即push，回执随后补记。
 
 - Commit/push：审阅记录及两张当前截图d2a53b91已成功推送origin/main（4e965c36..d2a53b91），仅本轮五个文件，暂存diff检查通过；源码/Pages未改。本回执单独提交并立即push；补回方向尚待讨论。
+
+
+## 2026-10-10 · 可视化设计点来源澄清
+
+- 用户询问具体来源。引用用户此前指定的../cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#19：B1第19页（B1.png）代码/日志/实际与预期形状关联，B2第21页（B2.png）原文件关联张量图解与局部路径，B6第29页（B6-task-try.png）参数/代码/图形同步；后一页各有说明。现有图像推理输入维度/通道顺序方案属于设计提案。
+- 整块/尾块范围图、误差分布图是面向当前AddCustom问题02的新增迁移建议，原材料没有这些具体图。用户尚未确认A/B/C或授权实施，当前只回答引用来源。
+- 仅更新根/原型交接，不改源码/Pages/当前浏览器状态；未构建或运行测试。diff检查后立即提交/push，实际回执随后补记；其他题目、报告页序、研究事实及API/Host/Application边界不变。
