@@ -321,3 +321,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 使用已读Product Design ideate反馈流程及ImageGen内置工具，基于用户实际附件/var/folders/wj/nd900vqd3wl1kztdsn2r8pcw0000gn/T/codex-clipboard-da0920df-d0a0-455a-a424-a22e86f74290.png（已打开）生成一张修订图并在主对话展示。输出：/Users/hsin/.codex/generated_images/01a0f0fa-7e78-7c81-a14c-994e31ca9b7b/exec-862118e4-15f9-4ba3-aa30-3daf63bb4833.png，约1672×941。视觉提案，尚待用户评审，不视为实施选定或运行证据。
 - 图中主操作黑色、用户气泡浅灰、侧栏/工作区明显提亮，普通内容面更平；左下档案氛围保留。生成图部分次级文字操作仍呈蓝色，后续须遵循用户无彩色按钮的约束；图示数值按源数据实现，不以生成文本作实证。三栏、AI铺背景/无头像、任务分组/自动化/能力库、按需画布和问题02单题范围保持。
 - 本轮未改源码或Pages，前序WIP保留；未构建或新增/运行测试，不改变报告序列、技术事实或API/Host/Application边界。Product Design预检未找到全局user-context.md，使用仓内决策和本次参考。仅根/原型交接暂存diff检查后立即commit/push，待修订图评审后实施。
+
+- Commit/push：反馈与修订图交接81ba4c23已成功推送origin/main（f7c395e0..81ba4c23），仅两个AGENTS，暂存diff检查通过；未提交源码/Pages或前序WIP，本轮没有发布新版Demo。此回执随文档提交立即push。
