@@ -4648,3 +4648,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改ascend-studio/src/styles.css：在共享.ambient-art规则统一opacity .25，移除两处独立覆盖。保留对话左上位置、760px尺度、轻微曲面、blur1.5px/saturate1.2及各自渐消；不改变布局、内容、交互或右侧无装饰规则。更新README和素材说明的当前参数。
 - In-app Browser默认1280×720读到两处computed opacity均0.25，并保存ascend-studio/evidence/20261010-ambient-opacity-before.png、ambient-opacity-final.png；标题和按钮清晰，浅蓝紫/粉杏及曲面仍有少量露出。不同PNG自身透明和遮罩不同，因此相同CSS值不等于逐像素颜色相同。M级本地视觉展示，非硬件或全面交互验证。
 - npm run build:pages与git diff检查通过；未新增或运行测试，不改其他问题、报告顺序、研究事实或API/Host/Application边界。源码、同步Pages产物、证据和交接只纳入本任务并立即push，实际回执随后补记。
+
+- Commit/push：底图不透明度统一源码、Pages产物、前后截图和交接提交5c346541已成功推送origin/main（c50f6aba..5c346541），共11个本任务文件；构建与暂存diff检查通过。回执随后单独提交并立即push；未混入原有无关脏文件，线上部署状态未另行核验。
