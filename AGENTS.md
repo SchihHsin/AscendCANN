@@ -4699,3 +4699,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 原材料是用户指定的cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#19“开发中学习”故事线：B1（第19页，images/B1.png）为选中代码与错误日志、实际/预期形状关联；B2（第21页，images/B2.png）为原文件关联张量图解及局部路径；B6（第29页，images/B6-task-try.png）为参数控件、代码、张量形状与结果同步。对应设计说明分别在后一页。依据为现有HTML和本轮之前已查看的方案图，属于设计提案，不是运行实证。
 - 原方案场景是图像推理输入维度/通道顺序。此前建议的整块/尾块范围图、误差分布图是针对当前AddCustom问题02提出的迁移与补充方向，原材料没有这些具体图；用户尚未授权实施。后续必须区分原方案已有机制与新增场景设计。
 - 只维护根/原型AGENTS；不影响报告页序、研究事实、API/Host/Application边界。未构建或运行测试；本轮文档diff检查后立即提交/push，回执随后补记。
+
+- Commit/push：来源澄清记录a6d6604f已成功推送origin/main（a061a957..a6d6604f），仅根/原型AGENTS两个文件；diff检查通过。原型/Pages未改，补回方向仍待讨论。本回执随交接提交立即push。

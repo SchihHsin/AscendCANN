@@ -257,3 +257,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户询问具体来源。引用用户此前指定的../cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#19：B1第19页（B1.png）代码/日志/实际与预期形状关联，B2第21页（B2.png）原文件关联张量图解与局部路径，B6第29页（B6-task-try.png）参数/代码/图形同步；后一页各有说明。现有图像推理输入维度/通道顺序方案属于设计提案。
 - 整块/尾块范围图、误差分布图是面向当前AddCustom问题02的新增迁移建议，原材料没有这些具体图。用户尚未确认A/B/C或授权实施，当前只回答引用来源。
 - 仅更新根/原型交接，不改源码/Pages/当前浏览器状态；未构建或运行测试。diff检查后立即提交/push，实际回执随后补记；其他题目、报告页序、研究事实及API/Host/Application边界不变。
+
+- Commit/push：来源澄清记录a6d6604f已成功推送origin/main（a061a957..a6d6604f），仅根/原型AGENTS两个文件；diff检查通过。原型/Pages未改，补回方向仍待讨论。本回执随交接提交立即push。
