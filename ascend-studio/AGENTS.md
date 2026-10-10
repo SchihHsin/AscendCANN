@@ -383,3 +383,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 首条提问与演示答复滚至底部；任务往返恢复360px阅读位置；右侧进入/关闭画布保持360px；新对话/恢复历史/重置均为0。完整刷新后无新增浏览器error；开发期间新增Hook引起两次Vite热更新顺序错误，完整刷新后消失，不能把历史日志说成全程为空。
 - node --check src/useWorkbenchState.js、npm run build:pages与git diff --check通过；未新增/运行自动测试套件。同步根ascstudio/产物，截图与验收细节见 ascend-studio/design-qa.md及evidence/20261010-chat-responsive-{default,narrow}.jpg。
 - 不调整已选视觉方向、左侧组织、两案例图解、报告页序或API/Host/Application边界；仅M级浏览器交互观察，未新增AI/模型/NPU运行。仅暂存本任务源文件、Pages、截图与交接，保留其他报告/图片/DS_Store等无关改动。提交后立即推送origin/main，实际回执后补。
+
+- Commit/push：自适应修复69568a0a已成功推送origin/main（8666cca6..69568a0a），包含11个本任务源文件/Pages/截图/交接文件。此回执随交接提交立即推送；线上资源版本另核对。
