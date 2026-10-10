@@ -268,3 +268,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 选项A（推荐）同一解释页图解为主、视频按需展开，窄工作区上下/宽工作区并排；B视频/图解独立材料并排。尚未选型或实施。AddCustom须使用对应范围示例/片段，不照搬RGB技术内容；本题视频素材待补，原型可明确标注为讲解交互示例，不能冒充官方课程/根因/NPU实证。
 - 本轮实际读取当前原型来源→解释（两张截图保存并打开），解释仍只有数字与文字。浏览器当前容器约738×692，截图仅证明材料页内容，未改视口/任务/输入；最终保留解释页。审阅与细节见ascend-studio/design-qa.md及evidence/20261010-diagram-video-review-{01-source,02-explanation}.png。M级本地观察和源设计提案，非全面可访问性审阅。
 - 仅维护根/原型AGENTS、design-qa及两张截图，不改UI/Pages/其他题目/报告页序/API/Host/Application边界；未构建或运行测试。文档diff检查后立即commit/push，实际回执随后补记。
+
+- Commit/push：图解与视频联动讨论、审阅记录及两张当前材料截图132fb2b8已成功推送origin/main（fe51085d..132fb2b8），仅本轮五个文件；暂存diff检查通过。源码/Pages未改，A/B仍待用户选择。本回执随交接提交立即push。
