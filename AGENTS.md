@@ -4789,3 +4789,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅维护根/原型AGENTS，暂存diff检查后commit并立即push；未编辑源码/Pages、未生成图、未构建或新增/运行测试，前序WIP保留，报告页序及API/Host/Application边界不变。上述方案待用户讨论确认后再出关键状态图评审。
 
 - Commit/push：当前AddCustom丰富图解讨论edc3fdfd已成功推送origin/main（4863f4e6..edc3fdfd），仅两个AGENTS，暂存diff检查通过；源码/Pages未纳入，方案尚待讨论。本回执随交接提交立即push。
+
+
+### 2026-10-10（Ascend Studio：两案例通过项目任务列表切换）
+
+- 用户明确两个案例都可以有，通过左侧项目列表切换：当前AddCustom与原图像推理。此前A/B作为内容场景二选一的设问不再适用；两个案例共享工作台壳，各自承接对应图解，不把RGB技术内容硬转成尾块解释。
+- 沿现有项目分组：CANN自定义算子下AddCustom精度异常；模型推理下图像推理任务。只读确认prototype-data.js已列出两个任务，但Image inference debugging目前仅通用排查简报，不能把菜单可点击视为原图像推理图解流程已落地。
+- AddCustom内容方向为输入/分块结构、尾块放大、代码访问过程、参数变化与尝试对照；图像推理恢复原A3/B2/B6/A4的RGB分层、HWC/CHW及batch维度、代码旁参数、形状同步和结果。统一普通内容/临时并排/按需画布、黑色主按钮/浅中性底，不新增学习中心或学习组。
+- 切换任务时对话、来源代码、图解、当前材料和尝试记录共同跟随任务；任务各自保留浏览器会话内状态，返回恢复该任务现场，不串参数/快照，不承诺刷新持久化。图像示例练习与模型推理实证仍需区分，AddCustom范围示例不代表根因/NPU通过。
+- 用户已确认两案例范围，本轮整理组织与切换规则，不实现尚待评审的图解状态，不新增其他题目/平台。仅根/原型AGENTS暂存diff检查后commit/push，未改源码/Pages，未生成图或构建/新增/运行测试；前序WIP保持，报告序列及API/Host/Application边界不变。
