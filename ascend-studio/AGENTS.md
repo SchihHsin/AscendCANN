@@ -299,3 +299,15 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 本轮只生成选型图片和维护根/原型交接；未编辑源码/Pages、未构建、未新增或运行测试。前序待整合代码保持未提交。交接diff检查后立即commit/push，实际回执随后补记。下一步用户选择第1/2/3张，或给出组合/调整意见；有调整先修图再实现。
 
 - Commit/push：三图选型交接83ecafb4已成功推送origin/main（fd1c72d2..83ecafb4），仅根/原型AGENTS，暂存diff检查通过。图片已逐张在主对话展示；原型源码和Pages未纳入，本轮没有发布新Demo。此回执单独提交并立即push，待用户选图。
+
+
+### 2026-10-10（Ascend Studio：重绘差异更明确的三种视觉方向）
+
+- 用户否定上一组三档视觉强度差异过小；主要只改按钮和图解色彩，未有效形成可比较的层级策略。继续使用已读Product Design ideate与ImageGen，以当前问题02截图ascend-studio/evidence/20261010-strategy-02-current-diagram.png为参考，独立重绘三张并已在主对话逐张展示。
+- 最新显示顺序作为唯一选择映射：1白色平面、文字/分隔线组织的连续内容；2更大的浅蓝紫图解焦点与区间关系；3浅灰结构背景、白色内容面组织分区。共同保留左项目任务、中对话、右普通内容，任务中按需解释与图解；不改成常驻画布或独立学习中心。
+- 最新图像路径（显示顺序）：
+  1. /Users/hsin/.codex/generated_images/01a0f0fa-7e78-7c81-a14c-994e31ca9b7b/exec-e5fc2af9-1c3e-4c63-94ae-45e6f98cb3b1.png
+  2. /Users/hsin/.codex/generated_images/01a0f0fa-7e78-7c81-a14c-994e31ca9b7b/exec-645a4380-d931-44a2-9396-24b45864bbb3.png
+  3. /Users/hsin/.codex/generated_images/01a0f0fa-7e78-7c81-a14c-994e31ca9b7b/exec-429cc19b-ae63-4b48-86ac-8f6d7da5117d.png
+- 三图为生成选型示意，约1672×941，非运行证据；文字/几何、按钮饱和度等生成偏差不覆盖既定中性选中、克制蓝紫、无头像、AI铺背景、用户靠右及数据驱动约束。尚未选型，不编辑源码/Pages，不提交前序WIP，不启动其他题目；报告页序、研究事实与API/Host/Application边界不变，无真实AI/NPU验证。
+- 本轮仅维护根/原型AGENTS，未构建或新增/运行测试；暂存diff检查后立即commit/push。用户选择映射到本轮最新三图，有组合/修改意见则先修图再实现。
