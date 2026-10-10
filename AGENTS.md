@@ -4775,3 +4775,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 待用户确认具体内容场景：A继续AddCustom，补完整分块结构、访问过程、修改前后图形联动；B将原图像输入案例（RGB/HWC→CHW/参数联动）也纳入Demo。已通过异步问题询问，未将后者擅自新增任务或推进其他题目。后续宜评审理解、讲解关联、试改对照三个关键状态，保留普通查看/临时并排，画布按需打开。
 - 按钮保持黑色主要操作与中性次级操作、底色提亮；图解可有明确语义颜色（维度/范围/状态），不把界面克制错误理解为图解全部去色。原RGB内容与AddCustom的尾块算例属于不同技术对象，不能直接当作同一根因。
 - 本轮仅维护根/原型AGENTS并立即commit/push，未修改源码/Pages、未生成新图、未构建或新增/运行测试；前序WIP保留，报告页序及API/Host/Application边界不变，无真实NPU/AI验证。
+
+- Commit/push：图解来源与场景澄清710eeb9d已成功推送origin/main（13616efa..710eeb9d），仅两个AGENTS，暂存diff检查通过；源码/Pages未提交，等待用户确认图解内容场景。此回执随交接提交立即push。
