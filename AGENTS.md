@@ -4678,3 +4678,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - In-app Browser默认1280×720：494px对话正文453.6px、两侧约19.7px；右分隔线实际拖到360/300px，正文与按钮留在栏内，输入两排。左分隔线避开中部胶囊拖到项目440px/对话340px/右500px，按栏宽重排。临时1720×960中对话981.6px，正文与输入760px、左右均110.3px；随后恢复默认视口及286/494/500三栏，不刷新、不改任务/依据展开/右代码材料。截图见ascend-studio/evidence/20261010-conversation-resize-*.png；M级页面展示及DOM尺寸，非全面交互验证。
 - npm run build:pages通过；构建产物JS语法与git diff检查随提交执行。未新增或运行测试套件，没有全面复做超长输入/附件、移动端、任务切换或画布流程。当前仍是浏览器演示，不改变根因/NPU/研究事实、其他题目、报告页序或API/Host/Application边界。
 - 仅暂存本轮源码、静态产物、截图及交接，立即commit/push；实际回执随后补记。问题02继续交用户评审。
+
+- Commit/push：对话响应源码、同步Pages产物、七张展示截图及交接提交077a0af0已成功推送origin/main（3eb92714..077a0af0），仅本轮17个文件。Pages构建、产物node语法及暂存diff检查通过；原有无关脏文件未纳入。该回执单独提交并立即push，线上最新部署未另行核验。
