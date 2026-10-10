@@ -1,0 +1,86 @@
+.task-workspace { position: relative; display: flex; flex-direction: column; height: 100%; min-width: 0; min-height: 0; color: #606675; background: #fff; }
+.tw-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 58px; flex-shrink: 0; padding: 10px 16px; border-bottom: 1px solid #e8e9ed; }
+.tw-heading { min-width: 0; display: flex; align-items: center; gap: 7px; }
+.tw-heading > svg { flex-shrink: 0; color: #83899a; }
+.tw-heading h2 { margin: 0; color: #484e5c; font-size: 14px; font-weight: 600; white-space: nowrap; }
+.tw-heading > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #9a9eaa; font-size: 10px; margin-left: 3px; }
+.tw-header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.tw-new-results { display: inline-flex; align-items: center; gap: 5px; padding: 3px 0; border: 0; background: transparent; color: #6c7690; font-size: 10px; cursor: pointer; }
+.tw-new-results > span, .tw-unread-dot { width: 5px; height: 5px; border-radius: 50%; background: #7e87ac; flex-shrink: 0; }
+.tw-tools { position: relative; }
+.tw-tool-button { display: flex; align-items: center; justify-content: center; gap: 4px; height: 27px; padding: 0 6px; border: 1px solid #e5e6eb; border-radius: 5px; background: #fff; color: #8990a0; cursor: pointer; }
+.tw-tool-button:hover, .tw-tool-button.is-open { background: #f2f3f5; color: #59657f; }
+.tw-tools-menu { position: absolute; top: 33px; right: 0; z-index: 80; width: 169px; padding: 5px; border: 1px solid #dedfe6; border-radius: 7px; background: #fff; box-shadow: 0 7px 24px #2d324715; }
+.tw-tools-menu button { width: 100%; display: flex; align-items: center; gap: 8px; padding: 9px 8px; border: 0; border-radius: 4px; background: transparent; color: #737b8d; font-size: 11px; text-align: left; cursor: pointer; }
+.tw-tools-menu button:hover { background: #f3f4f6; color: #545f79; }
+.tw-tools-menu small { margin-left: auto; color: #9cA1ae; font-size: 9px; }
+.tw-tabs { display: flex; align-items: stretch; flex-shrink: 0; min-height: 37px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid #e5e7ec; background: #f9f9f8; }
+.tw-tab { display: flex; align-items: center; gap: 2px; max-width: 215px; min-width: 85px; padding: 0 7px 0 10px; border-right: 1px solid #e9e9ed; color: #9398a5; background: transparent; }
+.tw-tab.is-active { color: #555e72; background: #fff; box-shadow: 0 1px 0 #fff; }
+.tw-tab.is-split { color: #70798d; background: #f0f1f3; }
+.tw-tab-select { display: flex; align-items: center; gap: 6px; min-width: 0; height: 36px; flex: 1; padding: 0; border: 0; background: transparent; color: inherit; font-size: 11px; cursor: pointer; }
+.tw-tab-select > svg { flex-shrink: 0; }
+.tw-tab-select > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tw-tab-close { display: inline-flex; align-items: center; justify-content: center; width: 19px; height: 21px; padding: 0; flex-shrink: 0; border: 0; border-radius: 4px; background: transparent; color: #a1a6b1; cursor: pointer; }
+.tw-tab-close:hover { color: #5d6475; background: #ebedf1; }
+.tw-add-content { display: inline-flex; align-items: center; justify-content: center; width: 33px; min-width: 33px; padding: 0; border: 0; color: #9bA0ae; background: transparent; cursor: pointer; }
+.tw-add-content:hover { color: #67728d; background: #f0f1f3; }
+.tw-view-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 7px; padding: 7px 13px; min-height: 34px; flex-shrink: 0; border-bottom: 1px solid #eeeff1; background: #fff; }
+.tw-view-kind { color: #9398a4; font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.tw-view-kind small { margin-left: 8px; color: #a3a7b2; font-size: 10px; }
+.tw-view-toolbar > div { display: flex; align-items: center; gap: 11px; flex-shrink: 0; }
+.tw-view-toolbar button { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: transparent; color: #7a849c; font-size: 10px; cursor: pointer; white-space: nowrap; }
+.tw-view-toolbar button:hover { color: #4f5e80; }
+.tw-stage { position: relative; flex: 1; min-width: 0; min-height: 0; }
+.tw-task-body, .tw-canvas-view { position: absolute; inset: 0; min-width: 0; min-height: 0; }
+.tw-task-body[hidden], .tw-canvas-view[hidden], .tw-pane[hidden] { display: none; }
+.tw-pane { position: absolute; inset: 0; display: flex; flex-direction: column; min-width: 0; min-height: 0; background: #fff; }
+.tw-task-body.has-split .tw-pane.is-primary { right: 50%; border-right: 1px solid #e0e3eb; }
+.tw-task-body.has-split .tw-pane.is-secondary { left: 50%; }
+.tw-pane-label { display: flex; align-items: center; gap: 6px; height: 32px; flex-shrink: 0; padding: 0 11px; border-bottom: 1px solid #e9ebf0; background: #fafafb; color: #858d9f; font-size: 10px; }
+.tw-pane-label > svg { flex-shrink: 0; }
+.tw-pane-label > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tw-pane-label button { display: inline-flex; align-items: center; justify-content: center; margin-left: auto; padding: 3px; border: 0; border-radius: 3px; background: transparent; color: #a0a6b3; cursor: pointer; }
+.tw-pane-label button:hover { background: #eaecf1; color: #66748d; }
+.tw-pane-content { flex: 1; min-height: 0; min-width: 0; padding: 17px 18px 24px; overflow: auto; overscroll-behavior: contain; font-size: 12px; line-height: 1.75; scrollbar-width: thin; scrollbar-color: #d8dbe3 transparent; }
+.tw-pane-content > * { min-width: 0; }
+.tw-task-body.has-split .tw-pane-content { padding: 13px 11px 22px; }
+.tw-pane-content .cm-code { min-height: 240px; max-height: none; }
+.tw-pane-content .cm-code-editor { min-height: 290px; }
+.tw-pane-content .action-workspace { height: auto; min-height: 100%; }
+.tw-pane-content .action-workspace .panel-header { display: none; }
+.tw-empty { position: absolute; inset: 20% 8% auto; display: flex; flex-direction: column; align-items: center; text-align: center; color: #98a1b3; }
+.tw-empty strong { font-size: 13px; font-weight: 500; color: #758097; margin-top: 12px; }
+.tw-empty p { font-size: 11px; color: #979eab; margin: 8px 0 15px; }
+.tw-empty button { display: flex; align-items: center; gap: 6px; padding: 7px 11px; border: 1px solid #dfe3eb; border-radius: 5px; color: #72809c; background: #fff; font-size: 11px; cursor: pointer; }
+.tw-material-picker { position: absolute; z-index: 75; top: 104px; right: 12px; left: 12px; max-height: calc(100% - 122px); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #dde1e9; border-radius: 8px; background: #fff; box-shadow: 0 8px 28px #28304718; }
+.tw-picker-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 13px 12px; border-bottom: 1px solid #edeef2; }
+.tw-picker-header > div { display: flex; flex-direction: column; gap: 4px; }
+.tw-picker-header strong { color: #5c6579; font-size: 12px; font-weight: 600; }
+.tw-picker-header span { color: #a0a6b3; font-size: 10px; }
+.tw-picker-header > button { display: inline-flex; padding: 3px; border: 0; border-radius: 4px; color: #9aA2b2; background: transparent; cursor: pointer; }
+.tw-material-list { overflow: auto; padding: 5px 9px; scrollbar-width: thin; scrollbar-color: #dadee7 transparent; }
+.tw-material-row { display: flex; align-items: center; gap: 8px; min-height: 51px; padding: 6px 4px; border-bottom: 1px solid #f0f1f4; color: #8d95a8; }
+.tw-material-row:last-child { border-bottom: 0; }
+.tw-material-row > svg { flex-shrink: 0; }
+.tw-material-row.is-unavailable { color: #b4b9c4; }
+.tw-material-check { position: relative; display: inline-flex; cursor: pointer; flex-shrink: 0; }
+.tw-material-check input { position: absolute; opacity: 0; width: 15px; height: 15px; margin: 0; }
+.tw-material-check > span { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border: 1px solid #d9dee8; border-radius: 3px; color: transparent; background: #fff; }
+.tw-material-check input:checked + span { background: #eff0f4; color: #6b7899; border-color: #aeb8cc; }
+.tw-material-check input:disabled + span { background: #f7f8fa; opacity: .6; cursor: default; }
+.tw-material-check input:focus-visible + span { outline: 2px solid #aab3c9; outline-offset: 2px; }
+.tw-material-open { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; padding: 0; border: 0; background: transparent; text-align: left; color: #68748c; cursor: pointer; }
+.tw-material-open strong { font-size: 11px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tw-material-open small { color: #a1a7b4; font-size: 10px; line-height: 1.4; }
+.tw-material-open:disabled { color: #aeb4bf; cursor: default; }
+.tw-material-actions { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+.tw-material-actions button { display: inline-flex; align-items: center; justify-content: center; width: 25px; height: 26px; padding: 0; border: 0; border-radius: 4px; color: #96a0b4; background: transparent; cursor: pointer; }
+.tw-material-actions button:hover:not(:disabled), .tw-picker-header > button:hover { color: #596b8f; background: #f0f2f6; }
+.tw-material-actions button:disabled { opacity: .4; cursor: default; }
+.tw-picker-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 13px; border-top: 1px solid #e9ecf1; background: #fcfcfd; }
+.tw-picker-footer > span { font-size: 10px; color: #9aa3b4; }
+.tw-picker-footer > button { display: flex; align-items: center; gap: 5px; padding: 6px 9px; border: 1px solid #d9e0ed; border-radius: 5px; color: #697b9e; background: #fff; font-size: 10px; cursor: pointer; }
+.tw-picker-footer > button:disabled { color: #b4bdcb; border-color: #e5e8ee; cursor: default; }
+.task-workspace button:focus-visible { outline: 2px solid #aab3c9; outline-offset: 2px; }
+@media (max-width: 1180px) { .tw-header { padding-inline: 12px; } .tw-heading > span { display: none; } .tw-view-toolbar { padding-inline: 10px; } .tw-view-kind small { display: none; } .tw-view-toolbar > div { gap: 8px; } .tw-pane-content { padding-inline: 13px; } }

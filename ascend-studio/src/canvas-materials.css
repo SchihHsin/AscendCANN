@@ -120,3 +120,23 @@
 .cm-evidence-facts > div:nth-child(2) > svg { color: #ad938a; }
 .cm-evidence-facts strong { display: block; color: #626c7d; font-size: 12px; font-weight: 500; line-height: 1.6; }
 .cm-evidence-facts small { display: block; margin-top: 2px; color: #929aaa; font-size: 10px; line-height: 1.6; }
+
+/* Full content viewers share the same material and editable draft state. */
+.cm-presentation-content { width: 100%; min-width: 0; }
+.cm-presentation-content .cm-stack { gap: 16px; }
+.cm-presentation-content .cm-code { max-height: none; min-height: 260px; padding: 16px; background: #f8f9f8; }
+.cm-presentation-content.cm-material-source .cm-code { min-height: 390px; }
+.cm-presentation-content .cm-code-editor { min-height: 390px; max-height: none; padding: 16px; background: #fcfcfa; }
+.cm-presentation-content .cm-diff { max-height: none; min-height: 290px; }
+.cm-presentation-content .cm-body-copy { color: #626875; }
+.cm-presentation-content .cm-note { color: #7e8490; }
+.cm-presentation-content .cm-parameter-form { gap: 16px; }
+.cm-presentation-content .cm-parameter-form > .cm-button { align-self: flex-start; }
+.cm-presentation-content .cm-mode-selector { background: #f4f5f3; }
+.cm-presentation-content .cm-empty { background: #fafaf7; }
+@media (max-width: 440px) {
+  .cm-presentation-content .cm-code, .cm-presentation-content .cm-code-editor { padding: 12px; }
+  .cm-presentation-content .cm-parameter-fields { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+
+.cm-view-status { margin-top: 17px; padding: 9px 11px; border: 1px solid #e8e9eb; border-radius: 6px; background: #fafaf8; color: #818898; font-size: 10px; line-height: 1.8; }

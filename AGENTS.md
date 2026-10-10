@@ -4627,3 +4627,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅更新根/原型交接并立即commit/push，不生成图、不构建、不运行测试，不修改其他题目、报告序列或API/Host/Application边界。待继续讨论如何进入/返回与材料关联方式。
 
 - Commit/push：按需画布的用户确认与待讨论建议提交68b82884已成功推送origin/main（7e41c0e8..68b82884），仅根与原型AGENTS两个文件，暂存diff检查通过。本回执单独提交并立即push；原型与产物未改。
+
+
+### 2026-10-10（Ascend Studio：普通内容工作区与按需画布落地）
+
+- 用户授权按已讨论的交互修改代码，继续只实施问题02。右侧统一称“工作区”，默认只读索引范围示例，普通代码/解释/尝试/Diff/范围复核/误差/记录/参考网页分别打开实际材料标签；画布未打开时没有标签。此前始终自由画布规则由本条覆盖。
+- 新增ascend-studio/src/useContentWorkspace.js、workspace-materials.js、TaskWorkspace.jsx/task-workspace.css、ReferenceBrowser.jsx/reference-browser.css；更新App.jsx、useCanvasState.js、TaskCanvas.jsx/task-canvas.css、CanvasMaterials.jsx/canvas-materials.css、useWorkbenchState.js。同任务内容保留实例；关闭普通标签不清草稿，关闭画布返回此前普通/并排内容，重新打开保留材料、布局和视口；跨任务隐藏原查看器，其他任务仅显示自己的简报。
+- 工作区工具菜单“打开画布”首次为空；对话与内容“在画布中整理”、材料复选只加入相关材料。普通内容可以并排，画布卡片“展开查看”进入完整查看器；工具栏“返回画布”和画布标签恢复原现场。统一材料标题，图卡操作不再因选中时移至顶层而丢失第一次点击。
+- 尝试/提案/应用/范围复核新增时仅注册内容与未读提示，不抢占当前视图，不自动添加或重排画布卡片；任务切换期间生成的结果归属MAIN_TASK。材料与草案共用flow数据，误差/复核卡片作为摘要引用完整核对器，避免两份局部表单互相覆盖。画布保留既有空间操作，没有新增用户自画连接功能。
+- 普通浏览器型参考使用研究run-log.md中已有的昇腾官方Ascend C概览URL（latest入口，并非锁定当前环境版本）；具有地址、前进后退、重载和外部打开。内嵌网页是否显示受原站限制，始终提供外开入口，不伪造访问成功或根因证据。
+- 在In-app Browser默认1280×720展示默认代码、空画布、关闭/恢复、来源/草案普通并排、带材料入画布、卡片完整展开、范围算例→未读结果→Diff→示例应用→范围复核、官方参考查看器、任务切换与恢复本题。画布卡片一次方向键移动后，关闭/重开前后的卡片位置及world transform一致；关闭画布恢复此前并排内容。截图见ascend-studio/evidence/20261010-content-workspace-*.png。构建及语法/diff检查通过；未新增或运行测试套件，没有全面覆盖拖动、缩放手势、复制、浏览器前后导航或窄屏。
+- 主体三栏、栏宽拖拽、项目栏收起、左/中装饰底图、无头像/AI铺背景/用户靠右、中性选中保持；右侧无装饰图。不新增学习中心/学习组，不改其他问题、报告页序、研究事实或API/Host/Application边界。仍是浏览器演示，无真实AI/NPU、项目写入或持久化；尾块是未确认线索。源码和Pages产物随本轮提交并立即push，实际回执随后补充；待用户评审问题02。

@@ -1,5 +1,7 @@
 .task-canvas { display: flex; flex-direction: column; height: 100%; min-height: 0; min-width: 0; background: #fff; color: #666b78; }
 .task-canvas[hidden] { display: none; }
+.task-canvas.is-embedded { height: 100%; }
+.task-canvas.is-embedded .tc-object-toolbar { min-height: 37px; }
 .task-canvas .tc-header { flex-shrink: 0; min-height: 72px; padding: 10px 18px; gap: 10px; background: #fff; }
 .tc-header > div:first-child { min-width: 0; }
 .tc-header h2 { display: flex; align-items: center; gap: 7px; margin: 0; font-size: 16px; color: #464b58; }

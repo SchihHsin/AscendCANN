@@ -5,6 +5,10 @@ import { WorkbenchDialogs } from "./WorkbenchDialogs";
 import { ActionWorkspace } from "./ActionWorkspace";
 import { useTaskFlow } from "./useTaskFlow";
 import { useCanvasState } from "./useCanvasState";
+import { useContentWorkspace } from "./useContentWorkspace";
+import { MATERIAL_DEFINITIONS, getMaterialMeta } from "./workspace-materials";
+import { TaskWorkspace } from "./TaskWorkspace";
+import { ReferenceBrowser } from "./ReferenceBrowser";
 import { useWorkbenchLayout } from "./useWorkbenchLayout";
 import { TaskCanvas } from "./TaskCanvas";
 import { CanvasMaterial } from "./CanvasMaterials";
@@ -109,11 +113,11 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
 function App() {
   const wb = useWorkbenchState();
   const flow = useTaskFlow({ onRecord: (title, summary, kind, isDemo) => wb.addRecord({ title, summary, kind, isDemo }, MAIN_TASK) });
-  const canvas = useCanvasState();
+  const canvas = useCanvasState({ startEmpty: true });
   const [precisionContext, setPrecisionContext] = useState(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const layout = useWorkbenchLayout({ sidebarCollapsed });
-  const previousFlow = useRef({ attempts: 0, proposal: null, applied: null });
+  const previousFlow = useRef({ attempts: 0, proposal: null, applied: null, validation: null });
   const [taskContentsOpen, setTaskContentsOpen] = useState(false);
   const [suggestionDismissed, setSuggestionDismissed] = useState(false);
   const {
@@ -126,60 +130,107 @@ function App() {
   const selectedRouteData = routes.find((route) => route.id === selectedRoute) || routes[0];
   const feedback = (value) => wb.patchSession({ feedback: session.feedback === value ? null : value });
   const closeMenuAnd = (action) => { wb.setMenu(null); action(); };
-  const showCanvasCard = (id, options = {}) => {
-    if (!isMainTask) return;
-    if (options.close) canvas.actions.hideCard(options.close);
+  const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask });
+  const mainSession = wb.getSession(MAIN_TASK);
+  const mainAttachment = [...mainSession.messages.flatMap(item => item.attachments || []), ...mainSession.attachments]
+    .filter(file => file.content && (file.type === "code" || /\.(cpp|h|py)$/i.test(file.name)))
+    .sort((a, b) => (a.receivedOrder || 0) - (b.receivedOrder || 0)).at(-1);
+  const openContent = (id, options = {}) => {
+    if (!isMainTask && id !== "task-brief") return;
+    if (options.close) workspace.actions.close(options.close);
     if (id === "compare") {
-      canvas.actions.beginComparison(["source", "draft"]);
+      workspace.actions.open("source");
+      workspace.actions.splitWith("draft");
     } else {
       if (id === "diff" && !flow.state.proposedCode) flow.actions.prepareDiff();
-      canvas.actions.showCard(id, options);
+      if (options.split) workspace.actions.splitWith(id);
+      else workspace.actions.open(id, options);
     }
+    setTaskContentsOpen(false);
+  };
+  const openCanvas = () => {
+    if (!isMainTask) return;
+    workspace.actions.openCanvas();
+    setTaskContentsOpen(false);
+  };
+  const arrangeMaterials = (ids) => {
+    if (!isMainTask) return;
+    const uniqueIds = [...new Set(ids)].filter(id => id !== "canvas");
+    if (uniqueIds.includes("diff") && !flow.state.proposedCode) flow.actions.prepareDiff();
+    uniqueIds.forEach(id => {
+      const card = canvas.state.cards.find(item => item.id === id);
+      if (card) canvas.actions.showCard(id, { focus: false });
+      else {
+        const record = mainSession.records.find(item => "record:" + item.id === id);
+        canvas.actions.addCard({ ...getMaterialMeta(id, record ? { title: record.title } : {}), width: 440, height: 340 }, { focus: false });
+      }
+    });
+    openCanvas();
+    if (uniqueIds.length) requestAnimationFrame(() => canvas.actions.fitCanvas());
+  };
+  const locateCanvasMaterial = (id) => {
+    if (id === "diff" && !flow.state.proposedCode) flow.actions.prepareDiff();
+    if (!canvas.state.cards.some(card => card.id === id)) arrangeMaterials([id]);
+    else canvas.actions.showCard(id);
     setTaskContentsOpen(false);
   };
   const changeActionView = (view) => {
     if (view === "code" || view === "precision") wb.patchSession({ selectedRoute: view === "code" ? "tail" : "precision" });
-    showCanvasCard(view === "code" ? "source" : view);
+    openContent(view === "code" ? "source" : view);
   };
   const openTaskFlow = (phase = "understand") => {
     if (!isMainTask) return;
     if (phase === "try") {
-      canvas.actions.showCard("draft", { focus: false });
-      showCanvasCard("parameters");
-    } else showCanvasCard({ understand: "explanation", diff: "diff", validate: "validation" }[phase] || "explanation");
+      workspace.actions.open("draft");
+      workspace.actions.splitWith("parameters");
+    } else openContent({ understand: "explanation", diff: "diff", validate: "validation" }[phase] || "explanation");
   };
-  const confirmCanvasRoute = () => {
+  const confirmWorkspaceRoute = () => {
     if (selectedRoute === "retry") wb.confirmRoute();
     else changeActionView(selectedRoute === "tail" ? "code" : "precision");
   };
-  const openCanvasRecord = (record) => {
-    canvas.actions.addCard({ id: "record:" + record.id, title: record.title });
-    setTaskContentsOpen(false);
-  };
   const latestAttempt = flow.state.attempts.find(attempt => attempt.id === flow.state.selectedAttemptId) || flow.state.attempts.at(-1);
-  const renderCanvasMaterial = (id) => {
+  const renderBrief = (ownerId) => <div className="diagnostic-scroll">
+    <section className="task-brief-section"><div className="section-title"><IconFileText size={18} /><h3>任务简报</h3></div><div className="task-brief-card"><strong>{ownerId}</strong><p>{wb.getTask(ownerId).goal}</p><span>待补充证据</span></div></section>
+    <section className="task-brief-section"><div className="section-title"><IconDatabase size={18} /><h3>上下文与材料</h3></div><div className="task-brief-card"><p>补充代码、日志与运行条件后，再确定检查方向。</p><button type="button" className="light-button" onClick={() => openDialog("code")}><IconCode size={15} />补充代码片段</button><button type="button" className="light-button" onClick={() => { setDraft("请帮我整理当前任务的环境条件、需要补充的证据和下一步检查清单。"); wb.draftRef.current?.focus(); }}><IconMessageCircle size={15} />整理检查清单</button></div></section>
+    <p className="action-footnote">任务内容仅用于本地交互演示，尚未接入 AI 或硬件服务。</p>
+  </div>;
+  const renderMaterial = (id, presentation = "canvas", ownerId = MAIN_TASK) => {
+    if (id === "task-brief") return renderBrief(ownerId);
+    if (ownerId !== MAIN_TASK) return null;
     if (id.startsWith("record:")) {
-      const record = session.records.find(item => "record:" + item.id === id);
+      const record = mainSession.records.find(item => "record:" + item.id === id);
       return record ? <article className="canvas-record-detail"><span>{record.time} · {record.isDemo ? "浏览器示例记录" : "开发者记录 · 待验证"}</span><p>{record.summary}</p></article> : null;
     }
-    if (id === "precision" || id === "review") return <ActionWorkspace embedded view={id} onChangeView={changeActionView} onBack={() => canvas.actions.hideCard(id)} onRecord={(record) => wb.addRecord(record, MAIN_TASK)} precisionContext={precisionContext} onPrecisionContext={setPrecisionContext} rangeContext={latestAttempt ? { total: latestAttempt.total, tile: latestAttempt.tileSize } : null} />;
-    return <CanvasMaterial id={id} flow={{ ...flow, codeAttachment: wb.attachmentCode }} onShowCard={showCanvasCard} onAttachCode={() => openDialog("code")} />;
+    if (id === "reference") return presentation === "canvas" ? <div className="cm-stack"><p className="cm-body-copy">Ascend C 官方文档</p><p className="cm-note">用于理解概念与使用范围，实际版本与根因仍需核对。</p><button className="cm-button" type="button" onClick={() => openContent("reference")}>打开参考网页<IconArrowRight size={14} /></button></div> : <ReferenceBrowser resetVersion={flow.state.resetVersion} />;
+    if (presentation === "canvas" && (id === "precision" || id === "review")) return <div className="cm-stack"><p className="cm-body-copy">{id === "precision" ? "逐元素误差与容差依据" : "检查清单、观察与待补证据"}</p><p className="cm-note">{precisionContext ? `已保留 ${precisionContext.count ?? precisionContext.rows?.length ?? "本次"} 项误差核对依据。` : "尚未保存误差计算。真实项目根因待确认。"}</p><button className="cm-button" type="button" onClick={() => openContent(id)}>展开核对<IconArrowRight size={14} /></button></div>;
+    if (id === "precision" || id === "review") return <ActionWorkspace key={flow.state.resetVersion} embedded view={id} onChangeView={changeActionView} onBack={() => openContent("evidence")} onRecord={(record) => wb.addRecord(record, MAIN_TASK)} precisionContext={precisionContext} onPrecisionContext={setPrecisionContext} rangeContext={latestAttempt ? { total: latestAttempt.total, tile: latestAttempt.tileSize } : null} />;
+    return <CanvasMaterial key={flow.state.resetVersion} id={id} presentation={presentation} flow={{ ...flow, codeAttachment: mainAttachment }} onShowCard={openContent} onAttachCode={() => openDialog("code")} />;
   };
+  const availableMaterials = isMainTask ? [
+    ...Object.values(MATERIAL_DEFINITIONS).filter(item => item.id !== "canvas" && item.id !== "task-brief").map(item => ({
+      ...item,
+      available: item.id === "attempts" || item.id === "diff" ? flow.state.attempts.length > 0 : item.id === "validation" ? Boolean(flow.state.appliedCode) : true,
+      disabledReason: item.id === "validation" ? "应用示例修改后可用" : "运行一次范围算例后可用",
+    })),
+    ...mainSession.records.map(record => ({ ...getMaterialMeta("record:" + record.id, { title: record.title }), description: record.time + " · " + (record.isDemo ? "示例记录" : "待验证") })),
+  ] : [MATERIAL_DEFINITIONS["task-brief"]];
   const resetCurrentTask = () => {
     if (isMainTask) { flow.actions.reset(); canvas.actions.reset(); setPrecisionContext(null); setSuggestionDismissed(false); }
+    workspace.actions.reset();
     setTaskContentsOpen(false);
     wb.resetTask();
   };
   useEffect(() => {
     const before = previousFlow.current;
-    const next = { attempts: flow.state.attempts.length, proposal: flow.state.proposedCode, applied: flow.state.appliedCode };
-    if (next.attempts > before.attempts) canvas.actions.showCard("attempts", { focus: isMainTask });
-    if (next.proposal && next.proposal !== before.proposal) canvas.actions.showCard("diff", { focus: isMainTask });
-    if (!next.proposal && before.proposal) canvas.actions.hideCard("diff");
-    if (next.applied && next.applied !== before.applied) canvas.actions.showCard("validation", { focus: isMainTask });
-    if (!next.applied && before.applied) canvas.actions.hideCard("validation");
+    const next = { attempts: flow.state.attempts.length, proposal: flow.state.proposedCode, applied: flow.state.appliedCode, validation: flow.state.validation };
+    const registerResult = id => workspace.actions.open(id, { activate: false, taskId: MAIN_TASK, isMainTask: true });
+    if (next.attempts > before.attempts) registerResult("attempts");
+    if (next.proposal && next.proposal !== before.proposal) registerResult("diff");
+    if (next.applied && next.applied !== before.applied) registerResult("validation");
+    if (next.validation && next.validation !== before.validation) registerResult("validation");
     previousFlow.current = next;
-  }, [flow.state.attempts.length, flow.state.proposedCode, flow.state.appliedCode]);
+  }, [flow.state.attempts.length, flow.state.proposedCode, flow.state.appliedCode, flow.state.validation]);
   useEffect(() => { setTaskContentsOpen(false); }, [selectedTask]);
 
   return (
@@ -294,11 +345,11 @@ function App() {
                   <button className="rationale-button" type="button" aria-expanded={rationaleOpen} onClick={() => setRationaleOpen((value) => !value)}>
                     <IconBook size={16} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={15} />
                   </button>
-                  {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => showCanvasCard("evidence")}>定位画布中的判断依据<IconArrowRight size={13} /></button></div>}
+                  {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => openContent("evidence")}>打开现场与判断<IconArrowRight size={13} /></button></div>}
                   <p className="assistant-next">建议先只读检查对应循环的索引范围和有效元素数；如果没有发现边界异常，再补充逐元素误差证据。当前还没有真实 NPU 验证结果。</p>
                   {!suggestionDismissed && <div className="task-inline-suggestion">
                     <div><IconBook size={15} /><span><strong>先看懂这条线索，再决定是否修改</strong><small>展开范围示例，保留当前任务与错误现场。</small></span><button type="button" className="icon-button compact-icon" aria-label="关闭解释建议" onClick={() => setSuggestionDismissed(true)}><IconX size={14} /></button></div>
-                    <div className="task-suggestion-actions"><button type="button" className="light-button" onClick={() => openTaskFlow("understand")}>理解并试改<IconArrowRight size={14} /></button><button type="button" className="task-plain-button" onClick={() => changeActionView("code")}>直接核对代码</button></div>
+                    <div className="task-suggestion-actions"><button type="button" className="light-button" onClick={() => openTaskFlow("understand")}>理解并试改<IconArrowRight size={14} /></button><button type="button" className="task-plain-button" onClick={() => changeActionView("code")}>直接核对代码</button><button type="button" className="task-plain-button" onClick={() => arrangeMaterials(["source", "evidence", "explanation"])}>在画布中整理</button></div>
                   </div>}
                   <div className="chat-next-actions" aria-label="可能的下一步方向">
                     <div className="chat-next-heading">可能的下一步方向</div>
@@ -314,7 +365,7 @@ function App() {
                         <small>{route.sub} · {route.reason}</small>
                       </button>
                     ))}
-                    <button className="light-button chat-canvas-action" type="button" onClick={confirmCanvasRoute}>{selectedRouteData.id === "retry" ? "保留现场并重新评估" : selectedRouteData.id === "tail" ? "定位画布中的代码" : "在画布中核对误差"}<IconArrowRight size={14} /></button>
+                    <button className="light-button chat-canvas-action" type="button" onClick={confirmWorkspaceRoute}>{selectedRouteData.id === "retry" ? "保留现场并重新评估" : selectedRouteData.id === "tail" ? "查看索引范围示例" : "打开误差核对"}<IconArrowRight size={14} /></button>
                   </div>
                 </div>
                 <div className="message-feedback">
@@ -365,22 +416,19 @@ function App() {
           <input hidden type="file" multiple accept="image/*" ref={wb.imageRef} onChange={(event) => wb.readFiles(event, "image")} aria-label="选择截图附件" />
         </section>
 
-        <div className="workspace-divider workspace-divider--conversation" role="separator" tabIndex={0} aria-label="调整对话与画布宽度" title="拖动调整对话与画布宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />
-        <aside className="diagnostic-panel" aria-label={isMainTask ? "任务画布" : "任务简报"}>
-          <TaskCanvas key={flow.state.resetVersion} visible={isMainTask} flow={flow} canvas={canvas} onBack={() => showCanvasCard("evidence")} onOpenContents={() => setTaskContentsOpen(value => !value)} onAttachCode={() => openDialog("code")} renderMaterial={renderCanvasMaterial} contentsOpen={taskContentsOpen && isMainTask} contents={<CanvasIndex canvas={canvas} flow={flow} records={session.records} onClose={() => setTaskContentsOpen(false)} onLocate={showCanvasCard} onOpenRecord={openCanvasRecord} />} />
-          {!isMainTask && <div className="diagnostic-scroll">
-            <header className="panel-header diagnostic-header"><h2>任务简报</h2><button className="icon-button" type="button" aria-label="更多诊断操作" data-menu-trigger aria-expanded={wb.menu?.name === "diagnostic"} onClick={(event) => openMenu("diagnostic", event)}><IconDots size={18} /></button></header>
-            <section className="task-brief-section"><div className="section-title"><IconFileText size={18} /><h3>任务简报</h3></div><div className="task-brief-card"><strong>{selectedTask}</strong><p>{task.goal}</p><span>待补充证据</span></div></section>
-            <section className="task-brief-section"><div className="section-title"><IconDatabase size={18} /><h3>上下文与材料</h3></div><div className="task-brief-card"><p>补充代码、日志与运行条件后，再确定检查方向。</p><button type="button" className="light-button" onClick={() => openDialog("code")}><IconCode size={15} />补充代码片段</button><button type="button" className="light-button" onClick={() => { setDraft("请帮我整理当前任务的环境条件、需要补充的证据和下一步检查清单。"); wb.draftRef.current?.focus(); }}><IconMessageCircle size={15} />整理检查清单</button></div></section>
-            <p className="action-footnote">任务内容仅用于本地交互演示，尚未接入 AI 或硬件服务。</p>
-          </div>}
+        <div className="workspace-divider workspace-divider--conversation" role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />
+        <aside className="diagnostic-panel" aria-label="任务工作区">
+          <TaskWorkspace taskId={selectedTask} workspace={workspace} isMainTask={isMainTask} materials={availableMaterials} onOpen={openContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials}
+            renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)}
+            renderCanvas={(visible, ownerId) => ownerId === MAIN_TASK ? <TaskCanvas key={flow.state.resetVersion} embedded visible={visible} flow={flow} canvas={canvas} onBack={() => openContent("evidence")} onOpenContents={() => setTaskContentsOpen(value => !value)} onOpenContent={openContent} onAttachCode={() => openDialog("code")} renderMaterial={id => renderMaterial(id, "canvas")} contentsOpen={taskContentsOpen && visible} contents={<CanvasIndex canvas={canvas} flow={flow} records={mainSession.records} onClose={() => setTaskContentsOpen(false)} onLocate={locateCanvasMaterial} onOpenRecord={record => locateCanvasMaterial("record:" + record.id)} />} /> : null}
+          />
         </aside>
       </div>
       {wb.menu && <div className={"workbench-menu workbench-menu-" + wb.menu.name} ref={wb.menuRef} style={{ left: wb.menu.left, ...(wb.menu.bottom !== null ? { bottom: wb.menu.bottom } : { top: wb.menu.top }) }}>
         {wb.menu.name === "filter" && <><div className="menu-label">显示项目</div>{[{ id: "all", label: "全部项目" }, { id: "current", label: "当前项目" }].map((item) => <button key={item.id} type="button" className={wb.filterScope === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => wb.setFilterScope(item.id))}>{item.label}{wb.filterScope === item.id && <IconCircleCheck size={15} />}</button>)}<div className="menu-divider" /><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups(wb.groups.map((group) => group.id)))}>展开所有项目</button><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups([]))}>收起所有项目</button></>}
         {wb.menu.name === "chat" && <><div className="menu-label">当前任务对话</div><button type="button" onClick={() => openDialog("history")}>对话历史<span>{session.history.length}</span></button><button type="button" onClick={() => closeMenuAnd(() => wb.copyText(wb.conversationText()))}>复制当前对话<IconCopy size={15} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={15} /></button><div className="menu-divider" /><button type="button" onClick={resetCurrentTask}>恢复本题初始状态</button></>}
         {wb.menu.name === "input" && <><div className="menu-label">补充任务上下文</div><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={15} /></button><button type="button" onClick={() => openDialog("capabilities")}>使用能力库<IconBooks size={15} /></button></>}
-        {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => showCanvasCard("review"))}>生成复核记录<IconFileText size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={15} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={15} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={15} /></button></>}
+        {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => openContent("review"))}>生成复核记录<IconFileText size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={15} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={15} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={15} /></button></>}
         {wb.menu.name === "notifications" && <><div className="menu-label">任务动态</div>{wb.notifications.length ? wb.notifications.map((entry) => <button className="notification-row" key={entry.id} type="button" onClick={() => selectTask(entry.taskName)}><span><strong>{entry.text}</strong><small>{entry.taskName} · {entry.time}</small></span></button>) : <p className="menu-empty">尚无新动态。完成核对后会在这里留下记录。</p>}</>}
         {wb.menu.name === "profile" && <><div className="menu-profile"><strong>开发者</strong><span>Ascend Studio · 本地设计预览</span></div><button type="button" onClick={wb.exportTask}>导出当前任务</button><p className="menu-empty">附件与交互记录保存在本次页面会话中；刷新后恢复初始状态。</p></>}
       </div>}
