@@ -244,16 +244,16 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   mask-image: radial-gradient(ellipse at 72% 78%, #000 20%, transparent 78%);
 }
 .ambient-art--exchange {
-  /* Crop the raster into a soft upper-left glow, independent of column width. */
-  top: -110px;
+  /* Reveal a pastel curved fragment at the upper left without entering layout. */
+  top: -80px;
   left: -170px;
   width: 760px;
   max-width: none;
   height: auto;
-  filter: blur(22px);
-  opacity: .24;
-  -webkit-mask-image: radial-gradient(ellipse 360px 145px at 35% 43%, #000 0%, #000 20%, transparent 85%);
-  mask-image: radial-gradient(ellipse 360px 145px at 35% 43%, #000 0%, #000 20%, transparent 85%);
+  filter: blur(1.5px) saturate(1.2);
+  opacity: .50;
+  -webkit-mask-image: radial-gradient(ellipse 400px 155px at 40% 42%, #000 0%, #000 30%, transparent 92%);
+  mask-image: radial-gradient(ellipse 400px 155px at 40% 42%, #000 0%, #000 30%, transparent 92%);
 }
 
 /* Keep the navigation toggle outside the clipped sidebar content. */

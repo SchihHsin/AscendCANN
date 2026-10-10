@@ -164,3 +164,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - styles.css复用现有ImageGen PNG，固定760px宽、原比例，top:-110px/left:-170px，blur22px、24%透明度，以左上角为可见重心并向右/下渐消。只保留浅蓝紫/淡粉光感，避免完整波带或居中摆件感；不占位、不接收点击、不影响文字。左档案和右画布规则保持。
 - 同一桌面页面前后截图为evidence/20261009-header-glow-{before,final}.jpg，已比较文字、间距、栏边界与画布内容。固定素材尺度不随栏宽缩放，本轮未重新操作宽度拖拽或移动端。
 - npm run build:pages通过；同步根仓ascstudio产物。未新增或运行测试，仅做本次范围的视觉展示与diff检查。源码、产物、证据和交接立即commit/push；只处理问题02，无新功能/研究/NPU结论，等待用户评审柔光强度。
+
+## 2026-10-10 · 柔光需保留轻微形状与更多浅彩
+
+- 用户反馈纯柔光完全看不出形状，随后指出露出颜色太少，像局部暗下去而非装饰画。最新要求覆盖上一轮将形状彻底弱化的倾向：仍在对话header左上角，但要能看见轻薄曲面局部与蓝紫/粉杏颜色。
+- styles.css复用原PNG，固定760px/原比例、left:-170px、top:-80px；模糊降为1.5px、彩度1.2、透明度50%，扩大偏左上渐消范围。局部曲面和彩色梯度可辨，右边按钮区保持渐隐；不占位、文字清晰、原三栏不改，右画布无装饰。
+- 第一版仅降低模糊仍不足，已据局部截图增大曲面与颜色露出。最终桌面前后证据为evidence/20261010-header-shape-{before,final}.jpg，局部为header-shape-detail.jpg；页面会话与宽度一致，未操作额外功能。
+- npm run build:pages通过，静态产物同步ascstudio。未新增/运行测试，未重复分栏拖动、窄屏或画布全流程；只交付问题02并立即commit/push，等待用户评审装饰露出程度。

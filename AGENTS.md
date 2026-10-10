@@ -4588,3 +4588,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅暂存本次源码、产物、截图和交接并立即commit/push；实际回执完成后补记。问题02继续待用户评审柔光强度。
 
 - Commit/push：C方案源码、同步Pages产物、前后截图及交接提交f73588f5已成功推送origin/main（0eafd035..f73588f5）；Pages构建和暂存diff检查通过，共11个本任务文件，未混入原有脏文件。本回执随后单独提交并立即push；未将push成功描述为线上最新部署已核验。
+
+### 2026-10-10（Ascend Studio：柔光保留轻微曲面与更多颜色）
+
+- 用户反馈上一版完全看不出形状，要求稍微带形状；随后补充露色太少、像局部灰暗而非装饰画。本条更新上一轮“形状不重要”的处理尺度，维持C的左上角位置，恢复轻薄曲面局部和浅彩辨识度。
+- 修改ascend-studio/src/styles.css，复用现有ImageGen PNG：760px固定宽度/原比例，left:-170px、top:-80px，blur1.5px/saturate1.2、opacity50%，渐消椭圆400×155px、中心40%42%、核心30%到92%渐隐。增加蓝紫/粉杏和曲面露出，仍为header底层、不占位、不接收点击；左档案、右画布规则及三栏结构保持。
+- 初版只降低模糊仍不足，按当前局部截图扩大彩色露出后保存最终证据：ascend-studio/evidence/20261010-header-shape-before.jpg、header-shape-final.jpg及header-shape-detail.jpg。同一1672×941、相同默认三栏与会话现场共同检视，M级本地展示；标题按钮清晰、曲面与浅彩可见、向右渐消。不是全面交互/可访问性核验。
+- 更新根/原型AGENTS、README、素材README和design-qa；npm run build:pages通过，根仓ascstudio产物同步。未新增或运行测试，未复做分栏拖动、键盘、窄屏或画布流程；不改变其他题目、报告序列、研究/根因/NPU事实或API/Host/Application边界，只处理问题02供用户评审。
+- 本轮仅暂存源码、产物、三张截图和交接，立即commit/push，不混入无关脏文件；实际回执完成后补记。待用户评审露出的颜色和曲面程度。
