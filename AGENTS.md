@@ -4596,3 +4596,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 初版只降低模糊仍不足，按当前局部截图扩大彩色露出后保存最终证据：ascend-studio/evidence/20261010-header-shape-before.jpg、header-shape-final.jpg及header-shape-detail.jpg。同一1672×941、相同默认三栏与会话现场共同检视，M级本地展示；标题按钮清晰、曲面与浅彩可见、向右渐消。不是全面交互/可访问性核验。
 - 更新根/原型AGENTS、README、素材README和design-qa；npm run build:pages通过，根仓ascstudio产物同步。未新增或运行测试，未复做分栏拖动、键盘、窄屏或画布流程；不改变其他题目、报告序列、研究/根因/NPU事实或API/Host/Application边界，只处理问题02供用户评审。
 - 本轮仅暂存源码、产物、三张截图和交接，立即commit/push，不混入无关脏文件；实际回执完成后补记。待用户评审露出的颜色和曲面程度。
+
+- Commit/push：浅彩曲面修订源码、同步Pages产物、三张视觉证据与交接提交ab2a0072已成功推送origin/main（fa453d94..ab2a0072）；Pages构建和暂存diff检查通过，只纳入本轮12个文件。本回执随后单独提交并立即push，未把push成功描述为线上最新部署已核验。
