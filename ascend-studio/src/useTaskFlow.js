@@ -10,7 +10,7 @@ const now = () => new Date().toLocaleTimeString("zh-CN", {
   hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Shanghai",
 });
 
-function sampleCode({ rows, columns, tileSize, bounds }) {
+export function sampleCode({ rows, columns, tileSize, bounds }) {
   const valid = bounds === "valid";
   return [
     "// 示例工作副本：仅用于说明索引范围，不代表项目源码。",

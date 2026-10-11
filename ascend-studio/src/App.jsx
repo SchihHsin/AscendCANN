@@ -18,6 +18,8 @@ import { IMAGE_TASK, IMAGE_MATERIALS, useImageInference, imageShape } from "./us
 import { ImageInferenceMaterial } from "./ImageInference";
 import { getRangeGeometry } from "./RangeDiagram";
 import { classifyTaskIntent, getExplanationFocus } from "./task-intents";
+import ProactiveCue from "./ProactiveCue.jsx";
+import { useProactiveCues } from "./useProactiveCues.js";
 import "./interaction.css";
 import "./visual-focus.css";
 import {
@@ -119,6 +121,8 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
 function App() {
   const wb = useWorkbenchState();
   const flow = useTaskFlow({ onRecord: (title, summary, kind, isDemo) => wb.addRecord({ title, summary, kind, isDemo }, MAIN_TASK) });
+  const diagnosisTargetRef = useRef(null);
+  const proactive = useProactiveCues(`${MAIN_TASK}:${flow.state.resetVersion}`);
   const canvas = useCanvasState({ startEmpty: true });
   const imageCanvas = useCanvasState({ startEmpty: true, cardDefinitions: IMAGE_MATERIALS });
   const [precisionContext, setPrecisionContext] = useState(null);
@@ -301,7 +305,7 @@ function App() {
     if (id === "reference") return presentation === "canvas" ? <div className="cm-stack"><p className="cm-body-copy">Ascend C 官方文档</p><p className="cm-note">用于理解概念与使用范围，实际版本与根因仍需核对。</p><button className="cm-button" type="button" onClick={() => openContent("reference")}>打开参考网页<IconArrowRight size={14} /></button></div> : <ReferenceBrowser resetVersion={flow.state.resetVersion} />;
     if (presentation === "canvas" && (id === "precision" || id === "review")) return <div className="cm-stack"><p className="cm-body-copy">{id === "precision" ? "逐元素误差与容差依据" : "检查清单、观察与待补证据"}</p><p className="cm-note">{precisionContext ? `已保留 ${precisionContext.count ?? precisionContext.rows?.length ?? "本次"} 项误差核对依据。` : "尚未保存误差计算。真实项目根因待确认。"}</p><button className="cm-button" type="button" onClick={() => openContent(id)}>展开核对<IconArrowRight size={14} /></button></div>;
     if (id === "precision" || id === "review") return <ActionWorkspace key={flow.state.resetVersion} embedded view={id} onChangeView={changeActionView} onBack={() => openContent("evidence")} onRecord={(record) => wb.addRecord(record, MAIN_TASK)} precisionContext={precisionContext} onPrecisionContext={setPrecisionContext} rangeContext={latestAttempt ? { total: latestAttempt.total, tile: latestAttempt.tileSize } : null} />;
-    return <CanvasMaterial key={flow.state.resetVersion} id={id} presentation={presentation} flow={{ ...flow, codeAttachment: mainAttachment }} onShowCard={openContent} onAttachCode={() => openDialog("code")} explanation={explanation} onAsk={askExplanation} onCompare={compareExplanation} />;
+    return <CanvasMaterial key={flow.state.resetVersion} id={id} presentation={presentation} flow={{ ...flow, codeAttachment: mainAttachment }} onShowCard={openContent} onAttachCode={() => openDialog("code")} explanation={explanation} onAsk={askExplanation} onCompare={compareExplanation} proactive={proactive} diagramRef={presentation === "content" ? diagnosisTargetRef : undefined} />;
   };
   const availableMaterials = isMainTask ? [
     ...Object.values(MATERIAL_DEFINITIONS).filter(item => item.id !== "canvas" && item.id !== "task-brief" && !item.id.startsWith("image-")).map(item => ({
@@ -452,8 +456,14 @@ function App() {
                     <IconBook size={16} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={15} />
                   </button>
                   {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => openContent("evidence")}>打开现场与判断<IconArrowRight size={13} /></button></div>}
-                  <p className="assistant-next">右侧图解已对应这次疑问展开，可以直接调参数对照。</p>
-                  <div className="task-suggestion-actions"><button type="button" className="task-plain-button" onClick={() => dispatchTaskIntent("explain", "tail")}>返回关联图解<IconArrowRight size={14} /></button><button type="button" className="task-plain-button" onClick={() => changeActionView("code")}>查看代码与来源</button></div>
+                  <ProactiveCue {...proactive.forCue("diagnosis-tail")} emphasisRef={diagnosisTargetRef}
+                    title="先核对非整块输入的访问范围"
+                    evidence="两组输入结果不同，调整编译参数后错误位置未变"
+                    description="已把尾块差异带入右侧图解。可以直接调参观察，再核对实际循环；这条线索仍不能确认根因。"
+                    primaryLabel={workspace.state.activeId === "explanation" ? "核对实际循环与来源" : "查看关联图解"}
+                    onPrimary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? changeActionView("code") : dispatchTaskIntent("explain", "tail"); }}
+                    secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "查看实际代码"}
+                    onSecondary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? dispatchTaskIntent("explain", "tail") : changeActionView("code"); }} />
                   <details className="chat-next-disclosure"><summary>比较其他排查方向</summary><div className="chat-next-actions" aria-label="可能的下一步方向">
                     <div className="chat-next-heading">可能的下一步方向</div>
                     {routes.map((route, index) => (
@@ -491,7 +501,12 @@ function App() {
                     {message.attachments?.length > 0 && <div className="message-attachments">{message.attachments.map((file) => <button type="button" key={file.id} onClick={() => openDialog("evidence", { title: file.name, body: "本次任务的本地附件，尚未独立验证。", log: file.content || "已关联文件名称，尚无可读取的文本内容。" })}><IconPaperclip size={13} />{file.name}</button>)}</div>}
                   </div>
                   {message.sourceContext && <div className="message-source-links"><button type="button" onClick={() => { if (message.sourceContext.kind === "image") { inference.actions.seek(message.sourceContext.time); if (!inference.state.lessonOpen) inference.actions.lesson(); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus, time: message.sourceContext.time, video: true }); }}><IconPlayerPlay size={12} /><span>讲解示例 {message.sourceContext.stamp} · 返回片段</span></button>{message.role === "assistant" && <button type="button" onClick={() => { if (message.sourceContext.kind === "image") { inference.actions.focus(message.sourceContext.focus); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus }); }}><IconBook size={12} />查看关联图解</button>}</div>}
-                  {message.role === "assistant" && message.interaction && <div className="message-source-links"><button type="button" onClick={() => dispatchTaskIntent("explain", message.interaction.focus)}><IconBook size={13} />{message.interaction.intent === "diagnose" ? "解释这条线索" : "查看关联图解"}</button></div>}
+                  {isMainTask && message.role === "assistant" && message.interaction?.intent === "diagnose" ? <ProactiveCue {...proactive.forCue(`diagnose:${message.id}`)}
+                    title="沿这次错误补一项判断依据" description="当前材料保持原位。需要理解时，可把这条线索直接带进关联图解。"
+                    evidence="基于本次描述；实际循环与运行证据仍待核对"
+                    primaryLabel="解释这条线索" onPrimary={() => { proactive.settle(`diagnose:${message.id}`); dispatchTaskIntent("explain", message.interaction.focus); }}
+                    secondaryLabel="查看实际代码" onSecondary={() => { proactive.settle(`diagnose:${message.id}`); changeActionView("code"); }} />
+                    : message.role === "assistant" && message.interaction && <div className="message-source-links"><button type="button" onClick={() => dispatchTaskIntent("explain", message.interaction.focus)}><IconBook size={13} />{message.interaction.intent === "diagnose" ? "解释这条线索" : "查看关联图解"}</button></div>}
                   {message.role === "assistant" && <div className="message-feedback"><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={16} /></button></div>}
                 </div>
               </article>

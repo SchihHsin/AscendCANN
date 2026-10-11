@@ -162,3 +162,36 @@ button.cm-code-line:hover { background: #f0f1f6; }
 .cm-trial-comparison h4 { margin: 0 0 8px; color: #626b84; font-size: 11px; font-weight: 600; }
 .cm-material-body { container-type: inline-size; container-name: material; }
 @container material (max-width: 580px) { .cm-trial-comparison { grid-template-columns: minmax(0,1fr); } }
+
+/* Applied actions sit beside the diff; ancillary range snapshots are optional. */
+.cm-diff-confirm { padding-block: 5px; }
+.cm-diff-confirm > span { color: #717683; font-size: 11px; line-height: 1.5; }
+.cm-supporting-evidence { min-width: 0; border: 1px solid #e5e6ec; border-radius: 8px; padding: 10px; }
+.cm-supporting-evidence > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; color: #555c6e; font-size: 11px; line-height: 1.6; }
+.cm-supporting-evidence[open] > summary { margin-bottom: 10px; }
+.cm-supporting-evidence > .cm-attempt-result { margin-top: 10px; }
+.cm-validation-layers { border-color: #e2e4e9; background: #fff; }
+.cm-validation-layers li { border-color: #e9eaf0; }
+.cm-validation-layers strong { color: #414958; font-weight: 600; }
+.cm-validation-layers p { color: #737a88; }
+.cm-validation-layers em { color: #747b89; }
+.cm-validation-layers .cm-layer-icon, .cm-validation-layers .cm-layer-icon.is-pending { color: #788090; background: #f1f2f5; }
+.cm-validation-layers li.is-complete .cm-layer-icon { color: #4f8068; background: #edf5ef; }
+.cm-validation-layers li.is-complete em { color: #4f8068; }
+.cm-validation-layers li.is-failed .cm-layer-icon { color: #a66661; background: #faefed; }
+.cm-validation-layers li.is-failed em { color: #a66661; }
+.cm-diff { background: #fafbfc; border-color: #e1e4ea; }
+.cm-diff-line { color: #535d70; }
+.cm-diff-line.is-added { color: #527861; background: #eef5ef; }
+.cm-diff-line.is-removed { color: #936861; background: #fbefed; }
+@container task-content (max-width: 390px) {
+  .cm-diff-confirm { align-items: stretch; }
+  .cm-diff-confirm > .cm-button { flex: 1 1 100%; }
+}
+
+.cm-diff-expand { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 30px; border: 0; border-block: 1px solid #e9eaf0; background: #f5f6f9; color: #777d89; font: inherit; font-size: 11px; cursor: pointer; }
+.cm-diff-expand:hover { background: #eeeef5; color: #4f5265; }
+.cm-diff-expand:focus-visible { outline: 2px solid #726eae; outline-offset: -2px; }
+
+.cm-validation-result.is-failed { border-color: #ecdeda; background: #fffaf8; }
+.cm-validation-result.is-failed .cm-validation-checks { border-color: #ecdeda; }

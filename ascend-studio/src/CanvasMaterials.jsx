@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   IconAlertTriangle,
   IconArrowRight,
@@ -17,6 +17,7 @@ import {
 } from "@tabler/icons-react";
 import { SAMPLE_ORIGINAL_CODE } from "./useTaskFlow.js";
 import { ExplainPanel } from "./ExplainPanel.jsx";
+import ProactiveCue from "./ProactiveCue.jsx";
 import { RangeDiagram } from "./RangeDiagram.jsx";
 import { CODE_CONCEPTS, codeConcept } from "./code-concepts.js";
 import "./canvas-materials.css";
@@ -154,7 +155,9 @@ function AttemptsMaterial({ flow, onShowCard }) {
   </div>;
 }
 
-function DiffMaterial({ flow, onShowCard, explanation }) {
+function DiffMaterial({ flow, onShowCard, explanation, proactive }) {
+  const diffRef = useRef(null);
+  const [expandedDiff, setExpandedDiff] = useState(false);
   const { state, actions } = flow;
   const attempts = Array.isArray(state.attempts) ? state.attempts : [];
   const selected = attempts.find((attempt) => attempt.id === state.selectedAttemptId) || attempts.at(-1);
@@ -162,50 +165,80 @@ function DiffMaterial({ flow, onShowCard, explanation }) {
   const proposed = state.proposedCode;
   const lines = useMemo(() => proposed ? buildDiff(baseline, proposed) : [], [baseline, proposed]);
   const hasChanges = Boolean(proposed) && lines.some((line) => line.type !== "same");
+  useEffect(() => setExpandedDiff(false), [proposed, baseline]);
+  const shownLines = useMemo(() => {
+    if (expandedDiff || !hasChanges) return lines;
+    const related = new Set();
+    lines.forEach((line, index) => {
+      if (line.type !== "same") for (let offset = -2; offset <= 2; offset += 1) related.add(index + offset);
+    });
+    const visible = [];
+    let omitted = 0;
+    const flush = () => { if (omitted) { visible.push({ type: "omitted", count: omitted }); omitted = 0; } };
+    lines.forEach((line, index) => { if (related.has(index)) { flush(); visible.push(line); } else omitted += 1; });
+    flush();
+    return visible;
+  }, [lines, expandedDiff, hasChanges]);
   const alreadyApplied = Boolean(proposed) && proposed === state.appliedCode;
   const feedback = useCopy(state.resetVersion);
+  const applyCueId = `applied:${state.appliedAttemptId}`;
+  const checkApplied = () => { proactive?.settle(applyCueId); onShowCard?.("validation"); actions.runValidation(); };
   const cancel = () => { actions.cancelDiff(); explanation?.actions.startExplore(); onShowCard?.("explanation", { close: "diff" }); };
   if (!proposed) return <div className="cm-stack"><div className="cm-empty">尚无待核对的示例提案。先选择一次尝试，再生成修改预览。</div><button className="cm-button" type="button" onClick={() => onShowCard?.("attempts")}>查看尝试记录<IconArrowRight size={14} /></button><LocalError state={state} /></div>;
   return <div className="cm-stack"><p className="cm-note cm-note-leading">对照{baseline === SAMPLE_ORIGINAL_CODE ? "原始范围示例" : "上次已应用的示例副本"}与所选尝试生成的提案。真实来源保持只读。</p>
     {selected && <AttemptMetadata attempt={selected} />}
     {!hasChanges && <div className="cm-quiet-note"><IconCode size={15} /><span>当前提案没有新增改动，应用已禁用。可以返回图解，调整范围策略后再审阅。</span></div>}
-    <div className="cm-diff-legend"><span>− 删除行</span><span>+ 新增行</span><button className="cm-text-button" type="button" onClick={() => feedback.copy(proposed)}><IconCopy size={13} />复制提案</button></div>
-    <div className="cm-diff" tabIndex={0} aria-label="示例工作副本与提案的代码差异">{lines.map((line, index) => {
+    <div className="cm-diff-legend"><span>− 删除行</span><span>+ 新增行</span><button className="cm-text-button" type="button" onClick={() => feedback.copy(proposed)}><IconCopy size={13} />复制提案</button>{expandedDiff && hasChanges && <button className="cm-text-button" type="button" onClick={() => setExpandedDiff(false)}>收起未改动代码</button>}</div>
+    <div ref={diffRef} className="cm-diff" tabIndex={0} aria-label="示例工作副本与提案的代码差异">{shownLines.map((line, index) => {
+      if (line.type === "omitted") return <button type="button" className="cm-diff-expand" key={index} onClick={() => setExpandedDiff(true)}>展开 {line.count} 行未改动代码<IconChevronDown size={12} /></button>;
       const concept = codeConcept(line.text);
       const content = <><span aria-hidden="true">{line.type === "removed" ? "−" : line.type === "added" ? "+" : " "}</span><code>{line.text || " "}</code></>;
       return concept ? <button type="button" className={"cm-diff-line cm-diff-linked is-" + line.type + (explanation?.state.focus === concept ? " is-focused" : "")} key={index} aria-pressed={explanation?.state.focus === concept} title={`对应图解：${CODE_CONCEPTS[concept].label}`} onClick={() => explanation?.actions.focusConcept(concept)}>{content}</button> : <div className={"cm-diff-line is-" + line.type} key={index}>{content}</div>;
     })}</div>
-    {selected && <RangeDiagram snapshot={selected.snapshot || selected} focus={explanation?.state.focus || "access"} onFocus={explanation?.actions.focusConcept} compact title="提案对应的访问范围" />}
-    <details className="cm-code-snapshot"><summary><IconCode size={14} />查看原始 / 已应用示例<IconChevronDown size={13} /></summary><CodeBlock label="此次差异的只读基准代码">{baseline}</CodeBlock></details>
-    {selected && <AttemptResult attempt={selected} compact />}
+    {alreadyApplied ? <ProactiveCue {...proactive?.forCue(applyCueId)} emphasisRef={diffRef} title="示例已应用，下一步核对这份副本"
+      description="对照整块输入与应用时的输入。点击后检查浏览器中的示例范围，不执行真实项目或 NPU。"
+      evidence={`应用记录 · [${selected?.rows ?? "—"},${selected?.columns ?? "—"}] / 每块 ${selected?.tileSize ?? "—"}`}
+      primaryLabel="检查已应用的示例范围" onPrimary={checkApplied} busy={state.busy}
+      secondaryLabel="核对实际代码与来源" onSecondary={() => { proactive?.settle(applyCueId); onShowCard?.("source"); }} />
+      : <div className="cm-actions cm-diff-confirm"><button className="cm-button cm-button-primary" type="button" disabled={state.busy || !hasChanges} onClick={actions.confirmApply}><IconCheck size={14} />应用到示例工作副本</button><button className="cm-button" type="button" disabled={state.busy} onClick={cancel}><IconX size={14} />取消提案</button><span>只更新浏览器副本；项目仍待验证。</span></div>}
+    {selected && <details className="cm-supporting-evidence"><summary>查看范围图解与这次尝试的依据<IconChevronDown size={13} /></summary><RangeDiagram snapshot={selected.snapshot || selected} focus={explanation?.state.focus || "access"} onFocus={explanation?.actions.focusConcept} compact title="提案对应的访问范围" /><AttemptResult attempt={selected} compact /></details>}
+    <details className="cm-code-snapshot"><summary><IconCode size={14} />查看此次差异的基准代码<IconChevronDown size={13} /></summary><CodeBlock label="此次差异的只读基准代码">{baseline}</CodeBlock></details>
     <p className="cm-note">提案依据保存的参数和范围策略生成；手工代码、精度和实际环境仍需另外核对。</p>
-    <div className="cm-actions"><button className="cm-button cm-button-primary" type="button" disabled={state.busy || !hasChanges || alreadyApplied} onClick={() => { actions.confirmApply(); }}><IconCheck size={14} />{alreadyApplied ? "此提案已应用" : "应用到示例工作副本"}</button>{!alreadyApplied && <button className="cm-button" type="button" disabled={state.busy} onClick={cancel}><IconX size={14} />取消提案</button>}{alreadyApplied && <button className="cm-button" type="button" onClick={() => onShowCard?.("validation")}>打开示例核对<IconArrowRight size={14} /></button>}</div>
     <p className="cm-note">{alreadyApplied ? "示例副本已更新。需要时打开核对；真实项目仍待验证。" : "取消会回到图解，保留参数与尝试；可继续试改或重新审阅。"}</p>
     <CopyFeedback feedback={feedback} /><LocalError state={state} />
   </div>;
 }
 
-function ValidationMaterial({ flow, onShowCard }) {
+function ValidationMaterial({ flow, onShowCard, proactive }) {
+  const validationRef = useRef(null);
   const { state, actions } = flow;
   const validation = state.validation;
   const appliedAttempt = state.attempts?.find((attempt) => attempt.id === state.appliedAttemptId);
-  return <div className="cm-stack"><ol className="cm-validation-layers"><li><span className={"cm-layer-icon" + (!state.appliedCode ? " is-pending" : "")}>{state.appliedCode ? <IconCheck size={14} /> : <IconCode size={14} />}</span><div><strong>{state.appliedCode ? "示例工作副本已更新" : "示例修改尚未应用"}</strong><p>{state.appliedCode ? "保留对应提案、代码与尝试快照。" : "核对 Diff 并确认应用后，再检查范围。"}</p></div><em>{state.appliedCode ? "已应用" : "待应用"}</em></li><li><span className="cm-layer-icon"><IconClipboardCheck size={14} /></span><div><strong>示例索引范围</strong><p>对照 [16,32] 与应用时的输入形状。</p></div><em>{validation ? validation.passed ? "范围内" : "待复核" : "待检查"}</em></li><li><span className="cm-layer-icon is-pending"><IconAlertTriangle size={14} /></span><div><strong>真实项目与 NPU 验证</strong><p>仍需真实代码、环境、精度和运行证据。</p></div><em>待验证</em></li></ol>
+  const resultCueId = `validated:${validation?.id}`;
+  return <div className="cm-stack"><ol className="cm-validation-layers"><li className={state.appliedCode ? "is-complete" : "is-pending"}><span className={"cm-layer-icon" + (!state.appliedCode ? " is-pending" : "")}>{state.appliedCode ? <IconCheck size={14} /> : <IconCode size={14} />}</span><div><strong>{state.appliedCode ? "示例工作副本已更新" : "示例修改尚未应用"}</strong><p>{state.appliedCode ? "保留对应提案、代码与尝试快照。" : "核对 Diff 并确认应用后，再检查范围。"}</p></div><em>{state.appliedCode ? "已应用" : "待应用"}</em></li><li className={validation ? validation.passed ? "is-complete" : "is-failed" : "is-pending"}><span className={"cm-layer-icon" + (!validation ? " is-pending" : "")}><IconClipboardCheck size={14} /></span><div><strong>示例索引范围</strong><p>对照 [16,32] 与应用时的输入形状。</p></div><em>{validation ? validation.passed ? "范围内" : "待复核" : "待检查"}</em></li><li className="is-pending"><span className="cm-layer-icon is-pending"><IconAlertTriangle size={14} /></span><div><strong>真实项目与 NPU 验证</strong><p>仍需真实代码、环境、精度和运行证据。</p></div><em>待验证</em></li></ol>
     {appliedAttempt && <AttemptMetadata attempt={appliedAttempt} />}
-    <button className="cm-button cm-button-primary" type="button" disabled={state.busy || !state.appliedCode} onClick={actions.runValidation}>{state.busy ? <IconLoader2 className="cm-spinner" size={14} /> : <IconClipboardCheck size={14} />}{state.busy ? "正在复核" : "重新检查示例范围"}</button>
+    <button className="cm-button cm-button-primary" type="button" disabled={state.busy || !state.appliedCode} onClick={actions.runValidation}>{state.busy ? <IconLoader2 className="cm-spinner" size={14} /> : <IconClipboardCheck size={14} />}{state.busy ? "正在复核" : validation ? "重新检查示例范围" : "检查已应用的示例范围"}</button>
     {!state.appliedCode && <button className="cm-text-button" type="button" onClick={() => onShowCard?.("diff")}>查看修改预览<IconArrowRight size={13} /></button>}
-    {validation && <div className="cm-validation-result"><div className="cm-meta-line"><strong>保存的范围复核</strong><span>{validation.time}</span></div><p className="cm-body-copy">{validation.summary}</p><div className="cm-validation-checks">{(validation.checks || []).map((check, index) => <div key={`${check.label}-${index}`}><span><strong>{check.label}</strong><small>元素 {check.total} · 尾块 {check.tail}</small></span><span><strong>{check.passed ? "示例范围内" : "范围待复核"}</strong><small>范围外 {check.outOfRange} 个索引</small></span></div>)}</div><p className="cm-note">结果仅针对浏览器范围演算，未编译或运行 C++，未验证实际算子精度，根因尚未确认。</p></div>}
+    {validation && <div ref={validationRef} className={`cm-validation-result${validation.passed ? "" : " is-failed"}`}><div className="cm-meta-line"><strong>保存的范围复核</strong><span>{validation.time}</span></div><p className="cm-body-copy">{validation.summary}</p><div className="cm-validation-checks">{(validation.checks || []).map((check, index) => <div key={`${check.label}-${index}`}><span><strong>{check.label}</strong><small>元素 {check.total} · 尾块 {check.tail}</small></span><span><strong>{check.passed ? "示例范围内" : "范围待复核"}</strong><small>范围外 {check.outOfRange} 个索引</small></span></div>)}</div><p className="cm-note">结果仅针对浏览器范围演算，未编译或运行 C++，未验证实际算子精度，根因尚未确认。</p></div>}
+    {validation && <ProactiveCue {...proactive?.forCue(resultCueId)} emphasisRef={validationRef} title={validation.passed ? "示例范围已核对，工程证据仍待补齐" : "示例还有范围问题，先回到相关参数"}
+      description={validation.passed ? "这次记录只证明两组示例的索引范围。真实循环、逐元素误差和运行条件还需核对，根因未确认。" : "保留本次结果和已应用副本；返回图解调整参数后，可再次审阅和检查。"}
+      evidence={`范围复核 ${validation.time} · ${validation.checks?.length ?? 0} 组浏览器算例`}
+      primaryLabel={validation.passed ? "核对实际代码与来源" : "返回图解继续试改"}
+      onPrimary={() => { proactive?.settle(resultCueId); onShowCard?.(validation.passed ? "source" : "explanation"); }}
+      secondaryLabel={validation.passed ? "查看逐元素误差依据" : "查看当前草案"}
+      onSecondary={() => { proactive?.settle(resultCueId); onShowCard?.(validation.passed ? "precision" : "draft"); }} />}
     {state.appliedCode && <details className="cm-code-snapshot"><summary><IconCode size={14} />已应用的示例代码快照<IconChevronDown size={13} /></summary><CodeBlock label="已应用示例代码，只读">{state.appliedCode}</CodeBlock></details>}
     <div className="cm-actions"><button className="cm-text-button" type="button" onClick={() => onShowCard?.("draft")}>查看当前草案<IconArrowRight size={13} /></button><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation")}>返回图解继续试改</button><button className="cm-text-button" type="button" disabled={state.busy || !state.canUndoApply} onClick={actions.undoApply}><IconRestore size={13} />撤销上次示例应用</button></div>
     <LocalError state={state} />
   </div>;
 }
 
-export function CanvasMaterial({ id, flow, onShowCard, onAttachCode, explanation, onAsk, onCompare, presentation = "canvas" }) {
+export function CanvasMaterial({ id, flow, onShowCard, onAttachCode, explanation, onAsk, onCompare, proactive, diagramRef, presentation = "canvas" }) {
   if (!flow?.state || !flow?.actions) return null;
-  const props = { flow, onShowCard, onAttachCode, explanation };
+  const props = { flow, onShowCard, onAttachCode, explanation, proactive };
   return <div className={`cm-material-body cm-material-${id} cm-presentation-${presentation}`}>{
     id === "evidence" ? <EvidenceMaterial {...props} /> :
-    id === "explanation" ? <ExplainPanel {...props} onAsk={onAsk} onCompare={onCompare} presentation={presentation} /> :
+    id === "explanation" ? <ExplainPanel {...props} diagramRef={diagramRef} onAsk={onAsk} onCompare={onCompare} presentation={presentation} /> :
     id === "source" ? <SourceMaterial {...props} /> :
     id === "draft" ? <DraftMaterial {...props} /> :
     id === "parameters" ? <ParametersMaterial {...props} /> :

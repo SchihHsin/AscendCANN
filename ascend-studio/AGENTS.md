@@ -468,3 +468,14 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 各场景通过用户意图与对象操作自然推进，保留失败、取消、重试、补证和恢复；不增加强制按序的故事向导。Studio承载任务中学习，官网承载权威内容/路径，GitCode承载工程证据/评审/分享审核；可用关联前端页面演示跨平台上下文，不把全部功能塞入Studio。
 - 演示级能力推荐、验证回执、团队评审/分享草稿可模拟；真实AI/仓库写入/CI/NPU/公开投稿须实际服务及环境。模拟状态明确标注，不把教学示例或预置证据当真实运行。本轮不改变已确认的主动性规则、报告序列/hash或API/Host/Application边界。
 - 推荐后续先打通任务中学习至验证的核心接续，由用户评审一题后继续；随后学习起步、能力选配及GitCode协作回流逐段推进。仅更新根/原型AGENTS；git diff --check后提交并立即push，不构建、不新增或运行测试，不改源码/Pages或设计材料正文。
+
+
+### 2026-10-11（AddCustom 主动提示 B 方案）
+
+- 用户要求梳理完整故事中的体验障碍并增强主动交互，已明确选择B：就近浅蓝紫行动提示、关联对象一次强调、处理后收回摘要；黑主按钮、无左色条、AI铺背景/无头像。维持逐题评审，本轮只实现AddCustom诊断/试改/应用后检查，图像流程只记录纵向讲解占用问题。
+- 使用Product Design audit先捕获6处修改前截图。Luna承担ProactiveCue基础组件、ExplainPanel试改反馈、设计复核材料；主代理完成整合、语义修正、自适应及实际操作审阅。源码新增ProactiveCue.jsx/proactive-cue.css/useProactiveCues.js，改App.jsx、ExplainPanel.jsx、CanvasMaterials.jsx、canvas-materials.css/useTaskFlow.js；同步根ascstudio Pages产物。
+- 诊断提示贴依据；试改数学范围外15→0后直接给当前快照Diff入口，保存次级且状态按快照匹配；Diff只展示修改行±2上下文，完整代码可展开，支持范围图/尝试证据折叠，应用/取消贴代码；应用留Diff且不自动检查，明确点击检查可直接进入并运行浏览器范围核对。仅complete状态绿，待检查/真实项目NPU待验证中性。返回取消保参数历史；关闭/处理后摘要及seen状态按任务/reset/语义事件在本次会话保留。
+- 动效：提示入视口时220ms淡入/4px位移，关联对象700ms短强调，无循环、不滚动或抢焦点；相同访问策略/范围外语义不随逐位输入反复闪；减少动效静态样式。DOM标签id独立；sampleCode复用现有生成函数避免两套提案漂移。
+- 设计材料正文在cann-dashboard/ploy-interaction-lab/learning-canvas-story/proactive-interaction-review.md，含6处修改前观察、B触发/依据/行动/退出规则、修改后截图、手动审阅/设计推演/未实现范围；design-storyline.md补索引，interaction-design.md只交接实施索引。能力选配、保存恢复/持久化、团队评审/自愿分享等风险仅推演，不声称已有或实測。
+- M级手动观察：关闭提示切任务返回仍摘要；无效列数阻止操作；保存身份、当前列数34快照、取消/应用/明确检查、完整Diff展开、状态分层。实际右栏360px参数316/提示290（应用提示336）、390页面宽390、1600桌面、中栏300px/h480提示273/输入底y390均无正常内容横溢出；回看聊天核对完成scrollTop前后0。截图ascend-studio/evidence/20261011-proactive-audit/01–12，12裁切初稿已替换并验看。最终刷新后的error日志为空。
+- 仅浏览器数学范围演算/示例副本；无真实AI/项目写入/C++/模型/NPU，不证明尾块根因/精度。reduced-motion仅核对源码，未完整屏幕阅读器实操；用户设计评审待定。未改报告序列/hash或API/Host/Application事实边界，未改其他题/平台。本轮未新增/运行自动测试；最终build:pages、node --check、diff检查后仅暂存本任务文件，保留行为报告WIP/图稿/DS_Store等，并立即commit/push，回执随后补记。

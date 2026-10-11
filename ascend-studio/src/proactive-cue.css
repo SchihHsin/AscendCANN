@@ -1,0 +1,189 @@
+.proactive-cue {
+  --cue-ink: #252630;
+  --cue-muted: #5d6070;
+  --cue-border: #d9d9ec;
+  --cue-surface: #f2f1fb;
+  container: proactive-cue / inline-size;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 12px 13px;
+  border: 1px solid var(--cue-border);
+  border-radius: 10px;
+  color: var(--cue-ink);
+  background: var(--cue-surface);
+}
+
+.proactive-cue *,
+.proactive-cue *::before,
+.proactive-cue *::after { box-sizing: border-box; }
+
+.proactive-cue.is-entering { animation: proactive-cue-enter 220ms ease-out both; }
+
+@keyframes proactive-cue-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.proactive-cue-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  min-width: 0;
+}
+
+.proactive-cue-icon {
+  display: grid;
+  flex: 0 0 20px;
+  place-items: center;
+  width: 20px;
+  height: 22px;
+  color: #615d9d;
+}
+
+.proactive-cue-heading-copy { flex: 1 1 auto; min-width: 0; }
+.proactive-cue-heading h3 {
+  margin: 1px 0 0;
+  color: #292a35;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.proactive-cue-evidence {
+  display: block;
+  align-items: baseline;
+  gap: 5px;
+  margin: 4px 0 0;
+  color: var(--cue-muted);
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.proactive-cue-evidence span { margin-right: 5px; color: #69658f; font-weight: 600; }
+
+.proactive-cue-heading-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-start;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.proactive-cue-expand,
+.proactive-cue-dismiss,
+.proactive-cue-primary,
+.proactive-cue-secondary {
+  font: inherit;
+  cursor: pointer;
+}
+
+.proactive-cue-expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 5px 7px;
+  border: 0;
+  border-radius: 6px;
+  color: #4e4d68;
+  background: transparent;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.proactive-cue-expand:hover { background: rgba(89, 82, 151, .08); }
+
+.proactive-cue-dismiss {
+  display: grid;
+  flex: 0 0 36px;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: #666778;
+  background: transparent;
+}
+.proactive-cue-dismiss:hover { color: #343541; background: rgba(89, 82, 151, .08); }
+
+.proactive-cue-body { min-width: 0; padding: 7px 0 0 29px; }
+.proactive-cue-description,
+.proactive-cue-extra {
+  margin: 0;
+  color: #454754;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.proactive-cue-extra { margin-top: 7px; }
+
+.proactive-cue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+}
+.proactive-cue-primary,
+.proactive-cue-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  max-width: 100%;
+  padding: 7px 11px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.proactive-cue-primary {
+  color: #fff;
+  background: #25262b;
+}
+.proactive-cue-primary:hover:not(:disabled) { background: #3b3c43; }
+.proactive-cue-secondary {
+  color: #454653;
+  border-color: #d8d8e2;
+  background: rgba(255, 255, 255, .72);
+}
+.proactive-cue-secondary:hover:not(:disabled) { background: #fff; }
+.proactive-cue-primary:disabled,
+.proactive-cue-secondary:disabled { opacity: .52; cursor: default; }
+.proactive-cue :is(button):focus-visible { outline: 2px solid #726eae; outline-offset: 2px; }
+
+.proactive-cue.is-collapsed { padding-block: 7px; background: #fafaff; border-color: #e4e3ed; }
+.proactive-cue.is-collapsed .proactive-cue-heading { align-items: center; }
+.proactive-cue.is-collapsed .proactive-cue-icon { height: 20px; }
+.proactive-cue.is-collapsed .proactive-cue-heading h3 { margin-top: 0; }
+.proactive-cue.is-collapsed .proactive-cue-evidence { margin-top: 2px; }
+.proactive-cue.is-collapsed .proactive-cue-dismiss { width: 32px; height: 32px; flex-basis: 32px; }
+
+@media (max-width: 360px) {
+  .proactive-cue { padding: 10px; }
+  .proactive-cue-heading { gap: 6px; }
+  .proactive-cue-heading-actions { gap: 1px; }
+  .proactive-cue-body { padding-left: 26px; }
+  .proactive-cue-actions { align-items: stretch; }
+  .proactive-cue-primary,
+  .proactive-cue-secondary { flex: 1 1 100%; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proactive-cue.is-entering { animation: none; }
+}
+
+/* Pane width, rather than viewport width, governs the action layout. */
+@container proactive-cue (max-width: 330px) {
+  .proactive-cue-heading { gap: 6px; }
+  .proactive-cue-body { padding-left: 0; }
+  .proactive-cue-actions { align-items: stretch; }
+  .proactive-cue-primary, .proactive-cue-secondary { flex: 1 1 100%; width: 100%; }
+  .proactive-cue-heading h3 { font-size: 12px; }
+}

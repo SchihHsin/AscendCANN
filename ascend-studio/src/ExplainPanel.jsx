@@ -1,6 +1,8 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { IconAlertTriangle, IconArrowLeft, IconArrowRight, IconCheck, IconChevronDown, IconCode, IconColumns2, IconHistory, IconMessageQuestion, IconPin, IconPlayerPause, IconPlayerPlay, IconX } from "@tabler/icons-react";
 import RangeDiagram, { getRangeGeometry } from "./RangeDiagram.jsx";
+import ProactiveCue from "./ProactiveCue.jsx";
+import { SAMPLE_ORIGINAL_CODE, sampleCode } from "./useTaskFlow.js";
 import { EXPLANATION_DURATION, EXPLANATION_SEGMENTS, EXPLANATION_SNAPSHOT, EXPLANATION_TITLE, explanationSegmentAt } from "./useExplanationSession.js";
 import "./explain-panel.css";
 
@@ -46,12 +48,24 @@ function CodeAnchor({ snapshot, focus, onShowCard, onCompare }) {
   return <section className="ex-code-anchor"><div className="ex-anchor-heading"><span><IconCode size={14} />对应示例代码 · {focusLabel(focus)}</span><button className="ex-quiet-button" type="button" onClick={() => onShowCard?.("source", { anchor: focus })}>查看来源<IconArrowRight size={12} /></button></div><pre tabIndex={0} aria-label={`${focusLabel(focus)}对应的示例代码`}><code>{code.join("\n")}</code></pre><div className="ex-anchor-footer"><p>{description}</p><button className="ex-quiet-button" type="button" onClick={() => onCompare?.(focus)}><IconColumns2 size={13} />并排核对</button></div></section>;
 }
 
-function TrialControls({ flow, explanation, onShowCard }) {
+function sameSnapshot(left, right) {
+  return Boolean(left && right && ["rows", "columns", "tileSize", "bounds"].every((name) => String(left[name]) === String(right[name])));
+}
+
+function TrialControls({ flow, explanation, onShowCard, proactive }) {
   const { state, actions } = flow;
   const strategyName = useId();
+  const resultRef = useRef(null);
   const geometry = getRangeGeometry(state);
   const attempts = Array.isArray(state.attempts) ? state.attempts : [];
   const latestAttempt = attempts.find((item) => item.id === state.selectedAttemptId) || attempts.at(-1);
+  const currentSnapshot = snapshotOf(state);
+  const savedCurrent = attempts.some((item) => sameSnapshot(item.snapshot, currentSnapshot));
+  const baseline = { rows: "17", columns: "33", tileSize: "32", bounds: "full" };
+  const changed = !sameSnapshot(currentSnapshot, baseline);
+  const diffAdded = sampleCode(currentSnapshot) !== (state.appliedCode || SAMPLE_ORIGINAL_CODE);
+  const cueId = `range-${state.bounds}-${geometry.valid && geometry.outOfRange > 0 ? "outside" : "contained"}`;
+  const cue = proactive?.forCue?.(cueId);
   const setParameter = (name, value) => {
     explanation.actions.startExplore();
     actions.setParameter(name, value);
@@ -65,20 +79,32 @@ function TrialControls({ flow, explanation, onShowCard }) {
     actions.restoreParameters();
   };
   const reviewCurrent = () => {
+    proactive?.settle?.(cueId);
     if (actions.prepareDiff({ current: true })) onShowCard?.("diff", { prepared: true });
   };
 
   return <section className="ex-trial-panel" aria-label="图解内参数试算"><div className="ex-trial-heading"><div><strong>调整参数，图解即时更新</strong><span>仅影响当前示例副本 · 讲解与固定参考分别保留</span></div>{explanation.state.videoOpen && <span className="ex-lesson-context">讲解停在 {formatTime(explanation.state.time)}</span>}</div>
     <div className="ex-parameter-fields">{[{ name: "rows", label: "行数" }, { name: "columns", label: "列数" }, { name: "tileSize", label: "每块元素" }].map(({ name, label }) => <label key={name}>{label}<input type="number" required min="1" step="1" value={state[name]} disabled={state.busy} onChange={(event) => setParameter(name, event.target.value)} /></label>)}</div>
     <fieldset className="ex-strategies"><legend>最后一块的访问范围</legend><label><input type="radio" name={strategyName} checked={state.bounds === "full"} disabled={state.busy} onChange={() => setBounds("full")} /><span>整块访问<small>每块按相同大小</small></span></label><label><input type="radio" name={strategyName} checked={state.bounds === "valid"} disabled={state.busy} onChange={() => setBounds("valid")} /><span>仅有效元素<small>尾块按剩余数量</small></span></label></fieldset>
-    <div className={`ex-current-result${geometry.valid ? "" : " is-invalid"}`} role="status" aria-live="polite">{geometry.valid ? <><strong>当前即时演算 <span>· 未保存为尝试</span></strong><p>{geometry.total} 个元素 · {geometry.blocks} 块 · 尾块有效 {geometry.lastBlockValid} 个 · {geometry.bounds === "valid" ? "仅访问有效元素" : `整块访问，范围外 ${geometry.outOfRange} 个`}</p></> : <><strong><IconAlertTriangle size={13} />参数暂不可演算</strong><p>{geometry.error}</p></>}</div>
+    <div ref={resultRef} className={`ex-current-result${geometry.valid ? "" : " is-invalid"}`} role="status" aria-live="polite">{geometry.valid ? <><strong>当前即时演算 <span>· {savedCurrent ? "已保存对应尝试" : "未保存为尝试"}</span></strong><p>{geometry.total} 个元素 · {geometry.blocks} 块 · 尾块有效 {geometry.lastBlockValid} 个 · {geometry.bounds === "valid" ? "仅访问有效元素" : `整块访问，数学范围外 ${geometry.outOfRange} 个`}</p></> : <><strong><IconAlertTriangle size={13} />参数暂不可演算</strong><p>{geometry.error}</p></>}</div>
+    {changed && geometry.valid && !state.busy && cue && <ProactiveCue
+      {...cue}
+      emphasisRef={resultRef}
+      title="参数变化已反映在当前算例"
+      description={`相比原始示例，数学范围外索引由 15 个变为 ${geometry.outOfRange} 个。${geometry.outOfRange ? "这只是索引范围演算，不能确认真实代码根因或精度。" : "当前算例没有数学范围外索引；这不能确认真实代码根因或精度。"}`}
+      evidence={`当前 ${geometry.rows} × ${geometry.columns}，每块 ${geometry.tileSize}，${geometry.bounds === "valid" ? "仅访问有效元素" : "整块访问"}。`}
+      primaryLabel={diffAdded ? "审阅这次示例修改" : undefined}
+      onPrimary={diffAdded ? reviewCurrent : undefined}
+      secondaryLabel="查看实际代码"
+      onSecondary={() => { proactive?.settle?.(cueId); onShowCard?.("source"); }}
+    />}
     {state.error && <p className="ex-trial-error" role="alert"><IconAlertTriangle size={14} />{state.error}</p>}
-    <div className="ex-trial-actions"><button className="ex-primary-button" type="button" disabled={state.busy || !geometry.valid} onClick={actions.runTrial}><IconPlayerPlay size={14} />{state.busy ? "正在保存…" : "保存这次尝试"}</button><button className="ex-neutral-button" type="button" disabled={state.busy || !geometry.valid} onClick={reviewCurrent}>审阅当前修改<IconArrowRight size={13} /></button><button className="ex-quiet-button" type="button" disabled={state.busy} onClick={restoreParameters}>恢复原始参数</button><span>只演算索引，不执行 C++ 或 NPU</span></div>
+    <div className="ex-trial-actions"><button className="ex-neutral-button" type="button" disabled={state.busy || !geometry.valid} onClick={actions.runTrial}><IconPlayerPlay size={14} />{state.busy ? "正在保存…" : "保存这次尝试"}</button><button className="ex-quiet-button" type="button" disabled={state.busy} onClick={restoreParameters}>恢复原始参数</button><span>只演算索引，不执行 C++ 或 NPU</span></div>
     {latestAttempt && <div className="ex-trial-result" role="group" aria-label="最近保存的尝试"><div><span className="ex-result-icon">{latestAttempt.passed ? <IconCheck size={15} /> : <IconAlertTriangle size={15} />}</span><span><strong>已保存尝试：{latestAttempt.passed ? "示例索引在范围内" : `涉及 ${latestAttempt.outOfRange} 个范围外索引`}</strong><small>{latestAttempt.time} · [{latestAttempt.rows},{latestAttempt.columns}] / 每块 {latestAttempt.tileSize} · {latestAttempt.bounds === "valid" ? "仅有效元素" : "整块访问"}</small></span></div><button className="ex-quiet-button" type="button" onClick={() => onShowCard?.("attempts")}><IconHistory size={13} />尝试历史</button></div>}
   </section>;
 }
 
-export function ExplainPanel({ flow, explanation, onShowCard, onAsk, onCompare, presentation = "content" }) {
+export function ExplainPanel({ flow, explanation, onShowCard, onAsk, onCompare, proactive, diagramRef, presentation = "content" }) {
   const [fullDiagram, setFullDiagram] = useState(false);
   useEffect(() => setFullDiagram(false), [flow?.state?.resetVersion]);
   if (!flow?.state || !explanation?.state) return null;
@@ -90,7 +116,7 @@ export function ExplainPanel({ flow, explanation, onShowCard, onAsk, onCompare, 
   const focus = fixed ? state.pinnedFocus : state.focus;
   if (presentation === "canvas") return <div className="ex-canvas-summary"><div className="ex-summary-meta"><span>范围图解</span><span>{state.pinned ? "参考已固定" : "按需查看"}</span></div><RangeDiagram snapshot={diagramSnapshot} focus={focus} compact title="元素分块与尾块" /><p>图解、讲解片段与试算留在同一份解释中。</p><button className="ex-quiet-button" type="button" onClick={() => onShowCard?.("explanation")}>展开解释与试算<IconArrowRight size={13} /></button></div>;
   return <div className="ex-panel"><header className="ex-heading"><div><span className="ex-eyebrow">AddCustom · 解释线索</span><h2>看清元素、尾块与访问范围</h2><p>点选图中区域聚焦；直接调整参数，结果在原图解内更新。</p></div><div className="ex-heading-actions"><button className="ex-primary-button" type="button" onClick={state.videoOpen ? actions.closeVideo : actions.openVideo}><IconPlayerPlay size={14} />{state.videoOpen ? "收起讲解" : "观看讲解"}<span>60 秒</span></button></div></header>
-    <div className={`ex-reading-layout${state.videoOpen ? " has-lesson" : ""}`}>{state.videoOpen && <LessonPlayer explanation={explanation} onAsk={onAsk} />}<section className="ex-diagram-panel" aria-label="关联范围图解"><header className="ex-diagram-heading"><div><strong>{focusLabel(focus)}</strong><span>{state.mode === "explore" ? "随当前试算参数" : fixed ? "固定参考 · 保留当时参数" : state.mode === "lesson" ? `关联动态片段 ${formatTime(state.time)}` : "随当前示例参数"}</span></div><button className={`ex-quiet-button${state.pinned ? " is-fixed" : ""}`} type="button" aria-pressed={state.pinned} onClick={() => actions.pin(diagramSnapshot)}><IconPin size={13} />{state.mode === "explore" ? state.pinned ? "更新固定参考" : "固定试算图" : state.pinned ? "取消固定" : "固定图解"}</button></header><RangeDiagram snapshot={diagramSnapshot} focus={focus} onFocus={actions.focusConcept} compact={!fullDiagram} title={focusLabel(focus)} active={explanation.visible} /><button className="ex-expand-diagram ex-quiet-button" type="button" aria-expanded={fullDiagram} onClick={() => setFullDiagram((value) => !value)}><IconChevronDown size={12} />{fullDiagram ? "收起完整图解" : "展开完整图解"}</button><div className="ex-diagram-foot"><span>[{diagramSnapshot.rows},{diagramSnapshot.columns}] · 每块 {diagramSnapshot.tileSize} · {diagramSnapshot.bounds === "valid" ? "有效元素范围" : "整块范围"}</span>{(state.mode === "lesson" || fixed) && <button className="ex-quiet-button" type="button" onClick={actions.startExplore}><IconCode size={13} />查看当前参数<IconArrowRight size={12} /></button>}</div><TrialControls flow={flow} explanation={explanation} onShowCard={onShowCard} />{fixed && state.videoOpen && <p className="ex-fixed-note">图解已固定，播放不会替换这份参考。取消固定后跟随片段。</p>}{state.pinned && state.mode === "explore" && <p className="ex-fixed-note">固定参考仍保留；当前图解显示你的试算参数。</p>}</section></div>
+    <div className={`ex-reading-layout${state.videoOpen ? " has-lesson" : ""}`}>{state.videoOpen && <LessonPlayer explanation={explanation} onAsk={onAsk} />}<section ref={diagramRef} className="ex-diagram-panel" aria-label="关联范围图解"><header className="ex-diagram-heading"><div><strong>{focusLabel(focus)}</strong><span>{state.mode === "explore" ? "随当前试算参数" : fixed ? "固定参考 · 保留当时参数" : state.mode === "lesson" ? `关联动态片段 ${formatTime(state.time)}` : "随当前示例参数"}</span></div><button className={`ex-quiet-button${state.pinned ? " is-fixed" : ""}`} type="button" aria-pressed={state.pinned} onClick={() => actions.pin(diagramSnapshot)}><IconPin size={13} />{state.mode === "explore" ? state.pinned ? "更新固定参考" : "固定试算图" : state.pinned ? "取消固定" : "固定图解"}</button></header><RangeDiagram snapshot={diagramSnapshot} focus={focus} onFocus={actions.focusConcept} compact={!fullDiagram} title={focusLabel(focus)} active={explanation.visible} /><button className="ex-expand-diagram ex-quiet-button" type="button" aria-expanded={fullDiagram} onClick={() => setFullDiagram((value) => !value)}><IconChevronDown size={12} />{fullDiagram ? "收起完整图解" : "展开完整图解"}</button><div className="ex-diagram-foot"><span>[{diagramSnapshot.rows},{diagramSnapshot.columns}] · 每块 {diagramSnapshot.tileSize} · {diagramSnapshot.bounds === "valid" ? "有效元素范围" : "整块范围"}</span>{(state.mode === "lesson" || fixed) && <button className="ex-quiet-button" type="button" onClick={actions.startExplore}><IconCode size={13} />查看当前参数<IconArrowRight size={12} /></button>}</div><TrialControls flow={flow} explanation={explanation} onShowCard={onShowCard} proactive={proactive} />{fixed && state.videoOpen && <p className="ex-fixed-note">图解已固定，播放不会替换这份参考。取消固定后跟随片段。</p>}{state.pinned && state.mode === "explore" && <p className="ex-fixed-note">固定参考仍保留；当前图解显示你的试算参数。</p>}</section></div>
     <CodeAnchor snapshot={diagramSnapshot} focus={focus} onShowCard={onShowCard} onCompare={onCompare} />
     <p className="ex-evidence-note">图解与动态片段使用范围示例。尾块只是待核查线索，真实 AddCustom 根因与精度仍待证据确认。</p>
   </div>;
