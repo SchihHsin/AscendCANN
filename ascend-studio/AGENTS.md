@@ -448,3 +448,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 自适应验收：1280×720默认；实际拖右栏至360px，两案例参数/结果 scrollWidth 不超过容器；1280×480实际拖中栏至300px，正文275px、输入区273px且底部466px，未横向溢出；390×844两案例页面 scrollWidth=390；1600×900宽栏检查。背景装饰仍为无占位图，header 的宽装饰已裁切，不能把它的 scrollWidth 误判为正常控件溢出。
 - 检查：npm run build:pages、相关 .js 的 node --check 与 git diff --check；本轮未新增/运行自动测试套件。详细实测和截图见 ascend-studio/design-qa.md、evidence/20261011-task-learning-*.png。开发期间有热更新文件替换与旧预览tab连接超时；另开同浏览器预览、完整刷新后继续验收，最终日志情况以 QA 记录为准。
 - 边界：仅浏览器范围/形状演算，未执行 Python/C++、真实 AI、模型/NPU或项目写入；AddCustom尾块仍是待核查线索，示例索引在范围内不能证明精度/根因。没有改变报告序列、hash 或 API/Host/Application 层边界。仅暂存本任务文件，保留其他报告、图稿、DS_Store等原有脏改；提交后立即push origin/main，回执后补。
+
+- Commit/push：任务中学习交互实现041e2d0c已成功推送origin/main（a437cb3f..041e2d0c），23个授权源码/产物/交接/截图文件。Pages构建、七个相关JS静态语法及暂存差异检查通过，完整刷新后的两案例操作无新增浏览器error。未混入报告原有WIP、图稿或DS_Store；此回执随交接提交立即push，线上资源版本另核对。
