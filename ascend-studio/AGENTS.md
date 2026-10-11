@@ -490,3 +490,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 新增原设计材料旁content-management-design.md，design-storyline.md和interaction-design.md补索引。候选A保留标签，B当前主内容＋用户固定参考（推荐）；任务级统一内容入口按最近使用默认、理解/试改与修改/验证/参考用途筛选自动维护，用户无需手工分类保存。两方向待用户选择，不写成已确认。
 - 提案规则：第一次调用/产物自动挂任务/问题；可操作视图和历史结果快照分开。明确下一步才接续主内容，后台新结果不抢阅读；收起退出当前视图但不删除/停止，最后内容收起可退出右区归还对话宽度；固定参考不自动关闭。原对话/代码/结果对象链接及统一内容入口恢复现场，重开不重跑，视频默认暂停；版本变化标旧结果条件/待重新核对。普通内容/画布共享记录身份，画布仍只主动整理。跨刷新恢复需新增持久化，未实现。
 - 保留三栏/紧凑项目分组、无学习中心/学习组、项目任务隔离、官网/GitCode/Studio分工及示例/真实项目验证边界。不改报告序列/hash、API/Host/Application或源码/Pages；不新增实际AI/NPU/项目写入或无依据的收益。仅文档diff检查，不构建或新增/运行测试；只提交本任务设计稿/索引/两AGENTS并立即push，其他既有脏文件保持。
+
+- Commit/push回执：46a7d790（docs: define task content lifecycle and recovery options）已成功推送origin/main，d1e246d1..46a7d790；仅5份本任务设计稿/索引/交接文件，暂存diff检查通过。Demo源码和Pages未改，内容管理方向仍待用户讨论确认。
