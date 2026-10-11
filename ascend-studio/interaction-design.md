@@ -71,3 +71,8 @@
 - 仅已完成状态使用绿，待检查/真实项目与NPU待验证为中性。示例范围通过不等于真实精度或根因确认。
 
 正式设计记录与修改前后证据在[主动交互体验复核](../cann-dashboard/ploy-interaction-lab/learning-canvas-story/proactive-interaction-review.md)。其他故事风险仅梳理，仍逐题评审；图像讲解的纵向占用待后续改造。提示状态仅本页会话内保留，无跨刷新持久化。
+
+
+## 2026-10-11 · 内容管理讨论（未实施）
+
+用户提出历史解释/核对/图像讲解的分类、收起与唤醒问题。正式讨论稿放在原设计材料目录：[任务内容管理](../cann-dashboard/ploy-interaction-lab/learning-canvas-story/content-management-design.md)。推荐系统自动关联任务/问题及用途、默认按最近使用找回；区分继续操作的视图与当时核对快照。收起不删除/停止，重开恢复现场不重跑；普通内容与画布共享一个内容索引。前台A保留标签/B当前内容＋固定参考仍待选择，当前无源码改动或新增跨刷新持久化。

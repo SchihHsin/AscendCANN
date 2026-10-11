@@ -4925,3 +4925,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅浏览器数学范围演算/示例副本；无真实AI/项目写入/C++/模型/NPU，不证明尾块根因/精度。reduced-motion仅核对源码，未完整屏幕阅读器实操；用户设计评审待定。未改报告序列/hash或API/Host/Application事实边界，未改其他题/平台。本轮未新增/运行自动测试；最终build:pages、node --check、diff检查后仅暂存本任务文件，保留行为报告WIP/图稿/DS_Store等，并立即commit/push，回执随后补记。
 
 - Commit/push回执：4a9b2235（feat: add contextual proactive cues for AddCustom）已成功推送origin/main，8b4af26d..4a9b2235；31个本任务源码/Pages/设计材料/交接/截图文件。最终build:pages成功，资源index-CHCj9ZiA.js与index-BRAVOMQe.css，两JS静态语法与暂存diff检查通过。未纳入原有报告WIP、未跟踪图稿或DS_Store；未新增/运行自动测试。用户评审待定。
+
+
+### 2026-10-11（任务内容分类、收起与唤醒讨论）
+
+- 用户指出历史调用的线索解释、误差核对、图像与张量讲解需要独立的管理设计，要求分类/收起/再唤醒过程少负担。本轮为讨论，不实施Demo；与主动提示B方案分别处理。
+- 主代理读取既有审阅页四个工作区标签；Luna只读复核TaskWorkspace.jsx/useContentWorkspace.js/CanvasIndex.jsx：普通关闭保留visited视图，但历史恢复入口不明显，平铺材料列表混合可用内容；画布收纳另有索引，需统一语义。按taskId隔离、会话内恢复存在，跨刷新持久化尚无。上述为界面/代码观察，未新做用户实测或完整交互验收。
+- 新增原设计材料旁content-management-design.md，design-storyline.md和interaction-design.md补索引。候选A保留标签，B当前主内容＋用户固定参考（推荐）；任务级统一内容入口按最近使用默认、理解/试改与修改/验证/参考用途筛选自动维护，用户无需手工分类保存。两方向待用户选择，不写成已确认。
+- 提案规则：第一次调用/产物自动挂任务/问题；可操作视图和历史结果快照分开。明确下一步才接续主内容，后台新结果不抢阅读；收起退出当前视图但不删除/停止，最后内容收起可退出右区归还对话宽度；固定参考不自动关闭。原对话/代码/结果对象链接及统一内容入口恢复现场，重开不重跑，视频默认暂停；版本变化标旧结果条件/待重新核对。普通内容/画布共享记录身份，画布仍只主动整理。跨刷新恢复需新增持久化，未实现。
+- 保留三栏/紧凑项目分组、无学习中心/学习组、项目任务隔离、官网/GitCode/Studio分工及示例/真实项目验证边界。不改报告序列/hash、API/Host/Application或源码/Pages；不新增实际AI/NPU/项目写入或无依据的收益。仅文档diff检查，不构建或新增/运行测试；只提交本任务设计稿/索引/两AGENTS并立即push，其他既有脏文件保持。
