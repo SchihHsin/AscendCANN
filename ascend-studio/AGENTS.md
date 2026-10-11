@@ -458,3 +458,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 稿件记录每场用户行动/响应/返回状态、可选画布与深入分支、全量设计点覆盖、实施差距及后台供给/评价。仅为待评审提案，不代表后续全部流程已经确认，不改原型源码/Pages或报告序列。继续优先任务中学习，后续按一题一题实施评审。
 - 两位Luna只读提取/复核，主代理整合；官网/GitCode/Studio职责保留。图解直接调参，示例/副本/真实修改/工程验证分层；尾块不预设根因，当前无新增AI/NPU/项目写入/持久化。
 - 仅Markdown差异审阅和git diff --check；不构建或新增/运行测试。仅纳入故事线/索引/两份AGENTS，commit后立即push，其他既有脏文件不暂存。
+
+- Commit/push：故事线及覆盖索引b2356a24已成功推送origin/main（1873eb0e..b2356a24），仅故事稿/索引/两份AGENTS。暂存检查指出新故事稿日期后的Markdown硬换行有行尾空格，本次改为独立段落，并再次执行差异检查；未改Demo、报告或现有WIP。此回执与格式修正单独commit后立即push。
