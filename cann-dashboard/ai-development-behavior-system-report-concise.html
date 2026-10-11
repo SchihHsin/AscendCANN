@@ -2316,6 +2316,14 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
         const pageItem={...item,platform:'Ascend Space 空间画布',solutionImage:image,solutionAlt:spec.alt,solutionBoundary:'来源：Learning Canvas Story「开发中学习」界面提案。空间画布与交互尚未实现；示意不代表 Codex 或昇腾平台现成功能。',designPoints:spec.points,solutionStates:[{label:spec.stage,image,alt:spec.alt}]};
         const solution=makeProblemSlide(pageItem,'solution');
         stableHeading(solution,q,'解决方案');
+        // 2026-10-11：用户确认的主动展开与就地图解试改设计点。
+        if(spec===learningCanvasPages[0]){
+          const interactionNote=solution.querySelector('.solution-foot');
+          interactionNote.classList.replace('solution-foot','solution-interaction-note');
+          interactionNote.style.fontSize='var(--fs-body)';
+          interactionNote.style.lineHeight='1.5';
+          interactionNote.innerHTML='<b>主动展开：</b>问为什么 → 回答与图解同步；只报错 → 简短依据与深入入口；阅读编辑 → 保持现场、新建议轻提示；明确试改／采用／检查 → 接续对应操作。<br><b>就地试改：</b>图解内直接调参，结果就地更新；试算作用于示例／副本，项目修改经 Diff 确认。<a href="ploy-interaction-lab/learning-canvas-story/index.html#31">完整交互设计说明 ↗</a> · 配图为早期提案，最新交互以说明为准。';
+        }
         solution.dataset.title=`问题04：${q.name}·${spec.id} ${spec.stage}`;
         const meta=solution.querySelector('.solution-meta');
         meta.innerHTML=`<b>问题 ${q.no}</b><span>${problemEsc(q.phase)}</span><span>· ${problemEsc(spec.id)} ${problemEsc(spec.stage)}</span>${spec.mode?`<span class="learning-option">${problemEsc(spec.mode)}</span>`:''}`;
@@ -2330,6 +2338,11 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
       return;
     }
     const solution=makeProblemSlide(item,'solution');stableHeading(solution,q,'解决方案');oldSolution.replaceWith(solution);setSolutionState(solution,0);
+    if(q.id==='04'){
+      const interactionNote=solution.querySelector('.solution-foot');
+      interactionNote.classList.replace('solution-foot','solution-interaction-note');
+      interactionNote.innerHTML='任务中学习的主动性随意图变化：只报错先给短依据与深入入口；明确问为什么时同步展开回答与图解；阅读编辑保持现场，试改／采用／检查直接接续。<a href="ploy-interaction-lab/learning-canvas-story/index.html#31">查看共用交互规则 ↗</a> · 尾块仍为待核查线索，图解试算不替代项目验证。';
+    }
     if(q.id==='03')solution.classList.add('q1-sample');
     status.querySelector('[data-story-evidence]')?.setAttribute('aria-label',`放大问题${q.no}原始证据`);
     focusNodes.set(q.no,{q,item,status,solution});

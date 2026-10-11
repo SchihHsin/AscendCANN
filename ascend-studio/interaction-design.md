@@ -37,3 +37,13 @@
 - 交互来源：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 的B1–B6，以及 `cann-dashboard/ai-development-behavior-system-report-concise.html` 正式问题02/04。
 - Luna对原型代码的只读复核提示：新材料激活会切换右侧焦点，访问历史仍保留，但用户可能需要找回阅读现场。不是本轮浏览器验收或用户实测。
 - AddCustom尾块仍是待核查线索；范围试算、示例结果与真实循环/环境/逐元素误差验证分别表达。当前原型没有真实项目写入或NPU执行。
+
+## 原设计材料中的正式落点
+
+用户要求设计点直接进入原设计材料。本页作为补充交接索引；正式方案说明已补入：
+
+- [Learning Canvas Story](../cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#31) 第31页共用机制：集中记录四种主动展开规则与图解内直接试改。
+- 同份材料第20页B1、第22页B2、第30页B6：同步诊断入口、解释中的直接试改、同一处反馈与影响范围。
+- [开发行为系统精简报告](../cann-dashboard/ai-development-behavior-system-report-concise.html)：问题02判断与纠错、问题04首个理解页补入可见交互说明和完整规则链接。
+
+此次只更新设计材料正文与交接索引，Demo代码实施仍按后续评审推进；旧配图明确标为早期提案。
