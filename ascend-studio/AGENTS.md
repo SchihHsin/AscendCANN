@@ -433,3 +433,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 行为精简报告此前有用户未提交改动（包含L1–L3 AddCustom配图等）；本轮对HEAD和当前工作文本应用同一独立插入，仅用专门patch暂存这次新增说明。原未提交改动、未跟踪图稿、其他报告及DS_Store等保持未暂存，不能把它们顺带推送。
 - 使用Report PPT Skill的既有版式承载文字设计更新，Luna只读建议落点，主代理负责编辑。只包含已确认规则，不把应用后是否自动检查等未决项作为定论；范围试算/副本、真实项目修改与工程验证保持区分，无真实AI/项目写入/NPU验证，API/Host/Application事实边界不变。
 - 本轮不修改ascend-studio/src或ascstudio产物，不生成图片、构建或新增/运行测试。完成源码差异审阅、git diff --check，以及两份HTML和报告待暂存版本的内联JS静态node --check；未执行脚本或运行交互测试。内容补充不是Demo功能上线，未声称浏览器或用户实测。仅提交两份材料、本次索引和根/原型交接，提交后立即push，实际回执后补。
+
+- Commit/push：原设计材料补充89c7de84已成功推送origin/main（fd4b1975..89c7de84），仅五个本任务材料/索引/交接文件；报告原有25新增/38删除的未提交差异仍留在工作区。静态内联JS语法与暂存差异检查通过。本次推送更新设计说明，不含Demo源码或产物；此回执提交后立即push。
