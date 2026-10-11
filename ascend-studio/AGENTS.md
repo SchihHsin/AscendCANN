@@ -479,3 +479,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 设计材料正文在cann-dashboard/ploy-interaction-lab/learning-canvas-story/proactive-interaction-review.md，含6处修改前观察、B触发/依据/行动/退出规则、修改后截图、手动审阅/设计推演/未实现范围；design-storyline.md补索引，interaction-design.md只交接实施索引。能力选配、保存恢复/持久化、团队评审/自愿分享等风险仅推演，不声称已有或实測。
 - M级手动观察：关闭提示切任务返回仍摘要；无效列数阻止操作；保存身份、当前列数34快照、取消/应用/明确检查、完整Diff展开、状态分层。实际右栏360px参数316/提示290（应用提示336）、390页面宽390、1600桌面、中栏300px/h480提示273/输入底y390均无正常内容横溢出；回看聊天核对完成scrollTop前后0。截图ascend-studio/evidence/20261011-proactive-audit/01–12，12裁切初稿已替换并验看。最终刷新后的error日志为空。
 - 仅浏览器数学范围演算/示例副本；无真实AI/项目写入/C++/模型/NPU，不证明尾块根因/精度。reduced-motion仅核对源码，未完整屏幕阅读器实操；用户设计评审待定。未改报告序列/hash或API/Host/Application事实边界，未改其他题/平台。本轮未新增/运行自动测试；最终build:pages、node --check、diff检查后仅暂存本任务文件，保留行为报告WIP/图稿/DS_Store等，并立即commit/push，回执随后补记。
+
+- Commit/push回执：4a9b2235（feat: add contextual proactive cues for AddCustom）已成功推送origin/main，8b4af26d..4a9b2235；31个本任务源码/Pages/设计材料/交接/截图文件。最终build:pages成功，资源index-CHCj9ZiA.js与index-BRAVOMQe.css，两JS静态语法与暂存diff检查通过。未纳入原有报告WIP、未跟踪图稿或DS_Store；未新增/运行自动测试。用户评审待定。
