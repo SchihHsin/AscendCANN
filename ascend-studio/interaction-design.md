@@ -50,3 +50,10 @@
 - [开发行为系统精简报告](../cann-dashboard/ai-development-behavior-system-report-concise.html)：问题02判断与纠错、问题04首个理解页补入可见交互说明和完整规则链接。
 
 原设计材料已记录上述规则；本轮进一步实施 Demo。旧配图仍标为早期提案，实施状态与验收记录见 design-qa.md。
+
+
+## 完整故事线讨论稿
+
+2026-10-11：用户要求梳理两份材料的全部设计点如何进入同一个演示故事。已保存[设计故事线与覆盖索引](../cann-dashboard/ploy-interaction-lab/learning-canvas-story/design-storyline.md)，位于原设计材料目录，包含AddCustom任务闭环、图像推理案例、从学习起步的补充入口、可选分支、逐项覆盖表和Demo差距。
+
+该稿是待评审叙事提案，不新增Demo功能，也不代表用户已确认所有后续流程。优先继续讨论任务中学习；后续按一题一题评审，官网/GitCode/Studio职责分别承接。

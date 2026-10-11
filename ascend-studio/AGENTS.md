@@ -450,3 +450,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 边界：仅浏览器范围/形状演算，未执行 Python/C++、真实 AI、模型/NPU或项目写入；AddCustom尾块仍是待核查线索，示例索引在范围内不能证明精度/根因。没有改变报告序列、hash 或 API/Host/Application 层边界。仅暂存本任务文件，保留其他报告、图稿、DS_Store等原有脏改；提交后立即push origin/main，回执后补。
 
 - Commit/push：任务中学习交互实现041e2d0c已成功推送origin/main（a437cb3f..041e2d0c），23个授权源码/产物/交接/截图文件。Pages构建、七个相关JS静态语法及暂存差异检查通过，完整刷新后的两案例操作无新增浏览器error。未混入报告原有WIP、图稿或DS_Store；此回执随交接提交立即push，线上资源版本另核对。
+
+
+### 2026-10-11（完整设计故事线讨论稿）
+
+- 用户要求梳理所有当前材料设计点的故事线；新增设计材料旁的cann-dashboard/ploy-interaction-lab/learning-canvas-story/design-storyline.md，并在interaction-design.md建立索引。AddCustom任务闭环覆盖正式六问；图像推理独立案例承接丰富图解与视频；学习起步A1–A5为补充入口，按用户意愿接开发。
+- 稿件记录每场用户行动/响应/返回状态、可选画布与深入分支、全量设计点覆盖、实施差距及后台供给/评价。仅为待评审提案，不代表后续全部流程已经确认，不改原型源码/Pages或报告序列。继续优先任务中学习，后续按一题一题实施评审。
+- 两位Luna只读提取/复核，主代理整合；官网/GitCode/Studio职责保留。图解直接调参，示例/副本/真实修改/工程验证分层；尾块不预设根因，当前无新增AI/NPU/项目写入/持久化。
+- 仅Markdown差异审阅和git diff --check；不构建或新增/运行测试。仅纳入故事线/索引/两份AGENTS，commit后立即push，其他既有脏文件不暂存。
