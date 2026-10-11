@@ -116,3 +116,9 @@
   .im-channel-strip { grid-template-columns:repeat(4,minmax(0,1fr)); gap:5px; }
   .im-channel-strip figcaption, .im-channel > span { overflow-wrap:anywhere; }
 }
+
+/* Parameters and their immediate feedback belong to the same explanation. */
+.im-code-disclosure { min-width:0; border-top:1px solid #e8e9ee; padding-top:10px; }
+.im-code-disclosure summary { font-size:11px; color:#626978; cursor:pointer; }
+.im-code-disclosure .im-code { margin-top:8px; }
+.im-code-disclosure > small, .im-diagram-context { display:block; margin-top:7px; color:#7e8491; font-size:11px; line-height:1.7; overflow-wrap:anywhere; }

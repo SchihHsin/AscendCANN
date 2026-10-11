@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { getMaterialMeta } from "./workspace-materials";
 
 function initialState(isMainTask, taskId) {
-  const initial = { ...getMaterialMeta(taskId === "图像推理调试" ? "image-source" : isMainTask ? "source" : "task-brief"), unread: false };
+  const initial = { ...getMaterialMeta(taskId === "图像推理调试" ? "image-explanation" : isMainTask ? "explanation" : "task-brief"), unread: false };
   return {
     tabs: [initial],
     visitedTabs: [initial],

@@ -164,11 +164,11 @@ function DiffMaterial({ flow, onShowCard, explanation }) {
   const hasChanges = Boolean(proposed) && lines.some((line) => line.type !== "same");
   const alreadyApplied = Boolean(proposed) && proposed === state.appliedCode;
   const feedback = useCopy(state.resetVersion);
-  const cancel = () => { actions.cancelDiff(); onShowCard?.("draft", { close: "diff" }); };
+  const cancel = () => { actions.cancelDiff(); explanation?.actions.startExplore(); onShowCard?.("explanation", { close: "diff" }); };
   if (!proposed) return <div className="cm-stack"><div className="cm-empty">尚无待核对的示例提案。先选择一次尝试，再生成修改预览。</div><button className="cm-button" type="button" onClick={() => onShowCard?.("attempts")}>查看尝试记录<IconArrowRight size={14} /></button><LocalError state={state} /></div>;
   return <div className="cm-stack"><p className="cm-note cm-note-leading">对照{baseline === SAMPLE_ORIGINAL_CODE ? "原始范围示例" : "上次已应用的示例副本"}与所选尝试生成的提案。真实来源保持只读。</p>
     {selected && <AttemptMetadata attempt={selected} />}
-    {!hasChanges && <div className="cm-quiet-note"><IconCode size={15} /><span>当前提案没有新增改动，应用已禁用。可以回到草案，调整范围策略后再运行。</span></div>}
+    {!hasChanges && <div className="cm-quiet-note"><IconCode size={15} /><span>当前提案没有新增改动，应用已禁用。可以返回图解，调整范围策略后再审阅。</span></div>}
     <div className="cm-diff-legend"><span>− 删除行</span><span>+ 新增行</span><button className="cm-text-button" type="button" onClick={() => feedback.copy(proposed)}><IconCopy size={13} />复制提案</button></div>
     <div className="cm-diff" tabIndex={0} aria-label="示例工作副本与提案的代码差异">{lines.map((line, index) => {
       const concept = codeConcept(line.text);
@@ -179,8 +179,8 @@ function DiffMaterial({ flow, onShowCard, explanation }) {
     <details className="cm-code-snapshot"><summary><IconCode size={14} />查看原始 / 已应用示例<IconChevronDown size={13} /></summary><CodeBlock label="此次差异的只读基准代码">{baseline}</CodeBlock></details>
     {selected && <AttemptResult attempt={selected} compact />}
     <p className="cm-note">提案依据保存的参数和范围策略生成；手工代码、精度和实际环境仍需另外核对。</p>
-    <div className="cm-actions"><button className="cm-button cm-button-primary" type="button" disabled={state.busy || !hasChanges || alreadyApplied} onClick={() => { actions.confirmApply(); onShowCard?.("validation"); }}><IconCheck size={14} />{alreadyApplied ? "此提案已应用" : "应用到示例工作副本"}</button><button className="cm-button" type="button" disabled={state.busy} onClick={cancel}><IconX size={14} />取消提案</button></div>
-    <p className="cm-note">取消只关闭此预览，草案和尝试记录继续保留，可重新生成修改预览。</p>
+    <div className="cm-actions"><button className="cm-button cm-button-primary" type="button" disabled={state.busy || !hasChanges || alreadyApplied} onClick={() => { actions.confirmApply(); }}><IconCheck size={14} />{alreadyApplied ? "此提案已应用" : "应用到示例工作副本"}</button>{!alreadyApplied && <button className="cm-button" type="button" disabled={state.busy} onClick={cancel}><IconX size={14} />取消提案</button>}{alreadyApplied && <button className="cm-button" type="button" onClick={() => onShowCard?.("validation")}>打开示例核对<IconArrowRight size={14} /></button>}</div>
+    <p className="cm-note">{alreadyApplied ? "示例副本已更新。需要时打开核对；真实项目仍待验证。" : "取消会回到图解，保留参数与尝试；可继续试改或重新审阅。"}</p>
     <CopyFeedback feedback={feedback} /><LocalError state={state} />
   </div>;
 }
@@ -195,7 +195,7 @@ function ValidationMaterial({ flow, onShowCard }) {
     {!state.appliedCode && <button className="cm-text-button" type="button" onClick={() => onShowCard?.("diff")}>查看修改预览<IconArrowRight size={13} /></button>}
     {validation && <div className="cm-validation-result"><div className="cm-meta-line"><strong>保存的范围复核</strong><span>{validation.time}</span></div><p className="cm-body-copy">{validation.summary}</p><div className="cm-validation-checks">{(validation.checks || []).map((check, index) => <div key={`${check.label}-${index}`}><span><strong>{check.label}</strong><small>元素 {check.total} · 尾块 {check.tail}</small></span><span><strong>{check.passed ? "示例范围内" : "范围待复核"}</strong><small>范围外 {check.outOfRange} 个索引</small></span></div>)}</div><p className="cm-note">结果仅针对浏览器范围演算，未编译或运行 C++，未验证实际算子精度，根因尚未确认。</p></div>}
     {state.appliedCode && <details className="cm-code-snapshot"><summary><IconCode size={14} />已应用的示例代码快照<IconChevronDown size={13} /></summary><CodeBlock label="已应用示例代码，只读">{state.appliedCode}</CodeBlock></details>}
-    <div className="cm-actions"><button className="cm-text-button" type="button" onClick={() => onShowCard?.("draft")}>查看当前草案<IconArrowRight size={13} /></button><button className="cm-text-button" type="button" disabled={state.busy || !state.canUndoApply} onClick={actions.undoApply}><IconRestore size={13} />撤销上次示例应用</button></div>
+    <div className="cm-actions"><button className="cm-text-button" type="button" onClick={() => onShowCard?.("draft")}>查看当前草案<IconArrowRight size={13} /></button><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation")}>返回图解继续试改</button><button className="cm-text-button" type="button" disabled={state.busy || !state.canUndoApply} onClick={actions.undoApply}><IconRestore size={13} />撤销上次示例应用</button></div>
     <LocalError state={state} />
   </div>;
 }

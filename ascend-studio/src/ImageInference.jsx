@@ -34,7 +34,9 @@ function Dimensions({ snapshot, label }) {
 
 export function TensorDiagram({ inference, snapshot: supplied, compact = false }) {
   const { state, actions } = inference;
-  const snapshot = supplied || (state.exploring ? state : state.pinned || (state.lessonOpen ? { axes: state.focus === "channels" ? [0, 1, 2] : [2, 0, 1], batch: state.focus === "batch" } : state));
+  const pinnedSnapshot = state.pinned ? { axes: [...state.pinned.axes], batch: state.pinned.batch } : null;
+  const lessonSnapshot = state.lessonOpen && !state.exploring ? { axes: state.focus === "channels" ? [0, 1, 2] : [2, 0, 1], batch: state.focus === "batch" } : state;
+  const snapshot = supplied || (state.exploring ? state : pinnedSnapshot || lessonSnapshot);
   const focus = !supplied && !state.exploring && state.pinned ? state.pinned.focus : state.focus;
   const shape = imageShape(snapshot);
   return <section className={`im-diagram${compact ? " is-compact" : ""}`} aria-label="RGB 张量结构与维度转换">
@@ -56,13 +58,51 @@ function ImagePlayer({ inference, onAsk }) {
 function ImageParameters({ inference }) {
   const { state, actions } = inference;
   const prefix = useId();
-  return <div className="im-parameters"><div className="im-parameter-line"><code>image.transpose(</code>{state.axes.map((axis, index) => <label key={index} htmlFor={`${prefix}-${index}`}><span>输出轴 {index}</span><select id={`${prefix}-${index}`} aria-label={`输出轴 ${index} 对应的输入轴`} value={axis} onChange={event => actions.axis(index, event.target.value)}>{[0, 1, 2].map(value => <option key={value} value={value}>{value} · {["H", "W", "C"][value]}</option>)}</select></label>)}<code>)</code></div><div className="im-parameter-bottom"><label><input type="checkbox" checked={state.batch} onChange={event => actions.batch(event.target.checked)} />增加 batch 维度 N = 1</label><button className="im-text-button" type="button" onClick={actions.correct}>使用 2,0,1 示例</button></div></div>;
+  return <div className="im-parameters"><div className="im-parameter-line"><code>image.transpose(</code>{state.axes.map((axis, index) => <label key={index} htmlFor={`${prefix}-${index}`}><span>输出轴 {index}</span><select id={`${prefix}-${index}`} aria-label={`输出轴 ${index} 对应的输入轴`} value={axis} onChange={event => actions.axis(index, event.target.value)}>{[0, 1, 2].map(value => <option key={value} value={value}>{value} · {["H", "W", "C"][value]}</option>)}</select></label>)}<code>)</code></div><div className="im-parameter-bottom"><label><input type="checkbox" checked={state.batch} onChange={event => actions.batch(event.target.checked)} />增加 batch 维度 N = 1</label><button className="im-text-button" type="button" onClick={actions.restoreParameters}><IconRotateClockwise size={13} />恢复原始示例参数</button></div></div>;
+}
+
+function ImageShapeFeedback({ snapshot }) {
+  const shape = imageShape(snapshot);
+  const outcome = !shape.valid ? "轴顺序无效" : shape.passed ? "符合示例形状约定" : "尚不符合示例形状约定";
+  const summary = !shape.valid
+    ? "轴 0、1、2 各使用一次，才能生成维度顺序。"
+    : `当前输出 [${shape.dimensions.join(", " )}]；示例期望 NCHW [1, 3, 224, 224]。`;
+  return <div className={`im-outcome${shape.valid && shape.passed ? " is-pass" : " is-pending"}`} role="status"><strong>{outcome}</strong><span>{summary}</span></div>;
+}
+
+function ImageCodePreview({ snapshot }) {
+  return <details className="im-code-disclosure"><summary>查看当前示例代码</summary><div className="im-code">{imageCode(snapshot).split("\n").map((line, index) => <div key={index}><span>{index + 1}</span><code>{line || " "}</code></div>)}</div><small>这是随当前参数生成的示例代码，未读取或修改项目文件。</small></details>;
+}
+
+function ImageExplanation({ inference, onOpen, onAsk }) {
+  const { state, actions } = inference;
+  const shape = imageShape(state);
+  const reviewCurrent = () => {
+    const attempt = actions.prepareCurrent();
+    if (attempt) onOpen("image-diff");
+  };
+  const saveAttempt = () => {
+    actions.run();
+    onOpen("image-attempts", { activate: false });
+  };
+  return <>
+    <header className="im-heading"><div><span>图像推理 · 关联解释</span><h2>从图像到模型输入</h2><p>图解、当前参数和示例代码同步显示；原项目文件保持不变。</p></div><button className="im-button" type="button" onClick={actions.lesson}><IconPlayerPlay size={14} />{state.lessonOpen ? "收起讲解" : "观看讲解"}</button></header>
+    {state.lessonOpen && <ImagePlayer inference={inference} onAsk={onAsk} />}
+    <div className="im-figure-tools"><span>{state.pinned && state.exploring ? "固定参考已保留；当前图解跟随试改" : state.pinned ? "参考已固定，参数保留" : state.lessonOpen && !state.exploring ? `讲解 ${stamp(state.time)} · 参数可继续调整` : "图解随当前参数更新"}</span><button className="im-text-button" type="button" aria-pressed={Boolean(state.pinned)} onClick={actions.pin}><IconPin size={13} />{state.pinned ? "取消固定" : "固定图解"}</button></div>
+    <ImageParameters inference={inference} />
+    <ImageShapeFeedback snapshot={state} />
+    <TensorDiagram inference={inference} />
+    {state.lessonOpen && !state.exploring && <p className="im-diagram-context">下方图解对应讲解片段；上方即时结果对应当前参数。调整参数后，图解回到当前试改。</p>}
+    {state.pinned && !state.exploring && <p className="im-diagram-context">图解为固定参考；上方即时结果和代码保留当前参数。调整参数后可与这份参考对照。</p>}
+    <div className="im-primary-actions"><button className="im-button" type="button" onClick={saveAttempt}>保存本次形状检查<IconHistory size={14} /></button><button className="im-button is-primary" type="button" disabled={!shape.valid} onClick={reviewCurrent}>审阅当前修改<IconGitCompare size={14} /></button></div>
+    <ImageCodePreview snapshot={state} />
+  </>;
 }
 
 function ImageSource({ inference, onOpen, practice, onCopy, codeAttachment }) {
   const { state, actions } = inference;
   const code = practice ? imageCode(state) : codeAttachment?.content || imageCode();
-  return <><header className="im-heading"><div><span>图像推理 · {practice ? "隔离练习副本" : "只读现场"}</span><h2>{practice ? "试改预处理，观察形状变化" : codeAttachment?.name || "preprocess.py"}</h2><p>{practice ? "参数控件同步生成示例代码；原文件保持只读。" : codeAttachment ? "用户提供的只读附件；图解使用独立预处理示例，未解析附件。" : "原方案的图像输入示例 · 当前输入 NHWC，示例模型约定 NCHW。"}</p></div><button className="im-button" type="button" onClick={() => onCopy?.(code)}>复制代码</button></header><div className="im-code">{code.split("\n").map((line, index) => <div className={index === 5 || index === 6 ? "is-concept" : ""} key={index}><span>{index + 1}</span><code>{line || " "}</code>{!practice && !codeAttachment && (index === 5 || index === 6) && <button className="im-icon" type="button" aria-label={index === 5 ? "解释通道顺序" : "解释 batch 维度"} onClick={() => { actions.focus(index === 5 ? "layout" : "batch"); onOpen("image-explanation", { split: true }); }}><IconArrowRight size={13} /></button>}</div>)}</div>{practice ? <><ImageParameters inference={inference} /><TensorDiagram inference={inference} snapshot={state} /><div className="im-primary-actions"><button className="im-button is-primary" type="button" onClick={() => { actions.run(); onOpen("image-attempts", { activate: false }); }}>运行形状检查<IconPlayerPlay size={14} /></button><button className="im-button" type="button" onClick={() => onOpen("image-attempts")}>查看尝试<IconHistory size={14} /></button></div><small>仅演算维度顺序，不执行上方 Python 或模型推理。</small></> : <div className="im-primary-actions"><button className="im-button is-primary" type="button" onClick={() => onOpen("image-explanation")}>查看图解<IconArrowRight size={14} /></button><button className="im-button" type="button" onClick={() => { actions.explore(); onOpen("image-practice"); }}>在副本中试一下<IconCode size={14} /></button></div>}</>;
+  return <><header className="im-heading"><div><span>图像推理 · {practice ? "隔离练习副本" : "只读现场"}</span><h2>{practice ? "试改预处理，观察形状变化" : codeAttachment?.name || "preprocess.py"}</h2><p>{practice ? "参数控件同步生成示例代码；原文件保持只读。" : codeAttachment ? "用户提供的只读附件；图解使用独立预处理示例，未解析附件。" : "原方案的图像输入示例 · 当前输入 NHWC，示例模型约定 NCHW。"}</p></div><button className="im-button" type="button" onClick={() => onCopy?.(code)}>复制代码</button></header><div className="im-code">{code.split("\n").map((line, index) => <div className={index === 5 || index === 6 ? "is-concept" : ""} key={index}><span>{index + 1}</span><code>{line || " "}</code>{!practice && !codeAttachment && (index === 5 || index === 6) && <button className="im-icon" type="button" aria-label={index === 5 ? "解释通道顺序" : "解释 batch 维度"} onClick={() => { actions.focus(index === 5 ? "layout" : "batch"); onOpen("image-explanation", { split: true }); }}><IconArrowRight size={13} /></button>}</div>)}</div>{practice ? <><ImageParameters inference={inference} /><TensorDiagram inference={inference} snapshot={state} /><div className="im-primary-actions"><button className="im-button is-primary" type="button" onClick={() => { actions.run(); onOpen("image-attempts", { activate: false }); }}>运行形状检查<IconPlayerPlay size={14} /></button><button className="im-button" type="button" onClick={() => onOpen("image-attempts")}>查看尝试<IconHistory size={14} /></button></div><small>仅演算维度顺序，不执行上方 Python 或模型推理。</small></> : <div className="im-primary-actions"><button className="im-button is-primary" type="button" onClick={() => onOpen("image-explanation")}>查看图解<IconArrowRight size={14} /></button><button className="im-button" type="button" onClick={() => { actions.explore(); onOpen("image-explanation"); }}>在副本中试一下<IconCode size={14} /></button></div>}</>;
 }
 
 function ImageAttempts({ inference, onOpen }) {
@@ -76,7 +116,7 @@ function ImageDiff({ inference, onOpen }) {
   const { state, actions } = inference;
   const proposal = state.proposal;
   const changed = proposal && imageCode(proposal.baseline) !== proposal.attempt.code;
-  return <><header className="im-heading"><div><span>修改预览 · 浏览器副本</span><h2>核对预处理的变化</h2><p>确认后仅更新示例工作副本，不写入真实项目。</p></div></header>{!proposal ? <div className="im-empty"><p>选择已保存的尝试，再生成修改预览。</p><button className="im-button" type="button" onClick={() => onOpen("image-attempts")}>查看尝试</button></div> : <><div className="im-before-after"><Dimensions snapshot={proposal.baseline} label="应用前的副本" /><Dimensions snapshot={proposal.attempt.snapshot} label="这次提案" /></div><div className="im-diff-code">{[5, 6].map(index => <div key={index}><pre className="is-before">− {imageCode(proposal.baseline).split("\n")[index]}</pre><pre className="is-after">+ {proposal.attempt.code.split("\n")[index]}</pre></div>)}</div><p>{changed ? "确认轴顺序及 batch 维度后再应用。" : "这次提案与当前副本相同，没有可应用的新变化。"}</p><div className="im-primary-actions"><button className="im-button is-primary" type="button" disabled={!changed} onClick={() => { actions.apply(); onOpen("image-validation"); }}>确认应用到示例副本</button><button className="im-button" type="button" onClick={() => { actions.cancel(); onOpen("image-practice"); }}>取消，保留练习</button></div></>}</>;
+  return <><header className="im-heading"><div><span>修改预览 · 浏览器副本</span><h2>核对预处理的变化</h2><p>确认后仅更新示例工作副本，不写入真实项目。</p></div></header>{!proposal ? state.applied ? <div className="im-empty"><strong>示例修改已应用到浏览器副本</strong><p>原项目未修改。需要时再回原任务核对真实模型签名、预处理与推理结果。</p><button className="im-button is-primary" type="button" onClick={() => onOpen("image-validation")}>打开任务核对</button></div> : <div className="im-empty"><p>选择已保存的尝试，或回到图解审阅当前参数。</p><button className="im-button" type="button" onClick={() => onOpen("image-explanation")}>返回图解</button></div> : <><div className="im-before-after"><Dimensions snapshot={proposal.baseline} label="应用前的副本" /><Dimensions snapshot={proposal.attempt.snapshot} label="这次提案" /></div><div className="im-diff-code">{[5, 6].map(index => <div key={index}><pre className="is-before">− {imageCode(proposal.baseline).split("\n")[index]}</pre><pre className="is-after">+ {proposal.attempt.code.split("\n")[index]}</pre></div>)}</div><p>{changed ? "确认轴顺序及 batch 维度后再应用。" : "这次提案与当前副本相同，没有可应用的新变化。"}</p><div className="im-primary-actions"><button className="im-button is-primary" type="button" disabled={!changed} onClick={() => actions.apply()}>确认应用到示例副本</button><button className="im-button" type="button" onClick={() => { actions.cancel(); onOpen("image-explanation"); }}>取消，保留练习</button></div></>}</>;
 }
 
 export function ImageInferenceMaterial({ id, inference, onOpen, onAsk, onCopy, presentation = "content", codeAttachment }) {
@@ -89,7 +129,7 @@ export function ImageInferenceMaterial({ id, inference, onOpen, onAsk, onCopy, p
   }
   return <div className="im-material">
     {(id === "image-source" || id === "image-practice") && <ImageSource inference={inference} onOpen={onOpen} onCopy={onCopy} codeAttachment={codeAttachment} practice={id === "image-practice"} />}
-    {id === "image-explanation" && <><header className="im-heading"><div><span>图像推理 · 关联解释</span><h2>从图像到模型输入</h2><p>图像、三个通道与代码维度，在同一处对照。</p></div><button className="im-button" type="button" onClick={actions.lesson}><IconPlayerPlay size={14} />{state.lessonOpen ? "收起讲解" : "观看讲解"}</button></header>{state.lessonOpen && <ImagePlayer inference={inference} onAsk={onAsk} />}<div className="im-figure-tools"><span>{state.pinned ? "参考已固定，参数保留" : state.lessonOpen && !state.exploring ? `跟随讲解 ${stamp(state.time)}` : "当前练习参数"}</span><button className="im-text-button" type="button" aria-pressed={Boolean(state.pinned)} onClick={actions.pin}><IconPin size={13} />{state.pinned ? "取消固定" : "固定图解"}</button></div><TensorDiagram inference={inference} /><div className="im-primary-actions"><button className="im-button is-primary" type="button" onClick={() => { actions.explore(); onOpen("image-practice"); }}>在副本中试一下<IconArrowRight size={14} /></button><button className="im-button" type="button" onClick={() => { onOpen("image-source"); onOpen("image-explanation", { split: true }); }}><IconLayoutColumns size={14} />与代码对照</button></div></>}
+    {id === "image-explanation" && <ImageExplanation inference={inference} onOpen={onOpen} onAsk={onAsk} />}
     {id === "image-attempts" && <ImageAttempts inference={inference} onOpen={onOpen} />}
     {id === "image-diff" && <ImageDiff inference={inference} onOpen={onOpen} />}
     {id === "image-validation" && <><header className="im-heading"><div><span>返回原任务 · 分层核对</span><h2>理解、修改与验证分别记录</h2><p>示例形状检查通过，并不表示模型推理成功。</p></div></header>{state.applied ? <><Dimensions snapshot={state.applied.snapshot} label="已应用的浏览器副本" /><div className="im-primary-actions"><button className="im-button is-primary" type="button" onClick={actions.validate}>复核示例形状并带回对话</button><button className="im-button" disabled={!state.undo} type="button" onClick={actions.undo}><IconRotateClockwise size={14} />撤销示例应用</button></div></> : <p>还没有应用示例修改。可以先理解图解，或继续练习。</p>}<dl className="im-checklist"><div><dt>理解与尝试</dt><dd>{state.attempts.length ? `${state.attempts.length} 次尝试已保存` : "待尝试"}</dd></div><div><dt>示例副本</dt><dd>{state.applied ? "已应用 · 可撤销" : "未应用"}</dd></div><div><dt>形状约定</dt><dd>{state.validation ? state.validation.passed ? "单项符合" : "需继续调整" : "待复核"}</dd></div><div><dt>真实项目与推理</dt><dd>未修改 · 未运行</dd></div></dl><p>下一步：核对真实模型签名、dtype、颜色顺序、归一化和运行结果。</p></>}

@@ -192,12 +192,28 @@ export function useTaskFlow({ onRecord } = {}) {
     proposalAttempt.current = null;
     update({ selectedAttemptId: id, proposedCode: null, error: "", notice: "已选择这次尝试，可对照当时的参数、代码和结果。" });
   };
-  const prepareDiff = () => {
-    if (latest.current.busy) return;
-    const attempt = latest.current.attempts.find((item) => item.id === latest.current.selectedAttemptId) || latest.current.attempts.at(-1);
-    if (!attempt) { update({ phase: "try", error: "请先运行一次示例范围检查，再查看这次尝试的修改建议。" }); return; }
+  const prepareDiff = ({ current = false } = {}) => {
+    if (latest.current.busy) return false;
+    let attempt = latest.current.attempts.find((item) => item.id === latest.current.selectedAttemptId) || latest.current.attempts.at(-1);
+    if (current) {
+      const snapshot = inputSnapshot(latest.current);
+      const error = validParameters(snapshot);
+      if (error) { update({ error }); return false; }
+      const code = sampleCode(snapshot);
+      attempt = latest.current.attempts.findLast(item => item.code === code && ["rows", "columns", "tileSize", "bounds"].every(name => String(item.snapshot[name]) === String(snapshot[name])));
+      if (!attempt) {
+        attempt = { id: uid(), time: now(), snapshot, mode: snapshot.mode, code, ...rangeCheck(snapshot) };
+        update(previous => ({ attempts: [...previous.attempts, attempt], selectedAttemptId: attempt.id }));
+      }
+    }
+    if (!attempt) { update({ phase: "try", error: "请先运行一次示例范围检查，再查看这次尝试的修改建议。" }); return false; }
     proposalAttempt.current = attempt;
     update({ phase: "diff", selectedAttemptId: attempt.id, proposalBaseline: latest.current.appliedCode || SAMPLE_ORIGINAL_CODE, proposedCode: sampleCode(attempt.snapshot), error: "", notice: attempt.bounds === "full" ? "所选尝试保留整块访问策略，尚未形成范围修正。提案仅对应示例，真实项目根因仍未知。" : "示例提案根据所选尝试的参数与范围策略生成；不会修改用户附件或真实项目文件。" });
+    return true;
+  };
+  const restoreParameters = () => {
+    if (latest.current.busy) return;
+    update({ rows: "17", columns: "33", tileSize: "32", bounds: "full", draftCode: SAMPLE_ORIGINAL_CODE, error: "", notice: "已恢复原始示例参数；尝试历史、提案与已应用副本继续保留。" });
   };
   const editDraft = (code) => {
     cancelPending();
@@ -269,6 +285,6 @@ export function useTaskFlow({ onRecord } = {}) {
 
   return {
     state,
-    actions: { open, setMode, setParameter, setBounds, toggleExplanation, togglePin, toggleCompare, runTrial, selectAttempt, prepareDiff, editDraft, confirmApply, undoApply, cancelDiff, runValidation, archive, restore, toggleCollapse, reset },
+    actions: { open, setMode, setParameter, setBounds, toggleExplanation, togglePin, toggleCompare, runTrial, selectAttempt, prepareDiff, restoreParameters, editDraft, confirmApply, undoApply, cancelDiff, runValidation, archive, restore, toggleCollapse, reset },
   };
 }

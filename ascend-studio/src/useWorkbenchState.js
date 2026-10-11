@@ -7,7 +7,7 @@ export const evidenceDetails = [
   { title: "[17,33] 失败", body: "已知的失败样本。非整块输入与失败同时出现，仅能作为核查线索。", log: "input_shape: [17,33]\nprecision_check: FAIL\n逐元素误差：待补充" },
   { title: "precision mismatch · custom_op.cpp:128", body: "错误位置标记了检查入口，尚未定位到具体实现原因。", log: "precision mismatch\nlocation: custom_op.cpp:128\n尝试：修改编译参数\n结果：错误位置未变" },
 ];
-const blank = () => ({ showIntro: true, messages: [], draft: "", attachments: [], records: [], capabilityIds: [], history: [], selectedRoute: "tail", feedback: null, replying: false });
+const blank = () => ({ showIntro: true, messages: [], draft: "", attachments: [], records: [], capabilityIds: [], history: [], selectedRoute: "tail", feedback: null, replying: false, unreadReply: false });
 const uid = () => crypto.randomUUID();
 const timeNow = () => new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Shanghai" });
 const cleanReply = (text) => text.replace(/\n\n演示答复 · 未调用真实 AI 或硬件。$/, "");
@@ -39,10 +39,13 @@ export function useWorkbenchState() {
   const fileRef = useRef(null);
   const imageRef = useRef(null);
   const menuRef = useRef(null);
+  const activeConversationTask = useRef(selectedTask);
+  activeConversationTask.current = selectedTask;
   const session = sessions[selectedTask] || blank();
   const conversationScrollState = useRef({ task: selectedTask, messages: session.messages });
   const conversationScrollPositions = useRef(new Map());
   const previousConversationTask = useRef(selectedTask);
+  const followingConversation = useRef(new Map());
   const scrollConversationToTop = useRef(null);
   const task = meta[selectedTask] || { question: "开始任务", reply: "请补充任务上下文。", goal: "补充目标和材料。" };
   const currentGroup = groups.find((group) => group.tasks.includes(selectedTask));
@@ -98,6 +101,11 @@ export function useWorkbenchState() {
     const hasNewMessage = previous.task === selectedTask && session.messages.length > previous.messages.length && (!previousLast || session.messages[previous.messages.length - 1]?.id === previousLast.id);
     conversationScrollState.current = { task: selectedTask, messages: session.messages };
     if (!hasNewMessage) return undefined;
+    const latestMessage = session.messages.at(-1);
+    if (latestMessage?.role !== "user" && followingConversation.current.get(selectedTask) === false) {
+      patchSession({ unreadReply: true });
+      return undefined;
+    }
     const frame = requestAnimationFrame(() => conversationRef.current?.scrollTo({ top: conversationRef.current.scrollHeight, behavior: "smooth" }));
     return () => cancelAnimationFrame(frame);
   }, [selectedTask, session.messages]);
@@ -117,22 +125,36 @@ export function useWorkbenchState() {
     const link = document.createElement("a"); link.href = url; link.download = selectedTask + "-任务记录.json"; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); setMenu(null); notify("已导出任务记录");
   };
   const resetTask = () => { cancelReply(selectedTask); scrollConversationToTop.current = selectedTask; patchSession(blank()); setActionView(null); setMenu(null); notify("当前任务已恢复初始状态"); };
-  const sendMessage = (event) => {
+  const sendMessage = (event, options = {}) => {
     event?.preventDefault();
     const text = session.draft.trim() || (session.attachments.length ? "请结合这些附件整理下一步检查。" : "");
-    if (!text || session.replying || replyTimers.current.has(selectedTask)) return;
+    if (!text || session.replying || replyTimers.current.has(selectedTask)) return false;
     const taskName = selectedTask, attachments = session.attachments, records = session.records, modelLabel = model.label;
     const pending = { timer: null };
     replyTimers.current.set(taskName, pending);
-    updateTask(taskName, (old) => ({ draft: "", attachments: [], replying: true, messages: [...old.messages, { id: uid(), role: "user", text, attachments }] }));
+    updateTask(taskName, (old) => ({ draft: "", attachments: [], replying: true, unreadReply: false, messages: [...old.messages, { id: uid(), role: "user", text, attachments }] }));
     pending.timer = setTimeout(() => {
       if (replyTimers.current.get(taskName) !== pending) return;
       replyTimers.current.delete(taskName);
-      updateTask(taskName, (old) => ({ replying: false, messages: [...old.messages, { id: uid(), role: "assistant", text: cleanReply(buildAssistantReply({ text, taskName, modelLabel, attachments, records })), model: modelLabel, isDemo: true }] }));
+      updateTask(taskName, (old) => ({ replying: false, unreadReply: old.unreadReply || activeConversationTask.current !== taskName, messages: [...old.messages, { id: uid(), role: "assistant", text: options.replyText || cleanReply(buildAssistantReply({ text, taskName, modelLabel, attachments, records })), interaction: options.interaction, model: modelLabel, isDemo: true }] }));
     }, 650);
+    return true;
+  };
+  const handleConversationScroll = () => {
+    const node = conversationRef.current;
+    if (!node) return;
+    const following = node.scrollHeight - node.clientHeight - node.scrollTop < 80;
+    followingConversation.current.set(selectedTask, following);
+    conversationScrollPositions.current.set(selectedTask, node.scrollTop);
+    if (following && session.unreadReply) patchSession({ unreadReply: false });
+  };
+  const showLatestReply = () => {
+    followingConversation.current.set(selectedTask, true);
+    patchSession({ unreadReply: false });
+    conversationRef.current?.scrollTo({ top: conversationRef.current.scrollHeight, behavior: "smooth" });
   };
   const askFromExplanation = (context) => {
-    if (session.replying || replyTimers.current.has(selectedTask)) { notify("当前答复完成后可以继续解释这句。"); return; }
+    if (session.replying || replyTimers.current.has(selectedTask)) { notify("当前答复完成后可以继续解释这句。"); return false; }
     if (context.kind === "image") {
       const focus = ["channels", "layout", "batch"].includes(context.focus) ? context.focus : "layout";
       const seconds = Math.max(0, Math.min(60, Number(context.time) || 0));
@@ -140,7 +162,7 @@ export function useWorkbenchState() {
       const sourceContext = { ...context, focus, time: seconds, stamp, isDemo: true };
       const text = { channels: "每个像素包含 R、G、B 三个数值，HWC 的最后一维 C=3。分层张量图帮助区分通道，透视示意不表示真实内存结构。", layout: "HWC 输入的轴 0、1、2 分别对应 H、W、C。transpose(2,0,1) 改成 C、H、W，得到 [3,224,224]。图解里的尺寸随轴一起移动。", batch: "CHW [3,224,224] 前增加样本数 N=1，就成为 NCHW [1,3,224,224]。这里只核对示例输入约定，真实模型签名、dtype 和归一化仍需确认。" }[focus];
       updateTask(selectedTask, old => ({ messages: [...old.messages, { id: uid(), role: "user", text: `请解释 ${stamp} 这句：“${context.subtitle}”`, sourceContext }, { id: uid(), role: "assistant", text, isDemo: true, sourceContext }] }));
-      return;
+      return true;
     }
     const focus = ["total", "tail", "access"].includes(context.focus) ? context.focus : "tail";
     const seconds = Math.max(0, Math.min(60, Number(context.time) || 0));
@@ -155,6 +177,7 @@ export function useWorkbenchState() {
       { id: uid(), role: "user", text: `请解释 ${stamp} 这句：“${sourceContext.subtitle}”`, sourceContext },
       { id: uid(), role: "assistant", text: replies[focus], isDemo: true, sourceContext },
     ] }));
+    return true;
   };
   const createTask = ({ name, groupId, goal }) => {
     const title = name.trim(), group = groups.find((item) => item.id === groupId);
@@ -181,7 +204,7 @@ export function useWorkbenchState() {
     updateTask(taskName, (old) => ({ attachments: [...old.attachments, ...incoming] })); input.value = ""; if (incoming.length) notify("已关联 " + incoming.length + " 个附件");
   };
   const useCapability = (id) => { const item = capabilities.find((capability) => capability.id === id); if (!item) return; patchSession((old) => ({ capabilityIds: old.capabilityIds.includes(id) ? old.capabilityIds : [...old.capabilityIds, id], draft: item.prompt })); setDialog(null); draftRef.current?.focus(); notify("能力已加入当前任务"); };
-  const addRecord = (record, taskName = selectedTask) => { const entry = { ...record, id: uid(), time: timeNow() }; updateTask(taskName, (old) => ({ records: [...old.records, entry], messages: [...old.messages, { id: uid(), role: "assistant", text: "已保存「" + record.title + "」。\n\n" + record.summary, isDemo: record.isDemo }] })); addNotification(record.title + "已保存", taskName); notify("记录已保存到当前任务"); };
+  const addRecord = (record, taskName = selectedTask) => { const entry = { ...record, id: uid(), time: timeNow() }; updateTask(taskName, (old) => ({ unreadReply: old.unreadReply || activeConversationTask.current !== taskName, records: [...old.records, entry], messages: [...old.messages, { id: uid(), role: "assistant", text: "已保存「" + record.title + "」。\n\n" + record.summary, isDemo: record.isDemo }] })); addNotification(record.title + "已保存", taskName); notify("记录已保存到当前任务"); };
   const confirmRoute = () => { if (session.selectedRoute === "retry") { setRetryRequested(true); openDialog("models"); } else setActionView(session.selectedRoute === "tail" ? "code" : "precision"); };
   const chooseModel = (id) => {
     setSelectedModel(id); const label = modelOptions.find((item) => item.id === id)?.label;
@@ -203,5 +226,5 @@ export function useWorkbenchState() {
     .filter((file) => file.content && (file.type === "code" || /\.(cpp|h|py)$/i.test(file.name)))
     .sort((a, b) => (a.receivedOrder || 0) - (b.receivedOrder || 0)).at(-1);
   const attempts = [...(isMainTask ? [{ title: "修改编译参数", summary: "错误仍在 custom_op.cpp:128，未新增定位信号。", time: "已知现场" }] : []), ...session.records.filter((item) => item.kind === "attempt")];
-  return { getSession: (name) => sessions[name] || blank(), getTask: (name) => meta[name] || { goal: "补充目标和材料。" }, groups, task, session, query, setQuery, filterScope, setFilterScope, openedGroups, setOpenedGroups, selectedTask, rationaleOpen, setRationaleOpen, actionView, setActionView, menu, setMenu, menuRef, openMenu, dialog, dialogData, openDialog, closeDialog, selectedModel, model, automations, setAutomations, notifications, toast, notify, conversationRef, draftRef, fileRef, imageRef, currentGroup, isMainTask, visibleGroups, patchSession, toggleGroup, selectTask, setSelectedRoute, setDraft, copyText, conversationText, exportTask, resetTask, sendMessage, askFromExplanation, createTask, startConversation, restoreConversation, attachCode, readFiles, useCapability, addRecord, confirmRoute, chooseModel, runAutomation, attachmentCode, attempts };
+  return { getSession: (name) => sessions[name] || blank(), getTask: (name) => meta[name] || { goal: "补充目标和材料。" }, groups, task, session, query, setQuery, filterScope, setFilterScope, openedGroups, setOpenedGroups, selectedTask, rationaleOpen, setRationaleOpen, actionView, setActionView, menu, setMenu, menuRef, openMenu, dialog, dialogData, openDialog, closeDialog, selectedModel, model, automations, setAutomations, notifications, toast, notify, conversationRef, draftRef, fileRef, imageRef, currentGroup, isMainTask, visibleGroups, patchSession, toggleGroup, selectTask, setSelectedRoute, setDraft, copyText, conversationText, exportTask, resetTask, sendMessage, handleConversationScroll, showLatestReply, askFromExplanation, createTask, startConversation, restoreConversation, attachCode, readFiles, useCapability, addRecord, confirmRoute, chooseModel, runAutomation, attachmentCode, attempts };
 }

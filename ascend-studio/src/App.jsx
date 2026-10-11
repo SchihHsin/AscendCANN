@@ -14,8 +14,10 @@ import { useWorkbenchLayout } from "./useWorkbenchLayout";
 import { TaskCanvas } from "./TaskCanvas";
 import { CanvasMaterial } from "./CanvasMaterials";
 import { CanvasIndex } from "./CanvasIndex";
-import { IMAGE_TASK, IMAGE_MATERIALS, useImageInference } from "./useImageInference";
+import { IMAGE_TASK, IMAGE_MATERIALS, useImageInference, imageShape } from "./useImageInference";
 import { ImageInferenceMaterial } from "./ImageInference";
+import { getRangeGeometry } from "./RangeDiagram";
+import { classifyTaskIntent, getExplanationFocus } from "./task-intents";
 import "./interaction.css";
 import "./visual-focus.css";
 import {
@@ -124,7 +126,6 @@ function App() {
   const layout = useWorkbenchLayout({ sidebarCollapsed });
   const previousFlow = useRef({ attempts: 0, proposal: null, applied: null, validation: null });
   const [taskContentsOpen, setTaskContentsOpen] = useState(false);
-  const [suggestionDismissed, setSuggestionDismissed] = useState(false);
   const {
     query, setQuery, openedGroups, selectedTask, rationaleOpen, setRationaleOpen,
     visibleGroups, toggleGroup, selectTask, setSelectedRoute,
@@ -158,7 +159,7 @@ function App() {
       workspace.actions.open("source");
       workspace.actions.splitWith("draft");
     } else {
-      if (id === "diff" && !flow.state.proposedCode) flow.actions.prepareDiff();
+      if (id === "diff" && !options.prepared && !flow.state.proposedCode) flow.actions.prepareDiff();
       if (options.split) workspace.actions.splitWith(id);
       else workspace.actions.open(id, options);
     }
@@ -170,7 +171,11 @@ function App() {
     setTaskContentsOpen(false);
   };
   const askExplanation = (context) => {
-    wb.askFromExplanation(context);
+    if (!wb.askFromExplanation(context)) return;
+    if (context.kind === "image") {
+      inference.actions.focus(context.focus);
+      openContent("image-explanation");
+    } else openContent("explanation", { anchor: context.focus });
   };
   const openCanvas = () => {
     if (!isInteractiveTask) return;
@@ -204,12 +209,70 @@ function App() {
     if (view === "code" || view === "precision") wb.patchSession({ selectedRoute: view === "code" ? "tail" : "precision" });
     openContent(view === "code" ? "source" : view);
   };
-  const openTaskFlow = (phase = "understand") => {
-    if (!isMainTask) return;
-    if (phase === "try") {
-      workspace.actions.open("draft");
-      workspace.actions.splitWith("parameters");
-    } else openContent({ understand: "explanation", diff: "diff", validate: "validation" }[phase] || "explanation");
+  // Explicit user requests may open a related view. Reply/record arrivals never navigate.
+  const dispatchTaskIntent = (intent, focus, target = null) => {
+    const explainId = isImageTask ? "image-explanation" : "explanation";
+    if (isMainTask && flow.state.busy && ["review", "check"].includes(intent) && !target) return;
+    if (intent === "explain" || intent === "try") {
+      if (isImageTask) { inference.actions.explore(); inference.actions.focus(focus); }
+      else { explanation.actions.startExplore(); explanation.actions.focusConcept(focus); }
+      openContent(explainId);
+    } else if (intent === "review") {
+      const prepared = isImageTask ? inference.actions.prepareCurrent() : flow.actions.prepareDiff({ current: true });
+      openContent(prepared ? (isImageTask ? "image-diff" : "diff") : explainId, { prepared: Boolean(prepared) });
+    } else if (intent === "check") {
+      if (target) { openContent(target); return; }
+      if (isImageTask && inference.state.applied) { inference.actions.validate(); openContent("image-validation"); }
+      else if (isMainTask && flow.state.appliedCode) { flow.actions.runValidation(); openContent("validation"); }
+      else {
+        if (isImageTask) { inference.actions.explore(); inference.actions.run(); }
+        else { explanation.actions.startExplore(); flow.actions.runTrial(); }
+        openContent(explainId);
+      }
+    }
+  };
+  const taskIntentReply = (intent, focus, target = null) => {
+    const scope = "这里只演算浏览器示例，未执行项目代码或模型，也未验证 NPU。";
+    if (intent === "check" && target) return target === "precision"
+      ? "已打开误差核对。需要实际逐元素输出与容差，核对后再判断误差是否集中在特定位置。范围算例不能替代精度证据。"
+      : "已打开只读代码来源，便于核对实际循环或模型输入约定。没有执行项目；请关联真实代码、模型签名与运行证据。";
+    if (intent === "diagnose") return isImageTask
+      ? "先对照输入形状与模型约定：当前示例需要 NCHW [1,3,224,224]。轴顺序、batch、dtype 与归一化都需核对真实代码和模型签名。\n\n可以展开维度图解理解这条线索；当前阅读与编辑位置保留。"
+      : "非整块输入失败使尾块范围值得优先核对；它仍是线索，根因尚未确认。还需实际循环、逐元素误差与两次运行条件。\n\n可以展开范围图解理解这条线索；当前阅读与编辑位置保留。";
+    if ((intent === "review" || intent === "check") && isMainTask && flow.state.busy) return "当前示例检查正在进行，请等结果完成后再继续审阅或检查。参数与尝试会保留。";
+    if (intent === "review") {
+      const valid = isImageTask ? imageShape(inference.state).valid : getRangeGeometry(flow.state).valid;
+      return valid ? "已根据当前参数准备 Diff，旁边保留这次尝试的依据。审阅后再确认应用到浏览器示例副本。\n\n真实项目文件保持只读，尚未写入或执行。" : "当前参数无效，修改预览还不能生成。请先在图解里修正参数；已有尝试与阅读现场保留。";
+    }
+    if (intent === "check" && (isImageTask ? inference.state.applied : flow.state.appliedCode)) return "正在接续已应用示例副本的核对，结果会保留在本任务。\n\n" + scope;
+    if (isImageTask) {
+      const shape = imageShape(inference.state);
+      if (!shape.valid) return "当前轴顺序无效：0、1、2 每个轴只能出现一次。可以在图解内修正，结果会原位更新。\n\n" + scope;
+      const detail = focus === "channels" ? "RGB 每个像素包含三个通道，原图是 HWC [224,224,3]。通道分层图与当前图像对应。"
+        : focus === "batch" ? `当前${inference.state.batch ? "加入" : "未加入"} batch，输出为 ${shape.labels.join("")} [${shape.dimensions.join(",")}]。batch 表示样本数，需要与模型签名一致。`
+        : `transpose(${inference.state.axes.join(",")}) 将原来的 H、W、C 轴按当前顺序排列；输出为 ${shape.labels.join("")} [${shape.dimensions.join(",")}]。`;
+      return detail + (intent === "check" ? "\n\n这次形状检查已保留；" : "\n\n图解已展开，参数可直接调整，形状与代码在原处更新；") + scope;
+    }
+    const range = getRangeGeometry(flow.state);
+    if (!range.valid) return range.error + "\n\n图解保留当前参数，修正后即可继续；" + scope;
+    const detail = focus === "total" ? `[${range.rows},${range.columns}] 共 ${range.total} 个元素，每块 ${range.tileSize} 个，分为 ${range.blocks} 块。`
+      : focus === "access" ? `当前策略访问至索引 ${range.maxAccessIndex}，有效索引截止 ${range.lastValidIndex}，涉及 ${range.outOfRange} 个范围外位置。`
+      : `最后一块从索引 ${range.lastBlockStart} 开始，有 ${range.lastBlockValid} 个有效元素；${range.hasTail ? `按整块访问会多涉及 ${range.unusedSlots} 个位置。` : "当前输入没有不足一块的尾块。"}`;
+    return detail + (intent === "check" ? "\n\n这次范围检查会保留；" : "\n\n图解已展开，参数可直接调整，图形与结果在原处更新；") + "尾块仍是待核查线索。" + scope;
+  };
+  const handleSendMessage = (event) => {
+    const text = draft.trim();
+    const intent = isInteractiveTask ? classifyTaskIntent(text) : "none";
+    const requestedFocus = getExplanationFocus(text, isImageTask);
+    const focus = requestedFocus === "structure" ? "total" : requestedFocus;
+    const target = intent === "check"
+      ? isMainTask && /误差|精度|容差|precision|tolerance/i.test(text) ? "precision"
+        : /实际(?:代码|循环|模型)|真实(?:代码|项目|模型)|模型签名|原文件|源码/i.test(text) ? (isImageTask ? "image-source" : "source") : null
+      : null;
+    const accepted = sendMessage(event, intent === "none" ? {} : {
+      interaction: { intent, focus, target }, replyText: taskIntentReply(intent, focus, target),
+    });
+    if (accepted && isInteractiveTask) dispatchTaskIntent(intent, focus, target);
   };
   const confirmWorkspaceRoute = () => {
     if (selectedRoute === "retry") wb.confirmRoute();
@@ -257,7 +320,7 @@ function App() {
     ...(flow.state.appliedCode ? [{ id: "diff-validation", from: "diff", to: "validation", label: "示例应用后复核" }] : []),
   ];
   const resetCurrentTask = () => {
-    if (isMainTask) { flow.actions.reset(); canvas.actions.reset(); setPrecisionContext(null); setSuggestionDismissed(false); }
+    if (isMainTask) { flow.actions.reset(); canvas.actions.reset(); setPrecisionContext(null); }
     if (isImageTask) { inference.actions.reset(); imageCanvas.actions.reset(); }
     workspace.actions.reset();
     setTaskContentsOpen(false);
@@ -358,12 +421,13 @@ function App() {
           <header className="panel-header conversation-header">
             <div><h2>对话</h2><span className="conversation-context" title={selectedTask}>{selectedTask}</span></div>
             <div className="header-actions">
+              {session.unreadReply && <button className="light-button new-reply-button" type="button" onClick={wb.showLatestReply}><IconChevronDown size={14} />有新回复</button>}
               <button className="light-button" type="button" onClick={wb.startConversation}><IconPlus size={16} />新对话</button>
               <button className="icon-button" type="button" aria-label="更多对话操作" data-menu-trigger aria-expanded={wb.menu?.name === "chat"} onClick={(event) => openMenu("chat", event)}><IconDots size={18} /></button>
             </div>
             <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           </header>
-          <div className="conversation-scroll" ref={wb.conversationRef}>
+          <div className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
             <div className="conversation-flow">
             {session.showIntro && isMainTask && <>
             <article className="message-row user-message">
@@ -388,11 +452,8 @@ function App() {
                     <IconBook size={16} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={15} />
                   </button>
                   {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => openContent("evidence")}>打开现场与判断<IconArrowRight size={13} /></button></div>}
-                  <p className="assistant-next">先理解有效元素与访问范围，再决定下一步。</p>
-                  {!suggestionDismissed && <div className="task-inline-suggestion">
-                    <div><IconBook size={15} /><span><strong>先看懂这条线索，再决定是否修改</strong><small>展开范围示例，保留当前任务与错误现场。</small></span><button type="button" className="icon-button compact-icon" aria-label="关闭解释建议" onClick={() => setSuggestionDismissed(true)}><IconX size={14} /></button></div>
-                    <div className="task-suggestion-actions"><button type="button" className="light-button" onClick={() => openTaskFlow("understand")}>查看图解并试改<IconArrowRight size={14} /></button><button type="button" className="task-plain-button" onClick={() => changeActionView("code")}>直接核对代码</button><button type="button" className="task-plain-button" onClick={() => arrangeMaterials(["source", "evidence", "explanation"])}>在画布中整理</button></div>
-                  </div>}
+                  <p className="assistant-next">右侧图解已对应这次疑问展开，可以直接调参数对照。</p>
+                  <div className="task-suggestion-actions"><button type="button" className="task-plain-button" onClick={() => dispatchTaskIntent("explain", "tail")}>返回关联图解<IconArrowRight size={14} /></button><button type="button" className="task-plain-button" onClick={() => changeActionView("code")}>查看代码与来源</button></div>
                   <details className="chat-next-disclosure"><summary>比较其他排查方向</summary><div className="chat-next-actions" aria-label="可能的下一步方向">
                     <div className="chat-next-heading">可能的下一步方向</div>
                     {routes.map((route, index) => (
@@ -420,7 +481,7 @@ function App() {
             </>}
             {session.showIntro && !isMainTask && <>
               <article className="message-row user-message"><div className="message-content"><div className="message-meta">你</div><div className="user-bubble">{task.question}</div></div></article>
-              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response">{task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}{isImageTask && <div className="task-inline-suggestion"><div><IconBook size={15} /><span><strong>从图像到输入张量，先看懂再试</strong><small>原代码只读，练习与尝试保留在本任务。</small></span></div><div className="task-suggestion-actions"><button className="light-button" type="button" onClick={() => openContent("image-explanation")}>查看图解<IconArrowRight size={14} /></button><button className="task-plain-button" type="button" onClick={() => { inference.actions.explore(); openContent("image-practice"); }}>在副本中试一下</button></div></div>}</div></div></article>
+              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response">{task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}{isImageTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => dispatchTaskIntent("explain", "layout")}>返回关联图解<IconArrowRight size={14} /></button><button className="task-plain-button" type="button" onClick={() => openContent("image-source")}>查看代码与来源</button></div>}</div></div></article>
             </>}
             {messages.map((message) => (
               <article className={"message-row " + (message.role === "user" ? "user-message" : "assistant-message")} key={message.id}>
@@ -430,6 +491,7 @@ function App() {
                     {message.attachments?.length > 0 && <div className="message-attachments">{message.attachments.map((file) => <button type="button" key={file.id} onClick={() => openDialog("evidence", { title: file.name, body: "本次任务的本地附件，尚未独立验证。", log: file.content || "已关联文件名称，尚无可读取的文本内容。" })}><IconPaperclip size={13} />{file.name}</button>)}</div>}
                   </div>
                   {message.sourceContext && <div className="message-source-links"><button type="button" onClick={() => { if (message.sourceContext.kind === "image") { inference.actions.seek(message.sourceContext.time); if (!inference.state.lessonOpen) inference.actions.lesson(); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus, time: message.sourceContext.time, video: true }); }}><IconPlayerPlay size={12} /><span>讲解示例 {message.sourceContext.stamp} · 返回片段</span></button>{message.role === "assistant" && <button type="button" onClick={() => { if (message.sourceContext.kind === "image") { inference.actions.focus(message.sourceContext.focus); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus }); }}><IconBook size={12} />查看关联图解</button>}</div>}
+                  {message.role === "assistant" && message.interaction && <div className="message-source-links"><button type="button" onClick={() => dispatchTaskIntent("explain", message.interaction.focus)}><IconBook size={13} />{message.interaction.intent === "diagnose" ? "解释这条线索" : "查看关联图解"}</button></div>}
                   {message.role === "assistant" && <div className="message-feedback"><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={16} /></button></div>}
                 </div>
               </article>
@@ -437,12 +499,12 @@ function App() {
             {session.replying && <div className="replying-indicator" role="status"><span /><span /><span /><small>正在整理演示答复…</small></div>}
             </div>
           </div>
-          <form className="composer" onSubmit={sendMessage}>
+          <form className="composer" onSubmit={handleSendMessage}>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0) && <div className="composer-context-chips">
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={13} /><span title={file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={12} /></button></span>)}
               {session.capabilityIds.map((id) => <span className="attachment-chip capability-chip" key={id}><IconBooks size={13} /><span>{capabilities.find((item) => item.id === id)?.name}</span><button type="button" aria-label="移除能力" onClick={() => wb.patchSession((old) => ({ capabilityIds: old.capabilityIds.filter((item) => item !== id) }))}><IconX size={12} /></button></span>)}
             </div>}
-            <textarea ref={wb.draftRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); sendMessage(event); } }} placeholder="继续提问，或描述你想进行的下一步…" aria-label="继续提问" rows={1} />
+            <textarea ref={wb.draftRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); handleSendMessage(event); } }} placeholder="继续提问，或描述你想进行的下一步…" aria-label="继续提问" rows={1} />
             <div className="composer-toolbar">
               <div className="composer-tools">
                 <button className="icon-button composer-plus" type="button" aria-label="更多输入方式" data-menu-trigger aria-expanded={wb.menu?.name === "input"} onClick={(event) => openMenu("input", event)}><IconPlus size={17} /></button>

@@ -16,6 +16,12 @@ export const IMAGE_LESSON = [
 ];
 export const imageSegmentAt = time => IMAGE_LESSON.findLast(item => time >= item.time) || IMAGE_LESSON[0];
 const original = { axes: [0, 1, 2], batch: true };
+const snapshotOf = state => ({ axes: [...state.axes], batch: Boolean(state.batch) });
+const sameSnapshot = (left, right) => Boolean(left && right)
+  && left.batch === right.batch
+  && Array.isArray(left.axes) && Array.isArray(right.axes)
+  && left.axes.length === right.axes.length
+  && left.axes.every((axis, index) => axis === right.axes[index]);
 export function imageShape(snapshot) {
   const valid = Array.isArray(snapshot.axes) && snapshot.axes.length === 3 && new Set(snapshot.axes).size === 3 && snapshot.axes.every(value => [0, 1, 2].includes(value));
   const axes = valid ? snapshot.axes : [0, 1, 2];
@@ -33,7 +39,13 @@ export function useImageInference({ visible, onRecord }) {
   const current = useRef(state);
   const callback = useRef(onRecord); callback.current = onRecord;
   current.current = state;
-  const patch = change => setState(old => ({ ...old, ...(typeof change === "function" ? change(old) : change) }));
+  const patch = change => {
+    const previous = current.current;
+    const next = { ...previous, ...(typeof change === "function" ? change(previous) : change) };
+    current.current = next;
+    setState(next);
+    return next;
+  };
   useEffect(() => { if (!visible) patch({ playing: false }); }, [visible]);
   useEffect(() => {
     if (!visible || !state.playing || !state.lessonOpen) return;
@@ -44,12 +56,15 @@ export function useImageInference({ visible, onRecord }) {
     return () => clearInterval(timer);
   }, [visible, state.playing, state.lessonOpen]);
   const record = (title, summary) => callback.current?.({ title, summary, kind: "image-practice", isDemo: true });
+  const makeAttempt = snapshot => {
+    const result = imageShape(snapshot);
+    return { id: crypto.randomUUID(), time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }), snapshot: { axes: [...snapshot.axes], batch: Boolean(snapshot.batch) }, ...result, code: imageCode(snapshot) };
+  };
   const run = () => {
     const old = current.current;
-    const snapshot = { axes: [...old.axes], batch: old.batch };
-    const result = imageShape(snapshot);
-    const attempt = { id: crypto.randomUUID(), time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }), snapshot, ...result, code: imageCode(snapshot) };
-    patch(previous => ({ attempts: [...previous.attempts, attempt], selectedId: attempt.id, proposal: null, notice: result.valid ? "这次形状检查已保存。未执行 Python 或模型推理。" : "轴顺序必须包含 0、1、2，且每个轴只出现一次。已保留这次尝试。" }));
+    const snapshot = snapshotOf(old);
+    const attempt = makeAttempt(snapshot);
+    patch(previous => ({ attempts: [...previous.attempts, attempt], selectedId: attempt.id, proposal: null, notice: attempt.valid ? `当前示例形状：${attempt.dimensions.join(" × ")}。这次形状检查已保存；未执行 Python 或模型推理。` : "轴顺序必须包含 0、1、2，且每个轴只出现一次。已保留这次尝试。" }));
     return attempt;
   };
   const prepare = () => {
@@ -57,6 +72,24 @@ export function useImageInference({ visible, onRecord }) {
     const attempt = old.attempts.find(item => item.id === old.selectedId) || old.attempts.at(-1);
     if (!attempt?.valid) { patch({ notice: "先完成一次有效轴顺序的形状检查，再查看修改预览。" }); return; }
     patch({ proposal: { attempt, baseline: old.applied?.snapshot || original }, notice: "提案对应所选尝试，仅应用到浏览器示例副本。" });
+  };
+  const prepareCurrent = () => {
+    const old = current.current;
+    const snapshot = snapshotOf(old);
+    const result = imageShape(snapshot);
+    if (!result.valid) {
+      patch({ notice: "轴顺序必须包含 0、1、2，且每个轴只出现一次；修正后再审阅当前修改。" });
+      return null;
+    }
+    const attempt = old.attempts.find(item => sameSnapshot(item.snapshot, snapshot)) || makeAttempt(snapshot);
+    const attempts = old.attempts.some(item => item.id === attempt.id) ? old.attempts : [...old.attempts, attempt];
+    patch({
+      attempts,
+      selectedId: attempt.id,
+      proposal: { attempt, baseline: { ...(old.applied?.snapshot || original), axes: [...(old.applied?.snapshot || original).axes] } },
+      notice: "已按当前参数生成修改审阅；提案仅对应浏览器示例副本，原项目未修改。",
+    });
+    return attempt;
   };
   const apply = () => {
     const old = current.current;
@@ -71,9 +104,18 @@ export function useImageInference({ visible, onRecord }) {
     patch({ validation, notice: "已复核示例形状。模型文件、数据类型、归一化和设备推理仍需项目证据。" });
     record("图像推理 · 返回任务核对", `示例输入 [${validation.dimensions.join(",")}]，${validation.passed ? "符合" : "不符合"}示例约定 NCHW [1,3,224,224]。未执行 Python、模型或 NPU；需要核对真实模型签名与预处理。`);
   };
+  const restoreParameters = () => patch(old => ({
+    axes: [...original.axes],
+    batch: original.batch,
+    focus: "layout",
+    playing: false,
+    exploring: true,
+    proposal: null,
+    notice: "已恢复原始示例参数；尝试记录、已应用副本和历史核对均保留。",
+  }));
   return { state, actions: {
-    axis: (index, value) => patch(old => ({ axes: old.axes.map((axis, i) => i === index ? Number(value) : axis), notice: "", playing: false, exploring: true, focus: "layout" })),
-    batch: value => patch({ batch: value, notice: "", playing: false, exploring: true, focus: "batch" }),
+    axis: (index, value) => patch(old => ({ axes: old.axes.map((axis, i) => i === index ? Number(value) : axis), notice: "", proposal: null, playing: false, exploring: true, focus: "layout" })),
+    batch: value => patch({ batch: value, notice: "", proposal: null, playing: false, exploring: true, focus: "batch" }),
     focus: focus => patch({ focus, playing: false }), channel: channel => patch({ channel, focus: "channels" }),
     correct: () => patch({ axes: [2, 0, 1], batch: true, focus: "layout", playing: false, exploring: true }),
     lesson: () => patch(old => ({ lessonOpen: !old.lessonOpen, playing: false, exploring: false })),
@@ -81,10 +123,10 @@ export function useImageInference({ visible, onRecord }) {
     play: () => patch(old => ({ playing: !old.playing, time: old.time >= 60 ? 0 : old.time, lessonOpen: true, exploring: false })),
     explore: () => patch({ playing: false, exploring: true }),
     pin: () => patch(old => ({ pinned: old.pinned ? null : { axes: old.lessonOpen && !old.exploring ? old.focus === "channels" ? [0, 1, 2] : [2, 0, 1] : [...old.axes], batch: old.lessonOpen && !old.exploring ? old.focus === "batch" : old.batch, focus: old.focus } })),
-    run, select: selectedId => patch({ selectedId, proposal: null }), prepare, apply, validate,
+    run, select: selectedId => patch({ selectedId, proposal: null }), prepare, prepareCurrent, apply, validate, restoreParameters,
     cancel: () => patch({ proposal: null, notice: "提案已取消，练习与尝试仍保留。" }),
     undo: () => { const old = current.current; if (old.undo) patch({ ...old.undo, undo: null, notice: "已撤销最近一次示例应用。" }); },
     save: attempt => record("图像预处理 · 形状尝试", `轴顺序 ${attempt.snapshot.axes.join(",")}；${attempt.valid ? `[${attempt.dimensions.join(",")}]，${attempt.passed ? "符合" : "不符合"}示例约定` : "轴顺序无效"}。仅形状演算，未执行推理。`),
-    reset: () => setState(old => ({ ...start(), resetVersion: old.resetVersion + 1 })),
+    reset: () => patch(old => ({ ...start(), resetVersion: old.resetVersion + 1 })),
   } };
 }

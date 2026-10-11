@@ -13,7 +13,7 @@ export function explanationSegmentAt(time) {
   return EXPLANATION_SEGMENTS.find((item) => time >= item.time && time < item.end) || EXPLANATION_SEGMENTS.at(-1);
 }
 
-const initialState = () => ({ focus: "total", videoOpen: false, playing: false, time: 0, mode: "read", pinned: false, pinnedSnapshot: null, pinnedFocus: "total" });
+const initialState = () => ({ focus: "tail", videoOpen: false, playing: false, time: 0, mode: "read", pinned: false, pinnedSnapshot: null, pinnedFocus: "total" });
 const knownFocus = (focus) => EXPLANATION_SEGMENTS.some((item) => item.focus === focus);
 const safeTime = (time) => Math.max(0, Math.min(EXPLANATION_DURATION, Number.isFinite(Number(time)) ? Number(time) : 0));
 

@@ -4877,3 +4877,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本轮不修改ascend-studio/src或ascstudio产物，不生成图片、构建或新增/运行测试。完成源码差异审阅、git diff --check，以及两份HTML和报告待暂存版本的内联JS静态node --check；未执行脚本或运行交互测试。内容补充不是Demo功能上线，未声称浏览器或用户实测。仅提交两份材料、本次索引和根/原型交接，提交后立即push，实际回执后补。
 
 - Commit/push：原设计材料补充89c7de84已成功推送origin/main（fd4b1975..89c7de84），仅五个本任务材料/索引/交接文件；报告原有25新增/38删除的未提交差异仍留在工作区。静态内联JS语法与暂存差异检查通过。本次推送更新设计说明，不含Demo源码或产物；此回执提交后立即push。
+
+
+### 2026-10-11（Ascend Studio：任务中学习交互落地）
+
+- 用户明确要求 Demo 同步实施原设计材料中的交互。仅改 Ascend Studio 的 AddCustom 与图像推理案例，不推进学习起步 A1–A5，不改其他问题承载平台。保留左项目任务、中对话、右按需内容，普通内容承载解释与试改，画布继续用于主动整理。
+- 变更文件：ascend-studio/src/App.jsx、task-intents.js、ExplainPanel.jsx / explain-panel.css、ImageInference.jsx / image-inference.css、useTaskFlow.js、useImageInference.js、useWorkbenchState.js、useContentWorkspace.js、useExplanationSession.js、CanvasMaterials.jsx、prototype-data.js；同步 ascstudio/ Pages 产物，更新 interaction-design.md、design-qa.md 和两 AGENTS。Luna 分别承担参数图解与本地意图分流，主代理负责集成、语义修正及自适应验收。
+- 已接四层主动性：明确解释疑问直接展开关联图解；仅报错/修复保持右侧材料，用短依据与可选深入入口；阅读旧消息时新回复轻提示，后台结果不抢材料；明确试改/采用/检查承接对应操作。分流是本地演示规则，不是真实 AI。主代理修正“请检查已应用示例”被应用词抢成审阅、解释问题中的检查词被抢成执行，以及否定后“只解释”的分句。
+- 两任务解释内直接提供参数，当前图形、对应代码与即时结果联动，保存尝试不切页；当前演算与保存快照区分。审阅使用当前参数，不误取旧尝试；无效参数禁用审阅。取消返回图解并保留参数/历史；恢复原始参数保留尝试和已应用副本。确认应用只更新浏览器副本，并留在审阅页；没有自动启动检查。明确检查时接示例复核，实际代码/精度请求转相应只读来源/误差材料。
+- 字幕追问保留时间/原句/概念；调参暂停动态讲解，用户可直接继续播放或切片段，试改参数保留。等待答复时切换任务不自动导航回原任务；任务往返仍保存对话滚动与各自参数/材料。右侧自由画布、三栏拖宽、收起项目栏等既有能力保持。
+- 来源：learning-canvas-story B1–B6/#31 与 ai-development-behavior-system-report-concise 正式02/04；均为设计提案。M级本地手动交互观察：解释提问/报错分流、两案例调参/保存/当前快照 Diff/取消/应用/明确检查、字幕关联、任务往返；回看聊天 scrollTop=0 时保存范围结果后仍=0，并出现“有新回复”，右侧保持解释。
+- 自适应验收：1280×720默认；实际拖右栏至360px，两案例参数/结果 scrollWidth 不超过容器；1280×480实际拖中栏至300px，正文275px、输入区273px且底部466px，未横向溢出；390×844两案例页面 scrollWidth=390；1600×900宽栏检查。背景装饰仍为无占位图，header 的宽装饰已裁切，不能把它的 scrollWidth 误判为正常控件溢出。
+- 检查：npm run build:pages、相关 .js 的 node --check 与 git diff --check；本轮未新增/运行自动测试套件。详细实测和截图见 ascend-studio/design-qa.md、evidence/20261011-task-learning-*.png。开发期间有热更新文件替换与旧预览tab连接超时；另开同浏览器预览、完整刷新后继续验收，最终日志情况以 QA 记录为准。
+- 边界：仅浏览器范围/形状演算，未执行 Python/C++、真实 AI、模型/NPU或项目写入；AddCustom尾块仍是待核查线索，示例索引在范围内不能证明精度/根因。没有改变报告序列、hash 或 API/Host/Application 层边界。仅暂存本任务文件，保留其他报告、图稿、DS_Store等原有脏改；提交后立即push origin/main，回执后补。

@@ -79,7 +79,7 @@
 .ex-trial-heading > div { display:flex; flex-direction:column; }
 .ex-trial-heading strong { font-size:12px; font-weight:600; }
 .ex-trial-heading span { font-size:10px; color:#9395a0; }
-.ex-trial-panel form { display:flex; flex-direction:column; gap:10px; }
+.ex-lesson-context { padding:3px 7px; border:1px solid #e7e7ed; border-radius:5px; background:#f6f6f8; white-space:nowrap; }
 .ex-parameter-fields { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
 .ex-parameter-fields label { display:flex; flex-direction:column; gap:4px; font-size:11px; color:#838692; min-width:0; }
 .ex-parameter-fields input { width:100%; min-width:0; padding:6px 8px; border:1px solid #dddde4; border-radius:6px; background:#fff; color:#4c5264; font-family:inherit; font-size:12px; line-height:1.5; }
@@ -92,6 +92,18 @@
 .ex-strategies small { color:#a0a2ad; font-size:10px; }
 .ex-trial-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .ex-trial-actions > span { font-size:10px; color:#9799a4; }
+.ex-trial-panel .ex-primary-button { background:#27272d; color:#fff; border-color:#27272d; }
+.ex-trial-panel .ex-primary-button:hover { background:#3a3a42; border-color:#3a3a42; }
+.ex-neutral-button { display:inline-flex; align-items:center; justify-content:center; gap:5px; padding:6px 9px; border:1px solid #e0e0e5; border-radius:7px; color:#585b65; background:#f4f4f6; white-space:nowrap; }
+.ex-neutral-button:hover { background:#ececef; border-color:#d4d4da; }
+.ex-neutral-button:disabled { cursor:not-allowed; opacity:.5; }
+.ex-current-result { padding:8px 9px; border:1px solid #e7e7ec; border-radius:7px; background:#f8f8fa; }
+.ex-current-result > strong { display:flex; align-items:center; gap:5px; color:#555966; font-size:11px; font-weight:600; }
+.ex-current-result > strong > span { color:#92949f; font-size:10px; font-weight:400; }
+.ex-current-result p { margin-top:3px; color:#777b87; font-size:11px; line-height:1.6; }
+.ex-current-result.is-invalid { border-color:#ecd9d4; background:#fbf6f4; }
+.ex-current-result.is-invalid > strong { color:#946c61; }
+.ex-current-result.is-invalid p { color:#9b7c73; }
 .ex-trial-error { display:flex; align-items:flex-start; gap:6px; padding:7px; background:#fbf4f1; border-radius:5px; color:#9b7266; font-size:11px; }
 .ex-trial-error svg { flex-shrink:0; margin-top:2px; }
 .ex-trial-result { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding-top:9px; border-top:1px solid #e7e7ec; }
@@ -106,5 +118,7 @@
 .ex-canvas-summary p { margin:0; font-size:10px; color:#9699a5; }
 .ex-canvas-summary > button { align-self:flex-start; }
 @container explanation (min-width:760px) { .ex-reading-layout.has-lesson { grid-template-columns:minmax(0,.93fr) minmax(0,1.07fr); align-items:start; } }
-@container explanation (max-width:390px) { .ex-panel { gap:12px; } .ex-diagram-panel { padding:9px; } .ex-heading h2 { font-size:15px; } .ex-heading-actions { width:100%; } .ex-chapters button { padding:5px 3px; } .ex-scene-heading strong { font-size:13px; } .ex-scene-blocks { gap:3px; } .ex-parameter-fields { gap:6px; } .ex-parameter-fields input { padding:6px; } .ex-strategies { grid-template-columns:minmax(0,1fr); } .ex-caption { flex-wrap:wrap; } .ex-caption > span { flex-basis:calc(100% - 20px); } .ex-caption > svg { position:absolute; top:7px; right:7px; } }
+@container explanation (max-width:390px) { .ex-strategies { grid-template-columns:minmax(0,1fr); } .ex-trial-actions { align-items:stretch; } .ex-trial-actions > button { justify-content:center; } .ex-trial-result { align-items:flex-start; } }
+@container explanation (max-width:300px) { .ex-parameter-fields { grid-template-columns:minmax(0,1fr); gap:7px; } .ex-parameter-fields input { padding:7px 8px; } }
+@container explanation (max-width:390px) { .ex-panel { gap:12px; } .ex-diagram-panel { padding:9px; } .ex-heading h2 { font-size:15px; } .ex-heading-actions { width:100%; } .ex-chapters button { padding:5px 3px; } .ex-scene-heading strong { font-size:13px; } .ex-scene-blocks { gap:3px; } .ex-parameter-fields { gap:6px; } .ex-parameter-fields input { padding:6px; } .ex-caption { flex-wrap:wrap; } .ex-caption > span { flex-basis:calc(100% - 20px); } .ex-caption > svg { position:absolute; top:7px; right:7px; } }
 @media (prefers-reduced-motion:reduce) { .ex-lesson-scene.is-playing .ex-scene-blocks > span, .ex-lesson-scene.is-playing .ex-scene-tail > span { animation:none; } .ex-scene-sweep { transition:none; } }
