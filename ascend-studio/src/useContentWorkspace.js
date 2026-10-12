@@ -10,6 +10,9 @@ function initialState(isMainTask, taskId) {
     splitId: null,
     lastContentId: initial.id,
     lastSplitId: null,
+    canvasMode: "overview",
+    overview: { query: "", category: "all", collapsedGroups: [], compactIds: [] },
+    snapshots: [],
   };
 }
 
@@ -25,7 +28,7 @@ function openedMaterial(previous, id, options = {}) {
     || previous.visitedTabs.find((tab) => tab.id === id);
   const meta = getMaterialMeta(id, { ...existing, ...options });
   const visible = id === previous.activeId || id === previous.splitId;
-  const material = { ...meta, unread: options.activate === false && !visible };
+  const material = { ...existing, ...meta, closed: false, unread: options.activate === false && !visible ? options.restore ? Boolean(existing?.unread) : true : false };
   return {
     ...previous,
     tabs: rememberMaterial(previous.tabs, material),
@@ -41,7 +44,7 @@ function activatedState(previous, id) {
   if (canvas) splitId = null;
   else if (splitId === id) splitId = previous.activeId !== "canvas" ? previous.activeId : null;
   const markRead = (items) => items.map((item) => item.id === id || item.id === splitId
-    ? { ...item, unread: false } : item);
+    ? { ...item, closed: false, unread: false } : item);
   return {
     ...previous,
     activeId: id,
@@ -81,39 +84,36 @@ export function useContentWorkspace({ taskId, isMainTask }) {
   const activate = (id) => update((previous) => activatedState(previous, id));
 
   const close = (id) => update((previous) => {
-    const index = previous.tabs.findIndex((tab) => tab.id === id);
-    if (index < 0) return previous;
+    const target = previous.tabs.find((tab) => tab.id === id);
+    if (!target) return previous;
     const tabs = previous.tabs.filter((tab) => tab.id !== id);
-    const contentTabs = tabs.filter((tab) => tab.type !== "canvas");
-    let lastContentId = contentTabs.some((tab) => tab.id === previous.lastContentId)
-      ? previous.lastContentId : contentTabs.at(-1)?.id || null;
+    const visitedTabs = previous.visitedTabs.map((tab) => tab.id === id ? { ...tab, closed: true } : tab);
+    const compactIds = id === "canvas" ? previous.overview.compactIds : [...new Set([...previous.overview.compactIds, id])];
     let activeId = previous.activeId;
     let splitId = previous.splitId === id ? null : previous.splitId;
-    let lastSplitId = previous.lastSplitId === id ? null : previous.lastSplitId;
     if (activeId === id) {
-      if (id === "canvas" && lastContentId) {
-        activeId = lastContentId;
-        splitId = tabs.some(tab => tab.id === lastSplitId) && lastSplitId !== activeId ? lastSplitId : null;
-      }
+      if (id === "canvas") activeId = previous.lastContentId && tabs.some(tab => tab.id === previous.lastContentId) ? previous.lastContentId : null;
       else if (splitId) { activeId = splitId; splitId = null; }
-      else activeId = tabs[Math.min(index, tabs.length - 1)]?.id || null;
+      else activeId = isMainTask ? "canvas" : null;
     }
-    if (activeId === "canvas" || !activeId) splitId = null;
-    if (activeId && activeId !== "canvas") lastContentId = activeId;
-    const markRead = (items) => items.map((tab) => tab.id === activeId || tab.id === splitId
-      ? { ...tab, unread: false } : tab);
-    return {
-      ...previous,
-      tabs: markRead(tabs),
-      visitedTabs: markRead(previous.visitedTabs),
-      activeId,
-      splitId,
-      lastContentId,
-      lastSplitId: activeId === "canvas" ? lastSplitId : splitId,
-    };
+    const next = { ...previous, tabs, visitedTabs, activeId, splitId, overview: { ...previous.overview, compactIds } };
+    return activeId === "canvas" ? activatedState(openedMaterial(next, "canvas", { restore: true }), "canvas") : next;
   });
 
-  const openCanvas = () => open("canvas");
+  const openCanvas = (options = {}) => update(previous => {
+    const opened = activatedState(openedMaterial(previous, "canvas", { restore: true }), "canvas");
+    return { ...opened, canvasMode: options.mode || previous.canvasMode || "overview" };
+  });
+  const setOverview = (patch = {}) => update(previous => ({ ...previous, overview: { ...previous.overview, ...patch } }));
+  const getTaskState = (ownerId, ownerIsMainTask = true) => {
+    if (!tasks.current.has(ownerId)) tasks.current.set(ownerId, initialState(ownerIsMainTask, ownerId));
+    return tasks.current.get(ownerId);
+  };
+  const saveSnapshot = (parentId, snapshot, ownerId = taskId) => update(previous => {
+    const record = { ...snapshot, parentId, id: "snapshot:" + crypto.randomUUID(), time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }) };
+    const opened = openedMaterial(previous, parentId, { activate: false, restore: false });
+    return { ...opened, snapshots: [...previous.snapshots, record] };
+  }, ownerId, true);
 
   const splitWith = (id) => {
     if (typeof id !== "string" || !id.trim() || id.trim() === "canvas") return;
@@ -141,9 +141,10 @@ export function useContentWorkspace({ taskId, isMainTask }) {
   };
 
   const endSplit = () => update((previous) => previous.splitId ? { ...previous, splitId: null, lastSplitId: null } : previous);
+  const markRead = (id) => update(previous => ({ ...previous, tabs: previous.tabs.map(item => item.id === id ? { ...item, unread: false } : item), visitedTabs: previous.visitedTabs.map(item => item.id === id ? { ...item, unread: false } : item) }));
   const reset = () => update(() => initialState(isMainTask, taskId));
 
-  return { state, actions: { open, activate, close, openCanvas, splitWith, endSplit, reset } };
+  return { state, getTaskState, actions: { open, activate, close, openCanvas, setOverview, saveSnapshot, markRead, splitWith, endSplit, reset } };
 }
 
 export default useContentWorkspace;

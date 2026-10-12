@@ -504,3 +504,17 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 仅改上述设计稿/两索引/两AGENTS，文档diff检查后commit并立即push；未改源码/Pages、报告序列/hash或API/Host/Application，未实现自动分类/总览/跨刷新恢复，其他既有WIP/图稿/DS_Store保持。提交回执后补。
 
 - Commit/push回执：3f7d5a20（docs: revise content management around canvas overview）已成功推送origin/main，2e9442b7..3f7d5a20；仅5份设计稿/索引/交接文件，暂存diff检查通过，Demo源码和Pages未改。
+
+
+### 2026-10-12（Ascend Studio：任务内容管理实施）
+
+- 用户授权整理刚才讨论并改进Demo；采用按具体问题分组＋五用途筛选，保留画布全貌及普通深入视图。实施为现有AddCustom/图像两案例共享管理机制，不扩展其他题或官网/GitCode流程。
+- 新增src/TaskContentOverview.jsx、task-content-overview.css、task-content-catalog.js；修改App.jsx、TaskWorkspace.jsx/task-workspace.css、TaskCanvas.jsx/useCanvasState.js、useContentWorkspace.js，并同步根ascstudio Pages。Luna负责组件/目录与只读复核，主代理整合状态、快照、意图及自适应。
+- 已用/已产生对象自动入总览，普通顶部仅当前/并排；新增材料入口与历史分开。主题区自动排布，五主用途、中性选择、概要一键露出全部条目；卡/组收起留摘要/次数，普通pane保持挂载，深入返回原scroll/自由viewport。自由画布共享ID/概要偏好，首次实际测量后fit，明确进入时补齐已用内容，不移动已有对象。
+- 生成Diff、误差与两案例复核自动保存会话内只读快照，嵌套父内容并展示时间/输入/容差；取消后旧提案可读，恢复不prepare/run，旧条件不等于当前通过。任务隔离，后台登记activate:false，有限本地语句找回及多结果选择。没有跨刷新持久化、多标签/组名纠正、真实AI/NPU/工程写入。
+- 原设计材料content-management-design.md整理授权规则/§9检查证据；design-storyline.md和interaction-design.md建立索引，design-qa.md补检查。M级手动：取消提案快照、误差两个容差及恢复不增记录、两任务切换、图像提案与形状快照、用途/搜索/空态、对话找回、普通/自由/概要同步。scroll331.5往返相同，free transform相同；早先359→331.5含定位器滚动/高度收缩，已限定口径。
+- 自适应：默认1280×720、实际拖右360px，相关client/scrollWidth一致；1280×480中栏299/输入273底466；390×844页面/总览390，截图11幅及窄屏补图经主代理查看。完整新标签加载error/warn空、操作标签error空；一次CDP超时读取AX后恢复。没有新增/运行自动测试或完整屏幕阅读器验收。
+- 保留左任务/自动化/能力库、中无头像AI铺背景及右按需内容，黑主按钮、中性选择、克制蓝紫，无学习中心/学习组、无右侧装饰。不改报告序列/hash/API-Host-Application边界，示例仍不证明真实根因/精度。
+- 最终build:pages、相关纯JS node --check和git diff --check后仅暂存本任务源码/产物/设计材料/交接/截图，commit并立即push origin/main；保留其他报告WIP、图稿、DS_Store等。用户评审待定，构建/commit/push回执随后补记。
+
+- 构建回执：最终build:pages成功，index-D7375VcR.js/index-BEGs8Lx0.css；3份相关纯JS静态语法通过，JSX经Vite解析。主JS503.10kB有非阻塞体积提示，未改阈值、未声称性能验收；最终普通收起及两画布概要同步再次操作无error。

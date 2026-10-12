@@ -28,11 +28,11 @@ function normalizeVisited(state) {
 }
 
 /** Ordinary viewers stay mounted while the task canvas is opened or closed. */
-export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], onOpen, onOpenCanvas, onArrange, renderContent, renderCanvas }) {
+export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], contentItems = [], onOpen, onClose, onOpenCanvas, onArrange, renderContent, renderCanvas }) {
   const { state, actions } = workspace;
   const [menuOpen, setMenuOpen] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [pickerPurpose, setPickerPurpose] = useState("new");
   const activeTabRef = useRef(null);
   const toolsRef = useRef(null);
   const pickerRef = useRef(null);
@@ -41,11 +41,15 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], o
   const activeTab = tabs.find((tab) => tab.id === state.activeId);
   const onCanvas = state.activeId === "canvas";
   const unreadTabs = tabs.filter((tab) => tab.unread && tab.id !== state.activeId);
+  const displayTabs = tabs.filter(tab => tab.id === state.activeId || tab.id === state.splitId);
+  const knownIds = new Set(contentItems.map(item => item.id));
+  const pickerMaterials = pickerPurpose === "split" || !isMainTask ? materials : materials.filter(item => !knownIds.has(item.id) && !item.id.startsWith("record:"));
+  const activeHistory = contentItems.find(item => item.id === state.activeId)?.children || [];
   const activeMaterial = materials.find((material) => material.id === state.activeId);
   taskViews.current.set(taskId, { state, isMainTask, visited: normalizeVisited(state) });
 
   useEffect(() => { activeTabRef.current?.scrollIntoView({ block: "nearest", inline: "nearest" }); }, [taskId, state.activeId]);
-  useEffect(() => { setMenuOpen(false); setPickerOpen(false); setSelectedIds([]); }, [taskId]);
+  useEffect(() => { setMenuOpen(false); setPickerOpen(false); }, [taskId]);
   useEffect(() => {
     if (!menuOpen && !pickerOpen) return undefined;
     const outsideClick = (event) => {
@@ -61,7 +65,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], o
 
   const openMaterial = (material, split = false) => {
     if (material.available === false) return;
-    onOpen?.(material.id, split ? { split: true } : {});
+    onOpen?.(material.id, split || pickerPurpose === "split" ? { split: true, restore: true } : {});
     setPickerOpen(false);
   };
   const arrange = (ids) => {
@@ -69,49 +73,48 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], o
     onArrange?.(ids);
     setPickerOpen(false);
     setMenuOpen(false);
-    setSelectedIds([]);
   };
-  const showPicker = () => { setMenuOpen(false); setPickerOpen(true); };
-  const openCanvas = () => { setMenuOpen(false); setPickerOpen(false); onOpenCanvas?.(); };
-  const toggleSelected = (id) => setSelectedIds((current) => current.includes(id) ? current.filter((value) => value !== id) : [...current, id]);
+  const showPicker = (purpose = "new") => { setPickerPurpose(purpose); setMenuOpen(false); setPickerOpen(true); };
+  const openCanvas = (mode = "overview") => { setMenuOpen(false); setPickerOpen(false); onOpenCanvas?.({ mode }); };
 
   return <section className="task-workspace" aria-label="任务内容工作区">
     <header className="tw-header">
-      <div className="tw-heading"><IconLayoutColumns size={16} /><h2>工作区</h2><span>{onCanvas ? "整理关联材料" : state.splitId ? "并排查看" : "查看与操作任务内容"}</span></div>
+      <div className="tw-heading"><IconLayoutColumns size={16} /><h2>工作区</h2><span>{onCanvas ? state.canvasMode === "free" ? "自由摆放" : "按问题查看全部内容" : state.splitId ? "并排查看" : "查看与操作任务内容"}</span></div>
       <div className="tw-header-actions">
-        {unreadTabs.length > 0 && <button className="tw-new-results" type="button" onClick={() => actions.activate(unreadTabs[0].id)}><span aria-hidden="true" />新结果 {unreadTabs.length}</button>}
+        {isMainTask && <button className={"tw-overview-button" + (onCanvas ? " is-selected" : "")} type="button" onClick={() => openCanvas()}><IconLayoutBoard size={14} />内容总览 <span>{contentItems.length}</span>{unreadTabs.length > 0 && <i aria-label={`${unreadTabs.length}项内容有更新`} />}</button>}
         <div className="tw-tools" ref={toolsRef}>
           <button className={"tw-tool-button" + (menuOpen ? " is-open" : "")} type="button" aria-label="工作区工具" aria-expanded={menuOpen} onClick={() => { setMenuOpen((current) => !current); setPickerOpen(false); }}><IconPlus size={14} /><IconChevronDown size={12} /></button>
           {menuOpen && <div className="tw-tools-menu">
-            <button type="button" onClick={showPicker}><IconLayoutList size={15} /><span>打开材料</span></button>
-            {isMainTask && <button type="button" onClick={openCanvas}><IconLayoutBoard size={15} /><span>打开画布</span>{normalizeVisited(state).some((tab) => tab.id === "canvas") && <small>恢复</small>}</button>}
+            <button type="button" onClick={() => showPicker()}><IconPlus size={15} /><span>新增内容</span></button>
+            {isMainTask && <button type="button" onClick={() => openCanvas("free")}><IconLayoutBoard size={15} /><span>自由摆放</span></button>}
           </div>}
         </div>
       </div>
     </header>
 
-    <div className="tw-tabs" role="tablist" aria-label="已打开的任务内容">
-      {tabs.map((tab) => <div className={"tw-tab" + (tab.id === state.activeId ? " is-active" : "") + (tab.id === state.splitId ? " is-split" : "")} key={tab.id}>
+    <div className="tw-tabs" hidden={onCanvas} role="tablist" aria-label="已打开的任务内容">
+      {displayTabs.map((tab) => <div className={"tw-tab" + (tab.id === state.activeId ? " is-active" : "") + (tab.id === state.splitId ? " is-split" : "")} key={tab.id}>
         <button className="tw-tab-select" ref={tab.id === state.activeId ? activeTabRef : null} type="button" role="tab" aria-selected={tab.id === state.activeId || tab.id === state.splitId} aria-controls={`workspace-pane-${taskId}-${tab.id}`} onClick={() => actions.activate(tab.id)}><MaterialIcon type={tab.type || (tab.id === "canvas" ? "canvas" : "preview")} /><span>{tab.title}</span>{tab.unread && tab.id !== state.activeId && <i className="tw-unread-dot" aria-label="有未读更新" />}</button>
-        <button className="tw-tab-close" type="button" aria-label={`关闭${tab.title}`} title={tab.id === "canvas" ? "关闭画布，保留材料与布局" : "关闭视图，保留内容"} onClick={() => actions.close(tab.id)}><IconX size={12} /></button>
+        <button className="tw-tab-close" type="button" aria-label={`收起${tab.title}`} title={tab.id === "canvas" ? "收起总览，保留材料与布局" : "收起为概要，内容与现场保留"} onClick={() => (onClose || actions.close)(tab.id)}><IconX size={12} /></button>
       </div>)}
-      <button className="tw-add-content" type="button" aria-label="打开其他材料" title="打开其他材料" onClick={showPicker}><IconPlus size={14} /></button>
+      <button className="tw-add-content" type="button" aria-label="新增任务内容" title="新增任务内容" onClick={() => showPicker()}><IconPlus size={14} /></button>
     </div>
 
     {activeTab && !onCanvas && <div className="tw-view-toolbar">
       <span className="tw-view-kind">{typeLabels[activeTab.type] || "任务内容"}{activeMaterial?.description && <small>{activeMaterial.description}</small>}</span>
-      <div>{isMainTask && tabs.some(tab => tab.id === "canvas") && <button type="button" onClick={onOpenCanvas}><IconLayoutBoard size={13} />返回画布</button>}{state.splitId ? <button type="button" onClick={() => actions.endSplit()}><IconLayoutColumns size={13} />退出并排</button> : isMainTask && <button type="button" onClick={showPicker}><IconLayoutColumns size={13} />并排查看</button>}{isMainTask && <button type="button" onClick={() => arrange([state.activeId, ...(state.splitId ? [state.splitId] : [])])}><IconLayoutBoard size={13} />在画布中整理</button>}</div>
+      <div>{activeHistory.length > 0 && <details className="tw-history-menu"><summary>历史记录 {activeHistory.length}</summary><div>{[...activeHistory].reverse().map(item => <button type="button" key={item.id} onClick={() => onOpen?.(item.id, { restore: true, title: item.title })}><strong>{item.title}</strong><small>{item.time} · {item.summary}</small></button>)}</div></details>}{isMainTask && <button type="button" onClick={() => onOpenCanvas?.({ mode: state.canvasMode })}><IconLayoutBoard size={13} />返回总览</button>}{state.splitId ? <button type="button" onClick={() => actions.endSplit()}><IconLayoutColumns size={13} />退出并排</button> : isMainTask && <button type="button" onClick={() => showPicker("split")}><IconLayoutColumns size={13} />并排查看</button>}{isMainTask && <button type="button" onClick={() => arrange([state.activeId, ...(state.splitId ? [state.splitId] : [])])}><IconLayoutBoard size={13} />在画布中整理</button>}</div>
     </div>}
 
     <div className="tw-stage">
       {[...taskViews.current.entries()].map(([ownerTaskId, view]) => {
         const selectedTask = ownerTaskId === taskId;
-        const current = view.state;
+        const current = workspace.getTaskState?.(ownerTaskId, view.isMainTask) || view.state;
         const currentCanvas = current.activeId === "canvas";
         const diagramSplit = current.splitId && [current.activeId, current.splitId].some(id => id === "explanation" || id.startsWith("image-"));
-        const canvasVisited = view.visited.some((tab) => tab.id === "canvas");
+        const visited = normalizeVisited(current);
+        const canvasVisited = visited.some((tab) => tab.id === "canvas");
         return <div className={"tw-task-body" + (current.splitId && !currentCanvas ? " has-split" : "") + (diagramSplit ? " is-diagram-split" : "")} key={ownerTaskId} hidden={!selectedTask}>
-          {view.visited.filter((tab) => tab.id !== "canvas").map((tab) => {
+          {visited.filter((tab) => tab.id !== "canvas").map((tab) => {
             const primary = current.activeId === tab.id && !currentCanvas;
             const secondary = current.splitId === tab.id && !currentCanvas;
             const showing = selectedTask && (primary || secondary);
@@ -121,23 +124,23 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], o
             </section>;
           })}
           {canvasVisited && view.isMainTask && <div className="tw-canvas-view" id={`workspace-pane-${ownerTaskId}-canvas`} role="tabpanel" aria-label="任务画布" hidden={!selectedTask || !currentCanvas}>{renderCanvas?.(selectedTask && currentCanvas, ownerTaskId)}</div>}
-          {selectedTask && !current.activeId && <div className="tw-empty"><IconFileDescription size={24} /><strong>打开需要查看的内容</strong><p>代码、结果和参考资料会在这里展开。</p><button type="button" onClick={showPicker}><IconLayoutList size={14} />打开材料</button></div>}
+          {selectedTask && !current.activeId && <div className="tw-empty"><IconFileDescription size={24} /><strong>打开需要查看的内容</strong><p>代码、结果和参考资料会在这里展开。</p>{isMainTask && <button type="button" onClick={() => openCanvas()}><IconLayoutBoard size={14} />查看已有内容</button>}<button type="button" onClick={() => showPicker()}><IconPlus size={14} />新增内容</button></div>}
         </div>;
       })}
     </div>
 
     {pickerOpen && <div className="tw-material-picker" ref={pickerRef} aria-label="任务材料">
-      <div className="tw-picker-header"><div><strong>本任务材料</strong><span>{isMainTask ? "单独查看，或选择关联材料整理" : "查看当前任务的内容"}</span></div><button type="button" aria-label="关闭材料列表" onClick={() => setPickerOpen(false)}><IconX size={15} /></button></div>
-      <div className="tw-material-list">{materials.map((material) => {
+      <div className="tw-picker-header"><div><strong>{pickerPurpose === "split" ? "选择并排内容" : "新增任务内容"}</strong><span>{pickerPurpose === "split" ? "保留当前内容，打开一份参考" : "已使用的内容自动保留在总览中"}</span></div><button type="button" aria-label="关闭材料列表" onClick={() => setPickerOpen(false)}><IconX size={15} /></button></div>
+      <div className="tw-material-list">{pickerMaterials.map((material) => {
         const available = material.available !== false;
         return <div className={"tw-material-row" + (!available ? " is-unavailable" : "")} key={material.id}>
-          {isMainTask && <label className="tw-material-check"><input type="checkbox" checked={selectedIds.includes(material.id)} disabled={!available} aria-label={`选择${material.title}`} onChange={() => toggleSelected(material.id)} /><span><IconCheck size={11} /></span></label>}
+
           <MaterialIcon type={material.type} size={15} />
           <button className="tw-material-open" type="button" disabled={!available} onClick={() => openMaterial(material)}><strong>{material.title}</strong><small>{available ? material.description || typeLabels[material.type] || "任务材料" : material.disabledReason || "完成前置操作后可用"}</small></button>
           <div className="tw-material-actions">{available && state.activeId && !onCanvas && state.activeId !== material.id && isMainTask && <button type="button" aria-label={`将${material.title}与当前内容并排查看`} title="与当前内容并排" onClick={() => openMaterial(material, true)}><IconLayoutColumns size={14} /></button>}<button type="button" disabled={!available} aria-label={`打开${material.title}`} title="单独打开" onClick={() => openMaterial(material)}><IconArrowRight size={14} /></button></div>
         </div>;
       })}</div>
-      {isMainTask && <div className="tw-picker-footer"><span>{selectedIds.length ? `已选择 ${selectedIds.length} 份材料` : "选择要一起整理的材料"}</span><button type="button" disabled={!selectedIds.length} onClick={() => arrange(selectedIds)}><IconLayoutBoard size={14} />在画布中整理</button></div>}
+      {isMainTask && <div className="tw-picker-footer"><span>{pickerMaterials.length ? "打开后自动归入当前任务，无需另行保存" : "所有可用内容都已收进任务总览"}</span><button type="button" onClick={() => openCanvas()}>查看内容总览<IconArrowRight size={13} /></button></div>}
     </div>}
   </section>;
 }

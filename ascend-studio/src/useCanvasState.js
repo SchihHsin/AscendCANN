@@ -90,7 +90,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions } = {}) {
     if (!placedCards.current.has(id) && !card.pinned) card = { ...card, ...freePosition(card, current.current.cards) };
     placedCards.current.add(id);
     hiddenHistory.current = hiddenHistory.current.filter((item) => item !== id);
-    const cards = bringToFront(current.current.cards.map((item) => item.id === id ? { ...card, visible: true, opened: true } : item), id);
+    const cards = bringToFront(current.current.cards.map((item) => item.id === id ? { ...card, visible: true, opened: true, collapsed: typeof options.collapsed === "boolean" ? options.collapsed : card.collapsed } : item), id);
     const size = surfaceSize.current;
     const focusZoom = size ? clampZoom(Math.min(1, Math.max(1, size.width - 40) / card.width, Math.max(1, size.height - 110) / visibleHeight(card))) : current.current.viewport.zoom;
     const viewport = size && options.focus !== false ? {

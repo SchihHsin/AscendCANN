@@ -463,3 +463,20 @@ Product Design audit先捕获6处修改前状态；两位Luna分别实现提示�
 本轮不新增/运行自动测试。仅浏览器示例、副本、数学索引演算；无真实AI、项目写入、C++/模型/NPU执行；不证明精度或根因。用户评审待定，其他故事仍待后续逐题实现。最终Pages构建/静态检查回执随交付补记。
 
 最终构建与静态检查：npm run build:pages成功，Pages资源index-CHCj9ZiA.js / index-BRAVOMQe.css；useTaskFlow.js、useProactiveCues.js的node --check通过，JSX由Vite构建解析。git diff --check通过。未新增或运行自动测试。
+
+
+## 2026-10-12 · 内容管理检查
+
+结果：本轮核心交互与自适应检查通过，待用户评审。依据为既有三栏界面、本轮UI操作及源码复核；未新增/运行自动测试，不宣称完整无障碍或生产环境验收。
+
+详细规则/步骤/观察在[任务内容管理§9](../cann-dashboard/ploy-interaction-lab/learning-canvas-story/content-management-design.md)。关键证据：evidence/20261012-content-management/01-before.png、02-before-canvas.png、04-cancelled-diff-snapshot.png、05-grouped-overview.png、06-narrow-overview.png、07-image-snapshot-narrow.png、08-mobile-overview.png、09-low-height.png、10-history-choice.png、11-final-overview.png。
+
+- 已修复：原空画布需再次人工挑材料；工具与历史混列；顶部标签积累；收起后找回入口隐藏；两任务的记录索引分离。总览/自由摆放/普通内容共用ID，生成快照嵌套，取消/重开不运行。
+- 观察：误差计算两次保留两个容差条件，重开保持0.05及两历史；图像预处理提案历史可打开，两个任务各自计数；总览scroll331.5往返331.5，自由viewport往返保持。定位器原先滚动与内容高度变化造成的359→331.5另记，未据此声称所有内容改变都保持绝对offset。
+- 自适应：1280×720实际拖右栏360px无横溢出；1280×480中栏299px、输入273px底y466；390×844页面/总览宽390。视口override与布局恢复。
+- 最终全新加载打开总览error/warn为空，已操作标签error为空；一次CDP超时读取AX后恢复。保留本地有限意图/浏览器示例边界，无跨刷新恢复/真实AI/模型/NPU/项目写入。
+- 源码复核：Luna指出图像snapshot白名单与记录归组问题，主代理修复后实际恢复图像快照；普通任务关闭不进入不存在的画布，未发现剩余P1/P2。减少动效样式已保留，未重新实测系统偏好/完整读屏流程。
+
+Pages构建与静态检查回执随后补充。
+
+最终构建回执：build:pages成功，JS index-D7375VcR.js、CSS index-BEGs8Lx0.css；useCanvasState.js、useContentWorkspace.js、task-content-catalog.js的node --check通过，JSX由Vite构建解析。存在503.10kB主JS的非阻塞chunk-size提示，未改变构建阈值或声称完成加载性能评估。普通收起与自由/总览概要同步在最终源码再次实际操作，error日志仍为空。
