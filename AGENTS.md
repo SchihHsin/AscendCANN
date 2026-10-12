@@ -4964,3 +4964,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 构建回执：最终build:pages成功，index-D7375VcR.js/index-BEGs8Lx0.css；3份相关纯JS静态语法通过，JSX经Vite解析。主JS503.10kB有非阻塞体积提示，未改阈值、未声称性能验收；最终普通收起及两画布概要同步再次操作无error。
 
 - Commit/push回执：e84a78b8（feat: unify task content overview and history recovery）已成功推送origin/main，d980fe58..e84a78b8；32个本任务源码/Pages/设计材料/交接/截图文件。最终Pages构建、3份JS静态语法与暂存diff检查通过；未纳入原有报告WIP/图稿/DS_Store，未新增或运行自动测试。用户评审待定。
+
+
+### 2026-10-12（Demo 设计点实施状态核对，仅梳理）
+
+- 用户要求先梳理前几轮主动交互与内容管理建议哪些已改、哪些待改，不继续全部实施。本轮只读对照当前源码/既有操作记录，两位 Luna 分工核对，主代理整理；未修改 Demo 源码/Pages、未构建、未新增或运行测试、未新增浏览器验收。
+- 在原设计材料目录新增 cann-dashboard/ploy-interaction-lab/learning-canvas-story/demo-implementation-status.md，覆盖主动交互、管理、完整故事与已取代方向；interaction-design.md、design-storyline.md、content-management-design.md补最新索引/历史状态限定。应用后不自动检查已确定，移除将此项仍写为待讨论的旧句，真实工程接入仍待做。
+- 四种主动性本地规则、两案例图解内调参/示例Diff/明确检查已做；B就近浅蓝紫提示和一次动效主要覆盖AddCustom，图像提示/讲解布局未完整深化。当前规则为正则/预置回复，非真实AI。
+- 已做会话内总览/五用途筛选/概要收起/共享ID/历史条件快照/有限语句唤醒/任务隔离。主题和用途是两案例预置映射，非任意问题语义推导；主题改名/分类纠正、多标签、统一最近使用、跨视图固定参考、右区整体关闭、跨刷新恢复及跨任务复用未完整实现。不能把收起单项等同关闭整区。
+- 完整学习起步A1–A5、问题01能力匹配与回执、问题03真实工程证据、问题05团队评审、问题06分享审核/后来者复用仍未完成；既有图像图解复用不等于学习起步闭环。保留任务中学习优先、逐题评审及官网/GitCode/Studio分工；不恢复学习中心/学习组、全平台Codex或永久画布等已否定方案。
+- 来源为当前源码及2026-10-11/12既有M级操作记录，功能基线e84a78b8/交接2f99acf3已推送；本轮无新增用户研究/真实AI/项目写入/模型/NPU证据。未改变报告页序/hash或API/Host/Application边界，示例成功不证明AddCustom根因/真实精度。
+- 仅检查本任务文档差异及git diff --check，暂存设计状态/索引/两份AGENTS后提交并立即push；不纳入行为报告WIP、图稿、DS_Store或其他未知文件。当前用户评审待定，提交回执随后补记。
