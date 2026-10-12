@@ -106,13 +106,27 @@ export function useContentWorkspace({ taskId, isMainTask }) {
     const compactIds = id === "canvas" ? previous.overview.compactIds : [...new Set([...previous.overview.compactIds, id])];
     let activeId = previous.activeId;
     let splitId = previous.splitId === id ? null : previous.splitId;
+    let referenceId = previous.referenceId === id ? null : previous.referenceId;
+    let referenceReturnId = previous.referenceId === id || previous.referenceReturnId === id ? null : previous.referenceReturnId;
     if (activeId === id) {
-      if (id === "canvas") activeId = previous.lastContentId && tabs.some(tab => tab.id === previous.lastContentId) ? previous.lastContentId : null;
+      const originalReturn = id === previous.referenceId && tabs.find(tab => tab.id === previous.referenceReturnId);
+      const contentTabs = previous.tabs.filter(tab => tab.id !== "canvas");
+      const index = contentTabs.findIndex(tab => tab.id === id);
+      const remaining = contentTabs.filter(tab => tab.id !== id);
+      const adjacent = remaining[Math.min(index, remaining.length - 1)];
+      if (id === "canvas") activeId = previous.lastContentId && tabs.some(tab => tab.id === previous.lastContentId) ? previous.lastContentId : remaining.at(-1)?.id || null;
+      else if (originalReturn) activeId = originalReturn.id;
       else if (splitId) { activeId = splitId; splitId = null; }
-      else activeId = isMainTask ? "canvas" : null;
+      else activeId = adjacent?.id || (isMainTask ? "canvas" : null);
+      if (referenceId === activeId) { referenceId = null; referenceReturnId = null; }
     }
-    const next = { ...previous, tabs, visitedTabs, activeId, splitId, referenceId: previous.referenceId === id ? null : previous.referenceId, referenceReturnId: previous.referenceId === id ? null : previous.referenceReturnId, overview: { ...previous.overview, compactIds } };
-    return activeId === "canvas" ? activatedState(openedMaterial(next, "canvas", { restore: true }), "canvas") : next;
+    const next = { ...previous, tabs, visitedTabs, activeId, splitId, referenceId, referenceReturnId,
+      lastSplitId: previous.lastSplitId === id ? null : previous.lastSplitId,
+      returnPoint: previous.returnPoint?.activeId === id ? null : previous.returnPoint,
+      overview: { ...previous.overview, compactIds },
+      ...(activeId === "canvas" && previous.activeId === id ? { canvasMode: "overview" } : {}) };
+    if (activeId === "canvas") return activatedState(openedMaterial(next, "canvas", { restore: true }), "canvas");
+    return previous.activeId === id && activeId ? activatedState(next, activeId) : next;
   });
 
   const openCanvas = (options = {}) => update(previous => {
@@ -175,7 +189,9 @@ export function useContentWorkspace({ taskId, isMainTask }) {
   };
 
   const endSplit = () => update((previous) => ({ ...previous, splitId: null, lastSplitId: null, referenceId: null, referenceReturnId: null }));
-  const returnFromReference = () => { if (state.referenceReturnId) open(state.referenceReturnId, { restore: true }); };
+  const returnFromReference = () => update(previous => previous.referenceReturnId
+    ? activatedState(openedMaterial(previous, previous.referenceReturnId, { restore: true }), previous.referenceReturnId)
+    : previous);
   const markRead = (id) => update(previous => ({ ...previous, tabs: previous.tabs.map(item => item.id === id ? { ...item, unread: false } : item), visitedTabs: previous.visitedTabs.map(item => item.id === id ? { ...item, unread: false } : item) }));
   const reset = () => update(() => initialState(isMainTask, taskId));
 

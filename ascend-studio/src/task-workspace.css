@@ -3,6 +3,31 @@
 .tw-current-title { display: flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 0; color: #596071; font-size: 11px; font-weight: 550; }
 .tw-current-title > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tw-unread-count { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 4px; flex: 0 0 auto; border-radius: 8px; color: #747d96; background: #f0f1f4; font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tw-content-switch { display: flex; flex: 1 1 auto; min-width: 0; }
+.tw-topbar .tw-content-trigger { display: flex; align-items: center; justify-content: flex-start; gap: 6px; width: 100%; min-width: 0; height: 28px; padding: 0 7px; border: 1px solid transparent; border-radius: 5px; color: #596071; background: transparent; font-size: 12px; font-weight: 550; text-align: left; }
+.tw-topbar .tw-content-trigger:hover, .tw-topbar .tw-content-trigger[aria-expanded="true"] { border-color: #e6e6e4; background: #f4f4f3; color: #4f5561; }
+.tw-content-trigger > svg { flex: 0 0 auto; color: #858995; }
+.tw-content-trigger > span:not(.tw-unread-count) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tw-content-trigger > svg:last-child { margin-left: auto; }
+.tw-content-menu { position: absolute; z-index: 80; top: 42px; right: 10px; left: 10px; display: flex; flex-direction: column; max-height: calc(100% - 54px); min-width: 0; overflow: hidden; border: 1px solid #dedfe4; border-radius: 8px; background: #fff; box-shadow: 0 8px 26px #272c3818; }
+.tw-content-groups { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 4px 8px; scrollbar-width: thin; scrollbar-color: #d8d9dc transparent; }
+.tw-content-group { padding: 3px 0 5px; }
+.tw-content-group + .tw-content-group { border-top: 1px solid #eeefed; }
+.tw-content-group h3 { margin: 0; padding: 7px 7px 4px; color: #777c86; font-size: 11px; font-weight: 600; line-height: 1.4; }
+.tw-topbar .tw-content-option { display: flex; align-items: center; gap: 8px; width: 100%; min-width: 0; min-height: 32px; height: auto; padding: 5px 7px; border: 0; border-radius: 5px; color: #686e79; background: transparent; font-size: 12px; text-align: left; white-space: normal; }
+.tw-topbar .tw-content-option:hover { color: #505662; background: #f4f4f3; }
+.tw-topbar .tw-content-option.is-current { color: #505662; background: #f0f0ef; }
+.tw-topbar .tw-content-option.is-reference { color: #666c76; background: #f7f7f6; }
+.tw-topbar .tw-content-option.is-unavailable { color: #8b9099; cursor: default; opacity: 1; }
+.tw-topbar .tw-content-option.is-unavailable .tw-option-copy small { color: #737b86; }
+.tw-content-option > svg { flex: 0 0 auto; color: #888d96; }
+.tw-option-copy { display: flex; flex: 1 1 auto; flex-direction: column; gap: 1px; min-width: 0; }
+.tw-option-copy strong { min-width: 0; overflow: hidden; color: inherit; font-size: 12px; font-weight: 500; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
+.tw-option-copy small { color: #888d96; font-size: 11px; font-weight: 400; line-height: 1.45; overflow-wrap: anywhere; }
+.tw-option-state { flex: 0 0 auto; margin-left: auto; color: #858995; font-size: 11px; font-weight: 400; }
+.tw-content-menu-foot { flex: 0 0 auto; padding: 7px 8px; border-top: 1px solid #e9eae8; background: #fbfbfa; }
+.tw-topbar .tw-content-menu-foot > button { justify-content: flex-start; width: 100%; height: 30px; padding: 0 8px; border: 0; border-radius: 5px; color: #616773; background: transparent; font-size: 12px; }
+.tw-topbar .tw-content-menu-foot > button:hover { background: #f0f0ef; color: #4f5561; }
 .tw-topbar-actions { display: flex; align-items: center; gap: 5px; flex: 0 0 auto; }
 .tw-topbar button { display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 25px; min-width: 25px; padding: 0 7px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #737b8d; font-size: 12px; white-space: nowrap; cursor: pointer; }
 .tw-topbar button:hover, .tw-topbar button.is-open { background: #f2f3f5; color: #555e72; }
@@ -77,6 +102,10 @@
 }
 @container task-content (max-width: 420px) {
   .tw-topbar { gap: 5px; padding-inline: 8px 6px; }
+  .tw-topbar .tw-content-trigger { gap: 4px; padding-inline: 5px; font-size: 11px; }
+  .tw-content-menu { top: 41px; right: 7px; left: 7px; }
+  .tw-content-groups { padding-inline: 5px; }
+  .tw-content-option { gap: 6px; }
   .tw-topbar-actions { gap: 3px; }
   .tw-topbar .tw-nearby-action { padding-inline: 5px; font-size: 11px; }
   .tw-topbar .tw-view-all { padding-inline: 7px; font-size: 11px; }
@@ -102,6 +131,7 @@
 .tw-history-menu > div { position: absolute; z-index: 90; right: 0; top: 23px; width: min(290px, 72vw); max-height: 260px; overflow: auto; border: 1px solid #dfe2ea; border-radius: 6px; padding: 4px; background: #fff; box-shadow: 0 8px 25px #25314918; }
 .tw-history-menu button { display: flex; flex-direction: column; width: 100%; padding: 8px; gap: 4px; text-align: left; white-space: normal; border-radius: 4px; }
 .tw-history-menu button:hover { background: #f3f4f7; }
+.tw-topbar .tw-history-menu button { height: auto; min-height: 52px; align-items: flex-start; justify-content: flex-start; white-space: normal; line-height: 1.5; }
 .tw-history-menu strong { font-weight: 500; color: #596780; }
 .tw-history-menu small { font-size: 12px; line-height: 1.5; color: #929bae; }
 

@@ -104,3 +104,10 @@
 ## 2026-10-12 · 默认聚焦、全貌与恢复实施
 
 用户批准§10.8推荐方案。当前任务身份集中到顶栏，右侧仅36px操作栏；默认聚焦，“看全部/回到刚才”导航，分类变短标签，查找/纠正按需展开，自由整理进更多。整区收起、参考跨步骤、同浏览器自动保存/刷新恢复已接入，范围/误差/历史恢复不重跑，讲解默认暂停。核心AddCustom故事已检查；取消后普通审阅入口保留，提示收摘要不阻断继续操作。源方案及实施边界见[内容管理§11](../cann-dashboard/ploy-interaction-lab/learning-canvas-story/content-management-design.md)，具体检查见design-qa.md与evidence/20261012-focused-space。图像专属提示/视频布局和其他完整故事后续逐题评审；无真实AI/工程写入/NPU。
+
+
+## 2026-10-12 · B 分类内容下拉已实施
+
+用户采用B当前对象标题＋四类静态下拉。主要材料直接选，状态清晰；当前历史列入切换，其他历史归原对象。看全部保任务概要，关闭回原参考/相邻对象、末项总览；纯导航不生成或检查。小提示不新页签是基础规则。
+
+完整决策见原材料content-management-design.md§13、demo-implementation-status.md§11；验收见design-qa.md及evidence/20261012-content-dropdown。每轮报告已完成、当前、确定、下一步。

@@ -587,3 +587,14 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 后续以整条讲解→代码→网页→Diff→收起找回链路为实施/评审单位；图像专属联动和学习起步等仍未完成。文档diff检查后仅暂存本轮4份文档并立即commit/push，其他WIP保持；回执后补。
 
 - Commit/push回执：22ceb78a（docs: compare workspace content navigation options）已成功推送origin/main，138a035f..22ceb78a；仅4份本轮设计/状态/交接文档，暂存diff检查通过，Demo源码/Pages没有改动。
+
+
+### 2026-10-12（B 分类下拉实施）
+
+- 用户采用B当前标题＋分类下拉；明确小提示不新页签是基础规则，不应反复当新设计亮点。继续每轮报告完成/当前/确定/下一步，按完整链路交付。
+- 变更TaskWorkspace.jsx、task-workspace.css、useContentWorkspace.js。静态四组：图解与说明、代码与修改、网页与资料、核对与记录；直接点对象，当前/参考/已收起/前置条件可见。纯activate/open restore导航，不生成提案或检查；关闭回原参考/并排/相邻，末项回总览。历史仍归原对象，当前快照补入列表。Luna做CSS与只读复核，主代理整合并实际验收。
+- M级操作：讲解→代码→网页→Diff、Diff和网页收起重开、固定参考关闭回来源、7项全收起回总览、重开图解保17/33/32及20秒暂停、12:08历史正确目标及刷新恢复；总览7项/尝试1/Diff历史3/范围历史1保持。两任务往返与普通任务隔离正常。
+- 修复历史菜单继承25px高度造成长文本和点击重叠，现94/94/76px；历史aria-controls对应面板，ID编码任务名防空格。菜单聚焦preventScroll并仅滚内部列表；最终真实键盘End/上箭头后workspace-grid.scrollTop=0。自动化locator额外滚祖先与取证调用错误未作为产品行为结论。
+- 1440×900、右360、1280×480右360、390×844检查；菜单344px/短视口top99 bottom467、窄屏页面390/menu374无横溢。默认栏宽和viewport恢复，error日志为空，14张截图evidence/20261012-content-dropdown，细节design-qa.md。原材料content-management-design.md§13/demo-implementation-status.md§11取代此前C推荐/未实施状态，interaction-design.md同步。
+- ReferenceBrowser未改：已知公开报告iframe显示，原始官方页本轮未确认正常显示；可能限制嵌入。导航本会话收起保留，跨刷新回初始URL。分类为已知映射，未接真实工程/AI/模型/NPU，不能确认AddCustom根因/精度；图像专属联动、学习起步、能力匹配及官网/GitCode评审分享仍未完整。不改报告WIP、页序/hash/API-Host-Application边界。
+- node --check、build:pages、diff检查通过，产物index-eMqom2g2.js/index-CfoSMdUk.css，JS522.76kB体积提示保持；无新增/运行自动测试，仅提交本任务源码/Pages/材料/QA/交接/截图，其他WIP保留。commit/push回执后补。
