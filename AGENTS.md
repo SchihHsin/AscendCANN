@@ -5007,3 +5007,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 最终检查回执：10份纯JS静态语法通过，最终build:pages成功，产物index-TM4dfXJo.js/index-BeCYEscw.css；主JS517.67kB的非阻塞体积提示保持。最终浏览器error日志为空，临时viewport已reset，默认三栏比例恢复；未新增/运行自动测试。
 
 - Commit/push回执：85b46b0e（feat: simplify task content navigation and restore task context）已成功推送origin/main，278f2eae..85b46b0e；仅42个本任务源码/Pages/材料/交接/QA/截图文件，最终语法/构建/暂存diff检查通过。未纳入报告WIP、DS_Store、未跟踪图稿或其他文件；用户评审待定，线上资源版本另核对。
+
+- 发布核对：线上ascstudio/index.html已指向index-TM4dfXJo.js与index-BeCYEscw.css，两资源HTTP200；对应已验收本地构建。交接提交c6d5d615已成功推送origin/main。本地预览仍运行，用户评审待定。
