@@ -4989,3 +4989,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户补充缩放只是思路，可按体验自主判断；附图指向header.tw-header和header.panel-header.conversation-header，认为降低屏效（“附图”是用户纠正用词）。原材料§10.8补推荐：默认正常尺寸自动聚焦，“看全部/回到刚才”简化导航，手动缩放辅助；五用途不增加常驻筛选。任务身份归顶栏，中栏取消独立对话标题，右栏合并紧凑操作条，全部浮动操作为不推荐候选；这些仍为待评审设计。
 - M级本次标题观察：当前浏览器自然宽度为窄屏；为正确查看两处桌面结构临时1280×720截图/DOM尺寸后reset，未刷新/导航或运行任务。对话header62px，右侧header58+tabs37+toolbar34=129px，截图evidence/20261012-header-review/{01-current-headers,02-desktop-headers}.png，主代理查看已保存桌面图。正常尺寸已恢复；这是局部结构审阅，不是新交互验收/无障碍验证。
+
+- Commit/push回执：645a9432（docs: revise task space navigation and header design）已成功推送origin/main，b4f2b0d6..645a9432；仅7份本任务讨论/交接/截图文件，暂存diff检查通过，Demo源码和Pages未改。浏览器只读标题审阅后尺寸已reset，没有新增或运行测试，其他WIP未暂存。
