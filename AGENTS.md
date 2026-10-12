@@ -4975,3 +4975,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 完整学习起步A1–A5、问题01能力匹配与回执、问题03真实工程证据、问题05团队评审、问题06分享审核/后来者复用仍未完成；既有图像图解复用不等于学习起步闭环。保留任务中学习优先、逐题评审及官网/GitCode/Studio分工；不恢复学习中心/学习组、全平台Codex或永久画布等已否定方案。
 - 来源为当前源码及2026-10-11/12既有M级操作记录，功能基线e84a78b8/交接2f99acf3已推送；本轮无新增用户研究/真实AI/项目写入/模型/NPU证据。未改变报告页序/hash或API/Host/Application边界，示例成功不证明AddCustom根因/真实精度。
 - 仅检查本任务文档差异及git diff --check，暂存设计状态/索引/两份AGENTS后提交并立即push；不纳入行为报告WIP、图稿、DS_Store或其他未知文件。当前用户评审待定，提交回执随后补记。
+
+- Commit/push回执：14ddb255（docs: clarify demo implementation status and remaining work）已成功推送origin/main，2f99acf3..14ddb255；仅6份本任务状态/索引/交接文档，暂存git diff --check通过。Demo源码和Pages未改，无构建、测试或新增浏览器验收；其他未知改动保持未暂存。
