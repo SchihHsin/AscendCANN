@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { readSession, writeSession, sessionSaveAvailable } from "./session-storage";
 import { useWorkbenchState, MAIN_TASK } from "./useWorkbenchState";
 import { capabilities, modelOptions } from "./prototype-data";
 import { WorkbenchDialogs } from "./WorkbenchDialogs";
@@ -121,17 +122,25 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
 
 function App() {
   const wb = useWorkbenchState();
+  const [saveAvailable, setSaveAvailable] = useState(sessionSaveAvailable);
+  useEffect(() => {
+    const update = () => setSaveAvailable(sessionSaveAvailable());
+    window.addEventListener("ascstudio-save-status", update);
+    update();
+    return () => window.removeEventListener("ascstudio-save-status", update);
+  }, []);
   const flow = useTaskFlow({ onRecord: (title, summary, kind, isDemo) => wb.addRecord({ title, summary, kind, isDemo }, MAIN_TASK) });
   const diagnosisTargetRef = useRef(null);
   const proactive = useProactiveCues(`${MAIN_TASK}:${flow.state.resetVersion}`);
-  const canvas = useCanvasState({ startEmpty: true });
-  const imageCanvas = useCanvasState({ startEmpty: true, cardDefinitions: IMAGE_MATERIALS });
-  const [precisionContext, setPrecisionContext] = useState(null);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const layout = useWorkbenchLayout({ sidebarCollapsed });
-  const previousImage = useRef({ attempts: 0, proposal: null, applied: null, validation: null });
-  const previousPrecision = useRef(null);
-  const previousFlow = useRef({ attempts: 0, proposal: null, applied: null, validation: null });
+  const canvas = useCanvasState({ startEmpty: true, storageKey: "canvas-addcustom" });
+  const imageCanvas = useCanvasState({ startEmpty: true, cardDefinitions: IMAGE_MATERIALS, storageKey: "canvas-image" });
+  const [precisionContext, setPrecisionContext] = useState(() => readSession("precision-context", null));
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => readSession("sidebar-collapsed", false));
+  useEffect(() => { writeSession("sidebar-collapsed", sidebarCollapsed); }, [sidebarCollapsed]);
+  useEffect(() => { writeSession("precision-context", precisionContext); }, [precisionContext]);
+  const previousImage = useRef(null);
+  const previousPrecision = useRef(precisionContext);
+  const previousFlow = useRef({ attempts: flow.state.attempts.length, proposal: flow.state.proposedCode, applied: flow.state.appliedCode, validation: flow.state.validation });
   const [taskContentsOpen, setTaskContentsOpen] = useState(false);
   const {
     query, setQuery, openedGroups, selectedTask, rationaleOpen, setRationaleOpen,
@@ -146,9 +155,10 @@ function App() {
   const isImageTask = selectedTask === IMAGE_TASK;
   const isInteractiveTask = isMainTask || isImageTask;
   const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask });
-  const imageVisible = isImageTask && workspace.state.activeId !== "canvas" && [workspace.state.activeId, workspace.state.splitId].some(id => id === "image-explanation");
+  const layout = useWorkbenchLayout({ sidebarCollapsed, contentCollapsed: workspace.state.collapsed });
+  const imageVisible = !workspace.state.collapsed && isImageTask && workspace.state.activeId !== "canvas" && (workspace.state.activeId === "image-explanation" || (layout.contentWidth > 620 && workspace.state.splitId === "image-explanation"));
   const inference = useImageInference({ visible: imageVisible, onRecord: record => wb.addRecord(record, IMAGE_TASK) });
-  const explanationVisible = isMainTask && workspace.state.activeId !== "canvas" && (workspace.state.activeId === "explanation" || workspace.state.splitId === "explanation");
+  const explanationVisible = !workspace.state.collapsed && isMainTask && workspace.state.activeId !== "canvas" && (workspace.state.activeId === "explanation" || (layout.contentWidth > 620 && workspace.state.splitId === "explanation"));
   const explanation = useExplanationSession({ resetVersion: flow.state.resetVersion, visible: explanationVisible });
   const mainSession = wb.getSession(MAIN_TASK);
   const imageSession = wb.getSession(IMAGE_TASK);
@@ -172,14 +182,14 @@ function App() {
     }
     setTaskContentsOpen(false);
   };
-  const updateOverview = (patch) => {
+  const updateOverview = (patch, ownerId = selectedTask) => {
     if (Array.isArray(patch.compactIds)) {
-      const ownerCanvas = isImageTask ? imageCanvas : canvas;
+      const ownerCanvas = ownerId === IMAGE_TASK ? imageCanvas : canvas;
       ownerCanvas.state.cards.filter(card => card.opened).forEach(card => {
         if (Boolean(card.collapsed) !== patch.compactIds.includes(card.id)) ownerCanvas.actions.toggleCollapse(card.id);
       });
     }
-    workspace.actions.setOverview(patch);
+    workspace.actions.setOverview(patch, ownerId);
   };
   const closeContent = (id) => {
     const ownerCanvas = isImageTask ? imageCanvas : canvas;
@@ -217,7 +227,7 @@ function App() {
       if (added) requestAnimationFrame(() => targetCanvas.actions.fitCanvas());
     }
     if (mode === "free") targetCanvas.state.cards.filter(card => card.opened).forEach(card => { if (Boolean(card.collapsed) !== workspace.state.overview.compactIds.includes(card.id)) targetCanvas.actions.toggleCollapse(card.id); });
-    workspace.actions.openCanvas({ mode });
+    workspace.actions.openCanvas({ mode, fit: options.fit });
     setTaskContentsOpen(false);
   };
   const restoreContent = (id) => {
@@ -363,7 +373,7 @@ function App() {
     }
     if (id === "reference") return presentation === "canvas" ? <div className="cm-stack"><p className="cm-body-copy">Ascend C 官方文档</p><p className="cm-note">用于理解概念与使用范围，实际版本与根因仍需核对。</p><button className="cm-button" type="button" onClick={() => openContent("reference")}>打开参考网页<IconArrowRight size={14} /></button></div> : <ReferenceBrowser resetVersion={flow.state.resetVersion} />;
     if (presentation === "canvas" && (id === "precision" || id === "review")) return <div className="cm-stack"><p className="cm-body-copy">{id === "precision" ? "逐元素误差与容差依据" : "检查清单、观察与待补证据"}</p><p className="cm-note">{precisionContext ? `已保留 ${precisionContext.count ?? precisionContext.rows?.length ?? "本次"} 项误差核对依据。` : "尚未保存误差计算。真实项目根因待确认。"}</p><button className="cm-button" type="button" onClick={() => openContent(id)}>展开核对<IconArrowRight size={14} /></button></div>;
-    if (id === "precision" || id === "review") return <ActionWorkspace key={flow.state.resetVersion} embedded view={id} onChangeView={changeActionView} onBack={() => openContent("evidence")} onRecord={(record) => wb.addRecord(record, MAIN_TASK)} precisionContext={precisionContext} onPrecisionContext={setPrecisionContext} rangeContext={latestAttempt ? { total: latestAttempt.total, tile: latestAttempt.tileSize } : null} />;
+    if (id === "precision" || id === "review") return <ActionWorkspace key={flow.state.resetVersion} storageKey={`action-${MAIN_TASK}-${id}-${flow.state.resetVersion}`} embedded view={id} onChangeView={changeActionView} onBack={() => openContent("evidence")} onRecord={(record) => wb.addRecord(record, MAIN_TASK)} precisionContext={precisionContext} onPrecisionContext={setPrecisionContext} rangeContext={latestAttempt ? { total: latestAttempt.total, tile: latestAttempt.tileSize } : null} />;
     return <CanvasMaterial key={flow.state.resetVersion} id={id} presentation={presentation} flow={{ ...flow, codeAttachment: mainAttachment }} onShowCard={openContent} onAttachCode={() => openDialog("code")} explanation={explanation} onAsk={askExplanation} onCompare={compareExplanation} proactive={proactive} diagramRef={presentation === "content" ? diagnosisTargetRef : undefined} />;
   };
   const availableMaterials = isMainTask ? [
@@ -386,7 +396,7 @@ function App() {
       records: [...wb.getSession(ownerId).records, ...ownerState.snapshots],
       precisionContext: ownerMain ? precisionContext : null,
       canvasCards: ownerImage ? imageCanvas.state.cards : ownerMain ? canvas.state.cards : [],
-    });
+    }).map(item => ({ ...item, ...ownerState.overview.itemOverrides?.[item.id], lastAccessAt: ownerState.visitedTabs.find(tab => tab.id === item.id)?.lastAccessAt || 0 }));
   };
   const contentItems = getTaskItems(selectedTask);
   const renderContentCanvas = (visible, ownerId) => {
@@ -396,9 +406,8 @@ function App() {
     const free = ownerState.canvasMode === "free";
     const ownerCanvas = ownerImage ? imageCanvas : canvas;
     return <div className="tw-content-canvas">
-      <nav className="tw-canvas-switch" aria-label="画布查看方式"><button type="button" className={!free ? "is-selected" : ""} aria-pressed={!free} onClick={() => openCanvas({ mode: "overview" })}>分组总览</button><button type="button" className={free ? "is-selected" : ""} aria-pressed={free} onClick={() => openCanvas({ mode: "free" })}>自由摆放</button><span>自动归入任务 · 收起仍保留</span></nav>
       <div className="tw-canvas-body">
-        <TaskContentOverview taskId={ownerId} visible={visible && !free} items={getTaskItems(ownerId)} categories={CONTENT_CATEGORIES} groups={getContentGroups(ownerId)} viewState={ownerState.overview} selectedId={ownerState.lastContentId} onViewChange={updateOverview} onOpen={restoreContent} onArrange={arrangeMaterials}
+        <TaskContentOverview taskId={ownerId} visible={visible && !free} items={getTaskItems(ownerId)} categories={CONTENT_CATEGORIES} groups={getContentGroups(ownerId).map(group => ({ ...group, title: ownerState.overview.groupNames?.[group.id] || group.title }))} viewState={ownerState.overview} selectedId={ownerState.lastContentId} onViewChange={patch => updateOverview(patch, ownerId)} onEditGroup={workspace.actions.editGroup} onEditItem={workspace.actions.editItem} onOpen={restoreContent} onArrange={arrangeMaterials}
           renderPreview={id => id === "explanation" ? <RangeDiagram snapshot={flow.state} compact active={false} onFocus={focus => { explanation.actions.focusConcept(focus); restoreContent("explanation"); }} title="当前示例范围" /> : id === "image-explanation" ? <TensorDiagram inference={inference} compact /> : null} />
         <TaskCanvas embedded visible={visible && free} flow={ownerImage ? undefined : flow} canvas={ownerCanvas} comparisonIds={ownerImage ? ["image-source", "image-practice"] : ["source", "draft"]} onOpenContents={() => openCanvas()} onOpenContent={restoreContent} onCollapse={(id, collapsed) => workspace.actions.setOverview({ compactIds: collapsed ? [...new Set([...workspace.state.overview.compactIds, id])] : workspace.state.overview.compactIds.filter(item => item !== id) })} onAttachCode={() => openDialog("code")} connections={ownerImage ? [{ id: "image-code-diagram", from: "image-source", to: "image-explanation", label: "通道与维度" }, { id: "image-diagram-practice", from: "image-explanation", to: "image-practice", label: "参数试改" }, { id: "image-practice-result", from: "image-practice", to: "image-attempts", label: "形状快照" }] : materialConnections} renderMaterial={id => renderMaterial(id, "canvas", ownerId)} />
       </div>
@@ -437,8 +446,9 @@ function App() {
     previousFlow.current = next;
   }, [flow.state.attempts.length, flow.state.proposedCode, flow.state.appliedCode, flow.state.validation]);
   useEffect(() => {
-    const before = previousImage.current;
     const next = { attempts: inference.state.attempts.length, proposal: inference.state.proposal, applied: inference.state.applied, validation: inference.state.validation };
+    const before = previousImage.current;
+    if (!before) { previousImage.current = next; return; }
     const register = id => workspace.actions.open(id, { activate: false, taskId: IMAGE_TASK, isMainTask: true });
     if (next.attempts > before.attempts) register("image-attempts");
     if (next.proposal && next.proposal !== before.proposal) {
@@ -453,7 +463,7 @@ function App() {
     previousImage.current = next;
   }, [inference.state.attempts.length, inference.state.proposal, inference.state.applied, inference.state.validation]);
   useEffect(() => {
-    if (precisionContext && precisionContext !== previousPrecision.current) workspace.actions.saveSnapshot("precision", { title: "误差计算快照", kind: "precision-snapshot", summary: `${precisionContext.rows?.length || 0} 个元素，${precisionContext.failed} 个超差。${precisionContext.isDemo ? "演示" : "用户提供"}数据，来源与真实精度仍待核对。`, data: { ...precisionContext } }, MAIN_TASK);
+    if (precisionContext && JSON.stringify(precisionContext) !== JSON.stringify(previousPrecision.current)) workspace.actions.saveSnapshot("precision", { title: "误差计算快照", kind: "precision-snapshot", summary: `${precisionContext.rows?.length || 0} 个元素，${precisionContext.failed} 个超差。${precisionContext.isDemo ? "演示" : "用户提供"}数据，来源与真实精度仍待核对。`, data: { ...precisionContext } }, MAIN_TASK);
     previousPrecision.current = precisionContext;
   }, [precisionContext]);
   useEffect(() => { setTaskContentsOpen(false); }, [selectedTask]);
@@ -467,15 +477,18 @@ function App() {
         </div>
         <div className="topbar-divider" />
         <nav className="breadcrumbs" aria-label="当前位置">
-          <span>项目</span><IconChevronRight size={14} /><span>{currentGroup?.name}</span><IconChevronRight size={14} /><strong>任务</strong>
+          <span className="breadcrumb-project">{currentGroup?.name}</span><IconChevronRight className="breadcrumb-project" size={14} /><button className="task-title-button" type="button" title={selectedTask} aria-label="当前任务与对话操作" data-menu-trigger aria-expanded={wb.menu?.name === "chat"} onClick={event => openMenu("chat", event)}><strong>{selectedTask}</strong><IconChevronDown size={13} /></button>
         </nav>
+        {session.unreadReply && <button className="light-button new-reply-button" type="button" onClick={wb.showLatestReply}><IconChevronDown size={14} />有新回复</button>}
         <div className="topbar-spacer" />
+        {!saveAvailable && <span className="save-unavailable" role="status">暂未保存</span>}
+        {workspace.state.collapsed && <button className="light-button reopen-content" type="button" onClick={() => workspace.actions.setCollapsed(false)}>打开内容</button>}
         <span className="proposal-badge"><span className="proposal-dot" />设计提案 · 待开发者确认</span>
         <button className="icon-button top-icon" type="button" aria-label="通知" data-menu-trigger aria-expanded={wb.menu?.name === "notifications"} onClick={(event) => openMenu("notifications", event)}><IconBell size={18} />{wb.notifications.length > 0 && <span className="notification-dot" />}</button>
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid" + (sidebarCollapsed ? " is-sidebar-collapsed" : "") + (layout.dragging ? " is-resizing" : "")} ref={layout.workspaceRef} style={layout.style}>
+      <div className={"workspace-grid" + (sidebarCollapsed ? " is-sidebar-collapsed" : "") + (layout.dragging ? " is-resizing" : "") + (workspace.state.collapsed ? " is-content-collapsed" : "")} ref={layout.workspaceRef} style={layout.style}>
         <div className={"sidebar-shell" + (sidebarCollapsed ? " is-collapsed" : "")}>
         <aside id="project-sidebar" className="sidebar" aria-label="项目与任务" hidden={sidebarCollapsed}>
           <img className="ambient-art ambient-art--archive" src={`${import.meta.env.BASE_URL}assets/project-archive-ambient.png`} alt="" aria-hidden="true" draggable={false} />
@@ -538,15 +551,7 @@ function App() {
         {!sidebarCollapsed && <div className="workspace-divider workspace-divider--projects" role="separator" tabIndex={0} aria-label="调整项目栏宽度" title="拖动调整项目栏宽度；双击恢复默认布局" {...layout.separatorProps("projects")} />}
 
         <section className="conversation-panel" aria-label="任务对话">
-          <header className="panel-header conversation-header">
-            <div><h2>对话</h2><span className="conversation-context" title={selectedTask}>{selectedTask}</span></div>
-            <div className="header-actions">
-              {session.unreadReply && <button className="light-button new-reply-button" type="button" onClick={wb.showLatestReply}><IconChevronDown size={14} />有新回复</button>}
-              <button className="light-button" type="button" onClick={wb.startConversation}><IconPlus size={16} />新对话</button>
-              <button className="icon-button" type="button" aria-label="更多对话操作" data-menu-trigger aria-expanded={wb.menu?.name === "chat"} onClick={(event) => openMenu("chat", event)}><IconDots size={18} /></button>
-            </div>
-            <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
-          </header>
+          <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <div className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
             <div className="conversation-flow">
             {session.showIntro && isMainTask && <>
@@ -632,7 +637,7 @@ function App() {
           </div>
           <form className="composer" onSubmit={handleSendMessage}>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0) && <div className="composer-context-chips">
-              {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={13} /><span title={file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={12} /></button></span>)}
+              {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={13} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={12} /></button></span>)}
               {session.capabilityIds.map((id) => <span className="attachment-chip capability-chip" key={id}><IconBooks size={13} /><span>{capabilities.find((item) => item.id === id)?.name}</span><button type="button" aria-label="移除能力" onClick={() => wb.patchSession((old) => ({ capabilityIds: old.capabilityIds.filter((item) => item !== id) }))}><IconX size={12} /></button></span>)}
             </div>}
             <textarea ref={wb.draftRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); handleSendMessage(event); } }} placeholder="继续提问，或描述你想进行的下一步…" aria-label="继续提问" rows={1} />
@@ -653,20 +658,20 @@ function App() {
           <input hidden type="file" multiple accept="image/*" ref={wb.imageRef} onChange={(event) => wb.readFiles(event, "image")} aria-label="选择截图附件" />
         </section>
 
-        <div className="workspace-divider workspace-divider--conversation" role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />
-        <aside className="diagnostic-panel" aria-label="任务工作区">
-          <TaskWorkspace taskId={selectedTask} workspace={workspace} isMainTask={isInteractiveTask} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials}
+        <div className="workspace-divider workspace-divider--conversation" hidden={workspace.state.collapsed} role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />
+        <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
+          <TaskWorkspace taskId={selectedTask} workspace={workspace} isMainTask={isInteractiveTask} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)}
             renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
           />
         </aside>
       </div>
       {wb.menu && <div className={"workbench-menu workbench-menu-" + wb.menu.name} ref={wb.menuRef} style={{ left: wb.menu.left, ...(wb.menu.bottom !== null ? { bottom: wb.menu.bottom } : { top: wb.menu.top }) }}>
         {wb.menu.name === "filter" && <><div className="menu-label">显示项目</div>{[{ id: "all", label: "全部项目" }, { id: "current", label: "当前项目" }].map((item) => <button key={item.id} type="button" className={wb.filterScope === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => wb.setFilterScope(item.id))}>{item.label}{wb.filterScope === item.id && <IconCircleCheck size={15} />}</button>)}<div className="menu-divider" /><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups(wb.groups.map((group) => group.id)))}>展开所有项目</button><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups([]))}>收起所有项目</button></>}
-        {wb.menu.name === "chat" && <><div className="menu-label">当前任务对话</div><button type="button" onClick={() => openDialog("history")}>对话历史<span>{session.history.length}</span></button><button type="button" onClick={() => closeMenuAnd(() => wb.copyText(wb.conversationText()))}>复制当前对话<IconCopy size={15} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={15} /></button><div className="menu-divider" /><button type="button" onClick={resetCurrentTask}>恢复本题初始状态</button></>}
+        {wb.menu.name === "chat" && <><div className="menu-label">当前任务对话</div><button type="button" onClick={() => closeMenuAnd(wb.startConversation)}>新对话<IconPlus size={15} /></button><button type="button" onClick={() => openDialog("history")}>对话历史<span>{session.history.length}</span></button><button type="button" onClick={() => closeMenuAnd(() => wb.copyText(wb.conversationText()))}>复制当前对话<IconCopy size={15} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={15} /></button><div className="menu-divider" /><button type="button" onClick={resetCurrentTask}>恢复本题初始状态</button></>}
         {wb.menu.name === "input" && <><div className="menu-label">补充任务上下文</div><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={15} /></button><button type="button" onClick={() => openDialog("capabilities")}>使用能力库<IconBooks size={15} /></button></>}
         {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => openContent("review"))}>生成复核记录<IconFileText size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={15} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={15} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={15} /></button></>}
         {wb.menu.name === "notifications" && <><div className="menu-label">任务动态</div>{wb.notifications.length ? wb.notifications.map((entry) => <button className="notification-row" key={entry.id} type="button" onClick={() => selectTask(entry.taskName)}><span><strong>{entry.text}</strong><small>{entry.taskName} · {entry.time}</small></span></button>) : <p className="menu-empty">尚无新动态。完成核对后会在这里留下记录。</p>}</>}
-        {wb.menu.name === "profile" && <><div className="menu-profile"><strong>开发者</strong><span>Ascend Studio · 本地设计预览</span></div><button type="button" onClick={wb.exportTask}>导出当前任务</button><p className="menu-empty">附件与交互记录保存在本次页面会话中；刷新后恢复初始状态。</p></>}
+        {wb.menu.name === "profile" && <><div className="menu-profile"><strong>开发者</strong><span>Ascend Studio · 本地设计预览</span></div><button type="button" onClick={wb.exportTask}>导出当前任务</button><p className="menu-empty">{saveAvailable ? "任务参数、草案、对话与历史自动保存在此浏览器。原始附件需要重新选择。" : "此浏览器暂时无法保存新改动；请先导出当前任务记录。"}</p></>}
       </div>}
 
       <WorkbenchDialogs dialog={wb.dialog} onClose={wb.closeDialog} groups={wb.groups} taskName={selectedTask} taskGoal={task.goal} onCreateTask={wb.createTask} onAttachCode={wb.attachCode} capabilities={capabilities} onUseCapability={wb.useCapability} automations={wb.automations} onToggleAutomation={(id) => wb.setAutomations((items) => items.map((item) => item.id === id ? { ...item, enabled: !item.enabled } : item))} onRunAutomation={wb.runAutomation} onAddAutomation={(entry) => wb.setAutomations((items) => [...items, { ...entry, id: crypto.randomUUID(), enabled: true, lastRun: "" }])} history={session.history} onRestoreConversation={wb.restoreConversation} modelOptions={modelOptions} selectedModel={wb.selectedModel} onSelectModel={wb.chooseModel} attempts={wb.attempts} onAddAttempt={(entry) => wb.addRecord({ ...entry, kind: "attempt", isDemo: false })} evidenceDetail={wb.dialogData} copyText={wb.dialogData.text || ""} />

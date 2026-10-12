@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { readSession, writeSession } from "./session-storage";
 
 const MIN_ZOOM = 0.15;
 const MAX_ZOOM = 1.5;
@@ -68,12 +69,12 @@ function bringToFront(cards, id) {
   return [...cards.filter((card) => card.id !== id).map((card) => ({ ...card, selected: false })), { ...selected, selected: true }];
 }
 
-export function useCanvasState({ startEmpty = false, cardDefinitions } = {}) {
-  const [state, setState] = useState(() => initialState(startEmpty, cardDefinitions));
+export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey = "canvas" } = {}) {
+  const [state, setState] = useState(() => { const saved = readSession(storageKey, null); return saved && Array.isArray(saved.cards) && saved.viewport ? { ...initialState(startEmpty, cardDefinitions), ...saved, comparing: false } : initialState(startEmpty, cardDefinitions); });
   const current = useRef(state);
   const surfaceSize = useRef(null);
   const hiddenHistory = useRef([]);
-  const placedCards = useRef(new Set(startEmpty ? [] : ["source", "evidence"]));
+  const placedCards = useRef(new Set(state.cards.filter(card => card.opened).map(card => card.id)));
   const comparisonSnapshot = useRef(null);
   const lastHidden = (cards) => hiddenHistory.current.findLast((id) => cards.some((card) => card.id === id && !card.visible)) || null;
 
@@ -81,6 +82,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions } = {}) {
     const previous = current.current;
     const next = { ...previous, ...(typeof change === "function" ? change(previous) : change) };
     current.current = next;
+    writeSession(storageKey, next);
     setState(next);
   };
 

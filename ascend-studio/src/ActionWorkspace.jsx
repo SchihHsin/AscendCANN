@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { readSession, writeSession } from "./session-storage";
 import {
   IconAlertTriangle,
   IconArrowLeft,
@@ -66,28 +67,32 @@ function parsePrecisionCSV(source, absTolerance, relTolerance) {
   }).sort((a, b) => a.index - b.index);
 }
 
-export function ActionWorkspace({ view, onChangeView, onBack, onRecord, codeAttachment = null, onExplain, onTry, onOpenContents, embedded = false, precisionContext = null, onPrecisionContext, rangeContext = null }) {
-  const [total, setTotal] = useState("561");
-  const [tileSize, setTileSize] = useState("32");
-  const [rangeError, setRangeError] = useState("");
-  const [rangeResult, setRangeResult] = useState(null);
-  const [csv, setCSV] = useState("");
-  const [sourceIsDemo, setSourceIsDemo] = useState(false);
-  const [absoluteTolerance, setAbsoluteTolerance] = useState("0.00001");
-  const [relativeTolerance, setRelativeTolerance] = useState("0.001");
-  const [precisionError, setPrecisionError] = useState("");
-  const [precisionResult, setPrecisionResult] = useState(null);
-  const [selectedPrecisionIndex, setSelectedPrecisionIndex] = useState(null);
-  const [checks, setChecks] = useState([]);
-  const [observation, setObservation] = useState("");
-  const [reviewError, setReviewError] = useState("");
-  const [reviewResult, setReviewResult] = useState(null);
+export function ActionWorkspace({ view, onChangeView, onBack, onRecord, codeAttachment = null, onExplain, onTry, onOpenContents, embedded = false, storageKey = null, precisionContext = null, onPrecisionContext, rangeContext = null }) {
+  const saved = useRef(storageKey ? readSession(storageKey, {}) : {}).current;
+  const [total, setTotal] = useState(saved.total ?? "561");
+  const [tileSize, setTileSize] = useState(saved.tileSize ?? "32");
+  const [rangeError, setRangeError] = useState(saved.rangeError ?? "");
+  const [rangeResult, setRangeResult] = useState(saved.rangeResult ?? null);
+  const [csv, setCSV] = useState(saved.csv ?? "");
+  const [sourceIsDemo, setSourceIsDemo] = useState(saved.sourceIsDemo ?? false);
+  const [absoluteTolerance, setAbsoluteTolerance] = useState(saved.absoluteTolerance ?? "0.00001");
+  const [relativeTolerance, setRelativeTolerance] = useState(saved.relativeTolerance ?? "0.001");
+  const [precisionError, setPrecisionError] = useState(saved.precisionError ?? "");
+  const [precisionResult, setPrecisionResult] = useState(saved.precisionResult ?? null);
+  const [selectedPrecisionIndex, setSelectedPrecisionIndex] = useState(saved.selectedPrecisionIndex ?? null);
+  const [checks, setChecks] = useState(saved.checks ?? []);
+  const [observation, setObservation] = useState(saved.observation ?? "");
+  const [reviewError, setReviewError] = useState(saved.reviewError ?? "");
+  const [reviewResult, setReviewResult] = useState(saved.reviewResult ?? null);
   const [busy, setBusy] = useState(null);
   const [notice, setNotice] = useState("");
   const timer = useRef(null);
   const precisionTableRef = useRef(null);
   const precisionRowRefs = useRef(new Map());
 
+  useEffect(() => {
+    if (storageKey) writeSession(storageKey, { total, tileSize, rangeError, rangeResult, csv, sourceIsDemo, absoluteTolerance, relativeTolerance, precisionError, precisionResult, selectedPrecisionIndex, checks, observation, reviewError, reviewResult });
+  }, [storageKey, total, tileSize, rangeError, rangeResult, csv, sourceIsDemo, absoluteTolerance, relativeTolerance, precisionError, precisionResult, selectedPrecisionIndex, checks, observation, reviewError, reviewResult]);
   useEffect(() => () => window.clearTimeout(timer.current), []);
   useEffect(() => { if (embedded && view === "precision") onPrecisionContext?.(precisionResult); }, [precisionResult, embedded, view, onPrecisionContext]);
   useEffect(() => { setSelectedPrecisionIndex(precisionResult?.rows.find((row) => !row.passed)?.index ?? precisionResult?.rows[0]?.index ?? null); }, [precisionResult]);
@@ -164,7 +169,7 @@ export function ActionWorkspace({ view, onChangeView, onBack, onRecord, codeAtta
     try { rows = parsePrecisionCSV(csv, atol, rtol); }
     catch (error) { setPrecisionError(error.message); setPrecisionResult(null); return; }
     runLocalAction("precision", () => {
-      setPrecisionResult({ rows, atol, rtol, isDemo: sourceIsDemo, failed: rows.filter((row) => !row.passed).length });
+      setPrecisionResult({ id: crypto.randomUUID(), rows, atol, rtol, isDemo: sourceIsDemo, failed: rows.filter((row) => !row.passed).length });
       setNotice(`已完成 ${rows.length} 个元素的本地误差计算。`);
     });
   };

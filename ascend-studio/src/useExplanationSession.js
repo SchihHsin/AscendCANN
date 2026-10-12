@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { readSession, writeSession } from "./session-storage";
 
 export const EXPLANATION_TITLE = "元素分块与尾块范围";
 export const EXPLANATION_DURATION = 60;
@@ -17,8 +18,22 @@ const initialState = () => ({ focus: "tail", videoOpen: false, playing: false, t
 const knownFocus = (focus) => EXPLANATION_SEGMENTS.some((item) => item.focus === focus);
 const safeTime = (time) => Math.max(0, Math.min(EXPLANATION_DURATION, Number.isFinite(Number(time)) ? Number(time) : 0));
 
+function restoreExplanation(resetVersion) {
+  const initial = initialState();
+  const saved = readSession("explanation-session", null);
+  if (!saved || typeof saved !== "object" || Array.isArray(saved) || saved.resetVersion !== resetVersion) return initial;
+  const state = { ...initial, ...saved, playing: false, time: safeTime(saved.time) };
+  state.focus = knownFocus(state.focus) ? state.focus : initial.focus;
+  state.pinnedFocus = knownFocus(state.pinnedFocus) ? state.pinnedFocus : initial.pinnedFocus;
+  state.mode = ["read", "lesson", "explore"].includes(state.mode) ? state.mode : initial.mode;
+  state.videoOpen = Boolean(state.videoOpen);
+  state.pinned = Boolean(state.pinned);
+  state.pinnedSnapshot = state.pinnedSnapshot && typeof state.pinnedSnapshot === "object" && !Array.isArray(state.pinnedSnapshot) ? state.pinnedSnapshot : null;
+  return state;
+}
+
 export function useExplanationSession({ resetVersion = 0, visible = true } = {}) {
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(() => restoreExplanation(resetVersion));
   const lastReset = useRef(resetVersion);
 
   useEffect(() => {
@@ -26,6 +41,10 @@ export function useExplanationSession({ resetVersion = 0, visible = true } = {})
     lastReset.current = resetVersion;
     setState(initialState());
   }, [resetVersion]);
+
+  useEffect(() => {
+    writeSession("explanation-session", { ...state, playing: false, resetVersion });
+  }, [state, resetVersion]);
 
   useEffect(() => {
     if (!visible) setState((previous) => previous.playing ? { ...previous, playing: false } : previous);

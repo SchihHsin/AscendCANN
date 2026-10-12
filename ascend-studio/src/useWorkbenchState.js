@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply } from "./prototype-data";
+import { readSession, writeSession } from "./session-storage";
 
 export const MAIN_TASK = "AddCustom 精度异常";
 export const evidenceDetails = [
@@ -12,28 +13,96 @@ const uid = () => crypto.randomUUID();
 const timeNow = () => new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Shanghai" });
 const cleanReply = (text) => text.replace(/\n\n演示答复 · 未调用真实 AI 或硬件。$/, "");
 
+const isObject = value => Boolean(value) && typeof value === "object" && !Array.isArray(value);
+const objects = value => Array.isArray(value) ? value.filter(isObject) : [];
+
+function storedAttachment(file) {
+  const content = typeof file.content === "string" ? file.content : "";
+  const readable = content && !/^(?:blob:|data:)/i.test(content) && content.length <= 262144;
+  return {
+    id: typeof file.id === "string" ? file.id : uid(),
+    name: typeof file.name === "string" ? file.name : "本地附件",
+    type: typeof file.type === "string" ? file.type : "file",
+    size: Number.isFinite(file.size) ? file.size : 0,
+    receivedOrder: Number.isFinite(file.receivedOrder) ? file.receivedOrder : 0,
+    content: readable ? content : "",
+    ...(!readable ? { restorationNote: file.restorationNote || (content.length > 262144 ? "附件内容过大；仅保留名称，刷新后需重新选择文件。" : "仅保留附件名称；本地文件或图片需重新选择。") } : {}),
+  };
+}
+const storedAttachments = value => objects(value).map(storedAttachment);
+const storedMessages = value => objects(value).filter(message => typeof message.text === "string").map(message => ({
+  ...message,
+  ...(Array.isArray(message.attachments) ? { attachments: storedAttachments(message.attachments) } : {}),
+}));
+function storedTaskSession(value) {
+  const initial = blank();
+  const session = isObject(value) ? { ...initial, ...value } : initial;
+  return {
+    ...session,
+    showIntro: typeof session.showIntro === "boolean" ? session.showIntro : true,
+    messages: storedMessages(session.messages),
+    draft: typeof session.draft === "string" ? session.draft : "",
+    attachments: storedAttachments(session.attachments),
+    records: objects(session.records),
+    capabilityIds: Array.isArray(session.capabilityIds) ? session.capabilityIds.filter(id => typeof id === "string") : [],
+    history: objects(session.history).map(entry => ({ ...entry, messages: storedMessages(entry.messages) })),
+    selectedRoute: ["tail", "precision", "retry"].includes(session.selectedRoute) ? session.selectedRoute : initial.selectedRoute,
+    replying: false,
+    unreadReply: Boolean(session.unreadReply),
+  };
+}
+function restoreWorkbench() {
+  const saved = readSession("workbench", null);
+  const value = isObject(saved) ? saved : {};
+  const savedGroups = objects(value.groups).filter(group => typeof group.id === "string" && typeof group.name === "string" && Array.isArray(group.tasks));
+  const groups = savedGroups.length ? savedGroups.map(group => ({ ...group, tasks: group.tasks.filter(task => typeof task === "string") })) : initialGroups;
+  const taskNames = new Set(groups.flatMap(group => group.tasks));
+  const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
+  if (!sessions[MAIN_TASK]) sessions[MAIN_TASK] = blank();
+  const meta = { ...taskDetails, ...(isObject(value.meta) ? Object.fromEntries(Object.entries(value.meta).filter(([, item]) => isObject(item))) : {}) };
+  return {
+    groups, meta, sessions,
+    query: typeof value.query === "string" ? value.query : "",
+    filterScope: ["all", "current"].includes(value.filterScope) ? value.filterScope : "all",
+    openedGroups: Array.isArray(value.openedGroups) ? value.openedGroups.filter(id => groups.some(group => group.id === id)) : ["operator", "inference"],
+    selectedTask: taskNames.has(value.selectedTask) ? value.selectedTask : MAIN_TASK,
+    rationaleOpen: Boolean(value.rationaleOpen),
+    selectedModel: modelOptions.some(model => model.id === value.selectedModel) ? value.selectedModel : "general",
+    automations: Array.isArray(value.automations) ? objects(value.automations).map(entry => ({ ...entry, running: false })) : initialAutomations,
+    notifications: objects(value.notifications).slice(0, 10),
+    attachmentOrder: Math.max(0, ...Object.values(sessions).flatMap(session => [...session.attachments, ...session.messages.flatMap(message => message.attachments || []), ...session.history.flatMap(entry => entry.messages.flatMap(message => message.attachments || []))]).map(file => file.receivedOrder || 0)),
+  };
+}
+function restoreConversationScroll() {
+  const saved = readSession("conversation-scroll", null);
+  const entries = value => Array.isArray(value) ? value.filter(entry => Array.isArray(entry) && entry.length === 2 && typeof entry[0] === "string") : [];
+  return { positions: new Map(entries(saved?.positions).filter(([, position]) => Number.isFinite(position) && position >= 0)), following: new Map(entries(saved?.following).filter(([, following]) => typeof following === "boolean")) };
+}
+
 export function useWorkbenchState() {
-  const [groups, setGroups] = useState(initialGroups);
-  const [meta, setMeta] = useState(taskDetails);
-  const [query, setQuery] = useState("");
-  const [filterScope, setFilterScope] = useState("all");
-  const [openedGroups, setOpenedGroups] = useState(["operator", "inference"]);
-  const [selectedTask, setSelectedTask] = useState(MAIN_TASK);
-  const [sessions, setSessions] = useState({ [MAIN_TASK]: blank() });
-  const [rationaleOpen, setRationaleOpen] = useState(false);
+  const restored = useRef(null);
+  if (restored.current === null) restored.current = restoreWorkbench();
+  const [groups, setGroups] = useState(() => restored.current.groups);
+  const [meta, setMeta] = useState(() => restored.current.meta);
+  const [query, setQuery] = useState(() => restored.current.query);
+  const [filterScope, setFilterScope] = useState(() => restored.current.filterScope);
+  const [openedGroups, setOpenedGroups] = useState(() => restored.current.openedGroups);
+  const [selectedTask, setSelectedTask] = useState(() => restored.current.selectedTask);
+  const [sessions, setSessions] = useState(() => restored.current.sessions);
+  const [rationaleOpen, setRationaleOpen] = useState(() => restored.current.rationaleOpen);
   const [actionView, setActionView] = useState(null);
   const [menu, setMenu] = useState(null);
   const [dialog, setDialog] = useState(null);
   const [dialogData, setDialogData] = useState({});
-  const [selectedModel, setSelectedModel] = useState("general");
+  const [selectedModel, setSelectedModel] = useState(() => restored.current.selectedModel);
   const [retryRequested, setRetryRequested] = useState(false);
-  const [automations, setAutomations] = useState(initialAutomations);
-  const [notifications, setNotifications] = useState([]);
+  const [automations, setAutomations] = useState(() => restored.current.automations);
+  const [notifications, setNotifications] = useState(() => restored.current.notifications);
   const [toast, setToast] = useState("");
   const toastTimer = useRef(null);
   const replyTimers = useRef(new Map());
   const automationTimers = useRef(new Map());
-  const attachmentOrder = useRef(0);
+  const attachmentOrder = useRef(restored.current.attachmentOrder);
   const conversationRef = useRef(null);
   const draftRef = useRef(null);
   const fileRef = useRef(null);
@@ -43,9 +112,11 @@ export function useWorkbenchState() {
   activeConversationTask.current = selectedTask;
   const session = sessions[selectedTask] || blank();
   const conversationScrollState = useRef({ task: selectedTask, messages: session.messages });
-  const conversationScrollPositions = useRef(new Map());
-  const previousConversationTask = useRef(selectedTask);
-  const followingConversation = useRef(new Map());
+  const restoredScroll = useRef(null);
+  if (restoredScroll.current === null) restoredScroll.current = restoreConversationScroll();
+  const conversationScrollPositions = useRef(restoredScroll.current.positions);
+  const previousConversationTask = useRef(null);
+  const followingConversation = useRef(restoredScroll.current.following);
   const scrollConversationToTop = useRef(null);
   const task = meta[selectedTask] || { question: "开始任务", reply: "请补充任务上下文。", goal: "补充目标和材料。" };
   const currentGroup = groups.find((group) => group.tasks.includes(selectedTask));
@@ -69,12 +140,22 @@ export function useWorkbenchState() {
     const box = event.currentTarget.getBoundingClientRect();
     setMenu((old) => old?.name === name ? null : { name, left: Math.max(8, Math.min(innerWidth - 252, box.right - 240)), top: box.bottom + 7, bottom: box.bottom + 260 > innerHeight ? innerHeight - box.top + 7 : null });
   };
-  const saveConversationScroll = () => conversationScrollPositions.current.set(selectedTask, conversationRef.current?.scrollTop || 0);
+  const persistConversationScroll = () => writeSession("conversation-scroll", { positions: [...conversationScrollPositions.current], following: [...followingConversation.current] });
+  const saveConversationScroll = () => { conversationScrollPositions.current.set(selectedTask, conversationRef.current?.scrollTop || 0); persistConversationScroll(); };
   const selectTask = (name) => { if (name !== selectedTask) saveConversationScroll(); if (!sessions[name]) updateTask(name, {}); setSelectedTask(name); setActionView(null); setMenu(null); };
   const toggleGroup = (id) => setOpenedGroups((items) => items.includes(id) ? items.filter((item) => item !== id) : [...items, id]);
   const setSelectedRoute = (id) => { patchSession({ selectedRoute: id }); setActionView(null); };
   const setDraft = (draft) => patchSession({ draft });
   const addNotification = (text, taskName = selectedTask) => setNotifications((items) => [{ id: uid(), text, taskName, time: timeNow() }, ...items].slice(0, 10));
+
+  useEffect(() => {
+    writeSession("workbench", {
+      groups, meta, query, filterScope, openedGroups, selectedTask, rationaleOpen, selectedModel,
+      sessions: Object.fromEntries(Object.entries(sessions).map(([name, value]) => [name, storedTaskSession(value)])),
+      automations: automations.map(entry => ({ ...entry, running: false, ...(entry.running ? { lastRun: "刷新后停止；演示尚未完成。" } : {}) })),
+      notifications,
+    });
+  }, [groups, meta, query, filterScope, openedGroups, selectedTask, rationaleOpen, selectedModel, sessions, automations, notifications]);
 
   useEffect(() => {
     const close = (event) => { if (event.key === "Escape") setMenu(null); };
@@ -87,6 +168,7 @@ export function useWorkbenchState() {
       scrollConversationToTop.current = null;
       previousConversationTask.current = selectedTask;
       conversationScrollPositions.current.set(selectedTask, 0);
+      persistConversationScroll();
       conversationRef.current?.scrollTo({ top: 0 });
       conversationScrollState.current = { task: selectedTask, messages: session.messages };
       return;
@@ -146,6 +228,7 @@ export function useWorkbenchState() {
     const following = node.scrollHeight - node.clientHeight - node.scrollTop < 80;
     followingConversation.current.set(selectedTask, following);
     conversationScrollPositions.current.set(selectedTask, node.scrollTop);
+    persistConversationScroll();
     if (following && session.unreadReply) patchSession({ unreadReply: false });
   };
   const showLatestReply = () => {

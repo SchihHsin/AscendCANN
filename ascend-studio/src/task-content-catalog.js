@@ -73,6 +73,7 @@ function summarizeMainAttempts(flow, historyCount = 0) {
 }
 
 function summarizeMainDiff(flow, historyCount = 0) {
+  if (flow.appliedCode && flow.appliedCode === flow.proposedCode) return "这份提案已应用到浏览器示例副本；保留修改依据和历史，真实项目未修改。";
   if (!flow.proposedCode) return `${String(flow.notice || "").includes("取消") ? "当前提案已取消" : "当前提案暂不可用"}；${historyCount ? `保留 ${historyCount} 条提案及操作记录` : "暂无历史提案快照"}，打开不会重新生成。`;
   const code = String(flow.proposedCode);
   const baseline = String(flow.proposalBaseline || "");
@@ -202,7 +203,7 @@ function statusFor(id, produced, precisionContext, flow, inference) {
   if (id === "precision" && precisionContext) return "本地计算 · 数据来源待核对";
   if (id === "attempts") return "浏览器范围演算 · 根因待确认";
   if (id === "image-attempts") return "示例形状检查 · 真实模型待核对";
-  if (id === "diff") return "示例提案 · 未改真实项目";
+  if (id === "diff") return flow.appliedCode && flow.appliedCode === flow.proposedCode ? "已应用示例 · 真实项目待验证" : "示例提案 · 未改真实项目";
   if (id === "validation") return "示例范围复核 · 真实项目待核对";
   if (id === "image-diff") return "示例预览 · 未执行模型";
   if (id === "image-validation") return "示例形状复核 · 真实推理待核对";
@@ -227,7 +228,8 @@ export function buildTaskContentItems({
   const image = isImageTask(taskId);
   const flow = asObject(flowState);
   const inference = asObject(inferenceState);
-  const recordList = asArray(records);
+  const allRecords = asArray(records);
+  const recordList = allRecords.filter(record => !(record.kind === "validation" && allRecords.some(snapshot => snapshot.kind === "validation-snapshot" && snapshot.time === record.time && snapshot.summary === record.summary)));
   const materialList = asArray(materials);
   const canvasList = asArray(canvasCards);
   const metadata = image ? IMAGE_META : MAIN_META;

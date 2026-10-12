@@ -349,3 +349,31 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .workspace-grid.is-resizing, .workspace-grid.is-resizing * { cursor: col-resize !important; user-select: none; }
 .workspace-grid.is-resizing .workspace-divider::after { background: #9396a1; }
 @media (max-width: 980px) { .workspace-divider { display: none; } }
+
+
+/* Task identity is shared by conversation and contents; no duplicated header band. */
+.task-title-button { display: inline-flex; align-items: center; gap: 7px; min-width: 0; max-width: 280px; padding: 5px 7px; border: 0; border-radius: 5px; background: transparent; font: inherit; cursor: pointer; color: #454753; }
+.task-title-button strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.task-title-button:hover { background: #f2f2f4; }
+.task-title-button:focus-visible { outline: 2px solid #aab3c9; outline-offset: 2px; }
+.conversation-panel { position: relative; isolation: isolate; overflow: hidden; }
+.conversation-panel > .ambient-art--exchange { top: -100px; left: -165px; opacity: .2; z-index: -1; }
+.conversation-panel > .conversation-scroll, .conversation-panel > .composer { position: relative; z-index: 1; }
+.diagnostic-panel[hidden], .workspace-divider[hidden] { display: none; }
+.workspace-grid.is-content-collapsed { grid-template-columns: minmax(200px,22vw) minmax(0,1fr) 0; }
+.workspace-grid.is-content-collapsed.is-sidebar-collapsed { grid-template-columns: 18px minmax(0,1fr) 0; }
+.reopen-content { white-space: nowrap; font-size: 12px; }
+@media (max-width: 980px) {
+  .breadcrumbs { display: flex; flex: 1; min-width: 0; }
+  .breadcrumb-project { display: none; }
+  .task-title-button { max-width: 100%; padding-inline: 2px; }
+  .task-title-button strong { font-size: 12px; }
+  .topbar { gap: 8px; }
+  .topbar-spacer { display: none; }
+  .topbar .proposal-badge { display: none; }
+  .brand-studio, .topbar-divider { display: none; }
+  .conversation-panel { overflow: clip; }
+}
+@media (max-width: 420px) { .topbar .profile-button { display: none; } .new-reply-button { font-size: 10px; padding-inline: 5px; } .reopen-content { font-size: 11px; padding-inline: 6px; } }
+
+.save-unavailable { color: #8d6f49; font-size: 11px; white-space: nowrap; }

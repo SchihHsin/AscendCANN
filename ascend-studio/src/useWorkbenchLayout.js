@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { readSession, writeSession } from "./session-storage";
 
 const COLLAPSED_PROJECTS = 18;
 const MIN_PROJECTS = 200;
@@ -9,7 +10,7 @@ const clamp = (value, min, max) => Math.min(Math.max(value, min), Math.max(min, 
 const pixels = (value) => `${Math.round(value * 1000) / 1000}px`;
 const initialPreferences = () => ({ projects: null, conversationRatio: null });
 
-function resolveLayout(size, preferences, sidebarCollapsed) {
+function resolveLayout(size, preferences, sidebarCollapsed, contentCollapsed) {
   if (size.windowWidth <= 980 || !size.width) return null;
   const compact = size.windowWidth <= 1240;
   const defaultProjects = compact ? 260 : Math.max(286, size.windowWidth * 0.22);
@@ -22,6 +23,7 @@ function resolveLayout(size, preferences, sidebarCollapsed) {
   const defaultRatio = defaultRemaining ? defaultConversation / defaultRemaining : 0.55;
   const projects = sidebarCollapsed ? COLLAPSED_PROJECTS : expandedProjects;
   const remaining = Math.max(0, size.width - projects);
+  if (contentCollapsed) return { total: size.width, projects, conversation: remaining, canvas: 0 };
   const conversation = preferences.conversationRatio === null && !sidebarCollapsed
     ? defaultConversation
     : clamp(remaining * (preferences.conversationRatio ?? defaultRatio), MIN_CONVERSATION, remaining - MIN_CANVAS);
@@ -34,15 +36,17 @@ function bounds(kind, layout) {
     : { min: MIN_CONVERSATION, max: layout.total - layout.projects - MIN_CANVAS, now: layout.conversation };
 }
 
-export function useWorkbenchLayout({ sidebarCollapsed }) {
+export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false }) {
   const workspaceRef = useRef(null);
   const dragRef = useRef(null);
   const currentRef = useRef(null);
   const [size, setSize] = useState({ width: 0, windowWidth: 0 });
-  const [preferences, setPreferences] = useState(initialPreferences);
+  const [preferences, setPreferences] = useState(() => ({ ...initialPreferences(), ...readSession("layout", {}) }));
   const [dragging, setDragging] = useState(null);
-  const layout = resolveLayout(size, preferences, sidebarCollapsed);
-  currentRef.current = { layout, preferences, sidebarCollapsed };
+  const layout = resolveLayout(size, preferences, sidebarCollapsed, contentCollapsed);
+  currentRef.current = { layout, preferences, sidebarCollapsed, contentCollapsed };
+
+  useEffect(() => { writeSession("layout", preferences); }, [preferences]);
 
   function endDrag(updateState = true) {
     const active = dragRef.current;
@@ -80,11 +84,11 @@ export function useWorkbenchLayout({ sidebarCollapsed }) {
 
   useEffect(() => {
     if (dragRef.current) endDrag();
-  }, [sidebarCollapsed]);
+  }, [sidebarCollapsed, contentCollapsed]);
 
   function updateBoundary(kind, start, delta) {
     const current = currentRef.current;
-    if (!current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
+    if (!current.layout || (kind === "conversation" && current.contentCollapsed) || (kind === "projects" && current.sidebarCollapsed)) return;
     const limits = bounds(kind, start);
     const width = clamp(limits.now + delta, limits.min, limits.max);
     let next;
@@ -112,7 +116,7 @@ export function useWorkbenchLayout({ sidebarCollapsed }) {
 
   function separatorProps(kind) {
     const limits = layout ? bounds(kind, layout) : { min: 0, max: 0, now: 0 };
-    const disabled = !layout || (kind === "projects" && sidebarCollapsed);
+    const disabled = !layout || (kind === "projects" && sidebarCollapsed) || (kind === "conversation" && contentCollapsed);
     return {
       "aria-orientation": "vertical",
       "aria-disabled": disabled || undefined,
@@ -122,7 +126,7 @@ export function useWorkbenchLayout({ sidebarCollapsed }) {
       "aria-valuetext": `${Math.round(limits.now)} px`,
       onPointerDown: (event) => {
         const current = currentRef.current;
-        if (event.button !== 0 || !event.isPrimary || dragRef.current || !current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
+        if (disabled || event.button !== 0 || !event.isPrimary || dragRef.current || !current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
         event.preventDefault();
         event.currentTarget.setPointerCapture(event.pointerId);
         dragRef.current = { kind, pointerId: event.pointerId, clientX: event.clientX, layout: current.layout, element: event.currentTarget };
@@ -134,7 +138,7 @@ export function useWorkbenchLayout({ sidebarCollapsed }) {
       onLostPointerCapture: pointerEnd,
       onKeyDown: (event) => {
         const current = currentRef.current;
-        if (!current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
+        if (disabled || !current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
         const activeLimits = bounds(kind, current.layout);
         const step = event.shiftKey ? 64 : 16;
         const deltas = {
@@ -150,7 +154,7 @@ export function useWorkbenchLayout({ sidebarCollapsed }) {
       },
       onDoubleClick: (event) => {
         const current = currentRef.current;
-        if (!current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
+        if (disabled || !current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
         event.preventDefault();
         endDrag();
         const next = initialPreferences();
@@ -162,6 +166,7 @@ export function useWorkbenchLayout({ sidebarCollapsed }) {
 
   return {
     workspaceRef,
+    contentWidth: layout?.canvas ?? size.windowWidth,
     dragging,
     separatorProps,
     style: layout ? {

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { readSession, writeSession } from "./session-storage";
 
 export const FLOW_SOURCE = "https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#19";
 
@@ -68,6 +69,41 @@ function editableSnapshot(state) {
   return { rows: state.rows, columns: state.columns, tileSize: state.tileSize, bounds: state.bounds, draftCode: state.draftCode };
 }
 
+const isObject = value => Boolean(value) && typeof value === "object" && !Array.isArray(value);
+const isAttempt = value => isObject(value) && typeof value.id === "string" && isObject(value.snapshot) && typeof value.code === "string";
+const isDraft = value => isObject(value) && [...PARAMETER_NAMES, "draftCode"].every(name => typeof value[name] === "string") && ["full", "valid"].includes(value.bounds);
+
+function restoreFlowSession() {
+  const saved = readSession("task-flow", null);
+  const initial = initialState();
+  if (!isObject(saved) || !isObject(saved.state)) return { state: initial };
+  const state = { ...initial, ...saved.state, busy: false };
+  state.phase = PHASES.includes(state.phase) ? state.phase : initial.phase;
+  state.mode = MODES.includes(state.mode) ? state.mode : initial.mode;
+  state.bounds = ["full", "valid"].includes(state.bounds) ? state.bounds : initial.bounds;
+  for (const name of [...PARAMETER_NAMES, "draftCode", "error", "notice"]) {
+    if (typeof state[name] !== "string") state[name] = initial[name];
+  }
+  for (const name of ["explanationOpen", "pinned", "compare", "archived", "collapsed"]) {
+    if (typeof state[name] !== "boolean") state[name] = initial[name];
+  }
+  for (const name of ["proposedCode", "proposalBaseline", "appliedCode"]) {
+    if (state[name] !== null && typeof state[name] !== "string") state[name] = null;
+  }
+  state.attempts = Array.isArray(state.attempts) ? state.attempts.filter(isAttempt) : [];
+  state.selectedAttemptId = state.attempts.some(attempt => attempt.id === state.selectedAttemptId) ? state.selectedAttemptId : null;
+  state.validation = isObject(state.validation) && Array.isArray(state.validation.checks) && typeof state.validation.summary === "string" ? state.validation : null;
+  state.resetVersion = Number.isSafeInteger(state.resetVersion) && state.resetVersion >= 0 ? state.resetVersion : 0;
+  const proposalAttempt = state.proposedCode && (isAttempt(saved.proposalAttempt) ? saved.proposalAttempt : state.attempts.find(attempt => attempt.id === state.selectedAttemptId));
+  const appliedAttempt = state.appliedCode && (isAttempt(saved.appliedAttempt) ? saved.appliedAttempt : state.attempts.find(attempt => attempt.id === state.appliedAttemptId));
+  const applicationHistory = Array.isArray(saved.applicationHistory) ? saved.applicationHistory.filter(entry => isObject(entry) && (entry.attempt === null || isAttempt(entry.attempt))) : [];
+  state.canUndoApply = applicationHistory.length > 0;
+  const drafts = isObject(saved.modeDrafts) ? saved.modeDrafts : {};
+  const modeDrafts = { inline: isDraft(drafts.inline) ? drafts.inline : editableSnapshot(initial), isolated: isDraft(drafts.isolated) ? drafts.isolated : null };
+  modeDrafts[state.mode] = editableSnapshot(state);
+  return { state, proposalAttempt: proposalAttempt || null, appliedAttempt: appliedAttempt || null, applicationHistory, modeDrafts };
+}
+
 function validParameters(snapshot) {
   const parameters = PARAMETER_NAMES.map((name) => Number(snapshot[name]));
   if (PARAMETER_NAMES.some((name) => !/^\d+$/.test(String(snapshot[name]).trim())) ||
@@ -109,13 +145,15 @@ function rangeCheck(snapshot) {
 }
 
 export function useTaskFlow({ onRecord } = {}) {
-  const [state, setState] = useState(initialState);
+  const restored = useRef(null);
+  if (restored.current === null) restored.current = restoreFlowSession();
+  const [state, setState] = useState(() => restored.current.state);
   const latest = useRef(state);
   const timer = useRef(null);
-  const proposalAttempt = useRef(null);
-  const appliedAttempt = useRef(null);
-  const applicationHistory = useRef([]);
-  const modeDrafts = useRef({ inline: editableSnapshot(initialState()), isolated: null });
+  const proposalAttempt = useRef(restored.current.proposalAttempt || null);
+  const appliedAttempt = useRef(restored.current.appliedAttempt || null);
+  const applicationHistory = useRef(restored.current.applicationHistory || []);
+  const modeDrafts = useRef(restored.current.modeDrafts || { inline: editableSnapshot(initialState()), isolated: null });
   const recordCallback = useRef(onRecord);
   recordCallback.current = onRecord;
 
@@ -142,6 +180,16 @@ export function useTaskFlow({ onRecord } = {}) {
   useEffect(() => () => {
     if (timer.current !== null) clearTimeout(timer.current);
   }, []);
+
+  useEffect(() => {
+    writeSession("task-flow", {
+      state: { ...state, busy: false },
+      proposalAttempt: proposalAttempt.current,
+      appliedAttempt: appliedAttempt.current,
+      applicationHistory: applicationHistory.current,
+      modeDrafts: { ...modeDrafts.current, [state.mode]: editableSnapshot(state) },
+    });
+  }, [state]);
 
   const open = (phase) => {
     if (!PHASES.includes(phase)) return;

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { readSession, writeSession } from "./session-storage";
 
 export const IMAGE_TASK = "图像推理调试";
 export const IMAGE_MATERIALS = [
@@ -34,8 +35,34 @@ export function imageCode(snapshot = original) {
 }
 const start = () => ({ ...original, axes: [...original.axes], attempts: [], selectedId: null, proposal: null, applied: null, undo: null, validation: null, focus: "layout", channel: "all", time: 0, playing: false, lessonOpen: false, exploring: false, pinned: null, notice: "", resetVersion: 0 });
 
+const isObject = value => Boolean(value) && typeof value === "object" && !Array.isArray(value);
+const hasAxes = value => isObject(value) && Array.isArray(value.axes) && value.axes.length === 3 && value.axes.every(axis => [0, 1, 2].includes(axis));
+const isAttempt = value => isObject(value) && typeof value.id === "string" && hasAxes(value.snapshot) && Array.isArray(value.dimensions) && Array.isArray(value.labels) && typeof value.code === "string";
+
+function restoreImageSession() {
+  const initial = start();
+  const saved = readSession("image-inference", null);
+  if (!isObject(saved)) return initial;
+  const state = { ...initial, ...saved, playing: false };
+  state.axes = hasAxes(state) ? [...state.axes] : [...initial.axes];
+  for (const name of ["batch", "lessonOpen", "exploring"]) state[name] = typeof state[name] === "boolean" ? state[name] : initial[name];
+  state.focus = IMAGE_LESSON.some(item => item.focus === state.focus) ? state.focus : initial.focus;
+  state.channel = ["all", "R", "G", "B"].includes(state.channel) ? state.channel : initial.channel;
+  state.time = Math.max(0, Math.min(60, Number.isFinite(Number(state.time)) ? Number(state.time) : 0));
+  state.attempts = Array.isArray(state.attempts) ? state.attempts.filter(isAttempt) : [];
+  state.selectedId = state.attempts.some(attempt => attempt.id === state.selectedId) ? state.selectedId : null;
+  state.proposal = isObject(state.proposal) && isAttempt(state.proposal.attempt) && hasAxes(state.proposal.baseline) ? state.proposal : null;
+  state.applied = isAttempt(state.applied) ? state.applied : null;
+  state.undo = isObject(state.undo) && (state.undo.applied === null || isAttempt(state.undo.applied)) ? state.undo : null;
+  state.validation = isObject(state.validation) && hasAxes(state.validation.snapshot) && Array.isArray(state.validation.dimensions) ? state.validation : null;
+  state.pinned = hasAxes(state.pinned) ? state.pinned : null;
+  state.notice = typeof state.notice === "string" ? state.notice : "";
+  state.resetVersion = Number.isSafeInteger(state.resetVersion) && state.resetVersion >= 0 ? state.resetVersion : 0;
+  return state;
+}
+
 export function useImageInference({ visible, onRecord }) {
-  const [state, setState] = useState(start);
+  const [state, setState] = useState(restoreImageSession);
   const current = useRef(state);
   const callback = useRef(onRecord); callback.current = onRecord;
   current.current = state;
@@ -46,6 +73,7 @@ export function useImageInference({ visible, onRecord }) {
     setState(next);
     return next;
   };
+  useEffect(() => { writeSession("image-inference", { ...state, playing: false }); }, [state]);
   useEffect(() => { if (!visible) patch({ playing: false }); }, [visible]);
   useEffect(() => {
     if (!visible || !state.playing || !state.lessonOpen) return;
