@@ -5005,3 +5005,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计记录在原材料content-management-design.md§11，demo-implementation-status.md§8纠正先前状态快照，interaction-design.md索引；源码/Pages/交接/QA/截图仅暂存本任务。无真实AI/项目写入/模型/NPU或收益验证，真实根因未确认，不改原报告WIP、页序/hash/API-Host-Application事实。图像专属提示/视频布局、能力选配/完整学习起步/GitCode评审分享仍逐题推进。提交后立即push，回执后补。
 
 - 最终检查回执：10份纯JS静态语法通过，最终build:pages成功，产物index-TM4dfXJo.js/index-BeCYEscw.css；主JS517.67kB的非阻塞体积提示保持。最终浏览器error日志为空，临时viewport已reset，默认三栏比例恢复；未新增/运行自动测试。
+
+- Commit/push回执：85b46b0e（feat: simplify task content navigation and restore task context）已成功推送origin/main，278f2eae..85b46b0e；仅42个本任务源码/Pages/材料/交接/QA/截图文件，最终语法/构建/暂存diff检查通过。未纳入报告WIP、DS_Store、未跟踪图稿或其他文件；用户评审待定，线上资源版本另核对。
