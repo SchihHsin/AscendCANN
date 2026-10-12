@@ -5029,3 +5029,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 原材料content-management-design.md新增§12，demo-implementation-status.md新增§10：A所有对象页签、B当前标题下拉、C内容页签＋就地临时查看＋任务总览（主代理推荐，待选择）。C将短解释/试算/每次历史留原对象，完整图解/代码/网页/Diff直接切换，关闭回相邻对象、末项回概要；不增加模式分类选择，不随最近使用重排，也不硬限制三项。当前没有把推荐写成用户已选。
 - 用户转为讨论前Luna准备过同栏页签CSS；随后按自身补丁撤回，源码无diff，主代理未接JSX。此次仅方案/实施状态/两份AGENTS变更；使用Product Design上下文梳理，preflight无已保存插件上下文，沿用当前仓库设计材料。没有新图稿、浏览器操作、构建或测试，不改Pages/其他题/报告WIP/hash/API-Host-Application边界。
 - 后续以整条讲解→代码→网页→Diff→收起找回链路为实施/评审单位；图像专属联动和学习起步等仍未完成。文档diff检查后仅暂存本轮4份文档并立即commit/push，其他WIP保持；回执后补。
+
+- Commit/push回执：22ceb78a（docs: compare workspace content navigation options）已成功推送origin/main，138a035f..22ceb78a；仅4份本轮设计/状态/交接文档，暂存diff检查通过，Demo源码/Pages没有改动。
