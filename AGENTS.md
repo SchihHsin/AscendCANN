@@ -5009,3 +5009,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Commit/push回执：85b46b0e（feat: simplify task content navigation and restore task context）已成功推送origin/main，278f2eae..85b46b0e；仅42个本任务源码/Pages/材料/交接/QA/截图文件，最终语法/构建/暂存diff检查通过。未纳入报告WIP、DS_Store、未跟踪图稿或其他文件；用户评审待定，线上资源版本另核对。
 
 - 发布核对：线上ascstudio/index.html已指向index-TM4dfXJo.js与index-BeCYEscw.css，两资源HTTP200；对应已验收本地构建。交接提交c6d5d615已成功推送origin/main。本地预览仍运行，用户评审待定。
+
+
+### 2026-10-12（讲解错位修复与完整段落交付约定）
+
+- 用户反馈观看讲解错位；主代理读取用户截图、在In-app Browser复现AddCustom尾块章节。外层动态class ex-scene-tail与内部32格图形同名，外层误变32列grid，heading宽9.625/高338px。ExplainPanel.jsx外层改为ex-lesson-focus-*独立命名；Luna只读复核最终确认冲突，未采用其首轮overflow-wrap根因猜测。没有改框架、图解内容、视觉方案或其他题。
+- 主代理实际检查三个章节在1440×900默认栏宽/右360/1600×900右948双列；scene的clientWidth与scrollWidth分别467/336/416相等。播放推进、选字幕暂停20.2秒/工具出现、到60停播、关闭重开保进度正常；error日志为空，默认栏宽和viewport已恢复。7张截图evidence/20261012-lesson-layout，详情ascend-studio/design-qa.md。
+- 用户最新协作要求：按完整问题/交互链路推进，避免每次只做小部分就停下评审；交付写清总范围、已完成、接下来做什么和当前评审重点。保留逐题评审，粒度为完整故事段落。原材料demo-implementation-status.md§9记录本轮主动解释→图解内试改→修改核对→收起找回的整体状态；当前主要审阅自然接续与管理负担，明显bug和适配由主代理先处理。
+- 后续尚未完整：图像专属主动提示/视频图解深化、学习起步旅程、能力选配及官网/GitCode评审分享；真实AI/工程/模型/NPU、跨设备复用仍未接入。不改报告WIP、页序/hash或API/Host/Application边界；示例不证明真实AddCustom根因/精度。
+- build:pages通过，产物index-B9rM6D-K.js/index-BeCYEscw.css，JSX由Vite解析；主JS>500kB提示保持，未新增/运行自动测试。仅提交本任务源码/Pages/QA/实施状态/截图及两份AGENTS，保持未知脏文件；暂存diff检查及commit/push回执后补。

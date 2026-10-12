@@ -12,7 +12,7 @@ const snapshotOf = (state) => ({ rows: state.rows, columns: state.columns, tileS
 
 function LessonScene({ time, playing, segment }) {
   const progress = Math.min(1, Math.max(0, (time - segment.time) / 20));
-  return <div className={`ex-lesson-scene ex-scene-${segment.focus}${playing ? " is-playing" : ""}`} aria-label={`${segment.concept}的动态片段`}>
+  return <div className={`ex-lesson-scene ex-lesson-focus-${segment.focus}${playing ? " is-playing" : ""}`} aria-label={`${segment.concept}的动态片段`}>
     <div className="ex-scene-heading"><span>17 × 33</span><IconArrowRight size={15} /><strong>{segment.focus === "total" ? "561 个元素" : segment.focus === "tail" ? "尾块：17 / 32" : "有效 561 / 访问 576"}</strong></div>
     {segment.focus === "total" ? <div className="ex-scene-blocks">{Array.from({ length: 18 }, (_, index) => <span className={index === 17 ? "is-tail" : ""} key={index} style={{ "--ex-delay": `${index * 0.07}s` }}>{index === 17 ? "17" : "32"}</span>)}</div>
       : <div className="ex-scene-tail">{Array.from({ length: 32 }, (_, index) => <span key={index} className={index >= 17 ? "is-outside" : ""} style={{ "--ex-delay": `${index * 0.025}s` }} />)}<span className="ex-scene-sweep" style={{ left: `${progress * 100}%` }} aria-hidden="true" /></div>}

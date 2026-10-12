@@ -519,3 +519,18 @@ final result: passed（本次授权范围的主代理检查；用户评审待定
 - 隐藏任务总览滚动保存可能串owner：回调绑定所属任务，后台登记仍activate:false。
 
 没有新增/运行自动测试；十份纯JS node --check、Vite JSX/CSS构建及git diff --check通过。主JS仍有>500kB体积提示，未做性能基准、完整屏幕阅读器、保存禁用/配额失败及多标签并发实操。保存失败显示实际未保存状态；二进制附件不持久化。当前是浏览器示例运算，无真实AI/工程写入/模型/NPU，不声称真实根因或精度通过。
+
+
+## 2026-10-12 · 讲解播放器尾块章节错位修复
+
+用户截图显示观看讲解时文字竖排、图形挤在左侧。主代理在实际页面复现：外层 `ex-lesson-scene ex-scene-tail` 与内部尾块图形共用 `.ex-scene-tail`，误命中32列网格，标题宽9.625px/高338px。外层动态类改为独立的 `ex-lesson-focus-*`，内部图形类保持原语义。Luna只读复核最终确认该类名冲突；其首轮把继承的overflow-wrap判断为根因不正确，已由DOM尺寸纠正。
+
+| 检查条件 | 实际观察 |
+| --- | --- |
+| 1440×900正常栏宽，三个章节 | 场景display:block；场景clientWidth/scrollWidth均467；18个总元素块、32个尾块位置正常，字幕和对应示例代码随章节联动 |
+| 右栏360px，三个章节 | 场景clientWidth/scrollWidth均336；标题高21px，尾块图宽306px；无竖排错位或播放器横向溢出 |
+| 1600×900，右栏948px，三个章节 | 触发播放器/图解双列417.562/480.438px；场景clientWidth/scrollWidth均416；布局正常 |
+| 播放→选中字幕 | 播放从20秒推进；选字幕前playing=true/time20.2，后playing=false/time20.2；显示解释这句/暂停并试一下 |
+| 播放结束、关闭→重新打开 | 到60秒停播；重开保留进度、暂停状态及正常场景布局 |
+
+7张截图保存于 `evidence/20261012-lesson-layout/`，主代理已实际查看。最后恢复默认栏宽及临时viewport；浏览器error日志为空。`npm run build:pages`成功，JSX由Vite解析，产物index-B9rM6D-K.js/index-BeCYEscw.css；原有主JS>500kB提示保持。本轮未新增或运行自动测试，未声称已覆盖所有移动端、a11y或多标签场景。只修显示布局；范围算例仍不能确认真实AddCustom根因、精度或NPU通过。
