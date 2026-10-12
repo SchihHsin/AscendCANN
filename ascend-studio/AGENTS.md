@@ -502,3 +502,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 候选A按用途分区、B按具体问题主题分组（推荐），待评审。五类用途：图解与解释、试验与试改、检查与结果、修改与交付、资料与来源，作为系统推导轻标签/筛选，不强制互斥。问题组由任务上下文产生，不新增学习中心/学习组或额外任务。
 - 收起留标题/结论/状态/数量概要，重开复用对象，多次尝试/核对嵌套保留版本快照；普通内容与画布共享身份/记录。明确下一步不从总览移除旧对象，固定对象不自动收走，后台新结果不抢阅读。重开恢复现场不重跑，任务/示例/真实工程/NPU边界保留。
 - 仅改上述设计稿/两索引/两AGENTS，文档diff检查后commit并立即push；未改源码/Pages、报告序列/hash或API/Host/Application，未实现自动分类/总览/跨刷新恢复，其他既有WIP/图稿/DS_Store保持。提交回执后补。
+
+- Commit/push回执：3f7d5a20（docs: revise content management around canvas overview）已成功推送origin/main，2e9442b7..3f7d5a20；仅5份设计稿/索引/交接文件，暂存diff检查通过，Demo源码和Pages未改。
