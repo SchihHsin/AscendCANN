@@ -598,3 +598,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 1440×900、右360、1280×480右360、390×844检查；菜单344px/短视口top99 bottom467、窄屏页面390/menu374无横溢。默认栏宽和viewport恢复，error日志为空，14张截图evidence/20261012-content-dropdown，细节design-qa.md。原材料content-management-design.md§13/demo-implementation-status.md§11取代此前C推荐/未实施状态，interaction-design.md同步。
 - ReferenceBrowser未改：已知公开报告iframe显示，原始官方页本轮未确认正常显示；可能限制嵌入。导航本会话收起保留，跨刷新回初始URL。分类为已知映射，未接真实工程/AI/模型/NPU，不能确认AddCustom根因/精度；图像专属联动、学习起步、能力匹配及官网/GitCode评审分享仍未完整。不改报告WIP、页序/hash/API-Host-Application边界。
 - node --check、build:pages、diff检查通过，产物index-eMqom2g2.js/index-CfoSMdUk.css，JS522.76kB体积提示保持；无新增/运行自动测试，仅提交本任务源码/Pages/材料/QA/交接/截图，其他WIP保留。commit/push回执后补。
+
+- Commit/push回执：1b18af01（feat: add categorized workspace content switcher）已成功推送origin/main，18d257f1..1b18af01；27个本任务源码/Pages/设计材料/交接/QA/截图文件，最终语法/构建/暂存diff检查通过。其他WIP未暂存；Pages自动部署后核对资源版本。
