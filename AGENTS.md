@@ -5020,3 +5020,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - build:pages通过，产物index-B9rM6D-K.js/index-BeCYEscw.css，JSX由Vite解析；主JS>500kB提示保持，未新增/运行自动测试。仅提交本任务源码/Pages/QA/实施状态/截图及两份AGENTS，保持未知脏文件；暂存diff检查及commit/push回执后补。
 
 - Commit/push回执：d861d264（fix: isolate lesson scene layout from tail diagram grid）已成功推送origin/main，0c1be5f6..d861d264；14个本任务文件，暂存diff检查通过，其他WIP未暂存。Pages自动部署已启动；本条回填不改变已验收代码。
+
+
+### 2026-10-12（右侧内容导航与页签替代方案讨论）
+
+- 用户新增每轮状态汇报要求：完成了什么、当前在做什么、确定了什么、下一步做什么。用户指出右侧不应只露讲解，浏览器/代码/Diff需要内容切换位置；继而要求讨论恢复页签之外的更好方式。
+- 主代理与Luna只读核对TaskWorkspace/useContentWorkspace/ReferenceBrowser及85b46b0e前旧页签：当前仅标题/看全部/收起/更多；内容tabs及viewer仍在，reference是真地址栏/导航/iframe+外部打开。旧页签只显示active/split，去模式选择不应自动等于删除具体对象页签。代码/Diff仍为本地示例，非真实项目编辑。
+- 原材料content-management-design.md新增§12，demo-implementation-status.md新增§10：A所有对象页签、B当前标题下拉、C内容页签＋就地临时查看＋任务总览（主代理推荐，待选择）。C将短解释/试算/每次历史留原对象，完整图解/代码/网页/Diff直接切换，关闭回相邻对象、末项回概要；不增加模式分类选择，不随最近使用重排，也不硬限制三项。当前没有把推荐写成用户已选。
+- 用户转为讨论前Luna准备过同栏页签CSS；随后按自身补丁撤回，源码无diff，主代理未接JSX。此次仅方案/实施状态/两份AGENTS变更；使用Product Design上下文梳理，preflight无已保存插件上下文，沿用当前仓库设计材料。没有新图稿、浏览器操作、构建或测试，不改Pages/其他题/报告WIP/hash/API-Host-Application边界。
+- 后续以整条讲解→代码→网页→Diff→收起找回链路为实施/评审单位；图像专属联动和学习起步等仍未完成。文档diff检查后仅暂存本轮4份文档并立即commit/push，其他WIP保持；回执后补。
