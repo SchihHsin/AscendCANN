@@ -5018,3 +5018,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户最新协作要求：按完整问题/交互链路推进，避免每次只做小部分就停下评审；交付写清总范围、已完成、接下来做什么和当前评审重点。保留逐题评审，粒度为完整故事段落。原材料demo-implementation-status.md§9记录本轮主动解释→图解内试改→修改核对→收起找回的整体状态；当前主要审阅自然接续与管理负担，明显bug和适配由主代理先处理。
 - 后续尚未完整：图像专属主动提示/视频图解深化、学习起步旅程、能力选配及官网/GitCode评审分享；真实AI/工程/模型/NPU、跨设备复用仍未接入。不改报告WIP、页序/hash或API/Host/Application边界；示例不证明真实AddCustom根因/精度。
 - build:pages通过，产物index-B9rM6D-K.js/index-BeCYEscw.css，JSX由Vite解析；主JS>500kB提示保持，未新增/运行自动测试。仅提交本任务源码/Pages/QA/实施状态/截图及两份AGENTS，保持未知脏文件；暂存diff检查及commit/push回执后补。
+
+- Commit/push回执：d861d264（fix: isolate lesson scene layout from tail diagram grid）已成功推送origin/main，0c1be5f6..d861d264；14个本任务文件，暂存diff检查通过，其他WIP未暂存。Pages自动部署已启动；本条回填不改变已验收代码。
