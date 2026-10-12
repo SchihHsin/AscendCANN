@@ -4962,3 +4962,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 最终build:pages、相关纯JS node --check和git diff --check后仅暂存本任务源码/产物/设计材料/交接/截图，commit并立即push origin/main；保留其他报告WIP、图稿、DS_Store等。用户评审待定，构建/commit/push回执随后补记。
 
 - 构建回执：最终build:pages成功，index-D7375VcR.js/index-BEGs8Lx0.css；3份相关纯JS静态语法通过，JSX经Vite解析。主JS503.10kB有非阻塞体积提示，未改阈值、未声称性能验收；最终普通收起及两画布概要同步再次操作无error。
+
+- Commit/push回执：e84a78b8（feat: unify task content overview and history recovery）已成功推送origin/main，d980fe58..e84a78b8；32个本任务源码/Pages/设计材料/交接/截图文件。最终Pages构建、3份JS静态语法与暂存diff检查通过；未纳入原有报告WIP/图稿/DS_Store，未新增或运行自动测试。用户评审待定。
