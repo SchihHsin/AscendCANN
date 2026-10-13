@@ -5044,3 +5044,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - node --check、build:pages、diff检查通过，产物index-eMqom2g2.js/index-CfoSMdUk.css，JS522.76kB体积提示保持；无新增/运行自动测试，仅提交本任务源码/Pages/材料/QA/交接/截图，其他WIP保留。commit/push回执后补。
 
 - Commit/push回执：1b18af01（feat: add categorized workspace content switcher）已成功推送origin/main，18d257f1..1b18af01；27个本任务源码/Pages/设计材料/交接/QA/截图文件，最终语法/构建/暂存diff检查通过。其他WIP未暂存；Pages自动部署后核对资源版本。
+
+### 2026-10-13（分析材料研究主线纠偏讨论，未实施改稿）
+
+- 用户要求研究重点回到“Agent开发普及之后UX/UI如何变化”，而非Agent本体、能力盘点或架构介绍；来源/可信度仅是UI结论的小例子，不能代替完整设计分析。要求先分析并制定修改计划，本轮不改报告正文、不继续旧ImageGen迭代。
+- 只读核对当前operator-ai-journey-research/index.html、ai-development-behavior-system-report-concise.html、ai-era-interface-value-shift-report.html及agent-tool-calling-reference.html；两项只读子任务复核叙事与机制映射。精简版最终组装31页，问题01连续8页，能力沙盘/供给/机制篇幅挤压用户判断与协作；当前研究报告主要回答社区定位，适合作为证据和领域落地来源，而非完整UX/UI研究的替代。
+- 推荐主线（待评审）：开发方式与人机分工变化→用户新增判断/控制/协作负担→UX目标→UI与交互设计→必要运行机制和领域服务→任务验证。前台与后台须围绕同一体验对应，不拆成互不相干的UI篇和Agent科普篇。UI方向覆盖目标条件、任务选配、过程干预、判断恢复、结果验收、按需理解、团队交接、社区回流；这些是分析维度，不是已证明的新问题清单。
+- 保持现有六题名称不变：可装配能力难以按任务选配并有效使用；开发者难以判断和选择下一步行动；生成结果的可信性难以验证；任务完成不等于开发者能力增长；团队难以共享完整的决策背景；从论坛发帖到与AI对话，问题与解答不再自然沉淀于社区。机制与能力明细建议下沉，跨题评价提升为共性原则；具体删合页序和新图尚未批准。
+- 可信度设计应区分来源、适用条件、实际验证及未覆盖项，不把检索评分/HML类别/检查项完成比例当正确概率。Harness负责上下文、授权、工具运行、状态和证据关联，领域知识/测试/CI/NPU提供真实依据，应用定义验收；不声称Harness保证准确或工具成功等于任务完成。新增设计收益仍需控制任务/模型/资料/环境后的对照验证；本轮没有新用户/NPU/实验结果。
+- 本轮仅追加本交接记录，报告HTML、Demo、图片、页序/hash和机制事实均未改；保留原有全部WIP。检查本任务diff后仅提交AGENTS.md并立即push，提交回执以工具结果为准；后续先形成可评审的内容纲要与证据—体验—设计映射，再进入页面修改。
