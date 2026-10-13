@@ -5080,3 +5080,6 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 一手新材料为公开监督共创预印本及MCP规范/实现指南，准确记录来源与限制。HAX/PAIR没取得可核对正文，不引用记忆内容。单次访谈、15公开样本/15模拟、三检索评分/答案正确率分别保留口径；公开分类按5/6/4；无真人新实验、设计团队访谈、真实接入/NPU或长期收益结果。
 - 派生Report PPT完整runtime并保留翻页/概览/全屏/控制栏，补hash恢复与沙盘三步聚焦；图解结构为分析/规格而非新平台UI。当前脚本语法、23页、10行60格及本地引用路径检查通过。原本地file页被浏览器工具策略拒绝，未用其他浏览器/localhost/CDP重开；新副本先静态验证，正常推送后验收独立公开HTTPS交付，实际浏览器回执随后补。
 - 本任务文件与交接单独检查/暂存/commit并立即push，其他原有脏文件和未跟踪图稿保持。用户评审重点为研究主线、既有沙盘结论到具体做法的承接、UX职责/交付与证据边界；提交与最终验收回执随后补记。
+
+- 功能提交回执：346caeda（feat: add UX work research edition grounded in capability analysis）成功push origin/main，c1a04d18..346caeda，仅9个本任务文件。新副本Pages HTTP200并在IAB打开；源码23页、10行60格、重复ID0、1段脚本编译与本地引用路径检查通过。
+- 浏览器限制与回执：工具截图仅确认第8页默认约568px宽及1440×900桌面四栏推导布局；多次DOM/截图请求超时，未完成23页、概览/全屏/聚焦/键盘/hash全套实际验收，也未读到可靠console清单。没有把静态检查当视觉验收；默认窄视口内容需水平滚动，完整窄屏体验仍待检查。临时viewport已reset成功，新副本tab markDeliverable保留。详情evidence/ux-design-work-20261013/verification.md；该记录与本回执单独commit/push，其他文件保持。下一步用户重点评审6–13页建设结论到具体做法，以及后半段UX工作/验证建议。
