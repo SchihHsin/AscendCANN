@@ -5083,3 +5083,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 功能提交回执：346caeda（feat: add UX work research edition grounded in capability analysis）成功push origin/main，c1a04d18..346caeda，仅9个本任务文件。新副本Pages HTTP200并在IAB打开；源码23页、10行60格、重复ID0、1段脚本编译与本地引用路径检查通过。
 - 浏览器限制与回执：工具截图仅确认第8页默认约568px宽及1440×900桌面四栏推导布局；多次DOM/截图请求超时，未完成23页、概览/全屏/聚焦/键盘/hash全套实际验收，也未读到可靠console清单。没有把静态检查当视觉验收；默认窄视口内容需水平滚动，完整窄屏体验仍待检查。临时viewport已reset成功，新副本tab markDeliverable保留。详情evidence/ux-design-work-20261013/verification.md；该记录与本回执单独commit/push，其他文件保持。下一步用户重点评审6–13页建设结论到具体做法，以及后半段UX工作/验证建议。
+
+### 2026-10-15（DACT 研究材料加入 AI 协作旅程参考）
+
+- 用户选择方案一：将 AscendCANN 报告第 5 页的“AI 协作开发者旅程图”作为研究者内部参考，加入 DACT 研究材料总览和研究团队执行包；不改参与者材料与测试提纲。
+- 执行包将 Need/Context、Search/Fetch、Generate、Decide、Execute 作为协同行为观察标签，与 D/M/X/O/L 工程节点并列记录；两者不作一一映射，行为可循环、跳跃或缺失。明确该图仅为 AddCustom 情境示意，不是本研究实测证据，也不向参与者展示或作为标准脚本。
+- 验证：私有源与 Pages 副本的两份 HTML 字节一致；静态 HTMLParser 检查确认执行包内部锚点无断链、无重复 ID，来源链接各 1 处；三仓 `git diff --check` 通过。参与者材料和测试提纲未改。
+- 视觉检查限制：浏览器安全策略拒绝刷新本地 `file://` 页面；未通过其他浏览器或命令绕过，因此本轮没有声称完成视觉验收。
+- 提交 / 推送：`dact-chi-study` 提交 `77036a0`、`ascend-vs-nvidia-ux` 提交 `9b100f8` 均已推送 `origin/main`；AscendCANN 本仓仅更新本交接文件，随后单独提交并推送。
