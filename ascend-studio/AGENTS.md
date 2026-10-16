@@ -609,3 +609,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Luna只读复核三种架构，主代理结合全貌需求，在原content-management-design.md新增§14及demo-implementation-status.md§12：A自动排列的问题地图（推荐）、B紧凑问题树/档案、C时间线。A默认仍聚焦可操作内容，看全部呈问题概要/事实关联/采用版本与对应检查，历史嵌套、自动稳位、缩放改变信息层级，保留已选B分类快切；推荐未获选择，不写成已实施。
 - 下一段如授权实施，以AddCustom调用→试改→修改→明确检查→收起找回/对照完整链路及自适应为单位；图像专属联动/学习起步/能力匹配/官网GitCode协作仍未完整。Demo源码/Pages、报告序列/hash及API/Host/Application事实未改；浏览器范围示例不证明真实根因/精度或NPU成功。
 - 本轮仅更新原设计材料/实施状态/两份AGENTS及审阅截图；不构建、不新增或运行自动测试。仅本任务文档做diff检查并提交后立即push；其他报告WIP、图稿及DS_Store等保持未暂存，commit/push回执以工具结果为准。
+
+- Commit/push回执：1b9adcb5（docs: review right workspace content management options）已成功推送origin/main，41650944..1b9adcb5；仅9个本任务设计/状态/交接/审阅截图文件，暂存diff检查通过。Demo源码和Pages未改，推荐仍待讨论，无构建或新增/运行自动测试；其他WIP未暂存。
