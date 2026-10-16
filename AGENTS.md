@@ -5122,3 +5122,15 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅设计/状态/两AGENTS变更并diff检查后提交立即push；无源码/Pages改动、新浏览器操作、构建或新增/运行测试，无真实AI/工程/NPU新证据，不改报告序列/hash/API-Host-Application边界。原有WIP保持，commit/push结果以工具回执为准。
 
 - Commit/push回执：d97daba7（docs: clarify shared task-space interaction rules）已成功推送origin/main，47280bbc..d97daba7；仅4份本轮文档，暂存diff检查通过，Demo未改，其他WIP未暂存。
+
+
+### 2026-10-16（跨场景共性交互实施与材料统一）
+
+- 用户授权先改Demo并整理交互规则，决定沿用原content-management-design.md第17节作为集中规范，含共通规则/状态图/两场景/实现与检查；实施状态第15节、design-storyline和Studio的interaction-design补索引。此前第14地图仍非强制默认，保留B标题分类下拉、按需右区和三栏。
+- 新增src/ContentObjectInfo.jsx，修改App/TaskWorkspace/Overview及CSS、task-content-catalog/useContentWorkspace/useImageInference，Pages同步ascstudio。共通身份/工作状态/条件/关联/历史动作，查看状态独立；尝试稳定attempt ID，图解关联入口复用同记录，聊天回执/详细结果去重，历史跨行展开；来源关联历史为小入口按需面板。
+- 宽栏对照并排，620及以下切换双方完整宽度；临时对照和固定参考区分，结束回原内容/总览/焦点。历史标题带时间，纯restore导航不生成/检查；补材料列表打开空Diff的隐式生成路径。后台保持已收起对象/整区，不抢焦点，唤醒有更新数；实际可见IDs判定包含任务/宽度/焦点。本地保存新增对照返回点。
+- 两案例状态依提案/已应用/检查代码和尝试ID匹配；新提案待应用、旧检查标旧条件，关联不冒充因果/当前通过。图像记录新增kind/data供追溯与去重。Luna分工概要/目录/规则草案和只读复核，主代理整合验收；修其发现的焦点返回缺失及手动发现的窄栏第二正文隐藏/重复标题。
+- M级操作：AddCustom历史/对照返回/收起刷新/图解保存从1→2次；图像轴2,0,1含batch后保存审阅应用、明确核对，后取消batch新提案显示旧结果条件；图像2尝试/3提案应用记录/1详细核对。窄栏参考12:01往返总览仍为12:01，结束回12:12；任务间现场分别保持。
+- 适配实际拖右360、宽948并排、1280×480和390×844，无正常控件横溢；error日志为空，默认栏宽与临时viewport恢复。12幅取证evidence/20261016-shared-interactions，最终总览04/11。原5173无监听但旧DOM仍在，已启动仓内Vite25405并载入新实现。没有重置用户既有数据。
+- 无新增/运行自动测试；3份纯JS语法和build:pages通过，index-Ca564Dek.js/index-sjsgx6p3.css，546.41kB非阻塞体积提示保留。外部后台时序/编辑冲突只源码复核，完整无障碍、多标签、跨设备未覆盖；无真实AI/工程/模型/NPU证据。图像专属提示/视频、学习起步、能力匹配、官网GitCode协作仍待办，不改报告页序/hash/API-Host-Application边界。
+- 仅本任务源码/Pages/材料/QA/截图/两AGENTS做diff检查后提交立即push，其他报告WIP/图稿/DS_Store保持未暂存。用户评审本轮完整管理链路的一致性和负担，commit/push回执后补。

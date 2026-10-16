@@ -83,7 +83,7 @@ export function useImageInference({ visible, onRecord }) {
     }), 200);
     return () => clearInterval(timer);
   }, [visible, state.playing, state.lessonOpen]);
-  const record = (title, summary) => callback.current?.({ title, summary, kind: "image-practice", isDemo: true });
+  const record = (title, summary, kind = "image-practice", data) => callback.current?.({ title, summary, kind, data, isDemo: true });
   const makeAttempt = snapshot => {
     const result = imageShape(snapshot);
     return { id: crypto.randomUUID(), time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }), snapshot: { axes: [...snapshot.axes], batch: Boolean(snapshot.batch) }, ...result, code: imageCode(snapshot) };
@@ -123,14 +123,14 @@ export function useImageInference({ visible, onRecord }) {
     const old = current.current;
     if (!old.proposal || imageCode(old.proposal.baseline) === old.proposal.attempt.code) return;
     patch({ applied: old.proposal.attempt, proposal: null, undo: { applied: old.applied, validation: old.validation }, validation: null, notice: "浏览器副本已更新；原项目未修改，模型推理尚未运行。" });
-    record("图像预处理 · 应用示例修改", `轴顺序 ${old.proposal.attempt.snapshot.axes.join(",")}；形状 [${old.proposal.attempt.dimensions.join(",")} ]。仅浏览器副本，未写入项目。`);
+    record("图像预处理 · 应用示例修改", `轴顺序 ${old.proposal.attempt.snapshot.axes.join(",")}；形状 [${old.proposal.attempt.dimensions.join(",")} ]。仅浏览器副本，未写入项目。`, "image-apply", { attempt: old.proposal.attempt });
   };
   const validate = () => {
     const old = current.current;
     if (!old.applied) return;
     const validation = { ...imageShape(old.applied.snapshot), snapshot: old.applied.snapshot, attemptId: old.applied.id };
     patch({ validation, notice: "已复核示例形状。模型文件、数据类型、归一化和设备推理仍需项目证据。" });
-    record("图像推理 · 返回任务核对", `示例输入 [${validation.dimensions.join(",")}]，${validation.passed ? "符合" : "不符合"}示例约定 NCHW [1,3,224,224]。未执行 Python、模型或 NPU；需要核对真实模型签名与预处理。`);
+    record("图像推理 · 返回任务核对", `示例输入 [${validation.dimensions.join(",")}]，${validation.passed ? "符合" : "不符合"}示例约定 NCHW [1,3,224,224]。未执行 Python、模型或 NPU；需要核对真实模型签名与预处理。`, "image-validation", { ...validation });
   };
   const restoreParameters = () => patch(old => ({
     axes: [...original.axes],

@@ -9,11 +9,13 @@ import {
   IconGitCompare,
   IconLayoutBoard,
   IconLayoutColumns,
+  IconInfoCircle,
   IconPlus,
   IconWorld,
   IconX,
 } from "@tabler/icons-react";
 import "./task-workspace.css";
+import { ContentObjectInfo } from "./ContentObjectInfo";
 
 const typeLabels = { code: "代码", source: "只读代码", preview: "预览", browser: "浏览器", diff: "Diff", canvas: "画布", result: "结果", record: "记录", brief: "任务简报" };
 
@@ -55,9 +57,11 @@ function SavedContent({ workspace, ownerId, contentId, showing, children }) {
 }
 
 /** Ordinary viewers stay mounted while the task canvas is opened or closed. */
-export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], contentItems = [], onOpen, onClose, onOpenCanvas, onArrange, onReturnFocus, onCollapse, renderContent, renderCanvas }) {
+export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], contentItems = [], onOpen, onClose, onOpenCanvas, onArrange, onReturnFocus, onCollapse, renderContent, renderCanvas, contentWidth = 1000, onCompare }) {
   const { state, actions } = workspace;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [objectInfoOpen, setObjectInfoOpen] = useState(false);
+  const objectInfoTrigger = useRef(null);
   const [contentMenuOpen, setContentMenuOpen] = useState(false);
   const contentMenuId = useId();
   const contentSwitchRef = useRef(null);
@@ -69,39 +73,47 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
   const pickerRef = useRef(null);
   const taskViews = useRef(new Map());
   const tabs = state.tabs || [];
-  const activeTab = tabs.find((tab) => tab.id === state.activeId);
+  const compactCompare = contentWidth <= 620;
+  const focusedId = state.splitId && [state.activeId, state.splitId].includes(state.comparisonFocusId) ? state.comparisonFocusId : state.activeId;
+  const activeTab = tabs.find((tab) => tab.id === focusedId);
+  const parentItem = contentItems.find(item => item.id === focusedId || item.children?.some(child => child.id === focusedId));
+  const historyItem = parentItem?.children?.find(child => child.id === focusedId);
+  const savedEntry = id => contentItems.flatMap(item => item.children || []).find(item => item.id === id);
+  const contentTitle = id => { const record = savedEntry(id); return record ? `${record.title} · ${record.time || "历史"}` : tabs.find(tab => tab.id === id)?.title || "内容"; };
   const onCanvas = state.activeId === "canvas";
   const canReturn = Boolean(state.returnPoint?.activeId || state.lastContentId);
-  const unreadTabs = tabs.filter((tab) => tab.unread && tab.id !== state.activeId);
+  const unreadTabs = normalizeVisited(state).filter(tab => tab.unread);
   const knownIds = new Set(contentItems.map(item => item.id));
   const pickerMaterials = pickerPurpose === "split" || !isMainTask ? materials : materials.filter(item => !knownIds.has(item.id) && !item.id.startsWith("record:"));
-  const activeHistory = contentItems.find(item => item.id === state.activeId)?.children || [];
+  const activeHistory = [...(parentItem?.children || []), ...(parentItem?.relatedHistory || [])];
   const switchItems = [...new Map([
     ...materials.filter(item => item.id !== "canvas" && !item.id.startsWith("record:") && !item.id.startsWith("snapshot:")),
     ...tabs.filter(item => item.id !== "canvas" && (item.id === state.activeId || item.id === state.referenceId)),
   ].map(item => [item.id, { ...materials.find(material => material.id === item.id), ...item }])).values()];
   const groupedItems = contentGroups.map(group => ({ ...group, items: switchItems.filter(item => contentGroupOf(item) === group.id) })).filter(group => group.items.length);
-  taskViews.current.set(taskId, { state, isMainTask, visited: normalizeVisited(state) });
+  taskViews.current.set(taskId, { state, isMainTask, visited: normalizeVisited(state), contentItems });
 
-  useEffect(() => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); }, [taskId]);
+  useEffect(() => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); }, [taskId]);
   useEffect(() => {
-    if (!menuOpen && !pickerOpen && !contentMenuOpen) return undefined;
+    if (!menuOpen && !pickerOpen && !contentMenuOpen && !objectInfoOpen) return undefined;
     const outsideClick = (event) => {
-      if (toolsRef.current?.contains(event.target) || pickerRef.current?.contains(event.target) || contentSwitchRef.current?.contains(event.target)) return;
+      if (toolsRef.current?.contains(event.target) || pickerRef.current?.contains(event.target) || contentSwitchRef.current?.contains(event.target) || event.target.closest?.(".tw-object-sheet") || objectInfoTrigger.current?.contains(event.target)) return;
       setMenuOpen(false);
       setPickerOpen(false);
       setContentMenuOpen(false);
+      setObjectInfoOpen(false);
     };
     const escape = (event) => {
       if (event.key === "Escape") {
-        setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false);
+        setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false);
+        if (objectInfoOpen) objectInfoTrigger.current?.focus({ preventScroll: true });
         if (contentMenuOpen) contentTriggerRef.current?.focus({ preventScroll: true });
       }
     };
     document.addEventListener("pointerdown", outsideClick);
     document.addEventListener("keydown", escape);
     return () => { document.removeEventListener("pointerdown", outsideClick); document.removeEventListener("keydown", escape); };
-  }, [menuOpen, pickerOpen, contentMenuOpen]);
+  }, [menuOpen, pickerOpen, contentMenuOpen, objectInfoOpen]);
   useLayoutEffect(() => {
     if (!contentMenuOpen) return;
     const menu = contentMenuRef.current;
@@ -109,12 +121,25 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
     focusContentOption(current || menu?.querySelector("button:not(:disabled)"));
   }, [contentMenuOpen]);
 
+  useEffect(() => {
+    for (const [ownerId] of taskViews.current) {
+      const current = workspace.getTaskState(ownerId);
+      const selected = ownerId === taskId && !current.collapsed && current.activeId !== "canvas";
+      const focusId = compactCompare && current.splitId && [current.activeId, current.splitId].includes(current.comparisonFocusId) ? current.comparisonFocusId : current.activeId;
+      actions.setVisibleContent(ownerId, !selected ? [] : compactCompare ? [focusId] : [current.activeId, current.splitId].filter(Boolean));
+    }
+  });
+  const restoreObject = id => { setObjectInfoOpen(false); const record = activeHistory.find(child => child.id === id); onOpen?.(id, { restore: true, ...(record ? { title: record.title, type: "preview" } : {}) }); };
+  const compareObject = id => { setObjectInfoOpen(false); onCompare?.(id); };
+  const closeInfo = () => { setObjectInfoOpen(false); objectInfoTrigger.current?.focus({ preventScroll: true }); };
+
   const switchContent = (material) => {
     if (material.available === false) return;
     // Navigation restores an object; it does not generate a proposal or run a check.
     if (tabs.some(item => item.id === material.id)) actions.activate(material.id);
     else actions.open(material.id, { restore: true, title: material.title, type: material.type });
     setContentMenuOpen(false);
+    setObjectInfoOpen(false);
     contentTriggerRef.current?.focus({ preventScroll: true });
   };
   function focusContentOption(option) {
@@ -143,30 +168,31 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
 
   const openMaterial = (material, split = false) => {
     if (material.available === false) return;
-    onOpen?.(material.id, split || pickerPurpose === "split" ? { split: true, restore: true } : {});
+    onOpen?.(material.id, { restore: true, ...(split || pickerPurpose === "split" ? { split: true, pinned: pickerPurpose === "split" } : {}) });
     setPickerOpen(false);
   };
-  const showPicker = (purpose = "new") => { setPickerPurpose(purpose); setMenuOpen(false); setContentMenuOpen(false); setPickerOpen(true); };
-  const openCanvas = (mode = "overview", options = {}) => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); onOpenCanvas?.({ mode, ...options }); };
-  const activeTitle = onCanvas && state.canvasMode === "overview" ? "任务内容" : activeTab?.title || "任务内容";
+  const showPicker = (purpose = "new") => { setPickerPurpose(purpose); setMenuOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); setPickerOpen(true); };
+  const openCanvas = (mode = "overview", options = {}) => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); onOpenCanvas?.({ mode, ...options }); };
+  const activeTitle = onCanvas && state.canvasMode === "overview" ? "任务内容" : historyItem ? `${historyItem.title} · ${historyItem.time || "历史"}` : activeTab?.title || "任务内容";
   const returnToFocus = () => { setMenuOpen(false); setContentMenuOpen(false); onReturnFocus?.(); };
 
-  return <section className="task-workspace" aria-label="任务内容工作区">
+  return <section className={`task-workspace${compactCompare ? " is-compact-comparison" : ""}`} aria-label="任务内容工作区">
     <header className="tw-topbar">
       <div className="tw-content-switch" ref={contentSwitchRef}>
-        <button className="tw-content-trigger" type="button" ref={contentTriggerRef} aria-label={`切换任务内容：${activeTitle}`} aria-haspopup="menu" aria-expanded={contentMenuOpen} aria-controls={contentMenuId} title="切换任务内容" onClick={() => { setContentMenuOpen(current => !current); setMenuOpen(false); setPickerOpen(false); }} onKeyDown={event => { if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); setContentMenuOpen(true); setMenuOpen(false); setPickerOpen(false); } }}>
+        <button className="tw-content-trigger" type="button" ref={contentTriggerRef} aria-label={`切换任务内容：${activeTitle}`} aria-haspopup="menu" aria-expanded={contentMenuOpen} aria-controls={contentMenuId} title="切换任务内容" onClick={() => { setContentMenuOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setObjectInfoOpen(false); }} onKeyDown={event => { if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); setContentMenuOpen(true); setMenuOpen(false); setPickerOpen(false); } }}>
           <MaterialIcon type={onCanvas ? "canvas" : activeTab?.type} /><span>{activeTitle}</span>{unreadTabs.length > 0 && <span className="tw-unread-count" aria-label={`${unreadTabs.length}项内容有未读更新`}>{unreadTabs.length}</span>}<IconChevronDown size={13} />
         </button>
         {contentMenuOpen && <div className="tw-content-menu" id={contentMenuId} role="menu" aria-label="切换任务内容" ref={contentMenuRef} onKeyDown={navigateContentMenu}>
           <div className="tw-content-groups">{groupedItems.map(group => <section className="tw-content-group" key={group.id} role="group" aria-label={group.label}>
             <h3>{group.label}</h3>
             {group.items.map(material => {
-              const current = material.id === state.activeId;
+              const current = material.id === focusedId;
               const reference = material.id === state.referenceId && !current;
               const visited = state.visitedTabs?.find(item => item.id === material.id);
-              const saved = material.id.startsWith("snapshot:") || material.id.startsWith("record:");
-              return <button className={"tw-content-option" + (current ? " is-current" : "") + (reference ? " is-reference" : "") + (material.available === false ? " is-unavailable" : "")} key={material.id} type="button" role="menuitemradio" aria-checked={current} aria-label={material.title} disabled={material.available === false} tabIndex={-1} onClick={() => switchContent(material)}>
-                <MaterialIcon type={material.type} /><span className="tw-option-copy"><strong>{material.title}</strong>{material.available === false ? <small>{material.disabledReason || "完成前置操作后可用"}</small> : saved ? <small>当前只读历史</small> : null}</span>
+              const saved = /^(snapshot:|record:|attempt:)/.test(material.id);
+              const displayedTitle = saved ? contentTitle(material.id) : material.title;
+              return <button className={"tw-content-option" + (current ? " is-current" : "") + (reference ? " is-reference" : "") + (material.available === false ? " is-unavailable" : "")} key={material.id} type="button" role="menuitemradio" aria-checked={current} aria-label={displayedTitle} disabled={material.available === false} tabIndex={-1} onClick={() => switchContent(material)}>
+                <MaterialIcon type={material.type} /><span className="tw-option-copy"><strong>{displayedTitle}</strong>{material.available === false ? <small>{material.disabledReason || "完成前置操作后可用"}</small> : saved ? <small>只读历史</small> : null}</span>
                 {current ? <IconCheck size={13} aria-label="当前内容" /> : reference ? <small className="tw-option-state">参考</small> : visited?.closed ? <small className="tw-option-state">已收起</small> : visited?.unread ? <small className="tw-option-state">有更新</small> : null}
               </button>;
             })}
@@ -175,15 +201,16 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
         </div>}
       </div>
       <div className="tw-topbar-actions">
+        {!onCanvas && <button type="button" ref={objectInfoTrigger} className={"tw-object-info-button" + (objectInfoOpen ? " is-open" : "")} aria-label="来源、关联与历史" title="来源、关联与历史" aria-expanded={objectInfoOpen} onClick={() => { setObjectInfoOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); }}><IconInfoCircle size={15} />{activeHistory.length > 0 && <small>{activeHistory.length}</small>}</button>}
         {state.referenceId === state.activeId && state.referenceReturnId && <button className="tw-nearby-action" type="button" onClick={actions.returnFromReference}>返回当前内容</button>}
         {isMainTask && <button className="tw-view-all" type="button" disabled={onCanvas && state.canvasMode === "overview" && !canReturn} aria-label={onCanvas && state.canvasMode === "overview" ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => onCanvas && state.canvasMode === "overview" ? returnToFocus() : openCanvas("overview", { fit: true })}>{onCanvas && state.canvasMode === "overview" ? "回到刚才" : "看全部"}</button>}
         <button className="tw-collapse" type="button" aria-label="收起任务内容工作区" title="收起任务内容工作区" onClick={() => onCollapse?.()}><IconX size={14} /></button>
         <div className="tw-tools" ref={toolsRef}>
-          <button className={"tw-more-button" + (menuOpen ? " is-open" : "")} type="button" aria-label="更多任务内容操作" title="更多" aria-expanded={menuOpen} onClick={() => { setMenuOpen((current) => !current); setPickerOpen(false); setContentMenuOpen(false); }}><IconDots size={17} /></button>
+          <button className={"tw-more-button" + (menuOpen ? " is-open" : "")} type="button" aria-label="更多任务内容操作" title="更多" aria-expanded={menuOpen} onClick={() => { setMenuOpen((current) => !current); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); }}><IconDots size={17} /></button>
           {menuOpen && <div className="tw-tools-menu">
             {state.referenceId && <button type="button" onClick={() => { actions.endSplit(); setMenuOpen(false); }}><IconX size={15} /><span>收起固定参考</span></button>}
-            {activeHistory.length > 0 && <details className="tw-history-menu"><summary>历史记录 <span>{activeHistory.length}</span></summary><div>{[...activeHistory].reverse().map(item => <button type="button" key={item.id} aria-controls={workspacePaneId(taskId, item.id)} onClick={() => { onOpen?.(item.id, { restore: true, title: item.title }); setMenuOpen(false); }}><strong>{item.title}</strong><small>{item.time} · {item.summary}</small></button>)}</div></details>}
-            {state.activeId && !onCanvas && <button type="button" onClick={() => { (onClose || actions.close)(state.activeId); setMenuOpen(false); }}><IconX size={15} /><span>收起当前内容为概要</span></button>}
+            {!onCanvas && <button type="button" onClick={() => { setMenuOpen(false); setObjectInfoOpen(true); }}><IconInfoCircle size={15} /><span>来源、关联与历史{activeHistory.length ? ` · ${activeHistory.length}` : ""}</span></button>}
+            {state.activeId && !onCanvas && <button type="button" onClick={() => { (onClose || actions.close)(focusedId); setMenuOpen(false); }}><IconX size={15} /><span>收起当前内容为概要</span></button>}
             {state.activeId && !onCanvas && isMainTask && !state.splitId && <button type="button" onClick={() => showPicker("split")}><IconLayoutColumns size={15} /><span>留一份参考</span></button>}
             <button type="button" onClick={() => showPicker()}><IconPlus size={15} /><span>打开其他内容</span></button>
             {isMainTask && <button type="button" onClick={() => openCanvas("free")}><IconLayoutBoard size={15} /><span>手动整理内容</span></button>}
@@ -192,6 +219,11 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
       </div>
     </header>
 
+    {state.splitId && !onCanvas && <div className="tw-comparison-bar" aria-label="内容对照">
+      <div className="tw-comparison-items">{[state.activeId, state.splitId].map((id, index) => <button type="button" key={id} className={focusedId === id ? "is-selected" : ""} aria-pressed={focusedId === id} onClick={() => actions.focusComparison(id)} title={contentTitle(id)}><small>{index === 0 ? "当前" : state.comparisonPinned ? "参考" : "对照"}</small><span>{contentTitle(id)}</span></button>)}</div>
+      <button className="tw-end-comparison" type="button" onClick={actions.endSplit}>{state.comparisonPinned ? "移除参考" : "结束对照"}</button>
+    </div>}
+    {historyItem && !onCanvas && <div className="tw-history-context"><span>只读历史 · {historyItem.time || "当时保存"}</span><button type="button" onClick={() => restoreObject(parentItem.id)}>回到当前内容<IconArrowRight size={12} /></button></div>}
     <div className="tw-stage">
       {[...taskViews.current.entries()].map(([ownerTaskId, view]) => {
         const selectedTask = ownerTaskId === taskId;
@@ -204,9 +236,10 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
           {visited.filter((tab) => tab.id !== "canvas").map((tab) => {
             const primary = current.activeId === tab.id && !currentCanvas;
             const secondary = current.splitId === tab.id && !currentCanvas;
-            const showing = selectedTask && !current.collapsed && (primary || secondary);
+            const compareFocus = compactCompare && current.splitId && [current.activeId, current.splitId].includes(current.comparisonFocusId) ? current.comparisonFocusId : current.activeId;
+            const showing = selectedTask && !current.collapsed && (primary || secondary) && (!compactCompare || !current.splitId || tab.id === compareFocus);
             return <section className={"tw-pane" + (primary ? " is-primary" : "") + (secondary ? " is-secondary" : "")} key={tab.id} id={workspacePaneId(ownerTaskId, tab.id)} role="region" aria-label={tab.title} hidden={!showing}>
-              {secondary && <div className="tw-pane-label"><MaterialIcon type={tab.type} />{secondary ? <button className="tw-reference-focus" type="button" onClick={() => actions.activate(tab.id)}>查看参考 · {tab.title}</button> : <span>{tab.title}</span>}{secondary && <button type="button" aria-label="收起固定参考" onClick={() => actions.endSplit()}><IconX size={12} /></button>}</div>}
+
               <SavedContent workspace={workspace} ownerId={ownerTaskId} contentId={tab.id} showing={showing}>{renderContent?.(tab.id, ownerTaskId)}</SavedContent>
             </section>;
           })}
@@ -215,6 +248,8 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
         </div>;
       })}
     </div>
+
+    {objectInfoOpen && !onCanvas && <ContentObjectInfo item={parentItem || activeTab} history={historyItem} selectedId={focusedId} onClose={closeInfo} onOpen={restoreObject} onCompare={onCompare ? compareObject : undefined} />}
 
     {pickerOpen && <div className="tw-material-picker" ref={pickerRef} aria-label="任务材料">
       <div className="tw-picker-header"><div><strong>{pickerPurpose === "split" ? "选择参考内容" : "新增任务内容"}</strong><span>{pickerPurpose === "split" ? "保留当前内容，下一步也能查看这份参考" : "已使用的内容自动保留在总览中"}</span></div><button type="button" aria-label="关闭材料列表" onClick={() => setPickerOpen(false)}><IconX size={15} /></button></div>

@@ -111,3 +111,8 @@
 用户采用B当前对象标题＋四类静态下拉。主要材料直接选，状态清晰；当前历史列入切换，其他历史归原对象。看全部保任务概要，关闭回原参考/相邻对象、末项总览；纯导航不生成或检查。小提示不新页签是基础规则。
 
 完整决策见原材料content-management-design.md§13、demo-implementation-status.md§11；验收见design-qa.md及evidence/20261012-content-dropdown。每轮报告已完成、当前、确定、下一步。
+
+
+## 2026-10-16 · 跨场景共性交互
+
+权威规则集中于 ../cann-dashboard/ploy-interaction-lab/learning-canvas-story/content-management-design.md 第17节，避免平行规范。两任务共用内容身份、工作/查看状态、条件关联、记录入口、对照和恢复；概要/深入不复制对象。操作检查和未覆盖边界见design-qa.md及evidence/20261016-shared-interactions。当前评审管理一致性；图像视频/学习起步/官网GitCode故事仍按原待办。

@@ -1,29 +1,18 @@
-import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   IconArrowUpRight,
   IconChevronDown,
   IconChevronRight,
   IconDots,
-  IconListDetails,
+  IconHistory,
   IconSearch,
+  IconGitCompare,
 } from "@tabler/icons-react";
 import "./task-content-overview.css";
 
 const asIds = (value) => Array.isArray(value) ? value : [];
 const shortCategory = (id, label) => ({ explain: "解释", experiment: "试改", check: "检查", change: "修改", reference: "来源" }[id] || label || "其他");
-const shortStatus = (value = "") => {
-  if (/已应用/.test(value)) return "已应用";
-  if (/取消/.test(value)) return "已取消";
-  if (/暂不可用/.test(value)) return "不可用";
-  if (/演算|算例/.test(value)) return "算例";
-  if (/形状检查/.test(value)) return "形状检查";
-  if (/提案|修改预览|未改真实项目/.test(value)) return "提案";
-  if (/范围复核|形状复核/.test(value)) return "已复核";
-  if (/误差|精度/.test(value)) return "误差核对";
-  if (/复核记录/.test(value)) return "已记录";
-  if (/本地计算/.test(value)) return "本地计算";
-  return value ? "已访问" : "";
-};
+const recordsOf = item => [...new Map([...(item.children || []), ...(item.relatedHistory || [])].map(record => [record.id, record])).values()];
 const conciseSummary = (value = "") => String(value).replace(/\s+/g, " ").trim().split(/[；。]/)[0] || "已保留，可继续查看";
 const matches = (item, query) => {
   if (!query) return true;
@@ -60,37 +49,76 @@ function ItemMenu({ item, groups, categories, onEditItem }) {
   </details>;
 }
 
-function OverviewCard({ item, categoryLabel, current, historyOpen, onCloseHistory, onOpen, groups, categories, onEditItem }) {
+function CompareButton({ id, selectedId, onCompare }) {
+  if (!onCompare) return null;
+  const sameObject = id === selectedId;
+  if (sameObject) return null;
+  return <button className="tco-compare" type="button" disabled={!selectedId || sameObject} onClick={() => onCompare(id)} title={sameObject ? "当前内容不能与自身对照" : selectedId ? "与当前内容对照" : "先打开一项内容，再选择对照"}>
+    <IconGitCompare size={13} aria-hidden="true" />对照
+  </button>;
+}
+
+function OverviewCard({ item, categoryLabel, current, historyOpen, onToggleHistory, onOpen, groups, categories, onEditItem, selectedId, onCompare }) {
   const titleId = useId();
-  const children = Array.isArray(item.children) ? item.children : [];
+  const children = recordsOf(item);
   const historicalCount = children.length || Number(item.countLabel?.match(/(\d+)\s*条历史记录/)?.[1]) || 0;
+  const state = item.state && typeof item.state === "object" ? item.state : null;
+  const stateLabel = state ? state.label || "" : item.statusLabel || "";
+  const kindLabel = item.kindLabel || (categoryLabel ? shortCategory(item.category, categoryLabel) : "");
+  const applicability = item.contextLabel || item.applicability || item.applicableWhen || "";
   return <article className={`tco-card${current ? " is-current" : ""}`} aria-labelledby={titleId}>
     <div className="tco-card-main">
       <button className="tco-card-title" id={titleId} type="button" onClick={() => onOpen?.(item.id)} aria-label={`打开${item.title}`} aria-current={current ? "true" : undefined}>
         <strong title={item.title || "未命名内容"}>{item.title || "未命名内容"}</strong>
         <IconArrowUpRight size={14} aria-hidden="true" />
       </button>
+      <div className="tco-card-identity">
+        {kindLabel && <span className="tco-card-kind">{kindLabel}</span>}
+        {stateLabel && <span className={`tco-status${state?.tone ? ` is-${state.tone}` : ""}`} title={state?.detail || stateLabel}>{stateLabel}</span>}
+        {item.unread && <span className="tco-unread" title="有更新">有更新</span>}
+        {(current || item.closed) && <span className="tco-view-state">{current ? "上次查看" : "已收起"}</span>}
+      </div>
       <p className="tco-card-summary" title={item.summary || "已保留在本任务中，可继续查看。"}>{conciseSummary(item.summary || "已保留在本任务中，可继续查看。")}</p>
-      <div className="tco-card-meta">
-        {categoryLabel && <span className="tco-card-type" title={categoryLabel}>{shortCategory(item.category, categoryLabel)}</span>}
-        {item.statusLabel && <span className="tco-status" title={item.statusLabel}>{shortStatus(item.statusLabel)}</span>}
-        {historicalCount > 0 && <details className="tco-children" open={historyOpen || undefined} onToggle={event => { if (historyOpen && !event.currentTarget.open) onCloseHistory?.(); }}>
-          <summary title="查看历史时间、条件和记录"><IconListDetails size={13} aria-hidden="true" />历史 {historicalCount}</summary>
-          <ul>{children.map((child, index) => <li key={child.id || `${child.title}-${index}`}>
-            <button type="button" onClick={() => onOpen?.(child.id)} aria-label={`打开记录：${child.title}`}>
-              <span><strong>{child.title || "相关记录"}</strong>{child.summary && <small>{child.summary}</small>}</span>
-              {child.time && <time>{child.time}</time>}
-            </button>
-          </li>)}</ul>
-        </details>}
-        {item.unread && <span className="tco-unread" title="有更新">更新</span>}
+      {applicability && <p className="tco-card-applicability"><span>适用</span>{applicability}</p>}
+      {Array.isArray(item.relations) && item.relations.length > 0 && <div className="tco-card-relations" aria-label="关联内容">
+        <span className="tco-relations-label">关联</span>
+        {item.relations.map((relation, index) => <button key={relation.id || `${relation.label}-${index}`} type="button" onClick={() => onOpen?.(relation.id)} title={relation.title || relation.label || "查看关联内容"}>
+          {relation.label || relation.title || "关联内容"}{(relation.unread || relation.isNew || relation.updated) && <i aria-label="有更新" title="有更新" />}
+        </button>)}
+      </div>}
+      <div className="tco-card-actions">
+        {historicalCount > 0 && <button className={`tco-history-toggle${historyOpen ? " is-open" : ""}`} type="button" aria-expanded={historyOpen} onClick={() => onToggleHistory(item.id)}>
+          <IconHistory size={13} aria-hidden="true" />{historyOpen ? "收起历史" : `历史 ${historicalCount}`}
+        </button>}
+        <CompareButton id={item.id} selectedId={selectedId} onCompare={onCompare} />
         {onEditItem && <ItemMenu item={item} groups={groups} categories={categories} onEditItem={onEditItem} />}
       </div>
     </div>
   </article>;
 }
 
-export function TaskContentOverview({ taskId, items = [], categories = [], groups = [], viewState = {}, onViewChange, onOpen, onArrange, renderPreview, visible = true, selectedId = null, onEditGroup, onEditItem }) {
+function HistoryPanel({ item, onOpen, selectedId, onCompare }) {
+  const children = recordsOf(item);
+  return <section className="tco-history-panel" aria-label={`${item.title || "内容"}的历史记录`}>
+    <header><div><span>历史记录</span><strong>{item.title || "未命名内容"}</strong></div><button type="button" onClick={() => onOpen?.(item.id)}>打开当前内容</button></header>
+    <ol>{children.map((child, index) => <li key={child.id || `${child.title}-${index}`}>
+      <div className="tco-history-entry">
+        <button className="tco-history-title" type="button" onClick={() => onOpen?.(child.id)} title={`查看历史记录：${child.title || "相关记录"}`}>
+          <strong>{child.title || "相关记录"}</strong><span>{child.typeLabel === child.title ? "只读" : child.typeLabel || child.kindLabel || "只读记录"}</span>
+        </button>
+        {child.time && <time>{child.time}</time>}
+        {child.summary && <p>{child.summary}</p>}
+        {(child.condition || child.contextLabel) && <p className="tco-history-condition"><span>条件</span>{child.condition || child.contextLabel}</p>}
+        {child.parentId && <p className="tco-history-parent"><span>所属</span>{child.parentTitle || item.title || "当前内容"}</p>}
+        <CompareButton id={child.id} selectedId={selectedId} onCompare={onCompare} />
+      </div>
+    </li>)}</ol>
+  </section>;
+}
+
+export function TaskContentOverview({ taskId, items = [], categories = [], groups = [], viewState = {}, onViewChange, onOpen, onArrange, renderPreview, visible = true, selectedId = null, onEditGroup, onEditItem, onCompare }) {
+  const rootRef = useRef(null);
+  const [columnCount, setColumnCount] = useState(2);
   const scrollRef = useRef(null);
   const scrollTimerRef = useRef(null);
   const pendingScrollRef = useRef(null);
@@ -110,12 +138,15 @@ export function TaskContentOverview({ taskId, items = [], categories = [], group
   }, [query, category]);
   const categoryLabels = useMemo(() => new Map(safeCategories.map((entry) => [entry.id, entry.label])), [safeCategories]);
 
-  const filteredItems = useMemo(() => safeItems.filter((item) =>
-    (category === "all" || item.category === category) && matches(item, query)
-  ).sort((a, b) => {
+  const filteredItems = useMemo(() => {
+    const matching = safeItems.filter((item) => (category === "all" || item.category === category) && matches(item, query));
+    const historyItem = safeItems.find(item => item.id === viewState.historyId);
+    if (historyItem && !matching.some(item => item.id === historyItem.id)) matching.unshift(historyItem);
+    return matching.sort((a, b) => {
     if (!query) return 0;
     return (Number(b.lastAccessAt) || Date.parse(b.lastAccessAt || "") || 0) - (Number(a.lastAccessAt) || Date.parse(a.lastAccessAt || "") || 0);
-  }), [safeItems, category, query]);
+    });
+  }, [safeItems, category, query, viewState.historyId]);
   const orderedGroups = useMemo(() => {
     const result = safeGroups.map((group) => ({ ...group, items: filteredItems.filter((item) => item.groupId === group.id) }))
       .filter((group) => group.items.length > 0);
@@ -124,6 +155,21 @@ export function TaskContentOverview({ taskId, items = [], categories = [], group
     if (unassigned.length) result.push({ id: "__other__", title: "其他内容", description: "尚未归入主题区的本任务内容。", items: unassigned });
     return result;
   }, [safeGroups, filteredItems]);
+
+  useLayoutEffect(() => {
+    const element = rootRef.current;
+    if (!element || !visible) return undefined;
+    const measure = () => {
+      const grid = element.querySelector(".tco-group-cards");
+      if (!grid) return;
+      const count = getComputedStyle(grid).gridTemplateColumns.split(" ").filter(Boolean).length;
+      if (count > 0) setColumnCount(previous => previous === count ? previous : count);
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    measure();
+    return () => observer.disconnect();
+  }, [visible, safeItems.length, collapsedGroups.length]);
 
   const patch = (value) => onViewChange?.(value);
   const toggleGroup = (id) => {
@@ -135,6 +181,7 @@ export function TaskContentOverview({ taskId, items = [], categories = [], group
     scrollRef.current?.scrollTo({ top: 0 });
   };
   const clearFilters = () => patch({ query: "", category: "all" });
+  const toggleHistory = (id) => patch({ historyId: viewState.historyId === id ? null : id });
   const hasFilter = Boolean(query) || category !== "all";
   const collapsedCount = collapsedGroups.filter((id) => safeGroups.some((group) => group.id === id)).length;
   const flushScroll = () => {
@@ -170,7 +217,7 @@ export function TaskContentOverview({ taskId, items = [], categories = [], group
     scrollTimerRef.current = setTimeout(flushScroll, 200);
   };
 
-  return <section className="tco-root" data-task-id={taskId || undefined} hidden={!visible} aria-label="任务内容总览">
+  return <section className="tco-root" ref={rootRef} data-task-id={taskId || undefined} hidden={!visible} aria-label="任务内容总览">
     <header className="tco-toolbar">
       <div className="tco-overview-count"><strong>{safeItems.length}</strong><span>项内容</span></div>
       <div className="tco-toolbar-actions">
@@ -192,6 +239,8 @@ export function TaskContentOverview({ taskId, items = [], categories = [], group
       <div className="tco-map">
         {orderedGroups.map((group) => {
           const isCollapsed = collapsedGroups.includes(group.id);
+          const historyItem = group.items.find(item => item.id === viewState.historyId);
+          const historyRowEnd = historyItem ? Math.min(group.items.length - 1, (Math.floor(group.items.indexOf(historyItem) / columnCount) + 1) * columnCount - 1) : -1;
           const groupHeadingId = `${instanceId}-group-${String(group.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
           return <section className={`tco-group${isCollapsed ? " is-collapsed" : ""}`} key={group.id} aria-labelledby={groupHeadingId}>
             <header className="tco-group-header">
@@ -202,7 +251,9 @@ export function TaskContentOverview({ taskId, items = [], categories = [], group
               <span className="tco-group-count">{group.items.length}</span>
               {onEditGroup && <GroupMenu group={group} onEditGroup={onEditGroup} />}
             </header>
-            {isCollapsed ? <ul className="tco-group-outline">{group.items.map((item) => <li key={item.id}><button type="button" onClick={() => onOpen?.(item.id)} aria-label={`打开${item.title}`} aria-current={selectedId === item.id ? "true" : undefined}><span className="tco-outline-title">{item.title || "未命名内容"}<em>{categoryLabels.get(item.category) || "内容"}</em></span><small>{item.summary || "已保留在本任务中，可继续查看。"}</small></button></li>)}</ul> : <div className="tco-group-cards">{group.items.map((item) => <OverviewCard key={item.id} item={item} categoryLabel={categoryLabels.get(item.category)} current={selectedId === item.id} historyOpen={viewState.historyId === item.id} onCloseHistory={() => patch({ historyId: null })} onOpen={onOpen} groups={safeGroups} categories={safeCategories} onEditItem={onEditItem} />)}</div>}
+            {isCollapsed ? <ul className="tco-group-outline">{group.items.map((item) => <li key={item.id}><button type="button" onClick={() => onOpen?.(item.id)} aria-label={`打开${item.title}`} aria-current={selectedId === item.id ? "true" : undefined}><span className="tco-outline-title">{item.title || "未命名内容"}<em>{categoryLabels.get(item.category) || "内容"}</em></span><small>{item.summary || "已保留在本任务中，可继续查看。"}</small></button></li>)}</ul> : <>
+              <div className="tco-group-cards">{group.items.map((item, index) => <Fragment key={item.id}><OverviewCard item={item} categoryLabel={categoryLabels.get(item.category)} current={selectedId === item.id || item.children?.some(child => child.id === selectedId)} historyOpen={viewState.historyId === item.id} onToggleHistory={toggleHistory} onOpen={onOpen} groups={safeGroups} categories={safeCategories} onEditItem={onEditItem} selectedId={selectedId} onCompare={onCompare} />{historyItem && index === historyRowEnd && <HistoryPanel item={historyItem} onOpen={onOpen} selectedId={selectedId} onCompare={onCompare} />}</Fragment>)}</div>
+            </>}
           </section>;
         })}
       </div>

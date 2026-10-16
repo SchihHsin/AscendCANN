@@ -11,6 +11,9 @@ function initialState(isMainTask, taskId) {
     splitId: null,
     referenceId: null,
     referenceReturnId: null,
+    comparisonFocusId: null,
+    comparisonReturnPoint: null,
+    comparisonPinned: false,
     lastContentId: initial.id,
     lastSplitId: null,
     canvasMode: "overview",
@@ -33,11 +36,16 @@ function openedMaterial(previous, id, options = {}) {
   const existing = previous.tabs.find((tab) => tab.id === id)
     || previous.visitedTabs.find((tab) => tab.id === id);
   const meta = getMaterialMeta(id, { ...existing, ...options });
-  const visible = id === previous.activeId || id === previous.splitId;
-  const material = { ...existing, ...meta, closed: false, unread: options.activate === false && !visible ? options.restore ? Boolean(existing?.unread) : true : false };
+  const visible = Array.isArray(options.visibleIds)
+    ? options.visibleIds.includes(id)
+    : !previous.collapsed && previous.activeId !== "canvas" && (id === previous.activeId || id === previous.splitId);
+  const background = options.activate === false;
+  const closed = background ? existing?.closed ?? !previous.tabs.some(tab => tab.id === id) : false;
+  const material = { ...existing, ...meta, closed,
+    unread: background && !visible ? options.restore ? Boolean(existing?.unread) : true : false };
   return {
     ...previous,
-    tabs: rememberMaterial(previous.tabs, material),
+    tabs: background && closed ? previous.tabs : rememberMaterial(previous.tabs, material),
     visitedTabs: rememberMaterial(previous.visitedTabs, material),
   };
 }
@@ -57,6 +65,7 @@ function activatedState(previous, id) {
     activeId: id,
     collapsed: false,
     referenceReturnId,
+    comparisonFocusId: canvas ? previous.comparisonFocusId : id,
     splitId,
     lastContentId: canvas ? previous.lastContentId : id,
     lastSplitId: canvas && previous.activeId === "canvas" ? previous.lastSplitId : canvas ? previous.splitId : splitId,
@@ -67,6 +76,7 @@ function activatedState(previous, id) {
 
 export function useContentWorkspace({ taskId, isMainTask }) {
   const tasks = useRef(null);
+  const visibleContent = useRef(new Map());
   if (!tasks.current) {
     const saved = readSession("workspace", {});
     tasks.current = new Map(Object.entries(saved && typeof saved === "object" ? saved : {}).filter(([, value]) => value && Array.isArray(value.tabs) && Array.isArray(value.visitedTabs)).map(([id, value]) => [id, { ...initialState(id === "AddCustom 精度异常" || id === "图像推理调试", id), ...value, positions: value.positions || {}, overview: { ...initialState(true, id).overview, ...value.overview } }]));
@@ -89,7 +99,7 @@ export function useContentWorkspace({ taskId, isMainTask }) {
     if (typeof id !== "string" || !id.trim()) return;
     const materialId = id.trim();
     const ownerId = options.taskId || taskId;
-    const openingOptions = ownerId === taskId ? options : { ...options, activate: false };
+    const openingOptions = { ...options, visibleIds: visibleContent.current.get(ownerId), ...(ownerId !== taskId ? { activate: false } : {}) };
     update((previous) => {
       const opened = openedMaterial(previous, materialId, openingOptions);
       return openingOptions.activate === false ? opened : activatedState(opened, materialId);
@@ -121,6 +131,9 @@ export function useContentWorkspace({ taskId, isMainTask }) {
       if (referenceId === activeId) { referenceId = null; referenceReturnId = null; }
     }
     const next = { ...previous, tabs, visitedTabs, activeId, splitId, referenceId, referenceReturnId,
+      comparisonFocusId: activeId,
+      comparisonReturnPoint: null,
+      comparisonPinned: false,
       lastSplitId: previous.lastSplitId === id ? null : previous.lastSplitId,
       returnPoint: previous.returnPoint?.activeId === id ? null : previous.returnPoint,
       overview: { ...previous.overview, compactIds },
@@ -133,13 +146,13 @@ export function useContentWorkspace({ taskId, isMainTask }) {
     const opened = activatedState(openedMaterial(previous, "canvas", { restore: true }), "canvas");
     const overview = options.fit ? { ...previous.overview, query: "", category: "all", collapsedGroups: [], historyId: null, scrollTop: 0, fitTick: (previous.overview.fitTick || 0) + 1 } : previous.overview;
     return { ...opened, collapsed: false, canvasMode: options.mode || previous.canvasMode || "overview", overview,
-      returnPoint: previous.activeId !== "canvas" && previous.activeId ? { activeId: previous.activeId, splitId: previous.splitId } : previous.returnPoint };
+      returnPoint: previous.activeId !== "canvas" && previous.activeId ? { activeId: previous.activeId, splitId: previous.splitId, comparisonFocusId: previous.comparisonFocusId } : previous.returnPoint };
   });
   const returnFocus = () => update(previous => {
     const point = previous.returnPoint || { activeId: previous.lastContentId, splitId: previous.lastSplitId };
     if (!point.activeId || point.activeId === "canvas") return previous;
     let next = activatedState(openedMaterial(previous, point.activeId, { restore: true }), point.activeId);
-    if (point.splitId && previous.referenceId && point.splitId === previous.referenceId && point.splitId !== point.activeId) next = { ...openedMaterial(next, point.splitId, { restore: true }), splitId: point.splitId };
+    if (point.splitId && previous.referenceId && point.splitId === previous.referenceId && point.splitId !== point.activeId) next = { ...openedMaterial(next, point.splitId, { restore: true }), splitId: point.splitId, comparisonFocusId: [point.activeId, point.splitId].includes(point.comparisonFocusId) ? point.comparisonFocusId : point.activeId };
     return next;
   });
   const setCollapsed = value => update(previous => ({ ...previous, collapsed: value }));
@@ -157,45 +170,79 @@ export function useContentWorkspace({ taskId, isMainTask }) {
     return tasks.current.get(ownerId);
   };
   const saveSnapshot = (parentId, snapshot, ownerId = taskId) => update(previous => {
-    const record = { ...snapshot, parentId, id: "snapshot:" + crypto.randomUUID(), time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }) };
-    const opened = openedMaterial(previous, parentId, { activate: false, restore: false });
+    const record = { ...snapshot, parentId, id: "snapshot:" + crypto.randomUUID(), createdAt: Date.now(), time: new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }) };
+    const opened = openedMaterial(previous, parentId, { activate: false, restore: false, visibleIds: visibleContent.current.get(ownerId) });
     return { ...opened, snapshots: [...previous.snapshots, record] };
   }, ownerId, true);
 
-  const splitWith = (id) => {
+  const splitWith = (id, options = {}) => {
     if (typeof id !== "string" || !id.trim() || id.trim() === "canvas") return;
     const materialId = id.trim();
     update((previous) => {
-      const opened = openedMaterial(previous, materialId);
-      const contentTabs = opened.tabs.filter((tab) => tab.type !== "canvas");
-      const primary = contentTabs.find((tab) => tab.id === previous.activeId && tab.id !== materialId)
-        || contentTabs.find((tab) => tab.id === previous.lastContentId && tab.id !== materialId)
-        || contentTabs.find((tab) => tab.id !== materialId);
-      const activeId = primary?.id || materialId;
-      const splitId = primary ? materialId : null;
-      const markRead = (items) => items.map((tab) => tab.id === activeId || tab.id === splitId
-        ? { ...tab, unread: false } : tab);
+      let opened = openedMaterial(previous, materialId, { ...options, restore: true });
+      const primaryId = previous.activeId !== "canvas" ? previous.activeId : previous.lastContentId;
+      const primary = primaryId && primaryId !== materialId
+        ? previous.tabs.find(tab => tab.id === primaryId) || previous.visitedTabs.find(tab => tab.id === primaryId)
+        : null;
+      if (!primary) return activatedState(opened, materialId);
+      opened = openedMaterial(opened, primary.id, { restore: true });
+      const returnPoint = previous.comparisonReturnPoint || {
+        activeId: previous.activeId,
+        canvasMode: previous.canvasMode,
+        splitId: previous.splitId,
+        referenceId: previous.referenceId,
+        referenceReturnId: previous.referenceReturnId,
+        comparisonFocusId: previous.comparisonFocusId,
+      };
+      const markRead = items => items.map(tab => tab.id === primary.id || tab.id === materialId
+        ? { ...tab, unread: false, closed: false } : tab);
       return {
         ...opened,
-        activeId,
-        splitId,
-        referenceId: primary ? materialId : null,
-        lastContentId: activeId,
-        lastSplitId: splitId,
+        collapsed: false,
+        activeId: primary.id,
+        splitId: materialId,
+        referenceId: materialId,
+        referenceReturnId: null,
+        comparisonFocusId: primary.id,
+        comparisonReturnPoint: options.pinned ? null : returnPoint,
+        comparisonPinned: Boolean(options.pinned),
+        lastContentId: primary.id,
+        lastSplitId: materialId,
         tabs: markRead(opened.tabs),
         visitedTabs: markRead(opened.visitedTabs),
       };
     });
   };
 
-  const endSplit = () => update((previous) => ({ ...previous, splitId: null, lastSplitId: null, referenceId: null, referenceReturnId: null }));
+  const focusComparison = id => update(previous => {
+    if (id !== previous.activeId && id !== previous.splitId) return previous;
+    return { ...previous, comparisonFocusId: id,
+      tabs: previous.tabs.map(item => item.id === id ? { ...item, unread: false } : item),
+      visitedTabs: previous.visitedTabs.map(item => item.id === id ? { ...item, unread: false } : item) };
+  });
+  const endSplit = () => update(previous => {
+    const point = previous.comparisonReturnPoint;
+    let next = { ...previous, splitId: null, lastSplitId: null, referenceId: null, referenceReturnId: null,
+      comparisonFocusId: null, comparisonReturnPoint: null, comparisonPinned: false };
+    if (point?.activeId) {
+      next = activatedState(openedMaterial(next, point.activeId, { restore: true }), point.activeId);
+      next = { ...next, canvasMode: point.canvasMode || next.canvasMode };
+      if (point.referenceId && point.splitId && point.splitId !== point.activeId) {
+        next = { ...openedMaterial(next, point.splitId, { restore: true }), splitId: point.splitId,
+          referenceId: point.referenceId, referenceReturnId: point.referenceReturnId, comparisonPinned: true,
+          comparisonFocusId: [point.activeId, point.splitId].includes(point.comparisonFocusId) ? point.comparisonFocusId : point.activeId };
+      }
+    }
+    return next;
+  });
+  const setVisibleContent = (ownerId, ids) => visibleContent.current.set(ownerId, ids);
   const returnFromReference = () => update(previous => previous.referenceReturnId
     ? activatedState(openedMaterial(previous, previous.referenceReturnId, { restore: true }), previous.referenceReturnId)
     : previous);
   const markRead = (id) => update(previous => ({ ...previous, tabs: previous.tabs.map(item => item.id === id ? { ...item, unread: false } : item), visitedTabs: previous.visitedTabs.map(item => item.id === id ? { ...item, unread: false } : item) }));
   const reset = () => update(() => initialState(isMainTask, taskId));
 
-  return { state, getTaskState, actions: { open, activate, close, openCanvas, returnFocus, setCollapsed, savePosition, editGroup, editItem, setOverview, saveSnapshot, markRead, splitWith, endSplit, returnFromReference, reset } };
+  return { state, getTaskState, actions: { open, activate, close, openCanvas, returnFocus, setCollapsed, savePosition, editGroup, editItem, setOverview, saveSnapshot, markRead, splitWith, focusComparison, setVisibleContent, endSplit, returnFromReference, reset } };
 }
 
 export default useContentWorkspace;
