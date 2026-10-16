@@ -5120,3 +5120,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 沿用四种主动性意图、B标题分类下拉、按需右区/本地恢复/应用不自动检查；补后台不抢焦点、不覆盖编辑/历史快照，同对象更新/独立产物新建、收起不等于停止删除、查看不执行。任务级已授权动作不要求逐次确认；无验证的内容不强造检查阶段，窄栏改变布局而保行为含义。
 - Luna只读复核共通规则冲突，主代理整合。下一步先明确共性交互状态图/规则并用两案例完整代入，再映射卡片和总览；用户确认的是要求，未批准§14地图/§15全部字段或本轮实施。
 - 仅设计/状态/两AGENTS变更并diff检查后提交立即push；无源码/Pages改动、新浏览器操作、构建或新增/运行测试，无真实AI/工程/NPU新证据，不改报告序列/hash/API-Host-Application边界。原有WIP保持，commit/push结果以工具回执为准。
+
+- Commit/push回执：d97daba7（docs: clarify shared task-space interaction rules）已成功推送origin/main，47280bbc..d97daba7；仅4份本轮文档，暂存diff检查通过，Demo未改，其他WIP未暂存。
