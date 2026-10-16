@@ -5110,3 +5110,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 候选A各业务模板、B统一对象外壳＋可组合正文模块（主代理推荐）；提案统一身份/状态/操作位置、总览摘要、收起唤醒/版本历史、窄栏适配。正文按图解/视频/代码/Diff/网页/表格图表组合；无状态或验收环节不强造字段/步骤，查看状态与业务/验证状态分开。
 - 主题按目标/概念/分析主题/具体问题聚合；卡片代表可独立回看/操作/引用的稳定内容对象，小提示/每次工具调用/调参不天然独立铺卡，尝试历史嵌套，共用对象在总览/展开/聚焦保身份和现场。Luna只读复核泛化，主代理避免将整个目标做巨型嵌套卡；三场景示例是设计推演，未实现或做用户验证。
 - 本轮只读查看OverviewCard，未改源码/Pages、未新操作浏览器/构建/新增或运行测试；不改报告序列/hash/API-Host-Application边界，无真实AI/工程/模型/NPU新证据。仅原设计/实施状态/两AGENTS检查后commit立即push，其他WIP保持，回执以工具结果为准。
+
+- Commit/push回执：78607bea（docs: define cross-scenario card design proposal）已成功推送origin/main，0a6e73f0..78607bea；仅4份本轮设计/状态/交接文件，暂存diff检查通过，Demo实现未改，其他WIP未暂存。
