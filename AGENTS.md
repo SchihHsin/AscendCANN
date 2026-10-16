@@ -5112,3 +5112,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本轮只读查看OverviewCard，未改源码/Pages、未新操作浏览器/构建/新增或运行测试；不改报告序列/hash/API-Host-Application边界，无真实AI/工程/模型/NPU新证据。仅原设计/实施状态/两AGENTS检查后commit立即push，其他WIP保持，回执以工具结果为准。
 
 - Commit/push回执：78607bea（docs: define cross-scenario card design proposal）已成功推送origin/main，0a6e73f0..78607bea；仅4份本轮设计/状态/交接文件，暂存diff检查通过，Demo实现未改，其他WIP未暂存。
+
+
+### 2026-10-16（整体共性交互要求确认，仅讨论）
+
+- 用户强调“整体的共性的交互要清楚”，讨论由共通卡片结构提升到跨场景的完整行为规则。原content-management-design.md新增§16、实施状态新增§14，八项草案覆盖出现/焦点、对象更新、查看执行、聚焦全貌、版本结果、对照、收起、找回；不是强制业务步骤或新增模式。
+- 沿用四种主动性意图、B标题分类下拉、按需右区/本地恢复/应用不自动检查；补后台不抢焦点、不覆盖编辑/历史快照，同对象更新/独立产物新建、收起不等于停止删除、查看不执行。任务级已授权动作不要求逐次确认；无验证的内容不强造检查阶段，窄栏改变布局而保行为含义。
+- Luna只读复核共通规则冲突，主代理整合。下一步先明确共性交互状态图/规则并用两案例完整代入，再映射卡片和总览；用户确认的是要求，未批准§14地图/§15全部字段或本轮实施。
+- 仅设计/状态/两AGENTS变更并diff检查后提交立即push；无源码/Pages改动、新浏览器操作、构建或新增/运行测试，无真实AI/工程/NPU新证据，不改报告序列/hash/API-Host-Application边界。原有WIP保持，commit/push结果以工具回执为准。
