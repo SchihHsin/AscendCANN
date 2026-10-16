@@ -600,3 +600,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - node --check、build:pages、diff检查通过，产物index-eMqom2g2.js/index-CfoSMdUk.css，JS522.76kB体积提示保持；无新增/运行自动测试，仅提交本任务源码/Pages/材料/QA/交接/截图，其他WIP保留。commit/push回执后补。
 
 - Commit/push回执：1b18af01（feat: add categorized workspace content switcher）已成功推送origin/main，18d257f1..1b18af01；27个本任务源码/Pages/设计材料/交接/QA/截图文件，最终语法/构建/暂存diff检查通过。其他WIP未暂存；Pages自动部署后核对资源版本。
+
+
+### 2026-10-16（右侧画布管理再讨论，未实施）
+
+- 用户口误“左边”已纠正为右侧，要求讨论管理方案。本轮先审阅用户现有localhost页面的讲解、7项总览、修改历史及四类下拉；未刷新、运行试算/检查或改参数。临时1440×900看清桌面三栏后恢复当前讲解并reset视口，4张截图保存在ascend-studio/evidence/20261016-content-management-review/。
+- 当前已有问题分组/历史/恢复，症结是组内解释、尝试、修改、检查平级，关系及版本归属要逐项找；展开历史会撑高整排并产生相邻空白。三套组织语义（类型下拉/问题总览/空间整理）需减负。本轮为M级局部审阅，不是用户实测/完整流程验收或收益证据。
+- Luna只读复核三种架构，主代理结合全貌需求，在原content-management-design.md新增§14及demo-implementation-status.md§12：A自动排列的问题地图（推荐）、B紧凑问题树/档案、C时间线。A默认仍聚焦可操作内容，看全部呈问题概要/事实关联/采用版本与对应检查，历史嵌套、自动稳位、缩放改变信息层级，保留已选B分类快切；推荐未获选择，不写成已实施。
+- 下一段如授权实施，以AddCustom调用→试改→修改→明确检查→收起找回/对照完整链路及自适应为单位；图像专属联动/学习起步/能力匹配/官网GitCode协作仍未完整。Demo源码/Pages、报告序列/hash及API/Host/Application事实未改；浏览器范围示例不证明真实根因/精度或NPU成功。
+- 本轮仅更新原设计材料/实施状态/两份AGENTS及审阅截图；不构建、不新增或运行自动测试。仅本任务文档做diff检查并提交后立即push；其他报告WIP、图稿及DS_Store等保持未暂存，commit/push回执以工具结果为准。
