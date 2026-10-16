@@ -2,6 +2,7 @@ import {readFile,writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {stories} from './story-data.mjs';
 import {introPages,introCSS} from './intro.mjs';
+import {sharedInteractionPages,sharedInteractionCSS} from './shared-interaction-pages.mjs';
 const root=fileURLToPath(new URL('.',import.meta.url));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let template=await readFile(root+'source/deck-template.html','utf8');
@@ -109,34 +110,26 @@ const hero=(story,s,i)=>`<section class="slide s-glow hero-step" data-template="
 <div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">${esc(story.name)} / ${s.id} / ${esc(s.stage)}</div><h1>${esc(s.title)}</h1></div><a href="#${phaseStart[story.id]+i*2+1}">本步设计说明 →</a></header>
 <button class="hero-shot" data-enlarge="images/${s.id}.png" aria-label="查看${s.id}原图"><img src="images/${s.id}.png" alt="${esc(s.title)}" decoding="async"></button>
 <div class="hero-foot"><span>${esc(s.points.map(p=>p[0]).join(' · '))}</span><span>设计示意 · 点击图片放大</span></div></div></section>`;
-const detail=(story,s,i)=>`<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="${s.id} · ${esc(s.stage)} · 设计说明"><div class="glow"></div><div class="chrome"><span>${esc(story.name)} · ${s.id} 设计说明</span><span>界面提案 / 非实际运行</span></div>
+const detail=(story,s,i)=>`<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="${s.id} · ${esc(s.stage)} · 设计说明"><div class="glow"></div><div class="chrome"><span>${esc(story.name)} · ${s.id} 设计说明</span><span>交互说明已更新 · 配图为早期提案</span></div>
 <div class="inner"><div><h1 class="h-title">${esc(s.stage)}<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>${esc(s.action)}</p>
 <div class="points">${s.points.map((p,j)=>`<div class="point"><h2 class="pt-title">${j+1}. ${esc(p[0])}</h2><p class="pt-desc">${esc(p[1])}</p></div>`).join('')}</div>
-<p class="continuity"><b>画布管理</b><br>${esc(s.canvas)}</p><p class="continuity"><b>下一步</b><br>${esc(s.next)}</p></div>
+<p class="continuity"><b>内容管理</b><br>${esc(s.canvas)}</p><p class="continuity"><b>下一步</b><br>${esc(s.next)}</p></div>
 <button class="detail-image shot" data-enlarge="images/${s.id}.png" aria-label="放大${s.id}界面"><img src="images/${s.id}.png" alt="${esc(s.response)}"></button></div></section>`;
 const extraHero=()=>`<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="B6 · 任务中试改 · 大图"><div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">开发中学习 / B6 / 任务中试改</div><h1>在原任务现场先试改，再决定是否继续</h1></div><a href="#30">本步设计说明 →</a></header><button class="hero-shot" data-enlarge="images/B6-task-try.png" aria-label="查看 B6 任务中试改原图"><img src="images/B6-task-try.png" alt="在原任务现场先试改，再决定是否继续" decoding="async"></button><div class="hero-foot"><span>选中代码 · 参数试改 · 运行练习 · 结果关联</span><span>设计示意 · 点击图片放大</span></div></div></section>`;
-const extraDetail=()=>`<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="B6 · 任务中试改 · 设计说明"><div class="glow"></div><div class="chrome"><span>开发中学习 · B6 设计说明</span><span>界面提案 / 非实际运行</span></div><div class="inner"><div><h1 class="h-title">任务中试改<span class="light"> · 不离开原现场</span></h1><p class="body"><b>用户：</b>在当前项目中定位输入维度问题，先在选中的代码行上调整通道顺序，再运行本步练习观察结果。</p><div class="points"><div class="point"><h2 class="pt-title">1. 就地修改</h2><p class="pt-desc">参数控件紧贴选中的代码行，用户可以先试改，不必跳出当前任务重建上下文。</p></div><div class="point"><h2 class="pt-title">2. 结果同步可见</h2><p class="pt-desc">运行练习后，代码、张量形状对照与可视化结果保持在同一画布中，便于理解修改带来的变化。</p></div><div class="point"><h2 class="pt-title">3. 任务内容可管理</h2><p class="pt-desc">“本任务内容”保留当前代码、图解和练习的关联；固定、对照、收纳等操作不改变原项目文件。</p></div></div><p class="continuity"><b>画布管理</b><br>只对当前任务内容做局部试改；原文件、练习结果与后续修改建议保持状态区分。</p><p class="continuity"><b>下一步</b><br>进入隔离练习或查看修改建议，再决定是否回到项目应用修改。</p></div><button class="detail-image shot" data-enlarge="images/B6-task-try.png" aria-label="放大 B6 任务中试改界面"><img src="images/B6-task-try.png" alt="任务中试改界面"></button></div></section>`;
-const cover=`<section class="slide s-cover" data-title="让学习在合适的时机发生"><div class="cv-bg"></div><div class="cv-overlay"></div><div class="cv-inner"><div class="cv-top"><img class="cv-logo" src="../../../Ascendlogo.svg" alt="昇腾"></div><div class="cv-main"><div class="cv-kicker">SPATIAL LEARNING WORKSPACE</div><h1 class="cv-name"><span class="cv-line">让学习在合适的时机</span><span>发生</span></h1><p class="cv-lead">主动学习与开发中学习的两条完整故事线<br>每一步：用户操作 · 界面响应 · 设计点 · 画布管理</p><div class="cover-links"><a href="#7">主动学习 →</a><a href="#14">开发中学习 →</a><a href="#31">共用机制 →</a></div></div><div class="cv-bot"><span>10 张关键状态图 · 31 页 · 大图与设计说明配对</span></div></div></section>`;
+const extraDetail=()=>`<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="B6 · 任务中试改 · 设计说明"><div class="glow"></div><div class="chrome"><span>开发中学习 · B6 设计说明</span><span>交互说明更新 · 配图为早期提案</span></div><div class="inner"><div><h1 class="h-title">任务中试改<span class="light"> · 不离开原现场</span></h1><p class="body"><b>用户：</b>围绕当前输入维度问题，在图解中调整通道顺序或 batch，直接观察本次示例结果。</p><div class="points"><div class="point"><h2 class="pt-title">1. 图解内直接调参</h2><p class="pt-desc">少量参数直接出现在图解中，并关联当前代码行；不用先点击“试一下”或打开画布。</p></div><div class="point"><h2 class="pt-title">2. 结果同步可见</h2><p class="pt-desc">参数变化后，图形、形状对照、代码示例与本次结果就地更新，用户能直接看见变化。</p></div><div class="point"><h2 class="pt-title">3. 任务内容可管理</h2><p class="pt-desc">试算只影响当前示例／隔离副本；代码、图解与结果归属同一次尝试，项目修改仍经 Diff 审阅确认。</p></div></div><p class="continuity"><b>内容管理</b><br>普通内容即可承载解释与试改；自由画布仅按整理需求打开，阅读位置保持稳定。</p><p class="continuity"><b>下一步</b><br>用户表达“采用、检查”时直接接续对应操作；示例结果与原任务验证分别呈现。</p></div><button class="detail-image shot" data-enlarge="images/B6-task-try.png" aria-label="放大 B6 任务中试改界面"><img src="images/B6-task-try.png" alt="任务中试改界面"></button></div></section>`;
+const cover=`<section class="slide s-cover" data-title="让学习在合适的时机发生"><div class="cv-bg"></div><div class="cv-overlay"></div><div class="cv-inner"><div class="cv-top"><img class="cv-logo" src="../../../Ascendlogo.svg" alt="昇腾"></div><div class="cv-main"><div class="cv-kicker">SPATIAL LEARNING WORKSPACE</div><h1 class="cv-name"><span class="cv-line">让学习在合适的时机</span><span>发生</span></h1><p class="cv-lead">主动学习与开发中学习的两条完整故事线<br>每一步：用户操作 · 界面响应 · 设计点 · 内容管理</p><div class="cover-links"><a href="#7">主动学习 →</a><a href="#18">开发中学习 →</a><a href="#31">共用机制 →</a></div></div><div class="cv-bot"><span>11 张关键状态图 · 31 页 · 大图、设计说明与共通规则</span></div></div></section>`;
 const problem=`<section class="slide s-gray" data-title="AI 加速了开发，也带来了知识内化的新问题"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">AI 加速了开发，也带来了知识内化的新问题</span></div><div class="subttl">问题陈述</div></div>${chapterTabs('P')}</div><div class="body-area"><div class="problem-wrap"><h1 class="problem-title">代码完成了，知识不一定留下</h1><p class="problem-copy">从“查找—理解—实践”的传统路径，到“描述目标—生成—验证”的 AI 开发方式，学习发生的方式正在变化。我们需要重新设计知识进入任务的时机。</p><div class="problem-bottom"><span>从“完成当前任务”到“形成可迁移的理解”</span><span>接下来：让学习进入任务过程</span></div></div></div><div class="foot">设计背景 · 学习不应只发生在任务之外</div></section>`;
-const rules=[
- ['自由展开','从当前问题或路径节点打开内容','新内容在相关对象附近展开；拖动／缩放由用户控制','A1、A3、B1、B2'],
- ['轻分组','同一段学习包含多个对象','保留组名和关联；内部对象可自由排放','A3、B2'],
- ['临时聚焦','用户选择需要并排对照的对象','仅选中内容进入对照；退出恢复原位置','A4、B3'],
- ['固定参考','操作时需要保留原文件或结果','参考留在可见位置，不随下一步被自动收起','A3、B2–B4'],
- ['折叠／收纳','完成当前活动或主动整理','折叠在画布留摘要；收纳移出画布但保留索引','A5、B4、B5'],
- ['恢复／撤销','需要复习，或刚才收错内容','返回同一组及其关系、原位置；当前内容不被替换','A5、B5']
-];
-const summary=`<section class="slide s-gray" data-title="一套画布管理动作，贯穿两条学习故事线"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">一套画布管理动作，贯穿两条学习故事线</span></div><div class="subttl">共用机制</div></div>${chapterTabs('C')}</div><div class="body-area"><div class="summary-wrap"><table class="summary-table"><thead><tr><th>交互</th><th>何时发生</th><th>用户能看见与控制什么</th><th>对应步骤</th></tr></thead><tbody>${rules.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table><p class="summary-note"><b>稳定性规则：</b>阅读时不自动移动对象；完成、继续、退出对照或手动整理后才调整布局。收纳不等于删除，确认路径不等于应用项目代码。<br><b>验证重点：</b>用户能否找到原文件、区分副本与正式修改、恢复收纳内容，以及说清当前通过的是哪一项检查。</p></div></div><div class="foot">设计提案 · 尚未实现自由画布运行时 · <a href="../proactive-research.html#17">返回 Ploy 研究材料</a></div></section>`;
 const sections=[cover,problem,...introPages(chapterTabs)];
 for(const story of stories){sections.push(journey(story));story.steps.forEach((s,i)=>sections.push(hero(story,s,i),detail(story,s,i)));}
 sections.push(extraHero(),extraDetail());
-sections.push(summary);
+sections.push(...sharedInteractionPages(chapterTabs));
+sections[0]=sections[0].replace("31 页",`${sections.length} 页`);
 template=template.replace('<title>汇报 PPT 模板</title>','<title>空间画布学习体验 · 两条完整故事线</title>').replace('<body>','<body class="story-deck">');
 const start=template.indexOf('<div id="deck">');
 const end=template.indexOf('<!-- 调色面板',start);
 template=template.slice(0,start)+`<div id="deck">\n${sections.join('\n')}\n</div>\n`+template.slice(end);
 template=template.replace('class="cv-inner"','class="cv-content"').replace('class="cv-main"','class="cv-center"');
-template=template.replace('</style>',theme+introCSS+'\n</style>');
+template=template.replace('</style>',theme+introCSS+sharedInteractionCSS+'\n</style>');
 // The distributed template lacks the documented hash hook. Extend its existing runtime.
 template=template.replace('idx=i; const s=slides[idx];','idx=i; const s=slides[idx];\n  if(!document.body.classList.contains("overview")) history.replaceState(null,"","#"+(idx+1));');
 template=template.replace('let idx=0;','let idx=0;let restoringSlide=false;');

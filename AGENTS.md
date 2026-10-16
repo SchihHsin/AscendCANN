@@ -5136,3 +5136,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅本任务源码/Pages/材料/QA/截图/两AGENTS做diff检查后提交立即push，其他报告WIP/图稿/DS_Store保持未暂存。用户评审本轮完整管理链路的一致性和负担，commit/push回执后补。
 
 - Commit/push回执：cc6faa91（feat: unify cross-scenario content management interactions）已成功推送origin/main，1285d25f..cc6faa91；34个本任务源码/Pages/材料/交接/QA/截图文件，暂存diff检查通过。最终资源index-Ca564Dek.js/index-sjsgx6p3.css；首次线上核对仍旧资源，自动部署更新中。本地新版已打开，其他WIP未暂存，用户设计评审待定。
+
+
+### 2026-10-16（共性交互规则进入HTML正式设计材料）
+
+- 用户明确“材料”指HTML，并确认分工：learning-canvas-story/index.html承载完整规则；六问题精简报告只保留相关摘要和跳转。原第31页扩成31–38页，前30页顺序及#31入口保持，封面/README同步38页与11张故事图。
+- 新增shared-interaction-pages.mjs，沿现有灰底版式给出共通卡片、按意图主动/就近提示、查看/总览/对照/收起往返、主题关联/历史、条件版本/应用检查、固定参考/窄栏、两案例映射、实施边界。统一对象和操作预期，不强迫业务走诊断→修改→检查；查看不执行、应用不自动检查、旧条件不迁移、后台不抢焦点、收起不停止删除均明确。
+- build.mjs同步当前B6、story-data同步A/B既有确认文案，移除文字中的强制“学习组”；intro修复#5→#6后继链接。旧图保留早期提案并标注，现行说明以31–38页为准。正式HTML为主入口，Markdown保留过程/实施索引；README、design-storyline、demo-implementation-status同步。
+- 精简报告仅更新问题02/04首张两条摘要和局部可读性CSS，链接#31并保留报告现场；该文件原有大段WIP保留，本轮以HEAD加独立补丁暂存，不纳入其他业务改动。报告序列不变，学习报告31页变38页；不改API/Host/Application边界。
+- Luna同步源文案、只读复核锚点与规则一致性，主代理设计/集成/浏览器检查。修复390px新页图文重叠和页脚重叠，补明主题归组当前为两案例预置映射，未实现任意对话自动归组。Demo源码和ascstudio产物本轮不改。
+- 检查：JS语法、HTML页数/本地引用/ID/数字锚点、重建一致性及diff；1440×900逐页查看八页，1280×720测量余量，390×844页内滚至底部、整页无横溢；38页概览选36与刷新定位通过。全屏IAB未进入；摘要链接目标/直接加载有效，但工具点击/Enter未观察到导航，未记为通过。详见QA.md及evidence/shared-rules-20261016。无新增/运行自动测试，无真实AI/工程/模型/NPU证据。
+- 仅本轮文件及独立摘要补丁检查后commit立即push，其他WIP保持；回执随后补。用户主要评审31–36页共通行为是否清楚，第38页明确后续：图像专属主动提示/视频图解、学习起步、能力匹配、官网/GitCode协作仍待补齐。

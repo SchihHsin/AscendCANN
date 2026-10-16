@@ -1,44 +1,52 @@
 # 空间画布学习体验 · 两条完整故事线
 
-[打开网页 PPT](https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html)
+[打开网页 PPT](https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html) · [直接阅读共用机制（31–38页）](https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#31)
 
-30 页；#2–5 均为真实产品参考分析：用户提供的 Ploy Overview、官方权限设置、对话与产物同屏、对象标注。支持放大与来源跳转；封面使用方案设计图 A1。#6 起进入用户旅程，#7 起展示方案大图；B 路线末尾新增 B6“任务中试改”设计点。既有 Ploy 研究 #17 / #18 提供入口，原交互 Demo 保留。
+共38页。前30页保留产品参考、两条目标旅程及早期界面提案；31–38页集中说明跨业务共性交互。正式设计说明以HTML为主，Markdown保留实现追踪和检查记录。
 
 | 内容 | 页码 |
 |---|---|
-| 封面 | 1 |
-| Ploy 主动建议与权限 | 2–3 |
-| Workspace 与学习画布设计依据 | 4–5 |
-| 主动学习目标旅程 | 6 |
-| A1 表达目标 | 7–8 |
-| A2 调整路径 | 9–10 |
-| A3 理解内容 | 11–12 |
-| A4 跟练验证 | 13–14 |
-| A5 完成保存 | 15–16 |
-| 开发中学习目标旅程 | 17 |
-| B1 发现问题 | 18–19 |
-| B2 展开学习 | 20–21 |
-| B3 隔离跟练 | 22–23 |
-| B4 应用修改 | 24–25 |
-| B5 返回验证 | 26–27 |
-| B6 任务中试改 | 28–29 |
-| 共用画布管理机制 | 30 |
+| 封面 / 问题陈述 | 1–2 |
+| Ploy主动建议与权限 / Workspace参考 | 3–6 |
+| 主动学习目标旅程 | 7 |
+| A1 表达目标 | 8–9 |
+| A2 调整路径 | 10–11 |
+| A3 理解内容 | 12–13 |
+| A4 跟练验证 | 14–15 |
+| A5 完成保存 | 16–17 |
+| 开发中学习目标旅程 | 18 |
+| B1 发现问题 | 19–20 |
+| B2 展开学习 | 21–22 |
+| B3 隔离跟练 | 23–24 |
+| B4 应用修改 | 25–26 |
+| B5 返回验证 | 27–28 |
+| B6 任务中试改 | 29–30 |
+| 共通卡片结构与对象身份 | 31 |
+| 按意图主动出现 / 就近提示 | 32 |
+| 当前、总览、对照与整区收起 | 33 |
+| 主题分类、关联与历史 | 34 |
+| 条件版本、采用与检查 | 35 |
+| 对照、固定参考与窄栏适配 | 36 |
+| AddCustom / 图像推理共通映射 | 37 |
+| Demo实现范围与评审路径 | 38 |
 
 ## 内容边界
 
-- 设计方案，不是竞品事实，也不是可运行的 Workspace。图中的文件、视频、AI 和检查状态均为模拟。
-- 主动学习的完成范围是图像输入预处理；开发中学习完成后，项目输入检查通过，完整推理仍待执行。
-- 情绪尚未实测，旅程页不编造情绪曲线；风险是基于本轮讨论的设计假设。
-- 图片保留高保真 GUI 示意，代码片段仅服务界面状态说明，不作为可执行教程或真实 NPU 验证。
-- 拖拽、AI 操作动画、路径修改预览和原位恢复尚待代码原型实现。本轮不更新既有 Demo。
+- 两条故事线是目标体验提案；原图保留早期设计，不是当前Demo截图或真实执行证据。图中仍可能有历史术语与布局，现行共通行为以31–38页为准。
+- 不新增学习中心或强制学习组；解释、试改与学习按需发生在原任务中，右侧不常驻自由画布。
+- 统一对象身份、查看与管理动作；图解、代码、网页、Diff、视频按业务组合正文，无需全部走修改或检查流程。
+- 当前Demo已实现两任务的共通管理，详见第38页。视频与图解、学习起步、图像专属主动提示、能力匹配及官网／GitCode协作仍需补齐。
+- 示例预览、修改应用、范围核对分别记录；没有真实工程写入、Python／CANN编译、模型推理或NPU验证，不声称完整任务已运行成功。
+- 目标旅程与设计收益仍待用户回放验证；本地操作取证不等于用户效果研究。
 
 ## 文件与复现
 
-- `images/codex-workspace-user.png`：用户提供的 Codex Workspace 界面参考，用于第 4 页的 Vibe Coding / AI Workspace 背景说明。
-- `images/A1.png`–`A5.png`、`B1.png`–`B5.png`：新的完整故事线图片；`images/B6-task-try.png`：开发中学习新增的任务中试改设计点。
-- `story-data.mjs`：每步操作、响应、设计点、画布规则和下一步。
-- `source/image-prompts.json`：内置 ImageGen 提示词、最终图映射及修正记录。
-- `source/deck-template.html`、`source/user-journey-template.html`：Report PPT Skill 原始模板快照。
-- `build.mjs`：模板派生与内容组装，运行 `node build.mjs` 生成 `index.html`。
+- `index.html`：正式阅读入口，含完整翻页、概览、全屏和hash恢复。
+- `shared-interaction-pages.mjs`：31–38页的交互规则、HTML结构图、映射与实现范围。
+- `story-data.mjs`：A1–A5、B1–B5的用户操作、响应、设计点及下一步。
+- `intro.mjs`：产品参考分析；`images/`：参考与11张故事线设计图。
+- `build.mjs`：内容组装，运行 `node build.mjs` 生成 `index.html`；页数随内容计算。
+- `source/deck-template.html`、`source/user-journey-template.html`：Report PPT Skill通用模板快照。
+- `content-management-design.md`：讨论和实现过程；`demo-implementation-status.md`：范围跟踪；`QA.md`：材料检查记录。
 
-设计取舍：大图页占 83vh 且使用 contain 完整显示；说明放到紧随其后的页面，保留详细解释。用户阅读时不自动重排；对照、折叠、收纳及恢复都由可辨识动作触发。
+六问题报告的问题02、问题04仅保留共性交互摘要及本章链接，完整规则集中在本HTML中维护。构建源已同步既有B1/B2/B6主动展开与图解内调参文字，重新生成不会回退到旧说明。
