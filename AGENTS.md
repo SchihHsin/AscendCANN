@@ -5147,3 +5147,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Luna同步源文案、只读复核锚点与规则一致性，主代理设计/集成/浏览器检查。修复390px新页图文重叠和页脚重叠，补明主题归组当前为两案例预置映射，未实现任意对话自动归组。Demo源码和ascstudio产物本轮不改。
 - 检查：JS语法、HTML页数/本地引用/ID/数字锚点、重建一致性及diff；1440×900逐页查看八页，1280×720测量余量，390×844页内滚至底部、整页无横溢；38页概览选36与刷新定位通过。全屏IAB未进入；摘要链接目标/直接加载有效，但工具点击/Enter未观察到导航，未记为通过。详见QA.md及evidence/shared-rules-20261016。无新增/运行自动测试，无真实AI/工程/模型/NPU证据。
 - 仅本轮文件及独立摘要补丁检查后commit立即push，其他WIP保持；回执随后补。用户主要评审31–36页共通行为是否清楚，第38页明确后续：图像专属主动提示/视频图解、学习起步、能力匹配、官网/GitCode协作仍待补齐。
+
+- 提交/发布回执：b808d0d1（docs: publish shared interaction rules in HTML design materials）已推送origin/main，6c142dd3..b808d0d1；仅25个本轮文件/截图和报告独立补丁。Pages运行38874591469成功，公开学习HTML HTTP200且包含8个data-rule页面和delivery末页。尝试在IAB打开公开页两次超时，未据此声称公开页视觉验收；本地桌面/窄屏取证及线上源内容检查分别记录。其他报告WIP仍保留，暂存区无混入。
