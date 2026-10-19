@@ -5183,3 +5183,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 适配与检查：360单列、810两列无地图/工具栏横溢；1280×480右447px/主题body315px；390×844地图和页面宽390、摘要单列328/标题12px。五纯JS与两MJS语法、Vite Pages构建通过，最终index-C3EIKjJE.js/index-D4F9-R1k.css，561.58kB非阻塞体积提示保留。开发HMR出现过Hook依赖变更告警；最终完整刷新后03:25:34Z起无新增error/warn。不新增/运行自动测试，不声称完整a11y/跨设备/多标签/真实AI/工程/模型/NPU验证。
 - 材料：shared-interaction-captures/pages/index及README更新，第33页主题→摘要→收起→恢复同12:01记录，31–36共20画面；新增实拍与来源日志。1440四状态/38范围页、1280八页边界、390第33页滚至593.5且无横溢；静态38页/20状态/引用与ID/锚点、内联JS与重建一致性通过。详见learning-canvas-story/QA与evidence/shared-map-20261019。前30页早期故事图保留；API/Host/Application边界不变。
 - 本轮完整管理修订已实施并做本地检查；当前用户主要审阅“看全部→缩小/适应全部→点主题/对象→收起返回”是否自然及来源是否清楚。后续图像专属主动提示/视频、学习起步、能力匹配、官网/GitCode协作仍按既定范围待办。仅本轮源码/产物/材料/QA/截图/交接提交立即push，报告WIP/DS_Store/未知图稿不纳入；发布回执后补。
+
+- 提交/发布回执：a4a602f3（feat: add content relationship map and semantic overview zoom）已立即推送origin/main；仅53个本轮源码/产物/材料/截图/交接文件。Pages运行39194795230成功，公开Demo HTTP200且引用index-C3EIKjJE.js，材料HTTP200且含20状态和新语义缩放页；线上源已更新，视觉检查依据为本地IAB。临时5174与检查页已关闭，用户5173开发服务保留、临时视口已reset。其他报告WIP和未知文件未暂存。
