@@ -1,0 +1,98 @@
+[
+  {
+    "bodyHeight": 586,
+    "bodyScrollHeight": 797,
+    "bodyScrollWidth": 359,
+    "bodyWidth": 359,
+    "image": [
+      358.8046875,
+      202.703125
+    ],
+    "key": "object",
+    "natural": [
+      1280,
+      720
+    ],
+    "pageWidth": 390
+  },
+  {
+    "bodyHeight": 586,
+    "bodyScrollHeight": 821,
+    "bodyScrollWidth": 359,
+    "bodyWidth": 359,
+    "image": [
+      358.8046875,
+      202.703125
+    ],
+    "key": "intent",
+    "natural": [
+      1280,
+      720
+    ],
+    "pageWidth": 390
+  },
+  {
+    "bodyHeight": 563,
+    "bodyScrollHeight": 892,
+    "bodyScrollWidth": 359,
+    "bodyWidth": 359,
+    "image": [
+      358.8046875,
+      202.703125
+    ],
+    "key": "navigation",
+    "natural": [
+      1280,
+      720
+    ],
+    "pageWidth": 390
+  },
+  {
+    "bodyHeight": 586,
+    "bodyScrollHeight": 797,
+    "bodyScrollWidth": 359,
+    "bodyWidth": 359,
+    "image": [
+      358.8046875,
+      202.703125
+    ],
+    "key": "history",
+    "natural": [
+      1280,
+      720
+    ],
+    "pageWidth": 390
+  },
+  {
+    "bodyHeight": 586,
+    "bodyScrollHeight": 797,
+    "bodyScrollWidth": 359,
+    "bodyWidth": 359,
+    "image": [
+      358.8046875,
+      202.703125
+    ],
+    "key": "conditions",
+    "natural": [
+      1280,
+      720
+    ],
+    "pageWidth": 390
+  },
+  {
+    "bodyHeight": 586,
+    "bodyScrollHeight": 844,
+    "bodyScrollWidth": 359,
+    "bodyWidth": 359,
+    "image": [
+      358.8046875,
+      202.703125
+    ],
+    "key": "compare",
+    "natural": [
+      1280,
+      720
+    ],
+    "pageWidth": 390
+  }
+]

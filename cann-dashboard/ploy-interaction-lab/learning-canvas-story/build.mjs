@@ -79,10 +79,14 @@ ${jcss}
 .story-deck .cover-links{display:flex;gap:1vw;margin-top:3vh}
 .story-deck .cover-links a{border:1px solid #827896;background:rgba(255,255,255,.07);padding:1vh 1.3vw;border-radius:99px;color:#f0eaff;text-decoration:none;font-size:var(--fs-body)}
 .story-deck .cover-links a:hover{background:#6551a9}
-.story-deck #lightbox{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;background:#09090dee;border:0;padding:4vh 2vw;z-index:9999;color:#fff}
+.story-deck #lightbox{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;background:#09090dee;border:0;padding:56px 2vw 24px;z-index:9999;color:#fff}
 .story-deck #lightbox::backdrop{background:#09090d}
 .story-deck #lightbox[open]{display:flex;align-items:center;justify-content:center}
-.story-deck #lightbox img{max-width:96vw;max-height:92vh;object-fit:contain}
+.story-deck #lightbox .lightbox-visual{position:relative;display:block;max-width:96vw;max-height:calc(100dvh - 96px)}
+.story-deck #lightbox img{display:block;max-width:96vw;max-height:calc(100dvh - 96px);object-fit:contain}
+.story-deck #lightbox .capture-annotations{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.story-deck #lightbox .capture-annotations rect{fill:none;stroke:#9ba7ff;stroke-width:2;vector-effect:non-scaling-stroke}
+.story-deck #lightbox .capture-annotations text{fill:#fff;stroke:none;font:700 15px sans-serif;text-anchor:middle}.story-deck #lightbox .capture-annotations circle{fill:#666db2;stroke:none}
 .story-deck #lightbox button{position:absolute;top:1vh;right:2vw;background:#292532;color:#fff;border:1px solid #666;border-radius:9px;padding:.8vh 1vw;font-size:var(--fs-body);cursor:pointer}
 .story-deck #lightbox a{position:absolute;top:1.5vh;left:2vw;color:#ddd;font-size:var(--fs-sm)}
 body.overview.story-deck .hero-step .slide-inner{padding:0}
@@ -141,11 +145,11 @@ template=template.replace('window.scrollTo(0,0);\nslides.forEach(paintSlide);\nu
 window.scrollTo(0,0);slides.forEach(paintSlide);updateCurrent(initial);
 if(CTRL) setActive(initial);else requestAnimationFrame(()=>slides[initial].scrollIntoView({block:'start',behavior:'instant'}));
 addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(n>=1&&n<=slides.length)go(n-1);});`);
-const extra=`<dialog id="lightbox" aria-label="界面大图"><button id="closeLightbox" aria-label="关闭大图">关闭 ×</button><a id="originalImage" target="_blank" rel="noopener">打开原始图片 ↗</a><img id="largeImage" alt="学习 Workspace 界面大图"></dialog>
+const extra=`<dialog id="lightbox" aria-label="界面大图"><button id="closeLightbox" aria-label="关闭大图">关闭 ×</button><a id="originalImage" target="_blank" rel="noopener">打开原始图片 ↗</a><span class="lightbox-visual"><img id="largeImage" alt="学习 Workspace 界面大图"><svg class="capture-annotations" id="largeAnnotations" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true"></svg></span></dialog>
 <script>
 ${sharedInteractionRuntime}
 const lightbox=document.getElementById('lightbox');let imageTrigger;
-document.addEventListener('click',e=>{const b=e.target.closest('[data-enlarge]');if(!b||document.body.classList.contains('overview'))return;imageTrigger=b;document.getElementById('largeImage').src=b.dataset.enlarge;document.getElementById('originalImage').href=b.dataset.enlarge;lightbox.showModal();});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-enlarge]');if(!b||document.body.classList.contains('overview'))return;imageTrigger=b;const src=b.dataset.enlarge;document.getElementById('largeImage').src=src;document.getElementById('largeImage').alt=b.querySelector('img')?.alt||'完整界面截图';document.getElementById('originalImage').href=src;const svg=document.getElementById('largeAnnotations');const viewport=(b.dataset.viewport||'1280 720').split(/\\s+/);svg.setAttribute('viewBox','0 0 '+(Number(viewport[0])||1280)+' '+(Number(viewport[1])||720));svg.replaceChildren();try{const items=JSON.parse(b.dataset.highlights||'[]');items.forEach((h,i)=>{const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');rect.setAttribute('x',h.x);rect.setAttribute('y',h.y);rect.setAttribute('width',h.width);rect.setAttribute('height',h.height);rect.setAttribute('rx','5');svg.append(rect);const marker=document.createElementNS('http://www.w3.org/2000/svg','circle');marker.setAttribute('cx',Number(h.x)+13);marker.setAttribute('cy',Number(h.y)+13);marker.setAttribute('r','11');svg.append(marker);const text=document.createElementNS('http://www.w3.org/2000/svg','text');text.setAttribute('x',Number(h.x)+13);text.setAttribute('y',Number(h.y)+18);text.textContent=String(i+1);svg.append(text);});}catch{}lightbox.showModal();});
 document.getElementById('closeLightbox').onclick=()=>lightbox.close();
 lightbox.addEventListener('click',e=>{if(e.target===lightbox)lightbox.close();});
 lightbox.addEventListener('close',()=>imageTrigger?.focus({preventScroll:true}));

@@ -1,0 +1,68 @@
+[
+  {
+    "available": 560.765625,
+    "copyBottom": 450.8359375,
+    "copyTop": 81.1171875,
+    "height": 720,
+    "key": "object",
+    "overflow": false,
+    "stageBottom": 529.03125,
+    "stageTop": 2.9296875,
+    "width": 1280
+  },
+  {
+    "available": 560.765625,
+    "copyBottom": 462.8359375,
+    "copyTop": 69.1171875,
+    "height": 720,
+    "key": "intent",
+    "overflow": false,
+    "stageBottom": 529.03125,
+    "stageTop": 2.9296875,
+    "width": 1280
+  },
+  {
+    "available": 560.765625,
+    "copyBottom": 490.78125,
+    "copyTop": 41.171875,
+    "height": 720,
+    "key": "navigation",
+    "overflow": false,
+    "stageBottom": 529.03125,
+    "stageTop": 2.9296875,
+    "width": 1280
+  },
+  {
+    "available": 560.765625,
+    "copyBottom": 450.8359375,
+    "copyTop": 81.1171875,
+    "height": 720,
+    "key": "history",
+    "overflow": false,
+    "stageBottom": 529.03125,
+    "stageTop": 2.9296875,
+    "width": 1280
+  },
+  {
+    "available": 560.765625,
+    "copyBottom": 450.8359375,
+    "copyTop": 81.1171875,
+    "height": 720,
+    "key": "conditions",
+    "overflow": false,
+    "stageBottom": 529.03125,
+    "stageTop": 2.9296875,
+    "width": 1280
+  },
+  {
+    "available": 560.765625,
+    "copyBottom": 470.8125,
+    "copyTop": 61.1484375,
+    "height": 720,
+    "key": "compare",
+    "overflow": false,
+    "stageBottom": 529.03125,
+    "stageTop": 2.9296875,
+    "width": 1280
+  }
+]

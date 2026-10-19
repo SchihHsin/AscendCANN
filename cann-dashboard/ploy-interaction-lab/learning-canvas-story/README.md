@@ -2,7 +2,7 @@
 
 [打开网页 PPT](https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html) · [直接阅读共用机制（31–38页）](https://schihhsin.github.io/AscendCANN/cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html#31)
 
-共38页。前30页保留产品参考、两条目标旅程及早期界面提案；31–36页改用当前 Demo 实拍连续状态组件，每页可点选3–4步切换大图，点图可放大，并保留少量全景定位；37–38页继续说明跨业务映射与实现范围。正式设计说明以HTML为主，Markdown保留实现追踪和检查记录。
+共38页。前30页保留产品参考、两条目标旅程及早期界面提案；31–36页展示当前 Demo 的完整 1280×720 viewport 三栏状态，共21步，可点选切换完整大图并放大查看；收起状态下右侧区域按实拍隐藏。关键区域以独立 SVG 框标叠加，截图原图不含标注。37–38页继续说明跨业务映射与实现范围。正式设计说明以HTML为主，Markdown保留实现追踪和检查记录。
 
 | 内容 | 页码 |
 |---|---|
@@ -44,7 +44,7 @@
 - `index.html`：正式阅读入口，含完整翻页、概览、全屏和hash恢复。
 - `shared-interaction-pages.mjs`：组装31–38页，维护跨案例映射与实现范围。
 - `shared-interaction-captures.mjs`：31–36页的实拍连续状态、图文版式与步骤切换。
-- `images/shared-states-20261019/`：31–36页连续状态组件引用的当前 Demo 实拍图。素材索引与操作依据见本文件及 `demo-implementation-status.md` 第17节。
+- `images/shared-full-states-20261019/`：31–36页21个完整 Demo viewport 实拍及 `manifest.json` 标注坐标；原图未裁切、拼接或重绘，框标仅由 renderer 叠加。来源与逐图说明见该目录 `README.md`。旧目录 `images/shared-states-20261019/` 保留作早期过程材料，不再是31–36页当前配图。
 - `story-data.mjs`：A1–A5、B1–B5的用户操作、响应、设计点及下一步。
 - `intro.mjs`：产品参考分析；`images/`：参考与11张故事线设计图。
 - `build.mjs`：内容组装，运行 `node build.mjs` 生成 `index.html`；页数随内容计算。
@@ -52,6 +52,14 @@
 - `content-management-design.md`：讨论和实现过程；`demo-implementation-status.md`：范围跟踪；`QA.md`：材料检查记录。
 
 六问题报告的问题02、问题04仅保留共性交互摘要及本章链接，完整规则集中在本HTML中维护。构建源已同步既有B1/B2/B6主动展开与图解内调参文字，重新生成不会回退到旧说明。
+
+## 2026-10-19 · 共用机制页完整 viewport 实拍
+
+- 用户新要求取代此前“局部状态图 + 小全景定位”方案：31–36页每个状态直接展示完整 1280×720 viewport 三栏画面；收起时右区按实况隐藏。截图不裁切、不拼接、不重绘；SVG 关键框是独立叠加层，点开放大后仍显示标注，原始 JPEG 不含框。
+- 当前共21步：第33页由4步扩为5步（增加收起前的只读记录），其余步骤不变；故事序列仍为38页。
+- AddCustom 提示页（第32页）来自独立5174会话，保留既有 AddCustom 记录。图像推理页（第31、34–36页）来自独立5174会话，恢复正常 UI 后重建记录：尝试1为11:51含 batch，已采用并明确复核；尝试2为11:52不含 batch，新提案未应用。对照区域实测约638px宽、447px窄。
+- 地图第33页来自5173新 tab，只查看既有7项内容及12:01、12:12两条尝试；没有修改参数或创建记录。初始为70%摘要，操作结束仍为70%。
+- 所有图均为浏览器演示实拍（M级运行观察），不代表真实工程写入、编译、模型执行或NPU验证。收起期间出现新结果的画面尚未实拍，不据此描述为已验证行为。
 
 ## 2026-10-19 · 共用机制页改用 Demo 连续状态
 
