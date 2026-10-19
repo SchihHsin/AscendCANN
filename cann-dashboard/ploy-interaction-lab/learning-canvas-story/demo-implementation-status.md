@@ -160,3 +160,28 @@
 ## 16. 正式HTML规则材料（2026-10-16）
 
 用户明确“材料”指HTML，已确认两份材料分工：学习故事index.html的共用机制由原第31页扩成31–38页；六问题报告的问题02/04补短摘要与链接。本轮仅完善HTML说明和生成来源，不改Demo代码与交互；先前未完成场景仍按第15节跟踪，第38页明确已实现与后续范围。
+
+
+## 17. 共用机制页采用当前 Demo 连续状态图（2026-10-19）
+
+用户选择B方案：31–36页用当前 Demo 实拍连续状态替换低保真示意。每页保留少量全景定位，提供3–4个可点状态切换大图、点图放大；原页码31–38不变。37–38页继续保留共通案例映射和实现范围原则。素材目录为 `images/shared-states-20261019/`，正式阅读说明见[README](README.md)。
+
+### 本轮实拍操作记录
+
+- **AddCustom**：保存访问范围尝试 → 展开历史 → 查看只读快照 → 收起右区 → 唤醒恢复。
+- **图像推理**：轴顺序 `2,0,1` 且含 batch 的尝试保存 → 审阅并应用 → 单独发起核对 → 取消 batch 并保存新尝试 → 显示新提案待应用、旧结果标注旧条件。
+- **历史与对照**：查看 `10:29` / `10:31` 两条历史，在窄栏切换双方 → 拖至 809px 宽栏并排 → 结束对照并回到 `10:29`。
+
+这些是主代理在隔离端口会话中的本地 Demo 操作与截图素材，不是自动化测试或验收结论。参数、提案、应用和核对均为浏览器演示；不代表真实工程写入、Python/C++执行、模型推理或NPU验证。任意自然语言语义归组、自动关系地图和语义缩放没有实现；截图不能暗示这些能力已具备，也不能据此声称完整任务完成。
+
+### 截图索引
+
+`images/shared-states-20261019/` 内文件按状态命名，HTML页组件会复用对应实拍图：
+
+- AddCustom 内容与解释：`addcustom-overview.png`、`addcustom-context.png`、`addcustom-explanation.png`、`addcustom-parameters.png`、`addcustom-object-info.png`。
+- AddCustom 提示与历史：`addcustom-prompt.png`、`addcustom-prompt-open.png`、`addcustom-prompt-collapsed.png`、`addcustom-history-expanded.png`、`addcustom-history-readonly.png`。
+- 图像推理条件与提案：`image-overview.png`、`image-context.png`、`image-context-updated.png`、`image-conditions-overview.png`、`image-proposal.png`、`image-proposal-new.png`、`image-current-info.png`、`image-object-info.png`。
+- 图像应用与核对：`image-applied.png`、`image-check-pending.png`、`image-check-complete.png`、`image-tensor-correct.png`、`image-version-ownership.png`、`image-explanation.png`。
+- 导航找回与对照：`navigation-before.png`、`navigation-collapsed.png`、`navigation-restored.png`、`image-history-expanded.png`、`image-history-readonly.png`、`compare-narrow-current.png`、`compare-narrow-reference.png`、`compare-wide-context.png`、`compare-wide.png`、`compare-ended.png`。
+
+本轮同步更新正式HTML、生成模块、README、QA与根AGENTS。构建和人工浏览器检查见 `QA.md`；没有新增或运行自动测试，不代表用户评审通过。Demo源码和ascstudio产物未改；完整关系地图与语义缩放仍为后续工作。检查后仅提交本轮文件并立即推送。

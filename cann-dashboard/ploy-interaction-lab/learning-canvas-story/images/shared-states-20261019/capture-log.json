@@ -1,0 +1,376 @@
+{
+  "date": "2026-10-19",
+  "origin": "http://127.0.0.1:5174/",
+  "purpose": "同源码独立演示会话；不重置用户5173状态",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "captures": [
+    {
+      "name": "addcustom-context",
+      "clip": null,
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-prompt",
+      "clip": {
+        "x": 317,
+        "y": 100,
+        "width": 617,
+        "height": 500
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-explanation",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 575
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-prompt-collapsed",
+      "clip": {
+        "x": 317,
+        "y": 100,
+        "width": 617,
+        "height": 500
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-explanation",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 382
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-parameters",
+      "clip": {
+        "x": 951,
+        "y": 452,
+        "width": 473,
+        "height": 344
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-prompt-open",
+      "clip": {
+        "x": 317,
+        "y": 100,
+        "width": 617,
+        "height": 500
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-overview",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 650
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-history-expanded",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 600
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-history-readonly",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 565
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-object-info",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 580
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-history-readonly",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 405
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "navigation-before",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 405
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "navigation-collapsed",
+      "clip": null,
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "navigation-restored",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 405
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-context",
+      "clip": null,
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-explanation",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 720
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-tensor-correct",
+      "clip": {
+        "x": 952,
+        "y": 412,
+        "width": 470,
+        "height": 445
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-proposal",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 690
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-applied",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 650
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-applied",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 420
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-check-pending",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 590
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-check-complete",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 650
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-proposal-new",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 610
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-overview",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 740
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-history-expanded",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 800
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-history-expanded",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 650
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-history-readonly",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 760
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-history-readonly",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 585
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-object-info",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 565
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "compare-narrow-current",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 620
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "compare-narrow-reference",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 620
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "compare-wide",
+      "clip": {
+        "x": 631,
+        "y": 58,
+        "width": 809,
+        "height": 625
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "compare-wide-context",
+      "clip": null,
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "compare-ended",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 585
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-version-ownership",
+      "clip": {
+        "x": 947,
+        "y": 363,
+        "width": 480,
+        "height": 168
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-conditions-overview",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 478
+      },
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-context-updated",
+      "clip": null,
+      "url": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-current-info",
+      "clip": {
+        "x": 935,
+        "y": 58,
+        "width": 505,
+        "height": 565
+      },
+      "url": "http://127.0.0.1:5174/"
+    }
+  ]
+}
