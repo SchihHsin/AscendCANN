@@ -5201,3 +5201,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - M级来源：5174独立会话图像题恢复初始后，调轴2,0,1/含batch保存11:51尝试、审阅采用、明确复核；不含batch保存11:52生成新提案不应用，宽638/窄447对照。AddCustom提示沿该会话已有记录；地图在5173临时tab仅查看已有7内容/12:01和12:12记录，未改参数或增加尝试，结束回70摘要。完整viewport拍摄，未裁切拼接/伪造UI，不代表真实工程/NPU。
 - 本地检查：1280六页21状态完整图加载/框标对齐、lightbox全图及框标/Esc焦点返回/旧图兼容；1440宽屏边界抽查；390六页无横溢，33页页内滚动至原图并放大可达。初版文字溢出已修复；resize/滚动过程瞬时错误读数不作为验收。38页/21状态/唯一ID/图片引用/manifest、MJS/内联JS语法与diff检查通过，无新增或运行自动测试。证据在learning-canvas-story/evidence/shared-full-frames-20261019及QA。
 - 本轮只改材料，Demo源码/Pages产物/API-Host-Application事实不变。收起期间新增结果提示仍未独立实拍，不冒充已补齐；用户主要评审31–36完整页面位置关系与框选范围。仅暂存本任务文件后提交立即push，其他报告WIP/DS_Store/未知图稿保持；回执随后补。
+
+- 提交/发布回执：0ba4b72e（docs: show complete interface states with focused annotations）已成功推送origin/main，仅20个本轮材料生成源/记录/证据文件；完整素材已在3634e2a5登记。Pages运行39221401767已成功完成。后续再次核对翻页稳定后重拍32–36页整页证据，避免将过渡画面当正式取证；材料正文和功能不再变化。5174临时服务及拍摄tab已关闭，5173用户服务与数据保留，临时视口已reset。其他WIP未暂存。
