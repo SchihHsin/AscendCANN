@@ -1,0 +1,352 @@
+{
+  "date": "2026-10-19",
+  "origin": "http://127.0.0.1:5174/",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "format": "jpeg",
+  "method": "正常UI操作；完整viewport，未裁切、未拼接、未改写界面；标注为材料独立叠加层",
+  "captures": [
+    {
+      "name": "image-tensor-correct",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 454.984375,
+          "label": "右侧图解：形状随参数变化",
+          "width": 421.296875,
+          "x": 845.6953125,
+          "y": 105.8828125
+        }
+      ],
+      "notes": "输出轴2,0,1，含batch，向下阅读图解",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-proposal",
+      "clip": null,
+      "highlights": [
+        {
+          "x": 845,
+          "y": 205,
+          "width": 422,
+          "height": 372,
+          "label": "右侧修改预览：先审阅，再确认应用"
+        }
+      ],
+      "notes": "尝试1含batch，未确认应用",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-check-pending",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 167.59375,
+          "label": "已应用，形状约定仍待复核",
+          "width": 421.296875,
+          "x": 845.6953125,
+          "y": 391.6875
+        },
+        {
+          "height": 44.3984375,
+          "label": "明确操作才开始复核",
+          "width": 421.296875,
+          "x": 845.6953125,
+          "y": 341.2890625
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-check-complete",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 167.59375,
+          "label": "核对结果仅覆盖浏览器形状示例",
+          "width": 421.296875,
+          "x": 845.6953125,
+          "y": 391.6875
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-conditions-overview",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 127.4921875,
+          "label": "新提案：待应用，来源尝试2",
+          "width": 288.1484375,
+          "x": 671.6953125,
+          "y": 291.6953125
+        },
+        {
+          "height": 127.4921875,
+          "label": "旧核对仍属于尝试1",
+          "width": 288.1484375,
+          "x": 961.84375,
+          "y": 291.6953125
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-overview",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 372.8828125,
+          "label": "按同一任务主题组织内容",
+          "width": 628.296875,
+          "x": 646.6953125,
+          "y": 142
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-history-expanded",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 213.4921875,
+          "label": "历史在所属对象下跨整行展开",
+          "width": 574.296875,
+          "x": 673.6953125,
+          "y": 370.59375
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-history-readonly",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 595,
+          "label": "尝试1：原条件保留为只读快照",
+          "width": 640.3046875,
+          "x": 636.6953125,
+          "y": 122
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "compare-wide",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 556,
+          "label": "当前：尝试1，含batch",
+          "width": 329.1484375,
+          "x": 636.6953125,
+          "y": 161
+        },
+        {
+          "height": 556,
+          "label": "对照：尝试2，不含batch",
+          "width": 321.15625,
+          "x": 955.84375,
+          "y": 161
+        }
+      ],
+      "notes": "实际右区638px，两份记录并排",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "compare-narrow-current",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 556,
+          "label": "窄栏：当前记录完整显示",
+          "width": 448.3046875,
+          "x": 828.6953125,
+          "y": 161
+        }
+      ],
+      "notes": "实际右区447px，当前尝试1",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "compare-narrow-reference",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 556,
+          "label": "窄栏：切换到另一份记录",
+          "width": 448.3046875,
+          "x": 828.6953125,
+          "y": 161
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "compare-ended",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 595,
+          "label": "结束后回到原来的尝试1",
+          "width": 448.3046875,
+          "x": 828.6953125,
+          "y": 122
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "image-current-info",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 533.78125,
+          "label": "右侧统一入口：条件、来源、关联与历史",
+          "width": 438.296875,
+          "x": 837.6953125,
+          "y": 98
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-prompt",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 165.734375,
+          "label": "中间对话：就近解释依据与行动入口",
+          "width": 512.9609375,
+          "x": 302.8671875,
+          "y": 324.28125
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-prompt-collapsed",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 63.34375,
+          "label": "原对话中收为摘要，再次展开仍在原位",
+          "width": 512.9609375,
+          "x": 302.8671875,
+          "y": 324.28125
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "addcustom-explanation",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 619,
+          "label": "右侧关联图解：直接看与试改",
+          "width": 420.296875,
+          "x": 846.6953125,
+          "y": 98
+        }
+      ],
+      "notes": "",
+      "origin": "http://127.0.0.1:5174/"
+    },
+    {
+      "name": "map-navigation-collapsed",
+      "origin": "http://127.0.0.1:5173/",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 42,
+          "label": "右区收起后，从顶栏打开内容",
+          "width": 80,
+          "x": 919.640625,
+          "y": 7.5
+        }
+      ],
+      "notes": "5173来源；未运行或改写记录"
+    },
+    {
+      "name": "map-navigation-restored",
+      "origin": "http://127.0.0.1:5173/",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 595,
+          "label": "唤醒后仍是尝试1 · 12:01",
+          "width": 449.796875,
+          "x": 827.203125,
+          "y": 122
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "name": "map-navigation-before",
+      "origin": "http://127.0.0.1:5173/",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 595,
+          "label": "收起前：尝试1 · 12:01 的只读记录",
+          "width": 449.796875,
+          "x": 827.203125,
+          "y": 122
+        }
+      ],
+      "notes": "仅查看尝试1（12:01）的只读现场，未执行或改写记录；与唤醒后为同一份记录"
+    },
+    {
+      "name": "addcustom-map-topics",
+      "origin": "http://127.0.0.1:5173/",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 565,
+          "label": "右侧40%总览：七项内容、三个主题",
+          "width": 449.796875,
+          "x": 827.203125,
+          "y": 132
+        }
+      ],
+      "notes": "5173来源，仅查看与缩放"
+    },
+    {
+      "name": "addcustom-map-summary",
+      "origin": "http://127.0.0.1:5173/",
+      "clip": null,
+      "highlights": [
+        {
+          "height": 566.515625,
+          "label": "右侧70%摘要：显示关联与来源",
+          "width": 437.7890625,
+          "x": 837.203125,
+          "y": 141
+        }
+      ],
+      "notes": "5173来源，仅查看与缩放"
+    }
+  ],
+  "origins": [
+    "http://127.0.0.1:5174/",
+    "http://127.0.0.1:5173/"
+  ]
+}
