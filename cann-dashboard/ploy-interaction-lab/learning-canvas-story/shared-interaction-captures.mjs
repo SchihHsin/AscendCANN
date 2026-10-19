@@ -28,22 +28,23 @@ const states = [
     ]
   },
   {
-    key:'navigation', title:'看全部、收起与唤醒，仍能找到刚才那份',
-    heading:'一个默认查看面，<br>需要时看全部',
-    lead:'总览与分类下拉复用同一份任务内容。整区收起只隐藏查看面，参数和历史仍保留。',
-    rule:'打开、切换、返回和收起都是查看动作，不生成、不应用、不检查；后台结果不会自动重新打开右区。',
-    context:'addcustom-context', contextAlt:'AddCustom任务在三栏中的位置',
+    key:'navigation', title:'缩小看全貌，放大看关系，收起后仍能找回',
+    heading:'缩小看全貌，<br>点选回到具体内容',
+    lead:'同一总览逐级收成主题或内容摘要，保留结论、状态和来源；字号保持可读，不把正文缩成小字。',
+    rule:'100% 详情 → 70% 摘要 → 40% 主题；“适应全部”按空间选择。查看不生成、不应用、不检查；缩放和阅读位置随任务保留。',
+    context:'addcustom-map-context', contextAlt:'同一任务中的关系总览、来源与对话',
     steps:[
-      ['addcustom-overview','按问题看已有内容','总览露出主题、摘要、状态与关联；不用先选择解释类或检查类。','两案例使用预置主题映射；尚未自动形成关系地图'],
-      ['navigation-collapsed','收起右侧继续对话','整区收起后，对话获得空间；顶栏“打开内容”负责再次唤醒。','收起前查看：10:27 的只读范围尝试'],
-      ['navigation-restored','恢复同一份记录','再次打开，仍是 10:27 的只读尝试；没有误回当前参数或生成新记录。','原记录、原条件、阅读现场继续保留']
+      ['addcustom-map-topics','缩小看全部主题','主题里直接列出内容名称与状态；无需先选择分类或切换另一种视图。','40% 主题概览 · 七项内容归属三个主题'],
+      ['addcustom-map-summary','放大看关系与来源','内容自动排列，连线来自已记录关联；采用来源与核对条件都能看见。','70% 内容摘要 · 连线不表示已确认因果'],
+      ['map-navigation-collapsed','收起继续当前对话','右区收起后归还对话宽度，顶栏“打开内容”负责再次唤醒。','收起前查看：尝试 1 · 12:01 的只读范围记录'],
+      ['map-navigation-restored','唤醒恢复同一记录','重新打开仍是 12:01 的只读尝试；回总览也保留原缩放和阅读位置。','收起是查看动作，不停止、删除或重新执行']
     ]
   },
   {
     key:'history', title:'主题帮助定位，历史留在原对象下面',
     heading:'保存有价值的尝试，<br>不铺满每次调用',
     lead:'两次形状尝试分别保留含 batch 与不含 batch 的条件。当前图解、尝试记录和修改提案可以互相定位。',
-    rule:'历史在卡片行后跨整行展开，不把相邻卡片一起撑高；查看旧记录只读，不重新执行。当前主题是预置映射，关系自动排列仍待补齐。',
+    rule:'历史在卡片行后跨整行展开，不把相邻卡片一起撑高；查看旧记录只读，不重新执行。主题仍为两案例预置，关系仅取明确ID，不据关联推断因果。',
     context:'image-context-updated', contextAlt:'图像推理任务的主题总览',
     steps:[
       ['image-overview','先扫主题和摘要','同一主题聚合图解、尝试、提案与核对，类型只作为辅助信息。','摘要中可见历史数量、适用条件与关联入口'],
@@ -89,7 +90,7 @@ export function capturedInteractionPages(chapterTabs) {
       </div>
       <div class="capture-stage" id="capture-stage-${page.key}">${page.steps.map((step,index)=>`<figure class="capture-frame" data-capture-frame="${index}"${index?' hidden':''}><button type="button" class="capture-image" data-enlarge="${dir+step[0]}.png" aria-label="放大${esc(step[1])}的实际界面"><img src="${dir+step[0]}.png" alt="${esc(step[1]+'：'+step[2])}" decoding="async"${index?' loading="lazy"':''}></button><figcaption><span>${String(index+1).padStart(2,'0')} / ${String(page.steps.length).padStart(2,'0')}</span><strong>${step[1]}</strong><p>${step[3]}</p></figcaption></figure>`).join('')}<div class="capture-hint">点击步骤切换实际状态 · 点击界面查看原图</div></div>
     </div></div>
-    <div class="foot">当前 Demo 操作实拍 · 2026-10-19 · 独立演示会话 · 本地浏览器示例，不代表真实工程执行</div>
+    <div class="foot">当前 Demo 操作实拍 · 2026-10-19 · 本地操作记录 · 浏览器示例，不代表真实工程执行</div>
   </section>`);
 }
 

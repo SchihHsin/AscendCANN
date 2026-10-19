@@ -5170,3 +5170,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅本轮材料/图/QA/根AGENTS提交并立即push，保留全部未知WIP；commit/push回执后补。
 
 - 提交/发布回执：dc9f97b9（docs: replace shared interaction schematics with captured demo states）已推送origin/main；Pages运行39191811094成功，公开HTML HTTP200，确认6个data-capture-sequence和19个状态。线上源已更新，本轮可视检查依据仍是本地材料会话，不冒充额外线上逐页验收。67个本轮材料/截图/交接文件已提交，其他WIP保持未暂存。
+
+
+### 2026-10-19（关系地图与语义缩放实施，材料同步）
+
+- 用户明确“你改吧”，授权补上此前未完成的管理地图/缩放；同时再次确认低保真材料修改。沿用已选A问题地图＋紧凑性和此前B材料实拍方向，不新增视图选择排、不重做三栏，不扩展其他问题。材料第31–36已在前轮实拍，本轮第33补最新地图四状态、第38同步边界，38页序列/#31保持。
+- 新增src/task-content-map.js/CSS，重构TaskContentOverview：按真实group/relations/children记录稳定自动排列；SVG关联线在卡片间隙/外侧，不从类别猜因果。100详情/70摘要/40主题为语义层，保持文字可读；适应全部按窗口逐级精简，点主题定位摘要/点对象打开原内容。搜索/分类仍按需；历史跨整行、收起/返回/任务隔离保持。常规看全部恢复原地图而非每次重置。
+- catalog补精确来源/provenance：提案与已应用各自展示真实尝试序号和时间；核对始终链接其attemptId，匹配code+attemptId才能引用具体Diff快照，旧无归属记录不猜。App后续图像快照保存attemptId，图像核对保存code并兼容按确切attempt查code。两任务同参数重复尝试审阅时先用所选ID，再回退最近匹配，避免来源被静默替换。关联地图是明确记录的呈现，不是任意AI语义分类，主题仍为两案例预置适配。
+- 保留按需右区、B标题分类下拉、中性选中/黑按钮/无头像AI平铺/项目分组/自动化/能力库。新结果稳定位置，更新入口可清除阻挡的筛选并定位相关节点、一次柔和强调，减动模式停动画。源码仍保护当前编辑与后台不开右区；真实外部并发/编辑冲突本轮没有实测。
+- Luna分担纯关系派生/CSS/目录字段/文档及只读复核，主代理集成和实际浏览器检查。修复关联层首次ref尚未就绪、定位被筛选挡住、历史图像核对缺code、刷新恢复153px被早期宿主高度截为0（双rAF后复测153→153）等。修改源码App/TaskWorkspace/Overview/catalog/useContentWorkspace/useImageInference/useTaskFlow；同步根ascstudio产物、设计/实施/QA及两AGENTS。
+- M级操作：5173仅查看/缩放/布局，原7项2尝试参数与历史未重置；来源打开尝试1（12:01）只读，返回/收起/刷新恢复。独立5174图像会话采用不含batch的尝试2并明确复核，随后含batch保存尝试3生成未应用提案；地图显示提案来源3、已应用与旧核对2；旧核对打开11:09只读Diff，其代码input_data=transformed；筛选仅Diff时点更新恢复5节点并强调attempts。两任务往返各自恢复。
+- 适配与检查：360单列、810两列无地图/工具栏横溢；1280×480右447px/主题body315px；390×844地图和页面宽390、摘要单列328/标题12px。五纯JS与两MJS语法、Vite Pages构建通过，最终index-C3EIKjJE.js/index-D4F9-R1k.css，561.58kB非阻塞体积提示保留。开发HMR出现过Hook依赖变更告警；最终完整刷新后03:25:34Z起无新增error/warn。不新增/运行自动测试，不声称完整a11y/跨设备/多标签/真实AI/工程/模型/NPU验证。
+- 材料：shared-interaction-captures/pages/index及README更新，第33页主题→摘要→收起→恢复同12:01记录，31–36共20画面；新增实拍与来源日志。1440四状态/38范围页、1280八页边界、390第33页滚至593.5且无横溢；静态38页/20状态/引用与ID/锚点、内联JS与重建一致性通过。详见learning-canvas-story/QA与evidence/shared-map-20261019。前30页早期故事图保留；API/Host/Application边界不变。
+- 本轮完整管理修订已实施并做本地检查；当前用户主要审阅“看全部→缩小/适应全部→点主题/对象→收起返回”是否自然及来源是否清楚。后续图像专属主动提示/视频、学习起步、能力匹配、官网/GitCode协作仍按既定范围待办。仅本轮源码/产物/材料/QA/截图/交接提交立即push，报告WIP/DS_Store/未知图稿不纳入；发布回执后补。

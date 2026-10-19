@@ -1,0 +1,127 @@
+/**
+ * Derive an overview map from the task content catalog's explicit records.
+ * This module does not infer causal links or task outcomes.
+ */
+
+const asArray = value => Array.isArray(value) ? value : [];
+const asText = value => String(value ?? "").replace(/\s+/g, " ").trim();
+
+function itemHistoryIds(item) {
+  const ids = new Set();
+  for (const child of asArray(item?.children)) {
+    if (child?.id != null) ids.add(String(child.id));
+  }
+  for (const history of asArray(item?.relatedHistory)) {
+    if (history?.id != null) ids.add(String(history.id));
+  }
+  return ids;
+}
+
+/** Return a short, field-backed description for a map card. */
+export function summarizeContentMapItem(item = {}) {
+  const conclusion = asText(item.summary || item.contextLabel || item.title);
+  const status = asText(item.statusLabel || item.state?.label || item.state?.detail);
+  return {
+    conclusion,
+    status,
+    historyCount: itemHistoryIds(item).size,
+  };
+}
+
+/**
+ * Group catalog items without changing their source order and derive edges
+ * only from explicit `relations[].id` references.
+ */
+export function buildContentMap(items = [], groups = []) {
+  const sourceItems = asArray(items).filter(item => item && item.id != null);
+  const groupList = asArray(groups).filter(group => group && group.id != null)
+    .map(group => ({ ...group, items: [] }));
+  const groupById = new Map(groupList.map(group => [String(group.id), group]));
+  const ungrouped = { id: "ungrouped", title: "其他内容", description: "未指定分组的任务内容。", items: [] };
+  const itemById = new Map();
+  const ownerByRecordId = new Map();
+
+  for (const item of sourceItems) {
+    const id = String(item.id);
+    if (!itemById.has(id)) itemById.set(id, item);
+  }
+
+  for (const item of sourceItems) {
+    const id = String(item.id);
+    if (itemById.get(id) !== item) continue;
+    const group = groupById.get(String(item.groupId ?? "")) || ungrouped;
+    group.items.push(item);
+    for (const child of asArray(item.children)) {
+      if (!child || child.id == null) continue;
+      const recordId = String(child.id);
+      // Prefer the explicit child parent when it points to a real catalog item.
+      const parentId = child.parentId != null && itemById.has(String(child.parentId))
+        ? String(child.parentId)
+        : id;
+      ownerByRecordId.set(recordId, parentId);
+    }
+  }
+  // relatedHistory is a lookup reference; it must not reassign a history
+  // entry already owned by the container whose children actually include it.
+  for (const item of sourceItems) {
+    if (itemById.get(String(item.id)) !== item) continue;
+    for (const history of asArray(item.relatedHistory)) {
+      if (history?.id == null) continue;
+      const recordId = String(history.id);
+      if (ownerByRecordId.has(recordId)) continue;
+      ownerByRecordId.set(recordId, history.parentId != null && itemById.has(String(history.parentId))
+        ? String(history.parentId)
+        : String(item.id));
+    }
+  }
+  if (ungrouped.items.length) groupList.push(ungrouped);
+
+  const edges = [];
+  const edgeKeys = new Set();
+  for (const item of sourceItems) {
+    if (!itemById.has(String(item.id)) || itemById.get(String(item.id)) !== item) continue;
+    for (const relation of asArray(item.relations)) {
+      if (!relation || relation.id == null) continue;
+      const referencedId = String(relation.id);
+      const targetItem = itemById.get(referencedId);
+      const targetOwnerId = targetItem
+        ? referencedId
+        : ownerByRecordId.get(referencedId);
+      if (!targetOwnerId || !itemById.has(targetOwnerId)) continue;
+
+      const sourceId = String(item.id);
+      // A relation can point at a concrete history entry; keep that identity
+      // available to the UI while the graph endpoint remains its owning item.
+      const sourceRecordId = sourceId;
+      const targetRecordId = referencedId;
+      const label = asText(relation.label || relation.title);
+      const type = asText(relation.type || "related");
+      const key = [sourceId, targetOwnerId, sourceRecordId || "", targetRecordId || "", label, type].join("\u001f");
+      if (edgeKeys.has(key)) continue;
+      edgeKeys.add(key);
+      edges.push({
+        id: `relation:${edges.length + 1}`,
+        sourceId,
+        targetId: targetOwnerId,
+        label,
+        type,
+        sourceRecordId,
+        targetRecordId,
+      });
+    }
+  }
+
+  const childCount = sourceItems.reduce((count, item) => count + asArray(item.children).length, 0);
+  const historyIds = new Set(sourceItems.flatMap(item => [...itemHistoryIds(item)]));
+  return {
+    groups: groupList,
+    edges,
+    counts: {
+      groups: groupList.length,
+      items: itemById.size,
+      children: childCount,
+      history: historyIds.size,
+      edges: edges.length,
+    },
+  };
+}

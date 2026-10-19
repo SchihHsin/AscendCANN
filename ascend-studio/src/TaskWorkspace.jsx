@@ -197,13 +197,13 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
               </button>;
             })}
           </section>)}</div>
-          {isMainTask && <div className="tw-content-menu-foot"><button type="button" role="menuitem" tabIndex={-1} onClick={() => openCanvas("overview", { fit: true })}><IconLayoutBoard size={14} />看全部任务内容<IconArrowRight size={13} /></button></div>}
+          {isMainTask && <div className="tw-content-menu-foot"><button type="button" role="menuitem" tabIndex={-1} onClick={() => openCanvas("overview")}><IconLayoutBoard size={14} />看全部任务内容<IconArrowRight size={13} /></button></div>}
         </div>}
       </div>
       <div className="tw-topbar-actions">
         {!onCanvas && <button type="button" ref={objectInfoTrigger} className={"tw-object-info-button" + (objectInfoOpen ? " is-open" : "")} aria-label="来源、关联与历史" title="来源、关联与历史" aria-expanded={objectInfoOpen} onClick={() => { setObjectInfoOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); }}><IconInfoCircle size={15} />{activeHistory.length > 0 && <small>{activeHistory.length}</small>}</button>}
         {state.referenceId === state.activeId && state.referenceReturnId && <button className="tw-nearby-action" type="button" onClick={actions.returnFromReference}>返回当前内容</button>}
-        {isMainTask && <button className="tw-view-all" type="button" disabled={onCanvas && state.canvasMode === "overview" && !canReturn} aria-label={onCanvas && state.canvasMode === "overview" ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => onCanvas && state.canvasMode === "overview" ? returnToFocus() : openCanvas("overview", { fit: true })}>{onCanvas && state.canvasMode === "overview" ? "回到刚才" : "看全部"}</button>}
+        {isMainTask && <button className="tw-view-all" type="button" disabled={onCanvas && state.canvasMode === "overview" && !canReturn} aria-label={onCanvas && state.canvasMode === "overview" ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => onCanvas && state.canvasMode === "overview" ? returnToFocus() : openCanvas("overview")}>{onCanvas && state.canvasMode === "overview" ? "回到刚才" : "看全部"}</button>}
         <button className="tw-collapse" type="button" aria-label="收起任务内容工作区" title="收起任务内容工作区" onClick={() => onCollapse?.()}><IconX size={14} /></button>
         <div className="tw-tools" ref={toolsRef}>
           <button className={"tw-more-button" + (menuOpen ? " is-open" : "")} type="button" aria-label="更多任务内容操作" title="更多" aria-expanded={menuOpen} onClick={() => { setMenuOpen((current) => !current); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); }}><IconDots size={17} /></button>

@@ -1,0 +1,65 @@
+{
+  "bounds1280x720": [
+    {
+      "bottom": 617.734375,
+      "foot": 666.5,
+      "key": "object",
+      "width": 1177.609375
+    },
+    {
+      "bottom": 617.734375,
+      "foot": 666.5,
+      "key": "intent",
+      "width": 1177.609375
+    },
+    {
+      "bottom": 637.703125,
+      "foot": 666.5,
+      "key": "navigation",
+      "width": 1177.609375
+    },
+    {
+      "bottom": 617.734375,
+      "foot": 666.5,
+      "key": "history",
+      "width": 1177.609375
+    },
+    {
+      "bottom": 617.734375,
+      "foot": 666.5,
+      "key": "conditions",
+      "width": 1177.609375
+    },
+    {
+      "bottom": 637.703125,
+      "foot": 666.5,
+      "key": "compare",
+      "width": 1177.609375
+    },
+    {
+      "bottom": 577.75,
+      "foot": 666.5,
+      "key": "cases",
+      "width": 1177.609375
+    },
+    {
+      "bottom": 599.5390625,
+      "foot": 666.5,
+      "key": "delivery",
+      "width": 1177.609375
+    }
+  ],
+  "mobile": {
+    "bodyWidth": 359,
+    "hash": "#33",
+    "height": 563,
+    "pageWidth": 390,
+    "scrollTop": 593.5,
+    "scrollWidth": 359,
+    "slideTop": 0,
+    "total": 1156
+  },
+  "states": 4,
+  "totalSlides": 38,
+  "totalCapturedStates": 20
+}

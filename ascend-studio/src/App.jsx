@@ -473,7 +473,7 @@ function App() {
     if (next.attempts > before.attempts) register("image-attempts");
     if (next.proposal && next.proposal !== before.proposal) {
       register("image-diff");
-      workspace.actions.saveSnapshot("image-diff", { title: "预处理修改提案", kind: "diff-snapshot", summary: `当时的轴顺序 ${next.proposal.attempt.snapshot.axes.join(",")}；示例副本修改，未执行推理。`, data: { code: next.proposal.attempt.code, baseline: imageCode(next.proposal.baseline), snapshot: next.proposal.attempt.snapshot } }, IMAGE_TASK);
+      workspace.actions.saveSnapshot("image-diff", { title: "预处理修改提案", kind: "diff-snapshot", summary: `当时的轴顺序 ${next.proposal.attempt.snapshot.axes.join(",")}；示例副本修改，未执行推理。`, data: { code: next.proposal.attempt.code, baseline: imageCode(next.proposal.baseline), snapshot: next.proposal.attempt.snapshot, attemptId: next.proposal.attempt.id, attempt: next.proposal.attempt } }, IMAGE_TASK);
     }
     if (next.applied && next.applied !== before.applied) register("image-validation");
     if (next.validation && next.validation !== before.validation) {

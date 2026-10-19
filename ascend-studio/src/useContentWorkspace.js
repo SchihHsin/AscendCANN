@@ -17,7 +17,7 @@ function initialState(isMainTask, taskId) {
     lastContentId: initial.id,
     lastSplitId: null,
     canvasMode: "overview",
-    overview: { query: "", category: "all", collapsedGroups: [], compactIds: [] },
+    overview: { query: "", category: "all", collapsedGroups: [], compactIds: [], mapLevel: 2, mapInitialized: false },
     snapshots: [],
     collapsed: false,
     returnPoint: null,

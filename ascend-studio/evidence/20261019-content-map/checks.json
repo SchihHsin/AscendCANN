@@ -1,0 +1,54 @@
+{
+  "short": {
+    "clientHeight": 315,
+    "clientWidth": 447,
+    "level": "topics",
+    "pageWidth": 1280,
+    "scrollHeight": 315,
+    "scrollWidth": 447,
+    "toolbarClient": 447,
+    "toolbarWidth": 447,
+    "viewport": [
+      1280,
+      480
+    ],
+    "width": 447
+  },
+  "mobile": {
+    "clientHeight": 573,
+    "clientWidth": 390,
+    "level": "topics",
+    "pageWidth": 390,
+    "scrollHeight": 573,
+    "scrollWidth": 390,
+    "toolbarClient": 390,
+    "toolbarWidth": 390,
+    "viewport": [
+      390,
+      844
+    ],
+    "width": 390
+  },
+  "refresh": {
+    "before": {
+      "height": 735,
+      "level": "summary",
+      "scroll": 153,
+      "total": 888,
+      "width": 360
+    },
+    "after": {
+      "scroll": 153,
+      "level": "summary",
+      "width": 360
+    }
+  },
+  "observations": [
+    "AddCustom原有尝试1（12:01）来源可直接只读打开；返回总览和整区收起保留现场",
+    "历史整行：两卡高度168.99px；历史面板位于卡片行之后",
+    "360px单列与810px两列，无地图/工具栏横溢",
+    "图像新提案来自尝试3；应用来源/旧核对为尝试2；旧核对定位到11:09不含batch的修改快照",
+    "筛选仅修改时点击更新清筛选、显示5节点并一次强调尝试记录",
+    "390px摘要标题12px，不做几何缩字"
+  ]
+}

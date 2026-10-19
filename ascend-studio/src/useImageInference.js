@@ -109,7 +109,8 @@ export function useImageInference({ visible, onRecord }) {
       patch({ notice: "轴顺序必须包含 0、1、2，且每个轴只出现一次；修正后再审阅当前修改。" });
       return null;
     }
-    const attempt = old.attempts.find(item => sameSnapshot(item.snapshot, snapshot)) || makeAttempt(snapshot);
+    const attempt = old.attempts.find(item => item.id === old.selectedId && sameSnapshot(item.snapshot, snapshot))
+      || [...old.attempts].reverse().find(item => sameSnapshot(item.snapshot, snapshot)) || makeAttempt(snapshot);
     const attempts = old.attempts.some(item => item.id === attempt.id) ? old.attempts : [...old.attempts, attempt];
     patch({
       attempts,
@@ -128,7 +129,7 @@ export function useImageInference({ visible, onRecord }) {
   const validate = () => {
     const old = current.current;
     if (!old.applied) return;
-    const validation = { ...imageShape(old.applied.snapshot), snapshot: old.applied.snapshot, attemptId: old.applied.id };
+    const validation = { ...imageShape(old.applied.snapshot), snapshot: old.applied.snapshot, attemptId: old.applied.id, code: old.applied.code };
     patch({ validation, notice: "已复核示例形状。模型文件、数据类型、归一化和设备推理仍需项目证据。" });
     record("图像推理 · 返回任务核对", `示例输入 [${validation.dimensions.join(",")}]，${validation.passed ? "符合" : "不符合"}示例约定 NCHW [1,3,224,224]。未执行 Python、模型或 NPU；需要核对真实模型签名与预处理。`, "image-validation", { ...validation });
   };

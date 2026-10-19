@@ -81,10 +81,10 @@ export function sharedInteractionPages(chapterTabs) {
     ],'rule-case-table')}</div><div class="rule-conclusion">网页可侧重来源与阅读位置；视频可侧重时间点与关联图解。仅在业务确实需要时提供试改、采用或检查。</div></div>`),
 
     slide('delivery','共通管理已进入 Demo，后续场景仍需逐项补齐',`<div class="rule-full"><div class="rule-figure rule-scroll">${table(['范围','当前可演示','实际限制'],[
-      ['共通管理','两任务共用卡片结构、稳定记录、关联与历史；总览、对照、收起、找回。','两案例主题为预置映射；同来源本地保存、任务隔离，无跨设备同步；完整问题关系地图与语义缩放尚未实现。'],
-      ['条件与执行','应用不自动检查；历史只读；新提案与旧条件结果分开。','参数、提案、核对均为演示；未接真实工程写入和执行。'],
+      ['共通管理','明确关联自动画线；100%／70%／40%语义缩放；历史、对照、收起与找回。','主题仍为两案例预置；只按显式ID关联，不做AI语义归组。同来源保存，无跨设备同步。'],
+      ['条件与执行','提案、已应用内容与核对各自标明来源尝试；应用不自动检查，历史只读。','旧记录缺少精确归属时不猜测；仍为浏览器演示，未接真实工程写入和执行。'],
       ['主动交互','已有四种意图规则及 AddCustom 局部演示；后台登记不抢焦点。','任意自然语言识别、图像专属主动提示、真实后台并发时序尚未完整验证。'],
       ['后续场景','学习起步、视频与图解、浏览器、能力匹配、官网／GitCode协作按同一规则展开。','以上场景仍需补齐具体内容和交互，不能视作全部已经实现。']
-    ],'rule-status-table')}</div><p><b>建议本轮评审：</b>任选任务 → 看全部 → 图解记录 → 回到当前 → 选择版本对照 → 结束 → 整区收起再唤醒；切换另一任务复用同一组动作。</p><div class="rule-links"><a class="rule-screen-link" href="${demo}" target="_blank" rel="noopener">打开 Ascend Studio Demo ↗</a><a class="rule-screen-link" href="../../../ascend-studio/evidence/20261016-shared-interactions/11-final-overview.png" target="_blank" rel="noopener">AddCustom 操作取证 ↗</a><a class="rule-screen-link" href="../../../ascend-studio/evidence/20261016-shared-interactions/04-image-overview.png" target="_blank" rel="noopener">图像推理操作取证 ↗</a><a class="rule-screen-link" href="../../ai-development-behavior-system-report-concise.html" target="_blank" rel="noopener">返回六问题报告 ↗</a></div><p>已做两案例往返与窄栏操作检查；属于本地演示观察，不是用户效果研究，也不证明 AI、模型或 NPU 的真实能力。</p></div>`,'交互规格与Demo状态 · 2026-10-19 · 原有故事配图保留早期提案；共通行为以本章说明为准')
+    ],'rule-status-table')}</div><p><b>建议本轮评审：</b>任选任务 → 看全部 → 缩小或适应全部 → 点主题放大 → 查看来源与历史 → 整区收起再唤醒；切换另一任务复用同一组动作。</p><div class="rule-links"><a class="rule-screen-link" href="${demo}" target="_blank" rel="noopener">打开 Ascend Studio Demo ↗</a><a class="rule-screen-link" href="../../../ascend-studio/evidence/20261019-content-map/08-addcustom-summary-final.png" target="_blank" rel="noopener">AddCustom 操作取证 ↗</a><a class="rule-screen-link" href="../../../ascend-studio/evidence/20261019-content-map/06-image-version-summary.png" target="_blank" rel="noopener">图像推理操作取证 ↗</a><a class="rule-screen-link" href="../../ai-development-behavior-system-report-concise.html" target="_blank" rel="noopener">返回六问题报告 ↗</a></div><p>已做两案例往返与窄栏操作检查；属于本地演示观察，不是用户效果研究，也不证明 AI、模型或 NPU 的真实能力。</p></div>`,'交互规格与Demo状态 · 2026-10-19 · 原有故事配图保留早期提案；共通行为以本章说明为准')
   ];
 }

@@ -248,7 +248,8 @@ export function useTaskFlow({ onRecord } = {}) {
       const error = validParameters(snapshot);
       if (error) { update({ error }); return false; }
       const code = sampleCode(snapshot);
-      attempt = latest.current.attempts.findLast(item => item.code === code && ["rows", "columns", "tileSize", "bounds"].every(name => String(item.snapshot[name]) === String(snapshot[name])));
+      const matchesCurrent = item => item && item.code === code && ["rows", "columns", "tileSize", "bounds"].every(name => String(item.snapshot[name]) === String(snapshot[name]));
+      attempt = matchesCurrent(attempt) ? attempt : latest.current.attempts.findLast(matchesCurrent);
       if (!attempt) {
         attempt = { id: uid(), time: now(), snapshot, mode: snapshot.mode, code, ...rangeCheck(snapshot) };
         update(previous => ({ attempts: [...previous.attempts, attempt], selectedAttemptId: attempt.id }));

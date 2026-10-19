@@ -150,6 +150,7 @@ function childFromRecord(record) {
     summary: short([conditions, record.summary || "已保留本次任务记录。"].filter(Boolean).join("。"), 190),
     contextLabel: short(conditions, 90),
     time: record.time || "",
+    attemptId: data.attemptId || data.attempt?.id || "",
   };
 }
 
@@ -388,7 +389,29 @@ function taskStateFor(id, produced, precisionContext, flow, inference, fallbackD
   return { label, tone, detail: label ? detail : fallbackDetail };
 }
 
-function relationsFor(id, flow, inference) {
+function attemptRelation(attempt, label, attempts = []) {
+  if (!attempt?.id) return null;
+  const ordinal = asArray(attempts).findIndex(entry => entry.id === attempt.id);
+  const value = [ordinal >= 0 ? `尝试 ${ordinal + 1}` : "", attempt.time || "时间未记录"].filter(Boolean).join(" · ");
+  return { id: `attempt:${attempt.id}`, label: `${label} · ${value}`, title: `${label}：${value}` };
+}
+
+function recordAttemptId(record) {
+  const data = asObject(record?.data);
+  return data.attemptId || data.attempt?.id || "";
+}
+
+function exactDiffRecord(records, code, attemptId, image) {
+  if (!present(code) || !present(attemptId)) return null;
+  return asArray(records).find(record => {
+    const data = asObject(record.data);
+    const kindMatches = image ? ["diff-snapshot", "image-diff-snapshot"].includes(record.kind) : record.kind === "diff-snapshot";
+    return kindMatches && record.parentId === (image ? "image-diff" : "diff")
+      && data.code === code && recordAttemptId(record) === attemptId;
+  }) || null;
+}
+
+function relationsFor(id, flow, inference, records = []) {
   const relations = [];
   const add = (targetId, label, title) => relations.push({ id: targetId, label, title });
   if (id === "explanation") add("source", "示例来源", "索引范围示例");
@@ -397,28 +420,62 @@ function relationsFor(id, flow, inference) {
   if (id === "image-source") add("image-explanation", "用于图解", "图像与张量图解");
   if (["explanation", "parameters", "draft"].includes(id) && asArray(flow.attempts).length) add("attempts", "尝试记录", "范围尝试");
   if (["image-explanation", "image-practice"].includes(id) && asArray(inference.attempts).length) add("image-attempts", "尝试记录", "形状尝试");
-  if (id === "attempts" && flow.proposedCode && attemptById(flow.attempts, flow.selectedAttemptId)) add("diff", "提案依据", "示例修改预览");
+  if (id === "attempts" && flow.proposedCode && attemptById(flow.attempts, flow.selectedAttemptId)) add("diff", "提案条件引用", "示例修改预览");
   if (id === "diff") {
     const attempt = attemptById(flow.attempts, flow.proposedCode ? flow.selectedAttemptId : flow.appliedAttemptId);
     const diffMatchesApplied = Boolean(flow.appliedCode && (!flow.proposedCode || flow.proposedCode === flow.appliedCode));
-    if (attempt && (flow.proposedCode || diffMatchesApplied)) add("attempts", flow.proposedCode ? "提案依据" : "应用依据", "尝试记录");
-    const validationCurrent = flow.validation?.id && flow.validation.attemptId && flow.validation.attemptId === flow.appliedAttemptId
-      && flow.validation.code === flow.appliedCode && (!flow.proposedCode || flow.validation.code === flow.proposedCode);
-    if (validationCurrent && diffMatchesApplied) add("validation", "后续复核", "示例范围复核");
+    if (attempt && (flow.proposedCode || diffMatchesApplied)) relations.push(attemptRelation(attempt, flow.proposedCode ? "提案来源" : "已应用来源", flow.attempts));
   }
-  if (id === "validation" && flow.validation?.id && flow.validation.attemptId && flow.validation.attemptId === flow.appliedAttemptId
-    && flow.validation.code === flow.appliedCode && (!flow.proposedCode || flow.validation.code === flow.proposedCode)) {
-    if (flow.appliedCode) add("diff", "复核对象", "示例修改预览");
+  if (id === "validation" && flow.validation?.id && flow.validation.attemptId) {
+    const attempt = attemptById(flow.attempts, flow.validation.attemptId);
+    if (attempt) relations.push(attemptRelation(attempt, "核对的尝试", flow.attempts));
+    const diffRecord = exactDiffRecord(records, flow.validation.code, flow.validation.attemptId, false);
+    if (diffRecord) add(childFromRecord(diffRecord).id, `复核对象 · ${diffRecord.time || "时间未记录"}`, diffRecord.title || "对应修改快照");
   }
-  if (id === "image-attempts" && inference.proposal?.attempt?.id) add("image-diff", "提案引用", "预处理修改预览");
+  if (id === "image-attempts" && inference.proposal?.attempt?.id) add("image-diff", "提案条件引用", "预处理修改预览");
   if (id === "image-diff") {
     const attemptId = inference.proposal?.attempt?.id || inference.applied?.id;
-    if (attemptId) add("image-attempts", "依据尝试", "形状检查与尝试");
-    if (inference.validation && inference.validation.attemptId === inference.applied?.id && (!inference.proposal || inference.proposal.attempt?.id === inference.applied?.id)) add("image-validation", "后续核对", "返回任务核对");
+    const attempt = attemptById(inference.attempts, attemptId);
+    if (attempt) relations.push(attemptRelation(attempt, inference.proposal ? "提案来源" : "已应用来源", inference.attempts));
   }
-  if (id === "image-validation" && inference.validation && inference.validation.attemptId === inference.applied?.id
-    && (!inference.proposal || inference.proposal.attempt?.id === inference.applied?.id)) add("image-diff", "核对对象", "预处理修改预览");
+  if (id === "image-validation" && inference.validation?.attemptId) {
+    const attempt = attemptById(inference.attempts, inference.validation.attemptId);
+    if (attempt) relations.push(attemptRelation(attempt, "核对的尝试", inference.attempts));
+    const diffRecord = exactDiffRecord(records, inference.validation.code || attempt?.code, inference.validation.attemptId, true);
+    if (diffRecord) add(childFromRecord(diffRecord).id, `复核对象 · ${diffRecord.time || "时间未记录"}`, diffRecord.title || "对应修改快照");
+  }
   return relations;
+}
+
+function provenanceFor(id, flow, inference) {
+  const result = [];
+  const addAttempt = (label, attempt) => {
+    if (attempt?.id) {
+      const attempts = id.startsWith("image-") ? asArray(inference.attempts) : asArray(flow.attempts);
+      const ordinal = attempts.findIndex(entry => entry.id === attempt.id);
+      const value = [ordinal >= 0 ? `尝试 ${ordinal + 1}` : "", attempt.time || "时间未记录"].filter(Boolean).join(" · ");
+      result.push({ label, value, recordId: `attempt:${attempt.id}` });
+    }
+  };
+  if (id === "diff") {
+    if (flow.proposedCode) addAttempt("提案来源", attemptById(flow.attempts, flow.selectedAttemptId));
+    if (flow.appliedCode) addAttempt("已应用来源", attemptById(flow.attempts, flow.appliedAttemptId));
+  } else if (id === "validation" && flow.validation?.attemptId) {
+    const current = flow.validation.attemptId === flow.appliedAttemptId && flow.validation.code === flow.appliedCode
+      && (!flow.proposedCode || flow.validation.code === flow.proposedCode);
+    addAttempt(current ? "核对尝试" : "旧条件核对尝试", attemptById(flow.attempts, flow.validation.attemptId));
+    result.push({ label: "条件状态", value: current ? "对应当前应用条件" : "对应旧条件，不代表当前提案" });
+  } else if (id === "image-diff") {
+    const attempt = inference.proposal?.attempt || (inference.applied ? attemptById(inference.attempts, inference.applied.id) : null);
+    if (inference.proposal) addAttempt("提案来源", attempt);
+    if (inference.applied) addAttempt("已应用来源", attemptById(inference.attempts, inference.applied.id));
+  } else if (id === "image-validation" && inference.validation?.attemptId) {
+    const current = inference.validation.attemptId === inference.applied?.id
+      && (!inference.proposal || inference.proposal.attempt?.id === inference.applied?.id);
+    addAttempt(current ? "核对尝试" : "旧条件核对尝试", attemptById(inference.attempts, inference.validation.attemptId));
+    result.push({ label: "条件状态", value: current ? "对应当前应用条件" : "对应旧条件，不代表当前提案" });
+  }
+  return result.slice(0, 2);
 }
 
 function staticContextFor(id) {
@@ -542,7 +599,8 @@ export function buildTaskContentItems({
         closed: Boolean(visitedEntry.closed),
       },
       contextLabel: short((generic ? "" : image ? imageContextFor(id, inference) : mainContextFor(id, flow, precisionContext)) || material.contextLabel || visitedEntry.contextLabel || canvasCard.contextLabel || staticContextFor(id), 110),
-      relations: generic ? [] : relationsFor(id, flow, inference),
+      relations: generic ? [] : relationsFor(id, flow, inference, recordList),
+      provenance: generic ? [] : provenanceFor(id, flow, inference),
       countLabel,
       unread: Boolean(visitedEntry.unread),
       closed: Boolean(visitedEntry.closed),

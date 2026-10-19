@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-19",
+  "origin": "http://127.0.0.1:5173/",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "actions": "仅查看与缩放；主题40→摘要70→只读尝试1（12:01）→收起→唤醒同记录，不创建或执行记录",
+  "captures": [
+    {
+      "name": "addcustom-map-topics.png",
+      "clip": {
+        "x": 933,
+        "y": 58,
+        "width": 507,
+        "height": 600
+      }
+    },
+    {
+      "name": "addcustom-map-summary.png",
+      "clip": {
+        "x": 933,
+        "y": 58,
+        "width": 507,
+        "height": 460
+      }
+    },
+    {
+      "name": "addcustom-map-context.png",
+      "clip": null
+    },
+    {
+      "name": "map-navigation-collapsed.png",
+      "clip": null
+    },
+    {
+      "name": "map-navigation-restored.png",
+      "clip": {
+        "x": 942,
+        "y": 58,
+        "width": 498,
+        "height": 404
+      }
+    }
+  ]
+}
