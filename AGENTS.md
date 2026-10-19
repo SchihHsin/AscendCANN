@@ -5214,3 +5214,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 子agent分担框架叙事只读复核、21独立状态renderer和三份文档；主代理绘框架总图、整合、修正、浏览器验收。1280×720用概览进入27新页逐页核对：全部top0、无正文越界/横溢，21实拍均加载且仅一图一放大按钮，框标误差≤0.016px；1440×900同27页边界无异常。390×844同27页无横溢，31关系说明与47状态图滚动/放大可达；#37按右键进#38，刷新仍#38；34大图保框、59导航当前点在视口内，日志error/warn为空。
 - 静态/语法：59页、6框架/21状态、零data-capture-step/隐藏帧、唯一ID/图片引用/数字锚点、MJS与内联JS语法、重建字节一致、diff检查通过。证据在learning-canvas-story/evidence/framework-pages-20261019/及QA。未新增或运行自动测试，不冒充完整无障碍或原生全屏验收。
 - 本轮只重组设计HTML与源/文档，未新增Demo功能或实拍，现有两案例用于代入共通规则；真实后台晚到、并发/编辑冲突及浏览器/视频/学习起步等完整场景仍待补齐，不改变API/Host/Application事实或真实工程/NPU边界。主要评审31页整体关系与32–36通用规则，再从37页正常翻阅状态。仅本任务文件提交立即push，其他WIP保留；回执后补。
+
+- 提交/发布回执：9124334d（docs: introduce interaction framework and separate state slides）已成功推送origin/main，仅27个本轮材料/源/文档/证据文件。Pages运行39226152860成功完成。公开HTML源请求本轮遇URLError，未记作线上HTTP核对成功；正式交互与视觉检查依据为本地IAB，部署状态依据GitHub Pages回执。用户预览停在#31，临时视口已reset；其他WIP未暂存。
