@@ -5168,3 +5168,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 检查：三份MJS和两份内联脚本node --check；生成38页、6个实拍页、19状态、无重复ID/缺失本地引用/越界数字页锚点；重建字节一致，diff检查通过。IAB1440×900点击19步并逐页抽查，1280×720八页边界正文底617.7–637.7/页脚666.5，390×844上下/页内滚动无横溢，第36滚至659.5px；lightbox打开/Esc焦点返回，步骤Home/Right不翻整页，概览选35/刷新#35 top0，error/warn日志为空。截图与读数在evidence/shared-captures-20261019。没有新增或运行自动测试，IAB原生全屏本轮未确认，跨设备/真实后台并发/编辑冲突仍未验收。
 - 已确定：六页用实拍解释当前已实现的管理动作，设计规则与实施范围分开。下一步待办仍是完整问题关系地图/语义层级及原有图像专属主动提示、视频联动、学习起步和跨平台协作。用户本轮主要评审31–36页是否能清楚展示共通动作与前后变化，不视为整体产品已经通过评审。
 - 仅本轮材料/图/QA/根AGENTS提交并立即push，保留全部未知WIP；commit/push回执后补。
+
+- 提交/发布回执：dc9f97b9（docs: replace shared interaction schematics with captured demo states）已推送origin/main；Pages运行39191811094成功，公开HTML HTTP200，确认6个data-capture-sequence和19个状态。线上源已更新，本轮可视检查依据仍是本地材料会话，不冒充额外线上逐页验收。67个本轮材料/截图/交接文件已提交，其他WIP保持未暂存。
