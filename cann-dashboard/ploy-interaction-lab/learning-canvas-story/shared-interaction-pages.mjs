@@ -1,7 +1,9 @@
-import {capturedInteractionPages,captureCSS,captureRuntime} from './shared-interaction-captures.mjs';
+import {capturedInteractionPages,captureCSS,captureRuntime,capturePageCount} from './shared-interaction-captures.mjs';
+import {interactionFrameworkPages,frameworkCSS,frameworkPageCount} from './shared-interaction-framework.mjs';
+export {capturePageCount,frameworkPageCount};
 export {captureRuntime as sharedInteractionRuntime};
 // Formal HTML design rules. Implementation notes remain in content-management-design.md.
-export const sharedInteractionCSS = captureCSS + `
+export const sharedInteractionCSS = captureCSS + frameworkCSS + `
 .story-deck .shared-rules .body-area{padding-bottom:4vh}
 .story-deck .shared-rules .rule-layout{width:100%;display:grid;grid-template-columns:minmax(0,.64fr) minmax(0,1.36fr);gap:2.6vw;align-items:center}
 .story-deck .shared-rules .rule-copy{display:grid;gap:1.8vh;align-content:center}
@@ -70,6 +72,7 @@ const demo = '../../../ascstudio/';
 export function sharedInteractionPages(chapterTabs) {
   const slide = (key,title,body,foot='交互规则 · 2026-10-16 · 结构图为设计说明，Demo实施范围见本章最后一页') => `<section class="slide s-gray shared-rules" data-rule="${key}" data-title="${title}"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">${title}</span></div><div class="subttl">共用机制</div></div>${chapterTabs('C')}</div><div class="body-area">${body}</div><div class="foot">${foot}</div></section>`;
   return [
+    ...interactionFrameworkPages(chapterTabs),
     ...capturedInteractionPages(chapterTabs),
 
     slide('cases','AddCustom 与图像推理，共用同一组操作预期',`<div class="rule-full"><p>业务解释、参数和核对范围各不相同；内容身份、查看、历史、收起与返回遵守同一规则。</p><div class="rule-figure rule-scroll">${table(['共通动作','AddCustom','图像推理'],[

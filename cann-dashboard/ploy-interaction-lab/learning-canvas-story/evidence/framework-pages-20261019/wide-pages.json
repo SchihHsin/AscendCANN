@@ -1,0 +1,218 @@
+[
+  {
+    "bodyHeight": 710.7109375,
+    "bottom": 634.625,
+    "id": "framework-task-boundary",
+    "overflow": false,
+    "top": 40.078125,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 710.7109375,
+    "bottom": 633.078125,
+    "id": "framework-intent-and-attention",
+    "overflow": false,
+    "top": 41.625,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 710.7109375,
+    "bottom": 633.078125,
+    "id": "framework-workspace-navigation",
+    "overflow": false,
+    "top": 41.625,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 710.7109375,
+    "bottom": 633.078125,
+    "id": "framework-content-identity",
+    "overflow": false,
+    "top": 41.625,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 710.7109375,
+    "bottom": 633.078125,
+    "id": "framework-temporary-and-return",
+    "overflow": false,
+    "top": 41.625,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 710.7109375,
+    "bottom": 633.078125,
+    "id": "framework-updates-without-interruption",
+    "overflow": false,
+    "top": 41.625,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-object-image-tensor-correct",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-object-image-proposal",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-object-image-current-info",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-intent-addcustom-prompt",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-intent-addcustom-prompt-collapsed",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-intent-addcustom-explanation",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-navigation-addcustom-map-topics",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-navigation-addcustom-map-summary",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-navigation-map-navigation-before",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-navigation-map-navigation-collapsed",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-navigation-map-navigation-restored",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-history-image-overview",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-history-image-history-expanded",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-history-image-history-readonly",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-conditions-image-check-pending",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-conditions-image-check-complete",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-conditions-image-conditions-overview",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-compare-compare-wide",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-compare-compare-narrow-current",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-compare-compare-narrow-reference",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  },
+  {
+    "bodyHeight": 721.9140625,
+    "bottom": 653.03125,
+    "id": "state-compare-compare-ended",
+    "overflow": false,
+    "top": 41.875,
+    "width": 1440
+  }
+]

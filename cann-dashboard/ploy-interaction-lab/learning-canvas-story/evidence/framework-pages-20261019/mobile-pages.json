@@ -1,0 +1,218 @@
+[
+  {
+    "height": 579,
+    "id": "framework-task-boundary",
+    "pageWidth": 390,
+    "scrollHeight": 579,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 563,
+    "id": "framework-intent-and-attention",
+    "pageWidth": 390,
+    "scrollHeight": 813,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 579,
+    "id": "framework-workspace-navigation",
+    "pageWidth": 390,
+    "scrollHeight": 822,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 579,
+    "id": "framework-content-identity",
+    "pageWidth": 390,
+    "scrollHeight": 800,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 563,
+    "id": "framework-temporary-and-return",
+    "pageWidth": 390,
+    "scrollHeight": 800,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 563,
+    "id": "framework-updates-without-interruption",
+    "pageWidth": 390,
+    "scrollHeight": 777,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-object-image-tensor-correct",
+    "pageWidth": 390,
+    "scrollHeight": 628,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-object-image-proposal",
+    "pageWidth": 390,
+    "scrollHeight": 628,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-object-image-current-info",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-intent-addcustom-prompt",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-intent-addcustom-prompt-collapsed",
+    "pageWidth": 390,
+    "scrollHeight": 580,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-intent-addcustom-explanation",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-navigation-addcustom-map-topics",
+    "pageWidth": 390,
+    "scrollHeight": 628,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 554,
+    "id": "state-navigation-addcustom-map-summary",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-navigation-map-navigation-before",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-navigation-map-navigation-collapsed",
+    "pageWidth": 390,
+    "scrollHeight": 580,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 554,
+    "id": "state-navigation-map-navigation-restored",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 554,
+    "id": "state-history-image-overview",
+    "pageWidth": 390,
+    "scrollHeight": 628,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 554,
+    "id": "state-history-image-history-expanded",
+    "pageWidth": 390,
+    "scrollHeight": 628,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-history-image-history-readonly",
+    "pageWidth": 390,
+    "scrollHeight": 580,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 554,
+    "id": "state-conditions-image-check-pending",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 554,
+    "id": "state-conditions-image-check-complete",
+    "pageWidth": 390,
+    "scrollHeight": 628,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 554,
+    "id": "state-conditions-image-conditions-overview",
+    "pageWidth": 390,
+    "scrollHeight": 628,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-compare-compare-wide",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 554,
+    "id": "state-compare-compare-narrow-current",
+    "pageWidth": 390,
+    "scrollHeight": 628,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 554,
+    "id": "state-compare-compare-narrow-reference",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  },
+  {
+    "height": 577,
+    "id": "state-compare-compare-ended",
+    "pageWidth": 390,
+    "scrollHeight": 604,
+    "scrollWidth": 359,
+    "width": 359
+  }
+]

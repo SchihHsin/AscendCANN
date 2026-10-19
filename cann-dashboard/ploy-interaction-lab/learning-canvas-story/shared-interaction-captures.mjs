@@ -1,5 +1,5 @@
 // Actual states captured by operating a separate session of the current Demo.
-// Keep proposed behavior distinct from what these screenshots demonstrate.
+// Each state is a separate deck page; photographs retain their complete viewport.
 import {readFile} from 'node:fs/promises';
 const dir = 'images/shared-full-states-20261019/';
 let manifest={}, viewport={width:1280,height:720};
@@ -7,150 +7,245 @@ try { const data=JSON.parse(await readFile(new URL('./images/shared-full-states-
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const states = [
   {
-    key:'object', title:'业务内容可以不同，管理动作保持一致',
-    heading:'正文因任务而变，<br>操作预期保持一致',
-    lead:'图解与 Diff 共用管理方式，各自保留对象身份；历史属于原对象。下面三步来自同一条图像推理任务。',
-    rule:'关联帮助定位，不直接代表因果。没有检查环节的资料，不强加“待验证”；查看状态与业务状态分别记录。',
+    key:'object', label:'对象与统一管理',
     steps:[
-      ['image-tensor-correct','图解内理解与试改','RGB、轴顺序与 batch 在真实图解中联动；正文按业务组合。','轴 2,0,1 · 含 batch → [1,3,224,224]'],
-      ['image-proposal','独立审阅修改','独立 Diff 保留来源尝试与条件，明确作用于浏览器示例副本。','图解中的试改 → 修改预览；确认后才应用'],
-      ['image-current-info','找来源、关联与历史','统一小入口按需展开条件、来源与两条历史，不额外占据常驻区域。','当前条件：不含 batch；历史仍保留各自条件']
+      {
+        key:'image-tensor-correct', action:'图解内理解与试改', title:'参数在原图解中试改，形状随条件联动',
+        trigger:'调整轴顺序为 2,0,1，并保留 batch。',
+        response:'图解同步解释 RGB、轴顺序与输出形状 [1,3,224,224]。',
+        contract:'试改保留在当前任务与对象内，正文按业务需要组合。',
+        note:'轴 2,0,1 · 含 batch → [1,3,224,224]'
+      },
+      {
+        key:'image-proposal', action:'独立审阅修改', title:'试改先形成独立提案，审阅后再确认应用',
+        trigger:'从当前图解生成转换修改预览。',
+        response:'独立 Diff 保留来源尝试与条件，明确作用于浏览器示例副本。',
+        contract:'生成、审阅与应用是分开的动作；确认后才改变采用状态。',
+        note:'图解中的试改 → 修改预览；确认后才应用'
+      },
+      {
+        key:'image-current-info', action:'找来源、关联与历史', title:'条件、来源与历史共用一个按需入口',
+        trigger:'在当前图解打开内容信息。',
+        response:'统一入口展开适用条件、来源、关联和两条历史。',
+        contract:'历史属于原对象，各自保留条件；关联帮助定位，不代表因果。',
+        note:'当前条件：不含 batch；历史仍保留各自条件'
+      }
     ]
   },
   {
-    key:'intent', title:'建议贴着当前问题出现，处理后收回摘要',
-    heading:'先给必要依据，<br>再接上对应图解',
-    lead:'这里实拍的是“报告失败”分支：回答先说明线索与证据缺口，再提供就近行动入口。',
-    rule:'问“为什么”时回答与图解一起出现；阅读或编辑时保留现场；明确说“试改、采用、检查”时接续动作。当前是固定规则的局部演示，尚未接任意自然语言识别。',
+    key:'intent', label:'就近建议与摘要',
     steps:[
-      ['addcustom-prompt','就近提供行动','浅蓝紫提示面贴着回答出现，说明建议的依据，并保留“根因尚未确认”。','黑色主按钮 · 轻色提示面 · 不循环闪烁'],
-      ['addcustom-prompt-collapsed','收回成一行摘要','用户可收起建议，原对话继续阅读；短提示不新建一份内容。','收起提示保留再次展开入口'],
-      ['addcustom-explanation','定位相关图解','从原建议定位尾块图解，参数、访问过程与代码关系在原任务内查看。','用户明确进入后，才接上可持续查看的内容']
+      {
+        key:'addcustom-prompt', action:'就近提供行动', title:'先说明失败线索，再在回答旁提供行动',
+        trigger:'用户报告 AddCustom 失败，尚未提供完整根因证据。',
+        response:'浅蓝紫提示面贴着回答出现，交代建议依据与图解入口。',
+        contract:'保留“根因尚未确认”；当前按固定意图规则演示。',
+        note:'黑色主按钮 · 轻色提示面 · 不循环闪烁'
+      },
+      {
+        key:'addcustom-prompt-collapsed', action:'收回成一行摘要', title:'建议收起后保留摘要，让原对话继续阅读',
+        trigger:'用户收起回答中的建议面。',
+        response:'建议缩成原位的一行摘要，保留再次展开入口。',
+        contract:'收起只改变呈现，不新建内容，也不改变当前任务。',
+        note:'收起提示保留再次展开入口'
+      },
+      {
+        key:'addcustom-explanation', action:'定位相关图解', title:'明确进入后，图解接续当前问题与上下文',
+        trigger:'用户从原建议打开尾块访问图解。',
+        response:'右区展示相关参数、访问过程及其与代码的关系。',
+        contract:'在原任务内持续查看与试改；阅读动作保留当前现场。',
+        note:'用户明确进入后，才接上可持续查看的内容'
+      }
     ]
   },
   {
-    key:'navigation', title:'缩小看全貌，放大看关系，收起后仍能找回',
-    heading:'缩小看全貌，<br>点选回到具体内容',
-    lead:'同一总览逐级收成主题或内容摘要，保留结论、状态和来源；字号保持可读，不把正文缩成小字。',
-    rule:'100% 详情 → 70% 摘要 → 40% 主题；“适应全部”按空间选择。查看不生成、不应用、不检查；缩放和阅读位置随任务保留。',
+    key:'navigation', label:'语义缩放与现场恢复',
     steps:[
-      ['addcustom-map-topics','缩小看全部主题','主题里直接列出内容名称与状态；无需先选择分类或切换另一种视图。','40% 主题概览 · 七项内容归属三个主题'],
-      ['addcustom-map-summary','放大看关系与来源','内容自动排列，连线来自已记录关联；采用来源与核对条件都能看见。','70% 内容摘要 · 连线不表示已确认因果'],
-      ['map-navigation-before','打开要保留的记录','进入尝试 1 的只读快照，明确收起前正在看哪一份内容。','收起前：尝试 1 · 12:01 · 输入 [17,33]'],
-      ['map-navigation-collapsed','收起继续当前对话','右区收起后归还对话宽度，顶栏“打开内容”负责再次唤醒。','收起前查看：尝试 1 · 12:01 的只读范围记录'],
-      ['map-navigation-restored','唤醒恢复同一记录','重新打开仍是 12:01 的只读尝试；回总览也保留原缩放和阅读位置。','收起是查看动作，不停止、删除或重新执行']
+      {
+        key:'addcustom-map-topics', action:'缩小看全部主题', title:'缩小时收成主题，内容名称与状态仍可读',
+        trigger:'在内容总览缩小至 40%。',
+        response:'七项内容归入三个主题，主题内直接列出名称与状态。',
+        contract:'缩放改变信息层级，字号保持可读；无需另选分类视图。',
+        note:'40% 主题概览 · 七项内容归属三个主题'
+      },
+      {
+        key:'addcustom-map-summary', action:'放大看关系与来源', title:'放大后展开摘要，来源与关系在同一总览中可见',
+        trigger:'从主题概览放大至 70%。',
+        response:'内容摘要自动排列，并呈现已记录的来源和关联线。',
+        contract:'连线仅取明确关联；查看与缩放不生成、不应用、不检查。',
+        note:'70% 内容摘要 · 连线不表示已确认因果'
+      },
+      {
+        key:'map-navigation-before', action:'打开要保留的记录', title:'收起前明确当前记录，恢复才有确定落点',
+        trigger:'打开尝试 1 · 12:01 的记录。',
+        response:'右区展示输入 [17,33] 对应的只读范围快照。',
+        contract:'保留正在查看的对象与记录身份，查看不会重新执行。',
+        note:'收起前：尝试 1 · 12:01 · 输入 [17,33]'
+      },
+      {
+        key:'map-navigation-collapsed', action:'收起继续当前对话', title:'右区收起后归还宽度，顶栏保留找回入口',
+        trigger:'查看 12:01 记录时收起右区。',
+        response:'对话获得完整宽度，顶栏“打开内容”负责再次唤醒。',
+        contract:'收起是查看动作；原记录与阅读现场继续保留。',
+        note:'收起前查看：尝试 1 · 12:01 的只读范围记录'
+      },
+      {
+        key:'map-navigation-restored', action:'唤醒恢复同一记录', title:'重新打开回到同一记录，继续先前的阅读现场',
+        trigger:'从顶栏点击“打开内容”。',
+        response:'右区仍打开尝试 1 · 12:01 的只读记录。',
+        contract:'唤醒恢复原对象，不产生新的尝试；回总览保留原缩放与位置。',
+        note:'收起是查看动作，不停止、删除或重新执行'
+      }
     ]
   },
   {
-    key:'history', title:'主题帮助定位，历史留在原对象下面',
-    heading:'保存有价值的尝试，<br>不铺满每次调用',
-    lead:'两次形状尝试分别保留含 batch 与不含 batch 的条件。当前图解、尝试记录和修改提案可以互相定位。',
-    rule:'历史在卡片行后跨整行展开，不把相邻卡片一起撑高；查看旧记录只读，不重新执行。主题仍为两案例预置，关系仅取明确ID，不据关联推断因果。',
+    key:'history', label:'主题与历史',
     steps:[
-      ['image-overview','先扫主题和摘要','同一主题聚合图解、尝试、提案与核对，类型只作为辅助信息。','摘要中可见历史数量、适用条件与关联入口'],
-      ['image-history-expanded','在原对象下回看历史','两条历史跨整行展示，每条保留时间、条件、结论和对照入口。','11:51 含 batch；11:52 不含 batch'],
-      ['image-history-readonly','打开一份只读快照','11:51 仍显示 [1,3,224,224]；后来的参数改动不会覆盖这份记录。','返回当前内容可继续试改；历史不会自动变成新尝试']
+      {
+        key:'image-overview', action:'先扫主题和摘要', title:'按任务主题组织内容，摘要先交代条件与状态',
+        trigger:'回到图像推理任务的内容总览。',
+        response:'同一主题聚合图解、尝试、提案与核对，摘要展示历史数量和条件。',
+        contract:'类型作为辅助信息；主题帮助定位，历史仍归原对象。',
+        note:'摘要中可见历史数量、适用条件与关联入口'
+      },
+      {
+        key:'image-history-expanded', action:'在原对象下回看历史', title:'历史在原对象下跨行展开，每次条件分别保留',
+        trigger:'展开形状尝试对象的两条历史。',
+        response:'11:51 与 11:52 跨整行显示时间、条件、结论和对照入口。',
+        contract:'历史不撑高相邻卡片；含 batch 与不含 batch 各自记录。',
+        note:'11:51 含 batch；11:52 不含 batch'
+      },
+      {
+        key:'image-history-readonly', action:'打开一份只读快照', title:'旧尝试保持只读，后续参数不会覆盖历史',
+        trigger:'打开 11:51 的含 batch 历史。',
+        response:'快照继续显示当时的条件与输出 [1,3,224,224]。',
+        contract:'查看历史不重新执行；返回当前内容后才继续试改。',
+        note:'返回当前内容可继续试改；历史不会自动变成新尝试'
+      }
     ]
   },
   {
-    key:'conditions', title:'应用不自动检查，新条件不沿用旧结果',
-    heading:'看清这份结果，<br>对应哪一次条件',
-    lead:'同一演示先采用含 batch 的修改，明确复核后，再取消 batch 生成新提案。三步分别保留业务状态。',
-    rule:'检查携带输入、参数、版本与覆盖范围。示例预览、采用和检查各自可见；局部符合不代表真实工程或完整任务通过。',
+    key:'conditions', label:'条件与核对状态',
     steps:[
-      ['image-check-pending','应用以后仍待复核','确认应用到示例副本，只改变采用状态；形状约定仍显示“待复核”。','应用 ≠ 检查；不因打开核对面就生成结果'],
-      ['image-check-complete','明确操作才保存核对','发起“复核示例形状并带回对话”后，才保存含 batch 的单项符合记录。','仅浏览器形状示例；未执行 Python、模型或 NPU'],
-      ['image-conditions-overview','新提案与旧核对分开','取消 batch 后的新提案标“待应用”；先前核对仍标“旧条件结果”。','新提案 [3,224,224]；旧核对 [1,3,224,224]']
+      {
+        key:'image-check-pending', action:'应用以后仍待复核', title:'确认应用只改变采用状态，形状约定仍待复核',
+        trigger:'确认将含 batch 的修改应用到示例副本。',
+        response:'采用状态变为已应用，形状约定仍显示“待复核”。',
+        contract:'应用与检查分别记录；打开核对面不会生成核对结果。',
+        note:'应用 ≠ 检查；不因打开核对面就生成结果'
+      },
+      {
+        key:'image-check-complete', action:'明确操作才保存核对', title:'明确发起复核后，才保存对应条件与覆盖范围',
+        trigger:'点击“复核示例形状并带回对话”。',
+        response:'保存含 batch 条件下的单项符合记录，并带回当前对话。',
+        contract:'结果仅覆盖浏览器形状示例，未执行 Python、模型或 NPU。',
+        note:'仅浏览器形状示例；未执行 Python、模型或 NPU'
+      },
+      {
+        key:'image-conditions-overview', action:'新提案与旧核对分开', title:'条件改变后新提案待应用，旧核对继续标明旧条件',
+        trigger:'取消 batch，生成第二次尝试的转换提案。',
+        response:'新提案 [3,224,224] 标为待应用；原核对仍属于含 batch 的尝试。',
+        contract:'新条件不沿用旧结果；来源尝试、采用与核对各自可见。',
+        note:'新提案 [3,224,224]；旧核对 [1,3,224,224]'
+      }
     ]
   },
   {
-    key:'compare', title:'宽栏并排，窄栏完整看一份，结束回原处',
-    heading:'对照是临时动作，<br>双方条件始终清楚',
-    lead:'从 11:51 记录选择与 11:52 对照。拖动三栏分隔线只改变布局，不改变对象、参数或版本。',
-    rule:'右区 ≤620px 切换双方，宽栏并排；结束后回到进入对照前的内容或总览。固定参考供后续操作持续保留，与临时对照分开。',
+    key:'compare', label:'临时对照与返回',
     steps:[
-      ['compare-wide','宽栏同时比较','实际右区约 638px，两份记录并排，并列标明时间、batch 与输出形状。','同一对照关系；没有重新运行两份记录'],
-      ['compare-narrow-current','窄栏完整看当前','实际右区约 447px，以分段切换选择一份，每份保留完整可读宽度。','当前：11:51 · 含 batch · [1,3,224,224]'],
-      ['compare-narrow-reference','切换看另一份','切到 11:52，仍是同一组只读记录；无需返回总览再找一次。','对照：11:52 · 不含 batch · [3,224,224]'],
-      ['compare-ended','结束回到原记录','结束对照，回到最初进入时的 11:51 记录，而非默认图解或最新尝试。','结束对照 ≠ 关闭内容；继续保留原现场']
+      {
+        key:'compare-wide', action:'宽栏同时比较', title:'宽栏并排两份记录，时间与条件始终在场',
+        trigger:'从 11:51 记录选择与 11:52 对照，并拉宽右区。',
+        response:'实际约 638px 的右区并排展示两份记录及 batch、输出形状。',
+        contract:'拖动分隔线只改变布局，不改变对象、参数或版本。',
+        note:'同一对照关系；没有重新运行两份记录'
+      },
+      {
+        key:'compare-narrow-current', action:'窄栏完整看当前', title:'窄栏一次完整显示一份，保留当前记录的可读宽度',
+        trigger:'将对照右区收窄到约 447px。',
+        response:'以分段切换选择一份，当前展示 11:51 的含 batch 记录。',
+        contract:'右区 ≤620px 使用单份视图；双方记录与对照关系继续保留。',
+        note:'当前：11:51 · 含 batch · [1,3,224,224]'
+      },
+      {
+        key:'compare-narrow-reference', action:'切换看另一份', title:'窄栏切换仍在同一对照中，另一份条件完整呈现',
+        trigger:'在同一对照中切到 11:52。',
+        response:'显示不含 batch 的记录及输出 [3,224,224]。',
+        contract:'切换只改变正在阅读的一方，无需回总览重找，也不重新执行。',
+        note:'对照：11:52 · 不含 batch · [3,224,224]'
+      },
+      {
+        key:'compare-ended', action:'结束回到原记录', title:'结束临时对照后，返回进入前的原记录',
+        trigger:'结束 11:51 与 11:52 的对照。',
+        response:'右区回到最初进入时的 11:51 只读记录。',
+        contract:'结束对照保留原现场；固定参考作为另一种持续保留动作。',
+        note:'结束对照 ≠ 关闭内容；继续保留原现场'
+      }
     ]
   }
 ];
 
+// Stable identities allow the deck builder to assign page numbers independently.
+export const capturePagesIndex = states.flatMap(group => group.steps.map((state,index) => ({
+  pageId:`state-${group.key}-${state.key}`, group:group.key, groupLabel:group.label,
+  state:state.key, title:state.title, action:state.action, groupIndex:index+1, groupCount:group.steps.length
+})));
+export const capturePageCount = capturePagesIndex.length;
+
 export function capturedInteractionPages(chapterTabs) {
   const annotationsFor=key=>manifest[key]||[];
   const overlay=key=>{const items=annotationsFor(key);return items.length?`<svg class="capture-annotations" viewBox="0 0 ${viewport.width} ${viewport.height}" preserveAspectRatio="none" aria-hidden="true">${items.map((h,i)=>`<rect x="${h.x}" y="${h.y}" width="${h.width}" height="${h.height}" rx="5"/><circle cx="${h.x+13}" cy="${h.y+13}" r="11"/><text x="${h.x+13}" y="${h.y+18}">${i+1}</text>`).join('')}</svg>`:''};
-  return states.map(page => `<section class="slide s-gray shared-rules captured-rules" data-rule="${page.key}" data-title="${esc(page.title)}" data-capture-sequence="${page.key}">
-    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">${page.title}</span></div><div class="subttl">共用机制 · Demo 连续状态</div></div>${chapterTabs('C')}</div>
+  return states.flatMap(group => group.steps.map((state,index) => {
+    const pageId=`state-${group.key}-${state.key}`;
+    return `<section class="slide s-gray shared-rules captured-rules" id="${pageId}" data-page-id="${pageId}" data-rule="${group.key}" data-state="${state.key}" data-title="${esc(state.title)}" data-capture-sequence="${group.key}">
+    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">${esc(state.title)}</span></div><div class="subttl">共用机制 · ${esc(group.label)} · ${esc(state.action)}</div></div>${chapterTabs('C')}</div>
     <div class="body-area"><div class="capture-layout">
-      <div class="capture-copy"><h2>${page.heading}</h2><p>${page.lead}</p>
-        <div class="capture-steps" role="group" aria-label="${esc(page.title)}的关键状态">${page.steps.map((step,index)=>`<button type="button" class="capture-step${index===0?' is-active':''}" data-capture-step="${index}" aria-pressed="${index===0}" aria-controls="capture-stage-${page.key}"><span class="capture-index">${String(index+1).padStart(2,'0')}</span><span><strong>${step[1]}</strong><span>${step[2]}</span></span></button>`).join('')}</div>
-        <p class="capture-rule">${page.rule}</p>
-      </div>
-      <div class="capture-stage" id="capture-stage-${page.key}">${page.steps.map((step,index)=>`<figure class="capture-frame" data-capture-frame="${index}"${index?' hidden':''}><button type="button" class="capture-image" data-enlarge="${dir+step[0]}.jpg" data-highlights="${esc(JSON.stringify(annotationsFor(step[0])))}" data-viewport="${viewport.width} ${viewport.height}" aria-label="放大${esc(step[1])}的实际界面"><span class="capture-visual"><img src="${dir+step[0]}.jpg" alt="${esc(step[1]+'：'+step[2])}" decoding="async"${index?' loading="lazy"':''}>${overlay(step[0])}</span></button><figcaption><span>${String(index+1).padStart(2,'0')} / ${String(page.steps.length).padStart(2,'0')}</span><strong>${step[1]}</strong><p>${step[3]}</p><div class="capture-labels">${annotationsFor(step[0]).map((h,i)=>`<small class="capture-label">${i+1}. ${esc(h.label||'关键区域')}</small>`).join('')}</div></figcaption></figure>`).join('')}<div class="capture-hint">完整界面保留位置关系 · 细框标出重点 · 点击放大</div></div>
+      <div class="capture-copy"><dl class="capture-notes">
+        <div><dt>触发</dt><dd>${esc(state.trigger)}</dd></div>
+        <div><dt>系统响应</dt><dd>${esc(state.response)}</dd></div>
+        <div><dt>交互约定</dt><dd>${esc(state.contract)}</dd></div>
+      </dl></div>
+      <div class="capture-stage"><figure class="capture-frame"><button type="button" class="capture-image" data-enlarge="${dir+state.key}.jpg" data-highlights="${esc(JSON.stringify(annotationsFor(state.key)))}" data-viewport="${viewport.width} ${viewport.height}" aria-label="放大${esc(state.action)}的实际界面"><span class="capture-visual"><img src="${dir+state.key}.jpg" alt="${esc(state.action+'：'+state.response)}" decoding="async" loading="lazy">${overlay(state.key)}</span></button><figcaption><strong>${esc(state.action)}</strong><p>${esc(state.note)}</p><div class="capture-labels">${annotationsFor(state.key).map((h,i)=>`<small class="capture-label">${i+1}. ${esc(h.label||'关键区域')}</small>`).join('')}</div></figcaption></figure><div class="capture-hint">完整界面保留位置关系 · 细框标出重点 · 点击放大</div></div>
     </div></div>
-    <div class="foot">当前 Demo 操作实拍 · 2026-10-19 · 本地操作记录 · 浏览器示例，不代表真实工程执行</div>
-  </section>`);
+    <div class="foot"><span>${esc(group.label)} · ${index+1} / ${group.steps.length}</span><span>当前 Demo 操作实拍 · 2026-10-19 · 浏览器示例，不代表真实工程执行</span></div>
+  </section>`;
+  }));
 }
 
 export const captureCSS = `
-.story-deck .captured-rules .body-area{padding-bottom:3vh}
-.story-deck .capture-layout{width:100%;display:grid;grid-template-columns:minmax(220px,.3fr) minmax(0,.7fr);gap:2vw;align-items:center}
-.story-deck .capture-copy{display:grid;gap:1.6vh;align-content:center;min-width:0;min-height:0}
-.story-deck .capture-copy h2{font-size:var(--fs-h1);line-height:1.25;letter-spacing:-.025em;font-weight:750;color:var(--ink)}
-.story-deck .capture-copy>p{margin:0;font-size:var(--fs-body);line-height:1.6;color:var(--ink-2)}
-.story-deck .capture-steps{display:grid;gap:.65vh}
-.story-deck .capture-step{appearance:none;display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:.7vw;align-items:start;width:100%;padding:1.1vh .9vw;text-align:left;border:1px solid transparent;border-radius:10px;color:var(--ink-2);background:transparent;cursor:pointer;font:inherit;transition:background .18s ease,border-color .18s ease}
-.story-deck .capture-step .capture-index{font-size:var(--fs-sm);padding-top:.1em;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.story-deck .capture-step strong{display:block;font-size:var(--fs-body);line-height:1.45;font-weight:650;color:var(--ink)}
-.story-deck .capture-step>span>span{display:none;margin-top:.35vh;font-size:var(--fs-body);line-height:1.5;color:var(--ink-2)}
-.story-deck .capture-step.is-active>span>span{display:block}
-.story-deck .capture-step.is-active{background:rgba(255,255,255,.9);border-color:#fff;box-shadow:0 4px 14px #25283a05}
-.story-deck .capture-step.is-active .capture-index{color:#55506b;font-weight:700}
-.story-deck .capture-step:hover{background:#ffffff70}
-.story-deck .capture-step:focus-visible,.story-deck .capture-image:focus-visible,.story-deck .capture-context:focus-visible{outline:2px solid #7f7ca2;outline-offset:3px}
-.story-deck .capture-copy .capture-rule{font-size:var(--fs-body);line-height:1.6;color:var(--ink-3);padding-top:1.1vh;border-top:1px solid #cfd4df}
-.story-deck .capture-stage{margin:0;display:grid;gap:1.2vh;justify-items:center;align-items:center;min-width:0}
-.story-deck .capture-frame{margin:0;width:100%;display:grid;gap:1.2vh;justify-items:center}
-.story-deck .capture-frame[hidden]{display:none}
+.story-deck .shared-rules.captured-rules .head{gap:2vw;margin-bottom:2.4vh}
+.story-deck .shared-rules.captured-rules .body-area{padding-bottom:3vh}
+.story-deck .capture-layout{width:100%;display:grid;grid-template-columns:minmax(0,.27fr) minmax(0,.73fr);gap:2vw;align-items:center}
+.story-deck .capture-copy{min-width:0;min-height:0}
+.story-deck .capture-notes{display:grid;gap:2.2vh;margin:0}
+.story-deck .capture-notes>div{display:grid;gap:.65vh;padding-top:1.4vh;border-top:1px solid #cfd4df}
+.story-deck .capture-notes>div:first-child{padding-top:0;border-top:0}
+.story-deck .capture-notes dt{font-size:var(--fs-sm);line-height:1.4;font-weight:700;color:var(--ink-3);letter-spacing:.04em}
+.story-deck .capture-notes dd{margin:0;font-size:var(--fs-body);line-height:1.6;color:var(--ink-2);overflow-wrap:anywhere}
+.story-deck .capture-notes>div:nth-child(2) dd{color:var(--ink)}
+.story-deck .capture-image:focus-visible{outline:2px solid #7f7ca2;outline-offset:3px}
+.story-deck .capture-stage{margin:0;display:grid;gap:.9vh;justify-items:center;align-items:center;min-width:0}
+.story-deck .capture-frame{margin:0;width:100%;display:grid;gap:1vh;justify-items:center}
 .story-deck .capture-image{appearance:none;padding:0;border:0;border-radius:12px;display:flex;align-items:center;justify-content:center;width:100%;height:auto;background:transparent;cursor:zoom-in;overflow:visible}
 .story-deck .capture-visual{position:relative;display:block;width:fit-content;height:fit-content;max-width:100%;max-height:100%}
-.story-deck .capture-image img{display:block;max-width:100%;max-height:65vh;width:auto;height:auto;object-fit:contain;border:1px solid #d5d8e0;border-radius:10px;box-shadow:0 15px 45px -25px #46516b40}
+.story-deck .capture-image img{display:block;max-width:100%;max-height:63vh;width:auto;height:auto;object-fit:contain;border:1px solid #d5d8e0;border-radius:10px;box-shadow:0 15px 45px -25px #46516b40}
 .story-deck .capture-annotations{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .story-deck .capture-annotations rect{fill:none;stroke:#737bcd;stroke-width:2;vector-effect:non-scaling-stroke}
 .story-deck .capture-annotations text{fill:#fff;stroke:none;font:700 15px sans-serif;text-anchor:middle}.story-deck .capture-annotations circle{fill:#666db2;stroke:none}
-.story-deck .capture-labels{grid-column:2;display:flex;flex-wrap:wrap;gap:.4em 1.4em;min-width:0}
-.story-deck .capture-label{font-size:var(--fs-sm);line-height:1.4;color:#66709b}
-.story-deck .capture-frame figcaption{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.4vh .7vw;width:100%;max-width:none;align-items:baseline}
-.story-deck .capture-frame figcaption>span{color:var(--ink-3);font-size:var(--fs-sm);font-variant-numeric:tabular-nums}
+.story-deck .capture-frame figcaption{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.45vh 1vw;width:100%;align-items:baseline}
 .story-deck .capture-frame figcaption>strong{font-size:var(--fs-body);line-height:1.4;color:var(--ink);font-weight:650}
-.story-deck .capture-frame figcaption>p{grid-column:2;margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--ink-2)}
-.story-deck .capture-hint{font-size:var(--fs-sm);line-height:1.5;color:var(--ink-3)}
-body.overview.story-deck .capture-step,body.overview.story-deck .capture-image{pointer-events:none}
-@media(max-height:730px) and (min-width:641px){.story-deck .capture-copy{gap:1.1vh}.story-deck .capture-step{padding:.8vh .7vw}.story-deck .capture-image{height:auto}.story-deck .capture-image img{max-height:59vh}}
-@media(max-width:900px) and (min-width:641px){.story-deck .capture-layout{grid-template-columns:minmax(200px,.34fr) minmax(0,.66fr);gap:1.6vw}.story-deck .capture-copy h2{font-size:var(--fs-h2)}}
-@media(max-width:640px){.story-deck .capture-layout{grid-template-columns:1fr;gap:2vh;flex:0 0 auto}.story-deck .captured-rules .body-area{display:block;padding-top:2vh}.story-deck .capture-copy{gap:1.5vh}.story-deck .capture-copy h2{font-size:var(--fs-h2)}.story-deck .capture-step{gap:2vw;padding:1.1vh 2vw}.story-deck .capture-stage{padding-bottom:2vh}.story-deck .capture-image{height:auto;max-height:none}.story-deck .capture-image img{width:auto;max-width:100%;max-height:none}.story-deck .capture-frame figcaption{gap:.5vh 2vw}.story-deck .capture-hint{font-size:var(--fs-sm)}}
-@media(prefers-reduced-motion:reduce){.story-deck .capture-step{transition:none}}
-@media print{.story-deck .capture-context,.story-deck .capture-hint{display:none}}
+.story-deck .shared-rules.captured-rules .capture-frame figcaption>p{margin:0;font-size:var(--fs-body);line-height:1.45;color:var(--ink-2)}
+.story-deck .capture-labels{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.3em 1.4em;min-width:0}
+.story-deck .capture-label{font-size:var(--fs-sm);line-height:1.4;color:#66709b}
+.story-deck .capture-hint{font-size:var(--fs-sm);line-height:1.4;color:var(--ink-3)}
+.story-deck .shared-rules.captured-rules .foot{display:flex;justify-content:space-between;gap:2vw;font-size:var(--fs-sm);line-height:1.4;letter-spacing:0;left:4vw;right:4vw}
+.story-deck .shared-rules.captured-rules .foot>span:first-child{flex:none;font-variant-numeric:tabular-nums}
+body.overview.story-deck .capture-image{pointer-events:none}
+@media(max-height:730px) and (min-width:641px){.story-deck .capture-notes{gap:1.6vh}.story-deck .capture-notes>div{padding-top:1.1vh}.story-deck .capture-image img{max-height:62vh}}
+@media(max-width:900px) and (min-width:641px){.story-deck .capture-layout{gap:1.6vw}.story-deck .capture-notes{gap:1.5vh}.story-deck .capture-frame figcaption{grid-template-columns:1fr}.story-deck .capture-labels{grid-column:1}}
+@media(max-width:640px){.story-deck .capture-layout{grid-template-columns:1fr;gap:2.5vh;flex:0 0 auto}.story-deck .shared-rules.captured-rules .body-area{display:block;overflow-y:auto;overscroll-behavior:contain;padding-top:1vh;padding-bottom:5vh}.story-deck .capture-notes{gap:1.6vh}.story-deck .capture-notes>div{padding-top:1.1vh}.story-deck .capture-stage{padding-bottom:2vh}.story-deck .capture-image img{max-width:100%;max-height:none;width:auto;height:auto}.story-deck .capture-frame figcaption{grid-template-columns:1fr;gap:.6vh}.story-deck .capture-labels{grid-column:1}.story-deck .shared-rules.captured-rules .foot{flex-wrap:wrap;gap:.4vh 2vw}}
+@media print{.story-deck .capture-hint{display:none}}
 `;
 
-export const captureRuntime = `
-// Change photographed states without mutating the embedded Demo or the deck page.
-document.querySelectorAll('[data-capture-sequence]').forEach(sequence=>{
-  const buttons=[...sequence.querySelectorAll('[data-capture-step]')];
-  const frames=[...sequence.querySelectorAll('[data-capture-frame]')];
-  const select=index=>{
-    buttons.forEach((button,i)=>{button.classList.toggle('is-active',i===index);button.setAttribute('aria-pressed',String(i===index));});
-    frames.forEach((frame,i)=>frame.hidden=i!==index);
-  };
-  buttons.forEach((button,index)=>{
-    button.addEventListener('click',()=>select(index));
-    button.addEventListener('keydown',event=>{
-      if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
-      event.preventDefault();event.stopPropagation();
-      const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;
-      select(next);buttons[next].focus({preventScroll:true});
-    });
-  });
-});
-`;
+// The deck owns previous/next navigation; captured states have no local switcher.
+export const captureRuntime = '';
