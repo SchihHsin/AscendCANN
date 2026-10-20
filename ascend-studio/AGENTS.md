@@ -792,4 +792,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户澄清目标形状不是彩色顶边向外凸起，而是白色内容内沿在右上向下退让、形成浅凹口。此前彩色凸起理解错误，现撤销该方向。用户给出的目标图与修改前图已保存于 `evidence/20261020-new-task-home-dot-matrix/folder-shape-reference.png`、`folder-shape-current-before.png`。
 - 在 `.new-task-home__card-band::before` 中将曲线收回彩带内部下沿：彩色外顶边保持原卡片轮廓，靠右的内边界平滑向下凹入；不再生成高出外顶边的彩色页签。
-- `npm run build:pages`、Hook `node --check`、`git diff --check`通过；静态产物检查 CSS 曲线与位置无误。截图级 QA 仍 blocked，因为内置浏览器 URL 策略拒绝访问本机预览；不使用替代通道绕过。
+- `npm run build:pages`、Hook `node --check`、`git diff --check`通过；静态产物检查 CSS 曲线与位置无误。截图级 QA 仍 blocked，因为内置浏览器 URL 策略拒绝访问本机预览；不使用替代通道绕过。`a8faa3ca`（`fix: indent inner edge of folder card bands`）已推送；Pages run `39422494704` build/deploy成功。

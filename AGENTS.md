@@ -5444,4 +5444,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出文件夹形状应为第一张对比图：彩色外顶边没有向外凸起，而是内部白色内容内沿向下凹入。前两轮将其误解成彩色外凸页签；本轮已移除外凸形状，改为彩带下缘靠右处向卡片内部平滑下凹，保持彩色外边界原位。对比附件存于 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/folder-shape-reference.png` 与 `folder-shape-current-before.png`。
 - 改动位于 `ascend-studio/src/new-task-home.css`，Pages 构建产物重建。`npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check`通过；静态产物确认新增曲线位于色带内沿，不超出卡片顶部。Vite >500kB 提示仍存在。
-- 当前内置浏览器 URL 策略拒绝访问本机预览，因此未完成实现截图验证；不尝试绕过。`ascend-studio/design-qa.md` 保持 `final result: blocked`。
+- 当前内置浏览器 URL 策略拒绝访问本机预览，因此未完成实现截图验证；不尝试绕过。`ascend-studio/design-qa.md` 保持 `final result: blocked`。功能提交 `a8faa3ca`（`fix: indent inner edge of folder card bands`）已推送 `origin/main`；GitHub Pages run `39422494704` build/deploy 成功。

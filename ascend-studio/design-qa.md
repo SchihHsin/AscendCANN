@@ -699,7 +699,7 @@ final result: blocked
 - 移除凸出顶边的彩色页签；保留卡片原顶边彩带，在靠右位置让彩带下沿通过平滑曲线向卡片内部变厚，呈现白色内沿凹入效果。
 
 **验证**
-- `npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check` 通过；静态构建产物确认伪元素位于彩带下沿（`top: 6px`），使用向下浅弧曲线；Vite 主 JS 仍有 >500kB 体积提示。
+- `npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check` 通过；静态构建产物确认伪元素位于彩带下沿（`top: 6px`），使用向下浅弧曲线；Vite 主 JS 仍有 >500kB 体积提示。 功能提交 `a8faa3ca`（`fix: indent inner edge of folder card bands`）已推送；GitHub Pages run `39422494704` build/deploy 成功。
 - 未完成修改后浏览器截图验收：当前浏览器 URL 策略此前拒绝本机预览，不能改用其他通道绕过。
 
 **待验收**
