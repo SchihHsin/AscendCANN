@@ -671,3 +671,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 本地核对：图解/代码/网页/Diff→总览→返回原Diff；宽716px并排、窄446/500px上下，图解滚720px而代码仍18.5px，结束回原代码；AddCustom收起恢复17/33/32及原正文开头，图像收起恢复轴2/0/1和383.5px位置，再切回AddCustom保留参数。Demo390×844无横溢、1280×480正文347px。材料1280×720/1440×900十页逐页top0且图载入、正文不压页脚；390十页宽390/body359可滚；原图放大保框、Esc焦点返回，31→32与刷新#32恢复。5174日志error/warn为空。未新增或运行自动测试，未完整覆盖无障碍/原生全屏/真实并发。
 - 构建/静态：Vite build:pages通过，index-BDlRHhm4.js/index-CJbsqT_T.css（既有565kB主包提示保留）；63页/10架构/21状态、唯一ID、零缺图，目录JS/MJS/2份内联JS语法及diff检查通过。Luna分担材料版式、分组纯函数和内容工具/文档，主代理集成、修正分组/历史、框坐标/索引和实际浏览器核对。
 - 当前本轮代码与材料已完成，本次主要评审31–40界面分区和层级及Demo普通正文/总览/对照/收起的关系。后续学习起步、完整视频/图像专属主动提示、官网/GitCode业务协作仍按既有范围待适配；主题仍是两任务预置，不承诺任意AI语义归类。API/Host/Application事实不变，无真实工程/模型/NPU新验证。只暂存本轮文件并立即push，回执随后补；其他WIP全部保留。
+
+- 提交/发布回执：3b94df74（feat: unify content workspace architecture and document full interface states）已成功推送origin/main，仅59个本轮文件；Pages运行39355014413已成功。公开Demo HTTP200并引用index-BDlRHhm4.js，材料HTTP200且含10个架构页与新完整实拍路径。线上源已更新，视觉检查依据为本地IAB。补回最终文案对应的恢复页证据图，5174拍摄会话/临时服务已关闭，5173与8765服务和用户数据保留，viewport已reset；预览停#31。其他WIP未暂存。
