@@ -215,7 +215,6 @@ export function capturedInteractionPages(chapterTabs) {
       </dl></div>
       <div class="capture-stage"><figure class="capture-frame"><button type="button" class="capture-image" data-enlarge="${imagePath}" data-highlights="${esc(JSON.stringify(annotationsFor(state.key)))}" data-viewport="${viewport.width} ${viewport.height}" aria-label="放大${esc(state.action)}的实际界面"><span class="capture-visual"><img src="${imagePath}" alt="${esc(state.action+'：'+state.response)}" decoding="async" loading="lazy">${overlay(state.key)}</span></button><figcaption><strong>${esc(state.action)}</strong><p>${esc(state.note)}</p><div class="capture-labels">${annotationsFor(state.key).map((h,i)=>`<small class="capture-label">${i+1}. ${esc(h.label||'关键区域')}</small>`).join('')}</div></figcaption></figure><div class="capture-hint">完整界面保留位置关系 · 细框标出重点 · 点击放大</div></div>
     </div></div>
-    <div class="foot"><span>${esc(group.label)} · ${index+1} / ${group.steps.length}</span><span>${currentFrames[state.key]?'2026-10-20 新架构实拍':'2026-10-19 行为实拍 · 公共外壳见架构章'} · 浏览器示例，不代表真实工程执行</span></div>
   </section>`;
   }));
 }

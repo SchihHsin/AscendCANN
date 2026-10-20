@@ -70,7 +70,7 @@ const figure = body => `<div class="rule-figure">${body}</div>`;
 const demo = '../../../ascstudio/';
 
 export function sharedInteractionPages(chapterTabs) {
-  const slide = (key,title,body,foot='交互规则 · 2026-10-16 · 结构图为设计说明，Demo实施范围见本章最后一页') => `<section class="slide s-gray shared-rules" data-rule="${key}" data-title="${title}"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">${title}</span></div><div class="subttl">共用机制</div></div>${chapterTabs('C')}</div><div class="body-area">${body}</div><div class="foot">${foot}</div></section>`;
+  const slide = (key,title,body,foot='交互规则 · 2026-10-16 · 结构图为设计说明，Demo实施范围见本章最后一页') => `<section class="slide s-gray shared-rules" data-rule="${key}" data-title="${title}"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">${title}</span></div><div class="subttl">共用机制</div></div>${chapterTabs('C')}</div><div class="body-area">${body}</div></section>`;
   return [
     ...interactionFrameworkPages(chapterTabs),
     ...capturedInteractionPages(chapterTabs),

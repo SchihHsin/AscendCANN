@@ -5237,3 +5237,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 当前本轮代码与材料已完成，本次主要评审31–40界面分区和层级及Demo普通正文/总览/对照/收起的关系。后续学习起步、完整视频/图像专属主动提示、官网/GitCode业务协作仍按既有范围待适配；主题仍是两任务预置，不承诺任意AI语义归类。API/Host/Application事实不变，无真实工程/模型/NPU新验证。只暂存本轮文件并立即push，回执随后补；其他WIP全部保留。
 
 - 提交/发布回执：3b94df74（feat: unify content workspace architecture and document full interface states）已成功推送origin/main，仅59个本轮文件；Pages运行39355014413已成功。公开Demo HTTP200并引用index-BDlRHhm4.js，材料HTTP200且含10个架构页与新完整实拍路径。线上源已更新，视觉检查依据为本地IAB。补回最终文案对应的恢复页证据图，5174拍摄会话/临时服务已关闭，5173与8765服务和用户数据保留，viewport已reset；预览停#31。其他WIP未暂存。
+
+
+### 2026-10-20（移除材料底部实拍与来源说明）
+
+- 用户要求去掉右下角“当前Demo实拍…”这一行及同类说明。本轮删除共用章31–63页三类renderer的foot输出：实拍/日期/来源/边界说明及重复组内序号；正常63页导航、页码、正文、完整图片/框选、放大和正文链接保持。来源与证据边界继续保留在生成源字段、manifest、README、QA及实施范围，不另加页面说明。
+- 修改shared-interaction-captures/framework/pages.mjs并重建index.html；Demo源码与ascstudio产物、前30页原有研究内容不改，页序/hash及API/Host/Application边界不变。此为用户明确删减要求，无需重新选视觉方向。
+- 检查：63页、共用章footer为0、旧实拍说明文本命中为0，63导航和31图片放大入口保留；实际查看状态页和架构页，图片完整加载。三个MJS语法、构建与diff检查通过，未新增/运行自动测试。Luna只读核对footer无功能/链接；主代理完成删减与浏览器检查。证据在learning-canvas-story/evidence/footer-cleanup-20261020。仅本轮文件提交立即push，其他WIP保留；回执后补。
