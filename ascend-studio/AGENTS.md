@@ -754,3 +754,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 学习与开发共享单一目标框；模式切换会更新提示、CTA，保留当前输入。学习任务进入模型推理项目，开发任务放入当前项目，任务名来自目标文本。成功后切入新任务；侧栏选择已有任务返回原工作区。不要恢复旧多字段弹窗。
 - 浏览器 1280×720检查入口、模式、文案、CTA、计数、侧栏收起/恢复和已有任务回返；实际提交未执行，避免产生持久测试任务。`npm run build:pages`、相关Hook `node --check`、`git diff --check`通过。主JS 658.05kB的非阻塞体积提醒保留。视觉依据是用户图稿及本地Demo观察；没有真实AI/Python/模型/NPU或学习效果验证，API/Host/Application边界不变。
 - `affc51dd`（`feat: add learning and development task home`）已成功推送 `origin/main`；Pages run `39411454562` build/deploy 成功，公开入口与新JS/CSS均HTTP200。只提交本任务源码、Pages产物、交互/QA/README与根/Studio AGENTS，其他预存WIP保留。`npm run build:pages` 成功；交接修订随后单独提交并推送。
+
+
+## 2026-10-20 · 新建首页模式 Tab 纯黑选中态
+
+- 用户指出学习/开发 Tab 选中颜色不对，要求黑色底、白色字。本轮把 `.new-task-home__mode-button.is-active` 背景从 `#171923` 改为纯黑 `#000`，白字 `#fff` 保持；未更改布局和交互。
+- `npm run build:pages` 成功；构建 CSS 中活动态规则确认为 `color:#fff;background:#000`，`git diff --check` 通过。用户截图是视觉反馈；本轮未完成刷新后浏览器截图核验。
+- 仅涉及新建首页 CSS 与对应静态构建产物，路径画布、任务流、API / Host / Application 边界及正式材料页序/hash不变。

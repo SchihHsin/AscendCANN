@@ -5400,3 +5400,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅调整阶段标题的双语排版；任务关系图和通用循环图的页面顺序、API / Host / Application 边界及其他机制内容不变。
 - 验证：`git diff --cached --check` 通过，核对两处均包含六个中文标签。浏览器拒绝本地 `file:` URL 预览，未尝试绕过；因此没有完成截图级视觉检查。
 - 提交 `42f11802`（`docs: add Chinese workflow stage labels`）已推送 `origin/main`。工作区里与本任务无关的已有修改和未跟踪文件均未纳入。
+
+
+### 2026-10-20（新建首页模式Tab选中态纯黑）
+
+- 用户指出“学习 / 开发”模式 Tab 选中颜色不合适，明确要求黑色底、白色字。将 `ascend-studio/src/new-task-home.css` 的活动态背景从深炭色调整为纯黑 `#000`，文字保持白色 `#fff`；其他Tab、布局与交互不变。
+- 重建 `ascstudio/` Pages 静态产物。验证 `npm run build:pages` 成功，产物 CSS 精确包含 `.new-task-home__mode-button.is-active{color:#fff;background:#000;font-weight:600}`，`git diff --check` 通过。截图说明是用户的视觉反馈；本轮未通过浏览器完成新的屏幕截图检查，因此不将其记录为屏幕级验证。
+- 页面、任务流程、API / Host / Application 边界与汇报页序/hash均未改变。仅暂存本任务 CSS、对应Pages产物和本条交接；推送结果以Git回执为准。

@@ -27,7 +27,7 @@
 .new-task-home__subtitle { margin: 10px 0 24px; color: #777d8b; font-size: 16px; }
 .new-task-home__mode { display: inline-flex; padding: 3px; gap: 3px; border: 1px solid #d9dce3; border-radius: 10px; background: rgba(255,255,255,.86); }
 .new-task-home__mode-button { min-width: 94px; height: 34px; padding: 0 18px; border: 0; border-radius: 7px; color: #424754; background: transparent; font: inherit; font-size: 14px; cursor: pointer; transition: background .15s ease, color .15s ease; }
-.new-task-home__mode-button.is-active { color: #fff; background: #171923; font-weight: 600; }
+.new-task-home__mode-button.is-active { color: #fff; background: #000; font-weight: 600; }
 .new-task-home__form { margin: 20px auto 0; }
 .new-task-home__field { position: relative; display: block; }
 .new-task-home__field textarea { display: block; width: 100%; min-height: 116px; padding: 15px 16px 34px; resize: vertical; border: 1px solid #d9dce3; border-radius: 10px; outline: none; color: #20232d; background: rgba(255,255,255,.9); font: inherit; font-size: 15px; line-height: 1.6; box-sizing: border-box; }
