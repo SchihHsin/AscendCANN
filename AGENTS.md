@@ -5260,3 +5260,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户询问当前Ploy竞品分析是否经过简化。本轮只读核对：learning-canvas-story第3–6页是产品参考精选，包含Ploy主动建议、权限、对话与产物同屏，以及一页Codex Workspace背景；不等于完整Ploy研究。
 - 独立ploy-interaction-lab/index.html仍保留对象指选、直接编辑、Ploybook、Lookbook、版本/发布/检查及主动服务等详细观察，Git历史显示自3557a08e首次发布后未再修改；proactive-research.html另保留持续参与、后台准备、跨端承接、权限与复用等专题研究。摘要与独立研究分别维护，未因近期Demo和架构章修订覆盖原研究。
 - 本轮不改Demo、设计HTML、页面序列或图片，仅澄清材料范围；依据为本地源文件及Git历史，不冒充本轮线上页面复核。不新增或运行测试，不涉及API/Host/Application或真实工程/NPU事实变更。仅追加本交接记录，diff检查后提交并立即push，其他WIP全部保留。
+
+
+### 2026-10-20（Ploy两份研究的先后关系）
+
+- 用户询问两份独立Ploy研究的先后。按evidence/proactive/research-notes.md“主动交互研究补充”及后者对“原报告”的引用，index.html是先形成的基础交互研究，proactive-research.html是后续主动交互专题补充。Git中两者于2026-09-14同批首次提交，不能将提交时间解释成不同首次创建日期；后者随后持续修改至2026-09-16。后者为专题扩展，不是前者精简版。
+- 本轮仅核对源文档和Git历史、追加交接；不改产品/材料HTML或页序，不新增或运行测试。diff检查后仅提交AGENTS并立即push，其他WIP保留。
