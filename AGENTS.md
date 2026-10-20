@@ -5391,4 +5391,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 学习任务放入“模型推理”项目，开发任务进入当前项目；标题取目标前 60 字，经现有 `wb.createTask` 创建后进入新任务；点选已有任务返回对话与工作区。侧栏折叠时首页仍铺满工作区。
 - 改动文件：`ascend-studio/src/App.jsx`、`NewTaskHome.jsx`、`new-task-home.css`、`styles.css`、`README.md`、`interaction-design.md`、`design-qa.md`、嵌套 `ascend-studio/AGENTS.md`，以及Pages产物 `ascstudio/`。用户提供的截图是布局参考；本地浏览器为M级交互观察。创建任务实际提交未测试，以免在持久状态留下测试任务；映射逻辑经源码复核。
 - 本地1280×720检查首次进入、打开新建首页、学习/开发Tab、提示与CTA、计数、侧栏收起/恢复、返回已有任务并重新打开首页。`npm run build:pages`、相关Hook `node --check`、`git diff --check`通过；Vite主JS 658.05kB，既有>500kB提示。无真实AI、工程写入、Python/模型/NPU或学习效果验证。未改正式材料页序/hash，也不改变 API / Host / Application 边界。
-- 本轮代码和Pages经检查后仅提交相关文件，其他预存WIP未纳入。`affc51dd`（`feat: add learning and development task home`）已成功推送 `origin/main`；Pages静态产物由 `npm run build:pages` 构建。交接更新单独回填并立即推送。
+- 本轮代码和Pages经检查后仅提交相关文件，其他预存WIP未纳入。`affc51dd`（`feat: add learning and development task home`）已成功推送 `origin/main`；Pages run `39411454562` build/deploy 成功，公开入口及新JS/CSS均HTTP200。静态产物由 `npm run build:pages` 构建。交接更新单独回填并立即推送。

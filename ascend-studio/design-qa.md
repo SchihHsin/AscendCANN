@@ -626,3 +626,5 @@ Luna分工概要卡、目录语义、规则初稿及只读检查，主代理整�
 本地浏览器 1280×720 实际检查：首次加载显示原工作区；点“新建任务”出现首页；学习与开发选中态切换、textarea提示、计数与CTA更新；收起/展开侧栏后版面保持完整；点选当前已有任务返回对话/工作区；再次打开新建页后清空预览输入并恢复学习默认模式。未提交表单，避免在浏览器持久状态中留下测试任务；任务创建路由及项目/kind参数经源码检查，未实际验证创建完成后的页面回跳。
 
 `npm run build:pages`通过，JSX由Vite解析；主JS 658.05kB，保留既有 >500kB 提示。`git diff --check`及相关Hook `node --check`通过。没有新增或运行自动测试。没有真实AI、工程写入、Python、模型、NPU或学习效果验证；页面调整不影响正式材料页序/hash及 API / Host / Application 层边界。
+
+GitHub Pages run `39411454562` 的 build/deploy 均成功；公开入口HTTP200并引用 `index-CUKSCEIs.js` / `index-E2Z-rNdc.css`，两个资源均返回HTTP200。
