@@ -1,147 +1,115 @@
 // Framework rules precede the photographed examples. Screenshots illustrate
 // locations; a static frame is not evidence of arbitrary intent or concurrency.
 const dir = 'images/shared-full-states-20261019/';
+const architectureDir = 'images/interface-architecture-20261020/';
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 const framework = [
   {
-    key:'task-boundary', title:'项目组织任务，任务承载对话、内容与恢复现场',
-    thesis:'一个任务，<br>一份连续的工作现场',
-    lead:'先确定当前在做什么，再决定需要展开什么。理解、试改、审阅与核对都归属当前任务。',
-    facts:[
-      ['项目与任务','左侧定位工作范围；切换任务时，各自的对话、内容和阅读位置分别保留。'],
-      ['任务对话','中间持续表达目标、解释依据和接续行动，小提示直接留在相关回复旁。'],
-      ['按需内容','右侧查看图解、代码、Diff、网页或结果；需要时打开，用完可以收起。']
-    ],
-    image:'image-proposal', caption:'三栏是同一任务的三个部分；学习作为任务中的活动进入。',
-    highlights:[
-      {x:3,y:58,width:280,height:659,label:'项目与任务：定位现场'},
-      {x:289,y:58,width:540,height:659,label:'任务对话：持续推进'},
-      {x:836,y:58,width:441,height:659,label:'按需内容：查看与操作'}
-    ],
-    principle:'任务身份是上下文与恢复的边界；内容类型不改变这套结构。',
-    evidence:'现有三栏实拍＋共通交互规则；网页等完整业务流程仍待逐项适配。'
+    key:'task-boundary', title:'项目与任务、对话、内容工作区构成完整界面',
+    thesis:'三栏各司其职，<br>围绕同一项任务协作',
+    lead:'项目与任务确定工作范围；对话承接目标和过程；右侧内容工作区呈现当前需要查看的材料。学习、理解、试改与核对都落在具体任务里。',
+    facts:[['左栏｜项目与任务','定位正在处理的任务；切换任务后回到各自的对话和工作现场。'],['中栏｜任务对话','表达目标、查看解释、讨论方案并接续行动。'],['右栏｜内容工作区','查看当前对象的正文和专属工具；需要时展开，不需要时收起以腾出对话空间。']],
+    imagePath:'12-image-task.png', caption:'完整三栏界面：左侧定位任务，中间推进工作，右侧查看任务内容。',
+    highlights:[{x:0,y:58,width:286,height:662,label:'左栏：项目与任务范围'},{x:286,y:58,width:494,height:662,label:'中栏：任务对话与过程'},{x:780,y:58,width:500,height:662,label:'右栏：内容工作区'}],
+    principle:'三栏不是三种并列模式；它们是同一任务中相互衔接的工作区域。',
+    evidence:'完整界面实拍与分区框选。'
   },
   {
-    key:'intent-and-attention', title:'内容出现的方式，跟随用户意图与当前注意力',
-    thesis:'该展开时展开，<br>阅读时保持当前现场',
-    lead:'主动交互先判断用户现在想做什么，以及是否正在阅读或编辑。',
-    facts:[
-      ['问原因、求理解','回答与关联图解一起出现，用户可以直接看和试。'],
-      ['只报错、要求修复','先给必要依据，在问题旁提供深入入口；短提示不新建内容对象。'],
-      ['正在阅读或编辑','新建议轻提示，保留当前对象、位置和未保存内容。'],
-      ['明确试改、采用、检查','接续相应操作；实际改变内容前明确影响范围。']
-    ],
-    image:'addcustom-prompt', caption:'就近提示呈现依据和下一步；用户可接续，也可以收回摘要。',
-    highlights:[{x:303,y:324,width:513,height:166,label:'行动入口贴着相关回答'}],
-    principle:'主动程度随意图变化；提示、展开和执行分别有清楚的边界。',
-    evidence:'截图展示现有提示样式；四类意图为通用规则，当前仅有固定分支演示。'
+    key:'intent-and-attention', title:'右侧工作区：公共标题栏、专属工具与正文',
+    thesis:'管理位置保持稳定，<br>内容与工具按对象变化',
+    lead:'右侧工作区由公共外壳、专属工具和正文构成。切换对象时外壳不变；元信息和操作随对象需要出现，正文默认聚焦一份内容。',
+    facts:[['公共标题栏','一行承载“当前对象 ▾ / 全部内容 / 收起”，统一用于切换、管理和收起工作区。'],['专属工具区','讲解开关、复制、网页导航等工具跟随对象出现；不相关工具不占位。'],['正文容器','呈现当前对象的完整主体；试改、应用和核对贴着相关内容，给决策保留上下文。']],
+    imagePath:'09-before-collapse.png', caption:'完整工作区实拍：标题栏、对象专属工具和正文各有清楚层级。',
+    highlights:[{x:780,y:58,width:500,height:36,label:'公共标题栏'},{x:780,y:94,width:500,height:39,label:'当前对象专属工具'},{x:780,y:133,width:500,height:587,label:'单份当前内容的正文区域'}],
+    principle:'当前对象元信息按需显示；右侧正文默认只有一份当前内容。',
+    evidence:'完整界面实拍；主动提示不抢阅读或编辑焦点是交互规则，不由此图声称并发状态。'
   },
   {
-    key:'workspace-navigation', title:'平时查看具体内容，需要时拉远看同一批内容',
-    thesis:'当前内容与总览，<br>共用同一批对象',
-    lead:'右侧平时承载具体内容。找关系、定位历史或查看全貌时，再进入总览。',
-    facts:[
-      ['打开与切换','用标题处的分类入口选择内容；正文按代码、浏览器、图解或 Diff 自然呈现。'],
-      ['看全部','按任务主题显示对象与关联；类型是辅助信息，无需先选一套管理视图。'],
-      ['缩小与定位','详情 → 摘要 → 主题逐级精简，保持字号可读；点选内容回到正文。']
-    ],
-    image:'addcustom-map-topics', caption:'总览用于找内容；点选后继续正常阅读，右侧无需一直保持画布。',
-    highlights:[
-      {x:835,y:58,width:441,height:37,label:'同一标题区域：切换内容、看全部、收起'},
-      {x:835,y:133,width:441,height:560,label:'总览：按任务主题定位'}
-    ],
-    principle:'总览是需要时的查看方式，不增加一排日常模式选择。',
-    evidence:'图中为现有主题总览；主题由两个案例预置，关联来自明确记录。'
+    key:'workspace-navigation', title:'目录菜单按问题分组，类型只作内容标记',
+    thesis:'快速切换当前对象，<br>按需进入更多内容',
+    lead:'当前对象菜单直接列出已有材料，并按具体问题分组；类型用于辨认内容。目录不要求用户先选类别，更多工具通过“打开其他内容”按需进入。',
+    facts:[['按问题分组','示例中的“尾块访问与范围”分组下列出线索解释、尝试记录、索引范围示例。'],['关联资料','“相关代码与资料”单独承接已有的 Ascend C 文档。'],['按需扩展','当前菜单只列出已有四项；其他工具从“打开其他内容”进入，不预先铺满界面。']],
+    imagePath:'04-switcher.png', caption:'当前对象菜单：已有材料分组呈现，类型辅助辨认，不要求先选择类别。',
+    highlights:[{x:833.7,y:58,width:446.3,height:36,label:'当前对象切换入口'},{x:833.7,y:94,width:446.3,height:249,label:'按问题分组的四项已有内容与“打开其他内容”'}],
+    principle:'分组服务于具体问题；不承诺任意内容可自动归类。',
+    evidence:'完整菜单实拍，示例仅包含当前已有四项内容。'
   },
   {
-    key:'content-identity', title:'业务正文各不相同，内容身份与管理动作保持一致',
-    thesis:'管理同一个对象，<br>保留每一次的条件',
-    lead:'内容是能独立回看、操作或引用的对象。一次提示、一次调参不必各生成一张卡。',
-    facts:[
-      ['统一身份与入口','对象名称、任务归属、当前状态，以及来源、关联、历史保持一致。'],
-      ['正文按需组合','图解、视频、代码、Diff、网页或表格按业务组合；只需阅读的资料不强加试改和核对。'],
-      ['当前与历史分开','历史保留时间、输入与版本条件，只读查看；最新、已采用、已核对各自标明归属。']
-    ],
-    image:'image-current-info', caption:'条件、来源、关联与历史属于当前对象，统一从按需入口查看。',
-    highlights:[{x:838,y:98,width:438,height:534,label:'共通管理层；正文随业务变化'}],
-    principle:'来源关系帮助追溯；新条件不沿用旧结果，应用也不自动触发检查。',
-    evidence:'图中为图像推理的现有管理入口；模块组合是跨业务交互范式。'
+    key:'content-identity', title:'代码正文保留代码阅读与来源操作',
+    thesis:'代码是正文，<br>工具围绕代码出现',
+    lead:'代码对象保留语法阅读、行号和滚动结构。来源复制、关联讲解等操作靠近代码，不把代码压成一张通用信息卡。',
+    facts:[['对象信息','标题栏标出当前代码对象；来源与只读说明位于正文上方。'],['代码阅读','行号、缩进和代码区域构成主要正文，便于浏览完整片段。'],['相关操作','复制来源、前往关联讲解等入口依附当前代码对象。']],
+    imagePath:'02-code.png', caption:'代码型正文实拍：保留代码阅读结构及对象相关操作。',
+    highlights:[{x:833.7,y:58,width:446.3,height:75,label:'当前代码对象和来源信息'},{x:850,y:150,width:412,height:365,label:'代码正文与行号'}],
+    principle:'对象类型决定正文的阅读方式和专属工具。', evidence:'完整代码正文实拍。'
   },
   {
-    key:'temporary-and-return', title:'临时对照、收起和再打开，都有确定的返回位置',
-    thesis:'临时改变查看方式，<br>继续同一份工作',
-    lead:'查看方式可以变化；内容对象、版本归属和任务上下文持续保留。',
-    facts:[
-      ['进入前保留起点','保存原对象、历史版本和阅读位置；对照只聚焦选定的两份内容。'],
-      ['过程中适应空间','宽栏并排，窄栏完整查看一方；固定参考与临时对照分别表达。'],
-      ['结束或唤醒后继续','结束对照回入口；收起归还对话空间，再打开恢复原内容。查看不等于执行。']
-    ],
-    image:'compare-wide', caption:'两份记录各自保留条件；临时对照结束后回到进入前的原记录。',
-    highlights:[
-      {x:643,y:93,width:634,height:70,label:'当前双方身份与结束入口'},
-      {x:643,y:166,width:634,height:551,label:'同一临时对照，保留原对象和条件'}
-    ],
-    principle:'打开、缩放、对照、收起只改变查看；保存、应用、核对才改变业务记录。',
-    evidence:'现有宽窄栏与返回实拍；后续逐页呈现收起前、收起、恢复的状态。'
+    key:'browser-content', title:'浏览器正文呈现实际页面与导航状态',
+    thesis:'网页仍是网页，<br>来源和边界清楚可见',
+    lead:'浏览器型内容保留地址栏、页面导航和网页自身的阅读结构。当前截图中的页面是本地已有参考页；原站拒绝官方 HiAscend iframe 加载。',
+    facts:[['浏览器外壳','地址栏显示当前访问地址，正文区承载浏览器页面。'],['页面来源','本例打开仓库已有的 agent-tool-calling-reference.html 页面。'],['加载边界','官方 HiAscend iframe 被原站拒绝；截图只展示网页容器，不代表官方页面已载入。']],
+    imagePath:'03-browser.png', caption:'浏览器型正文实拍：页面容器已打开本地参考页，未加载官方 HiAscend 内容。',
+    highlights:[{x:833.7,y:94,width:446.3,height:626,label:'浏览器导航、地址栏与实际页面容器'}],
+    principle:'页面容器的存在不代表其中目标站点已成功加载。', evidence:'完整浏览器状态实拍；当前内容是本地参考页，官方 iframe 加载被拒绝。'
   },
   {
-    key:'updates-without-interruption', title:'新结果登记到原内容，当前阅读和编辑继续进行',
-    thesis:'变化可以被发现，<br>当前工作不被打断',
-    lead:'新增信息首先更新所属对象；系统不替用户切换工作焦点。',
-    facts:[
-      ['正在阅读或编辑','不切走、不重排，也不覆盖未保存草案；在关联位置提示更新。'],
-      ['右侧已经收起','保持关闭，入口保留更新数量；用户需要时再唤醒。'],
-      ['用户接续更新','定位到对应对象并短暂强调；处理后收回普通摘要，避免常驻醒目提示。']
-    ],
-    image:'image-overview', caption:'图中已有任务内更新入口；新结果仍归属原对象，而非另铺一批卡片。',
-    highlights:[
-      {x:709,y:103,width:54,height:27,label:'任务内更新入口'},
-      {x:969,y:207,width:275,height:80,label:'所属对象上的更新提示'}
-    ],
-    principle:'出现、查看、执行与更新分别管理，共同保持任务的连续性。',
-    evidence:'截图仅证明现有更新标记；真实后台晚到、外部并发和编辑冲突仍待验证。'
+    key:'diff-content', title:'Diff 正文呈现提案差异与明确操作',
+    thesis:'差异可读，<br>应用动作清楚分开',
+    lead:'Diff 型对象直接展示新增与删除内容，并在正文后提供应用或取消入口。查看提案与实际应用是两件不同的事。',
+    facts:[['对象身份','标题区标出示例修改预览，并显示关联状态。'],['差异正文','删除行与新增行在同一代码上下文中对照阅读。'],['明确选择','用户可以应用到示例工作副本或取消提案；截图不代表真实项目已验证。']],
+    imagePath:'05-diff.png', caption:'Diff 型正文实拍：提案变更与应用入口在同一对象中呈现。',
+    highlights:[{x:833.7,y:58,width:446.3,height:105,label:'Diff 对象标题与提案状态'},{x:850,y:263,width:412,height:290,label:'删除与新增行的差异正文'},{x:850,y:570,width:412,height:72,label:'应用或取消提案的明确入口'}],
+    principle:'审阅提案不等于应用；应用也不等于真实项目或 NPU 验证。', evidence:'完整 Diff 界面实拍，内容为示例工作副本。'
+  },
+  {
+    key:'content-overview', title:'全部内容总览用于查找和管理已有对象',
+    thesis:'总览帮助定位，<br>点选后回到正文',
+    lead:'“全部内容”展示任务中的对象与关联，按问题分组；它是管理层，不是日常正文或常驻并列模式。用户可从此返回具体正文。',
+    facts:[['问题分组','尾块访问与范围下列出相关图解、尝试记录、代码示例和修改预览。'],['资料分区','关联代码与资料独立分组，避免与问题对象混成一类。'],['回到正文','从总览选择具体对象，回到单对象内容工作区继续阅读。']],
+    imagePath:'06-overview.png', caption:'完整总览实拍：任务内容按问题组织，并提供“返回正文”入口。',
+    highlights:[{x:833.7,y:58,width:446.3,height:662,label:'全部内容管理层：分组、对象卡片与返回正文入口'}],
+    principle:'总览是找内容的管理层；类型只作标记，不要求用户先选类别。', evidence:'完整总览实拍；当前为预置内容，不代表自动分类能力。'
+  },
+  {
+    key:'temporary-and-return', title:'临时对照从当前对象发起，结束后返回原处',
+    thesis:'需要时并排核对，<br>结束后回到原内容',
+    lead:'对照只在需要比较两份材料时临时打开。宽区可以并排；窄区改为上下查看。对照不是与正文、总览并列常驻的模式。',
+    facts:[['宽区并排','两份对象各自保留标题和正文，便于横向核对。'],['窄区适配','空间不足时采用上下排列，每份正文分别滚动；后续独立状态页展示窄栏。'],['返回起点','结束对照回到发起前的对象和阅读位置。']],
+    imagePath:'08-compare-wide.png', caption:'宽区临时对照实拍：两份内容并列展示，工具和阅读位置分别保留。',
+    highlights:[{x:564,y:58,width:716,height:36,label:'当前对象与临时对照顶栏'},{x:564,y:94,width:716,height:39,label:'本次对照对象选择和结束入口'},{x:564,y:133,width:358,height:587,label:'左侧对象正文'},{x:922,y:133,width:358,height:587,label:'右侧对象正文'}],
+    principle:'对照有明确进入和退出位置；离开后继续原对象。', evidence:'完整宽栏对照实拍；后续独立状态页展示窄栏上下排列。'
+  },
+  {
+    key:'workspace-collapsed', title:'收起内容工作区，归还对话空间',
+    thesis:'收起右侧内容，<br>不丢当前工作位置',
+    lead:'收起后右侧正文隐藏，对话区域获得空间；顶部“打开内容”入口保留。主动更新时不自动唤醒工作区，避免打断阅读或编辑。',
+    facts:[['对话空间','原右侧区域收起，中央对话可继续使用。'],['恢复入口','“打开内容”位于界面右上角，保持可发现。'],['主动更新','更新可以提示存在，但不改变当前焦点；该规则不以此静态截图冒充并发实测。']],
+    imagePath:'10-collapsed.png', caption:'整区收起实拍：对话空间恢复，右上保留“打开内容”入口。',
+    highlights:[{x:286,y:58,width:994,height:662,label:'右侧收起后归还的工作空间'},{x:920,y:14,width:76,height:34,label:'右上角“打开内容”恢复入口'}],
+    principle:'收起改变工作区显示，不替用户切换任务或内容。', evidence:'完整收起状态实拍；主动更新不抢焦点是交互规则说明。'
+  },
+  {
+    key:'updates-without-interruption', title:'重新打开后恢复原参数与阅读位置',
+    thesis:'恢复同一工作现场，<br>继续刚才的阅读',
+    lead:'重新打开内容工作区后，当前对象、参数和滚动位置回到收起前状态。更新提示可以被发现，但不覆盖当前内容，也不自动切换对象。',
+    facts:[['参数恢复','行数 17、列数 33、每块元素 32 保持原值。'],['阅读位置','接续收起前的同一份线索解释，本例回到先前阅读的正文开头。'],['焦点归属','提示变化与当前对象分开处理；由用户决定是否查看更新。']],
+    imagePath:'11-restored.png', caption:'重新打开后，仍是同一份图解、同一组参数与原阅读位置。',
+    highlights:[{x:800,y:502,width:462,height:218,label:'恢复后的参数值：17 / 33 / 32'},{x:780,y:133,width:500,height:333,label:'恢复原对象的阅读现场'}],
+    principle:'恢复对象、参数和阅读位置；主动更新不夺取当前焦点。', evidence:'完整恢复状态实拍；本轮另核对图像图解的非零阅读位置恢复。'
   }
 ];
-
 export const frameworkPageCount = framework.length;
 export const frameworkPagesIndex = framework.map(item=>({key:item.key,title:item.title}));
 
-const taskFrameworkMap = () => `<div class="framework-map-layout"><svg class="framework-map" viewBox="0 0 1180 500" role="img" aria-labelledby="framework-map-title framework-map-desc"><title id="framework-map-title">以任务为边界的共性交互框架</title><desc id="framework-map-desc">对话按需要打开当前内容；当前内容可进入总览或临时对照，也可收起。选中总览对象、结束对照和重新打开均返回原内容或明确选定的对象。新结果登记到原对象，保留当前阅读和编辑现场。</desc><defs><marker id="framework-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="currentColor" stroke-width="1.5"/></marker></defs>
-  <g class="framework-task-band"><rect x="20" y="10" width="1125" height="48" rx="12"/><text x="42" y="40" class="framework-map-label">项目 / 当前任务</text><text x="265" y="40">对话、内容、历史与恢复状态，共同归属该任务</text></g>
-  <g class="framework-map-lines"><path d="M255 180H360"/><path d="M360 222H255"/><path d="M620 164H755V114H880"/><path d="M880 147H788V207H620"/><path d="M620 221H707V288H880"/><path d="M880 323H680V238H620"/><path d="M448 242V324"/><path d="M540 324V242"/></g>
-  <g class="framework-edge-labels"><text x="306" y="164">需要内容</text><text x="306" y="250">反馈回对话</text><text x="754" y="94">看全部</text><text x="752" y="231">点选内容</text><text x="787" y="277">开始对照</text><text x="786" y="346">结束 · 回原处</text><text x="420" y="291">收起</text><text x="582" y="291">打开 · 恢复</text></g>
-  <g class="framework-map-node"><rect x="20" y="150" width="235" height="100" rx="14"/><text x="137" y="183" class="framework-map-heading">任务对话</text><text x="137" y="211">表达目标、提问、接续行动</text><text x="137" y="235" class="framework-map-secondary">短提示留在相关回复旁</text></g>
-  <g class="framework-map-node framework-current-node"><rect x="360" y="142" width="260" height="100" rx="14"/><text x="490" y="177" class="framework-map-heading">当前内容</text><text x="490" y="207">图解 / 代码 / 预览 / 网页 / Diff</text><text x="490" y="230" class="framework-map-secondary">正文随对象变化，管理方式一致</text></g>
-  <g class="framework-map-node"><rect x="880" y="82" width="265" height="90" rx="14"/><text x="1012" y="114" class="framework-map-heading">总览定位</text><text x="1012" y="141">主题 / 关联 / 历史</text><text x="1012" y="162" class="framework-map-secondary">同一批对象，缩小精简信息</text></g>
-  <g class="framework-map-node"><rect x="880" y="260" width="265" height="90" rx="14"/><text x="1012" y="292" class="framework-map-heading">临时对照</text><text x="1012" y="319">保留双方版本与条件</text><text x="1012" y="340" class="framework-map-secondary">宽栏并排，窄栏切换</text></g>
-  <g class="framework-map-node"><rect x="360" y="324" width="260" height="74" rx="14"/><text x="490" y="355" class="framework-map-heading">内容收起</text><text x="490" y="382">继续对话，保留原对象与位置</text></g>
-  <g class="framework-updates-band"><rect x="20" y="433" width="1125" height="50" rx="12"/><text x="43" y="464" class="framework-map-label">新结果到达</text><text x="258" y="464">更新原对象与入口计数</text><path d="M195 458H228"/><path d="M596 458H635"/><text x="667" y="464">保持当前阅读、编辑与空间位置</text></g></svg>
-  <div class="framework-mobile-map"><p><b>项目 / 当前任务</b><span>对话、内容、历史与恢复状态共同归属该任务。</span></p><dl><div><dt>对话 ⇄ 当前内容</dt><dd>需要持续查看时打开，反馈回到原对话。</dd></div><div><dt>当前内容 ⇄ 总览</dt><dd>看全部以定位主题和历史，点选对象回正文。</dd></div><div><dt>当前内容 ⇄ 临时对照</dt><dd>比较选定两份，结束后回到进入前的对象。</dd></div><div><dt>当前内容 ⇄ 收起</dt><dd>归还对话空间，再打开恢复原对象与位置。</dd></div><div><dt>新结果 → 原对象</dt><dd>更新计数与就近提示，当前阅读和编辑继续。</dd></div></dl></div><p class="framework-map-caption">共通框架：先定位任务，再按需要查看内容；查看方式的变化与业务执行分别管理。</p></div>`;
 
-const frame = page => `<figure class="framework-frame"><button type="button" class="capture-image" data-enlarge="${dir+page.image}.jpg" data-highlights="${esc(JSON.stringify(page.highlights))}" data-viewport="1280 720" aria-label="放大框架：${esc(page.title)}"><span class="capture-visual"><img src="${dir+page.image}.jpg" alt="${esc(page.caption)}" loading="lazy" decoding="async"><svg class="capture-annotations" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">${page.highlights.map((h,i)=>`<rect x="${h.x}" y="${h.y}" width="${h.width}" height="${h.height}" rx="5"/><circle cx="${h.x+13}" cy="${h.y+13}" r="11"/><text x="${h.x+13}" y="${h.y+18}">${i+1}</text>`).join('')}</svg></span></button><figcaption><strong>${page.caption}</strong><div class="framework-legend">${page.highlights.map((h,i)=>`<span>${i+1}. ${esc(h.label)}</span>`).join('')}</div><small>完整界面位置说明 · 点击放大</small></figcaption></figure>`;
+const frame = page => `<figure class="framework-frame"><button type="button" class="capture-image" data-enlarge="${page.imagePath ? architectureDir+page.imagePath : dir+page.image+'.jpg'}" data-highlights="${esc(JSON.stringify(page.highlights))}" data-viewport="1280 720" aria-label="放大框架：${esc(page.title)}"><span class="capture-visual"><img src="${page.imagePath ? architectureDir+page.imagePath : dir+page.image+'.jpg'}" alt="${esc(page.caption)}" loading="lazy" decoding="async"><svg class="capture-annotations" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">${page.highlights.map((h,i)=>`<rect x="${h.x}" y="${h.y}" width="${h.width}" height="${h.height}" rx="5"/><circle cx="${h.x+13}" cy="${h.y+13}" r="11"/><text x="${h.x+13}" y="${h.y+18}">${i+1}</text>`).join('')}</svg></span></button><figcaption><strong>${page.caption}</strong><div class="framework-legend">${page.highlights.map((h,i)=>`<span>${i+1}. ${esc(h.label)}</span>`).join('')}</div><small>完整界面位置说明 · 点击放大</small></figcaption></figure>`;
 
 export function interactionFrameworkPages(chapterTabs) {
-  return framework.map((page,index)=>`<section class="slide s-gray shared-rules framework-rules" id="framework-${page.key}" data-framework="${page.key}" data-title="${page.title}"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">${page.title}</span></div><div class="subttl">共用交互框架 · ${index+1} / ${framework.length}</div></div>${chapterTabs('C')}</div><div class="body-area">${index===0?taskFrameworkMap():`<div class="framework-layout"><div class="framework-copy"><h2>${page.thesis}</h2><p>${page.lead}</p><dl>${page.facts.map(([label,text])=>`<div><dt>${label}</dt><dd>${text}</dd></div>`).join('')}</dl><p class="framework-principle">${page.principle}</p></div>${frame(page)}</div>`}</div><div class="foot">${index===0?'通用框架逻辑 · 任务为共同边界；后续完整界面逐项代入规则。':page.evidence}</div></section>`);
+  return framework.map((page,index)=>`<section class="slide s-gray shared-rules framework-rules" id="framework-${page.key}" data-framework="${page.key}" data-title="${page.title}"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">${page.title}</span></div><div class="subttl">界面架构说明 · ${index+1} / ${framework.length}</div></div>${chapterTabs('C')}</div><div class="body-area"><div class="framework-layout"><div class="framework-copy"><h2>${page.thesis}</h2><p>${page.lead}</p><dl>${page.facts.map(([label,text])=>`<div><dt>${label}</dt><dd>${text}</dd></div>`).join('')}</dl><p class="framework-principle">${page.principle}</p></div>${frame(page)}</div></div><div class="foot">${page.evidence}</div></section>`);
 }
 
 export const frameworkCSS = `
-.story-deck .framework-map-layout{width:100%;display:grid;gap:1vh;align-content:center}
-.story-deck .framework-map{display:block;width:100%;height:auto;overflow:visible;color:#7b83ab;font-family:inherit}
-.story-deck .framework-map text{font-size:18px;fill:#626b7c}
-.story-deck .framework-map .framework-map-label{font-weight:700;fill:#363d50}
-.story-deck .framework-map .framework-map-heading{font-size:23px;fill:#303749;font-weight:700}
-.story-deck .framework-map .framework-map-secondary{font-size:16px;fill:#7b8391}
-.story-deck .framework-task-band rect{fill:#ffffff99;stroke:#fff}
-.story-deck .framework-map-node rect{fill:#ffffffb8;stroke:#cfd5e1;stroke-width:1.2}
-.story-deck .framework-map-node text{text-anchor:middle}
-.story-deck .framework-current-node rect{fill:#eeeefd;stroke:#aeb4db}
-.story-deck .framework-map-lines path{fill:none;stroke:#8c95b7;stroke-width:1.8;marker-end:url(#framework-arrow);stroke-linejoin:round}
-.story-deck .framework-edge-labels text{font-size:16px;text-anchor:middle;fill:#697390}
-.story-deck .framework-updates-band rect{fill:#dde2f06b;stroke:#cfd5e3}
-.story-deck .framework-updates-band path{stroke:#8c95b7;stroke-width:1.6;fill:none;marker-end:url(#framework-arrow)}
-.story-deck .shared-rules .framework-map-caption{margin:0;text-align:center;font-size:var(--fs-body);line-height:1.5;color:var(--ink-2)}
-.story-deck .framework-mobile-map{display:none}
 .story-deck .framework-layout{display:grid;grid-template-columns:minmax(0,.3fr) minmax(0,.7fr);gap:2vw;width:100%;align-items:center}
 .story-deck .framework-copy{display:grid;gap:1.5vh;align-content:center}
 .story-deck .framework-copy h2{font-size:var(--fs-h2);font-weight:750;line-height:1.28;letter-spacing:-.025em}
@@ -159,5 +127,5 @@ export const frameworkCSS = `
 .story-deck .framework-frame figcaption>small{font-size:var(--fs-sm);line-height:1.4;color:var(--ink-3)}
 @media(max-height:730px) and (min-width:641px){.story-deck .framework-copy{gap:1vh}.story-deck .framework-copy dl{gap:1vh}.story-deck .framework-frame .capture-image img{max-height:57vh}}
 @media(max-width:900px) and (min-width:641px){.story-deck .framework-layout{grid-template-columns:minmax(0,.34fr) minmax(0,.66fr);gap:1.5vw}}
-@media(max-width:640px){.story-deck .framework-layout{grid-template-columns:1fr;gap:2.6vh;flex:0 0 auto}.story-deck .framework-rules .body-area{display:block;overflow-y:auto;overscroll-behavior:contain;padding-top:1vh;padding-bottom:5vh}.story-deck .framework-copy{gap:1.4vh}.story-deck .framework-copy dl{gap:1.4vh}.story-deck .framework-frame .capture-image img{max-height:none}.story-deck .framework-legend{gap:.6vh 2vw}.story-deck .framework-map{display:none}.story-deck .framework-mobile-map{display:grid;gap:2vh}.story-deck .framework-mobile-map>p{margin:0;padding:1.5vh 3vw;background:#ffffff99;border-radius:10px}.story-deck .framework-mobile-map>p span{display:block;margin-top:.7vh}.story-deck .framework-mobile-map dl{display:grid;gap:2vh;margin:0}.story-deck .framework-mobile-map dt{font-size:var(--fs-body);font-weight:650;line-height:1.5;color:var(--ink)}.story-deck .framework-mobile-map dd{font-size:var(--fs-body);line-height:1.6;color:var(--ink-2);margin:.6vh 0 0}.story-deck .shared-rules .framework-map-caption{text-align:left;padding-top:1.5vh;border-top:1px solid #cfd4df}}
+@media(max-width:640px){.story-deck .framework-layout{grid-template-columns:1fr;gap:2.6vh;flex:0 0 auto}.story-deck .framework-rules .body-area{display:block;overflow-y:auto;overscroll-behavior:contain;padding-top:1vh;padding-bottom:5vh}.story-deck .framework-copy{gap:1.4vh}.story-deck .framework-copy dl{gap:1.4vh}.story-deck .framework-frame .capture-image img{max-height:none}.story-deck .framework-legend{gap:.6vh 2vw}}
 `;

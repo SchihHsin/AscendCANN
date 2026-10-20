@@ -1,0 +1,102 @@
+[
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-task-boundary",
+    "image": "images/interface-architecture-20261020/12-image-task.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  },
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-intent-and-attention",
+    "image": "images/interface-architecture-20261020/09-before-collapse.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  },
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-workspace-navigation",
+    "image": "images/interface-architecture-20261020/04-switcher.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  },
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-content-identity",
+    "image": "images/interface-architecture-20261020/02-code.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  },
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-browser-content",
+    "image": "images/interface-architecture-20261020/03-browser.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  },
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-diff-content",
+    "image": "images/interface-architecture-20261020/05-diff.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  },
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-content-overview",
+    "image": "images/interface-architecture-20261020/06-overview.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  },
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-temporary-and-return",
+    "image": "images/interface-architecture-20261020/08-compare-wide.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  },
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-workspace-collapsed",
+    "image": "images/interface-architecture-20261020/10-collapsed.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  },
+  {
+    "bottom": 613.953125,
+    "foot": 666.5,
+    "id": "framework-updates-without-interruption",
+    "image": "images/interface-architecture-20261020/11-restored.png",
+    "loaded": 1280,
+    "top": 0,
+    "viewport": 1280,
+    "width": 1280
+  }
+]

@@ -20,6 +20,7 @@ import { ExplainPanel } from "./ExplainPanel.jsx";
 import ProactiveCue from "./ProactiveCue.jsx";
 import { RangeDiagram } from "./RangeDiagram.jsx";
 import { CODE_CONCEPTS, codeConcept } from "./code-concepts.js";
+import { ContentToolbar } from "./ContentToolbar.jsx";
 import "./canvas-materials.css";
 
 function buildDiff(before, after) {
@@ -86,11 +87,11 @@ function SourceMaterial({ flow, onShowCard, onAttachCode, explanation }) {
   const text = typeof attachment?.content === "string" ? attachment.content : SAMPLE_ORIGINAL_CODE;
   const feedback = useCopy(flow.state.resetVersion);
   return <div className="cm-stack">
-    <div className="cm-meta-line"><span>{attachment?.name || "custom_op.cpp:128 · 范围来源示例"}</span><span className="cm-tag">{attachment ? "用户提供 · 只读" : "来源示例 · 只读"}</span></div>
+    <ContentToolbar label="代码阅读工具"><span className="tw-tool-context">{attachment?.name || "custom_op.cpp:128"}<small>{attachment ? "用户提供 · 只读" : "范围来源示例 · 只读"}</small></span><button className="cm-text-button" type="button" onClick={() => feedback.copy(text)}><IconCopy size={13} />复制来源</button></ContentToolbar>
     {attachment ? <CodeBlock label="用户提供的只读代码">{text}</CodeBlock> : <LinkedCodeBlock text={text} label="可选择代码行的范围来源示例" explanation={explanation} />}
     {!attachment && <div className="cm-code-link"><IconBook size={14} /><span><strong>{CODE_CONCEPTS[explanation?.state.focus || "tail"].label}</strong><small>{CODE_CONCEPTS[explanation?.state.focus || "tail"].note}</small></span><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation", { anchor: explanation?.state.focus || "tail", split: true })}>对照图解<IconArrowRight size={12} /></button></div>}
     <p className="cm-note">{attachment ? "保留你提供的代码作为核对证据。试改使用独立示例工作副本，未运行附件代码。" : "来源示例用于对照索引范围，不代表真实项目文件。示例草案和真实来源分别保留。"}</p>
-    <div className="cm-actions"><button className="cm-text-button" type="button" onClick={() => feedback.copy(text)}><IconCopy size={13} />复制来源</button><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation", { anchor: explanation?.state.focus || "tail" })}><IconBook size={13} />解释这里</button>{onAttachCode && <button className="cm-text-button" type="button" onClick={onAttachCode}><IconPaperclip size={13} />附加真实代码</button>}</div>
+    <div className="cm-actions"><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation", { anchor: explanation?.state.focus || "tail" })}><IconBook size={13} />解释这里</button>{onAttachCode && <button className="cm-text-button" type="button" onClick={onAttachCode}><IconPaperclip size={13} />附加真实代码</button>}</div>
     <CopyFeedback feedback={feedback} />
   </div>;
 }
@@ -99,11 +100,12 @@ function DraftMaterial({ flow, onShowCard, onAttachCode }) {
   const { state, actions } = flow;
   const feedback = useCopy(state.resetVersion);
   return <div className="cm-stack">
+    <ContentToolbar label="草案编辑工具"><span className="tw-tool-context">custom_op.cpp<small>{modeLabel(state.mode)} · 可编辑</small></span><button className="cm-text-button" type="button" onClick={() => feedback.copy(state.draftCode)}><IconCopy size={13} />复制草案</button></ContentToolbar>
     <div className="cm-mode-selector" role="group" aria-label="示例草案位置"><button className={state.mode === "inline" ? "is-selected" : ""} type="button" aria-pressed={state.mode === "inline"} disabled={state.busy} onClick={() => actions.setMode("inline")}>任务内示例副本</button><button className={state.mode === "isolated" ? "is-selected" : ""} type="button" aria-pressed={state.mode === "isolated"} disabled={state.busy} onClick={() => actions.setMode("isolated")}>隔离示例副本</button></div>
     <div className="cm-meta-line"><span>{modeLabel(state.mode)} · 可编辑</span><button className="cm-text-button" type="button" onClick={() => onShowCard?.("compare")}><IconColumns2 size={13} />并排对照来源</button></div>
     <textarea className="cm-code-editor" value={state.draftCode || ""} spellCheck={false} aria-label="编辑当前示例代码草案" onChange={(event) => { actions.editDraft(event.target.value); feedback.clear(); }} />
     <p className="cm-note">来源：只读范围示例的工作副本。两种副本分别保留参数和草案。范围演算由参数与范围策略决定，不解析、编译或执行编辑的 C++。</p>
-    <div className="cm-actions"><button className="cm-text-button" type="button" onClick={() => feedback.copy(state.draftCode)}><IconCopy size={13} />复制草案</button>{onAttachCode && <button className="cm-text-button" type="button" onClick={onAttachCode}><IconPaperclip size={13} />附加核对证据</button>}<button className="cm-button" type="button" onClick={() => onShowCard?.("parameters")}>打开尝试参数<IconArrowRight size={14} /></button></div>
+    <div className="cm-actions">{onAttachCode && <button className="cm-text-button" type="button" onClick={onAttachCode}><IconPaperclip size={13} />附加核对证据</button>}<button className="cm-button" type="button" onClick={() => onShowCard?.("parameters")}>打开尝试参数<IconArrowRight size={14} /></button></div>
     <CopyFeedback feedback={feedback} />
   </div>;
 }
@@ -185,10 +187,10 @@ function DiffMaterial({ flow, onShowCard, explanation, proactive }) {
   const checkApplied = () => { proactive?.settle(applyCueId); onShowCard?.("validation"); actions.runValidation(); };
   const cancel = () => { actions.cancelDiff(); explanation?.actions.startExplore(); onShowCard?.("explanation", { close: "diff" }); };
   if (!proposed) return <div className="cm-stack"><div className="cm-empty">尚无待核对的示例提案。先选择一次尝试，再生成修改预览。</div><button className="cm-button" type="button" onClick={() => onShowCard?.("attempts")}>查看尝试记录<IconArrowRight size={14} /></button><LocalError state={state} /></div>;
-  return <div className="cm-stack"><p className="cm-note cm-note-leading">对照{baseline === SAMPLE_ORIGINAL_CODE ? "原始范围示例" : "上次已应用的示例副本"}与所选尝试生成的提案。真实来源保持只读。</p>
+  return <div className="cm-stack"><ContentToolbar label="差异阅读工具"><span className="tw-tool-context">{baseline === SAMPLE_ORIGINAL_CODE ? "原始示例" : "上次应用"} → {alreadyApplied ? "已应用提案" : "当前提案"}<small>只读 Diff</small></span><button className="cm-text-button" type="button" onClick={() => feedback.copy(proposed)}><IconCopy size={13} />复制提案</button></ContentToolbar><p className="cm-note cm-note-leading">对照{baseline === SAMPLE_ORIGINAL_CODE ? "原始范围示例" : "上次已应用的示例副本"}与所选尝试生成的提案。真实来源保持只读。</p>
     {selected && <AttemptMetadata attempt={selected} />}
     {!hasChanges && <div className="cm-quiet-note"><IconCode size={15} /><span>当前提案没有新增改动，应用已禁用。可以返回图解，调整范围策略后再审阅。</span></div>}
-    <div className="cm-diff-legend"><span>− 删除行</span><span>+ 新增行</span><button className="cm-text-button" type="button" onClick={() => feedback.copy(proposed)}><IconCopy size={13} />复制提案</button>{expandedDiff && hasChanges && <button className="cm-text-button" type="button" onClick={() => setExpandedDiff(false)}>收起未改动代码</button>}</div>
+    <div className="cm-diff-legend"><span>− 删除行</span><span>+ 新增行</span>{expandedDiff && hasChanges && <button className="cm-text-button" type="button" onClick={() => setExpandedDiff(false)}>收起未改动代码</button>}</div>
     <div ref={diffRef} className="cm-diff" tabIndex={0} aria-label="示例工作副本与提案的代码差异">{shownLines.map((line, index) => {
       if (line.type === "omitted") return <button type="button" className="cm-diff-expand" key={index} onClick={() => setExpandedDiff(true)}>展开 {line.count} 行未改动代码<IconChevronDown size={12} /></button>;
       const concept = codeConcept(line.text);

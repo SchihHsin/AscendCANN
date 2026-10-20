@@ -2,6 +2,13 @@
 // Each state is a separate deck page; photographs retain their complete viewport.
 import {readFile} from 'node:fs/promises';
 const dir = 'images/shared-full-states-20261019/';
+const currentDir = 'images/interface-architecture-20261020/';
+const currentFrames = {
+  'compare-wide': { file: '08-compare-wide.png', highlights: [{x:565,y:95,width:713,height:36,label:'临时对照与结束入口'},{x:565,y:134,width:356,height:584,label:'当前：只读代码'},{x:923,y:134,width:355,height:584,label:'对照：关联图解'}] },
+  'compare-narrow-current': { file: '07-compare-narrow.png', highlights: [{x:835,y:134,width:442,height:290,label:'上方：代码及其工具'},{x:835,y:428,width:442,height:290,label:'下方：关联图解及其工具'}] },
+  'compare-narrow-reference': { file: '13-compare-reading.png', highlights: [{x:782,y:134,width:495,height:290,label:'代码的阅读位置保留'},{x:782,y:428,width:495,height:290,label:'只滚动下方的图解正文'}] },
+  'compare-ended': { file: '14-compare-ended.png', highlights: [{x:782,y:59,width:495,height:34,label:'回到进入前的索引范围示例'},{x:782,y:95,width:495,height:623,label:'同一代码对象与原阅读位置'}] },
+};
 let manifest={}, viewport={width:1280,height:720};
 try { const data=JSON.parse(await readFile(new URL('./images/shared-full-states-20261019/manifest.json',import.meta.url),'utf8')); manifest=Object.fromEntries((data.captures||[]).map(item=>[item.name,item.highlights||[]])); if(Number(data.viewport?.width)>0&&Number(data.viewport?.height)>0)viewport={width:Number(data.viewport.width),height:Number(data.viewport.height)}; } catch {}
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -154,30 +161,30 @@ const states = [
     key:'compare', label:'临时对照与返回',
     steps:[
       {
-        key:'compare-wide', action:'宽栏同时比较', title:'宽栏并排两份记录，时间与条件始终在场',
-        trigger:'从 11:51 记录选择与 11:52 对照，并拉宽右区。',
-        response:'实际约 638px 的右区并排展示两份记录及 batch、输出形状。',
+        key:'compare-wide', action:'宽栏同时比较', title:'宽栏并排代码与图解，各自保留阅读工具',
+        trigger:'从索引范围示例打开关联图解对照，并拉宽右区。',
+        response:'实际约 716px 的右区并排展示代码与图解，各自保留工具和滚动位置。',
         contract:'拖动分隔线只改变布局，不改变对象、参数或版本。',
         note:'同一对照关系；没有重新运行两份记录'
       },
       {
-        key:'compare-narrow-current', action:'窄栏完整看当前', title:'窄栏一次完整显示一份，保留当前记录的可读宽度',
+        key:'compare-narrow-current', action:'窄栏上下对照', title:'窄栏改为上下两份，保留每份内容的可读宽度',
         trigger:'将对照右区收窄到约 447px。',
-        response:'以分段切换选择一份，当前展示 11:51 的含 batch 记录。',
-        contract:'右区 ≤620px 使用单份视图；双方记录与对照关系继续保留。',
-        note:'当前：11:51 · 含 batch · [1,3,224,224]'
+        response:'上方阅读只读代码，下方查看关联图解；两份内容同时在场。',
+        contract:'右区 ≤620px 改为上下布局，不新增视图切换，也不缩小正文字号。',
+        note:'右区约 446px · 代码和图解分别滚动'
       },
       {
-        key:'compare-narrow-reference', action:'切换看另一份', title:'窄栏切换仍在同一对照中，另一份条件完整呈现',
-        trigger:'在同一对照中切到 11:52。',
-        response:'显示不含 batch 的记录及输出 [3,224,224]。',
-        contract:'切换只改变正在阅读的一方，无需回总览重找，也不重新执行。',
-        note:'对照：11:52 · 不含 batch · [3,224,224]'
+        key:'compare-narrow-reference', action:'分别滚动阅读', title:'只滚动要读的正文，另一份内容保持原位置',
+        trigger:'在约 500px 的右区内，向下阅读下方图解。',
+        response:'图解滚动至 720px，上方代码仍保留 18.5px 的原阅读位置。',
+        contract:'每份内容独立保存滚动位置，阅读不会生成新尝试或执行检查。',
+        note:'工具留在各自正文顶部；当前对照关系保持'
       },
       {
         key:'compare-ended', action:'结束回到原记录', title:'结束临时对照后，返回进入前的原记录',
-        trigger:'结束 11:51 与 11:52 的对照。',
-        response:'右区回到最初进入时的 11:51 只读记录。',
+        trigger:'结束索引范围代码与关联图解的对照。',
+        response:'右区回到进入前的索引范围示例，保留原阅读位置。',
         contract:'结束对照保留原现场；固定参考作为另一种持续保留动作。',
         note:'结束对照 ≠ 关闭内容；继续保留原现场'
       }
@@ -193,10 +200,11 @@ export const capturePagesIndex = states.flatMap(group => group.steps.map((state,
 export const capturePageCount = capturePagesIndex.length;
 
 export function capturedInteractionPages(chapterTabs) {
-  const annotationsFor=key=>manifest[key]||[];
+  const annotationsFor=key=>currentFrames[key]?.highlights||manifest[key]||[];
   const overlay=key=>{const items=annotationsFor(key);return items.length?`<svg class="capture-annotations" viewBox="0 0 ${viewport.width} ${viewport.height}" preserveAspectRatio="none" aria-hidden="true">${items.map((h,i)=>`<rect x="${h.x}" y="${h.y}" width="${h.width}" height="${h.height}" rx="5"/><circle cx="${h.x+13}" cy="${h.y+13}" r="11"/><text x="${h.x+13}" y="${h.y+18}">${i+1}</text>`).join('')}</svg>`:''};
   return states.flatMap(group => group.steps.map((state,index) => {
     const pageId=`state-${group.key}-${state.key}`;
+    const imagePath=currentFrames[state.key] ? currentDir+currentFrames[state.key].file : dir+state.key+'.jpg';
     return `<section class="slide s-gray shared-rules captured-rules" id="${pageId}" data-page-id="${pageId}" data-rule="${group.key}" data-state="${state.key}" data-title="${esc(state.title)}" data-capture-sequence="${group.key}">
     <div class="head"><div class="head-l"><div class="brand"><span class="ttl">${esc(state.title)}</span></div><div class="subttl">共用机制 · ${esc(group.label)} · ${esc(state.action)}</div></div>${chapterTabs('C')}</div>
     <div class="body-area"><div class="capture-layout">
@@ -205,9 +213,9 @@ export function capturedInteractionPages(chapterTabs) {
         <div><dt>系统响应</dt><dd>${esc(state.response)}</dd></div>
         <div><dt>交互约定</dt><dd>${esc(state.contract)}</dd></div>
       </dl></div>
-      <div class="capture-stage"><figure class="capture-frame"><button type="button" class="capture-image" data-enlarge="${dir+state.key}.jpg" data-highlights="${esc(JSON.stringify(annotationsFor(state.key)))}" data-viewport="${viewport.width} ${viewport.height}" aria-label="放大${esc(state.action)}的实际界面"><span class="capture-visual"><img src="${dir+state.key}.jpg" alt="${esc(state.action+'：'+state.response)}" decoding="async" loading="lazy">${overlay(state.key)}</span></button><figcaption><strong>${esc(state.action)}</strong><p>${esc(state.note)}</p><div class="capture-labels">${annotationsFor(state.key).map((h,i)=>`<small class="capture-label">${i+1}. ${esc(h.label||'关键区域')}</small>`).join('')}</div></figcaption></figure><div class="capture-hint">完整界面保留位置关系 · 细框标出重点 · 点击放大</div></div>
+      <div class="capture-stage"><figure class="capture-frame"><button type="button" class="capture-image" data-enlarge="${imagePath}" data-highlights="${esc(JSON.stringify(annotationsFor(state.key)))}" data-viewport="${viewport.width} ${viewport.height}" aria-label="放大${esc(state.action)}的实际界面"><span class="capture-visual"><img src="${imagePath}" alt="${esc(state.action+'：'+state.response)}" decoding="async" loading="lazy">${overlay(state.key)}</span></button><figcaption><strong>${esc(state.action)}</strong><p>${esc(state.note)}</p><div class="capture-labels">${annotationsFor(state.key).map((h,i)=>`<small class="capture-label">${i+1}. ${esc(h.label||'关键区域')}</small>`).join('')}</div></figcaption></figure><div class="capture-hint">完整界面保留位置关系 · 细框标出重点 · 点击放大</div></div>
     </div></div>
-    <div class="foot"><span>${esc(group.label)} · ${index+1} / ${group.steps.length}</span><span>当前 Demo 操作实拍 · 2026-10-19 · 浏览器示例，不代表真实工程执行</span></div>
+    <div class="foot"><span>${esc(group.label)} · ${index+1} / ${group.steps.length}</span><span>${currentFrames[state.key]?'2026-10-20 新架构实拍':'2026-10-19 行为实拍 · 公共外壳见架构章'} · 浏览器示例，不代表真实工程执行</span></div>
   </section>`;
   }));
 }

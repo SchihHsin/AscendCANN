@@ -1,0 +1,92 @@
+[
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-task-boundary",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  },
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-intent-and-attention",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  },
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-workspace-navigation",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  },
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-content-identity",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  },
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-browser-content",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  },
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-diff-content",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  },
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-content-overview",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  },
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-temporary-and-return",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  },
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-workspace-collapsed",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  },
+  {
+    "bodyClient": 359,
+    "bodyWidth": 359,
+    "id": "framework-updates-without-interruption",
+    "overflow": "auto",
+    "pageWidth": 390,
+    "top": 0,
+    "viewport": 390
+  }
+]

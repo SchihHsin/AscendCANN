@@ -34,6 +34,114 @@ export function getContentGroups(taskId) {
   return groups.map((group) => ({ ...group }));
 }
 
+/**
+ * Build the title-switcher navigation from task-owned content and workspace state.
+ * Group membership follows each content object's concrete groupId. Kind labels
+ * are presentation hints only and never determine the group.
+ */
+export function buildContentNavigation({
+  taskId,
+  materials = [],
+  contentItems = [],
+  tabs = [],
+  visitedTabs = [],
+  groupNames = {},
+  itemOverrides = {},
+} = {}) {
+  const groups = getContentGroups(taskId);
+  const metadata = isImageTask(taskId) ? IMAGE_META : isMainTask(taskId) ? MAIN_META : GENERIC_META;
+  const groupById = new Map(groups.map((group) => [group.id, group]));
+  const fallbackGroup = groups.find((group) => /相关代码与资料/.test(group.title || group.label || ""))
+    || groups.find((group) => group.id.endsWith("reference"))
+    || groups[0]
+    || { id: "content", title: "任务内容" };
+  const openTabs = asArray(tabs).map((entry) => typeof entry === "string" ? { id: entry } : asObject(entry)).filter((entry) => entry.id);
+  const openById = new Map(openTabs.map((entry) => [entry.id, entry]));
+  const visitedById = new Map(asArray(visitedTabs).map((entry) => typeof entry === "string" ? [entry, { id: entry }] : [entry?.id, entry]).filter(([id]) => id));
+  const contents = asArray(contentItems);
+  const materialsList = asArray(materials);
+  const contentById = new Map(contents.map((item) => [item.id, item]));
+  const materialById = new Map(materialsList.map((item) => [item.id, item]));
+  const itemMap = new Map();
+
+  const resolveGroupId = (item, parent) => {
+    const candidate = item?.groupId || parent?.groupId;
+    return candidate && groupById.has(candidate) ? candidate : fallbackGroup.id;
+  };
+  const putItem = (raw, parent = null) => {
+    if (!raw?.id || raw.id === "canvas") return;
+    const id = String(raw.id);
+    const opened = openById.get(id);
+    const visited = visitedById.get(id);
+    const material = materialById.get(id) || {};
+    const content = contentById.get(id) || {};
+    const override = asObject(itemOverrides[id]);
+    const item = { ...metadata[id], ...material, ...content, ...visited, ...opened, ...raw, ...override };
+    const groupId = resolveGroupId(item, parent);
+    if (item.available === false && !opened) return;
+    itemMap.set(id, {
+        id,
+        title: item.title || id,
+        type: item.type || "preview",
+        kindLabel: item.kindLabel || kindLabelFor(id, item.type || "preview", item.category, item.title || id),
+        groupId,
+        available: item.available !== false,
+        ...(item.disabledReason ? { disabledReason: item.disabledReason } : {}),
+        ...(item.summary ? { summary: item.summary } : {}),
+        ...(item.history ? { history: true } : {}),
+        ...(item.child ? { child: item.child } : {}),
+        ...(item.time ? { time: item.time } : {}),
+        ...(item.readOnly ? { readOnly: true } : {}),
+      });
+  };
+
+  // Keep available materials as direct-open entries, while retaining current tabs
+  // even if their material is now unavailable or no longer in the catalog.
+  for (const material of materialsList) putItem(material);
+  for (const item of contents) putItem(item);
+  for (const tab of openTabs) {
+    if (/^(record:|snapshot:|attempt:)/.test(String(tab.id))) continue;
+    putItem(tab);
+  }
+
+  // Only expose a history row while that history item is actually open. Its row
+  // stays in the owning content object's group and preserves the source child.
+  for (const tab of openTabs) {
+    const id = String(tab.id);
+    if (!/^(record:|snapshot:|attempt:)/.test(id)) continue;
+    let parent = contents.find((item) => item.children?.some((child) => child.id === id || child.id === tab.id));
+    let child = parent?.children?.find((entry) => entry.id === id || entry.id === tab.id);
+    if (!parent) {
+      const parentId = tab.parentId || tab.child?.parentId;
+      parent = contentById.get(parentId);
+      child = tab.child || parent?.children?.find((entry) => entry.id === id);
+    }
+    const parentGroupId = resolveGroupId(parent || {}, null);
+    const source = { ...(child || {}), ...tab };
+    const time = source.time || "";
+    const originalChild = child ? { ...child } : { ...source };
+    const history = {
+      ...source,
+      id,
+      title: source.title ? `${source.title}${time ? ` · ${time}` : " · 历史"}` : `历史记录${time ? ` · ${time}` : ""}`,
+      type: source.type || "record",
+      kindLabel: source.typeLabel || source.kindLabel || "历史记录",
+      groupId: parentGroupId,
+      history: true,
+      child: originalChild,
+      time,
+      readOnly: true,
+    };
+    putItem(history, parent);
+  }
+
+  return groups.map((group) => ({
+    id: group.id,
+    label: groupNames[group.id] || group.title || group.label || group.id,
+    items: [...itemMap.values()].filter((item) => item.groupId === group.id),
+  })).filter((group) => group.items.length);
+}
+
 const isImageTask = (taskId) => String(taskId || "") === "图像推理调试";
 const isMainTask = (taskId) => String(taskId || "") === "AddCustom 精度异常";
 const asArray = (value) => Array.isArray(value) ? value : [];

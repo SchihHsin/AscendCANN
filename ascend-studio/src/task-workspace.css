@@ -25,8 +25,9 @@
 .tw-option-copy strong { min-width: 0; overflow: hidden; color: inherit; font-size: 12px; font-weight: 500; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
 .tw-option-copy small { color: #888d96; font-size: 11px; font-weight: 400; line-height: 1.45; overflow-wrap: anywhere; }
 .tw-option-state { flex: 0 0 auto; margin-left: auto; color: #858995; font-size: 11px; font-weight: 400; }
-.tw-content-menu-foot { flex: 0 0 auto; padding: 7px 8px; border-top: 1px solid #e9eae8; background: #fbfbfa; }
-.tw-topbar .tw-content-menu-foot > button { justify-content: flex-start; width: 100%; height: 30px; padding: 0 8px; border: 0; border-radius: 5px; color: #616773; background: transparent; font-size: 12px; }
+.tw-option-kind { flex: 0 0 auto; color: #92949d; font-size: 10px; font-weight: 400; }
+.tw-content-menu-foot { display: flex; flex-wrap: wrap; gap: 4px; flex: 0 0 auto; padding: 7px 8px; border-top: 1px solid #e9eae8; background: #fbfbfa; }
+.tw-topbar .tw-content-menu-foot > button { justify-content: flex-start; flex: 1 1 auto; width: auto; height: 30px; padding: 0 8px; border: 0; border-radius: 5px; color: #616773; background: transparent; font-size: 12px; }
 .tw-topbar .tw-content-menu-foot > button:hover { background: #f0f0ef; color: #4f5561; }
 .tw-topbar-actions { display: flex; align-items: center; gap: 5px; flex: 0 0 auto; }
 .tw-topbar button { display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 25px; min-width: 25px; padding: 0 7px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #737b8d; font-size: 12px; white-space: nowrap; cursor: pointer; }
@@ -42,6 +43,15 @@
 .tw-history-menu > summary { cursor: pointer; white-space: nowrap; }
 .tw-history-menu > summary span { margin-left: 4px; color: #9ca1ae; font-variant-numeric: tabular-nums; }
 .tw-stage { position: relative; flex: 1; min-width: 0; min-height: 0; }
+.tw-return-arrow { transform: rotate(180deg); }
+.tw-toolbar-slot { flex: 0 0 auto; min-width: 0; border-bottom: 1px solid #ecedf0; background: #fafafb; }
+.tw-toolbar-slot:empty { display: none; }
+.tw-viewer-tools { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 10px; min-width: 0; min-height: 38px; padding: 6px 13px; font-size: 11px; line-height: 1.5; }
+.tw-tool-context { display: flex; align-items: baseline; flex-wrap: wrap; flex: 1 1 120px; min-width: 0; gap: 3px 8px; color: #656b79; overflow-wrap: anywhere; }
+.tw-tool-context small { color: #9296a2; font-size: 10px; }
+.tw-viewer-tools > button { flex: 0 0 auto; min-height: 26px; padding: 3px 7px; border-radius: 5px; color: #676d7c; font-size: 11px; }
+.tw-viewer-tools .rb-toolbar { flex: 1 1 100%; border: 0; border-radius: 0; padding: 0; background: transparent; }
+.tw-viewer-tools:has(.rb-toolbar) { padding: 5px 8px; }
 .tw-task-body, .tw-canvas-view { position: absolute; inset: 0; min-width: 0; min-height: 0; }
 .tw-task-body[hidden], .tw-canvas-view[hidden], .tw-pane[hidden] { display: none; }
 .tw-pane { position: absolute; inset: 0; display: flex; flex-direction: column; min-width: 0; min-height: 0; background: #fff; }
@@ -95,11 +105,6 @@
 .task-workspace button:focus-visible { outline: 2px solid #aab3c9; outline-offset: 2px; }
 @media (max-width: 1180px) { .tw-pane-content { padding-inline: 13px; } }
 
-/* Preserve readable code and diagrams when their shared work area is narrow. */
-@container task-content (max-width: 640px) {
-  .tw-task-body.has-split.is-diagram-split .tw-pane.is-primary { inset: 0 0 50%; border-right: 0; border-bottom: 1px solid #e0e3eb; }
-  .tw-task-body.has-split.is-diagram-split .tw-pane.is-secondary { inset: 50% 0 0; }
-}
 @container task-content (max-width: 420px) {
   .tw-topbar { gap: 5px; padding-inline: 8px 6px; }
   .tw-topbar .tw-content-trigger { gap: 4px; padding-inline: 5px; font-size: 11px; }
@@ -141,12 +146,6 @@
 @media (prefers-reduced-motion: reduce) { .tw-stage .tw-task-body { animation: none; } }
 
 .tw-pane-label .tw-reference-focus { margin: 0; min-width: 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; justify-content: flex-start; color: #626875; font-size: 12px; }
-@container task-content (max-width: 620px) {
-  .tw-task-body.has-split .tw-pane.is-primary, .tw-task-body.has-split.is-diagram-split .tw-pane.is-primary { inset: 0 0 36px; border: 0; }
-  .tw-task-body.has-split .tw-pane.is-secondary, .tw-task-body.has-split.is-diagram-split .tw-pane.is-secondary { inset: auto 0 0; height: 36px; border-top: 1px solid #e4e5ea; }
-  .tw-task-body.has-split .tw-pane.is-secondary .tw-pane-content { display: none; }
-  .tw-task-body.has-split .tw-pane-label { height: 36px; }
-}
 
 
 /* Shared object management: every viewer uses the same context and history. */
@@ -161,9 +160,9 @@
 .tw-end-comparison { flex: 0 0 auto; border: 0; padding: 5px; background: transparent; color: #656876; cursor: pointer; font-size: 11px; }
 .tw-end-comparison:hover { color: #343741; background: #eeeeef; border-radius: 4px; }
 .task-workspace.is-compact-comparison .tw-task-body.has-split .tw-pane.is-primary,
+.task-workspace.is-compact-comparison .tw-task-body.has-split.is-diagram-split .tw-pane.is-primary { inset: 0 0 50%; height: auto; border: 0; border-bottom: 1px solid #dde0e7; }
 .task-workspace.is-compact-comparison .tw-task-body.has-split .tw-pane.is-secondary,
-.task-workspace.is-compact-comparison .tw-task-body.has-split.is-diagram-split .tw-pane.is-primary,
-.task-workspace.is-compact-comparison .tw-task-body.has-split.is-diagram-split .tw-pane.is-secondary { inset: 0; height: auto; border: 0; }
+.task-workspace.is-compact-comparison .tw-task-body.has-split.is-diagram-split .tw-pane.is-secondary { inset: 50% 0 0; height: auto; border: 0; }
 .tw-history-context { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; padding: 5px 12px; border-bottom: 1px solid #e8e7ee; background: #f7f6fb; color: #777186; font-size: 11px; }
 .tw-history-context > span { min-width: 0; overflow-wrap: anywhere; }
 .tw-history-context button { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; padding: 3px 0; border: 0; background: transparent; color: #645c86; font-size: 11px; cursor: pointer; }

@@ -1,0 +1,92 @@
+[
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-task-boundary",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  },
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-intent-and-attention",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  },
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-workspace-navigation",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  },
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-content-identity",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  },
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-browser-content",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  },
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-diff-content",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  },
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-content-overview",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  },
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-temporary-and-return",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  },
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-workspace-collapsed",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  },
+  {
+    "bottom": 758.3671875,
+    "foot": 836,
+    "id": "framework-updates-without-interruption",
+    "img": 1280,
+    "top": 0,
+    "viewport": 1440,
+    "width": 1440
+  }
+]

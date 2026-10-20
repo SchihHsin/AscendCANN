@@ -8,6 +8,7 @@ import {
   IconReload,
   IconWorld,
 } from "@tabler/icons-react";
+import { ContentToolbar } from "./ContentToolbar";
 import "./reference-browser.css";
 
 // Existing research source: operator-ai-journey-research/run-log.md.
@@ -72,7 +73,7 @@ export function ReferenceBrowser({ reference = ASCEND_C_REFERENCE, resetVersion 
   };
 
   return <div className="rb-browser">
-    <div className="rb-toolbar">
+    <ContentToolbar label="网页浏览工具"><div className="rb-toolbar">
       <div className="rb-navigation">
         <button type="button" title="返回此前打开的地址" aria-label="返回此前打开的地址" disabled={position === 0} onClick={() => move(-1)}><IconArrowLeft size={15} /></button>
         <button type="button" title="前往下一个地址" aria-label="前往下一个地址" disabled={position === history.length - 1} onClick={() => move(1)}><IconArrowRight size={15} /></button>
@@ -84,7 +85,7 @@ export function ReferenceBrowser({ reference = ASCEND_C_REFERENCE, resetVersion 
         <button type="submit" title="打开此地址" aria-label="打开此地址"><IconArrowRight size={13} /></button>
       </form>
       <a className="rb-external" href={currentUrl} target="_blank" rel="noopener noreferrer" title="在外部浏览器打开" aria-label="在外部浏览器打开"><IconExternalLink size={15} /></a>
-    </div>
+    </div></ContentToolbar>
     {error && <p className="rb-error" role="alert">{error}</p>}
     <div className="rb-reference-meta"><IconBook size={14} /><span><strong>{isOriginal ? reference.title : pageHost}</strong><small>{isOriginal ? `${reference.publisher} · 版本以原网页为准` : "当前打开的网页"}</small></span><a href={reference.url} target="_blank" rel="noopener noreferrer">原始参考<IconExternalLink size={12} /></a></div>
     <div className="rb-embed-notice"><span>{embedError ? "当前网页无法嵌入，请在外部浏览器中查看。" : "网页由原站提供；若显示空白或拒绝连接，可在外部浏览器中查看。"}</span><a href={currentUrl} target="_blank" rel="noopener noreferrer">外部打开<IconExternalLink size={12} /></a></div>
