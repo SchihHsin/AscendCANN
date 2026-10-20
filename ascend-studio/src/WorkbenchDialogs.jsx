@@ -44,26 +44,36 @@ function FormActions({ onClose, children }) {
 }
 
 function NewTaskForm({ groups = [], onCreateTask, onClose }) {
+  const [kind, setKind] = useState("task");
   const [name, setName] = useState("");
   const [groupId, setGroupId] = useState(groups[0]?.id || "");
   const [goal, setGoal] = useState("");
+  const [background, setBackground] = useState("");
+  const [dailyMinutes, setDailyMinutes] = useState("20");
   const [error, setError] = useState("");
+  const learning = kind === "learning";
+  const changeKind = (nextKind) => {
+    setKind(nextKind); setError("");
+    if (nextKind === "learning" && groups.some(group => group.id === "inference")) setGroupId("inference");
+  };
   const submit = (event) => {
     event.preventDefault();
-    if (!name.trim() || !goal.trim()) { setError("请填写任务名称和目标。"); return; }
+    if ((!learning && !name.trim()) || !goal.trim()) { setError(learning ? "请填写想学会的内容。" : "请填写任务名称和目标。"); return; }
     if (!groups.some((group) => group.id === groupId)) { setError("请选择一个项目。"); return; }
     try {
-      if (onCreateTask?.({ name: name.trim(), groupId, goal: goal.trim() }) === false) {
-        setError("这个项目中已有同名任务，请换一个名称。");
+      if (onCreateTask?.({ name: name.trim() || goal.trim().slice(0, 60), groupId, goal: goal.trim(), ...(learning ? { kind: "learning", background: background.trim(), dailyMinutes: Number(dailyMinutes) } : {}) }) === false) {
+        setError("已有同名任务，请换一个名称。");
       }
     } catch { setError("任务未能创建，请稍后重试。"); }
   };
   return <form className="wb-form" onSubmit={submit}>
-    <label className="wb-field"><span>任务名称</span><input data-initial-focus required maxLength={80} value={name} onChange={(event) => { setName(event.target.value); setError(""); }} placeholder="例如：排查非整块输入的精度异常" /></label>
+    <div className="wb-filter-row" role="group" aria-label="任务起点"><button className={"wb-filter" + (!learning ? " is-active" : "")} type="button" aria-pressed={!learning} onClick={() => changeKind("task")}>开发任务</button><button className={"wb-filter" + (learning ? " is-active" : "")} type="button" aria-pressed={learning} onClick={() => changeKind("learning")}>学习目标</button></div>
+    <label className="wb-field"><span>{learning ? "任务名称（选填）" : "任务名称"}</span><input data-initial-focus required={!learning} maxLength={80} value={name} onChange={(event) => { setName(event.target.value); setError(""); }} placeholder={learning ? "不填时使用学习目标作为名称" : "例如：排查非整块输入的精度异常"} /></label>
     <label className="wb-field"><span>所属项目</span><select required value={groupId} onChange={(event) => setGroupId(event.target.value)} disabled={!groups.length}>{groups.length ? groups.map((group) => <option key={group.id} value={group.id}>{group.name}</option>) : <option value="">暂无可用项目</option>}</select></label>
-    <label className="wb-field"><span>任务目标</span><textarea required rows={4} maxLength={2000} value={goal} onChange={(event) => { setGoal(event.target.value); setError(""); }} placeholder="描述期望结果、已有信息和需要检查的内容。" /></label>
+    <label className="wb-field"><span>{learning ? "想学会什么" : "任务目标"}</span><textarea required rows={learning ? 3 : 4} maxLength={2000} value={goal} onChange={(event) => { setGoal(event.target.value); setError(""); }} placeholder={learning ? "例如：理解图像通道与输入维度，并能读懂一段预处理代码。" : "描述期望结果、已有信息和需要检查的内容。"} /></label>
+    {learning && <><label className="wb-field"><span>已有基础</span><textarea rows={2} maxLength={1000} value={background} onChange={(event) => setBackground(event.target.value)} placeholder="例如：会一点 Python，第一次接触模型输入。" /></label><label className="wb-field"><span>每天可用时间</span><select value={dailyMinutes} onChange={(event) => setDailyMinutes(event.target.value)}>{[10, 20, 30, 45, 60].map(minutes => <option key={minutes} value={minutes}>{minutes} 分钟</option>)}</select></label></>}
     <FormError message={error} />
-    <FormActions onClose={onClose}><button className="wb-button wb-button-primary" type="submit" disabled={!groups.length}>创建任务<IconArrowRight size={15} /></button></FormActions>
+    <FormActions onClose={onClose}><button className="wb-button wb-button-primary" type="submit" disabled={!groups.length}>{learning ? "创建学习任务" : "创建任务"}<IconArrowRight size={15} /></button></FormActions>
   </form>;
 }
 

@@ -1,3 +1,5 @@
+import { LEARNING_TASK } from "./learning-data";
+
 export const initialGroups = [
   {
     id: "operator",
@@ -7,7 +9,7 @@ export const initialGroups = [
   {
     id: "inference",
     name: "模型推理",
-    tasks: ["图像推理调试", "Model preprocessing", "Vision model test"],
+    tasks: ["图像推理调试", LEARNING_TASK, "Model preprocessing", "Vision model test"],
   },
   {
     id: "other",
@@ -17,6 +19,19 @@ export const initialGroups = [
 ];
 
 export const taskDetails = {
+  [LEARNING_TASK]: {
+    project: "模型推理",
+    kind: "learning",
+    goal: "理解图像通道、维度顺序与 batch，能够说明并核对一段输入预处理代码。",
+    learningProfile: {
+      goal: "学会图像输入预处理，理解 HWC、CHW 与 NCHW，并能核对轴顺序和 batch。",
+      background: "会读简单 Python，第一次学习模型图像输入。",
+      dailyMinutes: 20,
+    },
+    question: "我想学会图像输入预处理，会一点 Python，每天可以学 20 分钟。希望先理解，再动手试一下。",
+    reply: "先从你的学习目标开始，确认已有基础和可用时间，再整理一条可以逐步完成的学习路径。\n\n这里准备了图像通道与维度转换的学习案例：理解概念、对照图解、完成小练习，再回看学到了什么。练习与记录保存在当前任务中。",
+    status: "waiting",
+  },
   "AddCustom 精度异常": {
     project: "CANN 自定义算子",
     goal: "定位不同输入形状下的精度差异，保留判断依据并选择下一步检查。",

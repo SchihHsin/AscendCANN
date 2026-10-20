@@ -76,6 +76,18 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey
   const hiddenHistory = useRef([]);
   const placedCards = useRef(new Set(state.cards.filter(card => card.opened).map(card => card.id)));
   const comparisonSnapshot = useRef(null);
+  const activeStorageKey = useRef(storageKey);
+  const taskContexts = useRef(new Map());
+  if (activeStorageKey.current !== storageKey) {
+    taskContexts.current.set(activeStorageKey.current, { state: current.current, hidden: hiddenHistory.current, placed: placedCards.current, comparison: comparisonSnapshot.current });
+    const cached = taskContexts.current.get(storageKey);
+    const saved = readSession(storageKey, null);
+    current.current = cached?.state || (saved && Array.isArray(saved.cards) && saved.viewport ? { ...initialState(startEmpty, cardDefinitions), ...saved, comparing: false } : initialState(startEmpty, cardDefinitions));
+    hiddenHistory.current = cached?.hidden || [];
+    placedCards.current = cached?.placed || new Set(current.current.cards.filter(card => card.opened).map(card => card.id));
+    comparisonSnapshot.current = cached?.comparison || null;
+    activeStorageKey.current = storageKey;
+  }
   const lastHidden = (cards) => hiddenHistory.current.findLast((id) => cards.some((card) => card.id === id && !card.visible)) || null;
 
   const update = (change) => {
@@ -247,7 +259,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey
   };
 
   return {
-    state,
+    state: current.current,
     actions: { addCard, showCard, hideCard, selectCard, moveCard, resizeCard, togglePin, toggleCollapse, setViewport, setSurfaceSize, beginComparison, endComparison, reset, restore, fitCanvas },
   };
 }

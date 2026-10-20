@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 import { getMaterialMeta } from "./workspace-materials";
 
-function initialState(isMainTask, taskId) {
-  const initial = { ...getMaterialMeta(taskId === "图像推理调试" ? "image-explanation" : isMainTask ? "explanation" : "task-brief"), unread: false };
+function initialState(isMainTask, taskId, initialMaterialId) {
+  const initial = { ...getMaterialMeta(initialMaterialId || (taskId === "学会图像输入预处理" ? "learning-goal" : taskId === "图像推理调试" ? "image-explanation" : isMainTask ? "explanation" : "task-brief")), unread: false };
   return {
     tabs: [initial],
     visitedTabs: [initial],
@@ -74,7 +74,7 @@ function activatedState(previous, id) {
   };
 }
 
-export function useContentWorkspace({ taskId, isMainTask }) {
+export function useContentWorkspace({ taskId, isMainTask, initialMaterialId }) {
   const tasks = useRef(null);
   const visibleContent = useRef(new Map());
   if (!tasks.current) {
@@ -83,11 +83,11 @@ export function useContentWorkspace({ taskId, isMainTask }) {
   }
   const persist = () => writeSession("workspace", Object.fromEntries(tasks.current));
   const [, setRevision] = useState(0);
-  if (!tasks.current.has(taskId)) tasks.current.set(taskId, initialState(isMainTask, taskId));
+  if (!tasks.current.has(taskId)) tasks.current.set(taskId, initialState(isMainTask, taskId, initialMaterialId));
   const state = tasks.current.get(taskId);
 
   const update = (change, ownerId = taskId, ownerIsMainTask = isMainTask) => {
-    const previous = tasks.current.get(ownerId) || initialState(ownerIsMainTask, ownerId);
+    const previous = tasks.current.get(ownerId) || initialState(ownerIsMainTask, ownerId, ownerId === taskId ? initialMaterialId : undefined);
     const next = change(previous);
     if (next === previous) return;
     tasks.current.set(ownerId, next);
@@ -240,7 +240,7 @@ export function useContentWorkspace({ taskId, isMainTask }) {
     ? activatedState(openedMaterial(previous, previous.referenceReturnId, { restore: true }), previous.referenceReturnId)
     : previous);
   const markRead = (id) => update(previous => ({ ...previous, tabs: previous.tabs.map(item => item.id === id ? { ...item, unread: false } : item), visitedTabs: previous.visitedTabs.map(item => item.id === id ? { ...item, unread: false } : item) }));
-  const reset = () => update(() => initialState(isMainTask, taskId));
+  const reset = () => update(() => initialState(isMainTask, taskId, initialMaterialId));
 
   return { state, getTaskState, actions: { open, activate, close, openCanvas, returnFocus, setCollapsed, savePosition, editGroup, editItem, setOverview, saveSnapshot, markRead, splitWith, focusComparison, setVisibleContent, endSplit, returnFromReference, reset } };
 }

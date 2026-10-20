@@ -5281,3 +5281,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更：`cann-dashboard/ploy-interaction-lab/proactive-research.html`、`evidence/diagrams/` 四张 SVG、`evidence/full-review/README.md`、`evidence/proactive/research-notes.md`、`evidence/product-frames/README.md`。报告仍为 27 页，未改页序、API / Host / Application 边界或现有学习 Demo。官方资料内容为 H 级来源；图解是来源内容的说明性重绘，不构成账号实测或效果数据。
 - 验收：1280×720 本地浏览器检查 #6、#10、#11、#13、#26；四张图在页内正确加载，标题/正文/来源说明可见；#13 的发布区与同步步骤分开。静态核对 27 页、64 个本地引用、4 张 SVG XML 解析通过，`git diff --check` 通过。未新增或运行自动测试，没有真实账号写入、邮件发送、Code Sync、GSC 效果或 NPU 验证。
 - 内容提交 `54c9ce8d`（`docs: add workflow visuals to Ploy proactive report`）已推送 `origin/main`，从 `fa122ad2` 快进。随后仅补交接记录并再次提交推送。仍待取得实际待审 Gmail 队列、GSC 前后效果、AEO 原始回答/引用和 Code Sync 回执截图；不能把当前四张 SVG 当成实拍补齐。其他工作区 WIP 未纳入。
+
+### 2026-10-20（学习目标起步 A1–A5 进入 Ascend Studio）
+
+- 用户要求把learning-canvas-story#7从学习目标出发的故事加入Demo，并选C：模型推理分组增加“学会图像输入预处理”，同时“新建任务→学习目标”填目标／基础／时间。两个入口进入同一学习旅程；直达链接为`ascstudio/?task=learning`，参数选择后消费以保后续刷新现场。
+- 新增`ascend-studio/src/LearningJourney.jsx`/CSS、`learning-data.js`、`useLearningJourney.js`、`learning-content-catalog.js`；修改App、WorkbenchDialogs、prototype-data、useWorkbenchState、useContentWorkspace、useCanvasState、内容元数据和目录；同步根`ascstudio/`产物。旧会话只补缺失现成任务，不重置用户任务／参数／记录。学习状态和自由整理现场按taskId保存。
+- 目标／路径／讲解／练习／输入检查／成果六对象沿用既定三栏、按需右区、公共标题／专属工具／正文、总览与历史。目标或现成路径共同进草案；环境跳过／恢复和上下移动先预览，确认／取消保原路径和已有记录，理解→跟练→检查保依赖。字幕提问带时间点回中聊；跟练失败原位恢复，每次参数、代码、时间和结果独立保存；输入检查关联明确attemptId，相同参数另存新尝试也需自己的检查。保存摘要区分理解、示例检查与真实推理；收起／刷新可恢复，用户可选择进入开发并带回学习来源。
+- M级本地操作：5174走通生成／选现成路径、对话跳过和取消、确认、00:20字幕提问、默认HWC失败、重复轴失败、2/0/1+batch成功、取消batch后旧检查标旧条件且禁用完成、尝试4需重核对、摘要保存／收起／刷新／唤醒、地图定位尝试4、新建10分钟学习任务保持默认0/1/2且无旧尝试、开发原2/0/1无batch不被覆盖。824px并排各412px、360px上下、390×844页面宽/scrollWidth均390；代码复制实测，1280×480无页面横溢。11幅截图与边界见`ascend-studio/evidence/20261020-learning-goal/README.md`。最终完整刷新无新增error/warn，用户5173和8765未重置。
+- 材料README、实施状态§21、interaction-design与两AGENTS同步；`shared-interaction-pages.mjs`/生成index第63页只更新范围，63页序列、#7、#31和前30页提案不变；本地63页表格底510px/720px。API/Host/Application事实边界不变。路径为图像预处理本地模板、练习仅浏览器形状演算，未接任意课程生成、真实AI、Python执行、模型/NPU或学习效果数据；能力匹配／图像专属提示／官网GitCode协作继续待办。
+- 验证：相关JS语法、Vite `build:pages`、材料`build.mjs`及diff检查通过，最终index-CMMLvYrY.js/index-JyE7HLDv.css；611.78kB既有主包体积提示保留。无新增自动测试。只暂存本任务源码、产物、材料、QA与截图，检查后立即commit/push；具体发布回执随后补记。报告WIP、DS_Store和未知图稿均保留未纳入。

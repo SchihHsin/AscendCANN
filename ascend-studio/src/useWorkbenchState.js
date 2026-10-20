@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply } from "./prototype-data";
 import { readSession, writeSession } from "./session-storage";
+import { LEARNING_TASK } from "./learning-data";
 
 export const MAIN_TASK = "AddCustom 精度异常";
 export const evidenceDetails = [
@@ -55,7 +56,15 @@ function restoreWorkbench() {
   const saved = readSession("workbench", null);
   const value = isObject(saved) ? saved : {};
   const savedGroups = objects(value.groups).filter(group => typeof group.id === "string" && typeof group.name === "string" && Array.isArray(group.tasks));
-  const groups = savedGroups.length ? savedGroups.map(group => ({ ...group, tasks: group.tasks.filter(task => typeof task === "string") })) : initialGroups;
+  const groups = savedGroups.length
+    ? savedGroups.map(group => ({ ...group, tasks: group.tasks.filter(task => typeof task === "string") }))
+    : initialGroups.map(group => ({ ...group, tasks: [...group.tasks] }));
+  // Add the new example to existing browsers without replacing their task lists.
+  if (!groups.some(group => group.tasks.includes(LEARNING_TASK))) {
+    const inferenceGroup = groups.find(group => group.id === "inference");
+    if (inferenceGroup) inferenceGroup.tasks = [...inferenceGroup.tasks, LEARNING_TASK];
+    else groups.push({ id: "inference", name: "模型推理", tasks: [LEARNING_TASK] });
+  }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
   if (!sessions[MAIN_TASK]) sessions[MAIN_TASK] = blank();
@@ -218,7 +227,7 @@ export function useWorkbenchState() {
     pending.timer = setTimeout(() => {
       if (replyTimers.current.get(taskName) !== pending) return;
       replyTimers.current.delete(taskName);
-      updateTask(taskName, (old) => ({ replying: false, unreadReply: old.unreadReply || activeConversationTask.current !== taskName, messages: [...old.messages, { id: uid(), role: "assistant", text: options.replyText || cleanReply(buildAssistantReply({ text, taskName, modelLabel, attachments, records })), interaction: options.interaction, model: modelLabel, isDemo: true }] }));
+      updateTask(taskName, (old) => ({ replying: false, unreadReply: old.unreadReply || activeConversationTask.current !== taskName, messages: [...old.messages, { id: uid(), role: "assistant", text: options.overrideReply || options.replyText || cleanReply(buildAssistantReply({ text, taskName, modelLabel, attachments, records })), interaction: options.interaction, model: modelLabel, isDemo: true }] }));
     }, 650);
     return true;
   };
@@ -262,12 +271,47 @@ export function useWorkbenchState() {
     ] }));
     return true;
   };
-  const createTask = ({ name, groupId, goal }) => {
-    const title = name.trim(), group = groups.find((item) => item.id === groupId);
+  const addExchange = (user, assistant, targetTask = selectedTask) => {
+    const userMessage = typeof user === "string" ? { text: user } : user;
+    const assistantMessage = typeof assistant === "string" ? { text: assistant } : assistant;
+    if (!userMessage?.text?.trim() || !assistantMessage?.text?.trim() || !groups.some(group => group.tasks.includes(targetTask))) return false;
+    if (sessions[targetTask]?.replying || replyTimers.current.has(targetTask)) {
+      notify("当前答复完成后可以继续学习。");
+      return false;
+    }
+    updateTask(targetTask, old => ({
+      unreadReply: old.unreadReply || activeConversationTask.current !== targetTask,
+      messages: [...old.messages,
+        { ...userMessage, id: uid(), role: "user" },
+        { ...assistantMessage, id: uid(), role: "assistant", isDemo: true },
+      ],
+    }));
+    return true;
+  };
+  const createTask = ({ name, groupId, goal, kind, background = "", dailyMinutes = 20 }) => {
+    const cleanGoal = String(goal || "").trim();
+    const learning = kind === "learning";
+    const title = String(name || (learning ? cleanGoal.slice(0, 60) : "")).trim(), group = groups.find((item) => item.id === groupId);
     if (!group || !title) return false;
     if (groups.some((item) => item.tasks.includes(title))) { notify("已有同名任务，请换一个名称"); return false; }
     setGroups((all) => all.map((item) => item.id === groupId ? { ...item, tasks: [...item.tasks, title] } : item));
-    setMeta((all) => ({ ...all, [title]: { project: group.name, goal: goal.trim() || "补充目标、输入材料和完成条件。", question: goal.trim() || "开始整理这项任务的上下文。", reply: "已建立任务。可以继续补充代码、日志或具体问题，再选择下一步检查方向。当前尚无运行证据。", status: "waiting" } }));
+    const learningProfile = learning ? {
+      goal: cleanGoal || "明确本次想学会的内容和能够完成的动作。",
+      background: String(background || "").trim(),
+      dailyMinutes: Math.max(5, Math.min(180, Number(dailyMinutes) || 20)),
+    } : null;
+    setMeta((all) => ({ ...all, [title]: {
+      project: group.name,
+      ...(learning ? { kind: "learning", learningProfile } : {}),
+      goal: cleanGoal || "补充目标、输入材料和完成条件。",
+      question: learning
+        ? `我想学习：${learningProfile.goal}\n已有基础：${learningProfile.background || "待补充"}\n每天可用时间：${learningProfile.dailyMinutes} 分钟。`
+        : cleanGoal || "开始整理这项任务的上下文。",
+      reply: learning
+        ? "已建立学习任务。先确认目标、基础和可用时间，再整理学习路径；学习中产生的图解、练习和小结会保存在这个任务中。"
+        : "已建立任务。可以继续补充代码、日志或具体问题，再选择下一步检查方向。当前尚无运行证据。",
+      status: "waiting",
+    } }));
     saveConversationScroll(); updateTask(title, {}); setSelectedTask(title); setOpenedGroups((all) => all.includes(groupId) ? all : [...all, groupId]); setQuery(""); setFilterScope("all"); setActionView(null); setDialog(null); notify("任务已创建"); return true;
   };
   const startConversation = () => {
@@ -309,5 +353,5 @@ export function useWorkbenchState() {
     .filter((file) => file.content && (file.type === "code" || /\.(cpp|h|py)$/i.test(file.name)))
     .sort((a, b) => (a.receivedOrder || 0) - (b.receivedOrder || 0)).at(-1);
   const attempts = [...(isMainTask ? [{ title: "修改编译参数", summary: "错误仍在 custom_op.cpp:128，未新增定位信号。", time: "已知现场" }] : []), ...session.records.filter((item) => item.kind === "attempt")];
-  return { getSession: (name) => sessions[name] || blank(), getTask: (name) => meta[name] || { goal: "补充目标和材料。" }, groups, task, session, query, setQuery, filterScope, setFilterScope, openedGroups, setOpenedGroups, selectedTask, rationaleOpen, setRationaleOpen, actionView, setActionView, menu, setMenu, menuRef, openMenu, dialog, dialogData, openDialog, closeDialog, selectedModel, model, automations, setAutomations, notifications, toast, notify, conversationRef, draftRef, fileRef, imageRef, currentGroup, isMainTask, visibleGroups, patchSession, toggleGroup, selectTask, setSelectedRoute, setDraft, copyText, conversationText, exportTask, resetTask, sendMessage, handleConversationScroll, showLatestReply, askFromExplanation, createTask, startConversation, restoreConversation, attachCode, readFiles, useCapability, addRecord, confirmRoute, chooseModel, runAutomation, attachmentCode, attempts };
+  return { getSession: (name) => sessions[name] || blank(), getTask: (name) => meta[name] || { goal: "补充目标和材料。" }, groups, task, session, query, setQuery, filterScope, setFilterScope, openedGroups, setOpenedGroups, selectedTask, rationaleOpen, setRationaleOpen, actionView, setActionView, menu, setMenu, menuRef, openMenu, dialog, dialogData, openDialog, closeDialog, selectedModel, model, automations, setAutomations, notifications, toast, notify, conversationRef, draftRef, fileRef, imageRef, currentGroup, isMainTask, visibleGroups, patchSession, toggleGroup, selectTask, setSelectedRoute, setDraft, copyText, conversationText, exportTask, resetTask, sendMessage, handleConversationScroll, showLatestReply, askFromExplanation, addExchange, createTask, startConversation, restoreConversation, attachCode, readFiles, useCapability, addRecord, confirmRoute, chooseModel, runAutomation, attachmentCode, attempts };
 }

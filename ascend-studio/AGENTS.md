@@ -673,3 +673,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 当前本轮代码与材料已完成，本次主要评审31–40界面分区和层级及Demo普通正文/总览/对照/收起的关系。后续学习起步、完整视频/图像专属主动提示、官网/GitCode业务协作仍按既有范围待适配；主题仍是两任务预置，不承诺任意AI语义归类。API/Host/Application事实不变，无真实工程/模型/NPU新验证。只暂存本轮文件并立即push，回执随后补；其他WIP全部保留。
 
 - 提交/发布回执：3b94df74（feat: unify content workspace architecture and document full interface states）已成功推送origin/main，仅59个本轮文件；Pages运行39355014413已成功。公开Demo HTTP200并引用index-BDlRHhm4.js，材料HTTP200且含10个架构页与新完整实拍路径。线上源已更新，视觉检查依据为本地IAB。补回最终文案对应的恢复页证据图，5174拍摄会话/临时服务已关闭，5173与8765服务和用户数据保留，viewport已reset；预览停#31。其他WIP未暂存。
+
+## 2026-10-20 · 从学习目标开始进入 Demo
+
+- 用户选C：新增模型推理分组的“学会图像输入预处理”及“新建任务→学习目标”，共用A1–A5完整旅程；允许本轮从既有开发中学习范围扩展到学习起步，不再受早期“仅问题02”临时范围限制。
+- 新增LearningJourney/样式、learning-data、useLearningJourney、learning-content-catalog；扩展App、任务创建与旧会话补入、公共内容元数据及初始化、按任务切换自由整理状态。六对象沿用三栏、按需右区、公共工具、总览与历史；没有另设学习中心。
+- 草案先确认／取消，环境跳过与直接排序共用预览；字幕提问保留片段；每次练习／输入检查以ID关联，当前参数或目标不匹配时显示旧条件。保存需理解、当前尝试通过及对应检查；完成后收起、刷新可恢复，进入开发需用户选择且带来源学习参考。
+- 主代理在5174实际核对双入口及完整流程、失败与重复轴、相同参数新尝试需新检查、任务隔离、保存恢复、历史定位、代码复制、开发交接、824px并排/360px上下/390和短视口。11幅实拍及限制见evidence/20261020-learning-goal/README.md；原5173和用户数据保留。最终完整刷新无新增error/warn。
+- `node --check`、`npm run build:pages`及diff检查通过；产物index-CMMLvYrY.js/index-JyE7HLDv.css，611.78kB主包提示保留。材料第63页同步范围，63页序列/#7/#31不变。无自动测试或真实AI/Python/模型/NPU新验证，任意课程生成和学习效果未验证。功能与材料检查后仅提交本轮文件立即push，发布回执后补。

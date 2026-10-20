@@ -29,8 +29,8 @@ const GENERIC_META = Object.freeze({
   records: { title: "任务记录", type: "result", category: "reference", groupId: "content", summary: "本任务中已保留的记录与上下文。" },
 });
 
-export function getContentGroups(taskId) {
-  const groups = isImageTask(taskId) ? IMAGE_GROUPS : isMainTask(taskId) ? ADD_CUSTOM_GROUPS : GENERIC_GROUPS;
+export function getContentGroups(taskId, learning = false) {
+  const groups = learning || taskId === "学会图像输入预处理" ? [{ id: "learning", title: "学习目标与实践", description: "目标、路径、理解、跟练及对应的完成记录。" }] : isImageTask(taskId) ? IMAGE_GROUPS : isMainTask(taskId) ? ADD_CUSTOM_GROUPS : GENERIC_GROUPS;
   return groups.map((group) => ({ ...group }));
 }
 
@@ -48,7 +48,7 @@ export function buildContentNavigation({
   groupNames = {},
   itemOverrides = {},
 } = {}) {
-  const groups = getContentGroups(taskId);
+  const groups = getContentGroups(taskId, materials.some(item => item.id?.startsWith("learning-")));
   const metadata = isImageTask(taskId) ? IMAGE_META : isMainTask(taskId) ? MAIN_META : GENERIC_META;
   const groupById = new Map(groups.map((group) => [group.id, group]));
   const fallbackGroup = groups.find((group) => /相关代码与资料/.test(group.title || group.label || ""))
