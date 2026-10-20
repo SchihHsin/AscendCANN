@@ -494,11 +494,6 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .task-rel-page .agent-map-node.governance{border-color:rgba(62,143,117,.4);background:linear-gradient(135deg,#f8fcfa,#e9f4ef)}
 .task-rel-page .agent-env-band{top:70.8%;height:5.8%;left:54.6%;width:28.7%;padding:.25vh .42vw;gap:.35vw}
 .task-rel-page .agent-env-band b,.task-rel-page .agent-env-band span{font-size:var(--fs-xs)}
-.task-rel-page .task-research-lens{display:grid;grid-template-columns:1.18fr repeat(4,minmax(0,1fr)) 1.45fr;align-items:center;gap:.34vw;min-height:3.7vh;padding:.36vh .55vw;border:1px solid rgba(91,101,122,.14);border-radius:9px;background:rgba(255,255,255,.53);color:var(--ink-2)}
-.task-rel-page .task-research-lens b{font-size:var(--fs-xs);color:var(--ink);white-space:nowrap}
-.task-rel-page .task-research-lens span{position:relative;padding-left:.45vw;border-left:1px solid rgba(91,91,214,.24);font-size:var(--fs-xs);line-height:1.1;white-space:nowrap}
-.task-rel-page .task-research-lens span strong{color:var(--accent);font-weight:800}
-.task-rel-page .task-research-lens small{font-size:var(--fs-xs);line-height:1.1;color:var(--ink-3);text-align:right;white-space:nowrap}
 .task-rel-page .task-map-connectors{position:absolute;z-index:2;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .task-rel-page .task-map-connectors path{fill:none;stroke:#727b90;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .task-rel-page .task-map-connectors path.flow{stroke:var(--task-violet);stroke-width:2.35}
@@ -536,8 +531,8 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 .task-rel-page .task-learning-loop span{font-size:var(--fs-xs)}
 .task-rel-page .task-learning-loop i{font-style:normal;color:#555b70;font-weight:800}
 .task-rel-page .task-learning-loop small{margin-left:.35vw;color:var(--ink-3);font-size:var(--fs-xs)}
-@media(max-width:1100px){.task-rel-page .agent-map-stage b{font-size:9px}.task-rel-page .agent-map-label{width:8.1%}.task-rel-page .agent-env-band span{font-size:9px}.task-rel-page .task-research-lens{grid-template-columns:1fr repeat(4,minmax(0,1fr));}.task-rel-page .task-research-lens small{display:none}}
-@media(max-height:760px){.task-rel-page .agent-mechanism-map{height:52vh}.task-rel-page .agent-map-node{padding:.2vh .28vw}.task-rel-page .agent-map-node p{line-height:1.02}.task-rel-page .agent-env-band{top:70%;height:5.4%}.task-rel-page .task-research-lens{min-height:3.2vh}.task-rel-page .task-learning-loop{min-height:3vh}}
+@media(max-width:1100px){.task-rel-page .agent-map-stage b{font-size:9px}.task-rel-page .agent-map-label{width:8.1%}.task-rel-page .agent-env-band span{font-size:9px}}
+@media(max-height:760px){.task-rel-page .agent-mechanism-map{height:52vh}.task-rel-page .agent-map-node{padding:.2vh .28vw}.task-rel-page .agent-map-node p{line-height:1.02}.task-rel-page .agent-env-band{top:70%;height:5.4%}.task-rel-page .task-learning-loop{min-height:3vh}}
 </style>
 </head>
 <body>
@@ -563,7 +558,6 @@ body.overview .s-gray .slide-inner{display:flex;flex-direction:column;padding:5v
 <section class="slide s-gray task-rel-page" data-title="任务关系总览"><div class="slide-inner">
   <header class="head"><div class="head-l"><div class="subttl">从一个开发任务出发，看知识、能力、控制与证据怎样接入同一条运行链</div><div class="ttl">Agent 任务是六阶段主流程，开发者控制与三类循环共同构成闭环</div></div></header>
   <main class="body-area task-flow-body" aria-label="Agent 开发任务六阶段流程与三层泳道图">
-    <div class="task-research-lens" aria-label="AI 可用性研究的四个观察维度"><b>AI 可用性研究观察</b><span><strong>获取状态</strong>：找到权威来源</span><span><strong>任务支撑</strong>：步骤能否执行</span><span><strong>回答质量</strong>：代码是否正确完整</span><span><strong>获取成本</strong>：时间与往返</span><small>样本：Add · ONNX · 性能分析</small></div>
     <div class="agent-mechanism-map">
       <div class="agent-map-stage-rail" aria-label="六个统一运行环节"><div class="agent-map-stage"><small>01</small><b>CONTEXT · ASSEMBLE<em>上下文装配</em></b></div><div class="agent-map-stage"><small>02</small><b>DECIDE · PLAN<em>判断与规划</em></b></div><div class="agent-map-stage"><small>03</small><b>GATE · ROUTE<em>校验与路由</em></b></div><div class="agent-map-stage"><small>04</small><b>ACTION · EXECUTE<em>调用与执行</em></b></div><div class="agent-map-stage"><small>05</small><b>OBSERVE · VERIFY<em>观察与验证</em></b></div><div class="agent-map-stage"><small>06</small><b>REPLAN · CONTINUE<em>重新规划并继续</em></b></div></div>
       <div class="agent-map-grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
