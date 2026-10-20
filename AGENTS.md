@@ -5246,3 +5246,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 检查：63页、共用章footer为0、旧实拍说明文本命中为0，63导航和31图片放大入口保留；实际查看状态页和架构页，图片完整加载。三个MJS语法、构建与diff检查通过，未新增/运行自动测试。Luna只读核对footer无功能/链接；主代理完成删减与浏览器检查。证据在learning-canvas-story/evidence/footer-cleanup-20261020。仅本轮文件提交立即push，其他WIP保留；回执后补。
 
 - 提交/发布回执：47685518已成功推送origin/main；Pages运行39355496826成功，公开材料HTTP200且共用章foot=0。仅8个本轮材料/交接/证据文件，Demo未改，其他WIP保持；本条回填检查后再推送。
+
+### 2026-10-20（附图框架节点改称任务内容）
+
+- 用户指定旧框架总图中央“当前内容”改为“任务内容”；只改该图的容器命名，不将表示当前选中对象的普通正文全局替换。附图对应9124334d旧第31页，当前63页已无该图，故从原SVG及完整Report PPT CSS/runtime提取独立interaction-framework-map.html供审阅，主材料与Demo未回退。图内desc与窄屏对应名称同步，foot沿前轮要求删除。
+- 来源在interaction-framework-map.md，说明原图窄栏切换为历史图示（现Demo上下排列）。Luna提取和改字，主代理实际浏览器核对中央为任务内容、旧词0、1页/0foot/导航1，保存完整PNG；HTML解析、2份内联JS语法通过。初次含中文的检查命令编码失败，改用纯ASCII提取后重查通过；不记失败命令为已检查。未新增或运行自动测试，无API/Host/Application或工程/模型/NPU事实改变。
+- 功能提交2a21ae49已成功推送origin/main，仅独立HTML、来源MD、完整证据PNG三个文件；随后补README/QA与本交接并推送。其他WIP保持，Pages结果待回执。
+- 发布回执：Pages运行39356075532已成功；公开独立页HTTP200，确认“任务内容”存在且“当前内容”为0。功能提交whitespace检查通过；本次补交接与材料索引后立即推送，用户可直接查看独立总图。
