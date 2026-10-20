@@ -749,6 +749,6 @@ final result: blocked
 
 **验证**
 - `npm run build:pages`、`git diff --check`通过；静态产物重建。
-- 本次结论仅覆盖文件夹卡片局部，不代表历史记录中未复核流程已全部完成。
+- 本次结论仅覆盖文件夹卡片局部，不代表历史记录中未复核流程已全部完成。 功能提交 `e91b523a` 已推送 `origin/main`。
 
 final result: passed

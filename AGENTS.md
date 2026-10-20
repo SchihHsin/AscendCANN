@@ -5458,7 +5458,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户认为输入框仍偏下，要求再向上下居中。单独上移会遮住较多卡片，因此同步上移提示卡组，保留卡片与输入区的叠放关系；桌面提示卡组 `top:42%`、输入区距底 `37%`，短屏调整为卡组 `top:30%`，平板断点同步靠上。移动端输入框仍保持底部布局。
 - 变更 `ascend-studio/src/new-task-home.css` 并重建 `ascstudio/` Pages 产物。来源仅为用户的布局反馈；不涉及任务流程/API/Host/Application 边界。`npm run build:pages` 与 `git diff --check`通过；本地 1280×720 画面已确认输入区中心更接近内容区中线且卡片仍露出约一半以上。未做线上截图与窄屏交互复核。
-- 待提交并立即推送；其他既有工作区变更保持未暂存、未清理。
+- 功能提交 `e91b523a` 已成功推送 `origin/main`；其他既有工作区变更保持未暂存、未清理。
 
 
 ### 2026-10-21（新建首页文件夹卡片按附件还原）
@@ -5466,4 +5466,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户再次指定文件夹样式，最新参考保存在 `ascend-studio/evidence/20261021-folder-card-reference/source-reference.png`。关键轮廓为彩色背板外顶边不外凸、白色前层在右侧约70%–86%处平滑下移，之后保持低位直达右缘；不得再做成小碗状凹口后向上收回。
 - Luna（`gpt-6-luna`，low）调整 `ascend-studio/src/new-task-home.css`：14px彩色背板、连续的白色肩形内沿、纯白前层消除接缝、无底色深灰线性图标；卡片以flex顶部排列，修正原生button内容居中导致标题被输入区遮挡的问题。保留前轮已暂存的输入区居中、紧凑字号、点阵与位置调整；重建 `ascstudio/`。
 - 来源为用户附件与本地实际画面，不涉及研究证据、页面序列或API/Host/Application边界。内置浏览器1280×720与568×900（full-page）对照，首次19px背板过厚后收至14px；最终肩形、默认标题、悬浮上移、点击填入均核对，控制台无error/warn。`npm run build:pages`、`git diff --check`通过；本轮卡片局部QA为passed。
-- 提交/推送待回填；既有无关脏文件不暂存、不清理。
+- 功能提交 `e91b523a` 已成功推送 `origin/main`；既有无关脏文件不暂存、不清理。

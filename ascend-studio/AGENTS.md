@@ -811,4 +811,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 最新参考：`evidence/20261021-folder-card-reference/source-reference.png`。用户要彩色背板与白色前层的文件夹层次：白色上边缘在右侧约70%开始下移，86%后保持低位至右缘；不是向外凸页签，也不是下凹后再上收的小缺口。
 - `src/new-task-home.css` 使用14px背板与纯白前层，去掉图标有色底，保持深灰线性图标与淡色装饰。卡片改为flex从顶内边距排列，避免原生button内容自动垂直居中导致标题被输入区遮挡。紧凑尺寸、已调输入区位置及既有交互保留。
-- Luna low完成局部修改；主agent以1280×720、568×900 full-page实际画面对照，检查默认/悬浮与点击填入、控制台；构建与差异检查通过。本轮仅文件夹卡片的局部QA passed。
+- Luna low完成局部修改；主agent以1280×720、568×900 full-page实际画面对照，检查默认/悬浮与点击填入、控制台；构建与差异检查通过。本轮仅文件夹卡片的局部QA passed。 功能提交 `e91b523a` 已推送 `origin/main`。
