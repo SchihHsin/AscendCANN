@@ -746,3 +746,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 验证：5174 本地预览确认默认左右布局及层级节点；`node --check` 的三个 hook 检查和 `npm run build:pages` 通过，`git diff --check` 通过。页面仍有 Vite 主包大于 500kB 提示。未声称真实 Python、模型、NPU 或学习效果验证。
 - 用户偏好简单子任务使用 Luna（`gpt-6-luna`，low），不使用 `gpt-6.1-sol` Ultra。已创建 Agent 不能原地切模型；当前没有运行中的子 Agent。此次文档子任务由 Luna 完成；`learning_ui` 已中断，`learning_visual_gap` 当前为 pending_init、尚未执行，已发中断请求。后续新建/接续子任务使用 Luna。
 - 提交与发布回执：`72ae0ffc`（`feat: add learning hierarchy canvas layouts`）已推送 `origin/main`；Pages 运行 `39398520418` 的 build/deploy 均成功，公开 `/AscendCANN/ascstudio/` 已引用 `index-BB2tQ-zb.js` 与 `index-DwAV_whc.css`。本条仅涉及学习画布任务和 Luna 使用偏好，不纳入其他工作区改动。
+
+
+## 2026-10-20 · 新建任务首页与学习/开发切换
+
+- 用户选定保留现有 Ascend Studio 壳的极简首页，并指定模式 Tab 选中态为黑底白字。左侧项目/任务列表保留；点击“新建任务”在右侧打开首页；原任务工作区仍是首次进入的默认页面。
+- 学习与开发共享单一目标框；模式切换会更新提示、CTA，保留当前输入。学习任务进入模型推理项目，开发任务放入当前项目，任务名来自目标文本。成功后切入新任务；侧栏选择已有任务返回原工作区。不要恢复旧多字段弹窗。
+- 浏览器 1280×720检查入口、模式、文案、CTA、计数、侧栏收起/恢复和已有任务回返；实际提交未执行，避免产生持久测试任务。`npm run build:pages`、相关Hook `node --check`、`git diff --check`通过。主JS 658.05kB的非阻塞体积提醒保留。视觉依据是用户图稿及本地Demo观察；没有真实AI/Python/模型/NPU或学习效果验证，API/Host/Application边界不变。
+- 提交/推送回执随后补记；只提交本任务源码、Pages产物、交互/QA/README与根AGENTS，其他预存WIP保留。
