@@ -5292,3 +5292,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：相关JS语法、Vite `build:pages`、材料`build.mjs`及diff检查通过，最终index-CMMLvYrY.js/index-JyE7HLDv.css；611.78kB既有主包体积提示保留。无新增自动测试。只暂存本任务源码、产物、材料、QA与截图，检查后立即commit/push；具体发布回执随后补记。报告WIP、DS_Store和未知图稿均保留未纳入。
 
 - 提交／发布回执：`7a1f757f`（feat: add goal-driven learning journey to Ascend Studio）已成功推送origin/main，仅37个本轮文件；Pages运行`39382276899`已success。公开HTML引用index-CMMLvYrY.js/index-JyE7HLDv.css，已确认发布源更新。线上IAB导航／读取超时，视觉与完整交互验收依据为本地5174实拍，不把部署成功当作线上完整操作通过。临时视口已恢复后转线上，原QA页已转至公开Demo；应用内打开线上链接返回queued。自启5174服务已停止，用户5173/8765保留。后续实践建议关闭和原AddCustom 17/33/32回看也已操作；当前用户可从学习直达链接或新建目标评审。此回执随两AGENTS与证据说明另行检查提交推送，其余WIP保持。
+
+### 2026-10-20（学习起步视觉差距讨论，未实施）
+
+- 用户明确学习Demo不如learning-canvas-story原图，原有可视化workflow和图不应退化成普通卡片平铺；本轮只讨论修改方案。主代理实际打开该HTML引用的A1–A5五张本地原图，核对HTML引用、LearningJourney/App及样式；子代理只读复核。线上IAB读取／截图超时，本轮无新实际流程截图，不把旧QA当作当前完整审计。
+- 原图中A1目标与图像／张量预览、A2横向节点workflow／拟跳过／就地调整、A3讲解与大幅图解的字幕关联、A4图解代码与反馈的同屏跟练、A5成果与代码／检查关系，上一轮未充分迁移。当前路径为纵向列表，练习默认只有参数代码与文字结果，canvas路径摘要和总览学习预览也不足；已有六对象及业务状态不等于图形体验已完成。
+- 原content-management-design.md新增§21作为讨论入口，候选A原稿自由画布默认、B可操作workflow＋按阶段自动编排＋按需自由整理（推荐，待讨论）、C详情页补图。B可复用三栏、公共壳、对象ID、关联、历史和保存，学习阶段按需扩大右区仍是候选；不恢复旧学习中心／头像／整屏紫色等已否定风格。推荐与比例均未获用户选择，不能直接实施或记录成定稿。
+- 仅原讨论材料及两AGENTS变更，源码／Pages／汇报HTML与页序/hash不改；无构建或新增测试，无真实AI/Python/模型/NPU或学习效果新证据，API/Host/Application边界不变。Product Design preflight无已保存上下文，按用户当前原图和仓内设计约束讨论；未调用ImageGen。diff检查后仅提交这3份文档立即push，其他WIP保持，结果以工具回执为准。

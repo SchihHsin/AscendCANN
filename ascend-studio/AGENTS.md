@@ -683,3 +683,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - `node --check`、`npm run build:pages`及diff检查通过；产物index-CMMLvYrY.js/index-JyE7HLDv.css，611.78kB主包提示保留。材料第63页同步范围，63页序列/#7/#31不变。无自动测试或真实AI/Python/模型/NPU新验证，任意课程生成和学习效果未验证。功能与材料检查后仅提交本轮文件立即push，发布回执后补。
 
 - 发布回执：7a1f757f已push origin/main；Pages运行39382276899成功，公开HTML资源已更新为index-CMMLvYrY.js/index-JyE7HLDv.css。线上IAB读取超时，本轮完整操作证据来自本地5174；不声称线上全流程另行复测。已恢复临时视口，自启5174停止，用户5173/8765和既有记录保留。入口ascstudio/?task=learning或新建任务→学习目标；关闭后续建议保成果及AddCustom原17/33/32回归已操作。
+
+## 2026-10-20 · 用户要求恢复学习原稿中的workflow与图（仅讨论）
+
+- 用户认为学习起步Demo比learning-canvas-story A1–A5原稿普通，workflow与图形关系退化成卡片平铺；要求先讨论。本轮不实现，不把推荐记作用户已选。
+- 主代理已实际打开页面所引用A1–A5原图；源码与子代理只读复核确认路径为纵向列表，讲解为字幕条＋下方图，练习默认缺少图解；canvas路径只留一句摘要，总览无learning预览。现有业务状态／ID／历史可以复用，功能补齐不能替代对原视觉交互的迁移。
+- 候选A原稿自由画布默认，B可操作workflow＋按阶段自动编排＋按需自由整理（推荐待讨论），C现有详情页补图。B重点为目标与学习对象可视、路径节点可操作、讲解／图解同屏关联、跟练图解代码结果联动、完成成果证据关系；路径等阶段可讨论扩大内容区，具体比例尚未批准。
+- 正式讨论记录在原content-management-design.md§21。线上IAB读取／截图超时，本轮没有新流程实拍或完整审计，不用旧QA冒充当前证据。未改源码／Pages／HTML页序与API/Host/Application边界，无构建、新测试或真实AI/NPU证据；只更新讨论和两AGENTS，检查后立即提交推送。
