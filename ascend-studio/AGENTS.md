@@ -753,4 +753,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户选定保留现有 Ascend Studio 壳的极简首页，并指定模式 Tab 选中态为黑底白字。左侧项目/任务列表保留；点击“新建任务”在右侧打开首页；原任务工作区仍是首次进入的默认页面。
 - 学习与开发共享单一目标框；模式切换会更新提示、CTA，保留当前输入。学习任务进入模型推理项目，开发任务放入当前项目，任务名来自目标文本。成功后切入新任务；侧栏选择已有任务返回原工作区。不要恢复旧多字段弹窗。
 - 浏览器 1280×720检查入口、模式、文案、CTA、计数、侧栏收起/恢复和已有任务回返；实际提交未执行，避免产生持久测试任务。`npm run build:pages`、相关Hook `node --check`、`git diff --check`通过。主JS 658.05kB的非阻塞体积提醒保留。视觉依据是用户图稿及本地Demo观察；没有真实AI/Python/模型/NPU或学习效果验证，API/Host/Application边界不变。
-- 提交/推送回执随后补记；只提交本任务源码、Pages产物、交互/QA/README与根AGENTS，其他预存WIP保留。
+- `affc51dd`（`feat: add learning and development task home`）已成功推送 `origin/main`；只提交本任务源码、Pages产物、交互/QA/README与根/Studio AGENTS，其他预存WIP保留。`npm run build:pages` 成功；交接修订随后单独提交并推送。
