@@ -1,0 +1,25 @@
+Use case: ui-mockup.
+Asset type: One refined, implementation-ready desktop screenshot for Ascend Studio. This is ONE design, not comparison boards or multiple screens. Wide desktop image around 1792x1024.
+Primary request: Refine the attached selected design A to faithfully embody the agreed interaction: a learning STAGE NODE expands IN PLACE into its next level and learning objects on a FREE CANVAS. Default keeps a little surrounding learning path visible, with a secondary further-focus action. Avoid excessive fixed frameworks. Show an expanded practice stage with real educational graphics and directly related editable code.
+Input images: Image 1 is the SELECTED A visual reference: preserve its Ascend Studio red brand, existing project/chat/canvas shell, restrained pale blue-violet, warm white, neutral selected task, dotted free canvas, black main action. Image 2 is an educational reference for RGB photo/channel separation and tensor layout; use the visual richness, DO NOT copy its old sidebar, learning center, avatars, or purple branding.
+
+Layout: full-screen desktop app. Header 56px. Existing left project navigation about 13% width; chat about 22%; canvas about 65%. Left: Ascend Studio logo; 新建任务, 自动化任务, 能力库; project CANN 自定义算子 and 模型推理; selected task 学会图像输入预处理. Chat has task title, two short conversational turns, bottom composer; AI text lies directly on neutral background without avatar or bordered response card. User: “展开跟练这一步，保留一点周边路径。” Assistant: “已在原位置展开子步骤和图解。可以直接调参数，也可以进一步聚焦。” No timestamps.
+
+Canvas: small existing shared header 我的学习路径 with 全部内容 and close; then a spacious dotted infinite canvas. Title 学会图像输入预处理 with tiny 学习目标 / 当前阶段 metadata. Preserve small surrounding stage summaries at left/right: left 理解模型输入 with 完成理解 (personal marker only), a gray 环境准备 已跳过 behind it; center stage 02 跟练维度转换 is expanded at its SAME graph location; right small 03 核对输入 待核对. Thin real directional connections show the path edges entering/exiting the expanded parent. Do not draw a row of ordinary equal cards plus a separate article below it.
+
+Expanded stage: large OPEN area with only a very subtle lavender translucent grouping wash and a thin short title accent, NOT a thick giant container outline, no nested panel grids or permanent columns. Header “02  跟练维度转换”, small “把 HWC 转成 NCHW”, nearby lightweight actions 收起 and 聚焦当前. Under header reveal its CHILD ACTIVITIES in a small horizontal local sequence: “2.1 调整通道顺序” → “2.2 增加 batch” → “2.3 查看形状”. This must clearly read as levels under parent 02, not three new peer stages. Select 2.2 with subtle lavender, not all saturated colors. Stage expansion brings its existing associated content into view; no copies scattered across canvas.
+
+Within this open stage, place 2-3 independently movable, lightly framed learning objects with a natural slightly staggered spatial rhythm:
+A large educational RGB/photo and tensor object lower-left, with a real detailed cat photograph, R/G/B filtered small photos, transparent clean layered tensor graphic. Readable caption path: HWC [224,224,3] → CHW [3,224,224] → NCHW [1,3,224,224]. Arrows accurately express transpose then adding a sample axis. It must be a substantial rich diagram, not empty placeholder cards, unrelated illustration, or tiny icon.
+To the diagram's right and slightly lower a readable code object titled preprocess.py, Python, copy icon. Exact code:
+import numpy as np
+image = np.zeros((224, 224, 3))
+transformed = image.transpose(2, 0, 1)
+input_data = transformed[None, ...]
+print(input_data.shape)
+Highlight input_data = transformed[None, ...] softly; one thin semantic connector from selected 增加 batch to that line and the N=1 annotation in tensor diagram.
+Small inline controls attached to code: “通道顺序” compact values 2·C / 0·H / 1·W; checkbox checked “增加 batch · N=1”; compact preview “当前形状 [1,3,224,224] · 待检查”. Black button 运行练习检查. Do not show a passed test or actual model execution receipt. Any output is explicitly 预览 / 待检查.
+A contextual floating move/pin toolbar appears ONLY for the selected diagram object; no dozens of permanent toolbars.
+
+Canvas bottom right: quiet minimap with surrounding stage silhouettes and viewport rectangle; compact 100%, plus/minus, 适应路径. The surrounding path occupies visible margins, not dominant panels. Show a meaningful overview/learning context with much more screen area for the expanded stage than neighbors. User can later 聚焦当前; screenshot is the DEFAULT CONTEXTUAL expansion, not full focus. No fixed stage sidebar, no tabs of modes, no permanent three-column article inside canvas.
+Visual quality: crisp sophisticated realistic UI, legible Simplified Chinese, refined negative space, restrained borders and shadows, small Tabler-like line icons, no decorative blobs. Real cat photograph and accurate rich tensor illustration. No enormous rounded UI frames; freedom comes from open spatial placement and a hierarchy that expands in place. Preserve app brand shell from image1. No old 学习中心, no avatars, no fictitious NPU success, no pasted commentary outside the interface.

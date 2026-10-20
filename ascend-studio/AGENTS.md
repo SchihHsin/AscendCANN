@@ -728,3 +728,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户比较“在原画布长出新的内容”和“放大被展开节点”。主代理推荐学习阶段原位展开所属子活动/图解/练习，并按需聚焦视角；明确放大是视野变化、展开是显露层级，避免放大文字或巨型固定面板。收起恢复摘要与现场；独立问题/分支/可复用产物才作为外部新节点，关联来源且不重复创建。
 - 原 `content-management-design.md` 新增 §23.1，细化此前“附近展开对象”提案。用户已选 A，但这项具体机制仍在讨论，本轮不实施 Demo；未修改源码/Pages、正式材料页序/hash或 API/Host/Application 边界。子代理只读复核语义/风险，无新实拍或真实执行/效果证据。
 - 仅本轮讨论及根/Studio 两份 AGENTS，经 diff 检查后提交并立即推送 origin/main；无构建或新增/运行测试，其他 WIP 保留。交互继续由用户讨论定稿，提交/推送结果见本轮 Git 记录。
+
+
+### 2026-10-20（新图未通过；先讨论→出图→确认→Demo）
+
+- 用户要求据讨论重新 ImageGen 并随后改Demo，确认默认留周边路径/可进一步聚焦。内置ImageGen生成一图后，用户指出图中 2.1/2.2/2.3 仍是固定工具行，要求父子节点在路径直接可见；明确“先别做Demo”，并确定后续顺序：讨论清楚方案→出图→用户确认→实施。该新流程优先，未确认图前不得恢复实现。
+- 新生成图及完整提示词归档于 `ascend-studio/design-references/learning-hierarchy-review-20261020/`，文件名明确未通过；不是新定稿。参考已选A和原稿A3，生成图不代表实际UI/运行/效果证据。原content-management-design新增§24记录被否定原因和流程，不覆盖历史。
+- 实现子代理已立即停止，只读核实本轮无App/LearningJourney/CSS/Pages改动，也未创建层级画布新组件；早前LearningJourney属于已提交7a1f757f，不应回退。原Demo/用户任务和参数保持。无构建/新增或运行测试，无真实AI/Python/模型/NPU验证；API/Host/Application及正式材料页序/hash不变。
+- 用户新增路径位置议题：上方或左侧尚待讨论。先比较自由画布中两种初始摆放，不默认新增常驻侧栏；路径应呈现父子层级，节点内容按需展开。主代理已回到讨论，不继续ImageGen或实现。
+- 仅本轮图稿/提示词/README、讨论材料及根/Studio两份AGENTS经diff检查后提交立即推送origin/main，其他WIP保留。提交结果以本轮Git回执为准。
