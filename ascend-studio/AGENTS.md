@@ -768,3 +768,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 用户选择的新建任务首页截图继续作为布局参考，要求在此基础加入点阵。使用透明 PNG 纹理重复铺底；指针附近通过遮罩显示一层更亮的局部纹理并做数像素位移，离开后渐隐。触摸输入不触发跟随，`prefers-reduced-motion` 下关闭相关过渡。维持左侧项目/任务栏、学习/开发黑底白字选中态、输入框遮挡提示卡及 hover/focus 上浮。代码片段、截图与文件附件均能加入新任务上下文。纹理位于 `public/assets/new-task-dot-matrix.png`，用户参考图在 `evidence/20261020-new-task-home-dot-matrix/source-reference.png`，构建副本在根仓 `ascstudio/`。
 
 构建 `npm run build:pages` 成功；`node --check src/useWorkbenchState.js` 与 `git diff --check` 通过。主 JS 664.24kB，Vite 给出既有体积提醒。当前环境中的浏览器先前拒绝打开本地预览；本轮没有取得实现截图、比较相同 viewport，或实测鼠标/附件交互。QA 按 Product Design 流程标记 `final result: blocked`，不可宣称完成视觉验收。无真实 AI、工程执行、Python、模型/NPU 或学习效果验证。
+
+发布回执：`54b62463` 已推送 `origin/main`；Pages run `39418602567` build/deploy 成功。线上 HTML 已切换到本次 JS/CSS，点阵图片与 CSS 返回 HTTP 200。未完成浏览器截图级 QA，故 design QA 仍为 blocked。

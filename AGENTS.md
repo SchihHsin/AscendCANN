@@ -5422,4 +5422,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增视觉资源 `ascend-studio/public/assets/new-task-dot-matrix.png` 及参考截图 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/source-reference.png`；构建产物同步到 `ascstudio/`。源码变更在 `App.jsx`、`NewTaskHome.jsx`、`new-task-home.css`、`useWorkbenchState.js`。
 - 来源与边界：用户截图为布局/视觉来源；新点阵纹理为 ImageGen 生成资源。构建与源码检查为本地证据；本轮无法通过浏览器捕获实现截图，所以没有完成视觉对比或交互实测，`design-qa.md` 标为 blocked。不得把构建通过描述为视觉验收通过。无真实 AI、项目代码执行、Python、模型、NPU 或学习效果验证；未影响正式汇报页序/hash 或 API / Host / Application 边界。
 - 验证：`npm run build:pages` 成功；`node --check ascend-studio/src/useWorkbenchState.js` 与 `git diff --check` 通过。Vite 主 JS 664.24kB，沿用既有 >500kB 体积提醒。
-- 提交/推送回执将在源码推送后补录；只提交此首页功能、素材、静态产物和交接文档，其他预存 WIP 保持未暂存。
+- 提交/推送回执：`54b62463`（`feat: add dot matrix to new task home`）已推送 `origin/main`；Pages run `39418602567` build/deploy 成功。线上 HTML 已引用新 JS/CSS，点阵 PNG 与 CSS HTTP 200。只提交此首页功能、素材、静态产物和交接文档，其他预存 WIP 保持未暂存。

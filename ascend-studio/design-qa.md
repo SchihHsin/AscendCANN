@@ -650,5 +650,8 @@ GitHub Pages run `39411454562` 的 build/deploy 均成功；公开入口HTTP200�
 - [ ] 浏览器截图与同尺寸视觉比较。
 - [ ] 实际操作核心模式、卡片和附件入口。
 
+**Publish check**
+- Pages run `39418602567` 的 build/deploy 成功；线上首页引用本次新 JS/CSS，CSS 与点阵 PNG 返回 HTTP 200。该静态发布检查不能替代渲染截图与交互测试。
+
 **Final result**
 final result: blocked
