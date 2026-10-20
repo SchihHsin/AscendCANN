@@ -60,3 +60,13 @@
 ## 验证
 补充：发现模板在总览中会把可见缩略图误当当前阅读页，导致退出后页码不一致；仅在新补充材料中增加总览/恢复阶段保护，并显式同步目标页。复测点击第 5 页缩略图后，可见页面、hash 和计数均为 5。既有材料不改动。
 1280×720 应用内浏览器读取全部 16 页布局：未发现正文越界或与页眉/页脚重叠；本轮图片加载成功；控制台无 error/warn。截图抽查 #5、#8、#12，文字与图解完整。#12 刷新后 hash 与页码保持一致。图片点击后大图打开、正确加载原图并可关闭；概览为 3 列，16 页均进入导航。两段内联 JavaScript 编译通过，所有本地资源/链接存在，git diff --check 通过。未作移动端或多浏览器兼容性测试，未逐页保存 QA 截图。
+
+
+## 2026-10-20 配图补充与视频复核
+
+- 官方 Webinar 47:04 在 Firefox 中复核到真实访客列表与公司活动详情侧栏。该画面属于访客分析，未显示 Gmail 草稿审核，因此不用于证明 Email ICP 的输出界面。
+- 四张流程图解放在 `../diagrams/`：`06-email-review-flow.svg`、`10-gsc-observation-flow.svg`、`11-aeo-citation-evidence.svg`、`13-code-sync-handoff.svg`。它们是依据公开来源整理的证据图解，不是 Ploy 截图，也不表示本轮账号实测。
+- #6 Email ICP：依据 [官方 Ploybook](https://ploy.ai/ploybooks/email-icp-website-visitors) 的五阶段、Drafts only、无邮箱导出记录；实际 Gmail 队列界面未公开取得。
+- #10 GSC：依据 [官方 Ploybook](https://ploy.ai/ploybooks/gsc-keyword-optimization)，展示查询表现、页面修改、14–28 天后看 CTR / 排名；没有加入虚构数据或效果曲线。
+- #11 AEO：依据 [官方功能说明](https://ploy.ai/features/answer-engine-optimization)，表达完整回答、行内引用、来源页、品牌/竞品位置与每日历史；回答正文和引用标号仅为结构占位。
+- #13 Code Sync：依据 [CLI Local Development](https://docs.ploy.ai/cli/local-development) 与 [Workspaces & Sites](https://docs.ploy.ai/cli/workspaces-sites)，展示 GitHub main 导入、返回两端 commit、冲突在编辑器处理后重试；发布是后续独立动作。

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">GSC 修改与延迟观察流程</title><desc id="desc">依据 Ploy 官方 GSC Keyword Optimization 流程绘制的示意图，不是产品截图或实际效果数据。读取查询曝光、点击率与平均排名，发现内容缺口，修改页面字段，等待 14 到 28 天观察。</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F8F9FC"/><stop offset="1" stop-color="#EFF3F8"/></linearGradient>
+ <linearGradient id="window" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#E9E7F7"/><stop offset="1" stop-color="#E6F0F8"/></linearGradient>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#56617A" flood-opacity=".10"/></filter>
+ <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 10 5 0 10z" fill="#8A8FA7"/></marker>
+ <style>.t{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;fill:#20283A}.muted{fill:#737D91}.small{font-size:20px}.body{font-size:25px}.title{font-size:42px;font-weight:700}.step{font-size:19px;font-weight:700;letter-spacing:1px;fill:#817AA8}</style>
+</defs>
+<rect width="1600" height="900" rx="30" fill="url(#bg)"/><circle cx="1490" cy="90" r="190" fill="#E4E2F4" opacity=".28"/><circle cx="130" cy="850" r="180" fill="#DFEDF4" opacity=".25"/>
+<g class="t"><text x="64" y="68" font-size="18" font-weight="700" letter-spacing="2" fill="#7167A8">GSC KEYWORD OPTIMIZATION</text><text x="64" y="130" class="title">修改提交只是起点，效果要在后续窗口核对</text><text x="64" y="172" class="small muted">官方流程包含数据读取、内容修改与延迟观察；本图不呈现虚构的点击或排名变化</text><rect x="1278" y="42" width="258" height="42" rx="21" fill="#fff" stroke="#D9DEEA"/><text x="1407" y="69" text-anchor="middle" class="small muted">官方工作流图解 · 非产品截图</text></g>
+<!-- connectors -->
+<path d="M448 444 H514" stroke="#9A9EB2" stroke-width="4" fill="none" marker-end="url(#arrow)"/><path d="M924 444 H994" stroke="#9A9EB2" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<!-- GSC data card -->
+<g filter="url(#shadow)"><rect x="64" y="228" width="384" height="448" rx="22" fill="#fff" stroke="#DFE4ED" stroke-width="2"/></g>
+<g class="t"><text x="96" y="273" class="step">01 · READ GSC</text><text x="96" y="318" font-size="32" font-weight="700">发现内容机会</text><text x="96" y="357" class="small muted">按查询查看已有表现</text>
+<rect x="96" y="386" width="320" height="54" rx="12" fill="#F2F4F8"/><text x="116" y="420" font-size="18" font-weight="700" class="muted">QUERY</text><text x="232" y="420" font-size="18" font-weight="700" class="muted">曝光</text><text x="292" y="420" font-size="18" font-weight="700" class="muted">CTR</text><text x="352" y="420" font-size="18" font-weight="700" class="muted">排名</text>
+<rect x="96" y="452" width="320" height="66" rx="10" fill="#FBFCFD" stroke="#E5E9F0"/><text x="116" y="481" font-size="19">已有曝光的查询</text><text x="116" y="504" font-size="16" class="muted">标题 / Meta / 正文未覆盖</text><circle cx="245" cy="485" r="5" fill="#AAA6C7"/><circle cx="313" cy="485" r="5" fill="#AAA6C7"/><circle cx="378" cy="485" r="5" fill="#AAA6C7"/>
+<rect x="96" y="530" width="320" height="66" rx="10" fill="#FBFCFD" stroke="#E5E9F0"/><text x="116" y="559" font-size="19">按机会排序</text><text x="116" y="582" font-size="16" class="muted">不在图中填入假数据</text><circle cx="245" cy="563" r="5" fill="#AAA6C7"/><circle cx="313" cy="563" r="5" fill="#AAA6C7"/><circle cx="378" cy="563" r="5" fill="#AAA6C7"/>
+<rect x="96" y="620" width="198" height="34" rx="17" fill="#EEEAF8"/><text x="195" y="644" text-anchor="middle" font-size="17" font-weight="700" fill="#7167A8">Google Search Console</text></g>
+<!-- edits card -->
+<g filter="url(#shadow)"><rect x="514" y="228" width="410" height="448" rx="22" fill="url(#window)" stroke="#DADDEA" stroke-width="2"/></g>
+<g class="t"><text x="548" y="273" class="step">02 · EDIT PAGE</text><text x="548" y="318" font-size="32" font-weight="700">把缺口写回页面</text><text x="548" y="357" class="small muted">围绕目标查询自然调整，不做关键词堆砌</text>
+<rect x="548" y="390" width="342" height="58" rx="12" fill="#fff" stroke="#E0E3EC"/><circle cx="580" cy="419" r="13" fill="#E8E4F6"/><text x="580" y="426" text-anchor="middle" font-size="18" font-weight="700" fill="#7167A8">T</text><text x="610" y="427" class="body">Title / 标题</text><text x="856" y="426" text-anchor="end" class="small muted">修改</text>
+<rect x="548" y="462" width="342" height="58" rx="12" fill="#fff" stroke="#E0E3EC"/><circle cx="580" cy="491" r="13" fill="#E6F0F6"/><text x="580" y="498" text-anchor="middle" font-size="16" font-weight="700" fill="#507D95">M</text><text x="610" y="499" class="body">Meta / 摘要</text><text x="856" y="498" text-anchor="end" class="small muted">修改</text>
+<rect x="548" y="534" width="342" height="58" rx="12" fill="#fff" stroke="#E0E3EC"/><circle cx="580" cy="563" r="13" fill="#E8F2EE"/><text x="580" y="570" text-anchor="middle" font-size="16" font-weight="700" fill="#438B75">H</text><text x="610" y="571" class="body">Headings / 正文</text><text x="856" y="570" text-anchor="end" class="small muted">更新</text>
+<text x="548" y="635" class="small muted">修改提交后，记录本次页面版本</text></g>
+<!-- delayed observation panel -->
+<g filter="url(#shadow)"><rect x="994" y="228" width="542" height="448" rx="22" fill="#fff" stroke="#DFE4ED" stroke-width="2"/></g>
+<g class="t"><text x="1028" y="273" class="step">03 · MONITOR</text><text x="1028" y="318" font-size="32" font-weight="700">等待后续数据</text><text x="1028" y="357" class="small muted">不是提交即刻的成效回执</text>
+<rect x="1028" y="390" width="474" height="116" rx="17" fill="url(#window)"/><text x="1060" y="462" font-size="61" font-weight="700" fill="#645B9B">14–28</text><text x="1295" y="444" font-size="25" font-weight="700">天</text><text x="1295" y="476" font-size="18" class="muted">官方观察窗口</text><path d="M1060 484 H1472" stroke="#CDC9E4" stroke-width="2" stroke-dasharray="6 9"/>
+<circle cx="1074" cy="544" r="7" fill="#8A80B9"/><circle cx="1208" cy="544" r="7" fill="#8A80B9"/><circle cx="1342" cy="544" r="7" fill="#8A80B9"/><circle cx="1474" cy="544" r="7" fill="#8A80B9"/><path d="M1074 544 H1474" stroke="#BDB9D6" stroke-width="3" stroke-dasharray="3 10"/><text x="1074" y="578" text-anchor="middle" font-size="17" class="muted">提交</text><text x="1474" y="578" text-anchor="middle" font-size="17" class="muted">复核</text>
+<rect x="1028" y="606" width="222" height="44" rx="12" fill="#F1F4F8"/><text x="1046" y="635" class="small muted">观察：CTR 变化</text><rect x="1266" y="606" width="236" height="44" rx="12" fill="#F1F4F8"/><text x="1284" y="635" class="small muted">观察：平均排名变化</text></g>
+<!-- evidence boundary -->
+<rect x="64" y="720" width="1472" height="88" rx="18" fill="#F0EFF8" stroke="#E1DEEF"/><circle cx="103" cy="764" r="11" fill="#877BB6"/><path d="M103 748v14m0 8v1" stroke="#fff" stroke-width="3" stroke-linecap="round"/><g class="t"><text x="132" y="757" class="body" font-weight="700">观察到变化 ≠ 证明是这次修改单独造成</text><text x="132" y="787" class="small muted">本报告没有拿到真实 GSC 修改前后数据；这里只表达官方流程的时间跨度与核查指标。</text><text x="1504" y="775" text-anchor="end" class="small muted">来源：GSC Keyword Optimization</text></g>
+</svg>
