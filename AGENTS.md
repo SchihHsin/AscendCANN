@@ -5438,3 +5438,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈点阵仍不可见、背景应为浅灰而非白色、Tab 颜色不符，并要求按新附件调整。该附件与既有 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/source-reference.png` 哈希一致。最新参考图覆盖此前黑底白字选中态：任务类型 Tab 使用浅灰底轨，选中项白底、深色字和轻阴影。
 - `ascend-studio/src/new-task-home.css` 设浅灰首页底色 `#f6f6f5`，以 CSS radial-gradient 提供稳定可见的点阵，并保留指针位置局部加深；学习/开发 Tab 配色与截图一致。文件夹色带页签由圆角胶囊改为相连的非对称斜升、短平台、斜落轮廓。`NewTaskHome.jsx` 移除旧点阵纹理 URL，移除无用 PNG 资源；`ascstudio/` 已重建。
 - `npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check`通过，静态构建产物包含 CSS 点阵、浅灰底、白底选中态和新页签 polygon。浏览器策略拒绝本机预览访问；没有通过其他浏览器、Playwright、CDP、CLI 或间接方式绕过。截图级视觉 QA 未完成，`ascend-studio/design-qa.md` 保持 `final result: blocked`。 `13474f31`（`fix: match new task home reference styling`）已推送 `origin/main`；GitHub Pages run `39421417869` build/deploy 成功。
+
+
+### 2026-10-20（Ascend Studio 文件夹顶部形状方向纠正）
+
+- 用户指出文件夹形状应为第一张对比图：彩色外顶边没有向外凸起，而是内部白色内容内沿向下凹入。前两轮将其误解成彩色外凸页签；本轮已移除外凸形状，改为彩带下缘靠右处向卡片内部平滑下凹，保持彩色外边界原位。对比附件存于 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/folder-shape-reference.png` 与 `folder-shape-current-before.png`。
+- 改动位于 `ascend-studio/src/new-task-home.css`，Pages 构建产物重建。`npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check`通过；静态产物确认新增曲线位于色带内沿，不超出卡片顶部。Vite >500kB 提示仍存在。
+- 当前内置浏览器 URL 策略拒绝访问本机预览，因此未完成实现截图验证；不尝试绕过。`ascend-studio/design-qa.md` 保持 `final result: blocked`。

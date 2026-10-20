@@ -690,3 +690,19 @@ final result: blocked
 - 待在用户可用的浏览器刷新 `https://schihhsin.github.io/AscendCANN/ascstudio/`，确认浅灰底、点阵密度/对比、Tab 选中态、文件夹轮廓、卡片遮挡与 hover。
 
 final result: blocked
+
+
+## 2026-10-20 · 文件夹顶边方向纠正（白色内沿凹入）
+
+**用户澄清与改动**
+- 用户指出前两轮把形状方向做反：彩色外顶边没有向外凸起，实际应由内部白色内容区向下退让，在右上形成浅凹入。对比图已存为 `evidence/20261020-new-task-home-dot-matrix/folder-shape-reference.png`（目标）和 `folder-shape-current-before.png`（本次修改前）。
+- 移除凸出顶边的彩色页签；保留卡片原顶边彩带，在靠右位置让彩带下沿通过平滑曲线向卡片内部变厚，呈现白色内沿凹入效果。
+
+**验证**
+- `npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check` 通过；静态构建产物确认伪元素位于彩带下沿（`top: 6px`），使用向下浅弧曲线；Vite 主 JS 仍有 >500kB 体积提示。
+- 未完成修改后浏览器截图验收：当前浏览器 URL 策略此前拒绝本机预览，不能改用其他通道绕过。
+
+**待验收**
+- 发布后需要在可用浏览器观察彩色外沿是否保持、右上白色内沿是否形成细小凹入，以及三色卡片的比例是否一致。
+
+final result: blocked

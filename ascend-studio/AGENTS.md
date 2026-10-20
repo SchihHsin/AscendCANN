@@ -786,3 +786,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - `src/new-task-home.css` 将首页底色设为 `#f6f6f5`；点阵改用 CSS `radial-gradient` 固定网格及指针附近更深的遮罩层，不再依赖不易察觉的透明 PNG；模式 Tab 色彩按参考图重设。文件夹顶边采用连接的非对称斜坡页签，源码位于同一 CSS 文件；`NewTaskHome.jsx` 移除旧图片变量，废弃 PNG 纹理移除。
 - `npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check`通过；构建静态检查确认新 CSS 和 SVG/PNG 旧纹理移除；Vite 主 JS 仍提示 >500kB。
 - 内置浏览器拒绝读取本机预览，URL 策略未授权；遵守拒绝，不通过其他浏览器、Playwright、CDP 或命令行绕过。修改后视觉 QA 仍 `blocked`，不可写成已通过。待线上发布后由可用浏览器确认底色、点阵、Tab、文件夹页签及 hover。 `13474f31`（`fix: match new task home reference styling`）已推送 `origin/main`；GitHub Pages run `39421417869` build/deploy 成功。
+
+
+### 2026-10-20（修正文件夹顶边方向）
+
+- 用户澄清目标形状不是彩色顶边向外凸起，而是白色内容内沿在右上向下退让、形成浅凹口。此前彩色凸起理解错误，现撤销该方向。用户给出的目标图与修改前图已保存于 `evidence/20261020-new-task-home-dot-matrix/folder-shape-reference.png`、`folder-shape-current-before.png`。
+- 在 `.new-task-home__card-band::before` 中将曲线收回彩带内部下沿：彩色外顶边保持原卡片轮廓，靠右的内边界平滑向下凹入；不再生成高出外顶边的彩色页签。
+- `npm run build:pages`、Hook `node --check`、`git diff --check`通过；静态产物检查 CSS 曲线与位置无误。截图级 QA 仍 blocked，因为内置浏览器 URL 策略拒绝访问本机预览；不使用替代通道绕过。
