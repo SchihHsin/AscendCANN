@@ -709,3 +709,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 可执行约束：任务内容区默认自由画布，保留可移动的 workflow、图解、代码和具体反馈及关联；减少内部固定分栏、分区框、嵌套面板和常驻工具，选中对象时就近提供操作。初始组织应可直接阅读，用户无需先手工整理。全局项目/对话/任务内容三栏职责沿用，不把这句偏好扩张成删除导航。
 - 更新原 `content-management-design.md` §22、图稿 README 与根/Studio 两份 AGENTS；本轮仅记录设计选择，未实施 Demo、修改 Pages 产物或正式材料页序/hash，未改变 API/Host/Application 边界。来源是用户直接反馈，不构成产品实测/学习效果/真实AI/Python/模型/NPU证据。
 - 文档 diff 检查后仅提交本轮四份文件并立即 push origin/main，保留其他 WIP；无构建或新增/运行测试。提交推送以本轮 Git 回执为准，后续实现应遵循已选 A。
+
+- 提交/推送回执：本轮方向选择提交已成功推送 origin/main（具体提交见 git log 中 docs: select free learning canvas direction），仅四份文档，diff 检查通过；Demo 与其他 WIP 保持。本条回填随交接提交推送。
