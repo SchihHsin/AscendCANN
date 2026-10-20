@@ -655,3 +655,21 @@ GitHub Pages run `39411454562` 的 build/deploy 均成功；公开入口HTTP200�
 
 **Final result**
 final result: blocked
+
+
+## 2026-10-20 · 新建任务首页尺寸、文件夹页签与点阵可见性修正
+
+**调整**
+- 根据用户反馈收紧首页整体比例：标题、学习/开发切换、提示卡、输入框和按钮均缩小；缩窄卡片与输入框占宽，提示卡高度及间距同步调整。
+- 将点阵纹理层移到白色内容底层上方，扩大重复间距并提高静态点阵不透明度；鼠标局部高亮增强，并补充 WebKit mask 兼容。
+- 红/黄/蓝提示卡顶部由平色带改成凸出页签，增加文件夹式轮廓；提示卡允许页签外露。
+
+**验证与发布**
+- `npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check` 通过；Vite 主 JS 仍有大于 500kB 的体积提示。
+- GitHub Pages run `39419850890` build/deploy 成功；线上 HTML 已引用 `index-Dje8u0Ax.js`、`index-C8kRc4Bc.css`，CSS 与点阵资源 HTTP 200。功能提交 `eca3bf32`（`fix: refine new task home visual scale`）已推送 `origin/main`。
+- 本轮保存了修改前的线上页面截图 `evidence/20261020-new-task-home-dot-matrix/published-before-adjustment.png`；修改后的浏览器截图未能取得：选择线上页面时内置浏览器超时并重置。因此构建与发布成功不代表视觉验收完成，也未能实测修改后点阵、文件夹轮廓、悬浮交互或窄视口。
+
+**待验收**
+- 在可用浏览器中刷新 `https://schihhsin.github.io/AscendCANN/ascstudio/`，确认右侧内容尺寸、页签文件夹感、点阵静态/鼠标反馈、提示卡遮挡和不同视口。
+
+final result: blocked

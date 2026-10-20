@@ -5423,3 +5423,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 来源与边界：用户截图为布局/视觉来源；新点阵纹理为 ImageGen 生成资源。构建与源码检查为本地证据；本轮无法通过浏览器捕获实现截图，所以没有完成视觉对比或交互实测，`design-qa.md` 标为 blocked。不得把构建通过描述为视觉验收通过。无真实 AI、项目代码执行、Python、模型、NPU 或学习效果验证；未影响正式汇报页序/hash 或 API / Host / Application 边界。
 - 验证：`npm run build:pages` 成功；`node --check ascend-studio/src/useWorkbenchState.js` 与 `git diff --check` 通过。Vite 主 JS 664.24kB，沿用既有 >500kB 体积提醒。
 - 提交/推送回执：`54b62463`（`feat: add dot matrix to new task home`）已推送 `origin/main`；Pages run `39418602567` build/deploy 成功。线上 HTML 已引用新 JS/CSS，点阵 PNG 与 CSS HTTP 200。只提交此首页功能、素材、静态产物和交接文档，其他预存 WIP 保持未暂存。
+
+
+### 2026-10-20（Ascend Studio 新建首页尺寸与文件夹卡片修正）
+
+- 用户指出新建任务首页右侧内容偏大、点阵未显示、红黄蓝装饰不像文件夹，要求一并调整。已缩小首页标题、模式切换、提示卡、输入框与按钮并收紧占宽；提高静态点阵可见性与鼠标附近高亮；三张提示卡顶部改成凸出页签式文件夹装饰。
+- 功能改动在 `ascend-studio/src/new-task-home.css`，静态构建结果在 `ascstudio/`；修改前线上页面截图保存在 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/published-before-adjustment.png`。来源是用户视觉反馈和此前首页交互约定；点阵纹理为已有 ImageGen PNG。没有改变任务创建、项目映射、正式汇报页序/hash 或 API / Host / Application 边界。
+- 本地 `npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js` 与 `git diff --check` 通过；GitHub Pages run `39419850890` build/deploy 成功，部署 HTML 已引用新 CSS/JS，资源 HTTP 200。`eca3bf32`（`fix: refine new task home visual scale`）已推送。
+- 修改后截图级 QA 仍未完成：内置浏览器选择线上页签超时并重置。故 `ascend-studio/design-qa.md` 保留 `final result: blocked`；不能将静态部署检查说成视觉通过。待用户刷新线上 Demo 或在可用浏览器完成尺寸、页签、点阵、悬浮和窄视口复核。

@@ -770,3 +770,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 构建 `npm run build:pages` 成功；`node --check src/useWorkbenchState.js` 与 `git diff --check` 通过。主 JS 664.24kB，Vite 给出既有体积提醒。当前环境中的浏览器先前拒绝打开本地预览；本轮没有取得实现截图、比较相同 viewport，或实测鼠标/附件交互。QA 按 Product Design 流程标记 `final result: blocked`，不可宣称完成视觉验收。无真实 AI、工程执行、Python、模型/NPU 或学习效果验证。
 
 发布回执：`54b62463` 已推送 `origin/main`；Pages run `39418602567` build/deploy 成功。线上 HTML 已切换到本次 JS/CSS，点阵图片与 CSS 返回 HTTP 200。未完成浏览器截图级 QA，故 design QA 仍为 blocked。
+
+
+### 2026-10-20（新建任务首页缩放、文件夹页签与点阵修正）
+
+- 用户反馈新建任务首页右侧内容偏大、点阵未出现、红黄蓝装饰缺少文件夹感，并要求一起改。已缩小标题、模式切换、卡片、输入框、工具按钮及其占宽；点阵移到白底之上并提高静态可见度、增加鼠标附近的高亮；红黄蓝顶部装饰改为带凸出页签的文件夹式轮廓。
+- 变更仅限 `src/new-task-home.css` 与构建产物 `ascstudio/`；`evidence/20261020-new-task-home-dot-matrix/published-before-adjustment.png` 保存修改前线上状态。
+- 验证：`npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check`通过；Vite 主 JS 仍有 >500kB 提示。GitHub Pages run `39419850890` 的 build/deploy 成功，HTML 引用新 CSS/JS，CSS 与点阵 PNG HTTP 200。`eca3bf32`（`fix: refine new task home visual scale`）已推送 `origin/main`。
+- 内置浏览器打开线上页签超时并重置，未取得修改后截图；不得将构建/HTTP检查等同于视觉验收。`design-qa.md` 的最终结果保持 `blocked`，待在可用浏览器检查页面尺寸、页签轮廓、点阵、hover 与不同视口。无业务路由、任务创建或 API / Host / Application 边界变化。
