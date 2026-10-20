@@ -766,6 +766,6 @@ final result: passed
 - 保留13px行动标题、12px详情、11px任务来源及红黄蓝文件夹轮廓；摘要与输入区固定关联露出128px，正文仅在展开时显示。图标为现有库计算元素，文案来自任务目标和实际记录。
 - 开发模式不优先学习任务；Add batch dimension 对应算子 batch 轴、广播、输入输出形状及整块/非整块用例；AddCustom 事实仅按精确名称使用；学习建议依正序 records 中最新相关状态，历史失败不覆盖新成功。
 - 浏览器检查1600×900默认/展开、1280×720开发态输入遮挡间隙20–43px、568×900移动端展开CTA包裹、Escape收起、继续任务保留旧稿/对话；console error/warn 0。两个 JS `node --check`、Pages最终build、`git diff --check`通过。
-- 证据图 `evidence/20261021-folder-card-reference/source-reference.png`；实现截图只在浏览器工具输出，未导出本地文件。局部 QA：passed；未声称历史流程全量回归。无NPU验证，不影响 API / Host / Application 边界或正式页面序列。提交/push待回填。
+- 证据图 `evidence/20261021-folder-card-reference/source-reference.png`；实现截图只在浏览器工具输出，未导出本地文件。局部 QA：passed；未声称历史流程全量回归。无NPU验证，不影响 API / Host / Application 边界或正式页面序列。功能提交 `c0383511` 已成功推送 `origin/main`。
 
 final result: passed
