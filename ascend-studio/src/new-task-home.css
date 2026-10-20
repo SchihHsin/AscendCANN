@@ -158,12 +158,13 @@
 .new-task-home__card-band::before {
   content: "";
   position: absolute;
-  top: -9px;
-  right: 12px;
-  width: 88px;
-  height: 17px;
+  top: -6px;
+  right: 7px;
+  width: 64px;
+  height: 14px;
   background: inherit;
-  clip-path: polygon(0 100%, 7% 74%, 15% 46%, 23% 20%, 30% 4%, 36% 0, 76% 0, 84% 6%, 91% 25%, 96% 56%, 100% 100%);
+  clip-path: polygon(0 100%, 8% 82%, 16% 56%, 25% 30%, 34% 10%, 42% 2%, 49% 0, 74% 0, 82% 4%, 89% 15%, 95% 34%, 100% 65%, 100% 100%);
+  clip-path: path("M 0 14 C 7 14, 10 10, 16 6 C 21 2, 24 1, 31 1 L 48 1 C 54 1, 58 4, 60 8 C 62 11, 63 13, 64 14 L 64 14 L 0 14 Z");
 }
 .new-task-home__card--rose .new-task-home__card-band { background: #f39ca2; }
 .new-task-home__card--sand .new-task-home__card-band { background: #f4dda1; }
