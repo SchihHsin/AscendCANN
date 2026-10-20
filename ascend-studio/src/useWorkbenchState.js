@@ -150,11 +150,24 @@ export function useWorkbenchState() {
     setMenu((old) => old?.name === name ? null : { name, left: Math.max(8, Math.min(innerWidth - 252, box.right - 240)), top: box.bottom + 7, bottom: box.bottom + 260 > innerHeight ? innerHeight - box.top + 7 : null });
   };
   const persistConversationScroll = () => writeSession("conversation-scroll", { positions: [...conversationScrollPositions.current], following: [...followingConversation.current] });
-  const saveConversationScroll = () => { conversationScrollPositions.current.set(selectedTask, conversationRef.current?.scrollTop || 0); persistConversationScroll(); };
+  const saveConversationScroll = () => { if (!conversationRef.current) return; conversationScrollPositions.current.set(selectedTask, conversationRef.current.scrollTop); persistConversationScroll(); };
   const selectTask = (name) => { if (name !== selectedTask) saveConversationScroll(); if (!sessions[name]) updateTask(name, {}); setSelectedTask(name); setActionView(null); setMenu(null); };
   const toggleGroup = (id) => setOpenedGroups((items) => items.includes(id) ? items.filter((item) => item !== id) : [...items, id]);
   const setSelectedRoute = (id) => { patchSession({ selectedRoute: id }); setActionView(null); };
   const setDraft = (draft) => patchSession({ draft });
+  const prepareTaskSuggestion = ({ taskName, prompt }) => {
+    const group = groups.find(item => item.tasks.includes(taskName));
+    const suggestion = String(prompt || "").trim();
+    if (!group || !suggestion) return false;
+    updateTask(taskName, old => ({
+      draft: old.draft.includes(suggestion) ? old.draft : old.draft.trim() ? `${old.draft}\n\n${suggestion}` : suggestion,
+    }));
+    selectTask(taskName);
+    setOpenedGroups(items => items.includes(group.id) ? items : [...items, group.id]);
+    setQuery("");
+    setFilterScope("all");
+    return true;
+  };
   const addNotification = (text, taskName = selectedTask) => setNotifications((items) => [{ id: uid(), text, taskName, time: timeNow() }, ...items].slice(0, 10));
 
   useEffect(() => {
@@ -353,5 +366,5 @@ export function useWorkbenchState() {
     .filter((file) => file.content && (file.type === "code" || /\.(cpp|h|py)$/i.test(file.name)))
     .sort((a, b) => (a.receivedOrder || 0) - (b.receivedOrder || 0)).at(-1);
   const attempts = [...(isMainTask ? [{ title: "修改编译参数", summary: "错误仍在 custom_op.cpp:128，未新增定位信号。", time: "已知现场" }] : []), ...session.records.filter((item) => item.kind === "attempt")];
-  return { getSession: (name) => sessions[name] || blank(), getTask: (name) => meta[name] || { goal: "补充目标和材料。" }, groups, task, session, query, setQuery, filterScope, setFilterScope, openedGroups, setOpenedGroups, selectedTask, rationaleOpen, setRationaleOpen, actionView, setActionView, menu, setMenu, menuRef, openMenu, dialog, dialogData, openDialog, closeDialog, selectedModel, model, automations, setAutomations, notifications, toast, notify, conversationRef, draftRef, fileRef, imageRef, currentGroup, isMainTask, visibleGroups, patchSession, toggleGroup, selectTask, setSelectedRoute, setDraft, copyText, conversationText, exportTask, resetTask, sendMessage, handleConversationScroll, showLatestReply, askFromExplanation, addExchange, createTask, startConversation, restoreConversation, attachCode, readFiles, useCapability, addRecord, confirmRoute, chooseModel, runAutomation, attachmentCode, attempts };
+  return { getSession: (name) => sessions[name] || blank(), getTask: (name) => meta[name] || { goal: "补充目标和材料。" }, groups, task, session, query, setQuery, filterScope, setFilterScope, openedGroups, setOpenedGroups, selectedTask, rationaleOpen, setRationaleOpen, actionView, setActionView, menu, setMenu, menuRef, openMenu, dialog, dialogData, openDialog, closeDialog, selectedModel, model, automations, setAutomations, notifications, toast, notify, conversationRef, draftRef, fileRef, imageRef, currentGroup, isMainTask, visibleGroups, patchSession, toggleGroup, selectTask, setSelectedRoute, setDraft, prepareTaskSuggestion, copyText, conversationText, exportTask, resetTask, sendMessage, handleConversationScroll, showLatestReply, askFromExplanation, addExchange, createTask, startConversation, restoreConversation, attachCode, readFiles, useCapability, addRecord, confirmRoute, chooseModel, runAutomation, attachmentCode, attempts };
 }

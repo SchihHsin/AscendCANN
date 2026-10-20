@@ -812,3 +812,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 最新参考：`evidence/20261021-folder-card-reference/source-reference.png`。用户要彩色背板与白色前层的文件夹层次：白色上边缘在右侧约70%开始下移，86%后保持低位至右缘；不是向外凸页签，也不是下凹后再上收的小缺口。
 - `src/new-task-home.css` 使用14px背板与纯白前层，去掉图标有色底，保持深灰线性图标与淡色装饰。卡片改为flex从顶内边距排列，避免原生button内容自动垂直居中导致标题被输入区遮挡。紧凑尺寸、已调输入区位置及既有交互保留。
 - Luna low完成局部修改；主agent以1280×720、568×900 full-page实际画面对照，检查默认/悬浮与点击填入、控制台；构建与差异检查通过。本轮仅文件夹卡片的局部QA passed。 功能提交 `e91b523a` 已推送 `origin/main`。
+
+
+## 2026-10-21 · 任务建议卡片与计算背景
+
+- 用户反馈首页默认遮挡过多、展开信息应完整、建议需贴合任务上下文，背景改用计算元素。首页改动文件：`src/App.jsx`、`src/NewTaskHome.jsx`、`src/useWorkbenchState.js`、`src/new-task-home.css`、`src/home-recommendations.js`、`src/HomeComputeBackdrop.jsx`、`src/home-compute-backdrop.css`。建议来自真实任务与 records；默认显示项目、任务名和下一步，hover/focus/tap 展开 reason、最多两步、真实最新记录及继续 CTA。三色14px文件夹外观保留。
+- 卡片展开层独立于 composer/input 并置于上层，长内容撑开高度，任务名不截断；移动端纵向排列、20px间距、无旋转。继续 CTA 回对应任务追加 prompt 草稿，旧草稿和对话保持，不自动发送。背景为计算符号/标签、弱点阵与轻指针视差，支持 reduced-motion。
+- 建议规则：开发模式不优先学习任务；Add batch dimension 属于算子批量轴/广播/形状契约；AddCustom 事实严格按任务名匹配；学习状态只看正序 records 中最新相关记录，历史失败不覆盖成功。无真实NPU验证，API / Host / Application边界及汇报页序/hash不变。
+- 浏览器局部验证：1600×900默认与展开、1280×720开发态卡片/输入间距20–43px、568×900移动态CTA完整包裹、Escape、继续任务旧稿/对话保留；console error/warn为0。两个JS node check、Pages build、diff check通过。QA仅此局部 passed，不代表全量回归。截图只由浏览器工具输出，未本地导出；对照图 `evidence/20261021-folder-card-reference/source-reference.png`。提交/push待回填。

@@ -66,6 +66,7 @@ The three-column structure matches the selected mock: compact grouped project ta
 
 final result: passed
 
+
 ## 2026-10-09 · 交互补齐
 
 - 将仅弹出提示的入口改为实际表单、菜单和操作区，覆盖项目任务切换与创建、能力选择、代码附件、发送、AI配置、对话历史、自动化状态与演示运行、证据详情和复核记录。保留既有三栏结构及对话视觉规范。
@@ -750,5 +751,21 @@ final result: blocked
 **验证**
 - `npm run build:pages`、`git diff --check`通过；静态产物重建。
 - 本次结论仅覆盖文件夹卡片局部，不代表历史记录中未复核流程已全部完成。 功能提交 `e91b523a` 已推送 `origin/main`。
+
+final result: passed
+
+
+## 2026-10-21 · 首页任务建议、展开层与计算背景
+
+**范围**
+- 用户反馈默认卡片被输入区遮挡过多、hover 信息需完整显示、建议应结合任务上下文，背景采用计算元素。本轮改动涉及 `src/App.jsx`、`src/NewTaskHome.jsx`、`src/useWorkbenchState.js`、`src/new-task-home.css`、`src/home-recommendations.js`、`src/HomeComputeBackdrop.jsx`、`src/home-compute-backdrop.css`。
+- 建议从工作台真实 tasks/records 生成最多三张卡片。默认显示项目、任务名和具体行动；hover/focus/tap 展开 reason、最多两步、真实 latest record 和“继续此任务”。红黄蓝14px文件夹装饰保留。CTA 回到任务并追加 prompt 草稿，保留旧稿及对话，不自动发送或创建任务。
+- 卡片展开层位于 composer/input 上方，按内容增长且长任务名不截断；移动端纵向排列、20px gap、无旋转。背景使用计算符号/标签、弱点阵、轻指针视差与 reduced-motion 规则。
+
+**规则与验证**
+- 保留13px行动标题、12px详情、11px任务来源及红黄蓝文件夹轮廓；摘要与输入区固定关联露出128px，正文仅在展开时显示。图标为现有库计算元素，文案来自任务目标和实际记录。
+- 开发模式不优先学习任务；Add batch dimension 对应算子 batch 轴、广播、输入输出形状及整块/非整块用例；AddCustom 事实仅按精确名称使用；学习建议依正序 records 中最新相关状态，历史失败不覆盖新成功。
+- 浏览器检查1600×900默认/展开、1280×720开发态输入遮挡间隙20–43px、568×900移动端展开CTA包裹、Escape收起、继续任务保留旧稿/对话；console error/warn 0。两个 JS `node --check`、Pages最终build、`git diff --check`通过。
+- 证据图 `evidence/20261021-folder-card-reference/source-reference.png`；实现截图只在浏览器工具输出，未导出本地文件。局部 QA：passed；未声称历史流程全量回归。无NPU验证，不影响 API / Host / Application 边界或正式页面序列。提交/push待回填。
 
 final result: passed

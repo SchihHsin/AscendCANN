@@ -697,7 +697,12 @@ function App() {
         </div>
         {!sidebarCollapsed && <div className="workspace-divider workspace-divider--projects" role="separator" tabIndex={0} aria-label="调整项目栏宽度" title="拖动调整项目栏宽度；双击恢复默认布局" {...layout.separatorProps("projects")} />}
 
-        {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} onCreateTask={({ goal, kind, attachments }) => {
+        {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} tasks={wb.groups.flatMap(group => group.tasks.map(name => ({ ...wb.getTask(name), name, project: group.name, records: wb.getSession(name).records })))} onContinueTask={(suggestion) => {
+          if (wb.prepareTaskSuggestion(suggestion)) {
+            setShowNewTaskHome(false);
+            requestAnimationFrame(() => wb.draftRef.current?.focus());
+          }
+        }} onCreateTask={({ goal, kind, attachments }) => {
           const groupId = kind === "learning" ? "inference" : (currentGroup?.id || "operator");
           const created = wb.createTask({ name: goal.slice(0, 60), groupId, goal, kind, attachments });
           if (created) setShowNewTaskHome(false);

@@ -1,0 +1,47 @@
+.home-compute-backdrop {
+  color: #667187;
+}
+
+.home-compute-backdrop__mark,
+.home-compute-backdrop__token {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  color: inherit;
+  opacity: .16;
+  transform: translate3d(calc(var(--dot-shift-x, 0px) * .22), calc(var(--dot-shift-y, 0px) * .22), 0);
+  transition: opacity 240ms ease, transform 220ms ease-out;
+}
+
+.home-compute-backdrop__mark svg {
+  display: block;
+}
+
+.home-compute-backdrop__mark.is-matrix { top: 12%; left: 9%; }
+.home-compute-backdrop__mark.is-binary { top: 19%; right: 12%; }
+.home-compute-backdrop__mark.is-function { top: 67%; left: 7%; }
+.home-compute-backdrop__mark.is-chip { right: 8%; bottom: 17%; }
+.home-compute-backdrop__mark.is-brackets { right: 19%; top: 76%; }
+.home-compute-backdrop__mark.is-code { left: 22%; bottom: 14%; }
+
+.home-compute-backdrop__token {
+  font: 500 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .015em;
+  white-space: nowrap;
+}
+
+.home-compute-backdrop__token.is-index { top: 34%; left: 5.5%; }
+.home-compute-backdrop__token.is-sum { top: 49%; right: 6%; }
+
+.new-task-home.has-pointer .home-compute-backdrop__mark,
+.new-task-home.has-pointer .home-compute-backdrop__token {
+  opacity: .21;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-compute-backdrop__mark,
+  .home-compute-backdrop__token {
+    transform: none;
+    transition: none;
+  }
+}

@@ -5454,6 +5454,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地预览以1280×720及用户参考图1586×992截图复核。1586视口实测标题24px、卡片组680×176px、composer 866×136px/y=613；输入区比原先更靠中并保留约六成卡面。hover、附件等交互未在本轮重测。`npm run build:pages`、`git diff --check`通过；静态构建产物已更新。GitHub Pages run `39424953850` build/deploy成功；线上地址截图未确认。
 - 功能提交 `4ebcaddf`（`style: compact new task home workspace`）已推送 `origin/main`。正式页面序列、任务创建逻辑、API / Host / Application 边界不变。未决：上线后可再刷新线上页核对；完整交互验收仍按 `ascend-studio/design-qa.md` 记录为未完成。
 
+
 ### 2026-10-20（输入区进一步向垂直中心移动）
 
 - 用户认为输入框仍偏下，要求再向上下居中。单独上移会遮住较多卡片，因此同步上移提示卡组，保留卡片与输入区的叠放关系；桌面提示卡组 `top:42%`、输入区距底 `37%`，短屏调整为卡组 `top:30%`，平板断点同步靠上。移动端输入框仍保持底部布局。
@@ -5467,3 +5468,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Luna（`gpt-6-luna`，low）调整 `ascend-studio/src/new-task-home.css`：14px彩色背板、连续的白色肩形内沿、纯白前层消除接缝、无底色深灰线性图标；卡片以flex顶部排列，修正原生button内容居中导致标题被输入区遮挡的问题。保留前轮已暂存的输入区居中、紧凑字号、点阵与位置调整；重建 `ascstudio/`。
 - 来源为用户附件与本地实际画面，不涉及研究证据、页面序列或API/Host/Application边界。内置浏览器1280×720与568×900（full-page）对照，首次19px背板过厚后收至14px；最终肩形、默认标题、悬浮上移、点击填入均核对，控制台无error/warn。`npm run build:pages`、`git diff --check`通过；本轮卡片局部QA为passed。
 - 功能提交 `e91b523a` 已成功推送 `origin/main`；既有无关脏文件不暂存、不清理。
+
+
+### 2026-10-21（新建首页任务相关建议与计算背景）
+
+- 用户反馈首页默认遮挡过多、hover信息应增加且完整显示、建议需带任务上下文，背景应有计算元素。本轮首页改动涉及 `ascend-studio/src/App.jsx`、`NewTaskHome.jsx`、`useWorkbenchState.js`、`new-task-home.css`、`home-recommendations.js`、`HomeComputeBackdrop.jsx`、`home-compute-backdrop.css`：由真实 tasks/records 提取三条建议，默认显示项目、任务名、具体下一步；hover/focus/tap 展示理由、最多两步、真实最新记录与继续入口；保留红黄蓝14px文件夹形态。
+- 卡片与输入区改用同一锚点定位，当前默认露出128px摘要区域；展开层独立于 composer，层级高于输入框；高度随内容增长，长名完整显示。移动端纵向排列、20px间距、无旋转。继续任务回到对应任务追加 prompt 草稿，保留旧稿和对话，不自动发送或创建任务。背景使用计算符号/标签、弱点阵与轻微指针视差，并响应 reduced-motion。
+- 开发模式不优先学习任务；Add batch dimension 按算子 batch 轴、广播、形状与用例处理；AddCustom 事实只用于精确任务名；学习建议依据正序 records 的最新相关状态，旧失败不覆盖新成功。无 NPU 验证；研究、API / Host / Application 边界与正式页面序列/hash不变。
+- 浏览器验证覆盖1600×900默认/展开、1280×720开发卡片与输入间距20–43px、568×900移动端展开及CTA包裹、Escape与继续任务草稿保留；console error/warn为0。两个 JS `node --check`、Pages最终构建和 `git diff --check`通过。局部 QA passed，不代表历史项目全面回归。浏览器截图未导出本地；参考图 `ascend-studio/evidence/20261021-folder-card-reference/source-reference.png`。提交/push待回填。

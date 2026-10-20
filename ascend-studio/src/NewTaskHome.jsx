@@ -9,8 +9,11 @@ import {
   IconPhoto,
   IconPlus,
   IconSparkles,
+  IconBrain,
   IconX,
 } from "@tabler/icons-react";
+import { HomeComputeBackdrop } from "./HomeComputeBackdrop";
+import { buildHomeSuggestions } from "./home-recommendations";
 import "./new-task-home.css";
 
 const modes = [
@@ -18,37 +21,10 @@ const modes = [
   { id: "development", label: "开发", placeholder: "描述你要实现的功能、遇到的问题或希望修改的代码…", action: "开始开发任务" },
 ];
 
-const suggestions = [
-  {
-    id: "learning",
-    title: "继续学习主题",
-    description: "基于当前问题，生成个性化的学习路径",
-    icon: IconBook,
-    motif: IconBook,
-    tone: "rose",
-  },
-  {
-    id: "current-issue",
-    title: "从当前问题开始",
-    description: "基于已有报错或代码，整理下一步线索",
-    icon: IconFileText,
-    motif: IconBulb,
-    tone: "sand",
-  },
-  {
-    id: "materials",
-    title: "添加材料",
-    description: "上传代码、日志或截图，补充任务上下文",
-    icon: IconPaperclip,
-    motif: IconPaperclip,
-    tone: "blue",
-  },
-];
-
 const codeFilePattern = /\.(c|cc|cpp|cxx|h|hpp|py|js|jsx|ts|tsx|txt|log|csv|json|md|yaml|yml)$/i;
 const createId = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
-export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务" }) {
+export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onContinueTask }) {
   const [mode, setMode] = useState("learning");
   const [goal, setGoal] = useState("");
   const [error, setError] = useState("");
@@ -56,11 +32,13 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务" }) 
   const [snippet, setSnippet] = useState("");
   const [snippetOpen, setSnippetOpen] = useState(false);
   const [quickMenuOpen, setQuickMenuOpen] = useState(false);
+  const [expandedCardId, setExpandedCardId] = useState(null);
   const homeRef = useRef(null);
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const goalRef = useRef(null);
   const activeMode = modes.find((item) => item.id === mode) || modes[0];
+  const suggestions = buildHomeSuggestions({ tasks, currentTaskName, mode });
 
   const addFiles = async (fileList, forcedType) => {
     const incomingFiles = Array.from(fileList || []);
@@ -102,19 +80,7 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务" }) 
     setError("");
   };
 
-  const selectSuggestion = (suggestion) => {
-    if (suggestion.id === "materials") {
-      fileInputRef.current?.click();
-      return;
-    }
-    const nextMode = suggestion.id === "learning" ? "learning" : "development";
-    setMode(nextMode);
-    setGoal(suggestion.id === "learning"
-      ? `请围绕“${currentTaskName}”梳理值得学习的主题，并给出适合当前基础的学习路径。`
-      : `请从“${currentTaskName}”开始，先整理现有问题与线索，再给出下一步检查建议。`);
-    setError("");
-    requestAnimationFrame(() => goalRef.current?.focus());
-  };
+  const setCardExpanded = (id) => setExpandedCardId(id);
 
   const updatePointer = (event) => {
     if (event.pointerType === "touch" || !homeRef.current) return;
@@ -155,10 +121,7 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务" }) 
       onPointerMove={updatePointer}
       onPointerLeave={(event) => { if (event.pointerType !== "touch") homeRef.current?.classList.remove("has-pointer"); }}
     >
-      <div
-        className="new-task-home__dot-field"
-        aria-hidden="true"
-      />
+      <HomeComputeBackdrop />
       <div className="new-task-home__hero">
         <h1>开始一个新任务</h1>
         <div className="new-task-home__mode" role="group" aria-label="任务类型">
@@ -168,7 +131,7 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务" }) 
               className={"new-task-home__mode-button" + (item.id === mode ? " is-active" : "")}
               type="button"
               aria-pressed={item.id === mode}
-              onClick={() => { setMode(item.id); setError(""); }}
+              onClick={() => { setMode(item.id); setError(""); setExpandedCardId(null); }}
             >
               {item.id === "learning" ? <IconBook size={22} stroke={1.8} aria-hidden="true" /> : <IconCode size={22} stroke={1.8} aria-hidden="true" />}
               {item.label}
@@ -178,26 +141,34 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务" }) 
       </div>
 
       <div className="new-task-home__suggestions" aria-label="任务起点">
-        {suggestions.map((item) => {
-          const Icon = item.icon;
-          const Motif = item.motif;
+        {suggestions.map((item, index) => {
+          const Icon = item.tone === "rose" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
+          const Motif = item.tone === "rose" ? IconBook : item.tone === "blue" ? IconBrain : IconBulb;
+          const expanded = expandedCardId === item.taskName;
           return (
-            <button
-              key={item.id}
-              type="button"
-              className={`new-task-home__card new-task-home__card--${item.tone}`}
-              onClick={() => selectSuggestion(item)}
-              aria-label={item.id === "materials" ? "添加材料" : `${item.title}：填入建议内容`}
+            <article
+              key={`${item.taskName}-${index}`}
+              className={`new-task-home__card new-task-home__card--${item.tone}${expanded ? " is-expanded" : ""}`}
+              onPointerEnter={(event) => { if (event.pointerType !== "touch") setCardExpanded(item.taskName); }}
+              onPointerLeave={(event) => { if (event.pointerType !== "touch" && !event.currentTarget.contains(document.activeElement)) setCardExpanded(null); }}
+              onFocusCapture={() => setCardExpanded(item.taskName)}
+              onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setCardExpanded(null); }}
+              onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); event.currentTarget.querySelector(".new-task-home__card-summary")?.focus({ preventScroll: true }); setCardExpanded(null); } }}
             >
               <span className="new-task-home__card-band" aria-hidden="true" />
-              <span className="new-task-home__card-icon"><Icon size={25} stroke={1.8} aria-hidden="true" /></span>
-              <span className="new-task-home__card-copy">
-                <strong>{item.title}</strong>
-                <span>{item.description}</span>
-              </span>
+              <button className="new-task-home__card-summary" type="button" aria-expanded={expanded} aria-controls={`home-suggestion-details-${index}`} aria-label={`${item.taskName}：${item.title}`} onClick={() => setCardExpanded(item.taskName)}>
+                <span className="new-task-home__card-context"><Icon size={22} stroke={1.8} aria-hidden="true" /><span className="new-task-home__card-source">{item.project || "任务"}</span></span>
+                <span className="new-task-home__card-title"><strong title={item.taskName}>{item.taskName}</strong><span>{item.title}</span></span>
+                <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={18} /></span>
+              </button>
+              <div className="new-task-home__card-details" id={`home-suggestion-details-${index}`} hidden={!expanded}>
+                <p className="new-task-home__card-reason">{item.reason}</p>
+                {item.steps.length > 0 && <ul className="new-task-home__card-steps">{item.steps.slice(0, 2).map((step) => <li key={step}>{step}</li>)}</ul>}
+                {item.lastRecord && <div className="new-task-home__card-last-record"><strong>最近记录 · {item.lastRecord.title || item.lastRecord.kind || "任务记录"}</strong>{item.lastRecord.summary && <p>{item.lastRecord.summary}</p>}</div>}
+                <button className="new-task-home__card-continue" type="button" onClick={() => onContinueTask?.({ taskName: item.taskName, prompt: item.prompt })}>继续此任务</button>
+              </div>
               <Motif className="new-task-home__card-motif" size={76} stroke={1.2} aria-hidden="true" />
-              <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={18} /></span>
-            </button>
+            </article>
           );
         })}
       </div>
