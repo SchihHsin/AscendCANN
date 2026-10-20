@@ -681,3 +681,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 草案先确认／取消，环境跳过与直接排序共用预览；字幕提问保留片段；每次练习／输入检查以ID关联，当前参数或目标不匹配时显示旧条件。保存需理解、当前尝试通过及对应检查；完成后收起、刷新可恢复，进入开发需用户选择且带来源学习参考。
 - 主代理在5174实际核对双入口及完整流程、失败与重复轴、相同参数新尝试需新检查、任务隔离、保存恢复、历史定位、代码复制、开发交接、824px并排/360px上下/390和短视口。11幅实拍及限制见evidence/20261020-learning-goal/README.md；原5173和用户数据保留。最终完整刷新无新增error/warn。
 - `node --check`、`npm run build:pages`及diff检查通过；产物index-CMMLvYrY.js/index-JyE7HLDv.css，611.78kB主包提示保留。材料第63页同步范围，63页序列/#7/#31不变。无自动测试或真实AI/Python/模型/NPU新验证，任意课程生成和学习效果未验证。功能与材料检查后仅提交本轮文件立即push，发布回执后补。
+
+- 发布回执：7a1f757f已push origin/main；Pages运行39382276899成功，公开HTML资源已更新为index-CMMLvYrY.js/index-JyE7HLDv.css。线上IAB读取超时，本轮完整操作证据来自本地5174；不声称线上全流程另行复测。已恢复临时视口，自启5174停止，用户5173/8765和既有记录保留。入口ascstudio/?task=learning或新建任务→学习目标；关闭后续建议保成果及AddCustom原17/33/32回归已操作。
