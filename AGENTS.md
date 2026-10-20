@@ -5445,3 +5445,25 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出文件夹形状应为第一张对比图：彩色外顶边没有向外凸起，而是内部白色内容内沿向下凹入。前两轮将其误解成彩色外凸页签；本轮已移除外凸形状，改为彩带下缘靠右处向卡片内部平滑下凹，保持彩色外边界原位。对比附件存于 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/folder-shape-reference.png` 与 `folder-shape-current-before.png`。
 - 改动位于 `ascend-studio/src/new-task-home.css`，Pages 构建产物重建。`npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check`通过；静态产物确认新增曲线位于色带内沿，不超出卡片顶部。Vite >500kB 提示仍存在。
 - 当前内置浏览器 URL 策略拒绝访问本机预览，因此未完成实现截图验证；不尝试绕过。`ascend-studio/design-qa.md` 保持 `final result: blocked`。功能提交 `a8faa3ca`（`fix: indent inner edge of folder card bands`）已推送 `origin/main`；GitHub Pages run `39422494704` build/deploy 成功。
+
+
+### 2026-10-20（Ascend Studio 新建首页尺寸与垂直位置再收紧）
+
+- 用户指出右侧新建任务区域仍然过大，尤其标题、卡片、输入区与字号；要求字号层级与应用其他区域一致，随后补充输入框应更靠近垂直中心。对已确认页面进行局部尺寸迭代时，按用户本轮指示直接改 Demo；更换结构或交互方向时仍先以图讨论。
+- 参照 `ascend-studio/src/styles.css` 与其他组件普遍使用的12px主体、13px卡片标题、14–16px区块标题，收紧 `ascend-studio/src/new-task-home.css`：首页标题36→24px、卡片标题16→13px、说明与输入字调整为12px；卡片组最大680×176px，composer宽度最大920px、高136px。用户指出第一次上移后仍偏下，最终桌面将卡片组 `top` 调至47.5%、composer距底26%，两者同步上移以保留输入区遮挡卡片的关系。左侧任务列表、点阵、配色及文件夹白色凹入内沿保留。
+- 本地预览以1280×720及用户参考图1586×992截图复核。1586视口实测标题24px、卡片组680×176px、composer 866×136px/y=613；输入区比原先更靠中并保留约六成卡面。hover、附件等交互未在本轮重测。`npm run build:pages`、`git diff --check`通过；静态构建产物已更新。GitHub Pages run `39424953850` build/deploy成功；线上地址截图未确认。
+- 功能提交 `4ebcaddf`（`style: compact new task home workspace`）已推送 `origin/main`。正式页面序列、任务创建逻辑、API / Host / Application 边界不变。未决：上线后可再刷新线上页核对；完整交互验收仍按 `ascend-studio/design-qa.md` 记录为未完成。
+
+### 2026-10-20（输入区进一步向垂直中心移动）
+
+- 用户认为输入框仍偏下，要求再向上下居中。单独上移会遮住较多卡片，因此同步上移提示卡组，保留卡片与输入区的叠放关系；桌面提示卡组 `top:42%`、输入区距底 `37%`，短屏调整为卡组 `top:30%`，平板断点同步靠上。移动端输入框仍保持底部布局。
+- 变更 `ascend-studio/src/new-task-home.css` 并重建 `ascstudio/` Pages 产物。来源仅为用户的布局反馈；不涉及任务流程/API/Host/Application 边界。`npm run build:pages` 与 `git diff --check`通过；本地 1280×720 画面已确认输入区中心更接近内容区中线且卡片仍露出约一半以上。未做线上截图与窄屏交互复核。
+- 待提交并立即推送；其他既有工作区变更保持未暂存、未清理。
+
+
+### 2026-10-21（新建首页文件夹卡片按附件还原）
+
+- 用户再次指定文件夹样式，最新参考保存在 `ascend-studio/evidence/20261021-folder-card-reference/source-reference.png`。关键轮廓为彩色背板外顶边不外凸、白色前层在右侧约70%–86%处平滑下移，之后保持低位直达右缘；不得再做成小碗状凹口后向上收回。
+- Luna（`gpt-6-luna`，low）调整 `ascend-studio/src/new-task-home.css`：14px彩色背板、连续的白色肩形内沿、纯白前层消除接缝、无底色深灰线性图标；卡片以flex顶部排列，修正原生button内容居中导致标题被输入区遮挡的问题。保留前轮已暂存的输入区居中、紧凑字号、点阵与位置调整；重建 `ascstudio/`。
+- 来源为用户附件与本地实际画面，不涉及研究证据、页面序列或API/Host/Application边界。内置浏览器1280×720与568×900（full-page）对照，首次19px背板过厚后收至14px；最终肩形、默认标题、悬浮上移、点击填入均核对，控制台无error/warn。`npm run build:pages`、`git diff --check`通过；本轮卡片局部QA为passed。
+- 提交/推送待回填；既有无关脏文件不暂存、不清理。

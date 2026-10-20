@@ -107,7 +107,7 @@
 .new-task-home__suggestions {
   position: absolute;
   z-index: 1;
-  top: 47.5%;
+  top: 42%;
   left: 50%;
   display: grid;
   width: min(58%, 680px);
@@ -118,14 +118,17 @@
 }
 .new-task-home__card {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   min-width: 0;
   height: 176px;
   overflow: visible;
   padding: 22px 17px 18px;
   border: 1px solid #e8e8e9;
   border-radius: 14px;
-  background: rgba(255, 255, 255, .96);
+  background: #fff;
   color: #18191d;
   box-shadow: 0 7px 20px rgba(25, 28, 37, .065);
   text-align: left;
@@ -152,35 +155,37 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 8px;
-  border-radius: 14px 14px 7px 7px;
+  height: 14px;
+  border-radius: 14px 14px 0 0;
   pointer-events: none;
 }
 .new-task-home__card-band::before {
   content: "";
   position: absolute;
-  top: 6px;
-  right: 10px;
-  width: 58px;
-  height: 10px;
-  background: inherit;
-  clip-path: polygon(0 0, 14% 0, 24% 24%, 33% 70%, 42% 100%, 66% 100%, 78% 72%, 90% 28%, 100% 0);
-  clip-path: path("M 0 0 C 7 0, 10 3, 16 6 C 20 8, 24 9, 30 9 L 38 9 C 45 9, 49 5, 53 2 C 55 1, 57 0, 58 0 L 58 0 L 0 0 Z");
+  inset: 0;
+  border-radius: 14px 14px 0 0;
+  background: #fff;
+  clip-path: polygon(
+    0 34%, .2% 34.05%, .5% 34.2%, 1% 34.5%, 1.8% 34.8%,
+    3% 34.95%, 5% 35%, 8% 35%, 12% 34.9%, 68% 34%,
+    70% 34.4%, 72% 36%, 74% 39%, 76% 44%, 78% 51%,
+    80% 60%, 82% 70%, 83% 76%, 84% 84%, 85% 93%, 86% 100%,
+    100% 100%, 0 100%
+  );
 }
 .new-task-home__card--rose .new-task-home__card-band { background: #f39ca2; }
 .new-task-home__card--sand .new-task-home__card-band { background: #f4dda1; }
 .new-task-home__card--blue .new-task-home__card-band { background: #9db7f0; }
 .new-task-home__card-icon {
   display: grid;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   place-items: center;
   margin-bottom: 10px;
-  border-radius: 8px;
-  color: #383b43;
-  background: rgba(246, 247, 249, .84);
+  color: #34363c;
+  background: transparent;
 }
-.new-task-home__card-icon svg { width: 21px; height: 21px; }
+.new-task-home__card-icon svg { width: 23px; height: 23px; }
 .new-task-home__card-copy { position: relative; z-index: 1; display: grid; max-width: 92%; gap: 6px; }
 .new-task-home__card-copy strong { color: #17181d; font-size: 13px; font-weight: 650; letter-spacing: -.2px; line-height: 1.4; }
 .new-task-home__card-copy > span { color: #787b84; font-size: 12px; line-height: 1.5; }
@@ -212,15 +217,12 @@
 .new-task-home__card-action svg { width: 16px; height: 16px; }
 .new-task-home__card:hover .new-task-home__card-action,
 .new-task-home__card:focus-visible .new-task-home__card-action { transform: translateX(2px); border-color: #d9dce3; }
-.new-task-home__card--rose .new-task-home__card-icon { color: #d66a74; background: #fff2f2; }
-.new-task-home__card--sand .new-task-home__card-icon { color: #a47c2b; background: #fff8e9; }
-.new-task-home__card--blue .new-task-home__card-icon { color: #698bd4; background: #eff4ff; }
 
 .new-task-home__composer {
   position: absolute;
   z-index: 2;
   left: 50%;
-  bottom: 26%;
+  bottom: 37%;
   display: flex;
   width: min(70%, 920px);
   min-height: 136px;
@@ -333,22 +335,22 @@
 
 @media (max-width: 1240px) and (min-width: 981px) {
   .new-task-home__hero { top: 22.5%; }
-  .new-task-home__suggestions { top: 47.5%; width: min(80%, 680px); height: 164px; gap: 9px; }
+  .new-task-home__suggestions { top: 42.5%; width: min(80%, 680px); height: 164px; gap: 9px; }
   .new-task-home__card { height: 164px; padding-inline: 15px; }
   .new-task-home__composer { width: 84%; min-height: 132px; }
 }
 @media (max-height: 760px) and (min-width: 981px) {
   .new-task-home__hero { top: 15%; }
   .new-task-home__mode { margin-top: 14px; }
-  .new-task-home__suggestions { top: 41%; }
-  .new-task-home__composer { bottom: 26%; min-height: 128px; }
+  .new-task-home__suggestions { top: 30%; }
+  .new-task-home__composer { bottom: 37%; min-height: 128px; }
 }
 @media (max-width: 980px) {
   .new-task-home { min-height: 760px; flex: 0 0 760px; }
   .new-task-home__hero { top: 10%; }
-  .new-task-home__suggestions { top: 37%; width: min(78%, 700px); height: 188px; }
+  .new-task-home__suggestions { top: 35%; width: min(78%, 700px); height: 188px; }
   .new-task-home__card { height: 188px; }
-  .new-task-home__composer { left: 6%; bottom: 23%; width: 88%; min-height: 148px; transform: none; }
+  .new-task-home__composer { left: 6%; bottom: 37%; width: 88%; min-height: 148px; transform: none; }
 }
 @media (max-width: 620px) {
   .new-task-home { min-height: 690px; flex-basis: 690px; }
@@ -373,7 +375,6 @@
   }
   .new-task-home__suggestions::-webkit-scrollbar { display: none; }
   .new-task-home__card { min-width: min(216px, calc(100vw - 54px)); height: 180px; padding: 21px 16px 16px; scroll-snap-align: start; }
-  .new-task-home__card-band::before { right: 25px; }
   .new-task-home__card:nth-child(n) { transform: rotate(0) translateY(5px); }
   .new-task-home__card:nth-child(n):hover,
   .new-task-home__card:nth-child(n):focus-visible { transform: translateY(-10px) scale(1.01); }
