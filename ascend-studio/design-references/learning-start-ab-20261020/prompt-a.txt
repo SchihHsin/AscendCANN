@@ -1,0 +1,25 @@
+Use case: ui-mockup.
+Create one realistic, production-quality desktop product UI concept named 自由学习画布. This is the FIRST of a user-requested pair comparing two interaction designs, but show ONLY ONE complete app screen in this image. Target 1792 x 1024 landscape, high fidelity, beautifully legible Chinese typography. Current date anchor 2026-10-20; do not add dates or timestamps.
+
+Reference roles: Image 1 (A2.png) is the visual workflow and spatial relationships reference; Image 2 (A3.png) is the RGB/tensor educational imagery reference; Image 3 (01-path-preview.png) is the CURRENT Ascend Studio brand, compact navigation and neutral conversation shell reference. These are references for a new concept, not an instruction to reproduce the dull vertical-card list from image 3. Preserve Ascend Studio branding with small red Ascend logo, NOT the old Ascend Space brand.
+
+Shared scene to compare fairly: developer learning task 学会图像输入预处理, at 审阅学习路径, route adjustment is a PREVIEW, not yet confirmed. User chat says exactly “环境已准备好，跳过环境配置。” Assistant says “已准备调整预览。理解、跟练和输入检查保留，确认后生效。” No AI or user avatars; assistant text sits directly on the conversation surface; user message is right-aligned in a restrained gray bubble. Chat composer remains at bottom.
+
+Whole app anatomy: thin 54px top bar; compact left project/task navigation approximately 13% width; conversation approximately 23%; generous right learning workspace approximately 64%. Left shortcuts 新建任务 / 自动化任务 / 能力库. Small projects CANN 自定义算子 and 模型推理, selected neutral task 学会图像输入预处理, another task 图像推理调试. No 学习中心, no 学习组, no avatar gallery, no dashboard metrics. Keep both project list and conversation visible.
+
+VISUAL DIRECTION AND DEFINING INTERACTION: right area is a genuine open, airy, faintly dotted FREE SPATIAL CANVAS, with independent different-sized artifacts deliberately staggered and with room to move. Not a grid of equal cards and not a scrolling form. Sparse meaningful gently curved connectors link real content. A selected path object has a delicate violet boundary, corner resize handles and contextual tool strip 移动 / 固定 / 调整; one small cursor on its edge makes the affordance understandable without cartoon annotation. Lower right a compact minimap, 100%, minus/plus, 适应全部. These canvas controls belong to the workspace, not to a modal.
+
+Hero object across upper-middle canvas is a visual workflow with four connected nodes: 环境准备 (gray, dashed outline, struck-through name, small badge 拟跳过), 理解输入维度 (proposed starting node, compact caption 从这里开始), 跟练维度转换, 输入检查. Arrows from left to right, independent node icons, not a fixed page stepper. The connection past the skipped environment retains its original position, faint dashed line. Main workflow is visually larger than any supporting note.
+
+Below the path, three spatially arranged meaningful artifacts at different vertical offsets:
+- a smaller source image object lower-left containing an actual small cat photo and tiny red / green / blue channel previews, caption RGB 图像 and HWC [224,224,3];
+- a medium code object slightly lower and center, titled preprocess.py · 示例预览, with legible monospace:
+  chw = image.transpose(2, 0, 1)
+  input_data = chw[None, ...]
+  print(input_data.shape)
+  Use subtle row emphasis and line numbers.
+- a large airy beautiful RGB exploded tensor visualization to the right, translucent red, green, blue planes with geometry labeled H / W / C, and clear HWC → CHW → NCHW relation, caption 预期输入 [1,3,224,224]. A meaningful connector runs image → code → expected tensor. This is an expected learning sample, NOT a passed run.
+
+A compact floating adjustment-preview object sits near the changed workflow node, not a permanent bottom bar. Exact text 调整预览 / 跳过“环境准备” / 保留后续三个节点. One black primary button 确认并开始, a quiet secondary 取消. No pass checkmarks, no completed course, no real NPU result, no extra status panels. Put a tiny neutral footer 设计提案 · 示例内容.
+
+Style: warm white and pale gray base, elegant crisp Chinese sans-serif, subtle cool blue-violet used only in graph arrows/selected object/educational diagrams. Black primary action; neutral project selection. Gentle natural shadows only for genuinely floating artifacts. No saturated purple buttons everywhere, no decorative blobs overwhelming content. Use large intentional diagram imagery, clear visual hierarchy, restrained typography, enough whitespace between independent objects. The relationship of workflow + image + code + tensor must be instantly understood. No external slide title, no device/browser chrome, no multiple variations inside one image. Do not add functionality or many tiny cards simply to fill space.

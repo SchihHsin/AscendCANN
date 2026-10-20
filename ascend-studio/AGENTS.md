@@ -690,3 +690,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 主代理已实际打开页面所引用A1–A5原图；源码与子代理只读复核确认路径为纵向列表，讲解为字幕条＋下方图，练习默认缺少图解；canvas路径只留一句摘要，总览无learning预览。现有业务状态／ID／历史可以复用，功能补齐不能替代对原视觉交互的迁移。
 - 候选A原稿自由画布默认，B可操作workflow＋按阶段自动编排＋按需自由整理（推荐待讨论），C现有详情页补图。B重点为目标与学习对象可视、路径节点可操作、讲解／图解同屏关联、跟练图解代码结果联动、完成成果证据关系；路径等阶段可讨论扩大内容区，具体比例尚未批准。
 - 正式讨论记录在原content-management-design.md§21。线上IAB读取／截图超时，本轮没有新流程实拍或完整审计，不用旧QA冒充当前证据。未改源码／Pages／HTML页序与API/Host/Application边界，无构建、新测试或真实AI/NPU证据；只更新讨论和两AGENTS，检查后立即提交推送。
+
+
+### 2026-10-20（学习起步 A / B ImageGen 图稿审阅）
+
+- 用户要求将此前 A、B 分别 ImageGen 出图，凭视觉审阅后再选择。本轮使用内置 ImageGen 独立生成两张，并保留原生成文件；不是 Demo 实拍，也未授权实施任一方案。A 为自由学习画布，B 为自动编排学习工作区，两图统一任务、路径审阅阶段、拟跳过环境的未确认状态及三栏品牌风格。
+- 设计参考保存在 `ascend-studio/design-references/learning-start-ab-20261020/`，含两张 PNG、完整 prompt-a/prompt-b 与 README。两次都实际附入原材料 `images/A2.png`、`images/A3.png` 和当前 Demo `evidence/20261020-learning-goal/01-path-preview.png`，原图已经查看；生成图以原生结果依 A→B 顺序展示。设计依据为用户反馈与已有原稿，图片是设计提案，不作为 H/M 级产品实测或学习效果证据。
+- 目视与子代理只读复核：A 有点阵、错落对象、选框/缩放和小地图；B 无自由画布控件，保留横向 workflow、就地调整确认、连续 RGB/HWC→CHW→NCHW 图解及关联代码。B 的对话“20分钟”与工具行“30分钟”为生成文字误差，后续定稿需统一；不影响本轮空间组织比较，不将图片文字当产品数据。
+- 仅新增设计参考并更新根/Studio 两份 AGENTS；Demo 源码、ascstudio 产物、正式材料/页序/hash 及 API/Host/Application 边界未改。没有真实 AI/Python/模型/NPU 执行或学习效果验证。未新增或运行自动测试、未构建未修改的 Demo；PNG 文件完整性与 `git diff --check` 检查后仅提交本轮文件并立即 push origin/main，其他 WIP 保留。
+- 待用户审阅选 A、B 或明确组合方式，再提出具体实现范围；此前 B 推荐仍不是用户选择。提交/推送回执随后补记。

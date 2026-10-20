@@ -5299,3 +5299,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 原图中A1目标与图像／张量预览、A2横向节点workflow／拟跳过／就地调整、A3讲解与大幅图解的字幕关联、A4图解代码与反馈的同屏跟练、A5成果与代码／检查关系，上一轮未充分迁移。当前路径为纵向列表，练习默认只有参数代码与文字结果，canvas路径摘要和总览学习预览也不足；已有六对象及业务状态不等于图形体验已完成。
 - 原content-management-design.md新增§21作为讨论入口，候选A原稿自由画布默认、B可操作workflow＋按阶段自动编排＋按需自由整理（推荐，待讨论）、C详情页补图。B可复用三栏、公共壳、对象ID、关联、历史和保存，学习阶段按需扩大右区仍是候选；不恢复旧学习中心／头像／整屏紫色等已否定风格。推荐与比例均未获用户选择，不能直接实施或记录成定稿。
 - 仅原讨论材料及两AGENTS变更，源码／Pages／汇报HTML与页序/hash不改；无构建或新增测试，无真实AI/Python/模型/NPU或学习效果新证据，API/Host/Application边界不变。Product Design preflight无已保存上下文，按用户当前原图和仓内设计约束讨论；未调用ImageGen。diff检查后仅提交这3份文档立即push，其他WIP保持，结果以工具回执为准。
+
+
+### 2026-10-20（学习起步 A / B ImageGen 图稿审阅）
+
+- 用户要求将此前 A、B 分别 ImageGen 出图，凭视觉审阅后再选择。本轮使用内置 ImageGen 独立生成两张，并保留原生成文件；不是 Demo 实拍，也未授权实施任一方案。A 为自由学习画布，B 为自动编排学习工作区，两图统一任务、路径审阅阶段、拟跳过环境的未确认状态及三栏品牌风格。
+- 设计参考保存在 `ascend-studio/design-references/learning-start-ab-20261020/`，含两张 PNG、完整 prompt-a/prompt-b 与 README。两次都实际附入原材料 `images/A2.png`、`images/A3.png` 和当前 Demo `evidence/20261020-learning-goal/01-path-preview.png`，原图已经查看；生成图以原生结果依 A→B 顺序展示。设计依据为用户反馈与已有原稿，图片是设计提案，不作为 H/M 级产品实测或学习效果证据。
+- 目视与子代理只读复核：A 有点阵、错落对象、选框/缩放和小地图；B 无自由画布控件，保留横向 workflow、就地调整确认、连续 RGB/HWC→CHW→NCHW 图解及关联代码。B 的对话“20分钟”与工具行“30分钟”为生成文字误差，后续定稿需统一；不影响本轮空间组织比较，不将图片文字当产品数据。
+- 仅新增设计参考并更新根/Studio 两份 AGENTS；Demo 源码、ascstudio 产物、正式材料/页序/hash 及 API/Host/Application 边界未改。没有真实 AI/Python/模型/NPU 执行或学习效果验证。未新增或运行自动测试、未构建未修改的 Demo；PNG 文件完整性与 `git diff --check` 检查后仅提交本轮文件并立即 push origin/main，其他 WIP 保留。
+- 待用户审阅选 A、B 或明确组合方式，再提出具体实现范围；此前 B 推荐仍不是用户选择。提交/推送回执随后补记。

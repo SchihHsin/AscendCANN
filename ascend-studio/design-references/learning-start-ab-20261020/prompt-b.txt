@@ -1,0 +1,29 @@
+Use case: ui-mockup.
+Create one realistic, production-quality desktop product UI concept named 自动编排学习工作区. ONLY ONE complete app screen, no side-by-side variants. Target 1792 x 1024 landscape, high fidelity, crisp legible Chinese. Current date anchor 2026-10-20; omit dates/timestamps. This concept must make SYSTEM-ARRANGED VISUAL LEARNING clearly visible.
+
+Input images are references for a NEW composition, not edit targets: Image 1 A2.png supplies meaningful learning workflow and image → code → tensor relationships; Image 2 A3.png supplies educational RGB imagery and scientific diagram style; Image 3 01-path-preview.png supplies the current Ascend Studio red brand mark, project navigation, neutral selected states and avatar-free chat shell. Preserve Ascend Studio, not the old Ascend Space branding. Do not copy the current vertical-card-list layout from Image 3.
+
+FAIR COMPARISON SCENE: exact same learning task 学会图像输入预处理, same stage 审阅学习路径, adjustment only proposed and not yet confirmed. User chat exactly “环境已准备好，跳过环境配置。” Assistant text exactly “已准备调整预览。理解、跟练和输入检查保留，确认后生效。” User message right-aligned restrained gray bubble, assistant directly on plain conversation background, no response bubble, no avatars. Bottom composer remains visible.
+
+Whole app shell same as the other concept: thin top global bar with small red Ascend logo and Ascend Studio, breadcrumb 模型推理 > 学会图像输入预处理. Compact left project navigation ~13% width; continuous conversation ~23%; expanded right learning content ~64%. Sidebar shortcuts 新建任务 / 自动化任务 / 能力库; project groups CANN 自定义算子 and 模型推理. Neutral gray selected task 学会图像输入预处理, other task 图像推理调试. No 学习中心, 学习组, avatars, dashboard metrics or unrelated project marketing.
+
+DEFINING DIFFERENCE: right learning area is a calm, intelligently composed CONTENT WORKSPACE, with a stable aligned reading surface. System already places workflow, concept diagram and code in the best positions. The user should immediately feel this needs no card dragging or arranging. No dotted infinite-canvas background, no minimap, no zoom percentage or pan/grab controls, no resize handles, no scattered floating cards. No card grid, no vertical itinerary list. Use page alignment, spacious composition and subtle dividers instead of enclosing every section.
+
+Public workspace title bar: 我的学习路径 ▾ on left, quiet 全部内容 and ellipsis/close on right. Thin object-specific tool row has 路径审阅, small 每天 30 分钟, and only a subtle secondary icon action 自由整理 at far right; this is not a prominent view mode picker. No fixed Learning/Code/Result tabs.
+
+Main visual composition:
+1. Header 学会图像输入预处理 with a short supporting sentence 从 RGB 图像到模型输入，理解并核对维度转换.
+2. A genuinely visual, horizontal connected WORKFLOW at a stable location across the upper content area. Four stages 环境准备 → 理解输入维度 → 跟练维度转换 → 输入检查. Clear meaningful line icons, connecting paths and concise microcopy. Environment is muted with gray dashed route, struck-through name, explicit 拟跳过. The 理解输入维度 node is softly violet as proposed start, caption 从这里开始. Other steps remain pending, no completion checks. These are connected semantic nodes with generous breathing room, not four equal dashboard cards.
+3. Directly attached below that workflow is ONE narrow inline change-preview band, exact text 调整预览：跳过环境准备，保留理解、跟练和输入检查. On this SAME band right side are one black primary 确认并开始 and quiet 取消. No floating modal and no remote repeated CTA.
+4. The lower main surface is labeled 学习内容预览. It is a clean automatically arranged educational composition with an explanatory VISUAL as the hero on the left ~65% and a compact CODE PREVIEW to the right ~35%, separated by a simple vertical divider and baseline aligned. Do NOT turn these into a collection of rounded cards. Do not add a bottom result panel.
+   VISUAL: real small cat photo alongside its red/green/blue separated channel thumbnails, then a directional arrow showing channel reordering, then a large gorgeous transparent RGB exploded tensor. Clearly label HWC [224,224,3] and CHW [3,224,224]. At the tensor corner, a compact N=1 layer annotation naturally shows adding batch, leading to 预期 NCHW [1,3,224,224]. Keep the diagram large, polished, readable, and scientifically coherent. All labels and arrows are anchored to the respective photo/planes, no decorative meaningless connectors. Underneath, one brief caption 同一份图像数据，先调整通道顺序，再增加 batch 维度.
+   CODE: heading preprocess.py · 示例预览, small Python meta and copy icon; 6-8 readable lines with line numbers and clear syntax coloring. Important exact lines:
+      image = load_image()
+      chw = image.transpose(2, 0, 1)
+      input_data = chw[None, ...]
+      print(input_data.shape)
+   A delicate violet annotation links the channel-reordering arrow to the transpose line, and the N=1 annotation to the None line; minimal and clear, not spaghetti crossing. This makes diagram and code a single coordinated learning composition rather than unconnected panels. Highlight only these two code lines subtly.
+
+No claimed execution, no check passed, no real Python/model/NPU results; this is preview before starting. Footer tiny neutral 设计提案 · 示例内容.
+
+Style: polished warm white/pale gray UI, cool blue-violet used sparingly for workflow focus, semantic connectors and graph labels, black main action, neutral task selection. Readable intentional Chinese sans-serif; monospace only for code. Restrained thin dividers and spacious margins. No huge shadows, no lavender blobs or purple everywhere. Strong main visual workflow and RGB diagram, not a text-heavy admin form. Same brand, same task, same content and same pending state as the free-canvas concept; the meaningful difference is this system-aligned composition and absence of manual space management. No slide border, no device/browser chrome, no external explanatory annotations.
