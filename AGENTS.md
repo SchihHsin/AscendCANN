@@ -5273,3 +5273,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出《Ploy主动交互研究》图片过少。本轮确认是内容配图未补齐，不是图片加载故障：当前HTML引用的图片文件有效；图像主要是4段官方演示视频帧（意图建议、访客建议、Events、Ploybook）、1张发布权限文档截图和1张官网时间线，部分图片跨页重复，另有HTML/CSS重绘的机制示意。
 - `evidence/product-frames/README.md`明确承认第6、10、11、13页缺产品截图，AEO/GSC真实效果、待审邮件草稿/例外队列、Code Sync回执等未取得；主动交互研究记录亦写明外部应用不稳定、未登录操作，完整连续的建议→审阅→执行→反馈画面仍待补证。因此27页/8个概念不代表视觉证据已完整。此前回答只讲页数与场景、没有说明缺图，是不完整的。
 - 本轮只读核对，未修改报告或素材。新增/未跟踪图仍需按来源与画面核验后才可判断是否可用，不得仅凭文件存在当作已复核证据。本轮无测试，无API/Host/Application、Demo或真实执行事实变更；diff检查后仅提交本交接并push，其他WIP保留。
+
+### 2026-10-20（Ploy 主动交互研究补入官方来源图解）
+
+- 用户要求把缺失配图找到并放入主动交互报告。#6、#10、#11、#13 已各补一张可放大的 SVG 工作流图解：Email ICP、GSC 延迟观察、AEO 引用证据下钻、Code Sync 跨端版本交接。图解依据各自官方 Ploybook / 功能说明 / CLI 文档；公开材料没有取得这些场景的对应实拍 UI，因此明确标为“非产品截图”，不冒充真实产品画面。
+- 复核官方 Webinar 47:04 后，画面为访客列表与公司活动详情，不是 Gmail 草稿审核队列；第 26 页证据表已将文字回顾与画面所见分开记录，避免把该帧误用于 #6。第 13 页将可选生产发布明确放在 Code Sync 之外。
+- 变更：`cann-dashboard/ploy-interaction-lab/proactive-research.html`、`evidence/diagrams/` 四张 SVG、`evidence/full-review/README.md`、`evidence/proactive/research-notes.md`、`evidence/product-frames/README.md`。报告仍为 27 页，未改页序、API / Host / Application 边界或现有学习 Demo。官方资料内容为 H 级来源；图解是来源内容的说明性重绘，不构成账号实测或效果数据。
+- 验收：1280×720 本地浏览器检查 #6、#10、#11、#13、#26；四张图在页内正确加载，标题/正文/来源说明可见；#13 的发布区与同步步骤分开。静态核对 27 页、64 个本地引用、4 张 SVG XML 解析通过，`git diff --check` 通过。未新增或运行自动测试，没有真实账号写入、邮件发送、Code Sync、GSC 效果或 NPU 验证。
+- 内容提交 `54c9ce8d`（`docs: add workflow visuals to Ploy proactive report`）已推送 `origin/main`，从 `fa122ad2` 快进。随后仅补交接记录并再次提交推送。仍待取得实际待审 Gmail 队列、GSC 前后效果、AEO 原始回答/引用和 Code Sync 回执截图；不能把当前四张 SVG 当成实拍补齐。其他工作区 WIP 未纳入。
