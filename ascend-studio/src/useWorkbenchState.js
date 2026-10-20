@@ -288,7 +288,7 @@ export function useWorkbenchState() {
     }));
     return true;
   };
-  const createTask = ({ name, groupId, goal, kind, background = "", dailyMinutes = 20 }) => {
+  const createTask = ({ name, groupId, goal, kind, background = "", dailyMinutes = 20, attachments = [] }) => {
     const cleanGoal = String(goal || "").trim();
     const learning = kind === "learning";
     const title = String(name || (learning ? cleanGoal.slice(0, 60) : "")).trim(), group = groups.find((item) => item.id === groupId);
@@ -312,7 +312,7 @@ export function useWorkbenchState() {
         : "已建立任务。可以继续补充代码、日志或具体问题，再选择下一步检查方向。当前尚无运行证据。",
       status: "waiting",
     } }));
-    saveConversationScroll(); updateTask(title, {}); setSelectedTask(title); setOpenedGroups((all) => all.includes(groupId) ? all : [...all, groupId]); setQuery(""); setFilterScope("all"); setActionView(null); setDialog(null); notify("任务已创建"); return true;
+    saveConversationScroll(); updateTask(title, { attachments: storedAttachments(attachments) }); setSelectedTask(title); setOpenedGroups((all) => all.includes(groupId) ? all : [...all, groupId]); setQuery(""); setFilterScope("all"); setActionView(null); setDialog(null); notify("任务已创建"); return true;
   };
   const startConversation = () => {
     cancelReply(selectedTask);

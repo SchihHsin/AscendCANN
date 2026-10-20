@@ -697,9 +697,9 @@ function App() {
         </div>
         {!sidebarCollapsed && <div className="workspace-divider workspace-divider--projects" role="separator" tabIndex={0} aria-label="调整项目栏宽度" title="拖动调整项目栏宽度；双击恢复默认布局" {...layout.separatorProps("projects")} />}
 
-        {showNewTaskHome ? <NewTaskHome onCreateTask={({ goal, kind }) => {
+        {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} onCreateTask={({ goal, kind, attachments }) => {
           const groupId = kind === "learning" ? "inference" : (currentGroup?.id || "operator");
-          const created = wb.createTask({ name: goal.slice(0, 60), groupId, goal, kind });
+          const created = wb.createTask({ name: goal.slice(0, 60), groupId, goal, kind, attachments });
           if (created) setShowNewTaskHome(false);
           return created;
         }} /> : <section className="conversation-panel" aria-label="任务对话">

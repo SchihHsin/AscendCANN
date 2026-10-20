@@ -5414,3 +5414,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出 `ai-coding-platform-mechanism-report.html#2` 顶部的 `AI 可用性研究观察` 条应去掉。已删除该整块及专属 CSS，不改六阶段泳道、任务外环或图中其他内容。
 - 页序、Hash 与 API / Host / Application 层边界不变。验证：`git diff --check` 通过，源码中已无 `task-research-lens` / `AI 可用性研究观察` 残留。截图级浏览器复核未进行。
 - 功能提交 `3be0204a`（`docs: remove research lens from task overview`）已推送 `origin/main`；无关工作区改动未纳入。
+
+
+### 2026-10-20（新建首页点阵背景与鼠标交互）
+
+- 用户以选定的新建任务首页截图为基础，要求加入点阵动效并做成 Demo。保留左侧任务列表、学习/开发切换（活动态黑底白字）、输入框遮挡部分提示卡、悬停/键盘聚焦时卡片上浮；新增透明点阵纹理作为静态背景，并在鼠标位置显示轻微局部高亮与位移，触摸不跟随，支持减少动态效果。首页的代码片段/截图/文件添加可随新任务携带。
+- 新增视觉资源 `ascend-studio/public/assets/new-task-dot-matrix.png` 及参考截图 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/source-reference.png`；构建产物同步到 `ascstudio/`。源码变更在 `App.jsx`、`NewTaskHome.jsx`、`new-task-home.css`、`useWorkbenchState.js`。
+- 来源与边界：用户截图为布局/视觉来源；新点阵纹理为 ImageGen 生成资源。构建与源码检查为本地证据；本轮无法通过浏览器捕获实现截图，所以没有完成视觉对比或交互实测，`design-qa.md` 标为 blocked。不得把构建通过描述为视觉验收通过。无真实 AI、项目代码执行、Python、模型、NPU 或学习效果验证；未影响正式汇报页序/hash 或 API / Host / Application 边界。
+- 验证：`npm run build:pages` 成功；`node --check ascend-studio/src/useWorkbenchState.js` 与 `git diff --check` 通过。Vite 主 JS 664.24kB，沿用既有 >500kB 体积提醒。
+- 提交/推送回执将在源码推送后补录；只提交此首页功能、素材、静态产物和交接文档，其他预存 WIP 保持未暂存。

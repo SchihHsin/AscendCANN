@@ -628,3 +628,27 @@ Luna分工概要卡、目录语义、规则初稿及只读检查，主代理整�
 `npm run build:pages`通过，JSX由Vite解析；主JS 658.05kB，保留既有 >500kB 提示。`git diff --check`及相关Hook `node --check`通过。没有新增或运行自动测试。没有真实AI、工程写入、Python、模型、NPU或学习效果验证；页面调整不影响正式材料页序/hash及 API / Host / Application 层边界。
 
 GitHub Pages run `39411454562` 的 build/deploy 均成功；公开入口HTTP200并引用 `index-CUKSCEIs.js` / `index-E2Z-rNdc.css`，两个资源均返回HTTP200。
+
+
+## 2026-10-20 · 新建任务首页点阵与指针交互
+
+**Findings**
+- [Blocker] 缺少实现端截图，无法进行设计 QA。
+  Location: 新建任务首页，`src/NewTaskHome.jsx`、`src/new-task-home.css`。
+  Source: `evidence/20261020-new-task-home-dot-matrix/source-reference.png`，PNG 1586×992；设计状态为左侧项目/任务列表保留、学习模式选中、提示卡部分被输入框遮挡。
+  Implementation screenshot: 未生成。实现端预期比较 viewport 为 1586×992；CSS viewport 与 device scale 未实测。此前本地浏览器预览请求被环境策略拒绝；现有工具说明不允许改用其他浏览器、Playwright 或 CDP 绕过，因此本轮停止截图尝试。
+  Evidence / impact: 构建结果与源码不能代替浏览器渲染；不能据此判断点阵密度、叠层可见度、卡片遮挡比例、窄视口排版、文字/间距/色彩匹配或指针交互。附件选择、移除与创建任务也未进行浏览器实测。
+  Next step: 在获准的预览浏览器中以相同 viewport 打开首页，分别检查静止、指针悬停、卡片 hover/focus、窄屏，以及代码片段/图片/文件附件；将实现截图保存后与来源图并排复核。
+
+**Open Questions**
+- 需视觉确认点阵在用户环境显示的疏密、亮度和指针局部增强幅度。
+
+**Implementation Checklist**
+- [x] 生成透明点阵纹理并加入首页背景。
+- [x] 加入指针位置局部增强、轻微位移、触屏跳过及 reduced-motion 处理。
+- [x] 构建 Pages 静态产物并检查源码。
+- [ ] 浏览器截图与同尺寸视觉比较。
+- [ ] 实际操作核心模式、卡片和附件入口。
+
+**Final result**
+final result: blocked
