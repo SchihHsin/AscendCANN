@@ -5308,3 +5308,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 目视与子代理只读复核：A 有点阵、错落对象、选框/缩放和小地图；B 无自由画布控件，保留横向 workflow、就地调整确认、连续 RGB/HWC→CHW→NCHW 图解及关联代码。B 的对话“20分钟”与工具行“30分钟”为生成文字误差，后续定稿需统一；不影响本轮空间组织比较，不将图片文字当产品数据。
 - 仅新增设计参考并更新根/Studio 两份 AGENTS；Demo 源码、ascstudio 产物、正式材料/页序/hash 及 API/Host/Application 边界未改。没有真实 AI/Python/模型/NPU 执行或学习效果验证。未新增或运行自动测试、未构建未修改的 Demo；PNG 文件完整性与 `git diff --check` 检查后仅提交本轮文件并立即 push origin/main，其他 WIP 保留。
 - 待用户审阅选 A、B 或明确组合方式，再提出具体实现范围；此前 B 推荐仍不是用户选择。提交/推送回执随后补记。
+
+- 提交/推送回执：`305af24c`（design: compare learning canvas and arranged workspace proposals）已成功推送 origin/main，范围仅两图、两份完整提示词、README 与两份 AGENTS。PNG 完整性、源文件存在及暂存 diff 检查通过；两张已原生显示供用户审阅，未改变 Demo 实现，未将 Pages 自动触发当作产品变更验收。其余 WIP 未暂存；本条回填随后单独推送。
