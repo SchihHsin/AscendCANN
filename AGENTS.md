@@ -5437,4 +5437,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户反馈点阵仍不可见、背景应为浅灰而非白色、Tab 颜色不符，并要求按新附件调整。该附件与既有 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/source-reference.png` 哈希一致。最新参考图覆盖此前黑底白字选中态：任务类型 Tab 使用浅灰底轨，选中项白底、深色字和轻阴影。
 - `ascend-studio/src/new-task-home.css` 设浅灰首页底色 `#f6f6f5`，以 CSS radial-gradient 提供稳定可见的点阵，并保留指针位置局部加深；学习/开发 Tab 配色与截图一致。文件夹色带页签由圆角胶囊改为相连的非对称斜升、短平台、斜落轮廓。`NewTaskHome.jsx` 移除旧点阵纹理 URL，移除无用 PNG 资源；`ascstudio/` 已重建。
-- `npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check`通过，静态构建产物包含 CSS 点阵、浅灰底、白底选中态和新页签 polygon。浏览器策略拒绝本机预览访问；没有通过其他浏览器、Playwright、CDP、CLI 或间接方式绕过。截图级视觉 QA 未完成，`ascend-studio/design-qa.md` 保持 `final result: blocked`。
+- `npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check`通过，静态构建产物包含 CSS 点阵、浅灰底、白底选中态和新页签 polygon。浏览器策略拒绝本机预览访问；没有通过其他浏览器、Playwright、CDP、CLI 或间接方式绕过。截图级视觉 QA 未完成，`ascend-studio/design-qa.md` 保持 `final result: blocked`。 `13474f31`（`fix: match new task home reference styling`）已推送 `origin/main`；GitHub Pages run `39421417869` build/deploy 成功。

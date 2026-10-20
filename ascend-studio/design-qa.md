@@ -683,7 +683,7 @@ final result: blocked
 - 红/黄/蓝卡片页签沿用参考图的文件夹语义，凸起区域与顶边相接，采用非对称斜升—短平台—斜落轮廓；不再使用胶囊形凸块。
 
 **验证**
-- `npm run build:pages` 成功；构建产物静态检查确认浅灰底、CSS 点阵、白底选中态和 polygon 文件夹轮廓存在；旧点阵 PNG 已不再输出。`node --check src/useWorkbenchState.js` 与 `git diff --check` 通过。Vite 主 JS 仍有 >500kB 体积提示。
+- `npm run build:pages` 成功；构建产物静态检查确认浅灰底、CSS 点阵、白底选中态和 polygon 文件夹轮廓存在；旧点阵 PNG 已不再输出。`node --check src/useWorkbenchState.js` 与 `git diff --check` 通过。Vite 主 JS 仍有 >500kB 体积提示。功能提交 `13474f31`（`fix: match new task home reference styling`）已推送；GitHub Pages run `39421417869` build/deploy 成功。
 - 浏览器截图级验收未完成：内置浏览器拒绝访问本机预览，URL 策略未授权读取本机页面。不可改用其他浏览器、Playwright、CDP、CLI 或间接方式绕过；源码/构建不能证明实际屏幕效果。
 
 **待验收**

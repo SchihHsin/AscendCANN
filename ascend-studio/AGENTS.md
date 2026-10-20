@@ -785,4 +785,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户再次指出点阵不可见、纯白背景不符合参考图、Tab 颜色不对，并要求严格按最新附件。`evidence/20261020-new-task-home-dot-matrix/source-reference.png` 与本轮附件相同。最新图覆盖此前“黑底白字”选中态：改为浅灰分段底轨，选中项白底深色字和轻阴影。
 - `src/new-task-home.css` 将首页底色设为 `#f6f6f5`；点阵改用 CSS `radial-gradient` 固定网格及指针附近更深的遮罩层，不再依赖不易察觉的透明 PNG；模式 Tab 色彩按参考图重设。文件夹顶边采用连接的非对称斜坡页签，源码位于同一 CSS 文件；`NewTaskHome.jsx` 移除旧图片变量，废弃 PNG 纹理移除。
 - `npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check`通过；构建静态检查确认新 CSS 和 SVG/PNG 旧纹理移除；Vite 主 JS 仍提示 >500kB。
-- 内置浏览器拒绝读取本机预览，URL 策略未授权；遵守拒绝，不通过其他浏览器、Playwright、CDP 或命令行绕过。修改后视觉 QA 仍 `blocked`，不可写成已通过。待线上发布后由可用浏览器确认底色、点阵、Tab、文件夹页签及 hover。
+- 内置浏览器拒绝读取本机预览，URL 策略未授权；遵守拒绝，不通过其他浏览器、Playwright、CDP 或命令行绕过。修改后视觉 QA 仍 `blocked`，不可写成已通过。待线上发布后由可用浏览器确认底色、点阵、Tab、文件夹页签及 hover。 `13474f31`（`fix: match new task home reference styling`）已推送 `origin/main`；GitHub Pages run `39421417869` build/deploy 成功。
