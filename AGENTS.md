@@ -5392,3 +5392,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 改动文件：`ascend-studio/src/App.jsx`、`NewTaskHome.jsx`、`new-task-home.css`、`styles.css`、`README.md`、`interaction-design.md`、`design-qa.md`、嵌套 `ascend-studio/AGENTS.md`，以及Pages产物 `ascstudio/`。用户提供的截图是布局参考；本地浏览器为M级交互观察。创建任务实际提交未测试，以免在持久状态留下测试任务；映射逻辑经源码复核。
 - 本地1280×720检查首次进入、打开新建首页、学习/开发Tab、提示与CTA、计数、侧栏收起/恢复、返回已有任务并重新打开首页。`npm run build:pages`、相关Hook `node --check`、`git diff --check`通过；Vite主JS 658.05kB，既有>500kB提示。无真实AI、工程写入、Python/模型/NPU或学习效果验证。未改正式材料页序/hash，也不改变 API / Host / Application 边界。
 - 本轮代码和Pages经检查后仅提交相关文件，其他预存WIP未纳入。`affc51dd`（`feat: add learning and development task home`）已成功推送 `origin/main`；Pages run `39411454562` build/deploy 成功，公开入口及新JS/CSS均HTTP200。静态产物由 `npm run build:pages` 构建。交接更新单独回填并立即推送。
+
+
+### 2026-10-20（机制流程六阶段补充中文）
+
+- 用户要求将 `ai-coding-platform-mechanism-report.html` 的六阶段英文标签加上中文。为避免同一套标签在总览页和通用 Host 循环页不一致，两处均补齐：上下文装配、判断与规划、校验与路由、调用与执行、观察与验证、重新规划并继续。
+- 仅调整阶段标题的双语排版；任务关系图和通用循环图的页面顺序、API / Host / Application 边界及其他机制内容不变。
+- 验证：`git diff --cached --check` 通过，核对两处均包含六个中文标签。浏览器拒绝本地 `file:` URL 预览，未尝试绕过；因此没有完成截图级视觉检查。
+- 提交 `42f11802`（`docs: add Chinese workflow stage labels`）已推送 `origin/main`。工作区里与本任务无关的已有修改和未跟踪文件均未纳入。
