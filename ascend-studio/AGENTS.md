@@ -759,5 +759,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ## 2026-10-20 · 新建首页模式 Tab 纯黑选中态
 
 - 用户指出学习/开发 Tab 选中颜色不对，要求黑色底、白色字。本轮把 `.new-task-home__mode-button.is-active` 背景从 `#171923` 改为纯黑 `#000`，白字 `#fff` 保持；未更改布局和交互。
-- `npm run build:pages` 成功；构建 CSS 中活动态规则确认为 `color:#fff;background:#000`，`git diff --check` 通过。用户截图是视觉反馈；本轮未完成刷新后浏览器截图核验。
-- 仅涉及新建首页 CSS 与对应静态构建产物，路径画布、任务流、API / Host / Application 边界及正式材料页序/hash不变。
+- `npm run build:pages` 成功；构建与线上 CSS 中活动态规则确认为 `color:#fff;background:#000`，`git diff --check` 通过。Pages run `39412734552` build/deploy 成功，线上入口已引用新CSS。用户截图是视觉反馈；本轮未完成刷新后浏览器截图核验。
+- 功能提交 `d9e0b557`（`style: set active task mode tab to black`）已推送 `origin/main`；交接回填随后单独提交推送。仅涉及新建首页 CSS 与对应静态构建产物，路径画布、任务流、API / Host / Application 边界及正式材料页序/hash不变。
