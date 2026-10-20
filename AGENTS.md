@@ -5244,3 +5244,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求去掉右下角“当前Demo实拍…”这一行及同类说明。本轮删除共用章31–63页三类renderer的foot输出：实拍/日期/来源/边界说明及重复组内序号；正常63页导航、页码、正文、完整图片/框选、放大和正文链接保持。来源与证据边界继续保留在生成源字段、manifest、README、QA及实施范围，不另加页面说明。
 - 修改shared-interaction-captures/framework/pages.mjs并重建index.html；Demo源码与ascstudio产物、前30页原有研究内容不改，页序/hash及API/Host/Application边界不变。此为用户明确删减要求，无需重新选视觉方向。
 - 检查：63页、共用章footer为0、旧实拍说明文本命中为0，63导航和31图片放大入口保留；实际查看状态页和架构页，图片完整加载。三个MJS语法、构建与diff检查通过，未新增/运行自动测试。Luna只读核对footer无功能/链接；主代理完成删减与浏览器检查。证据在learning-canvas-story/evidence/footer-cleanup-20261020。仅本轮文件提交立即push，其他WIP保留；回执后补。
+
+- 提交/发布回执：47685518已成功推送origin/main；Pages运行39355496826成功，公开材料HTTP200且共用章foot=0。仅8个本轮材料/交接/证据文件，Demo未改，其他WIP保持；本条回填检查后再推送。
