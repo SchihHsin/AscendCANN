@@ -737,3 +737,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 实现子代理已立即停止，只读核实本轮无App/LearningJourney/CSS/Pages改动，也未创建层级画布新组件；早前LearningJourney属于已提交7a1f757f，不应回退。原Demo/用户任务和参数保持。无构建/新增或运行测试，无真实AI/Python/模型/NPU验证；API/Host/Application及正式材料页序/hash不变。
 - 用户新增路径位置议题：上方或左侧尚待讨论。先比较自由画布中两种初始摆放，不默认新增常驻侧栏；路径应呈现父子层级，节点内容按需展开。主代理已回到讨论，不继续ImageGen或实现。
 - 仅本轮图稿/提示词/README、讨论材料及根/Studio两份AGENTS经diff检查后提交立即推送origin/main，其他WIP保留。提交结果以本轮Git回执为准。
+
+
+## 2026-10-20 · 学习层级自由画布交付记录
+
+- 用户确认开始实现 A 方案，并确定用无文字 icon tab 切换左右/上下整体布局，默认左右；路径阶段和子节点直接可见，当前子节点连接图解与学习材料。实现已接入现成演示任务和新建学习目标流程。
+- 改动涉及 `src/LearningHierarchyCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/useLearningCanvasView.js`、`src/App.jsx`、`src/TaskWorkspace.jsx`、`src/useContentWorkspace.js`、`src/useWorkbenchLayout.js`。说明与 QA 见 `interaction-design.md`、`design-qa.md`。
+- 验证：5174 本地预览确认默认左右布局及层级节点；`node --check` 的三个 hook 检查和 `npm run build:pages` 通过，`git diff --check` 通过。页面仍有 Vite 主包大于 500kB 提示。未声称真实 Python、模型、NPU 或学习效果验证。
+- 用户偏好简单子任务使用 Luna（`gpt-6-luna`，low），不使用 `gpt-6.1-sol` Ultra。已创建 Agent 不能原地切模型；当前没有运行中的子 Agent。此次文档子任务由 Luna 完成，其余 Agent 已停用。后续新建/接续子任务使用 Luna。
+- 提交和 Pages 发布回执待提交后补记；本条仅涉及学习画布任务和 Luna 使用偏好，不纳入其他工作区改动。

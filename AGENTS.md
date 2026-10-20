@@ -76,6 +76,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 2. **每次对话结束后更新本文件（AGENTS.md）**，追加本次对话的关键决策和改动摘要
 3. **视觉/设计类改动先提 2–4 个选项**让用户选，不要直接实现
 4. **用中文**与用户交流
+5. 用户要求简单子任务使用 Luna（`gpt-6-luna`，低推理档），不要使用 `gpt-6.1-sol` Ultra。既有 Agent 线程无法原地换模型；如需继续其未完成工作，停用旧线程后用 Luna 新线程接手，已写入工作区的成果保留并复核。
 
 ---
 
@@ -5346,3 +5347,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现子代理已立即停止，只读核实本轮无App/LearningJourney/CSS/Pages改动，也未创建层级画布新组件；早前LearningJourney属于已提交7a1f757f，不应回退。原Demo/用户任务和参数保持。无构建/新增或运行测试，无真实AI/Python/模型/NPU验证；API/Host/Application及正式材料页序/hash不变。
 - 用户新增路径位置议题：上方或左侧尚待讨论。先比较自由画布中两种初始摆放，不默认新增常驻侧栏；路径应呈现父子层级，节点内容按需展开。主代理已回到讨论，不继续ImageGen或实现。
 - 仅本轮图稿/提示词/README、讨论材料及根/Studio两份AGENTS经diff检查后提交立即推送origin/main，其他WIP保留。提交结果以本轮Git回执为准。
+
+
+### 2026-10-20（学习路径层级画布实施）
+
+- 用户确认实施，并指定布局工具用无文字 icon tab 切换整体左右/上下；左右默认。A自由画布仍是参考方向：路径是可移动节点组，父阶段和子步骤直接可见；当前子步骤连接关联图解与材料各一条线；默认保留周边路径，提供进一步聚焦。
+- 已实施到 `ascend-studio/src/LearningHierarchyCanvas.jsx`、`learning-hierarchy-canvas.css`、`useLearningCanvasView.js`，并接入 App、TaskWorkspace、内容工作区和工作区默认比例。现成任务与新建学习目标沿用同一画布；左右/上下分别保存视角和对象位置。历史记录和练习状态继续按原任务身份保存。
+- 设计/实施说明更新在 `ascend-studio/interaction-design.md`、`cann-dashboard/ploy-interaction-lab/learning-canvas-story/content-management-design.md` 与其 README；QA记录在 `ascend-studio/design-qa.md`。参考图及连线反馈在 `ascend-studio/design-references/learning-left-hierarchy-20261020/`。图稿为设计参考，截图在本轮浏览器工具内联查看，未保存成独立PNG。
+- 实际浏览器检查覆盖布局切换及刷新恢复、子节点/材料导航、聚焦返回、收起恢复、固定与键盘移动、草案取消、新建学习目标表单、1280×720和390×844宽度。构建 `npm run build:pages` 成功，3个JS hook语法检查和 `git diff --check` 通过；主包654.98kB，Vite有>500kB非阻塞提示。临时热更新曾出现宽度变量初始化顺序错误，已修复并完整刷新后继续检查。
+- 仅演示单一图像预处理路径；图片通道分离为浏览器概念演示，张量为示意，练习只核对形状。没有真实Python、模型、NPU、工程写入或学习效果验证；API / Host / Application边界和正式汇报页序/hash未改变。
+- 提交/Pages推送回执待本轮提交后补入；其他已有WIP（报告、`.DS_Store`、研究素材等）未纳入本任务。

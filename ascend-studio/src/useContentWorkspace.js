@@ -32,6 +32,20 @@ function rememberMaterial(items, material) {
     : [...items, material];
 }
 
+function learningCanvasState(previous) {
+  const material = { ...getMaterialMeta("canvas"), title: "学习画布", unread: false, closed: false };
+  return {
+    ...previous,
+    tabs: rememberMaterial(previous.tabs, material),
+    visitedTabs: rememberMaterial(previous.visitedTabs, material),
+    activeId: "canvas",
+    splitId: null,
+    canvasMode: "free",
+    lastContentId: previous.lastContentId && previous.lastContentId !== "canvas" ? previous.lastContentId : "learning-goal",
+    learningCanvasVersion: 1,
+  };
+}
+
 function openedMaterial(previous, id, options = {}) {
   const existing = previous.tabs.find((tab) => tab.id === id)
     || previous.visitedTabs.find((tab) => tab.id === id);
@@ -40,9 +54,10 @@ function openedMaterial(previous, id, options = {}) {
     ? options.visibleIds.includes(id)
     : !previous.collapsed && previous.activeId !== "canvas" && (id === previous.activeId || id === previous.splitId);
   const background = options.activate === false;
-  const closed = background ? existing?.closed ?? !previous.tabs.some(tab => tab.id === id) : false;
+  const closed = options.viewedInCanvas ? false : background ? existing?.closed ?? !previous.tabs.some(tab => tab.id === id) : false;
   const material = { ...existing, ...meta, closed,
-    unread: background && !visible ? options.restore ? Boolean(existing?.unread) : true : false };
+    unread: !options.viewedInCanvas && background && !visible ? options.restore ? Boolean(existing?.unread) : true : false,
+    ...(options.viewedInCanvas ? { lastAccessAt: Date.now() } : {}) };
   return {
     ...previous,
     tabs: background && closed ? previous.tabs : rememberMaterial(previous.tabs, material),
@@ -74,7 +89,7 @@ function activatedState(previous, id) {
   };
 }
 
-export function useContentWorkspace({ taskId, isMainTask, initialMaterialId }) {
+export function useContentWorkspace({ taskId, isMainTask, initialMaterialId, defaultToLearningCanvas = false }) {
   const tasks = useRef(null);
   const visibleContent = useRef(new Map());
   if (!tasks.current) {
@@ -84,6 +99,11 @@ export function useContentWorkspace({ taskId, isMainTask, initialMaterialId }) {
   const persist = () => writeSession("workspace", Object.fromEntries(tasks.current));
   const [, setRevision] = useState(0);
   if (!tasks.current.has(taskId)) tasks.current.set(taskId, initialState(isMainTask, taskId, initialMaterialId));
+  // Migrate only the presentation once; saved task data and a collapsed work area remain intact.
+  if (defaultToLearningCanvas && tasks.current.get(taskId).learningCanvasVersion !== 1) {
+    tasks.current.set(taskId, learningCanvasState(tasks.current.get(taskId)));
+    persist();
+  }
   const state = tasks.current.get(taskId);
 
   const update = (change, ownerId = taskId, ownerIsMainTask = isMainTask) => {
@@ -240,7 +260,7 @@ export function useContentWorkspace({ taskId, isMainTask, initialMaterialId }) {
     ? activatedState(openedMaterial(previous, previous.referenceReturnId, { restore: true }), previous.referenceReturnId)
     : previous);
   const markRead = (id) => update(previous => ({ ...previous, tabs: previous.tabs.map(item => item.id === id ? { ...item, unread: false } : item), visitedTabs: previous.visitedTabs.map(item => item.id === id ? { ...item, unread: false } : item) }));
-  const reset = () => update(() => initialState(isMainTask, taskId, initialMaterialId));
+  const reset = () => update(() => { const initial = initialState(isMainTask, taskId, initialMaterialId); return defaultToLearningCanvas ? learningCanvasState(initial) : initial; });
 
   return { state, getTaskState, actions: { open, activate, close, openCanvas, returnFocus, setCollapsed, savePosition, editGroup, editItem, setOverview, saveSnapshot, markRead, splitWith, focusComparison, setVisibleContent, endSplit, returnFromReference, reset } };
 }

@@ -45,7 +45,7 @@ function SavedContent({ workspace, ownerId, contentId, showing, children }) {
 }
 
 /** Ordinary viewers stay mounted while the task canvas is opened or closed. */
-export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], contentItems = [], onOpen, onClose, onOpenCanvas, onArrange, onReturnFocus, onCollapse, renderContent, renderCanvas, contentWidth = 1000, onCompare }) {
+export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = false, canvasMaterialIds = [], materials = [], contentItems = [], onOpen, onClose, onOpenCanvas, onArrange, onReturnFocus, onCollapse, renderContent, renderCanvas, contentWidth = 1000, onCompare }) {
   const { state, actions } = workspace;
   const [menuOpen, setMenuOpen] = useState(false);
   const [objectInfoOpen, setObjectInfoOpen] = useState(false);
@@ -113,8 +113,9 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
   useEffect(() => {
     for (const [ownerId] of taskViews.current) {
       const current = workspace.getTaskState(ownerId);
-      const selected = ownerId === taskId && !current.collapsed && current.activeId !== "canvas";
-      actions.setVisibleContent(ownerId, !selected ? [] : [current.activeId, current.splitId].filter(Boolean));
+      const selected = ownerId === taskId && !current.collapsed;
+      const canvasIds = isLearningTask && current.activeId === "canvas" && current.canvasMode === "free" ? canvasMaterialIds : [];
+      actions.setVisibleContent(ownerId, !selected ? [] : current.activeId === "canvas" ? canvasIds : [current.activeId, current.splitId].filter(Boolean));
     }
   });
   const restoreObject = id => { setObjectInfoOpen(false); const record = activeHistory.find(child => child.id === id); onOpen?.(id, { restore: true, ...(record ? { title: record.title, type: "preview" } : {}) }); };
@@ -125,7 +126,8 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
     if (material.available === false) return;
     // Navigation restores an object; it does not generate a proposal or run a check.
     if (state.splitId && !state.comparisonPinned) actions.endSplit();
-    if (tabs.some(item => item.id === material.id)) actions.activate(material.id);
+    if (isLearningTask) onOpen?.(material.id, { restore: true, title: material.title, type: material.type });
+    else if (tabs.some(item => item.id === material.id)) actions.activate(material.id);
     else actions.open(material.id, { restore: true, title: material.title, type: material.type });
     setContentMenuOpen(false);
     setObjectInfoOpen(false);
@@ -163,7 +165,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
   const showPicker = (purpose = "new") => { setPickerPurpose(purpose); setMenuOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); setPickerOpen(true); };
   const openCanvas = (mode = "overview", options = {}) => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); onOpenCanvas?.({ mode, ...options }); };
   const inOverview = onCanvas && state.canvasMode === "overview";
-  const activeTitle = inOverview ? "全部内容" : historyItem ? `${historyItem.title} · ${historyItem.time || "历史"}` : activeTab?.title || "任务内容";
+  const activeTitle = inOverview ? "全部内容" : onCanvas && isLearningTask ? "学习画布" : historyItem ? `${historyItem.title} · ${historyItem.time || "历史"}` : activeTab?.title || "任务内容";
   const returnToFocus = () => { setMenuOpen(false); setContentMenuOpen(false); onReturnFocus?.(); };
 
   return <section className={`task-workspace${compactCompare ? " is-compact-comparison" : ""}${inOverview ? " is-overview" : ""}`} aria-label="任务内容工作区">
@@ -202,7 +204,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
             {state.activeId && !onCanvas && <button type="button" onClick={() => { (onClose || actions.close)(focusedId); setMenuOpen(false); }}><IconX size={15} /><span>收起当前内容为概要</span></button>}
             {state.activeId && !onCanvas && isMainTask && !state.splitId && <button type="button" onClick={() => showPicker("split")}><IconLayoutColumns size={15} /><span>留一份参考</span></button>}
             <button type="button" onClick={() => showPicker()}><IconPlus size={15} /><span>打开其他内容</span></button>
-            {isMainTask && <button type="button" onClick={() => openCanvas("free")}><IconLayoutBoard size={15} /><span>手动整理内容</span></button>}
+            {isMainTask && !isLearningTask && <button type="button" onClick={() => openCanvas("free")}><IconLayoutBoard size={15} /><span>手动整理内容</span></button>}
           </div>}
         </div>
         <button className="tw-collapse" type="button" aria-label="收起任务内容工作区" title="收起任务内容工作区" onClick={() => onCollapse?.()}><IconX size={14} /></button>
@@ -232,7 +234,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, materials = [], c
               <SavedContent workspace={workspace} ownerId={ownerTaskId} contentId={tab.id} showing={showing}>{renderContent?.(tab.id, ownerTaskId)}</SavedContent>
             </section>;
           })}
-          {canvasVisited && view.isMainTask && <div className="tw-canvas-view" id={workspacePaneId(ownerTaskId, "canvas")} role="region" aria-label={current.canvasMode === "free" ? "手动整理任务内容" : "全部任务内容"} hidden={!selectedTask || !currentCanvas}>{renderCanvas?.(selectedTask && !current.collapsed && currentCanvas, ownerTaskId)}</div>}
+          {canvasVisited && view.isMainTask && <div className="tw-canvas-view" id={workspacePaneId(ownerTaskId, "canvas")} role="region" aria-label={current.canvasMode === "free" ? isLearningTask ? "学习任务画布" : "手动整理任务内容" : "全部任务内容"} hidden={!selectedTask || !currentCanvas}>{renderCanvas?.(selectedTask && !current.collapsed && currentCanvas, ownerTaskId)}</div>}
           {selectedTask && !current.activeId && <div className="tw-empty"><IconFileDescription size={24} /><strong>打开需要查看的内容</strong><p>代码、结果和参考资料会在这里展开。</p>{isMainTask && <button type="button" onClick={() => openCanvas()}><IconLayoutBoard size={14} />查看已有内容</button>}<button type="button" onClick={() => showPicker()}><IconPlus size={14} />新增内容</button></div>}
         </div>;
       })}

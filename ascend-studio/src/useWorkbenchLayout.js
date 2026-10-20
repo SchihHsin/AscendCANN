@@ -10,15 +10,17 @@ const clamp = (value, min, max) => Math.min(Math.max(value, min), Math.max(min, 
 const pixels = (value) => `${Math.round(value * 1000) / 1000}px`;
 const initialPreferences = () => ({ projects: null, conversationRatio: null });
 
-function resolveLayout(size, preferences, sidebarCollapsed, contentCollapsed) {
+function resolveLayout(size, preferences, sidebarCollapsed, contentCollapsed, learningLayout) {
   if (size.windowWidth <= 980 || !size.width) return null;
   const compact = size.windowWidth <= 1240;
-  const defaultProjects = compact ? 260 : Math.max(286, size.windowWidth * 0.22);
+  const defaultProjects = learningLayout ? clamp(size.windowWidth * .13, MIN_PROJECTS, 280) : compact ? 260 : Math.max(286, size.windowWidth * 0.22);
   const expandedProjects = preferences.projects === null
     ? defaultProjects
     : clamp(preferences.projects, MIN_PROJECTS, Math.min(MAX_PROJECTS, size.width - MIN_CONVERSATION - MIN_CANVAS));
   const defaultRemaining = Math.max(0, size.width - expandedProjects);
-  const defaultCanvas = Math.max(compact ? 420 : 500, defaultRemaining * (compact ? 0.48 : 0.45));
+  const defaultCanvas = learningLayout
+    ? Math.max(MIN_CANVAS, defaultRemaining - Math.max(MIN_CONVERSATION, size.windowWidth * .21))
+    : Math.max(compact ? 420 : 500, defaultRemaining * (compact ? 0.48 : 0.45));
   const defaultConversation = Math.max(0, defaultRemaining - defaultCanvas);
   const defaultRatio = defaultRemaining ? defaultConversation / defaultRemaining : 0.55;
   const projects = sidebarCollapsed ? COLLAPSED_PROJECTS : expandedProjects;
@@ -36,14 +38,14 @@ function bounds(kind, layout) {
     : { min: MIN_CONVERSATION, max: layout.total - layout.projects - MIN_CANVAS, now: layout.conversation };
 }
 
-export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false }) {
+export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false, learningLayout = false }) {
   const workspaceRef = useRef(null);
   const dragRef = useRef(null);
   const currentRef = useRef(null);
   const [size, setSize] = useState({ width: 0, windowWidth: 0 });
   const [preferences, setPreferences] = useState(() => ({ ...initialPreferences(), ...readSession("layout", {}) }));
   const [dragging, setDragging] = useState(null);
-  const layout = resolveLayout(size, preferences, sidebarCollapsed, contentCollapsed);
+  const layout = resolveLayout(size, preferences, sidebarCollapsed, contentCollapsed, learningLayout);
   currentRef.current = { layout, preferences, sidebarCollapsed, contentCollapsed };
 
   useEffect(() => { writeSession("layout", preferences); }, [preferences]);

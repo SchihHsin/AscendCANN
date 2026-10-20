@@ -1,0 +1,236 @@
+import { useCallback, useMemo, useRef, useState } from "react";
+import { readSession, writeSession } from "./session-storage";
+
+const MIN_SCALE = .35;
+const MAX_SCALE = 1.6;
+const LAYOUTS = ["horizontal", "vertical"];
+const STAGES = new Set(["goal", "path", "environment", "channels", "practice", "check", "summary"]);
+const MATERIAL_STAGES = {
+  "learning-goal": ["goal"],
+  "learning-path": ["path"],
+  "learning-lesson": ["channels", "channels"],
+  "learning-practice": ["practice", "layout"],
+  "learning-check": ["check", "input"],
+  "learning-summary": ["summary", "summary"],
+};
+
+const keyFor = taskId => `learning-canvas-view:${taskId}`;
+const finite = value => typeof value === "number" && Number.isFinite(value);
+const object = value => value !== null && typeof value === "object" && !Array.isArray(value);
+const validId = value => typeof value === "string" && /^[A-Za-z0-9][\w:.-]{0,119}$/u.test(value);
+const validTask = value => typeof value === "string" && value.trim().length > 0;
+const sameViewport = (a, b) => a.x === b.x && a.y === b.y && a.scale === b.scale;
+
+function viewport(value, fallback = { x: 0, y: 0, scale: 1 }) {
+  const candidate = object(value) ? value : {};
+  return {
+    x: finite(candidate.x) ? candidate.x : fallback.x,
+    y: finite(candidate.y) ? candidate.y : fallback.y,
+    scale: finite(candidate.scale) ? Math.min(MAX_SCALE, Math.max(MIN_SCALE, candidate.scale)) : fallback.scale,
+  };
+}
+
+function positions(value) {
+  if (!object(value)) return {};
+  return Object.fromEntries(Object.entries(value).filter(([id, point]) =>
+    validId(id) && object(point) && finite(point.x) && finite(point.y),
+  ).map(([id, point]) => [id, { x: point.x, y: point.y }]));
+}
+
+function layoutView(value) {
+  const saved = object(value) ? value : {};
+  return {
+    viewport: viewport(saved.viewport),
+    positions: positions(saved.positions),
+    initialized: saved.initialized === true,
+    returnViewport: object(saved.returnViewport) ? viewport(saved.returnViewport) : null,
+    focusViewport: object(saved.focusViewport) ? viewport(saved.focusViewport) : null,
+  };
+}
+
+function initial() {
+  const layouts = { horizontal: layoutView(), vertical: layoutView() };
+  return {
+    state: {
+      layout: "horizontal",
+      selectedStage: "channels",
+      selectedStep: "channels",
+      expanded: true,
+      focused: false,
+      viewport: layouts.horizontal.viewport,
+      positions: layouts.horizontal.positions,
+      pinned: [],
+      initialized: false,
+    },
+    layouts,
+  };
+}
+
+function restore(taskId) {
+  const saved = readSession(keyFor(taskId), null);
+  if (!object(saved)) return initial();
+  const layout = LAYOUTS.includes(saved.layout) ? saved.layout : "horizontal";
+  const layouts = {
+    horizontal: layoutView(saved.layouts?.horizontal),
+    vertical: layoutView(saved.layouts?.vertical),
+  };
+  // Accept the active flat snapshot as well as the per-layout representation.
+  layouts[layout] = layoutView(object(saved.layouts?.[layout]) ? saved.layouts[layout] : saved);
+  const selectedStage = STAGES.has(saved.selectedStage) ? saved.selectedStage : "channels";
+  const expanded = typeof saved.expanded === "boolean" ? saved.expanded : true;
+  return {
+    state: {
+      layout,
+      selectedStage,
+      selectedStep: validId(saved.selectedStep) ? saved.selectedStep : selectedStage,
+      expanded,
+      focused: expanded && saved.focused === true,
+      viewport: layouts[layout].viewport,
+      positions: layouts[layout].positions,
+      pinned: Array.isArray(saved.pinned) ? [...new Set(saved.pinned.filter(validId))] : [],
+      initialized: layouts[layout].initialized,
+    },
+    layouts,
+  };
+}
+
+function replaceState(record, patch, viewPatch = {}) {
+  const state = { ...record.state, ...patch };
+  return {
+    state,
+    layouts: {
+      ...record.layouts,
+      [state.layout]: {
+        ...record.layouts[state.layout],
+        ...viewPatch,
+        viewport: state.viewport,
+        positions: state.positions,
+        initialized: state.initialized,
+      },
+    },
+  };
+}
+
+function collapseRecord(record) {
+  if (!record.state.expanded && !record.state.focused) return record;
+  return replaceState(record, { expanded: false, focused: false }, {
+    returnViewport: { ...record.state.viewport },
+    focusViewport: null,
+  });
+}
+
+function expandRecord(record) {
+  if (record.state.expanded) return record;
+  const previousViewport = record.layouts[record.state.layout].returnViewport;
+  return replaceState(record, {
+    expanded: true,
+    ...(previousViewport ? { viewport: { ...previousViewport } } : {}),
+  });
+}
+
+/** Visual state only: learning progress and validation records remain task-owned elsewhere. */
+export function useLearningCanvasView({ taskId, enabled = true } = {}) {
+  const tasks = useRef(new Map());
+  const disabledState = useRef(null);
+  const currentEnabled = useRef(enabled);
+  currentEnabled.current = enabled;
+  const [, render] = useState(0);
+  if (!disabledState.current) disabledState.current = initial().state;
+  const active = enabled && validTask(taskId);
+  // Restore never writes: simply switching tasks must not create or replace a saved session.
+  if (active && !tasks.current.has(taskId)) tasks.current.set(taskId, restore(taskId));
+
+  const update = useCallback(change => {
+    if (!enabled || !currentEnabled.current || !validTask(taskId)) return undefined;
+    const previous = tasks.current.get(taskId);
+    if (!previous) return undefined;
+    const next = change(previous);
+    if (next === previous) return previous.state;
+    tasks.current.set(taskId, next);
+    writeSession(keyFor(taskId), { ...next.state, layouts: next.layouts });
+    render(revision => revision + 1);
+    return next.state;
+  }, [taskId, enabled]);
+
+  const actions = useMemo(() => {
+    const select = (stage, step) => {
+      if (!STAGES.has(stage) || (step !== undefined && !validId(step))) return undefined;
+      return update(record => {
+        const previous = record.state;
+        const sameStage = previous.selectedStage === stage;
+        const selectedStep = step ?? (sameStage ? previous.selectedStep : stage);
+        if (sameStage && previous.selectedStep === selectedStep && previous.expanded) return record;
+        const expanded = sameStage ? expandRecord(record) : record;
+        const previousFocus = record.layouts[previous.layout].focusViewport;
+        return replaceState(expanded, {
+          selectedStage: stage,
+          selectedStep,
+          expanded: true,
+          focused: sameStage ? expanded.state.focused : false,
+          ...(!sameStage && previous.focused && previousFocus ? { viewport: { ...previousFocus } } : {}),
+        }, sameStage ? {} : { returnViewport: null, focusViewport: null });
+      });
+    };
+    return {
+      setLayout: layout => {
+        if (!LAYOUTS.includes(layout)) return undefined;
+        return update(record => {
+          if (record.state.layout === layout) return record;
+          const view = record.layouts[layout];
+          return replaceState(record, {
+            layout,
+            viewport: { ...view.viewport },
+            positions: { ...view.positions },
+            initialized: view.initialized,
+          });
+        });
+      },
+      select,
+      openMaterial: id => MATERIAL_STAGES[id] ? select(...MATERIAL_STAGES[id]) : undefined,
+      collapse: () => update(collapseRecord),
+      setExpanded: expanded => typeof expanded === "boolean"
+        ? update(expanded ? expandRecord : collapseRecord)
+        : undefined,
+      setFocused: focused => {
+        if (typeof focused !== "boolean") return undefined;
+        return update(record => {
+          if (record.state.focused === focused) return record;
+          const expanded = focused ? expandRecord(record) : record;
+          const view = expanded.layouts[expanded.state.layout];
+          return replaceState(expanded, {
+            focused,
+            ...(focused ? { expanded: true } : view.focusViewport ? { viewport: { ...view.focusViewport } } : {}),
+          }, { focusViewport: focused ? { ...expanded.state.viewport } : null });
+        });
+      },
+      setViewport: patch => {
+        if (!object(patch)) return undefined;
+        return update(record => {
+          const next = viewport(patch, record.state.viewport);
+          return sameViewport(next, record.state.viewport) ? record : replaceState(record, { viewport: next });
+        });
+      },
+      moveObject: (id, point) => {
+        if (!validId(id) || !object(point) || !finite(point.x) || !finite(point.y)) return undefined;
+        return update(record => {
+          const previous = record.state.positions[id];
+          if (record.state.pinned.includes(id) || (previous?.x === point.x && previous?.y === point.y)) return record;
+          return replaceState(record, { positions: { ...record.state.positions, [id]: { x: point.x, y: point.y } } });
+        });
+      },
+      togglePin: id => {
+        if (!validId(id)) return undefined;
+        return update(record => replaceState(record, { pinned: record.state.pinned.includes(id)
+          ? record.state.pinned.filter(item => item !== id)
+          : [...record.state.pinned, id] }));
+      },
+      markInitialized: () => update(record => record.state.initialized ? record : replaceState(record, { initialized: true })),
+      reset: () => update(() => initial()),
+    };
+  }, [update]);
+
+  const getTaskState = useCallback(ownerId => tasks.current.get(ownerId)?.state, []);
+  return { state: tasks.current.get(taskId)?.state || disabledState.current, actions, getTaskState };
+}
+
+export default useLearningCanvasView;
