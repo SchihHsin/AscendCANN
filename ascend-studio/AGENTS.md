@@ -744,5 +744,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户确认开始实现 A 方案，并确定用无文字 icon tab 切换左右/上下整体布局，默认左右；路径阶段和子节点直接可见，当前子节点连接图解与学习材料。实现已接入现成演示任务和新建学习目标流程。
 - 改动涉及 `src/LearningHierarchyCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/useLearningCanvasView.js`、`src/App.jsx`、`src/TaskWorkspace.jsx`、`src/useContentWorkspace.js`、`src/useWorkbenchLayout.js`。说明与 QA 见 `interaction-design.md`、`design-qa.md`。
 - 验证：5174 本地预览确认默认左右布局及层级节点；`node --check` 的三个 hook 检查和 `npm run build:pages` 通过，`git diff --check` 通过。页面仍有 Vite 主包大于 500kB 提示。未声称真实 Python、模型、NPU 或学习效果验证。
-- 用户偏好简单子任务使用 Luna（`gpt-6-luna`，low），不使用 `gpt-6.1-sol` Ultra。已创建 Agent 不能原地切模型；当前没有运行中的子 Agent。此次文档子任务由 Luna 完成，其余 Agent 已停用。后续新建/接续子任务使用 Luna。
+- 用户偏好简单子任务使用 Luna（`gpt-6-luna`，low），不使用 `gpt-6.1-sol` Ultra。已创建 Agent 不能原地切模型；当前没有运行中的子 Agent。此次文档子任务由 Luna 完成；`learning_ui` 已中断，`learning_visual_gap` 当前为 pending_init、尚未执行，已发中断请求。后续新建/接续子任务使用 Luna。
 - 提交与发布回执：`72ae0ffc`（`feat: add learning hierarchy canvas layouts`）已推送 `origin/main`；Pages 运行 `39398520418` 的 build/deploy 均成功，公开 `/AscendCANN/ascstudio/` 已引用 `index-BB2tQ-zb.js` 与 `index-DwAV_whc.css`。本条仅涉及学习画布任务和 Luna 使用偏好，不纳入其他工作区改动。
