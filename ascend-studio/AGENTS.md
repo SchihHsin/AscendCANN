@@ -721,3 +721,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 仅修改讨论材料及根/Studio 两份 AGENTS，未改 Demo/Pages、正式汇报页序/hash或 API/Host/Application 边界；无新真实AI/Python/模型/NPU或学习效果证据，无构建/新增或运行测试。diff 检查后仅本轮三份文档提交立即推送，其他 WIP 保留，回执随后补记。
 
 - 提交/推送回执：`6c98c963`（docs: discuss learning node hierarchy and canvas expansion）已成功推送 origin/main，仅三份讨论/交接文档，diff 检查通过；Demo 未改，交互细节仍为待讨论建议。此条回填随后提交推送，其他 WIP 未纳入。
+
+
+### 2026-10-20（讨论：节点原位展开还是旁边新增）
+
+- 用户比较“在原画布长出新的内容”和“放大被展开节点”。主代理推荐学习阶段原位展开所属子活动/图解/练习，并按需聚焦视角；明确放大是视野变化、展开是显露层级，避免放大文字或巨型固定面板。收起恢复摘要与现场；独立问题/分支/可复用产物才作为外部新节点，关联来源且不重复创建。
+- 原 `content-management-design.md` 新增 §23.1，细化此前“附近展开对象”提案。用户已选 A，但这项具体机制仍在讨论，本轮不实施 Demo；未修改源码/Pages、正式材料页序/hash或 API/Host/Application 边界。子代理只读复核语义/风险，无新实拍或真实执行/效果证据。
+- 仅本轮讨论及根/Studio 两份 AGENTS，经 diff 检查后提交并立即推送 origin/main；无构建或新增/运行测试，其他 WIP 保留。交互继续由用户讨论定稿，提交/推送结果见本轮 Git 记录。
