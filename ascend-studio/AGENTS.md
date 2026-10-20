@@ -719,3 +719,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 原 `content-management-design.md` 新增 §23 草案：任务→阶段→活动，学习材料作为关联对象；区分包含/依赖/参考；主线可带条件/并行/补救支线。建议点阶段在原画布展开子步骤及当前活动的少量关联对象，独立移动；旧对象原位保留、不重复创建/自动重排，拖位置不改顺序，展开不等于完成。跨任务复用行为与完成依据，阶段内容和依赖按任务定义，不硬套四节点模板。
 - 主代理读取当前 LearningJourney/learning-data，子代理只读复核。当前实现仍是四个扁平节点和图像预处理本地模板；所举算子路线只作结构示例，不表示新增课程/通用生成或真实执行。相关对象同时出现及旧内容保留为推荐，仍待用户讨论，不额外索取重复实施许可。
 - 仅修改讨论材料及根/Studio 两份 AGENTS，未改 Demo/Pages、正式汇报页序/hash或 API/Host/Application 边界；无新真实AI/Python/模型/NPU或学习效果证据，无构建/新增或运行测试。diff 检查后仅本轮三份文档提交立即推送，其他 WIP 保留，回执随后补记。
+
+- 提交/推送回执：`6c98c963`（docs: discuss learning node hierarchy and canvas expansion）已成功推送 origin/main，仅三份讨论/交接文档，diff 检查通过；Demo 未改，交互细节仍为待讨论建议。此条回填随后提交推送，其他 WIP 未纳入。
