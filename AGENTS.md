@@ -5356,4 +5356,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 设计/实施说明更新在 `ascend-studio/interaction-design.md`、`cann-dashboard/ploy-interaction-lab/learning-canvas-story/content-management-design.md` 与其 README；QA记录在 `ascend-studio/design-qa.md`。参考图及连线反馈在 `ascend-studio/design-references/learning-left-hierarchy-20261020/`。图稿为设计参考，截图在本轮浏览器工具内联查看，未保存成独立PNG。
 - 实际浏览器检查覆盖布局切换及刷新恢复、子节点/材料导航、聚焦返回、收起恢复、固定与键盘移动、草案取消、新建学习目标表单、1280×720和390×844宽度。构建 `npm run build:pages` 成功，3个JS hook语法检查和 `git diff --check` 通过；主包654.98kB，Vite有>500kB非阻塞提示。临时热更新曾出现宽度变量初始化顺序错误，已修复并完整刷新后继续检查。
 - 仅演示单一图像预处理路径；图片通道分离为浏览器概念演示，张量为示意，练习只核对形状。没有真实Python、模型、NPU、工程写入或学习效果验证；API / Host / Application边界和正式汇报页序/hash未改变。
-- 提交/Pages推送回执待本轮提交后补入；其他已有WIP（报告、`.DS_Store`、研究素材等）未纳入本任务。
+- 提交与发布回执：`72ae0ffc`（`feat: add learning hierarchy canvas layouts`）已推送 `origin/main`；Pages 运行 `39398520418` 的 build/deploy 均成功，公开 `/AscendCANN/ascstudio/` 已引用 `index-BB2tQ-zb.js` 与 `index-DwAV_whc.css`。其他已有 WIP（报告、`.DS_Store`、研究素材等）未纳入本任务。
