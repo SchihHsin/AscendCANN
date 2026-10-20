@@ -5407,3 +5407,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出“学习 / 开发”模式 Tab 选中颜色不合适，明确要求黑色底、白色字。将 `ascend-studio/src/new-task-home.css` 的活动态背景从深炭色调整为纯黑 `#000`，文字保持白色 `#fff`；其他Tab、布局与交互不变。
 - 重建 `ascstudio/` Pages 静态产物。验证 `npm run build:pages` 成功，产物 CSS 精确包含 `.new-task-home__mode-button.is-active{color:#fff;background:#000;font-weight:600}`，`git diff --check` 通过。截图说明是用户的视觉反馈；本轮未通过浏览器完成新的屏幕截图检查，因此不将其记录为屏幕级验证。
 - 页面、任务流程、API / Host / Application 边界与汇报页序/hash均未改变。功能提交 `d9e0b557`（`style: set active task mode tab to black`）已推送 `origin/main`；Pages run `39412734552` build/deploy 成功，线上已引用 `index-CGq7jAPS.css`，实测规则为黑底白字。交接回填随后单独提交推送，其他WIP未纳入。
+
+
+### 2026-10-20（移除任务关系总览的研究观察条）
+
+- 用户指出 `ai-coding-platform-mechanism-report.html#2` 顶部的 `AI 可用性研究观察` 条应去掉。已删除该整块及专属 CSS，不改六阶段泳道、任务外环或图中其他内容。
+- 页序、Hash 与 API / Host / Application 层边界不变。验证：`git diff --check` 通过，源码中已无 `task-research-lens` / `AI 可用性研究观察` 残留。截图级浏览器复核未进行。
+- 功能提交 `3be0204a`（`docs: remove research lens from task overview`）已推送 `origin/main`；无关工作区改动未纳入。
