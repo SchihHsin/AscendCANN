@@ -8,7 +8,7 @@
   min-height: 0;
   overflow: hidden;
   isolation: isolate;
-  background: #fff;
+  background: #f6f6f5;
 }
 
 .new-task-home__dot-field {
@@ -17,22 +17,20 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  --dot-texture: none;
 }
 .new-task-home__dot-field::before,
 .new-task-home__dot-field::after {
   content: "";
   position: absolute;
   inset: -8px;
-  background-image: var(--dot-texture);
-  background-size: 560px 560px;
+  background-image: radial-gradient(circle, rgba(89, 95, 108, .2) 1px, transparent 1.45px);
+  background-size: 24px 24px;
   background-repeat: repeat;
   background-position: center;
-  filter: grayscale(1);
-  mix-blend-mode: multiply;
 }
-.new-task-home__dot-field::before { opacity: .72; }
+.new-task-home__dot-field::before { opacity: .76; }
 .new-task-home__dot-field::after {
+  background-image: radial-gradient(circle, rgba(83, 96, 128, .32) 1.1px, transparent 1.5px);
   opacity: 0;
   transform: translate3d(var(--dot-shift-x), var(--dot-shift-y), 0);
   -webkit-mask-image: radial-gradient(ellipse 220px 175px at var(--pointer-x) var(--pointer-y), #000 8%, transparent 100%);
@@ -68,7 +66,7 @@
   gap: 2px;
   border: 1px solid #e3e4e7;
   border-radius: 12px;
-  background: rgba(247, 247, 248, .92);
+  background: #eeeff1;
   box-shadow: 0 2px 6px rgba(22, 24, 31, .035);
 }
 .new-task-home__mode-button {
@@ -91,10 +89,10 @@
   transition: color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
 }
 .new-task-home__mode-button.is-active {
-  color: #fff;
-  background: #000;
+  color: #17181d;
+  background: #fff;
   font-weight: 650;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, .13);
+  box-shadow: 0 2px 8px rgba(22, 24, 31, .1), 0 0 0 1px rgba(22, 24, 31, .025);
 }
 .new-task-home__mode-button:focus-visible,
 .new-task-home__card:focus-visible,
@@ -160,13 +158,12 @@
 .new-task-home__card-band::before {
   content: "";
   position: absolute;
-  top: -7px;
-  right: 32px;
-  width: 76px;
-  height: 15px;
-  border-radius: 9px 9px 0 0;
+  top: -9px;
+  right: 12px;
+  width: 88px;
+  height: 17px;
   background: inherit;
-  box-shadow: 0 -1px 2px rgba(26, 29, 37, .045);
+  clip-path: polygon(0 100%, 7% 74%, 15% 46%, 23% 20%, 30% 4%, 36% 0, 76% 0, 84% 6%, 91% 25%, 96% 56%, 100% 100%);
 }
 .new-task-home__card--rose .new-task-home__card-band { background: #f39ca2; }
 .new-task-home__card--sand .new-task-home__card-band { background: #f4dda1; }

@@ -5431,3 +5431,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 功能改动在 `ascend-studio/src/new-task-home.css`，静态构建结果在 `ascstudio/`；修改前线上页面截图保存在 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/published-before-adjustment.png`。来源是用户视觉反馈和此前首页交互约定；点阵纹理为已有 ImageGen PNG。没有改变任务创建、项目映射、正式汇报页序/hash 或 API / Host / Application 边界。
 - 本地 `npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js` 与 `git diff --check` 通过；GitHub Pages run `39419850890` build/deploy 成功，部署 HTML 已引用新 CSS/JS，资源 HTTP 200。`eca3bf32`（`fix: refine new task home visual scale`）已推送。
 - 修改后截图级 QA 仍未完成：内置浏览器选择线上页签超时并重置。故 `ascend-studio/design-qa.md` 保留 `final result: blocked`；不能将静态部署检查说成视觉通过。待用户刷新线上 Demo 或在可用浏览器完成尺寸、页签、点阵、悬浮和窄视口复核。
+
+
+### 2026-10-20（Ascend Studio 新建首页按最新参考图修正）
+
+- 用户反馈点阵仍不可见、背景应为浅灰而非白色、Tab 颜色不符，并要求按新附件调整。该附件与既有 `ascend-studio/evidence/20261020-new-task-home-dot-matrix/source-reference.png` 哈希一致。最新参考图覆盖此前黑底白字选中态：任务类型 Tab 使用浅灰底轨，选中项白底、深色字和轻阴影。
+- `ascend-studio/src/new-task-home.css` 设浅灰首页底色 `#f6f6f5`，以 CSS radial-gradient 提供稳定可见的点阵，并保留指针位置局部加深；学习/开发 Tab 配色与截图一致。文件夹色带页签由圆角胶囊改为相连的非对称斜升、短平台、斜落轮廓。`NewTaskHome.jsx` 移除旧点阵纹理 URL，移除无用 PNG 资源；`ascstudio/` 已重建。
+- `npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check`通过，静态构建产物包含 CSS 点阵、浅灰底、白底选中态和新页签 polygon。浏览器策略拒绝本机预览访问；没有通过其他浏览器、Playwright、CDP、CLI 或间接方式绕过。截图级视觉 QA 未完成，`ascend-studio/design-qa.md` 保持 `final result: blocked`。

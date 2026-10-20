@@ -673,3 +673,20 @@ final result: blocked
 - 在可用浏览器中刷新 `https://schihhsin.github.io/AscendCANN/ascstudio/`，确认右侧内容尺寸、页签文件夹感、点阵静态/鼠标反馈、提示卡遮挡和不同视口。
 
 final result: blocked
+
+
+## 2026-10-20 · 按最新参考图修正浅灰底、点阵、Tab 与文件夹页签
+
+**本轮依据与修正**
+- 依据：`evidence/20261020-new-task-home-dot-matrix/source-reference.png`（与用户本轮附件 SHA-256 相同，1586×992）。该参考图覆盖此前“选中 Tab 黑底白字”的旧偏好：任务模式底轨为浅灰，当前项白底深色字并带轻阴影。
+- 首页主背景从纯白改为浅灰 `#f6f6f5`。为避免点阵继续因图片纹理/透明度在页面上消失，换成 CSS 原生 24px radial-gradient 点阵；鼠标附近仍以局部遮罩和更深一层点阵增强。移除不再使用的 PNG 纹理资源。
+- 红/黄/蓝卡片页签沿用参考图的文件夹语义，凸起区域与顶边相接，采用非对称斜升—短平台—斜落轮廓；不再使用胶囊形凸块。
+
+**验证**
+- `npm run build:pages` 成功；构建产物静态检查确认浅灰底、CSS 点阵、白底选中态和 polygon 文件夹轮廓存在；旧点阵 PNG 已不再输出。`node --check src/useWorkbenchState.js` 与 `git diff --check` 通过。Vite 主 JS 仍有 >500kB 体积提示。
+- 浏览器截图级验收未完成：内置浏览器拒绝访问本机预览，URL 策略未授权读取本机页面。不可改用其他浏览器、Playwright、CDP、CLI 或间接方式绕过；源码/构建不能证明实际屏幕效果。
+
+**待验收**
+- 待在用户可用的浏览器刷新 `https://schihhsin.github.io/AscendCANN/ascstudio/`，确认浅灰底、点阵密度/对比、Tab 选中态、文件夹轮廓、卡片遮挡与 hover。
+
+final result: blocked

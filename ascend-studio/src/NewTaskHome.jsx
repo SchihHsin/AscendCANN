@@ -157,7 +157,6 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务" }) 
     >
       <div
         className="new-task-home__dot-field"
-        style={{ "--dot-texture": `url("${import.meta.env.BASE_URL}assets/new-task-dot-matrix.png")` }}
         aria-hidden="true"
       />
       <div className="new-task-home__hero">
