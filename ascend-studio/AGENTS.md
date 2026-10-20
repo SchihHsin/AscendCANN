@@ -793,3 +793,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户澄清目标形状不是彩色顶边向外凸起，而是白色内容内沿在右上向下退让、形成浅凹口。此前彩色凸起理解错误，现撤销该方向。用户给出的目标图与修改前图已保存于 `evidence/20261020-new-task-home-dot-matrix/folder-shape-reference.png`、`folder-shape-current-before.png`。
 - 在 `.new-task-home__card-band::before` 中将曲线收回彩带内部下沿：彩色外顶边保持原卡片轮廓，靠右的内边界平滑向下凹入；不再生成高出外顶边的彩色页签。
 - `npm run build:pages`、Hook `node --check`、`git diff --check`通过；静态产物检查 CSS 曲线与位置无误。截图级 QA 仍 blocked，因为内置浏览器 URL 策略拒绝访问本机预览；不使用替代通道绕过。`a8faa3ca`（`fix: indent inner edge of folder card bands`）已推送；Pages run `39422494704` build/deploy成功。
+
+
+## 2026-10-20 · 新建首页右侧整体紧凑度
+
+- 用户指出右侧内容仍整体偏大，特别是标题、卡片、输入区和字号；要求字号层级与应用其他区域一致，并补充输入区应更靠近垂直中心。对已确定布局做尺寸微调时，直接改 Demo；需要用户选择不同结构/交互方向时再先用图比较。
+- 参照现有应用字号（主体约12px、卡片标题约13px、区块标题14–16px），将新建首页标题、模式、卡片、输入框和按钮统一收紧，缩窄内容组并同步适配断点。用户随后指出输入区仍偏下；最终桌面布局将 composer 锚点调到距底26%，提示卡组上移到47.5%，以一起上移的方式保持遮挡比例。左侧任务列表、浅灰点阵、卡片颜色及白色内沿凹口保持。
+- `npm run build:pages` 成功；浏览器截图级验收仍 blocked，未声称实际像素或交互已验证。
