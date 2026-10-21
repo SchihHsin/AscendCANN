@@ -33,7 +33,6 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
   const [snippetOpen, setSnippetOpen] = useState(false);
   const [quickMenuOpen, setQuickMenuOpen] = useState(false);
   const [expandedCardId, setExpandedCardId] = useState(null);
-  const homeRef = useRef(null);
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const goalRef = useRef(null);
@@ -82,19 +81,6 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
 
   const setCardExpanded = (id) => setExpandedCardId(id);
 
-  const updatePointer = (event) => {
-    if (event.pointerType === "touch" || !homeRef.current) return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
-    const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
-    const root = homeRef.current;
-    root.classList.add("has-pointer");
-    root.style.setProperty("--pointer-x", `${(x * 100).toFixed(2)}%`);
-    root.style.setProperty("--pointer-y", `${(y * 100).toFixed(2)}%`);
-    root.style.setProperty("--dot-shift-x", `${((x - 0.5) * 8).toFixed(2)}px`);
-    root.style.setProperty("--dot-shift-y", `${((y - 0.5) * 6).toFixed(2)}px`);
-  };
-
   const submit = (event) => {
     event.preventDefault();
     const cleanGoal = goal.trim();
@@ -115,11 +101,8 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
 
   return (
     <section
-      ref={homeRef}
       className="new-task-home"
       aria-label="新建任务"
-      onPointerMove={updatePointer}
-      onPointerLeave={(event) => { if (event.pointerType !== "touch") homeRef.current?.classList.remove("has-pointer"); }}
     >
       <HomeComputeBackdrop />
       <div className="new-task-home__hero">

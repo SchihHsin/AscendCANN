@@ -5476,3 +5476,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 卡片与输入区改用同一锚点定位，当前默认露出128px摘要区域；展开层独立于 composer，层级高于输入框；高度随内容增长，长名完整显示。移动端纵向排列、20px间距、无旋转。继续任务回到对应任务追加 prompt 草稿，保留旧稿和对话，不自动发送或创建任务。背景使用计算符号/标签、弱点阵与轻微指针视差，并响应 reduced-motion。
 - 开发模式不优先学习任务；Add batch dimension 按算子 batch 轴、广播、形状与用例处理；AddCustom 事实只用于精确任务名；学习建议依据正序 records 的最新相关状态，旧失败不覆盖新成功。无 NPU 验证；研究、API / Host / Application 边界与正式页面序列/hash不变。
 - 浏览器验证覆盖1600×900默认/展开、1280×720开发卡片与输入间距20–43px、568×900移动端展开及CTA包裹、Escape与继续任务草稿保留；console error/warn为0。两个 JS `node --check`、Pages最终构建和 `git diff --check`通过。局部 QA passed，不代表历史项目全面回归。浏览器截图未导出本地；参考图 `ascend-studio/evidence/20261021-folder-card-reference/source-reference.png`。功能提交 `c0383511` 已成功推送 `origin/main`。
+
+
+### 2026-10-21（首页点阵与计算元素统一动效）
+
+- 用户指出背景存在两层错位感，且计算元素也应参与动效。原因为静态点阵与移动高亮点阵重复叠加；现删除伪元素与NewTaskHome旧pointer变量，单个SVG中只绘制一份24px网格，矩阵、二进制、函数、芯片、括号、代码及标签各一次。
+- 修改 `ascend-studio/src/HomeComputeBackdrop.jsx`、`home-compute-backdrop.css`、`NewTaskHome.jsx`、`new-task-home.css`，重建 `ascstudio/`。点与符号共享180px距离反馈，近处轻微外移/加深、远处不动，离场平滑归位；rAF在静止后停止，触摸跳过，reduced-motion直接静态复位，ResizeObserver/事件/帧清理，尺寸变化重置。用户已授权这类局部修正直接改Demo。
+- Luna（gpt-6-luna，low）实现，主agent复核并补充resize复位。内置浏览器1280×720确认一组1247点、无before/after叠层；矩阵/芯片与点阵同步响应，离场位移残差小于0.05px；568×900确认SVG视口匹配、无横向溢出。证据 `ascend-studio/evidence/20261021-unified-backdrop/pointer-near-matrix.jpg`。编辑阶段一次HMR重载错误，最终刷新后无新增；减少动态/触摸保护仅代码核查，未做系统设置切换/真机验证。本轮未全量回归其他流程。
+- `npm run build:pages`、`git diff --check`通过；源码、产物和本文一起提交推送，回执随后补记。来源为用户视觉反馈及本地观察；不涉及研究结论、NPU、正式页序/hash或API/Host/Application边界。

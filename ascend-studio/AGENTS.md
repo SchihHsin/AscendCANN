@@ -820,3 +820,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 卡片展开层独立于 composer/input 并置于上层，长内容撑开高度，任务名不截断；移动端纵向排列、20px间距、无旋转。继续 CTA 回对应任务追加 prompt 草稿，旧草稿和对话保持，不自动发送。背景为计算符号/标签、弱点阵与轻指针视差，支持 reduced-motion。
 - 建议规则：开发模式不优先学习任务；Add batch dimension 属于算子批量轴/广播/形状契约；AddCustom 事实严格按任务名匹配；学习状态只看正序 records 中最新相关记录，历史失败不覆盖成功。无真实NPU验证，API / Host / Application边界及汇报页序/hash不变。
 - 浏览器局部验证：1600×900默认与展开、1280×720开发态卡片/输入间距20–43px、568×900移动态CTA完整包裹、Escape、继续任务旧稿/对话保留；console error/warn为0。两个JS node check、Pages build、diff check通过。QA仅此局部 passed，不代表全量回归。截图只由浏览器工具输出，未本地导出；对照图 `evidence/20261021-folder-card-reference/source-reference.png`。功能提交 `c0383511` 已成功推送 `origin/main`。
+
+
+### 2026-10-21（首页点阵与计算元素统一动效）
+
+- 用户指出背景存在两层错位感，且计算元素也应参与动效。原因为静态点阵与移动高亮点阵重复叠加；现删除伪元素与NewTaskHome旧pointer变量，单个SVG中只绘制一份24px网格，矩阵、二进制、函数、芯片、括号、代码及标签各一次。
+- 修改 `ascend-studio/src/HomeComputeBackdrop.jsx`、`home-compute-backdrop.css`、`NewTaskHome.jsx`、`new-task-home.css`，重建 `ascstudio/`。点与符号共享180px距离反馈，近处轻微外移/加深、远处不动，离场平滑归位；rAF在静止后停止，触摸跳过，reduced-motion直接静态复位，ResizeObserver/事件/帧清理，尺寸变化重置。用户已授权这类局部修正直接改Demo。
+- Luna（gpt-6-luna，low）实现，主agent复核并补充resize复位。内置浏览器1280×720确认一组1247点、无before/after叠层；矩阵/芯片与点阵同步响应，离场位移残差小于0.05px；568×900确认SVG视口匹配、无横向溢出。证据 `ascend-studio/evidence/20261021-unified-backdrop/pointer-near-matrix.jpg`。编辑阶段一次HMR重载错误，最终刷新后无新增；减少动态/触摸保护仅代码核查，未做系统设置切换/真机验证。本轮未全量回归其他流程。
+- `npm run build:pages`、`git diff --check`通过；源码、产物和本文一起提交推送，回执随后补记。来源为用户视觉反馈及本地观察；不涉及研究结论、NPU、正式页序/hash或API/Host/Application边界。

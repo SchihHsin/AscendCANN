@@ -769,3 +769,12 @@ final result: passed
 - 证据图 `evidence/20261021-folder-card-reference/source-reference.png`；实现截图只在浏览器工具输出，未导出本地文件。局部 QA：passed；未声称历史流程全量回归。无NPU验证，不影响 API / Host / Application 边界或正式页面序列。功能提交 `c0383511` 已成功推送 `origin/main`。
 
 final result: passed
+
+
+## 2026-10-21 · 单层背景与计算符号动效
+
+- 删除静态/移动网格叠加造成的双影；一个SVG绘制网格、6种计算图标和2个标签，使用同一距离反馈。点opacity .17至.40，符号.13至.42；位移上限10px/7.2px，离场归位、静止停帧。触摸跳过、减少动态偏好直接静态复位。
+- 1280×720实测仅一组1247点，before/after均none；矩阵与芯片近处位移约6px并加深、远处静止，离场残差小于0.05px。568×900 SVG viewBox与容器匹配且无横向溢出；临时viewport核验后恢复。截图 `evidence/20261021-unified-backdrop/pointer-near-matrix.jpg` 为真实本地Demo。
+- Pages构建和diff检查通过；编辑阶段一次HMR错误，最终刷新后未新增。reduced-motion/触摸仅代码检查；未做设置切换或真机验证。本轮只覆盖背景修复，卡片、输入尺寸与业务行为保持；提交推送待回填。
+
+final result: passed
