@@ -5542,4 +5542,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 鼠标 / 键盘点击展开卡片；触屏按首击展开、同卡再次点击收起。保持左侧任务列表、首页任务模式、文件夹卡片、紧凑字号、浅灰计算点阵和输入区，不新增固定框架，不改正式报告页面序列或 API / Host / Application 边界。
 - 修改文件：`ascend-studio/src/App.jsx`、`LearningJourney.jsx`、`NewTaskHome.jsx`、`home-recommendations.js`、`home-recommendations.test.js`、`useHomeRecommendationState.js`、`learning-data.js`、`useLearningJourney.js`、`new-task-home.css` 与静态 Pages 产物 `ascstudio/`；交接更新在 Studio 的 `interaction-design.md`、`design-qa.md` 和 `AGENTS.md`。
 - 验证：11 项推荐规则测试通过；推荐模块与状态 Hook `node --check`、`git diff --check`、`npm run build:pages`通过。浏览器在 1280×720 检查学习 / 开发卡默认态、展开详情与鼠标 click/hover；动作按钮通过源码路由复核，没有点击会写入共享浏览器本地任务数据的 CTA。未做窄屏/真机触屏与全量回归，无真实硬件 / 工程 / NPU 证据。
-- 方案细节与局部 QA 见 `ascend-studio/interaction-design.md`、`ascend-studio/design-qa.md`。本轮源码与 Pages 构建结果将按仓库卫生要求单独提交；push结果待回填。
+- 方案细节与局部 QA 见 `ascend-studio/interaction-design.md`、`ascend-studio/design-qa.md`。功能提交 `1559e522`（`feat: add task-grounded home recommendations`）已推送 `origin/main`，仅包含本功能源码、规则测试、Pages 构建结果和交接记录。

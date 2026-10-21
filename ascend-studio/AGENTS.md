@@ -85,7 +85,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 学习状态从理解、跟练、输入检查、保存小结到迁移变式连续推荐；迁移尝试与基础练习隔离，完成只根据当前来源小结及当前迁移快照判定。开发态对 AddCustom 示例线索、代码/参数快照和图像形状复核缺口分开推荐，并明确演示证据边界。
 - 鼠标/键盘卡片点击保持展开，触屏使用首击展开/再次点击收起。沿用当前左侧任务栏、文件夹卡片、小字号、点阵与composer，不改正式报告页序或 API / Host / Application 边界。
 - 测试 11 项通过；`node --check`、`git diff --check` 与 `npm run build:pages` 通过。浏览器 1280×720 检查学习 / 开发两种默认推荐、展开证据/动作和鼠标点击；CTA跳转以 typed action 源码复核，没有点击会写入共享本地任务的控件。未做窄屏/真机触屏或真实 Python / 工程 / NPU验证。详见 `design-qa.md`。
-- 源码、Pages产物及本记录随本轮提交；提交与 push 回执待回填。
+- 源码、Pages产物及本记录随功能提交 `1559e522`（`feat: add task-grounded home recommendations`）已推送 `origin/main`；本条哈希回填随后提交并推送。
 
 
 ## 2026-10-09 · 计算场景装饰重新探索
