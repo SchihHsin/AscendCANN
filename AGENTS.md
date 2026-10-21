@@ -5509,7 +5509,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求学习材料不再为每个步骤单独放一张重复大图页；主动学习 A1–A5 与开发中学习 B1–B6 每步统一保留一页“设计点 + 完整界面大图”。正式序列从 63 页缩为 52 页，移除 11 张仅展示大图的重复页。
 - 更新 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/build.mjs`、`shared-interaction-pages.mjs`、`README.md` 与生成后的 `index.html`；章节入口改为 A1 #8、B1 #14、界面架构 #20。同步修正材料、六问题报告及机制汇报中指向旧页码的入口。
 - 来源为用户本轮设计要求及现有原型页面，不新增用户研究或运行证据；图片继续标为早期设计提案，非当前 Demo 实拍。未改变 API / Host / Application 边界或其他材料的正式页面序列。
-- 验证：重新构建得到 52 页；JS 源语法、材料图片/页码链接和 `git diff --check` 已核对。视觉预览未通过：本地 5173 深链被 SPA 回退到 Ascend Studio，未显示静态材料，因此不声称完成浏览器视觉验收。提交 / 推送回执待本轮结束前回填。
+- 验证：重新构建得到 52 页；JS 源语法、材料图片/页码链接和 `git diff --check` 已核对。视觉预览未通过：本地 5173 深链被 SPA 回退到 Ascend Studio，未显示静态材料，因此不声称完成浏览器视觉验收。
+- 发布回执：`ebe35306`（`docs: consolidate learning story slides`）已成功推送 `origin/main`；本条回填随后的交接提交一并推送。其他已有工作区变更未暂存。
 
 ### 2026-10-21（首页卡片主动交互方向讨论）
 
