@@ -830,3 +830,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - `npm run build:pages`、`git diff --check`通过；源码、产物和本文一起提交推送，回执随后补记。来源为用户视觉反馈及本地观察；不涉及研究结论、NPU、正式页序/hash或API/Host/Application边界。
 
 - 发布回执：`0d854bc8`（`fix: unify home dot and compute symbol motion`）已成功推送 `origin/main`；源码、Pages静态产物、验证截图均纳入。本文回填另行提交推送；未检查本次GitHub Pages部署完成状态。
+
+### 2026-10-21（文件夹白色前层轮廓方案讨论）
+
+- 对照用户提供的目标图与当前页面截图：目标白色前层上沿为高位直边、短而圆润的S形下沉、低位直边延伸至右缘；当前 `clip-path` 从68%至86%的斜坡过长，左侧露彩边约4.8px、右侧约14px，呈楔形色条，且仅顶部14px色带内有白色遮片，截图可见细横向接缝。
+- 待讨论方案：保留紧凑卡片尺寸，重画独立彩色背板与完整连续白色前层；肩部起点约76%、结束约86%，两端切线水平，先以左露5–6px、右露11–12px作为比对参数；圆角保持连续，悬浮不拉伸顶边。此为建议，未代表最终采纳。
+- 本轮仅依据用户附件与当前CSS只读比较，无新运行或NPU证据；不改Demo源码、Pages构建产物或页面序列，不影响API / Host / Application边界；未生成图像。文档diff检查通过；本轮提交仅含两份交接文档，提交/推送回执见Git记录。
