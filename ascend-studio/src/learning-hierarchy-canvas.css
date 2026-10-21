@@ -38,8 +38,19 @@
 .lh-tree-node.is-skipped { color:#9aa0b3; border-style:dashed; background:#f6f7fae6; }
 .lh-tree-node.is-skipped em { position:absolute; right:5px; top:4px; border-radius:4px; padding:0 5px; background:#a0a7b7; color:#fff; font-size:9px; font-style:normal; }
 .lh-step-node { border-radius:8px; gap:8px; padding:7px 11px; }
+.lh-step-node { cursor:grab!important; }
+.lh-step-node:active { cursor:grabbing!important; }
 .lh-step-node strong { font-size:11px; }
 .lh-step-node small { font-size:10px; }
+.lh-step-node.is-proposed-add { border-color:#b9a5ed; background:#fbfaff; color:#514577; }
+.lh-step-node.is-proposed-add.is-selected { border-color:#9274e8; background:#f3efff; }
+.lh-step-node.is-proposal-accepted { border-color:#c8b9ee; }
+.lh-step-node.is-dragging { opacity:.42; }
+.lh-step-node.is-drop-target { outline:1px dashed #8b70df; outline-offset:3px; }
+.lh-step-suggestion { position:absolute; top:-7px; right:6px; border:1px solid #e5def7; border-radius:4px; padding:0 5px; background:#f3efff; color:#8064cc; font-size:8px; font-style:normal; line-height:1.5; white-space:nowrap; }
+.lh-step-suggestion.is-skip { border-color:#e5e6eb; background:#f0f1f4; color:#81889b; }
+.lh-step-suggestion.is-accepted { border-color:#d8eadf; background:#f1f8f3; color:#6f9c7c; }
+.lh-step-grip { flex-shrink:0; color:#b1a9c9; }
 .lh-step-index { align-self:flex-start; margin-top:1px; color:#7d74a3; font-size:10px; min-width:23px; }
 .lh-step-node.is-selected::after { content:""; position:absolute; right:-6px; top:50%; width:10px; height:10px; transform:translateY(-50%); border:2px solid #fff; border-radius:50%; background:#8767e8; }
 .lh-material-lines { position:absolute; left:0; top:0; overflow:visible; z-index:1; pointer-events:none; }
@@ -168,9 +179,28 @@
 .lh-preview-path strong { font-size:12px; color:#74718f; }
 .lh-preview-path span { color:#a2a9bd; font-size:10px; }
 .lh-path-draft { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 15px; padding:14px; }
+.lh-path-draft { align-items:flex-start; }
 .lh-path-draft > div:first-child { flex:1; min-width:250px; }
 .lh-path-draft strong { color:#81799a; font-size:12px; }
 .lh-path-draft p, .lh-path-draft small { color:#a0a6b9; font-size:10px; }
+.lh-path-sync { display:flex; align-items:flex-start; gap:6px; flex-basis:100%; color:#8174a7!important; font-size:10px; }
+.lh-path-sync svg { flex:none; margin-top:2px; color:#8971d0; }
+.lh-path-sync strong { flex:none; color:#71609e!important; font-size:10px!important; white-space:nowrap; }
+.lh-path-sync span { color:#8174a7; line-height:1.55; }
+.lh-path-review { display:flex; flex-direction:column; gap:5px; flex-basis:100%; padding-top:8px; border-top:1px solid #eeeaf7; }
+.lh-path-review > header { display:flex; align-items:center; gap:6px; color:#7c68b7; }
+.lh-path-review > header strong { color:#71609e; font-size:11px; }
+.lh-path-review > header span { color:#9991af; font-size:9px; }
+.lh-path-review ul { display:flex; flex-direction:column; gap:1px; margin:0; padding:0; list-style:none; }
+.lh-path-review li { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:29px; padding:4px 0; border-top:1px solid #f2f1f6; }
+.lh-path-review li > div:first-child { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.lh-path-review li > div:first-child strong { color:#77748c; font-size:10px; font-weight:600; }
+.lh-path-review li > div:first-child small { color:#a0a5b5; font-size:9px; }
+.lh-change-actions { display:flex; flex:none; align-items:center; gap:8px; }
+.lh-change-actions button { padding:3px 4px; border:0; border-radius:4px; background:transparent; color:#8570c6; font-size:9px; }
+.lh-change-actions button:hover { background:#f3effb; }
+.lh-path-review .lh-actions { margin-top:3px; }
+.lh-path-review .lh-review-boundary { color:#aaadbb; font-size:8px; }
 .lh-draft-reorder { display:flex; align-items:center; gap:5px; width:100%; font-size:10px; color:#a5abbb; }
 .lh-restore-material { position:absolute; display:flex; align-items:center; gap:12px; padding:14px 18px; border:1px dashed #cfc4ed; border-radius:9px; background:#faf8ff; color:#a18ccb; z-index:4; }
 .lh-restore-material > span { display:flex; flex-direction:column; text-align:left; font-size:10px; }

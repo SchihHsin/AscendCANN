@@ -64,6 +64,7 @@ import {
   IconPlus,
   IconSearch,
   IconSend,
+  IconSparkles,
   IconSettingsAutomation,
   IconThumbDown,
   IconThumbUp,
@@ -353,6 +354,13 @@ function App() {
     workspace.actions.openCanvas({ mode, fit: options.fit });
     setTaskContentsOpen(false);
   };
+  const openLearningPathReview = () => {
+    if (!isStandardLearningTask) return;
+    learningCanvasView.actions.select("path");
+    learningCanvasView.actions.setExpanded(true);
+    workspace.actions.openCanvas({ mode: "free" });
+    setTaskContentsOpen(false);
+  };
   const restoreContent = (id) => {
     const saved = workspace.getTaskState(selectedTask).snapshots.find(item => item.id === id) || wb.getSession(selectedTask).records.find(item => "record:" + item.id === id);
     const indexed = getTaskItems(selectedTask).flatMap(item => [item, ...(item.children || [])]).find(item => item.id === id);
@@ -487,6 +495,7 @@ function App() {
       if (!text || session.replying) return;
       let action = () => openContent("learning-goal");
       let replyText = "目标与基础已保留。可以在右侧修改，再生成或选用图像输入预处理的示例路径。";
+      let messageMeta;
       if (/取消.*(?:路径|调整|变更)|(?:路径|调整|变更).*取消/.test(text)) {
         action = () => { learning.actions.cancelPath(); openContent("learning-path"); };
         replyText = "已取消路径调整，保留原来已确认的路径与学习记录。";
@@ -496,12 +505,32 @@ function App() {
       } else if (/恢复.*环境|环境.*恢复/.test(text)) {
         action = () => { const entry = (learning.state.draftPath || learning.state.path)?.find(node => node.id === "environment"); if (entry?.skipped) learning.actions.editPath("environment", "skip"); openContent("learning-path"); };
         replyText = "已准备恢复环境节点的调整预览，等待确认。";
+      } else if ((learning.state.draftPath || learning.state.path) && /(?:已经|已掌握|会了|熟悉|学过|重点|优先|补充|增加|加入|移除|删除|跳过|减少|调整|更关注|不需要)/i.test(text)) {
+        const proposal = learning.actions.proposePathChanges(text);
+        action = openLearningPathReview;
+        if (proposal.changes.length) {
+          messageMeta = { pathReviewId: proposal.proposalId };
+          replyText = `我按你补充的学习情况准备了 ${proposal.changes.length} 项路径建议。你可以在画布逐项采纳或忽略，也可以继续拖动节点；整条路径确认前，原路径与学习记录都不会改变。`;
+        } else {
+          replyText = "我已打开当前路径供你继续审阅。要调整内容，可以说已掌握的节点、想补充的主题，或希望重点练习的部分；我会先给出可采纳或忽略的草案建议。";
+        }
+      } else if (!learning.state.path && !learning.state.draftPath && /(?:我想|希望|想要|帮我|我要).{0,36}(?:学会|学习|掌握|了解)|(?:生成|准备|制定).{0,16}(?:学习)?路径/i.test(text)) {
+        const proposal = learning.actions.startPathFromPrompt(text);
+        if (proposal) {
+          action = openLearningPathReview;
+          messageMeta = { pathReviewId: proposal.proposalId };
+          replyText = proposal.changes.length
+            ? `我先按你的目标起草路径，并标出 ${proposal.changes.length} 项可能需要调整的内容。请先在画布审阅；可以继续补充目标、逐项采纳或忽略，最后由你确认后才开始学习。`
+            : "我先按你的目标准备了路径草案。你可以在画布检查阶段和子步骤，也可以继续告诉我已掌握的内容或想增加的主题；确认之前不会开始学习。";
+        }
       } else if (/确认.*(?:路径|开始|调整)|开始学习/.test(text)) {
         action = () => { if (learning.state.draftPath) learning.actions.confirmPath(); openContent("learning-path"); };
         replyText = learning.state.draftPath ? "已确认学习路径，可以从保留的节点继续。" : "已打开当前路径；若尚未准备草案，先生成或选用路径。";
       } else if (/生成.*路径|准备.*路径|选用.*路径|调整.*路径/.test(text)) {
-        action = () => { learning.actions.generatePath(/选用/.test(text) ? "existing" : "goal"); openContent("learning-path"); };
-        replyText = "已准备可审阅的示例路径。你可以调整环境节点，确认后进入理解、跟练与检查。";
+        const proposal = learning.actions.generatePath(/选用/.test(text) ? "existing" : "goal");
+        action = openLearningPathReview;
+        if (proposal) messageMeta = { pathReviewId: proposal.proposalId };
+        replyText = "已准备可审阅的示例路径。你可以检查各阶段和子步骤、补充学习要求或拖动节点；确认后才进入学习。";
       } else if (/输入.*(?:检查|核对)|核对.*输入/.test(text)) {
         action = () => openContent("learning-check");
         replyText = "已打开本次输入检查；明确运行检查后才保存结果，旧记录继续保留。";
@@ -519,7 +548,7 @@ function App() {
       } else if (/全部|找回|恢复/.test(text)) {
         action = () => openCanvas(); replyText = "已打开本任务的内容与记录，可以恢复原对象及尝试。";
       }
-      if (sendMessage(event, withPointContext({ replyText }))) { consumePointContext(); action(); }
+      if (sendMessage(event, withPointContext({ replyText, ...(messageMeta ? { messageMeta } : {}) }))) { consumePointContext(); action(); }
       return;
     }
     const restore = isInteractiveTask && /^(?:请)?(?:帮我)?(?:打开|回到|恢复|找回|再看|唤醒|查看)/.test(text) && /刚才|之前|上次|那份|解释|图解|张量|误差|核对|尝试|记录|diff|修改预览|来源/i.test(text);
@@ -976,6 +1005,7 @@ function App() {
                     }
                   }}><IconPointer2 size={12} /><span>{message.scopeReference.type === "workspace-area" ? `关联工作区区域 · ${message.scopeReference.contentTitle || "内容"} · ${message.scopeReference.label}` : `关联图解范围 · ${message.scopeReference.label}`}</span></button></div>}
                   {message.learningReference && <div className="message-source-links"><button type="button" onClick={() => selectExistingTask(message.learningReference.taskId)}><IconBook size={12} />返回来源学习任务</button></div>}
+                  {message.pathReviewId && isStandardLearningTask && <div className="message-source-links"><button type="button" onClick={openLearningPathReview}><IconSparkles size={12} />{learning.state.draftPath ? "查看路径草案与审阅建议" : "回看已确认学习路径"}</button></div>}
                   {message.sourceContext && <div className="message-source-links"><button type="button" onClick={() => { if (message.sourceContext.kind === "official-learning") { openContent(message.sourceContext.nodeId); officialLearning.actions.seek(message.sourceContext.time); } else if (message.sourceContext.kind === "learning") { learning.actions.seek(message.sourceContext.time); openContent("learning-lesson", { anchor: message.sourceContext.focus }); } else if (message.sourceContext.kind === "image") { inference.actions.seek(message.sourceContext.time); if (!inference.state.lessonOpen) inference.actions.lesson(); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus, time: message.sourceContext.time, video: true }); }}><IconPlayerPlay size={12} /><span>讲解示例 {message.sourceContext.stamp} · 返回片段</span></button>{message.role === "assistant" && <button type="button" onClick={() => { if (message.sourceContext.kind === "official-learning") { openContent(message.sourceContext.nodeId); } else if (message.sourceContext.kind === "learning") { learning.actions.focus(message.sourceContext.focus); openContent("learning-lesson", { anchor: message.sourceContext.focus }); } else if (message.sourceContext.kind === "image") { inference.actions.focus(message.sourceContext.focus); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus }); }}><IconBook size={12} />查看关联图解</button>}</div>}
                   {isMainTask && message.role === "assistant" && message.interaction?.intent === "diagnose" ? <ProactiveCue {...proactive.forCue(`diagnose:${message.id}`)}
                     title="沿这次错误补一项判断依据" description="当前材料保持原位。需要理解时，可把这条线索直接带进关联图解。"

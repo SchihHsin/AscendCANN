@@ -832,3 +832,14 @@ final result: passed (scoped QA)
 - 20项进度/既有推荐测试、数据与Hook node check、Pages构建通过。浏览器检查新路径期间没有console error/warn；随后并行修改的 `RangeDiagram.jsx` 出现JSX编译错误，不能覆盖他人WIP。本次最终发布在临时目录中以HEAD加本任务明确列出的16份源码构建，排除RangeDiagram/VoiceCaptureButton等无关工作；工作区原文件保持。详细限制和来源见证据README。
 
 - 发布回执：功能提交 `0b8df29d` 已成功推送 `origin/main`；GitHub Pages run `39568645590` 的 build / deploy 均 success（2026-10-21）。提交采用临时发布快照的 App/useWorkbenchState blob 暂存，保留这两个文件中后续并行语音等改动为未暂存，不混入发布。线上浏览器绑定两次超时，公开页HTTP补查也遇TLS EOF，故未声称发布后交互复测成功；本地此前截图/检查及最终隔离构建与20测试有效。容器尺寸重适配补充仅构建/代码检查，后续可在网络恢复后补浏览器确认。
+
+
+## 2026-10-21 · 学习路径生成人机协同
+
+- 浏览器：现有 in-app tab `http://127.0.0.1:5174/`，学习任务 QA；当前工作区内容区域实际为 568×685。截图在本轮浏览器 QA 输出中查看，未导出截图文件；没有将这一尺寸描述成全宽桌面或移动真机结果。
+- M级操作：在已有学习小结的任务里输入“我已经掌握 HWC→CHW，重点学 Resize、Normalization 和 NCHW 输入检查。”；对话回复生成 5 项建议（2项跳过、3项新增），并带“查看路径草案与审阅建议”。画布节点状态、每条建议理由、单项采纳、单项忽略、批量采纳、待审阅时禁用整条确认、节点直接拖动与“AI 同步说明”均可见。采纳后建议标签更新，忽略新增节点后节点从草案移除；完成处理后确认控件启用。
+- 回归：批量采纳后点取消，恢复原来已确认的学习路径和输入练习；已有路径、记录不被草案覆盖。拖动路径节点到同阶段另一节点后，真实显示“已把……移到……之后”，方向与实际节点顺序相符。浏览器 console error 为空。
+- 自动检查：`node --test src/learning-path-collaboration.test.js` 5/5 通过；`npm run build:pages` 通过，只有既有 bundle >500kB 提示；`git diff --check` 通过。
+- 范围：对话解释和路径调整是本地示例，不调用真实 AI；新增 Resize / Normalization / NCHW 教学材料未在本轮实现，不宣称真实代码/模型/NPU验证。报告页序、API / Host / Application 边界不变。
+
+final result: passed (scoped QA)

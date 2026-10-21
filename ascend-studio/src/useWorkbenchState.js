@@ -245,7 +245,7 @@ export function useWorkbenchState() {
     pending.timer = setTimeout(() => {
       if (replyTimers.current.get(taskName) !== pending) return;
       replyTimers.current.delete(taskName);
-      updateTask(taskName, (old) => ({ replying: false, unreadReply: old.unreadReply || activeConversationTask.current !== taskName, messages: [...old.messages, { id: uid(), role: "assistant", text: options.overrideReply || options.replyText || cleanReply(buildAssistantReply({ text: generationText, taskName, modelLabel, attachments, records })), interaction: options.interaction, model: modelLabel, isDemo: true }] }));
+      updateTask(taskName, (old) => ({ replying: false, unreadReply: old.unreadReply || activeConversationTask.current !== taskName, messages: [...old.messages, { id: uid(), role: "assistant", text: options.overrideReply || options.replyText || cleanReply(buildAssistantReply({ text: generationText, taskName, modelLabel, attachments, records })), interaction: options.interaction, ...(options.messageMeta && typeof options.messageMeta === "object" ? options.messageMeta : {}), model: modelLabel, isDemo: true }] }));
     }, 650);
     return true;
   };

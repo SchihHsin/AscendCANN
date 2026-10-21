@@ -5682,6 +5682,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据来源：交互方向来自用户明确选择；本地桌面预览的区域框选、键盘退出、文本发送及消息引用恢复为 M。选区不是图像裁切，也未连接真实视觉模型/API；语音识别的麦克风权限和真实听写未验证。
 - 不影响 Dashboard、汇报页序/hash 或 API / Host / Application 边界。变更文件：`ascend-studio/src/TaskWorkspace.jsx`、`task-workspace.css`、`ExplainPanel.jsx`、`App.jsx` 与 `ascstudio/` Pages 构建产物。验证：干净源码快照 `npm run build:pages` 通过（Vite 保留既有大 chunk 提示）；`git diff --check` 通过；本地 1280×720 页面手动核对大区域划选、Esc、原 composer、文字消息和区域引用恢复；未运行测试。功能提交 `5d65af81`（`feat: allow workspace area pointing`）已成功推送 `origin/main`。社区经验源码的已有暂存改动仍单独保留，未并入该功能提交。
 
+### 2026-10-21 · 学习路径生成与人机协同编辑实施
+
+- 用户确认三种状态属于同一流程：AI 先按目标生成待审阅草案；用户可继续用自然语言补充、逐项采纳/忽略建议；用户也可直接拖动二级节点，AI 同步说明节点顺序变化。不是互斥方案。
+- 学习任务对话现在可解析目标、已掌握的 HWC→CHW、重点主题 Resize / Normalization 和 NCHW 输入检查，形成局部演示建议；回复提供回到草案的入口。草案保留在原学习画布，节点可见建议状态，理由与单项/批量审阅并列显示；待审阅建议处理完才可确认。拖动创建/更新草案，解释调整相对位置，可撤销；取消继续保留已确认路径和学习记录。
+- 主要源码：`ascend-studio/src/learning-path-collaboration.js`、`useLearningJourney.js`、`LearningHierarchyCanvas.jsx`、`learning-hierarchy-canvas.css`、`App.jsx`、`useWorkbenchState.js`。本地规则与对话均为 Demo 演示，不连接真实 AI；新增预处理主题仍需后续接入对应教学材料，不能推断为 Python、模型或 NPU 已验证。
+- 本地 QA 为 M：在用户现有 127.0.0.1 学习 QA 任务实际补充目标，浏览器显示 5 项建议；分别采纳/忽略、拖动节点并核对 AI 同步说明、批量采纳后取消；已确认路径恢复，旧学习记录未被新草案替换。浏览器 console error 为空；当前 in-app 内容区为 568×685，未据此声称桌面全宽或触屏验证。截图在 QA 会话输出检查，未落独立仓库文件。
+- 测试：`node --test ascend-studio/src/learning-path-collaboration.test.js` 5 项通过；`npm run build:pages` 通过（Vite 保留既有 >500kB chunk 提示）；`git diff --check` 通过。不改正式报告序列/hash，也不改变 API / Host / Application 边界。提交/推送结果待完成后回填。
+
 
 ### 2026-10-21 · 框选后的就地文字与按住说话交互
 

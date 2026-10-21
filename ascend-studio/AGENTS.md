@@ -948,6 +948,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 选择结果保留任务/内容来源、矩形比例坐标与可读文字，显示为可移除的输入上下文；发送后消息保留来源链接，可重新打开原内容并显示原选区。Esc 退出框选。
 - 本地桌面预览核对大区域框选、composer 输入、消息引用恢复和 Esc。真实图像裁切、视觉模型/API 及浏览器语音权限/听写未接入或验证。源文件和 Pages 产物随本轮交付；干净源码快照构建与 `git diff --check` 通过，未运行测试。功能提交 `5d65af81`（`feat: allow workspace area pointing`）已成功推送 `origin/main`；本轮恢复社区经验暂存时只保留社区经验差异，未覆盖已推送的区域选择实现，也未提交社区经验改动。
 
+### 2026-10-21 · 学习路径生成与协同编辑
+
+- 用户确认“目标起草 → 人与 AI 迭代 → 人工确认”和“直接拖节点 → AI 同步说明”是同一方案中的互补状态。沿用现有三栏学习工作台、层级画布、点阵背景和左右/上下布局，不引入独立新框架。
+- 目标或对话可生成路径草案；自然语言补充已掌握内容/重点主题后，Demo 形成带理由的增删/跳过建议，画布标示节点状态，支持逐项/批量采纳、忽略、撤销、取消。未处理的建议阻止整条路径确认。聊天回复可返回对应路径审阅画布。二级节点可直接拖动换序或用 Alt+方向键，画布显示其与目标节点的相对顺序变化；取消后回到原已确认路径，学习记录保持。
+- 主要文件：`src/learning-path-collaboration.js`、`src/learning-path-collaboration.test.js`、`src/useLearningJourney.js`、`src/LearningHierarchyCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/App.jsx`、`src/useWorkbenchState.js`。真实 AI、教学内容生成和 NPU 验证未接入；建议规则只覆盖图像预处理 Demo 的示例主题。
+- 本地浏览器手动回放覆盖已有目标任务的自然语言修改、5项草案、单项采纳/忽略、直接拖动、AI 同步说明、批量采纳及取消恢复。浏览器 console error 为空；in-app 内容区实测 568×685，没有宣称更宽桌面/触屏回归。详细限制见 `design-qa.md`，交互规则见 `interaction-design.md`。测试/构建/提交回执完成后补记。
+
 
 ## 2026-10-21 · 框选后的局部输入与按住说话
 

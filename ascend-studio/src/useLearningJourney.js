@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 import { DEFAULT_LEARNING_PROFILE, LEARNING_NODES, getLearningCode, getLearningShape, getTransferCode, getTransferShape } from "./learning-data";
+import { cloneLearningPath, commitLearningPath, moveLearningPathStep, pendingPathChangeCount, proposeLearningPathChanges, resolveLearningPathChange } from "./learning-path-collaboration";
 
 const now = () => new Date().toLocaleTimeString("zh-CN", { timeZone: "Asia/Shanghai", hour: "2-digit", minute: "2-digit" });
 const sameParameters = (a, b) => Boolean(a && b && a.axes.join(",") === b.axes.join(",") && a.batch === b.batch);
-const initial = profile => ({ profile: { ...DEFAULT_LEARNING_PROFILE, ...profile }, path: null, draftPath: null, pathSource: null, draftSource: null, pathProfile: null, activeNode: null, understood: [], axes: [0, 1, 2], batch: false, attempts: [], checks: [], summaries: [], transfer: null, practiceView: "base", time: 0, focus: "channels", channel: "all", playing: false, suggestionDismissed: false, notice: "", resetVersion: 0 });
+const initial = profile => ({ profile: { ...DEFAULT_LEARNING_PROFILE, ...profile }, path: null, draftPath: null, pathSource: null, draftSource: null, pathProfile: null, pathChanges: [], pathProposalId: null, pathUndo: [], pathSync: "", activeNode: null, understood: [], axes: [0, 1, 2], batch: false, attempts: [], checks: [], summaries: [], transfer: null, practiceView: "base", time: 0, focus: "channels", channel: "all", playing: false, suggestionDismissed: false, notice: "", resetVersion: 0 });
 const keyFor = taskId => `learning-journey:${taskId}`;
 function restore(taskId, profile) {
   const saved = readSession(keyFor(taskId), null);
   const base = initial(profile);
   if (!saved || !Array.isArray(saved.attempts)) return base;
-  return { ...base, ...saved, profile: { ...base.profile, ...saved.profile }, checks: Array.isArray(saved.checks) ? saved.checks : [], summaries: Array.isArray(saved.summaries) ? saved.summaries : [], understood: Array.isArray(saved.understood) ? saved.understood : [], transfer: saved.transfer || null, practiceView: saved.practiceView === "transfer" ? "transfer" : "base", playing: false };
+  return { ...base, ...saved, profile: { ...base.profile, ...saved.profile }, checks: Array.isArray(saved.checks) ? saved.checks : [], summaries: Array.isArray(saved.summaries) ? saved.summaries : [], understood: Array.isArray(saved.understood) ? saved.understood : [], pathChanges: Array.isArray(saved.pathChanges) ? saved.pathChanges : [], pathUndo: Array.isArray(saved.pathUndo) ? saved.pathUndo : [], pathProposalId: saved.pathProposalId || null, transfer: saved.transfer || null, practiceView: saved.practiceView === "transfer" ? "transfer" : "base", playing: false };
 }
 function exposeTaskState(task) {
   if (!task) return undefined;
@@ -51,6 +52,8 @@ export function useLearningJourney({ taskId, profile, visible = false, onRecord 
     return next;
   };
   const record = (title, summary, kind, data) => onRecord?.({ title, summary, kind, data, isDemo: true }, taskId);
+  const pathSnapshot = previous => ({ draftPath: previous.draftPath ? cloneLearningPath(previous.draftPath) : null, pathChanges: (previous.pathChanges || []).map(change => ({ ...change })), pathProposalId: previous.pathProposalId || null, pathSync: previous.pathSync || "" });
+  const pathUndoStack = () => [...(state.pathUndo || []), pathSnapshot(state)].slice(-20);
   const shape = getLearningShape(state);
   const latestAttempt = state.attempts.at(-1);
   const currentAttempt = sameParameters(latestAttempt?.snapshot, state) && JSON.stringify(latestAttempt.profile) === JSON.stringify(state.profile) ? latestAttempt : null;
@@ -88,11 +91,69 @@ export function useLearningJourney({ taskId, profile, visible = false, onRecord 
   const defaultPath = () => LEARNING_NODES.map(node => ({ id: node.id, skipped: false }));
   const generatePath = (source = "goal") => {
     if (!state.profile.goal.trim()) { update({ notice: "先填写想学会的内容。" }); return false; }
-    update({ draftPath: state.path ? state.path.map(node => ({ ...node })) : defaultPath(), draftSource: source, notice: "路径停留在草案；可以调整，再确认开始。" });
+    const proposalId = crypto.randomUUID();
+    update({ draftPath: state.path ? cloneLearningPath(state.path) : defaultPath(), draftSource: source, pathChanges: [], pathProposalId: proposalId, pathUndo: [], pathSync: "", notice: "路径停留在草案；可以继续讨论或调整，再确认开始。" });
+    return { proposalId, changes: [] };
+  };
+  const startPathFromPrompt = prompt => {
+    const text = String(prompt || "").trim();
+    const nextProfile = { ...state.profile };
+    const goalMatch = text.match(/(?:我想|希望|想要|帮我)?\s*(学会|学习|掌握|了解)\s*([^，,。；;！!]+)/);
+    if (goalMatch) nextProfile.goal = `${goalMatch[1]}${goalMatch[2].trim()}`;
+    const timeMatch = text.match(/每天(?:可以|大约|约)?\s*(\d+)\s*分钟/);
+    if (timeMatch) nextProfile.dailyMinutes = Math.min(120, Math.max(5, Number(timeMatch[1])));
+    const backgroundMatch = text.match(/(会一点|有)([^，,。；;！!]{1,30}(?:Python|python|基础|经验)[^，,。；;！!]*)/);
+    if (backgroundMatch) nextProfile.background = `${backgroundMatch[1]}${backgroundMatch[2]}`.trim();
+    if (!nextProfile.goal.trim()) { update({ notice: "先补充想学会的内容。" }); return null; }
+    const proposalId = crypto.randomUUID();
+    const proposal = proposeLearningPathChanges(state.path ? cloneLearningPath(state.path) : defaultPath(), text, proposalId);
+    update({ profile: nextProfile, draftPath: proposal.path, draftSource: "goal", pathChanges: proposal.changes, pathProposalId: proposalId, pathUndo: [], pathSync: "", notice: proposal.changes.length ? `AI 已准备学习路径和 ${proposal.changes.length} 项建议；请先审阅，确认前不会开始学习。` : "AI 已按你的目标准备路径草案；确认前不会开始学习。" });
+    return { proposalId, profile: nextProfile, path: proposal.path, changes: proposal.changes };
+  };
+  const proposePathChanges = prompt => {
+    const basePath = state.draftPath || state.path || defaultPath();
+    const proposalId = crypto.randomUUID();
+    const proposal = proposeLearningPathChanges(basePath, prompt, proposalId);
+    if (!proposal.changes.length) return { proposalId: state.pathProposalId, changes: [], path: basePath };
+    update({ draftPath: proposal.path, draftSource: state.draftSource || state.pathSource || "goal", pathChanges: [...(state.pathChanges || []), ...proposal.changes], pathProposalId: proposalId, pathUndo: pathUndoStack(), pathSync: "", notice: `已准备 ${proposal.changes.length} 项建议；原路径与学习记录保持不变。` });
+    return { proposalId, changes: proposal.changes, path: proposal.path };
+  };
+  const resolvePathChange = (id, accept) => {
+    if (!state.draftPath || !state.pathChanges?.some(change => change.id === id && change.status === "pending")) return false;
+    const result = resolveLearningPathChange(state.draftPath, state.pathChanges, id, accept);
+    update({ draftPath: result.path, pathChanges: result.changes, pathUndo: pathUndoStack(), notice: accept ? "已采纳这项路径建议；确认整条路径后才生效。" : "已忽略这项建议，保留原节点。" });
+    return true;
+  };
+  const acceptAllPathChanges = () => {
+    const pending = (state.pathChanges || []).filter(change => change.status === "pending");
+    if (!state.draftPath || !pending.length) return false;
+    const result = pending.reduce((current, change) => resolveLearningPathChange(current.path, current.changes, change.id, true), { path: state.draftPath, changes: state.pathChanges });
+    update({ draftPath: result.path, pathChanges: result.changes, pathUndo: pathUndoStack(), notice: `已采纳 ${pending.length} 项建议；确认整条路径后才开始学习。` });
+    return true;
+  };
+  const dismissPathSuggestions = () => {
+    const pending = (state.pathChanges || []).filter(change => change.status === "pending");
+    if (!state.draftPath || !pending.length) return false;
+    const result = pending.reduce((current, change) => resolveLearningPathChange(current.path, current.changes, change.id, false), { path: state.draftPath, changes: state.pathChanges });
+    update({ draftPath: result.path, pathChanges: result.changes, pathUndo: pathUndoStack(), notice: "已忽略待审阅建议；路径草案仍可继续调整。" });
+    return true;
+  };
+  const undoPathEdit = () => {
+    const previous = state.pathUndo?.at(-1);
+    if (!previous) return false;
+    update({ draftPath: previous.draftPath ? cloneLearningPath(previous.draftPath) : null, pathChanges: previous.pathChanges || [], pathProposalId: previous.pathProposalId || null, pathSync: previous.pathSync || "", pathUndo: state.pathUndo.slice(0, -1), notice: "已撤销上一步路径调整。" });
+    return true;
+  };
+  const reorderPathStep = (stageId, sourceId, targetId) => {
+    const basePath = state.draftPath || state.path || defaultPath();
+    const moved = moveLearningPathStep(basePath, stageId, sourceId, targetId);
+    if (!moved) return false;
+    const pathSync = `已把「${moved.movedTitle}」移到「${moved.targetTitle}」${moved.relation}；同阶段的其余节点顺序已同步调整。你可以继续拖动，或撤销这一步。`;
+    update({ draftPath: moved.path, draftSource: state.draftSource || state.pathSource || "goal", pathProposalId: state.pathProposalId || crypto.randomUUID(), pathUndo: pathUndoStack(), pathSync, notice: `${pathSync} 确认草案后才会替换当前路径。` });
     return true;
   };
   const editPath = (id, action) => {
-    const draft = (state.draftPath || state.path || defaultPath()).map(node => ({ ...node }));
+    const draft = cloneLearningPath(state.draftPath || state.path || defaultPath());
     const index = draft.findIndex(node => node.id === id);
     if (index < 0) return false;
     if (action === "skip" && id === "environment") draft[index].skipped = !draft[index].skipped;
@@ -103,13 +164,14 @@ export function useLearningJourney({ taskId, profile, visible = false, onRecord 
       const order = draft.filter(node => node.id !== "environment").map(node => node.id).join(",");
       if (order !== "channels,practice,check") { update({ notice: "理解 → 跟练 → 输入检查需要按依赖顺序进行；环境准备可移动或跳过。" }); return false; }
     }
-    update({ draftPath: draft, draftSource: state.draftSource || state.pathSource || "goal", notice: "调整已放入预览，确认后才更新学习路径。" });
+    update({ draftPath: draft, draftSource: state.draftSource || state.pathSource || "goal", pathProposalId: state.pathProposalId || crypto.randomUUID(), pathUndo: pathUndoStack(), notice: "调整已放入预览，确认后才更新学习路径。" });
     return true;
   };
   const confirmPath = () => {
     if (!state.draftPath) return false;
-    const path = state.draftPath.map(node => ({ ...node }));
-    update({ path, draftPath: null, pathSource: state.draftSource || state.pathSource || "goal", draftSource: null, pathProfile: { ...state.profile }, activeNode: path.find(node => !node.skipped)?.id, notice: "学习路径已确认，已有学习记录保留。" });
+    if (pendingPathChangeCount(state.pathChanges) > 0) { update({ notice: "还有路径建议待你采纳或忽略；处理后再确认整条路径。" }); return false; }
+    const path = commitLearningPath(state.draftPath);
+    update({ path, draftPath: null, pathSource: state.draftSource || state.pathSource || "goal", draftSource: null, pathProfile: { ...state.profile }, pathChanges: [], pathProposalId: null, pathUndo: [], pathSync: "", activeNode: path.find(node => !node.skipped)?.id, notice: "学习路径已确认，已有学习记录保留。" });
     record("已确认学习路径", `${state.profile.goal}；${path.filter(node => !node.skipped).length} 个节点；每天 ${state.profile.dailyMinutes} 分钟。`, "learning-path", { path, profile: state.profile });
     return true;
   };
@@ -162,8 +224,8 @@ export function useLearningJourney({ taskId, profile, visible = false, onRecord 
   const setTransferBatch = batch => update(previous => previous.transfer ? ({ transfer: { ...previous.transfer, batch: Boolean(batch) }, notice: "迁移参数已改变；旧尝试仍保留在历史中，当前需重新运行。" }) : { notice: "先从有效学习小结开始迁移练习。" });
   return { state, shape, latestAttempt, currentAttempt, currentCheck, pathCurrent, readyToComplete, currentSummary, summaryCurrent, transferShape, transferSource, transferSourceCurrent, transferCurrentAttempt, getTaskState: ownerId => exposeTaskState(tasks.current.get(ownerId)), actions: {
     setProfile: patch => update(previous => ({ profile: { ...previous.profile, ...patch }, notice: previous.path ? "目标或基础已修改；请重新审阅并确认学习路径。" : "" })),
-    generatePath, editPath, confirmPath,
-    cancelPath: () => update({ draftPath: null, draftSource: null, notice: state.path ? "已取消调整，保留原学习路径与记录。" : "已取消草案，可修改目标或选择现成路径。" }),
+    generatePath, startPathFromPrompt, proposePathChanges, resolvePathChange, acceptAllPathChanges, dismissPathSuggestions, undoPathEdit, reorderPathStep, editPath, confirmPath,
+    cancelPath: () => update({ draftPath: null, draftSource: null, pathChanges: [], pathProposalId: null, pathUndo: [], pathSync: "", notice: state.path ? "已取消调整，保留原学习路径与记录。" : "已取消草案，可修改目标或选择现成路径。" }),
     openNode: id => update({ activeNode: id }),
     markUnderstood: () => update(previous => ({ understood: [...new Set([...previous.understood, "channels"])], notice: "已记录看过并理解这一段；可继续跟练。" })),
     axis: (index, axis) => update(previous => ({ axes: previous.axes.map((old, i) => i === index ? Number(axis) : old), notice: "参数已改变；已有尝试和检查按原条件保留。" })),
