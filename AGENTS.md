@@ -5697,3 +5697,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 同一草稿框支持文字和按住快捷键说话：按下开始录音，松开结束；语音转写写入当前草稿，用户检查后主动发送，消息携带所选区域引用。不自动开麦或自动发送。
 - 快捷键具体组合尚未确定；需检查 Mac / Windows 与中文输入法冲突。空格、单字母和 `Ctrl+Space` 不作为默认键位。
 - 本轮仅确认交互方向并更新交接记录，未改 Demo、未运行构建或测试；没有新增运行/语音识别证据，也不影响报告页序/hash 或 API / Host / Application 边界。
+
+### 2026-10-22 · 框选后局部输入与按住说话已实现
+
+- 将「指着说」框选后的输入落实到 Demo：局部 composer 出现在选区附近并自动获得焦点，复用既有 `.composer` 外观，不跳转到对话主输入框。输入包含区域上下文；点击发送后作为当前任务消息提交并保留选区引用。
+- 局部草稿支持普通打字和按住 `⌥ /`（Alt + `/`）语音输入，松开结束识别；转写只回填草稿，用户检查后主动发送。快捷键只在局部输入框处理，并跳过 IME composition。浏览器麦克风权限与真实识别未触发，仍待设备验证。
+- 变更：`ascend-studio/src/AreaComposer.jsx`、`TaskWorkspace.jsx`、`task-workspace.css`、`App.jsx` 以及 Pages 静态产物 `ascstudio/`。本地 `http://127.0.0.1:5177/` 无障碍树显示局部输入框已出现且获得焦点；未触发麦克风。
+- 验证：源码 Vite 构建通过（保留既有大 chunk 提示）；从 HEAD 加本任务改动构建 Pages 通过；`git diff --check` 通过。没有修改报告序列/hash 或 API / Host / Application 边界。
+- 仅本任务文件形成 `b090c700 feat: add nearby area composer` 并已推送 `origin/main`。既有社区经验暂存、其他源码改动、Dashboard 修改和未跟踪资料均保留。
