@@ -5680,4 +5680,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认入口放在工作区公共标题栏，并补充选区可以覆盖工作区里的大块或小块区域；框选后既可在原输入框打字，也可继续用普通「语音输入」。它们是并列输入方式，不再提供图解内专属语音按钮。
 - `TaskWorkspace` 现在在右侧工作区内容区提供任意矩形选择，支持 Esc 退出、选区尺寸提示、可移除的输入上下文及消息历史回定位。上下文记录任务/内容、区域比例坐标和选区中可读取的文字；composer 输入框和语音按钮沿用现有实现。移除了范围图解内部的专属划选/对范围说入口，旧消息的范围引用仍可恢复。
 - 证据来源：交互方向来自用户明确选择；本地桌面预览的区域框选、键盘退出、文本发送及消息引用恢复为 M。选区不是图像裁切，也未连接真实视觉模型/API；语音识别的麦克风权限和真实听写未验证。
-- 不影响 Dashboard、汇报页序/hash 或 API / Host / Application 边界。变更文件：`ascend-studio/src/TaskWorkspace.jsx`、`task-workspace.css`、`ExplainPanel.jsx`、`App.jsx` 与 `ascstudio/` Pages 构建产物。验证：干净源码快照 `npm run build:pages` 通过（Vite 保留既有大 chunk 提示）；`git diff --check` 通过；本地 1280×720 页面手动核对大区域划选、Esc、原 composer、文字消息和区域引用恢复；未运行测试。提交 / push 回执待本轮提交后回填。
+- 不影响 Dashboard、汇报页序/hash 或 API / Host / Application 边界。变更文件：`ascend-studio/src/TaskWorkspace.jsx`、`task-workspace.css`、`ExplainPanel.jsx`、`App.jsx` 与 `ascstudio/` Pages 构建产物。验证：干净源码快照 `npm run build:pages` 通过（Vite 保留既有大 chunk 提示）；`git diff --check` 通过；本地 1280×720 页面手动核对大区域划选、Esc、原 composer、文字消息和区域引用恢复；未运行测试。功能提交 `5d65af81`（`feat: allow workspace area pointing`）已成功推送 `origin/main`。社区经验源码的已有暂存改动仍单独保留，未并入该功能提交。
