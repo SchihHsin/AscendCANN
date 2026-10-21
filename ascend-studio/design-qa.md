@@ -821,3 +821,12 @@ final result: passed
 - 主 CTA 的跨任务复核与 material action mapping 已通过源码检查；没有执行会写入共享任务状态的按钮，因此不声称完成这些路由的点击级QA。未做窄屏/真机触屏、reduced-motion设置或全量回归；浏览器形状演算不是 Python、真实工程、模型或 NPU 验证。不改正式报告页序和 API / Host / Application 边界。
 
 final result: passed (scoped QA)
+
+
+## 2026-10-21 · ResNet50 B 版目标学习画布
+
+- 用户授权后重做独立任务为五目标阶段/15子动作；保留旧图像预处理任务。共用 `LearningCanvasToolbar` / `LearningCanvasCard`，源 `lh-*` 样式和照片/张量图解复用；无固定底部详情。材料高度按内容测量以避免重叠，选中连线从节点侧边绕到材料，不穿过下一级节点。
+- 在实际1600×900内置浏览器检查分类/Host与设备/输入/执行图、两个整体布局、播放暂停与设备定位00:30、移动+10px、固定阻止移动、收起恢复、聚焦退出、重复轴和正确NCHW预览、旧任务数据与同工具栏回归。未运行会保存完成结果的UI检查；纯数据测试覆盖完成约束与失效。截图在 `evidence/20261021-resnet-goal-canvas/`。
+- 响应式：viewport API未实际改变当前页（仍1600×900），不宣称1280或移动端验证；通过分隔条检查544px画布，标题与工具栏分两排。随后补充按布局记录容器尺寸并自动适配尺寸变化；该补充纳入最终构建，待发布后确认。
+- 官方视频因SAMEORIGIN/CSP不嵌入本Demo，节点打开官方课程页；45秒是单独标明的本地图解讲解。官方入口/播放器限制事实为H，本地交互为M；无真实AI/Python/模型/NPU运行，不代表用户设计验收。
+- 20项进度/既有推荐测试、数据与Hook node check、Pages构建通过。浏览器检查新路径期间没有console error/warn；随后并行修改的 `RangeDiagram.jsx` 出现JSX编译错误，不能覆盖他人WIP。本次最终发布在临时目录中以HEAD加本任务明确列出的16份源码构建，排除RangeDiagram/VoiceCaptureButton等无关工作；工作区原文件保持。详细限制和来源见证据README。

@@ -30,7 +30,7 @@ const GENERIC_META = Object.freeze({
 });
 
 export function getContentGroups(taskId, learning = false) {
-  const groups = taskId === "ResNet50 离线推理初体验" ? [{ id: "learning", title: "官网路径与学习拆解", description: "按官网课程顺序组织的主线节点、学习拆解与官方来源。" }] : learning || taskId === "学会图像输入预处理" ? [{ id: "learning", title: "学习目标与实践", description: "目标、路径、理解、跟练及对应的完成记录。" }] : isImageTask(taskId) ? IMAGE_GROUPS : isMainTask(taskId) ? ADD_CUSTOM_GROUPS : GENERIC_GROUPS;
+  const groups = taskId === "ResNet50 离线推理初体验" ? [{ id: "learning", title: "ResNet50 目标与实践", description: "按推理目标组织的学习动作、图解、理解检查与官方来源。" }] : learning || taskId === "学会图像输入预处理" ? [{ id: "learning", title: "学习目标与实践", description: "目标、路径、理解、跟练及对应的完成记录。" }] : isImageTask(taskId) ? IMAGE_GROUPS : isMainTask(taskId) ? ADD_CUSTOM_GROUPS : GENERIC_GROUPS;
   return groups.map((group) => ({ ...group }));
 }
 

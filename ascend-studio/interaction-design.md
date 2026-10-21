@@ -37,6 +37,14 @@
 
 已核对来源：官网[成长路径](https://www.hiascend.com/edu/growth/details/2b5bea0dcd854f3b9d22d9e423a75746)当前列出 3 个课程与 1 个在线实验；[官方学习资源文章](https://www.hiascend.com/developer/techArticles/20230817-1?envFlag=1)列出概述、快速入门、模型转换、推理基础、图像处理和 ResNet50 应用开发等视频。可追溯课程入口为 [AscendCL 概述](https://www.hiascend.com/developer/courses/detail/1676860115159470081)、[快速入门](https://www.hiascend.com/developer/courses/detail/1676864664357150722)、[ResNet50 C&C++ 应用课程](https://www.hiascend.com/developer/courses/detail/1679410425112403970)、[ResNet50 Python 应用课程](https://www.hiascend.com/zh/developer/courses/detail/1687390499876962306)。这些入口来自公开官方资源，不表示已经完成课程播放或硬件实验验证。
 
+### 已实施与验证边界（2026-10-21）
+
+用户已授权实施。ResNet50 独立任务现按五阶段、15 个学习动作组织，图解/讲解/练习沿用原 `lh-*` 世界画布与共享工具栏、材料卡；左右/上下切换整个组成，材料可移动、固定、收起恢复，聚焦退出回原视口。图解包含分类链路、Host/AscendCL/Device、依赖层、样例文件、原照片与RGB张量、执行调用及结果解析；理解题、输入维度和调用顺序检查支撑子节点进度，阶段按子节点汇总。
+
+官方课程播放器返回 `X-Frame-Options: SAMEORIGIN`，且 CSP 的 `frame-ancestors` 不包含本 Demo 的 localhost/GitHub Pages，因此视频从节点打开官方课程页；不以内嵌代理绕过限制。画布的 45 秒播放器明确是本地交互图解，不伪造官方章节、字幕或时长。官方课程实际内容与设备运行尚未在本机验证。原学习任务与独立存储保留；旧版手动状态单列为历史，不冒充新理解/检查通过。
+
+详细局部 QA 与限制见 `design-qa.md`、`evidence/20261021-resnet-goal-canvas/README.md`；实现尚待用户设计评审，技术检查通过不等于已认可外观。
+
 ## 设计点 01：按用户意图决定主动展开程度
 
 | 用户当前行为 | 系统响应 | 展示规则 |

@@ -71,6 +71,8 @@ function restoreWorkbench() {
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
   if (!sessions[MAIN_TASK]) sessions[MAIN_TASK] = blank();
   const meta = { ...taskDetails, ...(isObject(value.meta) ? Object.fromEntries(Object.entries(value.meta).filter(([, item]) => isObject(item))) : {}) };
+  // Refresh only the built-in scenario brief; saved conversations, records and custom tasks stay intact.
+  if (meta[OFFICIAL_LEARNING_TASK]?.kind === "official-learning") meta[OFFICIAL_LEARNING_TASK] = { ...meta[OFFICIAL_LEARNING_TASK], ...taskDetails[OFFICIAL_LEARNING_TASK] };
   return {
     groups, meta, sessions,
     query: typeof value.query === "string" ? value.query : "",

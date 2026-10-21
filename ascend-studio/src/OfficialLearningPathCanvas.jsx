@@ -1,205 +1,148 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { IconArrowRight, IconBook2, IconCheck, IconFocus2, IconHandStop, IconLayoutColumns, IconLayoutRows, IconMaximize, IconMinus, IconPlus, IconRefresh, IconTargetArrow } from "@tabler/icons-react";
-import { OFFICIAL_IMAGE_SAMPLE_URL, OFFICIAL_LEARNING_COURSES, OFFICIAL_LEARNING_PATH_URL, getOfficialCourseStatus, getOfficialLearningNode, officialStatusLabel } from "./official-learning-data";
+import { IconArrowRight, IconBook2, IconCheck, IconChevronDown, IconCode, IconCube, IconDeviceDesktop, IconPhoto, IconPointer, IconRoute, IconSearch } from "@tabler/icons-react";
+import { OFFICIAL_LEARNING_STAGES, getOfficialCourseStatus, getOfficialLearningNode, officialStatusLabel } from "./official-learning-data";
+import LearningCanvasToolbar from "./LearningCanvasToolbar";
+import LearningCanvasCard from "./LearningCanvasCard";
+import OfficialLearningVisuals from "./OfficialLearningVisuals";
+import { OfficialLesson, OfficialPractice, OfficialSources } from "./OfficialLearningActivities";
+import "./learning-hierarchy-canvas.css";
 import "./official-learning-canvas.css";
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
-const courseStatus = (course, statuses) => getOfficialCourseStatus(course, statuses);
-const stepStatus = (step, statuses) => statuses[step.id] || "not-started";
-
-function graphFor(layout) {
-  if (layout === "vertical") {
-    const rowHeight = 188;
-    const groups = OFFICIAL_LEARNING_COURSES.map((course, index) => {
-      const y = 54 + index * rowHeight;
-      const parent = { x: 42, y: y + 52, width: 240, height: 72 };
-      const children = course.children.map((child, childIndex) => ({ ...child, rect: { x: 340, y: y + 5 + childIndex * 55, width: 260, height: 52 } }));
-      return { ...course, index, rect: parent, children };
-    });
-    return { groups, width: 630, height: 54 + OFFICIAL_LEARNING_COURSES.length * rowHeight - 10 };
-  }
-  const columnWidth = 286;
-  const groups = OFFICIAL_LEARNING_COURSES.map((course, index) => {
-    const x = 42 + index * columnWidth;
-    const parent = { x, y: 49, width: 252, height: 78 };
-    const children = course.children.map((child, childIndex) => ({ ...child, rect: { x: x + 7, y: 154 + childIndex * 66, width: 265, height: 58 } }));
-    return { ...course, index, rect: parent, children };
+const icons = [IconRoute, IconDeviceDesktop, IconPhoto, IconCube, IconSearch];
+function makeTree(layout) {
+  let offset = 0;
+  const horizontal = layout === "horizontal";
+  const groups = OFFICIAL_LEARNING_STAGES.map((stage, i) => {
+    const rect = horizontal ? { x: 0, y: offset, width: 258, height: 72 } : { x: i * 320, y: 0, width: 292, height: 72 };
+    const children = stage.children.map((child, j) => ({ ...child, rect: horizontal ? { x: 32, y: offset + 82 + j * 55, width: 226, height: 47 } : { x: i * 320 + 20, y: 88 + j * 55, width: 272, height: 47 } }));
+    offset += 95 + children.length * 55;
+    return { ...stage, index: i, rect, children };
   });
-  return { groups, width: 42 + (OFFICIAL_LEARNING_COURSES.length - 1) * columnWidth + 272, height: 154 + 2 * 66 + 58 + 20 };
-}
-function NodeStatus({ status }) {
-  return <span className={`ol-status is-${status}`}><i />{officialStatusLabel(status)}</span>;
+  return { groups, width: horizontal ? 258 : groups.length * 320 - 28, height: horizontal ? offset - 20 : 310 };
 }
 
-function WorkflowLines({ graph, layout, selectedNodeId }) {
-  const selected = getOfficialLearningNode(selectedNodeId);
-  return <svg className="ol-lines" width={graph.width} height={graph.height} aria-hidden="true">
-    <defs><marker id="ol-arrow-main" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8Z" /></marker><marker id="ol-arrow-child" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L8 4L0 8Z" /></marker></defs>
-    {graph.groups.map((course, index) => {
-      const next = graph.groups[index + 1];
-      const currentCourse = selected?.courseId === course.id;
-      const parent = course.rect;
-      const main = next && (layout === "horizontal"
-        ? `M${parent.x + parent.width},${parent.y + parent.height / 2} C${parent.x + parent.width + 26},${parent.y + parent.height / 2} ${next.rect.x - 26},${next.rect.y + next.rect.height / 2} ${next.rect.x},${next.rect.y + next.rect.height / 2}`
-        : `M${parent.x + parent.width / 2},${parent.y + parent.height} C${parent.x + parent.width / 2},${parent.y + parent.height + 25} ${next.rect.x + next.rect.width / 2},${next.rect.y - 25} ${next.rect.x + next.rect.width / 2},${next.rect.y}`);
-      const branch = layout === "horizontal"
-        ? `M${parent.x + 25},${parent.y + parent.height} V${course.children[0]?.rect.y - 22}`
-        : `M${parent.x + parent.width},${parent.y + parent.height / 2} H${course.children[0]?.rect.x - 34} V${course.children[0]?.rect.y + course.children[0]?.rect.height / 2}`;
-      return <g key={course.id} className={currentCourse ? "is-current" : ""}>
-        {main && <path className="ol-main-link" d={main} markerEnd="url(#ol-arrow-main)" />}
-        {layout === "horizontal" && course.children.length > 0 && <path className="ol-branch" d={branch} />}
-        {layout === "vertical" && course.children.length > 0 && <path className="ol-branch" d={`M${parent.x + parent.width},${parent.y + parent.height / 2} H${course.children[0].rect.x - 24} V${course.children.at(-1).rect.y + course.children.at(-1).rect.height / 2}`} />}
-        {course.children.map(child => {
-          const target = child.rect;
-          const d = layout === "horizontal"
-            ? `M${parent.x + 25},${parent.y + parent.height} V${target.y + target.height / 2} H${target.x}`
-            : `M${target.x - 24},${target.y + target.height / 2} H${target.x}`;
-          return <path key={child.id} className={`ol-child-link${selectedNodeId === child.id ? " is-selected" : ""}`} d={d} markerEnd="url(#ol-arrow-child)" />;
-        })}
-      </g>;
-    })}
-  </svg>;
+function Hierarchy({ tree, layout, node, statuses, onSelect, onDrag }) {
+  const horizontal = layout === "horizontal";
+  return <div className={`lh-hierarchy is-${layout}`} style={{ width: tree.width, height: tree.height }}>
+    <div className="lh-tree-grab" role="button" tabIndex={0} aria-label="移动完整学习层级" title="拖动学习层级" onPointerDown={onDrag} onKeyDown={event=>{const d={ArrowLeft:[-10,0],ArrowRight:[10,0],ArrowUp:[0,-10],ArrowDown:[0,10]}[event.key];if(d){event.preventDefault();onDrag(null,d);}}}><IconPointer size={12} />学习路径</div>
+    <svg className="lh-tree-lines" width={tree.width + 20} height={tree.height + 20} aria-hidden="true"><defs><marker id="og-tree-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8" /></marker></defs>{tree.groups.map((stage, index) => {
+      const next = tree.groups[index + 1], r = stage.rect;
+      return <g key={stage.id}>{next && <path className="lh-stage-line" markerEnd="url(#og-tree-arrow)" d={horizontal ? `M${r.x + 18},${r.y + r.height} V${next.rect.y - 8}` : `M${r.x + r.width},${r.y + 34} H${next.rect.x - 8}`} />}{stage.children.map(child => <path key={child.id} className={`lh-child-line${node.id === child.id ? " is-current" : ""}`} d={`M${r.x + 18},${r.y + r.height} V${child.rect.y + 23} H${child.rect.x}`} />)}</g>;
+    })}</svg>
+    {tree.groups.map(stage => { const Icon = icons[stage.index]; const status = getOfficialCourseStatus(stage, statuses); return <div key={stage.id}>
+      <button type="button" className={`lh-tree-node lh-stage-node${node.courseId === stage.id ? " is-selected" : ""}`} style={{left:stage.rect.x,top:stage.rect.y,width:stage.rect.width,height:stage.rect.height}} onClick={() => onSelect(stage.children.find(child => statuses[child.id] !== "completed")?.id || stage.children[0].id)} aria-pressed={node.courseId === stage.id}><span className={`lh-node-icon${status === "completed" ? " is-done" : ""}`}>{status === "completed" ? <IconCheck size={19} /> : <Icon size={20} />}</span><span><strong>{String(stage.index + 1).padStart(2,"0")}　{stage.title}</strong><small>{stage.children.filter(child => statuses[child.id] === "completed").length}/{stage.children.length} 已完成 · 建议 {stage.minutes} 分钟</small></span><em className={`og-stage-status is-${status}`}>{officialStatusLabel(status)}</em></button>
+      {stage.children.map((child,index) => <button type="button" key={child.id} className={`lh-tree-node lh-step-node${node.id === child.id ? " is-selected" : ""}`} style={{left:child.rect.x,top:child.rect.y,width:child.rect.width,height:child.rect.height}} onClick={() => onSelect(child.id)} aria-pressed={node.id === child.id}><span className="lh-step-index">{stage.index + 1}.{index + 1}</span><span><strong>{child.title}</strong><small>{child.concepts.slice(0,2).join(" · ")}</small></span><i className={`og-step-status is-${statuses[child.id] || "not-started"}`} aria-label={officialStatusLabel(statuses[child.id])}>{statuses[child.id] === "completed" ? <IconCheck size={10} /> : null}</i></button>)}
+    </div>; })}
+  </div>;
 }
 
-function FlowDiagram({ items }) {
-  return <div className="ol-flow" aria-label="当前节点流程示意">{items.map((item, index) => <div className="ol-flow-item" key={`${item}-${index}`}><span>{String(index + 1).padStart(2, "0")}</span><strong>{item}</strong>{index < items.length - 1 && <IconArrowRight size={15} />}</div>)}</div>;
-}
-
-function NodeDetail({ node, state, actions }) {
-  const isStep = node.kind === "step";
-  const status = isStep ? stepStatus(node, state.statuses) : courseStatus(OFFICIAL_LEARNING_COURSES.find(item => item.id === node.id), state.statuses);
-  const parentCourse = !isStep ? OFFICIAL_LEARNING_COURSES.find(item => item.id === node.id) : null;
-  const parentIndex = parentCourse ? OFFICIAL_LEARNING_COURSES.indexOf(parentCourse) : -1;
-  const firstStep = parentCourse?.children[0];
-  const link = node.source === "image-sample" ? OFFICIAL_IMAGE_SAMPLE_URL : OFFICIAL_LEARNING_PATH_URL;
-  const linkLabel = node.source === "image-sample" ? "官方图像处理样例参考" : "打开昇腾开发者成长路径";
-  return <section className="ol-detail" aria-live="polite">
-    <div className="ol-detail-head"><div><span>{isStep ? `学习拆解 · ${node.courseTitle}` : "官网课程节点"}</span><h3>{node.title}</h3></div><NodeStatus status={status} /></div>
-    <p className="ol-objective">{isStep ? node.objective : node.summary}</p>
-    {isStep ? <>
-      <FlowDiagram items={node.flow} />
-      <div className="ol-concepts"><span>本节点关注</span>{node.concepts.map(concept => <i key={concept}>{concept}</i>)}</div>
-      <div className="ol-detail-actions">
-        {status === "not-started" && <button type="button" className="ol-primary" onClick={() => actions.startNode(node.id)}>开始这个节点<IconArrowRight size={14} /></button>}
-        {status === "in-progress" && <button type="button" className="ol-primary" onClick={() => actions.completeNode(node.id)}><IconCheck size={14} />我已学完</button>}
-        {status === "completed" && <button type="button" className="ol-secondary" onClick={() => actions.startNode(node.id)}><IconRefresh size={14} />重新学习</button>}
-        <a href={link} target="_blank" rel="noreferrer">{linkLabel}<IconArrowRight size={13} /></a>
-      </div>
-    </> : <>
-      <div className="ol-course-progress"><span>此课程下的学习拆解</span><strong>{node.children.filter(child => state.statuses[child.id] === "completed").length} / {node.children.length} 已标记学完</strong></div>
-      <div className="ol-course-steps">{node.children.map((child, index) => <button type="button" key={child.id} onClick={() => actions.selectNode(child.id)}><span>{parentIndex + 1}.{index + 1}</span><strong>{child.title}</strong><NodeStatus status={stepStatus(child, state.statuses)} /><IconArrowRight size={13} /></button>)}</div>
-      {firstStep && <button type="button" className="ol-primary ol-course-cta" onClick={() => actions.startNode(firstStep.id)}>从第一个拆解节点开始<IconArrowRight size={14} /></button>}
-      <a className="ol-course-source" href={OFFICIAL_LEARNING_PATH_URL} target="_blank" rel="noreferrer">打开昇腾开发者成长路径<IconArrowRight size={13} /></a>
-    </>}
-    <p className="ol-note">进度由学习者手动记录；子节点是 Demo 的学习拆解，不是官网章节，也不代表已完成设备运行验证。</p>
-  </section>;
-}
-
-export function OfficialLearningPathCanvas({ journey, visible = true }) {
+export function OfficialLearningPathCanvas({ journey, view, visible = true, onAsk, onCopy, onOpenPreprocessing }) {
   const { state, actions } = journey;
-  const host = useRef(null);
-  const gesture = useRef(null);
-  const current = useRef(null);
-  const [graphSize, setGraphSize] = useState({ width: 0, height: 0 });
-  const [hand, setHand] = useState(false);
-  const [focused, setFocused] = useState(false);
-  const graph = useMemo(() => graphFor(state.layout), [state.layout]);
-  const node = getOfficialLearningNode(state.selectedNodeId) || getOfficialLearningNode(OFFICIAL_LEARNING_COURSES[0].children[0].id);
-  const viewport = state.viewport;
-  const done = Object.values(state.statuses).filter(status => status === "completed").length;
-  const total = OFFICIAL_LEARNING_COURSES.reduce((sum, course) => sum + course.children.length, 0);
-  const graphBounds = state.layout === "horizontal" ? { x: 20, y: 18, width: graph.width - 18, height: graph.height - 18 } : { x: 18, y: 18, width: graph.width - 12, height: graph.height - 18 };
-  const setViewport = actions.setViewport;
-  const fitPath = (padding = 26) => {
-    const width = graphSize.width;
-    const height = graphSize.height;
-    if (width < 50 || height < 50) return;
-    const scale = clamp(Math.min((width - padding * 2) / graphBounds.width, (height - padding * 2) / graphBounds.height), .2, 1.1);
-    setViewport({ scale, x: padding + Math.max(0, (width - padding * 2 - graphBounds.width * scale) / 2) - graphBounds.x * scale, y: padding + Math.max(0, (height - padding * 2 - graphBounds.height * scale) / 2) - graphBounds.y * scale });
-    setFocused(false);
+  const { state: canvas, actions: canvasActions } = view;
+  const host = useRef(null), gesture = useRef(null), latest = useRef(null), previousNode = useRef(state.selectedNodeId);
+  const [size,setSize] = useState({width:0,height:0});
+  const [hand,setHand] = useState(false);
+  const [heights,setHeights] = useState({});
+  const tree = useMemo(() => makeTree(canvas.layout), [canvas.layout]);
+  const selected = getOfficialLearningNode(state.selectedNodeId);
+  const node = selected?.kind === "step" ? selected : getOfficialLearningNode(OFFICIAL_LEARNING_STAGES[0].children[0].id);
+  const stage = tree.groups.find(item => item.id === node.courseId) || tree.groups[0];
+  const step = stage.children.find(item => item.id === node.id) || stage.children[0];
+  const horizontal = canvas.layout === "horizontal";
+  const treePoint = canvas.positions.hierarchy || {x:42,y:100};
+  const diagramWidth = 780, lessonWidth = 700;
+  const baseY = horizontal ? treePoint.y + stage.rect.y : treePoint.y + tree.height + 75;
+  const contentX = horizontal ? treePoint.x + 308 : Math.max(45,Math.min(treePoint.x + stage.rect.x,treePoint.x + tree.width - diagramWidth));
+  const keyFor = kind => `${node.id}:${kind}`;
+  const diagramHeight = heights[`${node.id}:diagram`] || 370;
+  const practiceHeight = heights[`${node.id}:practice`] || 460;
+  const defaultPoint = kind => ({x:contentX,y:baseY + (kind === "diagram" ? 0 : kind === "practice" ? diagramHeight + 28 : diagramHeight + 28 + (["preprocess","contract","execution","summary"].includes(node.visual) ? practiceHeight + 28 : 0))});
+  const position = kind => canvas.positions[keyFor(kind)] || defaultPoint(kind);
+  const viewport = canvas.viewport;
+  const expanded = canvas.expanded;
+  const hidden = kind => !expanded || canvas.hidden.includes(keyFor(kind));
+  const practice = ["preprocess","contract","execution","summary"].includes(node.visual);
+  const world = {width:Math.max(1500,tree.width + 100,contentX + 870),height:Math.max(tree.height + 200,baseY + 1750)};
+  const done = Object.values(state.statuses).filter(value => value === "completed").length;
+  const total = OFFICIAL_LEARNING_STAGES.reduce((sum,item) => sum + item.children.length,0);
+  const fitBounds = (bounds, padding = 28, min = .35) => {
+    const top = size.width < 650 ? 132 : 86;
+    const scale = clamp(Math.min((size.width-padding*2)/bounds.width,(size.height-top-22)/bounds.height),min,1.1);
+    canvasActions.setViewport({scale,x:padding-bounds.x*scale,y:top-bounds.y*scale});
   };
-  current.current = { viewport, setViewport };
-
-  useEffect(() => {
-    const element = host.current?.querySelector(".ol-graph-viewport");
-    if (!element) return undefined;
-    const observer = new ResizeObserver(entries => {
-      const { width, height } = entries[0].contentRect;
-      if (width > 0 && height > 0) setGraphSize({ width, height });
-    });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-  useEffect(() => {
-    if (!visible || state.initialized || graphSize.width < 50 || graphSize.height < 50) return;
-    fitPath();
-    actions.markInitialized();
-  }, [visible, state.initialized, state.layout, graph.width, graph.height, graphSize.width, graphSize.height]);
-  useEffect(() => {
-    const element = host.current;
-    if (!element) return undefined;
-    const wheel = event => {
-      if (event.target.closest("button,a,input,textarea,select,.ol-detail")) return;
-      event.preventDefault();
-      const { viewport: old, setViewport: set } = current.current;
-      if (event.ctrlKey || event.metaKey) {
-        const rect = element.querySelector(".ol-graph-viewport").getBoundingClientRect();
-        const x = event.clientX - rect.left, y = event.clientY - rect.top;
-        const scale = clamp(old.scale * Math.exp(-event.deltaY * .002), .2, 1.6);
-        set({ scale, x: x - (x - old.x) * scale / old.scale, y: y - (y - old.y) * scale / old.scale });
-      } else set({ x: old.x - event.deltaX, y: old.y - event.deltaY });
+  const fitContext = () => {
+    const p=position("diagram");
+    if (horizontal) {
+      const narrow=size.width<720;
+      fitBounds({x:narrow?p.x-82:Math.min(treePoint.x,p.x),y:p.y-8,width:narrow?diagramWidth+100:p.x+diagramWidth-treePoint.x+15,height:660},24,narrow?.55:.45);
+    } else fitBounds({x:Math.max(15,contentX-90),y:treePoint.y-18,width:diagramWidth+190,height:tree.height+520},24,.4);
+  };
+  const fitPath = () => {canvasActions.setFocused(false);fitBounds({x:treePoint.x-10,y:treePoint.y-35,width:horizontal?1120:tree.width+35,height:horizontal?tree.height+60:tree.height+590},26,.25);};
+  const focus = () => {
+    if(canvas.focused){canvasActions.setFocused(false);return;}
+    canvasActions.setFocused(true);
+    canvasActions.revealObject(keyFor("diagram"));
+    fitBounds({...position("diagram"),width:diagramWidth,height:460},24,.45);
+  };
+  latest.current={viewport,canvasActions};
+  useEffect(()=>{
+    const element=host.current;if(!element)return undefined;
+    const observer=new ResizeObserver(entries=>{const{width,height}=entries[0].contentRect;if(width>0&&height>0)setSize({width,height});});
+    observer.observe(element);return()=>observer.disconnect();
+  },[]);
+  useEffect(()=>{
+    const cards=host.current?.querySelectorAll(".lh-card");
+    if(!cards?.length)return;
+    const observer=new ResizeObserver(entries=>setHeights(previous=>{
+      const next={...previous};let changed=false;
+      for(const entry of entries){const id=entry.target.dataset.objectId;const height=entry.borderBoxSize?.[0]?.blockSize || entry.target.offsetHeight;if(id&&Math.abs((previous[id]||0)-height)>.5){next[id]=height;changed=true;}}
+      return changed?next:previous;
+    }));cards.forEach(card=>observer.observe(card));return()=>observer.disconnect();
+  },[node.id,canvas.hidden,canvas.expanded]);
+  useEffect(()=>{
+    if(!visible||size.width<50)return;
+    if(!canvas.initialized||previousNode.current!==node.id||!canvas.canvasSize||Math.abs(size.width-canvas.canvasSize.width)>40||Math.abs(size.height-canvas.canvasSize.height)>80){
+      if(canvas.focused)fitBounds({...position("diagram"),width:diagramWidth,height:460},24,.45);else fitContext();
+      canvasActions.markInitialized();canvasActions.rememberSize(size);previousNode.current=node.id;
+    }
+  },[visible,size.width,size.height,node.id,canvas.layout,canvas.initialized,canvas.canvasSize]);
+  useEffect(()=>{
+    const element=host.current;if(!element)return undefined;
+    const wheel=event=>{
+      if(event.target.closest("input,textarea,select,summary,a"))return;
+      event.preventDefault();const {viewport:old,canvasActions:a}=latest.current;
+      if(event.ctrlKey||event.metaKey){const r=element.getBoundingClientRect(),x=event.clientX-r.left,y=event.clientY-r.top;const scale=clamp(old.scale*Math.exp(-event.deltaY*.002),.25,1.6);a.setViewport({scale,x:x-(x-old.x)*scale/old.scale,y:y-(y-old.y)*scale/old.scale});}
+      else a.setViewport({x:old.x-event.deltaX,y:old.y-event.deltaY});
     };
-    element.addEventListener("wheel", wheel, { passive: false });
-    return () => element.removeEventListener("wheel", wheel);
-  }, []);
-
-  const zoom = delta => {
-    const scale = clamp(viewport.scale + delta, .2, 1.6);
-    const centerX = graphSize.width / 2, centerY = graphSize.height / 2;
-    setViewport({ scale, x: centerX - (centerX - viewport.x) * scale / viewport.scale, y: centerY - (centerY - viewport.y) * scale / viewport.scale });
+    element.addEventListener("wheel",wheel,{passive:false});return()=>element.removeEventListener("wheel",wheel);
+  },[]);
+  const zoom=delta=>{const scale=clamp(viewport.scale+delta,.25,1.6);canvasActions.setViewport({scale,x:size.width/2-(size.width/2-viewport.x)*scale/viewport.scale,y:size.height/2-(size.height/2-viewport.y)*scale/viewport.scale});};
+  const select=id=>{const selectedNode=getOfficialLearningNode(id);if(!selectedNode)return;actions.selectNode(id);canvasActions.select(selectedNode.courseId,selectedNode.id);canvasActions.revealObject(`${selectedNode.id}:diagram`);canvasActions.revealObject(`${selectedNode.id}:lesson`);};
+  const beginObjectDrag=(event,id,point)=>{
+    if(canvas.pinned.includes(id))return;
+    if(!event){canvasActions.moveObject(id,point);return;}
+    if(event.button!==0)return;event.preventDefault();event.stopPropagation();gesture.current={id,startX:event.clientX,startY:event.clientY,original:point};host.current.setPointerCapture(event.pointerId);
   };
-  const focusNode = () => {
-    if (focused) { fitPath(); return; }
-    const target = node.kind === "course"
-      ? graph.groups.find(item => item.id === node.id)?.rect
-      : graph.groups.flatMap(item => item.children).find(item => item.id === node.id)?.rect;
-    if (!target) return;
-    const scale = clamp(Math.min((graphSize.width - 90) / (target.width + 270), (graphSize.height - 70) / (target.height + 190)), .28, 1.35);
-    setViewport({ scale, x: graphSize.width / 2 - (target.x + target.width / 2) * scale, y: graphSize.height / 2 - (target.y + target.height / 2) * scale });
-    setFocused(true);
-  };
-  const select = id => actions.selectNode(id);
-  const selectedCourseId = node.kind === "course" ? node.id : node.courseId;
-  const currentCourseIndex = Math.max(0, OFFICIAL_LEARNING_COURSES.findIndex(course => course.id === selectedCourseId));
-  const rectFor = id => id === selectedCourseId ? graph.groups[currentCourseIndex]?.rect : graph.groups.flatMap(course => course.children).find(child => child.id === id)?.rect;
-  const activeRect = rectFor(node.id);
-
-  return <div ref={host} className={`learning-hierarchy-canvas official-learning-canvas${hand ? " is-hand" : ""}`} aria-label="AscendCL 与 ResNet50 官网学习路径画布" onPointerDown={event => {
-    if (event.button !== 0 || event.target.closest("button,a,input,textarea,select,.ol-detail,.ol-node")) return;
-    gesture.current = { x: event.clientX, y: event.clientY, origin: viewport };
-    event.currentTarget.setPointerCapture(event.pointerId);
-  }} onPointerMove={event => {
-    if (!gesture.current) return;
-    setViewport({ x: gesture.current.origin.x + event.clientX - gesture.current.x, y: gesture.current.origin.y + event.clientY - gesture.current.y });
-  }} onPointerUp={() => { gesture.current = null; }} onPointerCancel={() => { gesture.current = null; }}>
-    <header className="ol-heading"><div className="ol-title-icon"><IconBook2 size={19} /></div><div><h2>AscendCL → ResNet50 离线推理</h2><p>官网成长路径 · 约 2 小时 · 计算机基础、机器学习</p></div><div className="ol-progress" aria-label={`已标记完成 ${done} 个拆解节点，共 ${total} 个`}><span><b>{done}</b> / {total}</span><small>节点已学完</small></div></header>
-    <div className="ol-toolbar" role="toolbar" aria-label="学习路径画布工具"><div className="lh-layout-toggle" role="group" aria-label="路径布局方向"><button type="button" title="左右布局" aria-label="左右布局" aria-pressed={state.layout === "horizontal"} onClick={() => actions.setLayout("horizontal")}><IconLayoutColumns size={17} /></button><button type="button" title="上下布局" aria-label="上下布局" aria-pressed={state.layout === "vertical"} onClick={() => actions.setLayout("vertical")}><IconLayoutRows size={17} /></button></div><div className="lh-zoom-controls"><button type="button" aria-label="缩小学习路径" onClick={() => zoom(-.1)}><IconMinus size={15} /></button><button type="button" className="lh-zoom-value" title="恢复 100%" onClick={() => setViewport({ scale: 1 })}>{Math.round(viewport.scale * 100)}%</button><button type="button" aria-label="放大学习路径" onClick={() => zoom(.1)}><IconPlus size={15} /></button></div><button type="button" className="lh-tool-button" title="拖动画布" aria-label="拖动画布" aria-pressed={hand} onClick={() => setHand(value => !value)}><IconHandStop size={17} /></button><button type="button" className="lh-tool-button" title="适应完整学习路径" aria-label="适应完整学习路径" onClick={() => fitPath()}><IconMaximize size={17} /></button><button type="button" className={`lh-tool-button${focused ? " is-active" : ""}`} title={focused ? "显示完整路径" : "聚焦当前节点"} aria-label={focused ? "显示完整路径" : "聚焦当前节点"} onClick={focusNode}><IconFocus2 size={17} /></button></div>
-    <div className="ol-source-chip"><IconTargetArrow size={13} /><span>官网课程主线</span><i /> <span>学习拆解子节点</span></div>
-    <div className="ol-graph-viewport">
-      <div className="lh-world ol-world" style={{ width: graph.width, height: graph.height, transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})` }}>
-        <WorkflowLines graph={graph} layout={state.layout} selectedNodeId={state.selectedNodeId} />
-        {graph.groups.map((course, index) => <div className="ol-course-group" key={course.id}>
-          <button type="button" className={`ol-node ol-course-node${selectedCourseId === course.id && node.kind === "course" ? " is-selected" : ""}`} style={{ left: course.rect.x, top: course.rect.y, width: course.rect.width, height: course.rect.height }} onClick={() => select(course.id)} aria-pressed={state.selectedNodeId === course.id}>
-            <span className="ol-node-kicker"><span>官网路径 {String(index + 1).padStart(2, "0")}</span><NodeStatus status={courseStatus(course, state.statuses)} /></span><strong>{course.title}</strong><small>{course.children.length} 个学习拆解</small>
-          </button>
-          {course.children.map((child, childIndex) => <button type="button" key={child.id} className={`ol-node ol-step-node${state.selectedNodeId === child.id ? " is-selected" : ""}`} style={{ left: child.rect.x, top: child.rect.y, width: child.rect.width, height: child.rect.height }} onClick={() => select(child.id)} aria-pressed={state.selectedNodeId === child.id}>
-            <span className="ol-step-number">{index + 1}.{childIndex + 1}</span><span className="ol-step-copy"><strong>{child.title}</strong><small>{child.summary}</small></span><NodeStatus status={stepStatus(child, state.statuses)} />
-          </button>)}
-        </div>)}
-      </div>
-      {activeRect && <svg className="ol-focus-mark" aria-hidden="true"><circle cx={viewport.x + (activeRect.x + activeRect.width / 2) * viewport.scale} cy={viewport.y + (activeRect.y + activeRect.height / 2) * viewport.scale} r={Math.max(4, 7 * viewport.scale)} /></svg>}
+  const cardProps=kind=>({id:keyFor(kind),point:position(kind),width:kind==="diagram"?diagramWidth:lessonWidth,pinned:canvas.pinned.includes(keyFor(kind)),onDrag:beginObjectDrag,onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,position(kind));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.hideObject(keyFor(kind))});
+  const restorePill=(kind,title)=><button type="button" className="lh-restore-material" style={{left:position(kind).x,top:position(kind).y}} onClick={()=>{canvasActions.setExpanded(true);canvasActions.revealObject(keyFor(kind));}}><IconBook2 size={18}/><span>材料已收起<strong>恢复{title}</strong></span><IconChevronDown size={16}/></button>;
+  const start={x:treePoint.x+step.rect.x+step.rect.width,y:treePoint.y+step.rect.y+step.rect.height/2};
+  const p=position("diagram");
+  const connection=horizontal?`M${start.x},${start.y} H${treePoint.x+tree.width+22} V${p.y+26} H${p.x}`:`M${start.x},${start.y} H${treePoint.x+stage.rect.x+stage.rect.width+14} V${treePoint.y+tree.height+32} H${p.x+60} V${p.y}`;
+  return <div ref={host} className={`learning-hierarchy-canvas goal-learning-canvas${hand?" is-hand":""}`} aria-label="可移动的 ResNet50 学习层级与内容画布" onPointerDown={event=>{
+    if(event.button!==0||event.target.closest("button,input,textarea,select,summary,a,.lh-card,.lh-tree-node"))return;
+    gesture.current={id:"viewport",startX:event.clientX,startY:event.clientY,original:viewport};event.currentTarget.setPointerCapture(event.pointerId);
+  }} onPointerMove={event=>{const drag=gesture.current;if(!drag)return;const dx=event.clientX-drag.startX,dy=event.clientY-drag.startY;if(drag.id==="viewport")canvasActions.setViewport({x:drag.original.x+dx,y:drag.original.y+dy});else canvasActions.moveObject(drag.id,{x:drag.original.x+dx/viewport.scale,y:drag.original.y+dy/viewport.scale});}} onPointerUp={()=>{gesture.current=null;}} onPointerCancel={()=>{gesture.current=null;}}>
+    <div className="lh-canvas-title"><IconBook2 size={22}/><div><h2>跑通一次 ResNet50 图像推理</h2><p>目标学习路径 · {done}/{total} 个学习动作已完成</p></div></div>
+    <LearningCanvasToolbar layout={canvas.layout} scale={viewport.scale} hand={hand} focused={canvas.focused} onLayout={next=>{if(canvas.focused)canvasActions.setFocused(false);canvasActions.setLayout(next);}} onZoom={zoom} onResetZoom={()=>canvasActions.setViewport({scale:1})} onHand={()=>setHand(value=>!value)} onFit={fitPath} onFocus={focus}/>
+    <div className="lh-world" style={{width:world.width,height:world.height,transform:`translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})`}}>
+      {!hidden("diagram")&&<svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><path d={connection}/><circle cx={start.x} cy={start.y} r="4"/></svg>}
+      <div className="lh-tree-position" style={{left:treePoint.x,top:treePoint.y}}><Hierarchy tree={tree} layout={canvas.layout} node={node} statuses={state.statuses} onSelect={select} onDrag={(event,delta)=>beginObjectDrag(event,"hierarchy",delta?{x:treePoint.x+delta[0],y:treePoint.y+delta[1]}:treePoint)}/></div>
+      {!hidden("diagram")?<LearningCanvasCard {...cardProps("diagram")} title={node.title} icon={node.visual==="image"?IconPhoto:IconCube}><OfficialLearningVisuals key={node.id} node={node} journey={journey}/>{["image","preprocess","contract"].includes(node.visual)&&<div className="og-related"><button type="button" className="lh-text-button" onClick={onOpenPreprocessing}>回看已有的图像输入预处理图解<IconArrowRight size={13}/></button></div>}</LearningCanvasCard>:restorePill("diagram","图解")}
+      {practice&&(!hidden("practice")?<LearningCanvasCard {...cardProps("practice")} title={node.visual==="summary"?"学习记录与成果":"动手练习与本次检查"} icon={IconCode}><OfficialPractice node={node} journey={journey} onCopy={onCopy}/></LearningCanvasCard>:restorePill("practice","练习"))}
+      {!hidden("lesson")?<LearningCanvasCard {...cardProps("lesson")} title="讲解、视频与理解检查" icon={IconBook2}><OfficialLesson node={node} journey={journey} onAsk={onAsk} onCopy={onCopy}/><OfficialSources node={node} journey={journey}/>{state.statuses[node.id]==="completed"&&<div className="og-next"><span><IconCheck size={14}/>当前学习动作已完成</span><button type="button" className="lh-button" onClick={()=>{const all=OFFICIAL_LEARNING_STAGES.flatMap(item=>item.children);const next=all[all.findIndex(item=>item.id===node.id)+1];if(next)select(next.id);else select("learning-official-step-save-summary");}}>继续下一步<IconArrowRight size={13}/></button></div>}</LearningCanvasCard>:restorePill("lesson","视频与讲解")}
     </div>
-    <NodeDetail node={node} state={state} actions={actions} />
-    <footer className="ol-footer"><span>路径顺序与课程名来自昇腾开发者成长计划</span><a href={OFFICIAL_LEARNING_PATH_URL} target="_blank" rel="noreferrer">查看官方路径<IconArrowRight size={12} /></a><span className="ol-footer-divider" /><a href={OFFICIAL_IMAGE_SAMPLE_URL} target="_blank" rel="noreferrer">图像处理样例参考<IconArrowRight size={12} /></a></footer>
+    {state.notice&&<div className="lh-canvas-notice" role="status">{state.notice}</div>}
+    <div className="lh-minimap"><svg viewBox={`0 0 ${world.width} ${world.height}`} aria-label="学习画布小地图，点击定位" role="button" tabIndex={0} onClick={event=>{const r=event.currentTarget.getBoundingClientRect();const x=(event.clientX-r.left)/r.width*world.width,y=(event.clientY-r.top)/r.height*world.height;canvasActions.setViewport({x:size.width/2-x*viewport.scale,y:size.height/2-y*viewport.scale});}} onKeyDown={event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();fitPath();}}}><rect className="lh-mini-bg" width={world.width} height={world.height}/>{tree.groups.map(item=><rect className={item.id===node.courseId?"is-current":""} key={item.id} x={treePoint.x+item.rect.x} y={treePoint.y+item.rect.y} width={item.rect.width} height={item.rect.height} rx="8"/>)}<rect x={p.x} y={p.y} width={diagramWidth} height="380" rx="8"/><rect className="lh-mini-viewport" x={-viewport.x/viewport.scale} y={-viewport.y/viewport.scale} width={size.width/viewport.scale} height={size.height/viewport.scale}/></svg><button type="button" onClick={fitPath}>适应路径</button></div>
   </div>;
 }

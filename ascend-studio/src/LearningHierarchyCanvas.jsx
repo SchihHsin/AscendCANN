@@ -1,5 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { IconAdjustments, IconArrowDown, IconArrowRight, IconArrowUp, IconBook2, IconCheck, IconChevronDown, IconChevronUp, IconCode, IconCube, IconFocus2, IconHandStop, IconHistory, IconLayoutColumns, IconLayoutRows, IconMaximize, IconMessageQuestion, IconMinus, IconPhoto, IconPin, IconPinnedOff, IconPlayerPause, IconPlayerPlay, IconPlus, IconPointer, IconSearch, IconSettings, IconX } from "@tabler/icons-react";
+import { IconAdjustments, IconArrowDown, IconArrowRight, IconArrowUp, IconBook2, IconCheck, IconChevronDown, IconCode, IconCube, IconHistory, IconMessageQuestion, IconPhoto, IconPlayerPause, IconPlayerPlay, IconPointer, IconSearch, IconSettings, IconX } from "@tabler/icons-react";
+import LearningCanvasToolbar from "./LearningCanvasToolbar";
+import CanvasCard from "./LearningCanvasCard";
 import { LEARNING_NODES, LEARNING_SEGMENTS, getLearningCode, getLearningShape } from "./learning-data";
 import "./learning-hierarchy-canvas.css";
 
@@ -16,7 +18,7 @@ const substeps = {
 
 function Button({ children, primary, className = "", ...props }) { return <button type="button" className={`lh-button${primary ? " is-primary" : ""} ${className}`} {...props}>{children}</button>; }
 
-function ChannelPhoto({ channel }) {
+export function ChannelPhoto({ channel }) {
   const ref = useRef(null);
   useEffect(() => {
     let active = true;
@@ -48,7 +50,7 @@ function TensorVisual({ journey, activeSubstep, stage }) {
   </div>;
 }
 
-function TensorShape({ label, dimensions, kind, active }) {
+export function TensorShape({ label, dimensions, kind, active }) {
   return <figure className={`lh-tensor-shape is-${kind}${active ? " is-active" : ""}`}><strong>{label}</strong><div className="lh-tensor-image"><img src={asset("inference-rgb-tensor.png")} alt={`${label} 三个通道平面的概念张量`} /><span className="lh-dimension-h">H<br />224</span><span className="lh-dimension-w">W · 224</span><span className="lh-dimension-c">C<br />3</span>{kind === "nchw" && <span className="lh-dimension-n">N = 1</span>}</div><figcaption>{label} {dimensions}</figcaption></figure>;
 }
 
@@ -109,10 +111,6 @@ function GoalObject({ journey, onGenerate, onReturn }) {
   const { state, actions } = journey;
   const id = useId();
   return <div className="lh-goal-body"><span className="lh-kicker">从学习目标开始</span><h2>这次想学会什么？</h2><label htmlFor={`${id}-goal`}>学习目标<textarea id={`${id}-goal`} rows={2} maxLength={2000} value={state.profile.goal} onChange={event => actions.setProfile({ goal: event.target.value })} /></label><label htmlFor={`${id}-background`}>已有基础<textarea id={`${id}-background`} rows={2} maxLength={1000} value={state.profile.background} onChange={event => actions.setProfile({ background: event.target.value })} /></label><label className="lh-time-label" htmlFor={`${id}-time`}>每天可用时间<select id={`${id}-time`} value={state.profile.dailyMinutes} onChange={event => actions.setProfile({ dailyMinutes: Number(event.target.value) })}>{[10, 20, 30, 45, 60].map(minutes => <option key={minutes} value={minutes}>{minutes} 分钟</option>)}</select></label><Button primary disabled={!state.profile.goal.trim()} onClick={() => onGenerate("goal")}>生成学习路径<IconArrowRight size={14} /></Button>{state.path && <button type="button" className="lh-text-button" onClick={onReturn}>回看已有路径</button>}<p className="lh-boundary">当前路径由图像预处理示例模板准备，目标与基础会保留在任务中。</p></div>;
-}
-
-function CanvasCard({ id, title, icon: Icon = IconBook2, point, width, pinned, children, onDrag, onTogglePin, onCollapse, className = "" }) {
-  return <section className={`lh-card ${className}${pinned ? " is-pinned" : ""}`} data-object-id={id} style={{ left: point.x, top: point.y, width }} aria-label={title}><header className="lh-card-header"><div className="lh-card-title"><Icon size={18} /><strong>{title}</strong></div><div className="lh-card-tools"><button type="button" className="lh-icon-button lh-drag-handle" aria-label={`移动${title}`} title="拖动对象；方向键微调" onPointerDown={event => onDrag(event, id, point)} onKeyDown={event => { const vectors = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] }; if (vectors[event.key]) { event.preventDefault(); onDrag(null, id, { x: point.x + vectors[event.key][0], y: point.y + vectors[event.key][1] }); } }}><IconPointer size={14} /></button><button className="lh-icon-button" type="button" title={pinned ? "取消固定" : "固定对象"} aria-label={`${pinned ? "取消固定" : "固定"}${title}`} aria-pressed={pinned} onClick={() => onTogglePin(id)}>{pinned ? <IconPinnedOff size={14} /> : <IconPin size={14} />}</button>{onCollapse && <button className="lh-icon-button" type="button" title="收起材料，保留学习层级" aria-label={`收起${title}`} onClick={onCollapse}><IconChevronUp size={15} /></button>}</div></header>{children}</section>;
 }
 
 export function LearningHierarchyCanvas({ journey, view, visible = true, onOpen, onAsk, onCopy, onArchive, onEnterDevelopment }) {
@@ -224,7 +222,7 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, onOpen,
     else canvasActions.moveObject(drag.id, { x: drag.original.x + deltaX / viewport.scale, y: drag.original.y + deltaY / viewport.scale });
   }} onPointerUp={() => { gesture.current = null; }} onPointerCancel={() => { gesture.current = null; }}>
     <div className="lh-canvas-title"><IconBook2 size={24} /><div><h2>{state.profile.goal || "我的学习目标"}</h2><p>{state.draftPath ? "审阅学习路径草案，再确认开始" : isGoal ? "从目标或现成路径开始一段可验证的学习" : `${stageLabels[activeStage]} · ${substeps[activeStage]?.find(item => item.id === selectedStep)?.title || "选择子步骤继续"}`}</p></div></div>
-    <div className="lh-toolbar" role="toolbar" aria-label="学习画布工具"><div className="lh-layout-toggle" role="group" aria-label="整体画布布局"><button type="button" title="左右布局" aria-label="左右布局" aria-pressed={horizontal} onClick={() => canvasActions.setLayout("horizontal")}><IconLayoutColumns size={17} /></button><button type="button" title="上下布局" aria-label="上下布局" aria-pressed={!horizontal} onClick={() => canvasActions.setLayout("vertical")}><IconLayoutRows size={17} /></button></div><div className="lh-zoom-controls"><button type="button" aria-label="缩小学习画布" onClick={() => zoom(-.1)}><IconMinus size={15} /></button><button type="button" className="lh-zoom-value" onClick={() => canvasActions.setViewport({ scale: 1 })} title="恢复 100%">{Math.round(viewport.scale * 100)}%</button><button type="button" aria-label="放大学习画布" onClick={() => zoom(.1)}><IconPlus size={15} /></button></div><button type="button" className="lh-tool-button" aria-pressed={hand} title="拖动画布" aria-label="拖动画布" onClick={() => setHand(!hand)}><IconHandStop size={17} /></button><button type="button" className="lh-tool-button" title="适应路径" aria-label="适应完整学习路径" onClick={fitPath}><IconMaximize size={17} /></button><button type="button" className={`lh-tool-button${canvas.focused ? " is-active" : ""}`} title={canvas.focused ? "退出聚焦" : "聚焦当前材料"} aria-label={canvas.focused ? "退出聚焦" : "聚焦当前材料"} onClick={focusCurrent}><IconFocus2 size={17} /></button></div>
+    <LearningCanvasToolbar layout={layout} scale={viewport.scale} hand={hand} focused={canvas.focused} onLayout={canvasActions.setLayout} onZoom={zoom} onResetZoom={() => canvasActions.setViewport({ scale: 1 })} onHand={() => setHand(!hand)} onFit={fitPath} onFocus={focusCurrent} />
     <div className="lh-world" style={{ width: world.width, height: world.height, transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})` }}>
       {!isGoal && <div className="lh-tree-position" style={{ left: treePoint.x, top: treePoint.y }}><HierarchyGroup tree={tree} layout={layout} selectedStage={activeStage} selectedStep={selectedStep} journey={journey} onSelect={select} pinned={pinned("hierarchy")} onDrag={event => beginObjectDrag(event, "hierarchy", treePoint)} /></div>}
       {start && canvas.expanded && !state.draftPath && !reviewingPath && <svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><defs><marker id="lh-material-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8" /></marker></defs><path d={connection(position("diagram"), diagramWidth, 0)} markerEnd="url(#lh-material-arrow)" /><path d={connection(position("detail"), detailWidth, 1)} markerEnd="url(#lh-material-arrow)" /><circle cx={start.x} cy={start.y} r="5" /></svg>}

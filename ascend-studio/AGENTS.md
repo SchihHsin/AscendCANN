@@ -901,3 +901,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 内容映射与交互记录见 `interaction-design.md` 的“ResNet50 目标路径与多媒体学习材料”：认识链路、准备环境/样例、准备输入、执行推理、解读结果/复盘。官网课程是内容来源；现有照片、RGB/张量图解与动态讲解可按样例输入约定复用，不机械沿用旧例约定。
 - 公开官网现列 3 个课程与 1 个在线实验；官方资源文章给出概述、快速入门和 ResNet50 C&C++/Python 视频入口，已核对链接来源。播放器直链/内嵌、播放和精确章节尚未核验；不伪造视频时长/字幕或宣称硬件实验完成。本轮只细化讨论与记录，未改 Demo 源码/产物或执行构建；文档检查后提交推送。
 - 用户补充右上工具按钮样式不对。源码确认新版 `ol-toolbar` 没有命中原 `.lh-toolbar button` 基础样式，且单独覆盖布局黑底选中态。后续重做应直接共用旧工具栏组件及其分组、32px 高度、细浅边框、约7px圆角、图标尺寸和浅紫选中反馈；无需用户重新选择一套样式。此轮仍仅讨论并更新文档。
+
+
+### 2026-10-21 · ResNet50 B 版目标路径实施与共享学习画布
+
+- 用户授权实施，并要求简单执行由Luna low承接、给出明确文件与验收范围。Luna完成目标数据/活动UI、共享组件、官方视频来源核查、CSS和进度单测；主agent整合与复核。独立“ResNet50 离线推理初体验”任务保持原key，改为认识链路→环境与样例→输入→执行→结果/复盘，5阶段15学习动作；子节点是Demo目标拆解，不冒充官网章节。
+- 主要源码：`ascend-studio/src/OfficialLearningPathCanvas.jsx`、`OfficialLearningVisuals.jsx`、`OfficialLearningActivities.jsx`、`official-learning-data.js`、`official-learning-progress.js`、`useOfficialLearningPath.js`及CSS；原`LearningHierarchyCanvas`抽出共享`LearningCanvasToolbar`/`LearningCanvasCard`并导出原照片/张量组件。App、内容目录、任务简介与视觉存储接入新路径；原图像预处理任务的记录与独立存储保持。
+- 新旧任务同一工具栏/卡片外观；整体左右/上下图标布局、同画布多媒体材料、可移动/固定/收起恢复、默认周边路径、进一步聚焦及返回。图解提供分类、Host/AscendCL/Device、依赖层、文件角色、RGB/张量、API数据流、输出解析和复盘。理解记录+当前正确理解题+所需练习检查更新子状态，阶段汇总；改变输入/答案使当前检查失效，历史保留。v1手动状态只留历史，summary需保存记录；不把点击、阅读或浏览器形状题算作设备运行。
+- 来源H：公开官方成长路径（3课程+1在线实验）、概述/快速入门/ResNet50课程和图像处理文档；公开播放器HTTP200但有SAMEORIGIN与限定官方域的frame-ancestors，故视频打开原课程，45秒本地图解另行标明。净化证据/截图见`ascend-studio/evidence/20261021-resnet-goal-canvas/`。没有NPU/真实模型或工程验证，不改变正式报告序列/hash或API/Host/Application边界；用户设计验收仍待本轮反馈。
+- 验证M：实际1600×900检查新旧切换、布局、图解联动、聚焦返回、固定/移动/收起恢复、形状参数同步；分隔条缩至544px检查工具栏避让。viewport API不生效，未声称1280或移动端。尝试隔离localhost测试页被浏览器拒绝，未绕过，后续用既有127页检查。20项进度/既有推荐测试、Node语法、Pages构建及scoped diff检查。最后增加按布局记录容器尺寸用于重适配；需最终发布页补查。
+- 仓库并行的RangeDiagram/VoiceCaptureButton等WIP不纳入本次提交；RangeDiagram曾导致本地编译错误，未覆盖其源码。最终发布包在临时目录由HEAD及本任务16份源码构建，排除无关未完成代码，保留工作区原件。功能与交接一起提交并立即推送origin/main；回执由Git记录及后续补记确认。

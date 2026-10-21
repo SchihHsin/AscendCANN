@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 
-const MIN_SCALE = .35;
+const MIN_SCALE = .25;
 const MAX_SCALE = 1.6;
 const LAYOUTS = ["horizontal", "vertical"];
 const STAGES = new Set(["goal", "path", "environment", "channels", "practice", "check", "summary"]);
@@ -14,7 +14,7 @@ const MATERIAL_STAGES = {
   "learning-summary": ["summary", "summary"],
 };
 
-const keyFor = taskId => `learning-canvas-view:${taskId}`;
+const keyFor = (taskId, prefix = "learning-canvas-view") => `${prefix}:${taskId}`;
 const finite = value => typeof value === "number" && Number.isFinite(value);
 const object = value => value !== null && typeof value === "object" && !Array.isArray(value);
 const validId = value => typeof value === "string" && /^[A-Za-z0-9][\w:.-]{0,119}$/u.test(value);
@@ -43,32 +43,35 @@ function layoutView(value) {
     viewport: viewport(saved.viewport),
     positions: positions(saved.positions),
     initialized: saved.initialized === true,
+    canvasSize: object(saved.canvasSize) && finite(saved.canvasSize.width) && finite(saved.canvasSize.height) ? saved.canvasSize : null,
     returnViewport: object(saved.returnViewport) ? viewport(saved.returnViewport) : null,
     focusViewport: object(saved.focusViewport) ? viewport(saved.focusViewport) : null,
   };
 }
 
-function initial() {
+function initial(initialStage = "channels") {
   const layouts = { horizontal: layoutView(), vertical: layoutView() };
   return {
     state: {
       layout: "horizontal",
-      selectedStage: "channels",
-      selectedStep: "channels",
+      selectedStage: initialStage,
+      selectedStep: initialStage,
       expanded: true,
       focused: false,
       viewport: layouts.horizontal.viewport,
       positions: layouts.horizontal.positions,
       pinned: [],
+      hidden: [],
       initialized: false,
+      canvasSize: null,
     },
     layouts,
   };
 }
 
-function restore(taskId) {
-  const saved = readSession(keyFor(taskId), null);
-  if (!object(saved)) return initial();
+function restore(taskId, { stageIds, initialStage, storagePrefix }) {
+  const saved = readSession(keyFor(taskId, storagePrefix), null);
+  if (!object(saved)) return initial(initialStage);
   const layout = LAYOUTS.includes(saved.layout) ? saved.layout : "horizontal";
   const layouts = {
     horizontal: layoutView(saved.layouts?.horizontal),
@@ -76,7 +79,7 @@ function restore(taskId) {
   };
   // Accept the active flat snapshot as well as the per-layout representation.
   layouts[layout] = layoutView(object(saved.layouts?.[layout]) ? saved.layouts[layout] : saved);
-  const selectedStage = STAGES.has(saved.selectedStage) ? saved.selectedStage : "channels";
+  const selectedStage = stageIds.has(saved.selectedStage) ? saved.selectedStage : initialStage;
   const expanded = typeof saved.expanded === "boolean" ? saved.expanded : true;
   return {
     state: {
@@ -88,7 +91,9 @@ function restore(taskId) {
       viewport: layouts[layout].viewport,
       positions: layouts[layout].positions,
       pinned: Array.isArray(saved.pinned) ? [...new Set(saved.pinned.filter(validId))] : [],
+      hidden: Array.isArray(saved.hidden) ? [...new Set(saved.hidden.filter(validId))] : [],
       initialized: layouts[layout].initialized,
+      canvasSize: layouts[layout].canvasSize,
     },
     layouts,
   };
@@ -106,6 +111,7 @@ function replaceState(record, patch, viewPatch = {}) {
         viewport: state.viewport,
         positions: state.positions,
         initialized: state.initialized,
+        canvasSize: state.canvasSize,
       },
     },
   };
@@ -129,16 +135,16 @@ function expandRecord(record) {
 }
 
 /** Visual state only: learning progress and validation records remain task-owned elsewhere. */
-export function useLearningCanvasView({ taskId, enabled = true } = {}) {
+export function useLearningCanvasView({ taskId, enabled = true, stageIds = STAGES, initialStage = "channels", materialStages = MATERIAL_STAGES, storagePrefix = "learning-canvas-view" } = {}) {
   const tasks = useRef(new Map());
   const disabledState = useRef(null);
   const currentEnabled = useRef(enabled);
   currentEnabled.current = enabled;
   const [, render] = useState(0);
-  if (!disabledState.current) disabledState.current = initial().state;
+  if (!disabledState.current) disabledState.current = initial(initialStage).state;
   const active = enabled && validTask(taskId);
   // Restore never writes: simply switching tasks must not create or replace a saved session.
-  if (active && !tasks.current.has(taskId)) tasks.current.set(taskId, restore(taskId));
+  if (active && !tasks.current.has(taskId)) tasks.current.set(taskId, restore(taskId, { stageIds, initialStage, storagePrefix }));
 
   const update = useCallback(change => {
     if (!enabled || !currentEnabled.current || !validTask(taskId)) return undefined;
@@ -147,14 +153,14 @@ export function useLearningCanvasView({ taskId, enabled = true } = {}) {
     const next = change(previous);
     if (next === previous) return previous.state;
     tasks.current.set(taskId, next);
-    writeSession(keyFor(taskId), { ...next.state, layouts: next.layouts });
+    writeSession(keyFor(taskId, storagePrefix), { ...next.state, layouts: next.layouts });
     render(revision => revision + 1);
     return next.state;
-  }, [taskId, enabled]);
+  }, [taskId, enabled, storagePrefix]);
 
   const actions = useMemo(() => {
     const select = (stage, step) => {
-      if (!STAGES.has(stage) || (step !== undefined && !validId(step))) return undefined;
+      if (!stageIds.has(stage) || (step !== undefined && !validId(step))) return undefined;
       return update(record => {
         const previous = record.state;
         const sameStage = previous.selectedStage === stage;
@@ -182,11 +188,12 @@ export function useLearningCanvasView({ taskId, enabled = true } = {}) {
             viewport: { ...view.viewport },
             positions: { ...view.positions },
             initialized: view.initialized,
+            canvasSize: view.canvasSize,
           });
         });
       },
       select,
-      openMaterial: id => MATERIAL_STAGES[id] ? select(...MATERIAL_STAGES[id]) : undefined,
+      openMaterial: id => materialStages[id] ? select(...materialStages[id]) : undefined,
       collapse: () => update(collapseRecord),
       setExpanded: expanded => typeof expanded === "boolean"
         ? update(expanded ? expandRecord : collapseRecord)
@@ -224,10 +231,13 @@ export function useLearningCanvasView({ taskId, enabled = true } = {}) {
           ? record.state.pinned.filter(item => item !== id)
           : [...record.state.pinned, id] }));
       },
+      hideObject: id => validId(id) ? update(record => replaceState(record, { hidden: [...new Set([...record.state.hidden, id])] })) : undefined,
+      revealObject: id => validId(id) ? update(record => replaceState(record, { hidden: record.state.hidden.filter(item => item !== id) })) : undefined,
+      rememberSize: size => object(size) && finite(size.width) && finite(size.height) ? update(record => record.state.canvasSize?.width === size.width && record.state.canvasSize?.height === size.height ? record : replaceState(record, { canvasSize:{width:size.width,height:size.height} })) : undefined,
       markInitialized: () => update(record => record.state.initialized ? record : replaceState(record, { initialized: true })),
-      reset: () => update(() => initial()),
+      reset: () => update(() => initial(initialStage)),
     };
-  }, [update]);
+  }, [update, stageIds, initialStage, materialStages]);
 
   const getTaskState = useCallback(ownerId => tasks.current.get(ownerId)?.state, []);
   return { state: tasks.current.get(taskId)?.state || disabledState.current, actions, getTaskState };
