@@ -887,4 +887,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 新画布展示官网四门课程主线及 10 个标记为 Demo 学习拆解的子节点，提供左右 / 上下图标布局。子节点进度手动更新，一级课程节点按子节点汇总；选中焦点不会改变进度。官方 URL 与图像处理样例链接可从任务内打开。子节点标题是 Demo 侧拆解，不冒充官网章节；状态不代表运行、模型或 NPU 验证。
 - 本轮还修正窄视口的缩放、滚轮和聚焦，使其以图表视口尺寸计算；降低最小缩放比例，便于适配完整路径。官网课程状态在画布和材料列表采用同一汇总逻辑。
 - 主要文件：`src/official-learning-data.js`、`src/useOfficialLearningPath.js`、`src/OfficialLearningPathCanvas.jsx`、`src/official-learning-canvas.css`；集成在 `src/App.jsx`、`src/prototype-data.js`、`src/useWorkbenchState.js`、`src/workspace-materials.js`、`src/task-content-catalog.js`。证据源为 HiAscend 成长路径与官方图像处理样例；未连接真实开发环境或硬件，也未改变正式报告序列或 API / Host / Application 边界。
-- 验证：`npm run build:pages`、Hook/数据模块 `node --check`、课程与材料数量/汇总状态断言、`git diff --check` 通过。浏览器检查了新旧任务切换、ResNet50 节点详情、两种布局和完整路径适配；没有在既有浏览器任务中保存测试完成状态。提交及推送结果按根仓 `AGENTS.md` 记录。
+- 验证：`npm run build:pages`、Hook/数据模块 `node --check`、课程与材料数量/汇总状态断言、`git diff --check` 通过。浏览器检查了新旧任务切换、ResNet50 节点详情、两种布局和完整路径适配；没有在既有浏览器任务中保存测试完成状态。功能提交 `f86e9e36` 已成功推送 `origin/main`。
