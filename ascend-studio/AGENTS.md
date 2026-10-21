@@ -888,3 +888,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 本轮还修正窄视口的缩放、滚轮和聚焦，使其以图表视口尺寸计算；降低最小缩放比例，便于适配完整路径。官网课程状态在画布和材料列表采用同一汇总逻辑。
 - 主要文件：`src/official-learning-data.js`、`src/useOfficialLearningPath.js`、`src/OfficialLearningPathCanvas.jsx`、`src/official-learning-canvas.css`；集成在 `src/App.jsx`、`src/prototype-data.js`、`src/useWorkbenchState.js`、`src/workspace-materials.js`、`src/task-content-catalog.js`。证据源为 HiAscend 成长路径与官方图像处理样例；未连接真实开发环境或硬件，也未改变正式报告序列或 API / Host / Application 边界。
 - 验证：`npm run build:pages`、Hook/数据模块 `node --check`、课程与材料数量/汇总状态断言、`git diff --check` 通过。浏览器检查了新旧任务切换、ResNet50 节点详情、两种布局和完整路径适配；没有在既有浏览器任务中保存测试完成状态。功能提交 `f86e9e36` 已成功推送 `origin/main`；GitHub Pages run `39555693841` 的 build / deploy 均成功。
+
+### 2026-10-21 · 真实路径首版被否定，先讨论一致的学习体验
+
+- 用户对 ResNet50 首版明确不满意，要求与原“学会图像输入预处理”对照讨论。技术通过/发布不等于设计获认可；后续不得继续扩展当前“缩略导图＋固定底部详情”方向。
+- 应以原 `LearningHierarchyCanvas` 的视觉、节点层级、同画布展开、可移动图解/练习、保留周边路径与进一步聚焦作为讨论基底。左右/上下按钮切换整个路径与学习内容的布局，不能只改变课程导图排列方向。真实课程内容需要具体图像、资源关系、代码与可操作练习，而不止标题、概念标签和手动完成按钮。
+- 当前提议仍待讨论：一级保留官网四课程或按实际学习动作组织，具体知识节点采用相应可视化；来源单独可追溯。本轮只记录反馈，无 Demo 改动、构建或新的运行证据；文档 `git diff --check` 后单独提交推送。
