@@ -5502,3 +5502,17 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 1280×720默认/展开，viewBox 183.5×168及183.5×370.375且top y6/12不变；568×900无横向溢出；Escape与展开白片包裹检查通过，最终console error/warn为空。`npm run build:pages`、`git diff --check`通过；静态产物 `ascstudio/`已重建。局部QA passed，详见Studio design-qa；不代表全量回归/NPU证据，不改变正式页序/hash或API/Host/Application边界。提交/push回执随后补记。
 
 - 发布回执：`53839ea1`（`fix: redraw continuous folder card front surfaces`）已成功推送 `origin/main`，包括源码、Pages产物及参考/实现对照。未检查本次Pages部署完成状态；此交接回填另行提交推送。
+
+
+### 2026-10-21（学习故事线合并重复大图页）
+
+- 用户要求学习材料不再为每个步骤单独放一张重复大图页；主动学习 A1–A5 与开发中学习 B1–B6 每步统一保留一页“设计点 + 完整界面大图”。正式序列从 63 页缩为 52 页，移除 11 张仅展示大图的重复页。
+- 更新 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/build.mjs`、`shared-interaction-pages.mjs`、`README.md` 与生成后的 `index.html`；章节入口改为 A1 #8、B1 #14、界面架构 #20。同步修正材料、六问题报告及机制汇报中指向旧页码的入口。
+- 来源为用户本轮设计要求及现有原型页面，不新增用户研究或运行证据；图片继续标为早期设计提案，非当前 Demo 实拍。未改变 API / Host / Application 边界或其他材料的正式页面序列。
+- 验证：重新构建得到 52 页；JS 源语法、材料图片/页码链接和 `git diff --check` 已核对。视觉预览未通过：本地 5173 深链被 SPA 回退到 Ascend Studio，未显示静态材料，因此不声称完成浏览器视觉验收。提交 / 推送回执待本轮结束前回填。
+
+### 2026-10-21（首页卡片主动交互方向讨论）
+
+- 用户指出首页建议卡看起来像最近使用记录；本轮只讨论设计，不改Demo。只读核对 `ascend-studio/src/home-recommendations.js`：先按当前任务/模式评分选3个任务再生成标题，卡片与任务一对一绑定；CTA仅回对应任务追加草稿。故事 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 第3页及 `images/ploy-overview-user.png` 显示 For you 与 Recents 分离，建议呈现发现、依据/影响、Run Ploy与关闭；不据截图推断后台检测实现。
+- 待讨论提案：卡片一等内容改为有依据的待处理事项/机会，任务名作为来源；默认展示发现和当下价值，展开给证据、影响与具体下一步。近期记录只提供依据，不自动等于建议；无有效事项时不凑满三张，已处理后更新/撤下，可暂不处理。学习/开发分别优先理解迁移与排障验证缺口；只用现有任务状态、记录和用户材料，不伪造日志、资料或“已准备好”内容，也不把浏览器演示通过说成工程/NPU验证。
+- 示例仅为拟议条件场景：仅有浏览器演算时提示真实代码尚待核对；已有学习小结时建议换含batch的新输入检验迁移。是否点击后直达具体工作或先进入讨论仍待商定。无新研究/运行证据；不影响页面序列或API层边界。主agent提交时仅暂存本条新hunk。

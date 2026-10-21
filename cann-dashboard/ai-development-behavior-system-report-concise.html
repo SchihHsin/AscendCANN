@@ -2326,7 +2326,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
           interactionNote.classList.replace('solution-foot','solution-interaction-note');
           interactionNote.style.fontSize='var(--fs-body)';
           interactionNote.style.lineHeight='1.5';
-          interactionNote.innerHTML='<b>主动展开：</b>理解问题时回答带图解，阅读编辑时保持现场。<b>内容管理：</b>图解、代码与结果共用身份、条件和历史；按需收起、找回与对照。<br><b>执行边界：</b>查看不执行，试算限于示例；应用不自动检查，旧条件结果单独标明。<a href="ploy-interaction-lab/learning-canvas-story/index.html#31" target="_blank" rel="noopener">完整共性交互规则（31–38页）↗</a> · 配图为早期提案。';
+          interactionNote.innerHTML='<b>主动展开：</b>理解问题时回答带图解，阅读编辑时保持现场。<b>内容管理：</b>图解、代码与结果共用身份、条件和历史；按需收起、找回与对照。<br><b>执行边界：</b>查看不执行，试算限于示例；应用不自动检查，旧条件结果单独标明。<a href="ploy-interaction-lab/learning-canvas-story/index.html#20" target="_blank" rel="noopener">完整共性交互设计材料（20–52页）↗</a> · 配图为早期提案。';
         }
         solution.dataset.title=`问题04：${q.name}·${spec.id} ${spec.stage}`;
         const meta=solution.querySelector('.solution-meta');
@@ -2345,7 +2345,7 @@ document.querySelectorAll('img[data-logo-key]').forEach(img=>{const key=img.data
     if(q.id==='04'){
       const interactionNote=solution.querySelector('.solution-foot');
       interactionNote.classList.replace('solution-foot','solution-interaction-note');
-      interactionNote.innerHTML='<b>共性交互：</b>按意图提供依据与深入入口；卡片保留来源、条件及历史，收起后可找回、对照。查看不触发应用或检查。<a href="ploy-interaction-lab/learning-canvas-story/index.html#31" target="_blank" rel="noopener">完整规则（31–38页）↗</a> · 尾块仍是待核查线索，示例结果不替代项目验证。';
+      interactionNote.innerHTML='<b>共性交互：</b>按意图提供依据与深入入口；卡片保留来源、条件及历史，收起后可找回、对照。查看不触发应用或检查。<a href="ploy-interaction-lab/learning-canvas-story/index.html#20" target="_blank" rel="noopener">完整交互设计材料（20–52页）↗</a> · 尾块仍是待核查线索，示例结果不替代项目验证。';
     }
     if(q.id==='03')solution.classList.add('q1-sample');
     status.querySelector('[data-story-evidence]')?.setAttribute('aria-label',`放大问题${q.no}原始证据`);

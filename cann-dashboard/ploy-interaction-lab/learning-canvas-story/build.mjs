@@ -19,15 +19,6 @@ const theme=`
 html:has(body.story-deck.overview){scroll-snap-type:none;scroll-behavior:auto}
 body.story-deck.overview{scroll-behavior:auto}
 .story-deck .s-glow{--glow-color-int:.22;--glow-white-int:.08}
-.story-deck .hero-step{padding:0}
-.story-deck .hero-inner{position:absolute;inset:2.4vh 3vw 2vh;display:grid;grid-template-rows:6.8vh minmax(0,1fr) 2.6vh;gap:1vh;z-index:1}
-.story-deck .hero-heading{display:flex;align-items:center;justify-content:space-between;gap:2vw}
-.story-deck .hero-heading h1{font-size:var(--fs-h1);line-height:1.2;color:#e5dcff;font-weight:650}
-.story-deck .step-meta{font-size:var(--fs-sm);color:#a5a0b4;margin-bottom:.35vh}
-.story-deck .hero-heading a,.story-deck .hero-foot a{color:#c4b8f9;text-decoration:none;font-size:var(--fs-sm)}
-.story-deck .hero-shot{border:0;background:none;display:flex;align-items:center;justify-content:center;cursor:zoom-in;width:100%;height:83vh;padding:0}
-.story-deck .hero-shot img{display:block;max-width:100%;width:auto;height:100%;object-fit:contain;border-radius:9px}
-.story-deck .hero-foot{display:flex;justify-content:space-between;align-items:center;color:#95919f;font-size:var(--fs-sm)}
 .story-deck .detail-step{padding:8vh 3vw 4vh}
 .story-deck .detail-step .chrome{top:3vh;left:3vw;right:3vw;font-size:var(--fs-sm);letter-spacing:.04em}
 .story-deck .detail-step .inner{grid-template-columns:.52fr 1.48fr;gap:2vw;align-items:center}
@@ -92,13 +83,12 @@ ${jcss}
 .story-deck #lightbox .capture-annotations text{fill:#fff;stroke:none;font:700 15px sans-serif;text-anchor:middle}.story-deck #lightbox .capture-annotations circle{fill:#666db2;stroke:none}
 .story-deck #lightbox button{position:absolute;top:1vh;right:2vw;background:#292532;color:#fff;border:1px solid #666;border-radius:9px;padding:.8vh 1vw;font-size:var(--fs-body);cursor:pointer}
 .story-deck #lightbox a{position:absolute;top:1.5vh;left:2vw;color:#ddd;font-size:var(--fs-sm)}
-body.overview.story-deck .hero-step .slide-inner{padding:0}
 body.overview.story-deck .detail-step .slide-inner{padding:8vh 3vw 4vh}
-body.overview.story-deck .hero-shot,body.overview.story-deck .detail-image{pointer-events:none}
+body.overview.story-deck .detail-image{pointer-events:none}
 @media print{body.story-deck{overflow:visible;height:auto;background:#fff}.story-deck #controls,.story-deck #navDots{display:none}.story-deck .slide{break-after:page;height:100vh}.story-deck #lightbox{display:none}}
 `;
 const chapterTabs=active=>`<div class="section-tabs"><span class="${active==='P'?'active':''}">主动交互</span><span class="${active==='A'?'active':''}">主动学习</span><span class="${active==='B'?'active':''}">开发中学习</span><span class="${active==='C'?'active':''}">共用机制</span></div>`;
-const phaseStart={A:8,B:19};
+const phaseStart={A:8,B:14};
 const journey = story => {
   const cells=story.steps;
   const row=(name,en,cls,inner)=>`<div class="jrn-grid ${cls}"><div class="jrn-rl"><div class="jrn-rn">${name}</div><div class="jrn-re">${en}</div></div>${cells.map(inner).join('')}</div>`;
@@ -107,28 +97,23 @@ const journey = story => {
   <p class="journey-sub">${esc(story.scope)}</p><div class="journey-body"><div class="jrn-wrap">
   ${row('阶段','STEP','',(s,i)=>`<div class="jrn-pw" style="--stage:#7561cf"><div class="jrn-ph"><div class="pn">${s.id}</div><div class="pt">${esc(s.stage)}</div></div></div>`)}
   ${row('触点','TOUCH','',s=>`<div class="jrn-tw"><div class="jrn-tc"><div class="jrn-touch">${esc(s.touch)}</div></div></div>`)}
-  ${row('行为','ACTION','',(s,i)=>`<div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#${phaseStart[story.id]+i*2}"><img src="images/${s.id}.png" alt="${esc(s.stage)}状态图"></a><div class="jrn-fl">${esc(s.action)}</div></div></div>`)}
+  ${row('行为','ACTION','',(s,i)=>`<div class="jrn-fw"><div class="jrn-fc"><a class="jrn-scr" href="#${phaseStart[story.id]+i}"><img src="images/${s.id}.png" alt="${esc(s.stage)}状态图"></a><div class="jrn-fl">${esc(s.action)}</div></div></div>`)}
   ${row('情绪','EMOTION','je',()=>'<div class="jrn-ew"><div class="jrn-ec">待用户回放验证</div></div>')}
   ${row('风险','PAIN','',s=>`<div class="jrn-pw2"><div class="jrn-pc"><div class="jrn-text">${esc(s.pain)}</div></div></div>`)}
   ${row('设计响应','RESPONSE','',s=>`<div class="jrn-ow"><div class="jrn-oc"><div class="jrn-ot">${esc(s.opportunity)}</div></div></div>`)}
-  </div></div><div class="foot">目标旅程，不代表实测行为或情绪数据。点击阶段缩略图进入大图；每一步后附设计说明。</div></section>`;
+  </div></div><div class="foot">目标旅程，不代表实测行为或情绪数据。点击阶段缩略图查看对应设计点与界面；每一步包含设计说明和大图。</div></section>`;
 };
-const hero=(story,s,i)=>`<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="${s.id} · ${esc(s.stage)} · 大图">
-<div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">${esc(story.name)} / ${s.id} / ${esc(s.stage)}</div><h1>${esc(s.title)}</h1></div><a href="#${phaseStart[story.id]+i*2+1}">本步设计说明 →</a></header>
-<button class="hero-shot" data-enlarge="images/${s.id}.png" aria-label="查看${s.id}原图"><img src="images/${s.id}.png" alt="${esc(s.title)}" decoding="async"></button>
-<div class="hero-foot"><span>${esc(s.points.map(p=>p[0]).join(' · '))}</span><span>设计示意 · 点击图片放大</span></div></div></section>`;
 const detail=(story,s,i)=>`<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="${s.id} · ${esc(s.stage)} · 设计说明"><div class="glow"></div><div class="chrome"><span>${esc(story.name)} · ${s.id} 设计说明</span><span>交互说明已更新 · 配图为早期提案</span></div>
 <div class="inner"><div><h1 class="h-title">${esc(s.stage)}<span class="light"> · 用户如何接着做</span></h1><p class="body"><b>用户：</b>${esc(s.action)}</p>
 <div class="points">${s.points.map((p,j)=>`<div class="point"><h2 class="pt-title">${j+1}. ${esc(p[0])}</h2><p class="pt-desc">${esc(p[1])}</p></div>`).join('')}</div>
 <p class="continuity"><b>内容管理</b><br>${esc(s.canvas)}</p><p class="continuity"><b>下一步</b><br>${esc(s.next)}</p></div>
 <button class="detail-image shot" data-enlarge="images/${s.id}.png" aria-label="放大${s.id}界面"><img src="images/${s.id}.png" alt="${esc(s.response)}"></button></div></section>`;
-const extraHero=()=>`<section class="slide s-glow hero-step" data-template="glow-design-point" data-title="B6 · 任务中试改 · 大图"><div class="glow"></div><div class="hero-inner"><header class="hero-heading"><div><div class="step-meta">开发中学习 / B6 / 任务中试改</div><h1>在原任务现场先试改，再决定是否继续</h1></div><a href="#30">本步设计说明 →</a></header><button class="hero-shot" data-enlarge="images/B6-task-try.png" aria-label="查看 B6 任务中试改原图"><img src="images/B6-task-try.png" alt="在原任务现场先试改，再决定是否继续" decoding="async"></button><div class="hero-foot"><span>选中代码 · 参数试改 · 运行练习 · 结果关联</span><span>设计示意 · 点击图片放大</span></div></div></section>`;
 const extraDetail=()=>`<section class="slide s-glow detail-step" data-template="glow-design-point" data-title="B6 · 任务中试改 · 设计说明"><div class="glow"></div><div class="chrome"><span>开发中学习 · B6 设计说明</span><span>交互说明更新 · 配图为早期提案</span></div><div class="inner"><div><h1 class="h-title">任务中试改<span class="light"> · 不离开原现场</span></h1><p class="body"><b>用户：</b>围绕当前输入维度问题，在图解中调整通道顺序或 batch，直接观察本次示例结果。</p><div class="points"><div class="point"><h2 class="pt-title">1. 图解内直接调参</h2><p class="pt-desc">少量参数直接出现在图解中，并关联当前代码行；不用先点击“试一下”或打开画布。</p></div><div class="point"><h2 class="pt-title">2. 结果同步可见</h2><p class="pt-desc">参数变化后，图形、形状对照、代码示例与本次结果就地更新，用户能直接看见变化。</p></div><div class="point"><h2 class="pt-title">3. 任务内容可管理</h2><p class="pt-desc">试算只影响当前示例／隔离副本；代码、图解与结果归属同一次尝试，项目修改仍经 Diff 审阅确认。</p></div></div><p class="continuity"><b>内容管理</b><br>普通内容即可承载解释与试改；自由画布仅按整理需求打开，阅读位置保持稳定。</p><p class="continuity"><b>下一步</b><br>用户表达“采用、检查”时直接接续对应操作；示例结果与原任务验证分别呈现。</p></div><button class="detail-image shot" data-enlarge="images/B6-task-try.png" aria-label="放大 B6 任务中试改界面"><img src="images/B6-task-try.png" alt="任务中试改界面"></button></div></section>`;
-const cover=`<section class="slide s-cover" data-title="让学习在合适的时机发生"><div class="cv-bg"></div><div class="cv-overlay"></div><div class="cv-inner"><div class="cv-top"><img class="cv-logo" src="../../../Ascendlogo.svg" alt="昇腾"></div><div class="cv-main"><div class="cv-kicker">SPATIAL LEARNING WORKSPACE</div><h1 class="cv-name"><span class="cv-line">让学习在合适的时机</span><span>发生</span></h1><p class="cv-lead">主动学习与开发中学习的两条完整故事线<br>每一步：用户操作 · 界面响应 · 设计点 · 内容管理</p><div class="cover-links"><a href="#7">主动学习 →</a><a href="#18">开发中学习 →</a><a href="#31">界面架构 →</a></div></div><div class="cv-bot"><span>11 张故事图 · ${frameworkPageCount} 页界面架构 · ${capturePageCount} 个独立状态 · 31 页</span></div></div></section>`;
+const cover=`<section class="slide s-cover" data-title="让学习在合适的时机发生"><div class="cv-bg"></div><div class="cv-overlay"></div><div class="cv-inner"><div class="cv-top"><img class="cv-logo" src="../../../Ascendlogo.svg" alt="昇腾"></div><div class="cv-main"><div class="cv-kicker">SPATIAL LEARNING WORKSPACE</div><h1 class="cv-name"><span class="cv-line">让学习在合适的时机</span><span>发生</span></h1><p class="cv-lead">主动学习与开发中学习的两条完整故事线<br>每一步：用户操作 · 界面响应 · 设计点 · 内容管理</p><div class="cover-links"><a href="#7">主动学习 →</a><a href="#13">开发中学习 →</a><a href="#20">界面架构 →</a></div></div><div class="cv-bot"><span>11 张故事图 · ${frameworkPageCount} 页界面架构 · ${capturePageCount} 个独立状态 · 31 页</span></div></div></section>`;
 const problem=`<section class="slide s-gray" data-title="AI 加速了开发，也带来了知识内化的新问题"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">AI 加速了开发，也带来了知识内化的新问题</span></div><div class="subttl">问题陈述</div></div>${chapterTabs('P')}</div><div class="body-area"><div class="problem-wrap"><h1 class="problem-title">代码完成了，知识不一定留下</h1><p class="problem-copy">从“查找—理解—实践”的传统路径，到“描述目标—生成—验证”的 AI 开发方式，学习发生的方式正在变化。我们需要重新设计知识进入任务的时机。</p><div class="problem-bottom"><span>从“完成当前任务”到“形成可迁移的理解”</span><span>接下来：让学习进入任务过程</span></div></div></div><div class="foot">设计背景 · 学习不应只发生在任务之外</div></section>`;
 const sections=[cover,problem,...introPages(chapterTabs)];
-for(const story of stories){sections.push(journey(story));story.steps.forEach((s,i)=>sections.push(hero(story,s,i),detail(story,s,i)));}
-sections.push(extraHero(),extraDetail());
+for(const story of stories){sections.push(journey(story));story.steps.forEach((s,i)=>sections.push(detail(story,s,i)));}
+sections.push(extraDetail());
 sections.push(...sharedInteractionPages(chapterTabs));
 sections[0]=sections[0].replace("31 页",`${sections.length} 页`);
 template=template.replace('<title>汇报 PPT 模板</title>','<title>空间画布学习体验 · 两条完整故事线</title>').replace('<body>','<body class="story-deck">');
