@@ -843,4 +843,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Luna low实施；主agent修正初版观察父卡片尺寸遗漏padding导致缩放的问题，改观察SVG后刷新复核。证据在 `evidence/20261021-folder-front-surface/`，包含用户目标、改前与桌面/移动画面、轮廓对照。对照图边缘padding略有差异，只用于判断走势与连续性，不声称像素完全一致。
 - 局部验证：1280×720默认/展开SVG viewBox为183.5×168与183.5×370.375，顶部y=6/12一致，展开白片完整包裹CTA；568×900卡片SVG为534×114，全页截图568×1378且无横向溢出；最终刷新console error/warn为`[]`。Pages构建与 `git diff --check`通过（构建有既有大包提醒）。仅轮廓局部QA，不代表全量回归或NPU验证；API / Host / Application边界和报告页序不变。提交/push待主agent处理。
 
+
 - 发布回执：`53839ea1`（`fix: redraw continuous folder card front surfaces`）已成功推送 `origin/main`，包括源码、Pages产物及参考/实现对照。未检查本次Pages部署完成状态；此交接回填另行提交推送。
+
+### 2026-10-21 · 首页卡片主动交互方向讨论
+
+- 用户认为现有建议卡像最近使用记录；本轮仅讨论。只读核对 `src/home-recommendations.js`：当前先按任务/模式选3个任务再生成标题，卡片绑定对应任务，CTA回任务追加草稿。故事材料第3页及 `images/ploy-overview-user.png` 显示 For you 与 Recents 分区，并展示发现、依据/影响、Run Ploy、关闭；这是截图可见内容，不证明后台检测实现。
+- 待讨论方向：卡片主对象由任务改为有依据的待处理事项/机会，任务名降为来源；默认给发现与一句当前价值，展开给证据、影响、下一步。近期记录仅作依据，不自动生成建议；无有效事项不硬凑三张，处理后更新/撤下并支持暂不处理。学习/开发分别聚焦理解迁移与排障验证缺口，只据已有任务状态、记录、用户材料，不生成虚构日志/资料或宣称工程/NPU已验证。
+- 拟议示例：仅浏览器演算时提示真实代码仍需核对；已有学习小结时建议换含batch新输入检查迁移。CTA是直接续接具体工作还是先讨论尚待商定。本轮无新运行/研究证据，不改Demo、页面序列或API / Host / Application边界。
