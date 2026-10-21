@@ -5712,4 +5712,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将「学会图像输入预处理」保留为已有路径与学习进度入口，并新增独立的「图像输入预处理路径共创」任务；左侧状态分别标为路径已确认、待你审阅。新任务仅在首次打开时提供学习路径草案和三条待审阅建议，不复制原任务的练习、小结或完成记录。
 - 画布增加共创进度：目标与基础已整理 → 路径草案已生成 → 等待用户审阅 → 确认后开始学习。逐条采纳、忽略和修改仍共用草案；待审阅建议处理完后才能确认。示例路径规则是本地 Demo，不代表真实 AI 实时生成或模型/NPU 验证。
 - 涉及 `ascend-studio/src/learning-data.js`、`learning-path-generation.js`（新增）、`learning-path-generation.test.js`（新增）、`prototype-data.js`、`useLearningJourney.js`、`useWorkbenchState.js`、`App.jsx`、`LearningHierarchyCanvas.jsx`、`learning-hierarchy-canvas.css`、`styles.css`。未改汇报序列/hash或 API / Host / Application 边界。
-- 本地 127.0.0.1 Demo 的无障碍树和截图可见两个独立任务、草案阶段、3 项可采纳/忽略建议；测试 6/6 通过，源码生产构建通过（保留既有 >500kB chunk 提示），`git diff --check` 通过。提交与推送结果随后回填；其他对话的暂存、未暂存和未跟踪改动均保留。
+- 本地 127.0.0.1 Demo 的无障碍树和截图可见两个独立任务、草案阶段、3 项可采纳/忽略建议；测试 6/6 通过，源码生产构建通过（保留既有 >500kB chunk 提示），`git diff --check` 通过。功能提交 `8aa681d9` 已推送 `origin/main`；其他对话的暂存、未暂存和未跟踪改动均保留。
