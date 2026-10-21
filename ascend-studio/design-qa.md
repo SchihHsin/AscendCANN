@@ -830,3 +830,5 @@ final result: passed (scoped QA)
 - 响应式：viewport API未实际改变当前页（仍1600×900），不宣称1280或移动端验证；通过分隔条检查544px画布，标题与工具栏分两排。随后补充按布局记录容器尺寸并自动适配尺寸变化；该补充纳入最终构建，待发布后确认。
 - 官方视频因SAMEORIGIN/CSP不嵌入本Demo，节点打开官方课程页；45秒是单独标明的本地图解讲解。官方入口/播放器限制事实为H，本地交互为M；无真实AI/Python/模型/NPU运行，不代表用户设计验收。
 - 20项进度/既有推荐测试、数据与Hook node check、Pages构建通过。浏览器检查新路径期间没有console error/warn；随后并行修改的 `RangeDiagram.jsx` 出现JSX编译错误，不能覆盖他人WIP。本次最终发布在临时目录中以HEAD加本任务明确列出的16份源码构建，排除RangeDiagram/VoiceCaptureButton等无关工作；工作区原文件保持。详细限制和来源见证据README。
+
+- 发布回执：功能提交 `0b8df29d` 已成功推送 `origin/main`；GitHub Pages run `39568645590` 的 build / deploy 均 success（2026-10-21）。提交采用临时发布快照的 App/useWorkbenchState blob 暂存，保留这两个文件中后续并行语音等改动为未暂存，不混入发布。线上浏览器绑定两次超时，公开页HTTP补查也遇TLS EOF，故未声称发布后交互复测成功；本地此前截图/检查及最终隔离构建与20测试有效。容器尺寸重适配补充仅构建/代码检查，后续可在网络恢复后补浏览器确认。

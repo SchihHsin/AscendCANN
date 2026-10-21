@@ -911,3 +911,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 来源H：公开官方成长路径（3课程+1在线实验）、概述/快速入门/ResNet50课程和图像处理文档；公开播放器HTTP200但有SAMEORIGIN与限定官方域的frame-ancestors，故视频打开原课程，45秒本地图解另行标明。净化证据/截图见`ascend-studio/evidence/20261021-resnet-goal-canvas/`。没有NPU/真实模型或工程验证，不改变正式报告序列/hash或API/Host/Application边界；用户设计验收仍待本轮反馈。
 - 验证M：实际1600×900检查新旧切换、布局、图解联动、聚焦返回、固定/移动/收起恢复、形状参数同步；分隔条缩至544px检查工具栏避让。viewport API不生效，未声称1280或移动端。尝试隔离localhost测试页被浏览器拒绝，未绕过，后续用既有127页检查。20项进度/既有推荐测试、Node语法、Pages构建及scoped diff检查。最后增加按布局记录容器尺寸用于重适配；需最终发布页补查。
 - 仓库并行的RangeDiagram/VoiceCaptureButton等WIP不纳入本次提交；RangeDiagram曾导致本地编译错误，未覆盖其源码。最终发布包在临时目录由HEAD及本任务16份源码构建，排除无关未完成代码，保留工作区原件。功能与交接一起提交并立即推送origin/main；回执由Git记录及后续补记确认。
+
+- 发布回执：功能提交 `0b8df29d` 已成功推送 `origin/main`；GitHub Pages run `39568645590` 的 build / deploy 均 success（2026-10-21）。提交采用临时发布快照的 App/useWorkbenchState blob 暂存，保留这两个文件中后续并行语音等改动为未暂存，不混入发布。线上浏览器绑定两次超时，公开页HTTP补查也遇TLS EOF，故未声称发布后交互复测成功；本地此前截图/检查及最终隔离构建与20测试有效。容器尺寸重适配补充仅构建/代码检查，后续可在网络恢复后补浏览器确认。
