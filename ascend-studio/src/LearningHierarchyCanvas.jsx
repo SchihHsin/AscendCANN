@@ -249,6 +249,16 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, onOpen,
       {!isGoal && reviewingPath && !state.draftPath && <CanvasCard id="goal" title="已确认的学习路径" point={position("goal")} width={horizontal ? 830 : 1215} pinned={pinned("goal")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin}><div className="lh-path-draft"><div><strong>{state.profile.goal}</strong><p>{state.profile.background} · 每天 {state.profile.dailyMinutes} 分钟</p><small>{journey.pathCurrent ? "按节点继续学习，或审阅路径调整。" : "目标或基础已改变，请重新审阅路径。"}</small></div><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => select(state.activeNode || "channels", "channels")}>继续学习<IconArrowRight size={13} /></Button><Button onClick={() => actions.generatePath()}>调整路径</Button><Button onClick={() => canvasActions.select("goal")}>修改目标</Button></div></div></CanvasCard>}
       {state.draftPath && <CanvasCard id="goal" title="学习路径草案 · 等待确认" point={position("goal")} width={horizontal ? 830 : 1215} pinned={pinned("goal")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin}><div className="lh-path-draft">
         <div><strong>{state.profile.goal}</strong><p>{state.profile.background} · 每天 {state.profile.dailyMinutes} 分钟</p><small>节点操作与对话共用此预览；原路径和学习记录在确认前保持不变。</small></div>
+        <section className="lh-generation-flow" aria-label="学习路径共创进度">
+          <span>共创进度</span>
+          <ol>
+            <li className="is-complete"><i>1</i><span>目标与基础已整理</span></li>
+            <li className="is-complete"><i>2</i><span>路径草案已生成</span></li>
+            <li className={pendingChanges.length ? "is-current" : "is-complete"}><i>3</i><span>{pendingChanges.length ? `等待你审阅 ${pendingChanges.length} 项建议` : "建议已处理"}</span></li>
+            <li className={pendingChanges.length ? "" : "is-current"}><i>4</i><span>确认后开始学习</span></li>
+          </ol>
+          <small>你可以采纳、忽略或继续提出修改；确认后才进入学习，学习进度保存在独立任务中。</small>
+        </section>
         {state.pathSync && <p className="lh-path-sync" role="status"><IconSparkles size={13} /><strong>AI 同步说明</strong><span>{state.pathSync}</span></p>}
         {pendingChanges.length > 0 && <section className="lh-path-review" aria-label="AI 路径调整建议">
           <header><IconSparkles size={15} /><strong>AI 修改建议</strong><span>{pendingChanges.length} 项待你审阅</span></header>

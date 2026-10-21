@@ -23,7 +23,7 @@ import { RangeDiagram, getRangeGeometry } from "./RangeDiagram";
 import { classifyTaskIntent, getExplanationFocus } from "./task-intents";
 import ProactiveCue from "./ProactiveCue.jsx";
 import { useProactiveCues } from "./useProactiveCues.js";
-import { LEARNING_TASK, LEARNING_MATERIALS } from "./learning-data";
+import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK, LEARNING_MATERIALS } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK, OFFICIAL_LEARNING_STAGES, OFFICIAL_LEARNING_MATERIALS, getOfficialLearningNode, buildOfficialLearningContentItems, getOfficialLearningStatus, officialStatusLabel } from "./official-learning-data";
 import { useLearningJourney } from "./useLearningJourney";
 import { useLearningCanvasView } from "./useLearningCanvasView";
@@ -96,7 +96,7 @@ const routes = [
   },
 ];
 
-function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect }) {
+function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect, statusForTask }) {
   const normalizedQuery = query.trim().toLowerCase();
   const matchesProject = normalizedQuery && group.name.toLowerCase().includes(normalizedQuery);
   const filteredTasks = matchesProject
@@ -119,8 +119,9 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
       </button>
       {opened && (
         <div className="project-tasks" id={"project-" + group.id}>
-          {filteredTasks.map((task) => (
-            <button
+          {filteredTasks.map((task) => {
+            const status = statusForTask?.(task);
+            return <button
               className={"task-row" + (selectedTask === task ? " is-selected" : "")}
               type="button"
               aria-current={selectedTask === task ? "page" : undefined}
@@ -128,9 +129,10 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
               onClick={() => onSelect(task)}
             >
               <IconFileText className="task-file" size={17} />
-              <span>{task}</span>
-            </button>
-          ))}
+              <span className="task-row-label">{task}</span>
+              {status && <small className={`task-status is-${status.tone}`}>{status.label}</small>}
+            </button>;
+          })}
         </div>
       )}
     </section>
@@ -198,6 +200,7 @@ function App() {
   const closeMenuAnd = (action) => { wb.setMenu(null); action(); };
   const isImageTask = selectedTask === IMAGE_TASK;
   const isStandardLearningTask = task.kind === "learning";
+  const isPathGenerationTask = selectedTask === LEARNING_PATH_GENERATION_TASK;
   const isOfficialLearningTask = task.kind === "official-learning";
   const isLearningTask = isStandardLearningTask || isOfficialLearningTask;
   const learningLaunchHandled = useRef(false);
@@ -220,9 +223,18 @@ function App() {
   const layout = useWorkbenchLayout({ sidebarCollapsed, contentCollapsed: workspace.state.collapsed, learningLayout: isLearningTask });
   const visibleContentId = layout.contentWidth <= 620 && workspace.state.splitId && [workspace.state.activeId, workspace.state.splitId].includes(workspace.state.comparisonFocusId) ? workspace.state.comparisonFocusId : workspace.state.activeId;
   const contentVisible = id => !workspace.state.collapsed && workspace.state.activeId !== "canvas" && (layout.contentWidth <= 620 ? visibleContentId === id : workspace.state.activeId === id || workspace.state.splitId === id);
-  const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask });
+  const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask, initialStage: isPathGenerationTask ? "path" : "channels" });
   const learningCanvasVisible = isStandardLearningTask && !workspace.state.collapsed && workspace.state.activeId === "canvas" && workspace.state.canvasMode === "free";
-  const learning = useLearningJourney({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", profile: task.learningProfile, visible: isStandardLearningTask && (contentVisible("learning-lesson") || learningCanvasVisible && learningCanvasView.state.expanded && ["channels", "environment"].includes(learningCanvasView.state.selectedStage)), onRecord: (record, ownerId) => { wb.addRecord(record, ownerId); const id = ({ "learning-path": "learning-path", "learning-attempt": "learning-practice", "learning-check": "learning-check", "learning-summary": "learning-summary" })[record.kind]; if (id) workspace.actions.open(id, { activate: false, taskId: ownerId, isMainTask: true }); } });
+  const learning = useLearningJourney({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", profile: task.learningProfile, seedPathGeneration: isPathGenerationTask, visible: isStandardLearningTask && (contentVisible("learning-lesson") || learningCanvasVisible && learningCanvasView.state.expanded && ["channels", "environment"].includes(learningCanvasView.state.selectedStage)), onRecord: (record, ownerId) => { wb.addRecord(record, ownerId); const id = ({ "learning-path": "learning-path", "learning-attempt": "learning-practice", "learning-check": "learning-check", "learning-summary": "learning-summary" })[record.kind]; if (id) workspace.actions.open(id, { activate: false, taskId: ownerId, isMainTask: true }); } });
+  const statusForTask = name => {
+    if (name === LEARNING_PATH_GENERATION_TASK && name === selectedTask) {
+      if (learning.state.path) return { label: "路径已确认", tone: "confirmed" };
+      if (learning.state.draftPath) return { label: learning.state.pathChanges.some(change => change.status === "pending") ? "待你审阅" : "待确认", tone: "review" };
+      return { label: "生成中", tone: "review" };
+    }
+    const details = wb.getTask(name);
+    return details.sidebarStatus ? { label: details.sidebarStatus, tone: details.sidebarStatusTone || "review" } : null;
+  };
   const officialCanvasVisible = isOfficialLearningTask && !workspace.state.collapsed && workspace.state.activeId === "canvas" && workspace.state.canvasMode === "free";
   const officialCanvasView = useLearningCanvasView({ taskId: isOfficialLearningTask ? selectedTask : "__inactive-official-learning", enabled: isOfficialLearningTask, stageIds: OFFICIAL_STAGE_IDS, initialStage: OFFICIAL_LEARNING_STAGES[0].id, materialStages: OFFICIAL_MATERIAL_STAGES, storagePrefix: "official-learning-canvas-v2" });
   const officialLearning = useOfficialLearningPath({ taskId: isOfficialLearningTask ? selectedTask : "__inactive-official-learning", enabled: isOfficialLearningTask, visible: officialCanvasVisible && officialCanvasView.state.expanded && !showNewTaskHome, onRecord: (record, ownerId) => wb.addRecord(record, ownerId) });
@@ -898,6 +910,7 @@ function App() {
                 selectedTask={selectedTask}
                 onToggle={() => toggleGroup(group.id)}
                 onSelect={selectExistingTask}
+                statusForTask={statusForTask}
               />
             ))}
             {query && !visibleGroups.some((group) =>

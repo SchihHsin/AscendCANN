@@ -1,4 +1,4 @@
-import { LEARNING_TASK } from "./learning-data";
+import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK, LEARNING_PATH_GENERATION_PROFILE } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
 
 export const initialGroups = [
@@ -10,7 +10,7 @@ export const initialGroups = [
   {
     id: "inference",
     name: "模型推理",
-    tasks: ["图像推理调试", LEARNING_TASK, OFFICIAL_LEARNING_TASK, "Model preprocessing", "Vision model test"],
+    tasks: ["图像推理调试", LEARNING_PATH_GENERATION_TASK, LEARNING_TASK, OFFICIAL_LEARNING_TASK, "Model preprocessing", "Vision model test"],
   },
   {
     id: "other",
@@ -20,9 +20,22 @@ export const initialGroups = [
 ];
 
 export const taskDetails = {
+  [LEARNING_PATH_GENERATION_TASK]: {
+    project: "模型推理",
+    kind: "learning",
+    sidebarStatus: "待审阅",
+    sidebarStatusTone: "review",
+    goal: "围绕图像推理前处理目标，协同生成并审阅学习路径；确认前不开始学习。",
+    learningProfile: LEARNING_PATH_GENERATION_PROFILE,
+    question: "我想学习图像推理前处理，先帮我生成一条包含尺寸调整、归一化和输入形状检查的路径。",
+    reply: "我已根据学习目标、Python 基础和每天 20 分钟的时间整理出一份路径草案。\n\n路径里补入了图像尺寸调整、归一化和 NCHW 输入检查建议；你可以逐条采纳或忽略，也可以继续提出修改。确认之前不会开始学习。\n\n这是独立的路径共创任务；原来的「学会图像输入预处理」及其学习记录会保留在原任务中。",
+    status: "active",
+  },
   [LEARNING_TASK]: {
     project: "模型推理",
     kind: "learning",
+    sidebarStatus: "路径已确认",
+    sidebarStatusTone: "confirmed",
     goal: "理解图像通道、维度顺序与 batch，能够说明并核对一段输入预处理代码。",
     learningProfile: {
       goal: "学会图像输入预处理，理解 HWC、CHW 与 NCHW，并能核对轴顺序和 batch。",

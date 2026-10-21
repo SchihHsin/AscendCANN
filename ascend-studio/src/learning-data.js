@@ -1,5 +1,11 @@
 export const LEARNING_TASK = "学会图像输入预处理";
 export const DEFAULT_LEARNING_PROFILE = { goal: LEARNING_TASK, background: "有 Python 基础，第一次接触模型输入", dailyMinutes: 30 };
+export const LEARNING_PATH_GENERATION_TASK = "图像输入预处理路径共创";
+export const LEARNING_PATH_GENERATION_PROFILE = {
+  goal: "学习图像推理前处理，理解并核对模型输入",
+  background: "能读简单 Python；对尺寸调整、归一化和输入布局还不熟悉",
+  dailyMinutes: 20,
+};
 export const LEARNING_NODES = [
   { id: "environment", title: "准备学习环境", minutes: 5, description: "了解示例的输入与运行边界", optional: true },
   { id: "channels", title: "理解 RGB 与输入维度", minutes: 8, description: "看懂 HWC、CHW 与 batch 的含义" },

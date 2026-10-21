@@ -79,6 +79,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .task-row:hover { background: #f7f7f6; }
 .task-row.is-selected { background: #f2f2f0; color: #27282c; font-weight: 600; }
 .task-file { color: #7e8290; flex: 0 0 auto; stroke-width: 1.7; }
+.task-row-label { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.task-status { flex: 0 0 auto; border-radius: 999px; padding: 2px 6px; font-size: 9px; line-height: 1.4; font-weight: 500; white-space: nowrap; }
+.task-status.is-review { color: #86651d; background: #f5efdf; }
+.task-status.is-confirmed { color: #5d7765; background: #edf3ee; }
 .empty-search { padding: 22px 8px; color: var(--text-muted); font-size: 12px; text-align: center; }
 .sidebar-footer { flex: 0 0 auto; display: flex; align-items: center; gap: 7px; padding: 8px 4px 2px; color: #a0a1a5; font-size: 10px; border-top: 1px solid #f0efed; }
 

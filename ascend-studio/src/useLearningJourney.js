@@ -2,15 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 import { DEFAULT_LEARNING_PROFILE, LEARNING_NODES, getLearningCode, getLearningShape, getTransferCode, getTransferShape } from "./learning-data";
 import { cloneLearningPath, commitLearningPath, moveLearningPathStep, pendingPathChangeCount, proposeLearningPathChanges, resolveLearningPathChange } from "./learning-path-collaboration";
+import { createPathGenerationDemoDraft } from "./learning-path-generation";
 
 const now = () => new Date().toLocaleTimeString("zh-CN", { timeZone: "Asia/Shanghai", hour: "2-digit", minute: "2-digit" });
 const sameParameters = (a, b) => Boolean(a && b && a.axes.join(",") === b.axes.join(",") && a.batch === b.batch);
 const initial = profile => ({ profile: { ...DEFAULT_LEARNING_PROFILE, ...profile }, path: null, draftPath: null, pathSource: null, draftSource: null, pathProfile: null, pathChanges: [], pathProposalId: null, pathUndo: [], pathSync: "", activeNode: null, understood: [], axes: [0, 1, 2], batch: false, attempts: [], checks: [], summaries: [], transfer: null, practiceView: "base", time: 0, focus: "channels", channel: "all", playing: false, suggestionDismissed: false, notice: "", resetVersion: 0 });
 const keyFor = taskId => `learning-journey:${taskId}`;
-function restore(taskId, profile) {
+function restore(taskId, profile, seedPathGeneration) {
   const saved = readSession(keyFor(taskId), null);
   const base = initial(profile);
-  if (!saved || !Array.isArray(saved.attempts)) return base;
+  if (!saved || !Array.isArray(saved.attempts)) return seedPathGeneration ? { ...base, ...createPathGenerationDemoDraft() } : base;
   return { ...base, ...saved, profile: { ...base.profile, ...saved.profile }, checks: Array.isArray(saved.checks) ? saved.checks : [], summaries: Array.isArray(saved.summaries) ? saved.summaries : [], understood: Array.isArray(saved.understood) ? saved.understood : [], pathChanges: Array.isArray(saved.pathChanges) ? saved.pathChanges : [], pathUndo: Array.isArray(saved.pathUndo) ? saved.pathUndo : [], pathProposalId: saved.pathProposalId || null, transfer: saved.transfer || null, practiceView: saved.practiceView === "transfer" ? "transfer" : "base", playing: false };
 }
 function exposeTaskState(task) {
@@ -36,12 +37,12 @@ function exposeTaskState(task) {
 }
 
 /** Task-owned state changes are written at action time, never during task restore. */
-export function useLearningJourney({ taskId, profile, visible = false, onRecord }) {
+export function useLearningJourney({ taskId, profile, visible = false, onRecord, seedPathGeneration = false }) {
   const tasks = useRef(new Map());
   const [, render] = useState(0);
   const activeTask = useRef(taskId);
   activeTask.current = taskId;
-  if (!tasks.current.has(taskId)) tasks.current.set(taskId, restore(taskId, profile));
+  if (!tasks.current.has(taskId)) tasks.current.set(taskId, restore(taskId, profile, seedPathGeneration));
   const state = tasks.current.get(taskId);
   const update = (change, ownerId = taskId) => {
     const previous = tasks.current.get(ownerId);

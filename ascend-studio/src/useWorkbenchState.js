@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply } from "./prototype-data";
 import { readSession, writeSession } from "./session-storage";
-import { LEARNING_TASK } from "./learning-data";
+import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
 
 export const MAIN_TASK = "AddCustom 精度异常";
@@ -61,7 +61,7 @@ function restoreWorkbench() {
     ? savedGroups.map(group => ({ ...group, tasks: group.tasks.filter(task => typeof task === "string") }))
     : initialGroups.map(group => ({ ...group, tasks: [...group.tasks] }));
   // Add learning examples to existing browsers without replacing saved task lists.
-  for (const taskName of [LEARNING_TASK, OFFICIAL_LEARNING_TASK]) {
+  for (const taskName of [LEARNING_PATH_GENERATION_TASK, LEARNING_TASK, OFFICIAL_LEARNING_TASK]) {
     if (groups.some(group => group.tasks.includes(taskName))) continue;
     const inferenceGroup = groups.find(group => group.id === "inference");
     if (inferenceGroup) inferenceGroup.tasks = [...inferenceGroup.tasks, taskName];
@@ -71,6 +71,15 @@ function restoreWorkbench() {
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
   if (!sessions[MAIN_TASK]) sessions[MAIN_TASK] = blank();
   const meta = { ...taskDetails, ...(isObject(value.meta) ? Object.fromEntries(Object.entries(value.meta).filter(([, item]) => isObject(item))) : {}) };
+  for (const taskName of [LEARNING_PATH_GENERATION_TASK, LEARNING_TASK]) {
+    if (meta[taskName]?.kind === "learning") {
+      meta[taskName] = {
+        ...meta[taskName],
+        sidebarStatus: taskDetails[taskName].sidebarStatus,
+        sidebarStatusTone: taskDetails[taskName].sidebarStatusTone,
+      };
+    }
+  }
   // Refresh only the built-in scenario brief; saved conversations, records and custom tasks stay intact.
   if (meta[OFFICIAL_LEARNING_TASK]?.kind === "official-learning") meta[OFFICIAL_LEARNING_TASK] = { ...meta[OFFICIAL_LEARNING_TASK], ...taskDetails[OFFICIAL_LEARNING_TASK] };
   return {
