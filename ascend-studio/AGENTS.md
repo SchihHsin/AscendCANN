@@ -928,3 +928,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 录音与转写留在 composer 草稿区，不向对话流插入录音状态或实时转写项；用户提交后才生成一条带索引范围关联的消息，并可从该消息回到原图解范围。composer 原样式不变。
 - 划选支持拖动与键盘操作；Escape 可退出。语音使用浏览器 SpeechRecognition / webkitSpeechRecognition；本轮未触发麦克风权限请求，权限与听写能力仍待实际设备验证。
 - 修改文件包括 `src/VoiceCaptureButton.jsx`、`src/App.jsx`、`src/ExplainPanel.jsx`、`src/RangeDiagram.jsx`、`src/useWorkbenchState.js` 和对应样式。Pages 构建已通过；交互回放见本任务记录。
+
+
+### 2026-10-21 · 学习路径生成与人机协同编辑待讨论
+
+- 用户指出当前 Demo 更完整地表现了路径生成后的学习，缺少用户与 AI 共同生成、修改路径的过程。现状：新建页只创建学习任务；目标画布使用模板路径，提供环境跳过和受约束的节点换序，没有自然语言迭代、节点级改动建议、差异/依据、撤销或草案版本确认。
+- 讨论建议：保持路径画布可见；同时支持全局目标反馈与选中节点的局部修改。AI修改进入可视、可撤销的草案，标出变化及原因；用户最终确认后才进入学习态。该交互仍待讨论，本轮不改 Demo。

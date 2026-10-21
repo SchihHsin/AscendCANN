@@ -5654,3 +5654,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据来源：用户确认的交互要求（需求依据）；本地浏览器的范围选择、composer 上下文、发送关联和恢复检查（M）；浏览器原生语音识别是否可用、麦克风权限及真实听写结果未验证。没有新增 NPU、模型或工程正确性结论。
 - 不影响 Dashboard / 报告页序、hash 或 API / Host / Application 层边界。验证：`npm run build:pages` 通过（Vite 有既有大 chunk 提示），`git diff --check` 通过；未运行测试。
 - 功能提交 `9ae5e540`（`feat: add point-and-speak interaction`）已推送 `origin/main`。线上 `https://schihhsin.github.io/AscendCANN/ascstudio/` 返回 HTTP 200，HTML 已引用新 JS/CSS 资源，JS 资源也返回 HTTP 200。交接回填随后单独提交并推送。未决事项仅为浏览器原生 Speech Recognition 支持及真实权限 / 识别效果的后续验证。
+
+
+### 2026-10-21 · 学习路径生成与人机协同编辑待讨论
+
+- 用户指出当前学习体验主要呈现路径生成后的学习过程，缺少从目标到路径草案、AI与用户协同修改、最终确认的过程。源码核对：新建页提交目标只创建任务；学习画布虽有目标/基础/时间输入与模板生成，但调整能力限于环境节点跳过和有限换序，尚无自然语言协作、节点级增删改、修改理由/差异、撤销或版本审阅。
+- 讨论方向：让路径草案留在同一画布，用户可对整体路径提要求，也可直接调整节点；AI把修改作为可见、可撤销的草案更新并说明依据，用户确认后才进入正式学习。尚未获用户确认，本轮无 Demo 改动，不影响报告页序和 API / Host / Application 边界。
