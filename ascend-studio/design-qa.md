@@ -778,3 +778,5 @@ final result: passed
 - Pages构建和diff检查通过；编辑阶段一次HMR错误，最终刷新后未新增。reduced-motion/触摸仅代码检查；未做设置切换或真机验证。本轮只覆盖背景修复，卡片、输入尺寸与业务行为保持；提交推送待回填。
 
 final result: passed
+
+- 发布回执：`0d854bc8`（`fix: unify home dot and compute symbol motion`）已成功推送 `origin/main`；源码、Pages静态产物、验证截图均纳入。本文回填另行提交推送；未检查本次GitHub Pages部署完成状态。

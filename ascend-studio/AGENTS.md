@@ -828,3 +828,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `ascend-studio/src/HomeComputeBackdrop.jsx`、`home-compute-backdrop.css`、`NewTaskHome.jsx`、`new-task-home.css`，重建 `ascstudio/`。点与符号共享180px距离反馈，近处轻微外移/加深、远处不动，离场平滑归位；rAF在静止后停止，触摸跳过，reduced-motion直接静态复位，ResizeObserver/事件/帧清理，尺寸变化重置。用户已授权这类局部修正直接改Demo。
 - Luna（gpt-6-luna，low）实现，主agent复核并补充resize复位。内置浏览器1280×720确认一组1247点、无before/after叠层；矩阵/芯片与点阵同步响应，离场位移残差小于0.05px；568×900确认SVG视口匹配、无横向溢出。证据 `ascend-studio/evidence/20261021-unified-backdrop/pointer-near-matrix.jpg`。编辑阶段一次HMR重载错误，最终刷新后无新增；减少动态/触摸保护仅代码核查，未做系统设置切换/真机验证。本轮未全量回归其他流程。
 - `npm run build:pages`、`git diff --check`通过；源码、产物和本文一起提交推送，回执随后补记。来源为用户视觉反馈及本地观察；不涉及研究结论、NPU、正式页序/hash或API/Host/Application边界。
+
+- 发布回执：`0d854bc8`（`fix: unify home dot and compute symbol motion`）已成功推送 `origin/main`；源码、Pages静态产物、验证截图均纳入。本文回填另行提交推送；未检查本次GitHub Pages部署完成状态。
