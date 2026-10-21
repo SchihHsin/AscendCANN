@@ -28,6 +28,7 @@ import { useLearningCanvasView } from "./useLearningCanvasView";
 import { LearningHierarchyCanvas } from "./LearningHierarchyCanvas";
 import { LearningJourneyMaterial } from "./LearningJourney";
 import { NewTaskHome } from "./NewTaskHome";
+import { buildHomeSuggestions } from "./home-recommendations";
 import { buildLearningContentItems } from "./learning-content-catalog";
 import "./interaction.css";
 import "./visual-focus.css";
@@ -130,6 +131,7 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
 function App() {
   const wb = useWorkbenchState();
   const [showNewTaskHome, setShowNewTaskHome] = useState(false);
+  const [pendingRecommendationAction, setPendingRecommendationAction] = useState(null);
   const [saveAvailable, setSaveAvailable] = useState(sessionSaveAvailable);
   useEffect(() => {
     const update = () => setSaveAvailable(sessionSaveAvailable());
@@ -540,6 +542,79 @@ function App() {
     }).map(item => ({ ...item, ...ownerState.overview.itemOverrides?.[item.id], lastAccessAt: ownerState.visitedTabs.find(tab => tab.id === item.id)?.lastAccessAt || 0 }));
   };
   const contentItems = getTaskItems(selectedTask);
+  const recommendationTasks = wb.groups.flatMap(group => group.tasks.map(name => {
+    const details = wb.getTask(name);
+    return {
+      ...details,
+      name,
+      project: group.name,
+      records: wb.getSession(name).records,
+      ...(name === MAIN_TASK ? { flowState: flow.state } : {}),
+      ...(name === IMAGE_TASK ? { imageState: inference.state } : {}),
+      ...(details.kind === "learning" ? {
+        learningState: learning.getTaskState(name) || readSession(`learning-journey:${name}`, null),
+      } : {}),
+    };
+  }));
+  const runRecommendationAction = item => {
+    const { action = {} } = item;
+    if (action.type === "learning-path") {
+      if (action.preparePath && !learning.actions.generatePath("home-recommendation")) return;
+      openContent(action.materialId || "learning-path", { restore: true, ...(action.anchor ? { anchor: action.anchor } : {}) });
+      return;
+    }
+    if (action.type === "learning-summary") {
+      if (!learning.actions.complete()) { wb.notify("当前学习状态还不满足保存条件，请先完成理解、跟练与输入检查。"); return; }
+      openContent("learning-summary", { restore: true });
+      return;
+    }
+    if (["learning-lesson", "learning-practice", "learning-check"].includes(action.type)) {
+      openContent(action.materialId || action.type, { restore: true, ...(action.anchor ? { anchor: action.anchor } : {}) });
+      return;
+    }
+    if (action.type === "learning-transfer") {
+      const started = learning.actions.startTransfer?.(action.sourceSummaryId);
+      if (!started) { wb.notify("这条迁移练习已不再对应当前学习小结，请从最新学习记录继续。"); return; }
+      openContent("learning-practice", { restore: true });
+      return;
+    }
+    if (action.type === "development-diff") {
+      const prepared = flow.actions.prepareDiff({ current: true });
+      if (!prepared) { wb.notify("当前任务条件已变化，请先重新检查相关示例。"); return; }
+      openContent(action.materialId || "diff", { prepared: true });
+      return;
+    }
+    if (action.type === "development-material") {
+      const materialId = action.materialId;
+      if (!materialId) { wb.notify("这条建议暂时无法打开对应内容。"); return; }
+      if (materialId === "validation" && !flow.state.appliedCode) {
+        wb.notify("当前还没有可复核的示例副本；先查看对应代码或练习材料。");
+        return;
+      }
+      openContent(materialId, { restore: true });
+      return;
+    }
+    wb.notify("这条建议暂时无法打开对应内容。");
+  };
+  const selectRecommendationAction = item => {
+    setPendingRecommendationAction(item);
+    setShowNewTaskHome(false);
+    if (selectedTask !== item.taskName) selectTask(item.taskName);
+  };
+  useEffect(() => {
+    if (!pendingRecommendationAction || selectedTask !== pendingRecommendationAction.taskName) return;
+    const current = buildHomeSuggestions({ tasks: recommendationTasks, currentTaskName: selectedTask, mode: pendingRecommendationAction.mode })
+      .find(item => item.id === pendingRecommendationAction.id && item.revision === pendingRecommendationAction.revision);
+    setPendingRecommendationAction(null);
+    if (!current) { wb.notify("任务状态已经变化，这条建议需要重新判断；首页会显示最新内容。"); return; }
+    runRecommendationAction(current);
+  }, [selectedTask, pendingRecommendationAction]);
+  const chatAboutRecommendation = item => {
+    if (wb.prepareTaskSuggestion({ taskName: item.taskName, prompt: item.prompt })) {
+      setShowNewTaskHome(false);
+      requestAnimationFrame(() => wb.draftRef.current?.focus());
+    }
+  };
   const renderContentCanvas = (visible, ownerId) => {
     const ownerLearning = wb.getTask(ownerId).kind === "learning";
     if (ownerLearning && ownerId !== selectedTask) return null;
@@ -697,12 +772,7 @@ function App() {
         </div>
         {!sidebarCollapsed && <div className="workspace-divider workspace-divider--projects" role="separator" tabIndex={0} aria-label="调整项目栏宽度" title="拖动调整项目栏宽度；双击恢复默认布局" {...layout.separatorProps("projects")} />}
 
-        {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} tasks={wb.groups.flatMap(group => group.tasks.map(name => ({ ...wb.getTask(name), name, project: group.name, records: wb.getSession(name).records })))} onContinueTask={(suggestion) => {
-          if (wb.prepareTaskSuggestion(suggestion)) {
-            setShowNewTaskHome(false);
-            requestAnimationFrame(() => wb.draftRef.current?.focus());
-          }
-        }} onCreateTask={({ goal, kind, attachments }) => {
+        {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} tasks={recommendationTasks} onRecommendationAction={selectRecommendationAction} onRecommendationChat={chatAboutRecommendation} onCreateTask={({ goal, kind, attachments }) => {
           const groupId = kind === "learning" ? "inference" : (currentGroup?.id || "operator");
           const created = wb.createTask({ name: goal.slice(0, 60), groupId, goal, kind, attachments });
           if (created) setShowNewTaskHome(false);

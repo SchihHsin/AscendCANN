@@ -15,6 +15,7 @@ import {
 import { HomeComputeBackdrop } from "./HomeComputeBackdrop";
 import { FolderCardSurface } from "./FolderCardSurface";
 import { buildHomeSuggestions } from "./home-recommendations";
+import { useHomeRecommendationState } from "./useHomeRecommendationState";
 import "./new-task-home.css";
 
 const modes = [
@@ -25,7 +26,7 @@ const modes = [
 const codeFilePattern = /\.(c|cc|cpp|cxx|h|hpp|py|js|jsx|ts|tsx|txt|log|csv|json|md|yaml|yml)$/i;
 const createId = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
-export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onContinueTask }) {
+export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onRecommendationAction, onRecommendationChat }) {
   const [mode, setMode] = useState("learning");
   const [goal, setGoal] = useState("");
   const [error, setError] = useState("");
@@ -34,11 +35,22 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
   const [snippetOpen, setSnippetOpen] = useState(false);
   const [quickMenuOpen, setQuickMenuOpen] = useState(false);
   const [expandedCardId, setExpandedCardId] = useState(null);
+  const expandedCardIdRef = useRef(null);
+  const touchPointerRef = useRef(null);
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const goalRef = useRef(null);
   const activeMode = modes.find((item) => item.id === mode) || modes[0];
-  const suggestions = buildHomeSuggestions({ tasks, currentTaskName, mode });
+  const candidates = buildHomeSuggestions({ tasks, currentTaskName, mode }).slice(0, 3).map((item, index) => ({
+    ...item,
+    id: item.id || `${mode}:${item.taskName || "task"}:${item.type || item.title || index}`,
+    revision: item.revision ?? item.updatedAt ?? item.evidenceRevision ?? "1",
+    evidence: item.evidence || [],
+    action: item.action || {},
+    steps: item.steps || [],
+    reason: item.reason || "根据该任务的现有记录，建议继续核对下一步。",
+  }));
+  const { suggestions, snooze } = useHomeRecommendationState(candidates);
 
   const addFiles = async (fileList, forcedType) => {
     const incomingFiles = Array.from(fileList || []);
@@ -80,7 +92,7 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
     setError("");
   };
 
-  const setCardExpanded = (id) => setExpandedCardId(id);
+  const setCardExpanded = (id) => { expandedCardIdRef.current = id; setExpandedCardId(id); };
 
   const submit = (event) => {
     event.preventDefault();
@@ -115,7 +127,7 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
               className={"new-task-home__mode-button" + (item.id === mode ? " is-active" : "")}
               type="button"
               aria-pressed={item.id === mode}
-              onClick={() => { setMode(item.id); setError(""); setExpandedCardId(null); }}
+              onClick={() => { setMode(item.id); setError(""); setCardExpanded(null); }}
             >
               {item.id === "learning" ? <IconBook size={22} stroke={1.8} aria-hidden="true" /> : <IconCode size={22} stroke={1.8} aria-hidden="true" />}
               {item.label}
@@ -124,32 +136,40 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
         </div>
       </div>
 
-      <div className="new-task-home__suggestions" aria-label="任务起点">
-        {suggestions.map((item, index) => {
+      <div className={`new-task-home__suggestions${suggestions.length === 0 ? " is-empty" : ` is-count-${suggestions.length}`}`} aria-label="任务起点">
+        {suggestions.length === 0 && <p className="new-task-home__empty" role="status">目前没有需要优先处理的建议。你可以直接描述新的学习或开发目标。</p>}
+        {suggestions.map((item) => {
           const Icon = item.tone === "rose" ? IconBook : item.tone === "blue" ? IconBrain : IconFileText;
           const Motif = item.tone === "rose" ? IconBook : item.tone === "blue" ? IconBrain : IconBulb;
-          const expanded = expandedCardId === item.taskName;
+          const expanded = expandedCardId === item.id;
+          const detailsId = `home-suggestion-details-${String(item.id).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
           return (
             <article
-              key={`${item.taskName}-${index}`}
+              key={item.id}
               className={`new-task-home__card new-task-home__card--${item.tone}${expanded ? " is-expanded" : ""}`}
-              onPointerEnter={(event) => { if (event.pointerType !== "touch") setCardExpanded(item.taskName); }}
+              onPointerEnter={(event) => { if (event.pointerType !== "touch") setCardExpanded(item.id); }}
               onPointerLeave={(event) => { if (event.pointerType !== "touch" && !event.currentTarget.contains(document.activeElement)) setCardExpanded(null); }}
-              onFocusCapture={() => setCardExpanded(item.taskName)}
+              onPointerDown={(event) => { touchPointerRef.current = event.pointerType === "touch" ? { itemId: item.id, wasExpanded: expandedCardIdRef.current === item.id } : null; }}
+              onFocusCapture={() => setCardExpanded(item.id)}
               onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setCardExpanded(null); }}
               onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); event.currentTarget.querySelector(".new-task-home__card-summary")?.focus({ preventScroll: true }); setCardExpanded(null); } }}
             >
               <FolderCardSurface />
-              <button className="new-task-home__card-summary" type="button" aria-expanded={expanded} aria-controls={`home-suggestion-details-${index}`} aria-label={`${item.taskName}：${item.title}`} onClick={() => setCardExpanded(item.taskName)}>
-                <span className="new-task-home__card-context"><Icon size={22} stroke={1.8} aria-hidden="true" /><span className="new-task-home__card-source">{item.project || "任务"}</span></span>
-                <span className="new-task-home__card-title"><strong title={item.taskName}>{item.taskName}</strong><span>{item.title}</span></span>
+              <button className="new-task-home__card-summary" type="button" aria-expanded={expanded} aria-controls={detailsId} aria-label={`${item.taskName}：${item.title}`} onClick={() => { const touch = touchPointerRef.current; setCardExpanded(touch?.itemId === item.id && touch.wasExpanded ? null : item.id); touchPointerRef.current = null; }}>
+                <span className="new-task-home__card-context"><Icon size={22} stroke={1.8} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
+                <span className="new-task-home__card-title"><strong title={item.title}>{item.title}</strong></span>
+                <span className="new-task-home__card-reason">{item.reason}</span>
                 <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={18} /></span>
               </button>
-              <div className="new-task-home__card-details" id={`home-suggestion-details-${index}`} hidden={!expanded}>
-                <p className="new-task-home__card-reason">{item.reason}</p>
-                {item.steps.length > 0 && <ul className="new-task-home__card-steps">{item.steps.slice(0, 2).map((step) => <li key={step}>{step}</li>)}</ul>}
-                {item.lastRecord && <div className="new-task-home__card-last-record"><strong>最近记录 · {item.lastRecord.title || item.lastRecord.kind || "任务记录"}</strong>{item.lastRecord.summary && <p>{item.lastRecord.summary}</p>}</div>}
-                <button className="new-task-home__card-continue" type="button" onClick={() => onContinueTask?.({ taskName: item.taskName, prompt: item.prompt })}>继续此任务</button>
+              <div className="new-task-home__card-details" id={detailsId} hidden={!expanded}>
+                {item.evidence?.length > 0 && <ul className="new-task-home__card-evidence" aria-label="推荐依据">{item.evidence.slice(0, 3).map((evidence) => <li key={evidence.id}><strong>{evidence.title}</strong>{evidence.summary && <span>{evidence.summary}</span>}{evidence.time && <time>{evidence.time}</time>}</li>)}</ul>}
+                {item.condition && <p className="new-task-home__card-condition">适用条件：{item.condition}</p>}
+                {item.steps?.length > 0 && <ul className="new-task-home__card-steps" aria-label="建议步骤">{item.steps.slice(0, 3).map((step, stepIndex) => <li key={`${stepIndex}-${step}`}>{step}</li>)}</ul>}
+                <div className="new-task-home__card-buttons">
+                  <button className="new-task-home__card-continue" type="button" onClick={() => onRecommendationAction?.(item)}>{item.actionLabel || "查看建议"}</button>
+                  <button className="new-task-home__card-chat" type="button" onClick={() => onRecommendationChat?.(item)}>先聊聊</button>
+                  <button className="new-task-home__card-snooze" type="button" onClick={() => { snooze(item); setCardExpanded(null); }}>暂不处理</button>
+                </div>
               </div>
               <Motif className="new-task-home__card-motif" size={76} stroke={1.2} aria-hidden="true" />
             </article>

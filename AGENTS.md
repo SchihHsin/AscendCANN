@@ -5533,3 +5533,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户明确默认卡片三层内容：具体来源任务（可附项目）→建议主标题→由该任务明确事实触发的推荐原因（1–2行）。来源和原因默认可见，不用泛化话术，也不藏在 hover；价值与推荐原因需区分。
 - 展开态再显示记录/时间/适用条件、动作/影响和暂不处理。禁止编造时间、失败次数或掌握推断；学习/开发示例仅为待实施内容规则，不是当前系统检测结果。保持紧凑字号与现有卡片尺寸，调整内部空间确保三层在输入区上方完整露出。
 - 此项内容要求已明确；整体推荐分池及 action 方案仍待确认。详见 ascend-studio/interaction-design.md 同名章节。本轮只改文档，不改Demo或其他边界。
+
+
+### 2026-10-21（首页学习 / 开发主动推荐方案已确认并实施）
+
+- 用户在方案讨论后明确“ok，改吧”。首页主动推荐从任务/最近记录卡片改为有结构化依据的可行动事项；学习 / 开发候选池分开，无证据时不以最近任务填满。默认卡片显示来源任务、具体下一步和推荐原因；展开提供证据、步骤、“先聊聊”和“暂不处理”。来源与推荐理由必须来自该任务明确事实。
+- 学习流程按理解、练习、输入检查、保存小结、迁移练习衔接；迁移变式保存独立参数和尝试，不覆盖基础练习，只有来源小结及当前迁移快照有效且最新尝试通过时才撤下。开发模式按 AddCustom 演示排查线索、代码/参数版本复核和图像形状复核分别出建议；所有示例明确不是工程、Python、模型或 NPU 验证。
+- 鼠标 / 键盘点击展开卡片；触屏按首击展开、同卡再次点击收起。保持左侧任务列表、首页任务模式、文件夹卡片、紧凑字号、浅灰计算点阵和输入区，不新增固定框架，不改正式报告页面序列或 API / Host / Application 边界。
+- 修改文件：`ascend-studio/src/App.jsx`、`LearningJourney.jsx`、`NewTaskHome.jsx`、`home-recommendations.js`、`home-recommendations.test.js`、`useHomeRecommendationState.js`、`learning-data.js`、`useLearningJourney.js`、`new-task-home.css` 与静态 Pages 产物 `ascstudio/`；交接更新在 Studio 的 `interaction-design.md`、`design-qa.md` 和 `AGENTS.md`。
+- 验证：11 项推荐规则测试通过；推荐模块与状态 Hook `node --check`、`git diff --check`、`npm run build:pages`通过。浏览器在 1280×720 检查学习 / 开发卡默认态、展开详情与鼠标 click/hover；动作按钮通过源码路由复核，没有点击会写入共享浏览器本地任务数据的 CTA。未做窄屏/真机触屏与全量回归，无真实硬件 / 工程 / NPU 证据。
+- 方案细节与局部 QA 见 `ascend-studio/interaction-design.md`、`ascend-studio/design-qa.md`。本轮源码与 Pages 构建结果将按仓库卫生要求单独提交；push结果待回填。

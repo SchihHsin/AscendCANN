@@ -25,6 +25,15 @@ export function getLearningShape({ axes = [0, 1, 2], batch = false } = {}) {
   const labels = valid ? [...(batch ? ["N"] : []), ...axes.map(axis => ["H", "W", "C"][axis])] : [];
   return { valid, dimensions, labels, passed: valid && batch && axes.join(",") === "2,0,1" };
 }
+export function getTransferShape({ dimensions = [128, 256, 3], axes = [0, 1, 2], batch = false } = {}) {
+  const valid = dimensions.length === 3 && dimensions.every(value => Number.isFinite(value) && value > 0) && axes.length === 3 && axes.every(axis => [0, 1, 2].includes(axis)) && new Set(axes).size === 3;
+  const outputDimensions = valid ? [...(batch ? [1] : []), ...axes.map(axis => dimensions[axis])] : [];
+  const labels = valid ? [...(batch ? ["N"] : []), ...axes.map(axis => ["H", "W", "C"][axis])] : [];
+  return { valid, dimensions: outputDimensions, labels, passed: valid && axes.join(",") === "2,0,1" && batch };
+}
+export function getTransferCode({ dimensions = [128, 256, 3], axes = [2, 0, 1], batch = true } = {}) {
+  return [`# 输入：RGB 图像，HWC [${dimensions.join(", ")}]`, "import numpy as np", `image = np.zeros((${dimensions.join(", ")}), dtype=np.float32)`, `transformed = image.transpose(${axes.join(", ")})`, `input_data = ${batch ? "transformed[None, ...]" : "transformed"}`, "print(input_data.shape)", `# 目标输出：(${batch ? "1, " : ""}${dimensions[2]}, ${dimensions[0]}, ${dimensions[1]})`].join("\n");
+}
 export function getLearningCode({ axes = [0, 1, 2], batch = false } = {}) {
   return ["# 输入：RGB 图像，HWC [224,224,3]", "import numpy as np", "image = np.zeros((224, 224, 3), dtype=np.float32)", `transformed = image.transpose(${axes.join(", ")})`, `input_data = ${batch ? "transformed[None, ...]" : "transformed"}`, "print(input_data.shape)", "# 目标输出：(1, 3, 224, 224)"].join("\n");
 }

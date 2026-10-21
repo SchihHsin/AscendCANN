@@ -1,16 +1,37 @@
 import { useEffect, useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
-import { DEFAULT_LEARNING_PROFILE, LEARNING_NODES, getLearningCode, getLearningShape } from "./learning-data";
+import { DEFAULT_LEARNING_PROFILE, LEARNING_NODES, getLearningCode, getLearningShape, getTransferCode, getTransferShape } from "./learning-data";
 
 const now = () => new Date().toLocaleTimeString("zh-CN", { timeZone: "Asia/Shanghai", hour: "2-digit", minute: "2-digit" });
 const sameParameters = (a, b) => Boolean(a && b && a.axes.join(",") === b.axes.join(",") && a.batch === b.batch);
-const initial = profile => ({ profile: { ...DEFAULT_LEARNING_PROFILE, ...profile }, path: null, draftPath: null, pathSource: null, draftSource: null, pathProfile: null, activeNode: null, understood: [], axes: [0, 1, 2], batch: false, attempts: [], checks: [], summaries: [], time: 0, focus: "channels", channel: "all", playing: false, suggestionDismissed: false, notice: "", resetVersion: 0 });
+const initial = profile => ({ profile: { ...DEFAULT_LEARNING_PROFILE, ...profile }, path: null, draftPath: null, pathSource: null, draftSource: null, pathProfile: null, activeNode: null, understood: [], axes: [0, 1, 2], batch: false, attempts: [], checks: [], summaries: [], transfer: null, practiceView: "base", time: 0, focus: "channels", channel: "all", playing: false, suggestionDismissed: false, notice: "", resetVersion: 0 });
 const keyFor = taskId => `learning-journey:${taskId}`;
 function restore(taskId, profile) {
   const saved = readSession(keyFor(taskId), null);
   const base = initial(profile);
   if (!saved || !Array.isArray(saved.attempts)) return base;
-  return { ...base, ...saved, profile: { ...base.profile, ...saved.profile }, checks: Array.isArray(saved.checks) ? saved.checks : [], summaries: Array.isArray(saved.summaries) ? saved.summaries : [], understood: Array.isArray(saved.understood) ? saved.understood : [], playing: false };
+  return { ...base, ...saved, profile: { ...base.profile, ...saved.profile }, checks: Array.isArray(saved.checks) ? saved.checks : [], summaries: Array.isArray(saved.summaries) ? saved.summaries : [], understood: Array.isArray(saved.understood) ? saved.understood : [], transfer: saved.transfer || null, practiceView: saved.practiceView === "transfer" ? "transfer" : "base", playing: false };
+}
+function exposeTaskState(task) {
+  if (!task) return undefined;
+  const latestAttempt = task.attempts?.at(-1);
+  const currentAttempt = latestAttempt && sameParameters(latestAttempt.snapshot, task)
+    && JSON.stringify(latestAttempt.profile) === JSON.stringify(task.profile) ? latestAttempt : null;
+  const currentCheck = [...(task.checks || [])].reverse().find(check => check.attemptId === currentAttempt?.id && sameParameters(check.snapshot, task));
+  const currentSummary = task.summaries?.at(-1);
+  const pathCurrent = Boolean(task.path && JSON.stringify(task.profile) === JSON.stringify(task.pathProfile));
+  const summaryCurrent = Boolean(currentSummary && pathCurrent && currentAttempt && currentCheck
+    && currentSummary.attemptId === currentAttempt.id && currentSummary.checkId === currentCheck.id
+    && JSON.stringify(currentSummary.path) === JSON.stringify(task.path)
+    && JSON.stringify(currentSummary.profile) === JSON.stringify(task.profile));
+  const transferSource = task.transfer && task.summaries?.find(summary => summary.id === task.transfer.sourceSummaryId);
+  const transferSourceCurrent = Boolean(summaryCurrent && transferSource?.id === currentSummary?.id
+    && task.transfer.sourceSignature === JSON.stringify({ attemptId: transferSource.attemptId, checkId: transferSource.checkId, profile: transferSource.profile, path: transferSource.path, dimensions: transferSource.dimensions }));
+  const latestTransferAttempt = task.transfer?.attempts?.at(-1);
+  const transferCurrentAttempt = transferSourceCurrent && latestTransferAttempt
+    && latestTransferAttempt.sourceSummaryId === task.transfer.sourceSummaryId
+    && JSON.stringify(latestTransferAttempt.snapshot) === JSON.stringify(task.transfer.snapshot) ? latestTransferAttempt : null;
+  return { ...task, transferSourceCurrent, transferCurrentAttempt, transferCompleted: Boolean(transferCurrentAttempt?.passed) };
 }
 
 /** Task-owned state changes are written at action time, never during task restore. */
@@ -38,6 +59,11 @@ export function useLearningJourney({ taskId, profile, visible = false, onRecord 
   const readyToComplete = Boolean(pathCurrent && state.understood.includes("channels") && currentAttempt?.passed && currentCheck?.passed);
   const currentSummary = state.summaries.at(-1);
   const summaryCurrent = Boolean(currentSummary && currentSummary.attemptId === currentAttempt?.id && currentSummary.checkId === currentCheck?.id && JSON.stringify(currentSummary.path) === JSON.stringify(state.path) && JSON.stringify(currentSummary.profile) === JSON.stringify(state.profile));
+  const transferSource = state.transfer && state.summaries.find(summary => summary.id === state.transfer.sourceSummaryId);
+  const transferSourceCurrent = Boolean(transferSource && transferSource.id === currentSummary?.id && summaryCurrent && transferSource.id === state.transfer.sourceSummaryId && state.transfer.sourceSignature === JSON.stringify({ attemptId: transferSource.attemptId, checkId: transferSource.checkId, profile: transferSource.profile, path: transferSource.path, dimensions: transferSource.dimensions }));
+  const transferAttempt = state.transfer?.attempts?.at(-1);
+  const transferCurrentAttempt = transferSourceCurrent && transferAttempt && transferAttempt.sourceSummaryId === state.transfer.sourceSummaryId && JSON.stringify(transferAttempt.snapshot) === JSON.stringify(state.transfer.snapshot) ? transferAttempt : null;
+  const transferShape = state.transfer ? getTransferShape(state.transfer.snapshot) : getTransferShape();
 
   useEffect(() => {
     if (!visible || !state.playing) return undefined;
@@ -111,7 +137,30 @@ export function useLearningJourney({ taskId, profile, visible = false, onRecord 
     record("已保存学习记录", `${state.profile.goal}；理解与示例形状检查已完成，共 ${state.attempts.length} 次尝试。`, "learning-summary", summary);
     return summary;
   };
-  return { state, shape, latestAttempt, currentAttempt, currentCheck, pathCurrent, readyToComplete, currentSummary, summaryCurrent, getTaskState: (ownerId) => tasks.current.get(ownerId), actions: {
+  const startTransfer = summaryId => {
+    const summary = state.summaries.find(item => item.id === summaryId);
+    if (!summary || summary.id !== currentSummary?.id || !summaryCurrent) { update({ practiceView: "base", notice: "来源学习小结已变化或不再有效，请从当前有效小结重新开始迁移练习。" }); return false; }
+    const sourceSignature = JSON.stringify({ attemptId: summary.attemptId, checkId: summary.checkId, profile: summary.profile, path: summary.path, dimensions: summary.dimensions });
+    if (state.transfer?.sourceSummaryId === summaryId && state.transfer.sourceSignature === sourceSignature) {
+      update({ practiceView: "transfer", activeNode: "practice", notice: "已恢复同一条迁移练习；原参数和尝试历史均保留。" });
+      return true;
+    }
+    const snapshot = { dimensions: [128, 256, 3], axes: [0, 1, 2], batch: false };
+    update({ transfer: { sourceSummaryId: summaryId, sourceSignature, dimensions: [...snapshot.dimensions], axes: [...snapshot.axes], batch: snapshot.batch, snapshot, attempts: [] }, practiceView: "transfer", activeNode: "practice", notice: "迁移练习已建立，基础练习参数和历史保持不变。" });
+    return true;
+  };
+  const runTransfer = () => {
+    if (!state.transfer || !transferSourceCurrent) { update({ notice: "来源学习小结已变化或不再有效；本次迁移练习不计为完成。" }); return null; }
+    const snapshot = { dimensions: [...state.transfer.dimensions], axes: [...state.transfer.axes], batch: state.transfer.batch };
+    const result = getTransferShape(snapshot);
+    const attempt = { id: crypto.randomUUID(), sourceSummaryId: state.transfer.sourceSummaryId, time: now(), snapshot, ...result, code: getTransferCode(snapshot) };
+    update(previous => ({ transfer: { ...previous.transfer, snapshot, attempts: [...previous.transfer.attempts, attempt] }, notice: result.passed ? "迁移形状检查通过；这是本地形状演算，不是 Python 或 NPU 执行。" : result.valid ? "迁移输出尚不符合 NHWC → NCHW 目标；调整后可重试。" : "输入尺寸与轴序无效；修正后重试。" }));
+    record("学习迁移练习尝试", `来源小结 ${state.transfer.sourceSummaryId}；${result.valid ? `[${result.dimensions.join(",")}]` : "无效输入"} · ${result.passed ? "符合迁移形状约定" : "需调整"}。仅本地形状演算。`, "learning-transfer-attempt", attempt);
+    return attempt;
+  };
+  const setTransferAxis = (index, axis) => update(previous => previous.transfer ? ({ transfer: { ...previous.transfer, axes: previous.transfer.axes.map((value, i) => i === index ? Number(axis) : value) }, notice: "迁移参数已改变；旧尝试仍保留在历史中，当前需重新运行。" }) : { notice: "先从有效学习小结开始迁移练习。" });
+  const setTransferBatch = batch => update(previous => previous.transfer ? ({ transfer: { ...previous.transfer, batch: Boolean(batch) }, notice: "迁移参数已改变；旧尝试仍保留在历史中，当前需重新运行。" }) : { notice: "先从有效学习小结开始迁移练习。" });
+  return { state, shape, latestAttempt, currentAttempt, currentCheck, pathCurrent, readyToComplete, currentSummary, summaryCurrent, transferShape, transferSource, transferSourceCurrent, transferCurrentAttempt, getTaskState: ownerId => exposeTaskState(tasks.current.get(ownerId)), actions: {
     setProfile: patch => update(previous => ({ profile: { ...previous.profile, ...patch }, notice: previous.path ? "目标或基础已修改；请重新审阅并确认学习路径。" : "" })),
     generatePath, editPath, confirmPath,
     cancelPath: () => update({ draftPath: null, draftSource: null, notice: state.path ? "已取消调整，保留原学习路径与记录。" : "已取消草案，可修改目标或选择现成路径。" }),
@@ -123,6 +172,8 @@ export function useLearningJourney({ taskId, profile, visible = false, onRecord 
     seek: time => { const value = Math.max(0, Math.min(60, Number(time))); update({ time: value, focus: value < 20 ? "channels" : value < 40 ? "layout" : "batch", playing: false }); },
     play: () => update({ playing: !state.playing, ...(state.time >= 60 ? { time: 0 } : {}) }),
     runPractice, checkInput, complete,
+    startTransfer, setTransferAxis, setTransferBatch, runTransfer,
+    returnToBasePractice: () => update({ practiceView: "base", notice: "已返回基础练习；其参数和尝试历史均已保留。" }),
     dismissDevelopment: () => update({ suggestionDismissed: true, notice: "后续实践建议已关闭，学习记录继续保留。" }),
     reset: () => update({ ...initial(profile), resetVersion: state.resetVersion + 1 }),
   } };

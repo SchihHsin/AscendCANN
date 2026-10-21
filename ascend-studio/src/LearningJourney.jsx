@@ -1,7 +1,7 @@
 import { IconArrowDown, IconArrowRight, IconArrowUp, IconCheck, IconCode, IconHistory, IconLayoutColumns, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
 import { ContentToolbar } from "./ContentToolbar";
 import { TensorDiagram } from "./ImageInference";
-import { LEARNING_NODES, LEARNING_SEGMENTS, getLearningCode, getLearningShape } from "./learning-data";
+import { LEARNING_NODES, LEARNING_SEGMENTS, getLearningCode, getLearningShape, getTransferCode, getTransferShape } from "./learning-data";
 import "./learning-journey.css";
 
 const stamp = seconds => `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
@@ -12,8 +12,12 @@ function ShapeResult({ snapshot, title }) {
   const shape = getLearningShape(snapshot);
   return <div className={`lj-result${shape.passed ? " is-pass" : ""}`} role="status"><strong>{title || (!shape.valid ? "轴顺序无效" : shape.passed ? "符合示例形状约定" : "还需要调整")}</strong><code>{shape.valid ? `${shape.labels.join("")} [${shape.dimensions.join(", ")}]` : "轴 0、1、2 必须各使用一次"}</code><span>预期：NCHW [1, 3, 224, 224]</span></div>;
 }
+function TransferShapeResult({ snapshot, title }) {
+  const shape = getTransferShape(snapshot);
+  return <div className={`lj-result${shape.passed ? " is-pass" : ""}`} role="status"><strong>{title || (!shape.valid ? "轴顺序无效" : shape.passed ? "符合迁移目标形状" : "还需要调整")}</strong><code>{shape.valid ? `${shape.labels.join("")} [${shape.dimensions.join(", ")}]` : "轴 0、1、2 必须各使用一次"}</code><span>目标：NCHW [{snapshot.batch ? "1, " : ""}{snapshot.dimensions?.[2]}, {snapshot.dimensions?.[0]}, {snapshot.dimensions?.[1]}]</span></div>;
+}
 export function LearningJourneyMaterial({ id, journey, onOpen, onAsk, onCopy, onEnterDevelopment, onArchive, presentation = "content" }) {
-  const { state, actions, shape, currentAttempt, currentCheck, currentSummary, summaryCurrent, pathCurrent, readyToComplete } = journey;
+  const { state, actions, shape, currentAttempt, currentCheck, currentSummary, summaryCurrent, pathCurrent, readyToComplete, transferShape, transferSource, transferSourceCurrent, transferCurrentAttempt } = journey;
   const path = state.draftPath || state.path;
   const segment = [...LEARNING_SEGMENTS].reverse().find(item => state.time >= item.time) || LEARNING_SEGMENTS[0];
   const adapter = { state: { ...state, channel: state.channel || "all", exploring: true }, actions };
@@ -53,6 +57,17 @@ export function LearningJourneyMaterial({ id, journey, onOpen, onAsk, onCopy, on
       <div className="lj-actions"><Button primary disabled={!state.path || !pathCurrent} onClick={() => { actions.markUnderstood(); actions.openNode("practice"); onOpen("learning-practice"); }}>理解了，继续跟练<IconArrowRight size={14} /></Button><Button onClick={() => onOpen("learning-practice", { split: true })}><IconLayoutColumns size={14} />对照练习</Button></div><p className="lj-note">动态讲解为本地概念演示。点击“理解了”记录学习状态，练习结果另行检查。</p>
     </>}
     {id === "learning-practice" && <>
+      {state.practiceView === "transfer" && state.transfer ? <>
+        <Heading eyebrow="迁移练习 · 隔离变式" title="把新的 NHWC 输入转换为 NCHW">使用与基础练习相同的本地维度演算规则；尝试与基础练习分开保存。</Heading>
+        <div className="lj-notice"><strong>迁移练习 · 来自某次学习小结</strong><p>{transferSource?.time || "来源已失效"} · {transferSource?.profile?.goal || "未知学习目标"} · 小结 {state.transfer.sourceSummaryId}</p>{!transferSourceCurrent && <p role="alert">来源小结已变化或目标状态失效；旧结果不计入当前迁移完成。</p>}</div>
+        <div className="lj-parameter-form"><strong>输入 RGB 图像 · HWC</strong><div className="lj-axis-controls">{state.transfer.axes.map((axis, index) => <label key={index}>输出轴 {index}<select aria-label={`迁移练习输出轴 ${index}`} value={axis} onChange={event => actions.setTransferAxis(index, event.target.value)}>{[0, 1, 2].map(value => <option value={value} key={value}>{value} · { ["H", "W", "C"][value] }</option>)}</select></label>)}</div><label className="lj-checkbox"><input type="checkbox" checked={state.transfer.batch} onChange={event => actions.setTransferBatch(event.target.checked)} />增加 batch 维度 N = 1</label></div>
+        <TransferShapeResult snapshot={state.transfer} title="当前迁移参数预览" />
+        <pre className="lj-code"><code>{getTransferCode(state.transfer)}</code></pre>
+        <div className="lj-actions"><Button primary disabled={!transferSourceCurrent} onClick={actions.runTransfer}><IconPlayerPlay size={14} />运行迁移形状检查</Button><Button onClick={actions.returnToBasePractice}>返回基础练习</Button></div>
+        {transferCurrentAttempt && <div className={`lj-result${transferCurrentAttempt.passed ? " is-pass" : ""}`}><strong>{transferCurrentAttempt.time} · {transferCurrentAttempt.passed ? "迁移练习通过" : "本次未通过"}</strong><p>{transferCurrentAttempt.passed ? `新输入输出为 NCHW [${transferCurrentAttempt.dimensions.join(", ")}]。迁移完成仅对来源小结 ${transferCurrentAttempt.sourceSummaryId} 与这组参数有效。` : transferCurrentAttempt.valid ? "请将 C 轴移动到最前并按目标加入 batch，再重新检查。" : "轴序无效，请让 0、1、2 各使用一次后重试。"}</p></div>}
+        {state.transfer.attempts.length > 0 && <AttemptHistory attempts={state.transfer.attempts.map(attempt => ({ ...attempt, snapshot: { axes: attempt.snapshot.axes, batch: attempt.snapshot.batch } }))} currentId={transferCurrentAttempt?.id} />}
+        <p className="lj-note">通过只表示浏览器按本地规则核对了形状，不执行真实 Python、模型或 NPU。</p>
+      </> : <>
       <Heading eyebrow="跟练 · 隔离学习示例" title="把 HWC 转成 NCHW">将通道移到最前，再增加一个样本的 batch 维度。每次检查都会保留当时的参数和结果。</Heading>
       <div className="lj-parameter-form"><strong>image.transpose(…)</strong><div className="lj-axis-controls">{state.axes.map((axis, index) => <label key={index}>输出轴 {index}<select aria-label={`学习输出轴 ${index}`} value={axis} onChange={event => actions.axis(index, event.target.value)}>{[0, 1, 2].map(value => <option value={value} key={value}>{value} · {["H", "W", "C"][value]}</option>)}</select></label>)}</div><label className="lj-checkbox"><input type="checkbox" checked={state.batch} onChange={event => actions.batch(event.target.checked)} />增加 batch 维度 N = 1</label></div>
       <ShapeResult snapshot={state} title="当前参数预览" />
@@ -61,6 +76,8 @@ export function LearningJourneyMaterial({ id, journey, onOpen, onAsk, onCopy, on
       {currentAttempt ? <div className={`lj-result${currentAttempt.passed ? " is-pass" : ""}`}><strong>尝试 {state.attempts.indexOf(currentAttempt) + 1} · {currentAttempt.time} · {currentAttempt.passed ? "形状检查通过" : "检查未通过"}</strong><p>{currentAttempt.passed ? "得到 (1, 3, 224, 224)，可以继续核对这次输入。" : !currentAttempt.valid ? "轴顺序重复。将 0、1、2 各使用一次后重试。" : "先将轴 2（C）放到最前，再核对是否增加了 batch。"}</p>{currentAttempt.passed && <Button primary onClick={() => { actions.openNode("check"); onOpen("learning-check"); }}>继续输入检查<IconArrowRight size={14} /></Button>}</div> : state.attempts.length > 0 && <p className="lj-notice">参数已变化；上次结果属于旧条件，请重新运行练习检查。</p>}
       <AttemptHistory attempts={state.attempts} currentId={currentAttempt?.id} />
       <p className="lj-note">检查只演算维度顺序，代码可复制到本地自行运行。真实模型的 dtype、颜色顺序与归一化仍需另行核对。</p>
+      {state.transfer && <Button onClick={() => { actions.startTransfer(state.transfer.sourceSummaryId); }}>恢复迁移练习</Button>}
+      </>}
     </>}
     {id === "learning-check" && <>
       <Heading eyebrow="验证 · 关联到本次尝试" title="核对这次输入">检查目标为示例的 NCHW [1,3,224,224]。运行核对后，才记录这一项完成。</Heading>

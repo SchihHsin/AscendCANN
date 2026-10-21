@@ -806,3 +806,18 @@ final result: passed
 final result: passed
 
 - 发布回执：`53839ea1`（`fix: redraw continuous folder card front surfaces`）已成功推送 `origin/main`，包括源码、Pages产物及参考/实现对照。未检查本次Pages部署完成状态；此交接回填另行提交推送。
+
+
+## 2026-10-21 · 首页学习 / 开发主动推荐
+
+**范围与实际检查**
+- 用户确认按已讨论方案实施首页主动推荐。只改首页卡片内容 / 状态、typed action 路由和学习迁移练习；沿用左侧任务列表、三色文件夹卡片、浅灰计算点阵、紧凑尺寸与输入框。
+- 内置浏览器新建本地QA tab 8，`http://127.0.0.1:5174/`，1280×720。学习模式检查一条当前有效学习小结推荐：默认态能看到来源任务、行动标题和推荐原因；展开态完整显示来源小结证据、迁移步骤、主 CTA、“先聊聊”和“暂不处理”。开发模式检查显示三条分别来自 AddCustom 的未确认尾块线索、当前算例缺少匹配复核、图像形状快照缺少复核；展开态证据明确注明演示边界。
+- 鼠标点击卡片时发现 hover 先展开、click 又收起的事件冲突；已修正为鼠标/键盘打开详情、触屏首击展开且同卡再次点击可收起。HMR 后再实测桌面鼠标单击，卡片保持展开。浏览器截图直接在QA会话中检查，未导出独立文件；未操作会写入共享本地数据的 CTA / 暂不处理按钮。
+
+**验证结果与边界**
+- `node --test src/home-recommendations.test.js`：11 项通过，覆盖候选池隔离、事实不足空态、同条件失败被成功覆盖、迁移小结 / 参数快照有效性、保存学习小结、开发代码 / 参数变更失效和材料目标。
+- `node --check ascend-studio/src/home-recommendations.js`、`node --check ascend-studio/src/useHomeRecommendationState.js`、`git diff --check`通过；`npm run build:pages`成功，Vite 保留主 bundle 大于500kB提醒。
+- 主 CTA 的跨任务复核与 material action mapping 已通过源码检查；没有执行会写入共享任务状态的按钮，因此不声称完成这些路由的点击级QA。未做窄屏/真机触屏、reduced-motion设置或全量回归；浏览器形状演算不是 Python、真实工程、模型或 NPU 验证。不改正式报告页序和 API / Host / Application 边界。
+
+final result: passed (scoped QA)

@@ -17,6 +17,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The middle conversation and right operation area should remain close to the agreed 55:45 proportion. This prototype is Ascend Studio; do not imply that all issues are handled in Codex or add “学习组” labeling.
 - Omit avatars in the conversation. Keep AI responses directly on the conversation background without a bubble surface; align user messages to the right inside a restrained bubble.
 - Problem 02 must present tail-block handling as an unconfirmed clue. Do not state a root cause or claim NPU validation.
+- The new-task home keeps the left project/task list and supports both learning and development. Its recommendations are actions grounded in task facts, not a list of recently used tasks; default cards show the source task, specific next action, and why it is recommended.
+- Keep the learning and development recommendation pools distinct. Do not fill empty slots with recency. Recommendation actions must revalidate their task/evidence revision before routing; “先聊聊” preserves the task draft and never sends it automatically.
+- A learning transfer exercise is isolated from its base practice and retains the source summary, input dimensions, axes, and batch. Remove its home recommendation only after the current source and transfer snapshot still match a passing attempt. Browser shape calculations are not Python, model, project, or NPU validation.
 
 ## 2026-10-09 · Decorative refinement review
 
@@ -74,6 +77,15 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户纠正Ascend Studio不应放在CANN Dashboard下。源码已移到根仓 `ascend-studio/`，与 `cann-dashboard/` 平级；根仓 `ascstudio/` 继续只放Pages静态产物。
 - `build:pages`输出路径同步为 `../ascstudio`，线上入口仍为 `https://schihhsin.github.io/AscendCANN/ascstudio/`。不改UI、交互或其他问题的承载平台。
+
+
+## 2026-10-21 · 首页学习 / 开发主动推荐实施
+
+- 用户确认按讨论方案实施。首页卡片现在是一条有证据的待处理事项：默认显示来源任务、明确下一步和推荐原因；展开显示依据、操作步骤、“先聊聊”和“暂不处理”。学习与开发候选分池，无结构化证据时使用弱空态，不按最近访问补卡。
+- 学习状态从理解、跟练、输入检查、保存小结到迁移变式连续推荐；迁移尝试与基础练习隔离，完成只根据当前来源小结及当前迁移快照判定。开发态对 AddCustom 示例线索、代码/参数快照和图像形状复核缺口分开推荐，并明确演示证据边界。
+- 鼠标/键盘卡片点击保持展开，触屏使用首击展开/再次点击收起。沿用当前左侧任务栏、文件夹卡片、小字号、点阵与composer，不改正式报告页序或 API / Host / Application 边界。
+- 测试 11 项通过；`node --check`、`git diff --check` 与 `npm run build:pages` 通过。浏览器 1280×720 检查学习 / 开发两种默认推荐、展开证据/动作和鼠标点击；CTA跳转以 typed action 源码复核，没有点击会写入共享本地任务的控件。未做窄屏/真机触屏或真实 Python / 工程 / NPU验证。详见 `design-qa.md`。
+- 源码、Pages产物及本记录随本轮提交；提交与 push 回执待回填。
 
 
 ## 2026-10-09 · 计算场景装饰重新探索
