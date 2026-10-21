@@ -5681,3 +5681,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `TaskWorkspace` 现在在右侧工作区内容区提供任意矩形选择，支持 Esc 退出、选区尺寸提示、可移除的输入上下文及消息历史回定位。上下文记录任务/内容、区域比例坐标和选区中可读取的文字；composer 输入框和语音按钮沿用现有实现。移除了范围图解内部的专属划选/对范围说入口，旧消息的范围引用仍可恢复。
 - 证据来源：交互方向来自用户明确选择；本地桌面预览的区域框选、键盘退出、文本发送及消息引用恢复为 M。选区不是图像裁切，也未连接真实视觉模型/API；语音识别的麦克风权限和真实听写未验证。
 - 不影响 Dashboard、汇报页序/hash 或 API / Host / Application 边界。变更文件：`ascend-studio/src/TaskWorkspace.jsx`、`task-workspace.css`、`ExplainPanel.jsx`、`App.jsx` 与 `ascstudio/` Pages 构建产物。验证：干净源码快照 `npm run build:pages` 通过（Vite 保留既有大 chunk 提示）；`git diff --check` 通过；本地 1280×720 页面手动核对大区域划选、Esc、原 composer、文字消息和区域引用恢复；未运行测试。功能提交 `5d65af81`（`feat: allow workspace area pointing`）已成功推送 `origin/main`。社区经验源码的已有暂存改动仍单独保留，未并入该功能提交。
+
+
+### 2026-10-21 · 框选后的就地文字与按住说话交互
+
+- 用户确认框选后不把焦点送到对话主输入框；应在选区附近自动展开默认可打字的输入框，焦点留在该局部输入框。输入框视觉沿用 Demo 原有样式，需要时自动避让选区。
+- 同一草稿框支持文字和按住快捷键说话：按下开始录音，松开结束；语音转写写入当前草稿，用户检查后主动发送，消息携带所选区域引用。不自动开麦或自动发送。
+- 快捷键具体组合尚未确定；需检查 Mac / Windows 与中文输入法冲突。空格、单字母和 `Ctrl+Space` 不作为默认键位。
+- 本轮仅确认交互方向并更新交接记录，未改 Demo、未运行构建或测试；没有新增运行/语音识别证据，也不影响报告页序/hash 或 API / Host / Application 边界。
