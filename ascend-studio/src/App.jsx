@@ -14,6 +14,7 @@ import { ReferenceBrowser } from "./ReferenceBrowser";
 import { useWorkbenchLayout } from "./useWorkbenchLayout";
 import { TaskCanvas } from "./TaskCanvas";
 import { CanvasMaterial } from "./CanvasMaterials";
+import VoiceCaptureButton from "./VoiceCaptureButton.jsx";
 import { TaskContentOverview } from "./TaskContentOverview";
 import { CONTENT_CATEGORIES, getContentGroups, buildTaskContentItems } from "./task-content-catalog";
 import { IMAGE_TASK, IMAGE_MATERIALS, useImageInference, imageShape, imageCode } from "./useImageInference";
@@ -59,6 +60,7 @@ import {
   IconPaperclip,
   IconPhoto,
   IconPlayerPlay,
+  IconPointer2,
   IconPlus,
   IconSearch,
   IconSend,
@@ -158,12 +160,40 @@ function App() {
   const previousPrecision = useRef(precisionContext);
   const previousFlow = useRef({ attempts: flow.state.attempts.length, proposal: flow.state.proposedCode, applied: flow.state.appliedCode, validation: flow.state.validation });
   const [taskContentsOpen, setTaskContentsOpen] = useState(false);
+  const [pointContext, setPointContext] = useState(null);
+  const pointVoiceDraftRef = useRef("");
+  const composerVoiceDraftRef = useRef("");
   const {
     query, setQuery, openedGroups, selectedTask, rationaleOpen, setRationaleOpen,
     visibleGroups, toggleGroup, selectTask, setSelectedRoute,
     session, task, currentGroup, isMainTask,
     openDialog, openMenu, sendMessage, setDraft, toast,
   } = wb;
+  useEffect(() => {
+    const mergeTranscript = (base, transcript) => [String(base || "").trim(), String(transcript || "").trim()].filter(Boolean).join(" ");
+    const onRangeSelected = (event) => setPointContext(event.detail || null);
+    const onPointVoiceStart = () => { pointVoiceDraftRef.current = wb.draftRef.current?.value ?? ""; };
+    const onPointTranscript = (event) => setDraft(mergeTranscript(pointVoiceDraftRef.current, event.detail?.text));
+    const onRangeClear = () => setPointContext(null);
+    window.addEventListener("ascstudio-point-range-selected", onRangeSelected);
+    window.addEventListener("ascstudio-point-voice-start", onPointVoiceStart);
+    window.addEventListener("ascstudio-point-transcript", onPointTranscript);
+    window.addEventListener("ascstudio-point-range-clear", onRangeClear);
+    window.addEventListener("ascstudio-point-range-consumed", onRangeClear);
+    return () => {
+      window.removeEventListener("ascstudio-point-range-selected", onRangeSelected);
+      window.removeEventListener("ascstudio-point-voice-start", onPointVoiceStart);
+      window.removeEventListener("ascstudio-point-transcript", onPointTranscript);
+      window.removeEventListener("ascstudio-point-range-clear", onRangeClear);
+      window.removeEventListener("ascstudio-point-range-consumed", onRangeClear);
+    };
+  }, [setDraft, wb.draftRef]);
+  const onComposerVoiceStart = () => { composerVoiceDraftRef.current = wb.draftRef.current?.value ?? draft; };
+  const onComposerVoiceTranscript = (transcript) => setDraft([composerVoiceDraftRef.current.trim(), transcript.trim()].filter(Boolean).join(" "));
+  const clearPointContext = () => {
+    setPointContext(null);
+    window.dispatchEvent(new Event("ascstudio-point-range-consumed"));
+  };
   const selectExistingTask = (name) => { selectTask(name); setShowNewTaskHome(false); };
   const { selectedRoute, draft, messages } = session;
   const selectedRouteData = routes.find((route) => route.id === selectedRoute) || routes[0];
@@ -493,6 +523,12 @@ function App() {
       if (sendMessage(event, { replyText })) action();
       return;
     }
+    const withPointContext = (options = {}) => pointContext && isMainTask ? {
+      ...options,
+      scopeReference: { ...pointContext },
+      generationText: `${text}\n\n用户指向图解范围：${pointContext.label}`,
+    } : options;
+    const consumePointContext = () => { if (pointContext && isMainTask) clearPointContext(); };
     const restore = isInteractiveTask && /^(?:请)?(?:帮我)?(?:打开|回到|恢复|找回|再看|唤醒|查看)/.test(text) && /刚才|之前|上次|那份|解释|图解|张量|误差|核对|尝试|记录|diff|修改预览|来源/i.test(text);
     if (restore) {
       const items = getTaskItems(selectedTask);
@@ -502,8 +538,9 @@ function App() {
       const target = aliases.find(([pattern]) => pattern.test(text))?.[1];
       const item = items.find(value => value.id === target);
       const replyText = item ? /之前|上次/.test(text) ? `已定位「${item.title}」的历史记录，可按时间与条件选择一份。没有重新生成或运行检查。` : `已找回「${item.title}」。保留原参数、阅读现场与已有记录，没有重新生成或运行检查。` : "已打开本任务的内容总览，可按用途或关键词找回已有内容。重新运行需要另行操作。";
-      const accepted = sendMessage(event, { replyText });
+      const accepted = sendMessage(event, withPointContext({ replyText }));
       if (accepted) {
+        consumePointContext();
         if (item && !/之前|上次/.test(text)) restoreContent(item.id);
         else { workspace.actions.setOverview({ category: item?.category || "all", query: "", collapsedGroups: [], compactIds: workspace.state.overview.compactIds.filter(id => id !== item?.id), historyId: item?.id || null }); openCanvas(); }
       }
@@ -512,14 +549,16 @@ function App() {
     const intent = isInteractiveTask ? classifyTaskIntent(text) : "none";
     const requestedFocus = getExplanationFocus(text, isImageTask);
     const focus = requestedFocus === "structure" ? "total" : requestedFocus;
+    const keepsPointFocus = Boolean(pointContext && isMainTask);
     const target = intent === "check"
       ? isMainTask && /误差|精度|容差|precision|tolerance/i.test(text) ? "precision"
         : /实际(?:代码|循环|模型)|真实(?:代码|项目|模型)|模型签名|原文件|源码/i.test(text) ? (isImageTask ? "image-source" : "source") : null
       : null;
-    const accepted = sendMessage(event, intent === "none" ? {} : {
+    const accepted = sendMessage(event, withPointContext(intent === "none" ? {} : {
       interaction: { intent, focus, target }, replyText: taskIntentReply(intent, focus, target),
-    });
-    if (accepted && isInteractiveTask) dispatchTaskIntent(intent, focus, target);
+    }));
+    if (accepted) consumePointContext();
+    if (accepted && isInteractiveTask && !keepsPointFocus) dispatchTaskIntent(intent, focus, target);
   };
   const confirmWorkspaceRoute = () => {
     if (selectedRoute === "retry") wb.confirmRoute();
@@ -932,6 +971,7 @@ function App() {
                   <div className={message.role === "user" ? "user-bubble" : "assistant-response extra-message"}>{message.text.split("\n\n").map((paragraph, i) => <p className="message-paragraph" key={i}>{paragraph}</p>)}
                     {message.attachments?.length > 0 && <div className="message-attachments">{message.attachments.map((file) => <button type="button" key={file.id} onClick={() => openDialog("evidence", { title: file.name, body: "本次任务的本地附件，尚未独立验证。", log: file.content || "已关联文件名称，尚无可读取的文本内容。" })}><IconPaperclip size={13} />{file.name}</button>)}</div>}
                   </div>
+                  {message.scopeReference && <div className="message-source-links"><button type="button" onClick={() => { openContent("explanation", { anchor: message.scopeReference.focus || "tail" }); window.setTimeout(() => window.dispatchEvent(new CustomEvent("ascstudio-point-range-restore", { detail: message.scopeReference })), 0); }}><IconPointer2 size={12} /><span>关联图解范围 · {message.scopeReference.label}</span></button></div>}
                   {message.learningReference && <div className="message-source-links"><button type="button" onClick={() => selectExistingTask(message.learningReference.taskId)}><IconBook size={12} />返回来源学习任务</button></div>}
                   {message.sourceContext && <div className="message-source-links"><button type="button" onClick={() => { if (message.sourceContext.kind === "official-learning") { openContent(message.sourceContext.nodeId); officialLearning.actions.seek(message.sourceContext.time); } else if (message.sourceContext.kind === "learning") { learning.actions.seek(message.sourceContext.time); openContent("learning-lesson", { anchor: message.sourceContext.focus }); } else if (message.sourceContext.kind === "image") { inference.actions.seek(message.sourceContext.time); if (!inference.state.lessonOpen) inference.actions.lesson(); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus, time: message.sourceContext.time, video: true }); }}><IconPlayerPlay size={12} /><span>讲解示例 {message.sourceContext.stamp} · 返回片段</span></button>{message.role === "assistant" && <button type="button" onClick={() => { if (message.sourceContext.kind === "official-learning") { openContent(message.sourceContext.nodeId); } else if (message.sourceContext.kind === "learning") { learning.actions.focus(message.sourceContext.focus); openContent("learning-lesson", { anchor: message.sourceContext.focus }); } else if (message.sourceContext.kind === "image") { inference.actions.focus(message.sourceContext.focus); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus }); }}><IconBook size={12} />查看关联图解</button>}</div>}
                   {isMainTask && message.role === "assistant" && message.interaction?.intent === "diagnose" ? <ProactiveCue {...proactive.forCue(`diagnose:${message.id}`)}
@@ -948,7 +988,8 @@ function App() {
             </div>
           </div>
           <form className="composer" onSubmit={handleSendMessage}>
-            {(session.attachments.length > 0 || session.capabilityIds.length > 0) && <div className="composer-context-chips">
+            {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
+              {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={13} /><span>图解范围 · {pointContext.label}</span><button type="button" aria-label="移除图解范围" onClick={clearPointContext}><IconX size={12} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={13} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={12} /></button></span>)}
               {session.capabilityIds.map((id) => <span className="attachment-chip capability-chip" key={id}><IconBooks size={13} /><span>{capabilities.find((item) => item.id === id)?.name}</span><button type="button" aria-label="移除能力" onClick={() => wb.patchSession((old) => ({ capabilityIds: old.capabilityIds.filter((item) => item !== id) }))}><IconX size={12} /></button></span>)}
             </div>}
@@ -959,6 +1000,7 @@ function App() {
                 <button className="tool-chip" type="button" onClick={() => openDialog("code")}><IconCode size={15} />代码片段</button>
                 <button className="tool-chip" type="button" onClick={() => wb.imageRef.current?.click()}><IconPhoto size={15} />截图</button>
                 <button className="tool-chip" type="button" onClick={() => wb.fileRef.current?.click()}><IconPaperclip size={15} />文件</button>
+                <VoiceCaptureButton className="tool-chip voice-input-chip" label="语音输入" activeLabel="停止" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} />
               </div>
               <div className="composer-submit">
                 <button className="model-button" type="button" onClick={() => openDialog("models")} title="选择 AI（本地演示）"><IconBulb size={14} /><span>{wb.model.label}</span><IconChevronDown size={13} /></button>

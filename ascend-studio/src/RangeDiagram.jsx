@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import "./range-diagram.css";
 import { RangeStructure, RangeAccessStepper } from "./RangeStructure";
 
@@ -100,14 +100,77 @@ function FocusExplanation({ geometry, focus }) {
   return <p className="rd-focus-copy"><code>baseIndex / validCount</code>：最后一块从索引 {count(lastBlockStart)} 开始，{hasTail ? `剩余 ${count(tail)} 个有效元素。按完整块大小访问时，还会涉及 ${count(tileSize - tail)} 个范围外位置。` : `含 ${count(tileSize)} 个有效元素，是完整块，无需额外尾块处理。`}</p>;
 }
 
-export function RangeDiagram({ snapshot, focus = "tail", onFocus, compact = false, title, active = true }) {
+function TailPositionPlot({ selectionMode, lastLabel, grouped, geometry, positions, outsideLabel, selectedRange, compact, onFocusTail, onSelectRange, publishRange, onPointerDown, onPointerMove, onPointerUp, onPointerCancel }) {
+  const Plot = selectionMode ? "div" : "button";
+  return <Plot className="rd-plot rd-tail is-focused" {...(selectionMode ? { role: "group", "aria-label": `${lastLabel}位置范围，可拖动或键盘选择。` } : { type: "button", onClick: onFocusTail, "aria-label": `${lastLabel}：${count(geometry.lastBlockValid)} 个有效元素，${count(geometry.unusedSlots)} 个${outsideLabel}。关注最后一块。` })}>
+    <span className="rd-plot-heading"><strong>{lastLabel}{grouped ? "分组示意" : "放大"}</strong><span>{count(geometry.lastBlockValid)} / {count(geometry.tileSize)} 有效</span></span>
+    <span className={`rd-position-grid${selectionMode ? " is-selectable" : ""}`} role={selectionMode ? "listbox" : undefined} aria-label={selectionMode ? "选择索引范围" : undefined} aria-multiselectable={selectionMode ? "true" : undefined} onPointerDown={selectionMode ? onPointerDown : undefined} onPointerMove={selectionMode ? onPointerMove : undefined} onPointerUp={selectionMode ? onPointerUp : undefined} onPointerCancel={selectionMode ? onPointerCancel : undefined}>
+      {positions.map((position, index) => {
+        const start = geometry.lastBlockStart + position.start;
+        const end = start + position.size - 1;
+        const description = `${position.valid ? "有效元素" : outsideLabel}；索引 ${interval(start, end)}；共 ${count(position.size)} 个位置`;
+        const selected = Boolean(selectedRange && start <= selectedRange.endIndex && end >= selectedRange.startIndex);
+        return <span className={`rd-position${position.valid ? " is-valid" : geometry.bounds === "full" ? " is-outside" : " is-inactive"}${selected ? " is-selected" : ""}`} key={position.start} title={description} aria-label={selectionMode ? description : undefined} role={selectionMode ? "option" : undefined} aria-selected={selectionMode ? selected : undefined} tabIndex={selectionMode ? 0 : undefined} data-position-index={selectionMode ? index : undefined} onKeyDown={selectionMode ? (event) => {
+          if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onSelectRange?.({ startIndex: start, endIndex: end }, true); }
+          if ((event.key === "ArrowRight" || event.key === "ArrowLeft") && event.shiftKey) {
+            event.preventDefault();
+            const activeIndex = positions.findIndex((candidate) => geometry.lastBlockStart + candidate.start <= (selectedRange?.endIndex ?? start) && geometry.lastBlockStart + candidate.start + candidate.size - 1 >= (selectedRange?.endIndex ?? start));
+            const nextIndex = Math.max(0, Math.min(positions.length - 1, (activeIndex < 0 ? index : activeIndex) + (event.key === "ArrowRight" ? 1 : -1)));
+            publishRange(selectedRange ? positions.findIndex((candidate) => geometry.lastBlockStart + candidate.start <= selectedRange.startIndex && geometry.lastBlockStart + candidate.start + candidate.size - 1 >= selectedRange.startIndex) : index, nextIndex);
+          }
+        } : undefined}><span>{grouped ? `组 ${index + 1}` : position.start}</span><small aria-hidden="true">{position.valid ? "●" : geometry.bounds === "full" ? "×" : "—"}</small></span>;
+      })}
+    </span>
+    <span className="rd-tail-ranges"><span><i className="rd-key is-valid" aria-hidden="true" />有效 {count(geometry.lastBlockValid)} 个<span>索引 {interval(geometry.lastBlockStart, geometry.lastValidIndex)}</span></span>{geometry.unusedSlots > 0 && <span><i className={"rd-key " + (geometry.bounds === "full" ? "is-outside" : "is-inactive")} aria-hidden="true" />{outsideLabel} {count(geometry.unusedSlots)} 个<span>索引 {interval(geometry.total, geometry.capacity - 1)}</span></span>}</span>
+    {!compact && <span className="rd-plot-caption">{selectionMode ? "拖动跨格选择；键盘可聚焦格子并按 Enter 选择。" : grouped ? "每格为一组连续索引；悬浮可查看每组的精确区间与整数数量。" : "格内数字是块内偏移；● 有效，× 范围外访问，— 未访问。"}{!selectionMode && geometry.bounds === "valid" && geometry.unusedSlots > 0 ? "虚线位置保留，但当前策略不会访问。" : ""}</span>}
+  </Plot>;
+}
+
+export function RangeDiagram({ snapshot, focus = "tail", onFocus, compact = false, title, active = true, selectionMode = false, selectedRange = null, onSelectRange }) {
   const geometry = getRangeGeometry(snapshot);
   const requestedFocus = Object.hasOwn(RANGE_CONCEPT_LABELS, focus) ? focus : "tail";
   const [localFocus, setLocalFocus] = useState(requestedFocus);
+  const dragRef = useRef(null);
   const id = useId().replace(/:/g, "");
   const activeFocus = onFocus ? requestedFocus : localFocus;
   useEffect(() => { setLocalFocus(requestedFocus); }, [requestedFocus]);
   const selectFocus = (next) => { setLocalFocus(next); onFocus?.(next); };
+  const selectionAt = (event) => {
+    const cell = typeof document === "undefined" ? null : document.elementFromPoint(event.clientX, event.clientY)?.closest?.("[data-position-index]");
+    const target = cell || event.target?.closest?.("[data-position-index]");
+    const index = Number(target?.dataset?.positionIndex);
+    return Number.isInteger(index) ? index : null;
+  };
+  const publishRange = (startPosition, endPosition, complete = false) => {
+    const first = positions[Math.min(startPosition, endPosition)];
+    const last = positions[Math.max(startPosition, endPosition)];
+    if (first && last) onSelectRange?.({ startIndex: geometry.lastBlockStart + first.start, endIndex: geometry.lastBlockStart + last.start + last.size - 1 }, complete);
+  };
+  const handleSelectionPointerDown = (event) => {
+    if (!selectionMode) return;
+    const index = selectionAt(event);
+    if (index === null) return;
+    event.preventDefault();
+    event.stopPropagation();
+    dragRef.current = { pointerId: event.pointerId, anchor: index, current: index };
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    publishRange(index, index);
+  };
+  const handleSelectionPointerMove = (event) => {
+    if (!selectionMode || dragRef.current?.pointerId !== event.pointerId) return;
+    const index = selectionAt(event);
+    if (index === null || index === dragRef.current.current) return;
+    dragRef.current.current = index;
+    publishRange(dragRef.current.anchor, index);
+  };
+  const handleSelectionPointerUp = (event) => {
+    if (!selectionMode || dragRef.current?.pointerId !== event.pointerId) return;
+    const index = selectionAt(event);
+    const { anchor, current } = dragRef.current;
+    dragRef.current = null;
+    publishRange(anchor, index ?? current, true);
+    event.stopPropagation();
+  };
 
   if (!geometry.valid) return <section className="rd-range-diagram rd-invalid" aria-label={title || "索引范围图解"}><strong>{title || "索引范围图解"}</strong><p role="status">{geometry.error}</p></section>;
 
@@ -136,17 +199,7 @@ export function RangeDiagram({ snapshot, focus = "tail", onFocus, compact = fals
       {!compact && <span className="rd-plot-caption">{count(geometry.fullBlocks)} 个完整块{geometry.hasTail ? ` + 尾块 ${count(geometry.tail)} 个有效元素` : " · 无不足一块的尾块"}{geometry.blocks > 18 ? "；中间块已省略，块宽为示意。" : "；块宽为示意。"}</span>}
     </button>}
 
-    {activeFocus === "tail" && <button className={"rd-plot rd-tail" + (activeFocus === "tail" ? " is-focused" : "")} type="button" onClick={() => selectFocus("tail")} aria-label={`${lastLabel}：${count(geometry.lastBlockValid)} 个有效元素，${count(geometry.unusedSlots)} 个${outsideLabel}。关注最后一块。`}>
-      <span className="rd-plot-heading"><strong>{lastLabel}{grouped ? "分组示意" : "放大"}</strong><span>{count(geometry.lastBlockValid)} / {count(geometry.tileSize)} 有效</span></span>
-      <span className="rd-position-grid">{positions.map((position, index) => {
-        const start = geometry.lastBlockStart + position.start;
-        const end = start + position.size - 1;
-        const description = `${position.valid ? "有效元素" : outsideLabel}；索引 ${interval(start, end)}；共 ${count(position.size)} 个位置`;
-        return <span className={"rd-position" + (position.valid ? " is-valid" : geometry.bounds === "full" ? " is-outside" : " is-inactive")} key={position.start} title={description} aria-label={description}><span>{grouped ? `组 ${index + 1}` : position.start}</span><small aria-hidden="true">{position.valid ? "●" : geometry.bounds === "full" ? "×" : "—"}</small></span>;
-      })}</span>
-      <span className="rd-tail-ranges"><span><i className="rd-key is-valid" aria-hidden="true" />有效 {count(geometry.lastBlockValid)} 个<span>索引 {interval(geometry.lastBlockStart, geometry.lastValidIndex)}</span></span>{geometry.unusedSlots > 0 && <span><i className={"rd-key " + (geometry.bounds === "full" ? "is-outside" : "is-inactive")} aria-hidden="true" />{outsideLabel} {count(geometry.unusedSlots)} 个<span>索引 {interval(geometry.total, geometry.capacity - 1)}</span></span>}</span>
-      {!compact && <span className="rd-plot-caption">{grouped ? "每格为一组连续索引；悬浮可查看每组的精确区间与整数数量。" : "格内数字是块内偏移；● 有效，× 范围外访问，— 未访问。"}{geometry.bounds === "valid" && geometry.unusedSlots > 0 ? "虚线位置保留，但当前策略不会访问。" : ""}</span>}
-    </button>}
+    {activeFocus === "tail" && <TailPositionPlot selectionMode={selectionMode} lastLabel={lastLabel} grouped={grouped} geometry={geometry} positions={positions} outsideLabel={outsideLabel} selectedRange={selectedRange} compact={compact} onFocusTail={() => selectFocus("tail")} onSelectRange={onSelectRange} publishRange={publishRange} onPointerDown={handleSelectionPointerDown} onPointerMove={handleSelectionPointerMove} onPointerUp={handleSelectionPointerUp} onPointerCancel={() => { dragRef.current = null; }} />}
 
     {activeFocus === "access" && <button className={"rd-plot rd-access" + (activeFocus === "access" ? " is-focused" : "")} type="button" onClick={() => selectFocus("access")} aria-label={`有效索引 0 至 ${count(geometry.lastValidIndex)}，示例最大访问索引 ${count(geometry.maxAccessIndex)}。关注访问边界。`}>
       <span className="rd-plot-heading"><strong>有效区间与访问上限</strong><span>{geometry.outOfRange ? `范围外 ${count(geometry.outOfRange)}` : "范围外 0"}</span></span>

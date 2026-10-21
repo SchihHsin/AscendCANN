@@ -5645,3 +5645,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 展开卡片的摘要区曾沿用折叠态 `136px` 最小高度，使“当前学习小结”前出现空白；展开态改为按内容收缩。本地首页截图已确认详情紧接简介显示，折叠态尺寸不变。
 - 推荐卡颜色目前按渲染位置分配，位置变化会让同一推荐换色；没有语义分类。建议按“问题/待核验、下一步建议、资料/理解”固定配色，用户尚未确认，暂不改色。
 - 验证：隔离 Vite 构建通过，`git diff --check` 通过；首页推荐单测 10/12，通过的构建与测试范围按本轮代码如实说明。未涉及报告页序或 API / Host / Application 边界。
+
+
+### 2026-10-21 · Ascend Studio「指着说」与语音输入
+
+- 用户明确区分普通语音输入与「指着说」：两者是独立入口 / 交互模式。图解工具栏进入划选模式，选中索引范围后才可对该范围说话；语音转写进入现有 composer 草稿，用户发送后才形成对话消息，并保存可恢复的图解范围关联。原 composer 样式保持不变。
+- 实现位于 `ascend-studio/src/VoiceCaptureButton.jsx`、`App.jsx`、`ExplainPanel.jsx`、`RangeDiagram.jsx`、`useWorkbenchState.js` 及相关样式；Pages 包位于 `ascstudio/`。本次静态构建从暂存的语音 / 范围功能源码生成，排除同时存在的首页推荐未提交改动。
+- 证据来源：用户确认的交互要求（需求依据）；本地浏览器的范围选择、composer 上下文、发送关联和恢复检查（M）；浏览器原生语音识别是否可用、麦克风权限及真实听写结果未验证。没有新增 NPU、模型或工程正确性结论。
+- 不影响 Dashboard / 报告页序、hash 或 API / Host / Application 层边界。验证：`npm run build:pages` 通过（Vite 有既有大 chunk 提示），`git diff --check` 通过；未运行测试。
+- 功能提交和交接提交的 push 回执待补记。未决事项仅为浏览器原生 Speech Recognition 支持及真实权限 / 识别效果的后续验证。

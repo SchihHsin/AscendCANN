@@ -235,16 +235,17 @@ export function useWorkbenchState() {
   const resetTask = () => { cancelReply(selectedTask); scrollConversationToTop.current = selectedTask; patchSession(blank()); setActionView(null); setMenu(null); notify("当前任务已恢复初始状态"); };
   const sendMessage = (event, options = {}) => {
     event?.preventDefault();
-    const text = session.draft.trim() || (session.attachments.length ? "请结合这些附件整理下一步检查。" : "");
+    const text = String(options.userText ?? (session.draft.trim() || (session.attachments.length ? "请结合这些附件整理下一步检查。" : ""))).trim();
     if (!text || session.replying || replyTimers.current.has(selectedTask)) return false;
+    const generationText = options.generationText || text;
     const taskName = selectedTask, attachments = session.attachments, records = session.records, modelLabel = model.label;
     const pending = { timer: null };
     replyTimers.current.set(taskName, pending);
-    updateTask(taskName, (old) => ({ draft: "", attachments: [], replying: true, unreadReply: false, messages: [...old.messages, { id: uid(), role: "user", text, attachments }] }));
+    updateTask(taskName, (old) => ({ draft: "", attachments: [], replying: true, unreadReply: false, messages: [...old.messages, { id: uid(), role: "user", text, attachments, ...(options.scopeReference ? { scopeReference: options.scopeReference } : {}) }] }));
     pending.timer = setTimeout(() => {
       if (replyTimers.current.get(taskName) !== pending) return;
       replyTimers.current.delete(taskName);
-      updateTask(taskName, (old) => ({ replying: false, unreadReply: old.unreadReply || activeConversationTask.current !== taskName, messages: [...old.messages, { id: uid(), role: "assistant", text: options.overrideReply || options.replyText || cleanReply(buildAssistantReply({ text, taskName, modelLabel, attachments, records })), interaction: options.interaction, model: modelLabel, isDemo: true }] }));
+      updateTask(taskName, (old) => ({ replying: false, unreadReply: old.unreadReply || activeConversationTask.current !== taskName, messages: [...old.messages, { id: uid(), role: "assistant", text: options.overrideReply || options.replyText || cleanReply(buildAssistantReply({ text: generationText, taskName, modelLabel, attachments, records })), interaction: options.interaction, model: modelLabel, isDemo: true }] }));
     }, 650);
     return true;
   };

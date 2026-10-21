@@ -920,3 +920,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 展开态摘要移除折叠态的 `136px` 最小高度；详情现在紧接推荐简介，折叠卡片保持原尺寸。通过本地首页悬浮展开截图核验。
 - 卡片颜色按当前显示顺序分配，隐藏/重排后同一推荐会换色。后续建议按问题待核验、下一步建议、资料理解固定色义；此映射待用户确认，当前不改颜色。
 - 隔离 Vite 构建和 `git diff --check` 通过；推荐单测 10/12，两个失败均为填充卡数量/演示优先级断言，留作该功能后续检查。
+
+
+## 2026-10-21 · 「指着说」与普通语音输入分离
+
+- 普通语音输入保留在原 composer 的工具行；图解上的「指着说」是另一种模式，必须先进入划选、选中范围，再开始对该范围说话。两种入口不互相切换或替代。
+- 录音与转写留在 composer 草稿区，不向对话流插入录音状态或实时转写项；用户提交后才生成一条带索引范围关联的消息，并可从该消息回到原图解范围。composer 原样式不变。
+- 划选支持拖动与键盘操作；Escape 可退出。语音使用浏览器 SpeechRecognition / webkitSpeechRecognition；本轮未触发麦克风权限请求，权限与听写能力仍待实际设备验证。
+- 修改文件包括 `src/VoiceCaptureButton.jsx`、`src/App.jsx`、`src/ExplainPanel.jsx`、`src/RangeDiagram.jsx`、`src/useWorkbenchState.js` 和对应样式。Pages 构建已通过；交互回放见本任务记录。
