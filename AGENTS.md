@@ -5543,3 +5543,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改文件：`ascend-studio/src/App.jsx`、`LearningJourney.jsx`、`NewTaskHome.jsx`、`home-recommendations.js`、`home-recommendations.test.js`、`useHomeRecommendationState.js`、`learning-data.js`、`useLearningJourney.js`、`new-task-home.css` 与静态 Pages 产物 `ascstudio/`；交接更新在 Studio 的 `interaction-design.md`、`design-qa.md` 和 `AGENTS.md`。
 - 验证：11 项推荐规则测试通过；推荐模块与状态 Hook `node --check`、`git diff --check`、`npm run build:pages`通过。浏览器在 1280×720 检查学习 / 开发卡默认态、展开详情与鼠标 click/hover；动作按钮通过源码路由复核，没有点击会写入共享浏览器本地任务数据的 CTA。未做窄屏/真机触屏与全量回归，无真实硬件 / 工程 / NPU 证据。
 - 方案细节与局部 QA 见 `ascend-studio/interaction-design.md`、`ascend-studio/design-qa.md`。功能提交 `1559e522`（`feat: add task-grounded home recommendations`）已推送 `origin/main`，仅包含本功能源码、规则测试、Pages 构建结果和交接记录。
+
+### 2026-10-21 · Ascend Studio 社区经验与答案可信度视觉提案
+
+- 用户更正目标链接为 `https://schihhsin.github.io/AscendCANN/ascstudio/`。据此核对当前 Ascend Studio 三栏工作台与项目内截图；用户附图仅作为功能交互参考，分别对应社区反馈草稿审核和回答来源成分标注。
+- 视觉提案覆盖两个待设计能力：从当前任务一键整理社区经验草稿，用户检查、编辑与敏感信息后再手动提交；Agent 答案按现场事实、已尝试记录、AI 推断和待补证标明依据，不用单一置信百分数替代可追溯证据。
+- 更正链接前按汇报页生成的两张预览不采用。正确目标下生成的三张方案按实际展示顺序保存于 `/Users/hsin/.codex/generated_images/01a15c67-facb-7e12-a5bb-9e3584247b5e/`：`exec-176b6502-d827-443a-92b7-e8c2d7789801.png`、`exec-f00dd1de-9d0c-4d59-bb61-8b7aabf769ca.png`、`exec-f4503d0f-34da-4fda-8844-e4f553f702ad.png`。均为待用户选择的视觉概念，不是实现或运行证据。
+- 证据来源：用户提供的两张功能截图、正确 Demo 的只读浏览器截图，以及项目截图 `ascend-studio/evidence/20261019-content-map/13-final-demo.png`；当前界面外观为可见状态，功能方案仍属待验证设计提案。未改 Ascend Studio 源码或 `ascstudio/` 发布产物；不影响报告页序，也不改变 API / Host / Application 边界。
+- 验证：本轮未运行构建或功能测试；仅做 `git diff --check` 文档检查。提交仅包含本条交接记录，其他工作区修改保持原样。
+- 未决事项：等待用户从三张图中选择方向或指定组合细节；确认后再实施并按 Ascend Studio 的 `npm run build:pages` 流程验证和发布。
