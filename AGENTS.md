@@ -5653,4 +5653,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现位于 `ascend-studio/src/VoiceCaptureButton.jsx`、`App.jsx`、`ExplainPanel.jsx`、`RangeDiagram.jsx`、`useWorkbenchState.js` 及相关样式；Pages 包位于 `ascstudio/`。本次静态构建从暂存的语音 / 范围功能源码生成，排除同时存在的首页推荐未提交改动。
 - 证据来源：用户确认的交互要求（需求依据）；本地浏览器的范围选择、composer 上下文、发送关联和恢复检查（M）；浏览器原生语音识别是否可用、麦克风权限及真实听写结果未验证。没有新增 NPU、模型或工程正确性结论。
 - 不影响 Dashboard / 报告页序、hash 或 API / Host / Application 层边界。验证：`npm run build:pages` 通过（Vite 有既有大 chunk 提示），`git diff --check` 通过；未运行测试。
-- 功能提交和交接提交的 push 回执待补记。未决事项仅为浏览器原生 Speech Recognition 支持及真实权限 / 识别效果的后续验证。
+- 功能提交 `9ae5e540`（`feat: add point-and-speak interaction`）已推送 `origin/main`。线上 `https://schihhsin.github.io/AscendCANN/ascstudio/` 返回 HTTP 200，HTML 已引用新 JS/CSS 资源，JS 资源也返回 HTTP 200。交接回填随后单独提交并推送。未决事项仅为浏览器原生 Speech Recognition 支持及真实权限 / 识别效果的后续验证。
