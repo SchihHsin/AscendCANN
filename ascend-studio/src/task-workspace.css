@@ -32,6 +32,9 @@
 .tw-topbar-actions { display: flex; align-items: center; gap: 5px; flex: 0 0 auto; }
 .tw-topbar button { display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 25px; min-width: 25px; padding: 0 7px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #737b8d; font-size: 12px; white-space: nowrap; cursor: pointer; }
 .tw-topbar button:hover, .tw-topbar button.is-open { background: #f2f3f5; color: #555e72; }
+.tw-topbar .tw-point-mode { gap: 5px; padding: 0 8px; border-color: #e4e5ea; background: #fff; color: #62697a; }
+.tw-topbar .tw-point-mode:hover, .tw-topbar .tw-point-mode.is-open { border-color: #d9dbe4; background: #f2f2f5; color: #53586a; }
+.tw-topbar .tw-point-mode svg { flex: 0 0 auto; }
 .tw-topbar .tw-view-all { padding: 0 9px; border-color: #dfe0e5; background: #f4f4f5; color: #565b68; font-weight: 550; }
 .tw-topbar .tw-view-all:hover { background: #eaeaee; color: #393e4b; }
 .tw-topbar .tw-collapse, .tw-topbar .tw-more-button { width: 25px; padding: 0; }
@@ -43,6 +46,16 @@
 .tw-history-menu > summary { cursor: pointer; white-space: nowrap; }
 .tw-history-menu > summary span { margin-left: 4px; color: #9ca1ae; font-variant-numeric: tabular-nums; }
 .tw-stage { position: relative; flex: 1; min-width: 0; min-height: 0; }
+.tw-stage.is-area-selecting { overflow: hidden; }
+.tw-area-select-layer { position: absolute; z-index: 110; inset: 0; cursor: crosshair; touch-action: none; user-select: none; }
+.tw-area-selection-box { position: absolute; min-width: 1px; min-height: 1px; border: 1px solid #8178ad; border-radius: 3px; background: rgba(129,120,173,.12); box-shadow: 0 0 0 1px rgba(255,255,255,.72) inset; pointer-events: none; }
+.tw-area-mode-hint { position: absolute; z-index: 111; top: 9px; left: 50%; display: flex; align-items: center; gap: 7px; max-width: calc(100% - 24px); padding: 6px 8px; transform: translateX(-50%); border: 1px solid #e1e2e8; border-radius: 6px; background: rgba(255,255,255,.96); box-shadow: 0 3px 12px rgba(41,44,55,.08); color: #646b7b; font-size: 11px; line-height: 1.4; pointer-events: auto; }
+.tw-area-mode-hint > svg { flex: 0 0 auto; color: #7971a4; }
+.tw-area-mode-hint > span { min-width: 0; }
+.tw-area-mode-hint > button { display: inline-grid; place-items: center; flex: 0 0 22px; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: #8a8f9c; cursor: pointer; }
+.tw-area-mode-hint > button:hover { background: #f0f0f3; color: #575d6a; }
+.tw-area-selection-preview { position: absolute; z-index: 109; border: 1px solid #8279ad; border-radius: 3px; background: rgba(130,121,173,.08); box-shadow: 0 0 0 1px rgba(255,255,255,.7) inset; pointer-events: none; }
+.tw-area-selection-preview > span { position: absolute; top: -24px; left: -1px; max-width: min(260px, 60vw); overflow: hidden; padding: 3px 6px; border: 1px solid #e0e1e7; border-radius: 4px; background: rgba(255,255,255,.96); color: #676d7b; font-size: 10px; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
 .tw-return-arrow { transform: rotate(180deg); }
 .tw-toolbar-slot { flex: 0 0 auto; min-width: 0; border-bottom: 1px solid #ecedf0; background: #fafafb; }
 .tw-toolbar-slot:empty { display: none; }
@@ -112,6 +125,8 @@
   .tw-content-groups { padding-inline: 5px; }
   .tw-content-option { gap: 6px; }
   .tw-topbar-actions { gap: 3px; }
+  .tw-topbar .tw-point-mode { width: 25px; padding-inline: 0; }
+  .tw-topbar .tw-point-mode span { display: none; }
   .tw-topbar .tw-nearby-action { padding-inline: 5px; font-size: 11px; }
   .tw-topbar .tw-view-all { padding-inline: 7px; font-size: 11px; }
 }

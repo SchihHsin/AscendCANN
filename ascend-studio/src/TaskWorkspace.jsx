@@ -11,6 +11,7 @@ import {
   IconLayoutColumns,
   IconInfoCircle,
   IconPlus,
+  IconPointer2,
   IconWorld,
   IconX,
 } from "@tabler/icons-react";
@@ -44,9 +45,59 @@ function SavedContent({ workspace, ownerId, contentId, showing, children }) {
   return <ContentSurface scrollerRef={scroller} onScroll={event => workspace.actions.savePosition(contentId, event.currentTarget.scrollTop, ownerId)}>{children}</ContentSurface>;
 }
 
+function selectedWorkspaceText(stage, rect) {
+  if (!stage) return "";
+  const walker = document.createTreeWalker(stage, window.NodeFilter.SHOW_TEXT);
+  const parts = [];
+  let length = 0;
+  while (walker.nextNode() && length < 1200) {
+    const node = walker.currentNode;
+    const value = node.nodeValue?.replace(/\s+/g, " ").trim();
+    if (!value) continue;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    const intersects = [...range.getClientRects()].some(box => box.right > rect.left && box.left < rect.right && box.bottom > rect.top && box.top < rect.bottom);
+    if (!intersects) continue;
+    const parent = node.parentElement;
+    if (!parent || parent.closest("[hidden]")) continue;
+    const style = window.getComputedStyle(parent);
+    if (style.display === "none" || style.visibility === "hidden") continue;
+    parts.push(value);
+    length += value.length;
+  }
+  const labels = [...stage.querySelectorAll("img[alt],canvas[aria-label],svg[aria-label],[role='img'][aria-label]")]
+    .filter(element => {
+      const box = element.getBoundingClientRect();
+      return box.right > rect.left && box.left < rect.right && box.bottom > rect.top && box.top < rect.bottom && !element.closest("[hidden]");
+    })
+    .map(element => element.getAttribute("alt") || element.getAttribute("aria-label"))
+    .filter(Boolean);
+  return [...new Set([...parts, ...labels])].join(" ").slice(0, 1200);
+}
+
+function areaBounds(start, point) {
+  return {
+    left: Math.min(start.x, point.x),
+    top: Math.min(start.y, point.y),
+    width: Math.abs(point.x - start.x),
+    height: Math.abs(point.y - start.y),
+  };
+}
+
+function pointInStage(event, bounds) {
+  return {
+    x: Math.min(bounds.width, Math.max(0, event.clientX - bounds.left)),
+    y: Math.min(bounds.height, Math.max(0, event.clientY - bounds.top)),
+  };
+}
+
 /** Ordinary viewers stay mounted while the task canvas is opened or closed. */
-export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = false, canvasMaterialIds = [], materials = [], contentItems = [], onOpen, onClose, onOpenCanvas, onArrange, onReturnFocus, onCollapse, renderContent, renderCanvas, contentWidth = 1000, onCompare }) {
+export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = false, canvasMaterialIds = [], materials = [], contentItems = [], onOpen, onClose, onOpenCanvas, onArrange, onReturnFocus, onCollapse, renderContent, renderCanvas, contentWidth = 1000, onCompare, pointContext = null, onPointContextChange }) {
   const { state, actions } = workspace;
+  const stageRef = useRef(null);
+  const pointerStart = useRef(null);
+  const [areaSelectionMode, setAreaSelectionMode] = useState(false);
+  const [dragSelection, setDragSelection] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [objectInfoOpen, setObjectInfoOpen] = useState(false);
   const objectInfoTrigger = useRef(null);
@@ -82,7 +133,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
   const groupedItems = buildContentNavigation({ taskId, materials: switchItems, contentItems, tabs: navigationTabs, visitedTabs: state.visitedTabs, groupNames: state.overview?.groupNames, itemOverrides: state.overview?.itemOverrides });
   taskViews.current.set(taskId, { state, isMainTask, visited: normalizeVisited(state), contentItems });
 
-  useEffect(() => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); }, [taskId]);
+  useEffect(() => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); setAreaSelectionMode(false); setDragSelection(null); pointerStart.current = null; }, [taskId]);
   useEffect(() => {
     if (!menuOpen && !pickerOpen && !contentMenuOpen && !objectInfoOpen) return undefined;
     const outsideClick = (event) => {
@@ -167,6 +218,71 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
   const inOverview = onCanvas && state.canvasMode === "overview";
   const activeTitle = inOverview ? "全部内容" : onCanvas && isLearningTask ? "学习画布" : historyItem ? `${historyItem.title} · ${historyItem.time || "历史"}` : activeTab?.title || "任务内容";
   const returnToFocus = () => { setMenuOpen(false); setContentMenuOpen(false); onReturnFocus?.(); };
+  const selectionSourceId = onCanvas ? "canvas" : focusedId || "empty";
+  const visibleAreaContext = pointContext?.type === "workspace-area"
+    && pointContext.taskId === taskId
+    && pointContext.contentId === selectionSourceId
+    && (selectionSourceId !== "canvas" || pointContext.canvasMode === state.canvasMode);
+
+  useEffect(() => {
+    if (!areaSelectionMode) return undefined;
+    const escape = event => {
+      if (event.key === "Escape") {
+        setAreaSelectionMode(false);
+        setDragSelection(null);
+        pointerStart.current = null;
+      }
+    };
+    window.addEventListener("keydown", escape);
+    return () => window.removeEventListener("keydown", escape);
+  }, [areaSelectionMode]);
+
+  const finishAreaSelection = (event) => {
+    const start = pointerStart.current;
+    const stage = stageRef.current;
+    if (!start || !stage || (event.pointerId !== undefined && event.pointerId !== start.pointerId)) return;
+    const stageRect = stage.getBoundingClientRect();
+    const rect = areaBounds(start, pointInStage(event, stageRect));
+    pointerStart.current = null;
+    setDragSelection(null);
+    if (rect.width < 8 || rect.height < 8) return;
+    const text = selectedWorkspaceText(stage, { left: stageRect.left + rect.left, top: stageRect.top + rect.top, right: stageRect.left + rect.left + rect.width, bottom: stageRect.top + rect.top + rect.height });
+    const nextContext = {
+      type: "workspace-area",
+      taskId,
+      contentId: selectionSourceId,
+      canvasMode: selectionSourceId === "canvas" ? state.canvasMode : undefined,
+      contentTitle: activeTitle,
+      label: `${Math.round(rect.width)} × ${Math.round(rect.height)} px`,
+      selectedText: text,
+      selection: {
+        left: rect.left / Math.max(1, stageRect.width),
+        top: rect.top / Math.max(1, stageRect.height),
+        width: rect.width / Math.max(1, stageRect.width),
+        height: rect.height / Math.max(1, stageRect.height),
+      },
+    };
+    onPointContextChange?.(nextContext);
+    setAreaSelectionMode(false);
+  };
+
+  const startAreaSelection = (event) => {
+    if (event.button !== 0 || !stageRef.current) return;
+    event.preventDefault();
+    const bounds = stageRef.current.getBoundingClientRect();
+    const start = { ...pointInStage(event, bounds), pointerId: event.pointerId };
+    pointerStart.current = start;
+    setDragSelection({ left: start.x, top: start.y, width: 0, height: 0 });
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+  };
+
+  const moveAreaSelection = (event) => {
+    const start = pointerStart.current;
+    const stage = stageRef.current;
+    if (!start || !stage || event.pointerId !== start.pointerId) return;
+    const bounds = stage.getBoundingClientRect();
+    setDragSelection(areaBounds(start, pointInStage(event, bounds)));
+  };
 
   return <section className={`task-workspace${compactCompare ? " is-compact-comparison" : ""}${inOverview ? " is-overview" : ""}`} aria-label="任务内容工作区">
     <header className="tw-topbar" aria-label="工作区公共标题栏">
@@ -193,6 +309,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
         </div>}
       </div>
       <div className="tw-topbar-actions">
+        <button className={`tw-point-mode${areaSelectionMode ? " is-open" : ""}`} type="button" aria-pressed={areaSelectionMode} aria-label={areaSelectionMode ? "退出指着说区域选择" : "指着说"} title={areaSelectionMode ? "拖动框选工作区任意区域；按 Esc 退出" : "框选工作区任意区域后，通过输入框打字或语音描述"} onClick={() => { setDragSelection(null); pointerStart.current = null; setAreaSelectionMode(value => !value); }}><IconPointer2 size={14} /><span>{areaSelectionMode ? "退出框选" : "指着说"}</span></button>
         {!onCanvas && <button type="button" ref={objectInfoTrigger} className={"tw-object-info-button" + (objectInfoOpen ? " is-open" : "")} aria-label="来源、关联与历史" title="来源、关联与历史" aria-expanded={objectInfoOpen} onClick={() => { setObjectInfoOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); }}><IconInfoCircle size={15} />{activeHistory.length > 0 && <small>{activeHistory.length}</small>}</button>}
         {state.referenceId === state.activeId && state.referenceReturnId && <button className="tw-nearby-action" type="button" onClick={actions.returnFromReference}>返回当前内容</button>}
         {isMainTask && <button className="tw-view-all" type="button" disabled={inOverview && !canReturn} aria-label={inOverview ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => inOverview ? returnToFocus() : openCanvas("overview")}>{inOverview ? <><IconArrowRight className="tw-return-arrow" size={13} />返回正文</> : <><IconLayoutBoard size={13} />全部内容</>}</button>}
@@ -216,7 +333,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
       <button className="tw-end-comparison" type="button" onClick={actions.endSplit}>{state.comparisonPinned ? "移除参考" : "结束对照"}</button>
     </div>}
     {historyItem && !onCanvas && <div className="tw-history-context"><span>只读历史 · {historyItem.time || "当时保存"}</span><button type="button" onClick={() => restoreObject(parentItem.id)}>回到当前内容<IconArrowRight size={12} /></button></div>}
-    <div className="tw-stage">
+    <div className={`tw-stage${areaSelectionMode ? " is-area-selecting" : ""}`} ref={stageRef}>
       {[...taskViews.current.entries()].map(([ownerTaskId, view]) => {
         const selectedTask = ownerTaskId === taskId;
         const current = workspace.getTaskState?.(ownerTaskId, view.isMainTask) || view.state;
@@ -238,6 +355,13 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
           {selectedTask && !current.activeId && <div className="tw-empty"><IconFileDescription size={24} /><strong>打开需要查看的内容</strong><p>代码、结果和参考资料会在这里展开。</p>{isMainTask && <button type="button" onClick={() => openCanvas()}><IconLayoutBoard size={14} />查看已有内容</button>}<button type="button" onClick={() => showPicker()}><IconPlus size={14} />新增内容</button></div>}
         </div>;
       })}
+      {visibleAreaContext && pointContext.selection && <div className="tw-area-selection-preview" aria-hidden="true" style={{ left: `${pointContext.selection.left * 100}%`, top: `${pointContext.selection.top * 100}%`, width: `${pointContext.selection.width * 100}%`, height: `${pointContext.selection.height * 100}%` }}><span>已选区域 · {pointContext.label}</span></div>}
+      {areaSelectionMode && <>
+        <div className="tw-area-select-layer" role="presentation" aria-label="拖动框选工作区区域" onPointerDown={startAreaSelection} onPointerMove={moveAreaSelection} onPointerUp={finishAreaSelection} onPointerCancel={() => { pointerStart.current = null; setDragSelection(null); }} onContextMenu={event => event.preventDefault()}>
+          {dragSelection && <div className="tw-area-selection-box" style={{ left: dragSelection.left, top: dragSelection.top, width: dragSelection.width, height: dragSelection.height }} />}
+        </div>
+        <div className="tw-area-mode-hint" role="status"><IconPointer2 size={14} /><span>在工作区拖动框选任意区域；选中后可回到输入框打字或语音描述。</span><button type="button" aria-label="退出区域选择" onClick={() => { setAreaSelectionMode(false); setDragSelection(null); pointerStart.current = null; }}><IconX size={13} /></button></div>
+      </>}
     </div>
 
     {objectInfoOpen && !onCanvas && <ContentObjectInfo item={parentItem || activeTab} history={historyItem} selectedId={focusedId} onClose={closeInfo} onOpen={restoreObject} onCompare={onCompare ? compareObject : undefined} />}

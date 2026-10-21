@@ -161,7 +161,6 @@ function App() {
   const previousFlow = useRef({ attempts: flow.state.attempts.length, proposal: flow.state.proposedCode, applied: flow.state.appliedCode, validation: flow.state.validation });
   const [taskContentsOpen, setTaskContentsOpen] = useState(false);
   const [pointContext, setPointContext] = useState(null);
-  const pointVoiceDraftRef = useRef("");
   const composerVoiceDraftRef = useRef("");
   const {
     query, setQuery, openedGroups, selectedTask, rationaleOpen, setRationaleOpen,
@@ -170,24 +169,15 @@ function App() {
     openDialog, openMenu, sendMessage, setDraft, toast,
   } = wb;
   useEffect(() => {
-    const mergeTranscript = (base, transcript) => [String(base || "").trim(), String(transcript || "").trim()].filter(Boolean).join(" ");
-    const onRangeSelected = (event) => setPointContext(event.detail || null);
-    const onPointVoiceStart = () => { pointVoiceDraftRef.current = wb.draftRef.current?.value ?? ""; };
-    const onPointTranscript = (event) => setDraft(mergeTranscript(pointVoiceDraftRef.current, event.detail?.text));
-    const onRangeClear = () => setPointContext(null);
-    window.addEventListener("ascstudio-point-range-selected", onRangeSelected);
-    window.addEventListener("ascstudio-point-voice-start", onPointVoiceStart);
-    window.addEventListener("ascstudio-point-transcript", onPointTranscript);
-    window.addEventListener("ascstudio-point-range-clear", onRangeClear);
-    window.addEventListener("ascstudio-point-range-consumed", onRangeClear);
+    const clearRangeContext = () => setPointContext(null);
+    window.addEventListener("ascstudio-point-range-clear", clearRangeContext);
+    window.addEventListener("ascstudio-point-range-consumed", clearRangeContext);
     return () => {
-      window.removeEventListener("ascstudio-point-range-selected", onRangeSelected);
-      window.removeEventListener("ascstudio-point-voice-start", onPointVoiceStart);
-      window.removeEventListener("ascstudio-point-transcript", onPointTranscript);
-      window.removeEventListener("ascstudio-point-range-clear", onRangeClear);
-      window.removeEventListener("ascstudio-point-range-consumed", onRangeClear);
+      window.removeEventListener("ascstudio-point-range-clear", clearRangeContext);
+      window.removeEventListener("ascstudio-point-range-consumed", clearRangeContext);
     };
-  }, [setDraft, wb.draftRef]);
+  }, []);
+  useEffect(() => setPointContext(null), [selectedTask]);
   const onComposerVoiceStart = () => { composerVoiceDraftRef.current = wb.draftRef.current?.value ?? draft; };
   const onComposerVoiceTranscript = (transcript) => setDraft([composerVoiceDraftRef.current.trim(), transcript.trim()].filter(Boolean).join(" "));
   const clearPointContext = () => {
@@ -459,6 +449,14 @@ function App() {
   };
   const handleSendMessage = (event) => {
     const text = draft.trim();
+    const withPointContext = (options = {}) => pointContext ? {
+      ...options,
+      scopeReference: { ...pointContext },
+      generationText: pointContext.type === "workspace-area"
+        ? `${text}\n\n用户指向工作区区域「${pointContext.contentTitle || "当前内容"} · ${pointContext.label}」。${pointContext.selectedText ? `选区内可读取文本：\n${pointContext.selectedText}` : "选区可能包含图表、代码或其他视觉内容，请结合当前任务上下文理解。"}`
+        : `${text}\n\n用户指向图解范围：${pointContext.label}`,
+    } : options;
+    const consumePointContext = () => { if (pointContext) clearPointContext(); };
     if (isOfficialLearningTask) {
       event?.preventDefault();
       if (!text || session.replying) return;
@@ -477,7 +475,8 @@ function App() {
       const replyText = targetNode
         ? `已定位「${targetNode.title}」。${targetNode.lesson?.body || targetNode.summary}\n\n在同一画布里可以看图解、打开官方视频课程、检查理解并保留尝试。节点进度由理解与当前检查更新；真实设备运行仍需在官方实验环境验证。`
         : "这份路径按认识链路、准备环境、准备输入、执行推理、解读结果组织，可以从具体学习动作继续。";
-      if (sendMessage(event, { replyText })) {
+      if (sendMessage(event, withPointContext({ replyText }))) {
+        consumePointContext();
         if (targetNode) openContent(target);
         else openCanvas({ mode: "free" });
       }
@@ -520,15 +519,9 @@ function App() {
       } else if (/全部|找回|恢复/.test(text)) {
         action = () => openCanvas(); replyText = "已打开本任务的内容与记录，可以恢复原对象及尝试。";
       }
-      if (sendMessage(event, { replyText })) action();
+      if (sendMessage(event, withPointContext({ replyText }))) { consumePointContext(); action(); }
       return;
     }
-    const withPointContext = (options = {}) => pointContext && isMainTask ? {
-      ...options,
-      scopeReference: { ...pointContext },
-      generationText: `${text}\n\n用户指向图解范围：${pointContext.label}`,
-    } : options;
-    const consumePointContext = () => { if (pointContext && isMainTask) clearPointContext(); };
     const restore = isInteractiveTask && /^(?:请)?(?:帮我)?(?:打开|回到|恢复|找回|再看|唤醒|查看)/.test(text) && /刚才|之前|上次|那份|解释|图解|张量|误差|核对|尝试|记录|diff|修改预览|来源/i.test(text);
     if (restore) {
       const items = getTaskItems(selectedTask);
@@ -549,7 +542,7 @@ function App() {
     const intent = isInteractiveTask ? classifyTaskIntent(text) : "none";
     const requestedFocus = getExplanationFocus(text, isImageTask);
     const focus = requestedFocus === "structure" ? "total" : requestedFocus;
-    const keepsPointFocus = Boolean(pointContext && isMainTask);
+    const keepsPointFocus = Boolean(pointContext);
     const target = intent === "check"
       ? isMainTask && /误差|精度|容差|precision|tolerance/i.test(text) ? "precision"
         : /实际(?:代码|循环|模型)|真实(?:代码|项目|模型)|模型签名|原文件|源码/i.test(text) ? (isImageTask ? "image-source" : "source") : null
@@ -971,7 +964,17 @@ function App() {
                   <div className={message.role === "user" ? "user-bubble" : "assistant-response extra-message"}>{message.text.split("\n\n").map((paragraph, i) => <p className="message-paragraph" key={i}>{paragraph}</p>)}
                     {message.attachments?.length > 0 && <div className="message-attachments">{message.attachments.map((file) => <button type="button" key={file.id} onClick={() => openDialog("evidence", { title: file.name, body: "本次任务的本地附件，尚未独立验证。", log: file.content || "已关联文件名称，尚无可读取的文本内容。" })}><IconPaperclip size={13} />{file.name}</button>)}</div>}
                   </div>
-                  {message.scopeReference && <div className="message-source-links"><button type="button" onClick={() => { openContent("explanation", { anchor: message.scopeReference.focus || "tail" }); window.setTimeout(() => window.dispatchEvent(new CustomEvent("ascstudio-point-range-restore", { detail: message.scopeReference })), 0); }}><IconPointer2 size={12} /><span>关联图解范围 · {message.scopeReference.label}</span></button></div>}
+                  {message.scopeReference && <div className="message-source-links"><button type="button" onClick={() => {
+                    const reference = message.scopeReference;
+                    if (reference.type === "workspace-area") {
+                      setPointContext(reference);
+                      if (reference.contentId === "canvas") openCanvas({ mode: reference.canvasMode || "overview" });
+                      else if (reference.contentId !== "empty") openContent(reference.contentId || "explanation", { restore: true });
+                    } else {
+                      openContent("explanation", { anchor: reference.focus || "tail" });
+                      window.setTimeout(() => window.dispatchEvent(new CustomEvent("ascstudio-point-range-restore", { detail: reference })), 0);
+                    }
+                  }}><IconPointer2 size={12} /><span>{message.scopeReference.type === "workspace-area" ? `关联工作区区域 · ${message.scopeReference.contentTitle || "内容"} · ${message.scopeReference.label}` : `关联图解范围 · ${message.scopeReference.label}`}</span></button></div>}
                   {message.learningReference && <div className="message-source-links"><button type="button" onClick={() => selectExistingTask(message.learningReference.taskId)}><IconBook size={12} />返回来源学习任务</button></div>}
                   {message.sourceContext && <div className="message-source-links"><button type="button" onClick={() => { if (message.sourceContext.kind === "official-learning") { openContent(message.sourceContext.nodeId); officialLearning.actions.seek(message.sourceContext.time); } else if (message.sourceContext.kind === "learning") { learning.actions.seek(message.sourceContext.time); openContent("learning-lesson", { anchor: message.sourceContext.focus }); } else if (message.sourceContext.kind === "image") { inference.actions.seek(message.sourceContext.time); if (!inference.state.lessonOpen) inference.actions.lesson(); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus, time: message.sourceContext.time, video: true }); }}><IconPlayerPlay size={12} /><span>讲解示例 {message.sourceContext.stamp} · 返回片段</span></button>{message.role === "assistant" && <button type="button" onClick={() => { if (message.sourceContext.kind === "official-learning") { openContent(message.sourceContext.nodeId); } else if (message.sourceContext.kind === "learning") { learning.actions.focus(message.sourceContext.focus); openContent("learning-lesson", { anchor: message.sourceContext.focus }); } else if (message.sourceContext.kind === "image") { inference.actions.focus(message.sourceContext.focus); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus }); }}><IconBook size={12} />查看关联图解</button>}</div>}
                   {isMainTask && message.role === "assistant" && message.interaction?.intent === "diagnose" ? <ProactiveCue {...proactive.forCue(`diagnose:${message.id}`)}
@@ -989,7 +992,7 @@ function App() {
           </div>
           <form className="composer" onSubmit={handleSendMessage}>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
-              {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={13} /><span>图解范围 · {pointContext.label}</span><button type="button" aria-label="移除图解范围" onClick={clearPointContext}><IconX size={12} /></button></span>}
+              {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={13} /><span>{pointContext.type === "workspace-area" ? `工作区区域 · ${pointContext.label}` : `图解范围 · ${pointContext.label}`}</span><button type="button" aria-label="移除指向区域上下文" onClick={clearPointContext}><IconX size={12} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={13} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={12} /></button></span>)}
               {session.capabilityIds.map((id) => <span className="attachment-chip capability-chip" key={id}><IconBooks size={13} /><span>{capabilities.find((item) => item.id === id)?.name}</span><button type="button" aria-label="移除能力" onClick={() => wb.patchSession((old) => ({ capabilityIds: old.capabilityIds.filter((item) => item !== id) }))}><IconX size={12} /></button></span>)}
             </div>}
@@ -1014,7 +1017,7 @@ function App() {
 
         {!showNewTaskHome && <div className="workspace-divider workspace-divider--conversation" hidden={workspace.state.collapsed} role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />}
         {!showNewTaskHome && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
-          <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)}
+          <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext}
             renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
           />
         </aside>}
