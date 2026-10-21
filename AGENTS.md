@@ -5500,3 +5500,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户授权实施前轮方案。新增 `ascend-studio/src/FolderCardSurface.jsx`，修改 `NewTaskHome.jsx`、`new-task-home.css`：删除旧彩条/白色polygon遮片，以独立彩色背板与完整白色前片绘制文件夹；76%–86%短S形从6px高位降至12px低位并延伸右缘，消除横向接缝。用ResizeObserver观察SVG自身，固定顶部尺寸适应卡片宽度和展开高度。三色、字号、内容、紧凑尺寸与交互沿用。
 - Luna low实现，主agent发现并修正初版尺寸测量遗漏padding的问题后刷新复核。证据源为用户附件与实际本地截图，保存在 `ascend-studio/evidence/20261021-folder-front-surface/`；参考与实现顶部归一宽度并排检查，只对轮廓作结论。
 - 1280×720默认/展开，viewBox 183.5×168及183.5×370.375且top y6/12不变；568×900无横向溢出；Escape与展开白片包裹检查通过，最终console error/warn为空。`npm run build:pages`、`git diff --check`通过；静态产物 `ascstudio/`已重建。局部QA passed，详见Studio design-qa；不代表全量回归/NPU证据，不改变正式页序/hash或API/Host/Application边界。提交/push回执随后补记。
+
+- 发布回执：`53839ea1`（`fix: redraw continuous folder card front surfaces`）已成功推送 `origin/main`，包括源码、Pages产物及参考/实现对照。未检查本次Pages部署完成状态；此交接回填另行提交推送。

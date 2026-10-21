@@ -804,3 +804,5 @@ final result: passed
 - `npm run build:pages`、`git diff --check`通过，既有大包提醒保留。仅本次轮廓局部QA，不代表全量回归或真实NPU验证；API/Host/Application边界与正式页序不变。提交推送回执随后补记。
 
 final result: passed
+
+- 发布回执：`53839ea1`（`fix: redraw continuous folder card front surfaces`）已成功推送 `origin/main`，包括源码、Pages产物及参考/实现对照。未检查本次Pages部署完成状态；此交接回填另行提交推送。
