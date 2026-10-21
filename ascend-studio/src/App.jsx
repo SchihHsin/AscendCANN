@@ -185,6 +185,12 @@ function App() {
     setPointContext(null);
     window.dispatchEvent(new Event("ascstudio-point-range-consumed"));
   };
+  const sendAreaMessage = (text, context) => {
+    const generationText = `${text}\n\n用户指向工作区区域「${context.contentTitle || "当前内容"} · ${context.label}」。${context.selectedText ? `选区内可读取文本：\n${context.selectedText}` : "选区可能包含图表、代码或其他视觉内容，请结合当前任务上下文理解。"}`;
+    const accepted = sendMessage(null, { userText: text, scopeReference: { ...context }, generationText });
+    if (accepted) clearPointContext();
+    return accepted;
+  };
   const selectExistingTask = (name) => { selectTask(name); setShowNewTaskHome(false); };
   const { selectedRoute, draft, messages } = session;
   const selectedRouteData = routes.find((route) => route.id === selectedRoute) || routes[0];
@@ -1047,7 +1053,7 @@ function App() {
 
         {!showNewTaskHome && <div className="workspace-divider workspace-divider--conversation" hidden={workspace.state.collapsed} role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />}
         {!showNewTaskHome && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
-          <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext}
+          <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext} onAreaSend={sendAreaMessage} onAreaDismiss={clearPointContext} areaComposerDisabled={session.replying}
             renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
           />
         </aside>}
