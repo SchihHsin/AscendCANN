@@ -840,6 +840,7 @@ final result: passed (scoped QA)
 - M级操作：在已有学习小结的任务里输入“我已经掌握 HWC→CHW，重点学 Resize、Normalization 和 NCHW 输入检查。”；对话回复生成 5 项建议（2项跳过、3项新增），并带“查看路径草案与审阅建议”。画布节点状态、每条建议理由、单项采纳、单项忽略、批量采纳、待审阅时禁用整条确认、节点直接拖动与“AI 同步说明”均可见。采纳后建议标签更新，忽略新增节点后节点从草案移除；完成处理后确认控件启用。
 - 回归：批量采纳后点取消，恢复原来已确认的学习路径和输入练习；已有路径、记录不被草案覆盖。拖动路径节点到同阶段另一节点后，真实显示“已把……移到……之后”，方向与实际节点顺序相符。浏览器 console error 为空。
 - 自动检查：`node --test src/learning-path-collaboration.test.js` 5/5 通过；`npm run build:pages` 通过，只有既有 bundle >500kB 提示；`git diff --check` 通过。
+- 发布：提交 `f51be9ff`（`feat: add collaborative learning path editing`）与干净快照 Pages 产物已推送至 `origin/main`；公开 Pages 自动部署状态未单独核验。其他对话的暂存、未暂存和未跟踪改动均保留。
 - 范围：对话解释和路径调整是本地示例，不调用真实 AI；新增 Resize / Normalization / NCHW 教学材料未在本轮实现，不宣称真实代码/模型/NPU验证。报告页序、API / Host / Application 边界不变。
 
 final result: passed (scoped QA)
