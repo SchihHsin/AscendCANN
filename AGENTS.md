@@ -5568,3 +5568,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户明确对新增“ResNet50 离线推理初体验”首版不满意，指出其与“学会图像输入预处理”的体验差异过大，要求先讨论。`f86e9e36` 的上线与技术检查不代表设计验收，当前首版不得作为已获用户认可的界面方向。
 - 源码对照确认：新增版另建 `OfficialLearningPathCanvas.jsx`，把所有课程/子节点适配为缩略导图并固定底部详情；其布局切换只改变导图排列方向。旧 `LearningHierarchyCanvas.jsx` 则用同一世界画布承载路径、可视化图解及练习对象，支持展开、移动、固定、聚焦，左右/上下切换作用于路径与内容整体。真实来源内容应继续承载在既有体验中。
 - 讨论建议待用户确认：统一使用旧学习画布的视觉与交互，按知识内容提供应用栈、资源生命周期、图像/张量输入、推理结果等具体可视化和对应动手操作；官方课程与 Demo 学习拆解保留可追溯来源。一级按官网课程还是按学习动作组织仍需讨论。本轮仅记录反馈，不改 Demo 源码或 Pages 产物，不改变报告页序与 API / Host / Application 边界；仅做文档差异检查，反馈记录提交后推送。
+
+
+### 2026-10-21 · Ascend Studio 页面入口核对
+
+- 确认 `https://schihhsin.github.io/AscendCANN/ascstudio/` 对应仓库本地 `ascstudio/index.html`（目录访问由静态 Pages 默认解析到 `index.html`）；文件标题为“Ascend Studio · 判断与纠错”。不要与 `ascend-studio/` 源码目录混淆。
+- 证据：`git ls-files -- ascstudio/index.html` 确认文件受版本控制；HTML `<title>` 与页面资源路径核对一致。属于本地文件映射确认，不改源码、页面序列或 API / Host / Application 边界。
+- 验证：`rg` 检查 title / 资源引用及 `git status --short -- ascstudio/index.html`；仅查询，无页面构建或测试。
+- Commit / push：本条交接记录按仓库协作规则单独提交并推送至 `origin/main`。
