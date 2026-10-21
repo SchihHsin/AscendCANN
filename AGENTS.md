@@ -5524,3 +5524,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 详规见 `ascend-studio/interaction-design.md` 同名章节：以独立、有证据和解决条件的事项替代按任务取三条；学习 L1–L3、开发 D1–D3 候选池，按事实/优先级排序；卡片紧凑呈现发现/价值并展开证据/影响/动作，按任务和 evidence revision 管理生命周期。
 - 方案含模式刷新、直达具体学习/开发工作与保留草稿的“先聊聊”、规则/事实/UI/typed action拆分及验收。首页进入和已有任务事实变化时刷新；1–2条保持原单卡尺寸居中，不拉伸；来源1行、标题最多2行、价值最多1行。
 - 本轮仅待确认设计方案，不实施Demo，无新增运行/研究证据，不改变页面序列或 API / Host / Application 边界。
+
+- 方案文档回执：`ad996076` 已成功推送 `origin/main`，仅三份讨论/交接文档，`git diff --check`通过；未改Demo或运行构建。待确认方案将作为后续实施依据，本条回填随交接提交推送。
