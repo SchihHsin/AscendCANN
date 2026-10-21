@@ -1,4 +1,5 @@
 import { LEARNING_TASK } from "./learning-data";
+import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
 
 export const initialGroups = [
   {
@@ -9,7 +10,7 @@ export const initialGroups = [
   {
     id: "inference",
     name: "模型推理",
-    tasks: ["图像推理调试", LEARNING_TASK, "Model preprocessing", "Vision model test"],
+    tasks: ["图像推理调试", LEARNING_TASK, OFFICIAL_LEARNING_TASK, "Model preprocessing", "Vision model test"],
   },
   {
     id: "other",
@@ -30,6 +31,14 @@ export const taskDetails = {
     },
     question: "我想学会图像输入预处理，会一点 Python，每天可以学 20 分钟。希望先理解，再动手试一下。",
     reply: "先从你的学习目标开始，确认已有基础和可用时间，再整理一条可以逐步完成的学习路径。\n\n这里准备了图像通道与维度转换的学习案例：理解概念、对照图解、完成小练习，再回看学到了什么。练习与记录保存在当前任务中。",
+    status: "waiting",
+  },
+  [OFFICIAL_LEARNING_TASK]: {
+    project: "模型推理",
+    kind: "official-learning",
+    goal: "沿昇腾开发者成长计划中的 AscendCL 与香橙派 ResNet50 路径，理解并梳理图像分类离线推理的应用流程。",
+    question: "我想从官方学习路径开始，了解 AscendCL，并完成 ResNet50 图像分类离线推理的初步学习。",
+    reply: "这条独立学习任务保留了原来的图像输入预处理练习，并新增一条依据昇腾开发者成长计划整理的真实路径。\n\n学习顺序是 AscendCL 概述 → AscendCL 快速入门 → 香橙派部署图像分类及目标检测样例 → 香橙派部署 ResNet50 图像分类应用实验，官网标注约 2 小时。画布会把官网课程作为主节点，再把每门课拆成便于理解的子节点。",
     status: "waiting",
   },
   "AddCustom 精度异常": {

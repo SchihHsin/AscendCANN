@@ -5535,6 +5535,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 此项内容要求已明确；整体推荐分池及 action 方案仍待确认。详见 ascend-studio/interaction-design.md 同名章节。本轮只改文档，不改Demo或其他边界。
 
 
+### 2026-10-21 · 新增官方 ResNet50 离线推理学习任务
+
+- 用户决定保留原“学会图像输入预处理”任务，并在“模型推理”左侧任务列表新增基于昇腾开发者成长计划的独立任务“ResNet50 离线推理初体验”。两条路径的数据、进度和画布按任务隔离；老浏览器迁移仅补入缺失任务，不覆盖用户已有列表或“输入维度学习 · QA”等既有任务。
+- 新路径按官网四门课程顺序呈现：AscendCL 概述、AscendCL 快速入门、香橙派部署图像分类及目标检测样例、香橙派部署 ResNet50 图像分类应用实验。课程下有 10 个便于演示的学习拆解节点；这些子节点是 Demo 组织方式，不宣称为官网章节。左右 / 上下图标切换布局；节点焦点与学习状态分开，子节点状态由学习者手动记录，主节点汇总子节点，不表示真实设备验证。
+- 证据来源（H）：[昇腾开发者成长路径](https://www.hiascend.com/edu/growth/details/2b5bea0dcd854f3b9d22d9e423a75746) 的课程顺序与课程名、[官方图像处理样例](https://www.hiascend.com/document/detail/zh/canncommercial/800/developmentguide/appdevg/aclcppdevg/aclcppdevg_000058.html)。Demo 子节点是产品侧拆解；ResNet50 输入形状按官方实验材料核验，不从图像预处理旧任务推断。未连接真实工程、模型或 NPU。
+- 新增 `ascend-studio/src/official-learning-data.js`、`useOfficialLearningPath.js`、`OfficialLearningPathCanvas.jsx`、`official-learning-canvas.css`，并更新 `App.jsx`、`prototype-data.js`、`useWorkbenchState.js`、`workspace-materials.js`、`task-content-catalog.js` 和 `ascstudio/` Pages 构建产物。窄画布缩放、聚焦和滚轮以真实图表视口为基准；课程状态在画布及材料列表均从子节点汇总。
+- 验证：`npm run build:pages` 通过（保留 Vite 主包 >500KB 提醒）；`node --check src/useOfficialLearningPath.js`、课程/材料数量与状态汇总断言、`git diff --check` 通过。In-app Browser 窄视口实际检查左侧任务存在、原图像预处理任务切换后内容/记录仍独立、新任务课程主线与子节点、ResNet50 输入节点详情以及左右 / 上下布局和适应完整路径。为避免改动已有任务状态，没有在该浏览器保存学习完成记录；无 NPU 验证。未改变正式材料页序、API / Host / Application 边界。
+- Commit / push：功能源码、Pages 产物及本交接记录按仓库约定提交并推送；准确提交回执将在提交后补记。
+
+
 ### 2026-10-21（首页学习 / 开发主动推荐方案已确认并实施）
 
 - 用户在方案讨论后明确“ok，改吧”。首页主动推荐从任务/最近记录卡片改为有结构化依据的可行动事项；学习 / 开发候选池分开，无证据时不以最近任务填满。默认卡片显示来源任务、具体下一步和推荐原因；展开提供证据、步骤、“先聊聊”和“暂不处理”。来源与推荐理由必须来自该任务明确事实。

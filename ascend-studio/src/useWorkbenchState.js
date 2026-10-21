@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply } from "./prototype-data";
 import { readSession, writeSession } from "./session-storage";
 import { LEARNING_TASK } from "./learning-data";
+import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
 
 export const MAIN_TASK = "AddCustom 精度异常";
 export const evidenceDetails = [
@@ -59,11 +60,12 @@ function restoreWorkbench() {
   const groups = savedGroups.length
     ? savedGroups.map(group => ({ ...group, tasks: group.tasks.filter(task => typeof task === "string") }))
     : initialGroups.map(group => ({ ...group, tasks: [...group.tasks] }));
-  // Add the new example to existing browsers without replacing their task lists.
-  if (!groups.some(group => group.tasks.includes(LEARNING_TASK))) {
+  // Add learning examples to existing browsers without replacing saved task lists.
+  for (const taskName of [LEARNING_TASK, OFFICIAL_LEARNING_TASK]) {
+    if (groups.some(group => group.tasks.includes(taskName))) continue;
     const inferenceGroup = groups.find(group => group.id === "inference");
-    if (inferenceGroup) inferenceGroup.tasks = [...inferenceGroup.tasks, LEARNING_TASK];
-    else groups.push({ id: "inference", name: "模型推理", tasks: [LEARNING_TASK] });
+    if (inferenceGroup) inferenceGroup.tasks = [...inferenceGroup.tasks, taskName];
+    else groups.push({ id: "inference", name: "模型推理", tasks: [taskName] });
   }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
