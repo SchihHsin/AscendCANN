@@ -5583,3 +5583,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据：`git ls-files -- ascstudio/index.html` 确认文件受版本控制；HTML `<title>` 与页面资源路径核对一致。属于本地文件映射确认，不改源码、页面序列或 API / Host / Application 边界。
 - 验证：`rg` 检查 title / 资源引用及 `git status --short -- ascstudio/index.html`；仅查询，无页面构建或测试。
 - Commit / push：本条交接记录按仓库协作规则单独提交并推送至 `origin/main`。
+
+
+### 2026-10-21 · 新版学习与任务交互材料方案
+
+- 用户要求新建独立 HTML，整合旧学习材料设计点与后续 Ascend Studio Demo 新增设计点，参考 `/Users/hsin/Documents/Coding/CLI/hai-operator-design.html` 的左侧说明、右侧可操作示例形式；本轮先制定方案，未开始报告或 Demo 实现。
+- 只读盘点来源：`cann-dashboard/ploy-interaction-lab/learning-canvas-story/` 当前52页材料及生成源、`ascend-studio/interaction-design.md`、子目录 AGENTS 与相关源码。两项盘点交给 Luna（gpt-6-luna，low）只读完成；主代理汇总。源码存在不等于本轮浏览器验收，新增 ResNet50 路径重做等当前 WIP 不作为已获用户验收的能力。
+- 推荐新材料放根目录 `ascend-studio-design.html`，标题暂定“Ascend Studio · 任务与学习交互设计”。候选阅读方式 A 为逐屏设计点+真实 Demo（推荐），B 为连续说明文档+固定演示；待用户确定。内容按共通框架、任务中学习（主线）、目标学习、主动接续、内容管理与版本复核、覆盖索引重组，同一共性规则只完整讲一次。
+- 右侧建议占约70%并可展开；复用单个持续存在的真实 Demo iframe，每个设计页定位一个确定场景，关键变化拆分不同页，支持自由操作、恢复本页起点和独立打开。拟补场景定位桥接与独立演示存储，避免切页丢失练习或改写用户正常 Demo 记录；当前代码只有有限 task 参数入口，尚无报告场景协议。来源/覆盖/已实现或待实现状态放材料索引；未落地提案不冒充当前 Demo。
+- 本轮仅方案与交接记录，无新运行、截图、研究或硬件证据，不改旧材料页序/hash、Demo源码、Pages产物或API / Host / Application边界。本文差异检查后单独提交并推送 `origin/main`，回执见本轮 Git 记录；其他已有 WIP 保持。
