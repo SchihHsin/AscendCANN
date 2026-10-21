@@ -107,7 +107,7 @@
   padding: 14px 14px 14px;
   border: 1px solid #e8e8e9;
   border-radius: 14px;
-  background: #fff;
+  background: transparent;
   color: #18191d;
   box-shadow: 0 7px 20px rgba(25, 28, 37, .065);
   text-align: left;
@@ -169,32 +169,19 @@
 .new-task-home__card-continue { justify-self: start; min-height: 30px; margin-top: 2px; padding: 0 10px; border: 0; border-radius: 7px; color: #fff; background: #17181d; font: inherit; font-size: 12px; font-weight: 550; cursor: pointer; }
 .new-task-home__card-continue:hover { background: #2c2e35; }
 .new-task-home__card-continue:focus-visible { outline: 2px solid #81899d; outline-offset: 2px; }
-.new-task-home__card-band {
+.new-task-home__card-surface {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 14px;
-  border-radius: 14px 14px 0 0;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
-.new-task-home__card-band::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 14px 14px 0 0;
-  background: #fff;
-  clip-path: polygon(
-    0 34%, .2% 34.05%, .5% 34.2%, 1% 34.5%, 1.8% 34.8%,
-    3% 34.95%, 5% 35%, 8% 35%, 12% 34.9%, 68% 34%,
-    70% 34.4%, 72% 36%, 74% 39%, 76% 44%, 78% 51%,
-    80% 60%, 82% 70%, 83% 76%, 84% 84%, 85% 93%, 86% 100%,
-    100% 100%, 0 100%
-  );
-}
-.new-task-home__card--rose .new-task-home__card-band { background: #f39ca2; }
-.new-task-home__card--sand .new-task-home__card-band { background: #f4dda1; }
-.new-task-home__card--blue .new-task-home__card-band { background: #9db7f0; }
+.new-task-home__card-back { fill: var(--folder-back-color); }
+.new-task-home__card-front { fill: #fff; }
+.new-task-home__card--rose { --folder-back-color: #f39ca2; }
+.new-task-home__card--sand { --folder-back-color: #f4dda1; }
+.new-task-home__card--blue { --folder-back-color: #9db7f0; }
 .new-task-home__card-icon {
   display: grid;
   width: 25px;

@@ -836,3 +836,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 对照用户提供的目标图与当前页面截图：目标白色前层上沿为高位直边、短而圆润的S形下沉、低位直边延伸至右缘；当前 `clip-path` 从68%至86%的斜坡过长，左侧露彩边约4.8px、右侧约14px，呈楔形色条，且仅顶部14px色带内有白色遮片，截图可见细横向接缝。
 - 待讨论方案：保留紧凑卡片尺寸，重画独立彩色背板与完整连续白色前层；肩部起点约76%、结束约86%，两端切线水平，先以左露5–6px、右露11–12px作为比对参数；圆角保持连续，悬浮不拉伸顶边。此为建议，未代表最终采纳。
 - 本轮仅依据用户附件与当前CSS只读比较，无新运行或NPU证据；不改Demo源码、Pages构建产物或页面序列，不影响API / Host / Application边界；未生成图像。文档diff检查通过；本轮提交仅含两份交接文档，提交/推送回执见Git记录。
+
+### 2026-10-21 · 文件夹白色前层实施
+
+- 用户确认采用该轮廓方向。新增 `src/FolderCardSurface.jsx`，通过 `useLayoutEffect` 与 `ResizeObserver` 观察SVG自身 `contentRect` 并更新 `viewBox`；`NewTaskHome.jsx` 改用该SVG表面，`new-task-home.css` 移除旧色条/polygon。独立圆角彩色背板配完整连续白色路径：上沿高位约6px，经76%–86%短S形转至低位约12px并延伸右缘，左上14px、右上8px，底面连续无横缝。卡片尺寸、文字、任务及展开逻辑沿用。
+- Luna low实施；主agent修正初版观察父卡片尺寸遗漏padding导致缩放的问题，改观察SVG后刷新复核。证据在 `evidence/20261021-folder-front-surface/`，包含用户目标、改前与桌面/移动画面、轮廓对照。对照图边缘padding略有差异，只用于判断走势与连续性，不声称像素完全一致。
+- 局部验证：1280×720默认/展开SVG viewBox为183.5×168与183.5×370.375，顶部y=6/12一致，展开白片完整包裹CTA；568×900卡片SVG为534×114，全页截图568×1378且无横向溢出；最终刷新console error/warn为`[]`。Pages构建与 `git diff --check`通过（构建有既有大包提醒）。仅轮廓局部QA，不代表全量回归或NPU验证；API / Host / Application边界和报告页序不变。提交/push待主agent处理。

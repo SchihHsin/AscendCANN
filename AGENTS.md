@@ -5492,3 +5492,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 对照用户提供的目标图与当前页面截图：目标白色前层上沿为高位直边、短而圆润的S形下沉、低位直边延伸至右缘；当前 `clip-path` 从68%至86%的斜坡过长，左侧露彩边约4.8px、右侧约14px，呈楔形色条，且仅顶部14px色带内有白色遮片，截图可见细横向接缝。
 - 待讨论方案：保留紧凑卡片尺寸，重画独立彩色背板与完整连续白色前层；肩部起点约76%、结束约86%，两端切线水平，先以左露5–6px、右露11–12px作为比对参数；圆角保持连续，悬浮不拉伸顶边。此为建议，未代表最终采纳。
 - 本轮仅依据用户附件与当前CSS只读比较，无新运行或NPU证据；不改Demo源码、Pages构建产物或页面序列，不影响API / Host / Application边界；未生成图像。文档diff检查通过；本轮提交仅含两份交接文档，提交/推送回执见Git记录。
+- 后续用户确认按该方向实施，结果见 `ascend-studio/AGENTS.md` 与 `ascend-studio/design-qa.md` 的文件夹前层实施记录；此处保留原讨论作为决策过程，方案已实施并完成局部验证。
+
+
+### 2026-10-21（按已确认方案重画文件夹前片）
+
+- 用户授权实施前轮方案。新增 `ascend-studio/src/FolderCardSurface.jsx`，修改 `NewTaskHome.jsx`、`new-task-home.css`：删除旧彩条/白色polygon遮片，以独立彩色背板与完整白色前片绘制文件夹；76%–86%短S形从6px高位降至12px低位并延伸右缘，消除横向接缝。用ResizeObserver观察SVG自身，固定顶部尺寸适应卡片宽度和展开高度。三色、字号、内容、紧凑尺寸与交互沿用。
+- Luna low实现，主agent发现并修正初版尺寸测量遗漏padding的问题后刷新复核。证据源为用户附件与实际本地截图，保存在 `ascend-studio/evidence/20261021-folder-front-surface/`；参考与实现顶部归一宽度并排检查，只对轮廓作结论。
+- 1280×720默认/展开，viewBox 183.5×168及183.5×370.375且top y6/12不变；568×900无横向溢出；Escape与展开白片包裹检查通过，最终console error/warn为空。`npm run build:pages`、`git diff --check`通过；静态产物 `ascstudio/`已重建。局部QA passed，详见Studio design-qa；不代表全量回归/NPU证据，不改变正式页序/hash或API/Host/Application边界。提交/push回执随后补记。

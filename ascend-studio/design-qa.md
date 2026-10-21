@@ -780,3 +780,27 @@ final result: passed
 final result: passed
 
 - 发布回执：`0d854bc8`（`fix: unify home dot and compute symbol motion`）已成功推送 `origin/main`；源码、Pages静态产物、验证截图均纳入。本文回填另行提交推送；未检查本次GitHub Pages部署完成状态。
+
+## 2026-10-21 · 文件夹白色前层轮廓
+
+**范围与证据**
+- 用户明确要求实施已讨论方案；局部视觉真值为 `evidence/20261021-folder-front-surface/source-reference.png`（1538×380），改前用户截图 `user-before.png`（1304×356）。源图为放大的卡片局部，本轮匹配轮廓；字号、任务文案和紧凑布局沿用已确认Demo。
+- 实现：本地5174首页，1280×720 CSS px默认与展开，保存 `desktop-default.jpg` / `desktop-expanded.jpg`（均1280×720）；顶部局部 `desktop-card-tops.jpg`（608×132）；568×900 CSS px全页 `mobile-default.jpg`（568×1378）。浏览器DPR=2，但截图输出为CSS像素尺寸；临时viewport已恢复。
+- 同一输入比对 `contour-comparison.png`（1224×244）：目标黄色卡顶部裁切440×125、实现 `yellow-top.jpg` 196×62各缩放到588px宽并排。边缘留白略有差异，因此只判断肩部走势与白色面的连续性，不声称像素完全一致。全页图检查上下文及输入区叠放，局部图判断转折和接缝。
+
+**修复与比较历史**
+- [已修复 P2] 原68%–86%长坡呈楔形，14px彩条内的白遮片与正文出现横缝。新 `FolderCardSurface` 以独立彩色背板和完整白色path绘制，76%–86%短S形两端水平相接，6px高位、12px低位延伸至右缘，默认/展开均无横缝。
+- [已修复 P2] 初版观察父卡片contentRect遗漏padding，viewBox与SVG实际尺寸不符。改观察SVG自身，最终刷新后viewBox为183.5×168；展开183.5×370.375且top y=6/12一致，CTA包裹完整。窄屏534×114、无横向溢出。
+
+**五项保真检查**
+- 字体：沿用13px行动、12px详情、11px来源及现有字体层级。
+- 间距/布局：本轮只重画背景，紧凑卡片尺寸、padding、旋转、输入区位置与展开层级沿用；左右圆角连续，扩高不拉伸顶边。
+- 色彩：沿用rose/sand/blue三色token与纯白前层。
+- 图像/形态：这是一项可交互UI组件轮廓，按用户确认方案用响应式SVG几何绘制；装饰图标仍来自既有库，没有用生成整图替代可编辑UI。
+- 文案：现有真实任务上下文未改，不套用参考图泛化示例文案。
+
+**验证与边界**
+- 默认、展开、Escape收起、窄屏实际检查；刷新后console error/warn为空。
+- `npm run build:pages`、`git diff --check`通过，既有大包提醒保留。仅本次轮廓局部QA，不代表全量回归或真实NPU验证；API/Host/Application边界与正式页序不变。提交推送回执随后补记。
+
+final result: passed

@@ -13,6 +13,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { HomeComputeBackdrop } from "./HomeComputeBackdrop";
+import { FolderCardSurface } from "./FolderCardSurface";
 import { buildHomeSuggestions } from "./home-recommendations";
 import "./new-task-home.css";
 
@@ -138,7 +139,7 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
               onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setCardExpanded(null); }}
               onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); event.currentTarget.querySelector(".new-task-home__card-summary")?.focus({ preventScroll: true }); setCardExpanded(null); } }}
             >
-              <span className="new-task-home__card-band" aria-hidden="true" />
+              <FolderCardSurface />
               <button className="new-task-home__card-summary" type="button" aria-expanded={expanded} aria-controls={`home-suggestion-details-${index}`} aria-label={`${item.taskName}：${item.title}`} onClick={() => setCardExpanded(item.taskName)}>
                 <span className="new-task-home__card-context"><Icon size={22} stroke={1.8} aria-hidden="true" /><span className="new-task-home__card-source">{item.project || "任务"}</span></span>
                 <span className="new-task-home__card-title"><strong title={item.taskName}>{item.taskName}</strong><span>{item.title}</span></span>
