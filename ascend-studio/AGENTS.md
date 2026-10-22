@@ -1112,4 +1112,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - ResNet50 官方路径始终只读。先复制成个人计划草案，在同一阶段内调整；可撤销、取消、确认。确认后「继续下一步」按个人顺序走，学习进度仍与稳定节点 ID 关联，刷新后恢复个人计划。
 - 新增 `src/official-learning-plan.js` 与测试，修改学习层级画布、官方画布、对应样式、官方进度状态与 Hook。工作区的所有标准学习任务共用草案编辑规则；官方课程保留个人副本机制。
 - 本轮测试 24/24 通过，`npm run build`、`npm run build:pages` 和 `git diff --check` 通过；浏览器回放草案换序、确认和刷新恢复。构建仅有既有 bundle 体积提示；没有真实 AI、Python、模型或 NPU 执行。
-- 已在基于最新 `origin/main` 的隔离工作区生成源码与 Pages 产物；发布状态见根目录 `AGENTS.md` 本条回执。没有纳入共享目录的其他对话改动。
+- 已在基于最新 `origin/main` 的隔离工作区生成源码与 Pages 产物；功能提交 `78baa187` 已推送 `origin/main`，Pages workflow `39777745749` 成功，线上 index、JS 与 CSS 均返回 HTTP 200。没有纳入共享目录的其他对话改动。
