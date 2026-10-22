@@ -44,8 +44,10 @@
 .ld-source-footnote { margin:12px 1px 0; color:#9a9ba2; font-size:9px; line-height:1.5; }
 .ld-empty { display:grid; place-items:center; min-height:145px; border:1px dashed #e1e1ea; border-radius:10px; color:#9294a0; background:#ffffffa8; font-size:11px; }
 .ld-calendar-heading { margin-bottom:15px; }
-.ld-event-list { display:flex; flex-direction:column; gap:9px; }
-.ld-event { display:grid; grid-template-columns:62px minmax(0,1fr) 76px auto; align-items:center; gap:14px; padding:12px 14px; border:1px solid #e5e6ed; border-radius:10px; background:#fff; }
+.ld-event-list { --ld-timeline-indent:30px; --ld-timeline-rail:13px; position:relative; display:flex; flex-direction:column; gap:9px; padding-left:var(--ld-timeline-indent); }
+.ld-event-list::before { position:absolute; top:0; bottom:0; left:var(--ld-timeline-rail); width:1px; border-radius:999px; background:#d7d8f5; content:""; }
+.ld-event { position:relative; display:grid; grid-template-columns:62px minmax(0,1fr) 76px auto; align-items:center; gap:14px; padding:12px 14px; border:1px solid #e5e6ed; border-radius:10px; background:#fff; }
+.ld-event::before { box-sizing:border-box; position:absolute; top:50%; left:calc(var(--ld-timeline-rail) - var(--ld-timeline-indent) - 6.5px); width:13px; height:13px; transform:translateY(-50%); border:2px solid #fff; border-radius:50%; background:#c1c3f2; box-shadow:0 0 0 1px #d7d8f5; content:""; }
 .ld-event-date { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:75px; border-right:1px solid #e9eaf2; color:#737c9c; }
 .ld-event-date span { font-size:9px; }
 .ld-event-date strong { margin-top:1px; color:#333640; font-size:24px; font-weight:600; letter-spacing:-.04em; line-height:1.1; }
@@ -87,6 +89,7 @@
   .ld-card-topline { align-items:flex-start; }
   .ld-card-context { max-width:58%; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
   .ld-card-description { font-size:10px; }
+  .ld-event-list { --ld-timeline-indent:24px; --ld-timeline-rail:10px; }
   .ld-event { grid-template-columns:49px minmax(0,1fr) 48px; gap:10px; padding:10px; }
   .ld-event-date { min-height:72px; }
   .ld-event-date strong { font-size:21px; }
