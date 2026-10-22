@@ -5865,3 +5865,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`learning-discovery.css` 与 8 张 v2 内容图，并更新 `ascstudio/` Pages 产物。没有改变汇报页序、hash 或 API / Host / Application 边界。
 - 验证：`npm run build:pages` 成功（仅有既有 bundle 大小提示）；`git diff --check` 通过；本地浏览器 1280×720 查看了推荐、新上架与日程区域，滚动正常。Pages workflow `39758887454` 成功；线上浏览器视觉读取超时，因此不声称完成线上截图核验。未运行测试套件。
 - 功能提交 `c88e7644` 已推送 `origin/main`。共享工作区其他对话改动未纳入或覆盖。
+
+### 2026-10-22 · 学习发现蓝紫色再校准
+
+- 用户指出内容图仍显紫，明确要蓝紫色。保留白色 / 浅冷灰底与卡片内容，仅将楼层强调、焦点态、活动状态调整为蓝靛色，并把课程、路径、知识点、认证和 Meetup 图片统一向蓝靛偏移、轻微降饱和；不加青绿主色。
+- 修改 `ascend-studio/src/learning-discovery.css` 与 `ascstudio/` Pages 产物；页面顺序、滚动与交互不变，不影响 API / Host / Application 边界。图片素材仍是语义内容图，未改图片主体。
+- 证据：用户反馈 + 本地 1280×720 浏览器回看推荐、新上架、日程楼层。验证 `npm run build:pages`、`git diff --check`；线上 Pages index 与新 CSS 均 HTTP 200，蓝靛色相规则在 CSS 中出现 2 处。未运行测试套件。
+- Commit `280cf129` 已推送 `origin/main`；Pages workflow `39761831003` 成功。部署日志只有 Actions Node.js 20 弃用与 Ubuntu runner 迁移提示，没有构建或部署失败。
