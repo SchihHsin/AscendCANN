@@ -135,6 +135,8 @@
   .tw-topbar-actions { gap: 3px; }
   .tw-topbar .tw-point-mode { width: 25px; padding-inline: 0; }
   .tw-topbar .tw-point-mode span { display: none; }
+  .tw-topbar .tw-point-mode.is-open { width: auto; padding-inline: 8px; }
+  .tw-topbar .tw-point-mode.is-open span { display: inline; }
   .tw-topbar .tw-nearby-action { padding-inline: 5px; font-size: 11px; }
   .tw-topbar .tw-view-all { padding-inline: 7px; font-size: 11px; }
 }

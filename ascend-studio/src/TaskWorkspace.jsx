@@ -1,4 +1,4 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import {
   IconArrowRight,
   IconCheck,
@@ -99,6 +99,20 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
   const pointerStart = useRef(null);
   const [areaSelectionMode, setAreaSelectionMode] = useState(false);
   const [dragSelection, setDragSelection] = useState(null);
+  const exitAreaSelection = useCallback(() => {
+    setAreaSelectionMode(false);
+    setDragSelection(null);
+    pointerStart.current = null;
+  }, []);
+  const toggleAreaSelection = useCallback(() => {
+    if (areaSelectionMode) {
+      exitAreaSelection();
+      return;
+    }
+    setDragSelection(null);
+    pointerStart.current = null;
+    setAreaSelectionMode(true);
+  }, [areaSelectionMode, exitAreaSelection]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [objectInfoOpen, setObjectInfoOpen] = useState(false);
   const objectInfoTrigger = useRef(null);
@@ -229,14 +243,13 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
     if (!areaSelectionMode) return undefined;
     const escape = event => {
       if (event.key === "Escape") {
-        setAreaSelectionMode(false);
-        setDragSelection(null);
-        pointerStart.current = null;
+        event.preventDefault();
+        exitAreaSelection();
       }
     };
     window.addEventListener("keydown", escape);
     return () => window.removeEventListener("keydown", escape);
-  }, [areaSelectionMode]);
+  }, [areaSelectionMode, exitAreaSelection]);
 
   const finishAreaSelection = (event) => {
     const start = pointerStart.current;
@@ -310,7 +323,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
         </div>}
       </div>
       <div className="tw-topbar-actions">
-        <button className={`tw-point-mode${areaSelectionMode ? " is-open" : ""}`} type="button" aria-pressed={areaSelectionMode} aria-label={areaSelectionMode ? "退出指着说区域选择" : "指着说"} title={areaSelectionMode ? "拖动框选工作区任意区域；按 Esc 退出" : "框选工作区任意区域后，通过输入框打字或语音描述"} onClick={() => { setDragSelection(null); pointerStart.current = null; setAreaSelectionMode(value => !value); }}><IconPointer2 size={14} /><span>{areaSelectionMode ? "退出框选" : "指着说"}</span></button>
+        <button className={`tw-point-mode${areaSelectionMode ? " is-open" : ""}`} type="button" aria-pressed={areaSelectionMode} aria-label={areaSelectionMode ? "退出指着说区域选择" : "指着说"} title={areaSelectionMode ? "按 Esc 或再次点击此按钮退出框选" : "框选工作区任意区域后，通过输入框打字或语音描述"} onClick={toggleAreaSelection}><IconPointer2 size={14} /><span>{areaSelectionMode ? "退出框选" : "指着说"}</span></button>
         {!onCanvas && <button type="button" ref={objectInfoTrigger} className={"tw-object-info-button" + (objectInfoOpen ? " is-open" : "")} aria-label="来源、关联与历史" title="来源、关联与历史" aria-expanded={objectInfoOpen} onClick={() => { setObjectInfoOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); }}><IconInfoCircle size={15} />{activeHistory.length > 0 && <small>{activeHistory.length}</small>}</button>}
         {state.referenceId === state.activeId && state.referenceReturnId && <button className="tw-nearby-action" type="button" onClick={actions.returnFromReference}>返回当前内容</button>}
         {isMainTask && <button className="tw-view-all" type="button" disabled={inOverview && !canReturn} aria-label={inOverview ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => inOverview ? returnToFocus() : openCanvas("overview")}>{inOverview ? <><IconArrowRight className="tw-return-arrow" size={13} />返回正文</> : <><IconLayoutBoard size={13} />全部内容</>}</button>}
@@ -362,7 +375,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
         <div className="tw-area-select-layer" role="presentation" aria-label="拖动框选工作区区域" onPointerDown={startAreaSelection} onPointerMove={moveAreaSelection} onPointerUp={finishAreaSelection} onPointerCancel={() => { pointerStart.current = null; setDragSelection(null); }} onContextMenu={event => event.preventDefault()}>
           {dragSelection && <div className="tw-area-selection-box" style={{ left: dragSelection.left, top: dragSelection.top, width: dragSelection.width, height: dragSelection.height }} />}
         </div>
-        <div className="tw-area-mode-hint" role="status"><IconPointer2 size={14} /><span>在工作区拖动框选任意区域；选中后会在附近出现输入框，可打字或按住 Fn 语音输入。</span><button type="button" aria-label="退出区域选择" onClick={() => { setAreaSelectionMode(false); setDragSelection(null); pointerStart.current = null; }}><IconX size={13} /></button></div>
+        <div className="tw-area-mode-hint" role="status"><IconPointer2 size={14} /><span>拖动框选任意区域；按 <kbd>Esc</kbd> 或再次点击上方「退出框选」退出。选中后可在附近输入文字或按住 <kbd>Fn</kbd> 描述。</span><button type="button" aria-label="退出区域选择" title="退出框选" onClick={exitAreaSelection}><IconX size={13} /></button></div>
       </>}
     </div>
 
