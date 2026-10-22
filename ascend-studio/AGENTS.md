@@ -1165,6 +1165,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 变更 `src/useWorkbenchState.js` 与仓库根目录 Pages 构建产物；其他任务会话、消息及记录保持原样。真实社区服务未连接。
 - 构建与差异检查结果记录在根 `AGENTS.md`；未运行测试套件，未完成浏览器手工刷新回放。
 
+### 2026-10-23 · 刷新回到社区经验邀请提示
+
+- 页面恢复存档时移除已生成的社区草稿对象、对话中的草稿卡片和演示提交成功消息，保留任务完成后的社区邀请消息；刷新后可从邀请按钮重新生成草稿，不再落在“待你审阅”面板。
+- 发布渠道选择仍在草稿生成后的右侧面板；线上 Firefox 的下拉控件可展开四个渠道选项。真实发布未连接。
+- 变更 `src/useWorkbenchState.js` 和仓库根目录 `ascstudio/` Pages 构建产物；不改变页面导航 / API、Host / Application 边界。`npm run build`、`npm run build:pages`、语法检查和差异检查通过；线上下拉可展开四个平台。未运行测试套件。
+
 
 ### 2026-10-22 · 首页错误代码语法高亮
 

@@ -69,15 +69,11 @@ function restoreWorkbench() {
   }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
-  // Submission is a repeatable demo action: keep the reviewed draft, but
-  // reset its submitted state when the page restores a saved session.
+  // Community feedback returns to the completion invite after refresh. The
+  // generated review panel and its demo submit receipt are temporary states.
   for (const session of Object.values(sessions)) {
-    const communityDraft = session.communityDraft;
-    if (!isObject(communityDraft) || communityDraft.status !== "submitted") continue;
-    const draft = { ...communityDraft, status: "review" };
-    delete draft.submittedAt;
-    session.communityDraft = draft;
-    session.messages = session.messages.filter(message => !message.communitySubmission);
+    delete session.communityDraft;
+    session.messages = session.messages.filter(message => !message.communityDraftCard && !message.communitySubmission);
   }
   if (!sessions[MAIN_TASK]) sessions[MAIN_TASK] = blank();
   // The path co-creation task is a repeatable demo: restore its starter

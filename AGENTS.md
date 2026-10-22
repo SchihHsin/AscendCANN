@@ -6003,3 +6003,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 训练调优例子后续须明确假设来源：有训练任务与用户提供的日志时，可围绕任务展开解读日志、比较结果、定位瓶颈等动作；未有证据时，不宣称通信、数据加载或参数配置已存在问题。避免以算法、AI 推荐或满屏展示替代相关性依据。
 - 依据：用户本轮质疑与既有任务事实推荐约定；上述方案仍是待验证设计假设（L），并非已有用户遥测或推荐效果。仅更新交接，无页面 / 页序 / hash / API、Host、Application 边界变化。
 - 验证：隔离索引 `git diff --cached --check` 通过；本条文档基于最新 origin/main 单独提交推送，其他工作区和索引改动保留。未运行构建或测试；词条来源与呈现方向仍待讨论。
+
+### 2026-10-23 · 刷新恢复社区邀请提示
+
+- 更正上一版刷新行为：刷新时清除社区草稿面板、草稿卡片及演示提交消息，保留任务完成后的社区邀请提示，让界面回到“生成草稿”入口，而不是“待你审阅”。
+- 发布渠道下拉保留在生成后的右侧草稿面板；线上页面可展开昇腾社区、GitCode、CSDN、抖音四个选项。真实渠道发布服务未接入。
+- 修改 `ascend-studio/src/useWorkbenchState.js` 并重建 `ascstudio/` Pages 包；不改变页面导航序列 / hash 或 API / Host / Application 边界。
+- 验证：`npm run build`、`npm run build:pages`、`node --check src/useWorkbenchState.js` 与 `git diff --check` 均通过。CUA 检查线上下拉可展开四个平台；未运行测试套件，也未在新包部署前手工回放刷新。
