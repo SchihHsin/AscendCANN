@@ -5753,3 +5753,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更：`ascend-studio/src/App.jsx`、`LearningDiscoveryPage.jsx`、`learning-discovery.css`、`styles.css` 与根目录 `ascstudio/` Pages 产物。不改变汇报页序/hash，也不改变 API / Host / Application 边界。
 - 核验：基于最新干净主线 `920df74b` 的 `npm run build:pages` 成功，Vite 保留既有 500 kB chunk 提示；检查构建包包含学习发现、推荐、新上架和 Meetup 文案，`git diff --check` 通过。此前本地 1280×720 预览覆盖三类切换、4 条推荐、加入日程状态与推荐跳转；本轮 Pages workflow `39718068197` 成功，线上 `index.html` 引用新 bundle，完整下载后确认对应内容存在。未运行测试套件。
 - 源码与 Pages 产物提交 `e1c06fb0` 已推送 `origin/main`。其它对话的暂存和工作区更改均保留；活动与认证数据仍待接入真实来源。
+
+
+### 2026-10-22 · 开发示例入口展示社区经验提示
+
+- 用户反馈在「图像推理调试」Demo 中看不到彩色社区经验提示。`?task=development` 入口现在追加一段明确标为演示的形状核对通过对话，并显示社区经验邀请；从普通任务入口进入时仍需实际完成示例副本应用和形状复核才触发。学习任务不显示该邀请。
+- 彩色渐变样式沿用现有社区提示卡，标题区分「示例核对已完成」；演示文案明确浏览器形状规则不代表真实模型 / NPU 验证。草稿仍由用户主动打开、审阅和提交。
+- 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建产物。隔离快照 `npm run build:pages`、工作树 `npm run build`、`git diff --check` 通过；本地 Firefox 预览截图确认彩色提示出现在开发任务对话中。未运行测试套件。
+- 功能提交 `1332f5ee` 已推送 `origin/main`；不影响正式报告页序/hash或 API / Host / Application 边界。可信度设计仍按用户要求待后续处理。

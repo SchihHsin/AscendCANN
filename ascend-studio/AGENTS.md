@@ -992,3 +992,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 官方课程与成长路径引用现有官方数据；认证专题和活动日历是本地演示示例，未接真实推荐、报名或 AI 服务。
 - 变更：`src/App.jsx`、`src/LearningDiscoveryPage.jsx`、`src/learning-discovery.css`、`src/styles.css` 与 Pages 输出。基于 `920df74b` 的干净快照 `npm run build:pages` 成功；预览检查三类切换、推荐卡、日程状态和跳转，线上 workflow `39718068197` 成功并核对远端 bundle。Vite 有既有 >500 kB chunk 提示；未运行测试套件。
 - 源码与 Pages 提交 `e1c06fb0` 已推送。其它对话改动保留。
+
+
+### 2026-10-22 · 开发示例入口展示社区经验提示
+
+- 用户反馈在「图像推理调试」Demo 中看不到彩色社区经验提示。`?task=development` 入口现在追加一段明确标为演示的形状核对通过对话，并显示社区经验邀请；从普通任务入口进入时仍需实际完成示例副本应用和形状复核才触发。学习任务不显示该邀请。
+- 彩色渐变样式沿用现有社区提示卡，标题区分「示例核对已完成」；演示文案明确浏览器形状规则不代表真实模型 / NPU 验证。草稿仍由用户主动打开、审阅和提交。
+- 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建产物。隔离快照 `npm run build:pages`、工作树 `npm run build`、`git diff --check` 通过；本地 Firefox 预览截图确认彩色提示出现在开发任务对话中。未运行测试套件。
+- 功能提交 `1332f5ee` 已推送 `origin/main`；不影响正式报告页序/hash或 API / Host / Application 边界。可信度设计仍按用户要求待后续处理。
