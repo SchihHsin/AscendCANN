@@ -28,6 +28,7 @@ import { OFFICIAL_LEARNING_TASK, OFFICIAL_LEARNING_STAGES, OFFICIAL_LEARNING_MAT
 import { useLearningJourney } from "./useLearningJourney";
 import { useLearningCanvasView } from "./useLearningCanvasView";
 import { LearningHierarchyCanvas } from "./LearningHierarchyCanvas";
+import { stepsForStage } from "./learning-path-collaboration";
 import { useOfficialLearningPath } from "./useOfficialLearningPath";
 import { OfficialLearningPathCanvas } from "./OfficialLearningPathCanvas";
 import { LearningJourneyMaterial } from "./LearningJourney";
@@ -77,6 +78,19 @@ import {
 
 const OFFICIAL_STAGE_IDS = new Set(OFFICIAL_LEARNING_STAGES.map(stage => stage.id));
 const OFFICIAL_MATERIAL_STAGES = Object.fromEntries(OFFICIAL_LEARNING_STAGES.flatMap(stage => [[stage.id, [stage.id, stage.children[0].id]], ...stage.children.map(child => [child.id, [stage.id, child.id]])]));
+const PATH_REFINEMENT_DEMO_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
+
+function findLearningPathMove(text, path) {
+  const match = String(text).match(/(?:把|将)\s*[“"「]?(.+?)[”"」]?\s*(?:节点)?(?:移动到|移到|放到|排到)\s*[“"「]?(.+?)[”"」]?\s*(之前|前面|前|之后|后面|后)/);
+  if (!match) return null;
+  const clean = value => value.replace(/[“"「」”]/g, "").replace(/节点/g, "").trim();
+  const nodes = (path || []).flatMap(stage => stepsForStage(stage).map(step => ({ stageId: stage.id, stepId: step.id, title: step.title })));
+  const find = phrase => nodes.filter(node => phrase.includes(node.title) || node.title.includes(phrase)).sort((a, b) => b.title.length - a.title.length)[0];
+  const source = find(clean(match[1]));
+  const target = find(clean(match[2]));
+  if (!source || !target || source.stageId !== target.stageId || source.stepId === target.stepId) return null;
+  return { ...source, targetId: target.stepId, targetTitle: target.title, direction: /前/.test(match[3]) ? "before" : "after" };
+}
 
 const routes = [
   {
@@ -145,10 +159,17 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
 function App() {
   const wb = useWorkbenchState();
   const developmentDemoLaunch = useRef(new URLSearchParams(window.location.search).get("task") === "development");
-  const [showNewTaskHome, setShowNewTaskHome] = useState(() => !["learning", "development"].includes(new URLSearchParams(window.location.search).get("task")));
+  const [showNewTaskHome, setShowNewTaskHome] = useState(() => {
+    const launchTask = new URLSearchParams(window.location.search).get("task");
+    if (["learning", "development"].includes(launchTask)) return false;
+    // Reopening the co-creation scenario should show its reset starter state,
+    // while a fresh visit to the app still opens the new-task home.
+    return readSession("workbench", null)?.selectedTask !== LEARNING_PATH_GENERATION_TASK;
+  });
   const [showLearningDiscovery, setShowLearningDiscovery] = useState(false);
   const [pendingDiscoveryItem, setPendingDiscoveryItem] = useState(null);
   const [pendingRecommendationAction, setPendingRecommendationAction] = useState(null);
+  const [learningAgentAction, setLearningAgentAction] = useState(null);
   const [saveAvailable, setSaveAvailable] = useState(sessionSaveAvailable);
   useEffect(() => {
     const update = () => setSaveAvailable(sessionSaveAvailable());
@@ -236,13 +257,16 @@ function App() {
   const layout = useWorkbenchLayout({ sidebarCollapsed, contentCollapsed: showTaskWorkspace && workspace.state.collapsed, learningLayout: isLearningTask, communityDraftFocus });
   const visibleContentId = layout.contentWidth <= 620 && workspace.state.splitId && [workspace.state.activeId, workspace.state.splitId].includes(workspace.state.comparisonFocusId) ? workspace.state.comparisonFocusId : workspace.state.activeId;
   const contentVisible = id => !workspace.state.collapsed && workspace.state.activeId !== "canvas" && (layout.contentWidth <= 620 ? visibleContentId === id : workspace.state.activeId === id || workspace.state.splitId === id);
-  const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask, initialStage: isPathGenerationTask ? "path" : "channels" });
+  const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask, initialStage: isPathGenerationTask ? "path" : "channels", resetOnLoad: isPathGenerationTask });
   const learningCanvasVisible = isStandardLearningTask && !workspace.state.collapsed && workspace.state.activeId === "canvas" && workspace.state.canvasMode === "free";
   const learning = useLearningJourney({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", profile: task.learningProfile, seedPathGeneration: isPathGenerationTask, visible: isStandardLearningTask && (contentVisible("learning-lesson") || learningCanvasVisible && learningCanvasView.state.expanded && ["channels", "environment"].includes(learningCanvasView.state.selectedStage)), onRecord: (record, ownerId) => { wb.addRecord(record, ownerId); const id = ({ "learning-path": "learning-path", "learning-attempt": "learning-practice", "learning-check": "learning-check", "learning-summary": "learning-summary" })[record.kind]; if (id) workspace.actions.open(id, { activate: false, taskId: ownerId, isMainTask: true }); } });
+  useEffect(() => {
+    if (learningAgentAction && learningAgentAction.taskId !== selectedTask) setLearningAgentAction(null);
+  }, [selectedTask, learningAgentAction]);
   const statusForTask = name => {
     if (name === LEARNING_PATH_GENERATION_TASK && name === selectedTask) {
       if (learning.state.path) return { label: "路径已确认", tone: "confirmed" };
-      if (learning.state.draftPath) return { label: learning.state.pathChanges.some(change => change.status === "pending") ? "待你审阅" : "待确认", tone: "review" };
+      if (learning.state.draftPath) return { label: "路径共创中", tone: "review" };
       return { label: "生成中", tone: "review" };
     }
     const details = wb.getTask(name);
@@ -556,32 +580,59 @@ function App() {
       let action = () => openContent("learning-goal");
       let replyText = "目标与基础已保留。可以在右侧修改，再生成或选用图像输入预处理的示例路径。";
       let messageMeta;
+      let pathAgentAction = null;
       if (/取消.*(?:路径|调整|变更)|(?:路径|调整|变更).*取消/.test(text)) {
         action = () => { learning.actions.cancelPath(); openContent("learning-path"); };
         replyText = "已取消路径调整，保留原来已确认的路径与学习记录。";
       } else if (/跳过.*环境|环境.*(?:准备好|配置好|已配|已准备)/.test(text)) {
         action = () => { const entry = (learning.state.draftPath || learning.state.path)?.find(node => node.id === "environment"); if (!entry?.skipped) learning.actions.editPath("environment", "skip"); openContent("learning-path"); };
-        replyText = "已把跳过环境准备放进路径预览。理解 → 跟练 → 输入检查继续保留；确认后才更新路径。";
+        replyText = "已把环境准备节点的跳过调整放进路径共创中。理解 → 跟练 → 输入检查继续保留；确认后才开始学习。";
+        const environment = (learning.state.draftPath || learning.state.path)?.find(node => node.id === "environment");
+        if (!environment?.skipped) pathAgentAction = { type: "adjust", label: "调整节点", targets: [{ stageId: "environment", stepId: "environment-intro" }] };
       } else if (/恢复.*环境|环境.*恢复/.test(text)) {
         action = () => { const entry = (learning.state.draftPath || learning.state.path)?.find(node => node.id === "environment"); if (entry?.skipped) learning.actions.editPath("environment", "skip"); openContent("learning-path"); };
-        replyText = "已准备恢复环境节点的调整预览，等待确认。";
-      } else if ((learning.state.draftPath || learning.state.path) && /(?:已经|已掌握|会了|熟悉|学过|重点|优先|补充|增加|加入|移除|删除|跳过|减少|调整|更关注|不需要)/i.test(text)) {
-        const proposal = learning.actions.proposePathChanges(text);
+        replyText = "已把环境节点恢复放进路径共创中，等你决定后再开始学习。";
+        const environment = (learning.state.draftPath || learning.state.path)?.find(node => node.id === "environment");
+        if (environment?.skipped) pathAgentAction = { type: "adjust", label: "恢复节点", targets: [{ stageId: "environment", stepId: "environment-intro" }] };
+      } else if ((learning.state.draftPath || learning.state.path) && /(?:已经|已掌握|会了|熟悉|学过|重点|优先|补充|增加|加入|移除|删除|跳过|减少|调整|更关注|不需要|移动|移到|放到|排到)/i.test(text)) {
+        const pathBeforeChange = learning.state.draftPath || learning.state.path;
+        const move = findLearningPathMove(text, pathBeforeChange);
         action = openLearningPathReview;
-        if (proposal.changes.length) {
-          messageMeta = { pathReviewId: proposal.proposalId };
-          replyText = `我按你补充的学习情况准备了 ${proposal.changes.length} 项路径建议。你可以在画布逐项采纳或忽略，也可以继续拖动节点；整条路径确认前，原路径与学习记录都不会改变。`;
+        if (move) {
+          const moved = learning.actions.reorderPathStep(move.stageId, move.stepId, move.targetId, move.direction);
+          if (moved) {
+            pathAgentAction = { type: "move", label: "移动节点", targets: [{ stageId: move.stageId, stepId: move.stepId }, { stageId: move.stageId, stepId: move.targetId }] };
+            replyText = `我已把「${move.title}」移动到「${move.targetTitle}」${move.direction === "before" ? "之前" : "之后"}，改动留在路径草案里。你可以继续调整或撤销；确认整条路径后才会生效。`;
+          } else replyText = "这两个节点当前不能这样调整；我已打开路径画布，你可以查看同阶段的节点并继续编辑。";
         } else {
-          replyText = "我已打开当前路径供你继续审阅。要调整内容，可以说已掌握的节点、想补充的主题，或希望重点练习的部分；我会先给出可采纳或忽略的草案建议。";
+          const proposal = learning.actions.proposePathChanges(text);
+          if (proposal.changes.length) {
+            messageMeta = { pathReviewId: proposal.proposalId };
+            const targets = [...proposal.changes.map(change => ({ stageId: change.stageId, stepId: change.stepId })), ...(proposal.contextTargets || [])];
+            const uniqueTargets = targets.filter((target, index) => targets.findIndex(item => item.stageId === target.stageId && item.stepId === target.stepId) === index);
+            const orderedTargets = uniqueTargets.sort((a, b) => {
+              const path = proposal.path || learning.state.draftPath || learning.state.path || [];
+              const stageOrder = stageId => path.findIndex(stage => stage.id === stageId);
+              const stepOrder = target => stepsForStage(path.find(stage => stage.id === target.stageId)).findIndex(step => step.id === target.stepId);
+              return stageOrder(a.stageId) - stageOrder(b.stageId) || stepOrder(a) - stepOrder(b);
+            });
+            pathAgentAction = { type: "propose", label: "按新目标调整节点", targets: orderedTargets };
+            const profileUpdate = proposal.profileChanged ? `已同步目标、基础和每天 ${proposal.profile.dailyMinutes} 分钟的安排。` : "";
+            const orderNote = proposal.contextTargets?.length ? "NCHW 检查已放在跟练之后，我会保留这条依赖顺序。" : "";
+            replyText = `我根据你补充的学习情况提出了 ${proposal.changes.length} 项节点变化。${profileUpdate}${orderNote}Agent 已逐个定位相关节点；你可以在画布上逐项采纳或忽略，也可以继续手动调整。整条路径确认前不会开始学习。`;
+          } else if (proposal.profileChanged) {
+            replyText = `已同步学习目标、基础和每天 ${proposal.profile.dailyMinutes} 分钟的安排。现有节点暂无变化；你可以继续说想快速回顾或新增的练习内容。`;
+          } else replyText = "我已打开正在共创的路径。你可以说已掌握的节点、想补充的主题，或希望重点练习的部分；新的 AI 变化会直接出现在相应节点上。";
         }
       } else if (!learning.state.path && !learning.state.draftPath && /(?:我想|希望|想要|帮我|我要).{0,36}(?:学会|学习|掌握|了解)|(?:生成|准备|制定).{0,16}(?:学习)?路径/i.test(text)) {
         const proposal = learning.actions.startPathFromPrompt(text);
         if (proposal) {
           action = openLearningPathReview;
           messageMeta = { pathReviewId: proposal.proposalId };
+          pathAgentAction = { type: "create", label: "生成学习路径", targets: proposal.changes.length ? proposal.changes.map(change => ({ stageId: change.stageId, stepId: change.stepId })) : ["environment", "channels", "practice", "check"].map(stageId => ({ stageId })) };
           replyText = proposal.changes.length
-            ? `我先按你的目标起草路径，并标出 ${proposal.changes.length} 项可能需要调整的内容。请先在画布审阅；可以继续补充目标、逐项采纳或忽略，最后由你确认后才开始学习。`
-            : "我先按你的目标准备了路径草案。你可以在画布检查阶段和子步骤，也可以继续告诉我已掌握的内容或想增加的主题；确认之前不会开始学习。";
+            ? `我先按你的目标搭出路径初稿，并在 ${proposal.changes.length} 个节点上标出 AI 提议。路径仍在共创中；可以直接在节点决定，也可以继续补充目标，确认之前不会开始学习。`
+            : "我先按你的目标搭出路径初稿。你可以直接检查和调整路径节点，也可以继续告诉我已掌握的内容或想增加的主题；路径确认之前不会开始学习。";
         }
       } else if (/确认.*(?:路径|开始|调整)|开始学习/.test(text)) {
         action = () => { if (learning.state.draftPath) learning.actions.confirmPath(); openContent("learning-path"); };
@@ -590,7 +641,8 @@ function App() {
         const proposal = learning.actions.generatePath(/选用/.test(text) ? "existing" : "goal");
         action = openLearningPathReview;
         if (proposal) messageMeta = { pathReviewId: proposal.proposalId };
-        replyText = "已准备可审阅的示例路径。你可以检查各阶段和子步骤、补充学习要求或拖动节点；确认后才进入学习。";
+        if (proposal) pathAgentAction = { type: "create", label: "生成学习路径", targets: ["environment", "channels", "practice", "check"].map(stageId => ({ stageId })) };
+        replyText = "示例路径已放入共创画布。你可以检查各阶段和子步骤、补充学习要求或拖动节点；确认后才进入学习。";
       } else if (/输入.*(?:检查|核对)|核对.*输入/.test(text)) {
         action = () => openContent("learning-check");
         replyText = "已打开本次输入检查；明确运行检查后才保存结果，旧记录继续保留。";
@@ -608,7 +660,11 @@ function App() {
       } else if (/全部|找回|恢复/.test(text)) {
         action = () => openCanvas(); replyText = "已打开本任务的内容与记录，可以恢复原对象及尝试。";
       }
-      if (sendMessage(event, withPointContext({ replyText, ...(messageMeta ? { messageMeta } : {}) }))) { consumePointContext(); action(); }
+      if (sendMessage(event, withPointContext({ replyText, ...(messageMeta ? { messageMeta } : {}) }))) {
+        consumePointContext();
+        if (pathAgentAction) setLearningAgentAction({ ...pathAgentAction, id: crypto.randomUUID(), taskId: selectedTask });
+        action();
+      }
       return;
     }
     const restore = isInteractiveTask && /^(?:请)?(?:帮我)?(?:打开|回到|恢复|找回|再看|唤醒|查看)/.test(text) && /刚才|之前|上次|那份|解释|图解|张量|误差|核对|尝试|记录|diff|修改预览|来源/i.test(text);
@@ -841,7 +897,7 @@ function App() {
     const ownerImage = ownerId === IMAGE_TASK;
     const ownerState = workspace.getTaskState(ownerId);
     const free = ownerState.canvasMode === "free";
-    if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} visible={visible} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
+    if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
     if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
     const ownerCanvas = ownerLearning || ownerOfficialLearning ? learningCanvas : ownerImage ? imageCanvas : canvas;
     return <div className="tw-content-canvas">
@@ -993,7 +1049,7 @@ function App() {
         <div className="topbar-spacer" />
         {showTaskWorkspace && !saveAvailable && <span className="save-unavailable" role="status">暂未保存</span>}
         {showTaskWorkspace && workspace.state.collapsed && <button className="light-button reopen-content" type="button" onClick={() => workspace.actions.setCollapsed(false)}>打开内容{workspace.state.visitedTabs.some(item => item.unread) && <span className="reopen-update-count">{workspace.state.visitedTabs.filter(item => item.unread).length} 项更新</span>}</button>}
-        {!showNewTaskHome && <span className="proposal-badge"><span className="proposal-dot" />设计提案 · 待开发者确认</span>}
+        {!showNewTaskHome && <span className={`proposal-badge${isPathGenerationTask && learning.state.draftPath ? " proposal-badge--learning-edit" : ""}`}><span className="proposal-dot" />{isPathGenerationTask ? learning.state.draftPath ? "学习路径 · 编辑中" : learning.state.path ? "学习路径 · 已确认" : "学习路径 · 待生成" : "设计提案 · 待开发者确认"}</span>}
         <button className="icon-button top-icon" type="button" aria-label="通知" data-menu-trigger aria-expanded={wb.menu?.name === "notifications"} onClick={(event) => openMenu("notifications", event)}><IconBell size={18} />{wb.notifications.length > 0 && <span className="notification-dot" />}</button>
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
@@ -1131,7 +1187,7 @@ function App() {
             </>}
             {session.showIntro && !isMainTask && <>
               <article className="message-row user-message"><div className="message-content"><div className="message-meta">你</div><div className="user-bubble">{task.question}</div></div></article>
-              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response">{task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}{isStandardLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-goal")}>设置学习目标<IconArrowRight size={14} /></button><button className="task-plain-button" type="button" onClick={() => openContent(learning.state.summaries.length ? "learning-summary" : "learning-path")}>{learning.state.summaries.length ? "回看学习记录" : "查看学习路径"}</button></div>}{isOfficialLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-stage-chain")}>查看目标学习路径<IconArrowRight size={14} /></button><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-step-image-classification")}>从图像推理链路开始</button></div>}{isImageTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => dispatchTaskIntent("explain", "layout")}>返回关联图解<IconArrowRight size={14} /></button><button className="task-plain-button" type="button" onClick={() => openContent("image-source")}>查看代码与来源</button></div>}</div></div></article>
+              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response">{task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}{isStandardLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-goal")}>设置学习目标<IconArrowRight size={14} /></button><button className="task-plain-button" type="button" onClick={() => openContent(learning.state.summaries.length ? "learning-summary" : "learning-path")}>{learning.state.summaries.length ? "回看学习记录" : "查看学习路径"}</button>{isPathGenerationTask && <button className="task-plain-button" type="button" onClick={() => { setDraft(PATH_REFINEMENT_DEMO_PROMPT); wb.draftRef.current?.focus(); }}>填入共创演示需求</button>}</div>}{isOfficialLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-stage-chain")}>查看目标学习路径<IconArrowRight size={14} /></button><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-step-image-classification")}>从图像推理链路开始</button></div>}{isImageTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => dispatchTaskIntent("explain", "layout")}>返回关联图解<IconArrowRight size={14} /></button><button className="task-plain-button" type="button" onClick={() => openContent("image-source")}>查看代码与来源</button></div>}</div></div></article>
             </>}
             {messages.map((message) => (
               <article className={"message-row " + (message.role === "user" ? "user-message" : "assistant-message")} key={message.id}>
@@ -1153,7 +1209,7 @@ function App() {
                     }
                   }}><IconPointer2 size={12} /><span>{message.scopeReference.type === "workspace-area" ? `关联工作区区域 · ${message.scopeReference.contentTitle || "内容"} · ${message.scopeReference.label}` : `关联图解范围 · ${message.scopeReference.label}`}</span></button></div>}
                   {message.learningReference && <div className="message-source-links"><button type="button" onClick={() => selectExistingTask(message.learningReference.taskId)}><IconBook size={12} />返回来源学习任务</button></div>}
-                  {message.pathReviewId && isStandardLearningTask && <div className="message-source-links"><button type="button" onClick={openLearningPathReview}><IconSparkles size={12} />{learning.state.draftPath ? "查看路径草案与审阅建议" : "回看已确认学习路径"}</button></div>}
+                  {message.pathReviewId && isStandardLearningTask && <div className="message-source-links"><button type="button" onClick={openLearningPathReview}><IconSparkles size={12} />{learning.state.draftPath ? "继续路径共创" : "回看已确认学习路径"}</button></div>}
                   {message.sourceContext && <div className="message-source-links"><button type="button" onClick={() => { if (message.sourceContext.kind === "official-learning") { openContent(message.sourceContext.nodeId); officialLearning.actions.seek(message.sourceContext.time); } else if (message.sourceContext.kind === "learning") { learning.actions.seek(message.sourceContext.time); openContent("learning-lesson", { anchor: message.sourceContext.focus }); } else if (message.sourceContext.kind === "image") { inference.actions.seek(message.sourceContext.time); if (!inference.state.lessonOpen) inference.actions.lesson(); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus, time: message.sourceContext.time, video: true }); }}><IconPlayerPlay size={12} /><span>讲解示例 {message.sourceContext.stamp} · 返回片段</span></button>{message.role === "assistant" && <button type="button" onClick={() => { if (message.sourceContext.kind === "official-learning") { openContent(message.sourceContext.nodeId); } else if (message.sourceContext.kind === "learning") { learning.actions.focus(message.sourceContext.focus); openContent("learning-lesson", { anchor: message.sourceContext.focus }); } else if (message.sourceContext.kind === "image") { inference.actions.focus(message.sourceContext.focus); openContent("image-explanation"); } else openContent("explanation", { anchor: message.sourceContext.focus }); }}><IconBook size={12} />查看关联图解</button>}</div>}
                   {isMainTask && message.role === "assistant" && message.interaction?.intent === "diagnose" ? <ProactiveCue {...proactive.forCue(`diagnose:${message.id}`)}
                     title="沿这次错误补一项判断依据" description="当前材料保持原位。需要理解时，可把这条线索直接带进关联图解。"

@@ -70,6 +70,9 @@ function restoreWorkbench() {
   const taskNames = new Set(groups.flatMap(group => group.tasks));
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
   if (!sessions[MAIN_TASK]) sessions[MAIN_TASK] = blank();
+  // The path co-creation task is a repeatable demo: restore its starter
+  // conversation so a page refresh brings back the initial review scenario.
+  sessions[LEARNING_PATH_GENERATION_TASK] = blank();
   const meta = { ...taskDetails, ...(isObject(value.meta) ? Object.fromEntries(Object.entries(value.meta).filter(([, item]) => isObject(item))) : {}) };
   for (const taskName of [LEARNING_PATH_GENERATION_TASK, LEARNING_TASK]) {
     if (meta[taskName]?.kind === "learning") {

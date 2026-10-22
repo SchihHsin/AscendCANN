@@ -69,7 +69,8 @@ function initial(initialStage = "channels") {
   };
 }
 
-function restore(taskId, { stageIds, initialStage, storagePrefix }) {
+function restore(taskId, { stageIds, initialStage, storagePrefix, resetOnLoad }) {
+  if (resetOnLoad) return initial(initialStage);
   const saved = readSession(keyFor(taskId, storagePrefix), null);
   if (!object(saved)) return initial(initialStage);
   const layout = LAYOUTS.includes(saved.layout) ? saved.layout : "horizontal";
@@ -135,7 +136,7 @@ function expandRecord(record) {
 }
 
 /** Visual state only: learning progress and validation records remain task-owned elsewhere. */
-export function useLearningCanvasView({ taskId, enabled = true, stageIds = STAGES, initialStage = "channels", materialStages = MATERIAL_STAGES, storagePrefix = "learning-canvas-view" } = {}) {
+export function useLearningCanvasView({ taskId, enabled = true, stageIds = STAGES, initialStage = "channels", materialStages = MATERIAL_STAGES, storagePrefix = "learning-canvas-view", resetOnLoad = false } = {}) {
   const tasks = useRef(new Map());
   const disabledState = useRef(null);
   const currentEnabled = useRef(enabled);
@@ -144,7 +145,7 @@ export function useLearningCanvasView({ taskId, enabled = true, stageIds = STAGE
   if (!disabledState.current) disabledState.current = initial(initialStage).state;
   const active = enabled && validTask(taskId);
   // Restore never writes: simply switching tasks must not create or replace a saved session.
-  if (active && !tasks.current.has(taskId)) tasks.current.set(taskId, restore(taskId, { stageIds, initialStage, storagePrefix }));
+  if (active && !tasks.current.has(taskId)) tasks.current.set(taskId, restore(taskId, { stageIds, initialStage, storagePrefix, resetOnLoad }));
 
   const update = useCallback(change => {
     if (!enabled || !currentEnabled.current || !validTask(taskId)) return undefined;

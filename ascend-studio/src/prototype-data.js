@@ -23,12 +23,12 @@ export const taskDetails = {
   [LEARNING_PATH_GENERATION_TASK]: {
     project: "模型推理",
     kind: "learning",
-    sidebarStatus: "待审阅",
+    sidebarStatus: "路径共创中",
     sidebarStatusTone: "review",
-    goal: "围绕图像推理前处理目标，协同生成并审阅学习路径；确认前不开始学习。",
+    goal: "围绕图像推理前处理目标共创学习路径；确认前不开始学习。",
     learningProfile: LEARNING_PATH_GENERATION_PROFILE,
     question: "我想学习图像推理前处理，先帮我生成一条包含尺寸调整、归一化和输入形状检查的路径。",
-    reply: "我已根据学习目标、Python 基础和每天 20 分钟的时间整理出一份路径草案。\n\n路径里补入了图像尺寸调整、归一化和 NCHW 输入检查建议；你可以逐条采纳或忽略，也可以继续提出修改。确认之前不会开始学习。\n\n这是独立的路径共创任务；原来的「学会图像输入预处理」及其学习记录会保留在原任务中。",
+    reply: "我先按学习目标、Python 基础和每天 20 分钟的时间，搭出一份可编辑的路径初稿。路径还在共创中：你可以继续提出增删、调整重点或已有基础，我会把变化同步到右侧画布；也可以直接拖动节点调整顺序。确认之前不会开始学习。\n\n这是独立的路径共创任务；原来的「学会图像输入预处理」及其学习记录会保留在原任务中。",
     status: "active",
   },
   [LEARNING_TASK]: {

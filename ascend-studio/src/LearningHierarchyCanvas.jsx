@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { IconAdjustments, IconArrowDown, IconArrowRight, IconArrowUp, IconBook2, IconCheck, IconChevronDown, IconCode, IconCube, IconGripVertical, IconHistory, IconMessageQuestion, IconPhoto, IconPlayerPause, IconPlayerPlay, IconPointer, IconSearch, IconSettings, IconSparkles, IconX } from "@tabler/icons-react";
 import LearningCanvasToolbar from "./LearningCanvasToolbar";
 import CanvasCard from "./LearningCanvasCard";
@@ -76,15 +77,22 @@ function makeTree(layout, path) {
   const stages = path.map((entry, index) => {
     const children = stepsForStage(entry);
     const horizontal = layout === "horizontal";
-    const rect = horizontal ? { x: 0, y: offset, width: 258, height: 72 } : { x: index * 320, y: 0, width: 292, height: 72 };
-    const steps = children.map((step, stepIndex) => ({ ...step, rect: horizontal ? { x: 32, y: offset + 82 + stepIndex * 55, width: 226, height: 47 } : { x: index * 320 + 20, y: 88 + stepIndex * 55, width: 272, height: 47 } }));
-    offset += 95 + children.length * 55;
-    return { ...entry, index, rect, steps };
+    const rect = horizontal ? { x: index * 300, y: 0, width: 272, height: 72 } : { x: 0, y: offset, width: 258, height: 72 };
+    let stepOffset = 0;
+    const steps = children.map((step, stepIndex) => {
+      const annotated = Boolean(step.suggestion?.reason);
+      const height = annotated ? (step.userAdjusted ? 132 : 118) : step.userAdjusted ? 76 : 47;
+      const y = horizontal ? 88 + stepOffset : offset + 82 + stepOffset;
+      stepOffset += height + 8;
+      return { ...step, rect: horizontal ? { x: index * 300 + 12, y, width: 248, height } : { x: 32, y, width: 226, height } };
+    });
+    offset += 95 + stepOffset;
+    return { ...entry, index, rect, steps, contentHeight: 88 + stepOffset };
   });
-  return { stages, width: layout === "horizontal" ? 258 : path.length * 320 - 28, height: layout === "horizontal" ? offset - 20 : 260 };
+  return { stages, width: layout === "horizontal" ? Math.max(258, path.length * 300 - 28) : 258, height: layout === "horizontal" ? Math.max(260, ...stages.map(stage => stage.contentHeight + 12)) : offset - 20 };
 }
 
-function HierarchyGroup({ tree, layout, selectedStage, selectedStep, journey, onSelect, onDrag, onMoveStep, pinned }) {
+function HierarchyGroup({ tree, layout, selectedStage, selectedStep, journey, onSelect, onDrag, onMoveStep, pinned, agentTarget }) {
   const { state, currentAttempt, currentCheck } = journey;
   const [draggedStep, setDraggedStep] = useState(null);
   const done = id => id === "channels" ? state.understood.includes("channels") : id === "practice" ? currentAttempt?.passed : id === "check" ? currentCheck?.passed : false;
@@ -94,20 +102,25 @@ function HierarchyGroup({ tree, layout, selectedStage, selectedStep, journey, on
     <svg className="lh-tree-lines" width={tree.width + 20} height={tree.height + 20} aria-hidden="true"><defs><marker id="lh-tree-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8" /></marker></defs>{tree.stages.map((stage, index) => {
       const next = tree.stages[index + 1];
       const rect = stage.rect;
-      return <g key={stage.id}>{next && <path className="lh-stage-line" markerEnd="url(#lh-tree-arrow)" d={layout === "horizontal" ? `M${rect.x + 20},${rect.y + rect.height} V${next.rect.y - 8} H${next.rect.x + 20}` : `M${rect.x + rect.width},${rect.y + 34} H${next.rect.x - 8}`} />}{stage.steps.map(step => <path className={`lh-child-line${stage.id === selectedStage && step.id === selectedStep ? " is-current" : ""}`} key={step.id} d={layout === "horizontal" ? `M${rect.x + 18},${rect.y + rect.height} V${step.rect.y + 23} Q${rect.x + 18},${step.rect.y + 23} ${step.rect.x},${step.rect.y + 23}` : `M${rect.x + 10},${rect.y + rect.height} V${step.rect.y + 23} Q${rect.x + 10},${step.rect.y + 23} ${step.rect.x},${step.rect.y + 23}`} />)}</g>;
+      return <g key={stage.id}>{next && <path className="lh-stage-line" markerEnd="url(#lh-tree-arrow)" d={layout === "horizontal" ? `M${rect.x + rect.width},${rect.y + 34} H${next.rect.x - 8}` : `M${rect.x + 20},${rect.y + rect.height} V${next.rect.y - 8} H${next.rect.x + 20}`} />}{stage.steps.map(step => <path className={`lh-child-line${stage.id === selectedStage && step.id === selectedStep ? " is-current" : ""}`} key={step.id} d={layout === "horizontal" ? `M${rect.x + 18},${rect.y + rect.height} V${step.rect.y + 23} Q${rect.x + 18},${step.rect.y + 23} ${step.rect.x},${step.rect.y + 23}` : `M${rect.x + 18},${rect.y + rect.height} V${step.rect.y + 23} Q${rect.x + 18},${step.rect.y + 23} ${step.rect.x},${step.rect.y + 23}`} />)}</g>;
     })}</svg>
     {tree.stages.map(stage => {
       const Icon = stageIcons[stage.id] || IconBook2;
-      return <div key={stage.id}><button className={`lh-tree-node lh-stage-node${stage.id === selectedStage ? " is-selected" : ""}${stage.skipped ? " is-skipped" : ""}`} type="button" style={{ left: stage.rect.x, top: stage.rect.y, width: stage.rect.width, height: stage.rect.height }} onClick={() => onSelect(stage.id, stage.steps[0]?.id)} aria-pressed={stage.id === selectedStage}><span className={`lh-node-icon${done(stage.id) ? " is-done" : ""}`}>{done(stage.id) ? <IconCheck size={19} /> : <Icon size={20} />}</span><span><strong>{stage.id === "environment" ? "" : `0${stage.index}　`}{stageLabels[stage.id]}</strong><small>{stage.skipped ? state.draftPath ? "拟跳过 · 等待确认" : "已跳过" : LEARNING_NODES.find(item => item.id === stage.id)?.description}</small></span>{stage.skipped && <em>跳过</em>}</button>{stage.steps.map((step, index) => {
+      return <div key={stage.id}><button data-learning-stage={stage.id} className={`lh-tree-node lh-stage-node${stage.id === selectedStage ? " is-selected" : ""}${stage.skipped ? " is-skipped" : ""}${agentTarget?.stageId === stage.id && !agentTarget.stepId ? " is-agent-target" : ""}`} type="button" style={{ left: stage.rect.x, top: stage.rect.y, width: stage.rect.width, height: stage.rect.height }} onClick={() => onSelect(stage.id, stage.steps[0]?.id)} aria-pressed={stage.id === selectedStage}><span className={`lh-node-icon${done(stage.id) ? " is-done" : ""}`}>{done(stage.id) ? <IconCheck size={19} /> : <Icon size={20} />}</span><span><strong>{stage.id === "environment" ? "" : `0${stage.index}　`}{stageLabels[stage.id]}</strong><small>{stage.skipped ? state.draftPath ? "拟跳过 · 待你决定" : "已跳过" : LEARNING_NODES.find(item => item.id === stage.id)?.description}</small></span>{stage.skipped && <em>跳过</em>}</button>{stage.steps.map((step, index) => {
         const proposedSkip = step.suggestion?.kind === "skip" && step.suggestion.status === "pending";
         const proposedAdd = step.suggestion?.kind === "add" && step.suggestion.status === "pending";
+        const proposedRevise = step.suggestion?.kind === "revise" && step.suggestion.status === "pending";
         const acceptedSuggestion = step.suggestion?.status === "accepted";
-        const nodeClass = `lh-tree-node lh-step-node${stage.id === selectedStage && step.id === selectedStep ? " is-selected" : ""}${step.skipped || proposedSkip ? " is-skipped" : ""}${proposedAdd ? " is-proposed-add" : ""}${acceptedSuggestion ? " is-proposal-accepted" : ""}${draggedStep?.stageId === stage.id && draggedStep.stepId === step.id ? " is-dragging" : ""}`;
-        return <button className={nodeClass} type="button" key={step.id} style={{ left: step.rect.x, top: step.rect.y, width: step.rect.width, height: step.rect.height }} onClick={() => onSelect(stage.id, step.id)} aria-pressed={stage.id === selectedStage && step.id === selectedStep} aria-label={`${step.title}；可拖动排序，也可按 Alt 加方向键移动`} title="拖动排序；键盘可按 Alt + ↑ / ↓ 调整顺序" draggable={!pinned} onDragStart={event => { if (pinned) { event.preventDefault(); return; } const payload = { stageId: stage.id, stepId: step.id }; setDraggedStep(payload); event.dataTransfer.effectAllowed = "move"; event.dataTransfer.setData("application/x-learning-path-step", JSON.stringify(payload)); }} onDragEnd={() => setDraggedStep(null)} onDragOver={event => { if (draggedStep?.stageId === stage.id) { event.preventDefault(); event.dataTransfer.dropEffect = "move"; } }} onDrop={event => { event.preventDefault(); const payload = dragPayload(event); if (payload?.stageId === stage.id) onMoveStep?.(stage.id, payload.stepId, step.id); setDraggedStep(null); }} onKeyDown={event => { if (!event.altKey || !["ArrowUp", "ArrowDown"].includes(event.key)) return; const targetIndex = index + (event.key === "ArrowUp" ? -1 : 1); const target = stage.steps[targetIndex]; if (!target) return; event.preventDefault(); onMoveStep?.(stage.id, step.id, target.id); }}>
-          <span className="lh-step-index">{stage.index}.{index + 1}</span><span><strong>{step.title}</strong><small>{step.subtitle}</small></span>
-          {proposedSkip && <em className="lh-step-suggestion is-skip">AI 建议跳过</em>}{proposedAdd && <em className="lh-step-suggestion">AI 新增建议</em>}{acceptedSuggestion && <em className="lh-step-suggestion is-accepted">已采纳</em>}
-          {step.suggestion?.kind === "add" && <IconGripVertical className="lh-step-grip" size={12} aria-hidden="true" />}
-        </button>;
+        const nodeClass = `lh-tree-node lh-step-node${stage.id === selectedStage && step.id === selectedStep ? " is-selected" : ""}${step.skipped || proposedSkip ? " is-skipped" : ""}${proposedAdd ? " is-proposed-add" : ""}${proposedRevise ? " is-proposed-revise" : ""}${acceptedSuggestion ? " is-proposal-accepted" : ""}${draggedStep?.stageId === stage.id && draggedStep.stepId === step.id ? " is-dragging" : ""}${agentTarget?.stageId === stage.id && agentTarget.stepId === step.id ? " is-agent-target" : ""}`;
+        const change = step.suggestion?.status === "pending" ? (state.pathChanges || []).find(item => item.id === step.suggestion.id && item.status === "pending") : null;
+        return <div className={`lh-step-wrap${step.suggestion?.reason ? " has-review" : ""}${step.userAdjusted ? " is-user-adjusted" : ""}${draggedStep?.stageId === stage.id && draggedStep.stepId === step.id ? " is-dragging" : ""}`} key={step.id} style={{ left: step.rect.x, top: step.rect.y, width: step.rect.width, height: step.rect.height }}>
+          <button data-learning-stage={stage.id} data-learning-step={step.id} className={nodeClass} type="button" onClick={() => onSelect(stage.id, step.id)} aria-pressed={stage.id === selectedStage && step.id === selectedStep} aria-label={`${step.title}；可拖动排序，也可按 Alt 加方向键移动`} title="拖动排序；键盘可按 Alt + ↑ / ↓ 调整顺序" draggable={!pinned} onDragStart={event => { if (pinned) { event.preventDefault(); return; } const payload = { stageId: stage.id, stepId: step.id }; setDraggedStep(payload); event.dataTransfer.effectAllowed = "move"; event.dataTransfer.setData("application/x-learning-path-step", JSON.stringify(payload)); }} onDragEnd={() => setDraggedStep(null)} onDragOver={event => { if (draggedStep?.stageId === stage.id) { event.preventDefault(); event.dataTransfer.dropEffect = "move"; } }} onDrop={event => { event.preventDefault(); const payload = dragPayload(event); if (payload?.stageId === stage.id) onMoveStep?.(stage.id, payload.stepId, step.id); setDraggedStep(null); }} onKeyDown={event => { if (!event.altKey || !["ArrowUp", "ArrowDown"].includes(event.key)) return; const targetIndex = index + (event.key === "ArrowUp" ? -1 : 1); const target = stage.steps[targetIndex]; if (!target) return; event.preventDefault(); onMoveStep?.(stage.id, step.id, target.id); }}>
+            <span className="lh-step-index">{stage.index}.{index + 1}</span><span className="lh-step-copy"><strong>{proposedRevise ? step.suggestion.patch?.title || step.title : step.title}</strong><small>{proposedRevise ? step.suggestion.patch?.subtitle || step.subtitle : step.subtitle}</small>{step.userAdjusted && <small className="lh-step-user-adjusted">你已调整顺序</small>}{step.suggestion?.reason && <small className="lh-step-reason">{step.suggestion.reason}</small>}</span>
+            {proposedSkip && <em className="lh-step-suggestion is-skip">AI 提议跳过</em>}{proposedAdd && <em className="lh-step-suggestion">AI 提议 · 待确认</em>}{proposedRevise && <em className="lh-step-suggestion">AI 提议 · 调整内容</em>}{acceptedSuggestion && <em className="lh-step-suggestion is-accepted">已采纳</em>}
+            {step.suggestion?.kind === "add" && <IconGripVertical className="lh-step-grip" size={12} aria-hidden="true" />}
+          </button>
+          {change && <div className="lh-draft-node-actions" aria-label={`${change.title}的建议操作`}><button type="button" onClick={event => { event.preventDefault(); event.stopPropagation(); journey.actions.resolvePathChange(change.id, true); }}>采纳</button><button type="button" onClick={event => { event.preventDefault(); event.stopPropagation(); journey.actions.resolvePathChange(change.id, false); }}>忽略</button></div>}
+        </div>;
       })}</div>;
     })}
   </div>;
@@ -116,18 +129,22 @@ function HierarchyGroup({ tree, layout, selectedStage, selectedStep, journey, on
 function GoalObject({ journey, onGenerate, onReturn }) {
   const { state, actions } = journey;
   const id = useId();
-  return <div className="lh-goal-body"><span className="lh-kicker">从学习目标开始</span><h2>这次想学会什么？</h2><label htmlFor={`${id}-goal`}>学习目标<textarea id={`${id}-goal`} rows={2} maxLength={2000} value={state.profile.goal} onChange={event => actions.setProfile({ goal: event.target.value })} /></label><label htmlFor={`${id}-background`}>已有基础<textarea id={`${id}-background`} rows={2} maxLength={1000} value={state.profile.background} onChange={event => actions.setProfile({ background: event.target.value })} /></label><label className="lh-time-label" htmlFor={`${id}-time`}>每天可用时间<select id={`${id}-time`} value={state.profile.dailyMinutes} onChange={event => actions.setProfile({ dailyMinutes: Number(event.target.value) })}>{[10, 20, 30, 45, 60].map(minutes => <option key={minutes} value={minutes}>{minutes} 分钟</option>)}</select></label><Button primary disabled={!state.profile.goal.trim()} onClick={() => onGenerate("goal")}>生成学习路径<IconArrowRight size={14} /></Button>{state.path && <button type="button" className="lh-text-button" onClick={onReturn}>回看已有路径</button>}<p className="lh-boundary">当前路径由图像预处理示例模板准备，目标与基础会保留在任务中。</p></div>;
+  return <div className="lh-goal-body"><span className="lh-kicker">从学习目标开始</span><h2>这次想学会什么？</h2><label htmlFor={`${id}-goal`}>学习目标<textarea id={`${id}-goal`} rows={2} maxLength={2000} value={state.profile.goal} onChange={event => actions.setProfile({ goal: event.target.value })} /></label><label htmlFor={`${id}-background`}>已有基础<textarea id={`${id}-background`} rows={2} maxLength={1000} value={state.profile.background} onChange={event => actions.setProfile({ background: event.target.value })} /></label><label className="lh-time-label" htmlFor={`${id}-time`}>每天可用时间<select id={`${id}-time`} value={state.profile.dailyMinutes} onChange={event => actions.setProfile({ dailyMinutes: Number(event.target.value) })}>{[10, 15, 20, 30, 45, 60].map(minutes => <option key={minutes} value={minutes}>{minutes} 分钟</option>)}</select></label><Button primary disabled={!state.profile.goal.trim()} onClick={() => onGenerate("goal")}>生成学习路径<IconArrowRight size={14} /></Button>{state.path && <button type="button" className="lh-text-button" onClick={onReturn}>回看已有路径</button>}<p className="lh-boundary">当前路径由图像预处理示例模板准备，目标与基础会保留在任务中。</p></div>;
 }
 
-export function LearningHierarchyCanvas({ journey, view, visible = true, onOpen, onAsk, onCopy, onArchive, onEnterDevelopment }) {
+export function LearningHierarchyCanvas({ journey, view, visible = true, agentAction = null, onAgentActionComplete, onOpen, onAsk, onCopy, onArchive, onEnterDevelopment }) {
   const { state, actions } = journey;
   const { state: canvas, actions: canvasActions } = view;
   const host = useRef(null);
   const gesture = useRef(null);
   const current = useRef(null);
   const previousReview = useRef({ draft: false, stage: null, stepCount: 0 });
+  const agentCompleteRef = useRef(onAgentActionComplete);
   const [size, setSize] = useState({ width: 1000, height: 760 });
   const [hand, setHand] = useState(false);
+  const [agentCursor, setAgentCursor] = useState(null);
+  const [agentTarget, setAgentTarget] = useState(null);
+  agentCompleteRef.current = onAgentActionComplete;
   const layout = canvas.layout;
   const path = state.draftPath || state.path;
   const isGoal = !path || canvas.selectedStage === "goal";
@@ -149,7 +166,7 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, onOpen,
   const verticalSecondaryY = verticalContentY + 430;
   const defaults = isGoal ? { hierarchy: { x: 40, y: 90 }, goal: { x: 45, y: 105 }, diagram: { x: 550, y: 105 }, detail: { x: 550, y: 600 } } : horizontal ? { hierarchy: { x: 42, y: 100 }, goal: { x: 350, y: 100 }, diagram: { x: 350, y: state.draftPath || reviewingPath ? 285 : 100 }, detail: { x: 420, y: state.draftPath || reviewingPath ? 765 : 580 } } : { hierarchy: { x: 45, y: 90 }, goal: { x: 45, y: 405 }, diagram: { x: verticalDiagramX, y: verticalPrimary === "diagram" ? verticalContentY : verticalSecondaryY }, detail: { x: verticalDetailX, y: verticalPrimary === "detail" ? verticalContentY : verticalSecondaryY } };
   const position = id => canvas.positions[id] || defaults[id];
-  const world = { width: isGoal ? 1450 : horizontal ? 1280 : Math.max(1580, tree.width + 120), height: isGoal ? 1050 : horizontal ? 1450 : 1450 };
+  const world = { width: isGoal ? 1450 : horizontal ? Math.max(1280, tree.width + 160) : Math.max(1580, tree.width + 120), height: isGoal ? 1050 : horizontal ? Math.max(900, tree.height + 260) : Math.max(1450, tree.height + 160) };
   const viewport = canvas.viewport;
   const pinned = id => canvas.pinned.includes(id);
   const fitBounds = (bounds, padding = 34) => {
@@ -160,8 +177,9 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, onOpen,
     canvasActions.setFocused(false);
     const point = position("hierarchy");
     if (isGoal) fitBounds({ x: 20, y: 50, width: 1365, height: 710 });
+    else if (horizontal && state.draftPath) fitBounds({ x: point.x - 20, y: point.y - 150, width: tree.width + 40, height: tree.height + 190 });
     else if (horizontal) fitBounds({ x: Math.min(point.x, position("diagram").x), y: 65, width: Math.max(tree.width + 40, position("diagram").x + diagramWidth - point.x), height: Math.max(tree.height + 80, 720) });
-    else fitBounds({ x: point.x, y: point.y - 25, width: tree.width, height: 850 });
+    else fitBounds({ x: point.x, y: state.draftPath ? point.y - 120 : point.y - 25, width: tree.width, height: state.draftPath ? Math.max(tree.height + 150, 950) : 850 });
   };
   const focusCurrent = () => {
     if (canvas.focused) { canvasActions.setFocused(false); return; }
@@ -189,6 +207,70 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, onOpen,
     previousReview.current = { draft: Boolean(state.draftPath), stage: canvas.selectedStage, stepCount: proposedStepCount };
     if (shouldFit) requestAnimationFrame(fitPath);
   }, [visible, Boolean(state.draftPath), canvas.selectedStage, proposedStepCount, layout, size.width, size.height]);
+  useEffect(() => {
+    if (!agentAction?.id) return undefined;
+    if (!visible) {
+      agentCompleteRef.current?.(agentAction.id);
+      return undefined;
+    }
+    const timers = [];
+    let frame = 0;
+    let cancelled = false;
+    const later = (fn, delay) => timers.push(window.setTimeout(fn, delay));
+    const launch = () => {
+      if (cancelled || !host.current) return;
+      setAgentCursor(null);
+      setAgentTarget(null);
+      const composer = document.querySelector('.composer textarea[aria-label="继续提问"]');
+      const sendButton = composer?.closest(".composer")?.querySelector(".composer-submit .send-button");
+      const sourceRect = (sendButton || composer)?.getBoundingClientRect();
+      const fallbackRect = host.current.getBoundingClientRect();
+      const start = sourceRect
+        ? { x: sourceRect.left + sourceRect.width / 2, y: sourceRect.top + sourceRect.height / 2 }
+        : { x: fallbackRect.left + 18, y: fallbackRect.top + fallbackRect.height * .72 };
+      const targets = (agentAction.targets || []).map(target => {
+        const nodes = [...(host.current?.querySelectorAll("[data-learning-stage]") || [])];
+        const node = nodes.find(item => item.dataset.learningStage === target.stageId && (!target.stepId || item.dataset.learningStep === target.stepId));
+        if (!node) return null;
+        const rect = node.getBoundingClientRect();
+        return { stageId: target.stageId, stepId: target.stepId || null, x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+      }).filter(Boolean);
+      if (!targets.length) { agentCompleteRef.current?.(agentAction.id); return; }
+      setAgentCursor({ ...start, phase: "ready", label: `Agent · ${agentAction.label || "调整路径"}` });
+      const visit = index => {
+        if (cancelled) return;
+        if (index >= targets.length) {
+          later(() => {
+            if (cancelled) return;
+            setAgentCursor(currentCursor => currentCursor ? { ...currentCursor, phase: "done" } : null);
+            later(() => {
+              if (cancelled) return;
+              setAgentCursor(null);
+              setAgentTarget(null);
+              agentCompleteRef.current?.(agentAction.id);
+            }, 360);
+          }, 420);
+          return;
+        }
+        const target = targets[index];
+        setAgentTarget({ stageId: target.stageId, stepId: target.stepId });
+        setAgentCursor(currentCursor => currentCursor ? { ...currentCursor, ...target, phase: index === 0 && agentAction.type === "move" ? "grabbing" : "moving" } : null);
+        later(() => {
+          if (cancelled) return;
+          setAgentCursor(currentCursor => currentCursor ? { ...currentCursor, phase: "pressing" } : null);
+          later(() => visit(index + 1), 180);
+        }, 430);
+      };
+      frame = window.requestAnimationFrame(() => { frame = window.requestAnimationFrame(() => visit(0)); });
+    };
+    const launchTimer = window.setTimeout(launch, 130);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(launchTimer);
+      timers.forEach(window.clearTimeout);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [agentAction?.id, visible]);
   useEffect(() => {
     const node = host.current;
     if (!node) return undefined;
@@ -240,42 +322,22 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, onOpen,
     if (drag.id === "viewport") canvasActions.setViewport({ x: drag.original.x + deltaX, y: drag.original.y + deltaY });
     else canvasActions.moveObject(drag.id, { x: drag.original.x + deltaX / viewport.scale, y: drag.original.y + deltaY / viewport.scale });
   }} onPointerUp={() => { gesture.current = null; }} onPointerCancel={() => { gesture.current = null; }}>
-    <div className="lh-canvas-title"><IconBook2 size={24} /><div><h2>{state.profile.goal || "我的学习目标"}</h2><p>{state.draftPath ? `${pendingChanges.length ? `AI 建议待审阅 · ${pendingChanges.length} 项` : "路径草案待确认"} · ${path.length} 个阶段 · ${proposedStepCount} 个学习动作` : isGoal ? "从目标或现成路径开始一段可验证的学习" : `${stageLabels[activeStage]} · ${selectedStepTitle}`}</p></div></div>
+    <div className={`lh-canvas-title${state.draftPath ? " is-draft-path" : ""}`}><IconBook2 size={24} /><div className="lh-canvas-title-copy">{state.draftPath && <div className="lh-editing-state"><span className="lh-editing-dot" />学习路径草案 · 正在编辑<span>尚未开始学习</span></div>}<h2>{state.draftPath ? "与 AI 共创学习路径" : state.profile.goal || "我的学习目标"}</h2><p>{state.draftPath ? `目标：${state.profile.goal} · 拖动节点调整顺序，或在左侧对话继续增删重点${pendingChanges.length ? ` · ${pendingChanges.length} 项 AI 调整待你决定` : " · 当前路径可继续编辑"}` : isGoal ? "从目标或现成路径开始一段可验证的学习" : `${stageLabels[activeStage]} · ${selectedStepTitle}`}</p></div></div>
     <LearningCanvasToolbar layout={layout} scale={viewport.scale} hand={hand} focused={canvas.focused} onLayout={canvasActions.setLayout} onZoom={zoom} onResetZoom={() => canvasActions.setViewport({ scale: 1 })} onHand={() => setHand(!hand)} onFit={fitPath} onFocus={focusCurrent} />
+    {state.draftPath && <div className="lh-draft-controls" aria-label="路径共创整体操作"><Button primary disabled={pendingChanges.length > 0} title={pendingChanges.length ? "先决定所有 AI 调整" : "确认这条路径并进入学习"} onClick={() => { if (actions.confirmPath()) select("channels", "channels"); }}>确认路径并开始学习<IconArrowRight size={13} /></Button><Button disabled={!state.pathUndo?.length} onClick={actions.undoPathEdit}><IconHistory size={13} />撤销</Button><Button onClick={actions.cancelPath}>取消</Button></div>}
     <div className="lh-world" style={{ width: world.width, height: world.height, transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})` }}>
-      {!isGoal && <div className="lh-tree-position" style={{ left: treePoint.x, top: treePoint.y }}><HierarchyGroup tree={tree} layout={layout} selectedStage={activeStage} selectedStep={selectedStep} journey={journey} onSelect={select} onMoveStep={reorderStep} pinned={pinned("hierarchy")} onDrag={event => beginObjectDrag(event, "hierarchy", treePoint)} /></div>}
+      {!isGoal && <div className="lh-tree-position" style={{ left: treePoint.x, top: treePoint.y }}><HierarchyGroup tree={tree} layout={layout} selectedStage={activeStage} selectedStep={selectedStep} journey={journey} onSelect={select} onMoveStep={reorderStep} pinned={pinned("hierarchy")} agentTarget={agentTarget} onDrag={event => beginObjectDrag(event, "hierarchy", treePoint)} /></div>}
       {start && canvas.expanded && !state.draftPath && !reviewingPath && <svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><defs><marker id="lh-material-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8" /></marker></defs><path d={connection(position("diagram"), diagramWidth, 0)} markerEnd="url(#lh-material-arrow)" /><path d={connection(position("detail"), detailWidth, 1)} markerEnd="url(#lh-material-arrow)" /><circle cx={start.x} cy={start.y} r="5" /></svg>}
       {isGoal && <CanvasCard id="goal" title="学习目标与基础" point={position("goal")} width={440} pinned={pinned("goal")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin}><GoalObject journey={journey} onGenerate={generate} onReturn={() => canvasActions.select("path")} /></CanvasCard>}
       {!isGoal && reviewingPath && !state.draftPath && <CanvasCard id="goal" title="已确认的学习路径" point={position("goal")} width={horizontal ? 830 : 1215} pinned={pinned("goal")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin}><div className="lh-path-draft"><div><strong>{state.profile.goal}</strong><p>{state.profile.background} · 每天 {state.profile.dailyMinutes} 分钟</p><small>{journey.pathCurrent ? "按节点继续学习，或审阅路径调整。" : "目标或基础已改变，请重新审阅路径。"}</small></div><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => select(state.activeNode || "channels", "channels")}>继续学习<IconArrowRight size={13} /></Button><Button onClick={() => actions.generatePath()}>调整路径</Button><Button onClick={() => canvasActions.select("goal")}>修改目标</Button></div></div></CanvasCard>}
-      {state.draftPath && <CanvasCard id="goal" title="学习路径草案 · 等待确认" point={position("goal")} width={horizontal ? 830 : 1215} pinned={pinned("goal")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin}><div className="lh-path-draft">
-        <div><strong>{state.profile.goal}</strong><p>{state.profile.background} · 每天 {state.profile.dailyMinutes} 分钟</p><small>节点操作与对话共用此预览；原路径和学习记录在确认前保持不变。</small></div>
-        <section className="lh-generation-flow" aria-label="学习路径共创进度">
-          <span>共创进度</span>
-          <ol>
-            <li className="is-complete"><i>1</i><span>目标与基础已整理</span></li>
-            <li className="is-complete"><i>2</i><span>路径草案已生成</span></li>
-            <li className={pendingChanges.length ? "is-current" : "is-complete"}><i>3</i><span>{pendingChanges.length ? `等待你审阅 ${pendingChanges.length} 项建议` : "建议已处理"}</span></li>
-            <li className={pendingChanges.length ? "" : "is-current"}><i>4</i><span>确认后开始学习</span></li>
-          </ol>
-          <small>你可以采纳、忽略或继续提出修改；确认后才进入学习，学习进度保存在独立任务中。</small>
-        </section>
-        {state.pathSync && <p className="lh-path-sync" role="status"><IconSparkles size={13} /><strong>AI 同步说明</strong><span>{state.pathSync}</span></p>}
-        {pendingChanges.length > 0 && <section className="lh-path-review" aria-label="AI 路径调整建议">
-          <header><IconSparkles size={15} /><strong>AI 修改建议</strong><span>{pendingChanges.length} 项待你审阅</span></header>
-          <ul>{pendingChanges.map(change => <li key={change.id}><div><strong>{change.title}</strong><small>{change.reason}</small></div><span className="lh-change-actions"><button type="button" onClick={() => actions.resolvePathChange(change.id, true)}>采纳</button><button type="button" onClick={() => actions.resolvePathChange(change.id, false)}>忽略</button></span></li>)}</ul>
-          <div className="lh-actions"><Button primary onClick={actions.acceptAllPathChanges}>采纳全部建议</Button><Button onClick={actions.dismissPathSuggestions}>忽略未采纳建议</Button></div>
-          <small className="lh-review-boundary">本地交互演示 · 建议只更新草案，不会自动开始学习。</small>
-        </section>}
-        <div className="lh-actions"><Button primary disabled={pendingChanges.length > 0} title={pendingChanges.length ? "先采纳或忽略待审阅建议" : "确认这条学习路径"} onClick={() => { if (actions.confirmPath()) select("channels", "channels"); }}>确认并开始<IconArrowRight size={13} /></Button>{state.pathUndo?.length > 0 && <Button onClick={actions.undoPathEdit}>撤销上一步</Button>}<Button onClick={actions.cancelPath}>取消调整</Button><Button onClick={() => actions.editPath("environment", "skip")}>{path.find(item => item.id === "environment")?.skipped ? "恢复环境准备" : "跳过环境准备"}</Button></div>
-        <div className="lh-draft-reorder"><span>调整环境节点位置</span><button className="lh-icon-button" type="button" aria-label="上移环境准备" onClick={() => actions.editPath("environment", "up")}><IconArrowUp size={14} /></button><button className="lh-icon-button" type="button" aria-label="下移环境准备" onClick={() => actions.editPath("environment", "down")}><IconArrowDown size={14} /></button></div>
-      </div></CanvasCard>}
-      {(isGoal || canvas.expanded) && <CanvasCard id="diagram" title={isGoal ? "图像输入预处理 · 路径预览" : "图像到模型输入"} icon={IconPhoto} point={position("diagram")} width={diagramWidth} pinned={pinned("diagram")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin} onCollapse={isGoal ? null : canvasActions.collapse}><TensorVisual journey={journey} activeSubstep={selectedStep} stage={isGoal ? "channels" : activeStage} />{isGoal && <div className="lh-preview-path"><div><strong>图像输入预处理入门</strong><span>RGB 通道 → 维度转换 → 跟练 → 输入检查 · 约 30 分钟</span></div><Button onClick={() => generate("existing")}>选用现成路径<IconArrowRight size={14} /></Button></div>}</CanvasCard>}
+      {(isGoal || canvas.expanded && !state.draftPath) && <CanvasCard id="diagram" title={isGoal ? "图像输入预处理 · 路径预览" : "图像到模型输入"} icon={IconPhoto} point={position("diagram")} width={diagramWidth} pinned={pinned("diagram")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin} onCollapse={isGoal ? null : canvasActions.collapse}><TensorVisual journey={journey} activeSubstep={selectedStep} stage={isGoal ? "channels" : activeStage} />{isGoal && <div className="lh-preview-path"><div><strong>图像输入预处理入门</strong><span>RGB 通道 → 维度转换 → 跟练 → 输入检查 · 约 30 分钟</span></div><Button onClick={() => generate("existing")}>选用现成路径<IconArrowRight size={14} /></Button></div>}</CanvasCard>}
       {!isGoal && canvas.expanded && !state.draftPath && <CanvasCard id="detail" title={activeStage === "practice" ? "preprocess.py" : activeStage === "check" ? "输入检查与学习成果" : activeStage === "environment" ? "认识这次学习示例" : "讲解与理解记录"} icon={activeStage === "practice" ? IconCode : activeStage === "check" ? IconCheck : IconBook2} point={position("detail")} width={detailWidth} pinned={pinned("detail")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin} onCollapse={canvasActions.collapse}>
         {activeStage === "practice" ? <CodePractice journey={journey} activeSubstep={selectedStep} onCopy={onCopy} onContinue={() => select("check", "input")} /> : activeStage === "check" ? <InputCheck journey={journey} onRestore={() => select("practice", "result")} onArchive={onArchive} onEnterDevelopment={onEnterDevelopment} /> : <div className="lh-lesson-body">{activeStage === "environment" && <p>浏览器中可完成维度演算，无需安装环境。迁移到本地时需 Python 与 NumPy；真实模型另核对输入签名。</p>}<Player journey={journey} onAsk={onAsk} /><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => { actions.markUnderstood(); select("practice", "layout"); }}>理解了，继续跟练<IconArrowRight size={14} /></Button><button type="button" className="lh-text-button" onClick={() => actions.generatePath()}>调整路径</button></div><p className="lh-boundary">动态讲解为本地概念演示；“看过”与练习检查通过分别记录。</p></div>}
       </CanvasCard>}
       {!isGoal && !canvas.expanded && <button type="button" className="lh-restore-material" style={{ left: position("diagram").x, top: position("diagram").y }} onClick={() => canvasActions.select(activeStage, selectedStep)}><IconBook2 size={19} /><span>材料已收起<strong>恢复{stageLabels[activeStage]}的图解与内容</strong></span><IconChevronDown size={17} /></button>}
     </div>
-    {state.notice && <div className="lh-canvas-notice" role="status">{state.notice}</div>}
+    {state.notice && !state.draftPath && <div className="lh-canvas-notice" role="status">{state.notice}</div>}
     <div className="lh-minimap"><svg viewBox={`0 0 ${world.width} ${world.height}`} aria-label="学习画布小地图，点击定位" role="button" tabIndex={0} onClick={event => { const rect = event.currentTarget.getBoundingClientRect(); const x = (event.clientX - rect.left) / rect.width * world.width; const y = (event.clientY - rect.top) / rect.height * world.height; canvasActions.setViewport({ x: size.width / 2 - x * viewport.scale, y: size.height / 2 - y * viewport.scale }); }} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); fitPath(); } }}><rect className="lh-mini-bg" width={world.width} height={world.height} />{!isGoal && tree.stages.map(stage => <rect className={stage.id === activeStage ? "is-current" : ""} key={stage.id} x={treePoint.x + stage.rect.x} y={treePoint.y + stage.rect.y} width={stage.rect.width} height={stage.rect.height} rx="8" />)}<rect x={position("diagram").x} y={position("diagram").y} width={diagramWidth} height="390" rx="8" />{!isGoal && canvas.expanded && <rect x={position("detail").x} y={position("detail").y} width={detailWidth} height="470" rx="8" />}<rect className="lh-mini-viewport" x={-viewport.x / viewport.scale} y={-viewport.y / viewport.scale} width={size.width / viewport.scale} height={size.height / viewport.scale} /></svg><button type="button" onClick={fitPath}>适应路径</button></div>
+    {agentCursor && createPortal(<div className={`lh-agent-flight is-${agentCursor.phase}`} style={{ transform: `translate3d(${agentCursor.x}px, ${agentCursor.y}px, 0)` }} aria-hidden="true"><IconPointer size={22} stroke={2.2} /><span>{agentCursor.label}</span></div>, document.body)}
   </div>;
 }

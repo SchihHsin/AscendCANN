@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 import { getMaterialMeta } from "./workspace-materials";
+import { LEARNING_PATH_GENERATION_TASK } from "./learning-data";
 
 function initialState(isMainTask, taskId, initialMaterialId) {
   const initial = { ...getMaterialMeta(initialMaterialId || (taskId === "学会图像输入预处理" ? "learning-goal" : taskId === "图像推理调试" ? "image-explanation" : isMainTask ? "explanation" : "task-brief")), unread: false };
@@ -94,7 +95,7 @@ export function useContentWorkspace({ taskId, isMainTask, initialMaterialId, def
   const visibleContent = useRef(new Map());
   if (!tasks.current) {
     const saved = readSession("workspace", {});
-    tasks.current = new Map(Object.entries(saved && typeof saved === "object" ? saved : {}).filter(([, value]) => value && Array.isArray(value.tabs) && Array.isArray(value.visitedTabs)).map(([id, value]) => [id, { ...initialState(id === "AddCustom 精度异常" || id === "图像推理调试", id), ...value, positions: value.positions || {}, overview: { ...initialState(true, id).overview, ...value.overview } }]));
+    tasks.current = new Map(Object.entries(saved && typeof saved === "object" ? saved : {}).filter(([id, value]) => id !== LEARNING_PATH_GENERATION_TASK && value && Array.isArray(value.tabs) && Array.isArray(value.visitedTabs)).map(([id, value]) => [id, { ...initialState(id === "AddCustom 精度异常" || id === "图像推理调试", id), ...value, positions: value.positions || {}, overview: { ...initialState(true, id).overview, ...value.overview } }]));
   }
   const persist = () => writeSession("workspace", Object.fromEntries(tasks.current));
   const [, setRevision] = useState(0);
