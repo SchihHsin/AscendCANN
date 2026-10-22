@@ -25,6 +25,32 @@ const modes = [
 
 const codeFilePattern = /\.(c|cc|cpp|cxx|h|hpp|py|js|jsx|ts|tsx|txt|log|csv|json|md|yaml|yml)$/i;
 const createId = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const HOME_CODE_HIGHLIGHT_PATTERN = /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:const|auto|int|uint32_t|float|double|bool|void|Shape|PixelFormat)\b|\b(?:nullptr|true|false|RGB|NCHW|HWC)\b|\b\d+(?:\.\d+)?(?:[fFuUlL]*)\b|[A-Za-z_]\w*(?:(?:\.[A-Za-z_]\w*)|(?:::?[A-Za-z_]\w*))*?(?=\s*(?:\(|<<<))/g;
+const HOME_CODE_TYPE_TOKENS = new Set(["const", "auto", "int", "uint32_t", "float", "double", "bool", "void", "Shape", "PixelFormat"]);
+const HOME_CODE_CONSTANT_TOKENS = new Set(["nullptr", "true", "false", "RGB", "NCHW", "HWC"]);
+
+function highlightHomeCode(line) {
+  const fragments = [];
+  let cursor = 0;
+  for (const match of line.matchAll(new RegExp(HOME_CODE_HIGHLIGHT_PATTERN.source, "g"))) {
+    const [token] = match;
+    const start = match.index;
+    if (start > cursor) fragments.push(line.slice(cursor, start));
+    const tokenType = token.startsWith('"') || token.startsWith("'")
+      ? "string"
+      : /^\d/.test(token)
+        ? "number"
+        : HOME_CODE_TYPE_TOKENS.has(token)
+          ? "type"
+          : HOME_CODE_CONSTANT_TOKENS.has(token)
+            ? "constant"
+            : "function";
+    fragments.push(<span key={`${start}-${token}`} className={`new-task-home__card-error-code-token new-task-home__card-error-code-token--${tokenType}`}>{token}</span>);
+    cursor = start + token.length;
+  }
+  if (cursor < line.length) fragments.push(line.slice(cursor));
+  return fragments.length ? fragments : line;
+}
 
 export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onRecommendationAction, onRecommendationChat }) {
   const [mode, setMode] = useState("learning");
@@ -192,7 +218,7 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
                       <p className="new-task-home__card-error-detail-context">{example.detail}</p>
                       <div className="new-task-home__card-error-code-wrap">
                         <ol className="new-task-home__card-error-code" aria-label="演示代码片段">
-                          {example.code.map((line, lineIndex) => <li key={`${lineIndex}-${line}`}><code>{line}</code></li>)}
+                          {example.code.map((line, lineIndex) => <li key={`${lineIndex}-${line}`}><code>{highlightHomeCode(line)}</code></li>)}
                         </ol>
                       </div>
                     </section>)}
