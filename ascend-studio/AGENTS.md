@@ -1047,3 +1047,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - `127.0.0.1:8123` 仍显示旧导航，是因为共享本地检出落后于 `origin/main` 且保留着其他对话的未提交改动。只在本地 `src/App.jsx` 将学习发现导航移到自动化任务之前，未暂存或覆盖旁支改动。
 - Vite HMR 后 CUA 无障碍树确认顺序为「学习发现 → 自动化任务 → 能力库」。该顺序已由 `166b6e35` 发布；本次只同步本地演示。页面序列 / hash、API / Host / Application 边界不变。
+
+
+### 2026-10-22 · 社区经验提示固定在输入区
+
+- 将开发任务成功后的社区经验提示与输入框组成 `.composer-stack`，使它贴在输入框上方；消息历史单独滚动，窄视口下 `.composer-stack` 固定在底部。入口触发条件仍要求该图像开发任务完成。
+- 修改 `src/App.jsx`、`src/community-draft.css`、`src/styles.css`，并重建 `../ascstudio/` Pages 静态产物。用户截图仍为 `[1,224,224,3]`，应将输出轴设为 C/H/W 并保持 N=1 后再核对成功提示。
+- `npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。提交与 Pages 部署回执随后补充。

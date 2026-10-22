@@ -5823,3 +5823,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据与边界：这是前端交互原型，路径建议由本地演示逻辑生成，不代表真实模型推理。未改页面导航序列，也未改 API / Host / Application 层定义。
 - 验证：`node --test src/learning-path-collaboration.test.js src/learning-path-generation.test.js`（11 项通过）；`npm run build:pages`；`git diff --check`；本地静态产物入口与 JS / CSS 返回 200。Pages 线上入口已引用新资源 `index-BCw4Sx7R.js` / `index-DA_VHwx3.css`，发布时间戳为 2026-10-22 07:01 UTC。
 - 提交 / 推送：功能提交 `3e6b21de` 已推送 `origin/main`；本条交接记录随后单独推送。未决事项：用户刷新线上页面后需确认交互符合预期；本机原工作区其他对话改动未纳入该提交，仍保留原状。
+
+
+### 2026-10-22 · 社区经验提示贴近输入框
+
+- 按用户确认的行为，将开发任务成功后的社区经验邀请移出对话消息流，放到输入框正上方；桌面滚动旧对话时输入区留在对话面板底部，小屏将提示和输入框作为整体 sticky。提示仍只在图像开发任务完成后出现。
+- 修改 `ascend-studio/src/App.jsx`、`community-draft.css`、`styles.css`，并重建 `ascstudio/` Pages 静态产物。用户提供的截图中轴序仍为 H/W/C、输出 `[1,224,224,3]`，尚未满足 `[1,3,224,224]` 成功条件，因此没有任务完成提示。
+- 验证：`npm run build:pages`、`git diff --check` 通过；未运行测试套件。页面序列与 API / Host / Application 边界不变。功能提交与 Pages 部署回执随后补充。

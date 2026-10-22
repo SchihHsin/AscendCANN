@@ -218,7 +218,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   .conversation-panel { min-height: 720px; border-right: 0; border-bottom: 1px solid var(--line); }
   .diagnostic-panel { min-height: 680px; }
   .conversation-scroll { overflow: visible; }
-  .composer { position: sticky; bottom: 8px; }
+  .composer-stack { position: sticky; bottom: 8px; }
 }
 @media (max-height: 420px) and (min-width: 981px) {
   body { overflow-y: auto; }

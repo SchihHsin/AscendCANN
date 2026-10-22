@@ -234,6 +234,10 @@ function App() {
   const isPathGenerationTask = selectedTask === LEARNING_PATH_GENERATION_TASK;
   const isOfficialLearningTask = task.kind === "official-learning";
   const isLearningTask = isStandardLearningTask || isOfficialLearningTask;
+  const communityInviteMessage = isImageTask
+    ? [...session.messages].reverse().find(message => message.communityInvite)
+    : null;
+  const showCommunityInvite = Boolean(communityInviteMessage && communityInviteMessage.communityInvite.summaryId !== session.communityDraft?.completionId);
   const showTaskWorkspace = !showNewTaskHome && !showLearningDiscovery;
   const learningLaunchHandled = useRef(false);
   useEffect(() => {
@@ -1223,16 +1227,6 @@ function App() {
                     <span className="community-draft-card-status">{session.communityDraft.status === "submitted" ? "已提交 · 演示" : "待你审阅"}</span>
                     <IconChevronRight size={17} />
                   </button>}
-                  {message.communityInvite && <section className="community-success-invite" aria-label="任务完成后的社区经验邀请">
-                    <span className="community-success-invite-icon"><IconFileText size={21} aria-hidden="true" /></span>
-                    <div className="community-success-invite-copy">
-                      <strong>把本次任务整理为社区经验？</strong>
-                      <p>AI 根据当前对话生成草稿，可在右侧审阅</p>
-                    </div>
-                    <button type="button" className="community-entry-button" onClick={() => session.communityDraft?.completionId === message.communityInvite.summaryId ? openCommunityDraft() : generateCommunityExperience(message.communityInvite.summary)}>
-                      <IconFileText size={15} />{session.communityDraft?.completionId === message.communityInvite.summaryId ? "查看草稿" : "生成草稿"}
-                    </button>
-                  </section>}
                   {message.role === "assistant" && <div className="message-feedback"><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={16} /></button></div>}
                 </div>
               </article>
@@ -1240,7 +1234,18 @@ function App() {
             {session.replying && <div className="replying-indicator" role="status"><span /><span /><span /><small>正在整理演示答复…</small></div>}
             </div>
           </div>
-          <form className="composer" onSubmit={handleSendMessage}>
+          <div className={`composer-stack${showCommunityInvite ? " composer-stack--community" : ""}`}>
+          {showCommunityInvite && <section className="community-success-invite" aria-label="任务完成后的社区经验邀请">
+            <span className="community-success-invite-icon"><IconFileText size={21} aria-hidden="true" /></span>
+            <div className="community-success-invite-copy">
+              <strong>把本次任务整理为社区经验？</strong>
+              <p>AI 根据当前对话生成草稿，可在右侧审阅</p>
+            </div>
+            <button type="button" className="community-entry-button" onClick={() => generateCommunityExperience(communityInviteMessage.communityInvite.summary)}>
+              <IconFileText size={15} />生成草稿
+            </button>
+          </section>}
+          <form className={`composer${showCommunityInvite ? " composer--community" : ""}`} onSubmit={handleSendMessage}>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
               {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={13} /><span>{pointContext.type === "workspace-area" ? `工作区区域 · ${pointContext.label}` : `图解范围 · ${pointContext.label}`}</span><button type="button" aria-label="移除指向区域上下文" onClick={clearPointContext}><IconX size={12} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={13} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={12} /></button></span>)}
@@ -1261,6 +1266,7 @@ function App() {
               </div>
             </div>
           </form>
+          </div>
           <input hidden type="file" multiple ref={wb.fileRef} onChange={(event) => wb.readFiles(event, "file")} aria-label="选择文件附件" />
           <input hidden type="file" multiple accept="image/*" ref={wb.imageRef} onChange={(event) => wb.readFiles(event, "image")} aria-label="选择截图附件" />
         </section>}
