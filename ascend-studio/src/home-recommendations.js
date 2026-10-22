@@ -15,11 +15,12 @@ const signature = value => {
 };
 const evidence = (id, title, summary, time) => ({ id, title, summary, ...(time ? { time } : {}) });
 
-function candidate({ task, mode, type, title, reason, evidence: facts, steps, action, actionLabel, prompt, tone = mode === "learning" ? "rose" : "sand", priority = 0, deps }) {
+function candidate({ task, mode, type, title, reason, evidence: facts, steps, action, actionLabel, prompt, activity: explicitActivity, tone = mode === "learning" ? "rose" : "sand", priority = 0, deps }) {
   const taskName = clean(task.name);
+  const activity = explicitActivity || facts.find(fact => fact?.activity)?.activity || `依据现存目标「${clean(task.goal || task.learningProfile?.goal || task.name)}」；近期操作、完成与验证状态未记录。`;
   return {
     id: `${mode}:${signature([taskName, type])}`,
-    revision: signature(deps ?? facts), mode, type, taskName, project: clean(task.project), title, reason,
+    revision: signature(deps ?? facts), mode, type, taskName, project: clean(task.project), title, reason, activity,
     evidence: facts, steps, action, actionLabel, prompt, tone, priority,
   };
 }
@@ -45,7 +46,8 @@ function learningSuggestions(task) {
 
   if (!pathCurrent && goal) {
     const facts = [goalFact, ...records.filter(record => record.kind === "learning-path" && object(record.data)).slice(-1).map(record => evidence(record.id, record.title, record.summary, record.time))].filter(Boolean);
-    out.push(candidate({ task, mode: "learning", type: "learning-path", title: "按当前目标建立学习路径", reason: "目标已明确，尚无匹配的已确认学习路径。", evidence: facts, steps: ["确认目标与已有基础", "预览并确认学习路径"], action: { type: "learning-path", materialId: "learning-path", preparePath: true }, actionLabel: "准备学习路径", prompt: `请围绕“${goal}”整理一条学习路径，并先让我预览后再确认。`, priority: 95, deps: [goal, state.path, state.profile, state.pathProfile] }));
+    const activity = facts.length > 1 ? `已设定目标「${goal}」；已有路径与当前目标/画像不匹配` : `已设定目标「${goal}」；尚无匹配的已确认路径`;
+    out.push(candidate({ task, mode: "learning", type: "learning-path", title: "按当前目标建立学习路径", reason: "目标已明确，尚无匹配的已确认学习路径。", activity, evidence: facts, steps: ["确认目标与已有基础", "预览并确认学习路径"], action: { type: "learning-path", materialId: "learning-path", preparePath: true }, actionLabel: "准备学习路径", prompt: `请围绕“${goal}”整理一条学习路径，并先让我预览后再确认。`, priority: 95, deps: [goal, state.path, state.profile, state.pathProfile] }));
     return out;
   }
   if (!pathCurrent) return out;
@@ -62,10 +64,12 @@ function learningSuggestions(task) {
     const laterPassed = matchingAttempts.some((attempt, index) => index > failedIndex && attempt.passed && stable(attempt.snapshot) === stable(failedAttempt.snapshot));
     if (!laterPassed && failedAttempt === latestAttempt) {
       const facts = [evidence(attemptRecord?.id || latestAttempt.id, "学习跟练尝试", `${latestAttempt.valid ? `当前示例形状 [${arr(latestAttempt.dimensions).join(",")}]` : "轴顺序无效"}，尚未符合目标示例约定。`, attemptRecord?.time || latestAttempt.time), goalFact].filter(Boolean);
+      facts[0].activity = `最近跟练未通过：${latestAttempt.valid ? `形状 [${arr(latestAttempt.dimensions).join(",")}]` : "轴顺序无效"}`;
       out.push(candidate({ task, mode: "learning", type: "learning-practice", title: "修正当前维度转换练习", reason: "当前参数下的跟练未通过，需调整轴顺序或 batch。", evidence: facts, steps: ["查看失败尝试的轴顺序与 batch", "调整参数后重新检查示例形状"], action: { type: "learning-practice", materialId: "learning-practice", sourceSummaryId: currentSummary?.id }, actionLabel: "回到练习", prompt: "请根据这次失败尝试的结构化输入，解释需要调整的轴顺序或 batch；只讨论当前形状示例，不推断真实推理结果。", priority: 100, deps: [latestAttempt.id, latestAttempt.snapshot, latestAttempt.passed, matchingAttempts.map(item => [item.id, item.snapshot, item.passed])] }));
     }
   } else if (!understood && !out.some(item => item.type === "learning-practice")) {
     const facts = [goalFact, evidence("learning-path", "已确认学习路径", `目标「${goal}」的学习路径已确认，前置理解节点尚未记录完成。`)].filter(Boolean);
+    facts[1].activity = "已确认学习路径；前置理解节点尚无完成记录";
     out.push(candidate({ task, mode: "learning", type: "learning-lesson", title: "先理解图像通道与输入维度", reason: "已确认路径要求先理解维度；当前任务尚无该理解节点的完成记录。", evidence: facts, steps: ["查看 RGB、HWC 与 CHW 的讲解", "理解 batch 维度的作用"], action: { type: "learning-lesson", materialId: "learning-lesson" }, actionLabel: "打开前置讲解", prompt: `请按“${goal}”的目标讲解当前路径中的图像通道与输入维度，并说明练习前需要理解什么。`, priority: 90, deps: [path, state.understood, state.profile] }));
   }
 
@@ -81,13 +85,19 @@ function learningSuggestions(task) {
     && stable(latestTransfer.snapshot) === stable(transfer.snapshot));
   if (currentSummary && currentSummary.attemptId === latestAttempt?.id && latestCheck?.passed && !transferDone && !out.some(item => item.type === "learning-practice")) {
     const record = latestRecord("learning-summary", data => data.id === currentSummary.id);
-    out.push(candidate({ task, mode: "learning", type: "learning-transfer", title: "用新输入检验已学方法", reason: "当前目标、跟练和输入检查对应的学习小结仍有效，可用不同输入检验迁移。", evidence: [evidence(record?.id || currentSummary.id, "当前学习小结", `${goal}；小结关联当前路径、通过的跟练与输入检查。`, record?.time || currentSummary.time)], steps: ["选择不同于当前快照的图像形状", "解释轴顺序与 batch 如何变化"], action: { type: "learning-transfer", materialId: "learning-summary", sourceSummaryId: currentSummary.id }, actionLabel: "开始迁移练习", prompt: `以“${goal}”为目标，用一组不同输入形状建立隔离的迁移练习；保留原学习状态，不声称真实 Python 或 NPU 验证。`, priority: 75, deps: [currentSummary, currentSnapshot, currentCheck] }));
+    const facts = [evidence(record?.id || currentSummary.id, "当前学习小结", `${goal}；小结关联当前路径、通过的跟练与输入检查。`, record?.time || currentSummary.time)];
+    facts[0].activity = "已保存学习小结；关联跟练与输入检查均通过";
+    out.push(candidate({ task, mode: "learning", type: "learning-transfer", title: "用新输入检验已学方法", reason: "当前目标、跟练和输入检查对应的学习小结仍有效，可用不同输入检验迁移。", evidence: facts, steps: ["选择不同于当前快照的图像形状", "解释轴顺序与 batch 如何变化"], action: { type: "learning-transfer", materialId: "learning-summary", sourceSummaryId: currentSummary.id }, actionLabel: "开始迁移练习", prompt: `以“${goal}”为目标，用一组不同输入形状建立隔离的迁移练习；保留原学习状态，不声称真实 Python 或 NPU 验证。`, priority: 75, deps: [currentSummary, currentSnapshot, currentCheck] }));
   } else if (latestAttempt?.passed && latestCheck?.passed && !currentSummary && understood) {
     const record = latestRecord("learning-check", data => data.id === latestCheck.id);
-    out.push(candidate({ task, mode: "learning", type: "learning-summary", title: "保存本次学习小结", reason: "当前目标、跟练与输入检查已关联通过；学习记录尚未保存。", evidence: [evidence(record?.id || latestCheck.id, "已通过的输入检查", `关联当前跟练快照 [${arr(latestCheck.dimensions || latestAttempt.dimensions).join(",")}]; 真实模型推理尚未运行。`, record?.time || latestCheck.time), goalFact].filter(Boolean), steps: ["保存当前目标、路径与检查快照", "之后可从首页继续迁移练习"], action: { type: "learning-summary", materialId: "learning-summary" }, actionLabel: "保存学习小结", prompt: `请基于“${goal}”的当前路径、跟练与输入检查整理学习小结，并保留仅完成浏览器形状核对的边界。`, priority: 80, deps: [latestAttempt.id, latestCheck.id, state.path, state.profile, state.understood] }));
+      const facts = [evidence(record?.id || latestCheck.id, "已通过的输入检查", `关联当前跟练快照 [${arr(latestCheck.dimensions || latestAttempt.dimensions).join(",")}]; 真实模型推理尚未运行。`, record?.time || latestCheck.time), goalFact].filter(Boolean);
+      facts[0].activity = `最近输入检查已通过：形状 [${arr(latestCheck.dimensions || latestAttempt.dimensions).join(",")}]`;
+      out.push(candidate({ task, mode: "learning", type: "learning-summary", title: "保存本次学习小结", reason: "当前目标、跟练与输入检查已关联通过；学习记录尚未保存。", evidence: facts, steps: ["保存当前目标、路径与检查快照", "之后可从首页继续迁移练习"], action: { type: "learning-summary", materialId: "learning-summary" }, actionLabel: "保存学习小结", prompt: `请基于“${goal}”的当前路径、跟练与输入检查整理学习小结，并保留仅完成浏览器形状核对的边界。`, priority: 80, deps: [latestAttempt.id, latestCheck.id, state.path, state.profile, state.understood] }));
   } else if (latestAttempt?.passed && !latestCheck?.passed && !succeededAfterFailure) {
     const record = latestRecord("learning-attempt", data => data.id === latestAttempt.id);
-    out.push(candidate({ task, mode: "learning", type: "learning-practice", title: "核对本次通过练习的输入", reason: "当前跟练快照符合示例约定，但还没有与这次尝试关联的输入检查。", evidence: [evidence(record?.id || latestAttempt.id, "通过的跟练快照", `形状 [${arr(latestAttempt.dimensions).join(",")}]；仅浏览器形状演算。`, record?.time || latestAttempt.time)], steps: ["复核本次尝试的形状快照", "保存对应输入检查"], action: { type: "learning-practice", materialId: "learning-check", sourceSummaryId: latestAttempt.id }, actionLabel: "核对输入", prompt: "请围绕当前通过的形状快照完成输入约定核对，并保留它对应的尝试条件。", priority: 70, deps: [latestAttempt.id, latestAttempt.snapshot, latestCheck] }));
+    const facts = [evidence(record?.id || latestAttempt.id, "通过的跟练快照", `形状 [${arr(latestAttempt.dimensions).join(",")}]；仅浏览器形状演算。`, record?.time || latestAttempt.time)];
+    facts[0].activity = `最近跟练已通过，尚未关联输入检查：形状 [${arr(latestAttempt.dimensions).join(",")}]`;
+    out.push(candidate({ task, mode: "learning", type: "learning-practice", title: "核对本次通过练习的输入", reason: "当前跟练快照符合示例约定，但还没有与这次尝试关联的输入检查。", evidence: facts, steps: ["复核本次尝试的形状快照", "保存对应输入检查"], action: { type: "learning-practice", materialId: "learning-check", sourceSummaryId: latestAttempt.id }, actionLabel: "核对输入", prompt: "请围绕当前通过的形状快照完成输入约定核对，并保留它对应的尝试条件。", priority: 70, deps: [latestAttempt.id, latestAttempt.snapshot, latestCheck] }));
   }
   return out;
 }
@@ -102,8 +112,11 @@ function developmentSuggestions(task) {
     const sameConditionSuccess = arr(flow.attempts).some(item => item.passed === true && item.snapshot && Object.keys(snapshot).every(key => String(item.snapshot[key]) === snapshot[key]));
     const failed = arr(flow.attempts).findLast(item => item.snapshot && Object.keys(snapshot).every(key => String(item.snapshot[key]) === snapshot[key]) && item.passed === false);
     if (!sameConditionSuccess) {
-      const facts = [evidence(failed?.id || "addcustom-demo-failure", "AddCustom 演示背景", "固定演示背景：[16,32]通过、[17,33]失败；尾块范围待查，不代表实际运行。", failed?.time), ...records.filter(record => ["precision-snapshot", "trial", "validation-snapshot"].includes(record.kind) && object(record.data)).slice(-2).map(record => evidence(record.id, record.title, record.summary, record.time))];
-      out.push(candidate({ task, mode: "development", type: "development-troubleshoot", title: "对照 [17,33] 算例检查尾块访问", reason: "演示中[16,32]过、[17,33]败；尾块待查，根因未定。", evidence: facts, steps: ["对照实际循环上限和有效元素数", "记录真实运行条件与逐元素误差"], action: { type: "development-material", materialId: "source", anchor: "loop-bound" }, actionLabel: "打开代码核对", prompt: "请把当前浏览器算例中的范围线索作为待核对假设，先对照真实工程循环和有效元素数；不要把演示结果当真实运行或已定位根因。", priority: 100, deps: [snapshot, failed?.id, records.filter(record => ["precision-snapshot", "trial", "validation-snapshot"].includes(record.kind)).map(record => record.data)] }));
+      const recentTrials = arr(flow.attempts).filter(item => item.snapshot && Object.keys(snapshot).every(key => String(item.snapshot[key]) === snapshot[key]));
+      const latestTrial = recentTrials.at(-1);
+      const facts = [evidence(latestTrial?.id || "addcustom-demo-background", latestTrial ? "最近 AddCustom 示例尝试" : "AddCustom 演示背景", latestTrial ? `输入 [${latestTrial.snapshot.rows},${latestTrial.snapshot.columns}]；${latestTrial.passed === true ? "示例检查通过" : latestTrial.passed === false ? "示例检查未通过" : "尚无通过/失败结论"}，不代表实际工程运行。` : "固定演示背景：[16,32]通过、[17,33]失败；属于预置演示线索，不是用户近期操作或实际运行。", latestTrial?.time), ...records.filter(record => ["precision-snapshot", "trial", "validation-snapshot"].includes(record.kind) && object(record.data)).slice(-2).map(record => evidence(record.id, record.title, record.summary, record.time))];
+      const activity = latestTrial ? `最近示例尝试 [${latestTrial.snapshot.rows},${latestTrial.snapshot.columns}]：${latestTrial.passed === true ? "通过" : latestTrial.passed === false ? "未通过" : "结果未记录"}（非实际工程运行）` : "演示依据：预置 [16,32]/[17,33] 对照；没有记录用户近期尝试";
+      out.push(candidate({ task, mode: "development", type: "development-troubleshoot", title: "对照 [17,33] 算例检查尾块访问", reason: "演示中[16,32]过、[17,33]败；尾块待查，根因未定。", activity, evidence: facts, steps: ["对照实际循环上限和有效元素数", "记录真实运行条件与逐元素误差"], action: { type: "development-material", materialId: "source", anchor: "loop-bound" }, actionLabel: "打开代码核对", prompt: "请把当前浏览器算例中的范围线索作为待核对假设，先对照真实工程循环和有效元素数；不要把演示结果当真实运行或已定位根因。", priority: 100, deps: [snapshot, latestTrial, records.filter(record => ["precision-snapshot", "trial", "validation-snapshot"].includes(record.kind)).map(record => record.data)] }));
     }
     const currentCode = clean(flow.appliedCode || flow.draftCode || "");
     const hasApplied = Boolean(flow.appliedCode);
@@ -113,7 +126,7 @@ function developmentSuggestions(task) {
     const currentValidation = validationData && validationData.code === currentCode && validationData.attemptId === applicableAttempt?.id ? validationData : null;
     if (applicableAttempt && !currentValidation) {
       const rec = records.findLast(record => record.kind === "validation-snapshot" && record.data?.attemptId === applicableAttempt.id && record.data?.code === currentCode);
-      if (!rec) out.push(candidate({ task, mode: "development", type: "development-validation", title: "为当前示例版本补做范围复核", reason: "当前算例代码尚无匹配复核，仍属本地演示。", evidence: [evidence(applicableAttempt.id, "当前代码对应的示例快照", `输入 [${applicableAttempt.snapshot.rows},${applicableAttempt.snapshot.columns}]、块大小 ${applicableAttempt.snapshot.tileSize}；仅为演示算例。`, applicableAttempt.time)], steps: ["确认复核代码与尝试快照一致", "记录范围检查结果及适用边界"], action: { type: "development-material", materialId: hasApplied ? "validation" : "parameters" }, actionLabel: hasApplied ? "打开范围复核" : "检查范围参数", prompt: "请为当前示例代码和对应参数快照补做范围复核，并明确它只是浏览器演算，不是编译、真实运行或 NPU 验证。", priority: 85, deps: [currentCode, applicableAttempt.id, applicableAttempt.snapshot, currentValidation] }));
+      if (!rec) out.push(candidate({ task, mode: "development", type: "development-validation", title: "为当前示例版本补做范围复核", reason: "当前算例代码尚无匹配复核，仍属本地演示。", activity: `最近已生成当前代码的参数快照，尚无匹配复核：输入 [${applicableAttempt.snapshot.rows},${applicableAttempt.snapshot.columns}]、块大小 ${applicableAttempt.snapshot.tileSize}`, evidence: [evidence(applicableAttempt.id, "当前代码对应的示例快照", `输入 [${applicableAttempt.snapshot.rows},${applicableAttempt.snapshot.columns}]、块大小 ${applicableAttempt.snapshot.tileSize}；仅为演示算例。`, applicableAttempt.time)], steps: ["确认复核代码与尝试快照一致", "记录范围检查结果及适用边界"], action: { type: "development-material", materialId: hasApplied ? "validation" : "parameters" }, actionLabel: hasApplied ? "打开范围复核" : "检查范围参数", prompt: "请为当前示例代码和对应参数快照补做范围复核，并明确它只是浏览器演算，不是编译、真实运行或 NPU 验证。", priority: 85, deps: [currentCode, applicableAttempt.id, applicableAttempt.snapshot, currentValidation] }));
     }
     const latestSnapshot = appliedAttempt?.snapshot || arr(flow.attempts).at(-1)?.snapshot;
     const currentConditions = { rows: String(flow.rows ?? ""), columns: String(flow.columns ?? ""), tileSize: String(flow.tileSize ?? ""), bounds: flow.bounds };
@@ -124,7 +137,7 @@ function developmentSuggestions(task) {
     const codeChanged = Boolean(latestSnapshot && currentCode && latestAttempt?.code && latestAttempt.code !== currentCode);
     const snapshotChanged = Boolean(latestSnapshot && conditionsChanged);
     const matchingCurrentValidation = validationData && validationData.code === currentCode && validationData.attemptId === currentAttemptForConditions?.id;
-    if ((codeChanged || snapshotChanged) && !matchingCurrentValidation && latestSnapshot) out.push(candidate({ task, mode: "development", type: "development-change-review", title: "复核变更后的示例范围", reason: "代码或输入已变更，旧快照不适用于当前算例。", evidence: [evidence("addcustom-current-snapshot", "当前与既有示例快照", `当前输入 [${currentConditions.rows},${currentConditions.columns}]、块大小 ${currentConditions.tileSize}；旧快照 ${JSON.stringify(latestSnapshot)}。`, validationData?.time)], steps: ["按当前代码与参数重新生成范围尝试", "检查新快照及适用边界"], action: { type: "development-material", materialId: hasApplied ? "draft" : "parameters" }, actionLabel: hasApplied ? "查看当前草案" : "检查范围参数", prompt: "请针对当前示例代码和输入重新建立范围快照；旧快照在代码或条件变化后不适用。本操作仍为浏览器演算。", priority: 65, deps: [currentCode, currentConditions, latestSnapshot, validationData, currentAttemptForConditions] }));
+    if ((codeChanged || snapshotChanged) && !matchingCurrentValidation && latestSnapshot) out.push(candidate({ task, mode: "development", type: "development-change-review", title: "复核变更后的示例范围", reason: "代码或输入已变更，旧快照不适用于当前算例。", activity: codeChanged ? "最近代码草案与既有尝试代码不同；旧范围快照不再匹配" : "最近参数已变更；旧范围快照不再匹配当前输入", evidence: [evidence("addcustom-current-snapshot", "当前与既有示例快照", `当前输入 [${currentConditions.rows},${currentConditions.columns}]、块大小 ${currentConditions.tileSize}；旧快照 ${JSON.stringify(latestSnapshot)}。`, validationData?.time)], steps: ["按当前代码与参数重新生成范围尝试", "检查新快照及适用边界"], action: { type: "development-material", materialId: hasApplied ? "draft" : "parameters" }, actionLabel: hasApplied ? "查看当前草案" : "检查范围参数", prompt: "请针对当前示例代码和输入重新建立范围快照；旧快照在代码或条件变化后不适用。本操作仍为浏览器演算。", priority: 65, deps: [currentCode, currentConditions, latestSnapshot, validationData, currentAttemptForConditions] }));
   }
   const imageState = object(task.imageState) ? task.imageState : null;
   if (imageState && name === "图像推理调试") {
@@ -132,7 +145,7 @@ function developmentSuggestions(task) {
     const currentSnapshot = { axes: imageState.axes, batch: imageState.batch };
     const same = latest?.snapshot && stable(latest.snapshot) === stable(currentSnapshot);
     const validation = imageState.validation && stable(imageState.validation.snapshot) === stable(currentSnapshot) && imageState.validation.attemptId === latest?.id ? imageState.validation : null;
-    if (latest && same && !validation) out.push(candidate({ task, mode: "development", type: "development-validation", title: "核对当前图像形状快照", reason: "当前形状尝试尚无关联复核，模型推理仍待验证。", evidence: [evidence(latest.id, "图像形状尝试", `轴顺序 ${arr(latest.snapshot.axes).join(",")}，batch ${latest.snapshot.batch ? "开启" : "关闭"}；仅浏览器形状演算。`, latest.time)], steps: ["按当前尝试复核输出维度", "对照真实模型签名与预处理要求"], action: { type: "development-material", materialId: imageState.applied ? "image-validation" : "image-practice" }, actionLabel: imageState.applied ? "打开形状复核" : "返回维度练习", prompt: "请依据当前图像尝试快照核对输出形状，同时说明模型文件、数据预处理和设备推理还需独立验证。", tone: "blue", priority: 85, deps: [currentSnapshot, latest.id, latest.snapshot, validation, imageState.applied] }));
+    if (latest && same && !validation) out.push(candidate({ task, mode: "development", type: "development-validation", title: "核对当前图像形状快照", reason: "当前形状尝试尚无关联复核，模型推理仍待验证。", activity: `最近已尝试图像形状：轴顺序 ${arr(latest.snapshot.axes).join(",")}，batch ${latest.snapshot.batch ? "开启" : "关闭"}；尚无关联复核`, evidence: [evidence(latest.id, "图像形状尝试", `轴顺序 ${arr(latest.snapshot.axes).join(",")}，batch ${latest.snapshot.batch ? "开启" : "关闭"}；仅浏览器形状演算。`, latest.time)], steps: ["按当前尝试复核输出维度", "对照真实模型签名与预处理要求"], action: { type: "development-material", materialId: imageState.applied ? "image-validation" : "image-practice" }, actionLabel: imageState.applied ? "打开形状复核" : "返回维度练习", prompt: "请依据当前图像尝试快照核对输出形状，同时说明模型文件、数据预处理和设备推理还需独立验证。", tone: "blue", priority: 85, deps: [currentSnapshot, latest.id, latest.snapshot, validation, imageState.applied] }));
   }
   return out;
 }
@@ -157,6 +170,7 @@ function demoSuggestions(task, mode) {
   return choices.map((choice, index) => candidate({
     task, mode, type: choice.type, title: choice.title,
     reason: choice.reason || "演示建议：可从现存目标继续拆解下一步。", evidence: context,
+    activity: `依据现存目标「${goal}」；近期操作、完成与验证状态未记录。`,
     steps: [choice.step], action: choice.action || { type: mode === "learning" ? choice.type.replace("demo-", "") : "development-material", materialId: choice.materialId },
     actionLabel: choice.label, prompt: choice.prompt, priority: choice.priority || 1,
     tone: ["rose", "sand", "blue"][index % 3],

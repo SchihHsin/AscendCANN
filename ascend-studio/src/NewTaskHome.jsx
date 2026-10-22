@@ -156,7 +156,8 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
               <FolderCardSurface />
               <button className="new-task-home__card-summary" type="button" aria-label={`${item.taskName}：${item.title}，前往任务`} onClick={() => onRecommendationAction?.(item)}>
                 <span className="new-task-home__card-context"><Icon size={22} stroke={1.8} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
-                <span className="new-task-home__card-title"><strong title={item.title}>{item.title}</strong><span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={14} /></span></span>
+                <span className="new-task-home__card-activity" title={item.activity}>{item.activity}</span>
+                <span className="new-task-home__card-title"><strong title={item.title}>建议：{item.title}</strong><span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={14} /></span></span>
                 <span className="new-task-home__card-reason">{item.reason}</span>
               </button>
               <div className="new-task-home__card-details" id={detailsId} hidden={!expanded}>

@@ -155,6 +155,7 @@
 .new-task-home__card-context svg { width: 16px; height: 16px; flex: 0 0 16px; color: #555963; }
 .new-task-home__card-source { display: block; overflow: hidden; max-width: 100%; color: #565a64; font-size: 11px; font-weight: 600; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
 .new-task-home__card-source small { color: #858993; font-size: 10px; font-weight: 450; }
+.new-task-home__card-activity { display: -webkit-box; overflow: hidden; margin-top: 7px; color: #555963; font-size: 11px; font-weight: 560; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .new-task-home__card-title { display: flex; min-width: 0; align-items: flex-start; gap: 5px; margin-top: 5px; line-height: 1.4; }
 .new-task-home__card-title strong { display: -webkit-box; min-width: 0; flex: 1 1 auto; overflow: hidden; color: #17181d; font-size: 13px; font-weight: 620; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .new-task-home__card-summary > .new-task-home__card-reason { display: -webkit-box; overflow: hidden; margin: 5px 0 0; color: #656973; font-size: 11px; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }

@@ -34,6 +34,68 @@ test("已有诊断候选排在补位演示建议之前", () => {
   assert.ok(suggestions.slice(1).every(item => item.priority <= 2));
 });
 
+test("首页默认因果线索引用近期结构化状态，演示候选明确说明未记录操作", () => {
+  const [failure] = buildHomeSuggestions({ tasks: [learningTask({
+    learningState: {
+      path: [{ id: "channels" }, { id: "practice" }],
+      profile: { goal: "学会图像输入预处理" },
+      pathProfile: { goal: "学会图像输入预处理" },
+      axes: [2, 0, 1], batch: true, understood: ["channels"],
+      attempts: [{ id: "attempt-fail", snapshot: { axes: [2, 0, 1], batch: true }, profile: { goal: "学会图像输入预处理" }, path: [{ id: "channels" }, { id: "practice" }], passed: false, valid: true, dimensions: [1, 3, 224, 224], time: "10:30" }],
+      checks: [], summaries: [],
+    },
+  })], mode: "learning" });
+  assert.equal(failure.type, "learning-practice");
+  assert.match(failure.activity, /最近跟练未通过.*1,3,224,224/);
+
+  const demo = buildHomeSuggestions({ tasks: [developmentTask({})], mode: "development" }).find(item => item.type.startsWith("demo-"));
+  assert.match(demo.activity, /依据现存目标「AddCustom 精度异常」/);
+  assert.match(demo.activity, /近期操作、完成与验证状态未记录/);
+});
+
+test("无路径的学习推荐与纯补位卡明确展示已设定/现存目标", () => {
+  const goal = "学会图像输入预处理";
+  const task = learningTask({ goal, learningProfile: { goal } });
+  const suggestions = buildHomeSuggestions({ tasks: [task], mode: "learning" });
+  const path = suggestions.find(item => item.type === "learning-path");
+  assert.match(path.activity, new RegExp(`已设定目标「${goal}」；尚无匹配的已确认路径`));
+
+  const fill = suggestions.find(item => item.type.startsWith("demo-"));
+  assert.match(fill.activity, new RegExp(`依据现存目标「${goal}」`));
+  assert.match(fill.activity, /近期操作、完成与验证状态未记录/);
+  assert.doesNotMatch(fill.activity, /刚刚|最近操作/);
+});
+
+test("通过练习待核对、开发快照变更和图像形状尝试显示具体触发状态", () => {
+  const base = summarizedLearningTask();
+  const learning = { ...base.learningState, understood: ["channels"], summaries: [], transfer: null, checks: [] };
+  const pendingCheck = buildHomeSuggestions({ tasks: [{ ...base, learningState: learning, records: [] }], mode: "learning" }).find(item => item.type === "learning-practice");
+  assert.match(pendingCheck.activity, /最近跟练已通过.*尚未关联输入检查.*1,3,224,224/);
+
+  const attempted = { snapshot: { rows: "17", columns: "33", tileSize: "32", bounds: "full" }, code: "old" };
+  const development = buildHomeSuggestions({ tasks: [developmentTask({ flowState: {
+    rows: "18", columns: "33", tileSize: "32", bounds: "full", draftCode: "new draft", appliedCode: "new applied",
+    attempts: [{ ...attempted, id: "old", time: "10:00" }], appliedAttempt: { ...attempted, id: "old" }, appliedAttemptId: "old",
+  } })], mode: "development" });
+  assert.match(development.find(item => item.type === "development-change-review").activity, /最近代码草案与既有尝试代码不同/);
+
+  const image = buildHomeSuggestions({ tasks: [{ name: "图像推理调试", kind: "development", imageState: {
+    axes: [0, 1, 2], batch: true, attempts: [{ id: "image-attempt", snapshot: { axes: [0, 1, 2], batch: true }, valid: true }],
+  } }], mode: "development" }).find(item => item.type === "development-validation");
+  assert.match(image.activity, /最近已尝试图像形状.*0,1,2.*batch 开启/);
+});
+
+test("AddCustom 静态演示背景不伪装成用户近期尝试，真实尝试优先显示", () => {
+  const [fixture] = buildHomeSuggestions({ tasks: [developmentTask({})], mode: "development" });
+  assert.match(fixture.activity, /演示依据：预置/);
+  assert.doesNotMatch(fixture.activity, /最近示例尝试/);
+
+  const [recorded] = buildHomeSuggestions({ tasks: [developmentTask({ flowState: {
+    attempts: [{ id: "trial-17-33", snapshot: { rows: "17", columns: "33", tileSize: "32", bounds: "full" }, passed: false, time: "10:30" }],
+  } })], mode: "development" });
+  assert.match(recorded.activity, /最近示例尝试 \[17,33\].*未通过/);
+});
+
 test("首页保留三张以外的候选，暂缓后可继续补位", () => {
   const tasks = [
     learningTask({}),
