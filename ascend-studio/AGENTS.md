@@ -1036,3 +1036,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 将左侧「学习发现」移至「自动化任务」上方；顺序为新建任务、学习发现、自动化任务、能力库。按钮仍在主内容区打开发现页，不触发弹窗。
 - 修改 `src/App.jsx` 并从最新干净主线重新生成 `../ascstudio/`。隔离构建保护了其他对话在共享工作区里的改动。
 - `npm run build:pages` 和 `git diff --check` 通过；Pages run `39730791026` 部署成功，线上 index 已引用新 bundle，JS / CSS 均 HTTP 200。功能提交 `166b6e35` 已推送。页面序列、hash 和 API / Host / Application 边界未变。
+
+### 2026-10-22 · 学习发现整页滚动
+
+- 桌面学习发现从“固定标题 + 内部小滚动框”改为单一纵向滚动容器：`.learning-discovery` 滚动、`.ld-scroll` 随内容展开，因此标题、搜索和推荐 / 新上架 / 日程楼层一起移动。
+- 变更 `src/learning-discovery.css` 与 `../ascstudio/` Pages 产物；没有改 JSX 数据和交互。隔离快照仅基于最新 `origin/main` 加本次修复构建，保留共享工作区其他对话的暂存与未暂存变更。
+- Vite Pages 构建及 `git diff --check` 通过；1280×720 本地预览滚动验证确认 header 可滚走；线上 Pages run `39731591180` 成功，CSS / JS 均 HTTP 200。提交 `1e1fac00` 已推送；页面序列和 API / Host / Application 边界未变。

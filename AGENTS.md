@@ -5801,3 +5801,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更 `ascend-studio/src/App.jsx` 与静态 Pages 产物 `ascstudio/`。基于 `origin/main` 的干净隔离快照构建和发布，工作区其他对话的暂存、未暂存和未跟踪改动均保留。
 - 验证：`npm run build:pages`、`git diff --check` 通过；GitHub Pages run `39730791026` 成功；线上 `ascstudio/index.html` 已引用新 JS bundle，JS 与 CSS 返回 HTTP 200。
 - 不改学习发现页面内容、页面序列 / hash 或 API / Host / Application 边界。功能提交 `166b6e35` 已推送 `origin/main`。
+
+### 2026-10-22 · 学习发现页改为整页滚动
+
+- 用户指出桌面学习发现页顶部 `.ld-header` 固定、内容仅在较小的下方区域滚动。现由 `.learning-discovery` 承担纵向滚动，`.ld-scroll` 自然展开，使标题、搜索与三个内容楼层在同一滚动流内。
+- 变更 `ascend-studio/src/learning-discovery.css` 和 `ascstudio/` Pages 产物；页面内容、导航顺序与课程 / 活动行为不变。基于最新 `origin/main` 的隔离快照构建，未纳入共享工作区其它对话的改动。
+- 验证：`npm run build:pages`、`git diff --check` 通过；本地 Vite `127.0.0.1:8123` 的 1280×720 CUA 回放中，滚动后标题与搜索栏离开视口，新上架及近期日程进入视口。Pages run `39731591180` 成功；线上 index 已引用新 CSS / JS 且均 HTTP 200。
+- 不改变报告序列 / hash 或 API / Host / Application 边界。功能提交 `1e1fac00` 已推送至 `origin/main`。
