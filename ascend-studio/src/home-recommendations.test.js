@@ -14,12 +14,34 @@ test("学习与开发候选池相互隔离", () => {
   assert.notEqual(learning[0].action.type, development[0].action.type);
 });
 
-test("事实不足时不以最近任务填满候选", () => {
+test("事实不足时用明确标注的演示建议补足现存任务入口", () => {
   const tasks = [
-    { name: "普通开发任务", kind: "development", records: [{ title: "刚刚完成", summary: "已处理" }] },
-    { name: "另一个任务", kind: "development" },
+    { name: "普通开发任务", kind: "development", goal: "整理构建条件", records: [{ title: "刚刚完成", summary: "已处理" }] },
   ];
-  assert.deepEqual(buildHomeSuggestions({ tasks, mode: "development" }), []);
+  const suggestions = buildHomeSuggestions({ tasks, mode: "development" });
+  assert.equal(suggestions.length, 3);
+  assert.ok(suggestions.every(item => item.taskName === "普通开发任务" && /演示建议/.test(item.reason)));
+  assert.ok(suggestions.every(item => item.evidence.some(fact => /演示场景候选/.test(fact.title))));
+  assert.ok(suggestions.some(item => item.action.type === "task-create"));
+  assert.ok(suggestions.filter(item => item.action.type === "development-material").every(item => item.action.materialId === "task-brief"));
+});
+
+test("已有诊断候选排在补位演示建议之前", () => {
+  const task = developmentTask({});
+  const suggestions = buildHomeSuggestions({ tasks: [task], mode: "development" });
+  assert.equal(suggestions.length, 4);
+  assert.equal(suggestions[0].type, "development-troubleshoot");
+  assert.ok(suggestions.slice(1).every(item => item.priority <= 2));
+});
+
+test("首页保留三张以外的候选，暂缓后可继续补位", () => {
+  const tasks = [
+    learningTask({}),
+    { ...learningTask({}), name: "协同生成图像推理前处理学习路径", goal: "围绕图像推理前处理目标整理学习路径。" },
+  ];
+  const suggestions = buildHomeSuggestions({ tasks, mode: "learning" });
+  assert.equal(suggestions.length, 6);
+  assert.equal(new Set(suggestions.map(item => item.id)).size, 6);
 });
 
 test("后续同条件成功抵消旧的失败练习", () => {

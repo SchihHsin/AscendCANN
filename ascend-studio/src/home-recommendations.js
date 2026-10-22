@@ -137,13 +137,40 @@ function developmentSuggestions(task) {
   return out;
 }
 
+function demoSuggestions(task, mode) {
+  const goal = clean(task.goal || task.learningProfile?.goal || task.name);
+  const context = [
+    evidence("demo-task-goal", "现存任务目标", goal),
+    evidence("demo-candidate", "演示场景候选", "由现存任务目标拆分的可继续探索入口；没有完成、失败次数、运行日志或硬件验证记录。"),
+  ];
+  const choices = mode === "learning"
+    ? [
+      { type: "demo-learning-new-task", title: "开启一项新的图像推理学习任务", label: "新建学习任务", step: "从已有的输入预处理目标延伸到完整推理链路", reason: "演示建议：可以沿着现有学习目标，另开一项更完整的图像推理学习任务。", priority: 2, action: { type: "task-create", groupId: "inference", kind: "learning", name: "图像推理入门学习", goal: `从“${goal}”延伸，了解图像分类推理的环境准备、输入处理、执行流程与结果解读。` } },
+      { type: "demo-learning-lesson", title: "从目标中挑一个概念先理解", materialId: "learning-lesson", label: "打开概念讲解", step: "对照任务目标阅读相关概念", prompt: `请根据“${goal}”指出一个适合作为起点的概念，并说明后续如何练习。` },
+      { type: "demo-learning-diagram", title: "先看通道与维度图解", materialId: "learning-lesson", label: "打开图解", step: "用图解对照图像通道、HWC 与 CHW 的关系", prompt: `请结合“${goal}”解释图像通道、HWC 与 CHW 的关系，并指出后续练习要观察什么。` },
+    ]
+    : [
+      { type: "demo-development-new-task", title: "从当前问题新建一项开发任务", label: "新建开发任务", step: "把现有目标拆成独立的实现与验证任务", reason: "演示建议：可将当前目标整理成一项边界清晰、便于持续跟进的开发任务。", priority: 2, action: { type: "task-create", groupId: task.project === "模型推理" ? "inference" : "operator", kind: "development", name: task.project === "模型推理" ? "图像分类应用开发" : "算子验证设计", goal: `基于“${goal}”建立独立开发任务，整理实现范围、输入条件和验证计划；尚不表示已执行。` } },
+      { type: "demo-development-context", title: "整理目标与待补充条件", materialId: task.name === "AddCustom 精度异常" ? "source" : task.name === "图像推理调试" ? "image-source" : "task-brief", label: "进入任务上下文", step: "对照目标标出当前已有和待补充的信息", prompt: `请围绕“${goal}”整理已知条件和仍需补充的信息，不假设任务已经执行。` },
+      { type: "demo-development-preflight", title: "先补齐验证所需条件", materialId: "task-brief", label: "查看任务简报", step: "列出版本、硬件和输入条件等验证前提", prompt: `请围绕“${goal}”整理验证前需要补齐的版本、硬件和输入条件；不要推断这些条件已经满足。` },
+    ];
+  return choices.map((choice, index) => candidate({
+    task, mode, type: choice.type, title: choice.title,
+    reason: choice.reason || "演示建议：可从现存目标继续拆解下一步。", evidence: context,
+    steps: [choice.step], action: choice.action || { type: mode === "learning" ? choice.type.replace("demo-", "") : "development-material", materialId: choice.materialId },
+    actionLabel: choice.label, prompt: choice.prompt, priority: choice.priority || 1,
+    tone: ["rose", "sand", "blue"][index % 3],
+    deps: [goal, choice.type],
+  }));
+}
+
 export function buildHomeSuggestions({ tasks = [], currentTaskName = "", mode = "learning" } = {}) {
   if (!MODES.has(mode) || !Array.isArray(tasks)) return [];
   const pool = [];
   for (const task of tasks) {
     if (!object(task) || !clean(task.name)) continue;
     if (mode === "learning" && task.kind === "learning") pool.push(...learningSuggestions(task));
-    if (mode === "development" && task.kind !== "learning") pool.push(...developmentSuggestions(task));
+    if (mode === "development" && task.kind !== "learning" && task.kind !== "official-learning") pool.push(...developmentSuggestions(task));
   }
   const unique = new Map();
   for (const item of pool) {
@@ -151,5 +178,21 @@ export function buildHomeSuggestions({ tasks = [], currentTaskName = "", mode = 
     const old = unique.get(key);
     if (!old || item.priority > old.priority) unique.set(key, item);
   }
-  return [...unique.values()].sort((a, b) => b.priority - a.priority || Number(b.taskName === currentTaskName) - Number(a.taskName === currentTaskName) || a.taskName.localeCompare(b.taskName, "zh-CN")).slice(0, 3);
+  if (unique.size < 6) {
+    let hasDemoTaskCreation = false;
+    for (const task of tasks) {
+      if (!object(task) || !clean(task.name)) continue;
+      const eligible = mode === "learning" ? task.kind === "learning" : task.kind !== "learning" && task.kind !== "official-learning";
+      if (!eligible) continue;
+      for (const item of demoSuggestions(task, mode)) {
+        if (item.action.type === "task-create" && hasDemoTaskCreation) continue;
+        const key = `${item.taskName}:${item.type}`;
+        if (!unique.has(key) && unique.size < 6) {
+          unique.set(key, item);
+          if (item.action.type === "task-create") hasDemoTaskCreation = true;
+        }
+      }
+    }
+  }
+  return [...unique.values()].sort((a, b) => b.priority - a.priority || Number(b.taskName === currentTaskName) - Number(a.taskName === currentTaskName) || a.taskName.localeCompare(b.taskName, "zh-CN")).slice(0, 6);
 }

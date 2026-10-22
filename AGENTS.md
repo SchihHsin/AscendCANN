@@ -5721,3 +5721,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现涉及 `ascend-studio/src/App.jsx`、`LearningJourney.jsx`、`CommunityDraftPanel.jsx`、`community-draft-data.js`、`community-draft.css`、`useWorkbenchLayout.js`。当前为本地 Demo 行为，未连接真实 AI 或社区服务；完成记录中的形状演算不是 Python、模型或 NPU 实测。可信度表现按用户要求暂缓。
 - 本地 `http://localhost:4174/` 已检查保存后邀请、对话草稿卡和右侧审阅区；隔离构建、语法检查、`git diff --check` 通过，未运行测试套件。参考图并排比较受浏览器本地文件安全策略限制，视觉对照仍待补。
 - 功能提交 `3a7a0163`（`feat: add completion-gated community experience drafts`）及隔离 Pages 产物已推送 `origin/main`。其他对话的暂存、未暂存和未跟踪改动均未纳入并保持在工作区。此项不改变报告页序/hash及 API / Host / Application 边界。
+
+
+### 2026-10-22 · 首页推荐卡片补位
+
+- 首页学习 / 开发推荐区默认显示 3 张卡片。保留“暂不处理”，但候选池扩到 6 条；先过滤已暂缓项，再展示前三，避免旧的暂缓记录让首页只剩一张。学习与开发候选仍分开，补位项明确标为演示建议。
+- 变更：`ascend-studio/src/NewTaskHome.jsx`、`home-recommendations.js`、`home-recommendations.test.js`、`App.jsx`，以及根目录 Pages 产物 `ascstudio/`。本次不涉及正式报告页序、hash 或 API / Host / Application 边界。
+- 验证：首页推荐测试 13/13 通过，`npm run build:pages` 通过；本地桌面预览的无障碍树和截图均显示 3 张卡片。

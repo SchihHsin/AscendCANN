@@ -143,7 +143,7 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
 
 function App() {
   const wb = useWorkbenchState();
-  const [showNewTaskHome, setShowNewTaskHome] = useState(false);
+  const [showNewTaskHome, setShowNewTaskHome] = useState(() => new URLSearchParams(window.location.search).get("task") !== "learning");
   const [pendingRecommendationAction, setPendingRecommendationAction] = useState(null);
   const [saveAvailable, setSaveAvailable] = useState(sessionSaveAvailable);
   useEffect(() => {
@@ -731,6 +731,14 @@ function App() {
   };
   const runRecommendationAction = item => {
     const { action = {} } = item;
+    if (action.type === "task-create") {
+      const existingGroup = wb.groups.find(group => group.tasks.includes(action.name));
+      if (existingGroup) { wb.selectTask(action.name); setShowNewTaskHome(false); return; }
+      const created = wb.createTask({ name: action.name, groupId: action.groupId, goal: action.goal, kind: action.kind });
+      if (!created) wb.notify("演示任务没有创建成功，请从任务列表选择已有任务。");
+      setShowNewTaskHome(false);
+      return;
+    }
     if (action.type === "learning-path") {
       if (action.preparePath && !learning.actions.generatePath("home-recommendation")) return;
       openContent(action.materialId || "learning-path", { restore: true, ...(action.anchor ? { anchor: action.anchor } : {}) });
