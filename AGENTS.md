@@ -5768,3 +5768,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 入口仍只在开发任务完成示例形状核对后显示；用户点击后草稿进入右侧审阅，可编辑后再主动提交。学习任务不显示。社区生成 / 提交仍为本地演示；浏览器形状规则不代表真实 Python、模型或 NPU 验证。
 - 本地 CUA 预览 `http://localhost:4178/?task=development`（1280×720）显示待生成入口；点击后右侧出现草稿审阅。来源截图为 1702×924，浏览器安全策略拒绝以 `data:` URL 打开并排对照页，故视觉 QA 仍标记 blocked；没有声称完成同尺寸截图比对。
 - 变更：`ascend-studio/src/App.jsx`、`ascend-studio/src/community-draft.css`、`ascend-studio/design-qa.md` 和独立 `ascstudio/` Pages 构建。无报告页序/hash或 API / Host / Application 边界变化。
+
+### 2026-10-22 · 社区经验提示样式发布回执
+
+- 功能提交 `1f4a9428`（`fix: restore selected community invite styling`）包含社区入口源码、隔离构建的 Pages JS/CSS 与样式核验记录，已推送 `origin/main`。`npm run build:pages` 在干净 HEAD 快照加本次改动中成功；Pages 自动部署由推送触发，尚未独立核实部署完成状态。其他对话的暂存、未暂存和未跟踪改动均保持原样。

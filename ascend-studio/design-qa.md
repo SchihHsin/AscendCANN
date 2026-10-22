@@ -879,4 +879,6 @@ final result: blocked (参考图并排视觉比对未完成；功能实现与本
 **Comparison history**
 - Fix applied after finding above. CUA rendered capture at 1280×720 visually shows the selected layout; source and app captures were each opened and inspected. The browser security policy rejected a `data:` URL comparison page. No alternate browser / raw CDP path was attempted. Because a same-input side-by-side comparison and file-backed implementation screenshot are unavailable, typography / spacing / color are not signed off as pixel-matched.
 
+- Release: commit `1f4a9428` with isolated Pages output was pushed to `origin/main`; Pages deployment completion was not separately verified.
+
 final result: blocked

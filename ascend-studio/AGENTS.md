@@ -1007,3 +1007,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - `?task=development` 的完成示例出现“生成草稿”，点击后右侧工作区进入可编辑草稿审阅；提交仍需用户主动操作。真实 AI、社区接口、Python / 模型 / NPU 均未接入。
 - 本地 CUA 在 1280×720 截图核对入口样式并点击生成，右侧草稿面板打开。由于浏览器安全策略拒绝 data URL 并排页，未完成同尺寸 side-by-side 视觉 QA，详见 `design-qa.md`（final result: blocked）。
 - 修改 `src/App.jsx`、`src/community-draft.css` 与静态 Pages 产物；不涉及报告页序/hash或 API / Host / Application 边界。
+
+### 2026-10-22 · 社区经验提示样式发布回执
+
+- 功能提交 `1f4a9428`（`fix: restore selected community invite styling`）包含社区入口源码、隔离构建的 Pages JS/CSS 与样式核验记录，已推送 `origin/main`。`npm run build:pages` 在干净 HEAD 快照加本次改动中成功；Pages 自动部署由推送触发，尚未独立核实部署完成状态。其他对话的暂存、未暂存和未跟踪改动均保持原样。
