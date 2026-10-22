@@ -5914,3 +5914,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更 `ascend-studio/src/LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`、对应样式、官方进度/计划状态 Hook 与测试；新增 `official-learning-plan.js` 及测试，并重建 `ascstudio/` Pages 包。属于 Application / Task 交互，不改变报告页序/hash 或 API / Host / Harness 边界。
 - 验证：学习路径共创、生成、官方进度与个人计划测试共 24/24 通过；`npm run build`、`npm run build:pages`、`node --check`、`git diff --check` 通过。构建保留既有大 bundle 提示。隔离本地浏览器已回放标准路径草案排序、ResNet50 个人计划排序/确认及刷新恢复；未声称真实 Python、模型或 NPU 验证。
 - 源码与独立 Pages 构建基于最新 `origin/main` 隔离生成；功能提交 `78baa187` 已推送 `origin/main`。Pages workflow `39777745749` 成功；线上 index、JS 与 CSS 均返回 HTTP 200。共享工作区中其他对话的暂存、未暂存和未跟踪内容未纳入。
+
+### 2026-10-22 · 任务列表透明黑状态
+
+- 用户要求项目 / 任务列表的搜索框与选中状态使用有透明度的黑色，不再用灰色底。搜索框常态与聚焦、任务行悬停与选中均改为低透明度黑色；文本保持清晰黑色。
+- 修改 `ascend-studio/src/styles.css`，属于现有任务导航的局部视觉调整；不改页面顺序、交互和 API / Host / Application 边界。
+- 验证：`npm run build:pages`、`git diff --check`；未运行测试套件。源码与 Pages 产物从最新 `origin/main` 隔离构建后单独推送，工作区其他对话改动保留。

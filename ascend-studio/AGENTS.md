@@ -1113,3 +1113,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 新增 `src/official-learning-plan.js` 与测试，修改学习层级画布、官方画布、对应样式、官方进度状态与 Hook。工作区的所有标准学习任务共用草案编辑规则；官方课程保留个人副本机制。
 - 本轮测试 24/24 通过，`npm run build`、`npm run build:pages` 和 `git diff --check` 通过；浏览器回放草案换序、确认和刷新恢复。构建仅有既有 bundle 体积提示；没有真实 AI、Python、模型或 NPU 执行。
 - 已在基于最新 `origin/main` 的隔离工作区生成源码与 Pages 产物；功能提交 `78baa187` 已推送 `origin/main`，Pages workflow `39777745749` 成功，线上 index、JS 与 CSS 均返回 HTTP 200。没有纳入共享目录的其他对话改动。
+
+### 2026-10-22 · 任务列表透明黑状态
+
+- 用户要求项目 / 任务列表的搜索框与选中状态使用有透明度的黑色，不再用灰色底。搜索框常态与聚焦、任务行悬停与选中均改为低透明度黑色；文本保持清晰黑色。
+- 修改 `ascend-studio/src/styles.css`，属于现有任务导航的局部视觉调整；不改页面顺序、交互和 API / Host / Application 边界。
+- 验证：`npm run build:pages`、`git diff --check`；未运行测试套件。源码与 Pages 产物从最新 `origin/main` 隔离构建后单独推送，工作区其他对话改动保留。
