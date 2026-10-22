@@ -1140,3 +1140,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 展开卡片隐藏与收起态重复的两条摘要，显示两条带日期的演示问题记录、简短现象与两行代码；统一标为「近期记录 · 示例代码」。推荐理由和学习方向各保留一行，替换泛化步骤。仍使用三张原文件夹卡片及原配色，不标记错误来自开发或学习。
 - 数据为静态示例，不是真实用户记录或根因诊断；日期锚定 2026-10-22。改动 `src/NewTaskHome.jsx`、`src/home-recommendations.js`、`src/new-task-home.css`，Pages 构建位于仓库根目录 `ascstudio/`。页面序列 / hash 与 API / Host / Application 边界不变。
 - 构建与语法检查通过；本地 1280×720 查看了三张展开卡片。源码 commit `678118fd`、Pages commit `b4aa6573` 已推送到 `origin/main`；Pages run `39783592016` 成功。细节见根目录 `ascend-studio/design-qa.md`。
+
+
+### 2026-10-22 · 四图标主导航与自动化 / 能力库独立页面
+
+- 用户确认左侧改为四图标轨道：项目 / 任务、学习发现、自动化任务、能力库。项目列表默认隐藏，点项目图标展开；学习发现、自动化、能力库分别切换主内容区页面，不使用弹窗。
+- 搜索与分类、自动化启停 / 演示运行 / 新增、能力库带入当前任务能力继续可用；带入后回任务页并聚焦输入框。项目列表搜索框和选中状态延续透明黑。
+- 变更 `src/App.jsx`、`src/WorkbenchDialogs.jsx`、`src/styles.css`、`src/useWorkbenchLayout.js` 及根目录 Pages 输出 `../ascstudio/`。管理页面数据和操作仍是本地 Demo，不接真实服务；不改变报告页序 / hash 或 API / Host / Application 层边界。
+- 验证：快进至最新 `origin/main` 后执行 `npm run build:pages` 和 `git diff --check` 均通过；构建只有现存的大 bundle 提示。此前本地回放确认四入口与返回任务动作；本次新开的隔离预览端口被浏览器本地访问策略拦截，未将它记作截图验证。未运行测试套件。
+- 源码、Pages 产物和本记录作为本次功能提交推送到 `origin/main`；共享工作区其他对话的未提交内容不纳入。

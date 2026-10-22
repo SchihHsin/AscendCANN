@@ -1,53 +1,53 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 
-const COLLAPSED_PROJECTS = 18;
 const MIN_PROJECTS = 200;
 const MAX_PROJECTS = 520;
 const MIN_CONVERSATION = 300;
 const MIN_CANVAS = 360;
+const NAV_RAIL = 56;
 const clamp = (value, min, max) => Math.min(Math.max(value, min), Math.max(min, max));
 const pixels = (value) => `${Math.round(value * 1000) / 1000}px`;
 const initialPreferences = () => ({ projects: null, conversationRatio: null });
 
-function resolveLayout(size, preferences, sidebarCollapsed, contentCollapsed, learningLayout, communityDraftFocus) {
+function resolveLayout(size, preferences, projectPanelOpen, contentCollapsed, learningLayout, communityDraftFocus) {
   if (size.windowWidth <= 980 || !size.width) return null;
   const compact = size.windowWidth <= 1240;
   const defaultProjects = learningLayout ? clamp(size.windowWidth * .13, MIN_PROJECTS, 280) : compact ? 260 : Math.max(286, size.windowWidth * 0.22);
   const expandedProjects = preferences.projects === null
     ? defaultProjects
-    : clamp(preferences.projects, MIN_PROJECTS, Math.min(MAX_PROJECTS, size.width - MIN_CONVERSATION - MIN_CANVAS));
-  const defaultRemaining = Math.max(0, size.width - expandedProjects);
+    : clamp(preferences.projects, MIN_PROJECTS, Math.min(MAX_PROJECTS, size.width - NAV_RAIL - MIN_CONVERSATION - MIN_CANVAS));
+  const projects = projectPanelOpen ? expandedProjects : 0;
+  const defaultRemaining = Math.max(0, size.width - NAV_RAIL - expandedProjects);
   const defaultCanvas = learningLayout
     ? Math.max(MIN_CANVAS, defaultRemaining - Math.max(MIN_CONVERSATION, size.windowWidth * .21))
     : Math.max(compact ? 420 : 500, defaultRemaining * (compact ? 0.48 : 0.45));
   const defaultConversation = Math.max(0, defaultRemaining - defaultCanvas);
   const defaultRatio = defaultRemaining ? defaultConversation / defaultRemaining : 0.55;
-  const projects = sidebarCollapsed ? COLLAPSED_PROJECTS : expandedProjects;
-  const remaining = Math.max(0, size.width - projects);
-  if (contentCollapsed) return { total: size.width, projects, conversation: remaining, canvas: 0 };
-  const useCommunityFocus = preferences.conversationRatio === null && !sidebarCollapsed && communityDraftFocus;
-  const conversation = preferences.conversationRatio === null && !sidebarCollapsed && !useCommunityFocus
+  const remaining = Math.max(0, size.width - NAV_RAIL - projects);
+  if (contentCollapsed) return { total: size.width, rail: NAV_RAIL, projects, conversation: remaining, canvas: 0 };
+  const useCommunityFocus = preferences.conversationRatio === null && projectPanelOpen && communityDraftFocus;
+  const conversation = preferences.conversationRatio === null && projectPanelOpen && !useCommunityFocus
     ? defaultConversation
     : clamp(remaining * (preferences.conversationRatio ?? (useCommunityFocus ? 0.31 : defaultRatio)), MIN_CONVERSATION, remaining - MIN_CANVAS);
-  return { total: size.width, projects, conversation, canvas: remaining - conversation };
+  return { total: size.width, rail: NAV_RAIL, projects, conversation, canvas: remaining - conversation };
 }
 
 function bounds(kind, layout) {
   return kind === "projects"
-    ? { min: MIN_PROJECTS, max: Math.min(MAX_PROJECTS, layout.total - layout.canvas - MIN_CONVERSATION), now: layout.projects }
-    : { min: MIN_CONVERSATION, max: layout.total - layout.projects - MIN_CANVAS, now: layout.conversation };
+    ? { min: MIN_PROJECTS, max: Math.min(MAX_PROJECTS, layout.total - layout.rail - layout.canvas - MIN_CONVERSATION), now: layout.projects }
+    : { min: MIN_CONVERSATION, max: layout.total - layout.rail - layout.projects - MIN_CANVAS, now: layout.conversation };
 }
 
-export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false, learningLayout = false, communityDraftFocus = false }) {
+export function useWorkbenchLayout({ projectPanelOpen, contentCollapsed = false, learningLayout = false, communityDraftFocus = false }) {
   const workspaceRef = useRef(null);
   const dragRef = useRef(null);
   const currentRef = useRef(null);
   const [size, setSize] = useState({ width: 0, windowWidth: 0 });
   const [preferences, setPreferences] = useState(() => ({ ...initialPreferences(), ...readSession("layout", {}) }));
   const [dragging, setDragging] = useState(null);
-  const layout = resolveLayout(size, preferences, sidebarCollapsed, contentCollapsed, learningLayout, communityDraftFocus);
-  currentRef.current = { layout, preferences, sidebarCollapsed, contentCollapsed };
+  const layout = resolveLayout(size, preferences, projectPanelOpen, contentCollapsed, learningLayout, communityDraftFocus);
+  currentRef.current = { layout, preferences, projectPanelOpen, contentCollapsed };
 
   useEffect(() => { writeSession("layout", preferences); }, [preferences]);
 
@@ -87,19 +87,19 @@ export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false,
 
   useEffect(() => {
     if (dragRef.current) endDrag();
-  }, [sidebarCollapsed, contentCollapsed]);
+  }, [projectPanelOpen, contentCollapsed]);
 
   function updateBoundary(kind, start, delta) {
     const current = currentRef.current;
-    if (!current.layout || (kind === "conversation" && current.contentCollapsed) || (kind === "projects" && current.sidebarCollapsed)) return;
+    if (!current.layout || (kind === "conversation" && current.contentCollapsed) || (kind === "projects" && !current.projectPanelOpen)) return;
     const limits = bounds(kind, start);
     const width = clamp(limits.now + delta, limits.min, limits.max);
     let next;
     if (kind === "projects") {
-      const remaining = start.total - width;
+      const remaining = start.total - start.rail - width;
       next = { projects: width, conversationRatio: (remaining - start.canvas) / remaining };
     } else {
-      next = { ...current.preferences, conversationRatio: width / (start.total - start.projects) };
+      next = { ...current.preferences, conversationRatio: width / (start.total - start.rail - start.projects) };
     }
     currentRef.current = { ...current, preferences: next };
     setPreferences(next);
@@ -119,7 +119,7 @@ export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false,
 
   function separatorProps(kind) {
     const limits = layout ? bounds(kind, layout) : { min: 0, max: 0, now: 0 };
-    const disabled = !layout || (kind === "projects" && sidebarCollapsed) || (kind === "conversation" && contentCollapsed);
+    const disabled = !layout || (kind === "projects" && !projectPanelOpen) || (kind === "conversation" && contentCollapsed);
     return {
       "aria-orientation": "vertical",
       "aria-disabled": disabled || undefined,
@@ -129,7 +129,7 @@ export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false,
       "aria-valuetext": `${Math.round(limits.now)} px`,
       onPointerDown: (event) => {
         const current = currentRef.current;
-        if (disabled || event.button !== 0 || !event.isPrimary || dragRef.current || !current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
+        if (disabled || event.button !== 0 || !event.isPrimary || dragRef.current || !current.layout || (kind === "projects" && !current.projectPanelOpen)) return;
         event.preventDefault();
         event.currentTarget.setPointerCapture(event.pointerId);
         dragRef.current = { kind, pointerId: event.pointerId, clientX: event.clientX, layout: current.layout, element: event.currentTarget };
@@ -141,7 +141,7 @@ export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false,
       onLostPointerCapture: pointerEnd,
       onKeyDown: (event) => {
         const current = currentRef.current;
-        if (disabled || !current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
+        if (disabled || !current.layout || (kind === "projects" && !current.projectPanelOpen)) return;
         const activeLimits = bounds(kind, current.layout);
         const step = event.shiftKey ? 64 : 16;
         const deltas = {
@@ -157,7 +157,7 @@ export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false,
       },
       onDoubleClick: (event) => {
         const current = currentRef.current;
-        if (disabled || !current.layout || (kind === "projects" && current.sidebarCollapsed)) return;
+        if (disabled || !current.layout || (kind === "projects" && !current.projectPanelOpen)) return;
         event.preventDefault();
         endDrag();
         const next = initialPreferences();
@@ -173,9 +173,13 @@ export function useWorkbenchLayout({ sidebarCollapsed, contentCollapsed = false,
     dragging,
     separatorProps,
     style: layout ? {
-      gridTemplateColumns: `${pixels(layout.projects)} ${pixels(layout.conversation)} ${pixels(layout.canvas)}`,
-      "--projects-edge": pixels(layout.projects),
-      "--conversation-edge": pixels(layout.projects + layout.conversation),
+      gridTemplateColumns: `${pixels(layout.rail)} ${pixels(layout.projects)} ${pixels(layout.conversation)} ${pixels(layout.canvas)}`,
+      "--projects-edge": pixels(layout.rail + layout.projects),
+      "--conversation-edge": pixels(layout.rail + layout.projects + layout.conversation),
     } : {},
+    standaloneStyle: {
+      gridTemplateColumns: `${pixels(NAV_RAIL)} ${pixels(layout?.projects ?? (projectPanelOpen ? 286 : 0))} minmax(0, 1fr)`,
+      "--projects-edge": pixels(NAV_RAIL + (layout?.projects ?? (projectPanelOpen ? 286 : 0))),
+    },
   };
 }

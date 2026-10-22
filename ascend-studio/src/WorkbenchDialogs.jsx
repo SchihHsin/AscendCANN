@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import {
   IconAlertCircle,
   IconArrowRight,
-  IconBook,
   IconCheck,
   IconCode,
   IconCopy,
@@ -13,7 +12,6 @@ import {
   IconPlayerPlay,
   IconPlus,
   IconSearch,
-  IconSettingsAutomation,
   IconX,
 } from "@tabler/icons-react";
 import "./workbench-dialogs.css";
@@ -21,8 +19,6 @@ import "./workbench-dialogs.css";
 const dialogConfig = {
   newTask: { title: "新建任务", description: "把目标和上下文保存在项目中，后续对话会围绕这个任务展开。", icon: IconPlus },
   code: { title: "附加代码片段", description: "补充当前任务的代码上下文。片段只会保存在本次原型会话中。", icon: IconCode },
-  capabilities: { title: "能力库", description: "选择一个能力，把检查目标带入当前对话。", icon: IconBook },
-  automations: { title: "自动化任务", description: "查看任务状态，或演示运行一次。", icon: IconSettingsAutomation },
   history: { title: "对话历史", description: "恢复记录时，会切换当前任务的对话内容。", icon: IconHistory },
   models: { title: "选择 AI", description: "选择本次对话使用的演示 AI 配置。", icon: IconCpu },
   attempts: { title: "已尝试的动作", description: "保留动作和结果，避免反复尝试相同路径。", icon: IconHistory },
@@ -96,7 +92,7 @@ function CodeForm({ taskName, onAttachCode, onClose }) {
   </form>;
 }
 
-function CapabilityList({ capabilities = [], onUseCapability }) {
+export function CapabilityList({ capabilities = [], onUseCapability }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("全部");
   const categories = useMemo(() => ["全部", ...new Set(capabilities.map((item) => item.category).filter(Boolean))], [capabilities]);
@@ -108,7 +104,7 @@ function CapabilityList({ capabilities = [], onUseCapability }) {
   </div>;
 }
 
-function AutomationList({ automations = [], onToggleAutomation, onRunAutomation, onAddAutomation }) {
+export function AutomationList({ automations = [], onToggleAutomation, onRunAutomation, onAddAutomation }) {
   const [name, setName] = useState("");
   const [cadence, setCadence] = useState("每个工作日 09:00");
   const [error, setError] = useState("");
@@ -159,8 +155,6 @@ function DialogContent({ dialog, ...props }) {
   switch (dialog) {
     case "newTask": return <NewTaskForm {...props} />;
     case "code": return <CodeForm {...props} />;
-    case "capabilities": return <CapabilityList {...props} />;
-    case "automations": return <AutomationList {...props} />;
     case "history": return <HistoryList {...props} />;
     case "models": return <ModelList {...props} />;
     case "attempts": return <AttemptsList {...props} />;

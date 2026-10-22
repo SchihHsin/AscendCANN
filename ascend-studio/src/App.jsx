@@ -36,6 +36,7 @@ import { LearningJourneyMaterial } from "./LearningJourney";
 import { NewTaskHome } from "./NewTaskHome";
 import { LearningDiscoveryPage } from "./LearningDiscoveryPage";
 import { buildHomeSuggestions } from "./home-recommendations";
+import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
 import { CommunityDraftPanel } from "./CommunityDraftPanel";
 import { createCommunityDraft } from "./community-draft-data";
 import { buildLearningContentItems } from "./learning-content-catalog";
@@ -49,7 +50,6 @@ import {
   IconBook,
   IconBooks,
   IconChevronDown,
-  IconChevronLeft,
   IconChevronRight,
   IconCircleCheck,
   IconCircleX,
@@ -160,14 +160,19 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
 function App() {
   const wb = useWorkbenchState();
   const developmentDemoLaunch = useRef(new URLSearchParams(window.location.search).get("task") === "development");
-  const [showNewTaskHome, setShowNewTaskHome] = useState(() => {
+  const [mainView, setMainView] = useState(() => {
     const launchTask = new URLSearchParams(window.location.search).get("task");
-    if (["learning", "development"].includes(launchTask)) return false;
+    if (["learning", "development"].includes(launchTask)) return "task";
     // Reopening the co-creation scenario should show its reset starter state,
     // while a fresh visit to the app still opens the new-task home.
-    return readSession("workbench", null)?.selectedTask !== LEARNING_PATH_GENERATION_TASK;
+    return readSession("workbench", null)?.selectedTask === LEARNING_PATH_GENERATION_TASK ? "task" : "home";
   });
-  const [showLearningDiscovery, setShowLearningDiscovery] = useState(false);
+  const [projectPanelOpen, setProjectPanelOpen] = useState(false);
+  const showNewTaskHome = mainView === "home";
+  const showLearningDiscovery = mainView === "learning";
+  const showAutomations = mainView === "automations";
+  const showCapabilities = mainView === "capabilities";
+  const showTaskWorkspace = mainView === "task";
   const [pendingDiscoveryItem, setPendingDiscoveryItem] = useState(null);
   const [pendingRecommendationAction, setPendingRecommendationAction] = useState(null);
   const [learningAgentAction, setLearningAgentAction] = useState(null);
@@ -184,8 +189,6 @@ function App() {
   const canvas = useCanvasState({ startEmpty: true, storageKey: "canvas-addcustom" });
   const imageCanvas = useCanvasState({ startEmpty: true, cardDefinitions: IMAGE_MATERIALS, storageKey: "canvas-image" });
   const [precisionContext, setPrecisionContext] = useState(() => readSession("precision-context", null));
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => readSession("sidebar-collapsed", false));
-  useEffect(() => { writeSession("sidebar-collapsed", sidebarCollapsed); }, [sidebarCollapsed]);
   useEffect(() => { writeSession("precision-context", precisionContext); }, [precisionContext]);
   const previousImage = useRef(null);
   const previousPrecision = useRef(precisionContext);
@@ -221,7 +224,7 @@ function App() {
     if (accepted) clearPointContext();
     return accepted;
   };
-  const selectExistingTask = (name) => { selectTask(name); setShowNewTaskHome(false); setShowLearningDiscovery(false); };
+  const selectExistingTask = (name) => { selectTask(name); setMainView("task"); setProjectPanelOpen(false); };
   const { selectedRoute, draft } = session;
   const messages = session.messages.filter(message => {
     if (["learning", "official-learning"].includes(task.kind) && (message.communityInvite || message.communityDraftCard)) return false;
@@ -240,14 +243,13 @@ function App() {
     ? [...session.messages].reverse().find(message => message.communityInvite)
     : null;
   const showCommunityInvite = Boolean(communityInviteMessage && communityInviteMessage.communityInvite.summaryId !== session.communityDraft?.completionId);
-  const showTaskWorkspace = !showNewTaskHome && !showLearningDiscovery;
   const learningLaunchHandled = useRef(false);
   useEffect(() => {
     if (learningLaunchHandled.current) return;
     learningLaunchHandled.current = true;
     const launchTask = new URLSearchParams(window.location.search).get("task");
     if (launchTask === "learning" || launchTask === "development") {
-      setShowNewTaskHome(false);
+      setMainView("task");
       wb.selectTask(launchTask === "learning" ? LEARNING_TASK : IMAGE_TASK);
       wb.setQuery("");
       wb.setFilterScope("all");
@@ -260,7 +262,7 @@ function App() {
   const isInteractiveTask = isMainTask || isImageTask || isLearningTask;
   const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask, initialMaterialId: isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS[0]?.id : isLearningTask ? "learning-goal" : undefined, defaultToLearningCanvas: isLearningTask });
   const communityDraftFocus = showTaskWorkspace && supportsCommunityDraft && Boolean(session.communityDraft?.open && session.communityDraft?.completionId);
-  const layout = useWorkbenchLayout({ sidebarCollapsed, contentCollapsed: showTaskWorkspace && workspace.state.collapsed, learningLayout: isLearningTask, communityDraftFocus });
+  const layout = useWorkbenchLayout({ projectPanelOpen, contentCollapsed: showTaskWorkspace && workspace.state.collapsed, learningLayout: isLearningTask, communityDraftFocus });
   const visibleContentId = layout.contentWidth <= 620 && workspace.state.splitId && [workspace.state.activeId, workspace.state.splitId].includes(workspace.state.comparisonFocusId) ? workspace.state.comparisonFocusId : workspace.state.activeId;
   const contentVisible = id => !workspace.state.collapsed && workspace.state.activeId !== "canvas" && (layout.contentWidth <= 620 ? visibleContentId === id : workspace.state.activeId === id || workspace.state.splitId === id);
   const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask, initialStage: isPathGenerationTask ? "path" : "channels", resetOnLoad: isPathGenerationTask });
@@ -280,7 +282,7 @@ function App() {
   };
   const officialCanvasVisible = isOfficialLearningTask && !workspace.state.collapsed && workspace.state.activeId === "canvas" && workspace.state.canvasMode === "free";
   const officialCanvasView = useLearningCanvasView({ taskId: isOfficialLearningTask ? selectedTask : "__inactive-official-learning", enabled: isOfficialLearningTask, stageIds: OFFICIAL_STAGE_IDS, initialStage: OFFICIAL_LEARNING_STAGES[0].id, materialStages: OFFICIAL_MATERIAL_STAGES, storagePrefix: "official-learning-canvas-v2" });
-  const officialLearning = useOfficialLearningPath({ taskId: isOfficialLearningTask ? selectedTask : "__inactive-official-learning", enabled: isOfficialLearningTask, visible: officialCanvasVisible && officialCanvasView.state.expanded && !showNewTaskHome, onRecord: (record, ownerId) => wb.addRecord(record, ownerId) });
+  const officialLearning = useOfficialLearningPath({ taskId: isOfficialLearningTask ? selectedTask : "__inactive-official-learning", enabled: isOfficialLearningTask, visible: officialCanvasVisible && officialCanvasView.state.expanded && showTaskWorkspace, onRecord: (record, ownerId) => wb.addRecord(record, ownerId) });
   const learningCanvas = useCanvasState({ startEmpty: true, cardDefinitions: LEARNING_MATERIALS, storageKey: `canvas-learning-${isLearningTask ? selectedTask : "__inactive-learning"}` });
   const learningCanvasMaterial = !learning.state.path && !learning.state.draftPath ? "learning-goal" : ({ goal: "learning-goal", path: "learning-path", environment: "learning-lesson", channels: "learning-lesson", practice: "learning-practice", check: "learning-check", summary: "learning-summary" })[learningCanvasView.state.selectedStage];
   const learningCanvasMaterialIds = learningCanvasVisible && learningCanvasView.state.expanded && learningCanvasMaterial ? [learningCanvasMaterial] : [];
@@ -377,8 +379,8 @@ function App() {
   const openDiscoveryItem = (destination) => {
     if (!destination?.taskName || !destination?.materialId) return;
     wb.setMenu(null);
-    setShowNewTaskHome(false);
-    setShowLearningDiscovery(false);
+    setMainView("task");
+    setProjectPanelOpen(false);
     workspace.actions.setCollapsed(false);
     if (destination.taskName === selectedTask) {
       openContent(destination.materialId, { restore: true, ...(destination.anchor ? { anchor: destination.anchor } : {}) });
@@ -868,10 +870,11 @@ function App() {
     const { action = {} } = item;
     if (action.type === "task-create") {
       const existingGroup = wb.groups.find(group => group.tasks.includes(action.name));
-      if (existingGroup) { wb.selectTask(action.name); setShowNewTaskHome(false); return; }
+      if (existingGroup) { wb.selectTask(action.name); setMainView("task"); setProjectPanelOpen(false); return; }
       const created = wb.createTask({ name: action.name, groupId: action.groupId, goal: action.goal, kind: action.kind });
       if (!created) wb.notify("演示任务没有创建成功，请从任务列表选择已有任务。");
-      setShowNewTaskHome(false);
+      setMainView("task");
+      setProjectPanelOpen(false);
       return;
     }
     if (action.type === "learning-path") {
@@ -914,7 +917,8 @@ function App() {
   };
   const selectRecommendationAction = item => {
     setPendingRecommendationAction(item);
-    setShowNewTaskHome(false);
+    setMainView("task");
+    setProjectPanelOpen(false);
     if (selectedTask !== item.taskName) selectTask(item.taskName);
   };
   useEffect(() => {
@@ -927,7 +931,8 @@ function App() {
   }, [selectedTask, pendingRecommendationAction]);
   const chatAboutRecommendation = item => {
     if (wb.prepareTaskSuggestion({ taskName: item.taskName, prompt: item.prompt })) {
-      setShowNewTaskHome(false);
+      setMainView("task");
+      setProjectPanelOpen(false);
       requestAnimationFrame(() => wb.draftRef.current?.focus());
     }
   };
@@ -1094,6 +1099,22 @@ function App() {
     wb.notify("演示提交完成；尚未连接真实社区服务");
     window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
   };
+  const navigateMainView = (view) => {
+    wb.setMenu(null);
+    setMainView(view);
+    setProjectPanelOpen(false);
+  };
+  const toggleProjectNavigation = () => {
+    wb.setMenu(null);
+    if (mainView === "task" || mainView === "home") setProjectPanelOpen((open) => !open);
+    else { setMainView("task"); setProjectPanelOpen(true); }
+  };
+  const useCapabilityFromPage = (id) => {
+    wb.useCapability(id);
+    setMainView("task");
+    setProjectPanelOpen(false);
+    window.setTimeout(() => wb.draftRef.current?.focus(), 0);
+  };
 
   return (
     <main className="app-frame" data-testid="q02-workbench">
@@ -1104,7 +1125,7 @@ function App() {
         </div>
         <div className="topbar-divider" />
         <nav className="breadcrumbs" aria-label="当前位置">
-          {showNewTaskHome ? <strong>新建任务</strong> : showLearningDiscovery ? <strong>学习发现</strong> : <>
+          {showNewTaskHome ? <strong>新建任务</strong> : showLearningDiscovery ? <strong>学习发现</strong> : showAutomations ? <strong>自动化任务</strong> : showCapabilities ? <strong>能力库</strong> : <>
           <span className="breadcrumb-project">{currentGroup?.name}</span><IconChevronRight className="breadcrumb-project" size={14} /><button className="task-title-button" type="button" title={selectedTask} aria-label="当前任务与对话操作" data-menu-trigger aria-expanded={wb.menu?.name === "chat"} onClick={event => openMenu("chat", event)}><strong>{selectedTask}</strong><IconChevronDown size={13} /></button>
           </>}
         </nav>
@@ -1112,27 +1133,25 @@ function App() {
         <div className="topbar-spacer" />
         {showTaskWorkspace && !saveAvailable && <span className="save-unavailable" role="status">暂未保存</span>}
         {showTaskWorkspace && workspace.state.collapsed && <button className="light-button reopen-content" type="button" onClick={() => workspace.actions.setCollapsed(false)}>打开内容{workspace.state.visitedTabs.some(item => item.unread) && <span className="reopen-update-count">{workspace.state.visitedTabs.filter(item => item.unread).length} 项更新</span>}</button>}
-        {!showNewTaskHome && <span className={`proposal-badge${isPathGenerationTask && learning.state.draftPath ? " proposal-badge--learning-edit" : ""}`}><span className="proposal-dot" />{isPathGenerationTask ? learning.state.draftPath ? "学习路径 · 编辑中" : learning.state.path ? "学习路径 · 已确认" : "学习路径 · 待生成" : "设计提案 · 待开发者确认"}</span>}
+        {showTaskWorkspace && <span className={`proposal-badge${isPathGenerationTask && learning.state.draftPath ? " proposal-badge--learning-edit" : ""}`}><span className="proposal-dot" />{isPathGenerationTask ? learning.state.draftPath ? "学习路径 · 编辑中" : learning.state.path ? "学习路径 · 已确认" : "学习路径 · 待生成" : "设计提案 · 待开发者确认"}</span>}
         <button className="icon-button top-icon" type="button" aria-label="通知" data-menu-trigger aria-expanded={wb.menu?.name === "notifications"} onClick={(event) => openMenu("notifications", event)}><IconBell size={18} />{wb.notifications.length > 0 && <span className="notification-dot" />}</button>
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid" + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (sidebarCollapsed ? " is-sidebar-collapsed" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : undefined}>
-        <div className={"sidebar-shell" + (sidebarCollapsed ? " is-collapsed" : "")}>
-        <aside id="project-sidebar" className="sidebar" aria-label="项目与任务" hidden={sidebarCollapsed}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+        <aside className="icon-rail" aria-label="主导航">
+          <div className="icon-rail-nav">
+            <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={20} /></button>
+            <button className={"icon-rail-button" + (showLearningDiscovery ? " is-current" : "")} type="button" aria-label="学习发现" title="学习发现" aria-current={showLearningDiscovery ? "page" : undefined} onClick={() => navigateMainView("learning")}><IconSparkles size={20} /></button>
+            <button className={"icon-rail-button" + (showAutomations ? " is-current" : "")} type="button" aria-label="自动化任务" title="自动化任务" aria-current={showAutomations ? "page" : undefined} onClick={() => navigateMainView("automations")}><IconSettingsAutomation size={20} /></button>
+            <button className={"icon-rail-button" + (showCapabilities ? " is-current" : "")} type="button" aria-label="能力库" title="能力库" aria-current={showCapabilities ? "page" : undefined} onClick={() => navigateMainView("capabilities")}><IconBooks size={20} /></button>
+          </div>
+        </aside>
+        <aside id="project-sidebar" className="sidebar" aria-label="项目与任务" hidden={!projectPanelOpen}>
           <img className="ambient-art ambient-art--archive" src={`${import.meta.env.BASE_URL}assets/project-archive-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <div className="primary-nav">
-            <button className="new-task-button" type="button" onClick={() => { wb.setMenu(null); setShowLearningDiscovery(false); setShowNewTaskHome(true); }}>
+            <button className="new-task-button" type="button" onClick={() => { wb.setMenu(null); setMainView("home"); }}>
               <IconPlus size={18} /><span>新建任务</span>
-            </button>
-            <button className={"nav-row" + (showLearningDiscovery ? " is-current" : "")} type="button" aria-current={showLearningDiscovery ? "page" : undefined} onClick={() => { wb.setMenu(null); setShowNewTaskHome(false); setShowLearningDiscovery(true); }}>
-              <IconSparkles size={18} /><span>学习发现</span>
-            </button>
-            <button className="nav-row" type="button" onClick={() => openDialog("automations")}>
-              <IconSettingsAutomation size={18} /><span>自动化任务</span>
-            </button>
-            <button className="nav-row" type="button" onClick={() => openDialog("capabilities")}>
-              <IconBooks size={18} /><span>能力库</span>
             </button>
           </div>
 
@@ -1169,26 +1188,20 @@ function App() {
           </div>
           <div className="sidebar-footer"><IconLock size={14} /><span>当前任务与项目上下文关联</span></div>
         </aside>
-        <button
-          className="sidebar-toggle"
-          type="button"
-          aria-controls="project-sidebar"
-          aria-expanded={!sidebarCollapsed}
-          aria-label={sidebarCollapsed ? "展开项目栏" : "收起项目栏"}
-          title={sidebarCollapsed ? "展开项目栏" : "收起项目栏"}
-          onClick={() => { setSidebarCollapsed(value => !value); wb.setMenu(null); }}
-        >
-          {sidebarCollapsed ? <IconChevronRight size={13} /> : <IconChevronLeft size={13} />}
-        </button>
-        </div>
-        {!sidebarCollapsed && <div className="workspace-divider workspace-divider--projects" role="separator" tabIndex={0} aria-label="调整项目栏宽度" title="拖动调整项目栏宽度；双击恢复默认布局" {...layout.separatorProps("projects")} />}
+        {projectPanelOpen && <div className="workspace-divider workspace-divider--projects" role="separator" tabIndex={0} aria-label="调整项目栏宽度" title="拖动调整项目栏宽度；双击恢复默认布局" {...layout.separatorProps("projects")} />}
 
         {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} tasks={recommendationTasks} onRecommendationAction={selectRecommendationAction} onRecommendationChat={chatAboutRecommendation} onCreateTask={({ goal, kind, attachments }) => {
           const groupId = kind === "learning" ? "inference" : (currentGroup?.id || "operator");
           const created = wb.createTask({ name: goal.slice(0, 60), groupId, goal, kind, attachments });
-          if (created) { setShowNewTaskHome(false); setShowLearningDiscovery(false); }
+          if (created) { setMainView("task"); setProjectPanelOpen(false); }
           return created;
-        }} /> : showLearningDiscovery ? <LearningDiscoveryPage onOpenItem={openDiscoveryItem} /> : <section className="conversation-panel" aria-label="任务对话">
+        }} /> : showLearningDiscovery ? <LearningDiscoveryPage onOpenItem={openDiscoveryItem} /> : showAutomations ? <section className="management-page" aria-labelledby="automations-page-title">
+          <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 自动化</span><h1 id="automations-page-title">自动化任务</h1><p>查看自动化状态，安排演示任务，或手动运行一次检查。</p></div><div className="management-page-summary"><strong>{wb.automations.filter(item => item.enabled).length}</strong><span>项已启用</span><i /><strong>{wb.automations.length}</strong><span>项任务</span></div></header>
+          <div className="management-page-content"><AutomationList automations={wb.automations} onToggleAutomation={(id) => wb.setAutomations((items) => items.map((item) => item.id === id ? { ...item, enabled: !item.enabled } : item))} onRunAutomation={wb.runAutomation} onAddAutomation={(entry) => wb.setAutomations((items) => [...items, { ...entry, id: crypto.randomUUID(), enabled: true, lastRun: "" }])} /></div>
+        </section> : showCapabilities ? <section className="management-page" aria-labelledby="capabilities-page-title">
+          <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 工具与方法</span><h1 id="capabilities-page-title">能力库</h1><p>按类型查找可复用的检查能力，选择后会带入当前任务。</p></div><div className="management-page-summary"><strong>{capabilities.length}</strong><span>项可用能力</span><i /><strong>{new Set(capabilities.map(item => item.category).filter(Boolean)).size}</strong><span>个分类</span></div></header>
+          <div className="management-page-content"><CapabilityList capabilities={capabilities} onUseCapability={useCapabilityFromPage} /></div>
+        </section> : <section className="conversation-panel" aria-label="任务对话">
           <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <div className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
             <div className="conversation-flow">
@@ -1342,13 +1355,13 @@ function App() {
       {wb.menu && <div className={"workbench-menu workbench-menu-" + wb.menu.name} ref={wb.menuRef} style={{ left: wb.menu.left, ...(wb.menu.bottom !== null ? { bottom: wb.menu.bottom } : { top: wb.menu.top }) }}>
         {wb.menu.name === "filter" && <><div className="menu-label">显示项目</div>{[{ id: "all", label: "全部项目" }, { id: "current", label: "当前项目" }].map((item) => <button key={item.id} type="button" className={wb.filterScope === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => wb.setFilterScope(item.id))}>{item.label}{wb.filterScope === item.id && <IconCircleCheck size={15} />}</button>)}<div className="menu-divider" /><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups(wb.groups.map((group) => group.id)))}>展开所有项目</button><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups([]))}>收起所有项目</button></>}
         {wb.menu.name === "chat" && <><div className="menu-label">当前任务对话</div><button type="button" onClick={() => closeMenuAnd(wb.startConversation)}>新对话<IconPlus size={15} /></button><button type="button" onClick={() => openDialog("history")}>对话历史<span>{session.history.length}</span></button><button type="button" onClick={() => closeMenuAnd(() => wb.copyText(wb.conversationText()))}>复制当前对话<IconCopy size={15} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={15} /></button><div className="menu-divider" /><button type="button" onClick={resetCurrentTask}>恢复本题初始状态</button></>}
-        {wb.menu.name === "input" && <><div className="menu-label">补充任务上下文</div><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={15} /></button><button type="button" onClick={() => openDialog("capabilities")}>使用能力库<IconBooks size={15} /></button></>}
+        {wb.menu.name === "input" && <><div className="menu-label">补充任务上下文</div><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => navigateMainView("capabilities"))}>使用能力库<IconBooks size={15} /></button></>}
         {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => openContent("review"))}>生成复核记录<IconFileText size={15} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={15} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={15} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={15} /></button></>}
         {wb.menu.name === "notifications" && <><div className="menu-label">任务动态</div>{wb.notifications.length ? wb.notifications.map((entry) => <button className="notification-row" key={entry.id} type="button" onClick={() => selectExistingTask(entry.taskName)}><span><strong>{entry.text}</strong><small>{entry.taskName} · {entry.time}</small></span></button>) : <p className="menu-empty">尚无新动态。完成核对后会在这里留下记录。</p>}</>}
         {wb.menu.name === "profile" && <><div className="menu-profile"><strong>开发者</strong><span>Ascend Studio · 本地设计预览</span></div><button type="button" onClick={wb.exportTask}>导出当前任务</button><p className="menu-empty">{saveAvailable ? "任务参数、草案、对话与历史自动保存在此浏览器。原始附件需要重新选择。" : "此浏览器暂时无法保存新改动；请先导出当前任务记录。"}</p></>}
       </div>}
 
-      <WorkbenchDialogs dialog={wb.dialog} onClose={wb.closeDialog} groups={wb.groups} taskName={selectedTask} taskGoal={task.goal} onCreateTask={wb.createTask} onAttachCode={wb.attachCode} capabilities={capabilities} onUseCapability={wb.useCapability} automations={wb.automations} onToggleAutomation={(id) => wb.setAutomations((items) => items.map((item) => item.id === id ? { ...item, enabled: !item.enabled } : item))} onRunAutomation={wb.runAutomation} onAddAutomation={(entry) => wb.setAutomations((items) => [...items, { ...entry, id: crypto.randomUUID(), enabled: true, lastRun: "" }])} history={session.history} onRestoreConversation={wb.restoreConversation} modelOptions={modelOptions} selectedModel={wb.selectedModel} onSelectModel={wb.chooseModel} attempts={wb.attempts} onAddAttempt={(entry) => wb.addRecord({ ...entry, kind: "attempt", isDemo: false })} evidenceDetail={wb.dialogData} copyText={wb.dialogData.text || ""} />
+      <WorkbenchDialogs dialog={wb.dialog} onClose={wb.closeDialog} groups={wb.groups} taskName={selectedTask} taskGoal={task.goal} onCreateTask={wb.createTask} onAttachCode={wb.attachCode} history={session.history} onRestoreConversation={wb.restoreConversation} modelOptions={modelOptions} selectedModel={wb.selectedModel} onSelectModel={wb.chooseModel} attempts={wb.attempts} onAddAttempt={(entry) => wb.addRecord({ ...entry, kind: "attempt", isDemo: false })} evidenceDetail={wb.dialogData} copyText={wb.dialogData.text || ""} />
       {toast && <div className="toast-message" role="status">{toast}</div>}
     </main>
   );
