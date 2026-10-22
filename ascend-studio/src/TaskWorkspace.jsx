@@ -18,7 +18,7 @@ import {
 import "./task-workspace.css";
 import { ContentObjectInfo } from "./ContentObjectInfo";
 import { ContentSurface } from "./ContentToolbar";
-import { AreaComposer } from "./AreaComposer";
+import { AreaComposer, getAreaVoiceShortcutLabel } from "./AreaComposer";
 import { buildContentNavigation } from "./task-content-catalog";
 
 const typeLabels = { code: "代码", source: "只读代码", preview: "预览", browser: "浏览器", diff: "Diff", canvas: "画布", result: "结果", record: "记录", brief: "任务简报" };
@@ -377,7 +377,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
         <div className="tw-area-select-layer" role="presentation" aria-label="拖动框选工作区区域" onPointerDown={startAreaSelection} onPointerMove={moveAreaSelection} onPointerUp={finishAreaSelection} onPointerCancel={() => { pointerStart.current = null; setDragSelection(null); }} onContextMenu={event => event.preventDefault()}>
           {dragSelection && <div className="tw-area-selection-box" style={{ left: dragSelection.left, top: dragSelection.top, width: dragSelection.width, height: dragSelection.height }} />}
         </div>
-        <div className="tw-area-mode-hint" role="status"><IconPointer2 size={14} /><span>拖动框选任意区域；按 <kbd>Esc</kbd> 或再次点击上方「退出框选」退出。选中后可在附近输入文字或按住 <kbd>Fn</kbd> 描述。</span><button type="button" aria-label="退出区域选择" title="退出框选" onClick={exitAreaSelection}><IconX size={13} /></button></div>
+        <div className="tw-area-mode-hint" role="status"><IconPointer2 size={14} /><span>拖动框选任意区域；按 <kbd>Esc</kbd> 或再次点击上方「退出框选」退出。选中后可在附近输入文字或按住 <kbd>{getAreaVoiceShortcutLabel()}</kbd> 描述。</span><button type="button" aria-label="退出区域选择" title="退出框选" onClick={exitAreaSelection}><IconX size={13} /></button></div>
       </>}
     </div>
 

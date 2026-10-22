@@ -3,8 +3,15 @@ import { createPortal } from "react-dom";
 import { IconMicrophone, IconMicrophoneOff, IconPointer2, IconSend, IconX } from "@tabler/icons-react";
 
 const isFnKey = (event) => event.key === "Fn" || event.code === "Fn";
+const isControlKey = (event) => event.key === "Control" || event.code === "ControlLeft" || event.code === "ControlRight";
 const DEMO_TRANSCRIPT = "结合我选中的区域，解释一下这里的内容，并告诉我下一步该关注什么。";
 const VOICE_WAVE_HEIGHTS = [9, 15, 22, 12, 27, 18, 31, 15, 24, 34, 18, 28, 14, 25, 17, 30, 12, 21, 10];
+
+export const getAreaVoiceShortcutLabel = () => {
+  if (typeof navigator === "undefined") return "Ctrl";
+  const platform = navigator.userAgentData?.platform || navigator.platform || "";
+  return /mac|iphone|ipad/i.test(platform) ? "Fn" : "Ctrl";
+};
 
 export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
   const composerRef = useRef(null);
@@ -13,10 +20,13 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
   const voiceIndexRef = useRef(0);
   const draftRef = useRef("");
   const listeningRef = useRef(false);
+  const disabledRef = useRef(disabled);
   const voiceBaseRef = useRef("");
   const [draft, setDraft] = useState("");
   const [position, setPosition] = useState({ left: 12, top: 12 });
   const [listening, setListening] = useState(false);
+  const voiceShortcut = getAreaVoiceShortcutLabel();
+  disabledRef.current = disabled;
 
   const updateDraft = (value) => {
     draftRef.current = value;
@@ -35,7 +45,7 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
   };
 
   const startVoice = () => {
-    if (listeningRef.current || disabled) return;
+    if (listeningRef.current || disabledRef.current) return;
     listeningRef.current = true;
     setListening(true);
     const existingDraft = draftRef.current.trimEnd();
@@ -93,8 +103,14 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
   }, [context]);
 
   useEffect(() => {
+    const isVoiceShortcut = (event) => isFnKey(event) || (voiceShortcut === "Ctrl" && isControlKey(event));
+    const startOnPress = (event) => {
+      if (!isVoiceShortcut(event) || event.repeat || event.isComposing) return;
+      event.preventDefault();
+      startVoice();
+    };
     const stopOnRelease = (event) => {
-      if (isFnKey(event) && listeningRef.current) stopVoice();
+      if (isVoiceShortcut(event) && listeningRef.current) stopVoice();
     };
     const stopWhenHidden = () => {
       if (document.visibilityState === "hidden" && listeningRef.current) stopVoice();
@@ -102,24 +118,20 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
     const stopWhenBlurred = () => {
       if (listeningRef.current) stopVoice();
     };
-    window.addEventListener("keyup", stopOnRelease);
+    window.addEventListener("keydown", startOnPress, true);
+    window.addEventListener("keyup", stopOnRelease, true);
     window.addEventListener("blur", stopWhenBlurred);
     document.addEventListener("visibilitychange", stopWhenHidden);
     return () => {
-      window.removeEventListener("keyup", stopOnRelease);
+      window.removeEventListener("keydown", startOnPress, true);
+      window.removeEventListener("keyup", stopOnRelease, true);
       window.removeEventListener("blur", stopWhenBlurred);
       document.removeEventListener("visibilitychange", stopWhenHidden);
       if (voiceTimerRef.current !== null) window.clearInterval(voiceTimerRef.current);
       voiceTimerRef.current = null;
       listeningRef.current = false;
     };
-  }, []);
-
-  const handleKeyDown = (event) => {
-    if (!isFnKey(event) || event.repeat || event.nativeEvent?.isComposing) return;
-    event.preventDefault();
-    startVoice();
-  };
+  }, [voiceShortcut]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -129,7 +141,7 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
     if (onSend(text, context)) updateDraft("");
   };
 
-  return <form ref={composerRef} className="composer tw-area-composer" style={{ left: position.left, top: position.top }} onSubmit={handleSubmit} onKeyDown={handleKeyDown} aria-label="描述选中的工作区区域">
+  return <form ref={composerRef} className="composer tw-area-composer" style={{ left: position.left, top: position.top }} onSubmit={handleSubmit} aria-label="描述选中的工作区区域">
     <div className="composer-context-chips">
       <span className="attachment-chip point-context-chip"><IconPointer2 size={13} /><span>工作区区域 · {context.label}</span><button type="button" aria-label="取消区域输入" onClick={onDismiss}><IconX size={12} /></button></span>
     </div>
@@ -137,7 +149,7 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
     <div className="composer-toolbar">
       <div className="composer-tools">
         <span className={`tw-area-voice-hint${listening ? " is-listening" : ""}`} role="status">
-          {listening ? <><IconMicrophoneOff size={13} />松开 <kbd>Fn</kbd> 结束语音输入</> : <><IconMicrophone size={13} />按住 <kbd>Fn</kbd> 语音输入</>}
+          {listening ? <><IconMicrophoneOff size={13} />松开 <kbd>{voiceShortcut}</kbd> 结束语音输入</> : <><IconMicrophone size={13} />按住 <kbd>{voiceShortcut}</kbd> 语音输入</>}
         </span>
       </div>
       <div className="composer-submit">
