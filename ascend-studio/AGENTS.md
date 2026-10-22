@@ -1010,4 +1010,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ### 2026-10-22 · 社区经验提示样式发布回执
 
-- 功能提交 `1f4a9428`（`fix: restore selected community invite styling`）包含社区入口源码、隔离构建的 Pages JS/CSS 与样式核验记录，已推送 `origin/main`。`npm run build:pages` 在干净 HEAD 快照加本次改动中成功；Pages 自动部署由推送触发，尚未独立核实部署完成状态。其他对话的暂存、未暂存和未跟踪改动均保持原样。
+- 功能提交 `1f4a9428`（`fix: restore selected community invite styling`）包含社区入口源码、隔离构建的 Pages JS/CSS 与样式核验记录，已推送 `origin/main`。`npm run build:pages` 在干净 HEAD 快照加本次改动中成功；Pages 自动部署由推送触发，已在 `https://schihhsin.github.io/AscendCANN/ascstudio/?task=development` 通过 1280×720 浏览器截图确认新样式已上线；其他对话的暂存、未暂存和未跟踪改动均保持原样。
