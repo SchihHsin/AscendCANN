@@ -5840,7 +5840,6 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build:pages` 通过（保留既有大 chunk 提示）；官方学习进度与路径共创测试 20/20 通过；`git diff --check` 通过。127.0.0.1 本地 CUA 截图确认 ResNet50 五阶段及子节点恢复分层排布，另确认路径共创的建议节点与审阅操作样式仍正常。
 - Commit `16bb2fef` 已推送 `origin/main`。GitHub Pages run `39742150001` 构建和部署成功；线上入口现引用 `index-BjJd4Gq5.js` 与 `index-B98cOqcI.css`。没有真实设备运行或 NPU 验证。隔离 worktree 仅包含本任务修复，原工作区其他对话改动未触碰。
 
-
 ### 2026-10-22 · AddCustom 精度异常完成后的社区经验邀请
 
 - 将社区反馈入口接入「AddCustom 精度异常」开发任务。只有用户提供的逐元素误差数据全部在容差内，并由用户确认该数据来自目标环境修复后的复测，才在对话输入框上方出现邀请；演示数据和范围算例不会触发。每个 AddCustom 任务只出现一次。
@@ -5848,3 +5847,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更 `ascend-studio/src/App.jsx`、`ActionWorkspace.jsx`、`action-workspace.css`、`community-draft-data.js`，并重建 `ascstudio/`。不改页面序列 / hash 或 API / Host / Application 边界。
 - 验证：`npm run build:pages`、`git diff --check` 通过；未运行测试套件。Pages run `39753268645` 成功，线上 index、JS、CSS 均返回 HTTP 200。浏览器手工交互回放未完成；没有真实 NPU 验证。
 - 功能提交 `5b386cc5` 已推送 `origin/main`。未决：真实修复步骤和适用环境须由用户在草稿中审阅补全。
+
+### 2026-10-22 · 学习画布遮挡与节点拖动修复
+
+- 用户提供截图指出，已确认的学习路径被图解 / 内容卡片盖住，节点因此无法调整。横向布局现在将路径放在上方、材料放在下方并排；纵向布局将层级放在左侧、材料放在右侧。连接线随布局改道，画布“适应路径”按可见对象实际尺寸计算范围。路径层级高于材料卡，空白区域指针事件穿透到卡片。
+- 学习子节点改为指针拖动排序，目标节点有落点描边；路径组固定时仍可排序。Alt + ↑ / ↓ 键盘排序保留。仅对子节点同阶段排序，不改变阶段结构。
+- 学习画布视口状态版本升至 2。旧缓存首次载入时重新适配画布，仍保留用户手动移动的对象位置；ResNet50 官方学习进度树不受路径编辑样式影响。
+- 证据来源：用户截图（截图可见横向路径与两张材料卡重叠）；本地隔离 Vite 页面 1280×720 CUA 回放验证横向 / 纵向不再重叠，鼠标拖动后子节点顺序变化并进入可审阅草案状态；视口迁移有纯函数回归测试。前端演示不代表真实 Python、模型或 NPU 执行。
+- 变更：`ascend-studio/src/LearningHierarchyCanvas.jsx`、`learning-hierarchy-canvas.css`、`useLearningCanvasView.js`、新增 `learning-canvas-view-state.js` 与测试；同步重建独立 `ascstudio/` Pages 静态产物。页面导航序列 / hash 及 API / Host / Application 边界不变。
+- 验证：`node --test src/learning-canvas-view-state.test.js src/learning-path-collaboration.test.js src/learning-path-generation.test.js`（13 项通过）；`npm run build:pages`、`git diff --check`。构建保留现有大 bundle 提示。
+- Commit / push：待完成功能提交及 Pages 部署核验。共享原工作区其他对话的暂存、未暂存及未跟踪改动保持原样。

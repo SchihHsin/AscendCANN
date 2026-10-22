@@ -95,8 +95,24 @@ function makeTree(layout, path) {
 function HierarchyGroup({ tree, layout, selectedStage, selectedStep, journey, onSelect, onDrag, onMoveStep, pinned, agentTarget }) {
   const { state, currentAttempt, currentCheck } = journey;
   const [draggedStep, setDraggedStep] = useState(null);
+  const [dropTarget, setDropTarget] = useState(null);
+  const pointerDrag = useRef(null);
+  const suppressClick = useRef(false);
   const done = id => id === "channels" ? state.understood.includes("channels") : id === "practice" ? currentAttempt?.passed : id === "check" ? currentCheck?.passed : false;
-  const dragPayload = event => { try { return JSON.parse(event.dataTransfer.getData("application/x-learning-path-step")); } catch { return null; } };
+  const finishStepDrag = (event, allowDrop = true) => {
+    const drag = pointerDrag.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    pointerDrag.current = null;
+    if (!drag.active) return;
+    const target = allowDrop ? document.elementFromPoint(event.clientX, event.clientY)?.closest("[data-learning-stage][data-learning-step]") : null;
+    const targetStage = target?.getAttribute("data-learning-stage");
+    const targetStep = target?.getAttribute("data-learning-step");
+    if (targetStage === drag.stageId && targetStep && targetStep !== drag.stepId) onMoveStep?.(drag.stageId, drag.stepId, targetStep);
+    suppressClick.current = true;
+    window.setTimeout(() => { suppressClick.current = false; }, 0);
+    setDraggedStep(null);
+    setDropTarget(null);
+  };
   return <div className={`lh-hierarchy is-${layout}`} style={{ width: tree.width, height: tree.height }}>
     <div className="lh-tree-grab" role="button" tabIndex={0} aria-label="移动完整学习层级" title={pinned ? "层级已固定" : "拖动学习层级"} onPointerDown={onDrag}><IconPointer size={12} />学习路径</div>
     <svg className="lh-tree-lines" width={tree.width + 20} height={tree.height + 20} aria-hidden="true"><defs><marker id="lh-tree-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8" /></marker></defs>{tree.stages.map((stage, index) => {
@@ -111,10 +127,10 @@ function HierarchyGroup({ tree, layout, selectedStage, selectedStep, journey, on
         const proposedAdd = step.suggestion?.kind === "add" && step.suggestion.status === "pending";
         const proposedRevise = step.suggestion?.kind === "revise" && step.suggestion.status === "pending";
         const acceptedSuggestion = step.suggestion?.status === "accepted";
-        const nodeClass = `lh-tree-node lh-step-node${stage.id === selectedStage && step.id === selectedStep ? " is-selected" : ""}${step.skipped || proposedSkip ? " is-skipped" : ""}${proposedAdd ? " is-proposed-add" : ""}${proposedRevise ? " is-proposed-revise" : ""}${acceptedSuggestion ? " is-proposal-accepted" : ""}${draggedStep?.stageId === stage.id && draggedStep.stepId === step.id ? " is-dragging" : ""}${agentTarget?.stageId === stage.id && agentTarget.stepId === step.id ? " is-agent-target" : ""}`;
+        const nodeClass = `lh-tree-node lh-step-node${stage.id === selectedStage && step.id === selectedStep ? " is-selected" : ""}${step.skipped || proposedSkip ? " is-skipped" : ""}${proposedAdd ? " is-proposed-add" : ""}${proposedRevise ? " is-proposed-revise" : ""}${acceptedSuggestion ? " is-proposal-accepted" : ""}${draggedStep?.stageId === stage.id && draggedStep.stepId === step.id ? " is-dragging" : ""}${dropTarget?.stageId === stage.id && dropTarget.stepId === step.id ? " is-drop-target" : ""}${agentTarget?.stageId === stage.id && agentTarget.stepId === step.id ? " is-agent-target" : ""}`;
         const change = step.suggestion?.status === "pending" ? (state.pathChanges || []).find(item => item.id === step.suggestion.id && item.status === "pending") : null;
         return <div className={`lh-step-wrap${step.suggestion?.reason ? " has-review" : ""}${step.userAdjusted ? " is-user-adjusted" : ""}${draggedStep?.stageId === stage.id && draggedStep.stepId === step.id ? " is-dragging" : ""}`} key={step.id} style={{ left: step.rect.x, top: step.rect.y, width: step.rect.width, height: step.rect.height }}>
-          <button data-learning-stage={stage.id} data-learning-step={step.id} className={nodeClass} type="button" onClick={() => onSelect(stage.id, step.id)} aria-pressed={stage.id === selectedStage && step.id === selectedStep} aria-label={`${step.title}；可拖动排序，也可按 Alt 加方向键移动`} title="拖动排序；键盘可按 Alt + ↑ / ↓ 调整顺序" draggable={!pinned} onDragStart={event => { if (pinned) { event.preventDefault(); return; } const payload = { stageId: stage.id, stepId: step.id }; setDraggedStep(payload); event.dataTransfer.effectAllowed = "move"; event.dataTransfer.setData("application/x-learning-path-step", JSON.stringify(payload)); }} onDragEnd={() => setDraggedStep(null)} onDragOver={event => { if (draggedStep?.stageId === stage.id) { event.preventDefault(); event.dataTransfer.dropEffect = "move"; } }} onDrop={event => { event.preventDefault(); const payload = dragPayload(event); if (payload?.stageId === stage.id) onMoveStep?.(stage.id, payload.stepId, step.id); setDraggedStep(null); }} onKeyDown={event => { if (!event.altKey || !["ArrowUp", "ArrowDown"].includes(event.key)) return; const targetIndex = index + (event.key === "ArrowUp" ? -1 : 1); const target = stage.steps[targetIndex]; if (!target) return; event.preventDefault(); onMoveStep?.(stage.id, step.id, target.id); }}>
+          <button data-learning-stage={stage.id} data-learning-step={step.id} className={nodeClass} type="button" onClick={() => { if (suppressClick.current) { suppressClick.current = false; return; } onSelect(stage.id, step.id); }} aria-pressed={stage.id === selectedStage && step.id === selectedStep} aria-label={`${step.title}；可拖动排序，也可按 Alt 加方向键移动`} title="拖动排序；键盘可按 Alt + ↑ / ↓ 调整顺序" onPointerDown={event => { if (event.button !== 0 || pointerDrag.current) return; pointerDrag.current = { stageId: stage.id, stepId: step.id, pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, active: false }; event.currentTarget.setPointerCapture(event.pointerId); }} onPointerMove={event => { const drag = pointerDrag.current; if (!drag || drag.pointerId !== event.pointerId) return; if (!drag.active && Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) < 5) return; if (!drag.active) { drag.active = true; setDraggedStep({ stageId: drag.stageId, stepId: drag.stepId }); } event.preventDefault(); const target = document.elementFromPoint(event.clientX, event.clientY)?.closest("[data-learning-stage][data-learning-step]"); const targetStage = target?.getAttribute("data-learning-stage"); const targetStep = target?.getAttribute("data-learning-step"); const nextTarget = targetStage === drag.stageId && targetStep ? { stageId: targetStage, stepId: targetStep } : null; setDropTarget(current => current?.stageId === nextTarget?.stageId && current?.stepId === nextTarget?.stepId ? current : nextTarget); }} onPointerUp={event => finishStepDrag(event)} onPointerCancel={event => finishStepDrag(event, false)} onKeyDown={event => { if (!event.altKey || !["ArrowUp", "ArrowDown"].includes(event.key)) return; const targetIndex = index + (event.key === "ArrowUp" ? -1 : 1); const target = stage.steps[targetIndex]; if (!target) return; event.preventDefault(); onMoveStep?.(stage.id, step.id, target.id); }}>
             <span className="lh-step-index">{stage.index}.{index + 1}</span><span className="lh-step-copy"><strong>{proposedRevise ? step.suggestion.patch?.title || step.title : step.title}</strong><small>{proposedRevise ? step.suggestion.patch?.subtitle || step.subtitle : step.subtitle}</small>{step.userAdjusted && <small className="lh-step-user-adjusted">你已调整顺序</small>}{step.suggestion?.reason && <small className="lh-step-reason">{step.suggestion.reason}</small>}</span>
             {proposedSkip && <em className="lh-step-suggestion is-skip">AI 提议跳过</em>}{proposedAdd && <em className="lh-step-suggestion">AI 提议 · 待确认</em>}{proposedRevise && <em className="lh-step-suggestion">AI 提议 · 调整内容</em>}{acceptedSuggestion && <em className="lh-step-suggestion is-accepted">已采纳</em>}
             {step.suggestion?.kind === "add" && <IconGripVertical className="lh-step-grip" size={12} aria-hidden="true" />}
@@ -160,13 +176,48 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
   const diagramWidth = isGoal ? 820 : horizontal ? 830 : 850;
   const detailWidth = horizontal ? 700 : 850;
   const verticalPrimary = ["practice", "check"].includes(activeStage) ? "detail" : "diagram";
-  const verticalDiagramX = Math.max(45, 45 + (tree.width - diagramWidth) / 2);
-  const verticalDetailX = Math.max(45, 45 + (tree.width - detailWidth) / 2);
-  const verticalContentY = 90 + tree.height + 70;
-  const verticalSecondaryY = verticalContentY + 430;
-  const defaults = isGoal ? { hierarchy: { x: 40, y: 90 }, goal: { x: 45, y: 105 }, diagram: { x: 550, y: 105 }, detail: { x: 550, y: 600 } } : horizontal ? { hierarchy: { x: 42, y: 100 }, goal: { x: 350, y: 100 }, diagram: { x: 350, y: state.draftPath || reviewingPath ? 285 : 100 }, detail: { x: 420, y: state.draftPath || reviewingPath ? 765 : 580 } } : { hierarchy: { x: 45, y: 90 }, goal: { x: 45, y: 405 }, diagram: { x: verticalDiagramX, y: verticalPrimary === "diagram" ? verticalContentY : verticalSecondaryY }, detail: { x: verticalDetailX, y: verticalPrimary === "detail" ? verticalContentY : verticalSecondaryY } };
+  const horizontalHierarchy = canvas.positions.hierarchy || { x: 42, y: 100 };
+  const horizontalMaterialsY = horizontalHierarchy.y + tree.height + 96;
+  const horizontalReviewY = horizontalMaterialsY + 160;
+  const verticalHierarchy = canvas.positions.hierarchy || { x: 45, y: 90 };
+  const verticalDiagramX = verticalHierarchy.x + tree.width + 60;
+  const verticalDetailX = verticalDiagramX;
+  const verticalContentY = verticalHierarchy.y + (reviewingPath ? 175 : 0);
+  const verticalSecondaryY = verticalContentY + (verticalPrimary === "detail" ? 900 : 460);
+  const defaults = isGoal
+    ? { hierarchy: { x: 40, y: 90 }, goal: { x: 45, y: 105 }, diagram: { x: 550, y: 105 }, detail: { x: 550, y: 600 } }
+    : horizontal
+      ? {
+        hierarchy: horizontalHierarchy,
+        goal: { x: horizontalHierarchy.x, y: horizontalMaterialsY },
+        diagram: { x: horizontalHierarchy.x, y: reviewingPath ? horizontalReviewY : horizontalMaterialsY },
+        detail: { x: horizontalHierarchy.x + diagramWidth + 44, y: reviewingPath ? horizontalReviewY : horizontalMaterialsY },
+      }
+      : { hierarchy: verticalHierarchy, goal: { x: verticalDiagramX, y: verticalHierarchy.y }, diagram: { x: verticalDiagramX, y: verticalPrimary === "diagram" ? verticalContentY : verticalSecondaryY }, detail: { x: verticalDetailX, y: verticalPrimary === "detail" ? verticalContentY : verticalSecondaryY } };
   const position = id => canvas.positions[id] || defaults[id];
-  const world = { width: isGoal ? 1450 : horizontal ? Math.max(1280, tree.width + 160) : Math.max(1580, tree.width + 120), height: isGoal ? 1050 : horizontal ? Math.max(900, tree.height + 260) : Math.max(1450, tree.height + 160) };
+  const treePoint = position("hierarchy");
+  const goalWidth = isGoal ? 440 : horizontal ? 830 : 1215;
+  const showGoal = isGoal || reviewingPath && !state.draftPath;
+  const showDiagram = isGoal || canvas.expanded && !state.draftPath;
+  const showDetail = !isGoal && canvas.expanded && !state.draftPath;
+  const showRestore = !isGoal && !canvas.expanded;
+  const hierarchyRight = isGoal ? 0 : treePoint.x + tree.width;
+  const estimatedRight = Math.max(
+    hierarchyRight,
+    showGoal ? position("goal").x + goalWidth : 0,
+    showDiagram ? position("diagram").x + diagramWidth : 0,
+    showDetail ? position("detail").x + detailWidth : 0,
+    showRestore ? position("diagram").x + 320 : 0,
+  );
+  const estimatedBottom = Math.max(
+    isGoal ? position("goal").y + 490 : 0,
+    showGoal && !isGoal ? position("goal").y + 170 : 0,
+    showDiagram ? position("diagram").y + 450 : 0,
+    isGoal ? 0 : treePoint.y + tree.height,
+    showDetail ? position("detail").y + 820 : 0,
+    showRestore ? position("diagram").y + 100 : 0,
+  );
+  const world = { width: Math.max(isGoal ? 1450 : horizontal ? 1280 : 1580, estimatedRight + 80), height: Math.max(isGoal ? 1050 : 900, estimatedBottom + 90) };
   const viewport = canvas.viewport;
   const pinned = id => canvas.pinned.includes(id);
   const fitBounds = (bounds, padding = 34) => {
@@ -175,11 +226,19 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
   };
   const fitPath = () => {
     canvasActions.setFocused(false);
-    const point = position("hierarchy");
-    if (isGoal) fitBounds({ x: 20, y: 50, width: 1365, height: 710 });
-    else if (horizontal && state.draftPath) fitBounds({ x: point.x - 20, y: point.y - 150, width: tree.width + 40, height: tree.height + 190 });
-    else if (horizontal) fitBounds({ x: Math.min(point.x, position("diagram").x), y: 65, width: Math.max(tree.width + 40, position("diagram").x + diagramWidth - point.x), height: Math.max(tree.height + 80, 720) });
-    else fitBounds({ x: point.x, y: state.draftPath ? point.y - 120 : point.y - 25, width: tree.width, height: state.draftPath ? Math.max(tree.height + 150, 950) : 850 });
+    const elements = [...(host.current?.querySelectorAll(".lh-tree-position, .lh-card, .lh-restore-material") || [])].filter(element => element.getClientRects().length);
+    const measured = elements.map(element => ({ x: element.offsetLeft, y: element.offsetTop, width: element.offsetWidth, height: element.offsetHeight })).filter(rect => rect.width > 0 && rect.height > 0);
+    if (!measured.length) {
+      const point = position("hierarchy");
+      fitBounds(isGoal ? { x: 20, y: 35, width: 1365, height: 710 } : { x: point.x - 20, y: point.y - 75, width: Math.max(tree.width, world.width - 80), height: Math.max(tree.height + 150, world.height - 150) });
+      return;
+    }
+    const left = Math.min(...measured.map(rect => rect.x));
+    const top = Math.min(...measured.map(rect => rect.y));
+    const right = Math.max(...measured.map(rect => rect.x + rect.width));
+    const bottom = Math.max(...measured.map(rect => rect.y + rect.height));
+    const topWithToolbarClearance = Math.min(top, 100) - 75;
+    fitBounds({ x: left - 20, y: topWithToolbarClearance, width: right - left + 40, height: bottom - topWithToolbarClearance });
   };
   const focusCurrent = () => {
     if (canvas.focused) { canvasActions.setFocused(false); return; }
@@ -306,11 +365,18 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
   };
   const generate = source => { if (actions.generatePath(source)) { canvasActions.select("path"); canvasActions.setExpanded(true); } };
   const reorderStep = (stageId, sourceId, targetId) => { if (actions.reorderPathStep(stageId, sourceId, targetId)) canvasActions.select("path"); };
-  const treePoint = position("hierarchy");
   const chosenStage = tree.stages.find(stage => stage.id === activeStage);
   const selectedNode = chosenStage?.steps.find(step => step.id === selectedStep) || chosenStage?.steps[0];
   const start = selectedNode ? { x: treePoint.x + selectedNode.rect.x + (horizontal ? selectedNode.rect.width : selectedNode.rect.width / 2), y: treePoint.y + selectedNode.rect.y + (horizontal ? selectedNode.rect.height / 2 : selectedNode.rect.height) } : null;
-  const connection = (point, targetWidth, targetIndex) => horizontal ? `M${start.x},${start.y} H${treePoint.x + tree.width + 18 + targetIndex * 9} V${point.y + 28} H${point.x - 3}` : `M${start.x},${start.y} V${treePoint.y + tree.height + 35 + targetIndex * 10} H${point.x + Math.min(targetWidth / 2, 70)} V${point.y - 3}`;
+  const horizontalMaterialsBelowTree = horizontal && Math.min(position("diagram").y, position("detail").y) >= treePoint.y + tree.height;
+  const verticalMaterialsBesideTree = !horizontal && position("diagram").x >= treePoint.x + tree.width;
+  const connection = (point, targetWidth, targetIndex) => horizontalMaterialsBelowTree
+    ? `M${start.x},${start.y} V${treePoint.y + tree.height + 28 + targetIndex * 10} H${point.x + Math.min(targetWidth / 2, 70)} V${point.y - 3}`
+    : verticalMaterialsBesideTree
+      ? `M${start.x},${start.y} H${treePoint.x + tree.width + 28 + targetIndex * 10} V${point.y + 28} H${point.x - 3}`
+    : horizontal
+      ? `M${start.x},${start.y} H${treePoint.x + tree.width + 18 + targetIndex * 9} V${point.y + 28} H${point.x - 3}`
+      : `M${start.x},${start.y} V${treePoint.y + tree.height + 35 + targetIndex * 10} H${point.x + Math.min(targetWidth / 2, 70)} V${point.y - 3}`;
   return <div ref={host} className={`learning-hierarchy-canvas path-editing-canvas${hand ? " is-hand" : ""}`} aria-label="可移动的学习层级与内容画布" onPointerDown={event => {
     if (event.button !== 0 || event.target.closest("button,input,textarea,select,summary,a,.lh-card,.lh-tree-node")) return;
     gesture.current = { id: "viewport", startX: event.clientX, startY: event.clientY, original: viewport };
@@ -326,7 +392,7 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
     <LearningCanvasToolbar layout={layout} scale={viewport.scale} hand={hand} focused={canvas.focused} onLayout={canvasActions.setLayout} onZoom={zoom} onResetZoom={() => canvasActions.setViewport({ scale: 1 })} onHand={() => setHand(!hand)} onFit={fitPath} onFocus={focusCurrent} />
     {state.draftPath && <div className="lh-draft-controls" aria-label="路径共创整体操作"><Button primary disabled={pendingChanges.length > 0} title={pendingChanges.length ? "先决定所有 AI 调整" : "确认这条路径并进入学习"} onClick={() => { if (actions.confirmPath()) select("channels", "channels"); }}>确认路径并开始学习<IconArrowRight size={13} /></Button><Button disabled={!state.pathUndo?.length} onClick={actions.undoPathEdit}><IconHistory size={13} />撤销</Button><Button onClick={actions.cancelPath}>取消</Button></div>}
     <div className="lh-world" style={{ width: world.width, height: world.height, transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})` }}>
-      {!isGoal && <div className="lh-tree-position" style={{ left: treePoint.x, top: treePoint.y }}><HierarchyGroup tree={tree} layout={layout} selectedStage={activeStage} selectedStep={selectedStep} journey={journey} onSelect={select} onMoveStep={reorderStep} pinned={pinned("hierarchy")} agentTarget={agentTarget} onDrag={event => beginObjectDrag(event, "hierarchy", treePoint)} /></div>}
+      {!isGoal && <div className="lh-tree-position" style={{ left: treePoint.x, top: treePoint.y, width: tree.width, height: tree.height }}><HierarchyGroup tree={tree} layout={layout} selectedStage={activeStage} selectedStep={selectedStep} journey={journey} onSelect={select} onMoveStep={reorderStep} pinned={pinned("hierarchy")} agentTarget={agentTarget} onDrag={event => beginObjectDrag(event, "hierarchy", treePoint)} /></div>}
       {start && canvas.expanded && !state.draftPath && !reviewingPath && <svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><defs><marker id="lh-material-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8" /></marker></defs><path d={connection(position("diagram"), diagramWidth, 0)} markerEnd="url(#lh-material-arrow)" /><path d={connection(position("detail"), detailWidth, 1)} markerEnd="url(#lh-material-arrow)" /><circle cx={start.x} cy={start.y} r="5" /></svg>}
       {isGoal && <CanvasCard id="goal" title="学习目标与基础" point={position("goal")} width={440} pinned={pinned("goal")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin}><GoalObject journey={journey} onGenerate={generate} onReturn={() => canvasActions.select("path")} /></CanvasCard>}
       {!isGoal && reviewingPath && !state.draftPath && <CanvasCard id="goal" title="已确认的学习路径" point={position("goal")} width={horizontal ? 830 : 1215} pinned={pinned("goal")} onDrag={beginObjectDrag} onTogglePin={canvasActions.togglePin}><div className="lh-path-draft"><div><strong>{state.profile.goal}</strong><p>{state.profile.background} · 每天 {state.profile.dailyMinutes} 分钟</p><small>{journey.pathCurrent ? "按节点继续学习，或审阅路径调整。" : "目标或基础已改变，请重新审阅路径。"}</small></div><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => select(state.activeNode || "channels", "channels")}>继续学习<IconArrowRight size={13} /></Button><Button onClick={() => actions.generatePath()}>调整路径</Button><Button onClick={() => canvasActions.select("goal")}>修改目标</Button></div></div></CanvasCard>}
