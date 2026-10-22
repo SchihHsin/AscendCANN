@@ -47,15 +47,15 @@ const recommendations = [
     action: "打开知识点",
   },
   {
-    type: "学习任务",
-    title: "核对模型输入约定",
-    description: "把数据类型、布局和尺寸作为检查项，对照所选样例逐项确认。",
-    reason: "把已学概念带到输入准备环节",
-    meta: "输入准备 · 约 18 分钟",
-    image: inputContractImage,
-    imageAlt: "模型输入准备中核对张量维度、数据类型与输入约定",
-    destination: { taskName: OFFICIAL_LEARNING_TASK, materialId: "learning-official-stage-input" },
-    action: "开始下一步",
+    type: "认证",
+    title: "昇腾开发者认证准备",
+    description: "结合你正在学习的 CANN 与模型推理内容，梳理认证知识主题和下一步准备重点。",
+    reason: "与你近期的图像推理学习目标相关",
+    meta: "认证规划 · Demo 建议",
+    image: certificationImage,
+    imageAlt: "认证证书、备考笔记和学习清单",
+    followId: "certification",
+    action: "关注备考专题",
   },
 ];
 
@@ -171,11 +171,11 @@ export function LearningDiscoveryPage({ onOpenItem }) {
       <main className="ld-scroll" aria-label="学习发现内容">
         <section className="ld-floor ld-floor-recommended" aria-labelledby="ld-heading-recommended">
           <div className="ld-section-heading">
-            <div className="ld-section-copy"><span className="ld-floor-kicker">01 · 接着学</span><h2 id="ld-heading-recommended">为你推荐</h2><p>从课程、路径、知识点和下一步任务里，挑一个接着探索。</p></div>
+            <div className="ld-section-copy"><span className="ld-floor-kicker">01 · 接着学</span><h2 id="ld-heading-recommended">为你推荐</h2><p>从课程、路径、知识点和认证准备里，挑一个继续探索。</p></div>
             <span className="ld-section-count">{filteredRecommendations.length} 项</span>
           </div>
           <div className="ld-card-grid">
-            {filteredRecommendations.map(item => <DiscoveryCard key={item.title} item={item} onOpen={onOpenItem} />)}
+            {filteredRecommendations.map(item => <DiscoveryCard key={item.title} item={item} onOpen={onOpenItem} followed={followed.has(item.followId)} onFollow={id => toggleSet(setFollowed, id)} />)}
           </div>
           {filteredRecommendations.length === 0 && <EmptyResults />}
         </section>
