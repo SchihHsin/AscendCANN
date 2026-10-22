@@ -923,3 +923,20 @@ final result: implementation passed; local visual review blocked by browser poli
 - Pages 静态产物与源码在最新 `origin/main` 的隔离工作树中构建并一并发布；其他共享工作区的暂存、未暂存和未跟踪改动未纳入。
 
 final result: passed
+
+
+## 2026-10-22 · 首页错误记录展开详情
+
+**用户目标与决定**
+- 用户发现展开区重复显示收起态已有的两条错误摘要，因此展开信息必须回答「具体怎么错的」。用户确认用生成的示例记录和代码行演示，并要求控制卡片高度。
+- 收起态仍是原有文件夹卡片、错误次数和两条短摘要。展开时收起重复摘要，呈现两条记录：日期 / 问题、简短现象、两行示例代码；详情区顶部写「近期记录 · 示例代码」。底部以「推荐理由」「学习方向」两行替换「学习关键概念」「结合历史错误检查」。开发 / 学习来源不做区分。
+
+**视觉与交互核验**
+- 本地页面：`http://localhost:4191/`，CUA 浏览器，1280×720。逐一展开编译参数、输入维度 / Shape、图像预处理三张文件夹卡片；文件夹轮廓、原有上沿色彩和卡片位置保留。展开态分别约 371px、379px、358px 高，仍在首屏内；三种主题的一句现象均未发生横向溢出。代码行在卡片内换行展示。
+- 展开态不再渲染收起态摘要列表；按钮的无障碍名称只概述数量与详情入口，不再复述记录内容。
+- 日期与代码均为锚定 2026-10-22 的静态演示信息，不来自真实用户记录，不代表已确认根因或真实执行结果。
+
+**实现与验证**
+- 源码：`src/NewTaskHome.jsx`、`src/home-recommendations.js`、`src/new-task-home.css`；根目录 `ascstudio/` 已同步生成 Pages 静态包。无页面序列 / hash 或 API / Host / Application 边界变化。
+- `node --check src/home-recommendations.js`、`npm run build`、`npm run build:pages`、`git diff --check`：通过。未运行测试套件。Pages workflow `39783592016` 成功；线上 `/ascstudio/` index、JS 与 CSS 均 HTTP 200。
+- 提交：源码 `678118fd`、Pages 产物 `b4aa6573`，均已推送 `origin/main`。

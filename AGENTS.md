@@ -5937,3 +5937,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、新增 `ChannelDraftContent.jsx` / `channel-draft.css`，同步更新 `ascstudio/` 静态 Pages 包。页面序列与 API / Host / Application 边界未变。
 - 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；没有运行测试套件。当前回合未完成浏览器视觉回放。
 - 源码、Pages 产物与本条记录一并推送至 `origin/main`；共享工作区其他会话的未提交修改未纳入。
+
+
+### 2026-10-22 · 首页错误推荐卡展开详情
+
+- 用户指出展开后再列一次与收起态相同的错误摘要没有价值；用户随后确认增加更完整但不拉长卡片的详情，并展示具体代码行。三张文件夹卡片的收起态保持原样；展开态隐藏重复摘要，改为两条带日期的演示记录，每条包含问题、一句现象和两行示例代码。卡片增加一行推荐理由与一行学习方向，替换原来的泛化步骤。
+- 代码使用「近期记录 · 示例代码」标记；示例与日期锚定 2026-10-22，是静态演示内容，不是实际用户错误、真实统计或根因诊断。卡片不区分开发 / 学习来源。保留原有文件夹轮廓、色彩与首页构图。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`home-recommendations.js`、`new-task-home.css` 和 `ascstudio/` Pages 产物。未改变页面序列 / hash 或 API / Host / Application 边界。
+- 验证：`node --check src/home-recommendations.js`、`npm run build`、`npm run build:pages`、`git diff --check` 通过。CUA 在本地 1280×720 展开核验了三种主题；可见说明无溢出，卡片高度约 358–379px，文件夹样式保留。未运行测试套件。GitHub Pages run `39783592016` 成功；线上入口与 JS / CSS 均 HTTP 200。
+- Commit / push：源码提交 `678118fd` 与 Pages 产物提交 `b4aa6573` 已推送 `origin/main`。

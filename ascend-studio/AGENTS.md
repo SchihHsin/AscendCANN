@@ -1133,3 +1133,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - GitCode 草稿使用 Issue / PR 结构，CSDN 使用技术博客结构。奖励 / 收益仅作为界面中的示例提示，不代表平台已核实承诺。
 - 保留 AddCustom 证据边界：`[16,32]` 通过、`[17,33]` 失败；`custom_op.cpp:128` 为错误位置，尾块边界仍是待验证线索；没有真实 NPU 验证或实际渠道发布。
 - 页面导航与 API / Host / Application 分层不变；原有昇腾社区草稿、编辑和提交预览继续工作。
+
+
+### 2026-10-22 · 首页错误记录展开详情
+
+- 展开卡片隐藏与收起态重复的两条摘要，显示两条带日期的演示问题记录、简短现象与两行代码；统一标为「近期记录 · 示例代码」。推荐理由和学习方向各保留一行，替换泛化步骤。仍使用三张原文件夹卡片及原配色，不标记错误来自开发或学习。
+- 数据为静态示例，不是真实用户记录或根因诊断；日期锚定 2026-10-22。改动 `src/NewTaskHome.jsx`、`src/home-recommendations.js`、`src/new-task-home.css`，Pages 构建位于仓库根目录 `ascstudio/`。页面序列 / hash 与 API / Host / Application 边界不变。
+- 构建与语法检查通过；本地 1280×720 查看了三张展开卡片。源码 commit `678118fd`、Pages commit `b4aa6573` 已推送到 `origin/main`；Pages run `39783592016` 成功。细节见根目录 `ascend-studio/design-qa.md`。
