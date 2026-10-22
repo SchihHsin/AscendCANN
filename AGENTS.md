@@ -5830,3 +5830,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户确认的行为，将开发任务成功后的社区经验邀请移出对话消息流，放到输入框正上方；桌面滚动旧对话时输入区留在对话面板底部，小屏将提示和输入框作为整体 sticky。提示仍只在图像开发任务完成后出现。
 - 修改 `ascend-studio/src/App.jsx`、`community-draft.css`、`styles.css`，并重建 `ascstudio/` Pages 静态产物。用户提供的截图中轴序仍为 H/W/C、输出 `[1,224,224,3]`，尚未满足 `[1,3,224,224]` 成功条件，因此没有任务完成提示。
 - 验证：`npm run build:pages`、`git diff --check` 通过；未运行测试套件。页面序列与 API / Host / Application 边界不变。功能提交与 Pages 部署回执随后补充。
+
+
+### 2026-10-22 · ResNet50 路径节点定位回归修复
+
+- 用户指出「跑通一次 ResNet50 图像推理」的节点原本排布正确，随后突然错乱；按回归修复处理，不调整学习路径内容或重新设计布局。
+- 原因：协同编辑画布新增的 `.lh-step-node` 定位样式没有限定作用范围；ResNet50 复用该 class，节点的 inline 坐标被 `left/top/width/height: !important` 覆盖。现在只在 `path-editing-canvas` 内应用编辑态节点样式，ResNet50 继续使用学习树的绝对坐标。
+- 变更：`ascend-studio/src/LearningHierarchyCanvas.jsx`、`ascend-studio/src/learning-hierarchy-canvas.css` 和 `ascstudio/` 静态 Pages 产物。未改变路径数据、页面序列 / hash 或 API / Host / Application 边界。
+- 验证：`npm run build:pages` 通过（保留既有大 chunk 提示）；官方学习进度与路径共创测试 20/20 通过；`git diff --check` 通过。127.0.0.1 本地 CUA 截图确认 ResNet50 五阶段及子节点恢复分层排布，另确认路径共创的建议节点与审阅操作样式仍正常。
+- Commit `16bb2fef` 已推送 `origin/main`。GitHub Pages run `39742150001` 构建和部署成功；线上入口现引用 `index-BjJd4Gq5.js` 与 `index-B98cOqcI.css`。没有真实设备运行或 NPU 验证。隔离 worktree 仅包含本任务修复，原工作区其他对话改动未触碰。
