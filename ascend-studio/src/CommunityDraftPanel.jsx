@@ -13,6 +13,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import "./community-draft.css";
+import { CommunityPublishedArticle } from "./CommunityPublishedArticle.jsx";
 
 const sections = [
   { id: "problem", label: "1. 问题描述", Icon: IconAlertCircle },
@@ -44,6 +45,7 @@ function DraftSection({ section, value, editing, onEdit, onChange }) {
 export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
   const [editingSection, setEditingSection] = useState(null);
   const submitted = draft.status === "submitted";
+  if (submitted) return <CommunityPublishedArticle draft={draft} />;
   const updateField = (id, value) => onUpdate({ ...draft, [id]: value });
   const continueEditing = () => {
     setEditingSection("problem");
