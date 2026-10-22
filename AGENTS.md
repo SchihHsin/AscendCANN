@@ -5791,3 +5791,6 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 ascend-studio/src/LearningDiscoveryPage.jsx、learning-discovery.css、src/assets/learning-discovery/，静态 Pages 产物为 ascstudio/。页面序列 / hash 与 API、Host、Application 边界不变。
 - 核验：最新 origin/main 干净快照 npm run build:pages 成功；1440×900 桌面全页截图显示 3 楼层、0 个 tab ARIA 角色、9 张图加载、无横向溢出。截图与浏览器指标在 ascend-studio/evidence/20261022-learning-discovery/；git diff --check 通过，未运行测试套件。
 - Pages 构建从最新已提交源码与本任务文件单独生成，未覆盖或提交工作区中其他对话的暂存、未暂存及未跟踪改动。Commit / push 回执随后补充。
+
+
+- 发布回执：功能提交 d7039647 已推送至 origin/main；GitHub Pages run 39728932934 的构建与部署均成功。线上 index、JS、CSS 和内容图资源均返回 HTTP 200；线上 CUA 页面检查超时，因此视觉核验引用本地 1440×900 生产包截图，不声称完成线上交互回放。其他对话的暂存、未暂存和未跟踪改动保留。

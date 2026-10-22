@@ -1027,3 +1027,6 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 内容图由内置 ImageGen 生成并转为 JPEG，位于 src/assets/learning-discovery/。它们是教学主题插图，不是官方资产；认证专题与活动资料仍是本地示例。
 - 桌面 1440×900 本地 Pages 包检查确认 3 个连续楼层、全部 9 张图片可加载、横向无溢出且不存在 tab / tabpanel 语义。截图和元数据在 evidence/20261022-learning-discovery/；干净快照 Pages 构建与 git diff --check 通过，未运行测试套件。
 - 不改变报告序列、页面 hash 或 API / Host / Application 边界。该 Pages 包基于最新 origin/main 隔离构建，保留其他对话工作。Commit / push 回执随后补充。
+
+
+- 发布回执：功能提交 d7039647 已推送至 origin/main；Pages run 39728932934 成功，发布 index、JS、CSS 和内容图均返回 HTTP 200。线上 CUA 读取超时，视觉与楼层结构以本地 1440×900 生产包截图为证；未声称线上点击回放。其他对话的共享工作区改动未纳入功能提交。
