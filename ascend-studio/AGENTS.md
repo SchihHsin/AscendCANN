@@ -1079,3 +1079,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/learning-discovery.css` 与 `../ascstudio/` 静态 Pages 产物。页面顺序 / hash 及 API / Host / Application 边界不变。
 - 验证：`npm run build:pages`、`git diff --check` 通过；产物 CSS 含新蓝紫色且不含旧色值。Pages workflow `39771067575` 构建和部署成功；线上 index、JS、CSS 均 HTTP 200，线上 CSS 已核对新色值。
 - 提交 `fc7083ca` 已推送 `origin/main`；本记录随后单独提交。修改基于隔离快照，仅包含本任务文件，其他对话工作区改动保留。
+
+### 2026-10-22 · 学习发现强调改用浅蓝紫
+
+- 用户明确要求彩色强调只用浅蓝紫，深色只用黑色。楼层文字与互动文字改回黑色；浅蓝紫只用于楼层圆点、焦点描边、悬停 / 已选背景与浅边框；移除蓝紫色深阴影。页面白灰底与清透内容图不变。
+- 修改 `src/learning-discovery.css` 与 `../ascstudio/` 静态 Pages 产物。页面顺序 / hash 和 API / Host / Application 边界不变。
+- 验证：`npm run build:pages`、`git diff --check` 通过；线上 CSS、JS 均 HTTP 200，CSS 含浅蓝紫 `#c1c3f2` / `#d0d1f4` 且不含原深色强调值。Pages workflow `39772811575` 部署成功。CUA 页面截图回放超时，未声称完成视觉截图检查。
+- 样式提交 `f1d8a11b` 已推送 `origin/main`；本交接记录随后单独提交。共享工作区仅同步本次 CSS 色值供本地预览，其他对话改动未暂存或纳入提交。
