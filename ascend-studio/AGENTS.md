@@ -1086,3 +1086,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/learning-discovery.css` 与 `../ascstudio/` 静态 Pages 产物。页面顺序 / hash 和 API / Host / Application 边界不变。
 - 验证：`npm run build:pages`、`git diff --check` 通过；线上 CSS、JS 均 HTTP 200，CSS 含浅蓝紫 `#c1c3f2` / `#d0d1f4` 且不含原深色强调值。Pages workflow `39772811575` 部署成功。CUA 页面截图回放超时，未声称完成视觉截图检查。
 - 样式提交 `f1d8a11b` 已推送 `origin/main`；本交接记录随后单独提交。共享工作区仅同步本次 CSS 色值供本地预览，其他对话改动未暂存或纳入提交。
+
+### 2026-10-22 · 学习发现日程增加时间轴
+
+- 用户希望日程前有一条轴，将活动串联起来。日程列表前增加浅蓝紫竖线，每张活动卡对应一个圆点；窄屏同步缩小左侧留白。保留日期、活动内容和按钮行为。
+- 修改 `src/learning-discovery.css` 与 `../ascstudio/` 静态 Pages 产物；继续使用浅蓝紫装饰与黑色重点文字。无 JSX 数据、页面序列 / hash 或 API / Host / Application 边界变化。
+- 验证：`npm run build:pages`、`git diff --check` 通过；线上 CSS、JS 返回 HTTP 200，CSS 含时间轴线、节点和窄屏规则。CUA 页面回放未成功，未声称完成截图视觉检查。
+- 提交 `79346aef` 已推送 `origin/main`；本记录随后单独提交。共享工作区只同步本次 CSS，其他对话改动保持原样。
