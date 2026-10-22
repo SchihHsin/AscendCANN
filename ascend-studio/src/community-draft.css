@@ -1,18 +1,37 @@
 .community-success-invite {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   width: min(100%, 520px);
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 23px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
   margin: 12px 0 2px;
-  padding: 11px 12px 12px;
-  border: 1px solid #eee8eb;
-  border-radius: 9px;
-  background: linear-gradient(115deg, #fff3dd 0%, #f8f0fa 56%, #fff2e9 100%);
+  padding: 9px 10px;
+  border: 1px solid #eee9e6;
+  border-radius: 10px;
+  background: #fff;
 }
-.community-success-invite-heading { display: flex; align-items: center; gap: 7px; color: #303137; font-size: 12px; }
-.community-success-invite-heading svg { flex: 0 0 auto; color: #606c5b; }
-.community-success-invite p { margin: 6px 0 9px; color: #6f6d75; font-size: 11px; line-height: 1.55; }
-.community-success-invite .community-entry-button { min-height: 31px; }
+.community-success-invite::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(108deg, #fff2d8 0%, #f5eafa 54%, #fff0e5 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.82) 42%, transparent 100%);
+}
+.community-success-invite > * { position: relative; z-index: 1; }
+.community-success-invite-icon { display: grid; place-items: center; color: #24252a; }
+.community-success-invite-copy { min-width: 0; color: #303137; }
+.community-success-invite-copy strong { display: block; font-size: 12px; font-weight: 650; line-height: 1.4; }
+.community-success-invite-copy p { margin: 3px 0 0; color: #77747d; font-size: 10px; line-height: 1.45; }
 .community-entry-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 0 12px; border: 1px solid #1f2024; border-radius: 7px; color: #fff; background: #17181c; font-size: 11px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 4px rgba(28,26,34,.12); }
 .community-entry-button:hover { background: #34353a; }
 .community-entry-button:disabled { opacity: .58; cursor: default; }
+.conversation-panel:has(.community-success-invite) .composer { box-shadow: 0 5px 17px rgba(28,30,36,.085); }
 .community-draft-card {
   width: 100%;
   min-height: 58px;
@@ -72,7 +91,13 @@
 .community-draft-submit:disabled { cursor: default; }
 
 @container conversation (max-width: 520px) {
-  .community-success-invite { padding: 10px; }
+  .community-success-invite { gap: 8px; padding-inline: 9px; }
+}
+
+@container conversation (max-width: 360px) {
+  .community-success-invite { grid-template-columns: 22px minmax(0, 1fr); align-items: start; }
+  .community-success-invite-icon { padding-top: 2px; }
+  .community-success-invite .community-entry-button { grid-column: 2; justify-self: start; min-height: 30px; }
 }
 
 @media (max-width: 980px) {

@@ -860,3 +860,23 @@ final result: passed (scoped QA)
 - 本地参考图无法在浏览器中安全加载，因此没有完成参考图与页面的并排视觉比对；功能与交互核验已完成，视觉对照结论待补。社区功能已用干净 `HEAD` 快照独立构建；提交 `3a7a0163` 已推送 `origin/main`，共享工作区其他对话的暂存、未暂存和未跟踪改动均排除并保留。
 
 final result: blocked (参考图并排视觉比对未完成；功能实现与本地交互核验通过)
+
+## 2026-10-22 · 社区经验邀请卡样式修正
+
+**目标与证据**
+- Source visual: `evidence/20261021-community-experience/community-entry-reference.png`（1702×924；入口参考图）。
+- Implementation: `http://localhost:4178/?task=development`，本地 CUA in-app browser，1280×720；页面截图在本次 QA 会话中以内存图像查看，CUA 未提供文件导出路径。状态为开发任务完成示例核对、尚未生成草稿。
+- 用户现有状态另开 127.0.0.1 来源看了“已有草稿”窄栏状态（1280×720），确认 CTA 换成“查看草稿”且卡片在 360px 以下对话宽度换行。主比较视口与参考图物理尺寸 / density 不一致，未做归一化。
+
+**Findings 与修正**
+- 初始实现把整张卡铺成彩色渐变，并将完成标题、说明、按钮纵向堆叠；与参考图的顶部轻渐变、横向入口和黑色主按钮不符。已修正为白底卡片，上沿奶油黄—淡紫—暖粉渐变向下淡出；文档图标、标题 / 说明、黑底白字按钮横向排布。输入框保持在下方并加强投影。完成说明留在前一条消息，避免重复询问。
+- Fonts/copy: 沿用 Ascend Studio 系统字体；标题 12px、说明 10px；文案恢复参考图的“把本次任务整理为社区经验？”与“AI 根据当前对话生成草稿，可在右侧审阅”。
+- Spacing/layout: 入口卡 64px 最小高、10px 内边距、10px 圆角；对话窄于 360px 时按钮换至第二行。当前三栏 viewport 中正常宽度保持横向。
+- Colors/tokens: 仅卡片上沿使用低饱和暖黄 / 淡紫 / 暖粉，向下透明淡出至白色；主按钮 #17181c 白字；不使用蓝色主题色。
+- Assets: 使用现有 Tabler 文档图标，无新图像素材。
+- Interaction: CUA 点按“生成草稿”后对话状态变为“查看草稿”，右侧工作区出现四段可编辑社区经验草稿；未点击真实提交，服务仍是本地演示。
+
+**Comparison history**
+- Fix applied after finding above. CUA rendered capture at 1280×720 visually shows the selected layout; source and app captures were each opened and inspected. The browser security policy rejected a `data:` URL comparison page. No alternate browser / raw CDP path was attempted. Because a same-input side-by-side comparison and file-backed implementation screenshot are unavailable, typography / spacing / color are not signed off as pixel-matched.
+
+final result: blocked

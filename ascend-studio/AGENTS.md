@@ -1000,3 +1000,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 彩色渐变样式沿用现有社区提示卡，标题区分「示例核对已完成」；演示文案明确浏览器形状规则不代表真实模型 / NPU 验证。草稿仍由用户主动打开、审阅和提交。
 - 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建产物。隔离快照 `npm run build:pages`、工作树 `npm run build`、`git diff --check` 通过；本地 Firefox 预览截图确认彩色提示出现在开发任务对话中。未运行测试套件。
 - 功能提交 `1332f5ee` 已推送 `origin/main`；不影响正式报告页序/hash或 API / Host / Application 边界。可信度设计仍按用户要求待后续处理。
+
+### 2026-10-22 · 社区经验提示回到选定的入口样式
+
+- 完成对话中的社区经验入口复用已选参考图：轻暖黄 / 淡紫渐变集中在卡片上沿并向白色淡出，标题、辅助说明和黑底白字主操作横向排布；完成状态与验证边界留在对话说明，入口不再重复提问。窄对话区按钮自然换行；社区提示出现时加深输入框投影。
+- `?task=development` 的完成示例出现“生成草稿”，点击后右侧工作区进入可编辑草稿审阅；提交仍需用户主动操作。真实 AI、社区接口、Python / 模型 / NPU 均未接入。
+- 本地 CUA 在 1280×720 截图核对入口样式并点击生成，右侧草稿面板打开。由于浏览器安全策略拒绝 data URL 并排页，未完成同尺寸 side-by-side 视觉 QA，详见 `design-qa.md`（final result: blocked）。
+- 修改 `src/App.jsx`、`src/community-draft.css` 与静态 Pages 产物；不涉及报告页序/hash或 API / Host / Application 边界。

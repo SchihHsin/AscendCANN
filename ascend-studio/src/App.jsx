@@ -921,7 +921,7 @@ function App() {
       messages: [...old.messages, ...completionExchange, {
         id: crypto.randomUUID(), role: "assistant", isDemo: true,
         communityInvite: { summaryId: summary.id, summary },
-        text: `${summary.demoFixture ? "示例形状核对已通过" : "这次开发任务的示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
+        text: `${summary.demoFixture ? "示例形状核对已通过" : "示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
       }],
     }));
     window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
@@ -1168,10 +1168,13 @@ function App() {
                     <IconChevronRight size={17} />
                   </button>}
                   {message.communityInvite && <section className="community-success-invite" aria-label="任务完成后的社区经验邀请">
-                    <div className="community-success-invite-heading"><IconCircleCheck size={18} /><strong>{message.communityInvite.summary.demoFixture ? "示例核对已完成" : "这次任务已完成"}</strong></div>
-                    <p>把已核对的输入形状和操作过程整理成社区经验，供其他开发者参考。</p>
+                    <span className="community-success-invite-icon"><IconFileText size={21} aria-hidden="true" /></span>
+                    <div className="community-success-invite-copy">
+                      <strong>把本次任务整理为社区经验？</strong>
+                      <p>AI 根据当前对话生成草稿，可在右侧审阅</p>
+                    </div>
                     <button type="button" className="community-entry-button" onClick={() => session.communityDraft?.completionId === message.communityInvite.summaryId ? openCommunityDraft() : generateCommunityExperience(message.communityInvite.summary)}>
-                      <IconFileText size={15} />{session.communityDraft?.completionId === message.communityInvite.summaryId ? "查看社区经验草稿" : "整理为社区经验"}
+                      <IconFileText size={15} />{session.communityDraft?.completionId === message.communityInvite.summaryId ? "查看草稿" : "生成草稿"}
                     </button>
                   </section>}
                   {message.role === "assistant" && <div className="message-feedback"><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={16} /></button></div>}
