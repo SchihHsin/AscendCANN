@@ -5919,4 +5919,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求项目 / 任务列表的搜索框与选中状态使用有透明度的黑色，不再用灰色底。搜索框常态与聚焦、任务行悬停与选中均改为低透明度黑色；文本保持清晰黑色。
 - 修改 `ascend-studio/src/styles.css`，属于现有任务导航的局部视觉调整；不改页面顺序、交互和 API / Host / Application 边界。
-- 验证：`npm run build:pages`、`git diff --check`；未运行测试套件。源码与 Pages 产物从最新 `origin/main` 隔离构建后单独推送，工作区其他对话改动保留。
+- 验证：`npm run build:pages`、`git diff --check`；本地预览 `127.0.0.1:8123` 返回的样式包含透明黑搜索框与任务选中态；未运行测试套件。Pages workflow `39778498431` 构建与部署成功，线上入口引用 CSS `index-3UCjOMuZ.css`（HTTP 200）。功能提交 `3718898c` 已推送至 `origin/main`；其他对话改动保留。
