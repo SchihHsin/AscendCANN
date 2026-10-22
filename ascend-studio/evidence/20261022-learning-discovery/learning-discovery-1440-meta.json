@@ -1,0 +1,26 @@
+{
+  "url": "http://127.0.0.1:8123/",
+  "title": "Ascend Studio · 判断与纠错",
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "devicePixelRatio": 1
+  },
+  "capturedAt": "2026-10-22T05:29:00.628Z",
+  "browserMetrics": {
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "devicePixelRatio": 1,
+    "clientWidth": 1440,
+    "documentScrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "horizontalOverflow": false,
+    "sectionCount": 3,
+    "tabRoleCount": 0,
+    "loadedImages": 9,
+    "fullPageScrollHeight": 1750,
+    "visibleCookieText": false
+  },
+  "stateNote": "Local production Pages bundle; learning discovery opened through the visible sidebar. Full-page capture expands the internal scroll area after scrolling it at a 1440×900 desktop viewport.",
+  "screenshot": "/Users/hsin/Documents/Coding/AscendCANN/ascend-studio/evidence/20261022-learning-discovery/learning-discovery-1440-full.png"
+}

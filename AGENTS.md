@@ -5782,3 +5782,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、新增 `CommunityPublishedArticle.jsx` 与 `community-published.css`，并更新独立 Pages 构建产物 `ascstudio/`。页面属于 Application / Task 产品体验，不改 API / Host / Harness 边界或汇报页序。
 - 当前源码隔离 Vite 构建及基于干净 HEAD 的 `npm run build:pages` 均通过；大 bundle 提示沿用。未运行测试。由于本地预览 URL 受既有浏览器安全策略阻拦，本轮没有本地截图视觉回放；未尝试其他浏览器或间接方式。其他对话的暂存、未暂存和未跟踪改动保持原样。
 - `113feefe`（`feat: preview published community articles`）已推送 `origin/main`。
+
+
+### 2026-10-22 · 学习发现改为连续楼层与内容封面
+
+- 用户明确要求取消分类 tab，改为“为你推荐 → 新上架 → 近期日程”向下连续浏览；为你推荐保留多项，当前 4 项。搜索仍同时筛选三个楼层。
+- 课程、学习路径、HWC→CHW 知识点、模型输入任务、AscendCL 快速入门、开发者成长路径、认证备考及 Meetup 均配对应内容图；ImageGen 素材只作卡片封面。认证专题和日程仍为本地原型示例，插图不是官方课程或活动公告。
+- 修改 ascend-studio/src/LearningDiscoveryPage.jsx、learning-discovery.css、src/assets/learning-discovery/，静态 Pages 产物为 ascstudio/。页面序列 / hash 与 API、Host、Application 边界不变。
+- 核验：最新 origin/main 干净快照 npm run build:pages 成功；1440×900 桌面全页截图显示 3 楼层、0 个 tab ARIA 角色、9 张图加载、无横向溢出。截图与浏览器指标在 ascend-studio/evidence/20261022-learning-discovery/；git diff --check 通过，未运行测试套件。
+- Pages 构建从最新已提交源码与本任务文件单独生成，未覆盖或提交工作区中其他对话的暂存、未暂存及未跟踪改动。Commit / push 回执随后补充。

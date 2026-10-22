@@ -1018,3 +1018,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 提交草稿后，右侧工作区直接显示文章详情预览，视觉参照当前昇腾社区官方技术文章页的导航、面包屑、浅灰背景、白色圆角内容卡、标题/标签/发布时间及正文排版。
 - 预览保留真实官方频道地址 `https://www.hiascend.com/developer/techArticles` 作为可点击链接，并标明本地 Demo；当前无真实发布接口，不能生成单篇线上链接。真实详情页参考 `https://www.hiascend.com/developer/techArticles/20260923-1`。
 - 发布态工作区由 `src/CommunityDraftPanel.jsx` 切换到 `src/CommunityPublishedArticle.jsx`；样式位于 `src/community-published.css`。隔离源码构建和干净快照 `npm run build:pages` 通过；本地视觉回放受浏览器安全策略限制，未绕行。提交 `113feefe` 已推送。
+
+
+## 2026-10-22 · 学习发现连续楼层与内容图
+
+- 学习发现页按垂直内容流呈现“为你推荐”“新上架”“近期日程”，不使用 tab 切换；推荐区包含 4 条学习资源，另有 4 条新上架内容和 3 场示例日程。
+- 为 ResNet50 推理课程、图像预处理路径、HWC→CHW 知识点、AscendCL 课程、开发者成长路径、认证备考和模型推理 Meetup 生成内容相关封面；卡片的标题、说明与原有 CTA 保持。课程、路径跳转、认证关注、搜索及加入日程行为保留。
+- 内容图由内置 ImageGen 生成并转为 JPEG，位于 src/assets/learning-discovery/。它们是教学主题插图，不是官方资产；认证专题与活动资料仍是本地示例。
+- 桌面 1440×900 本地 Pages 包检查确认 3 个连续楼层、全部 9 张图片可加载、横向无溢出且不存在 tab / tabpanel 语义。截图和元数据在 evidence/20261022-learning-discovery/；干净快照 Pages 构建与 git diff --check 通过，未运行测试套件。
+- 不改变报告序列、页面 hash 或 API / Host / Application 边界。该 Pages 包基于最新 origin/main 隔离构建，保留其他对话工作。Commit / push 回执随后补充。
