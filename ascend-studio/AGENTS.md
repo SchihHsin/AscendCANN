@@ -968,3 +968,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 可直接打字；按住 `⌥ /`（Alt + `/`）录音，松开结束，语音转写写回同一草稿，由用户检查后主动发送。快捷键处理仅在局部输入框启用并跳过 IME composition；麦克风权限/真实识别未触发。
 - 源码：`src/AreaComposer.jsx`、`src/TaskWorkspace.jsx`、`src/task-workspace.css`、`src/App.jsx`。Pages 输出在根目录 `ascstudio/`。本地 `127.0.0.1:5177` 无障碍树确认局部框出现并自动聚焦。源码和隔离 Pages 构建、`git diff --check` 通过；未运行测试。
 - 功能提交 `b090c700` 已推送 `origin/main`。提交未包含社区经验或其他并行工作。
+
+
+### 2026-10-22 · 完成学习记录后生成社区经验草稿
+
+- 社区经验的唤醒点是学习任务完成并保存记录后出现的助手消息，而不是每段对话或常驻输入区。草稿生成后保留对话卡片，右侧工作区展示问题描述、尝试与结果、环境信息、验证状态；用户可编辑后主动提交。
+- 涉及 `src/App.jsx`、`src/LearningJourney.jsx`、`src/CommunityDraftPanel.jsx`、`src/community-draft-data.js`、`src/community-draft.css`、`src/useWorkbenchLayout.js`。当前生成和提交状态均为本地演示，没有接真实 AI / 社区服务；真实 Python、模型和 NPU 验证不在本次范围。可信度设计依用户要求暂缓。
+- `http://localhost:4174/` 本地查看保存后邀请、对话卡和右侧审阅面板；隔离构建、相关语法检查及 `git diff --check` 通过，未运行测试。参考图并排比对受本地浏览器安全策略限制，尚未完成。
+- 社区功能以独立源码快照构建 Pages 并单独提交 / 推送；其他对话的暂存、未暂存、未跟踪改动均不纳入，也不重置或清理。

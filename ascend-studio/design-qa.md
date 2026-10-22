@@ -844,3 +844,19 @@ final result: passed (scoped QA)
 - 范围：对话解释和路径调整是本地示例，不调用真实 AI；新增 Resize / Normalization / NCHW 教学材料未在本轮实现，不宣称真实代码/模型/NPU验证。报告页序、API / Host / Application 边界不变。
 
 final result: passed (scoped QA)
+
+
+## 2026-10-22 · 完成任务后整理社区经验
+
+**范围与交互**
+- 用户确认社区经验邀请不应出现在每条对话中；仅在学习任务完成并保存学习记录后，由助手消息邀请整理本次经验。点击后生成与该完成记录关联的草稿；生成卡片留在对话里，右侧工作区显示可编辑审阅面板。
+- 草稿含问题描述、尝试与结果、环境信息、验证状态；用户可编辑、继续编辑或提交。邀请与草稿按完成记录关联，普通任务对话不显示入口。
+- 变更源码：`ascend-studio/src/App.jsx`、`LearningJourney.jsx`、`CommunityDraftPanel.jsx`、`community-draft-data.js`、`community-draft.css`、`useWorkbenchLayout.js`。本轮未重建或覆盖 `ascstudio/` Pages 产物。
+
+**核验与证据边界**
+- 本地预览 `http://localhost:4174/` 手动查看到已保存学习记录后的邀请、对话中的草稿卡片，以及右侧待审阅草稿四个内容区和编辑 / 提交操作。此为本地浏览器 M 级交互证据。隔离构建、相关 JavaScript 语法检查和 `git diff --check` 通过；未运行测试套件。
+- 当前草稿由本地 Demo 逻辑生成，未连接真实 AI 或社区提交服务；“已提交”仅为本地演示状态。形状检查仅覆盖浏览器示例规则，没有运行真实 Python、模型或 NPU。
+- 本轮未对可信度表现做实现；按用户要求留待社区经验功能完成后再做。没有修改汇报页序/hash 或 API / Host / Application 边界。
+- 本地参考图无法在浏览器中安全加载，因此没有完成参考图与页面的并排视觉比对；功能与交互核验已完成，视觉对照结论待补。社区功能将从当前 `HEAD` 独立构建并单独提交 / 推送；共享工作区其他对话的暂存、未暂存和未跟踪改动均排除并保留。
+
+final result: blocked (参考图并排视觉比对未完成；功能实现与本地交互核验通过)

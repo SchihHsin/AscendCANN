@@ -16,7 +16,7 @@ function TransferShapeResult({ snapshot, title }) {
   const shape = getTransferShape(snapshot);
   return <div className={`lj-result${shape.passed ? " is-pass" : ""}`} role="status"><strong>{title || (!shape.valid ? "轴顺序无效" : shape.passed ? "符合迁移目标形状" : "还需要调整")}</strong><code>{shape.valid ? `${shape.labels.join("")} [${shape.dimensions.join(", ")}]` : "轴 0、1、2 必须各使用一次"}</code><span>目标：NCHW [{snapshot.batch ? "1, " : ""}{snapshot.dimensions?.[2]}, {snapshot.dimensions?.[0]}, {snapshot.dimensions?.[1]}]</span></div>;
 }
-export function LearningJourneyMaterial({ id, journey, onOpen, onAsk, onCopy, onEnterDevelopment, onArchive, presentation = "content" }) {
+export function LearningJourneyMaterial({ id, journey, onOpen, onAsk, onCopy, onEnterDevelopment, onArchive, onTaskComplete, presentation = "content" }) {
   const { state, actions, shape, currentAttempt, currentCheck, currentSummary, summaryCurrent, pathCurrent, readyToComplete, transferShape, transferSource, transferSourceCurrent, transferCurrentAttempt } = journey;
   const path = state.draftPath || state.path;
   const segment = [...LEARNING_SEGMENTS].reverse().find(item => state.time >= item.time) || LEARNING_SEGMENTS[0];
@@ -86,7 +86,7 @@ export function LearningJourneyMaterial({ id, journey, onOpen, onAsk, onCopy, on
       <div className="lj-actions"><Button primary disabled={!currentAttempt?.passed || !pathCurrent} onClick={actions.checkInput}>运行本次输入检查</Button><Button onClick={() => onOpen("learning-practice")}>返回跟练</Button></div>
       {currentCheck && <div className="lj-result is-pass"><strong><IconCheck size={15} /> 本次输入形状核对通过</strong><span>对应尝试 {state.attempts.indexOf(currentAttempt) + 1} · {currentCheck.time}</span><p>已验证当前示例的轴顺序与 batch；模型推理尚未运行。</p></div>}
       {state.checks.length > 0 && <details className="lj-history"><summary><IconHistory size={14} />输入检查历史 · {state.checks.length}</summary>{[...state.checks].reverse().map(check => <div key={check.id}><strong>{check.time} · {check.id === currentCheck?.id ? "当前条件" : "历史条件"}</strong><code>[{check.dimensions.join(", ")}]</code><small>对应尝试 {state.attempts.findIndex(attempt => attempt.id === check.attemptId) + 1} · 查看不会重跑</small></div>)}</details>}
-      <div className="lj-actions"><Button primary disabled={!readyToComplete} onClick={() => { if (actions.complete()) onOpen("learning-summary"); }}>完成并保存学习记录<IconArrowRight size={14} /></Button>{!state.understood.includes("channels") && <Button onClick={() => onOpen("learning-lesson")}>返回理解节点</Button>}</div>
+      <div className="lj-actions"><Button primary disabled={!readyToComplete} onClick={() => { const summary = actions.complete(); if (summary) { onTaskComplete?.(summary); onOpen("learning-summary"); } }}>完成并保存学习记录<IconArrowRight size={14} /></Button>{!state.understood.includes("channels") && <Button onClick={() => onOpen("learning-lesson")}>返回理解节点</Button>}</div>
     </>}
     {id === "learning-summary" && <>
       <Heading eyebrow="学习记录 · 当前浏览器保存" title={currentSummary ? "这一段学习已保存" : "完成后留下可恢复的成果"}>{currentSummary ? currentSummary.profile.goal : "完成理解、跟练与本次输入检查后，再保存学习记录。"}</Heading>

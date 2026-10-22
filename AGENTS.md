@@ -5713,3 +5713,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 画布增加共创进度：目标与基础已整理 → 路径草案已生成 → 等待用户审阅 → 确认后开始学习。逐条采纳、忽略和修改仍共用草案；待审阅建议处理完后才能确认。示例路径规则是本地 Demo，不代表真实 AI 实时生成或模型/NPU 验证。
 - 涉及 `ascend-studio/src/learning-data.js`、`learning-path-generation.js`（新增）、`learning-path-generation.test.js`（新增）、`prototype-data.js`、`useLearningJourney.js`、`useWorkbenchState.js`、`App.jsx`、`LearningHierarchyCanvas.jsx`、`learning-hierarchy-canvas.css`、`styles.css`。未改汇报序列/hash或 API / Host / Application 边界。
 - 本地 127.0.0.1 Demo 的无障碍树和截图可见两个独立任务、草案阶段、3 项可采纳/忽略建议；测试 6/6 通过，源码生产构建通过（保留既有 >500kB chunk 提示），`git diff --check` 通过。功能提交 `8aa681d9` 已推送 `origin/main`；其他对话的暂存、未暂存和未跟踪改动均保留。
+
+
+### 2026-10-22（Ascend Studio 社区经验入口）
+
+- 用户确认入口只在学习任务成功完成并保存记录后出现，作为对话中的助手邀请；不在每条对话或 composer 上方常驻。生成后，对话中保留草稿卡片，右侧工作区展示可编辑的社区经验草稿并允许用户主动提交。
+- 实现涉及 `ascend-studio/src/App.jsx`、`LearningJourney.jsx`、`CommunityDraftPanel.jsx`、`community-draft-data.js`、`community-draft.css`、`useWorkbenchLayout.js`。当前为本地 Demo 行为，未连接真实 AI 或社区服务；完成记录中的形状演算不是 Python、模型或 NPU 实测。可信度表现按用户要求暂缓。
+- 本地 `http://localhost:4174/` 已检查保存后邀请、对话草稿卡和右侧审阅区；隔离构建、语法检查、`git diff --check` 通过，未运行测试套件。参考图并排比较受浏览器本地文件安全策略限制，视觉对照仍待补。
+- 社区功能将以当前 `HEAD` 为基线单独构建 Pages 产物并提交 / 推送；不会纳入其他对话的暂存、未暂存或未跟踪改动，也不重置或清理共享工作区。此项不改变报告页序/hash及 API / Host / Application 边界。

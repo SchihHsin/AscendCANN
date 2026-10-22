@@ -33,6 +33,8 @@ import { OfficialLearningPathCanvas } from "./OfficialLearningPathCanvas";
 import { LearningJourneyMaterial } from "./LearningJourney";
 import { NewTaskHome } from "./NewTaskHome";
 import { buildHomeSuggestions } from "./home-recommendations";
+import { CommunityDraftPanel } from "./CommunityDraftPanel";
+import { createCommunityDraft } from "./community-draft-data";
 import { buildLearningContentItems } from "./learning-content-catalog";
 import "./interaction.css";
 import "./visual-focus.css";
@@ -194,7 +196,8 @@ function App() {
     return accepted;
   };
   const selectExistingTask = (name) => { selectTask(name); setShowNewTaskHome(false); };
-  const { selectedRoute, draft, messages } = session;
+  const { selectedRoute, draft } = session;
+  const messages = session.messages.filter(message => !message.communityDraftCard || Boolean(message.communityDraftId && session.communityDraft?.id === message.communityDraftId && session.communityDraft?.completionId));
   const selectedRouteData = routes.find((route) => route.id === selectedRoute) || routes[0];
   const feedback = (value) => wb.patchSession({ feedback: session.feedback === value ? null : value });
   const closeMenuAnd = (action) => { wb.setMenu(null); action(); };
@@ -220,12 +223,13 @@ function App() {
   }, []);
   const isInteractiveTask = isMainTask || isImageTask || isLearningTask;
   const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask, initialMaterialId: isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS[0]?.id : isLearningTask ? "learning-goal" : undefined, defaultToLearningCanvas: isLearningTask });
-  const layout = useWorkbenchLayout({ sidebarCollapsed, contentCollapsed: workspace.state.collapsed, learningLayout: isLearningTask });
+  const communityDraftFocus = !showNewTaskHome && Boolean(session.communityDraft?.open && session.communityDraft?.completionId);
+  const layout = useWorkbenchLayout({ sidebarCollapsed, contentCollapsed: workspace.state.collapsed, learningLayout: isLearningTask, communityDraftFocus });
   const visibleContentId = layout.contentWidth <= 620 && workspace.state.splitId && [workspace.state.activeId, workspace.state.splitId].includes(workspace.state.comparisonFocusId) ? workspace.state.comparisonFocusId : workspace.state.activeId;
   const contentVisible = id => !workspace.state.collapsed && workspace.state.activeId !== "canvas" && (layout.contentWidth <= 620 ? visibleContentId === id : workspace.state.activeId === id || workspace.state.splitId === id);
   const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask, initialStage: isPathGenerationTask ? "path" : "channels" });
   const learningCanvasVisible = isStandardLearningTask && !workspace.state.collapsed && workspace.state.activeId === "canvas" && workspace.state.canvasMode === "free";
-  const learning = useLearningJourney({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", profile: task.learningProfile, seedPathGeneration: isPathGenerationTask, visible: isStandardLearningTask && (contentVisible("learning-lesson") || learningCanvasVisible && learningCanvasView.state.expanded && ["channels", "environment"].includes(learningCanvasView.state.selectedStage)), onRecord: (record, ownerId) => { wb.addRecord(record, ownerId); const id = ({ "learning-path": "learning-path", "learning-attempt": "learning-practice", "learning-check": "learning-check", "learning-summary": "learning-summary" })[record.kind]; if (id) workspace.actions.open(id, { activate: false, taskId: ownerId, isMainTask: true }); } });
+  const learning = useLearningJourney({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", profile: task.learningProfile, seedPathGeneration: isPathGenerationTask, visible: isStandardLearningTask && (contentVisible("learning-lesson") || learningCanvasVisible && learningCanvasView.state.expanded && ["channels", "environment"].includes(learningCanvasView.state.selectedStage)), onRecord: (record, ownerId) => { wb.addRecord(record, ownerId); if (record.kind === "learning-summary" && record.data?.id) offerCommunityExperience(record.data); const id = ({ "learning-path": "learning-path", "learning-attempt": "learning-practice", "learning-check": "learning-check", "learning-summary": "learning-summary" })[record.kind]; if (id) workspace.actions.open(id, { activate: false, taskId: ownerId, isMainTask: true }); } });
   const statusForTask = name => {
     if (name === LEARNING_PATH_GENERATION_TASK && name === selectedTask) {
       if (learning.state.path) return { label: "路径已确认", tone: "confirmed" };
@@ -631,7 +635,7 @@ function App() {
         const record = wb.getSession(ownerId).records.find(item => `record:${item.id}` === id);
         return record ? <article className="content-snapshot"><header><strong>{record.title}</strong><small>{record.time} · 只读记录</small></header><p>{record.summary}</p>{record.data?.profile && <p>{record.data.profile.background} · 每天 {record.data.profile.dailyMinutes} 分钟</p>}</article> : null;
       }
-      return <LearningJourneyMaterial id={id} journey={learning} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} presentation={presentation} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
+      return <LearningJourneyMaterial id={id} journey={learning} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} presentation={presentation} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} onTaskComplete={offerCommunityExperience} />;
     }
     if (id === "task-brief") return renderBrief(ownerId);
     if (id.startsWith("attempt:")) {
@@ -716,6 +720,15 @@ function App() {
       } : {}),
     };
   }));
+  const saveLearningSummary = () => {
+    const summary = learning.actions.complete();
+    if (!summary) {
+      wb.notify("当前学习状态还不满足保存条件，请先完成理解、跟练与输入检查。");
+      return null;
+    }
+    offerCommunityExperience(summary);
+    return summary;
+  };
   const runRecommendationAction = item => {
     const { action = {} } = item;
     if (action.type === "learning-path") {
@@ -724,7 +737,7 @@ function App() {
       return;
     }
     if (action.type === "learning-summary") {
-      if (!learning.actions.complete()) { wb.notify("当前学习状态还不满足保存条件，请先完成理解、跟练与输入检查。"); return; }
+      if (!saveLearningSummary()) return;
       openContent("learning-summary", { restore: true });
       return;
     }
@@ -850,6 +863,57 @@ function App() {
     previousPrecision.current = precisionContext;
   }, [precisionContext]);
   useEffect(() => { setTaskContentsOpen(false); }, [selectedTask]);
+
+  const offerCommunityExperience = (summary) => {
+    if (!summary?.id) return;
+    if (session.messages.some(message => message.communityInvite?.summaryId === summary.id)) return;
+    const dimensions = summary.dimensions?.join(", ") || "当前示例形状";
+    wb.patchSession(old => old.messages.some(message => message.communityInvite?.summaryId === summary.id) ? {} : ({
+      messages: [...old.messages, {
+        id: crypto.randomUUID(), role: "assistant", isDemo: true,
+        communityInvite: { summaryId: summary.id, summary },
+        text: `这次学习任务已完成并保存。输入示例已核对为 NCHW [${dimensions}]。\n\n要不要把这次对照 HWC、CHW 和 batch 的过程整理成社区经验？这里完成的是浏览器中的形状演算；真实模型推理仍需在对应环境验证。`,
+      }],
+    }));
+    window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
+  };
+  const generateCommunityExperience = (completion) => {
+    if (!completion?.id) return;
+    if (session.communityDraft?.completionId === completion.id) {
+      wb.patchSession(old => ({ communityDraft: { ...old.communityDraft, open: true } }));
+      workspace.actions.setCollapsed(false);
+      return;
+    }
+    const communityDraft = createCommunityDraft({ taskId: selectedTask, task, session, completion });
+    wb.patchSession(old => ({
+      communityDraft,
+      messages: [...old.messages, {
+        id: crypto.randomUUID(), role: "assistant", isDemo: true, communityDraftCard: true, communityDraftId: communityDraft.id,
+        text: "已根据本次任务对话整理社区经验草稿，可在右侧审阅、编辑并决定是否提交。",
+      }],
+    }));
+    workspace.actions.setCollapsed(false);
+    wb.notify("社区经验草稿已生成 · 本地演示");
+    window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
+  };
+  const openCommunityDraft = () => {
+    if (!session.communityDraft?.completionId) return;
+    wb.patchSession(old => ({ communityDraft: { ...old.communityDraft, open: true } }));
+    workspace.actions.setCollapsed(false);
+  };
+  const closeCommunityDraft = () => wb.patchSession(old => ({ ...old.communityDraft, open: false }));
+  const submitCommunityDraft = () => {
+    if (!session.communityDraft || session.communityDraft.status === "submitted") return;
+    wb.patchSession(old => ({
+      communityDraft: { ...old.communityDraft, status: "submitted", submittedAt: Date.now(), open: true },
+      messages: [...old.messages, {
+        id: crypto.randomUUID(), role: "assistant", isDemo: true, communitySubmission: true,
+        text: "社区经验草稿已提交（演示）。当前页面尚未连接真实社区服务。",
+      }],
+    }));
+    wb.notify("演示提交完成；尚未连接真实社区服务");
+    window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
+  };
 
   return (
     <main className="app-frame" data-testid="q02-workbench">
@@ -1016,6 +1080,7 @@ function App() {
                     const reference = message.scopeReference;
                     if (reference.type === "workspace-area") {
                       setPointContext(reference);
+                      if (session.communityDraft?.open) closeCommunityDraft();
                       if (reference.contentId === "canvas") openCanvas({ mode: reference.canvasMode || "overview" });
                       else if (reference.contentId !== "empty") openContent(reference.contentId || "explanation", { restore: true });
                     } else {
@@ -1032,6 +1097,19 @@ function App() {
                     primaryLabel="解释这条线索" onPrimary={() => { proactive.settle(`diagnose:${message.id}`); dispatchTaskIntent("explain", message.interaction.focus); }}
                     secondaryLabel="查看实际代码" onSecondary={() => { proactive.settle(`diagnose:${message.id}`); changeActionView("code"); }} />
                     : message.role === "assistant" && message.interaction && <div className="message-source-links"><button type="button" onClick={() => dispatchTaskIntent("explain", message.interaction.focus)}><IconBook size={13} />{message.interaction.intent === "diagnose" ? "解释这条线索" : "查看关联图解"}</button></div>}
+                  {message.communityDraftCard && message.communityDraftId === session.communityDraft?.id && session.communityDraft?.completionId && <button type="button" className="community-draft-card" onClick={openCommunityDraft} aria-label="打开社区经验草稿审阅">
+                    <span className="community-draft-card-icon"><IconFileText size={21} /></span>
+                    <span className="community-draft-card-copy"><strong>社区经验草稿已生成</strong><small>AI 根据本次对话整理 · 演示</small></span>
+                    <span className="community-draft-card-status">{session.communityDraft.status === "submitted" ? "已提交 · 演示" : "待你审阅"}</span>
+                    <IconChevronRight size={17} />
+                  </button>}
+                  {message.communityInvite && <section className="community-success-invite" aria-label="任务完成后的社区经验邀请">
+                    <div className="community-success-invite-heading"><IconCircleCheck size={18} /><strong>这次任务已完成</strong></div>
+                    <p>把已核对的输入形状和操作过程整理成社区经验，供其他开发者参考。</p>
+                    <button type="button" className="community-entry-button" onClick={() => session.communityDraft?.completionId === message.communityInvite.summaryId ? openCommunityDraft() : generateCommunityExperience(message.communityInvite.summary)}>
+                      <IconFileText size={15} />{session.communityDraft?.completionId === message.communityInvite.summaryId ? "查看社区经验草稿" : "整理为社区经验"}
+                    </button>
+                  </section>}
                   {message.role === "assistant" && <div className="message-feedback"><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={16} /></button></div>}
                 </div>
               </article>
@@ -1066,9 +1144,14 @@ function App() {
 
         {!showNewTaskHome && <div className="workspace-divider workspace-divider--conversation" hidden={workspace.state.collapsed} role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />}
         {!showNewTaskHome && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
-          <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext} onAreaSend={sendAreaMessage} onAreaDismiss={clearPointContext} areaComposerDisabled={session.replying}
-            renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
-          />
+          {session.communityDraft?.open && session.communityDraft?.completionId
+            ? <CommunityDraftPanel draft={session.communityDraft} onUpdate={communityDraft => wb.patchSession({ communityDraft })} onClose={closeCommunityDraft} onSubmit={submitCommunityDraft} />
+            : (
+            <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext} onAreaSend={sendAreaMessage} onAreaDismiss={clearPointContext} areaComposerDisabled={session.replying}
+              renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
+            />
+            )}
+
         </aside>}
       </div>
       {wb.menu && <div className={"workbench-menu workbench-menu-" + wb.menu.name} ref={wb.menuRef} style={{ left: wb.menu.left, ...(wb.menu.bottom !== null ? { bottom: wb.menu.bottom } : { top: wb.menu.top }) }}>
