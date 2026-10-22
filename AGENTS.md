@@ -5857,3 +5857,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更：`ascend-studio/src/LearningHierarchyCanvas.jsx`、`learning-hierarchy-canvas.css`、`useLearningCanvasView.js`、新增 `learning-canvas-view-state.js` 与测试；同步重建独立 `ascstudio/` Pages 静态产物。页面导航序列 / hash 及 API / Host / Application 边界不变。
 - 验证：`node --test src/learning-canvas-view-state.test.js src/learning-path-collaboration.test.js src/learning-path-generation.test.js`（13 项通过）；`npm run build:pages`、`git diff --check`。构建保留现有大 bundle 提示。
 - Commit / push：源码提交 `fbc4bf63` 与合并最新 AddCustom 源码后的 Pages 构建提交 `92e85974` 已推送到 `origin/main`。Pages run `39756284988` 构建 / 部署成功；线上 index、新 JS 与 CSS 均 HTTP 200，线上 bundle 包含指针拖动代码及 AddCustom 邀请；线上浏览器交互回放超时，交互视觉验证以本地 1280×720 CUA 为准。共享原工作区其他对话的暂存、未暂存及未跟踪改动保持原样。
+
+### 2026-10-22 · 学习发现清透视觉调整
+
+- 按用户确认的方向将学习发现改为白色与浅冷灰界面，强调色统一为蓝紫；明确不用蓝青色或青绿色作为主强调。三个连续楼层、导航位置和原有搜索、跳转、关注、加入日程行为保留。
+- 为课程、学习路径、HWC→CHW 知识点、输入约定、AscendCL、成长路径、认证准备和 Meetup 换用同一套明亮清透的内容插图；认证和活动仍为本地 Demo 内容，不是官方公告或真实推荐。
+- 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`learning-discovery.css` 与 8 张 v2 内容图，并更新 `ascstudio/` Pages 产物。没有改变汇报页序、hash 或 API / Host / Application 边界。
+- 验证：`npm run build:pages` 成功（仅有既有 bundle 大小提示）；`git diff --check` 通过；本地浏览器 1280×720 查看了推荐、新上架与日程区域，滚动正常。Pages workflow `39758887454` 成功；线上浏览器视觉读取超时，因此不声称完成线上截图核验。未运行测试套件。
+- 功能提交 `c88e7644` 已推送 `origin/main`。共享工作区其他对话改动未纳入或覆盖。
