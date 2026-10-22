@@ -985,3 +985,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 变更：`ascend-studio/src/App.jsx`、`community-draft-data.js`、`prototype-data.js`、`useWorkbenchState.js` 与独立 Pages 产物 `ascstudio/`。不改变正式报告页序/hash或 API / Host / Application 边界。
 - 本地浏览器 M 级核验：在「图像推理调试」中将轴顺序设为 2,0,1，应用示例副本并完成 NCHW `[1,3,224,224]` 形状复核后，邀请出现在该开发对话；生成后右侧显示问题、尝试与结果、环境、验证状态四部分草稿。隔离快照 `npm run build:pages` 和 `git diff --check` 通过；未运行测试套件。
 - 证据边界：浏览器形状规则通过不等于真实项目代码、Python、模型或 NPU 验证；草稿生成与社区提交仍为本地演示。Commit `650c7ba9` 已推送 `origin/main`。其他对话的暂存、未暂存和未跟踪改动均保留。
+
+### 2026-10-22 · 学习发现页
+
+- 左侧新增“学习发现”导航，与自动化任务、能力库同级；点击后在主内容区打开新页面，不弹窗。页面含 4 条“为你推荐”、4 条“新上架”以及 3 场日程，支持搜索、关注认证专题、加入演示日程和跳转到关联学习材料。
+- 官方课程与成长路径引用现有官方数据；认证专题和活动日历是本地演示示例，未接真实推荐、报名或 AI 服务。
+- 变更：`src/App.jsx`、`src/LearningDiscoveryPage.jsx`、`src/learning-discovery.css`、`src/styles.css` 与 Pages 输出。基于 `920df74b` 的干净快照 `npm run build:pages` 成功；预览检查三类切换、推荐卡、日程状态和跳转，线上 workflow `39718068197` 成功并核对远端 bundle。Vite 有既有 >500 kB chunk 提示；未运行测试套件。
+- 源码与 Pages 提交 `e1c06fb0` 已推送。其它对话改动保留。

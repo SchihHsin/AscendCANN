@@ -5745,3 +5745,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更：`ascend-studio/src/NewTaskHome.jsx`、`home-recommendations.js`、`home-recommendations.test.js`、`new-task-home.css` 及 Pages 产物 `ascstudio/`。结构化学习跟练、输入检查、路径状态，以及开发参数 / 代码快照会显示具体依据；已有目标会写明目标内容；无近期操作时如实说明，AddCustom 静态对照明确标为演示依据，不包装成用户操作。
 - 证据边界：建议依据来自本地 Demo 状态和演示数据，不表示真实 AI 推理、工程运行或 NPU 验证；未改变正式报告序列 / hash 或 API、Host / Application 边界。
 - 验证：`node --test ascend-studio/src/home-recommendations.test.js` 17/17 通过；`npm run build:pages` 与 `git diff --check` 通过；本地 1280×720 学习 / 开发首页截图与无障碍树确认三卡和默认态触发文案可见。代码提交 `76656d7b` 已推送 `origin/main`；Pages 发布尚待线上资源哈希更新确认。
+
+### 2026-10-22 · Ascend Studio「学习发现」
+
+- 用户选择 B「学习发现」，并确认“为你推荐”要展示多条内容。左侧导航新增与“自动化任务”“能力库”同级的入口；选择后在主内容区切换成独立页面，不弹窗。页面提供 4 条个性化主题示例、4 条新上架内容（课程、路径、认证专题、知识点）和 3 场近期日程（Meetup、直播、开发者交流），支持搜索、加入日程和进入关联学习材料。
+- 官方课程与成长路径链接复用 `official-learning-data.js`；认证专题与活动/时间是原型示例，“加入日程”只保存在当前页面状态。没有接真实个性化、活动报名或 AI 服务。
+- 变更：`ascend-studio/src/App.jsx`、`LearningDiscoveryPage.jsx`、`learning-discovery.css`、`styles.css` 与根目录 `ascstudio/` Pages 产物。不改变汇报页序/hash，也不改变 API / Host / Application 边界。
+- 核验：基于最新干净主线 `920df74b` 的 `npm run build:pages` 成功，Vite 保留既有 500 kB chunk 提示；检查构建包包含学习发现、推荐、新上架和 Meetup 文案，`git diff --check` 通过。此前本地 1280×720 预览覆盖三类切换、4 条推荐、加入日程状态与推荐跳转；本轮 Pages workflow `39718068197` 成功，线上 `index.html` 引用新 bundle，完整下载后确认对应内容存在。未运行测试套件。
+- 源码与 Pages 产物提交 `e1c06fb0` 已推送 `origin/main`。其它对话的暂存和工作区更改均保留；活动与认证数据仍待接入真实来源。
