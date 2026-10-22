@@ -42,6 +42,9 @@
 .aw-button-next:hover { background: #f8f8f6; }
 .aw-inline-button { display: inline-flex; align-items: center; gap: 5px; padding: 3px 0; border: 0; color: #696e92; background: transparent; font-size: 10px; cursor: pointer; }
 .aw-inline-button:hover { color: #42486d; text-decoration: underline; text-underline-offset: 3px; }
+.aw-inline-button:disabled { color: #777982; cursor: default; text-decoration: none; }
+.aw-resolution-confirm { margin-top: 10px; padding: 9px 10px; border: 1px solid #e6e6e5; border-radius: 7px; background: #fafaf9; }
+.aw-resolution-confirm .aw-description { margin: 0 0 4px; }
 .aw-result-card { margin-top: 15px; padding: 13px; border: 1px solid #e6e6e6; border-radius: 8px; background: #fcfcfa; min-width: 0; }
 .aw-result-title { display: flex; align-items: center; gap: 6px; color: #626879; font-size: 11px; }
 .aw-result-title strong { color: #4b4e59; font-weight: 600; }

@@ -26,6 +26,12 @@ export function createCommunityDraft({ taskId, task, session, completion }) {
     problem = "在图像推理测试过程中，示例模型要求输入张量为 NCHW [1,3,224,224]，但当前预处理输出的图像张量为 NHWC [1,224,224,3]，两者通道顺序不一致。需要理解这种差异，以及如何在不修改原文件的情况下调整。";
     approach = "先对照图像与示例约定：图像以 HWC 读入，示例模型约定为 NCHW。可以在隔离的浏览器示例副本中调整轴顺序与 batch，观察形状变化；原项目文件保持只读。";
     verification = "还没有完成示例形状复核。当前只建立问题背景；真实模型签名、归一化和推理结果也需要在对应环境核对。";
+  } else if (taskId === "AddCustom 精度异常" && completion?.kind === "addcustom-precision-resolution") {
+    const precision = completion.precision || {};
+    const count = Number.isFinite(precision.count) ? precision.count : "未记录";
+    problem = "AddCustom 算子在输入 [16,32] 时通过、[17,33] 时出现 precision mismatch，错误位置为 custom_op.cpp:128。任务已由开发者确认在目标环境修复并复测通过；具体复现条件仍应结合实际项目版本补全。";
+    approach = `开发者确认问题已在目标环境解决并复测通过。本次提交的逐元素对照包含 ${count} 项，${precision.failed ?? 0} 项超出所设容差（atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}）。当前对话与工作区没有记录实际修改点或根因，草稿不会推断修复方法；请在发布前从代码变更或任务记录中补全。`;
+    verification = `开发者确认目标环境复测通过；本次逐元素数据 ${count} 项、${precision.failed ?? 0} 项超差。容差：atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}。Demo 未独立连接 NPU，也未核验数据来源；CANN、芯片、驱动与固件版本尚未提供。`;
   } else if (taskId === "AddCustom 精度异常") {
     problem = "AddCustom 算子在输入 [16,32] 时通过、[17,33] 时失败，报错为 precision mismatch，位置在 custom_op.cpp:128。修改编译参数后，错误仍出现在同一位置。需要继续核对失败条件与误差证据，目前不能确认根因。";
     approach = "现有对话将尾块边界列为优先核查线索，并建议只读检查对应循环的索引范围和有效元素数；若未发现边界异常，再补充两次运行条件与逐元素误差。当前没有修改真实项目文件，也没有据此认定根因。";

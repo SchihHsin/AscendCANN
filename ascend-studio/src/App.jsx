@@ -230,11 +230,12 @@ function App() {
   const feedback = (value) => wb.patchSession({ feedback: session.feedback === value ? null : value });
   const closeMenuAnd = (action) => { wb.setMenu(null); action(); };
   const isImageTask = selectedTask === IMAGE_TASK;
+  const supportsCommunityDraft = selectedTask === IMAGE_TASK || selectedTask === MAIN_TASK;
   const isStandardLearningTask = task.kind === "learning";
   const isPathGenerationTask = selectedTask === LEARNING_PATH_GENERATION_TASK;
   const isOfficialLearningTask = task.kind === "official-learning";
   const isLearningTask = isStandardLearningTask || isOfficialLearningTask;
-  const communityInviteMessage = isImageTask
+  const communityInviteMessage = supportsCommunityDraft
     ? [...session.messages].reverse().find(message => message.communityInvite)
     : null;
   const showCommunityInvite = Boolean(communityInviteMessage && communityInviteMessage.communityInvite.summaryId !== session.communityDraft?.completionId);
@@ -257,7 +258,7 @@ function App() {
   }, []);
   const isInteractiveTask = isMainTask || isImageTask || isLearningTask;
   const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask, initialMaterialId: isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS[0]?.id : isLearningTask ? "learning-goal" : undefined, defaultToLearningCanvas: isLearningTask });
-  const communityDraftFocus = showTaskWorkspace && isImageTask && Boolean(session.communityDraft?.open && session.communityDraft?.completionId);
+  const communityDraftFocus = showTaskWorkspace && supportsCommunityDraft && Boolean(session.communityDraft?.open && session.communityDraft?.completionId);
   const layout = useWorkbenchLayout({ sidebarCollapsed, contentCollapsed: showTaskWorkspace && workspace.state.collapsed, learningLayout: isLearningTask, communityDraftFocus });
   const visibleContentId = layout.contentWidth <= 620 && workspace.state.splitId && [workspace.state.activeId, workspace.state.splitId].includes(workspace.state.comparisonFocusId) ? workspace.state.comparisonFocusId : workspace.state.activeId;
   const contentVisible = id => !workspace.state.collapsed && workspace.state.activeId !== "canvas" && (layout.contentWidth <= 620 ? visibleContentId === id : workspace.state.activeId === id || workspace.state.splitId === id);
@@ -775,7 +776,7 @@ function App() {
     }
     if (id === "reference") return presentation === "canvas" ? <div className="cm-stack"><p className="cm-body-copy">Ascend C 官方文档</p><p className="cm-note">用于理解概念与使用范围，实际版本与根因仍需核对。</p><button className="cm-button" type="button" onClick={() => openContent("reference")}>打开参考网页<IconArrowRight size={14} /></button></div> : <ReferenceBrowser resetVersion={flow.state.resetVersion} />;
     if (presentation === "canvas" && (id === "precision" || id === "review")) return <div className="cm-stack"><p className="cm-body-copy">{id === "precision" ? "逐元素误差与容差依据" : "检查清单、观察与待补证据"}</p><p className="cm-note">{precisionContext ? `已保留 ${precisionContext.count ?? precisionContext.rows?.length ?? "本次"} 项误差核对依据。` : "尚未保存误差计算。真实项目根因待确认。"}</p><button className="cm-button" type="button" onClick={() => openContent(id)}>展开核对<IconArrowRight size={14} /></button></div>;
-    if (id === "precision" || id === "review") return <ActionWorkspace key={flow.state.resetVersion} storageKey={`action-${MAIN_TASK}-${id}-${flow.state.resetVersion}`} embedded view={id} onChangeView={changeActionView} onBack={() => openContent("evidence")} onRecord={(record) => wb.addRecord(record, MAIN_TASK)} precisionContext={precisionContext} onPrecisionContext={setPrecisionContext} rangeContext={latestAttempt ? { total: latestAttempt.total, tile: latestAttempt.tileSize } : null} />;
+    if (id === "precision" || id === "review") return <ActionWorkspace key={flow.state.resetVersion} storageKey={`action-${MAIN_TASK}-${id}-${flow.state.resetVersion}`} embedded view={id} onChangeView={changeActionView} onBack={() => openContent("evidence")} onRecord={(record) => wb.addRecord(record, MAIN_TASK)} precisionContext={precisionContext} onPrecisionContext={setPrecisionContext} rangeContext={latestAttempt ? { total: latestAttempt.total, tile: latestAttempt.tileSize } : null} onTaskComplete={id === "precision" ? confirmAddCustomResolution : undefined} completionAlreadyOffered={mainSession.messages.some(message => message.communityInvite?.summary?.kind === "addcustom-precision-resolution")} />;
     return <CanvasMaterial key={flow.state.resetVersion} id={id} presentation={presentation} flow={{ ...flow, codeAttachment: mainAttachment }} onShowCard={openContent} onAttachCode={() => openDialog("code")} explanation={explanation} onAsk={askExplanation} onCompare={compareExplanation} proactive={proactive} diagramRef={presentation === "content" ? diagnosisTargetRef : undefined} />;
   };
   const availableMaterials = isMainTask ? [
@@ -971,6 +972,7 @@ function App() {
 
   const offerCommunityExperience = (summary) => {
     if (!summary?.id) return;
+    if (summary.kind === "addcustom-precision-resolution" && session.messages.some(message => message.communityInvite?.summary?.kind === summary.kind)) return;
     if (session.messages.some(message => message.communityInvite?.summaryId === summary.id)) return;
     const dimensions = summary.dimensions?.join(", ") || "当前示例形状";
     const completionExchange = summary.demoFixture ? [{
@@ -981,10 +983,19 @@ function App() {
       messages: [...old.messages, ...completionExchange, {
         id: crypto.randomUUID(), role: "assistant", isDemo: true,
         communityInvite: { summaryId: summary.id, summary },
-        text: `${summary.demoFixture ? "示例形状核对已通过" : "示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
+        text: summary.completionText || `${summary.demoFixture ? "示例形状核对已通过" : "示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
       }],
     }));
     window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
+  };
+  const confirmAddCustomResolution = (result) => {
+    if (selectedTask !== MAIN_TASK || result?.kind !== "addcustom-precision-resolution" || result.isDemo || result.failed !== 0) return;
+    offerCommunityExperience({
+      id: `addcustom-${result.id}`,
+      kind: "addcustom-precision-resolution",
+      precision: result.precision,
+      completionText: "你已确认 AddCustom 精度异常已在目标环境复测通过。可以把本次修复步骤、适用条件和验证证据整理为社区经验；当前 Demo 不会代替真实设备检查。",
+    });
   };
   useEffect(() => {
     if (!developmentDemoLaunch.current || selectedTask !== IMAGE_TASK) return;
@@ -1273,7 +1284,7 @@ function App() {
 
         {showTaskWorkspace && <div className="workspace-divider workspace-divider--conversation" hidden={workspace.state.collapsed} role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />}
         {showTaskWorkspace && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
-          {isImageTask && session.communityDraft?.open && session.communityDraft?.completionId
+          {supportsCommunityDraft && session.communityDraft?.open && session.communityDraft?.completionId
             ? <CommunityDraftPanel draft={session.communityDraft} onUpdate={communityDraft => wb.patchSession({ communityDraft })} onClose={closeCommunityDraft} onSubmit={submitCommunityDraft} />
             : <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext} onAreaSend={sendAreaMessage} onAreaDismiss={clearPointContext} areaComposerDisabled={session.replying}
               renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
