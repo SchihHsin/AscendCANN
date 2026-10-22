@@ -23,6 +23,8 @@
 .topbar .proposal-badge--learning-edit { border-color:#e5def4; background:#faf8ff; color:#69569f; }
 .topbar .proposal-badge--learning-edit .proposal-dot { background:#8b70df; animation:lh-editing-pulse 1.8s ease-out infinite; }
 .lh-toolbar { position:absolute; top:18px; right:17px; display:flex; align-items:center; gap:7px; z-index:20; }
+.lh-edit-path-trigger { position:absolute; top:65px; left:23px; z-index:21; display:flex; align-items:center; gap:5px; padding:5px 8px; border:1px solid #e5e1ef; border-radius:7px; background:#ffffffed; color:#6b5b9b; font-size:10px; box-shadow:0 2px 6px #3f4f7c08; }
+.lh-edit-path-trigger:hover { border-color:#cec3e8; background:#faf8ff; }
 .lh-draft-controls { position:absolute; z-index:21; left:18px; bottom:16px; display:flex; align-items:center; gap:6px; padding:4px; border:1px solid #e2deed; border-radius:8px; background:#fffffff0; box-shadow:0 3px 12px #3f4f7c0a; }
 .lh-draft-controls .lh-button { padding:5px 8px; }
 .lh-toolbar button { display:flex; align-items:center; justify-content:center; padding:6px; height:32px; min-width:31px; border:0; background:#fff; color:#4b536d; font-size:10px; }
@@ -34,6 +36,7 @@
 .lh-tree-position { position:absolute; z-index:5; pointer-events:none; }
 .lh-tree-position button, .lh-tree-position .lh-tree-grab { pointer-events:auto; }
 .lh-hierarchy { position:relative; }
+.lh-reorder-hint { position:absolute; left:0; bottom:-32px; z-index:8; padding:4px 8px; border:1px solid #e6e1f0; border-radius:6px; background:#fff; color:#766b92; font-size:9px; line-height:1.45; box-shadow:0 2px 8px #4358870a; white-space:nowrap; }
 .path-editing-canvas .lh-step-wrap { position:absolute; z-index:2; }
 .lh-tree-grab { display:flex; align-items:center; gap:6px; position:absolute; top:-29px; left:2px; color:#9098ad; font-size:10px; cursor:grab; user-select:none; }
 .lh-tree-lines { position:absolute; left:0; top:0; overflow:visible; pointer-events:none; }
@@ -62,11 +65,12 @@
 .lh-stage-node.is-selected .lh-node-icon { color:#8966ec; }
 .lh-tree-node.is-skipped { color:#9aa0b3; border-style:dashed; background:#f6f7fae6; }
 .lh-tree-node.is-skipped em { position:absolute; right:5px; top:4px; border-radius:4px; padding:0 5px; background:#a0a7b7; color:#fff; font-size:9px; font-style:normal; }
-.path-editing-canvas .lh-step-node { position:relative; left:auto!important; top:auto!important; width:100%!important; height:100%!important; border-radius:8px; gap:8px; padding:7px 11px; }
+.path-editing-canvas .lh-step-node { position:relative; left:auto!important; top:auto!important; width:100%!important; height:100%!important; border-radius:8px; gap:8px; padding:7px 11px; touch-action:none; user-select:none; }
 .path-editing-canvas .lh-step-wrap.has-review .lh-step-node { height:calc(100% - 29px)!important; }
 .path-editing-canvas .lh-step-node > .lh-step-copy { flex:1; align-self:center; }
-.path-editing-canvas .lh-step-node { cursor:grab!important; }
-.path-editing-canvas .lh-step-node:active { cursor:grabbing!important; }
+.path-editing-canvas .lh-step-node { cursor:pointer!important; }
+.path-editing-canvas .lh-hierarchy.is-editable .lh-step-node { cursor:grab!important; }
+.path-editing-canvas .lh-hierarchy.is-editable .lh-step-node:active { cursor:grabbing!important; }
 .path-editing-canvas .lh-step-node strong { font-size:11px; }
 .path-editing-canvas .lh-step-node small { font-size:10px; }
 .path-editing-canvas .lh-step-copy { display:flex; flex-direction:column; gap:2px; min-width:0; }

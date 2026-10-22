@@ -1,4 +1,5 @@
 import { OFFICIAL_LEARNING_STAGES, getOfficialLearningNode } from "./official-learning-data.js";
+import { normalizeOfficialPersonalPlan } from "./official-learning-plan.js";
 
 const nodes = OFFICIAL_LEARNING_STAGES.flatMap(stage => stage.children);
 const ids = new Set(nodes.map(node => node.id));
@@ -17,7 +18,7 @@ export const initialOfficialProgress = () => ({
   version: 2, selectedNodeId: nodes[0].id, started: [], understood: [], answers: {}, checks: {}, attempts: [],
   input: { axes: [0, 1, 2], batch: false }, inputAttempts: [],
   sequence: ["load", "execute", "input", "output"], sequenceAttempts: [],
-  times: {}, playing: false, sources: [], summary: null, legacyStatuses: {}, notice: "",
+  times: {}, playing: false, sources: [], summary: null, legacyStatuses: {}, personalPlan: null, personalPlanBase: null, personalPlanUndo: [], notice: "",
 });
 
 export function restoreOfficialProgress(saved) {
@@ -30,6 +31,9 @@ export function restoreOfficialProgress(saved) {
   const checks = object(saved.checks) ? Object.fromEntries(nodes.filter(node => object(saved.checks[node.id]) && node.checkpoint.options.some(option => option.id === saved.checks[node.id].answer)).map(node => { const check = saved.checks[node.id]; return [node.id, { ...check, passed: check.answer === node.checkpoint.answer }]; })) : {};
   const axes = list(saved.input?.axes);
   const sequence = list(saved.sequence);
+  const personalPlan = normalizeOfficialPersonalPlan(saved.personalPlan);
+  const personalPlanBase = normalizeOfficialPersonalPlan(saved.personalPlanBase);
+  const personalPlanUndo = list(saved.personalPlanUndo).map(item => normalizeOfficialPersonalPlan(item)).filter(Boolean).slice(-20);
   return { ...base, selectedNodeId, started: list(saved.started).filter(id => ids.has(id)), understood: list(saved.understood).filter(id => ids.has(id)), answers, checks,
     attempts: list(saved.attempts).filter(item => object(item) && ids.has(item.nodeId)).slice(-120),
     input: { axes: axes.length === 3 && axes.every(value => Number.isInteger(value) && value >= 0 && value <= 2) ? axes : base.input.axes, batch: saved.input?.batch === true },
@@ -37,7 +41,7 @@ export function restoreOfficialProgress(saved) {
     sequence: sequence.length === 4 && new Set(sequence).size === 4 && sequence.every(item => base.sequence.includes(item)) ? sequence : base.sequence,
     sequenceAttempts: list(saved.sequenceAttempts).filter(item => object(item) && Array.isArray(item.snapshot)).slice(-40).map(item => ({...item, snapshot:[...item.snapshot], passed:item.snapshot.join(",") === SEQUENCE.join(",")})),
     times: object(saved.times) ? Object.fromEntries(Object.entries(saved.times).filter(([id, time]) => ids.has(id) && Number.isFinite(time)).map(([id,time]) => [id, Math.max(0, Math.min(45,time))])) : {},
-    sources: list(saved.sources).filter(id => typeof id === "string"), summary: object(saved.summary) ? saved.summary : null, legacyStatuses: object(saved.legacyStatuses) ? saved.legacyStatuses : {},
+    sources: list(saved.sources).filter(id => typeof id === "string"), summary: object(saved.summary) ? saved.summary : null, legacyStatuses: object(saved.legacyStatuses) ? saved.legacyStatuses : {}, personalPlan, personalPlanBase, personalPlanUndo,
   };
 }
 

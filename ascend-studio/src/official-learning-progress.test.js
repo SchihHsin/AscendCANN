@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { OFFICIAL_LEARNING_STAGES } from "./official-learning-data.js";
 import { currentInputAttempt, currentSequenceAttempt, deriveOfficialStatuses, initialOfficialProgress, restoreOfficialProgress } from "./official-learning-progress.js";
+import { officialPathOrder } from "./official-learning-plan.js";
 
 const allNodes = OFFICIAL_LEARNING_STAGES.flatMap(stage => stage.children);
 const node = visual => allNodes.find(item => item.visual === visual);
@@ -19,6 +20,19 @@ test("v1 manual completed status is retained as history but does not complete a 
   const restored = restoreOfficialProgress({ version: 1, statuses: { [target.id]: "completed" } });
   assert.equal(restored.legacyStatuses[target.id], "completed");
   assert.equal(deriveOfficialStatuses(restored)[target.id], "in-progress");
+});
+
+test("personal path order restores independently from stable learning progress", () => {
+  const target = node("classification");
+  const state = prepared(target);
+  const stage = OFFICIAL_LEARNING_STAGES.find(item => item.children.some(child => child.id === target.id));
+  const orderByStage = officialPathOrder();
+  orderByStage[stage.id] = [...orderByStage[stage.id]].reverse();
+  state.personalPlan = { status: "confirmed", orderByStage };
+  const restored = restoreOfficialProgress(state);
+  assert.deepEqual(restored.personalPlan.orderByStage[stage.id], orderByStage[stage.id]);
+  assert.equal(deriveOfficialStatuses(restored)[target.id], "completed");
+  assert.deepEqual(restored.started, [target.id]);
 });
 
 test("restored input and sequence passed flags are recomputed from current snapshots", () => {

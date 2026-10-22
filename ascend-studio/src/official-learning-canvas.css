@@ -3,6 +3,9 @@
 .goal-learning-canvas::before { background:linear-gradient(128deg,rgba(237,242,255,.45),transparent 48%,rgba(240,247,250,.35)); }
 .goal-learning-canvas .lh-canvas-title { max-width:min(46%,470px); }
 .goal-learning-canvas .lh-canvas-title h2 { font-size:14px; }
+.goal-learning-canvas .og-plan-state { display:flex; align-items:center; gap:5px; margin:0 0 3px; color:#76659f; font-size:9px; font-weight:650; }
+.goal-learning-canvas .og-plan-state > i { width:6px; height:6px; border-radius:50%; background:#8b70df; box-shadow:0 0 0 3px #8b70df18; }
+.goal-learning-canvas .lh-canvas-title.is-draft-path h2 { color:#604b99; }
 .og-stage-status,.og-step-status { flex:none; }
 .og-stage-status { color:#8b849f; font-size:9px; white-space:nowrap; }
 .og-stage-status.is-completed { color:#718c7b; }
@@ -215,6 +218,17 @@
 .goal-learning-canvas::after { content:""; position:absolute; inset:0 0 auto; height:124px; z-index:8; pointer-events:none; background:linear-gradient(#f8f9fc 55%,#f8f9fc00); }
 .goal-learning-canvas .lh-stage-node > span:nth-child(2) { flex:1; }
 .goal-learning-canvas .og-stage-status { font-style:normal; }
+.goal-learning-canvas .lh-step-node.is-plan-editable { cursor:grab!important; touch-action:none; }
+.goal-learning-canvas .lh-step-node.is-plan-editable:active { cursor:grabbing!important; }
+.goal-learning-canvas .lh-step-node.is-dragging { opacity:.42; }
+.goal-learning-canvas .lh-step-node.is-drop-target { outline:1px dashed #8b70df; outline-offset:3px; }
+.og-personal-plan-controls { max-width:calc(100% - 180px); min-height:36px; }
+.og-personal-plan-status { display:flex; align-items:center; gap:6px; padding:0 7px; color:#898da0; font-size:9px; white-space:nowrap; }
+.og-personal-plan-status > i { width:6px; height:6px; border-radius:50%; background:#9ba3b5; }
+.og-personal-plan-controls:has(.og-plan-confirm) .og-personal-plan-status > i { background:#8b70df; box-shadow:0 0 0 3px #8b70df18; }
+.og-personal-plan-controls .og-plan-confirm { border-color:#d7ccef; background:#f8f5ff; color:#6b56a4; }
+.og-personal-plan-controls .og-plan-confirm:hover { background:#f0eaff; }
+.goal-learning-canvas .lh-canvas-notice { bottom:64px; max-width:min(720px,calc(100% - 210px)); }
 .og-transform small { font-size:9px; color:#8b7ba8; }
 
 .goal-learning-canvas { overflow:clip; }
@@ -224,4 +238,8 @@
   .goal-learning-canvas .lh-canvas-title { max-width:calc(100% - 40px); }
   .goal-learning-canvas .lh-canvas-title h2 { max-width:400px; font-size:13px; }
   .goal-learning-canvas .lh-toolbar { top:71px; left:22px; right:auto; }
+  .goal-learning-canvas .og-personal-plan-controls { left:8px; bottom:9px; max-width:calc(100% - 120px); gap:3px; padding:3px; }
+  .goal-learning-canvas .og-personal-plan-controls .lh-button { padding:4px 6px; font-size:9px!important; white-space:nowrap; }
+  .goal-learning-canvas .og-personal-plan-status { display:none; }
+  .goal-learning-canvas .lh-canvas-notice { bottom:58px; max-width:calc(100% - 130px); }
 }

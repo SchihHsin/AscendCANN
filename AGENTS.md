@@ -5906,3 +5906,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/NewTaskHome.jsx`、`src/home-recommendations.js`、`src/new-task-home.css`。日期、次数和摘要为固定演示数据，不是实际遥测或已确认根因。视觉依据为用户认可的 ImageGen 效果图；本地 CUA 在 1280×720 检查卡片显示与学习任务入口。
 - 属于首页 Application / Task 演示，不影响页面序列、hash 或 API / Host / Application 边界。`node --check`、`npm run build`、`npm run build:pages` 与 `git diff --check` 通过；未运行测试套件，保留既有 bundle 体积提示。
 - 源码、Pages 产物与本条记录基于最新 `origin/main` 隔离构建，并一并提交、推送至 `origin/main`；共享工作区的其他修改未纳入。
+
+### 2026-10-22 · 学习画布节点排序进入可审阅草案
+
+- 用户确认学习画布节点可整理，但学习顺序只在路径草案中编辑。标准学习任务仍可在普通画布选节点查看内容；点「调整路径」后生成个人草案，草案内支持同阶段拖拽或 `Alt + ↑/↓` 排序，并需确认后才替换当前路径。取消保留原路径与进度；学习记录按节点 ID 保留。
+- ResNet50 官方学习路径保持只读。用户先复制为个人计划草案，再在同一官方阶段内调整节点；确认后个人顺序才用于「继续下一步」。支持撤销、取消、刷新恢复，不改变官方路径来源或节点学习状态。
+- 变更 `ascend-studio/src/LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`、对应样式、官方进度/计划状态 Hook 与测试；新增 `official-learning-plan.js` 及测试，并重建 `ascstudio/` Pages 包。属于 Application / Task 交互，不改变报告页序/hash 或 API / Host / Harness 边界。
+- 验证：学习路径共创、生成、官方进度与个人计划测试共 24/24 通过；`npm run build`、`npm run build:pages`、`node --check`、`git diff --check` 通过。构建保留既有大 bundle 提示。隔离本地浏览器已回放标准路径草案排序、ResNet50 个人计划排序/确认及刷新恢复；未声称真实 Python、模型或 NPU 验证。
+- 源码与独立 Pages 构建基于最新 `origin/main` 隔离生成；发布提交及 Pages 状态见本条后续回执。共享工作区中其他对话的暂存、未暂存和未跟踪内容未纳入。
