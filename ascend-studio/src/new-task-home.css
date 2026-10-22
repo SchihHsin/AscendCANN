@@ -170,6 +170,22 @@
 .new-task-home__card-error-examples li { display: flex; min-width: 0; align-items: baseline; gap: 4px; color: #616570; font-size: 11px; line-height: 1.35; white-space: nowrap; }
 .new-task-home__card-error-examples time { flex: 0 0 auto; color: #828691; font-size: 10px; }
 .new-task-home__card-error-summary { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.new-task-home__card-error-detail-list { display: grid; gap: 4px; }
+.new-task-home__card-error-detail-label { color: #858993; font-size: 8.5px; line-height: 1.2; }
+.new-task-home__card-error-detail { min-width: 0; padding: 5px 6px; border-radius: 7px; background: rgba(246,247,249,.82); }
+.new-task-home__card-error-detail-heading { display: flex; min-width: 0; align-items: baseline; gap: 5px; font-size: 10.5px; line-height: 1.3; }
+.new-task-home__card-error-detail-heading time { flex: 0 0 auto; color: #828691; font-size: 9px; }
+.new-task-home__card-error-detail-heading strong { min-width: 0; overflow: hidden; color: #424650; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.new-task-home__card-error-detail-context { overflow: hidden; margin: 2px 0 0; color: #626670; font-size: 9.5px; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
+.new-task-home__card-error-code-wrap { display: grid; gap: 1px; margin-top: 3px; }
+.new-task-home__card-error-code { overflow: hidden; padding: 3px 3px 3px 21px; margin: 0; border-radius: 5px; color: #424650; background: rgba(255,255,255,.86); font: 9px/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.new-task-home__card-error-code li { padding-left: 2px; }
+.new-task-home__card-error-code code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.new-task-home__card-error-guidance { display: grid; gap: 3px; padding-top: 2px; }
+.new-task-home__card-error-guidance p { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 5px; margin: 0; font-size: 9.5px; line-height: 1.4; }
+.new-task-home__card-error-guidance strong { color: #424650; font-size: 9px; font-weight: 620; white-space: nowrap; }
+.new-task-home__card-error-guidance span { min-width: 0; color: #656973; }
+.new-task-home__card.is-error-learning .new-task-home__card-details:not([hidden]) { gap: 5px; }
 .new-task-home__card.is-expanded .new-task-home__card-summary { height: auto; min-height: 0; flex: 0 0 auto; }
 .new-task-home__card.is-expanded .new-task-home__card-title strong { overflow: visible; white-space: normal; overflow-wrap: anywhere; }
 .new-task-home__card-details { display: none; position: relative; z-index: 1; margin-top: 6px; color: #747780; font-size: 12px; line-height: 1.45; }
@@ -186,6 +202,10 @@
 .new-task-home__card-evidence span,.new-task-home__card-evidence time { color: #747780; }
 .new-task-home__card-condition { color: #656973; }
 .new-task-home__card-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.new-task-home__card.is-error-learning .new-task-home__card-buttons { flex-wrap: nowrap; gap: 5px; }
+.new-task-home__card.is-error-learning .new-task-home__card-continue,
+.new-task-home__card.is-error-learning .new-task-home__card-chat,
+.new-task-home__card.is-error-learning .new-task-home__card-snooze { min-height: 28px; padding-inline: 6px; font-size: 10px; white-space: nowrap; }
 .new-task-home__card-last-record { overflow-wrap: anywhere; }
 .new-task-home__card-last-record > strong { display: block; margin-bottom: 2px; color: #565a64; font-weight: 600; }
 .new-task-home__card-last-record p { margin: 0; white-space: normal; overflow-wrap: anywhere; }

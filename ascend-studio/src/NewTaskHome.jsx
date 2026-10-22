@@ -148,7 +148,7 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
           return (
             <article
               key={item.id}
-              className={`new-task-home__card new-task-home__card--${cardTone}${expanded ? " is-expanded" : ""}`}
+              className={`new-task-home__card new-task-home__card--${cardTone}${errorLearning ? " is-error-learning" : ""}${expanded ? " is-expanded" : ""}`}
               onPointerEnter={(event) => { if (event.pointerType !== "touch") setCardExpanded(item.id); }}
               onPointerLeave={(event) => { if (event.pointerType !== "touch" && !event.currentTarget.contains(document.activeElement)) setCardExpanded(null); }}
               onFocusCapture={() => setCardExpanded(item.id)}
@@ -160,7 +160,7 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
                 className={`new-task-home__card-summary${errorLearning ? " is-error-learning" : ""}`}
                 type="button"
                 aria-label={errorLearning
-                  ? `建议学习${item.title}，${item.errorPeriod}出错${item.errorCount}次。${item.errorExamples.map(example => `${example.date}${example.summary}`).join("；")}`
+                  ? `建议学习${item.title}，${item.errorPeriod}出错${item.errorCount}次，展开查看错误详情和推荐说明`
                   : `${item.taskName}：${item.title}，前往任务`}
                 aria-controls={detailsId}
                 aria-expanded={expanded}
@@ -173,9 +173,9 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
                     <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={14} /></span>
                   </span>
                   <span className="new-task-home__card-error-count">{item.errorPeriod}出错 <strong>{item.errorCount} 次</strong></span>
-                  <ul className="new-task-home__card-error-examples" aria-label="近期错误记录">
+                  {!expanded && <ul className="new-task-home__card-error-examples" aria-label="近期错误记录">
                     {item.errorExamples.slice(0, 2).map((example) => <li key={`${example.date}-${example.summary}`} title={`${example.date} · ${example.summary}`}><time>{example.date}</time><span aria-hidden="true">·</span><span className="new-task-home__card-error-summary">{example.summary}</span></li>)}
-                  </ul>
+                  </ul>}
                 </> : <>
                   <span className="new-task-home__card-context"><Icon size={22} stroke={1.8} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
                   <span className="new-task-home__card-activity" title={item.activity}>{item.activity}</span>
@@ -184,9 +184,28 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
                 </>}
               </button>
               <div className="new-task-home__card-details" id={detailsId} hidden={!expanded}>
-                {item.evidence?.length > 0 && <ul className="new-task-home__card-evidence" aria-label="推荐依据">{item.evidence.slice(0, 3).map((evidence) => <li key={evidence.id}><strong>{evidence.title}</strong>{evidence.summary && <span>{evidence.summary}</span>}{evidence.time && <time>{evidence.time}</time>}</li>)}</ul>}
-                {item.condition && <p className="new-task-home__card-condition">适用条件：{item.condition}</p>}
-                {item.steps?.length > 0 && <ul className="new-task-home__card-steps" aria-label="建议步骤">{item.steps.slice(0, 3).map((step, stepIndex) => <li key={`${stepIndex}-${step}`}>{step}</li>)}</ul>}
+                {errorLearning ? <>
+                  <div className="new-task-home__card-error-detail-list" aria-label="近期错误详情">
+                    <span className="new-task-home__card-error-detail-label">近期记录 · 示例代码</span>
+                    {item.errorExamples.slice(0, 2).map((example) => <section className="new-task-home__card-error-detail" key={`${example.date}-${example.summary}`}>
+                      <div className="new-task-home__card-error-detail-heading"><time>{example.date}</time><strong>{example.summary}</strong></div>
+                      <p className="new-task-home__card-error-detail-context">{example.detail}</p>
+                      <div className="new-task-home__card-error-code-wrap">
+                        <ol className="new-task-home__card-error-code" aria-label="演示代码片段">
+                          {example.code.map((line, lineIndex) => <li key={`${lineIndex}-${line}`}><code>{line}</code></li>)}
+                        </ol>
+                      </div>
+                    </section>)}
+                  </div>
+                  <div className="new-task-home__card-error-guidance" aria-label="推荐说明">
+                    <p><strong>推荐理由</strong><span>{item.recommendationReason}</span></p>
+                    <p><strong>学习方向</strong><span>{item.learningDirection}</span></p>
+                  </div>
+                </> : <>
+                  {item.evidence?.length > 0 && <ul className="new-task-home__card-evidence" aria-label="推荐依据">{item.evidence.slice(0, 3).map((evidence) => <li key={evidence.id}><strong>{evidence.title}</strong>{evidence.summary && <span>{evidence.summary}</span>}{evidence.time && <time>{evidence.time}</time>}</li>)}</ul>}
+                  {item.condition && <p className="new-task-home__card-condition">适用条件：{item.condition}</p>}
+                  {item.steps?.length > 0 && <ul className="new-task-home__card-steps" aria-label="建议步骤">{item.steps.slice(0, 3).map((step, stepIndex) => <li key={`${stepIndex}-${step}`}>{step}</li>)}</ul>}
+                </>}
                 <div className="new-task-home__card-buttons">
                   <button className="new-task-home__card-continue" type="button" onClick={() => onRecommendationAction?.(item)}>{item.actionLabel || "查看建议"}</button>
                   <button className="new-task-home__card-chat" type="button" onClick={() => onRecommendationChat?.(item)}>先聊聊</button>

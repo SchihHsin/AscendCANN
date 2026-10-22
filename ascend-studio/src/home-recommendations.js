@@ -23,27 +23,57 @@ const HOME_ERROR_LEARNING_PATTERNS = [
     id: "kernel-parameter-validation",
     topic: "编译参数校验",
     count: 3,
+    recommendationReason: "近 7 天的记录集中在启动参数对齐。",
+    learningDirection: "核对 tiling 字段、核函数入参与边界条件。",
     examples: [
-      { date: "10月21日", summary: "tiling参数不匹配" },
-      { date: "10月18日", summary: "核函数参数越界" },
+      {
+        date: "10月21日", summary: "tiling参数不匹配",
+        detail: "blockDim 和 tiling 配置不一致。",
+        code: ["uint32_t blockDim = 8;", "AddKernel<<<1, nullptr, stream>>>(..., tiling);"],
+      },
+      {
+        date: "10月18日", summary: "核函数参数越界",
+        detail: "尾部索引没有长度检查。",
+        code: ["int idx = blockIdx * blockDim + threadIdx;", "output[idx] = input[idx];"],
+      },
     ],
   },
   {
     id: "input-dimensions-shape",
     topic: "输入维度与Shape",
     count: 2,
+    recommendationReason: "两条记录都指向输入、输出维度未对齐。",
+    learningDirection: "对照模型签名检查输入、输出维度。",
     examples: [
-      { date: "10月20日", summary: "输入维度与模型要求不符" },
-      { date: "10月17日", summary: "输出Shape与预期不符" },
+      {
+        date: "10月20日", summary: "输入维度与模型要求不符",
+        detail: "输入按 HWC，模型要求 NCHW。",
+        code: ["const Shape inputShape = {1, 224, 224, 3};", "model.run(inputShape);"],
+      },
+      {
+        date: "10月17日", summary: "输出Shape与预期不符",
+        detail: "预期 Shape 沿用了输入尺寸。",
+        code: ["auto output = model.run(input);", "checkShape(output, expectedShape);"],
+      },
     ],
   },
   {
     id: "image-preprocessing",
     topic: "图像数据预处理",
     count: 2,
+    recommendationReason: "近期记录涉及格式转换和归一化。",
+    learningDirection: "核对数据布局、像素格式与归一化区间。",
     examples: [
-      { date: "10月19日", summary: "输入格式转换失败" },
-      { date: "10月16日", summary: "归一化范围不一致" },
+      {
+        date: "10月19日", summary: "输入格式转换失败",
+        detail: "转换后的通道顺序不匹配。",
+        code: ["convert(input, PixelFormat::RGB);", "tensor.copyFrom(input);"],
+      },
+      {
+        date: "10月16日", summary: "归一化范围不一致",
+        detail: "归一化范围与模型约定不一致。",
+        code: ["input[i] = pixel / 255.0f;", "input[i] = (input[i] - mean) / std;"],
+      },
     ],
   },
 ];
@@ -51,26 +81,31 @@ const HOME_ERROR_LEARNING_PATTERNS = [
 function errorLearningSuggestions(tasks) {
   const task = arr(tasks).find(item => item?.name === LEARNING_TASK);
   if (!task) return [];
-  return HOME_ERROR_LEARNING_PATTERNS.map((pattern, index) => candidate({
-    task,
-    mode: "learning",
-    type: `error-learning-${pattern.id}`,
-    title: pattern.topic,
-    reason: `近 7 天出现 ${pattern.count} 次相关错误记录，建议补齐${pattern.topic}知识。`,
-    activity: `近 7 天出错 ${pattern.count} 次`,
-    evidence: pattern.examples.map((item, exampleIndex) => evidence(`${pattern.id}-${exampleIndex}`, item.date, item.summary)),
-    steps: [`学习${pattern.topic}的关键概念`, "结合历史错误检查相关条件"],
-    action: { type: "learning-lesson", materialId: "learning-lesson" },
-    actionLabel: "开始学习",
-    prompt: `请结合最近记录，讲解“${pattern.topic}”的关键概念，并说明如何检查相关错误。`,
-    priority: 130 - index,
-    deps: pattern,
-  })).map((item, index) => ({
-    ...item,
-    errorCount: HOME_ERROR_LEARNING_PATTERNS[index].count,
-    errorPeriod: "近 7 天",
-    errorExamples: HOME_ERROR_LEARNING_PATTERNS[index].examples,
-  }));
+  return HOME_ERROR_LEARNING_PATTERNS.map((pattern, index) => {
+    const facts = pattern.examples.map((item, exampleIndex) => evidence(`${pattern.id}-${exampleIndex}`, item.date, item.summary));
+    return {
+      ...candidate({
+        task,
+        mode: "learning",
+        type: `error-learning-${pattern.id}`,
+        title: pattern.topic,
+        reason: pattern.recommendationReason,
+        activity: `近 7 天出错 ${pattern.count} 次`,
+        evidence: facts,
+        steps: [],
+        action: { type: "learning-lesson", materialId: "learning-lesson" },
+        actionLabel: "开始学习",
+        prompt: `请围绕“${pattern.topic}”讲解${pattern.learningDirection}，并结合示例记录说明检查方法。`,
+        priority: 130 - index,
+        deps: pattern,
+      }),
+      errorCount: pattern.count,
+      errorPeriod: "近 7 天",
+      errorExamples: pattern.examples,
+      recommendationReason: pattern.recommendationReason,
+      learningDirection: pattern.learningDirection,
+    };
+  });
 }
 
 function candidate({ task, mode, type, title, reason, evidence: facts, steps, action, actionLabel, prompt, activity: explicitActivity, tone = mode === "learning" ? "rose" : "sand", priority = 0, deps }) {
