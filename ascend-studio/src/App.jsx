@@ -13,7 +13,6 @@ import { TaskWorkspace } from "./TaskWorkspace";
 import { ReferenceBrowser } from "./ReferenceBrowser";
 import { useWorkbenchLayout } from "./useWorkbenchLayout";
 import { TaskCanvas } from "./TaskCanvas";
-import { AddCustomTaskCanvas } from "./AddCustomTaskCanvas";
 import { CanvasMaterial } from "./CanvasMaterials";
 import VoiceCaptureButton from "./VoiceCaptureButton.jsx";
 import { TaskContentOverview } from "./TaskContentOverview";
@@ -186,7 +185,7 @@ function App() {
   const flow = useTaskFlow({ onRecord: (title, summary, kind, isDemo) => wb.addRecord({ title, summary, kind, isDemo }, MAIN_TASK) });
   const diagnosisTargetRef = useRef(null);
   const proactive = useProactiveCues(`${MAIN_TASK}:${flow.state.resetVersion}`);
-  const canvas = useCanvasState({ startEmpty: true, storageKey: "canvas-addcustom" });
+  const canvas = useCanvasState({ startEmpty: true, initialVisibleIds: ["explanation", "source", "evidence"], storageKey: "canvas-addcustom-v3" });
   const imageCanvas = useCanvasState({ startEmpty: true, cardDefinitions: IMAGE_MATERIALS, storageKey: "canvas-image" });
   const [precisionContext, setPrecisionContext] = useState(() => readSession("precision-context", null));
   useEffect(() => { writeSession("precision-context", precisionContext); }, [precisionContext]);
@@ -448,9 +447,32 @@ function App() {
     if (!isInteractiveTask) return;
     const mode = options.mode || "overview";
     const targetCanvas = isLearningTask ? learningCanvas : isImageTask ? imageCanvas : canvas;
-    if (isMainTask && mode === "focus") {
-      const focusId = options.focusId || workspace.state.overview.focusId || workspace.state.lastContentId || "explanation";
-      workspace.actions.setOverview({ focusId });
+    if (isMainTask && ["focus", "overview"].includes(mode)) {
+      if (mode === "focus") {
+        const focusId = options.focusId || targetCanvas.state.selectedCardId || workspace.state.overview.focusId || workspace.state.lastContentId || "explanation";
+        const items = getTaskItems(selectedTask).flatMap(item => [item, ...(item.children || [])]);
+        const material = items.find(item => item.id === focusId);
+        const relatedIds = new Set((material?.relations || []).map(relation => relation.id));
+        const focusIds = [focusId, ...relatedIds].filter((id, index, all) => all.indexOf(id) === index && items.some(item => item.id === id));
+        focusIds.forEach(id => {
+          const card = targetCanvas.state.cards.find(item => item.id === id);
+          if (card) { if (!card.visible) targetCanvas.actions.showCard(id, { focus: false }); }
+          else {
+            const item = items.find(candidate => candidate.id === id);
+            if (item?.available !== false) targetCanvas.actions.addCard({ ...getMaterialMeta(id, item), width: id === "explanation" ? 360 : 300, height: id === "explanation" ? 450 : 390 }, { focus: false });
+          }
+        });
+        workspace.actions.setOverview({ focusId });
+      } else {
+        getTaskItems(selectedTask).flatMap(item => [item, ...(item.children || [])]).filter(item => item.id !== "canvas" && item.available !== false).forEach(item => {
+          const existing = targetCanvas.state.cards.find(card => card.id === item.id);
+          if (existing) { if (!existing.visible) targetCanvas.actions.showCard(item.id, { focus: false }); }
+          else targetCanvas.actions.addCard({ ...getMaterialMeta(item.id, item), width: 420, height: 320 }, { focus: false });
+        });
+      }
+      workspace.actions.openCanvas({ mode, fit: options.fit });
+      setTaskContentsOpen(false);
+      return;
     }
     if (isLearningTask && mode === "free") {
       workspace.actions.openCanvas({ mode: "free" });
@@ -947,22 +969,19 @@ function App() {
     const free = ownerState.canvasMode === "free";
     const ownerItems = getTaskItems(ownerId);
     const focusedId = ownerMain ? ownerState.overview.focusId || ownerState.lastContentId || "explanation" : null;
-    const focusItem = ownerMain ? ownerItems.flatMap(item => [item, ...(item.children || [])]).find(item => item.id === focusedId) || { id: focusedId, title: getMaterialMeta(focusedId).title } : null;
-    const relatedItems = ownerMain ? (focusItem?.relations || []).map(relation => {
-      const target = ownerItems.flatMap(item => [item, ...(item.children || [])]).find(item => item.id === relation.id);
-      return target ? { id: target.id, title: target.title, relationLabel: relation.label, status: target.state?.label || target.statusLabel } : null;
-    }).filter(Boolean) : [];
-    const showFocusedContent = ownerMain && !free && ownerState.canvasMode === "focus";
-    const showOverview = visible && !free && (!ownerMain || ownerState.canvasMode === "overview");
+    const addCustomCanvas = ownerMain && ["focus", "overview"].includes(ownerState.canvasMode);
+    const focusedMaterial = ownerItems.flatMap(item => [item, ...(item.children || [])]).find(item => item.id === focusedId);
+    const focusRelatedIds = new Set((focusedMaterial?.relations || []).map(relation => relation.id));
+    const focusIds = ownerMain ? [focusedId, ...focusRelatedIds].filter((id, index, all) => all.indexOf(id) === index) : [];
+    const showOverview = visible && !free && !ownerMain;
     if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
     if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
     const ownerCanvas = ownerLearning || ownerOfficialLearning ? learningCanvas : ownerImage ? imageCanvas : canvas;
     return <div className="tw-content-canvas">
       <div className="tw-canvas-body">
-        {showFocusedContent && <AddCustomTaskCanvas item={focusItem} relatedItems={relatedItems} onOpenRelated={id => openContent(id, { restore: true, viewedInCanvas: true })}>{renderMaterial(focusedId, "focus", ownerId)}</AddCustomTaskCanvas>}
         <TaskContentOverview taskId={ownerId} visible={showOverview} items={ownerItems} categories={CONTENT_CATEGORIES} groups={getContentGroups(ownerId, ownerLearning || ownerOfficialLearning).map(group => ({ ...group, title: ownerState.overview.groupNames?.[group.id] || group.title }))} viewState={ownerState.overview} selectedId={ownerMain ? focusedId : ownerState.lastContentId} onViewChange={patch => updateOverview(patch, ownerId)} onEditGroup={workspace.actions.editGroup} onEditItem={workspace.actions.editItem} onOpen={id => ownerMain ? openContent(id, { restore: true, viewedInCanvas: true }) : restoreContent(id)} onCompare={compareContent} onArrange={arrangeMaterials}
           renderPreview={id => id === "explanation" ? <RangeDiagram snapshot={flow.state} compact active={false} onFocus={focus => { explanation.actions.focusConcept(focus); restoreContent("explanation"); }} title="当前示例范围" /> : id === "image-explanation" ? <TensorDiagram inference={inference} compact /> : null} />
-        <TaskCanvas embedded visible={visible && free} flow={ownerImage || ownerLearning || ownerOfficialLearning ? undefined : flow} canvas={ownerCanvas} comparisonIds={ownerLearning ? ["learning-lesson", "learning-practice"] : ownerOfficialLearning ? [OFFICIAL_LEARNING_MATERIALS[0]?.id, OFFICIAL_LEARNING_MATERIALS.at(-1)?.id] : ownerImage ? ["image-source", "image-practice"] : ["source", "draft"]} onOpenContents={() => openCanvas()} onOpenContent={restoreContent} onCollapse={(id, collapsed) => workspace.actions.setOverview({ compactIds: collapsed ? [...new Set([...workspace.state.overview.compactIds, id])] : workspace.state.overview.compactIds.filter(item => item !== id) })} onAttachCode={() => openDialog("code")} connections={ownerLearning ? contentItems.flatMap(item => (item.relations || []).filter(relation => contentItems.some(target => target.id === relation.id)).map(relation => ({ id: `${item.id}-${relation.id}`, from: relation.id, to: item.id, label: relation.label }))) : ownerImage ? [{ id: "image-code-diagram", from: "image-source", to: "image-explanation", label: "通道与维度" }, { id: "image-diagram-practice", from: "image-explanation", to: "image-practice", label: "参数试改" }, { id: "image-practice-result", from: "image-practice", to: "image-attempts", label: "形状快照" }] : materialConnections} renderMaterial={id => renderMaterial(id, "canvas", ownerId)} />
+        <TaskCanvas embedded visible={visible && (free || addCustomCanvas)} viewMode={addCustomCanvas ? ownerState.canvasMode : undefined} focusIds={focusIds} fitRequest={ownerState.overview.fitTick || 0} flow={ownerImage || ownerLearning || ownerOfficialLearning ? undefined : flow} canvas={ownerCanvas} comparisonIds={ownerLearning ? ["learning-lesson", "learning-practice"] : ownerOfficialLearning ? [OFFICIAL_LEARNING_MATERIALS[0]?.id, OFFICIAL_LEARNING_MATERIALS.at(-1)?.id] : ownerImage ? ["image-source", "image-practice"] : ["source", "draft"]} onOpenContents={() => openCanvas("overview", { fit: true })} onOpenContent={restoreContent} onCollapse={(id, collapsed) => workspace.actions.setOverview({ compactIds: collapsed ? [...new Set([...workspace.state.overview.compactIds, id])] : workspace.state.overview.compactIds.filter(item => item !== id) })} onAttachCode={() => openDialog("code")} connections={ownerLearning ? contentItems.flatMap(item => (item.relations || []).filter(relation => contentItems.some(target => target.id === relation.id)).map(relation => ({ id: `${item.id}-${relation.id}`, from: relation.id, to: item.id, label: relation.label }))) : ownerImage ? [{ id: "image-code-diagram", from: "image-source", to: "image-explanation", label: "通道与维度" }, { id: "image-diagram-practice", from: "image-explanation", to: "image-practice", label: "参数试改" }, { id: "image-practice-result", from: "image-practice", to: "image-attempts", label: "形状快照" }] : materialConnections} renderMaterial={id => renderMaterial(id, "canvas", ownerId)} />
       </div>
     </div>;
   };

@@ -4,7 +4,7 @@ import { getMaterialMeta } from "./workspace-materials";
 import { LEARNING_PATH_GENERATION_TASK } from "./learning-data";
 
 const ADD_CUSTOM_TASK_ID = "AddCustom 精度异常";
-const ADD_CUSTOM_CANVAS_VERSION = 3;
+const ADD_CUSTOM_CANVAS_VERSION = 4;
 
 function initialState(isMainTask, taskId, initialMaterialId) {
   const initial = { ...getMaterialMeta(initialMaterialId || (taskId === "学会图像输入预处理" ? "learning-goal" : taskId === "图像推理调试" ? "image-explanation" : isMainTask ? "explanation" : "task-brief")), unread: false };

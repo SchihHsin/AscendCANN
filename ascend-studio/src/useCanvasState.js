@@ -5,10 +5,10 @@ const MIN_ZOOM = 0.15;
 const MAX_ZOOM = 1.5;
 const FIT_PADDING = 28;
 
-const initialCards = (startEmpty = false) => [
-  { id: "explanation", title: "线索解释", x: 500, y: 28, width: 360, height: 340, pinned: false, visible: false, selected: false },
-  { id: "source", title: "索引范围示例", x: 28, y: 28, width: 440, height: 350, pinned: false, visible: true, selected: false },
-  { id: "evidence", title: "现场与判断", x: 72, y: 408, width: 395, height: 270, pinned: false, visible: true, selected: false },
+const initialCards = (startEmpty = false, initialVisibleIds = []) => [
+  { id: "explanation", title: "线索解释", x: 284, y: 28, width: 300, height: 450, pinned: false, visible: false, selected: false },
+  { id: "source", title: "索引范围示例", x: 28, y: 28, width: 230, height: 390, pinned: false, visible: true, selected: false },
+  { id: "evidence", title: "现场与判断", x: 52, y: 448, width: 395, height: 270, pinned: false, visible: true, selected: false },
   { id: "precision", title: "误差核对", x: 960, y: 28, width: 430, height: 390, pinned: false, visible: false, selected: false },
   { id: "review", title: "复核记录", x: 960, y: 448, width: 430, height: 340, pinned: false, visible: false, selected: false },
   { id: "draft", title: "示例工作副本", x: 500, y: 408, width: 430, height: 440, pinned: false, visible: false, selected: false },
@@ -16,15 +16,22 @@ const initialCards = (startEmpty = false) => [
   { id: "attempts", title: "尝试记录", x: 500, y: 888, width: 340, height: 350, pinned: false, visible: false, selected: false },
   { id: "diff", title: "示例修改预览", x: 1420, y: 28, width: 500, height: 550, pinned: false, visible: false, selected: false },
   { id: "validation", title: "示例范围复核", x: 1420, y: 608, width: 500, height: 390, pinned: false, visible: false, selected: false },
-].map((card) => ({ ...card, visible: startEmpty ? false : card.visible, collapsed: false, opened: startEmpty ? false : card.visible }));
+].map((card) => {
+  const visible = startEmpty ? initialVisibleIds.includes(card.id) : card.visible;
+  return { ...card, visible, selected: visible && card.id === initialVisibleIds[0], collapsed: false, opened: visible };
+});
 
-const initialState = (startEmpty = false, cardDefinitions) => ({
-  cards: cardDefinitions ? cardDefinitions.map((card, index) => ({ x: 28 + (index % 2) * 450, y: 28 + Math.floor(index / 2) * 390, width: 420, height: 360, pinned: false, visible: false, selected: false, collapsed: false, opened: false, ...card })) : initialCards(startEmpty),
-  selectedCardId: null,
+const initialState = (startEmpty = false, cardDefinitions, initialVisibleIds = []) => {
+  const cards = cardDefinitions ? cardDefinitions.map((card, index) => ({ x: 28 + (index % 2) * 450, y: 28 + Math.floor(index / 2) * 390, width: 420, height: 360, pinned: false, visible: false, selected: false, collapsed: false, opened: false, ...card })) : initialCards(startEmpty, initialVisibleIds);
+  const selectedCardId = cards.find((card) => card.visible)?.id || null;
+  return {
+  cards,
+  selectedCardId,
   lastHiddenId: null,
   comparing: false,
   viewport: { x: 0, y: 0, zoom: 1 },
-});
+  };
+};
 
 const clampZoom = (value) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, value));
 const isFiniteNumber = (value) => typeof value === "number" && Number.isFinite(value);
@@ -43,8 +50,9 @@ function freePosition(card, obstacles) {
   return { x: right + 24, y: card.y };
 }
 
-function fittedViewport(cards, width, height) {
-  const visible = cards.filter((card) => card.visible);
+function fittedViewport(cards, width, height, ids = null) {
+  const included = ids ? new Set(ids) : null;
+  const visible = cards.filter((card) => card.visible && (!included || included.has(card.id)));
   if (!visible.length) return { x: 0, y: 0, zoom: 1 };
   const left = Math.min(...visible.map((card) => card.x));
   const top = Math.min(...visible.map((card) => card.y));
@@ -69,8 +77,8 @@ function bringToFront(cards, id) {
   return [...cards.filter((card) => card.id !== id).map((card) => ({ ...card, selected: false })), { ...selected, selected: true }];
 }
 
-export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey = "canvas" } = {}) {
-  const [state, setState] = useState(() => { const saved = readSession(storageKey, null); return saved && Array.isArray(saved.cards) && saved.viewport ? { ...initialState(startEmpty, cardDefinitions), ...saved, comparing: false } : initialState(startEmpty, cardDefinitions); });
+export function useCanvasState({ startEmpty = false, cardDefinitions, initialVisibleIds = [], storageKey = "canvas" } = {}) {
+  const [state, setState] = useState(() => { const saved = readSession(storageKey, null); return saved && Array.isArray(saved.cards) && saved.viewport ? { ...initialState(startEmpty, cardDefinitions, initialVisibleIds), ...saved, comparing: false } : initialState(startEmpty, cardDefinitions, initialVisibleIds); });
   const current = useRef(state);
   const surfaceSize = useRef(null);
   const hiddenHistory = useRef([]);
@@ -82,7 +90,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey
     taskContexts.current.set(activeStorageKey.current, { state: current.current, hidden: hiddenHistory.current, placed: placedCards.current, comparison: comparisonSnapshot.current });
     const cached = taskContexts.current.get(storageKey);
     const saved = readSession(storageKey, null);
-    current.current = cached?.state || (saved && Array.isArray(saved.cards) && saved.viewport ? { ...initialState(startEmpty, cardDefinitions), ...saved, comparing: false } : initialState(startEmpty, cardDefinitions));
+    current.current = cached?.state || (saved && Array.isArray(saved.cards) && saved.viewport ? { ...initialState(startEmpty, cardDefinitions, initialVisibleIds), ...saved, comparing: false } : initialState(startEmpty, cardDefinitions, initialVisibleIds));
     hiddenHistory.current = cached?.hidden || [];
     placedCards.current = cached?.placed || new Set(current.current.cards.filter(card => card.opened).map(card => card.id));
     comparisonSnapshot.current = cached?.comparison || null;
@@ -191,6 +199,11 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey
     setSurfaceSize(width, height);
     update({ viewport: fittedViewport(current.current.cards, width, height) });
   };
+  const focusCanvas = (ids = [], width = surfaceSize.current?.width, height = surfaceSize.current?.height) => {
+    if (!isFiniteNumber(width) || !isFiniteNumber(height) || width <= 0 || height <= 0) return;
+    setSurfaceSize(width, height);
+    update({ viewport: fittedViewport(current.current.cards, width, height, ids) });
+  };
   const restore = (id) => {
     const target = id || current.current.lastHiddenId;
     if (target) showCard(target);
@@ -255,12 +268,12 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, storageKey
     hiddenHistory.current = [];
     placedCards.current = new Set(startEmpty ? [] : ["source", "evidence"]);
     comparisonSnapshot.current = null;
-    update(initialState(startEmpty, cardDefinitions));
+    update(initialState(startEmpty, cardDefinitions, initialVisibleIds));
   };
 
   return {
     state: current.current,
-    actions: { addCard, showCard, hideCard, selectCard, moveCard, resizeCard, togglePin, toggleCollapse, setViewport, setSurfaceSize, beginComparison, endComparison, reset, restore, fitCanvas },
+    actions: { addCard, showCard, hideCard, selectCard, moveCard, resizeCard, togglePin, toggleCollapse, setViewport, setSurfaceSize, beginComparison, endComparison, reset, restore, fitCanvas, focusCanvas },
   };
 }
 

@@ -369,7 +369,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
               <SavedContent workspace={workspace} ownerId={ownerTaskId} contentId={tab.id} showing={showing}>{renderContent?.(tab.id, ownerTaskId)}</SavedContent>
             </section>;
           })}
-          {canvasVisited && view.isMainTask && <div className="tw-canvas-view" id={workspacePaneId(ownerTaskId, "canvas")} role="region" aria-label={current.canvasMode === "free" ? isLearningTask ? "学习任务画布" : "手动整理任务内容" : current.canvasMode === "focus" && ownerTaskId === "AddCustom 精度异常" ? "AddCustom 任务内容" : "全部任务内容"} hidden={!selectedTask || !currentCanvas}>{renderCanvas?.(selectedTask && !current.collapsed && currentCanvas, ownerTaskId)}</div>}
+          {canvasVisited && view.isMainTask && <div className="tw-canvas-view" id={workspacePaneId(ownerTaskId, "canvas")} role="region" aria-label={ownerTaskId === "AddCustom 精度异常" ? "AddCustom 任务内容画布" : current.canvasMode === "free" ? isLearningTask ? "学习任务画布" : "手动整理任务内容" : "全部任务内容"} hidden={!selectedTask || !currentCanvas}>{renderCanvas?.(selectedTask && !current.collapsed && currentCanvas, ownerTaskId)}</div>}
           {selectedTask && !current.activeId && <div className="tw-empty"><IconFileDescription size={24} /><strong>打开需要查看的内容</strong><p>代码、结果和参考资料会在这里展开。</p>{isMainTask && <button type="button" onClick={() => openCanvas()}><IconLayoutBoard size={14} />查看已有内容</button>}<button type="button" onClick={() => showPicker()}><IconPlus size={14} />新增内容</button></div>}
         </div>;
       })}

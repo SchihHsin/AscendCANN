@@ -29,7 +29,7 @@ const clampZoom = (zoom) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom));
 const editableTarget = (target) => target instanceof Element && Boolean(target.closest("input,textarea,select,[contenteditable=true]"));
 const floatingTarget = (target) => target instanceof Element && Boolean(target.closest(".tc-floating-index,.tc-canvas-controls,.tc-mini-map,.tc-empty-state"));
 
-export function TaskCanvas({ visible = true, embedded = false, flow, canvas, onBack, onOpenContents, onOpenContent, onCollapse, onAttachCode, renderMaterial, contents = null, contentsOpen = false, connections = [], comparisonIds = ["source", "draft"] }) {
+export function TaskCanvas({ visible = true, embedded = false, viewMode, focusIds = [], fitRequest = 0, flow, canvas, onBack, onOpenContents, onOpenContent, onCollapse, onAttachCode, renderMaterial, contents = null, contentsOpen = false, connections = [], comparisonIds = ["source", "draft"] }) {
   const { state, actions } = canvas;
   const [collapsedIds, setCollapsedIds] = useState([]);
   const [handMode, setHandMode] = useState(false);
@@ -80,7 +80,7 @@ export function TaskCanvas({ visible = true, embedded = false, flow, canvas, onB
   }, []);
 
   useEffect(() => {
-    if (!visible || initialFitDone.current || !visibleCards.length) return undefined;
+    if (viewMode || !visible || initialFitDone.current || !visibleCards.length) return undefined;
     const frame = requestAnimationFrame(() => {
       const rect = stageRef.current?.getBoundingClientRect();
       if (!rect || rect.width < 1 || rect.height < 1) return;
@@ -90,6 +90,20 @@ export function TaskCanvas({ visible = true, embedded = false, flow, canvas, onB
     });
     return () => cancelAnimationFrame(frame);
   }, [visible, visibleCards.length]);
+
+  const viewKey = `${viewMode || ""}:${focusIds.join(",")}:${fitRequest}`;
+  useEffect(() => {
+    if (!viewMode || !visible) return undefined;
+    const frame = requestAnimationFrame(() => {
+      const rect = stageRef.current?.getBoundingClientRect();
+      if (!rect || rect.width < 1 || rect.height < 1) return;
+      actionsRef.current.setSurfaceSize?.(rect.width, rect.height);
+      if (viewMode === "focus") actionsRef.current.focusCanvas(focusIds, rect.width, rect.height);
+      else actionsRef.current.fitCanvas(rect.width, rect.height);
+      initialFitDone.current = true;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [viewKey, visible]);
 
   useEffect(() => {
     const stage = stageRef.current;
