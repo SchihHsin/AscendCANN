@@ -5814,3 +5814,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户发现线上导航顺序已调整，但 `127.0.0.1:8123` 仍将学习发现放在自动化任务后。原因是共享本地检出仍基于较旧的 `c27a6fe5`，并含其他对话未提交改动；先前发布只更新了隔离快照。
 - 仅在共享工作区 `ascend-studio/src/App.jsx` 移动学习发现按钮块至自动化任务之前，使本地 Vite HMR 与已发布顺序一致；没有暂存或覆盖其他改动。CUA 无障碍树确认顺序为学习发现、自动化任务、能力库；线上对应顺序已由 `166b6e35` 发布。
 - 这是同步已发布功能到本地预览，不新增产品行为；不改变页面序列 / hash 或 API / Host / Application 边界。
+
+
+### 2026-10-22（学习路径共创状态发布）
+
+- 变更文件：`ascend-studio/src/App.jsx`、`LearningHierarchyCanvas.jsx`、`learning-hierarchy-canvas.css`、`learning-path-collaboration.js` 及测试、`learning-path-generation.js` 及测试、`prototype-data.js`、`useContentWorkspace.js`、`useLearningCanvasView.js`、`useLearningJourney.js`、`useWorkbenchState.js`；同步重建 `ascstudio/` Pages 产物。
+- 目的：让「图像输入预处理路径共创」明确处于可编辑、未开始学习的草案状态；演示 Agent 按用户目标定位并提议节点新增 / 调整，用户可逐项处理后确认；刷新恢复初始共创场景。
+- 证据与边界：这是前端交互原型，路径建议由本地演示逻辑生成，不代表真实模型推理。未改页面导航序列，也未改 API / Host / Application 层定义。
+- 验证：`node --test src/learning-path-collaboration.test.js src/learning-path-generation.test.js`（11 项通过）；`npm run build:pages`；`git diff --check`；本地静态产物入口与 JS / CSS 返回 200。Pages 线上入口已引用新资源 `index-BCw4Sx7R.js` / `index-DA_VHwx3.css`，发布时间戳为 2026-10-22 07:01 UTC。
+- 提交 / 推送：功能提交 `3e6b21de` 已推送 `origin/main`；本条交接记录随后单独推送。未决事项：用户刷新线上页面后需确认交互符合预期；本机原工作区其他对话改动未纳入该提交，仍保留原状。
