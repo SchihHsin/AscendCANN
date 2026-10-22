@@ -975,4 +975,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 社区经验的唤醒点是学习任务完成并保存记录后出现的助手消息，而不是每段对话或常驻输入区。草稿生成后保留对话卡片，右侧工作区展示问题描述、尝试与结果、环境信息、验证状态；用户可编辑后主动提交。
 - 涉及 `src/App.jsx`、`src/LearningJourney.jsx`、`src/CommunityDraftPanel.jsx`、`src/community-draft-data.js`、`src/community-draft.css`、`src/useWorkbenchLayout.js`。当前生成和提交状态均为本地演示，没有接真实 AI / 社区服务；真实 Python、模型和 NPU 验证不在本次范围。可信度设计依用户要求暂缓。
 - `http://localhost:4174/` 本地查看保存后邀请、对话卡和右侧审阅面板；隔离构建、相关语法检查及 `git diff --check` 通过，未运行测试。参考图并排比对受本地浏览器安全策略限制，尚未完成。
-- 社区功能以独立源码快照构建 Pages 并单独提交 / 推送；其他对话的暂存、未暂存、未跟踪改动均不纳入，也不重置或清理。
+- 功能提交 `3a7a0163` 已推送 `origin/main`，包含社区功能源码与独立 Pages 构建；其他对话的暂存、未暂存和未跟踪改动均未纳入。

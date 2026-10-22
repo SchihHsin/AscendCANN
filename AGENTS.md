@@ -5720,4 +5720,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认入口只在学习任务成功完成并保存记录后出现，作为对话中的助手邀请；不在每条对话或 composer 上方常驻。生成后，对话中保留草稿卡片，右侧工作区展示可编辑的社区经验草稿并允许用户主动提交。
 - 实现涉及 `ascend-studio/src/App.jsx`、`LearningJourney.jsx`、`CommunityDraftPanel.jsx`、`community-draft-data.js`、`community-draft.css`、`useWorkbenchLayout.js`。当前为本地 Demo 行为，未连接真实 AI 或社区服务；完成记录中的形状演算不是 Python、模型或 NPU 实测。可信度表现按用户要求暂缓。
 - 本地 `http://localhost:4174/` 已检查保存后邀请、对话草稿卡和右侧审阅区；隔离构建、语法检查、`git diff --check` 通过，未运行测试套件。参考图并排比较受浏览器本地文件安全策略限制，视觉对照仍待补。
-- 社区功能将以当前 `HEAD` 为基线单独构建 Pages 产物并提交 / 推送；不会纳入其他对话的暂存、未暂存或未跟踪改动，也不重置或清理共享工作区。此项不改变报告页序/hash及 API / Host / Application 边界。
+- 功能提交 `3a7a0163`（`feat: add completion-gated community experience drafts`）及隔离 Pages 产物已推送 `origin/main`。其他对话的暂存、未暂存和未跟踪改动均未纳入并保持在工作区。此项不改变报告页序/hash及 API / Host / Application 边界。
