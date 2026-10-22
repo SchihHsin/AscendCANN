@@ -64,6 +64,11 @@
 .tw-area-voice-hint.is-listening { color: #655f91; }
 .tw-area-voice-hint kbd { padding: 1px 4px; border: 1px solid #e4e3e8; border-radius: 4px; background: #f7f7f9; color: #6e6988; font: inherit; }
 .tw-area-composer .composer-submit .send-button { width: 30px; height: 30px; padding: 0; }
+.tw-voice-wave-capsule { position: fixed; z-index: 2000; left: 50%; bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 16px)); display: grid; place-items: center; width: 184px; height: 48px; transform: translateX(-50%); border: 1px solid #dedce8; border-radius: 999px; background: rgba(255,255,255,.97); box-shadow: 0 8px 28px rgba(42,40,58,.18), 0 1px 3px rgba(42,40,58,.08); pointer-events: none; }
+.tw-voice-wave { display: flex; align-items: center; justify-content: center; gap: 4px; width: 126px; height: 34px; }
+.tw-voice-wave > span { display: block; flex: 0 0 2px; max-height: 28px; min-height: 6px; border-radius: 2px; background: linear-gradient(180deg, #958ebc, #655d91); transform: scaleY(.34); transform-origin: center; animation: tw-voice-wave-pulse 720ms ease-in-out infinite alternate; animation-delay: var(--wave-delay, 0s); }
+@keyframes tw-voice-wave-pulse { from { transform: scaleY(.28); opacity: .58; } to { transform: scaleY(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .tw-voice-wave > span { animation: none; transform: scaleY(.62); opacity: .82; } }
 .tw-return-arrow { transform: rotate(180deg); }
 .tw-toolbar-slot { flex: 0 0 auto; min-width: 0; border-bottom: 1px solid #ecedf0; background: #fafafb; }
 .tw-toolbar-slot:empty { display: none; }
