@@ -5980,3 +5980,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`，同步 `ascstudio/` Pages 产物；不改变页面序列 / hash 或 API / Host / Application 边界。
 - 验证：`node --check src/home-recommendations.js`、`npm run build`、`npm run build:pages`、`git diff --check` 通过。CUA 在本地 1280×720 核验三种卡片的类型、函数、常量、数字高亮和卡片高度；无溢出。未运行测试套件。Pages run `39799829376` 成功；线上 JS / CSS 返回 HTTP 200，CSS 含高亮规则。
 - Commit / push：源码提交 `974820e0`、Pages 产物提交 `0f12b433` 已推送 `origin/main`。
+
+### 2026-10-23 · 首页词条关联与 prompt 生成方向讨论
+
+- 用户提出替代现有“学习 / 开发 Tab + 输入框”的首页方案：工作区铺开可探索词条，悬浮展示关联，逐步形成可发送的 prompt。本轮仅讨论，尚未选择方向或授权实现；没有改动页面代码。
+- 依据：只读核对 `ascend-studio/src/NewTaskHome.jsx` 与既有首页约定。线上浏览器连接未成功，不声称观察到当前线上画面；现有结构依据本地源码（M），新交互均为待验证假设（L）。
+- 待选方向：A 语义星图（自由散布、局部关联）、B 主题群岛（主题分组、组内展开，本轮推荐）、C 任务链（对象→动作→条件）。建议以任务对象与“弄懂 / 跑通 / 排错 / 优化”连接学习和开发；悬浮仅预览，点击加入意图，生成可编辑草稿，明确发送后才建任务。上述建议尚待用户反馈，不作为已确认决策。
+- 全屏探索暂按左侧项目 / 任务列表以外的主工作区理解；不据此删除导航。应保持已选词条位置稳定、提供直接输入入口，避免用户必须拼完全部条件才能开始。
+- 验证：隔离索引中 `git diff --cached --check` 通过；未运行构建或页面测试。仅本条文档记录基于最新 origin/main 独立提交并推送，共享索引与其他未提交改动保持原状。未改正式页序、hash 或 API / Host / Application 边界；待用户选择方向后再进入视觉探索。
