@@ -5839,3 +5839,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更：`ascend-studio/src/LearningHierarchyCanvas.jsx`、`ascend-studio/src/learning-hierarchy-canvas.css` 和 `ascstudio/` 静态 Pages 产物。未改变路径数据、页面序列 / hash 或 API / Host / Application 边界。
 - 验证：`npm run build:pages` 通过（保留既有大 chunk 提示）；官方学习进度与路径共创测试 20/20 通过；`git diff --check` 通过。127.0.0.1 本地 CUA 截图确认 ResNet50 五阶段及子节点恢复分层排布，另确认路径共创的建议节点与审阅操作样式仍正常。
 - Commit `16bb2fef` 已推送 `origin/main`。GitHub Pages run `39742150001` 构建和部署成功；线上入口现引用 `index-BjJd4Gq5.js` 与 `index-B98cOqcI.css`。没有真实设备运行或 NPU 验证。隔离 worktree 仅包含本任务修复，原工作区其他对话改动未触碰。
+
+
+### 2026-10-22 · AddCustom 精度异常完成后的社区经验邀请
+
+- 将社区反馈入口接入「AddCustom 精度异常」开发任务。只有用户提供的逐元素误差数据全部在容差内，并由用户确认该数据来自目标环境修复后的复测，才在对话输入框上方出现邀请；演示数据和范围算例不会触发。每个 AddCustom 任务只出现一次。
+- 用户确认后可复用现有右侧社区草稿审阅与发布后样式预览。草稿记录误差条数和容差；没有记录的修复根因、代码变更及环境版本会明确标出待补充，不据此伪造结论。社区提交仍为本地 Demo。
+- 变更 `ascend-studio/src/App.jsx`、`ActionWorkspace.jsx`、`action-workspace.css`、`community-draft-data.js`，并重建 `ascstudio/`。不改页面序列 / hash 或 API / Host / Application 边界。
+- 验证：`npm run build:pages`、`git diff --check` 通过；未运行测试套件。Pages run `39753268645` 成功，线上 index、JS、CSS 均返回 HTTP 200。浏览器手工交互回放未完成；没有真实 NPU 验证。
+- 功能提交 `5b386cc5` 已推送 `origin/main`。未决：真实修复步骤和适用环境须由用户在草稿中审阅补全。
