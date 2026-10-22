@@ -5829,7 +5829,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 按用户确认的行为，将开发任务成功后的社区经验邀请移出对话消息流，放到输入框正上方；桌面滚动旧对话时输入区留在对话面板底部，小屏将提示和输入框作为整体 sticky。提示仍只在图像开发任务完成后出现。
 - 修改 `ascend-studio/src/App.jsx`、`community-draft.css`、`styles.css`，并重建 `ascstudio/` Pages 静态产物。用户提供的截图中轴序仍为 H/W/C、输出 `[1,224,224,3]`，尚未满足 `[1,3,224,224]` 成功条件，因此没有任务完成提示。
-- 验证：`npm run build:pages`、`git diff --check` 通过；未运行测试套件。页面序列与 API / Host / Application 边界不变。功能提交与 Pages 部署回执随后补充。
+- 验证：`npm run build:pages`、`git diff --check` 通过；未运行测试套件。页面序列与 API / Host / Application 边界不变。功能提交 `7621cd57`（`fix: pin community invite to composer`）已推送 `origin/main`；GitHub Pages run `39740642616` 成功。随后最新 Pages run `39742383501` 也成功；线上入口引用的新 JS/CSS 均返回 HTTP 200，CSS 已确认包含 `.composer-stack` 与小屏 sticky 规则。共享工作区其他对话的改动未纳入。
 
 
 ### 2026-10-22 · ResNet50 路径节点定位回归修复

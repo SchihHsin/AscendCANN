@@ -1053,4 +1053,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 将开发任务成功后的社区经验提示与输入框组成 `.composer-stack`，使它贴在输入框上方；消息历史单独滚动，窄视口下 `.composer-stack` 固定在底部。入口触发条件仍要求该图像开发任务完成。
 - 修改 `src/App.jsx`、`src/community-draft.css`、`src/styles.css`，并重建 `../ascstudio/` Pages 静态产物。用户截图仍为 `[1,224,224,3]`，应将输出轴设为 C/H/W 并保持 N=1 后再核对成功提示。
-- `npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。提交与 Pages 部署回执随后补充。
+- `npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。功能提交 `7621cd57`（`fix: pin community invite to composer`）已推送 `origin/main`；GitHub Pages run `39740642616` 成功。随后最新 Pages run `39742383501` 也成功；线上入口引用的新 JS/CSS 均返回 HTTP 200，CSS 已确认包含 `.composer-stack` 与小屏 sticky 规则。共享工作区其他对话的改动未纳入。
