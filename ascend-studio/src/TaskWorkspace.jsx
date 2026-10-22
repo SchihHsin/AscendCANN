@@ -238,18 +238,20 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
     && pointContext.taskId === taskId
     && pointContext.contentId === selectionSourceId
     && (selectionSourceId !== "canvas" || pointContext.canvasMode === state.canvasMode);
+  const hasSelectedAreaContext = Boolean(visibleAreaContext && pointContext.selection);
 
   useEffect(() => {
-    if (!areaSelectionMode) return undefined;
+    if (!areaSelectionMode && !hasSelectedAreaContext) return undefined;
     const escape = event => {
       if (event.key === "Escape") {
         event.preventDefault();
-        exitAreaSelection();
+        if (areaSelectionMode) exitAreaSelection();
+        else onAreaDismiss?.();
       }
     };
     window.addEventListener("keydown", escape);
     return () => window.removeEventListener("keydown", escape);
-  }, [areaSelectionMode, exitAreaSelection]);
+  }, [areaSelectionMode, hasSelectedAreaContext, exitAreaSelection, onAreaDismiss]);
 
   const finishAreaSelection = (event) => {
     const start = pointerStart.current;
@@ -323,7 +325,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
         </div>}
       </div>
       <div className="tw-topbar-actions">
-        <button className={`tw-point-mode${areaSelectionMode ? " is-open" : ""}`} type="button" aria-pressed={areaSelectionMode} aria-label={areaSelectionMode ? "退出指着说区域选择" : "指着说"} title={areaSelectionMode ? "按 Esc 或再次点击此按钮退出框选" : "框选工作区任意区域后，通过输入框打字或语音描述"} onClick={toggleAreaSelection}><IconPointer2 size={14} /><span>{areaSelectionMode ? "退出框选" : "指着说"}</span></button>
+        <button className={`tw-point-mode${areaSelectionMode || hasSelectedAreaContext ? " is-open" : ""}`} type="button" aria-pressed={areaSelectionMode || hasSelectedAreaContext} aria-label={areaSelectionMode ? "退出框选" : hasSelectedAreaContext ? "取消已选区域和输入草稿" : "指着说"} title={areaSelectionMode ? "按 Esc 或再次点击退出框选" : hasSelectedAreaContext ? "取消当前选区和输入草稿，不会发送消息" : "框选工作区任意区域后，通过输入框打字或语音描述"} onClick={() => { if (areaSelectionMode) exitAreaSelection(); else if (hasSelectedAreaContext) onAreaDismiss?.(); else toggleAreaSelection(); }}><IconPointer2 size={14} /><span>{areaSelectionMode ? "退出框选" : hasSelectedAreaContext ? "取消选区" : "指着说"}</span></button>
         {!onCanvas && <button type="button" ref={objectInfoTrigger} className={"tw-object-info-button" + (objectInfoOpen ? " is-open" : "")} aria-label="来源、关联与历史" title="来源、关联与历史" aria-expanded={objectInfoOpen} onClick={() => { setObjectInfoOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); }}><IconInfoCircle size={15} />{activeHistory.length > 0 && <small>{activeHistory.length}</small>}</button>}
         {state.referenceId === state.activeId && state.referenceReturnId && <button className="tw-nearby-action" type="button" onClick={actions.returnFromReference}>返回当前内容</button>}
         {isMainTask && <button className="tw-view-all" type="button" disabled={inOverview && !canReturn} aria-label={inOverview ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => inOverview ? returnToFocus() : openCanvas("overview")}>{inOverview ? <><IconArrowRight className="tw-return-arrow" size={13} />返回正文</> : <><IconLayoutBoard size={13} />全部内容</>}</button>}
