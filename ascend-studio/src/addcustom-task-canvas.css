@@ -1,0 +1,36 @@
+.ac-task-canvas { display: flex; flex-direction: column; width: 100%; height: 100%; min-width: 0; min-height: 0; background: #fff; }
+.ac-task-canvas-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 7px 13px; border-bottom: 1px solid #ececf1; background: #fcfcfd; }
+.ac-task-canvas-heading { display: flex; align-items: baseline; gap: 9px; min-width: 0; }
+.ac-task-canvas-heading > span { flex: 0 0 auto; color: #9699a6; font-size: 11px; }
+.ac-task-canvas-heading > strong { overflow: hidden; color: #343642; font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.ac-task-canvas-state { flex: 0 0 auto; max-width: 40%; overflow: hidden; padding: 3px 7px; border: 1px solid #e7e8ee; border-radius: 999px; color: #707588; background: #f7f7f9; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.ac-task-canvas-state.is-confirmed { border-color: #d7e9df; color: #47765b; background: #f1f8f3; }
+.ac-task-canvas-state.is-review { border-color: #e6def2; color: #71638f; background: #f7f4fb; }
+.ac-task-canvas-state.is-pending { border-color: #ebe4d5; color: #88784f; background: #faf7ef; }
+.ac-task-canvas-state.is-blocked { border-color: #eedddd; color: #9b5e5e; background: #fcf4f4; }
+.ac-task-canvas-main { flex: 1 1 auto; min-width: 0; min-height: 0; padding: 12px 14px 8px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #dfe1e8 transparent; }
+.ac-task-canvas-main > * { min-width: 0; }
+.ac-task-canvas-main .cm-material-body { max-width: none; min-height: 100%; }
+.ac-task-canvas-main .cm-stack { max-width: none; }
+.ac-task-canvas-related { display: flex; flex-direction: column; gap: 7px; flex: 0 0 auto; padding: 8px 13px 10px; border-top: 1px solid #ececf1; background: #fcfcfd; }
+.ac-task-canvas-related-label { color: #9295a2; font-size: 10px; }
+.ac-task-canvas-related-list { display: flex; gap: 7px; min-width: 0; overflow-x: auto; padding-bottom: 1px; scrollbar-width: thin; scrollbar-color: #e0e2e8 transparent; }
+.ac-task-canvas-related-list > button { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 2px 8px; flex: 0 1 220px; min-width: 150px; max-width: 250px; padding: 6px 9px; border: 1px solid #e8e9ee; border-radius: 7px; color: #575c6b; background: #fff; text-align: left; cursor: pointer; }
+.ac-task-canvas-related-list > button:hover { border-color: #cdd0dd; background: #f9f9fb; }
+.ac-task-canvas-related-list > button:focus-visible { outline: 2px solid #a6a4c6; outline-offset: 2px; }
+.ac-task-canvas-related-list small { grid-column: 1 / -1; overflow: hidden; color: #989baa; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.ac-task-canvas-related-list strong { overflow: hidden; font-size: 10px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.ac-task-canvas-related-list em { overflow: hidden; color: #969baa; font-size: 9px; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+
+@container task-content (max-width: 520px) {
+  .ac-task-canvas-header { min-height: 44px; padding-inline: 9px; }
+  .ac-task-canvas-heading { gap: 6px; }
+  .ac-task-canvas-heading > strong { font-size: 12px; }
+  .ac-task-canvas-main { padding: 9px 9px 6px; }
+  .ac-task-canvas-related { padding-inline: 9px; }
+  .ac-task-canvas-related-list > button { flex-basis: 175px; min-width: 145px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-task-canvas-related-list > button { scroll-behavior: auto; }
+}

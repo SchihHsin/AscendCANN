@@ -146,6 +146,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
   ].map(item => [item.id, { ...materials.find(material => material.id === item.id), ...item }])).values()];
   const navigationTabs = tabs.filter(item => !/^(record:|snapshot:|attempt:)/.test(item.id) || item.id === state.activeId || item.id === state.splitId);
   const groupedItems = buildContentNavigation({ taskId, materials: switchItems, contentItems, tabs: navigationTabs, visitedTabs: state.visitedTabs, groupNames: state.overview?.groupNames, itemOverrides: state.overview?.itemOverrides });
+  const isAddCustomTask = taskId === "AddCustom 精度异常";
   taskViews.current.set(taskId, { state, isMainTask, visited: normalizeVisited(state), contentItems });
 
   useEffect(() => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); setAreaSelectionMode(false); setDragSelection(null); pointerStart.current = null; }, [taskId]);
@@ -193,6 +194,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
     // Navigation restores an object; it does not generate a proposal or run a check.
     if (state.splitId && !state.comparisonPinned) actions.endSplit();
     if (isLearningTask) onOpen?.(material.id, { restore: true, title: material.title, type: material.type });
+    else if (isAddCustomTask) onOpen?.(material.id, { restore: true, title: material.title, type: material.type });
     else if (tabs.some(item => item.id === material.id)) actions.activate(material.id);
     else actions.open(material.id, { restore: true, title: material.title, type: material.type });
     setContentMenuOpen(false);
@@ -231,7 +233,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
   const showPicker = (purpose = "new") => { setPickerPurpose(purpose); setMenuOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); setPickerOpen(true); };
   const openCanvas = (mode = "overview", options = {}) => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); onOpenCanvas?.({ mode, ...options }); };
   const inOverview = onCanvas && state.canvasMode === "overview";
-  const activeTitle = inOverview ? "全部内容" : onCanvas && isLearningTask ? "学习画布" : historyItem ? `${historyItem.title} · ${historyItem.time || "历史"}` : activeTab?.title || "任务内容";
+  const activeTitle = inOverview ? "全部内容" : onCanvas && isAddCustomTask ? "任务内容" : onCanvas && isLearningTask ? "学习画布" : historyItem ? `${historyItem.title} · ${historyItem.time || "历史"}` : activeTab?.title || "任务内容";
   const returnToFocus = () => { setMenuOpen(false); setContentMenuOpen(false); onReturnFocus?.(); };
   const selectionSourceId = onCanvas ? "canvas" : focusedId || "empty";
   const visibleAreaContext = pointContext?.type === "workspace-area"
@@ -328,7 +330,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
         <button className={`tw-point-mode${areaSelectionMode || hasSelectedAreaContext ? " is-open" : ""}`} type="button" aria-pressed={areaSelectionMode || hasSelectedAreaContext} aria-label={areaSelectionMode ? "退出框选" : hasSelectedAreaContext ? "取消已选区域和输入草稿" : "指着说"} title={areaSelectionMode ? "按 Esc 或再次点击退出框选" : hasSelectedAreaContext ? "取消当前选区和输入草稿，不会发送消息" : "框选工作区任意区域后，通过输入框打字或语音描述"} onClick={() => { if (areaSelectionMode) exitAreaSelection(); else if (hasSelectedAreaContext) onAreaDismiss?.(); else toggleAreaSelection(); }}><IconPointer2 size={14} /><span>{areaSelectionMode ? "退出框选" : hasSelectedAreaContext ? "取消选区" : "指着说"}</span></button>
         {!onCanvas && <button type="button" ref={objectInfoTrigger} className={"tw-object-info-button" + (objectInfoOpen ? " is-open" : "")} aria-label="来源、关联与历史" title="来源、关联与历史" aria-expanded={objectInfoOpen} onClick={() => { setObjectInfoOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); }}><IconInfoCircle size={15} />{activeHistory.length > 0 && <small>{activeHistory.length}</small>}</button>}
         {state.referenceId === state.activeId && state.referenceReturnId && <button className="tw-nearby-action" type="button" onClick={actions.returnFromReference}>返回当前内容</button>}
-        {isMainTask && <button className="tw-view-all" type="button" disabled={inOverview && !canReturn} aria-label={inOverview ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => inOverview ? returnToFocus() : openCanvas("overview")}>{inOverview ? <><IconArrowRight className="tw-return-arrow" size={13} />返回正文</> : <><IconLayoutBoard size={13} />全部内容</>}</button>}
+        {isMainTask && <button className="tw-view-all" type="button" disabled={inOverview && !canReturn && !isAddCustomTask} aria-label={isAddCustomTask ? inOverview ? "返回当前聚焦内容" : "查看本任务全部内容" : inOverview ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => isAddCustomTask ? openCanvas(inOverview ? "focus" : "overview") : inOverview ? returnToFocus() : openCanvas("overview")}>{isAddCustomTask ? inOverview ? <><IconArrowRight className="tw-return-arrow" size={13} />返回聚焦</> : <><IconLayoutBoard size={13} />全部内容</> : inOverview ? <><IconArrowRight className="tw-return-arrow" size={13} />返回正文</> : <><IconLayoutBoard size={13} />全部内容</>}</button>}
         <div className="tw-tools" ref={toolsRef}>
           <button className={"tw-more-button" + (menuOpen ? " is-open" : "")} type="button" aria-label="更多任务内容操作" title="更多" aria-expanded={menuOpen} onClick={() => { setMenuOpen((current) => !current); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); }}><IconDots size={17} /></button>
           {menuOpen && <div className="tw-tools-menu">
@@ -337,7 +339,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
             {state.activeId && !onCanvas && <button type="button" onClick={() => { (onClose || actions.close)(focusedId); setMenuOpen(false); }}><IconX size={15} /><span>收起当前内容为概要</span></button>}
             {state.activeId && !onCanvas && isMainTask && !state.splitId && <button type="button" onClick={() => showPicker("split")}><IconLayoutColumns size={15} /><span>留一份参考</span></button>}
             <button type="button" onClick={() => showPicker()}><IconPlus size={15} /><span>打开其他内容</span></button>
-            {isMainTask && !isLearningTask && <button type="button" onClick={() => openCanvas("free")}><IconLayoutBoard size={15} /><span>手动整理内容</span></button>}
+            {isMainTask && !isLearningTask && !isAddCustomTask && <button type="button" onClick={() => openCanvas("free")}><IconLayoutBoard size={15} /><span>手动整理内容</span></button>}
           </div>}
         </div>
         <button className="tw-collapse" type="button" aria-label="收起任务内容工作区" title="收起任务内容工作区" onClick={() => onCollapse?.()}><IconX size={14} /></button>
@@ -367,7 +369,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
               <SavedContent workspace={workspace} ownerId={ownerTaskId} contentId={tab.id} showing={showing}>{renderContent?.(tab.id, ownerTaskId)}</SavedContent>
             </section>;
           })}
-          {canvasVisited && view.isMainTask && <div className="tw-canvas-view" id={workspacePaneId(ownerTaskId, "canvas")} role="region" aria-label={current.canvasMode === "free" ? isLearningTask ? "学习任务画布" : "手动整理任务内容" : "全部任务内容"} hidden={!selectedTask || !currentCanvas}>{renderCanvas?.(selectedTask && !current.collapsed && currentCanvas, ownerTaskId)}</div>}
+          {canvasVisited && view.isMainTask && <div className="tw-canvas-view" id={workspacePaneId(ownerTaskId, "canvas")} role="region" aria-label={current.canvasMode === "free" ? isLearningTask ? "学习任务画布" : "手动整理任务内容" : current.canvasMode === "focus" && ownerTaskId === "AddCustom 精度异常" ? "AddCustom 任务内容" : "全部任务内容"} hidden={!selectedTask || !currentCanvas}>{renderCanvas?.(selectedTask && !current.collapsed && currentCanvas, ownerTaskId)}</div>}
           {selectedTask && !current.activeId && <div className="tw-empty"><IconFileDescription size={24} /><strong>打开需要查看的内容</strong><p>代码、结果和参考资料会在这里展开。</p>{isMainTask && <button type="button" onClick={() => openCanvas()}><IconLayoutBoard size={14} />查看已有内容</button>}<button type="button" onClick={() => showPicker()}><IconPlus size={14} />新增内容</button></div>}
         </div>;
       })}

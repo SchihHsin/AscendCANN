@@ -3,12 +3,17 @@ import { readSession, writeSession } from "./session-storage";
 import { getMaterialMeta } from "./workspace-materials";
 import { LEARNING_PATH_GENERATION_TASK } from "./learning-data";
 
+const ADD_CUSTOM_TASK_ID = "AddCustom 精度异常";
+const ADD_CUSTOM_CANVAS_VERSION = 3;
+
 function initialState(isMainTask, taskId, initialMaterialId) {
   const initial = { ...getMaterialMeta(initialMaterialId || (taskId === "学会图像输入预处理" ? "learning-goal" : taskId === "图像推理调试" ? "image-explanation" : isMainTask ? "explanation" : "task-brief")), unread: false };
+  const addCustom = taskId === ADD_CUSTOM_TASK_ID;
+  const canvas = { ...getMaterialMeta("canvas"), title: "任务内容画布", unread: false };
   return {
-    tabs: [initial],
-    visitedTabs: [initial],
-    activeId: initial.id,
+    tabs: addCustom ? [initial, canvas] : [initial],
+    visitedTabs: addCustom ? [initial, canvas] : [initial],
+    activeId: addCustom ? "canvas" : initial.id,
     splitId: null,
     referenceId: null,
     referenceReturnId: null,
@@ -17,12 +22,13 @@ function initialState(isMainTask, taskId, initialMaterialId) {
     comparisonPinned: false,
     lastContentId: initial.id,
     lastSplitId: null,
-    canvasMode: "overview",
-    overview: { query: "", category: "all", collapsedGroups: [], compactIds: [], mapLevel: 2, mapInitialized: false },
+    canvasMode: addCustom ? "focus" : "overview",
+    overview: { query: "", category: "all", collapsedGroups: [], compactIds: [], mapLevel: 2, mapInitialized: false, ...(addCustom ? { focusId: initial.id } : {}) },
     snapshots: [],
     collapsed: false,
     returnPoint: null,
     positions: {},
+    ...(addCustom ? { addCustomCanvasVersion: ADD_CUSTOM_CANVAS_VERSION } : {}),
   };
 }
 
@@ -100,6 +106,34 @@ export function useContentWorkspace({ taskId, isMainTask, initialMaterialId, def
   const persist = () => writeSession("workspace", Object.fromEntries(tasks.current));
   const [, setRevision] = useState(0);
   if (!tasks.current.has(taskId)) tasks.current.set(taskId, initialState(isMainTask, taskId, initialMaterialId));
+  if (taskId === ADD_CUSTOM_TASK_ID && tasks.current.get(taskId).addCustomCanvasVersion !== ADD_CUSTOM_CANVAS_VERSION) {
+    const previous = tasks.current.get(taskId);
+    const focusId = previous.activeId && previous.activeId !== "canvas"
+      ? previous.activeId
+      : previous.overview?.focusId || previous.lastContentId || "explanation";
+    const canvas = { ...getMaterialMeta("canvas"), title: "任务内容画布", unread: false, closed: false };
+    const tabs = rememberMaterial(previous.tabs || [], canvas);
+    const visitedTabs = rememberMaterial(previous.visitedTabs || [], canvas);
+    tasks.current.set(taskId, {
+      ...previous,
+      tabs,
+      visitedTabs,
+      activeId: "canvas",
+      splitId: null,
+      referenceId: null,
+      referenceReturnId: null,
+      comparisonFocusId: null,
+      comparisonReturnPoint: null,
+      comparisonPinned: false,
+      lastContentId: focusId,
+      lastSplitId: null,
+      canvasMode: "focus",
+      overview: { ...initialState(true, taskId).overview, ...previous.overview, focusId },
+      returnPoint: null,
+      addCustomCanvasVersion: ADD_CUSTOM_CANVAS_VERSION,
+    });
+    persist();
+  }
   // Migrate only the presentation once; saved task data and a collapsed work area remain intact.
   if (defaultToLearningCanvas && tasks.current.get(taskId).learningCanvasVersion !== 1) {
     tasks.current.set(taskId, learningCanvasState(tasks.current.get(taskId)));
