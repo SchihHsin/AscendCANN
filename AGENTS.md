@@ -5893,3 +5893,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/learning-discovery.css` 与 `ascstudio/` 静态 Pages 产物；继续使用浅蓝紫装饰与黑色重点文字。无 JSX 数据、页面序列 / hash 或 API / Host / Application 边界变化。
 - 验证：`npm run build:pages`、`git diff --check` 通过；线上 CSS、JS 返回 HTTP 200，CSS 含时间轴线、节点和窄屏规则。CUA 页面回放未成功，未声称完成截图视觉检查。
 - 提交 `79346aef` 已推送 `origin/main`；本记录随后单独提交。共享工作区只同步本次 CSS，其他对话改动保持原样。
+
+### 2026-10-22 · 为你推荐的第四项改为认证
+
+- 用户要求将「为你推荐」四项中的最后一个学习任务改为认证，数量仍为四项。卡片现在是「昇腾开发者认证准备」，复用现有认证备考图，标记为 Demo 建议；关注按钮与「新上架」认证专题共享状态。
+- 修改 `ascend-studio/src/LearningDiscoveryPage.jsx` 和 `ascstudio/` Pages 产物，并同步推荐区说明文案。搜索、其他三张卡及页面楼层不变；不改变页面序列 / hash 或 API / Host / Application 边界。
+- 验证：`npm run build:pages`、`git diff --check` 通过；构建后仍为 4 项，线上 JS 返回 HTTP 200，已核对推荐标题和关注按钮文案。
+- 提交 `acfb61a1` 已推送 `origin/main`，Pages workflow `39775522183` 成功。共享工作区仅同步本次推荐内容，未覆盖或纳入其他对话改动。
