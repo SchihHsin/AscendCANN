@@ -5856,4 +5856,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据来源：用户截图（截图可见横向路径与两张材料卡重叠）；本地隔离 Vite 页面 1280×720 CUA 回放验证横向 / 纵向不再重叠，鼠标拖动后子节点顺序变化并进入可审阅草案状态；视口迁移有纯函数回归测试。前端演示不代表真实 Python、模型或 NPU 执行。
 - 变更：`ascend-studio/src/LearningHierarchyCanvas.jsx`、`learning-hierarchy-canvas.css`、`useLearningCanvasView.js`、新增 `learning-canvas-view-state.js` 与测试；同步重建独立 `ascstudio/` Pages 静态产物。页面导航序列 / hash 及 API / Host / Application 边界不变。
 - 验证：`node --test src/learning-canvas-view-state.test.js src/learning-path-collaboration.test.js src/learning-path-generation.test.js`（13 项通过）；`npm run build:pages`、`git diff --check`。构建保留现有大 bundle 提示。
-- Commit / push：待完成功能提交及 Pages 部署核验。共享原工作区其他对话的暂存、未暂存及未跟踪改动保持原样。
+- Commit / push：源码提交 `fbc4bf63` 与合并最新 AddCustom 源码后的 Pages 构建提交 `92e85974` 已推送到 `origin/main`。Pages run `39756284988` 构建 / 部署成功；线上 index、新 JS 与 CSS 均 HTTP 200，线上 bundle 包含指针拖动代码及 AddCustom 邀请；线上浏览器交互回放超时，交互视觉验证以本地 1280×720 CUA 为准。共享原工作区其他对话的暂存、未暂存及未跟踪改动保持原样。
