@@ -5955,3 +5955,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`WorkbenchDialogs.jsx`、`styles.css`、`useWorkbenchLayout.js`，并重建根目录 `ascstudio/` Pages 输出。能力库与自动化仍使用本地 Demo 状态，没有接入实际服务或调度器。属于 Application / Task 导航，不改变报告序列 / hash，也不改变 API / Host / Application 分层定义。
 - 验证：在最新 `origin/main` 快进后的隔离工作树运行 `npm run build:pages` 成功，只有 Vite 既有 bundle 体积提示；`git diff --check` 通过。导航和三种页面的交互已在本地预览回放核对；本次隔离预览端口受浏览器本地访问策略阻止，未据此声称完成新的截图回放。未运行测试套件。
 - 源码、Pages 产物和本交接记录将作为本次功能提交推送到 `origin/main`；共享工作区中其他对话的修改不纳入。
+
+
+### 2026-10-22 · AddCustom 聚焦与总览统一为自由画布
+
+- 延续用户确认的“先只做 AddCustom，逐题评审”范围：AddCustom 的默认聚焦与「全部内容」现在共用 `TaskCanvas` 自由画布，聚焦时围绕当前内容与直接关联项定位；总览适配所有已显示内容。点阵画布上的卡片可移动、缩放、固定、折叠；不改左侧任务列表与中间对话结构。
+- 修改 `ascend-studio/src/App.jsx`、`TaskCanvas.jsx`、`TaskWorkspace.jsx`、`useCanvasState.js`、`useContentWorkspace.js`，并重建 `ascstudio/` Pages 静态产物。AddCustom 会话状态版本更新到 4，画布存储键升级，旧内容焦点迁移到聚焦画布。特殊聚焦/总览路由仅限 AddCustom；图像推理及其他任务仍使用原工作区逻辑。未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages` 与 `git diff HEAD^ HEAD --check` 通过；本地 `127.0.0.1:5178` 视觉回放确认聚焦状态为点阵底画布、显示线索解释与关联代码卡片；「全部内容」切换到同一画布，AX 树确认现场与判断卡片也在总览中。受当前浏览器窄视口限制，未完成桌面宽屏截图验收；图像推理任务的浏览器切换操作未成功派发，因此其他任务保持不变的依据是源码路由条件，而非本轮截图回放。未运行测试套件、真实 C++ 或 NPU。构建有既有的大 JS chunk 提示，不影响成功状态。
+- 提交 `bc8f5349` 已推送 `origin/main`。`ascend-studio/node_modules` 为未跟踪依赖目录，没有纳入提交。Pages 自动部署状态未在本轮核实。

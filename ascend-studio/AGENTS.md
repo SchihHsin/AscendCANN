@@ -1149,3 +1149,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 变更 `src/App.jsx`、`src/WorkbenchDialogs.jsx`、`src/styles.css`、`src/useWorkbenchLayout.js` 及根目录 Pages 输出 `../ascstudio/`。管理页面数据和操作仍是本地 Demo，不接真实服务；不改变报告页序 / hash 或 API / Host / Application 层边界。
 - 验证：快进至最新 `origin/main` 后执行 `npm run build:pages` 和 `git diff --check` 均通过；构建只有现存的大 bundle 提示。此前本地回放确认四入口与返回任务动作；本次新开的隔离预览端口被浏览器本地访问策略拦截，未将它记作截图验证。未运行测试套件。
 - 源码、Pages 产物和本记录作为本次功能提交推送到 `origin/main`；共享工作区其他对话的未提交内容不纳入。
+
+
+## 2026-10-22 · AddCustom 统一任务画布
+
+- AddCustom 默认聚焦与「全部内容」统一使用自由画布；聚焦围绕当前内容和直接关联卡片，全部内容显示已打开的任务材料。卡片保留移动、缩放、固定与折叠。左侧任务 / 中间对话不改。
+- AddCustom 状态迁移版本为 4；聚焦画布状态单独使用新存储键。特定路由仅命中 AddCustom，图像推理及其他任务维持原来的工作区模式。
+- `npm run build:pages`、`git diff HEAD^ HEAD --check` 通过；在本地预览确认聚焦和总览均显示在点阵画布。窄视口回放中 AX 树确认总览包含现场与判断卡片；本轮未完成桌面宽屏视觉核验，也未声称图像推理任务完成浏览器回放。没有真实 C++ / NPU 验证。
+- 源码与 `ascstudio/` 发布包提交 `bc8f5349` 已推送 `origin/main`。
