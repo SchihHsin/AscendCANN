@@ -1119,3 +1119,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户要求项目 / 任务列表的搜索框与选中状态使用有透明度的黑色，不再用灰色底。搜索框常态与聚焦、任务行悬停与选中均改为低透明度黑色；文本保持清晰黑色。
 - 修改 `ascend-studio/src/styles.css`，属于现有任务导航的局部视觉调整；不改页面顺序、交互和 API / Host / Application 边界。
 - 验证：`npm run build:pages`、`git diff --check`；本地预览 `127.0.0.1:8123` 返回的样式包含透明黑搜索框与任务选中态；未运行测试套件。Pages workflow `39778498431` 构建与部署成功，线上入口引用 CSS `index-3UCjOMuZ.css`（HTTP 200）。功能提交 `3718898c` 已推送至 `origin/main`；其他对话改动保留。
+
+## 2026-10-22 · AddCustom 右侧任务画布框架
+
+- 当前仅为「AddCustom 精度异常」设置画布默认状态：初次进入显示当前聚焦内容与直接关联项；顶部「全部内容」进入同一画布的总览；从总览选择内容后返回聚焦视图；「返回聚焦」恢复上一焦点。没有新增视图模式选择。
+- `useContentWorkspace.js` 为旧会话迁移到画布聚焦模式（状态版本 3），保留原 active / last content。`TaskWorkspace.jsx` 仅在 AddCustom 分支路由聚焦与总览；图像推理等其他任务保持原视图。
+- 本次视觉回放 1280×720：默认线索解释、总览分组、打开索引范围示例、返回聚焦均通过；右侧压窄约 420px 后图解和代码可滚动查看。AI 对话、左侧任务结构和三栏工作区保留。
+- `npm run build:pages` 与 `git diff --check` 通过；没有真实 C++ / NPU 执行。功能提交 `9247e867` 已推送；Pages workflow `39780064805` 已成功；线上 index、JS、CSS 均 HTTP 200，JS 包含 AddCustom 聚焦画布及返回聚焦文案。

@@ -5920,3 +5920,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求项目 / 任务列表的搜索框与选中状态使用有透明度的黑色，不再用灰色底。搜索框常态与聚焦、任务行悬停与选中均改为低透明度黑色；文本保持清晰黑色。
 - 修改 `ascend-studio/src/styles.css`，属于现有任务导航的局部视觉调整；不改页面顺序、交互和 API / Host / Application 边界。
 - 验证：`npm run build:pages`、`git diff --check`；本地预览 `127.0.0.1:8123` 返回的样式包含透明黑搜索框与任务选中态；未运行测试套件。Pages workflow `39778498431` 构建与部署成功，线上入口引用 CSS `index-3UCjOMuZ.css`（HTTP 200）。功能提交 `3718898c` 已推送至 `origin/main`；其他对话改动保留。
+
+### 2026-10-22 · AddCustom 右侧任务画布框架
+
+- 用户要求先只修改 AddCustom 任务的右侧工作区。确定默认聚焦当前内容；「全部内容」是同一任务画布的总览，不是第二种独立工作区。总览卡片按问题主题分组并显示关系；打开某项后回到聚焦内容，底部保留直接关联项。左侧项目 / 任务和中间对话保持原布局，其他任务不套用该改动。
+- 实现 `AddCustomTaskCanvas` 聚焦容器、`focusId` 状态及旧会话迁移（版本 3）；旧会话沿用当前阅读内容。AddCustom 工具栏使用「任务内容」统一命名；总览提供「返回聚焦」。
+- 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`useContentWorkspace.js`，新增 `AddCustomTaskCanvas.jsx`、`addcustom-task-canvas.css`，并重建 `ascstudio/` 静态 Pages 产物。页面序列 / hash 及 API / Host / Application 边界未变。
+- 验证：`npm run build:pages`、`git diff --check` 通过。CUA 本地 1280×720 回放确认默认聚焦、总览两项分组、选择代码示例后回到原项目内容、返回后保留焦点；把对话 / 工作区分隔条调至 558 后图解与代码仍可读。另确认图像推理任务仍显示原有工具视图。未运行 NPU 或真实 C++ 代码。
+- 代码提交 `9247e867` 已推送 `origin/main`。GitHub Pages run `39780064805`（commit `9247e867`）workflow 已成功；线上 index、JS、CSS 均 HTTP 200，JS 包含 AddCustom 聚焦画布及返回聚焦文案。
