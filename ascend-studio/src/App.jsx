@@ -144,6 +144,7 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
 
 function App() {
   const wb = useWorkbenchState();
+  const developmentDemoLaunch = useRef(new URLSearchParams(window.location.search).get("task") === "development");
   const [showNewTaskHome, setShowNewTaskHome] = useState(() => !["learning", "development"].includes(new URLSearchParams(window.location.search).get("task")));
   const [showLearningDiscovery, setShowLearningDiscovery] = useState(false);
   const [pendingDiscoveryItem, setPendingDiscoveryItem] = useState(null);
@@ -912,15 +913,31 @@ function App() {
     if (!summary?.id) return;
     if (session.messages.some(message => message.communityInvite?.summaryId === summary.id)) return;
     const dimensions = summary.dimensions?.join(", ") || "当前示例形状";
+    const completionExchange = summary.demoFixture ? [{
+      id: crypto.randomUUID(), role: "user", isDemo: true,
+      text: `我在示例副本中调整了图像输入，形状核对结果为 NCHW [${dimensions}]。`,
+    }] : [];
     wb.patchSession(old => old.messages.some(message => message.communityInvite?.summaryId === summary.id) ? {} : ({
-      messages: [...old.messages, {
+      messages: [...old.messages, ...completionExchange, {
         id: crypto.randomUUID(), role: "assistant", isDemo: true,
         communityInvite: { summaryId: summary.id, summary },
-        text: `这次开发任务的示例修改已应用，输入形状核对通过：NCHW [${dimensions}]。\n\n要不要把问题、改动思路和验证边界整理成社区经验？这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
+        text: `${summary.demoFixture ? "示例形状核对已通过" : "这次开发任务的示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
       }],
     }));
     window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
   };
+  useEffect(() => {
+    if (!developmentDemoLaunch.current || selectedTask !== IMAGE_TASK) return;
+    developmentDemoLaunch.current = false;
+    if (session.messages.some(message => message.communityInvite)) return;
+    offerCommunityExperience({
+      id: "demo-image-shape-check",
+      dimensions: [1, 3, 224, 224],
+      snapshot: { axes: [2, 0, 1], batch: true },
+      attemptCount: 2,
+      demoFixture: true,
+    });
+  }, [selectedTask]);
   const generateCommunityExperience = (completion) => {
     if (!completion?.id) return;
     if (session.communityDraft?.completionId === completion.id) {
@@ -1151,7 +1168,7 @@ function App() {
                     <IconChevronRight size={17} />
                   </button>}
                   {message.communityInvite && <section className="community-success-invite" aria-label="任务完成后的社区经验邀请">
-                    <div className="community-success-invite-heading"><IconCircleCheck size={18} /><strong>这次任务已完成</strong></div>
+                    <div className="community-success-invite-heading"><IconCircleCheck size={18} /><strong>{message.communityInvite.summary.demoFixture ? "示例核对已完成" : "这次任务已完成"}</strong></div>
                     <p>把已核对的输入形状和操作过程整理成社区经验，供其他开发者参考。</p>
                     <button type="button" className="community-entry-button" onClick={() => session.communityDraft?.completionId === message.communityInvite.summaryId ? openCommunityDraft() : generateCommunityExperience(message.communityInvite.summary)}>
                       <IconFileText size={15} />{session.communityDraft?.completionId === message.communityInvite.summaryId ? "查看社区经验草稿" : "整理为社区经验"}
