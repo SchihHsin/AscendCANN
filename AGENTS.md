@@ -5928,3 +5928,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`useContentWorkspace.js`，新增 `AddCustomTaskCanvas.jsx`、`addcustom-task-canvas.css`，并重建 `ascstudio/` 静态 Pages 产物。页面序列 / hash 及 API / Host / Application 边界未变。
 - 验证：`npm run build:pages`、`git diff --check` 通过。CUA 本地 1280×720 回放确认默认聚焦、总览两项分组、选择代码示例后回到原项目内容、返回后保留焦点；把对话 / 工作区分隔条调至 558 后图解与代码仍可读。另确认图像推理任务仍显示原有工具视图。未运行 NPU 或真实 C++ 代码。
 - 代码提交 `9247e867` 已推送 `origin/main`。GitHub Pages run `39780064805`（commit `9247e867`）workflow 已成功；线上 index、JS、CSS 均 HTTP 200，JS 包含 AddCustom 聚焦画布及返回聚焦文案。
+
+### 2026-10-22 · 多渠道任务经验草稿
+
+- 右侧经验草稿默认选择昇腾社区，可切换 GitCode、CSDN 或抖音；渠道激励只作示例提示，不承诺平台实际积分 / 收益。
+- 抖音内容以深色 4 页知识图文呈现，明确提供“生成图文草稿”按钮；生成后配文可编辑，发布动作只模拟本地状态。GitCode 按 Issue / PR 结构，CSDN 按技术博客结构展示，各有自己的生成与演示发布入口。
+- 技术内容仍限于现有 AddCustom 对话证据：`[16,32]` 通过、`[17,33]` 失败，错误在 `custom_op.cpp:128`；尾块边界是待验证线索，未确认根因，也没有真实 NPU 验证或真实渠道发布。
+- 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、新增 `ChannelDraftContent.jsx` / `channel-draft.css`，同步更新 `ascstudio/` 静态 Pages 包。页面序列与 API / Host / Application 边界未变。
+- 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；没有运行测试套件。当前回合未完成浏览器视觉回放。
+- 源码、Pages 产物与本条记录一并推送至 `origin/main`；共享工作区其他会话的未提交修改未纳入。

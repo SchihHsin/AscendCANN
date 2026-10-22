@@ -1126,3 +1126,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - `useContentWorkspace.js` 为旧会话迁移到画布聚焦模式（状态版本 3），保留原 active / last content。`TaskWorkspace.jsx` 仅在 AddCustom 分支路由聚焦与总览；图像推理等其他任务保持原视图。
 - 本次视觉回放 1280×720：默认线索解释、总览分组、打开索引范围示例、返回聚焦均通过；右侧压窄约 420px 后图解和代码可滚动查看。AI 对话、左侧任务结构和三栏工作区保留。
 - `npm run build:pages` 与 `git diff --check` 通过；没有真实 C++ / NPU 执行。功能提交 `9247e867` 已推送；Pages workflow `39780064805` 已成功；线上 index、JS、CSS 均 HTTP 200，JS 包含 AddCustom 聚焦画布及返回聚焦文案。
+
+### 2026-10-22 · 多渠道草稿与抖音生成入口
+
+- 发布草稿面板默认昇腾社区，并提供渠道下拉；选择抖音后显示深色 4 页知识图文轮播与明确的“生成图文草稿”按钮。生成后可审阅并编辑配文，再进行本地演示发布。
+- GitCode 草稿使用 Issue / PR 结构，CSDN 使用技术博客结构。奖励 / 收益仅作为界面中的示例提示，不代表平台已核实承诺。
+- 保留 AddCustom 证据边界：`[16,32]` 通过、`[17,33]` 失败；`custom_op.cpp:128` 为错误位置，尾块边界仍是待验证线索；没有真实 NPU 验证或实际渠道发布。
+- 页面导航与 API / Host / Application 分层不变；原有昇腾社区草稿、编辑和提交预览继续工作。
