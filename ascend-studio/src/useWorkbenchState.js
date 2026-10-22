@@ -82,6 +82,7 @@ function restoreWorkbench() {
   }
   // Refresh only the built-in scenario brief; saved conversations, records and custom tasks stay intact.
   if (meta[OFFICIAL_LEARNING_TASK]?.kind === "official-learning") meta[OFFICIAL_LEARNING_TASK] = { ...meta[OFFICIAL_LEARNING_TASK], ...taskDetails[OFFICIAL_LEARNING_TASK] };
+  if (meta["图像推理调试"]) meta["图像推理调试"] = { ...meta["图像推理调试"], ...taskDetails["图像推理调试"] };
   return {
     groups, meta, sessions,
     query: typeof value.query === "string" ? value.query : "",

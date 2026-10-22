@@ -143,7 +143,7 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
 
 function App() {
   const wb = useWorkbenchState();
-  const [showNewTaskHome, setShowNewTaskHome] = useState(() => new URLSearchParams(window.location.search).get("task") !== "learning");
+  const [showNewTaskHome, setShowNewTaskHome] = useState(() => !["learning", "development"].includes(new URLSearchParams(window.location.search).get("task")));
   const [pendingRecommendationAction, setPendingRecommendationAction] = useState(null);
   const [saveAvailable, setSaveAvailable] = useState(sessionSaveAvailable);
   useEffect(() => {
@@ -197,7 +197,10 @@ function App() {
   };
   const selectExistingTask = (name) => { selectTask(name); setShowNewTaskHome(false); };
   const { selectedRoute, draft } = session;
-  const messages = session.messages.filter(message => !message.communityDraftCard || Boolean(message.communityDraftId && session.communityDraft?.id === message.communityDraftId && session.communityDraft?.completionId));
+  const messages = session.messages.filter(message => {
+    if (["learning", "official-learning"].includes(task.kind) && (message.communityInvite || message.communityDraftCard)) return false;
+    return !message.communityDraftCard || Boolean(message.communityDraftId && session.communityDraft?.id === message.communityDraftId && session.communityDraft?.completionId);
+  });
   const selectedRouteData = routes.find((route) => route.id === selectedRoute) || routes[0];
   const feedback = (value) => wb.patchSession({ feedback: session.feedback === value ? null : value });
   const closeMenuAnd = (action) => { wb.setMenu(null); action(); };
@@ -210,9 +213,10 @@ function App() {
   useEffect(() => {
     if (learningLaunchHandled.current) return;
     learningLaunchHandled.current = true;
-    if (new URLSearchParams(window.location.search).get("task") === "learning") {
+    const launchTask = new URLSearchParams(window.location.search).get("task");
+    if (launchTask === "learning" || launchTask === "development") {
       setShowNewTaskHome(false);
-      wb.selectTask(LEARNING_TASK);
+      wb.selectTask(launchTask === "learning" ? LEARNING_TASK : IMAGE_TASK);
       wb.setQuery("");
       wb.setFilterScope("all");
       wb.setOpenedGroups(groups => groups.includes("inference") ? groups : [...groups, "inference"]);
@@ -223,13 +227,13 @@ function App() {
   }, []);
   const isInteractiveTask = isMainTask || isImageTask || isLearningTask;
   const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask, initialMaterialId: isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS[0]?.id : isLearningTask ? "learning-goal" : undefined, defaultToLearningCanvas: isLearningTask });
-  const communityDraftFocus = !showNewTaskHome && Boolean(session.communityDraft?.open && session.communityDraft?.completionId);
+  const communityDraftFocus = !showNewTaskHome && isImageTask && Boolean(session.communityDraft?.open && session.communityDraft?.completionId);
   const layout = useWorkbenchLayout({ sidebarCollapsed, contentCollapsed: workspace.state.collapsed, learningLayout: isLearningTask, communityDraftFocus });
   const visibleContentId = layout.contentWidth <= 620 && workspace.state.splitId && [workspace.state.activeId, workspace.state.splitId].includes(workspace.state.comparisonFocusId) ? workspace.state.comparisonFocusId : workspace.state.activeId;
   const contentVisible = id => !workspace.state.collapsed && workspace.state.activeId !== "canvas" && (layout.contentWidth <= 620 ? visibleContentId === id : workspace.state.activeId === id || workspace.state.splitId === id);
   const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask, initialStage: isPathGenerationTask ? "path" : "channels" });
   const learningCanvasVisible = isStandardLearningTask && !workspace.state.collapsed && workspace.state.activeId === "canvas" && workspace.state.canvasMode === "free";
-  const learning = useLearningJourney({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", profile: task.learningProfile, seedPathGeneration: isPathGenerationTask, visible: isStandardLearningTask && (contentVisible("learning-lesson") || learningCanvasVisible && learningCanvasView.state.expanded && ["channels", "environment"].includes(learningCanvasView.state.selectedStage)), onRecord: (record, ownerId) => { wb.addRecord(record, ownerId); if (record.kind === "learning-summary" && record.data?.id) offerCommunityExperience(record.data); const id = ({ "learning-path": "learning-path", "learning-attempt": "learning-practice", "learning-check": "learning-check", "learning-summary": "learning-summary" })[record.kind]; if (id) workspace.actions.open(id, { activate: false, taskId: ownerId, isMainTask: true }); } });
+  const learning = useLearningJourney({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", profile: task.learningProfile, seedPathGeneration: isPathGenerationTask, visible: isStandardLearningTask && (contentVisible("learning-lesson") || learningCanvasVisible && learningCanvasView.state.expanded && ["channels", "environment"].includes(learningCanvasView.state.selectedStage)), onRecord: (record, ownerId) => { wb.addRecord(record, ownerId); const id = ({ "learning-path": "learning-path", "learning-attempt": "learning-practice", "learning-check": "learning-check", "learning-summary": "learning-summary" })[record.kind]; if (id) workspace.actions.open(id, { activate: false, taskId: ownerId, isMainTask: true }); } });
   const statusForTask = name => {
     if (name === LEARNING_PATH_GENERATION_TASK && name === selectedTask) {
       if (learning.state.path) return { label: "路径已确认", tone: "confirmed" };
@@ -255,7 +259,17 @@ function App() {
   }, [selectedTask, officialCanvasVisible, officialLearning.state.selectedNodeId]);
   const officialCanvasMaterialIds = officialCanvasVisible && officialLearning.state.selectedNodeId ? [officialLearning.state.selectedNodeId] : [];
   const imageVisible = isImageTask && contentVisible("image-explanation");
-  const inference = useImageInference({ visible: imageVisible, onRecord: record => wb.addRecord(record, IMAGE_TASK) });
+  const inference = useImageInference({ visible: imageVisible, onRecord: record => {
+    wb.addRecord(record, IMAGE_TASK);
+    if (record.kind === "image-validation" && record.data?.passed) {
+      offerCommunityExperience({
+        id: record.data.attemptId,
+        dimensions: record.data.dimensions,
+        snapshot: record.data.snapshot,
+        attemptCount: 1,
+      });
+    }
+  } });
   const explanationVisible = isMainTask && contentVisible("explanation");
   const explanation = useExplanationSession({ resetVersion: flow.state.resetVersion, visible: explanationVisible });
   const mainSession = wb.getSession(MAIN_TASK);
@@ -726,7 +740,6 @@ function App() {
       wb.notify("当前学习状态还不满足保存条件，请先完成理解、跟练与输入检查。");
       return null;
     }
-    offerCommunityExperience(summary);
     return summary;
   };
   const runRecommendationAction = item => {
@@ -880,7 +893,7 @@ function App() {
       messages: [...old.messages, {
         id: crypto.randomUUID(), role: "assistant", isDemo: true,
         communityInvite: { summaryId: summary.id, summary },
-        text: `这次学习任务已完成并保存。输入示例已核对为 NCHW [${dimensions}]。\n\n要不要把这次对照 HWC、CHW 和 batch 的过程整理成社区经验？这里完成的是浏览器中的形状演算；真实模型推理仍需在对应环境验证。`,
+        text: `这次开发任务的示例修改已应用，输入形状核对通过：NCHW [${dimensions}]。\n\n要不要把问题、改动思路和验证边界整理成社区经验？这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
       }],
     }));
     window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
@@ -1152,7 +1165,7 @@ function App() {
 
         {!showNewTaskHome && <div className="workspace-divider workspace-divider--conversation" hidden={workspace.state.collapsed} role="separator" tabIndex={0} aria-label="调整对话与工作区宽度" title="拖动调整对话与工作区宽度；双击恢复默认布局" {...layout.separatorProps("conversation")} />}
         {!showNewTaskHome && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
-          {session.communityDraft?.open && session.communityDraft?.completionId
+          {isImageTask && session.communityDraft?.open && session.communityDraft?.completionId
             ? <CommunityDraftPanel draft={session.communityDraft} onUpdate={communityDraft => wb.patchSession({ communityDraft })} onClose={closeCommunityDraft} onSubmit={submitCommunityDraft} />
             : (
             <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext} onAreaSend={sendAreaMessage} onAreaDismiss={clearPointContext} areaComposerDisabled={session.replying}
