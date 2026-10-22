@@ -976,3 +976,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 涉及 `src/App.jsx`、`src/LearningJourney.jsx`、`src/CommunityDraftPanel.jsx`、`src/community-draft-data.js`、`src/community-draft.css`、`src/useWorkbenchLayout.js`。当前生成和提交状态均为本地演示，没有接真实 AI / 社区服务；真实 Python、模型和 NPU 验证不在本次范围。可信度设计依用户要求暂缓。
 - `http://localhost:4174/` 本地查看保存后邀请、对话卡和右侧审阅面板；隔离构建、相关语法检查及 `git diff --check` 通过，未运行测试。参考图并排比对受本地浏览器安全策略限制，尚未完成。
 - 功能提交 `3a7a0163` 已推送 `origin/main`，包含社区功能源码与独立 Pages 构建；其他对话的暂存、未暂存和未跟踪改动均未纳入。
+
+
+### 2026-10-22（社区经验入口改到开发任务）
+
+- 用户明确社区经验示例应在开发任务中呈现，不放在学习任务。示例任务采用「图像推理调试」：只有隔离副本中的预处理修改应用后，示例形状复核通过，才在同一对话出现社区经验邀请。直接入口：`https://schihhsin.github.io/AscendCANN/ascstudio/?task=development`。
+- 学习任务不再创建社区经验邀请；旧学习会话中可能残留的邀请/草稿也在学习对话和右侧工作区隐藏。对话草稿生成后仍在右侧审阅，可编辑后由用户主动提交。
+- 变更：`ascend-studio/src/App.jsx`、`community-draft-data.js`、`prototype-data.js`、`useWorkbenchState.js` 与独立 Pages 产物 `ascstudio/`。不改变正式报告页序/hash或 API / Host / Application 边界。
+- 本地浏览器 M 级核验：在「图像推理调试」中将轴顺序设为 2,0,1，应用示例副本并完成 NCHW `[1,3,224,224]` 形状复核后，邀请出现在该开发对话；生成后右侧显示问题、尝试与结果、环境、验证状态四部分草稿。隔离快照 `npm run build:pages` 和 `git diff --check` 通过；未运行测试套件。
+- 证据边界：浏览器形状规则通过不等于真实项目代码、Python、模型或 NPU 验证；草稿生成与社区提交仍为本地演示。Commit `650c7ba9` 已推送 `origin/main`。其他对话的暂存、未暂存和未跟踪改动均保留。
