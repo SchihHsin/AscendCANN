@@ -5971,3 +5971,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/useWorkbenchState.js` 并重建根目录 `ascstudio/` Pages 包。不改页面导航序列 / hash 或 API / Host / Application 边界；真实社区发布服务未接入。
 - 验证：源码 `npm run build` 与最新主线上的 `npm run build:pages`、`git diff --check` 均通过；未运行测试套件，浏览器手工刷新回放未完成。
 - 源码、Pages 产物与本条记录一并推送至 `origin/main`；共享工作区其他会话的未提交修改不纳入。
+
+
+### 2026-10-22 · 首页错误卡片代码语法高亮
+
+- 用户确认给错误记录中的示例代码加语法高亮。类型和函数标为低饱和蓝紫，常量用柔和紫色，数字和字符串用暖色；普通变量、标点仍使用深灰。保留浅色代码底、行号和现有卡片高度，不给示例行加红色错误背景。
+- 使用首页本地轻量 tokenizer，没有添加高亮库。高亮只改善代码可读性；日期和代码仍是 2026-10-22 静态示例，不是真实用户记录或根因诊断。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`new-task-home.css`，同步 `ascstudio/` Pages 产物；不改变页面序列 / hash 或 API / Host / Application 边界。
+- 验证：`node --check src/home-recommendations.js`、`npm run build`、`npm run build:pages`、`git diff --check` 通过。CUA 在本地 1280×720 核验三种卡片的类型、函数、常量、数字高亮和卡片高度；无溢出。未运行测试套件。Pages run `39799829376` 成功；线上 JS / CSS 返回 HTTP 200，CSS 含高亮规则。
+- Commit / push：源码提交 `974820e0`、Pages 产物提交 `0f12b433` 已推送 `origin/main`。

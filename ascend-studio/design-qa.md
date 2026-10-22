@@ -940,3 +940,21 @@ final result: passed
 - 源码：`src/NewTaskHome.jsx`、`src/home-recommendations.js`、`src/new-task-home.css`；根目录 `ascstudio/` 已同步生成 Pages 静态包。无页面序列 / hash 或 API / Host / Application 边界变化。
 - `node --check src/home-recommendations.js`、`npm run build`、`npm run build:pages`、`git diff --check`：通过。未运行测试套件。Pages workflow `39783592016` 成功；线上 `/ascstudio/` index、JS 与 CSS 均 HTTP 200。
 - 提交：源码 `678118fd`、Pages 产物 `b4aa6573`，均已推送 `origin/main`。
+
+
+## 2026-10-22 · 首页错误详情代码语法高亮
+
+**用户目标与方向**
+- 用户确认在展开卡片中的示例代码增加语法高亮。目标是让类型、函数、常量和数字更容易扫读，同时保留小卡片的克制视觉。
+- 类型使用低饱和蓝灰（`#586b9e`），函数用蓝紫（`#605a9e`），常量用柔和紫（`#80609a`），数字用暖棕（`#a36337`），字符串用暖棕灰（`#8b6546`）；变量与标点继续用深灰。
+- 浅色代码底、行号、字号和三张文件夹卡片的轮廓 / 配色保持；不添加高亮整行或红色诊断背景，避免把生成的演示片段误读成已确认根因。
+
+**实现与视觉核验**
+- 在 `src/NewTaskHome.jsx` 加入轻量代码 token 识别并映射语义色，无第三方库；样例中的 `uint32_t` / `Shape`、`AddKernel` / `model.run` / `convert`、`nullptr` / `RGB` 和数字均能落到对应 token 类。
+- 本地 `http://localhost:4191/`，CUA 1280×720。三组展开卡片均检查：类型、函数、常量、数字呈不同颜色，普通变量仍为深灰；卡片高约 358–379px，没有因为高亮增加高度或截断代码。
+- 代码仍标为示例；高亮只表示 token 类型，不表示错误严重性、根因或修复状态。
+
+**构建与发布**
+- 修改 `src/NewTaskHome.jsx`、`src/new-task-home.css` 并重建根目录 `ascstudio/` Pages 产物。无页面序列 / hash 或 API / Host / Application 边界变化。
+- `node --check src/home-recommendations.js`、`npm run build`、`npm run build:pages`、`git diff --check`：通过；未运行测试套件。Pages run `39799829376` 成功；线上 `/ascstudio/` index、JS、CSS HTTP 200，CSS 包含高亮 token 规则。
+- 源码 commit `974820e0` 与 Pages commit `0f12b433` 已推送 `origin/main`。

@@ -1164,3 +1164,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 刷新页面后，把已提交的社区草稿恢复为待审阅，可再次进行本地演示提交；草稿正文继续保留，提交时间与本次演示成功消息移除。复位逻辑只在恢复存档会话时运行，因此当前页面内提交后仍会显示“已提交”。
 - 变更 `src/useWorkbenchState.js` 与仓库根目录 Pages 构建产物；其他任务会话、消息及记录保持原样。真实社区服务未连接。
 - 构建与差异检查结果记录在根 `AGENTS.md`；未运行测试套件，未完成浏览器手工刷新回放。
+
+
+### 2026-10-22 · 首页错误代码语法高亮
+
+- 按用户确认给示例代码增加轻量语法高亮：类型 / 函数 / 常量使用低饱和蓝紫，数字 / 字符串用柔和暖色，变量保留深灰。代码底色、行号和文件夹卡片不变，不用红色底标注示例行。
+- 使用 `NewTaskHome.jsx` 内的 tokenizer，无第三方依赖。数据仍是静态示例；本次只增强代码可读性。
+- 修改 `src/NewTaskHome.jsx`、`src/new-task-home.css` 与根目录 `ascstudio/` Pages bundle。无页面序列 / hash 或 API / Host / Application 边界变化。
+- `npm run build`、`npm run build:pages`、语法检查与 `git diff --check` 通过；CUA 本地 1280×720 查看了三组代码。源码 commit `974820e0`、Pages commit `0f12b433` 已推送；Pages run `39799829376` 成功。
