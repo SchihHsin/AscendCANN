@@ -5772,3 +5772,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-10-22 · 社区经验提示样式发布回执
 
 - 功能提交 `1f4a9428`（`fix: restore selected community invite styling`）包含社区入口源码、隔离构建的 Pages JS/CSS 与样式核验记录，已推送 `origin/main`。`npm run build:pages` 在干净 HEAD 快照加本次改动中成功；Pages 自动部署由推送触发，已在 `https://schihhsin.github.io/AscendCANN/ascstudio/?task=development` 通过 1280×720 浏览器截图确认新样式已上线；其他对话的暂存、未暂存和未跟踪改动均保持原样。
+
+
+### 2026-10-22 · 社区经验提交后的文章详情预览
+
+- 用户要求草稿提交后，右侧立即切换到昇腾社区文章页面，并尽量贴近当前社区样式。`CommunityDraftPanel` 现于提交态切换为文章详情：社区导航与面包屑、浅灰页面底色、白色圆角正文卡、标题/分类/发布日期/阅读与点赞数，以及问题、方案、环境、验证正文。
+- 真实样式参考已通过浏览器只读查看昇腾社区文章详情页（H）：`https://www.hiascend.com/developer/techArticles/20260923-1`。页面结构同时可由官方频道 `https://www.hiascend.com/developer/techArticles` 访问。
+- Demo 尚未接入社区发布服务。页面标记“已提交 · 本地预览”，社区地址链接指向真实官方技术文章频道；没有伪造单篇线上永久链接。若后续接入发布 API，应使用服务返回的单篇 URL。
+- 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、新增 `CommunityPublishedArticle.jsx` 与 `community-published.css`，并更新独立 Pages 构建产物 `ascstudio/`。页面属于 Application / Task 产品体验，不改 API / Host / Harness 边界或汇报页序。
+- 当前源码隔离 Vite 构建及基于干净 HEAD 的 `npm run build:pages` 均通过；大 bundle 提示沿用。未运行测试。由于本地预览 URL 受既有浏览器安全策略阻拦，本轮没有本地截图视觉回放；未尝试其他浏览器或间接方式。其他对话的暂存、未暂存和未跟踪改动保持原样。
+- `113feefe`（`feat: preview published community articles`）已推送 `origin/main`。

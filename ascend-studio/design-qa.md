@@ -882,3 +882,24 @@ final result: blocked (参考图并排视觉比对未完成；功能实现与本
 - Release: commit `1f4a9428` with isolated Pages output was pushed to `origin/main`; live `?task=development` at 1280×720 shows the restored card style. The same-input side-by-side source comparison remains blocked by the browser policy, so the final QA result remains blocked.
 
 final result: blocked
+
+
+## 2026-10-22 · 社区经验提交后文章详情
+
+**目标与来源**
+- 用户要求提交草稿后右侧立即切换为社区地址，并呈现发布后的文章外观。
+- 真实参考：昇腾社区当前文章详情 [vLLM-Ascend 安装部署类问题踩坑分享](https://www.hiascend.com/developer/techArticles/20260923-1)。只读浏览器检查确认顶部昇腾导航、官方技术文章面包屑、浅灰页面底、白色圆角正文卡，以及标题、分类、发布时间、阅读/点赞信息和长文正文结构。
+- 社区频道地址为 `https://www.hiascend.com/developer/techArticles`。
+
+**实现与范围**
+- 提交后右侧面板即时换为文章详情预览，复用草稿问题、尝试与结果、环境和验证内容；提供真实官方文章频道链接，并标明“已提交 · 本地预览”。
+- 没有真实社区发布接口，故链接打开官方文章频道，不能代表单篇内容已在线发布；单篇 permalink 需由未来 API 返回。没有更改可信度功能、正式报告页序或 API / Host / Application 边界。
+- 源码：`src/CommunityDraftPanel.jsx`、`src/CommunityPublishedArticle.jsx`、`src/community-published.css`；Pages 静态产物随提交更新。
+
+**核验**
+- `npx vite build --base=./ --outDir /tmp/ascstudio-community-published-validation --emptyOutDir`：通过，保留既有 >500 kB 提醒。
+- 干净 HEAD + 本次源码 `npm run build:pages`：通过；构建 bundle 中核对到预览状态文案、文章标题与官方链接。`git diff --cached --check`：通过；未运行测试套件。
+- 本地页面没有截图级回放：本地预览地址受到已记录的浏览器安全策略限制，未使用其他浏览器或间接访问方式。官方参考页面已做只读视觉检查。
+- Commit `113feefe` 已推送 `origin/main`。其他对话的暂存、未暂存和未跟踪变更未纳入本提交。
+
+final result: implementation passed; local visual review blocked by browser policy

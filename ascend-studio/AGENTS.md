@@ -1011,3 +1011,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-22 · 社区经验提示样式发布回执
 
 - 功能提交 `1f4a9428`（`fix: restore selected community invite styling`）包含社区入口源码、隔离构建的 Pages JS/CSS 与样式核验记录，已推送 `origin/main`。`npm run build:pages` 在干净 HEAD 快照加本次改动中成功；Pages 自动部署由推送触发，已在 `https://schihhsin.github.io/AscendCANN/ascstudio/?task=development` 通过 1280×720 浏览器截图确认新样式已上线；其他对话的暂存、未暂存和未跟踪改动均保持原样。
+
+
+### 2026-10-22 · 提交后切换社区文章预览
+
+- 提交草稿后，右侧工作区直接显示文章详情预览，视觉参照当前昇腾社区官方技术文章页的导航、面包屑、浅灰背景、白色圆角内容卡、标题/标签/发布时间及正文排版。
+- 预览保留真实官方频道地址 `https://www.hiascend.com/developer/techArticles` 作为可点击链接，并标明本地 Demo；当前无真实发布接口，不能生成单篇线上链接。真实详情页参考 `https://www.hiascend.com/developer/techArticles/20260923-1`。
+- 发布态工作区由 `src/CommunityDraftPanel.jsx` 切换到 `src/CommunityPublishedArticle.jsx`；样式位于 `src/community-published.css`。隔离源码构建和干净快照 `npm run build:pages` 通过；本地视觉回放受浏览器安全策略限制，未绕行。提交 `113feefe` 已推送。
