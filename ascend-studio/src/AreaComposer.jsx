@@ -8,6 +8,8 @@ const describeSpeechError = (code) => {
   return "语音输入暂不可用";
 };
 
+const isFnKey = (event) => event.key === "Fn" || event.code === "Fn";
+
 export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
   const composerRef = useRef(null);
   const textareaRef = useRef(null);
@@ -113,7 +115,7 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
 
   useEffect(() => {
     const stopOnRelease = (event) => {
-      if (event.code === "Slash" && listeningRef.current) stopVoice();
+      if (isFnKey(event) && listeningRef.current) stopVoice();
     };
     const stopWhenHidden = () => {
       if (document.visibilityState === "hidden" && listeningRef.current) stopVoice();
@@ -129,7 +131,7 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
   }, []);
 
   const handleKeyDown = (event) => {
-    if (event.code !== "Slash" || !event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.repeat || event.nativeEvent?.isComposing) return;
+    if (!isFnKey(event) || event.repeat || event.nativeEvent?.isComposing) return;
     event.preventDefault();
     startVoice();
   };
@@ -149,7 +151,7 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
     <div className="composer-toolbar">
       <div className="composer-tools">
         <span className={`tw-area-voice-hint${listening ? " is-listening" : ""}`} role="status">
-          {listening ? <><IconMicrophoneOff size={13} />松开 <kbd>⌥ /</kbd> 结束语音输入</> : voiceError ? voiceError : <><IconMicrophone size={13} />按住 <kbd>⌥ /</kbd> 语音输入</>}
+          {listening ? <><IconMicrophoneOff size={13} />松开 <kbd>Fn</kbd> 结束语音输入</> : voiceError ? voiceError : <><IconMicrophone size={13} />按住 <kbd>Fn</kbd> 语音输入</>}
         </span>
       </div>
       <div className="composer-submit">

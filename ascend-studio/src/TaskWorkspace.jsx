@@ -362,7 +362,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
         <div className="tw-area-select-layer" role="presentation" aria-label="拖动框选工作区区域" onPointerDown={startAreaSelection} onPointerMove={moveAreaSelection} onPointerUp={finishAreaSelection} onPointerCancel={() => { pointerStart.current = null; setDragSelection(null); }} onContextMenu={event => event.preventDefault()}>
           {dragSelection && <div className="tw-area-selection-box" style={{ left: dragSelection.left, top: dragSelection.top, width: dragSelection.width, height: dragSelection.height }} />}
         </div>
-        <div className="tw-area-mode-hint" role="status"><IconPointer2 size={14} /><span>在工作区拖动框选任意区域；选中后会在附近出现输入框，可打字或按住 ⌥ / 语音输入。</span><button type="button" aria-label="退出区域选择" onClick={() => { setAreaSelectionMode(false); setDragSelection(null); pointerStart.current = null; }}><IconX size={13} /></button></div>
+        <div className="tw-area-mode-hint" role="status"><IconPointer2 size={14} /><span>在工作区拖动框选任意区域；选中后会在附近出现输入框，可打字或按住 Fn 语音输入。</span><button type="button" aria-label="退出区域选择" onClick={() => { setAreaSelectionMode(false); setDragSelection(null); pointerStart.current = null; }}><IconX size={13} /></button></div>
       </>}
     </div>
 
