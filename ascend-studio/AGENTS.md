@@ -1072,3 +1072,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户指出当前配图仍偏紫，要求蓝紫色。以后以靛蓝 / 蓝紫为主，降低薰衣草紫的占比；避免青绿 / 蓝青主色。保留清透白灰页面和内容图所表达的课程、路径、认证、知识点与 Meetup 语义。
 - 本轮将学习发现强调色和图片显示色相往蓝靛偏移，图片仅轻微降饱和；白灰背景、楼层结构、导航和交互不变。线上发布由 Pages workflow `39761831003` 成功确认。
+
+### 2026-10-22 · 学习发现强调色改为蓝紫
+
+- 用户指出上一版强调色 `#5d70c4` 看起来偏靛蓝。现在将强调文字、楼层标识、焦点态、悬停态及关注 / 报名状态统一校到蓝紫（主色 `#7169cc`，状态色 `#655bc2`，配套浅色边框与底色）；白灰底、内容图的清透蓝调、楼层结构和交互保持。
+- 修改 `src/learning-discovery.css` 与 `../ascstudio/` 静态 Pages 产物。页面顺序 / hash 及 API / Host / Application 边界不变。
+- 验证：`npm run build:pages`、`git diff --check` 通过；产物 CSS 含新蓝紫色且不含旧色值。Pages workflow `39771067575` 构建和部署成功；线上 index、JS、CSS 均 HTTP 200，线上 CSS 已核对新色值。
+- 提交 `fc7083ca` 已推送 `origin/main`；本记录随后单独提交。修改基于隔离快照，仅包含本任务文件，其他对话工作区改动保留。
