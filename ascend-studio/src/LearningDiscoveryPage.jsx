@@ -2,13 +2,14 @@ import { useMemo, useState } from "react";
 import { IconArrowRight, IconCalendarEvent, IconCircleCheck, IconSearch, IconSparkles, IconUsersGroup, IconVideo } from "@tabler/icons-react";
 import { LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_PATH_URL, OFFICIAL_LEARNING_SOURCES, OFFICIAL_LEARNING_TASK } from "./official-learning-data";
-import resnetCourseImage from "./assets/learning-discovery/resnet50-inference-course.jpg";
-import preprocessingPathImage from "./assets/learning-discovery/image-preprocessing-path.jpg";
-import tensorKnowledgeImage from "./assets/learning-discovery/hwc-to-chw-knowledge.jpg";
-import ascendclCourseImage from "./assets/learning-discovery/ascendcl-quickstart-course.jpg";
-import developerPathImage from "./assets/learning-discovery/developer-growth-path.jpg";
-import certificationImage from "./assets/learning-discovery/developer-certification-prep.jpg";
-import meetupImage from "./assets/learning-discovery/inference-meetup.jpg";
+import resnetCourseImage from "./assets/learning-discovery/resnet50-inference-course-v2.jpg";
+import preprocessingPathImage from "./assets/learning-discovery/image-preprocessing-path-v2.jpg";
+import tensorKnowledgeImage from "./assets/learning-discovery/hwc-to-chw-knowledge-v2.jpg";
+import inputContractImage from "./assets/learning-discovery/model-input-contract-v2.jpg";
+import ascendclCourseImage from "./assets/learning-discovery/ascendcl-quickstart-course-v2.jpg";
+import developerPathImage from "./assets/learning-discovery/developer-growth-path-v2.jpg";
+import certificationImage from "./assets/learning-discovery/developer-certification-prep-v2.jpg";
+import meetupImage from "./assets/learning-discovery/inference-meetup-v2.jpg";
 import "./learning-discovery.css";
 
 const recommendations = [
@@ -51,8 +52,8 @@ const recommendations = [
     description: "把数据类型、布局和尺寸作为检查项，对照所选样例逐项确认。",
     reason: "把已学概念带到输入准备环节",
     meta: "输入准备 · 约 18 分钟",
-    image: tensorKnowledgeImage,
-    imageAlt: "模型输入准备中核对图像张量的通道布局与维度",
+    image: inputContractImage,
+    imageAlt: "模型输入准备中核对张量维度、数据类型与输入约定",
     destination: { taskName: OFFICIAL_LEARNING_TASK, materialId: "learning-official-stage-input" },
     action: "开始下一步",
   },
@@ -94,8 +95,8 @@ const newItems = [
     title: "图像预处理：核对模型输入约定",
     description: "从模型签名和官方样例出发，逐项记录输入数据类型、布局与尺寸。",
     meta: "学习内容 · 输入准备",
-    image: tensorKnowledgeImage,
-    imageAlt: "图像输入的 RGB 通道与张量布局示意",
+    image: inputContractImage,
+    imageAlt: "图像输入的张量规格与核对清单示意",
     action: "打开知识点",
     destination: { taskName: OFFICIAL_LEARNING_TASK, materialId: "learning-official-stage-input" },
   },
