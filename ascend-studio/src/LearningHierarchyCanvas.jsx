@@ -311,7 +311,7 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
   const selectedNode = chosenStage?.steps.find(step => step.id === selectedStep) || chosenStage?.steps[0];
   const start = selectedNode ? { x: treePoint.x + selectedNode.rect.x + (horizontal ? selectedNode.rect.width : selectedNode.rect.width / 2), y: treePoint.y + selectedNode.rect.y + (horizontal ? selectedNode.rect.height / 2 : selectedNode.rect.height) } : null;
   const connection = (point, targetWidth, targetIndex) => horizontal ? `M${start.x},${start.y} H${treePoint.x + tree.width + 18 + targetIndex * 9} V${point.y + 28} H${point.x - 3}` : `M${start.x},${start.y} V${treePoint.y + tree.height + 35 + targetIndex * 10} H${point.x + Math.min(targetWidth / 2, 70)} V${point.y - 3}`;
-  return <div ref={host} className={`learning-hierarchy-canvas${hand ? " is-hand" : ""}`} aria-label="可移动的学习层级与内容画布" onPointerDown={event => {
+  return <div ref={host} className={`learning-hierarchy-canvas path-editing-canvas${hand ? " is-hand" : ""}`} aria-label="可移动的学习层级与内容画布" onPointerDown={event => {
     if (event.button !== 0 || event.target.closest("button,input,textarea,select,summary,a,.lh-card,.lh-tree-node")) return;
     gesture.current = { id: "viewport", startX: event.clientX, startY: event.clientY, original: viewport };
     event.currentTarget.setPointerCapture(event.pointerId);

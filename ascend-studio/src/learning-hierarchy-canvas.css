@@ -33,7 +33,7 @@
 .lh-toolbar button:hover { background:#f3f3f8; }
 .lh-tree-position { position:absolute; z-index:3; }
 .lh-hierarchy { position:relative; }
-.lh-step-wrap { position:absolute; z-index:2; }
+.path-editing-canvas .lh-step-wrap { position:absolute; z-index:2; }
 .lh-tree-grab { display:flex; align-items:center; gap:6px; position:absolute; top:-29px; left:2px; color:#9098ad; font-size:10px; cursor:grab; user-select:none; }
 .lh-tree-lines { position:absolute; left:0; top:0; overflow:visible; pointer-events:none; }
 .lh-tree-lines path { fill:none; stroke:#c3c5d7; stroke-width:1.5; }
@@ -61,33 +61,33 @@
 .lh-stage-node.is-selected .lh-node-icon { color:#8966ec; }
 .lh-tree-node.is-skipped { color:#9aa0b3; border-style:dashed; background:#f6f7fae6; }
 .lh-tree-node.is-skipped em { position:absolute; right:5px; top:4px; border-radius:4px; padding:0 5px; background:#a0a7b7; color:#fff; font-size:9px; font-style:normal; }
-.lh-step-node { position:relative; left:auto!important; top:auto!important; width:100%!important; height:100%!important; border-radius:8px; gap:8px; padding:7px 11px; }
-.lh-step-wrap.has-review .lh-step-node { height:calc(100% - 29px)!important; }
-.lh-step-node > .lh-step-copy { flex:1; align-self:center; }
-.lh-step-node { cursor:grab!important; }
-.lh-step-node:active { cursor:grabbing!important; }
-.lh-step-node strong { font-size:11px; }
-.lh-step-node small { font-size:10px; }
-.lh-step-copy { display:flex; flex-direction:column; gap:2px; min-width:0; }
-.lh-step-node .lh-step-reason { color:#8068b6; font-size:9px; line-height:1.35; white-space:normal; }
-.lh-step-node .lh-step-user-adjusted { color:#627e70; font-size:9px; line-height:1.35; }
-.lh-step-node.is-proposed-add { border:1px dashed #aa94e5; background:#fbfaff; color:#514577; }
-.lh-step-node.is-proposed-add.is-selected { border-color:#9274e8; background:#f3efff; }
-.lh-step-node.is-proposed-revise { border:1px dashed #aa94e5; background:linear-gradient(110deg,#fcfbff,#f5f2ff); color:#514577; }
-.lh-step-node.is-proposed-revise.is-selected { border-color:#9274e8; background:#f3efff; }
-.lh-step-node.is-proposal-accepted { border-color:#c8b9ee; }
-.lh-step-wrap.is-dragging { opacity:.42; }
-.lh-step-node.is-drop-target { outline:1px dashed #8b70df; outline-offset:3px; }
-.lh-step-suggestion { position:absolute; top:-7px; right:6px; border:1px solid #e5def7; border-radius:4px; padding:0 5px; background:#f3efff; color:#8064cc; font-size:8px; font-style:normal; line-height:1.5; white-space:nowrap; }
-.lh-step-suggestion.is-skip { border-color:#e5e6eb; background:#f0f1f4; color:#81889b; }
-.lh-step-suggestion.is-accepted { border-color:#d8eadf; background:#f1f8f3; color:#6f9c7c; }
-.lh-draft-node-actions { position:absolute; right:5px; bottom:0; display:flex; align-items:center; gap:5px; }
-.lh-draft-node-actions button { border:1px solid #e7e2f1; border-radius:5px; padding:2px 9px; background:#fff; color:#7661aa; font-size:9px; line-height:1.5; }
-.lh-draft-node-actions button:first-child { border-color:#b9a9df; color:#5e4a95; background:#f8f5ff; }
-.lh-draft-node-actions button:hover { background:#eee9fa; }
-.lh-step-grip { flex-shrink:0; color:#b1a9c9; }
+.path-editing-canvas .lh-step-node { position:relative; left:auto!important; top:auto!important; width:100%!important; height:100%!important; border-radius:8px; gap:8px; padding:7px 11px; }
+.path-editing-canvas .lh-step-wrap.has-review .lh-step-node { height:calc(100% - 29px)!important; }
+.path-editing-canvas .lh-step-node > .lh-step-copy { flex:1; align-self:center; }
+.path-editing-canvas .lh-step-node { cursor:grab!important; }
+.path-editing-canvas .lh-step-node:active { cursor:grabbing!important; }
+.path-editing-canvas .lh-step-node strong { font-size:11px; }
+.path-editing-canvas .lh-step-node small { font-size:10px; }
+.path-editing-canvas .lh-step-copy { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.path-editing-canvas .lh-step-node .lh-step-reason { color:#8068b6; font-size:9px; line-height:1.35; white-space:normal; }
+.path-editing-canvas .lh-step-node .lh-step-user-adjusted { color:#627e70; font-size:9px; line-height:1.35; }
+.path-editing-canvas .lh-step-node.is-proposed-add { border:1px dashed #aa94e5; background:#fbfaff; color:#514577; }
+.path-editing-canvas .lh-step-node.is-proposed-add.is-selected { border-color:#9274e8; background:#f3efff; }
+.path-editing-canvas .lh-step-node.is-proposed-revise { border:1px dashed #aa94e5; background:linear-gradient(110deg,#fcfbff,#f5f2ff); color:#514577; }
+.path-editing-canvas .lh-step-node.is-proposed-revise.is-selected { border-color:#9274e8; background:#f3efff; }
+.path-editing-canvas .lh-step-node.is-proposal-accepted { border-color:#c8b9ee; }
+.path-editing-canvas .lh-step-wrap.is-dragging { opacity:.42; }
+.path-editing-canvas .lh-step-node.is-drop-target { outline:1px dashed #8b70df; outline-offset:3px; }
+.path-editing-canvas .lh-step-suggestion { position:absolute; top:-7px; right:6px; border:1px solid #e5def7; border-radius:4px; padding:0 5px; background:#f3efff; color:#8064cc; font-size:8px; font-style:normal; line-height:1.5; white-space:nowrap; }
+.path-editing-canvas .lh-step-suggestion.is-skip { border-color:#e5e6eb; background:#f0f1f4; color:#81889b; }
+.path-editing-canvas .lh-step-suggestion.is-accepted { border-color:#d8eadf; background:#f1f8f3; color:#6f9c7c; }
+.path-editing-canvas .lh-draft-node-actions { position:absolute; right:5px; bottom:0; display:flex; align-items:center; gap:5px; }
+.path-editing-canvas .lh-draft-node-actions button { border:1px solid #e7e2f1; border-radius:5px; padding:2px 9px; background:#fff; color:#7661aa; font-size:9px; line-height:1.5; }
+.path-editing-canvas .lh-draft-node-actions button:first-child { border-color:#b9a9df; color:#5e4a95; background:#f8f5ff; }
+.path-editing-canvas .lh-draft-node-actions button:hover { background:#eee9fa; }
+.path-editing-canvas .lh-step-grip { flex-shrink:0; color:#b1a9c9; }
 .lh-step-index { align-self:flex-start; margin-top:1px; color:#7d74a3; font-size:10px; min-width:23px; }
-.lh-step-node.is-selected::after { content:""; position:absolute; right:-6px; top:50%; width:10px; height:10px; transform:translateY(-50%); border:2px solid #fff; border-radius:50%; background:#8767e8; }
+.path-editing-canvas .lh-step-node.is-selected::after { content:""; position:absolute; right:-6px; top:50%; width:10px; height:10px; transform:translateY(-50%); border:2px solid #fff; border-radius:50%; background:#8767e8; }
 .lh-material-lines { position:absolute; left:0; top:0; overflow:visible; z-index:1; pointer-events:none; }
 .lh-material-lines > path { fill:none; stroke:#a58aef; stroke-width:1.6; }
 .lh-material-lines marker path { fill:#9b7ae8; }
