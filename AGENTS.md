@@ -5808,3 +5808,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更 `ascend-studio/src/learning-discovery.css` 和 `ascstudio/` Pages 产物；页面内容、导航顺序与课程 / 活动行为不变。基于最新 `origin/main` 的隔离快照构建，未纳入共享工作区其它对话的改动。
 - 验证：`npm run build:pages`、`git diff --check` 通过；本地 Vite `127.0.0.1:8123` 的 1280×720 CUA 回放中，滚动后标题与搜索栏离开视口，新上架及近期日程进入视口。Pages run `39731591180` 成功；线上 index 已引用新 CSS / JS 且均 HTTP 200。
 - 不改变报告序列 / hash 或 API / Host / Application 边界。功能提交 `1e1fac00` 已推送至 `origin/main`。
+
+### 2026-10-22 · 同步本地预览的学习发现导航
+
+- 用户发现线上导航顺序已调整，但 `127.0.0.1:8123` 仍将学习发现放在自动化任务后。原因是共享本地检出仍基于较旧的 `c27a6fe5`，并含其他对话未提交改动；先前发布只更新了隔离快照。
+- 仅在共享工作区 `ascend-studio/src/App.jsx` 移动学习发现按钮块至自动化任务之前，使本地 Vite HMR 与已发布顺序一致；没有暂存或覆盖其他改动。CUA 无障碍树确认顺序为学习发现、自动化任务、能力库；线上对应顺序已由 `166b6e35` 发布。
+- 这是同步已发布功能到本地预览，不新增产品行为；不改变页面序列 / hash 或 API / Host / Application 边界。

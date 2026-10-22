@@ -1042,3 +1042,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 桌面学习发现从“固定标题 + 内部小滚动框”改为单一纵向滚动容器：`.learning-discovery` 滚动、`.ld-scroll` 随内容展开，因此标题、搜索和推荐 / 新上架 / 日程楼层一起移动。
 - 变更 `src/learning-discovery.css` 与 `../ascstudio/` Pages 产物；没有改 JSX 数据和交互。隔离快照仅基于最新 `origin/main` 加本次修复构建，保留共享工作区其他对话的暂存与未暂存变更。
 - Vite Pages 构建及 `git diff --check` 通过；1280×720 本地预览滚动验证确认 header 可滚走；线上 Pages run `39731591180` 成功，CSS / JS 均 HTTP 200。提交 `1e1fac00` 已推送；页面序列和 API / Host / Application 边界未变。
+
+### 2026-10-22 · 本地预览导航同步
+
+- `127.0.0.1:8123` 仍显示旧导航，是因为共享本地检出落后于 `origin/main` 且保留着其他对话的未提交改动。只在本地 `src/App.jsx` 将学习发现导航移到自动化任务之前，未暂存或覆盖旁支改动。
+- Vite HMR 后 CUA 无障碍树确认顺序为「学习发现 → 自动化任务 → 能力库」。该顺序已由 `166b6e35` 发布；本次只同步本地演示。页面序列 / hash、API / Host / Application 边界不变。
