@@ -903,3 +903,23 @@ final result: blocked
 - Commit `113feefe` 已推送 `origin/main`。其他对话的暂存、未暂存和未跟踪变更未纳入本提交。
 
 final result: implementation passed; local visual review blocked by browser policy
+
+## 2026-10-22 · 首页错误记录知识推荐卡片
+
+**目标与来源**
+- Source visual: `/Users/hsin/.codex/generated_images/01a162b8-d26f-76e3-bfc9-b25ecdd4c3ad/exec-ae2900ec-eb2d-4c1d-b469-ed21f3f86824.png`（1672×941）。沿用 Ascend Studio 首页的文件夹卡片和整体气质，展示知识点、近 7 天错误次数及两条过往错误摘要。
+- Implementation: Codex in-app browser `http://localhost:4188/`；CUA 1280×720 CSS viewport。状态为新建任务首页、学习模式选中、卡片未展开、输入区为空。
+- 日期和次数是锚定 2026-10-22 的固定演示样例，不代表真实用户记录或根因诊断。
+
+**Fidelity 与交互**
+- 保留文件夹轮廓、轻微旋转、粉 / 金 / 雾蓝上沿、浅色主题图标和原有首页构图。卡片内标题 13px、错误摘要 11px、日期 10px；错误次数沿用各卡片上沿强调色，没有图表编码或错误来源分类。
+- 三张卡分别呈现编译参数校验（3 次）、输入维度与 Shape（2 次）、图像数据预处理（2 次）；每张卡露出两条带日期的具体记录。点击卡片打开“学会图像输入预处理”任务。
+- CUA 页面树核对三张卡片、统计语义与摘要均可见；本地 1280×720 视觉回看未发现 P0 / P1 / P2 问题。
+
+**Build / validation**
+- `node --check src/home-recommendations.js`：通过。
+- `npm run build` 与 `npm run build:pages`：通过，保留既有 bundle 体积提醒。
+- `git diff --check`：通过。未运行测试套件；浏览器控制台未从 CUA 读取。
+- Pages 静态产物与源码在最新 `origin/main` 的隔离工作树中构建并一并发布；其他共享工作区的暂存、未暂存和未跟踪改动未纳入。
+
+final result: passed

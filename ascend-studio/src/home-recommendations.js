@@ -1,3 +1,5 @@
+import { LEARNING_TASK } from "./learning-data";
+
 const MODES = new Set(["learning", "development"]);
 const clean = value => String(value ?? "").trim();
 const object = value => value && typeof value === "object" && !Array.isArray(value);
@@ -14,6 +16,62 @@ const signature = value => {
   return (hash >>> 0).toString(36);
 };
 const evidence = (id, title, summary, time) => ({ id, title, summary, ...(time ? { time } : {}) });
+
+// Demonstration records anchored to 2026-10-22; these keep the recommendation concept visible in the prototype.
+const HOME_ERROR_LEARNING_PATTERNS = [
+  {
+    id: "kernel-parameter-validation",
+    topic: "编译参数校验",
+    count: 3,
+    examples: [
+      { date: "10月21日", summary: "tiling参数不匹配" },
+      { date: "10月18日", summary: "核函数参数越界" },
+    ],
+  },
+  {
+    id: "input-dimensions-shape",
+    topic: "输入维度与Shape",
+    count: 2,
+    examples: [
+      { date: "10月20日", summary: "输入维度与模型要求不符" },
+      { date: "10月17日", summary: "输出Shape与预期不符" },
+    ],
+  },
+  {
+    id: "image-preprocessing",
+    topic: "图像数据预处理",
+    count: 2,
+    examples: [
+      { date: "10月19日", summary: "输入格式转换失败" },
+      { date: "10月16日", summary: "归一化范围不一致" },
+    ],
+  },
+];
+
+function errorLearningSuggestions(tasks) {
+  const task = arr(tasks).find(item => item?.name === LEARNING_TASK);
+  if (!task) return [];
+  return HOME_ERROR_LEARNING_PATTERNS.map((pattern, index) => candidate({
+    task,
+    mode: "learning",
+    type: `error-learning-${pattern.id}`,
+    title: pattern.topic,
+    reason: `近 7 天出现 ${pattern.count} 次相关错误记录，建议补齐${pattern.topic}知识。`,
+    activity: `近 7 天出错 ${pattern.count} 次`,
+    evidence: pattern.examples.map((item, exampleIndex) => evidence(`${pattern.id}-${exampleIndex}`, item.date, item.summary)),
+    steps: [`学习${pattern.topic}的关键概念`, "结合历史错误检查相关条件"],
+    action: { type: "learning-lesson", materialId: "learning-lesson" },
+    actionLabel: "开始学习",
+    prompt: `请结合最近记录，讲解“${pattern.topic}”的关键概念，并说明如何检查相关错误。`,
+    priority: 130 - index,
+    deps: pattern,
+  })).map((item, index) => ({
+    ...item,
+    errorCount: HOME_ERROR_LEARNING_PATTERNS[index].count,
+    errorPeriod: "近 7 天",
+    errorExamples: HOME_ERROR_LEARNING_PATTERNS[index].examples,
+  }));
+}
 
 function candidate({ task, mode, type, title, reason, evidence: facts, steps, action, actionLabel, prompt, activity: explicitActivity, tone = mode === "learning" ? "rose" : "sand", priority = 0, deps }) {
   const taskName = clean(task.name);
@@ -180,7 +238,7 @@ function demoSuggestions(task, mode) {
 
 export function buildHomeSuggestions({ tasks = [], currentTaskName = "", mode = "learning" } = {}) {
   if (!MODES.has(mode) || !Array.isArray(tasks)) return [];
-  const pool = [];
+  const pool = mode === "learning" ? errorLearningSuggestions(tasks) : [];
   for (const task of tasks) {
     if (!object(task) || !clean(task.name)) continue;
     if (mode === "learning" && task.kind === "learning") pool.push(...learningSuggestions(task));

@@ -1100,3 +1100,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/LearningDiscoveryPage.jsx` 和 `../ascstudio/` Pages 产物，并同步推荐区说明文案。搜索、其他三张卡及页面楼层不变；不改变页面序列 / hash 或 API / Host / Application 边界。
 - 验证：`npm run build:pages`、`git diff --check` 通过；构建后仍为 4 项，线上 JS 返回 HTTP 200，已核对推荐标题和关注按钮文案。
 - 提交 `acfb61a1` 已推送 `origin/main`，Pages workflow `39775522183` 成功。共享工作区仅同步本次推荐内容，未覆盖或纳入其他对话改动。
+## 2026-10-22 · 首页错误记录知识推荐卡片
+
+- 首页继续使用原有三张文件夹卡片；学习建议改为“知识点 + 近 7 天出错次数 + 两条简短历史记录”，不暴露错误所属任务类型。用户认可的参考为本对话生成的卡片概念图。
+- 演示记录锚定 2026-10-22，是静态内容，不是实际用户统计或根因诊断。卡片入口进入对应学习任务；真实错误聚合尚未接入。
+- 验证及发布结果见根目录 `AGENTS.md` 与 `design-qa.md` 的本日条目。未改变页面序列或 API / Host / Application 分层。

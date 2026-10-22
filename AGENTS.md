@@ -5900,3 +5900,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/LearningDiscoveryPage.jsx` 和 `ascstudio/` Pages 产物，并同步推荐区说明文案。搜索、其他三张卡及页面楼层不变；不改变页面序列 / hash 或 API / Host / Application 边界。
 - 验证：`npm run build:pages`、`git diff --check` 通过；构建后仍为 4 项，线上 JS 返回 HTTP 200，已核对推荐标题和关注按钮文案。
 - 提交 `acfb61a1` 已推送 `origin/main`，Pages workflow `39775522183` 成功。共享工作区仅同步本次推荐内容，未覆盖或纳入其他对话改动。
+### 2026-10-22 · 首页错误记录知识推荐卡片
+
+- 用户确认将已选方案落入 Ascend Studio 首页：保留三张文件夹卡片，展示知识点、近 7 天错误次数与两条近期错误摘要；不区分记录来自开发或学习任务。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`src/home-recommendations.js`、`src/new-task-home.css`。日期、次数和摘要为固定演示数据，不是实际遥测或已确认根因。视觉依据为用户认可的 ImageGen 效果图；本地 CUA 在 1280×720 检查卡片显示与学习任务入口。
+- 属于首页 Application / Task 演示，不影响页面序列、hash 或 API / Host / Application 边界。`node --check`、`npm run build`、`npm run build:pages` 与 `git diff --check` 通过；未运行测试套件，保留既有 bundle 体积提示。
+- 源码、Pages 产物与本条记录基于最新 `origin/main` 隔离构建，并一并提交、推送至 `origin/main`；共享工作区的其他修改未纳入。
