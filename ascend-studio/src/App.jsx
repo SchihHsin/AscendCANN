@@ -1006,14 +1006,14 @@ function App() {
             <button className="new-task-button" type="button" onClick={() => { wb.setMenu(null); setShowLearningDiscovery(false); setShowNewTaskHome(true); }}>
               <IconPlus size={18} /><span>新建任务</span>
             </button>
+            <button className={"nav-row" + (showLearningDiscovery ? " is-current" : "")} type="button" aria-current={showLearningDiscovery ? "page" : undefined} onClick={() => { wb.setMenu(null); setShowNewTaskHome(false); setShowLearningDiscovery(true); }}>
+              <IconSparkles size={18} /><span>学习发现</span>
+            </button>
             <button className="nav-row" type="button" onClick={() => openDialog("automations")}>
               <IconSettingsAutomation size={18} /><span>自动化任务</span>
             </button>
             <button className="nav-row" type="button" onClick={() => openDialog("capabilities")}>
               <IconBooks size={18} /><span>能力库</span>
-            </button>
-            <button className={"nav-row" + (showLearningDiscovery ? " is-current" : "")} type="button" aria-current={showLearningDiscovery ? "page" : undefined} onClick={() => { wb.setMenu(null); setShowNewTaskHome(false); setShowLearningDiscovery(true); }}>
-              <IconSparkles size={18} /><span>学习发现</span>
             </button>
           </div>
 
