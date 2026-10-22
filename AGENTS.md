@@ -5954,7 +5954,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 自动化任务和能力库不再从左侧菜单弹窗打开。能力库保留搜索、分类和“带入当前任务”；自动化保留启停、演示运行和新增。使用能力后返回任务页并聚焦输入框。列表搜索与选中态继续使用透明黑。
 - 修改 `ascend-studio/src/App.jsx`、`WorkbenchDialogs.jsx`、`styles.css`、`useWorkbenchLayout.js`，并重建根目录 `ascstudio/` Pages 输出。能力库与自动化仍使用本地 Demo 状态，没有接入实际服务或调度器。属于 Application / Task 导航，不改变报告序列 / hash，也不改变 API / Host / Application 分层定义。
 - 验证：在最新 `origin/main` 快进后的隔离工作树运行 `npm run build:pages` 成功，只有 Vite 既有 bundle 体积提示；`git diff --check` 通过。导航和三种页面的交互已在本地预览回放核对；本次隔离预览端口受浏览器本地访问策略阻止，未据此声称完成新的截图回放。未运行测试套件。
-- 源码、Pages 产物和本交接记录将作为本次功能提交推送到 `origin/main`；共享工作区中其他对话的修改不纳入。
+- 源码、Pages 产物和本交接记录已随功能提交 `dfb7829a` 推送到 `origin/main`；共享工作区中其他对话的修改不纳入。
 
 
 ### 2026-10-22 · AddCustom 聚焦与总览统一为自由画布

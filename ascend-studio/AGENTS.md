@@ -1148,7 +1148,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 搜索与分类、自动化启停 / 演示运行 / 新增、能力库带入当前任务能力继续可用；带入后回任务页并聚焦输入框。项目列表搜索框和选中状态延续透明黑。
 - 变更 `src/App.jsx`、`src/WorkbenchDialogs.jsx`、`src/styles.css`、`src/useWorkbenchLayout.js` 及根目录 Pages 输出 `../ascstudio/`。管理页面数据和操作仍是本地 Demo，不接真实服务；不改变报告页序 / hash 或 API / Host / Application 层边界。
 - 验证：快进至最新 `origin/main` 后执行 `npm run build:pages` 和 `git diff --check` 均通过；构建只有现存的大 bundle 提示。此前本地回放确认四入口与返回任务动作；本次新开的隔离预览端口被浏览器本地访问策略拦截，未将它记作截图验证。未运行测试套件。
-- 源码、Pages 产物和本记录作为本次功能提交推送到 `origin/main`；共享工作区其他对话的未提交内容不纳入。
+- 源码、Pages 产物和本记录已随功能提交 `dfb7829a` 推送到 `origin/main`；共享工作区其他对话的未提交内容不纳入。
 
 
 ## 2026-10-22 · AddCustom 统一任务画布
