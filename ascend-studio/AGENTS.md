@@ -1030,3 +1030,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 
 - 发布回执：功能提交 d7039647 已推送至 origin/main；Pages run 39728932934 成功，发布 index、JS、CSS 和内容图均返回 HTTP 200。线上 CUA 读取超时，视觉与楼层结构以本地 1440×900 生产包截图为证；未声称线上点击回放。其他对话的共享工作区改动未纳入功能提交。
+
+### 2026-10-22 · 学习发现导航排序
+
+- 将左侧「学习发现」移至「自动化任务」上方；顺序为新建任务、学习发现、自动化任务、能力库。按钮仍在主内容区打开发现页，不触发弹窗。
+- 修改 `src/App.jsx` 并从最新干净主线重新生成 `../ascstudio/`。隔离构建保护了其他对话在共享工作区里的改动。
+- `npm run build:pages` 和 `git diff --check` 通过；Pages run `39730791026` 部署成功，线上 index 已引用新 bundle，JS / CSS 均 HTTP 200。功能提交 `166b6e35` 已推送。页面序列、hash 和 API / Host / Application 边界未变。

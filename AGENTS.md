@@ -5794,3 +5794,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 
 - 发布回执：功能提交 d7039647 已推送至 origin/main；GitHub Pages run 39728932934 的构建与部署均成功。线上 index、JS、CSS 和内容图资源均返回 HTTP 200；线上 CUA 页面检查超时，因此视觉核验引用本地 1440×900 生产包截图，不声称完成线上交互回放。其他对话的暂存、未暂存和未跟踪改动保留。
+
+### 2026-10-22 · 学习发现导航排序
+
+- 左侧导航顺序调整为「新建任务 → 学习发现 → 自动化任务 → 能力库 → 项目与任务列表」，学习发现仍打开主内容区页面，既有入口行为不变。
+- 变更 `ascend-studio/src/App.jsx` 与静态 Pages 产物 `ascstudio/`。基于 `origin/main` 的干净隔离快照构建和发布，工作区其他对话的暂存、未暂存和未跟踪改动均保留。
+- 验证：`npm run build:pages`、`git diff --check` 通过；GitHub Pages run `39730791026` 成功；线上 `ascstudio/index.html` 已引用新 JS bundle，JS 与 CSS 返回 HTTP 200。
+- 不改学习发现页面内容、页面序列 / hash 或 API / Host / Application 边界。功能提交 `166b6e35` 已推送 `origin/main`。
