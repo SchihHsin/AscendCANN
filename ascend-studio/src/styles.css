@@ -46,7 +46,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .profile-button { width: 31px; height: 31px; border: 1px solid #e9e8e6; border-radius: 50%; color: #696e7c; background: #f2f2f3; font-size: 12px; font-weight: 600; cursor: pointer; }
 
 .workspace-grid { display: grid; grid-template-columns: minmax(286px, 22vw) minmax(0, 55fr) minmax(500px, 45fr); min-height: 0; overflow: hidden; }
-.workspace-grid.is-new-task-home { grid-template-columns: minmax(286px, 22vw) minmax(0, 1fr); }
+.workspace-grid.is-new-task-home, .workspace-grid.is-learning-discovery { grid-template-columns: minmax(286px, 22vw) minmax(0, 1fr); }
 .workspace-grid.is-new-task-home .new-task-button { background: #fff; }
 .sidebar { min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 12px 12px 10px; border-right: 1px solid var(--line); background: #fff; overflow: hidden; }
 .primary-nav { display: flex; flex-direction: column; gap: 3px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
@@ -56,6 +56,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .nav-row { height: 32px; padding: 0 10px; border-radius: 7px; font-size: 13px; }
 .nav-row svg { color: #717782; stroke-width: 1.7; }
 .nav-row:hover { background: #f7f7f6; }
+.nav-row.is-current { background:#f2f2f0; color:#292a30; font-weight:600; }
+.nav-row.is-current svg { color:#707b9f; }
 .project-list-header { min-height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 2px 2px 0; }
 .project-list-header h1 { margin: 0; font-size: 15px; font-weight: 650; letter-spacing: -.2px; }
 .compact-icon { height: 30px; width: 30px; border-color: transparent; color: #777a82; }
@@ -295,7 +297,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .sidebar[hidden] { display: none; }
 .sidebar-shell.is-collapsed { background: #fbfbfa; border-right: 1px solid var(--line); }
 .workspace-grid.is-sidebar-collapsed { grid-template-columns: 18px minmax(0, 55fr) minmax(500px, 45fr); }
-.workspace-grid.is-new-task-home.is-sidebar-collapsed { grid-template-columns: 18px minmax(0, 1fr); }
+.workspace-grid.is-new-task-home.is-sidebar-collapsed, .workspace-grid.is-learning-discovery.is-sidebar-collapsed { grid-template-columns: 18px minmax(0, 1fr); }
 .sidebar-toggle {
   position: absolute;
   z-index: 3;
