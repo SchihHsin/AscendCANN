@@ -1317,4 +1317,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 外层抖音渠道卡维持已确认的左青右粉、向下淡白渐变。未增加图外的深色嵌套容器。
 - 修改 `src/ChannelDraftContent.jsx`、`src/CommunityDraftPanel.jsx`、`src/channel-draft.css`、`src/community-draft.css`，重建 `../ascstudio/` Pages 包。此为样式表达，不构成真实模型 / NPU 验证或平台发布。
 - `npm run build:pages`、`git diff --check` 通过；CUA 本地核对 2×2 总览与完整单页。未运行测试套件。
-- Commit / push 与 Pages workflow 结果随后补记。
+- 源码与 Pages 产物提交 `60ebb1d8` 已推送 `origin/main`；GitHub Pages workflow `39953053218` 成功。线上 `/ascstudio/` HTML、`index-BW5TNpXr.js` 与 `index-BHMQBo6M.css` 均 HTTP 200；线上 CSS 已确认含语义色样式并保留外层渠道青粉渐变。

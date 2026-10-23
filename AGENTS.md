@@ -6162,4 +6162,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 外层抖音渠道卡仍保留用户此前确认的左青右粉、向下淡白渐变；没有添加新的内层深色容器。
 - 更新 `ascend-studio/src/ChannelDraftContent.jsx`、`CommunityDraftPanel.jsx`、`channel-draft.css`、`community-draft.css` 和根目录 `ascstudio/` Pages 产物。只改变展示层，不代表真实模型 / NPU 结果或平台发布状态；无页面序列 / hash、API、Host / Harness 或 Application / Task 边界变化。
 - 验证：`npm run build:pages`、`git diff --check` 通过。CUA 本地预览查看 2×2 渠道总览与单张图文详情，确认内图不再使用抖音青粉色、外层渠道色渐变保留。未运行测试套件。
-- Commit / push 与 Pages workflow 结果随后补记。
+- 源码与 Pages 产物提交 `60ebb1d8` 已推送 `origin/main`；GitHub Pages workflow `39953053218` 成功。线上 `/ascstudio/` HTML、`index-BW5TNpXr.js` 与 `index-BHMQBo6M.css` 均 HTTP 200；线上 CSS 已确认含语义色样式并保留外层渠道青粉渐变。
