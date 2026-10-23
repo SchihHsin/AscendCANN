@@ -6248,6 +6248,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 源码提交 `b4a59eca`、Pages 资源提交 `eedae623` 已推送 `origin/main`。Pages workflow `39970392442` 对应 `eedae623` 且成功；线上 `/ascstudio/` 引用脚本 HTTP 200，并确认包含 `application-view` 播放器入口与登录失败兜底。未登录环境无法确认视频实际播放。
 - 为供共享的本地 Demo 预览，本轮将同一播放器入口、课程 embed URL 与样式最小同步到当前工作区的三处源码；没有重建或覆盖 `ascstudio/` 发布目录。由于工作区正包含其他对话的在途改动，本地同步保留为未提交状态；线上代码已经由前述提交发布。
 
+### 2026-10-24 · ResNet50 视频位置与默认显示修正
+
+- 用户截图显示当前选中节点为「核对资源释放顺序」，节点关联资料是「AscendCL 概述」。此前播放器依赖节点资料带有 `embedUrl`，且需要点击展开；因此该节点看不到 ResNet50 视频，且入口不在用户预期的主视频区域。这是条件绑定和默认隐藏造成的呈现错误。
+- 将 ResNet50 C&C++ 课程改为该任务学习画布的常驻官方视频，直接显示在「讲解、视频与理解检查」区顶部，默认可见；节点相关官方资料链接、交互图解讲解与理解检查仍保留在下方。改动 `ascend-studio/src/OfficialLearningActivities.jsx`、`official-learning-canvas.css` 和 `ascstudio/` 发布资源；没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages` 成功；`npm run test:sites` 4/4 通过；`git diff --check` 通过。部署后 `/ascstudio/` HTML 与 JS 均 HTTP 200，线上 bundle 可检索到 ResNet50 视频标题、`application-view` 地址及节点资料标签。第三方课程平台在未登录条件下可能要求昇腾 AI 学堂登录，未声称无需登录即可实际播放。
+- 源码提交 `f5493e3d`、Pages 资源提交 `dd2ef894` 已推送 `origin/main`；GitHub Pages workflow `39993079318` 成功。共享本地工作区已同步组件和样式的相同修正，但保留为未提交状态，避免纳入其他对话的在途更改。
+
 ### 2026-10-24 · 图像推理任务的全部内容改为自由画布
 
 - 用户纠正：「全部内容」总览改成画布视图；分组卡片总览与自由画布不能并列。此次先在图像推理调试试点，不推广到其他任务。
