@@ -6254,7 +6254,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascend-studio/src/App.jsx` 将图像推理的总览入口映射至自由画布，自动迁移已打开的旧总览会话，并在入口时适配全部可见节点；`TaskWorkspace.jsx` 更正按钮标题与返回路径并移除重复「手动整理内容」入口；`TaskCanvas.jsx` 将图像推理画布中的「总览」改为仅执行视野适配的「适应全部」。
 - 同步 `ascend-studio/AGENTS.md` 与 `ascend-studio/design-qa.md`，明确与用户已确认的方案及其他任务的范围边界；未改变页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界，不代表 Python、模型或 NPU 已验证。
 - `npm run build`、`npm run build:pages`、`git diff --check` 通过；桌面 CUA 1440×900 核对「图像推理画布」、代码和张量图解节点、连线、小地图、适应全部及返回任务。首次桌面进入后视野为 68%；从任务内容进入、返回并再次进入时画布和视野保持正确。未新增或运行自动化测试；旧存档迁移未单独构造回放。
-- 本地源码在 `987b947a` 基础上重放到当时的 `origin/main`；后续同步主分支后需重新构建 Pages 产物，再补记最终提交与推送结果。只先在图像推理调试试点，待用户评审后再讨论推广。
+- 源码提交 `7e3cacc9`、Pages 产物提交 `46dc23ec` 已推送 `origin/main`。GitHub Pages workflow `39991571477` 的 build / deploy 均成功；线上新版 JS `index-DPQtH-HK.js` 与 CSS `index-CiM5ep6g.css` 均 HTTP 200，HTML HEAD 请求超时，未确认 HTML 响应。只先在图像推理调试试点，待用户评审后再讨论推广。
 
 ### 2026-10-24 · 修复探索终点提示重叠与重复发送入口
 
