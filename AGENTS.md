@@ -6178,4 +6178,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出中文主题字体与之前不一致，并明确更喜欢之前的样式。移除主题专属的无衬线、加粗、字距覆盖，使中文标题重新沿用普通探索节点既有的衬线字体栈；移除窄屏下独立的 15px 字号覆盖。英文小字、中文 Prompt、其他布局和交互均保留。
 - 依据：用户反馈及其截图（H）；恢复既有字体栈，没有加入新字体或外部资源。当前工作只改变首页文字样式，不改变悬浮下钻、连线、等待时间或任务行为。
 - 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 层边界；不涉及真实训练诊断或 NPU 验证。
-- 本地 Chrome 1280×720 预览核对首层六个中文主题，截图 `ascend-studio/evidence/20261023-home-exploration/chinese-font-restored-1280x720.png`；构建、测试、提交与 Pages 发布结果待完成后回填，详见 `ascend-studio/design-qa.md`。
+- 本地 Chrome 1280×720 预览核对首层六个中文主题，截图 `ascend-studio/evidence/20261023-home-exploration/chinese-font-restored-1280x720.png`。`npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）与 `git diff --check` 均通过；构建保留既有 JS chunk 体积提示。推送与 Pages workflow 结果待回填，详见 `ascend-studio/design-qa.md`。

@@ -1070,4 +1070,5 @@ final result: passed
 - **实现:** 删除 `.explore-field__node.is-topic strong` 的无衬线、粗体、字距与窄行高覆盖，以及移动视口下独立的 15px 覆盖。中文主题重新继承 `.explore-field__node strong` 的既有 `ui-serif, Georgia, "Songti SC", serif` 字体与字重。英文小字、标题层级、布局、Prompt 和下钻交互未改。
 - **视觉核验:** 本地 Chrome `http://127.0.0.1:5194/?home=explore`，1280×720 视口；首层六个中文主题均恢复原有衬线字形，与页面主标题同属原有字形风格，英文翻译仍在中文上方。截图：`evidence/20261023-home-exploration/chinese-font-restored-1280x720.png`。
 - **边界:** 用户偏好与附图属于直接反馈（H）；字体恢复沿用仓库既有 CSS 定义，不加入外部字体。没有改变页面序列 / hash、Prompt 内容、悬浮节奏、连线或 API / Host / Application 边界，不涉及真实训练与 NPU 验证。
-- **Build / release:** 检查、构建、提交、推送及 Pages workflow 结果待完成后回填。
+- **Build / validation:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check` 通过；Vite 保留既有 JS chunk 超过 500 kB 的提示。构建产物 CSS 已确认包含原衬线字体栈，且不含主题专属无衬线标题覆盖。未新增自动化测试。
+- **Release:** 推送与 Pages workflow 结果待完成后回填。
