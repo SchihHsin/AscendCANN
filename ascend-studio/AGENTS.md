@@ -1201,3 +1201,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 顶部配图从 Banner 中段向下逐渐淡出，最终与页面的浅灰底色 `#f7f8fc` 融合；避免下沿出现明显横线或硬切边。
 - 延续用户已确认的清透浅蓝紫方向，深色只用黑色；本次只调整背景过渡，保留标题、推荐课程、楼层顺序与交互。
+- `npm run build:pages` 与 `git diff --check` 通过。源码和 Pages 产物提交 `4c100b10` 已推送 `origin/main`，GitHub Pages workflow `39911378396` 成功；线上入口已引用新 bundle，CSS 已确认包含渐隐规则。桌面同视口视觉比对仍未完成，见 `design-qa.md`。

@@ -980,5 +980,6 @@ final result: passed
 - **Build / validation:** `npx vite build --base=./ --outDir /tmp/ascstudio-banner-fade-validation --emptyOutDir` 通过；隔离的最新主分支 `npm run build:pages` 通过；`git diff --check` 通过。未运行自动化测试。构建保留既有主 JS 包体积提醒。
 - **Findings:** 本轮窄屏观察未发现渐隐断层；桌面尺寸、源稿同视口对照及完整五项视觉一致性审查尚未完成。
 - **Open item:** 需要可捕获的桌面视口才能做源稿与实现图的同尺寸比较。
+- **Deployment:** 提交 `4c100b10` 已推送；GitHub Pages workflow `39911378396` 成功。线上入口引用了新 JS/CSS bundle，CSS 内容确认有渐隐规则；未完成线上桌面截图核对。
 
 final result: blocked

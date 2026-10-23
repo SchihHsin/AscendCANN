@@ -6036,5 +6036,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：用户明确选定的视觉稿 `/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-bb3ed6bb-1a8e-4e58-9692-0c9c87a16e37.png`（1486×1059）及本轮直接反馈；属于用户设计意图。实际预览约 381×668，能看到渐隐，但未能与桌面稿同视口并排对照。
 - 边界：只改学习发现页面视觉；页面序列、路由、API / Protocol、Host / Harness 和 Application / Task 边界均未改变。
 - 核验：`npx vite build --base=./ --outDir /tmp/ascstudio-banner-fade-validation --emptyOutDir` 通过；隔离的最新主分支 `npm run build:pages` 通过；`git diff --check` 通过。未运行自动化测试。构建有既有主 JS 包体积提示。
-- Commit / push：最新主分支隔离发布准备中；完成后回填结果。其他工作目录内的变更未清理、重置或纳入发布。
+- Commit / push：源码和 Pages 产物提交 `4c100b10` 已推送 `origin/main`；GitHub Pages workflow `39911378396` 成功。线上 `ascstudio/index.html` 已引用新 JS/CSS bundle，CSS 内容确认含 Banner 下沿渐隐规则。其他工作目录内的变更未清理、重置或纳入发布。
 - 未决：桌面同视口视觉对照尚未完成，见 `ascend-studio/design-qa.md` 的 `final result: blocked`。
