@@ -6142,3 +6142,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 Chrome/CDP 回放：训练主题停留 350ms 时未展开，超过延迟后居中并显示 4 个关联项；鼠标静止 1 秒仍停留本层；主动移向“提升训练效率”后展开其 4 个关联项，随后静止 1 秒仍不连跳。模型部署居中后显示 3 个关联项。381px 视口下文档滚动宽度等于视口宽度，节点文字未造成横向溢出。截图：`ascend-studio/evidence/20261023-home-exploration/hover-root-english-1417x941.png`、`hover-centered-training-1417x798.png`。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过；保留既有 JS chunk 体积提示。未改变正式页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；主题仍为人工预设，不代表读取日志、训练诊断或 NPU 验证。
 - 源码提交 `f15587f6` 与 `ascstudio/` Pages 产物提交 `5f6dae30` 已推送 `origin/main`。Pages workflow `39948215316` 成功；线上 `/ascstudio/` 返回 HTTP 200，加载 `index-DXP34u-g.js` 与 `index-CGlj_L9u.css`，两项资源均 HTTP 200。
+### 2026-10-23 · 图像推理画布交互试点
+
+- 将 AddCustom 的卡片级聚焦／完整阅读交互作为试点带入「图像推理调试」：卡片右上角聚焦后仍留在自由画布并自动适配；完整阅读转入任务内容区；静态预览不保留重复展开按钮。其他任务不变。
+- 在 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 追加规则页，原有页面锚点不变；在 `ascend-studio/design-qa.md` 补充评审项。
+- `npm run build:pages`、`git diff --check` 通过；本地 5188 CUA 回放验证聚焦 → 完整阅读 → 返回，聚焦状态保留。未运行测试套件，无真实 Python / 模型 / NPU 验证。源码、材料、QA 与 `ascstudio/` 产物随本轮修改推送；是否推广下一种业务任务，待用户评审后再定。

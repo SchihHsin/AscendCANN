@@ -1294,3 +1294,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Chrome/CDP 回放验证训练首层与“提升训练效率”分支均不会因鼠标静止而连跳；模型部署主题展开 3 个关联项。381px CSS 视口下页面无横向滚动。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过；无页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。页面词条仍非真实训练诊断或 NPU 结果。
 - 源码提交 `f15587f6`、根仓 Pages 产物提交 `5f6dae30` 已推送 `origin/main`；Pages workflow `39948215316` 成功，线上 HTML / JS / CSS 均 HTTP 200。
+
+### 2026-10-23 · 图像推理卡片聚焦与完整阅读试点
+
+- 按用户确认的逐任务评审计划，先在「图像推理调试」启用卡片右上角“聚焦”入口；聚焦留在自由画布内，自动按当前视口适配所选卡片，保留图像、张量、源码和尝试之间的任务关系。
+- 右上角“完整阅读”继续打开同一任务内容区；长内容在该区查看。画布只保留静态预览，去除摘要卡片内重复的“展开内容”按钮；任务内容标签与回画布入口沿用现有工作区。
+- 范围限于图像推理试点；AddCustom 既有行为不变，其他任务不变。规则补入 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 末尾新页，既有页码 / hash 不移动；评审清单更新于 `ascend-studio/design-qa.md`。
+- 方向来自用户确认（H）；“自由画布保留任务关联，完整阅读转任务内容区”的复用方式为本次待评审设计方案（L）。未改变 API / Protocol、Host / Harness、Application / Task 边界，无真实 Python、模型或 NPU 验证。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过（Vite 保留既有 >500 kB chunk 提示）。本地 `http://127.0.0.1:5188/?task=development` 回放确认：张量图解聚焦后仍在自由画布且自动从 37% 适配至 74%；完整阅读在任务内容区打开；回到画布后所选对象及 74% 视口保留。未运行测试套件。
+- 源码、故事材料、QA 记录与 `ascstudio/` Pages 产物随本轮提交推送到 `origin/main`；是否把共通入口继续推广到下一种业务任务，待用户评审本试点后再定。

@@ -875,6 +875,29 @@ body.overview.story-deck .capture-image{pointer-events:none}
     </div>
   </div></div>
 </section>
+<section class="slide s-gray shared-rules canvas-focus-slide" data-rule="image-inference-canvas-pilot" data-title="图像推理沿用聚焦与完整阅读，画布身份保持不变">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">图像推理沿用聚焦与完整阅读，画布身份保持不变</span></div><div class="subttl">共用机制 · 图像推理试点 · 在既有自由画布内阅读</div></div><div class="section-tabs"><span>主动交互</span><span>主动学习</span><span>开发中学习</span><span class="active">共用机制</span></div></div>
+  <div class="body-area"><div class="rule-full">
+    <p>这是 AddCustom 节点聚焦与长内容阅读规则的第二个试点。图像推理右侧仍以自由画布为默认内容形态，保留任务内容标签；聚焦和完整阅读是针对单个节点的查看尺度，不会把整个任务改成 AddCustom 专属的聚焦视图。</p>
+    <div class="rule-figure">
+      <div class="rule-state-flow">
+        <div class="rule-state"><strong>图像推理自由画布</strong><p>保留图像、张量、源码、尝试和结果等节点及其任务关系</p><small>全览与定位</small></div><div class="rule-arrow">→</div>
+        <div class="rule-state current"><strong>聚焦所选节点</strong><p>仍在画布中，自动适配所选卡片；卡片只承担静态预览</p><small>右上角聚焦操作</small></div><div class="rule-arrow">→</div>
+        <div class="rule-state"><strong>完整阅读</strong><p>同一内容打开到任务内容区，超长正文在这里滚动</p><small>右上角完整阅读操作</small></div>
+      </div>
+    </div>
+    <div class="rule-layout">
+      <div class="rule-copy"><h2>试点边界与行为</h2><ul>
+        <li><b>任务框架不变：</b>图像推理仍是独立任务，继续使用自身的自由画布与任务内容标签；左侧任务列表和中间对话不变。</li>
+        <li><b>聚焦是画布内操作：</b>从图像、张量解释、源码或尝试卡片右上角聚焦后，保留所选节点及相关关系，自动适配所选卡片；不切换到 AddCustom 的专属聚焦布局。</li>
+        <li><b>完整阅读是任务内容操作：</b>从卡片右上角打开完整内容时，进入右侧任务内容区；代码、图解或记录在该区按需滚动。返回后回到原画布上下文。</li>
+        <li><b>卡片只做预览：</b>卡片展示足以识别对象的摘要、关键图形或代码片段；不在卡片内部滚动，不重复复制一份完整正文，也不新增底部提示条。</li>
+        <li><b>范围仅到本试点：</b>本轮只验证图像推理与 AddCustom 两种任务共享“聚焦 / 完整阅读”入口原则；其他任务不随之改变，需逐项评审后再推广。</li>
+      </ul></div>
+      <div class="rule-conclusion">共通的是卡片右上角的两种阅读动作与静态预览原则；任务自己的画布结构、标签和内容组织仍由各任务决定。</div>
+    </div>
+  </div></div>
+</section>
 </div>
 <!-- 调色面板（JS 会把它挂到当前黑底章节封面页内）-->
 <div id="panel" style="display:none">
