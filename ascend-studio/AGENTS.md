@@ -1309,3 +1309,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 中文主题名与首层 Prompt 保持主标题；英文仅作为上方小字翻译。页面主标题上方显示英文译文。训练等预设探索文案、prompt 内容和分类语义不变。
 - 下钻中心节点移除卡片白底、描边、圆角与阴影，继续用与外围节点一致的文字样式。画布说明固定在下方留白处，不能与中心 / 卫星节点重叠。
 - CUA 本地预览 1280×720 检查首层与训练展开通过；`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过。人工预设词条不代表真实日志诊断或 NPU 验证。
+- 源码提交 `f01a8d70` 与 Pages 产物提交 `7126a2af` 已推送 `origin/main`；workflow `39952421205` 成功，线上 JS / CSS 均 HTTP 200。

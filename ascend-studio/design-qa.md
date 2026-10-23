@@ -1062,4 +1062,4 @@ final result: passed
 - **布局:** 下钻画布中的说明行放到画布底部的独立留白位置；本地 `http://127.0.0.1:5194/?home=explore` 的 1280×720 CUA 预览检查首层和训练展开，中心与四周节点、连线、说明行无重叠，中心不再出现孤立卡片风格。
 - **检查:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）与 `git diff --check` 通过。没有检查窄屏；不声称训练现场诊断、模型执行或 NPU 验证。
 - **边界:** 保留 620ms 悬浮预览与展开后至少移动 14px 的防连跳逻辑、连线动效、原始中文 Prompt 与点击锁定；没有改变正式页面序列 / hash 或 API / Host / Application 层边界。
-- **发布:** 源码、Pages 产物及交接记录提交 / 推送与 Pages workflow 核对待完成。
+- **发布:** 源码提交 `f01a8d70`、Pages 产物提交 `7126a2af` 已推送 `origin/main`；Pages workflow `39952421205` 成功。线上 `/ascstudio/` 已加载 `index-Dsvh3DPW.js` 与 `index-CEruwWww.css`，页面及资源均 HTTP 200。

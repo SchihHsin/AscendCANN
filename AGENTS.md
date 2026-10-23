@@ -6154,4 +6154,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 下钻后的中心主题去掉白底卡片、边框、圆角和阴影，与周围节点统一为文字节点；说明行移到画布底部，避免覆盖中心主题或周边方向。620ms 悬浮节奏、主动移动门槛、连线、Prompt 数据和点击锁定逻辑保留。
 - 本地 CUA 1280×720 检查首层和训练展开：中心“训练与调优”以小字 `TRAINING & TUNING` 在上、中文主题在下；周边节点仍显示原中文 Prompt，连接线与底部说明没有相互遮挡。词条是人工预设，不代表真实训练诊断或 NPU 验证。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过。无页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。
-- 源码与 Pages 发布产物、根交接、`ascend-studio/AGENTS.md`、`ascend-studio/design-qa.md` 一并记录本次修正；提交与线上 Pages 核验待完成。
+- 源码提交 `f01a8d70` 与 Pages 产物提交 `7126a2af` 已推送 `origin/main`；GitHub Pages workflow `39952421205` 成功。线上 `/ascstudio/?home=explore` 返回 HTTP 200，加载 `index-Dsvh3DPW.js` 与 `index-CEruwWww.css`，均 HTTP 200。根交接、`ascend-studio/AGENTS.md`、`ascend-studio/design-qa.md` 均记录本次修正。
