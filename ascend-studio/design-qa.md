@@ -1013,6 +1013,6 @@ final result: blocked
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`node --test src/canvas-node-position.test.js src/official-learning-progress.test.js`（14 项）、`git diff --check`：通过；保留既有 JS chunk 体积提醒。
 - 额外直接运行 `node --test src/home-recommendations.test.js` 时，Node 因该既有测试依赖无扩展名导入 `learning-data` 而无法解析；该测试不覆盖本次文件，没有改动相关代码。
 - 词条仍为人工整理的预设探索方向，不代表个性化训练诊断、真实日志、模型或 NPU 验证。
-- Deployment: pending.
+- Deployment: 源码与证据 commit `0acd2f67`、Pages bundle commit `161e74bd` 已推送 `origin/main`；GitHub Pages workflow `39923025865` 成功。线上 `/ascstudio/?home=explore` HTTP 200，引用的 JS `index-BeBs4LFF.js` 与 CSS `index-Belprzrk.css` 均 HTTP 200，内容确认包含 ResizeObserver 连线测量、节点进入动效与 reduced-motion 规则。
 
 final result: passed

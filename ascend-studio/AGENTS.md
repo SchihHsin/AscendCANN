@@ -1237,4 +1237,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 尊重 `prefers-reduced-motion`：禁用节点 / 连线动画，节点保持可见，连线作为静态关联保留。悬浮、锁定、路径和 prompt 的既有行为不变。
 - 本地 `http://127.0.0.1:5187/?home=explore`，Chrome CSS viewport 1672×941 与 381×664 核验训练主题展开、4 个子节点、4 条连线、单分支高亮和窄屏无横向溢出。证据截图见 `evidence/20261023-home-exploration/drilldown-connections-training-{1672x941,381x664}.png`。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`node --test src/canvas-node-position.test.js src/official-learning-progress.test.js`（14 项）、`git diff --check` 通过。Vite 保留既有 >500KB bundle 提醒；直接单跑无关 `home-recommendations.test.js` 被其既有无扩展名 `learning-data` 导入阻塞。
-- 不改正式页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；训练内容仍为本地预设方向，未接真实日志、模型或 NPU。Commit / push 与 Pages workflow 待补记。
+- 不改正式页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；训练内容仍为本地预设方向，未接真实日志、模型或 NPU。源码与证据提交 `0acd2f67`、Pages 产物提交 `161e74bd` 已推送 `origin/main`；workflow `39923025865` 成功，线上已加载 `index-BeBs4LFF.js` / `index-Belprzrk.css`。

@@ -6083,4 +6083,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/ExploreTaskHome.jsx`、`explore-task-home.css`，新增 1672×941 与 381×664 视口截图到 `ascend-studio/evidence/20261023-home-exploration/`，并重建根目录 `ascstudio/` Pages 静态包。
 - 本地 Chrome 回放确认训练主题展开 4 个节点及 4 条连线、悬浮分支只强调对应连线；窄视口无水平溢出。减少动态效果状态下节点 opacity 为 1、动画关闭，连线静态可见。`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、相关上游 Node 测试（14 项）、`git diff --check` 通过；Vite 保留既有大 JS bundle 提醒。直接单跑 `home-recommendations.test.js` 时 Node 无法解析其既有无扩展名 `learning-data` 导入，未作为本次验证通过项。
 - 证据边界：预设训练方向仍是待确认的静态产品假设，不代表读取日志、诊断用户训练现场或真实性能 / NPU 验证；不改变首页切换、路径锁定 / prompt 行为、正式页序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- Commit / push 与 Pages 发布回执：待本轮推送后补记。
+- Commit / push：源码与证据提交 `0acd2f67`、Pages 产物提交 `161e74bd` 已推送 `origin/main`。Pages workflow `39923025865` 成功；线上 `/ascstudio/?home=explore` 返回 HTTP 200，加载 `index-BeBs4LFF.js` / `index-Belprzrk.css`（均 HTTP 200，包含连线测量、展开动效与 reduced-motion 规则）。
