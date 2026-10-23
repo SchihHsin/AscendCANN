@@ -6104,3 +6104,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `npm run build`、`npm run build:pages`、`git diff --check` 通过。未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界。
 - 本轮只提交中性灰源码、发布产物及本记录；未触碰共享工作区其他对话改动。
 - 发布记录：源码提交 `6e18be04` 与 Pages 产物提交 `f0111923` 已推送 `origin/main`。GitHub Pages workflow `39925882144` 成功；线上 `/ascstudio/` 已引用 `index-DKWVH3ia.js` / `index-B8mMxIN2.css`，两项资源返回 HTTP 200，CSS 含中性灰色值。
+
+### 2026-10-23 · 多渠道预览渐变与抖音卡片层级
+
+- 用户进一步明确四渠道卡片的色彩层级：昇腾社区、GitCode、CSDN沿用各自品牌色，但卡片顶部渐变要更淡；抖音卡片顶部是左青右粉的品牌色过渡，并从上向下淡入白色。
+- 抖音四页图文预览保留四张内容不同的深色小图卡；外层预览仍使用浅色渠道卡片，标题与四页标注位于浅底，不再套一层深色容器。抖音内容可以使用适合主题的颜色，不要求整张图都铺抖音品牌色。
+- 变更源码：ascend-studio/src/CommunityDraftPanel.jsx、ChannelDraftContent.jsx、community-draft.css、channel-draft.css；重建 ascstudio/ Pages 产物。奖励文案继续标为示例，不代表平台实际承诺；未改变报告序列或 API / Host / Application 边界。
+- 在 2026-10-23 最新 main（92b47202）上继续工作，保留并包含同期五个上游提交；未改写其源码。npm run build:pages 与 git diff --check 通过；CUA 本地预览确认抖音外层浅底与四张独立深色卡片，以及顶部青粉横向、纵向淡白效果。未运行测试套件。
+- 功能与 Pages 产物提交 33f60ed4 已推送 origin/main；GitHub Pages workflow 39930783900 成功。

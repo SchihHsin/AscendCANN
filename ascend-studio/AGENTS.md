@@ -1258,3 +1258,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 变更 9 个 CSS 文件并由最新主线源码重新构建 `../ascstudio/`。`npm run build`、`npm run build:pages` 和 `git diff --check` 通过；保留既有大 JS bundle 提示。
 - 无页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。
 - 发布核验：源码 `6e18be04`、Pages 产物 `f0111923` 已推送；workflow `39925882144` 成功。线上 `/ascstudio/` 返回新 JS / CSS 引用，两项资源均 HTTP 200，CSS 确认包含中性灰背景与用户消息气泡规则。
+
+### 2026-10-23 · 多渠道预览渐变与抖音卡片层级
+
+- 用户确认昇腾社区、GitCode、CSDN的标题区品牌色底需要更淡。抖音品牌渐变沿水平方向呈现青色到粉色，再沿垂直方向向下淡成白色；不能让青粉变成上下色带。
+- 抖音预览保留四张分别表现封面、输入对比、排查步骤、证据清单的深色小图卡。标题“抖音 · 知识图文 / 4页预览”位于最外层浅色渠道卡片上，移除原本包住预览的整块深色内层背景。生成的图可以按内容设计，不必整体限定为抖音品牌色。
+- 更新 CommunityDraftPanel.jsx、ChannelDraftContent.jsx、community-draft.css、channel-draft.css，并更新根仓 ascstudio/ Pages 产物。示例奖励与本地演示发布边界不变；没有真实平台提交或真实 NPU 验证。
+- 验证：npm run build:pages、git diff --check 通过；CUA 在本地 5191 预览中查看四渠道卡片，确认其层级与抖音内容区。未运行测试套件。上游五个提交已先快进保留至 92b47202；功能提交 33f60ed4 已推送 origin/main，Pages workflow 39930783900 成功。
