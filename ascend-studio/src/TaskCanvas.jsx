@@ -195,7 +195,8 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     actions.selectCard(card.id);
     const current = stateRef.current.viewport;
     const height = isCollapsed(card) ? COLLAPSED_HEIGHT : card.height;
-    const zoom = isAddCustom || enableCardFocus ? clampZoom(Math.min(1.1, Math.max(1, stageSize.width - 72) / card.width, Math.max(1, stageSize.height - 112) / height)) : current.zoom;
+    const widthPadding = isAddCustom ? 24 : 72;
+    const zoom = isAddCustom || enableCardFocus ? clampZoom(Math.min(1.1, Math.max(1, stageSize.width - widthPadding) / card.width, Math.max(1, stageSize.height - 112) / height)) : current.zoom;
     actions.setViewport({ zoom, x: stageSize.width / 2 - (card.x + card.width / 2) * zoom, y: stageSize.height / 2 - (card.y + height / 2) * zoom });
   };
 
