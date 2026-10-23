@@ -38,7 +38,7 @@
 .tco-categories button.is-selected { border-color: #dcdde0; color: #555a65; background: #e8e8e7; font-weight: 600; }
 .tco-clear-filters { justify-self: end; color: #625f91; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 .tco-scroll { flex: 1 1 auto; min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #d8dbe3 transparent; }
-.tco-map { display: grid; align-content: start; gap: 10px; min-width: 0; min-height: 100%; padding: 12px; background: #f7f7f5; }
+.tco-map { display: grid; align-content: start; gap: 10px; min-width: 0; min-height: 100%; padding: 12px; background: var(--surface-subtle, #f8f8f8); }
 .tco-group { min-width: 0; overflow: hidden; border: 1px solid #e4e5e3; border-radius: 8px; background: #fbfbfa; box-shadow: 0 1px 2px #20252b08; }
 .tco-group-header { display: flex; align-items: center; gap: 7px; min-height: 35px; padding: 4px 8px; border-bottom: 1px solid #ececea; background: #fdfdfc; }
 .tco-group-toggle { display: inline-flex; align-items: center; justify-content: center; width: 25px; height: 26px; flex: 0 0 25px; padding: 0; border: 0; border-radius: 4px; color: #858a95; background: transparent; cursor: pointer; }

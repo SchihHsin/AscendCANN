@@ -23,7 +23,7 @@
 .chat-next-disclosure > summary { font-size:11px; color:#737782; cursor:pointer; }
 .ex-diagram-panel { background:#fdfdfe; border-color:#e7e8ec; border-radius:8px; box-shadow:none; }
 .ex-diagram-panel .rd-heading { display:none; }
-.ex-lesson-scene { background:#f9f9fc; }
+.ex-lesson-scene { background:var(--surface-subtle, #f8f8f8); }
 .ex-trial-panel { background:#fff; border-radius:8px; }
 .ex-heading h2, .im-heading h2 { color:#30343d; }
 .ex-heading p, .im-heading p { color:#737984; }

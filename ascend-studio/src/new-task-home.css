@@ -6,7 +6,7 @@
   min-height: 0;
   overflow: hidden;
   isolation: isolate;
-  background: #f6f6f5;
+  background: var(--canvas-surface, #f5f5f5);
 }
 
 .new-task-home__dot-field {
@@ -44,7 +44,7 @@
   gap: 2px;
   border: 1px solid #e3e4e7;
   border-radius: 10px;
-  background: #eeeff1;
+  background: var(--surface-selected, #efeff0);
   box-shadow: 0 2px 6px rgba(22, 24, 31, .035);
 }
 .new-task-home__mode-button {
