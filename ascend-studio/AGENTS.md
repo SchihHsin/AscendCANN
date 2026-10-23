@@ -1356,3 +1356,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 根因：菜单主题按钮是嵌套按钮，旧规则只对菜单直接子按钮启用 flex；现已为主题选项明确设置 `display:flex`、`align-items:center`、`width:100%` 和 `text-align:left`。
 - 修改 `src/interaction.css`，重建根仓 Pages 目录 `../ascstudio/`。本地 CUA `http://127.0.0.1:5195/` 实际展开头像菜单复核通过；不改变主题切换与存储逻辑。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 均通过；Vite 大 bundle 提示仍存在。修复提交 `346a965e` 已推送；Pages workflow `39962634657` 成功；线上 HTML、JS、CSS 均 HTTP 200，CSS 主题选项规则与本地视觉检查一致。
+
+
+### 2026-10-23 · 图像推理调试默认完成态
+
+- 默认参数改为 `transpose(2,0,1)` 与 `N=1`，直接显示通过状态。图像推理任务缺少社区完成邀请时自动出现完成对话与「生成草稿」入口；学习任务和其他任务不变。
+- 旧版本地状态首次升级时改为该默认轴序，保留已有尝试和记录。通过提示仍限定为浏览器中的形状示例检查，不表示真实 Python、模型或 NPU 执行。
+- 修改 `src/App.jsx`、`src/useImageInference.js` 与 `../ascstudio/` 发布包。`npm run build:pages`、`git diff --check` 通过；Chrome 1280×720 检查默认态及旧状态刷新迁移通过。未运行测试套件。
+- 提交 `b62c47d7` 已推送到 `origin/main`；Pages workflow `39966367464` 成功。

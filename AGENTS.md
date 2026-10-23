@@ -6212,3 +6212,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 根因是主题按钮嵌套在菜单中，没有继承只匹配菜单直接子项的 flex 规则；现为主题按钮显式设置 flex 对齐、宽度与文字左对齐。
 - 修改 `ascend-studio/src/interaction.css`，并重建 `ascstudio/` Pages 资源。依据为用户截图（H）与本地 CUA 预览 `http://127.0.0.1:5195/` 的视觉复核（M）。不改变主题行为、页面序列或 API / Host / Application 边界。
 - 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）及 `git diff --check` 通过；Vite 仍显示既有大 bundle 提示。修复提交 `346a965e` 已推送 `origin/main`；Pages workflow `39962634657` 成功。线上 `/ascstudio/` 引用 `index-CAN71tdm.js` 与 `index-Cv_nE7YX.css`（均 HTTP 200），CSS 已确认主题选项为单列整行、左侧 flex 对齐和右侧勾选定位。
+
+
+### 2026-10-23 · 图像推理调试默认展示完成态与社区入口
+
+- 用户要求打开「图像推理调试」时直接呈现理想结果并出现「生成草稿」入口，不再手动改输出轴。初始状态设为 `transpose(2,0,1)`、batch `N=1`，形状区显示符合示例约定；该任务没有社区完成邀请时自动补入演示完成对话与邀请。学习任务及其他任务不受影响。
+- 升级旧版图像会话状态时，仅将当前默认轴序 / batch 调整为完成态；既有尝试、记录和其他任务会话继续保留。仍明确这是浏览器中的示例形状核对，不代表 Python、模型或 NPU 推理已执行。
+- 修改 `ascend-studio/src/App.jsx`、`useImageInference.js` 与 `ascstudio/` Pages 发布包。没有改变正式页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- `npm run build:pages`、`git diff --check` 通过；本地 Chrome 1280×720 及此前存有错误轴序的本地会话均核对通过：默认输出 `[1,3,224,224]`、通过提示、社区邀请与「生成草稿」按钮可见。未运行测试套件。
+- 源码与 Pages 产物提交 `b62c47d7` 已推送 `origin/main`；GitHub Pages workflow `39966367464` 成功。
