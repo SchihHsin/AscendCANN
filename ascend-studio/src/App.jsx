@@ -232,7 +232,7 @@ function App() {
     if (accepted) clearPointContext();
     return accepted;
   };
-  const selectExistingTask = (name) => { selectTask(name); setMainView("task"); setProjectPanelOpen(false); };
+  const selectExistingTask = (name) => { selectTask(name); setMainView("task"); };
   const { selectedRoute, draft } = session;
   const messages = session.messages.filter(message => {
     if (["learning", "official-learning"].includes(task.kind) && (message.communityInvite || message.communityDraftCard)) return false;
