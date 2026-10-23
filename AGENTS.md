@@ -6236,7 +6236,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈：从多渠道总览打开单个平台详情后，找不到返回位置。将详情标题栏原先不显眼的「查看全部发布渠道」改为带左箭头的「返回渠道总览」按钮，点击回到四渠道卡片总览。
 - 返回只切换视图，不重置 `selectedChannels`；CUA 实际选择 GitCode、打开详情、返回后，总览仍显示 2 个已选渠道。截图核对了四卡总览和抖音详情标题栏的返回按钮。
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`community-draft.css` 与根仓 `ascstudio/` Pages 构建产物；同步本条和 `ascend-studio/AGENTS.md`、`design-qa.md`。依据为用户反馈（H），无页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界变化。
-- `npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。构建保留既有 Vite 大 chunk 提示。源码及 Pages 产物推送结果待回填。
+- `npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。构建保留既有 Vite 大 chunk 提示。
+- 功能提交 `184d2527` 与最新 `origin/main`（含其他对话的学习内容更新）合并后，提交 `3603cdc5` 已推送到 `origin/main`。Pages workflow `39990403368` 成功；线上 `/ascstudio/` 的 HTML、`index-CSGahLNK.js`、`index-CiM5ep6g.css` 均 HTTP 200，JS 含「返回渠道总览」，CSS 含返回按钮样式。
 
 ### 2026-10-24 · ResNet50 官方课程视频内嵌
 

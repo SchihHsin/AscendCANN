@@ -73,7 +73,7 @@ final result: passed
 - **Interaction check:** 本地 `http://127.0.0.1:5203/` 使用图像推理调试的已完成示例进入社区草稿。选中 GitCode 并打开详情，顶栏返回按钮可见；点击后回到四卡总览，已选社区与 GitCode 保持不变。随后核对抖音详情页，返回按钮同样可见。截图曾在 CUA 预览中检查，本轮未另存入仓库。
 - **Validation:** `npm run build:pages`、`git diff --check` 通过；未运行测试套件。构建保留既有 Vite 大 chunk 提示。
 - **Scope:** 只调整发布渠道详情导航；不改变奖励文案、发布状态、页面序列 / hash 或 API / Host / Application 边界。
-- **Release:** 提交与 Pages 发布回执待回填。
+- **Release:** 功能提交 `184d2527` 与远端最新主线合并后，`3603cdc5` 已推送到 `origin/main`。Pages workflow `39990403368` 成功；线上 HTML、`index-CSGahLNK.js` 与 `index-CiM5ep6g.css` 返回 HTTP 200，JS / CSS 已核对含返回文案及按钮样式。
 
 
 ## 2026-10-23 · 图像推理画布聚焦与完整阅读试点（设计规则）
