@@ -10,6 +10,16 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## Confirmed design decisions
 
+### Ascend Studio 核心目标与概念 Demo 原则
+
+- Ascend Studio 是体验与交互设计概念的展示、试验和讨论空间。用户以体验 / 交互设计师视角提出创新点；原型首先要让设计点可见、可感知、可操作，不需要为了证明概念而完成真实 AI、日志、训练环境、NPU 或后端集成。
+- 做设计工作时，不要让“是否接入真实历史 / 遥测”取代对交互价值的讨论，也不要将“不读取历史”写成产品优点。可用策划的示例任务和状态讲清楚交互；如果需要标明演示语境，放在不打断体验的位置即可。
+- 历史任务、已有材料、过去的选择或未完成目标可以成为概念中的探索起点。让它们带出相关方向和下一步选择；示例词条应通过上下文关系被理解，不假定每位用户都需要同一组推荐。
+- 探索画布应体现渐进下钻：当前焦点移到中心，子节点向周围扩散，关系由连线表现；动效平滑、节点位置稳定。悬浮用于预览，经过停留后仍需用户再次移动或明确选择才进入下层，不能因新布局下鼠标恰好压住子节点而自动连跳；通过路径导航保留展开来源。
+- 选择路径逐步生成可编辑 Prompt。用户可直接修改、添加或删除条件，明确发送后才继续；演示可由前端规则模拟，不要求完整工程流程。
+- 当前首页探索创新点使用“训练与调优”主题，不再用图像推理作为该方向的案例。训练效率、多卡收益、瓶颈定位、并行策略和对照实验可作为演示故事素材，不表示真实运行或诊断结果。
+- 探索页的文案层级已确认：中文主题和 Prompt 是大字，英文翻译作为上方小字；中文标题沿用之前认可的宋体衬线字形。中心焦点与周边节点视觉协调，避免凭空突出为另一套卡片组件。
+
 - 2026-10-23：外层滚动条自动隐藏仅应用于项目列表 `.project-scroll` 与对话消息 `.conversation-scroll`，空闲时隐藏、悬停或滚动时显现。画布、画布卡片、代码区和其他管理 / 内容面板均排除；实现与验证记录见仓库根 `AGENTS.md`。
 
 - The workspace has three columns: left project/task navigation, middle task conversation, and right-side judgment/evidence/actions. Do not remove the conversation or replace the project task list with a learning center.
