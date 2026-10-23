@@ -1033,3 +1033,14 @@ final result: passed
 - 长内容仍完整保留在同一内容对象中；卡片内部不滚动，超出部分作为静态预览，只有进入右侧完整阅读区后才滚动。全景、聚焦、完整阅读之间的既有关系不变。
 - 更新实现与学习材料规则；范围仅限 AddCustom。没有改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、`git diff --check` 通过；Vite 保留既有 JS chunk >500 kB 提示。未运行测试套件。Chrome 本地预览 `http://127.0.0.1:5188/` 在 1280×720 下核对聚焦卡片：底部提示条数量为 0，卡片右上角仍保留聚焦与放大等操作。源码提交 `f13d2323`、Pages 产物提交 `bd5fae2c` 和交接记录清理提交 `597d2130` 已推送到 `origin/main`；本轮未检查 Pages workflow。
+## 2026-10-23 · 探索首页悬浮防连跳与英文主题标题
+
+- **Intent:** 悬浮下钻需有停留时间；每次展开后要求用户主动移动到下一节点，避免鼠标静止时误连续切层。通用小标签“探索方向”替换为具体英文主题大标题，中文名作为说明。
+- **Implementation:** 本地 `http://127.0.0.1:5194/?home=explore`。首层大标题包括 `TRAINING & TUNING`、`MODEL DEPLOYMENT`、`OPERATOR DEVELOPMENT`、`MIGRATION & PORTING`、`ENVIRONMENT & TOOLS`、`LEARNING PATHS`。
+- **Interaction replay:** Chrome/CDP 指针回放确认停留 350ms 尚不展开；达到 620ms 后训练主题居中并显示 4 个相关项，鼠标不动等待 1 秒仍留在该层。主动移向“提升训练效率”并停留后展开其 4 个关联项，静止再等 1 秒仍不连跳。模型部署展开 3 个关联项。每层继续悬浮前需指针移动至少 14px；点击锁定逻辑保留。
+- **Visual evidence:** `evidence/20261023-home-exploration/hover-root-english-1417x941.png`、`hover-centered-training-1417x798.png`。381px CSS 视口检查 `documentElement.scrollWidth === clientWidth`，首层标题均在节点内容宽度内。
+- **Build / validation:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check` 均通过。构建仍有既有 JS chunk 超过 500kB 的提示。
+- **Scope / evidence boundary:** 未改变导航、prompt 编辑 / 锁定 / 发送规则、页面序列 / hash 或 API、Host / Application 边界。词条为人工预设，未连接训练数据或 NPU。
+- **Deployment:** 等待本次变更提交并推送后回填 Pages workflow 与线上资源。
+
+final result: passed

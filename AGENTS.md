@@ -6134,3 +6134,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`CommunityDraftPanel.jsx`、`community-draft.css`，重建根目录 `ascstudio/` Pages 包。未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界；未运行测试套件。
 - 验证：`npm run build:pages`、`git diff --check` 通过；CUA 本地 `http://127.0.0.1:5191/` 确认关闭后可重新打开、状态为黄色、奖励 Alert 及渠道入口顺序正确。
 - 源码与 Pages 产物提交 `15860eca` 已推送 `origin/main`；Pages workflow `39947662930` 成功。线上 `/ascstudio/` 已引用 `index-B6hP5QxW.js` / `index-CZwrH0Lt.css`，HTML 与两项资源均返回 HTTP 200；bundle 已确认包含「发布激励」、黄色待审阅状态及 Alert 样式。
+### 2026-10-23 · 探索首页防止悬浮连续误下钻
+
+- 用户补充要求：当前层展开后不能因为鼠标停在原位置、碰巧落到新节点上，就连续进入更多层；上方通用的“探索方向”也要换成能表达具体主题的英文大标题。
+- 悬浮预览改为停留 620ms 后展开。每次展开后重新等待明确的指针移动（至少 14px），当前中心节点不会再次触发自身；离开探索画布会清除等待状态，点击锁定与 prompt 编辑 / 发送行为保持原样。
+- 六个首层主题以英文大字呈现：`TRAINING & TUNING`、`MODEL DEPLOYMENT`、`OPERATOR DEVELOPMENT`、`MIGRATION & PORTING`、`ENVIRONMENT & TOOLS`、`LEARNING PATHS`；中文主题名继续保留为辅助说明，不再显示空泛的“探索方向”。
+- 本地 Chrome/CDP 回放：训练主题停留 350ms 时未展开，超过延迟后居中并显示 4 个关联项；鼠标静止 1 秒仍停留本层；主动移向“提升训练效率”后展开其 4 个关联项，随后静止 1 秒仍不连跳。模型部署居中后显示 3 个关联项。381px 视口下文档滚动宽度等于视口宽度，节点文字未造成横向溢出。截图：`ascend-studio/evidence/20261023-home-exploration/hover-root-english-1417x941.png`、`hover-centered-training-1417x798.png`。
+- `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过；保留既有 JS chunk 体积提示。未改变正式页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；主题仍为人工预设，不代表读取日志、训练诊断或 NPU 验证。
+- 源码、`ascstudio/` 发布产物、截图和交接文件提交后立即推送 `origin/main`；Pages 发布状态待回填。

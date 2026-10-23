@@ -1287,3 +1287,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/App.jsx`、`src/CommunityDraftPanel.jsx`、`src/community-draft.css`，并重建 `../ascstudio/` Pages 包。无页面序列或 API / Host / Application 边界变化。
 - 验证：`npm run build:pages`、`git diff --check` 通过；本地 CUA 已确认关闭 / 重新打开、黄色待审阅状态、Alert 样式与标题栏入口顺序。未运行测试套件。
 - 源码与 `../ascstudio/` Pages 产物提交 `15860eca` 已推送 `origin/main`；Pages workflow `39947662930` 成功。线上 `/ascstudio/` 的 JS / CSS 均 HTTP 200，已确认加载多色奖励 Alert 与黄色待审阅样式。
+### 2026-10-23 · 探索首页悬浮节奏与主题英译
+
+- 停留 620ms 才预览下一级；每次展开后需将鼠标主动移动至少 14px，避免原位置压中新节点而连续下钻。离开探索画布或点击锁定会清除等待状态。
+- 首层主题卡用英文大标题取代“探索方向”，保留具体中文主题名及提示作辅助说明；训练与调优、模型部署等预设内容与 prompt 规则不变。
+- Chrome/CDP 回放验证训练首层与“提升训练效率”分支均不会因鼠标静止而连跳；模型部署主题展开 3 个关联项。381px CSS 视口下页面无横向滚动。
+- `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过；无页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。页面词条仍非真实训练诊断或 NPU 结果。
+- 根仓 Pages 产物、截图与文档随本次实现提交；推送与 Pages 状态待回填。

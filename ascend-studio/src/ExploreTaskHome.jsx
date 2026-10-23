@@ -16,6 +16,18 @@ const topicIcons = {
   learning: IconBook,
 };
 
+const topicEnglishTitles = {
+  training: "TRAINING & TUNING",
+  deployment: "MODEL DEPLOYMENT",
+  operator: "OPERATOR DEVELOPMENT",
+  migration: "MIGRATION & PORTING",
+  environment: "ENVIRONMENT & TOOLS",
+  learning: "LEARNING PATHS",
+};
+
+const HOVER_PREVIEW_DELAY_MS = 620;
+const REQUIRED_POINTER_MOVEMENT_PX = 14;
+
 function satellitePosition(index, count) {
   const positions = {
     1: [[76, 50]],
@@ -63,6 +75,8 @@ export function ExploreTaskHome({ onCreateTask }) {
   const draftRef = useRef(null);
   const previewTimer = useRef(null);
   const pointerNodeId = useRef(null);
+  const pointerPosition = useRef(null);
+  const rearmPointer = useRef(null);
 
   const request = explorationRequest(ids);
   const activeIds = [...ids, ...previewIds];
@@ -183,6 +197,8 @@ export function ExploreTaskHome({ onCreateTask }) {
     window.clearTimeout(previewTimer.current);
     previewTimer.current = null;
     pointerNodeId.current = null;
+    pointerPosition.current = null;
+    rearmPointer.current = null;
     captureNodeLayout();
     const next = explorationRequest(nextIds);
     setIds(next.path.map((item) => item.id));
@@ -201,13 +217,25 @@ export function ExploreTaskHome({ onCreateTask }) {
     setHoveredId(node.id);
     previewTimer.current = window.setTimeout(() => {
       captureNodeLayout();
+      if (pointerPosition.current) {
+        rearmPointer.current = { ...pointerPosition.current };
+      }
       setPreviewIds((current) => appendPreviewPath(ids, current, node.id));
       previewTimer.current = null;
-    }, 320);
+    }, HOVER_PREVIEW_DELAY_MS);
   };
 
   const moveOnNode = (node, event) => {
-    if (event.pointerType === "touch" || pointerNodeId.current === node.id) return;
+    if (event.pointerType === "touch") return;
+    const point = { x: event.clientX, y: event.clientY };
+    pointerPosition.current = point;
+    if (rearmPointer.current) {
+      const dx = point.x - rearmPointer.current.x;
+      const dy = point.y - rearmPointer.current.y;
+      if (Math.hypot(dx, dy) < REQUIRED_POINTER_MOVEMENT_PX) return;
+      rearmPointer.current = null;
+    }
+    if (node.id === focused?.id || pointerNodeId.current === node.id) return;
     pointerNodeId.current = node.id;
     if (node.children.length) preview(node);
     else setHoveredId(node.id);
@@ -225,6 +253,8 @@ export function ExploreTaskHome({ onCreateTask }) {
     window.clearTimeout(previewTimer.current);
     previewTimer.current = null;
     pointerNodeId.current = null;
+    pointerPosition.current = null;
+    rearmPointer.current = null;
     if (previewIds.length) captureNodeLayout();
     setPreviewIds([]);
     setHoveredId(null);
@@ -247,7 +277,7 @@ export function ExploreTaskHome({ onCreateTask }) {
       <div className="explore-home__heading">
         <div className="explore-home__eyebrow"><IconSparkles size={14} /> 任务探索 · 预设能力地图</div>
         <h1>今天，想探索什么？</h1>
-        <p>{focused ? `围绕「${focused.label}」继续向下探索，或锁定这条路径。` : "悬浮一个方向，看看它能展开哪些相关内容。"}</p>
+        <p>{focused ? `围绕「${focused.label}」继续向下探索，或锁定这条路径。` : "停留片刻预览；展开后移向新节点，继续探索。"}</p>
       </div>
       <div className="explore-home__origin">
         <button type="button" aria-expanded={showOrigin} onClick={() => setShowOrigin(!showOrigin)}>
@@ -308,7 +338,7 @@ export function ExploreTaskHome({ onCreateTask }) {
             if (element) nodeRefs.current.set(focused.id, element);
             else nodeRefs.current.delete(focused.id);
           }}
-          className={`explore-field__node explore-field__node--${focused.tone || "blue"} is-center${isPreviewing ? " is-previewing" : ""}`}
+          className={`explore-field__node explore-field__node--${focused.tone || "blue"} is-center${topicEnglishTitles[focused.id] ? " is-topic" : ""}${isPreviewing ? " is-previewing" : ""}`}
           style={{ "--node-x": "50%", "--node-y": "50%", "--node-index": 0 }}
           onPointerMove={(event) => moveOnNode(focused, event)}
           onPointerLeave={() => leaveNode(focused)}
@@ -321,7 +351,8 @@ export function ExploreTaskHome({ onCreateTask }) {
         >
           <span className="explore-field__node-content">
             <span className="explore-field__node-kind"><i aria-hidden="true" />{isPreviewing ? "正在预览" : "当前方向"}</span>
-            <strong>{focused.label}</strong>
+            <strong>{topicEnglishTitles[focused.id] || focused.label}</strong>
+            {topicEnglishTitles[focused.id] && <span className="explore-field__node-local">{focused.label}</span>}
             <span className="explore-field__node-hint">{focused.hint}</span>
             <span className="explore-field__node-action">{isPreviewing ? <>点击锁定路径 <IconCheck size={13} /></> : <>已加入需求草稿 <IconCheck size={13} /></>}</span>
           </span>
@@ -330,7 +361,7 @@ export function ExploreTaskHome({ onCreateTask }) {
           const Icon = topicIcons[item.icon];
           const rootNode = activePath.length === 0;
           const tone = item.tone || (rootNode ? "violet" : focused?.tone || "blue");
-          const label = rootNode ? "探索方向" : item.children.length ? "关联方向" : "下一步";
+          const label = rootNode ? item.label : item.children.length ? "关联方向" : "下一步";
           const [x, y] = focused ? satellitePosition(index, options.length) : [undefined, undefined];
           return <button
             type="button"
@@ -356,7 +387,8 @@ export function ExploreTaskHome({ onCreateTask }) {
                 {Icon && rootNode ? <Icon size={13} stroke={1.8} /> : null}
                 {label}
               </span>
-              <strong>{item.label}</strong>
+              <strong>{rootNode ? topicEnglishTitles[item.id] || item.label : item.label}</strong>
+              {rootNode && topicEnglishTitles[item.id] && <span className="explore-field__node-local">{item.label}</span>}
               <span className="explore-field__node-hint">{item.hint}</span>
               <span className="explore-field__node-action">{item.children.length ? "继续展开" : "加入需求"} <IconArrowUpRight size={13} /></span>
             </span>
@@ -369,8 +401,8 @@ export function ExploreTaskHome({ onCreateTask }) {
         </div>}
       </div> : null}
       <div className="explore-field__note" aria-live="polite">
-        {hovered ? <><strong>{hovered.label}</strong><span>{hovered.hint}</span><small>{hovered.children.length ? "悬浮预览下一层 · 点击后锁定" : "点击加入需求草稿"}</small></>
-          : focused ? <><strong>{isPreviewing ? "正在预览这条路径" : "已锁定当前方向"}</strong><span>{focused.children.length ? "围绕中心节点悬浮关联方向，继续逐层展开。" : "这条路径会作为可编辑需求草稿。"}</span></>
+        {hovered ? <><strong>{hovered.label}</strong><span>{hovered.hint}</span><small>{hovered.children.length ? "停留预览下一层 · 展开后移动到新节点继续" : "点击加入需求草稿"}</small></>
+          : focused ? <><strong>{isPreviewing ? "正在预览这条路径" : "已锁定当前方向"}</strong><span>{focused.children.length ? "停留片刻预览；展开后移动到新节点，再继续下钻。" : "这条路径会作为可编辑需求草稿。"}</span></>
             : <span>主题词来自预设地图；它们是探索入口，不代表已经识别出你的问题。</span>}
       </div>
     </div>
