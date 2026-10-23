@@ -6103,3 +6103,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/` 的 9 个 CSS 文件；从最新 `origin/main`（含 AddCustom 画布更新）重建 `ascstudio/` Pages 静态产物，避免覆盖并行功能。
 - `npm run build`、`npm run build:pages`、`git diff --check` 通过。未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界。
 - 本轮只提交中性灰源码、发布产物及本记录；未触碰共享工作区其他对话改动。
+- 发布记录：源码提交 `6e18be04` 与 Pages 产物提交 `f0111923` 已推送 `origin/main`。GitHub Pages workflow `39925882144` 成功；线上 `/ascstudio/` 已引用 `index-DKWVH3ia.js` / `index-B8mMxIN2.css`，两项资源返回 HTTP 200，CSS 含中性灰色值。

@@ -1257,3 +1257,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户明确指向用户消息气泡：改为 `var(--surface-selected)`；`.attempt-row` 任务提示行保持原样。语义提示色与内容白底不变。
 - 变更 9 个 CSS 文件并由最新主线源码重新构建 `../ascstudio/`。`npm run build`、`npm run build:pages` 和 `git diff --check` 通过；保留既有大 JS bundle 提示。
 - 无页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。
+- 发布核验：源码 `6e18be04`、Pages 产物 `f0111923` 已推送；workflow `39925882144` 成功。线上 `/ascstudio/` 返回新 JS / CSS 引用，两项资源均 HTTP 200，CSS 确认包含中性灰背景与用户消息气泡规则。
