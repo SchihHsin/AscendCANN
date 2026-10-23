@@ -1346,7 +1346,7 @@ function App() {
           </div>
           <div className={`composer-stack${showCommunityInvite ? " composer-stack--community" : ""}`}>
           {showCommunityInvite && <section className="community-success-invite" aria-label="任务完成后的社区经验邀请">
-            <span className="community-success-invite-icon"><IconFileText size={21} aria-hidden="true" /></span>
+            <span className="community-success-invite-icon"><IconSparkles size={21} aria-hidden="true" /></span>
             <div className="community-success-invite-copy">
               <strong>把本次任务整理为社区经验？</strong>
               <p>AI 根据当前对话生成草稿，可在右侧审阅</p>
