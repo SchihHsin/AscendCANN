@@ -1414,3 +1414,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 来源与边界：用户反馈为直接依据（H）；本地CUA测量为实现观察（M）；各类别尺寸属于本轮交互设计参数（L），不是普适行业标准。页面序列/hash、API/Protocol、Host/Harness、Application/Task边界均未改变；不代表真实代码、模型或NPU验证。
 - 验证：`npm run build:pages`、`git diff --check`通过；未运行测试套件。381×664本地预览中，聚焦源码卡为46%缩放、357×229px；正文区域client/scroll高度均451px，无内部滚动或裁切。放大完整阅读能看见代码来源及关联入口，返回后仍在聚焦画布。三节点全景为24%，适合定位关系而非阅读正文。
 - 提交 `00bcce10` 已推送 `origin/main`；GitHub Pages workflow `40007714166` 的 build/deploy 成功。发布仍有既有的JavaScript chunk大于500kB提醒。未决：其他隐藏节点没有逐项完成浏览器回放；本轮未做桌面宽屏/真实NPU验证。
+
+
+### 2026-10-24 · 项目列表在切换任务后保持展开
+
+- 用户录屏显示：左侧项目列表展开时，选择另一任务会自动收起。期望已确认：切换任务不收起列表，只有点击最左侧项目图标才切换其展开状态。
+- `src/App.jsx` 的 `selectExistingTask` 原本在选中任务后调用 `setProjectPanelOpen(false)`；删除该调用。显式侧栏图标仍负责展开 / 收起；从学习发现、自动化任务、能力库等独立页面导航时的关闭行为不变。
+- CUA 在最新 Pages 构建 `/ascstudio/` 中回放：展开列表，切换「图像推理调试」→「AddCustom 精度异常」，列表持续可见；点击项目图标后列表收起。用户录屏为复现证据（H），本地回放为实现核验（M）。
+- `npm run build:pages`、`git diff --check` 通过；未运行自动化测试套件。线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200，Pages workflow `40008849917` build / deploy 成功。源码 `29979622` 与 Pages 包 `4aa19026` 已推送 `origin/main`。不改变页面顺序 / hash、API / Protocol、Host / Harness、Application / Task 边界；未做真实 NPU 验证。

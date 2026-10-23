@@ -6309,3 +6309,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 来源与边界：用户反馈为直接依据（H）；本地CUA测量为实现观察（M）；各类别尺寸属于本轮交互设计参数（L），不是普适行业标准。页面序列/hash、API/Protocol、Host/Harness、Application/Task边界均未改变；不代表真实代码、模型或NPU验证。
 - 验证：`npm run build:pages`、`git diff --check`通过；未运行测试套件。381×664本地预览中，聚焦源码卡为46%缩放、357×229px；正文区域client/scroll高度均451px，无内部滚动或裁切。放大完整阅读能看见代码来源及关联入口，返回后仍在聚焦画布。三节点全景为24%，适合定位关系而非阅读正文。
 - 提交 `00bcce10` 已推送 `origin/main`；GitHub Pages workflow `40007714166` 的 build/deploy 成功。发布仍有既有的JavaScript chunk大于500kB提醒。未决：其他隐藏节点没有逐项完成浏览器回放；本轮未做桌面宽屏/真实NPU验证。
+
+
+### 2026-10-24 · 切换任务时保持项目列表展开
+
+- 用户提供的录屏复现：展开左侧项目与任务列表后，选择另一个任务，列表会自动收起。此前已确认期望行为：切换任务时列表保持展开，只有再次点击最左侧项目图标才收起。
+- 根因是 `ascend-studio/src/App.jsx` 的 `selectExistingTask` 在选中任务后调用 `setProjectPanelOpen(false)`。移除这次自动收起；项目图标仍通过 `toggleProjectNavigation` 显式展开 / 收起，其他页面导航继续按原流程关闭侧栏。
+- 依据与置信度：用户录屏直接证据（H）；代码根因（H）；本地最新 Pages 包的 CUA 回放（M）。在 `/ascstudio/` 展开列表，依次切换到「图像推理调试」和「AddCustom 精度异常」，列表均保持展开；再次点项目图标后列表收起。
+- 页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界均未改变；该修复只调整任务切换后的侧栏可见状态，不代表真实 NPU 验证。
+- 验证：`npm run build:pages`、`git diff --check` 通过；未运行自动化测试套件。构建保留既有 JavaScript chunk 大于 500 kB 的提醒。GitHub Pages workflow `40008849917` 的 build / deploy 成功；线上 `/ascstudio/` HTML、`index-DEiKr4CE.js` 与 `index-U7bewoKQ.css` 均返回 HTTP 200。源码提交 `29979622`、Pages 包提交 `4aa19026` 已推送 `origin/main`。
