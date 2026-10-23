@@ -1115,3 +1115,13 @@ final result: passed
 - **证据边界:** 方案来自用户已确认决定与本轮纠正（H）；本次仅调整任务视图路由与画布入口，没有增加 Python 执行、模型推理或 NPU 验证声明，也没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - **Build / validation:** `npm run build` 与 `git diff --check` 通过；保留既有 JS chunk 超过 500 kB 提示。未新增或运行自动化测试。旧总览会话迁移已通过代码路径复核，未单独构造浏览器旧存档回放。
 - **后续:** 先由用户评审图像推理任务的画布组织方式，再讨论是否把这一规则推广到其他任务。
+
+
+## 2026-10-24 · 探索首页悬浮预览与点击锁定
+
+- **目标:** 按用户澄清，保留悬浮作为自然、直接的逐层下钻方式；点击只承担锁定路径的作用。用户已选择“悬浮预览、点击锁定”。
+- **实现:** 首屏显示悬浮 / 点击操作图例。预览中心状态与关系线以暖色虚线提示；锁定后以实线和确认标签呈现，并把当前路径写入可编辑 Prompt。周围可继续悬浮下钻。保留 620ms 悬停延迟和展开后至少移动 14px 的防连跳门槛。
+- **验证:** CUA 在 http://127.0.0.1:5201/?home=explore、1280×720 下悬浮“训练与调优”进入第一层，接着悬浮“提升训练效率”进入下一层；静止 1 秒不自动连跳。点击中心后 AX 状态为“已锁定到需求草稿”，Prompt 加入对应路径。目视检查预览虚线与锁定实线状态清楚。
+- **范围:** 只调整探索首页交互提示与状态反馈，不改变训练方向数据、经典 / 探索切换、页面序列 / hash 或 API / Host / Application 边界。没有真实训练、日志或 NPU 验证。
+- **检查:** npm run build、npm run test:sites（4/4）、npm run build:pages、git diff --check 均通过；Vite 保留既有大 JS chunk 提醒。生成的 Pages 资源为 index-DgBRA8TS.js 与 index-xaGMi3JY.css。
+- **发布:** 源码、交接文档和 Pages 资源已提交并推送 origin/main；等待 Pages workflow 完成后记录线上状态。

@@ -6270,3 +6270,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 In-App Browser `http://127.0.0.1:5201/?home=explore` 在 1280×720 下复现“每步耗时波动”终点，核对提示不再重叠、发送区只剩图标按钮。A11y 树确认仅有一个“发送并开始”按钮；根页仍可保留经典 / 探索切换与 Prompt 条件展示。
 - 验证：`npm run build`、`npm run test:sites`（4/4）、`npm run build:pages` 和 `git diff --check` 通过；Vite 保留既有主 JS chunk 大于 500 kB 提示。无页面序列 / hash 或 API / Host / Application 边界变化。
 - 源码修复提交 `5872e106`、Pages 产物及 QA 记录提交 `f4b0abfc` 已成功推送 `origin/main`；Pages workflow `39992045663` 的 build / deploy 均成功。发布入口引用 `index-CDzESHM6.js` 与 `index-D0rtDyQ8.css`。本环境对线上 GitHub Pages 的 Python HTTPS 与 curl 请求均握手失败 / 超时，未能做资源级 HTTP 回读；本地预览及构建已核验。
+
+
+### 2026-10-24 · 悬浮下钻与点击锁定状态区分
+
+- 用户澄清悬浮是更自然直接的探索方式；悬浮仍须是逐层下钻的主要交互，点击用于确认 / 锁定当前路径，不可改成只有点击才能进入下一层。用户已选择“悬浮预览、点击锁定”。
+- 保留已有 620ms 停留后展开，以及每层展开后需主动移动至少 14px 才识别下一节点的规则；这两项避免指针尚未跟上布局时误连续跳层。
+- 修改 ascend-studio/src/ExploreTaskHome.jsx 和 explore-task-home.css：首层加入“悬浮停留→预览下一层 / 点击节点→锁定路径”图例；预览状态使用暖色虚线提示与虚线关系线，锁定状态使用实线确认样式并同步写入 Prompt；子节点动作文字明确表明悬浮可下钻、点击可锁定。根方向的英文翻译与中文主标题关系保留。
+- 本地 In-App Browser http://127.0.0.1:5201/?home=explore，1280×720 CUA 核对：悬浮“训练与调优”展开第一层，再悬浮“提升训练效率”进入下一层；展开后静置 1 秒没有自动继续跳层；点击中心后状态转为“已锁定到需求草稿”，Prompt 条件同步出现。截图视觉确认预览虚线与锁定实线的区分。
+- npm run build、npm run test:sites（4/4）、npm run build:pages 与 git diff --check 通过；构建仍提示既有 JS chunk 超过 500 kB。未改训练方向数据、经典 / 探索 Tab、正式页序 / hash 或 API / Host / Application 边界，不代表已连接真实训练任务、日志或 NPU。
+- 源码和 Pages 构建包已提交并推送 origin/main；线上发布状态待 Pages workflow 确认。

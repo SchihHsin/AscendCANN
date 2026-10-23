@@ -305,12 +305,15 @@ export function ExploreTaskHome({ onCreateTask }) {
       {request.path.length > 0 && <button className="explore-home__back" type="button" onClick={() => choose(ids.slice(0, -1))}>
         <IconArrowUpRight size={13} />返回上一级
       </button>}
-      {isPreviewing && <span className="explore-home__preview-label">悬浮预览 · 点击节点锁定</span>}
+      {isPreviewing && <span className="explore-home__preview-label"><i aria-hidden="true" />悬浮预览中 <b>点击中心锁定</b></span>}
     </nav>}
 
     {!focused && <div className="explore-home__map-heading">
       <span>或者，从一个主题开始</span>
-      <small>EXPLORE A NEW THREAD</small>
+      <span className="explore-home__map-legend" aria-label="交互提示">
+        <span><i className="is-hover" aria-hidden="true" /><strong>悬浮停留</strong><em>预览下一层</em></span>
+        <span><i className="is-click" aria-hidden="true" /><strong>点击节点</strong><em>锁定路径</em></span>
+      </span>
     </div>}
 
     <div
@@ -330,7 +333,7 @@ export function ExploreTaskHome({ onCreateTask }) {
           <path
             className={"explore-field__connection" + (hoveredId === path.id ? " is-active" : "")}
             d={path.d}
-            pathLength="1"
+            pathLength={isPreviewing ? undefined : 1}
             style={{ "--connection-index": path.index, "--connection-color": path.color }}
           />
           <circle className="explore-field__connection-end" cx={path.x} cy={path.y} r="2" style={{ "--connection-color": path.color }} />
@@ -356,10 +359,10 @@ export function ExploreTaskHome({ onCreateTask }) {
           aria-label={focused.label + (isPreviewing ? "。点击锁定当前方向。" : "。当前已选方向。")}
         >
           <span className="explore-field__node-content">
-            <span className="explore-field__node-kind"><i aria-hidden="true" />{topicEnglishTitles[focused.id] || (isPreviewing ? "PREVIEWING" : "CURRENT DIRECTION")}</span>
+            <span className="explore-field__node-kind"><i aria-hidden="true" />{topicEnglishTitles[focused.id] || (isPreviewing ? "HOVER PREVIEW" : "LOCKED DIRECTION")}</span>
             <strong>{focused.label}</strong>
             <span className="explore-field__node-hint">{focused.hint}</span>
-            <span className="explore-field__node-action">{isPreviewing ? <>点击锁定路径 <IconCheck size={13} /></> : <>已加入需求草稿 <IconCheck size={13} /></>}</span>
+            <span className={"explore-field__node-action explore-field__node-status" + (isPreviewing ? " is-preview" : " is-locked")}>{isPreviewing ? <>悬浮预览中 · 点击锁定 <IconArrowRight size={13} /></> : <>已锁定到需求草稿 <IconCheck size={13} /></>}</span>
           </span>
         </button>}
         {options.map((item, index) => {
@@ -384,7 +387,7 @@ export function ExploreTaskHome({ onCreateTask }) {
               if (!event.currentTarget.parentElement?.contains(event.relatedTarget)) setHoveredId(null);
             }}
             onClick={() => choose([...activeIds, item.id])}
-            aria-label={item.label + "。 " + item.hint + (item.children.length ? "。点击进入相关方向。" : "。点击加入需求草稿。")}
+            aria-label={item.label + "。 " + item.hint + (item.children.length ? "。悬浮停留展开下一层，也可点击锁定并继续。" : "。点击加入需求草稿。")}
           >
             <span className="explore-field__node-content">
               <span className="explore-field__node-kind">
@@ -394,7 +397,7 @@ export function ExploreTaskHome({ onCreateTask }) {
               </span>
               <strong>{item.label}</strong>
               <span className="explore-field__node-hint">{item.hint}</span>
-              <span className="explore-field__node-action">{item.children.length ? "继续展开" : "加入需求"} <IconArrowUpRight size={13} /></span>
+              <span className="explore-field__node-action">{item.children.length ? <>悬浮预览 · 点击锁定 <IconArrowUpRight size={13} /></> : <>点击加入需求 <IconArrowUpRight size={13} /></>}</span>
             </span>
           </button>;
         })}
@@ -405,9 +408,9 @@ export function ExploreTaskHome({ onCreateTask }) {
         </div>}
       </div> : null}
       {!completeLeaf && <div className="explore-field__note" aria-live="polite">
-        {hovered ? <><strong>{hovered.label}</strong><span>{hovered.hint}</span><small>{hovered.children.length ? "停留预览下一层 · 展开后移动到新节点继续" : "点击加入需求草稿"}</small></>
-          : focused ? <><strong>{isPreviewing ? "正在预览这条路径" : "已锁定当前方向"}</strong><span>{focused.children.length ? "停留片刻预览；展开后移动到新节点，再继续下钻。" : "这条路径会作为可编辑需求草稿。"}</span></>
-            : <span>每条思路都能长出不同的关联方向。</span>}
+        {hovered ? <><strong>{hovered.label}</strong><span>{hovered.hint}</span><small>{hovered.children.length ? "悬浮停留展开下一层 · 点击锁定并继续" : "点击加入需求草稿"}</small></>
+          : focused ? <><strong>{isPreviewing ? "悬浮预览中 · 尚未锁定" : "已锁定到需求"}</strong><span>{isPreviewing ? "点击中心节点锁定这条路径；移向周围节点，可继续悬浮下钻。" : focused.children.length ? "周围节点可悬浮预览下一层；点击节点会锁定并继续。" : "这条路径已加入可编辑需求草稿。"}</span></>
+            : <span>悬浮停留可预览并下钻；点击节点锁定路径。</span>}
       </div>}
     </div>
 
@@ -431,7 +434,7 @@ export function ExploreTaskHome({ onCreateTask }) {
         <span className="explore-composer__path" aria-label="已加入需求的条件">
           {request.path.length ? request.path.map((item, index) => <button type="button" key={item.id} title={"移除“" + item.label + "”及后续选择"} onClick={() => choose(ids.slice(0, index))}>
             {index > 0 && <IconChevronRight size={11} />}{item.label}<IconX size={11} />
-          </button>) : <small>悬浮只预览 · 点击才加入 · 发送后才创建任务</small>}
+          </button>) : <small>悬浮停留可下钻 · 点击锁定 · 发送后创建任务</small>}
         </span>
         {pending && <button className="explore-composer__regenerate" type="button" onClick={() => { setDraft(request.goal); setAppliedPrompt(request.goal); setEdited(false); }}>
           保留了你的编辑 · 按当前选择重新生成
