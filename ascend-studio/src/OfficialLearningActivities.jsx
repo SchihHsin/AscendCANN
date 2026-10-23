@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId } from "react";
 import { IconArrowRight, IconCheck, IconHistory, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
 import { OFFICIAL_LEARNING_SOURCES } from "./official-learning-data.js";
 
@@ -15,10 +15,10 @@ function sourceForLesson(node) {
 
 export function OfficialLesson({ node, journey, onAsk, onCopy }) {
   const timeId = useId();
-  const [showOfficialVideo, setShowOfficialVideo] = useState(false);
   if (!node || !journey?.state || !journey?.actions) return null;
   const { state, actions } = journey;
   const source = sourceForLesson(node);
+  const taskVideo = OFFICIAL_LEARNING_SOURCES.resnet;
   const steps = node.flow?.length ? node.flow : [node.title];
   const duration = 45;
   const slice = duration / steps.length;
@@ -29,8 +29,8 @@ export function OfficialLesson({ node, journey, onAsk, onCopy }) {
   const currentCheck = state.checks?.[node.id];
   const answer = state.answers?.[node.id];
   return <div className="lh-player og-lesson">
-    <a className="og-official-course" href={source.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(source.id)}><span><small>官方视频课程</small><strong>{source.title}</strong></span><span>观看官方课程↗</span></a>
-    {source.embedUrl && <section className="og-official-video" aria-label="官网视频课程"><button className="og-official-video-toggle" type="button" aria-expanded={showOfficialVideo} onClick={() => { if (!showOfficialVideo) actions.visitSource(source.id); setShowOfficialVideo(value => !value); }}><span>{showOfficialVideo ? <IconPlayerPause size={15} /> : <IconPlayerPlay size={15} />}{showOfficialVideo ? "收起官网课程" : "在画布内播放官网课程"}</span><small>官方 ResNet50 C&C++ 视频</small></button>{showOfficialVideo && <div className="og-official-video-frame"><iframe title="昇腾官方 ResNet50 C&C++ 课程视频" src={source.embedUrl} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowFullScreen /><p>视频由昇腾课程平台提供。若播放器要求登录或未能加载，可<a href={source.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(source.id)}>前往官网观看↗</a>。</p></div>}</section>}
+    {taskVideo?.embedUrl && <section className="og-official-video" aria-label="官方 ResNet50 视频课程"><header className="og-official-video-header"><span><small>官方视频课程</small><strong>{taskVideo.title}</strong></span><a href={taskVideo.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(taskVideo.id)}>官网观看↗</a></header><div className="og-official-video-frame"><iframe title="昇腾官方 ResNet50 C&C++ 课程视频" src={taskVideo.embedUrl} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowFullScreen /><p>视频由昇腾课程平台提供。若播放器要求登录或未能加载，可<a href={taskVideo.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(taskVideo.id)}>前往官网观看↗</a>。</p></div></section>}
+    <a className="og-official-course" href={source.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(source.id)}><span><small>本节点关联资料</small><strong>{source.title}</strong></span><span>打开资料↗</span></a>
     <section className="og-local-lesson" aria-label="交互图解讲解"><header><div><strong>交互图解讲解 · 45 秒</strong><span>本地讲解示例</span></div><span>{mmss(state.time)} / 00:45</span></header>
       <div className="og-flow-focus" aria-live="polite"><span>当前步骤 · {segmentIndex + 1}/{steps.length}</span><strong>{focus}</strong><p>{point}</p></div>
       <div className="og-player-controls"><button className="lh-button" type="button" aria-label={state.playing ? "暂停本地讲解" : "播放本地讲解"} onClick={actions.play}>{state.playing ? <IconPlayerPause size={15} /> : <IconPlayerPlay size={15} />}{state.playing ? "暂停" : "播放"}</button><label className="og-sr-only" htmlFor={timeId}>本地讲解进度</label><input id={timeId} type="range" min="0" max={duration} step="0.5" value={state.time} aria-label="本地讲解进度" onChange={event => actions.seek(event.target.value)} /><span>{mmss(state.time)}</span></div>
