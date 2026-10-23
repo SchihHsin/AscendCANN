@@ -1272,4 +1272,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 中性灰沿用已确认基准：画布 `#f5f5f5`、细分表面 `#f8f8f8`、选中面 / 用户气泡 `#efeff0`。冷灰为画布 `#f4f6f9`、细分表面 `#f7f8fb`、选中面 `#edf1f5`、用户气泡 `#f1f2f4`。工作区线条与点阵同步调整，白色内容面和语义色不变。
 - 修改 `src/App.jsx`、`src/styles.css`、`src/interaction.css`、`src/task-canvas.css`、`src/learning-hierarchy-canvas.css`、`src/learning-discovery.css`；Pages 产物从当前源码重新构建。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）通过。CUA 本地 5193 核对菜单、两种主题、用户消息气泡取值、刷新恢复及无 console error。未改变任务内容与 API / Host / Application 边界。
-- Commit / push 结果随后补记。
+- 源码提交 `ead5334d` 与 Pages 产物提交 `3d417a13` 已推送 `origin/main`；GitHub Pages workflow `39946105091` 成功。线上 `/ascstudio/` 引用 `index-BV0fkUSG.js` / `index-QG_AQLhe.css`，HTML 与两项资源均 HTTP 200。
