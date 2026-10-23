@@ -6067,6 +6067,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 CUA 1280×720 看到四张卡片同屏；从 GitCode / CSDN 预览可进入对应审阅页面，CSDN 本地演示发布状态回到总览后显示在卡片上。`npm run build:pages`、`git diff --check` 通过，未运行测试套件。
 - 源码提交 `afcd7201`、Pages 产物提交 `deddff90` 已推送 `origin/main`。随后并行工作流提交 `ff5f8c22` 自动重建了 Pages 资源；没有覆盖它的滚动条改动。Pages workflow `39917240033` 成功，线上 `/ascstudio/` 已引用新 `index-CrgsQxNv.js` / `index--X1czWii.css`。
 - 本次在隔离工作树实施；根共享工作树已有的其他改动未纳入本次功能提交。
+- 头像修正：四张卡片改用本地 SVG 品牌标志，昇腾社区取自仓内 Ascend CANN 标志，GitCode / CSDN 使用 Simple Icons 品牌图形，抖音使用双色音符标志；随构建打包，无运行时外链。`npm run build:pages` 与 `git diff --check` 通过，未运行测试套件。提交 `37731e1b` 已推送 `origin/main`；Pages workflow `39919652648` 成功，线上已引用 `index-BAi1jd8R.js` / `index-07fC6pBs.css`。
 
 ### 2026-10-23 · Ascend Studio 项目列表与对话滚动条
 

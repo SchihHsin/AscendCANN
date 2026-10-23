@@ -1228,3 +1228,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - AddCustom 的尾块仍仅为待验证线索，不声称根因已定位或真实 NPU 验证通过。社区草稿仍可审阅、编辑及本地提交，提交后继续呈现社区文章样式。
 - 变更 `src/CommunityDraftPanel.jsx`、`src/ChannelDraftContent.jsx`、`src/community-draft.css`，并生成 Pages 产物 `../ascstudio/`。无报告页序 / hash 或 API、Host / Harness、Application / Task 层边界变化。
 - 本地 1280×720 核对四卡片同屏、GitCode / CSDN 详情、演示发布后状态返回卡片；`npm run build:pages` 与 `git diff --check` 通过。未运行测试套件。源码提交 `afcd7201`、Pages 产物提交 `deddff90` 已推送 `origin/main`；并行提交 `ff5f8c22` 的 Pages workflow `39917240033` 成功，线上已引用新 JS / CSS bundle。
+- 2026-10-23 头像修正：社区、GitCode、CSDN、抖音卡片均显示对应品牌 SVG 标志，不再用字母 / 字符代替；图形本地打包。`npm run build:pages`、`git diff --check` 通过；提交 `37731e1b` 已推送，Pages workflow `39919652648` 成功，线上入口已加载新 JS / CSS。
