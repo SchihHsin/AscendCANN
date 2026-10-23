@@ -6038,3 +6038,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 核验：`npx vite build --base=./ --outDir /tmp/ascstudio-banner-fade-validation --emptyOutDir` 通过；隔离的最新主分支 `npm run build:pages` 通过；`git diff --check` 通过。未运行自动化测试。构建有既有主 JS 包体积提示。
 - Commit / push：源码和 Pages 产物提交 `4c100b10` 已推送 `origin/main`；GitHub Pages workflow `39911378396` 成功。线上 `ascstudio/index.html` 已引用新 JS/CSS bundle，CSS 内容确认含 Banner 下沿渐隐规则。其他工作目录内的变更未清理、重置或纳入发布。
 - 未决：桌面同视口视觉对照尚未完成，见 `ascend-studio/design-qa.md` 的 `final result: blocked`。
+
+### 2026-10-23 · 学习画布改为位置编辑
+
+- 用户澄清“编辑”是移动节点及其关联内容卡片在画布上的空间位置，不是拖动节点换序。普通学习画布与 ResNet50 官方路径统一使用工具栏铅笔进入位置编辑；可拖节点、阶段层级和图解 / 讲解 / 练习卡片，键盘可用 Alt + 方向键微调。位置写入各任务各布局的画布坐标；拖动过程中更新节点连线。编辑不改变学习顺序或进度。
+- 修正共创任务的种子回复，说明位置编辑与顺序的区别；该可重置演示在刷新时同步恢复初始说明，避免保留旧的“拖动节点调整顺序”文案。ResNet50 旧的未确认个人换序草案刷新时恢复其基线路径。
+- 变更：`ascend-studio/src/LearningCanvasToolbar.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`、`LearningCanvasCard.jsx`、`canvas-node-position.js` 及测试、画布 CSS、`useWorkbenchState.js`、`official-learning-progress.js` 及测试、`prototype-data.js`；重建 `ascstudio/` Pages 产物。属于 Application / Task 交互实现，不改正式页序、hash 或 API / Host / Application 分层边界；不涉及 NPU 验证。
+- 验证：16 个 Node 测试通过；`node --check`、`npm run build`、`npm run build:pages`、`git diff --check` 通过。CUA 本地回放确认 ResNet50 节点及图解卡可拖，位置变化后仍为 0/15，节点标号 / 顺序不变；共创画布显示独立位置编辑状态。`restoreWorkbench` 刷新后呈现新说明和初始草案。GitHub Pages workflow `39912777286` 成功；线上 index、`index-CTiWSnbN.js`、`index-DF0mT96l.css` 返回 HTTP 200，脚本含“编辑画布位置”且不含旧的换序提示。
+- 发布：源码提交 `869a58b8`、Pages 产物提交 `9888785f` 已推送 `origin/main`。同步了其他工作线在远端的更改，没有纳入它们的功能差异。
+- 未决：线上仅确认 HTML / bundle 响应与文案，不做线上 UI 截图验收；构建保留 Vite 既有的大 JS chunk 提醒。
