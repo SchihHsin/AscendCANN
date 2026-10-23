@@ -1303,3 +1303,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 方向来自用户确认（H）；“自由画布保留任务关联，完整阅读转任务内容区”的复用方式为本次待评审设计方案（L）。未改变 API / Protocol、Host / Harness、Application / Task 边界，无真实 Python、模型或 NPU 验证。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过（Vite 保留既有 >500 kB chunk 提示）。本地 `http://127.0.0.1:5188/?task=development` 回放确认：张量图解聚焦后仍在自由画布且自动从 37% 适配至 74%；完整阅读在任务内容区打开；回到画布后所选对象及 74% 视口保留。未运行测试套件。
 - 源码、故事材料、QA 记录与 `ascstudio/` Pages 产物提交 `d5d3d8f2` 已推送到 `origin/main`；Pages workflow `39951739533` 成功，线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200，JS 确认包含聚焦入口。交接记录提交 `f27bd8bc` 已推送。是否把共通入口继续推广到下一种业务任务，待用户评审本试点后再定。
+
+### 2026-10-23 · 探索首页中英标题与中心节点样式修正
+
+- 中文主题名与首层 Prompt 保持主标题；英文仅作为上方小字翻译。页面主标题上方显示英文译文。训练等预设探索文案、prompt 内容和分类语义不变。
+- 下钻中心节点移除卡片白底、描边、圆角与阴影，继续用与外围节点一致的文字样式。画布说明固定在下方留白处，不能与中心 / 卫星节点重叠。
+- CUA 本地预览 1280×720 检查首层与训练展开通过；`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过。人工预设词条不代表真实日志诊断或 NPU 验证。

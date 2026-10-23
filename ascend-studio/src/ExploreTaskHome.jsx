@@ -275,7 +275,7 @@ export function ExploreTaskHome({ onCreateTask }) {
   return <section ref={homeRef} className="explore-home" aria-label="探索式首页" onPointerLeave={leaveField}>
     <header className="explore-home__header">
       <div className="explore-home__heading">
-        <div className="explore-home__eyebrow"><IconSparkles size={14} /> 任务探索 · 预设能力地图</div>
+        <div className="explore-home__eyebrow"><IconSparkles size={14} /> WHAT WOULD YOU LIKE TO EXPLORE TODAY?</div>
         <h1>今天，想探索什么？</h1>
         <p>{focused ? `围绕「${focused.label}」继续向下探索，或锁定这条路径。` : "停留片刻预览；展开后移向新节点，继续探索。"}</p>
       </div>
@@ -350,9 +350,8 @@ export function ExploreTaskHome({ onCreateTask }) {
           aria-label={focused.label + (isPreviewing ? "。点击锁定当前方向。" : "。当前已选方向。")}
         >
           <span className="explore-field__node-content">
-            <span className="explore-field__node-kind"><i aria-hidden="true" />{isPreviewing ? "正在预览" : "当前方向"}</span>
-            <strong>{topicEnglishTitles[focused.id] || focused.label}</strong>
-            {topicEnglishTitles[focused.id] && <span className="explore-field__node-local">{focused.label}</span>}
+            <span className="explore-field__node-kind"><i aria-hidden="true" />{topicEnglishTitles[focused.id] || (isPreviewing ? "PREVIEWING" : "CURRENT DIRECTION")}</span>
+            <strong>{focused.label}</strong>
             <span className="explore-field__node-hint">{focused.hint}</span>
             <span className="explore-field__node-action">{isPreviewing ? <>点击锁定路径 <IconCheck size={13} /></> : <>已加入需求草稿 <IconCheck size={13} /></>}</span>
           </span>
@@ -385,10 +384,9 @@ export function ExploreTaskHome({ onCreateTask }) {
               <span className="explore-field__node-kind">
                 <i aria-hidden="true" />
                 {Icon && rootNode ? <Icon size={13} stroke={1.8} /> : null}
-                {label}
+                {rootNode ? topicEnglishTitles[item.id] || label : label}
               </span>
-              <strong>{rootNode ? topicEnglishTitles[item.id] || item.label : item.label}</strong>
-              {rootNode && topicEnglishTitles[item.id] && <span className="explore-field__node-local">{item.label}</span>}
+              <strong>{item.label}</strong>
               <span className="explore-field__node-hint">{item.hint}</span>
               <span className="explore-field__node-action">{item.children.length ? "继续展开" : "加入需求"} <IconArrowUpRight size={13} /></span>
             </span>
