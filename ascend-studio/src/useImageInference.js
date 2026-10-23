@@ -17,6 +17,8 @@ export const IMAGE_LESSON = [
 ];
 export const imageSegmentAt = time => IMAGE_LESSON.findLast(item => time >= item.time) || IMAGE_LESSON[0];
 const original = { axes: [0, 1, 2], batch: true };
+const completedDemo = { axes: [2, 0, 1], batch: true };
+const IMAGE_STATE_PRESET_VERSION = 1;
 const snapshotOf = state => ({ axes: [...state.axes], batch: Boolean(state.batch) });
 const sameSnapshot = (left, right) => Boolean(left && right)
   && left.batch === right.batch
@@ -33,7 +35,7 @@ export function imageShape(snapshot) {
 export function imageCode(snapshot = original) {
   return ["# 预处理示例 · 原项目文件未接入", "import numpy as np", "from PIL import Image", "", "image = np.asarray(Image.open(path).convert('RGB').resize((224, 224)))", `transformed = image.transpose(${snapshot.axes.join(", ")})`, snapshot.batch ? "input_data = transformed[None, ...]" : "input_data = transformed", "print(input_data.shape)"].join("\n");
 }
-const start = () => ({ ...original, axes: [...original.axes], attempts: [], selectedId: null, proposal: null, applied: null, undo: null, validation: null, focus: "layout", channel: "all", time: 0, playing: false, lessonOpen: false, exploring: false, pinned: null, notice: "", resetVersion: 0 });
+const start = () => ({ ...completedDemo, axes: [...completedDemo.axes], imageStatePresetVersion: IMAGE_STATE_PRESET_VERSION, attempts: [], selectedId: null, proposal: null, applied: null, undo: null, validation: null, focus: "layout", channel: "all", time: 0, playing: false, lessonOpen: false, exploring: false, pinned: null, notice: "", resetVersion: 0 });
 
 const isObject = value => Boolean(value) && typeof value === "object" && !Array.isArray(value);
 const hasAxes = value => isObject(value) && Array.isArray(value.axes) && value.axes.length === 3 && value.axes.every(axis => [0, 1, 2].includes(axis));
@@ -44,6 +46,11 @@ function restoreImageSession() {
   const saved = readSession("image-inference", null);
   if (!isObject(saved)) return initial;
   const state = { ...initial, ...saved, playing: false };
+  if (saved.imageStatePresetVersion !== IMAGE_STATE_PRESET_VERSION) {
+    state.axes = [...completedDemo.axes];
+    state.batch = completedDemo.batch;
+    state.imageStatePresetVersion = IMAGE_STATE_PRESET_VERSION;
+  }
   state.axes = hasAxes(state) ? [...state.axes] : [...initial.axes];
   for (const name of ["batch", "lessonOpen", "exploring"]) state[name] = typeof state[name] === "boolean" ? state[name] : initial[name];
   state.focus = IMAGE_LESSON.some(item => item.focus === state.focus) ? state.focus : initial.focus;

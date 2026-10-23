@@ -167,7 +167,6 @@ function App() {
     document.documentElement.dataset.theme = visualTheme;
     try { localStorage.setItem("ascend-studio-theme", visualTheme); } catch { /* Keep the in-session choice when storage is unavailable. */ }
   }, [visualTheme]);
-  const developmentDemoLaunch = useRef(new URLSearchParams(window.location.search).get("task") === "development");
   const [mainView, setMainView] = useState(() => {
     if (["classic", "explore"].includes(new URLSearchParams(window.location.search).get("home"))) return "home";
     const launchTask = new URLSearchParams(window.location.search).get("task");
@@ -1087,8 +1086,7 @@ function App() {
     });
   };
   useEffect(() => {
-    if (!developmentDemoLaunch.current || selectedTask !== IMAGE_TASK) return;
-    developmentDemoLaunch.current = false;
+    if (selectedTask !== IMAGE_TASK) return;
     if (session.messages.some(message => message.communityInvite)) return;
     offerCommunityExperience({
       id: "demo-image-shape-check",
