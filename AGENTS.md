@@ -6090,7 +6090,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求为节点尺寸 / 长内容制定并记录细则，并让 AddCustom 画布支持聚焦某个节点、再把同一节点放大至右侧完整工作区；本轮只调整 AddCustom，不推广到其他任务。
 - 画布节点继续是同一份内容对象。新增定位图标：目标节点居中，直接关联对象随视口进入视野，其他节点仍保留在原画布、不会被隐藏；新增外扩图标：将同一内容铺满右侧工作区，正文在该区域滚动，底部可切换直接关联节点；“返回画布”回到该节点的聚焦状态。
-- AddCustom 节点使用按内容类别配置的初始尺寸与可调上下限；超长内容不在节点内滚动，卡片底部渐隐并提供放大入口。旧版默认布局仅在匹配已知默认尺寸时迁移，固定或已自定义尺寸尽量保留。
+- AddCustom 节点使用按内容类别配置的初始尺寸与可调上下限；超长内容不在节点内滚动，卡片内保留静态预览，聚焦 / 放大操作统一置于卡片右上角。旧版默认布局仅在匹配已知默认尺寸时迁移，固定或已自定义尺寸尽量保留。
 - 在 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 末尾新增两页，分别记录类型尺寸 / 长内容规则与全景→聚焦→完整阅读的交互；新增页放在既有页面之后，既有页的数字页码 / hash 不移动。
 - 依据：交互方向来自用户明确要求（H）；默认尺寸、最小 / 最大尺寸是本轮按 AddCustom 内容提出的可验证设计值（L），不是用户数据或普适平台规则。没有修改 API / Protocol、Host / Harness、Application / Task 边界，不声称真实代码、模型或 NPU 已验证。
 - 验证：`npm run build:pages` 通过，`git diff --check` 通过；Vite 保留既有 500 kB chunk 提示。未运行测试套件。已启动隔离本地预览 `http://127.0.0.1:5188/` 并请求在 Codex 面板打开；本轮未完成截图级交互回放，用户评审重点是聚焦与完整阅读的区别、卡片预览 / 溢出入口、完整内容区与返回行为。
@@ -6118,4 +6118,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求在右上角头像菜单提供「中性灰 / 冷灰」两种界面主题；默认中性灰，用户选择写入本地浏览器并在刷新后恢复。
 - 菜单提供两种有色样片与当前选中态；主题通过根节点 `data-theme` 和共享 CSS 变量应用到工作区背景、细分表面、边线、点阵及用户消息气泡。白色内容面与语义状态色保留。
 - 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）通过；本地 5193 浏览器实测两种主题切换、气泡和外层背景取值、刷新恢复及无 console error。
+<<<<<<< HEAD
 - 不改变任务内容、导航序列或 API / Host / Application 边界。源码提交 `ead5334d`、Pages 产物提交 `3d417a13` 已推送 `origin/main`；GitHub Pages workflow `39946105091` 成功。线上 `/ascstudio/` 返回新 JS / CSS 文件名，HTML 与两项资源均 HTTP 200；线上 CSS 确认包含中性灰与冷灰色值。
+
+### 2026-10-23 · AddCustom 卡片底部提示移除
+
+- 用户确认卡片底部不需要独立提示条，管理、放大和聚焦入口放在卡片右上角即可。右上角已有聚焦、放大到右侧完整工作区、固定、折叠和收起操作，删除底部重复提示及第二个放大入口。
+- 长内容仍保留在同一节点中；卡片内不滚动，完整正文在右侧阅读区查看。只涉及 AddCustom 当前任务，不扩展到其他任务。
+- 更新 `TaskCanvas.jsx`、`task-canvas.css` 与 `learning-canvas-story/index.html`，同步修正本文件、`ascend-studio/AGENTS.md` 和 `ascend-studio/design-qa.md` 中的规则记录。
+- `npm run build:pages` 与 `git diff --check` 通过；Chrome 本地预览 `http://127.0.0.1:5188/` 在 1280×720 下核对聚焦卡片，卡片底部提示条数量为 0，右上角聚焦 / 放大等管理按钮仍可见。Vite 保留既有 JS chunk >500 kB 提示；未运行测试套件。commit / push 状态待完成后补记。

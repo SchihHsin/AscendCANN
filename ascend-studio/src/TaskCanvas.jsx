@@ -36,9 +36,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
   const [spaceHeld, setSpaceHeld] = useState(false);
   const [gestureKind, setGestureKind] = useState(null);
   const [stageSize, setStageSize] = useState({ width: 1, height: 1 });
-  const [overflowingCards, setOverflowingCards] = useState([]);
   const stageRef = useRef(null);
-  const cardContentRefs = useRef(new Map());
   const initialFitDone = useRef(false);
   const gesture = useRef(null);
   const stateRef = useRef(state);
@@ -106,28 +104,6 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     });
     return () => cancelAnimationFrame(frame);
   }, [viewKey, visible]);
-
-  useEffect(() => {
-    if (!isAddCustom) return undefined;
-    let frame = 0;
-    const measure = () => {
-      const next = [...cardContentRefs.current.entries()]
-        .filter(([id, element]) => {
-          const card = stateRef.current.cards.find((item) => item.id === id);
-          return card?.visible && !isCollapsed(card) && element.scrollHeight > element.clientHeight + 4;
-        })
-        .map(([id]) => id);
-      setOverflowingCards((current) => current.length === next.length && current.every((id) => next.includes(id)) ? current : next);
-    };
-    const scheduleMeasure = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(measure);
-    };
-    const observer = new MutationObserver(scheduleMeasure);
-    cardContentRefs.current.forEach((element) => observer.observe(element, { subtree: true, childList: true, characterData: true, attributes: true }));
-    scheduleMeasure();
-    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
-  }, [isAddCustom, state.cards, flow?.state, stageSize.width, stageSize.height]);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -299,8 +275,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
               <button className="tc-move-handle" type="button" disabled={card.pinned} aria-label={`移动${card.title}；方向键微调，Shift 加快`} title={card.pinned ? "已固定位置" : "拖动标题移动；方向键微调"} onPointerDown={(event) => beginMove(event, card)} onKeyDown={(event) => keyboardMove(event, card)}><IconGripVertical size={15} /></button><h3 title={card.title}>{card.title}</h3>{collapsed && <small className="tc-collapse-summary">{cardSummary(card)}</small>}{card.pinned && <span className="tc-pin-label"><IconPin size={11} />已固定</span>}
               <div className="tc-card-actions">{isAddCustom && <button type="button" aria-label={`聚焦到${card.title}`} title="聚焦到画布中的这个节点" onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><IconTarget size={13} /></button>}{onOpenContent && <button type="button" aria-label={`放大${card.title}到右侧完整工作区`} title="放大到右侧完整工作区" onClick={() => onOpenContent(card.id)}><IconExternalLink size={13} /></button>}<button type="button" aria-label={card.pinned ? `取消固定${card.title}` : `固定${card.title}`} title={card.pinned ? "取消固定" : "固定位置与尺寸"} aria-pressed={card.pinned} onClick={() => actions.togglePin(card.id)}><IconPin size={13} /></button><button type="button" aria-label={collapsed ? `展开${card.title}` : `折叠${card.title}`} title={collapsed ? "展开内容" : "折叠内容"} aria-expanded={!collapsed} onClick={() => toggleCollapsed(card.id)}>{collapsed ? <IconChevronRight size={14} /> : <IconChevronDown size={14} />}</button><button type="button" aria-label={`收起${card.title}为概要`} title="收起为概要，仍保留在画布上" onClick={() => { if (!collapsed) toggleCollapsed(card.id); }}><IconX size={13} /></button></div>
             </header>
-            <div className="tc-card-content" hidden={collapsed} ref={(element) => { if (element) cardContentRefs.current.set(card.id, element); else cardContentRefs.current.delete(card.id); }}>{renderMaterial ? renderMaterial(card.id, card) : <div className="tc-slot-placeholder"><span>当前任务内容</span><button type="button" onClick={onOpenContents}>打开内容索引</button></div>}</div>
-            {isAddCustom && !collapsed && overflowingCards.includes(card.id) && <div className="tc-card-full-content"><span>卡片显示预览 · 全文可放大阅读</span><button type="button" onClick={() => onOpenContent?.(card.id)} aria-label={`放大${card.title}到右侧完整工作区`}>放大<IconExternalLink size={12} /></button></div>}
+            <div className="tc-card-content" hidden={collapsed}>{renderMaterial ? renderMaterial(card.id, card) : <div className="tc-slot-placeholder"><span>当前任务内容</span><button type="button" onClick={onOpenContents}>打开内容索引</button></div>}</div>
             {!collapsed && <button className="tc-resize-handle" type="button" disabled={card.pinned} aria-label={`调整${card.title}尺寸；方向键微调`} title={card.pinned ? "已固定尺寸" : "拖动调整尺寸；方向键微调"} onPointerDown={(event) => beginResize(event, card)} onKeyDown={(event) => keyboardResize(event, card)}><IconArrowsDiagonal size={12} /></button>}
           </section>;
         })}
