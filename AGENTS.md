@@ -6230,3 +6230,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`useImageInference.js` 与 `ascstudio/` Pages 发布包。没有改变正式页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - `npm run build:pages`、`git diff --check` 通过；本地 Chrome 1280×720 及此前存有错误轴序的本地会话均核对通过：默认输出 `[1,3,224,224]`、通过提示、社区邀请与「生成草稿」按钮可见。未运行测试套件。
 - 源码与 Pages 产物提交 `b62c47d7` 已推送 `origin/main`；GitHub Pages workflow `39966367464` 成功。
+
+
+### 2026-10-24 · ResNet50 官方课程视频内嵌
+
+- 用户明确要求将「ResNet50 离线推理初体验」关联的官网视频直接嵌入学习画布。根据昇腾官方资源文章和课程详情 API，视频 07 对应官方 ResNet50 C&C++ 课程；官方课程详情页自身限制 iframe 来源，因此改用课程平台返回的 `application-view` 地址，在现有视频卡片中按需加载官方课程 iframe。
+- 修改 `ascend-studio/src/OfficialLearningActivities.jsx`、`official-learning-data.js`、`official-learning-canvas.css` 和 `ascstudio/` 发布包。保留原官网课程入口、本地 45 秒交互图解及理解检查；未改变学习路径节点、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 证据：官方成长路径与学习资源文章列明该课程 / 视频（H）；读取课程平台公开返回的课程入口及响应头（M）；未登录浏览器中直接课程页跳至昇腾 AI 学堂登录页（M）。因此 iframe 已嵌入，但播放需要课程平台登录；未声称无需登录即可播放。
+- 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）和 `git diff --check` 通过；打包 JS 确认包含嵌入入口及官方课程地址。
+- 源码提交 `b4a59eca`、Pages 资源提交 `eedae623` 已推送 `origin/main`。Pages workflow `39970392442` 对应 `eedae623` 且成功；线上 `/ascstudio/` 引用脚本 HTTP 200，并确认包含 `application-view` 播放器入口与登录失败兜底。未登录环境无法确认视频实际播放。
+- 为供共享的本地 Demo 预览，本轮将同一播放器入口、课程 embed URL 与样式最小同步到当前工作区的三处源码；没有重建或覆盖 `ascstudio/` 发布目录。由于工作区正包含其他对话的在途改动，本地同步保留为未提交状态；线上代码已经由前述提交发布。
