@@ -1254,7 +1254,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户明确要求移除卡片最底部提示条；卡片右上角的管理图标已包含聚焦和放大，保留该处的固定、折叠、收起操作，不再在底部重复说明或放大。
 - 长内容仍完整保留在原内容对象里；节点卡片作为不滚动的静态预览，右侧完整阅读区负责长文滚动。仅修正 AddCustom，不扩展到其他任务。
-- 已更新 `TaskCanvas.jsx`、`task-canvas.css`、学习画布故事材料及 QA 记录；Pages 构建与桌面预览通过，commit / push 状态待本轮完成后更新。
+- 已更新 `TaskCanvas.jsx`、`task-canvas.css`、学习画布故事材料及 QA 记录；Pages 构建与桌面预览通过。源码提交 `f13d2323`、Pages 产物提交 `bd5fae2c`、交接记录清理提交 `597d2130` 已推送到 `origin/main`；本轮未检查 Pages workflow。
 
 
 ### 2026-10-23 · 中性灰统一（工作区与用户消息）

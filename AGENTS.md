@@ -6125,4 +6125,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认卡片底部不需要独立提示条，管理、放大和聚焦入口放在卡片右上角即可。右上角已有聚焦、放大到右侧完整工作区、固定、折叠和收起操作，删除底部重复提示及第二个放大入口。
 - 长内容仍保留在同一节点中；卡片内不滚动，完整正文在右侧阅读区查看。只涉及 AddCustom 当前任务，不扩展到其他任务。
 - 更新 `TaskCanvas.jsx`、`task-canvas.css` 与 `learning-canvas-story/index.html`，同步修正本文件、`ascend-studio/AGENTS.md` 和 `ascend-studio/design-qa.md` 中的规则记录。
-- `npm run build:pages` 与 `git diff --check` 通过；Chrome 本地预览 `http://127.0.0.1:5188/` 在 1280×720 下核对聚焦卡片，卡片底部提示条数量为 0，右上角聚焦 / 放大等管理按钮仍可见。Vite 保留既有 JS chunk >500 kB 提示；未运行测试套件。commit / push 状态待完成后补记。
+- `npm run build:pages` 与 `git diff --check` 通过；Chrome 本地预览 `http://127.0.0.1:5188/` 在 1280×720 下核对聚焦卡片，卡片底部提示条数量为 0，右上角聚焦 / 放大等管理按钮仍可见。Vite 保留既有 JS chunk >500 kB 提示；未运行测试套件。源码提交 `f13d2323`、Pages 产物提交 `bd5fae2c` 和交接记录清理提交 `597d2130` 已推送到 `origin/main`；本轮未检查 Pages workflow。
