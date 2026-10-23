@@ -10,6 +10,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 ## Confirmed design decisions
 
+- 2026-10-23：外层滚动条自动隐藏仅应用于项目列表 `.project-scroll` 与对话消息 `.conversation-scroll`，空闲时隐藏、悬停或滚动时显现。画布、画布卡片、代码区和其他管理 / 内容面板均排除；实现与验证记录见仓库根 `AGENTS.md`。
+
 - The workspace has three columns: left project/task navigation, middle task conversation, and right-side judgment/evidence/actions. Do not remove the conversation or replace the project task list with a learning center.
 - Keep the left shortcuts for new task, automation tasks, and capability library, then show compact, collapsible task groups under projects.
 - Use the selected screen mock as the visual reference, then make iteration changes in HTML/CSS. Keep generated imagery for small decorative accents, not as the editable page itself.
