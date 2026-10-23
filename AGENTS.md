@@ -6262,4 +6262,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 根因是终点提示与画布状态说明同时显示、占用同一底边；输入表单则保留了两个 `type=submit` 控件。终点状态现隐藏重复画布说明，只留“这个方向已经具体到可开始 / 编辑需求”；表单移除右下角文字提交按钮和相关样式，保留右侧图标按钮作为唯一发送入口。
 - 本地 In-App Browser `http://127.0.0.1:5201/?home=explore` 在 1280×720 下复现“每步耗时波动”终点，核对提示不再重叠、发送区只剩图标按钮。A11y 树确认仅有一个“发送并开始”按钮；根页仍可保留经典 / 探索切换与 Prompt 条件展示。
 - 验证：`npm run build`、`npm run test:sites`（4/4）、`npm run build:pages` 和 `git diff --check` 通过；Vite 保留既有主 JS chunk 大于 500 kB 提示。无页面序列 / hash 或 API / Host / Application 边界变化。
-- 源码、Pages 产物与记录的 commit / push 和 Pages workflow 回执随后补充。
+- 源码修复提交 `5872e106`、Pages 产物及 QA 记录提交 `f4b0abfc` 已成功推送 `origin/main`；Pages workflow `39992045663` 的 build / deploy 均成功。发布入口引用 `index-CDzESHM6.js` 与 `index-D0rtDyQ8.css`。本环境对线上 GitHub Pages 的 Python HTTPS 与 curl 请求均握手失败 / 超时，未能做资源级 HTTP 回读；本地预览及构建已核验。

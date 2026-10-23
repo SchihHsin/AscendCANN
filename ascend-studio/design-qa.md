@@ -73,7 +73,7 @@ final result: passed
 - **Fix:** `completeLeaf` 为真时不渲染 `.explore-field__note`，只保留叶子提示和编辑操作；移除底部“发送并开始”按钮及桌面 / 窄屏专属样式，保留输入区右侧图标按钮作为唯一表单提交入口。
 - **Evidence:** 用户截图为直接反馈（H）；本地 In-App Browser `http://127.0.0.1:5201/?home=explore` 在 1280×720 复现“每步耗时波动”终点，目视确认文字不再重叠且仅显示图标发送；A11y 树仅出现一个“发送并开始”按钮（M）。本轮未将浏览器截图另存为文件。
 - **Validation:** `npm run build`、`npm run test:sites`（4/4）、`npm run build:pages` 与 `git diff --check` 通过；构建有既有 JS chunk >500 kB 提示。未改变任务 Prompt / 发送处理、首页模式切换、页面序列 / hash 或 API / Host / Application 边界。
-- **Release:** Commit / push 与 Pages workflow 回执随后补充。
+- **Release:** 源码提交 `5872e106` 与 Pages 产物 / QA 记录提交 `f4b0abfc` 已推送 `origin/main`；Pages workflow `39992045663` 的 build 与 deploy 均成功。`ascstudio/index.html` 指向 `index-CDzESHM6.js` / `index-D0rtDyQ8.css`；本环境对线上页面的 HTTPS 回读握手失败 / 超时，因此未确认资源级 HTTP 状态。
 
 final result: passed
 
