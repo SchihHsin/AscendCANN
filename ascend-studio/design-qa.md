@@ -1134,3 +1134,13 @@ final result: passed
 - **边界:** 这些页面是本地发布后拟态，不会创建真实 GitCode issue、CSDN 博文或抖音内容。无页面序列 / hash 或 API、Host / Harness、Application / Task 变化。CUA 截图用于本轮视觉核对，未另存为证据文件。
 - **检查:** `npm run build:pages` 与 `git diff --check` 通过；构建产物为 `index-C7ld622Y.js` / `index-JPPzXMDy.css`，保留既有大 JS chunk 提示。未运行自动化测试。
 - **发布:** 提交 `4283086b` 已推送 `origin/main`；GitHub Pages workflow `40004268766` build / deploy 成功，线上 `/ascstudio/` 引用的 HTML、JS 与 CSS 已确认使用这次资源。
+
+
+## 2026-10-24 · AddCustom 卡片加宽与聚焦视图
+
+- 目标：修正“卡片逻辑尺寸加大但自动缩放抵消”的问题；常见内容应完整留在卡片内，代码预览不得出现内部滚动。
+- 修改：源代码卡780×500，现场/解释/结果类默认约700px宽，Diff 840px宽；代码类最小高度500px。AddCustom fit/focus 取景边距分别收紧到12px/24px；其他画布不变。旧尺寸布局迁移仅针对未固定且匹配已知默认值的卡片。学习材料同步尺寸表。
+- CUA：本地 `http://127.0.0.1:5188/`，381×664 CSS视口。索引范围节点聚焦为46%，实际357×229px；正文clientHeight/scrollHeight=451/451，8行示例完整出现且无卡内滚动。放大后代码在任务内容区以正常字号显示，返回后回到同一聚焦节点。适应全部三节点会缩至24%，因此总览用于看关系，不应被误认为正文阅读尺寸。
+- 检查：`npm run build:pages` 与 `git diff --check`通过；没有运行测试套件。构建仍有既有 >500kB JS chunk 提醒。CUA画面在当轮直接检查，未另存截图。
+- 发布：提交 `00bcce10` 已推送 `origin/main`；workflow `40007714166` build/deploy成功。
+- 限制：只实看现场、解释、源码三张已显示卡，以及源码的完整阅读/返回；其他隐藏节点未逐项操作；未做宽屏与NPU验收。

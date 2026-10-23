@@ -1404,3 +1404,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 发布预览仍提供返回渠道总览、关闭和放大操作；切换平台不清除发布状态。
 - `npm run build:pages`、`git diff --check` 通过；CUA 在 381px 视口核对 GitCode 单发、社区 + CSDN + 抖音批发，以及二次 CSDN + 抖音批发后的预览切换。未运行自动化测试。
 - 提交 `4283086b` 已推送 `origin/main`；Pages workflow `40004268766` build / deploy 成功，线上 HTML 与新 JS / CSS 资源均可读取。
+
+
+### 2026-10-24 · AddCustom 节点尺寸与聚焦取景复核
+
+- 用户指出节点卡仍偏窄，并确认此前“常见内容尽量完整显示、卡内不滚动、特别长的内容保留静态预览并从右上角完整阅读”的规则是否已落地。此前代码已有按类型预览和逻辑尺寸，但 381px CSS 视口、42%缩放时，卡片仅约325px宽；只加逻辑宽度会被自动适配抵消。
+- 本轮将 AddCustom 默认宽度调为：现场记录700px、解释/结果/记录约700px、源代码780px、草案700px、Diff 840px；源代码默认高度500px且代码卡最小高度500px，可容纳8行预览。同步扩展尺寸边界，并迁移未固定且匹配旧默认值的存档；AddCustom布局版本升至8。其他任务保持原尺寸规则。
+- AddCustom 全景/聚焦视图的取景留白缩至12px；单节点聚焦时水平留白缩至24px，尽量使用画布可用空间。全景负责关系定位；聚焦强调当前节点；完整阅读区提供正常字号与长内容滚动。材料中的尺寸规则同步更新。
+- 来源与边界：用户反馈为直接依据（H）；本地CUA测量为实现观察（M）；各类别尺寸属于本轮交互设计参数（L），不是普适行业标准。页面序列/hash、API/Protocol、Host/Harness、Application/Task边界均未改变；不代表真实代码、模型或NPU验证。
+- 验证：`npm run build:pages`、`git diff --check`通过；未运行测试套件。381×664本地预览中，聚焦源码卡为46%缩放、357×229px；正文区域client/scroll高度均451px，无内部滚动或裁切。放大完整阅读能看见代码来源及关联入口，返回后仍在聚焦画布。三节点全景为24%，适合定位关系而非阅读正文。
+- 提交 `00bcce10` 已推送 `origin/main`；GitHub Pages workflow `40007714166` 的 build/deploy 成功。发布仍有既有的JavaScript chunk大于500kB提醒。未决：其他隐藏节点没有逐项完成浏览器回放；本轮未做桌面宽屏/真实NPU验证。
