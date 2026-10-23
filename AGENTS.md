@@ -6213,7 +6213,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 这是面向体验设计评审的策划示例，不连接真实历史、训练日志或 NPU。主要设计表达是“历史锚点 → 关联分支 → 可编辑 Prompt”，不以工程集成声明抢占首页注意力。
 - 本地预览在 Codex In-App Browser `http://127.0.0.1:5201/?home=explore`、1280×720 下核对首屏、接续入口、关联分支、连线、路径和 Prompt；演示点击“设计对照实验”后该条件追加到 Prompt；手动编辑 Prompt 后回到上层，文字保留并出现显式重新生成操作。随后恢复为接续入口打开的多卡收益中心态供评审。
 - 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）与 `git diff --check` 通过；构建保留既有 JS chunk >500 kB 提示。没有改变首页经典 / 探索 Tab、训练数据树、页面序列 / hash 或 API / Host / Application 边界。
-- 源码、Pages 产物与文档提交和推送回执随后补充。未将共享工作区里的其他任务改动纳入本次发布。
+- 源码提交 `4ef4cc73` 与 Pages 产物提交 `9f0f2dad` 已推送 `origin/main`；Pages workflow `39969122898` 的 build 与 deploy 均成功，线上新 JS/CSS 资源均 HTTP 200。未将共享工作区里的其他任务改动纳入本次发布。
 
 ### 2026-10-23 · 头像菜单主题选项对齐
 
