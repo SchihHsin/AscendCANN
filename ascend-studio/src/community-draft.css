@@ -178,13 +178,14 @@
 .channel-preview-card-heading { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 6px; min-height: 27px; }
 .channel-preview-channel-name { display: flex; min-width: 0; align-items: center; gap: 7px; }
 .channel-preview-channel-name strong { overflow: hidden; color: #2f3035; font-size: 12px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
-.channel-preview-mark { display: grid; flex: 0 0 auto; width: 23px; height: 23px; place-items: center; border-radius: 50%; color: #fff; background: #e8e8e8; font-size: 15px; font-weight: 750; line-height: 1; }
-.channel-preview-mark--community { color: #e72e3a; background: #fff; font-size: 19px; }
-.channel-preview-ascend-mark { transform: scaleX(.84); font-weight: 850; }
-.channel-preview-mark--gitcode { color: #fff; background: #e84c43; font-family: Arial, sans-serif; font-size: 15px; }
-.channel-preview-mark--csdn { color: #fff; background: #f27a26; font-family: Arial, sans-serif; font-size: 16px; }
-.channel-preview-mark--tiktok { color: #fff; background: #18191d; }
-.channel-preview-tiktok-mark { text-shadow: -1px 0 #4de3e9, 1px 0 #f36b83; }
+.channel-preview-mark { display: grid; flex: 0 0 auto; width: 23px; height: 23px; place-items: center; overflow: hidden; border: 1px solid #f0eeee; border-radius: 50%; background: #fff; }
+.channel-preview-mark img { display: block; width: 15px; height: 15px; object-fit: contain; }
+.channel-preview-mark--community { border-color: transparent; }
+.channel-preview-mark--community img { width: 17px; height: 20px; }
+.channel-preview-mark--gitcode img { width: 16px; height: 16px; }
+.channel-preview-mark--csdn img { width: 17px; height: 17px; }
+.channel-preview-mark--tiktok { border-color: #18191d; background: #18191d; }
+.channel-preview-mark--tiktok img { width: 14px; height: 14px; }
 .channel-preview-format { flex: 0 0 auto; padding: 4px 7px; border: 1px solid #ece9f2; border-radius: 20px; color: #747080; background: #fff; font-size: 8px; line-height: 1; white-space: nowrap; }
 .channel-preview-card--community .channel-preview-format { color: #a56831; border-color: #f2e4d4; }
 .channel-preview-card--gitcode .channel-preview-format { color: #bb4f6e; border-color: #f3dce6; }

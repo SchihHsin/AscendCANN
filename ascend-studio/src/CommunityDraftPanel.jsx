@@ -20,6 +20,10 @@ import "./community-draft.css";
 import { ChannelDraftContent, getCommunityDraftTopic } from "./ChannelDraftContent.jsx";
 import "./channel-draft.css";
 import { CommunityPublishedArticle } from "./CommunityPublishedArticle.jsx";
+import ascendCommunityMark from "./assets/channel-marks/ascend-community.svg";
+import gitcodeMark from "./assets/channel-marks/gitcode.svg";
+import csdnMark from "./assets/channel-marks/csdn.svg";
+import douyinMark from "./assets/channel-marks/douyin.svg";
 
 const sections = [
   { id: "problem", label: "1. 问题描述", Icon: IconAlertCircle },
@@ -35,6 +39,12 @@ const CHANNELS = [
   { id: "tiktok", name: "抖音", reward: "按播放表现可能获得创作收益", rewardShort: "播放表现激励", button: "预览并发布" },
 ];
 const CHANNEL_BY_ID = Object.fromEntries(CHANNELS.map(channel => [channel.id, channel]));
+const CHANNEL_MARKS = {
+  community: ascendCommunityMark,
+  gitcode: gitcodeMark,
+  csdn: csdnMark,
+  tiktok: douyinMark,
+};
 const truncate = (value, max = 96) => {
   const text = String(value || "").replace(/\s+/g, " ").trim();
   return text.length > max ? `${text.slice(0, max)}…` : text;
@@ -62,9 +72,7 @@ function DraftSection({ section, value, editing, onEdit, onChange }) {
 
 function ChannelMark({ channel }) {
   return <span className={`channel-preview-mark channel-preview-mark--${channel.id}`} aria-hidden="true">
-    {channel.id === "community" ? <span className="channel-preview-ascend-mark">A</span>
-      : channel.id === "gitcode" ? "G"
-        : channel.id === "csdn" ? "C" : <span className="channel-preview-tiktok-mark">♪</span>}
+    <img src={CHANNEL_MARKS[channel.id]} alt="" />
   </span>;
 }
 
