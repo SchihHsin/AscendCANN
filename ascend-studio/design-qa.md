@@ -1071,4 +1071,4 @@ final result: passed
 - **视觉核验:** 本地 Chrome `http://127.0.0.1:5194/?home=explore`，1280×720 视口；首层六个中文主题均恢复原有衬线字形，与页面主标题同属原有字形风格，英文翻译仍在中文上方。截图：`evidence/20261023-home-exploration/chinese-font-restored-1280x720.png`。
 - **边界:** 用户偏好与附图属于直接反馈（H）；字体恢复沿用仓库既有 CSS 定义，不加入外部字体。没有改变页面序列 / hash、Prompt 内容、悬浮节奏、连线或 API / Host / Application 边界，不涉及真实训练与 NPU 验证。
 - **Build / validation:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check` 通过；Vite 保留既有 JS chunk 超过 500 kB 的提示。构建产物 CSS 已确认包含原衬线字体栈，且不含主题专属无衬线标题覆盖。未新增自动化测试。
-- **Release:** 推送与 Pages workflow 结果待完成后回填。
+- **Release:** 源码 / 截图提交 `e98eb45d` 与 Pages 包提交 `a60b1647` 已推送 `origin/main`；Pages workflow `39958952895` 成功。线上 `/ascstudio/` HTML、`index-V0mG495J.js`、`index-DVr2BBcb.css` 均 HTTP 200；CSS 已确认保留 `Songti SC` 字体栈，未再包含首层主题无衬线标题覆盖。
