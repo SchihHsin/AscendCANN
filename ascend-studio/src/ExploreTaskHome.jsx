@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import {
   IconArrowRight, IconArrowUpRight, IconBook, IconCheck, IconChevronRight,
-  IconCode, IconCpu, IconEdit, IconInfoCircle, IconRoute, IconSettings,
+  IconCode, IconCpu, IconEdit, IconHistory, IconRoute, IconSettings,
   IconSparkles, IconTrendingUp, IconX,
 } from "@tabler/icons-react";
 import { explorationTopics, explorationRequest, resolveExplorationPath } from "./home-exploration";
@@ -67,7 +67,6 @@ export function ExploreTaskHome({ onCreateTask }) {
   const [appliedPrompt, setAppliedPrompt] = useState("");
   const [kindOverride, setKindOverride] = useState("");
   const [error, setError] = useState("");
-  const [showOrigin, setShowOrigin] = useState(false);
   const homeRef = useRef(null);
   const fieldRef = useRef(null);
   const nodeRefs = useRef(new Map());
@@ -212,6 +211,8 @@ export function ExploreTaskHome({ onCreateTask }) {
     }
   };
 
+  const continuePrevious = () => choose(["training", "efficiency", "multi-card"]);
+
   const preview = (node) => {
     window.clearTimeout(previewTimer.current);
     setHoveredId(node.id);
@@ -268,26 +269,26 @@ export function ExploreTaskHome({ onCreateTask }) {
     }
   };
 
-  const sourceText = isPreviewing || request.path.length
-    ? "当前词条来自预设的探索地图，按你悬浮或点击的路径逐层展开；它们不是对你的训练现场、日志或问题的判断。"
-    : "这里是人工整理的任务探索方向，不是个性化推荐，也没有读取你的训练日志。先悬浮预览；点击后才会加入需求。";
-
   return <section ref={homeRef} className="explore-home" aria-label="探索式首页" onPointerLeave={leaveField}>
     <header className="explore-home__header">
       <div className="explore-home__heading">
         <div className="explore-home__eyebrow"><IconSparkles size={14} /> WHAT WOULD YOU LIKE TO EXPLORE TODAY?</div>
         <h1>今天，想探索什么？</h1>
-        <p>{focused ? `围绕「${focused.label}」继续向下探索，或锁定这条路径。` : "停留片刻预览；展开后移向新节点，继续探索。"}</p>
-      </div>
-      <div className="explore-home__origin">
-        <button type="button" aria-expanded={showOrigin} onClick={() => setShowOrigin(!showOrigin)}>
-          <IconInfoCircle size={14} />这些词条从哪里来
-        </button>
-        {showOrigin && <div className="explore-home__origin-popover" role="note">{sourceText}</div>}
+        <p>{focused ? `围绕「${focused.label}」继续向下探索，或锁定这条路径。` : "接续最近的思路，或从一个主题开始探索。"}</p>
       </div>
     </header>
 
-    <nav className="explore-home__trail" aria-label="探索路径">
+    {!focused && <section className="explore-continuation" aria-label="接续上一条思路">
+      <div className="explore-continuation__mark" aria-hidden="true"><IconHistory size={15} stroke={1.7} /></div>
+      <div className="explore-continuation__copy">
+        <span className="explore-continuation__eyebrow">PICK UP THE THREAD <i /> 训练与调优</span>
+        <strong>多卡收益不明显</strong>
+        <span className="explore-continuation__hint">增加卡数后，吞吐提升没有达到预期</span>
+      </div>
+      <button type="button" onClick={continuePrevious}>继续探索<IconArrowRight size={15} /></button>
+    </section>}
+
+    {(focused || isPreviewing) && <nav className="explore-home__trail" aria-label="探索路径">
       <button type="button" onClick={() => choose([])} aria-current={!focused ? "page" : undefined}>全部方向</button>
       {activePath.map((item, index) => {
         const locked = index < ids.length;
@@ -305,7 +306,12 @@ export function ExploreTaskHome({ onCreateTask }) {
         <IconArrowUpRight size={13} />返回上一级
       </button>}
       {isPreviewing && <span className="explore-home__preview-label">悬浮预览 · 点击节点锁定</span>}
-    </nav>
+    </nav>}
+
+    {!focused && <div className="explore-home__map-heading">
+      <span>或者，从一个主题开始</span>
+      <small>EXPLORE A NEW THREAD</small>
+    </div>}
 
     <div
       ref={fieldRef}
@@ -401,7 +407,7 @@ export function ExploreTaskHome({ onCreateTask }) {
       <div className="explore-field__note" aria-live="polite">
         {hovered ? <><strong>{hovered.label}</strong><span>{hovered.hint}</span><small>{hovered.children.length ? "停留预览下一层 · 展开后移动到新节点继续" : "点击加入需求草稿"}</small></>
           : focused ? <><strong>{isPreviewing ? "正在预览这条路径" : "已锁定当前方向"}</strong><span>{focused.children.length ? "停留片刻预览；展开后移动到新节点，再继续下钻。" : "这条路径会作为可编辑需求草稿。"}</span></>
-            : <span>主题词来自预设地图；它们是探索入口，不代表已经识别出你的问题。</span>}
+            : <span>每条思路都能长出不同的关联方向。</span>}
       </div>
     </div>
 

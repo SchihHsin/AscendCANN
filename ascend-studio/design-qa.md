@@ -66,6 +66,7 @@ The three-column structure matches the selected mock: compact grouped project ta
 
 final result: passed
 
+
 ## 2026-10-23 · 图像推理画布聚焦与完整阅读试点（设计规则）
 
 - 目的：作为 AddCustom 节点聚焦 / 长内容完整阅读规则的第二个试点，确认共同入口可复用，同时不抹平不同任务自己的工作区结构。
@@ -1072,3 +1073,16 @@ final result: passed
 - **边界:** 用户偏好与附图属于直接反馈（H）；字体恢复沿用仓库既有 CSS 定义，不加入外部字体。没有改变页面序列 / hash、Prompt 内容、悬浮节奏、连线或 API / Host / Application 边界，不涉及真实训练与 NPU 验证。
 - **Build / validation:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check` 通过；Vite 保留既有 JS chunk 超过 500 kB 的提示。构建产物 CSS 已确认包含原衬线字体栈，且不含主题专属无衬线标题覆盖。未新增自动化测试。
 - **Release:** 源码 / 截图提交 `e98eb45d` 与 Pages 包提交 `a60b1647` 已推送 `origin/main`；Pages workflow `39958952895` 成功。线上 `/ascstudio/` HTML、`index-V0mG495J.js`、`index-DVr2BBcb.css` 均 HTTP 200；CSS 已确认保留 `Songti SC` 字体栈，未再包含首层主题无衬线标题覆盖。
+
+## 2026-10-23 · 首页从上一条思路接续并展开关联 Prompt
+
+- **Target:** Ascend Studio 新建任务首页的「探索」方案；参考当前探索画布和用户明确的产品目标：用交互原型展示前沿设计点，无需先接完真实工程。
+- **Intent:** 让探索词条有可理解的起点。用户可从一个既有思路继续，看到它关联出的方向，并观察 Prompt 如何随路径逐步生成；仍可转而从其他主题开始。
+- **Implementation:** 移除“这些词条从哪里来”弹层及强调“未读取训练日志 / 预设地图”的首屏提示。新增「接续上一条思路」情境行，主题为“训练与调优 / 多卡收益不明显”。点击后沿既有路径进入中心焦点，周围展开“先定位瓶颈”“设计对照实验”“先理解并行训练”，关系线和 Prompt 联动保留；回到“全部方向”仍可选其他主题。
+- **Preview:** Codex In-App Browser 的 `http://127.0.0.1:5201/?home=explore`，1280×720。核对首屏续接入口、中心节点与三个关联方向、连线、祖先路径和可编辑 Prompt；点击对照实验后 Prompt 追加对应条件。手动改写 Prompt 后回到祖先节点，文本保留并出现显式重新生成入口。当前预览停在多卡收益中心态。
+- **Validation:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check` 通过。Vite 有既有主 JS chunk 大于 500 kB 提示。
+- **Scope:** 这是策划的交互故事，不连接真实个人历史、训练日志或 NPU；不改变经典 / 探索 Tab、正式页面序列 / hash 或 API / Host / Application 层边界。构建与预览不代表真实训练验证。
+- **Evidence note:** 页面在 In-App Browser 中实时目视核验；本轮没有把浏览器截图另存为仓库文件。
+- **Release:** Commit / push 回执随后补充。
+
+final result: passed

@@ -65,10 +65,17 @@
 .explore-home__eyebrow svg { color: #6d7cf0; }
 .explore-home__header h1 { margin: 8px 0 4px; color: #20242d; font-family: ui-serif, Georgia, "Songti SC", serif; font-size: clamp(25px, 2.2vw, 34px); font-weight: 560; letter-spacing: -.045em; line-height: 1.3; }
 .explore-home__header p { margin: 0; color: #777b84; font-size: 12px; line-height: 1.65; }
-.explore-home__origin { position: relative; z-index: 5; flex-shrink: 0; margin-bottom: 2px; }
-.explore-home__origin > button { display: flex; align-items: center; gap: 5px; padding: 6px 0; border: 0; background: transparent; color: #898e99; font-size: 10px; }
-.explore-home__origin > button:hover { color: #5c72da; }
-.explore-home__origin-popover { position: absolute; top: calc(100% + 7px); right: 0; width: min(286px, calc(100vw - 44px)); padding: 12px 14px; border: 1px solid #e5e7ec; border-radius: 9px; background: #fff; box-shadow: 0 10px 28px #22293812; color: #626a77; font-size: 11px; line-height: 1.75; }
+.explore-continuation { position: relative; display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; align-items: center; gap: 4px 11px; flex-shrink: 0; margin: 19px 0 3px; padding: 0 0 13px; border-bottom: 1px solid #eeedf2; }
+.explore-continuation__mark { display: grid; width: 24px; height: 24px; place-items: center; align-self: start; margin-top: 3px; border: 1px solid #e8e5f3; border-radius: 50%; color: #7b75b4; }
+.explore-continuation__copy { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
+.explore-continuation__eyebrow { display: flex; align-items: center; gap: 7px; color: #8882aa; font-size: 9px; letter-spacing: .045em; line-height: 1.3; }
+.explore-continuation__eyebrow i { width: 3px; height: 3px; border-radius: 50%; background: #c7c1dc; }
+.explore-continuation__copy strong { overflow: hidden; color: #3a3e4a; font-family: ui-serif, Georgia, "Songti SC", serif; font-size: 15px; font-weight: 560; letter-spacing: -.02em; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.explore-continuation__hint { overflow: hidden; color: #9297a1; font-size: 10px; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
+.explore-continuation > button { display: inline-flex; align-items: center; gap: 5px; justify-self: end; padding: 7px 0 7px 9px; border: 0; background: transparent; color: #6374ce; font-size: 10px; white-space: nowrap; transition: color 150ms, gap 150ms; }
+.explore-continuation > button:hover { gap: 8px; color: #485cc0; }
+.explore-home__map-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-shrink: 0; margin: 3px 0 2px; color: #686f7c; font-size: 11px; }
+.explore-home__map-heading small { color: #b0b2bc; font-size: 8px; letter-spacing: .08em; }
 
 .explore-home__trail { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; flex-shrink: 0; min-height: 34px; margin-top: 8px; }
 .explore-home__trail > button, .explore-home__trail > span > button { display: inline-flex; align-items: center; gap: 4px; padding: 4px 0; border: 0; background: transparent; color: #9297a1; font-size: 10px; }
@@ -203,7 +210,14 @@
   .explore-home { padding: 46px 19px 10px; }
   .explore-home__header { align-items: flex-start; flex-direction: column; gap: 2px; }
   .explore-home__header h1 { font-size: 25px; }
-  .explore-home__origin { position: relative; align-self: flex-end; margin: 2px 0 0; }
+  .explore-continuation { grid-template-columns: 21px minmax(0, 1fr); align-items: start; gap: 3px 9px; margin-top: 13px; padding-bottom: 9px; }
+  .explore-continuation__mark { width: 21px; height: 21px; margin-top: 1px; }
+  .explore-continuation__eyebrow { gap: 6px; font-size: 8px; }
+  .explore-continuation__copy strong { font-size: 14px; }
+  .explore-continuation__hint { font-size: 9px; }
+  .explore-continuation > button { grid-column: 2; justify-self: start; margin-top: 1px; padding: 3px 0; font-size: 9px; }
+  .explore-home__map-heading { margin-top: 8px; font-size: 10px; }
+  .explore-home__map-heading small { font-size: 7px; }
   .explore-home__trail { min-height: 28px; margin-top: 3px; }
   .explore-field { min-height: 255px; }
   .explore-field__nodes { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(78px, 1fr)); gap: 2px 1%; padding-inline: 0; }
