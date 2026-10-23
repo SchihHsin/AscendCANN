@@ -1132,4 +1132,5 @@ final result: passed
 - **平台内容:** 社区使用已有文章页；GitCode 显示问题标题、标签、复现过程、环境与待补证据；CSDN 显示长文、目录和互动栏；抖音以深色知识图卡轮播呈现内容与配文，不在知识图卡上写“示例”，也不编造互动数据。内容随任务草稿更新。
 - **CUA 回放:** 本地 `http://127.0.0.1:5204/`、381px CSS 视口。单发 GitCode 后 AX 页面显示 GitCode 发布页；先发布社区 + CSDN + 抖音后出现 3 个切换标签；随后已发布社区不计入第二批，CSDN + 抖音批发只显示 2 个新发布渠道。切换到 CSDN、抖音均保留预览；GitCode、CSDN 和抖音截图核对无横向溢出迹象，抖音深色卡片保持深色渐变。
 - **边界:** 这些页面是本地发布后拟态，不会创建真实 GitCode issue、CSDN 博文或抖音内容。无页面序列 / hash 或 API、Host / Harness、Application / Task 变化。CUA 截图用于本轮视觉核对，未另存为证据文件。
-- **检查:** `npm run build:pages` 与 `git diff --check` 通过；构建产物为 `index-C7ld622Y.js` / `index-JPPzXMDy.css`，保留既有大 JS chunk 提示。未运行自动化测试。GitHub 推送结果待部署后补记。
+- **检查:** `npm run build:pages` 与 `git diff --check` 通过；构建产物为 `index-C7ld622Y.js` / `index-JPPzXMDy.css`，保留既有大 JS chunk 提示。未运行自动化测试。
+- **发布:** 提交 `4283086b` 已推送 `origin/main`；GitHub Pages workflow `40004268766` build / deploy 成功，线上 `/ascstudio/` 引用的 HTML、JS 与 CSS 已确认使用这次资源。

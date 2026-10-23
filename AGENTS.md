@@ -6298,4 +6298,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 外部链接分别打开对应平台的内容频道 / 首页。Demo 只模拟发布后页面，不代表实际第三方发布或平台账号数据；抖音互动量不编造。
 - 依据：交互要求与抖音卡片文案约束来自用户直接反馈（H）；平台版式是便于讨论的前端拟态（L）。没有改变导航页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 CUA 在 381px CSS 视口回放 GitCode 单发、社区 + CSDN + 抖音批发，以及之后不把已发布社区混入的 CSDN + 抖音批发。预览切换与渠道对应正确；没有运行自动化测试。Vite 提示既有大 JS chunk 超过 500 kB。
-- Pages 构建生成 `index-C7ld622Y.js` 与 `index-JPPzXMDy.css`。提交与 `origin/main` 推送结果将在发布完成后补记。
+- 发布：提交 `4283086b` 已推送 `origin/main`；Pages workflow `40004268766` 的 build / deploy 成功。线上 `/ascstudio/` HTML 引用 `index-C7ld622Y.js` 与 `index-JPPzXMDy.css`，二者均可读取且包含本次平台预览样式与文案。

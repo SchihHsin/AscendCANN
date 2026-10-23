@@ -1402,3 +1402,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 单渠道发布后直接切换到该渠道的发布后页面；批量发布后进入本次实际新发布的第一个渠道，顶部保留本批渠道切换项。再次发布时不把之前已发布的平台混入本批预览。
 - 社区继续使用社区文章预览；GitCode、CSDN、抖音补齐各自的平台内容版式。抖音正文采用深色知识图卡，卡面避免出现“示例”字样；图文可切页。外部平台链接仅打开平台站点，预览不声称已真实发布。
 - 发布预览仍提供返回渠道总览、关闭和放大操作；切换平台不清除发布状态。
+- `npm run build:pages`、`git diff --check` 通过；CUA 在 381px 视口核对 GitCode 单发、社区 + CSDN + 抖音批发，以及二次 CSDN + 抖音批发后的预览切换。未运行自动化测试。
+- 提交 `4283086b` 已推送 `origin/main`；Pages workflow `40004268766` build / deploy 成功，线上 HTML 与新 JS / CSS 资源均可读取。
