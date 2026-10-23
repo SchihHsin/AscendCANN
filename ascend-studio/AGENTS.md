@@ -1194,5 +1194,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 草稿右侧标题栏显示当前发布渠道、“查看全部发布渠道”、渠道奖励提示和放大入口；默认勾选昇腾社区，可额外勾选 GitCode、CSDN、抖音。渠道预览与勾选独立，打开未选渠道预览不会把它加入目标列表。
 - 奖励卡使用明显的蓝 / 紫 / 粉 / 橙渐变；积分与创作收益文案是演示示例，不表示平台规则已经核实。平台草稿类型和社区本地提交后视图保留。
 - 源码位于 `src/CommunityDraftPanel.jsx`、`src/community-draft.css`、`src/channel-draft.css`；Pages 发布输出仍位于根仓 `ascstudio/`。不改页面序列、任务场景路由或 API / Host / Application 边界。
-- `npm run build`、`npm run build:pages`、`git diff --check` 通过。CUA 在本地 1280×720 核对标题、多选、奖励、GitCode 预览与放大；没有运行测试套件或连接真实渠道服务。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过。CUA 在本地 1280×720 核对标题、多选、奖励、GitCode 预览与放大；刷新回到首页后重新打开已完成的开发对话，社区邀请仍存在。没有运行测试套件或连接真实渠道服务。
 - 源码及 Pages 产物提交 `c0623057` 已推送 `origin/main`，Pages workflow `39886807631` 成功；远端 index 引用新 JS / CSS bundle，内容用 HTTP 获取核对。线上浏览器截图读取超时。

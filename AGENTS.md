@@ -6026,5 +6026,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认生成草稿后的右侧标题栏直接显示当前渠道、`查看全部发布渠道` 和多彩奖励提示；昇腾社区默认勾选，可在渠道面板多选其他平台并查看各自预览。渠道勾选与预览状态独立，预览未勾选渠道不会改变发布目标；草稿可放大检查。
 - 标题栏奖励提示使用蓝、紫、粉、橙渐变。奖励数字与收益文案仍是界面示例，不代表已核验的平台规则；真实第三方发布服务未连接。社区提交仍展示原有本地发布后页面。
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`community-draft.css`、`channel-draft.css`，同步重建根目录 `ascstudio/` Pages 产物。无页面序列 / hash 或 API / Host / Application 层边界变化。
-- 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 本地 1280×720 查看了右侧标题栏、默认渠道、四渠道奖励 / 多选面板、GitCode 预览和放大视图。刷新回到初始首页入口。未运行测试套件；NPU / 真实渠道发布未验证。
+- 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 本地 1280×720 查看了右侧标题栏、默认渠道、四渠道奖励 / 多选面板、GitCode 预览和放大视图。刷新后回到首页，重新打开已完成的开发对话仍显示社区邀请入口。未运行测试套件；NPU / 真实渠道发布未验证。
 - 源码和 Pages 产物提交 `c0623057` 已推送 `origin/main`；Pages workflow `39886807631` 成功。线上 `ascstudio/index.html` 引用 `index-CZJIor0M.js` / `index-Ds20pJGY.css`，无缓存请求获取到新文案及蓝紫渐变 CSS；线上浏览器截图读取超时，不记作线上视觉核验。
