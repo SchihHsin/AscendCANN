@@ -6075,3 +6075,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户将本轮范围明确限定为项目列表 `.project-scroll` 和对话消息 `.conversation-scroll` 两个外层滚动区。空闲隐藏，区域悬浮或滚动时显示；滚动事件后短暂显示约 900ms。保留原生滚动方式。
 - 新增 `ascend-studio/src/scrollbar-autohide.css`、`scrollbar-autohide.js`，由 `src/main.jsx` 引入。其它管理 / 内容面板、代码区、所有任务与学习画布、画布卡片及画布拖动逻辑不变。
 - 依据为本轮用户明确的界面需求，不新增产品事实，不改变页面序列或 API / Host / Application 边界。`npm run build`、`npm run build:pages`、`node --check ascend-studio/src/scrollbar-autohide.js`、`git diff --check` 均通过；构建保留既有大 JS chunk 提示。CUA 在本地 `5182` 验证项目列表有 111px 可滚动距离，滚动时加上显现状态，离开区域后恢复透明；当前共创对话内容未形成溢出，但相同规则已覆盖该容器。功能提交 `ff5f8c22` 已推送至 `origin/main`；GitHub Pages workflow `39917240033` 成功，线上 `/ascstudio/`、`index-CrgsQxNv.js`、`index--X1czWii.css` 均返回 HTTP 200，资源包含自动隐藏规则。
+
+### 2026-10-23 · 探索首页下钻微动效与主题连线
+
+- 用户指出下钻内容突然替换显得突兀，希望节点有展开微动效，并用连线表达层级关联。保留原悬浮停留与点击锁定语义；关联节点错落淡入、轻微上移，主题锚点向当前子节点绘制低对比弧线，悬浮某一分支时对应连线略微强调。
+- 连线根据主题锚点和各节点的实际位置测量，在容器尺寸变化时重新计算；连线避开焦点说明行。`prefers-reduced-motion` 下取消节点 / 连线动画但保留静态关联。
+- 修改 `ascend-studio/src/ExploreTaskHome.jsx`、`explore-task-home.css`，新增 1672×941 与 381×664 视口截图到 `ascend-studio/evidence/20261023-home-exploration/`，并重建根目录 `ascstudio/` Pages 静态包。
+- 本地 Chrome 回放确认训练主题展开 4 个节点及 4 条连线、悬浮分支只强调对应连线；窄视口无水平溢出。减少动态效果状态下节点 opacity 为 1、动画关闭，连线静态可见。`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、相关上游 Node 测试（14 项）、`git diff --check` 通过；Vite 保留既有大 JS bundle 提醒。直接单跑 `home-recommendations.test.js` 时 Node 无法解析其既有无扩展名 `learning-data` 导入，未作为本次验证通过项。
+- 证据边界：预设训练方向仍是待确认的静态产品假设，不代表读取日志、诊断用户训练现场或真实性能 / NPU 验证；不改变首页切换、路径锁定 / prompt 行为、正式页序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- Commit / push 与 Pages 发布回执：待本轮推送后补记。

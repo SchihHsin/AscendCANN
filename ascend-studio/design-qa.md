@@ -994,3 +994,25 @@ final result: blocked
 - 最新视觉检查只在 381×664 App 视口完成；没有以参考图 1672×941 桌面尺寸进行同屏比对。此前 1280×720 截图属于旧探索结构，不作为本轮结果。
 - final result: blocked（桌面参考尺寸视觉核验未完成；层级交互与构建检查通过）。
 - Commit / push: `04cde721` 已推送 `origin/main`；Pages workflow `39915607006` 成功，线上 `/ascstudio/` HTTP 200 并加载 `index-CGj_DVPe.js` / `index-CyHJEtly.css`。
+
+## 2026-10-23 · 探索首页下钻微动效与主题连线
+
+**用户反馈与交互决定**
+- 用户觉得下钻时内容突然切换显得突兀，希望有展开微动效，并通过连线体现主题与相关节点的关系。
+- 保留既有悬浮预览与点击锁定：新一层节点错落淡入、轻微上移；当前主题锚点向子节点绘制低对比弧线，鼠标悬浮某个子节点时只强调它对应的线。仍只显示当前层级，prompt 生成、编辑保留与发送行为不变。
+- `prefers-reduced-motion: reduce` 下停止节点 / 连线动画，节点直接可见，连线作为静态关系保留。
+
+**视觉与交互核验**
+- 本地 `http://127.0.0.1:5187/?home=explore`，Chrome CSS viewport 1672×941。悬浮“训练与调优”后出现“提升训练效率、排查训练异常、跑通训练流程、理解训练方法”4 个相关节点及 4 条连线；连线起始段从焦点说明行下方出发。悬浮“提升训练效率”时对应连线亮起。
+- 381×664 viewport 下同样展开 4 个节点与连线，探索页 `scrollWidth` 与 `clientWidth` 均为 381，无横向溢出。
+- 截图：`evidence/20261023-home-exploration/drilldown-connections-training-1672x941.png`、`evidence/20261023-home-exploration/drilldown-connections-training-381x664.png`。这是本地原型视觉核验，不代表与源参考图进行了像素级对照。
+- 减少动态效果回放结果：节点 `animation: none`、opacity 为 1，连线 dash pattern 关闭且静态可见。
+
+**实现与验证**
+- 更新 `src/ExploreTaskHome.jsx` 与 `src/explore-task-home.css`；`ResizeObserver` 与窗口尺寸变化后重新量测锚点和节点坐标。重建根仓 `../ascstudio/` Pages 包。未改变正式页序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`node --test src/canvas-node-position.test.js src/official-learning-progress.test.js`（14 项）、`git diff --check`：通过；保留既有 JS chunk 体积提醒。
+- 额外直接运行 `node --test src/home-recommendations.test.js` 时，Node 因该既有测试依赖无扩展名导入 `learning-data` 而无法解析；该测试不覆盖本次文件，没有改动相关代码。
+- 词条仍为人工整理的预设探索方向，不代表个性化训练诊断、真实日志、模型或 NPU 验证。
+- Deployment: pending.
+
+final result: passed

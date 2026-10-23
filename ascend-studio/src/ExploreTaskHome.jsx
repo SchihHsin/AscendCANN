@@ -26,6 +26,7 @@ function appendPreviewPath(ids, previewIds, nodeId) {
 export function ExploreTaskHome({ onCreateTask }) {
   const [ids, setIds] = useState([]);
   const [previewIds, setPreviewIds] = useState([]);
+  const [connections, setConnections] = useState({ width: 0, height: 0, source: null, paths: [] });
   const [hoveredId, setHoveredId] = useState(null);
   const [draft, setDraft] = useState("");
   const [edited, setEdited] = useState(false);
@@ -34,6 +35,9 @@ export function ExploreTaskHome({ onCreateTask }) {
   const [error, setError] = useState("");
   const [showOrigin, setShowOrigin] = useState(false);
   const homeRef = useRef(null);
+  const fieldRef = useRef(null);
+  const connectionSourceRef = useRef(null);
+  const nodeRefs = useRef(new Map());
   const draftRef = useRef(null);
   const previewTimer = useRef(null);
   const pointerNodeId = useRef(null);
@@ -53,6 +57,65 @@ export function ExploreTaskHome({ onCreateTask }) {
   useLayoutEffect(() => {
     if (homeRef.current) homeRef.current.scrollTop = 0;
   }, [focusedId]);
+
+  useLayoutEffect(() => {
+    const field = fieldRef.current;
+    const source = connectionSourceRef.current;
+    if (!focused || options.length === 0 || !field || !source) {
+      setConnections({ width: 0, height: 0, source: null, paths: [] });
+      return undefined;
+    }
+
+    let frame = 0;
+    const measure = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const fieldRect = field.getBoundingClientRect();
+        const sourceRect = source.getBoundingClientRect();
+        const focusRect = field.querySelector(".explore-field__focus")?.getBoundingClientRect();
+        const sx = sourceRect.left + sourceRect.width / 2 - fieldRect.left;
+        const sy = sourceRect.top + sourceRect.height / 2 - fieldRect.top;
+        const branchY = Math.max(sy + 13, focusRect ? focusRect.bottom - fieldRect.top + 4 : sy + 13);
+        const paths = options.flatMap((item, index) => {
+          const node = nodeRefs.current.get(item.id);
+          if (!node) return [];
+          const rect = node.getBoundingClientRect();
+          const tx = rect.left + rect.width / 2 - fieldRect.left;
+          const ty = rect.top + 4 - fieldRect.top;
+          const curveDepth = Math.min(44, Math.max(18, Math.abs(tx - sx) * 0.06));
+          return [{
+            id: item.id,
+            index,
+            color: getComputedStyle(node).getPropertyValue("--node-color").trim() || "#6275d6",
+            d: `M ${sx} ${branchY} C ${sx} ${branchY + curveDepth}, ${tx} ${ty + curveDepth}, ${tx} ${ty}`,
+            x: tx,
+            y: ty,
+          }];
+        });
+        setConnections({
+          width: fieldRect.width,
+          height: fieldRect.height,
+          source: { x: sx, y: sy, branchY },
+          paths,
+        });
+      });
+    };
+
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
+    observer?.observe(field);
+    observer?.observe(source);
+    options.forEach((item) => {
+      const node = nodeRefs.current.get(item.id);
+      if (node) observer?.observe(node);
+    });
+    window.addEventListener("resize", measure);
+    measure();
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer?.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [focusedId, options, hoveredId]);
 
   const choose = (nextIds) => {
     window.clearTimeout(previewTimer.current);
@@ -150,11 +213,34 @@ export function ExploreTaskHome({ onCreateTask }) {
     </nav>
 
     <div
+      ref={fieldRef}
       className={"explore-field" + (focused ? " is-focused" : "") + (isPreviewing ? " is-previewing" : "") + (completeLeaf ? " is-leaf" : "")}
       aria-label={focused ? focused.label + "相关方向" : "可探索的任务方向"}
     >
+      {connections.paths.length > 0 && <svg
+        className="explore-field__connections"
+        width={connections.width}
+        height={connections.height}
+        viewBox={`0 0 ${connections.width} ${connections.height}`}
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        {connections.source && <path
+          className="explore-field__connection-source"
+          d={`M ${connections.source.x} ${connections.source.y} L ${connections.source.x} ${connections.source.branchY}`}
+        />}
+        {connections.paths.map((path) => <g key={path.id}>
+          <path
+            className={"explore-field__connection" + (hoveredId === path.id ? " is-active" : "")}
+            d={path.d}
+            pathLength="1"
+            style={{ "--connection-index": path.index, "--connection-color": path.color }}
+          />
+          <circle className="explore-field__connection-end" cx={path.x} cy={path.y} r="2" style={{ "--connection-color": path.color }} />
+        </g>)}
+      </svg>}
       {focused && <div className="explore-field__focus">
-        <span className="explore-field__focus-mark"><i aria-hidden="true" />{isPreviewing ? "正在预览" : "当前方向"}</span>
+        <span className="explore-field__focus-mark"><i ref={connectionSourceRef} aria-hidden="true" />{isPreviewing ? "正在预览" : "当前方向"}</span>
         <strong>{isPreviewing ? "点击锁定这个方向，或继续悬浮下钻。" : "已加入需求草稿。"}</strong>
         {isPreviewing && <button className="explore-field__lock" type="button" onClick={() => choose(activeIds)}>
           锁定「{focused.label}」<IconCheck size={12} />
@@ -169,6 +255,10 @@ export function ExploreTaskHome({ onCreateTask }) {
           return <button
             type="button"
             key={item.id}
+            ref={(element) => {
+              if (element) nodeRefs.current.set(item.id, element);
+              else nodeRefs.current.delete(item.id);
+            }}
             className={"explore-field__node explore-field__node--" + tone + (hoveredId === item.id ? " is-hovered" : "") + (rootNode ? " is-topic" : "")}
             style={{ "--node-index": index }}
             onPointerMove={(event) => moveOnNode(item, event)}
@@ -180,14 +270,16 @@ export function ExploreTaskHome({ onCreateTask }) {
             onClick={() => choose([...activeIds, item.id])}
             aria-label={item.label + "。 " + item.hint + (item.children.length ? "。点击进入相关方向。" : "。点击加入需求草稿。")}
           >
-            <span className="explore-field__node-kind">
-              <i aria-hidden="true" />
-              {Icon && rootNode ? <Icon size={13} stroke={1.8} /> : null}
-              {label}
+            <span className="explore-field__node-content">
+              <span className="explore-field__node-kind">
+                <i aria-hidden="true" />
+                {Icon && rootNode ? <Icon size={13} stroke={1.8} /> : null}
+                {label}
+              </span>
+              <strong>{item.label}</strong>
+              <span className="explore-field__node-hint">{item.hint}</span>
+              <span className="explore-field__node-action">{item.children.length ? "继续展开" : "加入需求"} <IconArrowUpRight size={13} /></span>
             </span>
-            <strong>{item.label}</strong>
-            <span className="explore-field__node-hint">{item.hint}</span>
-            <span className="explore-field__node-action">{item.children.length ? "继续展开" : "加入需求"} <IconArrowUpRight size={13} /></span>
           </button>;
         })}
       </div> : <div className="explore-field__leaf">

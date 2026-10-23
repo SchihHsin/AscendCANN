@@ -1230,3 +1230,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 本地 1280×720 核对四卡片同屏、GitCode / CSDN 详情、演示发布后状态返回卡片；`npm run build:pages` 与 `git diff --check` 通过。未运行测试套件。源码提交 `afcd7201`、Pages 产物提交 `deddff90` 已推送 `origin/main`；并行提交 `ff5f8c22` 的 Pages workflow `39917240033` 成功，线上已引用新 JS / CSS bundle。
 - 2026-10-23 头像修正：社区、GitCode、CSDN、抖音卡片均显示对应品牌 SVG 标志，不再用字母 / 字符代替；图形本地打包。`npm run build:pages`、`git diff --check` 通过；提交 `37731e1b` 已推送，Pages workflow `39919652648` 成功，线上入口已加载新 JS / CSS。
 - 2026-10-23 多选与批量发布：默认勾选社区；点击卡片任意处或圆形勾选可切换，选中态有描边与勾号。单卡操作为「查看详情」，页面右下角按待发渠道数批量发布；仅更新本地演示状态，社区提交继续支持文章预览及返回多渠道页。选中与发布状态刷新后重置。`npm run build:pages`、`git diff --check` 通过，未运行测试套件。提交 `c8632171` 已推送 `origin/main`，Pages workflow `39921418238` 成功，线上加载新资源。
+
+### 2026-10-23 · 探索首页下钻微动效与主题连线
+
+- 下钻时关联节点错落淡入并轻微上移；从当前主题锚点向子节点绘制低对比连线，悬浮目标分支时对应连线加强。连线按节点实测位置绘制并随容器缩放重算，起点避开焦点说明文字。
+- 尊重 `prefers-reduced-motion`：禁用节点 / 连线动画，节点保持可见，连线作为静态关联保留。悬浮、锁定、路径和 prompt 的既有行为不变。
+- 本地 `http://127.0.0.1:5187/?home=explore`，Chrome CSS viewport 1672×941 与 381×664 核验训练主题展开、4 个子节点、4 条连线、单分支高亮和窄屏无横向溢出。证据截图见 `evidence/20261023-home-exploration/drilldown-connections-training-{1672x941,381x664}.png`。
+- `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`node --test src/canvas-node-position.test.js src/official-learning-progress.test.js`（14 项）、`git diff --check` 通过。Vite 保留既有 >500KB bundle 提醒；直接单跑无关 `home-recommendations.test.js` 被其既有无扩展名 `learning-data` 导入阻塞。
+- 不改正式页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；训练内容仍为本地预设方向，未接真实日志、模型或 NPU。Commit / push 与 Pages workflow 待补记。
