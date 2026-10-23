@@ -1063,3 +1063,11 @@ final result: passed
 - **检查:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）与 `git diff --check` 通过。没有检查窄屏；不声称训练现场诊断、模型执行或 NPU 验证。
 - **边界:** 保留 620ms 悬浮预览与展开后至少移动 14px 的防连跳逻辑、连线动效、原始中文 Prompt 与点击锁定；没有改变正式页面序列 / hash 或 API / Host / Application 层边界。
 - **发布:** 源码提交 `f01a8d70`、Pages 产物提交 `7126a2af` 已推送 `origin/main`；Pages workflow `39952421205` 成功。线上 `/ascstudio/` 已加载 `index-Dsvh3DPW.js` 与 `index-CEruwWww.css`，页面及资源均 HTTP 200。
+
+## 2026-10-23 · 探索首页中文字体恢复
+
+- **反馈与目标:** 用户指出中文主题字形偏离此前版本，认为原来的字体更好看。其截图用于定位当前主题标题的字体差异；目标是恢复首页原有中文主标题字体，同时保留上方英文翻译。
+- **实现:** 删除 `.explore-field__node.is-topic strong` 的无衬线、粗体、字距与窄行高覆盖，以及移动视口下独立的 15px 覆盖。中文主题重新继承 `.explore-field__node strong` 的既有 `ui-serif, Georgia, "Songti SC", serif` 字体与字重。英文小字、标题层级、布局、Prompt 和下钻交互未改。
+- **视觉核验:** 本地 Chrome `http://127.0.0.1:5194/?home=explore`，1280×720 视口；首层六个中文主题均恢复原有衬线字形，与页面主标题同属原有字形风格，英文翻译仍在中文上方。截图：`evidence/20261023-home-exploration/chinese-font-restored-1280x720.png`。
+- **边界:** 用户偏好与附图属于直接反馈（H）；字体恢复沿用仓库既有 CSS 定义，不加入外部字体。没有改变页面序列 / hash、Prompt 内容、悬浮节奏、连线或 API / Host / Application 边界，不涉及真实训练与 NPU 验证。
+- **Build / release:** 检查、构建、提交、推送及 Pages workflow 结果待完成后回填。

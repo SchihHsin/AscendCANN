@@ -1326,3 +1326,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 渠道奖励提示不显示“示例”字样，改以平台规则说明收尾。社区 +20、GitCode +50、CSDN +10 是原型中的展示数值，不是经核实的平台承诺。
 - 更新 `src/CommunityDraftPanel.jsx`、`src/community-draft.css` 与 `../ascstudio/` 发布包。`npm run build:pages`、`git diff --check` 通过；CUA 本地核对标题栏紧凑单行；未运行测试套件。
 - 源码与 Pages 产物提交 `c7212ec9` 已推送 `origin/main`；GitHub Pages workflow `39957570105` 成功。线上 `/ascstudio/` HTML、`index-kT5h-YcN.js` 与 `index-DIYOtvWj.css` 均 HTTP 200，线上 JS 已确认奖励提示为单行且不含“示例”。
+
+### 2026-10-23 · 探索首页中文字体偏好
+
+- 用户明确偏好此前的中文字体样式。探索主题中文标题继续使用普通节点的衬线字体栈 `ui-serif, Georgia, "Songti SC", serif`，不得给首层主题单独覆盖为无衬线粗体；窄屏沿用同一标题字形，只保留响应式字号规则。
+- 英文翻译仍是中文标题上方的小字；不改 Prompt 文案、悬浮行为、连线、首页切换或生成任务逻辑。源自用户直接反馈（H），以本地原有字体定义恢复，不引入外部字体。
