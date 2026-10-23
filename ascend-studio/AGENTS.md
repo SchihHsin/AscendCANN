@@ -1286,4 +1286,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 奖励提示采用多色渐变 Alert，加入信息图标、提示标题和奖励说明，明确其为信息而非按钮；积分文案均为示例，不承诺实际奖励。
 - 修改 `src/App.jsx`、`src/CommunityDraftPanel.jsx`、`src/community-draft.css`，并重建 `../ascstudio/` Pages 包。无页面序列或 API / Host / Application 边界变化。
 - 验证：`npm run build:pages`、`git diff --check` 通过；本地 CUA 已确认关闭 / 重新打开、黄色待审阅状态、Alert 样式与标题栏入口顺序。未运行测试套件。
-- Commit / push 与 Pages workflow 结果随后补记。
+- 源码与 `../ascstudio/` Pages 产物提交 `15860eca` 已推送 `origin/main`；Pages workflow `39947662930` 成功。线上 `/ascstudio/` 的 JS / CSS 均 HTTP 200，已确认加载多色奖励 Alert 与黄色待审阅样式。

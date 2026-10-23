@@ -6133,4 +6133,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户反馈将奖励文案从单行色块改为紧凑的多色 Alert，含信息图标、「发布激励」标题和奖励说明，不承担点击操作。奖励数值仍为示例，实际规则以各平台为准。
 - 修改 `ascend-studio/src/App.jsx`、`CommunityDraftPanel.jsx`、`community-draft.css`，重建根目录 `ascstudio/` Pages 包。未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界；未运行测试套件。
 - 验证：`npm run build:pages`、`git diff --check` 通过；CUA 本地 `http://127.0.0.1:5191/` 确认关闭后可重新打开、状态为黄色、奖励 Alert 及渠道入口顺序正确。
-- Commit / push 与 Pages workflow 结果随后补记。
+- 源码与 Pages 产物提交 `15860eca` 已推送 `origin/main`；Pages workflow `39947662930` 成功。线上 `/ascstudio/` 已引用 `index-B6hP5QxW.js` / `index-CZwrH0Lt.css`，HTML 与两项资源均返回 HTTP 200；bundle 已确认包含「发布激励」、黄色待审阅状态及 Alert 样式。
