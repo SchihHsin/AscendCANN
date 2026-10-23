@@ -404,11 +404,11 @@ export function ExploreTaskHome({ onCreateTask }) {
         <button type="button" onClick={() => draftRef.current?.focus()}><IconEdit size={14} />编辑需求</button>
         </div>}
       </div> : null}
-      <div className="explore-field__note" aria-live="polite">
+      {!completeLeaf && <div className="explore-field__note" aria-live="polite">
         {hovered ? <><strong>{hovered.label}</strong><span>{hovered.hint}</span><small>{hovered.children.length ? "停留预览下一层 · 展开后移动到新节点继续" : "点击加入需求草稿"}</small></>
           : focused ? <><strong>{isPreviewing ? "正在预览这条路径" : "已锁定当前方向"}</strong><span>{focused.children.length ? "停留片刻预览；展开后移动到新节点，再继续下钻。" : "这条路径会作为可编辑需求草稿。"}</span></>
             : <span>每条思路都能长出不同的关联方向。</span>}
-      </div>
+      </div>}
     </div>
 
     <form className="explore-composer" onSubmit={submit}>
@@ -439,7 +439,6 @@ export function ExploreTaskHome({ onCreateTask }) {
         <label className="explore-composer__kind"><span>创建为</span><select aria-label="创建的任务类型" value={kind} onChange={(event) => setKindOverride(event.target.value)}>
           <option value="development">开发任务</option><option value="learning">学习任务</option>
         </select></label>
-        <button className="explore-composer__submit" type="submit" disabled={!draft.trim()}>发送并开始<IconArrowRight size={14} /></button>
       </div>
       {error && <p className="explore-composer__error" role="alert">{error}</p>}
     </form>

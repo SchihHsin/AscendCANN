@@ -181,9 +181,6 @@
 .explore-composer__path button:hover { background: #eee9f4; }
 .explore-composer__kind { display: inline-flex; align-items: center; gap: 5px; color: #a1a5ad; font-size: 9px; white-space: nowrap; }
 .explore-composer__kind select { padding: 3px 5px; border: 0; border-radius: 4px; background: #f6f6f8; color: #777f8a; font-size: 9px; }
-.explore-composer__submit { display: inline-flex; align-items: center; gap: 5px; padding: 4px 6px; border: 0; background: transparent; color: #6979d8; font-size: 9px; white-space: nowrap; }
-.explore-composer__submit:hover { color: #485dc9; }
-.explore-composer__submit:disabled { color: #bfc3cc; cursor: default; }
 .explore-composer__regenerate { padding: 4px 0; border: 0; background: transparent; color: #8b72a0; font-size: 9px; text-align: left; }
 .explore-composer__error { margin: 3px 0 0 37px; color: #b04e59; font-size: 10px; }
 
@@ -259,7 +256,6 @@
   .explore-composer__path { flex-basis: 100%; order: 1; }
   .explore-composer__kind { margin-left: auto; }
   .explore-composer__regenerate { order: 2; width: 100%; }
-  .explore-composer__submit { order: 3; }
 }
 @media (prefers-reduced-motion: reduce) {
   .explore-home *, .explore-home *::before, .explore-home *::after { transition: none !important; animation: none !important; }
