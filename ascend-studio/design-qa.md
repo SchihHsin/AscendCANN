@@ -1041,6 +1041,6 @@ final result: passed
 - **Visual evidence:** `evidence/20261023-home-exploration/hover-root-english-1417x941.png`、`hover-centered-training-1417x798.png`。381px CSS 视口检查 `documentElement.scrollWidth === clientWidth`，首层标题均在节点内容宽度内。
 - **Build / validation:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check` 均通过。构建仍有既有 JS chunk 超过 500kB 的提示。
 - **Scope / evidence boundary:** 未改变导航、prompt 编辑 / 锁定 / 发送规则、页面序列 / hash 或 API、Host / Application 边界。词条为人工预设，未连接训练数据或 NPU。
-- **Deployment:** 等待本次变更提交并推送后回填 Pages workflow 与线上资源。
+- **Deployment:** 源码提交 `f15587f6` 与 Pages 产物提交 `5f6dae30` 已推送。Pages workflow `39948215316` 成功；线上 `/ascstudio/` 返回 HTTP 200，引用 `index-DXP34u-g.js` 与 `index-CGlj_L9u.css`，两项资源均 HTTP 200。
 
 final result: passed

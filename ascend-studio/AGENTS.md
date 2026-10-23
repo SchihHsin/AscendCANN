@@ -1293,4 +1293,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 首层主题卡用英文大标题取代“探索方向”，保留具体中文主题名及提示作辅助说明；训练与调优、模型部署等预设内容与 prompt 规则不变。
 - Chrome/CDP 回放验证训练首层与“提升训练效率”分支均不会因鼠标静止而连跳；模型部署主题展开 3 个关联项。381px CSS 视口下页面无横向滚动。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过；无页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。页面词条仍非真实训练诊断或 NPU 结果。
-- 根仓 Pages 产物、截图与文档随本次实现提交；推送与 Pages 状态待回填。
+- 源码提交 `f15587f6`、根仓 Pages 产物提交 `5f6dae30` 已推送 `origin/main`；Pages workflow `39948215316` 成功，线上 HTML / JS / CSS 均 HTTP 200。

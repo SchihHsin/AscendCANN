@@ -6141,4 +6141,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 六个首层主题以英文大字呈现：`TRAINING & TUNING`、`MODEL DEPLOYMENT`、`OPERATOR DEVELOPMENT`、`MIGRATION & PORTING`、`ENVIRONMENT & TOOLS`、`LEARNING PATHS`；中文主题名继续保留为辅助说明，不再显示空泛的“探索方向”。
 - 本地 Chrome/CDP 回放：训练主题停留 350ms 时未展开，超过延迟后居中并显示 4 个关联项；鼠标静止 1 秒仍停留本层；主动移向“提升训练效率”后展开其 4 个关联项，随后静止 1 秒仍不连跳。模型部署居中后显示 3 个关联项。381px 视口下文档滚动宽度等于视口宽度，节点文字未造成横向溢出。截图：`ascend-studio/evidence/20261023-home-exploration/hover-root-english-1417x941.png`、`hover-centered-training-1417x798.png`。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过；保留既有 JS chunk 体积提示。未改变正式页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；主题仍为人工预设，不代表读取日志、训练诊断或 NPU 验证。
-- 源码、`ascstudio/` 发布产物、截图和交接文件提交后立即推送 `origin/main`；Pages 发布状态待回填。
+- 源码提交 `f15587f6` 与 `ascstudio/` Pages 产物提交 `5f6dae30` 已推送 `origin/main`。Pages workflow `39948215316` 成功；线上 `/ascstudio/` 返回 HTTP 200，加载 `index-DXP34u-g.js` 与 `index-CGlj_L9u.css`，两项资源均 HTTP 200。
