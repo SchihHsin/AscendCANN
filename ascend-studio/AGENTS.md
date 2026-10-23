@@ -1318,3 +1318,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/ChannelDraftContent.jsx`、`src/CommunityDraftPanel.jsx`、`src/channel-draft.css`、`src/community-draft.css`，重建 `../ascstudio/` Pages 包。此为样式表达，不构成真实模型 / NPU 验证或平台发布。
 - `npm run build:pages`、`git diff --check` 通过；CUA 本地核对 2×2 总览与完整单页。未运行测试套件。
 - 源码与 Pages 产物提交 `60ebb1d8` 已推送 `origin/main`；GitHub Pages workflow `39953053218` 成功。线上 `/ascstudio/` HTML、`index-BW5TNpXr.js` 与 `index-BHMQBo6M.css` 均 HTTP 200；线上 CSS 已确认含语义色样式并保留外层渠道青粉渐变。
+
+
+### 2026-10-23 · 发布激励提示恢复紧凑样式
+
+- 恢复星光图标加单行奖励文案和原先的柔和彩色渐变；移除额外“发布激励”标题与左侧色条。
+- 渠道奖励提示不显示“示例”字样，改以平台规则说明收尾。社区 +20、GitCode +50、CSDN +10 是原型中的展示数值，不是经核实的平台承诺。
+- 更新 `src/CommunityDraftPanel.jsx`、`src/community-draft.css` 与 `../ascstudio/` 发布包。`npm run build:pages`、`git diff --check` 通过；CUA 本地核对标题栏紧凑单行；未运行测试套件。
+- Commit / push 与 Pages workflow 结果随后补记。

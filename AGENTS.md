@@ -6163,3 +6163,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `ascend-studio/src/ChannelDraftContent.jsx`、`CommunityDraftPanel.jsx`、`channel-draft.css`、`community-draft.css` 和根目录 `ascstudio/` Pages 产物。只改变展示层，不代表真实模型 / NPU 结果或平台发布状态；无页面序列 / hash、API、Host / Harness 或 Application / Task 边界变化。
 - 验证：`npm run build:pages`、`git diff --check` 通过。CUA 本地预览查看 2×2 渠道总览与单张图文详情，确认内图不再使用抖音青粉色、外层渠道色渐变保留。未运行测试套件。
 - 源码与 Pages 产物提交 `60ebb1d8` 已推送 `origin/main`；GitHub Pages workflow `39953053218` 成功。线上 `/ascstudio/` HTML、`index-BW5TNpXr.js` 与 `index-BHMQBo6M.css` 均 HTTP 200；线上 CSS 已确认含语义色样式并保留外层渠道青粉渐变。
+
+
+### 2026-10-23 · 恢复发布激励的紧凑提示
+
+- 用户选择恢复旧版紧凑样式：星光图标加单行奖励文案，保留横向柔和多色渐变，移除独立的“发布激励”标题和左侧竖向渐变条。
+- 从各渠道奖励提示中移除“示例”字样；补充“以平台规则为准”的轻量说明。社区 +20、GitCode +50、CSDN +10 仍是原型展示数值，不代表已核实或保证的实际平台奖励。抖音继续按播放表现描述创作收益。
+- 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`community-draft.css` 和生成的 `ascstudio/` Pages 包。未改变页面序列、hash、API / Protocol、Host / Harness 或 Application / Task 边界。
+- `npm run build:pages`、`git diff --check` 通过；CUA 本地预览确认标题栏显示为紧凑单行，未运行测试套件。
+- Commit / push 与 Pages workflow 结果随后补记。

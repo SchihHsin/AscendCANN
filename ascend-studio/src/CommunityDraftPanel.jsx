@@ -33,9 +33,9 @@ const sections = [
 ];
 
 const CHANNELS = [
-  { id: "community", name: "昇腾社区", reward: "审核通过后 +20 积分（示例）", rewardShort: "审核后 +20 积分 · 示例", button: "审阅并提交" },
-  { id: "gitcode", name: "GitCode", reward: "活动投稿被采纳可获积分（示例 +50）", rewardShort: "采纳后 +50 积分 · 示例", button: "审阅并发布" },
-  { id: "csdn", name: "CSDN", reward: "原创内容积分（示例 +10，规则以平台为准）", rewardShort: "+10 积分（示例）", button: "审阅并发布" },
+  { id: "community", name: "昇腾社区", reward: "审核通过后 +20 积分（以社区规则为准）", rewardShort: "审核后 +20 积分", button: "审阅并提交" },
+  { id: "gitcode", name: "GitCode", reward: "投稿被采纳后 +50 积分（以活动规则为准）", rewardShort: "采纳后 +50 积分", button: "审阅并发布" },
+  { id: "csdn", name: "CSDN", reward: "原创内容 +10 积分（以平台规则为准）", rewardShort: "+10 积分", button: "审阅并发布" },
   { id: "tiktok", name: "抖音", reward: "按播放表现可能获得创作收益", rewardShort: "播放表现激励", button: "预览并发布" },
 ];
 const CHANNEL_BY_ID = Object.fromEntries(CHANNELS.map(channel => [channel.id, channel]));
@@ -184,7 +184,7 @@ function MultiChannelOverview({ draft, channelStates, selectedChannels, onToggle
       />)}
     </div>
     <div className="community-channel-overview-footer">
-      <p className="community-channel-overview-note"><IconInfoCircle size={14} />已选 {selectedChannels.length} 个渠道；发布为本地演示，奖励提示为示例。</p>
+      <p className="community-channel-overview-note"><IconInfoCircle size={14} />已选 {selectedChannels.length} 个渠道；发布为本地演示，奖励规则以平台为准。</p>
       <button type="button" className="community-channel-publish-selected" onClick={onPublishSelected} disabled={pendingCount === 0}>
         {pendingCount === 0 && selectedChannels.length > 0
           ? <><IconCheck size={14} />已完成演示发布</>
@@ -265,8 +265,8 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
           </span>
         </div>
         <div className="community-incentive-alert" role="status" aria-label={channelDetails.reward} title={channelDetails.reward}>
-          <IconInfoCircle size={15} aria-hidden="true" />
-          <span className="community-incentive-alert-copy"><strong>发布激励</strong><span>{channelDetails.rewardShort}</span></span>
+          <IconSparkles size={14} aria-hidden="true" />
+          <span>{channelDetails.rewardShort}</span>
         </div>
         <button type="button" className="community-channel-all" aria-label="查看全部发布渠道" onClick={() => setView("overview")}><span>查看全部发布渠道</span><IconArrowRight size={13} aria-hidden="true" /></button>
         <div className="community-draft-header-actions">
@@ -296,7 +296,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
         />)}
       </div>
       <footer className="community-draft-footer">
-        <p><IconInfoCircle size={17} aria-hidden="true" /><span>草稿不会自动公开；提交前可继续编辑并确认内容。积分提示为示例，实际以平台规则为准。</span></p>
+        <p><IconInfoCircle size={17} aria-hidden="true" /><span>草稿不会自动公开；提交前可继续编辑并确认内容。奖励规则以对应平台为准。</span></p>
         <div className="community-draft-actions">
           <button type="button" className="community-draft-continue" onClick={continueEditing}>继续编辑</button>
           <button type="button" className="community-draft-submit" onClick={() => { setEditingSection(null); onSubmit(); }}><IconSend size={16} />提交到社区</button>
