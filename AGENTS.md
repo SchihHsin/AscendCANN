@@ -6118,7 +6118,6 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求在右上角头像菜单提供「中性灰 / 冷灰」两种界面主题；默认中性灰，用户选择写入本地浏览器并在刷新后恢复。
 - 菜单提供两种有色样片与当前选中态；主题通过根节点 `data-theme` 和共享 CSS 变量应用到工作区背景、细分表面、边线、点阵及用户消息气泡。白色内容面与语义状态色保留。
 - 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）通过；本地 5193 浏览器实测两种主题切换、气泡和外层背景取值、刷新恢复及无 console error。
-<<<<<<< HEAD
 - 不改变任务内容、导航序列或 API / Host / Application 边界。源码提交 `ead5334d`、Pages 产物提交 `3d417a13` 已推送 `origin/main`；GitHub Pages workflow `39946105091` 成功。线上 `/ascstudio/` 返回新 JS / CSS 文件名，HTML 与两项资源均 HTTP 200；线上 CSS 确认包含中性灰与冷灰色值。
 
 ### 2026-10-23 · AddCustom 卡片底部提示移除
