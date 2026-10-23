@@ -260,14 +260,15 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
         <div className="community-draft-title">
           <IconFileDescription size={23} aria-hidden="true" />
           <h2>{channelDetails.name}</h2>
-          <span className={`community-draft-status${channelState.published ? " is-submitted" : ""}`}>
+          <span className={`community-draft-status${channelState.published ? " is-submitted" : submittedForReview ? " is-review" : ""}`}>
             {channelState.published ? "已发布 · 演示" : submittedForReview ? "待你审阅" : "待生成"}
           </span>
         </div>
-        <button type="button" className="community-channel-all" aria-label="查看全部发布渠道" onClick={() => setView("overview")}><span>查看全部发布渠道</span><IconArrowRight size={13} aria-hidden="true" /></button>
         <div className="community-incentive-alert" role="status" aria-label={channelDetails.reward} title={channelDetails.reward}>
-          <IconSparkles size={14} aria-hidden="true" /><span>{channelDetails.rewardShort}</span>
+          <IconInfoCircle size={15} aria-hidden="true" />
+          <span className="community-incentive-alert-copy"><strong>发布激励</strong><span>{channelDetails.rewardShort}</span></span>
         </div>
+        <button type="button" className="community-channel-all" aria-label="查看全部发布渠道" onClick={() => setView("overview")}><span>查看全部发布渠道</span><IconArrowRight size={13} aria-hidden="true" /></button>
         <div className="community-draft-header-actions">
           <button type="button" className={`community-draft-zoom${expanded ? " is-active" : ""}`} onClick={() => setExpanded(value => !value)} aria-label={expanded ? "缩小草稿预览" : "放大草稿预览"} title={expanded ? "缩小预览" : "放大预览"}><IconMaximize size={15} /></button>
           <button type="button" className="community-draft-close" onClick={onClose} aria-label="关闭社区经验草稿"><IconX size={17} /></button>

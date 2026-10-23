@@ -6126,3 +6126,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 长内容仍保留在同一节点中；卡片内不滚动，完整正文在右侧阅读区查看。只涉及 AddCustom 当前任务，不扩展到其他任务。
 - 更新 `TaskCanvas.jsx`、`task-canvas.css` 与 `learning-canvas-story/index.html`，同步修正本文件、`ascend-studio/AGENTS.md` 和 `ascend-studio/design-qa.md` 中的规则记录。
 - `npm run build:pages` 与 `git diff --check` 通过；Chrome 本地预览 `http://127.0.0.1:5188/` 在 1280×720 下核对聚焦卡片，卡片底部提示条数量为 0，右上角聚焦 / 放大等管理按钮仍可见。Vite 保留既有 JS chunk >500 kB 提示；未运行测试套件。源码提交 `f13d2323`、Pages 产物提交 `bd5fae2c` 和交接记录清理提交 `597d2130` 已推送到 `origin/main`；本轮未检查 Pages workflow。
+
+### 2026-10-23 · 社区草稿审阅入口与激励提示修正
+
+- 修复关闭审阅面板时错误合并状态的问题：显式更新 `communityDraft.open`，关闭后草稿卡片仍保留，可再次打开。社区草稿卡及面板标题中的「待你审阅」使用黄色状态；「查看全部发布渠道」位于激励提示之后、放大图标之前。
+- 按用户反馈将奖励文案从单行色块改为紧凑的多色 Alert，含信息图标、「发布激励」标题和奖励说明，不承担点击操作。奖励数值仍为示例，实际规则以各平台为准。
+- 修改 `ascend-studio/src/App.jsx`、`CommunityDraftPanel.jsx`、`community-draft.css`，重建根目录 `ascstudio/` Pages 包。未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界；未运行测试套件。
+- 验证：`npm run build:pages`、`git diff --check` 通过；CUA 本地 `http://127.0.0.1:5191/` 确认关闭后可重新打开、状态为黄色、奖励 Alert 及渠道入口顺序正确。
+- Commit / push 与 Pages workflow 结果随后补记。

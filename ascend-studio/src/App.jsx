@@ -1122,7 +1122,9 @@ function App() {
     wb.patchSession(old => ({ communityDraft: { ...old.communityDraft, open: true } }));
     workspace.actions.setCollapsed(false);
   };
-  const closeCommunityDraft = () => wb.patchSession(old => ({ ...old.communityDraft, open: false }));
+  const closeCommunityDraft = () => wb.patchSession(old => ({
+    communityDraft: { ...old.communityDraft, open: false },
+  }));
   const submitCommunityDraft = () => {
     if (!session.communityDraft || session.communityDraft.status === "submitted") return;
     wb.patchSession(old => ({
@@ -1332,7 +1334,7 @@ function App() {
                   {message.communityDraftCard && message.communityDraftId === session.communityDraft?.id && session.communityDraft?.completionId && <button type="button" className="community-draft-card" onClick={openCommunityDraft} aria-label="打开社区经验草稿审阅">
                     <span className="community-draft-card-icon"><IconFileText size={21} /></span>
                     <span className="community-draft-card-copy"><strong>社区经验草稿已生成</strong><small>AI 根据本次对话整理 · 演示</small></span>
-                    <span className="community-draft-card-status">{session.communityDraft.status === "submitted" ? "已提交 · 演示" : "待你审阅"}</span>
+                    <span className={`community-draft-card-status${session.communityDraft.status === "submitted" ? " is-submitted" : " is-review"}`}>{session.communityDraft.status === "submitted" ? "已提交 · 演示" : "待你审阅"}</span>
                     <IconChevronRight size={17} />
                   </button>}
                   {message.role === "assistant" && <div className="message-feedback"><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={16} /></button></div>}

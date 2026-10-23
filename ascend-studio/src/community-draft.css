@@ -73,6 +73,8 @@
 .community-draft-card-copy strong { display: block; font-size: 12px; font-weight: 620; }
 .community-draft-card-copy small { display: block; margin-top: 4px; color: #8c8992; font-size: 10px; }
 .community-draft-card-status { flex: 0 0 auto; padding: 4px 7px; border: 1px solid #e8e8e6; border-radius: 5px; color: #66666d; background: rgba(255,255,255,.74); font-size: 10px; white-space: nowrap; }
+.community-draft-card-status.is-review { border-color: #f0d995; color: #8b6716; background: #fff7dc; }
+.community-draft-card-status.is-submitted { border-color: #dce7dd; color: #576d5e; background: #f5f8f5; }
 .community-draft-card > svg:last-child { flex: 0 0 auto; color: #81818a; }
 
 .community-draft-panel { height: 100%; min-height: 0; display: flex; flex-direction: column; overflow: hidden; color: #292a2f; background: #fff; }
@@ -81,12 +83,16 @@
 .community-draft-title > svg { flex: 0 0 auto; color: #303137; stroke-width: 1.7; }
 .community-draft-title h2 { min-width: 0; margin: 0; color: #303137; font-size: 14px; font-weight: 650; letter-spacing: -.2px; white-space: nowrap; }
 .community-draft-status { flex: 0 0 auto; padding: 4px 8px; border: 1px solid #e4e4e2; border-radius: 5px; color: #62636a; background: #f8f8f7; font-size: 10px; white-space: nowrap; }
+.community-draft-status.is-review { color: #8b6716; background: #fff7dc; border-color: #f0d995; }
 .community-draft-status.is-submitted { color: #576d5e; background: #f5f8f5; border-color: #dce7dd; }
 .community-channel-all { display: inline-flex; align-items: center; justify-content: center; gap: 2px; min-height: 27px; padding: 0 5px; border: 0; border-radius: 5px; color: #666671; background: transparent; font-size: 9px; font-weight: 550; white-space: nowrap; cursor: pointer; }
 .community-channel-all:hover { color: #503a87; background: #f5f1fc; }
-.community-incentive-alert { display: inline-flex; align-items: center; flex: 0 1 auto; min-width: 0; max-width: 150px; gap: 4px; padding: 5px 7px; overflow: hidden; border: 1px solid #d8cbed; border-radius: 6px; color: #433666; background: linear-gradient(108deg, #dceaff 0%, #e2e5ff 26%, #ecdfff 52%, #f8dff0 77%, #ffe8d8 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.76); font-size: 9px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
-.community-incentive-alert svg { flex: 0 0 auto; color: #7457c5; }
-.community-incentive-alert span { overflow: hidden; text-overflow: ellipsis; }
+.community-incentive-alert { position: relative; display: inline-flex; align-items: center; flex: 0 1 auto; min-width: 0; max-width: 166px; gap: 7px; padding: 5px 9px; overflow: hidden; border: 1px solid #e7e0f2; border-left: 0; border-radius: 7px; color: #514376; background: linear-gradient(110deg, rgba(234,242,255,.88) 0%, rgba(238,234,255,.86) 38%, rgba(247,237,250,.82) 72%, rgba(255,242,233,.82) 100%); box-shadow: none; text-align: left; pointer-events: none; }
+.community-incentive-alert::before { position: absolute; inset: 0 auto 0 0; width: 3px; content: ""; background: linear-gradient(180deg, #58a6f8, #8b68d9 50%, #e47ac2); }
+.community-incentive-alert > svg { flex: 0 0 auto; color: #7457c5; }
+.community-incentive-alert-copy { display: grid; min-width: 0; gap: 2px; overflow: hidden; line-height: 1.15; }
+.community-incentive-alert-copy strong { color: #66558e; font-size: 8px; font-weight: 650; }
+.community-incentive-alert-copy > span { overflow: hidden; color: #514376; font-size: 9px; font-weight: 550; text-overflow: ellipsis; white-space: nowrap; }
 .community-draft-header-actions { display: flex; align-items: center; flex: 0 0 auto; gap: 4px; margin-left: auto; }
 .community-draft-zoom { display: grid; flex: 0 0 auto; width: 27px; height: 27px; place-items: center; padding: 0; border: 1px solid #e6e5e3; border-radius: 6px; color: #66666e; background: #fff; cursor: pointer; }
 .community-draft-zoom:hover, .community-draft-zoom.is-active { color: #553f8b; border-color: #d8ccef; background: #f7f3fd; }
@@ -142,7 +148,10 @@
   .community-draft-title > svg { width: 19px; }
   .community-draft-status { padding: 3px 5px; font-size: 8px; }
   .community-channel-all { min-height: 25px; padding-inline: 3px; font-size: 8px; }
-  .community-incentive-alert { max-width: 105px; padding: 4px 5px; font-size: 8px; }
+  .community-incentive-alert { max-width: 116px; gap: 4px; padding: 4px 5px; }
+  .community-incentive-alert > svg { width: 13px; }
+  .community-incentive-alert-copy strong { font-size: 7px; }
+  .community-incentive-alert-copy > span { font-size: 8px; }
   .community-draft-header-actions { gap: 3px; }
   .community-draft-zoom, .community-draft-close { width: 25px; height: 25px; }
   .community-draft-intro { padding-inline: 13px; }

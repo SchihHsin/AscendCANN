@@ -1279,3 +1279,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/App.jsx`、`src/styles.css`、`src/interaction.css`、`src/task-canvas.css`、`src/learning-hierarchy-canvas.css`、`src/learning-discovery.css`；Pages 产物从当前源码重新构建。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）通过。CUA 本地 5193 核对菜单、两种主题、用户消息气泡取值、刷新恢复及无 console error。未改变任务内容与 API / Host / Application 边界。
 - 源码提交 `ead5334d` 与 Pages 产物提交 `3d417a13` 已推送 `origin/main`；GitHub Pages workflow `39946105091` 成功。线上 `/ascstudio/` 引用 `index-BV0fkUSG.js` / `index-QG_AQLhe.css`，HTML 与两项资源均 HTTP 200。
+
+### 2026-10-23 · 社区草稿审阅入口与激励提示修正
+
+- 修复社区草稿面板关闭逻辑，更新嵌套的 `communityDraft.open` 状态；关闭后对话草稿卡片仍可重新打开。待审阅状态统一为黄色；全渠道入口在激励提示之后、放大按钮之前。
+- 奖励提示采用多色渐变 Alert，加入信息图标、提示标题和奖励说明，明确其为信息而非按钮；积分文案均为示例，不承诺实际奖励。
+- 修改 `src/App.jsx`、`src/CommunityDraftPanel.jsx`、`src/community-draft.css`，并重建 `../ascstudio/` Pages 包。无页面序列或 API / Host / Application 边界变化。
+- 验证：`npm run build:pages`、`git diff --check` 通过；本地 CUA 已确认关闭 / 重新打开、黄色待审阅状态、Alert 样式与标题栏入口顺序。未运行测试套件。
+- Commit / push 与 Pages workflow 结果随后补记。
