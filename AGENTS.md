@@ -6279,4 +6279,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 ascend-studio/src/ExploreTaskHome.jsx 和 explore-task-home.css：首层加入“悬浮停留→预览下一层 / 点击节点→锁定路径”图例；预览状态使用暖色虚线提示与虚线关系线，锁定状态使用实线确认样式并同步写入 Prompt；子节点动作文字明确表明悬浮可下钻、点击可锁定。根方向的英文翻译与中文主标题关系保留。
 - 本地 In-App Browser http://127.0.0.1:5201/?home=explore，1280×720 CUA 核对：悬浮“训练与调优”展开第一层，再悬浮“提升训练效率”进入下一层；展开后静置 1 秒没有自动继续跳层；点击中心后状态转为“已锁定到需求草稿”，Prompt 条件同步出现。截图视觉确认预览虚线与锁定实线的区分。
 - npm run build、npm run test:sites（4/4）、npm run build:pages 与 git diff --check 通过；构建仍提示既有 JS chunk 超过 500 kB。未改训练方向数据、经典 / 探索 Tab、正式页序 / hash 或 API / Host / Application 边界，不代表已连接真实训练任务、日志或 NPU。
-- 源码和 Pages 构建包已提交并推送 origin/main；线上发布状态待 Pages workflow 确认。
+- 源码与 Pages 构建包提交 381e5964 已推送 origin/main；Pages workflow 40001670205 对应该提交，build / deploy 均成功，资源 index-DgBRA8TS.js 与 index-xaGMi3JY.css 已发布。

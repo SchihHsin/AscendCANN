@@ -1124,4 +1124,4 @@ final result: passed
 - **验证:** CUA 在 http://127.0.0.1:5201/?home=explore、1280×720 下悬浮“训练与调优”进入第一层，接着悬浮“提升训练效率”进入下一层；静止 1 秒不自动连跳。点击中心后 AX 状态为“已锁定到需求草稿”，Prompt 加入对应路径。目视检查预览虚线与锁定实线状态清楚。
 - **范围:** 只调整探索首页交互提示与状态反馈，不改变训练方向数据、经典 / 探索切换、页面序列 / hash 或 API / Host / Application 边界。没有真实训练、日志或 NPU 验证。
 - **检查:** npm run build、npm run test:sites（4/4）、npm run build:pages、git diff --check 均通过；Vite 保留既有大 JS chunk 提醒。生成的 Pages 资源为 index-DgBRA8TS.js 与 index-xaGMi3JY.css。
-- **发布:** 源码、交接文档和 Pages 资源已提交并推送 origin/main；等待 Pages workflow 完成后记录线上状态。
+- **发布:** 源码、交接文档和 Pages 资源由提交 381e5964 推送至 origin/main；Pages workflow 40001670205 的 build / deploy 均成功。
