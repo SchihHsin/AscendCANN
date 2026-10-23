@@ -970,3 +970,15 @@ final result: passed
 - Console errors: 0 during checked interactions.
 - Scope limits: 浏览器工具未提供直接鼠标 hover，实际回放使用同等 focus 展开；pointer enter/leave 已接入组件。未核验移动端 / 实体触屏；不涉及真实 AI / 训练 / NPU 性能。
 - final result: passed
+
+## 2026-10-23 · 学习发现 Banner 下沿渐隐
+
+- **Source visual truth:** 用户选择的方案 1：`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-bb3ed6bb-1a8e-4e58-9692-0c9c87a16e37.png`（1486×1059）；对应 Banner 素材：`src/assets/learning-discovery/discovery-banner-bg.png`（2048×768）。
+- **Implementation:** `http://127.0.0.1:8124/`，学习发现页面。CUA 截图已在本轮界面中查看，未提供可保存的文件路径；截图显示约 381×668，CSS viewport 与 device scale 未能读取。
+- **State:** 学习发现首屏与 Banner 下沿滚动位置。窄屏画面中波纹背景逐渐变淡并融入浅灰底色，未见硬横线；首屏标题、搜索和推荐课程卡仍位于渐变背景上方。
+- **Comparison:** 没有把源图和实现截图置于同一输入中，也未完成同一桌面视口对照。尝试 1440×900 视口覆盖后，截图仍是约 381px 宽的应用面板；因此不据此宣称完整视觉 QA 通过。
+- **Build / validation:** `npx vite build --base=./ --outDir /tmp/ascstudio-banner-fade-validation --emptyOutDir` 通过；隔离的最新主分支 `npm run build:pages` 通过；`git diff --check` 通过。未运行自动化测试。构建保留既有主 JS 包体积提醒。
+- **Findings:** 本轮窄屏观察未发现渐隐断层；桌面尺寸、源稿同视口对照及完整五项视觉一致性审查尚未完成。
+- **Open item:** 需要可捕获的桌面视口才能做源稿与实现图的同尺寸比较。
+
+final result: blocked

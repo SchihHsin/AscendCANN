@@ -1196,3 +1196,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 源码位于 `src/CommunityDraftPanel.jsx`、`src/community-draft.css`、`src/channel-draft.css`；Pages 发布输出仍位于根仓 `ascstudio/`。不改页面序列、任务场景路由或 API / Host / Application 边界。
 - `npm run build`、`npm run build:pages`、`git diff --check` 通过。CUA 在本地 1280×720 核对标题、多选、奖励、GitCode 预览与放大；刷新回到首页后重新打开已完成的开发对话，社区邀请仍存在。没有运行测试套件或连接真实渠道服务。
 - 源码及 Pages 产物提交 `c0623057` 已推送 `origin/main`，Pages workflow `39886807631` 成功；远端 index 引用新 JS / CSS bundle，内容用 HTTP 获取核对。线上浏览器截图读取超时。
+
+## 2026-10-23 · 学习发现 Banner 渐隐
+
+- 顶部配图从 Banner 中段向下逐渐淡出，最终与页面的浅灰底色 `#f7f8fc` 融合；避免下沿出现明显横线或硬切边。
+- 延续用户已确认的清透浅蓝紫方向，深色只用黑色；本次只调整背景过渡，保留标题、推荐课程、楼层顺序与交互。

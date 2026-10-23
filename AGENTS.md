@@ -6028,3 +6028,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`community-draft.css`、`channel-draft.css`，同步重建根目录 `ascstudio/` Pages 产物。无页面序列 / hash 或 API / Host / Application 层边界变化。
 - 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 本地 1280×720 查看了右侧标题栏、默认渠道、四渠道奖励 / 多选面板、GitCode 预览和放大视图。刷新后回到首页，重新打开已完成的开发对话仍显示社区邀请入口。未运行测试套件；NPU / 真实渠道发布未验证。
 - 源码和 Pages 产物提交 `c0623057` 已推送 `origin/main`；Pages workflow `39886807631` 成功。线上 `ascstudio/index.html` 引用 `index-CZJIor0M.js` / `index-Ds20pJGY.css`，无缓存请求获取到新文案及蓝紫渐变 CSS；线上浏览器截图读取超时，不记作线上视觉核验。
+
+### 2026-10-23（学习发现 Banner 下沿渐隐）
+
+- 变更文件：`ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css`、`ascend-studio/src/assets/learning-discovery/discovery-banner-bg.png`；同时更新学习发现视觉 QA 记录。
+- 目的：保留用户已选的方案 1，在 Banner 下沿加入透明度渐变，使浅蓝紫波纹逐渐融入 `#f7f8fc` 页面底色，不出现横向硬边；不改卡片、楼层顺序或入口行为。
+- 依据与置信度：用户明确选定的视觉稿 `/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-bb3ed6bb-1a8e-4e58-9692-0c9c87a16e37.png`（1486×1059）及本轮直接反馈；属于用户设计意图。实际预览约 381×668，能看到渐隐，但未能与桌面稿同视口并排对照。
+- 边界：只改学习发现页面视觉；页面序列、路由、API / Protocol、Host / Harness 和 Application / Task 边界均未改变。
+- 核验：`npx vite build --base=./ --outDir /tmp/ascstudio-banner-fade-validation --emptyOutDir` 通过；隔离的最新主分支 `npm run build:pages` 通过；`git diff --check` 通过。未运行自动化测试。构建有既有主 JS 包体积提示。
+- Commit / push：最新主分支隔离发布准备中；完成后回填结果。其他工作目录内的变更未清理、重置或纳入发布。
+- 未决：桌面同视口视觉对照尚未完成，见 `ascend-studio/design-qa.md` 的 `final result: blocked`。

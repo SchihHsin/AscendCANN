@@ -154,18 +154,33 @@ export function LearningDiscoveryPage({ onOpenItem }) {
   return (
     <section className="learning-discovery" aria-label="学习发现">
       <header className="ld-header">
-        <div className="ld-heading-copy">
-          <div className="ld-eyebrow"><IconSparkles size={15} />学习与活动</div>
-          <h1>学习发现</h1>
-          <p>接着学一点，发现新内容，也看看开发者们最近在交流什么。</p>
+        <div className="ld-hero-copy">
+          <div className="ld-heading-copy">
+            <div className="ld-eyebrow"><IconSparkles size={15} />学习与活动</div>
+            <h1>学习发现</h1>
+            <p>接着学一点，发现新内容，也看看开发者们最近在交流什么。</p>
+          </div>
+          <div className="ld-heading-tools">
+            <label className="ld-search">
+              <IconSearch size={16} />
+              <input value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索课程、知识点或活动" aria-label="搜索学习内容与活动" />
+            </label>
+          </div>
         </div>
-        <div className="ld-heading-tools">
-          <span className="ld-demo-note">原型示例内容</span>
-          <label className="ld-search">
-            <IconSearch size={16} />
-            <input value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索课程、知识点或活动" aria-label="搜索学习内容与活动" />
-          </label>
-        </div>
+        <article className="ld-featured-card" aria-label="推荐课程">
+          <div className="ld-featured-copy">
+            <span className="ld-type-chip">课程</span>
+            <h2>{recommendations[0].title}</h2>
+            <p>{recommendations[0].description}</p>
+            <span className="ld-featured-meta">{recommendations[0].meta}</span>
+          </div>
+          <div className="ld-featured-media">
+            <img src={recommendations[0].image} alt={recommendations[0].imageAlt} />
+          </div>
+          <button className="ld-featured-action" type="button" aria-label={`继续学习：${recommendations[0].title}`} onClick={() => onOpenItem(recommendations[0].destination)}>
+            <IconArrowRight size={18} />
+          </button>
+        </article>
       </header>
 
       <main className="ld-scroll" aria-label="学习发现内容">
