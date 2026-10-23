@@ -6318,3 +6318,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与置信度：用户录屏直接证据（H）；代码根因（H）；本地最新 Pages 包的 CUA 回放（M）。在 `/ascstudio/` 展开列表，依次切换到「图像推理调试」和「AddCustom 精度异常」，列表均保持展开；再次点项目图标后列表收起。
 - 页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界均未改变；该修复只调整任务切换后的侧栏可见状态，不代表真实 NPU 验证。
 - 验证：`npm run build:pages`、`git diff --check` 通过；未运行自动化测试套件。构建保留既有 JavaScript chunk 大于 500 kB 的提醒。GitHub Pages workflow `40008849917` 的 build / deploy 成功；线上 `/ascstudio/` HTML、`index-DEiKr4CE.js` 与 `index-U7bewoKQ.css` 均返回 HTTP 200。源码提交 `29979622`、Pages 包提交 `4aa19026` 已推送 `origin/main`。
+
+- 补充核验当前用户本地 `http://127.0.0.1:8124/`：切到「图像推理调试」后列表仍展开；继续切到「AddCustom 精度异常」时，该本地旧 bundle 出现 `ReferenceError: presentation is not defined` 并白屏。重新加载后恢复。该预览与已发布 Pages 包不同；主工作区有其他对话在途文件，本轮没有修改或清理。

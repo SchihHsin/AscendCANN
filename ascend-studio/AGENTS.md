@@ -1422,3 +1422,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - `src/App.jsx` 的 `selectExistingTask` 原本在选中任务后调用 `setProjectPanelOpen(false)`；删除该调用。显式侧栏图标仍负责展开 / 收起；从学习发现、自动化任务、能力库等独立页面导航时的关闭行为不变。
 - CUA 在最新 Pages 构建 `/ascstudio/` 中回放：展开列表，切换「图像推理调试」→「AddCustom 精度异常」，列表持续可见；点击项目图标后列表收起。用户录屏为复现证据（H），本地回放为实现核验（M）。
 - `npm run build:pages`、`git diff --check` 通过；未运行自动化测试套件。线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200，Pages workflow `40008849917` build / deploy 成功。源码 `29979622` 与 Pages 包 `4aa19026` 已推送 `origin/main`。不改变页面顺序 / hash、API / Protocol、Host / Harness、Application / Task 边界；未做真实 NPU 验证。
+
+- 本地 `http://127.0.0.1:8124/` 属于另一个在途工作区：切到「图像推理调试」列表保持展开，但继续切到 AddCustom 时本地 bundle 报 `ReferenceError: presentation is not defined` 并白屏；重载后恢复。没有改动该工作区或其中其他对话的文件。已发布 Pages 构建已通过同一路径任务切换回放。
