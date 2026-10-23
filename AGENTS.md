@@ -6071,4 +6071,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户将本轮范围明确限定为项目列表 `.project-scroll` 和对话消息 `.conversation-scroll` 两个外层滚动区。空闲隐藏，区域悬浮或滚动时显示；滚动事件后短暂显示约 900ms。保留原生滚动方式。
 - 新增 `ascend-studio/src/scrollbar-autohide.css`、`scrollbar-autohide.js`，由 `src/main.jsx` 引入。其它管理 / 内容面板、代码区、所有任务与学习画布、画布卡片及画布拖动逻辑不变。
-- 依据为本轮用户明确的界面需求，不新增产品事实，不改变页面序列或 API / Host / Application 边界。`npm run build`、`npm run build:pages`、`node --check ascend-studio/src/scrollbar-autohide.js`、`git diff --check` 均通过；构建保留既有大 JS chunk 提示。CUA 在本地 `5182` 验证项目列表有 111px 可滚动距离，滚动时加上显现状态，离开区域后恢复透明；当前共创对话内容未形成溢出，但相同规则已覆盖该容器。提交和推送待完成。
+- 依据为本轮用户明确的界面需求，不新增产品事实，不改变页面序列或 API / Host / Application 边界。`npm run build`、`npm run build:pages`、`node --check ascend-studio/src/scrollbar-autohide.js`、`git diff --check` 均通过；构建保留既有大 JS chunk 提示。CUA 在本地 `5182` 验证项目列表有 111px 可滚动距离，滚动时加上显现状态，离开区域后恢复透明；当前共创对话内容未形成溢出，但相同规则已覆盖该容器。功能提交 `ff5f8c22` 已推送至 `origin/main`；GitHub Pages workflow `39917240033` 成功，线上 `/ascstudio/`、`index-CrgsQxNv.js`、`index--X1czWii.css` 均返回 HTTP 200，资源包含自动隐藏规则。
