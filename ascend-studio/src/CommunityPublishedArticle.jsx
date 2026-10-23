@@ -1,4 +1,4 @@
-import { IconChevronRight, IconExternalLink, IconEye, IconThumbUp } from "@tabler/icons-react";
+import { IconArrowLeft, IconChevronRight, IconExternalLink, IconEye, IconThumbUp } from "@tabler/icons-react";
 import "./community-published.css";
 
 const COMMUNITY_ARTICLES_URL = "https://www.hiascend.com/developer/techArticles";
@@ -12,11 +12,12 @@ function publishedDate(timestamp) {
   }).format(date).replaceAll("-", "/");
 }
 
-export function CommunityPublishedArticle({ draft }) {
+export function CommunityPublishedArticle({ draft, onBack }) {
   const environment = String(draft.environment || "").split("\n").filter(Boolean);
 
   return <section className="community-published-panel" aria-label="昇腾社区文章发布后预览">
     <div className="community-published-demo-bar">
+      {onBack && <button type="button" className="community-published-back" onClick={onBack}><IconArrowLeft size={13} aria-hidden="true" />多渠道预览</button>}
       <span className="community-published-demo-status"><i aria-hidden="true" />已提交 · 本地预览</span>
       <span className="community-published-demo-copy">页面样式参照昇腾社区官方技术文章</span>
       <a href={COMMUNITY_ARTICLES_URL} target="_blank" rel="noopener noreferrer">

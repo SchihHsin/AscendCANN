@@ -115,23 +115,41 @@ function ChannelCardPreview({ channelId, draft }) {
   </div>;
 }
 
-function ChannelPreviewCard({ channel, draft, state, onOpen }) {
-  return <article className={`channel-preview-card channel-preview-card--${channel.id}`}>
+function ChannelPreviewCard({ channel, draft, state, selected, onToggle, onOpen }) {
+  return <article
+    className={`channel-preview-card channel-preview-card--${channel.id}${selected ? " is-selected" : ""}`}
+    onClick={onToggle}
+  >
     <div className="channel-preview-card-heading">
       <div className="channel-preview-channel-name"><ChannelMark channel={channel} /><strong>{channel.name}</strong></div>
-      <span className="channel-preview-format">{channel.id === "community" ? "社区经验帖" : channel.id === "gitcode" ? "Issue / PR" : channel.id === "csdn" ? "技术博客" : "知识图文"}</span>
+      <div className="channel-preview-card-tools">
+        <span className="channel-preview-format">{channel.id === "community" ? "社区经验帖" : channel.id === "gitcode" ? "Issue / PR" : channel.id === "csdn" ? "技术博客" : "知识图文"}</span>
+        <button
+          type="button"
+          className={`channel-preview-select${selected ? " is-selected" : ""}`}
+          onClick={event => { event.stopPropagation(); onToggle(); }}
+          aria-label={`${selected ? "取消选择" : "选择"}${channel.name}`}
+          aria-pressed={selected}
+        >
+          {selected && <IconCheck size={12} stroke={2.5} aria-hidden="true" />}
+        </button>
+      </div>
     </div>
     <div className="channel-preview-card-body"><ChannelCardPreview channelId={channel.id} draft={draft} /></div>
     <div className="channel-preview-card-footer">
       <span className="channel-preview-reward"><IconSparkles size={12} />{channel.rewardShort}</span>
-      <button type="button" onClick={onOpen} className={`channel-preview-action${state.published ? " is-published" : ""}`}>
-        {state.published ? <><IconCheck size={14} />已发布 · 演示</> : <>{channel.button}<IconArrowRight size={13} /></>}
-      </button>
+      <div className="channel-preview-card-footer-actions">
+        {state.published && <span className="channel-preview-published"><IconCheck size={11} />已发布 · 演示</span>}
+        <button type="button" onClick={event => { event.stopPropagation(); onOpen(); }} className="channel-preview-action">
+          查看详情<IconArrowRight size={13} />
+        </button>
+      </div>
     </div>
   </article>;
 }
 
-function MultiChannelOverview({ draft, channelStates, onOpen, regenerated }) {
+function MultiChannelOverview({ draft, channelStates, selectedChannels, onToggleChannel, onOpen, onPublishSelected, regenerated }) {
+  const pendingCount = selectedChannels.filter(id => !channelStates[id]?.published).length;
   return <div className="community-channel-overview">
     <div className="community-channel-overview-actions">
       {regenerated && <span className="community-channel-regenerated" role="status">已重新整理草稿 · 本地演示</span>}
@@ -142,10 +160,19 @@ function MultiChannelOverview({ draft, channelStates, onOpen, regenerated }) {
         channel={channel}
         draft={draft}
         state={channelStates[channel.id] || { generated: true, published: false }}
+        selected={selectedChannels.includes(channel.id)}
+        onToggle={() => onToggleChannel(channel.id)}
         onOpen={() => onOpen(channel.id)}
       />)}
     </div>
-    <p className="community-channel-overview-note"><IconInfoCircle size={14} />同一任务经验按平台语境整理草稿；生成与发布均为本地演示，奖励提示为示例。</p>
+    <div className="community-channel-overview-footer">
+      <p className="community-channel-overview-note"><IconInfoCircle size={14} />已选 {selectedChannels.length} 个渠道；发布为本地演示，奖励提示为示例。</p>
+      <button type="button" className="community-channel-publish-selected" onClick={onPublishSelected} disabled={pendingCount === 0}>
+        {pendingCount === 0 && selectedChannels.length > 0
+          ? <><IconCheck size={14} />已完成演示发布</>
+          : <><IconSend size={14} />{pendingCount > 1 ? `批量发布（${pendingCount}）` : pendingCount === 1 ? "发布到选中渠道（1）" : "选择发布渠道"}</>}
+      </button>
+    </div>
   </div>;
 }
 
@@ -154,6 +181,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
   const [view, setView] = useState("community");
   const [expanded, setExpanded] = useState(false);
   const [regenerated, setRegenerated] = useState(false);
+  const [selectedChannels, setSelectedChannels] = useState(["community"]);
   const [channelStates, setChannelStates] = useState({
     community: { generated: true, published: false },
     gitcode: { generated: true, published: false },
@@ -165,9 +193,27 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
   const channelDetails = CHANNEL_BY_ID[activeChannel] || CHANNEL_BY_ID.community;
   const channelState = channelStates[activeChannel] || { generated: true, published: false };
   const submitted = draft.status === "submitted";
+  const overviewChannelStates = submitted
+    ? { ...channelStates, community: { ...channelStates.community, generated: true, published: true } }
+    : channelStates;
   const submittedForReview = activeChannel === "community" ? draft.status === "review" : channelState.generated;
   const updateField = (id, value) => onUpdate({ ...draft, [id]: value });
   const setChannelState = (channelId, change) => setChannelStates(states => ({ ...states, [channelId]: { ...(states[channelId] || {}), ...change } }));
+  const toggleSelectedChannel = channelId => setSelectedChannels(selected => selected.includes(channelId)
+    ? selected.filter(id => id !== channelId)
+    : [...selected, channelId]);
+  const publishSelectedChannels = () => {
+    const pendingChannels = selectedChannels.filter(id => !channelStates[id]?.published);
+    if (!pendingChannels.length) return;
+    setChannelStates(states => pendingChannels.reduce((next, id) => ({
+      ...next,
+      [id]: { ...(states[id] || {}), generated: true, published: true },
+    }), { ...states }));
+    if (pendingChannels.includes("community")) {
+      setEditingSection(null);
+      onSubmit();
+    }
+  };
   const continueEditing = () => {
     setEditingSection("problem");
     document.querySelector(".community-draft-scroll")?.scrollTo({ top: 0, behavior: "smooth" });
@@ -178,7 +224,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
     setChannelStates(states => Object.fromEntries(CHANNELS.map(channel => [channel.id, { ...states[channel.id], generated: true }])));
   };
 
-  if (submitted) return <CommunityPublishedArticle draft={draft} />;
+  if (submitted && activeChannel === "community" && !overview) return <CommunityPublishedArticle draft={draft} onBack={() => setView("overview")} />;
 
   return <section className={`community-draft-panel${expanded ? " is-expanded" : ""}${overview ? " is-channel-overview" : ""}`} aria-label={overview ? "多渠道草稿预览" : `${channelDetails.name}发布草稿`} role={expanded ? "dialog" : undefined} aria-modal={expanded ? "true" : undefined}>
     <header className={`community-draft-header${overview ? " community-draft-header--overview" : ""}`}>
@@ -212,8 +258,11 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
     </header>
     {overview ? <MultiChannelOverview
       draft={draft}
-      channelStates={channelStates}
+      channelStates={overviewChannelStates}
+      selectedChannels={selectedChannels}
+      onToggleChannel={toggleSelectedChannel}
       onOpen={channelId => setView(channelId)}
+      onPublishSelected={publishSelectedChannels}
       regenerated={regenerated}
     /> : activeChannel === "community" ? <>
       <p className="community-draft-intro">已根据本次任务对话整理内容。请核对描述与结果，补充必要信息后再提交到社区。</p>

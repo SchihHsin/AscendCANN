@@ -170,7 +170,9 @@
 .community-channel-overview-actions { display: flex; flex: 0 0 auto; align-items: center; justify-content: flex-end; min-height: 0; }
 .community-channel-regenerated { color: #777681; font-size: 9px; }
 .community-channel-grid { display: grid; flex: 1 1 0; min-height: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.channel-preview-card { display: flex; min-width: 0; min-height: 0; flex-direction: column; overflow: hidden; padding: 10px 11px 9px; border: 1px solid #e7e6e4; border-radius: 10px; background: #fff; box-shadow: 0 2px 8px rgba(35, 34, 41, .025); }
+.channel-preview-card { display: flex; min-width: 0; min-height: 0; flex-direction: column; overflow: hidden; padding: 10px 11px 9px; border: 1px solid #e7e6e4; border-radius: 10px; background: #fff; box-shadow: 0 2px 8px rgba(35, 34, 41, .025); cursor: pointer; transition: border-color .16s ease, box-shadow .16s ease; }
+.channel-preview-card:hover { border-color: #c9c7c4; }
+.channel-preview-card.is-selected { border-color: #26272b; box-shadow: 0 0 0 2px rgba(38, 39, 43, .1), 0 3px 10px rgba(35, 34, 41, .045); }
 .channel-preview-card--community { background: linear-gradient(145deg, #fffdfa, #fff 50%); }
 .channel-preview-card--gitcode { background: linear-gradient(145deg, #fff, #fffafd 100%); }
 .channel-preview-card--csdn { background: linear-gradient(145deg, #fff, #fffafe 100%); }
@@ -178,6 +180,7 @@
 .channel-preview-card-heading { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 6px; min-height: 27px; }
 .channel-preview-channel-name { display: flex; min-width: 0; align-items: center; gap: 7px; }
 .channel-preview-channel-name strong { overflow: hidden; color: #2f3035; font-size: 12px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.channel-preview-card-tools { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 6px; }
 .channel-preview-mark { display: grid; flex: 0 0 auto; width: 23px; height: 23px; place-items: center; overflow: hidden; border: 1px solid #f0eeee; border-radius: 50%; background: #fff; }
 .channel-preview-mark img { display: block; width: 15px; height: 15px; object-fit: contain; }
 .channel-preview-mark--community { border-color: transparent; }
@@ -186,6 +189,10 @@
 .channel-preview-mark--csdn img { width: 17px; height: 17px; }
 .channel-preview-mark--tiktok { border-color: #18191d; background: #18191d; }
 .channel-preview-mark--tiktok img { width: 14px; height: 14px; }
+.channel-preview-select { display: grid; flex: 0 0 auto; width: 18px; height: 18px; place-items: center; padding: 0; border: 1px solid #d8d6d3; border-radius: 50%; color: transparent; background: #fff; cursor: pointer; transition: color .16s ease, background .16s ease, border-color .16s ease; }
+.channel-preview-select:hover { border-color: #828187; }
+.channel-preview-select.is-selected { border-color: #202125; color: #fff; background: #202125; }
+.channel-preview-select:focus-visible { outline: 2px solid #94939a; outline-offset: 2px; }
 .channel-preview-format { flex: 0 0 auto; padding: 4px 7px; border: 1px solid #ece9f2; border-radius: 20px; color: #747080; background: #fff; font-size: 8px; line-height: 1; white-space: nowrap; }
 .channel-preview-card--community .channel-preview-format { color: #a56831; border-color: #f2e4d4; }
 .channel-preview-card--gitcode .channel-preview-format { color: #bb4f6e; border-color: #f3dce6; }
@@ -229,11 +236,16 @@
 .channel-preview-card-footer { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 5px; min-height: 34px; margin-top: 5px; padding-top: 5px; border-top: 1px solid #f0efed; }
 .channel-preview-reward { display: inline-flex; min-width: 0; align-items: center; gap: 4px; overflow: hidden; color: #615480; font-size: 8px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
 .channel-preview-reward svg { flex: 0 0 auto; color: #8c6bd3; }
-.channel-preview-action { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 4px; min-height: 28px; padding: 0 8px; border: 1px solid #1c1d21; border-radius: 6px; color: #fff; background: #17181c; font-size: 8px; font-weight: 600; white-space: nowrap; cursor: pointer; }
-.channel-preview-action:hover { background: #34353a; }
-.channel-preview-action.is-published { border-color: #dce7dd; color: #536758; background: #f5f8f5; cursor: pointer; }
-.community-channel-overview-note { display: flex; flex: 0 0 auto; align-items: center; gap: 5px; margin: 0; color: #8a8991; font-size: 8px; line-height: 1.3; }
+.channel-preview-card-footer-actions { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 6px; }
+.channel-preview-published { display: inline-flex; align-items: center; gap: 2px; color: #5c765f; font-size: 7px; white-space: nowrap; }
+.channel-preview-action { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 4px; min-height: 26px; padding: 0 8px; border: 1px solid #e3e1df; border-radius: 6px; color: #484950; background: #fff; font-size: 8px; font-weight: 550; white-space: nowrap; cursor: pointer; }
+.channel-preview-action:hover { border-color: #c9c7c4; background: #f8f7f6; }
+.community-channel-overview-footer { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 8px; }
+.community-channel-overview-note { display: flex; min-width: 0; align-items: center; gap: 5px; margin: 0; color: #8a8991; font-size: 8px; line-height: 1.3; }
 .community-channel-overview-note svg { flex: 0 0 auto; }
+.community-channel-publish-selected { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 5px; min-height: 30px; padding: 0 11px; border: 1px solid #17181c; border-radius: 6px; color: #fff; background: #17181c; font-size: 9px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.community-channel-publish-selected:hover:not(:disabled) { background: #34353a; }
+.community-channel-publish-selected:disabled { border-color: #e2e1df; color: #9a999d; background: #f1f0ef; cursor: not-allowed; }
 
 @container (max-width: 560px) {
   .community-channel-overview { overflow-y: auto; }
@@ -247,5 +259,6 @@
   .community-overview-heading > p { font-size: 9px; }
   .community-overview-regenerate { min-height: 28px; gap: 4px; padding-inline: 6px; font-size: 8px; }
   .community-channel-overview { padding-inline: 9px; }
+  .community-channel-overview-footer { align-items: flex-end; }
   .community-channel-overview-note { font-size: 7px; }
 }

@@ -22,6 +22,8 @@
 }
 .community-published-demo-status { display: inline-flex; align-items: center; gap: 6px; color: #58685d; font-weight: 650; white-space: nowrap; }
 .community-published-demo-status i { width: 7px; height: 7px; border-radius: 50%; background: #6f9875; }
+.community-published-back { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; padding: 4px 7px; border: 1px solid #e5e5e5; border-radius: 5px; color: #56575e; background: #fff; font: inherit; cursor: pointer; }
+.community-published-back:hover { background: #f7f7f7; }
 .community-published-demo-copy { flex: 1; min-width: 0; color: #85868c; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .community-published-demo-bar > a { display: inline-flex; align-items: center; gap: 4px; color: #4c5968; text-decoration: none; white-space: nowrap; }
 .community-published-demo-bar > a:hover { color: #a21d35; }
