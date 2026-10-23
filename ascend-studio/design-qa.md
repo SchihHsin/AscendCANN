@@ -66,6 +66,17 @@ The three-column structure matches the selected mock: compact grouped project ta
 
 final result: passed
 
+## 2026-10-24 · 探索终点提示去重与发送入口收敛
+
+- **Target:** Ascend Studio 新建任务首页的「探索」方案，用户附图中的训练效率叶子节点。
+- **Finding:** 叶子状态同时显示“这个方向已经具体到可开始 / 编辑需求”与画布底部的节点状态说明，两者被绝对定位到同一区域，文字相互覆盖；表单上下各有一个提交按钮。
+- **Fix:** `completeLeaf` 为真时不渲染 `.explore-field__note`，只保留叶子提示和编辑操作；移除底部“发送并开始”按钮及桌面 / 窄屏专属样式，保留输入区右侧图标按钮作为唯一表单提交入口。
+- **Evidence:** 用户截图为直接反馈（H）；本地 In-App Browser `http://127.0.0.1:5201/?home=explore` 在 1280×720 复现“每步耗时波动”终点，目视确认文字不再重叠且仅显示图标发送；A11y 树仅出现一个“发送并开始”按钮（M）。本轮未将浏览器截图另存为文件。
+- **Validation:** `npm run build`、`npm run test:sites`（4/4）、`npm run build:pages` 与 `git diff --check` 通过；构建有既有 JS chunk >500 kB 提示。未改变任务 Prompt / 发送处理、首页模式切换、页面序列 / hash 或 API / Host / Application 边界。
+- **Release:** Commit / push 与 Pages workflow 回执随后补充。
+
+final result: passed
+
 ## 2026-10-24 · 发布渠道详情返回入口
 
 - **Intent:** 用户指出从任一渠道卡片打开详情后，缺少明确的返回位置。
