@@ -6205,3 +6205,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Demo 可使用策划示例呈现交互故事，无需将“没有读取历史”当作卖点或主说明；历史任务 / 材料 / 选择可以作为概念里的起点，让关联方向逐步形成 Prompt。示例服务于设计表达，不包装成真实个性化诊断。
 - 首页探索示例继续采用训练与调优，不用图像推理作为该创新方向主案例；渐进节点、关系连线、柔和展开、避免悬浮连续误下钻、中文大标题 + 英文小字翻译、宋体中文风格等决策已汇总到 `ascend-studio/AGENTS.md`，供后续原型工作持久加载。
 - 本轮只更新根目录与 Ascend Studio 的 Agent 指引，不改页面源码、发布产物、页序 / hash 或 API / Host / Application 边界；验证为文档差异与空白检查。
+
+### 2026-10-23 · 头像菜单主题选项对齐
+
+- 根据用户截图修复头像菜单中主题切换项的布局：主题由拥挤的双列改为上下排列的整行；两种色样和文字左侧对齐，选中勾固定在每行右侧，统一行高、内边距与间距。
+- 根因是主题按钮嵌套在菜单中，没有继承只匹配菜单直接子项的 flex 规则；现为主题按钮显式设置 flex 对齐、宽度与文字左对齐。
+- 修改 `ascend-studio/src/interaction.css`，并重建 `ascstudio/` Pages 资源。依据为用户截图（H）与本地 CUA 预览 `http://127.0.0.1:5195/` 的视觉复核（M）。不改变主题行为、页面序列或 API / Host / Application 边界。
+- 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）及 `git diff --check` 通过；Vite 仍显示既有大 bundle 提示。commit / push 与线上部署状态待补记。

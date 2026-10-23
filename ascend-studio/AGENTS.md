@@ -1349,3 +1349,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 任务完成后的渐变邀请卡左侧改用星光图标；「生成草稿」按钮的文档图标不变。仅为展示层调整，不改变触发条件与草稿流程。
 - 验证：`npm run build:pages`、`git diff --check`；Chrome 1280×720 从 `../ascstudio/` 本地预览确认两个图标分别正确。
 - 提交 `a83d4faa` 已推送到 `origin/main`，Pages workflow `39961155460` 成功；线上页面请求超时，未直接核对线上资源。
+
+### 2026-10-23 · 头像菜单主题选项对齐
+
+- 用户指出头像菜单主题切换的选中框、勾选标记没有对齐，色样、文字之间的间距不均。把两列主题选项改为整行纵向排列，色样与文字左对齐、选中标记靠右，行高和间距一致。
+- 根因：菜单主题按钮是嵌套按钮，旧规则只对菜单直接子按钮启用 flex；现已为主题选项明确设置 `display:flex`、`align-items:center`、`width:100%` 和 `text-align:left`。
+- 修改 `src/interaction.css`，重建根仓 Pages 目录 `../ascstudio/`。本地 CUA `http://127.0.0.1:5195/` 实际展开头像菜单复核通过；不改变主题切换与存储逻辑。
+- `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 均通过；Vite 大 bundle 提示仍存在。commit / push 与线上部署状态待补记。
