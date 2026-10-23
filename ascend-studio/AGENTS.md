@@ -1210,3 +1210,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 顶部配图从 Banner 中段向下逐渐淡出，最终与页面的浅灰底色 `#f7f8fc` 融合；避免下沿出现明显横线或硬切边。
 - 延续用户已确认的清透浅蓝紫方向，深色只用黑色；本次只调整背景过渡，保留标题、推荐课程、楼层顺序与交互。
 - `npm run build:pages` 与 `git diff --check` 通过。源码和 Pages 产物提交 `4c100b10` 已推送 `origin/main`，GitHub Pages workflow `39911378396` 成功；线上入口已引用新 bundle，CSS 已确认包含渐隐规则。桌面同视口视觉比对仍未完成，见 `design-qa.md`。
+
+### 2026-10-23 · 探索首页逐层下钻与配色
+
+- 按用户文字场参考实现：首屏只显示顶层方向；悬浮后全场替换为当前主题相关节点，继续悬浮可逐层预览；点击锁定路径并更新可编辑 prompt。训练案例沿“训练与调优 → 提升训练效率 → 多卡收益不明显”下钻，保留“先定位 / 对照实验 / 理解并行”，不预设根因。
+- 配色按用户补充保持白底与深色正文，蓝紫作主识别色，少量珊瑚、青绿和暖金区分节点。词条为预设地图，不表示个性化推荐或用户日志诊断。
+- 修改 `src/ExploreTaskHome.jsx`、`src/explore-task-home.css`、`src/home-exploration.js` 及根目录 `ascstudio/` Pages 产物；修正层级切换后的滚动位置。无正式页序 / hash 或 API / Host / Application 层变化，不声称真实训练 / NPU 验证。
+- `npm run build`、`npm run build:pages`、35 节点 / 路径 / prompt / 类型 / tone 断言、相关上游 14 项测试、Sites 4 项测试及 `git diff --check` 通过；保留 chunk 体积提示。CUA 381×664 核验训练主题、效率、多卡三层和可编辑草稿；1672×941 桌面视觉比对未完成，design QA 标记 blocked。
+- 发布提交回执随后补记。

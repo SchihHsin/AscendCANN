@@ -6047,3 +6047,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：16 个 Node 测试通过；`node --check`、`npm run build`、`npm run build:pages`、`git diff --check` 通过。CUA 本地回放确认 ResNet50 节点及图解卡可拖，位置变化后仍为 0/15，节点标号 / 顺序不变；共创画布显示独立位置编辑状态。`restoreWorkbench` 刷新后呈现新说明和初始草案。GitHub Pages workflow `39912777286` 成功；线上 index、`index-CTiWSnbN.js`、`index-DF0mT96l.css` 返回 HTTP 200，脚本含“编辑画布位置”且不含旧的换序提示。
 - 发布：源码提交 `869a58b8`、Pages 产物提交 `9888785f` 已推送 `origin/main`。同步了其他工作线在远端的更改，没有纳入它们的功能差异。
 - 未决：线上仅确认 HTML / bundle 响应与文案，不做线上 UI 截图验收；构建保留 Vite 既有的大 JS chunk 提醒。
+
+### 2026-10-23 · 首页探索页逐层下钻与配色调整
+
+- 用户给出白色大画布、散落关键词的文字场参考，并明确希望悬浮“训练与调优”后画布只显示训练相关内容、再沿悬浮继续下钻；蓝紫是主要识别色但只作点缀，可用少量其他主题色。首屏只呈现 6 个顶层方向，避免提前铺满所有层级。
+- 探索画布采用无卡片的分散文字场。悬浮主题后只显示该主题关联节点，继续悬浮可进入下一层；点击锁定路径并更新可编辑 prompt。训练链为“训练与调优 → 提升训练效率 → 多卡收益不明显 → 定位瓶颈 / 对照实验 / 理解并行”。用户输入“多卡收益不明显”只作为示例意图，不预设根因。
+- 配色按用户补充调整：白色画布和深色正文占主体；蓝 / 紫为主识别色，珊瑚、青绿、暖金少量用于区分异常、实践和学习节点。词条明确标为人工整理的预设探索地图，不是个性化推荐、日志诊断或现场事实。
+- 修改 `ascend-studio/src/ExploreTaskHome.jsx`、`explore-task-home.css`、`home-exploration.js`，并基于最新 `origin/main` 重建根目录 `ascstudio/`。另修复下钻 / 返回后窄视图保留旧滚动位置的问题。仅涉及首页交互与视觉，不改正式页序、hash 或 API / Protocol、Host / Harness、Application / Task 层边界。
+- 验证：`npm run build`、`npm run build:pages` 通过；Node 断言覆盖 35 个节点、路径解析、训练 prompt、任务类型和节点配色；`node --test src/canvas-node-position.test.js src/official-learning-progress.test.js` 14 项通过，`npm run test:sites` 4 项通过；`git diff --check` 通过。Vite 保留既有 500 kB chunk 警告。
+- CUA 在本地 `http://127.0.0.1:5187/?home=explore` 的 381×664 App 视口中核验首屏、训练主题、效率与多卡三层替换、路径锁定、prompt 生成和编辑保留。工具只能以拖动触发指针预览，拖动会选中文字；不把这当作纯鼠标悬浮的视觉证据。未完成参考图 1672×941 同尺寸视觉复核；此前 1280×720 截图属于旧版结构，不能替代本轮截图。
+- 证据边界：用户参考图和配色 / 交互选择为直接需求（H）；主题内容为静态产品假设（L），没有真实用户需求遥测、训练日志、模型或 NPU 验证。`ascend-studio/design-qa.md` 将桌面视觉结论标记为 blocked，层级交互与构建验证通过。
+- 提交 / push 回执待发布后补记。

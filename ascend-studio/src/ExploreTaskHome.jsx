@@ -1,137 +1,238 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { IconArrowRight, IconArrowUpRight, IconBook, IconCheck, IconChevronRight, IconCode, IconCpu, IconEdit, IconInfoCircle, IconRoute, IconSettings, IconSparkles, IconTrendingUp, IconX } from "@tabler/icons-react";
-import { explorationTopics, explorationRequest } from "./home-exploration";
+import {
+  IconArrowRight, IconArrowUpRight, IconBook, IconCheck, IconChevronRight,
+  IconCode, IconCpu, IconEdit, IconInfoCircle, IconRoute, IconSettings,
+  IconSparkles, IconTrendingUp, IconX,
+} from "@tabler/icons-react";
+import { explorationTopics, explorationRequest, resolveExplorationPath } from "./home-exploration";
 import "./explore-task-home.css";
 
-const topicIcons = { training: IconTrendingUp, deployment: IconCpu, operator: IconCode, migration: IconRoute, environment: IconSettings, learning: IconBook };
+const topicIcons = {
+  training: IconTrendingUp,
+  deployment: IconCpu,
+  operator: IconCode,
+  migration: IconRoute,
+  environment: IconSettings,
+  learning: IconBook,
+};
 
-function Connections({ containerRef, revision, hovered }) {
-  const [lines, setLines] = useState([]);
-  useLayoutEffect(() => {
-    const container = containerRef.current;
-    if (!container) return undefined;
-    const measure = () => {
-      const frame = container.getBoundingClientRect();
-      const root = container.querySelector("[data-graph-root]")?.getBoundingClientRect();
-      if (!root || !frame.width) { setLines([]); return; }
-      setLines(Array.from(container.querySelectorAll("[data-graph-node]")).map((node) => {
-        const rect = node.getBoundingClientRect();
-        const sx = root.right - frame.left, sy = root.top + root.height / 2 - frame.top;
-        const ex = rect.left - frame.left, ey = rect.top + rect.height / 2 - frame.top;
-        return { id: node.dataset.graphNode, d: `M ${sx} ${sy} C ${sx + (ex - sx) * .48} ${sy}, ${sx + (ex - sx) * .48} ${ey}, ${ex} ${ey}` };
-      }));
-    };
-    const observer = new ResizeObserver(measure);
-    observer.observe(container);
-    measure();
-    return () => observer.disconnect();
-  }, [containerRef, revision]);
-  return <svg className="explore-map__connections" aria-hidden="true">{lines.map((line) => <path key={line.id} d={line.d} className={hovered === line.id ? "is-active" : ""} />)}</svg>;
+function appendPreviewPath(ids, previewIds, nodeId) {
+  return [...previewIds, nodeId].filter((id, index, path) => {
+    const resolved = resolveExplorationPath([...ids, ...path.slice(0, index + 1)]);
+    return resolved.at(-1)?.id === id;
+  });
 }
 
 export function ExploreTaskHome({ onCreateTask }) {
   const [ids, setIds] = useState([]);
-  const [hovered, setHovered] = useState(null);
+  const [previewIds, setPreviewIds] = useState([]);
+  const [hoveredId, setHoveredId] = useState(null);
   const [draft, setDraft] = useState("");
   const [edited, setEdited] = useState(false);
   const [appliedPrompt, setAppliedPrompt] = useState("");
-  const [directOpen, setDirectOpen] = useState(false);
   const [kindOverride, setKindOverride] = useState("");
   const [error, setError] = useState("");
   const [showOrigin, setShowOrigin] = useState(false);
-  const mapRef = useRef(null);
+  const homeRef = useRef(null);
   const draftRef = useRef(null);
+  const previewTimer = useRef(null);
+  const pointerNodeId = useRef(null);
+
   const request = explorationRequest(ids);
-  const current = request.path.at(-1);
-  const topic = request.path[0];
-  const options = current?.children || [];
-  const preview = (current ? options : explorationTopics).find((item) => item.id === hovered);
-  const pending = edited && appliedPrompt !== request.goal;
+  const activeIds = [...ids, ...previewIds];
+  const activePath = resolveExplorationPath(activeIds);
+  const focused = activePath.at(-1);
+  const options = focused?.children || explorationTopics;
+  const hovered = options.find((item) => item.id === hoveredId);
+  const isPreviewing = previewIds.length > 0;
   const kind = kindOverride || request.kind;
-  const dockOpen = Boolean(current || directOpen || draft);
+  const pending = edited && appliedPrompt !== request.goal;
+  const completeLeaf = Boolean(focused && options.length === 0);
+  const focusedId = focused?.id || "";
+
+  useLayoutEffect(() => {
+    if (homeRef.current) homeRef.current.scrollTop = 0;
+  }, [focusedId]);
 
   const choose = (nextIds) => {
+    window.clearTimeout(previewTimer.current);
+    previewTimer.current = null;
+    pointerNodeId.current = null;
     const next = explorationRequest(nextIds);
     setIds(next.path.map((item) => item.id));
-    setHovered(null);
+    setPreviewIds([]);
+    setHoveredId(null);
     setError("");
     setKindOverride("");
-    if (!edited) { setDraft(next.goal); setAppliedPrompt(next.goal); }
+    if (!edited) {
+      setDraft(next.goal);
+      setAppliedPrompt(next.goal);
+    }
   };
+
+  const preview = (node) => {
+    window.clearTimeout(previewTimer.current);
+    setHoveredId(node.id);
+    previewTimer.current = window.setTimeout(() => {
+      setPreviewIds((current) => appendPreviewPath(ids, current, node.id));
+      previewTimer.current = null;
+    }, 320);
+  };
+
+  const moveOnNode = (node, event) => {
+    if (event.pointerType === "touch" || pointerNodeId.current === node.id) return;
+    pointerNodeId.current = node.id;
+    if (node.children.length) preview(node);
+    else setHoveredId(node.id);
+  };
+
+  const leaveNode = (node) => {
+    if (pointerNodeId.current !== node.id) return;
+    window.clearTimeout(previewTimer.current);
+    previewTimer.current = null;
+    pointerNodeId.current = null;
+    setHoveredId(null);
+  };
+
+  const leaveField = () => {
+    window.clearTimeout(previewTimer.current);
+    previewTimer.current = null;
+    pointerNodeId.current = null;
+    setPreviewIds([]);
+    setHoveredId(null);
+  };
+
   const submit = (event) => {
     event.preventDefault();
     if (!draft.trim()) return;
-    if (!onCreateTask?.({ goal: draft.trim(), kind, attachments: [], groupId: "other" })) setError("暂时未能创建任务。可能已有同名任务，请调整需求后重试。");
-  };
-  const openDirect = () => {
-    setDirectOpen(true);
-    requestAnimationFrame(() => draftRef.current?.focus());
-  };
-  const focusPreview = (event, id) => {
-    if (event.pointerType !== "touch") setHovered(id);
+    if (!onCreateTask?.({ goal: draft.trim(), kind, attachments: [], groupId: "other" })) {
+      setError("暂时未能创建任务。可能已有同名任务，请调整需求后重试。");
+    }
   };
 
-  return <section className={`explore-home${dockOpen ? " has-draft" : ""}`} aria-label="探索式首页">
+  const sourceText = isPreviewing || request.path.length
+    ? "当前词条来自预设的探索地图，按你悬浮或点击的路径逐层展开；它们不是对你的训练现场、日志或问题的判断。"
+    : "这里是人工整理的任务探索方向，不是个性化推荐，也没有读取你的训练日志。先悬浮预览；点击后才会加入需求。";
+
+  return <section ref={homeRef} className="explore-home" aria-label="探索式首页" onPointerLeave={leaveField}>
     <header className="explore-home__header">
-      <div className="explore-home__eyebrow"><IconSparkles size={14} /> 从一个方向开始</div>
-      <h1>{current ? "让想法，再具体一点。" : "今天，想探索什么？"}</h1>
-      <p>{current ? "选一个更接近你的目标，下面的需求会随之成形。" : "悬浮看看关联，点选一个起点，把想法连成可以开始的任务。"}</p>
+      <div className="explore-home__heading">
+        <div className="explore-home__eyebrow"><IconSparkles size={14} /> 任务探索 · 预设能力地图</div>
+        <h1>{focused ? focused.label : "今天，想探索什么？"}</h1>
+        <p>{focused ? focused.hint : "悬浮一个方向，看看它能展开哪些相关内容。"}</p>
+      </div>
       <div className="explore-home__origin">
-        <button type="button" aria-expanded={showOrigin} onClick={() => setShowOrigin(!showOrigin)}><IconInfoCircle size={13} />{current ? "依据：你刚刚的选择" : "这些方向从哪里来"}</button>
-        {showOrigin && <div className="explore-home__origin-popover" role="note">{current ? `当前关联来自你选择的「${request.path.map((item) => item.label).join(" → ")}」。它们是可选的下一步，尚未判断问题原因。` : "这里是预设的任务探索地图，帮助你找到起点。尚未读取你的训练日志，也没有据此判断你遇到了什么问题。"}</div>}
+        <button type="button" aria-expanded={showOrigin} onClick={() => setShowOrigin(!showOrigin)}>
+          <IconInfoCircle size={14} />这些词条从哪里来
+        </button>
+        {showOrigin && <div className="explore-home__origin-popover" role="note">{sourceText}</div>}
       </div>
     </header>
 
     <nav className="explore-home__trail" aria-label="探索路径">
-      <button type="button" onClick={() => choose([])} aria-current={!current ? "page" : undefined}>全部方向</button>
-      {request.path.map((item, index) => <span key={item.id}><IconChevronRight size={12} /><button type="button" aria-current={index === request.path.length - 1 ? "page" : undefined} onClick={() => choose(ids.slice(0, index + 1))}>{item.label}</button></span>)}
-      {current && <button type="button" className="explore-home__back" onClick={() => choose(ids.slice(0, -1))}>返回上一级</button>}
+      <button type="button" onClick={() => choose([])} aria-current={!focused ? "page" : undefined}>全部方向</button>
+      {activePath.map((item, index) => {
+        const locked = index < ids.length;
+        return <span key={item.id}>
+          <IconChevronRight size={13} />
+          <button
+            type="button"
+            className={locked ? "" : "is-preview"}
+            aria-current={index === activePath.length - 1 ? "page" : undefined}
+            onClick={() => choose(activeIds.slice(0, index + 1))}
+          >{item.label}</button>
+        </span>;
+      })}
+      {request.path.length > 0 && <button className="explore-home__back" type="button" onClick={() => choose(ids.slice(0, -1))}>
+        <IconArrowUpRight size={13} />返回上一级
+      </button>}
+      {isPreviewing && <span className="explore-home__preview-label">悬浮预览 · 点击节点锁定</span>}
     </nav>
 
-    {!current ? <div className={`explore-atlas${hovered ? " is-previewing" : ""}`} aria-label="可探索的任务方向">
-      {explorationTopics.map((item) => {
-        const Icon = topicIcons[item.icon];
-        const active = hovered === item.id;
-        return <div key={item.id} className={`explore-island explore-island--${item.tone}${active ? " is-active" : ""}`} onPointerEnter={(event) => focusPreview(event, item.id)} onPointerLeave={() => setHovered(null)} onFocusCapture={() => setHovered(item.id)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setHovered(null); }}>
-          <svg className="explore-island__links" viewBox="0 0 320 170" preserveAspectRatio="none" aria-hidden="true"><path d="M160 80 C120 80 100 34 65 34 M160 80 C205 80 210 34 255 34 M160 90 C120 90 100 143 65 143 M160 90 C210 90 210 143 255 143" /></svg>
-          <button type="button" className="explore-island__topic" onClick={() => choose([item.id])}><Icon size={19} stroke={1.6} /><strong>{item.label}</strong><IconArrowUpRight className="explore-island__arrow" size={15} /></button>
-          <span className="explore-island__keywords" aria-hidden="true">{item.keywords}</span>
-          <div className="explore-island__satellites">{item.children.map((child, index) => <button type="button" key={child.id} className={`explore-island__satellite satellite-${index}`} onClick={() => choose([item.id, child.id])}>{child.label}</button>)}</div>
-        </div>;
-      })}
-    </div> : <div className={`explore-map${!options.length ? " is-leaf" : ""}`} ref={mapRef}>
-      <Connections containerRef={mapRef} revision={`${ids.join("/")}:${options.length}`} hovered={hovered} />
-      <div className="explore-map__root" data-graph-root>
-        <span className="explore-map__root-eyebrow">{topic.label}</span>
-        <strong>{current.label}</strong>
-        <span className="explore-map__root-hint">{current.hint}</span>
-        <span className="explore-map__root-selected"><IconCheck size={12} /> 已加入需求</span>
-      </div>
-      {options.length > 0 ? <div className="explore-map__branches" aria-label={`${current.label}的关联方向`}>
-        {options.map((item) => <button type="button" key={item.id} data-graph-node={item.id} className={`explore-map__node${hovered === item.id ? " is-previewed" : ""}`} onPointerEnter={(event) => focusPreview(event, item.id)} onPointerLeave={() => setHovered(null)} onFocus={() => setHovered(item.id)} onBlur={() => setHovered(null)} onClick={() => choose([...ids, item.id])}>
-          <span className="explore-map__node-label">{item.label}<IconArrowUpRight size={15} /></span>
-          <span className="explore-map__node-hint">{item.hint}</span>
-        </button>)}
-      </div> : <div className="explore-map__ready" data-graph-node="ready">
-        <IconCheck size={21} stroke={1.7} /><h2>已经有一个清楚的起点</h2><p>检查下方需求，补充你的现场，再开始任务。</p>
-        <button type="button" onClick={openDirect}>补充我的情况 <IconEdit size={13} /></button>
+    <div
+      className={"explore-field" + (focused ? " is-focused" : "") + (isPreviewing ? " is-previewing" : "") + (completeLeaf ? " is-leaf" : "")}
+      aria-label={focused ? focused.label + "相关方向" : "可探索的任务方向"}
+    >
+      {focused && <div className="explore-field__focus">
+        <span className="explore-field__focus-mark"><i aria-hidden="true" />{isPreviewing ? "正在预览" : "当前方向"}</span>
+        <strong>{isPreviewing ? "点击锁定这个方向，或继续悬浮下钻。" : "已加入需求草稿。"}</strong>
+        {isPreviewing && <button className="explore-field__lock" type="button" onClick={() => choose(activeIds)}>
+          锁定「{focused.label}」<IconCheck size={12} />
+        </button>}
       </div>}
-    </div>}
-
-    <div className="explore-home__caption" aria-live="polite">{preview ? <><span>{preview.label}</span><span>{preview.hint}</span><small>点击加入需求</small></> : <span>{current ? options.length ? "关联方向来自当前选择；你也可以直接编辑需求并开始。" : "尚未运行分析。发送后，从你的环境和材料开始。" : "这里展示可探索的任务，不代表已经识别出你的问题。"}</span>}</div>
-
-    {dockOpen ? <form className="explore-draft" onSubmit={submit}>
-      <div className="explore-draft__top"><span className="explore-draft__label"><IconSparkles size={14} />{edited ? "你的需求" : "你的需求，正在成形"}</span>
-        <div className="explore-draft__chips" aria-label="已选择的条件">{request.path.map((item, index) => <button type="button" key={item.id} title={`移除${item.label}及后续选择`} onClick={() => choose(ids.slice(0, index))}>{item.label}<IconX size={10} /></button>)}</div>
-        {!current && <button type="button" className="explore-draft__close" aria-label="收起需求编辑" onClick={() => setDirectOpen(false)} disabled={Boolean(draft)}><IconX size={14} /></button>}
+      {options.length > 0 ? <div className="explore-field__nodes" data-count={options.length}>
+        {options.map((item, index) => {
+          const Icon = topicIcons[item.icon];
+          const rootNode = activePath.length === 0;
+          const tone = item.tone || (rootNode ? "violet" : focused?.tone || "blue");
+          const label = rootNode ? "探索方向" : item.children.length ? "关联方向" : "下一步";
+          return <button
+            type="button"
+            key={item.id}
+            className={"explore-field__node explore-field__node--" + tone + (hoveredId === item.id ? " is-hovered" : "") + (rootNode ? " is-topic" : "")}
+            style={{ "--node-index": index }}
+            onPointerMove={(event) => moveOnNode(item, event)}
+            onPointerLeave={() => leaveNode(item)}
+            onFocus={() => setHoveredId(item.id)}
+            onBlur={(event) => {
+              if (!event.currentTarget.parentElement?.contains(event.relatedTarget)) setHoveredId(null);
+            }}
+            onClick={() => choose([...activeIds, item.id])}
+            aria-label={item.label + "。 " + item.hint + (item.children.length ? "。点击进入相关方向。" : "。点击加入需求草稿。")}
+          >
+            <span className="explore-field__node-kind">
+              <i aria-hidden="true" />
+              {Icon && rootNode ? <Icon size={13} stroke={1.8} /> : null}
+              {label}
+            </span>
+            <strong>{item.label}</strong>
+            <span className="explore-field__node-hint">{item.hint}</span>
+            <span className="explore-field__node-action">{item.children.length ? "继续展开" : "加入需求"} <IconArrowUpRight size={13} /></span>
+          </button>;
+        })}
+      </div> : <div className="explore-field__leaf">
+        <span className="explore-field__leaf-mark"><IconCheck size={15} /></span>
+        <div><span>这个方向已经具体到可开始</span><p>检查下方需求，补充你的现场，再发送并开始。</p></div>
+        <button type="button" onClick={() => draftRef.current?.focus()}><IconEdit size={14} />编辑需求</button>
+      </div>}
+      <div className="explore-field__note" aria-live="polite">
+        {hovered ? <><strong>{hovered.label}</strong><span>{hovered.hint}</span><small>{hovered.children.length ? "悬浮预览下一层 · 点击后锁定" : "点击加入需求草稿"}</small></>
+          : focused ? <><strong>{focused.label}</strong><span>{focused.children.length ? "这一层只展示当前主题下的相关方向。" : "这条路径会作为可编辑需求草稿。"}</span></>
+            : <span>主题词来自预设地图；它们是探索入口，不代表已经识别出你的问题。</span>}
       </div>
-      <textarea ref={draftRef} value={draft} maxLength={2000} rows={3} onChange={(event) => { setDraft(event.target.value); setEdited(true); setError(""); }} aria-label="可发送的需求" placeholder="直接描述你想完成的事，也可以先从上方选择一个方向…" />
-      <div className="explore-draft__bottom">
-        {pending ? <button className="explore-draft__regenerate" type="button" onClick={() => { setDraft(request.goal); setAppliedPrompt(request.goal); setEdited(false); }}>保留了你的编辑 · 按当前选择重新生成</button> : <span className="explore-draft__note">可以自由修改 · 点击发送后才创建任务</span>}
-        <label className="explore-draft__kind"><span>创建为</span><select aria-label="创建的任务类型" value={kind} onChange={(event) => setKindOverride(event.target.value)}><option value="development">开发任务</option><option value="learning">学习任务</option></select></label>
-        <button className="explore-draft__send" type="submit" disabled={!draft.trim()}>发送并开始<IconArrowRight size={15} /></button>
+    </div>
+
+    <form className="explore-composer" onSubmit={submit}>
+      <div className="explore-composer__main">
+        <span className="explore-composer__spark"><IconSparkles size={19} /></span>
+        <textarea
+          ref={draftRef}
+          value={draft}
+          maxLength={2000}
+          rows={2}
+          onChange={(event) => { setDraft(event.target.value); setEdited(true); setError(""); }}
+          aria-label="可发送的需求草稿"
+          placeholder="描述你想完成的事，或先悬浮、点击一个探索方向…"
+        />
+        <button className="explore-composer__send" type="submit" disabled={!draft.trim()} aria-label="发送并开始">
+          <IconArrowRight size={20} />
+        </button>
       </div>
-      {error && <p className="explore-draft__error" role="alert">{error}</p>}
-    </form> : <div className="explore-home__direct"><span>已经有明确的想法？</span><button type="button" onClick={openDirect}><IconEdit size={15} />直接说说你的目标<IconArrowRight size={14} /></button><button type="button" className="explore-home__demo" onClick={() => choose(["training"])}>试试训练调优<IconArrowUpRight size={13} /></button></div>}
+      <div className="explore-composer__footer">
+        <span className="explore-composer__path" aria-label="已加入需求的条件">
+          {request.path.length ? request.path.map((item, index) => <button type="button" key={item.id} title={"移除“" + item.label + "”及后续选择"} onClick={() => choose(ids.slice(0, index))}>
+            {index > 0 && <IconChevronRight size={11} />}{item.label}<IconX size={11} />
+          </button>) : <small>悬浮只预览 · 点击才加入 · 发送后才创建任务</small>}
+        </span>
+        {pending && <button className="explore-composer__regenerate" type="button" onClick={() => { setDraft(request.goal); setAppliedPrompt(request.goal); setEdited(false); }}>
+          保留了你的编辑 · 按当前选择重新生成
+        </button>}
+        <label className="explore-composer__kind"><span>创建为</span><select aria-label="创建的任务类型" value={kind} onChange={(event) => setKindOverride(event.target.value)}>
+          <option value="development">开发任务</option><option value="learning">学习任务</option>
+        </select></label>
+        <button className="explore-composer__submit" type="submit" disabled={!draft.trim()}>发送并开始<IconArrowRight size={14} /></button>
+      </div>
+      {error && <p className="explore-composer__error" role="alert">{error}</p>}
+    </form>
   </section>;
 }
