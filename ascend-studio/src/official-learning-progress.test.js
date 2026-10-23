@@ -35,6 +35,25 @@ test("personal path order restores independently from stable learning progress",
   assert.deepEqual(restored.started, [target.id]);
 });
 
+test("unconfirmed personal path-order drafts restore their base sequence", () => {
+  const target = node("classification");
+  const state = prepared(target);
+  const stage = OFFICIAL_LEARNING_STAGES.find(item => item.children.some(child => child.id === target.id));
+  const baseOrder = officialPathOrder();
+  const draftOrder = officialPathOrder();
+  draftOrder[stage.id] = [...draftOrder[stage.id]].reverse();
+  state.personalPlan = { status: "draft", orderByStage: draftOrder };
+  state.personalPlanBase = { status: "confirmed", orderByStage: baseOrder };
+  state.personalPlanUndo = [{ status: "draft", orderByStage: draftOrder }];
+
+  const restored = restoreOfficialProgress(state);
+  assert.deepEqual(restored.personalPlan.orderByStage[stage.id], baseOrder[stage.id]);
+  assert.equal(restored.personalPlan.status, "confirmed");
+  assert.equal(restored.personalPlanBase, null);
+  assert.deepEqual(restored.personalPlanUndo, []);
+  assert.equal(deriveOfficialStatuses(restored)[target.id], "completed");
+});
+
 test("restored input and sequence passed flags are recomputed from current snapshots", () => {
   const inputState = initialOfficialProgress();
   inputState.input = { axes: [2, 0, 1], batch: true };

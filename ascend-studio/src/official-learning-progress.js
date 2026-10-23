@@ -31,9 +31,14 @@ export function restoreOfficialProgress(saved) {
   const checks = object(saved.checks) ? Object.fromEntries(nodes.filter(node => object(saved.checks[node.id]) && node.checkpoint.options.some(option => option.id === saved.checks[node.id].answer)).map(node => { const check = saved.checks[node.id]; return [node.id, { ...check, passed: check.answer === node.checkpoint.answer }]; })) : {};
   const axes = list(saved.input?.axes);
   const sequence = list(saved.sequence);
-  const personalPlan = normalizeOfficialPersonalPlan(saved.personalPlan);
-  const personalPlanBase = normalizeOfficialPersonalPlan(saved.personalPlanBase);
-  const personalPlanUndo = list(saved.personalPlanUndo).map(item => normalizeOfficialPersonalPlan(item)).filter(Boolean).slice(-20);
+  const savedPersonalPlan = normalizeOfficialPersonalPlan(saved.personalPlan);
+  const savedPersonalPlanBase = normalizeOfficialPersonalPlan(saved.personalPlanBase);
+  // An unconfirmed draft from the old toolbar action was only a path-order edit.
+  // Restore its base so the canvas opens in its normal sequence after reload.
+  const discardedDraft = savedPersonalPlan?.status === "draft";
+  const personalPlan = discardedDraft ? savedPersonalPlanBase : savedPersonalPlan;
+  const personalPlanBase = discardedDraft ? null : savedPersonalPlanBase;
+  const personalPlanUndo = discardedDraft ? [] : list(saved.personalPlanUndo).map(item => normalizeOfficialPersonalPlan(item)).filter(Boolean).slice(-20);
   return { ...base, selectedNodeId, started: list(saved.started).filter(id => ids.has(id)), understood: list(saved.understood).filter(id => ids.has(id)), answers, checks,
     attempts: list(saved.attempts).filter(item => object(item) && ids.has(item.nodeId)).slice(-120),
     input: { axes: axes.length === 3 && axes.every(value => Number.isInteger(value) && value >= 0 && value <= 2) ? axes : base.input.axes, batch: saved.input?.batch === true },

@@ -44,6 +44,10 @@
 .lh-tree-lines .lh-child-line { stroke:#c6c7d6; }
 .lh-tree-lines .lh-child-line.is-current { stroke:#9780f1; stroke-width:1.8; }
 .lh-tree-node { position:absolute; display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid #e0e5ee; border-radius:10px; color:#424966; background:rgba(255,255,255,.94); text-align:left; box-shadow:0 3px 9px #43588704; }
+.lh-hierarchy.is-position-editing .lh-tree-node { cursor:grab; touch-action:none; user-select:none; }
+.lh-hierarchy.is-position-editing .lh-tree-node:active { cursor:grabbing; }
+.lh-node-move-grip { flex-shrink:0; margin-left:auto; color:#8b76c7; }
+.lh-tree-node.is-node-dragging { z-index:6; cursor:grabbing!important; box-shadow:0 7px 22px #59439a24; }
 .lh-tree-node > span:last-of-type { display:flex; flex-direction:column; gap:4px; min-width:0; }
 .lh-tree-node strong { font-size:12px; font-weight:630; line-height:1.5; }
 .lh-tree-node small { color:#939bb1; font-size:10px; line-height:1.5; }
@@ -97,6 +101,8 @@
 .lh-material-lines circle { fill:#9673ef; stroke:#fff; stroke-width:2; }
 .lh-card { position:absolute; z-index:4; border:1px solid #e0e7f0; background:rgba(255,255,255,.97); border-radius:12px; box-shadow:0 5px 20px #5b6f9e07; overflow:hidden; }
 .lh-card.is-pinned { border-color:#d5d5e8; }
+.is-position-editing .lh-card:not(.is-pinned) { border-color:#d9d1ed; box-shadow:0 5px 20px #5b6f9e0a,0 0 0 1px #8e78d20b; }
+.is-position-editing .lh-card:not(.is-pinned) .lh-drag-handle { color:#7658e8; background:#f4f0ff; }
 .lh-card-header { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:47px; padding:9px 14px; border-bottom:1px solid #edf0f5; background:linear-gradient(180deg,#fff,#fefeff); }
 .lh-card-title { display:flex; align-items:center; gap:8px; min-width:0; color:#343955; }
 .lh-card-title > svg { color:#5d4ca5; flex-shrink:0; }
