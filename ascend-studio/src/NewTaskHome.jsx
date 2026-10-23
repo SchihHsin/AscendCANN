@@ -1,6 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ExploreTaskHome } from "./ExploreTaskHome";
 import {
   IconArrowRight,
+  IconEdit as IconEditHome,
   IconBook,
   IconBulb,
   IconCode,
@@ -52,7 +54,7 @@ function highlightHomeCode(line) {
   return fragments.length ? fragments : line;
 }
 
-export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onRecommendationAction, onRecommendationChat }) {
+function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks = [], onRecommendationAction, onRecommendationChat }) {
   const [mode, setMode] = useState("learning");
   const [goal, setGoal] = useState("");
   const [error, setError] = useState("");
@@ -305,4 +307,36 @@ export function NewTaskHome({ onCreateTask, currentTaskName = "当前任务", ta
       </form>
     </section>
   );
+}
+
+
+export function NewTaskHome(props) {
+  const readView = () => new URLSearchParams(window.location.search).get("home") === "explore" ? "explore" : "classic";
+  const [view, setView] = useState(readView);
+  useEffect(() => {
+    const sync = () => setView(readView());
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
+  const switchView = (next) => {
+    setView(next);
+    const url = new URL(window.location.href);
+    url.searchParams.set("home", next);
+    url.searchParams.delete("task");
+    window.history.replaceState(window.history.state, "", url);
+  };
+  const handleTabKey = (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key === "Home" ? "classic" : event.key === "End" ? "explore" : view === "classic" ? "explore" : "classic";
+    switchView(next);
+    event.currentTarget.querySelector(`#home-tab-${next}`)?.focus();
+  };
+  return <section className="home-variants" aria-label="新建任务首页">
+    <div className="home-variants__tabs" role="tablist" aria-label="首页方案" onKeyDown={handleTabKey}>
+      {[{ id: "classic", label: "经典", Icon: IconEditHome }, { id: "explore", label: "探索", Icon: IconSparkles }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={13} />{label}</button>)}
+    </div>
+    <div className="home-variants__panel" role="tabpanel" id="home-panel-classic" aria-labelledby="home-tab-classic" hidden={view !== "classic"}><ClassicTaskHome {...props} /></div>
+    <div className="home-variants__panel" role="tabpanel" id="home-panel-explore" aria-labelledby="home-tab-explore" hidden={view !== "explore"}><ExploreTaskHome onCreateTask={props.onCreateTask} /></div>
+  </section>;
 }

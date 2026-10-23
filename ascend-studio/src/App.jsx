@@ -160,6 +160,7 @@ function App() {
   const wb = useWorkbenchState();
   const developmentDemoLaunch = useRef(new URLSearchParams(window.location.search).get("task") === "development");
   const [mainView, setMainView] = useState(() => {
+    if (["classic", "explore"].includes(new URLSearchParams(window.location.search).get("home"))) return "home";
     const launchTask = new URLSearchParams(window.location.search).get("task");
     if (["learning", "development"].includes(launchTask)) return "task";
     // Reopening the co-creation scenario should show its reset starter state,
@@ -1209,8 +1210,8 @@ function App() {
         </aside>
         {projectPanelOpen && <div className="workspace-divider workspace-divider--projects" role="separator" tabIndex={0} aria-label="调整项目栏宽度" title="拖动调整项目栏宽度；双击恢复默认布局" {...layout.separatorProps("projects")} />}
 
-        {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} tasks={recommendationTasks} onRecommendationAction={selectRecommendationAction} onRecommendationChat={chatAboutRecommendation} onCreateTask={({ goal, kind, attachments }) => {
-          const groupId = kind === "learning" ? "inference" : (currentGroup?.id || "operator");
+        {showNewTaskHome ? <NewTaskHome currentTaskName={selectedTask} tasks={recommendationTasks} onRecommendationAction={selectRecommendationAction} onRecommendationChat={chatAboutRecommendation} onCreateTask={({ goal, kind, attachments, groupId: requestedGroupId }) => {
+          const groupId = wb.groups.some((group) => group.id === requestedGroupId) ? requestedGroupId : kind === "learning" ? "inference" : (currentGroup?.id || "operator");
           const created = wb.createTask({ name: goal.slice(0, 60), groupId, goal, kind, attachments });
           if (created) { setMainView("task"); setProjectPanelOpen(false); }
           return created;

@@ -958,3 +958,15 @@ final result: passed
 - 修改 `src/NewTaskHome.jsx`、`src/new-task-home.css` 并重建根目录 `ascstudio/` Pages 产物。无页面序列 / hash 或 API / Host / Application 边界变化。
 - `node --check src/home-recommendations.js`、`npm run build`、`npm run build:pages`、`git diff --check`：通过；未运行测试套件。Pages run `39799829376` 成功；线上 `/ascstudio/` index、JS、CSS HTTP 200，CSS 包含高亮 token 规则。
 - 源码 commit `974820e0` 与 Pages commit `0f12b433` 已推送 `origin/main`。
+
+## 2026-10-23 · 首页探索方案
+
+- Source visual truth: 当前线上经典首页（本轮 CUA 1280×720 截图已在会话中检查）及既有 `src/NewTaskHome.jsx` / `new-task-home.css`。用户明确授权从讨论直接制作可切换 Demo，无待还原的探索版静态设计图。
+- Implementation screenshots: `evidence/20261023-home-exploration/classic-retained.png`、`explore-start.png`、`training-associations.png`，均为 1280×720。CSS viewport 1280×720，输出像素相同，没有密度缩放。
+- Full-view comparison: 经典与探索截图在同一工具输入中并列复核。经典的标题、卡片和输入布局保留；探索复用浅灰背景、紧凑字体、低饱和蓝紫与既有 Tabler 图标，属于用户授权的新结构，不声称像素复刻。
+- Focused review: 直接检查右上角切换控件、关联节点与底部草稿。字体为既有应用栈，标题 24–26px、节点 13–19px、辅助文案 10–12px；边框、圆角和灰紫色层次与原应用协调。无新增位图或替代品牌资产。文案明确任务地图来源和尚未诊断的边界。
+- Iterations: [P1] 新容器落入零宽项目列，增加独立视图 grid-column 定位；[P2] 四个分支超出图区域并被草稿遮挡，改为按内容伸展并压缩节点间距；[P2] 初始词条对比度过低，提升文字对比并取消整组透明淡出。修改后 DOM 量测：map bottom 505.72，caption bottom 533.72，draft top 533.72 / bottom 702；可见区域无重叠，页面高度 720。
+- Primary interactions: 聚焦关联预览、选词生成需求、训练多卡分支、用户编辑不被新选择覆盖、两种首页往返保留草稿、显式重新生成、发送创建任务、任务简报承接。创建后“待补充证据”与未连接 AI / 硬件服务说明可见。
+- Console errors: 0 during checked interactions.
+- Scope limits: 浏览器工具未提供直接鼠标 hover，实际回放使用同等 focus 展开；pointer enter/leave 已接入组件。未核验移动端 / 实体触屏；不涉及真实 AI / 训练 / NPU 性能。
+- final result: passed

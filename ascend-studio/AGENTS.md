@@ -1178,3 +1178,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 使用 `NewTaskHome.jsx` 内的 tokenizer，无第三方依赖。数据仍是静态示例；本次只增强代码可读性。
 - 修改 `src/NewTaskHome.jsx`、`src/new-task-home.css` 与根目录 `ascstudio/` Pages bundle。无页面序列 / hash 或 API / Host / Application 边界变化。
 - `npm run build`、`npm run build:pages`、语法检查与 `git diff --check` 通过；CUA 本地 1280×720 查看了三组代码。源码 commit `974820e0`、Pages commit `0f12b433` 已推送；Pages run `39799829376` 成功。
+
+### 2026-10-23 · 首页经典 / 探索双视图 Demo
+
+- 用户授权直接实现可体验 Demo，并指定右上角小 Tab 在新旧首页间切换。新增“经典 / 探索”切换，两个视图在同一次首页访问中保持挂载，切换保留各自输入；`?home=explore` 直达探索视图，`?home=classic` 直达旧版，URL 保留切换结果。没有替换既有首页或应用导航。
+- 探索首页以 6 个通用任务方向、35 个可达节点组成预设能力地图；说明词条来源，不将静态词条包装成个性化诊断。悬浮 / 键盘聚焦展示局部关联，点击才进入分支并形成草稿。训练调优主线为“训练与调优 → 提升训练效率 → 多卡收益不明显 → 定位 / 对照 / 理解并行训练”。没有使用图像推理作为新方案案例。
+- 草稿支持直接输入、编辑、移除条件、返回上一级和任务类型调整。手工编辑后继续选择不会覆盖草稿；提供明确的重新生成动作。只有“发送并开始”才调用既有任务创建，探索任务归入“其他项目”，不误放入模型推理项目；后续材料继续在任务工作区补充。当前是本地规则 Demo，未接真实模型、训练日志、性能诊断或 NPU。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`App.jsx`，新增 `ExploreTaskHome.jsx`、`home-exploration.js`、`explore-task-home.css`；发布产物仍在 `ascstudio/`。只增加首页交互及 URL 参数，不改既有汇报页序 / hash，也不改变 API / Host / Application 层边界。
+- 验证：Node 断言覆盖 35 个节点、空起点、无效分支与学习 / 开发类型；Vite build、Pages build、`git diff --check`。CUA 1280×720 复核首屏、键盘聚焦关联、训练分支、手工编辑保留、经典 / 探索切换、发送创建及任务简报；错误日志为空。已修正新壳 grid 列定位及分支与草稿遮挡。截图位于 `ascend-studio/evidence/20261023-home-exploration/`；没有声称完成移动端或实体触屏验证。
+- 发布方式：在 origin/main 的独立工作树中实施、合并最新提交、单独构建并推送，避免混入共享目录已有暂存 / 未暂存变更。构建保留既有大包体积提示；提交与线上部署回执随后补充。
