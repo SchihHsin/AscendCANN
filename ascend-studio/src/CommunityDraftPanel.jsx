@@ -101,15 +101,33 @@ function ChannelCardPreview({ channelId, draft }) {
   </div>;
 
   return <div className="channel-preview-tiktok">
-    <div className="channel-preview-tiktok-heading"><span>ASCEND C · DEBUG NOTE</span><b>知识图文 · 4 页</b></div>
+    <div className="channel-preview-tiktok-heading"><span>抖音 · 知识图文</span><b>4 页预览</b></div>
     <div className="channel-preview-tiktok-panels">
       {[
-        ["01", isAddCustom ? "精度异常，\n怎么排？" : "输入形状，\n怎么核对？", "先固定现象"],
-        ["02", isAddCustom ? "复现输入\n边界" : "对齐输入\n约定", "记录实际差异"],
-        ["03", isAddCustom ? "检查候选\n线索" : "核对转换\n步骤", isAddCustom ? "线索不等于根因" : "示例不等于模型验证"],
-        ["04", "补齐证据\n再判断", "验证状态待补"],
-      ].map(([number, title, note]) => <div key={number} className={`channel-preview-tiktok-tile channel-preview-tiktok-tile--${number}`}>
-        <small>{number}</small><strong>{title.split("\n").map((line, index) => <span key={index}>{line}</span>)}</strong><i /> <em>{note}</em>
+        { number: "01", type: "cover", kicker: "问题现象", title: isAddCustom ? "AddCustom 精度异常" : `${topic}怎么核对？`, note: "先固定异常范围" },
+        { number: "02", type: "compare", kicker: "输入对比", title: isAddCustom ? "两组输入的结果" : "输入与目标约定", note: isAddCustom ? "报错位置 · custom_op.cpp:128" : "示例结果仍需实际环境核对" },
+        { number: "03", type: "flow", kicker: "排查线索", title: isAddCustom ? "尾块边界候选" : "逐步检查处理步骤", note: "线索不等于根因" },
+        { number: "04", type: "evidence", kicker: "判断前补证据", title: "验证记录清单", note: "真实 NPU 验证待补" },
+      ].map(slide => <div key={slide.number} className={`channel-preview-tiktok-tile channel-preview-tiktok-tile--${slide.type}`}>
+        <div className="channel-preview-tiktok-tile-top"><small>{slide.number}</small><span>{slide.kicker}</span></div>
+        {slide.type === "cover" && <div className="channel-preview-tiktok-cover-content">
+          <strong>{slide.title}</strong><span>从现象开始排查</span><i aria-hidden="true">≠</i>
+        </div>}
+        {slide.type === "compare" && <div className="channel-preview-tiktok-compare-content">
+          <strong>{slide.title}</strong>
+          <div><b>{isAddCustom ? "[16,32]" : "示例输入"}<em>{isAddCustom ? "通过" : "示例"}</em></b><b>{isAddCustom ? "[17,33]" : "目标约定"}<em>{isAddCustom ? "失败" : "待核对"}</em></b></div>
+          <span>{slide.note}</span>
+        </div>}
+        {slide.type === "flow" && <div className="channel-preview-tiktok-flow-content">
+          <strong>{slide.title}</strong>
+          <ol><li><b>01</b>输入范围</li><li><b>02</b>循环边界</li><li><b>03</b>有效元素</li></ol>
+          <span>{slide.note}</span>
+        </div>}
+        {slide.type === "evidence" && <div className="channel-preview-tiktok-evidence-content">
+          <strong>{slide.title}</strong>
+          <ul><li>版本与运行环境</li><li>复现条件与命令</li><li>逐元素误差</li></ul>
+          <span>{slide.note}</span>
+        </div>}
       </div>)}
     </div>
   </div>;

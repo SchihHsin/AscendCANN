@@ -1,5 +1,7 @@
 import { useState } from "react";
 import {
+  IconAlertCircle,
+  IconArrowDown,
   IconArrowLeft,
   IconArrowRight,
   IconCheck,
@@ -19,27 +21,72 @@ function buildTikTokSlides(draft) {
   const topic = getCommunityDraftTopic(draft);
   const isAddCustom = topic === "AddCustom 精度异常";
   return [
-    { eyebrow: "先看现象", title: isAddCustom ? "AddCustom\n精度异常，怎么排？" : `${topic}\n怎么核对？`, note: "先固定现象，再整理已有证据", visual: "cover", footer: "问题排查路径 · 01 / 04" },
-    { eyebrow: "01 · 复现边界", title: isAddCustom ? "两组输入，\n结果不一样" : "对齐输入与\n目标约定", note: isAddCustom ? "[16,32] 通过　·　[17,33] 失败\n报错位置：custom_op.cpp:128" : "固定示例输入与目标形状\n当前只核对浏览器示例", visual: "compare", footer: "先固定现象，不急着改结论" },
-    { eyebrow: isAddCustom ? "02 · 核对候选线索" : "02 · 核对处理步骤", title: isAddCustom ? "检查尾块\n有效元素范围" : "检查轴顺序\n与 batch 维度", note: isAddCustom ? "逐项核对循环边界与有效元素数\n这是一条待验证线索" : "对照模型输入约定\n真实模型条件仍需确认", visual: "blocks", footer: isAddCustom ? "线索不等于根因" : "示例结果不等于模型验证" },
-    { eyebrow: "03 · 补证据再判断", title: "把运行条件\n和结果补完整", note: isAddCustom ? "编译命令与版本 · 两次运行条件\n逐元素误差 · 预期与实际结果" : "模型签名与预处理参数\n实际环境 · 模型推理结果", visual: "evidence", footer: "当前没有真实 NPU 验证结论" },
+    { eyebrow: "先看现象", title: isAddCustom ? "AddCustom 精度异常" : `${topic}怎么核对？`, note: "先固定异常范围，再整理已有证据", visual: "cover", footer: "问题排查路径 · 01 / 04" },
+    { eyebrow: "01 · 复现边界", title: isAddCustom ? "两组输入，结果不同" : "输入与目标约定", note: isAddCustom ? "报错位置：custom_op.cpp:128" : "固定示例输入与目标形状", visual: "compare", footer: "先固定现象，不急着改结论" },
+    { eyebrow: isAddCustom ? "02 · 核对候选线索" : "02 · 核对处理步骤", title: isAddCustom ? "尾块边界候选" : "轴顺序与 batch 维度", note: isAddCustom ? "逐项核对循环边界与有效元素数；这是一条待验证线索" : "对照模型输入约定；真实模型条件仍需确认", visual: "blocks", footer: isAddCustom ? "线索不等于根因" : "示例结果不等于模型验证" },
+    { eyebrow: "03 · 补证据再判断", title: "验证前要补齐的记录", note: isAddCustom ? "版本与环境 · 两组运行条件 · 逐元素误差" : "模型签名 · 预处理参数 · 实际推理结果", visual: "evidence", footer: "当前没有真实 NPU 验证结论" },
   ];
+}
+
+function TikTokSlideContent({ slide, isAddCustom }) {
+  const title = slide.title.split("\n").map((line, index) => <span key={index}>{line}</span>);
+  if (slide.visual === "cover") return <>
+    <div className="tiktok-slide-heading tiktok-slide-heading--cover">
+      <span className="tiktok-visual-eyebrow">{slide.eyebrow}</span>
+      <h3>{title}</h3>
+      <p>{slide.note}</p>
+    </div>
+    <div className="visual-cover-art"><IconAlertCircle size={32} stroke={1.7} /><div><strong>两组输入表现不同</strong><span>先定位异常边界</span></div></div>
+    <div className="visual-cover-snapshot"><span>{isAddCustom ? "[16,32]" : "示例输入"}<b><IconCheck size={12} />{isAddCustom ? "通过" : "示例"}</b></span><span>{isAddCustom ? "[17,33]" : "目标约定"}<b><IconAlertCircle size={12} />{isAddCustom ? "失败" : "待核对"}</b></span></div>
+  </>;
+
+  if (slide.visual === "compare") return <>
+    <div className="tiktok-slide-heading">
+      <span className="tiktok-visual-eyebrow">{slide.eyebrow}</span>
+      <h3>{title}</h3>
+    </div>
+    <div className="visual-compare-grid">
+      <div className="visual-compare-panel is-pass"><span>输入组合 A</span><b>{isAddCustom ? "[16,32]" : "示例输入"}</b><i>{isAddCustom ? <><IconCheck size={13} />通过</> : "示例"}</i></div>
+      <span className="visual-compare-divider">对照</span>
+      <div className="visual-compare-panel is-fail"><span>输入组合 B</span><b>{isAddCustom ? "[17,33]" : "目标约定"}</b><i>{isAddCustom ? <><IconAlertCircle size={13} />失败</> : "待核对"}</i></div>
+    </div>
+    <p className="visual-slide-note">{slide.note}</p>
+  </>;
+
+  if (slide.visual === "blocks") return <>
+    <div className="tiktok-slide-heading">
+      <span className="tiktok-visual-eyebrow">{slide.eyebrow}</span>
+      <h3>{title}</h3>
+    </div>
+    <div className="visual-diagnostic-flow">
+      <div><b>01</b><span>{isAddCustom ? "读取范围" : "输入轴顺序"}</span></div>
+      <IconArrowDown size={16} aria-hidden="true" />
+      <div><b>02</b><span>{isAddCustom ? "循环边界" : "batch 维度"}</span></div>
+      <IconArrowDown size={16} aria-hidden="true" />
+      <div className="is-focus"><b>03</b><span>{isAddCustom ? "尾块有效元素" : "目标输入约定"}</span><em>待核对</em></div>
+    </div>
+    <p className="visual-slide-note">{slide.note}</p>
+  </>;
+
+  return <>
+    <div className="tiktok-slide-heading">
+      <span className="tiktok-visual-eyebrow">{slide.eyebrow}</span>
+      <h3>{title}</h3>
+    </div>
+    <div className="visual-evidence-list">
+      {["CANN / 芯片 / 编译版本", "两组输入与运行条件", "逐元素误差与原始日志"].map(item => <div key={item}><IconAlertCircle size={14} aria-hidden="true" /><span>{item}</span><b>待补</b></div>)}
+      <strong>真实 NPU 验证待补</strong>
+    </div>
+    <p className="visual-slide-note">{slide.note}</p>
+  </>;
 }
 
 function TikTokVisual({ slide, slides, index, onPrevious, onNext, isAddCustom }) {
   return <div className="tiktok-visual-shell">
     <div className={`tiktok-visual tiktok-visual--${slide.visual}`}>
       <div className="tiktok-visual-topline"><span>ASCEND C · DEBUG NOTE</span><span>{String(index + 1).padStart(2, "0")} / 04</span></div>
-      <div className="tiktok-visual-copy">
-        <span className="tiktok-visual-eyebrow">{slide.eyebrow}</span>
-        <h3>{slide.title.split("\n").map((line, lineIndex) => <span key={lineIndex}>{line}</span>)}</h3>
-        <p>{slide.note.split("\n").map((line, lineIndex) => <span key={lineIndex}>{line}</span>)}</p>
-      </div>
-      <div className="tiktok-visual-art" aria-hidden="true">
-        {slide.visual === "cover" && <div className="visual-code-mark"><i /><i /><i /><b>≠</b></div>}
-        {slide.visual === "compare" && <div className="visual-compare-grid"><div><b>{isAddCustom ? "16 × 32" : "当前输入"}</b><i>对照</i></div><span>→</span><div><b>{isAddCustom ? "17 × 33" : "目标约定"}</b><i>核对</i></div></div>}
-        {slide.visual === "blocks" && <div className="visual-block-row"><i /><i /><i /><i className="is-tail" /><span>{isAddCustom ? "尾块" : "轴顺序"}</span></div>}
-        {slide.visual === "evidence" && <div className="visual-evidence-list"><i>运行参数</i><i>{isAddCustom ? "误差记录" : "模型签名"}</i><i className="is-pending">真实验证待补</i></div>}
+      <div className={`tiktok-slide-content tiktok-slide-content--${slide.visual}`}>
+        <TikTokSlideContent slide={slide} isAddCustom={isAddCustom} />
       </div>
       <div className="tiktok-visual-footer"><span>{slide.footer}</span><b>昇腾开发笔记</b></div>
     </div>
