@@ -6058,3 +6058,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - CUA 在本地 `http://127.0.0.1:5187/?home=explore` 的 381×664 App 视口中核验首屏、训练主题、效率与多卡三层替换、路径锁定、prompt 生成和编辑保留。工具只能以拖动触发指针预览，拖动会选中文字；不把这当作纯鼠标悬浮的视觉证据。未完成参考图 1672×941 同尺寸视觉复核；此前 1280×720 截图属于旧版结构，不能替代本轮截图。
 - 证据边界：用户参考图和配色 / 交互选择为直接需求（H）；主题内容为静态产品假设（L），没有真实用户需求遥测、训练日志、模型或 NPU 验证。`ascend-studio/design-qa.md` 将桌面视觉结论标记为 blocked，层级交互与构建验证通过。
 - 发布回执：提交 `04cde721` 已推送 `origin/main`；GitHub Pages workflow `39915607006` 成功，线上 `/ascstudio/` 返回 HTTP 200 并引用新 `index-CGj_DVPe.js` / `index-CyHJEtly.css`。
+
+### 2026-10-23 · 多渠道草稿改为四卡片总览
+
+- 用户依据此前草图明确纠正交互：点“查看全部发布渠道”后，右侧显示社区、GitCode、CSDN、抖音四张预览卡片并排成 2×2；取消下拉 / 勾选菜单。卡片各自进入对应渠道的审阅 / 发布视图；昇腾社区保留可编辑草稿和提交后社区文章预览。
+- 四渠道按平台语境呈现独立预览；抖音卡片使用深色知识图文。主题标题随草稿变化，避免其他开发任务的内容被写成 AddCustom。奖励与积分仍清楚标为示例；第三方发布仍为本地演示。AddCustom 尾块只写作待验证线索，未增加根因或 NPU 已通过的结论。
+- 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`ChannelDraftContent.jsx`、`community-draft.css`，重建根目录 `ascstudio/` Pages 包；无报告页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。
+- 本地 CUA 1280×720 看到四张卡片同屏；从 GitCode / CSDN 预览可进入对应审阅页面，CSDN 本地演示发布状态回到总览后显示在卡片上。`npm run build:pages`、`git diff --check` 通过，未运行测试套件。线上发布 / Pages 状态待回填。
+- 本次在隔离工作树基于 `origin/main` 实施；根共享工作树已有的其他会话改动未纳入。本轮提交 / push 与 Pages 发布状态待补记。

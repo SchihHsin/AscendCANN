@@ -1218,3 +1218,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/ExploreTaskHome.jsx`、`src/explore-task-home.css`、`src/home-exploration.js` 及根目录 `ascstudio/` Pages 产物；修正层级切换后的滚动位置。无正式页序 / hash 或 API / Host / Application 层变化，不声称真实训练 / NPU 验证。
 - `npm run build`、`npm run build:pages`、35 节点 / 路径 / prompt / 类型 / tone 断言、相关上游 14 项测试、Sites 4 项测试及 `git diff --check` 通过；保留 chunk 体积提示。CUA 381×664 核验训练主题、效率、多卡三层和可编辑草稿；1672×941 桌面视觉比对未完成，design QA 标记 blocked。
 - 发布回执：提交 `04cde721` 已推送 `origin/main`；Pages workflow `39915607006` 成功，线上 `/ascstudio/` 返回 HTTP 200 并引用新 JS / CSS bundle。
+
+### 2026-10-23 · 四渠道预览卡片总览
+
+- 覆盖此前的下拉多选方案：点击「查看全部发布渠道」后，右侧改为昇腾社区、GitCode、CSDN、抖音 2×2 预览卡片；每张卡片各自进入渠道审阅 / 发布。返回社区草稿也有明确入口。
+- 四个平台的卡片用不同内容结构；抖音展示深色知识图文。卡片标题依当前草稿主题变化，避免跨任务沿用 AddCustom 文案。奖励保持示例提示；平台发布未接入，演示操作不会发布到真实平台。
+- AddCustom 的尾块仍仅为待验证线索，不声称根因已定位或真实 NPU 验证通过。社区草稿仍可审阅、编辑及本地提交，提交后继续呈现社区文章样式。
+- 变更 `src/CommunityDraftPanel.jsx`、`src/ChannelDraftContent.jsx`、`src/community-draft.css`，并生成 Pages 产物 `../ascstudio/`。无报告页序 / hash 或 API、Host / Harness、Application / Task 层边界变化。
+- 本地 1280×720 核对四卡片同屏、GitCode / CSDN 详情、演示发布后状态返回卡片；`npm run build:pages` 与 `git diff --check` 通过。未运行测试套件；本轮提交和 Pages 发布状态待记录。

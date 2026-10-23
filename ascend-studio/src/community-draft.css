@@ -82,34 +82,14 @@
 .community-draft-title h2 { min-width: 0; margin: 0; color: #303137; font-size: 14px; font-weight: 650; letter-spacing: -.2px; white-space: nowrap; }
 .community-draft-status { flex: 0 0 auto; padding: 4px 8px; border: 1px solid #e4e4e2; border-radius: 5px; color: #62636a; background: #f8f8f7; font-size: 10px; white-space: nowrap; }
 .community-draft-status.is-submitted { color: #576d5e; background: #f5f8f5; border-color: #dce7dd; }
-.community-channel-picker-anchor { position: relative; flex: 0 0 auto; }
 .community-channel-all { display: inline-flex; align-items: center; justify-content: center; gap: 2px; min-height: 27px; padding: 0 5px; border: 0; border-radius: 5px; color: #666671; background: transparent; font-size: 9px; font-weight: 550; white-space: nowrap; cursor: pointer; }
-.community-channel-all:hover, .community-channel-all[aria-expanded="true"] { color: #503a87; background: #f5f1fc; }
+.community-channel-all:hover { color: #503a87; background: #f5f1fc; }
 .community-incentive-alert { display: inline-flex; align-items: center; flex: 0 1 auto; min-width: 0; max-width: 150px; gap: 4px; padding: 5px 7px; overflow: hidden; border: 1px solid #d8cbed; border-radius: 6px; color: #433666; background: linear-gradient(108deg, #dceaff 0%, #e2e5ff 26%, #ecdfff 52%, #f8dff0 77%, #ffe8d8 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.76); font-size: 9px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
 .community-incentive-alert svg { flex: 0 0 auto; color: #7457c5; }
 .community-incentive-alert span { overflow: hidden; text-overflow: ellipsis; }
 .community-draft-header-actions { display: flex; align-items: center; flex: 0 0 auto; gap: 4px; margin-left: auto; }
 .community-draft-zoom { display: grid; flex: 0 0 auto; width: 27px; height: 27px; place-items: center; padding: 0; border: 1px solid #e6e5e3; border-radius: 6px; color: #66666e; background: #fff; cursor: pointer; }
 .community-draft-zoom:hover, .community-draft-zoom.is-active { color: #553f8b; border-color: #d8ccef; background: #f7f3fd; }
-.community-channel-picker { position: absolute; top: calc(100% + 8px); right: -120px; z-index: 30; width: min(360px, calc(100vw - 28px)); padding: 12px; border: 1px solid #e7e3ed; border-radius: 11px; background: #fff; box-shadow: 0 16px 42px rgba(35, 28, 53, .18); animation: reveal .14s ease-out; }
-.community-channel-picker-heading { display: flex; flex-direction: column; gap: 3px; padding: 2px 2px 10px; }
-.community-channel-picker-heading strong { color: #323239; font-size: 12px; font-weight: 650; }
-.community-channel-picker-heading span { color: #82818a; font-size: 10px; }
-.community-channel-options { display: grid; gap: 6px; }
-.community-channel-option { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 8px; border: 1px solid #eceaee; border-radius: 8px; background: #fff; transition: border-color .14s ease, background .14s ease; }
-.community-channel-option.is-selected { border-color: #d8cef0; background: linear-gradient(105deg, rgba(79, 142, 255, .06), rgba(170, 120, 245, .07), rgba(238, 130, 210, .045)); }
-.community-channel-option.is-previewing { box-shadow: inset 0 0 0 1px rgba(117, 91, 181, .16); }
-.community-channel-option-check { display: flex; align-items: flex-start; flex: 1; min-width: 0; gap: 8px; cursor: pointer; }
-.community-channel-option-check input { flex: 0 0 auto; width: 15px; height: 15px; margin: 2px 0 0; accent-color: #765ac7; }
-.community-channel-option-copy { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
-.community-channel-option-copy strong { color: #42434a; font-size: 10px; font-weight: 620; }
-.community-channel-option-copy small { color: #85848d; font-size: 9px; line-height: 1.35; }
-.community-channel-option-preview { flex: 0 0 auto; min-height: 27px; padding: 0 8px; border: 1px solid #e6e3eb; border-radius: 5px; color: #64616d; background: #fff; font-size: 9px; cursor: pointer; }
-.community-channel-option-preview:hover, .community-channel-option-preview[aria-pressed="true"] { color: #503a87; border-color: #d8ccef; background: #f7f3fd; }
-.community-channel-picker-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; padding-top: 9px; border-top: 1px solid #efedf1; }
-.community-channel-picker-footer span { color: #797780; font-size: 9px; }
-.community-channel-picker-footer button { min-height: 29px; padding: 0 10px; border: 1px solid #25242b; border-radius: 6px; color: #fff; background: #201f25; font-size: 9px; font-weight: 600; cursor: pointer; }
-.community-channel-picker-footer button:hover { background: #383640; }
 .community-draft-close { display: grid; place-items: center; flex: 0 0 auto; width: 31px; height: 31px; padding: 0; border: 1px solid #e6e5e3; border-radius: 7px; color: #62636a; background: #fff; cursor: pointer; }
 .community-draft-close:hover { background: #f7f7f6; }
 .community-draft-panel.is-expanded { position: fixed; z-index: 1000; inset: 66px 14px 14px; width: auto; height: auto; max-width: none; border: 1px solid #dedbe3; border-radius: 12px; box-shadow: 0 18px 58px rgba(19, 19, 26, .2), 0 0 0 100vmax rgba(22, 21, 29, .36); }
@@ -165,7 +145,6 @@
   .community-incentive-alert { max-width: 105px; padding: 4px 5px; font-size: 8px; }
   .community-draft-header-actions { gap: 3px; }
   .community-draft-zoom, .community-draft-close { width: 25px; height: 25px; }
-  .community-channel-picker { right: -90px; }
   .community-draft-intro { padding-inline: 13px; }
   .community-draft-scroll { padding-inline: 10px; }
   .community-draft-footer { align-items: stretch; flex-direction: column; padding: 9px 10px; }
@@ -174,4 +153,98 @@
 
 @media (prefers-reduced-motion: reduce) {
   .community-draft-scroll { scroll-behavior: auto; }
+}
+
+/* The all-channel view follows the selected four-card sketch. */
+.community-draft-panel.is-channel-overview { container-type: inline-size; }
+.community-draft-header--overview { min-height: 77px; gap: 12px; padding: 10px 16px; }
+.community-overview-heading { flex: 1 1 auto; min-width: 0; }
+.community-overview-heading-title { display: flex; align-items: center; gap: 9px; }
+.community-overview-heading-title h2 { margin: 0; color: #292a2f; font-size: 19px; font-weight: 680; letter-spacing: -.35px; }
+.community-overview-heading > p { margin: 4px 0 0 34px; color: #85858d; font-size: 11px; line-height: 1.35; }
+.community-overview-back { display: grid; flex: 0 0 auto; width: 25px; height: 25px; place-items: center; padding: 0; border: 1px solid #e8e7e5; border-radius: 6px; color: #66666e; background: #fff; cursor: pointer; }
+.community-overview-back:hover { background: #f7f6f5; }
+.community-overview-regenerate { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 33px; padding: 0 10px; border: 1px solid #e5e4e2; border-radius: 7px; color: #56575e; background: #fff; font-size: 10px; font-weight: 550; white-space: nowrap; cursor: pointer; }
+.community-overview-regenerate:hover { background: #f7f6f5; }
+.community-channel-overview { display: flex; flex: 1 1 0; min-height: 0; flex-direction: column; gap: 7px; padding: 9px 12px 10px; }
+.community-channel-overview-actions { display: flex; flex: 0 0 auto; align-items: center; justify-content: flex-end; min-height: 0; }
+.community-channel-regenerated { color: #777681; font-size: 9px; }
+.community-channel-grid { display: grid; flex: 1 1 0; min-height: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.channel-preview-card { display: flex; min-width: 0; min-height: 0; flex-direction: column; overflow: hidden; padding: 10px 11px 9px; border: 1px solid #e7e6e4; border-radius: 10px; background: #fff; box-shadow: 0 2px 8px rgba(35, 34, 41, .025); }
+.channel-preview-card--community { background: linear-gradient(145deg, #fffdfa, #fff 50%); }
+.channel-preview-card--gitcode { background: linear-gradient(145deg, #fff, #fffafd 100%); }
+.channel-preview-card--csdn { background: linear-gradient(145deg, #fff, #fffafe 100%); }
+.channel-preview-card--tiktok { background: linear-gradient(145deg, #fff, #fff 62%, #fcfbff 100%); }
+.channel-preview-card-heading { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 6px; min-height: 27px; }
+.channel-preview-channel-name { display: flex; min-width: 0; align-items: center; gap: 7px; }
+.channel-preview-channel-name strong { overflow: hidden; color: #2f3035; font-size: 12px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.channel-preview-mark { display: grid; flex: 0 0 auto; width: 23px; height: 23px; place-items: center; border-radius: 50%; color: #fff; background: #e8e8e8; font-size: 15px; font-weight: 750; line-height: 1; }
+.channel-preview-mark--community { color: #e72e3a; background: #fff; font-size: 19px; }
+.channel-preview-ascend-mark { transform: scaleX(.84); font-weight: 850; }
+.channel-preview-mark--gitcode { color: #fff; background: #e84c43; font-family: Arial, sans-serif; font-size: 15px; }
+.channel-preview-mark--csdn { color: #fff; background: #f27a26; font-family: Arial, sans-serif; font-size: 16px; }
+.channel-preview-mark--tiktok { color: #fff; background: #18191d; }
+.channel-preview-tiktok-mark { text-shadow: -1px 0 #4de3e9, 1px 0 #f36b83; }
+.channel-preview-format { flex: 0 0 auto; padding: 4px 7px; border: 1px solid #ece9f2; border-radius: 20px; color: #747080; background: #fff; font-size: 8px; line-height: 1; white-space: nowrap; }
+.channel-preview-card--community .channel-preview-format { color: #a56831; border-color: #f2e4d4; }
+.channel-preview-card--gitcode .channel-preview-format { color: #bb4f6e; border-color: #f3dce6; }
+.channel-preview-card--csdn .channel-preview-format { color: #7860bb; border-color: #e8e1f8; }
+.channel-preview-card--tiktok .channel-preview-format { color: #554b71; border-color: #e7e2f1; }
+.channel-preview-card-body { flex: 1 1 0; min-height: 0; overflow: hidden; padding-top: 7px; }
+.channel-preview-community, .channel-preview-gitcode, .channel-preview-csdn { height: 100%; overflow: hidden; }
+.channel-preview-community h3, .channel-preview-gitcode h3, .channel-preview-csdn h3 { display: -webkit-box; overflow: hidden; margin: 0 0 7px; color: #303137; font-size: 13px; font-weight: 680; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.channel-preview-community > div:not(.channel-preview-caution) { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 6px; margin-top: 5px; padding: 5px 0; border-bottom: 1px solid #f0efed; }
+.channel-preview-community > div b, .channel-preview-step b { color: #47484e; font-size: 9px; font-weight: 650; }
+.channel-preview-community > div p, .channel-preview-step p { display: -webkit-box; overflow: hidden; margin: 0; color: #777983; font-size: 9px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.channel-preview-caution { display: flex; align-items: center; gap: 6px; margin-top: 7px; color: #896d5b; font-size: 8px; line-height: 1.35; }
+.channel-preview-caution span { flex: 0 0 auto; width: 5px; height: 5px; border-radius: 50%; background: #d6a77e; }
+.channel-preview-topic { display: flex; gap: 5px; margin: 0 0 6px; }
+.channel-preview-topic span { padding: 3px 6px; border: 1px solid #ece9e7; border-radius: 12px; color: #7e7d83; background: #fbfaf9; font-size: 7px; }
+.channel-preview-step { display: grid; grid-template-columns: 17px minmax(0, 1fr); gap: 6px; margin-top: 6px; }
+.channel-preview-step > i { display: grid; width: 15px; height: 15px; place-items: center; border-radius: 50%; color: #7458c1; background: #f0eaff; font-size: 8px; font-style: normal; }
+.channel-preview-step > div { min-width: 0; }
+.channel-preview-step p { margin-top: 2px; }
+.channel-preview-code { margin-top: 8px; padding: 6px 8px; overflow: hidden; border-radius: 5px; color: #585969; background: #f5f4f7; text-overflow: ellipsis; white-space: nowrap; }
+.channel-preview-code code { font-size: 8px; }
+.channel-preview-csdn h3 { margin-bottom: 4px; }
+.channel-preview-csdn > p { display: -webkit-box; overflow: hidden; margin: 0 0 5px; color: #85858e; font-size: 8px; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.channel-preview-csdn ol { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; counter-reset: article-step; }
+.channel-preview-csdn li { display: grid; grid-template-columns: 75px minmax(0, 1fr); gap: 5px; padding: 4px 0; border-top: 1px solid #f0efed; counter-increment: article-step; }
+.channel-preview-csdn li b { color: #4c4b52; font-size: 8px; font-weight: 650; }
+.channel-preview-csdn li span { display: -webkit-box; overflow: hidden; color: #85858e; font-size: 8px; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.channel-preview-tiktok { display: flex; height: 100%; flex-direction: column; overflow: hidden; padding: 7px; border-radius: 7px; background: linear-gradient(132deg, #1b1a20, #0e0f13 55%, #19141d); }
+.channel-preview-tiktok-heading { display: flex; justify-content: space-between; gap: 5px; margin-bottom: 6px; color: #aaa7b0; font-size: 6px; letter-spacing: .06em; }
+.channel-preview-tiktok-heading b { color: #e2c6fb; font-size: 7px; font-weight: 550; letter-spacing: 0; }
+.channel-preview-tiktok-panels { display: grid; flex: 1; min-height: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.channel-preview-tiktok-tile { position: relative; display: flex; min-width: 0; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 6px 5px; border: 1px solid rgba(255,255,255,.1); border-radius: 5px; color: #fff; background: radial-gradient(ellipse at 70% 35%, rgba(143,99,189,.24), transparent 54%), #17181d; }
+.channel-preview-tiktok-tile::after { position: absolute; right: -12px; bottom: 25px; left: -8px; height: 1px; content: ""; transform: rotate(-20deg); background: linear-gradient(90deg, transparent, rgba(227,153,130,.55), rgba(177,133,220,.5), transparent); }
+.channel-preview-tiktok-tile small { z-index: 1; color: #d8b6f1; font-size: 6px; }
+.channel-preview-tiktok-tile strong { z-index: 1; display: flex; flex-direction: column; margin: auto 0; color: #f4f1f7; font-size: clamp(8px, 1vw, 11px); font-weight: 700; line-height: 1.2; }
+.channel-preview-tiktok-tile i { z-index: 1; display: block; width: 72%; height: 3px; border-radius: 3px; background: linear-gradient(90deg, #e5827d, #a985dc); }
+.channel-preview-tiktok-tile em { z-index: 1; color: #aaa7b1; font-size: 6px; font-style: normal; line-height: 1.3; }
+.channel-preview-tiktok-tile--02 { background: radial-gradient(ellipse at 75% 34%, rgba(79,122,175,.26), transparent 54%), #17181d; }
+.channel-preview-tiktok-tile--03 { background: radial-gradient(ellipse at 70% 35%, rgba(191,125,104,.22), transparent 54%), #17181d; }
+.channel-preview-tiktok-tile--04 { background: radial-gradient(ellipse at 70% 35%, rgba(105,124,177,.24), transparent 54%), #17181d; }
+.channel-preview-card-footer { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 5px; min-height: 34px; margin-top: 5px; padding-top: 5px; border-top: 1px solid #f0efed; }
+.channel-preview-reward { display: inline-flex; min-width: 0; align-items: center; gap: 4px; overflow: hidden; color: #615480; font-size: 8px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+.channel-preview-reward svg { flex: 0 0 auto; color: #8c6bd3; }
+.channel-preview-action { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 4px; min-height: 28px; padding: 0 8px; border: 1px solid #1c1d21; border-radius: 6px; color: #fff; background: #17181c; font-size: 8px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.channel-preview-action:hover { background: #34353a; }
+.channel-preview-action.is-published { border-color: #dce7dd; color: #536758; background: #f5f8f5; cursor: pointer; }
+.community-channel-overview-note { display: flex; flex: 0 0 auto; align-items: center; gap: 5px; margin: 0; color: #8a8991; font-size: 8px; line-height: 1.3; }
+.community-channel-overview-note svg { flex: 0 0 auto; }
+
+@container (max-width: 560px) {
+  .community-channel-overview { overflow-y: auto; }
+  .community-channel-grid { flex: 0 0 auto; grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .channel-preview-card { min-height: 235px; }
+}
+
+@media (max-width: 700px) {
+  .community-draft-header--overview { padding-inline: 9px; }
+  .community-overview-heading-title h2 { font-size: 15px; }
+  .community-overview-heading > p { font-size: 9px; }
+  .community-overview-regenerate { min-height: 28px; gap: 4px; padding-inline: 6px; font-size: 8px; }
+  .community-channel-overview { padding-inline: 9px; }
+  .community-channel-overview-note { font-size: 7px; }
 }
