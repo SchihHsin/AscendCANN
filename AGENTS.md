@@ -6155,3 +6155,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 CUA 1280×720 检查首层和训练展开：中心“训练与调优”以小字 `TRAINING & TUNING` 在上、中文主题在下；周边节点仍显示原中文 Prompt，连接线与底部说明没有相互遮挡。词条是人工预设，不代表真实训练诊断或 NPU 验证。
 - `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过。无页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。
 - 源码提交 `f01a8d70` 与 Pages 产物提交 `7126a2af` 已推送 `origin/main`；GitHub Pages workflow `39952421205` 成功。线上 `/ascstudio/?home=explore` 返回 HTTP 200，加载 `index-Dsvh3DPW.js` 与 `index-CEruwWww.css`，均 HTTP 200。根交接、`ascend-studio/AGENTS.md`、`ascend-studio/design-qa.md` 均记录本次修正。
+
+### 2026-10-23 · 抖音知识图文改为内容语义配色
+
+- 用户确认生成的图文不要使用抖音主题青粉色。只调整四张深色知识图内部与完整图文预览：石墨 / 灰白为底色，琥珀色表达待核对或异常线索，绿色只标记明确的示例通过；普通「示例」保持中性灰。由内容状态决定颜色，不把渠道品牌色当作插图配色。
+- 外层抖音渠道卡仍保留用户此前确认的左青右粉、向下淡白渐变；没有添加新的内层深色容器。
+- 更新 `ascend-studio/src/ChannelDraftContent.jsx`、`CommunityDraftPanel.jsx`、`channel-draft.css`、`community-draft.css` 和根目录 `ascstudio/` Pages 产物。只改变展示层，不代表真实模型 / NPU 结果或平台发布状态；无页面序列 / hash、API、Host / Harness 或 Application / Task 边界变化。
+- 验证：`npm run build:pages`、`git diff --check` 通过。CUA 本地预览查看 2×2 渠道总览与单张图文详情，确认内图不再使用抖音青粉色、外层渠道色渐变保留。未运行测试套件。
+- Commit / push 与 Pages workflow 结果随后补记。

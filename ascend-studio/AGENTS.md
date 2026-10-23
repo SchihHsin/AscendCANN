@@ -1310,3 +1310,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 下钻中心节点移除卡片白底、描边、圆角与阴影，继续用与外围节点一致的文字样式。画布说明固定在下方留白处，不能与中心 / 卫星节点重叠。
 - CUA 本地预览 1280×720 检查首层与训练展开通过；`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、`git diff --check` 通过。人工预设词条不代表真实日志诊断或 NPU 验证。
 - 源码提交 `f01a8d70` 与 Pages 产物提交 `7126a2af` 已推送 `origin/main`；workflow `39952421205` 成功，线上 JS / CSS 均 HTTP 200。
+
+### 2026-10-23 · 抖音知识图文改为内容语义配色
+
+- 知识图内不再使用抖音青粉品牌色：深石墨底、灰白正文；琥珀色表示待核对 / 异常线索，绿色仅表示明确通过，中性示例使用灰色。规则同时应用于 4 张缩略预览和逐张图文详情。
+- 外层抖音渠道卡维持已确认的左青右粉、向下淡白渐变。未增加图外的深色嵌套容器。
+- 修改 `src/ChannelDraftContent.jsx`、`src/CommunityDraftPanel.jsx`、`src/channel-draft.css`、`src/community-draft.css`，重建 `../ascstudio/` Pages 包。此为样式表达，不构成真实模型 / NPU 验证或平台发布。
+- `npm run build:pages`、`git diff --check` 通过；CUA 本地核对 2×2 总览与完整单页。未运行测试套件。
+- Commit / push 与 Pages workflow 结果随后补记。

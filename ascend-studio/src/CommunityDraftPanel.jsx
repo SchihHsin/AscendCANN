@@ -115,7 +115,7 @@ function ChannelCardPreview({ channelId, draft }) {
         </div>}
         {slide.type === "compare" && <div className="channel-preview-tiktok-compare-content">
           <strong>{slide.title}</strong>
-          <div><b>{isAddCustom ? "[16,32]" : "示例输入"}<em>{isAddCustom ? "通过" : "示例"}</em></b><b>{isAddCustom ? "[17,33]" : "目标约定"}<em>{isAddCustom ? "失败" : "待核对"}</em></b></div>
+          <div><b>{isAddCustom ? "[16,32]" : "示例输入"}<em className={isAddCustom ? "is-pass" : "is-example"}>{isAddCustom ? "通过" : "示例"}</em></b><b>{isAddCustom ? "[17,33]" : "目标约定"}<em className={isAddCustom ? "is-fail" : "is-review"}>{isAddCustom ? "失败" : "待核对"}</em></b></div>
           <span>{slide.note}</span>
         </div>}
         {slide.type === "flow" && <div className="channel-preview-tiktok-flow-content">

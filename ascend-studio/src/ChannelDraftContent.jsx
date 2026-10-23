@@ -37,7 +37,7 @@ function TikTokSlideContent({ slide, isAddCustom }) {
       <p>{slide.note}</p>
     </div>
     <div className="visual-cover-art"><IconAlertCircle size={32} stroke={1.7} /><div><strong>两组输入表现不同</strong><span>先定位异常边界</span></div></div>
-    <div className="visual-cover-snapshot"><span>{isAddCustom ? "[16,32]" : "示例输入"}<b><IconCheck size={12} />{isAddCustom ? "通过" : "示例"}</b></span><span>{isAddCustom ? "[17,33]" : "目标约定"}<b><IconAlertCircle size={12} />{isAddCustom ? "失败" : "待核对"}</b></span></div>
+    <div className="visual-cover-snapshot"><span>{isAddCustom ? "[16,32]" : "示例输入"}<b className={isAddCustom ? "is-pass" : "is-example"}><IconCheck size={12} />{isAddCustom ? "通过" : "示例"}</b></span><span>{isAddCustom ? "[17,33]" : "目标约定"}<b className={isAddCustom ? "is-warning" : "is-review"}><IconAlertCircle size={12} />{isAddCustom ? "失败" : "待核对"}</b></span></div>
   </>;
 
   if (slide.visual === "compare") return <>
@@ -46,9 +46,9 @@ function TikTokSlideContent({ slide, isAddCustom }) {
       <h3>{title}</h3>
     </div>
     <div className="visual-compare-grid">
-      <div className="visual-compare-panel is-pass"><span>输入组合 A</span><b>{isAddCustom ? "[16,32]" : "示例输入"}</b><i>{isAddCustom ? <><IconCheck size={13} />通过</> : "示例"}</i></div>
+      <div className={`visual-compare-panel ${isAddCustom ? "is-pass" : "is-example"}`}><span>输入组合 A</span><b>{isAddCustom ? "[16,32]" : "示例输入"}</b><i>{isAddCustom ? <><IconCheck size={13} />通过</> : "示例"}</i></div>
       <span className="visual-compare-divider">对照</span>
-      <div className="visual-compare-panel is-fail"><span>输入组合 B</span><b>{isAddCustom ? "[17,33]" : "目标约定"}</b><i>{isAddCustom ? <><IconAlertCircle size={13} />失败</> : "待核对"}</i></div>
+      <div className={`visual-compare-panel ${isAddCustom ? "is-fail" : "is-review"}`}><span>输入组合 B</span><b>{isAddCustom ? "[17,33]" : "目标约定"}</b><i>{isAddCustom ? <><IconAlertCircle size={13} />失败</> : "待核对"}</i></div>
     </div>
     <p className="visual-slide-note">{slide.note}</p>
   </>;
