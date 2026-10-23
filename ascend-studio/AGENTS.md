@@ -22,6 +22,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 当前首页探索创新点使用“训练与调优”主题，不再用图像推理作为该方向的案例。训练效率、多卡收益、瓶颈定位、并行策略和对照实验可作为演示故事素材，不表示真实运行或诊断结果。
 - 探索页的文案层级已确认：中文主题和 Prompt 是大字，英文翻译作为上方小字；中文标题沿用之前认可的宋体衬线字形。中心焦点与周边节点视觉协调，避免凭空突出为另一套卡片组件。
 
+
+- 2026-10-23：在「图像推理调试」中，「全部内容」直接打开自由画布；全部内容与画布不是两种并列视图。画布内的「适应全部」只调整视野，顶栏「返回任务」回到进入画布前的内容。旧会话若停在分组总览，自动迁移到任务画布；本次仅试点图像推理任务。
 - 2026-10-23：外层滚动条自动隐藏仅应用于项目列表 `.project-scroll` 与对话消息 `.conversation-scroll`，空闲时隐藏、悬停或滚动时显现。画布、画布卡片、代码区和其他管理 / 内容面板均排除；实现与验证记录见仓库根 `AGENTS.md`。
 
 - The workspace has three columns: left project/task navigation, middle task conversation, and right-side judgment/evidence/actions. Do not remove the conversation or replace the project task list with a learning center.

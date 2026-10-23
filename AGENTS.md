@@ -6247,3 +6247,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）和 `git diff --check` 通过；打包 JS 确认包含嵌入入口及官方课程地址。
 - 源码提交 `b4a59eca`、Pages 资源提交 `eedae623` 已推送 `origin/main`。Pages workflow `39970392442` 对应 `eedae623` 且成功；线上 `/ascstudio/` 引用脚本 HTTP 200，并确认包含 `application-view` 播放器入口与登录失败兜底。未登录环境无法确认视频实际播放。
 - 为供共享的本地 Demo 预览，本轮将同一播放器入口、课程 embed URL 与样式最小同步到当前工作区的三处源码；没有重建或覆盖 `ascstudio/` 发布目录。由于工作区正包含其他对话的在途改动，本地同步保留为未提交状态；线上代码已经由前述提交发布。
+
+### 2026-10-24 · 图像推理任务的全部内容改为自由画布
+
+- 用户纠正：「全部内容」总览改成画布视图；分组卡片总览与自由画布不能并列。此次先在图像推理调试试点，不推广到其他任务。
+- `ascend-studio/src/App.jsx` 将图像推理的总览入口映射至自由画布，自动迁移已打开的旧总览会话，并在入口时适配全部可见节点；`TaskWorkspace.jsx` 更正按钮标题与返回路径并移除重复「手动整理内容」入口；`TaskCanvas.jsx` 将图像推理画布中的「总览」改为仅执行视野适配的「适应全部」。
+- 同步 `ascend-studio/AGENTS.md` 与 `ascend-studio/design-qa.md`，明确与用户已确认的方案及其他任务的范围边界；未改变页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界，不代表 Python、模型或 NPU 已验证。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过；桌面 CUA 1440×900 核对「图像推理画布」、代码和张量图解节点、连线、小地图、适应全部及返回任务。首次桌面进入后视野为 68%；从任务内容进入、返回并再次进入时画布和视野保持正确。未新增或运行自动化测试；旧存档迁移未单独构造回放。
+- 本地源码在 `987b947a` 基础上重放到当时的 `origin/main`；后续同步主分支后需重新构建 Pages 产物，再补记最终提交与推送结果。只先在图像推理调试试点，待用户评审后再讨论推广。
