@@ -1083,6 +1083,6 @@ final result: passed
 - **Validation:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check` 通过。Vite 有既有主 JS chunk 大于 500 kB 提示。
 - **Scope:** 这是策划的交互故事，不连接真实个人历史、训练日志或 NPU；不改变经典 / 探索 Tab、正式页面序列 / hash 或 API / Host / Application 层边界。构建与预览不代表真实训练验证。
 - **Evidence note:** 页面在 In-App Browser 中实时目视核验；本轮没有把浏览器截图另存为仓库文件。
-- **Release:** Commit / push 回执随后补充。
+- **Release:** 源码提交 `4ef4cc73` 与 Pages 产物提交 `9f0f2dad` 已推送 `origin/main`；Pages workflow `39969122898` 的 build 与 deploy 均成功。线上 `/ascstudio/` 引用的 `index-DiuQz1jl.js`、`index-nCHq-VB3.css` 均 HTTP 200。
 
 final result: passed
