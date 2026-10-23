@@ -1302,4 +1302,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 范围限于图像推理试点；AddCustom 既有行为不变，其他任务不变。规则补入 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 末尾新页，既有页码 / hash 不移动；评审清单更新于 `ascend-studio/design-qa.md`。
 - 方向来自用户确认（H）；“自由画布保留任务关联，完整阅读转任务内容区”的复用方式为本次待评审设计方案（L）。未改变 API / Protocol、Host / Harness、Application / Task 边界，无真实 Python、模型或 NPU 验证。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过（Vite 保留既有 >500 kB chunk 提示）。本地 `http://127.0.0.1:5188/?task=development` 回放确认：张量图解聚焦后仍在自由画布且自动从 37% 适配至 74%；完整阅读在任务内容区打开；回到画布后所选对象及 74% 视口保留。未运行测试套件。
-- 源码、故事材料、QA 记录与 `ascstudio/` Pages 产物随本轮提交推送到 `origin/main`；是否把共通入口继续推广到下一种业务任务，待用户评审本试点后再定。
+- 源码、故事材料、QA 记录与 `ascstudio/` Pages 产物提交 `d5d3d8f2` 已推送到 `origin/main`；Pages workflow 尚待确认。是否把共通入口继续推广到下一种业务任务，待用户评审本试点后再定。

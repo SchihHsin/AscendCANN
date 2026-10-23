@@ -6146,4 +6146,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 将 AddCustom 的卡片级聚焦／完整阅读交互作为试点带入「图像推理调试」：卡片右上角聚焦后仍留在自由画布并自动适配；完整阅读转入任务内容区；静态预览不保留重复展开按钮。其他任务不变。
 - 在 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 追加规则页，原有页面锚点不变；在 `ascend-studio/design-qa.md` 补充评审项。
-- `npm run build:pages`、`git diff --check` 通过；本地 5188 CUA 回放验证聚焦 → 完整阅读 → 返回，聚焦状态保留。未运行测试套件，无真实 Python / 模型 / NPU 验证。源码、材料、QA 与 `ascstudio/` 产物随本轮修改推送；是否推广下一种业务任务，待用户评审后再定。
+- `npm run build:pages`、`git diff --check` 通过；本地 5188 CUA 回放验证聚焦 → 完整阅读 → 返回，聚焦状态保留。未运行测试套件，无真实 Python / 模型 / NPU 验证。源码、材料、QA 与 `ascstudio/` 产物提交 `d5d3d8f2` 已推送 `origin/main`；是否推广下一种业务任务，待用户评审后再定。
