@@ -67,14 +67,28 @@ function CodeBlock({ children, label }) {
   return <pre className="cm-code" tabIndex={0} aria-label={label}><code>{children}</code></pre>;
 }
 
-function EvidenceMaterial({ onShowCard }) {
-  return <div className="cm-stack"><div className="cm-meta-line"><span>来源：本题诊断记录</span><span className="cm-tag">根因待确认</span></div><div className="cm-evidence-facts"><div><IconCheck size={15} /><span><strong>[16,32] 通过</strong><small>已记录的对照输入</small></span></div><div><IconAlertTriangle size={15} /><span><strong>[17,33] 失败</strong><small>失败与非整块输入同时出现</small></span></div><div><IconCode size={15} /><span><strong>precision mismatch</strong><small>custom_op.cpp:128</small></span></div><div><IconHistory size={15} /><span><strong>编译参数已调整</strong><small>错误位置未变，未带来新的定位信号</small></span></div></div><p className="cm-body-copy">尾块边界值得优先核对。目前仍需对照实际循环、逐元素误差和两次运行的环境条件，根因尚未确认。</p><div className="cm-actions"><button className="cm-button" type="button" onClick={() => onShowCard?.("explanation")}><IconBook size={14} />解释并试改</button><button className="cm-button" type="button" onClick={() => onShowCard?.("source")}><IconCode size={14} />只读核对</button><button className="cm-text-button" type="button" onClick={() => onShowCard?.("precision")}>误差核对<IconArrowRight size={13} /></button></div><p className="cm-note">这里只索引已有记录，尚无真实项目或 NPU 的新增验证结果。</p></div>;
+function codeExcerpt(value, maxLines = 8) {
+  const lines = String(value || "").split("\n");
+  const excerpt = lines.slice(0, maxLines);
+  return { text: `${excerpt.join("\n")}${lines.length > excerpt.length ? "\n…" : ""}`, total: lines.length, shown: excerpt.length };
 }
 
-function LinkedCodeBlock({ text, label, explanation }) {
+function EvidenceMaterial({ onShowCard, presentation }) {
+  const preview = presentation === "canvas";
+  return <div className={`cm-stack${preview ? " cm-card-preview cm-card-preview-evidence" : ""}`}><div className="cm-meta-line"><span>来源：本题诊断记录</span><span className="cm-tag">根因待确认</span></div><div className="cm-evidence-facts"><div><IconCheck size={15} /><span><strong>[16,32] 通过</strong><small>已记录的对照输入</small></span></div><div><IconAlertTriangle size={15} /><span><strong>[17,33] 失败</strong><small>失败与非整块输入同时出现</small></span></div><div><IconCode size={15} /><span><strong>precision mismatch</strong><small>custom_op.cpp:128</small></span></div><div><IconHistory size={15} /><span><strong>编译参数已调整</strong><small>错误位置未变，未带来新的定位信号</small></span></div></div><p className="cm-body-copy">{preview ? "尾块边界值得优先核对；根因尚未确认。" : "尾块边界值得优先核对。目前仍需对照实际循环、逐元素误差和两次运行的环境条件，根因尚未确认。"}</p><div className="cm-actions"><button className="cm-button" type="button" onClick={() => onShowCard?.("explanation")}><IconBook size={14} />解释并试改</button><button className="cm-button" type="button" onClick={() => onShowCard?.("source")}><IconCode size={14} />只读核对</button><button className="cm-text-button" type="button" onClick={() => onShowCard?.("precision")}>误差核对<IconArrowRight size={13} /></button></div>{!preview && <p className="cm-note">这里只索引已有记录，尚无真实项目或 NPU 的新增验证结果。</p>}</div>;
+}
+
+function LinkedCodeBlock({ text, label, explanation, maxLines }) {
   const focus = explanation?.state.focus || "tail";
+  const allLines = String(text).split("\n");
+  const focusedIndex = allLines.findIndex((line) => codeConcept(line) === focus);
+  const start = maxLines && allLines.length > maxLines
+    ? Math.max(0, Math.min((focusedIndex < 0 ? 0 : focusedIndex) - Math.floor(maxLines / 2), allLines.length - maxLines))
+    : 0;
+  const lines = allLines.slice(start, maxLines ? start + maxLines : undefined);
   return <div className="cm-linked-code" role="group" aria-label={label}>
-    {String(text).split("\n").map((line, index) => {
+    {lines.map((line, offset) => {
+      const index = start + offset;
       const concept = codeConcept(line);
       return concept ? <button type="button" className={"cm-code-line" + (focus === concept ? " is-focused" : "")} aria-pressed={focus === concept} title={`关联图解：${CODE_CONCEPTS[concept].label}`} key={index} onClick={() => explanation?.actions.focusConcept(concept)}><span aria-hidden="true">{index + 1}</span><code>{line || " "}</code></button>
         : <div className="cm-code-line" key={index}><span aria-hidden="true">{index + 1}</span><code>{line || " "}</code></div>;
@@ -82,23 +96,31 @@ function LinkedCodeBlock({ text, label, explanation }) {
   </div>;
 }
 
-function SourceMaterial({ flow, onShowCard, onAttachCode, explanation }) {
+function SourceMaterial({ flow, onShowCard, onAttachCode, explanation, presentation }) {
+  const preview = presentation === "canvas";
   const attachment = flow.sourceAttachment || flow.codeAttachment || null;
   const text = typeof attachment?.content === "string" ? attachment.content : SAMPLE_ORIGINAL_CODE;
   const feedback = useCopy(flow.state.resetVersion);
-  return <div className="cm-stack">
-    <ContentToolbar label="代码阅读工具"><span className="tw-tool-context">{attachment?.name || "custom_op.cpp:128"}<small>{attachment ? "用户提供 · 只读" : "范围来源示例 · 只读"}</small></span><button className="cm-text-button" type="button" onClick={() => feedback.copy(text)}><IconCopy size={13} />复制来源</button></ContentToolbar>
-    {attachment ? <CodeBlock label="用户提供的只读代码">{text}</CodeBlock> : <LinkedCodeBlock text={text} label="可选择代码行的范围来源示例" explanation={explanation} />}
-    {!attachment && <div className="cm-code-link"><IconBook size={14} /><span><strong>{CODE_CONCEPTS[explanation?.state.focus || "tail"].label}</strong><small>{CODE_CONCEPTS[explanation?.state.focus || "tail"].note}</small></span><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation", { anchor: explanation?.state.focus || "tail", split: true })}>对照图解<IconArrowRight size={12} /></button></div>}
-    <p className="cm-note">{attachment ? "保留你提供的代码作为核对证据。试改使用独立示例工作副本，未运行附件代码。" : "来源示例用于对照索引范围，不代表真实项目文件。示例草案和真实来源分别保留。"}</p>
-    <div className="cm-actions"><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation", { anchor: explanation?.state.focus || "tail" })}><IconBook size={13} />解释这里</button>{onAttachCode && <button className="cm-text-button" type="button" onClick={onAttachCode}><IconPaperclip size={13} />附加真实代码</button>}</div>
+  const previewLines = text.split("\n").slice(0, 8);
+  return <div className={`cm-stack${preview ? " cm-card-preview cm-card-preview-source" : ""}`}>
+    <ContentToolbar label={preview ? "代码片段预览" : "代码阅读工具"}><span className="tw-tool-context">{attachment?.name || "custom_op.cpp:128"}<small>{preview ? `关联片段 · ${Math.min(8, text.split("\n").length)} 行 · 只读` : attachment ? "用户提供 · 只读" : "范围来源示例 · 只读"}</small></span><button className="cm-text-button" type="button" onClick={() => feedback.copy(text)}><IconCopy size={13} />复制来源</button></ContentToolbar>
+    {attachment ? <CodeBlock label="用户提供的只读代码">{preview ? `${previewLines.join("\n")}${text.split("\n").length > previewLines.length ? "\n…" : ""}` : text}</CodeBlock> : <LinkedCodeBlock text={text} label="可选择代码行的范围来源示例" explanation={explanation} maxLines={preview ? 8 : undefined} />}
+    {!attachment && <div className={`cm-code-link${preview ? " is-compact" : ""}`}><IconBook size={14} /><span><strong>{CODE_CONCEPTS[explanation?.state.focus || "tail"].label}</strong><small>{CODE_CONCEPTS[explanation?.state.focus || "tail"].note}</small></span><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation", { anchor: explanation?.state.focus || "tail", split: true })}>对照图解<IconArrowRight size={12} /></button></div>}
+    {!preview && <><p className="cm-note">{attachment ? "保留你提供的代码作为核对证据。试改使用独立示例工作副本，未运行附件代码。" : "来源示例用于对照索引范围，不代表真实项目文件。示例草案和真实来源分别保留。"}</p><div className="cm-actions"><button className="cm-text-button" type="button" onClick={() => onShowCard?.("explanation", { anchor: explanation?.state.focus || "tail" })}><IconBook size={13} />解释这里</button>{onAttachCode && <button className="cm-text-button" type="button" onClick={onAttachCode}><IconPaperclip size={13} />附加真实代码</button>}</div></>}
     <CopyFeedback feedback={feedback} />
   </div>;
 }
 
-function DraftMaterial({ flow, onShowCard, onAttachCode }) {
+function DraftMaterial({ flow, onShowCard, onAttachCode, presentation }) {
   const { state, actions } = flow;
   const feedback = useCopy(state.resetVersion);
+  const preview = presentation === "canvas";
+  const excerpt = codeExcerpt(state.draftCode);
+  if (preview) return <div className="cm-stack cm-card-preview cm-card-preview-draft">
+    <div className="cm-meta-line"><span>{modeLabel(state.mode)} · {excerpt.total} 行</span><span className="cm-tag">示例副本</span></div>
+    <CodeBlock label="示例工作副本代码预览">{excerpt.text}</CodeBlock>
+    <p className="cm-note">预览 {excerpt.shown} 行；完整草案在放大后的节点中编辑。这里不会解析、编译或执行 C++。</p>
+  </div>;
   return <div className="cm-stack">
     <ContentToolbar label="草案编辑工具"><span className="tw-tool-context">custom_op.cpp<small>{modeLabel(state.mode)} · 可编辑</small></span><button className="cm-text-button" type="button" onClick={() => feedback.copy(state.draftCode)}><IconCopy size={13} />复制草案</button></ContentToolbar>
     <div className="cm-mode-selector" role="group" aria-label="示例草案位置"><button className={state.mode === "inline" ? "is-selected" : ""} type="button" aria-pressed={state.mode === "inline"} disabled={state.busy} onClick={() => actions.setMode("inline")}>任务内示例副本</button><button className={state.mode === "isolated" ? "is-selected" : ""} type="button" aria-pressed={state.mode === "isolated"} disabled={state.busy} onClick={() => actions.setMode("isolated")}>隔离示例副本</button></div>
@@ -110,9 +132,16 @@ function DraftMaterial({ flow, onShowCard, onAttachCode }) {
   </div>;
 }
 
-function ParametersMaterial({ flow, onShowCard, explanation }) {
+function ParametersMaterial({ flow, onShowCard, explanation, presentation }) {
   const { state, actions } = flow;
   const radioName = useId();
+  if (presentation === "canvas") return <div className="cm-stack cm-card-preview cm-card-preview-parameters">
+    <div className="cm-meta-line"><span>当前示例参数</span><span className="cm-tag">{boundsLabel(state.bounds)}</span></div>
+    <dl className="cm-preview-metrics"><div><dt>输入形状</dt><dd>[{state.rows},{state.columns}]</dd></div><div><dt>每块元素</dt><dd>{state.tileSize}</dd></div><div><dt>总元素</dt><dd>{Number(state.rows) * Number(state.columns)}</dd></div></dl>
+    <RangeDiagram snapshot={state} focus={explanation?.state.focus || "tail"} compact title="当前参数范围预览" />
+    <p className="cm-note">调参和运行入口在放大后的节点中；运行结果只代表浏览器范围算例。</p>
+    <LocalError state={state} />
+  </div>;
   return <div className="cm-stack">
     <p className="cm-note cm-note-leading">来源：{modeLabel(state.mode)}的参数演算。运行后会保留本次参数、策略、代码快照和结果。</p>
     <RangeDiagram snapshot={state} focus={explanation?.state.focus || "tail"} onFocus={explanation?.actions.focusConcept} title="当前参数预览" />
@@ -135,7 +164,7 @@ function AttemptResult({ attempt, compact = false }) {
   return <div className={"cm-attempt-result" + (compact ? " is-compact" : "")}><div className={"cm-outcome" + (attempt.passed ? " is-pass" : "")} >{attempt.passed ? <IconCheck size={14} /> : <IconAlertTriangle size={14} />}<strong>{attempt.passed ? "示例索引在范围内" : "示例存在范围外索引"}</strong><span>浏览器算例</span></div><AttemptMetadata attempt={attempt} /><RangeDiagram snapshot={attempt.snapshot || attempt} compact title="这次尝试的图形快照" /><p className="cm-body-copy">{attempt.result}</p><dl className="cm-stat-grid"><div><dt>总元素 / 总块数</dt><dd>{attempt.total ?? "—"} / {attempt.blocks ?? "—"}</dd></div><div><dt>尾块有效元素</dt><dd>{attempt.tail ?? "—"}</dd></div><div><dt>最大访问索引</dt><dd>{attempt.maxIndex ?? "—"}</dd></div><div><dt>范围外索引数</dt><dd>{attempt.outOfRange ?? "—"}</dd></div></dl>{!compact && <p className="cm-note">结果对应上方保存的参数与策略，未编译 C++，未检查实际算子精度。</p>}</div>;
 }
 
-function AttemptsMaterial({ flow, onShowCard }) {
+function AttemptsMaterial({ flow, onShowCard, presentation }) {
   const { state, actions } = flow;
   const attempts = Array.isArray(state.attempts) ? state.attempts : [];
   const selected = attempts.find((attempt) => attempt.id === state.selectedAttemptId) || attempts.at(-1);
@@ -144,6 +173,14 @@ function AttemptsMaterial({ flow, onShowCard }) {
   const [comparePrevious, setComparePrevious] = useState(false);
   const previous = selected && attempts[attempts.findIndex((item) => item.id === selected.id) - 1];
   useEffect(() => { setComparePrevious(false); }, [selected?.id]);
+  if (presentation === "canvas" && !selected) return <div className="cm-stack cm-card-preview"><div className="cm-empty">还没有范围尝试。运行算例后，结果会保留在这里。</div></div>;
+  if (presentation === "canvas" && selected) return <div className="cm-stack cm-card-preview cm-card-preview-attempts">
+    <div className="cm-outcome-preview"><span className={selected.passed ? "is-pass" : "is-fail"}>{selected.passed ? <IconCheck size={14} /> : <IconAlertTriangle size={14} />}{selected.passed ? "示例索引在范围内" : "示例存在范围外索引"}</span><small>{attempts.length} 次尝试 · {selected.time || "本次会话"}</small></div>
+    <div className="cm-attempt-metadata"><span>输入 {attemptShape(selected)}</span><span>每块 {selected.tileSize ?? selected.snapshot?.tileSize ?? "—"}</span><span>{boundsLabel(selected.bounds ?? selected.snapshot?.bounds)}</span></div>
+    <RangeDiagram snapshot={selected.snapshot || selected} compact title="本次尝试的范围快照" />
+    <p className="cm-body-copy">{selected.result}</p>
+    <dl className="cm-preview-metrics"><div><dt>尾块有效元素</dt><dd>{selected.tail ?? "—"}</dd></div><div><dt>范围外索引</dt><dd>{selected.outOfRange ?? "—"}</dd></div></dl>
+  </div>;
   if (!selected) return <div className="cm-stack"><div className="cm-empty">还没有范围尝试。运行一次后，这里会保留当时的输入、代码和结果。</div><button className="cm-button" type="button" onClick={() => onShowCard?.("parameters")}>打开参数<IconArrowRight size={14} /></button></div>;
   return <div className="cm-stack"><label className="cm-history-select"><span>查看保存的尝试</span><select value={selected.id} disabled={state.busy} onChange={(event) => actions.selectAttempt(event.target.value)}>{[...attempts].reverse().map((attempt) => <option key={attempt.id} value={attempt.id}>{attempt.time} · {attemptShape(attempt)} · {boundsLabel(attempt.bounds)} · {modeLabel(attempt.mode)}</option>)}</select></label>
     {previous && <button className="cm-button" type="button" aria-pressed={comparePrevious} onClick={() => setComparePrevious((value) => !value)}><IconColumns2 size={14} />{comparePrevious ? "收起前后对照" : "与上一次尝试对照"}</button>}
@@ -157,7 +194,7 @@ function AttemptsMaterial({ flow, onShowCard }) {
   </div>;
 }
 
-function DiffMaterial({ flow, onShowCard, explanation, proactive }) {
+function DiffMaterial({ flow, onShowCard, explanation, proactive, presentation }) {
   const diffRef = useRef(null);
   const [expandedDiff, setExpandedDiff] = useState(false);
   const { state, actions } = flow;
@@ -186,6 +223,11 @@ function DiffMaterial({ flow, onShowCard, explanation, proactive }) {
   const applyCueId = `applied:${state.appliedAttemptId}`;
   const checkApplied = () => { proactive?.settle(applyCueId); onShowCard?.("validation"); actions.runValidation(); };
   const cancel = () => { actions.cancelDiff(); explanation?.actions.startExplore(); onShowCard?.("explanation", { close: "diff" }); };
+  if (presentation === "canvas") {
+    const changed = lines.filter((line) => line.type !== "same");
+    const excerpt = changed.slice(0, 6);
+    return <div className="cm-stack cm-card-preview cm-card-preview-diff"><div className="cm-meta-line"><span>{proposed ? alreadyApplied ? "示例修改已应用" : "待核对的示例修改" : "暂无待核对修改"}</span>{proposed && <span className="cm-tag">{changed.length} 行变化</span>}</div>{selected && <AttemptMetadata attempt={selected} />}<div className="cm-diff cm-diff-preview" aria-label="示例修改差异摘要">{excerpt.length ? excerpt.map((line, index) => <div className={`cm-diff-line is-${line.type}`} key={`${line.type}-${index}`}><span aria-hidden="true">{line.type === "removed" ? "−" : "+"}</span><code>{line.text || " "}</code></div>) : <p className="cm-note">先完成一次范围尝试，再生成修改预览。</p>}</div>{changed.length > excerpt.length && <p className="cm-note">另有 {changed.length - excerpt.length} 行变化，完整 Diff 在放大后的节点中查看。</p>}{alreadyApplied && <p className="cm-note">当前预览对应已应用的示例副本；真实项目仍待验证。</p>}</div>;
+  }
   if (!proposed) return <div className="cm-stack"><div className="cm-empty">尚无待核对的示例提案。先选择一次尝试，再生成修改预览。</div><button className="cm-button" type="button" onClick={() => onShowCard?.("attempts")}>查看尝试记录<IconArrowRight size={14} /></button><LocalError state={state} /></div>;
   return <div className="cm-stack"><ContentToolbar label="差异阅读工具"><span className="tw-tool-context">{baseline === SAMPLE_ORIGINAL_CODE ? "原始示例" : "上次应用"} → {alreadyApplied ? "已应用提案" : "当前提案"}<small>只读 Diff</small></span><button className="cm-text-button" type="button" onClick={() => feedback.copy(proposed)}><IconCopy size={13} />复制提案</button></ContentToolbar><p className="cm-note cm-note-leading">对照{baseline === SAMPLE_ORIGINAL_CODE ? "原始范围示例" : "上次已应用的示例副本"}与所选尝试生成的提案。真实来源保持只读。</p>
     {selected && <AttemptMetadata attempt={selected} />}
@@ -211,12 +253,19 @@ function DiffMaterial({ flow, onShowCard, explanation, proactive }) {
   </div>;
 }
 
-function ValidationMaterial({ flow, onShowCard, proactive }) {
+function ValidationMaterial({ flow, onShowCard, proactive, presentation }) {
   const validationRef = useRef(null);
   const { state, actions } = flow;
   const validation = state.validation;
   const appliedAttempt = state.attempts?.find((attempt) => attempt.id === state.appliedAttemptId);
   const resultCueId = `validated:${validation?.id}`;
+  if (presentation === "canvas") return <div className="cm-stack cm-card-preview cm-card-preview-validation">
+    <div className="cm-meta-line"><span>检查状态</span><span className="cm-tag">真实项目待验证</span></div>
+    <ul className="cm-validation-preview"><li><span>示例副本</span><strong>{state.appliedCode ? "已应用" : "待应用"}</strong></li><li><span>示例索引范围</span><strong>{validation ? validation.passed ? "范围内" : "待复核" : "待检查"}</strong></li><li><span>真实代码与 NPU</span><strong>待验证</strong></li></ul>
+    {validation && <><p className="cm-body-copy">{validation.summary}</p><p className="cm-note">{validation.checks?.length ?? 0} 组浏览器范围算例 · {validation.time}</p></>}
+    {!validation && <p className="cm-note">应用示例副本后可检查范围；结果不等于实际算子精度验证。</p>}
+    {state.error && <LocalError state={state} />}
+  </div>;
   return <div className="cm-stack"><ol className="cm-validation-layers"><li className={state.appliedCode ? "is-complete" : "is-pending"}><span className={"cm-layer-icon" + (!state.appliedCode ? " is-pending" : "")}>{state.appliedCode ? <IconCheck size={14} /> : <IconCode size={14} />}</span><div><strong>{state.appliedCode ? "示例工作副本已更新" : "示例修改尚未应用"}</strong><p>{state.appliedCode ? "保留对应提案、代码与尝试快照。" : "核对 Diff 并确认应用后，再检查范围。"}</p></div><em>{state.appliedCode ? "已应用" : "待应用"}</em></li><li className={validation ? validation.passed ? "is-complete" : "is-failed" : "is-pending"}><span className={"cm-layer-icon" + (!validation ? " is-pending" : "")}><IconClipboardCheck size={14} /></span><div><strong>示例索引范围</strong><p>对照 [16,32] 与应用时的输入形状。</p></div><em>{validation ? validation.passed ? "范围内" : "待复核" : "待检查"}</em></li><li className="is-pending"><span className="cm-layer-icon is-pending"><IconAlertTriangle size={14} /></span><div><strong>真实项目与 NPU 验证</strong><p>仍需真实代码、环境、精度和运行证据。</p></div><em>待验证</em></li></ol>
     {appliedAttempt && <AttemptMetadata attempt={appliedAttempt} />}
     <button className="cm-button cm-button-primary" type="button" disabled={state.busy || !state.appliedCode} onClick={actions.runValidation}>{state.busy ? <IconLoader2 className="cm-spinner" size={14} /> : <IconClipboardCheck size={14} />}{state.busy ? "正在复核" : validation ? "重新检查示例范围" : "检查已应用的示例范围"}</button>
@@ -239,14 +288,14 @@ export function CanvasMaterial({ id, flow, onShowCard, onAttachCode, explanation
   if (!flow?.state || !flow?.actions) return null;
   const props = { flow, onShowCard, onAttachCode, explanation, proactive };
   return <div className={`cm-material-body cm-material-${id} cm-presentation-${presentation}`}>{
-    id === "evidence" ? <EvidenceMaterial {...props} /> :
+    id === "evidence" ? <EvidenceMaterial {...props} presentation={presentation} /> :
     id === "explanation" ? <ExplainPanel {...props} diagramRef={diagramRef} onAsk={onAsk} onCompare={onCompare} presentation={presentation} /> :
-    id === "source" ? <SourceMaterial {...props} /> :
-    id === "draft" ? <DraftMaterial {...props} /> :
-    id === "parameters" ? <ParametersMaterial {...props} /> :
-    id === "attempts" ? <AttemptsMaterial {...props} /> :
-    id === "diff" ? <DiffMaterial {...props} /> :
-    id === "validation" ? <ValidationMaterial {...props} /> : null
+    id === "source" ? <SourceMaterial {...props} presentation={presentation} /> :
+    id === "draft" ? <DraftMaterial {...props} presentation={presentation} /> :
+    id === "parameters" ? <ParametersMaterial {...props} presentation={presentation} /> :
+    id === "attempts" ? <AttemptsMaterial {...props} presentation={presentation} /> :
+    id === "diff" ? <DiffMaterial {...props} presentation={presentation} /> :
+    id === "validation" ? <ValidationMaterial {...props} presentation={presentation} /> : null
   }{presentation === "content" && flow.state.notice && !flow.state.error && <div className="cm-view-status" role="status">{flow.state.notice}</div>}</div>;
 }
 

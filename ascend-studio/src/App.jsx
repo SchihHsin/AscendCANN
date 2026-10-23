@@ -819,6 +819,11 @@ function App() {
       const attempt = (ownerId === IMAGE_TASK ? inference.state.attempts : flow.state.attempts).find(item => `attempt:${item.id}` === id);
       if (!attempt) return <p className="cm-note">这份尝试记录暂不可用。</p>;
       const image = ownerId === IMAGE_TASK;
+      if (presentation === "canvas") return <article className="content-snapshot cm-card-preview cm-history-preview"><header><strong>{image ? "形状尝试" : "范围尝试"}</strong><small>{attempt.time} · 只读历史</small></header>
+        <p className="cm-body-copy">{image ? `当时的输出 [${attempt.dimensions.join(",")}]，${attempt.passed ? "符合" : "不符合"}示例形状约定。` : attempt.result}</p>
+        {image ? <TensorDiagram inference={inference} snapshot={attempt.snapshot} compact /> : <RangeDiagram snapshot={attempt.snapshot} compact active={false} title="当时的范围参数" />}
+        <p className="cm-note">当时输入 [{image ? attempt.dimensions?.join(",") || "—" : `${attempt.rows ?? attempt.snapshot?.rows ?? "—"},${attempt.columns ?? attempt.snapshot?.columns ?? "—"}`}] · 展开节点查看代码与完整依据；查看不会重新执行。</p>
+      </article>;
       return <article className="content-snapshot"><header><strong>{image ? "形状尝试" : "范围尝试"}</strong><small>{attempt.time} · 只读历史</small></header>
         <p>{image ? `当时的输出 [${attempt.dimensions.join(",")}]，${attempt.passed ? "符合" : "不符合"}示例形状约定。` : attempt.result}</p>
         {image ? <TensorDiagram inference={inference} snapshot={attempt.snapshot} compact /> : <RangeDiagram snapshot={attempt.snapshot} compact active={false} title="当时的范围参数" />}
@@ -830,6 +835,13 @@ function App() {
       const saved = workspace.getTaskState(ownerId).snapshots.find(item => item.id === id);
       if (!saved) return <p className="cm-note">这份记录暂不可用。</p>;
       const data = saved.data || {};
+      if (presentation === "canvas") return <article className="content-snapshot cm-card-preview cm-history-preview"><header><strong>{saved.title}</strong><small>{saved.time} · 只读快照</small></header><p className="cm-body-copy">{saved.summary}</p>
+        {data.attempt?.snapshot && <RangeDiagram snapshot={data.attempt.snapshot} compact active={false} title="当时的范围参数" />}
+        {data.snapshot?.axes && <TensorDiagram inference={inference} snapshot={data.snapshot} compact />}
+        {Array.isArray(data.checks) && <dl className="cm-preview-metrics">{data.checks.slice(0, 3).map((check, index) => <div key={index}><dt>{check.label}</dt><dd>{check.passed ? "示例范围内" : `范围外 ${check.outOfRange} 个`}</dd></div>)}</dl>}
+        {Array.isArray(data.rows) && <p className="cm-note">{data.rows.length} 项误差数据 · {data.failed} 项超差 · atol {data.atol} · rtol {data.rtol}</p>}
+        <p className="cm-note">展开节点可查看当时的代码和完整证据；重新打开不会运行。</p>
+      </article>;
       return <article className="content-snapshot"><header><strong>{saved.title}</strong><small>{saved.time} · 当时保存的只读快照</small></header><p>{saved.summary}</p>
         {data.attempt?.snapshot && <RangeDiagram snapshot={data.attempt.snapshot} compact active={false} title="当时的范围参数" />}
         {data.snapshot?.axes && <TensorDiagram inference={inference} snapshot={data.snapshot} compact />}
@@ -850,7 +862,7 @@ function App() {
     if (ownerId !== MAIN_TASK) return null;
     if (id.startsWith("record:")) {
       const record = mainSession.records.find(item => "record:" + item.id === id);
-      return record ? <article className="canvas-record-detail"><span>{record.time} · {record.isDemo ? "浏览器示例记录" : "开发者记录 · 待验证"}</span><p>{record.summary}</p></article> : null;
+      return record ? <article className="canvas-record-detail cm-card-preview"><span>{record.time} · {record.isDemo ? "浏览器示例记录" : "开发者记录 · 待验证"}</span><p>{record.summary}</p><small>完整记录可从节点右上角放大查看。</small></article> : null;
     }
     if (id === "reference") return presentation === "canvas" ? <div className="cm-stack"><p className="cm-body-copy">Ascend C 官方文档</p><p className="cm-note">用于理解概念与使用范围，实际版本与根因仍需核对。</p><button className="cm-button" type="button" onClick={() => openContent("reference")}>打开参考网页<IconArrowRight size={14} /></button></div> : <ReferenceBrowser resetVersion={flow.state.resetVersion} />;
     if (presentation === "canvas" && (id === "precision" || id === "review")) return <div className="cm-stack"><p className="cm-body-copy">{id === "precision" ? "逐元素误差与容差依据" : "检查清单、观察与待补证据"}</p><p className="cm-note">{precisionContext ? `已保留 ${precisionContext.count ?? precisionContext.rows?.length ?? "本次"} 项误差核对依据。` : "尚未保存误差计算。真实项目根因待确认。"}</p><button className="cm-button" type="button" onClick={() => openContent(id)}>展开核对<IconArrowRight size={14} /></button></div>;

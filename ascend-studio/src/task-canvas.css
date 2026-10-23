@@ -12,6 +12,12 @@
 .tc-header-links button:hover, .tc-header-links button.is-active { color: #535d7b; }
 .tc-object-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0; min-height: 38px; padding: 5px 13px; border-bottom: 1px solid #e9e9e7; background: #fdfdfb; }
 .tc-selection-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #898d98; font-size: 10px; }
+.tc-focus-related { display: flex; align-items: center; gap: 5px; min-width: 0; margin-right: auto; overflow-x: auto; scrollbar-width: none; }
+.tc-focus-related::-webkit-scrollbar { display: none; }
+.tc-focus-related button { display: inline-flex; align-items: baseline; gap: 5px; max-width: 190px; min-width: 0; height: 26px; padding: 0 7px; border: 1px solid #e6e7eb; border-radius: 5px; color: #6d7280; background: #fff; font-size: 10px; cursor: pointer; }
+.tc-focus-related button:hover { border-color: #d5d7e0; color: #555b6d; background: #f8f8fa; }
+.tc-focus-related button span, .tc-focus-related button small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tc-focus-related button small { color: #9a9daa; font-size: 9px; }
 .tc-object-toolbar > div { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
 .tc-object-toolbar button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-width: 27px; height: 27px; padding: 4px 5px; border: 0; border-radius: 4px; background: transparent; color: #82899a; font-size: 10px; cursor: pointer; }
 .tc-object-toolbar button:hover, .tc-object-toolbar button.is-active { background: #ededee; color: #545d73; }
@@ -76,6 +82,6 @@
 .tc-flow-status > span { min-width: 0; overflow-wrap: anywhere; }
 .tc-flow-status.is-error { color: #937a6b; background: #fcf9f6; }
 .task-canvas button:focus-visible, .tc-stage:focus-visible, .tc-mini-map svg:focus-visible { outline: 2px solid #aab0c5; outline-offset: 3px; }
-@media (max-width: 1180px) { .task-canvas .tc-header { padding-inline: 12px; } .tc-object-toolbar { padding-inline: 10px; } .tc-mini-map { width: 94px; } .tc-mini-map svg { height: 54px; } .tc-canvas-controls { gap: 3px; } .tc-canvas-controls button { width: 28px; } .tc-zoom-controls .tc-zoom-label { width: 41px; } }
+@media (max-width: 1180px) { .task-canvas .tc-header { padding-inline: 12px; } .tc-object-toolbar { padding-inline: 10px; } .tc-focus-related { gap: 3px; } .tc-focus-related button { gap: 3px; max-width: 150px; padding-inline: 5px; } .tc-focus-related button small { display: none; } .tc-mini-map { width: 94px; } .tc-mini-map svg { height: 54px; } .tc-canvas-controls { gap: 3px; } .tc-canvas-controls button { width: 28px; } .tc-zoom-controls .tc-zoom-label { width: 41px; } }
 
 .tc-collapse-summary { font-size: 10px; color: #8b919e; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }

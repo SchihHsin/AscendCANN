@@ -5,11 +5,16 @@ const MIN_ZOOM = 0.15;
 const MAX_ZOOM = 1.5;
 const FIT_PADDING = 28;
 
-const ADD_CUSTOM_CANVAS_VERSION = 3;
+const ADD_CUSTOM_CANVAS_VERSION = 6;
 const ADD_CUSTOM_CARD_SIZES = {
-  explanation: [560, 520], source: [620, 610], evidence: [560, 390], precision: [560, 500],
-  review: [600, 520], draft: [560, 560], parameters: [560, 560], attempts: [560, 560],
-  diff: [680, 640], validation: [560, 560],
+  explanation: [620, 520], source: [720, 460], evidence: [620, 420], precision: [640, 500],
+  review: [640, 520], draft: [640, 560], parameters: [640, 560], attempts: [640, 560],
+  diff: [760, 640], validation: [640, 560],
+};
+const ADD_CUSTOM_CARD_POSITIONS = {
+  explanation: [772, 28], source: [28, 28], evidence: [28, 548], precision: [772, 572],
+  review: [28, 992], draft: [772, 1096], parameters: [28, 1536], attempts: [772, 1680],
+  diff: [28, 2120], validation: [812, 2264],
 };
 const ADD_CUSTOM_CARD_LIMITS = {
   note: { minWidth: 440, maxWidth: 720, minHeight: 240, maxHeight: 560 },
@@ -22,10 +27,16 @@ const ADD_CUSTOM_CARD_CATEGORY = {
   explanation: "explanation", source: "code", evidence: "note", precision: "result", review: "result",
   draft: "code", parameters: "explanation", attempts: "result", diff: "diff", validation: "result",
 };
+const isAddCustomStorageKey = (key) => typeof key === "string" && /^canvas-addcustom(?:-|$)/.test(key);
 const LEGACY_CARD_SIZES = {
-  explanation: [[300, 450], [360, 340]], source: [[230, 390], [440, 350]], evidence: [[395, 270]],
-  precision: [[430, 390]], review: [[430, 340]], draft: [[430, 440]], parameters: [[340, 310]],
-  attempts: [[340, 350]], diff: [[500, 550]], validation: [[500, 390]],
+  explanation: [[300, 450], [360, 340], [560, 520]], source: [[230, 390], [440, 350], [620, 610], [620, 460]], evidence: [[395, 270], [560, 390], [560, 420]],
+  precision: [[430, 390], [560, 500]], review: [[430, 340], [600, 520]], draft: [[430, 440], [560, 560]], parameters: [[340, 310], [560, 560]],
+  attempts: [[340, 350], [560, 560]], diff: [[500, 550], [680, 640]], validation: [[500, 390], [560, 560]],
+};
+const LEGACY_CARD_POSITIONS = {
+  explanation: [[660, 28]], source: [[28, 28]], evidence: [[52, 448], [72, 408], [28, 670]],
+  precision: [[660, 568]], review: [[28, 1088]], draft: [[660, 1088]], parameters: [[28, 1640]],
+  attempts: [[660, 1680]], diff: [[28, 2230]], validation: [[740, 2280]],
 };
 
 function addCustomCardLimits(id) {
@@ -43,16 +54,16 @@ function clampAddCustomCardSize(id, width, height) {
 }
 
 const initialCards = (startEmpty = false, initialVisibleIds = []) => [
-  { id: "explanation", title: "线索解释", x: 660, y: 28, width: 560, height: 520, pinned: false, visible: false, selected: false },
-  { id: "source", title: "索引范围示例", x: 28, y: 28, width: 620, height: 610, pinned: false, visible: true, selected: false },
-  { id: "evidence", title: "现场与判断", x: 28, y: 670, width: 560, height: 390, pinned: false, visible: true, selected: false },
-  { id: "precision", title: "误差核对", x: 660, y: 568, width: 560, height: 500, pinned: false, visible: false, selected: false },
-  { id: "review", title: "复核记录", x: 28, y: 1088, width: 600, height: 520, pinned: false, visible: false, selected: false },
-  { id: "draft", title: "示例工作副本", x: 660, y: 1088, width: 560, height: 560, pinned: false, visible: false, selected: false },
-  { id: "parameters", title: "参数与范围策略", x: 28, y: 1640, width: 560, height: 560, pinned: false, visible: false, selected: false },
-  { id: "attempts", title: "尝试记录", x: 660, y: 1680, width: 560, height: 560, pinned: false, visible: false, selected: false },
-  { id: "diff", title: "示例修改预览", x: 28, y: 2230, width: 680, height: 640, pinned: false, visible: false, selected: false },
-  { id: "validation", title: "示例范围复核", x: 740, y: 2280, width: 560, height: 560, pinned: false, visible: false, selected: false },
+  { id: "explanation", title: "线索解释", x: 772, y: 28, width: 620, height: 520, pinned: false, visible: false, selected: false },
+  { id: "source", title: "索引范围示例", x: 28, y: 28, width: 720, height: 460, pinned: false, visible: true, selected: false },
+  { id: "evidence", title: "现场与判断", x: 28, y: 548, width: 620, height: 420, pinned: false, visible: true, selected: false },
+  { id: "precision", title: "误差核对", x: 772, y: 572, width: 640, height: 500, pinned: false, visible: false, selected: false },
+  { id: "review", title: "复核记录", x: 28, y: 992, width: 640, height: 520, pinned: false, visible: false, selected: false },
+  { id: "draft", title: "示例工作副本", x: 772, y: 1096, width: 640, height: 560, pinned: false, visible: false, selected: false },
+  { id: "parameters", title: "参数与范围策略", x: 28, y: 1536, width: 640, height: 560, pinned: false, visible: false, selected: false },
+  { id: "attempts", title: "尝试记录", x: 772, y: 1680, width: 640, height: 560, pinned: false, visible: false, selected: false },
+  { id: "diff", title: "示例修改预览", x: 28, y: 2120, width: 760, height: 640, pinned: false, visible: false, selected: false },
+  { id: "validation", title: "示例范围复核", x: 812, y: 2264, width: 640, height: 560, pinned: false, visible: false, selected: false },
 ].map((card) => {
   const visible = startEmpty ? initialVisibleIds.includes(card.id) : card.visible;
   return { ...card, visible, selected: visible && card.id === initialVisibleIds[0], collapsed: false, opened: visible };
@@ -74,17 +85,19 @@ const initialState = (startEmpty = false, cardDefinitions, initialVisibleIds = [
 function restoreCanvasState(saved, startEmpty, cardDefinitions, initialVisibleIds, storageKey) {
   if (!saved || !Array.isArray(saved.cards) || !saved.viewport) return initialState(startEmpty, cardDefinitions, initialVisibleIds);
   const base = { ...initialState(startEmpty, cardDefinitions, initialVisibleIds), ...saved };
-  if (storageKey !== "canvas-addcustom" || Number(saved.layoutVersion) >= ADD_CUSTOM_CANVAS_VERSION) return base;
-  const source = base.cards.find(card => card.id === "source");
-  const evidence = base.cards.find(card => card.id === "evidence");
-  const defaultPlacement = source?.x === 28 && source?.y === 28 && evidence && [[52, 448], [72, 408]].some(([x, y]) => evidence.x === x && evidence.y === y);
+  if (!isAddCustomStorageKey(storageKey) || Number(saved.layoutVersion) >= ADD_CUSTOM_CANVAS_VERSION) return base;
   const cards = base.cards.map(card => {
     const target = ADD_CUSTOM_CARD_SIZES[card.id];
     const legacySizes = LEGACY_CARD_SIZES[card.id] || [];
+    const legacyPositions = LEGACY_CARD_POSITIONS[card.id] || [];
+    const targetPosition = ADD_CUSTOM_CARD_POSITIONS[card.id];
     const matchesOldDefault = legacySizes.some(([width, height]) => card.width === width && card.height === height);
-    const resized = target && matchesOldDefault && !card.pinned ? { ...card, width: target[0], height: target[1] } : card;
-    if (card.id === "evidence" && defaultPlacement && !card.pinned) return { ...resized, x: 28, y: 670 };
-    return resized;
+    const matchesOldPosition = legacyPositions.some(([x, y]) => card.x === x && card.y === y);
+    return {
+      ...card,
+      ...(target && matchesOldDefault && !card.pinned ? { width: target[0], height: target[1] } : {}),
+      ...(targetPosition && matchesOldPosition && !card.pinned ? { x: targetPosition[0], y: targetPosition[1] } : {}),
+    };
   });
   return { ...base, layoutVersion: ADD_CUSTOM_CANVAS_VERSION, cards };
 }
@@ -191,14 +204,14 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
       y: isFiniteNumber(definition.y) ? definition.y : anchor ? anchor.y + 24 : 28,
       width: Math.max(220, isFiniteNumber(definition.width) ? definition.width : 420),
       height: Math.max(140, isFiniteNumber(definition.height) ? definition.height : 300),
-      ...(storageKey === "canvas-addcustom" && ADD_CUSTOM_CARD_SIZES[id] ? { width: ADD_CUSTOM_CARD_SIZES[id][0], height: ADD_CUSTOM_CARD_SIZES[id][1] } : {}),
+      ...(isAddCustomStorageKey(storageKey) && ADD_CUSTOM_CARD_SIZES[id] ? { width: ADD_CUSTOM_CARD_SIZES[id][0], height: ADD_CUSTOM_CARD_SIZES[id][1] } : {}),
       pinned: Boolean(definition.pinned),
       visible: true,
       opened: true,
       selected: false,
       collapsed: Boolean(definition.collapsed),
     };
-    if (storageKey === "canvas-addcustom") Object.assign(card, clampAddCustomCardSize(id, card.width, card.height));
+    if (isAddCustomStorageKey(storageKey)) Object.assign(card, clampAddCustomCardSize(id, card.width, card.height));
     update((previous) => ({ cards: [...previous.cards, card] }));
     showCard(id, options);
   };
@@ -230,7 +243,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
     if (!isFiniteNumber(width) || !isFiniteNumber(height)) return;
     const card = current.current.cards.find((item) => item.id === id);
     if (!card || card.pinned) return;
-    const size = storageKey === "canvas-addcustom" ? clampAddCustomCardSize(id, width, height) : { width: Math.max(220, width), height: Math.max(140, height) };
+    const size = isAddCustomStorageKey(storageKey) ? clampAddCustomCardSize(id, width, height) : { width: Math.max(220, width), height: Math.max(140, height) };
     update((previous) => ({ cards: previous.cards.map((item) => item.id === id ? { ...item, ...size } : item) }));
   };
   const togglePin = (id) => {
