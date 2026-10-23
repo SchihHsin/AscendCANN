@@ -6020,3 +6020,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：Node 断言覆盖 35 个节点、空起点、无效分支与学习 / 开发类型；Vite build、Pages build、`git diff --check`。CUA 1280×720 复核首屏、键盘聚焦关联、训练分支、手工编辑保留、经典 / 探索切换、发送创建及任务简报；错误日志为空。已修正新壳 grid 列定位及分支与草稿遮挡。截图位于 `ascend-studio/evidence/20261023-home-exploration/`；没有声称完成移动端或实体触屏验证。
 - 发布方式：在 origin/main 的独立工作树中实施、合并最新提交、单独构建并推送，避免混入共享目录已有暂存 / 未暂存变更。构建保留既有大包体积提示；提交与线上部署回执随后补充。
 - 发布回执补充：功能提交 `2cccac7c`、Pages 产物提交 `f4aafffb` 已推送 `origin/main`。GitHub Actions Pages workflow `39883154116` 最终成功；线上 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=explore` 返回 HTTP 200 并引用新 JS bundle。完整交互回放使用本地预览；发布后线上浏览器截图读取超时，不记录为线上视觉核验。
+
+### 2026-10-23 · 多渠道发布栏与奖励提示
+
+- 用户确认生成草稿后的右侧标题栏直接显示当前渠道、`查看全部发布渠道` 和多彩奖励提示；昇腾社区默认勾选，可在渠道面板多选其他平台并查看各自预览。渠道勾选与预览状态独立，预览未勾选渠道不会改变发布目标；草稿可放大检查。
+- 标题栏奖励提示使用蓝、紫、粉、橙渐变。奖励数字与收益文案仍是界面示例，不代表已核验的平台规则；真实第三方发布服务未连接。社区提交仍展示原有本地发布后页面。
+- 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`community-draft.css`、`channel-draft.css`，同步重建根目录 `ascstudio/` Pages 产物。无页面序列 / hash 或 API / Host / Application 层边界变化。
+- 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 本地 1280×720 查看了右侧标题栏、默认渠道、四渠道奖励 / 多选面板、GitCode 预览和放大视图。刷新回到初始首页入口。未运行测试套件；NPU / 真实渠道发布未验证。
+- 源码和 Pages 产物提交 `c0623057` 已推送 `origin/main`；Pages workflow `39886807631` 成功。线上 `ascstudio/index.html` 引用 `index-CZJIor0M.js` / `index-Ds20pJGY.css`，无缓存请求获取到新文案及蓝紫渐变 CSS；线上浏览器截图读取超时，不记作线上视觉核验。
