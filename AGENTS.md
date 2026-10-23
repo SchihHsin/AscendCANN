@@ -6171,4 +6171,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 从各渠道奖励提示中移除“示例”字样；补充“以平台规则为准”的轻量说明。社区 +20、GitCode +50、CSDN +10 仍是原型展示数值，不代表已核实或保证的实际平台奖励。抖音继续按播放表现描述创作收益。
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`community-draft.css` 和生成的 `ascstudio/` Pages 包。未改变页面序列、hash、API / Protocol、Host / Harness 或 Application / Task 边界。
 - `npm run build:pages`、`git diff --check` 通过；CUA 本地预览确认标题栏显示为紧凑单行，未运行测试套件。
-- Commit / push 与 Pages workflow 结果随后补记。
+- 源码与 Pages 产物提交 `c7212ec9` 已推送 `origin/main`；GitHub Pages workflow `39957570105` 成功。线上 `/ascstudio/` HTML、`index-kT5h-YcN.js` 与 `index-DIYOtvWj.css` 均 HTTP 200，线上 JS 已确认奖励提示为单行且不含“示例”。

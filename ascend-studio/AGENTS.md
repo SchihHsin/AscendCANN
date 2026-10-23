@@ -1325,4 +1325,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 恢复星光图标加单行奖励文案和原先的柔和彩色渐变；移除额外“发布激励”标题与左侧色条。
 - 渠道奖励提示不显示“示例”字样，改以平台规则说明收尾。社区 +20、GitCode +50、CSDN +10 是原型中的展示数值，不是经核实的平台承诺。
 - 更新 `src/CommunityDraftPanel.jsx`、`src/community-draft.css` 与 `../ascstudio/` 发布包。`npm run build:pages`、`git diff --check` 通过；CUA 本地核对标题栏紧凑单行；未运行测试套件。
-- Commit / push 与 Pages workflow 结果随后补记。
+- 源码与 Pages 产物提交 `c7212ec9` 已推送 `origin/main`；GitHub Pages workflow `39957570105` 成功。线上 `/ascstudio/` HTML、`index-kT5h-YcN.js` 与 `index-DIYOtvWj.css` 均 HTTP 200，线上 JS 已确认奖励提示为单行且不含“示例”。
