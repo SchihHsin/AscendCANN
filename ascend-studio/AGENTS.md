@@ -1366,3 +1366,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 旧版本地状态首次升级时改为该默认轴序，保留已有尝试和记录。通过提示仍限定为浏览器中的形状示例检查，不表示真实 Python、模型或 NPU 执行。
 - 修改 `src/App.jsx`、`src/useImageInference.js` 与 `../ascstudio/` 发布包。`npm run build:pages`、`git diff --check` 通过；Chrome 1280×720 检查默认态及旧状态刷新迁移通过。未运行测试套件。
 - 提交 `b62c47d7` 已推送到 `origin/main`；Pages workflow `39966367464` 成功。
+
+### 2026-10-24 · 多渠道详情的返回导航
+
+- 从任一发布渠道卡片进入详情后，标题栏提供左箭头「返回渠道总览」；返回只切回四卡总览，不清除已选渠道。
+- CUA 本地核对：选择 GitCode → 查看详情 → 返回后，社区与 GitCode 仍为已选状态；抖音详情页也能直接看到返回按钮。

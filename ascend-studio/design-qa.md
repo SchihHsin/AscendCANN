@@ -66,6 +66,15 @@ The three-column structure matches the selected mock: compact grouped project ta
 
 final result: passed
 
+## 2026-10-24 · 发布渠道详情返回入口
+
+- **Intent:** 用户指出从任一渠道卡片打开详情后，缺少明确的返回位置。
+- **Implementation:** 把详情顶栏原先的轻量「查看全部发布渠道」文字链接改为左箭头按钮「返回渠道总览」，点击回到四渠道卡片视图。
+- **Interaction check:** 本地 `http://127.0.0.1:5203/` 使用图像推理调试的已完成示例进入社区草稿。选中 GitCode 并打开详情，顶栏返回按钮可见；点击后回到四卡总览，已选社区与 GitCode 保持不变。随后核对抖音详情页，返回按钮同样可见。截图曾在 CUA 预览中检查，本轮未另存入仓库。
+- **Validation:** `npm run build:pages`、`git diff --check` 通过；未运行测试套件。构建保留既有 Vite 大 chunk 提示。
+- **Scope:** 只调整发布渠道详情导航；不改变奖励文案、发布状态、页面序列 / hash 或 API / Host / Application 边界。
+- **Release:** 提交与 Pages 发布回执待回填。
+
 
 ## 2026-10-23 · 图像推理画布聚焦与完整阅读试点（设计规则）
 

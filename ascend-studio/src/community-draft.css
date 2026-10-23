@@ -85,8 +85,9 @@
 .community-draft-status { flex: 0 0 auto; padding: 4px 8px; border: 1px solid #e4e4e2; border-radius: 5px; color: #62636a; background: #f8f8f7; font-size: 10px; white-space: nowrap; }
 .community-draft-status.is-review { color: #8b6716; background: #fff7dc; border-color: #f0d995; }
 .community-draft-status.is-submitted { color: #576d5e; background: #f5f8f5; border-color: #dce7dd; }
-.community-channel-all { display: inline-flex; align-items: center; justify-content: center; gap: 2px; min-height: 27px; padding: 0 5px; border: 0; border-radius: 5px; color: #666671; background: transparent; font-size: 9px; font-weight: 550; white-space: nowrap; cursor: pointer; }
-.community-channel-all:hover { color: #503a87; background: #f5f1fc; }
+.community-channel-back { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 4px; min-height: 29px; padding: 0 8px; border: 1px solid #e5e4e2; border-radius: 6px; color: #55565e; background: #fff; font-size: 10px; font-weight: 550; white-space: nowrap; cursor: pointer; }
+.community-channel-back:hover { border-color: #d7d2df; color: #503a87; background: #f8f6fb; }
+.community-channel-back:focus-visible { outline: 2px solid #9991ad; outline-offset: 2px; }
 .community-incentive-alert { display: inline-flex; align-items: center; flex: 0 1 auto; min-width: 0; max-width: 150px; gap: 4px; padding: 5px 7px; overflow: hidden; border: 1px solid #d8cbed; border-radius: 6px; color: #433666; background: linear-gradient(108deg, #dceaff 0%, #e2e5ff 26%, #ecdfff 52%, #f8dff0 77%, #ffe8d8 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.76); font-size: 9px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
 .community-incentive-alert svg { flex: 0 0 auto; color: #7457c5; }
 .community-incentive-alert span { overflow: hidden; text-overflow: ellipsis; }
@@ -144,7 +145,7 @@
   .community-draft-title h2 { font-size: 12px; }
   .community-draft-title > svg { width: 19px; }
   .community-draft-status { padding: 3px 5px; font-size: 8px; }
-  .community-channel-all { min-height: 25px; padding-inline: 3px; font-size: 8px; }
+  .community-channel-back { min-height: 25px; gap: 2px; padding-inline: 4px; font-size: 8px; }
   .community-incentive-alert { max-width: 105px; padding: 4px 5px; font-size: 8px; }
   .community-draft-header-actions { gap: 3px; }
   .community-draft-zoom, .community-draft-close { width: 25px; height: 25px; }

@@ -6230,3 +6230,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`useImageInference.js` 与 `ascstudio/` Pages 发布包。没有改变正式页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - `npm run build:pages`、`git diff --check` 通过；本地 Chrome 1280×720 及此前存有错误轴序的本地会话均核对通过：默认输出 `[1,3,224,224]`、通过提示、社区邀请与「生成草稿」按钮可见。未运行测试套件。
 - 源码与 Pages 产物提交 `b62c47d7` 已推送 `origin/main`；GitHub Pages workflow `39966367464` 成功。
+
+### 2026-10-24 · 渠道详情补充明确的返回入口
+
+- 用户反馈：从多渠道总览打开单个平台详情后，找不到返回位置。将详情标题栏原先不显眼的「查看全部发布渠道」改为带左箭头的「返回渠道总览」按钮，点击回到四渠道卡片总览。
+- 返回只切换视图，不重置 `selectedChannels`；CUA 实际选择 GitCode、打开详情、返回后，总览仍显示 2 个已选渠道。截图核对了四卡总览和抖音详情标题栏的返回按钮。
+- 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`community-draft.css` 与根仓 `ascstudio/` Pages 构建产物；同步本条和 `ascend-studio/AGENTS.md`、`design-qa.md`。依据为用户反馈（H），无页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界变化。
+- `npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。构建保留既有 Vite 大 chunk 提示。源码及 Pages 产物推送结果待回填。

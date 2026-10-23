@@ -268,7 +268,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
           <IconSparkles size={14} aria-hidden="true" />
           <span>{channelDetails.rewardShort}</span>
         </div>
-        <button type="button" className="community-channel-all" aria-label="查看全部发布渠道" onClick={() => setView("overview")}><span>查看全部发布渠道</span><IconArrowRight size={13} aria-hidden="true" /></button>
+        <button type="button" className="community-channel-back" aria-label="返回渠道总览" title="返回渠道总览" onClick={() => setView("overview")}><IconArrowLeft size={14} aria-hidden="true" /><span>返回渠道总览</span></button>
         <div className="community-draft-header-actions">
           <button type="button" className={`community-draft-zoom${expanded ? " is-active" : ""}`} onClick={() => setExpanded(value => !value)} aria-label={expanded ? "缩小草稿预览" : "放大草稿预览"} title={expanded ? "缩小预览" : "放大预览"}><IconMaximize size={15} /></button>
           <button type="button" className="community-draft-close" onClick={onClose} aria-label="关闭社区经验草稿"><IconX size={17} /></button>
