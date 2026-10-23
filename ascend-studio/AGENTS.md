@@ -1387,3 +1387,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 悬浮停留仍是逐层下钻方式；点击用于锁定路径，不得改成点击专属下钻。延续 620ms 悬停延迟和展开后至少移动 14px 的规则，避免页面布局变化后指针静止造成连续跳层。
 - 通过清晰图例、悬浮预览虚线 / 暖色状态标记、锁定实线 / 确认标记、节点动作提示和 Prompt 条件变化让两种状态易辨认。中心继续使用与周围一致的文字节点，不改成大卡片。
 - 例子继续使用“训练与调优”；概念体验不依赖真实历史、训练日志、后端或 NPU。
+
+
+### 2026-10-24 · ResNet50 免登录视频演示
+
+- 用户确认这是交互方案演示，选择用自绘的录屏感动画替代登录受限的官网 iframe；界面不添加“假视频”提示，保留播放器中的官网课程外链。
+- `ascend-studio/src/OfficialLearningActivities.jsx` 在原“讲解、视频与理解检查”区域提供 45 秒可播放画面：代码编辑区、推理流程、Top-3 结果、光标 / 高亮随当前学习节点进度推进；播放、暂停、拖动时间轴和章节切换共用现有学习状态。播放器控件移入画面底部，默认视口可见。`official-learning-canvas.css` 仅补充这一区域的播放器布局与小屏规则。
+- 来源与边界：官网课程链接仍指向 `official-learning-data.js` 中的昇腾课程（H）；屏幕内的代码与结果是交互原型素材，不表示官方原片或 NPU 实测。未改变页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
+- 验证：`npm run build` 与 clean-main checkout 的 `npm run build:pages` 成功；`git diff --check` 通过。CUA 在 1280×720 打开 ResNet50 任务，确认 iframe 为 0、新播放器与控件各 1；点播后 00:01 前进，拖至 00:15 后当前讲解、代码高亮和推理节点同步切换；console 无错误。Vite 保留既有大 chunk 提示。
+- 源码及 Pages 产物提交 `d269f336` 已推送 `origin/main`；GitHub Pages workflow `40002518291` 的 build / deploy 均成功；线上 `/ascstudio/` index 引用的 JS、CSS 均返回 HTTP 200。

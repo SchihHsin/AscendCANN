@@ -6280,3 +6280,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 In-App Browser http://127.0.0.1:5201/?home=explore，1280×720 CUA 核对：悬浮“训练与调优”展开第一层，再悬浮“提升训练效率”进入下一层；展开后静置 1 秒没有自动继续跳层；点击中心后状态转为“已锁定到需求草稿”，Prompt 条件同步出现。截图视觉确认预览虚线与锁定实线的区分。
 - npm run build、npm run test:sites（4/4）、npm run build:pages 与 git diff --check 通过；构建仍提示既有 JS chunk 超过 500 kB。未改训练方向数据、经典 / 探索 Tab、正式页序 / hash 或 API / Host / Application 边界，不代表已连接真实训练任务、日志或 NPU。
 - 源码与 Pages 构建包提交 381e5964 已推送 origin/main；Pages workflow 40001670205 对应该提交，build / deploy 均成功，资源 index-DgBRA8TS.js 与 index-xaGMi3JY.css 已发布。
+
+
+### 2026-10-24 · ResNet50 免登录视频演示
+
+- 用户确认这是交互方案演示，选择用自绘的录屏感动画替代登录受限的官网 iframe；界面不添加“假视频”提示，保留播放器中的官网课程外链。
+- `ascend-studio/src/OfficialLearningActivities.jsx` 在原“讲解、视频与理解检查”区域提供 45 秒可播放画面：代码编辑区、推理流程、Top-3 结果、光标 / 高亮随当前学习节点进度推进；播放、暂停、拖动时间轴和章节切换共用现有学习状态。播放器控件移入画面底部，默认视口可见。`official-learning-canvas.css` 仅补充这一区域的播放器布局与小屏规则。
+- 来源与边界：官网课程链接仍指向 `official-learning-data.js` 中的昇腾课程（H）；屏幕内的代码与结果是交互原型素材，不表示官方原片或 NPU 实测。未改变页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
+- 验证：`npm run build` 与 clean-main checkout 的 `npm run build:pages` 成功；`git diff --check` 通过。CUA 在 1280×720 打开 ResNet50 任务，确认 iframe 为 0、新播放器与控件各 1；点播后 00:01 前进，拖至 00:15 后当前讲解、代码高亮和推理节点同步切换；console 无错误。Vite 保留既有大 chunk 提示。
+- 源码及 Pages 产物提交 `d269f336` 已推送 `origin/main`；GitHub Pages workflow `40002518291` 的 build / deploy 均成功；线上 `/ascstudio/` index 引用的 JS、CSS 均返回 HTTP 200。
