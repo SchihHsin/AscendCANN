@@ -1332,3 +1332,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户明确偏好此前的中文字体样式。探索主题中文标题继续使用普通节点的衬线字体栈 `ui-serif, Georgia, "Songti SC", serif`，不得给首层主题单独覆盖为无衬线粗体；窄屏沿用同一标题字形，只保留响应式字号规则。
 - 英文翻译仍是中文标题上方的小字；不改 Prompt 文案、悬浮行为、连线、首页切换或生成任务逻辑。源自用户直接反馈（H），以本地原有字体定义恢复，不引入外部字体。
 - 本地 Chrome 1280×720 核验与截图见 `design-qa.md`；`npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）通过，Vite 保留既有大 JS chunk 提醒。提交 `e98eb45d`、`a60b1647` 已推送；Pages workflow `39958952895` 成功，线上 CSS 确认使用原有中文衬线字体栈。
+
+
+### 2026-10-23 · 社区经验邀请左侧图标
+
+- 任务完成后的渐变邀请卡左侧改用星光图标；「生成草稿」按钮的文档图标不变。仅为展示层调整，不改变触发条件与草稿流程。
+- 验证：`npm run build:pages`、`git diff --check`；Chrome 1280×720 从 `../ascstudio/` 本地预览确认两个图标分别正确。
+- 提交 `a83d4faa` 已推送到 `origin/main`，Pages workflow `39961155460` 成功；线上页面请求超时，未直接核对线上资源。

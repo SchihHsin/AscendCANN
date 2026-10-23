@@ -6179,3 +6179,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户反馈及其截图（H）；恢复既有字体栈，没有加入新字体或外部资源。当前工作只改变首页文字样式，不改变悬浮下钻、连线、等待时间或任务行为。
 - 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 层边界；不涉及真实训练诊断或 NPU 验证。
 - 本地 Chrome 1280×720 预览核对首层六个中文主题，截图 `ascend-studio/evidence/20261023-home-exploration/chinese-font-restored-1280x720.png`。`npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）与 `git diff --check` 均通过；构建保留既有 JS chunk 体积提示。源码 / 预览图提交 `e98eb45d` 与 Pages 包提交 `a60b1647` 已推送 `origin/main`。Pages workflow `39958952895` 成功；线上 `/ascstudio/` HTML、`index-V0mG495J.js` 与 `index-DVr2BBcb.css` 均 HTTP 200，CSS 已确认移除主题专属无衬线覆盖并保留 `Songti SC` 字体栈。
+
+
+### 2026-10-23 · 社区经验邀请改用星光图标
+
+- 按用户截图反馈，只将任务完成后的渐变邀请卡左侧图标换为 `IconSparkles`；「生成草稿」按钮内的文档图标及其他社区草稿图标保持原样。
+- 依据：用户直接指示与随附截图（H）。只调整表现层，不改变入口触发条件、社区草稿行为、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`git diff --check` 通过；Chrome 1280×720 从 Pages 发布目录本地预览，确认左侧为星光、按钮仍为文档图标。未运行测试套件。
+- 源码与 Pages 产物提交 `a83d4faa` 已推送 `origin/main`；GitHub Pages workflow `39961155460` 成功。线上页面的直接浏览请求超时，未完成浏览器端资源复核。
