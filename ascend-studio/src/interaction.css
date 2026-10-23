@@ -70,6 +70,14 @@ button.evidence-row > svg:last-child { margin-left: auto; color: #b0b1b7; }
 .menu-profile { padding: 10px; border-bottom: 1px solid #efefec; margin-bottom: 4px; }
 .menu-profile strong { display: block; font-size: 12px; }
 .menu-profile span { display: block; margin-top: 6px; color: #92949c; font-size: 10px; }
+.theme-options { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 0 4px 5px; }
+.workbench-menu .theme-options > button { justify-content: flex-start; min-height: 30px; padding: 6px 8px; gap: 6px; border: 1px solid transparent; border-radius: 6px; color: #50525b; background: transparent; font-size: 11px; cursor: pointer; }
+.workbench-menu .theme-options > button:hover { background: var(--surface-subtle); }
+.workbench-menu .theme-options > button[aria-pressed="true"] { border-color: var(--line-strong); background: var(--surface-selected); color: #34363d; }
+.theme-swatch { display: inline-block; width: 20px; height: 14px; flex: 0 0 auto; border: 1px solid #d5d7dc; border-radius: 3px; }
+.theme-swatch--neutral-gray { background: linear-gradient(90deg, #f5f5f5 0 50%, #efeff0 50%); }
+.theme-swatch--cool-gray { background: linear-gradient(90deg, #f4f6f9 0 50%, #f1f2f4 50%); }
+.workbench-menu .theme-options > button > svg { margin-left: auto; }
 .notification-row strong { display: block; font-size: 11px; font-weight: 500; }
 .notification-row small { display: block; margin-top: 5px; font-size: 10px; color: #999ba3; }
 @keyframes replyPulse { 0%, 80%, 100% { opacity: .35; } 40% { opacity: 1; } }

@@ -6112,3 +6112,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更源码：ascend-studio/src/CommunityDraftPanel.jsx、ChannelDraftContent.jsx、community-draft.css、channel-draft.css；重建 ascstudio/ Pages 产物。奖励文案继续标为示例，不代表平台实际承诺；未改变报告序列或 API / Host / Application 边界。
 - 在 2026-10-23 最新 main（92b47202）上继续工作，保留并包含同期五个上游提交；未改写其源码。npm run build:pages 与 git diff --check 通过；CUA 本地预览确认抖音外层浅底与四张独立深色卡片，以及顶部青粉横向、纵向淡白效果。未运行测试套件。
 - 功能与 Pages 产物提交 33f60ed4 已推送 origin/main；GitHub Pages workflow 39930783900 成功。
+
+### 2026-10-23 · 头像菜单主题切换
+
+- 用户要求在右上角头像菜单提供「中性灰 / 冷灰」两种界面主题；默认中性灰，用户选择写入本地浏览器并在刷新后恢复。
+- 菜单提供两种有色样片与当前选中态；主题通过根节点 `data-theme` 和共享 CSS 变量应用到工作区背景、细分表面、边线、点阵及用户消息气泡。白色内容面与语义状态色保留。
+- 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）通过；本地 5193 浏览器实测两种主题切换、气泡和外层背景取值、刷新恢复及无 console error。
+- 不改变任务内容、导航序列或 API / Host / Application 边界。发布结果随后补记。

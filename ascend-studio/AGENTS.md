@@ -1265,3 +1265,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 抖音预览保留四张分别表现封面、输入对比、排查步骤、证据清单的深色小图卡。标题“抖音 · 知识图文 / 4页预览”位于最外层浅色渠道卡片上，移除原本包住预览的整块深色内层背景。生成的图可以按内容设计，不必整体限定为抖音品牌色。
 - 更新 CommunityDraftPanel.jsx、ChannelDraftContent.jsx、community-draft.css、channel-draft.css，并更新根仓 ascstudio/ Pages 产物。示例奖励与本地演示发布边界不变；没有真实平台提交或真实 NPU 验证。
 - 验证：npm run build:pages、git diff --check 通过；CUA 在本地 5191 预览中查看四渠道卡片，确认其层级与抖音内容区。未运行测试套件。上游五个提交已先快进保留至 92b47202；功能提交 33f60ed4 已推送 origin/main，Pages workflow 39930783900 成功。
+
+### 2026-10-23 · 头像菜单主题切换
+
+- 右上角头像菜单新增「中性灰 / 冷灰」主题按钮和对应灰阶样片；默认中性灰。选择保存到 `localStorage`，刷新后继续应用。
+- 中性灰沿用已确认基准：画布 `#f5f5f5`、细分表面 `#f8f8f8`、选中面 / 用户气泡 `#efeff0`。冷灰为画布 `#f4f6f9`、细分表面 `#f7f8fb`、选中面 `#edf1f5`、用户气泡 `#f1f2f4`。工作区线条与点阵同步调整，白色内容面和语义色不变。
+- 修改 `src/App.jsx`、`src/styles.css`、`src/interaction.css`、`src/task-canvas.css`、`src/learning-hierarchy-canvas.css`、`src/learning-discovery.css`；Pages 产物从当前源码重新构建。
+- `npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）通过。CUA 本地 5193 核对菜单、两种主题、用户消息气泡取值、刷新恢复及无 console error。未改变任务内容与 API / Host / Application 边界。
+- Commit / push 结果随后补记。

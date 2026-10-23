@@ -13,6 +13,8 @@
   --surface-selected: #efeff0;
   --line: #e5e5e5;
   --line-strong: #d8d8d8;
+  --user-bubble: #efeff0;
+  --canvas-dot: #d9d9d9;
   --text: #25252a;
   --text-muted: #777a83;
   --text-soft: #999ba2;
@@ -22,6 +24,26 @@
   --warm-line: #f1e5cd;
 }
 
+:root[data-theme="neutral-gray"] {
+  --canvas-surface: #f5f5f5;
+  --surface-subtle: #f8f8f8;
+  --surface-selected: #efeff0;
+  --line: #e5e5e5;
+  --line-strong: #d8d8d8;
+  --user-bubble: #efeff0;
+  --canvas-dot: #d9d9d9;
+}
+
+:root[data-theme="cool-gray"] {
+  --canvas-surface: #f4f6f9;
+  --surface-subtle: #f7f8fb;
+  --surface-selected: #edf1f5;
+  --line: #e1e6ed;
+  --line-strong: #d4dbe4;
+  --user-bubble: #f1f2f4;
+  --canvas-dot: #d1d9e2;
+}
+
 * { box-sizing: border-box; }
 html, body, #root { min-width: 320px; width: 100%; min-height: 100%; margin: 0; }
 body { min-height: 100vh; overflow: hidden; }
@@ -29,7 +51,7 @@ button, input, textarea { font: inherit; }
 button { color: inherit; }
 button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid #7782a3; outline-offset: 2px; }
 
-.app-frame { width: 100%; height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: 58px minmax(0, 1fr); background: var(--surface); overflow: hidden; }
+.app-frame { width: 100%; height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: 58px minmax(0, 1fr); background: var(--canvas-surface); overflow: hidden; }
 .topbar { height: 58px; display: flex; align-items: center; gap: 16px; padding: 0 24px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.96); z-index: 3; }
 .brand-lockup { display: flex; align-items: center; gap: 5px; flex: 0 0 auto; white-space: nowrap; }
 .brand-logo { display: block; width: 75px; height: 30px; object-fit: contain; object-position: left center; }
@@ -46,8 +68,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .top-icon { border: 0; width: 28px; background: transparent; }
 .profile-button { width: 31px; height: 31px; border: 1px solid #e9e8e6; border-radius: 50%; color: #696e7c; background: #f2f2f3; font-size: 12px; font-weight: 600; cursor: pointer; }
 
-.workspace-grid { display: grid; grid-template-columns: 56px minmax(0, 0px) minmax(0, 55fr) minmax(500px, 45fr); min-height: 0; overflow: hidden; }
-.icon-rail { grid-column: 1; grid-row: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; border-right: 1px solid var(--line); background: #fbfbfa; }
+.workspace-grid { display: grid; grid-template-columns: 56px minmax(0, 0px) minmax(0, 55fr) minmax(500px, 45fr); min-height: 0; overflow: hidden; background: var(--canvas-surface); }
+.icon-rail { grid-column: 1; grid-row: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; border-right: 1px solid var(--line); background: var(--surface-subtle); }
 .icon-rail-nav { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 14px 6px; }
 .icon-rail-button { display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border: 1px solid transparent; border-radius: 10px; color: #6b6d74; background: transparent; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
 .icon-rail-button:hover { color: #292a30; background: rgba(0,0,0,.045); }
@@ -120,7 +142,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .user-message .message-meta { text-align: right; margin-right: 1px; }
 .message-content { min-width: 0; }
 .message-meta { margin: 0 0 5px 1px; color: #9698a0; font-size: 10px; overflow-wrap: anywhere; }
-.user-bubble { max-width: 100%; padding: 13px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-selected); color: #292a2f; font-size: 13px; line-height: 1.65; overflow-wrap: anywhere; }
+.user-bubble { max-width: 100%; padding: 13px; border: 1px solid var(--line); border-radius: 9px; background: var(--user-bubble); color: #292a2f; font-size: 13px; line-height: 1.65; overflow-wrap: anywhere; }
 .attempt-row { width: 100%; min-height: 42px; display: flex; align-items: center; gap: 8px; margin: 0 0 28px; padding: 8px 10px; border: 1px solid #ededeb; border-radius: 8px; color: #666970; background: #fafaf9; font-size: 11px; }
 .attempt-row > span:not(.attempt-icon) { min-width: 0; overflow-wrap: anywhere; }
 .attempt-icon { display: grid; place-items: center; flex-shrink: 0; width: 22px; height: 22px; color: #71788d; background: #f1f2f4; border-radius: 6px; }
