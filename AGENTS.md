@@ -6095,3 +6095,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：交互方向来自用户明确要求（H）；默认尺寸、最小 / 最大尺寸是本轮按 AddCustom 内容提出的可验证设计值（L），不是用户数据或普适平台规则。没有修改 API / Protocol、Host / Harness、Application / Task 边界，不声称真实代码、模型或 NPU 已验证。
 - 验证：`npm run build:pages` 通过，`git diff --check` 通过；Vite 保留既有 500 kB chunk 提示。未运行测试套件。已启动隔离本地预览 `http://127.0.0.1:5188/` 并请求在 Codex 面板打开；本轮未完成截图级交互回放，用户评审重点是聚焦与完整阅读的区别、卡片预览 / 溢出入口、完整内容区与返回行为。
 - AddCustom 源码、两页规则材料和 `ascstudio/` Pages 产物随提交 `b5981e77` 已推送 `origin/main`；Pages workflow 尚未确认。
+
+
+### 2026-10-23 · 中性灰统一（工作区与用户消息）
+
+- 用户选定中性灰，并澄清要调整的是用户消息气泡；独立任务提示行保持不变。统一工作区主背景、局部画布和交互灰阶，保留语义色与白色内容面。
+- 修改 `ascend-studio/src/` 的 9 个 CSS 文件；从最新 `origin/main`（含 AddCustom 画布更新）重建 `ascstudio/` Pages 静态产物，避免覆盖并行功能。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过。未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界。
+- 本轮只提交中性灰源码、发布产物及本记录；未触碰共享工作区其他对话改动。

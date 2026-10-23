@@ -1249,3 +1249,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 依据：交互方向来自用户明确要求（H）；默认尺寸、最小 / 最大尺寸是本轮按 AddCustom 内容提出的可验证设计值（L），不是用户数据或普适平台规则。没有修改 API / Protocol、Host / Harness、Application / Task 边界，不声称真实代码、模型或 NPU 已验证。
 - 验证：`npm run build:pages` 通过，`git diff --check` 通过；Vite 保留既有 500 kB chunk 提示。未运行测试套件。已启动隔离本地预览 `http://127.0.0.1:5188/` 并请求在 Codex 面板打开；本轮未完成截图级交互回放，用户评审重点是聚焦与完整阅读的区别、卡片预览 / 溢出入口、完整内容区与返回行为。
 - AddCustom 源码、两页规则材料和 `ascstudio/` Pages 产物随提交 `b5981e77` 已推送 `origin/main`；Pages workflow 尚未确认。
+
+
+### 2026-10-23 · 中性灰统一（工作区与用户消息）
+
+- 按用户选择统一中性灰：根背景与主要画布使用 `#f5f5f5`，细分表面使用 `#f8f8f8`，选中表面使用 `#efeff0`，边线统一为中性灰；学习发现页、学习层级画布、任务画布、首页与任务工作区采用共享 token。
+- 用户明确指向用户消息气泡：改为 `var(--surface-selected)`；`.attempt-row` 任务提示行保持原样。语义提示色与内容白底不变。
+- 变更 9 个 CSS 文件并由最新主线源码重新构建 `../ascstudio/`。`npm run build`、`npm run build:pages` 和 `git diff --check` 通过；保留既有大 JS bundle 提示。
+- 无页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。
