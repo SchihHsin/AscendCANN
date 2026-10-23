@@ -233,7 +233,8 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
   const showPicker = (purpose = "new") => { setPickerPurpose(purpose); setMenuOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); setPickerOpen(true); };
   const openCanvas = (mode = "overview", options = {}) => { setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); onOpenCanvas?.({ mode, ...options }); };
   const inOverview = onCanvas && state.canvasMode === "overview";
-  const activeTitle = inOverview ? "全部内容" : onCanvas && isAddCustomTask ? "任务内容" : onCanvas && isLearningTask ? "学习画布" : historyItem ? `${historyItem.title} · ${historyItem.time || "历史"}` : activeTab?.title || "任务内容";
+  const addCustomDetail = onCanvas && isAddCustomTask && state.canvasMode === "detail";
+  const activeTitle = addCustomDetail ? contentTitle(focusedId) : inOverview ? "全部内容" : onCanvas && isAddCustomTask ? "任务内容" : onCanvas && isLearningTask ? "学习画布" : historyItem ? `${historyItem.title} · ${historyItem.time || "历史"}` : activeTab?.title || "任务内容";
   const returnToFocus = () => { setMenuOpen(false); setContentMenuOpen(false); onReturnFocus?.(); };
   const selectionSourceId = onCanvas ? "canvas" : focusedId || "empty";
   const visibleAreaContext = pointContext?.type === "workspace-area"

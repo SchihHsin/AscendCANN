@@ -1,5 +1,9 @@
 .ac-task-canvas { display: flex; flex-direction: column; width: 100%; height: 100%; min-width: 0; min-height: 0; background: #fff; }
 .ac-task-canvas-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 7px 13px; border-bottom: 1px solid #ececf1; background: #fcfcfd; }
+.ac-task-canvas-header-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.ac-task-canvas-return { display: inline-flex; align-items: center; gap: 4px; min-height: 28px; padding: 0 7px; border: 1px solid #e5e6eb; border-radius: 5px; color: #686d7a; background: #fff; font-size: 11px; cursor: pointer; }
+.ac-task-canvas-return:hover { border-color: #d7d8e0; background: #f6f6f8; color: #4d5260; }
+.ac-task-canvas-return:focus-visible { outline: 2px solid #a6a4c6; outline-offset: 2px; }
 .ac-task-canvas-heading { display: flex; align-items: baseline; gap: 9px; min-width: 0; }
 .ac-task-canvas-heading > span { flex: 0 0 auto; color: #9699a6; font-size: 11px; }
 .ac-task-canvas-heading > strong { overflow: hidden; color: #343642; font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
@@ -24,6 +28,9 @@
 
 @container task-content (max-width: 520px) {
   .ac-task-canvas-header { min-height: 44px; padding-inline: 9px; }
+  .ac-task-canvas-header-actions { gap: 5px; }
+  .ac-task-canvas-return { width: 28px; padding: 0; justify-content: center; }
+  .ac-task-canvas-return span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .ac-task-canvas-heading { gap: 6px; }
   .ac-task-canvas-heading > strong { font-size: 12px; }
   .ac-task-canvas-main { padding: 9px 9px 6px; }

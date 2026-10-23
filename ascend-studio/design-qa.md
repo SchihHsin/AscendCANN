@@ -1016,3 +1016,13 @@ final result: blocked
 - Deployment: 源码与证据 commit `0acd2f67`、Pages bundle commit `161e74bd` 已推送 `origin/main`；GitHub Pages workflow `39923025865` 成功。线上 `/ascstudio/?home=explore` HTTP 200，引用的 JS `index-BeBs4LFF.js` 与 CSS `index-Belprzrk.css` 均 HTTP 200，内容确认包含 ResizeObserver 连线测量、节点进入动效与 reduced-motion 规则。
 
 final result: passed
+
+## 2026-10-23 · AddCustom 画布聚焦与长内容尺寸规则
+
+- 交付：AddCustom 节点新增“聚焦到画布”和“放大到右侧完整工作区”两个入口；完整阅读显示同一节点内容及直接关联节点，返回到该节点聚焦视图。焦点视图不会隐藏、收纳或重排其他节点。
+- 节点尺寸按便签 / 解释 / 代码 / 结果 / Diff 类别设默认值和可调上下限；节点正文不出现内部滚动。超出卡片可用高度时显示渐隐预览和放大入口，长正文仅在右侧完整阅读区滚动。旧版默认尺寸可迁移，非默认布局尽量保留。
+- 学习材料新增两张独立规则页，放在材料末尾，避免改变既有页面的数字页码 / hash：节点尺寸与长内容；全景、聚焦与完整阅读。
+- `npm run build:pages` 通过，`git diff --check` 通过；Vite 提示 JS chunk 超过 500 kB。未运行自动化测试。
+- 本地预览由隔离工作树服务于 `http://127.0.0.1:5188/`，已请求在 Codex 面板打开；没有完成截图级视觉 / 点击回放。待用户重点审阅三个状态是否清楚、卡片是否仍需内部滚动、完整阅读后的返回与关联项切换。
+- 业务与证据边界：方向来自用户明示（H），具体尺寸及边界是设计假设（L）；未连接真实工程、AI 或 NPU。
+- Commit / push: pending.

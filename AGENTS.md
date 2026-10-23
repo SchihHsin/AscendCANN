@@ -6083,4 +6083,15 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/ExploreTaskHome.jsx`、`explore-task-home.css`，新增 1672×941 与 381×664 视口截图到 `ascend-studio/evidence/20261023-home-exploration/`，并重建根目录 `ascstudio/` Pages 静态包。
 - 本地 Chrome 回放确认训练主题展开 4 个节点及 4 条连线、悬浮分支只强调对应连线；窄视口无水平溢出。减少动态效果状态下节点 opacity 为 1、动画关闭，连线静态可见。`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）、相关上游 Node 测试（14 项）、`git diff --check` 通过；Vite 保留既有大 JS bundle 提醒。直接单跑 `home-recommendations.test.js` 时 Node 无法解析其既有无扩展名 `learning-data` 导入，未作为本次验证通过项。
 - 证据边界：预设训练方向仍是待确认的静态产品假设，不代表读取日志、诊断用户训练现场或真实性能 / NPU 验证；不改变首页切换、路径锁定 / prompt 行为、正式页序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+
 - Commit / push：源码与证据提交 `0acd2f67`、Pages 产物提交 `161e74bd` 已推送 `origin/main`。Pages workflow `39923025865` 成功；线上 `/ascstudio/?home=explore` 返回 HTTP 200，加载 `index-BeBs4LFF.js` / `index-Belprzrk.css`（均 HTTP 200，包含连线测量、展开动效与 reduced-motion 规则）。
+
+### 2026-10-23 · AddCustom 画布节点聚焦与完整阅读
+
+- 用户要求为节点尺寸 / 长内容制定并记录细则，并让 AddCustom 画布支持聚焦某个节点、再把同一节点放大至右侧完整工作区；本轮只调整 AddCustom，不推广到其他任务。
+- 画布节点继续是同一份内容对象。新增定位图标：目标节点居中，直接关联对象随视口进入视野，其他节点仍保留在原画布、不会被隐藏；新增外扩图标：将同一内容铺满右侧工作区，正文在该区域滚动，底部可切换直接关联节点；“返回画布”回到该节点的聚焦状态。
+- AddCustom 节点使用按内容类别配置的初始尺寸与可调上下限；超长内容不在节点内滚动，卡片底部渐隐并提供放大入口。旧版默认布局仅在匹配已知默认尺寸时迁移，固定或已自定义尺寸尽量保留。
+- 在 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 末尾新增两页，分别记录类型尺寸 / 长内容规则与全景→聚焦→完整阅读的交互；新增页放在既有页面之后，既有页的数字页码 / hash 不移动。
+- 依据：交互方向来自用户明确要求（H）；默认尺寸、最小 / 最大尺寸是本轮按 AddCustom 内容提出的可验证设计值（L），不是用户数据或普适平台规则。没有修改 API / Protocol、Host / Harness、Application / Task 边界，不声称真实代码、模型或 NPU 已验证。
+- 验证：`npm run build:pages` 通过，`git diff --check` 通过；Vite 保留既有 500 kB chunk 提示。未运行测试套件。已启动隔离本地预览 `http://127.0.0.1:5188/` 并请求在 Codex 面板打开；本轮未完成截图级交互回放，用户评审重点是聚焦与完整阅读的区别、卡片预览 / 溢出入口、完整内容区与返回行为。
+- Commit / push：等待本轮功能与材料文件提交后回填。
