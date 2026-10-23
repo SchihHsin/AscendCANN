@@ -993,4 +993,4 @@ final result: blocked
 - `npm run build`、`npm run build:pages`、Node 路径 / prompt / 类型 / tone 断言、两份最新上游测试（14 项）、`npm run test:sites`（4 项）、`git diff --check`：通过。Vite 保留既有 500 kB chunk 体积提示。
 - 最新视觉检查只在 381×664 App 视口完成；没有以参考图 1672×941 桌面尺寸进行同屏比对。此前 1280×720 截图属于旧探索结构，不作为本轮结果。
 - final result: blocked（桌面参考尺寸视觉核验未完成；层级交互与构建检查通过）。
-- Commit / push: 待本轮发布后补记。
+- Commit / push: `04cde721` 已推送 `origin/main`；Pages workflow `39915607006` 成功，线上 `/ascstudio/` HTTP 200 并加载 `index-CGj_DVPe.js` / `index-CyHJEtly.css`。

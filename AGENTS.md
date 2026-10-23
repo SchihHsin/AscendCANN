@@ -6057,4 +6057,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build`、`npm run build:pages` 通过；Node 断言覆盖 35 个节点、路径解析、训练 prompt、任务类型和节点配色；`node --test src/canvas-node-position.test.js src/official-learning-progress.test.js` 14 项通过，`npm run test:sites` 4 项通过；`git diff --check` 通过。Vite 保留既有 500 kB chunk 警告。
 - CUA 在本地 `http://127.0.0.1:5187/?home=explore` 的 381×664 App 视口中核验首屏、训练主题、效率与多卡三层替换、路径锁定、prompt 生成和编辑保留。工具只能以拖动触发指针预览，拖动会选中文字；不把这当作纯鼠标悬浮的视觉证据。未完成参考图 1672×941 同尺寸视觉复核；此前 1280×720 截图属于旧版结构，不能替代本轮截图。
 - 证据边界：用户参考图和配色 / 交互选择为直接需求（H）；主题内容为静态产品假设（L），没有真实用户需求遥测、训练日志、模型或 NPU 验证。`ascend-studio/design-qa.md` 将桌面视觉结论标记为 blocked，层级交互与构建验证通过。
-- 提交 / push 回执待发布后补记。
+- 发布回执：提交 `04cde721` 已推送 `origin/main`；GitHub Pages workflow `39915607006` 成功，线上 `/ascstudio/` 返回 HTTP 200 并引用新 `index-CGj_DVPe.js` / `index-CyHJEtly.css`。

@@ -1217,4 +1217,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 配色按用户补充保持白底与深色正文，蓝紫作主识别色，少量珊瑚、青绿和暖金区分节点。词条为预设地图，不表示个性化推荐或用户日志诊断。
 - 修改 `src/ExploreTaskHome.jsx`、`src/explore-task-home.css`、`src/home-exploration.js` 及根目录 `ascstudio/` Pages 产物；修正层级切换后的滚动位置。无正式页序 / hash 或 API / Host / Application 层变化，不声称真实训练 / NPU 验证。
 - `npm run build`、`npm run build:pages`、35 节点 / 路径 / prompt / 类型 / tone 断言、相关上游 14 项测试、Sites 4 项测试及 `git diff --check` 通过；保留 chunk 体积提示。CUA 381×664 核验训练主题、效率、多卡三层和可编辑草稿；1672×941 桌面视觉比对未完成，design QA 标记 blocked。
-- 发布提交回执随后补记。
+- 发布回执：提交 `04cde721` 已推送 `origin/main`；Pages workflow `39915607006` 成功，线上 `/ascstudio/` 返回 HTTP 200 并引用新 JS / CSS bundle。
