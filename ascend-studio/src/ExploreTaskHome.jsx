@@ -16,6 +16,28 @@ const topicIcons = {
   learning: IconBook,
 };
 
+function satellitePosition(index, count) {
+  const positions = {
+    1: [[76, 50]],
+    2: [[28, 30], [72, 70]],
+    3: [[27, 27], [73, 27], [50, 78]],
+    4: [[50, 17], [82, 50], [50, 83], [18, 50]],
+    5: [[28, 20], [72, 20], [84, 56], [50, 83], [16, 56]],
+  };
+  return positions[count]?.[index] || [50, 50];
+}
+
+function edgePoint(rect, dx, dy, fieldRect) {
+  const scale = Math.min(
+    Math.abs(dx) > 0.01 ? rect.width / 2 / Math.abs(dx) : Infinity,
+    Math.abs(dy) > 0.01 ? rect.height / 2 / Math.abs(dy) : Infinity,
+  );
+  return {
+    x: rect.left + rect.width / 2 + dx * scale - fieldRect.left,
+    y: rect.top + rect.height / 2 + dy * scale - fieldRect.top,
+  };
+}
+
 function appendPreviewPath(ids, previewIds, nodeId) {
   return [...previewIds, nodeId].filter((id, index, path) => {
     const resolved = resolveExplorationPath([...ids, ...path.slice(0, index + 1)]);
@@ -26,7 +48,7 @@ function appendPreviewPath(ids, previewIds, nodeId) {
 export function ExploreTaskHome({ onCreateTask }) {
   const [ids, setIds] = useState([]);
   const [previewIds, setPreviewIds] = useState([]);
-  const [connections, setConnections] = useState({ width: 0, height: 0, source: null, paths: [] });
+  const [connections, setConnections] = useState({ width: 0, height: 0, paths: [] });
   const [hoveredId, setHoveredId] = useState(null);
   const [draft, setDraft] = useState("");
   const [edited, setEdited] = useState(false);
@@ -36,8 +58,8 @@ export function ExploreTaskHome({ onCreateTask }) {
   const [showOrigin, setShowOrigin] = useState(false);
   const homeRef = useRef(null);
   const fieldRef = useRef(null);
-  const connectionSourceRef = useRef(null);
   const nodeRefs = useRef(new Map());
+  const previousNodeLayout = useRef(null);
   const draftRef = useRef(null);
   const previewTimer = useRef(null);
   const pointerNodeId = useRef(null);
@@ -54,73 +76,114 @@ export function ExploreTaskHome({ onCreateTask }) {
   const completeLeaf = Boolean(focused && options.length === 0);
   const focusedId = focused?.id || "";
 
+  const captureNodeLayout = () => {
+    const nodes = new Map();
+    nodeRefs.current.forEach((node, id) => {
+      const rect = node.getBoundingClientRect();
+      nodes.set(id, { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+    });
+    previousNodeLayout.current = {
+      centered: Boolean(fieldRef.current?.querySelector(".explore-field__nodes.has-center")),
+      nodes,
+    };
+  };
+
+  useLayoutEffect(() => {
+    const previous = previousNodeLayout.current;
+    previousNodeLayout.current = null;
+    if (!previous || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const centered = Boolean(fieldRef.current?.querySelector(".explore-field__nodes.has-center"));
+    if (previous.centered === centered) return;
+    previous.nodes.forEach((from, id) => {
+      const node = nodeRefs.current.get(id);
+      if (!node) return;
+      const to = node.getBoundingClientRect();
+      const dx = from.left - to.left;
+      const dy = from.top - to.top;
+      const sx = to.width ? from.width / to.width : 1;
+      const sy = to.height ? from.height / to.height : 1;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(sx - 1) < 0.01 && Math.abs(sy - 1) < 0.01) return;
+      node.animate([
+        { translate: `${dx}px ${dy}px`, scale: `${sx} ${sy}` },
+        { translate: "0px 0px", scale: "1 1" },
+      ], { duration: 540, easing: "cubic-bezier(.2,.75,.3,1)" });
+    });
+  }, [focusedId]);
+
   useLayoutEffect(() => {
     if (homeRef.current) homeRef.current.scrollTop = 0;
   }, [focusedId]);
 
   useLayoutEffect(() => {
     const field = fieldRef.current;
-    const source = connectionSourceRef.current;
-    if (!focused || options.length === 0 || !field || !source) {
-      setConnections({ width: 0, height: 0, source: null, paths: [] });
+    const center = focused ? nodeRefs.current.get(focused.id) : null;
+    if (!focused || options.length === 0 || !field || !center) {
+      setConnections({ width: 0, height: 0, paths: [] });
       return undefined;
     }
 
     let frame = 0;
+    let animationFrame = 0;
+    let stopped = false;
     const measure = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        const fieldRect = field.getBoundingClientRect();
-        const sourceRect = source.getBoundingClientRect();
-        const focusRect = field.querySelector(".explore-field__focus")?.getBoundingClientRect();
-        const sx = sourceRect.left + sourceRect.width / 2 - fieldRect.left;
-        const sy = sourceRect.top + sourceRect.height / 2 - fieldRect.top;
-        const branchY = Math.max(sy + 13, focusRect ? focusRect.bottom - fieldRect.top + 4 : sy + 13);
-        const paths = options.flatMap((item, index) => {
-          const node = nodeRefs.current.get(item.id);
-          if (!node) return [];
-          const rect = node.getBoundingClientRect();
-          const tx = rect.left + rect.width / 2 - fieldRect.left;
-          const ty = rect.top + 4 - fieldRect.top;
-          const curveDepth = Math.min(44, Math.max(18, Math.abs(tx - sx) * 0.06));
-          return [{
-            id: item.id,
-            index,
-            color: getComputedStyle(node).getPropertyValue("--node-color").trim() || "#6275d6",
-            d: `M ${sx} ${branchY} C ${sx} ${branchY + curveDepth}, ${tx} ${ty + curveDepth}, ${tx} ${ty}`,
-            x: tx,
-            y: ty,
-          }];
-        });
-        setConnections({
-          width: fieldRect.width,
-          height: fieldRect.height,
-          source: { x: sx, y: sy, branchY },
-          paths,
-        });
+      if (stopped) return;
+      const fieldRect = field.getBoundingClientRect();
+      const centerRect = center.getBoundingClientRect();
+      const paths = options.flatMap((item, index) => {
+        const node = nodeRefs.current.get(item.id);
+        if (!node) return [];
+        const rect = node.getBoundingClientRect();
+        const dx = rect.left + rect.width / 2 - centerRect.left - centerRect.width / 2;
+        const dy = rect.top + rect.height / 2 - centerRect.top - centerRect.height / 2;
+        const start = edgePoint(centerRect, dx, dy, fieldRect);
+        const end = edgePoint(rect, -dx, -dy, fieldRect);
+        const curve = Math.min(24, Math.max(-24, dx * 0.035));
+        return [{
+          id: item.id,
+          index,
+          color: getComputedStyle(node).getPropertyValue("--node-color").trim() || "#6275d6",
+          d: `M ${start.x} ${start.y} Q ${(start.x + end.x) / 2 - curve} ${(start.y + end.y) / 2 + (Math.abs(dx) < 30 ? (dy < 0 ? -12 : 12) : 0)} ${end.x} ${end.y}`,
+          x: end.x,
+          y: end.y,
+        }];
       });
+      setConnections({ width: fieldRect.width, height: fieldRect.height, paths });
     };
 
-    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => measure());
     observer?.observe(field);
-    observer?.observe(source);
+    observer?.observe(center);
     options.forEach((item) => {
       const node = nodeRefs.current.get(item.id);
       if (node) observer?.observe(node);
     });
-    window.addEventListener("resize", measure);
-    measure();
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const start = performance.now();
+    const animate = (now) => {
+      measure();
+      if (now - start < 720) animationFrame = window.requestAnimationFrame(animate);
+    };
+    const scheduleMeasure = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(measure);
+    };
+    window.addEventListener("resize", scheduleMeasure);
+    if (reduceMotion) measure();
+    else animationFrame = window.requestAnimationFrame(animate);
     return () => {
       window.cancelAnimationFrame(frame);
+      window.cancelAnimationFrame(animationFrame);
+      stopped = true;
       observer?.disconnect();
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", scheduleMeasure);
     };
-  }, [focusedId, options, hoveredId]);
+  }, [focusedId, options]);
 
   const choose = (nextIds) => {
     window.clearTimeout(previewTimer.current);
     previewTimer.current = null;
     pointerNodeId.current = null;
+    captureNodeLayout();
     const next = explorationRequest(nextIds);
     setIds(next.path.map((item) => item.id));
     setPreviewIds([]);
@@ -137,6 +200,7 @@ export function ExploreTaskHome({ onCreateTask }) {
     window.clearTimeout(previewTimer.current);
     setHoveredId(node.id);
     previewTimer.current = window.setTimeout(() => {
+      captureNodeLayout();
       setPreviewIds((current) => appendPreviewPath(ids, current, node.id));
       previewTimer.current = null;
     }, 320);
@@ -161,6 +225,7 @@ export function ExploreTaskHome({ onCreateTask }) {
     window.clearTimeout(previewTimer.current);
     previewTimer.current = null;
     pointerNodeId.current = null;
+    if (previewIds.length) captureNodeLayout();
     setPreviewIds([]);
     setHoveredId(null);
   };
@@ -181,8 +246,8 @@ export function ExploreTaskHome({ onCreateTask }) {
     <header className="explore-home__header">
       <div className="explore-home__heading">
         <div className="explore-home__eyebrow"><IconSparkles size={14} /> 任务探索 · 预设能力地图</div>
-        <h1>{focused ? focused.label : "今天，想探索什么？"}</h1>
-        <p>{focused ? focused.hint : "悬浮一个方向，看看它能展开哪些相关内容。"}</p>
+        <h1>今天，想探索什么？</h1>
+        <p>{focused ? `围绕「${focused.label}」继续向下探索，或锁定这条路径。` : "悬浮一个方向，看看它能展开哪些相关内容。"}</p>
       </div>
       <div className="explore-home__origin">
         <button type="button" aria-expanded={showOrigin} onClick={() => setShowOrigin(!showOrigin)}>
@@ -225,10 +290,6 @@ export function ExploreTaskHome({ onCreateTask }) {
         preserveAspectRatio="none"
         aria-hidden="true"
       >
-        {connections.source && <path
-          className="explore-field__connection-source"
-          d={`M ${connections.source.x} ${connections.source.y} L ${connections.source.x} ${connections.source.branchY}`}
-        />}
         {connections.paths.map((path) => <g key={path.id}>
           <path
             className={"explore-field__connection" + (hoveredId === path.id ? " is-active" : "")}
@@ -239,19 +300,38 @@ export function ExploreTaskHome({ onCreateTask }) {
           <circle className="explore-field__connection-end" cx={path.x} cy={path.y} r="2" style={{ "--connection-color": path.color }} />
         </g>)}
       </svg>}
-      {focused && <div className="explore-field__focus">
-        <span className="explore-field__focus-mark"><i ref={connectionSourceRef} aria-hidden="true" />{isPreviewing ? "正在预览" : "当前方向"}</span>
-        <strong>{isPreviewing ? "点击锁定这个方向，或继续悬浮下钻。" : "已加入需求草稿。"}</strong>
-        {isPreviewing && <button className="explore-field__lock" type="button" onClick={() => choose(activeIds)}>
-          锁定「{focused.label}」<IconCheck size={12} />
+      {focused || options.length > 0 ? <div className={"explore-field__nodes" + (focused ? " has-center" : "")} data-count={options.length}>
+        {focused && <button
+          type="button"
+          key={focused.id}
+          ref={(element) => {
+            if (element) nodeRefs.current.set(focused.id, element);
+            else nodeRefs.current.delete(focused.id);
+          }}
+          className={`explore-field__node explore-field__node--${focused.tone || "blue"} is-center${isPreviewing ? " is-previewing" : ""}`}
+          style={{ "--node-x": "50%", "--node-y": "50%", "--node-index": 0 }}
+          onPointerMove={(event) => moveOnNode(focused, event)}
+          onPointerLeave={() => leaveNode(focused)}
+          onFocus={() => setHoveredId(focused.id)}
+          onBlur={(event) => {
+            if (!event.currentTarget.parentElement?.contains(event.relatedTarget)) setHoveredId(null);
+          }}
+          onClick={() => { if (isPreviewing) choose(activeIds); }}
+          aria-label={focused.label + (isPreviewing ? "。点击锁定当前方向。" : "。当前已选方向。")}
+        >
+          <span className="explore-field__node-content">
+            <span className="explore-field__node-kind"><i aria-hidden="true" />{isPreviewing ? "正在预览" : "当前方向"}</span>
+            <strong>{focused.label}</strong>
+            <span className="explore-field__node-hint">{focused.hint}</span>
+            <span className="explore-field__node-action">{isPreviewing ? <>点击锁定路径 <IconCheck size={13} /></> : <>已加入需求草稿 <IconCheck size={13} /></>}</span>
+          </span>
         </button>}
-      </div>}
-      {options.length > 0 ? <div className="explore-field__nodes" data-count={options.length}>
         {options.map((item, index) => {
           const Icon = topicIcons[item.icon];
           const rootNode = activePath.length === 0;
           const tone = item.tone || (rootNode ? "violet" : focused?.tone || "blue");
           const label = rootNode ? "探索方向" : item.children.length ? "关联方向" : "下一步";
+          const [x, y] = focused ? satellitePosition(index, options.length) : [undefined, undefined];
           return <button
             type="button"
             key={item.id}
@@ -260,7 +340,7 @@ export function ExploreTaskHome({ onCreateTask }) {
               else nodeRefs.current.delete(item.id);
             }}
             className={"explore-field__node explore-field__node--" + tone + (hoveredId === item.id ? " is-hovered" : "") + (rootNode ? " is-topic" : "")}
-            style={{ "--node-index": index }}
+            style={{ "--node-index": index + 1, ...(focused ? { "--node-x": `${x}%`, "--node-y": `${y}%` } : {}) }}
             onPointerMove={(event) => moveOnNode(item, event)}
             onPointerLeave={() => leaveNode(item)}
             onFocus={() => setHoveredId(item.id)}
@@ -282,14 +362,15 @@ export function ExploreTaskHome({ onCreateTask }) {
             </span>
           </button>;
         })}
-      </div> : <div className="explore-field__leaf">
+        {focused && options.length === 0 && <div className="explore-field__leaf">
         <span className="explore-field__leaf-mark"><IconCheck size={15} /></span>
         <div><span>这个方向已经具体到可开始</span><p>检查下方需求，补充你的现场，再发送并开始。</p></div>
         <button type="button" onClick={() => draftRef.current?.focus()}><IconEdit size={14} />编辑需求</button>
-      </div>}
+        </div>}
+      </div> : null}
       <div className="explore-field__note" aria-live="polite">
         {hovered ? <><strong>{hovered.label}</strong><span>{hovered.hint}</span><small>{hovered.children.length ? "悬浮预览下一层 · 点击后锁定" : "点击加入需求草稿"}</small></>
-          : focused ? <><strong>{focused.label}</strong><span>{focused.children.length ? "这一层只展示当前主题下的相关方向。" : "这条路径会作为可编辑需求草稿。"}</span></>
+          : focused ? <><strong>{isPreviewing ? "正在预览这条路径" : "已锁定当前方向"}</strong><span>{focused.children.length ? "围绕中心节点悬浮关联方向，继续逐层展开。" : "这条路径会作为可编辑需求草稿。"}</span></>
             : <span>主题词来自预设地图；它们是探索入口，不代表已经识别出你的问题。</span>}
       </div>
     </div>
