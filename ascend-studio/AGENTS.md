@@ -1396,3 +1396,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 来源与边界：官网课程链接仍指向 `official-learning-data.js` 中的昇腾课程（H）；屏幕内的代码与结果是交互原型素材，不表示官方原片或 NPU 实测。未改变页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
 - 验证：`npm run build` 与 clean-main checkout 的 `npm run build:pages` 成功；`git diff --check` 通过。CUA 在 1280×720 打开 ResNet50 任务，确认 iframe 为 0、新播放器与控件各 1；点播后 00:01 前进，拖至 00:15 后当前讲解、代码高亮和推理节点同步切换；console 无错误。Vite 保留既有大 chunk 提示。
 - 源码及 Pages 产物提交 `d269f336` 已推送 `origin/main`；GitHub Pages workflow `40002518291` 的 build / deploy 均成功；线上 `/ascstudio/` index 引用的 JS、CSS 均返回 HTTP 200。
+
+### 2026-10-24 · 发布完成后进入各平台预览
+
+- 单渠道发布后直接切换到该渠道的发布后页面；批量发布后进入本次实际新发布的第一个渠道，顶部保留本批渠道切换项。再次发布时不把之前已发布的平台混入本批预览。
+- 社区继续使用社区文章预览；GitCode、CSDN、抖音补齐各自的平台内容版式。抖音正文采用深色知识图卡，卡面避免出现“示例”字样；图文可切页。外部平台链接仅打开平台站点，预览不声称已真实发布。
+- 发布预览仍提供返回渠道总览、关闭和放大操作；切换平台不清除发布状态。

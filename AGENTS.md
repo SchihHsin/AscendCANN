@@ -6289,3 +6289,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 来源与边界：官网课程链接仍指向 `official-learning-data.js` 中的昇腾课程（H）；屏幕内的代码与结果是交互原型素材，不表示官方原片或 NPU 实测。未改变页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
 - 验证：`npm run build` 与 clean-main checkout 的 `npm run build:pages` 成功；`git diff --check` 通过。CUA 在 1280×720 打开 ResNet50 任务，确认 iframe 为 0、新播放器与控件各 1；点播后 00:01 前进，拖至 00:15 后当前讲解、代码高亮和推理节点同步切换；console 无错误。Vite 保留既有大 chunk 提示。
 - 源码及 Pages 产物提交 `d269f336` 已推送 `origin/main`；GitHub Pages workflow `40002518291` 的 build / deploy 均成功；线上 `/ascstudio/` index 引用的 JS、CSS 均返回 HTTP 200。
+
+### 2026-10-24 · 单渠道与批量发布后的平台预览
+
+- 用户要求：无论单渠道还是批量发布，操作后都要直接看到对应内容的发布后样式；单发进入对应平台，批发先显示一个已发布渠道，并可切换查看本批其他渠道。
+- 实现位于 `ascend-studio/src/CommunityDraftPanel.jsx`、`PublishedChannelPreview.jsx`、`CommunityPublishedArticle.jsx`、`ChannelDraftContent.jsx` 与渠道 CSS。单渠道发布切换到该平台；批量发布只把本次新发布的渠道放入顶部切换栏，默认进入第一个本次发布的渠道。已有的返回总览、关闭与放大功能保留。
+- 昇腾社区继续呈现社区技术文章；GitCode 新增 Issue 风格页面，CSDN 新增技术博客页面，抖音新增知识图文发布页，图卡保持深色且不出现“示例”字样。标题、问题、过程、环境和验证内容取自当前社区草稿。
+- 外部链接分别打开对应平台的内容频道 / 首页。Demo 只模拟发布后页面，不代表实际第三方发布或平台账号数据；抖音互动量不编造。
+- 依据：交互要求与抖音卡片文案约束来自用户直接反馈（H）；平台版式是便于讨论的前端拟态（L）。没有改变导航页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 CUA 在 381px CSS 视口回放 GitCode 单发、社区 + CSDN + 抖音批发，以及之后不把已发布社区混入的 CSDN + 抖音批发。预览切换与渠道对应正确；没有运行自动化测试。Vite 提示既有大 JS chunk 超过 500 kB。
+- Pages 构建生成 `index-C7ld622Y.js` 与 `index-JPPzXMDy.css`。提交与 `origin/main` 推送结果将在发布完成后补记。

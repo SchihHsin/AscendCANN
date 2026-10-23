@@ -1,4 +1,5 @@
 import { IconArrowLeft, IconChevronRight, IconExternalLink, IconEye, IconThumbUp } from "@tabler/icons-react";
+import { getCommunityDraftTopic } from "./ChannelDraftContent.jsx";
 import "./community-published.css";
 
 const COMMUNITY_ARTICLES_URL = "https://www.hiascend.com/developer/techArticles";
@@ -12,18 +13,21 @@ function publishedDate(timestamp) {
   }).format(date).replaceAll("-", "/");
 }
 
-export function CommunityPublishedArticle({ draft, onBack }) {
+export function CommunityPublishedArticle({ draft, onBack, embedded = false }) {
   const environment = String(draft.environment || "").split("\n").filter(Boolean);
+  const topic = getCommunityDraftTopic(draft);
+  const isAddCustom = topic === "AddCustom 精度异常";
+  const title = isAddCustom ? "AddCustom 精度异常排查：从现象到证据核对" : topic === "图像输入形状" ? "图像推理输入布局排查：从 HWC 到 NCHW" : "开发任务经验：从现象到验证";
 
-  return <section className="community-published-panel" aria-label="昇腾社区文章发布后预览">
-    <div className="community-published-demo-bar">
+  return <section className={`community-published-panel${embedded ? " is-embedded" : ""}`} aria-label="昇腾社区文章发布后预览">
+    {!embedded && <div className="community-published-demo-bar">
       {onBack && <button type="button" className="community-published-back" onClick={onBack}><IconArrowLeft size={13} aria-hidden="true" />多渠道预览</button>}
       <span className="community-published-demo-status"><i aria-hidden="true" />已提交 · 本地预览</span>
       <span className="community-published-demo-copy">页面样式参照昇腾社区官方技术文章</span>
       <a href={COMMUNITY_ARTICLES_URL} target="_blank" rel="noopener noreferrer">
         打开社区<IconExternalLink size={14} aria-hidden="true" />
       </a>
-    </div>
+    </div>}
 
     <div className="community-published-scroll">
       <div className="community-site-header">
@@ -45,13 +49,13 @@ export function CommunityPublishedArticle({ draft, onBack }) {
         <div className="community-article-breadcrumb">
           <a href={COMMUNITY_ARTICLES_URL} target="_blank" rel="noopener noreferrer">官方技术文章</a>
           <IconChevronRight size={13} aria-hidden="true" />
-          <span>图像推理输入布局排查</span>
+          <span>{title}</span>
         </div>
 
         <article className="community-article-card">
           <header className="community-article-heading">
-            <h1>图像推理输入布局排查：从 HWC 到 NCHW</h1>
-            <span className="community-article-tag">图像推理</span>
+            <h1>{title}</h1>
+            <span className="community-article-tag">{isAddCustom ? "算子开发" : topic === "图像输入形状" ? "图像推理" : "开发经验"}</span>
             <div className="community-article-meta">
               <span>发表于：{publishedDate(draft.submittedAt)}</span>
               <span className="community-article-stat"><IconEye size={15} aria-hidden="true" />0</span>

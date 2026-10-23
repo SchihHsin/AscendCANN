@@ -246,6 +246,7 @@
 .channel-preview-tiktok-compare-content > div b { display: flex; align-items: center; justify-content: space-between; gap: 3px; padding: 4px; border: 1px solid rgba(255, 255, 255, .1); border-radius: 4px; font-size: 7px; }
 .channel-preview-tiktok-compare-content > div b em { font-style: normal; }
 .channel-preview-tiktok-compare-content > div b em.is-pass { color: #8fc99c; }
+.channel-preview-tiktok-compare-content > div b em.is-recorded { color: #c2c8ce; }
 .channel-preview-tiktok-compare-content > div b em.is-fail, .channel-preview-tiktok-compare-content > div b em.is-review { color: #e5b36f; }
 .channel-preview-tiktok-compare-content > div b em.is-example { color: #aeb4bb; }
 .channel-preview-tiktok-compare-content > div b:last-child { border-color: rgba(224,164,87,.38); }

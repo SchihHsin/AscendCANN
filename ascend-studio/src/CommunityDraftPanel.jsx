@@ -19,7 +19,7 @@ import {
 import "./community-draft.css";
 import { ChannelDraftContent, getCommunityDraftTopic } from "./ChannelDraftContent.jsx";
 import "./channel-draft.css";
-import { CommunityPublishedArticle } from "./CommunityPublishedArticle.jsx";
+import { PublishedChannelPreview } from "./PublishedChannelPreview.jsx";
 import ascendCommunityMark from "./assets/channel-marks/ascend-community.svg";
 import gitcodeMark from "./assets/channel-marks/gitcode.svg";
 import csdnMark from "./assets/channel-marks/csdn.svg";
@@ -105,7 +105,7 @@ function ChannelCardPreview({ channelId, draft }) {
     <div className="channel-preview-tiktok-panels">
       {[
         { number: "01", type: "cover", kicker: "问题现象", title: isAddCustom ? "AddCustom 精度异常" : `${topic}怎么核对？`, note: "先固定异常范围" },
-        { number: "02", type: "compare", kicker: "输入对比", title: isAddCustom ? "两组输入的结果" : "输入与目标约定", note: isAddCustom ? "报错位置 · custom_op.cpp:128" : "示例结果仍需实际环境核对" },
+        { number: "02", type: "compare", kicker: "输入对比", title: isAddCustom ? "两组输入的结果" : "输入与目标约定", note: isAddCustom ? "报错位置 · custom_op.cpp:128" : "形状记录 · 真实推理待验证" },
         { number: "03", type: "flow", kicker: "排查线索", title: isAddCustom ? "尾块边界候选" : "逐步检查处理步骤", note: "线索不等于根因" },
         { number: "04", type: "evidence", kicker: "判断前补证据", title: "验证记录清单", note: "真实 NPU 验证待补" },
       ].map(slide => <div key={slide.number} className={`channel-preview-tiktok-tile channel-preview-tiktok-tile--${slide.type}`}>
@@ -115,7 +115,7 @@ function ChannelCardPreview({ channelId, draft }) {
         </div>}
         {slide.type === "compare" && <div className="channel-preview-tiktok-compare-content">
           <strong>{slide.title}</strong>
-          <div><b>{isAddCustom ? "[16,32]" : "示例输入"}<em className={isAddCustom ? "is-pass" : "is-example"}>{isAddCustom ? "通过" : "示例"}</em></b><b>{isAddCustom ? "[17,33]" : "目标约定"}<em className={isAddCustom ? "is-fail" : "is-review"}>{isAddCustom ? "失败" : "待核对"}</em></b></div>
+          <div><b>{isAddCustom ? "[16,32]" : "NHWC [224,224,3]"}<em className={isAddCustom ? "is-pass" : "is-recorded"}>{isAddCustom ? "通过" : "已记录"}</em></b><b>{isAddCustom ? "[17,33]" : "NCHW [1,3,224,224]"}<em className={isAddCustom ? "is-fail" : "is-review"}>{isAddCustom ? "失败" : "待核对"}</em></b></div>
           <span>{slide.note}</span>
         </div>}
         {slide.type === "flow" && <div className="channel-preview-tiktok-flow-content">
@@ -196,18 +196,21 @@ function MultiChannelOverview({ draft, channelStates, selectedChannels, onToggle
 
 export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
   const [editingSection, setEditingSection] = useState(null);
-  const [view, setView] = useState("community");
+  const [view, setView] = useState(() => draft.status === "submitted" ? "published" : "community");
   const [expanded, setExpanded] = useState(false);
   const [regenerated, setRegenerated] = useState(false);
   const [selectedChannels, setSelectedChannels] = useState(["community"]);
-  const [channelStates, setChannelStates] = useState({
-    community: { generated: true, published: false },
+  const [channelStates, setChannelStates] = useState(() => ({
+    community: { generated: true, published: draft.status === "submitted" },
     gitcode: { generated: true, published: false },
     csdn: { generated: true, published: false },
     tiktok: { generated: true, published: false },
-  });
+  }));
+  const [publishedChannelIds, setPublishedChannelIds] = useState(() => draft.status === "submitted" ? ["community"] : []);
+  const [publishedActiveChannel, setPublishedActiveChannel] = useState("community");
   const overview = view === "overview";
-  const activeChannel = overview ? "community" : view;
+  const publishedPreview = view === "published";
+  const activeChannel = publishedPreview ? publishedActiveChannel : overview ? "community" : view;
   const channelDetails = CHANNEL_BY_ID[activeChannel] || CHANNEL_BY_ID.community;
   const channelState = channelStates[activeChannel] || { generated: true, published: false };
   const submitted = draft.status === "submitted";
@@ -220,6 +223,19 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
   const toggleSelectedChannel = channelId => setSelectedChannels(selected => selected.includes(channelId)
     ? selected.filter(id => id !== channelId)
     : [...selected, channelId]);
+  const showPublishedPreviews = channelIds => {
+    const ids = [...new Set(channelIds)].filter(id => CHANNEL_BY_ID[id]);
+    if (!ids.length) return;
+    setPublishedChannelIds(ids);
+    setPublishedActiveChannel(ids[0]);
+    setView("published");
+  };
+  const publishChannel = channelId => {
+    setChannelState(channelId, { generated: true, published: true });
+    setEditingSection(null);
+    if (channelId === "community") onSubmit();
+    showPublishedPreviews([channelId]);
+  };
   const publishSelectedChannels = () => {
     const pendingChannels = selectedChannels.filter(id => !channelStates[id]?.published);
     if (!pendingChannels.length) return;
@@ -228,8 +244,22 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
       [id]: { ...(states[id] || {}), generated: true, published: true },
     }), { ...states }));
     if (pendingChannels.includes("community")) {
-      setEditingSection(null);
       onSubmit();
+    }
+    const batchChannels = pendingChannels;
+    setPublishedChannelIds(batchChannels);
+    setPublishedActiveChannel(pendingChannels[0] || batchChannels[0]);
+    setView("published");
+  };
+  const openChannel = channelId => {
+    if (channelStates[channelId]?.published || (channelId === "community" && submitted)) {
+      const publishedGroup = publishedChannelIds.filter(id => channelStates[id]?.published || (id === "community" && submitted));
+      const channelsToShow = publishedGroup.includes(channelId) ? publishedGroup : [channelId];
+      setPublishedChannelIds(channelsToShow);
+      setPublishedActiveChannel(channelId);
+      setView("published");
+    } else {
+      setView(channelId);
     }
   };
   const continueEditing = () => {
@@ -242,7 +272,18 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
     setChannelStates(states => Object.fromEntries(CHANNELS.map(channel => [channel.id, { ...states[channel.id], generated: true }])));
   };
 
-  if (submitted && activeChannel === "community" && !overview) return <CommunityPublishedArticle draft={draft} onBack={() => setView("overview")} />;
+  if (publishedPreview) return <section className={`community-draft-panel${expanded ? " is-expanded" : ""}`} aria-label="发布后内容预览" role={expanded ? "dialog" : undefined} aria-modal={expanded ? "true" : undefined}>
+    <PublishedChannelPreview
+      draft={draft}
+      channelIds={publishedChannelIds.filter(id => channelStates[id]?.published || (id === "community" && submitted))}
+      activeChannel={activeChannel}
+      onSelect={setPublishedActiveChannel}
+      onBack={() => setView("overview")}
+      expanded={expanded}
+      onToggleExpanded={() => setExpanded(value => !value)}
+      onClose={onClose}
+    />
+  </section>;
 
   return <section className={`community-draft-panel${expanded ? " is-expanded" : ""}${overview ? " is-channel-overview" : ""}`} aria-label={overview ? "多渠道草稿预览" : `${channelDetails.name}发布草稿`} role={expanded ? "dialog" : undefined} aria-modal={expanded ? "true" : undefined}>
     <header className={`community-draft-header${overview ? " community-draft-header--overview" : ""}`}>
@@ -280,7 +321,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
       channelStates={overviewChannelStates}
       selectedChannels={selectedChannels}
       onToggleChannel={toggleSelectedChannel}
-      onOpen={channelId => setView(channelId)}
+      onOpen={openChannel}
       onPublishSelected={publishSelectedChannels}
       regenerated={regenerated}
     /> : activeChannel === "community" ? <>
@@ -299,7 +340,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
         <p><IconInfoCircle size={17} aria-hidden="true" /><span>草稿不会自动公开；提交前可继续编辑并确认内容。奖励规则以对应平台为准。</span></p>
         <div className="community-draft-actions">
           <button type="button" className="community-draft-continue" onClick={continueEditing}>继续编辑</button>
-          <button type="button" className="community-draft-submit" onClick={() => { setEditingSection(null); onSubmit(); }}><IconSend size={16} />提交到社区</button>
+          <button type="button" className="community-draft-submit" onClick={() => publishChannel("community")}><IconSend size={16} />提交到社区</button>
         </div>
       </footer>
     </> : <ChannelDraftContent
@@ -308,7 +349,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
       generated={channelState.generated}
       published={channelState.published}
       onGenerate={() => setChannelState(activeChannel, { generated: true })}
-      onPublish={() => setChannelState(activeChannel, { published: true })}
+      onPublish={() => publishChannel(activeChannel)}
       publishLabel={channelDetails.button}
     />}
   </section>;

@@ -1,0 +1,154 @@
+.channel-published-preview { height: 100%; min-height: 0; display: flex; flex-direction: column; overflow: hidden; color: #28292e; background: #f4f5f7; }
+.channel-published-toolbar { z-index: 4; flex: 0 0 auto; min-height: 45px; display: flex; align-items: center; gap: 9px; padding: 5px 11px; border-bottom: 1px solid #e8e8e8; background: #fff; }
+.channel-published-back { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; min-height: 28px; padding: 0 7px; border: 1px solid #e5e5e6; border-radius: 6px; color: #55565c; background: #fff; font: inherit; font-size: 9px; cursor: pointer; }
+.channel-published-back:hover { background: #f7f7f8; }
+.channel-published-current { min-width: 0; flex: 1 1 auto; display: flex; align-items: center; gap: 7px; }
+.channel-published-current strong { color: #292a30; font-size: 10px; white-space: nowrap; }
+.channel-published-current > span:last-child { display: inline-flex; align-items: center; gap: 5px; margin-left: 3px; color: #637265; font-size: 9px; white-space: nowrap; }
+.channel-published-current > span:last-child i { width: 6px; height: 6px; border-radius: 50%; background: #79a17d; }
+.published-channel-mark { width: 18px; height: 18px; display: inline-grid; flex: 0 0 auto; place-items: center; overflow: hidden; border-radius: 50%; background: #fff; }
+.published-channel-mark img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.channel-published-tabs { min-width: 0; flex: 1 1 auto; display: flex; align-items: center; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.channel-published-tabs::-webkit-scrollbar { display: none; }
+.channel-published-tabs button { min-height: 30px; display: inline-flex; flex: 0 0 auto; align-items: center; gap: 5px; padding: 0 8px; border: 1px solid transparent; border-radius: 7px; color: #6b6c73; background: transparent; font: inherit; font-size: 9px; cursor: pointer; }
+.channel-published-tabs button:hover { background: #f5f5f6; }
+.channel-published-tabs button.is-active { border-color: #e7e5e9; color: #292a30; background: #f7f7f8; font-weight: 650; }
+.channel-published-tabs button > svg { color: #77927a; }
+.channel-published-tabs button:not(.is-active) > svg { display: none; }
+.channel-published-tabs .published-channel-mark { width: 16px; height: 16px; }
+.channel-published-external { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; color: #60616a; font-size: 9px; text-decoration: none; white-space: nowrap; }
+.channel-published-external:hover { color: #28292e; }
+.channel-published-window-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 3px; }
+.channel-published-window-button { display: grid; width: 25px; height: 25px; place-items: center; padding: 0; border: 1px solid transparent; border-radius: 6px; color: #777981; background: transparent; cursor: pointer; }
+.channel-published-window-button:hover, .channel-published-window-button.is-active { border-color: #e9e8eb; color: #35363c; background: #f7f7f8; }
+.channel-published-batch-note { z-index: 2; flex: 0 0 auto; min-height: 23px; display: flex; align-items: center; padding: 0 13px; border-bottom: 1px solid #ebebed; color: #777982; background: #fbfbfc; font-size: 8px; }
+.channel-published-body { flex: 1 1 0; min-height: 0; overflow: hidden; }
+.community-published-panel.is-embedded { height: 100%; }
+
+/* GitCode Issue-style published page */
+.gitcode-published-site { height: 100%; min-height: 0; overflow: auto; color: #262a30; background: #f5f6f8; scrollbar-width: thin; scrollbar-color: #d7d9dc transparent; }
+.gitcode-published-nav { position: sticky; top: 0; z-index: 2; height: 43px; display: flex; align-items: center; gap: 20px; padding: 0 16px; border-bottom: 1px solid #e8e9eb; background: #fff; }
+.gitcode-published-brand { display: flex; align-items: center; gap: 6px; color: #202329; font-size: 12px; }
+.gitcode-published-brand .published-channel-mark { width: 20px; height: 20px; }
+.gitcode-published-nav nav { display: flex; align-items: center; gap: 16px; color: #626670; font-size: 9px; }
+.gitcode-published-user { margin-left: auto; color: #777a82; font-size: 9px; }
+.gitcode-published-layout { width: min(100%, 1110px); display: grid; grid-template-columns: minmax(0, 1fr) 190px; align-items: start; gap: 12px; margin: 0 auto; padding: 14px; }
+.gitcode-published-layout main { min-width: 0; }
+.gitcode-published-breadcrumb { display: flex; align-items: center; gap: 5px; margin: 2px 0 11px; color: #777b84; font-size: 9px; }
+.gitcode-published-breadcrumb svg { color: #a5a7ac; }
+.gitcode-published-breadcrumb b { color: #3d4149; font-weight: 550; }
+.gitcode-published-issue { padding: 18px 20px 0; border: 1px solid #e6e8eb; border-radius: 8px; background: #fff; }
+.gitcode-published-labels { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.gitcode-published-labels > span { min-height: 18px; display: inline-flex; align-items: center; gap: 3px; padding: 0 7px; border: 1px solid #e7e8ea; border-radius: 4px; color: #686c75; background: #fff; font-size: 8px; }
+.gitcode-published-labels > .gitcode-open-label { border-color: #d1ead8; color: #378453; background: #eff9f2; }
+.gitcode-published-issue h1 { margin: 11px 0 9px; color: #24272d; font-size: 17px; font-weight: 650; line-height: 1.45; }
+.gitcode-published-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: #858891; font-size: 8px; }
+.gitcode-published-meta b { color: #565a63; font-weight: 550; }
+.gitcode-published-avatar { width: 18px; height: 18px; display: inline-grid; place-items: center; border-radius: 50%; color: #fff; background: #7c8ca5; font-size: 9px; }
+.gitcode-published-rule { height: 1px; margin: 14px -20px 0; background: #eceef0; }
+.gitcode-published-prose { padding: 3px 0 14px; color: #555962; font-size: 10px; line-height: 1.75; overflow-wrap: anywhere; }
+.gitcode-published-prose h2 { margin: 15px 0 5px; color: #343840; font-size: 11px; font-weight: 650; }
+.gitcode-published-prose p { margin: 0; white-space: pre-wrap; }
+.gitcode-published-code { display: grid; gap: 7px; margin: 11px 0; padding: 10px 11px; border: 1px solid #eceef0; border-radius: 6px; background: #f8f9fa; }
+.gitcode-published-code span { color: #777c85; font-size: 8px; }
+.gitcode-published-code code { color: #444954; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.gitcode-published-caution { margin-top: 12px; padding: 8px 10px; border-left: 2px solid #d6ab7a; color: #74604c; background: #fcf8f2; font-size: 9px; }
+.gitcode-published-issue-footer { min-height: 37px; display: flex; align-items: center; gap: 15px; margin: 0 -20px; padding: 0 20px; border-top: 1px solid #eceef0; color: #70747d; font-size: 8px; }
+.gitcode-published-issue-footer span { display: inline-flex; align-items: center; gap: 4px; }
+.gitcode-published-sidebar { padding: 13px 12px; border: 1px solid #e6e8eb; border-radius: 7px; background: #fff; }
+.gitcode-published-sidebar h2 { margin: 0 0 11px; color: #41454d; font-size: 10px; }
+.gitcode-published-sidebar > div { display: grid; gap: 4px; margin-top: 10px; color: #878a92; font-size: 8px; }
+.gitcode-published-sidebar > div b { color: #51555e; font-size: 9px; font-weight: 550; }
+.gitcode-published-sidebar > div small { color: #626670; font-size: 8px; line-height: 1.6; overflow-wrap: anywhere; }
+.gitcode-published-sidebar p { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid #eee; color: #878a92; font-size: 8px; line-height: 1.6; }
+
+/* CSDN long-form article page */
+.csdn-published-site { height: 100%; min-height: 0; overflow: auto; color: #27282d; background: #f5f5f5; scrollbar-width: thin; scrollbar-color: #d7d7d7 transparent; }
+.csdn-published-nav { position: sticky; top: 0; z-index: 2; min-height: 44px; display: flex; align-items: center; gap: 16px; padding: 0 15px; border-bottom: 1px solid #ededed; background: #fff; }
+.csdn-published-brand { flex: 0 0 auto; display: flex; align-items: center; gap: 5px; color: #d23b34; font-size: 13px; }
+.csdn-published-brand .published-channel-mark { width: 18px; height: 18px; }
+.csdn-published-brand > span { color: #777980; font-size: 8px; }
+.csdn-published-nav nav { display: flex; align-items: center; gap: 13px; color: #5b5d64; font-size: 8px; }
+.csdn-published-search { min-width: 80px; flex: 1 1 auto; max-width: 180px; margin-left: auto; padding: 6px 8px; border: 1px solid #e8e8e8; border-radius: 14px; color: #9b9ca1; background: #fafafa; font-size: 8px; }
+.csdn-published-nav > button { padding: 6px 10px; border: 0; border-radius: 4px; color: #fff; background: #d84940; font: inherit; font-size: 8px; }
+.csdn-published-layout { width: min(100%, 1060px); display: grid; grid-template-columns: minmax(0, 1fr) 170px; align-items: start; gap: 12px; margin: 0 auto; padding: 15px; }
+.csdn-published-article { min-width: 0; padding: 20px 22px 0; border: 1px solid #eee; border-radius: 7px; background: #fff; }
+.csdn-published-kicker { color: #999aa0; font-size: 8px; }
+.csdn-published-article h1 { margin: 9px 0 12px; color: #26272c; font-size: 18px; line-height: 1.45; }
+.csdn-published-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: #999aa0; font-size: 8px; }
+.csdn-published-meta b { color: #5b5c62; font-weight: 550; }
+.csdn-published-meta span { display: inline-flex; align-items: center; gap: 3px; }
+.csdn-published-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.csdn-published-tags span { padding: 3px 7px; border-radius: 3px; color: #74767d; background: #f5f5f6; font-size: 8px; }
+.csdn-published-prose { padding: 4px 0 18px; color: #44464c; font-size: 10px; line-height: 1.85; overflow-wrap: anywhere; }
+.csdn-published-prose h2 { margin: 16px 0 5px; color: #292a30; font-size: 11px; }
+.csdn-published-prose p { margin: 0; white-space: pre-wrap; }
+.csdn-published-prose ul { margin: 0; padding-left: 18px; }
+.csdn-published-lead { margin-top: 14px !important; color: #6c6e75; }
+.csdn-published-note { margin: 12px 0 3px; padding: 8px 10px; border-left: 2px solid #d84940; color: #686970; background: #fff8f7; font-size: 9px; }
+.csdn-published-reactions { min-height: 38px; display: flex; align-items: center; gap: 14px; margin: 0 -22px; padding: 0 22px; border-top: 1px solid #f0f0f0; color: #81828a; font-size: 8px; }
+.csdn-published-toc { position: sticky; top: 55px; display: grid; gap: 10px; padding: 13px 11px; border: 1px solid #eee; border-radius: 6px; color: #72747b; background: #fff; font-size: 8px; }
+.csdn-published-toc b { color: #44464d; font-size: 9px; }
+.csdn-published-toc small { margin-top: 5px; padding-top: 8px; border-top: 1px solid #eee; color: #a0a1a6; font-size: 7px; }
+
+/* Douyin knowledge-carousel post */
+.douyin-published-site { height: 100%; min-height: 0; overflow: auto; color: #25262a; background: #f4f5f6; scrollbar-width: thin; scrollbar-color: #d5d7da transparent; }
+.douyin-published-nav { position: sticky; top: 0; z-index: 2; min-height: 45px; display: flex; align-items: center; gap: 17px; padding: 0 16px; border-bottom: 1px solid #ededee; background: #fff; }
+.douyin-published-logo { display: flex; align-items: center; gap: 5px; color: #212226; font-size: 12px; }
+.douyin-published-logo .published-channel-mark { width: 20px; height: 20px; }
+.douyin-published-nav nav { display: flex; align-items: center; gap: 16px; color: #5d5e63; font-size: 9px; }
+.douyin-published-search { flex: 1 1 auto; max-width: 180px; margin-left: auto; padding: 6px 9px; border: 1px solid #e7e7e9; border-radius: 15px; color: #96979c; background: #f8f8f9; font-size: 8px; }
+.douyin-published-nav-user { color: #5d5e63; font-size: 8px; }
+.douyin-published-feed { width: min(100%, 780px); margin: 0 auto; padding: 16px; }
+.douyin-published-feed-label { display: flex; align-items: center; justify-content: space-between; margin: 0 0 8px; color: #767880; font-size: 8px; }
+.douyin-published-feed-label span:first-child { color: #34353b; font-size: 10px; font-weight: 650; }
+.douyin-published-post { max-width: 640px; margin: 0 auto; padding: 15px; border: 1px solid #e9eaec; border-radius: 9px; background: #fff; box-shadow: 0 2px 9px rgba(32, 35, 40, .035); }
+.douyin-published-account { display: flex; align-items: center; gap: 8px; margin-bottom: 13px; }
+.douyin-published-avatar { width: 30px; height: 30px; display: inline-grid; flex: 0 0 auto; place-items: center; border-radius: 50%; color: #fff; background: #31343a; font-size: 12px; }
+.douyin-published-account > div { display: grid; gap: 2px; }
+.douyin-published-account strong { color: #33343a; font-size: 9px; }
+.douyin-published-account small { color: #96979d; font-size: 7px; }
+.douyin-published-account > button { min-height: 23px; margin-left: auto; padding: 0 11px; border: 1px solid #e5e6e8; border-radius: 14px; color: #55575f; background: #fff; font: inherit; font-size: 8px; }
+.douyin-published-main { display: grid; grid-template-columns: minmax(200px, .88fr) minmax(170px, 1fr); align-items: center; gap: 17px; }
+.douyin-published-main .tiktok-visual-shell { width: min(100%, 250px); }
+.douyin-published-main .tiktok-carousel-controls { margin-top: 6px; }
+.douyin-published-copy { min-width: 0; align-self: center; }
+.douyin-published-copy h3 { margin: 0 0 8px; color: #303137; font-size: 13px; line-height: 1.4; }
+.douyin-published-copy p { margin: 0; color: #5e6067; font-size: 9px; line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
+.douyin-published-tags { margin-top: 8px; color: #6c7180; font-size: 8px; line-height: 1.6; }
+.douyin-published-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 14px; padding-top: 10px; border-top: 1px solid #eeeeef; color: #777980; font-size: 8px; }
+.douyin-published-boundary { max-width: 640px; margin: 8px auto 0; color: #a0a1a6; font-size: 7px; text-align: right; }
+
+@media (max-width: 680px) {
+  .channel-published-toolbar { gap: 5px; padding-inline: 7px; }
+  .channel-published-back { gap: 2px; padding-inline: 5px; font-size: 8px; }
+  .channel-published-external { font-size: 8px; }
+  .channel-published-tabs { gap: 1px; }
+  .channel-published-tabs button { gap: 3px; padding-inline: 5px; font-size: 8px; }
+  .gitcode-published-layout { grid-template-columns: minmax(0, 1fr); padding: 9px; }
+  .gitcode-published-sidebar { display: none; }
+  .gitcode-published-nav { gap: 10px; padding-inline: 9px; }
+  .gitcode-published-nav nav { gap: 8px; }
+  .csdn-published-layout { grid-template-columns: minmax(0, 1fr); padding: 9px; }
+  .csdn-published-toc { display: none; }
+  .csdn-published-nav { gap: 9px; padding-inline: 8px; }
+  .csdn-published-nav nav { gap: 8px; }
+  .csdn-published-search { display: none; }
+  .csdn-published-nav > button { margin-left: auto; }
+  .douyin-published-nav { gap: 10px; padding-inline: 9px; }
+  .douyin-published-nav nav { gap: 9px; }
+  .douyin-published-search { display: none; }
+  .douyin-published-feed { padding: 10px 8px; }
+  .douyin-published-post { padding: 11px; }
+  .douyin-published-main { grid-template-columns: minmax(150px, .9fr) minmax(130px, 1fr); gap: 9px; }
+}
+
+@media (max-width: 460px) {
+  .channel-published-toolbar { flex-wrap: wrap; }
+  .channel-published-tabs { order: 3; flex: 1 0 100%; }
+  .channel-published-external { margin-left: auto; }
+  .channel-published-tabs button { min-height: 26px; }
+  .douyin-published-main { grid-template-columns: minmax(0, 1fr); }
+  .douyin-published-main .tiktok-visual-shell { width: min(100%, 225px); }
+  .douyin-published-copy { padding: 2px; }
+}

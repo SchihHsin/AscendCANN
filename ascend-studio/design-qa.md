@@ -1125,3 +1125,11 @@ final result: passed
 - **范围:** 只调整探索首页交互提示与状态反馈，不改变训练方向数据、经典 / 探索切换、页面序列 / hash 或 API / Host / Application 边界。没有真实训练、日志或 NPU 验证。
 - **检查:** npm run build、npm run test:sites（4/4）、npm run build:pages、git diff --check 均通过；Vite 保留既有大 JS chunk 提醒。生成的 Pages 资源为 index-DgBRA8TS.js 与 index-xaGMi3JY.css。
 - **发布:** 源码、交接文档和 Pages 资源由提交 381e5964 推送至 origin/main；Pages workflow 40001670205 的 build / deploy 均成功。
+
+## 2026-10-24 · 单发与批发后的内容预览
+
+- **交互:** 单发 GitCode 后直接显示 GitCode Issue 风格页面；批量选择昇腾社区、CSDN、抖音后先进入昇腾社区文章，并以顶部 3 个渠道标签切换。若已发布的社区不在本次待发布集合中，再批发 CSDN 与抖音后只出现这 2 个新发布标签，默认落在 CSDN。
+- **平台内容:** 社区使用已有文章页；GitCode 显示问题标题、标签、复现过程、环境与待补证据；CSDN 显示长文、目录和互动栏；抖音以深色知识图卡轮播呈现内容与配文，不在知识图卡上写“示例”，也不编造互动数据。内容随任务草稿更新。
+- **CUA 回放:** 本地 `http://127.0.0.1:5204/`、381px CSS 视口。单发 GitCode 后 AX 页面显示 GitCode 发布页；先发布社区 + CSDN + 抖音后出现 3 个切换标签；随后已发布社区不计入第二批，CSDN + 抖音批发只显示 2 个新发布渠道。切换到 CSDN、抖音均保留预览；GitCode、CSDN 和抖音截图核对无横向溢出迹象，抖音深色卡片保持深色渐变。
+- **边界:** 这些页面是本地发布后拟态，不会创建真实 GitCode issue、CSDN 博文或抖音内容。无页面序列 / hash 或 API、Host / Harness、Application / Task 变化。CUA 截图用于本轮视觉核对，未另存为证据文件。
+- **检查:** `npm run build:pages` 与 `git diff --check` 通过；构建产物为 `index-C7ld622Y.js` / `index-JPPzXMDy.css`，保留既有大 JS chunk 提示。未运行自动化测试。GitHub 推送结果待部署后补记。

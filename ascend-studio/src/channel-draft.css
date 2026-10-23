@@ -46,12 +46,14 @@
 .visual-cover-snapshot b.is-pass { color: #8fc99c; }
 .visual-cover-snapshot b.is-warning, .visual-cover-snapshot b.is-review { color: #e5b36f; }
 .visual-cover-snapshot b.is-example { color: #aeb4bb; }
+.visual-cover-snapshot b.is-recorded { color: #c2c8ce; }
 .visual-compare-grid { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: 7px; margin-block: auto; }
 .visual-compare-panel { display: grid; min-width: 0; gap: 12px; padding: 13px 10px; border: 1px solid rgba(255,255,255,.11); border-radius: 10px; background: rgba(255,255,255,.045); }
 .visual-compare-panel > span { color: #aeb8bc; font-size: 8px; }
 .visual-compare-panel > b { color: #f3f1f5; font-size: clamp(12px, 1.7vw, 16px); white-space: nowrap; }
 .visual-compare-panel > i { display: inline-flex; align-items: center; gap: 4px; color: #b4b9bf; font-size: 9px; font-style: normal; font-weight: 700; }
 .visual-compare-panel.is-pass > i { color: #8fc99c; }
+.visual-compare-panel.is-recorded > i { color: #c2c8ce; }
 .visual-compare-panel.is-fail, .visual-compare-panel.is-review { border-color: rgba(229,179,111,.38); background: rgba(229,179,111,.065); }
 .visual-compare-panel.is-fail > i, .visual-compare-panel.is-review > i { color: #e5b36f; }
 .visual-compare-divider { color: #7f888c; font-size: 8px; }
