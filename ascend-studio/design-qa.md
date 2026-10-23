@@ -1025,4 +1025,4 @@ final result: passed
 - `npm run build:pages` 通过，`git diff --check` 通过；Vite 提示 JS chunk 超过 500 kB。未运行自动化测试。
 - 本地预览由隔离工作树服务于 `http://127.0.0.1:5188/`，已请求在 Codex 面板打开；没有完成截图级视觉 / 点击回放。待用户重点审阅三个状态是否清楚、卡片是否仍需内部滚动、完整阅读后的返回与关联项切换。
 - 业务与证据边界：方向来自用户明示（H），具体尺寸及边界是设计假设（L）；未连接真实工程、AI 或 NPU。
-- Commit / push: pending.
+- Commit / push: `b5981e77` 已推送 `origin/main`；Pages workflow 尚未确认。

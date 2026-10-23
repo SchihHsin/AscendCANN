@@ -6094,4 +6094,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 在 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 末尾新增两页，分别记录类型尺寸 / 长内容规则与全景→聚焦→完整阅读的交互；新增页放在既有页面之后，既有页的数字页码 / hash 不移动。
 - 依据：交互方向来自用户明确要求（H）；默认尺寸、最小 / 最大尺寸是本轮按 AddCustom 内容提出的可验证设计值（L），不是用户数据或普适平台规则。没有修改 API / Protocol、Host / Harness、Application / Task 边界，不声称真实代码、模型或 NPU 已验证。
 - 验证：`npm run build:pages` 通过，`git diff --check` 通过；Vite 保留既有 500 kB chunk 提示。未运行测试套件。已启动隔离本地预览 `http://127.0.0.1:5188/` 并请求在 Codex 面板打开；本轮未完成截图级交互回放，用户评审重点是聚焦与完整阅读的区别、卡片预览 / 溢出入口、完整内容区与返回行为。
-- Commit / push：等待本轮功能与材料文件提交后回填。
+- AddCustom 源码、两页规则材料和 `ascstudio/` Pages 产物随提交 `b5981e77` 已推送 `origin/main`；Pages workflow 尚未确认。
