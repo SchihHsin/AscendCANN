@@ -6009,7 +6009,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更正上一版刷新行为：刷新时清除社区草稿面板、草稿卡片及演示提交消息，保留任务完成后的社区邀请提示，让界面回到“生成草稿”入口，而不是“待你审阅”。
 - 发布渠道下拉保留在生成后的右侧草稿面板；线上页面可展开昇腾社区、GitCode、CSDN、抖音四个选项。真实渠道发布服务未接入。
 - 修改 `ascend-studio/src/useWorkbenchState.js` 并重建 `ascstudio/` Pages 包；不改变页面导航序列 / hash 或 API / Host / Application 边界。
-- 验证：`npm run build`、`npm run build:pages`、`node --check src/useWorkbenchState.js` 与 `git diff --check` 均通过。CUA 检查线上下拉可展开四个平台；未运行测试套件，也未在新包部署前手工回放刷新。
+- 验证：`npm run build`、`npm run build:pages`、`node --check src/useWorkbenchState.js` 与 `git diff --check` 均通过。提交 `9b83f844` 已推送 `main`；对该提交手动请求 Pages 构建 `1305919539` 并确认 `built`，无缓存请求线上入口返回 `index-BECcnVmp.js`。此前线上下拉可展开四个平台；未运行测试套件，未做浏览器内刷新回放。
 
 ### 2026-10-23 · 首页经典 / 探索双视图 Demo
 
