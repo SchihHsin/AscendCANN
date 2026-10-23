@@ -6211,4 +6211,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 根据用户截图修复头像菜单中主题切换项的布局：主题由拥挤的双列改为上下排列的整行；两种色样和文字左侧对齐，选中勾固定在每行右侧，统一行高、内边距与间距。
 - 根因是主题按钮嵌套在菜单中，没有继承只匹配菜单直接子项的 flex 规则；现为主题按钮显式设置 flex 对齐、宽度与文字左对齐。
 - 修改 `ascend-studio/src/interaction.css`，并重建 `ascstudio/` Pages 资源。依据为用户截图（H）与本地 CUA 预览 `http://127.0.0.1:5195/` 的视觉复核（M）。不改变主题行为、页面序列或 API / Host / Application 边界。
-- 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）及 `git diff --check` 通过；Vite 仍显示既有大 bundle 提示。commit / push 与线上部署状态待补记。
+- 验证：`npm run build`、`npm run build:pages`、`npm run test:sites`（4 项）及 `git diff --check` 通过；Vite 仍显示既有大 bundle 提示。修复提交 `346a965e` 已推送 `origin/main`；Pages workflow `39962634657` 成功。线上 `/ascstudio/` 引用 `index-CAN71tdm.js` 与 `index-Cv_nE7YX.css`（均 HTTP 200），CSS 已确认主题选项为单列整行、左侧 flex 对齐和右侧勾选定位。
