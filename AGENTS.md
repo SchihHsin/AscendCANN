@@ -6068,6 +6068,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 源码提交 `afcd7201`、Pages 产物提交 `deddff90` 已推送 `origin/main`。随后并行工作流提交 `ff5f8c22` 自动重建了 Pages 资源；没有覆盖它的滚动条改动。Pages workflow `39917240033` 成功，线上 `/ascstudio/` 已引用新 `index-CrgsQxNv.js` / `index--X1czWii.css`。
 - 本次在隔离工作树实施；根共享工作树已有的其他改动未纳入本次功能提交。
 - 头像修正：四张卡片改用本地 SVG 品牌标志，昇腾社区取自仓内 Ascend CANN 标志，GitCode / CSDN 使用 Simple Icons 品牌图形，抖音使用双色音符标志；随构建打包，无运行时外链。`npm run build:pages` 与 `git diff --check` 通过，未运行测试套件。提交 `37731e1b` 已推送 `origin/main`；Pages workflow `39919652648` 成功，线上已引用 `index-BAi1jd8R.js` / `index-07fC6pBs.css`。
+- 多渠道页增加卡片多选：默认选中昇腾社区，点卡片或圆形勾选控件可切换；选中态显示深色描边和勾选。卡片按钮统一为「查看详情」，右下角按待发布数量提供单发 / 批量发布；发布仅演示本地状态，选中社区时仍更新提交态并可返回社区文章预览。选中与外部渠道发布状态不持久化，无报告页序 / hash 或 API、Host / Harness、Application / Task 边界变化。`npm run build:pages`、`git diff --check` 通过，未运行测试套件。提交 `c8632171` 已推送 `origin/main`；Pages workflow `39921418238` 成功，线上 `/ascstudio/` 引用 `index-BPU1heH9.js` / `index-Co8klKKT.css`。
 
 ### 2026-10-23 · Ascend Studio 项目列表与对话滚动条
 

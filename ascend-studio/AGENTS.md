@@ -1229,3 +1229,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 变更 `src/CommunityDraftPanel.jsx`、`src/ChannelDraftContent.jsx`、`src/community-draft.css`，并生成 Pages 产物 `../ascstudio/`。无报告页序 / hash 或 API、Host / Harness、Application / Task 层边界变化。
 - 本地 1280×720 核对四卡片同屏、GitCode / CSDN 详情、演示发布后状态返回卡片；`npm run build:pages` 与 `git diff --check` 通过。未运行测试套件。源码提交 `afcd7201`、Pages 产物提交 `deddff90` 已推送 `origin/main`；并行提交 `ff5f8c22` 的 Pages workflow `39917240033` 成功，线上已引用新 JS / CSS bundle。
 - 2026-10-23 头像修正：社区、GitCode、CSDN、抖音卡片均显示对应品牌 SVG 标志，不再用字母 / 字符代替；图形本地打包。`npm run build:pages`、`git diff --check` 通过；提交 `37731e1b` 已推送，Pages workflow `39919652648` 成功，线上入口已加载新 JS / CSS。
+- 2026-10-23 多选与批量发布：默认勾选社区；点击卡片任意处或圆形勾选可切换，选中态有描边与勾号。单卡操作为「查看详情」，页面右下角按待发渠道数批量发布；仅更新本地演示状态，社区提交继续支持文章预览及返回多渠道页。选中与发布状态刷新后重置。`npm run build:pages`、`git diff --check` 通过，未运行测试套件。提交 `c8632171` 已推送 `origin/main`，Pages workflow `39921418238` 成功，线上加载新资源。
