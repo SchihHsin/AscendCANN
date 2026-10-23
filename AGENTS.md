@@ -6064,8 +6064,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户依据此前草图明确纠正交互：点“查看全部发布渠道”后，右侧显示社区、GitCode、CSDN、抖音四张预览卡片并排成 2×2；取消下拉 / 勾选菜单。卡片各自进入对应渠道的审阅 / 发布视图；昇腾社区保留可编辑草稿和提交后社区文章预览。
 - 四渠道按平台语境呈现独立预览；抖音卡片使用深色知识图文。主题标题随草稿变化，避免其他开发任务的内容被写成 AddCustom。奖励与积分仍清楚标为示例；第三方发布仍为本地演示。AddCustom 尾块只写作待验证线索，未增加根因或 NPU 已通过的结论。
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`ChannelDraftContent.jsx`、`community-draft.css`，重建根目录 `ascstudio/` Pages 包；无报告页面序列 / hash 或 API、Host / Harness、Application / Task 边界变化。
-- 本地 CUA 1280×720 看到四张卡片同屏；从 GitCode / CSDN 预览可进入对应审阅页面，CSDN 本地演示发布状态回到总览后显示在卡片上。`npm run build:pages`、`git diff --check` 通过，未运行测试套件。线上发布 / Pages 状态待回填。
-- 本次在隔离工作树基于 `origin/main` 实施；根共享工作树已有的其他会话改动未纳入。本轮提交 / push 与 Pages 发布状态待补记。
+- 本地 CUA 1280×720 看到四张卡片同屏；从 GitCode / CSDN 预览可进入对应审阅页面，CSDN 本地演示发布状态回到总览后显示在卡片上。`npm run build:pages`、`git diff --check` 通过，未运行测试套件。
+- 源码提交 `afcd7201`、Pages 产物提交 `deddff90` 已推送 `origin/main`。随后并行工作流提交 `ff5f8c22` 自动重建了 Pages 资源；没有覆盖它的滚动条改动。Pages workflow `39917240033` 成功，线上 `/ascstudio/` 已引用新 `index-CrgsQxNv.js` / `index--X1czWii.css`。
+- 本次在隔离工作树实施；根共享工作树已有的其他改动未纳入本次功能提交。
 
 ### 2026-10-23 · Ascend Studio 项目列表与对话滚动条
 
