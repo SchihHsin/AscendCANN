@@ -6320,3 +6320,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build:pages`、`git diff --check` 通过；未运行自动化测试套件。构建保留既有 JavaScript chunk 大于 500 kB 的提醒。GitHub Pages workflow `40008849917` 的 build / deploy 成功；线上 `/ascstudio/` HTML、`index-DEiKr4CE.js` 与 `index-U7bewoKQ.css` 均返回 HTTP 200。源码提交 `29979622`、Pages 包提交 `4aa19026` 已推送 `origin/main`。
 
 - 补充核验当前用户本地 `http://127.0.0.1:8124/`：切到「图像推理调试」后列表仍展开；继续切到「AddCustom 精度异常」时，该本地旧 bundle 出现 `ReferenceError: presentation is not defined` 并白屏。重新加载后恢复。该预览与已发布 Pages 包不同；主工作区有其他对话在途文件，本轮没有修改或清理。
+
+
+### 2026-10-24 · 探索首页鼠标跟随柔光试验
+
+- 用户反馈探索页背景偏单调，并明确要求尝试光晕随鼠标移动。页面增加低对比蓝紫 / 暖粉静态底色，鼠标附近的柔光以轻微缓动跟随；光层在内容之后。触屏不触发，系统减少动态效果时隐藏跟随光晕。仅是视觉概念，不表达训练状态或诊断数据。
+- 修改 `ascend-studio/src/ExploreTaskHome.jsx`、`explore-task-home.css`、`design-qa.md`、`ascend-studio/AGENTS.md`，并重建 `ascstudio/` Pages 产物。没有改变下钻、锁定、Prompt、任务创建、页面序列 / hash 或 API / Host / Application 边界。
+- 证据为用户直接反馈（H）。本地 CUA `http://127.0.0.1:5202/?home=explore`、1280×720 核对光晕从画布中部跟随到右侧；训练主题锁定下钻后中心与关联节点 / 连线仍清晰。预览标签保持打开供用户评审。
+- 验证：`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check` 通过；线上 HTML、JS、CSS HTTP 200，JS 中有指针动画代码，CSS 中有光晕规则。Vite 仍提示主 JS chunk 大于 500 kB。
+- 提交 `c1ec4561` 已推送 `origin/main`，Pages workflow `40048292606` build / deploy 成功。待用户评估光晕的颜色与强度。

@@ -1151,4 +1151,4 @@ final result: passed
 - **实现:** `ExploreTaskHome.jsx` 用 requestAnimationFrame 追踪指针并平滑跟随；`explore-task-home.css` 将光晕置于界面内容之后。触屏不触发；`prefers-reduced-motion` 下不显示光晕。未改变节点、连线、路径选择、Prompt 或任务创建行为。
 - **验证:** CUA 本地预览 `http://127.0.0.1:5202/?home=explore`，1280×720。移动指针后，柔光从中部移动至右侧；进入训练主题下钻态后，中心节点、周围节点和关联连线仍清晰。页面恢复到初始探索态供评审。
 - **检查:** `npm run build:pages` 与 `git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 的提醒。未新增或运行自动化测试，未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界。
-- **发布:** 待提交与推送。
+- **发布:** 源码、交接与 Pages 构建产物由提交 `c1ec4561` 推送至 `origin/main`；Pages workflow `40048292606` build / deploy 成功。线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200，CSS 与 JS 已确认包含光晕规则和指针动画。
