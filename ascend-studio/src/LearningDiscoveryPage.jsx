@@ -2,14 +2,14 @@ import { useMemo, useState } from "react";
 import { IconArrowRight, IconCalendarEvent, IconCircleCheck, IconSearch, IconSparkles, IconUsersGroup, IconVideo } from "@tabler/icons-react";
 import { LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_PATH_URL, OFFICIAL_LEARNING_SOURCES, OFFICIAL_LEARNING_TASK } from "./official-learning-data";
-import resnetCourseImage from "./assets/learning-discovery/resnet50-inference-course-v2.jpg";
-import preprocessingPathImage from "./assets/learning-discovery/image-preprocessing-path-v2.jpg";
-import tensorKnowledgeImage from "./assets/learning-discovery/hwc-to-chw-knowledge-v2.jpg";
-import inputContractImage from "./assets/learning-discovery/model-input-contract-v2.jpg";
-import ascendclCourseImage from "./assets/learning-discovery/ascendcl-quickstart-course-v2.jpg";
-import developerPathImage from "./assets/learning-discovery/developer-growth-path-v2.jpg";
-import certificationImage from "./assets/learning-discovery/developer-certification-prep-v2.jpg";
-import meetupImage from "./assets/learning-discovery/inference-meetup-v2.jpg";
+import resnetCourseImage from "./assets/learning-discovery/resnet-inference-course-light.jpg";
+import preprocessingPathImage from "./assets/learning-discovery/image-preprocessing-path-light.jpg";
+import tensorKnowledgeImage from "./assets/learning-discovery/tensor-layout-conversion-light.jpg";
+import inputContractImage from "./assets/learning-discovery/model-input-checklist-light.jpg";
+import ascendclCourseImage from "./assets/learning-discovery/ascendcl-quickstart-light.jpg";
+import developerPathImage from "./assets/learning-discovery/developer-growth-path-light.jpg";
+import certificationImage from "./assets/learning-discovery/certification-preparation-light.jpg";
+import meetupImage from "./assets/learning-discovery/developer-meetup-light.jpg";
 import "./learning-discovery.css";
 
 const recommendations = [
@@ -108,6 +108,18 @@ const events = [
   { id: "meetup-community", month: "11月", day: "19", weekday: "周四", time: "19:00", kind: "开发者交流", title: "昇腾 AI 应用开发者交流会", description: "分享模型迁移、应用调试与开发协作中的实践经验。", place: "线上 · 活动信息示例" },
 ];
 
+const chipTone = type => ({
+  "课程": "tone-course",
+  "学习路径": "tone-path",
+  "路径": "tone-path",
+  "知识点": "tone-knowledge",
+  "认证": "tone-certification",
+  "学习任务": "tone-task",
+  "Meetup": "tone-meetup",
+  "课程直播": "tone-course",
+  "开发者交流": "tone-community",
+}[type] ?? "tone-neutral");
+
 function DiscoveryCard({ item, onOpen, followed, onFollow }) {
   return (
     <article className="ld-card">
@@ -116,7 +128,7 @@ function DiscoveryCard({ item, onOpen, followed, onFollow }) {
       </div>
       <div className="ld-card-content">
         <div className="ld-card-topline">
-          <span className="ld-type-chip">{item.type}</span>
+          <span className={`ld-type-chip ${chipTone(item.type)}`}>{item.type}</span>
           {item.reason && <span className="ld-card-context">{item.reason}</span>}
         </div>
         <h3>{item.title}</h3>
@@ -161,26 +173,13 @@ export function LearningDiscoveryPage({ onOpenItem }) {
             <p>接着学一点，发现新内容，也看看开发者们最近在交流什么。</p>
           </div>
           <div className="ld-heading-tools">
+            <span className="ld-demo-note">展示示例内容</span>
             <label className="ld-search">
               <IconSearch size={16} />
               <input value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索课程、知识点或活动" aria-label="搜索学习内容与活动" />
             </label>
           </div>
         </div>
-        <article className="ld-featured-card" aria-label="推荐课程">
-          <div className="ld-featured-copy">
-            <span className="ld-type-chip">课程</span>
-            <h2>{recommendations[0].title}</h2>
-            <p>{recommendations[0].description}</p>
-            <span className="ld-featured-meta">{recommendations[0].meta}</span>
-          </div>
-          <div className="ld-featured-media">
-            <img src={recommendations[0].image} alt={recommendations[0].imageAlt} />
-          </div>
-          <button className="ld-featured-action" type="button" aria-label={`继续学习：${recommendations[0].title}`} onClick={() => onOpenItem(recommendations[0].destination)}>
-            <IconArrowRight size={18} />
-          </button>
-        </article>
       </header>
 
       <main className="ld-scroll" aria-label="学习发现内容">
@@ -219,7 +218,7 @@ export function LearningDiscoveryPage({ onOpenItem }) {
               return <article className="ld-event" key={event.id}>
                 <div className="ld-event-date"><span>{event.month}</span><strong>{event.day}</strong><small>{event.weekday}</small></div>
                 <div className="ld-event-copy">
-                  <div className="ld-event-meta"><span className="ld-type-chip">{event.kind}</span><span>{event.time}</span></div>
+                  <div className="ld-event-meta"><span className={`ld-type-chip ${chipTone(event.kind)}`}>{event.kind}</span><span>{event.time}</span></div>
                   <h3>{event.title}</h3>
                   <p>{event.description}</p>
                   <small className="ld-event-place">{event.place}</small>
