@@ -1471,3 +1471,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-24 · 学习发现 Banner 纠正
 
 - 用户再次明确：学习发现页顶部要有已选的浅色 Banner 图，并向下渐隐到灰色内容底；这条决定覆盖上文“不使用大 Banner”的误记。保留紧凑页头和四类推荐内容，不恢复旧版顶部推荐大卡。
+- `npm run build:pages` 与 `git diff --check` 通过；提交 `9fd1070b` 已推送 `origin/main`，Pages workflow `40079315361` build / deploy 成功。线上 HTML、JS、CSS 与 Banner 图均 HTTP 200。

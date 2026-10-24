@@ -6434,4 +6434,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户澄清：学习发现页顶部应保留此前选定的浅色 Banner 图，并从上向下渐隐融入浅灰内容区；此前“学习发现不使用大 Banner”的记录源自误读，以本条为准。
 - `ascend-studio/src/learning-discovery.css` 恢复 `discovery-banner-bg.png` 作为页头背景，保留紧凑标题与搜索布局，不恢复旧版推荐大卡；渐变底色与内容画布统一为 `#f8f9fb`，窄屏继续采用纵向页头。
 - 依据：用户本轮纠正与既有 Banner 选择（H）；本地桌面预览确认顶部浅图可见、下沿渐融入楼层背景（M）。不改变页面顺序、导航、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- `npm run build:pages`、`git diff --check` 通过；本轮先整合至 `c8ea9dba` 的 `origin/main`，保留并行 AddCustom 画布更新后重新构建。提交并推送后核对 Pages 发布状态；未做真实 NPU 验证。
+- `npm run build:pages`、`git diff --check` 通过；先整合 `origin/main` 的 AddCustom 画布与探索页并行更新后重建。提交 `9fd1070b` 已推送 `origin/main`；Pages workflow `40079315361` build / deploy 成功，线上 `/ascstudio/` HTML、JS、CSS 与 Banner 图均 HTTP 200，CSS 已引用渐隐图层。CUA 本地预览确认 Banner 可见且下沿融入灰白楼层；线上只核对资源响应，未取得线上截图。未做真实 NPU 验证。
