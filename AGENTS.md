@@ -6406,3 +6406,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 根协作规则已补充：每轮修改当轮检查、只提交本任务文件、push `origin/main` 并核对 Pages 发布；不得以本地已改、共享工作区脏或待 QA 为由延期，冲突时保留并行修改且禁止强推。
 - 依据：用户提供的两张截图及此前确认的设计决策（H）；Git 历史与主工作区待发布文件用于定位差异（H）。本次不涉及页面序列、hash、API / Protocol、Host / Harness 或 Application / Task 边界变化，也不构成真实模型 / NPU 验证。
 - `npm run build:pages` 与 `git diff --check` 成功；CUA 本地桌面预览确认紧凑白色页头、浅色内容图、四类推荐和三层连续结构已出现，截图 `/tmp/ascstudio-learning-discovery-selected-20261024.png`。未运行测试套件。源码及 Pages 提交 `ea2153cb` 已推送 `origin/main`（推送前整合 5 个并行提交）；Pages workflow `40074675860` build / deploy 成功。线上 HTML 已引用 `index-Bdhw4m6A.js`、`index-D-OSzdn9.css`，JS/CSS 及 8 张浅色内容图均 HTTP 200。线上浏览器视觉读取超时，不记作线上截图核验成功；本地截图为最终构建实拍。
+
+### 2026-10-24 · 布局承担界面解释
+
+- 用户提供参考图，确认 Ascend Studio 的界面应避免不必要的次级标签和说明，让布局、位置与分组承担解释；该原则已加入「Ascend Studio 长期设计基准」。依据为用户提供的设计参考，属于明确的设计偏好。
+- 同轮讨论了 ResNet50 学习画布与 AddCustom 精度异常画布的共用外框，并更新独立评审稿 /Users/hsin/.codex/visualizations/2026/10/24/ascend-canvas-shell-review/index.html：使用画布内浮动控件，保留缩放、聚焦与适应画布等操作。没有修改实际 Demo，也未触碰 AddCustom 对话的工作区。
+- git diff --check 通过；规则已单独提交并推送至 origin/main。本条不改变页面序列、hash 或 API / Host / Application 边界。
