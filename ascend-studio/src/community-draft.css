@@ -178,6 +178,8 @@
 .channel-preview-card::before { position: absolute; z-index: 0; top: 0; right: 0; left: 0; height: clamp(70px, 31%, 94px); border-radius: inherit; content: ""; pointer-events: none; }
 .channel-preview-card > * { position: relative; z-index: 1; }
 .channel-preview-card:hover { border-color: #c9c7c4; }
+.channel-preview-card.is-published { cursor: default; }
+.channel-preview-card.is-published:hover { border-color: rgba(110, 104, 105, .16); }
 .channel-preview-card.is-selected { border-color: #26272b; box-shadow: 0 0 0 2px rgba(38, 39, 43, .1), 0 3px 10px rgba(35, 34, 41, .045); }
 .channel-preview-card--community { --channel-accent: #c31d20; }
 .channel-preview-card--community::before { background: linear-gradient(180deg, rgba(195, 29, 32, .07), rgba(195, 29, 32, .025) 55%, rgba(195, 29, 32, 0)); }
@@ -203,6 +205,7 @@
 .channel-preview-select:hover { border-color: #828187; }
 .channel-preview-select.is-selected { border-color: #202125; color: #fff; background: #202125; }
 .channel-preview-select:focus-visible { outline: 2px solid #94939a; outline-offset: 2px; }
+.channel-preview-locked-status { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 2px; padding: 4px 5px; border: 1px solid #dce7dd; border-radius: 20px; color: #5c765f; background: #f5f8f5; font-size: 7px; line-height: 1; white-space: nowrap; }
 .channel-preview-format { flex: 0 0 auto; padding: 4px 7px; border: 1px solid rgba(110, 104, 105, .15); border-radius: 20px; color: #58585f; background: rgba(255, 255, 255, .78); font-size: 8px; line-height: 1; white-space: nowrap; }
 .channel-preview-card--community .channel-preview-format, .channel-preview-card--gitcode .channel-preview-format, .channel-preview-card--csdn .channel-preview-format { color: var(--channel-accent); border-color: color-mix(in srgb, var(--channel-accent) 23%, white); }
 .channel-preview-card--tiktok .channel-preview-format { color: #25262b; border-color: rgba(37, 244, 238, .4); }
@@ -264,7 +267,6 @@
 .channel-preview-reward { display: inline-flex; min-width: 0; align-items: center; gap: 4px; overflow: hidden; color: var(--channel-accent, #62636b); font-size: 8px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
 .channel-preview-reward svg { flex: 0 0 auto; color: var(--channel-accent, #62636b); }
 .channel-preview-card-footer-actions { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 6px; }
-.channel-preview-published { display: inline-flex; align-items: center; gap: 2px; color: #5c765f; font-size: 7px; white-space: nowrap; }
 .channel-preview-action { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 4px; min-height: 26px; padding: 0 8px; border: 1px solid #e3e1df; border-radius: 6px; color: #484950; background: #fff; font-size: 8px; font-weight: 550; white-space: nowrap; cursor: pointer; }
 .channel-preview-action:hover { border-color: #c9c7c4; background: #f8f7f6; }
 .community-channel-overview-footer { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 8px; }

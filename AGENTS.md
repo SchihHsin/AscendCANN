@@ -6345,3 +6345,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户截图与明确反馈（H）；本地 CUA 已确认首次草稿显示「查看全部发布渠道」，点击后进入四渠道总览（M）。本轮检查时浏览器连接中断，未重新回放总览进入详情后的返回文案。
 - 用户正在讨论多渠道发布后的卡片状态：倾向于已发布渠道显示已发布且不可再次选择/发布，未发布渠道仍可查看并发布。为保留既有发布结果预览，建议锁定已发布卡片的选择行为，同时提供独立的「查看发布效果」入口；等待用户确认后实现。
 - 不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。构建、提交和推送状态在本次交付后补齐。
+
+### 2026-10-24 · 多渠道总览中的已发布状态
+
+- 用户确认：已发布渠道显示状态并停止卡片选择 / 重复发布；未发布渠道继续可选；发布结果仍需可重新查看。`CommunityDraftPanel.jsx` 现对已发布卡片移除整卡点击与选择框，显示「已发布」，保留独立「查看发布效果」按钮。未发布卡片仍支持整卡选择、详情查看和批量发布；已发布渠道从待发布选择中清除，底部数量只统计待发布项。没有待发布选择而已有发布结果时，底部仍可进入最近一批预览。
+- 本地 CUA 回放：生成社区草稿 → 选社区与 GitCode 批量发布 → 从社区发布预览返回总览。社区与 GitCode 显示已发布；点击社区卡片正文无切换；独立预览按钮能重新进入发布后文章。CSDN、抖音仍显示可选框；点击抖音卡片可选中，待发布数与按钮数量同步增加。当前仅为本地演示，不触发真实平台发布。
+- 变更：`ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css`、`ascstudio/` 构建产物，以及本交接文件、`ascend-studio/AGENTS.md`、`ascend-studio/design-qa.md`。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证与发布：`npm --prefix ascend-studio run build:pages`、`node --check` 构建 JS、`git diff --check` 均通过；未运行自动化测试。构建保留既有 JS chunk 大于 500 kB 提示。提交、推送和 Pages workflow 结果待补记。
