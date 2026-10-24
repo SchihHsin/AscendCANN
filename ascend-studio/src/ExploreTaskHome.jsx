@@ -62,6 +62,8 @@ export function ExploreTaskHome({ onCreateTask }) {
   const [previewIds, setPreviewIds] = useState([]);
   const [connections, setConnections] = useState({ width: 0, height: 0, paths: [] });
   const [hoveredId, setHoveredId] = useState(null);
+  const [pendingId, setPendingId] = useState(null);
+  const [lockingId, setLockingId] = useState(null);
   const [draft, setDraft] = useState("");
   const [edited, setEdited] = useState(false);
   const [appliedPrompt, setAppliedPrompt] = useState("");
@@ -77,11 +79,16 @@ export function ExploreTaskHome({ onCreateTask }) {
   const previousNodeLayout = useRef(null);
   const draftRef = useRef(null);
   const previewTimer = useRef(null);
+  const lockTimer = useRef(null);
   const pointerNodeId = useRef(null);
   const pointerPosition = useRef(null);
   const rearmPointer = useRef(null);
 
-  useLayoutEffect(() => () => window.cancelAnimationFrame(glowFrame.current), []);
+  useLayoutEffect(() => () => {
+    window.cancelAnimationFrame(glowFrame.current);
+    window.clearTimeout(previewTimer.current);
+    window.clearTimeout(lockTimer.current);
+  }, []);
 
   const request = explorationRequest(ids);
   const activeIds = [...ids, ...previewIds];
@@ -198,12 +205,21 @@ export function ExploreTaskHome({ onCreateTask }) {
     };
   }, [focusedId, options]);
 
-  const choose = (nextIds) => {
+  const choose = (nextIds, lockNodeId = null, pointerEvent = null) => {
     window.clearTimeout(previewTimer.current);
     previewTimer.current = null;
+    window.clearTimeout(lockTimer.current);
     pointerNodeId.current = null;
-    pointerPosition.current = null;
-    rearmPointer.current = null;
+    const clickPoint = pointerEvent?.detail > 0
+      ? { x: pointerEvent.clientX, y: pointerEvent.clientY }
+      : null;
+    pointerPosition.current = clickPoint;
+    rearmPointer.current = clickPoint;
+    setPendingId(null);
+    setLockingId(lockNodeId);
+    if (lockNodeId) {
+      lockTimer.current = window.setTimeout(() => setLockingId(null), 560);
+    }
     captureNodeLayout();
     const next = explorationRequest(nextIds);
     setIds(next.path.map((item) => item.id));
@@ -222,11 +238,13 @@ export function ExploreTaskHome({ onCreateTask }) {
   const preview = (node) => {
     window.clearTimeout(previewTimer.current);
     setHoveredId(node.id);
+    setPendingId(node.id);
     previewTimer.current = window.setTimeout(() => {
       captureNodeLayout();
       if (pointerPosition.current) {
         rearmPointer.current = { ...pointerPosition.current };
       }
+      setPendingId(null);
       setPreviewIds((current) => appendPreviewPath(ids, current, node.id));
       previewTimer.current = null;
     }, HOVER_PREVIEW_DELAY_MS);
@@ -253,6 +271,7 @@ export function ExploreTaskHome({ onCreateTask }) {
     window.clearTimeout(previewTimer.current);
     previewTimer.current = null;
     pointerNodeId.current = null;
+    setPendingId(null);
     setHoveredId(null);
   };
 
@@ -262,6 +281,7 @@ export function ExploreTaskHome({ onCreateTask }) {
     pointerNodeId.current = null;
     pointerPosition.current = null;
     rearmPointer.current = null;
+    setPendingId(null);
     if (previewIds.length) captureNodeLayout();
     setPreviewIds([]);
     setHoveredId(null);
@@ -380,12 +400,18 @@ export function ExploreTaskHome({ onCreateTask }) {
       >
         {connections.paths.map((path) => <g key={path.id}>
           <path
-            className={"explore-field__connection" + (hoveredId === path.id ? " is-active" : "")}
+            className={"explore-field__connection" + (hoveredId === path.id ? " is-active" : "") + (pendingId === path.id ? " is-pending" : "")}
             d={path.d}
             pathLength={isPreviewing ? undefined : 1}
             style={{ "--connection-index": path.index, "--connection-color": path.color }}
           />
-          <circle className="explore-field__connection-end" cx={path.x} cy={path.y} r="2" style={{ "--connection-color": path.color }} />
+          {pendingId === path.id && <path
+            className="explore-field__pending-trace"
+            d={path.d}
+            pathLength="1"
+            style={{ "--connection-color": path.color }}
+          />}
+          <circle className={"explore-field__connection-end" + (pendingId === path.id ? " is-pending" : "")} cx={path.x} cy={path.y} r="2" style={{ "--connection-color": path.color }} />
         </g>)}
       </svg>}
       {focused || options.length > 0 ? <div className={"explore-field__nodes" + (focused ? " has-center" : "")} data-count={options.length}>
@@ -396,7 +422,7 @@ export function ExploreTaskHome({ onCreateTask }) {
             if (element) nodeRefs.current.set(focused.id, element);
             else nodeRefs.current.delete(focused.id);
           }}
-          className={`explore-field__node explore-field__node--${focused.tone || "blue"} is-center${topicEnglishTitles[focused.id] ? " is-topic" : ""}${isPreviewing ? " is-previewing" : ""}`}
+          className={`explore-field__node explore-field__node--${focused.tone || "blue"} is-center${topicEnglishTitles[focused.id] ? " is-topic" : ""}${isPreviewing ? " is-previewing" : ""}${lockingId === focused.id ? " is-locking" : ""}`}
           style={{ "--node-x": "50%", "--node-y": "50%", "--node-index": 0 }}
           onPointerMove={(event) => moveOnNode(focused, event)}
           onPointerLeave={() => leaveNode(focused)}
@@ -404,11 +430,11 @@ export function ExploreTaskHome({ onCreateTask }) {
           onBlur={(event) => {
             if (!event.currentTarget.parentElement?.contains(event.relatedTarget)) setHoveredId(null);
           }}
-          onClick={() => { if (isPreviewing) choose(activeIds); }}
+          onClick={(event) => { if (isPreviewing) choose(activeIds, focused.id, event); }}
           aria-label={focused.label + (isPreviewing ? "。点击锁定当前方向。" : "。当前已选方向。")}
         >
           <span className="explore-field__node-content">
-            <span className="explore-field__node-kind"><i aria-hidden="true" />{topicEnglishTitles[focused.id] || (isPreviewing ? "HOVER PREVIEW" : "LOCKED DIRECTION")}</span>
+            <span className="explore-field__node-kind"><span className="explore-field__node-cue" aria-hidden="true"><i /><svg className="explore-field__dwell-ring" viewBox="0 0 18 18"><circle className="explore-field__dwell-track" cx="9" cy="9" r="7" /><circle className="explore-field__dwell-progress" cx="9" cy="9" r="7" pathLength="100" /></svg></span>{topicEnglishTitles[focused.id] || (isPreviewing ? "HOVER PREVIEW" : "LOCKED DIRECTION")}</span>
             <strong>{focused.label}</strong>
             <span className="explore-field__node-hint">{focused.hint}</span>
             <span className={"explore-field__node-action explore-field__node-status" + (isPreviewing ? " is-preview" : " is-locked")}>{isPreviewing ? <>悬浮预览中 · 点击锁定 <IconArrowRight size={13} /></> : <>已锁定到需求草稿 <IconCheck size={13} /></>}</span>
@@ -427,7 +453,7 @@ export function ExploreTaskHome({ onCreateTask }) {
               if (element) nodeRefs.current.set(item.id, element);
               else nodeRefs.current.delete(item.id);
             }}
-            className={"explore-field__node explore-field__node--" + tone + (hoveredId === item.id ? " is-hovered" : "") + (rootNode ? " is-topic" : "")}
+            className={"explore-field__node explore-field__node--" + tone + (hoveredId === item.id ? " is-hovered" : "") + (pendingId === item.id ? " is-hover-pending" : "") + (lockingId === item.id ? " is-locking" : "") + (rootNode ? " is-topic" : "")}
             style={{ "--node-index": index + 1, ...(focused ? { "--node-x": `${x}%`, "--node-y": `${y}%` } : {}) }}
             onPointerMove={(event) => moveOnNode(item, event)}
             onPointerLeave={() => leaveNode(item)}
@@ -435,12 +461,12 @@ export function ExploreTaskHome({ onCreateTask }) {
             onBlur={(event) => {
               if (!event.currentTarget.parentElement?.contains(event.relatedTarget)) setHoveredId(null);
             }}
-            onClick={() => choose([...activeIds, item.id])}
+            onClick={(event) => choose([...activeIds, item.id], item.id, event)}
             aria-label={item.label + "。 " + item.hint + (item.children.length ? "。悬浮停留展开下一层，也可点击锁定并继续。" : "。点击加入需求草稿。")}
           >
             <span className="explore-field__node-content">
               <span className="explore-field__node-kind">
-                <i aria-hidden="true" />
+                <span className="explore-field__node-cue" aria-hidden="true"><i /><svg className="explore-field__dwell-ring" viewBox="0 0 18 18"><circle className="explore-field__dwell-track" cx="9" cy="9" r="7" /><circle className="explore-field__dwell-progress" cx="9" cy="9" r="7" pathLength="100" /></svg></span>
                 {Icon && rootNode ? <Icon size={13} stroke={1.8} /> : null}
                 {rootNode ? topicEnglishTitles[item.id] || label : label}
               </span>

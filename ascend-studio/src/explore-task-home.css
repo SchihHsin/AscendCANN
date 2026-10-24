@@ -128,6 +128,10 @@
 .explore-field.is-previewing .explore-field__connection { stroke-dasharray: 4 7; stroke-dashoffset: 14px; opacity: .38; animation: explore-preview-connection 540ms cubic-bezier(.22,.8,.3,1) forwards; }
 .explore-field.is-previewing .explore-field__connection.is-active { stroke-width: 1.6; opacity: .78; }
 .explore-field.is-previewing .explore-field__connection-end { opacity: .42; }
+.explore-field__connection.is-pending { stroke-width: 1.35; opacity: .48; }
+.explore-field.is-previewing .explore-field__connection.is-pending { stroke-width: 1.6; opacity: .72; }
+.explore-field__pending-trace { fill: none; stroke: var(--connection-color); stroke-width: 1.8; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: .88; filter: drop-shadow(0 0 2px var(--connection-color)); animation: explore-dwell-line 620ms linear forwards; pointer-events: none; }
+.explore-field__connection-end.is-pending { opacity: .85; filter: drop-shadow(0 0 3px var(--connection-color)); }
 .explore-field__nodes, .explore-field__note { position: relative; z-index: 1; }
 .explore-field__nodes { display: grid; flex: 1 1 auto; min-height: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(112px, 1fr)); align-items: center; gap: 5px 3%; padding: 0 1%; }
 .explore-field__node { --node-color: #6275d6; position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-self: center; width: max-content; max-width: 100%; min-width: 0; padding: 10px 12px 13px; border: 0; border-radius: 0; background: transparent; color: #242b37; text-align: left; transition: color 160ms, transform 200ms; }
@@ -146,8 +150,19 @@
 .explore-field__node:hover, .explore-field__node.is-hovered { color: var(--node-color); transform: translateY(-3px); }
 .explore-field__node:hover::after, .explore-field__node.is-hovered::after { opacity: .7; transform: scaleX(1); }
 .explore-field__node-kind { display: inline-flex; align-items: center; gap: 5px; margin-bottom: 7px; color: var(--node-color); font-size: 9px; line-height: 1.2; }
-.explore-field__node-kind i { width: 2px; height: 10px; background: currentColor; }
-.explore-field__node-kind svg { margin-right: 1px; }
+.explore-field__node-cue { position: relative; display: inline-grid; flex: 0 0 14px; width: 14px; height: 14px; place-items: center; color: currentColor; }
+.explore-field__node-cue > i { width: 3px; height: 3px; border-radius: 50%; background: currentColor; transition: opacity 160ms, transform 160ms; }
+.explore-field__dwell-ring { position: absolute; inset: 0; width: 14px; height: 14px; margin: 0 !important; overflow: visible; opacity: 0; transform: rotate(-90deg) scale(.72); transform-box: fill-box; transform-origin: center; transition: opacity 120ms, transform 160ms; pointer-events: none; }
+.explore-field__dwell-track, .explore-field__dwell-progress { fill: none; stroke: currentColor; }
+.explore-field__dwell-track { stroke-width: 1; opacity: .19; }
+.explore-field__dwell-progress { stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+.explore-field__node.is-hover-pending .explore-field__node-cue > i { opacity: .16; transform: scale(.65); }
+.explore-field__node.is-hover-pending .explore-field__dwell-ring { opacity: 1; transform: rotate(-90deg) scale(1); }
+.explore-field__node.is-hover-pending .explore-field__dwell-progress { animation: explore-dwell-ring 620ms linear forwards; }
+.explore-field__node.is-locking .explore-field__node-cue > i { animation: explore-lock-dot 240ms cubic-bezier(.2,.7,.3,1) both; }
+.explore-field__node.is-locking .explore-field__dwell-ring { opacity: 1; animation: explore-lock-ring 560ms cubic-bezier(.16,.7,.2,1) both; }
+.explore-field__node.is-locking .explore-field__dwell-progress { stroke-dashoffset: 0; }
+.explore-field__node-kind > svg { margin-right: 1px; }
 .explore-field__node strong { display: block; max-width: 100%; color: var(--node-color); font-family: ui-serif, Georgia, "Songti SC", serif; font-size: clamp(21px, 2.15vw, 33px); font-weight: 540; letter-spacing: -.04em; line-height: 1.3; white-space: normal; }
 .explore-field__node.is-topic .explore-field__node-kind { margin-bottom: 8px; font-size: 11px; }
 .explore-field__node-local { display: block; max-width: 100%; margin-top: 2px; color: #858c98; font-size: 11px; font-weight: 500; letter-spacing: 0; line-height: 1.45; }
@@ -162,7 +177,7 @@
 .explore-field__nodes.has-center .explore-field__node:not(.is-center) { width: max-content; max-width: min(270px, 31%); }
 .explore-field__nodes.has-center .explore-field__node.is-center { z-index: 2; width: min(270px, 31%); padding: 0; align-items: center; border: 0; border-radius: 0; background: transparent; box-shadow: none; text-align: center; }
 .explore-field__nodes.has-center .explore-field__node.is-center .explore-field__node-kind { margin-bottom: 5px; }
-.explore-field__nodes.has-center .explore-field__node.is-center .explore-field__node-kind i { width: 6px; height: 6px; border-radius: 50%; }
+.explore-field__nodes.has-center .explore-field__node.is-center .explore-field__node-cue > i { width: 6px; height: 6px; }
 .explore-field__nodes.has-center .explore-field__node.is-center .explore-field__node-content { align-items: center; }
 .explore-field__nodes.has-center .explore-field__node.is-center strong { font-size: clamp(24px, 2.15vw, 32px); }
 .explore-field__nodes.has-center .explore-field__node.is-center .explore-field__node-hint { max-width: 250px; }
@@ -233,6 +248,21 @@
 }
 @keyframes explore-connection-draw {
   to { stroke-dashoffset: 0; }
+}
+@keyframes explore-dwell-ring {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes explore-dwell-line {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes explore-lock-ring {
+  0% { opacity: 0; transform: rotate(-90deg) scale(.72); }
+  18% { opacity: .95; }
+  100% { opacity: 0; transform: rotate(-90deg) scale(1.55); }
+}
+@keyframes explore-lock-dot {
+  45% { box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 24%, transparent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
 }
 @keyframes explore-preview-connection {
   to { stroke-dashoffset: 0; opacity: .38; }
@@ -306,4 +336,6 @@
   .explore-home__cursor-glow { display: none; }
   .explore-field__node-content { opacity: 1 !important; translate: none !important; filter: none !important; }
   .explore-field__connection { stroke-dasharray: none; stroke-dashoffset: 0; opacity: .23; }
+  .explore-field__pending-trace { animation: none; stroke-dashoffset: 0; opacity: .88; }
+  .explore-field__dwell-ring { display: none; }
 }
