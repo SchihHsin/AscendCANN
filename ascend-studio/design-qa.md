@@ -1212,4 +1212,8 @@ final result: passed
 - `git diff --check`：通过。未运行自动化测试。
 - 来源与边界：参考图风格为用户明确偏好（H）；本地桌面截图为实现观察（M）。未声称真实学习个性化、NPU 或模型验证；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 
-final result: passed
+**Publish / online check**
+- Commit `8b9c9479` pushed to `origin/main`; GitHub Pages workflow `40084082873` build / deploy succeeded. Online index and referenced JS / CSS returned HTTP 200; the CSS includes the dot grid and selected-state rules.
+- Online CUA visual capture timed out, so no online screenshot verification is claimed. The local static Pages build was visually checked in CUA.
+
+final result: passed (local visual review; online screenshot unavailable)
