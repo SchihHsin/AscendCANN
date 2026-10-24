@@ -6443,3 +6443,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据 / 验证：用户反馈为需求依据（H）；本地 CUA 刷新复核为实现观察（M），确认任务工作区、任务行高亮和此前展开的列表状态恢复。`npm run build:pages`、`git diff --check` 通过；未运行自动化测试。构建保留既有大 JS chunk 提醒。
 - 范围：改动 `ascend-studio/src/App.jsx`、`ascstudio/index.html` 与重新生成的静态 JS 资源，以及本记录；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 发布：实现提交 `1abeac04` 保留；整合并行探索页提交 `823e9cb1` 后，由 `d77b2336` 推送到 `origin/main`。Pages workflow `40080856085` build / deploy 成功；线上 `/ascstudio/` HTML、`index-DX-oL7ub.js`、`index-B6kBlHxL.css` 返回 HTTP 200，JS 含 `main-view` 与 `project-panel-open` 持久化键。
+
+### 2026-10-24 · 探索页移除悬浮 / 点击状态小字
+
+- 用户指出探索页中心节点附近的“悬浮预览中 · 点击锁定”等小字突兀，明确要求移除。正式 1+2 版本与本地方案 3 均删除中心状态句、节点悬浮 / 点击动作句、重复图例及空白输入框提示；主题节点原有英文翻译、中文标题、节点内容、连线与悬停 / 锁定动效保留。可见状态由节点样式、停留进度、关系线和路径位置表达，辅助技术标签仍保留在 `aria-label` 中。
+- 依据：用户截图与本轮明确反馈（H）；改动范围是移除冗余提示，不改变交互模型、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：方案 3 worktree 执行 `npm run build`；正式 1+2 执行 `npm run build:pages`；两者 `git diff --check` 通过。CUA 检查 5205 首页不再显示顶部图例、节点动作文字和底部状态提示。线上 HTML 已引用 `index-Drfi5YwA.js` / `index-B6kBlHxL.css`，两项均 HTTP 200。
+- 提交 / 推送：正式版本提交 `823e9cb1` 已推送 `origin/main`；GitHub Pages workflow `40080675197` build / deploy 成功。方案 3 仅更新 5205 本地预览，保留在 `codex/explore-history-seed-20261023` worktree，未发布。
