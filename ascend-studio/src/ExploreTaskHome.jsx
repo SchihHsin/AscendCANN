@@ -69,6 +69,10 @@ export function ExploreTaskHome({ onCreateTask }) {
   const [error, setError] = useState("");
   const homeRef = useRef(null);
   const fieldRef = useRef(null);
+  const glowRef = useRef(null);
+  const glowFrame = useRef(0);
+  const glowTarget = useRef(null);
+  const glowCurrent = useRef(null);
   const nodeRefs = useRef(new Map());
   const previousNodeLayout = useRef(null);
   const draftRef = useRef(null);
@@ -76,6 +80,8 @@ export function ExploreTaskHome({ onCreateTask }) {
   const pointerNodeId = useRef(null);
   const pointerPosition = useRef(null);
   const rearmPointer = useRef(null);
+
+  useLayoutEffect(() => () => window.cancelAnimationFrame(glowFrame.current), []);
 
   const request = explorationRequest(ids);
   const activeIds = [...ids, ...previewIds];
@@ -261,6 +267,48 @@ export function ExploreTaskHome({ onCreateTask }) {
     setHoveredId(null);
   };
 
+  const moveGlow = (event) => {
+    if (event.pointerType === "touch" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const home = homeRef.current;
+    const glow = glowRef.current;
+    if (!home || !glow) return;
+    const rect = home.getBoundingClientRect();
+    const next = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    glowTarget.current = next;
+    if (!glowCurrent.current) {
+      glowCurrent.current = next;
+      glow.style.transform = `translate3d(${next.x - rect.width / 2}px, ${next.y - rect.height / 2}px, 0) translate(-50%, -50%)`;
+    }
+    glow.classList.add("is-active");
+    if (glowFrame.current) return;
+
+    const follow = () => {
+      const current = glowCurrent.current;
+      const target = glowTarget.current;
+      const bounds = homeRef.current?.getBoundingClientRect();
+      if (!current || !target || !bounds || !glowRef.current) {
+        glowFrame.current = 0;
+        return;
+      }
+      current.x += (target.x - current.x) * 0.16;
+      current.y += (target.y - current.y) * 0.16;
+      glowRef.current.style.transform = `translate3d(${current.x - bounds.width / 2}px, ${current.y - bounds.height / 2}px, 0) translate(-50%, -50%)`;
+      if (Math.hypot(target.x - current.x, target.y - current.y) > 0.35) {
+        glowFrame.current = window.requestAnimationFrame(follow);
+      } else {
+        current.x = target.x;
+        current.y = target.y;
+        glowFrame.current = 0;
+      }
+    };
+    glowFrame.current = window.requestAnimationFrame(follow);
+  };
+
+  const leaveHome = () => {
+    leaveField();
+    glowRef.current?.classList.remove("is-active");
+  };
+
   const submit = (event) => {
     event.preventDefault();
     if (!draft.trim()) return;
@@ -269,7 +317,8 @@ export function ExploreTaskHome({ onCreateTask }) {
     }
   };
 
-  return <section ref={homeRef} className="explore-home" aria-label="探索式首页" onPointerLeave={leaveField}>
+  return <section ref={homeRef} className="explore-home" aria-label="探索式首页" onPointerMove={moveGlow} onPointerLeave={leaveHome}>
+    <div ref={glowRef} className="explore-home__cursor-glow" aria-hidden="true" />
     <header className="explore-home__header">
       <div className="explore-home__heading">
         <div className="explore-home__eyebrow"><IconSparkles size={14} /> WHAT WOULD YOU LIKE TO EXPLORE TODAY?</div>

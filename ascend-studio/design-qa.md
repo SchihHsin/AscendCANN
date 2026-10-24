@@ -1144,3 +1144,11 @@ final result: passed
 - 检查：`npm run build:pages` 与 `git diff --check`通过；没有运行测试套件。构建仍有既有 >500kB JS chunk 提醒。CUA画面在当轮直接检查，未另存截图。
 - 发布：提交 `00bcce10` 已推送 `origin/main`；workflow `40007714166` build/deploy成功。
 - 限制：只实看现场、解释、源码三张已显示卡，以及源码的完整阅读/返回；其他隐藏节点未逐项操作；未做宽屏与NPU验收。
+
+## 2026-10-24 · 探索首页鼠标跟随光晕
+
+- **目标:** 用户认为探索背景偏单调，并提出试试光晕随鼠标移动。加入浅蓝紫与暖粉的低对比静态底色，以及一团由指针位置驱动、带轻微缓动的柔光。
+- **实现:** `ExploreTaskHome.jsx` 用 requestAnimationFrame 追踪指针并平滑跟随；`explore-task-home.css` 将光晕置于界面内容之后。触屏不触发；`prefers-reduced-motion` 下不显示光晕。未改变节点、连线、路径选择、Prompt 或任务创建行为。
+- **验证:** CUA 本地预览 `http://127.0.0.1:5202/?home=explore`，1280×720。移动指针后，柔光从中部移动至右侧；进入训练主题下钻态后，中心节点、周围节点和关联连线仍清晰。页面恢复到初始探索态供评审。
+- **检查:** `npm run build:pages` 与 `git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 的提醒。未新增或运行自动化测试，未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界。
+- **发布:** 待提交与推送。

@@ -1424,3 +1424,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - `npm run build:pages`、`git diff --check` 通过；未运行自动化测试套件。线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200，Pages workflow `40008849917` build / deploy 成功。源码 `29979622` 与 Pages 包 `4aa19026` 已推送 `origin/main`。不改变页面顺序 / hash、API / Protocol、Host / Harness、Application / Task 边界；未做真实 NPU 验证。
 
 - 本地 `http://127.0.0.1:8124/` 属于另一个在途工作区：切到「图像推理调试」列表保持展开，但继续切到 AddCustom 时本地 bundle 报 `ReferenceError: presentation is not defined` 并白屏；重载后恢复。没有改动该工作区或其中其他对话的文件。已发布 Pages 构建已通过同一路径任务切换回放。
+
+### 2026-10-24 · 探索首页背景的鼠标跟随光晕
+
+- 探索首页背景允许用低饱和蓝紫、暖粉渐变增加层次，并让一团柔和光晕缓慢跟随鼠标；光效放在节点、文字和连线之后，移动自然、存在感克制，不遮挡交互。
+- 尊重 `prefers-reduced-motion`：减少动态效果时不显示跟随光晕，静态的浅色底层仍保留。该背景是交互概念表达，不引入计算诊断、性能数据或真实训练含义。

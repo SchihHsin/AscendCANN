@@ -43,6 +43,7 @@
   --explore-ink: #1d2430;
   --explore-muted: #777f8b;
   --explore-line: #e7e8ec;
+  isolation: isolate;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -52,10 +53,35 @@
   overflow: auto;
   padding: 28px 38px 20px;
   color: var(--explore-ink);
-  background: #fff;
+  background:
+    radial-gradient(ellipse at 7% 8%, rgba(205, 220, 255, .22), transparent 32%),
+    radial-gradient(ellipse at 93% 82%, rgba(255, 225, 218, .16), transparent 34%),
+    linear-gradient(135deg, #fff 3%, #fdfdff 52%, #fffdfc 100%);
   scrollbar-width: thin;
   scrollbar-color: #d8dbe2 transparent;
 }
+.explore-home__cursor-glow {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: min(760px, 86vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(117, 143, 248, .17) 0%,
+    rgba(151, 139, 231, .115) 27%,
+    rgba(237, 174, 190, .07) 46%,
+    rgba(255, 227, 202, .035) 59%,
+    transparent 73%);
+  opacity: 0;
+  filter: blur(20px);
+  pointer-events: none;
+  transition: opacity 420ms ease;
+  will-change: transform, opacity;
+}
+.explore-home__cursor-glow.is-active { opacity: .9; }
+.explore-home > :not(.explore-home__cursor-glow) { position: relative; z-index: 1; }
 .explore-home button, .explore-home textarea, .explore-home select { font: inherit; }
 .explore-home button { cursor: pointer; }
 .explore-home button:focus-visible, .explore-home textarea:focus-visible, .explore-home select:focus-visible { outline: 2px solid #8191ed; outline-offset: 4px; }
@@ -277,6 +303,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .explore-home *, .explore-home *::before, .explore-home *::after { transition: none !important; animation: none !important; }
+  .explore-home__cursor-glow { display: none; }
   .explore-field__node-content { opacity: 1 !important; translate: none !important; filter: none !important; }
   .explore-field__connection { stroke-dasharray: none; stroke-dashoffset: 0; opacity: .23; }
 }
