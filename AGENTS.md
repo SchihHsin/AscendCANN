@@ -6458,3 +6458,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增 `ascend-studio/src/canvas-reference-style.css` 并从 `main.jsx` 加载；保留各任务原有路径结构、层级、卡片内容与拖拽 / 缩放交互，仅覆盖视觉令牌。重新生成根目录 Pages 产物 `ascstudio/`。不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、`git diff --check` 通过；CUA 在 1280×720 预览学习路径共创和图像推理开发画布，确认点阵背景、黑色选中项、彩色节点标记和白色浮动工具生效。截图在本轮工具输出中核对，未另存仓库。未运行自动化测试；构建保留现有大 JS chunk 提醒。
 - 源码与 Pages 产物提交 `8b9c9479` 已推送 `origin/main`。GitHub Pages workflow `40084082873` build / deploy 成功；线上 index、新 JS 与 CSS 均 HTTP 200，CSS 含本轮画布样式。线上 CUA 视觉读取超时，因此不记作线上截图复核；本地静态 Pages 包已通过 CUA 桌面截图核验。
+
+### 2026-10-24 · 探索首页中心节点与下方节点留白
+
+- 用户截图指出：展开后中心节点与正下方子节点距离太近，竖向关联线难以辨认；用户选择“中心上移、下方节点下移并增强连线”。
+- 正式探索页已按选择调整：中心节点在有三个及以上子节点时上移至画布 46%；下方节点移至 84%，上方节点随之拉开；展开画布桌面最小高度为 340px，窄屏继续按流式列表排列并保留原最小高度。关联线默认加深至 32% 透明度、1.2px，悬浮关联再增强。
+- 依据：用户截图与交互反馈（H）；桌面 / 窄屏本地回放为实现观察（M）。锁定“模型部署”路径时，1280×720 下中心与下方节点净间距约 59px、画布底部余量约 17px，连线可见；390×844 下页面未溢出。未改变页面顺序、提示文案决策或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：本地 1+2 与方案 3 均 `npm run build` 通过；正式版 `npm run build:pages`、`git diff --check` 通过。保留既有大 JS chunk 构建提示。提交 / push 与 Pages 部署结果待本轮发布后补记。

@@ -1486,3 +1486,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 新增 `ascend-studio/src/canvas-reference-style.css` 并从 `main.jsx` 加载；保留各任务原有路径结构、层级、卡片内容与拖拽 / 缩放交互，仅覆盖视觉令牌。重新生成根目录 Pages 产物 `ascstudio/`。不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、`git diff --check` 通过；CUA 在 1280×720 预览学习路径共创和图像推理开发画布，确认点阵背景、黑色选中项、彩色节点标记和白色浮动工具生效。截图在本轮工具输出中核对，未另存仓库。未运行自动化测试；构建保留现有大 JS chunk 提醒。
 - 源码与 Pages 产物提交 `8b9c9479` 已推送 `origin/main`。GitHub Pages workflow `40084082873` build / deploy 成功；线上 index、新 JS 与 CSS 均 HTTP 200，CSS 含本轮画布样式。线上 CUA 视觉读取超时，因此不记作线上截图复核；本地静态 Pages 包已通过 CUA 桌面截图核验。
+
+## 探索首页节点间距与连线对比（2026-10-24）
+
+- 对齐用户选择：中心节点轻微上移，下方节点下移，并增强连线。三个及以上子节点时中心位置为 46%；下方节点落在 84%，展开画布桌面最小高度 340px。窄屏沿用上下排列的列表样式。
+- 默认连线为 1.2px / 32% 透明度，悬浮与锁定反馈继续沿用既有状态变化。训练与调优、模型部署路径均已回放，锁定模型部署后中心与下方节点间距约 59px，线段清楚且底部不遮挡。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过；1280×720 与 390×844 视口无溢出。改动不影响页面序列、Prompt 结构或 API / Host / Application 边界。提交、推送和 Pages 结果待补记。
