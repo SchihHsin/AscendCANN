@@ -1159,5 +1159,5 @@ final result: passed
 - **问题:** 用户截图中，渠道卡片虽显示“已发布 · 演示”，但卡片操作只有泛化的“查看详情”；底部“已完成演示发布”禁用，用户无法看出如何重新进入发布后的预览。
 - **调整:** 已发布卡片显示“查看发布效果”；当已选渠道均已发布时，底部改为可点击的“查看发布后预览”，并回到最近一次发布批次。发布完成仍自动进入结果页，批次标签可切换。
 - **CUA:** 本地 `http://127.0.0.1:5204/`。提交社区后返回总览，卡片与底部入口都可再次进入社区文章；再批量发布 GitCode + CSDN 后进入 GitCode，切换 CSDN；返回总览再点底部入口，标签范围仍只有最近批次的 GitCode + CSDN。
-- **边界与检查:** 发布页仍是本地演示，不会向第三方平台提交。`npm run build:pages`、`git diff --check` 通过；未运行自动化测试。Pages JS 与 CSS 资源名会按最新主线重建；有既有大 JS chunk 提示。
-- **发布:** 本轮 commit / push 与 Pages workflow 待补记。
+- **边界与检查:** 发布页仍是本地演示，不会向第三方平台提交。`npm run build:pages`、`git diff --check` 通过；未运行自动化测试。Pages JS 为 `index-Q6jk1m2w.js`、CSS 为 `index-CXzZy5Tk.css`；有既有大 JS chunk 提示。
+- **发布:** 提交 `1b31070c` 已推送最新 `main`，保留并行提交；GitHub Pages workflow `40048924308` build / deploy 成功。线上 HTML 与新 JS / CSS 已确认可读取。

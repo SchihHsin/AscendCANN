@@ -1435,4 +1435,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户指出发布后再次回到总览时没有明确进入预览的地方。已发布渠道卡片显示“查看发布效果”；所有已选渠道均发布后，底部显示可点击的“查看发布后预览”，打开最近一批结果。
 - CUA 核对社区单发后返回总览并再次进入；GitCode + CSDN 批发后默认进入 GitCode，可切换 CSDN；返回总览再次进入仅显示本批两项。`npm run build:pages` 和 `git diff --check` 通过，未运行自动化测试。
-- Pages 产物、commit / push 与 workflow 结果待最新主线构建后回填。
+- 提交 `1b31070c` 已推送最新 `main`，并保留并行提交；Pages workflow `40048924308` build / deploy 均成功。线上 `/ascstudio/` 引用 `index-Q6jk1m2w.js` 与 `index-CXzZy5Tk.css`，已确认 JS 含入口文案。

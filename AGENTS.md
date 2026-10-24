@@ -6337,4 +6337,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 在 `ascend-studio/src/CommunityDraftPanel.jsx` 将已发布卡片操作改为“查看发布效果”；当已选渠道全部发布后，底部提供可点击的“查看发布后预览”，打开最近一批已发布渠道的页面并保留切换范围。新发布批次仍自动先显示本批第一个渠道。
 - 依据：问题界面来自用户截图（H），处理范围由用户原先要求的单发 / 批发后可预览（H）决定。未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 CUA 先提交社区、返回总览，确认已发布卡片和底部入口可见且可点；再发布 GitCode + CSDN，确认自动进入 GitCode、顶部可切换 CSDN；回到总览后再次进入，仅显示最近批次 GitCode + CSDN。未运行自动化测试。构建保留既有大 JS chunk 提示。
-- 发布：源码与 Pages 产物已生成；原推送遇到并行 `main` 更新，已按最新 `origin/main` 重新整合；最终 commit / push 与 Pages workflow 待确认。
+- 发布：提交 `1b31070c` 已整合并推送最新 `origin/main`，保留了并行提交；Pages workflow `40048924308` 的 build / deploy 均成功。线上 `/ascstudio/` 已引用 `index-Q6jk1m2w.js` 与 `index-CXzZy5Tk.css`，JS 中包含两个明确入口文案。
