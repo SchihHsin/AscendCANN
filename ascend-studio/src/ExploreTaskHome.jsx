@@ -374,7 +374,6 @@ export function ExploreTaskHome({ onCreateTask }) {
       {request.path.length > 0 && <button className="explore-home__back" type="button" onClick={() => choose(ids.slice(0, -1))}>
         <IconArrowUpRight size={13} />返回上一级
       </button>}
-      {isPreviewing && <span className="explore-home__preview-label"><i aria-hidden="true" />悬浮预览中 <b>点击中心锁定</b></span>}
     </nav>}
 
     {!focused && <div className="explore-home__map-heading">
@@ -387,7 +386,7 @@ export function ExploreTaskHome({ onCreateTask }) {
 
     <div
       ref={fieldRef}
-      className={"explore-field" + (focused ? " is-focused" : "") + (isPreviewing ? " is-previewing" : "") + (completeLeaf ? " is-leaf" : "")}
+      className={"explore-field is-motion-feedback" + (focused ? " is-focused" : "") + (isPreviewing ? " is-previewing" : "") + (completeLeaf ? " is-leaf" : "")}
       aria-label={focused ? focused.label + "相关方向" : "可探索的任务方向"}
     >
       {connections.paths.length > 0 && <svg
@@ -453,7 +452,7 @@ export function ExploreTaskHome({ onCreateTask }) {
               if (element) nodeRefs.current.set(item.id, element);
               else nodeRefs.current.delete(item.id);
             }}
-            className={"explore-field__node explore-field__node--" + tone + (hoveredId === item.id ? " is-hovered" : "") + (pendingId === item.id ? " is-hover-pending" : "") + (lockingId === item.id ? " is-locking" : "") + (rootNode ? " is-topic" : "")}
+            className={"explore-field__node explore-field__node--" + tone + (item.children.length ? " is-expandable" : " is-terminal") + (hoveredId === item.id ? " is-hovered" : "") + (pendingId === item.id ? " is-hover-pending" : "") + (lockingId === item.id ? " is-locking" : "") + (rootNode ? " is-topic" : "")}
             style={{ "--node-index": index + 1, ...(focused ? { "--node-x": `${x}%`, "--node-y": `${y}%` } : {}) }}
             onPointerMove={(event) => moveOnNode(item, event)}
             onPointerLeave={() => leaveNode(item)}

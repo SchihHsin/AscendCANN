@@ -6363,6 +6363,32 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **检查:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check`、`node --check ascend-studio/src/home-exploration.js` 通过；保留 Vite 既有 JS chunk 超过 500 kB 提示。
 - **发布:** 组合版提交 `7e231927` 已推送 `origin/main`；Pages workflow `40069513929` build / deploy 成功。线上 `/ascstudio/` 引用 `index-kSSA1G0F.js`、`index-49VUzwC6.css`，HTML / JS / CSS 返回 HTTP 200；JS 含悬浮预览与锁定状态文案。
 
+### 2026-10-24 · 探索首页方案 3 字号层级修正
+
+- **原因:** 用户指出字级看起来一样大。样式核对发现窄屏主标题 25px、下钻中心节点 24px；宽屏两者也会同时接近 32px，中文衬线字形与字重相似，导致页标题和焦点标题层级合并。
+- **调整:** 拉开探索页标题、中心节点、周边节点和辅助信息的比例；窄屏主标题 28px、中心节点 22px、周边节点 16px，首页同层主题节点为 18–20px；较宽布局按容器宽度缩放，中文继续使用既定宋体衬线风格。
+- **证据与验证:** 原因来自样式规则（H）；当前方案 3 本地预览由 CUA 复核（M），首页和多卡下钻画面层级可辨，页面无可见横向溢出。`npm run build` 与 `git diff --check` 通过；构建保留 Vite 既有大 JS chunk 提示。
+- **范围:** 只调整方案 3 探索首页字号；不改变页面序列 / hash、交互行为或 API / Protocol、Host / Harness、Application / Task 边界。方案 3 仍为本地对比稿，线上继续保留方案 1+2；本轮未提交或推送。
+
+### 2026-10-24 · 探索预览状态去除黄褐提示
+
+- **用户反馈:** 悬浮预览中的黄色提示显得突兀、难看。
+- **调整:** 删除路径栏重复的悬浮提示胶囊；中心预览状态改为无底色的紫灰文字，底部交互提示改用现有淡紫色，锁定状态保留轻量灰绿色文字；将“设计对照实验”的黄褐强调色改为低饱和蓝绿色。
+- **验证:** 本地 5205 下钻画面经 CUA 复核，黄褐提示已消失，节点色调整为蓝绿色；`npm run build` 与 `git diff --check` 通过。构建仍提示既有 JS chunk 超过 500 kB。方案 3 仍是本地对比稿，暂不提交 / 推送。
+
+### 2026-10-24 · 新建任务首页清除左侧任务选中态
+
+- **目标与实现:** 用户指出右侧是首页时，左侧任务列表不应仍高亮上次的任务。`App.jsx` 在 `showNewTaskHome` 时向任务列表传入空选中项，行样式与 `aria-current` 均不再标记选中；应用内部仍保留 `selectedTask`，供首页接续推荐使用。
+- **验证:** 本地 5205 首页打开项目侧栏后，CUA 复核列表无任务选中；`npm run build` 与 `git diff --check` 通过。构建保留 Vite 既有 JS chunk 超过 500 kB 提示。
+- **范围:** 只改变首页中的左侧列表呈现，不清除任务状态、不改右侧首页推荐，也不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。方案 3 仍为本地对比稿，暂不提交 / 推送。
+
+### 2026-10-24 · 探索节点字号表达后续层级
+
+- **用户澄清:** 字号差异要表达节点后面是否还有层级：下钻后，仍可继续展开的节点应大于没有下一级的叶子节点；不是只比较页面标题与中心节点。
+- **实现:** `ExploreTaskHome.jsx` 根据 `children.length` 给每个方向标记可展开 / 终点；`explore-task-home.css` 在下钻节点圈内将可展开标题设为 19px、终点标题设为 15px（窄屏），桌面随容器宽度在 18–20px 与 15–16px 间变化。根主题同属一层，字号保持一致。
+- **依据 / 验证:** 层级关系来自 `home-exploration.js` 的演示树（H）。用户确认字号层级为可继续下钻的二级节点 18–20px、终点节点 15–16px，中心节点保持最大。`npm run build` 与 `git diff --check` 通过；保留既有 JS chunk 超过 500 kB 提示。未取得变更后截图，不声称完成截图核验。
+- **范围:** 仅把节点可继续下钻的状态映射为字号差异，不改变探索数据、选择行为、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+
 
 ### 2026-10-24 · 探索首页方案 3 本地交互变体
 

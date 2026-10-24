@@ -1229,7 +1229,7 @@ function App() {
                 group={group}
                 opened={openedGroups.includes(group.id) || Boolean(query)}
                 query={query}
-                selectedTask={selectedTask}
+                selectedTask={showNewTaskHome ? null : selectedTask}
                 onToggle={() => toggleGroup(group.id)}
                 onSelect={selectExistingTask}
                 statusForTask={statusForTask}
