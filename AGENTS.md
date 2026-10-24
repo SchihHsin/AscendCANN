@@ -6329,3 +6329,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据为用户直接反馈（H）。本地 CUA `http://127.0.0.1:5202/?home=explore`、1280×720 核对光晕从画布中部跟随到右侧；训练主题锁定下钻后中心与关联节点 / 连线仍清晰。预览标签保持打开供用户评审。
 - 验证：`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check` 通过；线上 HTML、JS、CSS HTTP 200，JS 中有指针动画代码，CSS 中有光晕规则。Vite 仍提示主 JS chunk 大于 500 kB。
 - 提交 `c1ec4561` 已推送 `origin/main`，Pages workflow `40048292606` build / deploy 成功。待用户评估光晕的颜色与强度。
+
+
+### 2026-10-24 · 发布预览的再次进入入口
+
+- 用户截图指出：回到“多渠道草稿预览”后，底部“已完成演示发布”是禁用态，用户找不到重新进入发布结果的明确入口。
+- 在 `ascend-studio/src/CommunityDraftPanel.jsx` 将已发布卡片操作改为“查看发布效果”；当已选渠道全部发布后，底部提供可点击的“查看发布后预览”，打开最近一批已发布渠道的页面并保留切换范围。新发布批次仍自动先显示本批第一个渠道。
+- 依据：问题界面来自用户截图（H），处理范围由用户原先要求的单发 / 批发后可预览（H）决定。未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 CUA 先提交社区、返回总览，确认已发布卡片和底部入口可见且可点；再发布 GitCode + CSDN，确认自动进入 GitCode、顶部可切换 CSDN；回到总览后再次进入，仅显示最近批次 GitCode + CSDN。未运行自动化测试。构建保留既有大 JS chunk 提示。
+- 发布：源码与 Pages 产物已生成；原推送遇到并行 `main` 更新，已按最新 `origin/main` 重新整合；最终 commit / push 与 Pages workflow 待确认。

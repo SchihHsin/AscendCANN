@@ -159,15 +159,16 @@ function ChannelPreviewCard({ channel, draft, state, selected, onToggle, onOpen 
       <div className="channel-preview-card-footer-actions">
         {state.published && <span className="channel-preview-published"><IconCheck size={11} />已发布 · 演示</span>}
         <button type="button" onClick={event => { event.stopPropagation(); onOpen(); }} className="channel-preview-action">
-          查看详情<IconArrowRight size={13} />
+          {state.published ? "查看发布效果" : "查看详情"}<IconArrowRight size={13} />
         </button>
       </div>
     </div>
   </article>;
 }
 
-function MultiChannelOverview({ draft, channelStates, selectedChannels, onToggleChannel, onOpen, onPublishSelected, regenerated }) {
+function MultiChannelOverview({ draft, channelStates, selectedChannels, onToggleChannel, onOpen, onPublishSelected, onViewPublished, regenerated }) {
   const pendingCount = selectedChannels.filter(id => !channelStates[id]?.published).length;
+  const allSelectedPublished = selectedChannels.length > 0 && pendingCount === 0;
   return <div className="community-channel-overview">
     <div className="community-channel-overview-actions">
       {regenerated && <span className="community-channel-regenerated" role="status">已重新整理草稿 · 本地演示</span>}
@@ -185,9 +186,9 @@ function MultiChannelOverview({ draft, channelStates, selectedChannels, onToggle
     </div>
     <div className="community-channel-overview-footer">
       <p className="community-channel-overview-note"><IconInfoCircle size={14} />已选 {selectedChannels.length} 个渠道；发布为本地演示，奖励规则以平台为准。</p>
-      <button type="button" className="community-channel-publish-selected" onClick={onPublishSelected} disabled={pendingCount === 0}>
-        {pendingCount === 0 && selectedChannels.length > 0
-          ? <><IconCheck size={14} />已完成演示发布</>
+      <button type="button" className="community-channel-publish-selected" onClick={allSelectedPublished ? onViewPublished : onPublishSelected} disabled={selectedChannels.length === 0}>
+        {allSelectedPublished
+          ? <><IconArrowRight size={14} />查看发布后预览</>
           : <><IconSend size={14} />{pendingCount > 1 ? `批量发布（${pendingCount}）` : pendingCount === 1 ? "发布到选中渠道（1）" : "选择发布渠道"}</>}
       </button>
     </div>
@@ -229,6 +230,11 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
     setPublishedChannelIds(ids);
     setPublishedActiveChannel(ids[0]);
     setView("published");
+  };
+  const openSelectedPublishedPreviews = () => {
+    const latestPublished = publishedChannelIds.filter(id => channelStates[id]?.published || (id === "community" && submitted));
+    const selectedPublished = selectedChannels.filter(id => channelStates[id]?.published || (id === "community" && submitted));
+    showPublishedPreviews(latestPublished.length ? latestPublished : selectedPublished);
   };
   const publishChannel = channelId => {
     setChannelState(channelId, { generated: true, published: true });
@@ -323,6 +329,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
       onToggleChannel={toggleSelectedChannel}
       onOpen={openChannel}
       onPublishSelected={publishSelectedChannels}
+      onViewPublished={openSelectedPublishedPreviews}
       regenerated={regenerated}
     /> : activeChannel === "community" ? <>
       <p className="community-draft-intro">已根据本次任务对话整理内容。请核对描述与结果，补充必要信息后再提交到社区。</p>

@@ -1152,3 +1152,12 @@ final result: passed
 - **验证:** CUA 本地预览 `http://127.0.0.1:5202/?home=explore`，1280×720。移动指针后，柔光从中部移动至右侧；进入训练主题下钻态后，中心节点、周围节点和关联连线仍清晰。页面恢复到初始探索态供评审。
 - **检查:** `npm run build:pages` 与 `git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 的提醒。未新增或运行自动化测试，未改变页面序列 / hash 或 API、Host / Harness、Application / Task 边界。
 - **发布:** 源码、交接与 Pages 构建产物由提交 `c1ec4561` 推送至 `origin/main`；Pages workflow `40048292606` build / deploy 成功。线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200，CSS 与 JS 已确认包含光晕规则和指针动画。
+
+
+## 发布预览入口可发现性（2026-10-24）
+
+- **问题:** 用户截图中，渠道卡片虽显示“已发布 · 演示”，但卡片操作只有泛化的“查看详情”；底部“已完成演示发布”禁用，用户无法看出如何重新进入发布后的预览。
+- **调整:** 已发布卡片显示“查看发布效果”；当已选渠道均已发布时，底部改为可点击的“查看发布后预览”，并回到最近一次发布批次。发布完成仍自动进入结果页，批次标签可切换。
+- **CUA:** 本地 `http://127.0.0.1:5204/`。提交社区后返回总览，卡片与底部入口都可再次进入社区文章；再批量发布 GitCode + CSDN 后进入 GitCode，切换 CSDN；返回总览再点底部入口，标签范围仍只有最近批次的 GitCode + CSDN。
+- **边界与检查:** 发布页仍是本地演示，不会向第三方平台提交。`npm run build:pages`、`git diff --check` 通过；未运行自动化测试。Pages JS 与 CSS 资源名会按最新主线重建；有既有大 JS chunk 提示。
+- **发布:** 本轮 commit / push 与 Pages workflow 待补记。
