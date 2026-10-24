@@ -6464,4 +6464,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户截图指出：展开后中心节点与正下方子节点距离太近，竖向关联线难以辨认；用户选择“中心上移、下方节点下移并增强连线”。
 - 正式探索页已按选择调整：中心节点在有三个及以上子节点时上移至画布 46%；下方节点移至 84%，上方节点随之拉开；展开画布桌面最小高度为 340px，窄屏继续按流式列表排列并保留原最小高度。关联线默认加深至 32% 透明度、1.2px，悬浮关联再增强。
 - 依据：用户截图与交互反馈（H）；桌面 / 窄屏本地回放为实现观察（M）。锁定“模型部署”路径时，1280×720 下中心与下方节点净间距约 59px、画布底部余量约 17px，连线可见；390×844 下页面未溢出。未改变页面顺序、提示文案决策或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：本地 1+2 与方案 3 均 `npm run build` 通过；正式版 `npm run build:pages`、`git diff --check` 通过。保留既有大 JS chunk 构建提示。提交 / push 与 Pages 部署结果待本轮发布后补记。
+- 验证：本地 1+2 与方案 3 均 `npm run build` 通过；正式版 `npm run build:pages`、`git diff --check` 通过。保留既有大 JS chunk 构建提示。提交 / 推送：实现 commit `5f4f8974` 已推送至 `origin/main`；Pages workflow `40085282550` build / deploy 成功。线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200，JS / CSS 已包含新的布局参数。

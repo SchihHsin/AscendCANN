@@ -1491,4 +1491,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 对齐用户选择：中心节点轻微上移，下方节点下移，并增强连线。三个及以上子节点时中心位置为 46%；下方节点落在 84%，展开画布桌面最小高度 340px。窄屏沿用上下排列的列表样式。
 - 默认连线为 1.2px / 32% 透明度，悬浮与锁定反馈继续沿用既有状态变化。训练与调优、模型部署路径均已回放，锁定模型部署后中心与下方节点间距约 59px，线段清楚且底部不遮挡。
-- `npm run build`、`npm run build:pages`、`git diff --check` 通过；1280×720 与 390×844 视口无溢出。改动不影响页面序列、Prompt 结构或 API / Host / Application 边界。提交、推送和 Pages 结果待补记。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过；1280×720 与 390×844 视口无溢出。改动不影响页面序列、Prompt 结构或 API / Host / Application 边界。实现 commit `5f4f8974` 已推送至 `origin/main`；Pages workflow `40085282550` build / deploy 成功，线上 JS / CSS HTTP 200。

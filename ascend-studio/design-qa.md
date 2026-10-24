@@ -1224,4 +1224,4 @@ final result: passed (local visual review; online screenshot unavailable)
 - **排布:** 中心在有 3 个以上子节点时设为画布 46%；三至五节点布局把下方节点放至 84%，上方节点同步上移。桌面展开画布最小高度 340px；窄屏仍使用顺序列表。
 - **关系线:** 常态 1.2px / 32% 透明度，悬浮中的关系线继续加亮。模型部署的“核对部署条件”与中心相距约 59px，锁定状态下连线仍清晰。
 - **验证:** Headless Chrome 在 1280×720 回放“模型部署”悬浮及点击锁定、在 390×844 回放训练方向；无页面溢出，底部输入区不被节点遮挡。`npm run build`、`npm run build:pages`、`git diff --check` 通过。
-- **边界:** 仅修正空间与线条表现；不改变训练 / 部署示例语义、交互阈值、页面序列或 API / Host / Application 边界。提交与 Pages 状态待发布后补记。
+- **边界:** 仅修正空间与线条表现；不改变训练 / 部署示例语义、交互阈值、页面序列或 API / Host / Application 边界。实现 commit `5f4f8974` 已推送至 `origin/main`；Pages workflow `40085282550` build / deploy 成功，线上 CSS / JS HTTP 200。
