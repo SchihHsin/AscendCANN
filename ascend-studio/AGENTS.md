@@ -1467,3 +1467,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - AddCustom 常见内容按类型和长度设置尺寸；长说明、历史正文在有界卡片正文内纵向滚动，滚轮不带动画布；源代码和 Diff 的短预览仍可从右上角打开完整阅读。已用临时缩小现场卡的真实 UI 回放确认内部滚动；此规则仅适用于 AddCustom 试点，图像推理仍保持静态预览，其他任务不随之改变。
 - 详细规则与迁移写入 `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 第 54 页。用户确认 B 方案；实现与间距属于本轮设计参数，继续评审后再推广到其他任务。
 - 源码提交 `cc475800` 已推送 `origin/main`；GitHub Pages workflow `40077685049` build / deploy 成功；线上 `/ascstudio/` HTML、JS、CSS 与学习画布材料均 HTTP 200。发布 JS 含四组名称与卡内滚动实现，材料的第 54 页记录排布规则。
+
+### 2026-10-24 · 学习发现 Banner 纠正
+
+- 用户再次明确：学习发现页顶部要有已选的浅色 Banner 图，并向下渐隐到灰色内容底；这条决定覆盖上文“不使用大 Banner”的误记。保留紧凑页头和四类推荐内容，不恢复旧版顶部推荐大卡。

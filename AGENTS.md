@@ -6428,3 +6428,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与边界：B 方案及卡片问题来自用户直接确认（H）；AddCustom 局部预览、浏览器卡片滚动值为实现观察（M）；尺寸、分组和间距为本轮设计参数（L），并非行业通用标准。没有改变 API / Protocol、Host / Harness 或 Application / Task 边界，也不代表真实代码、精度或 NPU 验证。
 - 验证：`npm run build`、`npm run build:pages`、`node --check src/addcustom-canvas-layout.js`、`git diff --check` 通过；本地隔离预览检查四组标题和节点排布。将「现场与判断」临时缩至 262px 高后，正文 scrollHeight 323px、clientHeight 215px；卡内滚动使 scrollTop 从 0 到 108.5，画布本身未移动。材料页实测 56 页，新增排布规则在第 54 页。构建保留既有 JS chunk 大于 500 kB 提醒。
 - 提交 / 推送：源码与 Pages 产物提交 `cc475800` 已推送 `origin/main`。GitHub Pages workflow `40077685049` build / deploy 成功；线上 `/ascstudio/` HTML、`index-BcsW0z29.js`、`index-CxXEyA9C.css` 和学习画布材料均 HTTP 200。JS 已确认包含四组名称与卡内滚动实现；材料包含 56 页封面计数和第 54 页排布规则。无关未跟踪目录 `ascend-studio/node_modules` 未纳入提交。
+
+### 2026-10-24 · 学习发现顶部 Banner 渐隐恢复
+
+- 用户澄清：学习发现页顶部应保留此前选定的浅色 Banner 图，并从上向下渐隐融入浅灰内容区；此前“学习发现不使用大 Banner”的记录源自误读，以本条为准。
+- `ascend-studio/src/learning-discovery.css` 恢复 `discovery-banner-bg.png` 作为页头背景，保留紧凑标题与搜索布局，不恢复旧版推荐大卡；渐变底色与内容画布统一为 `#f8f9fb`，窄屏继续采用纵向页头。
+- 依据：用户本轮纠正与既有 Banner 选择（H）；本地桌面预览确认顶部浅图可见、下沿渐融入楼层背景（M）。不改变页面顺序、导航、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- `npm run build:pages`、`git diff --check` 通过；本轮先整合至 `c8ea9dba` 的 `origin/main`，保留并行 AddCustom 画布更新后重新构建。提交并推送后核对 Pages 发布状态；未做真实 NPU 验证。
