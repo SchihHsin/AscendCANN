@@ -6378,4 +6378,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 从保留中的工作区仅带入学习发现相关源码和 8 张已选内容图；去掉大 Banner / 顶部放大的推荐课程卡，保留白色紧凑页头、搜索、连续的“为你推荐 → 新上架 → 近期日程”、四类推荐（课程 / 路径 / 知识点 / 认证）、内容图及串联日程的时间轴。图标轨道、全局导航、其他任务和对话改动不改。内容图按 512px、JPEG 88 质量输出，展示尺寸约 100px；八张合计约 248 KB，避免原 PNG 约 9 MB 的页面资源负担。
 - 根协作规则已补充：每轮修改当轮检查、只提交本任务文件、push `origin/main` 并核对 Pages 发布；不得以本地已改、共享工作区脏或待 QA 为由延期，冲突时保留并行修改且禁止强推。
 - 依据：用户提供的两张截图及此前确认的设计决策（H）；Git 历史与主工作区待发布文件用于定位差异（H）。本次不涉及页面序列、hash、API / Protocol、Host / Harness 或 Application / Task 边界变化，也不构成真实模型 / NPU 验证。
-- `npm run build:pages` 与 `git diff --check` 成功；CUA 本地桌面预览确认紧凑白色页头、浅色内容图、四类推荐和三层连续结构已出现，截图 `/tmp/ascstudio-learning-discovery-selected-20261024.png`。未运行测试套件。提交 / push、Pages workflow 和线上资源核对将在推送后回填。
+- `npm run build:pages` 与 `git diff --check` 成功；CUA 本地桌面预览确认紧凑白色页头、浅色内容图、四类推荐和三层连续结构已出现，截图 `/tmp/ascstudio-learning-discovery-selected-20261024.png`。未运行测试套件。源码及 Pages 提交 `ea2153cb` 已推送 `origin/main`（推送前整合 5 个并行提交）；Pages workflow `40074675860` build / deploy 成功。线上 HTML 已引用 `index-Bdhw4m6A.js`、`index-D-OSzdn9.css`，JS/CSS 及 8 张浅色内容图均 HTTP 200。线上浏览器视觉读取超时，不记作线上截图核验成功；本地截图为最终构建实拍。
