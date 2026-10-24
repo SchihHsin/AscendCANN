@@ -6352,3 +6352,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 CUA 回放：生成社区草稿 → 选社区与 GitCode 批量发布 → 从社区发布预览返回总览。社区与 GitCode 显示已发布；点击社区卡片正文无切换；独立预览按钮能重新进入发布后文章。CSDN、抖音仍显示可选框；点击抖音卡片可选中，待发布数与按钮数量同步增加。当前仅为本地演示，不触发真实平台发布。
 - 变更：`ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css`、`ascstudio/` 构建产物，以及本交接文件、`ascend-studio/AGENTS.md`、`ascend-studio/design-qa.md`。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证与发布：`npm --prefix ascend-studio run build:pages`、`node --check` 构建 JS、`git diff --check` 均通过；未运行自动化测试。构建保留既有 JS chunk 大于 500 kB 提示。提交、推送和 Pages workflow 结果待补记。
+
+
+### 2026-10-24 · 探索首页悬浮进度与点击锁定反馈
+
+- **目标:** 用户确认先把方案 1+2 组合版做进 Demo 并推送，再试方案 3。组合版继续以悬浮作为自然的预览 / 下钻入口，点击用于锁定当前路径；两种动作应通过界面状态而非文字说明单独可感知。
+- **实现:** 悬浮等待时，节点旁环形进度与对应关系线同步渐进；点击锁定后，节点中心点脉冲、环形标记短暂扩散，并固定当前方向与 Prompt。保留 620ms 悬浮停留、每层切换后至少移动 14px 才重新识别，避免布局变化引起连跳。
+- **验证:** 独立工作区本地预览 `http://127.0.0.1:5205/?home=explore`，1280×720。悬浮“提升训练效率”看到预览环与关系线进度；点击中心后节点锁定反馈、Prompt 更新。浏览器无控制台错误 / 警告，页面无溢出。
+- **边界:** 沿用训练与调优演示，不接真实训练、遥测、日志或 NPU；不改变页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界。方案 3 留待组合版发布后作为本地替代反馈试验。
+- **检查:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check`、`node --check ascend-studio/src/home-exploration.js` 通过；保留 Vite 既有 JS chunk 超过 500 kB 提示。
+- **发布:** 组合版推送与 Pages 部署状态在本节后续补记。
