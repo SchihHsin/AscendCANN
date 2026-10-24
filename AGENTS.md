@@ -6443,3 +6443,33 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据 / 验证：用户反馈为需求依据（H）；本地 CUA 刷新复核为实现观察（M），确认任务工作区、任务行高亮和此前展开的列表状态恢复。`npm run build:pages`、`git diff --check` 通过；未运行自动化测试。构建保留既有大 JS chunk 提醒。
 - 范围：改动 `ascend-studio/src/App.jsx`、`ascstudio/index.html` 与重新生成的静态 JS 资源，以及本记录；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 发布：实现提交 `1abeac04` 保留；整合并行探索页提交 `823e9cb1` 后，由 `d77b2336` 推送到 `origin/main`。Pages workflow `40080856085` build / deploy 成功；线上 `/ascstudio/` HTML、`index-DX-oL7ub.js`、`index-B6kBlHxL.css` 返回 HTTP 200，JS 含 `main-view` 与 `project-panel-open` 持久化键。
+
+### 2026-10-24 · 探索页移除悬浮 / 点击状态小字
+
+- 用户指出探索页中心节点附近的“悬浮预览中 · 点击锁定”等小字突兀，明确要求移除。正式 1+2 版本与本地方案 3 均删除中心状态句、节点悬浮 / 点击动作句、重复图例及空白输入框提示；主题节点原有英文翻译、中文标题、节点内容、连线与悬停 / 锁定动效保留。可见状态由节点样式、停留进度、关系线和路径位置表达，辅助技术标签仍保留在 `aria-label` 中。
+- 依据：用户截图与本轮明确反馈（H）；改动范围是移除冗余提示，不改变交互模型、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：方案 3 worktree 执行 `npm run build`；正式 1+2 执行 `npm run build:pages`；两者 `git diff --check` 通过。CUA 检查 5205 首页不再显示顶部图例、节点动作文字和底部状态提示。线上 HTML 已引用 `index-Drfi5YwA.js` / `index-B6kBlHxL.css`，两项均 HTTP 200。
+- 提交 / 推送：正式版本提交 `823e9cb1` 已推送 `origin/main`；GitHub Pages workflow `40080675197` build / deploy 成功。方案 3 仅更新 5205 本地预览，保留在 `codex/explore-history-seed-20261023` worktree，未发布。
+
+
+### 2026-10-24 · 画布参考图视觉样式接入
+
+- 用户指定的参考图作为视觉依据（H）。学习画布、从目标生成路径及开发任务画布统一采用浅灰点阵背景、白色内容节点、黑色选中节点 / 主操作和克制的彩色类型标记；点阵继续读取中性灰 / 冷灰主题变量。
+- 新增 `ascend-studio/src/canvas-reference-style.css` 并从 `main.jsx` 加载；保留各任务原有路径结构、层级、卡片内容与拖拽 / 缩放交互，仅覆盖视觉令牌。重新生成根目录 Pages 产物 `ascstudio/`。不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`git diff --check` 通过；CUA 在 1280×720 预览学习路径共创和图像推理开发画布，确认点阵背景、黑色选中项、彩色节点标记和白色浮动工具生效。截图在本轮工具输出中核对，未另存仓库。未运行自动化测试；构建保留现有大 JS chunk 提醒。
+- 源码与 Pages 产物提交 `8b9c9479` 已推送 `origin/main`。GitHub Pages workflow `40084082873` build / deploy 成功；线上 index、新 JS 与 CSS 均 HTTP 200，CSS 含本轮画布样式。线上 CUA 视觉读取超时，因此不记作线上截图复核；本地静态 Pages 包已通过 CUA 桌面截图核验。
+
+### 2026-10-24 · 探索首页中心节点与下方节点留白
+
+- 用户截图指出：展开后中心节点与正下方子节点距离太近，竖向关联线难以辨认；用户选择“中心上移、下方节点下移并增强连线”。
+- 正式探索页已按选择调整：中心节点在有三个及以上子节点时上移至画布 46%；下方节点移至 84%，上方节点随之拉开；展开画布桌面最小高度为 340px，窄屏继续按流式列表排列并保留原最小高度。关联线默认加深至 32% 透明度、1.2px，悬浮关联再增强。
+- 依据：用户截图与交互反馈（H）；桌面 / 窄屏本地回放为实现观察（M）。锁定“模型部署”路径时，1280×720 下中心与下方节点净间距约 59px、画布底部余量约 17px，连线可见；390×844 下页面未溢出。未改变页面顺序、提示文案决策或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：本地 1+2 与方案 3 均 `npm run build` 通过；正式版 `npm run build:pages`、`git diff --check` 通过。保留既有大 JS chunk 构建提示。提交 / 推送：实现 commit `5f4f8974` 已推送至 `origin/main`；Pages workflow `40085282550` build / deploy 成功。线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200，JS / CSS 已包含新的布局参数。
+
+
+### 2026-10-25 · 修正带 home 参数地址的任务刷新恢复
+
+- 用户反馈上一轮推送后 GitHub Pages 刷新仍回首页；原生 Firefox 现场确认用户在 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=classic` 打开「ResNet50 离线推理初体验」。遗留 `home` 参数在初始化时优先于已保存的 `main-view`，覆盖任务恢复；此前只回放无参数本地地址，遗漏该路径。
+- `ascend-studio/src/App.jsx` 改为有效的已保存主视图优先于 `home=classic/explore`；无保存记录时才用 home 参数进入首页。`?task=learning/development` 的直接任务入口仍优先；home 参数继续选择首页变体，选中的任务及列表展开状态沿用原持久化。此条替代此前“显式 home 参数始终优先”的记录。
+- 依据为用户反馈、Firefox 地址与界面观察（H/M）、源码初始化顺序（H）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 首次构建 `npm run build:pages`、产物 `node --check`、`git diff --check` 通过。修复提交 `af2d3e5e`；发布前整合其他对话的画布样式、探索节点间距与连线更新，静态包冲突通过重建解决。发布与线上刷新回放结果在完成后补记。

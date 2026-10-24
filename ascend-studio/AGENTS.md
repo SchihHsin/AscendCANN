@@ -1478,3 +1478,25 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 工作台原本已持久化选中的任务；缺陷是刷新后普通任务的主视图回到首页，导致任务本身和左侧选中态不显示。`src/App.jsx` 现在恢复上次主视图，并持久化项目列表展开状态；显式 `?home=` / `?task=` 启动参数仍优先。
 - 本地 CUA 刷新复核确认仍显示原任务、对应列表行高亮，列表展开状态也恢复。`npm run build:pages` 和 `git diff --check` 通过；未运行自动化测试。构建保留既有 JS chunk 提醒。
 - 不改变页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界。实现提交 `1abeac04` 经 `d77b2336` 整合并推送至 `origin/main`；Pages workflow `40080856085` build / deploy 成功，线上 JS / CSS 均 HTTP 200。
+
+
+### 2026-10-24 · 画布参考图视觉样式接入
+
+- 用户指定的参考图作为视觉依据（H）。学习画布、从目标生成路径及开发任务画布统一采用浅灰点阵背景、白色内容节点、黑色选中节点 / 主操作和克制的彩色类型标记；点阵继续读取中性灰 / 冷灰主题变量。
+- 新增 `ascend-studio/src/canvas-reference-style.css` 并从 `main.jsx` 加载；保留各任务原有路径结构、层级、卡片内容与拖拽 / 缩放交互，仅覆盖视觉令牌。重新生成根目录 Pages 产物 `ascstudio/`。不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`git diff --check` 通过；CUA 在 1280×720 预览学习路径共创和图像推理开发画布，确认点阵背景、黑色选中项、彩色节点标记和白色浮动工具生效。截图在本轮工具输出中核对，未另存仓库。未运行自动化测试；构建保留现有大 JS chunk 提醒。
+- 源码与 Pages 产物提交 `8b9c9479` 已推送 `origin/main`。GitHub Pages workflow `40084082873` build / deploy 成功；线上 index、新 JS 与 CSS 均 HTTP 200，CSS 含本轮画布样式。线上 CUA 视觉读取超时，因此不记作线上截图复核；本地静态 Pages 包已通过 CUA 桌面截图核验。
+
+## 探索首页节点间距与连线对比（2026-10-24）
+
+- 对齐用户选择：中心节点轻微上移，下方节点下移，并增强连线。三个及以上子节点时中心位置为 46%；下方节点落在 84%，展开画布桌面最小高度 340px。窄屏沿用上下排列的列表样式。
+- 默认连线为 1.2px / 32% 透明度，悬浮与锁定反馈继续沿用既有状态变化。训练与调优、模型部署路径均已回放，锁定模型部署后中心与下方节点间距约 59px，线段清楚且底部不遮挡。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过；1280×720 与 390×844 视口无溢出。改动不影响页面序列、Prompt 结构或 API / Host / Application 边界。实现 commit `5f4f8974` 已推送至 `origin/main`；Pages workflow `40085282550` build / deploy 成功，线上 JS / CSS HTTP 200。
+
+
+### 2026-10-25 · 修正带 home 参数地址的任务刷新恢复
+
+- 用户反馈上一轮推送后 GitHub Pages 刷新仍回首页；原生 Firefox 现场确认用户在 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=classic` 打开「ResNet50 离线推理初体验」。遗留 `home` 参数在初始化时优先于已保存的 `main-view`，覆盖任务恢复；此前只回放无参数本地地址，遗漏该路径。
+- `ascend-studio/src/App.jsx` 改为有效的已保存主视图优先于 `home=classic/explore`；无保存记录时才用 home 参数进入首页。`?task=learning/development` 的直接任务入口仍优先；home 参数继续选择首页变体，选中的任务及列表展开状态沿用原持久化。此条替代此前“显式 home 参数始终优先”的记录。
+- 依据为用户反馈、Firefox 地址与界面观察（H/M）、源码初始化顺序（H）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 首次构建 `npm run build:pages`、产物 `node --check`、`git diff --check` 通过。修复提交 `af2d3e5e`；发布前整合其他对话的画布样式、探索节点间距与连线更新，静态包冲突通过重建解决。发布与线上刷新回放结果在完成后补记。
