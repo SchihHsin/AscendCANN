@@ -6472,4 +6472,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈上一轮推送后 GitHub Pages 刷新仍回首页；原生 Firefox 现场确认用户在 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=classic` 打开「ResNet50 离线推理初体验」。遗留 `home` 参数在初始化时优先于已保存的 `main-view`，覆盖任务恢复；此前只回放无参数本地地址，遗漏该路径。
 - `ascend-studio/src/App.jsx` 改为有效的已保存主视图优先于 `home=classic/explore`；无保存记录时才用 home 参数进入首页。`?task=learning/development` 的直接任务入口仍优先；home 参数继续选择首页变体，选中的任务及列表展开状态沿用原持久化。此条替代此前“显式 home 参数始终优先”的记录。
 - 依据为用户反馈、Firefox 地址与界面观察（H/M）、源码初始化顺序（H）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 首次构建 `npm run build:pages`、产物 `node --check`、`git diff --check` 通过。修复提交 `af2d3e5e`；发布前整合其他对话的画布样式、探索节点间距与连线更新，静态包冲突通过重建解决。发布与线上刷新回放结果在完成后补记。
+- 验证与发布：合并前后 `npm run build:pages`、产物 `node --check`、`git diff --check` 通过。修复提交 `af2d3e5e`，整合并行画布样式和探索节点更新后的发布提交 `031c12c4` 已推送 `origin/main`；Pages workflow `40110708219` build / deploy 成功。线上 HTML 已引用 `index-CzCSdMsa.js` / `index-UrPzqb1-.css`。没有新增或运行测试套件。
+- 线上交互验证：直接在 Firefox 已打开的上述带参数 Pages 地址按刷新，仍显示「ResNet50 离线推理初体验」、原有对话和学习画布；左侧对应任务行保持高亮，列表保持展开。截图 `/tmp/ascstudio-pages-task-refresh-20261025.png` 为线上刷新后的实拍，仅本地保留。此次是实际线上交互回放，不以 HTTP 或部署状态替代行为验证。
