@@ -30,5 +30,10 @@ export function getMaterialMeta(id, options = {}) {
   const allowedTypes = ["code", "preview", "browser", "diff"];
   const type = materialId === "canvas" ? "canvas"
     : allowedTypes.includes(options.type) ? options.type : defined?.type || "preview";
-  return { id: materialId, title, type };
+  const metadata = { id: materialId, title, type };
+  for (const key of ["groupId", "parentId", "parentTitle", "relations", "layoutOrder", "summary", "typeLabel", "kindLabel"]) {
+    const value = options[key] ?? defined?.[key];
+    if (value !== undefined) metadata[key] = value;
+  }
+  return metadata;
 }

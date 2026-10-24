@@ -19,6 +19,7 @@ import {
   IconTarget,
   IconX,
 } from "@tabler/icons-react";
+import { ADD_CUSTOM_LAYOUT_GROUPS, addCustomGroupKey } from "./addcustom-canvas-layout";
 import "./task-canvas.css";
 
 const MIN_ZOOM = 0.15;
@@ -53,6 +54,18 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     : [];
   const { x: panX, y: panY, zoom } = state.viewport;
   const isCollapsed = (card) => card.collapsed ?? collapsedIds.includes(card.id);
+  const addCustomGroupRegions = useMemo(() => {
+    if (!isAddCustom) return [];
+    return ADD_CUSTOM_LAYOUT_GROUPS.map((group) => {
+      const cards = visibleCards.filter((card) => addCustomGroupKey(card) === group.id);
+      if (!cards.length) return null;
+      const left = Math.min(...cards.map((card) => card.x)) - 20;
+      const top = Math.min(...cards.map((card) => card.y)) - 42;
+      const right = Math.max(...cards.map((card) => card.x + card.width)) + 20;
+      const bottom = Math.max(...cards.map((card) => card.y + (isCollapsed(card) ? COLLAPSED_HEIGHT : card.height))) + 20;
+      return { ...group, left, top, width: right - left, height: bottom - top };
+    }).filter(Boolean);
+  }, [isAddCustom, state.cards, collapsedIds]);
 
   const minimapBounds = useMemo(() => {
     if (!visibleCards.length) return { x: -30, y: -30, width: 600, height: 500 };
@@ -257,6 +270,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
       else if (event.key === "Escape") { setSpaceHeld(false); setHandMode(false); }
     }} onKeyUp={(event) => { if (event.key === " ") setSpaceHeld(false); }} onBlur={() => setSpaceHeld(false)}>
       <div className="tc-world" style={{ transform: `translate(${panX}px, ${panY}px) scale(${zoom})` }}>
+        {addCustomGroupRegions.map((group) => <div key={group.id} className={`tc-group-region is-${group.id}`} aria-hidden="true" style={{ left: group.left, top: group.top, width: group.width, height: group.height, "--tc-group-label-scale": Math.max(1, Math.min(4.5, 1 / zoom)) }}><span>{group.label}</span></div>)}
         {connections.length > 0 && <svg className="tc-connections" aria-hidden="true"><defs><marker id="task-canvas-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 1 1 L 7 4 L 1 7" fill="none" stroke="currentColor" strokeWidth="1.3" /></marker></defs>{connections.map((connection, index) => {
           const from = visibleCards.find((card) => card.id === connection.from);
           const to = visibleCards.find((card) => card.id === connection.to);
@@ -283,7 +297,10 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
               <button className="tc-move-handle" type="button" disabled={card.pinned} aria-label={`移动${card.title}；方向键微调，Shift 加快`} title={card.pinned ? "已固定位置" : "拖动标题移动；方向键微调"} onPointerDown={(event) => beginMove(event, card)} onKeyDown={(event) => keyboardMove(event, card)}><IconGripVertical size={15} /></button><h3 title={card.title}>{card.title}</h3>{collapsed && <small className="tc-collapse-summary">{cardSummary(card)}</small>}{card.pinned && <span className="tc-pin-label"><IconPin size={11} />已固定</span>}
               <div className="tc-card-actions">{(isAddCustom || enableCardFocus) && <button type="button" aria-label={`聚焦到${card.title}`} title="聚焦到画布中的这个节点" onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><IconTarget size={13} /></button>}{onOpenContent && <button type="button" aria-label={`放大${card.title}到右侧完整工作区`} title="放大到右侧完整工作区" onClick={() => onOpenContent(card.id)}><IconExternalLink size={13} /></button>}<button type="button" aria-label={card.pinned ? `取消固定${card.title}` : `固定${card.title}`} title={card.pinned ? "取消固定" : "固定位置与尺寸"} aria-pressed={card.pinned} onClick={() => actions.togglePin(card.id)}><IconPin size={13} /></button><button type="button" aria-label={collapsed ? `展开${card.title}` : `折叠${card.title}`} title={collapsed ? "展开内容" : "折叠内容"} aria-expanded={!collapsed} onClick={() => toggleCollapsed(card.id)}>{collapsed ? <IconChevronRight size={14} /> : <IconChevronDown size={14} />}</button><button type="button" aria-label={`收起${card.title}为概要`} title="收起为概要，仍保留在画布上" onClick={() => { if (!collapsed) toggleCollapsed(card.id); }}><IconX size={13} /></button></div>
             </header>
-            <div className="tc-card-content" hidden={collapsed}>{renderMaterial ? renderMaterial(card.id, card) : <div className="tc-slot-placeholder"><span>当前任务内容</span><button type="button" onClick={onOpenContents}>打开内容索引</button></div>}</div>
+            <div className="tc-card-content" hidden={collapsed} role={isAddCustom ? "region" : undefined} tabIndex={isAddCustom ? 0 : undefined} aria-label={isAddCustom ? `${card.title}内容，可在卡片内滚动查看` : undefined} onWheel={(event) => {
+              const content = event.currentTarget;
+              if (!event.ctrlKey && !event.metaKey && content.scrollHeight > content.clientHeight + 1) event.stopPropagation();
+            }}>{renderMaterial ? renderMaterial(card.id, card) : <div className="tc-slot-placeholder"><span>当前任务内容</span><button type="button" onClick={onOpenContents}>打开内容索引</button></div>}</div>
             {!collapsed && <button className="tc-resize-handle" type="button" disabled={card.pinned} aria-label={`调整${card.title}尺寸；方向键微调`} title={card.pinned ? "已固定尺寸" : "拖动调整尺寸；方向键微调"} onPointerDown={(event) => beginResize(event, card)} onKeyDown={(event) => keyboardResize(event, card)}><IconArrowsDiagonal size={12} /></button>}
           </section>;
         })}

@@ -6407,9 +6407,15 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户提供的两张截图及此前确认的设计决策（H）；Git 历史与主工作区待发布文件用于定位差异（H）。本次不涉及页面序列、hash、API / Protocol、Host / Harness 或 Application / Task 边界变化，也不构成真实模型 / NPU 验证。
 - `npm run build:pages` 与 `git diff --check` 成功；CUA 本地桌面预览确认紧凑白色页头、浅色内容图、四类推荐和三层连续结构已出现，截图 `/tmp/ascstudio-learning-discovery-selected-20261024.png`。未运行测试套件。源码及 Pages 提交 `ea2153cb` 已推送 `origin/main`（推送前整合 5 个并行提交）；Pages workflow `40074675860` build / deploy 成功。线上 HTML 已引用 `index-Bdhw4m6A.js`、`index-D-OSzdn9.css`，JS/CSS 及 8 张浅色内容图均 HTTP 200。线上浏览器视觉读取超时，不记作线上截图核验成功；本地截图为最终构建实拍。
 
-### 2026-10-24 · 线上保留方案 1+2 并表达探索节点深度
+### 2026-10-24 · 布局承担界面解释
+
+- 用户提供参考图，确认 Ascend Studio 的界面应避免不必要的次级标签和说明，让布局、位置与分组承担解释；该原则已加入「Ascend Studio 长期设计基准」。依据为用户提供的设计参考，属于明确的设计偏好。
+- 同轮讨论了 ResNet50 学习画布与 AddCustom 精度异常画布的共用外框，并更新独立评审稿 /Users/hsin/.codex/visualizations/2026/10/24/ascend-canvas-shell-review/index.html：使用画布内浮动控件，保留缩放、聚焦与适应画布等操作。没有修改实际 Demo，也未触碰 AddCustom 对话的工作区。
+- git diff --check 通过；规则已单独提交并推送至 origin/main。本条不改变页面序列、hash 或 API / Host / Application 边界。
+
+### 2026-10-24 · 正式探索页恢复 1+2 并区分节点深度
 
 - 用户确认下钻后的可展开节点应大于终点节点：前者 18–20px，后者 15–16px；中心节点保持最大。该字号差异只在下钻节点中区分是否还有下一级，首页主题节点仍保持同级。
-- 本次更正一次误操作：此前正式构建把方案 3 的本地轨迹与按压反馈一起发布。已从已发布的 1+2 版本恢复探索页，再加入字号分类；悬浮环形进度 / 关系线反馈保留，方案 3 留在 `/tmp/ascendcann-explore-history-20261023` 的 5205 本地预览，不作为线上版本。保留用户已要求的无黄色提示和首页左侧任务列表不高亮。
-- **依据 / 验证:** 节点是否有后续方向按 `home-exploration.js` 演示树的 `children` 判断（H），字号取值经用户确认。`npm run build:pages` 与 `git diff --check` 通过；本地发布 JS 含 `is-expandable` / `is-terminal`，CSS 含对应 18–20px / 15–16px 规则，且不含 `is-motion-feedback` 变体。尚待 push 和 Pages 发布核验；没有变更后截图，不记作视觉截图复核。
-- **范围:** 只涉及 Ascend Studio 探索首页。未改变页面序列 / hash、探索数据、API / Protocol、Host / Harness、Application / Task 边界；不接真实训练、遥测、日志或 NPU。
+- 更正一次误操作：此前正式构建把方案 3 的本地轨迹与按压反馈一起发布。已从正式的 1+2 代码恢复探索页，再加入字号分类；悬浮环形进度 / 关系线反馈保留，方案 3 留在 `/tmp/ascendcann-explore-history-20261023` 的 5205 本地预览，不作为线上版本。保留用户已要求的无黄色提示和首页左侧任务列表不高亮。
+- **依据 / 验证:** 节点是否有后续方向按 `home-exploration.js` 演示树的 `children` 判断（H），字号取值经用户确认。`npm run build:pages` 与 `git diff --check` 通过；本地发布 JS 含 `is-expandable` / `is-terminal`，CSS 含对应 18–20px / 15–16px 规则，且不含 `is-motion-feedback` 变体。当前修正待 push 和 Pages 发布核验；没有变更后截图，不记作视觉截图复核。
+- **范围:** 只涉及 Ascend Studio 探索首页及静态发布包；保留并行 AddCustom 画布更新。未改变页面序列 / hash、探索数据、API / Protocol、Host / Harness、Application / Task 边界；不接真实训练、遥测、日志或 NPU。
