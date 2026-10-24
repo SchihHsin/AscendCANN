@@ -6435,3 +6435,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascend-studio/src/learning-discovery.css` 恢复 `discovery-banner-bg.png` 作为页头背景，保留紧凑标题与搜索布局，不恢复旧版推荐大卡；渐变底色与内容画布统一为 `#f8f9fb`，窄屏继续采用纵向页头。
 - 依据：用户本轮纠正与既有 Banner 选择（H）；本地桌面预览确认顶部浅图可见、下沿渐融入楼层背景（M）。不改变页面顺序、导航、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - `npm run build:pages`、`git diff --check` 通过；先整合 `origin/main` 的 AddCustom 画布与探索页并行更新后重建。提交 `9fd1070b` 已推送 `origin/main`；Pages workflow `40079315361` build / deploy 成功，线上 `/ascstudio/` HTML、JS、CSS 与 Banner 图均 HTTP 200，CSS 已引用渐隐图层。CUA 本地预览确认 Banner 可见且下沿融入灰白楼层；线上只核对资源响应，未取得线上截图。未做真实 NPU 验证。
+
+### 2026-10-24 · 刷新后恢复当前任务
+
+- 用户要求：左侧项目列表选中任务后刷新页面，继续显示同一任务且保留选中态。
+- 原因：工作台已持久化 `selectedTask`，但应用刷新时普通任务的主视图会回到首页，因而任务工作区与高亮没有呈现。`ascend-studio/src/App.jsx` 现在通过 `readSession` / `writeSession` 持久化当前主视图和项目列表展开状态；工作台原有任务状态存储继续提供当前任务。带 `?home=` 或 `?task=` 的显式启动参数仍优先。
+- 依据 / 验证：用户反馈为需求依据（H）；本地 CUA 刷新复核为实现观察（M），确认任务工作区、任务行高亮和此前展开的列表状态恢复。`npm run build:pages`、`git diff --check` 通过；未运行自动化测试。构建保留既有大 JS chunk 提醒。
+- 范围：改动 `ascend-studio/src/App.jsx`、`ascstudio/index.html` 与重新生成的静态 JS 资源，以及本记录；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交、推送和 Pages 部署结果：本记录随本轮代码发布更新；推送后补记实际提交与 workflow 状态。

@@ -189,11 +189,15 @@ function App() {
     if (["classic", "explore"].includes(new URLSearchParams(window.location.search).get("home"))) return "home";
     const launchTask = new URLSearchParams(window.location.search).get("task");
     if (["learning", "development"].includes(launchTask)) return "task";
+    const savedView = readSession("main-view", null);
+    if (["home", "learning", "automations", "capabilities", "task"].includes(savedView)) return savedView;
     // Reopening the co-creation scenario should show its reset starter state,
     // while a fresh visit to the app still opens the new-task home.
     return readSession("workbench", null)?.selectedTask === LEARNING_PATH_GENERATION_TASK ? "task" : "home";
   });
-  const [projectPanelOpen, setProjectPanelOpen] = useState(false);
+  useEffect(() => { writeSession("main-view", mainView); }, [mainView]);
+  const [projectPanelOpen, setProjectPanelOpen] = useState(() => readSession("project-panel-open", false) === true);
+  useEffect(() => { writeSession("project-panel-open", projectPanelOpen); }, [projectPanelOpen]);
   const showNewTaskHome = mainView === "home";
   const showLearningDiscovery = mainView === "learning";
   const showAutomations = mainView === "automations";

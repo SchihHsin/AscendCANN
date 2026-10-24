@@ -1472,3 +1472,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户再次明确：学习发现页顶部要有已选的浅色 Banner 图，并向下渐隐到灰色内容底；这条决定覆盖上文“不使用大 Banner”的误记。保留紧凑页头和四类推荐内容，不恢复旧版顶部推荐大卡。
 - `npm run build:pages` 与 `git diff --check` 通过；提交 `9fd1070b` 已推送 `origin/main`，Pages workflow `40079315361` build / deploy 成功。线上 HTML、JS、CSS 与 Banner 图均 HTTP 200。
+
+## 2026-10-24 · 刷新后恢复当前任务
+
+- 工作台原本已持久化选中的任务；缺陷是刷新后普通任务的主视图回到首页，导致任务本身和左侧选中态不显示。`src/App.jsx` 现在恢复上次主视图，并持久化项目列表展开状态；显式 `?home=` / `?task=` 启动参数仍优先。
+- 本地 CUA 刷新复核确认仍显示原任务、对应列表行高亮，列表展开状态也恢复。`npm run build:pages` 和 `git diff --check` 通过；未运行自动化测试。构建保留既有 JS chunk 提醒。
+- 不改变页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界。提交、push 与 Pages workflow 状态待本轮发布后补记。
