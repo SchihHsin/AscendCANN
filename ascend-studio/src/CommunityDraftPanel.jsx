@@ -198,6 +198,7 @@ function MultiChannelOverview({ draft, channelStates, selectedChannels, onToggle
 export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
   const [editingSection, setEditingSection] = useState(null);
   const [view, setView] = useState(() => draft.status === "submitted" ? "published" : "community");
+  const [overviewVisited, setOverviewVisited] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [regenerated, setRegenerated] = useState(false);
   const [selectedChannels, setSelectedChannels] = useState(["community"]);
@@ -236,6 +237,10 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
     const selectedPublished = selectedChannels.filter(id => channelStates[id]?.published || (id === "community" && submitted));
     showPublishedPreviews(latestPublished.length ? latestPublished : selectedPublished);
   };
+  const showChannelOverview = () => {
+    setOverviewVisited(true);
+    setView("overview");
+  };
   const publishChannel = channelId => {
     setChannelState(channelId, { generated: true, published: true });
     setEditingSection(null);
@@ -258,6 +263,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
     setView("published");
   };
   const openChannel = channelId => {
+    setOverviewVisited(true);
     if (channelStates[channelId]?.published || (channelId === "community" && submitted)) {
       const publishedGroup = publishedChannelIds.filter(id => channelStates[id]?.published || (id === "community" && submitted));
       const channelsToShow = publishedGroup.includes(channelId) ? publishedGroup : [channelId];
@@ -284,7 +290,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
       channelIds={publishedChannelIds.filter(id => channelStates[id]?.published || (id === "community" && submitted))}
       activeChannel={activeChannel}
       onSelect={setPublishedActiveChannel}
-      onBack={() => setView("overview")}
+      onBack={showChannelOverview}
       expanded={expanded}
       onToggleExpanded={() => setExpanded(value => !value)}
       onClose={onClose}
@@ -315,7 +321,7 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
           <IconSparkles size={14} aria-hidden="true" />
           <span>{channelDetails.rewardShort}</span>
         </div>
-        <button type="button" className="community-channel-back" aria-label="返回渠道总览" title="返回渠道总览" onClick={() => setView("overview")}><IconArrowLeft size={14} aria-hidden="true" /><span>返回渠道总览</span></button>
+        <button type="button" className="community-channel-back" aria-label={overviewVisited ? "返回渠道总览" : "查看全部发布渠道"} title={overviewVisited ? "返回渠道总览" : "查看全部发布渠道"} onClick={showChannelOverview}>{overviewVisited ? <IconArrowLeft size={14} aria-hidden="true" /> : <IconArrowRight size={14} aria-hidden="true" />}<span>{overviewVisited ? "返回渠道总览" : "查看全部发布渠道"}</span></button>
         <div className="community-draft-header-actions">
           <button type="button" className={`community-draft-zoom${expanded ? " is-active" : ""}`} onClick={() => setExpanded(value => !value)} aria-label={expanded ? "缩小草稿预览" : "放大草稿预览"} title={expanded ? "缩小预览" : "放大预览"}><IconMaximize size={15} /></button>
           <button type="button" className="community-draft-close" onClick={onClose} aria-label="关闭社区经验草稿"><IconX size={17} /></button>

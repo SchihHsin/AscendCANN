@@ -6338,3 +6338,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：问题界面来自用户截图（H），处理范围由用户原先要求的单发 / 批发后可预览（H）决定。未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 CUA 先提交社区、返回总览，确认已发布卡片和底部入口可见且可点；再发布 GitCode + CSDN，确认自动进入 GitCode、顶部可切换 CSDN；回到总览后再次进入，仅显示最近批次 GitCode + CSDN。未运行自动化测试。构建保留既有大 JS chunk 提示。
 - 发布：提交 `1b31070c` 已整合并推送最新 `origin/main`，保留了并行提交；Pages workflow `40048924308` 的 build / deploy 均成功。线上 `/ascstudio/` 已引用 `index-Q6jk1m2w.js` 与 `index-CXzZy5Tk.css`，JS 中包含两个明确入口文案。
+
+### 2026-10-24 · 首次生成草稿的渠道入口
+
+- 初次生成昇腾社区草稿时，入口文案应是「查看全部发布渠道」；只有用户已进入过渠道总览，再回到渠道详情时才显示「返回渠道总览」。`CommunityDraftPanel.jsx` 已用会话内状态区分这两种情况；从发布后预览返回总览也会记录已访问状态。
+- 依据：用户截图与明确反馈（H）；本地 CUA 已确认首次草稿显示「查看全部发布渠道」，点击后进入四渠道总览（M）。本轮检查时浏览器连接中断，未重新回放总览进入详情后的返回文案。
+- 用户正在讨论多渠道发布后的卡片状态：倾向于已发布渠道显示已发布且不可再次选择/发布，未发布渠道仍可查看并发布。为保留既有发布结果预览，建议锁定已发布卡片的选择行为，同时提供独立的「查看发布效果」入口；等待用户确认后实现。
+- 不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。构建、提交和推送状态在本次交付后补齐。
