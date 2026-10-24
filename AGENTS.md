@@ -6361,4 +6361,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **验证:** 独立工作区本地预览 `http://127.0.0.1:5205/?home=explore`，1280×720。悬浮“提升训练效率”看到预览环与关系线进度；点击中心后节点锁定反馈、Prompt 更新。浏览器无控制台错误 / 警告，页面无溢出。
 - **边界:** 沿用训练与调优演示，不接真实训练、遥测、日志或 NPU；不改变页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界。方案 3 留待组合版发布后作为本地替代反馈试验。
 - **检查:** `npm run build`、`npm run build:pages`、`npm run test:sites`（4/4）、`git diff --check`、`node --check ascend-studio/src/home-exploration.js` 通过；保留 Vite 既有 JS chunk 超过 500 kB 提示。
-- **发布:** 组合版推送与 Pages 部署状态在本节后续补记。
+- **发布:** 组合版提交 `7e231927` 已推送 `origin/main`；Pages workflow `40069513929` build / deploy 成功。线上 `/ascstudio/` 引用 `index-kSSA1G0F.js`、`index-49VUzwC6.css`，HTML / JS / CSS 返回 HTTP 200；JS 含悬浮预览与锁定状态文案。
+
+
+### 2026-10-24 · 探索首页方案 3 本地交互变体
+
+- **目标:** 在方案 1+2 线上组合版之后试做用户提到的方案 3，继续保留悬浮下钻与点击锁定的行为逻辑，但换一种更贴合文字节点画布的反馈。
+- **实现:** 本地 `is-motion-feedback` 变体取消小环进度与连线描画；悬浮目标出现包围整组文字的细轨迹并轻柔展开。点击锁定时节点轻微按压 / 回弹，中文方向旁留下固定勾标。节点仍是无卡片的文字对象，不做游戏按钮感。
+- **本地复核:** `http://127.0.0.1:5205/?home=explore`，1280×720。点击锁定「先定位瓶颈」后，中心显示固定勾标、方向仍写入 Prompt；文档宽高为 1280×720，没有溢出。动效与样式经 `npm run build` 编译通过。
+- **边界:** 方案 3 是未选定的对比试验，仅保留在独立工作区源码 / 本地预览；线上 `main` 继续呈现方案 1+2。没有改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界，也不表达真实训练诊断。
+- **检查:** `npm run build`、`git diff --check` 通过；Vite 保留既有 JS chunk 超过 500 kB 提示。方案 3 的悬浮等待动画通过样式实现，CUA 本轮直接核对的是锁定勾标与 Prompt 状态。
