@@ -28,7 +28,12 @@
 .tc-stage.is-panning { cursor: grabbing; }
 .tc-stage.is-gesturing, .tc-stage.is-gesturing * { user-select: none; }
 .tc-world { position: absolute; inset: 0 auto auto 0; width: 1px; height: 1px; transform-origin: 0 0; }
-.tc-connections { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; color: #b7bcca; pointer-events: none; }
+.tc-group-region { position: absolute; z-index: 0; box-sizing: border-box; border: 1px solid #e7e8ee; border-radius: 12px; background: linear-gradient(145deg, #fbfbfdbb, #f8f8fb8c); pointer-events: none; }
+.tc-group-region > span { position: absolute; left: 13px; top: 10px; display: inline-flex; align-items: center; min-height: 22px; padding: 0 7px; border: 1px solid #e9eaf0; border-radius: 5px; background: #fcfcfe; color: #71778a; font-size: 10px; line-height: 1.2; white-space: nowrap; transform: scale(var(--tc-group-label-scale, 1)); transform-origin: left bottom; }
+.tc-group-region.is-analysis { border-color: #e5e4ef; background: linear-gradient(145deg, #faf9fdbb, #f7f7fb8c); }
+.tc-group-region.is-change { border-color: #e4e7ed; background: linear-gradient(145deg, #fafbfdba, #f7f9fb8c); }
+.tc-group-region.is-precision { border-color: #e8e6df; background: linear-gradient(145deg, #fcfbf8b8, #f9f8f58c); }
+.tc-connections { position: absolute; z-index: 1; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; color: #aeb4c2; pointer-events: none; }
 .tc-connections path { fill: none; stroke: #b7bcca; stroke-width: 1.5; }
 .tc-connections text { fill: #8a90a2; font-size: 10px; text-anchor: middle; }
 .tc-card { position: absolute; display: flex; flex-direction: column; min-width: 220px; min-height: 140px; box-sizing: border-box; border: 1px solid #dfdfe3; border-radius: 9px; background: #fff; box-shadow: 0 3px 16px #36384d07; }
@@ -50,8 +55,14 @@
 .tc-card-content { flex: 1; min-height: 0; min-width: 0; padding: 12px 13px 14px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #d7d8dc transparent; background: #fff; border-radius: 0 0 8px 8px; font-size: 12px; line-height: 1.75; touch-action: pan-y; }
 .tc-card-content[hidden] { display: none; }
 .tc-card-content > * { min-width: 0; }
-.task-canvas.is-addcustom .tc-card-content { overflow: hidden; overscroll-behavior: auto; touch-action: auto; }
+.task-canvas.is-addcustom .tc-card-content { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; touch-action: pan-y; }
+.task-canvas.is-addcustom .tc-card-content::-webkit-scrollbar { width: 6px; height: 6px; }
+.task-canvas.is-addcustom .tc-card-content::-webkit-scrollbar-thumb { border: 1px solid #fff; border-radius: 5px; background: #d5d7df; }
 .task-canvas.is-addcustom .tc-card-content .cm-linked-code, .task-canvas.is-addcustom .tc-card-content .cm-code { max-height: none; overflow: visible; }
+.task-canvas.is-addcustom .tc-card-content .canvas-record-detail.cm-card-preview > p,
+.task-canvas.is-addcustom .tc-card-content .cm-history-preview > .cm-body-copy,
+.task-canvas.is-addcustom .tc-card-content .cm-card-preview-attempts .cm-body-copy,
+.task-canvas.is-addcustom .tc-card-content .cm-card-preview-validation .cm-body-copy { display: block; overflow: visible; -webkit-line-clamp: unset; }
 .tc-resize-handle { position: absolute; right: 2px; bottom: 2px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 3px; padding: 0; color: #b0b3bf; background: #ffffffdb; cursor: nwse-resize; }
 .tc-resize-handle:disabled { opacity: .35; cursor: default; }
 .tc-resize-handle:hover:not(:disabled) { background: #f0f0f3; color: #82899e; }
