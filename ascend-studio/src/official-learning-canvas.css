@@ -33,6 +33,8 @@
 .og-flow-focus > strong { color:#5e5d78; font-size:12px; font-weight:600; }
 .og-flow-focus > p { color:#7e879b; font-size:11px; }
 .og-local-lesson,.og-checkpoint { padding:9px 10px; border:1px solid #e9ecf3; border-radius:7px; background:#fcfcfe; }
+.og-local-lesson { display:flex; flex-direction:column; gap:14px; }
+.og-local-lesson > .lh-text-button { align-self:flex-start; }
 .og-local-lesson > header,.og-checkpoint > header { display:flex; align-items:center; justify-content:space-between; gap:8px; color:#656d85; font-size:11px; font-weight:600; }
 .og-local-lesson > header > span,.og-checkpoint > header > span { color:#9aa2b3; font-size:10px; font-weight:450; }
 .og-player-controls { display:flex; align-items:center; gap:8px; min-width:0; }
@@ -99,6 +101,7 @@
 .og-demo-output { margin-top:0; padding:7px; border:1px solid #303447; border-radius:4px; background:#1d202d; }
 .og-demo-output-heading { display:flex; justify-content:space-between; gap:5px; margin-bottom:6px; color:#c2c4d1; font:8px/1.2 ui-sans-serif,system-ui,sans-serif; }
 .og-demo-output-heading small { color:#858a9c; font-size:7px; }
+.og-demo-output-waiting { min-height:32px; padding:8px 0; color:#858a9c; font:8px/1.5 ui-sans-serif,system-ui,sans-serif; }
 .og-demo-score { display:grid; grid-template-columns:38px minmax(20px,1fr) 21px; align-items:center; gap:5px; margin-top:4px; color:#aeb2c1; font:7px/1 ui-sans-serif,system-ui,sans-serif; }
 .og-demo-score > i { height:3px; overflow:hidden; border-radius:4px; background:#343849; }
 .og-demo-score > i > b { display:block; height:100%; border-radius:inherit; background:#a58ada; }
