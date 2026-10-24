@@ -1477,4 +1477,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 工作台原本已持久化选中的任务；缺陷是刷新后普通任务的主视图回到首页，导致任务本身和左侧选中态不显示。`src/App.jsx` 现在恢复上次主视图，并持久化项目列表展开状态；显式 `?home=` / `?task=` 启动参数仍优先。
 - 本地 CUA 刷新复核确认仍显示原任务、对应列表行高亮，列表展开状态也恢复。`npm run build:pages` 和 `git diff --check` 通过；未运行自动化测试。构建保留既有 JS chunk 提醒。
-- 不改变页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界。提交、push 与 Pages workflow 状态待本轮发布后补记。
+- 不改变页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界。实现提交 `1abeac04` 经 `d77b2336` 整合并推送至 `origin/main`；Pages workflow `40080856085` build / deploy 成功，线上 JS / CSS 均 HTTP 200。

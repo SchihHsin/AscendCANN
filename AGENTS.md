@@ -6442,4 +6442,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 原因：工作台已持久化 `selectedTask`，但应用刷新时普通任务的主视图会回到首页，因而任务工作区与高亮没有呈现。`ascend-studio/src/App.jsx` 现在通过 `readSession` / `writeSession` 持久化当前主视图和项目列表展开状态；工作台原有任务状态存储继续提供当前任务。带 `?home=` 或 `?task=` 的显式启动参数仍优先。
 - 依据 / 验证：用户反馈为需求依据（H）；本地 CUA 刷新复核为实现观察（M），确认任务工作区、任务行高亮和此前展开的列表状态恢复。`npm run build:pages`、`git diff --check` 通过；未运行自动化测试。构建保留既有大 JS chunk 提醒。
 - 范围：改动 `ascend-studio/src/App.jsx`、`ascstudio/index.html` 与重新生成的静态 JS 资源，以及本记录；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 提交、推送和 Pages 部署结果：本记录随本轮代码发布更新；推送后补记实际提交与 workflow 状态。
+- 发布：实现提交 `1abeac04` 保留；整合并行探索页提交 `823e9cb1` 后，由 `d77b2336` 推送到 `origin/main`。Pages workflow `40080856085` build / deploy 成功；线上 `/ascstudio/` HTML、`index-DX-oL7ub.js`、`index-B6kBlHxL.css` 返回 HTTP 200，JS 含 `main-view` 与 `project-panel-open` 持久化键。
