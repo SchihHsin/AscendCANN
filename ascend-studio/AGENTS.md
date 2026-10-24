@@ -1478,3 +1478,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 工作台原本已持久化选中的任务；缺陷是刷新后普通任务的主视图回到首页，导致任务本身和左侧选中态不显示。`src/App.jsx` 现在恢复上次主视图，并持久化项目列表展开状态；显式 `?home=` / `?task=` 启动参数仍优先。
 - 本地 CUA 刷新复核确认仍显示原任务、对应列表行高亮，列表展开状态也恢复。`npm run build:pages` 和 `git diff --check` 通过；未运行自动化测试。构建保留既有 JS chunk 提醒。
 - 不改变页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界。实现提交 `1abeac04` 经 `d77b2336` 整合并推送至 `origin/main`；Pages workflow `40080856085` build / deploy 成功，线上 JS / CSS 均 HTTP 200。
+
+
+### 2026-10-24 · 画布参考图视觉样式接入
+
+- 用户指定的参考图作为视觉依据（H）。学习画布、从目标生成路径及开发任务画布统一采用浅灰点阵背景、白色内容节点、黑色选中节点 / 主操作和克制的彩色类型标记；点阵继续读取中性灰 / 冷灰主题变量。
+- 新增 `ascend-studio/src/canvas-reference-style.css` 并从 `main.jsx` 加载；保留各任务原有路径结构、层级、卡片内容与拖拽 / 缩放交互，仅覆盖视觉令牌。重新生成根目录 Pages 产物 `ascstudio/`。不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`git diff --check` 通过；CUA 在 1280×720 预览学习路径共创和图像推理开发画布，确认点阵背景、黑色选中项、彩色节点标记和白色浮动工具生效。截图在本轮工具输出中核对，未另存仓库。未运行自动化测试；构建保留现有大 JS chunk 提醒。
+- 发布回执在本轮提交及 Pages 检查后补记。

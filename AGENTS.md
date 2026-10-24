@@ -6450,3 +6450,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户截图与本轮明确反馈（H）；改动范围是移除冗余提示，不改变交互模型、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：方案 3 worktree 执行 `npm run build`；正式 1+2 执行 `npm run build:pages`；两者 `git diff --check` 通过。CUA 检查 5205 首页不再显示顶部图例、节点动作文字和底部状态提示。线上 HTML 已引用 `index-Drfi5YwA.js` / `index-B6kBlHxL.css`，两项均 HTTP 200。
 - 提交 / 推送：正式版本提交 `823e9cb1` 已推送 `origin/main`；GitHub Pages workflow `40080675197` build / deploy 成功。方案 3 仅更新 5205 本地预览，保留在 `codex/explore-history-seed-20261023` worktree，未发布。
+
+
+### 2026-10-24 · 画布参考图视觉样式接入
+
+- 用户指定的参考图作为视觉依据（H）。学习画布、从目标生成路径及开发任务画布统一采用浅灰点阵背景、白色内容节点、黑色选中节点 / 主操作和克制的彩色类型标记；点阵继续读取中性灰 / 冷灰主题变量。
+- 新增 `ascend-studio/src/canvas-reference-style.css` 并从 `main.jsx` 加载；保留各任务原有路径结构、层级、卡片内容与拖拽 / 缩放交互，仅覆盖视觉令牌。重新生成根目录 Pages 产物 `ascstudio/`。不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`git diff --check` 通过；CUA 在 1280×720 预览学习路径共创和图像推理开发画布，确认点阵背景、黑色选中项、彩色节点标记和白色浮动工具生效。截图在本轮工具输出中核对，未另存仓库。未运行自动化测试；构建保留现有大 JS chunk 提醒。
+- 发布回执在本轮提交及 Pages 检查后补记。

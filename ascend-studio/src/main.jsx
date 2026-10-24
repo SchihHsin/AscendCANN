@@ -4,6 +4,7 @@ import { App } from "./App.jsx";
 import "./styles.css";
 import "./prototype-polish.css";
 import "./scrollbar-autohide.css";
+import "./canvas-reference-style.css";
 import "./scrollbar-autohide.js";
 
 createRoot(document.getElementById("root")).render(
