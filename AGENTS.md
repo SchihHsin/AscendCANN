@@ -6412,3 +6412,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户提供参考图，确认 Ascend Studio 的界面应避免不必要的次级标签和说明，让布局、位置与分组承担解释；该原则已加入「Ascend Studio 长期设计基准」。依据为用户提供的设计参考，属于明确的设计偏好。
 - 同轮讨论了 ResNet50 学习画布与 AddCustom 精度异常画布的共用外框，并更新独立评审稿 /Users/hsin/.codex/visualizations/2026/10/24/ascend-canvas-shell-review/index.html：使用画布内浮动控件，保留缩放、聚焦与适应画布等操作。没有修改实际 Demo，也未触碰 AddCustom 对话的工作区。
 - git diff --check 通过；规则已单独提交并推送至 origin/main。本条不改变页面序列、hash 或 API / Host / Application 边界。
+
+
+### 2026-10-24 · AddCustom 按问题分组的默认画布与卡内滚动
+
+- 用户确认采用 B 方案：AddCustom 画布先按问题分组，再在组内按阅读和处理顺序排布；并指出节点卡片内容被截断、无法滚动。本轮只改 AddCustom，不推广到其他任务。
+- 新增 `ascend-studio/src/addcustom-canvas-layout.js`，定义现场与来源、理解与试算、修改与核对、输出误差与复核四组；组间距 88px、组内纵向间距 48px；关联节点避让；旧版未固定布局升级时按组重排，固定节点保留位置；后续新节点按组和顺序插入。`TaskCanvas` 为分组绘制底框和随缩放保持可读的标题，并只在 AddCustom 卡片正文启用纵向滚动。来源 / 父子关系才补连线，不猜未知关联。
+- `cann-dashboard/ploy-interaction-lab/learning-canvas-story/index.html` 记录了卡片尺寸、长内容滚动、四组排布与迁移规则；新增排布规则为第 54 页，总页数与封面计数均为 56。
+- 依据与边界：B 方案及卡片问题来自用户直接确认（H）；AddCustom 局部预览、浏览器卡片滚动值为实现观察（M）；尺寸、分组和间距为本轮设计参数（L），并非行业通用标准。没有改变 API / Protocol、Host / Harness 或 Application / Task 边界，也不代表真实代码、精度或 NPU 验证。
+- 验证：`npm run build`、`npm run build:pages`、`node --check src/addcustom-canvas-layout.js`、`git diff --check` 通过；本地隔离预览检查四组标题和节点排布。将「现场与判断」临时缩至 262px 高后，正文 scrollHeight 323px、clientHeight 215px；卡内滚动使 scrollTop 从 0 到 108.5，画布本身未移动。材料页实测 56 页，新增排布规则在第 54 页。构建保留既有 JS chunk 大于 500 kB 提醒。
+- 提交 / 推送：源码与 Pages 产物提交 `cc475800` 已推送 `origin/main`。GitHub Pages workflow `40077685049` build / deploy 成功；线上 `/ascstudio/` HTML、`index-BcsW0z29.js`、`index-CxXEyA9C.css` 和学习画布材料均 HTTP 200。JS 已确认包含四组名称与卡内滚动实现；材料包含 56 页封面计数和第 54 页排布规则。无关未跟踪目录 `ascend-studio/node_modules` 未纳入提交。
