@@ -386,7 +386,7 @@ export function ExploreTaskHome({ onCreateTask }) {
 
     <div
       ref={fieldRef}
-      className={"explore-field is-motion-feedback" + (focused ? " is-focused" : "") + (isPreviewing ? " is-previewing" : "") + (completeLeaf ? " is-leaf" : "")}
+      className={"explore-field" + (focused ? " is-focused" : "") + (isPreviewing ? " is-previewing" : "") + (completeLeaf ? " is-leaf" : "")}
       aria-label={focused ? focused.label + "相关方向" : "可探索的任务方向"}
     >
       {connections.paths.length > 0 && <svg

@@ -6406,3 +6406,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 根协作规则已补充：每轮修改当轮检查、只提交本任务文件、push `origin/main` 并核对 Pages 发布；不得以本地已改、共享工作区脏或待 QA 为由延期，冲突时保留并行修改且禁止强推。
 - 依据：用户提供的两张截图及此前确认的设计决策（H）；Git 历史与主工作区待发布文件用于定位差异（H）。本次不涉及页面序列、hash、API / Protocol、Host / Harness 或 Application / Task 边界变化，也不构成真实模型 / NPU 验证。
 - `npm run build:pages` 与 `git diff --check` 成功；CUA 本地桌面预览确认紧凑白色页头、浅色内容图、四类推荐和三层连续结构已出现，截图 `/tmp/ascstudio-learning-discovery-selected-20261024.png`。未运行测试套件。源码及 Pages 提交 `ea2153cb` 已推送 `origin/main`（推送前整合 5 个并行提交）；Pages workflow `40074675860` build / deploy 成功。线上 HTML 已引用 `index-Bdhw4m6A.js`、`index-D-OSzdn9.css`，JS/CSS 及 8 张浅色内容图均 HTTP 200。线上浏览器视觉读取超时，不记作线上截图核验成功；本地截图为最终构建实拍。
+
+### 2026-10-24 · 线上保留方案 1+2 并表达探索节点深度
+
+- 用户确认下钻后的可展开节点应大于终点节点：前者 18–20px，后者 15–16px；中心节点保持最大。该字号差异只在下钻节点中区分是否还有下一级，首页主题节点仍保持同级。
+- 本次更正一次误操作：此前正式构建把方案 3 的本地轨迹与按压反馈一起发布。已从已发布的 1+2 版本恢复探索页，再加入字号分类；悬浮环形进度 / 关系线反馈保留，方案 3 留在 `/tmp/ascendcann-explore-history-20261023` 的 5205 本地预览，不作为线上版本。保留用户已要求的无黄色提示和首页左侧任务列表不高亮。
+- **依据 / 验证:** 节点是否有后续方向按 `home-exploration.js` 演示树的 `children` 判断（H），字号取值经用户确认。`npm run build:pages` 与 `git diff --check` 通过；本地发布 JS 含 `is-expandable` / `is-terminal`，CSS 含对应 18–20px / 15–16px 规则，且不含 `is-motion-feedback` 变体。尚待 push 和 Pages 发布核验；没有变更后截图，不记作视觉截图复核。
+- **范围:** 只涉及 Ascend Studio 探索首页。未改变页面序列 / hash、探索数据、API / Protocol、Host / Harness、Application / Task 边界；不接真实训练、遥测、日志或 NPU。
