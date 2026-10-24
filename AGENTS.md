@@ -84,6 +84,7 @@ git --git-dir=/Users/hsin/Documents/Coding/AscendCANN/.git \
 
 1. **每次修改完成后立即 git push**，不要堆积
    - 2026-09-14 用户再次确认：每次修改并检查完成后均推送。本要求替代此前学习 / Ploy 材料“仅本地，先别推送”的临时限制；只有用户后续再次明确要求才暂停推送。
+   - 执行口径：每轮修改完成后，当轮完成必要检查、只暂存本任务文件、提交并立即推送 `origin/main`；随后确认推送回执及适用的 Pages 发布结果。不得把“本地已改 / 待隔离发布 / 等截图 QA”作为延期理由。共享工作区有其他改动时，使用隔离 worktree 或按文件暂存，保留所有无关改动；推送遇到并行更新时，先同步并合并保留双方内容，禁止强推。若 push 或 Pages 发布失败，明确报告实际状态并继续处理，不得记为完成。
 2. **每次对话结束后更新本文件（AGENTS.md）**，追加本次对话的关键决策和改动摘要
 3. **视觉/设计类改动先提 2–4 个选项**让用户选，不要直接实现
 4. **用中文**与用户交流
@@ -6342,16 +6343,15 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-10-24 · 首次生成草稿的渠道入口
 
 - 初次生成昇腾社区草稿时，入口文案应是「查看全部发布渠道」；只有用户已进入过渠道总览，再回到渠道详情时才显示「返回渠道总览」。`CommunityDraftPanel.jsx` 已用会话内状态区分这两种情况；从发布后预览返回总览也会记录已访问状态。
-- 依据：用户截图与明确反馈（H）；本地 CUA 已确认首次草稿显示「查看全部发布渠道」，点击后进入四渠道总览（M）。本轮检查时浏览器连接中断，未重新回放总览进入详情后的返回文案。
-- 用户正在讨论多渠道发布后的卡片状态：倾向于已发布渠道显示已发布且不可再次选择/发布，未发布渠道仍可查看并发布。为保留既有发布结果预览，建议锁定已发布卡片的选择行为，同时提供独立的「查看发布效果」入口；等待用户确认后实现。
-- 不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。构建、提交和推送状态在本次交付后补齐。
+- 依据：用户截图与明确反馈（H）；本地 CUA 已确认首次草稿显示「查看全部发布渠道」、点击进入四渠道总览，并从渠道详情通过「返回渠道总览」回到卡片页（M）。
+- 不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 
 ### 2026-10-24 · 多渠道总览中的已发布状态
 
 - 用户确认：已发布渠道显示状态并停止卡片选择 / 重复发布；未发布渠道继续可选；发布结果仍需可重新查看。`CommunityDraftPanel.jsx` 现对已发布卡片移除整卡点击与选择框，显示「已发布」，保留独立「查看发布效果」按钮。未发布卡片仍支持整卡选择、详情查看和批量发布；已发布渠道从待发布选择中清除，底部数量只统计待发布项。没有待发布选择而已有发布结果时，底部仍可进入最近一批预览。
 - 本地 CUA 回放：生成社区草稿 → 选社区与 GitCode 批量发布 → 从社区发布预览返回总览。社区与 GitCode 显示已发布；点击社区卡片正文无切换；独立预览按钮能重新进入发布后文章。CSDN、抖音仍显示可选框；点击抖音卡片可选中，待发布数与按钮数量同步增加。当前仅为本地演示，不触发真实平台发布。
 - 变更：`ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css`、`ascstudio/` 构建产物，以及本交接文件、`ascend-studio/AGENTS.md`、`ascend-studio/design-qa.md`。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证与发布：`npm --prefix ascend-studio run build:pages`、`node --check` 构建 JS、`git diff --check` 均通过；未运行自动化测试。构建保留既有 JS chunk 大于 500 kB 提示。提交、推送和 Pages workflow 结果待补记。
+- 验证与发布：`npm --prefix ascend-studio run build:pages`、`node --check` 构建 JS、`git diff --check` 均通过；未运行自动化测试。构建保留既有 JS chunk 大于 500 kB 提示。代码提交 `f7350e85`、`26921806` 经合并提交 `a8479ee8` 推送到 `origin/main`，合并时保留并行探索页更新；Pages workflow `40072175658` 的 build / deploy 均成功，运行对应代码提交 `a8479ee8`。其后已快进纳入并行文档提交 `e28c49fa`，未覆盖该更新。
 
 
 ### 2026-10-24 · 探索首页悬浮进度与点击锁定反馈
@@ -6397,3 +6397,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **本地复核:** `http://127.0.0.1:5205/?home=explore`，1280×720。点击锁定「先定位瓶颈」后，中心显示固定勾标、方向仍写入 Prompt；文档宽高为 1280×720，没有溢出。动效与样式经 `npm run build` 编译通过。
 - **边界:** 方案 3 是未选定的对比试验，仅保留在独立工作区源码 / 本地预览；线上 `main` 继续呈现方案 1+2。没有改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界，也不表达真实训练诊断。
 - **检查:** `npm run build`、`git diff --check` 通过；Vite 保留既有 JS chunk 超过 500 kB 提示。方案 3 的悬浮等待动画通过样式实现，CUA 本轮直接核对的是锁定勾标与 Prompt 状态。
+
+### 2026-10-24 · 恢复已选的学习发现浅色内容图方案
+
+- 用户对照线上与此前确认的截图发现视觉不一致。Git 历史确认：线上仍为 `4c100b10` 发布的大 Banner 及写实 V2 内容图；此前选定的紧凑页头、连续楼层与浅色内容示意图停留在共享工作区，未推送，因此线上不是缓存问题。
+- 从保留中的工作区仅带入学习发现相关源码和 8 张已选内容图；去掉大 Banner / 顶部放大的推荐课程卡，保留白色紧凑页头、搜索、连续的“为你推荐 → 新上架 → 近期日程”、四类推荐（课程 / 路径 / 知识点 / 认证）、内容图及串联日程的时间轴。图标轨道、全局导航、其他任务和对话改动不改。内容图按 512px、JPEG 88 质量输出，展示尺寸约 100px；八张合计约 248 KB，避免原 PNG 约 9 MB 的页面资源负担。
+- 根协作规则已补充：每轮修改当轮检查、只提交本任务文件、push `origin/main` 并核对 Pages 发布；不得以本地已改、共享工作区脏或待 QA 为由延期，冲突时保留并行修改且禁止强推。
+- 依据：用户提供的两张截图及此前确认的设计决策（H）；Git 历史与主工作区待发布文件用于定位差异（H）。本次不涉及页面序列、hash、API / Protocol、Host / Harness 或 Application / Task 边界变化，也不构成真实模型 / NPU 验证。
+- `npm run build:pages` 与 `git diff --check` 成功；CUA 本地桌面预览确认紧凑白色页头、浅色内容图、四类推荐和三层连续结构已出现，截图 `/tmp/ascstudio-learning-discovery-selected-20261024.png`。未运行测试套件。源码及 Pages 提交 `ea2153cb` 已推送 `origin/main`（推送前整合 5 个并行提交）；Pages workflow `40074675860` build / deploy 成功。线上 HTML 已引用 `index-Bdhw4m6A.js`、`index-D-OSzdn9.css`，JS/CSS 及 8 张浅色内容图均 HTTP 200。线上浏览器视觉读取超时，不记作线上截图核验成功；本地截图为最终构建实拍。
