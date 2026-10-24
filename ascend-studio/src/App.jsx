@@ -186,11 +186,13 @@ function App() {
     try { localStorage.setItem("ascend-studio-theme", visualTheme); } catch { /* Keep the in-session choice when storage is unavailable. */ }
   }, [visualTheme]);
   const [mainView, setMainView] = useState(() => {
-    if (["classic", "explore"].includes(new URLSearchParams(window.location.search).get("home"))) return "home";
     const launchTask = new URLSearchParams(window.location.search).get("task");
     if (["learning", "development"].includes(launchTask)) return "task";
     const savedView = readSession("main-view", null);
     if (["home", "learning", "automations", "capabilities", "task"].includes(savedView)) return savedView;
+    // A home-variant query may remain in the URL after navigating into a task.
+    // Use it only for a fresh session so it cannot override the saved task view on refresh.
+    if (["classic", "explore"].includes(new URLSearchParams(window.location.search).get("home"))) return "home";
     // Reopening the co-creation scenario should show its reset starter state,
     // while a fresh visit to the app still opens the new-task home.
     return readSession("workbench", null)?.selectedTask === LEARNING_PATH_GENERATION_TASK ? "task" : "home";
