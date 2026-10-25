@@ -6518,3 +6518,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascend-studio/src/CommunityDraftPanel.jsx` 将对照标签精简为“输入 / 目标”（AddCustom 为“参考 / 异常”），保留 NHWC / NCHW 和完整尺寸；移除尺寸数字间空格。`community-draft.css` 将格式与尺寸分行展示，状态移至标签行，并收紧尺寸字距。
 - 本地 CUA 1280×720 确认四张深色图文缩略卡同高，NHWC、NCHW 与两组尺寸均完整；浏览器测量中比较卡关键文字的 scrollWidth 不超过 clientWidth，无裁切 / 溢出。`npm run build:pages`、`git diff --check` 通过，未运行自动化测试；构建保留既有主 JS chunk >500 kB 提示。
 - 不改渠道、选择 / 发布交互、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本地发布仍为演示。提交及 Pages 部署状态待记录。
+
+### 2026-10-25 · 图标侧栏选中态改为黑底白图标
+
+- 用户指出左侧 IconButton 侧边栏的选中态太灰，明确希望选中时用黑底白图标；只调整 `.icon-rail-button.is-current` 为 `#191a1b` 背景 / 边框与白色图标，悬停提亮至 `#303132`，键盘焦点描边改为 `#191a1b`。未改变非选中按钮、任务列表或页面其他主题。
+- 依据：用户本轮明确设计要求（H），与 Ascend Studio 黑色主操作 / 选中态界面风格一致。实现位于 `ascend-studio/src/styles.css`，Pages 构建更新 `ascstudio/` 的哈希 CSS、JS 引用。
+- 验证：`npm run build:pages`、`git diff --check` 通过；构建保留既有主 JS chunk 大于 500 kB 的提示，未运行自动化测试。本次没有声称完成截图视觉回放。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 发布：样式与 Pages 产物提交 `ad236093` 已推送至 `origin/main`。本条交接记录单独提交并推送；GitHub Pages 部署状态未在本轮确认。
