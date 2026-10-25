@@ -1520,4 +1520,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户选定参考图：左右布局的阶段与子节点共享一条纵向主干，卡片由短支线和圆点接入；当前节点的支线 / 圆点为黑色。移除该布局中并行的阶段箭头和分组竖线。上下布局继续使用阶段内主干与阶段间横向连接，以免跨列连线穿过其他卡片。卡片位置、节点顺序、内容材料和拖拽行为保持不变。
 - 实现位于 `OfficialLearningPathCanvas.jsx`、`canvas-node-position.js` 与 `canvas-reference-style.css`，几何测试位于 `canvas-node-position.test.js`。参考图是设计依据（H），本地 CUA 截图为实现观察（M）；不涉及 API / Host / Application 机制或真实 NPU 验证。
-- 验证：5 项节点几何测试、`npm run build`、`npm run build:pages` 和 `git diff --check` 通过；本地桌面预览核对选中支线为黑色。实现提交 `b2aff8b2` 已推送 `origin/main`；GitHub Pages 发布核验随推送进行。
+- 验证：5 项节点几何测试、`npm run build`、`npm run build:pages` 和 `git diff --check` 通过；本地桌面预览核对选中支线为黑色。实现提交 `b2aff8b2` 与交接提交 `b20dddce` 已推送 `origin/main`；Pages workflow `40182962189` build / deploy 成功。线上 `/ascstudio/` HTML 已引用 `index-Co4hBAol.js` 与 `index-BKsu1NkP.css`；两项资源内容均核对到共用主干、节点圆点与黑色当前支线规则（HTTP 200）。未做线上 CUA 交互截图。
