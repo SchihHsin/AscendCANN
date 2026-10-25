@@ -6497,3 +6497,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascend-studio/src/OfficialLearningPathCanvas.jsx` 在左右布局中移除重复的阶段箭头和分组竖线，改为一根贯穿阶段与子节点的主干；上下布局保留各阶段自己的竖向分支和阶段间横向连接，避免支线穿过其他阶段卡片。卡片位置、层级和材料内容不变。连线几何由 `canvas-node-position.js` 提供，并覆盖对应测试；中性色和当前节点黑色覆盖写入 `canvas-reference-style.css`。
 - 依据 / 边界：用户提供的参考截图为明确设计依据（H）；本地桌面画布截图为实现观察（M）。只调整学习路径节点连线，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --test src/canvas-node-position.test.js`（5 项通过）、`npm run build`、`npm run build:pages`、`git diff --check`；本地桌面截图核对主干、分支圆点与当前黑色强调。实现提交 `b2aff8b2` 与交接提交 `b20dddce` 已推送 `origin/main`；Pages workflow `40182962189` build / deploy 成功。线上 `/ascstudio/` HTML 已引用 `index-Co4hBAol.js` 与 `index-BKsu1NkP.css`；两项资源内容均核对到共用主干、节点圆点与黑色当前支线规则（HTTP 200）。未做线上 CUA 交互截图。
+
+### 2026-10-25 · Ascend Studio 画布风格 Skill
+
+- 按用户确认的浅色画布、黑色主操作 / 选中态、克制彩色节点点缀方向，创建个人可复用 Skill：`~/.codex/skills/ascend-studio-canvas-style/SKILL.md`，并添加 Codex UI 元数据。规则只适用于学习 / 开发画布及其直接控件，不把整站改成深色主题。
+- 风格依据为用户选定的画布参考与 `ascend-studio/src/canvas-reference-style.css`；颜色映射作为当前画布参考，后续仍以用户最新指示和现有语义为准。
+- Skill Creator `quick_validate.py` 校验通过，`agents/openai.yaml` 的 YAML 解析通过。本次不改产品源码、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- Skill 位于个人 Codex 配置目录，不属于仓库；仅本交接记录进入仓库，未修改或纳入共享工作区的其他并行改动。
