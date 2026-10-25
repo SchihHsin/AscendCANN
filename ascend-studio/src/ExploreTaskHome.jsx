@@ -32,9 +32,9 @@ function satellitePosition(index, count) {
   const positions = {
     1: [[76, 50]],
     2: [[28, 30], [72, 70]],
-    3: [[27, 27], [73, 27], [50, 78]],
-    4: [[50, 17], [82, 50], [50, 83], [18, 50]],
-    5: [[28, 20], [72, 20], [84, 56], [50, 83], [16, 56]],
+    3: [[27, 20], [73, 20], [50, 84]],
+    4: [[50, 14], [82, 50], [50, 84], [18, 50]],
+    5: [[28, 18], [72, 18], [84, 56], [50, 84], [16, 56]],
   };
   return positions[count]?.[index] || [50, 50];
 }
@@ -417,7 +417,7 @@ export function ExploreTaskHome({ onCreateTask }) {
             else nodeRefs.current.delete(focused.id);
           }}
           className={`explore-field__node explore-field__node--${focused.tone || "blue"} is-center${topicEnglishTitles[focused.id] ? " is-topic" : ""}${isPreviewing ? " is-previewing" : ""}${lockingId === focused.id ? " is-locking" : ""}`}
-          style={{ "--node-x": "50%", "--node-y": "50%", "--node-index": 0 }}
+          style={{ "--node-x": "50%", "--node-y": options.length >= 3 ? "46%" : "50%", "--node-index": 0 }}
           onPointerMove={(event) => moveOnNode(focused, event)}
           onPointerLeave={() => leaveNode(focused)}
           onFocus={() => setHoveredId(focused.id)}

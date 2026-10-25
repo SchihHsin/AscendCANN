@@ -1200,3 +1200,36 @@ final result: passed
 - **视觉核对:** 四卡在桌面短屏同屏可见；卡片有独立的真实平台图标和选择状态。社区摘要含浅色立方体插画；GitCode 的标签、复现代码和验证边界可辨；CSDN 目录与代码使用双栏；抖音四张不同内容的深色知识图文缩略卡已替代重复占位图。没有页面横向溢出。
 - **交互核对:** 从完成任务生成社区草稿后进入渠道画廊；选择 GitCode 后待发渠道计数增加；打开 CSDN 详情并返回后保留选择；取消选择恢复社区默认单选。发布与奖励仍为本地概念演示，不会将内容发送到平台。
 - **构建:** `npm run build:pages` 通过，Vite 提示主 JS chunk 大于 500 kB；这是既有性能提示，本轮未处理。`git diff --check` 通过。未运行自动化测试。参考与本地截图尺寸不同，因此核对结构、层级及内容辨识度，不宣称像素级一致。
+
+## 2026-10-24 · 学习与开发画布采用参考图样式
+
+**目标与来源**
+- Source visual: `/var/folders/wj/nd900vqd3wl1kztdsn2r8pcw0000gn/T/codex-clipboard-e42ebcae-d829-40ee-afc6-aee7e7156c09.png`（1586×992）；用户要求将这套风格应用到 Demo。
+- Implementation: 最新 `origin/main` 上的 Ascend Studio Pages 包；本地静态预览 `http://127.0.0.1:5184/?task=learning`，CUA 桌面预览。
+- 视口：1280×720；状态：学习任务中的「与 AI 共创学习路径」，生成路径后显示 4 个阶段及其子节点；开发任务「图像推理调试」画布显示选中的 `preprocess.py` 与关联图解。
+
+**视觉复核**
+- 画布使用浅灰底和主题变量驱动的点阵；普通节点为白色，当前选中节点 / 开发卡片标题为黑色；不同学习阶段用小面积的蓝、珊瑚、琥珀、青绿色区分；浮动工具仍是紧凑白底，激活项黑底白字。学习材料卡片、节点布局和既有画布结构保留。
+- CUA 对学习路径生成前、生成后以及开发画布均有桌面截图核对。点击“适应完整学习路径”后全部阶段与子节点可见；开发画布的选中代码卡与关联图解保持可读。截图显示在本轮工具输出中，未落盘。
+- Colors / tokens：背景沿用 neutral-gray / cool-gray 主题变量，点阵也使用 `--canvas-dot`，不强制改为单一主题。
+- Images / icons：沿用现有节点图标和图解素材，不新增图片。
+- Interaction：没有更改节点选择、拖动、路径生成、缩放、聚焦或布局切换行为。
+
+**Build / validation**
+- `npm run build:pages`：通过；生成 Pages 的 JS / CSS 哈希资源。保留既有 >500 kB JS chunk 提醒。
+- `git diff --check`：通过。未运行自动化测试。
+- 来源与边界：参考图风格为用户明确偏好（H）；本地桌面截图为实现观察（M）。未声称真实学习个性化、NPU 或模型验证；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+
+**Publish / online check**
+- Commit `8b9c9479` pushed to `origin/main`; GitHub Pages workflow `40084082873` build / deploy succeeded. Online index and referenced JS / CSS returned HTTP 200; the CSS includes the dot grid and selected-state rules.
+- Online CUA visual capture timed out, so no online screenshot verification is claimed. The local static Pages build was visually checked in CUA.
+
+final result: passed (local visual review; online screenshot unavailable)
+
+## 探索首页节点间距与连线（2026-10-24）
+
+- **用户决策:** 中心上移、下方节点下移并增强连线。
+- **排布:** 中心在有 3 个以上子节点时设为画布 46%；三至五节点布局把下方节点放至 84%，上方节点同步上移。桌面展开画布最小高度 340px；窄屏仍使用顺序列表。
+- **关系线:** 常态 1.2px / 32% 透明度，悬浮中的关系线继续加亮。模型部署的“核对部署条件”与中心相距约 59px，锁定状态下连线仍清晰。
+- **验证:** Headless Chrome 在 1280×720 回放“模型部署”悬浮及点击锁定、在 390×844 回放训练方向；无页面溢出，底部输入区不被节点遮挡。`npm run build`、`npm run build:pages`、`git diff --check` 通过。
+- **边界:** 仅修正空间与线条表现；不改变训练 / 部署示例语义、交互阈值、页面序列或 API / Host / Application 边界。实现 commit `5f4f8974` 已推送至 `origin/main`；Pages workflow `40085282550` build / deploy 成功，线上 CSS / JS HTTP 200。

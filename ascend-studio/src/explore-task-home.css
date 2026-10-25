@@ -111,14 +111,15 @@
 .explore-home__trail .explore-home__back { margin-left: auto; color: #858b95; }
 
 .explore-field { position: relative; display: flex; flex: 1 1 auto; flex-direction: column; min-height: 285px; margin: 1px 0 8px; overflow: hidden; }
+.explore-field.is-focused { min-height: 340px; }
 .explore-field__connections { position: absolute; z-index: 0; inset: 0; overflow: visible; pointer-events: none; }
-.explore-field__connection { fill: none; stroke: var(--connection-color); stroke-width: .95; stroke-linecap: round; opacity: .16; stroke-dasharray: 1; stroke-dashoffset: 1; animation: explore-connection-draw 540ms cubic-bezier(.22,.8,.3,1) forwards; animation-delay: calc(var(--connection-index, 0) * 35ms); transition: opacity 180ms, stroke-width 180ms; }
-.explore-field__connection.is-active { stroke-width: 1.5; opacity: .42; }
-.explore-field__connection-end { fill: var(--connection-color); opacity: .2; }
-.explore-field.is-previewing .explore-field__connection { stroke-dasharray: 4 7; stroke-dashoffset: 14px; opacity: .38; animation: explore-preview-connection 540ms cubic-bezier(.22,.8,.3,1) forwards; }
-.explore-field.is-previewing .explore-field__connection.is-active { stroke-width: 1.6; opacity: .78; }
-.explore-field.is-previewing .explore-field__connection-end { opacity: .42; }
-.explore-field__connection.is-pending { stroke-width: 1.35; opacity: .48; }
+.explore-field__connection { fill: none; stroke: var(--connection-color); stroke-width: 1.2; stroke-linecap: round; opacity: .32; stroke-dasharray: 1; stroke-dashoffset: 1; animation: explore-connection-draw 540ms cubic-bezier(.22,.8,.3,1) forwards; animation-delay: calc(var(--connection-index, 0) * 35ms); transition: opacity 180ms, stroke-width 180ms; }
+.explore-field__connection.is-active { stroke-width: 1.8; opacity: .62; }
+.explore-field__connection-end { fill: var(--connection-color); opacity: .4; }
+.explore-field.is-previewing .explore-field__connection { stroke-dasharray: 4 7; stroke-dashoffset: 14px; opacity: .42; animation: explore-preview-connection 540ms cubic-bezier(.22,.8,.3,1) forwards; }
+.explore-field.is-previewing .explore-field__connection.is-active { stroke-width: 1.7; opacity: .84; }
+.explore-field.is-previewing .explore-field__connection-end { opacity: .52; }
+.explore-field__connection.is-pending { stroke-width: 1.4; opacity: .56; }
 .explore-field.is-previewing .explore-field__connection.is-pending { stroke-width: 1.6; opacity: .72; }
 .explore-field__pending-trace { fill: none; stroke: var(--connection-color); stroke-width: 1.8; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: .88; filter: drop-shadow(0 0 2px var(--connection-color)); animation: explore-dwell-line 620ms linear forwards; pointer-events: none; }
 .explore-field__connection-end.is-pending { opacity: .85; filter: drop-shadow(0 0 3px var(--connection-color)); }
@@ -276,6 +277,7 @@
   .explore-home__map-heading small { font-size: 7px; }
   .explore-home__trail { min-height: 28px; margin-top: 3px; }
   .explore-field { min-height: 255px; }
+  .explore-field.is-focused { min-height: 255px; }
   .explore-field__nodes { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(78px, 1fr)); gap: 2px 1%; padding-inline: 0; }
   .explore-field__node { justify-self: center; padding-inline: 5px; }
   .explore-field__node strong { font-size: clamp(19px, 5vw, 25px); }

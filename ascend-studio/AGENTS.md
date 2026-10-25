@@ -1486,3 +1486,25 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 昇腾社区使用浅色立方体插画与经验帖摘要；GitCode 用 Issue / 复现代码结构；CSDN 用目录与代码片段结构；抖音保留四张差异化深色知识图文卡。卡片继续显示渠道奖励信息，抖音只提示播放表现激励，不虚构积分数。
 - 1280×720 本地桌面预览四卡同屏；生成草稿、打开画廊、多选、详情返回保留选择均经 CUA 回放。发布是本地演示，不向第三方平台发送内容。
 - `npm run build:pages`、`git diff --check` 通过；未运行自动化测试。此项不改变导航序列、hash 或 API / Host / Application 边界。源码和 Pages 发布状态在根 `AGENTS.md` 的本轮记录中补全。
+
+### 2026-10-24 · 画布参考图视觉样式接入
+
+- 用户指定的参考图作为视觉依据（H）。学习画布、从目标生成路径及开发任务画布统一采用浅灰点阵背景、白色内容节点、黑色选中节点 / 主操作和克制的彩色类型标记；点阵继续读取中性灰 / 冷灰主题变量。
+- 新增 `ascend-studio/src/canvas-reference-style.css` 并从 `main.jsx` 加载；保留各任务原有路径结构、层级、卡片内容与拖拽 / 缩放交互，仅覆盖视觉令牌。重新生成根目录 Pages 产物 `ascstudio/`。不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`git diff --check` 通过；CUA 在 1280×720 预览学习路径共创和图像推理开发画布，确认点阵背景、黑色选中项、彩色节点标记和白色浮动工具生效。截图在本轮工具输出中核对，未另存仓库。未运行自动化测试；构建保留现有大 JS chunk 提醒。
+- 源码与 Pages 产物提交 `8b9c9479` 已推送 `origin/main`。GitHub Pages workflow `40084082873` build / deploy 成功；线上 index、新 JS 与 CSS 均 HTTP 200，CSS 含本轮画布样式。线上 CUA 视觉读取超时，因此不记作线上截图复核；本地静态 Pages 包已通过 CUA 桌面截图核验。
+
+## 探索首页节点间距与连线对比（2026-10-24）
+
+- 对齐用户选择：中心节点轻微上移，下方节点下移，并增强连线。三个及以上子节点时中心位置为 46%；下方节点落在 84%，展开画布桌面最小高度 340px。窄屏沿用上下排列的列表样式。
+- 默认连线为 1.2px / 32% 透明度，悬浮与锁定反馈继续沿用既有状态变化。训练与调优、模型部署路径均已回放，锁定模型部署后中心与下方节点间距约 59px，线段清楚且底部不遮挡。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过；1280×720 与 390×844 视口无溢出。改动不影响页面序列、Prompt 结构或 API / Host / Application 边界。实现 commit `5f4f8974` 已推送至 `origin/main`；Pages workflow `40085282550` build / deploy 成功，线上 JS / CSS HTTP 200。
+
+
+### 2026-10-25 · 修正带 home 参数地址的任务刷新恢复
+
+- 用户反馈上一轮推送后 GitHub Pages 刷新仍回首页；原生 Firefox 现场确认用户在 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=classic` 打开「ResNet50 离线推理初体验」。遗留 `home` 参数在初始化时优先于已保存的 `main-view`，覆盖任务恢复；此前只回放无参数本地地址，遗漏该路径。
+- `ascend-studio/src/App.jsx` 改为有效的已保存主视图优先于 `home=classic/explore`；无保存记录时才用 home 参数进入首页。`?task=learning/development` 的直接任务入口仍优先；home 参数继续选择首页变体，选中的任务及列表展开状态沿用原持久化。此条替代此前“显式 home 参数始终优先”的记录。
+- 依据为用户反馈、Firefox 地址与界面观察（H/M）、源码初始化顺序（H）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证与发布：合并前后 `npm run build:pages`、产物 `node --check`、`git diff --check` 通过。修复提交 `af2d3e5e`，整合并行画布样式和探索节点更新后的发布提交 `031c12c4` 已推送 `origin/main`；Pages workflow `40110708219` build / deploy 成功。线上 HTML 已引用 `index-CzCSdMsa.js` / `index-UrPzqb1-.css`。没有新增或运行测试套件。
+- 线上交互验证：直接在 Firefox 已打开的上述带参数 Pages 地址按刷新，仍显示「ResNet50 离线推理初体验」、原有对话和学习画布；左侧对应任务行保持高亮，列表保持展开。截图 `/tmp/ascstudio-pages-task-refresh-20261025.png` 为线上刷新后的实拍，仅本地保留。此次是实际线上交互回放，不以 HTTP 或部署状态替代行为验证。
