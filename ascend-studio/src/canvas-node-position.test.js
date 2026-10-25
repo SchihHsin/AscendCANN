@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { canvasNodeKey, nodeConnector, positionTreeNodes } from "./canvas-node-position.js";
+import { canvasNodeKey, nodeConnector, positionTreeNodes, stageSpineConnectors, hierarchySpineConnectors } from "./canvas-node-position.js";
 
 test("moving a learning node changes only its canvas coordinates and expands the drawing bounds", () => {
   const tree = {
@@ -48,4 +48,27 @@ test("node connectors recompute their route from the current node rectangles", (
     { x: 40, y: 0, width: 80, height: 40 },
     { x: 50, y: 100, width: 80, height: 40 },
   ), "M80,40 V70 H90 V100");
+});
+
+test("horizontal group spine connects its vertically stacked stage and children", () => {
+  const stage = {
+    rect: { x: 100, y: 10, width: 120, height: 40 },
+    children: [
+      { id: "one", rect: { x: 120, y: 70, width: 90, height: 30 } },
+      { id: "two", rect: { x: 120, y: 120, width: 90, height: 30 } },
+    ],
+  };
+  const connectors = stageSpineConnectors(stage);
+  assert.equal(connectors.spine, "M74,30 V135");
+  assert.deepEqual(connectors.branches.map(branch => branch.d), ["M74,30 H91", "M74,85 H111", "M74,135 H111"]);
+});
+
+test("one shared vertical spine branches to every stage and child card", () => {
+  const groups = [
+    { id: "a", rect: { x: 0, y: 0, width: 100, height: 40 }, children: [{ id: "a1", rect: { x: 15, y: 55, width: 80, height: 30 } }] },
+    { id: "b", rect: { x: 140, y: 110, width: 100, height: 40 }, children: [{ id: "b1", rect: { x: 155, y: 165, width: 80, height: 30 } }] },
+  ];
+  const connectors = hierarchySpineConnectors(groups);
+  assert.equal(connectors.spine, "M-26,20 V180");
+  assert.deepEqual(connectors.branches.map(branch => branch.d), ["M-26,20 H-9", "M-26,70 H6", "M-26,130 H131", "M-26,180 H146"]);
 });
