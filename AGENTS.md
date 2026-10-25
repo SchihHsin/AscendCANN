@@ -6504,3 +6504,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 风格依据为用户选定的画布参考与 `ascend-studio/src/canvas-reference-style.css`；颜色映射作为当前画布参考，后续仍以用户最新指示和现有语义为准。
 - Skill Creator `quick_validate.py` 校验通过，`agents/openai.yaml` 的 YAML 解析通过。本次不改产品源码、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
 - Skill 位于个人 Codex 配置目录，不属于仓库；仅本交接记录进入仓库，未修改或纳入共享工作区的其他并行改动。
+
+### 2026-10-25 · Ascend Studio 界面风格 Skill 扩展
+
+- 用户明确希望已建立的黑色重点色 + 克制彩色点缀风格可用于整个界面，而不只限画布，并要求写明色号。原 `ascend-studio-canvas-style` Skill 已扩展并更名为个人 Skill `~/.codex/skills/ascend-studio-interface-style/SKILL.md`。
+- 色板记录项目中已有的中性面、文字和描边色，以及黑色操作态和蓝 / 珊瑚 / 琥珀 / 青绿色及淡色底；明确分类色不能替代成功、警告、失败等语义状态色。范围覆盖工作台、导航、对话、卡片、表单、画布和控件，不代表整站深色主题。
+- 色号依据 `ascend-studio/src/styles.css` 与 `ascend-studio/src/canvas-reference-style.css` 的现存 token / 样式，并遵从用户已确认的中性灰与黑色重点方向。Skill Creator 校验和 UI YAML 解析通过。未修改产品源码、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 仅本交接记录进入仓库；Skill 本体位于个人 Codex 配置目录。共享工作区其他对话改动未纳入。
