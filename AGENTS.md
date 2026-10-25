@@ -6482,3 +6482,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据为用户反馈、Firefox 地址与界面观察（H/M）、源码初始化顺序（H）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证与发布：合并前后 `npm run build:pages`、产物 `node --check`、`git diff --check` 通过。修复提交 `af2d3e5e`，整合并行画布样式和探索节点更新后的发布提交 `031c12c4` 已推送 `origin/main`；Pages workflow `40110708219` build / deploy 成功。线上 HTML 已引用 `index-CzCSdMsa.js` / `index-UrPzqb1-.css`。没有新增或运行测试套件。
 - 线上交互验证：直接在 Firefox 已打开的上述带参数 Pages 地址按刷新，仍显示「ResNet50 离线推理初体验」、原有对话和学习画布；左侧对应任务行保持高亮，列表保持展开。截图 `/tmp/ascstudio-pages-task-refresh-20261025.png` 为线上刷新后的实拍，仅本地保留。此次是实际线上交互回放，不以 HTTP 或部署状态替代行为验证。
+
+### 2026-10-25 · ResNet50 学习画布采用共用主干连线
+
+- 用户选择的参考图（H）作为连线样式依据：纵向节点列共用一根主干，每张阶段 / 子节点卡片以短支线和圆点接入，当前节点的支线与圆点为黑色。
+- `ascend-studio/src/OfficialLearningPathCanvas.jsx` 在左右布局中移除重复的阶段箭头和分组竖线，改为一根贯穿阶段与子节点的主干；上下布局保留各阶段自己的竖向分支和阶段间横向连接，避免支线穿过其他阶段卡片。卡片位置、层级和材料内容不变。连线几何由 `canvas-node-position.js` 提供，并覆盖对应测试；中性色和当前节点黑色覆盖写入 `canvas-reference-style.css`。
+- 依据 / 边界：用户提供的参考截图为明确设计依据（H）；本地桌面画布截图为实现观察（M）。只调整学习路径节点连线，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --test src/canvas-node-position.test.js`（5 项通过）、`npm run build`、`npm run build:pages`、`git diff --check`；本地桌面截图核对主干、分支圆点与当前黑色强调。提交及 Pages 推送结果待本轮发布后回填。

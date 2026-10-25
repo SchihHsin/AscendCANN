@@ -67,9 +67,13 @@
 /* Branch and sequence lines remain thin and neutral, with a darker current route. */
 .lh-tree-lines path { stroke: var(--canvas-node-line); }
 .lh-tree-lines marker path { fill: #9b9ea0; }
-.lh-tree-lines .lh-stage-line,
-.lh-tree-lines .lh-child-line { stroke: #c2c4c6; }
-.lh-tree-lines .lh-child-line.is-current { stroke: #303234; stroke-width: 1.8; }
+.learning-hierarchy-canvas .lh-tree-lines .lh-stage-line,
+.learning-hierarchy-canvas .lh-tree-lines .lh-stage-spine,
+.learning-hierarchy-canvas .lh-tree-lines .lh-child-line,
+.learning-hierarchy-canvas .lh-tree-lines .lh-child-line.is-stage-branch { stroke: #c2c4c6; }
+.learning-hierarchy-canvas .lh-tree-lines .lh-child-line.is-current { stroke: #191a1b; stroke-width: 1.8; }
+.learning-hierarchy-canvas .lh-tree-lines .lh-branch-dot { fill: #c2c4c6; }
+.learning-hierarchy-canvas .lh-tree-lines .lh-branch-dot.is-current { fill: #191a1b; }
 .lh-material-lines > path { stroke: #aeb1b3; }
 .lh-material-lines circle { fill: #252728; }
 .tc-connections path { stroke: #b6b8ba; }
