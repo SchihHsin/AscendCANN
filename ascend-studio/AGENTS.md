@@ -1478,3 +1478,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 工作台原本已持久化选中的任务；缺陷是刷新后普通任务的主视图回到首页，导致任务本身和左侧选中态不显示。`src/App.jsx` 现在恢复上次主视图，并持久化项目列表展开状态；显式 `?home=` / `?task=` 启动参数仍优先。
 - 本地 CUA 刷新复核确认仍显示原任务、对应列表行高亮，列表展开状态也恢复。`npm run build:pages` 和 `git diff --check` 通过；未运行自动化测试。构建保留既有 JS chunk 提醒。
 - 不改变页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界。实现提交 `1abeac04` 经 `d77b2336` 整合并推送至 `origin/main`；Pages workflow `40080856085` build / deploy 成功，线上 JS / CSS 均 HTTP 200。
+
+
+### 2026-10-25 · 四渠道社区经验预览卡片
+
+- 按用户选定的参考图，将四个平台预览集中在右侧多渠道画廊。卡片多选用描边与圆形勾选表达；详情通过「查看详情」进入，发布操作集中在右下角。
+- 昇腾社区使用浅色立方体插画与经验帖摘要；GitCode 用 Issue / 复现代码结构；CSDN 用目录与代码片段结构；抖音保留四张差异化深色知识图文卡。卡片继续显示渠道奖励信息，抖音只提示播放表现激励，不虚构积分数。
+- 1280×720 本地桌面预览四卡同屏；生成草稿、打开画廊、多选、详情返回保留选择均经 CUA 回放。发布是本地演示，不向第三方平台发送内容。
+- `npm run build:pages`、`git diff --check` 通过；未运行自动化测试。此项不改变导航序列、hash 或 API / Host / Application 边界。源码和 Pages 发布状态在根 `AGENTS.md` 的本轮记录中补全。

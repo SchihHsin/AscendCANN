@@ -6450,3 +6450,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户截图与本轮明确反馈（H）；改动范围是移除冗余提示，不改变交互模型、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：方案 3 worktree 执行 `npm run build`；正式 1+2 执行 `npm run build:pages`；两者 `git diff --check` 通过。CUA 检查 5205 首页不再显示顶部图例、节点动作文字和底部状态提示。线上 HTML 已引用 `index-Drfi5YwA.js` / `index-B6kBlHxL.css`，两项均 HTTP 200。
 - 提交 / 推送：正式版本提交 `823e9cb1` 已推送 `origin/main`；GitHub Pages workflow `40080675197` build / deploy 成功。方案 3 仅更新 5205 本地预览，保留在 `codex/explore-history-seed-20261023` worktree，未发布。
+
+
+### 2026-10-25 · 四渠道草稿卡片画廊采用已选方案
+
+- **目标与方案:** 用户认可四渠道卡片画廊参考方案，继续实现 Ascend Studio 社区经验发布流程。多渠道页在右侧内容区并列展示昇腾社区、GitCode、CSDN、抖音四张平台预览卡；卡片可多选并以描边 / 圆形勾选表达，卡内提供「查看详情」，统一在右下角批量发布。
+- **实现:** 社区卡增加浅色立方体插画、标题与问题摘要；GitCode 显示 Issue 标签、复现代码和验证边界；CSDN 显示文章目录与代码片段；抖音显示四张内容各异的深色知识图文卡。新增插画 `ascend-studio/src/assets/channel-marks/tensor-cubes.png`，其余平台使用现有真实图标。窄屏 / 短屏规则保证卡片内容适配。
+- **依据 / 验证:** 方案依据用户选定参考图（H）。本地 CUA `http://127.0.0.1:5230/` 在 1280×720 复核：四卡同屏、社区默认选中、右下角批量发布入口可见；生成草稿 → 打开多渠道页、选择 GitCode、进入 CSDN 详情并返回后保留 / 恢复选择均已回放。`npm run build:pages`、`git diff --check` 通过；构建保留既有 JS chunk >500 kB 提示，未运行自动化测试。
+- **范围:** 仅调整社区经验草稿的渠道总览视觉与平台内容预览，不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。所有渠道发布仍是前端演示，不会真实提交第三方平台；不代表平台实际奖励承诺。
+- **提交 / 发布:** 本轮源码和 Pages 产物待整合远端并行提交后推送 `origin/main`；Pages workflow 结果待发布后复核。
