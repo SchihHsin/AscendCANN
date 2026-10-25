@@ -6458,7 +6458,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **实现:** 社区卡增加浅色立方体插画、标题与问题摘要；GitCode 显示 Issue 标签、复现代码和验证边界；CSDN 显示文章目录与代码片段；抖音显示四张内容各异的深色知识图文卡。新增插画 `ascend-studio/src/assets/channel-marks/tensor-cubes.png`，其余平台使用现有真实图标。窄屏 / 短屏规则保证卡片内容适配。
 - **依据 / 验证:** 方案依据用户选定参考图（H）。本地 CUA `http://127.0.0.1:5230/` 在 1280×720 复核：四卡同屏、社区默认选中、右下角批量发布入口可见；生成草稿 → 打开多渠道页、选择 GitCode、进入 CSDN 详情并返回后保留 / 恢复选择均已回放。`npm run build:pages`、`git diff --check` 通过；构建保留既有 JS chunk >500 kB 提示，未运行自动化测试。
 - **范围:** 仅调整社区经验草稿的渠道总览视觉与平台内容预览，不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。所有渠道发布仍是前端演示，不会真实提交第三方平台；不代表平台实际奖励承诺。
-- **提交 / 发布:** 本轮源码和 Pages 产物待整合远端并行提交后推送 `origin/main`；Pages workflow 结果待发布后复核。
+- **提交 / 发布:** 画廊实现提交 `4bef51d4` 与远端并行更新整合后形成 `465b89eb`，已推送 `origin/main`。Pages workflow `40180638508` build / deploy 成功；线上 `/ascstudio/` 引用 `index-CWrcc-vV.js` / `index-BApcEqBe.css`，HTML、JS、CSS 和 `tensor-cubes-ClovSdPR.png` 均 HTTP 200。
 
 ### 2026-10-24 · 画布参考图视觉样式接入
 

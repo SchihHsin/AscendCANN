@@ -1485,7 +1485,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 按用户选定的参考图，将四个平台预览集中在右侧多渠道画廊。卡片多选用描边与圆形勾选表达；详情通过「查看详情」进入，发布操作集中在右下角。
 - 昇腾社区使用浅色立方体插画与经验帖摘要；GitCode 用 Issue / 复现代码结构；CSDN 用目录与代码片段结构；抖音保留四张差异化深色知识图文卡。卡片继续显示渠道奖励信息，抖音只提示播放表现激励，不虚构积分数。
 - 1280×720 本地桌面预览四卡同屏；生成草稿、打开画廊、多选、详情返回保留选择均经 CUA 回放。发布是本地演示，不向第三方平台发送内容。
-- `npm run build:pages`、`git diff --check` 通过；未运行自动化测试。此项不改变导航序列、hash 或 API / Host / Application 边界。源码和 Pages 发布状态在根 `AGENTS.md` 的本轮记录中补全。
+- `npm run build:pages`、`git diff --check`、构建 JS 的 `node --check` 通过；未运行自动化测试。此项不改变导航序列、hash 或 API / Host / Application 边界。提交 `4bef51d4` 经 `465b89eb` 整合远端并行更新后推送 `origin/main`；Pages workflow `40180638508` build / deploy 成功。
 
 ### 2026-10-24 · 画布参考图视觉样式接入
 
