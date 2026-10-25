@@ -6524,7 +6524,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户截图仍有错位（H）：上一轮只修了多渠道总览缩略图；详情页第 2 张仍将长格式和值并排，NHWC / NCHW 与状态文字发生重叠。
 - `ascend-studio/src/ChannelDraftContent.jsx` 将格式名、尺寸和状态拆成独立内容行，以纵向箭头连接当前输入与目标布局；`channel-draft.css` 收紧该页标题与面板间距，避免与图片脚注 / 底栏相撞。AddCustom 两组输入沿用相同结构。
-- 本地 1280×720 CUA 检查详情页第 2 张：输入与目标各占一张全宽卡片，格式、尺寸、状态均完整且不重叠。`npm run build:pages`、构建 JS `node --check`、产物样式核对及 `git diff --check` 通过；未运行自动化测试。实现提交与 Pages 部署状态待补记。
+- 本地 1280×720 CUA 检查详情页第 2 张：输入与目标各占一张全宽卡片，格式、尺寸、状态均完整且不重叠。`npm run build:pages`、构建 JS `node --check`、产物样式核对及 `git diff --check` 通过；未运行自动化测试。提交 `6f8a63cb` 已推送 `origin/main`；Pages workflow `40198851377` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200，且静态资源包含新对照布局。
 - 不改发布渠道、发布状态、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 
 ### 2026-10-25 · 图标侧栏选中态改为黑底白图标

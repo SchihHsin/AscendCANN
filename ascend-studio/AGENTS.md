@@ -1530,4 +1530,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-25 · 抖音详情页第二张图修正挤压
 
 - 当前输入与目标布局改为上下两张卡片，卡片内格式、尺寸、状态分行；纵向箭头表达对照顺序。AddCustom 共享此布局。
-- 1280×720 本地预览确认完整显示，无横向覆盖；页面构建、构建 JS 语法检查与 diff 检查通过。发布状态随后补记根目录 `AGENTS.md`。
+- 1280×720 本地预览确认完整显示，无横向覆盖；页面构建、构建 JS 语法检查与 diff 检查通过。实现 `6f8a63cb` 已推送到 `origin/main`，Pages workflow `40198851377` 部署成功；完整发布记录见根目录 `AGENTS.md`。
