@@ -6482,3 +6482,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据为用户反馈、Firefox 地址与界面观察（H/M）、源码初始化顺序（H）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证与发布：合并前后 `npm run build:pages`、产物 `node --check`、`git diff --check` 通过。修复提交 `af2d3e5e`，整合并行画布样式和探索节点更新后的发布提交 `031c12c4` 已推送 `origin/main`；Pages workflow `40110708219` build / deploy 成功。线上 HTML 已引用 `index-CzCSdMsa.js` / `index-UrPzqb1-.css`。没有新增或运行测试套件。
 - 线上交互验证：直接在 Firefox 已打开的上述带参数 Pages 地址按刷新，仍显示「ResNet50 离线推理初体验」、原有对话和学习画布；左侧对应任务行保持高亮，列表保持展开。截图 `/tmp/ascstudio-pages-task-refresh-20261025.png` 为线上刷新后的实拍，仅本地保留。此次是实际线上交互回放，不以 HTTP 或部署状态替代行为验证。
+
+### 2026-10-25 · 修正抖音知识图文缩略图错位
+
+- 用户截图指出抖音卡片中的四张内容图排版错位（H）。原因是四列窄缩略图仍承载长标题、长标签与横排状态；文字换行后内容块高度和宽度互相挤压。
+- `ascend-studio/src/CommunityDraftPanel.jsx` 将四页内容收敛为封面、形状对照、排查步骤、验证清单；短化标签与步骤文案，形状对照改为上下两条结构固定的输入 / 目标记录。`community-draft.css` 为标题、标签、数据行、列表和状态提示设置最小尺寸、单行截断与明确网格位置，避免窄列换行造成错位。深色内容图、浅色外层抖音卡和四页并排布局保留，其他平台与选择 / 发布交互不变。
+- 本地 CUA `http://127.0.0.1:5230/` 1280×720 复核：四张图的序号与栏目眉题对齐；比较数据、步骤和清单分别落在各自内容区，无文字叠压或溢出（M）。页面导航、API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- `npm run build:pages` 与 `git diff --check` 通过；未运行自动化测试。构建继续提示既有主 JS chunk 大于 500 kB。
+- 提交与 Pages 部署状态将在本条更新后补记。

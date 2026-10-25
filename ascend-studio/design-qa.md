@@ -1234,3 +1234,13 @@ final result: passed (local visual review; online screenshot unavailable)
 - **关系线:** 常态 1.2px / 32% 透明度，悬浮中的关系线继续加亮。模型部署的“核对部署条件”与中心相距约 59px，锁定状态下连线仍清晰。
 - **验证:** Headless Chrome 在 1280×720 回放“模型部署”悬浮及点击锁定、在 390×844 回放训练方向；无页面溢出，底部输入区不被节点遮挡。`npm run build`、`npm run build:pages`、`git diff --check` 通过。
 - **边界:** 仅修正空间与线条表现；不改变训练 / 部署示例语义、交互阈值、页面序列或 API / Host / Application 边界。实现 commit `5f4f8974` 已推送至 `origin/main`；Pages workflow `40085282550` build / deploy 成功，线上 CSS / JS HTTP 200。
+
+
+## 抖音知识图文四页缩略图对齐（2026-10-25）
+
+- **问题来源:** 用户截图指出抖音卡片里的四张深色内容图文字与图形错位。四页缩成并排窄列时，长标题、步骤文字和状态文案会换行，挤压相邻内容。
+- **版式修正:** 第一页为封面标题与主题图标；第二页用两条固定结构的当前 / 目标形状记录和向下指引；第三页是编号排查步骤；第四页是验证清单与底部状态。页眉均统一为左侧序号、右侧短栏目名。
+- **本地视觉复核:** `http://127.0.0.1:5230/`，1280×720。四个缩略图同排；对照值、步骤、清单在各自区域中对齐，无文字叠压或卡片边缘溢出。深色图面和浅色抖音卡片外层保留。
+- **源文件 / 检查:** `ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css`、Pages 产物 `ascstudio/`。`npm run build:pages` 与 `git diff --check` 通过；未运行自动化测试。构建保留既有 JS chunk >500 kB 提醒。
+- **边界:** 只调整缩略图内容布局与紧凑文案；渠道选择、详情、发布交互、页面序列和 API / Host / Application 边界不变。本地发布仍为演示。
+- **发布:** 本条记录待 GitHub Pages 部署后补记。
