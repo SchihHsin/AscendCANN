@@ -6488,4 +6488,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户选择的参考图（H）作为连线样式依据：纵向节点列共用一根主干，每张阶段 / 子节点卡片以短支线和圆点接入，当前节点的支线与圆点为黑色。
 - `ascend-studio/src/OfficialLearningPathCanvas.jsx` 在左右布局中移除重复的阶段箭头和分组竖线，改为一根贯穿阶段与子节点的主干；上下布局保留各阶段自己的竖向分支和阶段间横向连接，避免支线穿过其他阶段卡片。卡片位置、层级和材料内容不变。连线几何由 `canvas-node-position.js` 提供，并覆盖对应测试；中性色和当前节点黑色覆盖写入 `canvas-reference-style.css`。
 - 依据 / 边界：用户提供的参考截图为明确设计依据（H）；本地桌面画布截图为实现观察（M）。只调整学习路径节点连线，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`node --test src/canvas-node-position.test.js`（5 项通过）、`npm run build`、`npm run build:pages`、`git diff --check`；本地桌面截图核对主干、分支圆点与当前黑色强调。实现提交 `b2aff8b2` 已推送 `origin/main`；GitHub Pages 发布核验随推送进行。
+- 验证：`node --test src/canvas-node-position.test.js`（5 项通过）、`npm run build`、`npm run build:pages`、`git diff --check`；本地桌面截图核对主干、分支圆点与当前黑色强调。实现提交 `b2aff8b2` 与交接提交 `b20dddce` 已推送 `origin/main`；Pages workflow `40182962189` build / deploy 成功。线上 `/ascstudio/` HTML 已引用 `index-Co4hBAol.js` 与 `index-BKsu1NkP.css`；两项资源内容均核对到共用主干、节点圆点与黑色当前支线规则（HTTP 200）。未做线上 CUA 交互截图。
