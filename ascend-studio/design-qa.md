@@ -1243,4 +1243,4 @@ final result: passed (local visual review; online screenshot unavailable)
 - **本地视觉复核:** `http://127.0.0.1:5230/`，1280×720。四个缩略图同排；对照值、步骤、清单在各自区域中对齐，无文字叠压或卡片边缘溢出。深色图面和浅色抖音卡片外层保留。
 - **源文件 / 检查:** `ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css`、Pages 产物 `ascstudio/`。`npm run build:pages` 与 `git diff --check` 通过；未运行自动化测试。构建保留既有 JS chunk >500 kB 提醒。
 - **边界:** 只调整缩略图内容布局与紧凑文案；渠道选择、详情、发布交互、页面序列和 API / Host / Application 边界不变。本地发布仍为演示。
-- **发布:** 本条记录待 GitHub Pages 部署后补记。
+- **发布:** 修复提交 `f2b2d37b` 已推送；包含并行画布更新的最终 `origin/main` 为 `aa1e595b`。Pages workflow `40183376959` build / deploy 成功。线上页面引用 `index-C3Sygmtw.js` / `index-DJmCKhw9.css`，HTML 与资源均 HTTP 200，资源中已包含四页布局内容与样式。未声称线上截图核验。

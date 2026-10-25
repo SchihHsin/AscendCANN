@@ -1499,7 +1499,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户截图确认四张深色图文缩略图内部标题和内容对不齐。将缩略图结构固定为封面、输入 / 目标对照、排查步骤、验证清单；保留四页并排和浅色外层抖音渠道卡。
 - 对窄列标题、眉题、对照值、状态、步骤与清单设置稳定网格、单行截断和内容最小尺寸，防止中文换行造成元素互相挤压；两类任务的内容都用短标签，AddCustom 数据仍区分参考输入、异常输入与待复核线索。
 - 本地 CUA 1280×720 预览确认四页结构清楚，无重叠 / 卡片外溢。`npm run build:pages`、`git diff --check` 通过；未运行自动化测试。没有改页面序列或 API / Host / Application 边界。
-- 提交、推送和 Pages workflow 结果待本轮发布后补记。
+- 修复提交 `f2b2d37b` 已整合并推送；最终 `origin/main` 为 `aa1e595b`，同时包含 ResNet50 学习画布连线并行更新。Pages workflow `40183376959` build / deploy 成功；线上 `/ascstudio/` 引用 `index-C3Sygmtw.js` / `index-DJmCKhw9.css`，HTML 与资源 HTTP 200，构建产物包含修正后的四页图文布局。
 
 ## 探索首页节点间距与连线对比（2026-10-24）
 
