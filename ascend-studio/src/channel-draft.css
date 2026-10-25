@@ -30,6 +30,9 @@
 .tiktok-visual--evidence { background: radial-gradient(ellipse at 88% 17%, rgba(116,177,132,.1), transparent 40%), radial-gradient(ellipse at 12% 90%, rgba(255,255,255,.035), transparent 43%), linear-gradient(152deg, #191a1a, #0c0e11 66%); }
 .tiktok-slide-content { z-index: 1; position: relative; display: flex; flex: 1; min-height: 0; flex-direction: column; padding: 19px 0 14px; }
 .tiktok-slide-content--cover { justify-content: center; gap: 14px; }
+.tiktok-slide-content--compare { padding-top: 12px; padding-bottom: 7px; }
+.tiktok-slide-content--compare .tiktok-slide-heading { gap: 7px; }
+.tiktok-slide-content--compare .tiktok-slide-heading h3 { font-size: clamp(22px, 2.2vw, 27px); }
 .tiktok-slide-heading { display: grid; gap: 11px; }
 .tiktok-visual-eyebrow { display: inline-flex; width: fit-content; align-items: center; min-height: 21px; padding: 0 8px; border: 1px solid rgba(210,214,220,.2); border-radius: 30px; color: #c8cbd0; background: rgba(255,255,255,.045); font-size: 9px; }
 .tiktok-slide-heading h3 { display: grid; gap: 1px; margin: 0; color: #f8f7f9; font-size: clamp(24px, 3vw, 31px); font-weight: 750; letter-spacing: -.04em; line-height: 1.14; }
@@ -47,16 +50,19 @@
 .visual-cover-snapshot b.is-warning, .visual-cover-snapshot b.is-review { color: #e5b36f; }
 .visual-cover-snapshot b.is-example { color: #aeb4bb; }
 .visual-cover-snapshot b.is-recorded { color: #c2c8ce; }
-.visual-compare-grid { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: 7px; margin-block: auto; }
-.visual-compare-panel { display: grid; min-width: 0; gap: 12px; padding: 13px 10px; border: 1px solid rgba(255,255,255,.11); border-radius: 10px; background: rgba(255,255,255,.045); }
-.visual-compare-panel > span { color: #aeb8bc; font-size: 8px; }
-.visual-compare-panel > b { color: #f3f1f5; font-size: clamp(12px, 1.7vw, 16px); white-space: nowrap; }
-.visual-compare-panel > i { display: inline-flex; align-items: center; gap: 4px; color: #b4b9bf; font-size: 9px; font-style: normal; font-weight: 700; }
-.visual-compare-panel.is-pass > i { color: #8fc99c; }
-.visual-compare-panel.is-recorded > i { color: #c2c8ce; }
+.visual-compare-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 5px; margin-block: 9px 0; }
+.visual-compare-panel { display: grid; min-width: 0; gap: 3px; padding: 7px 11px; border: 1px solid rgba(255,255,255,.11); border-radius: 9px; background: rgba(255,255,255,.045); }
+.visual-compare-panel-meta { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 8px; }
+.visual-compare-panel-meta > span { min-width: 0; overflow: hidden; color: #aeb8bc; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.visual-compare-panel > b { min-width: 0; color: #f3f1f5; font-size: clamp(13px, 1.5vw, 16px); line-height: 1.2; }
+.visual-compare-panel > small { color: #c1c8cb; font-size: 9px; line-height: 1.2; }
+.visual-compare-panel-meta > i { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; color: #b4b9bf; font-size: 8px; font-style: normal; font-weight: 700; white-space: nowrap; }
+.visual-compare-panel.is-pass .visual-compare-panel-meta > i { color: #8fc99c; }
+.visual-compare-panel.is-recorded .visual-compare-panel-meta > i { color: #c2c8ce; }
 .visual-compare-panel.is-fail, .visual-compare-panel.is-review { border-color: rgba(229,179,111,.38); background: rgba(229,179,111,.065); }
-.visual-compare-panel.is-fail > i, .visual-compare-panel.is-review > i { color: #e5b36f; }
-.visual-compare-divider { color: #7f888c; font-size: 8px; }
+.visual-compare-panel.is-fail .visual-compare-panel-meta > i, .visual-compare-panel.is-review .visual-compare-panel-meta > i { color: #e5b36f; }
+.visual-compare-divider { justify-self: center; color: #a9afb4; }
+.tiktok-slide-content--compare > .visual-slide-note { padding-top: 7px; font-size: 9px; line-height: 1.4; }
 .visual-slide-note { margin-top: auto; padding-top: 15px; }
 .visual-diagnostic-flow { display: grid; gap: 3px; margin-block: auto; }
 .visual-diagnostic-flow > div { display: grid; grid-template-columns: 27px minmax(0,1fr) auto; align-items: center; gap: 8px; min-height: 39px; padding: 5px 9px; border: 1px solid rgba(255,255,255,.08); border-radius: 7px; color: #e0e4e6; background: rgba(255,255,255,.035); font-size: 10px; }

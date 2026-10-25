@@ -1526,3 +1526,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 四页并排缩略图中的输入 / 目标标签改短为“输入 / 目标”，AddCustom 使用“参考 / 异常”；格式名称独占一行、尺寸独占一行、状态放在标签行，保证 66px 窄卡中内容完整。
 - 1280×720 CUA 复核四页同高；NHWC / NCHW 与尺寸文本未截断或溢出。`npm run build:pages`、`git diff --check` 通过；未运行测试套件。
+
+### 2026-10-25 · 抖音详情页第二张图修正挤压
+
+- 当前输入与目标布局改为上下两张卡片，卡片内格式、尺寸、状态分行；纵向箭头表达对照顺序。AddCustom 共享此布局。
+- 1280×720 本地预览确认完整显示，无横向覆盖；页面构建、构建 JS 语法检查与 diff 检查通过。发布状态随后补记根目录 `AGENTS.md`。

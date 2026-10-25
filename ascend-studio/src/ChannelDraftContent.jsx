@@ -46,9 +46,17 @@ function TikTokSlideContent({ slide, isAddCustom }) {
       <h3>{title}</h3>
     </div>
     <div className="visual-compare-grid">
-      <div className={`visual-compare-panel ${isAddCustom ? "is-pass" : "is-recorded"}`}><span>{isAddCustom ? "输入组合 A" : "当前输入"}</span><b>{isAddCustom ? "[16,32]" : "NHWC [224,224,3]"}</b><i>{isAddCustom ? <><IconCheck size={13} />通过</> : "已记录"}</i></div>
-      <span className="visual-compare-divider">对照</span>
-      <div className={`visual-compare-panel ${isAddCustom ? "is-fail" : "is-review"}`}><span>{isAddCustom ? "输入组合 B" : "目标布局"}</span><b>{isAddCustom ? "[17,33]" : "NCHW [1,3,224,224]"}</b><i>{isAddCustom ? <><IconAlertCircle size={13} />失败</> : "待核对"}</i></div>
+      <div className={`visual-compare-panel ${isAddCustom ? "is-pass" : "is-recorded"}`}>
+        <div className="visual-compare-panel-meta"><span>{isAddCustom ? "输入组合 A" : "当前输入"}</span><i>{isAddCustom ? <><IconCheck size={13} />通过</> : "已记录"}</i></div>
+        <b>{isAddCustom ? "[16,32]" : "NHWC"}</b>
+        <small>{isAddCustom ? "逐元素核对" : "[224,224,3]"}</small>
+      </div>
+      <IconArrowDown className="visual-compare-divider" size={17} aria-hidden="true" />
+      <div className={`visual-compare-panel ${isAddCustom ? "is-fail" : "is-review"}`}>
+        <div className="visual-compare-panel-meta"><span>{isAddCustom ? "输入组合 B" : "目标布局"}</span><i>{isAddCustom ? <><IconAlertCircle size={13} />失败</> : "待核对"}</i></div>
+        <b>{isAddCustom ? "[17,33]" : "NCHW"}</b>
+        <small>{isAddCustom ? "尾块边界" : "[1,3,224,224]"}</small>
+      </div>
     </div>
     <p className="visual-slide-note">{slide.note}</p>
   </>;
