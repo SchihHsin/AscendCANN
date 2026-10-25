@@ -142,11 +142,11 @@ function ChannelCardPreview({ channelId, draft }) {
         </div>}
         {slide.type === "compare" && <div className="channel-preview-tiktok-compare-content">
           <div className="channel-preview-tiktok-shape-row">
-            <span>{isAddCustom ? "参考输入" : "当前输入"}</span><strong>{isAddCustom ? "[16, 32]" : "NHWC"}</strong><small>{isAddCustom ? "逐元素核对" : "224 × 224 × 3"}</small><em className="is-recorded">{isAddCustom ? "通过" : "已记录"}</em>
+            <span>{isAddCustom ? "参考" : "输入"}</span><strong>{isAddCustom ? "[16, 32]" : "NHWC"}</strong><small>{isAddCustom ? "逐元素核对" : "224×224×3"}</small><em className="is-recorded">{isAddCustom ? "通过" : "已记录"}</em>
           </div>
           <span className="channel-preview-tiktok-shape-arrow" aria-hidden="true">↓</span>
           <div className="channel-preview-tiktok-shape-row is-target">
-            <span>{isAddCustom ? "异常输入" : "目标格式"}</span><strong>{isAddCustom ? "[17, 33]" : "NCHW"}</strong><small>{isAddCustom ? "尾块边界" : "1 × 3 × 224 × 224"}</small><em className={isAddCustom ? "is-fail" : "is-review"}>{isAddCustom ? "异常" : "待核对"}</em>
+            <span>{isAddCustom ? "异常" : "目标"}</span><strong>{isAddCustom ? "[17, 33]" : "NCHW"}</strong><small>{isAddCustom ? "尾块边界" : "1×3×224×224"}</small><em className={isAddCustom ? "is-fail" : "is-review"}>{isAddCustom ? "异常" : "待核对"}</em>
           </div>
         </div>}
         {slide.type === "flow" && <div className="channel-preview-tiktok-flow-content">

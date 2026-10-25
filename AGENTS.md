@@ -6511,3 +6511,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 色板记录项目中已有的中性面、文字和描边色，以及黑色操作态和蓝 / 珊瑚 / 琥珀 / 青绿色及淡色底；明确分类色不能替代成功、警告、失败等语义状态色。范围覆盖工作台、导航、对话、卡片、表单、画布和控件，不代表整站深色主题。
 - 色号依据 `ascend-studio/src/styles.css` 与 `ascend-studio/src/canvas-reference-style.css` 的现存 token / 样式，并遵从用户已确认的中性灰与黑色重点方向。Skill Creator 校验和 UI YAML 解析通过。未修改产品源码、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 仅本交接记录进入仓库；Skill 本体位于个人 Codex 配置目录。共享工作区其他对话改动未纳入。
+
+### 2026-10-25 · 抖音形状对照缩略图二次对齐
+
+- 用户补充截图指出上一轮修复后仍有错位（H）。复核发现极窄列中“当前输入 / 目标格式”与右侧状态占同一行，标签仍会被挤短；尺寸文本也不适合带空格的长格式。
+- `ascend-studio/src/CommunityDraftPanel.jsx` 将对照标签精简为“输入 / 目标”（AddCustom 为“参考 / 异常”），保留 NHWC / NCHW 和完整尺寸；移除尺寸数字间空格。`community-draft.css` 将格式与尺寸分行展示，状态移至标签行，并收紧尺寸字距。
+- 本地 CUA 1280×720 确认四张深色图文缩略卡同高，NHWC、NCHW 与两组尺寸均完整；浏览器测量中比较卡关键文字的 scrollWidth 不超过 clientWidth，无裁切 / 溢出。`npm run build:pages`、`git diff --check` 通过，未运行自动化测试；构建保留既有主 JS chunk >500 kB 提示。
+- 不改渠道、选择 / 发布交互、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本地发布仍为演示。提交及 Pages 部署状态待记录。
