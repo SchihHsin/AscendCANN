@@ -6517,7 +6517,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户补充截图指出上一轮修复后仍有错位（H）。复核发现极窄列中“当前输入 / 目标格式”与右侧状态占同一行，标签仍会被挤短；尺寸文本也不适合带空格的长格式。
 - `ascend-studio/src/CommunityDraftPanel.jsx` 将对照标签精简为“输入 / 目标”（AddCustom 为“参考 / 异常”），保留 NHWC / NCHW 和完整尺寸；移除尺寸数字间空格。`community-draft.css` 将格式与尺寸分行展示，状态移至标签行，并收紧尺寸字距。
 - 本地 CUA 1280×720 确认四张深色图文缩略卡同高，NHWC、NCHW 与两组尺寸均完整；浏览器测量中比较卡关键文字的 scrollWidth 不超过 clientWidth，无裁切 / 溢出。`npm run build:pages`、`git diff --check` 通过，未运行自动化测试；构建保留既有主 JS chunk >500 kB 提示。
-- 不改渠道、选择 / 发布交互、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本地发布仍为演示。提交及 Pages 部署状态待记录。
+- 不改渠道、选择 / 发布交互、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本地发布仍为演示。
+- 发布：提交 `2119284d` 已推送 `origin/main`；Pages workflow `40197017701` build / deploy 成功。该次线上 `/ascstudio/` HTML 引用 `index-BBAFqZPs.js` / `index-CojLKlgO.css`，JS 返回 HTTP 200；CSS 请求超时，未记为已核验。其后主线的图标侧栏样式构建更新了静态资源哈希。
 
 ### 2026-10-25 · 图标侧栏选中态改为黑底白图标
 

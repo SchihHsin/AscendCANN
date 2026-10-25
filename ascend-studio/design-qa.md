@@ -1249,4 +1249,4 @@ final result: passed (local visual review; online screenshot unavailable)
 
 - 用户指出上一轮图文仍有轻微错位。检查发现小卡中“当前输入 / 目标格式”被状态挤压；收短标签为“输入 / 目标”，把状态放到标签行右侧，形状格式与尺寸各自占一行，并移除数字间多余空格。
 - 1280×720 本地预览中，四页缩略图同高；NHWC、NCHW、224×224×3、1×3×224×224 完整可读。比较行文本 `scrollWidth <= clientWidth`，没有水平裁切。证据截图由本地预览核对；本轮未检查线上截图。
-- 源文件：`src/CommunityDraftPanel.jsx`、`src/community-draft.css`；构建 `npm run build:pages` 通过，保留既有大 JS chunk 提示。未运行自动化测试。
+- 源文件：`src/CommunityDraftPanel.jsx`、`src/community-draft.css`；构建 `npm run build:pages` 通过，保留既有大 JS chunk 提示。未运行自动化测试。提交 `2119284d` 已推送 `origin/main`，Pages workflow `40197017701` build / deploy 成功；线上 HTML 指向新 JS / CSS，JS HTTP 200，CSS 请求超时，未记作线上 CSS 状态已核验。
