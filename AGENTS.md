@@ -6489,7 +6489,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascend-studio/src/CommunityDraftPanel.jsx` 将四页内容收敛为封面、形状对照、排查步骤、验证清单；短化标签与步骤文案，形状对照改为上下两条结构固定的输入 / 目标记录。`community-draft.css` 为标题、标签、数据行、列表和状态提示设置最小尺寸、单行截断与明确网格位置，避免窄列换行造成错位。深色内容图、浅色外层抖音卡和四页并排布局保留，其他平台与选择 / 发布交互不变。
 - 本地 CUA `http://127.0.0.1:5230/` 1280×720 复核：四张图的序号与栏目眉题对齐；比较数据、步骤和清单分别落在各自内容区，无文字叠压或溢出（M）。页面导航、API / Protocol、Host / Harness、Application / Task 边界均未改变。
 - `npm run build:pages` 与 `git diff --check` 通过；未运行自动化测试。构建继续提示既有主 JS chunk 大于 500 kB。
-- 修复提交 `f2b2d37b` 已整合并推送；最终 `origin/main` 为 `aa1e595b`，保留并行 ResNet50 学习画布连线更新。Pages workflow `40183376959` build / deploy 成功。线上 `/ascstudio/` 当前引用 `index-C3Sygmtw.js` / `index-DJmCKhw9.css`，HTML、JS、CSS 均 HTTP 200，产物已包含四页对照布局及短标签；线上只核对资源，不声称截图回放。
+- 修复提交 `f2b2d37b` 随包含并行 ResNet50 学习画布连线更新的发布提交 `aa1e595b` 推送。Pages workflow `40183376959` build / deploy 成功。线上 `/ascstudio/` 当前引用 `index-C3Sygmtw.js` / `index-DJmCKhw9.css`，HTML、JS、CSS 均 HTTP 200，产物已包含四页对照布局及短标签；线上只核对资源，不声称截图回放。之后的提交只更新交接文档，不改页面产物。
 
 ### 2026-10-25 · ResNet50 学习画布采用共用主干连线
 
