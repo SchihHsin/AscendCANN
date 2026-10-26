@@ -6746,3 +6746,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 将 Ascend Studio 任务画布“适应全部可见内容”按钮从 Tabler `IconArrowsMaximize` 换为 `IconArrowsMinimize`。用户截图确认原向外图标与适配语义不符；按钮行为、标签与提示文字保持不变。仅改变图标表达，不影响学习流程或 API / Host / Application 边界。
 - `ascend-studio/src/TaskCanvas.jsx` 在共享工作区已有另一项未提交修改；本次在隔离 worktree 修改，并基于并行任务最新主分支重新构建，未覆盖共享工作区或并行页面改动。
 - 验证：`npm run build:pages` 成功；`git diff --check` 通过。未运行额外测试。
+
+### 2026-10-27 · 学习节点移除待开始空心圈
+
+- ResNet50 官方学习路径的二级节点不再为“待开始”显示空心圆圈；“学习中”改为实心紫点，“已完成”保留带勾状态。节点按钮的无障碍名称仍包含状态文字，保证状态信息可读。依据：用户确认去掉空心圈（H）及附图（H）。
+- 修改 `ascend-studio/src/OfficialLearningPathCanvas.jsx`、`official-learning-canvas.css` 与 Pages 构建产物。页面序列、学习顺序与 API / Host / Application 边界不变。原共享工作区的学习画布文件存在并行未提交改动，本次在隔离 worktree 基于最新主分支实现，没有覆盖它们。
+- 验证：`npm run build:pages`、`git diff --check` 通过；本地 5192 预览确认待开始节点的空心圈已消失，无障碍树仍读出“待开始”。未运行自动化测试。推送和 Pages 发布结果待完成。

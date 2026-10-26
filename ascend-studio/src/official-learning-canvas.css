@@ -10,7 +10,7 @@
 .og-stage-status.is-in-progress { color:#8068b7; }
 .og-step-status { display:grid; place-items:center; width:15px; height:15px; border:1px solid #e5e7ef; border-radius:50%; color:#79917f; }
 .og-step-status.is-completed { border-color:#dce9df; background:#f2f8f3; }
-.og-step-status.is-in-progress { border-color:#ded6f1; background:#f5f1fc; box-shadow:0 0 0 2px #a38adc16; }
+.og-step-status.is-in-progress { width:7px; height:7px; border:0; background:#8b70df; box-shadow:0 0 0 3px #8b70df1c; }
 .og-tree-arrow { fill:#a9aec1; }
 .og-related { padding:7px 14px 9px; border-top:1px solid #edf0f5; }
 .og-related .lh-text-button { display:inline-flex; align-items:center; gap:4px; color:#766aa3; font-size:10px; }
