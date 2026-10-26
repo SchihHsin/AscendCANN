@@ -6692,3 +6692,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与回放：用户附图及明确选择（H）；本地 Chrome 桌面预览中，拖动 `samples/s` 到“设备利用率”后 Prompt 增加该指标，点击可增删字段；发送后出现开发任务页。线上 Pages 以 `?home=combine` 打开后可访问性树确认「组合」被选中。
 - `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 提示。
 - 页面新增首页方案 Tab，不改变 API / Protocol、Host / Harness 或 Application / Task 边界。源码提交 `86b9a588`，发布资源提交 `dccebbe0`，并入并行更新后的提交 `f425e635` 已推送至 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200。
+
+### 2026-10-26 · 组合首页默认空白，由用户建立关系
+
+- **纠正前次默认状态：** 用户明确指出满屏字段不应预置任何连线。此前交接记录中的“默认示例关系以多条连线呈现”已被本决策覆盖：组合页首次打开时，28 个字段均未选中、连线为空、Prompt 为空；布局本身让用户从字段中开始探索。
+- **交互：** 用户从一个字段拖到另一个字段才创建关系；拖线后关联字段进入可编辑 Prompt，发送操作随之可用。保留现有点击字段加入 / 移除能力，且它不在初始状态预选字段。
+- **实现：** `ascend-studio/src/CombinationTaskHome.jsx` 将关系与草稿初始值设为空；`ascend-studio/src/home-composition.js` 移除预置关系并让空选集生成空草稿；`ascstudio/` 更新对应静态发布产物。
+- **回放与依据：** 用户本轮明确纠正（H）；本地 5206 组合页初始可访问性树确认 28 个未选字段、草稿为空、发送禁用；本地 CUA 实际拖动“数据加载”到“CPU 预处理”后确认只出现这条连接、两字段进入 Prompt、发送启用（M）。截图已在本轮浏览器回放中展示。
+- **检查 / 发布：** `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Vite 仍提示主 JS chunk 大于 500 kB，未运行测试套件。只更新关系组合 Demo，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。发布提交、Pages workflow 与线上资源核验待本轮收尾后补记。
