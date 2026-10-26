@@ -6583,4 +6583,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - AddCustom 与图像推理继续保留各自的内容和排布；工具位于画布上方右侧，视图、缩放、浏览及位置编辑分组；节点操作留在卡片右上角。聚焦留在画布、放大在右侧工作区阅读同一内容、图钉固定、折叠箭头收起/展开。移动与调尺寸仅在位置编辑时可见；Esc 退出，拖动只改画布坐标，不改业务顺序或进度。
 - 修改 `ascend-studio/src/TaskCanvas.jsx`、`task-canvas.css`、`canvas-reference-style.css`，并更新 `interaction-design.md`、`design-qa.md` 和 `ascend-studio/AGENTS.md`。ResNet50 的学习结构和其他任务的数据模型不合并。
 - 依据：用户最新选择（H）；ResNet50 当前视觉样式表（H）。本地窄视口 CUA 曾确认白色工具组、黑色编辑激活态与黑色选中卡片标题；热更新后回到新建首页，后续浏览器读取超时，故未声称完成最终桌面宽屏核验或实际拖动验证。 `npm run build`、`npm run build:pages` 和 `git diff --check` 通过；未运行测试套件。未涉及真实工程或 NPU 验证、页面序列或 API / Host / Application 边界。
-- 代码提交 `d23b28d8` 已基于最新 `origin/main` 重放；本轮共享样式、材料、Pages 产物及推送状态待补记。
+- 代码提交 `cbc34af3`、共享样式 / 材料 / Pages 产物提交 `9c5a9e31` 已快进推送到 `origin/main`。Pages 工作流状态未核验。

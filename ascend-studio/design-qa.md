@@ -1288,4 +1288,4 @@ final result: passed (local visual review; online screenshot unavailable)
 - 依据：用户最新视觉选择（H）；本地代码与预览观察（M）。不涉及真实工程、NPU、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 
 **发布**
-- 页面构建已更新 `ascstudio/index.html` 与哈希 CSS / JS。提交与 `origin/main` 推送状态待补记。
+- 页面构建更新 `ascstudio/index.html` 与哈希 CSS / JS。代码提交 `cbc34af3` 与本轮样式 / 材料 / Pages 产物提交 `9c5a9e31` 已快进推送到 `origin/main`；Pages 工作流状态未核验。
