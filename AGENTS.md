@@ -6674,8 +6674,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-10-26 · 抖音四页预览放大
 
 - 用户指出四张图文仍缩成小块（H）。原因是渠道卡片内的预览容器没有明确撑满可用宽度；在 `ascend-studio/src/community-draft.css` 为抖音预览与四页网格补充 `width: 100%`、`min-width: 0` 和拉伸约束，保留每页 `69:100` 比例。四页随卡片宽度一起放大，不再按内容宽度挤在左侧。
-- 本地 381px 窄视口 CUA 回放中，四张图文已横向占满抖音卡片并保持竖版比例（M）。未完成桌面尺寸截图；不声称桌面回放已验收。构建输出同步到 `ascstudio/`，待提交与发布。
+- 本地 381px 窄视口 CUA 回放中，四张图文已横向占满抖音卡片并保持竖版比例（M）。未完成桌面尺寸截图；不声称桌面回放已验收。`npm run build:pages`、生成 JS `node --check` 与 `git diff --check` 通过，未运行自动化测试。
 - 只调整抖音卡片预览尺寸，不改渠道选择 / 发布流程、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 源码、`ascstudio/` 构建产物及交接记录随提交 `cb6070b4` 推送至 `origin/main`。GitHub Pages workflow `40316645739` build / deploy 成功；公开 `/ascstudio/` HTML 与 CSS 均 HTTP 200，CSS 已含 `width: 100%` 规则。
 
 ### 2026-10-26 · ResNet50 全部节点内容展开
 
