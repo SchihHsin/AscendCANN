@@ -1611,3 +1611,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 四张图文缩略页与单张详情使用统一的 `69:100` 竖版画布比例。宽屏固定在 285px 上限，容器较窄时按比例缩小；标题字号与内边距跟卡片宽度计算，不随显示器视口改变。总览中四张缩略页按比例居中，不纵向拉伸填充整张渠道卡。
 - 用户反馈为直接依据（H）；1440×900、1024×768 本地预览的比例复核为实现观察（M）。按该规则修图文版式，不改变四页内容和社区渠道流程。
+
+### 2026-10-26 · 框选选区缩略图
+
+- 用户确认框选后用实际区域缩略图代替“工作区区域 · 宽 × 高 px”标签。输入区继续沿用原有 composer 样式，缩略图旁标“已选区域”，保留移除按钮；预览裁自当前工作区并忽略选择遮罩和 composer。
+- 实现位于 `src/AreaComposer.jsx`、`src/TaskWorkspace.jsx` 与 `src/task-workspace.css`；语音输入、框选和取消逻辑继续沿用。
+- `npm run build`、`npm run build:pages` 和 `git diff --check` 通过；CUA 未能启动，最终拖拽视觉核验未完成；未运行自动化测试。
+- 提交 `665955ed` 的源码与 Pages 产物已推送至 `origin/main`。

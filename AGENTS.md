@@ -6649,6 +6649,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 检查：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留原有主 JS bundle 大于 500 kB 提醒。
 - 发布：功能与 Pages 产物提交 `71c9a3c8` 已快进推送到 `origin/main`；GitHub Pages workflow `40301779914` build / deploy 成功。线上 `/ascstudio/` HTML、JS 与 CSS 响应均 HTTP 200；JS HEAD 长度为 995,104 bytes，完整正文下载在本轮 20 秒核验中超时，未声称已完成资源字节级比对。
 
+### 2026-10-26 · 框选上下文改用区域缩略图
+
+- 用户确认框选后输入区采用“区域缩略图”：在原输入框样式内显示实际选区预览，标“已选区域”并保留移除按钮，不再展示宽高像素数。依据为用户提供的输入区截图（H）。
+- 更新 `ascend-studio/src/AreaComposer.jsx`、`TaskWorkspace.jsx` 与 `task-workspace.css`；裁切预览取自当前工作区 DOM，排除选择遮罩和输入浮层。语音输入及其他工作区交互保留；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- `npm run build` 与 `npm run build:pages` 成功，相关差异 `git diff --check` 通过；未运行自动化测试。CUA 服务启动失败，未完成拖拽框选后的最终截图复核。
+- 源码和 `/ascstudio/` Pages 产物提交 `665955ed` 已推送至 `origin/main`。
+
 ### 2026-10-26 · 抖音知识图文固定画布比例
 
 - 用户反馈抖音四页图文在不同电脑尺寸下会被拉伸（H）。将单张预览和多渠道总览里的四个缩略页都固定为原有 `69:100` 竖版比例；字体与内边距改为根据卡片宽度计算，避免跟随整个屏幕视口变化。总览缩略页保持居中，避免填满卡片高度后再次变形。
