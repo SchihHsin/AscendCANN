@@ -6709,6 +6709,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **检查：** `npm run build`、`npm run build:pages`、生成 JS `node --check`、`git diff --check` 均通过；Vite 仍提示主 JS chunk 大于 500 kB，未运行测试套件。只更新关系组合 Demo，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - **发布：** 功能提交 `6023baf6` 与保留并行 main 更新的整合提交 `1e933adc` 已推送至 `origin/main`。GitHub Pages workflow `40318238407` build / deploy 成功。公开组合页地址为 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=combine`；线上 HTML 与 CSS 内容哈希匹配本地构建，JS 返回 HTTP 200（1,013,939 bytes）。
 
+### 2026-10-26 · 组合首页改用悬浮停留连线
+
+- 用户接受“悬浮起点 → 移至目标 → 停留确认”的无拖拽关系创建方式（H）。字段仍从无连线起始；起点悬停约 280ms 后点位泛起轻晕，鼠标移动显示方向虚线；目标出现环形停留进度，约 680ms 后关系固定并生成可编辑 Prompt。
+- 移开候选目标会重置其停留计时；点击画布空白、离开画布或 Esc 取消整个待连线预览。关系固定后清除起点，避免一次停留连续建立多条线。点击字段选择和 Alt+Enter 键盘连线保留；没有新增可见操作标签。
+- 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`combination-task-home.css` 和 `interaction-design.md`；Pages 产物更新在 `ascstudio/`。移除原拖线逻辑与禁止触屏滚动的 `touch-action: none`。
+- 本地 5206 回放：悬停起点后出现点位光晕，移到“CPU 预处理”后出现虚线与目标环形进度，停留后关系固定；Prompt 同步为“请重点分析数据加载、CPU 预处理”。移开目标后等待未形成关系，Esc 清除预览。页面 error 日志为空（M）。
+- `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Vite 保留既有 >500 kB chunk 提醒，未运行测试套件。该更新只改变训练调优组合 Demo 的连线方式，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交与 Pages 发布结果待本轮完成后补记。
+
 ### 2026-10-26 · 对话区域布局切换与指着说联动
 
 - 用户确认切换对象是当前左侧整块对话区域，不是单独移动输入框；提供左侧栏与底部居中浮窗两种呈现。两个互斥图标放在全局 `header.topbar`，保留同一对话历史与草稿，并按会话记忆布局选择。浮窗态展开右侧工作区，避免原左侧列继续占宽。
