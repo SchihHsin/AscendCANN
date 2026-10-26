@@ -6673,5 +6673,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-10-26 · ResNet50 全部节点内容展开
 
-- 在 `ascend-studio/src/OfficialLearningPathCanvas.jsx` 为官方 ResNet50 学习画布增加展开/收起全部节点内容态；复用每个节点现有的图解、讲解、来源与对应练习组件，卡片高度由 ResizeObserver 反馈到章节纵向排布，展开时适配完整路径。`LearningCanvasToolbar.jsx` 沿用公共浮动按钮组新增层叠卡片切换按钮，`official-learning-canvas.css` 仅加展开态卡片样式。
-- `npm run build:pages` 与 `npm run build && npm run test:sites` 均通过（4/4）；首次单独运行 Sites 测试因缺少 `dist/client/index.html` 失败，补跑构建后通过。`git diff --check` 通过。静态 index 引用的 JS/CSS 均存在，JS bundle 含展开与收起按钮 accessible label；在线发布验证待提交后执行。
+- 在 `ascend-studio/src/OfficialLearningPathCanvas.jsx` 为官方 ResNet50 学习画布增加展开/收起全部节点内容态；复用每个节点现有的图解、讲解、来源与对应练习组件，卡片高度由 ResizeObserver 反馈到章节纵向排布，展开时适配完整路径。`LearningCanvasToolbar.jsx` 沿用公共浮动按钮组新增层叠卡片切换按钮；按钮在宽画布显示“全部展开/收起”，窄画布保留图标并依靠完整 tooltip，`official-learning-canvas.css` 仅加展开态卡片与窄屏按钮样式。
+- `npm run build:pages` 与 `npm run build && npm run test:sites` 均通过（4/4）；首次单独运行 Sites 测试因缺少 `dist/client/index.html` 失败，补跑构建后通过。`git diff --check` 通过。静态 index 引用的 JS/CSS 均存在，JS bundle 含展开与收起按钮 accessible label；先后提交 `9fd5e106`、`95dcec1b` 并快进推送到 `origin/main`。公开 `/ascstudio/` 已引用 `index-Ynb_NaDA.js` 与 `index-bL8G7x54.css`，bundle 含“全部展开”及收起 accessible label；index 和两个资源均 HTTP 200。
