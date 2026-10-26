@@ -1442,4 +1442,4 @@ final result: passed
 - **依据：** 用户附图 `evidence/20261027-learning-discovery-path/selected-path-reference.png`（H）。该图是本次视觉真值，覆盖此前误认的 ImageGen 方案图。
 - **实现：** 路径用单个白色圆角外框，五个阶段沿彩色横向时间轴排列，阶段间细竖线分隔；编号圈位于时间轴，步骤为无卡片底的文本行并用细横线区分。保留阶段的蓝、青、紫、粉、绿颜色关系，降低饱和度和对比度以减少花感。
 - **复核：** 本地 1280×720 CUA 可见横轴节点、五阶段列、步骤分隔和柔和多色（M）。`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过，未运行测试套件。
-- **发布：** 源码提交 `5adba045`、Pages 产物提交 `1f1a3d87` 已推送到 `origin/main`；Pages workflow `40369406352` build / deploy 成功；新 CSS / JS 均 HTTP 200，HTML 请求超时 / 连接重置，未确认入口 HTML 哈希。
+- **发布：** 源码提交 `5adba045`、Pages 产物提交 `1f1a3d87` 已推送到 `origin/main`；Pages workflow `40369406352` build / deploy 成功；线上 HTML 确认引用 `index-Da-ZKEET.js` / `index-B8kzfCoY.css`，HTML、JS 与 CSS 均 HTTP 200。

@@ -6802,7 +6802,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **权威参考修正：** 用户重新上传了这次要修改的路径参考图，保存于 `ascend-studio/evidence/20261027-learning-discovery-path/selected-path-reference.png`。该图覆盖此前对“方案 1”的错误识别；未来修改应以此图为准，不要再引用前一张 ImageGen 整页方案。
 - **结构与视觉：** 参考图是一张连续白色圆角外框，内部五列阶段由横向彩色时间轴串联，阶段之间为细竖分割线；编号圈沿轴排列，步骤以无卡片底的文本行和细横线呈现。用户要求“基于此图优化颜色，因为颜色有点花”。实现保留蓝、青、紫、粉、绿的阶段语义，将饱和度和对比度压低，并保留浅色中性页面和黑色主操作。
 - **实现与证据：** 更新 `ascend-studio/src/learning-discovery.css` 与 `ascstudio/` 构建产物。桌面 1280×720 CUA 观察路径呈现为单容器、贯穿时间轴、分隔列和无底色步骤清单，颜色柔和且仍可区分（M）。`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 通过；未运行测试套件。页面序列、API / Host / Application 边界不变。
-- **发布：** 源码提交 `5adba045`、Pages 产物提交 `1f1a3d87` 已推送至 `origin/main`；Pages workflow `40369406352` build / deploy 成功，线上新 CSS 与 JS 均 HTTP 200；HTML 请求超时 / 连接重置，未核对线上入口 HTML。
+- **发布：** 源码提交 `5adba045`、Pages 产物提交 `1f1a3d87` 已推送至 `origin/main`；Pages workflow `40369406352` build / deploy 成功，线上 HTML 确认引用 `index-Da-ZKEET.js` / `index-B8kzfCoY.css`，HTML、JS 与 CSS 均 HTTP 200。
 
 ### 2026-10-27 · ResNet50 学习画布适应视图图标同步
 
