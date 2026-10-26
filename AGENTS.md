@@ -6540,3 +6540,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 同步更新个人 Skill `~/.codex/skills/ascend-studio-interface-style/SKILL.md`：黑色用于主要按钮，导航当前项用品牌蓝与淡蓝底，覆盖旧的通用黑色强选中态默认规则。Skill 本体位于个人配置目录，不进入仓库。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 5184 学习任务截图核对图标选中蓝色 / 淡蓝底（M）。构建继续提示既有主 JS chunk 大于 500 kB，未运行自动化测试。页面序列 / hash 和 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 发布：样式及 Pages 静态产物提交 `80206f32` 已推送到 `origin/main`；交接记录单独提交并推送。GitHub Pages 自动部署状态未在本轮确认。
+
+### 2026-10-26 · 左侧图标导航选中态恢复中性灰
+
+- 用户在查看蓝色方案后改回此前认可的灰色选中态。本记录覆盖上一条“品牌蓝轻选中态”决定：IconButton 当前项恢复为深灰图标 `#17181D`、浅灰半透明底 `rgba(0,0,0,.07)` 和极浅描边；移除蓝色悬停样式，键盘焦点描边恢复为原有 `#C1C3F2`。主要按钮黑底白字规则不变。
+- 同步个人 Skill `~/.codex/skills/ascend-studio-interface-style/SKILL.md`：导航当前项采用深灰图标 / 文字与浅中性灰底；彩色点缀仍可用于类别识别。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 5184 学习任务截图确认灰色图标选中态（M）。构建保留既有主 JS chunk 大于 500 kB 提示，未运行自动化测试。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 发布：样式与 Pages 静态产物提交 `1dad0c5d` 已推送到 `origin/main`；本条交接记录另行提交并推送。GitHub Pages 自动部署状态未在本轮确认。
