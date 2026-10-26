@@ -318,7 +318,7 @@ function App() {
   const officialCanvasVisible = isOfficialLearningTask && !workspace.state.collapsed && workspace.state.activeId === "canvas" && workspace.state.canvasMode === "free";
   const officialCanvasView = useLearningCanvasView({ taskId: isOfficialLearningTask ? selectedTask : "__inactive-official-learning", enabled: isOfficialLearningTask, stageIds: OFFICIAL_STAGE_IDS, initialStage: OFFICIAL_LEARNING_STAGES[0].id, materialStages: OFFICIAL_MATERIAL_STAGES, storagePrefix: "official-learning-canvas-v2" });
   const officialLearning = useOfficialLearningPath({ taskId: isOfficialLearningTask ? selectedTask : "__inactive-official-learning", enabled: isOfficialLearningTask, visible: officialCanvasVisible && officialCanvasView.state.expanded && showTaskWorkspace, onRecord: (record, ownerId) => wb.addRecord(record, ownerId) });
-  const learningCanvas = useCanvasState({ startEmpty: true, cardDefinitions: LEARNING_MATERIALS, storageKey: `canvas-learning-${isLearningTask ? selectedTask : "__inactive-learning"}` });
+  const learningCanvas = useCanvasState({ startEmpty: true, cardDefinitions: LEARNING_MATERIALS, storageKey: `canvas-learning-${isLearningTask || isOfficialLearningTask ? selectedTask : "__inactive-learning"}` });
   const learningCanvasMaterial = !learning.state.path && !learning.state.draftPath ? "learning-goal" : ({ goal: "learning-goal", path: "learning-path", environment: "learning-lesson", channels: "learning-lesson", practice: "learning-practice", check: "learning-check", summary: "learning-summary" })[learningCanvasView.state.selectedStage];
   const learningCanvasMaterialIds = learningCanvasVisible && learningCanvasView.state.expanded && learningCanvasMaterial ? [learningCanvasMaterial] : [];
   useEffect(() => {
@@ -1040,8 +1040,8 @@ function App() {
       return target ? { id: target.id, title: target.title, relationLabel: relation.label, status: target.state?.label || target.statusLabel } : null;
     }).filter(Boolean) : [];
     const showOverview = visible && !free && !ownerMain;
-    if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
-    if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
+    if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} canvasContent={learningCanvas} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
+    if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} canvasContent={learningCanvas} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
     const ownerCanvas = ownerLearning || ownerOfficialLearning ? learningCanvas : ownerImage ? imageCanvas : canvas;
     return <div className="tw-content-canvas">
       <div className="tw-canvas-body">
