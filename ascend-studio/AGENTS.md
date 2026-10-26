@@ -1572,3 +1572,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户明确要求 push，覆盖此前方案三仅供本地比较的临时边界；线上探索首页现使用外围方向短弧。
 - 弧线根据指针来向起笔；色彩渐隐从弧线中段开始，到原端点淡出，扫过角度与长度不变。悬浮仍用于预览 / 下钻，点击仍用于锁定；路径可形成可编辑 Prompt。
 - `npm run build`、`npm run build:pages`、`git diff --check` 通过；GitHub Pages workflow `40271522567` 成功，线上 HTML / JS / CSS 均 HTTP 200。源码及 Pages 资源已随 `262d5e96` 推送至 `origin/main`。不改变页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界。
+
+
+### 2026-10-26 · 跨任务画布卡片视觉纠错
+
+- 纠正此前把黑色选中标题栏记成新版规则的错误：开发卡片选中时仍保留白色标题栏、黑色细边和轻阴影；白色卡面与 ResNet50 学习材料卡一致。黑底白图标仅用于当前激活的画布工具。
+- `TaskCanvas`（AddCustom、图像推理等）与 `LearningCanvasCard`（图像预处理、ResNet50）共享卡片表面、右上角操作位置、IconButton 状态及聚焦 / 放大 / 固定 / 收起语义；任务各自的节点、关系、路径和布局入口不合并。两类卡片的聚焦图标统一为 `IconFocus2`，放大使用最大化图标。
+- 用户附图是发布中的旧版 CSS；本轮本地 5189 已显示白色标题栏。源码、交互规则及 Pages 构建产物均已更新。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地控制台 error 日志为空。当前 CUA 视口约 381px，桌面宽屏截图及拖动、放大、聚焦完整回放仍待补验。未运行测试套件。
+- 依据：用户截图与最新视觉选择（H），本地浏览器观察（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 / Pages 部署待补录。

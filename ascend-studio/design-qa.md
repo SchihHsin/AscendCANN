@@ -1310,3 +1310,12 @@ final result: passed (local visual review; online screenshot unavailable)
 - 用户明确要求发布方案三；此前“只做本地比较”的状态已结束。方向反馈沿节点外围短弧呈现，按指针进入方向起笔；颜色由弧线中段逐渐淡到原端点，扫角与总长度不变。
 - `npm run build`、`npm run build:pages`、`git diff --check` 通过。Pages workflow `40271522567` 成功；线上 HTML、`index-B0lR6MuK.js`、`index-DKaknuyv.css` 均 HTTP 200，并核对 CSS 包含新渐隐规则。
 - `262d5e96` 已推送至 `origin/main`。本轮以资源部署核验为准，未声称完成线上浏览器截图或真实训练验证。
+
+
+## 2026-10-26 · 开发画布与学习画布卡片标题栏一致
+
+- **发现：** 用户提供的公开 Pages 截图仍显示选中代码卡黑色标题栏，与 ResNet50 白色学习材料卡不一致。静态页面仍引用旧 CSS 资产；本地源码未重建发布。此前交接把黑色标题栏误记为目标，本条纠正。
+- **调整：** 开发任务选中卡保持白色标题栏，选中态改由黑色细边 / 轻阴影表达。聚焦图标统一为 `IconFocus2`；TaskCanvas 与 LearningCanvasCard 延续相同的右上角聚焦、放大、固定、收起操作和白灰黑控件层级。任务专属布局、路径和内容结构不变。
+- **源码 / 产物：** `src/TaskCanvas.jsx`、`src/LearningCanvasCard.jsx`、`src/task-canvas.css`、`src/canvas-reference-style.css`、`interaction-design.md`；Pages 输出 `ascstudio/index.html`、`index-Vrn6LA8Y.js`、`index-BezcPE5V.css`。
+- **检查：** `npm run build:pages` 成功；`node --check ascstudio/assets/index-Vrn6LA8Y.js` 与 `git diff --check` 通过；本地 5189 控制台 error 日志为空。CUA 当前可用视口约 381px，尚未完成宽屏截图及拖动 / 聚焦 / 放大逐项回放；未运行自动化测试。
+- **证据边界：** 用户截图为旧线上状态（H）；本地 5189 窄视口回放为 M。源码已构建，但线上发布状态待提交 / workflow 验证。

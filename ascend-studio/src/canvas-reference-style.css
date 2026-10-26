@@ -231,10 +231,10 @@
 .path-editing-canvas .lh-step-node.is-proposed-add.is-selected,
 .path-editing-canvas .lh-step-node.is-proposed-revise.is-selected { color: #fff; background: #191a1b; }
 
-/* Development task cards use the same white/gray frame; only the selected header darkens. */
+/* Development content cards keep a white header; selection is shown by the dark outer edge. */
 .tc-card {
   border-color: #e0e1e2;
-  border-radius: 10px;
+  border-radius: 11px;
   box-shadow: 0 4px 15px rgb(28 29 30 / 8%);
 }
 .tc-card.is-selected {
@@ -242,16 +242,16 @@
   box-shadow: 0 0 0 1px #252728, 0 7px 18px rgb(28 29 30 / 12%);
 }
 .tc-card.is-selected .tc-card-header {
-  border-bottom-color: #363839;
-  background: #191a1b;
+  border-bottom-color: #ededec;
+  background: #fff;
 }
 .tc-card.is-selected .tc-card-header h3,
 .tc-card.is-selected .tc-move-handle,
 .tc-card.is-selected .tc-card-actions button,
-.tc-card.is-selected .tc-pin-label { color: #f4f4f3; }
+.tc-card.is-selected .tc-pin-label { color: #292b2c; }
 .tc-card.is-selected .tc-card-actions button:hover,
-.tc-card.is-selected .tc-card-actions button[aria-pressed="true"] { color: #fff; background: #383a3b; }
-.tc-card.is-selected .tc-collapse-summary { color: #d3d4d4; }
+.tc-card.is-selected .tc-card-actions button[aria-pressed="true"] { color: #222324; background: #f1f1f0; }
+.tc-card.is-selected .tc-collapse-summary { color: #8b919e; }
 .tc-canvas-controls > button,
 .tc-canvas-toolbar > button,
 .tc-canvas-toolbar .tc-zoom-controls,

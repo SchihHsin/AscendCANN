@@ -6601,3 +6601,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascend-studio/src/ExploreTaskHome.jsx` 根据指针进入方向设置外围弧线起点；`explore-task-home.css` 保持原有弧线范围与端点，把颜色透明度渐隐拉长到弧线中段至原端点。保留悬浮预览 / 点击锁定、渐进下钻和可编辑 Prompt；未改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界，也不代表真实训练诊断。
 - `npm run build`、`npm run build:pages`、`git diff --check` 通过。Pages workflow `40271522567` 成功；线上 `/ascstudio/` HTML、`index-B0lR6MuK.js`、`index-DKaknuyv.css` 均 HTTP 200，资源中包含训练探索文案及新弧线渐隐规则。
 - 源码与 Pages 产物提交 `262d5e96` 已推送 `origin/main`；后续交接记录另行提交。
+
+
+### 2026-10-26 · 跨任务画布新版视觉复核与纠错
+
+- 用户提供的公开 Pages 截图显示开发画布卡片仍是黑色标题栏（H）。复核后确认该页面引用的是旧静态产物；本地源码此前虽有局部改动，但尚未重建发布，因此不能把本地修改描述为线上已生效。
+- **纠正上一条交接中“选中卡片黑色标题栏”的错误记录**：ResNet50 的新版内容卡保持白色标题栏；选择仅用黑色细边和轻阴影表达。黑底白图标只用于激活中的画布工具。开发画布与学习画布继续使用各自内容结构，但统一卡片表面、工具视觉、卡片操作位置与语义。
+- `TaskCanvas` 覆盖 AddCustom、图像推理等开发任务；`LearningCanvasCard` 覆盖图像预处理与 ResNet50 学习任务。两类卡片均采用白色标题栏，聚焦图标统一为 `IconFocus2`；卡片右上角保留聚焦、放大、固定、收起。
+- 源码已更新 `ascend-studio/src/TaskCanvas.jsx`、`LearningCanvasCard.jsx`、`task-canvas.css`、`canvas-reference-style.css` 与 `interaction-design.md`；Pages 构建产物同步 `ascstudio/`。
+- 本地 5189 CUA 核对了 AddCustom 卡片白色标题栏、开发与学习画布的卡片操作可访问名称；页面控制台 error 日志为空。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。当前 CUA 可用视口约 381px，本轮未完成 1280px 桌面截图和实际拖动 / 聚焦 / 放大逐项回放；不能把它们记为已验收。
+- 依据：用户截图（H）、ResNet50 当前内容卡视觉（H）、本地 5189 预览（M）。不改变页面序列 / hash、任务内容关系或 API / Protocol、Host / Harness、Application / Task 边界。
+- 发布状态：静态产物已重建为 `index-Vrn6LA8Y.js` / `index-BezcPE5V.css`；提交与 Pages 部署回执待本次结束前补录。
