@@ -6699,7 +6699,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **交互：** 用户从一个字段拖到另一个字段才创建关系；拖线后关联字段进入可编辑 Prompt，发送操作随之可用。保留现有点击字段加入 / 移除能力，且它不在初始状态预选字段。
 - **实现：** `ascend-studio/src/CombinationTaskHome.jsx` 将关系与草稿初始值设为空；`ascend-studio/src/home-composition.js` 移除预置关系并让空选集生成空草稿；`ascstudio/` 更新对应静态发布产物。
 - **回放与依据：** 用户本轮明确纠正（H）；本地 5206 组合页初始可访问性树确认 28 个未选字段、草稿为空、发送禁用；本地 CUA 实际拖动“数据加载”到“CPU 预处理”后确认只出现这条连接、两字段进入 Prompt、发送启用（M）。截图已在本轮浏览器回放中展示。
-- **检查 / 发布：** `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Vite 仍提示主 JS chunk 大于 500 kB，未运行测试套件。只更新关系组合 Demo，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。发布提交、Pages workflow 与线上资源核验待本轮收尾后补记。
+- **检查：** `npm run build`、`npm run build:pages`、生成 JS `node --check`、`git diff --check` 均通过；Vite 仍提示主 JS chunk 大于 500 kB，未运行测试套件。只更新关系组合 Demo，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- **发布：** 功能提交 `6023baf6` 与保留并行 main 更新的整合提交 `1e933adc` 已推送至 `origin/main`。GitHub Pages workflow `40318238407` build / deploy 成功。公开组合页地址为 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=combine`；线上 HTML 与 CSS 内容哈希匹配本地构建，JS 返回 HTTP 200（1,013,939 bytes）。
 
 ### 2026-10-26 · 对话区域布局切换与指着说联动
 
