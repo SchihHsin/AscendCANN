@@ -6783,6 +6783,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 1280×720 CUA 预览确认层级和节点清晰；`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过，未运行测试套件。用户可在同一主推路径继续查看。没有改页面序列 / hash 或 API / Host / Application 边界。
 - 视觉与 Pages 构建提交 `425653f7` 已推送至 `origin/main`；线上发布和资源状态待核对。
 
+### 2026-10-27 · 按选定方案 1 恢复柔和彩色阶段路径
+
+- 用户指出上一条改法与此前选定的 ImageGen 方案 1 无关。已找回原图 `/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-709684d0-484b-474c-8fa7-93b82678a2da.png`（H）：五阶段需各自保留浅彩底、细彩边、彩色序号和步骤节点；之前误改为全白灰的方向撤销。
+- 重新按图实施并结合“有点花”的反馈降低彩度与对比：五阶段仍分别用柔和蓝、青、蓝紫、玫粉、绿，卡片浅渐变保留，步骤行薄彩底、轻边框和小色点保留；彩色集中在阶段区域，不扩展成全屏彩底。黑色主 CTA、路径内容、顶部插画与页面结构不变。
+- 1280×720 本地 CUA 核对五阶段路径与动作仍可辨，色块关系和选定图一致但整体更淡。`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过；未运行测试套件。页面序列 / API / Host / Application 边界不变。
+- 最新主线同期更新已保留；样式与 Pages 资源提交 `942dcab4` 已推送到 `origin/main`。Pages 部署状态待核验。
+
 ### 2026-10-27 · Tabler 界面图标系统整合
 
 - 用户确认采用 Tabler。以现有 `@tabler/icons-react` 为页面界面图标库，新增 `ascend-studio/src/icon-system.js` 与 `icon-system.css`，统一尺寸阶梯、描边和按钮热区；将工作区顶部布局切换改为 Tabler 图标，统一重复的图书 / 并排对照语义。示意图与装饰图保留专属大小和描边。
