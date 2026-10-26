@@ -6675,3 +6675,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 在 `ascend-studio/src/OfficialLearningPathCanvas.jsx` 为官方 ResNet50 学习画布增加展开/收起全部节点内容态；复用每个节点现有的图解、讲解、来源与对应练习组件，卡片高度由 ResizeObserver 反馈到章节纵向排布，展开时适配完整路径。`LearningCanvasToolbar.jsx` 沿用公共浮动按钮组新增层叠卡片切换按钮；按钮在宽画布显示“全部展开/收起”，窄画布保留图标并依靠完整 tooltip，`official-learning-canvas.css` 仅加展开态卡片与窄屏按钮样式。
 - `npm run build:pages` 与 `npm run build && npm run test:sites` 均通过（4/4）；首次单独运行 Sites 测试因缺少 `dist/client/index.html` 失败，补跑构建后通过。`git diff --check` 通过。静态 index 引用的 JS/CSS 均存在，JS bundle 含展开与收起按钮 accessible label；先后提交 `9fd5e106`、`95dcec1b` 并快进推送到 `origin/main`。公开 `/ascstudio/` 已引用 `index-Ynb_NaDA.js` 与 `index-bL8G7x54.css`，bundle 含“全部展开”及收起 accessible label；index 和两个资源均 HTTP 200。
+
+
+### 2026-10-26 · 训练调优字段组合首页（第三个 Tab）
+
+- 用户从附图中选定“满屏字段 + 鼠标连线”的关系网方案。新建任务首页新增「组合」Tab，保留「经典」与「探索」；28 个训练调优字段覆盖目标、现象、条件、约束、指标和验证，默认示例关系以多条连线呈现。
+- 拖动字段可建立关系，点击可加入 / 移除字段，连线可删除；关系实时生成可编辑 Prompt，发送后创建本地演示开发任务。组合首页可通过 `?home=combine` 直接进入；没有接入真实训练遥测、AI 或 NPU，也不把示例内容表述为真实诊断。
+- 源码：`ascend-studio/src/CombinationTaskHome.jsx`、`home-composition.js`、`NewTaskHome.jsx`、`App.jsx`、`combination-task-home.css`；静态发布入口与哈希资源位于 `ascstudio/`。
+- 依据与回放：用户附图及明确选择（H）；本地 Chrome 桌面预览中，拖动 `samples/s` 到“设备利用率”后 Prompt 增加该指标，点击可增删字段；发送后出现开发任务页。线上 Pages 以 `?home=combine` 打开后可访问性树确认「组合」被选中。
+- `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 提示。
+- 页面新增首页方案 Tab，不改变 API / Protocol、Host / Harness 或 Application / Task 边界。源码提交 `86b9a588`，发布资源提交 `dccebbe0`，并入并行更新后的提交 `f425e635` 已推送至 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200。

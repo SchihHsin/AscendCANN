@@ -1625,3 +1625,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 学习发现 Banner 保留 ResNet50 五阶段主推路径、内容插画与向下渐隐；阶段点缀采用蓝 / 青 / 紫 / 玫红 / 绿，Banner 的柔和色光与日程轴使用青、紫、粉、绿。布局和页面顺序不变。
 - 最终 Pages 构建、生成 JS 语法检查及 diff 检查通过；本地 1280×720 观察 Banner、路径和日程楼层。GitHub Pages 部署 workflow `40307191492` 成功；线上 HTML、JS、CSS、新插画均 HTTP 200。未运行测试套件，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 合并并保留其他对话同期的共享画布 / 工作区预览更新；发布提交 `b5ebb1c6` 已推送至 `origin/main`。
+
+
+### 2026-10-26 · 首页「组合」关系网原型
+
+- 用户选定满屏训练调优字段通过鼠标连线组合需求的方案。作为第三个首页 Tab「组合」实现；与「经典」「探索」并列。28 个节点覆盖训练目标、瓶颈现象、训练条件、精度约束、指标及对照验证，既有连线保留多关系网络形态。
+- 字段拖动创建连线，点击选择 / 取消，底部 Prompt 可编辑；发送进入本地开发任务演示。`?home=combine` 是直接入口。
+- 原型使用策划示例，不代表真实诊断或训练结果；不接入模型 / NPU。验证、提交和 Pages 发布结果详见根目录 `AGENTS.md` 与 `design-qa.md`。
