@@ -1557,3 +1557,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 依据：用户确认的视觉方向（H）；新版 `canvas-reference-style.css` 是 ResNet50 当前视觉参照（H）。AddCustom 本地约 381px 窄视口预览显示白色工具组、黑色编辑按钮和黑色选中卡片标题栏（M）；工具栏顶部在该窄视口被裁切，未完成桌面宽屏截图核验，也未实际测试拖动坐标。
 - 验证：`npm run build` 与 `npm run build:pages` 成功；`git diff --check` 已运行。保留 Vite 既有主 JS chunk 大于 500 kB 提醒；未运行测试套件。未涉及真实工程或 NPU 验证。
 - 提交 / 推送：代码提交 `cbc34af3`、共享样式 / 设计记录 / Pages 产物提交 `9c5a9e31`、交接提交 `e75c092d` 已快进推送到 `origin/main`。GitHub Pages workflow `40258813844` build 成功；线上 `/ascstudio/` HTML 与 `index-DiUcW9HB.css` HTTP 200，CSS 包含新版工具栏规则。
+
+
+### 2026-10-26 · 学习发现顶部推荐方案选择
+
+- 用户看过三张 ImageGen 方案后选择方案 1。学习发现顶部以 ResNet50 离线推理作为主推路径，分五个阶段展开完整 15 个学习动作，并使用图像 → 特征处理 → ResNet50 → 分类结果的浅色内容图。主操作与动作行可进入路径节点；阶段内容来自既有 Demo 学习路径数据，不将策划节点说成官网原章节。
+- 页面继续以浅色中性底为主，黑色用于主要 CTA，阶段颜色仅作小面积提示；Banner 背景向下渐隐。此决定只作用于学习发现页，不改变其它任务与页面结构。

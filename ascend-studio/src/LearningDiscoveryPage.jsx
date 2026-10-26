@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { IconArrowRight, IconCalendarEvent, IconCircleCheck, IconSearch, IconSparkles, IconUsersGroup, IconVideo } from "@tabler/icons-react";
 import { LEARNING_TASK } from "./learning-data";
-import { OFFICIAL_LEARNING_PATH_URL, OFFICIAL_LEARNING_SOURCES, OFFICIAL_LEARNING_TASK } from "./official-learning-data";
+import { OFFICIAL_LEARNING_PATH_URL, OFFICIAL_LEARNING_SOURCES, OFFICIAL_LEARNING_STAGES, OFFICIAL_LEARNING_TASK } from "./official-learning-data";
 import resnetCourseImage from "./assets/learning-discovery/resnet-inference-course-light.jpg";
+import featuredResnetPathImage from "./assets/learning-discovery/resnet50-inference-path-light.png";
 import preprocessingPathImage from "./assets/learning-discovery/image-preprocessing-path-light.jpg";
 import tensorKnowledgeImage from "./assets/learning-discovery/tensor-layout-conversion-light.jpg";
 import inputContractImage from "./assets/learning-discovery/model-input-checklist-light.jpg";
@@ -11,6 +12,17 @@ import developerPathImage from "./assets/learning-discovery/developer-growth-pat
 import certificationImage from "./assets/learning-discovery/certification-preparation-light.jpg";
 import meetupImage from "./assets/learning-discovery/developer-meetup-light.jpg";
 import "./learning-discovery.css";
+
+const featuredPathActionCount = OFFICIAL_LEARNING_STAGES.reduce((total, stage) => total + stage.children.length, 0);
+const featuredPathDuration = OFFICIAL_LEARNING_STAGES.reduce((total, stage) => total + stage.minutes, 0);
+const featuredRecommendation = {
+  type: "学习路径",
+  title: "ResNet50 离线推理学习路径",
+  description: "从认识推理链路、准备环境与样例，到整理输入、执行推理和解读结果，完整走一遍 ResNet50 离线推理。",
+  destination: { taskName: OFFICIAL_LEARNING_TASK, materialId: OFFICIAL_LEARNING_STAGES[0].id },
+  action: "开始学习",
+};
+const pathStageTones = ["blue", "green", "purple", "amber", "rose"];
 
 const recommendations = [
   {
@@ -58,9 +70,6 @@ const recommendations = [
     action: "关注备考专题",
   },
 ];
-
-const featuredRecommendation = recommendations.find(item => item.type === "学习路径");
-const featuredPathSteps = ["认识图像通道", "整理数据维度", "核对模型输入", "保存学习记录"];
 
 const newItems = [
   {
@@ -156,7 +165,7 @@ export function LearningDiscoveryPage({ onOpenItem }) {
   const [followed, setFollowed] = useState(() => new Set());
   const [joinedEvents, setJoinedEvents] = useState(() => new Set());
   const normalizedQuery = query.trim().toLocaleLowerCase("zh-CN");
-  const filteredRecommendations = useMemo(() => recommendations.filter(item => item !== featuredRecommendation && `${item.type} ${item.title} ${item.description} ${item.reason}`.toLocaleLowerCase("zh-CN").includes(normalizedQuery)), [normalizedQuery]);
+  const filteredRecommendations = useMemo(() => recommendations.filter(item => `${item.type} ${item.title} ${item.description} ${item.reason}`.toLocaleLowerCase("zh-CN").includes(normalizedQuery)), [normalizedQuery]);
   const filteredNewItems = useMemo(() => newItems.filter(item => `${item.type} ${item.title} ${item.description} ${item.meta}`.toLocaleLowerCase("zh-CN").includes(normalizedQuery)), [normalizedQuery]);
   const filteredEvents = useMemo(() => events.filter(item => `${item.kind} ${item.title} ${item.description} ${item.place}`.toLocaleLowerCase("zh-CN").includes(normalizedQuery)), [normalizedQuery]);
   const toggleSet = (setter, id) => setter(previous => {
@@ -179,29 +188,43 @@ export function LearningDiscoveryPage({ onOpenItem }) {
           </div>
           <div className="ld-featured-layout">
             <div className="ld-featured-copy">
-              <span className="ld-featured-type">学习路径 <span>4 个节点 · 约 30 分钟</span></span>
+              <span className="ld-featured-type">学习路径 <span>{OFFICIAL_LEARNING_STAGES.length} 个阶段 · {featuredPathActionCount} 个学习动作 · 约 {featuredPathDuration} 分钟</span></span>
               <h1>{featuredRecommendation.title}</h1>
-              <p>从图像通道与维度理解开始，逐步完成跟练、输入检查和学习记录。</p>
+              <p>{featuredRecommendation.description}</p>
               <button className="ld-primary-action" type="button" onClick={() => onOpenItem(featuredRecommendation.destination)}>{featuredRecommendation.action}<IconArrowRight size={16} /></button>
             </div>
-            <div className="ld-path-visual" role="img" aria-label="图像输入预处理学习路径：认识图像通道、整理数据维度、核对模型输入、保存学习记录">
-              <div className="ld-path-visual-heading"><span>学习路线</span><small>从理解到实践</small></div>
-              <div className="ld-path-steps" aria-hidden="true">
-                {featuredPathSteps.map((step, index) => <div className={`ld-path-step${index === 0 ? " is-start" : ""}`} key={step}>
-                  <span className="ld-path-step-index">0{index + 1}</span>
-                  <span className="ld-path-step-name">{step}</span>
-                  <span className="ld-path-step-dot" />
-                </div>)}
-              </div>
+            <div className="ld-featured-art">
+              <img src={featuredResnetPathImage} alt="猫图像经过张量特征处理与 ResNet50 推理，生成分类结果" />
             </div>
           </div>
+          <ol className="ld-stage-groups" aria-label={`ResNet50 离线推理学习路径的 ${OFFICIAL_LEARNING_STAGES.length} 个阶段和 ${featuredPathActionCount} 个学习动作`}>
+            {OFFICIAL_LEARNING_STAGES.map((stage, stageIndex) => (
+              <li className={`ld-stage-group ld-stage-${pathStageTones[stageIndex % pathStageTones.length]}`} key={stage.id}>
+                <div className="ld-stage-heading">
+                  <span className="ld-stage-index" aria-hidden="true">{String(stageIndex + 1).padStart(2, "0")}</span>
+                  <h2>{stage.title}</h2>
+                  <span className="ld-stage-duration">{stage.minutes} 分钟</span>
+                </div>
+                <ol className="ld-stage-actions">
+                  {stage.children.map(node => (
+                    <li key={node.id}>
+                      <button className="ld-path-action" type="button" onClick={() => onOpenItem({ taskName: OFFICIAL_LEARNING_TASK, materialId: node.id })} aria-label={`打开${stage.title}：${node.title}`}>
+                        <span className="ld-path-action-dot" aria-hidden="true" />
+                        <span>{node.title}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              </li>
+            ))}
+          </ol>
         </div>
       </header>
 
       <main className="ld-scroll" aria-label="学习发现内容">
         <section className="ld-floor ld-floor-recommended" aria-labelledby="ld-heading-recommended">
           <div className="ld-section-heading">
-            <div className="ld-section-copy"><span className="ld-floor-kicker">01 · 继续探索</span><h2 id="ld-heading-recommended">更多推荐</h2><p>课程、知识点和认证专题，接着这条路径继续学习。</p></div>
+            <div className="ld-section-copy"><span className="ld-floor-kicker">01 · 继续探索</span><h2 id="ld-heading-recommended">更多推荐</h2><p>课程、路径、知识点和认证专题，接着这条路径继续学习。</p></div>
             <span className="ld-section-count">{filteredRecommendations.length} 项</span>
           </div>
           <div className="ld-card-grid">

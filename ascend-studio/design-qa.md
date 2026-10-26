@@ -1289,3 +1289,11 @@ final result: passed (local visual review; online screenshot unavailable)
 
 **发布**
 - 页面构建更新 `ascstudio/index.html` 与哈希 CSS / JS。代码提交 `cbc34af3`、样式 / 材料 / Pages 产物提交 `9c5a9e31`、交接提交 `e75c092d` 已快进推送到 `origin/main`。GitHub Pages workflow `40258813844` build 成功；公开 HTML 与 `index-DiUcW9HB.css` HTTP 200，CSS 含新版工具栏规则。
+
+
+## 2026-10-26 · 学习发现 Banner 采用 ResNet50 五阶段推荐路径
+
+- **设计选择:** 用户看过三张 ImageGen 方案后选择方案 1。Banner 主推「ResNet50 离线推理学习路径」，以五个横向阶段分组呈现全部 15 个学习动作；阶段时间共约 77 分钟。右侧内容图示意输入图像 → 特征处理 → ResNet50 → 分类结果，作为路径内容图而非纯装饰。
+- **实现:** `LearningDiscoveryPage.jsx` 的阶段与动作直接读取 `OFFICIAL_LEARNING_STAGES`，主按钮进入起始节点，每个动作按钮进入对应学习材料。Hero 保留向下渐隐；浅色背景、黑色主 CTA 和小面积阶段色点缀沿用既有约定。动作仍是 Demo 组织的学习节点，不冒充官网章节。
+- **本地复核:** `http://127.0.0.1:8126/ascstudio/`，1280×720。CUA 截图确认 Banner、内容图、五阶段与 15 个动作同屏可见；点击“记录环境条件”后进入 ResNet50 学习任务并选中对应阶段 / 节点，再返回学习发现。
+- **验证:** `npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；Vite 保留既有主 JS chunk 大于 500 kB 提醒。未运行自动化测试，未做真实 NPU 验证。用户选择为设计依据（H），浏览器回放为实现观察（M）；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
