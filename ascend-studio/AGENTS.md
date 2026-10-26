@@ -1564,3 +1564,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 学习材料卡聚焦到可视中心；放大适配右侧可用画布范围。位置编辑才显示对象拖动控制；`Esc` 退出编辑或抓手。材料卡内容高度仍自适应，不开放自由缩放；学习节点拖动只改坐标、不改学习顺序 / 进度。
 - 修改 `src/LearningCanvasToolbar.jsx`、`src/LearningCanvasCard.jsx`、`src/LearningHierarchyCanvas.jsx`、`src/OfficialLearningPathCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/canvas-reference-style.css`；更新交互规则与 QA 记录。
 - `npm run build`、`npm run build:pages`、构建 JS 的 `node --check` 与 `git diff --check` 通过；未运行自动化测试。尚未完成桌面截图和逐项拖动回放。画布添加便签 / 绘图内容的编辑入口仍是单独待办。
+- 发布：提交 `68ac4631` 已推送 `origin/main`；GitHub Pages workflow `40266606547` build / deploy 成功。公开页面直连在 TLS 握手时 EOF，因此线上 HTML / 资源尚未本轮回读确认。

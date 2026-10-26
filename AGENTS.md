@@ -6591,4 +6591,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 学习卡片聚焦时居中但保留当前缩放；放大时适配右侧画布可用区域。位置编辑模式才显示拖动把手，`Esc` 退出编辑 / 抓手。学习阶段与子节点拖动仅修改画布坐标；学习卡不开放尺寸调整，因为材料高度由内容决定。画布总览 / 对照与学习路径布局按钮仍按任务能力出现。
 - 修改 `ascend-studio/src/LearningCanvasToolbar.jsx`、`LearningCanvasCard.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx` 和相关画布 CSS；同步 `interaction-design.md`、`design-qa.md`。
 - 验证：`npm run build`、`npm run build:pages`、构建 JS 的 `node --check` 与 `git diff --check` 通过，保留既有大 JS chunk 提醒。未运行测试套件；桌面截图与逐项拖动回放仍未完成。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 未决：工具栏新增便签 / 绘图节点仍未接入，不能把本轮共通操作对齐描述为已支持新增任意画布内容。源代码与 Pages 构建产物是否已提交 / 推送，以本轮后续提交记录为准。
+- 发布：源代码、交互规则与 Pages 产物提交 `68ac4631` 已推送至 `origin/main`；Pages workflow `40266606547` build / deploy 成功。直接抓取公开页面时 TLS 握手 EOF，未据此声称线上资源已回读验证。
+- 未决：工具栏新增便签 / 绘图节点仍未接入，不能把本轮共通操作对齐描述为已支持新增任意画布内容。桌面全宽视觉和实际逐项拖动回放仍需补验。

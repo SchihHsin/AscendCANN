@@ -1302,3 +1302,4 @@ final result: passed (local visual review; online screenshot unavailable)
 - 修改 `src/LearningCanvasToolbar.jsx`、`src/LearningCanvasCard.jsx`、`src/LearningHierarchyCanvas.jsx`、`src/OfficialLearningPathCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/canvas-reference-style.css`。
 - `npm run build`、`npm run build:pages`、`node --check ascstudio/assets/index-CLY0NwfX.js` 与 `git diff --check` 通过；保留 Vite 现有主 JS chunk 大于 500 kB 提醒。未运行自动化测试。桌面全宽截图与实际逐项拖动回放仍待完成；不把构建成功记作视觉或拖动验收。
 - 依据：用户确认新版 ResNet50 视觉方向与跨任务统一需求（H）；交互实现来自本地代码（M）。不涉及真实工程 / NPU、页面序列或 API / Host / Application 边界。
+- 发布：提交 `68ac4631` 已推送至 `origin/main`，Pages workflow `40266606547` build / deploy 成功。公开页面 TLS 握手返回 EOF，未记作线上 HTML / CSS / JS 回读验证。
