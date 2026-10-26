@@ -1769,3 +1769,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 依据用户补充截图移除步骤行之间重复的横向分隔线，阶段之间的竖线改为更淡的中性灰，顶部彩色路径轴保留。阶段分组和步骤点仍能识别。
 - `npm run build:pages` 与 `git diff --check` 通过；Pages 部署待确认。未改变页面序列或 API / Host / Application 边界。
+
+### 2026-10-27 · 学习画布工具栏操作顺序
+
+- 共用学习工具栏按“布局 → 缩放 → 抓手 / 适应内容 → 全部展开 → 编辑”排列；全部展开位于视野控制之后，缩放与抓手 / 适应直接相邻。ResNet50 和原图像预处理路径共用此顺序。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Pages 发布状态待回读。

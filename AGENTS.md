@@ -6851,3 +6851,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出五阶段容器线条偏多，并补充当前页面截图。依据截图，步骤行横线与阶段列线、顶部彩色时间轴重复表达层级；移除步骤行之间的横线，仅保留低对比阶段分隔和顶部时间轴。保留玻璃容器、阶段布局与步骤内容。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过；Pages 部署待确认。不改变页面序列或 API / Host / Application 边界。
+
+### 2026-10-27 · 学习画布工具栏操作顺序
+
+- 按用户确认，将“全部展开”放到画布视野控制之后。学习画布工具栏顺序为：布局、缩放、抓手 / 适应内容、全部展开、编辑；缩放组与抓手 / 适应组直接相邻，避免“全部展开”打断视野操作。该工具栏供图像预处理与 ResNet50 官方学习路径共用。
+- 修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 与 `/ascstudio/` 构建产物；画布操作与状态逻辑不变。`npm run build:pages`、JS `node --check`、`git diff --check` 通过；本地预览的学习画布访问树确认缩放组后紧接抓手 / 适应组。
+- Pages 推送及部署状态待核对。

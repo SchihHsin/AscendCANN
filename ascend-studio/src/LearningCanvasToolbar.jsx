@@ -9,11 +9,11 @@ export default function LearningCanvasToolbar({ layout, scale, hand, positionEdi
       <CanvasToolButton type="button" active={layout === "vertical"} title="上下布局" aria-label="上下布局" onClick={() => onLayout("vertical")}><IconLayoutRows size={ICON_SIZE.control} /></CanvasToolButton>
     </CanvasToolbarGroup>
     <CanvasZoomGroup value={scale} min={0.35} max={1.6} onZoom={onZoom} onReset={onResetZoom} />
-    {onToggleAllExpanded && <CanvasToolbarGroup className="lh-all-toggle-group" label="节点内容"><CanvasToolButton className="lh-all-toggle" type="button" active={allExpanded} title={allExpanded ? "收起所有节点内容卡片" : "展开所有节点内容卡片"} aria-label={allExpanded ? "收起所有节点内容卡片" : "展开所有节点内容卡片"} aria-pressed={allExpanded} onClick={onToggleAllExpanded}><IconStack2 size={ICON_SIZE.control} /><span>{allExpanded ? "收起" : "全部展开"}</span></CanvasToolButton></CanvasToolbarGroup>}
     <CanvasToolbarGroup label="画布定位">
       <CanvasToolButton type="button" active={hand} title={hand ? "退出抓手平移" : "抓手平移"} aria-label={hand ? "退出抓手平移" : "抓手平移"} onClick={onHand}><IconHandMove size={ICON_SIZE.control} /></CanvasToolButton>
       <CanvasToolButton type="button" title="适应全部可见内容" aria-label="适应全部可见内容" onClick={onFit}><CanvasFitIcon /></CanvasToolButton>
     </CanvasToolbarGroup>
+    {onToggleAllExpanded && <CanvasToolbarGroup className="lh-all-toggle-group" label="节点内容"><CanvasToolButton className="lh-all-toggle" type="button" active={allExpanded} title={allExpanded ? "收起所有节点内容卡片" : "展开所有节点内容卡片"} aria-label={allExpanded ? "收起所有节点内容卡片" : "展开所有节点内容卡片"} aria-pressed={allExpanded} onClick={onToggleAllExpanded}><IconStack2 size={ICON_SIZE.control} /><span>{allExpanded ? "收起" : "全部展开"}</span></CanvasToolButton></CanvasToolbarGroup>}
     <CanvasToolbarGroup label="画布编辑">
       <CanvasToolButton type="button" active={positionEditing} title={positionEditing ? "完成画布编辑" : "编辑画布位置"} aria-label={positionEditing ? "完成画布编辑" : "编辑画布位置"} onClick={onTogglePositionEditing}>{positionEditing ? <IconCheck size={ICON_SIZE.control} /> : <IconPencil size={ICON_SIZE.control} />}</CanvasToolButton>
     </CanvasToolbarGroup>
