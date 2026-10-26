@@ -1744,3 +1744,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户重新附上的路径图为本次唯一视觉参考，已保存于 `evidence/20261027-learning-discovery-path/selected-path-reference.png`，覆盖此前误用的另一张“方案 1”图。
 - 对齐单个白色圆角外框、横向五阶段色轴、细竖向阶段分隔，以及无卡片底的步骤文本行；蓝、青、紫、粉、绿仍区分阶段，但整体降低饱和度与对比度。
 - 本地 1280×720 CUA 核对通过；构建、JS 语法和 diff 检查通过，未运行测试套件。源码 `5adba045`、Pages 产物 `1f1a3d87` 已推送至 `origin/main`；部署状态待确认。
+
+### 2026-10-27 · 推荐路径外框改为玻璃白卡
+
+- 将学习发现页顶部 ResNet50 路径下方 `.ld-stage-groups` 容器改为 Report PPT 玻璃白卡参数（白色 55% 透明度、15px blur / saturate 1.4、70% 亮色边线、内外柔影）。不触碰五阶段时间轴、阶段色、分隔线或步骤行。
+- 验证：`npm run build` 成功；无页面序列或 API / Host / Application 边界变更。尚无可保存的视觉截图。

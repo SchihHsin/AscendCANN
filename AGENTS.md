@@ -6836,3 +6836,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户纠正此前对“方案 1”图片的误认，并重新提供路径截图。权威视觉参考保存于 `ascend-studio/evidence/20261027-learning-discovery-path/selected-path-reference.png`；此前引用的另一张 ImageGen 整页方案不是这次路径的基准。
 - 路径改为参考图的单个白色圆角容器、五段彩色横轴、阶段分栏细线和纯文本步骤行；保留蓝 / 青 / 紫 / 粉 / 绿分段关系，降低彩度与对比，让颜色不花。1280×720 本地 CUA、Pages 构建和 JS / diff 检查通过。
 - 源码提交 `5adba045`、Pages 产物提交 `1f1a3d87` 已推送；线上部署待核验。详见 `ascend-studio/AGENTS.md` 与 `ascend-studio/design-qa.md`。
+
+### 2026-10-27 · 学习发现推荐路径玻璃容器
+
+- 用户要求将顶部推荐 ResNet50 学习路径下方的五阶段白色圆角容器改为 Report PPT skill 的玻璃白卡样式。只调整 `.ld-stage-groups` 外框：半透明白底、15px 背景模糊与饱和度、亮色描边和内外柔影；阶段轴、阶段分隔、步骤与颜色均不改。参考规范来自 `report-ppt-skill/references/type-and-color.md`；未改变页面序列或 API / Host / Application 边界。
+- 验证：`npm run build` 成功；未运行测试套件。页面 CUA 可访问性树确认路径和五阶段内容仍在；本轮未取得可保存的截图证据。
