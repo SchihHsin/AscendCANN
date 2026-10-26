@@ -63,6 +63,7 @@ button.evidence-row > svg:last-child { margin-left: auto; color: #b0b1b7; }
 .workbench-menu { position: fixed; z-index: 30; width: 240px; max-height: min(450px, calc(100vh - 32px)); padding: 5px; overflow-y: auto; border: 1px solid #e6e5e2; border-radius: 10px; background: #fff; box-shadow: 0 10px 36px #262a3b15, 0 2px 7px #262a3b08; animation: reveal .12s ease-out; }
 .workbench-menu > button { display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; min-height: 34px; padding: 8px 9px; border: 0; border-radius: 6px; background: transparent; text-align: left; font-size: 12px; color: #50525b; cursor: pointer; }
 .workbench-menu > button:hover, .workbench-menu > button.is-active { background: #f3f3f1; }
+.workbench-menu > .input-menu-voice { justify-content: flex-start; gap: 9px; }
 .workbench-menu > button > span:last-child:not(:first-child) { color: #92949c; font-size: 10px; }
 .menu-label { padding: 7px 9px 6px; color: #94959c; font-size: 10px; }
 .menu-divider { height: 1px; margin: 5px; background: #efefec; }
