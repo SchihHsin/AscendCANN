@@ -1727,3 +1727,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 通用任务画布、学习画布和任务内容总览中的“适应全部内容”入口统一调用共享 `CanvasFitIcon`（Tabler `IconArrowsMinimize`，四角朝内），不再分别维护图标。尺寸、按钮文案与适配行为保持原样。
 - 合入并保留并行主线 `6271639b` / `f9870df1` 后重新构建 Pages；`npm run build:pages`、JS `node --check`、`git diff --check` 与入口资源检查通过。发布状态待回读。
+
+
+### 2026-10-27 · 对话浮窗拖拽吸附
+
+- 已确认的工作区交互：桌面底部对话浮窗可从输入框边缘的 Tabler 把手拖动；进入左侧对话栏范围时显示完整栏位预览，松手吸附，松在目标外则恢复浮窗。输入框样式保持原样；原有顶栏布局按钮继续可直接切换。框选“指着说”时布局按钮禁用。移动端隐藏拖拽把手，仍可用顶栏按钮。
+- Pointer 拖动采用移动阈值，Escape 取消；把手支持轻点或键盘 Enter / Space / ← 停靠。对应实现：`src/App.jsx`、`src/styles.css`。桌面 1280×720 CUA 确认吸附、目标外回弹、顶栏切换与框选禁用；构建和差异检查通过，无 console error。
+- 页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变；Pages 发布状态与 commit 见仓库根目录 `AGENTS.md`。
