@@ -6707,4 +6707,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 指着说与对话布局是独立交互。底部浮窗布局进入框选或出现选区输入框时临时隐藏浮窗，锁定布局切换以防选区坐标变化；发送或取消后恢复。左侧栏布局的框选保持原位置与行为。
 - 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`styles.css` 与 Pages 静态产物。该概念改动不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 1280×720 核对左侧、底部浮窗、框选时浮窗隐藏、选区缩略输入出现及取消后恢复。未运行自动化测试；窄屏行为有响应式规则，未做独立小视口截图。依据：用户确认（H）、本地原型观察（M）。
-- 发布提交与 Pages workflow 待本条实现完成后补记。
+- 发布：实现提交 `385eee30` 已推送至 `origin/main`；GitHub Pages workflow `40317786603` build / deploy 成功。线上 `/ascstudio/` HTML 与本轮 JS / CSS 均 HTTP 200，资源中包含布局切换与选区自动收起逻辑。
