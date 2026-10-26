@@ -6731,3 +6731,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修复用户截图中的“观看讲解”上方大块空白：`ContentToolbar` 在无 `ContentSurface` 上下文时原样返回工具栏子项，导致 `.tw-tool-context` 的 120px flex-basis 在纵向 `.ex-panel` 中变为高度；改为沿用单行工具栏容器。截图中的按钮现与“范围图解”同排显示。
 - 修改 `ascend-studio/src/App.jsx`、`ContentToolbar.jsx`、`community-draft-data.js`、`community-draft.css` 与 `ascstudio/` 静态产物。证据：用户截图定位空白（H）；本地 CUA 走通快捷触发、可信度卡、草稿右栏审阅，并观察工具栏布局（M）。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；没有真实 AI / NPU 调用。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未新增或运行自动化测试。功能提交 `005d911b`，先后整合并保留并行主线更新；源码与 Pages 已推送到 `origin/main`，整合提交 `91ecf0b9`（从 `b5edf192` 快进）。
+
+### 2026-10-26 · 画布适应视图图标改为向内
+
+- 将 Ascend Studio 任务画布“适应全部可见内容”按钮从 Tabler `IconArrowsMaximize` 换为 `IconArrowsMinimize`。用户截图确认原向外图标与适配语义不符；按钮行为、标签与提示文字保持不变。仅改变图标表达，不影响学习流程或 API / Host / Application 边界。
+- `ascend-studio/src/TaskCanvas.jsx` 在共享工作区已有另一项未提交修改；本次在隔离 worktree 修改，并基于并行任务最新主分支重新构建，未覆盖共享工作区或并行页面改动。
+- 验证：`npm run build:pages` 成功；`git diff --check` 通过。未运行额外测试。

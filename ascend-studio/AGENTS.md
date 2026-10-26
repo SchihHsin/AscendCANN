@@ -1673,3 +1673,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 快捷触发方式：在 AddCustom 初始诊断中点击“演示任务完成后的可信度与社区反馈”，一键插入标注演示的完成态；点击对话输入框上方“生成草稿”后，右侧打开社区经验草稿审阅。预置的修复方法与复测状态仅用于演示，提交内容可编辑，不能声称是真实代码 / NPU 结果。
 - `ContentToolbar` 无共享内容区上下文时改用同一行工具栏容器，避免标题 flex-basis 在纵向内容栈中形成约 120px 空白，“观看讲解”与范围图解标题同排。
 - 依据：用户附图（H）；本地 CUA 验证完整快捷触发、右侧草稿和讲解工具栏排布（M）。修改 `src/App.jsx`、`src/ContentToolbar.jsx`、`src/community-draft-data.js`、`src/community-draft.css` 及 `/ascstudio/` 产物；不改变 API / Host / Application 边界。构建、JS 语法与差异检查通过；源码 / Pages 已合并并推送至 `origin/main`，整合提交 `91ecf0b9`。
+
+### 2026-10-26 · 适应视图图标语义
+
+- “适应全部可见内容”使用 Tabler `IconArrowsMinimize`（四角朝内），表达缩放视图以容纳全部内容；不改操作逻辑或提示文案。实现和发布验证记录见根目录 `AGENTS.md`。
