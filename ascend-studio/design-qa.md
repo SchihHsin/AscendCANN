@@ -1385,4 +1385,4 @@ final result: passed
 - **实现：** `CombinationTaskHome.jsx` 的关系和草稿初值为空；`home-composition.js` 删除预置关系并对空选择返回空字符串。字段仍可通过拖线组合；既有点击加入 / 移除字段能力保留。
 - **回放证据：** 本地 `http://127.0.0.1:5206/?home=combine` 初始状态中 28 个 checkbox 均未选，关系 SVG 无线，草稿为空且发送按钮禁用。随后实际从“数据加载”拖到“CPU 预处理”，截图确认两者之间仅出现一条线；可访问性树确认两字段被选中、草稿生成“我想在昇腾上提升训练效率。请重点分析数据加载、CPU 预处理。”并启用发送。证据来自本地 CUA（M），本轮截图已展示。
 - **检查与边界：** 本轮前序构建、Pages 构建、构建 JS 语法检查及 diff 检查均通过；保留既有 Vite >500 kB 提示，未运行测试套件。没有改页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界；无真实训练诊断。
-- **发布：** 待补。
+- **发布：** 功能提交 `6023baf6` 与整合并行更新的提交 `1e933adc` 已推送 `origin/main`；GitHub Pages workflow `40318238407` build / deploy 成功。公开 `/ascstudio/?home=combine` 的 HTML / CSS 与本地构建哈希一致，JS HTTP 200（1,013,939 bytes）。
