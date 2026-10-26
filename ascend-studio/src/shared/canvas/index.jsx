@@ -1,6 +1,6 @@
 import { ICON_SIZE } from "../../icon-system.js";
 import { forwardRef, useRef } from "react";
-import { IconMinus, IconPlus } from "@tabler/icons-react";
+import { IconArrowsMinimize, IconMinus, IconPlus } from "@tabler/icons-react";
 
 export const CanvasSurface = forwardRef(function CanvasSurface({ as: Element = "div", className = "", ...props }, ref) {
   return <Element {...props} ref={ref} className={`canvas-surface ${className}`.trim()} />;
@@ -12,6 +12,10 @@ export function CanvasToolbar({ as: Element = "div", placement = "top-right", cl
 
 export function CanvasToolbarGroup({ as: Element = "div", label, className = "", children, ...props }) {
   return <Element {...props} className={`canvas-toolbar-group ${className}`.trim()} role={props.role || "group"} aria-label={label || props["aria-label"]}>{children}</Element>;
+}
+
+export function CanvasFitIcon({ size = ICON_SIZE.control }) {
+  return <IconArrowsMinimize size={size} />;
 }
 
 export function CanvasToolButton({ active, className = "", children, ...props }) {
