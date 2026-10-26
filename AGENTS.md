@@ -6724,7 +6724,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 为起点与目标停留定时增加世代校验，确认前检查鼠标仍命中当前目标字段，避免快速离开再返回时旧回调误触发。确认后的目标保留为新起点；空白点击、离开画布或 Esc 可结束连接链。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`interaction-design.md` 和项目交接 / QA 记录。`npm run build:pages` 与构建 JS `node --check` 通过；未运行自动化测试，本轮未做新的 CUA 回放。
 - 不改变页面序列 / hash，也不改变 API / Protocol、Host / Harness 或 Application / Task 边界。
-- **发布：** 功能提交 `6271639b` 与保留并行更新的整合提交 `f9870df1` 已推送 `origin/main`；Pages workflow `40365607417` build / deploy 成功。公开组合页为 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=combine`；线上 HTML 引用 JS `index-VcpOKYyS.js` 和 CSS `index-BVnw8_Wn.css`，JS 返回 HTTP 200，CSS 请求遇连接超时。
+- **发布：** 功能提交 `6271639b` 与保留并行更新的整合提交 `f9870df1` 已推送 `origin/main`；后续会话停靠更新 `3ca7072f` 保留连续连线，Pages workflow `40366875012` 成功。公开组合页为 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=combine`；线上 HTML 引用 JS `index-pJdnm3Lb.js` 和 CSS `index-DkWU4xAD.css`，两项资源均 HTTP 200。
 
 ### 2026-10-26 · 对话区域布局切换与指着说联动
 
