@@ -6760,3 +6760,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - ResNet50 官方学习路径的二级节点不再为“待开始”显示空心圆圈；“学习中”改为实心紫点，“已完成”保留带勾状态。节点按钮的无障碍名称仍包含状态文字，保证状态信息可读。依据：用户确认去掉空心圈（H）及附图（H）。
 - 修改 `ascend-studio/src/OfficialLearningPathCanvas.jsx`、`official-learning-canvas.css` 与 Pages 构建产物。页面序列、学习顺序与 API / Host / Application 边界不变。原共享工作区的学习画布文件存在并行未提交改动，本次在隔离 worktree 基于最新主分支实现，没有覆盖它们。
 - 验证：`npm run build:pages`、`git diff --check` 通过；本地 5192 预览确认待开始节点的空心圈已消失，无障碍树仍读出“待开始”。未运行自动化测试。实现提交 `7d984d6e` 已推送至 `origin/main`；Pages workflow `40358563037` 完成且成功，线上 `/ascstudio/` HTML 返回 200 并引用新构建的 JS / CSS。
+
+### 2026-10-27 · 学习发现横幅两张猫照片替换
+
+- 用户提供新猫咪照片并要求替换横幅中的两个照片位；将推理插画左侧输入照片框与右侧结果卡片小照片框都更新为该猫图，未改插画布局、推理流程或其他元素。图像资产保持 1672×941 透明 PNG。
+- 变更：`ascend-studio/src/assets/learning-discovery/resnet50-inference-path-cool-spectrum.png` 与 `ascstudio/` 对应哈希资源 / JS / HTML。依据为用户附图（H）；插画属于演示内容，不表示真实推理结果。
+- 最新主线在期间更新了学习画布步骤环与组合任务首页；先更新至 `7d984d6e` 再重新构建，保留主线功能。`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过；未运行自动化测试。页面序列、API / Host / Application 边界不变。
+- 提交 `6c99041e` 已推送至 `origin/main`。GitHub Pages 已发布：线上 `/ascstudio/` HTML 引用 `index-BQsvSIyX.js` / `index-BB5PvceV.css`，HTML、JS、CSS 与新猫图均 HTTP 200。无未决事项。
+

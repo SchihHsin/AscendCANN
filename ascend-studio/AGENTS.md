@@ -1693,3 +1693,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-27 · 学习节点状态标记
 
 - 二级学习节点的“待开始”状态不显示空心圈；“学习中”显示实心紫点，“已完成”显示勾。节点的无障碍名称保留状态文字。
+
+### 2026-10-27 · 学习发现横幅猫图
+
+- 用户提供的新猫图替换学习发现横幅推理插画中的输入照片位和结果卡照片位；保留布局与其余推理图形不变。图片仍为 1672×941 透明 PNG。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过。源码和 Pages 资源提交 `6c99041e` 已推送至 `origin/main`；线上 HTML、JS、CSS 和新 PNG 均 HTTP 200。无待办。
