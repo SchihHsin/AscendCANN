@@ -1606,3 +1606,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 依据：用户要求使用公共组件层（H）；ResNet50 新版视觉作为共用视觉基准（H）；本地 1280×720 CUA 观察 AddCustom、图像预处理、ResNet50（M）。公共卡片标题栏均为 47px；工具组和小地图外框样式相同；点击学习画布小地图后视口坐标更新；控制台 error 为空。
 - 检查：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留原有主 JS bundle 大于 500 kB 提醒。
 - 发布：功能与 Pages 产物提交 `71c9a3c8` 已快进推送到 `origin/main`；GitHub Pages workflow `40301779914` build / deploy 成功。线上 `/ascstudio/` HTML、JS 与 CSS 响应均 HTTP 200；JS HEAD 长度为 995,104 bytes，完整正文下载在本轮 20 秒核验中超时，未声称已完成资源字节级比对。
+
+### 2026-10-26 · 抖音图文按画布比例缩放
+
+- 四张图文缩略页与单张详情使用统一的 `69:100` 竖版画布比例。宽屏固定在 285px 上限，容器较窄时按比例缩小；标题字号与内边距跟卡片宽度计算，不随显示器视口改变。总览中四张缩略页按比例居中，不纵向拉伸填充整张渠道卡。
+- 用户反馈为直接依据（H）；1440×900、1024×768 本地预览的比例复核为实现观察（M）。按该规则修图文版式，不改变四页内容和社区渠道流程。

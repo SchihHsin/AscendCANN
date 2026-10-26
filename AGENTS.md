@@ -6648,3 +6648,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户要求使用公共组件层（H）；ResNet50 新版视觉作为共用视觉基准（H）；本地 1280×720 CUA 观察 AddCustom、图像预处理、ResNet50（M）。公共卡片标题栏均为 47px；工具组和小地图外框样式相同；点击学习画布小地图后视口坐标更新；控制台 error 为空。
 - 检查：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留原有主 JS bundle 大于 500 kB 提醒。
 - 发布：功能与 Pages 产物提交 `71c9a3c8` 已快进推送到 `origin/main`；GitHub Pages workflow `40301779914` build / deploy 成功。线上 `/ascstudio/` HTML、JS 与 CSS 响应均 HTTP 200；JS HEAD 长度为 995,104 bytes，完整正文下载在本轮 20 秒核验中超时，未声称已完成资源字节级比对。
+
+### 2026-10-26 · 抖音知识图文固定画布比例
+
+- 用户反馈抖音四页图文在不同电脑尺寸下会被拉伸（H）。将单张预览和多渠道总览里的四个缩略页都固定为原有 `69:100` 竖版比例；字体与内边距改为根据卡片宽度计算，避免跟随整个屏幕视口变化。总览缩略页保持居中，避免填满卡片高度后再次变形。
+- 修改：`ascend-studio/src/channel-draft.css`、`community-draft.css` 及对应 `/ascstudio/` Pages 静态资源。该修正只影响抖音知识图文卡片，不改渠道内容、页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 证据：比例约束与字体计算为实现规则（M）；本地桌面预览在 1440×900 和 1024×768 下观察到单页纵横比例一致，总览四张缩略页保持统一比例（M）。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。保留既有 Vite 大 JS chunk 提示。
+- 发布：代码与 Pages 资源提交 `23c46ab7` 已推送到 `origin/main`；GitHub Pages workflow `40303951471` build / deploy 成功。未决事项：无。
