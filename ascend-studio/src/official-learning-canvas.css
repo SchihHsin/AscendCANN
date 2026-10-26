@@ -1,6 +1,4 @@
 /* ResNet50 official learning path: compact styles layered over the shared lh-* canvas. */
-.goal-learning-canvas { background-color:#f8f9fc; background-image:radial-gradient(circle,#d9ddeb .7px,transparent .85px); background-size:20px 20px; }
-.goal-learning-canvas::before { background:linear-gradient(128deg,rgba(237,242,255,.45),transparent 48%,rgba(240,247,250,.35)); }
 .goal-learning-canvas .lh-canvas-title { max-width:min(46%,470px); }
 .goal-learning-canvas .lh-canvas-title h2 { font-size:14px; }
 .goal-learning-canvas .og-plan-state { display:flex; align-items:center; gap:5px; margin:0 0 3px; color:#76659f; font-size:9px; font-weight:650; }
@@ -306,7 +304,6 @@
 @container goal-canvas (max-width:650px) {
   .goal-learning-canvas .lh-canvas-title { max-width:calc(100% - 40px); }
   .goal-learning-canvas .lh-canvas-title h2 { max-width:400px; font-size:13px; }
-  .goal-learning-canvas .lh-toolbar { top:71px; left:22px; right:auto; }
   .goal-learning-canvas .og-personal-plan-controls { left:8px; bottom:9px; max-width:calc(100% - 120px); gap:3px; padding:3px; }
   .goal-learning-canvas .og-personal-plan-controls .lh-button { padding:4px 6px; font-size:9px!important; white-space:nowrap; }
   .goal-learning-canvas .og-personal-plan-status { display:none; }

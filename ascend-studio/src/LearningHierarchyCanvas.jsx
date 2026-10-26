@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { IconAdjustments, IconArrowDown, IconArrowRight, IconArrowUp, IconBook2, IconCheck, IconChevronDown, IconCode, IconCube, IconGripVertical, IconHistory, IconMessageQuestion, IconPhoto, IconPlayerPause, IconPlayerPlay, IconPointer, IconSearch, IconSettings, IconSparkles, IconX } from "@tabler/icons-react";
 import LearningCanvasToolbar from "./LearningCanvasToolbar";
 import CanvasCard from "./LearningCanvasCard";
+import { CanvasMiniMap, CanvasSurface } from "./shared/canvas/index.jsx";
 import { LEARNING_NODES, LEARNING_SEGMENTS, getLearningCode, getLearningShape } from "./learning-data";
 import { stepsForStage } from "./learning-path-collaboration";
 import { canvasNodeKey, nodeConnector, positionTreeNodes } from "./canvas-node-position";
@@ -424,7 +425,7 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
       : horizontal
         ? `M${start.x},${start.y} H${treePoint.x + tree.width + 18 + targetIndex * 9} V${point.y + 28} H${point.x - 3}`
         : `M${start.x},${start.y} V${treePoint.y + tree.height + 35 + targetIndex * 10} H${point.x + Math.min(targetWidth / 2, 70)} V${point.y - 3}`;
-  return <div ref={host} className={`learning-hierarchy-canvas path-editing-canvas${hand ? " is-hand" : ""}${positionEditing ? " is-position-editing" : ""}`} aria-label="可移动的学习层级与内容画布" onPointerDown={event => {
+  return <CanvasSurface as="div" ref={host} className={`learning-hierarchy-canvas path-editing-canvas${hand ? " is-hand" : ""}${positionEditing ? " is-position-editing" : ""}`} style={{ backgroundSize: `${Math.max(12, 20 * viewport.scale)}px ${Math.max(12, 20 * viewport.scale)}px`, backgroundPosition: `${viewport.x}px ${viewport.y}px` }} aria-label="可移动的学习层级与内容画布" onPointerDown={event => {
     if (event.button !== 0 || event.target.closest("button,input,textarea,select,summary,a,.lh-card,.lh-tree-node")) return;
     gesture.current = { id: "viewport", startX: event.clientX, startY: event.clientY, original: viewport };
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -450,7 +451,11 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
       {!isGoal && !canvas.expanded && <button type="button" className="lh-restore-material" style={{ left: position("diagram").x, top: position("diagram").y }} onClick={() => canvasActions.select(activeStage, selectedStep)}><IconBook2 size={19} /><span>材料已收起<strong>恢复{stageLabels[activeStage]}的图解与内容</strong></span><IconChevronDown size={17} /></button>}
     </div>
     {state.notice && !state.draftPath && <div className="lh-canvas-notice" role="status">{state.notice}</div>}
-    <div className="lh-minimap"><svg viewBox={`0 0 ${world.width} ${world.height}`} aria-label="学习画布小地图，点击定位" role="button" tabIndex={0} onClick={event => { const rect = event.currentTarget.getBoundingClientRect(); const x = (event.clientX - rect.left) / rect.width * world.width; const y = (event.clientY - rect.top) / rect.height * world.height; canvasActions.setViewport({ x: size.width / 2 - x * viewport.scale, y: size.height / 2 - y * viewport.scale }); }} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); fitPath(); } }}><rect className="lh-mini-bg" width={world.width} height={world.height} />{!isGoal && tree.stages.map(stage => <rect className={stage.id === activeStage ? "is-current" : ""} key={stage.id} x={treePoint.x + stage.rect.x} y={treePoint.y + stage.rect.y} width={stage.rect.width} height={stage.rect.height} rx="8" />)}<rect x={position("diagram").x} y={position("diagram").y} width={diagramWidth} height="390" rx="8" />{!isGoal && canvas.expanded && <rect x={position("detail").x} y={position("detail").y} width={detailWidth} height="470" rx="8" />}<rect className="lh-mini-viewport" x={-viewport.x / viewport.scale} y={-viewport.y / viewport.scale} width={size.width / viewport.scale} height={size.height / viewport.scale} /></svg><button type="button" onClick={fitPath}>适应路径</button></div>
+    <CanvasMiniMap className="lh-minimap" viewBox={{ x: 0, y: 0, width: world.width, height: world.height }} viewport={{ x: -viewport.x / viewport.scale, y: -viewport.y / viewport.scale, width: size.width / viewport.scale, height: size.height / viewport.scale }} onNavigate={({ x, y }) => canvasActions.setViewport({ x: size.width / 2 - x * viewport.scale, y: size.height / 2 - y * viewport.scale })} onFit={fitPath}>
+      {!isGoal && tree.stages.map(stage => <rect className={`canvas-minimap-item${stage.id === activeStage ? " is-current" : ""}`} key={stage.id} x={treePoint.x + stage.rect.x} y={treePoint.y + stage.rect.y} width={stage.rect.width} height={stage.rect.height} rx="8" />)}
+      <rect className="canvas-minimap-item" x={position("diagram").x} y={position("diagram").y} width={diagramWidth} height="390" rx="8" />
+      {!isGoal && canvas.expanded && <rect className="canvas-minimap-item" x={position("detail").x} y={position("detail").y} width={detailWidth} height="470" rx="8" />}
+    </CanvasMiniMap>
     {agentCursor && createPortal(<div className={`lh-agent-flight is-${agentCursor.phase}`} style={{ transform: `translate3d(${agentCursor.x}px, ${agentCursor.y}px, 0)` }} aria-hidden="true"><IconPointer size={22} stroke={2.2} /><span>{agentCursor.label}</span></div>, document.body)}
-  </div>;
+  </CanvasSurface>;
 }

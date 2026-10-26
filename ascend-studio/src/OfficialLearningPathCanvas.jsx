@@ -3,6 +3,7 @@ import { IconArrowRight, IconBook2, IconCheck, IconChevronDown, IconCode, IconCu
 import { OFFICIAL_LEARNING_STAGES, getOfficialCourseStatus, getOfficialLearningNode, officialStatusLabel } from "./official-learning-data";
 import LearningCanvasToolbar from "./LearningCanvasToolbar";
 import LearningCanvasCard from "./LearningCanvasCard";
+import { CanvasMiniMap, CanvasSurface } from "./shared/canvas/index.jsx";
 import OfficialLearningVisuals from "./OfficialLearningVisuals";
 import { OfficialLesson, OfficialPractice, OfficialSources } from "./OfficialLearningActivities";
 import { canvasNodeKey, nodeConnector, positionTreeNodes, stageSpineConnectors, hierarchySpineConnectors } from "./canvas-node-position";
@@ -203,7 +204,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
   const start={x:treePoint.x+step.rect.x+step.rect.width,y:treePoint.y+step.rect.y+step.rect.height/2};
   const p=position("diagram");
   const connection=horizontal?`M${start.x},${start.y} H${treePoint.x+tree.width+22} V${p.y+26} H${p.x}`:`M${start.x},${start.y} H${treePoint.x+stage.rect.x+stage.rect.width+14} V${treePoint.y+tree.height+32} H${p.x+60} V${p.y}`;
-  return <div ref={host} className={`learning-hierarchy-canvas goal-learning-canvas${hand?" is-hand":""}${positionEditing?" is-position-editing":""}`} aria-label="可移动的 ResNet50 学习层级与内容画布" onPointerDown={event=>{
+  return <CanvasSurface as="div" ref={host} className={`learning-hierarchy-canvas goal-learning-canvas${hand?" is-hand":""}${positionEditing?" is-position-editing":""}`} style={{backgroundSize:`${Math.max(12,20*viewport.scale)}px ${Math.max(12,20*viewport.scale)}px`,backgroundPosition:`${viewport.x}px ${viewport.y}px`}} aria-label="可移动的 ResNet50 学习层级与内容画布" onPointerDown={event=>{
     if(event.button!==0||event.target.closest("button,input,textarea,select,summary,a,.lh-card,.lh-tree-node"))return;
     gesture.current={id:"viewport",startX:event.clientX,startY:event.clientY,original:viewport};event.currentTarget.setPointerCapture(event.pointerId);
   }} onPointerMove={event=>{const drag=gesture.current;if(!drag)return;const dx=event.clientX-drag.startX,dy=event.clientY-drag.startY;if(drag.id==="viewport")canvasActions.setViewport({x:drag.original.x+dx,y:drag.original.y+dy});else canvasActions.moveObject(drag.id,{x:drag.original.x+dx/viewport.scale,y:drag.original.y+dy/viewport.scale});}} onPointerUp={()=>{gesture.current=null;}} onPointerCancel={()=>{gesture.current=null;}}>
@@ -218,6 +219,9 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
     </div>
     {editingPersonalPlan && <div className="lh-draft-controls og-personal-plan-controls" aria-label="个人学习计划操作"><span className="og-personal-plan-status"><i />个人计划草案 · 不改变官方路径</span><button type="button" className="lh-button og-plan-confirm" onClick={actions.confirmPersonalPlan}>确认个人计划</button><button type="button" className="lh-button" disabled={!state.personalPlanUndo?.length} onClick={actions.undoPersonalPlanStep}>撤销</button><button type="button" className="lh-button" onClick={actions.cancelPersonalPlanEdit}>取消</button></div>}
     {state.notice&&<div className="lh-canvas-notice" role="status">{state.notice}</div>}
-    <div className="lh-minimap"><svg viewBox={`0 0 ${world.width} ${world.height}`} aria-label="学习画布小地图，点击定位" role="button" tabIndex={0} onClick={event=>{const r=event.currentTarget.getBoundingClientRect();const x=(event.clientX-r.left)/r.width*world.width,y=(event.clientY-r.top)/r.height*world.height;canvasActions.setViewport({x:size.width/2-x*viewport.scale,y:size.height/2-y*viewport.scale});}} onKeyDown={event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();fitPath();}}}><rect className="lh-mini-bg" width={world.width} height={world.height}/>{tree.groups.map(item=><rect className={item.id===node.courseId?"is-current":""} key={item.id} x={treePoint.x+item.rect.x} y={treePoint.y+item.rect.y} width={item.rect.width} height={item.rect.height} rx="8"/>)}<rect x={p.x} y={p.y} width={diagramWidth} height="380" rx="8"/><rect className="lh-mini-viewport" x={-viewport.x/viewport.scale} y={-viewport.y/viewport.scale} width={size.width/viewport.scale} height={size.height/viewport.scale}/></svg><button type="button" onClick={fitPath}>适应路径</button></div>
-  </div>;
+    <CanvasMiniMap className="lh-minimap" viewBox={{x:0,y:0,width:world.width,height:world.height}} viewport={{x:-viewport.x/viewport.scale,y:-viewport.y/viewport.scale,width:size.width/viewport.scale,height:size.height/viewport.scale}} onNavigate={({x,y})=>canvasActions.setViewport({x:size.width/2-x*viewport.scale,y:size.height/2-y*viewport.scale})} onFit={fitPath}>
+      {tree.groups.map(item=><rect className={`canvas-minimap-item${item.id===node.courseId?" is-current":""}`} key={item.id} x={treePoint.x+item.rect.x} y={treePoint.y+item.rect.y} width={item.rect.width} height={item.rect.height} rx="8"/>)}
+      <rect className="canvas-minimap-item" x={p.x} y={p.y} width={diagramWidth} height="380" rx="8"/>
+    </CanvasMiniMap>
+  </CanvasSurface>;
 }

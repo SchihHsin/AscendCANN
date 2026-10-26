@@ -1597,3 +1597,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户反馈上一轮配色整体偏暖。当前重生成的三张冷调方案均沿用学习发现页 ResNet50 五阶段布局、浅色中性底和黑色主要按钮，加入多种冷色点缀。先等用户选色，暂不修改页面实现。
 - 依据：用户本轮反馈（H）；本地 `/ascstudio/` 1280×720 视觉参考（CUA 观察，M）。三张图像文件路径、验证 / 发布状态及待办见根目录 `AGENTS.md`。
+
+### 2026-10-26 · 开发与学习画布改用公共组件层
+
+- 用户明确要求共用一套公共画布组件：按钮组、小地图、底图、卡片表面和卡片操作由公共实现提供；各任务仅提供自身内容、关系与布局，不把 AddCustom 的局部样式复制到其他画布。
+- 新建 `ascend-studio/src/shared/canvas/index.jsx` 与 `canvas.css`。公共层导出 `CanvasSurface`、工具栏 / 分组 / 缩放按钮、卡片框架 / 标题栏 / 操作按钮和可点击拖动的小地图。TaskCanvas（AddCustom、图像推理等）、LearningCanvasToolbar / LearningCanvasCard、LearningHierarchyCanvas、OfficialLearningPathCanvas 均调用该层。学习与开发画布仍保留独立数据、节点语义和自动布局。
+- 删除开发 / 学习画布中重复的底图、工具按钮、小地图和卡片标题栏外观规则，避免局部 CSS 覆盖公共样式；官方 ResNet50 画布也使用相同底图。没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户要求使用公共组件层（H）；ResNet50 新版视觉作为共用视觉基准（H）；本地 1280×720 CUA 观察 AddCustom、图像预处理、ResNet50（M）。公共卡片标题栏均为 47px；工具组和小地图外框样式相同；点击学习画布小地图后视口坐标更新；控制台 error 为空。
+- 检查：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留原有主 JS bundle 大于 500 kB 提醒。提交与推送结果在本条目的发布更新中补记。

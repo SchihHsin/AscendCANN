@@ -6639,3 +6639,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈上一轮的配色整体偏暖。重新生成三张冷调配色图，均沿用学习发现页的 ResNet50 五阶段布局、浅色中性底和黑色主要按钮，侧重冷色多彩点缀；页面实现暂不修改，等待用户从当前三张图中选择。
 - 参考为本地 `/ascstudio/` 1280×720 页面截图（CUA 观察，M）及用户本轮反馈（H）。可见方案文件：`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-78c4a498-b655-44d3-abf8-a2c85c493e6a.png`、`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-01e8624a-8340-4e4e-beb3-6a994927a40a.png`、`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-5d33e39a-d2f2-4e2c-bc03-2699517271c8.png`。
 - 未改变页面序列、学习交互或 API / Protocol、Host / Harness、Application / Task 边界。未运行产品构建 / 页面测试，也未发布页面；`git diff --check` 用于本轮交接文档检查。待办：用户选定配色后再实现。
+
+### 2026-10-26 · 开发与学习画布改用公共组件层
+
+- 用户明确要求共用一套公共画布组件：按钮组、小地图、底图、卡片表面和卡片操作由公共实现提供；各任务仅提供自身内容、关系与布局，不把 AddCustom 的局部样式复制到其他画布。
+- 新建 `ascend-studio/src/shared/canvas/index.jsx` 与 `canvas.css`。公共层导出 `CanvasSurface`、工具栏 / 分组 / 缩放按钮、卡片框架 / 标题栏 / 操作按钮和可点击拖动的小地图。TaskCanvas（AddCustom、图像推理等）、LearningCanvasToolbar / LearningCanvasCard、LearningHierarchyCanvas、OfficialLearningPathCanvas 均调用该层。学习与开发画布仍保留独立数据、节点语义和自动布局。
+- 删除开发 / 学习画布中重复的底图、工具按钮、小地图和卡片标题栏外观规则，避免局部 CSS 覆盖公共样式；官方 ResNet50 画布也使用相同底图。没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户要求使用公共组件层（H）；ResNet50 新版视觉作为共用视觉基准（H）；本地 1280×720 CUA 观察 AddCustom、图像预处理、ResNet50（M）。公共卡片标题栏均为 47px；工具组和小地图外框样式相同；点击学习画布小地图后视口坐标更新；控制台 error 为空。
+- 检查：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留原有主 JS bundle 大于 500 kB 提醒。提交与推送结果在本条目的发布更新中补记。

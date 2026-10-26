@@ -1,30 +1,4 @@
-/* Canvas visual language adapted from the user's selected Ascend Studio reference.
-   Keep the existing learning / development node structures and interaction states. */
-.learning-hierarchy-canvas,
-.tc-stage {
-  --canvas-node-ink: #191a1b;
-  --canvas-node-line: #c6c8ca;
-  background-color: var(--canvas-surface, #f5f5f5);
-  background-image: radial-gradient(circle, var(--canvas-dot, #d9d9d9) .7px, transparent .8px);
-}
-
-.goal-learning-canvas {
-  background-color: var(--canvas-surface, #f5f5f5);
-  background-image: radial-gradient(circle, var(--canvas-dot, #d9d9d9) .7px, transparent .8px);
-}
-
-.goal-learning-canvas::before { background: none; }
-.learning-hierarchy-canvas button:focus-visible,
-.learning-hierarchy-canvas input:focus-visible,
-.learning-hierarchy-canvas textarea:focus-visible,
-.learning-hierarchy-canvas select:focus-visible,
-.lh-minimap svg:focus-visible,
-.lh-tree-grab:focus-visible,
-.task-canvas button:focus-visible,
-.task-canvas .tc-stage:focus-visible,
-.tc-mini-map svg:focus-visible {
-  outline-color: #242526;
-}
+/* Learning-stage semantics stay local; shared canvas surfaces, cards, controls and minimaps live in shared/canvas. */
 
 .lh-canvas-title { color: #202123; }
 .lh-canvas-title > svg { color: #343637; }
@@ -44,38 +18,6 @@
 .topbar .proposal-badge--learning-edit { border-color: #dfe1e2; background: #f7f7f6; color: #55585a; }
 .topbar .proposal-badge--learning-edit .proposal-dot { background: #24a99f; }
 
-/* Floating canvas tools stay compact and white; only their selected state is black. */
-.lh-draft-controls,
-.lh-tool-button,
-.lh-zoom-controls,
-.lh-layout-toggle {
-  border-color: #dedfe0 !important;
-  border-radius: 9px;
-  box-shadow: 0 3px 12px rgb(24 25 26 / 8%);
-  background: rgb(255 255 255 / 96%);
-}
-.lh-toolbar button { color: #4f5254; background: #fff; }
-.lh-toolbar button:hover { color: #222324; background: #f1f1f0; }
-.lh-layout-toggle button[aria-pressed="true"],
-.lh-tool-button.is-active {
-  color: #fff;
-  background: #191a1b;
-}
-.lh-layout-toggle button[aria-pressed="true"]:hover,
-.lh-tool-button.is-active:hover { color: #fff; background: #303132; }
-.lh-toolbar-rule { background: #dedfe0; }
-.lh-icon-button[aria-pressed="true"] { color: #222324; background: #f1f1f0; }
-.lh-icon-button.lh-drag-handle { color: #777a7c; background: #f5f5f4; }
-.lh-icon-button.lh-drag-handle:hover { color: #222324; background: #ededec; }
-.learning-hierarchy-canvas.is-position-editing .lh-card:not(.is-pinned) {
-  border-color: #d8d8d8;
-  box-shadow: 0 5px 18px rgb(28 29 30 / 9%);
-}
-.learning-hierarchy-canvas.is-position-editing .lh-card:not(.is-pinned) .lh-drag-handle {
-  color: #777a7c;
-  background: #f5f5f4;
-}
-
 /* Branch and sequence lines remain thin and neutral, with a darker current route. */
 .lh-tree-lines path { stroke: var(--canvas-node-line); }
 .lh-tree-lines marker path { fill: #9b9ea0; }
@@ -86,10 +28,6 @@
 .learning-hierarchy-canvas .lh-tree-lines .lh-child-line.is-current { stroke: #191a1b; stroke-width: 1.8; }
 .learning-hierarchy-canvas .lh-tree-lines .lh-branch-dot { fill: #c2c4c6; }
 .learning-hierarchy-canvas .lh-tree-lines .lh-branch-dot.is-current { fill: #191a1b; }
-.lh-material-lines > path { stroke: #aeb1b3; }
-.lh-material-lines circle { fill: #252728; }
-.tc-connections path { stroke: #b6b8ba; }
-.tc-connections text { fill: #686b6d; }
 
 /* White node cards use small type accents; the focused node uses black. */
 .lh-tree-node {
@@ -193,25 +131,6 @@
 .lh-tree-node.is-skipped small { color: #8a8c8e; }
 .lh-stage-node.is-selected .lh-node-icon { color: #fff; }
 
-/* The content cards stay light and readable while borrowing the reference's quiet depth. */
-.lh-card {
-  border-color: #e1e2e2;
-  border-radius: 11px;
-  background: #fff;
-  box-shadow: 0 5px 18px rgb(28 29 30 / 8%);
-}
-.lh-card-header { border-bottom-color: #ededec; background: #fff; }
-.lh-card-title { color: #282a2b; }
-.lh-card-title > svg {
-  box-sizing: content-box;
-  width: 18px;
-  height: 18px;
-  padding: 6px;
-  border-radius: 50%;
-  color: #2787e8;
-  background: #e9f2ff;
-}
-.lh-icon-button:hover { color: #252627; background: #f0f0ef; }
 .lh-button.is-primary,
 .og-personal-plan-controls .og-plan-confirm,
 .lh-goal-body .lh-button.is-primary {
@@ -230,45 +149,6 @@
 .path-editing-canvas .lh-step-node.is-proposed-revise { border-color: #d6a33b; color: #4c4330; background: #fffaf0; }
 .path-editing-canvas .lh-step-node.is-proposed-add.is-selected,
 .path-editing-canvas .lh-step-node.is-proposed-revise.is-selected { color: #fff; background: #191a1b; }
-
-/* Development content cards keep a white header; selection is shown by the dark outer edge. */
-.tc-card {
-  border-color: #e0e1e2;
-  border-radius: 11px;
-  box-shadow: 0 4px 15px rgb(28 29 30 / 8%);
-}
-.tc-card.is-selected {
-  border-color: #252728;
-  box-shadow: 0 0 0 1px #252728, 0 7px 18px rgb(28 29 30 / 12%);
-}
-.tc-card.is-selected .tc-card-header {
-  border-bottom-color: #ededec;
-  background: #fff;
-}
-.tc-card.is-selected .tc-card-header h3,
-.tc-card.is-selected .tc-move-handle,
-.tc-card.is-selected .tc-card-actions button,
-.tc-card.is-selected .tc-pin-label { color: #292b2c; }
-.tc-card.is-selected .tc-card-actions button:hover,
-.tc-card.is-selected .tc-card-actions button[aria-pressed="true"] { color: #222324; background: #f1f1f0; }
-.tc-card.is-selected .tc-collapse-summary { color: #8b919e; }
-.tc-canvas-controls > button,
-.tc-canvas-toolbar > button,
-.tc-canvas-toolbar .tc-zoom-controls,
-.tc-zoom-controls { border-color: #dedfe0; border-radius: 9px; box-shadow: 0 3px 12px rgb(24 25 26 / 8%); }
-.tc-canvas-controls button,
-.tc-canvas-toolbar > button { color: #4f5254; background: #fff; }
-.tc-canvas-controls button:hover,
-.tc-canvas-controls button.is-active { color: #fff; background: #191a1b; }
-.tc-canvas-toolbar > button:hover { color: #222324; background: #f1f1f0; }
-.tc-canvas-toolbar > button.is-active,
-.tc-canvas-toolbar > button[aria-pressed="true"] { color: #fff; background: #191a1b; }
-.tc-canvas-toolbar > button.is-active:hover,
-.tc-canvas-toolbar > button[aria-pressed="true"]:hover { color: #fff; background: #303132; }
-.tc-comparison-button { border-radius: 6px; }
-.tc-object-toolbar > div:not(.tc-canvas-toolbar) button:hover,
-.tc-object-toolbar > div:not(.tc-canvas-toolbar) button.is-active { color: #222324; background: #ededec; }
-.tc-object-toolbar .tc-comparison-button[aria-pressed="true"] { color: #fff; background: #191a1b; }
 
 @media (prefers-reduced-motion: reduce) {
   .lh-tree-node { transition: none; }
