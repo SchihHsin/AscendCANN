@@ -26,6 +26,7 @@
 .lh-draft-controls { position:absolute; z-index:21; left:18px; bottom:16px; display:flex; align-items:center; gap:6px; padding:4px; border:1px solid #e2deed; border-radius:8px; background:#fffffff0; box-shadow:0 3px 12px #3f4f7c0a; }
 .lh-draft-controls .lh-button { padding:5px 8px; }
 .lh-toolbar button { display:flex; align-items:center; justify-content:center; padding:6px; height:32px; min-width:31px; border:0; background:#fff; color:#4b536d; font-size:10px; }
+.lh-toolbar-rule { width:1px; height:17px; flex:none; margin:0 1px; background:#dedfe0; }
 .lh-tool-button, .lh-zoom-controls, .lh-layout-toggle { border:1px solid #e5e8f0!important; border-radius:7px; box-shadow:0 2px 5px #3f4f7c04; overflow:hidden; background:#fff; }
 .lh-zoom-controls, .lh-layout-toggle { display:flex; }
 .lh-toolbar .lh-zoom-value { min-width:42px; font-size:10px; font-variant-numeric:tabular-nums; }
@@ -110,10 +111,10 @@
 .lh-card-title { display:flex; align-items:center; gap:8px; min-width:0; color:#343955; }
 .lh-card-title > svg { color:#5d4ca5; flex-shrink:0; }
 .lh-card-title > strong { font-size:13px; font-weight:650; white-space:nowrap; }
-.lh-card-tools { display:flex; align-items:center; gap:5px; }
+.lh-card-tools { display:flex; align-items:center; gap:2px; }
 .lh-icon-button, .lh-text-button { display:inline-flex; align-items:center; justify-content:center; gap:5px; background:transparent; border:0; color:#727a91; border-radius:4px; padding:3px; }
 .lh-icon-button:hover { color:#594a99; background:#f0edf8; }
-.lh-icon-button { width:23px; height:24px; }
+.lh-icon-button { width:23px; height:25px; }
 .lh-text-button { font-size:11px!important; padding:2px 0; text-align:left; }
 .lh-text-button:hover { text-decoration:underline; text-underline-offset:3px; }
 .lh-drag-handle { cursor:grab!important; }

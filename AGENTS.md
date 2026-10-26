@@ -6584,3 +6584,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/TaskCanvas.jsx`、`task-canvas.css`、`canvas-reference-style.css`，并更新 `interaction-design.md`、`design-qa.md` 和 `ascend-studio/AGENTS.md`。ResNet50 的学习结构和其他任务的数据模型不合并。
 - 依据：用户最新选择（H）；ResNet50 当前视觉样式表（H）。AddCustom 窄视口 CUA 显示白色工具组、黑色编辑激活态和黑色选中卡片标题；恢复后的视口约 381px，工具栏顶端有裁切，因此未声称完成桌面宽屏核验；未实际拖动节点验证坐标。`npm run build`、`npm run build:pages`、`git diff --check` 通过；未运行测试套件。未涉及真实工程 / NPU、页面序列或 API / Host / Application 边界。
 - 代码提交 `cbc34af3`、样式 / 材料 / Pages 产物提交 `9c5a9e31` 和交接提交 `e75c092d` 已快进推送到 `origin/main`。GitHub Pages workflow `40258813844` 于 `e75c092d` build 成功；公开 `/ascstudio/` HTML 与 `index-DiUcW9HB.css` 均 HTTP 200，CSS 包含新版工具栏规则。
+
+### 2026-10-26 · 跨任务画布交互对齐
+
+- 用户追问是否已统一所有任务画布，确认此前只完成了开发画布样式；本轮补齐学习画布共通操作。AddCustom / 图像推理保持 `TaskCanvas`；图像预处理学习 / ResNet50 保持学习路径结构，但工具条分组顺序、白灰黑控件状态、卡片聚焦 / 放大 / 固定 / 收起语义对齐。
+- 学习卡片聚焦时居中但保留当前缩放；放大时适配右侧画布可用区域。位置编辑模式才显示拖动把手，`Esc` 退出编辑 / 抓手。学习阶段与子节点拖动仅修改画布坐标；学习卡不开放尺寸调整，因为材料高度由内容决定。画布总览 / 对照与学习路径布局按钮仍按任务能力出现。
+- 修改 `ascend-studio/src/LearningCanvasToolbar.jsx`、`LearningCanvasCard.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx` 和相关画布 CSS；同步 `interaction-design.md`、`design-qa.md`。
+- 验证：`npm run build`、`npm run build:pages`、构建 JS 的 `node --check` 与 `git diff --check` 通过，保留既有大 JS chunk 提醒。未运行测试套件；桌面截图与逐项拖动回放仍未完成。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 未决：工具栏新增便签 / 绘图节点仍未接入，不能把本轮共通操作对齐描述为已支持新增任意画布内容。源代码与 Pages 构建产物是否已提交 / 推送，以本轮后续提交记录为准。

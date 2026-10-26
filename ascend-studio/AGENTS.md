@@ -1557,3 +1557,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 依据：用户确认的视觉方向（H）；新版 `canvas-reference-style.css` 是 ResNet50 当前视觉参照（H）。AddCustom 本地约 381px 窄视口预览显示白色工具组、黑色编辑按钮和黑色选中卡片标题栏（M）；工具栏顶部在该窄视口被裁切，未完成桌面宽屏截图核验，也未实际测试拖动坐标。
 - 验证：`npm run build` 与 `npm run build:pages` 成功；`git diff --check` 已运行。保留 Vite 既有主 JS chunk 大于 500 kB 提醒；未运行测试套件。未涉及真实工程或 NPU 验证。
 - 提交 / 推送：代码提交 `cbc34af3`、共享样式 / 设计记录 / Pages 产物提交 `9c5a9e31`、交接提交 `e75c092d` 已快进推送到 `origin/main`。GitHub Pages workflow `40258813844` build 成功；线上 `/ascstudio/` HTML 与 `index-DiUcW9HB.css` HTTP 200，CSS 包含新版工具栏规则。
+
+### 2026-10-26 · 所有学习与开发画布共通操作
+
+- 延续用户确认的新版 ResNet50 工具视觉，把学习画布工具顺序统一到“任务视图 / 布局 → 缩放 → 平移 / 适应全部 → 位置编辑”；卡片级聚焦、放大、固定、收起均在右上角。TaskCanvas 仍承接 AddCustom / 图像推理，LearningCanvas 保留学习层级与任务内容数据模型。
+- 学习材料卡聚焦到可视中心；放大适配右侧可用画布范围。位置编辑才显示对象拖动控制；`Esc` 退出编辑或抓手。材料卡内容高度仍自适应，不开放自由缩放；学习节点拖动只改坐标、不改学习顺序 / 进度。
+- 修改 `src/LearningCanvasToolbar.jsx`、`src/LearningCanvasCard.jsx`、`src/LearningHierarchyCanvas.jsx`、`src/OfficialLearningPathCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/canvas-reference-style.css`；更新交互规则与 QA 记录。
+- `npm run build`、`npm run build:pages`、构建 JS 的 `node --check` 与 `git diff --check` 通过；未运行自动化测试。尚未完成桌面截图和逐项拖动回放。画布添加便签 / 绘图内容的编辑入口仍是单独待办。

@@ -1289,3 +1289,16 @@ final result: passed (local visual review; online screenshot unavailable)
 
 **发布**
 - 页面构建更新 `ascstudio/index.html` 与哈希 CSS / JS。代码提交 `cbc34af3`、样式 / 材料 / Pages 产物提交 `9c5a9e31`、交接提交 `e75c092d` 已快进推送到 `origin/main`。GitHub Pages workflow `40258813844` build 成功；公开 HTML 与 `index-DiUcW9HB.css` HTTP 200，CSS 含新版工具栏规则。
+
+## 2026-10-26 · 所有任务画布共通交互补齐
+
+**覆盖范围与规则**
+- AddCustom / 图像推理复用开发画布工具；图像输入预处理与 ResNet50 学习任务复用学习画布工具。所有任务沿用新版 ResNet50 的白色紧凑工具、浅灰边界、黑色激活态和相同操作分组顺序；总览 / 对照和左右 / 上下布局等入口仍按任务能力呈现。
+- 学习画布材料卡现在提供与开发卡片对应的聚焦、放大、固定、收起操作。聚焦将卡片移到可视中心；放大让卡片适配右侧可用工作区。卡片标题栏继续右上放操作，不增加底部操作条。
+- 位置编辑时才出现学习卡片 / 层级节点拖动把手；Esc 退出位置编辑或抓手模式。拖动改画布坐标，不改变路径顺序或进度。学习材料高度仍由内容决定，不开放手动尺寸调整；开发卡片保留已有尺寸调整能力。
+- 学习画布工具顺序统一为“任务视图 → 缩放 → 平移 / 适应全部 → 位置编辑”，移除与卡片聚焦重复的全局聚焦按钮。分组由细分隔线区分。
+
+**实现与检查**
+- 修改 `src/LearningCanvasToolbar.jsx`、`src/LearningCanvasCard.jsx`、`src/LearningHierarchyCanvas.jsx`、`src/OfficialLearningPathCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/canvas-reference-style.css`。
+- `npm run build`、`npm run build:pages`、`node --check ascstudio/assets/index-CLY0NwfX.js` 与 `git diff --check` 通过；保留 Vite 现有主 JS chunk 大于 500 kB 提醒。未运行自动化测试。桌面全宽截图与实际逐项拖动回放仍待完成；不把构建成功记作视觉或拖动验收。
+- 依据：用户确认新版 ResNet50 视觉方向与跨任务统一需求（H）；交互实现来自本地代码（M）。不涉及真实工程 / NPU、页面序列或 API / Host / Application 边界。
