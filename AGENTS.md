@@ -6692,3 +6692,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与回放：用户附图及明确选择（H）；本地 Chrome 桌面预览中，拖动 `samples/s` 到“设备利用率”后 Prompt 增加该指标，点击可增删字段；发送后出现开发任务页。线上 Pages 以 `?home=combine` 打开后可访问性树确认「组合」被选中。
 - `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 提示。
 - 页面新增首页方案 Tab，不改变 API / Protocol、Host / Harness 或 Application / Task 边界。源码提交 `86b9a588`，发布资源提交 `dccebbe0`，并入并行更新后的提交 `f425e635` 已推送至 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200。
+
+### 2026-10-26 · 对话区域布局切换与指着说联动
+
+- 用户确认切换对象是当前左侧整块对话区域，不是单独移动输入框；提供左侧栏与底部居中浮窗两种呈现。两个互斥图标放在全局 `header.topbar`，保留同一对话历史与草稿，并按会话记忆布局选择。浮窗态展开右侧工作区，避免原左侧列继续占宽。
+- 指着说与对话布局是独立交互。底部浮窗布局进入框选或出现选区输入框时临时隐藏浮窗，锁定布局切换以防选区坐标变化；发送或取消后恢复。左侧栏布局的框选保持原位置与行为。
+- 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`styles.css` 与 Pages 静态产物。该概念改动不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 1280×720 核对左侧、底部浮窗、框选时浮窗隐藏、选区缩略输入出现及取消后恢复。未运行自动化测试；窄屏行为有响应式规则，未做独立小视口截图。依据：用户确认（H）、本地原型观察（M）。
+- 发布提交与 Pages workflow 待本条实现完成后补记。
