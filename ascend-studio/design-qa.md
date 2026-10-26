@@ -1297,3 +1297,32 @@ final result: passed (local visual review; online screenshot unavailable)
 - **实现:** `LearningDiscoveryPage.jsx` 的阶段与动作直接读取 `OFFICIAL_LEARNING_STAGES`，主按钮进入起始节点，每个动作按钮进入对应学习材料。Hero 保留向下渐隐；浅色背景、黑色主 CTA 和小面积阶段色点缀沿用既有约定。动作仍是 Demo 组织的学习节点，不冒充官网章节。
 - **本地复核:** `http://127.0.0.1:8126/ascstudio/`，1280×720。CUA 截图确认 Banner、内容图、五阶段与 15 个动作同屏可见；点击“记录环境条件”后进入 ResNet50 学习任务并选中对应阶段 / 节点，再返回学习发现。
 - **验证:** `npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；Vite 保留既有主 JS chunk 大于 500 kB 提醒。未运行自动化测试，未做真实 NPU 验证。用户选择为设计依据（H），浏览器回放为实现观察（M）；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+## 2026-10-26 · 所有任务画布共通交互补齐
+
+**覆盖范围与规则**
+- AddCustom / 图像推理复用开发画布工具；图像输入预处理与 ResNet50 学习任务复用学习画布工具。所有任务沿用新版 ResNet50 的白色紧凑工具、浅灰边界、黑色激活态和相同操作分组顺序；总览 / 对照和左右 / 上下布局等入口仍按任务能力呈现。
+- 学习画布材料卡现在提供与开发卡片对应的聚焦、放大、固定、收起操作。聚焦将卡片移到可视中心；放大让卡片适配右侧可用工作区。卡片标题栏继续右上放操作，不增加底部操作条。
+- 位置编辑时才出现学习卡片 / 层级节点拖动把手；Esc 退出位置编辑或抓手模式。拖动改画布坐标，不改变路径顺序或进度。学习材料高度仍由内容决定，不开放手动尺寸调整；开发卡片保留已有尺寸调整能力。
+- 学习画布工具顺序统一为“任务视图 → 缩放 → 平移 / 适应全部 → 位置编辑”，移除与卡片聚焦重复的全局聚焦按钮。分组由细分隔线区分。
+
+**实现与检查**
+- 修改 `src/LearningCanvasToolbar.jsx`、`src/LearningCanvasCard.jsx`、`src/LearningHierarchyCanvas.jsx`、`src/OfficialLearningPathCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/canvas-reference-style.css`。
+- `npm run build`、`npm run build:pages`、`node --check ascstudio/assets/index-CLY0NwfX.js` 与 `git diff --check` 通过；保留 Vite 现有主 JS chunk 大于 500 kB 提醒。未运行自动化测试。桌面全宽截图与实际逐项拖动回放仍待完成；不把构建成功记作视觉或拖动验收。
+- 依据：用户确认新版 ResNet50 视觉方向与跨任务统一需求（H）；交互实现来自本地代码（M）。不涉及真实工程 / NPU、页面序列或 API / Host / Application 边界。
+- 发布：提交 `68ac4631` 已推送至 `origin/main`，Pages workflow `40266606547` build / deploy 成功。公开页面 TLS 握手返回 EOF，未记作线上 HTML / CSS / JS 回读验证。
+
+
+## 方案三外围短弧发布（2026-10-26）
+
+- 用户明确要求发布方案三；此前“只做本地比较”的状态已结束。方向反馈沿节点外围短弧呈现，按指针进入方向起笔；颜色由弧线中段逐渐淡到原端点，扫角与总长度不变。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过。Pages workflow `40271522567` 成功；线上 HTML、`index-B0lR6MuK.js`、`index-DKaknuyv.css` 均 HTTP 200，并核对 CSS 包含新渐隐规则。
+- `262d5e96` 已推送至 `origin/main`。本轮以资源部署核验为准，未声称完成线上浏览器截图或真实训练验证。
+
+
+## 2026-10-26 · 开发画布与学习画布卡片标题栏一致
+
+- **发现：** 用户提供的公开 Pages 截图仍显示选中代码卡黑色标题栏，与 ResNet50 白色学习材料卡不一致。静态页面仍引用旧 CSS 资产；本地源码未重建发布。此前交接把黑色标题栏误记为目标，本条纠正。
+- **调整：** 开发任务选中卡保持白色标题栏，选中态改由黑色细边 / 轻阴影表达。聚焦图标统一为 `IconFocus2`；TaskCanvas 与 LearningCanvasCard 延续相同的右上角聚焦、放大、固定、收起操作和白灰黑控件层级。任务专属布局、路径和内容结构不变。
+- **源码 / 产物：** `src/TaskCanvas.jsx`、`src/LearningCanvasCard.jsx`、`src/task-canvas.css`、`src/canvas-reference-style.css`、`interaction-design.md`；Pages 输出 `ascstudio/index.html`、`index-Vrn6LA8Y.js`、`index-BezcPE5V.css`。
+- **检查：** `npm run build:pages` 成功；`node --check ascstudio/assets/index-Vrn6LA8Y.js` 与 `git diff --check` 通过；本地 5189 控制台 error 日志为空。CUA 当前可用视口约 381px，尚未完成宽屏截图及拖动 / 聚焦 / 放大逐项回放；未运行自动化测试。
+- **证据边界：** 用户截图为部署前线上状态（H）；本地 5189 窄视口回放为 M。提交 `01204f8a` 已推送，Pages workflow `40278245582` build / deploy 成功。公开 HTML 指向新 JS / CSS，CSS HTTP 200 并含白色标题栏规则；JS 完整下载超时，线上截图 / 交互回放未核验。

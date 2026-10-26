@@ -186,6 +186,16 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
   const [positionEditing, setPositionEditing] = useState(false);
   const [agentCursor, setAgentCursor] = useState(null);
   const [agentTarget, setAgentTarget] = useState(null);
+  useEffect(() => {
+    if (!hand && !positionEditing) return undefined;
+    const handleEscape = event => {
+      if (event.key !== "Escape" || event.target?.closest?.('input,textarea,select,[contenteditable="true"],[role="textbox"]')) return;
+      setHand(false);
+      setPositionEditing(false);
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [hand, positionEditing]);
   agentCompleteRef.current = onAgentActionComplete;
   const layout = canvas.layout;
   const path = state.draftPath || state.path;
@@ -250,6 +260,25 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
     const scale = Math.max(.35, Math.min(1.1, (size.width - padding * 2) / bounds.width, (size.height - padding * 2) / bounds.height));
     canvasActions.setViewport({ scale, x: padding - bounds.x * scale + Math.max(0, (size.width - padding * 2 - bounds.width * scale) / 2), y: padding - bounds.y * scale });
   };
+  const objectBounds = id => {
+    const element = [...(host.current?.querySelectorAll("[data-object-id]") || [])].find(item => item.dataset.objectId === id);
+    return element ? { x: element.offsetLeft, y: element.offsetTop, width: element.offsetWidth, height: element.offsetHeight } : null;
+  };
+  const focusObject = id => {
+    const bounds = objectBounds(id);
+    if (!bounds) return;
+    const centerY = (size.height + 90) / 2;
+    canvasActions.setViewport({ x: size.width / 2 - (bounds.x + bounds.width / 2) * viewport.scale, y: centerY - (bounds.y + bounds.height / 2) * viewport.scale });
+  };
+  const maximizeObject = id => {
+    const bounds = objectBounds(id);
+    if (!bounds) return;
+    const topInset = size.width < 650 ? 112 : 86;
+    const margin = 22;
+    const availableHeight = Math.max(1, size.height - topInset - margin);
+    const scale = Math.max(.2, Math.min(1.1, (size.width - margin * 2) / bounds.width, availableHeight / bounds.height));
+    canvasActions.setViewport({ scale, x: (size.width - bounds.width * scale) / 2 - bounds.x * scale, y: topInset + (availableHeight - bounds.height * scale) / 2 - bounds.y * scale });
+  };
   const fitPath = () => {
     canvasActions.setFocused(false);
     const elements = [...(host.current?.querySelectorAll(".lh-tree-position, .lh-card, .lh-restore-material") || [])].filter(element => element.getClientRects().length);
@@ -265,13 +294,6 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
     const bottom = Math.max(...measured.map(rect => rect.y + rect.height));
     const topWithToolbarClearance = Math.min(top, 100) - 75;
     fitBounds({ x: left - 20, y: topWithToolbarClearance, width: right - left + 40, height: bottom - topWithToolbarClearance });
-  };
-  const focusCurrent = () => {
-    if (canvas.focused) { canvasActions.setFocused(false); return; }
-    canvasActions.setFocused(true);
-    if (!canvas.expanded) canvasActions.setExpanded(true);
-    const point = position(activeStage === "practice" ? "detail" : "diagram");
-    fitBounds({ x: point.x - 20, y: point.y - 20, width: (activeStage === "practice" ? detailWidth : diagramWidth) + 40, height: 640 }, 20);
   };
   current.current = { viewport, size, canvasActions };
   useEffect(() => {
@@ -414,15 +436,15 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
     else canvasActions.moveObject(drag.id, { x: drag.original.x + deltaX / viewport.scale, y: drag.original.y + deltaY / viewport.scale });
   }} onPointerUp={() => { gesture.current = null; }} onPointerCancel={() => { gesture.current = null; }}>
     <div className={`lh-canvas-title${state.draftPath ? " is-draft-path" : ""}`}><IconBook2 size={24} /><div className="lh-canvas-title-copy">{state.draftPath && <div className="lh-editing-state"><span className="lh-editing-dot" />学习路径草案 · 正在编辑<span>尚未开始学习</span></div>}<h2>{state.draftPath ? "与 AI 共创学习路径" : state.profile.goal || "我的学习目标"}</h2><p>{state.draftPath ? `目标：${state.profile.goal} · 进入位置编辑后可移动节点与关联卡片，路径顺序不变${pendingChanges.length ? ` · ${pendingChanges.length} 项 AI 调整待你决定` : " · 也可在左侧对话继续增删重点"}` : isGoal ? "从目标或现成路径开始一段可验证的学习" : `${stageLabels[activeStage]} · ${selectedStepTitle}`}</p></div></div>
-    <LearningCanvasToolbar layout={layout} scale={viewport.scale} hand={hand} focused={canvas.focused} positionEditing={positionEditing} onTogglePositionEditing={() => { setPositionEditing(value => !value); setHand(false); }} onLayout={canvasActions.setLayout} onZoom={zoom} onResetZoom={() => canvasActions.setViewport({ scale: 1 })} onHand={() => { setHand(value => !value); setPositionEditing(false); }} onFit={fitPath} onFocus={focusCurrent} />
+    <LearningCanvasToolbar layout={layout} scale={viewport.scale} hand={hand} positionEditing={positionEditing} onTogglePositionEditing={() => { setPositionEditing(value => !value); setHand(false); }} onLayout={canvasActions.setLayout} onZoom={zoom} onResetZoom={() => canvasActions.setViewport({ scale: 1 })} onHand={() => { setHand(value => !value); setPositionEditing(false); }} onFit={fitPath} />
     {state.draftPath && <div className="lh-draft-controls" aria-label="路径共创整体操作"><Button primary disabled={pendingChanges.length > 0} title={pendingChanges.length ? "先决定所有 AI 调整" : "确认这条路径并进入学习"} onClick={() => { if (actions.confirmPath()) select("channels", "channels"); }}>确认路径并开始学习<IconArrowRight size={13} /></Button><Button disabled={!state.pathUndo?.length} onClick={actions.undoPathEdit}><IconHistory size={13} />撤销</Button><Button onClick={actions.cancelPath}>取消</Button></div>}
     <div className="lh-world" style={{ width: world.width, height: world.height, transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})` }}>
     {!isGoal && <div className="lh-tree-position" style={{ left: treePoint.x, top: treePoint.y, width: tree.width, height: tree.height }}><HierarchyGroup tree={tree} layout={layout} selectedStage={activeStage} selectedStep={selectedStep} journey={journey} onSelect={select} onMoveNode={(id, point) => canvasActions.moveObject(id, point)} scale={viewport.scale} minX={8 - treePoint.x} minY={8 - treePoint.y} pinned={pinned("hierarchy")} agentTarget={agentTarget} editing={positionEditing} onDrag={positionEditing && !pinned("hierarchy") ? event => beginObjectDrag(event, "hierarchy", treePoint) : undefined} /></div>}
       {start && canvas.expanded && !state.draftPath && !reviewingPath && <svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><defs><marker id="lh-material-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8" /></marker></defs><path d={connection(position("diagram"), diagramWidth, 0)} markerEnd="url(#lh-material-arrow)" /><path d={connection(position("detail"), detailWidth, 1)} markerEnd="url(#lh-material-arrow)" /><circle cx={start.x} cy={start.y} r="5" /></svg>}
-      {isGoal && <CanvasCard id="goal" title="学习目标与基础" point={position("goal")} width={440} pinned={pinned("goal")} onDrag={positionEditing && !pinned("goal") ? beginObjectDrag : undefined} onTogglePin={canvasActions.togglePin}><GoalObject journey={journey} onGenerate={generate} onReturn={() => canvasActions.select("path")} /></CanvasCard>}
-      {!isGoal && reviewingPath && !state.draftPath && <CanvasCard id="goal" title="已确认的学习路径" point={position("goal")} width={horizontal ? 830 : 1215} pinned={pinned("goal")} onDrag={positionEditing && !pinned("goal") ? beginObjectDrag : undefined} onTogglePin={canvasActions.togglePin}><div className="lh-path-draft"><div><strong>{state.profile.goal}</strong><p>{state.profile.background} · 每天 {state.profile.dailyMinutes} 分钟</p><small>{journey.pathCurrent ? "按节点继续学习，或审阅路径调整。" : "目标或基础已改变，请重新审阅路径。"}</small></div><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => select(state.activeNode || "channels", "channels")}>继续学习<IconArrowRight size={13} /></Button><Button onClick={() => actions.generatePath()}>调整路径</Button><Button onClick={() => canvasActions.select("goal")}>修改目标</Button></div></div></CanvasCard>}
-      {(isGoal || canvas.expanded && !state.draftPath) && <CanvasCard id="diagram" title={isGoal ? "图像输入预处理 · 路径预览" : "图像到模型输入"} icon={IconPhoto} point={position("diagram")} width={diagramWidth} pinned={pinned("diagram")} onDrag={positionEditing && !pinned("diagram") ? beginObjectDrag : undefined} onTogglePin={canvasActions.togglePin} onCollapse={isGoal ? null : canvasActions.collapse}><TensorVisual journey={journey} activeSubstep={selectedStep} stage={isGoal ? "channels" : activeStage} />{isGoal && <div className="lh-preview-path"><div><strong>图像输入预处理入门</strong><span>RGB 通道 → 维度转换 → 跟练 → 输入检查 · 约 30 分钟</span></div><Button onClick={() => generate("existing")}>选用现成路径<IconArrowRight size={14} /></Button></div>}</CanvasCard>}
-      {!isGoal && canvas.expanded && !state.draftPath && <CanvasCard id="detail" title={activeStage === "practice" ? "preprocess.py" : activeStage === "check" ? "输入检查与学习成果" : activeStage === "environment" ? "认识这次学习示例" : "讲解与理解记录"} icon={activeStage === "practice" ? IconCode : activeStage === "check" ? IconCheck : IconBook2} point={position("detail")} width={detailWidth} pinned={pinned("detail")} onDrag={positionEditing && !pinned("detail") ? beginObjectDrag : undefined} onTogglePin={canvasActions.togglePin} onCollapse={canvasActions.collapse}>
+      {isGoal && <CanvasCard id="goal" title="学习目标与基础" point={position("goal")} width={440} pinned={pinned("goal")} onDrag={positionEditing && !pinned("goal") ? beginObjectDrag : undefined} onFocus={focusObject} onMaximize={maximizeObject} onTogglePin={canvasActions.togglePin}><GoalObject journey={journey} onGenerate={generate} onReturn={() => canvasActions.select("path")} /></CanvasCard>}
+      {!isGoal && reviewingPath && !state.draftPath && <CanvasCard id="goal" title="已确认的学习路径" point={position("goal")} width={horizontal ? 830 : 1215} pinned={pinned("goal")} onDrag={positionEditing && !pinned("goal") ? beginObjectDrag : undefined} onFocus={focusObject} onMaximize={maximizeObject} onTogglePin={canvasActions.togglePin}><div className="lh-path-draft"><div><strong>{state.profile.goal}</strong><p>{state.profile.background} · 每天 {state.profile.dailyMinutes} 分钟</p><small>{journey.pathCurrent ? "按节点继续学习，或审阅路径调整。" : "目标或基础已改变，请重新审阅路径。"}</small></div><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => select(state.activeNode || "channels", "channels")}>继续学习<IconArrowRight size={13} /></Button><Button onClick={() => actions.generatePath()}>调整路径</Button><Button onClick={() => canvasActions.select("goal")}>修改目标</Button></div></div></CanvasCard>}
+      {(isGoal || canvas.expanded && !state.draftPath) && <CanvasCard id="diagram" title={isGoal ? "图像输入预处理 · 路径预览" : "图像到模型输入"} icon={IconPhoto} point={position("diagram")} width={diagramWidth} pinned={pinned("diagram")} onDrag={positionEditing && !pinned("diagram") ? beginObjectDrag : undefined} onFocus={focusObject} onMaximize={maximizeObject} onTogglePin={canvasActions.togglePin} onCollapse={isGoal ? null : canvasActions.collapse}><TensorVisual journey={journey} activeSubstep={selectedStep} stage={isGoal ? "channels" : activeStage} />{isGoal && <div className="lh-preview-path"><div><strong>图像输入预处理入门</strong><span>RGB 通道 → 维度转换 → 跟练 → 输入检查 · 约 30 分钟</span></div><Button onClick={() => generate("existing")}>选用现成路径<IconArrowRight size={14} /></Button></div>}</CanvasCard>}
+      {!isGoal && canvas.expanded && !state.draftPath && <CanvasCard id="detail" title={activeStage === "practice" ? "preprocess.py" : activeStage === "check" ? "输入检查与学习成果" : activeStage === "environment" ? "认识这次学习示例" : "讲解与理解记录"} icon={activeStage === "practice" ? IconCode : activeStage === "check" ? IconCheck : IconBook2} point={position("detail")} width={detailWidth} pinned={pinned("detail")} onDrag={positionEditing && !pinned("detail") ? beginObjectDrag : undefined} onFocus={focusObject} onMaximize={maximizeObject} onTogglePin={canvasActions.togglePin} onCollapse={canvasActions.collapse}>
         {activeStage === "practice" ? <CodePractice journey={journey} activeSubstep={selectedStep} onCopy={onCopy} onContinue={() => select("check", "input")} /> : activeStage === "check" ? <InputCheck journey={journey} onRestore={() => select("practice", "result")} onArchive={onArchive} onEnterDevelopment={onEnterDevelopment} /> : <div className="lh-lesson-body">{activeStage === "environment" && <p>浏览器中可完成维度演算，无需安装环境。迁移到本地时需 Python 与 NumPy；真实模型另核对输入签名。</p>}<Player journey={journey} onAsk={onAsk} /><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => { actions.markUnderstood(); select("practice", "layout"); }}>理解了，继续跟练<IconArrowRight size={14} /></Button></div><p className="lh-boundary">动态讲解为本地概念演示；“看过”与练习检查通过分别记录。</p></div>}
       </CanvasCard>}
       {!isGoal && !canvas.expanded && <button type="button" className="lh-restore-material" style={{ left: position("diagram").x, top: position("diagram").y }} onClick={() => canvasActions.select(activeStage, selectedStep)}><IconBook2 size={19} /><span>材料已收起<strong>恢复{stageLabels[activeStage]}的图解与内容</strong></span><IconChevronDown size={17} /></button>}

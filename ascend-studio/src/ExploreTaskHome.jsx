@@ -63,6 +63,8 @@ export function ExploreTaskHome({ onCreateTask }) {
   const [connections, setConnections] = useState({ width: 0, height: 0, paths: [] });
   const [hoveredId, setHoveredId] = useState(null);
   const [pendingId, setPendingId] = useState(null);
+  const [traceId, setTraceId] = useState(null);
+  const [traceAngle, setTraceAngle] = useState(0);
   const [lockingId, setLockingId] = useState(null);
   const [draft, setDraft] = useState("");
   const [edited, setEdited] = useState(false);
@@ -215,6 +217,7 @@ export function ExploreTaskHome({ onCreateTask }) {
     pointerPosition.current = clickPoint;
     rearmPointer.current = clickPoint;
     setPendingId(null);
+    setTraceId(null);
     setLockingId(lockNodeId);
     if (lockNodeId) {
       lockTimer.current = window.setTimeout(() => setLockingId(null), 560);
@@ -252,7 +255,7 @@ export function ExploreTaskHome({ onCreateTask }) {
   const moveOnNode = (node, event) => {
     if (event.pointerType === "touch") return;
     const point = { x: event.clientX, y: event.clientY };
-    pointerPosition.current = point;
+    const previousPoint = pointerPosition.current;
     if (rearmPointer.current) {
       const dx = point.x - rearmPointer.current.x;
       const dy = point.y - rearmPointer.current.y;
@@ -261,17 +264,31 @@ export function ExploreTaskHome({ onCreateTask }) {
     }
     if (node.id === focused?.id || pointerNodeId.current === node.id) return;
     pointerNodeId.current = node.id;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const movementX = point.x - (previousPoint?.x ?? point.x - (event.nativeEvent?.movementX || 0));
+    const movementY = point.y - (previousPoint?.y ?? point.y - (event.nativeEvent?.movementY || 0));
+    const movementLength = Math.hypot(movementX, movementY);
+    if (movementLength >= 1) {
+      const directionX = movementX / movementLength;
+      const directionY = movementY / movementLength;
+      const entryAngle = Math.atan2(-directionX, directionY) * 180 / Math.PI;
+      setTraceAngle(entryAngle);
+      event.currentTarget.style.setProperty("--trace-angle", `${entryAngle}deg`);
+      setTraceId(node.id);
+    }
     if (node.children.length) preview(node);
     else setHoveredId(node.id);
   };
 
   const leaveNode = (node) => {
     if (pointerNodeId.current !== node.id) return;
+    const keepPreviewTrace = Boolean(rearmPointer.current);
     window.clearTimeout(previewTimer.current);
     previewTimer.current = null;
     pointerNodeId.current = null;
     setPendingId(null);
     setHoveredId(null);
+    if (!keepPreviewTrace) setTraceId(null);
   };
 
   const leaveField = () => {
@@ -281,12 +298,14 @@ export function ExploreTaskHome({ onCreateTask }) {
     pointerPosition.current = null;
     rearmPointer.current = null;
     setPendingId(null);
+    setTraceId(null);
     if (previewIds.length) captureNodeLayout();
     setPreviewIds([]);
     setHoveredId(null);
   };
 
   const moveGlow = (event) => {
+    if (event.pointerType !== "touch") pointerPosition.current = { x: event.clientX, y: event.clientY };
     if (event.pointerType === "touch" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const home = homeRef.current;
     const glow = glowRef.current;
@@ -381,7 +400,7 @@ export function ExploreTaskHome({ onCreateTask }) {
 
     <div
       ref={fieldRef}
-      className={"explore-field" + (focused ? " is-focused" : "") + (isPreviewing ? " is-previewing" : "") + (completeLeaf ? " is-leaf" : "")}
+      className={"explore-field is-motion-feedback" + (focused ? " is-focused" : "") + (isPreviewing ? " is-previewing" : "") + (completeLeaf ? " is-leaf" : "")}
       aria-label={focused ? focused.label + "相关方向" : "可探索的任务方向"}
     >
       {connections.paths.length > 0 && <svg
@@ -399,12 +418,6 @@ export function ExploreTaskHome({ onCreateTask }) {
             pathLength={isPreviewing ? undefined : 1}
             style={{ "--connection-index": path.index, "--connection-color": path.color }}
           />
-          {pendingId === path.id && <path
-            className="explore-field__pending-trace"
-            d={path.d}
-            pathLength="1"
-            style={{ "--connection-color": path.color }}
-          />}
           <circle className={"explore-field__connection-end" + (pendingId === path.id ? " is-pending" : "")} cx={path.x} cy={path.y} r="2" style={{ "--connection-color": path.color }} />
         </g>)}
       </svg>}
@@ -416,8 +429,8 @@ export function ExploreTaskHome({ onCreateTask }) {
             if (element) nodeRefs.current.set(focused.id, element);
             else nodeRefs.current.delete(focused.id);
           }}
-          className={`explore-field__node explore-field__node--${focused.tone || "blue"} is-center${topicEnglishTitles[focused.id] ? " is-topic" : ""}${isPreviewing ? " is-previewing" : ""}${lockingId === focused.id ? " is-locking" : ""}`}
-          style={{ "--node-x": "50%", "--node-y": options.length >= 3 ? "46%" : "50%", "--node-index": 0 }}
+          className={`explore-field__node explore-field__node--${focused.tone || "blue"} is-center${topicEnglishTitles[focused.id] ? " is-topic" : ""}${isPreviewing ? " is-previewing" : ""}${traceId === focused.id ? " is-traced" : ""}${lockingId === focused.id ? " is-locking" : ""}`}
+          style={{ "--node-x": "50%", "--node-y": options.length >= 3 ? "46%" : "50%", "--node-index": 0, "--trace-angle": `${traceAngle}deg` }}
           onPointerMove={(event) => moveOnNode(focused, event)}
           onPointerLeave={() => leaveNode(focused)}
           onFocus={() => setHoveredId(focused.id)}
@@ -428,7 +441,7 @@ export function ExploreTaskHome({ onCreateTask }) {
           aria-label={focused.label + (isPreviewing ? "。点击锁定当前方向。" : "。当前已选方向。")}
         >
           <span className="explore-field__node-content">
-            {topicEnglishTitles[focused.id] && <span className="explore-field__node-kind"><span className="explore-field__node-cue" aria-hidden="true"><i /><svg className="explore-field__dwell-ring" viewBox="0 0 18 18"><circle className="explore-field__dwell-track" cx="9" cy="9" r="7" /><circle className="explore-field__dwell-progress" cx="9" cy="9" r="7" pathLength="100" /></svg></span>{topicEnglishTitles[focused.id]}</span>}
+            {topicEnglishTitles[focused.id] && <span className="explore-field__node-kind"><span className="explore-field__node-cue" aria-hidden="true"><i /></span>{topicEnglishTitles[focused.id]}</span>}
             <strong>{focused.label}</strong>
             <span className="explore-field__node-hint">{focused.hint}</span>
           </span>
@@ -446,7 +459,7 @@ export function ExploreTaskHome({ onCreateTask }) {
               if (element) nodeRefs.current.set(item.id, element);
               else nodeRefs.current.delete(item.id);
             }}
-            className={"explore-field__node explore-field__node--" + tone + (item.children.length ? " is-expandable" : " is-terminal") + (hoveredId === item.id ? " is-hovered" : "") + (pendingId === item.id ? " is-hover-pending" : "") + (lockingId === item.id ? " is-locking" : "") + (rootNode ? " is-topic" : "")}
+            className={"explore-field__node explore-field__node--" + tone + (item.children.length ? " is-expandable" : " is-terminal") + (hoveredId === item.id ? " is-hovered" : "") + (pendingId === item.id ? " is-hover-pending" : "") + (traceId === item.id ? " is-traced" : "") + (lockingId === item.id ? " is-locking" : "") + (rootNode ? " is-topic" : "")}
             style={{ "--node-index": index + 1, ...(focused ? { "--node-x": `${x}%`, "--node-y": `${y}%` } : {}) }}
             onPointerMove={(event) => moveOnNode(item, event)}
             onPointerLeave={() => leaveNode(item)}
@@ -459,7 +472,7 @@ export function ExploreTaskHome({ onCreateTask }) {
           >
             <span className="explore-field__node-content">
               <span className="explore-field__node-kind">
-                <span className="explore-field__node-cue" aria-hidden="true"><i /><svg className="explore-field__dwell-ring" viewBox="0 0 18 18"><circle className="explore-field__dwell-track" cx="9" cy="9" r="7" /><circle className="explore-field__dwell-progress" cx="9" cy="9" r="7" pathLength="100" /></svg></span>
+                <span className="explore-field__node-cue" aria-hidden="true"><i /></span>
                 {Icon && rootNode ? <Icon size={13} stroke={1.8} /> : null}
                 {rootNode ? topicEnglishTitles[item.id] || label : label}
               </span>
@@ -493,7 +506,7 @@ export function ExploreTaskHome({ onCreateTask }) {
         </button>
       </div>
       <div className="explore-composer__footer">
-        <span className="explore-composer__path" aria-label="已加入需求的条件">
+          <span className="explore-composer__path" aria-label="已加入需求的条件">
           {request.path.length ? request.path.map((item, index) => <button type="button" key={item.id} title={"移除“" + item.label + "”及后续选择"} onClick={() => choose(ids.slice(0, index))}>
             {index > 0 && <IconChevronRight size={11} />}{item.label}<IconX size={11} />
           </button>) : null}

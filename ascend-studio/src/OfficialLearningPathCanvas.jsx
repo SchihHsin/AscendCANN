@@ -99,6 +99,14 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
   const [hand,setHand] = useState(false);
   const [positionEditing,setPositionEditing] = useState(false);
   const [heights,setHeights] = useState({});
+  useEffect(()=>{
+    if(!hand&&!positionEditing)return undefined;
+    const handleEscape=event=>{
+      if(event.key!=="Escape"||event.target?.closest?.('input,textarea,select,[contenteditable="true"],[role="textbox"]'))return;
+      setHand(false);setPositionEditing(false);
+    };
+    window.addEventListener("keydown",handleEscape);return()=>window.removeEventListener("keydown",handleEscape);
+  },[hand,positionEditing]);
   const personalPlan = state.personalPlan;
   const editingPersonalPlan = personalPlan?.status === "draft";
   const tree = useMemo(() => makeTree(canvas.layout, personalPlan, canvas.positions), [canvas.layout, personalPlan, canvas.positions]);
@@ -136,11 +144,20 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
     } else fitBounds({x:Math.max(15,contentX-90),y:treePoint.y-18,width:diagramWidth+190,height:tree.height+520},24,.4);
   };
   const fitPath = () => {canvasActions.setFocused(false);fitBounds({x:treePoint.x-10,y:treePoint.y-35,width:horizontal?1120:tree.width+35,height:horizontal?tree.height+60:tree.height+590},26,.25);};
-  const focus = () => {
-    if(canvas.focused){canvasActions.setFocused(false);return;}
-    canvasActions.setFocused(true);
-    canvasActions.revealObject(keyFor("diagram"));
-    fitBounds({...position("diagram"),width:diagramWidth,height:460},24,.45);
+  const objectBounds = id => {
+    const element = [...(host.current?.querySelectorAll("[data-object-id]") || [])].find(item => item.dataset.objectId === id);
+    return element ? { x: element.offsetLeft, y: element.offsetTop, width: element.offsetWidth, height: element.offsetHeight } : null;
+  };
+  const focusObject = id => {
+    const bounds=objectBounds(id);if(!bounds)return;
+    const centerY=(size.height+(size.width<650?112:86))/2;
+    canvasActions.setViewport({x:size.width/2-(bounds.x+bounds.width/2)*viewport.scale,y:centerY-(bounds.y+bounds.height/2)*viewport.scale});
+  };
+  const maximizeObject = id => {
+    const bounds=objectBounds(id);if(!bounds)return;
+    const topInset=size.width<650?120:92,margin=22,availableHeight=Math.max(1,size.height-topInset-margin);
+    const scale=clamp(Math.min((size.width-margin*2)/bounds.width,availableHeight/bounds.height),.2,1.1);
+    canvasActions.setViewport({scale,x:(size.width-bounds.width*scale)/2-bounds.x*scale,y:topInset+(availableHeight-bounds.height*scale)/2-bounds.y*scale});
   };
   latest.current={viewport,canvasActions};
   useEffect(()=>{
@@ -181,7 +198,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
     if(!event){canvasActions.moveObject(id,point);return;}
     if(event.button!==0)return;event.preventDefault();event.stopPropagation();gesture.current={id,startX:event.clientX,startY:event.clientY,original:point};host.current.setPointerCapture(event.pointerId);
   };
-  const cardProps=kind=>({id:keyFor(kind),point:position(kind),width:kind==="diagram"?diagramWidth:lessonWidth,pinned:canvas.pinned.includes(keyFor(kind)),onDrag:positionEditing&&!canvas.pinned.includes(keyFor(kind))?beginObjectDrag:undefined,onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,position(kind));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.hideObject(keyFor(kind))});
+  const cardProps=kind=>({id:keyFor(kind),point:position(kind),width:kind==="diagram"?diagramWidth:lessonWidth,pinned:canvas.pinned.includes(keyFor(kind)),onDrag:positionEditing&&!canvas.pinned.includes(keyFor(kind))?beginObjectDrag:undefined,onFocus:focusObject,onMaximize:maximizeObject,onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,position(kind));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.hideObject(keyFor(kind))});
   const restorePill=(kind,title)=><button type="button" className="lh-restore-material" style={{left:position(kind).x,top:position(kind).y}} onClick={()=>{canvasActions.setExpanded(true);canvasActions.revealObject(keyFor(kind));}}><IconBook2 size={18}/><span>材料已收起<strong>恢复{title}</strong></span><IconChevronDown size={16}/></button>;
   const start={x:treePoint.x+step.rect.x+step.rect.width,y:treePoint.y+step.rect.y+step.rect.height/2};
   const p=position("diagram");
@@ -191,7 +208,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
     gesture.current={id:"viewport",startX:event.clientX,startY:event.clientY,original:viewport};event.currentTarget.setPointerCapture(event.pointerId);
   }} onPointerMove={event=>{const drag=gesture.current;if(!drag)return;const dx=event.clientX-drag.startX,dy=event.clientY-drag.startY;if(drag.id==="viewport")canvasActions.setViewport({x:drag.original.x+dx,y:drag.original.y+dy});else canvasActions.moveObject(drag.id,{x:drag.original.x+dx/viewport.scale,y:drag.original.y+dy/viewport.scale});}} onPointerUp={()=>{gesture.current=null;}} onPointerCancel={()=>{gesture.current=null;}}>
     <div className={`lh-canvas-title${editingPersonalPlan?" is-draft-path":""}`}><IconBook2 size={22}/><div>{personalPlan&&<div className="og-plan-state">{editingPersonalPlan?<><i/>个人计划草案 · 尚未确认</>:"我的学习计划 · 基于官方路径"}</div>}<h2>跑通一次 ResNet50 图像推理</h2><p>{editingPersonalPlan?"可继续共创路径；画布位置调整不会改变顺序或学习进度":`${personalPlan?"个人计划":"官方目标学习路径"} · ${done}/${total} 个学习动作已完成`}</p></div></div>
-    <LearningCanvasToolbar layout={canvas.layout} scale={viewport.scale} hand={hand} focused={canvas.focused} positionEditing={positionEditing} onTogglePositionEditing={()=>{setPositionEditing(value=>!value);setHand(false);}} onLayout={next=>{if(canvas.focused)canvasActions.setFocused(false);canvasActions.setLayout(next);}} onZoom={zoom} onResetZoom={()=>canvasActions.setViewport({scale:1})} onHand={()=>{setHand(value=>!value);setPositionEditing(false);}} onFit={fitPath} onFocus={focus}/>
+    <LearningCanvasToolbar layout={canvas.layout} scale={viewport.scale} hand={hand} positionEditing={positionEditing} onTogglePositionEditing={()=>{setPositionEditing(value=>!value);setHand(false);}} onLayout={next=>{if(canvas.focused)canvasActions.setFocused(false);canvasActions.setLayout(next);}} onZoom={zoom} onResetZoom={()=>canvasActions.setViewport({scale:1})} onHand={()=>{setHand(value=>!value);setPositionEditing(false);}} onFit={fitPath}/>
     <div className="lh-world" style={{width:world.width,height:world.height,transform:`translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})`}}>
       {!hidden("diagram")&&<svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><path d={connection}/><circle cx={start.x} cy={start.y} r="4"/></svg>}
       <div className="lh-tree-position" style={{left:treePoint.x,top:treePoint.y}}><Hierarchy tree={tree} layout={canvas.layout} node={node} statuses={state.statuses} onSelect={select} editing={positionEditing} scale={viewport.scale} minX={8} minY={8} onMoveNode={(id,point)=>canvasActions.moveObject(id,point)} onDrag={positionEditing&&!canvas.pinned.includes("hierarchy")?(event,delta)=>beginObjectDrag(event,"hierarchy",delta?{x:treePoint.x+delta[0],y:treePoint.y+delta[1]}:treePoint):undefined}/></div>

@@ -1563,3 +1563,26 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户看过三张 ImageGen 方案后选择方案 1。学习发现顶部以 ResNet50 离线推理作为主推路径，分五个阶段展开完整 15 个学习动作，并使用图像 → 特征处理 → ResNet50 → 分类结果的浅色内容图。主操作与动作行可进入路径节点；阶段内容来自既有 Demo 学习路径数据，不将策划节点说成官网原章节。
 - 页面继续以浅色中性底为主，黑色用于主要 CTA，阶段颜色仅作小面积提示；Banner 背景向下渐隐。此决定只作用于学习发现页，不改变其它任务与页面结构。
+### 2026-10-26 · 所有学习与开发画布共通操作
+
+- 延续用户确认的新版 ResNet50 工具视觉，把学习画布工具顺序统一到“任务视图 / 布局 → 缩放 → 平移 / 适应全部 → 位置编辑”；卡片级聚焦、放大、固定、收起均在右上角。TaskCanvas 仍承接 AddCustom / 图像推理，LearningCanvas 保留学习层级与任务内容数据模型。
+- 学习材料卡聚焦到可视中心；放大适配右侧可用画布范围。位置编辑才显示对象拖动控制；`Esc` 退出编辑或抓手。材料卡内容高度仍自适应，不开放自由缩放；学习节点拖动只改坐标、不改学习顺序 / 进度。
+- 修改 `src/LearningCanvasToolbar.jsx`、`src/LearningCanvasCard.jsx`、`src/LearningHierarchyCanvas.jsx`、`src/OfficialLearningPathCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/canvas-reference-style.css`；更新交互规则与 QA 记录。
+- `npm run build`、`npm run build:pages`、构建 JS 的 `node --check` 与 `git diff --check` 通过；未运行自动化测试。尚未完成桌面截图和逐项拖动回放。画布添加便签 / 绘图内容的编辑入口仍是单独待办。
+- 发布：提交 `68ac4631` 已推送 `origin/main`；GitHub Pages workflow `40266606547` build / deploy 成功。公开页面直连在 TLS 握手时 EOF，因此线上 HTML / 资源尚未本轮回读确认。
+
+
+## 方案三外围短弧发布（2026-10-26）
+
+- 用户明确要求 push，覆盖此前方案三仅供本地比较的临时边界；线上探索首页现使用外围方向短弧。
+- 弧线根据指针来向起笔；色彩渐隐从弧线中段开始，到原端点淡出，扫过角度与长度不变。悬浮仍用于预览 / 下钻，点击仍用于锁定；路径可形成可编辑 Prompt。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过；GitHub Pages workflow `40271522567` 成功，线上 HTML / JS / CSS 均 HTTP 200。源码及 Pages 资源已随 `262d5e96` 推送至 `origin/main`。不改变页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界。
+
+
+### 2026-10-26 · 跨任务画布卡片视觉纠错
+
+- 纠正此前把黑色选中标题栏记成新版规则的错误：开发卡片选中时仍保留白色标题栏、黑色细边和轻阴影；白色卡面与 ResNet50 学习材料卡一致。黑底白图标仅用于当前激活的画布工具。
+- `TaskCanvas`（AddCustom、图像推理等）与 `LearningCanvasCard`（图像预处理、ResNet50）共享卡片表面、右上角操作位置、IconButton 状态及聚焦 / 放大 / 固定 / 收起语义；任务各自的节点、关系、路径和布局入口不合并。两类卡片的聚焦图标统一为 `IconFocus2`，放大使用最大化图标。
+- 用户附图是发布中的旧版 CSS；本轮本地 5189 已显示白色标题栏。源码、交互规则及 Pages 构建产物均已更新。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地控制台 error 日志为空。当前 CUA 视口约 381px，桌面宽屏截图及拖动、放大、聚焦完整回放仍待补验。未运行测试套件。
+- 依据：用户截图与最新视觉选择（H），本地浏览器观察（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `01204f8a` 已推送到 `origin/main`；Pages workflow `40278245582` build / deploy 成功，公开 HTML / CSS 已核对，完整 JS 下载与线上截图仍未核验。
