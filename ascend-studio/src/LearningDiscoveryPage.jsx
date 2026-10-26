@@ -59,6 +59,9 @@ const recommendations = [
   },
 ];
 
+const featuredRecommendation = recommendations.find(item => item.type === "学习路径");
+const featuredPathSteps = ["认识图像通道", "整理数据维度", "核对模型输入", "保存学习记录"];
+
 const newItems = [
   {
     type: "课程",
@@ -153,7 +156,7 @@ export function LearningDiscoveryPage({ onOpenItem }) {
   const [followed, setFollowed] = useState(() => new Set());
   const [joinedEvents, setJoinedEvents] = useState(() => new Set());
   const normalizedQuery = query.trim().toLocaleLowerCase("zh-CN");
-  const filteredRecommendations = useMemo(() => recommendations.filter(item => `${item.type} ${item.title} ${item.description} ${item.reason}`.toLocaleLowerCase("zh-CN").includes(normalizedQuery)), [normalizedQuery]);
+  const filteredRecommendations = useMemo(() => recommendations.filter(item => item !== featuredRecommendation && `${item.type} ${item.title} ${item.description} ${item.reason}`.toLocaleLowerCase("zh-CN").includes(normalizedQuery)), [normalizedQuery]);
   const filteredNewItems = useMemo(() => newItems.filter(item => `${item.type} ${item.title} ${item.description} ${item.meta}`.toLocaleLowerCase("zh-CN").includes(normalizedQuery)), [normalizedQuery]);
   const filteredEvents = useMemo(() => events.filter(item => `${item.kind} ${item.title} ${item.description} ${item.place}`.toLocaleLowerCase("zh-CN").includes(normalizedQuery)), [normalizedQuery]);
   const toggleSet = (setter, id) => setter(previous => {
@@ -166,18 +169,31 @@ export function LearningDiscoveryPage({ onOpenItem }) {
   return (
     <section className="learning-discovery" aria-label="学习发现">
       <header className="ld-header">
-        <div className="ld-hero-copy">
-          <div className="ld-heading-copy">
-            <div className="ld-eyebrow"><IconSparkles size={15} />学习与活动</div>
-            <h1>学习发现</h1>
-            <p>接着学一点，发现新内容，也看看开发者们最近在交流什么。</p>
-          </div>
-          <div className="ld-heading-tools">
-            <span className="ld-demo-note">展示示例内容</span>
+        <div className="ld-hero-inner">
+          <div className="ld-hero-topline">
+            <div className="ld-featured-state"><IconSparkles size={15} /><span>为你推荐</span><i aria-hidden="true" /></div>
             <label className="ld-search">
               <IconSearch size={16} />
               <input value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索课程、知识点或活动" aria-label="搜索学习内容与活动" />
             </label>
+          </div>
+          <div className="ld-featured-layout">
+            <div className="ld-featured-copy">
+              <span className="ld-featured-type">学习路径 <span>4 个节点 · 约 30 分钟</span></span>
+              <h1>{featuredRecommendation.title}</h1>
+              <p>从图像通道与维度理解开始，逐步完成跟练、输入检查和学习记录。</p>
+              <button className="ld-primary-action" type="button" onClick={() => onOpenItem(featuredRecommendation.destination)}>{featuredRecommendation.action}<IconArrowRight size={16} /></button>
+            </div>
+            <div className="ld-path-visual" role="img" aria-label="图像输入预处理学习路径：认识图像通道、整理数据维度、核对模型输入、保存学习记录">
+              <div className="ld-path-visual-heading"><span>学习路线</span><small>从理解到实践</small></div>
+              <div className="ld-path-steps" aria-hidden="true">
+                {featuredPathSteps.map((step, index) => <div className={`ld-path-step${index === 0 ? " is-start" : ""}`} key={step}>
+                  <span className="ld-path-step-index">0{index + 1}</span>
+                  <span className="ld-path-step-name">{step}</span>
+                  <span className="ld-path-step-dot" />
+                </div>)}
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -185,7 +201,7 @@ export function LearningDiscoveryPage({ onOpenItem }) {
       <main className="ld-scroll" aria-label="学习发现内容">
         <section className="ld-floor ld-floor-recommended" aria-labelledby="ld-heading-recommended">
           <div className="ld-section-heading">
-            <div className="ld-section-copy"><span className="ld-floor-kicker">01 · 接着学</span><h2 id="ld-heading-recommended">为你推荐</h2><p>从课程、路径、知识点和认证准备里，挑一个继续探索。</p></div>
+            <div className="ld-section-copy"><span className="ld-floor-kicker">01 · 继续探索</span><h2 id="ld-heading-recommended">更多推荐</h2><p>课程、知识点和认证专题，接着这条路径继续学习。</p></div>
             <span className="ld-section-count">{filteredRecommendations.length} 项</span>
           </div>
           <div className="ld-card-grid">

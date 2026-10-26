@@ -233,3 +233,81 @@
   .ld-header { min-height:286px; }
   .ld-hero-copy { min-height:286px; padding:25px 16px 22px; }
 }
+
+/* The featured path turns the banner into a content preview; black is reserved for its primary action. */
+.learning-discovery { background:#f2f2f3; }
+.workspace-grid.is-learning-discovery .nav-row.is-current { background:#efeff0; color:#383941; }
+.workspace-grid.is-learning-discovery .nav-row.is-current svg { color:#383941; }
+.ld-header {
+  min-height:0;
+  padding:0;
+  background-color:#f2f2f3;
+  background-image:linear-gradient(180deg,rgba(242,242,243,0) 0%,rgba(242,242,243,.04) 42%,rgba(242,242,243,.48) 78%,#f2f2f3 100%),url("./assets/learning-discovery/discovery-banner-bg.png");
+  background-size:100% 100%,100% auto;
+}
+.ld-hero-inner { padding:25px clamp(22px,3vw,42px) 31px; }
+.ld-hero-topline { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:18px; }
+.ld-featured-state { display:inline-flex; align-items:center; gap:8px; color:#35363e; font-size:12px; font-weight:650; }
+.ld-featured-state svg { color:#7772c7; }
+.ld-featured-state i { width:7px; height:7px; border-radius:50%; background:#8b83dc; box-shadow:0 0 0 3px rgba(139,131,220,.14); }
+.ld-search { width:min(300px,38vw); height:38px; border-color:#dfe0e3; background:#fff; color:#696b72; }
+.ld-search:focus-within { border-color:#9c9da4; box-shadow:0 0 0 2px rgba(25,26,27,.07); }
+.ld-search input { color:#303137; }
+.ld-featured-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(380px,.92fr); align-items:center; gap:clamp(22px,4vw,56px); min-height:208px; }
+.ld-featured-copy { align-items:flex-start; min-width:0; }
+.ld-featured-type { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:10px; color:#635cae; font-size:11px; font-weight:650; }
+.ld-featured-type > span { color:#73757d; font-size:10px; font-weight:500; }
+.ld-featured-copy h1 { max-width:20em; margin:0; color:#222329; font-size:clamp(23px,2.2vw,30px); font-weight:680; letter-spacing:-.035em; line-height:1.28; }
+.ld-featured-copy p { max-width:37em; margin:10px 0 14px; color:#5f616a; font-size:12px; line-height:1.65; }
+.ld-primary-action { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:39px; padding:0 15px; border:1px solid #191a1b; border-radius:8px; background:#191a1b; color:#fff; font:inherit; font-size:11px; font-weight:620; cursor:pointer; transition:background .16s,transform .16s; }
+.ld-primary-action:hover { transform:translateY(-1px); background:#303132; }
+.ld-primary-action:focus-visible { outline:2px solid #7772c7; outline-offset:3px; }
+.ld-path-visual { min-width:0; padding:19px 18px 17px; border:1px solid rgba(224,225,230,.92); border-radius:16px; background:rgba(255,255,255,.88); box-shadow:0 12px 28px rgba(34,35,42,.075); backdrop-filter:blur(12px); }
+.ld-path-visual-heading { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:20px; color:#34353d; font-size:12px; font-weight:650; }
+.ld-path-visual-heading small { color:#878991; font-size:10px; font-weight:500; }
+.ld-path-steps { position:relative; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:5px; }
+.ld-path-steps::before { position:absolute; top:20px; right:11%; left:11%; height:2px; border-radius:2px; background:linear-gradient(90deg,#aaa4e8 0%,#c8c5e5 42%,#d8d9df 100%); content:""; }
+.ld-path-step { position:relative; display:flex; min-width:0; flex-direction:column; align-items:center; gap:9px; text-align:center; }
+.ld-path-step-index { z-index:1; display:grid; place-items:center; width:40px; height:40px; border:1px solid #e1e1e6; border-radius:50%; background:#f8f8f9; color:#6f717a; font-size:10px; font-weight:650; }
+.ld-path-step.is-start .ld-path-step-index { border-color:#cbc7ef; background:#f1efff; color:#655cba; box-shadow:0 0 0 4px rgba(139,131,220,.09); }
+.ld-path-step-name { max-width:7em; color:#41434a; font-size:10px; line-height:1.45; }
+.ld-scroll { background:#f2f2f3; }
+.ld-floor + .ld-floor { border-top-color:#dedfe2; }
+.ld-section-count { border-color:#dedfe2; color:#666870; }
+.ld-card { border-color:#dedfe2; box-shadow:0 2px 8px rgba(25,27,32,.035); }
+.ld-card:hover { border-color:#c9c9ce; box-shadow:0 7px 18px rgba(25,27,32,.075); }
+.ld-card-media { border-color:#e4e4e8; background:#fafafa; }
+.ld-type-chip,.ld-type-chip.tone-course,.ld-type-chip.tone-path,.ld-type-chip.tone-knowledge,.ld-type-chip.tone-certification,.ld-type-chip.tone-task,.ld-type-chip.tone-meetup,.ld-type-chip.tone-community {
+  border-color:#e1e1e5;
+  color:#555760;
+  background:#f7f7f8;
+}
+.ld-card-action,.ld-join-button { border-color:#d9dade; color:#41434a; background:#fff; }
+.ld-card-action:hover,.ld-join-button:hover { border-color:#c7c8cd; color:#25262b; background:#f0f0f1; }
+.ld-card-action.is-followed,.ld-join-button.is-joined { border-color:#bee1d3; color:#23764f; background:#edf8f2; }
+.ld-card-action.is-followed:hover,.ld-join-button.is-joined:hover { border-color:#a9d4c2; background:#e7f4ed; }
+.ld-floor-kicker::before { background:#8881d2; }
+.ld-floor-new .ld-floor-kicker::before { background:#dfa34a; }
+.ld-floor-calendar .ld-floor-kicker::before { background:#46a790; }
+.ld-event-list::before { background:#d6d7dc; }
+.ld-event::before,.ld-event:nth-child(n)::before { background:#dfa34a; box-shadow:0 0 0 1px #e5d8be; }
+.ld-event-date { color:#666870; }
+.ld-event-date strong { color:#26272c; }
+.ld-event-media { border-color:#e2e3e7; color:#7372b5; background:#f5f5f7; }
+.ld-join-button.is-joined { color:#23764f; }
+@media(max-width:980px) {
+  .ld-hero-inner { padding:23px 22px 27px; }
+  .ld-featured-layout { grid-template-columns:minmax(0,1fr) minmax(300px,.95fr); gap:20px; }
+}
+@media(max-width:700px) {
+  .ld-hero-inner { padding:19px 16px 24px; }
+  .ld-hero-topline { align-items:flex-start; flex-direction:column; gap:13px; margin-bottom:17px; }
+  .ld-search { width:100%; }
+  .ld-featured-layout { grid-template-columns:minmax(0,1fr); gap:17px; }
+  .ld-featured-copy h1 { font-size:23px; }
+  .ld-path-visual { padding:15px 11px 14px; border-radius:12px; }
+  .ld-path-visual-heading { margin-bottom:16px; }
+  .ld-path-step-index { width:34px; height:34px; }
+  .ld-path-steps::before { top:17px; }
+  .ld-path-step-name { font-size:9px; }
+}
