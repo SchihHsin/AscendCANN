@@ -60,6 +60,7 @@ import {
   IconDots,
   IconFileText,
   IconFolder,
+  IconGripVertical,
   IconLibrary,
   IconLayoutBottombar,
   IconLayoutSidebar,
@@ -225,6 +226,10 @@ function App() {
   useEffect(() => { writeSession("project-panel-open", projectPanelOpen); }, [projectPanelOpen]);
   const [conversationLayout, setConversationLayout] = useState(() => readSession("conversation-layout", "sidebar") === "floating" ? "floating" : "sidebar");
   useEffect(() => { writeSession("conversation-layout", conversationLayout); }, [conversationLayout]);
+  const [conversationDragging, setConversationDragging] = useState(false);
+  const [conversationDockPreview, setConversationDockPreview] = useState(false);
+  const conversationPanelRef = useRef(null);
+  const conversationDragRef = useRef(null);
   const showNewTaskHome = mainView === "home";
   const showLearningDiscovery = mainView === "learning";
   const showAutomations = mainView === "automations";
@@ -322,6 +327,57 @@ function App() {
   const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask, initialMaterialId: isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS[0]?.id : isLearningTask ? "learning-goal" : undefined, defaultToLearningCanvas: isLearningTask });
   const communityDraftFocus = showTaskWorkspace && supportsCommunityDraft && Boolean(session.communityDraft?.open && session.communityDraft?.completionId);
   const layout = useWorkbenchLayout({ projectPanelOpen, contentCollapsed: showTaskWorkspace && workspace.state.collapsed, learningLayout: isLearningTask, communityDraftFocus });
+  const resetConversationDrag = () => {
+    const active = conversationDragRef.current;
+    conversationDragRef.current = null;
+    if (active?.handle?.hasPointerCapture(active.pointerId)) active.handle.releasePointerCapture(active.pointerId);
+    conversationPanelRef.current?.style.removeProperty("--conversation-drag-x");
+    conversationPanelRef.current?.style.removeProperty("--conversation-drag-y");
+    setConversationDragging(false);
+    setConversationDockPreview(false);
+  };
+  const conversationDockTargetContains = (clientX, clientY) => {
+    const workspaceElement = layout.workspaceRef.current;
+    if (!workspaceElement) return false;
+    const workspaceRect = workspaceElement.getBoundingClientRect();
+    const styles = getComputedStyle(workspaceElement);
+    const projectsEdge = Number.parseFloat(styles.getPropertyValue("--projects-edge")) || 56;
+    const conversationEdge = Number.parseFloat(styles.getPropertyValue("--conversation-edge"));
+    if (!Number.isFinite(conversationEdge) || conversationEdge <= projectsEdge) return false;
+    const left = workspaceRect.left + projectsEdge;
+    const right = workspaceRect.left + conversationEdge;
+    return clientX >= left - 16 && clientX <= right + 16 && clientY >= workspaceRect.top && clientY <= workspaceRect.bottom;
+  };
+  const moveConversationDrag = (event) => {
+    const active = conversationDragRef.current;
+    if (!active || active.pointerId !== event.pointerId) return;
+    const deltaX = event.clientX - active.clientX;
+    const deltaY = event.clientY - active.clientY;
+    if (!active.moved && Math.hypot(deltaX, deltaY) < 5) return;
+    active.moved = true;
+    setConversationDragging(true);
+    conversationPanelRef.current?.style.setProperty("--conversation-drag-x", `${deltaX}px`);
+    conversationPanelRef.current?.style.setProperty("--conversation-drag-y", `${deltaY}px`);
+    const preview = conversationDockTargetContains(event.clientX, event.clientY);
+    setConversationDockPreview(current => current === preview ? current : preview);
+    event.preventDefault();
+  };
+  const startConversationDrag = (event) => {
+    if (areaInteractionActive || conversationLayout !== "floating" || window.innerWidth <= 980 || event.button !== 0 || !event.isPrimary || conversationDragRef.current) return;
+    conversationDragRef.current = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, moved: false, handle: event.currentTarget };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const finishConversationDrag = (event, cancelled = false) => {
+    const active = conversationDragRef.current;
+    if (!active || active.pointerId !== event.pointerId) return;
+    if (!cancelled) moveConversationDrag(event);
+    const shouldDock = !cancelled && (!active.moved || conversationDockTargetContains(event.clientX, event.clientY));
+    resetConversationDrag();
+    if (shouldDock) setConversationLayout("sidebar");
+  };
+  useEffect(() => {
+    if (areaInteractionActive && conversationDragRef.current) resetConversationDrag();
+  }, [areaInteractionActive]);
   const visibleContentId = layout.contentWidth <= 620 && workspace.state.splitId && [workspace.state.activeId, workspace.state.splitId].includes(workspace.state.comparisonFocusId) ? workspace.state.comparisonFocusId : workspace.state.activeId;
   const contentVisible = id => !workspace.state.collapsed && workspace.state.activeId !== "canvas" && (layout.contentWidth <= 620 ? visibleContentId === id : workspace.state.activeId === id || workspace.state.splitId === id);
   const learningCanvasView = useLearningCanvasView({ taskId: isStandardLearningTask ? selectedTask : "__inactive-learning", enabled: isStandardLearningTask, initialStage: isPathGenerationTask ? "path" : "channels", resetOnLoad: isPathGenerationTask });
@@ -1286,7 +1342,7 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
         <aside className="icon-rail" aria-label="主导航">
           <div className="icon-rail-nav">
             <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={ICON_SIZE.navigation} /></button>
@@ -1349,7 +1405,7 @@ function App() {
         </section> : showCapabilities ? <section className="management-page" aria-labelledby="capabilities-page-title">
           <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 工具与方法</span><h1 id="capabilities-page-title">能力库</h1><p>按类型查找可复用的检查能力，选择后会带入当前任务。</p></div><div className="management-page-summary"><strong>{capabilities.length}</strong><span>项可用能力</span><i /><strong>{new Set(capabilities.map(item => item.category).filter(Boolean)).size}</strong><span>个分类</span></div></header>
           <div className="management-page-content"><CapabilityList capabilities={capabilities} onUseCapability={useCapabilityFromPage} /></div>
-        </section> : <section className="conversation-panel" aria-label="任务对话">
+        </section> : <section ref={conversationPanelRef} className={`conversation-panel${conversationDragging ? " is-dragging" : ""}`} aria-label="任务对话">
           <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <div className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
             <div className="conversation-flow">
@@ -1478,6 +1534,7 @@ function App() {
             </button>
           </section>}
           <form className={`composer${showCommunityInvite ? " composer--community" : ""}`} onSubmit={handleSendMessage}>
+            {conversationLayout === "floating" && <button className="conversation-drag-handle" type="button" aria-label="拖动对话输入框到左侧停靠" title="拖动输入框到左侧；出现轮廓预览后松手吸附。轻点或按回车可直接切换" disabled={areaInteractionActive} onKeyDown={event => { if (event.key === "Escape" && conversationDragRef.current) { event.preventDefault(); resetConversationDrag(); } else if (event.key === "ArrowLeft" || event.key === "Enter" || event.key === " ") { event.preventDefault(); setConversationLayout("sidebar"); } }} onPointerDown={startConversationDrag} onPointerMove={moveConversationDrag} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}><IconGripVertical size={ICON_SIZE.inline} aria-hidden="true" /></button>}
             {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
               {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={ICON_SIZE.inline} /><span>{pointContext.type === "workspace-area" ? `工作区区域 · ${pointContext.label}` : `图解范围 · ${pointContext.label}`}</span><button type="button" aria-label="移除指向区域上下文" onClick={clearPointContext}><IconX size={ICON_SIZE.micro} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={ICON_SIZE.inline} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={ICON_SIZE.micro} /></button></span>)}
@@ -1511,6 +1568,7 @@ function App() {
               renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
             />}
         </aside>}
+        {showTaskWorkspace && conversationLayout === "floating" && conversationDockPreview && <div className="conversation-dock-preview" aria-hidden="true" />}
       </div>
       {wb.menu && <div className={"workbench-menu workbench-menu-" + wb.menu.name} ref={wb.menuRef} style={{ left: wb.menu.left, ...(wb.menu.bottom !== null ? { bottom: wb.menu.bottom } : { top: wb.menu.top }) }}>
         {wb.menu.name === "filter" && <><div className="menu-label">显示项目</div>{[{ id: "all", label: "全部项目" }, { id: "current", label: "当前项目" }].map((item) => <button key={item.id} type="button" className={wb.filterScope === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => wb.setFilterScope(item.id))}>{item.label}{wb.filterScope === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}<div className="menu-divider" /><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups(wb.groups.map((group) => group.id)))}>展开所有项目</button><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups([]))}>收起所有项目</button></>}

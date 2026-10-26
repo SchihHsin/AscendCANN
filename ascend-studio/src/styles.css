@@ -426,3 +426,73 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 }
 
 .save-unavailable { color: #8d6f49; font-size: 11px; white-space: nowrap; }
+
+/* Dragging the floating composer previews the conversation's docked destination. */
+.composer { position: relative; }
+.conversation-drag-handle {
+  position: absolute;
+  z-index: 3;
+  top: -14px;
+  right: 10px;
+  width: 28px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #e5e4e2;
+  border-bottom: 0;
+  border-radius: 7px 7px 0 0;
+  background: #fff;
+  color: #81838b;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.conversation-drag-handle:hover:not(:disabled),
+.conversation-drag-handle:focus-visible { color: #4c4e57; background: #fafaf9; }
+.conversation-drag-handle:active { cursor: grabbing; }
+.conversation-drag-handle:disabled { cursor: not-allowed; opacity: .45; }
+.conversation-panel.is-dragging {
+  z-index: 16 !important;
+  transform: translate3d(var(--conversation-drag-x, 0px), var(--conversation-drag-y, 0px), 0);
+  opacity: .84;
+  transition: none;
+  box-shadow: 0 16px 40px rgba(24,25,31,.2), 0 3px 10px rgba(24,25,31,.08);
+}
+.conversation-dock-preview {
+  position: absolute;
+  z-index: 17;
+  top: 0;
+  bottom: 0;
+  left: var(--projects-edge);
+  width: calc(var(--conversation-edge) - var(--projects-edge));
+  border: 1px dashed #aeb2bd;
+  border-radius: 10px;
+  background: rgba(255,255,255,.52);
+  box-shadow: 0 0 0 5px rgba(220,221,226,.2), inset 0 0 0 1px rgba(255,255,255,.7);
+  pointer-events: none;
+}
+.conversation-dock-preview::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 61px;
+  border-bottom: 1px solid rgba(213,214,219,.8);
+  background: rgba(245,245,246,.44);
+}
+.conversation-dock-preview::after {
+  content: "";
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  left: 16px;
+  height: 86px;
+  border: 1px solid rgba(213,214,219,.9);
+  border-radius: 11px;
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 2px 8px rgba(28,30,36,.035);
+}
+@media (max-width: 980px) {
+  .conversation-drag-handle { display: none; }
+  .conversation-panel.is-dragging { transform: none; }
+}
