@@ -6802,3 +6802,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出目标页面是 GitHub Pages。此前“适应全部可见内容”只改了通用 `TaskCanvas`，ResNet50 实际使用独立的 `LearningCanvasToolbar`，因此线上仍显示向外箭头。现将学习工具栏也改为 Tabler `IconArrowsMinimize`，与通用任务画布一致；按钮行为与提示不变。
 - 在隔离 worktree 同步 `origin/main` 的 `425653f7` / `6a4bf8e5`，保留学习发现页面并行改动后重新构建。修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 和 `ascstudio/` 构建产物；页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；已生成入口 `index-C3DSYrl0.js` 与 CSS `index-BVnw8_Wn.css`。提交 `f6070dff` 已推送到 `origin/main`；GitHub Pages workflow `40364545318` build / deploy 成功，线上 `/ascstudio/` HTML 引用新 JS / CSS，HTML、JS、CSS 均 HTTP 200。
+
+### 2026-10-27 · 统一画布“适应内容”图标
+
+- 用户指出适应视图图标应按画布统一规则全局一致。审查 Ascend Studio 画布后发现三处入口：通用任务画布 `TaskCanvas`、学习画布 `LearningCanvasToolbar`、任务内容总览 `TaskContentOverview`。在共享层新增 `CanvasFitIcon`，统一使用 Tabler `IconArrowsMinimize`；工具栏和总览保留原尺寸、文案、适配行为。
+- 同步并保留并行主线提交 `6271639b` 与 `f9870df1`（组合首页交互 / 学习发现样式和相关记录），基于合并后的源码重新构建 `/ascstudio/`。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 和入口资源引用检查通过；新产物为 `index-BqQ5JE5h.js` 与 `index-DTObeaaN.css`。Pages 发布状态待回读。
