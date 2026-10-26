@@ -13,9 +13,10 @@ export const getAreaVoiceShortcutLabel = () => {
   return /mac|iphone|ipad/i.test(platform) ? "Fn" : "Ctrl";
 };
 
-export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
+export function AreaComposer({ context, sourceRef, disabled = false, onSend, onDismiss }) {
   const composerRef = useRef(null);
   const textareaRef = useRef(null);
+  const thumbnailRef = useRef(null);
   const voiceTimerRef = useRef(null);
   const voiceIndexRef = useRef(0);
   const draftRef = useRef("");
@@ -102,6 +103,71 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
     };
   }, [context]);
 
+  useLayoutEffect(() => {
+    const thumbnail = thumbnailRef.current;
+    const source = sourceRef?.current;
+    const selection = context?.selection;
+    const sourceRect = source?.getBoundingClientRect();
+    if (!thumbnail || !source || !selection || !sourceRect?.width || !sourceRect?.height) return undefined;
+
+    const thumbnailWidth = Math.max(1, thumbnail.clientWidth);
+    const thumbnailHeight = Math.max(1, thumbnail.clientHeight);
+    const cropWidth = sourceRect.width * selection.width;
+    const cropHeight = sourceRect.height * selection.height;
+    if (!cropWidth || !cropHeight) return undefined;
+
+    const workspaceSnapshot = source.parentElement?.cloneNode(false);
+    const stageSnapshot = source.cloneNode(true);
+    if (!workspaceSnapshot || !stageSnapshot) return undefined;
+
+    const sourceElements = [source, ...source.querySelectorAll("*")];
+    const snapshotElements = [stageSnapshot, ...stageSnapshot.querySelectorAll("*")];
+    sourceElements.forEach((element, index) => {
+      const snapshot = snapshotElements[index];
+      if (!snapshot) return;
+      snapshot.scrollTop = element.scrollTop;
+      snapshot.scrollLeft = element.scrollLeft;
+      if (element instanceof HTMLInputElement && snapshot instanceof HTMLInputElement) {
+        snapshot.checked = element.checked;
+        if (element.type !== "file") snapshot.value = element.value;
+      } else if (element instanceof HTMLTextAreaElement && snapshot instanceof HTMLTextAreaElement) {
+        snapshot.value = element.value;
+      } else if (element instanceof HTMLSelectElement && snapshot instanceof HTMLSelectElement) {
+        snapshot.selectedIndex = element.selectedIndex;
+      } else if (element instanceof HTMLCanvasElement && snapshot instanceof HTMLCanvasElement) {
+        snapshot.width = element.width;
+        snapshot.height = element.height;
+        try { snapshot.getContext("2d")?.drawImage(element, 0, 0); } catch { /* Keep the surrounding UI if a canvas cannot be copied. */ }
+      }
+    });
+
+    stageSnapshot.querySelectorAll(".tw-area-select-layer, .tw-area-selection-preview, .tw-area-composer, .tw-area-mode-hint, script, [hidden]").forEach((element) => element.remove());
+    workspaceSnapshot.replaceChildren(stageSnapshot);
+    workspaceSnapshot.querySelectorAll("[id]").forEach((element) => element.removeAttribute("id"));
+    workspaceSnapshot.setAttribute("aria-hidden", "true");
+    workspaceSnapshot.inert = true;
+
+    const scale = Math.min(thumbnailWidth / cropWidth, thumbnailHeight / cropHeight);
+    const offsetX = (thumbnailWidth - cropWidth * scale) / 2 - sourceRect.width * selection.left * scale;
+    const offsetY = (thumbnailHeight - cropHeight * scale) / 2 - sourceRect.height * selection.top * scale;
+    Object.assign(workspaceSnapshot.style, {
+      position: "absolute",
+      left: `${offsetX}px`,
+      top: `${offsetY}px`,
+      width: `${sourceRect.width}px`,
+      height: `${sourceRect.height}px`,
+      minWidth: "0",
+      minHeight: "0",
+      overflow: "hidden",
+      transform: `scale(${scale})`,
+      transformOrigin: "top left",
+      pointerEvents: "none",
+      userSelect: "none",
+    });
+    thumbnail.replaceChildren(workspaceSnapshot);
+    return () => thumbnail.replaceChildren();
+  }, [context, sourceRef]);
+
   useEffect(() => {
     const isVoiceShortcut = (event) => isFnKey(event) || (voiceShortcut === "Ctrl" && isControlKey(event));
     const startOnPress = (event) => {
@@ -143,7 +209,7 @@ export function AreaComposer({ context, disabled = false, onSend, onDismiss }) {
 
   return <form ref={composerRef} className="composer tw-area-composer" style={{ left: position.left, top: position.top }} onSubmit={handleSubmit} aria-label="描述选中的工作区区域">
     <div className="composer-context-chips">
-      <span className="attachment-chip point-context-chip"><IconPointer2 size={13} /><span>工作区区域 · {context.label}</span><button type="button" aria-label="取消区域输入" onClick={onDismiss}><IconX size={12} /></button></span>
+      <span className="attachment-chip point-context-chip"><span ref={thumbnailRef} className="point-context-thumbnail" role="img" aria-label={`已选区域缩略图${context.contentTitle ? `：${context.contentTitle}` : ""}`} title={context.contentTitle || "已选区域"} /><span className="point-context-label">已选区域</span><button type="button" aria-label="移除已选区域" onClick={onDismiss}><IconX size={12} /></button></span>
     </div>
     <textarea ref={textareaRef} value={draft} onChange={(event) => updateDraft(event.target.value)} onBlur={() => { if (listeningRef.current) stopVoice(); }} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); handleSubmit(event); } }} placeholder="描述你希望我关注这个区域的什么…" aria-label="描述选中的工作区区域" rows={1} />
     <div className="composer-toolbar">

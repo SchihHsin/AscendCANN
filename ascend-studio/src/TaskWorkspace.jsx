@@ -274,7 +274,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
       contentId: selectionSourceId,
       canvasMode: selectionSourceId === "canvas" ? state.canvasMode : undefined,
       contentTitle: activeTitle,
-      label: `${Math.round(rect.width)} × ${Math.round(rect.height)} px`,
+      label: "已选区域",
       selectedText: text,
       selection: {
         left: rect.left / Math.max(1, stageRect.width),
@@ -376,8 +376,8 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
           {selectedTask && !current.activeId && <div className="tw-empty"><IconFileDescription size={24} /><strong>打开需要查看的内容</strong><p>代码、结果和参考资料会在这里展开。</p>{isMainTask && <button type="button" onClick={() => openCanvas()}><IconLayoutBoard size={14} />查看已有内容</button>}<button type="button" onClick={() => showPicker()}><IconPlus size={14} />新增内容</button></div>}
         </div>;
       })}
-      {visibleAreaContext && pointContext.selection && <div className="tw-area-selection-preview" aria-hidden="true" style={{ left: `${pointContext.selection.left * 100}%`, top: `${pointContext.selection.top * 100}%`, width: `${pointContext.selection.width * 100}%`, height: `${pointContext.selection.height * 100}%` }}><span>已选区域 · {pointContext.label}</span></div>}
-      {visibleAreaContext && pointContext.selection && <AreaComposer key={`${pointContext.taskId}:${pointContext.contentId}:${pointContext.selection.left}:${pointContext.selection.top}:${pointContext.selection.width}:${pointContext.selection.height}`} context={pointContext} disabled={areaComposerDisabled} onSend={onAreaSend} onDismiss={onAreaDismiss} />}
+      {visibleAreaContext && pointContext.selection && <div className="tw-area-selection-preview" aria-hidden="true" style={{ left: `${pointContext.selection.left * 100}%`, top: `${pointContext.selection.top * 100}%`, width: `${pointContext.selection.width * 100}%`, height: `${pointContext.selection.height * 100}%` }}><span>已选区域</span></div>}
+      {visibleAreaContext && pointContext.selection && <AreaComposer key={`${pointContext.taskId}:${pointContext.contentId}:${pointContext.selection.left}:${pointContext.selection.top}:${pointContext.selection.width}:${pointContext.selection.height}`} context={pointContext} sourceRef={stageRef} disabled={areaComposerDisabled} onSend={onAreaSend} onDismiss={onAreaDismiss} />}
       {areaSelectionMode && <>
         <div className="tw-area-select-layer" role="presentation" aria-label="拖动框选工作区区域" onPointerDown={startAreaSelection} onPointerMove={moveAreaSelection} onPointerUp={finishAreaSelection} onPointerCancel={() => { pointerStart.current = null; setDragSelection(null); }} onContextMenu={event => event.preventDefault()}>
           {dragSelection && <div className="tw-area-selection-box" style={{ left: dragSelection.left, top: dragSelection.top, width: dragSelection.width, height: dragSelection.height }} />}
