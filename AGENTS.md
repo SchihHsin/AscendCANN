@@ -6688,7 +6688,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出此前配色落地与选定参考图仍有差异：背景过平、偏暗，缺少细腻纹理与漂浮的彩色碎片。用户本轮上传的页面图成为最新视觉基准，覆盖此前对已发布 Banner 的“完成”判断。
 - 使用 ImageGen 生成纯背景资产 `ascend-studio/src/assets/learning-discovery/discovery-banner-bg-textured.png`：浅蓝白底、层叠柔光纹理、流动光带，以及青 / 紫 / 粉 / 薄荷色半透明碎片；没有文字或 UI。CSS 移除大面积径向色斑，接入新底图并保留向下渐隐。五阶段路径、内容插画、布局和黑色主 CTA 不变。
 - 本地 1280×720 预览（8133）已观察：Banner 更明亮，波纹纹理与彩色碎片可见；`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。未运行自动化测试。
-- 同步保留同期主线的学习画布展开卡片与组合任务首页改动；未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。源码、构建产物、记录在检查后推送 `origin/main`；Pages 发布状态待回填。
+- 同步保留同期主线的学习画布展开、组合首页默认空状态、对话区域布局切换等更新；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。发布提交 `78bc44a2` 已推送至 `origin/main`，GitHub Pages workflow `40319030276` 成功；线上 `/AscendCANN/ascstudio/` HTML、JS、CSS 与纹理底图均 HTTP 200，JS 完整下载 1,013,939 bytes。
 
 ### 2026-10-26 · 训练调优字段组合首页（第三个 Tab）
 
@@ -6699,12 +6699,6 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 提示。
 - 页面新增首页方案 Tab，不改变 API / Protocol、Host / Harness 或 Application / Task 边界。源码提交 `86b9a588`，发布资源提交 `dccebbe0`，并入并行更新后的提交 `f425e635` 已推送至 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200。
 
-
-### 2026-10-26 · 学习发现 Banner 纹理与彩色碎片校正
-
-- 用户指出上一版 Banner 背景比参考图更平、纹理与彩色碎片不足；本次上传截图是视觉依据（H）。
-- 以浅蓝白底图替换 Banner 纹理：加入柔和层叠波纹、光带和青 / 紫 / 粉 / 薄荷半透明碎片；继续保留向下渐隐。学习路径内容、布局和主按钮不变。
-- 本地桌面预览已核对，具体构建、语法、差异检查与推送状态将在发布后补记。未运行测试套件；未改页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 
 ### 2026-10-26 · 组合首页默认空白，由用户建立关系
 
