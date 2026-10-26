@@ -6797,6 +6797,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/icon-system.js`、`git diff --check`、入口 JS / CSS 存在性检查通过；本地 5178 预览 1280×720 显示布局切换按钮与工作区正常。未运行测试套件；Vite 有约 1.03 MB 主 chunk 提示。
 - 发布：图标实现 `2319819f` 经整合提交 `801f5b25`、`7c10785f`、`e9a55ac9` 推送到 `origin/main`；远端随后并入的记录现已同步至 `05318bc1`。workflow `40359623548` 的 build 成功，deploy 因后续并行主线更新取消；workflow `40360271679` build / deploy 成功；线上 `/ascstudio/` HTML 返回 200，并引用 `index-C-7h-DrJ.js` / `index--ttgCUFj.css`，两项资源均返回 200。
 
+### 2026-10-27 · 学习发现路径按用户最新截图收敛颜色
+
+- **权威参考修正：** 用户重新上传了这次要修改的路径参考图，保存于 `ascend-studio/evidence/20261027-learning-discovery-path/selected-path-reference.png`。该图覆盖此前对“方案 1”的错误识别；未来修改应以此图为准，不要再引用前一张 ImageGen 整页方案。
+- **结构与视觉：** 参考图是一张连续白色圆角外框，内部五列阶段由横向彩色时间轴串联，阶段之间为细竖分割线；编号圈沿轴排列，步骤以无卡片底的文本行和细横线呈现。用户要求“基于此图优化颜色，因为颜色有点花”。实现保留蓝、青、紫、粉、绿的阶段语义，将饱和度和对比度压低，并保留浅色中性页面和黑色主操作。
+- **实现与证据：** 更新 `ascend-studio/src/learning-discovery.css` 与 `ascstudio/` 构建产物。桌面 1280×720 CUA 观察路径呈现为单容器、贯穿时间轴、分隔列和无底色步骤清单，颜色柔和且仍可区分（M）。`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 通过；未运行测试套件。页面序列、API / Host / Application 边界不变。
+- **发布：** 源码提交 `5adba045`、Pages 产物提交 `1f1a3d87` 已推送至 `origin/main`；Pages workflow `40369406352` build / deploy 成功，线上新 CSS 与 JS 均 HTTP 200；HTML 请求超时 / 连接重置，未核对线上入口 HTML。
+
 ### 2026-10-27 · ResNet50 学习画布适应视图图标同步
 
 - 用户指出目标页面是 GitHub Pages。此前“适应全部可见内容”只改了通用 `TaskCanvas`，ResNet50 实际使用独立的 `LearningCanvasToolbar`，因此线上仍显示向外箭头。现将学习工具栏也改为 Tabler `IconArrowsMinimize`，与通用任务画布一致；按钮行为与提示不变。
@@ -6822,3 +6829,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **改动：** `ascend-studio/src/shared/canvas/canvas.css` 定义共享外框 10px、内层 9px token，统一选中态边线与柔和阴影；`ascend-studio/src/task-canvas.css` 的内容和折叠标题使用同一内层 token。规则同步到 `ascend-studio/interaction-design.md`，实现与验收记录在 `ascend-studio/design-qa.md`。Pages 产物为 `ascstudio/assets/index-D2zrDIk2.js`、`index-Pe1jOl7P.css` 与 `index.html`。
 - **证据 / 验证：** 用户反馈与既有统一规则（H）；本地 CUA 1280×720 对任务画布普通、选中、折叠状态回放及生产构建 DOM 样式读数（M）。外框 10px、标题 / 内容内角 9px；选中无外扩描边。`npm run build:pages`、`node --check ascstudio/assets/index-D2zrDIk2.js`、`git diff --cached --check` 通过；本地生产预览 console error 为空。未运行自动化测试。
 - **边界与发布：** 不改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界，也不宣称真实 NPU 验证。功能提交 `3c2cf905` 已推送 `origin/main`；Pages workflow `40367429848` build / deploy 成功。之后主线合并到 `766fb2b7`，workflow `40367803200` 也成功。公开 HTML 回读请求超时，因此没有声称完成线上资源哈希复核。
+
+
+### 2026-10-27 · 学习发现路径以用户重新提供的参考图为准
+
+- 用户纠正此前对“方案 1”图片的误认，并重新提供路径截图。权威视觉参考保存于 `ascend-studio/evidence/20261027-learning-discovery-path/selected-path-reference.png`；此前引用的另一张 ImageGen 整页方案不是这次路径的基准。
+- 路径改为参考图的单个白色圆角容器、五段彩色横轴、阶段分栏细线和纯文本步骤行；保留蓝 / 青 / 紫 / 粉 / 绿分段关系，降低彩度与对比，让颜色不花。1280×720 本地 CUA、Pages 构建和 JS / diff 检查通过。
+- 源码提交 `5adba045`、Pages 产物提交 `1f1a3d87` 已推送；线上部署待核验。详见 `ascend-studio/AGENTS.md` 与 `ascend-studio/design-qa.md`。

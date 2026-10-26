@@ -1738,3 +1738,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 所有任务画布与学习画布共用 `--canvas-card-radius: 10px` 与 `--canvas-card-inner-radius: 9px`；白色内层标题 / 内容贴合 1px 外框，折叠态使用同一规则。选中仅改细边和柔和投影，不加外扩黑圈。共享 token 放在 `src/shared/canvas/canvas.css`，任务卡片局部规则只消费 token。
 - 这条规则此前已定但未贯彻，局部 CSS 拆分与并行旧样式回写导致偏差。修改后在本地生产构建中检查选中展开态，并在开发预览检查普通 / 折叠态，计算样式为外框 10px、内层 9px。页面、路径和任务内容不变；发布与证据见根 `AGENTS.md`、`design-qa.md`。
+
+### 2026-10-27 · 学习发现路径按用户最新参考图优化
+
+- 用户重新附上的路径图为本次唯一视觉参考，已保存于 `evidence/20261027-learning-discovery-path/selected-path-reference.png`，覆盖此前误用的另一张“方案 1”图。
+- 对齐单个白色圆角外框、横向五阶段色轴、细竖向阶段分隔，以及无卡片底的步骤文本行；蓝、青、紫、粉、绿仍区分阶段，但整体降低饱和度与对比度。
+- 本地 1280×720 CUA 核对通过；构建、JS 语法和 diff 检查通过，未运行测试套件。源码 `5adba045`、Pages 产物 `1f1a3d87` 已推送至 `origin/main`；部署状态待确认。
