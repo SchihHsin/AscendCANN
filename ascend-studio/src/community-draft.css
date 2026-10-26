@@ -77,6 +77,27 @@
 .community-draft-card-status.is-submitted { border-color: #dce7dd; color: #576d5e; background: #f5f8f5; }
 .community-draft-card > svg:last-child { flex: 0 0 auto; color: #81818a; }
 
+.addcustom-feedback-shortcut { display: grid; justify-items: start; gap: 2px; margin-top: 8px; }
+.addcustom-feedback-shortcut > button { display: inline-flex; align-items: center; gap: 5px; }
+.addcustom-feedback-shortcut > small { padding-left: 19px; color: #92949b; font-size: 10px; line-height: 1.45; }
+.trust-evidence-card { display: grid; gap: 7px; margin: 9px 0; padding: 9px 10px; border: 1px solid #e7e6e2; border-radius: 8px; background: #fbfbfa; color: #4c4d52; }
+.trust-evidence-heading { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.trust-evidence-icon { display: grid; flex: 0 0 auto; width: 23px; height: 23px; place-items: center; border-radius: 50%; color: #706b5d; background: #f0eee8; }
+.trust-evidence-card--provisional .trust-evidence-icon { color: #8b6f32; background: #f6f0df; }
+.trust-evidence-copy { display: grid; flex: 1; min-width: 0; gap: 2px; }
+.trust-evidence-copy strong { color: #414248; font-size: 11px; font-weight: 650; line-height: 1.35; }
+.trust-evidence-copy small { color: #7d7e84; font-size: 10px; line-height: 1.45; }
+.trust-evidence-status { flex: 0 0 auto; padding: 3px 6px; border: 1px solid #e4e2db; border-radius: 5px; color: #68675f; background: #f5f4f0; font-size: 9px; line-height: 1.3; }
+.trust-evidence-card--confirmed .trust-evidence-status { border-color: #d7e3d8; color: #536c59; background: #f3f8f3; }
+.trust-evidence-card--demo .trust-evidence-status { border-color: #e5dceb; color: #705b7f; background: #f8f3fb; }
+.trust-evidence-details { border-top: 1px solid #eeede9; padding-top: 6px; }
+.trust-evidence-details summary { color: #73747a; font-size: 10px; cursor: pointer; list-style-position: inside; }
+.trust-evidence-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding-top: 7px; }
+.trust-evidence-lists > div { min-width: 0; }
+.trust-evidence-lists strong { color: #66676d; font-size: 10px; font-weight: 600; }
+.trust-evidence-lists ul { display: grid; gap: 3px; margin: 4px 0 0; padding-left: 14px; color: #83848a; font-size: 10px; line-height: 1.5; }
+@media (max-width: 520px) { .trust-evidence-lists { grid-template-columns: minmax(0, 1fr); } }
+
 .community-draft-panel { height: 100%; min-height: 0; display: flex; flex-direction: column; overflow: hidden; color: #292a2f; background: #fff; }
 .community-draft-header { position: relative; z-index: 5; flex: 0 0 auto; min-height: 61px; display: flex; align-items: center; gap: 7px; padding: 0 12px; border-bottom: 1px solid #e8e7e4; background: #fff; }
 .community-draft-title { display: flex; align-items: center; min-width: 0; gap: 7px; }

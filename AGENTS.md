@@ -6688,7 +6688,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出此前配色落地与选定参考图仍有差异：背景过平、偏暗，缺少细腻纹理与漂浮的彩色碎片。用户本轮上传的页面图成为最新视觉基准，覆盖此前对已发布 Banner 的“完成”判断。
 - 使用 ImageGen 生成纯背景资产 `ascend-studio/src/assets/learning-discovery/discovery-banner-bg-textured.png`：浅蓝白底、层叠柔光纹理、流动光带，以及青 / 紫 / 粉 / 薄荷色半透明碎片；没有文字或 UI。CSS 移除大面积径向色斑，接入新底图并保留向下渐隐。五阶段路径、内容插画、布局和黑色主 CTA 不变。
 - 本地 1280×720 预览（8133）已观察：Banner 更明亮，波纹纹理与彩色碎片可见；`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。未运行自动化测试。
-- 同步保留同期主线的学习画布展开卡片与组合任务首页改动；未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。源码、构建产物、记录在检查后推送 `origin/main`；Pages 发布状态待回填。
+- 同步保留同期主线的学习画布展开、组合首页默认空状态、对话区域布局切换等更新；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。发布提交 `78bc44a2` 已推送至 `origin/main`，GitHub Pages workflow `40319030276` 成功；线上 `/AscendCANN/ascstudio/` HTML、JS、CSS 与纹理底图均 HTTP 200，JS 完整下载 1,013,939 bytes。
 
 ### 2026-10-26 · 训练调优字段组合首页（第三个 Tab）
 
@@ -6699,12 +6699,6 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 提示。
 - 页面新增首页方案 Tab，不改变 API / Protocol、Host / Harness 或 Application / Task 边界。源码提交 `86b9a588`，发布资源提交 `dccebbe0`，并入并行更新后的提交 `f425e635` 已推送至 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200。
 
-
-### 2026-10-26 · 学习发现 Banner 纹理与彩色碎片校正
-
-- 用户指出上一版 Banner 背景比参考图更平、纹理与彩色碎片不足；本次上传截图是视觉依据（H）。
-- 以浅蓝白底图替换 Banner 纹理：加入柔和层叠波纹、光带和青 / 紫 / 粉 / 薄荷半透明碎片；继续保留向下渐隐。学习路径内容、布局和主按钮不变。
-- 本地桌面预览已核对，具体构建、语法、差异检查与推送状态将在发布后补记。未运行测试套件；未改页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 
 ### 2026-10-26 · 组合首页默认空白，由用户建立关系
 
@@ -6730,3 +6724,24 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 顶部布局切换改为 `IconLayoutSidebar` 与 `IconLayoutBottombar`，选中、悬停和禁用状态逻辑不变。知识图、数据图及其他内容图形不作替换。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/icon-system.js`、生成资源引用检查、`git diff --check` 通过；本地 5178 页面可访问性树确认布局控件与页面结构正常。未运行测试套件；Vite 保留主 JS chunk 大于 500 kB 提示。本轮不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 发布：源码与 `/ascstudio/` 构建产物随本轮提交推送至 `origin/main`；Pages 部署结果随后核对。
+
+### 2026-10-26 · 学习画布编辑态新增内容入口
+
+- ResNet50 / 官方学习画布进入「编辑画布位置」后，工具栏新增「新增节点：便签」与「自由绘图」；收起便签时，同组提供恢复入口。常规浏览态不显示这些编辑操作。
+- 便签按任务画布状态保存，可编辑、拖动和收起；新便签放在当前内容右侧，避免盖住已有节点。自由绘图笔迹随画布保存；小地图和「适应全部可见内容」把便签与笔迹纳入导航范围。学习层级与业务顺序不变。
+- 修改学习画布工具栏、ResNet50 / 学习路径画布，以及共享便签和绘图组件。依据：用户附图及此前确认的“进入编辑后才出现新增内容操作”（H）；本地预览回放（M）。
+- `npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行测试套件。最终 5193 构建预览在 1280×720 下显示完整工具组，点击“新增节点：便签”后实际创建可编辑便签。用户当前打开的本地 5190 是旧预览，所以看不到该入口。功能先随 `b5edf192` 推送，后续与 AddCustom / 画布图标更新合入 `91ecf0b9` / `00266210`；最新 Pages workflow `40320699274` 成功。公开 `/AscendCANN/ascstudio/` HTML、JS、CSS 均 HTTP 200；当前 JS `index-lJILiayO.js`（1,027,201 bytes）包含“新增节点：便签”“自由绘图”。
+
+### 2026-10-26 · AddCustom 可信度、社区回流与讲解空白修复
+
+- 在 AddCustom 对话的初始判断旁增加可信度依据卡：当前标为“线索级”，列出支持线索及缺少的实际循环、运行环境、逐元素误差与目标环境复测；不编造置信度百分比。真实逐元素数据通过且开发者确认复测后，完成回复也显示支撑项和未附日志 / 版本的缺口。
+- 为 AddCustom 初始诊断增加“演示任务完成后的可信度与社区反馈”快捷入口。点击后仅生成清晰标注为演示的完成回复与证据卡；再点击输入框上方“生成草稿”，社区经验草稿进入右侧内容区审阅。演示草稿明确提醒不要把预置修复 / 复测状态当作真实结果；真实任务仍需走非演示数据与用户确认。
+- 修复用户截图中的“观看讲解”上方大块空白：`ContentToolbar` 在无 `ContentSurface` 上下文时原样返回工具栏子项，导致 `.tw-tool-context` 的 120px flex-basis 在纵向 `.ex-panel` 中变为高度；改为沿用单行工具栏容器。截图中的按钮现与“范围图解”同排显示。
+- 修改 `ascend-studio/src/App.jsx`、`ContentToolbar.jsx`、`community-draft-data.js`、`community-draft.css` 与 `ascstudio/` 静态产物。证据：用户截图定位空白（H）；本地 CUA 走通快捷触发、可信度卡、草稿右栏审阅，并观察工具栏布局（M）。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；没有真实 AI / NPU 调用。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未新增或运行自动化测试。功能提交 `005d911b`，先后整合并保留并行主线更新；源码与 Pages 已推送到 `origin/main`，整合提交 `91ecf0b9`（从 `b5edf192` 快进）。
+
+### 2026-10-26 · 画布适应视图图标改为向内
+
+- 将 Ascend Studio 任务画布“适应全部可见内容”按钮从 Tabler `IconArrowsMaximize` 换为 `IconArrowsMinimize`。用户截图确认原向外图标与适配语义不符；按钮行为、标签与提示文字保持不变。仅改变图标表达，不影响学习流程或 API / Host / Application 边界。
+- `ascend-studio/src/TaskCanvas.jsx` 在共享工作区已有另一项未提交修改；本次在隔离 worktree 修改，并基于并行任务最新主分支重新构建，未覆盖共享工作区或并行页面改动。
+- 验证：`npm run build:pages` 成功；`git diff --check` 通过。未运行额外测试。

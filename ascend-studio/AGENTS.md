@@ -1630,7 +1630,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户指出前版与选定参考图不符：背景过平、缺少纹理与彩色碎片。最新上传截图取代旧版实现截图，作为 Banner 的视觉依据。
 - 新 ImageGen 纯底图位于 `src/assets/learning-discovery/discovery-banner-bg-textured.png`，含浅蓝白基底、柔和层叠波纹与青 / 紫 / 粉 / 薄荷半透明碎片；不含文字和 UI。学习发现页移除过大的径向色斑，沿用底部渐隐；不改五阶段内容、路径插画、布局或主按钮。
-- 本地 1280×720 预览已核对，纹理和碎片可见；Pages 构建、生成 JS 语法和 diff 检查通过。未运行测试套件。同期学习画布 / 组合任务更新已保留并合入；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。推送与 Pages 状态待回填。
+- 本地 1280×720 预览已核对，纹理和碎片可见；最终合并构建 `npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 均通过。未运行测试套件。同期学习画布、组合首页、对话布局更新已保留并合入；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。发布提交 `78bc44a2` 已推送到 `origin/main`，Pages workflow `40319030276` 成功；公开 HTML / JS / CSS / 纹理底图均 HTTP 200。
 
 ### 2026-10-26 · 首页「组合」关系网原型
 
@@ -1667,3 +1667,19 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 全页面统一采用现有 `@tabler/icons-react`；新增 `src/icon-system.js` 与 `src/icon-system.css` 维护 12 / 14 / 16 / 18 / 20 / 24px 的尺寸阶梯、1.8 描边与分层按钮热区（28 / 34 / 42px）。图标颜色沿用上下文类别色与状态色。
 - 移除顶部对话布局的手写 CSS 图形，改用 `IconLayoutSidebar` / `IconLayoutBottombar`；知识、对照等重复语义图标统一为 `IconBook` / `IconLayoutColumns`。内容示意图和装饰图保持自己的视觉尺寸。
 - `npm run build:pages` 与 `git diff --check` 通过；本地预览可访问性树结构正常。未运行测试套件。
+
+### 2026-10-26 · 学习画布编辑态新增内容
+
+- ResNet50 / 官方学习画布的新增内容操作仅在「编辑画布位置」时出现：新增便签、自由绘图，以及便签收起后的恢复入口。便签和笔迹按任务画布保存；便签可改写、拖动、收起，新建位置在已有内容右侧；小地图与适应全部包含这些内容。学习节点和顺序不变。
+- 合并到最新主线后重新构建；本地 5193 预览 1280×720 可见工具入口，点击后新增便签并显示可编辑区域。用户仍打开的本地 5190 是旧预览，不包含该功能。功能先随 `b5edf192` 推送，后续与 AddCustom / 画布图标更新合入 `91ecf0b9` / `00266210`；最新 Pages workflow `40320699274` 成功。公开 HTML、JS、CSS 均 HTTP 200；当前 JS `index-lJILiayO.js`（1,027,201 bytes）含“新增节点：便签”“自由绘图”。
+
+### 2026-10-26 · AddCustom 可信度与社区经验回流
+
+- AddCustom 初始对话显示“线索级”可信度依据，区分已知输入对照 / 错误位置与待补实际循环、运行条件、逐元素误差和目标环境复测；真实复测完成回复列出用户确认、容差数据及未附环境日志的边界，不显示无依据的置信百分比。
+- 快捷触发方式：在 AddCustom 初始诊断中点击“演示任务完成后的可信度与社区反馈”，一键插入标注演示的完成态；点击对话输入框上方“生成草稿”后，右侧打开社区经验草稿审阅。预置的修复方法与复测状态仅用于演示，提交内容可编辑，不能声称是真实代码 / NPU 结果。
+- `ContentToolbar` 无共享内容区上下文时改用同一行工具栏容器，避免标题 flex-basis 在纵向内容栈中形成约 120px 空白，“观看讲解”与范围图解标题同排。
+- 依据：用户附图（H）；本地 CUA 验证完整快捷触发、右侧草稿和讲解工具栏排布（M）。修改 `src/App.jsx`、`src/ContentToolbar.jsx`、`src/community-draft-data.js`、`src/community-draft.css` 及 `/ascstudio/` 产物；不改变 API / Host / Application 边界。构建、JS 语法与差异检查通过；源码 / Pages 已合并并推送至 `origin/main`，整合提交 `91ecf0b9`。
+
+### 2026-10-26 · 适应视图图标语义
+
+- “适应全部可见内容”使用 Tabler `IconArrowsMinimize`（四角朝内），表达缩放视图以容纳全部内容；不改操作逻辑或提示文案。实现和发布验证记录见根目录 `AGENTS.md`。

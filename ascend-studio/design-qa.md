@@ -1368,8 +1368,8 @@ final result: passed
 - **纠正原因：** 用户指出前版虽采用冷调多色，但 Banner 本身过平，未呈现参考图里的浅色纹理、流动光带与漂浮碎片。用户本轮上传的 1672×941 页面图为最新视觉基准。
 - **实现：** ImageGen 单独生成 `src/assets/learning-discovery/discovery-banner-bg-textured.png`（2048×768）：浅蓝白底、柔和层叠波纹、青 / 紫 / 粉 / 薄荷色半透明碎片；不包含文字、猫图或 UI。`learning-discovery.css` 移除大面积径向色斑，改用新底图和向下渐隐。ResNet50 路径插画、五阶段颜色和内容布局保持。
 - **视觉核对：** 本地预览 `http://127.0.0.1:8133/`，CUA 1280×720 截图显示 Banner 的亮度、柔纹与多色碎片接近用户参考；标题区保留清晰可读留白，底部自然过渡到灰色内容区。
-- **构建 / 检查：** 合入同步主线后的 `npm run build:pages` 成功（6373 modules，2.88s）；`node --check ascstudio/assets/index-C0leW93l.js`、`git diff --check` 通过。未运行测试套件。
-- **边界 / 发布：** 保留并合入同期的学习画布展开与组合任务首页更新；不改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。Push 与 Pages workflow 待完成后回填。
+- **构建 / 检查：** 同步最新主线后的 `npm run build:pages` 成功（6373 modules）；最终 JS `node --check ascstudio/assets/index-BE9ZjgIU.js` 与 `git diff --cached --check` 通过。Vite 保留既有主 JS chunk 大于 500 kB 提醒；未运行测试套件。
+- **边界 / 发布：** 保留并合入同期的学习画布展开、组合首页默认空状态和对话区域布局切换；不改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `78bc44a2` 已推送至 `origin/main`，Pages workflow `40319030276` 成功。线上 `/AscendCANN/ascstudio/` HTML、JS、CSS 与纹理底图均 HTTP 200；JS 1,013,939 bytes。
 
 ## 2026-10-26 · 训练调优字段组合首页
 
@@ -1386,3 +1386,10 @@ final result: passed
 - **回放证据：** 本地 `http://127.0.0.1:5206/?home=combine` 初始状态中 28 个 checkbox 均未选，关系 SVG 无线，草稿为空且发送按钮禁用。随后实际从“数据加载”拖到“CPU 预处理”，截图确认两者之间仅出现一条线；可访问性树确认两字段被选中、草稿生成“我想在昇腾上提升训练效率。请重点分析数据加载、CPU 预处理。”并启用发送。证据来自本地 CUA（M），本轮截图已展示。
 - **检查与边界：** 本轮前序构建、Pages 构建、构建 JS 语法检查及 diff 检查均通过；保留既有 Vite >500 kB 提示，未运行测试套件。没有改页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界；无真实训练诊断。
 - **发布：** 功能提交 `6023baf6` 与整合并行更新的提交 `1e933adc` 已推送 `origin/main`；GitHub Pages workflow `40318238407` build / deploy 成功。公开 `/ascstudio/?home=combine` 的 HTML / CSS 与本地构建哈希一致，JS HTTP 200（1,013,939 bytes）。
+
+
+## 2026-10-26 · 编辑态新增画布内容入口复核
+
+- 用户当前打开的 `http://127.0.0.1:5190/` 仍是旧预览：工具栏里只有“完成画布编辑”，没有新增操作。合并后的 Pages 构建在 `http://127.0.0.1:5193/` 可见完整工具组；编辑态的“完成画布编辑”旁有“＋”新增便签和自由绘图按钮，适应全部、布局、缩放等既有工具也保留。
+- 1280×720 CUA 截图确认工具组处于画布右上角且没有被裁切；实际点击“新增节点：便签”后，画布新增“笔记 2”并出现可编辑文本框。结果来自本地预览（M），没有修改任务路径顺序。
+- `npm run build:pages`、生成 JS 的 `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留既有 JS chunk 大于 500 kB 提醒。功能先随 `b5edf192` 推送，后续与 AddCustom / 画布图标更新合入 `91ecf0b9` / `00266210`；最新 Pages workflow `40320699274` 成功。公开 `/AscendCANN/ascstudio/` HTML、JS、CSS 均 HTTP 200；当前 JS `index-lJILiayO.js`（1,027,201 bytes）包含“新增节点：便签”和“自由绘图”。

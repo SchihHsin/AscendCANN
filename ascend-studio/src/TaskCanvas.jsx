@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   IconAlertTriangle,
   IconArrowLeft,
-  IconArrowsMaximize,
+  IconArrowsMinimize,
   IconArrowsDiagonal,
   IconChevronDown,
   IconChevronRight,
@@ -315,7 +315,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     <CanvasZoomGroup value={zoom} min={MIN_ZOOM} max={MAX_ZOOM} onZoom={changeZoom} onReset={() => changeZoom(1)} />
     <CanvasToolbarGroup label="画布定位">
       <CanvasToolButton type="button" active={handMode} aria-label={handMode ? "退出抓手模式" : "切换抓手平移模式"} title={handMode ? "退出抓手模式" : "抓手平移"} onClick={() => { setHandMode(current => !current); setPositionEditing(false); setNodePickerOpen(false); setDrawingMode(false); setDrawingDraft([]); }}><IconHandMove size={ICON_SIZE.control} /></CanvasToolButton>
-      <CanvasToolButton type="button" aria-label="适应全部可见内容" title="适应全部可见内容" onClick={() => actions.fitCanvas(stageSize.width, stageSize.height)}><IconArrowsMaximize size={ICON_SIZE.control} /></CanvasToolButton>
+      <CanvasToolButton type="button" aria-label="适应全部可见内容" title="适应全部可见内容" onClick={() => actions.fitCanvas(stageSize.width, stageSize.height)}><IconArrowsMinimize size={ICON_SIZE.control} /></CanvasToolButton>
     </CanvasToolbarGroup>
     <CanvasToolbarGroup label="画布编辑">
       <CanvasToolButton type="button" active={positionEditing} aria-label={positionEditing ? "完成画布编辑" : "编辑画布"} title={positionEditing ? "完成画布编辑" : "编辑画布"} onClick={togglePositionEditing}>{positionEditing ? <IconCheck size={ICON_SIZE.control} /> : <IconPencil size={ICON_SIZE.control} />}</CanvasToolButton>
