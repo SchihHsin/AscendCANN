@@ -1540,3 +1540,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 本地静态 Pages 1280×720 预览中，四节点与推荐路径结构可见；加入日程后辅助功能树显示“已加入”。
 - `npm run build:pages`、`node --check ascstudio/assets/index-C4UblvvI.js`、`git diff --check` 通过。功能提交 `0cba4934` 与保留并行提交的整合提交 `f4a74fc0` 已推送 `origin/main`；Pages workflow `40255980093` build / deploy 成功。
 - 线上 HTML 已引用 `index-C4UblvvI.js` 和 `index-1j9tFWac.css`；CSS HTTP 200，JS 区间请求 HTTP 206（1,024 bytes）。线上 CUA 页面读取超时，不记作线上截图 / 交互核验。
+
+### 2026-10-26 · 多渠道预览卡片正文滚动
+
+- 用户确认文字渠道正文区独立滚动的方案。昇腾社区、GitCode、CSDN 保持渠道行与文章标题 / 摘要固定，只让卡片中部较长内容滚动；底部奖励和「查看详情」固定。滚动区可键盘聚焦，并限制滚动传递。抖音继续完整展示四张图文缩略页，不增加卡片内滚动。
+- 修改 `ascend-studio/src/CommunityDraftPanel.jsx` 与 `community-draft.css`。原型中的任务状态和发布渠道数据不变；没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。发布仍为本地演示。
+- 依据：用户提供的多渠道卡片截图与本轮确认（H）；本地桌面 CUA 回放（M）。1280×720 下，社区 / GitCode / CSDN 正文可滚动，平台标题与奖励操作保持原位；抖音四页完整静止展示。`npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。
+- 提交与 GitHub Pages 部署结果待本条发布提交完成后补记。

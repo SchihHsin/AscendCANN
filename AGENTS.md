@@ -6561,3 +6561,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户本轮对 Skill 作用范围的明确纠正（H）。Skill 位于个人配置目录，本仓只记录交接；无产品代码、页面序列或 API / Protocol、Host / Harness、Application / Task 边界变化。
 - 验证：使用 Ruby 标准 YAML 解析器成功解析 Skill frontmatter 与 `agents/openai.yaml`，并检查 Skill 不含导航 / 侧栏专属规则。Skill Creator 的 `quick_validate.py` 因当前 Python 环境缺少 PyYAML 未能运行；未做产品构建或 Pages 发布（没有产品代码改动）。
 - 本条交接记录单独提交并推送至 `origin/main`。
+
+### 2026-10-26 · 多渠道预览卡片正文滚动
+
+- 用户确认文字渠道正文区独立滚动的方案。昇腾社区、GitCode、CSDN 保持渠道行与文章标题 / 摘要固定，只让卡片中部较长内容滚动；底部奖励和「查看详情」固定。滚动区可键盘聚焦，并限制滚动传递。抖音继续完整展示四张图文缩略页，不增加卡片内滚动。
+- 修改 `ascend-studio/src/CommunityDraftPanel.jsx` 与 `community-draft.css`。原型中的任务状态和发布渠道数据不变；没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。发布仍为本地演示。
+- 依据：用户提供的多渠道卡片截图与本轮确认（H）；本地桌面 CUA 回放（M）。1280×720 下，社区 / GitCode / CSDN 正文可滚动，平台标题与奖励操作保持原位；抖音四页完整静止展示。`npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。
+- 提交与 GitHub Pages 部署结果待本条发布提交完成后补记。
