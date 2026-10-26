@@ -230,11 +230,11 @@
 .channel-preview-csdn li { display: grid; grid-template-columns: 75px minmax(0, 1fr); gap: 5px; padding: 4px 0; border-top: 1px solid #f0efed; counter-increment: article-step; }
 .channel-preview-csdn li b { color: #4c4b52; font-size: 8px; font-weight: 650; }
 .channel-preview-csdn li span { display: -webkit-box; overflow: hidden; color: #85858e; font-size: 8px; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-.channel-preview-tiktok { display: flex; height: 100%; flex-direction: column; overflow: hidden; padding: 0; border-radius: 0; color: #55565d; background: transparent; }
+.channel-preview-tiktok { display: flex; width: 100%; min-width: 0; height: 100%; flex-direction: column; align-items: stretch; overflow: hidden; padding: 0; border-radius: 0; color: #55565d; background: transparent; }
 .channel-preview-tiktok-heading { display: flex; flex: 0 0 auto; justify-content: space-between; gap: 5px; margin: 0 0 6px; color: #797a82; font-size: 7px; }
 .channel-preview-tiktok-heading b { color: #797a82; font-size: 7px; font-weight: 550; letter-spacing: 0; }
-.channel-preview-tiktok-panels { display: grid; flex: 1; min-height: 0; align-content: center; align-items: start; grid-auto-rows: max-content; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
-.channel-preview-tiktok-tile { container-type: inline-size; position: relative; display: flex; width: 100%; aspect-ratio: 69 / 100; min-width: 0; min-height: 0; flex-direction: column; overflow: hidden; padding: 7px 6px; border: 1px solid rgba(255, 255, 255, .12); border-radius: 5px; color: #f6f8f8; background: #15191c; box-sizing: border-box; }
+.channel-preview-tiktok-panels { display: grid; width: 100%; min-width: 0; flex: 1 1 0; align-self: stretch; min-height: 0; align-content: start; align-items: start; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+.channel-preview-tiktok-tile { container-type: inline-size; position: relative; display: flex; width: 100%; max-width: 100%; aspect-ratio: 69 / 100; min-width: 0; min-height: 0; flex-direction: column; overflow: hidden; padding: 8px 7px; border: 1px solid rgba(255, 255, 255, .12); border-radius: 7px; color: #f6f8f8; background: #15191c; box-sizing: border-box; }
 .channel-preview-tiktok-tile-top { display: grid; flex: 0 0 auto; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 4px; min-width: 0; color: #bac4c7; font-size: 6px; line-height: 1.2; }
 .channel-preview-tiktok-tile-top small { color: #c6c9cd; font-size: 7px; font-weight: 700; }
 .channel-preview-tiktok-tile-top span { min-width: 0; overflow: hidden; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
