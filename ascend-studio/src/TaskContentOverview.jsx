@@ -10,9 +10,9 @@ import {
   IconGitCompare,
   IconMinus,
   IconPlus,
-  IconArrowsMaximize,
 } from "@tabler/icons-react";
 import { buildContentMap, summarizeContentMapItem } from "./task-content-map";
+import { CanvasFitIcon } from "./shared/canvas/index.jsx";
 import "./task-content-overview.css";
 import "./task-content-map.css";
 
@@ -319,7 +319,7 @@ export function TaskContentOverview({ taskId, items = [], categories = [], group
   };
   return <section className="tco-root" ref={rootRef} data-task-id={taskId||undefined} data-map-level={LEVEL_NAMES[level]} hidden={!visible} aria-label="任务内容总览">
     <header className="tco-toolbar"><div className="tco-overview-count"><strong>{safeItems.length}</strong><span>项内容</span>{unreadItems.length>0&&<button type="button" className="tco-update-locator" onClick={locateUpdate}>{unreadItems.length} 项更新</button>}</div><div className="tco-toolbar-actions">
-      <div className="tco-zoom-tools" role="group" aria-label="总览缩放"><button type="button" aria-label="缩小总览，显示更简洁的信息" title="缩小：内容 → 摘要 → 主题" disabled={level===0} onClick={()=>zoomTo(level-1)}><IconMinus size={ICON_SIZE.inline}/></button><span className="tco-zoom-value" title={`缩放 ${LEVEL_PERCENT[level]}%，${['主题概览','内容摘要','内容详情'][level]}`}>{LEVEL_PERCENT[level]}%</span><button type="button" aria-label="放大总览，显示更多内容细节" title="放大" disabled={level===2} onClick={()=>zoomTo(level+1)}><IconPlus size={ICON_SIZE.inline}/></button><button type="button" className="tco-zoom-fit" aria-label={hasFilter?'适应筛选结果':'适应全部内容'} title={hasFilter?'适应筛选结果':'适应全部内容'} onClick={fitAll}><IconArrowsMaximize size={ICON_SIZE.inline}/></button></div>
+      <div className="tco-zoom-tools" role="group" aria-label="总览缩放"><button type="button" aria-label="缩小总览，显示更简洁的信息" title="缩小：内容 → 摘要 → 主题" disabled={level===0} onClick={()=>zoomTo(level-1)}><IconMinus size={ICON_SIZE.inline}/></button><span className="tco-zoom-value" title={`缩放 ${LEVEL_PERCENT[level]}%，${['主题概览','内容摘要','内容详情'][level]}`}>{LEVEL_PERCENT[level]}%</span><button type="button" aria-label="放大总览，显示更多内容细节" title="放大" disabled={level===2} onClick={()=>zoomTo(level+1)}><IconPlus size={ICON_SIZE.inline}/></button><button type="button" className="tco-zoom-fit" aria-label={hasFilter?'适应筛选结果':'适应全部内容'} title={hasFilter?'适应筛选结果':'适应全部内容'} onClick={fitAll}><CanvasFitIcon size={ICON_SIZE.inline}/></button></div>
       <button className={`tco-search-toggle${searchOpen?' is-open':''}`} type="button" aria-expanded={searchOpen} aria-label="查找内容" onClick={()=>setSearchOpen(open=>!open)}><IconSearch size={ICON_SIZE.inline}/><span className="tco-search-label">查找</span></button>
     </div></header>
     {searchOpen&&<div className="tco-search-panel"><label className="tco-search"><IconSearch size={ICON_SIZE.inline}/><span className="tco-sr-only">搜索内容及相关记录</span><input value={query} onChange={event=>{pendingAnchor.current=null;stableAnchor.current=null;patch({query:event.target.value,scrollTop:0});}} placeholder="搜索标题、条件或历史记录"/></label>{safeCategories.length>0&&<div className="tco-categories" aria-label="按用途筛选"><button type="button" className={category==='all'?'is-selected':''} aria-pressed={category==='all'} onClick={()=>patch({category:'all'})}>全部</button>{safeCategories.map(entry=><button type="button" key={entry.id} className={category===entry.id?'is-selected':''} aria-pressed={category===entry.id} onClick={()=>patch({category:entry.id})}>{entry.label}</button>)}</div>}{hasFilter&&<button className="tco-clear-filters" type="button" onClick={()=>patch({query:'',category:'all'})}>清除搜索与筛选</button>}</div>}

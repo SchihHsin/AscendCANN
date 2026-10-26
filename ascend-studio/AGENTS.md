@@ -1671,7 +1671,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-26 · 组合首页悬浮停留确认连线
 
 - 覆盖“从字段拖动到另一个字段连线”的操作方式，默认空白关系网不变。鼠标停留节点约 280ms 后形成连接起点，鼠标移动时显示细虚线预览；悬浮目标约 680ms、进度环走完后固定关系并生成 Prompt。
-- 移开目标撤销其停留计时；空白点击、离开画布或 Esc 取消预览。固定一条后清除起点，不能因指针继续停留而接着连下一条。点击加入 / 移除字段与 Alt+Enter 键盘连线仍保留，视觉不增加说明小字。
+- 移开目标撤销其停留计时；空白点击、离开画布或 Esc 取消预览。确认 A→B 后，B 成为下一条连线起点，支持连续构成 A→B→C。定时器使用世代校验，并在确认时核对鼠标仍位于目标，避免旧回调误连。点击加入 / 移除字段与 Alt+Enter 键盘连线仍保留，视觉不增加说明小字。
 - 本地回放确认起点晕、指针方向虚线、目标进度环、固定连线与 Prompt 更新；离开目标不误连，Esc 可取消。构建、部署和发布结果详见根目录 `AGENTS.md` 与 `design-qa.md`。
 
 ### 2026-10-26 · 学习画布编辑态新增内容
@@ -1699,8 +1699,31 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户提供的新猫图替换学习发现横幅推理插画中的输入照片位和结果卡照片位；保留布局与其余推理图形不变。图片仍为 1672×941 透明 PNG。
 - `npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过。源码和 Pages 资源提交 `6c99041e` 已推送至 `origin/main`；线上 HTML、JS、CSS 和新 PNG 均 HTTP 200。无待办。
 
+### 2026-10-27 · 主推路径阶段颜色收敛
+
+- 五阶段保留轻柔多色识别，但阶段卡和步骤行统一为白灰中性面；色彩仅留在柔和低饱和的编号徽标与小节点，避免整卡渐变与重复色块造成花感。
+- 桌面 1280×720 预览可见五阶段与步骤仍清晰；`npm run build:pages`、生成 JS `node --check` 和 `git diff --check` 通过，未运行测试套件。页面序列 / API / Host / Application 边界不变。
+- 提交 `425653f7` 已推送到 `origin/main`；Pages 线上资源状态待回读。
+
+### 2026-10-27 · 恢复选定方案的柔和彩色阶段
+
+- 用户指出纯白灰卡片偏离此前选择的 ImageGen 方案 1。该方案原图见 `/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-709684d0-484b-474c-8fa7-93b82678a2da.png`；五段彩色卡片、浅彩色动作行与不同颜色节点是核心识别，不应整体去色。
+- 在保留彩色结构基础上降低彩度和对比度：浅蓝、青、蓝紫、玫粉、绿阶段卡；节点和动作采用更柔和颜色。桌面 1280×720 预览经 CUA 确认。`npm run build:pages`、JS 语法与 diff 检查通过，未运行测试套件。
+- 源码 / Pages 提交 `942dcab4` 已推送至 `origin/main`，待核实部署状态。
+
 ### 2026-10-27 · Ascend Studio Tabler 图标系统
 
 - 按用户确认统一采用已有 `@tabler/icons-react`，共享图标尺寸、描边与热区规则；顶部对话布局按钮改为 `IconLayoutSidebar` / `IconLayoutBottombar`，统一图书与并排布局图标语义。内容示意图保留专属造型。
 - 本地 5178 预览截图与可访问性树确认页面和两个布局选项正常；构建、图标模块语法、差异及静态入口资源检查通过。未运行测试套件，Vite 主 chunk 约 1.03 MB。没有改页面序列或 API / Host / Application 边界。
 - 源码与 `/ascstudio/` 静态产物已推送到 `origin/main`，并合入并行工作；Pages workflow `40360271679` build / deploy 成功；线上 `/ascstudio/` HTML、`index-C-7h-DrJ.js` 与 `index--ttgCUFj.css` 均返回 HTTP 200，详细记录见根目录 `AGENTS.md`。
+
+### 2026-10-27 · ResNet50 学习画布适应视图图标同步
+
+- 用户指出目标页面是 GitHub Pages。此前“适应全部可见内容”只改了通用 `TaskCanvas`，ResNet50 实际使用独立的 `LearningCanvasToolbar`，因此线上仍显示向外箭头。现将学习工具栏也改为 Tabler `IconArrowsMinimize`，与通用任务画布一致；按钮行为与提示不变。
+- 在隔离 worktree 同步 `origin/main` 的 `425653f7` / `6a4bf8e5`，保留学习发现页面并行改动后重新构建。修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 和 `ascstudio/` 构建产物；页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；已生成入口 `index-C3DSYrl0.js` 与 CSS `index-BVnw8_Wn.css`。提交 `f6070dff` 已推送；Pages workflow `40364545318` build / deploy 成功，线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200。
+
+### 2026-10-27 · 统一画布“适应内容”图标
+
+- 通用任务画布、学习画布和任务内容总览中的“适应全部内容”入口统一调用共享 `CanvasFitIcon`（Tabler `IconArrowsMinimize`，四角朝内），不再分别维护图标。尺寸、按钮文案与适配行为保持原样。
+- 合入并保留并行主线 `6271639b` / `f9870df1` 后重新构建 Pages；`npm run build:pages`、JS `node --check`、`git diff --check` 与入口资源检查通过。发布状态待回读。

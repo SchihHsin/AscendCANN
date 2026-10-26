@@ -72,6 +72,8 @@ export function CombinationTaskHome({ onCreateTask }) {
   const nodeRefs = useRef(new Map());
   const sourceHoverTimerRef = useRef(null);
   const targetDwellTimerRef = useRef(null);
+  const sourceTimerGenerationRef = useRef(0);
+  const targetTimerGenerationRef = useRef(0);
   const activeSourceRef = useRef(null);
   const sourceCandidateRef = useRef(null);
   const targetCandidateRef = useRef(null);
@@ -134,11 +136,13 @@ export function CombinationTaskHome({ onCreateTask }) {
   };
 
   const clearSourceHoverTimer = () => {
+    sourceTimerGenerationRef.current += 1;
     window.clearTimeout(sourceHoverTimerRef.current);
     sourceHoverTimerRef.current = null;
   };
 
   const clearTargetDwellTimer = () => {
+    targetTimerGenerationRef.current += 1;
     window.clearTimeout(targetDwellTimerRef.current);
     targetDwellTimerRef.current = null;
   };
@@ -241,12 +245,24 @@ export function CombinationTaskHome({ onCreateTask }) {
       targetCandidateRef.current = field.id;
       setHoverTargetId(field.id);
       updateHoverPreview(event.clientX, event.clientY, field.id);
+      const generation = ++targetTimerGenerationRef.current;
       targetDwellTimerRef.current = window.setTimeout(() => {
-        if (activeSourceRef.current !== sourceId || targetCandidateRef.current !== field.id) return;
+        const pointer = pointerPositionRef.current;
+        const hoveredField = pointer
+          ? document.elementFromPoint(pointer.clientX, pointer.clientY)?.closest?.("[data-composition-field]")
+          : null;
+        if (
+          targetTimerGenerationRef.current !== generation
+          || activeSourceRef.current !== sourceId
+          || targetCandidateRef.current !== field.id
+          || hoveredField?.dataset.compositionField !== field.id
+        ) return;
+        clearTargetDwellTimer();
         createConnection(sourceId, field.id);
-        activeSourceRef.current = null;
+        activeSourceRef.current = field.id;
         targetCandidateRef.current = null;
-        setHoverSourceId(null);
+        setHoverSourceId(field.id);
+        setHoverSourceCandidateId(null);
         setHoverTargetId(null);
         setHoverPreview(null);
         setPendingKeyboardNode(null);
@@ -256,8 +272,15 @@ export function CombinationTaskHome({ onCreateTask }) {
 
     sourceCandidateRef.current = field.id;
     setHoverSourceCandidateId(field.id);
+    const generation = ++sourceTimerGenerationRef.current;
     sourceHoverTimerRef.current = window.setTimeout(() => {
-      if (sourceCandidateRef.current !== field.id || hoveredFieldRef.current !== field.id || activeSourceRef.current) return;
+      if (
+        sourceTimerGenerationRef.current !== generation
+        || sourceCandidateRef.current !== field.id
+        || hoveredFieldRef.current !== field.id
+        || activeSourceRef.current
+      ) return;
+      clearSourceHoverTimer();
       sourceCandidateRef.current = null;
       activeSourceRef.current = field.id;
       setHoverSourceCandidateId(null);
@@ -360,7 +383,7 @@ export function CombinationTaskHome({ onCreateTask }) {
         type="button"
         data-composition-field={field.id}
         aria-pressed={selectedSet.has(field.id)}
-        aria-label={`${field.title}。${field.hint}。悬浮片刻作为连线起点，移到其他字段并停留确认；点击加入或移除。按 Alt 加 Enter 可用键盘连线。`}
+        aria-label={`${field.title}。${field.hint}。悬浮片刻作为连线起点，移到其他字段并停留确认；确认后从目标继续连线。点击加入或移除。按 Alt 加 Enter 可用键盘连线。`}
         style={{ "--field-x": `${field.x}%`, "--field-y": `${field.y}%`, "--field-color": `var(--composition-${field.tone})` }}
         onPointerEnter={(event) => handleFieldPointerEnter(event, field)}
         onPointerLeave={(event) => handleFieldPointerLeave(event, field)}
