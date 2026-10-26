@@ -6683,6 +6683,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 在 `ascend-studio/src/OfficialLearningPathCanvas.jsx` 为官方 ResNet50 学习画布增加展开/收起全部节点内容态；复用每个节点现有的图解、讲解、来源与对应练习组件，卡片高度由 ResizeObserver 反馈到章节纵向排布，展开时适配完整路径。`LearningCanvasToolbar.jsx` 沿用公共浮动按钮组新增层叠卡片切换按钮；按钮在宽画布显示“全部展开/收起”，窄画布保留图标并依靠完整 tooltip，`official-learning-canvas.css` 仅加展开态卡片与窄屏按钮样式。
 - `npm run build:pages` 与 `npm run build && npm run test:sites` 均通过（4/4）；首次单独运行 Sites 测试因缺少 `dist/client/index.html` 失败，补跑构建后通过。`git diff --check` 通过。静态 index 引用的 JS/CSS 均存在，JS bundle 含展开与收起按钮 accessible label；先后提交 `9fd5e106`、`95dcec1b` 并快进推送到 `origin/main`。公开 `/ascstudio/` 已引用 `index-Ynb_NaDA.js` 与 `index-bL8G7x54.css`，bundle 含“全部展开”及收起 accessible label；index 和两个资源均 HTTP 200。
 
+### 2026-10-26 · 学习发现 Banner 按用户参考图补回纹理与彩色碎片
+
+- 用户指出此前配色落地与选定参考图仍有差异：背景过平、偏暗，缺少细腻纹理与漂浮的彩色碎片。用户本轮上传的页面图成为最新视觉基准，覆盖此前对已发布 Banner 的“完成”判断。
+- 使用 ImageGen 生成纯背景资产 `ascend-studio/src/assets/learning-discovery/discovery-banner-bg-textured.png`：浅蓝白底、层叠柔光纹理、流动光带，以及青 / 紫 / 粉 / 薄荷色半透明碎片；没有文字或 UI。CSS 移除大面积径向色斑，接入新底图并保留向下渐隐。五阶段路径、内容插画、布局和黑色主 CTA 不变。
+- 本地 1280×720 预览（8133）已观察：Banner 更明亮，波纹纹理与彩色碎片可见；`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。未运行自动化测试。
+- 同步保留同期主线的学习画布展开卡片与组合任务首页改动；未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。源码、构建产物、记录在检查后推送 `origin/main`；Pages 发布状态待回填。
 
 ### 2026-10-26 · 训练调优字段组合首页（第三个 Tab）
 
@@ -6693,13 +6699,29 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 提示。
 - 页面新增首页方案 Tab，不改变 API / Protocol、Host / Harness 或 Application / Task 边界。源码提交 `86b9a588`，发布资源提交 `dccebbe0`，并入并行更新后的提交 `f425e635` 已推送至 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200。
 
+
+### 2026-10-26 · 学习发现 Banner 纹理与彩色碎片校正
+
+- 用户指出上一版 Banner 背景比参考图更平、纹理与彩色碎片不足；本次上传截图是视觉依据（H）。
+- 以浅蓝白底图替换 Banner 纹理：加入柔和层叠波纹、光带和青 / 紫 / 粉 / 薄荷半透明碎片；继续保留向下渐隐。学习路径内容、布局和主按钮不变。
+- 本地桌面预览已核对，具体构建、语法、差异检查与推送状态将在发布后补记。未运行测试套件；未改页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+
+### 2026-10-26 · 组合首页默认空白，由用户建立关系
+
+- **纠正前次默认状态：** 用户明确指出满屏字段不应预置任何连线。此前交接记录中的“默认示例关系以多条连线呈现”已被本决策覆盖：组合页首次打开时，28 个字段均未选中、连线为空、Prompt 为空；布局本身让用户从字段中开始探索。
+- **交互：** 用户从一个字段拖到另一个字段才创建关系；拖线后关联字段进入可编辑 Prompt，发送操作随之可用。保留现有点击字段加入 / 移除能力，且它不在初始状态预选字段。
+- **实现：** `ascend-studio/src/CombinationTaskHome.jsx` 将关系与草稿初始值设为空；`ascend-studio/src/home-composition.js` 移除预置关系并让空选集生成空草稿；`ascstudio/` 更新对应静态发布产物。
+- **回放与依据：** 用户本轮明确纠正（H）；本地 5206 组合页初始可访问性树确认 28 个未选字段、草稿为空、发送禁用；本地 CUA 实际拖动“数据加载”到“CPU 预处理”后确认只出现这条连接、两字段进入 Prompt、发送启用（M）。截图已在本轮浏览器回放中展示。
+- **检查：** `npm run build`、`npm run build:pages`、生成 JS `node --check`、`git diff --check` 均通过；Vite 仍提示主 JS chunk 大于 500 kB，未运行测试套件。只更新关系组合 Demo，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- **发布：** 功能提交 `6023baf6` 与保留并行 main 更新的整合提交 `1e933adc` 已推送至 `origin/main`。GitHub Pages workflow `40318238407` build / deploy 成功。公开组合页地址为 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=combine`；线上 HTML 与 CSS 内容哈希匹配本地构建，JS 返回 HTTP 200（1,013,939 bytes）。
+
 ### 2026-10-26 · 对话区域布局切换与指着说联动
 
 - 用户确认切换对象是当前左侧整块对话区域，不是单独移动输入框；提供左侧栏与底部居中浮窗两种呈现。两个互斥图标放在全局 `header.topbar`，保留同一对话历史与草稿，并按会话记忆布局选择。浮窗态展开右侧工作区，避免原左侧列继续占宽。
 - 指着说与对话布局是独立交互。底部浮窗布局进入框选或出现选区输入框时临时隐藏浮窗，锁定布局切换以防选区坐标变化；发送或取消后恢复。左侧栏布局的框选保持原位置与行为。
 - 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`styles.css` 与 Pages 静态产物。该概念改动不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 1280×720 核对左侧、底部浮窗、框选时浮窗隐藏、选区缩略输入出现及取消后恢复。未运行自动化测试；窄屏行为有响应式规则，未做独立小视口截图。依据：用户确认（H）、本地原型观察（M）。
-- 发布提交与 Pages workflow 待本条实现完成后补记。
+- 发布：实现提交 `385eee30` 已推送至 `origin/main`；GitHub Pages workflow `40317786603` build / deploy 成功。线上 `/ascstudio/` HTML 与本轮 JS / CSS 均 HTTP 200，资源中包含布局切换与选区自动收起逻辑。
 
 ### 2026-10-26 · 学习画布编辑态新增内容入口
 
