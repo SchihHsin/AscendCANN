@@ -10,6 +10,8 @@ import "./combination-task-home.css";
 
 const nodeMap = new Map(compositionFields.map((field) => [field.id, field]));
 const pairKey = (from, to) => [from, to].sort().join("::");
+const SOURCE_HOVER_DELAY = 280;
+const TARGET_CONFIRM_DWELL = 680;
 
 function pointAtEdge(rect, dx, dy, canvasRect) {
   const scale = Math.min(
@@ -45,19 +47,37 @@ function previewPoints(node, canvas, clientX, clientY) {
   };
 }
 
+function previewBetweenNodes(source, target, canvas, clientX, clientY) {
+  if (!target) return previewPoints(source, canvas, clientX, clientY);
+  const dx = target.left + target.width / 2 - source.left - source.width / 2;
+  const dy = target.top + target.height / 2 - source.top - source.height / 2;
+  return {
+    start: pointAtEdge(source, dx, dy, canvas),
+    end: pointAtEdge(target, -dx, -dy, canvas),
+  };
+}
+
 export function CombinationTaskHome({ onCreateTask }) {
   const [connections, setConnections] = useState([]);
   const [manuallySelected, setManuallySelected] = useState([]);
   const [geometry, setGeometry] = useState({ width: 0, height: 0, edges: [] });
-  const [dragPreview, setDragPreview] = useState(null);
+  const [hoverSourceId, setHoverSourceId] = useState(null);
+  const [hoverSourceCandidateId, setHoverSourceCandidateId] = useState(null);
+  const [hoverTargetId, setHoverTargetId] = useState(null);
+  const [hoverPreview, setHoverPreview] = useState(null);
   const [pendingKeyboardNode, setPendingKeyboardNode] = useState(null);
   const [draft, setDraft] = useState("");
   const [error, setError] = useState("");
   const canvasRef = useRef(null);
   const nodeRefs = useRef(new Map());
-  const dragRef = useRef(null);
-  const ignoreClickRef = useRef(false);
-  const ignoreClickTimerRef = useRef(null);
+  const sourceHoverTimerRef = useRef(null);
+  const targetDwellTimerRef = useRef(null);
+  const activeSourceRef = useRef(null);
+  const sourceCandidateRef = useRef(null);
+  const targetCandidateRef = useRef(null);
+  const hoveredFieldRef = useRef(null);
+  const pointerPositionRef = useRef(null);
+  const cancelHoverRef = useRef(null);
 
   const selectedIds = connectedCompositionIds(connections, manuallySelected);
   const selectedSet = new Set(selectedIds);
@@ -113,6 +133,58 @@ export function CombinationTaskHome({ onCreateTask }) {
     setConnections((items) => items.filter((item) => pairKey(item.from, item.to) !== key));
   };
 
+  const clearSourceHoverTimer = () => {
+    window.clearTimeout(sourceHoverTimerRef.current);
+    sourceHoverTimerRef.current = null;
+  };
+
+  const clearTargetDwellTimer = () => {
+    window.clearTimeout(targetDwellTimerRef.current);
+    targetDwellTimerRef.current = null;
+  };
+
+  const cancelHoverConnection = () => {
+    clearSourceHoverTimer();
+    clearTargetDwellTimer();
+    activeSourceRef.current = null;
+    sourceCandidateRef.current = null;
+    targetCandidateRef.current = null;
+    setHoverSourceId(null);
+    setHoverSourceCandidateId(null);
+    setHoverTargetId(null);
+    setHoverPreview(null);
+  };
+  cancelHoverRef.current = cancelHoverConnection;
+
+  const updateHoverPreview = (clientX, clientY, targetId = null) => {
+    const sourceId = activeSourceRef.current;
+    const sourceElement = sourceId ? nodeRefs.current.get(sourceId) : null;
+    const canvas = canvasRef.current;
+    if (!sourceElement || !canvas) {
+      setHoverPreview(null);
+      return;
+    }
+    const canvasRect = canvas.getBoundingClientRect();
+    const sourceRect = sourceElement.getBoundingClientRect();
+    const targetElement = targetId && targetId !== sourceId ? nodeRefs.current.get(targetId) : null;
+    const targetRect = targetElement?.getBoundingClientRect();
+    const points = previewBetweenNodes(sourceRect, targetRect, canvasRect, clientX, clientY);
+    setHoverPreview({
+      sourceId,
+      path: connectionPath(points.start, points.end),
+      color: fieldTone(nodeMap.get(sourceId)),
+    });
+  };
+
+  const createConnection = (from, to) => {
+    if (!from || !to || from === to) return;
+    const key = pairKey(from, to);
+    setConnections((items) => items.some((item) => pairKey(item.from, item.to) === key)
+      ? items
+      : [...items, { from, to }]);
+    setError("");
+  };
+
   const toggleConnection = (from, to) => {
     if (!from || !to || from === to) return;
     const key = pairKey(from, to);
@@ -122,56 +194,109 @@ export function CombinationTaskHome({ onCreateTask }) {
     setError("");
   };
 
-  const handlePointerDown = (event, field) => {
-    if (event.button !== 0 || event.isPrimary === false || event.target.closest("textarea, input")) return;
-    const canvasRect = canvasRef.current?.getBoundingClientRect();
-    const nodeRect = event.currentTarget.getBoundingClientRect();
-    dragRef.current = { sourceId: field.id, pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, sourceRect: nodeRect, moved: false };
-    event.currentTarget.setPointerCapture(event.pointerId);
-    if (canvasRect) setDragPreview({ sourceId: field.id, ...previewPoints(nodeRect, canvasRect, event.clientX, event.clientY) });
-  };
-
   const handleCanvasPointerMove = (event) => {
-    const active = dragRef.current;
-    if (!active || active.pointerId !== event.pointerId) return;
-    if (Math.hypot(event.clientX - active.startX, event.clientY - active.startY) > 5) active.moved = true;
-    const canvasRect = canvasRef.current?.getBoundingClientRect();
-    if (canvasRect) setDragPreview({ sourceId: active.sourceId, ...previewPoints(active.sourceRect, canvasRect, event.clientX, event.clientY) });
+    pointerPositionRef.current = { clientX: event.clientX, clientY: event.clientY };
+    const sourceId = activeSourceRef.current;
+    if (!sourceId) return;
+    const target = event.target.closest?.("[data-composition-field]");
+    const targetId = target?.dataset.compositionField || null;
+    if (targetId === sourceId) {
+      setHoverPreview(null);
+      return;
+    }
+    const duplicate = targetId && connections.some((item) => pairKey(item.from, item.to) === pairKey(sourceId, targetId));
+    if (duplicate) {
+      setHoverPreview(null);
+      return;
+    }
+    updateHoverPreview(event.clientX, event.clientY, targetId);
   };
 
-  const handleCanvasPointerUp = (event) => {
-    const active = dragRef.current;
-    if (!active || active.pointerId !== event.pointerId) return;
-    const target = document.elementFromPoint(event.clientX, event.clientY)?.closest("[data-composition-field]");
-    if (active.moved) {
-      ignoreClickRef.current = true;
-      window.clearTimeout(ignoreClickTimerRef.current);
-      ignoreClickTimerRef.current = window.setTimeout(() => { ignoreClickRef.current = false; }, 0);
+  const handleCanvasPointerDown = (event) => {
+    if (!event.target.closest?.("[data-composition-field]")) cancelHoverConnection();
+  };
+
+  const handleCanvasPointerLeave = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) cancelHoverConnection();
+  };
+
+  const handleFieldPointerEnter = (event, field) => {
+    if (event.pointerType !== "mouse") return;
+    pointerPositionRef.current = { clientX: event.clientX, clientY: event.clientY };
+    hoveredFieldRef.current = field.id;
+    clearSourceHoverTimer();
+
+    const sourceId = activeSourceRef.current;
+    if (sourceId) {
+      if (sourceId === field.id) return;
+      const duplicate = connections.some((item) => pairKey(item.from, item.to) === pairKey(sourceId, field.id));
+      if (duplicate) {
+        clearTargetDwellTimer();
+        targetCandidateRef.current = null;
+        setHoverTargetId(null);
+        setHoverPreview(null);
+        return;
+      }
+      clearTargetDwellTimer();
+      targetCandidateRef.current = field.id;
+      setHoverTargetId(field.id);
+      updateHoverPreview(event.clientX, event.clientY, field.id);
+      targetDwellTimerRef.current = window.setTimeout(() => {
+        if (activeSourceRef.current !== sourceId || targetCandidateRef.current !== field.id) return;
+        createConnection(sourceId, field.id);
+        activeSourceRef.current = null;
+        targetCandidateRef.current = null;
+        setHoverSourceId(null);
+        setHoverTargetId(null);
+        setHoverPreview(null);
+        setPendingKeyboardNode(null);
+      }, TARGET_CONFIRM_DWELL);
+      return;
     }
-    if (active.moved && target) {
-      toggleConnection(active.sourceId, target.dataset.compositionField);
+
+    sourceCandidateRef.current = field.id;
+    setHoverSourceCandidateId(field.id);
+    sourceHoverTimerRef.current = window.setTimeout(() => {
+      if (sourceCandidateRef.current !== field.id || hoveredFieldRef.current !== field.id || activeSourceRef.current) return;
+      sourceCandidateRef.current = null;
+      activeSourceRef.current = field.id;
+      setHoverSourceCandidateId(null);
+      setHoverSourceId(field.id);
+      setPendingKeyboardNode(null);
+      setHoverPreview(null);
+    }, SOURCE_HOVER_DELAY);
+  };
+
+  const handleFieldPointerLeave = (event, field) => {
+    if (event.pointerType !== "mouse") return;
+    if (hoveredFieldRef.current === field.id) hoveredFieldRef.current = null;
+    if (sourceCandidateRef.current === field.id) {
+      clearSourceHoverTimer();
+      sourceCandidateRef.current = null;
+      setHoverSourceCandidateId(null);
     }
-    dragRef.current = null;
-    setDragPreview(null);
+    if (targetCandidateRef.current === field.id) {
+      clearTargetDwellTimer();
+      targetCandidateRef.current = null;
+      setHoverTargetId(null);
+    }
   };
 
   const handleFieldClick = (event, field) => {
-    if (ignoreClickRef.current) {
-      ignoreClickRef.current = false;
-      return;
-    }
     if (event.detail === 0 && pendingKeyboardNode) {
-      ignoreClickRef.current = true;
+      cancelHoverConnection();
       toggleConnection(pendingKeyboardNode, field.id);
       setPendingKeyboardNode(null);
       return;
     }
+    cancelHoverConnection();
     setManuallySelected((items) => items.includes(field.id) ? items.filter((id) => id !== field.id) : [...items, field.id]);
   };
 
   const handleFieldKeyDown = (event, field) => {
     if (event.altKey && event.key === "Enter") {
       event.preventDefault();
+      cancelHoverConnection();
       if (pendingKeyboardNode && pendingKeyboardNode !== field.id) {
         toggleConnection(pendingKeyboardNode, field.id);
         setPendingKeyboardNode(null);
@@ -179,8 +304,25 @@ export function CombinationTaskHome({ onCreateTask }) {
         setPendingKeyboardNode(field.id);
       }
     }
-    if (event.key === "Escape") setPendingKeyboardNode(null);
+    if (event.key === "Escape") {
+      cancelHoverConnection();
+      setPendingKeyboardNode(null);
+    }
   };
+
+  useEffect(() => {
+    const handleWindowKeyDown = (event) => {
+      if (event.key !== "Escape") return;
+      cancelHoverRef.current?.();
+      setPendingKeyboardNode(null);
+    };
+    window.addEventListener("keydown", handleWindowKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleWindowKeyDown);
+      window.clearTimeout(sourceHoverTimerRef.current);
+      window.clearTimeout(targetDwellTimerRef.current);
+    };
+  }, []);
 
   const submit = (event) => {
     event.preventDefault();
@@ -198,8 +340,8 @@ export function CombinationTaskHome({ onCreateTask }) {
       className="combination-cloud"
       ref={canvasRef}
       onPointerMove={handleCanvasPointerMove}
-      onPointerUp={handleCanvasPointerUp}
-      onPointerCancel={() => { dragRef.current = null; setDragPreview(null); }}
+      onPointerDown={handleCanvasPointerDown}
+      onPointerLeave={handleCanvasPointerLeave}
     >
       <h1 className="combination-home__sr-only">训练与调优字段组合</h1>
       <svg className="combination-cloud__connections" width={geometry.width} height={geometry.height} viewBox={`0 0 ${geometry.width} ${geometry.height}`} aria-hidden="true">
@@ -209,23 +351,27 @@ export function CombinationTaskHome({ onCreateTask }) {
           <circle cx={edge.start.x} cy={edge.start.y} r="3.2" className="combination-cloud__endpoint" style={{ fill: edge.color }} />
           <circle cx={edge.end.x} cy={edge.end.y} r="3.2" className="combination-cloud__endpoint" style={{ fill: fieldTone(nodeMap.get(edge.to)) }} />
         </g>)}
-        {dragPreview && <path d={connectionPath(dragPreview.start, dragPreview.end)} className="combination-cloud__line-preview" />}
+        {hoverPreview && <path d={hoverPreview.path} className="combination-cloud__line-preview" style={{ stroke: hoverPreview.color }} />}
       </svg>
       {compositionFields.map((field) => <button
         key={field.id}
         ref={(node) => { if (node) nodeRefs.current.set(field.id, node); else nodeRefs.current.delete(field.id); }}
-        className={`combination-field combination-field--${field.size} combination-field--${field.tone}${selectedSet.has(field.id) ? " is-connected" : ""}${pendingKeyboardNode === field.id ? " is-connection-source" : ""}`}
+        className={`combination-field combination-field--${field.size} combination-field--${field.tone}${selectedSet.has(field.id) ? " is-connected" : ""}${pendingKeyboardNode === field.id || hoverSourceId === field.id ? " is-connection-source" : ""}${hoverSourceCandidateId === field.id ? " is-connection-candidate" : ""}${hoverTargetId === field.id ? " is-connection-target" : ""}`}
         type="button"
         data-composition-field={field.id}
         aria-pressed={selectedSet.has(field.id)}
-        aria-label={`${field.title}。${field.hint}。点击加入或移除，拖动到其他字段可建立连线。按 Alt 加 Enter 可用键盘连线。`}
+        aria-label={`${field.title}。${field.hint}。悬浮片刻作为连线起点，移到其他字段并停留确认；点击加入或移除。按 Alt 加 Enter 可用键盘连线。`}
         style={{ "--field-x": `${field.x}%`, "--field-y": `${field.y}%`, "--field-color": `var(--composition-${field.tone})` }}
-        onPointerDown={(event) => handlePointerDown(event, field)}
+        onPointerEnter={(event) => handleFieldPointerEnter(event, field)}
+        onPointerLeave={(event) => handleFieldPointerLeave(event, field)}
         onClick={(event) => handleFieldClick(event, field)}
         onKeyDown={(event) => handleFieldKeyDown(event, field)}
         onContextMenu={(event) => event.preventDefault()}
       >
         <span className="combination-field__dot" aria-hidden="true" />
+        {hoverTargetId === field.id && <svg className="combination-field__dwell" viewBox="0 0 22 22" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" pathLength="100" />
+        </svg>}
         <span className="combination-field__title">{field.title}</span>
         <span className="combination-field__english">{field.english}</span>
         <span className="combination-field__hint">{field.hint}</span>

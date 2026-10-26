@@ -1387,6 +1387,13 @@ final result: passed
 - **检查与边界：** 本轮前序构建、Pages 构建、构建 JS 语法检查及 diff 检查均通过；保留既有 Vite >500 kB 提示，未运行测试套件。没有改页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界；无真实训练诊断。
 - **发布：** 功能提交 `6023baf6` 与整合并行更新的提交 `1e933adc` 已推送 `origin/main`；GitHub Pages workflow `40318238407` build / deploy 成功。公开 `/ascstudio/?home=combine` 的 HTML / CSS 与本地构建哈希一致，JS HTTP 200（1,013,939 bytes）。
 
+## 组合首页悬浮停留确认连线（2026-10-26）
+
+- **用户决定：** 改用纯悬浮探索，不拖动；悬浮起点、移动到目标后停留确认。
+- **实现：** 起点停留约 280ms 后以节点晕显锁定；移动时显示沿鼠标方向延伸的细虚线；目标约 680ms 环形进度完成后固定关系。移开候选目标会清除该候选计时；空白点击、离开画布或 Esc 取消整个预览。固定后起点清空，避免一次悬浮连续连出多条。
+- **本地回放：** `http://127.0.0.1:5206/?home=combine`。确认了起点光晕、目标环形进度、停留后“数据加载—CPU 预处理”连线和 Prompt 更新；在进度完成前移开目标不会生成关系；Esc 会清除待连线预览。页面 error 日志为空（CUA，M）。
+- **检查 / 边界：** `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。保留既有 Vite 主 JS chunk >500 kB 提醒，未运行自动化测试。该设计不改默认空状态、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；未接真实训练数据 / NPU。
+- **发布：** 待补。
 
 ## 2026-10-26 · 编辑态新增画布内容入口复核
 
