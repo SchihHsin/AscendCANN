@@ -1565,3 +1565,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/LearningCanvasToolbar.jsx`、`src/LearningCanvasCard.jsx`、`src/LearningHierarchyCanvas.jsx`、`src/OfficialLearningPathCanvas.jsx`、`src/learning-hierarchy-canvas.css`、`src/canvas-reference-style.css`；更新交互规则与 QA 记录。
 - `npm run build`、`npm run build:pages`、构建 JS 的 `node --check` 与 `git diff --check` 通过；未运行自动化测试。尚未完成桌面截图和逐项拖动回放。画布添加便签 / 绘图内容的编辑入口仍是单独待办。
 - 发布：提交 `68ac4631` 已推送 `origin/main`；GitHub Pages workflow `40266606547` build / deploy 成功。公开页面直连在 TLS 握手时 EOF，因此线上 HTML / 资源尚未本轮回读确认。
+
+
+## 方案三外围短弧发布（2026-10-26）
+
+- 用户明确要求 push，覆盖此前方案三仅供本地比较的临时边界；线上探索首页现使用外围方向短弧。
+- 弧线根据指针来向起笔；色彩渐隐从弧线中段开始，到原端点淡出，扫过角度与长度不变。悬浮仍用于预览 / 下钻，点击仍用于锁定；路径可形成可编辑 Prompt。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过；GitHub Pages workflow `40271522567` 成功，线上 HTML / JS / CSS 均 HTTP 200。源码及 Pages 资源已随 `262d5e96` 推送至 `origin/main`。不改变页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界。

@@ -6593,3 +6593,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build`、`npm run build:pages`、构建 JS 的 `node --check` 与 `git diff --check` 通过，保留既有大 JS chunk 提醒。未运行测试套件；桌面截图与逐项拖动回放仍未完成。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 发布：源代码、交互规则与 Pages 产物提交 `68ac4631` 已推送至 `origin/main`；Pages workflow `40266606547` build / deploy 成功。直接抓取公开页面时 TLS 握手 EOF，未据此声称线上资源已回读验证。
 - 未决：工具栏新增便签 / 绘图节点仍未接入，不能把本轮共通操作对齐描述为已支持新增任意画布内容。桌面全宽视觉和实际逐项拖动回放仍需补验。
+
+
+### 2026-10-26 · 方案三短弧渐隐发布
+
+- 用户在本地比较后明确要求 push；此决定覆盖此前“方案三只留本地、线上维持 1+2”的临时发布边界。线上 Ascend Studio 探索首页现使用方案三外围方向短弧。
+- `ascend-studio/src/ExploreTaskHome.jsx` 根据指针进入方向设置外围弧线起点；`explore-task-home.css` 保持原有弧线范围与端点，把颜色透明度渐隐拉长到弧线中段至原端点。保留悬浮预览 / 点击锁定、渐进下钻和可编辑 Prompt；未改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界，也不代表真实训练诊断。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过。Pages workflow `40271522567` 成功；线上 `/ascstudio/` HTML、`index-B0lR6MuK.js`、`index-DKaknuyv.css` 均 HTTP 200，资源中包含训练探索文案及新弧线渐隐规则。
+- 源码与 Pages 产物提交 `262d5e96` 已推送 `origin/main`；后续交接记录另行提交。

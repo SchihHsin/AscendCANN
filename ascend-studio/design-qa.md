@@ -1303,3 +1303,10 @@ final result: passed (local visual review; online screenshot unavailable)
 - `npm run build`、`npm run build:pages`、`node --check ascstudio/assets/index-CLY0NwfX.js` 与 `git diff --check` 通过；保留 Vite 现有主 JS chunk 大于 500 kB 提醒。未运行自动化测试。桌面全宽截图与实际逐项拖动回放仍待完成；不把构建成功记作视觉或拖动验收。
 - 依据：用户确认新版 ResNet50 视觉方向与跨任务统一需求（H）；交互实现来自本地代码（M）。不涉及真实工程 / NPU、页面序列或 API / Host / Application 边界。
 - 发布：提交 `68ac4631` 已推送至 `origin/main`，Pages workflow `40266606547` build / deploy 成功。公开页面 TLS 握手返回 EOF，未记作线上 HTML / CSS / JS 回读验证。
+
+
+## 方案三外围短弧发布（2026-10-26）
+
+- 用户明确要求发布方案三；此前“只做本地比较”的状态已结束。方向反馈沿节点外围短弧呈现，按指针进入方向起笔；颜色由弧线中段逐渐淡到原端点，扫角与总长度不变。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过。Pages workflow `40271522567` 成功；线上 HTML、`index-B0lR6MuK.js`、`index-DKaknuyv.css` 均 HTTP 200，并核对 CSS 包含新渐隐规则。
+- `262d5e96` 已推送至 `origin/main`。本轮以资源部署核验为准，未声称完成线上浏览器截图或真实训练验证。
