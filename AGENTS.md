@@ -6611,4 +6611,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 源码已更新 `ascend-studio/src/TaskCanvas.jsx`、`LearningCanvasCard.jsx`、`task-canvas.css`、`canvas-reference-style.css` 与 `interaction-design.md`；Pages 构建产物同步 `ascstudio/`。
 - 本地 5189 CUA 核对了 AddCustom 卡片白色标题栏、开发与学习画布的卡片操作可访问名称；页面控制台 error 日志为空。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。当前 CUA 可用视口约 381px，本轮未完成 1280px 桌面截图和实际拖动 / 聚焦 / 放大逐项回放；不能把它们记为已验收。
 - 依据：用户截图（H）、ResNet50 当前内容卡视觉（H）、本地 5189 预览（M）。不改变页面序列 / hash、任务内容关系或 API / Protocol、Host / Harness、Application / Task 边界。
-- 发布状态：静态产物已重建为 `index-Vrn6LA8Y.js` / `index-BezcPE5V.css`；提交与 Pages 部署回执待本次结束前补录。
+- 发布：提交 `01204f8a` 已推送到 `origin/main`。GitHub Pages workflow `40278245582` build / deploy 成功；公开 `/ascstudio/` HTML 已引用 `index-Vrn6LA8Y.js` 与 `index-BezcPE5V.css`，CSS HTTP 200 且包含白色选中卡片规则。JS 完整下载在本轮 30 秒核验中超时，未声称已完成线上视觉截图回放。

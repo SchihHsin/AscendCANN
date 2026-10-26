@@ -1580,4 +1580,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - `TaskCanvas`（AddCustom、图像推理等）与 `LearningCanvasCard`（图像预处理、ResNet50）共享卡片表面、右上角操作位置、IconButton 状态及聚焦 / 放大 / 固定 / 收起语义；任务各自的节点、关系、路径和布局入口不合并。两类卡片的聚焦图标统一为 `IconFocus2`，放大使用最大化图标。
 - 用户附图是发布中的旧版 CSS；本轮本地 5189 已显示白色标题栏。源码、交互规则及 Pages 构建产物均已更新。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地控制台 error 日志为空。当前 CUA 视口约 381px，桌面宽屏截图及拖动、放大、聚焦完整回放仍待补验。未运行测试套件。
-- 依据：用户截图与最新视觉选择（H），本地浏览器观察（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 / Pages 部署待补录。
+- 依据：用户截图与最新视觉选择（H），本地浏览器观察（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `01204f8a` 已推送到 `origin/main`；Pages workflow `40278245582` build / deploy 成功，公开 HTML / CSS 已核对，完整 JS 下载与线上截图仍未核验。

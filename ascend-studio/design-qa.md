@@ -1318,4 +1318,4 @@ final result: passed (local visual review; online screenshot unavailable)
 - **调整：** 开发任务选中卡保持白色标题栏，选中态改由黑色细边 / 轻阴影表达。聚焦图标统一为 `IconFocus2`；TaskCanvas 与 LearningCanvasCard 延续相同的右上角聚焦、放大、固定、收起操作和白灰黑控件层级。任务专属布局、路径和内容结构不变。
 - **源码 / 产物：** `src/TaskCanvas.jsx`、`src/LearningCanvasCard.jsx`、`src/task-canvas.css`、`src/canvas-reference-style.css`、`interaction-design.md`；Pages 输出 `ascstudio/index.html`、`index-Vrn6LA8Y.js`、`index-BezcPE5V.css`。
 - **检查：** `npm run build:pages` 成功；`node --check ascstudio/assets/index-Vrn6LA8Y.js` 与 `git diff --check` 通过；本地 5189 控制台 error 日志为空。CUA 当前可用视口约 381px，尚未完成宽屏截图及拖动 / 聚焦 / 放大逐项回放；未运行自动化测试。
-- **证据边界：** 用户截图为旧线上状态（H）；本地 5189 窄视口回放为 M。源码已构建，但线上发布状态待提交 / workflow 验证。
+- **证据边界：** 用户截图为部署前线上状态（H）；本地 5189 窄视口回放为 M。提交 `01204f8a` 已推送，Pages workflow `40278245582` build / deploy 成功。公开 HTML 指向新 JS / CSS，CSS HTTP 200 并含白色标题栏规则；JS 完整下载超时，线上截图 / 交互回放未核验。
