@@ -6621,3 +6621,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据：用户选择方案 1（H）；路径节点来自当前 Demo 学习数据（H）；本地 CUA 1280×720 回放与“记录环境条件”节点跳转为实现观察（M）。本轮不改页面顺序 / hash，不改 API / Protocol、Host / Harness、Application / Task 边界，不涉及真实 NPU 验证。
 - 检查：`npm run build:pages`、`node --check ascstudio/assets/index-CJK713RA.js`、`git diff --check` 通过；Vite 保留既有大于 500 kB 的 JS chunk 提醒，未运行自动化测试。GitHub Pages workflow `40282794342` build / deploy 成功；线上 HTML、`index-CJK713RA.js`、`index-9Oo10ISi.css` 与新增 PNG 均 HTTP 200，JS / CSS 含本轮路径内容和样式。
 - 发布前发现本地分支与 `origin/main` 在 `83af903e` 后并行分叉；已把远端画布 / 探索更新合并保留并重建 Pages 产物。功能提交 `007e62b4`，含并行改动的整合提交 `be2f0a63` 已推送至 `origin/main`；未使用强推。
+
+
+### 2026-10-26 · 学习发现页减少蓝色，探索更丰富的彩色点缀
+
+- 用户反馈当前学习发现页整体偏蓝，希望有颜色的区域尽量采用更丰富的多色表达。保留浅色页面基底与黑色主要按钮；先用 ImageGen 比较三种配色分布，待用户选择后再实现，避免未经选择直接改页面。
+- 以当前 ResNet50 桌面页面截图为设计参照，目标视口 1280×720。三张独立方案图依次为：`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-709684d0-484b-474c-8fa7-93b82678a2da.png`、`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-338843cc-cf4a-4479-a35c-784da8f3dd5f.png`、`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-daabf47a-986d-4e36-b4a9-887d3282105d.png`。当前仅完成视觉探索，没有修改页面代码或发布新页面；颜色方向等待用户选择。
