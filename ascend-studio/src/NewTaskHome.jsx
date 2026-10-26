@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ExploreTaskHome } from "./ExploreTaskHome";
+import { CombinationTaskHome } from "./CombinationTaskHome";
 import {
   IconArrowRight,
   IconEdit as IconEditHome,
@@ -12,6 +13,7 @@ import {
   IconPlus,
   IconSparkles,
   IconBrain,
+  IconShare3,
   IconX,
 } from "@tabler/icons-react";
 import { HomeComputeBackdrop } from "./HomeComputeBackdrop";
@@ -311,7 +313,11 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
 
 
 export function NewTaskHome(props) {
-  const readView = () => new URLSearchParams(window.location.search).get("home") === "explore" ? "explore" : "classic";
+  const homeViews = ["classic", "explore", "combine"];
+  const readView = () => {
+    const requested = new URLSearchParams(window.location.search).get("home");
+    return homeViews.includes(requested) ? requested : "classic";
+  };
   const [view, setView] = useState(readView);
   useEffect(() => {
     const sync = () => setView(readView());
@@ -328,15 +334,22 @@ export function NewTaskHome(props) {
   const handleTabKey = (event) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     event.preventDefault();
-    const next = event.key === "Home" ? "classic" : event.key === "End" ? "explore" : view === "classic" ? "explore" : "classic";
+    const currentIndex = homeViews.indexOf(view);
+    const nextIndex = event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? homeViews.length - 1
+        : (currentIndex + (event.key === "ArrowRight" ? 1 : -1) + homeViews.length) % homeViews.length;
+    const next = homeViews[nextIndex];
     switchView(next);
     event.currentTarget.querySelector(`#home-tab-${next}`)?.focus();
   };
   return <section className="home-variants" aria-label="新建任务首页">
     <div className="home-variants__tabs" role="tablist" aria-label="首页方案" onKeyDown={handleTabKey}>
-      {[{ id: "classic", label: "经典", Icon: IconEditHome }, { id: "explore", label: "探索", Icon: IconSparkles }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={13} />{label}</button>)}
+      {[{ id: "classic", label: "经典", Icon: IconEditHome }, { id: "explore", label: "探索", Icon: IconSparkles }, { id: "combine", label: "组合", Icon: IconShare3 }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={13} />{label}</button>)}
     </div>
     <div className="home-variants__panel" role="tabpanel" id="home-panel-classic" aria-labelledby="home-tab-classic" hidden={view !== "classic"}><ClassicTaskHome {...props} /></div>
     <div className="home-variants__panel" role="tabpanel" id="home-panel-explore" aria-labelledby="home-tab-explore" hidden={view !== "explore"}><ExploreTaskHome onCreateTask={props.onCreateTask} /></div>
+    <div className="home-variants__panel" role="tabpanel" id="home-panel-combine" aria-labelledby="home-tab-combine" hidden={view !== "combine"}><CombinationTaskHome onCreateTask={props.onCreateTask} /></div>
   </section>;
 }
