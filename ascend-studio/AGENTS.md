@@ -1637,3 +1637,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户指出多渠道页里的四张抖音知识图文预览仍缩得太小。将外层预览、四页网格都设为填满可用宽度，并让每页按固定 `69:100` 竖版比例布局；尺寸由渠道卡片宽度决定。
 - CUA 窄视口观察到四张图文已在抖音卡片中横向铺开且保持比例。当前工具视口约 381px，尚未完成桌面截图；不记为桌面验收。
 - `npm run build:pages`、生成 JS `node --check` 与 `git diff --check` 通过；未运行自动化测试。源码与 Pages 产物已推送，提交 `cb6070b4`；Pages workflow `40316645739` 成功，公开 CSS 已核对包含新宽度规则。桌面截图仍未核验。
+
+### 2026-10-26 · ResNet50 内容卡最大化与聚焦分离
+
+- `OfficialLearningPathCanvas.jsx` 增加独立 maximized 状态和 viewport 快照；最大化时暂停画布世界变换、隐藏其他节点/卡片与周边控件，让目标卡实际占据可读工作区；卡片按钮切换为还原语义，Escape 可退出并恢复原 viewport。聚焦仍只调整平移坐标并保留当前缩放。单节点与全部展开卡片均走同一逻辑，其他任务画布不变。
+- `LearningCanvasCard.jsx` 为最大化态提供工作区尺寸和明确的还原按钮；`official-learning-canvas.css` 仅限定官方 ResNet50 最大化态的可见层级与滚动卡片头部。
+- 构建、测试与 Pages 产物检查完成后补记提交 / 推送和线上验证结果。
