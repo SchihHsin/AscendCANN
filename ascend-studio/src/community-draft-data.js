@@ -29,9 +29,14 @@ export function createCommunityDraft({ taskId, task, session, completion }) {
   } else if (taskId === "AddCustom 精度异常" && completion?.kind === "addcustom-precision-resolution") {
     const precision = completion.precision || {};
     const count = Number.isFinite(precision.count) ? precision.count : "未记录";
-    problem = "AddCustom 算子在输入 [16,32] 时通过、[17,33] 时出现 precision mismatch，错误位置为 custom_op.cpp:128。任务已由开发者确认在目标环境修复并复测通过；具体复现条件仍应结合实际项目版本补全。";
-    approach = `开发者确认问题已在目标环境解决并复测通过。本次提交的逐元素对照包含 ${count} 项，${precision.failed ?? 0} 项超出所设容差（atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}）。当前对话与工作区没有记录实际修改点或根因，草稿不会推断修复方法；请在发布前从代码变更或任务记录中补全。`;
-    verification = `开发者确认目标环境复测通过；本次逐元素数据 ${count} 项、${precision.failed ?? 0} 项超差。容差：atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}。Demo 未独立连接 NPU，也未核验数据来源；CANN、芯片、驱动与固件版本尚未提供。`;
+    problem = "AddCustom 算子在输入 [16,32] 时通过、[17,33] 时出现 precision mismatch，错误位置为 custom_op.cpp:128。具体复现条件应结合实际项目版本补全。";
+    if (completion.demoFixture) {
+      approach = "演示草稿预置了“按尾块有效元素数访问”的修正步骤，用来展示从问题线索到知识回流的写作结构。它没有关联真实代码 Diff 或项目修改，不可直接作为已验证解决方案发布。";
+      verification = "演示记录预置了逐元素数据在容差内及目标环境复测通过的状态，仅用于体验可信度与社区反馈流程。真实 CANN、芯片、驱动、固件和 NPU 验证均未接入；提交前应替换为本次任务的实际证据。";
+    } else {
+      approach = `开发者确认问题已在目标环境解决并复测通过。本次提交的逐元素对照包含 ${count} 项，${precision.failed ?? 0} 项超出所设容差（atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}）。当前对话与工作区没有记录实际修改点或根因，草稿不会推断修复方法；请在发布前从代码变更或任务记录中补全。`;
+      verification = `开发者确认目标环境复测通过；本次逐元素数据 ${count} 项、${precision.failed ?? 0} 项超差。容差：atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}。Demo 未独立连接 NPU，也未核验数据来源；CANN、芯片、驱动与固件版本尚未提供。`;
+    }
   } else if (taskId === "AddCustom 精度异常") {
     problem = "AddCustom 算子在输入 [16,32] 时通过、[17,33] 时失败，报错为 precision mismatch，位置在 custom_op.cpp:128。修改编译参数后，错误仍出现在同一位置。需要继续核对失败条件与误差证据，目前不能确认根因。";
     approach = "现有对话将尾块边界列为优先核查线索，并建议只读检查对应循环的索引范围和有效元素数；若未发现边界异常，再补充两次运行条件与逐元素误差。当前没有修改真实项目文件，也没有据此认定根因。";

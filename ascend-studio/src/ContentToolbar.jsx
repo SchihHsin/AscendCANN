@@ -15,6 +15,6 @@ export function ContentSurface({ children, scrollerRef, onScroll }) {
 /** A material supplies its own tools; the shared shell supplies their position. */
 export function ContentToolbar({ children, label = "当前内容工具" }) {
   const surface = useContext(ContentSurfaceContext);
-  if (!surface) return children;
+  if (!surface) return <div className="tw-viewer-tools" role="group" aria-label={label}>{children}</div>;
   return surface.host ? createPortal(<div className="tw-viewer-tools" role="group" aria-label={label}>{children}</div>, surface.host) : null;
 }
