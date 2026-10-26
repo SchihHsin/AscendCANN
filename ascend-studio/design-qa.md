@@ -1284,8 +1284,8 @@ final result: passed (local visual review; online screenshot unavailable)
 **实现与检查**
 - 源码：`src/TaskCanvas.jsx`、`src/task-canvas.css`、`src/canvas-reference-style.css`；交互规则同步到 `interaction-design.md` 与两份 `AGENTS.md`。
 - `npm run build`、`npm run build:pages`、`git diff --check` 通过；Vite 保留既有主 JS chunk 大于 500 kB 提醒；未运行测试套件。
-- 本地 5189 窄视口预览曾显示黑色编辑按钮和黑色选中卡片标题栏。热更新后浏览器回到新建首页且读取超时，因此没有把该视口记录为桌面验收；没有实际拖动卡片验证坐标变化。
+- 本地 5189 窄视口预览显示黑色编辑按钮和黑色选中卡片标题栏；约 381px 视口中工具栏顶部仍有裁切。热更新后曾返回新建首页，随后已重新选中 AddCustom 并留在任务画布；未完成桌面视口核验，也没有实际拖动卡片验证坐标变化。
 - 依据：用户最新视觉选择（H）；本地代码与预览观察（M）。不涉及真实工程、NPU、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 
 **发布**
-- 页面构建更新 `ascstudio/index.html` 与哈希 CSS / JS。代码提交 `cbc34af3` 与本轮样式 / 材料 / Pages 产物提交 `9c5a9e31` 已快进推送到 `origin/main`；Pages 工作流状态未核验。
+- 页面构建更新 `ascstudio/index.html` 与哈希 CSS / JS。代码提交 `cbc34af3`、样式 / 材料 / Pages 产物提交 `9c5a9e31`、交接提交 `e75c092d` 已快进推送到 `origin/main`。GitHub Pages workflow `40258813844` build 成功；公开 HTML 与 `index-DiUcW9HB.css` HTTP 200，CSS 含新版工具栏规则。

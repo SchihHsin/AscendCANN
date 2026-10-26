@@ -1554,6 +1554,6 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户确认跨任务画布操作控件采用**新版 ResNet50 视觉**；覆盖 `interaction-design.md` 较早记录的浅紫工具选中态建议。工具白底、约 32px 高、浅灰边框、9px 圆角与轻阴影；普通悬停为浅中性灰，激活态黑底白图标。选中开发卡片使用黑色标题栏，卡片操作图标保持中性。
 - AddCustom 与图像推理工具仍按原位置与任务内容排布；视图/画布操作在顶部右侧分组，卡片操作留在卡片右上角：聚焦、放大至右侧完整工作区、固定、折叠。拖动和调尺寸只在位置编辑模式出现；Esc 退出，不改变学习顺序、任务进度或业务顺序。
 - 修改 `src/TaskCanvas.jsx`、`src/task-canvas.css`，并让 `src/canvas-reference-style.css` 显式支持 `.tc-canvas-toolbar`，避免通用 `.tc-object-toolbar` 状态覆盖新版黑色激活态。补充 `interaction-design.md` 和本文件；ResNet50 节点/内容结构及各任务自动排布仍保持各自语义，不合并为同一数据模型。
-- 依据：用户确认的视觉方向（H）；新版 `canvas-reference-style.css` 是 ResNet50 当前视觉参照（H）。AddCustom 本地窄视口预览中看见白色工具组、黑色编辑按钮和黑色选中卡片标题栏（M）；热更新后回到新建首页，后续浏览器读取超时，因此未完成桌面宽屏截图核验，也未实际测试拖动坐标。
+- 依据：用户确认的视觉方向（H）；新版 `canvas-reference-style.css` 是 ResNet50 当前视觉参照（H）。AddCustom 本地约 381px 窄视口预览显示白色工具组、黑色编辑按钮和黑色选中卡片标题栏（M）；工具栏顶部在该窄视口被裁切，未完成桌面宽屏截图核验，也未实际测试拖动坐标。
 - 验证：`npm run build` 与 `npm run build:pages` 成功；`git diff --check` 已运行。保留 Vite 既有主 JS chunk 大于 500 kB 提醒；未运行测试套件。未涉及真实工程或 NPU 验证。
-- 提交 / 推送：代码提交 `cbc34af3`、共享样式 / 设计记录 / Pages 产物提交 `9c5a9e31` 已快进推送到 `origin/main`。Pages 工作流状态未核验。
+- 提交 / 推送：代码提交 `cbc34af3`、共享样式 / 设计记录 / Pages 产物提交 `9c5a9e31`、交接提交 `e75c092d` 已快进推送到 `origin/main`。GitHub Pages workflow `40258813844` build 成功；线上 `/ascstudio/` HTML 与 `index-DiUcW9HB.css` HTTP 200，CSS 包含新版工具栏规则。
