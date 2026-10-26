@@ -6705,3 +6705,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出上一版 Banner 背景比参考图更平、纹理与彩色碎片不足；本次上传截图是视觉依据（H）。
 - 以浅蓝白底图替换 Banner 纹理：加入柔和层叠波纹、光带和青 / 紫 / 粉 / 薄荷半透明碎片；继续保留向下渐隐。学习路径内容、布局和主按钮不变。
 - 本地桌面预览已核对，具体构建、语法、差异检查与推送状态将在发布后补记。未运行测试套件；未改页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+
+### 2026-10-26 · 对话区域布局切换与指着说联动
+
+- 用户确认切换对象是当前左侧整块对话区域，不是单独移动输入框；提供左侧栏与底部居中浮窗两种呈现。两个互斥图标放在全局 `header.topbar`，保留同一对话历史与草稿，并按会话记忆布局选择。浮窗态展开右侧工作区，避免原左侧列继续占宽。
+- 指着说与对话布局是独立交互。底部浮窗布局进入框选或出现选区输入框时临时隐藏浮窗，锁定布局切换以防选区坐标变化；发送或取消后恢复。左侧栏布局的框选保持原位置与行为。
+- 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`styles.css` 与 Pages 静态产物。该概念改动不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 1280×720 核对左侧、底部浮窗、框选时浮窗隐藏、选区缩略输入出现及取消后恢复。未运行自动化测试；窄屏行为有响应式规则，未做独立小视口截图。依据：用户确认（H）、本地原型观察（M）。
+- 发布提交与 Pages workflow 待本条实现完成后补记。
