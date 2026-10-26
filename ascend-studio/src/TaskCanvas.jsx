@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   IconAlertTriangle,
@@ -307,23 +308,23 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
 
   const canvasToolbar = <CanvasToolbar placement="inline" className="tc-canvas-toolbar" aria-label="画布视图与编辑操作">
     <CanvasToolbarGroup label="任务内容">
-      {embedded && !enableCardFocus && <CanvasToolButton type="button" active={contentsOpen} aria-label="打开任务内容总览" title="打开任务内容总览" aria-expanded={contentsOpen} onClick={onOpenContents}><IconLayoutList size={16} /></CanvasToolButton>}
-      <CanvasToolButton type="button" active={Boolean(state.comparing)} aria-label={state.comparing ? "退出临时对照" : "临时对照内容"} title={state.comparing ? "退出临时对照" : "临时对照内容"} onClick={() => state.comparing ? actions.endComparison?.() : actions.beginComparison?.(comparisonIds)}><IconLayoutColumns size={16} /></CanvasToolButton>
-      {state.lastHiddenId && <CanvasToolButton type="button" aria-label="恢复刚收起的内容" title="恢复刚收起的内容" onClick={() => actions.restore()}><IconRestore size={15} /></CanvasToolButton>}
+      {embedded && !enableCardFocus && <CanvasToolButton type="button" active={contentsOpen} aria-label="打开任务内容总览" title="打开任务内容总览" aria-expanded={contentsOpen} onClick={onOpenContents}><IconLayoutList size={ICON_SIZE.control} /></CanvasToolButton>}
+      <CanvasToolButton type="button" active={Boolean(state.comparing)} aria-label={state.comparing ? "退出临时对照" : "临时对照内容"} title={state.comparing ? "退出临时对照" : "临时对照内容"} onClick={() => state.comparing ? actions.endComparison?.() : actions.beginComparison?.(comparisonIds)}><IconLayoutColumns size={ICON_SIZE.control} /></CanvasToolButton>
+      {state.lastHiddenId && <CanvasToolButton type="button" aria-label="恢复刚收起的内容" title="恢复刚收起的内容" onClick={() => actions.restore()}><IconRestore size={ICON_SIZE.control} /></CanvasToolButton>}
     </CanvasToolbarGroup>
     <CanvasZoomGroup value={zoom} min={MIN_ZOOM} max={MAX_ZOOM} onZoom={changeZoom} onReset={() => changeZoom(1)} />
     <CanvasToolbarGroup label="画布定位">
-      <CanvasToolButton type="button" active={handMode} aria-label={handMode ? "退出抓手模式" : "切换抓手平移模式"} title={handMode ? "退出抓手模式" : "抓手平移"} onClick={() => { setHandMode(current => !current); setPositionEditing(false); setNodePickerOpen(false); setDrawingMode(false); setDrawingDraft([]); }}><IconHandMove size={16} /></CanvasToolButton>
-      <CanvasToolButton type="button" aria-label="适应全部可见内容" title="适应全部可见内容" onClick={() => actions.fitCanvas(stageSize.width, stageSize.height)}><IconArrowsMinimize size={16} /></CanvasToolButton>
+      <CanvasToolButton type="button" active={handMode} aria-label={handMode ? "退出抓手模式" : "切换抓手平移模式"} title={handMode ? "退出抓手模式" : "抓手平移"} onClick={() => { setHandMode(current => !current); setPositionEditing(false); setNodePickerOpen(false); setDrawingMode(false); setDrawingDraft([]); }}><IconHandMove size={ICON_SIZE.control} /></CanvasToolButton>
+      <CanvasToolButton type="button" aria-label="适应全部可见内容" title="适应全部可见内容" onClick={() => actions.fitCanvas(stageSize.width, stageSize.height)}><IconArrowsMinimize size={ICON_SIZE.control} /></CanvasToolButton>
     </CanvasToolbarGroup>
     <CanvasToolbarGroup label="画布编辑">
-      <CanvasToolButton type="button" active={positionEditing} aria-label={positionEditing ? "完成画布编辑" : "编辑画布"} title={positionEditing ? "完成画布编辑" : "编辑画布"} onClick={togglePositionEditing}>{positionEditing ? <IconCheck size={16} /> : <IconPencil size={16} />}</CanvasToolButton>
+      <CanvasToolButton type="button" active={positionEditing} aria-label={positionEditing ? "完成画布编辑" : "编辑画布"} title={positionEditing ? "完成画布编辑" : "编辑画布"} onClick={togglePositionEditing}>{positionEditing ? <IconCheck size={ICON_SIZE.control} /> : <IconPencil size={ICON_SIZE.control} />}</CanvasToolButton>
     </CanvasToolbarGroup>
     {isAddCustom && positionEditing && <CanvasToolbarGroup className="canvas-toolbar-group--add-content" label="添加画布内容">
-      <CanvasToolButton type="button" active={nodePickerOpen} aria-label="添加已有内容节点" aria-expanded={nodePickerOpen} title="添加已有内容节点" onClick={() => { setNodePickerOpen((open) => !open); setDrawingMode(false); }}><IconPlus size={16} /></CanvasToolButton>
-      <CanvasToolButton type="button" aria-label="添加笔记" title="添加笔记" onClick={addNote}><IconNotes size={16} /></CanvasToolButton>
-      <CanvasToolButton type="button" active={drawingMode} aria-label={drawingMode ? "退出绘图" : "自由绘图"} title={drawingMode ? "退出绘图" : "自由绘图"} onClick={() => { setDrawingMode((active) => !active); setNodePickerOpen(false); }}><IconPencil size={16} /></CanvasToolButton>
-      {drawings.length > 0 && <CanvasToolButton type="button" aria-label="撤销上一笔绘图" title="撤销上一笔绘图" onClick={() => actions.removeDrawing?.(drawings.at(-1).id)}><IconRestore size={15} /></CanvasToolButton>}
+      <CanvasToolButton type="button" active={nodePickerOpen} aria-label="添加已有内容节点" aria-expanded={nodePickerOpen} title="添加已有内容节点" onClick={() => { setNodePickerOpen((open) => !open); setDrawingMode(false); }}><IconPlus size={ICON_SIZE.control} /></CanvasToolButton>
+      <CanvasToolButton type="button" aria-label="添加笔记" title="添加笔记" onClick={addNote}><IconNotes size={ICON_SIZE.control} /></CanvasToolButton>
+      <CanvasToolButton type="button" active={drawingMode} aria-label={drawingMode ? "退出绘图" : "自由绘图"} title={drawingMode ? "退出绘图" : "自由绘图"} onClick={() => { setDrawingMode((active) => !active); setNodePickerOpen(false); }}><IconPencil size={ICON_SIZE.control} /></CanvasToolButton>
+      {drawings.length > 0 && <CanvasToolButton type="button" aria-label="撤销上一笔绘图" title="撤销上一笔绘图" onClick={() => actions.removeDrawing?.(drawings.at(-1).id)}><IconRestore size={ICON_SIZE.control} /></CanvasToolButton>}
     </CanvasToolbarGroup>}
   </CanvasToolbar>;
   const nodePicker = isAddCustom && positionEditing && nodePickerOpen && <div className="tc-node-picker" role="region" aria-label="添加已有内容节点">
@@ -332,7 +333,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
   </div>;
 
   return <aside className={"task-canvas" + (embedded ? " is-embedded" : "") + (isAddCustom ? " is-addcustom" : "")} hidden={!visible} aria-label="当前任务的自由画布">
-    {!embedded && <header className="panel-header tc-header"><div><h2><IconLayoutBoard size={17} />任务画布</h2><span>同一现场里的代码、解释与检查证据</span></div><div className="tc-header-links"><button type="button" onClick={onBack}><IconArrowLeft size={14} />定位现场</button><button type="button" className={contentsOpen ? "is-active" : ""} aria-expanded={contentsOpen} onClick={onOpenContents}><IconLayoutList size={14} />本任务内容</button></div></header>}
+    {!embedded && <header className="panel-header tc-header"><div><h2><IconLayoutBoard size={ICON_SIZE.heading} />任务画布</h2><span>同一现场里的代码、解释与检查证据</span></div><div className="tc-header-links"><button type="button" onClick={onBack}><IconArrowLeft size={ICON_SIZE.inline} />定位现场</button><button type="button" className={contentsOpen ? "is-active" : ""} aria-expanded={contentsOpen} onClick={onOpenContents}><IconLayoutList size={ICON_SIZE.inline} />本任务内容</button></div></header>}
     <div className="tc-object-toolbar"><span className="tc-selection-label">{selected ? selected.title : `${visibleCards.length} 个内容对象`}</span>{focusRelatedCards.length > 0 && <nav className="tc-focus-related" aria-label="当前节点的直接关联">{focusRelatedCards.map((card) => {
       const relation = connections.find((connection) => connection.from === focusCardId && connection.to === card.id || connection.to === focusCardId && connection.from === card.id);
       return <button key={card.id} type="button" title={`聚焦到${card.title}${relation?.label ? ` · ${relation.label}` : ""}`} onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><span>{card.title}</span>{relation?.label && <small>{relation.label}</small>}</button>;
@@ -388,20 +389,20 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
           const collapsed = isCollapsed(card);
           return <CanvasCardFrame key={card.id} className={`tc-card${collapsed ? " is-collapsed" : ""}`} selected={state.selectedCardId === card.id} pinned={card.pinned} collapsed={collapsed} hidden={!card.visible} aria-label={card.title} style={{ left: card.x, top: card.y, width: card.width, height: collapsed ? COLLAPSED_HEIGHT : card.height, zIndex: index + 2 }} onPointerDownCapture={(event) => { if (event.target instanceof Element && event.target.closest("button,a,input,textarea,select,label,summary")) return; if (!handMode && !spaceHeld && stateRef.current.selectedCardId !== card.id) actions.selectCard(card.id); }}>
             <CanvasCardHeader className="tc-card-header" onPointerDown={(event) => { if (!positionEditing || event.target instanceof Element && event.target.closest("button")) return; beginMove(event, card); }}>
-              {positionEditing && <CanvasCardButton className="tc-move-handle" type="button" disabled={card.pinned} aria-label={`移动${card.title}；方向键微调，Shift 加快`} title={card.pinned ? "已固定位置" : "拖动标题移动；方向键微调"} onPointerDown={(event) => beginMove(event, card)} onKeyDown={(event) => keyboardMove(event, card)}><IconGripVertical size={15} /></CanvasCardButton>}<div className="canvas-card-title"><h3 title={card.title}>{card.title}</h3></div>{collapsed && <small className="tc-collapse-summary">{cardSummary(card)}</small>}{card.pinned && <span className="tc-pin-label"><IconPin size={11} />已固定</span>}
-              <CanvasCardActions className="tc-card-actions"><CanvasCardButton type="button" aria-label={`聚焦到${card.title}`} title="聚焦到画布中的这个节点" onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><IconFocus2 size={14} /></CanvasCardButton>{onOpenContent && <CanvasCardButton type="button" aria-label={`放大${card.title}到右侧完整工作区`} title="放大到右侧完整工作区" onClick={() => onOpenContent(card.id)}><IconMaximize size={14} /></CanvasCardButton>}<CanvasCardButton type="button" active={card.pinned} aria-label={card.pinned ? `取消固定${card.title}` : `固定${card.title}`} title={card.pinned ? "取消固定" : "固定位置与尺寸"} onClick={() => actions.togglePin(card.id)}><IconPin size={14} /></CanvasCardButton><CanvasCardButton type="button" aria-label={collapsed ? `展开${card.title}` : `折叠${card.title}`} title={collapsed ? "展开内容" : "折叠内容"} aria-expanded={!collapsed} onClick={() => toggleCollapsed(card.id)}>{collapsed ? <IconChevronRight size={14} /> : <IconChevronDown size={14} />}</CanvasCardButton></CanvasCardActions>
+              {positionEditing && <CanvasCardButton className="tc-move-handle" type="button" disabled={card.pinned} aria-label={`移动${card.title}；方向键微调，Shift 加快`} title={card.pinned ? "已固定位置" : "拖动标题移动；方向键微调"} onPointerDown={(event) => beginMove(event, card)} onKeyDown={(event) => keyboardMove(event, card)}><IconGripVertical size={ICON_SIZE.control} /></CanvasCardButton>}<div className="canvas-card-title"><h3 title={card.title}>{card.title}</h3></div>{collapsed && <small className="tc-collapse-summary">{cardSummary(card)}</small>}{card.pinned && <span className="tc-pin-label"><IconPin size={ICON_SIZE.micro} />已固定</span>}
+              <CanvasCardActions className="tc-card-actions"><CanvasCardButton type="button" aria-label={`聚焦到${card.title}`} title="聚焦到画布中的这个节点" onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><IconFocus2 size={ICON_SIZE.inline} /></CanvasCardButton>{onOpenContent && <CanvasCardButton type="button" aria-label={`放大${card.title}到右侧完整工作区`} title="放大到右侧完整工作区" onClick={() => onOpenContent(card.id)}><IconMaximize size={ICON_SIZE.inline} /></CanvasCardButton>}<CanvasCardButton type="button" active={card.pinned} aria-label={card.pinned ? `取消固定${card.title}` : `固定${card.title}`} title={card.pinned ? "取消固定" : "固定位置与尺寸"} onClick={() => actions.togglePin(card.id)}><IconPin size={ICON_SIZE.inline} /></CanvasCardButton><CanvasCardButton type="button" aria-label={collapsed ? `展开${card.title}` : `折叠${card.title}`} title={collapsed ? "展开内容" : "折叠内容"} aria-expanded={!collapsed} onClick={() => toggleCollapsed(card.id)}>{collapsed ? <IconChevronRight size={ICON_SIZE.inline} /> : <IconChevronDown size={ICON_SIZE.inline} />}</CanvasCardButton></CanvasCardActions>
             </CanvasCardHeader>
             <div className="tc-card-content" hidden={collapsed} role={isAddCustom ? "region" : undefined} tabIndex={isAddCustom ? 0 : undefined} aria-label={isAddCustom ? `${card.title}内容，可在卡片内滚动查看` : undefined} onWheel={(event) => {
               const content = event.currentTarget;
               if (!event.ctrlKey && !event.metaKey && content.scrollHeight > content.clientHeight + 1) event.stopPropagation();
             }}>{card.kind === "note" ? <textarea className="tc-note-editor" aria-label={`${card.title}内容`} placeholder="记下当前判断、待办或补充说明…" value={card.noteText || ""} disabled={!positionEditing} onChange={(event) => actions.updateCard?.(card.id, { noteText: event.target.value })} /> : renderMaterial ? renderMaterial(card.id, card) : <div className="tc-slot-placeholder"><span>当前任务内容</span><button type="button" onClick={onOpenContents}>打开内容索引</button></div>}</div>
-            {!collapsed && positionEditing && <button className="tc-resize-handle" type="button" disabled={card.pinned} aria-label={`调整${card.title}尺寸；方向键微调`} title={card.pinned ? "已固定尺寸" : "拖动调整尺寸；方向键微调"} onPointerDown={(event) => beginResize(event, card)} onKeyDown={(event) => keyboardResize(event, card)}><IconArrowsDiagonal size={12} /></button>}
+            {!collapsed && positionEditing && <button className="tc-resize-handle" type="button" disabled={card.pinned} aria-label={`调整${card.title}尺寸；方向键微调`} title={card.pinned ? "已固定尺寸" : "拖动调整尺寸；方向键微调"} onPointerDown={(event) => beginResize(event, card)} onKeyDown={(event) => keyboardResize(event, card)}><IconArrowsDiagonal size={ICON_SIZE.micro} /></button>}
           </CanvasCardFrame>;
         })}
       </div>
 
       {contentsOpen && contents && <div className="tc-floating-index">{contents}</div>}
-      {!visibleCards.length && <div className="tc-empty-state"><IconLayoutBoard size={23} /><strong>{hiddenCards.length ? "当前内容已收纳" : "尚未加入材料"}</strong><p>{hiddenCards.length ? "从本任务内容中恢复，位置和操作记录仍保留。" : "在对话或材料中选择“在画布中整理”，把需要关联的内容放到这里。"}</p><button type="button" onClick={onOpenContents}><IconLayoutList size={14} />选择本任务材料</button></div>}
+      {!visibleCards.length && <div className="tc-empty-state"><IconLayoutBoard size={ICON_SIZE.feature} /><strong>{hiddenCards.length ? "当前内容已收纳" : "尚未加入材料"}</strong><p>{hiddenCards.length ? "从本任务内容中恢复，位置和操作记录仍保留。" : "在对话或材料中选择“在画布中整理”，把需要关联的内容放到这里。"}</p><button type="button" onClick={onOpenContents}><IconLayoutList size={ICON_SIZE.inline} />选择本任务材料</button></div>}
 
       <CanvasMiniMap className="tc-mini-map" placement="bottom-right" viewBox={minimapBounds} viewport={{ x: -panX / zoom, y: -panY / zoom, width: stageSize.width / zoom, height: stageSize.height / zoom }} onNavigate={navigateMap} onFit={() => actions.fitCanvas(stageSize.width, stageSize.height)} ariaLabel="小地图，点击或拖动定位；Enter 适应全部内容">
         {visibleCards.map((card) => <rect key={card.id} x={card.x} y={card.y} width={card.width} height={isCollapsed(card) ? COLLAPSED_HEIGHT : card.height} rx="8" className={`canvas-minimap-item${selected?.id === card.id ? " is-selected" : ""}`} />)}
@@ -410,7 +411,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
 
       <div className="tc-canvas-hint">{drawingMode ? "绘图中：在画布空白处拖动绘制 · Esc 退出编辑" : positionEditing ? "编辑中：拖动卡片标题移动 · 可添加节点、笔记或绘图 · Esc 退出编辑" : "空白拖动平移 · ⌘ / Ctrl 滚轮缩放"}{hiddenCards.length ? ` · 已收纳 ${hiddenCards.length} 项` : ""}</div>
     </CanvasSurface>
-    {(flow?.state?.notice || flow?.state?.error) && <div className={"tc-flow-status" + (flow.state.error ? " is-error" : "")} role={flow.state.error ? "alert" : "status"} aria-live="polite">{flow.state.error ? <IconAlertTriangle size={13} /> : <IconLayoutBoard size={13} />}<span>{flow.state.error || flow.state.notice}</span></div>}
+    {(flow?.state?.notice || flow?.state?.error) && <div className={"tc-flow-status" + (flow.state.error ? " is-error" : "")} role={flow.state.error ? "alert" : "status"} aria-live="polite">{flow.state.error ? <IconAlertTriangle size={ICON_SIZE.inline} /> : <IconLayoutBoard size={ICON_SIZE.inline} />}<span>{flow.state.error || flow.state.notice}</span></div>}
   </aside>;
 }
 

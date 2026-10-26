@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import "./addcustom-task-canvas.css";
 import { IconArrowLeft } from "@tabler/icons-react";
 
@@ -14,7 +15,7 @@ export function AddCustomTaskCanvas({ item, relatedItems = [], onOpenRelated, on
       </div>
       <div className="ac-task-canvas-header-actions">
         {item?.state?.label && <span className={`ac-task-canvas-state${toneClass(item.state.tone)}`} title={item.state.detail || item.state.label}>{item.state.label}</span>}
-        <button type="button" className="ac-task-canvas-return" onClick={onReturnCanvas} aria-label="返回画布中的聚焦视图" title="返回画布中的聚焦视图"><IconArrowLeft size={14} /><span>返回画布</span></button>
+        <button type="button" className="ac-task-canvas-return" onClick={onReturnCanvas} aria-label="返回画布中的聚焦视图" title="返回画布中的聚焦视图"><IconArrowLeft size={ICON_SIZE.inline} /><span>返回画布</span></button>
       </div>
     </header>
     <div className="ac-task-canvas-main">{children}</div>

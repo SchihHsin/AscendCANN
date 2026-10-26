@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useMemo, useState } from "react";
 import { IconArrowRight, IconCalendarEvent, IconCircleCheck, IconSearch, IconSparkles, IconUsersGroup, IconVideo } from "@tabler/icons-react";
 import { LEARNING_TASK } from "./learning-data";
@@ -147,9 +148,9 @@ function DiscoveryCard({ item, onOpen, followed, onFollow }) {
         <p className="ld-card-description">{item.description}</p>
         <div className="ld-card-bottom">
           <span className="ld-card-meta">{item.meta}</span>
-          {item.href ? <a className="ld-card-action" href={item.href} target="_blank" rel="noreferrer">{item.action}<IconArrowRight size={15} /></a>
-            : item.followId ? <button className={`ld-card-action${followed ? " is-followed" : ""}`} type="button" aria-pressed={followed} onClick={() => onFollow(item.followId)}>{followed ? "已关注" : item.action}{followed ? <IconCircleCheck size={15} /> : <IconArrowRight size={15} />}</button>
-              : <button className="ld-card-action" type="button" onClick={() => onOpen(item.destination)}>{item.action}<IconArrowRight size={15} /></button>}
+          {item.href ? <a className="ld-card-action" href={item.href} target="_blank" rel="noreferrer">{item.action}<IconArrowRight size={ICON_SIZE.control} /></a>
+            : item.followId ? <button className={`ld-card-action${followed ? " is-followed" : ""}`} type="button" aria-pressed={followed} onClick={() => onFollow(item.followId)}>{followed ? "已关注" : item.action}{followed ? <IconCircleCheck size={ICON_SIZE.control} /> : <IconArrowRight size={ICON_SIZE.control} />}</button>
+              : <button className="ld-card-action" type="button" onClick={() => onOpen(item.destination)}>{item.action}<IconArrowRight size={ICON_SIZE.control} /></button>}
         </div>
       </div>
     </article>
@@ -180,9 +181,9 @@ export function LearningDiscoveryPage({ onOpenItem }) {
       <header className="ld-header">
         <div className="ld-hero-inner">
           <div className="ld-hero-topline">
-            <div className="ld-featured-state"><IconSparkles size={15} /><span>为你推荐</span><i aria-hidden="true" /></div>
+            <div className="ld-featured-state"><IconSparkles size={ICON_SIZE.control} /><span>为你推荐</span><i aria-hidden="true" /></div>
             <label className="ld-search">
-              <IconSearch size={16} />
+              <IconSearch size={ICON_SIZE.control} />
               <input value={query} onChange={event => setQuery(event.target.value)} placeholder="搜索课程、知识点或活动" aria-label="搜索学习内容与活动" />
             </label>
           </div>
@@ -191,7 +192,7 @@ export function LearningDiscoveryPage({ onOpenItem }) {
               <span className="ld-featured-type">学习路径 <span>{OFFICIAL_LEARNING_STAGES.length} 个阶段 · {featuredPathActionCount} 个学习动作 · 约 {featuredPathDuration} 分钟</span></span>
               <h1>{featuredRecommendation.title}</h1>
               <p>{featuredRecommendation.description}</p>
-              <button className="ld-primary-action" type="button" onClick={() => onOpenItem(featuredRecommendation.destination)}>{featuredRecommendation.action}<IconArrowRight size={16} /></button>
+              <button className="ld-primary-action" type="button" onClick={() => onOpenItem(featuredRecommendation.destination)}>{featuredRecommendation.action}<IconArrowRight size={ICON_SIZE.control} /></button>
             </div>
             <div className="ld-featured-art">
               <img src={featuredResnetPathImage} alt="猫图像经过张量特征处理与 ResNet50 推理，生成分类结果" />
@@ -263,9 +264,9 @@ export function LearningDiscoveryPage({ onOpenItem }) {
                   <small className="ld-event-place">{event.place}</small>
                 </div>
                 <div className={`ld-event-media${event.image ? " has-image" : ""}`} aria-hidden="true">
-                  {event.image ? <img src={event.image} alt="" loading="lazy" /> : <EventIcon size={23} />}
+                  {event.image ? <img src={event.image} alt="" loading="lazy" /> : <EventIcon size={ICON_SIZE.feature} />}
                 </div>
-                <button className={`ld-join-button${isJoined ? " is-joined" : ""}`} type="button" aria-pressed={isJoined} onClick={() => toggleSet(setJoinedEvents, event.id)}>{isJoined ? <><IconCircleCheck size={15} />已加入</> : <>加入日程<IconArrowRight size={15} /></>}</button>
+                <button className={`ld-join-button${isJoined ? " is-joined" : ""}`} type="button" aria-pressed={isJoined} onClick={() => toggleSet(setJoinedEvents, event.id)}>{isJoined ? <><IconCircleCheck size={ICON_SIZE.control} />已加入</> : <>加入日程<IconArrowRight size={ICON_SIZE.control} /></>}</button>
               </article>;
             })}
           </div>

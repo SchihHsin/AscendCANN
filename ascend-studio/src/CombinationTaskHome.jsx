@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { IconSparkles, IconSend } from "@tabler/icons-react";
 import {
@@ -378,7 +379,7 @@ export function CombinationTaskHome({ onCreateTask }) {
     </div>
 
     <form className="combination-composer" onSubmit={submit}>
-      <IconSparkles className="combination-composer__sparkle" size={19} aria-hidden="true" />
+      <IconSparkles className="combination-composer__sparkle" size={ICON_SIZE.navigation} aria-hidden="true" />
       <textarea
         aria-label="根据连接字段生成的需求草稿"
         value={draft}
@@ -387,7 +388,7 @@ export function CombinationTaskHome({ onCreateTask }) {
         placeholder="连接训练目标、现象、环境和验证字段…"
         rows={2}
       />
-      <button className="combination-composer__send" type="submit" aria-label="发送并开始" disabled={!draft.trim()}><IconSend size={19} aria-hidden="true" /></button>
+      <button className="combination-composer__send" type="submit" aria-label="发送并开始" disabled={!draft.trim()}><IconSend size={ICON_SIZE.navigation} aria-hidden="true" /></button>
     </form>
     {error && <p className="combination-home__error" role="alert">{error}</p>}
   </section>;

@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -28,7 +29,7 @@ const dialogConfig = {
 
 function FormError({ message }) {
   if (!message) return null;
-  return <p className="wb-dialog-error" role="alert"><IconAlertCircle size={16} /><span>{message}</span></p>;
+  return <p className="wb-dialog-error" role="alert"><IconAlertCircle size={ICON_SIZE.control} /><span>{message}</span></p>;
 }
 
 function EmptyState({ children }) {
@@ -69,7 +70,7 @@ function NewTaskForm({ groups = [], onCreateTask, onClose }) {
     <label className="wb-field"><span>{learning ? "想学会什么" : "任务目标"}</span><textarea required rows={learning ? 3 : 4} maxLength={2000} value={goal} onChange={(event) => { setGoal(event.target.value); setError(""); }} placeholder={learning ? "例如：理解图像通道与输入维度，并能读懂一段预处理代码。" : "描述期望结果、已有信息和需要检查的内容。"} /></label>
     {learning && <><label className="wb-field"><span>已有基础</span><textarea rows={2} maxLength={1000} value={background} onChange={(event) => setBackground(event.target.value)} placeholder="例如：会一点 Python，第一次接触模型输入。" /></label><label className="wb-field"><span>每天可用时间</span><select value={dailyMinutes} onChange={(event) => setDailyMinutes(event.target.value)}>{[10, 20, 30, 45, 60].map(minutes => <option key={minutes} value={minutes}>{minutes} 分钟</option>)}</select></label></>}
     <FormError message={error} />
-    <FormActions onClose={onClose}><button className="wb-button wb-button-primary" type="submit" disabled={!groups.length}>{learning ? "创建学习任务" : "创建任务"}<IconArrowRight size={15} /></button></FormActions>
+    <FormActions onClose={onClose}><button className="wb-button wb-button-primary" type="submit" disabled={!groups.length}>{learning ? "创建学习任务" : "创建任务"}<IconArrowRight size={ICON_SIZE.control} /></button></FormActions>
   </form>;
 }
 
@@ -88,7 +89,7 @@ function CodeForm({ taskName, onAttachCode, onClose }) {
     <label className="wb-field"><span>文件名</span><input required maxLength={160} value={name} onChange={(event) => { setName(event.target.value); setError(""); }} placeholder="custom_op.cpp" /></label>
     <label className="wb-field"><span>代码片段</span><textarea className="wb-code-input" data-initial-focus required rows={11} maxLength={50000} value={content} onChange={(event) => { setContent(event.target.value); setError(""); }} placeholder="粘贴与当前问题相关的代码……" spellCheck={false} /></label>
     <FormError message={error} />
-    <FormActions onClose={onClose}><button className="wb-button wb-button-primary" type="submit"><IconCode size={15} />附加到对话</button></FormActions>
+    <FormActions onClose={onClose}><button className="wb-button wb-button-primary" type="submit"><IconCode size={ICON_SIZE.control} />附加到对话</button></FormActions>
   </form>;
 }
 
@@ -98,9 +99,9 @@ export function CapabilityList({ capabilities = [], onUseCapability }) {
   const categories = useMemo(() => ["全部", ...new Set(capabilities.map((item) => item.category).filter(Boolean))], [capabilities]);
   const visible = capabilities.filter((item) => (category === "全部" || item.category === category) && [item.name, item.description, item.category, item.prompt].filter(Boolean).join(" ").toLowerCase().includes(query.trim().toLowerCase()));
   return <div className="wb-content-stack">
-    <label className="wb-search"><IconSearch size={17} /><input data-initial-focus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索能力名称或用途" aria-label="搜索能力" /></label>
+    <label className="wb-search"><IconSearch size={ICON_SIZE.heading} /><input data-initial-focus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索能力名称或用途" aria-label="搜索能力" /></label>
     <div className="wb-filter-row" aria-label="能力分类">{categories.map((item) => <button key={item} type="button" className={"wb-filter" + (item === category ? " is-active" : "")} aria-pressed={item === category} onClick={() => setCategory(item)}>{item}</button>)}</div>
-    <div className="wb-item-list">{visible.length ? visible.map((item) => <article className="wb-list-item" key={item.id}><div className="wb-item-copy"><div className="wb-item-heading"><h3>{item.name}</h3>{item.category && <span className="wb-tag">{item.category}</span>}</div><p>{item.description}</p>{item.prompt && <div className="wb-prompt-preview">{item.prompt}</div>}</div><button className="wb-button" type="button" onClick={() => onUseCapability?.(item.id)}>使用<IconArrowRight size={14} /></button></article>) : <EmptyState>{capabilities.length ? "没有匹配的能力，试试其他关键词。" : "暂时没有可用能力。"}</EmptyState>}</div>
+    <div className="wb-item-list">{visible.length ? visible.map((item) => <article className="wb-list-item" key={item.id}><div className="wb-item-copy"><div className="wb-item-heading"><h3>{item.name}</h3>{item.category && <span className="wb-tag">{item.category}</span>}</div><p>{item.description}</p>{item.prompt && <div className="wb-prompt-preview">{item.prompt}</div>}</div><button className="wb-button" type="button" onClick={() => onUseCapability?.(item.id)}>使用<IconArrowRight size={ICON_SIZE.inline} /></button></article>) : <EmptyState>{capabilities.length ? "没有匹配的能力，试试其他关键词。" : "暂时没有可用能力。"}</EmptyState>}</div>
   </div>;
 }
 
@@ -117,18 +118,18 @@ export function AutomationList({ automations = [], onToggleAutomation, onRunAuto
     } catch { setError("自动化未能添加，请重试。"); }
   };
   return <div className="wb-content-stack">
-    <div className="wb-preview-note"><IconAlertCircle size={16} /><p>这是本次预览的状态演示。开关、周期和运行记录仅保存在页面中，未连接真实定时调度。</p></div>
-    <div className="wb-item-list">{automations.length ? automations.map((item) => <article className="wb-list-item wb-automation-item" key={item.id}><div className="wb-item-copy"><h3>{item.name}</h3><p>{item.cadence} · {item.enabled ? "已启用" : "已暂停"}</p><small>最近演示运行：{item.lastRun || "尚未运行"}</small></div><div className="wb-automation-actions"><button className="wb-switch" type="button" role="switch" aria-checked={item.enabled} aria-label={(item.enabled ? "暂停" : "启用") + item.name} onClick={() => onToggleAutomation?.(item.id)}><span /></button><button className="wb-button" type="button" disabled={Boolean(item.running)} onClick={() => onRunAutomation?.(item.id)}><IconPlayerPlay size={14} />{item.running ? "演示运行中…" : "演示运行"}</button></div></article>) : <EmptyState>尚无自动化任务，可以在下方添加一个演示任务。</EmptyState>}</div>
-    <form className="wb-form wb-inline-form" onSubmit={submit}><h3 className="wb-form-heading">新增自动化</h3><div className="wb-field-grid"><label className="wb-field"><span>名称</span><input required maxLength={80} value={name} onChange={(event) => { setName(event.target.value); setError(""); }} placeholder="例如：检查构建日志" /></label><label className="wb-field"><span>周期</span><input required maxLength={100} value={cadence} onChange={(event) => setCadence(event.target.value)} placeholder="每个工作日 09:00" /></label></div><FormError message={error} /><div className="wb-inline-actions"><button className="wb-button" type="submit"><IconPlus size={14} />添加演示任务</button></div></form>
+    <div className="wb-preview-note"><IconAlertCircle size={ICON_SIZE.control} /><p>这是本次预览的状态演示。开关、周期和运行记录仅保存在页面中，未连接真实定时调度。</p></div>
+    <div className="wb-item-list">{automations.length ? automations.map((item) => <article className="wb-list-item wb-automation-item" key={item.id}><div className="wb-item-copy"><h3>{item.name}</h3><p>{item.cadence} · {item.enabled ? "已启用" : "已暂停"}</p><small>最近演示运行：{item.lastRun || "尚未运行"}</small></div><div className="wb-automation-actions"><button className="wb-switch" type="button" role="switch" aria-checked={item.enabled} aria-label={(item.enabled ? "暂停" : "启用") + item.name} onClick={() => onToggleAutomation?.(item.id)}><span /></button><button className="wb-button" type="button" disabled={Boolean(item.running)} onClick={() => onRunAutomation?.(item.id)}><IconPlayerPlay size={ICON_SIZE.inline} />{item.running ? "演示运行中…" : "演示运行"}</button></div></article>) : <EmptyState>尚无自动化任务，可以在下方添加一个演示任务。</EmptyState>}</div>
+    <form className="wb-form wb-inline-form" onSubmit={submit}><h3 className="wb-form-heading">新增自动化</h3><div className="wb-field-grid"><label className="wb-field"><span>名称</span><input required maxLength={80} value={name} onChange={(event) => { setName(event.target.value); setError(""); }} placeholder="例如：检查构建日志" /></label><label className="wb-field"><span>周期</span><input required maxLength={100} value={cadence} onChange={(event) => setCadence(event.target.value)} placeholder="每个工作日 09:00" /></label></div><FormError message={error} /><div className="wb-inline-actions"><button className="wb-button" type="submit"><IconPlus size={ICON_SIZE.inline} />添加演示任务</button></div></form>
   </div>;
 }
 
 function HistoryList({ history = [], onRestoreConversation }) {
-  return <div className="wb-item-list">{history.length ? history.map((item) => <article className="wb-list-item" key={item.id}><div className="wb-item-copy"><h3>{item.title}</h3><p>{item.time || "本次会话"} · {(item.messages?.length || 0) + (item.showIntro ? 2 : 0)} 条消息</p>{item.messages?.length > 0 && <div className="wb-history-preview">{item.messages.at(-1)?.text || "已有对话记录"}</div>}</div><button className="wb-button" type="button" onClick={() => onRestoreConversation?.(item.id)}><IconHistory size={14} />恢复</button></article>) : <EmptyState>尚无已保存的对话记录。</EmptyState>}</div>;
+  return <div className="wb-item-list">{history.length ? history.map((item) => <article className="wb-list-item" key={item.id}><div className="wb-item-copy"><h3>{item.title}</h3><p>{item.time || "本次会话"} · {(item.messages?.length || 0) + (item.showIntro ? 2 : 0)} 条消息</p>{item.messages?.length > 0 && <div className="wb-history-preview">{item.messages.at(-1)?.text || "已有对话记录"}</div>}</div><button className="wb-button" type="button" onClick={() => onRestoreConversation?.(item.id)}><IconHistory size={ICON_SIZE.inline} />恢复</button></article>) : <EmptyState>尚无已保存的对话记录。</EmptyState>}</div>;
 }
 
 function ModelList({ modelOptions = [], selectedModel, onSelectModel }) {
-  return <div className="wb-content-stack"><p className="wb-context">本原型使用本地演示回复；选择配置会更新界面中的 AI 名称。</p><div className="wb-model-list" role="group" aria-label="AI 配置">{modelOptions.length ? modelOptions.map((item) => <button className={"wb-model-item" + (item.id === selectedModel ? " is-selected" : "")} type="button" key={item.id} aria-pressed={item.id === selectedModel} onClick={() => onSelectModel?.(item.id)}><IconCpu size={20} /><span><strong>{item.label}</strong><small>{item.description}</small></span>{item.id === selectedModel ? <IconCheck className="wb-model-check" size={18} /> : <span className="wb-model-check" />}</button>) : <EmptyState>暂无可选的 AI 配置。</EmptyState>}</div></div>;
+  return <div className="wb-content-stack"><p className="wb-context">本原型使用本地演示回复；选择配置会更新界面中的 AI 名称。</p><div className="wb-model-list" role="group" aria-label="AI 配置">{modelOptions.length ? modelOptions.map((item) => <button className={"wb-model-item" + (item.id === selectedModel ? " is-selected" : "")} type="button" key={item.id} aria-pressed={item.id === selectedModel} onClick={() => onSelectModel?.(item.id)}><IconCpu size={ICON_SIZE.navigation} /><span><strong>{item.label}</strong><small>{item.description}</small></span>{item.id === selectedModel ? <IconCheck className="wb-model-check" size={ICON_SIZE.heading} /> : <span className="wb-model-check" />}</button>) : <EmptyState>暂无可选的 AI 配置。</EmptyState>}</div></div>;
 }
 
 function AttemptsList({ attempts = [], onAddAttempt }) {
@@ -143,7 +144,7 @@ function AttemptsList({ attempts = [], onAddAttempt }) {
       setTitle(""); setSummary(""); setError("");
     } catch { setError("记录未能保存，请重试。"); }
   };
-  return <div className="wb-content-stack"><div className="wb-item-list">{attempts.length ? attempts.map((item, index) => <article className="wb-list-item" key={item.id || `${item.title}-${index}`}><div className="wb-attempt-number">{String(index + 1).padStart(2, "0")}</div><div className="wb-item-copy"><h3>{item.title}</h3><p>{item.summary}</p><small>{item.time || "本次会话"}</small></div></article>) : <EmptyState>尚未记录已尝试动作。</EmptyState>}</div><form className="wb-form wb-inline-form" onSubmit={submit}><h3 className="wb-form-heading">手动记录动作</h3><label className="wb-field"><span>做了什么</span><input required maxLength={120} value={title} onChange={(event) => { setTitle(event.target.value); setError(""); }} placeholder="例如：调整编译参数并重新运行" /></label><label className="wb-field"><span>结果与观察</span><textarea required rows={3} maxLength={2000} value={summary} onChange={(event) => { setSummary(event.target.value); setError(""); }} placeholder="记录实际观察到的结果、日志或仍未解决的问题。" /></label><FormError message={error} /><div className="wb-inline-actions"><button className="wb-button" type="submit"><IconPlus size={14} />保存记录</button></div></form></div>;
+  return <div className="wb-content-stack"><div className="wb-item-list">{attempts.length ? attempts.map((item, index) => <article className="wb-list-item" key={item.id || `${item.title}-${index}`}><div className="wb-attempt-number">{String(index + 1).padStart(2, "0")}</div><div className="wb-item-copy"><h3>{item.title}</h3><p>{item.summary}</p><small>{item.time || "本次会话"}</small></div></article>) : <EmptyState>尚未记录已尝试动作。</EmptyState>}</div><form className="wb-form wb-inline-form" onSubmit={submit}><h3 className="wb-form-heading">手动记录动作</h3><label className="wb-field"><span>做了什么</span><input required maxLength={120} value={title} onChange={(event) => { setTitle(event.target.value); setError(""); }} placeholder="例如：调整编译参数并重新运行" /></label><label className="wb-field"><span>结果与观察</span><textarea required rows={3} maxLength={2000} value={summary} onChange={(event) => { setSummary(event.target.value); setError(""); }} placeholder="记录实际观察到的结果、日志或仍未解决的问题。" /></label><FormError message={error} /><div className="wb-inline-actions"><button className="wb-button" type="submit"><IconPlus size={ICON_SIZE.inline} />保存记录</button></div></form></div>;
 }
 
 function EvidenceDetail({ evidenceDetail }) {
@@ -201,7 +202,7 @@ export function WorkbenchDialogs({ dialog, onClose, ...props }) {
   const HeaderIcon = config.icon;
   return createPortal(<div className="wb-modal-overlay" onClick={(event) => { if (event.target === event.currentTarget) onClose?.(); }}>
     <section className={"wb-modal wb-modal-" + dialog} ref={modalRef} role="dialog" aria-modal="true" aria-labelledby={titleId} aria-describedby={descriptionId} tabIndex={-1}>
-      <header className="wb-modal-header"><div className="wb-modal-title-row"><span className="wb-modal-icon"><HeaderIcon size={19} /></span><h2 id={titleId}>{config.title}</h2><button className="wb-close-button" type="button" onClick={onClose} aria-label="关闭对话框"><IconX size={19} /></button></div><p id={descriptionId}>{config.description}</p></header>
+      <header className="wb-modal-header"><div className="wb-modal-title-row"><span className="wb-modal-icon"><HeaderIcon size={ICON_SIZE.navigation} /></span><h2 id={titleId}>{config.title}</h2><button className="wb-close-button" type="button" onClick={onClose} aria-label="关闭对话框"><IconX size={ICON_SIZE.navigation} /></button></div><p id={descriptionId}>{config.description}</p></header>
       <div className="wb-modal-body"><DialogContent key={dialog} dialog={dialog} onClose={onClose} {...props} /></div>
     </section>
   </div>, document.body);

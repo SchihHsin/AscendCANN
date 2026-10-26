@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useId, useRef, useState } from "react";
 import {
   IconArrowRight,
@@ -74,7 +75,7 @@ export default function ProactiveCue({
     >
       <div className="proactive-cue-heading">
         <span className="proactive-cue-icon" aria-hidden="true">
-          <IconInfoCircle size={17} stroke={1.8} />
+          <IconInfoCircle size={ICON_SIZE.heading} />
         </span>
         <div className="proactive-cue-heading-copy">
           <h3 id={`${contentId}-title`}>{title}</h3>
@@ -89,7 +90,7 @@ export default function ProactiveCue({
               aria-controls={`${contentId}-body`}
               onClick={onExpand}
             >
-              展开<IconChevronDown size={15} aria-hidden="true" />
+              展开<IconChevronDown size={ICON_SIZE.control} aria-hidden="true" />
             </button>
           )}
           {onDismiss && !isCollapsed && (
@@ -99,7 +100,7 @@ export default function ProactiveCue({
               aria-label="收起建议"
               onClick={onDismiss}
             >
-              <IconX size={16} aria-hidden="true" />
+              <IconX size={ICON_SIZE.control} aria-hidden="true" />
             </button>
           )}
         </div>
@@ -117,7 +118,7 @@ export default function ProactiveCue({
                 onClick={onPrimary}
                 disabled={busy || !onPrimary}
               >
-                {primaryLabel}<IconArrowRight size={15} aria-hidden="true" />
+                {primaryLabel}<IconArrowRight size={ICON_SIZE.control} aria-hidden="true" />
               </button>
             )}
             {secondaryLabel && (

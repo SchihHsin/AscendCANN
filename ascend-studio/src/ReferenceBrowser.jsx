@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useState } from "react";
 import {
   IconArrowLeft,
@@ -75,20 +76,20 @@ export function ReferenceBrowser({ reference = ASCEND_C_REFERENCE, resetVersion 
   return <div className="rb-browser">
     <ContentToolbar label="网页浏览工具"><div className="rb-toolbar">
       <div className="rb-navigation">
-        <button type="button" title="返回此前打开的地址" aria-label="返回此前打开的地址" disabled={position === 0} onClick={() => move(-1)}><IconArrowLeft size={15} /></button>
-        <button type="button" title="前往下一个地址" aria-label="前往下一个地址" disabled={position === history.length - 1} onClick={() => move(1)}><IconArrowRight size={15} /></button>
-        <button type="button" title="重新加载网页" aria-label="重新加载网页" onClick={reload}><IconReload size={15} /></button>
+        <button type="button" title="返回此前打开的地址" aria-label="返回此前打开的地址" disabled={position === 0} onClick={() => move(-1)}><IconArrowLeft size={ICON_SIZE.control} /></button>
+        <button type="button" title="前往下一个地址" aria-label="前往下一个地址" disabled={position === history.length - 1} onClick={() => move(1)}><IconArrowRight size={ICON_SIZE.control} /></button>
+        <button type="button" title="重新加载网页" aria-label="重新加载网页" onClick={reload}><IconReload size={ICON_SIZE.control} /></button>
       </div>
       <form className="rb-address" onSubmit={(event) => { event.preventDefault(); navigate(address); }}>
-        {currentUrl.startsWith("https:") ? <IconLock size={13} aria-hidden="true" /> : <IconWorld size={13} aria-hidden="true" />}
+        {currentUrl.startsWith("https:") ? <IconLock size={ICON_SIZE.inline} aria-hidden="true" /> : <IconWorld size={ICON_SIZE.inline} aria-hidden="true" />}
         <input type="url" aria-label="网页地址" value={address} onChange={(event) => setAddress(event.target.value)} spellCheck={false} />
-        <button type="submit" title="打开此地址" aria-label="打开此地址"><IconArrowRight size={13} /></button>
+        <button type="submit" title="打开此地址" aria-label="打开此地址"><IconArrowRight size={ICON_SIZE.inline} /></button>
       </form>
-      <a className="rb-external" href={currentUrl} target="_blank" rel="noopener noreferrer" title="在外部浏览器打开" aria-label="在外部浏览器打开"><IconExternalLink size={15} /></a>
+      <a className="rb-external" href={currentUrl} target="_blank" rel="noopener noreferrer" title="在外部浏览器打开" aria-label="在外部浏览器打开"><IconExternalLink size={ICON_SIZE.control} /></a>
     </div></ContentToolbar>
     {error && <p className="rb-error" role="alert">{error}</p>}
-    <div className="rb-reference-meta"><IconBook size={14} /><span><strong>{isOriginal ? reference.title : pageHost}</strong><small>{isOriginal ? `${reference.publisher} · 版本以原网页为准` : "当前打开的网页"}</small></span><a href={reference.url} target="_blank" rel="noopener noreferrer">原始参考<IconExternalLink size={12} /></a></div>
-    <div className="rb-embed-notice"><span>{embedError ? "当前网页无法嵌入，请在外部浏览器中查看。" : "网页由原站提供；若显示空白或拒绝连接，可在外部浏览器中查看。"}</span><a href={currentUrl} target="_blank" rel="noopener noreferrer">外部打开<IconExternalLink size={12} /></a></div>
+    <div className="rb-reference-meta"><IconBook size={ICON_SIZE.inline} /><span><strong>{isOriginal ? reference.title : pageHost}</strong><small>{isOriginal ? `${reference.publisher} · 版本以原网页为准` : "当前打开的网页"}</small></span><a href={reference.url} target="_blank" rel="noopener noreferrer">原始参考<IconExternalLink size={ICON_SIZE.micro} /></a></div>
+    <div className="rb-embed-notice"><span>{embedError ? "当前网页无法嵌入，请在外部浏览器中查看。" : "网页由原站提供；若显示空白或拒绝连接，可在外部浏览器中查看。"}</span><a href={currentUrl} target="_blank" rel="noopener noreferrer">外部打开<IconExternalLink size={ICON_SIZE.micro} /></a></div>
     <div className="rb-frame-wrap">
       <iframe key={`${currentUrl}:${reloadVersion}`} src={currentUrl} title={isOriginal ? "Ascend C 官方参考网页" : "参考网页查看器"} className="rb-frame" referrerPolicy="strict-origin-when-cross-origin" onError={() => setEmbedError(true)} />
     </div>

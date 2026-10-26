@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "../../icon-system.js";
 import { forwardRef, useRef } from "react";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 
@@ -21,9 +22,9 @@ export function CanvasToolButton({ active, className = "", children, ...props })
 export function CanvasZoomGroup({ value, onZoom, onReset, min = 0.15, max = 1.5, step = 0.1, label = "缩放画布" }) {
   const percent = Math.round(value * 100);
   return <CanvasToolbarGroup className="canvas-toolbar-zoom" label={label}>
-    <CanvasToolButton type="button" disabled={value <= min} aria-label="缩小画布" title="缩小画布" onClick={() => onZoom(-step)}><IconMinus size={15} /></CanvasToolButton>
+    <CanvasToolButton type="button" disabled={value <= min} aria-label="缩小画布" title="缩小画布" onClick={() => onZoom(-step)}><IconMinus size={ICON_SIZE.control} /></CanvasToolButton>
     <CanvasToolButton type="button" className="canvas-zoom-value" aria-label={`当前缩放 ${percent}%，点击恢复 100%`} title="恢复 100%" onClick={onReset}>{percent}%</CanvasToolButton>
-    <CanvasToolButton type="button" disabled={value >= max} aria-label="放大画布" title="放大画布" onClick={() => onZoom(step)}><IconPlus size={15} /></CanvasToolButton>
+    <CanvasToolButton type="button" disabled={value >= max} aria-label="放大画布" title="放大画布" onClick={() => onZoom(step)}><IconPlus size={ICON_SIZE.control} /></CanvasToolButton>
   </CanvasToolbarGroup>;
 }
 

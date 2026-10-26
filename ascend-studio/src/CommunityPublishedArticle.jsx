@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { IconArrowLeft, IconChevronRight, IconExternalLink, IconEye, IconThumbUp } from "@tabler/icons-react";
 import { getCommunityDraftTopic } from "./ChannelDraftContent.jsx";
 import "./community-published.css";
@@ -21,11 +22,11 @@ export function CommunityPublishedArticle({ draft, onBack, embedded = false }) {
 
   return <section className={`community-published-panel${embedded ? " is-embedded" : ""}`} aria-label="昇腾社区文章发布后预览">
     {!embedded && <div className="community-published-demo-bar">
-      {onBack && <button type="button" className="community-published-back" onClick={onBack}><IconArrowLeft size={13} aria-hidden="true" />多渠道预览</button>}
+      {onBack && <button type="button" className="community-published-back" onClick={onBack}><IconArrowLeft size={ICON_SIZE.inline} aria-hidden="true" />多渠道预览</button>}
       <span className="community-published-demo-status"><i aria-hidden="true" />已提交 · 本地预览</span>
       <span className="community-published-demo-copy">页面样式参照昇腾社区官方技术文章</span>
       <a href={COMMUNITY_ARTICLES_URL} target="_blank" rel="noopener noreferrer">
-        打开社区<IconExternalLink size={14} aria-hidden="true" />
+        打开社区<IconExternalLink size={ICON_SIZE.inline} aria-hidden="true" />
       </a>
     </div>}
 
@@ -48,7 +49,7 @@ export function CommunityPublishedArticle({ draft, onBack, embedded = false }) {
       <div className="community-article-content">
         <div className="community-article-breadcrumb">
           <a href={COMMUNITY_ARTICLES_URL} target="_blank" rel="noopener noreferrer">官方技术文章</a>
-          <IconChevronRight size={13} aria-hidden="true" />
+          <IconChevronRight size={ICON_SIZE.inline} aria-hidden="true" />
           <span>{title}</span>
         </div>
 
@@ -58,8 +59,8 @@ export function CommunityPublishedArticle({ draft, onBack, embedded = false }) {
             <span className="community-article-tag">{isAddCustom ? "算子开发" : topic === "图像输入形状" ? "图像推理" : "开发经验"}</span>
             <div className="community-article-meta">
               <span>发表于：{publishedDate(draft.submittedAt)}</span>
-              <span className="community-article-stat"><IconEye size={15} aria-hidden="true" />0</span>
-              <span className="community-article-stat"><IconThumbUp size={14} aria-hidden="true" />0</span>
+              <span className="community-article-stat"><IconEye size={ICON_SIZE.control} aria-hidden="true" />0</span>
+              <span className="community-article-stat"><IconThumbUp size={ICON_SIZE.inline} aria-hidden="true" />0</span>
             </div>
           </header>
 
@@ -86,7 +87,7 @@ export function CommunityPublishedArticle({ draft, onBack, embedded = false }) {
         <div className="community-article-address">
           <span>社区地址</span>
           <a href={COMMUNITY_ARTICLES_URL} target="_blank" rel="noopener noreferrer">
-            www.hiascend.com/developer/techArticles<IconExternalLink size={13} aria-hidden="true" />
+            www.hiascend.com/developer/techArticles<IconExternalLink size={ICON_SIZE.inline} aria-hidden="true" />
           </a>
           <small>当前 Demo 未连接社区发布服务；链接打开昇腾社区官方技术文章频道。</small>
         </div>

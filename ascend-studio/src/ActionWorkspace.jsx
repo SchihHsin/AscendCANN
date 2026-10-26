@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 import {
@@ -204,8 +205,8 @@ export function ActionWorkspace({ view, onChangeView, onBack, onRecord, codeAtta
         {!embedded && <header className="panel-header action-workspace-header">
           <div><h2>核对工作区</h2><span>在当前任务中补充定位证据</span></div>
           <div className="aw-header-actions">
-            {onOpenContents && <button className="aw-contents-button" type="button" onClick={onOpenContents}><IconFiles size={14} />本任务内容</button>}
-            <button className="aw-back" type="button" onClick={onBack}><IconArrowLeft size={14} />返回诊断</button>
+            {onOpenContents && <button className="aw-contents-button" type="button" onClick={onOpenContents}><IconFiles size={ICON_SIZE.inline} />本任务内容</button>}
+            <button className="aw-back" type="button" onClick={onBack}><IconArrowLeft size={ICON_SIZE.inline} />返回诊断</button>
           </div>
         </header>}
         {!embedded && <div className="aw-tabs" role="tablist" aria-label="核对方式">
@@ -217,17 +218,17 @@ export function ActionWorkspace({ view, onChangeView, onBack, onRecord, codeAtta
               const next = event.key === "Home" ? 0 : event.key === "End" ? TABS.length - 1 : (current + (event.key === "ArrowRight" ? 1 : -1) + TABS.length) % TABS.length;
               onChangeView(TABS[next].id);
               document.getElementById(`aw-tab-${TABS[next].id}`)?.focus();
-            }}><Icon size={15} /><span>{label}</span></button>
+            }}><Icon size={ICON_SIZE.control} /><span>{label}</span></button>
           ))}
         </div>}
 
-        <div className="aw-boundary"><IconAlertTriangle size={15} /><span>根因尚未确认 · 待 NPU 验证</span></div>
+        <div className="aw-boundary"><IconAlertTriangle size={ICON_SIZE.control} /><span>根因尚未确认 · 待 NPU 验证</span></div>
 
         {view === "code" && (
           <section className="aw-panel" id={embedded ? undefined : "aw-panel-code"} role={embedded ? undefined : "tabpanel"} aria-labelledby={embedded ? undefined : "aw-tab-code"}>
             <div className="aw-section-heading"><h3 title={codeAttachment?.name}>{codeAttachment?.name || "custom_op.cpp:128"}</h3><span className="aw-badge">{codeAttachment ? "用户提供 · 只读" : "只读示例"}</span></div>
             <p className="aw-description">{codeAttachment ? "展示本次任务中提供的代码文本，未解析或运行。请核对循环范围与实际运行条件。" : "下方是用于核对范围的示例片段。请将它与实际项目文件对照；当前尚未读取项目代码。"}</p>
-            <div className="aw-code-window"><div className="aw-code-caption"><IconCode size={14} />{codeAttachment ? "用户提供的代码 · 未运行" : "范围检查示例 · C++"}</div><pre><code>{codeAttachment ? codeAttachment.content : `// 示例片段，不代表真实项目实现
+            <div className="aw-code-window"><div className="aw-code-caption"><IconCode size={ICON_SIZE.inline} />{codeAttachment ? "用户提供的代码 · 未运行" : "范围检查示例 · C++"}</div><pre><code>{codeAttachment ? codeAttachment.content : `// 示例片段，不代表真实项目实现
 const auto begin = blockId * tileSize;
 const auto validCount =
   std::min(tileSize, total - begin);
@@ -237,8 +238,8 @@ for (int i = 0; i < validCount; ++i) {
 }`}</code></pre></div>
             {(onExplain || onTry) && <div className="aw-flow-launch">
               <div className="aw-flow-launch-actions">
-                {onExplain && <button className="aw-source-action" type="button" onClick={onExplain}><IconBulb size={14} />解释这里</button>}
-                {onTry && <button className="aw-source-action" type="button" onClick={onTry}><IconPencil size={14} />在示例副本中试改<IconArrowRight size={13} /></button>}
+                {onExplain && <button className="aw-source-action" type="button" onClick={onExplain}><IconBulb size={ICON_SIZE.inline} />解释这里</button>}
+                {onTry && <button className="aw-source-action" type="button" onClick={onTry}><IconPencil size={ICON_SIZE.inline} />在示例副本中试改<IconArrowRight size={ICON_SIZE.inline} /></button>}
               </div>
               <p>{codeAttachment ? "解释与试改使用范围检查示例，原附件作为只读上下文保留。" : "沿用本任务的示例工作副本，解释、尝试与修改预览会保留。"}</p>
             </div>}
@@ -247,10 +248,10 @@ for (int i = 0; i < validCount; ++i) {
               <p className="aw-description">按一维、连续、从 0 开始的索引计算；分块规则需与实际实现核对。</p>
               <div className="aw-fields"><label>总元素数<input disabled={Boolean(busy)} type="number" min="1" step="1" value={total} onChange={(event) => { setTotal(event.target.value); setRangeResult(null); setRangeError(""); }} required /></label><label>每块元素数<input disabled={Boolean(busy)} type="number" min="1" step="1" value={tileSize} onChange={(event) => { setTileSize(event.target.value); setRangeResult(null); setRangeError(""); }} required /></label></div>
               {rangeError && <p className="aw-error" role="alert">{rangeError}</p>}
-              <button className="aw-button aw-button-primary" type="submit" disabled={Boolean(busy)}>{busy === "range" ? <IconLoader2 className="aw-spinner" size={15} /> : <IconChartDots size={15} />}计算索引范围</button>
+              <button className="aw-button aw-button-primary" type="submit" disabled={Boolean(busy)}>{busy === "range" ? <IconLoader2 className="aw-spinner" size={ICON_SIZE.control} /> : <IconChartDots size={ICON_SIZE.control} />}计算索引范围</button>
             </form>
-            {rangeResult && <div className="aw-result-card"><div className="aw-result-title"><IconCheck size={15} /><strong>范围算例结果</strong></div><dl className="aw-metrics"><div><dt>完整块数</dt><dd>{rangeResult.full}</dd></div><div><dt>尾块有效元素</dt><dd>{rangeResult.tail}</dd></div><div><dt>总块数</dt><dd>{rangeResult.blocks}</dd></div><div><dt>最后有效索引</dt><dd>{rangeResult.last}</dd></div></dl><p className="aw-description">{rangeResult.tail ? `最后一块需处理 ${rangeResult.tail} 个有效元素。` : "当前参数没有不足一块的尾块。"}这一计算不确认越界或其他根因。</p><button className="aw-inline-button" type="button" onClick={() => record({ title: "索引范围算例", summary: `总元素数 ${rangeResult.total}，每块 ${rangeResult.tile}；完整块 ${rangeResult.full}，尾块有效元素 ${rangeResult.tail}，最后有效索引 ${rangeResult.last}。仅范围算例，根因尚未确认，待 NPU 验证。`, kind: "range", isDemo: true })}><IconPlus size={14} />加入复核记录</button></div>}
-            <button className="aw-button aw-button-next" type="button" onClick={() => onChangeView("precision")}>继续检查误差分布<IconArrowRight size={15} /></button>
+            {rangeResult && <div className="aw-result-card"><div className="aw-result-title"><IconCheck size={ICON_SIZE.control} /><strong>范围算例结果</strong></div><dl className="aw-metrics"><div><dt>完整块数</dt><dd>{rangeResult.full}</dd></div><div><dt>尾块有效元素</dt><dd>{rangeResult.tail}</dd></div><div><dt>总块数</dt><dd>{rangeResult.blocks}</dd></div><div><dt>最后有效索引</dt><dd>{rangeResult.last}</dd></div></dl><p className="aw-description">{rangeResult.tail ? `最后一块需处理 ${rangeResult.tail} 个有效元素。` : "当前参数没有不足一块的尾块。"}这一计算不确认越界或其他根因。</p><button className="aw-inline-button" type="button" onClick={() => record({ title: "索引范围算例", summary: `总元素数 ${rangeResult.total}，每块 ${rangeResult.tile}；完整块 ${rangeResult.full}，尾块有效元素 ${rangeResult.tail}，最后有效索引 ${rangeResult.last}。仅范围算例，根因尚未确认，待 NPU 验证。`, kind: "range", isDemo: true })}><IconPlus size={ICON_SIZE.inline} />加入复核记录</button></div>}
+            <button className="aw-button aw-button-next" type="button" onClick={() => onChangeView("precision")}>继续检查误差分布<IconArrowRight size={ICON_SIZE.control} /></button>
           </section>
         )}
 
@@ -263,10 +264,10 @@ for (int i = 0; i < validCount; ++i) {
               <div className="aw-fields"><label>绝对容差 atol<input disabled={Boolean(busy)} type="number" min="0" step="any" value={absoluteTolerance} onChange={(event) => { setAbsoluteTolerance(event.target.value); invalidatePrecision("容差已变化，旧结果已清除，请重新计算。"); }} required /></label><label>相对容差 rtol<input disabled={Boolean(busy)} type="number" min="0" step="any" value={relativeTolerance} onChange={(event) => { setRelativeTolerance(event.target.value); invalidatePrecision("容差已变化，旧结果已清除，请重新计算。"); }} required /></label></div>
               <p className="aw-formula">超差条件：|actual − expected| &gt; atol + rtol × |expected|</p>
               {precisionError && <p className="aw-error" role="alert">{precisionError}</p>}
-              <button className="aw-button aw-button-primary" type="submit" disabled={Boolean(busy)}>{busy === "precision" ? <IconLoader2 className="aw-spinner" size={15} /> : <IconChartDots size={15} />}计算误差</button>
+              <button className="aw-button aw-button-primary" type="submit" disabled={Boolean(busy)}>{busy === "precision" ? <IconLoader2 className="aw-spinner" size={ICON_SIZE.control} /> : <IconChartDots size={ICON_SIZE.control} />}计算误差</button>
             </form>
             {precisionResult && <div className="aw-result-card aw-precision-result">
-              <div className="aw-result-title"><IconCheck size={15} /><strong>{precisionResult.isDemo ? "演示数据结果" : "用户数据计算结果"}</strong></div>
+              <div className="aw-result-title"><IconCheck size={ICON_SIZE.control} /><strong>{precisionResult.isDemo ? "演示数据结果" : "用户数据计算结果"}</strong></div>
               <div className="aw-result-summary"><span>{precisionResult.rows.length} 个元素</span><strong>{precisionResult.failed} 个超差</strong><span>atol {formatNumber(precisionResult.atol)} · rtol {formatNumber(precisionResult.rtol)}</span></div>
               <PrecisionPlot result={precisionResult} selectedIndex={selectedPrecisionIndex} onSelect={(index) => selectPrecisionRow(index, true)} />
               <div className="aw-table-heading"><strong>逐项数据</strong><span>点击索引与图中的点对应</span></div>
@@ -277,12 +278,12 @@ for (int i = 0; i < validCount; ++i) {
                 : <div className="aw-resolution-confirm">
                   <p className="aw-description">所有已提供元素均在容差内。若这是修复后的目标环境复测结果，可确认问题已解决；此操作记录你的确认，不会代替真实设备检查。</p>
                   <button className="aw-inline-button" type="button" disabled={completionAlreadyOffered} onClick={() => onTaskComplete({ id: precisionResult.id, kind: "addcustom-precision-resolution", precision: { count: precisionResult.rows.length, failed: precisionResult.failed, atol: precisionResult.atol, rtol: precisionResult.rtol, isDemo: precisionResult.isDemo } })}>
-                    <IconCheck size={13} />{completionAlreadyOffered ? "已确认 · 社区反馈入口已出现" : "确认问题已在目标环境复测通过"}
+                    <IconCheck size={ICON_SIZE.inline} />{completionAlreadyOffered ? "已确认 · 社区反馈入口已出现" : "确认问题已在目标环境复测通过"}
                   </button>
                 </div>)}
-              <button className="aw-inline-button" type="button" onClick={() => record({ title: precisionResult.isDemo ? "演示误差计算" : "逐元素误差计算", summary: `${precisionResult.isDemo ? "演示" : "用户提供"}数据：${precisionResult.rows.length} 个元素，${precisionResult.failed} 个超差；atol ${precisionResult.atol}，rtol ${precisionResult.rtol}。未独立验证数据来源，根因尚未确认，待 NPU 验证。`, kind: "precision", isDemo: precisionResult.isDemo })}><IconPlus size={14} />加入复核记录</button>
+              <button className="aw-inline-button" type="button" onClick={() => record({ title: precisionResult.isDemo ? "演示误差计算" : "逐元素误差计算", summary: `${precisionResult.isDemo ? "演示" : "用户提供"}数据：${precisionResult.rows.length} 个元素，${precisionResult.failed} 个超差；atol ${precisionResult.atol}，rtol ${precisionResult.rtol}。未独立验证数据来源，根因尚未确认，待 NPU 验证。`, kind: "precision", isDemo: precisionResult.isDemo })}><IconPlus size={ICON_SIZE.inline} />加入复核记录</button>
             </div>}
-            <button className="aw-button aw-button-next" type="button" onClick={() => onChangeView("review")}>整理观察与待验证项<IconArrowRight size={15} /></button>
+            <button className="aw-button aw-button-next" type="button" onClick={() => onChangeView("review")}>整理观察与待验证项<IconArrowRight size={ICON_SIZE.control} /></button>
           </section>
         )}
 
@@ -295,9 +296,9 @@ for (int i = 0; i < validCount; ++i) {
               <label className="aw-observation">观察与待确认内容<textarea disabled={Boolean(busy)} rows={5} value={observation} onChange={(event) => { setObservation(event.target.value); setReviewError(""); }} placeholder="例如：已对照循环范围，仍需补充失败元素的实际误差与运行环境记录。" /></label>
               <div className="aw-review-context"><span>当前记录来源</span><p>{activeRange ? `已计算范围算例：${activeRange.total} / ${activeRange.tile}。` : "范围算例尚未计算。"}{activePrecision ? `误差计算：${activePrecision.rows.length} 个元素、${activePrecision.failed} 个超差${activePrecision.isDemo ? "（演示）" : "（用户提供）"}。` : "尚未计算逐元素误差。"}</p></div>
               {reviewError && <p className="aw-error" role="alert">{reviewError}</p>}
-              <button className="aw-button aw-button-primary" type="submit" disabled={Boolean(busy)}>{busy === "review" ? <IconLoader2 className="aw-spinner" size={15} /> : <IconClipboardCheck size={15} />}生成复核记录</button>
+              <button className="aw-button aw-button-primary" type="submit" disabled={Boolean(busy)}>{busy === "review" ? <IconLoader2 className="aw-spinner" size={ICON_SIZE.control} /> : <IconClipboardCheck size={ICON_SIZE.control} />}生成复核记录</button>
             </form>
-            {reviewResult && <div className="aw-result-card"><div className="aw-result-title"><IconCheck size={15} /><strong>复核记录已生成</strong></div><p className="aw-review-text">{reviewResult.summary}</p><span className="aw-description">已同步到当前任务的记录区域。</span></div>}
+            {reviewResult && <div className="aw-result-card"><div className="aw-result-title"><IconCheck size={ICON_SIZE.control} /><strong>复核记录已生成</strong></div><p className="aw-review-text">{reviewResult.summary}</p><span className="aw-description">已同步到当前任务的记录区域。</span></div>}
           </section>
         )}
 

@@ -7,6 +7,7 @@ import "./scrollbar-autohide.css";
 import "./canvas-reference-style.css";
 import "./shared/canvas/canvas.css";
 import "./scrollbar-autohide.js";
+import "./icon-system.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

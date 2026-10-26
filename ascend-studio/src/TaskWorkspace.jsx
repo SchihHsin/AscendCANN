@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import {
   IconArrowRight,
@@ -23,7 +24,7 @@ import { buildContentNavigation } from "./task-content-catalog";
 
 const typeLabels = { code: "代码", source: "只读代码", preview: "预览", browser: "浏览器", diff: "Diff", canvas: "画布", result: "结果", record: "记录", brief: "任务简报" };
 
-function MaterialIcon({ type, size = 14 }) {
+function MaterialIcon({ type, size = ICON_SIZE.inline }) {
   const Icon = type === "canvas" ? IconLayoutBoard : type === "code" || type === "source" ? IconCode : type === "browser" ? IconWorld : type === "diff" ? IconGitCompare : IconFileDescription;
   return <Icon size={size} />;
 }
@@ -315,7 +316,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
     <header className="tw-topbar" aria-label="工作区公共标题栏">
       <div className="tw-content-switch" ref={contentSwitchRef}>
         <button className="tw-content-trigger" type="button" ref={contentTriggerRef} aria-label={`切换任务内容：${activeTitle}`} aria-haspopup="menu" aria-expanded={contentMenuOpen} aria-controls={contentMenuId} title="切换任务内容" onClick={() => { setContentMenuOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setObjectInfoOpen(false); }} onKeyDown={event => { if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); setContentMenuOpen(true); setMenuOpen(false); setPickerOpen(false); } }}>
-          <MaterialIcon type={onCanvas ? "canvas" : activeTab?.type} /><span>{activeTitle}</span>{unreadTabs.length > 0 && <span className="tw-unread-count" aria-label={`${unreadTabs.length}项内容有未读更新`}>{unreadTabs.length}</span>}<IconChevronDown size={13} />
+          <MaterialIcon type={onCanvas ? "canvas" : activeTab?.type} /><span>{activeTitle}</span>{unreadTabs.length > 0 && <span className="tw-unread-count" aria-label={`${unreadTabs.length}项内容有未读更新`}>{unreadTabs.length}</span>}<IconChevronDown size={ICON_SIZE.inline} />
         </button>
         {contentMenuOpen && <div className="tw-content-menu" id={contentMenuId} role="menu" aria-label="切换任务内容" ref={contentMenuRef} onKeyDown={navigateContentMenu}>
           <div className="tw-content-groups">{groupedItems.map(group => <section className="tw-content-group" key={group.id} role="group" aria-label={group.label}>
@@ -328,30 +329,30 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
               const displayedTitle = saved ? contentTitle(material.id) : material.title;
               return <button className={"tw-content-option" + (current ? " is-current" : "") + (reference ? " is-reference" : "") + (material.available === false ? " is-unavailable" : "")} key={material.id} type="button" role="menuitemradio" aria-checked={current} aria-label={displayedTitle} disabled={material.available === false} tabIndex={-1} onClick={() => switchContent(material)}>
                 <MaterialIcon type={material.type} /><span className="tw-option-copy"><strong>{displayedTitle}</strong>{material.available === false ? <small>{material.disabledReason || "完成前置操作后可用"}</small> : saved ? <small>只读历史</small> : null}</span><small className="tw-option-kind">{material.kindLabel || typeLabels[material.type] || "内容"}</small>
-                {current ? <IconCheck size={13} aria-label="当前内容" /> : reference ? <small className="tw-option-state">参考</small> : visited?.closed ? <small className="tw-option-state">已收起</small> : visited?.unread ? <small className="tw-option-state">有更新</small> : null}
+                {current ? <IconCheck size={ICON_SIZE.inline} aria-label="当前内容" /> : reference ? <small className="tw-option-state">参考</small> : visited?.closed ? <small className="tw-option-state">已收起</small> : visited?.unread ? <small className="tw-option-state">有更新</small> : null}
               </button>;
             })}
           </section>)}</div>
-          <div className="tw-content-menu-foot"><button type="button" role="menuitem" tabIndex={-1} onClick={() => showPicker()}><IconPlus size={14} />打开其他内容</button>{isMainTask && <button type="button" role="menuitem" tabIndex={-1} onClick={() => openCanvas(isImageTask ? "free" : "overview", { fit: true })}><IconLayoutBoard size={14} />{isImageTask ? "任务画布" : "全部内容"} · {contentItems.length}<IconArrowRight size={13} /></button>}</div>
+          <div className="tw-content-menu-foot"><button type="button" role="menuitem" tabIndex={-1} onClick={() => showPicker()}><IconPlus size={ICON_SIZE.inline} />打开其他内容</button>{isMainTask && <button type="button" role="menuitem" tabIndex={-1} onClick={() => openCanvas(isImageTask ? "free" : "overview", { fit: true })}><IconLayoutBoard size={ICON_SIZE.inline} />{isImageTask ? "任务画布" : "全部内容"} · {contentItems.length}<IconArrowRight size={ICON_SIZE.inline} /></button>}</div>
         </div>}
       </div>
       <div className="tw-topbar-actions">
-        <button className={`tw-point-mode${areaSelectionMode || hasSelectedAreaContext ? " is-open" : ""}`} type="button" aria-pressed={areaSelectionMode || hasSelectedAreaContext} aria-label={areaSelectionMode ? "退出框选" : hasSelectedAreaContext ? "取消已选区域和输入草稿" : "指着说"} title={areaSelectionMode ? "按 Esc 或再次点击退出框选" : hasSelectedAreaContext ? "取消当前选区和输入草稿，不会发送消息" : "框选工作区任意区域后，通过输入框打字或语音描述"} onClick={() => { if (areaSelectionMode) exitAreaSelection(); else if (hasSelectedAreaContext) onAreaDismiss?.(); else toggleAreaSelection(); }}><IconPointer2 size={14} /><span>{areaSelectionMode ? "退出框选" : hasSelectedAreaContext ? "取消选区" : "指着说"}</span></button>
-        {!onCanvas && <button type="button" ref={objectInfoTrigger} className={"tw-object-info-button" + (objectInfoOpen ? " is-open" : "")} aria-label="来源、关联与历史" title="来源、关联与历史" aria-expanded={objectInfoOpen} onClick={() => { setObjectInfoOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); }}><IconInfoCircle size={15} />{activeHistory.length > 0 && <small>{activeHistory.length}</small>}</button>}
+        <button className={`tw-point-mode${areaSelectionMode || hasSelectedAreaContext ? " is-open" : ""}`} type="button" aria-pressed={areaSelectionMode || hasSelectedAreaContext} aria-label={areaSelectionMode ? "退出框选" : hasSelectedAreaContext ? "取消已选区域和输入草稿" : "指着说"} title={areaSelectionMode ? "按 Esc 或再次点击退出框选" : hasSelectedAreaContext ? "取消当前选区和输入草稿，不会发送消息" : "框选工作区任意区域后，通过输入框打字或语音描述"} onClick={() => { if (areaSelectionMode) exitAreaSelection(); else if (hasSelectedAreaContext) onAreaDismiss?.(); else toggleAreaSelection(); }}><IconPointer2 size={ICON_SIZE.inline} /><span>{areaSelectionMode ? "退出框选" : hasSelectedAreaContext ? "取消选区" : "指着说"}</span></button>
+        {!onCanvas && <button type="button" ref={objectInfoTrigger} className={"tw-object-info-button" + (objectInfoOpen ? " is-open" : "")} aria-label="来源、关联与历史" title="来源、关联与历史" aria-expanded={objectInfoOpen} onClick={() => { setObjectInfoOpen(current => !current); setMenuOpen(false); setPickerOpen(false); setContentMenuOpen(false); }}><IconInfoCircle size={ICON_SIZE.control} />{activeHistory.length > 0 && <small>{activeHistory.length}</small>}</button>}
         {state.referenceId === state.activeId && state.referenceReturnId && <button className="tw-nearby-action" type="button" onClick={actions.returnFromReference}>返回当前内容</button>}
-        {isMainTask && <button className="tw-view-all" type="button" disabled={(inOverview || isImageTask && inFreeCanvas) && !canReturn && !isAddCustomTask} aria-label={isAddCustomTask ? inOverview ? "返回当前聚焦内容" : "查看本任务全部内容" : isImageTask ? inFreeCanvas ? "返回当前任务内容" : "打开图像推理任务画布" : inOverview ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => isAddCustomTask ? openCanvas(inOverview ? "focus" : "overview") : isImageTask ? inFreeCanvas ? returnToFocus() : openCanvas("free", { fit: true }) : inOverview ? returnToFocus() : openCanvas("overview")}>{isAddCustomTask ? inOverview ? <><IconArrowRight className="tw-return-arrow" size={13} />返回聚焦</> : <><IconLayoutBoard size={13} />全部内容</> : isImageTask ? inFreeCanvas ? <><IconArrowRight className="tw-return-arrow" size={13} />返回任务</> : <><IconLayoutBoard size={13} />全部内容</> : inOverview ? <><IconArrowRight className="tw-return-arrow" size={13} />返回正文</> : <><IconLayoutBoard size={13} />全部内容</>}</button>}
+        {isMainTask && <button className="tw-view-all" type="button" disabled={(inOverview || isImageTask && inFreeCanvas) && !canReturn && !isAddCustomTask} aria-label={isAddCustomTask ? inOverview ? "返回当前聚焦内容" : "查看本任务全部内容" : isImageTask ? inFreeCanvas ? "返回当前任务内容" : "打开图像推理任务画布" : inOverview ? "回到刚才查看的内容" : "看全部任务内容"} onClick={() => isAddCustomTask ? openCanvas(inOverview ? "focus" : "overview") : isImageTask ? inFreeCanvas ? returnToFocus() : openCanvas("free", { fit: true }) : inOverview ? returnToFocus() : openCanvas("overview")}>{isAddCustomTask ? inOverview ? <><IconArrowRight className="tw-return-arrow" size={ICON_SIZE.inline} />返回聚焦</> : <><IconLayoutBoard size={ICON_SIZE.inline} />全部内容</> : isImageTask ? inFreeCanvas ? <><IconArrowRight className="tw-return-arrow" size={ICON_SIZE.inline} />返回任务</> : <><IconLayoutBoard size={ICON_SIZE.inline} />全部内容</> : inOverview ? <><IconArrowRight className="tw-return-arrow" size={ICON_SIZE.inline} />返回正文</> : <><IconLayoutBoard size={ICON_SIZE.inline} />全部内容</>}</button>}
         <div className="tw-tools" ref={toolsRef}>
-          <button className={"tw-more-button" + (menuOpen ? " is-open" : "")} type="button" aria-label="更多任务内容操作" title="更多" aria-expanded={menuOpen} onClick={() => { setMenuOpen((current) => !current); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); }}><IconDots size={17} /></button>
+          <button className={"tw-more-button" + (menuOpen ? " is-open" : "")} type="button" aria-label="更多任务内容操作" title="更多" aria-expanded={menuOpen} onClick={() => { setMenuOpen((current) => !current); setPickerOpen(false); setContentMenuOpen(false); setObjectInfoOpen(false); }}><IconDots size={ICON_SIZE.heading} /></button>
           {menuOpen && <div className="tw-tools-menu">
-            {state.referenceId && <button type="button" onClick={() => { actions.endSplit(); setMenuOpen(false); }}><IconX size={15} /><span>收起固定参考</span></button>}
-            {!onCanvas && <button type="button" onClick={() => { setMenuOpen(false); setObjectInfoOpen(true); }}><IconInfoCircle size={15} /><span>来源、关联与历史{activeHistory.length ? ` · ${activeHistory.length}` : ""}</span></button>}
-            {state.activeId && !onCanvas && <button type="button" onClick={() => { (onClose || actions.close)(focusedId); setMenuOpen(false); }}><IconX size={15} /><span>收起当前内容为概要</span></button>}
-            {state.activeId && !onCanvas && isMainTask && !state.splitId && <button type="button" onClick={() => showPicker("split")}><IconLayoutColumns size={15} /><span>留一份参考</span></button>}
-            <button type="button" onClick={() => showPicker()}><IconPlus size={15} /><span>打开其他内容</span></button>
-            {isMainTask && !isLearningTask && !isAddCustomTask && !isImageTask && <button type="button" onClick={() => openCanvas("free")}><IconLayoutBoard size={15} /><span>手动整理内容</span></button>}
+            {state.referenceId && <button type="button" onClick={() => { actions.endSplit(); setMenuOpen(false); }}><IconX size={ICON_SIZE.control} /><span>收起固定参考</span></button>}
+            {!onCanvas && <button type="button" onClick={() => { setMenuOpen(false); setObjectInfoOpen(true); }}><IconInfoCircle size={ICON_SIZE.control} /><span>来源、关联与历史{activeHistory.length ? ` · ${activeHistory.length}` : ""}</span></button>}
+            {state.activeId && !onCanvas && <button type="button" onClick={() => { (onClose || actions.close)(focusedId); setMenuOpen(false); }}><IconX size={ICON_SIZE.control} /><span>收起当前内容为概要</span></button>}
+            {state.activeId && !onCanvas && isMainTask && !state.splitId && <button type="button" onClick={() => showPicker("split")}><IconLayoutColumns size={ICON_SIZE.control} /><span>留一份参考</span></button>}
+            <button type="button" onClick={() => showPicker()}><IconPlus size={ICON_SIZE.control} /><span>打开其他内容</span></button>
+            {isMainTask && !isLearningTask && !isAddCustomTask && !isImageTask && <button type="button" onClick={() => openCanvas("free")}><IconLayoutBoard size={ICON_SIZE.control} /><span>手动整理内容</span></button>}
           </div>}
         </div>
-        <button className="tw-collapse" type="button" aria-label="收起任务内容工作区" title="收起任务内容工作区" onClick={() => onCollapse?.()}><IconX size={14} /></button>
+        <button className="tw-collapse" type="button" aria-label="收起任务内容工作区" title="收起任务内容工作区" onClick={() => onCollapse?.()}><IconX size={ICON_SIZE.inline} /></button>
       </div>
     </header>
 
@@ -359,7 +360,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
       <div className="tw-comparison-items">{[state.activeId, state.splitId].map((id, index) => <button type="button" key={id} className={focusedId === id ? "is-selected" : ""} aria-pressed={focusedId === id} onClick={() => actions.focusComparison(id)} title={contentTitle(id)}><small>{index === 0 ? "当前" : state.comparisonPinned ? "参考" : "对照"}</small><span>{contentTitle(id)}</span></button>)}</div>
       <button className="tw-end-comparison" type="button" onClick={actions.endSplit}>{state.comparisonPinned ? "移除参考" : "结束对照"}</button>
     </div>}
-    {historyItem && !onCanvas && <div className="tw-history-context"><span>只读历史 · {historyItem.time || "当时保存"}</span><button type="button" onClick={() => restoreObject(parentItem.id)}>回到当前内容<IconArrowRight size={12} /></button></div>}
+    {historyItem && !onCanvas && <div className="tw-history-context"><span>只读历史 · {historyItem.time || "当时保存"}</span><button type="button" onClick={() => restoreObject(parentItem.id)}>回到当前内容<IconArrowRight size={ICON_SIZE.micro} /></button></div>}
     <div className={`tw-stage${areaSelectionMode ? " is-area-selecting" : ""}`} ref={stageRef}>
       {[...taskViews.current.entries()].map(([ownerTaskId, view]) => {
         const selectedTask = ownerTaskId === taskId;
@@ -379,7 +380,7 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
             </section>;
           })}
           {canvasVisited && view.isMainTask && <div className="tw-canvas-view" id={workspacePaneId(ownerTaskId, "canvas")} role="region" aria-label={ownerTaskId === "AddCustom 精度异常" ? "AddCustom 任务内容画布" : ownerTaskId === "图像推理调试" && current.canvasMode === "free" ? "图像推理任务画布" : current.canvasMode === "free" ? isLearningTask ? "学习任务画布" : "手动整理任务内容" : "全部任务内容"} hidden={!selectedTask || !currentCanvas}>{renderCanvas?.(selectedTask && !current.collapsed && currentCanvas, ownerTaskId)}</div>}
-          {selectedTask && !current.activeId && <div className="tw-empty"><IconFileDescription size={24} /><strong>打开需要查看的内容</strong><p>代码、结果和参考资料会在这里展开。</p>{isMainTask && <button type="button" onClick={() => openCanvas()}><IconLayoutBoard size={14} />查看已有内容</button>}<button type="button" onClick={() => showPicker()}><IconPlus size={14} />新增内容</button></div>}
+          {selectedTask && !current.activeId && <div className="tw-empty"><IconFileDescription size={ICON_SIZE.feature} /><strong>打开需要查看的内容</strong><p>代码、结果和参考资料会在这里展开。</p>{isMainTask && <button type="button" onClick={() => openCanvas()}><IconLayoutBoard size={ICON_SIZE.inline} />查看已有内容</button>}<button type="button" onClick={() => showPicker()}><IconPlus size={ICON_SIZE.inline} />新增内容</button></div>}
         </div>;
       })}
       {visibleAreaContext && pointContext.selection && <div className="tw-area-selection-preview" aria-hidden="true" style={{ left: `${pointContext.selection.left * 100}%`, top: `${pointContext.selection.top * 100}%`, width: `${pointContext.selection.width * 100}%`, height: `${pointContext.selection.height * 100}%` }}><span>已选区域</span></div>}
@@ -388,24 +389,24 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
         <div className="tw-area-select-layer" role="presentation" aria-label="拖动框选工作区区域" onPointerDown={startAreaSelection} onPointerMove={moveAreaSelection} onPointerUp={finishAreaSelection} onPointerCancel={() => { pointerStart.current = null; setDragSelection(null); }} onContextMenu={event => event.preventDefault()}>
           {dragSelection && <div className="tw-area-selection-box" style={{ left: dragSelection.left, top: dragSelection.top, width: dragSelection.width, height: dragSelection.height }} />}
         </div>
-        <div className="tw-area-mode-hint" role="status"><IconPointer2 size={14} /><span>拖动框选任意区域；按 <kbd>Esc</kbd> 或再次点击上方「退出框选」退出。选中后可在附近输入文字或按住 <kbd>{getAreaVoiceShortcutLabel()}</kbd> 描述。</span><button type="button" aria-label="退出区域选择" title="退出框选" onClick={exitAreaSelection}><IconX size={13} /></button></div>
+        <div className="tw-area-mode-hint" role="status"><IconPointer2 size={ICON_SIZE.inline} /><span>拖动框选任意区域；按 <kbd>Esc</kbd> 或再次点击上方「退出框选」退出。选中后可在附近输入文字或按住 <kbd>{getAreaVoiceShortcutLabel()}</kbd> 描述。</span><button type="button" aria-label="退出区域选择" title="退出框选" onClick={exitAreaSelection}><IconX size={ICON_SIZE.inline} /></button></div>
       </>}
     </div>
 
     {objectInfoOpen && !onCanvas && <ContentObjectInfo item={parentItem || activeTab} history={historyItem} selectedId={focusedId} onClose={closeInfo} onOpen={restoreObject} onCompare={onCompare ? compareObject : undefined} />}
 
     {pickerOpen && <div className="tw-material-picker" ref={pickerRef} aria-label="任务材料">
-      <div className="tw-picker-header"><div><strong>{pickerPurpose === "split" ? "选择参考内容" : "新增任务内容"}</strong><span>{pickerPurpose === "split" ? "保留当前内容，下一步也能查看这份参考" : "已使用的内容自动保留在总览中"}</span></div><button type="button" aria-label="关闭材料列表" onClick={() => setPickerOpen(false)}><IconX size={15} /></button></div>
+      <div className="tw-picker-header"><div><strong>{pickerPurpose === "split" ? "选择参考内容" : "新增任务内容"}</strong><span>{pickerPurpose === "split" ? "保留当前内容，下一步也能查看这份参考" : "已使用的内容自动保留在总览中"}</span></div><button type="button" aria-label="关闭材料列表" onClick={() => setPickerOpen(false)}><IconX size={ICON_SIZE.control} /></button></div>
       <div className="tw-material-list">{pickerMaterials.map((material) => {
         const available = material.available !== false;
         return <div className={"tw-material-row" + (!available ? " is-unavailable" : "")} key={material.id}>
 
-          <MaterialIcon type={material.type} size={15} />
+          <MaterialIcon type={material.type} size={ICON_SIZE.control} />
           <button className="tw-material-open" type="button" disabled={!available} onClick={() => openMaterial(material)}><strong>{material.title}</strong><small>{available ? material.description || typeLabels[material.type] || "任务材料" : material.disabledReason || "完成前置操作后可用"}</small></button>
-          <div className="tw-material-actions">{available && state.activeId && !onCanvas && state.activeId !== material.id && isMainTask && <button type="button" aria-label={`将${material.title}与当前内容并排查看`} title="与当前内容并排" onClick={() => openMaterial(material, true)}><IconLayoutColumns size={14} /></button>}<button type="button" disabled={!available} aria-label={`打开${material.title}`} title="单独打开" onClick={() => openMaterial(material)}><IconArrowRight size={14} /></button></div>
+          <div className="tw-material-actions">{available && state.activeId && !onCanvas && state.activeId !== material.id && isMainTask && <button type="button" aria-label={`将${material.title}与当前内容并排查看`} title="与当前内容并排" onClick={() => openMaterial(material, true)}><IconLayoutColumns size={ICON_SIZE.inline} /></button>}<button type="button" disabled={!available} aria-label={`打开${material.title}`} title="单独打开" onClick={() => openMaterial(material)}><IconArrowRight size={ICON_SIZE.inline} /></button></div>
         </div>;
       })}</div>
-      {isMainTask && <div className="tw-picker-footer"><span>{pickerMaterials.length ? "打开后自动归入当前任务，无需另行保存" : isImageTask ? "所有已用内容都在任务画布中" : "所有可用内容都已收进任务总览"}</span><button type="button" onClick={() => openCanvas(undefined, { fit: true })}>{isImageTask ? "打开任务画布" : "查看内容总览"}<IconArrowRight size={13} /></button></div>}
+      {isMainTask && <div className="tw-picker-footer"><span>{pickerMaterials.length ? "打开后自动归入当前任务，无需另行保存" : isImageTask ? "所有已用内容都在任务画布中" : "所有可用内容都已收进任务总览"}</span><button type="button" onClick={() => openCanvas(undefined, { fit: true })}>{isImageTask ? "打开任务画布" : "查看内容总览"}<IconArrowRight size={ICON_SIZE.inline} /></button></div>}
     </div>}
   </section>;
 }
