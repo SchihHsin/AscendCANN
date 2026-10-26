@@ -1,4 +1,5 @@
 .learning-hierarchy-canvas { position:relative; width:100%; height:100%; min-height:420px; overflow:hidden; isolation:isolate; color:#252c45; font-size:12px; line-height:1.7; touch-action:none; }
+.learning-hierarchy-canvas.is-drawing { cursor:crosshair; }
 .learning-hierarchy-canvas *, .learning-hierarchy-canvas *::before, .learning-hierarchy-canvas *::after { box-sizing:border-box; }
 .learning-hierarchy-canvas h2, .learning-hierarchy-canvas h3, .learning-hierarchy-canvas p, .learning-hierarchy-canvas figure, .learning-hierarchy-canvas dl { margin:0; }
 .learning-hierarchy-canvas button, .learning-hierarchy-canvas input, .learning-hierarchy-canvas textarea, .learning-hierarchy-canvas select { font:inherit; }

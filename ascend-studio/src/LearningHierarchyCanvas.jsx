@@ -3,7 +3,9 @@ import { createPortal } from "react-dom";
 import { IconAdjustments, IconArrowDown, IconArrowRight, IconArrowUp, IconBook2, IconCheck, IconChevronDown, IconCode, IconCube, IconGripVertical, IconHistory, IconMessageQuestion, IconPhoto, IconPlayerPause, IconPlayerPlay, IconPointer, IconSearch, IconSettings, IconSparkles, IconX } from "@tabler/icons-react";
 import LearningCanvasToolbar from "./LearningCanvasToolbar";
 import CanvasCard from "./LearningCanvasCard";
+import CanvasUserNote from "./shared/canvas/CanvasUserNote.jsx";
 import { CanvasMiniMap, CanvasSurface } from "./shared/canvas/index.jsx";
+import { useCanvasDrawing } from "./shared/canvas/useCanvasDrawing.js";
 import { LEARNING_NODES, LEARNING_SEGMENTS, getLearningCode, getLearningShape } from "./learning-data";
 import { stepsForStage } from "./learning-path-collaboration";
 import { canvasNodeKey, nodeConnector, positionTreeNodes } from "./canvas-node-position";
@@ -174,7 +176,7 @@ function GoalObject({ journey, onGenerate, onReturn }) {
   return <div className="lh-goal-body"><span className="lh-kicker">从学习目标开始</span><h2>这次想学会什么？</h2><label htmlFor={`${id}-goal`}>学习目标<textarea id={`${id}-goal`} rows={2} maxLength={2000} value={state.profile.goal} onChange={event => actions.setProfile({ goal: event.target.value })} /></label><label htmlFor={`${id}-background`}>已有基础<textarea id={`${id}-background`} rows={2} maxLength={1000} value={state.profile.background} onChange={event => actions.setProfile({ background: event.target.value })} /></label><label className="lh-time-label" htmlFor={`${id}-time`}>每天可用时间<select id={`${id}-time`} value={state.profile.dailyMinutes} onChange={event => actions.setProfile({ dailyMinutes: Number(event.target.value) })}>{[10, 15, 20, 30, 45, 60].map(minutes => <option key={minutes} value={minutes}>{minutes} 分钟</option>)}</select></label><Button primary disabled={!state.profile.goal.trim()} onClick={() => onGenerate("goal")}>生成学习路径<IconArrowRight size={14} /></Button>{state.path && <button type="button" className="lh-text-button" onClick={onReturn}>回看已有路径</button>}<p className="lh-boundary">当前路径由图像预处理示例模板准备，目标与基础会保留在任务中。</p></div>;
 }
 
-export function LearningHierarchyCanvas({ journey, view, visible = true, agentAction = null, onAgentActionComplete, onOpen, onAsk, onCopy, onArchive, onEnterDevelopment }) {
+export function LearningHierarchyCanvas({ journey, view, canvasContent, visible = true, agentAction = null, onAgentActionComplete, onOpen, onAsk, onCopy, onArchive, onEnterDevelopment }) {
   const { state, actions } = journey;
   const { state: canvas, actions: canvasActions } = view;
   const host = useRef(null);
@@ -185,6 +187,7 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
   const [size, setSize] = useState({ width: 1000, height: 760 });
   const [hand, setHand] = useState(false);
   const [positionEditing, setPositionEditing] = useState(false);
+  const drawing = useCanvasDrawing({ canvasContent, editing: positionEditing, viewport: canvas.viewport });
   const [agentCursor, setAgentCursor] = useState(null);
   const [agentTarget, setAgentTarget] = useState(null);
   useEffect(() => {
@@ -238,6 +241,9 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
   const showDiagram = isGoal || canvas.expanded && !state.draftPath;
   const showDetail = !isGoal && canvas.expanded && !state.draftPath;
   const showRestore = !isGoal && !canvas.expanded;
+  const userNotes = (canvasContent?.state.cards || []).filter(card => card.kind === "note" && card.visible);
+  const hiddenUserNotes = (canvasContent?.state.cards || []).filter(card => card.kind === "note" && !card.visible);
+  const drawingPoints = drawing.drawings.flatMap(item => item.points || []);
   const hierarchyRight = isGoal ? 0 : treePoint.x + tree.width;
   const estimatedRight = Math.max(
     hierarchyRight,
@@ -245,6 +251,8 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
     showDiagram ? position("diagram").x + diagramWidth : 0,
     showDetail ? position("detail").x + detailWidth : 0,
     showRestore ? position("diagram").x + 320 : 0,
+    ...userNotes.map(card => card.x + card.width),
+    ...drawingPoints.map(point => point.x),
   );
   const estimatedBottom = Math.max(
     isGoal ? position("goal").y + 490 : 0,
@@ -253,6 +261,8 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
     isGoal ? 0 : treePoint.y + tree.height,
     showDetail ? position("detail").y + 820 : 0,
     showRestore ? position("diagram").y + 100 : 0,
+    ...userNotes.map(card => card.y + card.height),
+    ...drawingPoints.map(point => point.y),
   );
   const world = { width: Math.max(isGoal ? 1450 : horizontal ? 1280 : 1580, estimatedRight + 80), height: Math.max(isGoal ? 1050 : 900, estimatedBottom + 90) };
   const viewport = canvas.viewport;
@@ -282,8 +292,13 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
   };
   const fitPath = () => {
     canvasActions.setFocused(false);
-    const elements = [...(host.current?.querySelectorAll(".lh-tree-position, .lh-card, .lh-restore-material") || [])].filter(element => element.getClientRects().length);
+    const elements = [...(host.current?.querySelectorAll(".lh-tree-position, .lh-card, .lh-restore-material, .canvas-user-note") || [])].filter(element => element.getClientRects().length);
     const measured = elements.map(element => ({ x: element.offsetLeft, y: element.offsetTop, width: element.offsetWidth, height: element.offsetHeight })).filter(rect => rect.width > 0 && rect.height > 0);
+    if (drawingPoints.length) {
+      const left = Math.min(...drawingPoints.map(point => point.x)), top = Math.min(...drawingPoints.map(point => point.y));
+      const right = Math.max(...drawingPoints.map(point => point.x)), bottom = Math.max(...drawingPoints.map(point => point.y));
+      measured.push({ x: left, y: top, width: Math.max(1, right - left), height: Math.max(1, bottom - top) });
+    }
     if (!measured.length) {
       const point = position("hierarchy");
       fitBounds(isGoal ? { x: 20, y: 35, width: 1365, height: 710 } : { x: point.x - 20, y: point.y - 75, width: Math.max(tree.width, world.width - 80), height: Math.max(tree.height + 150, world.height - 150) });
@@ -407,6 +422,21 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
     gesture.current = { id, startX: event.clientX, startY: event.clientY, original: point };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
+  const addUserNote = () => {
+    if (!canvasContent?.actions.addCard) return;
+    const count = (canvasContent.state.cards || []).filter(card => card.kind === "note").length + 1;
+    const x = estimatedRight + 24, y = position("diagram").y;
+    canvasContent.actions.addCard({ id: `learning-note:${Date.now().toString(36)}`, kind: "note", title: `笔记 ${count}`, noteText: "", x, y, width: 350, height: 220 }, { focus: false });
+    canvasActions.setViewport({ x: size.width / 2 - (x + 175) * viewport.scale, y: size.height / 2 - (y + 110) * viewport.scale });
+  };
+  const beginUserNoteDrag = (event, card) => {
+    if (!positionEditing || event.button !== 0) return;
+    event.preventDefault();
+    event.stopPropagation();
+    gesture.current = { id: `user-note:${card.id}`, startX: event.clientX, startY: event.clientY, original: { x: card.x, y: card.y } };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const drawingBlocked = "button,input,textarea,select,summary,a,.lh-card,.lh-tree-node,.canvas-user-note";
   const select = (stage, step) => {
     canvasActions.select(stage, step);
     actions.openNode(stage);
@@ -425,21 +455,25 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
       : horizontal
         ? `M${start.x},${start.y} H${treePoint.x + tree.width + 18 + targetIndex * 9} V${point.y + 28} H${point.x - 3}`
         : `M${start.x},${start.y} V${treePoint.y + tree.height + 35 + targetIndex * 10} H${point.x + Math.min(targetWidth / 2, 70)} V${point.y - 3}`;
-  return <CanvasSurface as="div" ref={host} className={`learning-hierarchy-canvas path-editing-canvas${hand ? " is-hand" : ""}${positionEditing ? " is-position-editing" : ""}`} style={{ backgroundSize: `${Math.max(12, 20 * viewport.scale)}px ${Math.max(12, 20 * viewport.scale)}px`, backgroundPosition: `${viewport.x}px ${viewport.y}px` }} aria-label="可移动的学习层级与内容画布" onPointerDown={event => {
-    if (event.button !== 0 || event.target.closest("button,input,textarea,select,summary,a,.lh-card,.lh-tree-node")) return;
+  return <CanvasSurface as="div" ref={host} className={`learning-hierarchy-canvas path-editing-canvas${hand ? " is-hand" : ""}${positionEditing ? " is-position-editing" : ""}${drawing.drawingMode ? " is-drawing" : ""}`} style={{ backgroundSize: `${Math.max(12, 20 * viewport.scale)}px ${Math.max(12, 20 * viewport.scale)}px`, backgroundPosition: `${viewport.x}px ${viewport.y}px` }} aria-label="可移动的学习层级与内容画布" onPointerDown={event => {
+    if (drawing.begin(event, event.currentTarget, drawingBlocked)) return;
+    if (event.button !== 0 || event.target.closest(drawingBlocked)) return;
     gesture.current = { id: "viewport", startX: event.clientX, startY: event.clientY, original: viewport };
     event.currentTarget.setPointerCapture(event.pointerId);
   }} onPointerMove={event => {
+    if (drawing.move(event, event.currentTarget)) return;
     const drag = gesture.current;
     if (!drag) return;
     const deltaX = event.clientX - drag.startX, deltaY = event.clientY - drag.startY;
     if (drag.id === "viewport") canvasActions.setViewport({ x: drag.original.x + deltaX, y: drag.original.y + deltaY });
+    else if (drag.id.startsWith("user-note:")) canvasContent?.actions.moveCard(drag.id.slice("user-note:".length), drag.original.x + deltaX / viewport.scale, drag.original.y + deltaY / viewport.scale);
     else canvasActions.moveObject(drag.id, { x: drag.original.x + deltaX / viewport.scale, y: drag.original.y + deltaY / viewport.scale });
-  }} onPointerUp={() => { gesture.current = null; }} onPointerCancel={() => { gesture.current = null; }}>
+  }} onPointerUp={event => { drawing.finish(event, event.currentTarget); gesture.current = null; }} onPointerCancel={event => { drawing.cancel(event, event.currentTarget); gesture.current = null; }}>
     <div className={`lh-canvas-title${state.draftPath ? " is-draft-path" : ""}`}><IconBook2 size={24} /><div className="lh-canvas-title-copy">{state.draftPath && <div className="lh-editing-state"><span className="lh-editing-dot" />学习路径草案 · 正在编辑<span>尚未开始学习</span></div>}<h2>{state.draftPath ? "与 AI 共创学习路径" : state.profile.goal || "我的学习目标"}</h2><p>{state.draftPath ? `目标：${state.profile.goal} · 进入位置编辑后可移动节点与关联卡片，路径顺序不变${pendingChanges.length ? ` · ${pendingChanges.length} 项 AI 调整待你决定` : " · 也可在左侧对话继续增删重点"}` : isGoal ? "从目标或现成路径开始一段可验证的学习" : `${stageLabels[activeStage]} · ${selectedStepTitle}`}</p></div></div>
-    <LearningCanvasToolbar layout={layout} scale={viewport.scale} hand={hand} positionEditing={positionEditing} onTogglePositionEditing={() => { setPositionEditing(value => !value); setHand(false); }} onLayout={canvasActions.setLayout} onZoom={zoom} onResetZoom={() => canvasActions.setViewport({ scale: 1 })} onHand={() => { setHand(value => !value); setPositionEditing(false); }} onFit={fitPath} />
+    <LearningCanvasToolbar layout={layout} scale={viewport.scale} hand={hand} positionEditing={positionEditing} drawingMode={drawing.drawingMode} hasHiddenContent={hiddenUserNotes.length > 0} onTogglePositionEditing={() => { setPositionEditing(value => !value); setHand(false); }} onLayout={canvasActions.setLayout} onZoom={zoom} onResetZoom={() => canvasActions.setViewport({ scale: 1 })} onHand={() => { setHand(value => !value); setPositionEditing(false); }} onFit={fitPath} onAddNode={canvasContent ? addUserNote : undefined} onToggleDrawing={canvasContent ? () => drawing.setDrawingMode(value => !value) : undefined} onRestoreContent={canvasContent ? () => canvasContent.actions.restore(hiddenUserNotes.at(-1)?.id) : undefined} />
     {state.draftPath && <div className="lh-draft-controls" aria-label="路径共创整体操作"><Button primary disabled={pendingChanges.length > 0} title={pendingChanges.length ? "先决定所有 AI 调整" : "确认这条路径并进入学习"} onClick={() => { if (actions.confirmPath()) select("channels", "channels"); }}>确认路径并开始学习<IconArrowRight size={13} /></Button><Button disabled={!state.pathUndo?.length} onClick={actions.undoPathEdit}><IconHistory size={13} />撤销</Button><Button onClick={actions.cancelPath}>取消</Button></div>}
     <div className="lh-world" style={{ width: world.width, height: world.height, transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})` }}>
+      {(drawing.drawings.length > 0 || drawing.draft.length > 0) && <svg className="canvas-user-drawings" width={world.width} height={world.height} aria-hidden="true">{[...drawing.drawings, ...(drawing.draft.length > 1 ? [{ id: "draft", points: drawing.draft, color: "#7468a1", width: 3 }] : [])].map(item => <polyline key={item.id} points={item.points.map(point => `${point.x},${point.y}`).join(" ")} stroke={item.color || "#7468a1"} strokeWidth={item.width || 3} />)}</svg>}
     {!isGoal && <div className="lh-tree-position" style={{ left: treePoint.x, top: treePoint.y, width: tree.width, height: tree.height }}><HierarchyGroup tree={tree} layout={layout} selectedStage={activeStage} selectedStep={selectedStep} journey={journey} onSelect={select} onMoveNode={(id, point) => canvasActions.moveObject(id, point)} scale={viewport.scale} minX={8 - treePoint.x} minY={8 - treePoint.y} pinned={pinned("hierarchy")} agentTarget={agentTarget} editing={positionEditing} onDrag={positionEditing && !pinned("hierarchy") ? event => beginObjectDrag(event, "hierarchy", treePoint) : undefined} /></div>}
       {start && canvas.expanded && !state.draftPath && !reviewingPath && <svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><defs><marker id="lh-material-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8" /></marker></defs><path d={connection(position("diagram"), diagramWidth, 0)} markerEnd="url(#lh-material-arrow)" /><path d={connection(position("detail"), detailWidth, 1)} markerEnd="url(#lh-material-arrow)" /><circle cx={start.x} cy={start.y} r="5" /></svg>}
       {isGoal && <CanvasCard id="goal" title="学习目标与基础" point={position("goal")} width={440} pinned={pinned("goal")} onDrag={positionEditing && !pinned("goal") ? beginObjectDrag : undefined} onFocus={focusObject} onMaximize={maximizeObject} onTogglePin={canvasActions.togglePin}><GoalObject journey={journey} onGenerate={generate} onReturn={() => canvasActions.select("path")} /></CanvasCard>}
@@ -449,12 +483,15 @@ export function LearningHierarchyCanvas({ journey, view, visible = true, agentAc
         {activeStage === "practice" ? <CodePractice journey={journey} activeSubstep={selectedStep} onCopy={onCopy} onContinue={() => select("check", "input")} /> : activeStage === "check" ? <InputCheck journey={journey} onRestore={() => select("practice", "result")} onArchive={onArchive} onEnterDevelopment={onEnterDevelopment} /> : <div className="lh-lesson-body">{activeStage === "environment" && <p>浏览器中可完成维度演算，无需安装环境。迁移到本地时需 Python 与 NumPy；真实模型另核对输入签名。</p>}<Player journey={journey} onAsk={onAsk} /><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => { actions.markUnderstood(); select("practice", "layout"); }}>理解了，继续跟练<IconArrowRight size={14} /></Button></div><p className="lh-boundary">动态讲解为本地概念演示；“看过”与练习检查通过分别记录。</p></div>}
       </CanvasCard>}
       {!isGoal && !canvas.expanded && <button type="button" className="lh-restore-material" style={{ left: position("diagram").x, top: position("diagram").y }} onClick={() => canvasActions.select(activeStage, selectedStep)}><IconBook2 size={19} /><span>材料已收起<strong>恢复{stageLabels[activeStage]}的图解与内容</strong></span><IconChevronDown size={17} /></button>}
+      {userNotes.map(card => <CanvasUserNote key={card.id} card={card} selected={canvasContent?.state.selectedCardId === card.id} editing={positionEditing} onMoveStart={beginUserNoteDrag} onChange={(id, noteText) => canvasContent?.actions.updateCard(id, { noteText })} onHide={id => canvasContent?.actions.hideCard(id)} />)}
     </div>
     {state.notice && !state.draftPath && <div className="lh-canvas-notice" role="status">{state.notice}</div>}
     <CanvasMiniMap className="lh-minimap" viewBox={{ x: 0, y: 0, width: world.width, height: world.height }} viewport={{ x: -viewport.x / viewport.scale, y: -viewport.y / viewport.scale, width: size.width / viewport.scale, height: size.height / viewport.scale }} onNavigate={({ x, y }) => canvasActions.setViewport({ x: size.width / 2 - x * viewport.scale, y: size.height / 2 - y * viewport.scale })} onFit={fitPath}>
       {!isGoal && tree.stages.map(stage => <rect className={`canvas-minimap-item${stage.id === activeStage ? " is-current" : ""}`} key={stage.id} x={treePoint.x + stage.rect.x} y={treePoint.y + stage.rect.y} width={stage.rect.width} height={stage.rect.height} rx="8" />)}
       <rect className="canvas-minimap-item" x={position("diagram").x} y={position("diagram").y} width={diagramWidth} height="390" rx="8" />
       {!isGoal && canvas.expanded && <rect className="canvas-minimap-item" x={position("detail").x} y={position("detail").y} width={detailWidth} height="470" rx="8" />}
+      {userNotes.map(card => <rect className={`canvas-minimap-item${canvasContent?.state.selectedCardId === card.id ? " is-selected" : ""}`} key={card.id} x={card.x} y={card.y} width={card.width} height={card.height} rx="7" />)}
+      {(drawing.drawings || []).map(item => <polyline key={item.id} className="canvas-minimap-drawing" points={item.points.map(point => `${point.x},${point.y}`).join(" ")} />)}
     </CanvasMiniMap>
     {agentCursor && createPortal(<div className={`lh-agent-flight is-${agentCursor.phase}`} style={{ transform: `translate3d(${agentCursor.x}px, ${agentCursor.y}px, 0)` }} aria-hidden="true"><IconPointer size={22} stroke={2.2} /><span>{agentCursor.label}</span></div>, document.body)}
   </CanvasSurface>;

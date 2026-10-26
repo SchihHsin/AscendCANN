@@ -1394,3 +1394,9 @@ final result: passed
 - **本地回放：** `http://127.0.0.1:5206/?home=combine`。确认了起点光晕、目标环形进度、停留后“数据加载—CPU 预处理”连线和 Prompt 更新；在进度完成前移开目标不会生成关系；Esc 会清除待连线预览。页面 error 日志为空（CUA，M）。
 - **检查 / 边界：** `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。保留既有 Vite 主 JS chunk >500 kB 提醒，未运行自动化测试。该设计不改默认空状态、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；未接真实训练数据 / NPU。
 - **发布：** 待补。
+
+## 2026-10-26 · 编辑态新增画布内容入口复核
+
+- 用户当前打开的 `http://127.0.0.1:5190/` 仍是旧预览：工具栏里只有“完成画布编辑”，没有新增操作。合并后的 Pages 构建在 `http://127.0.0.1:5193/` 可见完整工具组；编辑态的“完成画布编辑”旁有“＋”新增便签和自由绘图按钮，适应全部、布局、缩放等既有工具也保留。
+- 1280×720 CUA 截图确认工具组处于画布右上角且没有被裁切；实际点击“新增节点：便签”后，画布新增“笔记 2”并出现可编辑文本框。结果来自本地预览（M），没有修改任务路径顺序。
+- `npm run build:pages`、生成 JS 的 `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留既有 JS chunk 大于 500 kB 提醒。此时功能与最新主线已在本地合并，push / Pages workflow 待回填。

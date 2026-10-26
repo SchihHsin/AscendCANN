@@ -175,6 +175,26 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
   );
 }
 
+function TrustEvidenceCard({ assessment }) {
+  if (!assessment) return null;
+  const supported = assessment.supported || [];
+  const missing = assessment.missing || [];
+  return <section className={`trust-evidence-card trust-evidence-card--${assessment.statusTone || "provisional"}`} aria-label="Agent 判断可信度与依据">
+    <div className="trust-evidence-heading">
+      <span className="trust-evidence-icon">{assessment.statusTone === "provisional" ? <IconAlertTriangle size={15} /> : <IconCircleCheck size={15} />}</span>
+      <span className="trust-evidence-copy"><strong>{assessment.title || "判断可信度"}</strong><small>{assessment.summary}</small></span>
+      <span className="trust-evidence-status">{assessment.status || "待复核"}</span>
+    </div>
+    <details className="trust-evidence-details">
+      <summary>查看依据 · {supported.length} 项支持 · {missing.length} 项待补</summary>
+      <div className="trust-evidence-lists">
+        <div><strong>当前支持</strong><ul>{supported.map((item, index) => <li key={`support-${index}`}>{item}</li>)}</ul></div>
+        {missing.length > 0 && <div><strong>仍待补充</strong><ul>{missing.map((item, index) => <li key={`missing-${index}`}>{item}</li>)}</ul></div>}
+      </div>
+    </details>
+  </section>;
+}
+
 function App() {
   const wb = useWorkbenchState();
   const [visualTheme, setVisualTheme] = useState(() => {
@@ -278,6 +298,7 @@ function App() {
     ? [...session.messages].reverse().find(message => message.communityInvite)
     : null;
   const showCommunityInvite = Boolean(communityInviteMessage && communityInviteMessage.communityInvite.summaryId !== session.communityDraft?.completionId);
+  const hasAddCustomFeedbackInvite = selectedTask === MAIN_TASK && session.messages.some(message => message.communityInvite?.summary?.kind === "addcustom-precision-resolution");
   const learningLaunchHandled = useRef(false);
   useEffect(() => {
     if (learningLaunchHandled.current) return;
@@ -318,7 +339,7 @@ function App() {
   const officialCanvasVisible = isOfficialLearningTask && !workspace.state.collapsed && workspace.state.activeId === "canvas" && workspace.state.canvasMode === "free";
   const officialCanvasView = useLearningCanvasView({ taskId: isOfficialLearningTask ? selectedTask : "__inactive-official-learning", enabled: isOfficialLearningTask, stageIds: OFFICIAL_STAGE_IDS, initialStage: OFFICIAL_LEARNING_STAGES[0].id, materialStages: OFFICIAL_MATERIAL_STAGES, storagePrefix: "official-learning-canvas-v2" });
   const officialLearning = useOfficialLearningPath({ taskId: isOfficialLearningTask ? selectedTask : "__inactive-official-learning", enabled: isOfficialLearningTask, visible: officialCanvasVisible && officialCanvasView.state.expanded && showTaskWorkspace, onRecord: (record, ownerId) => wb.addRecord(record, ownerId) });
-  const learningCanvas = useCanvasState({ startEmpty: true, cardDefinitions: LEARNING_MATERIALS, storageKey: `canvas-learning-${isLearningTask ? selectedTask : "__inactive-learning"}` });
+  const learningCanvas = useCanvasState({ startEmpty: true, cardDefinitions: LEARNING_MATERIALS, storageKey: `canvas-learning-${isLearningTask || isOfficialLearningTask ? selectedTask : "__inactive-learning"}` });
   const learningCanvasMaterial = !learning.state.path && !learning.state.draftPath ? "learning-goal" : ({ goal: "learning-goal", path: "learning-path", environment: "learning-lesson", channels: "learning-lesson", practice: "learning-practice", check: "learning-check", summary: "learning-summary" })[learningCanvasView.state.selectedStage];
   const learningCanvasMaterialIds = learningCanvasVisible && learningCanvasView.state.expanded && learningCanvasMaterial ? [learningCanvasMaterial] : [];
   useEffect(() => {
@@ -1040,8 +1061,8 @@ function App() {
       return target ? { id: target.id, title: target.title, relationLabel: relation.label, status: target.state?.label || target.statusLabel } : null;
     }).filter(Boolean) : [];
     const showOverview = visible && !free && !ownerMain;
-    if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
-    if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
+    if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} canvasContent={learningCanvas} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
+    if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} canvasContent={learningCanvas} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
     const ownerCanvas = ownerLearning || ownerOfficialLearning ? learningCanvas : ownerImage ? imageCanvas : canvas;
     return <div className="tw-content-canvas">
       <div className="tw-canvas-body">
@@ -1114,7 +1135,7 @@ function App() {
     if (summary.kind === "addcustom-precision-resolution" && session.messages.some(message => message.communityInvite?.summary?.kind === summary.kind)) return;
     if (session.messages.some(message => message.communityInvite?.summaryId === summary.id)) return;
     const dimensions = summary.dimensions?.join(", ") || "当前示例形状";
-    const completionExchange = summary.demoFixture ? [{
+    const completionExchange = summary.demoFixture && summary.dimensions?.length ? [{
       id: crypto.randomUUID(), role: "user", isDemo: true,
       text: `我在示例副本中调整了图像输入，形状核对结果为 NCHW [${dimensions}]。`,
     }] : [];
@@ -1122,6 +1143,7 @@ function App() {
       messages: [...old.messages, ...completionExchange, {
         id: crypto.randomUUID(), role: "assistant", isDemo: true,
         communityInvite: { summaryId: summary.id, summary },
+        ...(summary.trustAssessment ? { trustAssessment: summary.trustAssessment } : {}),
         text: summary.completionText || `${summary.demoFixture ? "示例形状核对已通过" : "示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
       }],
     }));
@@ -1133,7 +1155,35 @@ function App() {
       id: `addcustom-${result.id}`,
       kind: "addcustom-precision-resolution",
       precision: result.precision,
+      trustAssessment: {
+        status: "开发者确认复测",
+        statusTone: "confirmed",
+        summary: `逐元素核对 ${result.precision?.count ?? "未记录"} 项均在容差内；目标环境复测由你确认。`,
+        supported: [
+          `${result.precision?.count ?? "未记录"} 项逐元素数据，超差 0 项`,
+          `atol ${result.precision?.atol ?? "未记录"} · rtol ${result.precision?.rtol ?? "未记录"}`,
+          "开发者确认目标环境复测通过",
+        ],
+        missing: ["运行日志、CANN / 芯片版本尚未附入；Demo 未独立连接 NPU 核验"],
+      },
       completionText: "你已确认 AddCustom 精度异常已在目标环境复测通过。可以把本次修复步骤、适用条件和验证证据整理为社区经验；当前 Demo 不会代替真实设备检查。",
+    });
+  };
+  const triggerAddCustomFeedbackDemo = () => {
+    if (selectedTask !== MAIN_TASK || hasAddCustomFeedbackInvite) return;
+    offerCommunityExperience({
+      id: "demo-addcustom-resolution-feedback",
+      kind: "addcustom-precision-resolution",
+      demoFixture: true,
+      precision: { count: 561, failed: 0, atol: "1e-5", rtol: "1e-4", isDemo: true },
+      trustAssessment: {
+        status: "演示证据闭环",
+        statusTone: "demo",
+        summary: "预置流程展示从问题线索到复测回执；不代表真实项目运行。",
+        supported: ["[16,32] 通过、[17,33] 失败的输入对照", "修正尾块有效元素访问的示例改动", "预设目标环境复测通过回执"],
+        missing: ["实际代码与运行日志", "CANN / 芯片版本与设备复测数据"],
+      },
+      completionText: "演示完成：预置流程展示了 AddCustom 精度异常从输入对照、尾块访问修正到复测回执的完整闭环。下方可信度卡片列出支撑依据和未采集信息；这些是界面演示数据，不代表真实项目或 NPU 结果。",
     });
   };
   useEffect(() => {
@@ -1319,6 +1369,13 @@ function App() {
                   <p className="assistant-lead">尾块索引范围值得优先核对，根因尚未确认。</p>
                   <p>已知：<span className="chat-fact is-pass">[16,32] 通过</span>；<span className="chat-fact is-fail">[17,33] 失败</span>。修改编译参数后，错误位置未变。</p>
                   <p>还需：实际循环、两次运行条件与逐元素误差证据。</p>
+                  <TrustEvidenceCard assessment={{
+                    status: "线索级",
+                    statusTone: "provisional",
+                    summary: "输入对照支持优先检查尾块，现有信息还不能确认根因。",
+                    supported: ["[16,32] 通过、[17,33] 失败", "修改编译参数后错误仍在 custom_op.cpp:128"],
+                    missing: ["实际循环与索引范围", "运行环境、逐元素误差与目标环境复测"],
+                  }} />
                   <button className="rationale-button" type="button" aria-expanded={rationaleOpen} onClick={() => setRationaleOpen((value) => !value)}>
                     <IconBook size={16} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={15} />
                   </button>
@@ -1331,6 +1388,10 @@ function App() {
                     onPrimary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? changeActionView("code") : dispatchTaskIntent("explain", "tail"); }}
                     secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "查看实际代码"}
                     onSecondary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? dispatchTaskIntent("explain", "tail") : changeActionView("code"); }} />
+                  {!hasAddCustomFeedbackInvite && <div className="addcustom-feedback-shortcut">
+                    <button className="task-plain-button" type="button" onClick={triggerAddCustomFeedbackDemo}><IconSparkles size={14} />演示任务完成后的可信度与社区反馈<IconArrowRight size={13} /></button>
+                    <small>一键展示复测依据，再生成右侧社区经验草稿</small>
+                  </div>}
                   <details className="chat-next-disclosure"><summary>比较其他排查方向</summary><div className="chat-next-actions" aria-label="可能的下一步方向">
                     <div className="chat-next-heading">可能的下一步方向</div>
                     {routes.map((route, index) => (
@@ -1367,6 +1428,7 @@ function App() {
                   <div className={message.role === "user" ? "user-bubble" : "assistant-response extra-message"}>{message.text.split("\n\n").map((paragraph, i) => <p className="message-paragraph" key={i}>{paragraph}</p>)}
                     {message.attachments?.length > 0 && <div className="message-attachments">{message.attachments.map((file) => <button type="button" key={file.id} onClick={() => openDialog("evidence", { title: file.name, body: "本次任务的本地附件，尚未独立验证。", log: file.content || "已关联文件名称，尚无可读取的文本内容。" })}><IconPaperclip size={13} />{file.name}</button>)}</div>}
                   </div>
+                  {message.trustAssessment && <TrustEvidenceCard assessment={message.trustAssessment} />}
                   {message.scopeReference && <div className="message-source-links"><button type="button" onClick={() => {
                     const reference = message.scopeReference;
                     if (reference.type === "workspace-area") {

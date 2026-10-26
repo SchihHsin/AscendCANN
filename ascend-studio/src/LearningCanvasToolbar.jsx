@@ -1,7 +1,7 @@
-import { IconArrowsMaximize, IconCheck, IconHandMove, IconLayoutColumns, IconLayoutRows, IconPencil, IconStack2 } from "@tabler/icons-react";
+import { IconArrowsMaximize, IconCheck, IconHandMove, IconLayoutColumns, IconLayoutRows, IconPencil, IconPlus, IconRestore, IconStack2 } from "@tabler/icons-react";
 import { CanvasToolButton, CanvasToolbar, CanvasToolbarGroup, CanvasZoomGroup } from "./shared/canvas/index.jsx";
 
-export default function LearningCanvasToolbar({ layout, scale, hand, positionEditing = false, onTogglePositionEditing, allExpanded = false, onToggleAllExpanded, onLayout, onZoom, onResetZoom, onHand, onFit }) {
+export default function LearningCanvasToolbar({ layout, scale, hand, positionEditing = false, drawingMode = false, hasHiddenContent = false, onTogglePositionEditing, allExpanded = false, onToggleAllExpanded, onLayout, onZoom, onResetZoom, onHand, onFit, onAddNode, onToggleDrawing, onRestoreContent }) {
   return <CanvasToolbar className="lh-toolbar" aria-label="画布视图与编辑操作">
     <CanvasToolbarGroup className="lh-layout-toggle" label="画布布局">
       <CanvasToolButton type="button" active={layout === "horizontal"} title="左右布局" aria-label="左右布局" onClick={() => onLayout("horizontal")}><IconLayoutColumns size={16} /></CanvasToolButton>
@@ -16,5 +16,10 @@ export default function LearningCanvasToolbar({ layout, scale, hand, positionEdi
     <CanvasToolbarGroup label="画布编辑">
       <CanvasToolButton type="button" active={positionEditing} title={positionEditing ? "完成画布编辑" : "编辑画布位置"} aria-label={positionEditing ? "完成画布编辑" : "编辑画布位置"} onClick={onTogglePositionEditing}>{positionEditing ? <IconCheck size={16} /> : <IconPencil size={16} />}</CanvasToolButton>
     </CanvasToolbarGroup>
+    {positionEditing && (onAddNode || onToggleDrawing || hasHiddenContent) && <CanvasToolbarGroup className="canvas-toolbar-group--add-content" label="新增画布内容">
+      {onAddNode && <CanvasToolButton type="button" title="新增节点：便签" aria-label="新增节点：便签" onClick={onAddNode}><IconPlus size={16} /></CanvasToolButton>}
+      {onToggleDrawing && <CanvasToolButton type="button" active={drawingMode} title={drawingMode ? "退出自由绘图" : "自由绘图"} aria-label={drawingMode ? "退出自由绘图" : "自由绘图"} onClick={onToggleDrawing}><IconPencil size={16} /></CanvasToolButton>}
+      {hasHiddenContent && onRestoreContent && <CanvasToolButton type="button" title="恢复刚收起的便签" aria-label="恢复刚收起的便签" onClick={onRestoreContent}><IconRestore size={15} /></CanvasToolButton>}
+    </CanvasToolbarGroup>}
   </CanvasToolbar>;
 }
