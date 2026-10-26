@@ -6700,3 +6700,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - **实现：** `ascend-studio/src/CombinationTaskHome.jsx` 将关系与草稿初始值设为空；`ascend-studio/src/home-composition.js` 移除预置关系并让空选集生成空草稿；`ascstudio/` 更新对应静态发布产物。
 - **回放与依据：** 用户本轮明确纠正（H）；本地 5206 组合页初始可访问性树确认 28 个未选字段、草稿为空、发送禁用；本地 CUA 实际拖动“数据加载”到“CPU 预处理”后确认只出现这条连接、两字段进入 Prompt、发送启用（M）。截图已在本轮浏览器回放中展示。
 - **检查 / 发布：** `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Vite 仍提示主 JS chunk 大于 500 kB，未运行测试套件。只更新关系组合 Demo，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。发布提交、Pages workflow 与线上资源核验待本轮收尾后补记。
+
+### 2026-10-26 · 对话区域布局切换与指着说联动
+
+- 用户确认切换对象是当前左侧整块对话区域，不是单独移动输入框；提供左侧栏与底部居中浮窗两种呈现。两个互斥图标放在全局 `header.topbar`，保留同一对话历史与草稿，并按会话记忆布局选择。浮窗态展开右侧工作区，避免原左侧列继续占宽。
+- 指着说与对话布局是独立交互。底部浮窗布局进入框选或出现选区输入框时临时隐藏浮窗，锁定布局切换以防选区坐标变化；发送或取消后恢复。左侧栏布局的框选保持原位置与行为。
+- 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`styles.css` 与 Pages 静态产物。该概念改动不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 1280×720 核对左侧、底部浮窗、框选时浮窗隐藏、选区缩略输入出现及取消后恢复。未运行自动化测试；窄屏行为有响应式规则，未做独立小视口截图。依据：用户确认（H）、本地原型观察（M）。
+- 发布提交与 Pages workflow 待本条实现完成后补记。
