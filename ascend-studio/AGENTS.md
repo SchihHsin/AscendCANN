@@ -1733,3 +1733,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 已确认的工作区交互：桌面底部对话浮窗可从输入框边缘的 Tabler 把手拖动；进入左侧对话栏范围时显示完整栏位预览，松手吸附，松在目标外则恢复浮窗。输入框样式保持原样；原有顶栏布局按钮继续可直接切换。框选“指着说”时布局按钮禁用。移动端隐藏拖拽把手，仍可用顶栏按钮。
 - Pointer 拖动采用移动阈值，Escape 取消；把手支持轻点或键盘 Enter / Space / ← 停靠。对应实现：`src/App.jsx`、`src/styles.css`。桌面 1280×720 CUA 确认吸附、目标外回弹、顶栏切换与框选禁用；构建和差异检查通过，无 console error。
 - 页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变；Pages 发布状态与 commit 见仓库根目录 `AGENTS.md`。
+
+### 2026-10-27 · 画布实体卡片圆角统一
+
+- 所有任务画布与学习画布共用 `--canvas-card-radius: 10px` 与 `--canvas-card-inner-radius: 9px`；白色内层标题 / 内容贴合 1px 外框，折叠态使用同一规则。选中仅改细边和柔和投影，不加外扩黑圈。共享 token 放在 `src/shared/canvas/canvas.css`，任务卡片局部规则只消费 token。
+- 这条规则此前已定但未贯彻，局部 CSS 拆分与并行旧样式回写导致偏差。修改后在本地生产构建中检查选中展开态，并在开发预览检查普通 / 折叠态，计算样式为外框 10px、内层 9px。页面、路径和任务内容不变；发布与证据见根 `AGENTS.md`、`design-qa.md`。

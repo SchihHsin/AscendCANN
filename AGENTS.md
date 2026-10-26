@@ -6815,3 +6815,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现于 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 与 `ascstudio/` Pages 产物。把手以 Pointer 拖动浮窗，目标栏显示包含标题栏和输入区的无字轮廓；松手落入目标时切换到左侧，拖出目标后回弹。轻点或键盘 Enter / Space / ← 可停靠，Esc 取消当前拖动；移动端保留顶栏切换并隐藏拖拽把手。没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过；桌面 1280×720 CUA 实操确认向左拖后吸附、拖向目标外后保持浮窗、顶栏可切换、指着说框选期间布局按钮禁用，页面无 console error。未新增或运行自动化测试。
 - 发布：源码提交 `7f836437`，同步并保留主线并行更新的合并提交 `789629e5`，Pages 产物提交 `3ca7072f`；已推送 `origin/main`。GitHub Pages workflow `40366875012` build / deploy 成功；线上 `/ascstudio/`、`index-pJdnm3Lb.js` 与 `index-DkWU4xAD.css` 均 HTTP 200。无未决事项。
+
+### 2026-10-27 · 画布卡片圆角规则落实与回归修复
+
+- **原因：** 用户此前已确认开发与学习画布使用共用卡片规则，但实际样式仍由共享外框和任务局部层分别定义：外框 11px、标题 / 内容 8px，选中态还有外扩黑圈。之后一次并行 Pages 样式更新又把这些旧值带回；本次将修正重放到最新主线后发布，避免回退。
+- **改动：** `ascend-studio/src/shared/canvas/canvas.css` 定义共享外框 10px、内层 9px token，统一选中态边线与柔和阴影；`ascend-studio/src/task-canvas.css` 的内容和折叠标题使用同一内层 token。规则同步到 `ascend-studio/interaction-design.md`，实现与验收记录在 `ascend-studio/design-qa.md`。Pages 产物为 `ascstudio/assets/index-D2zrDIk2.js`、`index-Pe1jOl7P.css` 与 `index.html`。
+- **证据 / 验证：** 用户反馈与既有统一规则（H）；本地 CUA 1280×720 对任务画布普通、选中、折叠状态回放及生产构建 DOM 样式读数（M）。外框 10px、标题 / 内容内角 9px；选中无外扩描边。`npm run build:pages`、`node --check ascstudio/assets/index-D2zrDIk2.js`、`git diff --cached --check` 通过；本地生产预览 console error 为空。未运行自动化测试。
+- **边界与发布：** 不改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界，也不宣称真实 NPU 验证。功能提交 `3c2cf905` 已推送 `origin/main`；Pages workflow `40367429848` build / deploy 成功。之后主线合并到 `766fb2b7`，workflow `40367803200` 也成功。公开 HTML 回读请求超时，因此没有声称完成线上资源哈希复核。

@@ -1434,3 +1434,5 @@ final result: passed
 - **规则与改动：** 所有实体画布卡片使用共享 `--canvas-card-radius: 10px`；1px 外框内标题栏 / 内容层使用 9px，折叠态延续同值。选中态保留黑色细边与柔和阴影，不叠加外扩描边。变量定义在 `src/shared/canvas/canvas.css`，任务卡片消费规则在 `src/task-canvas.css`，交互规则同步到 `interaction-design.md`。
 - **视觉核对：** 本地预览 `http://127.0.0.1:5193/`，1280×720；在「图像推理调试」中检查普通、选中、折叠三种卡片状态。浏览器实时样式读数确认外框 10px、内层 9px；选中卡没有外扩阴影圈。展开卡片截图显示边界连续，卡片标题栏与内容区没有各自一套圆角。
 - **构建 / 检查：** `npm run build:pages` 成功；最终入口 JS `node --check` 通过；`git diff --check` 通过。保留 Vite 已有主 JS chunk >500 kB 提醒；未运行自动化测试。无真实 NPU / 后端调用，不改变页面序列或 API / Host / Application 边界。
+- **发布：** 提交 `3c2cf905` 已推送 `origin/main`；Pages workflow `40367429848` build / deploy 成功。随后主线合并提交 `766fb2b7` 的 workflow `40367803200` 也成功。公开 HTML 回读超时，未完成线上静态资源哈希复核。
+- **发布：** 提交 `3c2cf905` 已推送 `origin/main`；Pages workflow `40367429848` build / deploy 成功。随后主线合并提交 `766fb2b7` 的 workflow `40367803200` 也成功。公开 HTML 回读超时，未完成线上静态资源哈希复核。
