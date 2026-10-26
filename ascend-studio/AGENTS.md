@@ -1699,6 +1699,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户提供的新猫图替换学习发现横幅推理插画中的输入照片位和结果卡照片位；保留布局与其余推理图形不变。图片仍为 1672×941 透明 PNG。
 - `npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过。源码和 Pages 资源提交 `6c99041e` 已推送至 `origin/main`；线上 HTML、JS、CSS 和新 PNG 均 HTTP 200。无待办。
 
+### 2026-10-27 · 主推路径阶段颜色收敛
+
+- 五阶段保留轻柔多色识别，但阶段卡和步骤行统一为白灰中性面；色彩仅留在柔和低饱和的编号徽标与小节点，避免整卡渐变与重复色块造成花感。
+- 桌面 1280×720 预览可见五阶段与步骤仍清晰；`npm run build:pages`、生成 JS `node --check` 和 `git diff --check` 通过，未运行测试套件。页面序列 / API / Host / Application 边界不变。
+- 提交 `425653f7` 已推送到 `origin/main`；Pages 线上资源状态待回读。
+
 ### 2026-10-27 · Ascend Studio Tabler 图标系统
 
 - 按用户确认统一采用已有 `@tabler/icons-react`，共享图标尺寸、描边与热区规则；顶部对话布局按钮改为 `IconLayoutSidebar` / `IconLayoutBottombar`，统一图书与并排布局图标语义。内容示意图保留专属造型。
