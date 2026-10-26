@@ -6759,4 +6759,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - ResNet50 官方学习路径的二级节点不再为“待开始”显示空心圆圈；“学习中”改为实心紫点，“已完成”保留带勾状态。节点按钮的无障碍名称仍包含状态文字，保证状态信息可读。依据：用户确认去掉空心圈（H）及附图（H）。
 - 修改 `ascend-studio/src/OfficialLearningPathCanvas.jsx`、`official-learning-canvas.css` 与 Pages 构建产物。页面序列、学习顺序与 API / Host / Application 边界不变。原共享工作区的学习画布文件存在并行未提交改动，本次在隔离 worktree 基于最新主分支实现，没有覆盖它们。
-- 验证：`npm run build:pages`、`git diff --check` 通过；本地 5192 预览确认待开始节点的空心圈已消失，无障碍树仍读出“待开始”。未运行自动化测试。推送和 Pages 发布结果待完成。
+- 验证：`npm run build:pages`、`git diff --check` 通过；本地 5192 预览确认待开始节点的空心圈已消失，无障碍树仍读出“待开始”。未运行自动化测试。实现提交 `7d984d6e` 已推送至 `origin/main`；Pages workflow `40358563037` 完成且成功，线上 `/ascstudio/` HTML 返回 200 并引用新构建的 JS / CSS。
