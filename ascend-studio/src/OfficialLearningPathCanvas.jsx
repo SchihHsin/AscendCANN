@@ -12,20 +12,29 @@ import "./official-learning-canvas.css";
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const icons = [IconRoute, IconDeviceDesktop, IconPhoto, IconCube, IconSearch];
-function makeTree(layout, personalPlan, positions = {}) {
+function makeTree(layout, personalPlan, positions = {}, allExpanded = false, heights = {}) {
   let offset = 0;
   const horizontal = layout === "horizontal";
   const groups = OFFICIAL_LEARNING_STAGES.map((stage, i) => {
-    const rect = horizontal ? { x: 0, y: offset, width: 258, height: 72 } : { x: i * 320, y: 0, width: 292, height: 72 };
+    const columnWidth = allExpanded ? 1050 : 320;
+    const rect = horizontal ? { x: 0, y: offset, width: 258, height: 72 } : { x: i * columnWidth, y: 0, width: 292, height: 72 };
     const order = personalPlan?.orderByStage?.[stage.id] || [];
-    const children = [...stage.children].sort((a, b) => {
+    const orderedChildren = [...stage.children].sort((a, b) => {
       const aIndex = order.indexOf(a.id), bIndex = order.indexOf(b.id);
       return (aIndex < 0 ? Number.MAX_SAFE_INTEGER : aIndex) - (bIndex < 0 ? Number.MAX_SAFE_INTEGER : bIndex);
-    }).map((child, j) => ({ ...child, rect: horizontal ? { x: 32, y: offset + 82 + j * 55, width: 226, height: 47 } : { x: i * 320 + 20, y: 88 + j * 55, width: 272, height: 47 } }));
-    offset += 95 + children.length * 55;
+    });
+    let rowOffset = 0;
+    const children = orderedChildren.map(child => {
+      const rect = horizontal ? { x: 32, y: offset + 82 + rowOffset, width: 226, height: 47 } : { x: i * columnWidth + 20, y: 88 + rowOffset, width: 272, height: 47 };
+      rowOffset += allExpanded ? (heights[child.id] || 850) + 34 : 55;
+      return { ...child, rect };
+    });
+    const rowsHeight = children.reduce((sum, child) => sum + (allExpanded ? (heights[child.id] || 850) + 34 : 55), 0);
+    offset += allExpanded ? 82 + rowsHeight + 82 : 95 + children.length * 55;
     return { ...stage, index: i, rect, children };
   });
-  return positionTreeNodes({ groups, width: horizontal ? 258 : groups.length * 320 - 28, height: horizontal ? offset - 20 : 310 }, positions, "groups", "children");
+  const rowsHeight = Math.max(0, ...groups.map(group => { const last = group.children.at(-1); return last ? last.rect.y + (allExpanded ? (heights[last.id] || 850) + 34 : 55) : 0; }));
+  return positionTreeNodes({ groups, width: horizontal ? 258 : groups.length * (allExpanded ? 1050 : 320) - 28, height: horizontal ? offset - 20 : allExpanded ? rowsHeight + 20 : 310 }, positions, "groups", "children");
 }
 
 function Hierarchy({ tree, layout, node, statuses, onSelect, onDrag, onMoveNode, scale = 1, minX = 8, minY = 8, editing = false }) {
@@ -100,6 +109,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
   const [hand,setHand] = useState(false);
   const [positionEditing,setPositionEditing] = useState(false);
   const [heights,setHeights] = useState({});
+  const [allExpanded,setAllExpanded] = useState(false);
   useEffect(()=>{
     if(!hand&&!positionEditing)return undefined;
     const handleEscape=event=>{
@@ -110,7 +120,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
   },[hand,positionEditing]);
   const personalPlan = state.personalPlan;
   const editingPersonalPlan = personalPlan?.status === "draft";
-  const tree = useMemo(() => makeTree(canvas.layout, personalPlan, canvas.positions), [canvas.layout, personalPlan, canvas.positions]);
+  const tree = useMemo(() => makeTree(canvas.layout, personalPlan, allExpanded ? {} : canvas.positions, allExpanded, Object.fromEntries(Object.entries(heights).filter(([key]) => key.startsWith("all:")).map(([key, value]) => [key.slice(4), value]))), [canvas.layout, personalPlan, canvas.positions, allExpanded, heights]);
   const selected = getOfficialLearningNode(state.selectedNodeId);
   const node = selected?.kind === "step" ? selected : getOfficialLearningNode(OFFICIAL_LEARNING_STAGES[0].children[0].id);
   const stage = tree.groups.find(item => item.id === node.courseId) || tree.groups[0];
@@ -129,10 +139,13 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
   const expanded = canvas.expanded;
   const hidden = kind => !expanded || canvas.hidden.includes(keyFor(kind));
   const practice = ["preprocess","contract","execution","summary"].includes(node.visual);
-  const world = {width:Math.max(1500,tree.width + 100,contentX + 870),height:Math.max(tree.height + 200,baseY + 1750)};
+  const allCardWidth = 700;
+  const allCardPoint = (group, child) => canvas.positions[`all:${child.id}`] || (horizontal ? {x:treePoint.x + 308,y:treePoint.y + child.rect.y - 1} : {x:treePoint.x + group.rect.x + 310,y:treePoint.y + child.rect.y - 1});
+  const expandedCards = allExpanded ? tree.groups.flatMap(group => group.children.map(child => ({child,group,point:allCardPoint(group,child),height:heights[`all:${child.id}`] || 850}))) : [];
+  const world = {width:Math.max(1500,tree.width + 100,contentX + 870,...expandedCards.map(card=>card.point.x+allCardWidth+40)),height:Math.max(tree.height + 200,baseY + 1750,...expandedCards.map(card=>card.point.y+card.height+40))};
   const done = Object.values(state.statuses).filter(value => value === "completed").length;
   const total = OFFICIAL_LEARNING_STAGES.reduce((sum,item) => sum + item.children.length,0);
-  const fitBounds = (bounds, padding = 28, min = .35) => {
+  const fitBounds = (bounds, padding = 28, min = allExpanded ? .04 : .35) => {
     const top = size.width < 650 ? 132 : 86;
     const scale = clamp(Math.min((size.width-padding*2)/bounds.width,(size.height-top-22)/bounds.height),min,1.1);
     canvasActions.setViewport({scale,x:padding-bounds.x*scale,y:top-bounds.y*scale});
@@ -144,7 +157,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
       fitBounds({x:narrow?p.x-82:Math.min(treePoint.x,p.x),y:p.y-8,width:narrow?diagramWidth+100:p.x+diagramWidth-treePoint.x+15,height:660},24,narrow?.55:.45);
     } else fitBounds({x:Math.max(15,contentX-90),y:treePoint.y-18,width:diagramWidth+190,height:tree.height+520},24,.4);
   };
-  const fitPath = () => {canvasActions.setFocused(false);fitBounds({x:treePoint.x-10,y:treePoint.y-35,width:horizontal?1120:tree.width+35,height:horizontal?tree.height+60:tree.height+590},26,.25);};
+  const fitPath = () => {canvasActions.setFocused(false);if(allExpanded){const left=Math.min(treePoint.x,...expandedCards.map(card=>card.point.x))-20,top=Math.min(treePoint.y,...expandedCards.map(card=>card.point.y))-25,right=Math.max(treePoint.x+tree.width,...expandedCards.map(card=>card.point.x+allCardWidth))+25,bottom=Math.max(treePoint.y+tree.height,...expandedCards.map(card=>card.point.y+card.height))+25;fitBounds({x:left,y:top,width:right-left,height:bottom-top},26,.025);}else fitBounds({x:treePoint.x-10,y:treePoint.y-35,width:horizontal?1120:tree.width+35,height:horizontal?tree.height+60:tree.height+590},26,.25);};
   const objectBounds = id => {
     const element = [...(host.current?.querySelectorAll("[data-object-id]") || [])].find(item => item.dataset.objectId === id);
     return element ? { x: element.offsetLeft, y: element.offsetTop, width: element.offsetWidth, height: element.offsetHeight } : null;
@@ -166,6 +179,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
     const observer=new ResizeObserver(entries=>{const{width,height}=entries[0].contentRect;if(width>0&&height>0)setSize({width,height});});
     observer.observe(element);return()=>observer.disconnect();
   },[]);
+  useEffect(()=>{if(!allExpanded||size.width<50)return;requestAnimationFrame(()=>requestAnimationFrame(fitPath));},[allExpanded,size.width,size.height]);
   useEffect(()=>{
     const cards=host.current?.querySelectorAll(".lh-card");
     if(!cards?.length)return;
@@ -174,7 +188,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
       for(const entry of entries){const id=entry.target.dataset.objectId;const height=entry.borderBoxSize?.[0]?.blockSize || entry.target.offsetHeight;if(id&&Math.abs((previous[id]||0)-height)>.5){next[id]=height;changed=true;}}
       return changed?next:previous;
     }));cards.forEach(card=>observer.observe(card));return()=>observer.disconnect();
-  },[node.id,canvas.hidden,canvas.expanded]);
+  },[node.id,canvas.hidden,canvas.expanded,allExpanded]);
   useEffect(()=>{
     if(!visible||size.width<50)return;
     if(!canvas.initialized||previousNode.current!==node.id||!canvas.canvasSize||Math.abs(size.width-canvas.canvasSize.width)>40||Math.abs(size.height-canvas.canvasSize.height)>80){
@@ -192,7 +206,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
     };
     element.addEventListener("wheel",wheel,{passive:false});return()=>element.removeEventListener("wheel",wheel);
   },[]);
-  const zoom=delta=>{const scale=clamp(viewport.scale+delta,.25,1.6);canvasActions.setViewport({scale,x:size.width/2-(size.width/2-viewport.x)*scale/viewport.scale,y:size.height/2-(size.height/2-viewport.y)*scale/viewport.scale});};
+  const zoom=delta=>{const scale=clamp(viewport.scale+delta,allExpanded?.02:.25,1.6);canvasActions.setViewport({scale,x:size.width/2-(size.width/2-viewport.x)*scale/viewport.scale,y:size.height/2-(size.height/2-viewport.y)*scale/viewport.scale});};
   const select=id=>{const selectedNode=getOfficialLearningNode(id);if(!selectedNode)return;actions.selectNode(id);canvasActions.select(selectedNode.courseId,selectedNode.id);canvasActions.revealObject(`${selectedNode.id}:diagram`);canvasActions.revealObject(`${selectedNode.id}:lesson`);};
   const beginObjectDrag=(event,id,point)=>{
     if(canvas.pinned.includes(id))return;
@@ -200,6 +214,7 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
     if(event.button!==0)return;event.preventDefault();event.stopPropagation();gesture.current={id,startX:event.clientX,startY:event.clientY,original:point};host.current.setPointerCapture(event.pointerId);
   };
   const cardProps=kind=>({id:keyFor(kind),point:position(kind),width:kind==="diagram"?diagramWidth:lessonWidth,pinned:canvas.pinned.includes(keyFor(kind)),onDrag:positionEditing&&!canvas.pinned.includes(keyFor(kind))?beginObjectDrag:undefined,onFocus:focusObject,onMaximize:maximizeObject,onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,position(kind));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.hideObject(keyFor(kind))});
+  const allCardProps=(group,child)=>({id:`all:${child.id}`,point:allCardPoint(group,child),width:allCardWidth,pinned:canvas.pinned.includes(`all:${child.id}`),onDrag:positionEditing&&!canvas.pinned.includes(`all:${child.id}`)?beginObjectDrag:undefined,onFocus:focusObject,onMaximize:maximizeObject,onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,allCardPoint(group,child));canvasActions.togglePin(id);}});
   const restorePill=(kind,title)=><button type="button" className="lh-restore-material" style={{left:position(kind).x,top:position(kind).y}} onClick={()=>{canvasActions.setExpanded(true);canvasActions.revealObject(keyFor(kind));}}><IconBook2 size={18}/><span>材料已收起<strong>恢复{title}</strong></span><IconChevronDown size={16}/></button>;
   const start={x:treePoint.x+step.rect.x+step.rect.width,y:treePoint.y+step.rect.y+step.rect.height/2};
   const p=position("diagram");
@@ -209,13 +224,13 @@ export function OfficialLearningPathCanvas({ journey, view, visible = true, onAs
     gesture.current={id:"viewport",startX:event.clientX,startY:event.clientY,original:viewport};event.currentTarget.setPointerCapture(event.pointerId);
   }} onPointerMove={event=>{const drag=gesture.current;if(!drag)return;const dx=event.clientX-drag.startX,dy=event.clientY-drag.startY;if(drag.id==="viewport")canvasActions.setViewport({x:drag.original.x+dx,y:drag.original.y+dy});else canvasActions.moveObject(drag.id,{x:drag.original.x+dx/viewport.scale,y:drag.original.y+dy/viewport.scale});}} onPointerUp={()=>{gesture.current=null;}} onPointerCancel={()=>{gesture.current=null;}}>
     <div className={`lh-canvas-title${editingPersonalPlan?" is-draft-path":""}`}><IconBook2 size={22}/><div>{personalPlan&&<div className="og-plan-state">{editingPersonalPlan?<><i/>个人计划草案 · 尚未确认</>:"我的学习计划 · 基于官方路径"}</div>}<h2>跑通一次 ResNet50 图像推理</h2><p>{editingPersonalPlan?"可继续共创路径；画布位置调整不会改变顺序或学习进度":`${personalPlan?"个人计划":"官方目标学习路径"} · ${done}/${total} 个学习动作已完成`}</p></div></div>
-    <LearningCanvasToolbar layout={canvas.layout} scale={viewport.scale} hand={hand} positionEditing={positionEditing} onTogglePositionEditing={()=>{setPositionEditing(value=>!value);setHand(false);}} onLayout={next=>{if(canvas.focused)canvasActions.setFocused(false);canvasActions.setLayout(next);}} onZoom={zoom} onResetZoom={()=>canvasActions.setViewport({scale:1})} onHand={()=>{setHand(value=>!value);setPositionEditing(false);}} onFit={fitPath}/>
+    <LearningCanvasToolbar layout={canvas.layout} scale={viewport.scale} hand={hand} positionEditing={positionEditing} allExpanded={allExpanded} onToggleAllExpanded={()=>setAllExpanded(value=>!value)} onTogglePositionEditing={()=>{setPositionEditing(value=>!value);setHand(false);}} onLayout={next=>{if(canvas.focused)canvasActions.setFocused(false);canvasActions.setLayout(next);}} onZoom={zoom} onResetZoom={()=>canvasActions.setViewport({scale:1})} onHand={()=>{setHand(value=>!value);setPositionEditing(false);}} onFit={fitPath}/>
     <div className="lh-world" style={{width:world.width,height:world.height,transform:`translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})`}}>
-      {!hidden("diagram")&&<svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><path d={connection}/><circle cx={start.x} cy={start.y} r="4"/></svg>}
+      {allExpanded ? <svg className="lh-material-lines og-all-material-lines" width={world.width} height={world.height} aria-hidden="true">{expandedCards.map(({child,group,point})=>{const source={x:treePoint.x+child.rect.x,y:treePoint.y+child.rect.y,width:child.rect.width,height:child.rect.height};return <path key={child.id} d={nodeConnector(source,{x:point.x,y:point.y,width:allCardWidth,height:47})}/>;})}</svg> : !hidden("diagram")&&<svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><path d={connection}/><circle cx={start.x} cy={start.y} r="4"/></svg>}
       <div className="lh-tree-position" style={{left:treePoint.x,top:treePoint.y}}><Hierarchy tree={tree} layout={canvas.layout} node={node} statuses={state.statuses} onSelect={select} editing={positionEditing} scale={viewport.scale} minX={8} minY={8} onMoveNode={(id,point)=>canvasActions.moveObject(id,point)} onDrag={positionEditing&&!canvas.pinned.includes("hierarchy")?(event,delta)=>beginObjectDrag(event,"hierarchy",delta?{x:treePoint.x+delta[0],y:treePoint.y+delta[1]}:treePoint):undefined}/></div>
-      {!hidden("diagram")?<LearningCanvasCard {...cardProps("diagram")} title={node.title} icon={node.visual==="image"?IconPhoto:IconCube}><OfficialLearningVisuals key={node.id} node={node} journey={journey}/>{["image","preprocess","contract"].includes(node.visual)&&<div className="og-related"><button type="button" className="lh-text-button" onClick={onOpenPreprocessing}>回看已有的图像输入预处理图解<IconArrowRight size={13}/></button></div>}</LearningCanvasCard>:restorePill("diagram","图解")}
+      {allExpanded ? <>{tree.groups.flatMap(group=>group.children.map(child=><LearningCanvasCard key={child.id} {...allCardProps(group,child)} className={`og-all-node-card${child.id===node.id?" is-current":""}`} title={child.title} icon={child.visual==="image"?IconPhoto:IconCube}><OfficialLearningVisuals key={`visual:${child.id}`} node={child} journey={journey}/>{["image","preprocess","contract"].includes(child.visual)&&<div className="og-related"><button type="button" className="lh-text-button" onClick={onOpenPreprocessing}>回看已有的图像输入预处理图解<IconArrowRight size={13}/></button></div>}<OfficialLesson node={child} journey={journey} onAsk={onAsk} onCopy={onCopy}/><OfficialSources node={child} journey={journey}/>{["preprocess","contract","execution","summary"].includes(child.visual)&&<section className="og-all-practice"><h3>{child.visual==="summary"?"学习记录与成果":"动手练习与本次检查"}</h3><OfficialPractice node={child} journey={journey} onCopy={onCopy}/></section>}</LearningCanvasCard>))}</> : <>{!hidden("diagram")?<LearningCanvasCard {...cardProps("diagram")} title={node.title} icon={node.visual==="image"?IconPhoto:IconCube}><OfficialLearningVisuals key={node.id} node={node} journey={journey}/>{["image","preprocess","contract"].includes(node.visual)&&<div className="og-related"><button type="button" className="lh-text-button" onClick={onOpenPreprocessing}>回看已有的图像输入预处理图解<IconArrowRight size={13}/></button></div>}</LearningCanvasCard>:restorePill("diagram","图解")}
       {practice&&(!hidden("practice")?<LearningCanvasCard {...cardProps("practice")} title={node.visual==="summary"?"学习记录与成果":"动手练习与本次检查"} icon={IconCode}><OfficialPractice node={node} journey={journey} onCopy={onCopy}/></LearningCanvasCard>:restorePill("practice","练习"))}
-      {!hidden("lesson")?<LearningCanvasCard {...cardProps("lesson")} title="讲解、视频与理解检查" icon={IconBook2}><OfficialLesson node={node} journey={journey} onAsk={onAsk} onCopy={onCopy}/><OfficialSources node={node} journey={journey}/>{state.statuses[node.id]==="completed"&&<div className="og-next"><span><IconCheck size={14}/>当前学习动作已完成</span><button type="button" className="lh-button" onClick={()=>{const all=personalPlan?.status==="confirmed"?tree.groups.flatMap(item=>item.children):OFFICIAL_LEARNING_STAGES.flatMap(item=>item.children);const next=all[all.findIndex(item=>item.id===node.id)+1];if(next)select(next.id);else select("learning-official-step-save-summary");}}>继续下一步<IconArrowRight size={13}/></button></div>}</LearningCanvasCard>:restorePill("lesson","视频与讲解")}
+      {!hidden("lesson")?<LearningCanvasCard {...cardProps("lesson")} title="讲解、视频与理解检查" icon={IconBook2}><OfficialLesson node={node} journey={journey} onAsk={onAsk} onCopy={onCopy}/><OfficialSources node={node} journey={journey}/>{state.statuses[node.id]==="completed"&&<div className="og-next"><span><IconCheck size={14}/>当前学习动作已完成</span><button type="button" className="lh-button" onClick={()=>{const all=personalPlan?.status==="confirmed"?tree.groups.flatMap(item=>item.children):OFFICIAL_LEARNING_STAGES.flatMap(item=>item.children);const next=all[all.findIndex(item=>item.id===node.id)+1];if(next)select(next.id);else select("learning-official-step-save-summary");}}>继续下一步<IconArrowRight size={13}/></button></div>}</LearningCanvasCard>:restorePill("lesson","视频与讲解")}</>}
     </div>
     {editingPersonalPlan && <div className="lh-draft-controls og-personal-plan-controls" aria-label="个人学习计划操作"><span className="og-personal-plan-status"><i />个人计划草案 · 不改变官方路径</span><button type="button" className="lh-button og-plan-confirm" onClick={actions.confirmPersonalPlan}>确认个人计划</button><button type="button" className="lh-button" disabled={!state.personalPlanUndo?.length} onClick={actions.undoPersonalPlanStep}>撤销</button><button type="button" className="lh-button" onClick={actions.cancelPersonalPlanEdit}>取消</button></div>}
     {state.notice&&<div className="lh-canvas-notice" role="status">{state.notice}</div>}
