@@ -1759,3 +1759,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 为增加首屏可见内容，收紧 `.ld-stage-groups` 的内边距、五阶段标题区高度、步骤行高度，并同步调整时间轴位置。保留 11px 步骤文字、五阶段顺序与颜色、玻璃白卡效果、交互和响应式结构。
 - `npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。Pages 部署待检查。未改变页面序列或 API / Host / Application 边界。
+
+### 2026-10-27 · 路径阶段分割线减量
+
+- 用户指出五阶段容器线条偏多，并补充当前页面截图。依据截图，步骤行横线与阶段列线、顶部彩色时间轴重复表达层级；移除步骤行之间的横线，仅保留低对比阶段分隔和顶部时间轴。保留玻璃容器、阶段布局与步骤内容。
+- 验证：待本轮构建及 Pages 发布检查；不改变页面序列或 API / Host / Application 边界。
+
+### 2026-10-27 · 五阶段路径减少分割线
+
+- 依据用户补充截图移除步骤行之间重复的横向分隔线，阶段之间的竖线改为更淡的中性灰，顶部彩色路径轴保留。阶段分组和步骤点仍能识别。
+- `npm run build:pages` 与 `git diff --check` 通过；Pages 部署待确认。未改变页面序列或 API / Host / Application 边界。

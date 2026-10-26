@@ -272,7 +272,7 @@
 .ld-stage-groups::before { position:absolute; top:32px; right:4%; left:4%; height:1px; background:linear-gradient(90deg,#a9c9ed 0%,#a9c9ed 19%,#a8d9d8 21%,#a8d9d8 39%,#c5b8e7 41%,#c5b8e7 59%,#e2b7c6 61%,#e2b7c6 79%,#b5d9c5 81%,#b5d9c5 100%); content:""; }
 .ld-stage-groups::after { position:absolute; top:29px; right:4%; left:4%; height:7px; background:radial-gradient(circle at 0% 50%,#b7d0eb 0 3px,transparent 3.5px),radial-gradient(circle at 20% 50%,#adc8e8 0 3px,transparent 3.5px),radial-gradient(circle at 40% 50%,#acd7d6 0 3px,transparent 3.5px),radial-gradient(circle at 60% 50%,#c8b9e7 0 3px,transparent 3.5px),radial-gradient(circle at 80% 50%,#e1b8c7 0 3px,transparent 3.5px),radial-gradient(circle at 100% 50%,#b8d9c7 0 3px,transparent 3.5px); content:""; pointer-events:none; }
 .ld-stage-group { --ld-stage-accent:#7584c5; --ld-stage-tint:#f4f5fb; --ld-stage-row:#fafafe; position:relative; z-index:1; min-width:0; padding:8px 10px 6px; }
-.ld-stage-group + .ld-stage-group { border-left:1px solid #eceef2; }
+.ld-stage-group + .ld-stage-group { border-left:1px solid #f0f0f2; }
 .ld-stage-blue { --ld-stage-accent:#6f9ccc; --ld-stage-tint:#f1f6fb; --ld-stage-row:#fbfdff; }
 .ld-stage-cyan { --ld-stage-accent:#69a9a7; --ld-stage-tint:#f0f7f7; --ld-stage-row:#fcfefe; }
 .ld-stage-purple { --ld-stage-accent:#8879bd; --ld-stage-tint:#f5f3fa; --ld-stage-row:#fdfcff; }
@@ -283,7 +283,6 @@
 .ld-stage-heading h2 { display:flex; min-height:32px; align-items:center; margin:6px 0 2px; color:#303137; font-size:12px; font-weight:650; line-height:1.4; }
 .ld-stage-duration { color:#858791; font-size:10px; line-height:1.4; }
 .ld-stage-actions { display:flex; flex-direction:column; gap:0; margin:0; padding:0; list-style:none; }
-.ld-stage-actions li + li { border-top:1px solid #eceef2; }
 .ld-path-action { display:flex; width:100%; min-height:36px; align-items:center; gap:8px; padding:5px 5px; border:0; border-radius:0; background:transparent; color:#41434a; font:inherit; font-size:11px; line-height:1.4; text-align:left; cursor:pointer; transition:background .16s,color .16s; }
 .ld-path-action:hover { border-color:transparent; border-radius:5px; background:var(--ld-stage-row); color:#24252a; }
 .ld-path-action:focus-visible { outline:2px solid color-mix(in srgb,var(--ld-stage-accent) 55%,#fff); outline-offset:2px; }
@@ -321,7 +320,7 @@
   .ld-stage-groups { grid-template-columns:repeat(3,minmax(0,1fr)); }
   .ld-stage-groups::before,.ld-stage-groups::after { display:none; }
   .ld-stage-group + .ld-stage-group { border-left:0; }
-  .ld-stage-group:nth-child(3n + 2),.ld-stage-group:nth-child(3n + 3) { border-left:1px solid #eceef2; }
+  .ld-stage-group:nth-child(3n + 2),.ld-stage-group:nth-child(3n + 3) { border-left:1px solid #f0f0f2; }
 }
 @media(max-width:700px) {
   .ld-hero-inner { padding:19px 16px 24px; }
@@ -334,8 +333,8 @@
   .ld-stage-groups { grid-template-columns:repeat(2,minmax(0,1fr)); gap:0; padding:9px; }
   .ld-stage-group { padding:11px 10px 9px; }
   .ld-stage-group + .ld-stage-group,.ld-stage-group:nth-child(3n + 2),.ld-stage-group:nth-child(3n + 3) { border-left:0; }
-  .ld-stage-group:nth-child(even) { border-left:1px solid #eceef2; }
-  .ld-stage-group:nth-child(n + 3) { border-top:1px solid #eceef2; }
+  .ld-stage-group:nth-child(even) { border-left:1px solid #f0f0f2; }
+  .ld-stage-group:nth-child(n + 3) { border-top:1px solid #f0f0f2; }
   .ld-stage-heading { min-height:88px; }
 }
 @media(max-width:520px) {
@@ -347,7 +346,7 @@
   .ld-stage-groups { grid-template-columns:minmax(0,1fr); margin-top:2px; padding:8px; }
   .ld-stage-group { padding:10px 8px; }
   .ld-stage-group + .ld-stage-group,.ld-stage-group:nth-child(even) { border-left:0; }
-  .ld-stage-group:nth-child(n + 2) { border-top:1px solid #eceef2; }
+  .ld-stage-group:nth-child(n + 2) { border-top:1px solid #f0f0f2; }
   .ld-stage-heading { min-height:0; flex-direction:row; align-items:center; gap:10px; margin-bottom:10px; text-align:left; }
   .ld-stage-heading h2 { min-height:0; margin:0; font-size:12px; }
   .ld-stage-duration { margin-left:auto; white-space:nowrap; }
