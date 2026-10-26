@@ -1368,8 +1368,8 @@ final result: passed
 - **纠正原因：** 用户指出前版虽采用冷调多色，但 Banner 本身过平，未呈现参考图里的浅色纹理、流动光带与漂浮碎片。用户本轮上传的 1672×941 页面图为最新视觉基准。
 - **实现：** ImageGen 单独生成 `src/assets/learning-discovery/discovery-banner-bg-textured.png`（2048×768）：浅蓝白底、柔和层叠波纹、青 / 紫 / 粉 / 薄荷色半透明碎片；不包含文字、猫图或 UI。`learning-discovery.css` 移除大面积径向色斑，改用新底图和向下渐隐。ResNet50 路径插画、五阶段颜色和内容布局保持。
 - **视觉核对：** 本地预览 `http://127.0.0.1:8133/`，CUA 1280×720 截图显示 Banner 的亮度、柔纹与多色碎片接近用户参考；标题区保留清晰可读留白，底部自然过渡到灰色内容区。
-- **构建 / 检查：** 合入同步主线后的 `npm run build:pages` 成功（6373 modules，2.88s）；`node --check ascstudio/assets/index-C0leW93l.js`、`git diff --check` 通过。未运行测试套件。
-- **边界 / 发布：** 保留并合入同期的学习画布展开与组合任务首页更新；不改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。Push 与 Pages workflow 待完成后回填。
+- **构建 / 检查：** 同步最新主线后的 `npm run build:pages` 成功（6373 modules）；最终 JS `node --check ascstudio/assets/index-BE9ZjgIU.js` 与 `git diff --cached --check` 通过。Vite 保留既有主 JS chunk 大于 500 kB 提醒；未运行测试套件。
+- **边界 / 发布：** 保留并合入同期的学习画布展开、组合首页默认空状态和对话区域布局切换；不改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `78bc44a2` 已推送至 `origin/main`，Pages workflow `40319030276` 成功。线上 `/AscendCANN/ascstudio/` HTML、JS、CSS 与纹理底图均 HTTP 200；JS 1,013,939 bytes。
 
 ## 2026-10-26 · 训练调优字段组合首页
 

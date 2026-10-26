@@ -1630,7 +1630,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户指出前版与选定参考图不符：背景过平、缺少纹理与彩色碎片。最新上传截图取代旧版实现截图，作为 Banner 的视觉依据。
 - 新 ImageGen 纯底图位于 `src/assets/learning-discovery/discovery-banner-bg-textured.png`，含浅蓝白基底、柔和层叠波纹与青 / 紫 / 粉 / 薄荷半透明碎片；不含文字和 UI。学习发现页移除过大的径向色斑，沿用底部渐隐；不改五阶段内容、路径插画、布局或主按钮。
-- 本地 1280×720 预览已核对，纹理和碎片可见；Pages 构建、生成 JS 语法和 diff 检查通过。未运行测试套件。同期学习画布 / 组合任务更新已保留并合入；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。推送与 Pages 状态待回填。
+- 本地 1280×720 预览已核对，纹理和碎片可见；最终合并构建 `npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 均通过。未运行测试套件。同期学习画布、组合首页、对话布局更新已保留并合入；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。发布提交 `78bc44a2` 已推送到 `origin/main`，Pages workflow `40319030276` 成功；公开 HTML / JS / CSS / 纹理底图均 HTTP 200。
 
 ### 2026-10-26 · 首页「组合」关系网原型
 
