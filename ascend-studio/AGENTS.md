@@ -1705,6 +1705,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 桌面 1280×720 预览可见五阶段与步骤仍清晰；`npm run build:pages`、生成 JS `node --check` 和 `git diff --check` 通过，未运行测试套件。页面序列 / API / Host / Application 边界不变。
 - 提交 `425653f7` 已推送到 `origin/main`；Pages 线上资源状态待回读。
 
+### 2026-10-27 · 恢复选定方案的柔和彩色阶段
+
+- 用户指出纯白灰卡片偏离此前选择的 ImageGen 方案 1。该方案原图见 `/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-709684d0-484b-474c-8fa7-93b82678a2da.png`；五段彩色卡片、浅彩色动作行与不同颜色节点是核心识别，不应整体去色。
+- 在保留彩色结构基础上降低彩度和对比度：浅蓝、青、蓝紫、玫粉、绿阶段卡；节点和动作采用更柔和颜色。桌面 1280×720 预览经 CUA 确认。`npm run build:pages`、JS 语法与 diff 检查通过，未运行测试套件。
+- 源码 / Pages 提交 `942dcab4` 已推送至 `origin/main`，待核实部署状态。
+
 ### 2026-10-27 · Ascend Studio Tabler 图标系统
 
 - 按用户确认统一采用已有 `@tabler/icons-react`，共享图标尺寸、描边与热区规则；顶部对话布局按钮改为 `IconLayoutSidebar` / `IconLayoutBottombar`，统一图书与并排布局图标语义。内容示意图保留专属造型。
