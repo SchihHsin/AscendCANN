@@ -40,3 +40,30 @@ export function nodeConnector(source, target) {
   const middleY = (startY + endY) / 2;
   return `M${sx},${startY} V${middleY} H${tx} V${endY}`;
 }
+
+// Draw a shared spine beside each stage's node column. The branches end at
+// the card edges so the line never runs beneath a node.
+export function stageSpineConnectors(stage, gap = 26, branchLength = 9) {
+  const rects = [stage.rect, ...stage.children.map(child => child.rect)];
+  if (!rects.length) return { spine: "", branches: [] };
+  const left = Math.min(...rects.map(rect => rect.x));
+  const spineX = left - gap;
+  const centers = rects.map(rect => rect.y + rect.height / 2);
+  const first = Math.min(...centers), last = Math.max(...centers);
+  return {
+    spine: `M${spineX},${first} V${last}`,
+    branches: rects.map((rect, index) => ({ id: index === 0 ? "stage" : stage.children[index - 1]?.id, d: `M${spineX},${rect.y + rect.height / 2} H${rect.x - branchLength}` })),
+  };
+}
+
+export function hierarchySpineConnectors(groups, gap = 26, branchLength = 9) {
+  const rects = groups.flatMap(stage => [{ id: `stage:${stage.id}`, rect: stage.rect }, ...stage.children.map(child => ({ id: child.id, rect: child.rect }))]);
+  if (!rects.length) return { spine: "", branches: [] };
+  const spineX = Math.min(...rects.map(item => item.rect.x)) - gap;
+  const centers = rects.map(item => item.rect.y + item.rect.height / 2);
+  const first = Math.min(...centers), last = Math.max(...centers);
+  return {
+    spine: `M${spineX},${first} V${last}`,
+    branches: rects.map(({ id, rect }) => ({ id, d: `M${spineX},${rect.y + rect.height / 2} H${rect.x - branchLength}` })),
+  };
+}

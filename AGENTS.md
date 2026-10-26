@@ -6452,6 +6452,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 提交 / 推送：正式版本提交 `823e9cb1` 已推送 `origin/main`；GitHub Pages workflow `40080675197` build / deploy 成功。方案 3 仅更新 5205 本地预览，保留在 `codex/explore-history-seed-20261023` worktree，未发布。
 
 
+### 2026-10-25 · 四渠道草稿卡片画廊采用已选方案
+
+- **目标与方案:** 用户认可四渠道卡片画廊参考方案，继续实现 Ascend Studio 社区经验发布流程。多渠道页在右侧内容区并列展示昇腾社区、GitCode、CSDN、抖音四张平台预览卡；卡片可多选并以描边 / 圆形勾选表达，卡内提供「查看详情」，统一在右下角批量发布。
+- **实现:** 社区卡增加浅色立方体插画、标题与问题摘要；GitCode 显示 Issue 标签、复现代码和验证边界；CSDN 显示文章目录与代码片段；抖音显示四张内容各异的深色知识图文卡。新增插画 `ascend-studio/src/assets/channel-marks/tensor-cubes.png`，其余平台使用现有真实图标。窄屏 / 短屏规则保证卡片内容适配。
+- **依据 / 验证:** 方案依据用户选定参考图（H）。本地 CUA `http://127.0.0.1:5230/` 在 1280×720 复核：四卡同屏、社区默认选中、右下角批量发布入口可见；生成草稿 → 打开多渠道页、选择 GitCode、进入 CSDN 详情并返回后保留 / 恢复选择均已回放。`npm run build:pages`、`git diff --check` 通过；构建保留既有 JS chunk >500 kB 提示，未运行自动化测试。
+- **范围:** 仅调整社区经验草稿的渠道总览视觉与平台内容预览，不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。所有渠道发布仍是前端演示，不会真实提交第三方平台；不代表平台实际奖励承诺。
+- **提交 / 发布:** 画廊实现提交 `4bef51d4` 与远端并行更新整合后形成 `465b89eb`，已推送 `origin/main`。Pages workflow `40180638508` build / deploy 成功；线上 `/ascstudio/` 引用 `index-CWrcc-vV.js` / `index-BApcEqBe.css`，HTML、JS、CSS 和 `tensor-cubes-ClovSdPR.png` 均 HTTP 200。
+
 ### 2026-10-24 · 画布参考图视觉样式接入
 
 - 用户指定的参考图作为视觉依据（H）。学习画布、从目标生成路径及开发任务画布统一采用浅灰点阵背景、白色内容节点、黑色选中节点 / 主操作和克制的彩色类型标记；点阵继续读取中性灰 / 冷灰主题变量。
@@ -6474,3 +6482,77 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据为用户反馈、Firefox 地址与界面观察（H/M）、源码初始化顺序（H）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证与发布：合并前后 `npm run build:pages`、产物 `node --check`、`git diff --check` 通过。修复提交 `af2d3e5e`，整合并行画布样式和探索节点更新后的发布提交 `031c12c4` 已推送 `origin/main`；Pages workflow `40110708219` build / deploy 成功。线上 HTML 已引用 `index-CzCSdMsa.js` / `index-UrPzqb1-.css`。没有新增或运行测试套件。
 - 线上交互验证：直接在 Firefox 已打开的上述带参数 Pages 地址按刷新，仍显示「ResNet50 离线推理初体验」、原有对话和学习画布；左侧对应任务行保持高亮，列表保持展开。截图 `/tmp/ascstudio-pages-task-refresh-20261025.png` 为线上刷新后的实拍，仅本地保留。此次是实际线上交互回放，不以 HTTP 或部署状态替代行为验证。
+
+### 2026-10-25 · 修正抖音知识图文缩略图错位
+
+- 用户截图指出抖音卡片中的四张内容图排版错位（H）。原因是四列窄缩略图仍承载长标题、长标签与横排状态；文字换行后内容块高度和宽度互相挤压。
+- `ascend-studio/src/CommunityDraftPanel.jsx` 将四页内容收敛为封面、形状对照、排查步骤、验证清单；短化标签与步骤文案，形状对照改为上下两条结构固定的输入 / 目标记录。`community-draft.css` 为标题、标签、数据行、列表和状态提示设置最小尺寸、单行截断与明确网格位置，避免窄列换行造成错位。深色内容图、浅色外层抖音卡和四页并排布局保留，其他平台与选择 / 发布交互不变。
+- 本地 CUA `http://127.0.0.1:5230/` 1280×720 复核：四张图的序号与栏目眉题对齐；比较数据、步骤和清单分别落在各自内容区，无文字叠压或溢出（M）。页面导航、API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- `npm run build:pages` 与 `git diff --check` 通过；未运行自动化测试。构建继续提示既有主 JS chunk 大于 500 kB。
+- 修复提交 `f2b2d37b` 随包含并行 ResNet50 学习画布连线更新的发布提交 `aa1e595b` 推送。Pages workflow `40183376959` build / deploy 成功。线上 `/ascstudio/` 当前引用 `index-C3Sygmtw.js` / `index-DJmCKhw9.css`，HTML、JS、CSS 均 HTTP 200，产物已包含四页对照布局及短标签；线上只核对资源，不声称截图回放。之后的提交只更新交接文档，不改页面产物。
+
+### 2026-10-25 · ResNet50 学习画布采用共用主干连线
+
+- 用户选择的参考图（H）作为连线样式依据：纵向节点列共用一根主干，每张阶段 / 子节点卡片以短支线和圆点接入，当前节点的支线与圆点为黑色。
+- `ascend-studio/src/OfficialLearningPathCanvas.jsx` 在左右布局中移除重复的阶段箭头和分组竖线，改为一根贯穿阶段与子节点的主干；上下布局保留各阶段自己的竖向分支和阶段间横向连接，避免支线穿过其他阶段卡片。卡片位置、层级和材料内容不变。连线几何由 `canvas-node-position.js` 提供，并覆盖对应测试；中性色和当前节点黑色覆盖写入 `canvas-reference-style.css`。
+- 依据 / 边界：用户提供的参考截图为明确设计依据（H）；本地桌面画布截图为实现观察（M）。只调整学习路径节点连线，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --test src/canvas-node-position.test.js`（5 项通过）、`npm run build`、`npm run build:pages`、`git diff --check`；本地桌面截图核对主干、分支圆点与当前黑色强调。实现提交 `b2aff8b2` 与交接提交 `b20dddce` 已推送 `origin/main`；Pages workflow `40182962189` build / deploy 成功。线上 `/ascstudio/` HTML 已引用 `index-Co4hBAol.js` 与 `index-BKsu1NkP.css`；两项资源内容均核对到共用主干、节点圆点与黑色当前支线规则（HTTP 200）。未做线上 CUA 交互截图。
+
+### 2026-10-25 · Ascend Studio 画布风格 Skill
+
+- 按用户确认的浅色画布、黑色主操作 / 选中态、克制彩色节点点缀方向，创建个人可复用 Skill：`~/.codex/skills/ascend-studio-canvas-style/SKILL.md`，并添加 Codex UI 元数据。规则只适用于学习 / 开发画布及其直接控件，不把整站改成深色主题。
+- 风格依据为用户选定的画布参考与 `ascend-studio/src/canvas-reference-style.css`；颜色映射作为当前画布参考，后续仍以用户最新指示和现有语义为准。
+- Skill Creator `quick_validate.py` 校验通过，`agents/openai.yaml` 的 YAML 解析通过。本次不改产品源码、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- Skill 位于个人 Codex 配置目录，不属于仓库；仅本交接记录进入仓库，未修改或纳入共享工作区的其他并行改动。
+
+### 2026-10-25 · Ascend Studio 界面风格 Skill 扩展
+
+- 用户明确希望已建立的黑色重点色 + 克制彩色点缀风格可用于整个界面，而不只限画布，并要求写明色号。原 `ascend-studio-canvas-style` Skill 已扩展并更名为个人 Skill `~/.codex/skills/ascend-studio-interface-style/SKILL.md`。
+- 色板记录项目中已有的中性面、文字和描边色，以及黑色操作态和蓝 / 珊瑚 / 琥珀 / 青绿色及淡色底；明确分类色不能替代成功、警告、失败等语义状态色。范围覆盖工作台、导航、对话、卡片、表单、画布和控件，不代表整站深色主题。
+- 色号依据 `ascend-studio/src/styles.css` 与 `ascend-studio/src/canvas-reference-style.css` 的现存 token / 样式，并遵从用户已确认的中性灰与黑色重点方向。Skill Creator 校验和 UI YAML 解析通过。未修改产品源码、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 仅本交接记录进入仓库；Skill 本体位于个人 Codex 配置目录。共享工作区其他对话改动未纳入。
+
+### 2026-10-25 · 抖音形状对照缩略图二次对齐
+
+- 用户补充截图指出上一轮修复后仍有错位（H）。复核发现极窄列中“当前输入 / 目标格式”与右侧状态占同一行，标签仍会被挤短；尺寸文本也不适合带空格的长格式。
+- `ascend-studio/src/CommunityDraftPanel.jsx` 将对照标签精简为“输入 / 目标”（AddCustom 为“参考 / 异常”），保留 NHWC / NCHW 和完整尺寸；移除尺寸数字间空格。`community-draft.css` 将格式与尺寸分行展示，状态移至标签行，并收紧尺寸字距。
+- 本地 CUA 1280×720 确认四张深色图文缩略卡同高，NHWC、NCHW 与两组尺寸均完整；浏览器测量中比较卡关键文字的 scrollWidth 不超过 clientWidth，无裁切 / 溢出。`npm run build:pages`、`git diff --check` 通过，未运行自动化测试；构建保留既有主 JS chunk >500 kB 提示。
+- 不改渠道、选择 / 发布交互、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本地发布仍为演示。
+- 发布：提交 `2119284d` 已推送 `origin/main`；Pages workflow `40197017701` build / deploy 成功。该次线上 `/ascstudio/` HTML 引用 `index-BBAFqZPs.js` / `index-CojLKlgO.css`，JS 返回 HTTP 200；CSS 请求超时，未记为已核验。其后主线的图标侧栏样式构建更新了静态资源哈希。
+
+### 2026-10-25 · 抖音详情形状对照改为纵向排布
+
+- 用户截图仍有错位（H）：上一轮只修了多渠道总览缩略图；详情页第 2 张仍将长格式和值并排，NHWC / NCHW 与状态文字发生重叠。
+- `ascend-studio/src/ChannelDraftContent.jsx` 将格式名、尺寸和状态拆成独立内容行，以纵向箭头连接当前输入与目标布局；`channel-draft.css` 收紧该页标题与面板间距，避免与图片脚注 / 底栏相撞。AddCustom 两组输入沿用相同结构。
+- 本地 1280×720 CUA 检查详情页第 2 张：输入与目标各占一张全宽卡片，格式、尺寸、状态均完整且不重叠。`npm run build:pages`、构建 JS `node --check`、产物样式核对及 `git diff --check` 通过；未运行自动化测试。提交 `6f8a63cb` 已推送 `origin/main`；Pages workflow `40198851377` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200，且静态资源包含新对照布局。
+- 不改发布渠道、发布状态、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+
+### 2026-10-25 · 图标侧栏选中态改为黑底白图标
+
+- 用户指出左侧 IconButton 侧边栏的选中态太灰，明确希望选中时用黑底白图标；只调整 `.icon-rail-button.is-current` 为 `#191a1b` 背景 / 边框与白色图标，悬停提亮至 `#303132`，键盘焦点描边改为 `#191a1b`。未改变非选中按钮、任务列表或页面其他主题。
+- 依据：用户本轮明确设计要求（H），与 Ascend Studio 黑色主操作 / 选中态界面风格一致。实现位于 `ascend-studio/src/styles.css`，Pages 构建更新 `ascstudio/` 的哈希 CSS、JS 引用。
+- 验证：`npm run build:pages`、`git diff --check` 通过；构建保留既有主 JS chunk 大于 500 kB 的提示，未运行自动化测试。本次没有声称完成截图视觉回放。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 发布：样式与 Pages 产物提交 `ad236093` 已推送至 `origin/main`。本条交接记录单独提交并推送；GitHub Pages 部署状态未在本轮确认。
+
+### 2026-10-26 · 左侧图标导航改用品牌蓝轻选中态
+
+- 用户修正配色规则：黑色主要用于主要按钮，左侧 IconButton 导航选中态不要黑底。查阅并实拍核对昇腾社区官网首页 `https://www.hiascend.com/`（H）：顶部当前 CANN 导航项用蓝色字样，主 CTA 使用黑底白字；页面内本地分类标签通过字重和下划线表达当前项。将侧栏当前按钮改为蓝色图标 `#2787E8` + 淡蓝底 `#E9F2FF`，悬停用较深蓝和 `#DCECFF`，焦点描边使用品牌蓝；其他图标项和任务列表未改。
+- 同步更新个人 Skill `~/.codex/skills/ascend-studio-interface-style/SKILL.md`：黑色用于主要按钮，导航当前项用品牌蓝与淡蓝底，覆盖旧的通用黑色强选中态默认规则。Skill 本体位于个人配置目录，不进入仓库。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 5184 学习任务截图核对图标选中蓝色 / 淡蓝底（M）。构建继续提示既有主 JS chunk 大于 500 kB，未运行自动化测试。页面序列 / hash 和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 发布：样式及 Pages 静态产物提交 `80206f32` 已推送到 `origin/main`；交接记录单独提交并推送。GitHub Pages 自动部署状态未在本轮确认。
+
+### 2026-10-26 · 左侧图标导航选中态恢复中性灰
+
+- 用户在查看蓝色方案后改回此前认可的灰色选中态。本记录覆盖上一条“品牌蓝轻选中态”决定：IconButton 当前项恢复为深灰图标 `#17181D`、浅灰半透明底 `rgba(0,0,0,.07)` 和极浅描边；移除蓝色悬停样式，键盘焦点描边恢复为原有 `#C1C3F2`。主要按钮黑底白字规则不变。
+- 同步个人 Skill `~/.codex/skills/ascend-studio-interface-style/SKILL.md`：导航当前项采用深灰图标 / 文字与浅中性灰底；彩色点缀仍可用于类别识别。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 5184 学习任务截图确认灰色图标选中态（M）。构建保留既有主 JS chunk 大于 500 kB 提示，未运行自动化测试。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 发布：样式与 Pages 静态产物提交 `1dad0c5d` 已推送到 `origin/main`；本条交接记录另行提交并推送。GitHub Pages 自动部署状态未在本轮确认。
+
+
+### 2026-10-26 · 学习发现 Banner 主推路径与浅中性色
+
+- 用户确认学习发现页顶部展示一条最推荐的学习路径；页面主体以浅色为主，黑色主要用于主按钮，少量彩色用于状态提示。顶部采用现有「图像输入预处理学习路径」，用“图像通道 → 整理数据维度 → 核对模型输入 → 保存学习记录”四个演示节点构成路线图，按钮直接打开该学习路径。其余课程、知识点、认证推荐仍在下方，近期日程和新上架楼层保留。
+- ascend-studio/src/LearningDiscoveryPage.jsx、learning-discovery.css 增加路径主推区。页面底色调整为中性浅灰，内容卡片保留白底，黑色只用于主 CTA 实心按钮；次级操作、搜索和类别标签采用中性样式；蓝紫推荐标记、琥珀新内容 / 活动提示、绿色已加入状态只在小面积使用。路径示意直接使用节点和连线呈现学习内容，没有新增装饰图或图片资源。
+- 依据：用户本轮确认的布局与颜色偏好（H）；路径节点来自当前演示路径内容（H）。仅更新学习发现页展示，不改页面顺序 / hash、学习流程交互、官方来源或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：合并并保留 origin/main 上 24 个并行提交后重新运行 npm run build:pages；本地 1280×720 静态 Pages 预览经 CUA 复核，顶栏主推路径、四节点图、黑色主按钮、下方三项其他推荐均可见。点击一次“加入日程”后 AX 状态变为“已加入”，状态用绿色表达。桌面截图保存至 /tmp/ascstudio-learning-discovery-featured-path-20261026.png。未运行自动化测试；保留既有大 JS chunk 提醒。
+- 发布状态：功能提交与 Pages 包待完成整合提交及 push，发布 workflow / 线上刷新结果待回填。

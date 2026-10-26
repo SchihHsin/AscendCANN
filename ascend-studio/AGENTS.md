@@ -1480,12 +1480,26 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 不改变页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界。实现提交 `1abeac04` 经 `d77b2336` 整合并推送至 `origin/main`；Pages workflow `40080856085` build / deploy 成功，线上 JS / CSS 均 HTTP 200。
 
 
+### 2026-10-25 · 四渠道社区经验预览卡片
+
+- 按用户选定的参考图，将四个平台预览集中在右侧多渠道画廊。卡片多选用描边与圆形勾选表达；详情通过「查看详情」进入，发布操作集中在右下角。
+- 昇腾社区使用浅色立方体插画与经验帖摘要；GitCode 用 Issue / 复现代码结构；CSDN 用目录与代码片段结构；抖音保留四张差异化深色知识图文卡。卡片继续显示渠道奖励信息，抖音只提示播放表现激励，不虚构积分数。
+- 1280×720 本地桌面预览四卡同屏；生成草稿、打开画廊、多选、详情返回保留选择均经 CUA 回放。发布是本地演示，不向第三方平台发送内容。
+- `npm run build:pages`、`git diff --check`、构建 JS 的 `node --check` 通过；未运行自动化测试。此项不改变导航序列、hash 或 API / Host / Application 边界。提交 `4bef51d4` 经 `465b89eb` 整合远端并行更新后推送 `origin/main`；Pages workflow `40180638508` build / deploy 成功。
+
 ### 2026-10-24 · 画布参考图视觉样式接入
 
 - 用户指定的参考图作为视觉依据（H）。学习画布、从目标生成路径及开发任务画布统一采用浅灰点阵背景、白色内容节点、黑色选中节点 / 主操作和克制的彩色类型标记；点阵继续读取中性灰 / 冷灰主题变量。
 - 新增 `ascend-studio/src/canvas-reference-style.css` 并从 `main.jsx` 加载；保留各任务原有路径结构、层级、卡片内容与拖拽 / 缩放交互，仅覆盖视觉令牌。重新生成根目录 Pages 产物 `ascstudio/`。不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、`git diff --check` 通过；CUA 在 1280×720 预览学习路径共创和图像推理开发画布，确认点阵背景、黑色选中项、彩色节点标记和白色浮动工具生效。截图在本轮工具输出中核对，未另存仓库。未运行自动化测试；构建保留现有大 JS chunk 提醒。
 - 源码与 Pages 产物提交 `8b9c9479` 已推送 `origin/main`。GitHub Pages workflow `40084082873` build / deploy 成功；线上 index、新 JS 与 CSS 均 HTTP 200，CSS 含本轮画布样式。线上 CUA 视觉读取超时，因此不记作线上截图复核；本地静态 Pages 包已通过 CUA 桌面截图核验。
+
+### 2026-10-25 · 抖音知识图文缩略图排版修正
+
+- 用户截图确认四张深色图文缩略图内部标题和内容对不齐。将缩略图结构固定为封面、输入 / 目标对照、排查步骤、验证清单；保留四页并排和浅色外层抖音渠道卡。
+- 对窄列标题、眉题、对照值、状态、步骤与清单设置稳定网格、单行截断和内容最小尺寸，防止中文换行造成元素互相挤压；两类任务的内容都用短标签，AddCustom 数据仍区分参考输入、异常输入与待复核线索。
+- 本地 CUA 1280×720 预览确认四页结构清楚，无重叠 / 卡片外溢。`npm run build:pages`、`git diff --check` 通过；未运行自动化测试。没有改页面序列或 API / Host / Application 边界。
+- 修复提交 `f2b2d37b` 随包含 ResNet50 学习画布连线并行更新的发布提交 `aa1e595b` 推送。Pages workflow `40183376959` build / deploy 成功；线上 `/ascstudio/` 引用 `index-C3Sygmtw.js` / `index-DJmCKhw9.css`，HTML 与资源 HTTP 200，构建产物包含修正后的四页图文布局。后续提交只更新交接文档，没有改变线上页面资源。
 
 ## 探索首页节点间距与连线对比（2026-10-24）
 
@@ -1501,3 +1515,26 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 依据为用户反馈、Firefox 地址与界面观察（H/M）、源码初始化顺序（H）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证与发布：合并前后 `npm run build:pages`、产物 `node --check`、`git diff --check` 通过。修复提交 `af2d3e5e`，整合并行画布样式和探索节点更新后的发布提交 `031c12c4` 已推送 `origin/main`；Pages workflow `40110708219` build / deploy 成功。线上 HTML 已引用 `index-CzCSdMsa.js` / `index-UrPzqb1-.css`。没有新增或运行测试套件。
 - 线上交互验证：直接在 Firefox 已打开的上述带参数 Pages 地址按刷新，仍显示「ResNet50 离线推理初体验」、原有对话和学习画布；左侧对应任务行保持高亮，列表保持展开。截图 `/tmp/ascstudio-pages-task-refresh-20261025.png` 为线上刷新后的实拍，仅本地保留。此次是实际线上交互回放，不以 HTTP 或部署状态替代行为验证。
+
+### 2026-10-25 · ResNet50 学习画布连线收敛
+
+- 用户选定参考图：左右布局的阶段与子节点共享一条纵向主干，卡片由短支线和圆点接入；当前节点的支线 / 圆点为黑色。移除该布局中并行的阶段箭头和分组竖线。上下布局继续使用阶段内主干与阶段间横向连接，以免跨列连线穿过其他卡片。卡片位置、节点顺序、内容材料和拖拽行为保持不变。
+- 实现位于 `OfficialLearningPathCanvas.jsx`、`canvas-node-position.js` 与 `canvas-reference-style.css`，几何测试位于 `canvas-node-position.test.js`。参考图是设计依据（H），本地 CUA 截图为实现观察（M）；不涉及 API / Host / Application 机制或真实 NPU 验证。
+- 验证：5 项节点几何测试、`npm run build`、`npm run build:pages` 和 `git diff --check` 通过；本地桌面预览核对选中支线为黑色。实现提交 `b2aff8b2` 与交接提交 `b20dddce` 已推送 `origin/main`；Pages workflow `40182962189` build / deploy 成功。线上 `/ascstudio/` HTML 已引用 `index-Co4hBAol.js` 与 `index-BKsu1NkP.css`；两项资源内容均核对到共用主干、节点圆点与黑色当前支线规则（HTTP 200）。未做线上 CUA 交互截图。
+
+### 2026-10-25 · 抖音形状对照行避免挤压
+
+- 四页并排缩略图中的输入 / 目标标签改短为“输入 / 目标”，AddCustom 使用“参考 / 异常”；格式名称独占一行、尺寸独占一行、状态放在标签行，保证 66px 窄卡中内容完整。
+- 1280×720 CUA 复核四页同高；NHWC / NCHW 与尺寸文本未截断或溢出。`npm run build:pages`、`git diff --check` 通过；未运行测试套件。
+
+### 2026-10-25 · 抖音详情页第二张图修正挤压
+
+- 当前输入与目标布局改为上下两张卡片，卡片内格式、尺寸、状态分行；纵向箭头表达对照顺序。AddCustom 共享此布局。
+- 1280×720 本地预览确认完整显示，无横向覆盖；页面构建、构建 JS 语法检查与 diff 检查通过。实现 `6f8a63cb` 已推送到 `origin/main`，Pages workflow `40198851377` 部署成功；完整发布记录见根目录 `AGENTS.md`。
+
+
+### 2026-10-26 · 学习发现顶部突出推荐学习路径
+
+- Banner 主体改为「图像输入预处理学习路径」推荐位：四个内容节点按“认识图像通道 → 整理数据维度 → 核对模型输入 → 保存学习记录”排列并由连线表示先后；标题、简介、节点数、时长与“查看学习路径”操作构成可读内容区。
+- 下方保留课程、知识点和认证三项推荐，以及“新上架”“近期日程”楼层。页面采用中性浅灰背景和白色卡片；黑色实心只给主 CTA，搜索、次级按钮和内容类别标签保持中性；颜色用作小面积的推荐、新内容、近期活动和已加入状态提示。
+- 本地静态 Pages 1280×720 预览中，四节点与推荐路径结构可见；加入日程后辅助功能树显示“已加入”。

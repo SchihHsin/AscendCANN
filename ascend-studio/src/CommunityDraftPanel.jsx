@@ -11,6 +11,7 @@ import {
   IconInfoCircle,
   IconListDetails,
   IconMaximize,
+  IconPhotoSearch,
   IconRefresh,
   IconSend,
   IconSparkles,
@@ -24,6 +25,7 @@ import ascendCommunityMark from "./assets/channel-marks/ascend-community.svg";
 import gitcodeMark from "./assets/channel-marks/gitcode.svg";
 import csdnMark from "./assets/channel-marks/csdn.svg";
 import douyinMark from "./assets/channel-marks/douyin.svg";
+import tensorCubeIllustration from "./assets/channel-marks/tensor-cubes.png";
 
 const sections = [
   { id: "problem", label: "1. 问题描述", Icon: IconAlertCircle },
@@ -79,53 +81,80 @@ function ChannelMark({ channel }) {
 function ChannelCardPreview({ channelId, draft }) {
   const topic = getCommunityDraftTopic(draft);
   const isAddCustom = topic === "AddCustom 精度异常";
+  const previewLines = isAddCustom
+    ? ["input = [17, 33]", "precision mismatch", "custom_op.cpp:128"]
+    : ["img = img.transpose(2, 0, 1)", "img = img[None, ...]", "shape = [1, 3, 224, 224]"];
   if (channelId === "community") return <div className="channel-preview-community">
-    <h3>{topic}经验记录</h3>
-    <div><b>问题现象</b><p>{truncate(draft.problem, 82)}</p></div>
-    <div><b>排查过程</b><p>{truncate(draft.approach, 82)}</p></div>
-    <div className="channel-preview-caution"><span />{isAddCustom ? "尾块边界是待验证线索，尚未确认根因" : "示例形状已核对，真实模型结果仍待补充"}</div>
+    <div className="channel-preview-community-lead">
+      <div>
+        <h3>{topic}经验记录与排查思路</h3>
+        <p>{truncate(draft.approach, 105)}</p>
+      </div>
+      <img src={tensorCubeIllustration} alt="" aria-hidden="true" />
+    </div>
+    <div className="channel-preview-community-section">
+      <h4>一、问题现象</h4>
+      <p>{truncate(draft.problem, 110)}</p>
+      <div className="channel-preview-caution"><span />{isAddCustom ? "尾块边界仍是待验证线索" : "真实模型结果仍待目标环境核对"}</div>
+    </div>
   </div>;
 
   if (channelId === "gitcode") return <div className="channel-preview-gitcode">
-    <div className="channel-preview-topic"><span>CANN</span><span>custom operator</span></div>
+    <div className="channel-preview-topic"><span className="channel-preview-state">Open</span><span>CANN</span><span>{isAddCustom ? "custom operator" : "image inference"}</span></div>
     <h3>{topic}：复现记录与排查线索</h3>
-    <div className="channel-preview-step"><i>1</i><div><b>复现现象</b><p>{truncate(draft.problem, 75)}</p></div></div>
-    <div className="channel-preview-step"><i>2</i><div><b>待补证据</b><p>{truncate(draft.verification, 75)}</p></div></div>
-    <div className="channel-preview-code"><code>复现步骤　·　运行环境　·　验证记录</code></div>
+    <div className="channel-preview-gitcode-code">
+      <div className="channel-preview-code-label"><span>复现记录</span><small>{isAddCustom ? "C++" : "Python"}</small></div>
+      <pre><code>{previewLines.join("\n")}</code></pre>
+    </div>
+    <div className="channel-preview-expectation"><b>排查线索</b><p>{truncate(draft.approach, 110)}</p></div>
+    <div className="channel-preview-expectation"><b>验证边界</b><p>{truncate(draft.verification, 110)}</p></div>
   </div>;
 
   if (channelId === "csdn") return <div className="channel-preview-csdn">
     <h3>一次{topic}的排查过程</h3>
-    <p>{truncate(draft.problem, 100)}</p>
-    <ol><li><b>问题现象</b><span>{truncate(draft.problem, 52)}</span></li><li><b>当前排查方向</b><span>{truncate(draft.approach, 52)}</span></li><li><b>验证状态</b><span>{truncate(draft.verification, 52)}</span></li></ol>
+    <p>{truncate(draft.problem, 105)}</p>
+    <div className="channel-preview-csdn-layout">
+      <div className="channel-preview-csdn-toc">
+        <b>文章目录</b>
+        <div className="channel-preview-csdn-toc-list" role="list">
+          {["问题现象", "输入与目标约定", "排查步骤", "验证记录"].map((label, index) => <div className="channel-preview-csdn-toc-item" role="listitem" key={label}><span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>{label}</div>)}
+        </div>
+      </div>
+      <div className="channel-preview-csdn-code">
+        <div><span>{isAddCustom ? "C++" : "Python"}</span><small>片段预览</small></div>
+        <pre><code>{previewLines.join("\n")}</code></pre>
+      </div>
+    </div>
   </div>;
 
   return <div className="channel-preview-tiktok">
     <div className="channel-preview-tiktok-heading"><span>抖音 · 知识图文</span><b>4 页预览</b></div>
     <div className="channel-preview-tiktok-panels">
       {[
-        { number: "01", type: "cover", kicker: "问题现象", title: isAddCustom ? "AddCustom 精度异常" : `${topic}怎么核对？`, note: "先固定异常范围" },
-        { number: "02", type: "compare", kicker: "输入对比", title: isAddCustom ? "两组输入的结果" : "输入与目标约定", note: isAddCustom ? "报错位置 · custom_op.cpp:128" : "形状记录 · 真实推理待验证" },
-        { number: "03", type: "flow", kicker: "排查线索", title: isAddCustom ? "尾块边界候选" : "逐步检查处理步骤", note: "线索不等于根因" },
-        { number: "04", type: "evidence", kicker: "判断前补证据", title: "验证记录清单", note: "真实 NPU 验证待补" },
+        { number: "01", type: "cover", kicker: "问题现象", title: isAddCustom ? "AddCustom\n精度异常" : "输入形状\n怎么核对？", note: "先固定异常范围" },
+        { number: "02", type: "compare", kicker: "形状对照" },
+        { number: "03", type: "flow", kicker: "排查步骤", items: isAddCustom ? ["输入范围", "尾块边界", "误差变化"] : ["换轴顺序", "补 Batch", "核对形状"], note: "线索不等于根因" },
+        { number: "04", type: "evidence", kicker: "验证清单", items: isAddCustom ? ["编译版本", "误差标准", "边界样例"] : ["模型约定", "归一化", "真实推理"], note: isAddCustom ? "目标环境待复核" : "真实推理待复核" },
       ].map(slide => <div key={slide.number} className={`channel-preview-tiktok-tile channel-preview-tiktok-tile--${slide.type}`}>
         <div className="channel-preview-tiktok-tile-top"><small>{slide.number}</small><span>{slide.kicker}</span></div>
         {slide.type === "cover" && <div className="channel-preview-tiktok-cover-content">
-          <strong>{slide.title}</strong><span>从现象开始排查</span><i aria-hidden="true">≠</i>
+          <strong>{slide.title}</strong><span>{isAddCustom ? "先定位误差范围" : "从现象开始排查"}</span><span className="channel-preview-tiktok-cover-mark" aria-hidden="true"><IconPhotoSearch size={20} stroke={1.7} /></span>
         </div>}
         {slide.type === "compare" && <div className="channel-preview-tiktok-compare-content">
-          <strong>{slide.title}</strong>
-          <div><b>{isAddCustom ? "[16,32]" : "NHWC [224,224,3]"}<em className={isAddCustom ? "is-pass" : "is-recorded"}>{isAddCustom ? "通过" : "已记录"}</em></b><b>{isAddCustom ? "[17,33]" : "NCHW [1,3,224,224]"}<em className={isAddCustom ? "is-fail" : "is-review"}>{isAddCustom ? "失败" : "待核对"}</em></b></div>
-          <span>{slide.note}</span>
+          <div className="channel-preview-tiktok-shape-row">
+            <span>{isAddCustom ? "参考" : "输入"}</span><strong>{isAddCustom ? "[16, 32]" : "NHWC"}</strong><small>{isAddCustom ? "逐元素核对" : "224×224×3"}</small><em className="is-recorded">{isAddCustom ? "通过" : "已记录"}</em>
+          </div>
+          <span className="channel-preview-tiktok-shape-arrow" aria-hidden="true">↓</span>
+          <div className="channel-preview-tiktok-shape-row is-target">
+            <span>{isAddCustom ? "异常" : "目标"}</span><strong>{isAddCustom ? "[17, 33]" : "NCHW"}</strong><small>{isAddCustom ? "尾块边界" : "1×3×224×224"}</small><em className={isAddCustom ? "is-fail" : "is-review"}>{isAddCustom ? "异常" : "待核对"}</em>
+          </div>
         </div>}
         {slide.type === "flow" && <div className="channel-preview-tiktok-flow-content">
-          <strong>{slide.title}</strong>
-          <ol><li><b>01</b>输入范围</li><li><b>02</b>循环边界</li><li><b>03</b>有效元素</li></ol>
+          <ol>{slide.items.map((item, index) => <li key={item}><b>{String(index + 1).padStart(2, "0")}</b><span>{item}</span></li>)}</ol>
           <span>{slide.note}</span>
         </div>}
         {slide.type === "evidence" && <div className="channel-preview-tiktok-evidence-content">
-          <strong>{slide.title}</strong>
-          <ul><li>版本与运行环境</li><li>复现条件与命令</li><li>逐元素误差</li></ul>
+          <ul>{slide.items.map(item => <li key={item}>{item}</li>)}</ul>
           <span>{slide.note}</span>
         </div>}
       </div>)}
