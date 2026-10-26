@@ -59,7 +59,7 @@ import {
   IconDots,
   IconFileText,
   IconFolder,
-  IconGripVertical,
+  IconGripHorizontal,
   IconLibrary,
   IconLayoutBottombar,
   IconLayoutSidebar,
@@ -72,6 +72,7 @@ import {
   IconPlus,
   IconSearch,
   IconSend,
+  IconShieldCheck,
   IconSparkles,
   IconSettingsAutomation,
   IconThumbDown,
@@ -83,6 +84,11 @@ import {
 const OFFICIAL_STAGE_IDS = new Set(OFFICIAL_LEARNING_STAGES.map(stage => stage.id));
 const OFFICIAL_MATERIAL_STAGES = Object.fromEntries(OFFICIAL_LEARNING_STAGES.flatMap(stage => [[stage.id, [stage.id, stage.children[0].id]], ...stage.children.map(child => [child.id, [stage.id, child.id]])]));
 const PATH_REFINEMENT_DEMO_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
+const PERMISSION_OPTIONS = [
+  { id: "read-only", label: "只读" },
+  { id: "confirm", label: "每次确认" },
+  { id: "task", label: "本任务内允许操作" },
+];
 
 function withMaterialCanvasConnections(baseConnections, items = []) {
   const knownIds = new Set(items.map(item => item.id));
@@ -207,6 +213,8 @@ function App() {
   useEffect(() => { writeSession("conversation-layout", conversationLayout); }, [conversationLayout]);
   const [conversationDragging, setConversationDragging] = useState(false);
   const [conversationDockPreview, setConversationDockPreview] = useState(false);
+  const [conversationFloatPreview, setConversationFloatPreview] = useState(false);
+  const [permissionModes, setPermissionModes] = useState({});
   const conversationPanelRef = useRef(null);
   const conversationDragRef = useRef(null);
   const showNewTaskHome = mainView === "home";
@@ -268,6 +276,8 @@ function App() {
   };
   const selectExistingTask = (name) => { selectTask(name); setMainView("task"); };
   const { selectedRoute, draft } = session;
+  const permissionMode = permissionModes[selectedTask] || "confirm";
+  const permissionModeLabel = PERMISSION_OPTIONS.find(item => item.id === permissionMode)?.label || "每次确认";
   const messages = session.messages.filter(message => {
     if (["learning", "official-learning"].includes(task.kind) && (message.communityInvite || message.communityDraftCard)) return false;
     return !message.communityDraftCard || Boolean(message.communityDraftId && session.communityDraft?.id === message.communityDraftId && session.communityDraft?.completionId);
@@ -314,6 +324,7 @@ function App() {
     conversationPanelRef.current?.style.removeProperty("--conversation-drag-y");
     setConversationDragging(false);
     setConversationDockPreview(false);
+    setConversationFloatPreview(false);
   };
   const conversationDockTargetContains = (clientX, clientY) => {
     const workspaceElement = layout.workspaceRef.current;
@@ -327,6 +338,19 @@ function App() {
     const right = workspaceRect.left + conversationEdge;
     return clientX >= left - 16 && clientX <= right + 16 && clientY >= workspaceRect.top && clientY <= workspaceRect.bottom;
   };
+  const conversationFloatTargetContains = (clientX, clientY) => {
+    const workspaceElement = layout.workspaceRef.current;
+    if (!workspaceElement) return false;
+    const workspaceRect = workspaceElement.getBoundingClientRect();
+    const styles = getComputedStyle(workspaceElement);
+    const projectsEdge = Number.parseFloat(styles.getPropertyValue("--projects-edge")) || 56;
+    const conversationEdge = Number.parseFloat(styles.getPropertyValue("--conversation-edge"));
+    const contentStart = Number.isFinite(conversationEdge) ? conversationEdge : projectsEdge;
+    const centerX = workspaceRect.left + projectsEdge + (workspaceRect.width - projectsEdge) / 2;
+    const hitWidth = Math.min(360, Math.max(220, (workspaceRect.right - workspaceRect.left - contentStart) / 2));
+    const bottomBand = Math.min(190, Math.max(120, workspaceRect.height * 0.28));
+    return clientX >= centerX - hitWidth && clientX <= centerX + hitWidth && clientY >= workspaceRect.bottom - bottomBand && clientY <= workspaceRect.bottom;
+  };
   const moveConversationDrag = (event) => {
     const active = conversationDragRef.current;
     if (!active || active.pointerId !== event.pointerId) return;
@@ -337,22 +361,28 @@ function App() {
     setConversationDragging(true);
     conversationPanelRef.current?.style.setProperty("--conversation-drag-x", `${deltaX}px`);
     conversationPanelRef.current?.style.setProperty("--conversation-drag-y", `${deltaY}px`);
-    const preview = conversationDockTargetContains(event.clientX, event.clientY);
-    setConversationDockPreview(current => current === preview ? current : preview);
+    const destination = active.sourceLayout === "floating"
+      ? conversationDockTargetContains(event.clientX, event.clientY) ? "sidebar" : null
+      : conversationFloatTargetContains(event.clientX, event.clientY) ? "floating" : null;
+    setConversationDockPreview(destination === "sidebar");
+    setConversationFloatPreview(destination === "floating");
     event.preventDefault();
   };
   const startConversationDrag = (event) => {
-    if (areaInteractionActive || conversationLayout !== "floating" || window.innerWidth <= 980 || event.button !== 0 || !event.isPrimary || conversationDragRef.current) return;
-    conversationDragRef.current = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, moved: false, handle: event.currentTarget };
+    if (areaInteractionActive || window.innerWidth <= 980 || event.button !== 0 || !event.isPrimary || conversationDragRef.current) return;
+    conversationDragRef.current = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, moved: false, sourceLayout: conversationLayout, handle: event.currentTarget };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
   const finishConversationDrag = (event, cancelled = false) => {
     const active = conversationDragRef.current;
     if (!active || active.pointerId !== event.pointerId) return;
     if (!cancelled) moveConversationDrag(event);
-    const shouldDock = !cancelled && (!active.moved || conversationDockTargetContains(event.clientX, event.clientY));
+    const hasTarget = active.sourceLayout === "floating"
+      ? conversationDockTargetContains(event.clientX, event.clientY)
+      : conversationFloatTargetContains(event.clientX, event.clientY);
+    const shouldSwitch = !cancelled && (!active.moved || hasTarget);
     resetConversationDrag();
-    if (shouldDock) setConversationLayout("sidebar");
+    if (shouldSwitch) setConversationLayout(active.sourceLayout === "floating" ? "sidebar" : "floating");
   };
   useEffect(() => {
     if (areaInteractionActive && conversationDragRef.current) resetConversationDrag();
@@ -1302,7 +1332,7 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
         <aside className="icon-rail" aria-label="主导航">
           <div className="icon-rail-nav">
             <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={ICON_SIZE.navigation} /></button>
@@ -1486,7 +1516,7 @@ function App() {
             </button>
           </section>}
           <form className={`composer${showCommunityInvite ? " composer--community" : ""}`} onSubmit={handleSendMessage}>
-            {conversationLayout === "floating" && <button className="conversation-drag-handle" type="button" aria-label="拖动对话输入框到左侧停靠" title="拖动输入框到左侧；出现轮廓预览后松手吸附。轻点或按回车可直接切换" disabled={areaInteractionActive} onKeyDown={event => { if (event.key === "Escape" && conversationDragRef.current) { event.preventDefault(); resetConversationDrag(); } else if (event.key === "ArrowLeft" || event.key === "Enter" || event.key === " ") { event.preventDefault(); setConversationLayout("sidebar"); } }} onPointerDown={startConversationDrag} onPointerMove={moveConversationDrag} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}><IconGripVertical size={ICON_SIZE.inline} aria-hidden="true" /></button>}
+            <button className="conversation-drag-handle" type="button" aria-label="拖动对话区域切换布局" title="拖动对话区域；靠近目标布局时会显示预览，松手后吸附。轻点或按回车可切换布局" disabled={areaInteractionActive} onKeyDown={event => { if (event.key === "Escape" && conversationDragRef.current) { event.preventDefault(); resetConversationDrag(); } else if (event.key === "Enter" || event.key === " " || conversationLayout === "floating" && event.key === "ArrowLeft" || conversationLayout === "sidebar" && event.key === "ArrowDown") { event.preventDefault(); setConversationLayout(current => current === "floating" ? "sidebar" : "floating"); } }} onPointerDown={startConversationDrag} onPointerMove={moveConversationDrag} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}><IconGripHorizontal size={ICON_SIZE.inline} aria-hidden="true" /></button>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
               {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={ICON_SIZE.inline} /><span>{pointContext.type === "workspace-area" ? `工作区区域 · ${pointContext.label}` : `图解范围 · ${pointContext.label}`}</span><button type="button" aria-label="移除指向区域上下文" onClick={clearPointContext}><IconX size={ICON_SIZE.micro} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={ICON_SIZE.inline} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={ICON_SIZE.micro} /></button></span>)}
@@ -1495,14 +1525,11 @@ function App() {
             <textarea ref={wb.draftRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); handleSendMessage(event); } }} placeholder="继续提问，或描述你想进行的下一步…" aria-label="继续提问" rows={1} />
             <div className="composer-toolbar">
               <div className="composer-tools">
-                <button className="icon-button composer-plus" type="button" aria-label="更多输入方式" data-menu-trigger aria-expanded={wb.menu?.name === "input"} onClick={(event) => openMenu("input", event)}><IconPlus size={ICON_SIZE.heading} /></button>
-                <button className="tool-chip" type="button" onClick={() => openDialog("code")}><IconCode size={ICON_SIZE.control} />代码片段</button>
-                <button className="tool-chip" type="button" onClick={() => wb.imageRef.current?.click()}><IconPhoto size={ICON_SIZE.control} />截图</button>
-                <button className="tool-chip" type="button" onClick={() => wb.fileRef.current?.click()}><IconPaperclip size={ICON_SIZE.control} />文件</button>
-                <VoiceCaptureButton className="tool-chip voice-input-chip" label="语音输入" activeLabel="停止" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} />
+                <button className="icon-button composer-plus" type="button" aria-label="更多输入方式" data-menu-trigger data-menu-align="left" aria-expanded={wb.menu?.name === "input"} onClick={(event) => openMenu("input", event)}><IconPlus size={ICON_SIZE.heading} /></button>
               </div>
               <div className="composer-submit">
                 <button className="model-button" type="button" onClick={() => openDialog("models")} title="选择 AI（本地演示）"><IconBulb size={ICON_SIZE.inline} /><span>{wb.model.label}</span><IconChevronDown size={ICON_SIZE.inline} /></button>
+                <button className="permission-button" type="button" aria-label={`权限设置，当前${permissionModeLabel}`} title={`权限：${permissionModeLabel}（演示）`} data-menu-trigger aria-expanded={wb.menu?.name === "permissions"} onClick={event => openMenu("permissions", event)}><IconShieldCheck size={ICON_SIZE.control} /></button>
                 <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying || (!draft.trim() && !session.attachments.length)}><IconSend size={ICON_SIZE.heading} /></button>
               </div>
             </div>
@@ -1520,12 +1547,14 @@ function App() {
               renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
             />}
         </aside>}
-        {showTaskWorkspace && conversationLayout === "floating" && conversationDockPreview && <div className="conversation-dock-preview" aria-hidden="true" />}
+        {showTaskWorkspace && conversationDockPreview && <div className="conversation-dock-preview" aria-hidden="true" />}
+        {showTaskWorkspace && conversationFloatPreview && <div className="conversation-float-preview" aria-hidden="true" />}
       </div>
       {wb.menu && <div className={"workbench-menu workbench-menu-" + wb.menu.name} ref={wb.menuRef} style={{ left: wb.menu.left, ...(wb.menu.bottom !== null ? { bottom: wb.menu.bottom } : { top: wb.menu.top }) }}>
         {wb.menu.name === "filter" && <><div className="menu-label">显示项目</div>{[{ id: "all", label: "全部项目" }, { id: "current", label: "当前项目" }].map((item) => <button key={item.id} type="button" className={wb.filterScope === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => wb.setFilterScope(item.id))}>{item.label}{wb.filterScope === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}<div className="menu-divider" /><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups(wb.groups.map((group) => group.id)))}>展开所有项目</button><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups([]))}>收起所有项目</button></>}
         {wb.menu.name === "chat" && <><div className="menu-label">当前任务对话</div><button type="button" onClick={() => closeMenuAnd(wb.startConversation)}>新对话<IconPlus size={ICON_SIZE.control} /></button><button type="button" onClick={() => openDialog("history")}>对话历史<span>{session.history.length}</span></button><button type="button" onClick={() => closeMenuAnd(() => wb.copyText(wb.conversationText()))}>复制当前对话<IconCopy size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button><div className="menu-divider" /><button type="button" onClick={resetCurrentTask}>恢复本题初始状态</button></>}
-        {wb.menu.name === "input" && <><div className="menu-label">补充任务上下文</div><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => navigateMainView("capabilities"))}>使用能力库<IconBooks size={ICON_SIZE.control} /></button></>}
+        {wb.menu.name === "input" && <><div className="menu-label">添加输入</div><VoiceCaptureButton className="input-menu-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} /><div className="menu-divider" /><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => navigateMainView("capabilities"))}>使用能力库<IconBooks size={ICON_SIZE.control} /></button></>}
+        {wb.menu.name === "permissions" && <><div className="menu-label">当前任务权限 · 演示</div>{PERMISSION_OPTIONS.map(item => <button key={item.id} type="button" className={permissionMode === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => setPermissionModes(current => ({ ...current, [selectedTask]: item.id })))}><span>{item.label}</span>{permissionMode === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
         {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => openContent("review"))}>生成复核记录<IconFileText size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={ICON_SIZE.control} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button></>}
         {wb.menu.name === "notifications" && <><div className="menu-label">任务动态</div>{wb.notifications.length ? wb.notifications.map((entry) => <button className="notification-row" key={entry.id} type="button" onClick={() => selectExistingTask(entry.taskName)}><span><strong>{entry.text}</strong><small>{entry.taskName} · {entry.time}</small></span></button>) : <p className="menu-empty">尚无新动态。完成核对后会在这里留下记录。</p>}</>}
         {wb.menu.name === "profile" && <><div className="menu-profile"><strong>开发者</strong><span>Ascend Studio · 本地设计预览</span></div><div className="menu-label">界面主题</div><div className="theme-options" role="group" aria-label="界面主题">{[{ id: "neutral-gray", label: "中性灰" }, { id: "cool-gray", label: "冷灰" }].map(item => <button key={item.id} type="button" aria-pressed={visualTheme === item.id} className={visualTheme === item.id ? "is-active" : ""} onClick={() => setVisualTheme(item.id)}><span className={`theme-swatch theme-swatch--${item.id}`} aria-hidden="true" />{item.label}{visualTheme === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</div><button type="button" onClick={wb.exportTask}>导出当前任务</button><p className="menu-empty">{saveAvailable ? "任务参数、草案、对话与历史自动保存在此浏览器。原始附件需要重新选择。" : "此浏览器暂时无法保存新改动；请先导出当前任务记录。"}</p></>}

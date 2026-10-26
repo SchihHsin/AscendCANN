@@ -6864,3 +6864,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出并未要求增加可信度展示。AddCustom 对话初始诊断和完成态均移除可信度卡与相关预置数据；社区反馈入口与完成后生成右侧草稿的流程保留。
 - 演示草稿验证文案改为说明回执属于预设内容，不代表真实运行数据。
 - 验证：`npm run build:pages`、`node --check ascstudio/assets/index-DNeckFzx.js` 与 `git diff --check` 通过；构建产物中已无 `trust-evidence`、`可信度` 或 `判断可信度` 字样。未运行自动化测试。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界；代码与页面产物提交 `fa753ea4` 已推送至 `origin/main`；GitHub Pages 部署 workflow `40375608258` 成功。
+
+### 2026-10-27 · 对话布局双向拖拽与输入区精简
+
+- 用户指出左侧对话栏也应可拖动切换到底部浮窗；原把手太突兀；composer 只保留加号、模型、权限、发送。现两种布局共用低对比横向握柄，左栏朝底部拖时预览浮窗位置，浮窗朝左侧拖时预览栏位；目标外松手保持原布局，点按与键盘仍可切换。框选“指着说”期间仍禁用拖动。
+- composer 收敛为加号、模型、权限与发送；语音、代码、文件、截图、能力库移入加号菜单。加号菜单在浮窗下左对齐，避免弹到输入框外侧。
+- 新增按任务保存于当前会话内存的权限演示状态：只读、每次确认、本任务内允许操作。此控制仅展示原型状态，不连接真实执行权限或 API / Host 能力，不改变 Application / Task 边界。
+- 修改：`ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css`、`src/useWorkbenchState.js` 与 `ascstudio/` Pages 产物。
+- 证据：用户本轮要求（H）；本地 5178 桌面预览（M）实际回放左栏→底部浮窗、浮窗→左栏双向吸附，两种布局的目标外落点均保持原布局；权限菜单与加号菜单可操作，浏览器无 error / warning。`npm run build:pages`、生成 JS `node --check`、`git diff --check` 均通过；未运行自动化测试。
+- 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。主线推送与 Pages 发布回执将在后续记录补齐。

@@ -175,7 +175,8 @@ export function useWorkbenchState() {
   const closeDialog = () => { setDialog(null); setRetryRequested(false); };
   const openMenu = (name, event) => {
     const box = event.currentTarget.getBoundingClientRect();
-    setMenu((old) => old?.name === name ? null : { name, left: Math.max(8, Math.min(innerWidth - 252, box.right - 240)), top: box.bottom + 7, bottom: box.bottom + 260 > innerHeight ? innerHeight - box.top + 7 : null });
+    const preferredLeft = event.currentTarget.dataset.menuAlign === "left" ? box.left : box.right - 240;
+    setMenu((old) => old?.name === name ? null : { name, left: Math.max(8, Math.min(innerWidth - 252, preferredLeft)), top: box.bottom + 7, bottom: box.bottom + 260 > innerHeight ? innerHeight - box.top + 7 : null });
   };
   const persistConversationScroll = () => writeSession("conversation-scroll", { positions: [...conversationScrollPositions.current], following: [...followingConversation.current] });
   const saveConversationScroll = () => { if (!conversationRef.current) return; conversationScrollPositions.current.set(selectedTask, conversationRef.current.scrollTop); persistConversationScroll(); };
