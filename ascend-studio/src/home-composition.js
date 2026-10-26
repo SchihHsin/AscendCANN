@@ -37,24 +37,9 @@ export const compositionFields = [
   field("ab-experiment", "对照实验", "A/B CONTRAST EXPERIMENT", "不同配置对比分析", "verification", "coral", "medium", 84, 95),
 ];
 
-export const initialCompositionConnections = [
-  ["data-loading", "cpu-preprocessing"],
-  ["cpu-preprocessing", "training-goal"],
-  ["single-card", "training-goal"],
-  ["training-goal", "samples"],
-  ["training-goal", "training-duration"],
-  ["multi-gpu-efficiency", "multi-card-gains"],
-  ["multi-card-gains", "hccl"],
-  ["hccl", "communication-wait"],
-  ["gradient-sync", "hccl"],
-  ["mixed-precision", "loss-scale"],
-  ["effective-batch", "global-batch"],
-  ["convergence", "precision"],
-  ["precision", "ab-experiment"],
-  ["profiler", "operator-bottleneck"],
-];
-
 export function buildCompositionPrompt(selectedIds) {
+  if (selectedIds.length === 0) return "";
+
   const selected = new Set(selectedIds);
   const valuesFor = (role) => compositionFields
     .filter((item) => selected.has(item.id) && item.role === role)

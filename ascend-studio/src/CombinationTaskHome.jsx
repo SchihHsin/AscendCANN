@@ -4,7 +4,6 @@ import {
   buildCompositionPrompt,
   compositionFields,
   connectedCompositionIds,
-  initialCompositionConnections,
 } from "./home-composition";
 import "./combination-task-home.css";
 
@@ -46,12 +45,12 @@ function previewPoints(node, canvas, clientX, clientY) {
 }
 
 export function CombinationTaskHome({ onCreateTask }) {
-  const [connections, setConnections] = useState(() => initialCompositionConnections.map(([from, to]) => ({ from, to })));
+  const [connections, setConnections] = useState([]);
   const [manuallySelected, setManuallySelected] = useState([]);
   const [geometry, setGeometry] = useState({ width: 0, height: 0, edges: [] });
   const [dragPreview, setDragPreview] = useState(null);
   const [pendingKeyboardNode, setPendingKeyboardNode] = useState(null);
-  const [draft, setDraft] = useState(() => buildCompositionPrompt(connectedCompositionIds(initialCompositionConnections.map(([from, to]) => ({ from, to })))));
+  const [draft, setDraft] = useState("");
   const [error, setError] = useState("");
   const canvasRef = useRef(null);
   const nodeRefs = useRef(new Map());

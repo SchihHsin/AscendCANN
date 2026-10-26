@@ -6706,10 +6706,18 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 以浅蓝白底图替换 Banner 纹理：加入柔和层叠波纹、光带和青 / 紫 / 粉 / 薄荷半透明碎片；继续保留向下渐隐。学习路径内容、布局和主按钮不变。
 - 本地桌面预览已核对，具体构建、语法、差异检查与推送状态将在发布后补记。未运行测试套件；未改页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 
+### 2026-10-26 · 组合首页默认空白，由用户建立关系
+
+- **纠正前次默认状态：** 用户明确指出满屏字段不应预置任何连线。此前交接记录中的“默认示例关系以多条连线呈现”已被本决策覆盖：组合页首次打开时，28 个字段均未选中、连线为空、Prompt 为空；布局本身让用户从字段中开始探索。
+- **交互：** 用户从一个字段拖到另一个字段才创建关系；拖线后关联字段进入可编辑 Prompt，发送操作随之可用。保留现有点击字段加入 / 移除能力，且它不在初始状态预选字段。
+- **实现：** `ascend-studio/src/CombinationTaskHome.jsx` 将关系与草稿初始值设为空；`ascend-studio/src/home-composition.js` 移除预置关系并让空选集生成空草稿；`ascstudio/` 更新对应静态发布产物。
+- **回放与依据：** 用户本轮明确纠正（H）；本地 5206 组合页初始可访问性树确认 28 个未选字段、草稿为空、发送禁用；本地 CUA 实际拖动“数据加载”到“CPU 预处理”后确认只出现这条连接、两字段进入 Prompt、发送启用（M）。截图已在本轮浏览器回放中展示。
+- **检查 / 发布：** `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Vite 仍提示主 JS chunk 大于 500 kB，未运行测试套件。只更新关系组合 Demo，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。发布提交、Pages workflow 与线上资源核验待本轮收尾后补记。
+
 ### 2026-10-26 · 对话区域布局切换与指着说联动
 
 - 用户确认切换对象是当前左侧整块对话区域，不是单独移动输入框；提供左侧栏与底部居中浮窗两种呈现。两个互斥图标放在全局 `header.topbar`，保留同一对话历史与草稿，并按会话记忆布局选择。浮窗态展开右侧工作区，避免原左侧列继续占宽。
 - 指着说与对话布局是独立交互。底部浮窗布局进入框选或出现选区输入框时临时隐藏浮窗，锁定布局切换以防选区坐标变化；发送或取消后恢复。左侧栏布局的框选保持原位置与行为。
 - 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`styles.css` 与 Pages 静态产物。该概念改动不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 1280×720 核对左侧、底部浮窗、框选时浮窗隐藏、选区缩略输入出现及取消后恢复。未运行自动化测试；窄屏行为有响应式规则，未做独立小视口截图。依据：用户确认（H）、本地原型观察（M）。
-- 发布提交与 Pages workflow 待本条实现完成后补记。
+- 发布：实现提交 `385eee30` 已推送至 `origin/main`；GitHub Pages workflow `40317786603` build / deploy 成功。线上 `/ascstudio/` HTML 与本轮 JS / CSS 均 HTTP 200，资源中包含布局切换与选区自动收起逻辑。

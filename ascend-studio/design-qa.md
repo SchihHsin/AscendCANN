@@ -1378,3 +1378,11 @@ final result: passed
 - **回放证据：** 本地 Chrome 桌面预览确认全屏词条、节点字号层级、连线与底部 Prompt；拖动 `samples/s` 到“设备利用率”后草稿增加该指标；点击切换字段后草稿同步；点击发送进入开发任务页。线上 Pages 的 `?home=combine` 页面已回读，`组合` Tab 处于选中状态。
 - **边界：** 预置任务情境用于呈现设计概念，不是个性化训练诊断；任务页明确标注暂无运行证据。未接入真实模型、遥测或 NPU，也未改 API / Protocol、Host / Harness 或 Application / Task 机制。
 - **检查 / 发布：** `npm run build`、`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留原有主 JS chunk 大于 500 kB 提示。`f425e635` 已推送到 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS HTTP 200。
+
+## 组合首页默认空状态与鼠标连线（2026-10-26）
+
+- **用户决定：** 满屏字段首次出现时没有预置连线；由用户通过鼠标建立字段关系。这覆盖此前记录的“默认示例关系以多条连线呈现”。
+- **实现：** `CombinationTaskHome.jsx` 的关系和草稿初值为空；`home-composition.js` 删除预置关系并对空选择返回空字符串。字段仍可通过拖线组合；既有点击加入 / 移除字段能力保留。
+- **回放证据：** 本地 `http://127.0.0.1:5206/?home=combine` 初始状态中 28 个 checkbox 均未选，关系 SVG 无线，草稿为空且发送按钮禁用。随后实际从“数据加载”拖到“CPU 预处理”，截图确认两者之间仅出现一条线；可访问性树确认两字段被选中、草稿生成“我想在昇腾上提升训练效率。请重点分析数据加载、CPU 预处理。”并启用发送。证据来自本地 CUA（M），本轮截图已展示。
+- **检查与边界：** 本轮前序构建、Pages 构建、构建 JS 语法检查及 diff 检查均通过；保留既有 Vite >500 kB 提示，未运行测试套件。没有改页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界；无真实训练诊断。
+- **发布：** 待补。
