@@ -6633,3 +6633,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascend-studio/src/TaskCanvas.jsx`、`task-canvas.css`、`useCanvasState.js` 支持从隐藏节点恢复已有材料、在任务画布内新增并编辑便签、自由绘图与撤销。笔记 / 笔迹随对应任务画布状态保存；绘图纳入小地图与“适应全部”。交互边界已记录到 `ascend-studio/interaction-design.md`。
 - `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；桌面 Chromium 视口 1440×757、文档宽度 1440，无横向溢出。验证了全部内容三节点、编辑态恢复隐藏节点、添加并输入便签、绘图后撤销；未运行自动化测试。用户浏览器原有收纳状态未清理。
 - 本轮未改变其他任务画布、页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界。源码与 Pages 产物提交 `0a0a1d3f` 已推送到 `origin/main`；Pages workflow `40289468807` build / deploy 成功，公开 `/ascstudio/` HTML 与本轮 JS / CSS 资源均 HTTP 200。
+
+### 2026-10-26 · 学习发现配色改为冷调方案，等待选择
+
+- 用户反馈上一轮的配色整体偏暖。重新生成三张冷调配色图，均沿用学习发现页的 ResNet50 五阶段布局、浅色中性底和黑色主要按钮，侧重冷色多彩点缀；页面实现暂不修改，等待用户从当前三张图中选择。
+- 参考为本地 `/ascstudio/` 1280×720 页面截图（CUA 观察，M）及用户本轮反馈（H）。可见方案文件：`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-78c4a498-b655-44d3-abf8-a2c85c493e6a.png`、`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-01e8624a-8340-4e4e-beb3-6a994927a40a.png`、`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-5d33e39a-d2f2-4e2c-bc03-2699517271c8.png`。
+- 未改变页面序列、学习交互或 API / Protocol、Host / Harness、Application / Task 边界。未运行产品构建 / 页面测试，也未发布页面；`git diff --check` 用于本轮交接文档检查。待办：用户选定配色后再实现。
