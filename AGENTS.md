@@ -6807,4 +6807,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出适应视图图标应按画布统一规则全局一致。审查 Ascend Studio 画布后发现三处入口：通用任务画布 `TaskCanvas`、学习画布 `LearningCanvasToolbar`、任务内容总览 `TaskContentOverview`。在共享层新增 `CanvasFitIcon`，统一使用 Tabler `IconArrowsMinimize`；工具栏和总览保留原尺寸、文案、适配行为。
 - 同步并保留并行主线提交 `6271639b` 与 `f9870df1`（组合首页交互 / 学习发现样式和相关记录），基于合并后的源码重新构建 `/ascstudio/`。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 和入口资源引用检查通过；新产物为 `index-BqQ5JE5h.js` 与 `index-DTObeaaN.css`。Pages 发布状态待回读。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 和入口资源引用检查通过；统一实现 `eb990165` 已进入主线，当前主线 `3ca7072f` 的 Pages workflow `40366875012` 成功。线上 `/ascstudio/` HTML 引用 `index-pJdnm3Lb.js` 与 `index-DkWU4xAD.css`，HTML / CSS HTTP 200，JS 响应 HTTP 200。

@@ -1726,4 +1726,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-27 · 统一画布“适应内容”图标
 
 - 通用任务画布、学习画布和任务内容总览中的“适应全部内容”入口统一调用共享 `CanvasFitIcon`（Tabler `IconArrowsMinimize`，四角朝内），不再分别维护图标。尺寸、按钮文案与适配行为保持原样。
-- 合入并保留并行主线 `6271639b` / `f9870df1` 后重新构建 Pages；`npm run build:pages`、JS `node --check`、`git diff --check` 与入口资源检查通过。发布状态待回读。
+- 合入并保留并行主线 `6271639b` / `f9870df1` 后重新构建 Pages；`npm run build:pages`、JS `node --check`、`git diff --check` 与入口资源检查通过。统一实现 `eb990165` 已进入主线；workflow `40366875012` 成功，线上入口引用 `index-pJdnm3Lb.js` / `index-DkWU4xAD.css`，资源可访问。
