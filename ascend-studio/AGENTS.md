@@ -1618,3 +1618,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 实现位于 `src/AreaComposer.jsx`、`src/TaskWorkspace.jsx` 与 `src/task-workspace.css`；语音输入、框选和取消逻辑继续沿用。
 - `npm run build`、`npm run build:pages` 和 `git diff --check` 通过；CUA 未能启动，最终拖拽视觉核验未完成；未运行自动化测试。
 - 提交 `665955ed` 的源码与 Pages 产物已推送至 `origin/main`。
+
+### 2026-10-26 · 学习发现页冷调多色方案 1
+
+- 用户从三张冷调多色提案中选择方案 1，要求方向整体降低暖感。维持浅色中性底与黑色主要 CTA；彩色只用于有信息意义的局部。此决定覆盖本文件上一条“等待选择”状态。
+- 学习发现 Banner 保留 ResNet50 五阶段主推路径、内容插画与向下渐隐；阶段点缀采用蓝 / 青 / 紫 / 玫红 / 绿，Banner 的柔和色光与日程轴使用青、紫、粉、绿。布局和页面顺序不变。
+- 最终 Pages 构建、生成 JS 语法检查及 diff 检查通过；本地 1280×720 观察 Banner、路径和日程楼层。GitHub Pages 部署 workflow `40307191492` 成功；线上 HTML、JS、CSS、新插画均 HTTP 200。未运行测试套件，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 合并并保留其他对话同期的共享画布 / 工作区预览更新；发布提交 `b5ebb1c6` 已推送至 `origin/main`。

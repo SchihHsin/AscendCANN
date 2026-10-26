@@ -6663,3 +6663,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据：比例约束与字体计算为实现规则（M）；本地桌面预览在 1440×900 和 1024×768 下观察到单页纵横比例一致，总览四张缩略页保持统一比例（M）。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。保留既有 Vite 大 JS chunk 提示。
 - 发布：代码与 Pages 资源提交 `23c46ab7` 已推送到 `origin/main`；GitHub Pages workflow `40303951471` build / deploy 成功。未决事项：无。
+
+### 2026-10-26 · 学习发现配色方案 1 已实施并发布
+
+- 用户指出上一轮整体偏暖，并在三张冷调多色方案中选择方案 1。该选择覆盖前文“等待选择”的状态：页面继续使用浅中性底、黑色主按钮，彩色集中在内容插画、路径阶段、推荐标记与日程轴。
+- 顶部继续展示 ResNet50 五阶段学习路径及向下渐隐的 Banner；阶段色改为蓝、青、紫、玫红、绿，Banner 增加轻柔青绿 / 紫 / 粉色过渡，日程轴用多色节点串联，新上架点缀改为青色；主 CTA 仍为黑色。布局与页面顺序不变。
+- 本地 1280×720 截图观察了 Banner、阶段路径及日程楼层；最终合并版 `npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 通过。未运行测试套件。未改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 保留并合并了期间到达的 origin/main 并行改动，包括共享画布及工作区选区预览；没有重置或清除其他对话的内容。最终提交 `b5ebb1c6` 已推送到 `origin/main`，GitHub Pages workflow `40307191492` build / deploy 成功。线上 `/ascstudio/` HTML、JS、CSS 与新插画均 HTTP 200；JS 完整下载 997,077 bytes。

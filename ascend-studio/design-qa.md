@@ -1334,3 +1334,24 @@ final result: passed (local visual review; online screenshot unavailable)
 - **检查：** `npm run build:pages`、构建 JS `node --check` 与 `git diff --check` 通过。桌面 Chromium 视口 1440×757、文档宽度 1440，无横向溢出；“全部内容”视图显示三个初始节点，编辑态验证了卡片拖动坐标变化、隐藏节点恢复、新增并输入便签、自由绘图后撤销，编辑工具组保持在右上角。本地 5189 用户浏览器还显示先前验证留下的“已收纳 2 项”，未清理浏览器状态。本轮未运行自动化测试。
 - **证据边界：** 用户选定的方案与样板范围为 H；浏览器可访问性树和构建输出为 M。未修改其他任务画布，不涉及真实工程、NPU、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - **发布：** 源码、交互规则与 Pages 资源提交 `0a0a1d3f` 已推送 `origin/main`；Pages workflow `40289468807` build / deploy 成功。公开 `/ascstudio/` HTML 与新 JS / CSS 均 HTTP 200。
+
+## 2026-10-26 · 学习发现冷调多色方案 1
+
+### 设计决定
+
+- 用户认为整体偏暖，并选择三张冷调配色提案中的方案 1。延续浅中性底、黑色主操作的页面基准；不把彩色扩展为整页底色。
+- 保持 Banner 的 ResNet50 五阶段学习路径、内容型推理插画及向下渐隐。阶段点缀由单一偏暖组合调整为蓝、青、紫、玫红、绿；Banner 上的青绿 / 紫 / 粉色层次保持低透明度；新上架标记为青色，近期日程轴用青绿、玫红和绿色节点串联。主 CTA 仍为黑底白字。
+- 页面结构、学习动作、链接和日程内容不变。
+
+### 视觉与发布核对
+
+- 本地 1280×720 截图 `/tmp/ascstudio-learning-discovery-option1-final-20261026.jpg` 显示浅冷渐变 Banner、ResNet50 内容图和五阶段路径；`/tmp/ascstudio-learning-discovery-lower-20261026.jpg` 显示下方推荐与近期日程多色轴。CUA 在最终构建后重连时返回 transport closed，未声称完成新的浏览器回放；本地截图与最终源码一致。
+- 最终合并源码运行 `npm run build:pages` 成功（6370 modules，9.43s）；Vite 保留既有主 JS chunk 大于 500 kB 提醒。`node --check ascstudio/assets/index-C-5wTRhU.js`、`git diff --cached --check` 通过；未运行自动化测试。
+- 本地预览 `http://127.0.0.1:8125/` 的 HTML、JS、CSS、新插画均 HTTP 200。GitHub Pages `/AscendCANN/ascstudio/` 的 HTML、JS、CSS、新插画均 HTTP 200；线上 JS 完整下载 997,077 bytes。
+- 保留并合并到达的 origin/main 并行更新，没有覆盖或清理其他对话内容。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+
+### 发布
+
+- 页面代码、内容插画与 Pages 产物随功能提交及合并提交推送到 `origin/main`，最终主线提交 `b5ebb1c6`。GitHub Pages workflow `40307191492` build / deploy 成功。
+
+final result: passed
