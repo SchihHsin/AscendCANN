@@ -6533,3 +6533,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户本轮明确设计要求（H），与 Ascend Studio 黑色主操作 / 选中态界面风格一致。实现位于 `ascend-studio/src/styles.css`，Pages 构建更新 `ascstudio/` 的哈希 CSS、JS 引用。
 - 验证：`npm run build:pages`、`git diff --check` 通过；构建保留既有主 JS chunk 大于 500 kB 的提示，未运行自动化测试。本次没有声称完成截图视觉回放。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 发布：样式与 Pages 产物提交 `ad236093` 已推送至 `origin/main`。本条交接记录单独提交并推送；GitHub Pages 部署状态未在本轮确认。
+
+### 2026-10-26 · 左侧图标导航改用品牌蓝轻选中态
+
+- 用户修正配色规则：黑色主要用于主要按钮，左侧 IconButton 导航选中态不要黑底。查阅并实拍核对昇腾社区官网首页 `https://www.hiascend.com/`（H）：顶部当前 CANN 导航项用蓝色字样，主 CTA 使用黑底白字；页面内本地分类标签通过字重和下划线表达当前项。将侧栏当前按钮改为蓝色图标 `#2787E8` + 淡蓝底 `#E9F2FF`，悬停用较深蓝和 `#DCECFF`，焦点描边使用品牌蓝；其他图标项和任务列表未改。
+- 同步更新个人 Skill `~/.codex/skills/ascend-studio-interface-style/SKILL.md`：黑色用于主要按钮，导航当前项用品牌蓝与淡蓝底，覆盖旧的通用黑色强选中态默认规则。Skill 本体位于个人配置目录，不进入仓库。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 5184 学习任务截图核对图标选中蓝色 / 淡蓝底（M）。构建继续提示既有主 JS chunk 大于 500 kB，未运行自动化测试。页面序列 / hash 和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 发布：样式及 Pages 静态产物提交 `80206f32` 已推送到 `origin/main`；交接记录单独提交并推送。GitHub Pages 自动部署状态未在本轮确认。
