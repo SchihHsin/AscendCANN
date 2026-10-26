@@ -10,6 +10,8 @@
   --canvas-control-radius: 10px;
   --canvas-card-line: #e0e1e2;
   --canvas-card-ink: #292b2c;
+  --canvas-card-radius: 10px;
+  --canvas-card-inner-radius: calc(var(--canvas-card-radius) - 1px);
   --canvas-card-shadow: 0 4px 15px rgb(28 29 30 / 8%);
   --canvas-active: #191a1b;
 }
@@ -81,13 +83,13 @@
 
 .canvas-card-frame {
   border: 1px solid var(--canvas-card-line);
-  border-radius: 11px;
+  border-radius: var(--canvas-card-radius);
   color: var(--canvas-card-ink);
   background: #fff;
   box-shadow: var(--canvas-card-shadow);
 }
 .canvas-card-frame[hidden] { display: none; }
-.canvas-card-frame.is-selected { border-color: #252728; box-shadow: 0 0 0 1px #252728, 0 7px 18px rgb(28 29 30 / 12%); }
+.canvas-card-frame.is-selected { border-color: #252728; box-shadow: 0 6px 16px rgb(28 29 30 / 10%); }
 .canvas-card-frame.is-pinned { border-color: #d6d7d8; }
 .canvas-card-header {
   display: flex;
@@ -99,6 +101,7 @@
   min-width: 0;
   padding: 9px 11px 9px 8px;
   border-bottom: 1px solid #ededec;
+  border-radius: var(--canvas-card-inner-radius) var(--canvas-card-inner-radius) 0 0;
   color: var(--canvas-card-ink);
   background: #fff;
 }
