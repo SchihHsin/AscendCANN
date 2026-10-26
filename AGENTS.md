@@ -6575,3 +6575,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 独立定义成功、进行中、提醒、失败状态色；类别装饰色不表达成功或失败。黑色仍仅用于主要操作；不规定导航 / 侧栏固定选中样式，交互状态仍按组件用途、层级与现有语义决定。
 - 依据：用户本轮确认的色彩规则（H）。仅改个人 Skill 文件与本仓交接记录，不改产品代码、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：Skill Creator `quick_validate.py` 因运行环境缺少 PyYAML（`ModuleNotFoundError`）未能执行；Ruby YAML 解析器分别成功解析 Skill frontmatter 和 `agents/openai.yaml`；`git diff --check` 通过。仅本 `AGENTS.md` 进入提交，个人 Skill 不纳入仓库。
+
+
+### 2026-10-26 · 开发画布采用新版 ResNet50 工具视觉
+
+- 用户确认用**新版 ResNet50 画布视觉**统一开发画布控件；这覆盖此前材料中早期浅紫工具选中态的建议。工具组采用白底、浅灰细边、约 32px 高、轻阴影，普通悬停用浅中性灰，激活态黑底白图标。卡片选中采用黑色标题栏与中性白色正文。
+- AddCustom 与图像推理继续保留各自的内容和排布；工具位于画布上方右侧，视图、缩放、浏览及位置编辑分组；节点操作留在卡片右上角。聚焦留在画布、放大在右侧工作区阅读同一内容、图钉固定、折叠箭头收起/展开。移动与调尺寸仅在位置编辑时可见；Esc 退出，拖动只改画布坐标，不改业务顺序或进度。
+- 修改 `ascend-studio/src/TaskCanvas.jsx`、`task-canvas.css`、`canvas-reference-style.css`，并更新 `interaction-design.md`、`design-qa.md` 和 `ascend-studio/AGENTS.md`。ResNet50 的学习结构和其他任务的数据模型不合并。
+- 依据：用户最新选择（H）；ResNet50 当前视觉样式表（H）。本地窄视口 CUA 曾确认白色工具组、黑色编辑激活态与黑色选中卡片标题；热更新后回到新建首页，后续浏览器读取超时，故未声称完成最终桌面宽屏核验或实际拖动验证。 `npm run build`、`npm run build:pages` 和 `git diff --check` 通过；未运行测试套件。未涉及真实工程或 NPU 验证、页面序列或 API / Host / Application 边界。
+- 代码提交 `d23b28d8` 已基于最新 `origin/main` 重放；本轮共享样式、材料、Pages 产物及推送状态待补记。

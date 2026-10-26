@@ -241,13 +241,21 @@
 .tc-card.is-selected .tc-card-actions button[aria-pressed="true"] { color: #fff; background: #383a3b; }
 .tc-card.is-selected .tc-collapse-summary { color: #d3d4d4; }
 .tc-canvas-controls > button,
+.tc-canvas-toolbar > button,
+.tc-canvas-toolbar .tc-zoom-controls,
 .tc-zoom-controls { border-color: #dedfe0; border-radius: 9px; box-shadow: 0 3px 12px rgb(24 25 26 / 8%); }
-.tc-canvas-controls button { color: #4f5254; }
+.tc-canvas-controls button,
+.tc-canvas-toolbar > button { color: #4f5254; background: #fff; }
 .tc-canvas-controls button:hover,
 .tc-canvas-controls button.is-active { color: #fff; background: #191a1b; }
+.tc-canvas-toolbar > button:hover { color: #222324; background: #f1f1f0; }
+.tc-canvas-toolbar > button.is-active,
+.tc-canvas-toolbar > button[aria-pressed="true"] { color: #fff; background: #191a1b; }
+.tc-canvas-toolbar > button.is-active:hover,
+.tc-canvas-toolbar > button[aria-pressed="true"]:hover { color: #fff; background: #303132; }
 .tc-comparison-button { border-radius: 6px; }
-.tc-object-toolbar button:hover,
-.tc-object-toolbar button.is-active { color: #222324; background: #ededec; }
+.tc-object-toolbar > div:not(.tc-canvas-toolbar) button:hover,
+.tc-object-toolbar > div:not(.tc-canvas-toolbar) button.is-active { color: #222324; background: #ededec; }
 .tc-object-toolbar .tc-comparison-button[aria-pressed="true"] { color: #fff; background: #191a1b; }
 
 @media (prefers-reduced-motion: reduce) {

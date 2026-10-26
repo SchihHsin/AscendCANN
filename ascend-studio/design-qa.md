@@ -1272,3 +1272,20 @@ final result: passed (local visual review; online screenshot unavailable)
 
 **发布**
 - 保留并合并 origin/main 上 24 个并行提交后重建 Pages；功能提交 0cba4934，整合提交 f4a74fc0 已推送 origin/main。Pages workflow 40255980093 build / deploy 成功。线上 HTML 引用 index-C4UblvvI.js / index-1j9tFWac.css；CSS HTTP 200，JS 区间请求 HTTP 206（1,024 bytes）。线上 CUA 页面对 AX / screenshot 的读取超时，因此不记录线上视觉回放成功；本地静态 Pages 页面完成桌面回放。
+
+
+## 2026-10-26 · AddCustom / 图像推理画布采用新版 ResNet50 控件视觉
+
+**确定的规则**
+- 用户选择新版 ResNet50 画布视觉：白色紧凑 IconButton、浅灰边框、约 32px 高与轻阴影；悬停为浅中性灰，激活态黑底白图标。该规则覆盖早期材料中浅紫选中态的临时建议。
+- 视图与画布工具仍在顶部右侧分组，卡片操作保留在卡片右上角。卡片语义为聚焦、放大到右侧完整工作区、固定、折叠 / 展开。拖动 / 尺寸控件仅在编辑位置模式出现，Esc 退出；不改变学习或业务顺序。
+- AddCustom 与图像推理内容结构、关系与初始排布不变；本轮统一的是控件视觉和操作语义。
+
+**实现与检查**
+- 源码：`src/TaskCanvas.jsx`、`src/task-canvas.css`、`src/canvas-reference-style.css`；交互规则同步到 `interaction-design.md` 与两份 `AGENTS.md`。
+- `npm run build`、`npm run build:pages`、`git diff --check` 通过；Vite 保留既有主 JS chunk 大于 500 kB 提醒；未运行测试套件。
+- 本地 5189 窄视口预览曾显示黑色编辑按钮和黑色选中卡片标题栏。热更新后浏览器回到新建首页且读取超时，因此没有把该视口记录为桌面验收；没有实际拖动卡片验证坐标变化。
+- 依据：用户最新视觉选择（H）；本地代码与预览观察（M）。不涉及真实工程、NPU、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+
+**发布**
+- 页面构建已更新 `ascstudio/index.html` 与哈希 CSS / JS。提交与 `origin/main` 推送状态待补记。
