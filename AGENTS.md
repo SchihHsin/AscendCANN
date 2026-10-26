@@ -6715,7 +6715,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 移开候选目标会重置其停留计时；点击画布空白、离开画布或 Esc 取消整个待连线预览。关系固定后清除起点，避免一次停留连续建立多条线。点击字段选择和 Alt+Enter 键盘连线保留；没有新增可见操作标签。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`combination-task-home.css` 和 `interaction-design.md`；Pages 产物更新在 `ascstudio/`。移除原拖线逻辑与禁止触屏滚动的 `touch-action: none`。
 - 本地 5206 回放：悬停起点后出现点位光晕，移到“CPU 预处理”后出现虚线与目标环形进度，停留后关系固定；Prompt 同步为“请重点分析数据加载、CPU 预处理”。移开目标后等待未形成关系，Esc 清除预览。页面 error 日志为空（M）。
-- `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Vite 保留既有 >500 kB chunk 提醒，未运行测试套件。该更新只改变训练调优组合 Demo 的连线方式，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交与 Pages 发布结果待本轮完成后补记。
+- `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Vite 保留既有 >500 kB chunk 提醒，未运行测试套件。该更新只改变训练调优组合 Demo 的连线方式，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- **发布：** 功能提交 `7cfc3133` 与整合提交 `0aeab5c7`（保留并行 main 更新）已推送 `origin/main`。GitHub Pages workflow `40358093084` build / deploy 成功。公开目标为 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=combine`；线上 JS / CSS 与本地构建 SHA-256 一致（JS `39ae5eb6…`，CSS `a98274aa…`）。本次直接读取线上 HTML 时连接超时，因此不记录 HTML 内容哈希。
 
 ### 2026-10-26 · 对话区域布局切换与指着说联动
 
