@@ -6612,3 +6612,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 5189 CUA 核对了 AddCustom 卡片白色标题栏、开发与学习画布的卡片操作可访问名称；页面控制台 error 日志为空。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。当前 CUA 可用视口约 381px，本轮未完成 1280px 桌面截图和实际拖动 / 聚焦 / 放大逐项回放；不能把它们记为已验收。
 - 依据：用户截图（H）、ResNet50 当前内容卡视觉（H）、本地 5189 预览（M）。不改变页面序列 / hash、任务内容关系或 API / Protocol、Host / Harness、Application / Task 边界。
 - 发布：提交 `01204f8a` 已推送到 `origin/main`。GitHub Pages workflow `40278245582` build / deploy 成功；公开 `/ascstudio/` HTML 已引用 `index-Vrn6LA8Y.js` 与 `index-BezcPE5V.css`，CSS HTTP 200 且包含白色选中卡片规则。JS 完整下载在本轮 30 秒核验中超时，未声称已完成线上视觉截图回放。
+
+
+### 2026-10-26 · 学习发现方案 1：ResNet50 五阶段推荐路径
+
+- 用户查看三张 ImageGen 方向后选定方案 1。学习发现页 Banner 以「ResNet50 离线推理学习路径」作为推荐主体：浅色内容图呈现输入图像 → 特征处理 → ResNet50 → 分类结果；下方按五个阶段直接展开 15 个学习动作，合计约 77 分钟。主按钮进入起始节点，各动作行进入对应节点。阶段与动作沿用 `OFFICIAL_LEARNING_STAGES`；15 个节点是 Demo 组织，不冒充官网章节。
+- 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`learning-discovery.css`，新增 `resnet50-inference-path-light.png`，并更新 `ascstudio/` 静态 Pages 资源、`ascend-studio/AGENTS.md` 与 `design-qa.md`。浅色中性底、黑色主 CTA、小面积阶段色点缀和 Banner 向下渐隐均保留。
+- 证据：用户选择方案 1（H）；路径节点来自当前 Demo 学习数据（H）；本地 CUA 1280×720 回放与“记录环境条件”节点跳转为实现观察（M）。本轮不改页面顺序 / hash，不改 API / Protocol、Host / Harness、Application / Task 边界，不涉及真实 NPU 验证。
+- 检查：`npm run build:pages`、`node --check ascstudio/assets/index-CJK713RA.js`、`git diff --check` 通过；Vite 保留既有大于 500 kB 的 JS chunk 提醒，未运行自动化测试。GitHub Pages workflow `40282794342` build / deploy 成功；线上 HTML、`index-CJK713RA.js`、`index-9Oo10ISi.css` 与新增 PNG 均 HTTP 200，JS / CSS 含本轮路径内容和样式。
+- 发布前发现本地分支与 `origin/main` 在 `83af903e` 后并行分叉；已把远端画布 / 探索更新合并保留并重建 Pages 产物。功能提交 `007e62b4`，含并行改动的整合提交 `be2f0a63` 已推送至 `origin/main`；未使用强推。
