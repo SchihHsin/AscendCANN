@@ -1626,6 +1626,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 最终 Pages 构建、生成 JS 语法检查及 diff 检查通过；本地 1280×720 观察 Banner、路径和日程楼层。GitHub Pages 部署 workflow `40307191492` 成功；线上 HTML、JS、CSS、新插画均 HTTP 200。未运行测试套件，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 合并并保留其他对话同期的共享画布 / 工作区预览更新；发布提交 `b5ebb1c6` 已推送至 `origin/main`。
 
+### 2026-10-26 · 学习发现 Banner 纹理与彩色碎片校正
+
+- 用户指出前版与选定参考图不符：背景过平、缺少纹理与彩色碎片。最新上传截图取代旧版实现截图，作为 Banner 的视觉依据。
+- 新 ImageGen 纯底图位于 `src/assets/learning-discovery/discovery-banner-bg-textured.png`，含浅蓝白基底、柔和层叠波纹与青 / 紫 / 粉 / 薄荷半透明碎片；不含文字和 UI。学习发现页移除过大的径向色斑，沿用底部渐隐；不改五阶段内容、路径插画、布局或主按钮。
+- 本地 1280×720 预览已核对，纹理和碎片可见；最终合并构建 `npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 均通过。未运行测试套件。同期学习画布、组合首页、对话布局更新已保留并合入；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。发布提交 `78bc44a2` 已推送到 `origin/main`，Pages workflow `40319030276` 成功；公开 HTML / JS / CSS / 纹理底图均 HTTP 200。
+
 ### 2026-10-26 · 首页「组合」关系网原型
 
 - 用户选定满屏训练调优字段通过鼠标连线组合需求的方案。作为第三个首页 Tab「组合」实现；与「经典」「探索」并列。28 个节点覆盖训练目标、瓶颈现象、训练条件、精度约束、指标及对照验证，既有连线保留多关系网络形态。
@@ -1637,3 +1643,21 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户指出多渠道页里的四张抖音知识图文预览仍缩得太小。将外层预览、四页网格都设为填满可用宽度，并让每页按固定 `69:100` 竖版比例布局；尺寸由渠道卡片宽度决定。
 - CUA 窄视口观察到四张图文已在抖音卡片中横向铺开且保持比例。当前工具视口约 381px，尚未完成桌面截图；不记为桌面验收。
 - `npm run build:pages`、生成 JS `node --check` 与 `git diff --check` 通过；未运行自动化测试。源码与 Pages 产物已推送，提交 `cb6070b4`；Pages workflow `40316645739` 成功，公开 CSS 已核对包含新宽度规则。桌面截图仍未核验。
+
+### 2026-10-26 · 组合首页从空状态开始
+
+- 覆盖上一条“既有连线保留多关系网络形态”的默认状态：打开组合 Tab 时不预选字段、不画任何连线，Prompt 为空。28 个字段作为可自由探索的词云式画布呈现。
+- 用户拖动字段到另一个字段时才建立关系；关系中的字段形成可编辑 Prompt 并启用发送。现有点击字段选择仍可使用，但初始不做任何选择。
+- 本地 CUA 已确认初始空状态，并实际拖动“数据加载”到“CPU 预处理”：线在拖动后出现，Prompt 与发送状态同步更新。详见根目录 `AGENTS.md` 与本目录 `design-qa.md` 的 2026-10-26 QA 记录。
+
+### 2026-10-26 · ResNet50 内容卡最大化与聚焦分离
+
+- `OfficialLearningPathCanvas.jsx` 增加独立 maximized 状态和 viewport 快照；最大化时暂停画布世界变换、隐藏其他节点/卡片与周边控件，让目标卡实际占据可读工作区；卡片按钮切换为还原语义，Escape 可退出并恢复原 viewport。聚焦仍只调整平移坐标并保留当前缩放。单节点与全部展开卡片均走同一逻辑，其他任务画布不变。
+- `LearningCanvasCard.jsx` 为最大化态提供工作区尺寸和明确的还原按钮；`official-learning-canvas.css` 仅限定官方 ResNet50 最大化态的可见层级与滚动卡片头部。
+- 最大化时目标卡实际铺满工作区（四周 18px），内部滚动；隐藏其他节点和拖动 / 聚焦 / 收起控件，仅保留固定与还原。原 viewport 坐标及 scale 单独保存，点击还原或 Escape 后恢复；退出后聚焦仍只改平移。普通模式与全部展开卡共用同一状态逻辑。
+- rebase 到包含 TikTok 预览更新的最新 `origin/main` 后，`npm run build`、`npm run test:sites`（4/4）、`npm run build:pages`、`git diff --check` 均通过。Pages index 引用的 JS / CSS 文件完整，构建 JS 包含放大、还原和最大化状态逻辑。线上发布核对待推送后执行。
+
+### 2026-10-26 · 对话区域布局切换
+
+- 对话区域可在左侧栏与底部居中浮窗之间切换；切换只改变呈现，保留当前对话历史与输入草稿。布局入口位于全局 `header.topbar`，与工作区内的「指着说」入口分开。
+- 底部浮窗进入区域框选或显示选区 composer 时暂时收起，避免遮挡工作区；选区发送或取消后恢复原布局。框选过程中禁用布局切换，保证指针坐标不因画布重排发生偏移。

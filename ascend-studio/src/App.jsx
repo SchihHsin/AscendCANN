@@ -220,6 +220,8 @@ function App() {
   useEffect(() => { writeSession("main-view", mainView); }, [mainView]);
   const [projectPanelOpen, setProjectPanelOpen] = useState(() => readSession("project-panel-open", false) === true);
   useEffect(() => { writeSession("project-panel-open", projectPanelOpen); }, [projectPanelOpen]);
+  const [conversationLayout, setConversationLayout] = useState(() => readSession("conversation-layout", "sidebar") === "floating" ? "floating" : "sidebar");
+  useEffect(() => { writeSession("conversation-layout", conversationLayout); }, [conversationLayout]);
   const showNewTaskHome = mainView === "home";
   const showLearningDiscovery = mainView === "learning";
   const showAutomations = mainView === "automations";
@@ -247,6 +249,7 @@ function App() {
   const previousFlow = useRef({ attempts: flow.state.attempts.length, proposal: flow.state.proposedCode, applied: flow.state.appliedCode, validation: flow.state.validation });
   const [taskContentsOpen, setTaskContentsOpen] = useState(false);
   const [pointContext, setPointContext] = useState(null);
+  const [areaInteractionActive, setAreaInteractionActive] = useState(false);
   const composerVoiceDraftRef = useRef("");
   const {
     query, setQuery, openedGroups, selectedTask, rationaleOpen, setRationaleOpen,
@@ -1265,6 +1268,14 @@ function App() {
         </nav>
         {showTaskWorkspace && session.unreadReply && <button className="light-button new-reply-button" type="button" onClick={wb.showLatestReply}><IconChevronDown size={14} />有新回复</button>}
         <div className="topbar-spacer" />
+        {showTaskWorkspace && <div className="conversation-layout-switch" role="group" aria-label="对话区域布局" title={areaInteractionActive ? "完成或取消区域输入后可切换对话布局" : "切换对话区域布局"}>
+          <button type="button" aria-label="对话显示在左侧" title="左侧对话" aria-pressed={conversationLayout === "sidebar"} disabled={areaInteractionActive} onClick={() => setConversationLayout("sidebar")}>
+            <span className="conversation-layout-glyph conversation-layout-glyph--sidebar" aria-hidden="true"><i /></span>
+          </button>
+          <button type="button" aria-label="对话显示为底部浮窗" title="底部浮窗" aria-pressed={conversationLayout === "floating"} disabled={areaInteractionActive} onClick={() => setConversationLayout("floating")}>
+            <span className="conversation-layout-glyph conversation-layout-glyph--floating" aria-hidden="true"><i /></span>
+          </button>
+        </div>}
         {showTaskWorkspace && !saveAvailable && <span className="save-unavailable" role="status">暂未保存</span>}
         {showTaskWorkspace && workspace.state.collapsed && <button className="light-button reopen-content" type="button" onClick={() => workspace.actions.setCollapsed(false)}>打开内容{workspace.state.visitedTabs.some(item => item.unread) && <span className="reopen-update-count">{workspace.state.visitedTabs.filter(item => item.unread).length} 项更新</span>}</button>}
         {showTaskWorkspace && <span className={`proposal-badge${isPathGenerationTask && learning.state.draftPath ? " proposal-badge--learning-edit" : ""}`}><span className="proposal-dot" />{isPathGenerationTask ? learning.state.draftPath ? "学习路径 · 编辑中" : learning.state.path ? "学习路径 · 已确认" : "学习路径 · 待生成" : "设计提案 · 待开发者确认"}</span>}
@@ -1272,7 +1283,7 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
         <aside className="icon-rail" aria-label="主导航">
           <div className="icon-rail-nav">
             <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={20} /></button>
@@ -1493,7 +1504,7 @@ function App() {
         {showTaskWorkspace && <aside className="diagnostic-panel" hidden={workspace.state.collapsed} aria-label="任务工作区">
           {supportsCommunityDraft && session.communityDraft?.open && session.communityDraft?.completionId
             ? <CommunityDraftPanel draft={session.communityDraft} onUpdate={communityDraft => wb.patchSession({ communityDraft })} onClose={closeCommunityDraft} onSubmit={submitCommunityDraft} />
-            : <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext} onAreaSend={sendAreaMessage} onAreaDismiss={clearPointContext} areaComposerDisabled={session.replying}
+            : <TaskWorkspace taskId={selectedTask} workspace={workspace} contentWidth={layout.contentWidth} onCompare={compareContent} isMainTask={isInteractiveTask} isLearningTask={isLearningTask} canvasMaterialIds={isOfficialLearningTask ? officialCanvasMaterialIds : learningCanvasMaterialIds} materials={availableMaterials} contentItems={contentItems} onOpen={openContent} onClose={closeContent} onOpenCanvas={openCanvas} onArrange={arrangeMaterials} onReturnFocus={isLearningTask ? () => workspace.actions.openCanvas({ mode: "free" }) : workspace.actions.returnFocus} onCollapse={() => workspace.actions.setCollapsed(true)} pointContext={pointContext} onPointContextChange={setPointContext} onAreaInteractionChange={setAreaInteractionActive} onAreaSend={sendAreaMessage} onAreaDismiss={clearPointContext} areaComposerDisabled={session.replying}
               renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
             />}
         </aside>}

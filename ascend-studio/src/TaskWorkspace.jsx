@@ -93,7 +93,7 @@ function pointInStage(event, bounds) {
 }
 
 /** Ordinary viewers stay mounted while the task canvas is opened or closed. */
-export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = false, canvasMaterialIds = [], materials = [], contentItems = [], onOpen, onClose, onOpenCanvas, onArrange, onReturnFocus, onCollapse, renderContent, renderCanvas, contentWidth = 1000, onCompare, pointContext = null, onPointContextChange, onAreaSend, onAreaDismiss, areaComposerDisabled = false }) {
+export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = false, canvasMaterialIds = [], materials = [], contentItems = [], onOpen, onClose, onOpenCanvas, onArrange, onReturnFocus, onCollapse, renderContent, renderCanvas, contentWidth = 1000, onCompare, pointContext = null, onPointContextChange, onAreaInteractionChange, onAreaSend, onAreaDismiss, areaComposerDisabled = false }) {
   const { state, actions } = workspace;
   const stageRef = useRef(null);
   const pointerStart = useRef(null);
@@ -244,6 +244,12 @@ export function TaskWorkspace({ taskId, workspace, isMainTask, isLearningTask = 
     && pointContext.contentId === selectionSourceId
     && (selectionSourceId !== "canvas" || pointContext.canvasMode === state.canvasMode);
   const hasSelectedAreaContext = Boolean(visibleAreaContext && pointContext.selection);
+
+  useEffect(() => {
+    onAreaInteractionChange?.(areaSelectionMode || hasSelectedAreaContext);
+  }, [areaSelectionMode, hasSelectedAreaContext, onAreaInteractionChange]);
+
+  useEffect(() => () => onAreaInteractionChange?.(false), [onAreaInteractionChange]);
 
   useEffect(() => {
     if (!areaSelectionMode && !hasSelectedAreaContext) return undefined;
