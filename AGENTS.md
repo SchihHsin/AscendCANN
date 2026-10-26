@@ -6548,7 +6548,6 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build:pages` 与 `git diff --check` 通过；本地 5184 学习任务截图确认灰色图标选中态（M）。构建保留既有主 JS chunk 大于 500 kB 提示，未运行自动化测试。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 发布：样式与 Pages 静态产物提交 `1dad0c5d` 已推送到 `origin/main`；本条交接记录另行提交并推送。GitHub Pages 自动部署状态未在本轮确认。
 
-
 ### 2026-10-26 · 学习发现 Banner 主推路径与浅中性色
 
 - 用户确认学习发现页顶部展示一条最推荐的学习路径；页面主体以浅色为主，黑色主要用于主按钮，少量彩色用于状态提示。顶部采用现有「图像输入预处理学习路径」，用“图像通道 → 整理数据维度 → 核对模型输入 → 保存学习记录”四个演示节点构成路线图，按钮直接打开该学习路径。其余课程、知识点、认证推荐仍在下方，近期日程和新上架楼层保留。
@@ -6556,3 +6555,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户本轮确认的布局与颜色偏好（H）；路径节点来自当前演示路径内容（H）。仅更新学习发现页展示，不改页面顺序 / hash、学习流程交互、官方来源或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：合并并保留 origin/main 上 24 个并行提交后重新运行 npm run build:pages；本地 1280×720 静态 Pages 预览经 CUA 复核，顶栏主推路径、四节点图、黑色主按钮、下方三项其他推荐均可见。点击一次“加入日程”后 AX 状态变为“已加入”，状态用绿色表达。桌面截图保存至 /tmp/ascstudio-learning-discovery-featured-path-20261026.png。未运行自动化测试；保留既有大 JS chunk 提醒。
 - 发布：功能提交 `0cba4934` 与保留 24 个并行提交的整合提交 `f4a74fc0` 已推送 `origin/main`。Pages workflow `40255980093` build / deploy 成功。线上 `/ascstudio/` HTML 引用 `index-C4UblvvI.js` 与 `index-1j9tFWac.css`；CSS HTTP 200，JS 区间请求返回 HTTP 206（1,024 bytes）。线上 CUA 页面载入 / AX 读取超时，因此只记录资源发布核验，不声称线上截图回放成功；本地静态 Pages 截图与交互核验已完成。
+### 2026-10-26 · Ascend Studio 界面风格 Skill 改为通用规则
+
+- 用户指出通用 Skill 不应绑定单个导航组件。个人 Skill `~/.codex/skills/ascend-studio-interface-style/SKILL.md` 已删除导航栏专属颜色和选中态规则，改为跨页面 / 组件的原则：浅中性灰基底、黑色主要操作、克制彩色点缀；非主要控件状态按组件用途、信息层级和既有语义决定。`agents/openai.yaml` 的短描述与默认提示同步改为“黑色主操作”，不再称“黑色选中态”。产品当前的灰色侧栏选中样式保持不变。
+- 依据：用户本轮对 Skill 作用范围的明确纠正（H）。Skill 位于个人配置目录，本仓只记录交接；无产品代码、页面序列或 API / Protocol、Host / Harness、Application / Task 边界变化。
+- 验证：使用 Ruby 标准 YAML 解析器成功解析 Skill frontmatter 与 `agents/openai.yaml`，并检查 Skill 不含导航 / 侧栏专属规则。Skill Creator 的 `quick_validate.py` 因当前 Python 环境缺少 PyYAML 未能运行；未做产品构建或 Pages 发布（没有产品代码改动）。
+- 本条交接记录单独提交并推送至 `origin/main`。
