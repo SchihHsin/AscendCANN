@@ -6670,3 +6670,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 顶部继续展示 ResNet50 五阶段学习路径及向下渐隐的 Banner；阶段色改为蓝、青、紫、玫红、绿，Banner 增加轻柔青绿 / 紫 / 粉色过渡，日程轴用多色节点串联，新上架点缀改为青色；主 CTA 仍为黑色。布局与页面顺序不变。
 - 本地 1280×720 截图观察了 Banner、阶段路径及日程楼层；最终合并版 `npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 通过。未运行测试套件。未改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 保留并合并了期间到达的 origin/main 并行改动，包括共享画布及工作区选区预览；没有重置或清除其他对话的内容。最终提交 `b5ebb1c6` 已推送到 `origin/main`，GitHub Pages workflow `40307191492` build / deploy 成功。线上 `/ascstudio/` HTML、JS、CSS 与新插画均 HTTP 200；JS 完整下载 997,077 bytes。
+
+### 2026-10-26 · ResNet50 全部节点内容展开
+
+- 在 `ascend-studio/src/OfficialLearningPathCanvas.jsx` 为官方 ResNet50 学习画布增加展开/收起全部节点内容态；复用每个节点现有的图解、讲解、来源与对应练习组件，卡片高度由 ResizeObserver 反馈到章节纵向排布，展开时适配完整路径。`LearningCanvasToolbar.jsx` 沿用公共浮动按钮组新增层叠卡片切换按钮，`official-learning-canvas.css` 仅加展开态卡片样式。
+- `npm run build:pages` 与 `npm run build && npm run test:sites` 均通过（4/4）；首次单独运行 Sites 测试因缺少 `dist/client/index.html` 失败，补跑构建后通过。`git diff --check` 通过。静态 index 引用的 JS/CSS 均存在，JS bundle 含展开与收起按钮 accessible label；在线发布验证待提交后执行。
