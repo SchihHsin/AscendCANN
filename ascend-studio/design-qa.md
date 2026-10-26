@@ -1399,4 +1399,4 @@ final result: passed
 
 - 用户当前打开的 `http://127.0.0.1:5190/` 仍是旧预览：工具栏里只有“完成画布编辑”，没有新增操作。合并后的 Pages 构建在 `http://127.0.0.1:5193/` 可见完整工具组；编辑态的“完成画布编辑”旁有“＋”新增便签和自由绘图按钮，适应全部、布局、缩放等既有工具也保留。
 - 1280×720 CUA 截图确认工具组处于画布右上角且没有被裁切；实际点击“新增节点：便签”后，画布新增“笔记 2”并出现可编辑文本框。结果来自本地预览（M），没有修改任务路径顺序。
-- `npm run build:pages`、生成 JS 的 `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留既有 JS chunk 大于 500 kB 提醒。此时功能与最新主线已在本地合并，push / Pages workflow 待回填。
+- `npm run build:pages`、生成 JS 的 `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留既有 JS chunk 大于 500 kB 提醒。功能先随 `b5edf192` 推送，后续与 AddCustom / 画布图标更新合入 `91ecf0b9` / `00266210`；最新 Pages workflow `40320699274` 成功。公开 `/AscendCANN/ascstudio/` HTML、JS、CSS 均 HTTP 200；当前 JS `index-lJILiayO.js`（1,027,201 bytes）包含“新增节点：便签”和“自由绘图”。
