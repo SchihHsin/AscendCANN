@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useRef, useState } from "react";
 import { ExploreTaskHome } from "./ExploreTaskHome";
 import { CombinationTaskHome } from "./CombinationTaskHome";
@@ -157,7 +158,7 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
               aria-pressed={item.id === mode}
               onClick={() => { setMode(item.id); setError(""); setCardExpanded(null); }}
             >
-              {item.id === "learning" ? <IconBook size={22} stroke={1.8} aria-hidden="true" /> : <IconCode size={22} stroke={1.8} aria-hidden="true" />}
+              {item.id === "learning" ? <IconBook size={ICON_SIZE.feature} aria-hidden="true" /> : <IconCode size={ICON_SIZE.feature} aria-hidden="true" />}
               {item.label}
             </button>
           ))}
@@ -198,18 +199,18 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
               >
                 {errorLearning ? <>
                   <span className="new-task-home__card-error-heading">
-                    <Icon size={20} stroke={1.8} aria-hidden="true" />
+                    <Icon size={ICON_SIZE.navigation} aria-hidden="true" />
                     <strong title={item.title}>{item.title}</strong>
-                    <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={14} /></span>
+                    <span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={ICON_SIZE.inline} /></span>
                   </span>
                   <span className="new-task-home__card-error-count">{item.errorPeriod}出错 <strong>{item.errorCount} 次</strong></span>
                   {!expanded && <ul className="new-task-home__card-error-examples" aria-label="近期错误记录">
                     {item.errorExamples.slice(0, 2).map((example) => <li key={`${example.date}-${example.summary}`} title={`${example.date} · ${example.summary}`}><time>{example.date}</time><span aria-hidden="true">·</span><span className="new-task-home__card-error-summary">{example.summary}</span></li>)}
                   </ul>}
                 </> : <>
-                  <span className="new-task-home__card-context"><Icon size={22} stroke={1.8} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
+                  <span className="new-task-home__card-context"><Icon size={ICON_SIZE.feature} aria-hidden="true" /><span className="new-task-home__card-source" title={item.taskName}>{item.taskName}<small>{item.project ? ` · ${item.project}` : ""}</small></span></span>
                   <span className="new-task-home__card-activity" title={item.activity}>{item.activity}</span>
-                  <span className="new-task-home__card-title"><strong title={item.title}>建议：{item.title}</strong><span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={14} /></span></span>
+                  <span className="new-task-home__card-title"><strong title={item.title}>建议：{item.title}</strong><span className="new-task-home__card-action" aria-hidden="true"><IconArrowRight size={ICON_SIZE.inline} /></span></span>
                   <span className="new-task-home__card-reason">{item.reason}</span>
                 </>}
               </button>
@@ -253,9 +254,9 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
           <div className="new-task-home__attachments" aria-label="已添加材料">
             {attachments.map((item) => (
               <span className="new-task-home__attachment" key={item.id} title={item.name}>
-                {item.type === "image" ? <IconPhoto size={14} aria-hidden="true" /> : item.type === "code" ? <IconCode size={14} aria-hidden="true" /> : <IconPaperclip size={14} aria-hidden="true" />}
+                {item.type === "image" ? <IconPhoto size={ICON_SIZE.inline} aria-hidden="true" /> : item.type === "code" ? <IconCode size={ICON_SIZE.inline} aria-hidden="true" /> : <IconPaperclip size={ICON_SIZE.inline} aria-hidden="true" />}
                 <span>{item.name}</span>
-                <button type="button" aria-label={`移除附件 ${item.name}`} onClick={() => setAttachments((items) => items.filter((attachment) => attachment.id !== item.id))}><IconX size={13} /></button>
+                <button type="button" aria-label={`移除附件 ${item.name}`} onClick={() => setAttachments((items) => items.filter((attachment) => attachment.id !== item.id))}><IconX size={ICON_SIZE.inline} /></button>
               </span>
             ))}
           </div>
@@ -272,9 +273,9 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
         )}
         {quickMenuOpen && (
           <div className="new-task-home__quick-menu" role="group" aria-label="添加上下文">
-            <button type="button" onClick={openSnippet}><IconCode size={16} />代码片段</button>
-            <button type="button" onClick={() => { setQuickMenuOpen(false); imageInputRef.current?.click(); }}><IconPhoto size={16} />截图</button>
-            <button type="button" onClick={() => { setQuickMenuOpen(false); fileInputRef.current?.click(); }}><IconPaperclip size={16} />文件</button>
+            <button type="button" onClick={openSnippet}><IconCode size={ICON_SIZE.control} />代码片段</button>
+            <button type="button" onClick={() => { setQuickMenuOpen(false); imageInputRef.current?.click(); }}><IconPhoto size={ICON_SIZE.control} />截图</button>
+            <button type="button" onClick={() => { setQuickMenuOpen(false); fileInputRef.current?.click(); }}><IconPaperclip size={ICON_SIZE.control} />文件</button>
           </div>
         )}
         <label className="new-task-home__field">
@@ -292,15 +293,15 @@ function ClassicTaskHome({ onCreateTask, currentTaskName = "当前任务", tasks
         </label>
         <div className="new-task-home__toolbar">
           <div className="new-task-home__tools">
-            <button className="new-task-home__add-button" type="button" aria-label="添加上下文" title="添加上下文" aria-expanded={quickMenuOpen} onClick={() => { setQuickMenuOpen((open) => !open); setSnippetOpen(false); }}><IconPlus size={23} stroke={1.8} /></button>
-            <button className="new-task-home__tool-button" type="button" onClick={openSnippet}><IconCode size={18} />代码片段</button>
-            <button className="new-task-home__tool-button" type="button" onClick={() => imageInputRef.current?.click()}><IconPhoto size={18} />截图</button>
-            <button className="new-task-home__tool-button" type="button" onClick={() => fileInputRef.current?.click()}><IconPaperclip size={18} />文件</button>
+            <button className="new-task-home__add-button" type="button" aria-label="添加上下文" title="添加上下文" aria-expanded={quickMenuOpen} onClick={() => { setQuickMenuOpen((open) => !open); setSnippetOpen(false); }}><IconPlus size={ICON_SIZE.feature} /></button>
+            <button className="new-task-home__tool-button" type="button" onClick={openSnippet}><IconCode size={ICON_SIZE.heading} />代码片段</button>
+            <button className="new-task-home__tool-button" type="button" onClick={() => imageInputRef.current?.click()}><IconPhoto size={ICON_SIZE.heading} />截图</button>
+            <button className="new-task-home__tool-button" type="button" onClick={() => fileInputRef.current?.click()}><IconPaperclip size={ICON_SIZE.heading} />文件</button>
           </div>
           <button className="new-task-home__submit" type="submit" disabled={!goal.trim()}>
-            <IconSparkles size={18} aria-hidden="true" />
+            <IconSparkles size={ICON_SIZE.heading} aria-hidden="true" />
             <span>{activeMode.action}</span>
-            <IconArrowRight size={19} aria-hidden="true" />
+            <IconArrowRight size={ICON_SIZE.navigation} aria-hidden="true" />
           </button>
         </div>
         {error && <p className="new-task-home__error" role="alert">{error}</p>}
@@ -346,7 +347,7 @@ export function NewTaskHome(props) {
   };
   return <section className="home-variants" aria-label="新建任务首页">
     <div className="home-variants__tabs" role="tablist" aria-label="首页方案" onKeyDown={handleTabKey}>
-      {[{ id: "classic", label: "经典", Icon: IconEditHome }, { id: "explore", label: "探索", Icon: IconSparkles }, { id: "combine", label: "组合", Icon: IconShare3 }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={13} />{label}</button>)}
+      {[{ id: "classic", label: "经典", Icon: IconEditHome }, { id: "explore", label: "探索", Icon: IconSparkles }, { id: "combine", label: "组合", Icon: IconShare3 }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={ICON_SIZE.inline} />{label}</button>)}
     </div>
     <div className="home-variants__panel" role="tabpanel" id="home-panel-classic" aria-labelledby="home-tab-classic" hidden={view !== "classic"}><ClassicTaskHome {...props} /></div>
     <div className="home-variants__panel" role="tabpanel" id="home-panel-explore" aria-labelledby="home-tab-explore" hidden={view !== "explore"}><ExploreTaskHome onCreateTask={props.onCreateTask} /></div>

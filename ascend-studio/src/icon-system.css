@@ -1,0 +1,66 @@
+:root {
+  --studio-icon-stroke: 1.8;
+  --studio-icon-size-micro: 12px;
+  --studio-icon-size-inline: 14px;
+  --studio-icon-size-control: 16px;
+  --studio-icon-size-heading: 18px;
+  --studio-icon-size-navigation: 20px;
+  --studio-icon-size-feature: 24px;
+  --studio-icon-hit-compact: 28px;
+  --studio-icon-hit-standard: 34px;
+  --studio-icon-hit-navigation: 42px;
+  --studio-icon-color-muted: #777a83;
+  --studio-icon-color-active: #25252a;
+}
+
+.app-frame svg.tabler-icon {
+  flex: 0 0 auto;
+  stroke-width: var(--studio-icon-stroke);
+}
+
+.app-frame .icon-button {
+  width: var(--studio-icon-hit-standard);
+  height: var(--studio-icon-hit-standard);
+}
+
+.app-frame .icon-button > svg.tabler-icon {
+  width: var(--studio-icon-size-control);
+  height: var(--studio-icon-size-control);
+}
+
+.app-frame .top-icon > svg.tabler-icon {
+  width: var(--studio-icon-size-heading);
+  height: var(--studio-icon-size-heading);
+}
+
+.app-frame .icon-rail-button {
+  width: var(--studio-icon-hit-navigation);
+  height: var(--studio-icon-hit-navigation);
+}
+
+.app-frame .icon-rail-button > svg.tabler-icon {
+  width: var(--studio-icon-size-navigation);
+  height: var(--studio-icon-size-navigation);
+}
+
+.app-frame .conversation-layout-switch > button {
+  width: var(--studio-icon-hit-compact);
+  height: var(--studio-icon-hit-compact);
+}
+
+.app-frame .conversation-layout-switch > button > svg.tabler-icon {
+  width: var(--studio-icon-size-heading);
+  height: var(--studio-icon-size-heading);
+}
+
+.app-frame button:has(> svg.tabler-icon:only-child):not(.attachment-chip > button) {
+  min-width: var(--studio-icon-hit-compact);
+  min-height: var(--studio-icon-hit-compact);
+}
+
+/* These Tabler symbols are part of diagrams or decorative artwork, not controls. */
+.app-frame .home-compute-backdrop__svg .tabler-icon { stroke-width: 1.45; }
+.app-frame .new-task-home__card-motif { stroke-width: 1.2; }
+.app-frame .og-chip > .tabler-icon { stroke-width: 1.15; }
+.app-frame .og-file-preview > .tabler-icon { stroke-width: 1.25; }
+.app-frame .lh-agent-flight > .tabler-icon { stroke-width: 2.2; }

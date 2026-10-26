@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useRef, useState } from "react";
 import { IconMicrophone, IconMicrophoneOff } from "@tabler/icons-react";
 
@@ -61,7 +62,7 @@ export function VoiceCaptureButton({ label = "语音输入", activeLabel = "停�
 
   return <>
     <button className={`${className} voice-capture-button${listening ? " is-listening" : ""}`.trim()} type="button" aria-pressed={listening} onClick={listening ? stop : start} title={listening ? "停止语音识别" : label}>
-      {listening ? <IconMicrophoneOff size={14} /> : <IconMicrophone size={14} />}
+      {listening ? <IconMicrophoneOff size={ICON_SIZE.inline} /> : <IconMicrophone size={ICON_SIZE.inline} />}
       {listening ? activeLabel : label}
     </button>
     {error && <span className="voice-capture-hint" role="status">{error}</span>}

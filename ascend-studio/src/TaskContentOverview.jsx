@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { Fragment, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   IconArrowUpRight,
@@ -31,7 +32,7 @@ function GroupMenu({ group, onEditGroup }) {
   const menuRef = useRef(null);
   useEffect(() => setTitle(group.title || ""), [group.title]);
   return <details className="tco-more-menu" ref={menuRef}>
-    <summary aria-label={`更多组操作：${group.title}`} title="更多"><IconDots size={16} aria-hidden="true" /></summary>
+    <summary aria-label={`更多组操作：${group.title}`} title="更多"><IconDots size={ICON_SIZE.control} aria-hidden="true" /></summary>
     <form onSubmit={(event) => { event.preventDefault(); onEditGroup?.(group.id, title.trim()); menuRef.current?.removeAttribute("open"); }}>
       <label>组名称<input value={title} onChange={(event) => setTitle(event.target.value)} /></label>
       <button type="submit" disabled={!title.trim() || title.trim() === group.title}>保存</button>
@@ -45,7 +46,7 @@ function ItemMenu({ item, groups, categories, onEditItem }) {
   const menuRef = useRef(null);
   useEffect(() => { setGroupId(item.groupId || ""); setCategory(item.category || ""); }, [item.groupId, item.category]);
   return <details className="tco-more-menu" ref={menuRef}>
-    <summary aria-label={`调整归属和用途：${item.title}`} title="更多"><IconDots size={16} aria-hidden="true" /></summary>
+    <summary aria-label={`调整归属和用途：${item.title}`} title="更多"><IconDots size={ICON_SIZE.control} aria-hidden="true" /></summary>
     <form onSubmit={(event) => { event.preventDefault(); onEditItem?.(item.id, { groupId, category }); menuRef.current?.removeAttribute("open"); }}>
       <label>所属组<select value={groupId} onChange={(event) => setGroupId(event.target.value)}><option value="">未分组</option>{groups.map((group) => <option key={group.id} value={group.id}>{group.title}</option>)}</select></label>
       <label>用途<select value={category} onChange={(event) => setCategory(event.target.value)}><option value="">其他</option>{categories.map((entry) => <option key={entry.id} value={entry.id}>{entry.label}</option>)}</select></label>
@@ -59,7 +60,7 @@ function CompareButton({ id, selectedId, onCompare }) {
   const sameObject = id === selectedId;
   if (sameObject) return null;
   return <button className="tco-compare" type="button" disabled={!selectedId || sameObject} onClick={() => onCompare(id)} title={sameObject ? "当前内容不能与自身对照" : selectedId ? "与当前内容对照" : "先打开一项内容，再选择对照"}>
-    <IconGitCompare size={13} aria-hidden="true" />对照
+    <IconGitCompare size={ICON_SIZE.inline} aria-hidden="true" />对照
   </button>;
 }
 
@@ -75,7 +76,7 @@ function OverviewCard({ item, categoryLabel, current, historyOpen, onToggleHisto
     <div className="tco-card-main">
       <button className="tco-card-title" id={titleId} type="button" onClick={() => onOpen?.(item.id)} aria-label={`打开${item.title}`} aria-current={current ? "true" : undefined}>
         <strong title={item.title || "未命名内容"}>{item.title || "未命名内容"}</strong>
-        <IconArrowUpRight size={14} aria-hidden="true" />
+        <IconArrowUpRight size={ICON_SIZE.inline} aria-hidden="true" />
       </button>
       <div className="tco-card-identity">
         {kindLabel && <span className="tco-card-kind">{kindLabel}</span>}
@@ -94,7 +95,7 @@ function OverviewCard({ item, categoryLabel, current, historyOpen, onToggleHisto
       </div>}
       <div className="tco-card-actions">
         {historicalCount > 0 && <button className={`tco-history-toggle${historyOpen ? " is-open" : ""}`} type="button" aria-expanded={historyOpen} onClick={() => onToggleHistory(item.id)}>
-          <IconHistory size={13} aria-hidden="true" />{historyOpen ? "收起历史" : `历史 ${historicalCount}`}
+          <IconHistory size={ICON_SIZE.inline} aria-hidden="true" />{historyOpen ? "收起历史" : `历史 ${historicalCount}`}
         </button>}
         <CompareButton id={item.id} selectedId={selectedId} onCompare={onCompare} />
         {onEditItem && <ItemMenu item={item} groups={groups} categories={categories} onEditItem={onEditItem} />}
@@ -125,7 +126,7 @@ function HistoryPanel({ item, onOpen, selectedId, onCompare }) {
 function SummaryNode({ item, current, onOpen, linked, spotlight }) {
   const summary = summarizeContentMapItem(item);
   return <button type="button" className={`tco-summary-node${current ? " is-current" : ""}${linked ? " is-linked" : ""}${spotlight ? " is-spotlight" : ""}`} data-map-node={item.id} onClick={()=>onOpen?.(item.id)} aria-label={`打开${item.title}`} aria-current={current ? "true" : undefined}>
-    <span className="tco-summary-heading"><strong>{item.title}</strong><IconArrowUpRight size={13} aria-hidden="true" /></span>
+    <span className="tco-summary-heading"><strong>{item.title}</strong><IconArrowUpRight size={ICON_SIZE.inline} aria-hidden="true" /></span>
     <span className="tco-summary-conclusion">{conciseSummary(summary.conclusion)}</span>
     {item.provenance?.map((entry,index)=><span className="tco-summary-provenance" key={entry.label+index}>{entry.label} · {entry.value}</span>)}
     <span className="tco-summary-meta">{item.state?.label && <span className={`tco-status is-${item.state.tone || "neutral"}`}>{item.state.label}</span>}{summary.historyCount>0 && <span>{summary.historyCount} 条历史</span>}{item.unread && <span className="tco-unread">有更新</span>}</span>
@@ -208,7 +209,7 @@ function ContentCluster({ group, edges, level, collapsed, onToggleGroup, onOpen,
     const observer=new ResizeObserver(measure);observer.observe(grid);measure();return()=>observer.disconnect();
   },[visible,collapsed,level]);
   return <section className={`tco-group${collapsed?" is-collapsed":""}`} data-map-group={group.id} aria-labelledby={groupHeadingId}>
-    <header className="tco-group-header"><button className="tco-group-toggle" type="button" aria-expanded={!collapsed} aria-label={`${collapsed?"展开":"收起"}主题：${group.title}`} onClick={()=>onToggleGroup(group.id)}>{collapsed?<IconChevronRight size={15}/>:<IconChevronDown size={15}/>}</button><div className="tco-group-heading" title={group.description||group.title}><h3 id={groupHeadingId}>{group.title}</h3></div><span className="tco-group-count">{group.items.length}</span>{onEditGroup&&<GroupMenu group={group} onEditGroup={onEditGroup}/>}</header>
+    <header className="tco-group-header"><button className="tco-group-toggle" type="button" aria-expanded={!collapsed} aria-label={`${collapsed?"展开":"收起"}主题：${group.title}`} onClick={()=>onToggleGroup(group.id)}>{collapsed?<IconChevronRight size={ICON_SIZE.control}/>:<IconChevronDown size={ICON_SIZE.control}/>}</button><div className="tco-group-heading" title={group.description||group.title}><h3 id={groupHeadingId}>{group.title}</h3></div><span className="tco-group-count">{group.items.length}</span>{onEditGroup&&<GroupMenu group={group} onEditGroup={onEditGroup}/>}</header>
     {collapsed?<ul className="tco-group-outline">{group.items.map(item=><li key={item.id}><button type="button" onClick={()=>onOpen?.(item.id)} aria-label={`打开${item.title}`}><span className="tco-outline-title">{item.title}<em>{item.state?.label||item.kindLabel}</em></span></button></li>)}</ul>:<div className="tco-map-surface"><div className="tco-group-cards tco-connected-grid" ref={gridRef} onMouseLeave={()=>onHighlight(null)} onFocusCapture={event=>onHighlight(event.target.closest('[data-map-node]')?.dataset.mapNode||null)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget))onHighlight(null);}}>
       <MapConnections gridRef={gridRef} edges={localEdges} highlightedId={highlightedId} visible={visible} layoutKey={`${level}:${historyId}:${columns}`}/>
       {group.items.map((item,index)=><Fragment key={item.id}><div className="tco-map-node-wrap" onMouseEnter={()=>onHighlight(item.id)}>{level===1?<SummaryNode item={item} current={selectedId===item.id||item.children?.some(child=>child.id===selectedId)} onOpen={onOpen} linked={linkedIds.has(item.id)} spotlight={spotlightId===item.id}/>:<OverviewCard item={item} categoryLabel={categoryLabels.get(item.category)} current={selectedId===item.id||item.children?.some(child=>child.id===selectedId)} historyOpen={historyId===item.id} onToggleHistory={onToggleHistory} onOpen={onOpen} groups={groups} categories={categories} onEditItem={onEditItem} selectedId={selectedId} onCompare={onCompare} linked={linkedIds.has(item.id)} spotlight={spotlightId===item.id}/>}</div>{historyItem&&index===historyRowEnd&&<HistoryPanel item={historyItem} onOpen={onOpen} selectedId={selectedId} onCompare={onCompare}/>}</Fragment>)}
@@ -222,7 +223,7 @@ function TopicNode({ group, edges, onZoomGroup, onOpen, selectedId }) {
   const important=group.items.find(item=>item.state?.tone==='warning')||group.items.find(item=>item.state?.label)||group.items[0];
   const groupEdges=edges.filter(edge=>group.items.some(item=>item.id===edge.sourceId));
   return <section className="tco-topic-node" data-map-group={group.id}>
-    <button className="tco-topic-open" type="button" onClick={()=>onZoomGroup(group.id)} aria-label={`展开主题：${group.title}`}><strong>{group.title}</strong><span className="tco-topic-count">{group.items.length} 项</span><IconChevronRight size={14}/></button>
+    <button className="tco-topic-open" type="button" onClick={()=>onZoomGroup(group.id)} aria-label={`展开主题：${group.title}`}><strong>{group.title}</strong><span className="tco-topic-count">{group.items.length} 项</span><IconChevronRight size={ICON_SIZE.inline}/></button>
     <p className="tco-topic-summary">{conciseSummary(important?.summary||group.description)}</p>
     <ul className="tco-topic-items">{group.items.map(item=><li key={item.id}><button type="button" onClick={()=>onOpen?.(item.id)} aria-label={`打开${item.title}`} aria-current={selectedId===item.id||item.children?.some(child=>child.id===selectedId)?'true':undefined}><span>{item.title}</span><small>{item.unread?'有更新':item.state?.label||item.kindLabel}</small></button></li>)}</ul>
     <div className="tco-topic-stats">{uniqueHistory.size>0&&<span>{uniqueHistory.size} 条历史</span>}{groupEdges.length>0&&<span>{groupEdges.length} 条关联</span>}{unread>0&&<span className="tco-unread">{unread} 项更新</span>}</div>
@@ -318,10 +319,10 @@ export function TaskContentOverview({ taskId, items = [], categories = [], group
   };
   return <section className="tco-root" ref={rootRef} data-task-id={taskId||undefined} data-map-level={LEVEL_NAMES[level]} hidden={!visible} aria-label="任务内容总览">
     <header className="tco-toolbar"><div className="tco-overview-count"><strong>{safeItems.length}</strong><span>项内容</span>{unreadItems.length>0&&<button type="button" className="tco-update-locator" onClick={locateUpdate}>{unreadItems.length} 项更新</button>}</div><div className="tco-toolbar-actions">
-      <div className="tco-zoom-tools" role="group" aria-label="总览缩放"><button type="button" aria-label="缩小总览，显示更简洁的信息" title="缩小：内容 → 摘要 → 主题" disabled={level===0} onClick={()=>zoomTo(level-1)}><IconMinus size={14}/></button><span className="tco-zoom-value" title={`缩放 ${LEVEL_PERCENT[level]}%，${['主题概览','内容摘要','内容详情'][level]}`}>{LEVEL_PERCENT[level]}%</span><button type="button" aria-label="放大总览，显示更多内容细节" title="放大" disabled={level===2} onClick={()=>zoomTo(level+1)}><IconPlus size={14}/></button><button type="button" className="tco-zoom-fit" aria-label={hasFilter?'适应筛选结果':'适应全部内容'} title={hasFilter?'适应筛选结果':'适应全部内容'} onClick={fitAll}><IconArrowsMaximize size={14}/></button></div>
-      <button className={`tco-search-toggle${searchOpen?' is-open':''}`} type="button" aria-expanded={searchOpen} aria-label="查找内容" onClick={()=>setSearchOpen(open=>!open)}><IconSearch size={14}/><span className="tco-search-label">查找</span></button>
+      <div className="tco-zoom-tools" role="group" aria-label="总览缩放"><button type="button" aria-label="缩小总览，显示更简洁的信息" title="缩小：内容 → 摘要 → 主题" disabled={level===0} onClick={()=>zoomTo(level-1)}><IconMinus size={ICON_SIZE.inline}/></button><span className="tco-zoom-value" title={`缩放 ${LEVEL_PERCENT[level]}%，${['主题概览','内容摘要','内容详情'][level]}`}>{LEVEL_PERCENT[level]}%</span><button type="button" aria-label="放大总览，显示更多内容细节" title="放大" disabled={level===2} onClick={()=>zoomTo(level+1)}><IconPlus size={ICON_SIZE.inline}/></button><button type="button" className="tco-zoom-fit" aria-label={hasFilter?'适应筛选结果':'适应全部内容'} title={hasFilter?'适应筛选结果':'适应全部内容'} onClick={fitAll}><IconArrowsMaximize size={ICON_SIZE.inline}/></button></div>
+      <button className={`tco-search-toggle${searchOpen?' is-open':''}`} type="button" aria-expanded={searchOpen} aria-label="查找内容" onClick={()=>setSearchOpen(open=>!open)}><IconSearch size={ICON_SIZE.inline}/><span className="tco-search-label">查找</span></button>
     </div></header>
-    {searchOpen&&<div className="tco-search-panel"><label className="tco-search"><IconSearch size={14}/><span className="tco-sr-only">搜索内容及相关记录</span><input value={query} onChange={event=>{pendingAnchor.current=null;stableAnchor.current=null;patch({query:event.target.value,scrollTop:0});}} placeholder="搜索标题、条件或历史记录"/></label>{safeCategories.length>0&&<div className="tco-categories" aria-label="按用途筛选"><button type="button" className={category==='all'?'is-selected':''} aria-pressed={category==='all'} onClick={()=>patch({category:'all'})}>全部</button>{safeCategories.map(entry=><button type="button" key={entry.id} className={category===entry.id?'is-selected':''} aria-pressed={category===entry.id} onClick={()=>patch({category:entry.id})}>{entry.label}</button>)}</div>}{hasFilter&&<button className="tco-clear-filters" type="button" onClick={()=>patch({query:'',category:'all'})}>清除搜索与筛选</button>}</div>}
+    {searchOpen&&<div className="tco-search-panel"><label className="tco-search"><IconSearch size={ICON_SIZE.inline}/><span className="tco-sr-only">搜索内容及相关记录</span><input value={query} onChange={event=>{pendingAnchor.current=null;stableAnchor.current=null;patch({query:event.target.value,scrollTop:0});}} placeholder="搜索标题、条件或历史记录"/></label>{safeCategories.length>0&&<div className="tco-categories" aria-label="按用途筛选"><button type="button" className={category==='all'?'is-selected':''} aria-pressed={category==='all'} onClick={()=>patch({category:'all'})}>全部</button>{safeCategories.map(entry=><button type="button" key={entry.id} className={category===entry.id?'is-selected':''} aria-pressed={category===entry.id} onClick={()=>patch({category:entry.id})}>{entry.label}</button>)}</div>}{hasFilter&&<button className="tco-clear-filters" type="button" onClick={()=>patch({query:'',category:'all'})}>清除搜索与筛选</button>}</div>}
     {safeItems.length===0?<div className="tco-empty"><strong>本任务尚无内容</strong><p>使用或产生的内容会保留在对应主题中。</p></div>:filteredItems.length===0?<div className="tco-empty"><strong>没有匹配的内容</strong><p>调整关键词或用途，继续查找本任务的内容。</p><button type="button" onClick={()=>patch({query:'',category:'all'})}>清除搜索与筛选</button></div>:<div className="tco-scroll" ref={scrollRef} onScroll={handleScroll}><div className={`tco-map${level===0?' tco-topic-map':''}`}>
       {level===0?orderedGroups.map(group=><TopicNode key={group.id} group={group} edges={model.edges} onZoomGroup={groupId=>zoomTo(1,groupId)} onOpen={onOpen} selectedId={selectedId}/>):orderedGroups.map(group=><ContentCluster key={group.id} group={group} edges={model.edges} level={level} collapsed={collapsedGroups.includes(group.id)} onToggleGroup={toggleGroup} onOpen={onOpen} onZoomGroup={groupId=>zoomTo(1,groupId)} selectedId={selectedOwner} categoryLabels={categoryLabels} historyId={viewState.historyId} onToggleHistory={toggleHistory} groups={safeGroups} categories={safeCategories} onEditItem={onEditItem} onEditGroup={onEditGroup} onCompare={onCompare} highlightedId={highlightedId||selectedOwner} spotlightId={spotlightId} onHighlight={setHighlightedId} visible={visible} instanceId={instanceId}/>)}
       {level>0&&model.edges.some(edge=>safeItems.find(item=>item.id===edge.sourceId)?.groupId!==safeItems.find(item=>item.id===edge.targetId)?.groupId)&&<div className="tco-cross-relations" aria-label="跨主题关联">{model.edges.filter(edge=>safeItems.find(item=>item.id===edge.sourceId)?.groupId!==safeItems.find(item=>item.id===edge.targetId)?.groupId).map(edge=><button type="button" key={edge.id} onClick={()=>onOpen?.(edge.targetRecordId)}>{safeItems.find(item=>item.id===edge.sourceId)?.title} · {edge.label} → {safeItems.find(item=>item.id===edge.targetId)?.title}</button>)}</div>}

@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useState } from "react";
 import {
   IconAlertCircle,
@@ -56,10 +57,10 @@ function DraftSection({ section, value, editing, onEdit, onChange }) {
   const { Icon } = section;
   return <article className="community-draft-section">
     <header>
-      <Icon size={19} aria-hidden="true" />
+      <Icon size={ICON_SIZE.navigation} aria-hidden="true" />
       <h3>{section.label}</h3>
       <button type="button" className="community-draft-edit" onClick={onEdit} aria-expanded={editing}>
-        {editing ? <IconCheck size={14} /> : <IconEdit size={14} />}{editing ? "完成" : "编辑"}
+        {editing ? <IconCheck size={ICON_SIZE.inline} /> : <IconEdit size={ICON_SIZE.inline} />}{editing ? "完成" : "编辑"}
       </button>
     </header>
     <div className="community-draft-section-body">
@@ -148,7 +149,7 @@ function ChannelCardPreview({ channelId, draft }) {
       ].map(slide => <div key={slide.number} className={`channel-preview-tiktok-tile channel-preview-tiktok-tile--${slide.type}`}>
         <div className="channel-preview-tiktok-tile-top"><small>{slide.number}</small><span>{slide.kicker}</span></div>
         {slide.type === "cover" && <div className="channel-preview-tiktok-cover-content">
-          <strong>{slide.title}</strong><span>{isAddCustom ? "先定位误差范围" : "从现象开始排查"}</span><span className="channel-preview-tiktok-cover-mark" aria-hidden="true"><IconPhotoSearch size={20} stroke={1.7} /></span>
+          <strong>{slide.title}</strong><span>{isAddCustom ? "先定位误差范围" : "从现象开始排查"}</span><span className="channel-preview-tiktok-cover-mark" aria-hidden="true"><IconPhotoSearch size={ICON_SIZE.navigation} /></span>
         </div>}
         {slide.type === "compare" && <div className="channel-preview-tiktok-compare-content">
           <div className="channel-preview-tiktok-shape-row">
@@ -184,7 +185,7 @@ function ChannelPreviewCard({ channel, draft, state, selected, onToggle, onOpen 
       <div className="channel-preview-card-tools">
         <span className="channel-preview-format">{channel.id === "community" ? "社区经验帖" : channel.id === "gitcode" ? "Issue / PR" : channel.id === "csdn" ? "技术博客" : "知识图文"}</span>
         {published
-          ? <span className="channel-preview-locked-status"><IconCheck size={10} aria-hidden="true" />已发布</span>
+          ? <span className="channel-preview-locked-status"><IconCheck size={ICON_SIZE.micro} aria-hidden="true" />已发布</span>
           : <button
             type="button"
             className={`channel-preview-select${selected ? " is-selected" : ""}`}
@@ -192,16 +193,16 @@ function ChannelPreviewCard({ channel, draft, state, selected, onToggle, onOpen 
             aria-label={`${selected ? "取消选择" : "选择"}${channel.name}`}
             aria-pressed={selected}
           >
-            {selected && <IconCheck size={12} stroke={2.5} aria-hidden="true" />}
+            {selected && <IconCheck size={ICON_SIZE.micro} aria-hidden="true" />}
           </button>}
       </div>
     </div>
     <div className="channel-preview-card-body"><ChannelCardPreview channelId={channel.id} draft={draft} /></div>
     <div className="channel-preview-card-footer">
-      <span className="channel-preview-reward"><IconSparkles size={12} />{channel.rewardShort}</span>
+      <span className="channel-preview-reward"><IconSparkles size={ICON_SIZE.micro} />{channel.rewardShort}</span>
       <div className="channel-preview-card-footer-actions">
         <button type="button" onClick={event => { event.stopPropagation(); onOpen(); }} className="channel-preview-action">
-          {state.published ? "查看发布效果" : "查看详情"}<IconArrowRight size={13} />
+          {state.published ? "查看发布效果" : "查看详情"}<IconArrowRight size={ICON_SIZE.inline} />
         </button>
       </div>
     </div>
@@ -228,11 +229,11 @@ function MultiChannelOverview({ draft, channelStates, selectedChannels, onToggle
       />)}
     </div>
     <div className="community-channel-overview-footer">
-      <p className="community-channel-overview-note"><IconInfoCircle size={14} />已选 {pendingChannels.length} 个待发布渠道；发布为本地演示，奖励规则以平台为准。</p>
+      <p className="community-channel-overview-note"><IconInfoCircle size={ICON_SIZE.inline} />已选 {pendingChannels.length} 个待发布渠道；发布为本地演示，奖励规则以平台为准。</p>
       <button type="button" className="community-channel-publish-selected" onClick={showPublishedPreview ? onViewPublished : onPublishSelected} disabled={pendingChannels.length === 0 && !hasPublished}>
         {showPublishedPreview
-          ? <><IconArrowRight size={14} />查看发布后预览</>
-          : <><IconSend size={14} />{pendingChannels.length > 1 ? `批量发布（${pendingChannels.length}）` : pendingChannels.length === 1 ? "发布到选中渠道（1）" : "选择发布渠道"}</>}
+          ? <><IconArrowRight size={ICON_SIZE.inline} />查看发布后预览</>
+          : <><IconSend size={ICON_SIZE.inline} />{pendingChannels.length > 1 ? `批量发布（${pendingChannels.length}）` : pendingChannels.length === 1 ? "发布到选中渠道（1）" : "选择发布渠道"}</>}
       </button>
     </div>
   </div>;
@@ -349,30 +350,30 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
     <header className={`community-draft-header${overview ? " community-draft-header--overview" : ""}`}>
       {overview ? <>
         <div className="community-overview-heading">
-          <div className="community-overview-heading-title"><button type="button" className="community-overview-back" onClick={() => setView("community")} aria-label="返回昇腾社区草稿"><IconArrowLeft size={16} /></button><h2>多渠道草稿预览</h2></div>
+          <div className="community-overview-heading-title"><button type="button" className="community-overview-back" onClick={() => setView("community")} aria-label="返回昇腾社区草稿"><IconArrowLeft size={ICON_SIZE.control} /></button><h2>多渠道草稿预览</h2></div>
           <p>同一条任务经验，按平台语境生成不同草稿</p>
         </div>
         <div className="community-draft-header-actions">
-          <button type="button" className="community-overview-regenerate" onClick={regenerate}><IconRefresh size={15} />重新生成</button>
-          <button type="button" className={`community-draft-zoom${expanded ? " is-active" : ""}`} onClick={() => setExpanded(value => !value)} aria-label={expanded ? "缩小草稿预览" : "放大草稿预览"} title={expanded ? "缩小预览" : "放大预览"}><IconMaximize size={15} /></button>
-          <button type="button" className="community-draft-close" onClick={onClose} aria-label="关闭社区经验草稿"><IconX size={17} /></button>
+          <button type="button" className="community-overview-regenerate" onClick={regenerate}><IconRefresh size={ICON_SIZE.control} />重新生成</button>
+          <button type="button" className={`community-draft-zoom${expanded ? " is-active" : ""}`} onClick={() => setExpanded(value => !value)} aria-label={expanded ? "缩小草稿预览" : "放大草稿预览"} title={expanded ? "缩小预览" : "放大预览"}><IconMaximize size={ICON_SIZE.control} /></button>
+          <button type="button" className="community-draft-close" onClick={onClose} aria-label="关闭社区经验草稿"><IconX size={ICON_SIZE.heading} /></button>
         </div>
       </> : <>
         <div className="community-draft-title">
-          <IconFileDescription size={23} aria-hidden="true" />
+          <IconFileDescription size={ICON_SIZE.feature} aria-hidden="true" />
           <h2>{channelDetails.name}</h2>
           <span className={`community-draft-status${channelState.published ? " is-submitted" : submittedForReview ? " is-review" : ""}`}>
             {channelState.published ? "已发布 · 演示" : submittedForReview ? "待你审阅" : "待生成"}
           </span>
         </div>
         <div className="community-incentive-alert" role="status" aria-label={channelDetails.reward} title={channelDetails.reward}>
-          <IconSparkles size={14} aria-hidden="true" />
+          <IconSparkles size={ICON_SIZE.inline} aria-hidden="true" />
           <span>{channelDetails.rewardShort}</span>
         </div>
-        <button type="button" className="community-channel-back" aria-label={overviewVisited ? "返回渠道总览" : "查看全部发布渠道"} title={overviewVisited ? "返回渠道总览" : "查看全部发布渠道"} onClick={showChannelOverview}>{overviewVisited ? <IconArrowLeft size={14} aria-hidden="true" /> : <IconArrowRight size={14} aria-hidden="true" />}<span>{overviewVisited ? "返回渠道总览" : "查看全部发布渠道"}</span></button>
+        <button type="button" className="community-channel-back" aria-label={overviewVisited ? "返回渠道总览" : "查看全部发布渠道"} title={overviewVisited ? "返回渠道总览" : "查看全部发布渠道"} onClick={showChannelOverview}>{overviewVisited ? <IconArrowLeft size={ICON_SIZE.inline} aria-hidden="true" /> : <IconArrowRight size={ICON_SIZE.inline} aria-hidden="true" />}<span>{overviewVisited ? "返回渠道总览" : "查看全部发布渠道"}</span></button>
         <div className="community-draft-header-actions">
-          <button type="button" className={`community-draft-zoom${expanded ? " is-active" : ""}`} onClick={() => setExpanded(value => !value)} aria-label={expanded ? "缩小草稿预览" : "放大草稿预览"} title={expanded ? "缩小预览" : "放大预览"}><IconMaximize size={15} /></button>
-          <button type="button" className="community-draft-close" onClick={onClose} aria-label="关闭社区经验草稿"><IconX size={17} /></button>
+          <button type="button" className={`community-draft-zoom${expanded ? " is-active" : ""}`} onClick={() => setExpanded(value => !value)} aria-label={expanded ? "缩小草稿预览" : "放大草稿预览"} title={expanded ? "缩小预览" : "放大预览"}><IconMaximize size={ICON_SIZE.control} /></button>
+          <button type="button" className="community-draft-close" onClick={onClose} aria-label="关闭社区经验草稿"><IconX size={ICON_SIZE.heading} /></button>
         </div>
       </>}
     </header>
@@ -398,10 +399,10 @@ export function CommunityDraftPanel({ draft, onUpdate, onClose, onSubmit }) {
         />)}
       </div>
       <footer className="community-draft-footer">
-        <p><IconInfoCircle size={17} aria-hidden="true" /><span>草稿不会自动公开；提交前可继续编辑并确认内容。奖励规则以对应平台为准。</span></p>
+        <p><IconInfoCircle size={ICON_SIZE.heading} aria-hidden="true" /><span>草稿不会自动公开；提交前可继续编辑并确认内容。奖励规则以对应平台为准。</span></p>
         <div className="community-draft-actions">
           <button type="button" className="community-draft-continue" onClick={continueEditing}>继续编辑</button>
-          <button type="button" className="community-draft-submit" onClick={() => publishChannel("community")}><IconSend size={16} />提交到社区</button>
+          <button type="button" className="community-draft-submit" onClick={() => publishChannel("community")}><IconSend size={ICON_SIZE.control} />提交到社区</button>
         </div>
       </footer>
     </> : <ChannelDraftContent

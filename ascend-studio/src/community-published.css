@@ -53,7 +53,7 @@
 .community-article-tag { display: inline-flex; align-items: center; min-height: 21px; padding: 0 9px; border-radius: 12px; color: #565860; background: #f0f1f3; font-size: 10px; }
 .community-article-meta { display: flex; align-items: center; gap: 12px; margin-top: 12px; color: #7d7f85; font-size: 10px; }
 .community-article-stat { display: inline-flex; align-items: center; gap: 3px; }
-.community-article-stat svg { color: #85878e; stroke-width: 1.7; }
+.community-article-stat svg { color: #85878e; }
 .community-article-body { margin-top: 20px; color: #55565c; font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
 .community-article-body section + section { margin-top: 16px; padding-top: 14px; border-top: 1px solid #ececee; }
 .community-article-body h2 { margin: 0 0 5px; color: #25262b; font-size: 13px; font-weight: 650; line-height: 1.7; }

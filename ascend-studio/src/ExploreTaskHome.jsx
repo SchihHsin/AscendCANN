@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useLayoutEffect, useRef, useState } from "react";
 import {
   IconArrowRight, IconArrowUpRight, IconBook, IconCheck, IconChevronRight,
@@ -359,20 +360,20 @@ export function ExploreTaskHome({ onCreateTask }) {
     <div ref={glowRef} className="explore-home__cursor-glow" aria-hidden="true" />
     <header className="explore-home__header">
       <div className="explore-home__heading">
-        <div className="explore-home__eyebrow"><IconSparkles size={14} /> WHAT WOULD YOU LIKE TO EXPLORE TODAY?</div>
+        <div className="explore-home__eyebrow"><IconSparkles size={ICON_SIZE.inline} /> WHAT WOULD YOU LIKE TO EXPLORE TODAY?</div>
         <h1>今天，想探索什么？</h1>
         <p>{focused ? `从「${focused.label}」继续展开关联方向。` : "接续最近的思路，或从一个主题开始探索。"}</p>
       </div>
     </header>
 
     {!focused && <section className="explore-continuation" aria-label="接续上一条思路">
-      <div className="explore-continuation__mark" aria-hidden="true"><IconHistory size={15} stroke={1.7} /></div>
+      <div className="explore-continuation__mark" aria-hidden="true"><IconHistory size={ICON_SIZE.control} /></div>
       <div className="explore-continuation__copy">
         <span className="explore-continuation__eyebrow">PICK UP THE THREAD <i /> 训练与调优</span>
         <strong>多卡收益不明显</strong>
         <span className="explore-continuation__hint">增加卡数后，吞吐提升没有达到预期</span>
       </div>
-      <button type="button" onClick={continuePrevious}>继续探索<IconArrowRight size={15} /></button>
+      <button type="button" onClick={continuePrevious}>继续探索<IconArrowRight size={ICON_SIZE.control} /></button>
     </section>}
 
     {(focused || isPreviewing) && <nav className="explore-home__trail" aria-label="探索路径">
@@ -380,7 +381,7 @@ export function ExploreTaskHome({ onCreateTask }) {
       {activePath.map((item, index) => {
         const locked = index < ids.length;
         return <span key={item.id}>
-          <IconChevronRight size={13} />
+          <IconChevronRight size={ICON_SIZE.inline} />
           <button
             type="button"
             className={locked ? "" : "is-preview"}
@@ -390,7 +391,7 @@ export function ExploreTaskHome({ onCreateTask }) {
         </span>;
       })}
       {request.path.length > 0 && <button className="explore-home__back" type="button" onClick={() => choose(ids.slice(0, -1))}>
-        <IconArrowUpRight size={13} />返回上一级
+        <IconArrowUpRight size={ICON_SIZE.inline} />返回上一级
       </button>}
     </nav>}
 
@@ -473,7 +474,7 @@ export function ExploreTaskHome({ onCreateTask }) {
             <span className="explore-field__node-content">
               <span className="explore-field__node-kind">
                 <span className="explore-field__node-cue" aria-hidden="true"><i /></span>
-                {Icon && rootNode ? <Icon size={13} stroke={1.8} /> : null}
+                {Icon && rootNode ? <Icon size={ICON_SIZE.inline} /> : null}
                 {rootNode ? topicEnglishTitles[item.id] || label : label}
               </span>
               <strong>{item.label}</strong>
@@ -482,16 +483,16 @@ export function ExploreTaskHome({ onCreateTask }) {
           </button>;
         })}
         {focused && options.length === 0 && <div className="explore-field__leaf">
-        <span className="explore-field__leaf-mark"><IconCheck size={15} /></span>
+        <span className="explore-field__leaf-mark"><IconCheck size={ICON_SIZE.control} /></span>
         <div><span>这个方向已经具体到可开始</span><p>检查下方需求，补充你的现场，再发送并开始。</p></div>
-        <button type="button" onClick={() => draftRef.current?.focus()}><IconEdit size={14} />编辑需求</button>
+        <button type="button" onClick={() => draftRef.current?.focus()}><IconEdit size={ICON_SIZE.inline} />编辑需求</button>
         </div>}
       </div> : null}
     </div>
 
     <form className="explore-composer" onSubmit={submit}>
       <div className="explore-composer__main">
-        <span className="explore-composer__spark"><IconSparkles size={19} /></span>
+        <span className="explore-composer__spark"><IconSparkles size={ICON_SIZE.navigation} /></span>
         <textarea
           ref={draftRef}
           value={draft}
@@ -502,13 +503,13 @@ export function ExploreTaskHome({ onCreateTask }) {
           placeholder="描述你想完成的事，或从当前探索方向继续…"
         />
         <button className="explore-composer__send" type="submit" disabled={!draft.trim()} aria-label="发送并开始">
-          <IconArrowRight size={20} />
+          <IconArrowRight size={ICON_SIZE.navigation} />
         </button>
       </div>
       <div className="explore-composer__footer">
           <span className="explore-composer__path" aria-label="已加入需求的条件">
           {request.path.length ? request.path.map((item, index) => <button type="button" key={item.id} title={"移除“" + item.label + "”及后续选择"} onClick={() => choose(ids.slice(0, index))}>
-            {index > 0 && <IconChevronRight size={11} />}{item.label}<IconX size={11} />
+            {index > 0 && <IconChevronRight size={ICON_SIZE.micro} />}{item.label}<IconX size={ICON_SIZE.micro} />
           </button>) : null}
         </span>
         {pending && <button className="explore-composer__regenerate" type="button" onClick={() => { setDraft(request.goal); setAppliedPrompt(request.goal); setEdited(false); }}>

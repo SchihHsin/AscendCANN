@@ -1661,3 +1661,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 对话区域可在左侧栏与底部居中浮窗之间切换；切换只改变呈现，保留当前对话历史与输入草稿。布局入口位于全局 `header.topbar`，与工作区内的「指着说」入口分开。
 - 底部浮窗进入区域框选或显示选区 composer 时暂时收起，避免遮挡工作区；选区发送或取消后恢复原布局。框选过程中禁用布局切换，保证指针坐标不因画布重排发生偏移。
+
+### 2026-10-26 · 界面图标统一使用 Tabler
+
+- 全页面统一采用现有 `@tabler/icons-react`；新增 `src/icon-system.js` 与 `src/icon-system.css` 维护 12 / 14 / 16 / 18 / 20 / 24px 的尺寸阶梯、1.8 描边与分层按钮热区（28 / 34 / 42px）。图标颜色沿用上下文类别色与状态色。
+- 移除顶部对话布局的手写 CSS 图形，改用 `IconLayoutSidebar` / `IconLayoutBottombar`；知识、对照等重复语义图标统一为 `IconBook` / `IconLayoutColumns`。内容示意图和装饰图保持自己的视觉尺寸。
+- `npm run build:pages` 与 `git diff --check` 通过；本地预览可访问性树结构正常。未运行测试套件。

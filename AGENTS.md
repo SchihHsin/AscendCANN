@@ -6722,3 +6722,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`styles.css` 与 Pages 静态产物。该概念改动不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 1280×720 核对左侧、底部浮窗、框选时浮窗隐藏、选区缩略输入出现及取消后恢复。未运行自动化测试；窄屏行为有响应式规则，未做独立小视口截图。依据：用户确认（H）、本地原型观察（M）。
 - 发布：实现提交 `385eee30` 已推送至 `origin/main`；GitHub Pages workflow `40317786603` build / deploy 成功。线上 `/ascstudio/` HTML 与本轮 JS / CSS 均 HTTP 200，资源中包含布局切换与选区自动收起逻辑。
+
+### 2026-10-26 · Ascend Studio 界面图标系统统一
+
+- 用户选择继续使用 Tabler，并要求整体整理各页面图标。盘点确认 `ascend-studio/src/` 的界面图标已主要来自 `@tabler/icons-react`；顶部对话布局切换器是自绘 CSS 图形，另有图标尺寸与描边覆盖值分散的问题。
+- 新建 `ascend-studio/src/icon-system.js` 与 `icon-system.css`：用共享尺寸阶梯 12 / 14 / 16 / 18 / 20 / 24px，统一常规 Tabler 图标描边为 1.8；纯图标按钮热区至少 28px，标准按钮 34px，主导航 42px。区分图解与装饰图形，保留其专属尺寸 / 描边；将图书图标统一为 `IconBook`、并排对照统一为 `IconLayoutColumns`。
+- 顶部布局切换改为 `IconLayoutSidebar` 与 `IconLayoutBottombar`，选中、悬停和禁用状态逻辑不变。知识图、数据图及其他内容图形不作替换。
+- 验证：`npm run build:pages`、`node --check ascend-studio/src/icon-system.js`、生成资源引用检查、`git diff --check` 通过；本地 5178 页面可访问性树确认布局控件与页面结构正常。未运行测试套件；Vite 保留主 JS chunk 大于 500 kB 提示。本轮不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 发布：源码与 `/ascstudio/` 构建产物随本轮提交推送至 `origin/main`；Pages 部署结果随后核对。

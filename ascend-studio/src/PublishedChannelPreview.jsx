@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import {
   IconArrowLeft,
   IconCheck,
@@ -43,9 +44,9 @@ function GitCodePublishedPage({ draft }) {
     <header className="gitcode-published-nav"><div className="gitcode-published-brand"><ChannelMark channel="gitcode" /><strong>GitCode</strong></div><nav><span>发现</span><span>开源项目</span><span>企业服务</span><span>学习</span></nav><div className="gitcode-published-user">个人中心</div></header>
     <div className="gitcode-published-layout">
       <main>
-        <div className="gitcode-published-breadcrumb"><span>cann</span><IconChevronRight size={13} /><span>问题反馈</span><IconChevronRight size={13} /><b>发布内容</b></div>
+        <div className="gitcode-published-breadcrumb"><span>cann</span><IconChevronRight size={ICON_SIZE.inline} /><span>问题反馈</span><IconChevronRight size={ICON_SIZE.inline} /><b>发布内容</b></div>
         <article className="gitcode-published-issue">
-          <div className="gitcode-published-labels"><span className="gitcode-open-label"><IconMessageCircle size={12} />开放讨论</span><span>精度问题</span><span>CANN</span></div>
+          <div className="gitcode-published-labels"><span className="gitcode-open-label"><IconMessageCircle size={ICON_SIZE.micro} />开放讨论</span><span>精度问题</span><span>CANN</span></div>
           <h1>{topic}：复现记录与排查线索</h1>
           <div className="gitcode-published-meta"><span className="gitcode-published-avatar">昇</span><b>昇腾开发笔记</b><span>发布于 {publishedDate(draft.submittedAt)}</span><span>面向社区讨论</span></div>
           <div className="gitcode-published-rule" />
@@ -56,7 +57,7 @@ function GitCodePublishedPage({ draft }) {
             <h2>待补证据</h2><p>{draft.verification || "仍需补充验证记录。"}</p>
             <div className="gitcode-published-caution">{isAddCustom ? "尾块边界目前只是待验证线索，尚未确认根因。" : "当前示例结果不能替代真实模型或设备验证。"}</div>
           </section>
-          <footer className="gitcode-published-issue-footer"><span><IconThumbUp size={15} />点赞</span><span><IconMessageCircle size={15} />参与讨论</span><span><IconGitBranch size={15} />关联项目</span></footer>
+          <footer className="gitcode-published-issue-footer"><span><IconThumbUp size={ICON_SIZE.control} />点赞</span><span><IconMessageCircle size={ICON_SIZE.control} />参与讨论</span><span><IconGitBranch size={ICON_SIZE.control} />关联项目</span></footer>
         </article>
       </main>
       <aside className="gitcode-published-sidebar"><h2>问题信息</h2><div><span>类型</span><b>Issue</b></div><div><span>可见范围</span><b>公开讨论</b></div><div><span>标签</span><b>精度问题</b></div><div><span>环境</span><small>{String(draft.environment || "待补充").split("\n").filter(Boolean).join(" · ")}</small></div><p>社区协作可继续补充复现条件与验证证据。</p></aside>
@@ -73,7 +74,7 @@ function CSDNPublishedPage({ draft }) {
       <main className="csdn-published-article">
         <div className="csdn-published-kicker">昇腾开发 · 技术博客</div>
         <h1>{topic}排查：从现象到证据核对</h1>
-        <div className="csdn-published-meta"><b>昇腾开发笔记</b><span>{publishedDate(draft.submittedAt)}</span><span><IconEye size={14} />文章预览</span><span>原创内容</span></div>
+        <div className="csdn-published-meta"><b>昇腾开发笔记</b><span>{publishedDate(draft.submittedAt)}</span><span><IconEye size={ICON_SIZE.inline} />文章预览</span><span>原创内容</span></div>
         <div className="csdn-published-tags"><span>{isAddCustom ? "算子开发" : "图像推理"}</span><span>CANN</span><span>问题排查</span></div>
         <div className="csdn-published-prose">
           <p className="csdn-published-lead">记录已观察到的现象、检查顺序，以及还需要哪些证据。以下内容来自本次开发任务整理。</p>
@@ -102,16 +103,16 @@ export function PublishedChannelPreview({ draft, channelIds, activeChannel, onSe
   const channels = channelIds.length ? channelIds : [activeChannel];
   return <section className="channel-published-preview" aria-label={`${current.name}发布后预览`}>
     <header className="channel-published-toolbar">
-      <button type="button" className="channel-published-back" onClick={onBack}><IconArrowLeft size={14} />返回渠道总览</button>
+      <button type="button" className="channel-published-back" onClick={onBack}><IconArrowLeft size={ICON_SIZE.inline} />返回渠道总览</button>
       {channels.length > 1 ? <nav className="channel-published-tabs" role="tablist" aria-label="本次发布渠道">
         {channels.map(channelId => <button key={channelId} type="button" role="tab" aria-selected={channelId === activeChannel} className={channelId === activeChannel ? "is-active" : ""} onClick={() => onSelect(channelId)}>
-          <ChannelMark channel={channelId} /><span>{CHANNEL_INFO[channelId].name}</span><IconCheck size={12} />
+          <ChannelMark channel={channelId} /><span>{CHANNEL_INFO[channelId].name}</span><IconCheck size={ICON_SIZE.micro} />
         </button>)}
       </nav> : <div className="channel-published-current"><ChannelMark channel={activeChannel} /><strong>{current.name}</strong><span><i />已发布 · 本地预览</span></div>}
-      <a className="channel-published-external" href={current.url} target="_blank" rel="noopener noreferrer">打开平台<IconExternalLink size={13} /></a>
+      <a className="channel-published-external" href={current.url} target="_blank" rel="noopener noreferrer">打开平台<IconExternalLink size={ICON_SIZE.inline} /></a>
       <div className="channel-published-window-actions">
-        <button type="button" className={`channel-published-window-button${expanded ? " is-active" : ""}`} onClick={onToggleExpanded} aria-label={expanded ? "缩小发布预览" : "放大发布预览"} title={expanded ? "缩小预览" : "放大预览"}><IconMaximize size={14} /></button>
-        <button type="button" className="channel-published-window-button" onClick={onClose} aria-label="关闭发布预览" title="关闭"><IconX size={15} /></button>
+        <button type="button" className={`channel-published-window-button${expanded ? " is-active" : ""}`} onClick={onToggleExpanded} aria-label={expanded ? "缩小发布预览" : "放大发布预览"} title={expanded ? "缩小预览" : "放大预览"}><IconMaximize size={ICON_SIZE.inline} /></button>
+        <button type="button" className="channel-published-window-button" onClick={onClose} aria-label="关闭发布预览" title="关闭"><IconX size={ICON_SIZE.control} /></button>
       </div>
     </header>
     {channels.length > 1 && <div className="channel-published-batch-note">已完成本地发布演示 · 本次发布到 {channels.length} 个渠道 · 选择渠道可切换预览</div>}

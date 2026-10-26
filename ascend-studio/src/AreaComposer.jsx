@@ -1,3 +1,4 @@
+import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { IconMicrophone, IconMicrophoneOff, IconPointer2, IconSend, IconX } from "@tabler/icons-react";
@@ -209,17 +210,17 @@ export function AreaComposer({ context, sourceRef, disabled = false, onSend, onD
 
   return <form ref={composerRef} className="composer tw-area-composer" style={{ left: position.left, top: position.top }} onSubmit={handleSubmit} aria-label="描述选中的工作区区域">
     <div className="composer-context-chips">
-      <span className="attachment-chip point-context-chip"><span ref={thumbnailRef} className="point-context-thumbnail" role="img" aria-label={`已选区域缩略图${context.contentTitle ? `：${context.contentTitle}` : ""}`} title={context.contentTitle || "已选区域"} /><span className="point-context-label">已选区域</span><button type="button" aria-label="移除已选区域" onClick={onDismiss}><IconX size={12} /></button></span>
+      <span className="attachment-chip point-context-chip"><span ref={thumbnailRef} className="point-context-thumbnail" role="img" aria-label={`已选区域缩略图${context.contentTitle ? `：${context.contentTitle}` : ""}`} title={context.contentTitle || "已选区域"} /><span className="point-context-label">已选区域</span><button type="button" aria-label="移除已选区域" onClick={onDismiss}><IconX size={ICON_SIZE.micro} /></button></span>
     </div>
     <textarea ref={textareaRef} value={draft} onChange={(event) => updateDraft(event.target.value)} onBlur={() => { if (listeningRef.current) stopVoice(); }} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); handleSubmit(event); } }} placeholder="描述你希望我关注这个区域的什么…" aria-label="描述选中的工作区区域" rows={1} />
     <div className="composer-toolbar">
       <div className="composer-tools">
         <span className={`tw-area-voice-hint${listening ? " is-listening" : ""}`} role="status">
-          {listening ? <><IconMicrophoneOff size={13} />松开 <kbd>{voiceShortcut}</kbd> 结束语音输入</> : <><IconMicrophone size={13} />按住 <kbd>{voiceShortcut}</kbd> 语音输入</>}
+          {listening ? <><IconMicrophoneOff size={ICON_SIZE.inline} />松开 <kbd>{voiceShortcut}</kbd> 结束语音输入</> : <><IconMicrophone size={ICON_SIZE.inline} />按住 <kbd>{voiceShortcut}</kbd> 语音输入</>}
         </span>
       </div>
       <div className="composer-submit">
-        <button className="send-button" type="submit" aria-label="发送区域描述" disabled={disabled || !draft.trim()}><IconSend size={17} /></button>
+        <button className="send-button" type="submit" aria-label="发送区域描述" disabled={disabled || !draft.trim()}><IconSend size={ICON_SIZE.heading} /></button>
       </div>
     </div>
     {listening && typeof document !== "undefined" && createPortal(
