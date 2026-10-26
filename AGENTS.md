@@ -6857,3 +6857,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户确认，将“全部展开”放到画布视野控制之后。学习画布工具栏顺序为：布局、缩放、抓手 / 适应内容、全部展开、编辑；缩放组与抓手 / 适应组直接相邻，避免“全部展开”打断视野操作。该工具栏供图像预处理与 ResNet50 官方学习路径共用。
 - 修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 与 `/ascstudio/` 构建产物；画布操作与状态逻辑不变。`npm run build:pages`、JS `node --check`、`git diff --check` 通过；本地预览的学习画布访问树确认缩放组后紧接抓手 / 适应组。
 - Pages 推送及部署状态待核对。
+
+
+### 2026-10-27 · AddCustom 移除未请求的可信度卡
+
+- 用户指出并未要求增加可信度展示。AddCustom 对话初始诊断和完成态均移除可信度卡与相关预置数据；社区反馈入口与完成后生成右侧草稿的流程保留。
+- 演示草稿验证文案改为说明回执属于预设内容，不代表真实运行数据。
+- 验证：`npm run build:pages`、`node --check ascstudio/assets/index-DNeckFzx.js` 与 `git diff --check` 通过；构建产物中已无 `trust-evidence`、`可信度` 或 `判断可信度` 字样。未运行自动化测试。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界；commit / push 与 Pages 部署状态将在发布后补记。

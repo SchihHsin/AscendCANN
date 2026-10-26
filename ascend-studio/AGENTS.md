@@ -1774,3 +1774,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 共用学习工具栏按“布局 → 缩放 → 抓手 / 适应内容 → 全部展开 → 编辑”排列；全部展开位于视野控制之后，缩放与抓手 / 适应直接相邻。ResNet50 和原图像预处理路径共用此顺序。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Pages 发布状态待回读。
+
+
+### 2026-10-27 · AddCustom 移除未请求的可信度卡
+
+- 用户指出并未要求增加可信度展示。删除 AddCustom 初始诊断与演示完成回复中的可信度卡片和对应数据；保留任务完成后的社区反馈快捷入口及右侧社区草稿审阅。
+- 草稿验证文字明确演示回执是预设内容，不是真实运行数据。`npm run build:pages`、`node --check` 与 `git diff --check` 通过；构建产物中无可信度卡相关文案。commit / push 与 Pages 部署状态将在发布后补记。
