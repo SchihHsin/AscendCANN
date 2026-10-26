@@ -1625,3 +1625,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 学习发现 Banner 保留 ResNet50 五阶段主推路径、内容插画与向下渐隐；阶段点缀采用蓝 / 青 / 紫 / 玫红 / 绿，Banner 的柔和色光与日程轴使用青、紫、粉、绿。布局和页面顺序不变。
 - 最终 Pages 构建、生成 JS 语法检查及 diff 检查通过；本地 1280×720 观察 Banner、路径和日程楼层。GitHub Pages 部署 workflow `40307191492` 成功；线上 HTML、JS、CSS、新插画均 HTTP 200。未运行测试套件，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 合并并保留其他对话同期的共享画布 / 工作区预览更新；发布提交 `b5ebb1c6` 已推送至 `origin/main`。
+
+### 2026-10-26 · 学习发现 Banner 纹理与彩色碎片校正
+
+- 用户指出前版与选定参考图不符：背景过平、缺少纹理与彩色碎片。最新上传截图取代旧版实现截图，作为 Banner 的视觉依据。
+- 新 ImageGen 纯底图位于 `src/assets/learning-discovery/discovery-banner-bg-textured.png`，含浅蓝白基底、柔和层叠波纹与青 / 紫 / 粉 / 薄荷半透明碎片；不含文字和 UI。学习发现页移除过大的径向色斑，沿用底部渐隐；不改五阶段内容、路径插画、布局或主按钮。
+- 本地 1280×720 预览已核对，纹理和碎片可见；Pages 构建、生成 JS 语法和 diff 检查通过。未运行测试套件。同期学习画布 / 组合任务更新已保留并合入；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。推送与 Pages 状态待回填。

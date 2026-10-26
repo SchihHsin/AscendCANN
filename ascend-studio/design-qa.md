@@ -1355,3 +1355,11 @@ final result: passed (local visual review; online screenshot unavailable)
 - 页面代码、内容插画与 Pages 产物随功能提交及合并提交推送到 `origin/main`，最终主线提交 `b5ebb1c6`。GitHub Pages workflow `40307191492` build / deploy 成功。
 
 final result: passed
+
+## 2026-10-26 · 按用户参考图校正学习发现 Banner
+
+- **纠正原因：** 用户指出前版虽采用冷调多色，但 Banner 本身过平，未呈现参考图里的浅色纹理、流动光带与漂浮碎片。用户本轮上传的 1672×941 页面图为最新视觉基准。
+- **实现：** ImageGen 单独生成 `src/assets/learning-discovery/discovery-banner-bg-textured.png`（2048×768）：浅蓝白底、柔和层叠波纹、青 / 紫 / 粉 / 薄荷色半透明碎片；不包含文字、猫图或 UI。`learning-discovery.css` 移除大面积径向色斑，改用新底图和向下渐隐。ResNet50 路径插画、五阶段颜色和内容布局保持。
+- **视觉核对：** 本地预览 `http://127.0.0.1:8133/`，CUA 1280×720 截图显示 Banner 的亮度、柔纹与多色碎片接近用户参考；标题区保留清晰可读留白，底部自然过渡到灰色内容区。
+- **构建 / 检查：** 合入同步主线后的 `npm run build:pages` 成功（6373 modules，2.88s）；`node --check ascstudio/assets/index-C0leW93l.js`、`git diff --check` 通过。未运行测试套件。
+- **边界 / 发布：** 保留并合入同期的学习画布展开与组合任务首页更新；不改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。Push 与 Pages workflow 待完成后回填。

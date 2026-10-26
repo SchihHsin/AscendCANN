@@ -6675,3 +6675,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 在 `ascend-studio/src/OfficialLearningPathCanvas.jsx` 为官方 ResNet50 学习画布增加展开/收起全部节点内容态；复用每个节点现有的图解、讲解、来源与对应练习组件，卡片高度由 ResizeObserver 反馈到章节纵向排布，展开时适配完整路径。`LearningCanvasToolbar.jsx` 沿用公共浮动按钮组新增层叠卡片切换按钮；按钮在宽画布显示“全部展开/收起”，窄画布保留图标并依靠完整 tooltip，`official-learning-canvas.css` 仅加展开态卡片与窄屏按钮样式。
 - `npm run build:pages` 与 `npm run build && npm run test:sites` 均通过（4/4）；首次单独运行 Sites 测试因缺少 `dist/client/index.html` 失败，补跑构建后通过。`git diff --check` 通过。静态 index 引用的 JS/CSS 均存在，JS bundle 含展开与收起按钮 accessible label；先后提交 `9fd5e106`、`95dcec1b` 并快进推送到 `origin/main`。公开 `/ascstudio/` 已引用 `index-Ynb_NaDA.js` 与 `index-bL8G7x54.css`，bundle 含“全部展开”及收起 accessible label；index 和两个资源均 HTTP 200。
+
+### 2026-10-26 · 学习发现 Banner 按用户参考图补回纹理与彩色碎片
+
+- 用户指出此前配色落地与选定参考图仍有差异：背景过平、偏暗，缺少细腻纹理与漂浮的彩色碎片。用户本轮上传的页面图成为最新视觉基准，覆盖此前对已发布 Banner 的“完成”判断。
+- 使用 ImageGen 生成纯背景资产 `ascend-studio/src/assets/learning-discovery/discovery-banner-bg-textured.png`：浅蓝白底、层叠柔光纹理、流动光带，以及青 / 紫 / 粉 / 薄荷色半透明碎片；没有文字或 UI。CSS 移除大面积径向色斑，接入新底图并保留向下渐隐。五阶段路径、内容插画、布局和黑色主 CTA 不变。
+- 本地 1280×720 预览（8133）已观察：Banner 更明亮，波纹纹理与彩色碎片可见；`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。未运行自动化测试。
+- 同步保留同期主线的学习画布展开卡片与组合任务首页改动；未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。源码、构建产物、记录在检查后推送 `origin/main`；Pages 发布状态待回填。
