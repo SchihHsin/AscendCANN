@@ -6632,4 +6632,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认将 AddCustom 作为首个样板实现右上 FAB 分组、编辑态新增内容、小地图拖动定位；其他任务暂不推广，等样板评审后再决定。
 - `ascend-studio/src/TaskCanvas.jsx`、`task-canvas.css`、`useCanvasState.js` 支持从隐藏节点恢复已有材料、在任务画布内新增并编辑便签、自由绘图与撤销。笔记 / 笔迹随对应任务画布状态保存；绘图纳入小地图与“适应全部”。交互边界已记录到 `ascend-studio/interaction-design.md`。
 - `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；桌面 Chromium 视口 1440×757、文档宽度 1440，无横向溢出。验证了全部内容三节点、编辑态恢复隐藏节点、添加并输入便签、绘图后撤销；未运行自动化测试。用户浏览器原有收纳状态未清理。
-- 本轮未改变其他任务画布、页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界。推送状态待本次提交后记录。
+- 本轮未改变其他任务画布、页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界。源码与 Pages 产物提交 `0a0a1d3f` 已推送到 `origin/main`；Pages workflow `40289468807` build / deploy 成功，公开 `/ascstudio/` HTML 与本轮 JS / CSS 资源均 HTTP 200。

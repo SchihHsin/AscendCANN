@@ -1333,3 +1333,4 @@ final result: passed (local visual review; online screenshot unavailable)
 - **实现：** 更新 `src/TaskCanvas.jsx`、`src/task-canvas.css`、`src/useCanvasState.js`。已有材料从隐藏节点中选择并恢复原位置；便签以画布节点存在并实时保存；绘图仅在画布空白处进行并可撤销。卡片移动、平移、绘图互斥；Esc 结束编辑。绘图进入画布视口、小地图范围与“适应全部”。编辑状态与笔记 / 绘图都保存在当前任务自己的画布状态中。`interaction-design.md` 记录交互边界。
 - **检查：** `npm run build:pages`、构建 JS `node --check` 与 `git diff --check` 通过。桌面 Chromium 视口 1440×757、文档宽度 1440，无横向溢出；“全部内容”视图显示三个初始节点，编辑态验证了隐藏节点恢复、新增并输入便签、自由绘图后撤销，编辑工具组保持在右上角。本地 5189 用户浏览器还显示先前验证留下的“已收纳 2 项”，未清理浏览器状态。本轮未运行自动化测试。
 - **证据边界：** 用户选定的方案与样板范围为 H；浏览器可访问性树和构建输出为 M。未修改其他任务画布，不涉及真实工程、NPU、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- **发布：** 源码、交互规则与 Pages 资源提交 `0a0a1d3f` 已推送 `origin/main`；Pages workflow `40289468807` build / deploy 成功。公开 `/ascstudio/` HTML 与新 JS / CSS 均 HTTP 200。
