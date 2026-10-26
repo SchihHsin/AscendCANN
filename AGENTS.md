@@ -6712,11 +6712,18 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 ### 2026-10-26 · 组合首页改用悬浮停留连线
 
 - 用户接受“悬浮起点 → 移至目标 → 停留确认”的无拖拽关系创建方式（H）。字段仍从无连线起始；起点悬停约 280ms 后点位泛起轻晕，鼠标移动显示方向虚线；目标出现环形停留进度，约 680ms 后关系固定并生成可编辑 Prompt。
-- 移开候选目标会重置其停留计时；点击画布空白、离开画布或 Esc 取消整个待连线预览。关系固定后清除起点，避免一次停留连续建立多条线。点击字段选择和 Alt+Enter 键盘连线保留；没有新增可见操作标签。
+- 移开候选目标会重置其停留计时；点击画布空白、离开画布或 Esc 取消整个待连线预览。关系固定后，目标节点成为下一条起点，支持 A→B→C 连续组合。点击字段选择和 Alt+Enter 键盘连线保留；没有新增可见操作标签。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`combination-task-home.css` 和 `interaction-design.md`；Pages 产物更新在 `ascstudio/`。移除原拖线逻辑与禁止触屏滚动的 `touch-action: none`。
 - 本地 5206 回放：悬停起点后出现点位光晕，移到“CPU 预处理”后出现虚线与目标环形进度，停留后关系固定；Prompt 同步为“请重点分析数据加载、CPU 预处理”。移开目标后等待未形成关系，Esc 清除预览。页面 error 日志为空（M）。
 - `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Vite 保留既有 >500 kB chunk 提醒，未运行测试套件。该更新只改变训练调优组合 Demo 的连线方式，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - **发布：** 功能提交 `7cfc3133` 与整合提交 `0aeab5c7` 已推送 `origin/main`；后续合入学习画布、插画和图标系统更新，Pages workflow `40358563037`、`40359033266` 成功。公开目标为 `https://schihhsin.github.io/AscendCANN/ascstudio/?home=combine`。最新本地 Pages 构建引用 JS `index-C-7h-DrJ.js`、CSS `index--ttgCUFj.css`，生成 JS 保留停留连线逻辑；最近一次线上资源完整校验因下载超时未确认，因此不沿用旧资源哈希。
+
+### 2026-10-27 · 连续连线与停留计时保护
+
+- 用户反馈目标确认不稳定，且确认一条关系后不便继续；用户选择 A→B 后由 B 自动成为下一条起点，支持 A→B→C 连续连接。
+- 为起点与目标停留定时增加世代校验，确认前检查鼠标仍命中当前目标字段，避免快速离开再返回时旧回调误触发。确认后的目标保留为新起点；空白点击、离开画布或 Esc 可结束连接链。
+- 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`interaction-design.md` 和项目交接 / QA 记录。`npm run build:pages` 与构建 JS `node --check` 通过；未运行自动化测试，本轮未做新的 CUA 回放。提交、推送与 Pages 状态待补。
+- 不改变页面序列 / hash，也不改变 API / Protocol、Host / Harness 或 Application / Task 边界。
 
 ### 2026-10-26 · 对话区域布局切换与指着说联动
 
@@ -6787,3 +6794,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出目标页面是 GitHub Pages。此前“适应全部可见内容”只改了通用 `TaskCanvas`，ResNet50 实际使用独立的 `LearningCanvasToolbar`，因此线上仍显示向外箭头。现将学习工具栏也改为 Tabler `IconArrowsMinimize`，与通用任务画布一致；按钮行为与提示不变。
 - 在隔离 worktree 同步 `origin/main` 的 `425653f7` / `6a4bf8e5`，保留学习发现页面并行改动后重新构建。修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 和 `ascstudio/` 构建产物；页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；已生成入口 `index-C3DSYrl0.js` 与 CSS `index-BVnw8_Wn.css`。提交 `f6070dff` 已推送到 `origin/main`；GitHub Pages workflow `40364545318` build / deploy 成功，线上 `/ascstudio/` HTML 引用新 JS / CSS，HTML、JS、CSS 均 HTTP 200。
+
+### 2026-10-27 · 统一画布“适应内容”图标
+
+- 用户指出适应视图图标应按画布统一规则全局一致。审查 Ascend Studio 画布后发现三处入口：通用任务画布 `TaskCanvas`、学习画布 `LearningCanvasToolbar`、任务内容总览 `TaskContentOverview`。在共享层新增 `CanvasFitIcon`，统一使用 Tabler `IconArrowsMinimize`；工具栏和总览保留原尺寸、文案、适配行为。
+- 同步并保留并行主线提交 `6271639b` 与 `f9870df1`（组合首页交互 / 学习发现样式和相关记录），基于合并后的源码重新构建 `/ascstudio/`。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 和入口资源引用检查通过；新产物为 `index-BqQ5JE5h.js` 与 `index-DTObeaaN.css`。Pages 发布状态待回读。

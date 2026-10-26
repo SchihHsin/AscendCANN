@@ -1671,7 +1671,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-26 · 组合首页悬浮停留确认连线
 
 - 覆盖“从字段拖动到另一个字段连线”的操作方式，默认空白关系网不变。鼠标停留节点约 280ms 后形成连接起点，鼠标移动时显示细虚线预览；悬浮目标约 680ms、进度环走完后固定关系并生成 Prompt。
-- 移开目标撤销其停留计时；空白点击、离开画布或 Esc 取消预览。固定一条后清除起点，不能因指针继续停留而接着连下一条。点击加入 / 移除字段与 Alt+Enter 键盘连线仍保留，视觉不增加说明小字。
+- 移开目标撤销其停留计时；空白点击、离开画布或 Esc 取消预览。确认 A→B 后，B 成为下一条连线起点，支持连续构成 A→B→C。定时器使用世代校验，并在确认时核对鼠标仍位于目标，避免旧回调误连。点击加入 / 移除字段与 Alt+Enter 键盘连线仍保留，视觉不增加说明小字。
 - 本地回放确认起点晕、指针方向虚线、目标进度环、固定连线与 Prompt 更新；离开目标不误连，Esc 可取消。构建、部署和发布结果详见根目录 `AGENTS.md` 与 `design-qa.md`。
 
 ### 2026-10-26 · 学习画布编辑态新增内容
@@ -1716,3 +1716,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户指出目标页面是 GitHub Pages。此前“适应全部可见内容”只改了通用 `TaskCanvas`，ResNet50 实际使用独立的 `LearningCanvasToolbar`，因此线上仍显示向外箭头。现将学习工具栏也改为 Tabler `IconArrowsMinimize`，与通用任务画布一致；按钮行为与提示不变。
 - 在隔离 worktree 同步 `origin/main` 的 `425653f7` / `6a4bf8e5`，保留学习发现页面并行改动后重新构建。修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 和 `ascstudio/` 构建产物；页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；已生成入口 `index-C3DSYrl0.js` 与 CSS `index-BVnw8_Wn.css`。提交 `f6070dff` 已推送；Pages workflow `40364545318` build / deploy 成功，线上 `/ascstudio/` HTML、JS、CSS 均 HTTP 200。
+
+### 2026-10-27 · 统一画布“适应内容”图标
+
+- 通用任务画布、学习画布和任务内容总览中的“适应全部内容”入口统一调用共享 `CanvasFitIcon`（Tabler `IconArrowsMinimize`，四角朝内），不再分别维护图标。尺寸、按钮文案与适配行为保持原样。
+- 合入并保留并行主线 `6271639b` / `f9870df1` 后重新构建 Pages；`npm run build:pages`、JS `node --check`、`git diff --check` 与入口资源检查通过。发布状态待回读。
