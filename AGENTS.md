@@ -6851,3 +6851,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出五阶段容器线条偏多，并补充当前页面截图。依据截图，步骤行横线与阶段列线、顶部彩色时间轴重复表达层级；移除步骤行之间的横线，仅保留低对比阶段分隔和顶部时间轴。保留玻璃容器、阶段布局与步骤内容。
 - 验证：`npm run build:pages` 与 `git diff --check` 通过；Pages 部署待确认。不改变页面序列或 API / Host / Application 边界。
+
+
+### 2026-10-27 · AddCustom 移除未请求的可信度卡
+
+- 用户指出并未要求增加可信度展示。AddCustom 对话初始诊断和完成态均移除可信度卡与相关预置数据；社区反馈入口与完成后生成右侧草稿的流程保留。
+- 演示草稿验证文案改为说明回执属于预设内容，不代表真实运行数据。
+- 验证：`npm run build:pages`、`node --check ascstudio/assets/index-DNeckFzx.js` 与 `git diff --check` 通过；构建产物中已无 `trust-evidence`、`可信度` 或 `判断可信度` 字样。未运行自动化测试。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界；commit / push 与 Pages 部署状态将在发布后补记。

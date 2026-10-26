@@ -1769,3 +1769,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 依据用户补充截图移除步骤行之间重复的横向分隔线，阶段之间的竖线改为更淡的中性灰，顶部彩色路径轴保留。阶段分组和步骤点仍能识别。
 - `npm run build:pages` 与 `git diff --check` 通过；Pages 部署待确认。未改变页面序列或 API / Host / Application 边界。
+
+
+### 2026-10-27 · AddCustom 移除未请求的可信度卡
+
+- 用户指出并未要求增加可信度展示。删除 AddCustom 初始诊断与演示完成回复中的可信度卡片和对应数据；保留任务完成后的社区反馈快捷入口及右侧社区草稿审阅。
+- 草稿验证文字明确演示回执是预设内容，不是真实运行数据。`npm run build:pages`、`node --check` 与 `git diff --check` 通过；构建产物中无可信度卡相关文案。commit / push 与 Pages 部署状态将在发布后补记。

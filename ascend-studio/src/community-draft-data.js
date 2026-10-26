@@ -32,7 +32,7 @@ export function createCommunityDraft({ taskId, task, session, completion }) {
     problem = "AddCustom 算子在输入 [16,32] 时通过、[17,33] 时出现 precision mismatch，错误位置为 custom_op.cpp:128。具体复现条件应结合实际项目版本补全。";
     if (completion.demoFixture) {
       approach = "演示草稿预置了“按尾块有效元素数访问”的修正步骤，用来展示从问题线索到知识回流的写作结构。它没有关联真实代码 Diff 或项目修改，不可直接作为已验证解决方案发布。";
-      verification = "演示记录预置了逐元素数据在容差内及目标环境复测通过的状态，仅用于体验可信度与社区反馈流程。真实 CANN、芯片、驱动、固件和 NPU 验证均未接入；提交前应替换为本次任务的实际证据。";
+      verification = "此演示草稿中的逐元素容差结果和目标环境复测回执均为预设内容，并非真实运行数据。CANN、芯片、驱动、固件和 NPU 均未接入；提交前请替换为本次任务的实际记录。";
     } else {
       approach = `开发者确认问题已在目标环境解决并复测通过。本次提交的逐元素对照包含 ${count} 项，${precision.failed ?? 0} 项超出所设容差（atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}）。当前对话与工作区没有记录实际修改点或根因，草稿不会推断修复方法；请在发布前从代码变更或任务记录中补全。`;
       verification = `开发者确认目标环境复测通过；本次逐元素数据 ${count} 项、${precision.failed ?? 0} 项超差。容差：atol ${precision.atol ?? "未记录"}，rtol ${precision.rtol ?? "未记录"}。Demo 未独立连接 NPU，也未核验数据来源；CANN、芯片、驱动与固件版本尚未提供。`;
