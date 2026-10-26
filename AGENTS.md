@@ -6646,4 +6646,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新建 `ascend-studio/src/shared/canvas/index.jsx` 与 `canvas.css`。公共层导出 `CanvasSurface`、工具栏 / 分组 / 缩放按钮、卡片框架 / 标题栏 / 操作按钮和可点击拖动的小地图。TaskCanvas（AddCustom、图像推理等）、LearningCanvasToolbar / LearningCanvasCard、LearningHierarchyCanvas、OfficialLearningPathCanvas 均调用该层。学习与开发画布仍保留独立数据、节点语义和自动布局。
 - 删除开发 / 学习画布中重复的底图、工具按钮、小地图和卡片标题栏外观规则，避免局部 CSS 覆盖公共样式；官方 ResNet50 画布也使用相同底图。没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户要求使用公共组件层（H）；ResNet50 新版视觉作为共用视觉基准（H）；本地 1280×720 CUA 观察 AddCustom、图像预处理、ResNet50（M）。公共卡片标题栏均为 47px；工具组和小地图外框样式相同；点击学习画布小地图后视口坐标更新；控制台 error 为空。
-- 检查：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留原有主 JS bundle 大于 500 kB 提醒。提交与推送结果在本条目的发布更新中补记。
+- 检查：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留原有主 JS bundle 大于 500 kB 提醒。
+- 发布：功能与 Pages 产物提交 `71c9a3c8` 已快进推送到 `origin/main`；GitHub Pages workflow `40301779914` build / deploy 成功。线上 `/ascstudio/` HTML、JS 与 CSS 响应均 HTTP 200；JS HEAD 长度为 995,104 bytes，完整正文下载在本轮 20 秒核验中超时，未声称已完成资源字节级比对。
