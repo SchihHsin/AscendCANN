@@ -1749,3 +1749,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 将学习发现页顶部 ResNet50 路径下方 `.ld-stage-groups` 容器改为 Report PPT 玻璃白卡参数（白色 55% 透明度、15px blur / saturate 1.4、70% 亮色边线、内外柔影）。不触碰五阶段时间轴、阶段色、分隔线或步骤行。
 - 验证：`npm run build` 成功；无页面序列或 API / Host / Application 边界变更。尚无可保存的视觉截图。
+
+### 2026-10-27 · 学习发现五阶段路径提高首屏屏效
+
+- 用户反馈五阶段容器屏效偏低。压缩桌面与平板阶段标题留白、编号圈尺寸和动作行高度，并微调时间轴纵向位置；文本字号保持可读、手机断点仍按单列/双列原布局适配。毛玻璃、路径内容、阶段色和交互不变。依据：用户反馈（H）与现有页面 CSS（M）。
+- 验证：待完成本轮构建与 Pages 发布检查；不改变页面序列或 API / Host / Application 边界。
+
+### 2026-10-27 · 五阶段路径容器提升屏效
+
+- 为增加首屏可见内容，收紧 `.ld-stage-groups` 的内边距、五阶段标题区高度、步骤行高度，并同步调整时间轴位置。保留 11px 步骤文字、五阶段顺序与颜色、玻璃白卡效果、交互和响应式结构。
+- `npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。Pages 部署待检查。未改变页面序列或 API / Host / Application 边界。

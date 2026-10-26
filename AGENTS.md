@@ -6841,3 +6841,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求将顶部推荐 ResNet50 学习路径下方的五阶段白色圆角容器改为 Report PPT skill 的玻璃白卡样式。只调整 `.ld-stage-groups` 外框：半透明白底、15px 背景模糊与饱和度、亮色描边和内外柔影；阶段轴、阶段分隔、步骤与颜色均不改。参考规范来自 `report-ppt-skill/references/type-and-color.md`；未改变页面序列或 API / Host / Application 边界。
 - 验证：`npm run build` 成功；未运行测试套件。页面 CUA 可访问性树确认路径和五阶段内容仍在；本轮未取得可保存的截图证据。
+
+### 2026-10-27 · 五阶段路径容器提高屏效
+
+- 用户反馈路径容器屏效偏低。缩短桌面 / 平板阶段标题区和步骤行高度、收紧容器内边距并同步上移色轴，11px 步骤正文和五阶段结构保持可读；玻璃效果、色彩、内容及响应式排列不变。
+- `npm run build:pages`、`git diff --check` 通过；未运行测试套件。页面序列与 API / Host / Application 边界不变。Pages 部署待检查。
