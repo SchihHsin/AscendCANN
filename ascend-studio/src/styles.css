@@ -73,9 +73,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .icon-rail-nav { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 14px 6px; }
 .icon-rail-button { display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border: 1px solid transparent; border-radius: 10px; color: #6b6d74; background: transparent; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
 .icon-rail-button:hover { color: #292a30; background: rgba(0,0,0,.045); }
-.icon-rail-button.is-current { color: #2787e8; background: #e9f2ff; border-color: #e9f2ff; }
-.icon-rail-button.is-current:hover { color: #1f6fc0; background: #dcecff; border-color: #dcecff; }
-.icon-rail-button:focus-visible { outline: 2px solid #2787e8; outline-offset: 2px; }
+.icon-rail-button.is-current { color: #17181d; background: rgba(0,0,0,.07); border-color: rgba(0,0,0,.025); }
+.icon-rail-button:focus-visible { outline: 2px solid #c1c3f2; outline-offset: 2px; }
 .sidebar { grid-column: 2; grid-row: 1; z-index: 2; min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 12px 12px 10px; border-right: 1px solid var(--line); background: #fff; overflow: hidden; }
 .sidebar[hidden] { display: none; }
 .workspace-grid.is-task-workspace > .conversation-panel,
