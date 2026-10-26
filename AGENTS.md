@@ -6856,7 +6856,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 按用户确认，将“全部展开”放到画布视野控制之后。学习画布工具栏顺序为：布局、缩放、抓手 / 适应内容、全部展开、编辑；缩放组与抓手 / 适应组直接相邻，避免“全部展开”打断视野操作。该工具栏供图像预处理与 ResNet50 官方学习路径共用。
 - 修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 与 `/ascstudio/` 构建产物；画布操作与状态逻辑不变。`npm run build:pages`、JS `node --check`、`git diff --check` 通过；本地预览的学习画布访问树确认缩放组后紧接抓手 / 适应组。
-- Pages 推送及部署状态待核对。
+- 页面提交 `2f7df93c` 已推送至 `origin/main`；Pages workflow `40376292000` 成功。线上 `/ascstudio/` HTML 已切换到 `index-Cmy4OFsy.js` 与 `index-D8mAbhAs.css`。
 
 
 ### 2026-10-27 · AddCustom 移除未请求的可信度卡

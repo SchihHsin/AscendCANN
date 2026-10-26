@@ -1773,7 +1773,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-27 · 学习画布工具栏操作顺序
 
 - 共用学习工具栏按“布局 → 缩放 → 抓手 / 适应内容 → 全部展开 → 编辑”排列；全部展开位于视野控制之后，缩放与抓手 / 适应直接相邻。ResNet50 和原图像预处理路径共用此顺序。
-- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Pages 发布状态待回读。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；提交 `2f7df93c` 已推送，Pages workflow `40376292000` 成功；线上入口已切换到新构建 JS / CSS。
 
 
 ### 2026-10-27 · AddCustom 移除未请求的可信度卡
