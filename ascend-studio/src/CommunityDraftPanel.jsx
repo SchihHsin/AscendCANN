@@ -92,27 +92,36 @@ function ChannelCardPreview({ channelId, draft }) {
       </div>
       <img src={tensorCubeIllustration} alt="" aria-hidden="true" />
     </div>
-    <div className="channel-preview-community-section">
-      <h4>一、问题现象</h4>
-      <p>{truncate(draft.problem, 110)}</p>
-      <div className="channel-preview-caution"><span />{isAddCustom ? "尾块边界仍是待验证线索" : "真实模型结果仍待目标环境核对"}</div>
+    <div className="channel-preview-community-scroll" role="region" tabIndex={0} aria-label="社区问题现象预览，可滚动查看">
+      <div className="channel-preview-community-section">
+        <h4>一、问题现象</h4>
+        <p>{truncate(draft.problem, 110)}</p>
+        <div className="channel-preview-caution"><span />{isAddCustom ? "尾块边界仍是待验证线索" : "真实模型结果仍待目标环境核对"}</div>
+      </div>
     </div>
   </div>;
 
   if (channelId === "gitcode") return <div className="channel-preview-gitcode">
-    <div className="channel-preview-topic"><span className="channel-preview-state">Open</span><span>CANN</span><span>{isAddCustom ? "custom operator" : "image inference"}</span></div>
-    <h3>{topic}：复现记录与排查线索</h3>
-    <div className="channel-preview-gitcode-code">
-      <div className="channel-preview-code-label"><span>复现记录</span><small>{isAddCustom ? "C++" : "Python"}</small></div>
-      <pre><code>{previewLines.join("\n")}</code></pre>
+    <div className="channel-preview-gitcode-heading">
+      <div className="channel-preview-topic"><span className="channel-preview-state">Open</span><span>CANN</span><span>{isAddCustom ? "custom operator" : "image inference"}</span></div>
+      <h3>{topic}：复现记录与排查线索</h3>
     </div>
-    <div className="channel-preview-expectation"><b>排查线索</b><p>{truncate(draft.approach, 110)}</p></div>
-    <div className="channel-preview-expectation"><b>验证边界</b><p>{truncate(draft.verification, 110)}</p></div>
+    <div className="channel-preview-gitcode-scroll" role="region" tabIndex={0} aria-label="GitCode复现与验证预览，可滚动查看">
+      <div className="channel-preview-gitcode-code">
+        <div className="channel-preview-code-label"><span>复现记录</span><small>{isAddCustom ? "C++" : "Python"}</small></div>
+        <pre><code>{previewLines.join("\n")}</code></pre>
+      </div>
+      <div className="channel-preview-expectation"><b>排查线索</b><p>{truncate(draft.approach, 110)}</p></div>
+      <div className="channel-preview-expectation"><b>验证边界</b><p>{truncate(draft.verification, 110)}</p></div>
+    </div>
   </div>;
 
   if (channelId === "csdn") return <div className="channel-preview-csdn">
-    <h3>一次{topic}的排查过程</h3>
-    <p>{truncate(draft.problem, 105)}</p>
+    <div className="channel-preview-csdn-heading">
+      <h3>一次{topic}的排查过程</h3>
+      <p>{truncate(draft.problem, 105)}</p>
+    </div>
+    <div className="channel-preview-csdn-scroll" role="region" tabIndex={0} aria-label="CSDN目录与代码片段预览，可滚动查看">
     <div className="channel-preview-csdn-layout">
       <div className="channel-preview-csdn-toc">
         <b>文章目录</b>
@@ -124,6 +133,7 @@ function ChannelCardPreview({ channelId, draft }) {
         <div><span>{isAddCustom ? "C++" : "Python"}</span><small>片段预览</small></div>
         <pre><code>{previewLines.join("\n")}</code></pre>
       </div>
+    </div>
     </div>
   </div>;
 
