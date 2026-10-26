@@ -6682,3 +6682,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 使用 ImageGen 生成纯背景资产 `ascend-studio/src/assets/learning-discovery/discovery-banner-bg-textured.png`：浅蓝白底、层叠柔光纹理、流动光带，以及青 / 紫 / 粉 / 薄荷色半透明碎片；没有文字或 UI。CSS 移除大面积径向色斑，接入新底图并保留向下渐隐。五阶段路径、内容插画、布局和黑色主 CTA 不变。
 - 本地 1280×720 预览（8133）已观察：Banner 更明亮，波纹纹理与彩色碎片可见；`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。未运行自动化测试。
 - 同步保留同期主线的学习画布展开卡片与组合任务首页改动；未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。源码、构建产物、记录在检查后推送 `origin/main`；Pages 发布状态待回填。
+
+### 2026-10-26 · 训练调优字段组合首页（第三个 Tab）
+
+- 用户从附图中选定“满屏字段 + 鼠标连线”的关系网方案。新建任务首页新增「组合」Tab，保留「经典」与「探索」；28 个训练调优字段覆盖目标、现象、条件、约束、指标和验证，默认示例关系以多条连线呈现。
+- 拖动字段可建立关系，点击可加入 / 移除字段，连线可删除；关系实时生成可编辑 Prompt，发送后创建本地演示开发任务。组合首页可通过 `?home=combine` 直接进入；没有接入真实训练遥测、AI 或 NPU，也不把示例内容表述为真实诊断。
+- 源码：`ascend-studio/src/CombinationTaskHome.jsx`、`home-composition.js`、`NewTaskHome.jsx`、`App.jsx`、`combination-task-home.css`；静态发布入口与哈希资源位于 `ascstudio/`。
+- 依据与回放：用户附图及明确选择（H）；本地 Chrome 桌面预览中，拖动 `samples/s` 到“设备利用率”后 Prompt 增加该指标，点击可增删字段；发送后出现开发任务页。线上 Pages 以 `?home=combine` 打开后可访问性树确认「组合」被选中。
+- `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 提示。
+- 页面新增首页方案 Tab，不改变 API / Protocol、Host / Harness 或 Application / Task 边界。源码提交 `86b9a588`，发布资源提交 `dccebbe0`，并入并行更新后的提交 `f425e635` 已推送至 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200。

@@ -1631,3 +1631,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户指出前版与选定参考图不符：背景过平、缺少纹理与彩色碎片。最新上传截图取代旧版实现截图，作为 Banner 的视觉依据。
 - 新 ImageGen 纯底图位于 `src/assets/learning-discovery/discovery-banner-bg-textured.png`，含浅蓝白基底、柔和层叠波纹与青 / 紫 / 粉 / 薄荷半透明碎片；不含文字和 UI。学习发现页移除过大的径向色斑，沿用底部渐隐；不改五阶段内容、路径插画、布局或主按钮。
 - 本地 1280×720 预览已核对，纹理和碎片可见；Pages 构建、生成 JS 语法和 diff 检查通过。未运行测试套件。同期学习画布 / 组合任务更新已保留并合入；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。推送与 Pages 状态待回填。
+
+### 2026-10-26 · 首页「组合」关系网原型
+
+- 用户选定满屏训练调优字段通过鼠标连线组合需求的方案。作为第三个首页 Tab「组合」实现；与「经典」「探索」并列。28 个节点覆盖训练目标、瓶颈现象、训练条件、精度约束、指标及对照验证，既有连线保留多关系网络形态。
+- 字段拖动创建连线，点击选择 / 取消，底部 Prompt 可编辑；发送进入本地开发任务演示。`?home=combine` 是直接入口。
+- 原型使用策划示例，不代表真实诊断或训练结果；不接入模型 / NPU。验证、提交和 Pages 发布结果详见根目录 `AGENTS.md` 与 `design-qa.md`。

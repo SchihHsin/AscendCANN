@@ -1363,3 +1363,11 @@ final result: passed
 - **视觉核对：** 本地预览 `http://127.0.0.1:8133/`，CUA 1280×720 截图显示 Banner 的亮度、柔纹与多色碎片接近用户参考；标题区保留清晰可读留白，底部自然过渡到灰色内容区。
 - **构建 / 检查：** 合入同步主线后的 `npm run build:pages` 成功（6373 modules，2.88s）；`node --check ascstudio/assets/index-C0leW93l.js`、`git diff --check` 通过。未运行测试套件。
 - **边界 / 发布：** 保留并合入同期的学习画布展开与组合任务首页更新；不改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。Push 与 Pages workflow 待完成后回填。
+
+## 2026-10-26 · 训练调优字段组合首页
+
+- **设计选择：** 用户选定附图所示的满屏字段关系网。新增第三个首页 Tab「组合」，与「经典」「探索」并列；以训练与调优为例，展示多关系连线如何形成 Prompt。
+- **交互：** 28 个字段。拖动字段到另一个字段建立连线；点击加入 / 移除字段；关系更新后自动重写需求草稿，草稿可继续编辑。点击发送会创建本地演示开发任务。
+- **回放证据：** 本地 Chrome 桌面预览确认全屏词条、节点字号层级、连线与底部 Prompt；拖动 `samples/s` 到“设备利用率”后草稿增加该指标；点击切换字段后草稿同步；点击发送进入开发任务页。线上 Pages 的 `?home=combine` 页面已回读，`组合` Tab 处于选中状态。
+- **边界：** 预置任务情境用于呈现设计概念，不是个性化训练诊断；任务页明确标注暂无运行证据。未接入真实模型、遥测或 NPU，也未改 API / Protocol、Host / Harness 或 Application / Task 机制。
+- **检查 / 发布：** `npm run build`、`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。Vite 保留原有主 JS chunk 大于 500 kB 提示。`f425e635` 已推送到 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS HTTP 200。
