@@ -3,7 +3,7 @@ import { IconArrowRight, IconCalendarEvent, IconCircleCheck, IconSearch, IconSpa
 import { LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_PATH_URL, OFFICIAL_LEARNING_SOURCES, OFFICIAL_LEARNING_STAGES, OFFICIAL_LEARNING_TASK } from "./official-learning-data";
 import resnetCourseImage from "./assets/learning-discovery/resnet-inference-course-light.jpg";
-import featuredResnetPathImage from "./assets/learning-discovery/resnet50-inference-path-light.png";
+import featuredResnetPathImage from "./assets/learning-discovery/resnet50-inference-path-cool-spectrum.png";
 import preprocessingPathImage from "./assets/learning-discovery/image-preprocessing-path-light.jpg";
 import tensorKnowledgeImage from "./assets/learning-discovery/tensor-layout-conversion-light.jpg";
 import inputContractImage from "./assets/learning-discovery/model-input-checklist-light.jpg";
@@ -22,7 +22,7 @@ const featuredRecommendation = {
   destination: { taskName: OFFICIAL_LEARNING_TASK, materialId: OFFICIAL_LEARNING_STAGES[0].id },
   action: "开始学习",
 };
-const pathStageTones = ["blue", "green", "purple", "amber", "rose"];
+const pathStageTones = ["blue", "cyan", "purple", "rose", "green"];
 
 const recommendations = [
   {
