@@ -6568,3 +6568,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx` 与 `community-draft.css`。原型中的任务状态和发布渠道数据不变；没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。发布仍为本地演示。
 - 依据：用户提供的多渠道卡片截图与本轮确认（H）；本地桌面 CUA 回放（M）。1280×720 下，社区 / GitCode / CSDN 正文可滚动，平台标题与奖励操作保持原位；抖音四页完整静止展示。`npm run build:pages` 与 `git diff --check` 通过；未运行测试套件。
 - 发布：功能提交 `64f530d0` 与 Pages 资源提交 `bcf7f627` 已推送 `origin/main`；Pages workflow `40256840317` build / deploy 成功。线上 `/ascstudio/` HTML 指向 `index-CZxgWasI.js` 与 `index-Dt7jay4d.css`，两项资源均 HTTP 200，SHA-256 与本地构建产物一致。本轮桌面视觉回放依据为本地 1280×720 预览；线上仅核验资源发布，不记作线上交互回放。
+
+### 2026-10-26 · Ascend Studio 界面风格 Skill 扩展白灰场景与八色类别
+
+- 按用户已确认规则更新个人 Skill `~/.codex/skills/ascend-studio-interface-style/SKILL.md`：说明白色 `#FFFFFF` 可用于阅读、表单、课程详情及整页底色；浅中性灰 `#F5F5F5` 用于工作区、画布和密集控制台；`#F8F8F8` 用于轻分组，同页可按层级组合。保留蓝、珊瑚、琥珀、青绿并新增紫、靛蓝、玫红、柔和黄绿，每色均有前景与淡底 token；限定为按实际类别使用的节点、资源、图标与图解装饰，不要求用满或增大饱和度 / 面积，跨页类别映射保持一致。
+- 独立定义成功、进行中、提醒、失败状态色；类别装饰色不表达成功或失败。黑色仍仅用于主要操作；不规定导航 / 侧栏固定选中样式，交互状态仍按组件用途、层级与现有语义决定。
+- 依据：用户本轮确认的色彩规则（H）。仅改个人 Skill 文件与本仓交接记录，不改产品代码、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：Skill Creator `quick_validate.py` 因运行环境缺少 PyYAML（`ModuleNotFoundError`）未能执行；Ruby YAML 解析器分别成功解析 Skill frontmatter 和 `agents/openai.yaml`；`git diff --check` 通过。仅本 `AGENTS.md` 进入提交，个人 Skill 不纳入仓库。
