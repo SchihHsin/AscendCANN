@@ -1400,7 +1400,7 @@ final result: passed
 - 用户反馈有时目标没连上、离开时反而确认，且一条关系后难以继续；用户选择“确认 A→B 后从 B 接到 C”。
 - 确认目标后保留该目标为下一条起点；计时器通过世代编号失效旧回调，并在确认时检查指针当前仍命中目标字段。
 - `npm run build:pages` 与构建 JS `node --check` 通过；未运行自动化测试，本轮未做新的 CUA 回放。页面序列 / hash 和 API / Host / Application 边界不变。
-- 功能提交 `6271639b` 与整合提交 `f9870df1` 已推送 `origin/main`；Pages workflow `40365607417` build / deploy 成功。线上 HTML 引用 JS `index-VcpOKYyS.js` 与 CSS `index-BVnw8_Wn.css`；JS 返回 HTTP 200，CSS 请求遇连接超时。
+- 功能提交 `6271639b` 与整合提交 `f9870df1` 已推送 `origin/main`；随后会话停靠更新 `3ca7072f` 保留此交互，Pages workflow `40366875012` 成功。线上 HTML 引用 JS `index-pJdnm3Lb.js` 与 CSS `index-DkWU4xAD.css`，两项资源均 HTTP 200。
 
 ## 2026-10-26 · 编辑态新增画布内容入口复核
 
