@@ -6555,4 +6555,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - ascend-studio/src/LearningDiscoveryPage.jsx、learning-discovery.css 增加路径主推区。页面底色调整为中性浅灰，内容卡片保留白底，黑色只用于主 CTA 实心按钮；次级操作、搜索和类别标签采用中性样式；蓝紫推荐标记、琥珀新内容 / 活动提示、绿色已加入状态只在小面积使用。路径示意直接使用节点和连线呈现学习内容，没有新增装饰图或图片资源。
 - 依据：用户本轮确认的布局与颜色偏好（H）；路径节点来自当前演示路径内容（H）。仅更新学习发现页展示，不改页面顺序 / hash、学习流程交互、官方来源或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：合并并保留 origin/main 上 24 个并行提交后重新运行 npm run build:pages；本地 1280×720 静态 Pages 预览经 CUA 复核，顶栏主推路径、四节点图、黑色主按钮、下方三项其他推荐均可见。点击一次“加入日程”后 AX 状态变为“已加入”，状态用绿色表达。桌面截图保存至 /tmp/ascstudio-learning-discovery-featured-path-20261026.png。未运行自动化测试；保留既有大 JS chunk 提醒。
-- 发布状态：功能提交与 Pages 包待完成整合提交及 push，发布 workflow / 线上刷新结果待回填。
+- 发布：功能提交 `0cba4934` 与保留 24 个并行提交的整合提交 `f4a74fc0` 已推送 `origin/main`。Pages workflow `40255980093` build / deploy 成功。线上 `/ascstudio/` HTML 引用 `index-C4UblvvI.js` 与 `index-1j9tFWac.css`；CSS HTTP 200，JS 区间请求返回 HTTP 206（1,024 bytes）。线上 CUA 页面载入 / AX 读取超时，因此只记录资源发布核验，不声称线上截图回放成功；本地静态 Pages 截图与交互核验已完成。

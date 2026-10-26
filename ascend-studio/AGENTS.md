@@ -1538,3 +1538,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - Banner 主体改为「图像输入预处理学习路径」推荐位：四个内容节点按“认识图像通道 → 整理数据维度 → 核对模型输入 → 保存学习记录”排列并由连线表示先后；标题、简介、节点数、时长与“查看学习路径”操作构成可读内容区。
 - 下方保留课程、知识点和认证三项推荐，以及“新上架”“近期日程”楼层。页面采用中性浅灰背景和白色卡片；黑色实心只给主 CTA，搜索、次级按钮和内容类别标签保持中性；颜色用作小面积的推荐、新内容、近期活动和已加入状态提示。
 - 本地静态 Pages 1280×720 预览中，四节点与推荐路径结构可见；加入日程后辅助功能树显示“已加入”。
+- `npm run build:pages`、`node --check ascstudio/assets/index-C4UblvvI.js`、`git diff --check` 通过。功能提交 `0cba4934` 与保留并行提交的整合提交 `f4a74fc0` 已推送 `origin/main`；Pages workflow `40255980093` build / deploy 成功。
+- 线上 HTML 已引用 `index-C4UblvvI.js` 和 `index-1j9tFWac.css`；CSS HTTP 200，JS 区间请求 HTTP 206（1,024 bytes）。线上 CUA 页面读取超时，不记作线上截图 / 交互核验。

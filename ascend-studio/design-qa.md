@@ -1271,4 +1271,4 @@ final result: passed (local visual review; online screenshot unavailable)
 - 依据：用户直接给出的页面与配色要求（H）；本地预览为实现观察（M）。不改页面序列 / hash 或 API / Host / Application 边界。
 
 **发布**
-- 保留并合并 origin/main 上并行提交后，更新 Pages 资源；提交 / 推送与部署结果待回填。
+- 保留并合并 origin/main 上 24 个并行提交后重建 Pages；功能提交 0cba4934，整合提交 f4a74fc0 已推送 origin/main。Pages workflow 40255980093 build / deploy 成功。线上 HTML 引用 index-C4UblvvI.js / index-1j9tFWac.css；CSS HTTP 200，JS 区间请求 HTTP 206（1,024 bytes）。线上 CUA 页面对 AX / screenshot 的读取超时，因此不记录线上视觉回放成功；本地静态 Pages 页面完成桌面回放。
