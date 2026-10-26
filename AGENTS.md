@@ -6627,3 +6627,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户反馈当前学习发现页整体偏蓝，希望有颜色的区域尽量采用更丰富的多色表达。保留浅色页面基底与黑色主要按钮；先用 ImageGen 比较三种配色分布，待用户选择后再实现，避免未经选择直接改页面。
 - 以当前 ResNet50 桌面页面截图为设计参照，目标视口 1280×720。三张独立方案图依次为：`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-709684d0-484b-474c-8fa7-93b82678a2da.png`、`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-338843cc-cf4a-4479-a35c-784da8f3dd5f.png`、`/Users/hsin/.codex/generated_images/01a16187-058e-7912-8b6f-b0ac61781351/exec-daabf47a-986d-4e36-b4a9-887d3282105d.png`。当前仅完成视觉探索，没有修改页面代码或发布新页面；颜色方向等待用户选择。
+### 2026-10-26 · AddCustom 画布编辑样板
+
+- 用户确认将 AddCustom 作为首个样板实现右上 FAB 分组、编辑态新增内容、小地图拖动定位；其他任务暂不推广，等样板评审后再决定。
+- `ascend-studio/src/TaskCanvas.jsx`、`task-canvas.css`、`useCanvasState.js` 支持从隐藏节点恢复已有材料、在任务画布内新增并编辑便签、自由绘图与撤销。笔记 / 笔迹随对应任务画布状态保存；绘图纳入小地图与“适应全部”。交互边界已记录到 `ascend-studio/interaction-design.md`。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；桌面 Chromium 视口 1440×757、文档宽度 1440，无横向溢出。验证了全部内容三节点、编辑态恢复隐藏节点、添加并输入便签、绘图后撤销；未运行自动化测试。用户浏览器原有收纳状态未清理。
+- 本轮未改变其他任务画布、页面序列 / hash、API / Protocol、Host / Harness 或 Application / Task 边界。推送状态待本次提交后记录。

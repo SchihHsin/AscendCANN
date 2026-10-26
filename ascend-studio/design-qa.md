@@ -1326,3 +1326,10 @@ final result: passed (local visual review; online screenshot unavailable)
 - **源码 / 产物：** `src/TaskCanvas.jsx`、`src/LearningCanvasCard.jsx`、`src/task-canvas.css`、`src/canvas-reference-style.css`、`interaction-design.md`；Pages 输出 `ascstudio/index.html`、`index-Vrn6LA8Y.js`、`index-BezcPE5V.css`。
 - **检查：** `npm run build:pages` 成功；`node --check ascstudio/assets/index-Vrn6LA8Y.js` 与 `git diff --check` 通过；本地 5189 控制台 error 日志为空。CUA 当前可用视口约 381px，尚未完成宽屏截图及拖动 / 聚焦 / 放大逐项回放；未运行自动化测试。
 - **证据边界：** 用户截图为部署前线上状态（H）；本地 5189 窄视口回放为 M。提交 `01204f8a` 已推送，Pages workflow `40278245582` build / deploy 成功。公开 HTML 指向新 JS / CSS，CSS HTTP 200 并含白色标题栏规则；JS 完整下载超时，线上截图 / 交互回放未核验。
+
+## 2026-10-26 · AddCustom 画布编辑工具样板
+
+- **范围与决策：** 用户确认先拟定统一画布工具方案后执行；AddCustom 为首个样板，待用户评审后再决定是否推广到其他任务。画布右上角按内容 / 对照、缩放、平移 / 适应全部、编辑组织 FAB 组。只有进入编辑状态后才出现添加已有节点、便签和自由绘图；小地图在左下，点击或拖动定位。
+- **实现：** 更新 `src/TaskCanvas.jsx`、`src/task-canvas.css`、`src/useCanvasState.js`。已有材料从隐藏节点中选择并恢复原位置；便签以画布节点存在并实时保存；绘图仅在画布空白处进行并可撤销。卡片移动、平移、绘图互斥；Esc 结束编辑。绘图进入画布视口、小地图范围与“适应全部”。编辑状态与笔记 / 绘图都保存在当前任务自己的画布状态中。`interaction-design.md` 记录交互边界。
+- **检查：** `npm run build:pages`、构建 JS `node --check` 与 `git diff --check` 通过。桌面 Chromium 视口 1440×757、文档宽度 1440，无横向溢出；“全部内容”视图显示三个初始节点，编辑态验证了隐藏节点恢复、新增并输入便签、自由绘图后撤销，编辑工具组保持在右上角。本地 5189 用户浏览器还显示先前验证留下的“已收纳 2 项”，未清理浏览器状态。本轮未运行自动化测试。
+- **证据边界：** 用户选定的方案与样板范围为 H；浏览器可访问性树和构建输出为 M。未修改其他任务画布，不涉及真实工程、NPU、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。

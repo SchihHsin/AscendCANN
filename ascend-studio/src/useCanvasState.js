@@ -11,7 +11,7 @@ const ADD_CUSTOM_CANVAS_VERSION = ADD_CUSTOM_LAYOUT_VERSION;
 const ADD_CUSTOM_CARD_SIZES = {
   explanation: [700, 520], source: [780, 500], evidence: [700, 420], precision: [700, 500],
   review: [700, 520], draft: [700, 560], parameters: [700, 560], attempts: [700, 560],
-  diff: [840, 640], validation: [700, 560], reference: [700, 520], "task-brief": [700, 420],
+  diff: [840, 640], validation: [700, 560], reference: [700, 520], "task-brief": [700, 420], note: [600, 360],
 };
 const ADD_CUSTOM_DYNAMIC_CARD_SIZES = {
   attempt: [680, 520], snapshot: [660, 480], record: [620, 420],
@@ -33,7 +33,7 @@ const ADD_CUSTOM_CARD_LIMITS = {
 };
 const ADD_CUSTOM_CARD_CATEGORY = {
   explanation: "explanation", source: "code", evidence: "note", precision: "result", review: "result",
-  draft: "code", parameters: "explanation", attempts: "result", diff: "diff", validation: "result",
+  draft: "code", parameters: "explanation", attempts: "result", diff: "diff", validation: "result", note: "note",
 };
 const isAddCustomStorageKey = (key) => typeof key === "string" && /^canvas-addcustom(?:-|$)/.test(key);
 const LEGACY_CARD_SIZES = {
@@ -48,6 +48,7 @@ const LEGACY_CARD_POSITIONS = {
 };
 
 function addCustomCardLimits(id) {
+  if (id.startsWith("note:")) return ADD_CUSTOM_CARD_LIMITS.note;
   if (id.startsWith("attempt:")) return ADD_CUSTOM_CARD_LIMITS.attempt;
   if (id.startsWith("snapshot:")) return ADD_CUSTOM_CARD_LIMITS.snapshot;
   const category = ADD_CUSTOM_CARD_CATEGORY[id]
@@ -57,6 +58,7 @@ function addCustomCardLimits(id) {
 
 function addCustomDefaultCardSize(id) {
   if (ADD_CUSTOM_CARD_SIZES[id]) return ADD_CUSTOM_CARD_SIZES[id];
+  if (id.startsWith("note:")) return ADD_CUSTOM_CARD_SIZES.note;
   if (id.startsWith("attempt:")) return ADD_CUSTOM_DYNAMIC_CARD_SIZES.attempt;
   if (id.startsWith("snapshot:")) return ADD_CUSTOM_DYNAMIC_CARD_SIZES.snapshot;
   if (id.startsWith("record:")) return ADD_CUSTOM_DYNAMIC_CARD_SIZES.record;
@@ -104,6 +106,7 @@ const initialState = (startEmpty = false, cardDefinitions, initialVisibleIds = [
   return {
   layoutVersion: ADD_CUSTOM_CANVAS_VERSION,
   cards,
+  drawings: [],
   selectedCardId,
   lastHiddenId: null,
   comparing: false,
@@ -149,14 +152,15 @@ function freePosition(card, obstacles) {
   return { x: right + 24, y: card.y };
 }
 
-function fittedViewport(cards, width, height, ids = null, padding = FIT_PADDING) {
+function fittedViewport(cards, width, height, ids = null, padding = FIT_PADDING, drawings = []) {
   const included = ids ? new Set(ids) : null;
   const visible = cards.filter((card) => card.visible && (!included || included.has(card.id)));
-  if (!visible.length) return { x: 0, y: 0, zoom: 1 };
-  const left = Math.min(...visible.map((card) => card.x));
-  const top = Math.min(...visible.map((card) => card.y));
-  const right = Math.max(...visible.map((card) => card.x + card.width));
-  const bottom = Math.max(...visible.map((card) => card.y + visibleHeight(card)));
+  const points = included ? [] : drawings.flatMap((drawing) => drawing.points || []);
+  if (!visible.length && !points.length) return { x: 0, y: 0, zoom: 1 };
+  const left = Math.min(...visible.map((card) => card.x), ...points.map((point) => point.x));
+  const top = Math.min(...visible.map((card) => card.y), ...points.map((point) => point.y));
+  const right = Math.max(...visible.map((card) => card.x + card.width), ...points.map((point) => point.x));
+  const bottom = Math.max(...visible.map((card) => card.y + visibleHeight(card)), ...points.map((point) => point.y));
   const contentWidth = Math.max(1, right - left);
   const contentHeight = Math.max(1, bottom - top);
   const zoom = clampZoom(Math.min(
@@ -260,6 +264,20 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
       lastHiddenId: id,
     }));
   };
+  const updateCard = (id, patch) => {
+    if (!current.current.cards.some((card) => card.id === id) || !patch || typeof patch !== "object") return;
+    update((previous) => ({ cards: previous.cards.map((card) => card.id === id ? { ...card, ...patch } : card) }));
+  };
+  const addDrawing = (drawing = {}) => {
+    const points = Array.isArray(drawing.points) ? drawing.points.filter((point) => isFiniteNumber(point?.x) && isFiniteNumber(point?.y)) : [];
+    if (points.length < 2) return null;
+    const id = `drawing:${Date.now().toString(36)}:${Math.random().toString(36).slice(2, 7)}`;
+    update((previous) => ({ drawings: [...(previous.drawings || []), { id, points, color: drawing.color || "#56585a", width: isFiniteNumber(drawing.width) ? drawing.width : 3 }] }));
+    return id;
+  };
+  const removeDrawing = (id) => {
+    update((previous) => ({ drawings: (previous.drawings || []).filter((drawing) => drawing.id !== id) }));
+  };
   const selectCard = (id) => {
     if (id === null) {
       update((previous) => ({ cards: previous.cards.map((card) => ({ ...card, selected: false })), selectedCardId: null }));
@@ -305,7 +323,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
     if (!isFiniteNumber(width) || !isFiniteNumber(height) || width <= 0 || height <= 0) return;
     setSurfaceSize(width, height);
     const padding = isAddCustomStorageKey(storageKey) ? ADD_CUSTOM_FIT_PADDING : FIT_PADDING;
-    update({ viewport: fittedViewport(current.current.cards, width, height, null, padding) });
+    update({ viewport: fittedViewport(current.current.cards, width, height, null, padding, current.current.drawings || []) });
   };
   const focusCanvas = (ids = [], width = surfaceSize.current?.width, height = surfaceSize.current?.height) => {
     if (!isFiniteNumber(width) || !isFiniteNumber(height) || width <= 0 || height <= 0) return;
@@ -382,7 +400,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
 
   return {
     state: current.current,
-    actions: { addCard, showCard, hideCard, selectCard, moveCard, resizeCard, togglePin, toggleCollapse, setViewport, setSurfaceSize, beginComparison, endComparison, reset, restore, fitCanvas, focusCanvas },
+    actions: { addCard, showCard, hideCard, selectCard, moveCard, resizeCard, updateCard, addDrawing, removeDrawing, togglePin, toggleCollapse, setViewport, setSurfaceSize, beginComparison, endComparison, reset, restore, fitCanvas, focusCanvas },
   };
 }
 

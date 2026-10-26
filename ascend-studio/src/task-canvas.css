@@ -28,9 +28,30 @@
 .tc-zoom-controls button { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; cursor: pointer; }
 .tc-canvas-toolbar .tc-zoom-label { min-width: 42px; font-size: 10px; font-variant-numeric: tabular-nums; }
 .tc-canvas-toolbar .tc-toolbar-rule { width: 1px; height: 17px; margin: 0 1px; background: #dedfe0; }
+.tc-floating-tools { position: absolute; top: 12px; right: 12px; z-index: 60; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; width: max-content; max-width: calc(100% - 24px); pointer-events: none; }
+.tc-canvas-toolbar.is-floating { position: relative; top: auto; right: auto; z-index: auto; display: flex; align-items: flex-start; justify-content: flex-end; flex-wrap: wrap; gap: 6px; width: max-content; max-width: 100%; margin: 0; pointer-events: auto; }
+.tc-fab-group { display: flex; align-items: center; gap: 2px; flex: 0 0 auto; min-height: 36px; padding: 3px; border: 1px solid #dedfe0; border-radius: 10px; background: #fffffff2; box-shadow: 0 3px 12px rgb(24 25 26 / 9%); backdrop-filter: blur(8px); }
+.tc-fab-group > button { display: flex; align-items: center; justify-content: center; width: 29px; height: 29px; flex: 0 0 29px; padding: 0; border: 0; border-radius: 7px; color: #4f5254; background: transparent; cursor: pointer; }
+.tc-fab-group > button:hover { color: #222324; background: #f1f1f0; }
+.tc-fab-group > button.is-active,
+.tc-fab-group > button[aria-pressed="true"] { color: #fff; background: #191a1b; }
+.tc-fab-group > button.is-active:hover,
+.tc-fab-group > button[aria-pressed="true"]:hover { color: #fff; background: #303132; }
+.tc-fab-group > button:disabled { opacity: .4; cursor: default; }
+.tc-canvas-toolbar.is-floating .tc-fab-group .tc-zoom-controls { display: flex; align-items: center; height: 29px; overflow: hidden; padding: 0; border: 0; border-radius: 7px; background: transparent; box-shadow: none; }
+.tc-canvas-toolbar.is-floating .tc-fab-group .tc-zoom-controls button { width: 28px; height: 29px; }
+.tc-canvas-toolbar.is-floating .tc-fab-group .tc-zoom-controls .tc-zoom-label { min-width: 38px; }
+.tc-node-picker { position: relative; z-index: auto; display: flex; flex-direction: column; gap: 4px; width: min(270px, 100%); max-height: min(360px, calc(100vh - 180px)); overflow: auto; padding: 8px; border: 1px solid #dedfe0; border-radius: 10px; background: #fffffff5; box-shadow: 0 8px 24px rgb(24 25 26 / 12%); backdrop-filter: blur(10px); pointer-events: auto; }
+.tc-node-picker > strong { padding: 2px 4px 5px; color: #505456; font-size: 11px; font-weight: 600; }
+.tc-node-picker > button { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; min-width: 0; padding: 7px 8px; border: 1px solid transparent; border-radius: 7px; color: #45494b; background: transparent; text-align: left; cursor: pointer; }
+.tc-node-picker > button:hover { border-color: #e4e5e5; background: #f5f5f4; }
+.tc-node-picker > button span { max-width: 100%; overflow: hidden; font-size: 11px; font-weight: 550; text-overflow: ellipsis; white-space: nowrap; }
+.tc-node-picker > button small { color: #85898b; font-size: 9px; line-height: 1.5; }
+.tc-node-picker > p { margin: 0; padding: 4px; color: #85898b; font-size: 10px; line-height: 1.6; }
 .tc-stage { position: relative; flex: 1; min-width: 0; min-height: 0; overflow: clip; outline: none; background-color: var(--canvas-surface, #f5f5f5); background-image: radial-gradient(circle, var(--canvas-dot, #d9d9d9) .8px, transparent .9px); touch-action: none; cursor: default; }
 .tc-stage.is-hand-mode { cursor: grab; }
 .tc-stage.is-panning { cursor: grabbing; }
+.tc-stage.is-drawing { cursor: crosshair; }
 .tc-stage.is-gesturing, .tc-stage.is-gesturing * { user-select: none; }
 .tc-world { position: absolute; inset: 0 auto auto 0; width: 1px; height: 1px; transform-origin: 0 0; }
 .tc-group-region { position: absolute; z-index: 0; box-sizing: border-box; border: 1px solid #e7e8ee; border-radius: 12px; background: linear-gradient(145deg, #fbfbfdbb, #f8f8fb8c); pointer-events: none; }
@@ -41,6 +62,7 @@
 .tc-connections { position: absolute; z-index: 1; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; color: #aeb4c2; pointer-events: none; }
 .tc-connections path { fill: none; stroke: #b7bcca; stroke-width: 1.5; }
 .tc-connections text { fill: #8a90a2; font-size: 10px; text-anchor: middle; }
+.tc-drawings { position: absolute; z-index: 2; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; pointer-events: none; }
 .tc-card { position: absolute; display: flex; flex-direction: column; min-width: 220px; min-height: 140px; box-sizing: border-box; border: 1px solid #e0e1e2; border-radius: 10px; background: #fff; box-shadow: 0 4px 15px rgb(28 29 30 / 8%); }
 .tc-card[hidden] { display: none; }
 .tc-card.is-selected { border-color: #252728; box-shadow: 0 0 0 1px #252728, 0 7px 18px rgb(28 29 30 / 12%); }
@@ -50,6 +72,8 @@
 .tc-stage.is-layout-editing .tc-card-header { cursor: grab; }
 .tc-stage.is-layout-editing .tc-card.is-pinned .tc-card-header { cursor: default; }
 .tc-stage.is-layout-editing .tc-card-header:active { cursor: grabbing; }
+.tc-stage.is-drawing .tc-card-header { cursor: default; }
+.tc-stage.is-drawing .tc-move-handle, .tc-stage.is-drawing .tc-resize-handle { display: none; }
 .tc-card.is-pinned .tc-card-header { cursor: default; }
 .tc-card.is-collapsed .tc-card-header { height: 42px; min-height: 42px; padding-block: 7px; border-bottom: 0; border-radius: 8px; }
 .tc-stage.is-hand-mode .tc-card-header { cursor: grab; }
@@ -72,6 +96,9 @@
 .tc-card-content { flex: 1; min-height: 0; min-width: 0; padding: 12px 13px 14px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #d7d8dc transparent; background: #fff; border-radius: 0 0 8px 8px; font-size: 12px; line-height: 1.75; touch-action: pan-y; }
 .tc-card-content[hidden] { display: none; }
 .tc-card-content > * { min-width: 0; }
+.tc-note-editor { display: block; width: 100%; height: 100%; min-height: 180px; resize: none; padding: 2px; border: 0; outline: none; color: #4b4f50; background: transparent; font: inherit; line-height: 1.8; }
+.tc-note-editor::placeholder { color: #a0a3a4; }
+.tc-note-editor:disabled { opacity: 1; color: #4b4f50; cursor: default; }
 .task-canvas.is-addcustom .tc-card-content { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; touch-action: pan-y; }
 .task-canvas.is-addcustom .tc-card-content::-webkit-scrollbar { width: 6px; height: 6px; }
 .task-canvas.is-addcustom .tc-card-content::-webkit-scrollbar-thumb { border: 1px solid #fff; border-radius: 5px; background: #d5d7df; }
@@ -88,9 +115,11 @@
 .tc-floating-index { position: absolute; top: 12px; right: 12px; z-index: 50; width: min(330px, calc(100% - 24px)); max-height: calc(100% - 115px); overflow: auto; scrollbar-width: thin; scrollbar-color: #d7d8db transparent; border: 1px solid #dddfe5; border-radius: 9px; background: #fff; box-shadow: 0 8px 24px #2c304513; }
 .tc-mini-map { position: absolute; bottom: 31px; left: 12px; z-index: 40; width: 115px; padding: 6px; border: 1px solid #e1e2e7; border-radius: 7px; background: #ffffffed; box-shadow: 0 3px 9px #34384d07; }
 .tc-mini-map svg { display: block; width: 100%; height: 67px; overflow: hidden; outline: none; cursor: crosshair; border: 1px solid #ededef; border-radius: 4px; background: #fafafa; }
+.tc-mini-map svg { touch-action: none; user-select: none; }
 .tc-mini-map svg > rect { fill: #e6e7ed; stroke: #d3d6e0; stroke-width: 1; vector-effect: non-scaling-stroke; }
 .tc-mini-map svg > rect.is-selected { fill: #d8dce7; stroke: #9da5bc; }
 .tc-mini-map svg > rect.tc-map-viewport { fill: #8f9abe0d; stroke: #8993ad; stroke-width: 1; pointer-events: none; }
+.tc-mini-map svg > polyline { fill: none; stroke: #777b7e; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; pointer-events: none; }
 .tc-mini-map > span { display: block; margin-top: 5px; text-align: center; font-size: 10px; color: #898d98; line-height: 1.3; }
 .tc-canvas-hint { position: absolute; bottom: 10px; left: 12px; right: 12px; z-index: 30; color: #9397a3; font-size: 10px; line-height: 1.4; pointer-events: none; }
 .tc-empty-state { position: absolute; top: 36%; left: 8%; right: 8%; display: flex; flex-direction: column; align-items: center; color: #9299ab; text-align: center; }
@@ -106,3 +135,23 @@
 @media (max-width: 760px) { .tc-object-toolbar { flex-wrap: wrap; } .tc-selection-label { flex: 1 1 90px; } .tc-canvas-toolbar { order: 2; } .tc-focus-related { order: 3; flex-basis: 100%; } }
 
 .tc-collapse-summary { font-size: 10px; color: #8b919e; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+.task-canvas.is-addcustom .tc-object-toolbar { min-height: 34px; padding-block: 4px; background: #fff; }
+.task-canvas.is-addcustom .tc-mini-map { width: 128px; padding: 6px; border-radius: 8px; border-color: #e1e2e7; background: #fffffff2; box-shadow: 0 2px 10px rgb(36 42 54 / 8%); }
+.task-canvas.is-addcustom .tc-mini-map svg { height: 78px; border-color: #eaebed; border-radius: 5px; cursor: grab; }
+.task-canvas.is-addcustom .tc-mini-map svg:active { cursor: grabbing; }
+.task-canvas.is-addcustom .tc-mini-map svg > rect { fill: #e2e4e6; stroke: #cfd2d4; }
+.task-canvas.is-addcustom .tc-mini-map svg > rect.is-selected { fill: #2b2d2f; stroke: #191a1b; }
+.task-canvas.is-addcustom .tc-mini-map svg > rect.tc-map-viewport { fill: #191a1b12; stroke: #191a1b; stroke-width: 1.6; }
+.task-canvas.is-addcustom .tc-mini-map > span { color: #74797b; font-size: 9px; }
+@media (max-width: 760px) {
+  .task-canvas.is-addcustom .tc-mini-map { width: 108px; }
+  .task-canvas.is-addcustom .tc-mini-map svg { height: 64px; }
+  .tc-floating-tools { top: 8px; right: 8px; gap: 4px; max-width: calc(100% - 16px); }
+  .tc-canvas-toolbar.is-floating { gap: 4px; }
+  .tc-fab-group { min-height: 34px; padding: 2px; border-radius: 9px; }
+  .tc-fab-group > button { width: 27px; height: 28px; flex-basis: 27px; }
+  .tc-canvas-toolbar.is-floating .tc-fab-group .tc-zoom-controls { height: 28px; }
+  .tc-canvas-toolbar.is-floating .tc-fab-group .tc-zoom-controls button { width: 26px; height: 28px; }
+  .tc-node-picker { max-height: min(300px, calc(100vh - 150px)); }
+}

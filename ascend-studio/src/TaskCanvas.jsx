@@ -15,6 +15,7 @@ import {
   IconLayoutList,
   IconMaximize,
   IconMinus,
+  IconNotes,
   IconPin,
   IconPencil,
   IconPlus,
@@ -29,17 +30,21 @@ const COLLAPSED_HEIGHT = 44;
 
 const clampZoom = (zoom) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom));
 const editableTarget = (target) => target instanceof Element && Boolean(target.closest("input,textarea,select,[contenteditable=true]"));
-const floatingTarget = (target) => target instanceof Element && Boolean(target.closest(".tc-floating-index,.tc-canvas-toolbar,.tc-mini-map,.tc-empty-state"));
+const floatingTarget = (target) => target instanceof Element && Boolean(target.closest(".tc-floating-index,.tc-canvas-toolbar,.tc-node-picker,.tc-mini-map,.tc-empty-state"));
 
 export function TaskCanvas({ visible = true, embedded = false, isAddCustom = false, enableCardFocus = false, viewMode, focusIds = [], fitRequest = 0, flow, canvas, onBack, onOpenContents, onOpenContent, onFocusContent, onCollapse, onAttachCode, renderMaterial, contents = null, contentsOpen = false, connections = [], comparisonIds = ["source", "draft"] }) {
   const { state, actions } = canvas;
   const [collapsedIds, setCollapsedIds] = useState([]);
   const [handMode, setHandMode] = useState(false);
   const [positionEditing, setPositionEditing] = useState(false);
+  const [nodePickerOpen, setNodePickerOpen] = useState(false);
+  const [drawingMode, setDrawingMode] = useState(false);
+  const [drawingDraft, setDrawingDraft] = useState([]);
   const [spaceHeld, setSpaceHeld] = useState(false);
   const [gestureKind, setGestureKind] = useState(null);
   const [stageSize, setStageSize] = useState({ width: 1, height: 1 });
   const stageRef = useRef(null);
+  const minimapPointer = useRef(null);
   const initialFitDone = useRef(false);
   const gesture = useRef(null);
   const stateRef = useRef(state);
@@ -50,6 +55,9 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     if (visible) return;
     setPositionEditing(false);
     setHandMode(false);
+    setNodePickerOpen(false);
+    setDrawingMode(false);
+    setDrawingDraft([]);
   }, [visible]);
   useEffect(() => {
     if (!visible || !positionEditing) return undefined;
@@ -57,6 +65,9 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
       if (event.key !== "Escape" || editableTarget(event.target)) return;
       setPositionEditing(false);
       setHandMode(false);
+      setNodePickerOpen(false);
+      setDrawingMode(false);
+      setDrawingDraft([]);
     };
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
@@ -65,6 +76,9 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
   const cardSummary = (card) => card.summary || ({ source: "来源只读", evidence: "根因待确认", explanation: "线索解释", draft: flow?.state.mode === "isolated" ? "隔离示例副本" : "任务内示例副本", parameters: `输入 [${flow?.state.rows},${flow?.state.columns}]`, attempts: `${flow?.state.attempts.length || 0} 次范围尝试`, diff: flow?.state.proposedCode ? "保留修改差异" : "待生成提案", validation: flow?.state.validation ? "已存范围复核" : "真实项目待验证", precision: "数值误差核对", review: "观察与待补证据" }[card.id] || "内容保留");
   const visibleCards = state.cards.filter((card) => card.visible);
   const hiddenCards = state.cards.filter((card) => !card.visible && card.opened);
+  const availableNodeCards = isAddCustom ? state.cards.filter((card) => !card.visible) : [];
+  const drawings = Array.isArray(state.drawings) ? state.drawings : [];
+  const displayedDrawings = drawingDraft.length > 1 ? [...drawings, { id: "drawing-draft", points: drawingDraft, color: "#55585a", width: 3.5 }] : drawings;
   const focusCardId = viewMode === "focus" ? focusIds[0] : null;
   const focusRelatedCards = focusCardId
     ? focusIds.slice(1).map((id) => visibleCards.find((card) => card.id === id)).filter(Boolean)
@@ -85,13 +99,14 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
   }, [isAddCustom, state.cards, collapsedIds]);
 
   const minimapBounds = useMemo(() => {
-    if (!visibleCards.length) return { x: -30, y: -30, width: 600, height: 500 };
-    const left = Math.min(...visibleCards.map((card) => card.x)) - 40;
-    const top = Math.min(...visibleCards.map((card) => card.y)) - 40;
-    const right = Math.max(...visibleCards.map((card) => card.x + card.width)) + 40;
-    const bottom = Math.max(...visibleCards.map((card) => card.y + (isCollapsed(card) ? COLLAPSED_HEIGHT : card.height))) + 40;
+    const drawingPoints = drawings.flatMap((drawing) => drawing.points || []);
+    if (!visibleCards.length && !drawingPoints.length) return { x: -30, y: -30, width: 600, height: 500 };
+    const left = Math.min(...visibleCards.map((card) => card.x), ...drawingPoints.map((point) => point.x)) - 40;
+    const top = Math.min(...visibleCards.map((card) => card.y), ...drawingPoints.map((point) => point.y)) - 40;
+    const right = Math.max(...visibleCards.map((card) => card.x + card.width), ...drawingPoints.map((point) => point.x)) + 40;
+    const bottom = Math.max(...visibleCards.map((card) => card.y + (isCollapsed(card) ? COLLAPSED_HEIGHT : card.height)), ...drawingPoints.map((point) => point.y)) + 40;
     return { x: left, y: top, width: Math.max(1, right - left), height: Math.max(1, bottom - top) };
-  }, [state.cards, collapsedIds]);
+  }, [state.cards, drawings, collapsedIds]);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -182,15 +197,25 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
   };
 
   const beginPan = (event) => beginGesture(event, { kind: "pan" });
+  const canvasPoint = (event, viewport = stateRef.current.viewport) => {
+    const rect = stageRef.current?.getBoundingClientRect();
+    if (!rect) return { x: 0, y: 0 };
+    return { x: (event.clientX - rect.left - viewport.x) / viewport.zoom, y: (event.clientY - rect.top - viewport.y) / viewport.zoom };
+  };
+  const beginDraw = (event) => {
+    const point = canvasPoint(event);
+    beginGesture(event, { kind: "draw", points: [point] });
+    setDrawingDraft([point]);
+  };
   const beginMove = (event, card) => {
-    if (!positionEditing) return;
+    if (!positionEditing || drawingMode) return;
     if (handMode || spaceHeld) { beginPan(event); return; }
     if (card.pinned) return;
     beginGesture(event, { kind: "move", id: card.id, x: card.x, y: card.y });
     actions.selectCard(card.id);
   };
   const beginResize = (event, card) => {
-    if (!positionEditing || card.pinned || isCollapsed(card)) return;
+    if (!positionEditing || drawingMode || card.pinned || isCollapsed(card)) return;
     beginGesture(event, { kind: "resize", id: card.id, width: card.width, height: card.height });
     actions.selectCard(card.id);
   };
@@ -202,13 +227,24 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     const deltaY = event.clientY - current.clientY;
     if (current.kind === "pan") actions.setViewport({ x: current.viewport.x + deltaX, y: current.viewport.y + deltaY });
     else if (current.kind === "move") actions.moveCard(current.id, current.x + deltaX / current.viewport.zoom, current.y + deltaY / current.viewport.zoom);
-    else actions.resizeCard(current.id, current.width + deltaX / current.viewport.zoom, current.height + deltaY / current.viewport.zoom);
+    else if (current.kind === "resize") actions.resizeCard(current.id, current.width + deltaX / current.viewport.zoom, current.height + deltaY / current.viewport.zoom);
+    else if (current.kind === "draw") {
+      const point = canvasPoint(event, current.viewport);
+      const previous = current.points.at(-1);
+      if (!previous || Math.hypot(point.x - previous.x, point.y - previous.y) >= 2) {
+        current.points = [...current.points, point];
+        setDrawingDraft(current.points);
+      }
+    }
   };
 
   const endGesture = (event) => {
     if (gesture.current && event.pointerId !== gesture.current.pointerId) return;
+    const completed = gesture.current;
+    if (completed?.kind === "draw" && completed.points.length > 1) actionsRef.current.addDrawing?.({ points: completed.points, color: "#55585a", width: 3.5 });
     gesture.current = null;
     setGestureKind(null);
+    setDrawingDraft([]);
     if (stageRef.current?.hasPointerCapture(event.pointerId)) stageRef.current.releasePointerCapture(event.pointerId);
   };
 
@@ -262,12 +298,70 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     actions.setViewport({ x: stageSize.width / 2 - point.x * zoom, y: stageSize.height / 2 - point.y * zoom });
   };
 
+  const beginMapDrag = (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    minimapPointer.current = event.pointerId;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    mapClick(event);
+  };
+  const moveMapDrag = (event) => {
+    if (minimapPointer.current === event.pointerId) mapClick(event);
+  };
+  const endMapDrag = (event) => {
+    if (minimapPointer.current !== event.pointerId) return;
+    minimapPointer.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+  };
+  const togglePositionEditing = () => {
+    const next = !positionEditing;
+    setPositionEditing(next);
+    setHandMode(false);
+    setNodePickerOpen(false);
+    setDrawingMode(false);
+    setDrawingDraft([]);
+  };
+  const addNote = () => {
+    const count = state.cards.filter((card) => card.kind === "note").length + 1;
+    actions.addCard({ id: `note:${Date.now().toString(36)}`, kind: "note", groupId: selected ? addCustomGroupKey(selected) : "analysis", title: `笔记 ${count}`, noteText: "", width: 600, height: 360 }, { focus: true });
+    setNodePickerOpen(false);
+    setDrawingMode(false);
+  };
+
+  const canvasToolbar = <div className={`tc-canvas-toolbar${isAddCustom ? " is-floating" : ""}`} role="toolbar" aria-label="画布视图与编辑操作">
+    <div className="tc-fab-group" role="group" aria-label="内容操作">
+      {embedded && !enableCardFocus && <button type="button" className={contentsOpen ? "is-active" : ""} aria-label="打开任务内容总览" title="打开任务内容总览" aria-expanded={contentsOpen} onClick={onOpenContents}><IconLayoutList size={16} /></button>}
+      <button type="button" className={state.comparing ? "is-active" : ""} aria-pressed={Boolean(state.comparing)} aria-label={state.comparing ? "退出临时对照" : "临时对照内容"} title={state.comparing ? "退出临时对照" : "临时对照内容"} onClick={() => state.comparing ? actions.endComparison?.() : actions.beginComparison?.(comparisonIds)}><IconLayoutColumns size={16} /></button>
+      {state.lastHiddenId && <button type="button" aria-label="恢复刚收起的内容" title="恢复刚收起的内容" onClick={() => actions.restore()}><IconRestore size={15} /></button>}
+    </div>
+    <div className="tc-fab-group tc-fab-group--zoom" role="group" aria-label="缩放画布">
+      <div className="tc-zoom-controls"><button type="button" disabled={zoom <= MIN_ZOOM} aria-label="缩小画布" title="缩小画布" onClick={() => changeZoom(zoom - 0.1)}><IconMinus size={15} /></button><button className="tc-zoom-label" type="button" title="还原 100% 画布比例" onClick={() => changeZoom(1)}>{Math.round(zoom * 100)}%</button><button type="button" disabled={zoom >= MAX_ZOOM} aria-label="放大画布" title="放大画布" onClick={() => changeZoom(zoom + 0.1)}><IconPlus size={15} /></button></div>
+    </div>
+    <div className="tc-fab-group" role="group" aria-label="画布定位">
+      <button type="button" className={handMode ? "is-active" : ""} aria-pressed={handMode} aria-label={handMode ? "退出抓手模式" : "切换抓手平移模式"} title={handMode ? "退出抓手模式" : "抓手平移"} onClick={() => { setHandMode(current => !current); setPositionEditing(false); setNodePickerOpen(false); setDrawingMode(false); setDrawingDraft([]); }}><IconHandMove size={16} /></button>
+      <button type="button" aria-label="适应全部可见内容" title="适应全部可见内容" onClick={() => actions.fitCanvas(stageSize.width, stageSize.height)}><IconArrowsMaximize size={16} /></button>
+    </div>
+    <div className="tc-fab-group" role="group" aria-label="编辑画布">
+      <button type="button" className={positionEditing ? "is-active" : ""} aria-pressed={positionEditing} aria-label={positionEditing ? "完成画布编辑" : "编辑画布"} title={positionEditing ? "完成画布编辑" : "编辑画布"} onClick={togglePositionEditing}>{positionEditing ? <IconCheck size={16} /> : <IconPencil size={16} />}</button>
+    </div>
+    {isAddCustom && positionEditing && <div className="tc-fab-group tc-fab-group--edit-content" role="group" aria-label="添加画布内容">
+      <button type="button" className={nodePickerOpen ? "is-active" : ""} aria-label="添加已有内容节点" aria-expanded={nodePickerOpen} title="添加已有内容节点" onClick={() => { setNodePickerOpen((open) => !open); setDrawingMode(false); }}><IconPlus size={16} /></button>
+      <button type="button" aria-label="添加笔记" title="添加笔记" onClick={addNote}><IconNotes size={16} /></button>
+      <button type="button" className={drawingMode ? "is-active" : ""} aria-label={drawingMode ? "退出绘图" : "自由绘图"} aria-pressed={drawingMode} title={drawingMode ? "退出绘图" : "自由绘图"} onClick={() => { setDrawingMode((active) => !active); setNodePickerOpen(false); }}><IconPencil size={16} /></button>
+      {drawings.length > 0 && <button type="button" aria-label="撤销上一笔绘图" title="撤销上一笔绘图" onClick={() => actions.removeDrawing?.(drawings.at(-1).id)}><IconRestore size={15} /></button>}
+    </div>}
+  </div>;
+  const nodePicker = isAddCustom && positionEditing && nodePickerOpen && <div className="tc-node-picker" role="region" aria-label="添加已有内容节点">
+    <strong>添加任务内容</strong>
+    {availableNodeCards.length ? availableNodeCards.map((card) => <button key={card.id} type="button" onClick={() => { actions.showCard(card.id, { focus: true }); setNodePickerOpen(false); }}><span>{card.title}</span><small>{cardSummary(card)}</small></button>) : <p>当前任务的材料都已显示在画布上。</p>}
+  </div>;
+
   return <aside className={"task-canvas" + (embedded ? " is-embedded" : "") + (isAddCustom ? " is-addcustom" : "")} hidden={!visible} aria-label="当前任务的自由画布">
     {!embedded && <header className="panel-header tc-header"><div><h2><IconLayoutBoard size={17} />任务画布</h2><span>同一现场里的代码、解释与检查证据</span></div><div className="tc-header-links"><button type="button" onClick={onBack}><IconArrowLeft size={14} />定位现场</button><button type="button" className={contentsOpen ? "is-active" : ""} aria-expanded={contentsOpen} onClick={onOpenContents}><IconLayoutList size={14} />本任务内容</button></div></header>}
     <div className="tc-object-toolbar"><span className="tc-selection-label">{selected ? selected.title : `${visibleCards.length} 个内容对象`}</span>{focusRelatedCards.length > 0 && <nav className="tc-focus-related" aria-label="当前节点的直接关联">{focusRelatedCards.map((card) => {
       const relation = connections.find((connection) => connection.from === focusCardId && connection.to === card.id || connection.to === focusCardId && connection.from === card.id);
       return <button key={card.id} type="button" title={`聚焦到${card.title}${relation?.label ? ` · ${relation.label}` : ""}`} onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><span>{card.title}</span>{relation?.label && <small>{relation.label}</small>}</button>;
-    })}</nav>}<div className="tc-canvas-toolbar" role="toolbar" aria-label="画布视图与编辑操作">
+    })}</nav>}{!isAddCustom && <div className="tc-canvas-toolbar" role="toolbar" aria-label="画布视图与编辑操作">
       {embedded && !enableCardFocus && <button type="button" className={contentsOpen ? "is-active" : ""} aria-label="打开任务内容总览" title="打开任务内容总览" aria-expanded={contentsOpen} onClick={onOpenContents}><IconLayoutList size={16} /></button>}
       <button type="button" className={state.comparing ? "is-active" : ""} aria-pressed={Boolean(state.comparing)} aria-label={state.comparing ? "退出临时对照" : "临时对照内容"} title={state.comparing ? "退出临时对照" : "临时对照内容"} onClick={() => state.comparing ? actions.endComparison?.() : actions.beginComparison?.(comparisonIds)}><IconLayoutColumns size={16} /></button>
       <span className="tc-toolbar-rule" />
@@ -279,11 +373,16 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
         {positionEditing ? <IconCheck size={16} /> : <IconPencil size={16} />}
       </button>
       {state.lastHiddenId && <button type="button" aria-label="恢复刚收起的内容" title="恢复刚收起的内容" onClick={() => actions.restore()}><IconRestore size={15} /></button>}
-    </div></div>
+    </div>}</div>
 
-    <div ref={stageRef} className={"tc-stage" + (handMode || spaceHeld ? " is-hand-mode" : "") + (positionEditing ? " is-layout-editing" : "") + (gestureKind ? " is-gesturing" : "") + (gestureKind === "pan" ? " is-panning" : "")} tabIndex={0} aria-label="任务空间；拖动空白平移，按住 Ctrl 或 Command 滚轮缩放" style={{ backgroundSize: `${Math.max(12, 20 * zoom)}px ${Math.max(12, 20 * zoom)}px`, backgroundPosition: `${panX}px ${panY}px` }} onPointerDown={(event) => {
+    <div ref={stageRef} className={"tc-stage" + (handMode || spaceHeld ? " is-hand-mode" : "") + (positionEditing ? " is-layout-editing" : "") + (drawingMode ? " is-drawing" : "") + (gestureKind ? " is-gesturing" : "") + (gestureKind === "pan" ? " is-panning" : "")} tabIndex={0} aria-label="任务空间；拖动空白平移，按住 Ctrl 或 Command 滚轮缩放" style={{ backgroundSize: `${Math.max(12, 20 * zoom)}px ${Math.max(12, 20 * zoom)}px`, backgroundPosition: `${panX}px ${panY}px` }} onPointerDown={(event) => {
       if (floatingTarget(event.target) || editableTarget(event.target)) return;
       const inCard = event.target instanceof Element && event.target.closest(".tc-card");
+      if (isAddCustom && drawingMode && !spaceHeld && !inCard && !(event.target instanceof Element && event.target.closest("button,a"))) {
+        if (!inCard) actions.selectCard(null);
+        beginDraw(event);
+        return;
+      }
       if (inCard && !handMode && !spaceHeld) return;
       if (event.target instanceof Element && event.target.closest("button,a")) return;
       if (!inCard) actions.selectCard(null);
@@ -297,8 +396,9 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
       else if (event.key.toLowerCase() === "f") { event.preventDefault(); actions.fitCanvas(stageSize.width, stageSize.height); }
       else if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) { event.preventDefault(); const step = event.shiftKey ? 120 : 40; actions.setViewport({ x: panX + (event.key === "ArrowLeft" ? step : event.key === "ArrowRight" ? -step : 0), y: panY + (event.key === "ArrowUp" ? step : event.key === "ArrowDown" ? -step : 0) }); }
       else if ((event.key === "Delete" || event.key === "Backspace") && selected) { event.preventDefault(); actions.hideCard(selected.id); }
-      else if (event.key === "Escape") { setSpaceHeld(false); setHandMode(false); setPositionEditing(false); }
+      else if (event.key === "Escape") { setSpaceHeld(false); setHandMode(false); setPositionEditing(false); setNodePickerOpen(false); setDrawingMode(false); setDrawingDraft([]); }
     }} onKeyUp={(event) => { if (event.key === " ") setSpaceHeld(false); }} onBlur={() => setSpaceHeld(false)}>
+      {isAddCustom && <div className="tc-floating-tools">{canvasToolbar}{nodePicker}</div>}
       <div className="tc-world" style={{ transform: `translate(${panX}px, ${panY}px) scale(${zoom})` }}>
         {addCustomGroupRegions.map((group) => <div key={group.id} className={`tc-group-region is-${group.id}`} aria-hidden="true" style={{ left: group.left, top: group.top, width: group.width, height: group.height, "--tc-group-label-scale": Math.max(1, Math.min(4.5, 1 / zoom)) }}><span>{group.label}</span></div>)}
         {connections.length > 0 && <svg className="tc-connections" aria-hidden="true"><defs><marker id="task-canvas-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 1 1 L 7 4 L 1 7" fill="none" stroke="currentColor" strokeWidth="1.3" /></marker></defs>{connections.map((connection, index) => {
@@ -319,6 +419,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
           const path = horizontal ? `M ${startX} ${startY} C ${startX + direction * distance} ${startY}, ${endX - direction * distance} ${endY}, ${endX} ${endY}` : `M ${startX} ${startY} C ${startX} ${startY + direction * distance}, ${endX} ${endY - direction * distance}, ${endX} ${endY}`;
           return <g key={connection.id || index}><path d={path} markerEnd="url(#task-canvas-arrow)" />{connection.label && <text x={(startX + endX) / 2} y={(startY + endY) / 2 - 8}>{connection.label}</text>}</g>;
         })}</svg>}
+        {displayedDrawings.length > 0 && <svg className="tc-drawings" aria-hidden="true">{displayedDrawings.map((drawing) => <polyline key={drawing.id} points={(drawing.points || []).map((point) => `${point.x},${point.y}`).join(" ")} fill="none" stroke={drawing.color || "#55585a"} strokeWidth={drawing.width || 3} strokeLinecap="round" strokeLinejoin="round" />)}</svg>}
 
         {state.cards.map((card, index) => {
           const collapsed = isCollapsed(card);
@@ -330,7 +431,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
             <div className="tc-card-content" hidden={collapsed} role={isAddCustom ? "region" : undefined} tabIndex={isAddCustom ? 0 : undefined} aria-label={isAddCustom ? `${card.title}内容，可在卡片内滚动查看` : undefined} onWheel={(event) => {
               const content = event.currentTarget;
               if (!event.ctrlKey && !event.metaKey && content.scrollHeight > content.clientHeight + 1) event.stopPropagation();
-            }}>{renderMaterial ? renderMaterial(card.id, card) : <div className="tc-slot-placeholder"><span>当前任务内容</span><button type="button" onClick={onOpenContents}>打开内容索引</button></div>}</div>
+            }}>{card.kind === "note" ? <textarea className="tc-note-editor" aria-label={`${card.title}内容`} placeholder="记下当前判断、待办或补充说明…" value={card.noteText || ""} disabled={!positionEditing} onChange={(event) => actions.updateCard?.(card.id, { noteText: event.target.value })} /> : renderMaterial ? renderMaterial(card.id, card) : <div className="tc-slot-placeholder"><span>当前任务内容</span><button type="button" onClick={onOpenContents}>打开内容索引</button></div>}</div>
             {!collapsed && positionEditing && <button className="tc-resize-handle" type="button" disabled={card.pinned} aria-label={`调整${card.title}尺寸；方向键微调`} title={card.pinned ? "已固定尺寸" : "拖动调整尺寸；方向键微调"} onPointerDown={(event) => beginResize(event, card)} onKeyDown={(event) => keyboardResize(event, card)}><IconArrowsDiagonal size={12} /></button>}
           </section>;
         })}
@@ -339,9 +440,9 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
       {contentsOpen && contents && <div className="tc-floating-index">{contents}</div>}
       {!visibleCards.length && <div className="tc-empty-state"><IconLayoutBoard size={23} /><strong>{hiddenCards.length ? "当前内容已收纳" : "尚未加入材料"}</strong><p>{hiddenCards.length ? "从本任务内容中恢复，位置和操作记录仍保留。" : "在对话或材料中选择“在画布中整理”，把需要关联的内容放到这里。"}</p><button type="button" onClick={onOpenContents}><IconLayoutList size={14} />选择本任务材料</button></div>}
 
-      <div className="tc-mini-map"><svg role="button" tabIndex={0} aria-label="画布小地图，点击定位；Enter 适应全部内容" viewBox={`${minimapBounds.x} ${minimapBounds.y} ${minimapBounds.width} ${minimapBounds.height}`} onClick={mapClick} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); actions.fitCanvas(stageSize.width, stageSize.height); } }}>{visibleCards.map((card) => <rect key={card.id} x={card.x} y={card.y} width={card.width} height={isCollapsed(card) ? COLLAPSED_HEIGHT : card.height} rx="12" className={selected?.id === card.id ? "is-selected" : ""} />)}<rect className="tc-map-viewport" x={-panX / zoom} y={-panY / zoom} width={stageSize.width / zoom} height={stageSize.height / zoom} /></svg><span>点击小地图定位</span></div>
+      <div className="tc-mini-map"><svg role="button" tabIndex={0} aria-label="小地图，按住拖动或点击定位；Enter 适应全部内容" viewBox={`${minimapBounds.x} ${minimapBounds.y} ${minimapBounds.width} ${minimapBounds.height}`} onPointerDown={beginMapDrag} onPointerMove={moveMapDrag} onPointerUp={endMapDrag} onPointerCancel={endMapDrag} onLostPointerCapture={() => { minimapPointer.current = null; }} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); actions.fitCanvas(stageSize.width, stageSize.height); } }}>{visibleCards.map((card) => <rect key={card.id} x={card.x} y={card.y} width={card.width} height={isCollapsed(card) ? COLLAPSED_HEIGHT : card.height} rx="12" className={selected?.id === card.id ? "is-selected" : ""} />)}{drawings.map((drawing) => <polyline key={drawing.id} points={(drawing.points || []).map((point) => `${point.x},${point.y}`).join(" ")} />)}<rect className="tc-map-viewport" x={-panX / zoom} y={-panY / zoom} width={stageSize.width / zoom} height={stageSize.height / zoom} /></svg><span>点击或拖动定位</span></div>
 
-      <div className="tc-canvas-hint">{positionEditing ? "拖动卡片标题调整位置 · 方向键微调 · Esc 退出编辑" : "空白拖动平移 · ⌘ / Ctrl 滚轮缩放"}{hiddenCards.length ? ` · 已收纳 ${hiddenCards.length} 项` : ""}</div>
+      <div className="tc-canvas-hint">{drawingMode ? "绘图中：在画布空白处拖动绘制 · Esc 退出编辑" : positionEditing ? "编辑中：拖动卡片标题移动 · 可添加节点、笔记或绘图 · Esc 退出编辑" : "空白拖动平移 · ⌘ / Ctrl 滚轮缩放"}{hiddenCards.length ? ` · 已收纳 ${hiddenCards.length} 项` : ""}</div>
     </div>
     {(flow?.state?.notice || flow?.state?.error) && <div className={"tc-flow-status" + (flow.state.error ? " is-error" : "")} role={flow.state.error ? "alert" : "status"} aria-live="polite">{flow.state.error ? <IconAlertTriangle size={13} /> : <IconLayoutBoard size={13} />}<span>{flow.state.error || flow.state.notice}</span></div>}
   </aside>;
