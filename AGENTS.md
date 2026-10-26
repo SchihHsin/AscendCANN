@@ -6671,6 +6671,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本地 1280×720 截图观察了 Banner、阶段路径及日程楼层；最终合并版 `npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 通过。未运行测试套件。未改页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 保留并合并了期间到达的 origin/main 并行改动，包括共享画布及工作区选区预览；没有重置或清除其他对话的内容。最终提交 `b5ebb1c6` 已推送到 `origin/main`，GitHub Pages workflow `40307191492` build / deploy 成功。线上 `/ascstudio/` HTML、JS、CSS 与新插画均 HTTP 200；JS 完整下载 997,077 bytes。
 
+### 2026-10-26 · 抖音四页预览放大
+
+- 用户指出四张图文仍缩成小块（H）。原因是渠道卡片内的预览容器没有明确撑满可用宽度；在 `ascend-studio/src/community-draft.css` 为抖音预览与四页网格补充 `width: 100%`、`min-width: 0` 和拉伸约束，保留每页 `69:100` 比例。四页随卡片宽度一起放大，不再按内容宽度挤在左侧。
+- 本地 381px 窄视口 CUA 回放中，四张图文已横向占满抖音卡片并保持竖版比例（M）。未完成桌面尺寸截图；不声称桌面回放已验收。`npm run build:pages`、生成 JS `node --check` 与 `git diff --check` 通过，未运行自动化测试。
+- 只调整抖音卡片预览尺寸，不改渠道选择 / 发布流程、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 源码、`ascstudio/` 构建产物及交接记录随提交 `cb6070b4` 推送至 `origin/main`。GitHub Pages workflow `40316645739` build / deploy 成功；公开 `/ascstudio/` HTML 与 CSS 均 HTTP 200，CSS 已含 `width: 100%` 规则。
+
 ### 2026-10-26 · ResNet50 全部节点内容展开
 
 - 在 `ascend-studio/src/OfficialLearningPathCanvas.jsx` 为官方 ResNet50 学习画布增加展开/收起全部节点内容态；复用每个节点现有的图解、讲解、来源与对应练习组件，卡片高度由 ResizeObserver 反馈到章节纵向排布，展开时适配完整路径。`LearningCanvasToolbar.jsx` 沿用公共浮动按钮组新增层叠卡片切换按钮；按钮在宽画布显示“全部展开/收起”，窄画布保留图标并依靠完整 tooltip，`official-learning-canvas.css` 仅加展开态卡片与窄屏按钮样式。
@@ -6691,3 +6698,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据与回放：用户附图及明确选择（H）；本地 Chrome 桌面预览中，拖动 `samples/s` 到“设备利用率”后 Prompt 增加该指标，点击可增删字段；发送后出现开发任务页。线上 Pages 以 `?home=combine` 打开后可访问性树确认「组合」被选中。
 - `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；保留 Vite 既有主 JS chunk 大于 500 kB 提示。
 - 页面新增首页方案 Tab，不改变 API / Protocol、Host / Harness 或 Application / Task 边界。源码提交 `86b9a588`，发布资源提交 `dccebbe0`，并入并行更新后的提交 `f425e635` 已推送至 `origin/main`；Pages workflow `40315576178` build / deploy 成功，线上 HTML、JS、CSS 均 HTTP 200。
+
+
+### 2026-10-26 · 学习发现 Banner 纹理与彩色碎片校正
+
+- 用户指出上一版 Banner 背景比参考图更平、纹理与彩色碎片不足；本次上传截图是视觉依据（H）。
+- 以浅蓝白底图替换 Banner 纹理：加入柔和层叠波纹、光带和青 / 紫 / 粉 / 薄荷半透明碎片；继续保留向下渐隐。学习路径内容、布局和主按钮不变。
+- 本地桌面预览已核对，具体构建、语法、差异检查与推送状态将在发布后补记。未运行测试套件；未改页面序列或 API / Protocol、Host / Harness、Application / Task 边界。

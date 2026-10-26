@@ -66,6 +66,13 @@ The three-column structure matches the selected mock: compact grouped project ta
 
 final result: passed
 
+### 2026-10-26 · 抖音四页预览放大
+
+- **问题：** 用户反馈四张抖音知识图文仍缩成一排小块。原有固定比例生效，但预览容器没有撑满渠道卡片。
+- **调整：** `.channel-preview-tiktok` 与 `.channel-preview-tiktok-panels` 明确占满可用宽度；四页各自保持 `69:100` 比例，网格靠上对齐，按卡片宽度均分。
+- **本地复核：** 381px 窄视口 CUA 显示四张图横向铺满抖音卡片，不再挤在左侧；竖版比例仍一致。桌面视口尚未截图核验。
+- **验证：** `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。源码与静态产物已随提交 `cb6070b4` 推送至 `origin/main`；Pages workflow `40316645739` 成功，公开 HTML / CSS HTTP 200，CSS 已核对包含撑满宽度规则。桌面截图尚未核验。
+
 ## 2026-10-24 · 探索终点提示去重与发送入口收敛
 
 - **Target:** Ascend Studio 新建任务首页的「探索」方案，用户附图中的训练效率叶子节点。
