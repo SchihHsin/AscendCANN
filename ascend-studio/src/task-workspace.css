@@ -59,6 +59,10 @@
 .tw-area-composer { position: absolute; z-index: 112; width: min(420px, calc(100% - 24px)); max-width: none; margin: 0; }
 .tw-area-composer .composer-context-chips { padding-bottom: 6px; }
 .tw-area-composer .attachment-chip > span { max-width: 100%; }
+.tw-area-composer .point-context-chip { gap: 7px; padding: 3px 5px; }
+.tw-area-composer .point-context-thumbnail { position: relative; display: block; flex: 0 0 48px; width: 48px; height: 32px; overflow: hidden; border: 1px solid #d8d8d8; border-radius: 4px; background: #fff; }
+.tw-area-composer .point-context-thumbnail > .task-workspace { display: flex; min-width: 0; min-height: 0; border: 0; }
+.tw-area-composer .point-context-label { color: #686a73; }
 .tw-area-voice-hint { display: inline-flex; align-items: center; gap: 5px; color: #85858c; font-size: 10px; line-height: 1.4; white-space: nowrap; }
 .tw-area-voice-hint > svg { color: #8883a5; }
 .tw-area-voice-hint.is-listening { color: #655f91; }
