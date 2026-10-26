@@ -1710,3 +1710,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 按用户确认统一采用已有 `@tabler/icons-react`，共享图标尺寸、描边与热区规则；顶部对话布局按钮改为 `IconLayoutSidebar` / `IconLayoutBottombar`，统一图书与并排布局图标语义。内容示意图保留专属造型。
 - 本地 5178 预览截图与可访问性树确认页面和两个布局选项正常；构建、图标模块语法、差异及静态入口资源检查通过。未运行测试套件，Vite 主 chunk 约 1.03 MB。没有改页面序列或 API / Host / Application 边界。
 - 源码与 `/ascstudio/` 静态产物已推送到 `origin/main`，并合入并行工作；Pages workflow `40360271679` build / deploy 成功；线上 `/ascstudio/` HTML、`index-C-7h-DrJ.js` 与 `index--ttgCUFj.css` 均返回 HTTP 200，详细记录见根目录 `AGENTS.md`。
+
+### 2026-10-27 · ResNet50 学习画布适应视图图标同步
+
+- 用户指出目标页面是 GitHub Pages。此前“适应全部可见内容”只改了通用 `TaskCanvas`，ResNet50 实际使用独立的 `LearningCanvasToolbar`，因此线上仍显示向外箭头。现将学习工具栏也改为 Tabler `IconArrowsMinimize`，与通用任务画布一致；按钮行为与提示不变。
+- 在隔离 worktree 同步 `origin/main` 的 `425653f7` / `6a4bf8e5`，保留学习发现页面并行改动后重新构建。修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 和 `ascstudio/` 构建产物；页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；已生成入口 `index-C3DSYrl0.js` 与 CSS `index-BVnw8_Wn.css`。Pages 推送及部署状态待回读。
