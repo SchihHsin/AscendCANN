@@ -6775,3 +6775,22 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 最新主线在期间更新了学习画布步骤环与组合任务首页；先更新至 `7d984d6e` 再重新构建，保留主线功能。`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过；未运行自动化测试。页面序列、API / Host / Application 边界不变。
 - 提交 `6c99041e` 已推送至 `origin/main`。GitHub Pages 已发布：线上 `/ascstudio/` HTML 引用 `index-BQsvSIyX.js` / `index-BB5PvceV.css`，HTML、JS、CSS 与新猫图均 HTTP 200。无未决事项。
 
+### 2026-10-27 · 学习发现主推路径降低彩色密度
+
+- 用户延续此前“选定方案 1，但颜色有点花”的反馈，要求继续优化推荐学习路径。确认花感来自五阶段各自使用整块彩色渐变卡片，并在动作行、编号与节点反复叠加同色强调。
+- `ascend-studio/src/learning-discovery.css` 收敛为白灰中性阶段卡与白色动作行；保留五种柔和低饱和色，仅用于阶段编号和小节点。五阶段信息、步骤、路径插画、浅色 Banner 与黑色主按钮均不变。
+- 本地 1280×720 CUA 预览确认层级和节点清晰；`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过，未运行测试套件。用户可在同一主推路径继续查看。没有改页面序列 / hash 或 API / Host / Application 边界。
+- 视觉与 Pages 构建提交 `425653f7` 已推送至 `origin/main`；线上发布和资源状态待核对。
+
+### 2026-10-27 · Tabler 界面图标系统整合
+
+- 用户确认采用 Tabler。以现有 `@tabler/icons-react` 为页面界面图标库，新增 `ascend-studio/src/icon-system.js` 与 `icon-system.css`，统一尺寸阶梯、描边和按钮热区；将工作区顶部布局切换改为 Tabler 图标，统一重复的图书 / 并排对照语义。示意图与装饰图保留专属大小和描边。
+- 整合期间把 `origin/main` 更新到 `e9a55ac9`，保留画布便签 / 自由绘图、AddCustom 可信度与社区回流、组合首页悬停连线、学习状态与横幅照片改动；本轮只改图标表现，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。依据：用户选择（H）、本地运行页面 CUA 截图与可访问性树（M）。
+- 验证：`npm run build:pages`、`node --check ascend-studio/src/icon-system.js`、`git diff --check`、入口 JS / CSS 存在性检查通过；本地 5178 预览 1280×720 显示布局切换按钮与工作区正常。未运行测试套件；Vite 有约 1.03 MB 主 chunk 提示。
+- 发布：图标实现 `2319819f` 经整合提交 `801f5b25`、`7c10785f`、`e9a55ac9` 推送到 `origin/main`；远端随后并入的记录现已同步至 `05318bc1`。workflow `40359623548` 的 build 成功，deploy 因后续并行主线更新取消；workflow `40360271679` build / deploy 成功；线上 `/ascstudio/` HTML 返回 200，并引用 `index-C-7h-DrJ.js` / `index--ttgCUFj.css`，两项资源均返回 200。
+
+### 2026-10-27 · ResNet50 学习画布适应视图图标同步
+
+- 用户指出目标页面是 GitHub Pages。此前“适应全部可见内容”只改了通用 `TaskCanvas`，ResNet50 实际使用独立的 `LearningCanvasToolbar`，因此线上仍显示向外箭头。现将学习工具栏也改为 Tabler `IconArrowsMinimize`，与通用任务画布一致；按钮行为与提示不变。
+- 在隔离 worktree 同步 `origin/main` 的 `425653f7` / `6a4bf8e5`，保留学习发现页面并行改动后重新构建。修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 和 `ascstudio/` 构建产物；页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；已生成入口 `index-C3DSYrl0.js` 与 CSS `index-BVnw8_Wn.css`。提交 `f6070dff` 已推送到 `origin/main`；GitHub Pages workflow `40364545318` build / deploy 成功，线上 `/ascstudio/` HTML 引用新 JS / CSS，HTML、JS、CSS 均 HTTP 200。
