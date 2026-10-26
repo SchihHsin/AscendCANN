@@ -6808,3 +6808,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出适应视图图标应按画布统一规则全局一致。审查 Ascend Studio 画布后发现三处入口：通用任务画布 `TaskCanvas`、学习画布 `LearningCanvasToolbar`、任务内容总览 `TaskContentOverview`。在共享层新增 `CanvasFitIcon`，统一使用 Tabler `IconArrowsMinimize`；工具栏和总览保留原尺寸、文案、适配行为。
 - 同步并保留并行主线提交 `6271639b` 与 `f9870df1`（组合首页交互 / 学习发现样式和相关记录），基于合并后的源码重新构建 `/ascstudio/`。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 和入口资源引用检查通过；统一实现 `eb990165` 已进入主线，当前主线 `3ca7072f` 的 Pages workflow `40366875012` 成功。线上 `/ascstudio/` HTML 引用 `index-pJdnm3Lb.js` 与 `index-DkWU4xAD.css`，HTML / CSS HTTP 200，JS 响应 HTTP 200。
+
+### 2026-10-27 · 对话浮窗拖拽吸附
+
+- 用户此前已确认：底部浮窗输入区可拖向左侧对话栏；接近目标时先显示栏位轮廓预览，松手后吸附。保留顶栏布局按钮；输入框外观沿用原样，只在框边加小型 Tabler 拖拽把手。指向区域框选期间不能切换布局。依据：用户已确认的交互决策（H）。
+- 实现于 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 与 `ascstudio/` Pages 产物。把手以 Pointer 拖动浮窗，目标栏显示包含标题栏和输入区的无字轮廓；松手落入目标时切换到左侧，拖出目标后回弹。轻点或键盘 Enter / Space / ← 可停靠，Esc 取消当前拖动；移动端保留顶栏切换并隐藏拖拽把手。没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages` 与 `git diff --check` 通过；桌面 1280×720 CUA 实操确认向左拖后吸附、拖向目标外后保持浮窗、顶栏可切换、指着说框选期间布局按钮禁用，页面无 console error。未新增或运行自动化测试。
+- 发布：源码提交 `7f836437`，同步并保留主线并行更新的合并提交 `789629e5`，Pages 产物提交 `3ca7072f`；已推送 `origin/main`。GitHub Pages workflow `40366875012` build / deploy 成功；线上 `/ascstudio/`、`index-pJdnm3Lb.js` 与 `index-DkWU4xAD.css` 均 HTTP 200。无未决事项。
