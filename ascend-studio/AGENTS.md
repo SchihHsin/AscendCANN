@@ -1642,4 +1642,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - `OfficialLearningPathCanvas.jsx` 增加独立 maximized 状态和 viewport 快照；最大化时暂停画布世界变换、隐藏其他节点/卡片与周边控件，让目标卡实际占据可读工作区；卡片按钮切换为还原语义，Escape 可退出并恢复原 viewport。聚焦仍只调整平移坐标并保留当前缩放。单节点与全部展开卡片均走同一逻辑，其他任务画布不变。
 - `LearningCanvasCard.jsx` 为最大化态提供工作区尺寸和明确的还原按钮；`official-learning-canvas.css` 仅限定官方 ResNet50 最大化态的可见层级与滚动卡片头部。
-- 构建、测试与 Pages 产物检查完成后补记提交 / 推送和线上验证结果。
+- 最大化时目标卡实际铺满工作区（四周 18px），内部滚动；隐藏其他节点和拖动 / 聚焦 / 收起控件，仅保留固定与还原。原 viewport 坐标及 scale 单独保存，点击还原或 Escape 后恢复；退出后聚焦仍只改平移。普通模式与全部展开卡共用同一状态逻辑。
+- rebase 到包含 TikTok 预览更新的最新 `origin/main` 后，`npm run build`、`npm run test:sites`（4/4）、`npm run build:pages`、`git diff --check` 均通过。Pages index 引用的 JS / CSS 文件完整，构建 JS 包含放大、还原和最大化状态逻辑。线上发布核对待推送后执行。
