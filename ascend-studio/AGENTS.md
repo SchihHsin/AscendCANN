@@ -1698,3 +1698,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户提供的新猫图替换学习发现横幅推理插画中的输入照片位和结果卡照片位；保留布局与其余推理图形不变。图片仍为 1672×941 透明 PNG。
 - `npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过。源码和 Pages 资源提交 `6c99041e` 已推送至 `origin/main`；线上 HTML、JS、CSS 和新 PNG 均 HTTP 200。无待办。
+
+### 2026-10-27 · Ascend Studio Tabler 图标系统
+
+- 按用户确认统一采用已有 `@tabler/icons-react`，共享图标尺寸、描边与热区规则；顶部对话布局按钮改为 `IconLayoutSidebar` / `IconLayoutBottombar`，统一图书与并排布局图标语义。内容示意图保留专属造型。
+- 本地 5178 预览截图与可访问性树确认页面和两个布局选项正常；构建、图标模块语法、差异及静态入口资源检查通过。未运行测试套件，Vite 主 chunk 约 1.03 MB。没有改页面序列或 API / Host / Application 边界。
+- 源码与 `/ascstudio/` 静态产物已推送到 `origin/main`，并合入并行工作；Pages workflow `40360271679` build / deploy 成功；线上 `/ascstudio/` HTML、`index-C-7h-DrJ.js` 与 `index--ttgCUFj.css` 均返回 HTTP 200，详细记录见根目录 `AGENTS.md`。
