@@ -1393,7 +1393,7 @@ final result: passed
 - **实现：** 起点停留约 280ms 后以节点晕显锁定；移动时显示沿鼠标方向延伸的细虚线；目标约 680ms 环形进度完成后固定关系。移开候选目标会清除该候选计时；空白点击、离开画布或 Esc 取消整个预览。固定后起点清空，避免一次悬浮连续连出多条。
 - **本地回放：** `http://127.0.0.1:5206/?home=combine`。确认了起点光晕、目标环形进度、停留后“数据加载—CPU 预处理”连线和 Prompt 更新；在进度完成前移开目标不会生成关系；Esc 会清除待连线预览。页面 error 日志为空（CUA，M）。
 - **检查 / 边界：** `npm run build`、`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。保留既有 Vite 主 JS chunk >500 kB 提醒，未运行自动化测试。该设计不改默认空状态、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界；未接真实训练数据 / NPU。
-- **发布：** 功能提交 `7cfc3133` 与整合提交 `0aeab5c7` 已推送 `origin/main`；其后 `7d984d6e`、`6c99041e` 的主线更新均保留，Pages workflow `40358563037`、`40359033266` 成功。最新本地 Pages 构建引用 `index-BQsvSIyX.js` 与 `index-BB5PvceV.css`；本轮线上最新资源下载超时，未确认其完整哈希。
+- **发布：** 功能提交 `7cfc3133` 与整合提交 `0aeab5c7` 已推送 `origin/main`；其后学习画布、插画及图标系统更新均保留，Pages workflow `40358563037`、`40359033266` 成功。最新本地 Pages 构建引用 `index-C-7h-DrJ.js` 与 `index--ttgCUFj.css`，其中保留停留连线交互；最新线上资源下载超时，未确认完整哈希。
 
 ## 2026-10-26 · 编辑态新增画布内容入口复核
 
