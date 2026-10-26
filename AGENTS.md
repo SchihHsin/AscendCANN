@@ -6716,3 +6716,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`TaskWorkspace.jsx`、`styles.css` 与 Pages 静态产物。该概念改动不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build`、`npm run build:pages`、`git diff --check` 通过；CUA 1280×720 核对左侧、底部浮窗、框选时浮窗隐藏、选区缩略输入出现及取消后恢复。未运行自动化测试；窄屏行为有响应式规则，未做独立小视口截图。依据：用户确认（H）、本地原型观察（M）。
 - 发布：实现提交 `385eee30` 已推送至 `origin/main`；GitHub Pages workflow `40317786603` build / deploy 成功。线上 `/ascstudio/` HTML 与本轮 JS / CSS 均 HTTP 200，资源中包含布局切换与选区自动收起逻辑。
+
+### 2026-10-26 · 学习画布编辑态新增内容入口
+
+- ResNet50 / 官方学习画布进入「编辑画布位置」后，工具栏新增「新增节点：便签」与「自由绘图」；收起便签时，同组提供恢复入口。常规浏览态不显示这些编辑操作。
+- 便签按任务画布状态保存，可编辑、拖动和收起；新便签放在当前内容右侧，避免盖住已有节点。自由绘图笔迹随画布保存；小地图和「适应全部可见内容」把便签与笔迹纳入导航范围。学习层级与业务顺序不变。
+- 修改学习画布工具栏、ResNet50 / 学习路径画布，以及共享便签和绘图组件。依据：用户附图及此前确认的“进入编辑后才出现新增内容操作”（H）；本地预览回放（M）。
+- `npm run build:pages` 成功；Vite 提示主 JS chunk 大于 500 kB。未运行测试套件。5191 新版预览的辅助功能树显示新增入口；当前主线整合和线上发布仍待完成。

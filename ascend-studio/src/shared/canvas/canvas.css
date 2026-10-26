@@ -127,6 +127,18 @@
 .canvas-card-button[aria-pressed="true"] { color: #222324; background: #f1f1f0; }
 .canvas-card-actions .canvas-card-button { color: #777a7c; }
 
+.canvas-user-note { position: absolute; display: flex; flex-direction: column; overflow: hidden; }
+.canvas-user-note-header { justify-content: flex-start; flex: 0 0 auto; gap: 7px; min-height: 39px; padding: 5px 7px; color: #55585a; background: #fbfbfa; }
+.canvas-user-note-header.is-draggable { cursor: grab; touch-action: none; user-select: none; }
+.canvas-user-note-header.is-draggable:active { cursor: grabbing; }
+.canvas-user-note-header > svg { flex: 0 0 auto; color: #96989a; }
+.canvas-user-note-header > strong { flex: 1 1 auto; overflow: hidden; font-size: 11px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.canvas-user-note > textarea { display: block; flex: 1 1 auto; width: 100%; min-height: 0; padding: 11px 12px; resize: none; border: 0; outline: 0; color: #4f5254; background: #fff; font: inherit; font-size: 11px; line-height: 1.7; }
+.canvas-user-note > textarea::placeholder { color: #a2a4a5; }
+.canvas-user-note > textarea[readonly] { cursor: default; }
+.canvas-user-drawings { position: absolute; inset: 0; z-index: 3; overflow: visible; pointer-events: none; }
+.canvas-user-drawings polyline { fill: none; stroke: #7468a1; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+
 .canvas-minimap {
   position: absolute;
   z-index: 24;
