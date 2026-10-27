@@ -7073,6 +7073,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户截图显示 `/AscendCANN/ascstudio/` 为空白。HTTP 复核发现 Pages 普通 URL 返回的缓存 HTML 引用 `index-2CZdRaiw.js` / `index-BMkz6m8g.css`，这两个资源已是 404；带查询参数绕过 CDN 缓存后返回新 HTML 与新资源。HTML 响应 `Cache-Control: max-age=600`，所以短时间内不同设备 / 浏览器会拿到不一致的 HTML。此前 `build:pages` 使用 `--emptyOutDir`，每次构建删掉旧哈希资源，造成缓存中的 HTML 无法加载脚本与样式。
 - `ascend-studio/package.json` 的 Pages 构建不再清空 `ascstudio/`。同时恢复最近 10 次索引版本中引用的哈希 JS / CSS 文件，确保已缓存的旧入口在缓存窗口内仍有可取资源；后续构建也会保留已有哈希资源。页面导航与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages` 成功；新 bundle 与缓存版本 bundle `node --check` 通过；新旧 JS / CSS 文件存在；`git diff --check` 通过。Firefox 原标签页在修复发布前仍显示空白，线上发布及资源状态待本轮确认。
+
+### 2026-10-27 · 修复 GitHub Pages 的运行时白屏
+
+- 保留旧哈希资源后，Firefox 仍报告 `ReferenceError: can't access lexical declaration 'W' before initialization`。根因在 `ascend-studio/src/App.jsx`：小地图避让 `useLayoutEffect` 的依赖数组在渲染期间读取了稍后才声明的 `layout.workspaceRef`；依赖数组立即求值，早于 `useWorkbenchLayout` 初始化。移除这个稳定 ref 依赖，保留 `liftMinimapForComposer` 与 `selectedTask` 两个状态触发条件；effect 回调仍在布局 hook 初始化后执行。
+- 更新源代码与 `/ascstudio/` 静态产物：入口现引用 `index-Bz81_Hog.js` / `index-BlUG8aw7.css`。证据来自用户截图、Firefox 控制台错误（H）和源码时序复核（M）。没有改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`node --check ascstudio/assets/index-Bz81_Hog.js`、`git diff --check` 通过；本地生产构建与线上 Pages 均用 Chrome 确认根应用已渲染且无 JavaScript 运行时异常。线上普通 URL 和缓存绕过 URL 的 HTML、新 JS / CSS 均 HTTP 200；旧缓存入口引用的 JS / CSS 仍 HTTP 200。未运行自动化测试。
+- 修复提交 `d76fd4b4` 合并并保留并行主线更新；Pages workflow `40498003527` 成功，部署 head `36955efb`。此前缓存 HTML 修复现已与此运行时修复共同生效。
 ### 2026-10-27 · 每周速览改为微信服务通知主路径
 
 - 用户选定以微信服务通知呈现主动推送（H）。`ascstudio-mini/` 默认展示微信会话列表中的未读「服务通知」；点开通知后再进入每周速览。速览含一条重点资讯和两张参考兴趣 / 存疑信号的短知识卡；订阅确认会模拟授权和新消息送达。移除了小程序底部「速览」入口，微信导航只出现在消息列表。
