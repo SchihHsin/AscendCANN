@@ -110,18 +110,44 @@ button {
   background:#8f78c6;
   border-radius:50%;
 }
+.intro-eyebrow>span:not(:first-child) {
+  width:auto;
+  height:auto;
+  background:none;
+  border-radius:0;
+}
 .intro-body h1 {
   font-family:var(--serif);
   font-size:48px;
   font-weight:500;
-  line-height:1.55;
+  line-height:1.42;
   letter-spacing:1px;
-  margin:24px 0;
+  margin:20px 0;
 }
 .intro-body>p {
+  max-width:460px;
   color:#82808a;
   font-size:15px;
   line-height:1.95;
+}
+.review-point {
+  display:grid;
+  gap:6px;
+  max-width:430px;
+  margin-top:25px;
+  padding:2px 0 2px 14px;
+  border-left:2px solid #c7b7d9;
+}
+.review-point small {
+  color:#918d98;
+  font-size:10px;
+  letter-spacing:.5px;
+}
+.review-point strong {
+  color:#514b59;
+  font-size:13px;
+  font-weight:500;
+  line-height:1.7;
 }
 .intro-journey {
   display:flex;
@@ -150,21 +176,60 @@ button {
 }
 .preview-foot {
   display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
   gap:32px;
   font-size:11px;
   letter-spacing:.3px;
   color:#96929e;
 }
+.review-controls {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:none;
+}
+.review-controls button {
+  display:flex;
+  align-items:center;
+  gap:5px;
+  min-height:34px;
+  padding:0 10px;
+  border:1px solid #dedbe3;
+  border-radius:9px;
+  background:#ffffffa8;
+  color:#625d69;
+  font-size:10px;
+  letter-spacing:0;
+}
+.review-controls button:last-child {
+  border-color:#25252a;
+  background:#25252a;
+  color:#fff;
+}
+.review-controls button:disabled {
+  cursor:not-allowed;
+  opacity:.45;
+}
+.review-progress {
+  min-width:38px;
+  color:#85818b;
+  font-size:10px;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.2px;
+  text-align:center;
+}
 .device-wrap {
   position:relative;
 }
 .device {
+  /* HUAWEI Pura X View 阔直板机身比例：87 / 144.1 ≈ 0.604。 */
   width:420px;
-  height:min(890px,calc(100dvh - 76px));
-  min-height:680px;
+  height:696px;
+  min-height:0;
   background:#f8f8f8;
-  border:7px solid #26262b;
-  border-radius:48px;
+  border:6px solid #26262b;
+  border-radius:42px;
   position:relative;
   overflow:hidden;
   display:flex;
@@ -2273,10 +2338,10 @@ button {
     gap:70px;
   }
   .device {
-    height:calc(100dvh - 48px);
-    min-height:600px;
-    border-width:6px;
-    border-radius:43px;
+    height:min(696px,calc(100dvh - 48px));
+    min-height:0;
+    border-width:5px;
+    border-radius:38px;
   }
   .preview-intro {
     min-height:600px;
@@ -2296,8 +2361,10 @@ button {
   }
   .device {
     width:390px;
-    height:calc(100dvh - 56px);
-    min-height:640px;
+    height:min(646px,calc(100dvh - 56px));
+    min-height:0;
+    border-width:5px;
+    border-radius:38px;
   }
   .intro-body h1 {
     font-size:35px;
@@ -2554,55 +2621,6 @@ button {
   .small-card h3 {
     font-size:13px;
   }
-}
-.weekly-entry {
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-height:68px;
-  padding:11px 13px;
-  margin:0 0 17px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:12px;
-  text-align:left;
-}
-.weekly-entry-icon {
-  display:grid;
-  place-items:center;
-  width:38px;
-  height:38px;
-  flex:none;
-  color:#8257c5;
-  background:#f2ecfa;
-  border-radius:11px;
-}
-.weekly-entry-copy {
-  display:grid;
-  gap:4px;
-  min-width:0;
-  flex:1;
-}
-.weekly-entry-copy strong {
-  font-size:13px;
-  font-weight:600;
-}
-.weekly-entry-copy small {
-  color:var(--muted);
-  font-size:11px;
-}
-.weekly-entry-end {
-  display:flex;
-  align-items:center;
-  gap:4px;
-  flex:none;
-  color:#77727e;
-  font-size:11px;
-}
-.weekly-entry-end .icon {
-  width:15px;
-  height:15px;
 }
 .signal-panel {
   display:grid;
@@ -2994,10 +3012,339 @@ button {
   width:100%;
   justify-content:center;
 }
+.device.is-wechat .system-bar,.device.is-wechat .app-header {
+  background:#f7f7f7;
+}
+.device.is-wechat .app-header {
+  height:53px;
+  padding:0 17px;
+}
+.wechat-header-title {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:17px;
+  font-weight:600;
+}
+.wechat-title-mark {
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#08bf62;
+}
+.wechat-header-tools {
+  display:flex;
+  align-items:center;
+  gap:18px;
+  color:#25262a;
+}
+.wechat-header-tools>span {
+  display:grid;
+  place-items:center;
+  width:28px;
+  height:34px;
+}
+.wechat-header-tools .icon {
+  width:22px;
+  height:22px;
+}
+.wechat-plus {
+  border:1.5px solid #25262a;
+  border-radius:50%;
+  width:23px!important;
+  height:23px!important;
+}
+.wechat-plus .icon {
+  width:18px;
+  height:18px;
+}
+.wechat-notification-menu {
+  color:#25262a;
+}
+.wechat-notification-menu .icon {
+  width:20px;
+  height:20px;
+}
+.device.is-wechat .app-scroll {
+  background:#f7f7f7;
+}
+.wechat-page {
+  min-height:100%;
+  padding-bottom:15px;
+  background:#f7f7f7;
+}
+.wechat-search-row {
+  position:relative;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin:5px 12px 9px;
+  border-radius:7px;
+  background:#ededed;
+  color:#9a9ba0;
+  font-size:12px;
+}
+.wechat-search-row .icon {
+  width:15px;
+  height:15px;
+}
+.wechat-search-row kbd {
+  position:absolute;
+  right:12px;
+  border:0;
+  background:transparent;
+  color:#b5b6ba;
+  font-size:17px;
+}
+.wechat-chat-list {
+  background:#fff;
+}
+.wechat-chat-row {
+  width:100%;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 15px;
+  background:#fff;
+  border-bottom:1px solid #f0f0f0;
+  text-align:left;
+}
+button.wechat-chat-row {
+  cursor:pointer;
+}
+.wechat-avatar {
+  width:47px;
+  height:47px;
+  display:grid;
+  flex:none;
+  place-items:center;
+  border-radius:11px;
+  color:#fff;
+  font-size:16px;
+  font-weight:500;
+}
+.service-avatar {
+  background:#08bf62;
+}
+.service-avatar .icon {
+  width:25px;
+  height:25px;
+  stroke-width:1.8;
+}
+.file-avatar {
+  background:#8c9aa8;
+}
+.group-avatar {
+  background:#8499bf;
+}
+.friend-avatar {
+  color:#614f39;
+  background:#e8d2af;
+}
+.wechat-chat-content {
+  min-width:0;
+  flex:1;
+  display:grid;
+  gap:6px;
+}
+.wechat-chat-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.wechat-chat-heading strong {
+  overflow:hidden;
+  color:#222328;
+  font-size:14px;
+  font-weight:500;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.wechat-chat-heading time {
+  flex:none;
+  color:#a5a6ab;
+  font-size:10px;
+}
+.wechat-chat-preview {
+  overflow:hidden;
+  color:#999aa0;
+  font-size:11px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.wechat-unread-count {
+  width:17px;
+  height:17px;
+  display:grid;
+  flex:none;
+  place-items:center;
+  border-radius:50%;
+  background:#f34c42;
+  color:#fff;
+  font-size:10px;
+  line-height:1;
+}
+.wechat-inbox-foot {
+  padding:14px 18px;
+  color:#a5a5aa;
+  font-size:10px;
+  text-align:center;
+}
+.wechat-service-page {
+  min-height:100%;
+  padding:23px 19px;
+  background:#f7f7f7;
+}
+.wechat-date-divider {
+  width:max-content;
+  margin:0 auto 17px;
+  padding:5px 9px;
+  border-radius:5px;
+  background:#e9e9e9;
+  color:#85868a;
+  font-size:10px;
+}
+.wechat-push-card {
+  padding:15px;
+  background:#fff;
+  border:1px solid #ededee;
+  border-radius:10px;
+}
+.push-source {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding-bottom:12px;
+  border-bottom:1px solid #f0f0f0;
+}
+.push-source img {
+  width:28px;
+  height:28px;
+  border-radius:7px;
+}
+.push-source>span {
+  flex:1;
+  display:grid;
+  gap:2px;
+}
+.push-source strong {
+  font-size:12px;
+  font-weight:600;
+}
+.push-source small,.push-source time {
+  color:#999aa0;
+  font-size:10px;
+}
+.wechat-push-card h1 {
+  margin-top:14px;
+  font-size:17px;
+  font-weight:600;
+  line-height:1.5;
+}
+.wechat-push-card>p {
+  margin-top:7px;
+  color:#6d6f76;
+  font-size:12px;
+  line-height:1.8;
+}
+.push-preview {
+  display:grid;
+  gap:7px;
+  margin:13px 0;
+  padding:11px 12px;
+  border-radius:8px;
+  background:#f7f7f7;
+}
+.push-preview>span {
+  color:#77727e;
+  font-size:10px;
+}
+.push-preview>strong {
+  font-size:12px;
+  line-height:1.6;
+}
+.push-preview>div {
+  display:flex;
+  align-items:center;
+  gap:4px;
+  color:#8c8d94;
+  font-size:10px;
+}
+.push-preview>div i {
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#8257c5;
+}
+.push-preview>div i+i {
+  background:#24a99f;
+}
+.wechat-push-card>.primary-button {
+  width:100%;
+  justify-content:center;
+}
+.wechat-service-hint {
+  margin:14px 4px 0;
+  color:#999aa0;
+  font-size:10px;
+  line-height:1.8;
+  text-align:center;
+}
+.wechat-tab-bar {
+  display:flex;
+  flex:none;
+  min-height:60px;
+  background:#fafafa;
+  border-top:1px solid #e9e9e9;
+}
+.wechat-tab {
+  position:relative;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  color:#85868c;
+  font-size:9px;
+}
+.wechat-tab .icon {
+  width:21px;
+  height:21px;
+  stroke-width:1.5;
+}
+.wechat-tab.is-active {
+  color:#08bf62;
+}
+.wechat-tab.is-active .icon {
+  stroke-width:2;
+}
+.device.is-wechat .home-indicator {
+  height:0;
+}
 @media(prefers-reduced-motion:reduce) {
   *,*:before,*:after {
     animation:none!important;
     transition:none!important;
     scroll-behavior:auto!important;
+  }
+}
+@media(max-width:620px) {
+  .device.is-wechat .system-bar {
+    display:flex;
+    height:45px;
+    padding-top:env(safe-area-inset-top,0px);
+  }
+  .device.is-wechat .app-header {
+    height:53px;
+    padding-top:0;
+  }
+  .wechat-tab-bar {
+    min-height:calc(59px + env(safe-area-inset-bottom,0px));
+    padding-bottom:env(safe-area-inset-bottom,0px);
   }
 }

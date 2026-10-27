@@ -88,7 +88,6 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .workspace-grid.is-standalone-view > .management-page { grid-column: 3; grid-row: 1; }
 .workspace-grid.is-task-workspace > .diagnostic-panel { grid-column: 4; grid-row: 1; }
 .workspace-grid.is-task-workspace.is-conversation-floating > .conversation-panel { grid-column: 3 / 5; grid-row: 1; align-self: end; justify-self: center; width: min(500px, calc(100% - 32px)); height: min(390px, calc(100% - 40px)); min-height: 260px; margin-bottom: 20px; z-index: 12; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 36px rgba(24,25,31,.16), 0 2px 7px rgba(24,25,31,.06); }
-.workspace-grid.is-conversation-composer-only .tc-mini-map { transition: bottom .16s ease-out; }
 .workspace-grid.is-task-workspace.is-conversation-floating > .diagnostic-panel { grid-column: 3 / 5; grid-row: 1; }
 .workspace-grid.is-task-workspace.is-conversation-floating > .workspace-divider--conversation { display: none; }
 .workspace-grid.is-task-workspace.is-conversation-floating.is-area-interaction-active > .conversation-panel { visibility: hidden; pointer-events: none; }
@@ -544,7 +543,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .conversation-panel.is-composer-only > .ambient-art,
 .conversation-panel.is-composer-only > .conversation-scroll { display: none; }
 .conversation-panel.is-composer-only > .composer-stack {
-  width: min(920px, calc(100% - 24px));
+  width: min(720px, calc(100% - 324px));
   max-width: none;
   margin: 0 auto;
 }
@@ -564,9 +563,6 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   padding: 1px 2px 3px;
 }
 .conversation-panel.is-composer-only .community-success-invite { display: none; }
-@media (prefers-reduced-motion: reduce) {
-  .workspace-grid.is-conversation-composer-only .tc-mini-map { transition: none; }
-}
 .workspace-grid.is-task-workspace.is-conversation-floating > .conversation-panel.is-conversation-expanded {
   width: min(920px, calc(100% - 32px));
   height: min(620px, calc(100% - 40px));

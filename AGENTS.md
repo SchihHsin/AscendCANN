@@ -6960,6 +6960,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - ImageGen 已迭代生成对照板。用户随后指定星星参考新图中的流动彩色分区与柔亮效果，同时保留四角星轮廓；书减少立体厚度。当前方案为黑色圆角底、白色低浮雕薄页书（仅保留轻微乳白透光和边缘高光）、带橙 / 粉 / 紫 / 蓝 / 青流动渐变的发光四角星。参考来自用户提供的原始书星草图、乳白玻璃材质图和彩色球体的光色风格图；不把球体轮廓用于星星。最新生成预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-474f1147-318a-4aec-acd2-5a91b5d03848.png`；未加入项目文件。
 - 用户进一步提出黑底 / 白底两种颜色模式（H）。首版白底方案曾将书改深灰，用户明确否定；最终要求黑底、白底两种模式都保留白书。
 - 最新并排对照中，两版使用同一白色低浮雕薄书和同一彩虹渐变星星。白底版仅以极浅冷灰蓝轮廓、书页折线和柔和贴近阴影显形，不改变书的白色。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-ecf55de7-07b6-4dd4-aefa-d5a7aacad20e.png`；未加入项目文件。
+- 用户决定回到之前的双层开页轮廓，并要求比较白底呈现的质感 / 浅色区分方式（H）。已生成四种同轮廓处理：浅蓝灰细边线、乳白玻璃轻微冰蓝折射、珍珠白缎面近距离柔影、带极弱青 / 淡紫边光的乳白玻璃。星星颜色和形态不变，书保持白色。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-0a36339e-df2f-478f-a6a3-f65558552ebd.png`；未加入项目文件。
+- 用户要求进一步优化书形并提供多种方案（H）。已生成四种薄页低浮雕轮廓：连续双页、轻量页线、外缘上扬的曲页、紧凑圆角页；对比图统一使用黑底、白书与同一彩虹星，仅用于聚焦比较书形，既定黑底 / 白底两种模式仍保留。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-a2252595-c300-4ae1-8ab6-f23595375252.png`；未加入项目文件。
+- 用户认为白底处理第 4 种方向可用，但需要略强区分且更像书页（H）。反馈后保留青 / 淡紫珠光边缘，生成四种柔和变化；随后因页线仍显得抽象，再生成清晰的左右白色页面面、中心书脊和浅内页弧线版本。最新方案仍为白色低浮雕书，边缘只加浅冷色轮廓与柔影；星形和渐变不变。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-007bcb44-4c91-4cb0-8366-4287cb963a8b.png`；未加入项目文件。
+- 用户澄清问题在页面质感太像玻璃，并进一步指出页面太圆润（H）。本轮固定书形和星形，改为不透明纸页并收平表面、减少鼓起与圆角；四种细节为细纸纹哑光纸、干爽缎面纸、薄而清楚的叠页边缘、低光泽珍珠白纸。白底下仍用轻柔浅冷灰边缘 / 近距离阴影区分，不增加硬描边。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-90f15934-56a4-4deb-88d8-bb6c91dd0f6d.png`；尚待用户选择，未加入项目文件。
+- 用户选中上述右上方案，并要求清理纸面上重复生成形成的杂纹（H）。已从右上方案提取单枚图标，保持页形、彩虹星和浅冷色页边，改为均匀、平滑的白色哑光纸面，移除颗粒纹、重复线与噪点。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-f8698070-47f7-4b29-b5d0-765af0e014e5.png`；仍是概念图，未加入项目文件。
 - 未改变产品页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本轮没有代码改动或工程验证。待用户评审后再确定是否把某一方向转为正式图标资产。
 - 验证 / 发布：交接文档 `git diff --check` 通过后，仅提交 `AGENTS.md` 并推送 `main`；本地共享工作区既有暂存、未暂存及未跟踪改动未纳入。
 
@@ -7043,8 +7048,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户确认将三个首页方案改为设计点命名：「主动建议 / 多层探索 / 线索串联」，并同意同步调整图标。第一项突出任务建议卡，第二项突出中心节点逐层展开，第三项突出满屏线索之间的关系连接。
 - Tab 图标分别使用 `IconCards`、`IconHierarchy3`、`IconAffiliate`；辅助无障碍名称改为「首页交互方式」。标签字号由 11px 调至 12px，保留原选中态、交互与 `?home=classic|explore|combine` 路由。
-- 修改 `ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务可用。部署结果待补记。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务可用。
 - 页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 发布：功能提交 `b009757a` 与保留并行画布、小程序更新的合并提交 `40d94763` 已进入 `origin/main`；后续主线更新同步至 `c6bcdc5a`。Pages workflow `40495774511` 成功。公开 `/AscendCANN/ascstudio/?home=combine` 返回 HTTP 200，引用 `index-Bn1n8C39.js` 与 `index-BlUG8aw7.css`，资源均 HTTP 200；JS 确认包含「主动建议 / 多层探索 / 线索串联」。
 
 ### 2026-10-27 · 旧画布笔迹删除入口
 
@@ -7063,3 +7069,37 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据为用户明确的交互要求（H）；760px 上限和避让间距属于实现参数（L）。页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界均未改变；不代表真实代码、精度或 NPU 验证。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/useCanvasState.js`、`git diff --check` 通过；构建保留既有超过 500 kB 的 bundle 提示，未运行自动化测试。当前工具环境没有浏览器回放能力，因此未声称完成页面交互 / 视觉核验。
 - 发布回执：实现提交 `e6ccedd5` 已推送至 `origin/main`；GitHub Pages workflow `40494606292` 成功。线上 `/AscendCANN/ascstudio/`、`index-Q53nHexO.js` 与 `index-D_07DMqX.css` 均 HTTP 200，资源中可检索到卡片尺寸测量及单一滚动区规则。以下为发布后的交接记录补充；未改变页面序列或 API / Host / Application 边界。
+
+### 2026-10-27 · 修复 GitHub Pages 缓存 HTML 指向已删除 bundle
+
+- 用户截图显示 `/AscendCANN/ascstudio/` 为空白。HTTP 复核发现 Pages 普通 URL 返回的缓存 HTML 引用 `index-2CZdRaiw.js` / `index-BMkz6m8g.css`，这两个资源已是 404；带查询参数绕过 CDN 缓存后返回新 HTML 与新资源。HTML 响应 `Cache-Control: max-age=600`，所以短时间内不同设备 / 浏览器会拿到不一致的 HTML。此前 `build:pages` 使用 `--emptyOutDir`，每次构建删掉旧哈希资源，造成缓存中的 HTML 无法加载脚本与样式。
+- `ascend-studio/package.json` 的 Pages 构建不再清空 `ascstudio/`。同时恢复最近 10 次索引版本中引用的哈希 JS / CSS 文件，确保已缓存的旧入口在缓存窗口内仍有可取资源；后续构建也会保留已有哈希资源。页面导航与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages` 成功；新 bundle 与缓存版本 bundle `node --check` 通过；新旧 JS / CSS 文件存在；`git diff --check` 通过。Firefox 原标签页在修复发布前仍显示空白，线上发布及资源状态待本轮确认。
+
+### 2026-10-27 · 修复 GitHub Pages 的运行时白屏
+
+- 保留旧哈希资源后，Firefox 仍报告 `ReferenceError: can't access lexical declaration 'W' before initialization`。根因在 `ascend-studio/src/App.jsx`：小地图避让 `useLayoutEffect` 的依赖数组在渲染期间读取了稍后才声明的 `layout.workspaceRef`；依赖数组立即求值，早于 `useWorkbenchLayout` 初始化。移除这个稳定 ref 依赖，保留 `liftMinimapForComposer` 与 `selectedTask` 两个状态触发条件；effect 回调仍在布局 hook 初始化后执行。
+- 更新源代码与 `/ascstudio/` 静态产物：入口现引用 `index-Bz81_Hog.js` / `index-BlUG8aw7.css`。证据来自用户截图、Firefox 控制台错误（H）和源码时序复核（M）。没有改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`node --check ascstudio/assets/index-Bz81_Hog.js`、`git diff --check` 通过；本地生产构建与线上 Pages 均用 Chrome 确认根应用已渲染且无 JavaScript 运行时异常。线上普通 URL 和缓存绕过 URL 的 HTML、新 JS / CSS 均 HTTP 200；旧缓存入口引用的 JS / CSS 仍 HTTP 200。未运行自动化测试。
+- 修复提交 `d76fd4b4` 合并并保留并行主线更新；Pages workflow `40498003527` 成功，部署 head `36955efb`。此前缓存 HTML 修复现已与此运行时修复共同生效。
+### 2026-10-27 · 每周速览改为微信服务通知主路径
+
+- 用户选定以微信服务通知呈现主动推送（H）。`ascstudio-mini/` 默认展示微信会话列表中的未读「服务通知」；点开通知后再进入每周速览。速览含一条重点资讯和两张参考兴趣 / 存疑信号的短知识卡；订阅确认会模拟授权和新消息送达。移除了小程序底部「速览」入口，微信导航只出现在消息列表。
+- 更新 `ascstudio-mini/app.js`、`index.html`、`styles.css`、`README.md`、`qa.md`。本轮只修改小程序原型路由，不改变电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 的机制边界。用户选择是产品方向证据（H）；消息流是本地演示实现（M），不代表微信已实际发消息。
+- Demo 的通知、资讯、个性化与订阅状态由本地示例 / localStorage 驱动；没有调用微信 API、真实定时器或后台推送。真实发送仍需适用的微信订阅能力与后台实现，内容也不是实时资讯。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行浏览器端完整点击回归，也未新增截图。GitHub Pages workflow `40495653128` 成功；线上入口 HTTP 200，线上 JS 已确认包含服务通知路由、未读数和模拟送达事件。
+- 提交 / 推送：功能提交 `0c6742ab` 已推送至 `origin/main`。此记录随后作为交接文档变更补充推送。
+
+### 2026-10-27 · 口袋新知五屏设计点讲解
+
+- 用户确认按五个连续屏幕展开不同设计点（H）。桌面评审壳左侧新增随当前页面变化的讲解区和上一屏 / 下一设计点控制；五步分别为微信列表主动送达、服务通知价值判断、每周资讯与两张个性化卡、知识卡信号回流、主题 / 时间订阅设置。第五步从速览页打开现有订阅弹层；翻页会同步切换手机界面路由。
+- 修改 `ascstudio-mini/index.html`、`app.js`、`styles.css`、`README.md`、`qa.md`。手机端小程序交互保持原路径；讲解侧栏仅在桌面评审壳出现。未改变电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 边界；微信消息仍为本地模拟，不代表真实推送。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未做完整浏览器逐屏点击回归，也未新增截图。Pages workflow `40498003527` 成功；线上入口、JS、CSS均 HTTP 200，HTML / JS 已确认包含五步面板和路由导航逻辑。
+- 提交 / 推送：功能提交 `36955efb` 已推送至 `origin/main`。本条交接记录随后补推。
+
+### 2026-10-27 · Pura X View 阔直板样机适配
+
+- 用户明确纠正设备形态：HUAWEI Pura X View 是阔直板手机，不是折叠屏（H）。华为官方规格页列出机身 144.1 × 87.0 mm、6.39 英寸屏幕（H）；标准桌面样机调整为 420 × 696 CSS px，宽高比约 0.603，近似机身 87.0 / 144.1 ≈ 0.604。样机只表达单屏阔直板轮廓，不声称复刻工业设计。
+- 更新 `ascstudio-mini/index.html`、`styles.css`、`README.md`、`qa.md` 与 `evidence/weekly-briefing-desktop.png`。另修正 `.intro-eyebrow` 通用 span 圆点样式误压缩步骤文字的问题。五屏路由、微信服务通知主路径不变；不涉及电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确设备纠正和华为官方规格（H）；Chrome 1440×1000 本地截图用于核对样机与布局（M）。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
+- 基线版本 `36955efb` 已在开始本轮机型适配前推送并在线核对。适配版当前提交 / 推送与 Pages 部署待完成。
