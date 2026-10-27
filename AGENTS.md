@@ -6894,4 +6894,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户确认下方楼层用浅灰圆角分组底，并要求资源卡改为上图下字、横向排列，同时指出配图过淡。保留白卡和细描边，推荐与新上架改为桌面四列竖版卡，窄屏依次切三列 / 两列 / 单列；图片换用仓库已有主体更清楚的 v2 课程、路径、知识点、认证素材，保持浅亮底色。近期日程保留纵向时间轴。
 - 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css` 与 `/ascstudio/` 构建产物。依据为用户本轮明确需求（H）及仓库已有内容图素材；不改变页面序列或 API / Host / Application 边界。
-- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。Pages 发布待确认。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。页面提交 `de01c247` 已推送到 `origin/main`；GitHub Pages workflow `40451131656` 成功，线上 `/ascstudio/` 已引用新 JS / CSS 哈希，二者均 HTTP 200。
