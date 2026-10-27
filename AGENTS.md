@@ -6888,7 +6888,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户选定标题“从你的场景出发，连接线索，找到新的方向”。标题表达首页的探索方式，不把“训练与调优”演示字段主题当成产品首页主题；不加英文副标。字段仍从未选择、无连线的空状态开始。
 - 组合首页的区块无障碍名称、需求草稿占位提示和空需求提示改为通用场景 / 线索表达；训练调优字段保留为当前 Demo 内容。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`ascend-studio/src/combination-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。由于 CUA 浏览器桥接在本轮断开，未完成页面截图复核。
-- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。构建提交 `aa75d58c` 已推送并进入 `origin/main`；随后主线文档更新 `7a01d7b4` 保留本次产物。Pages workflow `40493928347` 成功。公开 `/AscendCANN/ascstudio/?home=combine` 返回 HTTP 200，引用 `index-B7Jt65Gu.js` 与 `index-CmViAAB5.css`，资源均 HTTP 200；线上 JS 确认包含“串联”和场景标题。
 
 ### 2026-10-27 · 底部对话输入栏与语音入口
 
@@ -7013,7 +7013,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出右上角“组合”不合适；此前讨论并推荐“串联”，本轮补齐这个未落地的改名。Tab 文案改为“串联”，其他首页方案名称、路由参数和连线行为不变。
 - 修改 `ascend-studio/src/NewTaskHome.jsx` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。浏览器截图复核仍受 CUA 桥接中断影响。
-- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。构建提交 `aa75d58c` 已推送并进入 `origin/main`；随后主线文档更新 `7a01d7b4` 保留本次产物。Pages workflow `40493928347` 成功。公开 `/AscendCANN/ascstudio/?home=combine` 返回 HTTP 200，引用 `index-B7Jt65Gu.js` 与 `index-CmViAAB5.css`，资源均 HTTP 200；线上 JS 确认包含“串联”和场景标题。
 
 ### 2026-10-27 · 底部对话输入框与小地图避让
 
