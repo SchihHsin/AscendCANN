@@ -7268,4 +7268,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 共享卡片与任务内容总览统一呈现节点角色和状态；修正 AddCustom 线索 / 误差结果分类、学习检查与历史尝试快照端点、ResNet50 学习分组和学习域标识。状态标签区分待应用、已应用待复核、通过、未通过及过期；过期采用提醒色。用户视图管理状态不覆盖业务状态。
 - 交互规则与实现记录见 `ascend-studio/interaction-design.md`。本轮仅统一语义和数据映射，不改变各任务布局、学习顺序、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；浏览器 / NPU 演示结果仍不构成真实算子验证。用户确认的设计方向为 H，内容及本地演算映射为 M。
 - 构建 / 检查：合并最新主线后 `npm run build:pages` 成功；相关 JS `node --check`、资源引用存在性、`git diff --check` 与 `git diff --cached --check` 通过；本地 `5192` 返回 HTTP 200。未运行自动化测试，未取得浏览器截图回放。
-- 提交 `1da23913` 已含实现与规则，主线同步 / 最终 Pages 推送状态待本轮完成后补记。
+- 实现与规则提交 `1da23913` 已随合并提交 `14fa638a` 推送至 `origin/main`。Pages workflow `40558335339` 成功；线上 `/AscendCANN/ascstudio/`、`index-4GI4qk_O.js` 与 `index-pVOvJPt0.css` 均 HTTP 200。

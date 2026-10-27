@@ -1977,7 +1977,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 统一画布对象的 `nodeType`、`contentType`、`status`、`statusLabel`、`provenance`、`relations` 与 UI `viewState`。AddCustom、图像推理、学习画布和 ResNet50 通过共享归一化层及各自领域映射接入；任务自己的内容结构、状态判定与学习路径保持不变。
 - 节点角色 / 状态在共享卡片和任务总览中使用同一标记；关系只用通过共享校验的显式端点与关系类型绘制，历史检查保留具体快照。拖动、收纳、聚焦、固定等视图行为与业务状态分离。过期使用提醒色，失败或待复核不借类别色表达。
 - 具体规范与实现映射见 `interaction-design.md`。依据为用户确认的统一语义方向（H）和原型已有任务状态 / 材料（M）；没有改变页面序列、路由、API / Protocol、Host / Harness 或 Application / Task 边界。
-- 合并后的 `npm run build:pages`、相关 JS `node --check`、静态资源引用核验与 Git 差异检查通过。本地 `5192` 返回 HTTP 200；未运行自动化测试或截图回放。推送及 Pages 状态待补。
+- 合并后的 `npm run build:pages`、相关 JS `node --check`、静态资源引用核验与 Git 差异检查通过。本地 `5192` 返回 HTTP 200；未运行自动化测试或截图回放。合并提交 `14fa638a` 已推送至 `origin/main`；Pages workflow `40558335339` 成功，线上 `/AscendCANN/ascstudio/`、`index-4GI4qk_O.js` 与 `index-pVOvJPt0.css` 均 HTTP 200。
 
 ### 2026-10-28 · 学习发现「更多推荐」配图提亮
 
