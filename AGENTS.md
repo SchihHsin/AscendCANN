@@ -6881,3 +6881,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - AddCustom 以“问题现场”为真实起点，连接代码、已知现象、线索解释及后续试算 / 修改 / 复核；移除“现场与来源 / 理解与试算”等抽象背景组。图像推理保留其输入与预处理链，ResNet50 保留官方学习阶段和节点，不引入开发任务分类。
 - 验证：本地 1280×720 CUA 查看 AddCustom 与 ResNet50；画布均显示关联卡片和共享视图控件，ResNet50 阶段 / 视频 / 节点结构仍完整。`node --check`（AddCustom 布局与内容目录）、`npm run build:pages` 与构建后的入口资源生成成功；构建仅有既存的大 JS chunk 提示。未运行自动化测试。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变；本次源代码提交 `50af74ed` 与并入最新主线的合并提交 `6dde119b` 已准备推送，Pages 部署回执待写入。
 - 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5317a869` 已推送到 `origin/main`；Pages workflow `40376808989` 成功。线上 `/ascstudio/` HTML、`index-C15Xr9Tu.js`、`index-CnqbLe8f.css` 均返回 HTTP 200。
+
+
+### 2026-10-27 · 组合首页改为场景导向的中文 Slogan
+
+- 用户选定标题“从你的场景出发，连接线索，找到新的方向”。标题表达首页的探索方式，不把“训练与调优”演示字段主题当成产品首页主题；不加英文副标。字段仍从未选择、无连线的空状态开始。
+- 组合首页的区块无障碍名称、需求草稿占位提示和空需求提示改为通用场景 / 线索表达；训练调优字段保留为当前 Demo 内容。
+- 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`ascend-studio/src/combination-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。由于 CUA 浏览器桥接在本轮断开，未完成页面截图复核。
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。
