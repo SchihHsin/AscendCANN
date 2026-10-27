@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useCanvasDrawing({ canvasContent, editing, viewport }) {
+export function useCanvasDrawing({ canvasContent, editing }) {
   const [drawingMode, setDrawingMode] = useState(false);
+  const [targetCardId, setTargetCardId] = useState(null);
   const [draft, setDraft] = useState([]);
   const stroke = useRef(null);
   const drawings = canvasContent?.state.drawings || [];
@@ -9,24 +10,44 @@ export function useCanvasDrawing({ canvasContent, editing, viewport }) {
   useEffect(() => {
     if (!editing) {
       setDrawingMode(false);
+      setTargetCardId(null);
       setDraft([]);
+      const activeStroke = stroke.current;
       stroke.current = null;
+      if (activeStroke?.surface?.hasPointerCapture(activeStroke.pointerId)) activeStroke.surface.releasePointerCapture(activeStroke.pointerId);
     }
   }, [editing]);
 
   const pointFor = (event, surface) => {
     const rect = surface.getBoundingClientRect();
+    const scaleX = rect.width / Math.max(1, surface.clientWidth);
+    const scaleY = rect.height / Math.max(1, surface.clientHeight);
     return {
-      x: (event.clientX - rect.left - viewport.x) / viewport.scale,
-      y: (event.clientY - rect.top - viewport.y) / viewport.scale,
+      x: (event.clientX - rect.left) / scaleX,
+      y: (event.clientY - rect.top) / scaleY,
     };
   };
 
-  const begin = (event, surface, blockedSelector) => {
-    if (!editing || !drawingMode || event.button !== 0 || event.target.closest(blockedSelector)) return false;
+  const start = cardId => {
+    if (!editing || !cardId) return;
+    setTargetCardId(cardId);
+    setDrawingMode(true);
+  };
+
+  const stop = () => {
+    setDrawingMode(false);
+    setTargetCardId(null);
+    setDraft([]);
+    const activeStroke = stroke.current;
+    stroke.current = null;
+    if (activeStroke?.surface?.hasPointerCapture(activeStroke.pointerId)) activeStroke.surface.releasePointerCapture(activeStroke.pointerId);
+  };
+
+  const begin = (event, surface, cardId) => {
+    if (!editing || !drawingMode || !targetCardId || targetCardId !== cardId || event.button !== 0) return false;
     event.preventDefault();
     event.stopPropagation();
-    stroke.current = { pointerId: event.pointerId, points: [pointFor(event, surface)] };
+    stroke.current = { pointerId: event.pointerId, cardId, points: [pointFor(event, surface)], surface };
     surface.setPointerCapture(event.pointerId);
     setDraft(stroke.current.points);
     return true;
@@ -48,9 +69,10 @@ export function useCanvasDrawing({ canvasContent, editing, viewport }) {
   const finish = (event, surface) => {
     if (!stroke.current || stroke.current.pointerId !== event.pointerId) return false;
     const points = stroke.current.points;
+    const cardId = stroke.current.cardId;
     stroke.current = null;
     setDraft([]);
-    if (points.length > 1) canvasContent?.actions.addDrawing({ points, color: "#7468a1", width: 3 });
+    if (points.length > 1) canvasContent?.actions.addDrawing({ cardId, points, color: "#55585a", width: 3 });
     if (surface.hasPointerCapture(event.pointerId)) surface.releasePointerCapture(event.pointerId);
     return true;
   };
@@ -63,5 +85,5 @@ export function useCanvasDrawing({ canvasContent, editing, viewport }) {
     return true;
   };
 
-  return { drawingMode, setDrawingMode, drawings, draft, begin, move, finish, cancel };
+  return { drawingMode, targetCardId, drawings, draft, start, stop, begin, move, finish, cancel };
 }

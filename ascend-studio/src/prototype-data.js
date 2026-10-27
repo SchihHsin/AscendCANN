@@ -168,9 +168,9 @@ export const initialAutomations = [
 ];
 
 export const modelOptions = [
-  { id: "general", label: "通用助手", description: "整理目标、上下文和下一步材料。" },
-  { id: "diagnostic", label: "诊断助手", description: "关注复现条件、错误证据和检查顺序。" },
-  { id: "reasoning", label: "推理助手", description: "对照候选解释与仍缺少的证据。" },
+  { id: "general", label: "GLM-5.3", description: "通用任务与多轮协作。" },
+  { id: "diagnostic", label: "DeepSeek V4", description: "代码分析与复杂推理。" },
+  { id: "reasoning", label: "Qwen3-Coder", description: "代码生成与工程理解。" },
 ];
 
 const asText = (value) => typeof value === "string" ? value : "";
