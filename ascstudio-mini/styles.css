@@ -110,18 +110,44 @@ button {
   background:#8f78c6;
   border-radius:50%;
 }
+.intro-eyebrow>span:not(:first-child) {
+  width:auto;
+  height:auto;
+  background:none;
+  border-radius:0;
+}
 .intro-body h1 {
   font-family:var(--serif);
   font-size:48px;
   font-weight:500;
-  line-height:1.55;
+  line-height:1.42;
   letter-spacing:1px;
-  margin:24px 0;
+  margin:20px 0;
 }
 .intro-body>p {
+  max-width:460px;
   color:#82808a;
   font-size:15px;
   line-height:1.95;
+}
+.review-point {
+  display:grid;
+  gap:6px;
+  max-width:430px;
+  margin-top:25px;
+  padding:2px 0 2px 14px;
+  border-left:2px solid #c7b7d9;
+}
+.review-point small {
+  color:#918d98;
+  font-size:10px;
+  letter-spacing:.5px;
+}
+.review-point strong {
+  color:#514b59;
+  font-size:13px;
+  font-weight:500;
+  line-height:1.7;
 }
 .intro-journey {
   display:flex;
@@ -150,21 +176,321 @@ button {
 }
 .preview-foot {
   display:flex;
-  gap:32px;
+  align-items:flex-end;
+  justify-content:flex-start;
+  gap:18px;
   font-size:11px;
   letter-spacing:.3px;
   color:#96929e;
+}
+.review-help {
+  color:#aaa7b1;
+  font-size:10px;
+  letter-spacing:0;
+}
+.review-toolbar {
+  position:fixed;
+  z-index:60;
+  left:50%;
+  bottom:18px;
+  display:flex;
+  align-items:center;
+  gap:3px;
+  padding:4px 7px;
+  border:1px solid #ffffff1a;
+  border-radius:999px;
+  background:rgba(22,25,30,.48);
+  color:#fff;
+  box-shadow:0 8px 24px -12px #17151c88;
+  -webkit-backdrop-filter:blur(12px) saturate(1.2);
+  backdrop-filter:blur(12px) saturate(1.2);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translate(-50%,6px);
+  transition:opacity .2s ease,transform .2s ease,visibility .2s;
+}
+.review-toolbar.is-visible {
+  opacity:.94;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translate(-50%,0);
+}
+.review-toolbar button {
+  display:grid;
+  place-items:center;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  color:#fff;
+  opacity:.76;
+  transition:opacity .16s ease,background .16s ease;
+}
+.review-toolbar button:hover:not(:disabled),.review-toolbar button:focus-visible {
+  opacity:1;
+  background:#ffffff20;
+}
+.review-toolbar button:disabled {
+  cursor:default;
+  opacity:.28;
+}
+.review-toolbar button svg,.review-overview-heading button svg {
+  width:15px;
+  height:15px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.review-counter {
+  min-width:48px;
+  color:#ffffffc9;
+  font-size:10px;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.08em;
+  text-align:center;
+  user-select:none;
+}
+.review-toolbar-divider {
+  width:1px;
+  height:14px;
+  margin:0 3px;
+  background:#ffffff38;
+}
+.review-dots {
+  position:fixed;
+  z-index:60;
+  top:50%;
+  right:16px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  padding:10px 7px;
+  border:1px solid #ffffff38;
+  border-radius:999px;
+  background:#ffffff92;
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(-50%) translateX(5px);
+  transition:opacity .2s ease,transform .2s ease,visibility .2s;
+}
+.review-dots.is-visible {
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateY(-50%);
+}
+.review-dot {
+  width:8px;
+  height:8px;
+  padding:0;
+  border-radius:99px;
+  background:#3c394544;
+  transition:height .18s ease,background .18s ease,transform .18s ease;
+}
+.review-dot:hover {
+  background:#3c394488;
+  transform:scale(1.2);
+}
+.review-dot[aria-current="step"] {
+  height:20px;
+  border-radius:5px;
+  background:#8257c5;
+}
+.review-overview {
+  position:fixed;
+  z-index:100;
+  inset:0;
+  display:grid;
+  place-items:center;
+}
+.review-overview-backdrop {
+  position:absolute;
+  inset:0;
+  background:#15151bcc;
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+}
+.review-overview-panel {
+  position:relative;
+  width:min(1120px,calc(100vw - 56px));
+  max-height:calc(100dvh - 56px);
+  overflow:auto;
+  padding:26px;
+  border:1px solid #ffffff6b;
+  border-radius:22px;
+  background:#f0eff2;
+  color:#25252a;
+  box-shadow:0 28px 90px -35px #0009;
+}
+.review-overview-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:18px;
+}
+.review-overview-heading>div>span {
+  display:block;
+  margin-bottom:5px;
+  color:#8a8690;
+  font-size:9px;
+  letter-spacing:1.5px;
+}
+.review-overview-heading h2 {
+  font-family:var(--serif);
+  font-size:26px;
+  font-weight:500;
+}
+.review-overview-heading button {
+  display:grid;
+  place-items:center;
+  flex:none;
+  width:36px;
+  height:36px;
+  border:1px solid #dedce2;
+  border-radius:50%;
+  background:#ffffffb8;
+  color:#55515d;
+}
+.review-overview-grid {
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.review-overview-chapter>header {
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  margin-bottom:9px;
+}
+.review-overview-chapter>header h3 {
+  color:#3a3541;
+  font-size:15px;
+  font-weight:600;
+}
+.review-overview-chapter>header span {
+  color:#9a8ba9;
+  font-size:10px;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.04em;
+}
+.review-overview-chapter>header p {
+  margin-left:auto;
+  color:#8b8790;
+  font-size:10px;
+}
+.review-overview-cards {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+.review-overview-card {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  padding:12px;
+  border:1px solid #dfdde4;
+  border-radius:16px;
+  background:#ffffffc9;
+  color:#36333c;
+  text-align:left;
+  transition:border-color .18s ease,background .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.review-overview-card:hover {
+  transform:translateY(-2px);
+  border-color:#c2afd9;
+  box-shadow:0 12px 26px -18px #52465d88;
+}
+.review-overview-card[aria-current="step"] {
+  border-color:#8e6db5;
+  background:#fbf9fe;
+  box-shadow:0 0 0 2px #a283c326;
+}
+.review-overview-card-heading {
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  min-height:38px;
+  margin-bottom:8px;
+}
+.review-overview-card-heading>span {
+  flex:none;
+  color:#8c75a8;
+  font-size:11px;
+  font-variant-numeric:tabular-nums;
+}
+.review-overview-card-heading strong {
+  font-size:12px;
+  font-weight:600;
+  line-height:1.5;
+}
+.review-thumb-stage {
+  min-height:190px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:11px;
+  background:radial-gradient(ellipse at 50% 110%,#c9c0d6 0,transparent 60%),#e9e8ec;
+}
+.review-thumb-device {
+  width:111px;
+  height:182px;
+  padding:3px;
+  overflow:hidden;
+  border:1px solid #39373d;
+  border-radius:19px;
+  background:#26262b;
+  box-shadow:0 12px 24px -14px #24212a99;
+}
+.review-thumb-screen {
+  width:105px;
+  height:174px;
+  overflow:hidden;
+  border-radius:15px;
+  background:#f8f8f8;
+}
+.review-thumb-screen iframe {
+  display:block;
+  width:420px;
+  height:696px;
+  border:0;
+  transform:scale(.25);
+  transform-origin:top left;
+  pointer-events:none;
+}
+.review-overview-card-caption {
+  min-height:34px;
+  padding-top:9px;
+  color:#77737e;
+  font-size:10px;
+  line-height:1.6;
+}
+.review-overview-hint {
+  margin-top:15px;
+  color:#8b8790;
+  font-size:10px;
+  text-align:right;
+}
+body.review-overview-open {
+  overflow:hidden;
 }
 .device-wrap {
   position:relative;
 }
 .device {
+  /* HUAWEI Pura X View 阔直板机身比例：87 / 144.1 ≈ 0.604。 */
   width:420px;
-  height:min(890px,calc(100dvh - 76px));
-  min-height:680px;
+  height:696px;
+  min-height:0;
   background:#f8f8f8;
-  border:7px solid #26262b;
-  border-radius:48px;
+  border:6px solid #26262b;
+  border-radius:42px;
   position:relative;
   overflow:hidden;
   display:flex;
@@ -172,14 +498,15 @@ button {
   box-shadow:0 35px 80px -30px #3f3a4b40,0 0 0 1px #a1a0a5;
 }
 .system-bar {
-  height:45px;
+  height:34px;
   flex-shrink:0;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 25px;
+  padding:0 19px;
   background:#f8f8f8;
-  font-size:13px;
+  color:#24262a;
+  font-size:12px;
   font-weight:600;
 }
 .system-bar>div {
@@ -187,19 +514,58 @@ button {
   align-items:center;
   gap:6px;
 }
+.system-time {
+  font-size:12px;
+  font-weight:650;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.01em;
+}
+.system-status {
+  gap:6px!important;
+}
+.network-type {
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:-.03em;
+}
+.system-signal {
+  width:15px;
+  height:12px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.1;
+  stroke-linecap:round;
+}
+.system-wifi {
+  width:15px;
+  height:12px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+}
+.battery-percent {
+  margin-left:1px;
+  font-size:9px;
+  font-weight:600;
+  font-variant-numeric:tabular-nums;
+}
 .battery {
-  width:22px;
-  height:11px;
-  border:1px solid #333;
-  border-radius:3px;
+  width:16px;
+  height:9px;
+  border:1px solid currentColor;
+  border-radius:2px;
   position:relative;
-  margin-right:2px;
+  margin-right:3px;
 }
 .battery:before {
   content:"";
   position:absolute;
-  inset:1px;
-  background:#333;
+  left:1px;
+  top:1px;
+  bottom:1px;
+  width:72%;
+  background:currentColor;
   border-radius:1px;
 }
 .battery:after {
@@ -2273,16 +2639,16 @@ button {
     gap:70px;
   }
   .device {
-    height:calc(100dvh - 48px);
-    min-height:600px;
-    border-width:6px;
-    border-radius:43px;
+    height:min(696px,calc(100dvh - 48px));
+    min-height:0;
+    border-width:5px;
+    border-radius:38px;
   }
   .preview-intro {
     min-height:600px;
   }
   .system-bar {
-    height:36px;
+    height:32px;
   }
   .intro-body h1 {
     font-size:43px;
@@ -2296,8 +2662,10 @@ button {
   }
   .device {
     width:390px;
-    height:calc(100dvh - 56px);
-    min-height:640px;
+    height:min(646px,calc(100dvh - 56px));
+    min-height:0;
+    border-width:5px;
+    border-radius:38px;
   }
   .intro-body h1 {
     font-size:35px;
@@ -2306,12 +2674,34 @@ button {
     font-size:9px;
     letter-spacing:.8px;
   }
-  .preview-foot {
-    flex-direction:column;
-    gap:9px;
-  }
   .preview-intro {
     min-height:640px;
+  }
+  .preview-foot {
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+  }
+}
+@media(max-width:900px) and (min-width:621px) {
+  .review-overview-panel {
+    width:calc(100vw - 36px);
+    max-height:calc(100dvh - 36px);
+    padding:20px;
+  }
+  .review-overview-cards {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(hover:none) and (min-width:621px) {
+  .review-toolbar,.review-dots {
+    opacity:.92;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateX(-50%);
+  }
+  .review-dots {
+    transform:translateY(-50%);
   }
 }
 @media(max-width:620px) {
@@ -2326,6 +2716,9 @@ button {
   }
   .preview-intro {
     display:none;
+  }
+  .review-toolbar,.review-dots,.review-overview {
+    display:none!important;
   }
   .device-wrap {
     width:100%;
@@ -2554,55 +2947,6 @@ button {
   .small-card h3 {
     font-size:13px;
   }
-}
-.weekly-entry {
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-height:68px;
-  padding:11px 13px;
-  margin:0 0 17px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:12px;
-  text-align:left;
-}
-.weekly-entry-icon {
-  display:grid;
-  place-items:center;
-  width:38px;
-  height:38px;
-  flex:none;
-  color:#8257c5;
-  background:#f2ecfa;
-  border-radius:11px;
-}
-.weekly-entry-copy {
-  display:grid;
-  gap:4px;
-  min-width:0;
-  flex:1;
-}
-.weekly-entry-copy strong {
-  font-size:13px;
-  font-weight:600;
-}
-.weekly-entry-copy small {
-  color:var(--muted);
-  font-size:11px;
-}
-.weekly-entry-end {
-  display:flex;
-  align-items:center;
-  gap:4px;
-  flex:none;
-  color:#77727e;
-  font-size:11px;
-}
-.weekly-entry-end .icon {
-  width:15px;
-  height:15px;
 }
 .signal-panel {
   display:grid;
@@ -2994,10 +3338,339 @@ button {
   width:100%;
   justify-content:center;
 }
+.device.is-wechat .system-bar,.device.is-wechat .app-header {
+  background:#f7f7f7;
+}
+.device.is-wechat .app-header {
+  height:53px;
+  padding:0 17px;
+}
+.wechat-header-title {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:17px;
+  font-weight:600;
+}
+.wechat-title-mark {
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#08bf62;
+}
+.wechat-header-tools {
+  display:flex;
+  align-items:center;
+  gap:18px;
+  color:#25262a;
+}
+.wechat-header-tools>span {
+  display:grid;
+  place-items:center;
+  width:28px;
+  height:34px;
+}
+.wechat-header-tools .icon {
+  width:22px;
+  height:22px;
+}
+.wechat-plus {
+  border:1.5px solid #25262a;
+  border-radius:50%;
+  width:23px!important;
+  height:23px!important;
+}
+.wechat-plus .icon {
+  width:18px;
+  height:18px;
+}
+.wechat-notification-menu {
+  color:#25262a;
+}
+.wechat-notification-menu .icon {
+  width:20px;
+  height:20px;
+}
+.device.is-wechat .app-scroll {
+  background:#f7f7f7;
+}
+.wechat-page {
+  min-height:100%;
+  padding-bottom:15px;
+  background:#f7f7f7;
+}
+.wechat-search-row {
+  position:relative;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin:5px 12px 9px;
+  border-radius:7px;
+  background:#ededed;
+  color:#9a9ba0;
+  font-size:12px;
+}
+.wechat-search-row .icon {
+  width:15px;
+  height:15px;
+}
+.wechat-search-row kbd {
+  position:absolute;
+  right:12px;
+  border:0;
+  background:transparent;
+  color:#b5b6ba;
+  font-size:17px;
+}
+.wechat-chat-list {
+  background:#fff;
+}
+.wechat-chat-row {
+  width:100%;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 15px;
+  background:#fff;
+  border-bottom:1px solid #f0f0f0;
+  text-align:left;
+}
+button.wechat-chat-row {
+  cursor:pointer;
+}
+.wechat-avatar {
+  width:47px;
+  height:47px;
+  display:grid;
+  flex:none;
+  place-items:center;
+  border-radius:11px;
+  color:#fff;
+  font-size:16px;
+  font-weight:500;
+}
+.service-avatar {
+  background:#08bf62;
+}
+.service-avatar .icon {
+  width:25px;
+  height:25px;
+  stroke-width:1.8;
+}
+.file-avatar {
+  background:#8c9aa8;
+}
+.group-avatar {
+  background:#8499bf;
+}
+.friend-avatar {
+  color:#614f39;
+  background:#e8d2af;
+}
+.wechat-chat-content {
+  min-width:0;
+  flex:1;
+  display:grid;
+  gap:6px;
+}
+.wechat-chat-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.wechat-chat-heading strong {
+  overflow:hidden;
+  color:#222328;
+  font-size:14px;
+  font-weight:500;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.wechat-chat-heading time {
+  flex:none;
+  color:#a5a6ab;
+  font-size:10px;
+}
+.wechat-chat-preview {
+  overflow:hidden;
+  color:#999aa0;
+  font-size:11px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.wechat-unread-count {
+  width:17px;
+  height:17px;
+  display:grid;
+  flex:none;
+  place-items:center;
+  border-radius:50%;
+  background:#f34c42;
+  color:#fff;
+  font-size:10px;
+  line-height:1;
+}
+.wechat-inbox-foot {
+  padding:14px 18px;
+  color:#a5a5aa;
+  font-size:10px;
+  text-align:center;
+}
+.wechat-service-page {
+  min-height:100%;
+  padding:23px 19px;
+  background:#f7f7f7;
+}
+.wechat-date-divider {
+  width:max-content;
+  margin:0 auto 17px;
+  padding:5px 9px;
+  border-radius:5px;
+  background:#e9e9e9;
+  color:#85868a;
+  font-size:10px;
+}
+.wechat-push-card {
+  padding:15px;
+  background:#fff;
+  border:1px solid #ededee;
+  border-radius:10px;
+}
+.push-source {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding-bottom:12px;
+  border-bottom:1px solid #f0f0f0;
+}
+.push-source img {
+  width:28px;
+  height:28px;
+  border-radius:7px;
+}
+.push-source>span {
+  flex:1;
+  display:grid;
+  gap:2px;
+}
+.push-source strong {
+  font-size:12px;
+  font-weight:600;
+}
+.push-source small,.push-source time {
+  color:#999aa0;
+  font-size:10px;
+}
+.wechat-push-card h1 {
+  margin-top:14px;
+  font-size:17px;
+  font-weight:600;
+  line-height:1.5;
+}
+.wechat-push-card>p {
+  margin-top:7px;
+  color:#6d6f76;
+  font-size:12px;
+  line-height:1.8;
+}
+.push-preview {
+  display:grid;
+  gap:7px;
+  margin:13px 0;
+  padding:11px 12px;
+  border-radius:8px;
+  background:#f7f7f7;
+}
+.push-preview>span {
+  color:#77727e;
+  font-size:10px;
+}
+.push-preview>strong {
+  font-size:12px;
+  line-height:1.6;
+}
+.push-preview>div {
+  display:flex;
+  align-items:center;
+  gap:4px;
+  color:#8c8d94;
+  font-size:10px;
+}
+.push-preview>div i {
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#8257c5;
+}
+.push-preview>div i+i {
+  background:#24a99f;
+}
+.wechat-push-card>.primary-button {
+  width:100%;
+  justify-content:center;
+}
+.wechat-service-hint {
+  margin:14px 4px 0;
+  color:#999aa0;
+  font-size:10px;
+  line-height:1.8;
+  text-align:center;
+}
+.wechat-tab-bar {
+  display:flex;
+  flex:none;
+  min-height:60px;
+  background:#fafafa;
+  border-top:1px solid #e9e9e9;
+}
+.wechat-tab {
+  position:relative;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  color:#85868c;
+  font-size:9px;
+}
+.wechat-tab .icon {
+  width:21px;
+  height:21px;
+  stroke-width:1.5;
+}
+.wechat-tab.is-active {
+  color:#08bf62;
+}
+.wechat-tab.is-active .icon {
+  stroke-width:2;
+}
+.device.is-wechat .home-indicator {
+  height:0;
+}
 @media(prefers-reduced-motion:reduce) {
   *,*:before,*:after {
     animation:none!important;
     transition:none!important;
     scroll-behavior:auto!important;
+  }
+}
+@media(max-width:620px) {
+  .device.is-wechat .system-bar {
+    display:flex;
+    height:45px;
+    padding-top:env(safe-area-inset-top,0px);
+  }
+  .device.is-wechat .app-header {
+    height:53px;
+    padding-top:0;
+  }
+  .wechat-tab-bar {
+    min-height:calc(59px + env(safe-area-inset-bottom,0px));
+    padding-bottom:env(safe-area-inset-bottom,0px);
   }
 }

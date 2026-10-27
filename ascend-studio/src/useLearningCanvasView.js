@@ -33,6 +33,8 @@ function initial(initialStage = "channels") {
       positions: layouts.horizontal.positions,
       pinned: [],
       hidden: [],
+      collapsed: [],
+      pendingFocusId: null,
       initialized: false,
       canvasSize: null,
     },
@@ -64,6 +66,8 @@ function restore(taskId, { stageIds, initialStage, storagePrefix, resetOnLoad })
       positions: layouts[layout].positions,
       pinned: Array.isArray(saved.pinned) ? [...new Set(saved.pinned.filter(validId))] : [],
       hidden: Array.isArray(saved.hidden) ? [...new Set(saved.hidden.filter(validId))] : [],
+      collapsed: Array.isArray(saved.collapsed) ? [...new Set(saved.collapsed.filter(validId))] : [],
+      pendingFocusId: null,
       initialized: layouts[layout].initialized,
       canvasSize: layouts[layout].canvasSize,
     },
@@ -203,6 +207,14 @@ export function useLearningCanvasView({ taskId, enabled = true, stageIds = STAGE
           ? record.state.pinned.filter(item => item !== id)
           : [...record.state.pinned, id] }));
       },
+      toggleCollapsed: id => {
+        if (!validId(id)) return undefined;
+        return update(record => replaceState(record, { collapsed: record.state.collapsed.includes(id)
+          ? record.state.collapsed.filter(item => item !== id)
+          : [...record.state.collapsed, id] }));
+      },
+      requestFocus: id => validId(id) ? update(record => replaceState(record, { pendingFocusId: id })) : undefined,
+      clearPendingFocus: () => update(record => record.state.pendingFocusId ? replaceState(record, { pendingFocusId: null }) : record),
       hideObject: id => validId(id) ? update(record => replaceState(record, { hidden: [...new Set([...record.state.hidden, id])] })) : undefined,
       revealObject: id => validId(id) ? update(record => replaceState(record, { hidden: record.state.hidden.filter(item => item !== id) })) : undefined,
       rememberSize: size => object(size) && finite(size.width) && finite(size.height) ? update(record => record.state.canvasSize?.width === size.width && record.state.canvasSize?.height === size.height ? record : replaceState(record, { canvasSize:{width:size.width,height:size.height} })) : undefined,

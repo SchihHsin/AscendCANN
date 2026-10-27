@@ -88,7 +88,6 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .workspace-grid.is-standalone-view > .management-page { grid-column: 3; grid-row: 1; }
 .workspace-grid.is-task-workspace > .diagnostic-panel { grid-column: 4; grid-row: 1; }
 .workspace-grid.is-task-workspace.is-conversation-floating > .conversation-panel { grid-column: 3 / 5; grid-row: 1; align-self: end; justify-self: center; width: min(500px, calc(100% - 32px)); height: min(390px, calc(100% - 40px)); min-height: 260px; margin-bottom: 20px; z-index: 12; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 36px rgba(24,25,31,.16), 0 2px 7px rgba(24,25,31,.06); }
-.workspace-grid.is-conversation-composer-only .tc-mini-map { transition: bottom .16s ease-out; }
 .workspace-grid.is-task-workspace.is-conversation-floating > .diagnostic-panel { grid-column: 3 / 5; grid-row: 1; }
 .workspace-grid.is-task-workspace.is-conversation-floating > .workspace-divider--conversation { display: none; }
 .workspace-grid.is-task-workspace.is-conversation-floating.is-area-interaction-active > .conversation-panel { visibility: hidden; pointer-events: none; }
@@ -182,6 +181,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .message-feedback button:hover { background: #f1f1ef; color: #4f5462; }
 .extra-message { margin-bottom: 3px; }
 .composer { flex: 0 0 auto; width: calc(100% - 32px); max-width: 760px; margin: 0 auto 14px; padding: 9px 11px 8px; border: 1px solid #e5e4e2; border-radius: 11px; background: #fff; box-shadow: 0 2px 9px rgba(28,30,36,.035); }
+.composer-entry { min-width: 0; }
 .composer textarea { display: block; width: 100%; min-height: 44px; max-height: 110px; resize: none; overflow-y: auto; padding: 2px 3px 7px; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 12px; line-height: 1.45; }
 .composer textarea::placeholder { color: #a4a5ab; }
 .composer-toolbar { display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 8px; }
@@ -431,33 +431,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 
 .save-unavailable { color: #8d6f49; font-size: 11px; white-space: nowrap; }
 
-/* Dragging the floating composer previews the conversation's docked destination. */
+/* The composer perimeter is the drag affordance in both conversation layouts. */
 .composer { position: relative; }
-.conversation-drag-handle {
-  position: absolute;
-  z-index: 3;
-  top: -7px;
-  left: 50%;
-  width: 38px;
-  height: 14px;
-  transform: translateX(-50%);
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: #a6a7ad;
-  opacity: .72;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
-}
-.conversation-drag-handle:hover:not(:disabled),
-.conversation-drag-handle:focus-visible { color: #555760; background: rgba(245,245,243,.86); opacity: 1; }
-.conversation-drag-handle:active { cursor: grabbing; }
-.conversation-drag-handle:disabled { cursor: not-allowed; opacity: .45; }
-.conversation-drag-handle:hover:not(:disabled) { color: #747680; opacity: 1; }
+.composer.is-drag-edge-hover { border-color: #d0d2d8; box-shadow: 0 0 0 2px rgba(94,98,111,.1), 0 6px 24px rgba(28,30,36,.09), 0 1px 3px rgba(28,30,36,.04); cursor: grab; }
+.conversation-panel.is-dragging .composer { cursor: grabbing; user-select: none; }
 .conversation-panel.is-dragging {
   z-index: 16 !important;
   transform: translate3d(var(--conversation-drag-x, 0px), var(--conversation-drag-y, 0px), 0);
@@ -525,7 +502,6 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   background: rgba(255,255,255,.84);
 }
 @media (max-width: 980px) {
-  .conversation-drag-handle { display: none; }
   .conversation-panel.is-dragging { transform: none; }
 }
 
@@ -544,29 +520,41 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .conversation-panel.is-composer-only > .ambient-art,
 .conversation-panel.is-composer-only > .conversation-scroll { display: none; }
 .conversation-panel.is-composer-only > .composer-stack {
-  width: min(920px, calc(100% - 24px));
+  width: min(720px, calc(100% - 324px));
   max-width: none;
   margin: 0 auto;
 }
 .conversation-panel.is-composer-only .composer {
   width: 100%;
   max-width: none;
-  min-height: 72px;
-  padding: 6px 18px;
+  min-height: 54px;
+  padding: 8px 12px;
   border-radius: 22px;
   box-shadow: 0 6px 24px rgba(28,30,36,.09), 0 1px 3px rgba(28,30,36,.04);
 }
+.conversation-panel.is-composer-only .composer-entry {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 34px;
+}
+.conversation-panel.is-composer-only .composer-toolbar { display: contents; }
+.conversation-panel.is-composer-only .composer-tools { grid-column: 1; grid-row: 1; align-self: end; }
+.conversation-panel.is-composer-only .composer-submit { grid-column: 3; grid-row: 1; align-self: end; margin-left: 0; }
 .conversation-panel.is-composer-only .composer textarea {
-  min-height: 0;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  width: 100%;
+  min-height: 20px;
   max-height: 110px;
   resize: none;
   overflow-y: auto;
-  padding: 1px 2px 3px;
+  padding: 1px 2px;
 }
 .conversation-panel.is-composer-only .community-success-invite { display: none; }
-@media (prefers-reduced-motion: reduce) {
-  .workspace-grid.is-conversation-composer-only .tc-mini-map { transition: none; }
-}
 .workspace-grid.is-task-workspace.is-conversation-floating > .conversation-panel.is-conversation-expanded {
   width: min(920px, calc(100% - 32px));
   height: min(620px, calc(100% - 40px));
@@ -602,9 +590,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   border-radius: 8px;
   font-size: 12px;
 }
+.composer .model-brand-logo { display: block; width: 14px; height: 14px; flex: 0 0 14px; object-fit: contain; }
 .composer .model-button:hover,
 .composer .model-button[aria-expanded="true"] { background: #f4f4f2; color: #34353a; }
-.composer .model-button span { max-width: 120px; }
+.composer .model-button > span { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .composer-voice-slot { position: relative; display: inline-flex; flex: 0 0 auto; }
 .composer .composer-voice { display: grid; place-items: center; padding: 0; cursor: pointer; }
 .composer .composer-voice.is-listening { border: 0; background: #f1effa; color: #5f6091; }
@@ -627,6 +616,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   .workspace-grid.is-task-workspace.is-conversation-floating > .conversation-panel.is-composer-only {
     position: fixed;
     inset: auto 12px max(12px, env(safe-area-inset-bottom, 0px));
+    justify-self: stretch;
     width: auto;
     height: auto;
     max-height: none;
@@ -639,12 +629,20 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
     box-shadow: none;
   }
   .conversation-panel.is-composer-only > .composer-stack { width: 100%; }
-  .conversation-panel.is-composer-only .composer { padding: 6px 13px; border-radius: 20px; }
+  .conversation-panel.is-composer-only .composer { padding: 8px 13px; border-radius: 20px; }
   .workspace-grid.is-task-workspace.is-conversation-floating > .conversation-panel.is-conversation-expanded { height: min(620px, 60dvh); min-height: 270px; }
 }
 @container conversation (max-width: 440px) {
   .composer-toolbar { gap: 4px; }
   .composer-tools, .composer-submit { gap: 2px; }
-  .composer .model-button { max-width: 84px; padding-inline: 4px; }
-  .composer .model-button span { max-width: 48px; }
+  .composer .model-button { max-width: 84px; gap: 3px; padding-inline: 4px; }
+  .composer .model-button > span { max-width: 38px; }
+}
+@media (max-width: 480px) {
+  .conversation-panel.is-composer-only .composer-entry { grid-template-columns: 30px minmax(0, 1fr) auto; gap: 5px; }
+  .conversation-panel.is-composer-only .composer-tools .composer-plus { width: 30px; height: 30px; }
+  .conversation-panel.is-composer-only .composer-submit { gap: 2px; }
+  .conversation-panel.is-composer-only .model-button { width: 30px; justify-content: center; padding: 0; }
+  .conversation-panel.is-composer-only .model-button span { display: none; }
+  .conversation-panel.is-composer-only .model-menu-chevron { display: none; }
 }

@@ -20,6 +20,9 @@ const paths = {
   note: '<path d="M14 3H5v18h14V8zM14 3v6h5M8 13h8m-8 4h6"/>',
   external: '<path d="M14 3h7v7m0-7L10 14M10 3H3v18h18v-7"/>', home: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/>',
   help: '<circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.5 2.5 0 1 1 4.3 1.7c-1 .9-1.9 1.2-1.9 2.8m0 3h.01"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>', message: '<path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.8 8.8 0 0 1-3.5-.7L4 20l1.2-3.6A7.1 7.1 0 0 1 4 12c0-4.1 3.6-7.5 8-7.5s8 3.1 8 7Z"/>',
+  contacts: '<circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M16 5a3 3 0 0 1 0 6m1 3.5a5 5 0 0 1 3.5 4.5"/>',
+  profile: '<circle cx="12" cy="8" r="3.2"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>',
 };
 const icon = (name, cls = "") => `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.spark}</svg>`;
 const STORAGE = "ascstudio-mini:v1";
@@ -30,12 +33,237 @@ function load() {
     const raw = JSON.parse(localStorage.getItem(STORAGE) || "null") || {};
     const ids = value => [...new Set(Array.isArray(value) ? value.filter(validId) : [])];
     const topics = Array.isArray(raw.weeklyTopics) ? [...new Set(raw.weeklyTopics.filter(topic => WEEKLY_TOPICS.includes(topic)))] : [];
-    return { saved: ids(raw.saved), learned: ids(raw.learned), interested: ids(raw.interested), unsure: ids(raw.unsure), answers: raw.answers && typeof raw.answers === "object" && !Array.isArray(raw.answers) ? raw.answers : {}, notes: Array.isArray(raw.notes) ? raw.notes.filter(n => n && TASKS.some(t => t.id === n.taskId) && typeof n.text === "string").slice(-100) : [], activeTask: TASKS.some(t => t.id === raw.activeTask) ? raw.activeTask : "training", weeklyTopics: topics.length ? topics : ["昇腾开发"], weeklyDay: WEEKLY_DAY_OPTIONS.includes(raw.weeklyDay) ? raw.weeklyDay : "周一", weeklyTime: ["09:00", "19:00"].includes(raw.weeklyTime) ? raw.weeklyTime : "09:00", weeklySubscribed: raw.weeklySubscribed === true };
-  } catch { return { saved: [], learned: [], interested: [], unsure: [], answers: {}, notes: [], activeTask: "training", weeklyTopics: ["昇腾开发"], weeklyDay: "周一", weeklyTime: "09:00", weeklySubscribed: false }; }
+    return { saved: ids(raw.saved), learned: ids(raw.learned), interested: ids(raw.interested), unsure: ids(raw.unsure), answers: raw.answers && typeof raw.answers === "object" && !Array.isArray(raw.answers) ? raw.answers : {}, notes: Array.isArray(raw.notes) ? raw.notes.filter(n => n && TASKS.some(t => t.id === n.taskId) && typeof n.text === "string").slice(-100) : [], activeTask: TASKS.some(t => t.id === raw.activeTask) ? raw.activeTask : "training", weeklyTopics: topics.length ? topics : ["昇腾开发"], weeklyDay: WEEKLY_DAY_OPTIONS.includes(raw.weeklyDay) ? raw.weeklyDay : "周一", weeklyTime: ["09:00", "19:00"].includes(raw.weeklyTime) ? raw.weeklyTime : "09:00", weeklySubscribed: raw.weeklySubscribed === true, noticeRead: raw.noticeRead === true };
+  } catch { return { saved: [], learned: [], interested: [], unsure: [], answers: {}, notes: [], activeTask: "training", weeklyTopics: ["昇腾开发"], weeklyDay: "周一", weeklyTime: "09:00", weeklySubscribed: false, noticeRead: false }; }
 }
 const state = load();
-let category = "为你推荐", query = "", group = 0, returnRoute = "discover", currentRoute = "", toastTimer, overlayReturnFocus;
+const initialReviewParams = new URLSearchParams(location.search);
+const isReviewThumbnail = initialReviewParams.get("thumb") === "1";
+const initialPoint = initialReviewParams.get("point");
+if (initialPoint === "7" && !location.hash) location.hash = "briefing";
+const openOverviewOnLoad = initialReviewParams.get("overview") === "1";
+let category = "为你推荐", query = "", group = 0, returnRoute = "discover", currentRoute = "", toastTimer, reviewControlsTimer, overlayReturnFocus;
 const widgets = { cards: 4, batch: 4, devices: 4, accumulation: 2, sync: 0, precision: "mixed", parallel: "data", elements: 33, layout: "chw" };
+const REVIEW_STEPS = [
+  { chapter: "核心学习", kicker: "01 / 07 · 核心学习", title: "从任务出发，发现下一点新知", description: "继续电脑端正在做的事，首页把任务背景和相关知识放在一起，方便挑一个点开始。", principle: "让知识推荐接上具体开发任务" },
+  { chapter: "核心学习", kicker: "02 / 07 · 核心学习", title: "用几分钟，把一个概念学懂", description: "图解、可操作的小练习和理解小题放在同一张知识卡里，也能标记感兴趣或还没弄懂。", principle: "从浏览知识，走到理解与反馈" },
+  { chapter: "核心学习", kicker: "03 / 07 · 核心学习", title: "把理解带回原来的任务", description: "看学习进展、整理任务小结，或复制问题与已理解内容，回电脑继续处理。", principle: "手机学习接得回电脑任务" },
+  { chapter: "主动回访", kicker: "04 / 07 · 主动回访", title: "每周速览主动送到微信", description: "当用户不在小程序里时，一条未读服务通知出现在熟悉的微信会话列表。", principle: "推送作为回到学习的入口" },
+  { chapter: "主动回访", kicker: "05 / 07 · 主动回访", title: "先看懂通知，再决定是否打开", description: "通知先说明本周主题和内容形态，再由用户进入完整速览。", principle: "先交代价值，再邀请打开" },
+  { chapter: "主动回访", kicker: "06 / 07 · 主动回访", title: "一条资讯，再补两张个性化卡", description: "重点资讯之外，再按用户关注或存疑的知识点补两张适合手机阅读的短卡。", principle: "把学习信号带进下一次推荐" },
+  { chapter: "主动回访", kicker: "07 / 07 · 主动回访", title: "自己选择主题与接收时间", description: "订阅由用户决定；确认后模拟新通知回到微信列表，接上下一轮学习。", principle: "可选择、可管理的主动回访", nextTitle: "回到继续学习" },
+];
+let weeklySettingsOpen = false;
+let openReviewSettingsAfterBriefing = initialPoint === "7" && (!location.hash || location.hash === "#briefing");
+let reviewOverviewOpen = false, reviewOverviewReturnFocus = null;
+let reviewWheelDelta = 0, reviewWheelLocked = false, reviewWheelResetTimer;
+function reviewIndexForRoute(route = currentRoute) {
+  if (weeklySettingsOpen) return REVIEW_STEPS.length - 1;
+  const page = route.split("/")[0];
+  if (page === "discover") return 0;
+  if (page === "knowledge") return 1;
+  if (page === "task") return 2;
+  if (page === "wechat") return 3;
+  if (page === "wechat-notification") return 4;
+  if (page === "briefing") return 5;
+  return -1;
+}
+function setReviewLocation(index) {
+  const url = new URL(location.href);
+  if (index < 0) url.searchParams.delete("point");
+  else url.searchParams.set("point", String(index + 1));
+  history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
+function updateReviewPanel(route = currentRoute) {
+  const index = reviewIndexForRoute(route);
+  const dots = [...document.querySelectorAll(".review-dot")];
+  dots.forEach((dot, dotIndex) => {
+    if (dotIndex === index) dot.setAttribute("aria-current", "step");
+    else dot.removeAttribute("aria-current");
+  });
+  if (index < 0) {
+    $("#review-kicker").textContent = "自由体验";
+    $("#review-title").textContent = "继续自由体验";
+    $("#review-description").textContent = "手机界面仍可操作。想回到设计讲解，可从右侧节点或总览选择。";
+    $("#review-principle").textContent = "七个设计点随时可直达";
+    $("#review-progress").textContent = `— / ${String(REVIEW_STEPS.length).padStart(2, "0")}`;
+    $("#review-prev").disabled = true;
+    $("#review-next").disabled = true;
+    setReviewLocation(-1);
+    return;
+  }
+  const step = REVIEW_STEPS[index];
+  $("#review-kicker").textContent = step.kicker;
+  $("#review-title").textContent = step.title;
+  $("#review-description").textContent = step.description;
+  $("#review-principle").textContent = step.principle;
+  const journey = step.chapter === "核心学习" ? ["发现", "学懂", "接续"] : ["送达", "打开", "继续"];
+  ["#review-journey-first", "#review-journey-middle", "#review-journey-last"].forEach((selector, journeyIndex) => { $(selector).textContent = journey[journeyIndex]; });
+  $("#review-progress").textContent = `${String(index + 1).padStart(2, "0")} / ${String(REVIEW_STEPS.length).padStart(2, "0")}`;
+  $("#review-prev").disabled = index === 0;
+  $("#review-next").disabled = false;
+  $("#review-prev").setAttribute("aria-label", "上一个设计点");
+  $("#review-prev").title = "上一个设计点（←）";
+  const nextTitle = step.nextTitle || (index === 2 ? "看看微信回访" : "下一个设计点");
+  $("#review-next").setAttribute("aria-label", nextTitle);
+  $("#review-next").title = `${nextTitle}（→）`;
+  setReviewLocation(index);
+}
+function reviewRoute(index) {
+  if (index === 0) return "discover";
+  if (index === 1) return `knowledge/${activeTask().knowledge[0] || KNOWLEDGE[0].id}`;
+  if (index === 2) return `task/${activeTask().id}`;
+  if (index === 3) return "wechat";
+  if (index === 4) return "wechat-notification";
+  return "briefing";
+}
+function goReviewRoute(index) {
+  if (index === 0 && state.noticeRead) { state.noticeRead = false; persist(); }
+  go(reviewRoute(index));
+}
+function jumpReviewStep(index) {
+  const target = Math.max(0, Math.min(REVIEW_STEPS.length - 1, Number(index)));
+  if (reviewOverviewOpen) closeReviewOverview();
+  if (target === REVIEW_STEPS.length - 1) {
+    if (weeklySettingsOpen) return;
+    openReviewSettingsAfterBriefing = true;
+    setReviewLocation(4);
+    if ($("#overlay").classList.contains("is-open") && !weeklySettingsOpen) closeOverlay(false);
+    if (currentRoute === "briefing") {
+      openReviewSettingsAfterBriefing = false;
+      openWeeklySettings();
+    } else go("briefing");
+    return;
+  }
+  openReviewSettingsAfterBriefing = false;
+  if ($("#overlay").classList.contains("is-open")) closeOverlay(false);
+  setReviewLocation(target);
+  goReviewRoute(target);
+}
+function navigateReview(direction) {
+  const index = reviewIndexForRoute();
+  if (index < 0) return;
+  if (direction === "prev" && index > 0) jumpReviewStep(index - 1);
+  else if (direction === "next") jumpReviewStep(index === REVIEW_STEPS.length - 1 ? 0 : index + 1);
+}
+function handleReviewWheel(event) {
+  if (isReviewThumbnail || innerWidth <= 620 || reviewOverviewOpen) return;
+  const target = event.target instanceof Element ? event.target : null;
+  if (target?.closest("#review-overview, input, textarea, select, [contenteditable='true']")) return;
+  if (weeklySettingsOpen || $("#overlay").classList.contains("is-open")) return;
+  if (reviewIndexForRoute() < 0) return;
+
+  const deltaX = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? event.deltaX * 16 : event.deltaX;
+  const deltaY = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? event.deltaY * 16 : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? event.deltaY * innerHeight : event.deltaY;
+  if (!deltaY || Math.abs(deltaX) > Math.abs(deltaY)) return;
+
+  if (target?.closest("#screen")) {
+    const screen = $("#screen"), maxScroll = screen.scrollHeight - screen.clientHeight;
+    const canScrollInsidePhone = maxScroll > 2 && (deltaY > 0 ? screen.scrollTop < maxScroll - 1 : screen.scrollTop > 1);
+    if (canScrollInsidePhone) return;
+  }
+
+  event.preventDefault();
+  clearTimeout(reviewWheelResetTimer);
+  reviewWheelResetTimer = setTimeout(() => { reviewWheelLocked = false; reviewWheelDelta = 0; }, 520);
+  if (reviewWheelLocked) return;
+
+  reviewWheelDelta += deltaY;
+  if (Math.abs(reviewWheelDelta) < 30) return;
+  const direction = reviewWheelDelta > 0 ? "next" : "prev";
+  reviewWheelDelta = 0;
+  reviewWheelLocked = true;
+  revealReviewControls();
+  navigateReview(direction);
+}
+function reviewThumbnailUrl(index) {
+  const url = new URL(location.href);
+  url.searchParams.set("point", String(index + 1));
+  url.searchParams.set("thumb", "1");
+  url.searchParams.delete("overview");
+  url.hash = reviewRoute(index);
+  return url.href;
+}
+function renderReviewControls() {
+  $("#review-dots").innerHTML = REVIEW_STEPS.map((step, index) => `<button class="review-dot" type="button" data-review-jump="${index}" aria-label="跳到第 ${index + 1} 个设计点：${esc(step.title)}" title="${esc(step.title)}"></button>`).join("");
+  const card = (step, index) => `<button class="review-overview-card" type="button" data-review-jump="${index}"><span class="review-overview-card-heading"><span>${String(index + 1).padStart(2, "0")}</span><strong>${esc(step.title)}</strong></span><span class="review-thumb-stage"><span class="review-thumb-device"><span class="review-thumb-screen"><iframe src="${esc(reviewThumbnailUrl(index))}" title="第 ${index + 1} 个设计点：${esc(step.title)}" tabindex="-1" loading="lazy"></iframe></span></span></span><span class="review-overview-card-caption">${esc(step.principle)}</span></button>`;
+  const chapters = [...new Set(REVIEW_STEPS.map(step => step.chapter))];
+  $("#review-overview-grid").innerHTML = isReviewThumbnail ? "" : chapters.map(chapter => {
+    const steps = REVIEW_STEPS.map((step, index) => ({ step, index })).filter(item => item.step.chapter === chapter);
+    const range = `${String(steps[0].index + 1).padStart(2, "0")}–${String(steps.at(-1).index + 1).padStart(2, "0")}`;
+    const description = chapter === "核心学习" ? "任务关联 · 微学习 · 电脑接续" : "微信通知 · 个性化速览 · 用户掌控";
+    return `<section class="review-overview-chapter"><header><h3>${esc(chapter)}</h3><span>${range}</span><p>${description}</p></header><div class="review-overview-cards">${steps.map(({ step, index }) => card(step, index)).join("")}</div></section>`;
+  }).join("");
+}
+function updateReviewOverviewSelection() {
+  const index = reviewIndexForRoute();
+  document.querySelectorAll(".review-overview-card").forEach((card, cardIndex) => {
+    if (cardIndex === index) card.setAttribute("aria-current", "step");
+    else card.removeAttribute("aria-current");
+  });
+}
+function setOverviewLocation(open) {
+  const url = new URL(location.href);
+  if (open) url.searchParams.set("overview", "1");
+  else url.searchParams.delete("overview");
+  history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
+function openReviewOverview() {
+  if (isReviewThumbnail || innerWidth <= 620) return;
+  if (reviewOverviewOpen) return;
+  reviewOverviewOpen = true;
+  reviewOverviewReturnFocus = document.activeElement;
+  $("#review-overview").hidden = false;
+  $("#review-overview-toggle").setAttribute("aria-expanded", "true");
+  $("#preview-layout").inert = true;
+  document.body.classList.add("review-overview-open");
+  setOverviewLocation(true);
+  updateReviewOverviewSelection();
+  requestAnimationFrame(() => ($(".review-overview-card[aria-current='step']") || $("#review-overview-close")).focus({ preventScroll: true }));
+}
+function closeReviewOverview(restoreFocus = true) {
+  if (!reviewOverviewOpen) return;
+  reviewOverviewOpen = false;
+  $("#review-overview").hidden = true;
+  $("#review-overview-toggle").setAttribute("aria-expanded", "false");
+  $("#preview-layout").inert = false;
+  document.body.classList.remove("review-overview-open");
+  setOverviewLocation(false);
+  if (restoreFocus && reviewOverviewReturnFocus?.isConnected) reviewOverviewReturnFocus.focus({ preventScroll: true });
+}
+function toggleReviewOverview() {
+  reviewOverviewOpen ? closeReviewOverview() : openReviewOverview();
+}
+function revealReviewControls() {
+  if (isReviewThumbnail || innerWidth <= 620) return;
+  $("#review-toolbar").classList.add("is-visible");
+  $("#review-dots").classList.add("is-visible");
+  clearTimeout(reviewControlsTimer);
+  reviewControlsTimer = setTimeout(() => {
+    if (!$("#review-toolbar").contains(document.activeElement) && !$("#review-dots").contains(document.activeElement)) hideReviewControls();
+  }, 2800);
+}
+function showReviewControls(event) {
+  if (isReviewThumbnail || innerWidth <= 620) return;
+  $("#review-toolbar").classList.toggle("is-visible", event.clientY >= innerHeight - 120 || $("#review-toolbar").contains(document.activeElement));
+  $("#review-dots").classList.toggle("is-visible", event.clientX >= innerWidth - 110 || $("#review-dots").contains(document.activeElement));
+}
+function hideReviewControls() {
+  if (!$("#review-toolbar").contains(document.activeElement)) $("#review-toolbar").classList.remove("is-visible");
+  if (!$("#review-dots").contains(document.activeElement)) $("#review-dots").classList.remove("is-visible");
+}
+function syncReviewFullscreen() {
+  const button = $("#review-fullscreen-toggle"), active = Boolean(document.fullscreenElement);
+  button.setAttribute("aria-label", active ? "退出全屏演示" : "进入全屏演示");
+  button.title = active ? "退出全屏演示（F）" : "全屏演示（F）";
+  button.innerHTML = active
+    ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>'
+    : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg>';
+}
+function toggleReviewFullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+  else document.exitFullscreen?.();
+}
 function persist() {
   try { localStorage.setItem(STORAGE, JSON.stringify(state)); } catch { toast("当前浏览器无法保存记录，本次仍可继续体验"); }
 }
@@ -49,10 +277,6 @@ function go(route) {
 }
 const routeFor = k => `knowledge/${k.id}`;
 function activeTask() { return taskById(state.activeTask); }
-function weeklyEntry() {
-  const status = state.weeklySubscribed ? `演示订阅 · ${state.weeklyDay} ${state.weeklyTime}` : "一条重点资讯 + 两张相关知识卡";
-  return `<button class="weekly-entry" data-route="briefing"><span class="weekly-entry-icon">${icon("spark")}</span><span class="weekly-entry-copy"><strong>每周开发速览</strong><small>${esc(status)}</small></span><span class="weekly-entry-end">${state.weeklySubscribed ? "已开启" : "看看"}${icon("chevron")}</span></button>`;
-}
 function smallArt(k, hero = false) {
   if (k.visual === "scaling") return `<div class="card-art art-scaling ${hero ? "art-hero" : ""}" aria-hidden="true"><div class="art-grid"></div><div class="chip chip-one"><span>NPU</span><div class="chip-core">1</div><small>单卡基线</small></div><div class="chip-link"><i></i><span>× 4 ?</span><i></i></div><div class="chip chip-four"><span>NPU × 4</span><div class="core-grid">${"<i></i>".repeat(4)}</div><small>扩展收益</small></div><span class="art-orbit orbit-one"></span><span class="art-orbit orbit-two"></span><span class="art-spark">✦</span></div>`;
   if (k.visual === "batch") return `<div class="card-art art-batch" aria-hidden="true"><div class="batch-stack"><i></i><i></i><i></i><b>4</b></div><span>×</span><div class="batch-number">4</div><span>×</span><div class="batch-number outline">2</div><div class="batch-sum">= 32</div></div>`;
@@ -83,9 +307,21 @@ function discoveryResults() {
   if (query.trim() || category !== "为你推荐") return `<div class="result-count">${query ? `「${esc(query)}」` : esc(category)} · ${pool.length} 个知识点</div><div class="knowledge-list">${pool.map(k => card(k, "list")).join("")}</div>`;
   return `${card(pool[0], "hero")}<div class="section-title"><h2>接着这条思路</h2><button class="text-button" data-action="shuffle">换一组 ${icon("refresh")}</button></div><div class="small-card-grid">${pool.slice(1, 3).map(k => card(k)).join("")}</div><div class="section-title more-title"><h2>也许你还想知道</h2><span>几分钟，懂一点</span></div><div class="knowledge-list">${pool.slice(3).map(k => card(k, "list")).join("")}</div><p class="list-end">一点一点，把想法连起来。</p>`;
 }
+function wechatTabMarkup() {
+  return [["message", "微信", true], ["contacts", "通讯录", false], ["compass", "发现", false], ["profile", "我", false]].map(([name, label, active]) => `<div class="wechat-tab ${active ? "is-active" : ""}">${icon(name)}<span>${label}</span>${active ? '<i></i>' : ""}</div>`).join("");
+}
+function wechatPage() {
+  const feature = WEEKLY_FEATURES[state.weeklyTopics[0]] || WEEKLY_FEATURES["昇腾开发"];
+  return `<div class="wechat-page"><div class="wechat-search-row">${icon("search")}<span>搜索</span><kbd>⌕</kbd></div><div class="wechat-chat-list"><button class="wechat-chat-row service-chat" data-route="wechat-notification"><span class="wechat-avatar service-avatar">${icon("pocket")}</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>服务通知</strong><time>09:12</time></span><span class="wechat-chat-preview"><span>${state.noticeRead ? "Ascend Studio：每周开发速览" : "Ascend Studio：每周开发速览到了"}</span></span></span>${state.noticeRead ? "" : '<span class="wechat-unread-count">1</span>'}</button><div class="wechat-chat-row"><span class="wechat-avatar file-avatar">传</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>文件传输助手</strong><time>08:52</time></span><span class="wechat-chat-preview">图片</span></span></div><div class="wechat-chat-row"><span class="wechat-avatar group-avatar">昇</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>昇腾开发交流群</strong><time>昨天</time></span><span class="wechat-chat-preview">CANN 版本适配讨论</span></span></div><div class="wechat-chat-row"><span class="wechat-avatar friend-avatar">林</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>林同学</strong><time>周一</time></span><span class="wechat-chat-preview">知识卡的推送形式挺方便</span></span></div></div><div class="wechat-inbox-foot">${state.weeklySubscribed ? `每周${esc(state.weeklyDay)} ${esc(state.weeklyTime)} · 演示订阅已开启` : `示例消息 · ${esc(feature.category)}`}</div></div>`;
+}
+function wechatNotificationPage() {
+  const feature = WEEKLY_FEATURES[state.weeklyTopics[0]] || WEEKLY_FEATURES["昇腾开发"];
+  const date = new Intl.DateTimeFormat("zh-CN", { month: "long", day: "numeric", timeZone: "Asia/Shanghai" }).format(new Date());
+  return `<div class="wechat-service-page"><div class="wechat-date-divider">${esc(date)} · 09:12</div><article class="wechat-push-card"><div class="push-source"><img src="./mark.svg" alt=""><span><strong>Ascend Studio</strong><small>小程序订阅消息</small></span><time>09:12</time></div><h1>每周开发速览到了</h1><p>一条${esc(feature.category)}重点，再加两张按你关注或疑问整理的知识卡。</p><div class="push-preview"><span>${esc(feature.category)} · 本周重点</span><strong>${esc(feature.title)}</strong><div><i></i><i></i><span>2 张相关知识卡</span></div></div><button class="primary-button" data-route="briefing">查看本周速览${icon("arrow")}</button></article><p class="wechat-service-hint">通过微信服务通知送达。此处为交互演示，真实推送需用户授权和可用订阅模板。</p></div>`;
+}
 function discover() {
   const t = activeTask();
-  return `<div class="home-page"><div class="page-greeting"><div class="eyebrow"><span class="tiny-star">✦</span> 一点新知，接着你的思路</div><h1>今天，学一点什么？</h1></div>${weeklyEntry()}<div class="search-box">${icon("search")}<input type="search" id="knowledge-search" aria-label="搜索知识点" placeholder="搜一个概念，或说说你的问题" value="${esc(query)}" autocomplete="off"><button type="button" class="clear-search ${query ? "" : "is-hidden"}" data-action="clear-search" aria-label="清空搜索">${icon("close")}</button></div><div class="category-tabs" role="group" aria-label="知识分类">${["为你推荐", "训练调优", "算子开发", "模型推理"].map(c => `<button data-category="${c}" aria-pressed="${category === c}" class="${category === c ? "is-active" : ""}">${c}</button>`).join("")}</div><button class="task-context" data-route="task/${t.id}"><span class="context-icon tone-${t.tone}">${icon(t.icon)}</span><span><small>接着电脑端的思路</small><strong>${esc(t.title)}</strong></span><span class="context-end">${icon("chevron")}</span></button><div id="discovery-results">${discoveryResults()}</div></div>`;
+  return `<div class="home-page"><div class="page-greeting"><div class="eyebrow"><span class="tiny-star">✦</span> 一点新知，接着你的思路</div><h1>今天，学一点什么？</h1></div><div class="search-box">${icon("search")}<input type="search" id="knowledge-search" aria-label="搜索知识点" placeholder="搜一个概念，或说说你的问题" value="${esc(query)}" autocomplete="off"><button type="button" class="clear-search ${query ? "" : "is-hidden"}" data-action="clear-search" aria-label="清空搜索">${icon("close")}</button></div><div class="category-tabs" role="group" aria-label="知识分类">${["为你推荐", "训练调优", "算子开发", "模型推理"].map(c => `<button data-category="${c}" aria-pressed="${category === c}" class="${category === c ? "is-active" : ""}">${c}</button>`).join("")}</div><button class="task-context" data-route="task/${t.id}"><span class="context-icon tone-${t.tone}">${icon(t.icon)}</span><span><small>接着电脑端的思路</small><strong>${esc(t.title)}</strong></span><span class="context-end">${icon("chevron")}</span></button><div id="discovery-results">${discoveryResults()}</div></div>`;
 }
 function pills(values, selected, key, suffix = "") { return `<div class="widget-pills">${values.map(v => `<button data-widget="${key}" data-value="${v}" aria-pressed="${String(selected) === String(v)}" class="${String(selected) === String(v) ? "is-active" : ""}">${v}${suffix}</button>`).join("")}</div>`; }
 function widget(k) {
@@ -135,7 +371,7 @@ function weeklyDigest() {
   const date = new Intl.DateTimeFormat("zh-CN", { month: "long", day: "numeric", timeZone: "Asia/Shanghai" }).format(new Date());
   const topicLine = state.weeklyTopics.length ? state.weeklyTopics.join(" · ") : "昇腾开发";
   const feature = WEEKLY_FEATURES[state.weeklyTopics[0]] || WEEKLY_FEATURES["昇腾开发"];
-  return `<div class="brief-page"><div class="page-greeting"><div class="eyebrow"><span class="tiny-star">✦</span> ${esc(topicLine)} · 手机读完，再回电脑继续</div><h1>每周开发速览</h1><p class="page-subtitle">本周 · ${esc(date)} · 示例期</p></div><article class="featured-brief"><div class="brief-kicker"><span>本周重点资讯</span><span class="sample-label">示例内容</span></div><span class="brief-category">${esc(feature.category)}</span><h2>${esc(feature.title)}</h2><p>${esc(feature.summary)}</p><ul>${feature.points.map(point => `<li>${esc(point)}</li>`).join("")}</ul><a class="brief-source" href="${esc(feature.source.url)}" target="_blank" rel="noopener">${icon("external")}${esc(feature.source.title)}${icon("chevron")}</a></article><section class="brief-recommendations"><div class="section-title"><div><h2>给你补两张知识卡</h2><p>${signals ? `结合 ${signals} 个兴趣或疑问标记` : `先接上「${esc(activeTask().title)}」这条任务`}</p></div><span class="brief-count">02</span></div><div class="brief-card-list">${cards.map(({ knowledge: k, label }) => `<button class="brief-card" data-route="${routeFor(k)}"><span class="brief-card-top"><span class="tone-dot tone-${k.tone}"></span>${esc(label)}<span>${k.minutes} 分钟</span></span><strong>${esc(k.title)}</strong><p>${esc(k.takeaway)}</p><span class="brief-card-open">打开知识卡 ${icon("arrow")}</span></button>`).join("")}</div></section><section class="weekly-settings-card"><div class="weekly-settings-copy"><span>${icon("clock")} 每周一条，轻松读完</span><strong>${state.weeklySubscribed ? `每周${esc(state.weeklyDay)} · ${esc(state.weeklyTime)} <small>演示订阅已开启</small>` : "订阅后，收到本周速览通知"}</strong><small>主题：${esc(topicLine)}</small></div><button class="primary-button" data-action="${state.weeklySubscribed ? "open-notification" : "open-weekly-settings"}">${state.weeklySubscribed ? "查看本周通知" : "设置每周推送"}${icon("arrow")}</button><button class="text-button weekly-manage" data-action="open-weekly-settings">${state.weeklySubscribed ? "管理主题与时间" : "选主题与时间"}${icon("chevron")}</button></section><p class="prototype-note">交互流程为本地演示；真实周期推送需符合小程序类目并申请可用的长期订阅模板。</p></div>`;
+  return `<div class="brief-page"><div class="page-greeting"><div class="eyebrow"><span class="tiny-star">✦</span> ${esc(topicLine)} · 手机读完，再回电脑继续</div><h1>每周开发速览</h1><p class="page-subtitle">本周 · ${esc(date)} · 示例期</p></div><article class="featured-brief"><div class="brief-kicker"><span>本周重点资讯</span><span class="sample-label">示例内容</span></div><span class="brief-category">${esc(feature.category)}</span><h2>${esc(feature.title)}</h2><p>${esc(feature.summary)}</p><ul>${feature.points.map(point => `<li>${esc(point)}</li>`).join("")}</ul><a class="brief-source" href="${esc(feature.source.url)}" target="_blank" rel="noopener">${icon("external")}${esc(feature.source.title)}${icon("chevron")}</a></article><section class="brief-recommendations"><div class="section-title"><div><h2>给你补两张知识卡</h2><p>${signals ? `结合 ${signals} 个兴趣或疑问标记` : `先接上「${esc(activeTask().title)}」这条任务`}</p></div><span class="brief-count">02</span></div><div class="brief-card-list">${cards.map(({ knowledge: k, label }) => `<button class="brief-card" data-route="${routeFor(k)}"><span class="brief-card-top"><span class="tone-dot tone-${k.tone}"></span>${esc(label)}<span>${k.minutes} 分钟</span></span><strong>${esc(k.title)}</strong><p>${esc(k.takeaway)}</p><span class="brief-card-open">打开知识卡 ${icon("arrow")}</span></button>`).join("")}</div></section><section class="weekly-settings-card"><div class="weekly-settings-copy"><span>${icon("clock")} 每周一条，轻松读完</span><strong>${state.weeklySubscribed ? `每周${esc(state.weeklyDay)} · ${esc(state.weeklyTime)} <small>演示订阅已开启</small>` : "订阅后，收到本周速览通知"}</strong><small>主题：${esc(topicLine)}</small></div><button class="primary-button" data-action="open-weekly-settings">${state.weeklySubscribed ? "管理每周推送" : "订阅每周速览"}${icon("arrow")}</button></section><p class="prototype-note">交互流程为本地演示；真实周期推送需符合小程序类目并申请可用的长期订阅模板。</p></div>`;
 }
 function detail(k) {
   const related = activeTask().knowledge.includes(k.id) ? activeTask() : TASKS.find(t => t.knowledge.includes(k.id));
@@ -163,20 +399,39 @@ function render() {
   let route; try { route = decodeURIComponent(location.hash.slice(1) || "discover"); } catch { route = "discover"; }
   const [page, id] = route.split("/");
   const k = page === "knowledge" ? knowledgeById(id) : null;
-  const valid = page === "discover" || page === "briefing" || page === "tasks" || page === "mine" || (page === "task" && TASKS.some(t => t.id === id)) || Boolean(k);
+  const valid = ["wechat", "wechat-notification", "discover", "briefing", "tasks", "mine"].includes(page) || (page === "task" && TASKS.some(t => t.id === id)) || Boolean(k);
   if (!valid) { go("discover"); return; }
+  if (openReviewSettingsAfterBriefing && page !== "briefing") openReviewSettingsAfterBriefing = false;
+  if (page === "wechat-notification" && !state.noticeRead && !isReviewThumbnail) { state.noticeRead = true; persist(); }
   if (page === "knowledge" && !currentRoute.startsWith("knowledge/")) returnRoute = currentRoute || "discover";
   currentRoute = route;
-  const nested = page === "knowledge" || page === "task";
+  const isWechat = page === "wechat" || page === "wechat-notification";
+  const nested = page === "knowledge" || page === "task" || page === "briefing" || page === "wechat-notification";
   const pageName = page === "knowledge" ? "知识卡" : page === "task" ? "任务" : page === "briefing" ? "每周速览" : "";
-  $("#app-header").innerHTML = `<div class="header-title">${nested ? `<button class="icon-button" data-route="${page === "knowledge" ? esc(returnRoute) : "tasks"}" aria-label="返回">${icon("back")}</button><span>${pageName}</span>` : `<img src="./mark.svg" width="22" height="22" alt=""><span>Ascend Studio</span>`}</div><div class="mini-capsule"><button data-action="more" aria-label="更多选项">${icon("more")}</button><i></i><button data-route="discover" aria-label="回到发现首页">${icon("home")}</button></div>`;
-  $("#screen").innerHTML = page === "discover" ? discover() : page === "briefing" ? weeklyDigest() : k ? detail(k) : page === "tasks" ? tasksPage() : page === "task" ? taskDetail(taskById(id)) : mine(id);
+  if (page === "wechat") {
+    $("#app-header").innerHTML = `<div class="wechat-header-title">微信<span class="wechat-title-mark"></span></div><div class="wechat-header-tools"><span>${icon("search")}</span><span class="wechat-plus">${icon("plus")}</span></div>`;
+  } else if (page === "wechat-notification") {
+    $("#app-header").innerHTML = `<div class="header-title"><button class="icon-button" data-route="wechat" aria-label="返回微信消息列表">${icon("back")}</button><span>服务通知</span></div><span class="wechat-notification-menu">${icon("more")}</span>`;
+  } else {
+    const backRoute = page === "knowledge" ? esc(returnRoute) : page === "briefing" ? "wechat-notification" : "tasks";
+    $("#app-header").innerHTML = `<div class="header-title">${nested ? `<button class="icon-button" data-route="${backRoute}" aria-label="返回">${icon("back")}</button><span>${pageName}</span>` : `<img src="./mark.svg" width="22" height="22" alt=""><span>Ascend Studio</span>`}</div><div class="mini-capsule"><button data-action="more" aria-label="更多选项">${icon("more")}</button><i></i><button data-route="discover" aria-label="回到发现首页">${icon("home")}</button></div>`;
+  }
+  $("#screen").innerHTML = page === "wechat" ? wechatPage() : page === "wechat-notification" ? wechatNotificationPage() : page === "discover" ? discover() : page === "briefing" ? weeklyDigest() : k ? detail(k) : page === "tasks" ? tasksPage() : page === "task" ? taskDetail(taskById(id)) : mine(id);
   $("#screen").scrollTop = 0;
   $("#device").classList.toggle("is-detail", Boolean(k));
+  $("#device").classList.toggle("is-wechat", isWechat);
   $("#detail-action").innerHTML = k ? `<div class="detail-action"><button class="save-button ${state.saved.includes(k.id) ? "is-saved" : ""}" data-action="save" data-id="${k.id}" aria-pressed="${state.saved.includes(k.id)}" aria-label="${state.saved.includes(k.id) ? "取消收藏" : "收藏知识点"}">${icon("bookmark")}<span>${state.saved.includes(k.id) ? "已收藏" : "收藏"}</span></button><button class="primary-button" data-action="add-note" data-id="${k.id}">${icon("note")}加入任务小结${icon("arrow")}</button></div>` : "";
-  const selectedTab = page === "task" || page === "tasks" ? "tasks" : page === "mine" ? "mine" : page === "briefing" ? "briefing" : "discover";
-  $("#tab-bar").hidden = Boolean(k);
-  $("#tab-bar").innerHTML = [["discover", "compass", "发现"], ["briefing", "spark", "速览"], ["tasks", "layers", "任务"], ["mine/saved", "pocket", "我的"]].map(([path, name, label]) => `<button data-route="${path}" ${selectedTab === path.split("/")[0] ? 'aria-current="page"' : ""}>${icon(name)}<span>${label}</span>${selectedTab === path.split("/")[0] ? '<i class="tab-dot"></i>' : ""}</button>`).join("");
+  const selectedTab = page === "task" || page === "tasks" ? "tasks" : page === "mine" ? "mine" : "discover";
+  $("#tab-bar").hidden = Boolean(k) || page === "briefing" || isWechat;
+  $("#tab-bar").innerHTML = [["discover", "compass", "发现"], ["tasks", "layers", "任务"], ["mine/saved", "pocket", "我的"]].map(([path, name, label]) => `<button data-route="${path}" ${selectedTab === path.split("/")[0] ? 'aria-current="page"' : ""}>${icon(name)}<span>${label}</span>${selectedTab === path.split("/")[0] ? '<i class="tab-dot"></i>' : ""}</button>`).join("");
+  $("#wechat-tab-bar").hidden = page !== "wechat";
+  $("#wechat-tab-bar").innerHTML = wechatTabMarkup();
+  updateReviewPanel(route);
+  updateReviewOverviewSelection();
+  if (openReviewSettingsAfterBriefing && page === "briefing") {
+    openReviewSettingsAfterBriefing = false;
+    openWeeklySettings();
+  }
 }
 function openOverlay(title, body, kind = "") {
   overlayReturnFocus = document.activeElement;
@@ -188,17 +443,18 @@ function openOverlay(title, body, kind = "") {
 function closeOverlay(restore = true) {
   if (!$("#overlay").classList.contains("is-open")) return;
   $("#overlay").classList.remove("is-open"); $("#overlay").innerHTML = "";
+  weeklySettingsOpen = false;
   for (const id of ["#screen", "#app-header", "#tab-bar", "#detail-action"]) $(id).inert = false;
   if (restore && overlayReturnFocus?.isConnected) overlayReturnFocus.focus({ preventScroll: true });
+  updateReviewPanel(currentRoute);
 }
 function openWeeklySettings() {
   const topics = WEEKLY_TOPICS.map(topic => `<button class="topic-option ${state.weeklyTopics.includes(topic) ? "is-active" : ""}" data-action="toggle-weekly-topic" data-topic="${esc(topic)}" aria-pressed="${state.weeklyTopics.includes(topic)}">${state.weeklyTopics.includes(topic) ? icon("check") : ""}${esc(topic)}</button>`).join("");
   const days = WEEKLY_DAY_OPTIONS.map(day => `<button class="schedule-option ${state.weeklyDay === day ? "is-active" : ""}" data-action="set-weekly-day" data-day="${day}" aria-pressed="${state.weeklyDay === day}">${day}</button>`).join("");
   const times = ["09:00", "19:00"].map(time => `<button class="schedule-option ${state.weeklyTime === time ? "is-active" : ""}" data-action="set-weekly-time" data-time="${time}" aria-pressed="${state.weeklyTime === time}">${time === "09:00" ? "早上" : "晚上"} ${time}</button>`).join("");
-  openOverlay("设置每周开发速览", `<p class="sheet-hint settings-intro">每周一条重点资讯，再按你标记的兴趣或疑问补两张短知识卡。</p><span class="field-label">想看哪些主题</span><div class="topic-options">${topics}</div><span class="field-label">每周什么时候</span><div class="schedule-options">${days}</div><div class="schedule-options">${times}</div><div class="authorization-preview"><span>${icon("pocket")}微信订阅消息</span><p>下一步会模拟微信授权弹窗。允许后，展示一条服务通知并打开本周速览。</p></div><p class="platform-note">真实周期推送需小程序类目符合要求，并有可用的长期订阅模板。</p><button class="primary-button" data-action="accept-weekly">${state.weeklySubscribed ? "保存设置并预览通知" : "允许并预览通知"}${icon("arrow")}</button>${state.weeklySubscribed ? '<button class="text-button settings-cancel" data-action="cancel-weekly">关闭演示订阅</button>' : '<button class="text-button settings-cancel" data-action="reject-weekly">暂不订阅</button>'}`);
-}
-function openWeeklyNotification() {
-  openOverlay("微信服务通知 · 演示", `<article class="wechat-notification"><div class="notice-source"><img src="./mark.svg" alt=""><strong>Ascend Studio</strong><time>刚刚</time></div><div class="notice-content"><strong>本周开发速览到了</strong><p>一条昇腾开发重点，再加两张按你关注或疑问整理的知识卡。</p></div><button class="primary-button" data-action="open-briefing">打开本周速览${icon("arrow")}</button></article><p class="platform-note">此处模拟微信服务通知的点击回流；未连接微信后台。</p>`);
+  openOverlay("设置每周开发速览", `<p class="sheet-hint settings-intro">每周一条重点资讯，再按你标记的兴趣或疑问补两张短知识卡。</p><span class="field-label">想看哪些主题</span><div class="topic-options">${topics}</div><span class="field-label">每周什么时候</span><div class="schedule-options">${days}</div><div class="schedule-options">${times}</div><div class="authorization-preview"><span>${icon("pocket")}微信订阅消息</span><p>下一步会模拟微信授权。允许后，回到微信会话列表查看新到的服务通知。</p></div><p class="platform-note">真实周期推送需小程序类目符合要求，并有可用的长期订阅模板。</p><button class="primary-button" data-action="accept-weekly">${state.weeklySubscribed ? "保存设置并模拟新消息" : "允许并模拟收到消息"}${icon("arrow")}</button>${state.weeklySubscribed ? '<button class="text-button settings-cancel" data-action="cancel-weekly">关闭演示订阅</button>' : '<button class="text-button settings-cancel" data-action="reject-weekly">暂不订阅</button>'}`);
+  weeklySettingsOpen = true;
+  updateReviewPanel(currentRoute);
 }
 function openNote(k, t = activeTask()) {
   if (k && !t.knowledge.includes(k.id)) t = TASKS.find(x => x.knowledge.includes(k.id)) || t;
@@ -218,6 +474,15 @@ async function copy(text) {
   }
 }
 document.addEventListener("click", async event => {
+  const reviewControl = event.target.closest("[data-review-nav], [data-review-jump], [data-review-close-overview], [data-review-overview], [data-review-fullscreen]");
+  if (reviewControl) {
+    if (reviewControl.dataset.reviewNav) navigateReview(reviewControl.dataset.reviewNav);
+    else if (reviewControl.dataset.reviewJump !== undefined) jumpReviewStep(reviewControl.dataset.reviewJump);
+    else if (reviewControl.hasAttribute("data-review-close-overview")) closeReviewOverview();
+    else if (reviewControl.hasAttribute("data-review-overview")) toggleReviewOverview();
+    else if (reviewControl.hasAttribute("data-review-fullscreen")) toggleReviewFullscreen();
+    return;
+  }
   const button = event.target.closest("[data-route], [data-action], [data-category], [data-widget], [data-answer]");
   if (!button) return;
   if (button.dataset.route) { go(button.dataset.route); return; }
@@ -253,11 +518,9 @@ document.addEventListener("click", async event => {
   }
   else if (action === "set-weekly-day") { state.weeklyDay = WEEKLY_DAY_OPTIONS.includes(button.dataset.day) ? button.dataset.day : "周一"; persist(); closeOverlay(false); openWeeklySettings(); }
   else if (action === "set-weekly-time") { state.weeklyTime = ["09:00", "19:00"].includes(button.dataset.time) ? button.dataset.time : "09:00"; persist(); closeOverlay(false); openWeeklySettings(); }
-  else if (action === "accept-weekly") { state.weeklySubscribed = true; persist(); closeOverlay(false); openWeeklyNotification(); }
+  else if (action === "accept-weekly") { state.weeklySubscribed = true; state.noticeRead = false; persist(); closeOverlay(false); go("wechat"); toast("已模拟收到一条微信服务通知"); }
   else if (action === "cancel-weekly") { state.weeklySubscribed = false; persist(); closeOverlay(); render(); toast("已关闭本地演示订阅"); }
   else if (action === "reject-weekly") { closeOverlay(); toast("速览仍可随时打开"); }
-  else if (action === "open-notification") openWeeklyNotification();
-  else if (action === "open-briefing") { closeOverlay(false); go("briefing"); }
   else if (action === "clear-search") { query = ""; if ($("#knowledge-search")) { $("#knowledge-search").value = ""; $(".clear-search").classList.add("is-hidden"); $("#discovery-results").innerHTML = discoveryResults(); $("#knowledge-search").focus(); } }
   else if (action === "shuffle") { group++; $("#discovery-results").innerHTML = discoveryResults(); toast("换了一组关联知识点"); }
   else if (action === "sync-next") { widgets.sync = (widgets.sync + 1) % 3; $("#interactive-widget").innerHTML = widget(knowledgeById("sync")); $(".widget-next").focus({ preventScroll: true }); }
@@ -287,14 +550,54 @@ document.addEventListener("submit", event => {
   state.notes = state.notes.slice(-100); persist(); closeOverlay(false); go(`task/${taskId}`); toast("小结已保存，接着你的任务继续");
 });
 document.addEventListener("keydown", event => {
-  if (!$("#overlay").classList.contains("is-open")) return;
-  if (event.key === "Escape") { closeOverlay(); return; }
-  if (event.key === "Tab") {
-    const items = [...$("#overlay").querySelectorAll('button, a[href], input:not([type="hidden"]), textarea, select')].filter(el => !el.disabled);
-    const first = items[0], last = items[items.length - 1];
-    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
-    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+  const overview = $("#review-overview"), overlay = $("#overlay");
+  const focusable = root => [...root.querySelectorAll('button:not(:disabled), a[href], input:not([type="hidden"]):not(:disabled), textarea:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])')].filter(el => !el.hidden && el.getAttribute("aria-hidden") !== "true");
+  const trapTab = root => {
+    const items = focusable(root), first = items[0] || root, last = items.at(-1) || root;
+    if (!items.length) root.focus({ preventScroll: true });
+    if (event.shiftKey && (document.activeElement === first || !root.contains(document.activeElement))) { event.preventDefault(); last.focus({ preventScroll: true }); }
+    else if (!event.shiftKey && (document.activeElement === last || !root.contains(document.activeElement))) { event.preventDefault(); first.focus({ preventScroll: true }); }
+  };
+  if (reviewOverviewOpen) {
+    if (event.key === "Escape") { event.preventDefault(); closeReviewOverview(); return; }
+    if (event.key === "Tab") trapTab(overview);
+    return;
+  }
+  if (overlay.classList.contains("is-open")) {
+    if (event.key === "Escape") { closeOverlay(); return; }
+    if (event.key === "Tab") trapTab(overlay);
+    return;
+  }
+
+  const target = event.target instanceof Element ? event.target : null;
+  const inPhone = Boolean(target?.closest("#device"));
+  const inReviewControl = Boolean(target?.closest("#review-toolbar, #review-dots"));
+  const isEditable = target?.matches("input, textarea, select, [contenteditable='true']");
+  const isInteractive = target?.closest("button, a[href], input, textarea, select, [contenteditable='true']");
+  if (inPhone || isEditable || (isInteractive && !inReviewControl)) return;
+  if (isReviewThumbnail || innerWidth <= 620) return;
+
+  const index = reviewIndexForRoute();
+  if (["ArrowLeft", "PageUp"].includes(event.key) && index > 0) {
+    event.preventDefault(); revealReviewControls(); jumpReviewStep(index - 1);
+  } else if (["ArrowRight", "PageDown"].includes(event.key) && index >= 0) {
+    event.preventDefault(); revealReviewControls(); jumpReviewStep(index === REVIEW_STEPS.length - 1 ? 0 : index + 1);
+  } else if (event.key === "Home" && index >= 0) {
+    event.preventDefault(); revealReviewControls(); jumpReviewStep(0);
+  } else if (event.key === "End" && index >= 0) {
+    event.preventDefault(); revealReviewControls(); jumpReviewStep(REVIEW_STEPS.length - 1);
+  } else if (event.key.toLowerCase() === "o" && !event.repeat) {
+    event.preventDefault(); toggleReviewOverview();
+  } else if (event.key.toLowerCase() === "f" && !event.repeat) {
+    event.preventDefault(); toggleReviewFullscreen();
   }
 });
+document.addEventListener("pointermove", showReviewControls, { passive: true });
+document.addEventListener("pointerleave", hideReviewControls);
+window.addEventListener("wheel", handleReviewWheel, { passive: false });
+document.addEventListener("fullscreenchange", syncReviewFullscreen);
+window.addEventListener("blur", hideReviewControls);
 window.addEventListener("hashchange", render);
+renderReviewControls();
 render();
+if (openOverviewOnLoad && !isReviewThumbnail) openReviewOverview();

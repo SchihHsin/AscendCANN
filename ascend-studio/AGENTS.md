@@ -1865,12 +1865,76 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/App.jsx`、`src/styles.css` 与 `/ascstudio/` Pages 构建产物。依据：用户截图及确认（H）；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check`、构建 HTML / JS / CSS 引用检查通过；本地 5178 返回 HTTP 200。未运行自动化测试，也未留存本轮的 UI 截图。Pages workflow `40473711359` 成功；线上 `/ascstudio/` HTML、`index-DHwhtWIz.js`、`index-CmViAAB5.css` 均 HTTP 200。实现提交 `971d7020`，整合并行更新的提交 `270c7324`、`7598593e` 已推送 `origin/main`。
 
+
+### 2026-10-27 · 首页交互方式命名与图标
+
+- 用户确认三个首页 Tab 使用「主动建议 / 多层探索 / 线索串联」，并同意按各自设计点替换图标。映射为卡片 `IconCards`、层级 `IconHierarchy3`、关系 `IconAffiliate`；Tab 组辅助名称为「首页交互方式」。
+- 标签字号由 11px 调至 12px；仅改名称、图标与可读性尺寸，保留现有方案行为、选中态和 `classic / explore / combine` 路由。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务已启动。
+- 发布：功能提交 `b009757a` 与保留并行更新的合并提交 `40d94763` 已进入 `origin/main`，后续主线更新同步至 `c6bcdc5a`。Pages workflow `40495774511` 成功；公开 `/AscendCANN/ascstudio/?home=combine` HTML、`index-Bn1n8C39.js`、`index-BlUG8aw7.css` 均 HTTP 200，JS 含三个新名称。
+
 ### 2026-10-27 · 材料卡内容自适应与单一滚动区
 
 - 统一规则记录在本机 `ascend-studio-interface-style` Skill；卡片尽量展示完整常规内容，长内容、空间冲突、用户手动调尺寸或固定时才保留正文滚动。共享 `TaskCanvas` 测量画布逻辑尺寸，自动扩高有上限并避让邻卡；代码 / Diff 由卡片正文承接纵向滚动。便签、手绘不自动扩高。
 - ResNet50 / 图像学习的树节点是短导航摘要；材料卡自然排高，放大态使用单一卡片滚动容器和 sticky 标题，不将学习路径节点改造成长内容卡。
-- 构建与语法 / diff 检查已通过；未运行测试套件，未做浏览器视觉回放。页面序列与 API / Host / Application 边界不变；推送与 Pages 部署待完成。
+- 构建与语法 / diff 检查已通过；未运行测试套件，未做浏览器视觉回放。实现提交 `e6ccedd5` 已推送至 `origin/main`；Pages workflow `40494606292` 成功，线上 `/ascstudio/` 与对应 JS / CSS 均 HTTP 200。页面序列与 API / Host / Application 边界不变。
 
+### 2026-10-27 · 旧画布笔迹删除入口
+
+- 在有旧画布级笔迹的编辑态，工具栏始终显示“删除笔迹”；未选中时禁用并指引先点线条，选中后删除目标笔迹。任务画布、图像输入学习画布与 ResNet50 官方学习画布保持同一交互。
+- 新手绘卡片依旧只在卡片内容区域绘制；删整张新卡时同时移除卡内笔迹。此规则针对存量的无卡片归属笔迹，不改变当前卡片绘制方式。
+- 本轮实现已进入 `origin/main`，并随 Pages workflow `40495064319` 成功发布；线上 JS 确认提供选中 / 删除文案。细节见根目录 `AGENTS.md` 同日记录。
+
+### 2026-10-27 · GitHub Pages 旧缓存兼容
+
+- 用户的 GitHub Pages 页面空白是缓存入口失效：Pages 对 HTML 返回 `max-age=600`，而构建脚本的 `--emptyOutDir` 每次构建删除旧哈希 JS / CSS。浏览器可能继续使用旧 HTML 并请求已删除的 bundle，形成整页白屏。
+- `build:pages` 改为保留输出目录；在当前 Pages 产物中补回最近版本 HTML 引用过的旧 JS / CSS。后续更新留下哈希资源，以便缓存中的旧 HTML 仍可加载。页面内容和交互未变。
+- 验证：`npm run build:pages`、新旧入口 bundle `node --check`、资源文件存在性和 `git diff --check` 通过；Pages 推送与部署回执待补。
+
+### 2026-10-27 · GitHub Pages 首屏白屏运行时修复
+
+- 已确认旧 HTML 缓存指向缺失哈希资源的问题由保留历史 bundle 的 Pages 构建修复；剩余白屏来自 `src/App.jsx` 的初始化时序：小地图 `useLayoutEffect` 在 `layout` hook 声明前，把 `layout.workspaceRef` 放入依赖数组。React 在 render 阶段立即求值依赖数组，触发 TDZ。移除该稳定 ref 依赖，状态依赖保持为小地图显示条件与任务选择。
+- 修改 `src/App.jsx` 和根仓 `ascstudio/` 构建产物。无视觉或页面顺序变化；不影响 API / Protocol、Host / Harness、Application / Task 边界。
+- `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；本地静态构建与线上 Pages 在 Chrome 实际打开均成功渲染，未见 JS 运行时错误。线上 HTML / 当前资源及历史缓存资源均 HTTP 200；未运行自动化测试。
+- 修复提交 `d76fd4b4` 已合并进主线；GitHub Pages workflow `40498003527` 成功，线上入口引用 `index-Bz81_Hog.js` / `index-BlUG8aw7.css`。
+
+### 2026-10-27 · 底部输入框收窄与小地图原位
+
+- 用户确认底部输入框收窄即可为右下角小地图留白；小地图保持原位。移除动态移动小地图的 `ResizeObserver` 逻辑，将 `.composer-stack` 宽度调整为 `min(720px, calc(100% - 324px))`。composer 默认单行、最小高度 72px，随输入自动增高且最多 110px。
+- 修复底部布局白屏：移除在 `areaInteractionActive` 初始化前读取该状态的 `liftMinimapForComposer` 派生表达式及地图移动 effect。
+- 验证：`npm run build:pages`、构建 JS `node --check`、资源引用及 `git diff --check` 通过。1440×900 桌面 Chromium 渲染无异常；composer 为 636×72px，小地图保持在右下角，间距约 224px。Pages workflow `40501184517` 成功，线上 HTML、JS、CSS 均 HTTP 200。
+- 本轮未改变页面导航、hash 或 API / Protocol、Host / Harness、Application / Task 边界。代码 `b93cbd29` / 构建 `a08fff7d` 已推送，后续主线并行改动保留。
+
+### 2026-10-27 · 底部输入框整体单行
+
+- 用户选定 A：输入框初始整体单行，输入文字与加号、权限、模型、话筒、发送同排；多行文字时自动增高。浮窗 composer 最小高度从 72px 收至 54px，textarea 最多增高到 110px；左侧对话和展开对话仍沿用原来的上下两层结构。
+- 用 `.composer-entry` 网格排列浮窗输入行；窄屏占满左右留白，390px 时隐藏模型文字标签保留入口，避免控件挤压输入宽度。
+- 验证：`npm run build:pages`、构建 JS 语法检查、资源引用与 `git diff --check` 通过。桌面 1440×900 初始 636×54px，长文 textarea 增高至 110px；窄屏 390×844 初始 366×55px，所有操作都在视口内，无横向滚动。Pages workflow `40504848231` 成功，线上资源 HTTP 200。
+- 提交 `e4ce1482` 已推送 `origin/main`；未改变页面序列、路由或机制边界。
+
+
+### 2026-10-28 · 对话 composer 外沿作为布局拖动区
+
+- 用户确认：不论对话在左侧还是底部浮动，都隐藏独立拖动把手；把 composer 的外圈边缘作为可拖动区域。指针悬浮边缘时变为 grab，拖动中为 grabbing。文本输入区、模型 / 权限 / 附件 / 发送等控件继续执行自身操作。
+- 实现位于 `src/App.jsx` 与 `src/styles.css`：外沿约 10px 响应拖动，交互控件及上下文芯片排除；沿用目标区域预览和吸附，只有移动到目标并在其上松手才切换布局。移动端不启用此桌面拖动。没有改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 构建与检查：`npm run build:pages`、产物 JS `node --check`、资源引用校验及 `git diff --check` 通过。桌面浏览器回放验证左侧 ↔ 底部双向拖动、边缘 cursor、控件点击不触发，以及目标预览 / 松手吸附；无把手和运行时异常。未运行自动化测试。
+- 发布：提交 `8e3633c5` 推送至 `origin/main`；Pages workflow `40538891007` 成功。线上 `/AscendCANN/ascstudio/` 与本轮 JS / CSS 资源均返回 HTTP 200。
+
+
+### 2026-10-28 · 模型下拉项使用品牌标识
+
+- 用户要求将模型切换处的小闪电替换成对应模型标识。GLM-5.3 映射 Z.ai，DeepSeek V4 映射 DeepSeek，Qwen3-Coder 映射 Qwen。输入框当前选择按钮与下拉选项都显示各自 logo；窄屏隐藏文字与下拉箭头时保留图标。
+- 实现：`src/App.jsx` 的模型按钮及菜单绑定品牌 SVG，`src/styles.css` / `src/interaction.css` 统一图标尺寸与紧凑布局。三个 SVG 来自 `@lobehub/icons-static-svg@1.101.0`，其 MIT 许可和来源说明随源码、Pages 输出一并保留。
+- 验证：`npm run build:pages`、生成 JS `node --check`、HTML 资源引用、license 文件检查及 `git diff --check` 通过；本地 `5178` 返回 HTTP 200。未运行自动化测试或桌面逐项交互回放。
+- 发布：提交 `c1adafe0` 已推送；Pages workflow `40541928644` 成功。线上 `/AscendCANN/ascstudio/` 入口、JS、CSS 及 attribution 文件均 HTTP 200。
+
+### 2026-10-28 · 聚焦节点与阅读完整材料
+
+- 聚焦是在原画布内导航：目标节点进入可用视野中心并按可用宽高适当缩放，仍可访问其他节点和关系；节点过大时缩小以完整留在视口内。
+- 打开完整内容是离开画布到右侧任务内容区阅读。两种操作使用不同图标语义；整画布缩放和“适应全部”也不替代单节点聚焦 / 阅读。
+- AddCustom 与 ResNet50 采用同一行为。ResNet50 返回时恢复原画布状态并重新居中刚才打开的节点。共享取景位于 `src/shared/canvas/focus-viewport.js`，完整阅读组件位于 `src/OfficialLearningMaterial.jsx`。细则在 `interaction-design.md` 与 `ascend-studio-interface-style` Skill。
+- 本地 1440×900 浏览器回放：聚焦缩放 110%、卡片不裁切；打开完整材料并返回后原节点与可用视野中心对齐，未发现运行时异常。`npm run build:pages`、JS 语法检查、`git diff --check` 通过；未运行完整测试套件。
+- 实现提交 `63a329c8` 已推送；包含此提交的 Pages workflow `40543693742` 成功，线上 HTML / JS / CSS 均 HTTP 200。
 
 ### 2026-10-28 · 学习发现配图按内容类型统一点缀色
 

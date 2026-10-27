@@ -95,7 +95,16 @@
 .lh-material-lines > path { fill:none; stroke:#a58aef; stroke-width:1.6; }
 .lh-material-lines marker path { fill:#9b7ae8; }
 .lh-material-lines circle { fill:#9673ef; stroke:#fff; stroke-width:2; }
-.lh-card { position:absolute; z-index:4; overflow:hidden; }
+.lh-card { position:absolute; z-index:4; display:flex; flex-direction:column; max-height:var(--canvas-max-content-card-height,760px); overflow:hidden; }
+.lh-card-header { flex:0 0 auto; min-height:47px; }
+.lh-card-content { flex:1 1 auto; min-width:0; min-height:0; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:#d5d7df transparent; touch-action:pan-y; }
+.lh-card-content[hidden] { display:none; }
+.lh-card-content:focus-visible { outline:2px solid #242526; outline-offset:-3px; }
+.lh-card-content::-webkit-scrollbar { width:6px; height:6px; }
+.lh-card-content::-webkit-scrollbar-thumb { border:1px solid #fff; border-radius:5px; background:#d5d7df; }
+.lh-card.is-collapsed { min-height:44px; max-height:44px; }
+.lh-card.is-collapsed .lh-card-header { min-height:42px; height:42px; padding-block:7px; border-bottom:0; border-radius:var(--canvas-card-inner-radius); }
+.lh-collapse-summary { flex:1 1 auto; min-width:0; overflow:hidden; color:#8b919e; font-size:10px; text-overflow:ellipsis; white-space:nowrap; }
 .lh-text-button { font-size:11px!important; padding:2px 0; text-align:left; }
 .lh-text-button:hover { text-decoration:underline; text-underline-offset:3px; }
 .lh-drag-handle { cursor:grab!important; }

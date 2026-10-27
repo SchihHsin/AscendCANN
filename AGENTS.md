@@ -6958,7 +6958,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求基于「四角星在打开的书上方」草图做多种 Logo 方案。第一轮蓝紫玻璃方案被认为过于相似；第二轮金 / 珊瑚 / 绿等配色被反馈为奇怪。随后用户将方向收敛为黑色圆角底、白色打开的书、彩虹渐变发光的四角星，书与星需明确区分颜色和材质；并指定书参考另一张图中的乳白、圆润、半透明玻璃质感。这是待评审方向，不是最终定稿或项目内图标资产。
 - ImageGen 已迭代生成对照板。用户随后指定星星参考新图中的流动彩色分区与柔亮效果，同时保留四角星轮廓；书减少立体厚度。当前方案为黑色圆角底、白色低浮雕薄页书（仅保留轻微乳白透光和边缘高光）、带橙 / 粉 / 紫 / 蓝 / 青流动渐变的发光四角星。参考来自用户提供的原始书星草图、乳白玻璃材质图和彩色球体的光色风格图；不把球体轮廓用于星星。最新生成预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-474f1147-318a-4aec-acd2-5a91b5d03848.png`；未加入项目文件。
-- 用户进一步提出黑底 / 白底两种颜色模式（H）。已生成并排对照：黑底配白书；白底先用深灰书保持识别度，属待评审的适配方案而非已确认要求；两者沿用相同彩虹渐变星星。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-6d7de7b2-26f7-4fee-bda1-aa6c10974c61.png`；未加入项目文件。
+- 用户进一步提出黑底 / 白底两种颜色模式（H）。首版白底方案曾将书改深灰，用户明确否定；最终要求黑底、白底两种模式都保留白书。
+- 最新并排对照中，两版使用同一白色低浮雕薄书和同一彩虹渐变星星。白底版仅以极浅冷灰蓝轮廓、书页折线和柔和贴近阴影显形，不改变书的白色。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-ecf55de7-07b6-4dd4-aefa-d5a7aacad20e.png`；未加入项目文件。
+- 用户决定回到之前的双层开页轮廓，并要求比较白底呈现的质感 / 浅色区分方式（H）。已生成四种同轮廓处理：浅蓝灰细边线、乳白玻璃轻微冰蓝折射、珍珠白缎面近距离柔影、带极弱青 / 淡紫边光的乳白玻璃。星星颜色和形态不变，书保持白色。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-0a36339e-df2f-478f-a6a3-f65558552ebd.png`；未加入项目文件。
+- 用户要求进一步优化书形并提供多种方案（H）。已生成四种薄页低浮雕轮廓：连续双页、轻量页线、外缘上扬的曲页、紧凑圆角页；对比图统一使用黑底、白书与同一彩虹星，仅用于聚焦比较书形，既定黑底 / 白底两种模式仍保留。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-a2252595-c300-4ae1-8ab6-f23595375252.png`；未加入项目文件。
+- 用户认为白底处理第 4 种方向可用，但需要略强区分且更像书页（H）。反馈后保留青 / 淡紫珠光边缘，生成四种柔和变化；随后因页线仍显得抽象，再生成清晰的左右白色页面面、中心书脊和浅内页弧线版本。最新方案仍为白色低浮雕书，边缘只加浅冷色轮廓与柔影；星形和渐变不变。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-007bcb44-4c91-4cb0-8366-4287cb963a8b.png`；未加入项目文件。
+- 用户澄清问题在页面质感太像玻璃，并进一步指出页面太圆润（H）。本轮固定书形和星形，改为不透明纸页并收平表面、减少鼓起与圆角；四种细节为细纸纹哑光纸、干爽缎面纸、薄而清楚的叠页边缘、低光泽珍珠白纸。白底下仍用轻柔浅冷灰边缘 / 近距离阴影区分，不增加硬描边。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-90f15934-56a4-4deb-88d8-bb6c91dd0f6d.png`；尚待用户选择，未加入项目文件。
+- 用户选中上述右上方案，并要求清理纸面上重复生成形成的杂纹（H）。已从右上方案提取单枚图标，保持页形、彩虹星和浅冷色页边，改为均匀、平滑的白色哑光纸面，移除颗粒纹、重复线与噪点。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-f8698070-47f7-4b29-b5d0-765af0e014e5.png`；仍是概念图，未加入项目文件。
 - 未改变产品页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本轮没有代码改动或工程验证。待用户评审后再确定是否把某一方向转为正式图标资产。
 - 验证 / 发布：交接文档 `git diff --check` 通过后，仅提交 `AGENTS.md` 并推送 `main`；本地共享工作区既有暂存、未暂存及未跟踪改动未纳入。
 
@@ -7037,6 +7043,23 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTMLParser 通过；Chrome 1440px 桌面、1024px 平板、390px 手机视口完成视觉检查，三视口 `body.scrollWidth` 均等于视口宽度。`git diff --check` 通过；未运行自动化测试。
 - 提交与推送：蓝图提交 `ff9acc33` 已推送至 `origin/main`，此前并行的每周速览与主线更新均保留，未强推。GitHub Pages workflow `40493561236` 成功；线上 `/AscendCANN/ascstudio-mini/knowledge-provider-map.html` 返回 HTTP 200，标题与蓝图内容匹配。
 
+
+### 2026-10-27 · 首页三种交互 Tab 命名与图标
+
+- 用户确认将三个首页方案改为设计点命名：「主动建议 / 多层探索 / 线索串联」，并同意同步调整图标。第一项突出任务建议卡，第二项突出中心节点逐层展开，第三项突出满屏线索之间的关系连接。
+- Tab 图标分别使用 `IconCards`、`IconHierarchy3`、`IconAffiliate`；辅助无障碍名称改为「首页交互方式」。标签字号由 11px 调至 12px，保留原选中态、交互与 `?home=classic|explore|combine` 路由。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务可用。
+- 页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 发布：功能提交 `b009757a` 与保留并行画布、小程序更新的合并提交 `40d94763` 已进入 `origin/main`；后续主线更新同步至 `c6bcdc5a`。Pages workflow `40495774511` 成功。公开 `/AscendCANN/ascstudio/?home=combine` 返回 HTTP 200，引用 `index-Bn1n8C39.js` 与 `index-BlUG8aw7.css`，资源均 HTTP 200；JS 确认包含「主动建议 / 多层探索 / 线索串联」。
+
+### 2026-10-27 · 旧画布笔迹删除入口
+
+- 用户问如何删除此前画布上留下的笔迹。已有操作依赖先点线条选中，但删除按钮要选中后才出现，入口不明显。现在有旧画布级笔迹时，编辑工具栏始终显示“删除笔迹”，未选中时禁用并提示“先点击要删除的笔迹，再删除”；选中某条线后启用删除。任务画布、图像预处理学习画布、ResNet50 官方学习画布统一采用此行为，并同步改写画布内提示。
+- 新增手绘卡片仍在卡片内容区落笔；删除整张新增卡片时连带删除其关联笔迹。此更新只改进旧笔迹入口，不改变新卡片绘图与内容顺序。
+- 修改 `ascend-studio/src/LearningCanvasToolbar.jsx`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx` 和 `/ascstudio/` Pages 产物。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。用户截图、本地代码与构建为依据（H / M）。
+- 验证：`npm run build:pages`、产物 `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；Vite 有既存的主 bundle 大于 500 kB 提示，未运行自动化测试。已将本地预览在浏览器打开。
+- 发布：旧笔迹入口与提示随提交 `962c6165` 已推送至 `origin/main`；整合期间保留了 `ascstudio-mini/` 每周速览 / 知识蓝图，以及并行的材料卡尺寸与滚动更新。Pages workflow `40495064319`（head `a5d70e78`）成功；线上 `/AscendCANN/ascstudio/` 引用 `index-2CZdRaiw.js` / `index-BMkz6m8g.css`，资源均 HTTP 200，线上 JS 已核对包含删除提示。
+
 ### 2026-10-27 · Ascend Studio 跨画布卡片内容与滚动规则
 
 - 用户重申统一规则：卡片内尽量不滚动，常规内容完整呈现；只有确实过长、超过合理尺寸或会破坏画布关系时才在卡片内滚动。规则已写入本机 `ascend-studio-interface-style` Skill 的“卡片尺寸与内部滚动”章节，并同步记录至 `ascend-studio/interaction-design.md`。
@@ -7045,8 +7068,130 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 独立学习层级画布的导航节点是短摘要，不当材料卡扩高或滚动。其材料卡普通态按内容自然排高，放大态保持单一卡片滚动并固定标题；此结构作为同一规则下的独立实现，不强行改成 TaskCanvas DOM。
 - 依据为用户明确的交互要求（H）；760px 上限和避让间距属于实现参数（L）。页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界均未改变；不代表真实代码、精度或 NPU 验证。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/useCanvasState.js`、`git diff --check` 通过；构建保留既有超过 500 kB 的 bundle 提示，未运行自动化测试。当前工具环境没有浏览器回放能力，因此未声称完成页面交互 / 视觉核验。
-- 提交 / 推送及 Pages 部署状态：本轮仍待完成。
+- 发布回执：实现提交 `e6ccedd5` 已推送至 `origin/main`；GitHub Pages workflow `40494606292` 成功。线上 `/AscendCANN/ascstudio/`、`index-Q53nHexO.js` 与 `index-D_07DMqX.css` 均 HTTP 200，资源中可检索到卡片尺寸测量及单一滚动区规则。以下为发布后的交接记录补充；未改变页面序列或 API / Host / Application 边界。
 
+### 2026-10-27 · 修复 GitHub Pages 缓存 HTML 指向已删除 bundle
+
+- 用户截图显示 `/AscendCANN/ascstudio/` 为空白。HTTP 复核发现 Pages 普通 URL 返回的缓存 HTML 引用 `index-2CZdRaiw.js` / `index-BMkz6m8g.css`，这两个资源已是 404；带查询参数绕过 CDN 缓存后返回新 HTML 与新资源。HTML 响应 `Cache-Control: max-age=600`，所以短时间内不同设备 / 浏览器会拿到不一致的 HTML。此前 `build:pages` 使用 `--emptyOutDir`，每次构建删掉旧哈希资源，造成缓存中的 HTML 无法加载脚本与样式。
+- `ascend-studio/package.json` 的 Pages 构建不再清空 `ascstudio/`。同时恢复最近 10 次索引版本中引用的哈希 JS / CSS 文件，确保已缓存的旧入口在缓存窗口内仍有可取资源；后续构建也会保留已有哈希资源。页面导航与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages` 成功；新 bundle 与缓存版本 bundle `node --check` 通过；新旧 JS / CSS 文件存在；`git diff --check` 通过。Firefox 原标签页在修复发布前仍显示空白，线上发布及资源状态待本轮确认。
+
+### 2026-10-27 · 修复 GitHub Pages 的运行时白屏
+
+- 保留旧哈希资源后，Firefox 仍报告 `ReferenceError: can't access lexical declaration 'W' before initialization`。根因在 `ascend-studio/src/App.jsx`：小地图避让 `useLayoutEffect` 的依赖数组在渲染期间读取了稍后才声明的 `layout.workspaceRef`；依赖数组立即求值，早于 `useWorkbenchLayout` 初始化。移除这个稳定 ref 依赖，保留 `liftMinimapForComposer` 与 `selectedTask` 两个状态触发条件；effect 回调仍在布局 hook 初始化后执行。
+- 更新源代码与 `/ascstudio/` 静态产物：入口现引用 `index-Bz81_Hog.js` / `index-BlUG8aw7.css`。证据来自用户截图、Firefox 控制台错误（H）和源码时序复核（M）。没有改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`node --check ascstudio/assets/index-Bz81_Hog.js`、`git diff --check` 通过；本地生产构建与线上 Pages 均用 Chrome 确认根应用已渲染且无 JavaScript 运行时异常。线上普通 URL 和缓存绕过 URL 的 HTML、新 JS / CSS 均 HTTP 200；旧缓存入口引用的 JS / CSS 仍 HTTP 200。未运行自动化测试。
+- 修复提交 `d76fd4b4` 合并并保留并行主线更新；Pages workflow `40498003527` 成功，部署 head `36955efb`。此前缓存 HTML 修复现已与此运行时修复共同生效。
+### 2026-10-27 · 每周速览改为微信服务通知主路径
+
+- 用户选定以微信服务通知呈现主动推送（H）。`ascstudio-mini/` 默认展示微信会话列表中的未读「服务通知」；点开通知后再进入每周速览。速览含一条重点资讯和两张参考兴趣 / 存疑信号的短知识卡；订阅确认会模拟授权和新消息送达。移除了小程序底部「速览」入口，微信导航只出现在消息列表。
+- 更新 `ascstudio-mini/app.js`、`index.html`、`styles.css`、`README.md`、`qa.md`。本轮只修改小程序原型路由，不改变电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 的机制边界。用户选择是产品方向证据（H）；消息流是本地演示实现（M），不代表微信已实际发消息。
+- Demo 的通知、资讯、个性化与订阅状态由本地示例 / localStorage 驱动；没有调用微信 API、真实定时器或后台推送。真实发送仍需适用的微信订阅能力与后台实现，内容也不是实时资讯。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行浏览器端完整点击回归，也未新增截图。GitHub Pages workflow `40495653128` 成功；线上入口 HTTP 200，线上 JS 已确认包含服务通知路由、未读数和模拟送达事件。
+- 提交 / 推送：功能提交 `0c6742ab` 已推送至 `origin/main`。此记录随后作为交接文档变更补充推送。
+
+### 2026-10-27 · 口袋新知五屏设计点讲解
+
+- 用户确认按五个连续屏幕展开不同设计点（H）。桌面评审壳左侧新增随当前页面变化的讲解区和上一屏 / 下一设计点控制；五步分别为微信列表主动送达、服务通知价值判断、每周资讯与两张个性化卡、知识卡信号回流、主题 / 时间订阅设置。第五步从速览页打开现有订阅弹层；翻页会同步切换手机界面路由。
+- 修改 `ascstudio-mini/index.html`、`app.js`、`styles.css`、`README.md`、`qa.md`。手机端小程序交互保持原路径；讲解侧栏仅在桌面评审壳出现。未改变电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 边界；微信消息仍为本地模拟，不代表真实推送。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未做完整浏览器逐屏点击回归，也未新增截图。Pages workflow `40498003527` 成功；线上入口、JS、CSS均 HTTP 200，HTML / JS 已确认包含五步面板和路由导航逻辑。
+- 提交 / 推送：功能提交 `36955efb` 已推送至 `origin/main`。本条交接记录随后补推。
+
+### 2026-10-27 · Pura X View 阔直板样机适配
+
+- 用户明确纠正设备形态：HUAWEI Pura X View 是阔直板手机，不是折叠屏（H）。华为官方规格页列出机身 144.1 × 87.0 mm、6.39 英寸屏幕（H）；标准桌面样机调整为 420 × 696 CSS px，宽高比约 0.603，近似机身 87.0 / 144.1 ≈ 0.604。样机只表达单屏阔直板轮廓，不声称复刻工业设计。
+- 更新 `ascstudio-mini/index.html`、`styles.css`、`README.md`、`qa.md` 与 `evidence/weekly-briefing-desktop.png`。另修正 `.intro-eyebrow` 通用 span 圆点样式误压缩步骤文字的问题。五屏路由、微信服务通知主路径不变；不涉及电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确设备纠正和华为官方规格（H）；Chrome 1440×1000 本地截图用于核对样机与布局（M）。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
+- 基线版本 `36955efb` 已在开始本轮机型适配前推送并在线核对。实现提交 `ad114ed7` 已推送至 `origin/main`；Pages workflow `40500938226` 成功，部署 head `430527c8` 包含本次实现。线上 HTML 与 CSS（缓存绕过 URL）均 HTTP 200，已核对阔直板标签、样机标记及 420 × 696 尺寸规则。
+
+### 2026-10-27 · 知识供给侧蓝图改为可视化汇报材料
+
+- 用户明确要求改用 Report PPT skill，避免纯文字页。本材料重构为 7 页单文件网页 deck：封面、目录、知识供给链路、学习发现楼层与服务映射、Knowledge Unit 字段模型、Web/API/MCP/Skills 接口分层、P0–P2 建设与责任闭环。用供给流程、学习发现界面示意、字段对象、接口泳道和阶段路线图承载内容，保留概览、全屏、键盘翻页、右侧导航点与 `#页码` 恢复。
+- 主要文件：`ascstudio-mini/knowledge-provider-map.html`；README 已说明其是独立 7 页可视化汇报。设计基于 Report PPT skill 的封面 / 灰底分析篇、玻璃卡、信息图与原生翻页 runtime。目录第四卡与第七页路线图类名冲突已拆开；封面副标题收小一档，避免长句断行。
+- 蓝图覆盖课程、路径、认证、知识点、活动；来源内容、Knowledge Unit 边界与证据；robots.txt / Sitemap、llms.txt、Schema.org、REST/OpenAPI、MCP、Agent Skill 与可选 A2A；权限、隐私、版本、Owner、审计、反馈与渐进治理。标准链接提供事实依据；llms.txt 明确为提案，robots.txt 不承担鉴权。目标设计与当前本地 Demo 能力分开表述，不声称已接入真实服务。未改变既有页面序列及 API / Protocol、Host / Harness、Application / Task 机制边界。
+- 验证：HTMLParser 解析通过，7 个页面标题唯一；内嵌 JS `node --check` 与 `git diff --check` 通过。Chrome 1600×900 逐页截图核对 7 页结构与布局（目录错位已修复）；默认滚动模式的无头截图会显示背景黑图，但 DOM 状态确认 `#2`、计数 `02 / 07` 与根滚动位置均已恢复到第 2 页；所有页以 `?t=cut` 模式完成视觉抽查。未运行自动化测试。
+- 提交与发布：页面提交 `75ba4a34` 已并入远端主线更新（合并提交 `989cc8f8`），README / AGENTS 记录提交 `430527c8` 已推送至 `origin/main`。Pages workflow `40500938226` 成功；线上 `/AscendCANN/ascstudio-mini/knowledge-provider-map.html` 返回 HTTP 200，标题、7 个页面段、路线图样式与页码恢复脚本均已核对。并行提交保留，未强推。
+
+### 2026-10-27 · 底部对话输入框收窄并修复白屏
+
+- 用户反馈把对话拖到底部后页面白屏，并确认避让右下角小地图只需收窄输入框，小地图保持原位。移除动态抬高小地图的状态与 `ResizeObserver`；底部单行 composer 最小高度仍为 72px，输入内容继续自动增高、上限 110px。`.composer-stack` 宽度设为 `min(720px, calc(100% - 324px))`，地图沿用原定位。
+- 白屏触发点是 `liftMinimapForComposer` 在 `areaInteractionActive` 初始化前求值，切换到底部布局时触发暂时性死区引用错误。删除该派生状态及相关地图移动 effect；布局本身不再重排小地图。
+- 修改 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 和 `ascstudio/` 构建产物。依据为用户的明确要求（H）、源码定位与本地浏览器回放（M）；页面序列、路由和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、生成 JS `node --check`、资源哈希引用校验、`git diff --check` 通过。1440×900 桌面 Chromium 无运行时异常；composer 实测 636×72px，小地图维持右下角原位且与输入框相隔约 224px。线上 `/AscendCANN/ascstudio/` 已引用 `index-C5I0bdAh.js` / `index-COFjzgYO.css`，两资源 HTTP 200。
+- 推送：功能提交 `b93cbd29`、主线同步合并 `35587143`、构建产物 `a08fff7d` 已推至 `origin/main`；后续并行的 Pura X 与知识供给材料提交均保留。Pages workflow `40501184517` 成功。
+
+### 2026-10-28 · 口袋新知以核心学习为主线，微信推送作为回访
+
+- 用户确认先讲核心学习，再讲主动回访（H）。手机无路由时默认进入「发现」；桌面评审改为两章七点：核心学习 3 点（任务发现、知识卡微学习、任务接续），主动回访 4 点（微信消息列表、服务通知、每周速览、订阅设置）。推送保留为微信会话列表里的回访入口，不再承担整个小程序的叙事。
+- 延续用户已选的桌面评审壳控件（工具栏、右侧节点、总览、键盘与全屏），总览按两章分组；手机页面没有新增导航入口。直接链接 `?point=7#briefing` 打开订阅设置演示，确认后回到微信列表并显示未读消息。
+- 应用户指出的 iOS 观感，样机状态栏改为左侧时间、右侧 5G / 信号 / Wi-Fi / 电量百分比与电池图标。它是 HarmonyOS 常见信息编排的视觉示意，不是 Pura X View 实机截图或精确复刻。推送、周报素材和订阅授权仍是本地 Demo，不表示真实微信后台发送。
+- 变更文件：`ascstudio-mini/index.html`、`app.js`、`styles.css`、`README.md`、`qa.md`、`evidence/home-desktop.png`、`evidence/review-overview-desktop.png`。依据为用户确认的产品方向（H）与本地交互 / Chrome 截图观察（M）。小程序展示序列由 5 点改为 7 点；未修改电脑端 `/ascstudio/` 页面序列，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。Chrome 156、静态 HTTP 手动核验 1440×1000；七个概览 iframe 全部加载且没有嵌套，缩略预览未改写 localStorage；快捷键、弹层焦点循环、通知未读回流、搜索框快捷键隔离通过。320 / 390 / 430×844 手机视口无横向溢出，桌面控件与样机状态栏在移动端隐藏；未运行自动化测试。
+- 提交 / 推送：与主线同步到 `fa1edf4a` 后，功能提交 `88122d52` 已推送至 `origin/main`。Pages workflow `40540337498` 成功；缓存绕过的线上入口、JS、CSS均 HTTP 200，交付链接为 `https://schihhsin.github.io/AscendCANN/ascstudio-mini/?v=88122d52#discover`。本条交接记录随后单独提交推送。未决：状态栏仍为风格示意，真实微信定时推送尚未接入。
+
+### 2026-10-27 · 底部输入框改为整体单行
+
+- 用户确认采用 A 方案：底部输入框初始整体为一行，文字与加号、权限、模型、语音和发送操作同排；多行输入时自动增高。新增 `.composer-entry` 作为底部专用布局行，浮窗初始最小高度由 72px 改为 54px，文本最大高度仍为 110px；左侧对话栏与已展开对话保留既有两层 composer 样式。
+- 窄屏同步保持单行并可用：底部浮窗拉伸占满视口可用宽度，390px 视口下隐藏模型文字标签、保留模型图标入口。
+- 修改 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 与 `ascstudio/` 构建产物。依据为用户选择（H）及 Chromium 布局回放（M）；不改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、输出 JS `node --check`、资源引用校验及 `git diff --check` 通过。1440×900 下 composer 初始 636×54px，按钮与文本同排；长文本使文本框增高至 110px 上限。390×844 下 composer 宽 366px、高 55px，输入区及全部按钮均留在视口内，无横向溢出、无运行时异常。未运行测试套件。
+- 提交 `e4ce1482` 已推送 `origin/main`。Pages workflow `40504848231` 成功；线上 `/AscendCANN/ascstudio/` 已引用 `index-BoIHbObw.js` / `index-BX4OiBTt.css`，均 HTTP 200。
+
+### 2026-10-28 · 星星 × 白色书本 Icon 方向探索
+
+- 业务目的：根据用户提供的两张参考图，将图一的彩色星星与图二下方的白色打开书本组合成图标；按用户后续要求一次生成简洁立体、柔和玻璃感、弱高光渐变三种风格，并各提供深色底、浅色底、透明底 PNG。素材位于 visual-assets/star-book-icon-exploration/，共 9 张。
+- 证据与置信度：星星、书本形态和组合方向来自用户的参考图与明确要求（H）；三种图像是生成式视觉探索稿（M），只表达视觉方案，不代表已选定的品牌资产或产品使用结论。
+- 页面序列及 API / Protocol、Host / Harness、Application / Task 边界均无变化。
+- 验证：Pillow 检查 9 个 PNG；3 个透明版本为 RGBA 且 alpha 范围为 0–255，6 个背景版本为 RGB；git diff --cached --check 通过。未运行测试。
+- 提交 / 推送：本次素材与交接记录通过独立临时索引提交，并推送至 origin/main，提交主题为 assets: add star-book icon concepts；共享工作区其他暂存、未暂存和未跟踪内容未纳入。
+- 未决事项：由用户从三种风格中选定后续方向；如用于正式产品，再按最终使用尺寸和品牌规范细化。
+
+
+### 2026-10-28 · 对话输入框边缘拖动切换布局
+
+- 用户确认左侧对话与底部浮动两种布局都不显示独立拖动按钮；输入框外圈本身作为拖动区域。悬浮外圈时显示可拖动光标，拖动中显示抓取状态；输入文字、按钮和附件操作仍可直接使用。该规则来自用户明确要求（H）。
+- `ascend-studio/src/App.jsx` 将 composer 外沿 10px 设为拖动命中区，交互控件与内容芯片不启动拖动；保留已有目标预览与吸附，并要求真实移动且在目标区域释放才切换。`ascend-studio/src/styles.css` 移除独立把手样式，加入外沿悬浮与拖动光标状态；同步更新 `ascstudio/` 静态构建产物。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages` 成功；生成 JS `node --check`、HTML 资源引用存在性与 `git diff --check` 通过。桌面交互回放确认两种布局均可从边缘拖动，输入区内悬浮与控件点击不启动拖动，双向目标预览及松手吸附正常，无把手、无运行时异常；本地 `5178` 返回 HTTP 200。未运行自动化测试。
+- 发布：实现提交 `8e3633c5` 已推送 `origin/main`；合并前先快进同步主线提交 `4d5b8333`，其独立星星 × 书本素材完整保留。GitHub Pages workflow `40538891007` 成功；线上 `/AscendCANN/ascstudio/` HTML、`index-Cqdi8RJO.js` 与 `index-D_LHgAek.css` 返回 HTTP 200，HTML 引用为本轮 bundle。
+
+### 2026-10-28 · 模型选择器显示对应品牌标识
+
+- 用户要求将输入框模型按钮上的闪电换成各模型对应的标识（H）。GLM-5.3 显示 Z.ai 标识，DeepSeek V4 显示 DeepSeek 标识，Qwen3-Coder 显示 Qwen 标识；当前选择按钮和模型下拉项都展示对应图标。窄屏输入框收拢为纯图标时仍保留品牌标识。
+- 修改 `ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css`，新增三份本地 SVG 到 `src/assets/model-logos/`。SVG 来源为 `@lobehub/icons-static-svg@1.101.0`（MIT）；随源文件与 `/ascstudio/` 产物附带 attribution 和许可证文本。品牌标识只用于识别模型 / 提供方，不表示背书。
+- 构建：`npm run build:pages`、生成 JS `node --check`、HTML bundle 引用、许可证产物存在性及 `git diff --check` 通过。Vite 本地 `5178` 返回 HTTP 200 并加载新组件源码；没有运行自动化测试或桌面逐项交互回放。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 发布：提交 `c1adafe0` 已推送至 `origin/main`，并保留已同步的独立小程序叙事更新 `0c253ca6`。Pages workflow `40541928644` 成功。线上 `/AscendCANN/ascstudio/` HTML、`index-DhHj9YWC.js`、`index-CfLqzuZx.css` 和模型图标 attribution 均返回 HTTP 200。
+
+### 2026-10-28 · 白底书本对比度方向迭代
+
+- 业务目的：回应用户对浅色背景版书页不清晰的反馈；按用户明确要求不使用描边，并生成两种书本处理：浅冷色书页、白色书页下方露出彩色封底。每种均提供透明底、深色底和白色底 PNG，位于 visual-assets/star-book-icon-exploration/。
+- 证据与置信度：视觉问题、禁止描边和两种指定方案来自用户反馈（H）；六张图像为生成式视觉探索稿（M），仍需用户选择，不代表最终品牌定稿。
+- 页面序列及 API / Protocol、Host / Harness、Application / Task 边界均无变化。
+- 验证：Pillow 检查 6 个 PNG；2 个透明版本为 RGBA 且 alpha 范围为 0–255，4 个背景版本为 RGB；git diff --cached --check 通过。未运行测试。
+- 提交 / 推送：六张素材与本条交接记录通过独立临时索引提交并推送至 origin/main，主题为 assets: add book contrast icon variants；共享工作区其他暂存、未暂存和未跟踪内容未纳入。
+- 未决事项：等待用户比较浅冷色书页与彩色封底；选定方向后可再调整页面色温和封底露出比例。
+
+### 2026-10-28 · 桌面演示支持滚轮翻页
+
+- 用户询问材料为何不能滚动翻页，确认桌面仅有点击式控制栏、没有滚轮翻页。桌面评审区现支持滚轮 / 触控板切换七个设计点，保留已有章节、概览、控制栏、快捷键与 URL 页码同步；在手机样机正文可滚动时继续由样机消费滚轮，抵达边界后再翻材料。总览 / 订阅弹层及输入控件不触发翻页；手机视口保持原生内容滚动。
+- 修改 `ascstudio-mini/app.js`、`index.html`、`qa.md`。材料叙事和 7 屏顺序不变；通知 / 订阅仍是本地演示，不涉及微信 API 或 API / Host / Application 机制边界。设计点与行为来自用户需求（H），滚轮手势节流和内层滚动边界属于实现细节（M）。
+- 验证：桌面 Chrome 1440×1000 回放确认滚轮逐屏切换且同一惯性手势不连跳；手机内容在内部范围照常滚动，到底后才切下一屏；订阅弹层和手机 390×844 视口状态保持正常。未捕获 JS exception；`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。截图 `ascstudio-mini/evidence/review-wheel-desktop.png`；未运行自动化测试。
+- 提交 `8e8195c3` 已推送到 `origin/main`（推送前同步保留并行主线提交 `63a329c8`）。GitHub Pages workflow `40543693742` 成功；线上 HTML 与 `app.js` 返回 HTTP 200，并确认翻页提示与 wheel listener 已发布。
+
+### 2026-10-28 · 知识供给侧蓝图补充内容图像并完成发布
+
+- 用户反馈材料仍然文字偏多、不易一眼理解，并要求适当使用 ImageGen（H）。在七页结构化汇报中加入面向知识资源本身的内容图：学习路径、课程、认证与 Meetup 等资源视觉，集中资源位于 `ascstudio-mini/assets/knowledge-resource-atlas.png`，用于帮助读者先识别资源类型，再看服务链路与接口映射；图像是概念示意（M），不代表当前已接入真实内容服务或个性化推荐。
+- 保持知识供给蓝图的七页顺序与既有内容：供给链路、学习发现楼层映射、Knowledge Unit、Web / API / MCP / Skills 通道及 P0–P2 路线图。标准和协议的事实链接沿用原材料；`llms.txt` 仍明确为提案，`robots.txt` 不承担鉴权。未改变其他页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：HTMLParser 检查七页结构与标题、内嵌 JS `node --check`、`git diff --check` 通过；已核对桌面、平板、手机视口。GitHub Pages workflow `40543145732` 成功；线上蓝图页与 `assets/knowledge-resource-atlas.png` 均 HTTP 200。
+- 提交 / 发布：视觉改版提交 `1e4eb5cd` 已在 `c559619b` 同步主线时并入 `origin/main`。本条是发布核验和图像方向的交接补记，随本次记录提交推送；未决事项：无。
+
+### 2026-10-28 · 画布聚焦与完整内容阅读分开
+
+- 用户明确区分两种动作：**聚焦**留在画布内，把节点移至当前可用视野中心并适度缩放；**打开完整内容**离开画布，在右侧任务内容区以常规阅读宽度打开，长内容在内容区内滚动。画布缩放仍作用于整张画布；返回后恢复原画布并重新聚焦同一节点。
+- AddCustom 通用任务画布与 ResNet50 官方学习画布共用 `src/shared/canvas/focus-viewport.js` 的节点取景算法；ResNet50 完整材料使用独立 `OfficialLearningMaterial` 阅读视图。保留各自的任务节点、学习层级与内容结构。
+- 同步更新 `ascend-studio/interaction-design.md` 与本机 `ascend-studio-interface-style` Skill 的“聚焦与完整阅读”规则。主线并入时保留最新 App 与 Pages 修改，移除已被主线撤回的旧小地图避让副作用，避免遗留状态引用造成白屏。
+- 依据：用户确认的交互语义（H）；1440×900 隔离浏览器回放为实现观察（M）。聚焦回放显示节点缩放到 110%、完整位于画布内；打开完整内容后可返回；返回后同一节点的中心相对可用视野中心偏差为 0，未捕获运行时异常。没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages` 成功；源文件与 Pages 产物 `node --check`、`git diff --check` 通过。Vite 保留既有主 bundle 大于 500 kB 的提示；未运行自动化测试套件。
+- 提交 `63a329c89654ca5d91ce42795c06c9844a79426f` 已推送到 `origin/main`。首次 Pages deploy 被后续并行提交取消；包含本提交的后续 workflow `40543693742` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-l4oW5C5u.js`、`index-DM-Jd1s4.css`，入口及两个资源均 HTTP 200。未决事项：无。
 
 ### 2026-10-28 · 学习发现配图按内容类型统一点缀色
 

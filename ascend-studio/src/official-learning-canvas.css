@@ -52,20 +52,12 @@
 .og-checkpoint button,.og-practice-actions button { align-self:flex-start; }
 .og-official-course { display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0; padding:8px 9px; border:1px solid #e8eaf1; border-radius:6px; background:#fff; color:#71689a; font-size:11px; text-decoration:none; }
 .og-official-course:hover { border-color:#d6cbed; background:#faf9fe; }
-.og-all-node-card > .og-visual-body { border-bottom:1px solid #edf0f5; }
-.og-all-node-card > .og-lesson { margin:0 14px; }
-.og-all-node-card > .og-sources { margin-top:0; }
+.og-all-node-card .lh-card-content > .og-visual-body { border-bottom:1px solid #edf0f5; }
+.og-all-node-card .lh-card-content > .og-lesson { margin:0 14px; }
+.og-all-node-card .lh-card-content > .og-sources { margin-top:0; }
 .og-all-practice { margin:4px 14px 14px; padding-top:10px; border-top:1px solid #eceff4; }
 .og-all-practice > h3 { margin:0 0 8px; color:#68718a; font-size:11px; font-weight:650; }
 .goal-learning-canvas.is-all-expanded .og-all-node-card.is-current { border-color:#b8a6df; box-shadow:0 0 0 2px #9b82d614,0 5px 20px #5b6f9e0b; }
-.goal-learning-canvas.is-card-maximized > .lh-canvas-title,
-.goal-learning-canvas.is-card-maximized > .lh-toolbar,
-.goal-learning-canvas.is-card-maximized > .lh-draft-controls,
-.goal-learning-canvas.is-card-maximized > .lh-canvas-notice,
-.goal-learning-canvas.is-card-maximized > .lh-minimap { display:none; }
-.goal-learning-canvas .lh-world.is-card-maximized > :not(.lh-card.is-maximized) { visibility:hidden; }
-.goal-learning-canvas .lh-card.is-maximized { z-index:40; }
-.goal-learning-canvas .lh-card.is-maximized .lh-card-header { position:sticky; top:0; z-index:2; }
 .goal-learning-canvas .lh-all-toggle { gap:5px; flex-basis:auto; width:auto; padding:0 8px; font-size:10px; white-space:nowrap; }
 
 .og-official-video { overflow:hidden; margin-bottom:8px; border:1px solid #e8eaf1; border-radius:7px; background:#fff; }

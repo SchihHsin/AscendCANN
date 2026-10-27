@@ -33,6 +33,7 @@ import { LearningHierarchyCanvas } from "./LearningHierarchyCanvas";
 import { stepsForStage } from "./learning-path-collaboration";
 import { useOfficialLearningPath } from "./useOfficialLearningPath";
 import { OfficialLearningPathCanvas } from "./OfficialLearningPathCanvas";
+import { OfficialLearningMaterial } from "./OfficialLearningMaterial";
 import { LearningJourneyMaterial } from "./LearningJourney";
 import { NewTaskHome } from "./NewTaskHome";
 import { LearningDiscoveryPage } from "./LearningDiscoveryPage";
@@ -41,13 +42,15 @@ import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
 import { CommunityDraftPanel } from "./CommunityDraftPanel";
 import { createCommunityDraft } from "./community-draft-data";
 import { buildLearningContentItems } from "./learning-content-catalog";
+import zaiModelLogo from "./assets/model-logos/zai.svg";
+import deepseekModelLogo from "./assets/model-logos/deepseek-color.svg";
+import qwenModelLogo from "./assets/model-logos/qwen-color.svg";
 import "./interaction.css";
 import "./visual-focus.css";
 import {
   IconAdjustmentsHorizontal,
   IconArrowRight,
   IconBell,
-  IconBolt,
   IconBook,
   IconBooks,
   IconChevronDown,
@@ -60,7 +63,6 @@ import {
   IconDots,
   IconFileText,
   IconFolder,
-  IconGripHorizontal,
   IconLibrary,
   IconLayoutBottombar,
   IconLayoutSidebar,
@@ -81,6 +83,11 @@ import {
   IconX,
 } from "@tabler/icons-react";
 
+const MODEL_PROVIDER_LOGOS = {
+  general: zaiModelLogo,
+  diagnostic: deepseekModelLogo,
+  reasoning: qwenModelLogo,
+};
 const OFFICIAL_STAGE_IDS = new Set(OFFICIAL_LEARNING_STAGES.map(stage => stage.id));
 const OFFICIAL_MATERIAL_STAGES = Object.fromEntries(OFFICIAL_LEARNING_STAGES.flatMap(stage => [[stage.id, [stage.id, stage.children[0].id]], ...stage.children.map(child => [child.id, [stage.id, child.id]])]));
 const PATH_REFINEMENT_DEMO_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
@@ -213,6 +220,7 @@ function App() {
   useEffect(() => { writeSession("conversation-layout", conversationLayout); }, [conversationLayout]);
   const [floatingConversationExpanded, setFloatingConversationExpanded] = useState(false);
   const [conversationDragging, setConversationDragging] = useState(false);
+  const [conversationDragEdgeHover, setConversationDragEdgeHover] = useState(false);
   const [conversationDockPreview, setConversationDockPreview] = useState(false);
   const [conversationFloatPreview, setConversationFloatPreview] = useState(false);
   const [permissionModes, setPermissionModes] = useState({});
@@ -223,7 +231,6 @@ function App() {
   const showAutomations = mainView === "automations";
   const showCapabilities = mainView === "capabilities";
   const showTaskWorkspace = mainView === "task";
-  const liftMinimapForComposer = showTaskWorkspace && conversationLayout === "floating" && !floatingConversationExpanded && !areaInteractionActive;
   const [pendingDiscoveryItem, setPendingDiscoveryItem] = useState(null);
   const [pendingRecommendationAction, setPendingRecommendationAction] = useState(null);
   const [learningAgentAction, setLearningAgentAction] = useState(null);
@@ -273,31 +280,6 @@ function App() {
     textarea.style.height = "auto";
     textarea.style.height = `${Math.min(textarea.scrollHeight, 110)}px`;
   }, [session.draft, mainView]);
-  useLayoutEffect(() => {
-    if (!liftMinimapForComposer) return undefined;
-    const workspaceElement = layout.workspaceRef.current;
-    const composer = conversationPanelRef.current?.querySelector(".composer");
-    const stage = workspaceElement?.querySelector(".tc-stage");
-    const minimap = stage?.querySelector(".tc-mini-map");
-    if (!composer || !stage || !minimap) return undefined;
-
-    const liftMinimap = () => {
-      const stageRect = stage.getBoundingClientRect();
-      const composerRect = composer.getBoundingClientRect();
-      if (!stageRect.width || !stageRect.height || !composerRect.height) return;
-      minimap.style.bottom = `${Math.max(14, Math.ceil(stageRect.bottom - composerRect.top + 12))}px`;
-    };
-    const observer = new ResizeObserver(liftMinimap);
-    observer.observe(composer);
-    observer.observe(stage);
-    window.addEventListener("resize", liftMinimap);
-    liftMinimap();
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", liftMinimap);
-      minimap.style.removeProperty("bottom");
-    };
-  }, [liftMinimapForComposer, selectedTask, layout.workspaceRef]);
   const clearPointContext = () => {
     setPointContext(null);
     window.dispatchEvent(new Event("ascstudio-point-range-consumed"));
@@ -357,6 +339,7 @@ function App() {
     conversationPanelRef.current?.style.removeProperty("--conversation-drag-x");
     conversationPanelRef.current?.style.removeProperty("--conversation-drag-y");
     setConversationDragging(false);
+    setConversationDragEdgeHover(false);
     setConversationDockPreview(false);
     setConversationFloatPreview(false);
   };
@@ -385,6 +368,15 @@ function App() {
     const bottomBand = Math.min(190, Math.max(120, workspaceRect.height * 0.28));
     return clientX >= centerX - hitWidth && clientX <= centerX + hitWidth && clientY >= workspaceRect.bottom - bottomBand && clientY <= workspaceRect.bottom;
   };
+  const isConversationDragEdge = (event) => {
+    const target = event.target;
+    if (target instanceof Element && target.closest("textarea, button, input, select, a, [contenteditable='true'], .composer-context-chips")) return false;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const edge = 10;
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    return x <= edge || rect.right - event.clientX <= edge || y <= edge || rect.bottom - event.clientY <= edge;
+  };
   const moveConversationDrag = (event) => {
     const active = conversationDragRef.current;
     if (!active || active.pointerId !== event.pointerId) return;
@@ -402,8 +394,17 @@ function App() {
     setConversationFloatPreview(destination === "floating");
     event.preventDefault();
   };
+  const handleConversationPointerMove = (event) => {
+    if (conversationDragRef.current) {
+      moveConversationDrag(event);
+      return;
+    }
+    const canDrag = !areaInteractionActive && window.innerWidth > 980 && event.pointerType === "mouse" && isConversationDragEdge(event);
+    setConversationDragEdgeHover(current => current === canDrag ? current : canDrag);
+  };
   const startConversationDrag = (event) => {
-    if (areaInteractionActive || window.innerWidth <= 980 || event.button !== 0 || !event.isPrimary || conversationDragRef.current) return;
+    if (areaInteractionActive || window.innerWidth <= 980 || event.button !== 0 || !event.isPrimary || conversationDragRef.current || !isConversationDragEdge(event)) return;
+    setConversationDragEdgeHover(false);
     conversationDragRef.current = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, moved: false, sourceLayout: conversationLayout, handle: event.currentTarget };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
@@ -414,7 +415,7 @@ function App() {
     const hasTarget = active.sourceLayout === "floating"
       ? conversationDockTargetContains(event.clientX, event.clientY)
       : conversationFloatTargetContains(event.clientX, event.clientY);
-    const shouldSwitch = !cancelled && (!active.moved || hasTarget);
+    const shouldSwitch = !cancelled && active.moved && hasTarget;
     resetConversationDrag();
     if (shouldSwitch) setConversationLayout(active.sourceLayout === "floating" ? "sidebar" : "floating");
   };
@@ -605,6 +606,19 @@ function App() {
   const openCanvas = (options = {}) => {
     if (!isInteractiveTask) return;
     const requestedMode = options.mode || "overview";
+    if (isOfficialLearningTask) {
+      const selected = getOfficialLearningNode(options.focusId || officialLearning.state.selectedNodeId);
+      const step = selected?.kind === "course" ? selected.children[0] : selected;
+      if (step) {
+        officialLearning.actions.selectNode(step.id);
+        officialCanvasView.actions.openMaterial(step.id);
+        officialCanvasView.actions.revealObject(`${step.id}:diagram`);
+        officialCanvasView.actions.revealObject(`${step.id}:lesson`);
+      }
+      workspace.actions.openCanvas({ mode: "free", fit: Boolean(options.fit) });
+      setTaskContentsOpen(false);
+      return;
+    }
     // 图像推理任务的“全部内容”就是自由画布；不再切到另一张分组卡片总览。
     const mode = isImageTask && requestedMode === "overview" ? "free" : requestedMode;
     const fitOnEntry = Boolean(options.fit || isImageTask && requestedMode === "overview");
@@ -675,6 +689,16 @@ function App() {
     const indexed = getTaskItems(selectedTask).flatMap(item => [item, ...(item.children || [])]).find(item => item.id === id);
     if (saved?.parentId || indexed?.parentId) workspace.actions.markRead(saved?.parentId || indexed.parentId);
     openContent(id, { restore: true, ...((saved || indexed) ? { title: (saved || indexed).title, type: indexed?.parentId || saved ? "preview" : indexed.type } : {}) });
+  };
+  const openOfficialLearningContent = (id, canvasObjectId) => {
+    const selected = getOfficialLearningNode(id);
+    if (!selected) return;
+    const node = selected.kind === "course" ? selected.children[0] : selected;
+    officialLearning.actions.selectNode(node.id);
+    officialCanvasView.actions.openMaterial(node.id);
+    officialCanvasView.actions.requestFocus(canvasObjectId || `${node.id}:diagram`);
+    workspace.actions.open(node.id, { restore: true, title: node.title, type: "preview" });
+    setTaskContentsOpen(false);
   };
   const compareContent = id => {
     const item = getTaskItems(selectedTask).flatMap(entry => [entry, ...(entry.children || [])]).find(entry => entry.id === id);
@@ -953,7 +977,9 @@ function App() {
         const record = wb.getSession(ownerId).records.find(item => `record:${item.id}` === id);
         return record ? <article className="content-snapshot"><header><strong>{record.title}</strong><small>{record.time} · 学习记录</small></header><p>{record.summary}</p><p>资料与检查的本地快照；设备推理仍需在对应环境验证。</p></article> : null;
       }
-      return <button type="button" className="light-button" onClick={() => openContent(id)}>在学习画布中查看<IconArrowRight size={ICON_SIZE.inline} /></button>;
+      const selectedNode = getOfficialLearningNode(id);
+      const node = selectedNode?.kind === "course" ? selectedNode.children[0] : selectedNode;
+      return node ? <OfficialLearningMaterial node={node} journey={officialLearning} onAsk={askExplanation} onCopy={wb.copyText} onReturnToCanvas={() => { officialCanvasView.actions.requestFocus(officialCanvasView.state.pendingFocusId || `${node.id}:diagram`); openCanvas({ mode: "free", focusId: node.id }); }} /> : null;
     }
     if (wb.getTask(ownerId).kind === "learning") {
       if (ownerId !== selectedTask) return null;
@@ -1166,7 +1192,7 @@ function App() {
     }).filter(Boolean) : [];
     const showOverview = visible && !free && !ownerMain;
     if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} canvasContent={learningCanvas} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
-    if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} canvasContent={learningCanvas} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
+    if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} canvasContent={learningCanvas} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenContent={openOfficialLearningContent} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
     const ownerCanvas = ownerLearning || ownerOfficialLearning ? learningCanvas : ownerImage ? imageCanvas : canvas;
     return <div className="tw-content-canvas">
       <div className="tw-canvas-body">
@@ -1378,7 +1404,7 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (liftMinimapForComposer ? " is-conversation-composer-only" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
         <aside className="icon-rail" aria-label="主导航">
           <div className="icon-rail-nav">
             <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={ICON_SIZE.navigation} /></button>
@@ -1557,23 +1583,24 @@ function App() {
               <IconFileText size={ICON_SIZE.control} />生成草稿
             </button>
           </section>}
-          <form className={`composer${showCommunityInvite ? " composer--community" : ""}`} onSubmit={(event) => { if (conversationLayout === "floating" && !session.replying && (draft.trim() || session.attachments.length)) setFloatingConversationExpanded(true); handleSendMessage(event); }}>
-            <button className="conversation-drag-handle" type="button" aria-label="拖动对话区域切换布局" title="拖动对话区域；靠近目标布局时会显示预览，松手后吸附。轻点或按回车可切换布局" disabled={areaInteractionActive} onKeyDown={event => { if (event.key === "Escape" && conversationDragRef.current) { event.preventDefault(); resetConversationDrag(); } else if (event.key === "Enter" || event.key === " " || conversationLayout === "floating" && event.key === "ArrowLeft" || conversationLayout === "sidebar" && event.key === "ArrowDown") { event.preventDefault(); setConversationLayout(current => current === "floating" ? "sidebar" : "floating"); } }} onPointerDown={startConversationDrag} onPointerMove={moveConversationDrag} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}><IconGripHorizontal size={ICON_SIZE.inline} aria-hidden="true" /></button>
+          <form className={`composer${showCommunityInvite ? " composer--community" : ""}${conversationDragEdgeHover ? " is-drag-edge-hover" : ""}`} onSubmit={(event) => { if (conversationLayout === "floating" && !session.replying && (draft.trim() || session.attachments.length)) setFloatingConversationExpanded(true); handleSendMessage(event); }} onPointerDown={startConversationDrag} onPointerMove={handleConversationPointerMove} onPointerLeave={() => setConversationDragEdgeHover(false)} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
               {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={ICON_SIZE.inline} /><span>{pointContext.type === "workspace-area" ? `工作区区域 · ${pointContext.label}` : `图解范围 · ${pointContext.label}`}</span><button type="button" aria-label="移除指向区域上下文" onClick={clearPointContext}><IconX size={ICON_SIZE.micro} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={ICON_SIZE.inline} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={ICON_SIZE.micro} /></button></span>)}
               {session.capabilityIds.map((id) => <span className="attachment-chip capability-chip" key={id}><IconBooks size={ICON_SIZE.inline} /><span>{capabilities.find((item) => item.id === id)?.name}</span><button type="button" aria-label="移除能力" onClick={() => wb.patchSession((old) => ({ capabilityIds: old.capabilityIds.filter((item) => item !== id) }))}><IconX size={ICON_SIZE.micro} /></button></span>)}
             </div>}
-            <textarea ref={wb.draftRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); event.currentTarget.form?.requestSubmit(); } }} placeholder="继续提问，或描述你想进行的下一步…" aria-label="继续提问" rows={1} />
-            <div className="composer-toolbar">
-              <div className="composer-tools">
-                <button className="icon-button composer-plus" type="button" aria-label="更多输入方式" data-menu-trigger data-menu-align="left" aria-expanded={wb.menu?.name === "input"} onClick={(event) => openMenu("input", event)}><IconPlus size={ICON_SIZE.heading} /></button>
-              </div>
-              <div className="composer-submit">
-                <button className="permission-button" type="button" aria-label={`权限设置，当前${permissionModeLabel}`} title={`权限：${permissionModeLabel}（演示）`} data-menu-trigger aria-expanded={wb.menu?.name === "permissions"} onClick={event => openMenu("permissions", event)}><IconShieldCheck size={ICON_SIZE.control} /></button>
-                <button className="model-button" type="button" data-menu-trigger data-menu-align="left" aria-expanded={wb.menu?.name === "models"} onClick={event => openMenu("models", event)} title="选择模型"><IconBolt size={ICON_SIZE.inline} /><span>{wb.model.label}</span><IconChevronDown size={ICON_SIZE.inline} /></button>
-                <span className="composer-voice-slot"><VoiceCaptureButton className="composer-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} iconOnly /></span>
-                <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying || (!draft.trim() && !session.attachments.length)}><IconSend size={ICON_SIZE.heading} /></button>
+            <div className="composer-entry">
+              <textarea ref={wb.draftRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); event.currentTarget.form?.requestSubmit(); } }} placeholder="继续提问，或描述你想进行的下一步…" aria-label="继续提问" rows={1} />
+              <div className="composer-toolbar">
+                <div className="composer-tools">
+                  <button className="icon-button composer-plus" type="button" aria-label="更多输入方式" data-menu-trigger data-menu-align="left" aria-expanded={wb.menu?.name === "input"} onClick={(event) => openMenu("input", event)}><IconPlus size={ICON_SIZE.heading} /></button>
+                </div>
+                <div className="composer-submit">
+                  <button className="permission-button" type="button" aria-label={`权限设置，当前${permissionModeLabel}`} title={`权限：${permissionModeLabel}（演示）`} data-menu-trigger aria-expanded={wb.menu?.name === "permissions"} onClick={event => openMenu("permissions", event)}><IconShieldCheck size={ICON_SIZE.control} /></button>
+                  <button className="model-button" type="button" data-menu-trigger data-menu-align="left" aria-label={`选择模型，当前${wb.model.label}`} aria-expanded={wb.menu?.name === "models"} onClick={event => openMenu("models", event)} title="选择模型"><img className="model-brand-logo" src={MODEL_PROVIDER_LOGOS[wb.selectedModel]} alt="" aria-hidden="true" /><span>{wb.model.label}</span><IconChevronDown className="model-menu-chevron" size={ICON_SIZE.inline} /></button>
+                  <span className="composer-voice-slot"><VoiceCaptureButton className="composer-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} iconOnly /></span>
+                  <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying || (!draft.trim() && !session.attachments.length)}><IconSend size={ICON_SIZE.heading} /></button>
+                </div>
               </div>
             </div>
           </form>
@@ -1597,7 +1624,7 @@ function App() {
         {wb.menu.name === "filter" && <><div className="menu-label">显示项目</div>{[{ id: "all", label: "全部项目" }, { id: "current", label: "当前项目" }].map((item) => <button key={item.id} type="button" className={wb.filterScope === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => wb.setFilterScope(item.id))}>{item.label}{wb.filterScope === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}<div className="menu-divider" /><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups(wb.groups.map((group) => group.id)))}>展开所有项目</button><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups([]))}>收起所有项目</button></>}
         {wb.menu.name === "chat" && <><div className="menu-label">当前任务对话</div><button type="button" onClick={() => closeMenuAnd(wb.startConversation)}>新对话<IconPlus size={ICON_SIZE.control} /></button><button type="button" onClick={() => openDialog("history")}>对话历史<span>{session.history.length}</span></button><button type="button" onClick={() => closeMenuAnd(() => wb.copyText(wb.conversationText()))}>复制当前对话<IconCopy size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button><div className="menu-divider" /><button type="button" onClick={resetCurrentTask}>恢复本题初始状态</button></>}
         {wb.menu.name === "input" && <><div className="menu-label">添加输入</div><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => navigateMainView("capabilities"))}>使用能力库<IconBooks size={ICON_SIZE.control} /></button></>}
-        {wb.menu.name === "models" && <><div className="menu-label">选择模型</div>{modelOptions.map(item => <button key={item.id} type="button" className={wb.selectedModel === item.id ? "is-active" : ""} aria-pressed={wb.selectedModel === item.id} onClick={() => closeMenuAnd(() => wb.chooseModel(item.id))}><span>{item.label}</span>{wb.selectedModel === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
+        {wb.menu.name === "models" && <><div className="menu-label">选择模型</div>{modelOptions.map(item => <button key={item.id} type="button" className={wb.selectedModel === item.id ? "is-active" : ""} aria-pressed={wb.selectedModel === item.id} onClick={() => closeMenuAnd(() => wb.chooseModel(item.id))}><span className="model-option-main"><img className="model-option-logo" src={MODEL_PROVIDER_LOGOS[item.id]} alt="" aria-hidden="true" /><span>{item.label}</span></span>{wb.selectedModel === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
         {wb.menu.name === "permissions" && <><div className="menu-label">当前任务权限 · 演示</div>{PERMISSION_OPTIONS.map(item => <button key={item.id} type="button" className={permissionMode === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => setPermissionModes(current => ({ ...current, [selectedTask]: item.id })))}><span>{item.label}</span>{permissionMode === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
         {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => openContent("review"))}>生成复核记录<IconFileText size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={ICON_SIZE.control} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button></>}
         {wb.menu.name === "notifications" && <><div className="menu-label">任务动态</div>{wb.notifications.length ? wb.notifications.map((entry) => <button className="notification-row" key={entry.id} type="button" onClick={() => selectExistingTask(entry.taskName)}><span><strong>{entry.text}</strong><small>{entry.taskName} · {entry.time}</small></span></button>) : <p className="menu-empty">尚无新动态。完成核对后会在这里留下记录。</p>}</>}

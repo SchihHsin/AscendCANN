@@ -4,30 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f5f5f5">
-  <meta name="description" content="Ascend Studio 小程序交互 Demo：发现知识卡、标记兴趣与疑问，阅读每周开发速览并接续电脑端任务。">
+  <meta name="description" content="Ascend Studio 小程序交互 Demo：从开发任务出发发现知识、完成移动微学习，并通过微信服务通知回访。">
   <title>Ascend Studio · 口袋新知</title>
   <link rel="icon" type="image/svg+xml" href="./mark.svg">
   <link rel="stylesheet" href="./styles.css">
   <script type="module" src="./app.js"></script>
 </head>
 <body>
-  <div class="preview-layout">
-    <aside class="preview-intro" aria-label="小程序 Demo 介绍">
+  <div class="preview-layout" id="preview-layout">
+    <aside class="preview-intro" aria-label="小程序设计点讲解">
       <a class="desktop-brand" href="../ascstudio/" target="_blank" rel="noopener"><img src="./mark.svg" width="29" height="29" alt="">Ascend Studio</a>
-      <div class="intro-body">
-        <div class="intro-eyebrow"><span></span> 口袋新知 / MINI PROGRAM</div>
-        <h1>让下一点新知，<br>接上你的思路。</h1>
-        <p>从正在探索的任务出发。<br>随手学一点，回到电脑接着做。</p>
-        <div class="intro-journey"><span>发现</span><i></i><span>理解</span><i></i><span>继续</span></div>
+      <div class="intro-body" id="review-panel" aria-live="polite">
+        <div class="intro-eyebrow"><span></span><span id="review-kicker">01 / 07 · 核心学习</span></div>
+        <h1 id="review-title">从任务出发，发现下一点新知</h1>
+        <p id="review-description">继续电脑端正在做的事，首页把任务背景和相关知识放在一起，方便挑一个点开始。</p>
+        <div class="review-point"><small>这一屏的设计点</small><strong id="review-principle">让知识推荐接上具体开发任务</strong></div>
+        <div class="intro-journey"><span id="review-journey-first">发现</span><i></i><span id="review-journey-middle">学懂</span><i></i><span id="review-journey-last">接续</span></div>
       </div>
-      <div class="preview-foot"><span>小程序交互 Demo</span><span>手机打开，随手探索 ↗</span></div>
+      <div class="preview-foot">
+        <span>HUAWEI Pura X View · 阔直板 · 6.39″</span>
+        <span class="review-help">滚轮 / ↑↓ 翻页 · 右侧节点直达 · O 总览</span>
+      </div>
     </aside>
     <div class="device-wrap">
-      <div class="device" id="device">
-        <div class="system-bar" aria-hidden="true"><span>9:41</span><div><svg width="17" height="12" viewBox="0 0 17 12"><path d="M1 10V8M5 10V6M9 10V4M13 10V1" stroke="currentColor" stroke-width="2.5"/></svg><svg width="16" height="12" viewBox="0 0 18 14"><path d="M1 4.5q8-7 16 0M4 8q5-4 10 0M7 11q2-2 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="battery"></span></div></div>
+      <div class="device device-pura-x-view" id="device" aria-label="HUAWEI Pura X View 样机">
+        <div class="system-bar" aria-hidden="true"><time class="system-time">10:08</time><div class="system-status"><span class="network-type">5G</span><svg class="system-signal" viewBox="0 0 18 14"><path d="M2 13V10M6 13V7M10 13V4M14 13V1"/></svg><svg class="system-wifi" viewBox="0 0 18 14"><path d="M1 4.5q8-7 16 0M4 8q5-4 10 0M7 11q2-2 4 0"/></svg><span class="battery-percent">87%</span><span class="battery"></span></div></div>
         <header class="app-header" id="app-header"></header>
         <main class="app-scroll" id="screen" tabindex="-1"></main>
         <div id="detail-action"></div>
+        <nav class="wechat-tab-bar" id="wechat-tab-bar" aria-label="微信导航" hidden></nav>
         <nav class="tab-bar" id="tab-bar" aria-label="小程序导航"></nav>
         <div class="home-indicator" aria-hidden="true"></div>
         <div id="overlay"></div>
@@ -35,6 +40,26 @@
       </div>
     </div>
   </div>
+  <nav class="review-dots" id="review-dots" aria-label="设计点快速跳转"></nav>
+  <div class="review-toolbar" id="review-toolbar" role="toolbar" aria-label="演示控制">
+    <button id="review-prev" type="button" data-review-nav="prev" aria-label="上一个设计点" title="上一个设计点（←）"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/></svg></button>
+    <span class="review-counter" id="review-progress" aria-live="polite">01 / 07</span>
+    <button id="review-next" type="button" data-review-nav="next" aria-label="下一个设计点" title="下一个设计点（→）"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 5 7 7-7 7"/></svg></button>
+    <span class="review-toolbar-divider" aria-hidden="true"></span>
+    <button id="review-overview-toggle" type="button" data-review-overview aria-controls="review-overview" aria-expanded="false" aria-label="打开设计点总览" title="设计点总览（O）"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.2"/></svg></button>
+    <button id="review-fullscreen-toggle" type="button" data-review-fullscreen aria-label="进入全屏演示" title="全屏演示（F）"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg></button>
+  </div>
+  <section class="review-overview" id="review-overview" role="dialog" aria-modal="true" aria-labelledby="review-overview-title" tabindex="-1" hidden>
+    <div class="review-overview-backdrop" data-review-close-overview></div>
+    <div class="review-overview-panel">
+      <header class="review-overview-heading">
+        <div><span>ASCEND STUDIO · 口袋新知</span><h2 id="review-overview-title">从学习，到主动回访</h2></div>
+        <button id="review-overview-close" type="button" aria-label="关闭总览（Esc）" title="关闭总览（Esc）"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      </header>
+      <div class="review-overview-grid" id="review-overview-grid"></div>
+      <p class="review-overview-hint">点击任一画面，手机会切换到对应界面</p>
+    </div>
+  </section>
   <noscript>请启用 JavaScript 体验知识卡与任务小结。</noscript>
 </body>
 </html>
