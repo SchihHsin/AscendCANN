@@ -297,7 +297,8 @@ function App() {
       window.removeEventListener("resize", liftMinimap);
       minimap.style.removeProperty("bottom");
     };
-  }, [liftMinimapForComposer, selectedTask, layout.workspaceRef]);
+    // layout.workspaceRef is stable; the effect reruns when its relevant UI state changes.
+  }, [liftMinimapForComposer, selectedTask]);
   const clearPointContext = () => {
     setPointContext(null);
     window.dispatchEvent(new Event("ascstudio-point-range-consumed"));
