@@ -70,6 +70,7 @@
   transition: background-color .14s ease, color .14s ease;
 }
 .canvas-tool-button:hover { color: #222324; background: #f1f1f0; }
+.canvas-tool-button--labeled { flex-basis: auto; width: auto; gap: 5px; padding: 0 8px; font-size: 11px; white-space: nowrap; }
 .canvas-tool-button.is-active,
 .canvas-tool-button[aria-pressed="true"] { color: #fff; background: var(--canvas-active); }
 .canvas-tool-button.is-active:hover,
@@ -129,6 +130,7 @@
 .canvas-card-button.is-active,
 .canvas-card-button[aria-pressed="true"] { color: #222324; background: #f1f1f0; }
 .canvas-card-actions .canvas-card-button { color: #777a7c; }
+.canvas-card-button.is-destructive:hover { color: #b3263e; background: #fcebed; }
 
 .canvas-user-note { position: absolute; display: flex; flex-direction: column; overflow: hidden; }
 .canvas-user-note-header { justify-content: flex-start; flex: 0 0 auto; gap: 7px; min-height: 39px; padding: 5px 7px; color: #55585a; background: #fbfbfa; }
@@ -136,9 +138,15 @@
 .canvas-user-note-header.is-draggable:active { cursor: grabbing; }
 .canvas-user-note-header > svg { flex: 0 0 auto; color: #96989a; }
 .canvas-user-note-header > strong { flex: 1 1 auto; overflow: hidden; font-size: 11px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.canvas-user-note-header .canvas-card-actions { gap: 1px; }
 .canvas-user-note > textarea { display: block; flex: 1 1 auto; width: 100%; min-height: 0; padding: 11px 12px; resize: none; border: 0; outline: 0; color: #4f5254; background: #fff; font: inherit; font-size: 11px; line-height: 1.7; }
 .canvas-user-note > textarea::placeholder { color: #a2a4a5; }
 .canvas-user-note > textarea[readonly] { cursor: default; }
+.canvas-drawing-surface { position: relative; flex: 1 1 auto; min-width: 0; min-height: 0; overflow: hidden; background: #fff; touch-action: pan-y; }
+.canvas-drawing-surface.is-drawing { cursor: crosshair; touch-action: none; }
+.canvas-drawing-hint { position: absolute; inset: 0; display: grid; place-items: center; padding: 12px; color: #999ba2; font-size: 11px; text-align: center; pointer-events: none; }
+.canvas-drawing-surface-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+.canvas-drawing-surface-svg polyline { fill: none; stroke: #55585a; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .canvas-user-drawings { position: absolute; inset: 0; z-index: 3; overflow: visible; pointer-events: none; }
 .canvas-user-drawings polyline { fill: none; stroke: #7468a1; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 

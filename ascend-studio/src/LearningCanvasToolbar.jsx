@@ -15,11 +15,11 @@ export default function LearningCanvasToolbar({ layout, scale, hand, positionEdi
     </CanvasToolbarGroup>
     {onToggleAllExpanded && <CanvasToolbarGroup className="lh-all-toggle-group" label="节点内容"><CanvasToolButton className="lh-all-toggle" type="button" active={allExpanded} title={allExpanded ? "收起所有节点内容卡片" : "展开所有节点内容卡片"} aria-label={allExpanded ? "收起所有节点内容卡片" : "展开所有节点内容卡片"} aria-pressed={allExpanded} onClick={onToggleAllExpanded}><IconStack2 size={ICON_SIZE.control} /><span>{allExpanded ? "收起" : "全部展开"}</span></CanvasToolButton></CanvasToolbarGroup>}
     <CanvasToolbarGroup label="画布编辑">
-      <CanvasToolButton type="button" active={positionEditing} title={positionEditing ? "完成画布编辑" : "编辑画布位置"} aria-label={positionEditing ? "完成画布编辑" : "编辑画布位置"} onClick={onTogglePositionEditing}>{positionEditing ? <IconCheck size={ICON_SIZE.control} /> : <IconPencil size={ICON_SIZE.control} />}</CanvasToolButton>
+      <CanvasToolButton className={positionEditing ? "canvas-tool-button--labeled" : ""} type="button" active={positionEditing} title={positionEditing ? "完成编辑并退出编辑状态" : "编辑画布位置"} aria-label={positionEditing ? "完成编辑并退出编辑状态" : "编辑画布位置"} onClick={onTogglePositionEditing}>{positionEditing ? <><IconCheck size={ICON_SIZE.control} /><span>完成编辑</span></> : <IconPencil size={ICON_SIZE.control} />}</CanvasToolButton>
     </CanvasToolbarGroup>
     {positionEditing && (onAddNode || onToggleDrawing || hasHiddenContent) && <CanvasToolbarGroup className="canvas-toolbar-group--add-content" label="新增画布内容">
       {onAddNode && <CanvasToolButton type="button" title="新增节点：便签" aria-label="新增节点：便签" onClick={onAddNode}><IconPlus size={ICON_SIZE.control} /></CanvasToolButton>}
-      {onToggleDrawing && <CanvasToolButton type="button" active={drawingMode} title={drawingMode ? "退出自由绘图" : "自由绘图"} aria-label={drawingMode ? "退出自由绘图" : "自由绘图"} onClick={onToggleDrawing}><IconPencil size={ICON_SIZE.control} /></CanvasToolButton>}
+      {onToggleDrawing && <CanvasToolButton type="button" active={drawingMode} title={drawingMode ? "结束卡片绘图" : "新增手绘卡片"} aria-label={drawingMode ? "结束卡片绘图" : "新增手绘卡片"} onClick={onToggleDrawing}><IconPencil size={ICON_SIZE.control} /></CanvasToolButton>}
       {hasHiddenContent && onRestoreContent && <CanvasToolButton type="button" title="恢复刚收起的便签" aria-label="恢复刚收起的便签" onClick={onRestoreContent}><IconRestore size={ICON_SIZE.control} /></CanvasToolButton>}
     </CanvasToolbarGroup>}
   </CanvasToolbar>;

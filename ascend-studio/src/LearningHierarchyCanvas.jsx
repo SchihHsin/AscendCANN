@@ -188,19 +188,26 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
   const [size, setSize] = useState({ width: 1000, height: 760 });
   const [hand, setHand] = useState(false);
   const [positionEditing, setPositionEditing] = useState(false);
-  const drawing = useCanvasDrawing({ canvasContent, editing: positionEditing, viewport: canvas.viewport });
+  const drawing = useCanvasDrawing({ canvasContent, editing: positionEditing });
   const [agentCursor, setAgentCursor] = useState(null);
   const [agentTarget, setAgentTarget] = useState(null);
   useEffect(() => {
+    if (!visible) {
+      setHand(false);
+      setPositionEditing(false);
+      drawing.stop();
+      return undefined;
+    }
     if (!hand && !positionEditing) return undefined;
     const handleEscape = event => {
       if (event.key !== "Escape" || event.target?.closest?.('input,textarea,select,[contenteditable="true"],[role="textbox"]')) return;
       setHand(false);
       setPositionEditing(false);
+      drawing.stop();
     };
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
-  }, [hand, positionEditing]);
+  }, [visible, hand, positionEditing]);
   agentCompleteRef.current = onAgentActionComplete;
   const layout = canvas.layout;
   const path = state.draftPath || state.path;
@@ -242,9 +249,9 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
   const showDiagram = isGoal || canvas.expanded && !state.draftPath;
   const showDetail = !isGoal && canvas.expanded && !state.draftPath;
   const showRestore = !isGoal && !canvas.expanded;
-  const userNotes = (canvasContent?.state.cards || []).filter(card => card.kind === "note" && card.visible);
-  const hiddenUserNotes = (canvasContent?.state.cards || []).filter(card => card.kind === "note" && !card.visible);
-  const drawingPoints = drawing.drawings.flatMap(item => item.points || []);
+  const userNotes = (canvasContent?.state.cards || []).filter(card => ["note", "drawing"].includes(card.kind) && card.visible);
+  const hiddenUserNotes = (canvasContent?.state.cards || []).filter(card => ["note", "drawing"].includes(card.kind) && !card.visible);
+  const drawingPoints = drawing.drawings.filter(item => !item.cardId).flatMap(item => item.points || []);
   const hierarchyRight = isGoal ? 0 : treePoint.x + tree.width;
   const estimatedRight = Math.max(
     hierarchyRight,
@@ -430,6 +437,36 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
     canvasContent.actions.addCard({ id: `learning-note:${Date.now().toString(36)}`, kind: "note", title: `笔记 ${count}`, noteText: "", x, y, width: 350, height: 220 }, { focus: false });
     canvasActions.setViewport({ x: size.width / 2 - (x + 175) * viewport.scale, y: size.height / 2 - (y + 110) * viewport.scale });
   };
+  const addUserDrawingCard = () => {
+    if (!canvasContent?.actions.addCard) return null;
+    const count = (canvasContent.state.cards || []).filter(card => card.kind === "drawing").length + 1;
+    const id = `learning-drawing:${Date.now().toString(36)}:${Math.random().toString(36).slice(2, 6)}`;
+    const x = estimatedRight + 24, y = position("diagram").y;
+    canvasContent.actions.addCard({ id, kind: "drawing", title: `手绘卡片 ${count}`, x, y, width: 420, height: 300 }, { focus: false });
+    canvasActions.setViewport({ x: size.width / 2 - (x + 210) * viewport.scale, y: size.height / 2 - (y + 150) * viewport.scale });
+    return id;
+  };
+  const toggleDrawing = () => {
+    if (drawing.drawingMode) { drawing.stop(); return; }
+    const selectedCard = canvasContent?.state.cards?.find(card => card.id === canvasContent.state.selectedCardId && card.visible);
+    drawing.start(selectedCard?.kind === "drawing" ? selectedCard.id : addUserDrawingCard());
+  };
+  const drawingCardProps = card => ({
+    drawingMode: drawing.drawingMode && drawing.targetCardId === card.id,
+    drawings: drawing.drawings.filter(item => item.cardId === card.id),
+    draft: drawing.targetCardId === card.id ? drawing.draft : [],
+    onDrawingBegin: drawing.begin,
+    onDrawingMove: drawing.move,
+    onDrawingFinish: drawing.finish,
+    onDrawingCancel: drawing.cancel,
+    onDelete: id => { if (drawing.targetCardId === id) drawing.stop(); canvasContent?.actions.deleteCard(id); },
+  });
+  const togglePositionEditing = () => {
+    const next = !positionEditing;
+    setPositionEditing(next);
+    setHand(false);
+    if (!next) drawing.stop();
+  };
   const beginUserNoteDrag = (event, card) => {
     if (!positionEditing || event.button !== 0) return;
     event.preventDefault();
@@ -437,7 +474,7 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
     gesture.current = { id: `user-note:${card.id}`, startX: event.clientX, startY: event.clientY, original: { x: card.x, y: card.y } };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
-  const drawingBlocked = "button,input,textarea,select,summary,a,.lh-card,.lh-tree-node,.canvas-user-note";
+  const canvasPanBlocked = "button,input,textarea,select,summary,a,.lh-card,.lh-tree-node,.canvas-user-note";
   const select = (stage, step) => {
     canvasActions.select(stage, step);
     actions.openNode(stage);
@@ -457,24 +494,23 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
         ? `M${start.x},${start.y} H${treePoint.x + tree.width + 18 + targetIndex * 9} V${point.y + 28} H${point.x - 3}`
         : `M${start.x},${start.y} V${treePoint.y + tree.height + 35 + targetIndex * 10} H${point.x + Math.min(targetWidth / 2, 70)} V${point.y - 3}`;
   return <CanvasSurface as="div" ref={host} className={`learning-hierarchy-canvas path-editing-canvas${hand ? " is-hand" : ""}${positionEditing ? " is-position-editing" : ""}${drawing.drawingMode ? " is-drawing" : ""}`} style={{ backgroundSize: `${Math.max(12, 20 * viewport.scale)}px ${Math.max(12, 20 * viewport.scale)}px`, backgroundPosition: `${viewport.x}px ${viewport.y}px` }} aria-label="可移动的学习层级与内容画布" onPointerDown={event => {
-    if (drawing.begin(event, event.currentTarget, drawingBlocked)) return;
-    if (event.button !== 0 || event.target.closest(drawingBlocked)) return;
+    if (drawing.drawingMode) return;
+    if (event.button !== 0 || event.target.closest(canvasPanBlocked)) return;
     gesture.current = { id: "viewport", startX: event.clientX, startY: event.clientY, original: viewport };
     event.currentTarget.setPointerCapture(event.pointerId);
   }} onPointerMove={event => {
-    if (drawing.move(event, event.currentTarget)) return;
     const drag = gesture.current;
     if (!drag) return;
     const deltaX = event.clientX - drag.startX, deltaY = event.clientY - drag.startY;
     if (drag.id === "viewport") canvasActions.setViewport({ x: drag.original.x + deltaX, y: drag.original.y + deltaY });
     else if (drag.id.startsWith("user-note:")) canvasContent?.actions.moveCard(drag.id.slice("user-note:".length), drag.original.x + deltaX / viewport.scale, drag.original.y + deltaY / viewport.scale);
     else canvasActions.moveObject(drag.id, { x: drag.original.x + deltaX / viewport.scale, y: drag.original.y + deltaY / viewport.scale });
-  }} onPointerUp={event => { drawing.finish(event, event.currentTarget); gesture.current = null; }} onPointerCancel={event => { drawing.cancel(event, event.currentTarget); gesture.current = null; }}>
+  }} onPointerUp={() => { gesture.current = null; }} onPointerCancel={() => { gesture.current = null; }}>
     <div className={`lh-canvas-title${state.draftPath ? " is-draft-path" : ""}`}><IconBook size={ICON_SIZE.feature} /><div className="lh-canvas-title-copy">{state.draftPath && <div className="lh-editing-state"><span className="lh-editing-dot" />学习路径草案 · 正在编辑<span>尚未开始学习</span></div>}<h2>{state.draftPath ? "与 AI 共创学习路径" : state.profile.goal || "我的学习目标"}</h2><p>{state.draftPath ? `目标：${state.profile.goal} · 进入位置编辑后可移动节点与关联卡片，路径顺序不变${pendingChanges.length ? ` · ${pendingChanges.length} 项 AI 调整待你决定` : " · 也可在左侧对话继续增删重点"}` : isGoal ? "从目标或现成路径开始一段可验证的学习" : `${stageLabels[activeStage]} · ${selectedStepTitle}`}</p></div></div>
-    <LearningCanvasToolbar layout={layout} scale={viewport.scale} hand={hand} positionEditing={positionEditing} drawingMode={drawing.drawingMode} hasHiddenContent={hiddenUserNotes.length > 0} onTogglePositionEditing={() => { setPositionEditing(value => !value); setHand(false); }} onLayout={canvasActions.setLayout} onZoom={zoom} onResetZoom={() => canvasActions.setViewport({ scale: 1 })} onHand={() => { setHand(value => !value); setPositionEditing(false); }} onFit={fitPath} onAddNode={canvasContent ? addUserNote : undefined} onToggleDrawing={canvasContent ? () => drawing.setDrawingMode(value => !value) : undefined} onRestoreContent={canvasContent ? () => canvasContent.actions.restore(hiddenUserNotes.at(-1)?.id) : undefined} />
+    <LearningCanvasToolbar layout={layout} scale={viewport.scale} hand={hand} positionEditing={positionEditing} drawingMode={drawing.drawingMode} hasHiddenContent={hiddenUserNotes.length > 0} onTogglePositionEditing={togglePositionEditing} onLayout={canvasActions.setLayout} onZoom={zoom} onResetZoom={() => canvasActions.setViewport({ scale: 1 })} onHand={() => { setHand(value => !value); setPositionEditing(false); drawing.stop(); }} onFit={fitPath} onAddNode={canvasContent ? addUserNote : undefined} onToggleDrawing={canvasContent ? toggleDrawing : undefined} onRestoreContent={canvasContent ? () => canvasContent.actions.restore(hiddenUserNotes.at(-1)?.id) : undefined} />
     {state.draftPath && <div className="lh-draft-controls" aria-label="路径共创整体操作"><Button primary disabled={pendingChanges.length > 0} title={pendingChanges.length ? "先决定所有 AI 调整" : "确认这条路径并进入学习"} onClick={() => { if (actions.confirmPath()) select("channels", "channels"); }}>确认路径并开始学习<IconArrowRight size={ICON_SIZE.inline} /></Button><Button disabled={!state.pathUndo?.length} onClick={actions.undoPathEdit}><IconHistory size={ICON_SIZE.inline} />撤销</Button><Button onClick={actions.cancelPath}>取消</Button></div>}
     <div className="lh-world" style={{ width: world.width, height: world.height, transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})` }}>
-      {(drawing.drawings.length > 0 || drawing.draft.length > 0) && <svg className="canvas-user-drawings" width={world.width} height={world.height} aria-hidden="true">{[...drawing.drawings, ...(drawing.draft.length > 1 ? [{ id: "draft", points: drawing.draft, color: "#7468a1", width: 3 }] : [])].map(item => <polyline key={item.id} points={item.points.map(point => `${point.x},${point.y}`).join(" ")} stroke={item.color || "#7468a1"} strokeWidth={item.width || 3} />)}</svg>}
+      {drawing.drawings.some(item => !item.cardId) && <svg className="canvas-user-drawings" width={world.width} height={world.height} aria-hidden="true">{drawing.drawings.filter(item => !item.cardId).map(item => <polyline key={item.id} points={item.points.map(point => `${point.x},${point.y}`).join(" ")} stroke={item.color || "#55585a"} strokeWidth={item.width || 3} />)}</svg>}
     {!isGoal && <div className="lh-tree-position" style={{ left: treePoint.x, top: treePoint.y, width: tree.width, height: tree.height }}><HierarchyGroup tree={tree} layout={layout} selectedStage={activeStage} selectedStep={selectedStep} journey={journey} onSelect={select} onMoveNode={(id, point) => canvasActions.moveObject(id, point)} scale={viewport.scale} minX={8 - treePoint.x} minY={8 - treePoint.y} pinned={pinned("hierarchy")} agentTarget={agentTarget} editing={positionEditing} onDrag={positionEditing && !pinned("hierarchy") ? event => beginObjectDrag(event, "hierarchy", treePoint) : undefined} /></div>}
       {start && canvas.expanded && !state.draftPath && !reviewingPath && <svg className="lh-material-lines" width={world.width} height={world.height} aria-hidden="true"><defs><marker id="lh-material-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8" /></marker></defs><path d={connection(position("diagram"), diagramWidth, 0)} markerEnd="url(#lh-material-arrow)" /><path d={connection(position("detail"), detailWidth, 1)} markerEnd="url(#lh-material-arrow)" /><circle cx={start.x} cy={start.y} r="5" /></svg>}
       {isGoal && <CanvasCard id="goal" title="学习目标与基础" point={position("goal")} width={440} pinned={pinned("goal")} onDrag={positionEditing && !pinned("goal") ? beginObjectDrag : undefined} onFocus={focusObject} onMaximize={maximizeObject} onTogglePin={canvasActions.togglePin}><GoalObject journey={journey} onGenerate={generate} onReturn={() => canvasActions.select("path")} /></CanvasCard>}
@@ -484,7 +520,7 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
         {activeStage === "practice" ? <CodePractice journey={journey} activeSubstep={selectedStep} onCopy={onCopy} onContinue={() => select("check", "input")} /> : activeStage === "check" ? <InputCheck journey={journey} onRestore={() => select("practice", "result")} onArchive={onArchive} onEnterDevelopment={onEnterDevelopment} /> : <div className="lh-lesson-body">{activeStage === "environment" && <p>浏览器中可完成维度演算，无需安装环境。迁移到本地时需 Python 与 NumPy；真实模型另核对输入签名。</p>}<Player journey={journey} onAsk={onAsk} /><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => { actions.markUnderstood(); select("practice", "layout"); }}>理解了，继续跟练<IconArrowRight size={ICON_SIZE.inline} /></Button></div><p className="lh-boundary">动态讲解为本地概念演示；“看过”与练习检查通过分别记录。</p></div>}
       </CanvasCard>}
       {!isGoal && !canvas.expanded && <button type="button" className="lh-restore-material" style={{ left: position("diagram").x, top: position("diagram").y }} onClick={() => canvasActions.select(activeStage, selectedStep)}><IconBook size={ICON_SIZE.navigation} /><span>材料已收起<strong>恢复{stageLabels[activeStage]}的图解与内容</strong></span><IconChevronDown size={ICON_SIZE.heading} /></button>}
-      {userNotes.map(card => <CanvasUserNote key={card.id} card={card} selected={canvasContent?.state.selectedCardId === card.id} editing={positionEditing} onMoveStart={beginUserNoteDrag} onChange={(id, noteText) => canvasContent?.actions.updateCard(id, { noteText })} onHide={id => canvasContent?.actions.hideCard(id)} />)}
+      {userNotes.map(card => <CanvasUserNote key={card.id} card={card} selected={canvasContent?.state.selectedCardId === card.id} editing={positionEditing} onMoveStart={beginUserNoteDrag} onChange={(id, noteText) => canvasContent?.actions.updateCard(id, { noteText })} onHide={id => canvasContent?.actions.hideCard(id)} {...drawingCardProps(card)} />)}
     </div>
     {state.notice && !state.draftPath && <div className="lh-canvas-notice" role="status">{state.notice}</div>}
     <CanvasMiniMap className="lh-minimap" viewBox={{ x: 0, y: 0, width: world.width, height: world.height }} viewport={{ x: -viewport.x / viewport.scale, y: -viewport.y / viewport.scale, width: size.width / viewport.scale, height: size.height / viewport.scale }} onNavigate={({ x, y }) => canvasActions.setViewport({ x: size.width / 2 - x * viewport.scale, y: size.height / 2 - y * viewport.scale })} onFit={fitPath}>
@@ -492,7 +528,7 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
       <rect className="canvas-minimap-item" x={position("diagram").x} y={position("diagram").y} width={diagramWidth} height="390" rx="8" />
       {!isGoal && canvas.expanded && <rect className="canvas-minimap-item" x={position("detail").x} y={position("detail").y} width={detailWidth} height="470" rx="8" />}
       {userNotes.map(card => <rect className={`canvas-minimap-item${canvasContent?.state.selectedCardId === card.id ? " is-selected" : ""}`} key={card.id} x={card.x} y={card.y} width={card.width} height={card.height} rx="7" />)}
-      {(drawing.drawings || []).map(item => <polyline key={item.id} className="canvas-minimap-drawing" points={item.points.map(point => `${point.x},${point.y}`).join(" ")} />)}
+      {drawing.drawings.filter(item => !item.cardId).map(item => <polyline key={item.id} className="canvas-minimap-drawing" points={item.points.map(point => `${point.x},${point.y}`).join(" ")} />)}
     </CanvasMiniMap>
     {agentCursor && createPortal(<div className={`lh-agent-flight is-${agentCursor.phase}`} style={{ transform: `translate3d(${agentCursor.x}px, ${agentCursor.y}px, 0)` }} aria-hidden="true"><IconPointer size={22} stroke={2.2} /><span>{agentCursor.label}</span></div>, document.body)}
   </CanvasSurface>;
