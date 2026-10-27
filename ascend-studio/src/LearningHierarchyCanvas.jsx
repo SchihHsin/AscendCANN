@@ -406,7 +406,7 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
     const node = host.current;
     if (!node) return undefined;
     const wheel = event => {
-      if (event.target.closest("textarea,select,.lh-code,.lh-history, .lh-check-body")) return;
+      if (event.target.closest("textarea,select,.canvas-note-code-preview,.lh-code,.lh-history,.lh-check-body")) return;
       event.preventDefault();
       const { viewport: old, canvasActions: update } = current.current;
       if (event.ctrlKey || event.metaKey) {
@@ -434,7 +434,7 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
     if (!canvasContent?.actions.addCard) return;
     const count = (canvasContent.state.cards || []).filter(card => card.kind === "note").length + 1;
     const x = estimatedRight + 24, y = position("diagram").y;
-    canvasContent.actions.addCard({ id: `learning-note:${Date.now().toString(36)}`, kind: "note", title: `笔记 ${count}`, noteText: "", x, y, width: 350, height: 220 }, { focus: false });
+    canvasContent.actions.addCard({ id: `learning-note:${Date.now().toString(36)}`, kind: "note", title: `笔记 ${count}`, noteText: "", codeBlocks: [], x, y, width: 350, height: 220 }, { focus: false });
     canvasActions.setViewport({ x: size.width / 2 - (x + 175) * viewport.scale, y: size.height / 2 - (y + 110) * viewport.scale });
   };
   const addUserDrawingCard = () => {
@@ -520,7 +520,7 @@ export function LearningHierarchyCanvas({ journey, view, canvasContent, visible 
         {activeStage === "practice" ? <CodePractice journey={journey} activeSubstep={selectedStep} onCopy={onCopy} onContinue={() => select("check", "input")} /> : activeStage === "check" ? <InputCheck journey={journey} onRestore={() => select("practice", "result")} onArchive={onArchive} onEnterDevelopment={onEnterDevelopment} /> : <div className="lh-lesson-body">{activeStage === "environment" && <p>浏览器中可完成维度演算，无需安装环境。迁移到本地时需 Python 与 NumPy；真实模型另核对输入签名。</p>}<Player journey={journey} onAsk={onAsk} /><div className="lh-actions"><Button primary disabled={!journey.pathCurrent} onClick={() => { actions.markUnderstood(); select("practice", "layout"); }}>理解了，继续跟练<IconArrowRight size={ICON_SIZE.inline} /></Button></div><p className="lh-boundary">动态讲解为本地概念演示；“看过”与练习检查通过分别记录。</p></div>}
       </CanvasCard>}
       {!isGoal && !canvas.expanded && <button type="button" className="lh-restore-material" style={{ left: position("diagram").x, top: position("diagram").y }} onClick={() => canvasActions.select(activeStage, selectedStep)}><IconBook size={ICON_SIZE.navigation} /><span>材料已收起<strong>恢复{stageLabels[activeStage]}的图解与内容</strong></span><IconChevronDown size={ICON_SIZE.heading} /></button>}
-      {userNotes.map(card => <CanvasUserNote key={card.id} card={card} selected={canvasContent?.state.selectedCardId === card.id} editing={positionEditing} onMoveStart={beginUserNoteDrag} onChange={(id, noteText) => canvasContent?.actions.updateCard(id, { noteText })} onHide={id => canvasContent?.actions.hideCard(id)} {...drawingCardProps(card)} />)}
+      {userNotes.map(card => <CanvasUserNote key={card.id} card={card} selected={canvasContent?.state.selectedCardId === card.id} editing={positionEditing} onMoveStart={beginUserNoteDrag} onUpdate={(id, patch) => canvasContent?.actions.updateCard(id, patch)} onHide={id => canvasContent?.actions.hideCard(id)} {...drawingCardProps(card)} />)}
     </div>
     {state.notice && !state.draftPath && <div className="lh-canvas-notice" role="status">{state.notice}</div>}
     <CanvasMiniMap className="lh-minimap" viewBox={{ x: 0, y: 0, width: world.width, height: world.height }} viewport={{ x: -viewport.x / viewport.scale, y: -viewport.y / viewport.scale, width: size.width / viewport.scale, height: size.height / viewport.scale }} onNavigate={({ x, y }) => canvasActions.setViewport({ x: size.width / 2 - x * viewport.scale, y: size.height / 2 - y * viewport.scale })} onFit={fitPath}>
