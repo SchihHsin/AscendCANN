@@ -7228,4 +7228,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出展开入口偏右且方形；改为水平居中、圆角胶囊形状，保留原有悬浮 / 聚焦 / 触屏显隐与展开、收起行为。
 - 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 构建产物。依据为用户明确反馈（H）；不改变布局行为、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`npm run build:pages`、生成 JS `node --check`、HTML bundle 引用、胶囊居中样式核对及 `git diff --check` 通过；本地 5179 预览 HTTP 200。推送与 Pages 部署结果待补。
+- 验证：`npm run build:pages`、生成 JS `node --check`、HTML bundle 引用、胶囊居中样式核对及 `git diff --check` 通过；本地 5179 预览 HTTP 200。
+- 发布：样式提交 `9d052474` 已推送；其 Pages workflow `40552630444` 被之后的并行主线更新取消。快进同步并保留知识供给蓝图提交 `78bd3842`、`e6de3afe`、`ee1f6913` 后，最新 Pages workflow `40552923176` 成功。线上 HTML、`index-BbxiqbVp.js`、`index-Cd3-N-Gs.css` 均 HTTP 200；已回读确认展开入口居中胶囊样式和展开 / 收起文案。
