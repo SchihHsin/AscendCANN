@@ -7038,6 +7038,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：HTMLParser 通过；Chrome 1440px 桌面、1024px 平板、390px 手机视口完成视觉检查，三视口 `body.scrollWidth` 均等于视口宽度。`git diff --check` 通过；未运行自动化测试。
 - 提交与推送：蓝图提交 `ff9acc33` 已推送至 `origin/main`，此前并行的每周速览与主线更新均保留，未强推。GitHub Pages workflow `40493561236` 成功；线上 `/AscendCANN/ascstudio-mini/knowledge-provider-map.html` 返回 HTTP 200，标题与蓝图内容匹配。
 
+
+### 2026-10-27 · 首页三种交互 Tab 命名与图标
+
+- 用户确认将三个首页方案改为设计点命名：「主动建议 / 多层探索 / 线索串联」，并同意同步调整图标。第一项突出任务建议卡，第二项突出中心节点逐层展开，第三项突出满屏线索之间的关系连接。
+- Tab 图标分别使用 `IconCards`、`IconHierarchy3`、`IconAffiliate`；辅助无障碍名称改为「首页交互方式」。标签字号由 11px 调至 12px，保留原选中态、交互与 `?home=classic|explore|combine` 路由。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务可用。部署结果待补记。
+- 页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+
 ### 2026-10-27 · 旧画布笔迹删除入口
 
 - 用户问如何删除此前画布上留下的笔迹。已有操作依赖先点线条选中，但删除按钮要选中后才出现，入口不明显。现在有旧画布级笔迹时，编辑工具栏始终显示“删除笔迹”，未选中时禁用并提示“先点击要删除的笔迹，再删除”；选中某条线后启用删除。任务画布、图像预处理学习画布、ResNet50 官方学习画布统一采用此行为，并同步改写画布内提示。

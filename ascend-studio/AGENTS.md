@@ -1865,6 +1865,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/App.jsx`、`src/styles.css` 与 `/ascstudio/` Pages 构建产物。依据：用户截图及确认（H）；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check`、构建 HTML / JS / CSS 引用检查通过；本地 5178 返回 HTTP 200。未运行自动化测试，也未留存本轮的 UI 截图。Pages workflow `40473711359` 成功；线上 `/ascstudio/` HTML、`index-DHwhtWIz.js`、`index-CmViAAB5.css` 均 HTTP 200。实现提交 `971d7020`，整合并行更新的提交 `270c7324`、`7598593e` 已推送 `origin/main`。
 
+
+### 2026-10-27 · 首页交互方式命名与图标
+
+- 用户确认三个首页 Tab 使用「主动建议 / 多层探索 / 线索串联」，并同意按各自设计点替换图标。映射为卡片 `IconCards`、层级 `IconHierarchy3`、关系 `IconAffiliate`；Tab 组辅助名称为「首页交互方式」。
+- 标签字号由 11px 调至 12px；仅改名称、图标与可读性尺寸，保留现有方案行为、选中态和 `classic / explore / combine` 路由。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务已启动。发布结果待补记。
+
 ### 2026-10-27 · 材料卡内容自适应与单一滚动区
 
 - 统一规则记录在本机 `ascend-studio-interface-style` Skill；卡片尽量展示完整常规内容，长内容、空间冲突、用户手动调尺寸或固定时才保留正文滚动。共享 `TaskCanvas` 测量画布逻辑尺寸，自动扩高有上限并避让邻卡；代码 / Diff 由卡片正文承接纵向滚动。便签、手绘不自动扩高。
