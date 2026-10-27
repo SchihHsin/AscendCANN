@@ -1950,3 +1950,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 推荐区与新上架区按上述映射替换资源卡配图；Meetup 保留线稿画法并使用蓝紫基底与轻彩点缀。学习发现页楼层背景改为白色、移除灰色分组底。新增图以 JPEG 90 质量落在 `ascend-studio/src/assets/learning-discovery/`，避免高体积 PNG。
 - 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css`、新生成配图及 `ascstudio/` Pages 产物。根据用户确认（H）及图像生成 / 浏览器页面观察（M）；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地桌面 1280×720 预览确认配图均加载，四类点缀色清楚、楼层无灰底。未运行自动化测试。功能提交 `d1652e6c` 连同同步主线的合并提交 `4615ac28` 已推送 `origin/main`；Pages workflow `40547405913` 成功。线上 `/AscendCANN/ascstudio/`、JS/CSS 和 8 张配图均 HTTP 200。
+
+### 2026-10-28 · 底部对话浮窗的展开入口
+
+- 底部浮窗默认仅显示输入框。鼠标悬浮或键盘聚焦时，在输入框上沿显示展开箭头；点击展开对话后改为收起箭头。触屏设备常显，已展开时常显。
+- 展开对话是独立于顶部布局切换的动作；自动发送后展开历史的行为保留。入口位于 `src/App.jsx`，样式位于 `src/styles.css`。
+- 此决定来自用户确认（H）。不改变页面顺序、hash、任务 / 对话数据或 API / Protocol、Host / Harness、Application / Task 边界。

@@ -7207,3 +7207,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 推荐区与新上架区按上述映射替换资源卡配图；Meetup 保留线稿画法并使用蓝紫基底与轻彩点缀。学习发现页楼层背景改为白色、移除灰色分组底。新增图以 JPEG 90 质量落在 `ascend-studio/src/assets/learning-discovery/`，避免高体积 PNG。
 - 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css`、新生成配图及 `ascstudio/` Pages 产物。根据用户确认（H）及图像生成 / 浏览器页面观察（M）；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地桌面 1280×720 预览确认配图均加载，四类点缀色清楚、楼层无灰底。未运行自动化测试。功能提交 `d1652e6c` 连同同步主线的合并提交 `4615ac28` 已推送 `origin/main`；Pages workflow `40547405913` 成功。线上 `/AscendCANN/ascstudio/`、JS/CSS 和 8 张配图均 HTTP 200。
+
+### 2026-10-28 · 底部对话浮窗的展开入口
+
+- 用户确认在底部输入框上沿提供展开箭头：默认只保留输入框，鼠标悬浮或键盘聚焦时出现；点击后展开历史对话，箭头改为收起方向。触屏设备常显入口，已展开时也保持可见。该动作只切换对话内容显隐，不与顶部的左右 / 底部布局切换混用；发送新消息自动展开的既有行为保留。
+- 实现位于 `ascend-studio/src/App.jsx`、`src/styles.css` 与 `/ascstudio/` Pages 产物。依据为用户确认（H）；未改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、HTML bundle 引用存在性、`git diff --check` 通过；本地 5179 预览返回 HTTP 200 并已打开。未运行自动化测试或截图回放。
+- 推送与 Pages 部署结果待补。
