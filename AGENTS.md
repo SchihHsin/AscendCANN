@@ -7221,8 +7221,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 7 页序列保持不变。图片位于 `ascstudio-mini/assets/knowledge-resources/`：学习路径、认证、课程沿用各自资源图，封面与 Meetup 新图转为高质量 JPG；移除旧拼图 `knowledge-resource-atlas.png`。README 同步说明每类视觉承担的含义。所有图均作为概念内容示意，不表示推荐数据或服务后端已经接入。
 - 业务范围继续是目标服务方案，沿用原有标准 / 协议事实来源与 `llms.txt` 提案、`robots.txt` 不承担鉴权等边界；没有改变材料页序或 API / Protocol、Host / Harness、Application / Task 的责任边界。证据：用户确认方向（H）、本地页面资源及结构检查（M）。
 - 验证：lxml 解析确认 7 页；本地资源引用和图片 alt 检查通过；封面与 Meetup 图片分别为 152 KB / 301 KB；内嵌 JS `node --check` 与 `git diff --check` 通过。未做浏览器截图视觉核验，未运行自动化测试。
-- 推送：工作分支先快进同步了远端主线提交 `8c2a9f39`、`baf65093`；本轮提交 `78bd3842` 推送时主线又前进，随后合入 `9d052474`。合并记录完成后将一并推送至 `origin/main`；未包含其他工作区修改。GitHub Pages 部署状态未核验。
-- 未决：等待合并推送完成。
+- 推送：工作分支先快进同步远端主线提交 `8c2a9f39`、`baf65093`；因主线随后前进，又合入 `9d052474`。本轮材料提交 `78bd3842` 与主线合并提交 `e6de3afe` 已推送至 `origin/main`，其他工作区改动均保留。GitHub Pages 部署状态未核验。
+- 未决：无。
 
 ### 2026-10-28 · 展开箭头改为输入框上方居中胶囊
 
