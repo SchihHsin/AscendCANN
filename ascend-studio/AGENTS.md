@@ -1962,3 +1962,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 按用户反馈，将底部 composer 的对话展开箭头从右侧方形控件调整为上沿居中胶囊。既有显隐与切换行为保持不变。
 - 修改 `src/styles.css` 和 `/ascstudio/` Pages 构建产物；依据为用户明确反馈（H），不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 样式提交 `9d052474` 已推送；其 Pages workflow `40552630444` 因后续并行主线更新而取消。保留并同步知识供给蓝图更新后，最新主线 commit `ee1f6913` 对应 Pages workflow `40552923176` 成功；线上入口、JS、CSS 均 HTTP 200，确认新位置与胶囊样式。
