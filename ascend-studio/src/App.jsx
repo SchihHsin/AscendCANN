@@ -1,5 +1,5 @@
 import { ICON_SIZE } from "./icon-system.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { readSession, writeSession, sessionSaveAvailable } from "./session-storage";
 import { useWorkbenchState, MAIN_TASK } from "./useWorkbenchState";
 import { capabilities, modelOptions } from "./prototype-data";
@@ -223,6 +223,7 @@ function App() {
   const showAutomations = mainView === "automations";
   const showCapabilities = mainView === "capabilities";
   const showTaskWorkspace = mainView === "task";
+  const liftMinimapForComposer = showTaskWorkspace && conversationLayout === "floating" && !floatingConversationExpanded && !areaInteractionActive;
   const [pendingDiscoveryItem, setPendingDiscoveryItem] = useState(null);
   const [pendingRecommendationAction, setPendingRecommendationAction] = useState(null);
   const [learningAgentAction, setLearningAgentAction] = useState(null);
@@ -266,12 +267,37 @@ function App() {
   useEffect(() => setPointContext(null), [selectedTask]);
   const onComposerVoiceStart = () => { composerVoiceDraftRef.current = wb.draftRef.current?.value ?? draft; };
   const onComposerVoiceTranscript = (transcript) => setDraft([composerVoiceDraftRef.current.trim(), transcript.trim()].filter(Boolean).join(" "));
-  useEffect(() => {
+  useLayoutEffect(() => {
     const textarea = wb.draftRef.current;
     if (!textarea) return;
     textarea.style.height = "auto";
     textarea.style.height = `${Math.min(textarea.scrollHeight, 110)}px`;
   }, [session.draft, mainView]);
+  useLayoutEffect(() => {
+    if (!liftMinimapForComposer) return undefined;
+    const workspaceElement = layout.workspaceRef.current;
+    const composer = conversationPanelRef.current?.querySelector(".composer");
+    const stage = workspaceElement?.querySelector(".tc-stage");
+    const minimap = stage?.querySelector(".tc-mini-map");
+    if (!composer || !stage || !minimap) return undefined;
+
+    const liftMinimap = () => {
+      const stageRect = stage.getBoundingClientRect();
+      const composerRect = composer.getBoundingClientRect();
+      if (!stageRect.width || !stageRect.height || !composerRect.height) return;
+      minimap.style.bottom = `${Math.max(14, Math.ceil(stageRect.bottom - composerRect.top + 12))}px`;
+    };
+    const observer = new ResizeObserver(liftMinimap);
+    observer.observe(composer);
+    observer.observe(stage);
+    window.addEventListener("resize", liftMinimap);
+    liftMinimap();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", liftMinimap);
+      minimap.style.removeProperty("bottom");
+    };
+  }, [liftMinimapForComposer, selectedTask, layout.workspaceRef]);
   const clearPointContext = () => {
     setPointContext(null);
     window.dispatchEvent(new Event("ascstudio-point-range-consumed"));
@@ -1340,7 +1366,7 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (liftMinimapForComposer ? " is-conversation-composer-only" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
         <aside className="icon-rail" aria-label="主导航">
           <div className="icon-rail-nav">
             <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={ICON_SIZE.navigation} /></button>
