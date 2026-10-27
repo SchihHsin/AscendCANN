@@ -6888,7 +6888,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 输入文字自动撑高文本区，限制最大高度；底部态输入框加宽并使用较大圆角。控件无常驻描边，保留黑色发送键。模型示例更新为 GLM-5.3、DeepSeek V4、Qwen3-Coder；顶部模型控件使用下拉菜单。
 - 话筒直接调用现有中文浏览器语音识别，识别中的文字会更新输入草稿；浏览器若要求麦克风权限，由用户在页面确认。没有接入语音服务端或真实模型。
 - 修改：`ascend-studio/src/App.jsx`、`VoiceCaptureButton.jsx`、`prototype-data.js`、`styles.css` 与 `ascstudio/` 构建产物。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 在本轮不可用，尚无新的视觉截图复核。提交、推送与 Pages 状态待补记。
+- 验证：合并本任务与远端并行的学习发现资源卡改动后，重新运行 `npm run build:pages`、构建 JS `node --check`、`git diff --check`，均通过；未运行自动化测试。5178 本地预览返回 HTTP 200。当前工具环境没有 CUA，未取得新的视觉截图复核。
+- 发布：实现提交 `08648dbf`，保留并整合远端学习发现改动后，提交 `6b230f3a` 已推送至 `origin/main`。Pages workflow `40451889763` 成功；线上 `/ascstudio/` 引用 `index-B_eSiU84.js`、`index-Cb53yFSM.css`，HTML、JS 与 CSS 均 HTTP 200。
 
 - 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5600a865` 已推送至 `origin/main`；Pages workflow `40436387761` build / deploy 成功。线上 `/ascstudio/` HTML 已引用新 JS / CSS 哈希资源；本地 5206 页面与源码模块返回 HTTP 200。
 

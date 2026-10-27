@@ -1800,6 +1800,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 底部布局初始只显示横向加宽的圆角输入栏；发送后展开当前对话内容。输入栏拖动到目标位置时，预览展示同样的短宽轮廓。
 - 操作顺序为加号、权限、模型下拉、话筒、发送；语音入口使用小型话筒图标，接入现有中文浏览器语音识别并把识别结果写入草稿。输入框按内容自动增高，不提供手动拖高。
 - 模型示例为 GLM-5.3、DeepSeek V4、Qwen3-Coder。话筒识别依赖浏览器支持及用户授予的麦克风权限；模型回复仍为本地原型内容。
+- 合并远端学习发现资源卡的并行实现后，`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。5178 本地预览返回 HTTP 200；本轮没有可用的 CUA 截图复核。
+- 实现提交 `08648dbf` 并整合提交 `6b230f3a` 已推送至 `origin/main`。Pages workflow `40451889763` 成功；线上 `index-B_eSiU84.js`、`index-Cb53yFSM.css` 均 HTTP 200。
 
 - `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接中断，未完成截图复核。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。提交 `5600a865` 已推送至 `origin/main`；Pages workflow `40436387761` build / deploy 成功，线上 `/ascstudio/` HTML 已引用新 JS / CSS 哈希资源。
 
