@@ -248,7 +248,7 @@ function App() {
   const flow = useTaskFlow({ onRecord: (title, summary, kind, isDemo) => wb.addRecord({ title, summary, kind, isDemo }, MAIN_TASK) });
   const diagnosisTargetRef = useRef(null);
   const proactive = useProactiveCues(`${MAIN_TASK}:${flow.state.resetVersion}`);
-  const canvas = useCanvasState({ startEmpty: true, initialVisibleIds: ["explanation", "source", "evidence"], storageKey: "canvas-addcustom-v3" });
+  const canvas = useCanvasState({ startEmpty: true, initialVisibleIds: ["task-brief", "source", "evidence", "explanation"], storageKey: "canvas-addcustom-v3" });
   const imageCanvas = useCanvasState({ startEmpty: true, cardDefinitions: IMAGE_MATERIALS, storageKey: "canvas-image" });
   const [precisionContext, setPrecisionContext] = useState(() => readSession("precision-context", null));
   useEffect(() => { writeSession("precision-context", precisionContext); }, [precisionContext]);
@@ -1133,12 +1133,17 @@ function App() {
     </div>;
   };
   const materialConnections = [
-    { id: "source-explanation", from: "source", to: "explanation", label: "范围示例图解" },
-    { id: "evidence-explanation", from: "evidence", to: "explanation", label: "待核查线索" },
-    { id: "explanation-parameters", from: "explanation", to: "parameters", label: "沿用参数试算" },
-    ...(flow.state.attempts.length ? [{ id: "parameters-attempts", from: "parameters", to: "attempts", label: "已保存尝试" }] : []),
-    ...(flow.state.proposedCode ? [{ id: "attempts-diff", from: "attempts", to: "diff", label: "所选尝试的提案" }] : []),
+    { id: "brief-source", from: "task-brief", to: "source", label: "对应代码" },
+    { id: "brief-evidence", from: "task-brief", to: "evidence", label: "已知现象" },
+    { id: "reference-explanation", from: "reference", to: "explanation", label: "文档依据" },
+    { id: "source-explanation", from: "source", to: "explanation", label: "范围线索" },
+    { id: "evidence-explanation", from: "evidence", to: "explanation", label: "待解释证据" },
+    { id: "explanation-parameters", from: "explanation", to: "parameters", label: "形成待测假设" },
+    { id: "parameters-attempts", from: "parameters", to: "attempts", label: "对照试算" },
+    ...(flow.state.proposedCode ? [{ id: "attempts-diff", from: "attempts", to: "diff", label: "所选试算的提案" }, { id: "draft-diff", from: "draft", to: "diff", label: "代码副本差异" }] : []),
     ...(flow.state.appliedCode ? [{ id: "diff-validation", from: "diff", to: "validation", label: "示例应用后复核" }] : []),
+    { id: "validation-precision", from: "validation", to: "precision", label: "核对输出误差" },
+    { id: "precision-review", from: "precision", to: "review", label: "记录复核结论" },
   ];
   const resetCurrentTask = () => {
     if (isMainTask) { flow.actions.reset(); canvas.actions.reset(); setPrecisionContext(null); }

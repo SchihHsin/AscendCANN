@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
-import { ADD_CUSTOM_LAYOUT_VERSION, positionNewAddCustomCard, reflowAddCustomCards } from "./addcustom-canvas-layout";
+import { ADD_CUSTOM_CARD_POSITIONS, ADD_CUSTOM_LAYOUT_VERSION, positionNewAddCustomCard, reflowAddCustomCards } from "./addcustom-canvas-layout";
 
 const MIN_ZOOM = 0.15;
 const MAX_ZOOM = 1.5;
@@ -16,11 +16,9 @@ const ADD_CUSTOM_CARD_SIZES = {
 const ADD_CUSTOM_DYNAMIC_CARD_SIZES = {
   attempt: [680, 520], snapshot: [660, 480], record: [620, 420],
 };
-const ADD_CUSTOM_CARD_POSITIONS = {
-  "task-brief": [32, 64], source: [32, 532], evidence: [32, 1080], reference: [32, 1548],
-  explanation: [900, 64], parameters: [900, 632], attempts: [900, 1240],
-  draft: [1688, 64], diff: [1688, 672], validation: [1688, 1360],
-  precision: [2616, 64], review: [2616, 612],
+const addCustomPosition = (id) => {
+  const [x, y] = ADD_CUSTOM_CARD_POSITIONS[id] || [32, 64];
+  return { x, y };
 };
 const ADD_CUSTOM_CARD_LIMITS = {
   note: { minWidth: 480, maxWidth: 800, minHeight: 240, maxHeight: 560 },
@@ -85,16 +83,18 @@ function clampAddCustomCardSize(id, width, height) {
 }
 
 const initialCards = (startEmpty = false, initialVisibleIds = []) => [
-  { id: "explanation", title: "线索解释", x: 900, y: 64, width: 700, height: 520, pinned: false, visible: false, selected: false },
-  { id: "source", title: "索引范围示例", x: 32, y: 532, width: 780, height: 500, pinned: false, visible: true, selected: false },
-  { id: "evidence", title: "现场与判断", x: 32, y: 1080, width: 700, height: 420, pinned: false, visible: true, selected: false },
-  { id: "precision", title: "误差核对", x: 2616, y: 64, width: 700, height: 500, pinned: false, visible: false, selected: false },
-  { id: "review", title: "复核记录", x: 2616, y: 612, width: 700, height: 520, pinned: false, visible: false, selected: false },
-  { id: "draft", title: "示例工作副本", x: 1688, y: 64, width: 700, height: 560, pinned: false, visible: false, selected: false },
-  { id: "parameters", title: "参数与范围策略", x: 900, y: 632, width: 700, height: 560, pinned: false, visible: false, selected: false },
-  { id: "attempts", title: "尝试记录", x: 900, y: 1240, width: 700, height: 560, pinned: false, visible: false, selected: false },
-  { id: "diff", title: "示例修改预览", x: 1688, y: 672, width: 840, height: 640, pinned: false, visible: false, selected: false },
-  { id: "validation", title: "示例范围复核", x: 1688, y: 1360, width: 700, height: 560, pinned: false, visible: false, selected: false },
+  { id: "task-brief", title: "问题现场", ...addCustomPosition("task-brief"), width: 700, height: 420, pinned: false, visible: false, selected: false },
+  { id: "source", title: "索引范围示例", ...addCustomPosition("source"), width: 780, height: 500, pinned: false, visible: true, selected: false },
+  { id: "evidence", title: "现场与判断", ...addCustomPosition("evidence"), width: 700, height: 420, pinned: false, visible: true, selected: false },
+  { id: "reference", title: "Ascend C 文档", ...addCustomPosition("reference"), width: 700, height: 520, pinned: false, visible: false, selected: false },
+  { id: "explanation", title: "线索解释", ...addCustomPosition("explanation"), width: 700, height: 520, pinned: false, visible: false, selected: false },
+  { id: "parameters", title: "参数与范围策略", ...addCustomPosition("parameters"), width: 700, height: 560, pinned: false, visible: false, selected: false },
+  { id: "attempts", title: "尝试记录", ...addCustomPosition("attempts"), width: 700, height: 560, pinned: false, visible: false, selected: false },
+  { id: "draft", title: "示例工作副本", ...addCustomPosition("draft"), width: 700, height: 560, pinned: false, visible: false, selected: false },
+  { id: "diff", title: "示例修改预览", ...addCustomPosition("diff"), width: 840, height: 640, pinned: false, visible: false, selected: false },
+  { id: "validation", title: "示例范围复核", ...addCustomPosition("validation"), width: 700, height: 560, pinned: false, visible: false, selected: false },
+  { id: "precision", title: "误差核对", ...addCustomPosition("precision"), width: 700, height: 500, pinned: false, visible: false, selected: false },
+  { id: "review", title: "复核记录", ...addCustomPosition("review"), width: 700, height: 520, pinned: false, visible: false, selected: false },
 ].map((card) => {
   const visible = startEmpty ? initialVisibleIds.includes(card.id) : card.visible;
   return { ...card, visible, selected: visible && card.id === initialVisibleIds[0], collapsed: false, opened: visible };
@@ -116,7 +116,17 @@ const initialState = (startEmpty = false, cardDefinitions, initialVisibleIds = [
 
 function restoreCanvasState(saved, startEmpty, cardDefinitions, initialVisibleIds, storageKey) {
   if (!saved || !Array.isArray(saved.cards) || !saved.viewport) return initialState(startEmpty, cardDefinitions, initialVisibleIds);
-  const base = { ...initialState(startEmpty, cardDefinitions, initialVisibleIds), ...saved };
+  const defaults = initialState(startEmpty, cardDefinitions, initialVisibleIds);
+  let base = { ...defaults, ...saved };
+  if (isAddCustomStorageKey(storageKey)) {
+    const defaultIds = new Set(defaults.cards.map((card) => card.id));
+    const savedById = new Map(saved.cards.map((card) => [card.id, card]));
+    const cards = [
+      ...defaults.cards.map((card) => ({ ...card, ...(savedById.get(card.id) || {}) })),
+      ...saved.cards.filter((card) => !defaultIds.has(card.id)),
+    ];
+    base = { ...base, cards };
+  }
   if (!isAddCustomStorageKey(storageKey) || Number(saved.layoutVersion) >= ADD_CUSTOM_CANVAS_VERSION) return base;
   const cards = base.cards.map(card => {
     const target = addCustomDefaultCardSize(card.id);
