@@ -7119,3 +7119,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 和 `ascstudio/` 构建产物。依据为用户的明确要求（H）、源码定位与本地浏览器回放（M）；页面序列、路由和 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、生成 JS `node --check`、资源哈希引用校验、`git diff --check` 通过。1440×900 桌面 Chromium 无运行时异常；composer 实测 636×72px，小地图维持右下角原位且与输入框相隔约 224px。线上 `/AscendCANN/ascstudio/` 已引用 `index-C5I0bdAh.js` / `index-COFjzgYO.css`，两资源 HTTP 200。
 - 推送：功能提交 `b93cbd29`、主线同步合并 `35587143`、构建产物 `a08fff7d` 已推至 `origin/main`；后续并行的 Pura X 与知识供给材料提交均保留。Pages workflow `40501184517` 成功。
+
+### 2026-10-27 · 底部输入框改为整体单行
+
+- 用户确认采用 A 方案：底部输入框初始整体为一行，文字与加号、权限、模型、语音和发送操作同排；多行输入时自动增高。新增 `.composer-entry` 作为底部专用布局行，浮窗初始最小高度由 72px 改为 54px，文本最大高度仍为 110px；左侧对话栏与已展开对话保留既有两层 composer 样式。
+- 窄屏同步保持单行并可用：底部浮窗拉伸占满视口可用宽度，390px 视口下隐藏模型文字标签、保留模型图标入口。
+- 修改 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 与 `ascstudio/` 构建产物。依据为用户选择（H）及 Chromium 布局回放（M）；不改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、输出 JS `node --check`、资源引用校验及 `git diff --check` 通过。1440×900 下 composer 初始 636×54px，按钮与文本同排；长文本使文本框增高至 110px 上限。390×844 下 composer 宽 366px、高 55px，输入区及全部按钮均留在视口内，无横向溢出、无运行时异常。未运行测试套件。
+- 提交 `e4ce1482` 已推送 `origin/main`。Pages workflow `40504848231` 成功；线上 `/AscendCANN/ascstudio/` 已引用 `index-BoIHbObw.js` / `index-BX4OiBTt.css`，均 HTTP 200。

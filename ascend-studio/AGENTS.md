@@ -1904,3 +1904,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修复底部布局白屏：移除在 `areaInteractionActive` 初始化前读取该状态的 `liftMinimapForComposer` 派生表达式及地图移动 effect。
 - 验证：`npm run build:pages`、构建 JS `node --check`、资源引用及 `git diff --check` 通过。1440×900 桌面 Chromium 渲染无异常；composer 为 636×72px，小地图保持在右下角，间距约 224px。Pages workflow `40501184517` 成功，线上 HTML、JS、CSS 均 HTTP 200。
 - 本轮未改变页面导航、hash 或 API / Protocol、Host / Harness、Application / Task 边界。代码 `b93cbd29` / 构建 `a08fff7d` 已推送，后续主线并行改动保留。
+
+### 2026-10-27 · 底部输入框整体单行
+
+- 用户选定 A：输入框初始整体单行，输入文字与加号、权限、模型、话筒、发送同排；多行文字时自动增高。浮窗 composer 最小高度从 72px 收至 54px，textarea 最多增高到 110px；左侧对话和展开对话仍沿用原来的上下两层结构。
+- 用 `.composer-entry` 网格排列浮窗输入行；窄屏占满左右留白，390px 时隐藏模型文字标签保留入口，避免控件挤压输入宽度。
+- 验证：`npm run build:pages`、构建 JS 语法检查、资源引用与 `git diff --check` 通过。桌面 1440×900 初始 636×54px，长文 textarea 增高至 110px；窄屏 390×844 初始 366×55px，所有操作都在视口内，无横向滚动。Pages workflow `40504848231` 成功，线上资源 HTTP 200。
+- 提交 `e4ce1482` 已推送 `origin/main`；未改变页面序列、路由或机制边界。
