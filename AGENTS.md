@@ -7102,7 +7102,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户明确纠正设备形态：HUAWEI Pura X View 是阔直板手机，不是折叠屏（H）。华为官方规格页列出机身 144.1 × 87.0 mm、6.39 英寸屏幕（H）；标准桌面样机调整为 420 × 696 CSS px，宽高比约 0.603，近似机身 87.0 / 144.1 ≈ 0.604。样机只表达单屏阔直板轮廓，不声称复刻工业设计。
 - 更新 `ascstudio-mini/index.html`、`styles.css`、`README.md`、`qa.md` 与 `evidence/weekly-briefing-desktop.png`。另修正 `.intro-eyebrow` 通用 span 圆点样式误压缩步骤文字的问题。五屏路由、微信服务通知主路径不变；不涉及电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户明确设备纠正和华为官方规格（H）；Chrome 1440×1000 本地截图用于核对样机与布局（M）。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
-- 基线版本 `36955efb` 已在开始本轮机型适配前推送并在线核对。适配版当前提交 / 推送与 Pages 部署待完成。
+- 基线版本 `36955efb` 已在开始本轮机型适配前推送并在线核对。实现提交 `ad114ed7` 已推送至 `origin/main`；Pages workflow `40500938226` 成功，部署 head `430527c8` 包含本次实现。线上 HTML 与 CSS（缓存绕过 URL）均 HTTP 200，已核对阔直板标签、样机标记及 420 × 696 尺寸规则。
 
 ### 2026-10-27 · 知识供给侧蓝图改为可视化汇报材料
 
