@@ -7103,3 +7103,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `ascstudio-mini/index.html`、`styles.css`、`README.md`、`qa.md` 与 `evidence/weekly-briefing-desktop.png`。另修正 `.intro-eyebrow` 通用 span 圆点样式误压缩步骤文字的问题。五屏路由、微信服务通知主路径不变；不涉及电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户明确设备纠正和华为官方规格（H）；Chrome 1440×1000 本地截图用于核对样机与布局（M）。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
 - 基线版本 `36955efb` 已在开始本轮机型适配前推送并在线核对。适配版当前提交 / 推送与 Pages 部署待完成。
+
+### 2026-10-27 · 知识供给侧蓝图改为可视化汇报材料
+
+- 用户明确要求改用 Report PPT skill，避免纯文字页。本材料重构为 7 页单文件网页 deck：封面、目录、知识供给链路、学习发现楼层与服务映射、Knowledge Unit 字段模型、Web/API/MCP/Skills 接口分层、P0–P2 建设与责任闭环。用供给流程、学习发现界面示意、字段对象、接口泳道和阶段路线图承载内容，保留概览、全屏、键盘翻页、右侧导航点与 `#页码` 恢复。
+- 主要文件：`ascstudio-mini/knowledge-provider-map.html`；README 已说明其是独立 7 页可视化汇报。设计基于 Report PPT skill 的封面 / 灰底分析篇、玻璃卡、信息图与原生翻页 runtime。目录第四卡与第七页路线图类名冲突已拆开；封面副标题收小一档，避免长句断行。
+- 蓝图覆盖课程、路径、认证、知识点、活动；来源内容、Knowledge Unit 边界与证据；robots.txt / Sitemap、llms.txt、Schema.org、REST/OpenAPI、MCP、Agent Skill 与可选 A2A；权限、隐私、版本、Owner、审计、反馈与渐进治理。标准链接提供事实依据；llms.txt 明确为提案，robots.txt 不承担鉴权。目标设计与当前本地 Demo 能力分开表述，不声称已接入真实服务。未改变既有页面序列及 API / Protocol、Host / Harness、Application / Task 机制边界。
+- 验证：HTMLParser 解析通过，7 个页面标题唯一；内嵌 JS `node --check` 与 `git diff --check` 通过。Chrome 1600×900 逐页截图核对 7 页结构与布局（目录错位已修复）；默认滚动模式的无头截图会显示背景黑图，但 DOM 状态确认 `#2`、计数 `02 / 07` 与根滚动位置均已恢复到第 2 页；所有页以 `?t=cut` 模式完成视觉抽查。未运行自动化测试。
+- 页面提交 `75ba4a34` 已并入包含并行更新的主线；合并与发布结果待本次推送后补记。
