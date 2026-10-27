@@ -7169,3 +7169,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：Pillow 检查 6 个 PNG；2 个透明版本为 RGBA 且 alpha 范围为 0–255，4 个背景版本为 RGB；git diff --cached --check 通过。未运行测试。
 - 提交 / 推送：六张素材与本条交接记录通过独立临时索引提交并推送至 origin/main，主题为 assets: add book contrast icon variants；共享工作区其他暂存、未暂存和未跟踪内容未纳入。
 - 未决事项：等待用户比较浅冷色书页与彩色封底；选定方向后可再调整页面色温和封底露出比例。
+
+### 2026-10-28 · 桌面演示支持滚轮翻页
+
+- 用户询问材料为何不能滚动翻页，确认桌面仅有点击式控制栏、没有滚轮翻页。桌面评审区现支持滚轮 / 触控板切换七个设计点，保留已有章节、概览、控制栏、快捷键与 URL 页码同步；在手机样机正文可滚动时继续由样机消费滚轮，抵达边界后再翻材料。总览 / 订阅弹层及输入控件不触发翻页；手机视口保持原生内容滚动。
+- 修改 `ascstudio-mini/app.js`、`index.html`、`qa.md`。材料叙事和 7 屏顺序不变；通知 / 订阅仍是本地演示，不涉及微信 API 或 API / Host / Application 机制边界。设计点与行为来自用户需求（H），滚轮手势节流和内层滚动边界属于实现细节（M）。
+- 验证：桌面 Chrome 1440×1000 回放确认滚轮逐屏切换且同一惯性手势不连跳；手机内容在内部范围照常滚动，到底后才切下一屏；订阅弹层和手机 390×844 视口状态保持正常。未捕获 JS exception；`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。截图 `ascstudio-mini/evidence/review-wheel-desktop.png`；未运行自动化测试。
+- 发布回执待补。

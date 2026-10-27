@@ -72,3 +72,11 @@
 - 手机视口 320 / 390 / 430 × 844：文档宽度等于视口宽度，桌面演示控件和模拟系统状态栏隐藏，正文仍可滚动。未检测到浏览器 JS error。
 - 样机状态栏将原来的 `9:41` 与单独信号 / Wi-Fi / 电池图形改为 `10:08`、5G、信号、Wi-Fi、电量百分比与电池图标；属于 HarmonyOS 常见信息排列的概念示意，不是 Pura X View 实机截图。更新 `evidence/home-desktop.png` 和 `evidence/review-overview-desktop.png`。
 - 验证命令：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
+
+## 2026-10-28 · 滚轮翻设计页
+
+- 桌面评审区支持鼠标滚轮 / 触控板上下滚动切换七个设计点，保留右侧节点、底部控制栏与键盘翻页。手机样机内容仍可在可滚动范围内自然阅读；到达内容边界后再切换讲解页。总览、订阅设置和输入控件内不触发材料翻页。
+- 手机视口不注册材料翻页行为，保持原生内容滚动。
+- Chrome 本地回放：桌面 1440×1000 下，滚轮将 01/07 切到 02/07；同一惯性手势没有连跳，下一次滚动进入 03/07。鼠标停在手机内容区时先滚动内容，到底后切至下一设计点；第 07/07 订阅设置打开时，滚轮不会关闭弹层或切页。
+- 390×844 手机视口中，滚轮仍滚动手机正文；路由不因材料分页改变，`document.documentElement.scrollWidth` 为 390px。页面未捕获到 JS exception。
+- 截图：`evidence/review-wheel-desktop.png`。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。

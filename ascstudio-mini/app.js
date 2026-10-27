@@ -56,6 +56,7 @@ const REVIEW_STEPS = [
 let weeklySettingsOpen = false;
 let openReviewSettingsAfterBriefing = initialPoint === "7" && (!location.hash || location.hash === "#briefing");
 let reviewOverviewOpen = false, reviewOverviewReturnFocus = null;
+let reviewWheelDelta = 0, reviewWheelLocked = false, reviewWheelResetTimer;
 function reviewIndexForRoute(route = currentRoute) {
   if (weeklySettingsOpen) return REVIEW_STEPS.length - 1;
   const page = route.split("/")[0];
@@ -144,6 +145,36 @@ function navigateReview(direction) {
   if (index < 0) return;
   if (direction === "prev" && index > 0) jumpReviewStep(index - 1);
   else if (direction === "next") jumpReviewStep(index === REVIEW_STEPS.length - 1 ? 0 : index + 1);
+}
+function handleReviewWheel(event) {
+  if (isReviewThumbnail || innerWidth <= 620 || reviewOverviewOpen) return;
+  const target = event.target instanceof Element ? event.target : null;
+  if (target?.closest("#review-overview, input, textarea, select, [contenteditable='true']")) return;
+  if (weeklySettingsOpen || $("#overlay").classList.contains("is-open")) return;
+  if (reviewIndexForRoute() < 0) return;
+
+  const deltaX = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? event.deltaX * 16 : event.deltaX;
+  const deltaY = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? event.deltaY * 16 : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? event.deltaY * innerHeight : event.deltaY;
+  if (!deltaY || Math.abs(deltaX) > Math.abs(deltaY)) return;
+
+  if (target?.closest("#screen")) {
+    const screen = $("#screen"), maxScroll = screen.scrollHeight - screen.clientHeight;
+    const canScrollInsidePhone = maxScroll > 2 && (deltaY > 0 ? screen.scrollTop < maxScroll - 1 : screen.scrollTop > 1);
+    if (canScrollInsidePhone) return;
+  }
+
+  event.preventDefault();
+  clearTimeout(reviewWheelResetTimer);
+  reviewWheelResetTimer = setTimeout(() => { reviewWheelLocked = false; reviewWheelDelta = 0; }, 520);
+  if (reviewWheelLocked) return;
+
+  reviewWheelDelta += deltaY;
+  if (Math.abs(reviewWheelDelta) < 30) return;
+  const direction = reviewWheelDelta > 0 ? "next" : "prev";
+  reviewWheelDelta = 0;
+  reviewWheelLocked = true;
+  revealReviewControls();
+  navigateReview(direction);
 }
 function reviewThumbnailUrl(index) {
   const url = new URL(location.href);
@@ -563,6 +594,7 @@ document.addEventListener("keydown", event => {
 });
 document.addEventListener("pointermove", showReviewControls, { passive: true });
 document.addEventListener("pointerleave", hideReviewControls);
+window.addEventListener("wheel", handleReviewWheel, { passive: false });
 document.addEventListener("fullscreenchange", syncReviewFullscreen);
 window.addEventListener("blur", hideReviewControls);
 window.addEventListener("hashchange", render);
