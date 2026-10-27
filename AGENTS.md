@@ -6876,10 +6876,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-10-27 · 跨任务画布共享语义与导航收敛
 
-- 用户要求将近期确认的共享语义应用到所有任务画布，并询问前序修改是否已推送。此前共享画布改动已有远端基线；本轮节点语义、对象导航栏和 AddCustom 关系图修改原先仅在本地工作树，现已形成待推送提交。
+- 用户要求将近期确认的共享语义应用到所有任务画布，并询问前序修改是否已推送。此前共享画布改动已有远端基线；本轮节点语义、对象导航栏和 AddCustom 关系图修改已提交并推送到 `origin/main`。
 - 公共规则：所有任务共用画布浏览 / 编辑控件、节点聚焦与放大语义，以及连线表达关系的方式；卡片内容、阶段和关系按各任务本身定义，不强套统一业务分组。TaskCanvas 删除画布上沿选中标题 / 关联芯片横栏，节点操作留在卡片右上角，视图操作留在共享工具栏。
 - AddCustom 以“问题现场”为真实起点，连接代码、已知现象、线索解释及后续试算 / 修改 / 复核；移除“现场与来源 / 理解与试算”等抽象背景组。图像推理保留其输入与预处理链，ResNet50 保留官方学习阶段和节点，不引入开发任务分类。
-- 验证：本地 1280×720 CUA 查看 AddCustom 与 ResNet50；画布均显示关联卡片和共享视图控件，ResNet50 阶段 / 视频 / 节点结构仍完整。`node --check`（AddCustom 布局与内容目录）、`npm run build:pages` 与构建后的入口资源生成成功；构建仅有既存的大 JS chunk 提示。未运行自动化测试。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变；本次源代码提交 `50af74ed` 与并入最新主线的合并提交 `6dde119b` 已准备推送，Pages 部署回执待写入。
+- 验证：本地 1280×720 CUA 查看 AddCustom 与 ResNet50；画布均显示关联卡片和共享视图控件，ResNet50 阶段 / 视频 / 节点结构仍完整。`node --check`（AddCustom 布局与内容目录）、`npm run build:pages` 与构建后的入口资源生成成功；构建仅有既存的大 JS chunk 提示。未运行自动化测试。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变；源代码提交 `50af74ed` / 合并提交 `6dde119b` 已包含在 `origin/main` 的 `8e778844`，Pages workflow `40468702133` 成功；线上 `/ascstudio/` HTML、JS、CSS 资源均返回 HTTP 200。
 - 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5317a869` 已推送到 `origin/main`；Pages workflow `40376808989` 成功。线上 `/ascstudio/` HTML、`index-C15Xr9Tu.js`、`index-CnqbLe8f.css` 均返回 HTTP 200。
 
 
@@ -6991,6 +6991,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 完成操作写入本地任务会话状态，不连接真实设备验证；草稿沿用现有示例边界。未添加可信度卡。
 - 修改 `ascend-studio/src/App.jsx`、`CanvasMaterials.jsx`、`canvas-materials.css`、`community-draft.css` 和 `/ascstudio/` 构建产物。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。依据：用户明确要求（H）与源码实现（M）。
 - 验证：`npm run build:pages`、`node --check ascstudio/assets/index--kTdwENk.js`、`git diff --cached --check` 通过；构建产物已确认不含旧对话快捷入口和可信度卡文案，未运行自动化测试。提交 `ff18d786` 已推送 `origin/main`；Pages workflow `40466117026` 成功，线上 `/ascstudio/` HTML 已引用 `index--kTdwENk.js` 与 `index-Cugz80ir.css`，两资源 HEAD 均返回 HTTP 200。
+
+### 2026-10-27 · 昇腾社区预览补齐四个正文部分
+
+- 用户指出多渠道卡片内滚动后仍只见「一、问题现象」。原因是社区渠道预览组件只渲染了 `draft.problem`，没有把草稿其余字段接入；此前确认的卡片正文区独立滚动继续保留。现在按草稿字段显示问题现象、尝试与结果、环境信息、验证状态四节，标题及卡片底部渠道奖励 / 查看详情保持固定。
+- 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css` 和 `ascstudio/` Pages 构建产物。不改变页面序列与 API / Protocol、Host / Harness、Application / Task 边界；草稿的示例验证说明仍照实呈现。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；本地浏览器完成 AddCustom「标记为已解决 → 生成草稿 → 查看全部发布渠道」回放，确认社区卡可访问四节并在正文区域滚动；未运行测试套件。Vite 仍提示主 bundle 大于 500 kB。提交、推送及 Pages 部署状态待本轮完成后补记。
 
 
 ### 2026-10-27 · 组合首页 Tab 更名为“串联”
