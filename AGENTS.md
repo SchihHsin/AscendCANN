@@ -7192,3 +7192,80 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户确认的交互语义（H）；1440×900 隔离浏览器回放为实现观察（M）。聚焦回放显示节点缩放到 110%、完整位于画布内；打开完整内容后可返回；返回后同一节点的中心相对可用视野中心偏差为 0，未捕获运行时异常。没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages` 成功；源文件与 Pages 产物 `node --check`、`git diff --check` 通过。Vite 保留既有主 bundle 大于 500 kB 的提示；未运行自动化测试套件。
 - 提交 `63a329c89654ca5d91ce42795c06c9844a79426f` 已推送到 `origin/main`。首次 Pages deploy 被后续并行提交取消；包含本提交的后续 workflow `40543693742` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-l4oW5C5u.js`、`index-DM-Jd1s4.css`，入口及两个资源均 HTTP 200。未决事项：无。
+
+
+### 2026-10-28 · 模型品牌图标缩小
+
+- 用户指出模型选择按钮和菜单中的品牌图标偏大（H）。将输入框当前模型标识与下拉项标识从 18px 调至 14px；模型名称、选中勾选、切换行为不变，窄屏图标入口继续保留。
+- 更新 `ascend-studio/src/styles.css`、`src/interaction.css` 与 `/ascstudio/` 页面产物。构建基于已合并的主线，保留并行的学习画布内容完整阅读更新及小程序资源改动。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、输出 JS `node --check`、bundle 引用与 `git diff --check` 通过；线上入口 HTML 与新 JS / CSS 均 HTTP 200。未运行自动化测试或逐项视觉回放。
+- 发布：尺寸调整提交 `689b2b11` 与并行主线合并提交 `4cb77c74` 已推送至 `origin/main`。GitHub Pages workflow `40545134372` 成功。
+
+### 2026-10-28 · 学习发现配图按内容类型统一点缀色
+
+- 用户确认整页以冷白、蓝紫为基础，各类配图使用固定点缀色并跨楼层复用：课程偏粉、学习路径偏绿、知识点偏青、认证偏橙。颜色差异按配图内容表达，不复制 banner 波纹纹理；顶部 banner 与主视觉构图保留。
+- 推荐区与新上架区按上述映射替换资源卡配图；Meetup 保留线稿画法并使用蓝紫基底与轻彩点缀。学习发现页楼层背景改为白色、移除灰色分组底。新增图以 JPEG 90 质量落在 `ascend-studio/src/assets/learning-discovery/`，避免高体积 PNG。
+- 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css`、新生成配图及 `ascstudio/` Pages 产物。根据用户确认（H）及图像生成 / 浏览器页面观察（M）；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地桌面 1280×720 预览确认配图均加载，四类点缀色清楚、楼层无灰底。未运行自动化测试。功能提交 `d1652e6c` 连同同步主线的合并提交 `4615ac28` 已推送 `origin/main`；Pages workflow `40547405913` 成功。线上 `/AscendCANN/ascstudio/`、JS/CSS 和 8 张配图均 HTTP 200。
+
+### 2026-10-28 · 底部对话浮窗的展开入口
+
+- 用户确认在底部输入框上沿提供展开箭头：默认只保留输入框，鼠标悬浮或键盘聚焦时出现；点击后展开历史对话，箭头改为收起方向。触屏设备常显入口，已展开时也保持可见。该动作只切换对话内容显隐，不与顶部的左右 / 底部布局切换混用；发送新消息自动展开的既有行为保留。
+- 实现位于 `ascend-studio/src/App.jsx`、`src/styles.css` 与 `/ascstudio/` Pages 产物。依据为用户确认（H）；未改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、HTML bundle 引用存在性、`git diff --check` 通过；本地 5179 预览返回 HTTP 200 并已打开。未运行自动化测试或截图回放。
+- 发布：提交 `8c2a9f39` 已推送至 `origin/main`；GitHub Pages workflow `40550981417` 成功。线上 `/AscendCANN/ascstudio/` 的 HTML、`index-clfwqhtg.js`、`index-CcgYN-dL.css` 均 HTTP 200；回读确认新展开 / 收起文案与样式已发布。
+
+### 2026-10-28 · 知识供给蓝图按内容图、流程图与图标重构
+
+- 用户认可用内容图呈现真实资源样貌，用流程图 / 结构图说明服务关系，用图标标注类别（H）。据此重排独立材料 `ascstudio-mini/knowledge-provider-map.html`：封面放知识供给主视觉；学习发现映射页只在路径、认证、课程与 Meetup 等具体内容处放图；供给编译、Demo 楼层服务映射、Knowledge Unit 字段、Web / API / MCP / Skills 通道与 P0–P2 路线图改用信息图表达，减少文字平铺与突兀装饰图。
+- 7 页序列保持不变。图片位于 `ascstudio-mini/assets/knowledge-resources/`：学习路径、认证、课程沿用各自资源图，封面与 Meetup 新图转为高质量 JPG；移除旧拼图 `knowledge-resource-atlas.png`。README 同步说明每类视觉承担的含义。所有图均作为概念内容示意，不表示推荐数据或服务后端已经接入。
+- 业务范围继续是目标服务方案，沿用原有标准 / 协议事实来源与 `llms.txt` 提案、`robots.txt` 不承担鉴权等边界；没有改变材料页序或 API / Protocol、Host / Harness、Application / Task 的责任边界。证据：用户确认方向（H）、本地页面资源及结构检查（M）。
+- 验证：lxml 解析确认 7 页；本地资源引用和图片 alt 检查通过；封面与 Meetup 图片分别为 152 KB / 301 KB；内嵌 JS `node --check` 与 `git diff --check` 通过。未做浏览器截图视觉核验，未运行自动化测试。
+- 推送：工作分支先快进同步远端主线提交 `8c2a9f39`、`baf65093`；因主线随后前进，又合入 `9d052474`。本轮材料提交 `78bd3842` 与主线合并提交 `e6de3afe` 已推送至 `origin/main`，其他工作区改动均保留。GitHub Pages workflow `40552923176` 成功；线上 `/AscendCANN/ascstudio-mini/knowledge-provider-map.html` 以及学习路径、课程、认证、封面和 Meetup 五张图片均 HTTP 200，页面已引用 JPG 新资源。
+- 未决：无。
+
+### 2026-10-28 · 展开箭头改为输入框上方居中胶囊
+
+- 用户指出展开入口偏右且方形；改为水平居中、圆角胶囊形状，保留原有悬浮 / 聚焦 / 触屏显隐与展开、收起行为。
+- 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 构建产物。依据为用户明确反馈（H）；不改变布局行为、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、生成 JS `node --check`、HTML bundle 引用、胶囊居中样式核对及 `git diff --check` 通过；本地 5179 预览 HTTP 200。
+- 发布：样式提交 `9d052474` 已推送；其 Pages workflow `40552630444` 被之后的并行主线更新取消。快进同步并保留知识供给蓝图提交 `78bd3842`、`e6de3afe`、`ee1f6913` 后，最新 Pages workflow `40552923176` 成功。线上 HTML、`index-BbxiqbVp.js`、`index-Cd3-N-Gs.css` 均 HTTP 200；已回读确认展开入口居中胶囊样式和展开 / 收起文案。
+
+### 2026-10-28 · 学习发现「更多推荐」配图小幅提亮
+
+- 用户确认对该楼层配图小幅提亮、稍微降低饱和度，并保留课程粉、路径绿、知识点青、认证橙的类别区分（H）。
+- 仅对 `.ld-floor-recommended .ld-card-media img` 应用 `brightness(1.06) saturate(.8) contrast(.96)`；不影响顶部 Banner、新上架楼层和楼层背景。修改 `ascend-studio/src/learning-discovery.css` 及 `/ascstudio/` Pages 构建产物。
+- 依据：用户选择（H）；本地 1280×720 浏览器预览中四张卡片配图完整可见，亮度提高且类别色仍可辨（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`cd ascend-studio && npm run build:pages`、生成 JS `node --check`、HTML bundle 引用与文件存在性检查、`git diff --check` 通过；未运行自动化测试。源码提交 `001da5d2`、Pages 构建与文档提交 `daed9aa5` 已完成；同步保留截至 `f3b14cfa` 的并行主线更新后，最终提交 `6f40f5db` 已推送至 `origin/main`。Pages workflow `40554198989` 成功；线上 `/AscendCANN/ascstudio/`、`index-ChSAM-3t.js` 与 `index-CebWmIv6.css` 均 HTTP 200，回读 CSS 确认本次滤镜已发布。
+
+### 2026-10-28 · 底部对话展开改为紧凑连体面板
+
+- 用户选择 A：点击输入框上方箭头后，对话从输入框向上展开，面板与输入框连成一体，宽度接近 composer，高度约半屏，减少遮住工作区的面积和空白。
+- `/ascstudio/` 浮动展开态收窄到最多 760px、高度最多 520px 且不超过 52dvh；composer 底边与外层圆角面板连体，以细分隔线区分并保持一行输入。隐藏浮动展开态的背景装饰图；窄屏保持视口内宽度，高度最多 480px / 52dvh。左侧对话与拖动吸附行为不变。
+- 修改 `ascend-studio/src/styles.css` 与 Pages 构建产物。依据为用户选择（H）；页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、输出 JS `node --check`、资源引用、展开面板与输入行 CSS 核对、`git diff --check` 通过；本地 5179 返回 HTTP 200。未运行自动化测试或截图回放。
+- 发布：样式提交 `420dfe3c` 与合并并行主线更新的提交 `115879f4` 已推送至 `origin/main`；Pages workflow `40556756552` 成功。线上 HTML、`index-Cqckebzn.js`、`index-CTdhl43q.css` 均 HTTP 200；回读确认 760px / 52dvh 面板、连体 composer、单行输入和隐藏背景装饰均已发布。
+
+
+### 2026-10-28 · Ascend Studio 设计汇报与用户划分讨论
+
+- 用户要求用 report-ppt-skill，将线上 /ascstudio/ 和本地 5217 的 /ascstudio-mini/ 形成设计材料，从旧精简报告第5页旅程发现问题，再引出主动推荐与连线 Prompt、开发中学习与经验回流、意图学习路径与个人认知卡片、移动续学、1–2页知识供给。
+- 用户已选叙事A「一条旅程、两种起点」。随后要求先讨论任务用户 / 学习用户是否对应专业级 / 小白；用户分类尚未定稿。当前建议以使用目的区分「带任务开发」和「为目标学习」，把专业程度作为独立维度；此为讨论建议，不是用户已确认决定。
+- 已核对旧旅程和小程序资料，内置浏览器读取两端界面；本轮尚未完成完整截图取证。用户需求及选择为H，可见页面观察为M。学习切入问题拟为「知道目标，却不知道按自己的基础先学什么、学到什么程度能用」，属待确认设计推论。
+- 本轮仅讨论叙事与受众，未创建或改写汇报、产品源码、页面序列或API / Host / Application边界。后续先完成用户划分讨论，再展开材料。
+- 验证与发布：通过独立临时索引，相对最新origin/main仅追加本交接，执行git diff --cached --check后提交并推送main，主题docs: record Ascend Studio design report framing discussion；共享目录现有其他改动保持原样。
+
+
+### 2026-10-28 · 学习用户范围澄清
+
+- 用户指出「想系统入门但不知道学什么」与「知道想掌握什么，希望安排适合自己的路径」都属于学习用户（H）。此前助手将两种起步情况问成二选一，不能据此缩窄学习用户范围或另立两类画像。
+- 后续设计材料可将两种情况纳入同一学习旅程：目标模糊时探索方向与澄清意图；目标明确时生成、共同调整并实践路径。此为承接澄清的材料组织建议；任务导向 / 学习导向的总体划分仍是当前讨论框架，不将专业程度与使用目的等同。
+- 本轮仅澄清用户范围，未修改产品、汇报页序或 API / Host / Application 边界。通过独立临时索引仅追加 AGENTS.md，执行 git diff --cached --check 后提交并推送 main；保留共享目录既有改动。
+
+### 2026-10-28 · 跨任务画布节点语义统一
+
+- 按用户确认的完整方案，为 AddCustom、图像推理、图像学习和 ResNet50 接入统一节点语义层：稳定节点角色、内容形态、业务状态、来源、UI 视图状态及显式定向关系。各任务仍由自己的适配器解释节点，不从位置或渲染顺序猜关系。
+- 共享卡片与任务内容总览统一呈现节点角色和状态；修正 AddCustom 线索 / 误差结果分类、学习检查与历史尝试快照端点、ResNet50 学习分组和学习域标识。状态标签区分待应用、已应用待复核、通过、未通过及过期；过期采用提醒色。用户视图管理状态不覆盖业务状态。
+- 交互规则与实现记录见 `ascend-studio/interaction-design.md`。本轮仅统一语义和数据映射，不改变各任务布局、学习顺序、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；浏览器 / NPU 演示结果仍不构成真实算子验证。用户确认的设计方向为 H，内容及本地演算映射为 M。
+- 构建 / 检查：合并最新主线后 `npm run build:pages` 成功；相关 JS `node --check`、资源引用存在性、`git diff --check` 与 `git diff --cached --check` 通过；本地 `5192` 返回 HTTP 200。未运行自动化测试，未取得浏览器截图回放。
+- 提交 `1da23913` 已含实现与规则，主线同步 / 最终 Pages 推送状态待本轮完成后补记。

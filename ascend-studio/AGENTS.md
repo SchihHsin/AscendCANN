@@ -1935,3 +1935,51 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - AddCustom 与 ResNet50 采用同一行为。ResNet50 返回时恢复原画布状态并重新居中刚才打开的节点。共享取景位于 `src/shared/canvas/focus-viewport.js`，完整阅读组件位于 `src/OfficialLearningMaterial.jsx`。细则在 `interaction-design.md` 与 `ascend-studio-interface-style` Skill。
 - 本地 1440×900 浏览器回放：聚焦缩放 110%、卡片不裁切；打开完整材料并返回后原节点与可用视野中心对齐，未发现运行时异常。`npm run build:pages`、JS 语法检查、`git diff --check` 通过；未运行完整测试套件。
 - 实现提交 `63a329c8` 已推送；包含此提交的 Pages workflow `40543693742` 成功，线上 HTML / JS / CSS 均 HTTP 200。
+
+
+### 2026-10-28 · 模型 logo 尺寸调整
+
+- 根据用户截图，将 composer 按钮与模型菜单行里的品牌标识由 18px 调为 14px，避免图标抢过模型名称；下拉选中勾选、模型切换及窄屏纯图标入口保留。
+- 更新 `src/styles.css`、`src/interaction.css` 与 `/ascstudio/` 构建产物；在合并并保留并行学习画布 / 小程序更新后重新构建。
+- `npm run build:pages`、生成 JS `node --check`、bundle 引用及 `git diff --check` 通过。线上 HTML、JS、CSS HTTP 200；未运行自动化测试或逐项视觉回放。
+- 提交 `689b2b11` 与合并提交 `4cb77c74` 已推送，Pages workflow `40545134372` 成功。
+
+### 2026-10-28 · 学习发现配图按内容类型统一点缀色
+
+- 用户确认整页以冷白、蓝紫为基础，各类配图使用固定点缀色并跨楼层复用：课程偏粉、学习路径偏绿、知识点偏青、认证偏橙。颜色差异按配图内容表达，不复制 banner 波纹纹理；顶部 banner 与主视觉构图保留。
+- 推荐区与新上架区按上述映射替换资源卡配图；Meetup 保留线稿画法并使用蓝紫基底与轻彩点缀。学习发现页楼层背景改为白色、移除灰色分组底。新增图以 JPEG 90 质量落在 `ascend-studio/src/assets/learning-discovery/`，避免高体积 PNG。
+- 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css`、新生成配图及 `ascstudio/` Pages 产物。根据用户确认（H）及图像生成 / 浏览器页面观察（M）；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地桌面 1280×720 预览确认配图均加载，四类点缀色清楚、楼层无灰底。未运行自动化测试。功能提交 `d1652e6c` 连同同步主线的合并提交 `4615ac28` 已推送 `origin/main`；Pages workflow `40547405913` 成功。线上 `/AscendCANN/ascstudio/`、JS/CSS 和 8 张配图均 HTTP 200。
+
+### 2026-10-28 · 底部对话浮窗的展开入口
+
+- 底部浮窗默认仅显示输入框。鼠标悬浮或键盘聚焦时，在输入框上沿显示展开箭头；点击展开对话后改为收起箭头。触屏设备常显，已展开时常显。
+- 展开对话是独立于顶部布局切换的动作；自动发送后展开历史的行为保留。入口位于 `src/App.jsx`，样式位于 `src/styles.css`。
+- 此决定来自用户确认（H）。不改变页面顺序、hash、任务 / 对话数据或 API / Protocol、Host / Harness、Application / Task 边界。
+- 实现提交 `8c2a9f39` 已推送至 `origin/main`；Pages workflow `40550981417` 成功，线上 `/AscendCANN/ascstudio/` 及对应 JS / CSS 均 HTTP 200。
+
+### 2026-10-28 · 对话展开入口居中胶囊
+
+- 按用户反馈，将底部 composer 的对话展开箭头从右侧方形控件调整为上沿居中胶囊。既有显隐与切换行为保持不变。
+- 修改 `src/styles.css` 和 `/ascstudio/` Pages 构建产物；依据为用户明确反馈（H），不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 样式提交 `9d052474` 已推送；其 Pages workflow `40552630444` 因后续并行主线更新而取消。保留并同步知识供给蓝图更新后，最新主线 commit `ee1f6913` 对应 Pages workflow `40552923176` 成功；线上入口、JS、CSS 均 HTTP 200，确认新位置与胶囊样式。
+
+### 2026-10-28 · 浮动对话紧凑展开
+
+- 用户选择 A：底部对话从输入框向上展开，保持 composer 与记录同属一个面板；面板宽度贴近 composer，高度限制在约半屏。
+- 展开态面板最多 760px × 520px / 52dvh，窄屏最多 480px / 52dvh；输入区域并入同一外层白色面板，用细分隔线承接。浮动展开态隐藏背景装饰，composer 保持单行，降低遮挡和留白。
+- 修改 `src/styles.css` 和 `/ascstudio/` 构建产物。用户选择为依据（H）；左侧对话、页面顺序、hash、任务 / 对话机制与 API / Host / Application 边界均不变。
+- 验证：构建、输出 JS 语法、资源引用、关键 CSS 规则与本地预览 HTTP 200 通过；未运行自动化测试或截图回放。
+- 实现提交 `420dfe3c` 与保留并行更新的合并提交 `115879f4` 已推送至 `origin/main`；Pages workflow `40556756552` 成功。线上 HTML、JS、CSS 均 HTTP 200，回读确认紧凑连体展开样式。
+
+### 2026-10-28 · 跨任务画布节点语义统一
+
+- 统一画布对象的 `nodeType`、`contentType`、`status`、`statusLabel`、`provenance`、`relations` 与 UI `viewState`。AddCustom、图像推理、学习画布和 ResNet50 通过共享归一化层及各自领域映射接入；任务自己的内容结构、状态判定与学习路径保持不变。
+- 节点角色 / 状态在共享卡片和任务总览中使用同一标记；关系只用通过共享校验的显式端点与关系类型绘制，历史检查保留具体快照。拖动、收纳、聚焦、固定等视图行为与业务状态分离。过期使用提醒色，失败或待复核不借类别色表达。
+- 具体规范与实现映射见 `interaction-design.md`。依据为用户确认的统一语义方向（H）和原型已有任务状态 / 材料（M）；没有改变页面序列、路由、API / Protocol、Host / Harness 或 Application / Task 边界。
+- 合并后的 `npm run build:pages`、相关 JS `node --check`、静态资源引用核验与 Git 差异检查通过。本地 `5192` 返回 HTTP 200；未运行自动化测试或截图回放。推送及 Pages 状态待补。
+
+### 2026-10-28 · 学习发现「更多推荐」配图提亮
+
+- 用户选择将「更多推荐」楼层配图小幅提亮并略微降饱和，同时保留课程粉、学习路径绿、知识点青、认证橙的区分。只作用于该楼层图片；Banner、新上架配图和白色楼层底不变。
+- 实现于 `src/learning-discovery.css` 的 `.ld-floor-recommended .ld-card-media img`：`brightness(1.06) saturate(.8) contrast(.96)`。依据为用户明确选择（H）与本地 1280×720 楼层预览（M）；页面序列 / hash 及 API / Protocol、Host / Harness、Application / Task 边界不变。构建验证已通过；源码提交 `001da5d2` 与 Pages 构建提交 `daed9aa5` 已推送，主线合并提交 `6f40f5db` 已更新 `origin/main`。Pages workflow `40554198989` 成功，线上入口与新 JS / CSS 均 HTTP 200，CSS 中已确认目标滤镜。

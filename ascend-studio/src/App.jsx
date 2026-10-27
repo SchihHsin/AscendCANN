@@ -56,6 +56,7 @@ import {
   IconBooks,
   IconChevronDown,
   IconChevronRight,
+  IconChevronUp,
   IconCircleCheck,
   IconCircleX,
   IconCode,
@@ -1461,7 +1462,7 @@ function App() {
           <div className="management-page-content"><CapabilityList capabilities={capabilities} onUseCapability={useCapabilityFromPage} /></div>
         </section> : <section ref={conversationPanelRef} className={`conversation-panel${conversationDragging ? " is-dragging" : ""}${conversationLayout === "floating" && !floatingConversationExpanded ? " is-composer-only" : ""}${conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : ""}`} aria-label="任务对话">
           <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
-          <div className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
+          <div id="task-conversation-history" className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
             <div className="conversation-flow">
             {session.showIntro && isMainTask && <>
             <article className="message-row user-message">
@@ -1576,6 +1577,7 @@ function App() {
             </button>
           </section>}
           <form className={`composer${showCommunityInvite ? " composer--community" : ""}${conversationDragEdgeHover ? " is-drag-edge-hover" : ""}`} onSubmit={(event) => { if (conversationLayout === "floating" && !session.replying && (draft.trim() || session.attachments.length)) setFloatingConversationExpanded(true); handleSendMessage(event); }} onPointerDown={startConversationDrag} onPointerMove={handleConversationPointerMove} onPointerLeave={() => setConversationDragEdgeHover(false)} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}>
+            {conversationLayout === "floating" && <button className="conversation-expand-toggle" type="button" aria-label={floatingConversationExpanded ? "收起对话" : "展开对话"} aria-controls="task-conversation-history" aria-expanded={floatingConversationExpanded} title={floatingConversationExpanded ? "收起对话" : "展开对话"} onClick={() => setFloatingConversationExpanded(current => !current)}>{floatingConversationExpanded ? <IconChevronDown size={ICON_SIZE.inline} aria-hidden="true" /> : <IconChevronUp size={ICON_SIZE.inline} aria-hidden="true" />}</button>}
             {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
               {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={ICON_SIZE.inline} /><span>{pointContext.type === "workspace-area" ? `工作区区域 · ${pointContext.label}` : `图解范围 · ${pointContext.label}`}</span><button type="button" aria-label="移除指向区域上下文" onClick={clearPointContext}><IconX size={ICON_SIZE.micro} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={ICON_SIZE.inline} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={ICON_SIZE.micro} /></button></span>)}
