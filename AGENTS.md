@@ -7065,3 +7065,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据为用户明确的交互要求（H）；760px 上限和避让间距属于实现参数（L）。页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界均未改变；不代表真实代码、精度或 NPU 验证。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/useCanvasState.js`、`git diff --check` 通过；构建保留既有超过 500 kB 的 bundle 提示，未运行自动化测试。当前工具环境没有浏览器回放能力，因此未声称完成页面交互 / 视觉核验。
 - 发布回执：实现提交 `e6ccedd5` 已推送至 `origin/main`；GitHub Pages workflow `40494606292` 成功。线上 `/AscendCANN/ascstudio/`、`index-Q53nHexO.js` 与 `index-D_07DMqX.css` 均 HTTP 200，资源中可检索到卡片尺寸测量及单一滚动区规则。以下为发布后的交接记录补充；未改变页面序列或 API / Host / Application 边界。
+
+### 2026-10-27 · 每周速览改为微信服务通知主路径
+
+- 用户选定以微信服务通知呈现主动推送（H）。`ascstudio-mini/` 默认展示微信会话列表中的未读「服务通知」；点开通知后再进入每周速览。速览含一条重点资讯和两张参考兴趣 / 存疑信号的短知识卡；订阅确认会模拟授权和新消息送达。移除了小程序底部「速览」入口，微信导航只出现在消息列表。
+- 更新 `ascstudio-mini/app.js`、`index.html`、`styles.css`、`README.md`、`qa.md`。本轮只修改小程序原型路由，不改变电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 的机制边界。用户选择是产品方向证据（H）；消息流是本地演示实现（M），不代表微信已实际发消息。
+- Demo 的通知、资讯、个性化与订阅状态由本地示例 / localStorage 驱动；没有调用微信 API、真实定时器或后台推送。真实发送仍需适用的微信订阅能力与后台实现，内容也不是实时资讯。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行浏览器端完整点击回归，也未新增截图。GitHub Pages workflow `40495653128` 成功；线上入口 HTTP 200，线上 JS 已确认包含服务通知路由、未读数和模拟送达事件。
+- 提交 / 推送：功能提交 `0c6742ab` 已推送至 `origin/main`。此记录随后作为交接文档变更补充推送。
