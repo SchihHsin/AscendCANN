@@ -21,7 +21,6 @@ import {
   IconRestore,
   IconTrash,
 } from "@tabler/icons-react";
-import { ADD_CUSTOM_LAYOUT_GROUPS, addCustomGroupKey } from "./addcustom-canvas-layout";
 import { CanvasCardActions, CanvasCardButton, CanvasCardFrame, CanvasCardHeader, CanvasFitIcon, CanvasMiniMap, CanvasSurface, CanvasToolButton, CanvasToolbar, CanvasToolbarGroup, CanvasZoomGroup } from "./shared/canvas/index.jsx";
 import CanvasDrawingSurface from "./shared/canvas/CanvasDrawingSurface.jsx";
 import CanvasNoteContent from "./shared/canvas/CanvasNoteContent.jsx";
@@ -73,31 +72,15 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     return () => window.removeEventListener("keydown", handleEscape);
   }, [positionEditing, visible]);
   const selected = state.cards.find((card) => card.id === state.selectedCardId && card.visible) || null;
-  const cardSummary = (card) => card.summary || ({ source: "来源只读", evidence: "根因待确认", explanation: "线索解释", draft: flow?.state.mode === "isolated" ? "隔离示例副本" : "任务内示例副本", parameters: `输入 [${flow?.state.rows},${flow?.state.columns}]`, attempts: `${flow?.state.attempts.length || 0} 次范围尝试`, diff: flow?.state.proposedCode ? "保留修改差异" : "待生成提案", validation: flow?.state.validation ? "已存范围复核" : "真实项目待验证", precision: "数值误差核对", review: "观察与待补证据" }[card.id] || "内容保留");
+  const cardSummary = (card) => card.summary || ({ "task-brief": "问题现象与待补条件", source: "来源只读", evidence: "根因待确认", explanation: "线索解释", draft: flow?.state.mode === "isolated" ? "隔离示例副本" : "任务内示例副本", parameters: `输入 [${flow?.state.rows},${flow?.state.columns}]`, attempts: `${flow?.state.attempts.length || 0} 次范围尝试`, diff: flow?.state.proposedCode ? "保留修改差异" : "待生成提案", validation: flow?.state.validation ? "已存范围复核" : "真实项目待验证", precision: "数值误差核对", review: "观察与待补证据" }[card.id] || "内容保留");
   const visibleCards = state.cards.filter((card) => card.visible);
   const hiddenCards = state.cards.filter((card) => !card.visible && card.opened);
   const availableNodeCards = isAddCustom ? state.cards.filter((card) => !card.visible) : [];
   const drawings = Array.isArray(state.drawings) ? state.drawings : [];
-  const focusCardId = viewMode === "focus" ? focusIds[0] : null;
-  const focusRelatedCards = focusCardId
-    ? focusIds.slice(1).map((id) => visibleCards.find((card) => card.id === id)).filter(Boolean)
-    : [];
   const { x: panX, y: panY, zoom } = state.viewport;
   const drawing = useCanvasDrawing({ canvasContent: canvas, editing: positionEditing });
   const worldDrawings = drawings.filter(item => !item.cardId);
   const isCollapsed = (card) => card.collapsed ?? collapsedIds.includes(card.id);
-  const addCustomGroupRegions = useMemo(() => {
-    if (!isAddCustom) return [];
-    return ADD_CUSTOM_LAYOUT_GROUPS.map((group) => {
-      const cards = visibleCards.filter((card) => addCustomGroupKey(card) === group.id);
-      if (!cards.length) return null;
-      const left = Math.min(...cards.map((card) => card.x)) - 20;
-      const top = Math.min(...cards.map((card) => card.y)) - 42;
-      const right = Math.max(...cards.map((card) => card.x + card.width)) + 20;
-      const bottom = Math.max(...cards.map((card) => card.y + (isCollapsed(card) ? COLLAPSED_HEIGHT : card.height))) + 20;
-      return { ...group, left, top, width: right - left, height: bottom - top };
-    }).filter(Boolean);
-  }, [isAddCustom, state.cards, collapsedIds]);
 
   const minimapBounds = useMemo(() => {
     const drawingPoints = worldDrawings.flatMap((drawing) => drawing.points || []);
@@ -280,7 +263,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
   };
   const addNote = () => {
     const count = state.cards.filter((card) => card.kind === "note").length + 1;
-    actions.addCard({ id: `note:${Date.now().toString(36)}`, kind: "note", groupId: selected ? addCustomGroupKey(selected) : "analysis", title: `笔记 ${count}`, noteText: "", codeBlocks: [], width: 600, height: 360 }, { focus: true });
+    actions.addCard({ id: `note:${Date.now().toString(36)}`, kind: "note", parentId: selected?.id || "task-brief", title: `笔记 ${count}`, noteText: "", codeBlocks: [], width: 600, height: 360 }, { focus: true });
     setNodePickerOpen(false);
     drawing.stop();
   };
@@ -288,7 +271,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     const count = state.cards.filter(card => card.kind === "drawing").length + 1;
     const id = `drawing-card:${Date.now().toString(36)}:${Math.random().toString(36).slice(2, 6)}`;
     const anchor = selected || visibleCards.at(-1);
-    actions.addCard({ id, kind: "drawing", groupId: selected ? addCustomGroupKey(selected) : "analysis", title: `手绘卡片 ${count}`, width: 640, height: 420, ...(anchor ? { x: anchor.x + anchor.width + 24, y: anchor.y } : {}) }, { focus: true });
+    actions.addCard({ id, kind: "drawing", parentId: selected?.id || "task-brief", title: `手绘卡片 ${count}`, width: 640, height: 420, ...(anchor ? { x: anchor.x + anchor.width + 24, y: anchor.y } : {}) }, { focus: true });
     setNodePickerOpen(false);
     return id;
   };
@@ -327,11 +310,6 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
 
   return <aside className={"task-canvas" + (embedded ? " is-embedded" : "") + (isAddCustom ? " is-addcustom" : "")} hidden={!visible} aria-label="当前任务的自由画布">
     {!embedded && <header className="panel-header tc-header"><div><h2><IconLayoutBoard size={ICON_SIZE.heading} />任务画布</h2><span>同一现场里的代码、解释与检查证据</span></div><div className="tc-header-links"><button type="button" onClick={onBack}><IconArrowLeft size={ICON_SIZE.inline} />定位现场</button><button type="button" className={contentsOpen ? "is-active" : ""} aria-expanded={contentsOpen} onClick={onOpenContents}><IconLayoutList size={ICON_SIZE.inline} />本任务内容</button></div></header>}
-    <div className="tc-object-toolbar"><span className="tc-selection-label">{selected ? selected.title : `${visibleCards.length} 个内容对象`}</span>{focusRelatedCards.length > 0 && <nav className="tc-focus-related" aria-label="当前节点的直接关联">{focusRelatedCards.map((card) => {
-      const relation = connections.find((connection) => connection.from === focusCardId && connection.to === card.id || connection.to === focusCardId && connection.from === card.id);
-      return <button key={card.id} type="button" title={`聚焦到${card.title}${relation?.label ? ` · ${relation.label}` : ""}`} onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><span>{card.title}</span>{relation?.label && <small>{relation.label}</small>}</button>;
-    })}</nav>}</div>
-
     <CanvasSurface as="div" ref={stageRef} className={"tc-stage" + (handMode || spaceHeld ? " is-hand-mode" : "") + (positionEditing ? " is-layout-editing" : "") + (drawing.drawingMode ? " is-drawing" : "") + (gestureKind ? " is-gesturing" : "") + (gestureKind === "pan" ? " is-panning" : "")} tabIndex={0} aria-label="任务空间；拖动空白平移，按住 Ctrl 或 Command 滚轮缩放" style={{ backgroundSize: `${Math.max(12, 20 * zoom)}px ${Math.max(12, 20 * zoom)}px`, backgroundPosition: `${panX}px ${panY}px` }} onPointerDown={(event) => {
       if (floatingTarget(event.target) || editableTarget(event.target)) return;
       if (drawing.drawingMode) return;
@@ -353,7 +331,6 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     }} onKeyUp={(event) => { if (event.key === " ") setSpaceHeld(false); }} onBlur={() => setSpaceHeld(false)}>
       <div className="tc-floating-tools">{canvasToolbar}{nodePicker}</div>
       <div className="tc-world" style={{ transform: `translate(${panX}px, ${panY}px) scale(${zoom})` }}>
-        {addCustomGroupRegions.map((group) => <div key={group.id} className={`tc-group-region is-${group.id}`} aria-hidden="true" style={{ left: group.left, top: group.top, width: group.width, height: group.height, "--tc-group-label-scale": Math.max(1, Math.min(4.5, 1 / zoom)) }}><span>{group.label}</span></div>)}
         {connections.length > 0 && <svg className="tc-connections" aria-hidden="true"><defs><marker id="task-canvas-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 1 1 L 7 4 L 1 7" fill="none" stroke="currentColor" strokeWidth="1.3" /></marker></defs>{connections.map((connection, index) => {
           const from = visibleCards.find((card) => card.id === connection.from);
           const to = visibleCards.find((card) => card.id === connection.to);

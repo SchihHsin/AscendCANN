@@ -522,8 +522,13 @@ function exactDiffRecord(records, code, attemptId, image) {
 function relationsFor(id, flow, inference, records = []) {
   const relations = [];
   const add = (targetId, label, title) => relations.push({ id: targetId, label, title });
-  if (id === "explanation") add("source", "示例来源", "索引范围示例");
+  if (id === "task-brief") {
+    add("source", "待核对代码", "索引范围示例");
+    add("evidence", "已知现象", "现场与判断");
+  }
+  if (id === "explanation") add("source", "代码线索", "索引范围示例");
   if (id === "source") add("explanation", "用于图解", "线索解释");
+  if (["evidence", "reference"].includes(id)) add("explanation", id === "evidence" ? "待解释证据" : "文档依据", "线索解释");
   if (id === "image-explanation") add("image-source", "示例来源", "preprocess.py · 只读示例");
   if (id === "image-source") add("image-explanation", "用于图解", "图像与张量图解");
   if (["explanation", "parameters", "draft"].includes(id) && asArray(flow.attempts).length) add("attempts", "尝试记录", "范围尝试");
