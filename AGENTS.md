@@ -7176,3 +7176,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/app.js`、`index.html`、`qa.md`。材料叙事和 7 屏顺序不变；通知 / 订阅仍是本地演示，不涉及微信 API 或 API / Host / Application 机制边界。设计点与行为来自用户需求（H），滚轮手势节流和内层滚动边界属于实现细节（M）。
 - 验证：桌面 Chrome 1440×1000 回放确认滚轮逐屏切换且同一惯性手势不连跳；手机内容在内部范围照常滚动，到底后才切下一屏；订阅弹层和手机 390×844 视口状态保持正常。未捕获 JS exception；`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。截图 `ascstudio-mini/evidence/review-wheel-desktop.png`；未运行自动化测试。
 - 提交 `8e8195c3` 已推送到 `origin/main`（推送前同步保留并行主线提交 `63a329c8`）。GitHub Pages workflow `40543693742` 成功；线上 HTML 与 `app.js` 返回 HTTP 200，并确认翻页提示与 wheel listener 已发布。
+
+### 2026-10-28 · 知识供给侧蓝图补充内容图像并完成发布
+
+- 用户反馈材料仍然文字偏多、不易一眼理解，并要求适当使用 ImageGen（H）。在七页结构化汇报中加入面向知识资源本身的内容图：学习路径、课程、认证与 Meetup 等资源视觉，集中资源位于 `ascstudio-mini/assets/knowledge-resource-atlas.png`，用于帮助读者先识别资源类型，再看服务链路与接口映射；图像是概念示意（M），不代表当前已接入真实内容服务或个性化推荐。
+- 保持知识供给蓝图的七页顺序与既有内容：供给链路、学习发现楼层映射、Knowledge Unit、Web / API / MCP / Skills 通道及 P0–P2 路线图。标准和协议的事实链接沿用原材料；`llms.txt` 仍明确为提案，`robots.txt` 不承担鉴权。未改变其他页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：HTMLParser 检查七页结构与标题、内嵌 JS `node --check`、`git diff --check` 通过；已核对桌面、平板、手机视口。GitHub Pages workflow `40543145732` 成功；线上蓝图页与 `assets/knowledge-resource-atlas.png` 均 HTTP 200。
+- 提交 / 发布：视觉改版提交 `1e4eb5cd` 已在 `c559619b` 同步主线时并入 `origin/main`。本条是发布核验和图像方向的交接补记，随本次记录提交推送；未决事项：无。
