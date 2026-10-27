@@ -7183,3 +7183,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保持知识供给蓝图的七页顺序与既有内容：供给链路、学习发现楼层映射、Knowledge Unit、Web / API / MCP / Skills 通道及 P0–P2 路线图。标准和协议的事实链接沿用原材料；`llms.txt` 仍明确为提案，`robots.txt` 不承担鉴权。未改变其他页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：HTMLParser 检查七页结构与标题、内嵌 JS `node --check`、`git diff --check` 通过；已核对桌面、平板、手机视口。GitHub Pages workflow `40543145732` 成功；线上蓝图页与 `assets/knowledge-resource-atlas.png` 均 HTTP 200。
 - 提交 / 发布：视觉改版提交 `1e4eb5cd` 已在 `c559619b` 同步主线时并入 `origin/main`。本条是发布核验和图像方向的交接补记，随本次记录提交推送；未决事项：无。
+
+### 2026-10-28 · 画布聚焦与完整内容阅读分开
+
+- 用户明确区分两种动作：**聚焦**留在画布内，把节点移至当前可用视野中心并适度缩放；**打开完整内容**离开画布，在右侧任务内容区以常规阅读宽度打开，长内容在内容区内滚动。画布缩放仍作用于整张画布；返回后恢复原画布并重新聚焦同一节点。
+- AddCustom 通用任务画布与 ResNet50 官方学习画布共用 `src/shared/canvas/focus-viewport.js` 的节点取景算法；ResNet50 完整材料使用独立 `OfficialLearningMaterial` 阅读视图。保留各自的任务节点、学习层级与内容结构。
+- 同步更新 `ascend-studio/interaction-design.md` 与本机 `ascend-studio-interface-style` Skill 的“聚焦与完整阅读”规则。主线并入时保留最新 App 与 Pages 修改，移除已被主线撤回的旧小地图避让副作用，避免遗留状态引用造成白屏。
+- 依据：用户确认的交互语义（H）；1440×900 隔离浏览器回放为实现观察（M）。聚焦回放显示节点缩放到 110%、完整位于画布内；打开完整内容后可返回；返回后同一节点的中心相对可用视野中心偏差为 0，未捕获运行时异常。没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages` 成功；源文件与 Pages 产物 `node --check`、`git diff --check` 通过。Vite 保留既有主 bundle 大于 500 kB 的提示；未运行自动化测试套件。
+- 提交 `63a329c89654ca5d91ce42795c06c9844a79426f` 已推送到 `origin/main`。首次 Pages deploy 被后续并行提交取消；包含本提交的后续 workflow `40543693742` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-l4oW5C5u.js`、`index-DM-Jd1s4.css`，入口及两个资源均 HTTP 200。未决事项：无。
