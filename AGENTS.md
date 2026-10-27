@@ -6937,3 +6937,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 产品与核验材料提交 `c2c6ba1b429e38da045320a3484e786f11b26ec4` 已推送 `origin/main`；GitHub Pages legacy build 返回 `built`、无构建错误。线上 `https://schihhsin.github.io/AscendCANN/ascstudio-mini/` 及 `app.js`、`styles.css`、`knowledge.js`、`mark.svg` 均HTTP 200，JS / CSS MIME类型正常。
 - 内置浏览器已完成本地交互与手机 / 桌面视觉核验；最后的线上浏览器回放遇到连接超时，未据此宣称线上交互已复测。浏览器打开请求已发出，交付以可直接访问的线上链接为准。共享工作区现有改动继续保留。
+
+
+### 2026-10-27 · 小程序任务页标题改为继续学习
+
+- 用户依据小程序截图明确要求，将页面主标题「接着你的任务」改为「继续学习」（H）。仅修改 `ascstudio-mini/app.js` 的任务列表页 H1；保留其余文案、导航、任务关联与学习交互。页面序列与 API / Host / Application 边界无变化。
+- 验证：本地和最新主线目标 JS 的 `node --check` 通过；隔离索引的 `git diff --cached --check` 通过。纯文案变更，无新增测试。
+- 发布：在最新 `origin/main` 的独立临时索引中，仅提交标题替换及本交接条目，推送 `main`，提交主题 `fix: rename mini-program task heading to continue learning`。共享工作区中其他暂存、未暂存和未跟踪内容保持原样。
