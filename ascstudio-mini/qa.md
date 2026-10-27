@@ -80,3 +80,4 @@
 - Chrome 本地回放：桌面 1440×1000 下，滚轮将 01/07 切到 02/07；同一惯性手势没有连跳，下一次滚动进入 03/07。鼠标停在手机内容区时先滚动内容，到底后切至下一设计点；第 07/07 订阅设置打开时，滚轮不会关闭弹层或切页。
 - 390×844 手机视口中，滚轮仍滚动手机正文；路由不因材料分页改变，`document.documentElement.scrollWidth` 为 390px。页面未捕获到 JS exception。
 - 截图：`evidence/review-wheel-desktop.png`。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
+- 主线提交 `8e8195c3` 已推送；GitHub Pages workflow `40543693742` 成功。线上 HTML 与 `app.js` 均 HTTP 200，已核对翻页提示与 wheel listener 已发布。
