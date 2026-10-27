@@ -1781,7 +1781,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-27 · 学习画布工具栏操作顺序
 
 - 共用学习工具栏按“布局 → 缩放 → 抓手 / 适应内容 → 全部展开 → 编辑”排列；全部展开位于视野控制之后，缩放与抓手 / 适应直接相邻。ResNet50 和原图像预处理路径共用此顺序。
-- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Pages 发布状态待回读。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；提交 `2f7df93c` 已推送，Pages workflow `40376292000` 成功；线上入口已切换到新构建 JS / CSS。
 
 
 ### 2026-10-27 · AddCustom 移除未请求的可信度卡
@@ -1794,4 +1794,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 左侧栏与底部浮窗都可从输入框顶部的低对比横向握柄拖到另一布局；目标区域出现对应轮廓预览，松在其他位置保持原布局。点按和键盘切换继续可用；“指着说”框选中拖动禁用。
 - composer 主栏只留加号、模型、权限和发送。加号菜单容纳语音、代码片段、本地文件、截图与能力库；菜单锚点按加号左对齐。权限菜单有只读、每次确认、本任务内允许操作三档，仅作为本地原型状态，不连接真实执行层权限。
 - 依据：本轮用户明确要求（H）；本地 5178 CUA 实操（M）确认双向吸附、错误落点回弹、输入菜单与权限状态切换；控制台无 error / warning。
-- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过。未运行自动化测试。页面序列与 API / Host / Application 边界不变；主线推送与 Pages 回执待补。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过。未运行自动化测试。页面序列与 API / Host / Application 边界不变。提交 `5317a869` 已推送到 `origin/main`；Pages workflow `40376808989` 成功，线上 `/ascstudio/` HTML、JS 与 CSS 均 HTTP 200。

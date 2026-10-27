@@ -6856,7 +6856,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 按用户确认，将“全部展开”放到画布视野控制之后。学习画布工具栏顺序为：布局、缩放、抓手 / 适应内容、全部展开、编辑；缩放组与抓手 / 适应组直接相邻，避免“全部展开”打断视野操作。该工具栏供图像预处理与 ResNet50 官方学习路径共用。
 - 修改 `ascend-studio/src/LearningCanvasToolbar.jsx` 与 `/ascstudio/` 构建产物；画布操作与状态逻辑不变。`npm run build:pages`、JS `node --check`、`git diff --check` 通过；本地预览的学习画布访问树确认缩放组后紧接抓手 / 适应组。
-- Pages 推送及部署状态待核对。
+- 页面提交 `2f7df93c` 已推送至 `origin/main`；Pages workflow `40376292000` 成功。线上 `/ascstudio/` HTML 已切换到 `index-Cmy4OFsy.js` 与 `index-D8mAbhAs.css`。
 
 
 ### 2026-10-27 · AddCustom 移除未请求的可信度卡
@@ -6880,3 +6880,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 公共规则：所有任务共用画布浏览 / 编辑控件、节点聚焦与放大语义，以及连线表达关系的方式；卡片内容、阶段和关系按各任务本身定义，不强套统一业务分组。TaskCanvas 删除画布上沿选中标题 / 关联芯片横栏，节点操作留在卡片右上角，视图操作留在共享工具栏。
 - AddCustom 以“问题现场”为真实起点，连接代码、已知现象、线索解释及后续试算 / 修改 / 复核；移除“现场与来源 / 理解与试算”等抽象背景组。图像推理保留其输入与预处理链，ResNet50 保留官方学习阶段和节点，不引入开发任务分类。
 - 验证：本地 1280×720 CUA 查看 AddCustom 与 ResNet50；画布均显示关联卡片和共享视图控件，ResNet50 阶段 / 视频 / 节点结构仍完整。`node --check`（AddCustom 布局与内容目录）、`npm run build:pages` 与构建后的入口资源生成成功；构建仅有既存的大 JS chunk 提示。未运行自动化测试。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变；本次源代码提交 `50af74ed` 与并入最新主线的合并提交 `6dde119b` 已准备推送，Pages 部署回执待写入。
+- 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5317a869` 已推送到 `origin/main`；Pages workflow `40376808989` 成功。线上 `/ascstudio/` HTML、`index-C15Xr9Tu.js`、`index-CnqbLe8f.css` 均返回 HTTP 200。
