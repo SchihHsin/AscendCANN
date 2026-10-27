@@ -6996,7 +6996,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出多渠道卡片内滚动后仍只见「一、问题现象」。原因是社区渠道预览组件只渲染了 `draft.problem`，没有把草稿其余字段接入；此前确认的卡片正文区独立滚动继续保留。现在按草稿字段显示问题现象、尝试与结果、环境信息、验证状态四节，标题及卡片底部渠道奖励 / 查看详情保持固定。
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css` 和 `ascstudio/` Pages 构建产物。不改变页面序列与 API / Protocol、Host / Harness、Application / Task 边界；草稿的示例验证说明仍照实呈现。
-- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；本地浏览器完成 AddCustom「标记为已解决 → 生成草稿 → 查看全部发布渠道」回放，确认社区卡可访问四节并在正文区域滚动；未运行测试套件。Vite 仍提示主 bundle 大于 500 kB。提交、推送及 Pages 部署状态待本轮完成后补记。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；本地 5232 浏览器完成 AddCustom「标记为已解决 → 生成草稿 → 查看全部发布渠道」回放，确认社区卡可访问四节并在正文区域滚动；未运行测试套件。Vite 仍提示主 bundle 大于 500 kB。
+- 发布：源码提交 `6ca48c2d` 与主线并行提交 `a70325e5` 合并后推送，主线提交 `dde1ee69`；GitHub Pages workflow `40471279379` 成功，线上 `/ascstudio/` 已引用新 JS / CSS 哈希资源，JS HEAD 返回 HTTP 200。
 
 
 ### 2026-10-27 · 组合首页 Tab 更名为“串联”
