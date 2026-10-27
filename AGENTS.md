@@ -7238,6 +7238,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户选择（H）；本地 1280×720 浏览器预览中四张卡片配图完整可见，亮度提高且类别色仍可辨（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`cd ascend-studio && npm run build:pages`、生成 JS `node --check`、HTML bundle 引用与文件存在性检查、`git diff --check` 通过；未运行自动化测试。源码提交 `001da5d2`、Pages 构建与文档提交 `daed9aa5` 已完成；同步保留截至 `f3b14cfa` 的并行主线更新后，最终提交 `6f40f5db` 已推送至 `origin/main`。Pages workflow `40554198989` 成功；线上 `/AscendCANN/ascstudio/`、`index-ChSAM-3t.js` 与 `index-CebWmIv6.css` 均 HTTP 200，回读 CSS 确认本次滤镜已发布。
 
+### 2026-10-28 · 底部对话展开改为紧凑连体面板
+
+- 用户选择 A：点击输入框上方箭头后，对话从输入框向上展开，面板与输入框连成一体，宽度接近 composer，高度约半屏，减少遮住工作区的面积和空白。
+- `/ascstudio/` 浮动展开态收窄到最多 760px、高度最多 520px 且不超过 52dvh；composer 底边与外层圆角面板连体，以细分隔线区分并保持一行输入。隐藏浮动展开态的背景装饰图；窄屏保持视口内宽度，高度最多 480px / 52dvh。左侧对话与拖动吸附行为不变。
+- 修改 `ascend-studio/src/styles.css` 与 Pages 构建产物。依据为用户选择（H）；页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、输出 JS `node --check`、资源引用、展开面板与输入行 CSS 核对、`git diff --check` 通过；本地 5179 返回 HTTP 200。未运行自动化测试或截图回放。
+- 推送与 Pages 部署结果待补。
+
 
 ### 2026-10-28 · Ascend Studio 设计汇报与用户划分讨论
 

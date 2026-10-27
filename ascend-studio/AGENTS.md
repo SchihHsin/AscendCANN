@@ -1964,6 +1964,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/styles.css` 和 `/ascstudio/` Pages 构建产物；依据为用户明确反馈（H），不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 样式提交 `9d052474` 已推送；其 Pages workflow `40552630444` 因后续并行主线更新而取消。保留并同步知识供给蓝图更新后，最新主线 commit `ee1f6913` 对应 Pages workflow `40552923176` 成功；线上入口、JS、CSS 均 HTTP 200，确认新位置与胶囊样式。
 
+### 2026-10-28 · 浮动对话紧凑展开
+
+- 用户选择 A：底部对话从输入框向上展开，保持 composer 与记录同属一个面板；面板宽度贴近 composer，高度限制在约半屏。
+- 展开态面板最多 760px × 520px / 52dvh，窄屏最多 480px / 52dvh；输入区域并入同一外层白色面板，用细分隔线承接。浮动展开态隐藏背景装饰，composer 保持单行，降低遮挡和留白。
+- 修改 `src/styles.css` 和 `/ascstudio/` 构建产物。用户选择为依据（H）；左侧对话、页面顺序、hash、任务 / 对话机制与 API / Host / Application 边界均不变。
+- 验证：构建、输出 JS 语法、资源引用、关键 CSS 规则与本地预览 HTTP 200 通过；未运行自动化测试或截图回放。
+
 ### 2026-10-28 · 学习发现「更多推荐」配图提亮
 
 - 用户选择将「更多推荐」楼层配图小幅提亮并略微降饱和，同时保留课程粉、学习路径绿、知识点青、认证橙的区分。只作用于该楼层图片；Banner、新上架配图和白色楼层底不变。
