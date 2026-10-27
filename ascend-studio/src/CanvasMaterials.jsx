@@ -74,9 +74,9 @@ function codeExcerpt(value, maxLines = 8) {
   return { text: `${excerpt.join("\n")}${lines.length > excerpt.length ? "\n…" : ""}`, total: lines.length, shown: excerpt.length };
 }
 
-function EvidenceMaterial({ onShowCard, presentation }) {
+function EvidenceMaterial({ onShowCard, onCommunityExperienceReady, communityReady, presentation }) {
   const preview = presentation === "canvas";
-  return <div className={`cm-stack${preview ? " cm-card-preview cm-card-preview-evidence" : ""}`}><div className="cm-meta-line"><span>来源：本题诊断记录</span><span className="cm-tag">根因待确认</span></div><div className="cm-evidence-facts"><div><IconCheck size={ICON_SIZE.control} /><span><strong>[16,32] 通过</strong><small>已记录的对照输入</small></span></div><div><IconAlertTriangle size={ICON_SIZE.control} /><span><strong>[17,33] 失败</strong><small>失败与非整块输入同时出现</small></span></div><div><IconCode size={ICON_SIZE.control} /><span><strong>precision mismatch</strong><small>custom_op.cpp:128</small></span></div><div><IconHistory size={ICON_SIZE.control} /><span><strong>编译参数已调整</strong><small>错误位置未变，未带来新的定位信号</small></span></div></div><p className="cm-body-copy">{preview ? "尾块边界值得优先核对；根因尚未确认。" : "尾块边界值得优先核对。目前仍需对照实际循环、逐元素误差和两次运行的环境条件，根因尚未确认。"}</p><div className="cm-actions"><button className="cm-button" type="button" onClick={() => onShowCard?.("explanation")}><IconBook size={ICON_SIZE.inline} />解释并试改</button><button className="cm-button" type="button" onClick={() => onShowCard?.("source")}><IconCode size={ICON_SIZE.inline} />只读核对</button><button className="cm-text-button" type="button" onClick={() => onShowCard?.("precision")}>误差核对<IconArrowRight size={ICON_SIZE.inline} /></button></div>{!preview && <p className="cm-note">这里只索引已有记录，尚无真实项目或 NPU 的新增验证结果。</p>}</div>;
+  return <div className={`cm-stack${preview ? " cm-card-preview cm-card-preview-evidence" : ""}`}><div className="cm-meta-line"><span>来源：本题诊断记录</span><span className={`cm-tag${communityReady ? " is-complete" : ""}`}>{communityReady ? "已解决" : "根因待确认"}</span></div><div className="cm-evidence-facts"><div><IconCheck size={ICON_SIZE.control} /><span><strong>[16,32] 通过</strong><small>已记录的对照输入</small></span></div><div><IconAlertTriangle size={ICON_SIZE.control} /><span><strong>[17,33] 失败</strong><small>失败与非整块输入同时出现</small></span></div><div><IconCode size={ICON_SIZE.control} /><span><strong>precision mismatch</strong><small>custom_op.cpp:128</small></span></div><div><IconHistory size={ICON_SIZE.control} /><span><strong>编译参数已调整</strong><small>错误位置未变，未带来新的定位信号</small></span></div></div><p className="cm-body-copy">{communityReady ? "已标记为解决；可以把本次处理整理为社区经验。" : preview ? "尾块边界值得优先核对；根因尚未确认。" : "尾块边界值得优先核对。目前仍需对照实际循环、逐元素误差和两次运行的环境条件，根因尚未确认。"}</p><div className="cm-actions">{preview && onCommunityExperienceReady && !communityReady && <button className="cm-button cm-completion-trigger" type="button" onClick={onCommunityExperienceReady}><IconCheck size={ICON_SIZE.inline} />标记为已解决</button>}<button className="cm-button" type="button" onClick={() => onShowCard?.("explanation")}><IconBook size={ICON_SIZE.inline} />解释并试改</button><button className="cm-button" type="button" onClick={() => onShowCard?.("source")}><IconCode size={ICON_SIZE.inline} />只读核对</button><button className="cm-text-button" type="button" onClick={() => onShowCard?.("precision")}>误差核对<IconArrowRight size={ICON_SIZE.inline} /></button></div>{!preview && <p className="cm-note">这里只索引已有记录，尚无真实项目或 NPU 的新增验证结果。</p>}</div>;
 }
 
 function LinkedCodeBlock({ text, label, explanation, maxLines }) {
@@ -285,9 +285,9 @@ function ValidationMaterial({ flow, onShowCard, proactive, presentation }) {
   </div>;
 }
 
-export function CanvasMaterial({ id, flow, onShowCard, onAttachCode, explanation, onAsk, onCompare, proactive, diagramRef, presentation = "canvas" }) {
+export function CanvasMaterial({ id, flow, onShowCard, onAttachCode, explanation, onAsk, onCompare, proactive, diagramRef, onCommunityExperienceReady, communityReady, presentation = "canvas" }) {
   if (!flow?.state || !flow?.actions) return null;
-  const props = { flow, onShowCard, onAttachCode, explanation, proactive };
+  const props = { flow, onShowCard, onAttachCode, explanation, proactive, onCommunityExperienceReady, communityReady };
   return <div className={`cm-material-body cm-material-${id} cm-presentation-${presentation}`}>{
     id === "evidence" ? <EvidenceMaterial {...props} presentation={presentation} /> :
     id === "explanation" ? <ExplainPanel {...props} diagramRef={diagramRef} onAsk={onAsk} onCompare={onCompare} presentation={presentation} /> :
