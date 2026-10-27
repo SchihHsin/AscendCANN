@@ -7044,8 +7044,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户确认将三个首页方案改为设计点命名：「主动建议 / 多层探索 / 线索串联」，并同意同步调整图标。第一项突出任务建议卡，第二项突出中心节点逐层展开，第三项突出满屏线索之间的关系连接。
 - Tab 图标分别使用 `IconCards`、`IconHierarchy3`、`IconAffiliate`；辅助无障碍名称改为「首页交互方式」。标签字号由 11px 调至 12px，保留原选中态、交互与 `?home=classic|explore|combine` 路由。
-- 修改 `ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务可用。部署结果待补记。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务可用。
 - 页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 发布：功能提交 `b009757a` 与保留并行画布、小程序更新的合并提交 `40d94763` 已进入 `origin/main`；后续主线更新同步至 `c6bcdc5a`。Pages workflow `40495774511` 成功。公开 `/AscendCANN/ascstudio/?home=combine` 返回 HTTP 200，引用 `index-Bn1n8C39.js` 与 `index-BlUG8aw7.css`，资源均 HTTP 200；JS 确认包含「主动建议 / 多层探索 / 线索串联」。
 
 ### 2026-10-27 · 旧画布笔迹删除入口
 
@@ -7070,3 +7071,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户截图显示 `/AscendCANN/ascstudio/` 为空白。HTTP 复核发现 Pages 普通 URL 返回的缓存 HTML 引用 `index-2CZdRaiw.js` / `index-BMkz6m8g.css`，这两个资源已是 404；带查询参数绕过 CDN 缓存后返回新 HTML 与新资源。HTML 响应 `Cache-Control: max-age=600`，所以短时间内不同设备 / 浏览器会拿到不一致的 HTML。此前 `build:pages` 使用 `--emptyOutDir`，每次构建删掉旧哈希资源，造成缓存中的 HTML 无法加载脚本与样式。
 - `ascend-studio/package.json` 的 Pages 构建不再清空 `ascstudio/`。同时恢复最近 10 次索引版本中引用的哈希 JS / CSS 文件，确保已缓存的旧入口在缓存窗口内仍有可取资源；后续构建也会保留已有哈希资源。页面导航与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages` 成功；新 bundle 与缓存版本 bundle `node --check` 通过；新旧 JS / CSS 文件存在；`git diff --check` 通过。Firefox 原标签页在修复发布前仍显示空白，线上发布及资源状态待本轮确认。
+### 2026-10-27 · 每周速览改为微信服务通知主路径
+
+- 用户选定以微信服务通知呈现主动推送（H）。`ascstudio-mini/` 默认展示微信会话列表中的未读「服务通知」；点开通知后再进入每周速览。速览含一条重点资讯和两张参考兴趣 / 存疑信号的短知识卡；订阅确认会模拟授权和新消息送达。移除了小程序底部「速览」入口，微信导航只出现在消息列表。
+- 更新 `ascstudio-mini/app.js`、`index.html`、`styles.css`、`README.md`、`qa.md`。本轮只修改小程序原型路由，不改变电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 的机制边界。用户选择是产品方向证据（H）；消息流是本地演示实现（M），不代表微信已实际发消息。
+- Demo 的通知、资讯、个性化与订阅状态由本地示例 / localStorage 驱动；没有调用微信 API、真实定时器或后台推送。真实发送仍需适用的微信订阅能力与后台实现，内容也不是实时资讯。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行浏览器端完整点击回归，也未新增截图。GitHub Pages workflow `40495653128` 成功；线上入口 HTTP 200，线上 JS 已确认包含服务通知路由、未读数和模拟送达事件。
+- 提交 / 推送：功能提交 `0c6742ab` 已推送至 `origin/main`。此记录随后作为交接文档变更补充推送。
