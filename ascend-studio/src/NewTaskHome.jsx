@@ -4,7 +4,7 @@ import { ExploreTaskHome } from "./ExploreTaskHome";
 import { CombinationTaskHome } from "./CombinationTaskHome";
 import {
   IconArrowRight,
-  IconEdit as IconEditHome,
+  IconCards,
   IconBook,
   IconBulb,
   IconCode,
@@ -14,7 +14,8 @@ import {
   IconPlus,
   IconSparkles,
   IconBrain,
-  IconShare3,
+  IconHierarchy3,
+  IconAffiliate,
   IconX,
 } from "@tabler/icons-react";
 import { HomeComputeBackdrop } from "./HomeComputeBackdrop";
@@ -346,8 +347,8 @@ export function NewTaskHome(props) {
     event.currentTarget.querySelector(`#home-tab-${next}`)?.focus();
   };
   return <section className="home-variants" aria-label="新建任务首页">
-    <div className="home-variants__tabs" role="tablist" aria-label="首页方案" onKeyDown={handleTabKey}>
-      {[{ id: "classic", label: "经典", Icon: IconEditHome }, { id: "explore", label: "探索", Icon: IconSparkles }, { id: "combine", label: "串联", Icon: IconShare3 }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={ICON_SIZE.inline} />{label}</button>)}
+    <div className="home-variants__tabs" role="tablist" aria-label="首页交互方式" onKeyDown={handleTabKey}>
+      {[{ id: "classic", label: "主动建议", Icon: IconCards }, { id: "explore", label: "多层探索", Icon: IconHierarchy3 }, { id: "combine", label: "线索串联", Icon: IconAffiliate }].map(({ id, label, Icon }) => <button key={id} id={`home-tab-${id}`} type="button" role="tab" aria-selected={view === id} aria-controls={`home-panel-${id}`} tabIndex={view === id ? 0 : -1} onClick={() => switchView(id)}><Icon size={ICON_SIZE.inline} />{label}</button>)}
     </div>
     <div className="home-variants__panel" role="tabpanel" id="home-panel-classic" aria-labelledby="home-tab-classic" hidden={view !== "classic"}><ClassicTaskHome {...props} /></div>
     <div className="home-variants__panel" role="tabpanel" id="home-panel-explore" aria-labelledby="home-tab-explore" hidden={view !== "explore"}><ExploreTaskHome onCreateTask={props.onCreateTask} /></div>

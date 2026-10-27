@@ -1864,3 +1864,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 底部浮窗输入框最小高度从 88px 降到 72px，textarea 的固定最小高度取消；沿用原有自动增高逻辑与 110px 上限。对话处于输入态时，用 ResizeObserver 按输入框和画布的实际位置 / 高度动态抬高小地图，保持 12px 间距；对话展开或区域选择隐藏输入框后，小地图恢复画布右下角位置。侧栏对话和展开对话样式不变。
 - 修改 `src/App.jsx`、`src/styles.css` 与 `/ascstudio/` Pages 构建产物。依据：用户截图及确认（H）；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check`、构建 HTML / JS / CSS 引用检查通过；本地 5178 返回 HTTP 200。未运行自动化测试，也未留存本轮的 UI 截图。Pages workflow `40473711359` 成功；线上 `/ascstudio/` HTML、`index-DHwhtWIz.js`、`index-CmViAAB5.css` 均 HTTP 200。实现提交 `971d7020`，整合并行更新的提交 `270c7324`、`7598593e` 已推送 `origin/main`。
+
+
+### 2026-10-27 · 首页交互方式命名与图标
+
+- 用户确认三个首页 Tab 使用「主动建议 / 多层探索 / 线索串联」，并同意按各自设计点替换图标。映射为卡片 `IconCards`、层级 `IconHierarchy3`、关系 `IconAffiliate`；Tab 组辅助名称为「首页交互方式」。
+- 标签字号由 11px 调至 12px；仅改名称、图标与可读性尺寸，保留现有方案行为、选中态和 `classic / explore / combine` 路由。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务已启动。发布结果待补记。
