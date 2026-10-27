@@ -397,6 +397,11 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(112, 113, 120, .42) transparent;
 }
+.channel-preview-community-scroll { display: flex; flex-direction: column; gap: 9px; padding: 1px 5px 8px 1px; }
+.channel-preview-community-section { flex: 0 0 auto; padding: 0 1px 9px; border-bottom: 1px solid #efeeec; }
+.channel-preview-community-section:last-child { border-bottom: 0; }
+.channel-preview-community-environment { display: grid; gap: 3px; margin: 0; padding-left: 17px; color: #81828a; font-size: clamp(10px, .65vw, 11px); line-height: 1.45; }
+.channel-preview-community-environment li { padding-left: 1px; }
 .channel-preview-community-scroll:focus-visible, .channel-preview-gitcode-scroll:focus-visible, .channel-preview-csdn-scroll:focus-visible {
   outline: 2px solid rgba(70, 72, 79, .22);
   outline-offset: -2px;
