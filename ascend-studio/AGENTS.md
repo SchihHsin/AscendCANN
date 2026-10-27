@@ -1786,4 +1786,24 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 左侧栏与底部浮窗都可从输入框顶部的低对比横向握柄拖到另一布局；目标区域出现对应轮廓预览，松在其他位置保持原布局。点按和键盘切换继续可用；“指着说”框选中拖动禁用。
 - composer 主栏只留加号、模型、权限和发送。加号菜单容纳语音、代码片段、本地文件、截图与能力库；菜单锚点按加号左对齐。权限菜单有只读、每次确认、本任务内允许操作三档，仅作为本地原型状态，不连接真实执行层权限。
 - 依据：本轮用户明确要求（H）；本地 5178 CUA 实操（M）确认双向吸附、错误落点回弹、输入菜单与权限状态切换；控制台无 error / warning。
-- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过。未运行自动化测试。页面序列与 API / Host / Application 边界不变；主线推送与 Pages 回执待补。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过。未运行自动化测试。页面序列与 API / Host / Application 边界不变。提交 `5317a869` 已推送到 `origin/main`；Pages workflow `40376808989` 成功，线上 `/ascstudio/` HTML、JS 与 CSS 均 HTTP 200。
+
+
+### 2026-10-27 · 组合首页场景导向标题
+
+- 用户选定中文 Slogan“从你的场景出发，连接线索，找到新的方向”。这是通用关系探索首页标题，不突出当前演示所用的训练调优领域，也不添加英文副标。演示字段继续为空白起步，训练调优仅保留为样例数据。
+- 组合画布的无障碍名称、草稿占位和空需求提示去除对训练调优领域的固定依赖。
+- `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接中断，未完成截图复核。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。提交 `5600a865` 已推送至 `origin/main`；Pages workflow `40436387761` build / deploy 成功，线上 `/ascstudio/` HTML 已引用新 JS / CSS 哈希资源。
+
+### 2026-10-27 · 学习发现资源卡竖版与配图调整
+
+- 用户要求下方资源卡改成上图下字、横向排列，并指出原配图过淡。推荐与新上架卡片改为桌面四列，窄屏适配三列 / 两列 / 单列；采用仓库已有主体更清楚的 v2 资源图。楼层浅灰分组面、白卡细描边和活动日程纵向时间轴保留。
+- 修改 `src/LearningDiscoveryPage.jsx`、`src/learning-discovery.css` 与 Pages 构建产物。依据为用户明确需求和已有素材；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。页面提交 `de01c247` 已推送到 `origin/main`；GitHub Pages workflow `40451131656` 成功，线上 `/ascstudio/` 已引用新 JS / CSS 哈希，二者均 HTTP 200。
+
+### 2026-10-27 · 画布编辑与手绘卡片
+
+- 编辑态工具显示“完成编辑”，Esc 也可退出；结束编辑、切换抓手、隐藏画布时停止当前绘图并清理笔迹草稿。
+- 绘图入口添加独立手绘卡片，笔迹只画在卡片内容区并和卡片绑定；选中已有手绘卡片可继续绘制。便签与手绘卡片在编辑态可删除，关联笔迹随卡片删除；任务原材料仍只能收起 / 恢复。
+- 统一应用于通用任务画布、图像预处理学习画布和 ResNet50 官方学习画布。共享实现位于 `src/shared/canvas/CanvasDrawingSurface.jsx`、`CanvasUserNote.jsx` 与 `useCanvasDrawing.js`；通用卡片删除动作在 `src/useCanvasState.js`。
+- 构建及语法 / 差异检查通过，未运行测试套件。主线合并和 Pages 发布状态待补记。

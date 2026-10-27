@@ -6872,4 +6872,35 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增按任务保存于当前会话内存的权限演示状态：只读、每次确认、本任务内允许操作。此控制仅展示原型状态，不连接真实执行权限或 API / Host 能力，不改变 Application / Task 边界。
 - 修改：`ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css`、`src/useWorkbenchState.js` 与 `ascstudio/` Pages 产物。
 - 证据：用户本轮要求（H）；本地 5178 桌面预览（M）实际回放左栏→底部浮窗、浮窗→左栏双向吸附，两种布局的目标外落点均保持原布局；权限菜单与加号菜单可操作，浏览器无 error / warning。`npm run build:pages`、生成 JS `node --check`、`git diff --check` 均通过；未运行自动化测试。
-- 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。主线推送与 Pages 发布回执将在后续记录补齐。
+- 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5317a869` 已推送到 `origin/main`；Pages workflow `40376808989` 成功。线上 `/ascstudio/` HTML、`index-C15Xr9Tu.js`、`index-CnqbLe8f.css` 均返回 HTTP 200。
+
+
+### 2026-10-27 · 组合首页改为场景导向的中文 Slogan
+
+- 用户选定标题“从你的场景出发，连接线索，找到新的方向”。标题表达首页的探索方式，不把“训练与调优”演示字段主题当成产品首页主题；不加英文副标。字段仍从未选择、无连线的空状态开始。
+- 组合首页的区块无障碍名称、需求草稿占位提示和空需求提示改为通用场景 / 线索表达；训练调优字段保留为当前 Demo 内容。
+- 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`ascend-studio/src/combination-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。由于 CUA 浏览器桥接在本轮断开，未完成页面截图复核。
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5600a865` 已推送至 `origin/main`；Pages workflow `40436387761` build / deploy 成功。线上 `/ascstudio/` HTML 已引用新 JS / CSS 哈希资源；本地 5206 页面与源码模块返回 HTTP 200。
+
+
+### 2026-10-27 · Ascend Studio 小程序知识推荐方向（待选择）
+
+- 用户要求基于线上 `/ascstudio/` 电脑端 Demo 新增小程序端，重点是便捷推荐知识点。已读取线上入口及其 JS 文本，并核对本地学习发现、任务推荐和探索主题数据；来源为用户需求与公开发布代码（H），尚未进行小程序页面实现或视觉核验。
+- 按协作规则先提供三个方向：A 口袋知识卡（短讲解、图解、理解题与收藏）、B 轻探索地图（触摸主题渐进发现）、C 任务随行助手（围绕电脑端任务推荐知识与下一步）。建议 A 为首页并加入 C 的任务关联；这是待选建议，尚非用户确认决策。训练与调优可用作首轮故事素材。
+- 当前仅追加本交接记录，产品源码、电脑端页面序列与 API / Protocol、Host / Harness、Application / Task 边界均无变化。方向选择已通过异步问题发出，等待用户选择；拟先交付可点击交互 Demo，小程序原生工程范围尚未确认。
+- 验证与发布：仅把本条追加到最新 `origin/main` 的 `AGENTS.md`，用独立临时索引核对单文件差异并执行 `git diff-tree --check`，随后推送 `main`（提交主题 `docs: record mini-program knowledge recommendation options`）；共享工作区内已有暂存、未暂存及未跟踪内容保持原样。
+
+### 2026-10-27 · 学习发现下方楼层与资源卡调整
+
+- 用户确认下方楼层用浅灰圆角分组底，并要求资源卡改为上图下字、横向排列，同时指出配图过淡。保留白卡和细描边，推荐与新上架改为桌面四列竖版卡，窄屏依次切三列 / 两列 / 单列；图片换用仓库已有主体更清楚的 v2 课程、路径、知识点、认证素材，保持浅亮底色。近期日程保留纵向时间轴。
+- 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css` 与 `/ascstudio/` 构建产物。依据为用户本轮明确需求（H）及仓库已有内容图素材；不改变页面序列或 API / Host / Application 边界。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。页面提交 `de01c247` 已推送到 `origin/main`；GitHub Pages workflow `40451131656` 成功，线上 `/ascstudio/` 已引用新 JS / CSS 哈希，二者均 HTTP 200。
+
+### 2026-10-27 · 画布编辑退出、卡片内绘图与新增卡片删除
+
+- 用户提出三项一致性要求：进入画布编辑态后能明确退出；绘图应发生在卡片内部；新增卡片应能删除。编辑工具在编辑态显示“完成编辑”，并支持 Esc 退出；切换抓手、结束绘图或隐藏画布时清理活动笔迹状态。
+- 绘图按钮创建或选中独立“手绘卡片”，指针笔迹限定在该卡片内容区域，落笔数据按 `cardId` 归属。保留已有无卡片归属笔迹的显示兼容，但新交互不再产生画布级笔迹。
+- 任务画布、图像预处理学习画布、ResNet50 官方学习画布共用同一手绘卡片组件；新增便签和手绘卡片在编辑态提供删除，删除时同时清除关联笔迹。原任务材料仍使用收起 / 恢复，不显示删除操作。
+- 修改 `ascend-studio/src/TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`、`LearningCanvasToolbar.jsx`、`shared/canvas/CanvasUserNote.jsx`、新增 `shared/canvas/CanvasDrawingSurface.jsx`、`shared/canvas/useCanvasDrawing.js`、`shared/canvas/canvas.css`、`task-canvas.css`、`useCanvasState.js`；Pages 产物在合并主线后重新生成。
+- 依据：用户本轮明确要求（H）；本地实现逻辑与生产构建（M）。`npm run build:pages`、源码辅助模块 `node --check`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 源码提交 `fe2002cc` 已生成。为保留主线并行首页更新，正在合并 `origin/main` 并从合并后的源码重建 Pages；最终主线提交和部署结果待补记。
