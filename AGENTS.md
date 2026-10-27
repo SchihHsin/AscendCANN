@@ -7036,3 +7036,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修复蓝图的响应式网格：平板四阶段改为两列，手机按顺序单列并保留阶段箭头。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：HTMLParser 通过；Chrome 1440px 桌面、1024px 平板、390px 手机视口完成视觉检查，三视口 `body.scrollWidth` 均等于视口宽度。`git diff --check` 通过；未运行自动化测试。
 - 提交与推送：蓝图提交 `ff9acc33` 已推送至 `origin/main`，此前并行的每周速览与主线更新均保留，未强推。GitHub Pages workflow `40493561236` 成功；线上 `/AscendCANN/ascstudio-mini/knowledge-provider-map.html` 返回 HTTP 200，标题与蓝图内容匹配。
+
+### 2026-10-27 · 旧画布笔迹删除入口
+
+- 用户问如何删除此前画布上留下的笔迹。已有操作依赖先点线条选中，但删除按钮要选中后才出现，入口不明显。现在有旧画布级笔迹时，编辑工具栏始终显示“删除笔迹”，未选中时禁用并提示“先点击要删除的笔迹，再删除”；选中某条线后启用删除。任务画布、图像预处理学习画布、ResNet50 官方学习画布统一采用此行为，并同步改写画布内提示。
+- 新增手绘卡片仍在卡片内容区落笔；删除整张新增卡片时连带删除其关联笔迹。此更新只改进旧笔迹入口，不改变新卡片绘图与内容顺序。
+- 修改 `ascend-studio/src/LearningCanvasToolbar.jsx`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx` 和 `/ascstudio/` Pages 产物。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。用户截图、本地代码与构建为依据（H / M）。
+- 验证：`npm run build:pages`、产物 `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；Vite 有既存的主 bundle 大于 500 kB 提示，未运行自动化测试。已将本地预览在浏览器打开。
+- 发布记录待本轮 push 与 Pages 部署确认后回填；同步的主线包含 `ascstudio-mini/` 每周速览与知识供给蓝图更新，均保留。
