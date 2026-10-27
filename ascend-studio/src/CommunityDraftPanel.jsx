@@ -89,15 +89,28 @@ function ChannelCardPreview({ channelId, draft }) {
     <div className="channel-preview-community-lead">
       <div>
         <h3>{topic}经验记录与排查思路</h3>
-        <p>{truncate(draft.approach, 105)}</p>
       </div>
       <img src={tensorCubeIllustration} alt="" aria-hidden="true" />
     </div>
-    <div className="channel-preview-community-scroll" role="region" tabIndex={0} aria-label="社区问题现象预览，可滚动查看">
+    <div className="channel-preview-community-scroll" role="region" tabIndex={0} aria-label="社区经验帖内容预览，包含四个章节，可滚动查看">
       <div className="channel-preview-community-section">
         <h4>一、问题现象</h4>
-        <p>{truncate(draft.problem, 110)}</p>
+        <p>{draft.problem}</p>
         <div className="channel-preview-caution"><span />{isAddCustom ? "尾块边界仍是待验证线索" : "真实模型结果仍待目标环境核对"}</div>
+      </div>
+      <div className="channel-preview-community-section">
+        <h4>二、尝试与结果</h4>
+        <p>{draft.approach}</p>
+      </div>
+      <div className="channel-preview-community-section">
+        <h4>三、环境信息</h4>
+        <ul className="channel-preview-community-environment">
+          {String(draft.environment || "环境信息尚未补充").split(/\r?\n/).filter(Boolean).map((item, index) => <li key={`${index}-${item}`}>{item}</li>)}
+        </ul>
+      </div>
+      <div className="channel-preview-community-section">
+        <h4>四、验证状态</h4>
+        <p>{draft.verification}</p>
       </div>
     </div>
   </div>;
