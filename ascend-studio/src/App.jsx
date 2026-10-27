@@ -45,7 +45,6 @@ import "./interaction.css";
 import "./visual-focus.css";
 import {
   IconAdjustmentsHorizontal,
-  IconAlertTriangle,
   IconArrowRight,
   IconBell,
   IconBook,
@@ -60,7 +59,7 @@ import {
   IconDots,
   IconFileText,
   IconFolder,
-  IconGripVertical,
+  IconGripHorizontal,
   IconLibrary,
   IconLayoutBottombar,
   IconLayoutSidebar,
@@ -73,6 +72,7 @@ import {
   IconPlus,
   IconSearch,
   IconSend,
+  IconShieldCheck,
   IconSparkles,
   IconSettingsAutomation,
   IconThumbDown,
@@ -84,6 +84,11 @@ import {
 const OFFICIAL_STAGE_IDS = new Set(OFFICIAL_LEARNING_STAGES.map(stage => stage.id));
 const OFFICIAL_MATERIAL_STAGES = Object.fromEntries(OFFICIAL_LEARNING_STAGES.flatMap(stage => [[stage.id, [stage.id, stage.children[0].id]], ...stage.children.map(child => [child.id, [stage.id, child.id]])]));
 const PATH_REFINEMENT_DEMO_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
+const PERMISSION_OPTIONS = [
+  { id: "read-only", label: "只读" },
+  { id: "confirm", label: "每次确认" },
+  { id: "task", label: "本任务内允许操作" },
+];
 
 function withMaterialCanvasConnections(baseConnections, items = []) {
   const knownIds = new Set(items.map(item => item.id));
@@ -179,26 +184,6 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
   );
 }
 
-function TrustEvidenceCard({ assessment }) {
-  if (!assessment) return null;
-  const supported = assessment.supported || [];
-  const missing = assessment.missing || [];
-  return <section className={`trust-evidence-card trust-evidence-card--${assessment.statusTone || "provisional"}`} aria-label="Agent 判断可信度与依据">
-    <div className="trust-evidence-heading">
-      <span className="trust-evidence-icon">{assessment.statusTone === "provisional" ? <IconAlertTriangle size={15} /> : <IconCircleCheck size={15} />}</span>
-      <span className="trust-evidence-copy"><strong>{assessment.title || "判断可信度"}</strong><small>{assessment.summary}</small></span>
-      <span className="trust-evidence-status">{assessment.status || "待复核"}</span>
-    </div>
-    <details className="trust-evidence-details">
-      <summary>查看依据 · {supported.length} 项支持 · {missing.length} 项待补</summary>
-      <div className="trust-evidence-lists">
-        <div><strong>当前支持</strong><ul>{supported.map((item, index) => <li key={`support-${index}`}>{item}</li>)}</ul></div>
-        {missing.length > 0 && <div><strong>仍待补充</strong><ul>{missing.map((item, index) => <li key={`missing-${index}`}>{item}</li>)}</ul></div>}
-      </div>
-    </details>
-  </section>;
-}
-
 function App() {
   const wb = useWorkbenchState();
   const [visualTheme, setVisualTheme] = useState(() => {
@@ -228,6 +213,8 @@ function App() {
   useEffect(() => { writeSession("conversation-layout", conversationLayout); }, [conversationLayout]);
   const [conversationDragging, setConversationDragging] = useState(false);
   const [conversationDockPreview, setConversationDockPreview] = useState(false);
+  const [conversationFloatPreview, setConversationFloatPreview] = useState(false);
+  const [permissionModes, setPermissionModes] = useState({});
   const conversationPanelRef = useRef(null);
   const conversationDragRef = useRef(null);
   const showNewTaskHome = mainView === "home";
@@ -289,6 +276,8 @@ function App() {
   };
   const selectExistingTask = (name) => { selectTask(name); setMainView("task"); };
   const { selectedRoute, draft } = session;
+  const permissionMode = permissionModes[selectedTask] || "confirm";
+  const permissionModeLabel = PERMISSION_OPTIONS.find(item => item.id === permissionMode)?.label || "每次确认";
   const messages = session.messages.filter(message => {
     if (["learning", "official-learning"].includes(task.kind) && (message.communityInvite || message.communityDraftCard)) return false;
     return !message.communityDraftCard || Boolean(message.communityDraftId && session.communityDraft?.id === message.communityDraftId && session.communityDraft?.completionId);
@@ -335,6 +324,7 @@ function App() {
     conversationPanelRef.current?.style.removeProperty("--conversation-drag-y");
     setConversationDragging(false);
     setConversationDockPreview(false);
+    setConversationFloatPreview(false);
   };
   const conversationDockTargetContains = (clientX, clientY) => {
     const workspaceElement = layout.workspaceRef.current;
@@ -348,6 +338,19 @@ function App() {
     const right = workspaceRect.left + conversationEdge;
     return clientX >= left - 16 && clientX <= right + 16 && clientY >= workspaceRect.top && clientY <= workspaceRect.bottom;
   };
+  const conversationFloatTargetContains = (clientX, clientY) => {
+    const workspaceElement = layout.workspaceRef.current;
+    if (!workspaceElement) return false;
+    const workspaceRect = workspaceElement.getBoundingClientRect();
+    const styles = getComputedStyle(workspaceElement);
+    const projectsEdge = Number.parseFloat(styles.getPropertyValue("--projects-edge")) || 56;
+    const conversationEdge = Number.parseFloat(styles.getPropertyValue("--conversation-edge"));
+    const contentStart = Number.isFinite(conversationEdge) ? conversationEdge : projectsEdge;
+    const centerX = workspaceRect.left + projectsEdge + (workspaceRect.width - projectsEdge) / 2;
+    const hitWidth = Math.min(360, Math.max(220, (workspaceRect.right - workspaceRect.left - contentStart) / 2));
+    const bottomBand = Math.min(190, Math.max(120, workspaceRect.height * 0.28));
+    return clientX >= centerX - hitWidth && clientX <= centerX + hitWidth && clientY >= workspaceRect.bottom - bottomBand && clientY <= workspaceRect.bottom;
+  };
   const moveConversationDrag = (event) => {
     const active = conversationDragRef.current;
     if (!active || active.pointerId !== event.pointerId) return;
@@ -358,22 +361,28 @@ function App() {
     setConversationDragging(true);
     conversationPanelRef.current?.style.setProperty("--conversation-drag-x", `${deltaX}px`);
     conversationPanelRef.current?.style.setProperty("--conversation-drag-y", `${deltaY}px`);
-    const preview = conversationDockTargetContains(event.clientX, event.clientY);
-    setConversationDockPreview(current => current === preview ? current : preview);
+    const destination = active.sourceLayout === "floating"
+      ? conversationDockTargetContains(event.clientX, event.clientY) ? "sidebar" : null
+      : conversationFloatTargetContains(event.clientX, event.clientY) ? "floating" : null;
+    setConversationDockPreview(destination === "sidebar");
+    setConversationFloatPreview(destination === "floating");
     event.preventDefault();
   };
   const startConversationDrag = (event) => {
-    if (areaInteractionActive || conversationLayout !== "floating" || window.innerWidth <= 980 || event.button !== 0 || !event.isPrimary || conversationDragRef.current) return;
-    conversationDragRef.current = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, moved: false, handle: event.currentTarget };
+    if (areaInteractionActive || window.innerWidth <= 980 || event.button !== 0 || !event.isPrimary || conversationDragRef.current) return;
+    conversationDragRef.current = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, moved: false, sourceLayout: conversationLayout, handle: event.currentTarget };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
   const finishConversationDrag = (event, cancelled = false) => {
     const active = conversationDragRef.current;
     if (!active || active.pointerId !== event.pointerId) return;
     if (!cancelled) moveConversationDrag(event);
-    const shouldDock = !cancelled && (!active.moved || conversationDockTargetContains(event.clientX, event.clientY));
+    const hasTarget = active.sourceLayout === "floating"
+      ? conversationDockTargetContains(event.clientX, event.clientY)
+      : conversationFloatTargetContains(event.clientX, event.clientY);
+    const shouldSwitch = !cancelled && (!active.moved || hasTarget);
     resetConversationDrag();
-    if (shouldDock) setConversationLayout("sidebar");
+    if (shouldSwitch) setConversationLayout(active.sourceLayout === "floating" ? "sidebar" : "floating");
   };
   useEffect(() => {
     if (areaInteractionActive && conversationDragRef.current) resetConversationDrag();
@@ -1207,7 +1216,6 @@ function App() {
       messages: [...old.messages, ...completionExchange, {
         id: crypto.randomUUID(), role: "assistant", isDemo: true,
         communityInvite: { summaryId: summary.id, summary },
-        ...(summary.trustAssessment ? { trustAssessment: summary.trustAssessment } : {}),
         text: summary.completionText || `${summary.demoFixture ? "示例形状核对已通过" : "示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
       }],
     }));
@@ -1219,17 +1227,6 @@ function App() {
       id: `addcustom-${result.id}`,
       kind: "addcustom-precision-resolution",
       precision: result.precision,
-      trustAssessment: {
-        status: "开发者确认复测",
-        statusTone: "confirmed",
-        summary: `逐元素核对 ${result.precision?.count ?? "未记录"} 项均在容差内；目标环境复测由你确认。`,
-        supported: [
-          `${result.precision?.count ?? "未记录"} 项逐元素数据，超差 0 项`,
-          `atol ${result.precision?.atol ?? "未记录"} · rtol ${result.precision?.rtol ?? "未记录"}`,
-          "开发者确认目标环境复测通过",
-        ],
-        missing: ["运行日志、CANN / 芯片版本尚未附入；Demo 未独立连接 NPU 核验"],
-      },
       completionText: "你已确认 AddCustom 精度异常已在目标环境复测通过。可以把本次修复步骤、适用条件和验证证据整理为社区经验；当前 Demo 不会代替真实设备检查。",
     });
   };
@@ -1240,14 +1237,7 @@ function App() {
       kind: "addcustom-precision-resolution",
       demoFixture: true,
       precision: { count: 561, failed: 0, atol: "1e-5", rtol: "1e-4", isDemo: true },
-      trustAssessment: {
-        status: "演示证据闭环",
-        statusTone: "demo",
-        summary: "预置流程展示从问题线索到复测回执；不代表真实项目运行。",
-        supported: ["[16,32] 通过、[17,33] 失败的输入对照", "修正尾块有效元素访问的示例改动", "预设目标环境复测通过回执"],
-        missing: ["实际代码与运行日志", "CANN / 芯片版本与设备复测数据"],
-      },
-      completionText: "演示完成：预置流程展示了 AddCustom 精度异常从输入对照、尾块访问修正到复测回执的完整闭环。下方可信度卡片列出支撑依据和未采集信息；这些是界面演示数据，不代表真实项目或 NPU 结果。",
+      completionText: "演示完成：预置流程展示了 AddCustom 精度异常从输入对照、尾块访问修正到复测回执的完整闭环。这个流程仅用于演示，不代表真实项目或 NPU 结果。",
     });
   };
   useEffect(() => {
@@ -1347,7 +1337,7 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
         <aside className="icon-rail" aria-label="主导航">
           <div className="icon-rail-nav">
             <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={ICON_SIZE.navigation} /></button>
@@ -1433,13 +1423,6 @@ function App() {
                   <p className="assistant-lead">尾块索引范围值得优先核对，根因尚未确认。</p>
                   <p>已知：<span className="chat-fact is-pass">[16,32] 通过</span>；<span className="chat-fact is-fail">[17,33] 失败</span>。修改编译参数后，错误位置未变。</p>
                   <p>还需：实际循环、两次运行条件与逐元素误差证据。</p>
-                  <TrustEvidenceCard assessment={{
-                    status: "线索级",
-                    statusTone: "provisional",
-                    summary: "输入对照支持优先检查尾块，现有信息还不能确认根因。",
-                    supported: ["[16,32] 通过、[17,33] 失败", "修改编译参数后错误仍在 custom_op.cpp:128"],
-                    missing: ["实际循环与索引范围", "运行环境、逐元素误差与目标环境复测"],
-                  }} />
                   <button className="rationale-button" type="button" aria-expanded={rationaleOpen} onClick={() => setRationaleOpen((value) => !value)}>
                     <IconBook size={ICON_SIZE.control} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={ICON_SIZE.control} />
                   </button>
@@ -1453,8 +1436,8 @@ function App() {
                     secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "查看实际代码"}
                     onSecondary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? dispatchTaskIntent("explain", "tail") : changeActionView("code"); }} />
                   {!hasAddCustomFeedbackInvite && <div className="addcustom-feedback-shortcut">
-                    <button className="task-plain-button" type="button" onClick={triggerAddCustomFeedbackDemo}><IconSparkles size={14} />演示任务完成后的可信度与社区反馈<IconArrowRight size={13} /></button>
-                    <small>一键展示复测依据，再生成右侧社区经验草稿</small>
+                    <button className="task-plain-button" type="button" onClick={triggerAddCustomFeedbackDemo}><IconSparkles size={14} />演示任务完成后的社区反馈<IconArrowRight size={13} /></button>
+                    <small>一键展示完成态，再生成右侧社区经验草稿</small>
                   </div>}
                   <details className="chat-next-disclosure"><summary>比较其他排查方向</summary><div className="chat-next-actions" aria-label="可能的下一步方向">
                     <div className="chat-next-heading">可能的下一步方向</div>
@@ -1492,7 +1475,6 @@ function App() {
                   <div className={message.role === "user" ? "user-bubble" : "assistant-response extra-message"}>{message.text.split("\n\n").map((paragraph, i) => <p className="message-paragraph" key={i}>{paragraph}</p>)}
                     {message.attachments?.length > 0 && <div className="message-attachments">{message.attachments.map((file) => <button type="button" key={file.id} onClick={() => openDialog("evidence", { title: file.name, body: "本次任务的本地附件，尚未独立验证。", log: file.content || "已关联文件名称，尚无可读取的文本内容。" })}><IconPaperclip size={ICON_SIZE.inline} />{file.name}</button>)}</div>}
                   </div>
-                  {message.trustAssessment && <TrustEvidenceCard assessment={message.trustAssessment} />}
                   {message.scopeReference && <div className="message-source-links"><button type="button" onClick={() => {
                     const reference = message.scopeReference;
                     if (reference.type === "workspace-area") {
@@ -1539,7 +1521,7 @@ function App() {
             </button>
           </section>}
           <form className={`composer${showCommunityInvite ? " composer--community" : ""}`} onSubmit={handleSendMessage}>
-            {conversationLayout === "floating" && <button className="conversation-drag-handle" type="button" aria-label="拖动对话输入框到左侧停靠" title="拖动输入框到左侧；出现轮廓预览后松手吸附。轻点或按回车可直接切换" disabled={areaInteractionActive} onKeyDown={event => { if (event.key === "Escape" && conversationDragRef.current) { event.preventDefault(); resetConversationDrag(); } else if (event.key === "ArrowLeft" || event.key === "Enter" || event.key === " ") { event.preventDefault(); setConversationLayout("sidebar"); } }} onPointerDown={startConversationDrag} onPointerMove={moveConversationDrag} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}><IconGripVertical size={ICON_SIZE.inline} aria-hidden="true" /></button>}
+            <button className="conversation-drag-handle" type="button" aria-label="拖动对话区域切换布局" title="拖动对话区域；靠近目标布局时会显示预览，松手后吸附。轻点或按回车可切换布局" disabled={areaInteractionActive} onKeyDown={event => { if (event.key === "Escape" && conversationDragRef.current) { event.preventDefault(); resetConversationDrag(); } else if (event.key === "Enter" || event.key === " " || conversationLayout === "floating" && event.key === "ArrowLeft" || conversationLayout === "sidebar" && event.key === "ArrowDown") { event.preventDefault(); setConversationLayout(current => current === "floating" ? "sidebar" : "floating"); } }} onPointerDown={startConversationDrag} onPointerMove={moveConversationDrag} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}><IconGripHorizontal size={ICON_SIZE.inline} aria-hidden="true" /></button>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
               {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={ICON_SIZE.inline} /><span>{pointContext.type === "workspace-area" ? `工作区区域 · ${pointContext.label}` : `图解范围 · ${pointContext.label}`}</span><button type="button" aria-label="移除指向区域上下文" onClick={clearPointContext}><IconX size={ICON_SIZE.micro} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={ICON_SIZE.inline} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={ICON_SIZE.micro} /></button></span>)}
@@ -1548,14 +1530,11 @@ function App() {
             <textarea ref={wb.draftRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); handleSendMessage(event); } }} placeholder="继续提问，或描述你想进行的下一步…" aria-label="继续提问" rows={1} />
             <div className="composer-toolbar">
               <div className="composer-tools">
-                <button className="icon-button composer-plus" type="button" aria-label="更多输入方式" data-menu-trigger aria-expanded={wb.menu?.name === "input"} onClick={(event) => openMenu("input", event)}><IconPlus size={ICON_SIZE.heading} /></button>
-                <button className="tool-chip" type="button" onClick={() => openDialog("code")}><IconCode size={ICON_SIZE.control} />代码片段</button>
-                <button className="tool-chip" type="button" onClick={() => wb.imageRef.current?.click()}><IconPhoto size={ICON_SIZE.control} />截图</button>
-                <button className="tool-chip" type="button" onClick={() => wb.fileRef.current?.click()}><IconPaperclip size={ICON_SIZE.control} />文件</button>
-                <VoiceCaptureButton className="tool-chip voice-input-chip" label="语音输入" activeLabel="停止" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} />
+                <button className="icon-button composer-plus" type="button" aria-label="更多输入方式" data-menu-trigger data-menu-align="left" aria-expanded={wb.menu?.name === "input"} onClick={(event) => openMenu("input", event)}><IconPlus size={ICON_SIZE.heading} /></button>
               </div>
               <div className="composer-submit">
                 <button className="model-button" type="button" onClick={() => openDialog("models")} title="选择 AI（本地演示）"><IconBulb size={ICON_SIZE.inline} /><span>{wb.model.label}</span><IconChevronDown size={ICON_SIZE.inline} /></button>
+                <button className="permission-button" type="button" aria-label={`权限设置，当前${permissionModeLabel}`} title={`权限：${permissionModeLabel}（演示）`} data-menu-trigger aria-expanded={wb.menu?.name === "permissions"} onClick={event => openMenu("permissions", event)}><IconShieldCheck size={ICON_SIZE.control} /></button>
                 <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying || (!draft.trim() && !session.attachments.length)}><IconSend size={ICON_SIZE.heading} /></button>
               </div>
             </div>
@@ -1573,12 +1552,14 @@ function App() {
               renderContent={(id, ownerId) => renderMaterial(id, "content", ownerId)} renderCanvas={renderContentCanvas}
             />}
         </aside>}
-        {showTaskWorkspace && conversationLayout === "floating" && conversationDockPreview && <div className="conversation-dock-preview" aria-hidden="true" />}
+        {showTaskWorkspace && conversationDockPreview && <div className="conversation-dock-preview" aria-hidden="true" />}
+        {showTaskWorkspace && conversationFloatPreview && <div className="conversation-float-preview" aria-hidden="true" />}
       </div>
       {wb.menu && <div className={"workbench-menu workbench-menu-" + wb.menu.name} ref={wb.menuRef} style={{ left: wb.menu.left, ...(wb.menu.bottom !== null ? { bottom: wb.menu.bottom } : { top: wb.menu.top }) }}>
         {wb.menu.name === "filter" && <><div className="menu-label">显示项目</div>{[{ id: "all", label: "全部项目" }, { id: "current", label: "当前项目" }].map((item) => <button key={item.id} type="button" className={wb.filterScope === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => wb.setFilterScope(item.id))}>{item.label}{wb.filterScope === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}<div className="menu-divider" /><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups(wb.groups.map((group) => group.id)))}>展开所有项目</button><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups([]))}>收起所有项目</button></>}
         {wb.menu.name === "chat" && <><div className="menu-label">当前任务对话</div><button type="button" onClick={() => closeMenuAnd(wb.startConversation)}>新对话<IconPlus size={ICON_SIZE.control} /></button><button type="button" onClick={() => openDialog("history")}>对话历史<span>{session.history.length}</span></button><button type="button" onClick={() => closeMenuAnd(() => wb.copyText(wb.conversationText()))}>复制当前对话<IconCopy size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button><div className="menu-divider" /><button type="button" onClick={resetCurrentTask}>恢复本题初始状态</button></>}
-        {wb.menu.name === "input" && <><div className="menu-label">补充任务上下文</div><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => navigateMainView("capabilities"))}>使用能力库<IconBooks size={ICON_SIZE.control} /></button></>}
+        {wb.menu.name === "input" && <><div className="menu-label">添加输入</div><VoiceCaptureButton className="input-menu-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} /><div className="menu-divider" /><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => navigateMainView("capabilities"))}>使用能力库<IconBooks size={ICON_SIZE.control} /></button></>}
+        {wb.menu.name === "permissions" && <><div className="menu-label">当前任务权限 · 演示</div>{PERMISSION_OPTIONS.map(item => <button key={item.id} type="button" className={permissionMode === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => setPermissionModes(current => ({ ...current, [selectedTask]: item.id })))}><span>{item.label}</span>{permissionMode === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
         {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => openContent("review"))}>生成复核记录<IconFileText size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={ICON_SIZE.control} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button></>}
         {wb.menu.name === "notifications" && <><div className="menu-label">任务动态</div>{wb.notifications.length ? wb.notifications.map((entry) => <button className="notification-row" key={entry.id} type="button" onClick={() => selectExistingTask(entry.taskName)}><span><strong>{entry.text}</strong><small>{entry.taskName} · {entry.time}</small></span></button>) : <p className="menu-empty">尚无新动态。完成核对后会在这里留下记录。</p>}</>}
         {wb.menu.name === "profile" && <><div className="menu-profile"><strong>开发者</strong><span>Ascend Studio · 本地设计预览</span></div><div className="menu-label">界面主题</div><div className="theme-options" role="group" aria-label="界面主题">{[{ id: "neutral-gray", label: "中性灰" }, { id: "cool-gray", label: "冷灰" }].map(item => <button key={item.id} type="button" aria-pressed={visualTheme === item.id} className={visualTheme === item.id ? "is-active" : ""} onClick={() => setVisualTheme(item.id)}><span className={`theme-swatch theme-swatch--${item.id}`} aria-hidden="true" />{item.label}{visualTheme === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</div><button type="button" onClick={wb.exportTask}>导出当前任务</button><p className="menu-empty">{saveAvailable ? "任务参数、草案、对话与历史自动保存在此浏览器。原始附件需要重新选择。" : "此浏览器暂时无法保存新改动；请先导出当前任务记录。"}</p></>}
