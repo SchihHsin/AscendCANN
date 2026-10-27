@@ -7033,5 +7033,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户同意制作与小程序 Demo 分开的独立材料（H）。新增 `ascstudio-mini/knowledge-provider-map.html`，按「知识与学习资产 → 知识编译与注册 → Web / API / MCP / Skills 等场景交付 → 推荐体验与证据回流」说明服务供给；补充课程、路径、认证、知识点、活动等 Demo 入口的供给字段、Knowledge Unit 可用边界、来源 / 许可 / 版本 / Owner / 验证状态、P0–P2 顺序。`ascstudio-mini/README.md` 提供入口。
 - 资料规格是目标蓝图，不表示当前 Demo 已接真实后端、个性化推荐、Skill 或 MCP。`robots.txt`、`llms.txt`、Sitemap、Schema.org、OpenAPI、MCP、Agent Skills、A2A 各自职责和证据口径按页面链接的公开规范 / 提案表述；`llms.txt` 标为提案，robots 明确不承担鉴权，MCP 区分 Resources / Prompts / Tools。设计映射沿用已有机制研究中的 Knowledge Unit、Knowledge Compiler、Capability Registry 与 Evidence Feedback，不另造其为本 Demo 已有能力的事实。
 - 修复蓝图的响应式网格：平板四阶段改为两列，手机按顺序单列并保留阶段箭头。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 验证：HTMLParser 通过；Chrome 1440px 桌面、1024px 平板、390px 手机视口完成视觉检查，三视口均无横向溢出（body 宽度等于视口）。`git diff --check` 提交前复核；未运行自动化测试。
-- 提交与推送：本次仅提交本条记录、蓝图 HTML 与 README 入口；按仓库规则推送 `main`，随后确认远端提交及 Pages 页面可访问性。
+- 验证：HTMLParser 通过；Chrome 1440px 桌面、1024px 平板、390px 手机视口完成视觉检查，三视口 `body.scrollWidth` 均等于视口宽度。`git diff --check` 通过；未运行自动化测试。
+- 提交与推送：蓝图提交 `ff9acc33` 已推送至 `origin/main`，此前并行的每周速览与主线更新均保留，未强推。GitHub Pages workflow `40493561236` 成功；线上 `/AscendCANN/ascstudio-mini/knowledge-provider-map.html` 返回 HTTP 200，标题与蓝图内容匹配。
