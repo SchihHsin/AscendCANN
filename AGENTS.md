@@ -7237,3 +7237,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅对 `.ld-floor-recommended .ld-card-media img` 应用 `brightness(1.06) saturate(.8) contrast(.96)`；不影响顶部 Banner、新上架楼层和楼层背景。修改 `ascend-studio/src/learning-discovery.css` 及 `/ascstudio/` Pages 构建产物。
 - 依据：用户选择（H）；本地 1280×720 浏览器预览中四张卡片配图完整可见，亮度提高且类别色仍可辨（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`cd ascend-studio && npm run build:pages`、生成 JS `node --check`、HTML bundle 引用与文件存在性检查、`git diff --check` 通过；未运行自动化测试。源码提交 `001da5d2`、Pages 构建与文档提交 `daed9aa5` 已完成；同步保留截至 `f3b14cfa` 的并行主线更新后，最终提交 `6f40f5db` 已推送至 `origin/main`。Pages workflow `40554198989` 成功；线上 `/AscendCANN/ascstudio/`、`index-ChSAM-3t.js` 与 `index-CebWmIv6.css` 均 HTTP 200，回读 CSS 确认本次滤镜已发布。
+
+
+### 2026-10-28 · Ascend Studio 设计汇报与用户划分讨论
+
+- 用户要求用 report-ppt-skill，将线上 /ascstudio/ 和本地 5217 的 /ascstudio-mini/ 形成设计材料，从旧精简报告第5页旅程发现问题，再引出主动推荐与连线 Prompt、开发中学习与经验回流、意图学习路径与个人认知卡片、移动续学、1–2页知识供给。
+- 用户已选叙事A「一条旅程、两种起点」。随后要求先讨论任务用户 / 学习用户是否对应专业级 / 小白；用户分类尚未定稿。当前建议以使用目的区分「带任务开发」和「为目标学习」，把专业程度作为独立维度；此为讨论建议，不是用户已确认决定。
+- 已核对旧旅程和小程序资料，内置浏览器读取两端界面；本轮尚未完成完整截图取证。用户需求及选择为H，可见页面观察为M。学习切入问题拟为「知道目标，却不知道按自己的基础先学什么、学到什么程度能用」，属待确认设计推论。
+- 本轮仅讨论叙事与受众，未创建或改写汇报、产品源码、页面序列或API / Host / Application边界。后续先完成用户划分讨论，再展开材料。
+- 验证与发布：通过独立临时索引，相对最新origin/main仅追加本交接，执行git diff --cached --check后提交并推送main，主题docs: record Ascend Studio design report framing discussion；共享目录现有其他改动保持原样。
