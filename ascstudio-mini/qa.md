@@ -33,7 +33,17 @@
 - `evidence/knowledge-mobile.png`：知识卡详情与交互图解。
 - `evidence/task-mobile.png`：任务进展与相关知识。
 - `evidence/handoff-mobile.png`：可编辑的电脑端接续小结。
+- `evidence/weekly-briefing-320.png` / `evidence/weekly-briefing-mobile.png`：周报在 320 / 430px 手机视口。
+- `evidence/weekly-briefing-desktop.png`：桌面评审窗口中的小程序周报。
+- `evidence/knowledge-signal-mobile.png`：知识卡的兴趣 / 疑问信号区域。
 
 ## 演示边界
 
 本版为移动浏览器中的小程序交互Demo。示例任务、规则推荐与原理图解在本地运行；收藏和学习记录存储在当前浏览器。电脑端接续通过复制小结与问题完成，无跨设备后台同步。
+
+
+## 2026-10-27 · 每周速览新增界面核验
+
+- 新增周报页面与知识卡信号区后，用本地静态服务器和 Chrome 移动视口截屏检查 320px、430px。两种视口的 `document.documentElement.scrollWidth` 均与视口宽度一致；截图可见重点内容、两张相关卡和四项底部导航没有横向溢出。
+- 页面包含主题偏好（昇腾开发 / 训练调优 / 算子实践 / AI 应用）、周几与时间选项、微信授权样式弹窗、服务通知样式卡片和返回速览入口。此处为代码实现记录；本轮未执行完整端到端点击回归。
+- 当前周报内容是静态示例。真实持续推送受小程序类目与可用长期订阅模板限制；授权界面不调用微信 API。

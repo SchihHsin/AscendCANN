@@ -6954,6 +6954,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 发布：在最新 `origin/main` 的独立临时索引中，仅提交标题替换及本交接条目，推送 `main`，提交主题 `fix: rename mini-program task heading to continue learning`。共享工作区中其他暂存、未暂存和未跟踪内容保持原样。
 
 
+### 2026-10-27 · Ascend Studio 学习图标 Logo 探索
+
+- 用户要求基于「四角星在打开的书上方」草图做多种 Logo 方案。第一轮蓝紫玻璃方案被认为过于相似；第二轮金 / 珊瑚 / 绿等配色被反馈为奇怪。随后用户将方向收敛为黑色圆角底、白色打开的书、彩虹渐变发光的四角星，书与星需明确区分颜色和材质；并指定书参考另一张图中的乳白、圆润、半透明玻璃质感。这是待评审方向，不是最终定稿或项目内图标资产。
+- ImageGen 已迭代生成对照板。用户随后指定星星参考新图中的流动彩色分区与柔亮效果，同时保留四角星轮廓；书减少立体厚度。当前方案为黑色圆角底、白色低浮雕薄页书（仅保留轻微乳白透光和边缘高光）、带橙 / 粉 / 紫 / 蓝 / 青流动渐变的发光四角星。参考来自用户提供的原始书星草图、乳白玻璃材质图和彩色球体的光色风格图；不把球体轮廓用于星星。最新生成预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-474f1147-318a-4aec-acd2-5a91b5d03848.png`；未加入项目文件。
+- 未改变产品页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本轮没有代码改动或工程验证。待用户评审后再确定是否把某一方向转为正式图标资产。
+- 验证 / 发布：交接文档 `git diff --check` 通过后，仅提交 `AGENTS.md` 并推送 `main`；本地共享工作区既有暂存、未暂存及未跟踪改动未纳入。
+
+
 ### 2026-10-27 · 微信订阅提醒交互方向（待选择）
 
 - 用户询问能否在微信里演示主动向小程序用户推送信息，作为现有口袋新知小程序 Demo 的后续方向。已核对订阅消息接入说明：用户需要在明确点击后调起订阅授权；发送需有对应授权，消息经微信服务通知呈现，点击可回到小程序相关页。依据：[腾讯云小程序订阅消息接入指南](https://cloud.tencent.cn/document/product/1301/103770) 所述微信 `wx.requestSubscribeMessage` 流程；平台边界属H级公开接口事实。面向学习内容先按用户逐条授权的一次性提醒设计；不预设持续、无授权推送。
@@ -6996,5 +7004,34 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出多渠道卡片内滚动后仍只见「一、问题现象」。原因是社区渠道预览组件只渲染了 `draft.problem`，没有把草稿其余字段接入；此前确认的卡片正文区独立滚动继续保留。现在按草稿字段显示问题现象、尝试与结果、环境信息、验证状态四节，标题及卡片底部渠道奖励 / 查看详情保持固定。
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css` 和 `ascstudio/` Pages 构建产物。不改变页面序列与 API / Protocol、Host / Harness、Application / Task 边界；草稿的示例验证说明仍照实呈现。
+
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；本地 5232 浏览器完成 AddCustom「标记为已解决 → 生成草稿 → 查看全部发布渠道」回放，确认社区卡可访问四节并在正文区域滚动；未运行测试套件。Vite 仍提示主 bundle 大于 500 kB。
 - 发布：源码提交 `6ca48c2d` 与主线并行提交 `a70325e5` 合并后推送，主线提交 `dde1ee69`；GitHub Pages workflow `40471279379` 成功，线上 `/ascstudio/` 已引用新 JS / CSS 哈希资源，JS HEAD 返回 HTTP 200。
+
+
+### 2026-10-27 · 组合首页 Tab 更名为“串联”
+
+- 用户指出右上角“组合”不合适；此前讨论并推荐“串联”，本轮补齐这个未落地的改名。Tab 文案改为“串联”，其他首页方案名称、路由参数和连线行为不变。
+- 修改 `ascend-studio/src/NewTaskHome.jsx` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。浏览器截图复核仍受 CUA 桥接中断影响。
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。
+
+### 2026-10-27 · 底部对话输入框与小地图避让
+
+- 按用户确认，底部浮窗输入区默认一行、内容变多时自动增高；最小高度 88px 收到 72px，保留自动增高和 110px 上限。小地图在输入态按实际框体位置动态上移并留 12px 间距，对话展开或指向区域时恢复原位。
+- 修改 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 与 `ascstudio/` Pages 产物。依据为用户提供的截图与明确选择（H）；不影响页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check`、HTML 资源哈希引用检查通过；本地 5178 HTTP 200。未运行自动化测试，未留存新截图。实现提交 `971d7020`；并入主线同期画布 / 社区更新后，提交 `270c7324`、`7598593e` 已推送 `origin/main`。Pages workflow `40473711359` 成功，线上 HTML / JS / CSS 均 HTTP 200。
+
+### 2026-10-27 · 每周昇腾开发速览与个性化知识卡
+
+- 用户确认的周报形态为「一条重点资讯 + 两张按关注或存疑补充的短知识卡」（H）。在 `ascstudio-mini/` 扩展现有可点击 Demo：知识卡增加「感兴趣 / 还没弄懂」双信号；新设「速览」底部入口；按昇腾开发、训练调优、算子实践、AI 应用主题切换静态示例焦点内容，并优先推荐用户标记的两张卡，无标记时回退到当前电脑端任务关联知识。主题、时间、兴趣信号、疑问信号及订阅开关写入当前浏览器 localStorage。
+- 订阅交互包括主题 / 周几 / 时间设置、微信授权样式弹窗、服务通知样式卡片、点击返回周报和关闭本地演示订阅；这些是前端本地模拟，不调用微信 API，也不读取真实资讯流。真实持续推送依赖微信小程序类目和可用长期订阅模板，依据此前核对的 [腾讯云订阅消息接入指南](https://cloud.tencent.cn/document/product/1301/103770) 与 [小程序消息通知说明](https://cloud.tencent.com/document/practice/269/79050)。周报示例引用 PyTorch DDP、CANN 文档与 Anthropic Tool Use 公开资料。
+- 变更文件：`ascstudio-mini/index.html`、`app.js`、`knowledge.js`、`styles.css`、`README.md`、`qa.md` 与 `evidence/` 三种视口 / 状态截图。产品判断来自用户确认（H）；业务文章为策划示例、链接为公开来源；浏览器呈现与宽度测量为本地观察（M）。没有修改电脑端 `/ascstudio/`、API / Protocol、Host / Harness、Application / Task 的机制边界；仅为小程序新增周报路由和一个底部导航项。
+- 验证：`node --check app.js`、`node --check knowledge.js` 与 `git diff --check` 通过；Chrome 本地视口截屏核对 320 / 430 / 1440px，三种宽度 `documentElement.scrollWidth` 与视口宽度相等。未进行完整端到端点击回归。
+- 提交 / 推送：小程序改动提交 `7c0df7dc` 已并入最新主线；合并提交 `311451ea` 已推送至 `origin/main`。推送期间两次同步远端并行提交，均保留；共享工作区其它暂存、未暂存及未跟踪改动未纳入。
+### 2026-10-27 · 口袋新知 Demo 的知识供给侧服务蓝图
+
+- 用户同意制作与小程序 Demo 分开的独立材料（H）。新增 `ascstudio-mini/knowledge-provider-map.html`，按「知识与学习资产 → 知识编译与注册 → Web / API / MCP / Skills 等场景交付 → 推荐体验与证据回流」说明服务供给；补充课程、路径、认证、知识点、活动等 Demo 入口的供给字段、Knowledge Unit 可用边界、来源 / 许可 / 版本 / Owner / 验证状态、P0–P2 顺序。`ascstudio-mini/README.md` 提供入口。
+- 资料规格是目标蓝图，不表示当前 Demo 已接真实后端、个性化推荐、Skill 或 MCP。`robots.txt`、`llms.txt`、Sitemap、Schema.org、OpenAPI、MCP、Agent Skills、A2A 各自职责和证据口径按页面链接的公开规范 / 提案表述；`llms.txt` 标为提案，robots 明确不承担鉴权，MCP 区分 Resources / Prompts / Tools。设计映射沿用已有机制研究中的 Knowledge Unit、Knowledge Compiler、Capability Registry 与 Evidence Feedback，不另造其为本 Demo 已有能力的事实。
+- 修复蓝图的响应式网格：平板四阶段改为两列，手机按顺序单列并保留阶段箭头。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：HTMLParser 通过；Chrome 1440px 桌面、1024px 平板、390px 手机视口完成视觉检查，三视口均无横向溢出（body 宽度等于视口）。`git diff --check` 提交前复核；未运行自动化测试。
+- 提交与推送：本次仅提交本条记录、蓝图 HTML 与 README 入口；按仓库规则推送 `main`，随后确认远端提交及 Pages 页面可访问性。
