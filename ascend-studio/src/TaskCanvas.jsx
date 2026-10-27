@@ -25,6 +25,7 @@ import { ADD_CUSTOM_LAYOUT_GROUPS, addCustomGroupKey } from "./addcustom-canvas-
 import { CanvasCardActions, CanvasCardButton, CanvasCardFrame, CanvasCardHeader, CanvasFitIcon, CanvasMiniMap, CanvasSurface, CanvasToolButton, CanvasToolbar, CanvasToolbarGroup, CanvasZoomGroup } from "./shared/canvas/index.jsx";
 import CanvasDrawingSurface from "./shared/canvas/CanvasDrawingSurface.jsx";
 import CanvasNoteContent from "./shared/canvas/CanvasNoteContent.jsx";
+import CanvasLegacyDrawings from "./shared/canvas/CanvasLegacyDrawings.jsx";
 import { useCanvasDrawing } from "./shared/canvas/useCanvasDrawing.js";
 import "./task-canvas.css";
 
@@ -311,6 +312,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     <CanvasToolbarGroup label="画布编辑">
       <CanvasToolButton className={positionEditing ? "canvas-tool-button--labeled" : ""} type="button" active={positionEditing} aria-label={positionEditing ? "完成编辑并退出编辑状态" : "编辑画布"} title={positionEditing ? "完成编辑并退出编辑状态" : "编辑画布"} onClick={togglePositionEditing}>{positionEditing ? <><IconCheck size={ICON_SIZE.control} /><span>完成编辑</span></> : <IconPencil size={ICON_SIZE.control} />}</CanvasToolButton>
     </CanvasToolbarGroup>
+    {positionEditing && drawing.selectedLegacyDrawingId && <CanvasToolbarGroup label="选中笔迹操作"><CanvasToolButton className="canvas-tool-button--labeled" type="button" aria-label="删除当前选中的旧笔迹" title="删除当前选中的旧笔迹" onClick={drawing.deleteSelectedLegacyDrawing}><IconTrash size={ICON_SIZE.control} /><span>删除笔迹</span></CanvasToolButton></CanvasToolbarGroup>}
     {isAddCustom && positionEditing && <CanvasToolbarGroup className="canvas-toolbar-group--add-content" label="添加画布内容">
       <CanvasToolButton type="button" active={nodePickerOpen} aria-label="添加已有内容节点" aria-expanded={nodePickerOpen} title="添加已有内容节点" onClick={() => { setNodePickerOpen((open) => !open); drawing.stop(); }}><IconPlus size={ICON_SIZE.control} /></CanvasToolButton>
       <CanvasToolButton type="button" aria-label="添加笔记" title="添加笔记" onClick={addNote}><IconNotes size={ICON_SIZE.control} /></CanvasToolButton>
@@ -370,7 +372,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
           const path = horizontal ? `M ${startX} ${startY} C ${startX + direction * distance} ${startY}, ${endX - direction * distance} ${endY}, ${endX} ${endY}` : `M ${startX} ${startY} C ${startX} ${startY + direction * distance}, ${endX} ${endY - direction * distance}, ${endX} ${endY}`;
           return <g key={connection.id || index}><path d={path} markerEnd="url(#task-canvas-arrow)" />{connection.label && <text x={(startX + endX) / 2} y={(startY + endY) / 2 - 8}>{connection.label}</text>}</g>;
         })}</svg>}
-        {worldDrawings.length > 0 && <svg className="tc-drawings" aria-hidden="true">{worldDrawings.map((drawing) => <polyline key={drawing.id} points={(drawing.points || []).map((point) => `${point.x},${point.y}`).join(" ")} fill="none" stroke={drawing.color || "#55585a"} strokeWidth={drawing.width || 3} strokeLinecap="round" strokeLinejoin="round" />)}</svg>}
+        <CanvasLegacyDrawings className="tc-drawings" drawings={worldDrawings} editable={positionEditing} selectedId={drawing.selectedLegacyDrawingId} onSelect={drawing.selectLegacyDrawing} onDelete={drawing.deleteLegacyDrawing} />
 
         {state.cards.map((card, index) => {
           const collapsed = isCollapsed(card);
@@ -396,7 +398,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
         {worldDrawings.map((drawing) => <polyline key={drawing.id} className="canvas-minimap-drawing" points={(drawing.points || []).map((point) => `${point.x},${point.y}`).join(" ")} />)}
       </CanvasMiniMap>
 
-      <div className="tc-canvas-hint">{drawing.drawingMode ? "绘图中：在手绘卡片内拖动 · 点击笔形按钮或按 Esc 结束" : positionEditing ? "编辑中：拖动卡片标题移动 · 完成编辑按钮或 Esc 退出" : "空白拖动平移 · ⌘ / Ctrl 滚轮缩放"}{hiddenCards.length ? ` · 已收纳 ${hiddenCards.length} 项` : ""}</div>
+      <div className="tc-canvas-hint">{drawing.drawingMode ? "绘图中：在手绘卡片内拖动 · 点击笔形按钮或按 Esc 结束" : positionEditing && worldDrawings.length ? drawing.selectedLegacyDrawingId ? "已选中旧笔迹 · 点击“删除笔迹”移除" : "点击画布上的旧笔迹可选中并删除" : positionEditing ? "编辑中：拖动卡片标题移动 · 完成编辑按钮或 Esc 退出" : "空白拖动平移 · ⌘ / Ctrl 滚轮缩放"}{hiddenCards.length ? ` · 已收纳 ${hiddenCards.length} 项` : ""}</div>
     </CanvasSurface>
     {(flow?.state?.notice || flow?.state?.error) && <div className={"tc-flow-status" + (flow.state.error ? " is-error" : "")} role={flow.state.error ? "alert" : "status"} aria-live="polite">{flow.state.error ? <IconAlertTriangle size={ICON_SIZE.inline} /> : <IconLayoutBoard size={ICON_SIZE.inline} />}<span>{flow.state.error || flow.state.notice}</span></div>}
   </aside>;
