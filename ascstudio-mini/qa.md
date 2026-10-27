@@ -64,3 +64,11 @@
 - 桌面预览使用单屏直板外框，不含折叠轴或内外屏。标准尺寸 420×696 CSS px，宽高比约 0.603；华为规格为机身宽 87.0 mm、长 144.1 mm，宽高比约 0.604；6.39 英寸屏幕规格见[官方页面](https://consumer.huawei.com/cn/phones/pura-x-view/specs/)。该外框只近似机身比例，不声称精确还原工业设计。
 - Chrome 桌面视口 1440×1000 回放速览页并检查截图；设备外形保持宽直板比例，正文在更短屏幕内自然滚动。修正讲解栏步骤标签样式，避免被圆点规则压缩为竖排。
 - 更新 `evidence/weekly-briefing-desktop.png`。验证：`node --check app.js`、`node --check knowledge.js`、`git diff --check` 通过；未运行自动化测试。
+
+## 2026-10-28 · 核心学习主线、主动回访章节与 HarmonyOS 状态栏
+
+- 手机无路由初始进入「发现」；桌面评审分为「核心学习」3 点（任务发现、知识卡微学习、任务接续）与「主动回访」4 点（微信列表、通知、每周速览、订阅设置），默认顺序以学习体验为主。桌面总览提供两章七屏缩略图；上/下沿显隐、快捷键、总览焦点循环和 `?point=7#briefing` 均已核对。
+- Chrome 156 本地 HTTP 预览，桌面 1440×1000；总览 7 个缩略 iframe 全部加载、无嵌套总览，弹层高度 760px 且不需内部滚动。将通知状态设为 `noticeRead:false` 后加载总览缩略图，localStorage 内容保持不变。键盘到第七步打开订阅设置，弹层打开时方向键不切屏，Escape 关闭；确认订阅后回到微信列表并显示未读提示。聚焦手机内搜索框时，O 与方向键不会触发桌面演示快捷键。
+- 手机视口 320 / 390 / 430 × 844：文档宽度等于视口宽度，桌面演示控件和模拟系统状态栏隐藏，正文仍可滚动。未检测到浏览器 JS error。
+- 样机状态栏将原来的 `9:41` 与单独信号 / Wi-Fi / 电池图形改为 `10:08`、5G、信号、Wi-Fi、电量百分比与电池图标；属于 HarmonyOS 常见信息排列的概念示意，不是 Pura X View 实机截图。更新 `evidence/home-desktop.png` 和 `evidence/review-overview-desktop.png`。
+- 验证命令：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。

@@ -37,64 +37,201 @@ function load() {
   } catch { return { saved: [], learned: [], interested: [], unsure: [], answers: {}, notes: [], activeTask: "training", weeklyTopics: ["昇腾开发"], weeklyDay: "周一", weeklyTime: "09:00", weeklySubscribed: false, noticeRead: false }; }
 }
 const state = load();
-let category = "为你推荐", query = "", group = 0, returnRoute = "discover", currentRoute = "", toastTimer, overlayReturnFocus;
+const initialReviewParams = new URLSearchParams(location.search);
+const isReviewThumbnail = initialReviewParams.get("thumb") === "1";
+const initialPoint = initialReviewParams.get("point");
+if (initialPoint === "7" && !location.hash) location.hash = "briefing";
+const openOverviewOnLoad = initialReviewParams.get("overview") === "1";
+let category = "为你推荐", query = "", group = 0, returnRoute = "discover", currentRoute = "", toastTimer, reviewControlsTimer, overlayReturnFocus;
 const widgets = { cards: 4, batch: 4, devices: 4, accumulation: 2, sync: 0, precision: "mixed", parallel: "data", elements: 33, layout: "chw" };
 const REVIEW_STEPS = [
-  { kicker: "01 / 05 · 主动送达", title: "新知先出现在微信里", description: "一条未读服务通知，让每周开发速览主动来到用户熟悉的消息列表。", principle: "用熟悉的微信消息状态承接主动推送" },
-  { kicker: "02 / 05 · 一眼判断", title: "先看懂这条通知", description: "服务通知先交代主题、本周重点和内容形态，再把用户带入完整速览。", principle: "先说明价值，再邀请用户打开" },
-  { kicker: "03 / 05 · 个性化速览", title: "一条资讯，接两张卡", description: "一条重点资讯搭配两张短知识卡，让开发者用手机快速读完并接着学。", principle: "关注与存疑信号决定补充什么" },
-  { kicker: "04 / 05 · 信号回流", title: "把存疑留给下一次", description: "用户在知识卡上标记感兴趣或还没弄懂，后续速览据此调整知识卡推荐。", principle: "一次阅读也能留下下一步线索" },
-  { kicker: "05 / 05 · 用户掌控", title: "推送主题与时间可选", description: "在订阅设置中选择关注主题和接收时间；确认后，Demo 模拟新通知回到微信列表。", principle: "用户选择接收方式，并能管理订阅" },
+  { chapter: "核心学习", kicker: "01 / 07 · 核心学习", title: "从任务出发，发现下一点新知", description: "继续电脑端正在做的事，首页把任务背景和相关知识放在一起，方便挑一个点开始。", principle: "让知识推荐接上具体开发任务" },
+  { chapter: "核心学习", kicker: "02 / 07 · 核心学习", title: "用几分钟，把一个概念学懂", description: "图解、可操作的小练习和理解小题放在同一张知识卡里，也能标记感兴趣或还没弄懂。", principle: "从浏览知识，走到理解与反馈" },
+  { chapter: "核心学习", kicker: "03 / 07 · 核心学习", title: "把理解带回原来的任务", description: "看学习进展、整理任务小结，或复制问题与已理解内容，回电脑继续处理。", principle: "手机学习接得回电脑任务" },
+  { chapter: "主动回访", kicker: "04 / 07 · 主动回访", title: "每周速览主动送到微信", description: "当用户不在小程序里时，一条未读服务通知出现在熟悉的微信会话列表。", principle: "推送作为回到学习的入口" },
+  { chapter: "主动回访", kicker: "05 / 07 · 主动回访", title: "先看懂通知，再决定是否打开", description: "通知先说明本周主题和内容形态，再由用户进入完整速览。", principle: "先交代价值，再邀请打开" },
+  { chapter: "主动回访", kicker: "06 / 07 · 主动回访", title: "一条资讯，再补两张个性化卡", description: "重点资讯之外，再按用户关注或存疑的知识点补两张适合手机阅读的短卡。", principle: "把学习信号带进下一次推荐" },
+  { chapter: "主动回访", kicker: "07 / 07 · 主动回访", title: "自己选择主题与接收时间", description: "订阅由用户决定；确认后模拟新通知回到微信列表，接上下一轮学习。", principle: "可选择、可管理的主动回访", nextTitle: "回到继续学习" },
 ];
-let weeklySettingsOpen = false, openReviewSettingsAfterBriefing = false;
+let weeklySettingsOpen = false;
+let openReviewSettingsAfterBriefing = initialPoint === "7" && (!location.hash || location.hash === "#briefing");
+let reviewOverviewOpen = false, reviewOverviewReturnFocus = null;
 function reviewIndexForRoute(route = currentRoute) {
-  if (weeklySettingsOpen) return 4;
+  if (weeklySettingsOpen) return REVIEW_STEPS.length - 1;
   const page = route.split("/")[0];
-  if (page === "wechat") return 0;
-  if (page === "wechat-notification") return 1;
-  if (page === "briefing") return 2;
-  if (page === "knowledge") return 3;
+  if (page === "discover") return 0;
+  if (page === "knowledge") return 1;
+  if (page === "task") return 2;
+  if (page === "wechat") return 3;
+  if (page === "wechat-notification") return 4;
+  if (page === "briefing") return 5;
   return -1;
+}
+function setReviewLocation(index) {
+  const url = new URL(location.href);
+  if (index < 0) url.searchParams.delete("point");
+  else url.searchParams.set("point", String(index + 1));
+  history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
 }
 function updateReviewPanel(route = currentRoute) {
   const index = reviewIndexForRoute(route);
-  if (index < 0) return;
+  const dots = [...document.querySelectorAll(".review-dot")];
+  dots.forEach((dot, dotIndex) => {
+    if (dotIndex === index) dot.setAttribute("aria-current", "step");
+    else dot.removeAttribute("aria-current");
+  });
+  if (index < 0) {
+    $("#review-kicker").textContent = "自由体验";
+    $("#review-title").textContent = "继续自由体验";
+    $("#review-description").textContent = "手机界面仍可操作。想回到设计讲解，可从右侧节点或总览选择。";
+    $("#review-principle").textContent = "七个设计点随时可直达";
+    $("#review-progress").textContent = `— / ${String(REVIEW_STEPS.length).padStart(2, "0")}`;
+    $("#review-prev").disabled = true;
+    $("#review-next").disabled = true;
+    setReviewLocation(-1);
+    return;
+  }
   const step = REVIEW_STEPS[index];
   $("#review-kicker").textContent = step.kicker;
   $("#review-title").textContent = step.title;
   $("#review-description").textContent = step.description;
   $("#review-principle").textContent = step.principle;
+  const journey = step.chapter === "核心学习" ? ["发现", "学懂", "接续"] : ["送达", "打开", "继续"];
+  ["#review-journey-first", "#review-journey-middle", "#review-journey-last"].forEach((selector, journeyIndex) => { $(selector).textContent = journey[journeyIndex]; });
   $("#review-progress").textContent = `${String(index + 1).padStart(2, "0")} / ${String(REVIEW_STEPS.length).padStart(2, "0")}`;
   $("#review-prev").disabled = index === 0;
-  $("#review-next").textContent = index === 4 ? "回到微信列表 →" : "下一设计点 →";
-  $("#review-next").setAttribute("aria-label", index === 4 ? "回到微信消息列表" : "下一个设计点");
+  $("#review-next").disabled = false;
+  $("#review-prev").setAttribute("aria-label", "上一个设计点");
+  $("#review-prev").title = "上一个设计点（←）";
+  const nextTitle = step.nextTitle || (index === 2 ? "看看微信回访" : "下一个设计点");
+  $("#review-next").setAttribute("aria-label", nextTitle);
+  $("#review-next").title = `${nextTitle}（→）`;
+  setReviewLocation(index);
 }
 function reviewRoute(index) {
-  if (index === 0) return "wechat";
-  if (index === 1) return "wechat-notification";
-  if (index === 2) return "briefing";
-  if (index === 3) return `knowledge/${activeTask().knowledge[0] || KNOWLEDGE[0].id}`;
-  return "wechat";
+  if (index === 0) return "discover";
+  if (index === 1) return `knowledge/${activeTask().knowledge[0] || KNOWLEDGE[0].id}`;
+  if (index === 2) return `task/${activeTask().id}`;
+  if (index === 3) return "wechat";
+  if (index === 4) return "wechat-notification";
+  return "briefing";
 }
 function goReviewRoute(index) {
   if (index === 0 && state.noticeRead) { state.noticeRead = false; persist(); }
   go(reviewRoute(index));
 }
+function jumpReviewStep(index) {
+  const target = Math.max(0, Math.min(REVIEW_STEPS.length - 1, Number(index)));
+  if (reviewOverviewOpen) closeReviewOverview();
+  if (target === REVIEW_STEPS.length - 1) {
+    if (weeklySettingsOpen) return;
+    openReviewSettingsAfterBriefing = true;
+    setReviewLocation(4);
+    if ($("#overlay").classList.contains("is-open") && !weeklySettingsOpen) closeOverlay(false);
+    if (currentRoute === "briefing") {
+      openReviewSettingsAfterBriefing = false;
+      openWeeklySettings();
+    } else go("briefing");
+    return;
+  }
+  openReviewSettingsAfterBriefing = false;
+  if ($("#overlay").classList.contains("is-open")) closeOverlay(false);
+  setReviewLocation(target);
+  goReviewRoute(target);
+}
 function navigateReview(direction) {
   const index = reviewIndexForRoute();
   if (index < 0) return;
-  if (direction === "prev") {
-    if (index === 4) { closeOverlay(false); goReviewRoute(3); return; }
-    if (index > 0) goReviewRoute(index - 1);
-    return;
-  }
-  if (index === 4) { goReviewRoute(0); return; }
-  if (index === 3) {
-    openReviewSettingsAfterBriefing = true;
-    go("briefing");
-    return;
-  }
-  goReviewRoute(index + 1);
+  if (direction === "prev" && index > 0) jumpReviewStep(index - 1);
+  else if (direction === "next") jumpReviewStep(index === REVIEW_STEPS.length - 1 ? 0 : index + 1);
+}
+function reviewThumbnailUrl(index) {
+  const url = new URL(location.href);
+  url.searchParams.set("point", String(index + 1));
+  url.searchParams.set("thumb", "1");
+  url.searchParams.delete("overview");
+  url.hash = reviewRoute(index);
+  return url.href;
+}
+function renderReviewControls() {
+  $("#review-dots").innerHTML = REVIEW_STEPS.map((step, index) => `<button class="review-dot" type="button" data-review-jump="${index}" aria-label="跳到第 ${index + 1} 个设计点：${esc(step.title)}" title="${esc(step.title)}"></button>`).join("");
+  const card = (step, index) => `<button class="review-overview-card" type="button" data-review-jump="${index}"><span class="review-overview-card-heading"><span>${String(index + 1).padStart(2, "0")}</span><strong>${esc(step.title)}</strong></span><span class="review-thumb-stage"><span class="review-thumb-device"><span class="review-thumb-screen"><iframe src="${esc(reviewThumbnailUrl(index))}" title="第 ${index + 1} 个设计点：${esc(step.title)}" tabindex="-1" loading="lazy"></iframe></span></span></span><span class="review-overview-card-caption">${esc(step.principle)}</span></button>`;
+  const chapters = [...new Set(REVIEW_STEPS.map(step => step.chapter))];
+  $("#review-overview-grid").innerHTML = isReviewThumbnail ? "" : chapters.map(chapter => {
+    const steps = REVIEW_STEPS.map((step, index) => ({ step, index })).filter(item => item.step.chapter === chapter);
+    const range = `${String(steps[0].index + 1).padStart(2, "0")}–${String(steps.at(-1).index + 1).padStart(2, "0")}`;
+    const description = chapter === "核心学习" ? "任务关联 · 微学习 · 电脑接续" : "微信通知 · 个性化速览 · 用户掌控";
+    return `<section class="review-overview-chapter"><header><h3>${esc(chapter)}</h3><span>${range}</span><p>${description}</p></header><div class="review-overview-cards">${steps.map(({ step, index }) => card(step, index)).join("")}</div></section>`;
+  }).join("");
+}
+function updateReviewOverviewSelection() {
+  const index = reviewIndexForRoute();
+  document.querySelectorAll(".review-overview-card").forEach((card, cardIndex) => {
+    if (cardIndex === index) card.setAttribute("aria-current", "step");
+    else card.removeAttribute("aria-current");
+  });
+}
+function setOverviewLocation(open) {
+  const url = new URL(location.href);
+  if (open) url.searchParams.set("overview", "1");
+  else url.searchParams.delete("overview");
+  history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
+function openReviewOverview() {
+  if (isReviewThumbnail || innerWidth <= 620) return;
+  if (reviewOverviewOpen) return;
+  reviewOverviewOpen = true;
+  reviewOverviewReturnFocus = document.activeElement;
+  $("#review-overview").hidden = false;
+  $("#review-overview-toggle").setAttribute("aria-expanded", "true");
+  $("#preview-layout").inert = true;
+  document.body.classList.add("review-overview-open");
+  setOverviewLocation(true);
+  updateReviewOverviewSelection();
+  requestAnimationFrame(() => ($(".review-overview-card[aria-current='step']") || $("#review-overview-close")).focus({ preventScroll: true }));
+}
+function closeReviewOverview(restoreFocus = true) {
+  if (!reviewOverviewOpen) return;
+  reviewOverviewOpen = false;
+  $("#review-overview").hidden = true;
+  $("#review-overview-toggle").setAttribute("aria-expanded", "false");
+  $("#preview-layout").inert = false;
+  document.body.classList.remove("review-overview-open");
+  setOverviewLocation(false);
+  if (restoreFocus && reviewOverviewReturnFocus?.isConnected) reviewOverviewReturnFocus.focus({ preventScroll: true });
+}
+function toggleReviewOverview() {
+  reviewOverviewOpen ? closeReviewOverview() : openReviewOverview();
+}
+function revealReviewControls() {
+  if (isReviewThumbnail || innerWidth <= 620) return;
+  $("#review-toolbar").classList.add("is-visible");
+  $("#review-dots").classList.add("is-visible");
+  clearTimeout(reviewControlsTimer);
+  reviewControlsTimer = setTimeout(() => {
+    if (!$("#review-toolbar").contains(document.activeElement) && !$("#review-dots").contains(document.activeElement)) hideReviewControls();
+  }, 2800);
+}
+function showReviewControls(event) {
+  if (isReviewThumbnail || innerWidth <= 620) return;
+  $("#review-toolbar").classList.toggle("is-visible", event.clientY >= innerHeight - 120 || $("#review-toolbar").contains(document.activeElement));
+  $("#review-dots").classList.toggle("is-visible", event.clientX >= innerWidth - 110 || $("#review-dots").contains(document.activeElement));
+}
+function hideReviewControls() {
+  if (!$("#review-toolbar").contains(document.activeElement)) $("#review-toolbar").classList.remove("is-visible");
+  if (!$("#review-dots").contains(document.activeElement)) $("#review-dots").classList.remove("is-visible");
+}
+function syncReviewFullscreen() {
+  const button = $("#review-fullscreen-toggle"), active = Boolean(document.fullscreenElement);
+  button.setAttribute("aria-label", active ? "退出全屏演示" : "进入全屏演示");
+  button.title = active ? "退出全屏演示（F）" : "全屏演示（F）";
+  button.innerHTML = active
+    ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M16 21v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>'
+    : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg>';
+}
+function toggleReviewFullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+  else document.exitFullscreen?.();
 }
 function persist() {
   try { localStorage.setItem(STORAGE, JSON.stringify(state)); } catch { toast("当前浏览器无法保存记录，本次仍可继续体验"); }
@@ -228,12 +365,13 @@ function mine(tab) {
 }
 function render() {
   closeOverlay(false);
-  let route; try { route = decodeURIComponent(location.hash.slice(1) || "wechat"); } catch { route = "wechat"; }
+  let route; try { route = decodeURIComponent(location.hash.slice(1) || "discover"); } catch { route = "discover"; }
   const [page, id] = route.split("/");
   const k = page === "knowledge" ? knowledgeById(id) : null;
   const valid = ["wechat", "wechat-notification", "discover", "briefing", "tasks", "mine"].includes(page) || (page === "task" && TASKS.some(t => t.id === id)) || Boolean(k);
-  if (!valid) { go("wechat"); return; }
-  if (page === "wechat-notification" && !state.noticeRead) { state.noticeRead = true; persist(); }
+  if (!valid) { go("discover"); return; }
+  if (openReviewSettingsAfterBriefing && page !== "briefing") openReviewSettingsAfterBriefing = false;
+  if (page === "wechat-notification" && !state.noticeRead && !isReviewThumbnail) { state.noticeRead = true; persist(); }
   if (page === "knowledge" && !currentRoute.startsWith("knowledge/")) returnRoute = currentRoute || "discover";
   currentRoute = route;
   const isWechat = page === "wechat" || page === "wechat-notification";
@@ -258,6 +396,7 @@ function render() {
   $("#wechat-tab-bar").hidden = page !== "wechat";
   $("#wechat-tab-bar").innerHTML = wechatTabMarkup();
   updateReviewPanel(route);
+  updateReviewOverviewSelection();
   if (openReviewSettingsAfterBriefing && page === "briefing") {
     openReviewSettingsAfterBriefing = false;
     openWeeklySettings();
@@ -304,9 +443,17 @@ async function copy(text) {
   }
 }
 document.addEventListener("click", async event => {
-  const button = event.target.closest("[data-route], [data-action], [data-category], [data-widget], [data-answer], [data-review-nav]");
+  const reviewControl = event.target.closest("[data-review-nav], [data-review-jump], [data-review-close-overview], [data-review-overview], [data-review-fullscreen]");
+  if (reviewControl) {
+    if (reviewControl.dataset.reviewNav) navigateReview(reviewControl.dataset.reviewNav);
+    else if (reviewControl.dataset.reviewJump !== undefined) jumpReviewStep(reviewControl.dataset.reviewJump);
+    else if (reviewControl.hasAttribute("data-review-close-overview")) closeReviewOverview();
+    else if (reviewControl.hasAttribute("data-review-overview")) toggleReviewOverview();
+    else if (reviewControl.hasAttribute("data-review-fullscreen")) toggleReviewFullscreen();
+    return;
+  }
+  const button = event.target.closest("[data-route], [data-action], [data-category], [data-widget], [data-answer]");
   if (!button) return;
-  if (button.dataset.reviewNav) { navigateReview(button.dataset.reviewNav); return; }
   if (button.dataset.route) { go(button.dataset.route); return; }
   if (button.dataset.category) { category = button.dataset.category; group = 0; const scroll = $("#screen").scrollTop; render(); $("#screen").scrollTop = scroll; return; }
   if (button.dataset.widget) {
@@ -372,14 +519,53 @@ document.addEventListener("submit", event => {
   state.notes = state.notes.slice(-100); persist(); closeOverlay(false); go(`task/${taskId}`); toast("小结已保存，接着你的任务继续");
 });
 document.addEventListener("keydown", event => {
-  if (!$("#overlay").classList.contains("is-open")) return;
-  if (event.key === "Escape") { closeOverlay(); return; }
-  if (event.key === "Tab") {
-    const items = [...$("#overlay").querySelectorAll('button, a[href], input:not([type="hidden"]), textarea, select')].filter(el => !el.disabled);
-    const first = items[0], last = items[items.length - 1];
-    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
-    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+  const overview = $("#review-overview"), overlay = $("#overlay");
+  const focusable = root => [...root.querySelectorAll('button:not(:disabled), a[href], input:not([type="hidden"]):not(:disabled), textarea:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])')].filter(el => !el.hidden && el.getAttribute("aria-hidden") !== "true");
+  const trapTab = root => {
+    const items = focusable(root), first = items[0] || root, last = items.at(-1) || root;
+    if (!items.length) root.focus({ preventScroll: true });
+    if (event.shiftKey && (document.activeElement === first || !root.contains(document.activeElement))) { event.preventDefault(); last.focus({ preventScroll: true }); }
+    else if (!event.shiftKey && (document.activeElement === last || !root.contains(document.activeElement))) { event.preventDefault(); first.focus({ preventScroll: true }); }
+  };
+  if (reviewOverviewOpen) {
+    if (event.key === "Escape") { event.preventDefault(); closeReviewOverview(); return; }
+    if (event.key === "Tab") trapTab(overview);
+    return;
+  }
+  if (overlay.classList.contains("is-open")) {
+    if (event.key === "Escape") { closeOverlay(); return; }
+    if (event.key === "Tab") trapTab(overlay);
+    return;
+  }
+
+  const target = event.target instanceof Element ? event.target : null;
+  const inPhone = Boolean(target?.closest("#device"));
+  const inReviewControl = Boolean(target?.closest("#review-toolbar, #review-dots"));
+  const isEditable = target?.matches("input, textarea, select, [contenteditable='true']");
+  const isInteractive = target?.closest("button, a[href], input, textarea, select, [contenteditable='true']");
+  if (inPhone || isEditable || (isInteractive && !inReviewControl)) return;
+  if (isReviewThumbnail || innerWidth <= 620) return;
+
+  const index = reviewIndexForRoute();
+  if (["ArrowLeft", "PageUp"].includes(event.key) && index > 0) {
+    event.preventDefault(); revealReviewControls(); jumpReviewStep(index - 1);
+  } else if (["ArrowRight", "PageDown"].includes(event.key) && index >= 0) {
+    event.preventDefault(); revealReviewControls(); jumpReviewStep(index === REVIEW_STEPS.length - 1 ? 0 : index + 1);
+  } else if (event.key === "Home" && index >= 0) {
+    event.preventDefault(); revealReviewControls(); jumpReviewStep(0);
+  } else if (event.key === "End" && index >= 0) {
+    event.preventDefault(); revealReviewControls(); jumpReviewStep(REVIEW_STEPS.length - 1);
+  } else if (event.key.toLowerCase() === "o" && !event.repeat) {
+    event.preventDefault(); toggleReviewOverview();
+  } else if (event.key.toLowerCase() === "f" && !event.repeat) {
+    event.preventDefault(); toggleReviewFullscreen();
   }
 });
+document.addEventListener("pointermove", showReviewControls, { passive: true });
+document.addEventListener("pointerleave", hideReviewControls);
+document.addEventListener("fullscreenchange", syncReviewFullscreen);
+window.addEventListener("blur", hideReviewControls);
 window.addEventListener("hashchange", render);
+renderReviewControls();
 render();
+if (openOverviewOnLoad && !isReviewThumbnail) openReviewOverview();
