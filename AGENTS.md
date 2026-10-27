@@ -7136,3 +7136,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：Pillow 检查 9 个 PNG；3 个透明版本为 RGBA 且 alpha 范围为 0–255，6 个背景版本为 RGB；git diff --cached --check 通过。未运行测试。
 - 提交 / 推送：本次素材与交接记录通过独立临时索引提交，并推送至 origin/main，提交主题为 assets: add star-book icon concepts；共享工作区其他暂存、未暂存和未跟踪内容未纳入。
 - 未决事项：由用户从三种风格中选定后续方向；如用于正式产品，再按最终使用尺寸和品牌规范细化。
+
+
+### 2026-10-28 · 对话输入框边缘拖动切换布局
+
+- 用户确认左侧对话与底部浮动两种布局都不显示独立拖动按钮；输入框外圈本身作为拖动区域。悬浮外圈时显示可拖动光标，拖动中显示抓取状态；输入文字、按钮和附件操作仍可直接使用。该规则来自用户明确要求（H）。
+- `ascend-studio/src/App.jsx` 将 composer 外沿 10px 设为拖动命中区，交互控件与内容芯片不启动拖动；保留已有目标预览与吸附，并要求真实移动且在目标区域释放才切换。`ascend-studio/src/styles.css` 移除独立把手样式，加入外沿悬浮与拖动光标状态；同步更新 `ascstudio/` 静态构建产物。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages` 成功；生成 JS `node --check`、HTML 资源引用存在性与 `git diff --check` 通过。桌面交互回放确认两种布局均可从边缘拖动，输入区内悬浮与控件点击不启动拖动，双向目标预览及松手吸附正常，无把手、无运行时异常；本地 `5178` 返回 HTTP 200。未运行自动化测试。
+- 发布：实现提交 `8e3633c5` 已推送 `origin/main`；合并前先快进同步主线提交 `4d5b8333`，其独立星星 × 书本素材完整保留。GitHub Pages workflow `40538891007` 成功；线上 `/AscendCANN/ascstudio/` HTML、`index-Cqdi8RJO.js` 与 `index-D_LHgAek.css` 返回 HTTP 200，HTML 引用为本轮 bundle。

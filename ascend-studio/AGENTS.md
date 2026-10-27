@@ -1911,3 +1911,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用 `.composer-entry` 网格排列浮窗输入行；窄屏占满左右留白，390px 时隐藏模型文字标签保留入口，避免控件挤压输入宽度。
 - 验证：`npm run build:pages`、构建 JS 语法检查、资源引用与 `git diff --check` 通过。桌面 1440×900 初始 636×54px，长文 textarea 增高至 110px；窄屏 390×844 初始 366×55px，所有操作都在视口内，无横向滚动。Pages workflow `40504848231` 成功，线上资源 HTTP 200。
 - 提交 `e4ce1482` 已推送 `origin/main`；未改变页面序列、路由或机制边界。
+
+
+### 2026-10-28 · 对话 composer 外沿作为布局拖动区
+
+- 用户确认：不论对话在左侧还是底部浮动，都隐藏独立拖动把手；把 composer 的外圈边缘作为可拖动区域。指针悬浮边缘时变为 grab，拖动中为 grabbing。文本输入区、模型 / 权限 / 附件 / 发送等控件继续执行自身操作。
+- 实现位于 `src/App.jsx` 与 `src/styles.css`：外沿约 10px 响应拖动，交互控件及上下文芯片排除；沿用目标区域预览和吸附，只有移动到目标并在其上松手才切换布局。移动端不启用此桌面拖动。没有改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 构建与检查：`npm run build:pages`、产物 JS `node --check`、资源引用校验及 `git diff --check` 通过。桌面浏览器回放验证左侧 ↔ 底部双向拖动、边缘 cursor、控件点击不触发，以及目标预览 / 松手吸附；无把手和运行时异常。未运行自动化测试。
+- 发布：提交 `8e3633c5` 推送至 `origin/main`；Pages workflow `40538891007` 成功。线上 `/AscendCANN/ascstudio/` 与本轮 JS / CSS 资源均返回 HTTP 200。
