@@ -1935,3 +1935,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - AddCustom 与 ResNet50 采用同一行为。ResNet50 返回时恢复原画布状态并重新居中刚才打开的节点。共享取景位于 `src/shared/canvas/focus-viewport.js`，完整阅读组件位于 `src/OfficialLearningMaterial.jsx`。细则在 `interaction-design.md` 与 `ascend-studio-interface-style` Skill。
 - 本地 1440×900 浏览器回放：聚焦缩放 110%、卡片不裁切；打开完整材料并返回后原节点与可用视野中心对齐，未发现运行时异常。`npm run build:pages`、JS 语法检查、`git diff --check` 通过；未运行完整测试套件。
 - 实现提交 `63a329c8` 已推送；包含此提交的 Pages workflow `40543693742` 成功，线上 HTML / JS / CSS 均 HTTP 200。
+
+
+### 2026-10-28 · 模型 logo 尺寸调整
+
+- 根据用户截图，将 composer 按钮与模型菜单行里的品牌标识由 18px 调为 14px，避免图标抢过模型名称；下拉选中勾选、模型切换及窄屏纯图标入口保留。
+- 更新 `src/styles.css`、`src/interaction.css` 与 `/ascstudio/` 构建产物；在合并并保留并行学习画布 / 小程序更新后重新构建。
+- `npm run build:pages`、生成 JS `node --check`、bundle 引用及 `git diff --check` 通过。线上 HTML、JS、CSS HTTP 200；未运行自动化测试或逐项视觉回放。
+- 提交 `689b2b11` 与合并提交 `4cb77c74` 已推送，Pages workflow `40545134372` 成功。
