@@ -6968,3 +6968,18 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 平台边界：推送通过小程序订阅消息；首次订阅应由用户点击触发微信授权，并限于其同意的对应订阅，不预设无授权连续推送。已查阅 [腾讯云小程序订阅消息接入指南](https://cloud.tencent.cn/document/product/1301/103770)。知识卡兴趣 / 存疑为明确用户交互，不伪装成读取心理状态的自动判断。
 - 本轮记录产品方向，尚未实施 UI、通知、服务器或微信平台接入；没有改变页面序列和 API / Protocol、Host / Harness、Application / Task 边界。后续交互 Demo 应呈现手机端短内容与从通知返回知识点的体验。
 - 验证与发布：研究讨论无代码验证。仅将本条追加至最新 `origin/main` 的 `AGENTS.md`，独立临时索引执行 `git diff-tree --check` 后推送至 `main`；共享目录原有未提交改动保持不动。
+
+
+### 2026-10-27 · 定期 AI / 昇腾开发资讯推送想法
+
+- 用户提出还可由用户主动订阅定期的 AI / 昇腾开发资讯；推送内容应以手机方便阅读为主（H）。保留此前兴趣 / 存疑信号作为简报选题与排序依据。正在请用户在「三条资讯速览 / 每周主题微课 / 重点资讯加相关知识卡」中选择内容形态，建议最后一种。
+- 微信小程序的普通一次性订阅一次授权对应一条消息，重新发送需再次订阅；长期订阅模板和可用类目有限。来源：[腾讯云微搭订阅消息接入指南](https://cloud.tencent.cn/document/product/1301/103770)、[腾讯云微信小程序消息通知指南](https://cloud.tencent.com/document/practice/269/79050)。实际是否可为当前小程序申请长期模板，须按其真实类目与微信后台模板库确认，不据演示概念宣称长期推送已接通。
+- 本轮仅对内容形式和平台能力作讨论，没有修改页面、源码、通知实现或 API / Protocol、Host / Harness、Application / Task 边界；界面选择未定。
+- 验证 / 发布：无代码检查；独立临时索引仅追加本条 `AGENTS.md`，执行 `git diff-tree --check` 后推送 `main`。共享工作区原有暂存、未暂存及未跟踪工作保留。
+
+### 2026-10-27 · 画布便签插入代码块
+
+- 用户要求便签卡片支持插入代码（H）。普通任务画布、图像预处理学习画布与 ResNet50 官方学习画布共用 `CanvasNoteContent`：编辑态可添加多个代码块、选择 Python / C 或 C++ / Shell / JavaScript / 纯文本语言、修改并删除；退出编辑后以等宽字体只读展示。卡片文本与代码块都保存在现有画布会话状态中。
+- 修改 `ascend-studio/src/shared/canvas/CanvasNoteContent.jsx`、`CanvasUserNote.jsx`、`canvas.css`、`task-canvas.css`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`，并重建 `/ascstudio/` Pages 资源。没有新增代码运行或语法高亮承诺；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 通过；未运行自动化测试。Vite 有既存的主 bundle 超过 500 kB 提示。线上 HTML 引用 `index-DgWSk1Op.js` 与 `index-nTBEh0K1.css`，均 HTTP 200；Pages workflow `40464537367` 成功。
+- 发布：源码提交 `42f66f44` 与整合并行微信学习记录的提交 `c20b982d` 已推送至 `origin/main`。合并时保留了 `a0daa62b`、`93a900f3` 对 `AGENTS.md` 的并行更新，未强推。

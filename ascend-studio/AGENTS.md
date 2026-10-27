@@ -1831,3 +1831,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 线上 `/ascstudio/` 在桌面 Chrome 复现 `Cannot access 'hs' before initialization`。输入框高度同步 effect 的依赖数组提前读取了后续才解构的 `draft`。
 - 改用已存在的 `session.draft` 作为依赖；构建文件随源码同步更新。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地与线上桌面 Chrome 干净会话均正常渲染。修复提交 `f597d6f8` 已推送至 `origin/main`，并包含在 Pages workflow `40461602297` 成功部署中。
+
+### 2026-10-27 · 画布便签支持代码块
+
+- 新增便签代码块编辑：只在画布编辑态提供插入、语言选择、编辑与删除操作；查看态显示保留换行的等宽代码内容。代码作为卡片数据保存，不运行代码。
+- 任务画布、图像预处理学习画布与 ResNet50 官方学习画布共享 `CanvasNoteContent` 及样式；旧便签继续展示原有文字，未带 `codeBlocks` 字段时按空列表兼容。
+- `npm run build:pages`、生成 JS `node --check` 与差异检查通过；未运行测试。提交 `42f66f44`、整合并行更新的 `c20b982d` 已推送，Pages workflow `40464537367` 成功。

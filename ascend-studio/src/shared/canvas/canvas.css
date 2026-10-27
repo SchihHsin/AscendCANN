@@ -139,9 +139,27 @@
 .canvas-user-note-header > svg { flex: 0 0 auto; color: #96989a; }
 .canvas-user-note-header > strong { flex: 1 1 auto; overflow: hidden; font-size: 11px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
 .canvas-user-note-header .canvas-card-actions { gap: 1px; }
-.canvas-user-note > textarea { display: block; flex: 1 1 auto; width: 100%; min-height: 0; padding: 11px 12px; resize: none; border: 0; outline: 0; color: #4f5254; background: #fff; font: inherit; font-size: 11px; line-height: 1.7; }
-.canvas-user-note > textarea::placeholder { color: #a2a4a5; }
-.canvas-user-note > textarea[readonly] { cursor: default; }
+.canvas-note-content { display: flex; flex: 1 1 auto; flex-direction: column; gap: 8px; min-width: 0; min-height: 0; overflow: auto; padding: 11px 12px; color: #4f5254; background: #fff; font-size: 11px; line-height: 1.7; scrollbar-width: thin; scrollbar-color: #d7d8dc transparent; }
+.canvas-note-content.has-code > .canvas-note-text { flex: 0 0 108px; min-height: 76px; max-height: 260px; resize: vertical; }
+.canvas-note-text { display: block; flex: 1 1 auto; width: 100%; min-width: 0; min-height: 0; padding: 2px; resize: none; border: 0; outline: 0; color: #4f5254; background: transparent; font: inherit; font-size: 11px; line-height: 1.7; }
+.canvas-note-text::placeholder { color: #a2a4a5; }
+.canvas-note-text[readonly] { cursor: default; }
+.canvas-note-code-block { flex: 0 0 auto; min-width: 0; overflow: hidden; border: 1px solid #e5e5e5; border-radius: 8px; background: #f8f8f8; }
+.canvas-note-code-header { display: flex; align-items: center; gap: 6px; min-height: 30px; padding: 3px 7px 3px 9px; border-bottom: 1px solid #e5e5e5; color: #777a83; font-size: 10px; line-height: 1.4; }
+.canvas-note-code-header > svg { flex: 0 0 auto; color: #5366c8; }
+.canvas-note-code-header > span { flex: 1 1 auto; }
+.canvas-note-code-header > select { min-width: 0; flex: 1 1 auto; padding: 3px 22px 3px 6px; border: 1px solid #e5e5e5; border-radius: 6px; outline: 0; color: #55585a; background: #fff; font: inherit; font-size: 10px; }
+.canvas-note-code-header > select:focus-visible { border-color: #aeb4c2; }
+.canvas-note-code-remove { display: inline-flex; align-items: center; justify-content: center; width: 25px; height: 25px; flex: 0 0 auto; padding: 0; border: 0; border-radius: 6px; color: #777a83; background: transparent; cursor: pointer; }
+.canvas-note-code-remove:hover { color: #b3263e; background: #fcebed; }
+.canvas-note-code-editor { display: block; width: 100%; min-width: 0; min-height: 100px; max-height: 300px; box-sizing: border-box; padding: 9px 10px; resize: vertical; border: 0; outline: 0; color: #35363a; background: #fff; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; line-height: 1.65; tab-size: 2; white-space: pre; }
+.canvas-note-code-editor:focus { box-shadow: inset 0 0 0 1px #c9cdd4; }
+.canvas-note-code-preview { max-width: 100%; max-height: 300px; overflow: auto; margin: 0; padding: 9px 10px; color: #35363a; background: #fff; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; line-height: 1.65; tab-size: 2; white-space: pre; scrollbar-width: thin; scrollbar-color: #d7d8dc transparent; }
+.canvas-note-code-preview code { color: inherit; font: inherit; }
+.canvas-note-insert-code { display: inline-flex; align-items: center; align-self: flex-start; gap: 5px; min-height: 29px; flex: 0 0 auto; padding: 4px 8px; border: 1px solid #e5e5e5; border-radius: 6px; color: #55585a; background: #fff; font: inherit; font-size: 10px; cursor: pointer; }
+.canvas-note-insert-code > svg:first-child { color: #777a83; }
+.canvas-note-insert-code > svg:nth-child(2) { color: #5366c8; }
+.canvas-note-insert-code:hover { border-color: #d8d8d8; background: #f8f8f8; }
 .canvas-drawing-surface { position: relative; flex: 1 1 auto; min-width: 0; min-height: 0; overflow: hidden; background: #fff; touch-action: pan-y; }
 .canvas-drawing-surface.is-drawing { cursor: crosshair; touch-action: none; }
 .canvas-drawing-hint { position: absolute; inset: 0; display: grid; place-items: center; padding: 12px; color: #999ba2; font-size: 11px; text-align: center; pointer-events: none; }
