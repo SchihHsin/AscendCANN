@@ -7110,4 +7110,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 主要文件：`ascstudio-mini/knowledge-provider-map.html`；README 已说明其是独立 7 页可视化汇报。设计基于 Report PPT skill 的封面 / 灰底分析篇、玻璃卡、信息图与原生翻页 runtime。目录第四卡与第七页路线图类名冲突已拆开；封面副标题收小一档，避免长句断行。
 - 蓝图覆盖课程、路径、认证、知识点、活动；来源内容、Knowledge Unit 边界与证据；robots.txt / Sitemap、llms.txt、Schema.org、REST/OpenAPI、MCP、Agent Skill 与可选 A2A；权限、隐私、版本、Owner、审计、反馈与渐进治理。标准链接提供事实依据；llms.txt 明确为提案，robots.txt 不承担鉴权。目标设计与当前本地 Demo 能力分开表述，不声称已接入真实服务。未改变既有页面序列及 API / Protocol、Host / Harness、Application / Task 机制边界。
 - 验证：HTMLParser 解析通过，7 个页面标题唯一；内嵌 JS `node --check` 与 `git diff --check` 通过。Chrome 1600×900 逐页截图核对 7 页结构与布局（目录错位已修复）；默认滚动模式的无头截图会显示背景黑图，但 DOM 状态确认 `#2`、计数 `02 / 07` 与根滚动位置均已恢复到第 2 页；所有页以 `?t=cut` 模式完成视觉抽查。未运行自动化测试。
-- 页面提交 `75ba4a34` 已并入包含并行更新的主线；合并与发布结果待本次推送后补记。
+- 提交与发布：页面提交 `75ba4a34` 已并入远端主线更新（合并提交 `989cc8f8`），README / AGENTS 记录提交 `430527c8` 已推送至 `origin/main`。Pages workflow `40500938226` 成功；线上 `/AscendCANN/ascstudio-mini/knowledge-provider-map.html` 返回 HTTP 200，标题、7 个页面段、路线图样式与页码恢复脚本均已核对。并行提交保留，未强推。
