@@ -7080,3 +7080,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Demo 的通知、资讯、个性化与订阅状态由本地示例 / localStorage 驱动；没有调用微信 API、真实定时器或后台推送。真实发送仍需适用的微信订阅能力与后台实现，内容也不是实时资讯。
 - 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行浏览器端完整点击回归，也未新增截图。GitHub Pages workflow `40495653128` 成功；线上入口 HTTP 200，线上 JS 已确认包含服务通知路由、未读数和模拟送达事件。
 - 提交 / 推送：功能提交 `0c6742ab` 已推送至 `origin/main`。此记录随后作为交接文档变更补充推送。
+
+### 2026-10-27 · 口袋新知五屏设计点讲解
+
+- 用户确认按五个连续屏幕展开不同设计点（H）。桌面评审壳左侧新增随当前页面变化的讲解区和上一屏 / 下一设计点控制；五步分别为微信列表主动送达、服务通知价值判断、每周资讯与两张个性化卡、知识卡信号回流、主题 / 时间订阅设置。第五步从速览页打开现有订阅弹层；翻页会同步切换手机界面路由。
+- 修改 `ascstudio-mini/index.html`、`app.js`、`styles.css`、`README.md`、`qa.md`。手机端小程序交互保持原路径；讲解侧栏仅在桌面评审壳出现。未改变电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 边界；微信消息仍为本地模拟，不代表真实推送。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未做完整浏览器逐屏点击回归，也未新增截图。Pages workflow `40498003527` 成功；线上入口、JS、CSS均 HTTP 200，HTML / JS 已确认包含五步面板和路由导航逻辑。
+- 提交 / 推送：功能提交 `36955efb` 已推送至 `origin/main`。本条交接记录随后补推。
