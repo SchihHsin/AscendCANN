@@ -1816,4 +1816,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 编辑态工具显示“完成编辑”，Esc 也可退出；结束编辑、切换抓手、隐藏画布时停止当前绘图并清理笔迹草稿。
 - 绘图入口添加独立手绘卡片，笔迹只画在卡片内容区并和卡片绑定；选中已有手绘卡片可继续绘制。便签与手绘卡片在编辑态可删除，关联笔迹随卡片删除；任务原材料仍只能收起 / 恢复。
 - 统一应用于通用任务画布、图像预处理学习画布和 ResNet50 官方学习画布。共享实现位于 `src/shared/canvas/CanvasDrawingSurface.jsx`、`CanvasUserNote.jsx` 与 `useCanvasDrawing.js`；通用卡片删除动作在 `src/useCanvasState.js`。
-- 构建及语法 / 差异检查通过，未运行测试套件。主线合并和 Pages 发布状态待补记。
+- 构建及语法 / 差异检查通过，未运行测试套件。源码提交 `fe2002cc` 与主线合并提交 `f1fad356`、`ef0dec28`、`5e302f34` 已推送至 `origin/main`；Pages workflow `40452525868` 成功，线上 JS / CSS 均 HTTP 200，且 JS 已回读新交互文案。

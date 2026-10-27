@@ -6914,4 +6914,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 任务画布、图像预处理学习画布、ResNet50 官方学习画布共用同一手绘卡片组件；新增便签和手绘卡片在编辑态提供删除，删除时同时清除关联笔迹。原任务材料仍使用收起 / 恢复，不显示删除操作。
 - 修改 `ascend-studio/src/TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`、`LearningCanvasToolbar.jsx`、`shared/canvas/CanvasUserNote.jsx`、新增 `shared/canvas/CanvasDrawingSurface.jsx`、`shared/canvas/useCanvasDrawing.js`、`shared/canvas/canvas.css`、`task-canvas.css`、`useCanvasState.js`；Pages 产物在合并主线后重新生成。
 - 依据：用户本轮明确要求（H）；本地实现逻辑与生产构建（M）。`npm run build:pages`、源码辅助模块 `node --check`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 源码提交 `fe2002cc` 已生成。为保留主线并行首页更新，正在合并 `origin/main` 并从合并后的源码重建 Pages；最终主线提交和部署结果待补记。
+- 源码提交 `fe2002cc` 与主线合并提交 `f1fad356`、`ef0dec28`、`5e302f34` 已保留并推送至 `origin/main`；其间两次主线并行前进均通过合并同步，没有强推。GitHub Pages workflow `40452525868` build / deploy 成功；线上 `/ascstudio/` HTML 引用 `index-C55fWpDC.js` / `index-C85RrIPy.css`，两资源返回 HTTP 200，线上 JS 已核对“完成编辑”“新增手绘卡片”“在此卡片内拖动绘图”“删除卡片”等文案。并行首页与对话布局更新一并保留。
