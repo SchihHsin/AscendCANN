@@ -39,6 +39,63 @@ function load() {
 const state = load();
 let category = "为你推荐", query = "", group = 0, returnRoute = "discover", currentRoute = "", toastTimer, overlayReturnFocus;
 const widgets = { cards: 4, batch: 4, devices: 4, accumulation: 2, sync: 0, precision: "mixed", parallel: "data", elements: 33, layout: "chw" };
+const REVIEW_STEPS = [
+  { kicker: "01 / 05 · 主动送达", title: "新知先出现在微信里", description: "一条未读服务通知，让每周开发速览主动来到用户熟悉的消息列表。", principle: "用熟悉的微信消息状态承接主动推送" },
+  { kicker: "02 / 05 · 一眼判断", title: "先看懂这条通知", description: "服务通知先交代主题、本周重点和内容形态，再把用户带入完整速览。", principle: "先说明价值，再邀请用户打开" },
+  { kicker: "03 / 05 · 个性化速览", title: "一条资讯，接两张卡", description: "一条重点资讯搭配两张短知识卡，让开发者用手机快速读完并接着学。", principle: "关注与存疑信号决定补充什么" },
+  { kicker: "04 / 05 · 信号回流", title: "把存疑留给下一次", description: "用户在知识卡上标记感兴趣或还没弄懂，后续速览据此调整知识卡推荐。", principle: "一次阅读也能留下下一步线索" },
+  { kicker: "05 / 05 · 用户掌控", title: "推送主题与时间可选", description: "在订阅设置中选择关注主题和接收时间；确认后，Demo 模拟新通知回到微信列表。", principle: "用户选择接收方式，并能管理订阅" },
+];
+let weeklySettingsOpen = false, openReviewSettingsAfterBriefing = false;
+function reviewIndexForRoute(route = currentRoute) {
+  if (weeklySettingsOpen) return 4;
+  const page = route.split("/")[0];
+  if (page === "wechat") return 0;
+  if (page === "wechat-notification") return 1;
+  if (page === "briefing") return 2;
+  if (page === "knowledge") return 3;
+  return -1;
+}
+function updateReviewPanel(route = currentRoute) {
+  const index = reviewIndexForRoute(route);
+  if (index < 0) return;
+  const step = REVIEW_STEPS[index];
+  $("#review-kicker").textContent = step.kicker;
+  $("#review-title").textContent = step.title;
+  $("#review-description").textContent = step.description;
+  $("#review-principle").textContent = step.principle;
+  $("#review-progress").textContent = `${String(index + 1).padStart(2, "0")} / ${String(REVIEW_STEPS.length).padStart(2, "0")}`;
+  $("#review-prev").disabled = index === 0;
+  $("#review-next").textContent = index === 4 ? "回到微信列表 →" : "下一设计点 →";
+  $("#review-next").setAttribute("aria-label", index === 4 ? "回到微信消息列表" : "下一个设计点");
+}
+function reviewRoute(index) {
+  if (index === 0) return "wechat";
+  if (index === 1) return "wechat-notification";
+  if (index === 2) return "briefing";
+  if (index === 3) return `knowledge/${activeTask().knowledge[0] || KNOWLEDGE[0].id}`;
+  return "wechat";
+}
+function goReviewRoute(index) {
+  if (index === 0 && state.noticeRead) { state.noticeRead = false; persist(); }
+  go(reviewRoute(index));
+}
+function navigateReview(direction) {
+  const index = reviewIndexForRoute();
+  if (index < 0) return;
+  if (direction === "prev") {
+    if (index === 4) { closeOverlay(false); goReviewRoute(3); return; }
+    if (index > 0) goReviewRoute(index - 1);
+    return;
+  }
+  if (index === 4) { goReviewRoute(0); return; }
+  if (index === 3) {
+    openReviewSettingsAfterBriefing = true;
+    go("briefing");
+    return;
+  }
+  goReviewRoute(index + 1);
+}
 function persist() {
   try { localStorage.setItem(STORAGE, JSON.stringify(state)); } catch { toast("当前浏览器无法保存记录，本次仍可继续体验"); }
 }
@@ -200,6 +257,11 @@ function render() {
   $("#tab-bar").innerHTML = [["discover", "compass", "发现"], ["tasks", "layers", "任务"], ["mine/saved", "pocket", "我的"]].map(([path, name, label]) => `<button data-route="${path}" ${selectedTab === path.split("/")[0] ? 'aria-current="page"' : ""}>${icon(name)}<span>${label}</span>${selectedTab === path.split("/")[0] ? '<i class="tab-dot"></i>' : ""}</button>`).join("");
   $("#wechat-tab-bar").hidden = page !== "wechat";
   $("#wechat-tab-bar").innerHTML = wechatTabMarkup();
+  updateReviewPanel(route);
+  if (openReviewSettingsAfterBriefing && page === "briefing") {
+    openReviewSettingsAfterBriefing = false;
+    openWeeklySettings();
+  }
 }
 function openOverlay(title, body, kind = "") {
   overlayReturnFocus = document.activeElement;
@@ -211,14 +273,18 @@ function openOverlay(title, body, kind = "") {
 function closeOverlay(restore = true) {
   if (!$("#overlay").classList.contains("is-open")) return;
   $("#overlay").classList.remove("is-open"); $("#overlay").innerHTML = "";
+  weeklySettingsOpen = false;
   for (const id of ["#screen", "#app-header", "#tab-bar", "#detail-action"]) $(id).inert = false;
   if (restore && overlayReturnFocus?.isConnected) overlayReturnFocus.focus({ preventScroll: true });
+  updateReviewPanel(currentRoute);
 }
 function openWeeklySettings() {
   const topics = WEEKLY_TOPICS.map(topic => `<button class="topic-option ${state.weeklyTopics.includes(topic) ? "is-active" : ""}" data-action="toggle-weekly-topic" data-topic="${esc(topic)}" aria-pressed="${state.weeklyTopics.includes(topic)}">${state.weeklyTopics.includes(topic) ? icon("check") : ""}${esc(topic)}</button>`).join("");
   const days = WEEKLY_DAY_OPTIONS.map(day => `<button class="schedule-option ${state.weeklyDay === day ? "is-active" : ""}" data-action="set-weekly-day" data-day="${day}" aria-pressed="${state.weeklyDay === day}">${day}</button>`).join("");
   const times = ["09:00", "19:00"].map(time => `<button class="schedule-option ${state.weeklyTime === time ? "is-active" : ""}" data-action="set-weekly-time" data-time="${time}" aria-pressed="${state.weeklyTime === time}">${time === "09:00" ? "早上" : "晚上"} ${time}</button>`).join("");
   openOverlay("设置每周开发速览", `<p class="sheet-hint settings-intro">每周一条重点资讯，再按你标记的兴趣或疑问补两张短知识卡。</p><span class="field-label">想看哪些主题</span><div class="topic-options">${topics}</div><span class="field-label">每周什么时候</span><div class="schedule-options">${days}</div><div class="schedule-options">${times}</div><div class="authorization-preview"><span>${icon("pocket")}微信订阅消息</span><p>下一步会模拟微信授权。允许后，回到微信会话列表查看新到的服务通知。</p></div><p class="platform-note">真实周期推送需小程序类目符合要求，并有可用的长期订阅模板。</p><button class="primary-button" data-action="accept-weekly">${state.weeklySubscribed ? "保存设置并模拟新消息" : "允许并模拟收到消息"}${icon("arrow")}</button>${state.weeklySubscribed ? '<button class="text-button settings-cancel" data-action="cancel-weekly">关闭演示订阅</button>' : '<button class="text-button settings-cancel" data-action="reject-weekly">暂不订阅</button>'}`);
+  weeklySettingsOpen = true;
+  updateReviewPanel(currentRoute);
 }
 function openNote(k, t = activeTask()) {
   if (k && !t.knowledge.includes(k.id)) t = TASKS.find(x => x.knowledge.includes(k.id)) || t;
@@ -238,8 +304,9 @@ async function copy(text) {
   }
 }
 document.addEventListener("click", async event => {
-  const button = event.target.closest("[data-route], [data-action], [data-category], [data-widget], [data-answer]");
+  const button = event.target.closest("[data-route], [data-action], [data-category], [data-widget], [data-answer], [data-review-nav]");
   if (!button) return;
+  if (button.dataset.reviewNav) { navigateReview(button.dataset.reviewNav); return; }
   if (button.dataset.route) { go(button.dataset.route); return; }
   if (button.dataset.category) { category = button.dataset.category; group = 0; const scroll = $("#screen").scrollTop; render(); $("#screen").scrollTop = scroll; return; }
   if (button.dataset.widget) {

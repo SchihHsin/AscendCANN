@@ -12,15 +12,23 @@
 </head>
 <body>
   <div class="preview-layout">
-    <aside class="preview-intro" aria-label="小程序 Demo 介绍">
+    <aside class="preview-intro" aria-label="小程序设计点讲解">
       <a class="desktop-brand" href="../ascstudio/" target="_blank" rel="noopener"><img src="./mark.svg" width="29" height="29" alt="">Ascend Studio</a>
-      <div class="intro-body">
-        <div class="intro-eyebrow"><span></span> 微信服务通知 / SERVICE MESSAGE</div>
-        <h1>把下一点新知，<br>送到你手边。</h1>
-        <p>收到一条开发速览。<br>点开微信消息，手机上接着学。</p>
+      <div class="intro-body" id="review-panel" aria-live="polite">
+        <div class="intro-eyebrow"><span></span><span id="review-kicker">01 / 05 · 主动送达</span></div>
+        <h1 id="review-title">新知先出现在微信里</h1>
+        <p id="review-description">一条未读服务通知，让每周开发速览主动来到用户熟悉的消息列表。</p>
+        <div class="review-point"><small>这一屏的设计点</small><strong id="review-principle">用熟悉的微信消息状态承接主动推送</strong></div>
         <div class="intro-journey"><span>送达</span><i></i><span>打开</span><i></i><span>继续</span></div>
       </div>
-      <div class="preview-foot"><span>小程序交互 Demo</span><span>手机打开，随手探索 ↗</span></div>
+      <div class="preview-foot">
+        <span>可点击的小程序 Demo</span>
+        <div class="review-controls" aria-label="设计点翻页">
+          <button id="review-prev" type="button" data-review-nav="prev" aria-label="上一设计点" disabled>上一屏</button>
+          <span id="review-progress" aria-live="polite">01 / 05</span>
+          <button id="review-next" type="button" data-review-nav="next" aria-label="下一个设计点">下一设计点 <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
     </aside>
     <div class="device-wrap">
       <div class="device" id="device">
