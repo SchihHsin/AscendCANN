@@ -25,14 +25,17 @@
 .tc-world { position: absolute; inset: 0 auto auto 0; width: 1px; height: 1px; transform-origin: 0 0; }
 .tc-connections { position: absolute; z-index: 1; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; color: #aeb4c2; pointer-events: none; }
 .tc-connections path { fill: none; stroke: #b7bcca; stroke-width: 1.5; }
+.tc-connections .is-references path, .tc-connections .is-derived-from path { stroke-dasharray: 4 4; }
+.tc-connections .is-checks path { stroke-dasharray: 2 3; }
 .tc-connections text { fill: #8a90a2; font-size: 10px; text-anchor: middle; }
 .tc-drawings { position: absolute; z-index: 2; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; pointer-events: none; }
 .tc-card { position: absolute; display: flex; flex-direction: column; min-width: 220px; min-height: 140px; box-sizing: border-box; }
 .tc-card.is-collapsed { min-height: 44px; }
 .tc-card-header { height: 47px; user-select: none; cursor: default; }
-.tc-stage.is-layout-editing .tc-card-header { cursor: grab; }
+.tc-stage.is-layout-editing .tc-card-header { cursor: default; }
 .tc-stage.is-layout-editing .tc-card.is-pinned .tc-card-header { cursor: default; }
-.tc-stage.is-layout-editing .tc-card-header:active { cursor: grabbing; }
+.tc-stage.is-layout-editing .canvas-node-action-move { cursor: grab; }
+.tc-stage.is-layout-editing .canvas-node-action-move:active:not(:disabled) { cursor: grabbing; }
 .tc-stage.is-drawing .tc-card-header { cursor: default; }
 .tc-stage.is-drawing .tc-move-handle, .tc-stage.is-drawing .tc-resize-handle { display: none; }
 .tc-card.is-pinned .tc-card-header { cursor: default; }

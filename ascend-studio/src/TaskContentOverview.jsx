@@ -12,7 +12,7 @@ import {
   IconPlus,
 } from "@tabler/icons-react";
 import { buildContentMap, summarizeContentMapItem } from "./task-content-map";
-import { CanvasFitIcon } from "./shared/canvas/index.jsx";
+import { CanvasFitIcon, CanvasNodeMarker, CanvasNodeStatus } from "./shared/canvas/index.jsx";
 import "./task-content-overview.css";
 import "./task-content-map.css";
 
@@ -79,8 +79,9 @@ function OverviewCard({ item, categoryLabel, current, historyOpen, onToggleHisto
         <IconArrowUpRight size={ICON_SIZE.inline} aria-hidden="true" />
       </button>
       <div className="tco-card-identity">
+        <CanvasNodeMarker nodeType={item.nodeType} className="tco-node-type-marker" />
         {kindLabel && <span className="tco-card-kind">{kindLabel}</span>}
-        {stateLabel && <span className={`tco-status${state?.tone ? ` is-${state.tone}` : ""}`} title={state?.detail || stateLabel}>{stateLabel}</span>}
+        {stateLabel && <CanvasNodeStatus status={item.status} statusLabel={stateLabel} className="tco-node-status" />}
         {item.unread && <span className="tco-unread" title="有更新">有更新</span>}
         {(current || item.closed) && <span className="tco-view-state">{current ? "上次查看" : "已收起"}</span>}
       </div>
@@ -126,17 +127,18 @@ function HistoryPanel({ item, onOpen, selectedId, onCompare }) {
 function SummaryNode({ item, current, onOpen, linked, spotlight }) {
   const summary = summarizeContentMapItem(item);
   return <button type="button" className={`tco-summary-node${current ? " is-current" : ""}${linked ? " is-linked" : ""}${spotlight ? " is-spotlight" : ""}`} data-map-node={item.id} onClick={()=>onOpen?.(item.id)} aria-label={`打开${item.title}`} aria-current={current ? "true" : undefined}>
-    <span className="tco-summary-heading"><strong>{item.title}</strong><IconArrowUpRight size={ICON_SIZE.inline} aria-hidden="true" /></span>
+    <span className="tco-summary-heading"><CanvasNodeMarker nodeType={item.nodeType} className="tco-node-type-marker" /><strong>{item.title}</strong><IconArrowUpRight size={ICON_SIZE.inline} aria-hidden="true" /></span>
     <span className="tco-summary-conclusion">{conciseSummary(summary.conclusion)}</span>
     {item.provenance?.map((entry,index)=><span className="tco-summary-provenance" key={entry.label+index}>{entry.label} · {entry.value}</span>)}
-    <span className="tco-summary-meta">{item.state?.label && <span className={`tco-status is-${item.state.tone || "neutral"}`}>{item.state.label}</span>}{summary.historyCount>0 && <span>{summary.historyCount} 条历史</span>}{item.unread && <span className="tco-unread">有更新</span>}</span>
+    <span className="tco-summary-meta">{item.statusLabel && <CanvasNodeStatus status={item.status} statusLabel={item.statusLabel} className="tco-node-status" />}{summary.historyCount>0 && <span>{summary.historyCount} 条历史</span>}{item.unread && <span className="tco-unread">有更新</span>}</span>
   </button>;
 }
 
-// Routes stay in the spaces between cards and around the cluster, never across
-// their text. These are neutral association lines, not inferred causal arrows.
+// Routes stay in spaces between cards and preserve the declared source → target
+// direction; the shape is a relationship cue, not proof of causality or success.
 function MapConnections({ gridRef, edges, highlightedId, visible, layoutKey }) {
   const [drawing,setDrawing]=useState({width:0,height:0,paths:[]});
+  const arrowId=`tco-map-arrow-${useId().replace(/:/g,"")}`;
   useEffect(()=>{
     const grid=gridRef.current;
     if(!grid || !visible)return undefined;
@@ -153,15 +155,16 @@ function MapConnections({ gridRef, edges, highlightedId, visible, layoutKey }) {
       for(const edge of edges){
         const a=nodes.get(edge.sourceId),b=nodes.get(edge.targetId);
         if(!a || !b || edge.sourceId===edge.targetId)continue;
-        const pair=[edge.sourceId,edge.targetId].sort().join('\u001f');
+        const pair=[edge.sourceId,edge.targetId].join('\u001f');
         if(seen.has(pair))continue;
         seen.add(pair);
         const ay=a.y+a.h/2,by=b.y+b.h/2;
         let d;
         if(Math.abs(a.y-b.y)<3 && Math.abs(a.x-b.x)>3){
-          const left=a.x<b.x?a:b,right=a.x<b.x?b:a;
-          const sy=left.y+left.h/2,ty=right.y+right.h/2,mid=(left.x+left.w+right.x)/2;
-          d=`M ${left.x+left.w} ${sy} C ${mid} ${sy}, ${mid} ${ty}, ${right.x} ${ty}`;
+          const forward=a.x+a.w/2<b.x+b.w/2;
+          const sx=forward?a.x+a.w:a.x,tx=forward?b.x:b.x+b.w;
+          const sy=a.y+a.h/2,ty=b.y+b.h/2,mid=(sx+tx)/2;
+          d=`M ${sx} ${sy} C ${mid} ${sy}, ${mid} ${ty}, ${tx} ${ty}`;
         }else if(Math.abs(a.x-b.x)<3){
           const right=a.x>bounds.width/2;
           const x=right?Math.max(a.x+a.w,b.x+b.w)+10:Math.min(a.x,b.x)-10;
@@ -181,7 +184,7 @@ function MapConnections({ gridRef, edges, highlightedId, visible, layoutKey }) {
             d=`M ${ax} ${ay} H ${outsideA} V ${top} H ${outsideB} V ${by} H ${bx}`;
           }
         }
-        paths.push({id:pair,d,sourceId:edge.sourceId,targetId:edge.targetId});
+        paths.push({id:pair,d,sourceId:edge.sourceId,targetId:edge.targetId,type:edge.type});
       }
       const next={width:bounds.width,height:bounds.height,paths};
       setDrawing(previous=>JSON.stringify(previous)===JSON.stringify(next)?previous:next);
@@ -191,7 +194,7 @@ function MapConnections({ gridRef, edges, highlightedId, visible, layoutKey }) {
     [...grid.querySelectorAll('[data-map-node]')].forEach(node=>observer.observe(node));
     measure();return()=>{cancelAnimationFrame(frame);observer.disconnect();};
   },[visible,edges,gridRef,layoutKey]);
-  return <svg className="tco-connection-layer" width={drawing.width} height={drawing.height} viewBox={`0 0 ${drawing.width||1} ${drawing.height||1}`} aria-hidden="true">{drawing.paths.map(path=><path key={path.id} d={path.d} className={`tco-map-edge${highlightedId && [path.sourceId,path.targetId].includes(highlightedId)?" is-highlighted":""}`} />)}</svg>;
+  return <svg className="tco-connection-layer" width={drawing.width} height={drawing.height} viewBox={`0 0 ${drawing.width||1} ${drawing.height||1}`} aria-hidden="true"><defs><marker id={arrowId} markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M1 1L5 3L1 5" fill="none" stroke="currentColor" strokeWidth="1" /></marker></defs>{drawing.paths.map(path=><path key={path.id} d={path.d} markerEnd={`url(#${arrowId})`} className={`tco-map-edge is-${String(path.type||"related-to").replace(/[^a-z0-9-]/g,"-")}${highlightedId && [path.sourceId,path.targetId].includes(highlightedId)?" is-highlighted":""}`} />)}</svg>;
 }
 
 function ContentCluster({ group, edges, level, collapsed, onToggleGroup, onOpen, onZoomGroup, selectedId, categoryLabels, historyId, onToggleHistory, groups, categories, onEditItem, onEditGroup, onCompare, highlightedId, spotlightId, onHighlight, visible, instanceId }) {
@@ -325,7 +328,7 @@ export function TaskContentOverview({ taskId, items = [], categories = [], group
     {searchOpen&&<div className="tco-search-panel"><label className="tco-search"><IconSearch size={ICON_SIZE.inline}/><span className="tco-sr-only">搜索内容及相关记录</span><input value={query} onChange={event=>{pendingAnchor.current=null;stableAnchor.current=null;patch({query:event.target.value,scrollTop:0});}} placeholder="搜索标题、条件或历史记录"/></label>{safeCategories.length>0&&<div className="tco-categories" aria-label="按用途筛选"><button type="button" className={category==='all'?'is-selected':''} aria-pressed={category==='all'} onClick={()=>patch({category:'all'})}>全部</button>{safeCategories.map(entry=><button type="button" key={entry.id} className={category===entry.id?'is-selected':''} aria-pressed={category===entry.id} onClick={()=>patch({category:entry.id})}>{entry.label}</button>)}</div>}{hasFilter&&<button className="tco-clear-filters" type="button" onClick={()=>patch({query:'',category:'all'})}>清除搜索与筛选</button>}</div>}
     {safeItems.length===0?<div className="tco-empty"><strong>本任务尚无内容</strong><p>使用或产生的内容会保留在对应主题中。</p></div>:filteredItems.length===0?<div className="tco-empty"><strong>没有匹配的内容</strong><p>调整关键词或用途，继续查找本任务的内容。</p><button type="button" onClick={()=>patch({query:'',category:'all'})}>清除搜索与筛选</button></div>:<div className="tco-scroll" ref={scrollRef} onScroll={handleScroll}><div className={`tco-map${level===0?' tco-topic-map':''}`}>
       {level===0?orderedGroups.map(group=><TopicNode key={group.id} group={group} edges={model.edges} onZoomGroup={groupId=>zoomTo(1,groupId)} onOpen={onOpen} selectedId={selectedId}/>):orderedGroups.map(group=><ContentCluster key={group.id} group={group} edges={model.edges} level={level} collapsed={collapsedGroups.includes(group.id)} onToggleGroup={toggleGroup} onOpen={onOpen} onZoomGroup={groupId=>zoomTo(1,groupId)} selectedId={selectedOwner} categoryLabels={categoryLabels} historyId={viewState.historyId} onToggleHistory={toggleHistory} groups={safeGroups} categories={safeCategories} onEditItem={onEditItem} onEditGroup={onEditGroup} onCompare={onCompare} highlightedId={highlightedId||selectedOwner} spotlightId={spotlightId} onHighlight={setHighlightedId} visible={visible} instanceId={instanceId}/>)}
-      {level>0&&model.edges.some(edge=>safeItems.find(item=>item.id===edge.sourceId)?.groupId!==safeItems.find(item=>item.id===edge.targetId)?.groupId)&&<div className="tco-cross-relations" aria-label="跨主题关联">{model.edges.filter(edge=>safeItems.find(item=>item.id===edge.sourceId)?.groupId!==safeItems.find(item=>item.id===edge.targetId)?.groupId).map(edge=><button type="button" key={edge.id} onClick={()=>onOpen?.(edge.targetRecordId)}>{safeItems.find(item=>item.id===edge.sourceId)?.title} · {edge.label} → {safeItems.find(item=>item.id===edge.targetId)?.title}</button>)}</div>}
+      {level>0&&model.edges.some(edge=>safeItems.find(item=>item.id===edge.sourceId)?.groupId!==safeItems.find(item=>item.id===edge.targetId)?.groupId)&&<div className="tco-cross-relations" aria-label="跨主题关联">{model.edges.filter(edge=>safeItems.find(item=>item.id===edge.sourceId)?.groupId!==safeItems.find(item=>item.id===edge.targetId)?.groupId).map(edge=><button type="button" key={edge.id} onClick={()=>onOpen?.(edge.navigationTargetId||edge.targetRecordId)}>{safeItems.find(item=>item.id===edge.sourceId)?.title} · {edge.label} → {safeItems.find(item=>item.id===edge.targetId)?.title}</button>)}</div>}
     </div></div>}
     <footer className="tco-map-status"><span>{['主题概览 · 点主题展开，点内容直接查看','内容摘要 · 保留结论、状态与来源','内容详情 · 查看条件、关联与历史'][level]}</span>{level>0&&model.edges.length>0&&<span className="tco-relation-legend">连线表示已记录的关联</span>}</footer>
   </section>;

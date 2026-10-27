@@ -8,6 +8,7 @@ import { ActionWorkspace } from "./ActionWorkspace";
 import { useTaskFlow } from "./useTaskFlow";
 import { useExplanationSession } from "./useExplanationSession";
 import { useCanvasState } from "./useCanvasState";
+import { normalizeCanvasNodes, normalizeCanvasRelation } from "./shared/canvas/node-semantics.js";
 import { useContentWorkspace } from "./useContentWorkspace";
 import { MATERIAL_DEFINITIONS, getMaterialMeta } from "./workspace-materials";
 import { TaskWorkspace } from "./TaskWorkspace";
@@ -97,24 +98,27 @@ const PERMISSION_OPTIONS = [
   { id: "task", label: "本任务内允许操作" },
 ];
 
-function withMaterialCanvasConnections(baseConnections, items = []) {
+function withMaterialCanvasConnections(items = []) {
   const knownIds = new Set(items.map(item => item.id));
-  const connections = [...baseConnections];
-  const connectedPairs = new Set(connections.map(connection => [connection.from, connection.to].sort().join("::")));
-  const add = (from, to, label, id) => {
-    if (!from || !to || from === to || !knownIds.has(from) || !knownIds.has(to)) return;
-    const pair = [from, to].sort().join("::");
-    if (connectedPairs.has(pair)) return;
-    connectedPairs.add(pair);
-    connections.push({ id, from, to, label });
+  const connections = [];
+  const keys = new Set();
+  const add = raw => {
+    const relation = normalizeCanvasRelation(raw);
+    if (!relation || !knownIds.has(relation.fromId) || !knownIds.has(relation.toId)) return;
+    const key = [relation.fromId, relation.toId, relation.relationType].join("::");
+    if (keys.has(key)) return;
+    keys.add(key);
+    connections.push({
+      id: relation.id || key,
+      from: relation.fromId,
+      to: relation.toId,
+      relationType: relation.relationType,
+      label: relation.label || relation.title || "",
+    });
   };
-  items.forEach(item => {
-    if (item.parentId) add(item.parentId, item.id, item.typeLabel || item.kindLabel || "关联记录", `parent-${item.parentId}-${item.id}`);
-    (item.relations || []).forEach(relation => add(item.id, relation.id, relation.label || relation.title || "相关内容", `relation-${item.id}-${relation.id}`));
-  });
+  items.forEach(item => (item.relations || []).forEach(add));
   return connections;
 }
-
 function findLearningPathMove(text, path) {
   const match = String(text).match(/(?:把|将)\s*[“"「]?(.+?)[”"」]?\s*(?:节点)?(?:移动到|移到|放到|排到)\s*[“"「]?(.+?)[”"」]?\s*(之前|前面|前|之后|后面|后)/);
   if (!match) return null;
@@ -1060,13 +1064,13 @@ function App() {
   ] : isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS.map(item => ({ ...item, available: true, statusLabel: officialStatusLabel(getOfficialLearningStatus(item.id, officialLearning.state.statuses)), disabledReason: "来自昇腾开发者成长路径的学习材料" })) : isStandardLearningTask ? LEARNING_MATERIALS.map(item => ({ ...item, available: ["learning-goal", "learning-path"].includes(item.id) || (item.id === "learning-summary" ? learning.state.summaries.length > 0 : Boolean(learning.state.path)), disabledReason: item.id === "learning-summary" ? "完成输入检查并保存后可用" : "确认学习路径后可用" })) : isImageTask ? [...IMAGE_MATERIALS.map(item => ({ ...item, available: item.id === "image-attempts" || item.id === "image-diff" ? inference.state.attempts.length > 0 : item.id === "image-validation" ? Boolean(inference.state.applied) : true, disabledReason: "完成示例尝试后可用" })), ...imageSession.records.map(record => getMaterialMeta("record:" + record.id, { title: record.title }))] : [MATERIAL_DEFINITIONS["task-brief"]];
   const getTaskItems = (ownerId) => {
     const ownerKind = wb.getTask(ownerId).kind;
-    if (ownerKind === "learning") return ownerId === selectedTask ? buildLearningContentItems({ journey: learning, workspaceState: workspace.getTaskState(ownerId), records: wb.getSession(ownerId).records }) : [];
-    if (ownerKind === "official-learning") return ownerId === selectedTask ? buildOfficialLearningContentItems({ state: officialLearning.state, workspaceState: workspace.getTaskState(ownerId), records: wb.getSession(ownerId).records }) : [];
+    if (ownerKind === "learning") return ownerId === selectedTask ? normalizeCanvasNodes(buildLearningContentItems({ journey: learning, workspaceState: workspace.getTaskState(ownerId), records: wb.getSession(ownerId).records }), "learning") : [];
+    if (ownerKind === "official-learning") return ownerId === selectedTask ? normalizeCanvasNodes(buildOfficialLearningContentItems({ state: officialLearning.state, workspaceState: workspace.getTaskState(ownerId), records: wb.getSession(ownerId).records }), "resnet50") : [];
     if (![MAIN_TASK, IMAGE_TASK].includes(ownerId)) return [];
     const ownerImage = ownerId === IMAGE_TASK;
     const ownerMain = ownerId === MAIN_TASK;
     const ownerState = workspace.getTaskState(ownerId);
-    return buildTaskContentItems({
+    const items = buildTaskContentItems({
       taskId: ownerId, visited: ownerState.visitedTabs,
       materials: ownerImage ? IMAGE_MATERIALS : Object.values(MATERIAL_DEFINITIONS),
       flowState: ownerMain ? flow.state : {}, inferenceState: ownerImage ? inference.state : {},
@@ -1074,6 +1078,7 @@ function App() {
       precisionContext: ownerMain ? precisionContext : null,
       canvasCards: ownerImage ? imageCanvas.state.cards : ownerMain ? canvas.state.cards : [],
     }).map(item => ({ ...item, ...ownerState.overview.itemOverrides?.[item.id], lastAccessAt: ownerState.visitedTabs.find(tab => tab.id === item.id)?.lastAccessAt || 0 }));
+    return normalizeCanvasNodes(items, ownerImage ? "image-inference" : "addcustom");
   };
   const contentItems = getTaskItems(selectedTask);
   const recommendationTasks = wb.groups.flatMap(group => group.tasks.map(name => {
@@ -1184,7 +1189,7 @@ function App() {
     const focusedMaterial = ownerItems.flatMap(item => [item, ...(item.children || [])]).find(item => item.id === focusedId);
     const focusRelatedIds = new Set((focusedMaterial?.relations || []).map(relation => relation.id));
     const allOwnerItems = ownerItems.flatMap(item => [item, ...(item.children || [])]);
-    const ownerConnections = ownerMain ? withMaterialCanvasConnections(materialConnections, allOwnerItems) : materialConnections;
+    const ownerConnections = withMaterialCanvasConnections(allOwnerItems);
     const focusIds = ownerMain ? [focusedId, ...focusRelatedIds].filter((id, index, all) => all.indexOf(id) === index) : [];
     const relatedItems = ownerMain ? (focusedMaterial?.relations || []).map(relation => {
       const target = allOwnerItems.find(item => item.id === relation.id);
@@ -1199,23 +1204,10 @@ function App() {
         <TaskContentOverview taskId={ownerId} visible={showOverview} items={ownerItems} categories={CONTENT_CATEGORIES} groups={getContentGroups(ownerId, ownerLearning || ownerOfficialLearning).map(group => ({ ...group, title: ownerState.overview.groupNames?.[group.id] || group.title }))} viewState={ownerState.overview} selectedId={ownerMain ? focusedId : ownerState.lastContentId} onViewChange={patch => updateOverview(patch, ownerId)} onEditGroup={workspace.actions.editGroup} onEditItem={workspace.actions.editItem} onOpen={id => ownerMain ? openContent(id, { restore: true, viewedInCanvas: true }) : restoreContent(id)} onCompare={compareContent} onArrange={arrangeMaterials}
           renderPreview={id => id === "explanation" ? <RangeDiagram snapshot={flow.state} compact active={false} onFocus={focus => { explanation.actions.focusConcept(focus); restoreContent("explanation"); }} title="当前示例范围" /> : id === "image-explanation" ? <TensorDiagram inference={inference} compact /> : null} />
         {addCustomDetail && <AddCustomTaskCanvas item={focusedMaterial} relatedItems={relatedItems} onOpenRelated={id => openCanvas({ mode: "detail", focusId: id })} onReturnCanvas={() => openCanvas({ mode: "focus", focusId: focusedId })}>{renderMaterial(focusedId, "content", ownerId)}</AddCustomTaskCanvas>}
-        <TaskCanvas embedded isAddCustom={ownerMain} enableCardFocus={ownerImage} visible={visible && (free || addCustomCanvas)} viewMode={addCustomCanvas ? ownerState.canvasMode : undefined} focusIds={focusIds} fitRequest={ownerState.overview.fitTick || 0} flow={ownerImage || ownerLearning || ownerOfficialLearning ? undefined : flow} canvas={ownerCanvas} comparisonIds={ownerLearning ? ["learning-lesson", "learning-practice"] : ownerOfficialLearning ? [OFFICIAL_LEARNING_MATERIALS[0]?.id, OFFICIAL_LEARNING_MATERIALS.at(-1)?.id] : ownerImage ? ["image-source", "image-practice"] : ["source", "draft"]} onOpenContents={() => ownerImage ? imageCanvas.actions.fitCanvas() : openCanvas("overview", { fit: true })} onOpenContent={id => ownerMain ? openCanvas({ mode: "detail", focusId: id }) : restoreContent(id)} onFocusContent={id => { if (ownerMain) openCanvas({ mode: "focus", focusId: id }); }} onCollapse={(id, collapsed) => workspace.actions.setOverview({ compactIds: collapsed ? [...new Set([...workspace.state.overview.compactIds, id])] : workspace.state.overview.compactIds.filter(item => item !== id) })} onAttachCode={() => openDialog("code")} connections={ownerLearning ? contentItems.flatMap(item => (item.relations || []).filter(relation => contentItems.some(target => target.id === relation.id)).map(relation => ({ id: `${item.id}-${relation.id}`, from: relation.id, to: item.id, label: relation.label }))) : ownerImage ? [{ id: "image-code-diagram", from: "image-source", to: "image-explanation", label: "通道与维度" }, { id: "image-diagram-practice", from: "image-explanation", to: "image-practice", label: "参数试改" }, { id: "image-practice-result", from: "image-practice", to: "image-attempts", label: "形状快照" }] : ownerConnections} renderMaterial={id => renderMaterial(id, "canvas", ownerId)} />
+        <TaskCanvas embedded isAddCustom={ownerMain} enableCardFocus={ownerImage} semanticDomain={ownerMain ? "addcustom" : ownerImage ? "image-inference" : ownerLearning ? "learning" : "resnet50"} nodeSemantics={allOwnerItems} visible={visible && (free || addCustomCanvas)} viewMode={addCustomCanvas ? ownerState.canvasMode : undefined} focusIds={focusIds} fitRequest={ownerState.overview.fitTick || 0} flow={ownerImage || ownerLearning || ownerOfficialLearning ? undefined : flow} canvas={ownerCanvas} comparisonIds={ownerLearning ? ["learning-lesson", "learning-practice"] : ownerOfficialLearning ? [OFFICIAL_LEARNING_MATERIALS[0]?.id, OFFICIAL_LEARNING_MATERIALS.at(-1)?.id] : ownerImage ? ["image-source", "image-practice"] : ["source", "draft"]} onOpenContents={() => ownerImage ? imageCanvas.actions.fitCanvas() : openCanvas("overview", { fit: true })} onOpenContent={id => ownerMain ? openCanvas({ mode: "detail", focusId: id }) : restoreContent(id)} onFocusContent={id => { if (ownerMain) openCanvas({ mode: "focus", focusId: id }); }} onCollapse={(id, collapsed) => workspace.actions.setOverview({ compactIds: collapsed ? [...new Set([...workspace.state.overview.compactIds, id])] : workspace.state.overview.compactIds.filter(item => item !== id) })} onAttachCode={() => openDialog("code")} connections={ownerConnections} renderMaterial={id => renderMaterial(id, "canvas", ownerId)} />
       </div>
     </div>;
   };
-  const materialConnections = [
-    { id: "brief-source", from: "task-brief", to: "source", label: "对应代码" },
-    { id: "brief-evidence", from: "task-brief", to: "evidence", label: "已知现象" },
-    { id: "reference-explanation", from: "reference", to: "explanation", label: "文档依据" },
-    { id: "source-explanation", from: "source", to: "explanation", label: "范围线索" },
-    { id: "evidence-explanation", from: "evidence", to: "explanation", label: "待解释证据" },
-    { id: "explanation-parameters", from: "explanation", to: "parameters", label: "形成待测假设" },
-    { id: "parameters-attempts", from: "parameters", to: "attempts", label: "对照试算" },
-    ...(flow.state.proposedCode ? [{ id: "attempts-diff", from: "attempts", to: "diff", label: "所选试算的提案" }, { id: "draft-diff", from: "draft", to: "diff", label: "代码副本差异" }] : []),
-    ...(flow.state.appliedCode ? [{ id: "diff-validation", from: "diff", to: "validation", label: "示例应用后复核" }] : []),
-    { id: "validation-precision", from: "validation", to: "precision", label: "核对输出误差" },
-    { id: "precision-review", from: "precision", to: "review", label: "记录复核结论" },
-  ];
   const resetCurrentTask = () => {
     if (isMainTask) { flow.actions.reset(); canvas.actions.reset(); setPrecisionContext(null); }
     if (isImageTask) { inference.actions.reset(); imageCanvas.actions.reset(); }

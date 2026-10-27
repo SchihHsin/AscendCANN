@@ -390,6 +390,61 @@ function statusFor(id, produced, precisionContext, flow, inference) {
   return "";
 }
 
+function semanticStatusFor(id, produced, flow, inference, precisionContext) {
+  if (["task-brief", "source", "reference", "explanation", "image-source", "image-explanation", "image-practice"].includes(id)) return "available";
+  if (id === "evidence") return "needs-review";
+  if (id === "parameters" || id === "attempts" || id === "image-attempts") return produced ? "in-progress" : "available";
+  if (id === "draft") return flow.appliedCode ? "needs-review" : "available";
+  if (id === "diff") return flow.proposedCode ? flow.appliedCode === flow.proposedCode ? "needs-review" : "proposed" : flow.appliedCode ? "needs-review" : undefined;
+  if (id === "image-diff") return inference.proposal ? inference.proposal.attempt?.id === inference.applied?.id ? "needs-review" : "proposed" : inference.applied ? "needs-review" : undefined;
+  if (id === "precision" && precisionContext) {
+    const rows = asArray(precisionContext.rows);
+    const failed = precisionContext.failed ?? rows.filter(row => row && row.passed === false).length;
+    return failed > 0 ? "needs-review" : "completed";
+  }
+  if (id === "precision") return "available";
+  if (id === "review") return "needs-review";
+  if (id === "validation" && !flow.validation) return "available";
+  if (id === "validation" && flow.validation) {
+    const current = flow.validation.attemptId && flow.validation.attemptId === flow.appliedAttemptId
+      && flow.validation.code === flow.appliedCode && (!flow.proposedCode || flow.validation.code === flow.proposedCode);
+    return !current ? "outdated" : flow.validation.passed === true ? "completed" : "needs-review";
+  }
+  if (id === "image-validation" && !inference.validation) return "available";
+  if (id === "image-validation" && inference.validation) {
+    const current = inference.validation.attemptId && inference.validation.attemptId === inference.applied?.id
+      && inference.validation.code === inference.applied?.code
+      && (!inference.proposal || inference.proposal.attempt?.id === inference.applied?.id);
+    return !current ? "outdated" : inference.validation.passed === true ? "completed" : "needs-review";
+  }
+  return undefined;
+}
+
+function baselineProvenanceFor(id, image) {
+  const entries = image ? {
+    "image-source": [{ label: "来源", value: "原型内置 preprocess.py 示例；原项目文件未接入" }],
+    "image-explanation": [{ label: "来源", value: "本地张量图解；按当前浏览器示例数据演示" }],
+    "image-practice": [{ label: "范围", value: "隔离的预处理练习副本" }],
+    "image-attempts": [{ label: "计算", value: "浏览器形状算例；未执行 Python 或模型推理" }],
+    "image-diff": [{ label: "范围", value: "只应用到本地演示副本；未改原项目" }],
+    "image-validation": [{ label: "检查", value: "示例形状核对；未验证真实模型输入" }],
+  } : {
+    "task-brief": [{ label: "来源", value: "原型内置任务现场示例；根因尚未确认" }],
+    source: [{ label: "来源", value: "原型内置索引范围代码；原项目代码未接入" }],
+    evidence: [{ label: "来源", value: "预置现象与判断示例；真实日志待补" }],
+    reference: [{ label: "来源", value: "Ascend C 官方文档入口；适用版本待核对" }],
+    explanation: [{ label: "依据", value: "本地示例代码与预置线索；不代表根因已确认" }],
+    parameters: [{ label: "范围", value: "仅影响当前浏览器演示参数" }],
+    attempts: [{ label: "计算", value: "浏览器范围演算；未运行真实 C++ 或 NPU" }],
+    draft: [{ label: "范围", value: "当前任务中的浏览器示例副本；未改原项目" }],
+    diff: [{ label: "范围", value: "浏览器示例修改预览；待真实项目审阅" }],
+    validation: [{ label: "检查", value: "示例范围复核；不代表真实算子验证" }],
+    precision: [{ label: "计算", value: "本地误差核对；输入来源与真实项目待核" }],
+    review: [{ label: "记录", value: "本任务复核记录；根因仍待真实证据确认" }],
+  };
+  return entries[id] || [];
+}
+
 const KIND_LABELS = Object.freeze({
   explain: "图解", code: "代码", diff: "修改", result: "结果", browser: "资料", preview: "资料",
 });
@@ -471,11 +526,12 @@ function taskStateFor(id, produced, precisionContext, flow, inference, fallbackD
     const current = flow.validation.attemptId && flow.validation.attemptId === flow.appliedAttemptId
       && flow.validation.code === flow.appliedCode
       && (!flow.proposedCode || flow.validation.code === flow.proposedCode);
-    label = !current ? "旧条件结果" : flow.validation.passed === true ? "示例范围通过" : "范围复核待处理";
+    label = !current ? "旧条件结果" : flow.validation.passed === true ? "示例范围通过" : "示例范围未通过";
     tone = !current ? "neutral" : flow.validation.passed === true ? "success" : "warning";
     if (!current) detail = `${detail}；对应旧条件，不代表当前提案结果。`;
   } else if (id === "image-validation" && inference.validation) {
     const current = inference.validation.attemptId && inference.validation.attemptId === inference.applied?.id
+      && inference.validation.code === inference.applied?.code
       && (!inference.proposal || inference.proposal.attempt?.id === inference.applied?.id);
     label = !current ? "旧条件结果" : inference.validation.passed === true ? "示例形状符合" : "示例形状未符合";
     tone = !current ? "neutral" : inference.validation.passed === true ? "success" : "warning";
@@ -483,25 +539,44 @@ function taskStateFor(id, produced, precisionContext, flow, inference, fallbackD
   } else if (id === "precision" && precisionContext) {
     const rows = asArray(precisionContext.rows);
     const failed = precisionContext.failed ?? rows.filter((row) => row && row.passed === false).length;
-    label = "误差已计算";
-    tone = failed > 0 ? "warning" : "neutral";
+    label = failed > 0 ? `${failed} 项超出容差` : "当前容差内通过";
+    tone = failed > 0 ? "warning" : "success";
   } else if (id === "diff" && flow.proposedCode) {
-    label = flow.appliedCode === flow.proposedCode ? "示例已应用" : "待应用";
+    label = flow.appliedCode === flow.proposedCode ? "示例已应用 · 待复核" : "待应用";
   } else if (id === "diff" && flow.appliedCode || id === "image-diff" && inference.applied && !inference.proposal) {
-    label = "示例已应用";
+    label = "示例已应用 · 待复核";
   } else if (id === "image-diff" && inference.proposal) {
-    label = inference.proposal.attempt?.id && inference.proposal.attempt.id === inference.applied?.id ? "示例已应用" : "待应用";
+    label = inference.proposal.attempt?.id && inference.proposal.attempt.id === inference.applied?.id ? "示例已应用 · 待复核" : "待应用";
+  } else if (id === "evidence") {
+    label = "待补证据";
+    tone = "warning";
+    detail = "预置现象需结合真实日志与项目代码核对。";
+  } else if (id === "draft" && flow.appliedCode) {
+    label = "示例副本已更新";
+  } else if (id === "review") {
+    label = "根因待确认";
+    tone = "warning";
   } else if (id === "attempts" && asArray(flow.attempts).length || id === "image-attempts" && asArray(inference.attempts).length) {
     label = "已尝试";
   }
-  return { label, tone, detail: label ? detail : fallbackDetail };
+  return { label, tone, detail: label ? (detail || fallbackDetail) : fallbackDetail };
 }
 
-function attemptRelation(attempt, label, attempts = []) {
+function attemptRelation(attempt, label, attempts = [], edge = {}) {
   if (!attempt?.id) return null;
   const ordinal = asArray(attempts).findIndex(entry => entry.id === attempt.id);
   const value = [ordinal >= 0 ? `尝试 ${ordinal + 1}` : "", attempt.time || "时间未记录"].filter(Boolean).join(" · ");
-  return { id: `attempt:${attempt.id}`, label: `${label} · ${value}`, title: `${label}：${value}` };
+  const targetId = edge.id || `attempt:${attempt.id}`;
+  return {
+    id: targetId,
+    label: `${label} · ${value}`,
+    title: `${label}：${value}`,
+    ...(edge.fromId ? { fromId: edge.fromId } : {}),
+    ...(edge.toId ? { toId: edge.toId } : {}),
+    ...(edge.relationType ? { relationType: edge.relationType } : {}),
+    ...(edge.conditions ? { conditions: edge.conditions } : {}),
+    evidence: edge.evidence || `关联到${value}`,
+  };
 }
 
 function recordAttemptId(record) {
@@ -519,47 +594,82 @@ function exactDiffRecord(records, code, attemptId, image) {
   }) || null;
 }
 
-function relationsFor(id, flow, inference, records = []) {
+function relationsFor(id, flow, inference, records = [], precisionContext = null) {
   const relations = [];
-  const add = (targetId, label, title) => relations.push({ id: targetId, label, title });
+  const add = (targetId, label, title, relationType, fromId = id, toId = targetId, conditions, evidence) => {
+    relations.push({ id: targetId, label, title, fromId, toId, relationType, ...(conditions ? { conditions } : {}), ...(evidence ? { evidence } : {}) });
+  };
   if (id === "task-brief") {
-    add("source", "待核对代码", "索引范围示例");
-    add("evidence", "已知现象", "现场与判断");
+    add("source", "待核对代码", "索引范围示例", "references", "task-brief", "source");
+    add("evidence", "已知现象", "现场与判断", "references", "evidence", "task-brief");
   }
-  if (id === "explanation") add("source", "代码线索", "索引范围示例");
-  if (id === "source") add("explanation", "用于图解", "线索解释");
-  if (["evidence", "reference"].includes(id)) add("explanation", id === "evidence" ? "待解释证据" : "文档依据", "线索解释");
-  if (id === "image-explanation") add("image-source", "示例来源", "preprocess.py · 只读示例");
-  if (id === "image-source") add("image-explanation", "用于图解", "图像与张量图解");
-  if (["explanation", "parameters", "draft"].includes(id) && asArray(flow.attempts).length) add("attempts", "尝试记录", "范围尝试");
-  if (["image-explanation", "image-practice"].includes(id) && asArray(inference.attempts).length) add("image-attempts", "尝试记录", "形状尝试");
-  if (id === "attempts" && flow.proposedCode && attemptById(flow.attempts, flow.selectedAttemptId)) add("diff", "提案条件引用", "示例修改预览");
+  if (id === "explanation") add("parameters", "形成待测假设", "参数与范围策略", "precedes", "explanation", "parameters");
+  if (id === "parameters" && asArray(flow.attempts).length) add("attempts", "进行范围试算", "尝试记录", "precedes", "parameters", "attempts");
+  if (id === "explanation") add("source", "代码线索", "索引范围示例", "supports", "source", "explanation");
+  if (id === "source") add("explanation", "用于解释", "线索解释", "supports", "source", "explanation");
+  if (id === "evidence") add("explanation", "待解释证据", "线索解释", "supports", "evidence", "explanation");
+  if (id === "reference") add("explanation", "文档依据", "线索解释", "supports", "reference", "explanation");
+  if (id === "image-explanation") add("image-source", "示例来源", "preprocess.py · 只读示例", "supports", "image-source", "image-explanation");
+  if (id === "image-source") add("image-explanation", "用于图解", "图像与张量图解", "supports", "image-source", "image-explanation");
+  if (id === "image-explanation") add("image-practice", "图解后试改参数", "预处理练习副本", "precedes", "image-explanation", "image-practice");
+  if (id === "image-practice") add("image-attempts", "产生形状尝试", "形状检查与尝试", "precedes", "image-practice", "image-attempts");
+  if (["explanation", "parameters", "draft"].includes(id) && asArray(flow.attempts).length) {
+    add("attempts", "保留尝试记录", "范围尝试", "precedes", id, "attempts");
+  }
+  if (["image-explanation", "image-practice"].includes(id) && asArray(inference.attempts).length) {
+    add("image-attempts", "保留形状尝试", "形状尝试", "precedes", "image-practice", "image-attempts");
+  }
+  if (id === "attempts" && flow.proposedCode && attemptById(flow.attempts, flow.selectedAttemptId)) {
+    const attempt = attemptById(flow.attempts, flow.selectedAttemptId);
+    add("diff", `生成自尝试 ${flow.attempts.findIndex(item => item.id === attempt.id) + 1}`, "示例修改预览", "derived-from", "attempts", "diff", { attemptId: attempt.id, snapshotId: `attempt:${attempt.id}`, snapshot: attempt.snapshot, code: attempt.code }, "提案对应所选尝试快照");
+  }
   if (id === "diff") {
     const attempt = attemptById(flow.attempts, flow.proposedCode ? flow.selectedAttemptId : flow.appliedAttemptId);
     const diffMatchesApplied = Boolean(flow.appliedCode && (!flow.proposedCode || flow.proposedCode === flow.appliedCode));
-    if (attempt && (flow.proposedCode || diffMatchesApplied)) relations.push(attemptRelation(attempt, flow.proposedCode ? "提案来源" : "已应用来源", flow.attempts));
+    if (attempt && (flow.proposedCode || diffMatchesApplied)) relations.push(attemptRelation(attempt, flow.proposedCode ? "提案来源" : "已应用来源", flow.attempts, {
+      id: `attempt:${attempt.id}`, fromId: "attempts", toId: "diff", relationType: "derived-from",
+      conditions: { attemptId: attempt.id, snapshotId: `attempt:${attempt.id}`, snapshot: attempt.snapshot, code: attempt.code },
+    }));
   }
   if (id === "validation" && flow.validation?.id && flow.validation.attemptId) {
     const attempt = attemptById(flow.attempts, flow.validation.attemptId);
-    if (attempt) relations.push(attemptRelation(attempt, "核对的尝试", flow.attempts));
+    const currentDiff = exactDiffRecord(records, flow.validation.code, flow.validation.attemptId, false);
+    const targetId = currentDiff ? childFromRecord(currentDiff).id : "diff";
+    if (attempt) relations.push(attemptRelation(attempt, "核对的尝试", flow.attempts, {
+      id: targetId, fromId: "validation", toId: "diff", relationType: "checks",
+      conditions: { attemptId: attempt.id, snapshotId: currentDiff ? targetId : `attempt:${attempt.id}`, snapshot: flow.validation.snapshot, code: flow.validation.code },
+    }));
     const diffRecord = exactDiffRecord(records, flow.validation.code, flow.validation.attemptId, false);
-    if (diffRecord) add(childFromRecord(diffRecord).id, `复核对象 · ${diffRecord.time || "时间未记录"}`, diffRecord.title || "对应修改快照");
+    if (diffRecord) add(childFromRecord(diffRecord).id, `复核对象 · ${diffRecord.time || "时间未记录"}`, diffRecord.title || "对应修改快照", "checks", "validation", "diff", { snapshotId: childFromRecord(diffRecord).id, attemptId: flow.validation.attemptId, code: flow.validation.code });
+  } else if (id === "validation" && flow.appliedCode) {
+    add("validation", "等待范围复核", "示例范围复核", "precedes", "diff", "validation", { attemptId: flow.appliedAttemptId, code: flow.appliedCode });
   }
-  if (id === "image-attempts" && inference.proposal?.attempt?.id) add("image-diff", "提案条件引用", "预处理修改预览");
+  if (id === "validation" && (flow.validation || flow.appliedCode)) add("precision", "继续核对输出误差", "误差核对", "precedes", "validation", "precision");
+  if (id === "precision" && precisionContext) add("review", "记录复核结论", "复核记录", "precedes", "precision", "review");
+  if (id === "image-attempts" && inference.proposal?.attempt?.id) {
+    const attempt = inference.proposal.attempt;
+    add("image-diff", `生成自尝试 ${inference.attempts.findIndex(item => item.id === attempt.id) + 1}`, "预处理修改预览", "derived-from", "image-attempts", "image-diff", { attemptId: attempt.id, snapshotId: `attempt:${attempt.id}`, snapshot: attempt.snapshot, code: attempt.code }, "提案对应所选形状尝试");
+  }
   if (id === "image-diff") {
     const attemptId = inference.proposal?.attempt?.id || inference.applied?.id;
     const attempt = attemptById(inference.attempts, attemptId);
-    if (attempt) relations.push(attemptRelation(attempt, inference.proposal ? "提案来源" : "已应用来源", inference.attempts));
+    if (attempt) relations.push(attemptRelation(attempt, inference.proposal ? "提案来源" : "已应用来源", inference.attempts, {
+      id: `attempt:${attempt.id}`, fromId: "image-attempts", toId: "image-diff", relationType: "derived-from",
+      conditions: { attemptId: attempt.id, snapshotId: `attempt:${attempt.id}`, snapshot: attempt.snapshot, code: attempt.code },
+    }));
   }
+  if (id === "image-validation" && inference.applied && !inference.validation) add("image-validation", "等待形状复核", "返回任务核对", "precedes", "image-diff", "image-validation", { attemptId: inference.applied.id, snapshot: inference.applied.snapshot, code: inference.applied.code });
   if (id === "image-validation" && inference.validation?.attemptId) {
     const attempt = attemptById(inference.attempts, inference.validation.attemptId);
-    if (attempt) relations.push(attemptRelation(attempt, "核对的尝试", inference.attempts));
+    if (attempt) relations.push(attemptRelation(attempt, "核对的尝试", inference.attempts, {
+      id: "image-diff", fromId: "image-validation", toId: "image-diff", relationType: "checks",
+      conditions: { attemptId: attempt.id, snapshotId: `attempt:${attempt.id}`, snapshot: inference.validation.snapshot, code: inference.validation.code },
+    }));
     const diffRecord = exactDiffRecord(records, inference.validation.code || attempt?.code, inference.validation.attemptId, true);
-    if (diffRecord) add(childFromRecord(diffRecord).id, `复核对象 · ${diffRecord.time || "时间未记录"}`, diffRecord.title || "对应修改快照");
+    if (diffRecord) add(childFromRecord(diffRecord).id, `复核对象 · ${diffRecord.time || "时间未记录"}`, diffRecord.title || "对应修改快照", "checks", "image-validation", "image-diff", { snapshotId: childFromRecord(diffRecord).id, attemptId: inference.validation.attemptId, code: inference.validation.code });
   }
   return relations;
 }
-
 function provenanceFor(id, flow, inference) {
   const result = [];
   const addAttempt = (label, attempt) => {
@@ -692,6 +802,10 @@ export function buildTaskContentItems({
     const countLabel = id === "attempts" || id === "image-attempts" ? `${attemptChildren.length} 次尝试${historyCount ? ` · ${historyCount} 条历史记录` : ""}`
         : id === "precision" && precisionContext ? `${precisionContext.count ?? asArray(precisionContext.rows).length} 项${historyCount ? ` · ${historyCount} 条历史记录` : ""}`
           : historyCount ? `${historyCount} 条历史记录` : "";
+    const state = generic
+      ? { label: matchingRecords.length ? "任务记录已保留" : "任务内容已打开", tone: "neutral", detail: "通用任务内容；不套用其他业务场景的诊断或验证结论。" }
+      : taskStateFor(id, produced, precisionContext, flow, inference, material.summary || visitedEntry.summary || canvasCard.summary || meta?.summary || "");
+    const statusLabel = generic ? state.label : state.label || statusFor(id, produced, precisionContext, flow, inference);
     const item = {
       id,
       title,
@@ -702,18 +816,17 @@ export function buildTaskContentItems({
       summary: generic
         ? short(canvasCard.summary || material.summary || visitedEntry.summary || meta?.summary || `${title}已在本任务中保留，可继续查看。`, 190)
         : itemSummary(id, image, flow, inference, precisionContext, matchingRecords.length, matchingRecords.length > 0),
-      statusLabel: generic ? (matchingRecords.length ? "任务记录已保留" : "任务内容已打开") : statusFor(id, produced, precisionContext, flow, inference),
-      state: generic
-        ? { label: matchingRecords.length ? "内容记录已保留" : "内容可查看", tone: "neutral", detail: "通用任务内容；不套用其他业务场景的诊断或验证结论。" }
-        : taskStateFor(id, produced, precisionContext, flow, inference, material.summary || visitedEntry.summary || canvasCard.summary || meta?.summary || ""),
+      statusLabel,
+      state,
       viewState: {
         label: visitedEntry.closed ? "已收起" : visitedEntry.unread ? "有更新" : visitedEntry.id || canvasCard.id ? "已查看" : "未查看",
         unread: Boolean(visitedEntry.unread),
         closed: Boolean(visitedEntry.closed),
       },
       contextLabel: short((generic ? "" : image ? imageContextFor(id, inference) : mainContextFor(id, flow, precisionContext)) || material.contextLabel || visitedEntry.contextLabel || canvasCard.contextLabel || staticContextFor(id), 110),
-      relations: generic ? [] : relationsFor(id, flow, inference, recordList),
-      provenance: generic ? [] : provenanceFor(id, flow, inference),
+      status: generic ? undefined : semanticStatusFor(id, produced, flow, inference, precisionContext),
+      relations: generic ? [] : relationsFor(id, flow, inference, recordList, precisionContext),
+      provenance: generic ? [] : [...provenanceFor(id, flow, inference), ...baselineProvenanceFor(id, image)],
       countLabel,
       unread: Boolean(visitedEntry.unread),
       closed: Boolean(visitedEntry.closed),

@@ -111,6 +111,15 @@
 .canvas-card-title > strong,
 .canvas-card-title > h3 { min-width: 0; margin: 0; overflow: hidden; color: inherit; font-size: 12px; font-weight: 600; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
 .canvas-card-title > svg { flex: 0 0 auto; width: 18px; height: 18px; padding: 5px; border-radius: 50%; color: #4c555a; background: #f1f2f1; }
+.canvas-node-type-marker { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 17px; padding: 1px 5px; border-radius: 5px; color: var(--canvas-node-marker, #777a83); background: var(--canvas-node-marker-surface, #f1f1f1); font-size: 9px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
+.canvas-node-type-marker + h3 { margin-left: 0; }
+.canvas-node-type-marker + svg { margin-left: 0; }
+.canvas-node-status { display: inline-flex; align-items: center; flex: 0 1 auto; max-width: 140px; min-height: 18px; padding: 1px 6px; overflow: hidden; border-radius: 5px; font-size: 10px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.canvas-node-status.is-success { color: #21804a; background: #e8f5ec; }
+.canvas-node-status.is-progress { color: #4659a8; background: #eef1ff; }
+.canvas-node-status.is-review { color: #a45e00; background: #fff3dd; }
+.canvas-node-status.is-error { color: #b3263e; background: #fcebed; }
+.canvas-node-status.is-neutral { color: #777a83; background: #f0f0ef; }
 .canvas-card-actions { display: flex; align-items: center; gap: 2px; flex: 0 0 auto; margin-left: auto; }
 .canvas-card-button {
   display: inline-flex;

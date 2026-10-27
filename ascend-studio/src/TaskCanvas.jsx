@@ -3,13 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   IconAlertTriangle,
   IconArrowLeft,
-  IconArrowUpRight,
   IconArrowsDiagonal,
-  IconChevronDown,
-  IconChevronRight,
   IconCheck,
-  IconFocus2,
-  IconGripVertical,
   IconHandMove,
   IconLayoutBoard,
   IconLayoutColumns,
@@ -21,7 +16,8 @@ import {
   IconRestore,
   IconTrash,
 } from "@tabler/icons-react";
-import { CanvasCardActions, CanvasCardButton, CanvasCardFrame, CanvasCardHeader, CanvasFitIcon, CanvasMiniMap, CanvasSurface, CanvasToolButton, CanvasToolbar, CanvasToolbarGroup, CanvasZoomGroup, focusViewportForBounds } from "./shared/canvas/index.jsx";
+import { CanvasCardButton, CanvasCardFrame, CanvasCardHeader, CanvasFitIcon, CanvasMiniMap, CanvasNodeActions, CanvasNodeMarker, CanvasNodeStatus, CanvasSurface, CanvasToolButton, CanvasToolbar, CanvasToolbarGroup, CanvasZoomGroup, focusViewportForBounds } from "./shared/canvas/index.jsx";
+import { normalizeCanvasNode } from "./shared/canvas/node-semantics.js";
 import CanvasDrawingSurface from "./shared/canvas/CanvasDrawingSurface.jsx";
 import CanvasNoteContent from "./shared/canvas/CanvasNoteContent.jsx";
 import CanvasLegacyDrawings from "./shared/canvas/CanvasLegacyDrawings.jsx";
@@ -37,7 +33,7 @@ const clampZoom = (zoom) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom));
 const editableTarget = (target) => target instanceof Element && Boolean(target.closest("input,textarea,select,[contenteditable=true]"));
 const floatingTarget = (target) => target instanceof Element && Boolean(target.closest(".tc-floating-index,.tc-canvas-toolbar,.tc-node-picker,.tc-mini-map,.tc-empty-state"));
 
-export function TaskCanvas({ visible = true, embedded = false, isAddCustom = false, enableCardFocus = false, viewMode, focusIds = [], fitRequest = 0, flow, canvas, onBack, onOpenContents, onOpenContent, onFocusContent, onCollapse, onAttachCode, renderMaterial, contents = null, contentsOpen = false, connections = [], comparisonIds = ["source", "draft"] }) {
+export function TaskCanvas({ visible = true, embedded = false, isAddCustom = false, enableCardFocus = false, semanticDomain = "addcustom", nodeSemantics = [], viewMode, focusIds = [], fitRequest = 0, flow, canvas, onBack, onOpenContents, onOpenContent, onFocusContent, onCollapse, onAttachCode, renderMaterial, contents = null, contentsOpen = false, connections = [], comparisonIds = ["source", "draft"] }) {
   const { state, actions } = canvas;
   const [collapsedIds, setCollapsedIds] = useState([]);
   const [handMode, setHandMode] = useState(false);
@@ -73,6 +69,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
     return () => window.removeEventListener("keydown", handleEscape);
   }, [positionEditing, visible]);
   const selected = state.cards.find((card) => card.id === state.selectedCardId && card.visible) || null;
+  const nodeSemanticsById = useMemo(() => new Map(nodeSemantics.map(node => [node.id, node])), [nodeSemantics]);
   const cardSummary = (card) => card.summary || ({ "task-brief": "问题现象与待补条件", source: "来源只读", evidence: "根因待确认", explanation: "线索解释", draft: flow?.state.mode === "isolated" ? "隔离示例副本" : "任务内示例副本", parameters: `输入 [${flow?.state.rows},${flow?.state.columns}]`, attempts: `${flow?.state.attempts.length || 0} 次范围尝试`, diff: flow?.state.proposedCode ? "保留修改差异" : "待生成提案", validation: flow?.state.validation ? "已存范围复核" : "真实项目待验证", precision: "数值误差核对", review: "观察与待补证据" }[card.id] || "内容保留");
   const visibleCards = state.cards.filter((card) => card.visible);
   const hiddenCards = state.cards.filter((card) => !card.visible && card.opened);
@@ -410,16 +407,28 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
           const endY = horizontal ? toCenter.y : toCenter.y - direction * toHeight / 2;
           const distance = Math.max(8, Math.abs(horizontal ? endX - startX : endY - startY) * 0.4);
           const path = horizontal ? `M ${startX} ${startY} C ${startX + direction * distance} ${startY}, ${endX - direction * distance} ${endY}, ${endX} ${endY}` : `M ${startX} ${startY} C ${startX} ${startY + direction * distance}, ${endX} ${endY - direction * distance}, ${endX} ${endY}`;
-          return <g key={connection.id || index}><path d={path} markerEnd="url(#task-canvas-arrow)" />{connection.label && <text x={(startX + endX) / 2} y={(startY + endY) / 2 - 8}>{connection.label}</text>}</g>;
+          const relationType = connection.relationType || "related-to";
+          return <g key={connection.id || index} className={`tc-connection is-${relationType.replace(/[^a-z0-9-]/g, "-")}`} data-relation-type={relationType} aria-label={connection.label || relationType}><path d={path} markerEnd="url(#task-canvas-arrow)" />{connection.label && <text x={(startX + endX) / 2} y={(startY + endY) / 2 - 8}>{connection.label}</text>}</g>;
         })}</svg>}
         <CanvasLegacyDrawings className="tc-drawings" drawings={worldDrawings} editable={positionEditing} selectedId={drawing.selectedLegacyDrawingId} onSelect={drawing.selectLegacyDrawing} onDelete={drawing.deleteLegacyDrawing} />
 
         {state.cards.map((card, index) => {
           const collapsed = isCollapsed(card);
-          return <CanvasCardFrame key={card.id} className={`tc-card${collapsed ? " is-collapsed" : ""}`} selected={state.selectedCardId === card.id} pinned={card.pinned} collapsed={collapsed} hidden={!card.visible} aria-label={card.title} style={{ left: card.x, top: card.y, width: card.width, height: collapsed ? COLLAPSED_HEIGHT : card.height, zIndex: index + 2 }} onPointerDownCapture={(event) => { if (event.target instanceof Element && event.target.closest("button,a,input,textarea,select,label,summary")) return; if (!handMode && !spaceHeld && stateRef.current.selectedCardId !== card.id) actions.selectCard(card.id); }}>
-            <CanvasCardHeader className="tc-card-header" data-card-id={card.id} onPointerDown={(event) => { if (!positionEditing || event.target instanceof Element && event.target.closest("button")) return; beginMove(event, card); }}>
-              {positionEditing && <CanvasCardButton className="tc-move-handle" type="button" disabled={card.pinned} aria-label={`移动${card.title}；方向键微调，Shift 加快`} title={card.pinned ? "已固定位置" : "拖动标题移动；方向键微调"} onPointerDown={(event) => beginMove(event, card)} onKeyDown={(event) => keyboardMove(event, card)}><IconGripVertical size={ICON_SIZE.control} /></CanvasCardButton>}<div className="canvas-card-title"><h3 title={card.title}>{card.title}</h3></div>{collapsed && <small className="tc-collapse-summary">{cardSummary(card)}</small>}{card.pinned && <span className="tc-pin-label"><IconPin size={ICON_SIZE.micro} />已固定</span>}
-              <CanvasCardActions className="tc-card-actions"><CanvasCardButton type="button" aria-label={`聚焦${card.title}并适当放大`} title="移到视野中心并适当放大；仍在画布内" onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><IconFocus2 size={ICON_SIZE.inline} /></CanvasCardButton>{onOpenContent && <CanvasCardButton type="button" aria-label={`打开${card.title}完整内容`} title="打开完整内容；离开画布查看" onClick={() => onOpenContent(card.id)}><IconArrowUpRight size={ICON_SIZE.inline} /></CanvasCardButton>}<CanvasCardButton type="button" active={card.pinned} aria-label={card.pinned ? `取消固定${card.title}` : `固定${card.title}`} title={card.pinned ? "取消固定" : "固定位置与尺寸"} onClick={() => actions.togglePin(card.id)}><IconPin size={ICON_SIZE.inline} /></CanvasCardButton>{positionEditing && ["note", "drawing"].includes(card.kind) && <CanvasCardButton className="is-destructive" type="button" aria-label={`删除${card.title}`} title="删除新增卡片" onClick={() => { if (drawing.targetCardId === card.id) drawing.stop(); actions.deleteCard(card.id); }}><IconTrash size={ICON_SIZE.inline} /></CanvasCardButton>}<CanvasCardButton type="button" aria-label={collapsed ? `展开${card.title}` : `折叠${card.title}`} title={collapsed ? "展开内容" : "折叠内容"} aria-expanded={!collapsed} onClick={() => toggleCollapsed(card.id)}>{collapsed ? <IconChevronRight size={ICON_SIZE.inline} /> : <IconChevronDown size={ICON_SIZE.inline} />}</CanvasCardButton></CanvasCardActions>
+          const semantics = normalizeCanvasNode({ ...(nodeSemanticsById.get(card.id) || {}), ...card }, semanticDomain);
+          return <CanvasCardFrame key={card.id} className={`tc-card${collapsed ? " is-collapsed" : ""}`} data-node-type={semantics?.nodeType} data-content-type={semantics?.contentType} data-node-status={semantics?.status} data-node-domain={semantics?.domain} selected={state.selectedCardId === card.id} pinned={card.pinned} collapsed={collapsed} hidden={!card.visible} aria-label={[card.title, semantics?.nodeType, semantics?.statusLabel].filter(Boolean).join("，")} style={{ left: card.x, top: card.y, width: card.width, height: collapsed ? COLLAPSED_HEIGHT : card.height, zIndex: index + 2 }} onPointerDownCapture={(event) => { if (event.target instanceof Element && event.target.closest("button,a,input,textarea,select,label,summary")) return; if (!handMode && !spaceHeld && stateRef.current.selectedCardId !== card.id) actions.selectCard(card.id); }}>
+            <CanvasCardHeader className="tc-card-header" data-card-id={card.id}>
+              <div className="canvas-card-title"><CanvasNodeMarker nodeType={semantics?.nodeType} /><h3 title={card.title}>{card.title}</h3></div><CanvasNodeStatus status={semantics?.status} statusLabel={semantics?.statusLabel} hideAvailable />{collapsed && <small className="tc-collapse-summary">{cardSummary(card)}</small>}{card.pinned && <span className="tc-pin-label"><IconPin size={ICON_SIZE.micro} />已固定</span>}
+              <CanvasNodeActions
+                className="tc-card-actions"
+                title={card.title}
+                move={positionEditing ? { disabled: card.pinned, onPointerDown: event => beginMove(event, card), onKeyDown: event => keyboardMove(event, card), ariaLabel: `移动${card.title}；方向键微调，Shift 加快`, disabledTitle: "已固定位置与尺寸" } : null}
+                onFocus={() => { focusCard(card); onFocusContent?.(card.id); }}
+                onOpenContent={onOpenContent ? () => onOpenContent(card.id) : null}
+                pin={{ active: card.pinned, scope: "position-and-size", onToggle: () => actions.togglePin(card.id) }}
+                collapse={{ collapsed, onToggle: () => toggleCollapsed(card.id) }}
+              >
+                {positionEditing && ["note", "drawing"].includes(card.kind) && <CanvasCardButton className="is-destructive" type="button" aria-label={`删除${card.title}`} title="删除新增卡片" onClick={() => { if (drawing.targetCardId === card.id) drawing.stop(); actions.deleteCard(card.id); }}><IconTrash size={ICON_SIZE.inline} /></CanvasCardButton>}
+              </CanvasNodeActions>
             </CanvasCardHeader>
             <div className={`tc-card-content${card.kind === "drawing" ? " is-drawing-card" : card.kind === "note" ? " is-note-card" : ""}`} hidden={collapsed} role="region" aria-label={card.title + "内容；需要时可在卡片内滚动查看"} onWheel={(event) => {
               const content = event.currentTarget;

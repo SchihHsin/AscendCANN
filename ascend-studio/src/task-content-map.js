@@ -2,6 +2,7 @@
  * Derive an overview map from the task content catalog's explicit records.
  * This module does not infer causal links or task outcomes.
  */
+import { normalizeCanvasRelation } from "./shared/canvas/node-semantics.js";
 
 const asArray = value => Array.isArray(value) ? value : [];
 const asText = value => String(value ?? "").replace(/\s+/g, " ").trim();
@@ -29,8 +30,9 @@ export function summarizeContentMapItem(item = {}) {
 }
 
 /**
- * Group catalog items without changing their source order and derive edges
- * only from explicit `relations[].id` references.
+ * Group catalog items without changing their source order and derive directed
+ * edges only from explicit `fromId` / `toId` relationships. A legacy `id`
+ * remains a navigation target and is never used to guess edge direction.
  */
 export function buildContentMap(items = [], groups = []) {
   const sourceItems = asArray(items).filter(item => item && item.id != null);
@@ -78,35 +80,40 @@ export function buildContentMap(items = [], groups = []) {
 
   const edges = [];
   const edgeKeys = new Set();
+  const resolveOwner = endpointId => {
+    const id = String(endpointId || "");
+    if (!id) return "";
+    return itemById.has(id) ? id : ownerByRecordId.get(id) || "";
+  };
   for (const item of sourceItems) {
     if (!itemById.has(String(item.id)) || itemById.get(String(item.id)) !== item) continue;
-    for (const relation of asArray(item.relations)) {
-      if (!relation || relation.id == null) continue;
-      const referencedId = String(relation.id);
-      const targetItem = itemById.get(referencedId);
-      const targetOwnerId = targetItem
-        ? referencedId
-        : ownerByRecordId.get(referencedId);
-      if (!targetOwnerId || !itemById.has(targetOwnerId)) continue;
-
-      const sourceId = String(item.id);
-      // A relation can point at a concrete history entry; keep that identity
-      // available to the UI while the graph endpoint remains its owning item.
-      const sourceRecordId = sourceId;
-      const targetRecordId = referencedId;
+    for (const rawRelation of asArray(item.relations)) {
+      const relation = normalizeCanvasRelation(rawRelation, String(item.id));
+      if (!relation) continue;
+      const fromRecordId = String(relation.fromId || "");
+      const toRecordId = String(relation.toId || "");
+      if (!fromRecordId || !toRecordId) continue;
+      const sourceId = resolveOwner(fromRecordId);
+      const targetId = resolveOwner(toRecordId);
+      if (!sourceId || !targetId || sourceId === targetId) continue;
+      // History snapshots retain their own identities while graph endpoints
+      // collapse to the visible catalog card that owns them.
       const label = asText(relation.label || relation.title);
-      const type = asText(relation.type || "related");
-      const key = [sourceId, targetOwnerId, sourceRecordId || "", targetRecordId || "", label, type].join("\u001f");
+      const type = asText(relation.relationType || relation.type || "related-to");
+      const key = [sourceId, targetId, fromRecordId, toRecordId, type].join("\u001f");
       if (edgeKeys.has(key)) continue;
       edgeKeys.add(key);
       edges.push({
         id: `relation:${edges.length + 1}`,
         sourceId,
-        targetId: targetOwnerId,
+        targetId,
         label,
         type,
-        sourceRecordId,
-        targetRecordId,
+        sourceRecordId: fromRecordId,
+        targetRecordId: toRecordId,
+        navigationTargetId: String(relation.id || toRecordId),
+        evidence: asText(relation.evidence || relation.reason),
+        conditions: relation.conditions && typeof relation.conditions === "object" ? relation.conditions : undefined,
       });
     }
   }

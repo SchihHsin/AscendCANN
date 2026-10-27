@@ -1,6 +1,18 @@
 import { ICON_SIZE } from "../../icon-system.js";
 import { forwardRef, useRef } from "react";
-import { IconArrowsMinimize, IconMinus, IconPlus } from "@tabler/icons-react";
+import {
+  IconArrowUpRight,
+  IconArrowsMinimize,
+  IconChevronDown,
+  IconChevronRight,
+  IconFocus2,
+  IconGripVertical,
+  IconMinus,
+  IconPin,
+  IconPinnedOff,
+  IconPlus,
+} from "@tabler/icons-react";
+import { CANVAS_NODE_TYPE, normalizeCanvasStatus } from "./node-semantics.js";
 
 export { focusViewportForBounds } from "./focus-viewport.js";
 
@@ -49,6 +61,62 @@ export function CanvasCardActions({ as: Element = "div", className = "", childre
 export function CanvasCardButton({ active, className = "", children, ...props }) {
   const pressed = typeof active === "boolean" && props["aria-pressed"] === undefined ? { "aria-pressed": active } : {};
   return <button {...props} {...pressed} className={`canvas-card-button ${active ? "is-active" : ""} ${className}`.trim()}>{children}</button>;
+}
+
+const NODE_TYPE_MARKERS = Object.freeze({
+  [CANVAS_NODE_TYPE.GOAL]: { label: "目标", color: "#2787e8", surface: "#e9f2ff" },
+  [CANVAS_NODE_TYPE.STEP]: { label: "步骤", color: "#5366c8", surface: "#edf0ff" },
+  [CANVAS_NODE_TYPE.MATERIAL]: { label: "材料", color: "#e6a12d", surface: "#fff5e3" },
+  [CANVAS_NODE_TYPE.EVIDENCE]: { label: "证据", color: "#8257c5", surface: "#f2ecfa" },
+  [CANVAS_NODE_TYPE.ACTION]: { label: "操作", color: "#ec7169", surface: "#fff0ee" },
+  [CANVAS_NODE_TYPE.RESULT]: { label: "结果", color: "#24a99f", surface: "#e5f7f5" },
+  [CANVAS_NODE_TYPE.NOTE]: { label: "笔记", color: "#8257c5", surface: "#f2ecfa" },
+});
+
+export function CanvasNodeMarker({ nodeType, className = "" }) {
+  const marker = NODE_TYPE_MARKERS[nodeType];
+  if (!marker) return null;
+  return <span className={`canvas-node-type-marker ${className}`.trim()} data-node-type={nodeType} title={`${marker.label}节点`} style={{ "--canvas-node-marker": marker.color, "--canvas-node-marker-surface": marker.surface }}>{marker.label}</span>;
+}
+
+const NODE_STATUS_CLASS = Object.freeze({
+  "in-progress": "progress",
+  proposed: "review",
+  completed: "success",
+  "needs-review": "review",
+  blocked: "error",
+  outdated: "review",
+  archived: "neutral",
+  available: "neutral",
+});
+
+export function CanvasNodeStatus({ status, statusLabel, hideAvailable = false, className = "" }) {
+  const normalizedStatus = normalizeCanvasStatus(status);
+  if (!statusLabel || (hideAvailable && normalizedStatus === "available")) return null;
+  const tone = NODE_STATUS_CLASS[normalizedStatus] || "neutral";
+  return <span className={`canvas-node-status is-${tone} ${className}`.trim()} data-node-status={normalizedStatus || "unknown"} title={statusLabel}>{statusLabel}</span>;
+}
+
+/** One action contract for material cards across freeform and learning canvases. */
+export function CanvasNodeActions({ title, move, onFocus, onOpenContent, pin, collapse, className = "", children }) {
+  const pinScope = pin?.scope === "position-and-size" ? "位置与尺寸" : "位置";
+  const collapsed = Boolean(collapse?.collapsed);
+  return <CanvasCardActions className={className}>
+    {move && <CanvasCardButton
+      type="button"
+      className="canvas-node-action-move"
+      disabled={Boolean(move.disabled)}
+      aria-label={move.ariaLabel || `移动${title}`}
+      title={move.disabled ? (move.disabledTitle || "位置已固定") : (move.title || "拖动卡片移动；方向键微调")}
+      onPointerDown={move.onPointerDown}
+      onKeyDown={move.onKeyDown}
+    ><IconGripVertical size={ICON_SIZE.inline} /></CanvasCardButton>}
+    {onFocus && <CanvasCardButton type="button" aria-label={`聚焦${title}`} title="聚焦到画布视野中心" onClick={onFocus}><IconFocus2 size={ICON_SIZE.inline} /></CanvasCardButton>}
+    {onOpenContent && <CanvasCardButton type="button" aria-label={`打开${title}完整内容`} title="在任务内容区打开完整内容" onClick={onOpenContent}><IconArrowUpRight size={ICON_SIZE.inline} /></CanvasCardButton>}
+    {pin && <CanvasCardButton type="button" active={Boolean(pin.active)} aria-label={`${pin.active ? "取消固定" : "固定"}${title}${pinScope}`} title={pin.active ? `取消固定${pinScope}` : `固定${pinScope}`} onClick={pin.onToggle}>{pin.active ? <IconPinnedOff size={ICON_SIZE.inline} /> : <IconPin size={ICON_SIZE.inline} />}</CanvasCardButton>}
+    {collapse && <CanvasCardButton type="button" aria-label={collapsed ? `展开${title}` : `收起${title}`} title={collapsed ? "展开卡片内容" : "收起卡片内容"} aria-expanded={!collapsed} onClick={collapse.onToggle}>{collapsed ? <IconChevronRight size={ICON_SIZE.inline} /> : <IconChevronDown size={ICON_SIZE.inline} />}</CanvasCardButton>}
+    {children}
+  </CanvasCardActions>;
 }
 
 function normalizeViewBox(viewBox) {

@@ -124,16 +124,25 @@ export function buildOfficialLearningContentItems({ state, workspaceState, recor
   const statuses = state?.statuses || {};
   const visited = workspaceState?.visitedTabs || [];
   const labelFor = id => officialStatusLabel(getOfficialLearningStatus(id, statuses));
+  const statusFor = id => {
+    const status = getOfficialLearningStatus(id, statuses);
+    return status === "completed" || status === "in-progress" ? status : "available";
+  };
+  const sourceEntries = ids => [...new Set(ids)].map(id => OFFICIAL_LEARNING_SOURCES[id]).filter(Boolean).map(source => ({
+    label: "官方来源",
+    value: source.title,
+    url: source.url,
+  }));
   const items = OFFICIAL_LEARNING_STAGES.map(stage => {
     const stageVisit = visited.find(item => item.id === stage.id);
     const children = stage.children.map(child => {
       const childVisit = visited.find(item => item.id === child.id);
       const label = labelFor(child.id);
-      return { id: child.id, title: child.title, type: "preview", parentId: stage.id, parentTitle: stage.title, summary: child.summary, contextLabel: label, statusLabel: label, state: { label, tone: statuses[child.id] === "completed" ? "success" : "neutral", detail: "结合理解记录、当前理解题与所需练习更新；不代表设备验证。" }, readOnly: false, closed: Boolean(childVisit?.closed), unread: Boolean(childVisit?.unread), viewState: { label: childVisit?.closed ? "已收起" : childVisit?.unread ? "有更新" : childVisit ? "已查看" : "未查看", closed: Boolean(childVisit?.closed), unread: Boolean(childVisit?.unread) } };
+      return { id: child.id, title: child.title, type: "preview", nodeType: "step", contentType: "lesson", status: statusFor(child.id), provenance: sourceEntries(child.sourceIds || []), parentId: stage.id, parentTitle: stage.title, summary: child.summary, contextLabel: label, statusLabel: label, state: { label, tone: statuses[child.id] === "completed" ? "success" : "neutral", detail: "结合理解记录、当前理解题与所需练习更新；不代表设备验证。" }, readOnly: false, closed: Boolean(childVisit?.closed), unread: Boolean(childVisit?.unread), viewState: { label: childVisit?.closed ? "已收起" : childVisit?.unread ? "有更新" : childVisit ? "已查看" : "未查看", closed: Boolean(childVisit?.closed), unread: Boolean(childVisit?.unread) } };
     });
     const statusLabel = labelFor(stage.id);
     const completed = stage.children.filter(child => statuses[child.id] === "completed").length;
-    return { id: stage.id, title: stage.title, type: "preview", kindLabel: "目标阶段", groupId: "learning-official", summary: stage.summary, statusLabel, contextLabel: `${completed}/${stage.children.length} 个学习动作已完成`, state: { label: statusLabel, tone: statusLabel === "已学完" ? "success" : "neutral", detail: "阶段进度汇总自下方学习动作与检查记录；不代表 NPU 已验证。" }, children, relatedHistory: [], relations: [], provenance: [], countLabel: `${stage.children.length} 个学习动作`, closed: Boolean(stageVisit?.closed), unread: Boolean(stageVisit?.unread), viewState: { label: stageVisit?.closed ? "已收起" : stageVisit?.unread ? "有更新" : stageVisit ? "已查看" : "未查看", closed: Boolean(stageVisit?.closed), unread: Boolean(stageVisit?.unread) } };
+    return { id: stage.id, title: stage.title, type: "preview", nodeType: "step", contentType: "summary", status: statusFor(stage.id), provenance: sourceEntries(stage.children.flatMap(child => child.sourceIds || [])), kindLabel: "目标阶段", groupId: "learning", summary: stage.summary, statusLabel, contextLabel: `${completed}/${stage.children.length} 个学习动作已完成`, state: { label: statusLabel, tone: statusLabel === "已学完" ? "success" : "neutral", detail: "阶段进度汇总自下方学习动作与检查记录；不代表 NPU 已验证。" }, children, relatedHistory: [], relations: [], countLabel: `${stage.children.length} 个学习动作`, closed: Boolean(stageVisit?.closed), unread: Boolean(stageVisit?.unread), viewState: { label: stageVisit?.closed ? "已收起" : stageVisit?.unread ? "有更新" : stageVisit ? "已查看" : "未查看", closed: Boolean(stageVisit?.closed), unread: Boolean(stageVisit?.unread) } };
   });
-  return [...items, ...records.filter(record => record.kind === "official-learning-summary").map(record => ({ id:`record:${record.id}`, title:record.title, summary:record.summary, type:"preview", groupId:"learning-official", kindLabel:"学习记录", contextLabel:record.time, readOnly:true, state:{label:"已保存",tone:"neutral",detail:"保存时的本地学习记录"} }))];
+  return [...items, ...records.filter(record => record.kind === "official-learning-summary").map(record => ({ id:`record:${record.id}`, title:record.title, summary:record.summary, type:"preview", nodeType:"result", contentType:"summary", status:"completed", provenance:[{label:"记录来源",value:"本地学习记录；不代表设备实测"},{label:"保存时间",value:record.time}], groupId:"learning", kindLabel:"学习记录", contextLabel:record.time, readOnly:true, state:{label:"已保存",tone:"neutral",detail:"保存时的本地学习记录"} }))];
 }
