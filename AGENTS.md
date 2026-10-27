@@ -7096,3 +7096,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/index.html`、`app.js`、`styles.css`、`README.md`、`qa.md`。手机端小程序交互保持原路径；讲解侧栏仅在桌面评审壳出现。未改变电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 边界；微信消息仍为本地模拟，不代表真实推送。
 - 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未做完整浏览器逐屏点击回归，也未新增截图。Pages workflow `40498003527` 成功；线上入口、JS、CSS均 HTTP 200，HTML / JS 已确认包含五步面板和路由导航逻辑。
 - 提交 / 推送：功能提交 `36955efb` 已推送至 `origin/main`。本条交接记录随后补推。
+
+### 2026-10-27 · Pura X View 阔直板样机适配
+
+- 用户明确纠正设备形态：HUAWEI Pura X View 是阔直板手机，不是折叠屏（H）。华为官方规格页列出机身 144.1 × 87.0 mm、6.39 英寸屏幕（H）；标准桌面样机调整为 420 × 696 CSS px，宽高比约 0.603，近似机身 87.0 / 144.1 ≈ 0.604。样机只表达单屏阔直板轮廓，不声称复刻工业设计。
+- 更新 `ascstudio-mini/index.html`、`styles.css`、`README.md`、`qa.md` 与 `evidence/weekly-briefing-desktop.png`。另修正 `.intro-eyebrow` 通用 span 圆点样式误压缩步骤文字的问题。五屏路由、微信服务通知主路径不变；不涉及电脑端页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确设备纠正和华为官方规格（H）；Chrome 1440×1000 本地截图用于核对样机与布局（M）。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
+- 基线版本 `36955efb` 已在开始本轮机型适配前推送并在线核对。适配版当前提交 / 推送与 Pages 部署待完成。

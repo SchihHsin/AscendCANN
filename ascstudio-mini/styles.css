@@ -110,6 +110,12 @@ button {
   background:#8f78c6;
   border-radius:50%;
 }
+.intro-eyebrow>span:not(:first-child) {
+  width:auto;
+  height:auto;
+  background:none;
+  border-radius:0;
+}
 .intro-body h1 {
   font-family:var(--serif);
   font-size:48px;
@@ -217,12 +223,13 @@ button {
   position:relative;
 }
 .device {
+  /* HUAWEI Pura X View 阔直板机身比例：87 / 144.1 ≈ 0.604。 */
   width:420px;
-  height:min(890px,calc(100dvh - 76px));
-  min-height:680px;
+  height:696px;
+  min-height:0;
   background:#f8f8f8;
-  border:7px solid #26262b;
-  border-radius:48px;
+  border:6px solid #26262b;
+  border-radius:42px;
   position:relative;
   overflow:hidden;
   display:flex;
@@ -2331,10 +2338,10 @@ button {
     gap:70px;
   }
   .device {
-    height:calc(100dvh - 48px);
-    min-height:600px;
-    border-width:6px;
-    border-radius:43px;
+    height:min(696px,calc(100dvh - 48px));
+    min-height:0;
+    border-width:5px;
+    border-radius:38px;
   }
   .preview-intro {
     min-height:600px;
@@ -2354,8 +2361,10 @@ button {
   }
   .device {
     width:390px;
-    height:calc(100dvh - 56px);
-    min-height:640px;
+    height:min(646px,calc(100dvh - 56px));
+    min-height:0;
+    border-width:5px;
+    border-radius:38px;
   }
   .intro-body h1 {
     font-size:35px;

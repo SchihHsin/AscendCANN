@@ -58,3 +58,9 @@
 
 - 桌面预览左侧随当前路由切换讲解文案，并提供「上一屏 / 下一设计点」控制；导航覆盖微信消息列表、服务通知、每周速览、知识卡信号、订阅设置。进入第五步时通过速览页打开订阅弹层；移动端仍保留小程序原生交互路径。
 - 验证：`node --check app.js`、`node --check knowledge.js`、`git diff --check` 通过。未完成浏览器端的逐屏点击回归，未生成新截图。
+
+## 2026-10-27 · Pura X View 阔直板样机
+
+- 桌面预览使用单屏直板外框，不含折叠轴或内外屏。标准尺寸 420×696 CSS px，宽高比约 0.603；华为规格为机身宽 87.0 mm、长 144.1 mm，宽高比约 0.604；6.39 英寸屏幕规格见[官方页面](https://consumer.huawei.com/cn/phones/pura-x-view/specs/)。该外框只近似机身比例，不声称精确还原工业设计。
+- Chrome 桌面视口 1440×1000 回放速览页并检查截图；设备外形保持宽直板比例，正文在更短屏幕内自然滚动。修正讲解栏步骤标签样式，避免被圆点规则压缩为竖排。
+- 更新 `evidence/weekly-briefing-desktop.png`。验证：`node --check app.js`、`node --check knowledge.js`、`git diff --check` 通过；未运行自动化测试。
