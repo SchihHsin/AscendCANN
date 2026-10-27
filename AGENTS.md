@@ -7153,3 +7153,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascend-studio/src/App.jsx` 将 composer 外沿 10px 设为拖动命中区，交互控件与内容芯片不启动拖动；保留已有目标预览与吸附，并要求真实移动且在目标区域释放才切换。`ascend-studio/src/styles.css` 移除独立把手样式，加入外沿悬浮与拖动光标状态；同步更新 `ascstudio/` 静态构建产物。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages` 成功；生成 JS `node --check`、HTML 资源引用存在性与 `git diff --check` 通过。桌面交互回放确认两种布局均可从边缘拖动，输入区内悬浮与控件点击不启动拖动，双向目标预览及松手吸附正常，无把手、无运行时异常；本地 `5178` 返回 HTTP 200。未运行自动化测试。
 - 发布：实现提交 `8e3633c5` 已推送 `origin/main`；合并前先快进同步主线提交 `4d5b8333`，其独立星星 × 书本素材完整保留。GitHub Pages workflow `40538891007` 成功；线上 `/AscendCANN/ascstudio/` HTML、`index-Cqdi8RJO.js` 与 `index-D_LHgAek.css` 返回 HTTP 200，HTML 引用为本轮 bundle。
+
+### 2026-10-28 · 白底书本对比度方向迭代
+
+- 业务目的：回应用户对浅色背景版书页不清晰的反馈；按用户明确要求不使用描边，并生成两种书本处理：浅冷色书页、白色书页下方露出彩色封底。每种均提供透明底、深色底和白色底 PNG，位于 visual-assets/star-book-icon-exploration/。
+- 证据与置信度：视觉问题、禁止描边和两种指定方案来自用户反馈（H）；六张图像为生成式视觉探索稿（M），仍需用户选择，不代表最终品牌定稿。
+- 页面序列及 API / Protocol、Host / Harness、Application / Task 边界均无变化。
+- 验证：Pillow 检查 6 个 PNG；2 个透明版本为 RGBA 且 alpha 范围为 0–255，4 个背景版本为 RGB；git diff --cached --check 通过。未运行测试。
+- 提交 / 推送：六张素材与本条交接记录通过独立临时索引提交并推送至 origin/main，主题为 assets: add book contrast icon variants；共享工作区其他暂存、未暂存和未跟踪内容未纳入。
+- 未决事项：等待用户比较浅冷色书页与彩色封底；选定方向后可再调整页面色温和封底露出比例。
