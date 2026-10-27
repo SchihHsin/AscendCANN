@@ -6925,3 +6925,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 文件：`index.html`、`styles.css`、`app.js`、`knowledge.js`、`mark.svg`、`README.md`、`qa.md` 与 `evidence/` 下5张手机 / 桌面截图。收藏、理解进展与小结存储在当前浏览器；电脑端采用明确复制小结与问题，不冒充后台跨设备同步。原生微信工程及平台发布不在当前已选交互Demo范围内。
 - 验证：JS 两文件 `node --check` 通过；7张卡 / 3项任务的数据ID、关联、答案索引和HTTPS来源完整性检查通过；内置浏览器实际验证7种图解、搜索空结果与清空、换组、任务切换、错答 / 改答反馈、即时已理解、收藏 / 小结刷新恢复、剪贴板内容、弹窗背景inert与Escape关闭。320 / 390 / 430px手机与1440×1000桌面核验，320px控件无横向越界，页面console无error / warn；详见 `ascstudio-mini/qa.md`。
 - 发布：只将新增 `ascstudio-mini/` 与本条交接记录从最新 `origin/main` 隔离提交，`git diff-tree --check` 通过后推送至 `main`，提交主题为 `feat: add Ascend Studio pocket knowledge mini-program demo`。不纳入共享目录中已有的暂存、未暂存或未跟踪内容；电脑端源码、原有页面序列和API / Host / Application边界均无改动。待续事项是用户评审首版交互与内容取舍。
+
+### 2026-10-27 · 修复 Ascend Studio 线上白屏
+
+- 用户反馈 `/ascstudio/` 页面只显示空白。桌面 Chrome 无痕环境复现线上 JS 报错 `Cannot access 'hs' before initialization`，定位到 `App.jsx` 在 `draft` 声明前将其用于 `useEffect` 依赖，导致 React 启动中断。
+- 将输入框高度同步 effect 的依赖改为已提前取得的 `session.draft`。修改 `ascend-studio/src/App.jsx` 与 `/ascstudio/` 构建产物；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- `npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；本地静态预览以桌面 Chrome 干净会话加载后，`#root` 有完整应用内容且无前端运行异常。线上修复部署待确认。

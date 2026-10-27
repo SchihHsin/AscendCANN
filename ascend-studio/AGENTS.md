@@ -1817,3 +1817,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 绘图入口添加独立手绘卡片，笔迹只画在卡片内容区并和卡片绑定；选中已有手绘卡片可继续绘制。便签与手绘卡片在编辑态可删除，关联笔迹随卡片删除；任务原材料仍只能收起 / 恢复。
 - 统一应用于通用任务画布、图像预处理学习画布和 ResNet50 官方学习画布。共享实现位于 `src/shared/canvas/CanvasDrawingSurface.jsx`、`CanvasUserNote.jsx` 与 `useCanvasDrawing.js`；通用卡片删除动作在 `src/useCanvasState.js`。
 - 构建及语法 / 差异检查通过，未运行测试套件。源码提交 `fe2002cc` 与主线合并提交 `f1fad356`、`ef0dec28`、`5e302f34` 已推送至 `origin/main`；Pages workflow `40452525868` 成功，线上 JS / CSS 均 HTTP 200，且 JS 已回读新交互文案。
+
+### 2026-10-27 · 修复页面启动时报错导致的白屏
+
+- 线上 `/ascstudio/` 在桌面 Chrome 复现 `Cannot access 'hs' before initialization`。输入框高度同步 effect 的依赖数组提前读取了后续才解构的 `draft`。
+- 改用已存在的 `session.draft` 作为依赖；构建文件随源码同步更新。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地静态预览干净会话成功渲染，控制台无应用运行异常。线上部署待确认。

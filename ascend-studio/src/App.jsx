@@ -271,7 +271,7 @@ function App() {
     if (!textarea) return;
     textarea.style.height = "auto";
     textarea.style.height = `${Math.min(textarea.scrollHeight, 110)}px`;
-  }, [draft, mainView]);
+  }, [session.draft, mainView]);
   const clearPointContext = () => {
     setPointContext(null);
     window.dispatchEvent(new Event("ascstudio-point-range-consumed"));
