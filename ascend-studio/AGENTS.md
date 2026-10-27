@@ -1807,4 +1807,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户要求下方资源卡改成上图下字、横向排列，并指出原配图过淡。推荐与新上架卡片改为桌面四列，窄屏适配三列 / 两列 / 单列；采用仓库已有主体更清楚的 v2 资源图。楼层浅灰分组面、白卡细描边和活动日程纵向时间轴保留。
 - 修改 `src/LearningDiscoveryPage.jsx`、`src/learning-discovery.css` 与 Pages 构建产物。依据为用户明确需求和已有素材；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
-- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；Pages 发布待确认。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。页面提交 `de01c247` 已推送到 `origin/main`；GitHub Pages workflow `40451131656` 成功，线上 `/ascstudio/` 已引用新 JS / CSS 哈希，二者均 HTTP 200。
