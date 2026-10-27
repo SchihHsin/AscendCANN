@@ -1927,3 +1927,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 实现：`src/App.jsx` 的模型按钮及菜单绑定品牌 SVG，`src/styles.css` / `src/interaction.css` 统一图标尺寸与紧凑布局。三个 SVG 来自 `@lobehub/icons-static-svg@1.101.0`，其 MIT 许可和来源说明随源码、Pages 输出一并保留。
 - 验证：`npm run build:pages`、生成 JS `node --check`、HTML 资源引用、license 文件检查及 `git diff --check` 通过；本地 `5178` 返回 HTTP 200。未运行自动化测试或桌面逐项交互回放。
 - 发布：提交 `c1adafe0` 已推送；Pages workflow `40541928644` 成功。线上 `/AscendCANN/ascstudio/` 入口、JS、CSS 及 attribution 文件均 HTTP 200。
+
+### 2026-10-28 · 聚焦节点与阅读完整材料
+
+- 聚焦是在原画布内导航：目标节点进入可用视野中心并按可用宽高适当缩放，仍可访问其他节点和关系；节点过大时缩小以完整留在视口内。
+- 打开完整内容是离开画布到右侧任务内容区阅读。两种操作使用不同图标语义；整画布缩放和“适应全部”也不替代单节点聚焦 / 阅读。
+- AddCustom 与 ResNet50 采用同一行为。ResNet50 返回时恢复原画布状态并重新居中刚才打开的节点。共享取景位于 `src/shared/canvas/focus-viewport.js`，完整阅读组件位于 `src/OfficialLearningMaterial.jsx`。细则在 `interaction-design.md` 与 `ascend-studio-interface-style` Skill。
+- 本地 1440×900 浏览器回放：聚焦缩放 110%、卡片不裁切；打开完整材料并返回后原节点与可用视野中心对齐，未发现运行时异常。`npm run build:pages`、JS 语法检查、`git diff --check` 通过；未运行完整测试套件。
+- 实现提交 `63a329c8` 已推送；包含此提交的 Pages workflow `40543693742` 成功，线上 HTML / JS / CSS 均 HTTP 200。

@@ -306,6 +306,310 @@ body.overview #panel,body.overview #toggle{display:none!important}
 @media(max-width:1200px){.kp-slide .pipeline{grid-template-columns:1fr 24px 1fr;grid-template-rows:1fr 1fr;row-gap:8px}.kp-slide .pipeline>.stage:nth-of-type(5){grid-column:1;grid-row:2}.kp-slide .pipeline>.flow-arrow:nth-of-type(4),.kp-slide .pipeline>.flow-arrow:nth-of-type(6){visibility:hidden}.kp-slide .pipeline>.stage:nth-of-type(7){grid-column:3;grid-row:2}.kp-slide .demo-map{grid-template-columns:1fr 28px 1fr}.kp-slide .recommend{grid-template-columns:1fr 1fr}.kp-slide .mini-card:last-child{display:none}.kp-slide .operating{grid-template-columns:1fr 1.2fr 1fr}.kp-slide .signals{grid-column:1/-1;justify-content:center}}
 @media(max-width:760px){.kp-cover .cv-content{padding:22px 17px;min-height:100svh;height:auto}.kp-cover .cv-meta{display:none}.kp-cover .cv-center{grid-template-columns:1fr;gap:12px;padding:22px 0}.kp-cover h1{font-size:clamp(36px,11vw,50px)}.kp-cover .kp-orbit{height:300px}.kp-cover .orb-core{width:130px;height:130px}.kp-cover .orb-tag{font-size:10px;padding:7px 9px}.kp-slide{height:auto;min-height:100vh;overflow:visible;padding:23px 15px 26px}.kp-slide .head{margin-bottom:14px}.kp-slide .brand .ttl{font-size:22px}.kp-slide .subttl{font-size:12px;line-height:1.4}.kp-slide .body-area{flex:initial;padding-bottom:0;gap:10px}.kp-slide .kp-foot{position:static;margin-top:14px;flex-direction:column;gap:4px;font-size:10px}.kp-slide.contents-slide .contents-directory{grid-template-columns:1fr 1fr;gap:8px}.kp-slide .directory-card{min-height:190px;padding:12px}.kp-slide .directory-no{font-size:46px}.kp-slide .directory-name{font-size:15px;margin-top:9px}.kp-slide .directory-items{margin-top:12px}.kp-slide .directory-items span{font-size:12px}.kp-slide .pipeline{grid-template-columns:1fr;grid-template-rows:auto;gap:6px}.kp-slide .pipeline>.stage,.kp-slide .pipeline>.stage:nth-of-type(5),.kp-slide .pipeline>.stage:nth-of-type(7){grid-column:auto;grid-row:auto}.kp-slide .pipeline>.flow-arrow{display:flex;flex-direction:row;height:15px;gap:5px;transform:rotate(90deg)}.kp-slide .stage{padding:12px;gap:9px}.kp-slide .graph{min-height:205px}.kp-slide .feedback{flex-wrap:wrap;justify-content:flex-start}.kp-slide .demo-map{grid-template-columns:1fr;gap:8px}.kp-slide .demo-screen{padding:11px}.kp-slide .recommend{grid-template-columns:1fr 1fr}.kp-slide .path-card{grid-column:1/-1}.kp-slide .mini-card:last-child{display:flex}.kp-slide .map-arrow{flex-direction:row}.kp-slide .service-map{grid-template-rows:auto}.kp-slide .new-row{flex-wrap:wrap}.kp-slide .new-row small{margin-left:0}.kp-slide .schema{grid-template-columns:1fr}.kp-slide .json-card{min-height:280px}.kp-slide .fields{grid-template-rows:auto auto auto;grid-auto-rows:minmax(135px,auto)}.kp-slide .json{padding:16px;gap:10px}.kp-slide .context{flex-wrap:wrap}.kp-slide .context span{width:100%}.kp-slide .context strong{margin-left:0}.kp-slide .interface-core{flex-wrap:wrap;gap:6px}.kp-slide .interface-core em{width:100%;text-align:center}.kp-slide .lanes{grid-template-columns:1fr}.kp-slide .lane{padding:12px}.kp-slide .discovery,.kp-slide .api-list,.kp-slide .agent-pair{min-height:145px}.kp-slide .guardrail{flex-wrap:wrap;justify-content:center}.kp-slide .kp-sources{line-height:1.5}.kp-slide .phase-roadmap{grid-template-columns:1fr;gap:5px}.kp-slide .road{padding:12px}.kp-slide .road-next{transform:rotate(90deg);height:16px}.kp-slide .road ul{font-size:13px}.kp-slide .operating{grid-template-columns:1fr;padding:11px}.kp-slide .signals{grid-column:auto;justify-content:flex-start}}
 
+
+/* 让发现页面的资源层级与阶段示意占满画面，并突出每个通道的关键信息 */
+.kp-slide .visual-demo-map .demo-screen{display:grid;grid-template-rows:auto minmax(0,2.05fr) minmax(0,1fr) minmax(0,1fr);align-content:stretch}
+.kp-slide .visual-demo-map .demo-floor{min-height:0;justify-content:center}
+.kp-slide .visual-demo-map .resource-card .atlas-shot{height:clamp(108px,13vh,142px)}
+.kp-slide .updates-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kp-slide .updates-grid .update-card{min-width:0;min-height:70px}
+.kp-slide .knowledge-mini-graph{position:relative;width:58px;height:58px;flex:none;padding:5px;border-radius:10px;background:#eef1f8}
+.kp-slide .knowledge-mini-graph svg{display:block;width:100%;height:100%}
+.kp-slide .knowledge-mini-graph path{fill:none;stroke:#aeb9cb;stroke-width:2}
+.kp-slide .knowledge-mini-graph circle{fill:#fff;stroke:#8296b4;stroke-width:2}
+.kp-slide .knowledge-mini-graph circle:nth-of-type(3){fill:#dfe8f5;stroke:#6f87aa}
+.kp-slide .visual-service-map article>div{height:100%;justify-content:space-between;gap:12px}
+.kp-slide .visual-service-map .service-visual{min-height:64px}
+.kp-slide .visual-service-map .service-visual span,.kp-slide .visual-service-map .service-visual b{padding:8px 9px}
+.kp-slide .visual-roadmap .road-visual{min-height:0}
+.kp-slide .manifest-card{gap:9px;padding:14px}
+.kp-slide .manifest-card span{padding:10px 12px;font-size:11px}
+.kp-slide .manifest-result{padding:16px 14px}
+.kp-slide .manifest-result b{font-size:var(--fs-h3)}
+.kp-slide .channel-visual>div{min-height:110px;padding:16px 8px}
+.kp-slide .channel-visual>div b,.kp-slide .agent-road-visual>div>b{font-size:var(--fs-h3)}
+.kp-slide .agent-road-visual>div:not(.verify-node){min-height:110px;padding:14px 10px}
+@media(max-width:820px){
+  .kp-slide .visual-demo-map .demo-screen{display:flex}
+  .kp-slide .updates-grid{grid-template-columns:1fr}
+  .kp-slide .visual-demo-map .resource-card .atlas-shot{height:100px}
+}
+@media(max-width:560px){
+  .kp-slide .updates-grid{grid-template-columns:1fr}
+}
+
+</style>
+<style id="knowledge-visual-refresh">
+/* 内容图片裁切：四格分别表达路径、课程、认证与开发者活动 */
+.kp-slide .atlas-shot{position:relative;overflow:hidden;flex:none;border-radius:10px;background-image:url("assets/knowledge-resource-atlas.png");background-repeat:no-repeat;background-size:200% 200%;background-color:#e8edf4}
+.kp-slide .atlas-path{background-position:0 0}
+.kp-slide .atlas-course{background-position:100% 0}
+.kp-slide .atlas-cert{background-position:0 100%}
+.kp-slide .atlas-meetup{background-position:100% 100%}
+.kp-slide .visual-pipeline{grid-template-columns:minmax(0,1.15fr) 28px minmax(0,.94fr) 28px minmax(0,1.05fr) 28px minmax(0,.9fr);grid-template-rows:minmax(0,1fr);gap:.5vw}
+.kp-slide .visual-pipeline>.stage{min-width:0;min-height:0;padding:1.35vh .9vw;gap:1.2vh;background:rgba(255,255,255,.82);box-shadow:0 10px 28px -22px rgba(35,45,65,.28)}
+.kp-slide .visual-pipeline .stage>header{align-items:center;gap:10px}
+.kp-slide .visual-pipeline .stage>header>b{width:34px;height:34px;border-radius:11px;font-size:12px}
+.kp-slide .visual-pipeline .stage>header h3{font-size:var(--fs-h3)}
+.kp-slide .visual-pipeline .stage>header small{display:block;margin-top:4px;font-size:var(--fs-xs);color:#858c96;font-weight:400}
+.kp-slide .visual-pipeline .source-stage{display:flex;flex-direction:column}
+.kp-slide .resource-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;flex:1;min-height:0}
+.kp-slide .resource-tile{min-width:0;padding:7px;border:1px solid #edf0f4;border-radius:11px;background:#f8f9fb;display:flex;flex-direction:column;gap:5px}
+.kp-slide .resource-tile .atlas-shot{width:100%;aspect-ratio:1/1;border-radius:7px}
+.kp-slide .resource-tile b{font-size:var(--fs-sm);color:#505966}
+.kp-slide .visual-pipeline .source-stage footer{padding-top:8px;border-top:1px solid #eaedf1;color:#737c89;font-size:var(--fs-xs);line-height:1.4}
+.kp-slide .visual-pipeline .flow-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#98a0ac}
+.kp-slide .visual-pipeline .flow-arrow span{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#fff;color:#65758b;font-size:17px;box-shadow:0 4px 12px -8px #3f4b5e}
+.kp-slide .visual-pipeline .flow-arrow small{font-size:9px;white-space:nowrap}
+.kp-slide .compile-flow{display:grid;align-content:center;gap:9px;flex:1;min-height:0}
+.kp-slide .compile-step{position:relative;display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #e9edf2;border-radius:11px;background:#f8f9fb}
+.kp-slide .compile-step:not(:last-child):after{content:"↓";position:absolute;left:19px;bottom:-14px;z-index:2;color:#9aa5b3;font-size:11px}
+.kp-slide .compile-step i{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:#edf0f5;color:#77869a;font:700 10px Inter;font-style:normal}
+.kp-slide .compile-step span{display:flex;flex-direction:column;gap:3px}
+.kp-slide .compile-step b{font-size:var(--fs-sm);color:#414b58}
+.kp-slide .compile-step small{font-size:var(--fs-xs);color:#818995}
+.kp-slide .compile-step.last{background:#eef5f0;border-color:#e0ebe2}
+.kp-slide .compile-step.last i{background:#dcebe0;color:#648b6c}
+.kp-slide .visual-pipeline .graph{min-height:0}
+.kp-slide .visual-pipeline .graph-center{padding:15px 18px;border:1px solid #e8ebf1}
+.kp-slide .visual-pipeline .graph-center b{font-size:18px}
+.kp-slide .visual-pipeline .graph label{font-size:var(--fs-xs);font-weight:650}
+.kp-slide .visual-pipeline .scope{padding:9px 7px;font-size:var(--fs-xs)}
+.kp-slide .channel-stack{display:grid;align-content:center;gap:12px;flex:1;min-height:0}
+.kp-slide .channel-stack>div{display:flex;align-items:center;gap:11px;padding:12px 10px;border:1px solid #edf0f3;border-radius:11px;background:#f9fafb}
+.kp-slide .channel-stack strong{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:#eaf0f8;color:#5f7da4;font:700 12px Inter}
+.kp-slide .channel-stack .api-mark{background:#efedfa;color:#756aa9;font-size:10px}
+.kp-slide .channel-stack .agent-mark{background:#eaf3ed;color:#5d8a6b}
+.kp-slide .channel-stack span{display:flex;flex-direction:column;gap:3px}
+.kp-slide .channel-stack b{font-size:var(--fs-sm);color:#424b58}
+.kp-slide .channel-stack small{font-size:var(--fs-xs);color:#818995}
+.kp-slide .visual-feedback{min-height:56px;margin-top:1.2vh;padding:10px 14px;background:rgba(255,255,255,.86);border-color:#fff}
+.kp-slide .visual-feedback>b{color:#4c5664}
+.kp-slide .visual-feedback>div{display:flex;gap:7px}
+.kp-slide .visual-feedback>div span{padding:6px 10px;background:#f0f2f5;border-radius:99px;color:#697482;font-size:var(--fs-xs)}
+.kp-slide .visual-feedback>i{font-style:normal;color:#8994a1;font-size:16px}
+.kp-slide .visual-feedback>strong{color:#746bad;font-size:var(--fs-sm)}
+.kp-slide .visual-demo-map{grid-template-columns:minmax(0,1.1fr) 42px minmax(0,.95fr);gap:.7vw}
+.kp-slide .visual-demo-map .demo-screen{padding:1.1vh 1vw;gap:.9vh;background:rgba(255,255,255,.87);box-shadow:0 12px 30px -20px rgba(46,55,72,.3)}
+.kp-slide .visual-demo-map .screen-head{padding-bottom:10px}
+.kp-slide .visual-demo-map .screen-head b{font-size:var(--fs-h2)}
+.kp-slide .visual-demo-map .screen-head span{font-size:var(--fs-sm)}
+.kp-slide .demo-floor{display:flex;flex-direction:column;gap:7px;padding:8px 0}
+.kp-slide .demo-floor+.demo-floor{border-top:1px solid #edf0f3}
+.kp-slide .visual-demo-map .screen-title{margin-bottom:0}
+.kp-slide .visual-demo-map .screen-title b{font-size:var(--fs-h3)}
+.kp-slide .visual-demo-map .screen-title small{font-size:var(--fs-xs)}
+.kp-slide .visual-demo-map .screen-title .new{margin-left:auto}
+.kp-slide .visual-recommend{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kp-slide .resource-card{min-width:0;min-height:0;padding:8px;border:1px solid #e9edf2;border-radius:11px;background:#f8f9fb;display:flex;flex-direction:column;gap:7px}
+.kp-slide .resource-card .atlas-shot{width:100%;height:100px;border-radius:8px}
+.kp-slide .resource-card>div:last-child{display:flex;flex-direction:column;gap:4px}
+.kp-slide .resource-card label,.kp-slide .update-card label,.kp-slide .event-card label{font-size:var(--fs-xs);color:#7d8692}
+.kp-slide .resource-card label{width:fit-content;padding:3px 7px;border-radius:99px;background:#edf1f6;color:#6b7b90}
+.kp-slide .resource-card b,.kp-slide .update-card b,.kp-slide .event-card b{font-size:var(--fs-sm);line-height:1.3;color:#313943}
+.kp-slide .resource-card small{font-size:var(--fs-xs);color:#818995;line-height:1.3}
+.kp-slide .update-card,.kp-slide .event-card{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid #eaedf1;border-radius:10px;background:#fafbfc}
+.kp-slide .update-card .atlas-shot,.kp-slide .event-card .atlas-shot{width:58px;height:58px}
+.kp-slide .update-card>div:nth-child(2),.kp-slide .event-card>div:nth-of-type(2){display:flex;flex-direction:column;gap:4px;min-width:0}
+.kp-slide .update-card>span{margin-left:auto;color:#8c95a2}
+.kp-slide .event-card>strong{width:42px;height:46px;display:grid;place-content:center;border-radius:9px;background:#fff;color:#6b7e96;font:700 17px Inter}
+.kp-slide .event-card>strong small{font:9px 'HarmonyOS Sans SC';color:#818995}
+.kp-slide .event-state{margin-left:auto;padding:6px 9px;border-radius:99px;background:#edf5ee;color:#65886c;font-size:var(--fs-xs);white-space:nowrap}
+.kp-slide .visual-demo-map .map-arrow{font-size:28px}
+.kp-slide .visual-demo-map .map-arrow span{color:#718197}
+.kp-slide .visual-demo-map .map-arrow small{font-size:10px;line-height:1.5;text-align:center;white-space:nowrap}
+.kp-slide .visual-service-map{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:.75vh}
+.kp-slide .visual-service-map article{grid-template-columns:34px minmax(0,1fr);align-content:stretch;align-items:stretch;gap:9px;padding:1.2vh .85vw;background:rgba(255,255,255,.83);box-shadow:0 8px 22px -20px #4c596d}
+.kp-slide .visual-service-map .n{width:32px;height:32px;align-self:start;font-size:11px}
+.kp-slide .visual-service-map article>div{min-width:0;display:flex;flex-direction:column;gap:12px}
+.kp-slide .visual-service-map h3{font-size:var(--fs-h3)}
+.kp-slide .service-visual{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.kp-slide .service-visual span,.kp-slide .service-visual b{padding:6px 8px;border-radius:7px;background:#f0f2f5;color:#667181;font-size:var(--fs-xs);font-weight:600}
+.kp-slide .service-visual b{background:#e9eff8;color:#5c789d}
+.kp-slide .service-visual i{font-style:normal;color:#99a2ae;font-size:var(--fs-xs)}
+.kp-slide .visual-service-map article>div>small{font-size:var(--fs-xs);line-height:1.35;color:#818995}
+.kp-slide .visual-demo-map .demo-boundary{min-height:42px;margin-top:.7vh;padding:9px 12px;background:#fff;color:#707986}
+.kp-slide .visual-demo-map .demo-boundary>span{color:#687382}
+.kp-slide .visual-demo-map .demo-boundary>i{margin:0 4px;color:#8993a0;font-style:normal}
+.kp-slide .visual-schema{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:.9vw}
+.kp-slide .resource-passport{position:relative;min-width:0;display:flex;flex-direction:column;overflow:hidden;border-radius:16px;background:rgba(255,255,255,.9);border:1px solid white;box-shadow:0 14px 34px -22px rgba(44,53,69,.34)}
+.kp-slide .passport-art{position:relative;min-height:0;flex:1;overflow:hidden;background:#e8edf4}
+.kp-slide .passport-art .atlas-shot{position:absolute;inset:0;width:100%;height:100%;border-radius:0;filter:saturate(.88) brightness(.94)}
+.kp-slide .passport-art>span{position:absolute;left:14px;top:14px;padding:6px 9px;border-radius:99px;background:rgba(255,255,255,.86);color:#657184;font-size:var(--fs-xs)}
+.kp-slide .passport-copy{padding:16px 17px 8px}
+.kp-slide .passport-copy label{font:600 9px Inter;letter-spacing:.1em;color:#8993a0}
+.kp-slide .passport-copy h3{margin-top:7px;font-size:var(--fs-h2);color:#303844}
+.kp-slide .passport-copy p{margin-top:5px;color:#7c8591;font-size:var(--fs-xs)}
+.kp-slide .passport-meta{display:flex;gap:8px;padding:10px 16px}
+.kp-slide .passport-meta span{padding:6px 8px;border-radius:7px;background:#f1f3f6;color:#707a88;font:10px 'JetBrains Mono','HarmonyOS Sans SC'}
+.kp-slide .passport-meta b{margin-right:4px;color:#515e6f;font-family:'HarmonyOS Sans SC'}
+.kp-slide .passport-flow{display:flex;align-items:center;justify-content:space-between;gap:4px;padding:11px 16px;background:#272c35;color:#fff;font-size:var(--fs-xs)}
+.kp-slide .passport-flow i{font-style:normal;color:#aab1bc}
+.kp-slide .visual-fields{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr)) auto;gap:.8vh}
+.kp-slide .visual-fields .field{display:flex;flex-direction:column;justify-content:center;gap:16px;padding:1.3vh 1vw;background:rgba(255,255,255,.87);box-shadow:0 10px 24px -22px rgba(44,53,69,.25)}
+.kp-slide .field-question{display:flex;align-items:center;gap:11px}
+.kp-slide .field-question>b{width:36px;height:36px;flex:none;border-radius:11px;display:grid;place-items:center;background:color-mix(in srgb,var(--f) 15%,white);color:var(--f);font:700 11px Inter}
+.kp-slide .field-question h3{font-size:var(--fs-h3);color:#343d48}
+.kp-slide .field-pills{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kp-slide .field-pills span{padding:7px 9px;border-radius:7px;background:#f0f2f5;color:#707a87;font-size:var(--fs-xs);font-weight:600}
+.kp-slide .field-pills i{font-style:normal;color:#9ba3af;font-size:var(--fs-xs)}
+.kp-slide .visual-fields .id-bridge{display:flex;align-items:center;justify-content:center;gap:10px;grid-column:1/-1;padding:10px;background:#eff1f5;font-size:var(--fs-xs)}
+.kp-slide .visual-fields .id-bridge b{color:#56647a}
+.kp-slide .visual-fields .id-bridge span{padding:5px 8px;border-radius:99px;background:#fff;color:#737c8a}
+.kp-slide .visual-fields .id-bridge i{font-style:normal;color:#9099a5}
+.kp-slide .visual-context{min-height:49px;margin-top:.8vh;padding:10px 14px;background:#252932;color:#fff}
+.kp-slide .visual-context b{font-size:var(--fs-sm)}
+.kp-slide .visual-context span{font-size:var(--fs-xs)}
+.kp-slide .visual-context strong{font-size:var(--fs-xs);color:#d2c9f2}
+.kp-slide .visual-interface-body{gap:.85vh}
+.kp-slide .visual-interface-core{min-height:64px;display:flex;align-items:center;justify-content:center;gap:12px;padding:9px 14px}
+.kp-slide .visual-interface-core .core-orb{width:40px;height:40px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#424856,#242831);color:white;font-size:var(--fs-sm);font-weight:700}
+.kp-slide .visual-interface-core>div{display:flex;flex-direction:column;gap:3px}
+.kp-slide .visual-interface-core>div b{font-size:var(--fs-h3)}
+.kp-slide .visual-interface-core>div small{font-size:var(--fs-xs);color:#c0c5ce}
+.kp-slide .visual-interface-core>i{margin-left:12px;font-style:normal;color:#c4c8d0;font-size:var(--fs-xs)}
+.kp-slide .visual-lanes{grid-template-columns:repeat(3,minmax(0,1fr));gap:.75vw}
+.kp-slide .visual-lanes .lane{gap:.9vh;padding:1.2vh 1vw;background:rgba(255,255,255,.84);box-shadow:0 10px 26px -22px rgba(42,51,68,.28)}
+.kp-slide .visual-lanes .lane-title{gap:10px}
+.kp-slide .visual-lanes .lane-title>b{width:34px;height:34px;border-radius:11px;font-size:12px}
+.kp-slide .visual-lanes .lane-title h3{font-size:var(--fs-h3)}
+.kp-slide .visual-lanes .lane-title small{font-size:var(--fs-xs)}
+.kp-slide .lane-visual{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:1vh .8vw;border-radius:12px;background:#f3f5f8}
+.kp-slide .crawl-inputs{display:flex;align-items:center;justify-content:center;gap:8px}
+.kp-slide .crawl-inputs span{padding:8px 9px;border:1px solid #e6eaf0;border-radius:8px;background:white;color:#637187;font:10px 'JetBrains Mono'}
+.kp-slide .lane-arrow{color:#98a1ad;font-size:17px;line-height:1}
+.kp-slide .page-output{display:flex;flex-direction:column;align-items:center;gap:5px}
+.kp-slide .page-output b{font-size:var(--fs-xs);color:#7d8794;font-weight:500}
+.kp-slide .page-output strong{padding:10px 14px;border-radius:9px;background:#e7edf5;color:#526e93;font-size:var(--fs-sm)}
+.kp-slide .semantic-output{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.kp-slide .semantic-output span,.kp-slide .semantic-output b{padding:5px 7px;border-radius:7px;background:white;color:#75808e;font-size:9px;font-weight:500}
+.kp-slide .semantic-output b{color:#7784a3}
+.kp-slide .api-visual{align-items:stretch;gap:8px}
+.kp-slide .api-resource{display:grid;grid-template-columns:60px 1fr;grid-template-rows:auto auto;column-gap:8px;align-items:center;padding:9px 10px;border-radius:9px;background:white;border:1px solid #e9edf2}
+.kp-slide .api-resource strong{grid-row:span 2;color:#566b88;font-size:var(--fs-sm)}
+.kp-slide .api-resource span{font:10px 'JetBrains Mono';color:#7486a0}
+.kp-slide .api-resource i{font-style:normal;font-size:var(--fs-xs);color:#8a929d}
+.kp-slide .api-standard{padding:8px;border-radius:8px;background:#eeedf8;color:#756ca0;text-align:center;font-size:var(--fs-xs);font-weight:650}
+.kp-slide .visual-lanes .lane p{font-size:var(--fs-xs);line-height:1.35;color:#747d89}
+.kp-slide .visual-lanes .lane p b{color:#56677f}
+.kp-slide .agent-visual{flex-direction:row;gap:7px}
+.kp-slide .agent-method{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:11px 9px;border-radius:10px;background:#fff}
+.kp-slide .agent-method>b{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:#e8f1eb;color:#62866b;font-size:var(--fs-sm)}
+.kp-slide .skill-method>b{background:#efedfa;color:#756ca7}
+.kp-slide .agent-method strong{font-size:var(--fs-sm);color:#46515f}
+.kp-slide .agent-method span{font-size:var(--fs-xs);line-height:1.35;color:#818995}
+.kp-slide .agent-link{color:#9da4ae;font-size:17px}
+.kp-slide .agent-note{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:8px;background:#f4f1ec;color:#796b58;font-size:var(--fs-xs)}
+.kp-slide .agent-note b{color:#65543d}
+.kp-slide .visual-guardrail{min-height:40px;background:#e2e4e9;color:#656e7c}
+.kp-slide .visual-guardrail>b{color:#404a57}
+.kp-slide .visual-roadmap{grid-template-columns:minmax(0,1fr) 24px minmax(0,1fr) 24px minmax(0,1fr);gap:.4vw}
+.kp-slide .visual-roadmap .road{padding:1.25vh 1vw;background:rgba(255,255,255,.86);box-shadow:0 12px 26px -22px rgba(39,48,64,.3)}
+.kp-slide .visual-roadmap .road-title{grid-template-columns:42px 1fr;gap:5px 9px}
+.kp-slide .visual-roadmap .road-title>b{width:40px;height:40px;font-size:14px}
+.kp-slide .visual-roadmap .road-title span{font-size:var(--fs-xs)}
+.kp-slide .visual-roadmap .road-title strong{font-size:var(--fs-h3)}
+.kp-slide .road-visual{flex:1;min-height:0;margin:1.6vh 0 1vh;padding:14px;border-radius:13px;background:#f1f3f6;display:flex;align-items:center;justify-content:center;gap:9px;position:relative}
+.kp-slide .manifest-card{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;padding:10px;border-radius:11px;background:#fff;box-shadow:0 7px 18px -14px #35445d}
+.kp-slide .manifest-card span{padding:7px 8px;border-radius:7px;background:#edf1f6;color:#67768a;font:600 10px Inter}
+.kp-slide .manifest-visual>i{font-style:normal;color:#9aa3ae;font-size:18px}
+.kp-slide .manifest-result{display:flex;flex-direction:column;gap:5px;padding:12px;border-radius:11px;background:#e7efe9;color:#5e7b65;text-align:center}
+.kp-slide .manifest-result b{font-size:var(--fs-sm)}
+.kp-slide .manifest-result small{font-size:var(--fs-xs)}
+.kp-slide .channel-visual>div{min-width:0;flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;padding:14px 7px;border-radius:11px;background:#fff}
+.kp-slide .channel-visual>div b{font-size:var(--fs-sm);color:#576982}
+.kp-slide .channel-visual>div small{font-size:var(--fs-xs);color:#858d98}
+.kp-slide .channel-visual>i,.kp-slide .agent-road-visual>i{font-style:normal;color:#9aa3ae}
+.kp-slide .agent-road-visual>div{min-width:0;display:flex;flex-direction:column;align-items:center;gap:9px;padding:13px 9px;border-radius:11px;background:#fff}
+.kp-slide .agent-road-visual>div>b{font-size:var(--fs-sm);color:#657c99}
+.kp-slide .agent-road-visual>div>small{font-size:var(--fs-xs);color:#828b97;white-space:nowrap}
+.kp-slide .agent-road-visual>div.verify-node{width:58px;height:58px;padding:6px;border-radius:50%;background:#e6f0e9}
+.kp-slide .agent-road-visual .verify-node>b{font-size:17px;color:#5f8969}
+.kp-slide .road-callout{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;min-height:34px}
+.kp-slide .road-callout b{padding:5px 7px;border-radius:99px;background:#f0f2f5;color:#6b7583;font-size:var(--fs-xs);font-weight:550}
+.kp-slide .road-callout i{font-style:normal;color:#a4aab3}
+.kp-slide .visual-roadmap .road footer{display:flex;align-items:center;gap:6px;margin-top:auto;padding-top:10px;border-top:1px solid #e8eaee;color:#7c8490;font-size:var(--fs-xs)}
+.kp-slide .visual-roadmap .road footer b{padding:0;background:transparent;color:#4f5968;font-size:var(--fs-sm)}
+.kp-slide .visual-operating{grid-template-columns:1.05fr 1fr 16px 1fr 16px 1fr 1.8fr;min-height:77px;padding:10px 12px;background:rgba(255,255,255,.86)}
+.kp-slide .visual-operating .owner-intro{display:flex;flex-direction:column;gap:3px}
+.kp-slide .visual-operating .owner-intro b{font-size:var(--fs-sm)}
+.kp-slide .visual-operating article b{font-size:var(--fs-xs)}
+.kp-slide .visual-operating article small{font-size:9px}
+.kp-slide .visual-operating .signals{justify-content:flex-end;gap:4px}
+.kp-slide .visual-operating .signals>b{font-size:var(--fs-xs)}
+.kp-slide .visual-operating .signals span{font-size:9px}
+@media(max-width:1100px){
+  .kp-slide .visual-pipeline{grid-template-columns:minmax(0,1.15fr) 24px minmax(0,.94fr) 24px minmax(0,1.05fr) 24px minmax(0,.9fr);gap:.3vw}
+  .kp-slide .visual-pipeline>.flow-arrow{width:auto;overflow:visible;transform:none;z-index:2}
+  .kp-slide .visual-pipeline>.flow-arrow span{width:22px;height:22px}
+  .kp-slide .visual-pipeline>.stage{padding:1vh .65vw}
+  .kp-slide .resource-tile{padding:5px}
+  .kp-slide .resource-tile .atlas-shot{max-height:11vh}
+  .kp-slide .visual-operating{grid-template-columns:1fr 1fr 14px 1fr 14px 1fr}
+  .kp-slide .visual-operating .signals{grid-column:1/-1;justify-content:center}
+}
+@media(max-width:820px){
+  .kp-slide{height:auto;min-height:100vh;overflow:visible;padding:24px 16px 28px}
+  .kp-slide .head{margin-bottom:16px}
+  .kp-slide .brand .ttl{font-size:22px}
+  .kp-slide .subttl{font-size:12px}
+  .kp-slide .body-area{flex:initial;padding-bottom:0;gap:12px}
+  .kp-slide .kp-foot{position:static;margin-top:14px;flex-direction:column;gap:4px;font-size:10px}
+  .kp-slide .visual-pipeline{grid-template-columns:1fr;grid-template-rows:auto;gap:7px}
+  .kp-slide .visual-pipeline>.stage{padding:14px;min-height:300px}
+  .kp-slide .visual-pipeline>.flow-arrow{width:auto;height:24px;transform:rotate(90deg);overflow:visible}
+  .kp-slide .visual-pipeline>.flow-arrow small{display:none}
+  .kp-slide .resource-tile .atlas-shot{max-height:none}
+  .kp-slide .resource-tile .atlas-shot{aspect-ratio:1/1}
+  .kp-slide .visual-feedback{flex-wrap:wrap;gap:8px}
+  .kp-slide .visual-demo-map{grid-template-columns:1fr;gap:10px}
+  .kp-slide .visual-demo-map .demo-screen{padding:12px}
+  .kp-slide .visual-recommend{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .kp-slide .resource-card .atlas-shot{height:100px}
+  .kp-slide .visual-demo-map .map-arrow{height:28px;transform:rotate(90deg)}
+  .kp-slide .visual-service-map{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .kp-slide .visual-service-map article{min-height:150px;padding:12px}
+  .kp-slide .visual-schema{grid-template-columns:1fr}
+  .kp-slide .resource-passport{min-height:460px}
+  .kp-slide .visual-fields{grid-template-rows:repeat(2,minmax(150px,auto)) auto;grid-auto-rows:minmax(150px,auto)}
+  .kp-slide .visual-fields .field{padding:16px}
+  .kp-slide .visual-interface-body{min-height:0}
+  .kp-slide .visual-interface-core{min-height:64px}
+  .kp-slide .visual-lanes{grid-template-columns:1fr}
+  .kp-slide .visual-lanes .lane{min-height:430px;padding:14px}
+  .kp-slide .lane-visual{min-height:240px}
+  .kp-slide .visual-roadmap{grid-template-columns:1fr;gap:6px}
+  .kp-slide .visual-roadmap .road{min-height:410px;padding:14px}
+  .kp-slide .road-next{transform:rotate(90deg);height:20px}
+  .kp-slide .visual-operating{grid-template-columns:1fr;padding:12px}
+  .kp-slide .visual-operating .signals{grid-column:auto;justify-content:flex-start}
+}
+@media(max-width:560px){
+  .kp-slide .visual-recommend{grid-template-columns:1fr}
+  .kp-slide .resource-card{display:grid;grid-template-columns:76px minmax(0,1fr);align-items:center}
+  .kp-slide .resource-card .atlas-shot{width:76px;height:76px}
+  .kp-slide .resource-card>div:last-child{align-items:flex-start}
+  .kp-slide .visual-service-map{grid-template-columns:1fr}
+  .kp-slide .event-state{margin-left:0}
+  .kp-slide .demo-boundary{flex-wrap:wrap}
+  .kp-slide .passport-art{min-height:250px}
+  .kp-slide .passport-flow{flex-wrap:wrap;justify-content:center}
+  .kp-slide .visual-fields .id-bridge{flex-wrap:wrap}
+  .kp-slide .visual-guardrail{flex-wrap:wrap;justify-content:center}
+}
+
+@media(max-width:820px){
+  .kp-slide .head-l{width:100%;min-width:0}
+  .kp-slide .head .brand{display:block;width:100%;min-width:0;white-space:normal}
+  .kp-slide .head .brand .ttl{display:block;width:100%;max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.28;font-size:clamp(18px,5vw,22px)}
+  .kp-slide .visual-demo-map{flex:none;height:auto;min-height:0}
+  .kp-slide .visual-demo-map .demo-screen{height:auto;min-height:0;overflow:visible}
+  .kp-slide .visual-demo-map .demo-floor{flex:none;min-height:0}
+  .kp-slide .visual-demo-map .service-map{min-height:0}
+}
+
+.kp-slide .mobile-title-break{display:none}
+@media(max-width:820px){.kp-slide .mobile-title-break{display:block}}
 </style>
 </head>
 <body>
@@ -320,24 +624,146 @@ body.overview #panel,body.overview #toggle{display:none!important}
   <section id="contents-directory" class="slide s-gray kp-slide contents-slide" data-template="contents-directory" data-component="目录页" data-title="目录：从供给链路走到建设顺序"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">目录</span></div></div></div><div class="body-area"><div class="contents-directory contents-4">
     <article class="directory-card research"><div class="directory-no">01</div><h2 class="directory-name">供给链路</h2><div class="directory-en">Supply Chain</div><div class="directory-items"><span>内容资产</span><span>可信知识内核</span></div><div class="directory-note">资源如何变成服务</div></article><article class="directory-card competitor"><div class="directory-no">02</div><h2 class="directory-name">Demo 触点</h2><div class="directory-en">Experience Map</div><div class="directory-items"><span>推荐与上新</span><span>活动与反馈</span></div><div class="directory-note">页面楼层映射到数据</div></article><article class="directory-card persona"><div class="directory-no">03</div><h2 class="directory-name">知识合同</h2><div class="directory-en">Knowledge Unit</div><div class="directory-items"><span>适用边界</span><span>来源与验证</span></div><div class="directory-note">定义资源如何可信</div></article><article class="directory-card governance"><div class="directory-no">04</div><h2 class="directory-name">交付与治理</h2><div class="directory-en">Interfaces & Roadmap</div><div class="directory-items"><span>机器与 Agent 接口</span><span>责任与质量信号</span></div><div class="directory-note">形成渐进建设方案</div></article>
   </div></div></section>
-  <section class="slide s-gray kp-slide" data-component="供给链路图" data-title="同一套可信知识内核，支撑多个发现与调用入口"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">同一套可信知识内核，支撑多个发现与调用入口</span></div><div class="subttl">01 · SUPPLY CHAIN　从原始内容到可复用的知识服务</div></div></div><div class="body-area kp-body"><div class="pipeline">
+  <section class="slide s-gray kp-slide" data-component="供给链路图" data-title="分散内容经过整理，变成可重复使用的知识服务">
+    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">分散内容经过整理，<br class="mobile-title-break">变成可重复使用的知识服务</span></div><div class="subttl">01 · SUPPLY CHAIN　先整理可信资源，再提供给不同入口</div></div></div>
+    <div class="body-area kp-body"><div class="pipeline visual-pipeline">
+      <article class="stage source-stage"><header><b>01</b><div><h3>资源从哪里来</h3><small>四类开发者资源</small></div></header>
+        <div class="resource-tiles">
+          <div class="resource-tile"><div class="atlas-shot atlas-path" role="img" aria-label="学习路径内容图"></div><b>路径</b></div>
+          <div class="resource-tile"><div class="atlas-shot atlas-course" role="img" aria-label="编程课程内容图"></div><b>课程</b></div>
+          <div class="resource-tile"><div class="atlas-shot atlas-cert" role="img" aria-label="开发者认证内容图"></div><b>认证</b></div>
+          <div class="resource-tile"><div class="atlas-shot atlas-meetup" role="img" aria-label="开发者活动内容图"></div><b>活动</b></div>
+        </div><footer>也可纳入文档、API、案例与错误经验</footer></article>
+      <div class="flow-arrow"><span>→</span><small>整理</small></div>
+      <article class="stage compile-stage"><header><b class="v">02</b><div><h3>整理成可信资源</h3><small>每一步都能回到来源</small></div></header>
+        <div class="compile-flow">
+          <div class="compile-step"><i>01</i><span><b>采集</b><small>网页 · 文档 · 活动</small></span></div>
+          <div class="compile-step"><i>02</i><span><b>拆分</b><small>类型 · 章节 · 关系</small></span></div>
+          <div class="compile-step"><i>03</i><span><b>核对</b><small>版本 · 适用条件</small></span></div>
+          <div class="compile-step last"><i>04</i><span><b>登记</b><small>ID · 来源 · Owner</small></span></div>
+        </div></article>
+      <div class="flow-arrow"><span>→</span><small>入目录</small></div>
+      <article class="stage core-stage"><header><b class="t">03</b><div><h3>一份可信资源目录</h3><small>每项资源有边界、有依据</small></div></header>
+        <div class="graph"><svg viewBox="0 0 360 220" aria-hidden="true"><path d="M180 110 75 42M180 110 288 42M180 110 72 183M180 110 291 183M75 42 288 42M72 183 291 183"/><circle cx="75" cy="42" r="16"/><circle cx="288" cy="42" r="16"/><circle cx="72" cy="183" r="16"/><circle cx="291" cy="183" r="16"/><circle class="gc" cx="180" cy="110" r="38"/></svg><div class="graph-center"><b>Knowledge<br>Unit</b><small>来源 · 版本 · 验证</small></div><label class="g1">课程</label><label class="g2">API</label><label class="g3">路径</label><label class="g4">案例</label></div><div class="scope">按 CANN / 芯片 / 框架版本筛选</div></article>
+      <div class="flow-arrow"><span>→</span><small>按需交付</small></div>
+      <article class="stage delivery-stage"><header><b class="g">04</b><div><h3>不同入口读取</h3><small>同一资源，多种用法</small></div></header>
+        <div class="channel-stack">
+          <div><strong class="web-mark">W</strong><span><b>网页</b><small>阅读 · 搜索 · 引用</small></span></div>
+          <div><strong class="api-mark">API</strong><span><b>社区产品</b><small>检索 · 推荐 · 日程</small></span></div>
+          <div><strong class="agent-mark">AI</strong><span><b>Agent</b><small>MCP 查询 · Skill 指引</small></span></div>
+        </div></article>
+    </div>
+    <div class="feedback visual-feedback"><b>使用后回流</b><div><span>收藏</span><span>学完</span><span>引用 / 运行</span><span>纠错</span></div><i>→</i><strong>更新内容与推荐</strong></div></div>
+    <div class="kp-foot"><span>目标服务蓝图</span><span>来源许可 · 版本兼容 · 权限审计 · 资源退役</span></div>
+  </section>
     <article class="stage"><header><b>01</b><h3>内容资产<small>来源分散 · 语义不一</small></h3></header><div class="asset-grid"><div><i class="blue"></i><b>官方资料</b><small>文档 · API · 样例</small></div><div><i class="violet"></i><b>学习资源</b><small>课程 · 路径 · 认证</small></div><div><i class="teal"></i><b>实践证据</b><small>案例 · 错误 · 验证</small></div><div><i class="coral"></i><b>社区活动</b><small>Meetup · 直播 · 赛事</small></div></div><footer>保留原始出处与责任人</footer></article><div class="flow-arrow">›<small>编译</small></div>
     <article class="stage"><header><b class="v">02</b><h3>知识编译与注册<small>Knowledge Compiler</small></h3></header><div class="process"><div><b>采集</b><span>网页 · 文档 · 事件源</span></div><i>↓</i><div><b>解析归一</b><span>类型 · 章节 · 关系</span></div><i>↓</i><div><b>版本核验</b><span>适用条件 · 预期信号</span></div><i>↓</i><div class="done"><b>发布入库</b><span>ID · Owner · 生命周期</span></div></div></article><div class="flow-arrow">›<small>目录</small></div>
     <article class="stage core-stage"><header><b class="t">03</b><h3>可信知识目录<small>一份事实 · 多种关系 · 可追溯</small></h3></header><div class="graph"><svg viewBox="0 0 360 220"><path d="M180 110 75 42M180 110 288 42M180 110 72 183M180 110 291 183M75 42 288 42M72 183 291 183"/><circle cx="75" cy="42" r="16"/><circle cx="288" cy="42" r="16"/><circle cx="72" cy="183" r="16"/><circle cx="291" cy="183" r="16"/><circle class="gc" cx="180" cy="110" r="38"/></svg><div class="graph-center"><b>Knowledge<br>Unit</b><small>有边界 · 有证据</small></div><label class="g1">课程</label><label class="g2">API</label><label class="g3">路径</label><label class="g4">案例</label></div><div class="scope">CANN / 芯片 / 框架版本　·　按上下文过滤</div></article><div class="flow-arrow">›<small>按场景</small></div>
     <article class="stage"><header><b class="g">04</b><h3>多通道交付<small>共享同一资源事实</small></h3></header><div class="channels"><div><strong>W</strong><span><b>Web / Markdown</b><small>人读 · 搜索 · 引用</small></span></div><div><strong>API</strong><span><b>REST / OpenAPI</b><small>产品检索与推荐</small></span></div><div><strong>M</strong><span><b>MCP / Skills</b><small>Agent 上下文与方法</small></span></div></div></article>
   </div><div class="feedback"><b>使用与验证信号回流</b><span>曝光</span><span>点击 / 收藏</span><span>学习完成</span><span>引用 / 运行</span><span>纠错 / 过期</span><em>→ 更新内容、排序与验证状态</em></div></div><div class="kp-foot"><span>目标服务蓝图</span><span>全链路治理：来源许可　版本兼容　访问控制　审计与退役</span></div></section>
-  <section class="slide s-gray kp-slide" data-component="Demo楼层服务映射" data-title="学习发现每个楼层，都需要匹配的资源数据"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">学习发现每个楼层，都需要匹配的资源数据</span></div><div class="subttl">02 · EXPERIENCE MAP　页面所见卡片，对应供给侧目录与服务</div></div></div><div class="body-area kp-body"><div class="demo-map">
+  <section class="slide s-gray kp-slide" data-component="Demo楼层服务映射" data-title="学习发现里的每个楼层，都对应一类服务">
+    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">学习发现里的每个楼层，<br class="mobile-title-break">都对应一类服务</span></div><div class="subttl">02 · EXPERIENCE MAP　用图片卡看资源如何进入页面</div></div></div>
+    <div class="body-area kp-body"><div class="demo-map visual-demo-map">
+      <div class="demo-screen">
+        <div class="screen-head"><b>学习发现</b><span>为你的下一步找到合适资源</span><i>⌕　搜索</i></div>
+        <div class="demo-floor recommended-floor"><div class="screen-title"><b>为你推荐</b><small>路径 · 课程 · 认证</small></div>
+          <div class="recommend visual-recommend">
+            <article class="resource-card path-resource"><div class="atlas-shot atlas-path" role="img" aria-label="学习路径"></div><div><label>学习路径</label><b>从模型训练到性能调优</b><small>5 个阶段 · 可继续学习</small></div></article>
+            <article class="resource-card"><div class="atlas-shot atlas-cert" role="img" aria-label="开发者认证"></div><div><label>认证</label><b>昇腾开发者认证</b><small>进阶能力 · 学习目标</small></div></article>
+            <article class="resource-card"><div class="atlas-shot atlas-course" role="img" aria-label="编程课程"></div><div><label>课程</label><b>算子开发入门</b><small>课程 · 示例资源</small></div></article>
+          </div>
+        </div>
+        <div class="demo-floor update-floor"><div class="screen-title"><b>最近上新</b><small>课程 · 路径 · 知识点</small><label class="new">NEW</label></div>
+          <div class="updates-grid">
+            <div class="update-card"><div class="atlas-shot atlas-course" role="img" aria-label="新课程"></div><div><label>本周更新 · 新课程</label><b>昇腾训练性能分析实践</b></div><span>→</span></div>
+            <div class="update-card knowledge-update"><div class="knowledge-mini-graph" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M13 17 32 31 51 15M13 17 18 49 32 31 48 48M32 31 51 15 48 48"/><circle cx="13" cy="17" r="5"/><circle cx="51" cy="15" r="5"/><circle cx="32" cy="31" r="7"/><circle cx="18" cy="49" r="5"/><circle cx="48" cy="48" r="5"/></svg></div><div><label>新知识点</label><b>梯度同步</b></div><span>→</span></div>
+          </div>
+        </div>
+        <div class="demo-floor event-floor"><div class="screen-title"><b>近期日程</b><small>活动 · Meetup · 直播</small></div>
+          <div class="event-card"><strong>06<small>11月</small></strong><div class="atlas-shot atlas-meetup" role="img" aria-label="开发者 Meetup"></div><div><label>线上活动 · 报名开放</label><b>昇腾开发者 Meetup</b></div><span class="event-state">报名中</span></div>
+        </div>
+      </div>
+      <div class="map-arrow"><span>→</span><small>页面背后的<br>服务</small></div>
+      <div class="service-map visual-service-map">
+        <article><b class="n blue-bg">01</b><div><h3>推荐什么</h3><div class="service-visual"><span>目标</span><i>+</i><span>进度</span><i>→</i><b>资源</b></div><small>推荐同时说明理由</small></div></article>
+        <article><b class="n violet-bg">02</b><div><h3>有哪些资源</h3><div class="service-visual"><span>路径</span><span>课程</span><span>认证</span><span>知识点</span></div><small>按类型、版本与发布时间查找</small></div></article>
+        <article><b class="n coral-bg">03</b><div><h3>何时有什么活动</h3><div class="service-visual"><span>时间</span><i>+</i><span>形式</span><i>→</i><b>日程</b></div><small>附地点与报名入口</small></div></article>
+        <article><b class="n teal-bg">04</b><div><h3>用户反馈什么</h3><div class="service-visual"><span>收藏</span><span>学完</span><span>没弄懂</span></div><small>经授权后改善后续推荐</small></div></article>
+      </div>
+    </div>
+    <div class="demo-boundary"><b>当前示例</b><span>策划内容 · 浏览器本地状态</span><i>→</i><b>目标服务</b><span>资源目录 · 活动数据 · 授权推荐</span></div></div>
+    <div class="kp-foot"><span>反馈只按明确用途与授权处理</span><span>示意映射，不代表后端已接入</span></div>
+  </section>
     <div class="demo-screen"><div class="screen-head"><b>学习发现</b><span>探索昇腾成长资源</span><i>搜索　⌕</i></div><section><div class="screen-title"><b>为你推荐</b><small>与你当前目标相关</small></div><div class="recommend"><div class="path-card"><label>学习路径</label><b>从模型训练到性能调优</b><div class="steps"><i></i><i></i><i></i><i></i><i></i></div><small>阶段路径 · 8 个知识节点</small></div><div class="mini-card"><label>认证</label><b>昇腾开发者认证</b><small>进阶 · 预计 4 周</small></div><div class="mini-card"><label>课程</label><b>算子开发入门</b><small>匹配学习目标</small></div></div></section><section><div class="screen-title"><b>最近上新</b><small>课程 · 路径 · 知识点</small><label class="new">NEW</label></div><div class="new-row"><span>新课程</span><b>昇腾训练性能分析实践</b><small>本周更新</small>→</div></section><section><div class="screen-title"><b>近期日程</b><small>活动 · Meetup · 直播</small></div><div class="event-row"><strong>06<small>11月</small></strong><i></i><b>昇腾开发者 Meetup<small>线上 · 报名开放</small></b><label>报名中</label></div></section></div>
     <div class="map-arrow">→<small>楼层映射</small></div><div class="service-map"><article><b class="n blue-bg">01</b><div><h3>推荐排序</h3><p>目标 / 当前任务 / 已学与存疑 → 内容 + 推荐理由</p><code>resource_id　reason　prerequisite</code></div></article><article><b class="n violet-bg">02</b><div><h3>资源目录</h3><p>类型 / 发布时间 / 适用版本 → 路径、课程、认证、知识点</p><code>type　published_at　scope</code></div></article><article><b class="n coral-bg">03</b><div><h3>活动日历</h3><p>时间 / 形式 / 地点 / 报名 → 活动卡与时间轴</p><code>starts_at　timezone　registration_url</code></div></article><article><b class="n teal-bg">04</b><div><h3>显式反馈</h3><p>点击 / 收藏 / 完成 / 感兴趣 / 还没弄懂 → 后续推荐</p><code>signal　consent　retention</code></div></article></div></div><div class="demo-boundary"><b>当前 Demo</b> 本地策划示例与浏览器存储　<span>→</span>　<b>目标方案</b> 资源目录、活动接口、授权上下文与可解释推荐</div></div><div class="kp-foot"><span>个性化需要明确用途、授权、最小采集与留存周期</span><span>示意映射，不代表后端已接入</span></div></section>
-  <section class="slide s-gray kp-slide" data-component="Knowledge Unit字段模型" data-title="每条知识资源都要自带适用边界与可信证据"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">每条知识资源都要自带适用边界与可信证据</span></div><div class="subttl">03 · KNOWLEDGE UNIT　说清资源是什么、适用于谁、依据何在、何时失效</div></div></div><div class="body-area kp-body"><div class="schema">
+  <section class="slide s-gray kp-slide" data-component="Knowledge Unit字段模型" data-title="每条知识资源，都要带着一张可信身份证">
+    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">每条知识资源，<br class="mobile-title-break">都要带着一张可信身份证</span></div><div class="subttl">03 · KNOWLEDGE UNIT　四个问题，帮助人和 AI 判断能不能用</div></div></div>
+    <div class="body-area kp-body"><div class="schema visual-schema">
+      <article class="resource-passport"><div class="passport-art"><div class="atlas-shot atlas-course" role="img" aria-label="学习资源示例图"></div><span>示例资源</span></div>
+        <div class="passport-copy"><label>LEARNING RESOURCE</label><h3>算子开发入门</h3><p>一条资源如何被找到、匹配和引用</p></div>
+        <div class="passport-meta"><span><b>ID</b> stable-resource-id</span><span><b>类型</b> 课程</span></div>
+        <div class="passport-flow"><span>来源</span><i>→</i><span>适用版本</span><i>→</i><span>核验状态</span></div>
+      </article>
+      <div class="fields visual-fields">
+        <article class="field fi"><div class="field-question"><b>01</b><h3>这是什么？</h3></div><div class="field-pills"><span>标题</span><span>类型</span><span>稳定 ID</span></div></article>
+        <article class="field fs"><div class="field-question"><b>02</b><h3>适用于什么环境？</h3></div><div class="field-pills"><span>CANN</span><span>芯片</span><span>OS / 框架</span></div></article>
+        <article class="field fc"><div class="field-question"><b>03</b><h3>如何学会并验证？</h3></div><div class="field-pills"><span>先修</span><i>→</i><span>步骤</span><i>→</i><span>预期结果</span></div></article>
+        <article class="field fp"><div class="field-question"><b>04</b><h3>依据是否可靠？</h3></div><div class="field-pills"><span>原文出处</span><span>Owner</span><span>核验日期</span></div></article>
+        <div class="id-bridge"><b>同一资源 ID</b><span>目录</span><i>→</i><span>搜索 / API</span><i>→</i><span>Agent 引用</span></div>
+      </div>
+    </div>
+    <div class="context visual-context"><b>推荐信息分开存</b><span>学习目标、任务与兴趣信号不是公开知识本身；按授权控制用途和留存。</span><strong>权限 · 同意 · 留存</strong></div></div>
+    <div class="kp-foot"><span>发布前补齐：来源 · 适用范围 · Owner · 核验状态</span><span>字段示意，不代表现有数据 Schema</span></div>
+  </section>
     <div class="json-card"><div class="json-head"><span></span><span></span><span></span><b>RESOURCE OBJECT</b><small>字段示意</small></div><div class="json"><div>{</div><p><i>"id"</i>: <b>"stable-resource-id"</b>,</p><p><i>"type"</i>: <em>course | path | concept</em>,</p><p><i>"scope"</i>: <strong>CANN · chip · OS · framework</strong>,</p><p><i>"content"</i>: <strong>summary · steps · expected</strong>,</p><p><i>"source"</i>: <strong>canonical URL · anchor · license</strong>,</p><p><i>"verification"</i>: <strong>state · checked_at · owner</strong></p><div>}</div></div><div class="json-bottom"><span>可机器检索</span><span>回到原始出处</span><span>检查版本匹配</span></div></div>
     <div class="fields"><article class="field fi"><small>IDENTITY</small><h3>身份与类型</h3><p>稳定 ID · 标题 · 语言 · 资源类型</p><div><b>course</b> → section → lesson</div></article><article class="field fs"><small>SCOPE</small><h3>适用条件</h3><p>CANN / 芯片 / OS / 框架版本</p><div><b>匹配</b><span>适用</span><span>需补问</span><span>不兼容</span></div></article><article class="field fc"><small>LEARNING / TASK</small><h3>内容与方法</h3><p>先修关系 · 章节 · 步骤 · 预期信号</p><div><span>理解</span> → <span>实践</span> → <b>验证</b></div></article><article class="field fp"><small>PROVENANCE</small><h3>来源与生命周期</h3><p>原文锚点 · 许可 · Owner · 核验与失效时间</p><div><span>SOURCE</span><span>VERSION</span><span>CHECKED</span></div></article><div class="id-bridge">同一资源 ID　 ───　目录　 ───　搜索 API　 ───　Agent 引用</div></div></div><div class="context"><b>推荐上下文单独治理</b><span>当前目标、任务、学习进度与兴趣信号，与公开知识资源分开存储；按授权控制用途与保存期限。</span><strong>权限 · 同意 · 留存</strong></div></div><div class="kp-foot"><span>发布门槛：来源可追溯　适用范围明确　Owner 与验证状态齐全</span><span>示意字段，不代表现有数据 Schema</span></div></section>
-  <section class="slide s-gray kp-slide" data-component="接口分层图" data-title="发现、产品 API 与 Agent 调用是三类不同接口"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">发现、产品 API 与 Agent 调用是三类不同接口</span></div><div class="subttl">04 · INTERFACES　不同使用方读取同一份可信目录</div></div></div><div class="body-area kp-body"><div class="interface-core"><span>共享知识目录</span><b>Knowledge Unit + 版本 / 来源 / 权限</b><em>一种事实模型，多种适配出口</em></div><div class="lanes">
+  <section class="slide s-gray kp-slide" data-component="接口分层图" data-title="同一份知识目录，分三条通道交付">
+    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">同一份知识目录，<br class="mobile-title-break">分三条通道交付</span></div><div class="subttl">04 · DELIVERY　让人、产品与 AI 助手各取所需</div></div></div>
+    <div class="body-area kp-body visual-interface-body">
+      <div class="interface-core visual-interface-core"><span class="core-orb">库</span><div><b>可信知识目录</b><small>资源 · 版本 · 来源 · 权限</small></div><i>分发到</i></div>
+      <div class="lanes visual-lanes">
+        <article class="lane discovery-lane"><div class="lane-title"><b>A</b><div><h3>网页与搜索</h3><small>给开发者与搜索引擎</small></div></div>
+          <div class="lane-visual discovery-visual"><div class="crawl-inputs"><span>robots.txt</span><span>sitemap.xml</span></div><div class="lane-arrow">↓</div><div class="page-output"><b>网页内容</b><strong>HTML / Markdown</strong></div><div class="semantic-output"><span>结构化标签</span><b>JSON-LD</b><span>精选目录 · llms.txt*</span></div></div>
+          <p><b>robots</b> 管爬取；llms.txt 是提案目录，不替代正文或 API。</p>
+        </article>
+        <article class="lane api-lane"><div class="lane-title"><b class="vb">B</b><div><h3>社区产品 API</h3><small>给 Demo 与学习平台</small></div></div>
+          <div class="lane-visual api-visual"><div class="api-resource"><strong>资源</strong><span>/resources</span><i>课程 · 路径 · 认证</i></div><div class="api-resource"><strong>日程</strong><span>/events</span><i>活动 · 报名</i></div><div class="api-resource"><strong>环境</strong><span>/compatibility</span><i>版本 · 芯片 · 框架</i></div><div class="api-standard">OpenAPI　鉴权　限流　版本管理</div></div>
+          <p>用户行为数据使用独立授权。</p>
+        </article>
+        <article class="lane agent-lane"><div class="lane-title"><b class="gb">C</b><div><h3>AI 助手</h3><small>为 Agent 提供内容与做法</small></div></div>
+          <div class="lane-visual agent-visual"><div class="agent-method mcp-method"><b>MCP</b><strong>读取知识</strong><span>Resources · 查询</span></div><div class="agent-link">＋</div><div class="agent-method skill-method"><b>Skill</b><strong>指导任务</strong><span>步骤 · 检查 · 停止</span></div></div>
+          <div class="agent-note"><b>A2A 可选</b><span>仅在供给方另有 Agent 时评估</span></div><p>先开放只读；执行动作另行授权、审计并回报结果。</p>
+        </article>
+      </div>
+      <div class="guardrail visual-guardrail"><b>所有通道共同遵守</b><span>来源可追</span><i></i><span>版本匹配</span><i></i><span>身份权限</span><i></i><span>隐私许可</span><i></i><span>可审计</span></div>
+    </div>
+    <div class="kp-foot kp-sources"><b>规范与提案</b><a href="https://www.rfc-editor.org/rfc/rfc9309.html" target="_blank" rel="noreferrer">Robots</a><a href="https://www.sitemaps.org/protocol.html" target="_blank" rel="noreferrer">Sitemap</a><a href="https://llmstxt.org/" target="_blank" rel="noreferrer">llms.txt · 提案</a><a href="https://schema.org/Course" target="_blank" rel="noreferrer">Schema.org</a><a href="https://spec.openapis.org/oas/v3.1" target="_blank" rel="noreferrer">OpenAPI</a><a href="https://modelcontextprotocol.io/specification/2025-11-25/server/index" target="_blank" rel="noreferrer">MCP</a><a href="https://agentskills.io/specification" target="_blank" rel="noreferrer">Agent Skills</a><a href="https://a2a-protocol.org/v1.0.1/specification/" target="_blank" rel="noreferrer">A2A</a></div>
+  </section>
     <article class="lane"><div class="lane-title"><b>A</b><div><h3>内容发现与语义</h3><small>给人、搜索与爬虫</small></div></div><div class="discovery"><span>robots.txt</span><strong>+</strong><span>sitemap.xml</span><i>↓</i><b>HTML / Markdown</b><span>JSON-LD / Schema.org</span><span>llms.txt · 提案</span></div><p>robots 声明爬取规则，不负责鉴权；llms.txt 是精选目录，不能替代正文与 API。</p></article>
     <article class="lane"><div class="lane-title"><b class="vb">B</b><div><h3>产品服务 API</h3><small>给 Demo 与社区产品</small></div></div><div class="api-list"><div><code>GET /resources</code><span>课程 · 路径 · 认证 · 知识</span></div><div><code>GET /events</code><span>日程 · 报名状态</span></div><div><code>GET /compatibility</code><span>版本 · 芯片 · 框架</span></div><div><code>POST /signals</code><span>认证 · 授权 · 范围</span></div><strong>OpenAPI · 鉴权 · 限流 · 版本管理</strong></div><p>检索、详情、推荐与进度分别定义；个人数据操作使用独立权限。</p></article>
     <article class="lane"><div class="lane-title"><b class="gb">C</b><div><h3>Agent 连接与任务方法</h3><small>给可装配的 AI 助手</small></div></div><div class="agent-pair"><div><b>MCP Server</b><span>Resources · 内容</span><span>Prompts · 模板</span><span>Tools · 受控查询</span></div><div><b>Agent Skill</b><span>触发条件</span><span>输入与步骤</span><span>检查与停止</span></div></div><div class="a2a"><b>A2A · 可选</b> 仅当供给方暴露独立 Agent 时评估</div><p>先从只读与可引用开始；执行动作需单独授权、审计并回传状态证据。</p></article>
   </div><div class="guardrail"><b>贯穿约束</b><span>来源追溯</span><i></i><span>版本过滤</span><i></i><span>身份权限</span><i></i><span>隐私许可</span><i></i><span>审计观测</span></div></div><div class="kp-foot kp-sources"><b>依据</b><a href="https://www.rfc-editor.org/rfc/rfc9309.html" target="_blank" rel="noreferrer">RFC 9309 · Robots</a><a href="https://www.sitemaps.org/protocol.html" target="_blank" rel="noreferrer">Sitemaps</a><a href="https://llmstxt.org/" target="_blank" rel="noreferrer">llms.txt proposal</a><a href="https://schema.org/Course" target="_blank" rel="noreferrer">Schema.org</a><a href="https://spec.openapis.org/oas/v3.1" target="_blank" rel="noreferrer">OpenAPI</a><a href="https://modelcontextprotocol.io/specification/2025-11-25/server/index" target="_blank" rel="noreferrer">MCP</a><a href="https://agentskills.io/specification" target="_blank" rel="noreferrer">Agent Skills</a><a href="https://a2a-protocol.org/v1.0.1/specification/" target="_blank" rel="noreferrer">A2A</a></div></section>
-  <section class="slide s-gray kp-slide" data-component="路线图与治理" data-title="按 P0 → P1 → P2 建设，先把知识合同和来源治理做实"><div class="head"><div class="head-l"><div class="brand"><span class="ttl">按 P0 → P1 → P2 建设，先把知识合同和来源治理做实</span></div><div class="subttl">05 · BUILD & OPERATE　先让资源可信，再让入口复用，最后接入 Agent 闭环</div></div></div><div class="body-area kp-body"><div class="phase-roadmap">
+  <section class="slide s-gray kp-slide" data-component="路线图与治理" data-title="先统一资源，再连接产品，最后开放 Agent 能力">
+    <div class="head"><div class="head-l"><div class="brand"><span class="ttl">先统一资源，再连接产品，<br class="mobile-title-break">最后开放 Agent 能力</span></div><div class="subttl">05 · BUILD & OPERATE　渐进建设，不预设排期</div></div></div>
+    <div class="body-area kp-body visual-roadmap-body"><div class="phase-roadmap visual-roadmap">
+      <article class="road r0"><div class="road-title"><b>P0</b><span>知识底座</span><strong>每项资源先说清楚</strong></div>
+        <div class="road-visual manifest-visual"><div class="manifest-card"><span>ID</span><span>Scope</span><span>Source</span><span>Owner</span></div><i>→</i><div class="manifest-result"><b>可信目录</b><small>可查 · 可维护</small></div></div>
+        <div class="road-callout"><b>来源</b><i>·</i><b>适用版本</b><i>·</i><b>责任人</b><i>·</i><b>核验状态</b></div><footer><span>先解决</span><b>资源是否可信</b></footer></article>
+      <div class="road-next">→</div>
+      <article class="road r1"><div class="road-title"><b>P1</b><span>发现与服务</span><strong>让产品找得到资源</strong></div>
+        <div class="road-visual channel-visual"><div><b>网页</b><small>搜索</small></div><i>+</i><div><b>API</b><small>检索</small></div><i>+</i><div><b>日程</b><small>活动</small></div></div>
+        <div class="road-callout"><b>推荐理由</b><i>·</i><b>版本过滤</b><i>·</i><b>活动数据</b></div><footer><span>再解决</span><b>资源能否复用</b></footer></article>
+      <div class="road-next">→</div>
+      <article class="road r2"><div class="road-title"><b>P2</b><span>Agent 与质量闭环</span><strong>让 AI 按边界使用</strong></div>
+        <div class="road-visual agent-road-visual"><div><b>Skill</b><small>任务步骤</small></div><i>↔</i><div><b>MCP</b><small>知识查询</small></div><i>→</i><div class="verify-node"><b>✓</b><small>验证</small></div></div>
+        <div class="road-callout"><b>先只读</b><i>·</i><b>再授权</b><i>·</i><b>回传证据</b></div><footer><span>最后解决</span><b>AI 能否安全完成任务</b></footer></article>
+    </div>
+    <div class="operating visual-operating"><div class="owner-intro"><b>谁来维护</b><small>内容、平台与体验一起闭环</small></div>
+      <article><strong>C</strong><b>内容 Owner</b><small>内容准确 · 版本有效</small></article><i>→</i><article><strong>P</strong><b>平台 Owner</b><small>目录 · 搜索 · API</small></article><i>→</i><article><strong>E</strong><b>体验 / AI Owner</b><small>推荐 · 引用 · 任务验证</small></article>
+      <div class="signals"><b>持续看这 5 项</b><span>资源完整</span><span>版本命中</span><span>引用准确</span><span>任务完成</span><span>纠错回流</span></div>
+    </div></div>
+    <div class="kp-foot"><span>建议按资源质量与团队能力逐步推进</span><span>目标：可发现 · 可调用 · 可验证 · 可维护</span></div>
+  </section>
     <article class="road r0"><div class="road-title"><b>P0</b><span>知识底座</span><strong>先统一资源</strong></div><div class="road-graphic"><span>ID</span><span>Scope</span><span>Source</span><span>Owner</span><svg viewBox="0 0 300 50"><path d="M28 35H270M53 14v21M118 14v21M183 14v21M248 14v21"/><circle cx="53" cy="14" r="4"/><circle cx="118" cy="14" r="4"/><circle cx="183" cy="14" r="4"/><circle cx="248" cy="14" r="4"/></svg></div><ul><li>资源类型与稳定 ID</li><li>版本范围、出处与许可</li><li>Owner、核验与失效状态</li></ul><footer><b>产出</b> 可治理的知识目录</footer></article><div class="road-next">→</div>
     <article class="road r1"><div class="road-title"><b>P1</b><span>发现与服务</span><strong>接入 Demo</strong></div><div class="road-graphic"><span>HTML</span><i>+</i><span>Markdown</span><i>+</i><span>API</span></div><ul><li>站点地图与语义元数据</li><li>搜索 / 详情 / 活动 API</li><li>推荐理由与版本过滤</li></ul><footer><b>产出</b> 多入口复用同一资源</footer></article><div class="road-next">→</div>
     <article class="road r2"><div class="road-title"><b>P2</b><span>Agent 与质量闭环</span><strong>逐步开放调用</strong></div><div class="road-graphic"><span>Skill</span><i>↔</i><span>MCP</span><i>→</i><span>验证</span></div><ul><li>任务型 Skills 与只读 MCP</li><li>核验引用与版本匹配</li><li>授权后再开放受控动作</li></ul><footer><b>产出</b> 可评估的 Agent 知识服务</footer></article></div>

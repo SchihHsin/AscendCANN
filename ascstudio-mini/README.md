@@ -28,7 +28,7 @@
 - `app.js`：路由、推荐、图解、收藏、小题、兴趣信号、每周速览和任务小结。
 - `knowledge.js`：知识内容、任务关联、周报示例主题和公开阅读链接。
 - `styles.css`：独立样式与手机适配。
-- [知识供给侧服务蓝图（7 页可视化汇报）](./knowledge-provider-map.html)：独立的 Report PPT 风格材料，含供给链路图、Demo 楼层映射、Knowledge Unit 字段模型、接口分层和 P0–P2 建设路线；说明目标服务方案，不代表 Demo 已接入真实后端。
+- [知识供给侧服务蓝图（7 页可视化汇报）](./knowledge-provider-map.html)：独立的 Report PPT 风格材料，使用学习路径、课程、认证和 Meetup 内容图，配合供给流程、Demo 楼层服务映射、资源可信信息卡、三类交付通道与 P0–P2 建设路线；图集位于 `assets/knowledge-resource-atlas.png`。材料描述目标服务方案，不代表 Demo 已接入真实后端。
 - `evidence/home-desktop.png`：核心学习章节与 HarmonyOS 风格状态栏样机。
 - `evidence/review-overview-desktop.png`：核心学习 / 主动回访两章的七点总览。
 
