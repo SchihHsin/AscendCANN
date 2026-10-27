@@ -431,33 +431,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 
 .save-unavailable { color: #8d6f49; font-size: 11px; white-space: nowrap; }
 
-/* Dragging the floating composer previews the conversation's docked destination. */
+/* The composer perimeter is the drag affordance in both conversation layouts. */
 .composer { position: relative; }
-.conversation-drag-handle {
-  position: absolute;
-  z-index: 3;
-  top: -7px;
-  left: 50%;
-  width: 38px;
-  height: 14px;
-  transform: translateX(-50%);
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: #a6a7ad;
-  opacity: .72;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
-}
-.conversation-drag-handle:hover:not(:disabled),
-.conversation-drag-handle:focus-visible { color: #555760; background: rgba(245,245,243,.86); opacity: 1; }
-.conversation-drag-handle:active { cursor: grabbing; }
-.conversation-drag-handle:disabled { cursor: not-allowed; opacity: .45; }
-.conversation-drag-handle:hover:not(:disabled) { color: #747680; opacity: 1; }
+.composer.is-drag-edge-hover { border-color: #d0d2d8; box-shadow: 0 0 0 2px rgba(94,98,111,.1), 0 6px 24px rgba(28,30,36,.09), 0 1px 3px rgba(28,30,36,.04); cursor: grab; }
+.conversation-panel.is-dragging .composer { cursor: grabbing; user-select: none; }
 .conversation-panel.is-dragging {
   z-index: 16 !important;
   transform: translate3d(var(--conversation-drag-x, 0px), var(--conversation-drag-y, 0px), 0);
@@ -525,7 +502,6 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   background: rgba(255,255,255,.84);
 }
 @media (max-width: 980px) {
-  .conversation-drag-handle { display: none; }
   .conversation-panel.is-dragging { transform: none; }
 }
 

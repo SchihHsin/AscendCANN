@@ -60,7 +60,6 @@ import {
   IconDots,
   IconFileText,
   IconFolder,
-  IconGripHorizontal,
   IconLibrary,
   IconLayoutBottombar,
   IconLayoutSidebar,
@@ -213,6 +212,7 @@ function App() {
   useEffect(() => { writeSession("conversation-layout", conversationLayout); }, [conversationLayout]);
   const [floatingConversationExpanded, setFloatingConversationExpanded] = useState(false);
   const [conversationDragging, setConversationDragging] = useState(false);
+  const [conversationDragEdgeHover, setConversationDragEdgeHover] = useState(false);
   const [conversationDockPreview, setConversationDockPreview] = useState(false);
   const [conversationFloatPreview, setConversationFloatPreview] = useState(false);
   const [permissionModes, setPermissionModes] = useState({});
@@ -331,6 +331,7 @@ function App() {
     conversationPanelRef.current?.style.removeProperty("--conversation-drag-x");
     conversationPanelRef.current?.style.removeProperty("--conversation-drag-y");
     setConversationDragging(false);
+    setConversationDragEdgeHover(false);
     setConversationDockPreview(false);
     setConversationFloatPreview(false);
   };
@@ -359,6 +360,15 @@ function App() {
     const bottomBand = Math.min(190, Math.max(120, workspaceRect.height * 0.28));
     return clientX >= centerX - hitWidth && clientX <= centerX + hitWidth && clientY >= workspaceRect.bottom - bottomBand && clientY <= workspaceRect.bottom;
   };
+  const isConversationDragEdge = (event) => {
+    const target = event.target;
+    if (target instanceof Element && target.closest("textarea, button, input, select, a, [contenteditable='true'], .composer-context-chips")) return false;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const edge = 10;
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    return x <= edge || rect.right - event.clientX <= edge || y <= edge || rect.bottom - event.clientY <= edge;
+  };
   const moveConversationDrag = (event) => {
     const active = conversationDragRef.current;
     if (!active || active.pointerId !== event.pointerId) return;
@@ -376,8 +386,17 @@ function App() {
     setConversationFloatPreview(destination === "floating");
     event.preventDefault();
   };
+  const handleConversationPointerMove = (event) => {
+    if (conversationDragRef.current) {
+      moveConversationDrag(event);
+      return;
+    }
+    const canDrag = !areaInteractionActive && window.innerWidth > 980 && event.pointerType === "mouse" && isConversationDragEdge(event);
+    setConversationDragEdgeHover(current => current === canDrag ? current : canDrag);
+  };
   const startConversationDrag = (event) => {
-    if (areaInteractionActive || window.innerWidth <= 980 || event.button !== 0 || !event.isPrimary || conversationDragRef.current) return;
+    if (areaInteractionActive || window.innerWidth <= 980 || event.button !== 0 || !event.isPrimary || conversationDragRef.current || !isConversationDragEdge(event)) return;
+    setConversationDragEdgeHover(false);
     conversationDragRef.current = { pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY, moved: false, sourceLayout: conversationLayout, handle: event.currentTarget };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
@@ -388,7 +407,7 @@ function App() {
     const hasTarget = active.sourceLayout === "floating"
       ? conversationDockTargetContains(event.clientX, event.clientY)
       : conversationFloatTargetContains(event.clientX, event.clientY);
-    const shouldSwitch = !cancelled && (!active.moved || hasTarget);
+    const shouldSwitch = !cancelled && active.moved && hasTarget;
     resetConversationDrag();
     if (shouldSwitch) setConversationLayout(active.sourceLayout === "floating" ? "sidebar" : "floating");
   };
@@ -1531,8 +1550,7 @@ function App() {
               <IconFileText size={ICON_SIZE.control} />生成草稿
             </button>
           </section>}
-          <form className={`composer${showCommunityInvite ? " composer--community" : ""}`} onSubmit={(event) => { if (conversationLayout === "floating" && !session.replying && (draft.trim() || session.attachments.length)) setFloatingConversationExpanded(true); handleSendMessage(event); }}>
-            <button className="conversation-drag-handle" type="button" aria-label="拖动对话区域切换布局" title="拖动对话区域；靠近目标布局时会显示预览，松手后吸附。轻点或按回车可切换布局" disabled={areaInteractionActive} onKeyDown={event => { if (event.key === "Escape" && conversationDragRef.current) { event.preventDefault(); resetConversationDrag(); } else if (event.key === "Enter" || event.key === " " || conversationLayout === "floating" && event.key === "ArrowLeft" || conversationLayout === "sidebar" && event.key === "ArrowDown") { event.preventDefault(); setConversationLayout(current => current === "floating" ? "sidebar" : "floating"); } }} onPointerDown={startConversationDrag} onPointerMove={moveConversationDrag} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}><IconGripHorizontal size={ICON_SIZE.inline} aria-hidden="true" /></button>
+          <form className={`composer${showCommunityInvite ? " composer--community" : ""}${conversationDragEdgeHover ? " is-drag-edge-hover" : ""}`} onSubmit={(event) => { if (conversationLayout === "floating" && !session.replying && (draft.trim() || session.attachments.length)) setFloatingConversationExpanded(true); handleSendMessage(event); }} onPointerDown={startConversationDrag} onPointerMove={handleConversationPointerMove} onPointerLeave={() => setConversationDragEdgeHover(false)} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
               {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={ICON_SIZE.inline} /><span>{pointContext.type === "workspace-area" ? `工作区区域 · ${pointContext.label}` : `图解范围 · ${pointContext.label}`}</span><button type="button" aria-label="移除指向区域上下文" onClick={clearPointContext}><IconX size={ICON_SIZE.micro} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={ICON_SIZE.inline} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={ICON_SIZE.micro} /></button></span>)}
