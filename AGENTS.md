@@ -7044,8 +7044,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户确认将三个首页方案改为设计点命名：「主动建议 / 多层探索 / 线索串联」，并同意同步调整图标。第一项突出任务建议卡，第二项突出中心节点逐层展开，第三项突出满屏线索之间的关系连接。
 - Tab 图标分别使用 `IconCards`、`IconHierarchy3`、`IconAffiliate`；辅助无障碍名称改为「首页交互方式」。标签字号由 11px 调至 12px，保留原选中态、交互与 `?home=classic|explore|combine` 路由。
-- 修改 `ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务可用。部署结果待补记。
+- 修改 `ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务可用。
 - 页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 发布：功能提交 `b009757a` 与保留并行画布、小程序更新的合并提交 `40d94763` 已进入 `origin/main`；后续主线更新同步至 `c6bcdc5a`。Pages workflow `40495774511` 成功。公开 `/AscendCANN/ascstudio/?home=combine` 返回 HTTP 200，引用 `index-Bn1n8C39.js` 与 `index-BlUG8aw7.css`，资源均 HTTP 200；JS 确认包含「主动建议 / 多层探索 / 线索串联」。
 
 ### 2026-10-27 · 旧画布笔迹删除入口
 
