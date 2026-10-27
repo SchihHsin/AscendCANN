@@ -7044,7 +7044,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增手绘卡片仍在卡片内容区落笔；删除整张新增卡片时连带删除其关联笔迹。此更新只改进旧笔迹入口，不改变新卡片绘图与内容顺序。
 - 修改 `ascend-studio/src/LearningCanvasToolbar.jsx`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx` 和 `/ascstudio/` Pages 产物。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。用户截图、本地代码与构建为依据（H / M）。
 - 验证：`npm run build:pages`、产物 `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；Vite 有既存的主 bundle 大于 500 kB 提示，未运行自动化测试。已将本地预览在浏览器打开。
-- 发布记录待本轮 push 与 Pages 部署确认后回填；同步的主线包含 `ascstudio-mini/` 每周速览与知识供给蓝图更新，均保留。
+- 发布：旧笔迹入口与提示随提交 `962c6165` 已推送至 `origin/main`；整合期间保留了 `ascstudio-mini/` 每周速览 / 知识蓝图，以及并行的材料卡尺寸与滚动更新。Pages workflow `40495064319`（head `a5d70e78`）成功；线上 `/AscendCANN/ascstudio/` 引用 `index-2CZdRaiw.js` / `index-BMkz6m8g.css`，资源均 HTTP 200，线上 JS 已核对包含删除提示。
 
 ### 2026-10-27 · Ascend Studio 跨画布卡片内容与滚动规则
 
