@@ -6872,6 +6872,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增按任务保存于当前会话内存的权限演示状态：只读、每次确认、本任务内允许操作。此控制仅展示原型状态，不连接真实执行权限或 API / Host 能力，不改变 Application / Task 边界。
 - 修改：`ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css`、`src/useWorkbenchState.js` 与 `ascstudio/` Pages 产物。
 - 证据：用户本轮要求（H）；本地 5178 桌面预览（M）实际回放左栏→底部浮窗、浮窗→左栏双向吸附，两种布局的目标外落点均保持原布局；权限菜单与加号菜单可操作，浏览器无 error / warning。`npm run build:pages`、生成 JS `node --check`、`git diff --check` 均通过；未运行自动化测试。
+- 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。主线推送与 Pages 发布回执将在后续记录补齐。
+
+### 2026-10-27 · 跨任务画布共享语义与导航收敛
+
+- 用户要求将近期确认的共享语义应用到所有任务画布，并询问前序修改是否已推送。此前共享画布改动已有远端基线；本轮节点语义、对象导航栏和 AddCustom 关系图修改已提交并推送到 `origin/main`。
+- 公共规则：所有任务共用画布浏览 / 编辑控件、节点聚焦与放大语义，以及连线表达关系的方式；卡片内容、阶段和关系按各任务本身定义，不强套统一业务分组。TaskCanvas 删除画布上沿选中标题 / 关联芯片横栏，节点操作留在卡片右上角，视图操作留在共享工具栏。
+- AddCustom 以“问题现场”为真实起点，连接代码、已知现象、线索解释及后续试算 / 修改 / 复核；移除“现场与来源 / 理解与试算”等抽象背景组。图像推理保留其输入与预处理链，ResNet50 保留官方学习阶段和节点，不引入开发任务分类。
+- 验证：本地 1280×720 CUA 查看 AddCustom 与 ResNet50；画布均显示关联卡片和共享视图控件，ResNet50 阶段 / 视频 / 节点结构仍完整。`node --check`（AddCustom 布局与内容目录）、`npm run build:pages` 与构建后的入口资源生成成功；构建仅有既存的大 JS chunk 提示。未运行自动化测试。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变；源代码提交 `50af74ed` / 合并提交 `6dde119b` 已包含在 `origin/main` 的 `8e778844`，Pages workflow `40468702133` 成功；线上 `/ascstudio/` HTML、JS、CSS 资源均返回 HTTP 200。
 - 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5317a869` 已推送到 `origin/main`；Pages workflow `40376808989` 成功。线上 `/ascstudio/` HTML、`index-C15Xr9Tu.js`、`index-CnqbLe8f.css` 均返回 HTTP 200。
 
 
@@ -6975,3 +6983,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/shared/canvas/CanvasNoteContent.jsx`、`CanvasUserNote.jsx`、`canvas.css`、`task-canvas.css`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`，并重建 `/ascstudio/` Pages 资源。没有新增代码运行或语法高亮承诺；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 通过；未运行自动化测试。Vite 有既存的主 bundle 超过 500 kB 提示。线上 HTML 引用 `index-DgWSk1Op.js` 与 `index-nTBEh0K1.css`，均 HTTP 200；Pages workflow `40464537367` 成功。
 - 发布：源码提交 `42f66f44` 与整合并行微信学习记录的提交 `c20b982d` 已推送至 `origin/main`。合并时保留了 `a0daa62b`、`93a900f3` 对 `AGENTS.md` 的并行更新，未强推。
+
+
+### 2026-10-27 · AddCustom 社区经验入口由图解操作触发
+
+- 用户要求初始 AddCustom 对话不展示社区经验入口；先在右侧“现场与判断”图解卡完成一个简单操作，再显示入口。图解卡提供“标记为已解决”；完成后输入框上方出现社区经验邀请，点“生成草稿”在右侧打开草稿审阅。旧版本残留的演示邀请在入口未就绪时隐藏；实际精度流程确认完成仍可触发。
+- 完成操作写入本地任务会话状态，不连接真实设备验证；草稿沿用现有示例边界。未添加可信度卡。
+- 修改 `ascend-studio/src/App.jsx`、`CanvasMaterials.jsx`、`canvas-materials.css`、`community-draft.css` 和 `/ascstudio/` 构建产物。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。依据：用户明确要求（H）与源码实现（M）。
+- 验证：`npm run build:pages`、`node --check ascstudio/assets/index--kTdwENk.js`、`git diff --cached --check` 通过；构建产物已确认不含旧对话快捷入口和可信度卡文案，未运行自动化测试。提交 `ff18d786` 已推送 `origin/main`；Pages workflow `40466117026` 成功，线上 `/ascstudio/` HTML 已引用 `index--kTdwENk.js` 与 `index-Cugz80ir.css`，两资源 HEAD 均返回 HTTP 200。
