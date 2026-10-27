@@ -6881,3 +6881,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 组合首页的区块无障碍名称、需求草稿占位提示和空需求提示改为通用场景 / 线索表达；训练调优字段保留为当前 Demo 内容。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`ascend-studio/src/combination-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。由于 CUA 浏览器桥接在本轮断开，未完成页面截图复核。
 - 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5600a865` 已推送至 `origin/main`；Pages workflow `40436387761` build / deploy 成功。线上 `/ascstudio/` HTML 已引用新 JS / CSS 哈希资源；本地 5206 页面与源码模块返回 HTTP 200。
+
+
+### 2026-10-27 · Ascend Studio 小程序知识推荐方向（待选择）
+
+- 用户要求基于线上 `/ascstudio/` 电脑端 Demo 新增小程序端，重点是便捷推荐知识点。已读取线上入口及其 JS 文本，并核对本地学习发现、任务推荐和探索主题数据；来源为用户需求与公开发布代码（H），尚未进行小程序页面实现或视觉核验。
+- 按协作规则先提供三个方向：A 口袋知识卡（短讲解、图解、理解题与收藏）、B 轻探索地图（触摸主题渐进发现）、C 任务随行助手（围绕电脑端任务推荐知识与下一步）。建议 A 为首页并加入 C 的任务关联；这是待选建议，尚非用户确认决策。训练与调优可用作首轮故事素材。
+- 当前仅追加本交接记录，产品源码、电脑端页面序列与 API / Protocol、Host / Harness、Application / Task 边界均无变化。方向选择已通过异步问题发出，等待用户选择；拟先交付可点击交互 Demo，小程序原生工程范围尚未确认。
+- 验证与发布：仅把本条追加到最新 `origin/main` 的 `AGENTS.md`，用独立临时索引核对单文件差异并执行 `git diff-tree --check`，随后推送 `main`（提交主题 `docs: record mini-program knowledge recommendation options`）；共享工作区内已有暂存、未暂存及未跟踪内容保持原样。
