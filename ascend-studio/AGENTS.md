@@ -1962,3 +1962,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 按用户反馈，将底部 composer 的对话展开箭头从右侧方形控件调整为上沿居中胶囊。既有显隐与切换行为保持不变。
 - 修改 `src/styles.css` 和 `/ascstudio/` Pages 构建产物；依据为用户明确反馈（H），不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+
+### 2026-10-28 · 学习发现「更多推荐」配图提亮
+
+- 用户选择将「更多推荐」楼层配图小幅提亮并略微降饱和，同时保留课程粉、学习路径绿、知识点青、认证橙的区分。只作用于该楼层图片；Banner、新上架配图和白色楼层底不变。
+- 实现于 `src/learning-discovery.css` 的 `.ld-floor-recommended .ld-card-media img`：`brightness(1.06) saturate(.8) contrast(.96)`。依据为用户明确选择（H）与本地 1280×720 楼层预览（M）；页面序列 / hash 及 API / Protocol、Host / Harness、Application / Task 边界不变。构建验证已通过；推送 / Pages 状态待本轮完成后补记。

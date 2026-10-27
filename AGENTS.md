@@ -7220,3 +7220,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出展开入口偏右且方形；改为水平居中、圆角胶囊形状，保留原有悬浮 / 聚焦 / 触屏显隐与展开、收起行为。
 - 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 构建产物。依据为用户明确反馈（H）；不改变布局行为、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、生成 JS `node --check`、HTML bundle 引用、胶囊居中样式核对及 `git diff --check` 通过；本地 5179 预览 HTTP 200。推送与 Pages 部署结果待补。
+
+### 2026-10-28 · 学习发现「更多推荐」配图小幅提亮
+
+- 用户确认对该楼层配图小幅提亮、稍微降低饱和度，并保留课程粉、路径绿、知识点青、认证橙的类别区分（H）。
+- 仅对 `.ld-floor-recommended .ld-card-media img` 应用 `brightness(1.06) saturate(.8) contrast(.96)`；不影响顶部 Banner、新上架楼层和楼层背景。修改 `ascend-studio/src/learning-discovery.css` 及 `/ascstudio/` Pages 构建产物。
+- 依据：用户选择（H）；本地 1280×720 浏览器预览中四张卡片配图完整可见，亮度提高且类别色仍可辨（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`cd ascend-studio && npm run build:pages`、生成 JS `node --check`、HTML bundle 引用与文件存在性检查、`git diff --check` 通过；未运行自动化测试。源码提交 `001da5d2`，主线同步和 Pages 发布结果待本轮完成后补记。
