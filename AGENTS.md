@@ -7236,4 +7236,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认对该楼层配图小幅提亮、稍微降低饱和度，并保留课程粉、路径绿、知识点青、认证橙的类别区分（H）。
 - 仅对 `.ld-floor-recommended .ld-card-media img` 应用 `brightness(1.06) saturate(.8) contrast(.96)`；不影响顶部 Banner、新上架楼层和楼层背景。修改 `ascend-studio/src/learning-discovery.css` 及 `/ascstudio/` Pages 构建产物。
 - 依据：用户选择（H）；本地 1280×720 浏览器预览中四张卡片配图完整可见，亮度提高且类别色仍可辨（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`cd ascend-studio && npm run build:pages`、生成 JS `node --check`、HTML bundle 引用与文件存在性检查、`git diff --check` 通过；未运行自动化测试。源码提交 `001da5d2`，主线同步和 Pages 发布结果待本轮完成后补记。
+- 验证：`cd ascend-studio && npm run build:pages`、生成 JS `node --check`、HTML bundle 引用与文件存在性检查、`git diff --check` 通过；未运行自动化测试。源码提交 `001da5d2`、Pages 构建与文档提交 `daed9aa5` 已完成；同步保留截至 `f3b14cfa` 的并行主线更新后，最终提交 `6f40f5db` 已推送至 `origin/main`。Pages workflow `40554198989` 成功；线上 `/AscendCANN/ascstudio/`、`index-ChSAM-3t.js` 与 `index-CebWmIv6.css` 均 HTTP 200，回读 CSS 确认本次滤镜已发布。

@@ -1967,4 +1967,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-28 · 学习发现「更多推荐」配图提亮
 
 - 用户选择将「更多推荐」楼层配图小幅提亮并略微降饱和，同时保留课程粉、学习路径绿、知识点青、认证橙的区分。只作用于该楼层图片；Banner、新上架配图和白色楼层底不变。
-- 实现于 `src/learning-discovery.css` 的 `.ld-floor-recommended .ld-card-media img`：`brightness(1.06) saturate(.8) contrast(.96)`。依据为用户明确选择（H）与本地 1280×720 楼层预览（M）；页面序列 / hash 及 API / Protocol、Host / Harness、Application / Task 边界不变。构建验证已通过；推送 / Pages 状态待本轮完成后补记。
+- 实现于 `src/learning-discovery.css` 的 `.ld-floor-recommended .ld-card-media img`：`brightness(1.06) saturate(.8) contrast(.96)`。依据为用户明确选择（H）与本地 1280×720 楼层预览（M）；页面序列 / hash 及 API / Protocol、Host / Harness、Application / Task 边界不变。构建验证已通过；源码提交 `001da5d2` 与 Pages 构建提交 `daed9aa5` 已推送，主线合并提交 `6f40f5db` 已更新 `origin/main`。Pages workflow `40554198989` 成功，线上入口与新 JS / CSS 均 HTTP 200，CSS 中已确认目标滤镜。
