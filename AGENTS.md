@@ -6873,3 +6873,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改：`ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css`、`src/useWorkbenchState.js` 与 `ascstudio/` Pages 产物。
 - 证据：用户本轮要求（H）；本地 5178 桌面预览（M）实际回放左栏→底部浮窗、浮窗→左栏双向吸附，两种布局的目标外落点均保持原布局；权限菜单与加号菜单可操作，浏览器无 error / warning。`npm run build:pages`、生成 JS `node --check`、`git diff --check` 均通过；未运行自动化测试。
 - 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5317a869` 已推送到 `origin/main`；Pages workflow `40376808989` 成功。线上 `/ascstudio/` HTML、`index-C15Xr9Tu.js`、`index-CnqbLe8f.css` 均返回 HTTP 200。
+
+
+### 2026-10-27 · 组合首页改为场景导向的中文 Slogan
+
+- 用户选定标题“从你的场景出发，连接线索，找到新的方向”。标题表达首页的探索方式，不把“训练与调优”演示字段主题当成产品首页主题；不加英文副标。字段仍从未选择、无连线的空状态开始。
+- 组合首页的区块无障碍名称、需求草稿占位提示和空需求提示改为通用场景 / 线索表达；训练调优字段保留为当前 Demo 内容。
+- 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`ascend-studio/src/combination-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。由于 CUA 浏览器桥接在本轮断开，未完成页面截图复核。
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。

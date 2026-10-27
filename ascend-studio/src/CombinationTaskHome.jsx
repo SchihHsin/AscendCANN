@@ -351,14 +351,15 @@ export function CombinationTaskHome({ onCreateTask }) {
     event.preventDefault();
     const goal = draft.trim();
     if (!goal) {
-      setError("先连接或选择一些训练字段，再发送需求。");
+      setError("先连接或选择一些字段，再发送需求。");
       return;
     }
     const created = onCreateTask?.({ goal, kind: "development", attachments: [], groupId: "other" });
     if (!created) setError("任务没有创建成功，请调整需求后重试。");
   };
 
-  return <section className="combination-home" aria-label="训练与调优字段组合">
+  return <section className="combination-home" aria-label="基于场景的关系探索">
+    <h1 className="combination-home__title">从你的场景出发，连接线索，找到新的方向</h1>
     <div
       className="combination-cloud"
       ref={canvasRef}
@@ -366,7 +367,6 @@ export function CombinationTaskHome({ onCreateTask }) {
       onPointerDown={handleCanvasPointerDown}
       onPointerLeave={handleCanvasPointerLeave}
     >
-      <h1 className="combination-home__sr-only">训练与调优字段组合</h1>
       <svg className="combination-cloud__connections" width={geometry.width} height={geometry.height} viewBox={`0 0 ${geometry.width} ${geometry.height}`} aria-hidden="true">
         {geometry.edges.map((edge) => <g key={pairKey(edge.from, edge.to)}>
           <path d={edge.path} className="combination-cloud__line" style={{ stroke: edge.color }} />
@@ -408,7 +408,7 @@ export function CombinationTaskHome({ onCreateTask }) {
         value={draft}
         onChange={(event) => { setDraft(event.target.value); setError(""); }}
         onKeyDown={(event) => { if ((event.metaKey || event.ctrlKey) && event.key === "Enter") submit(event); }}
-        placeholder="连接训练目标、现象、环境和验证字段…"
+        placeholder="连接目标、线索、条件与验证方式…"
         rows={2}
       />
       <button className="combination-composer__send" type="submit" aria-label="发送并开始" disabled={!draft.trim()}><IconSend size={ICON_SIZE.navigation} aria-hidden="true" /></button>
