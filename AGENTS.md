@@ -6881,3 +6881,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 组合首页的区块无障碍名称、需求草稿占位提示和空需求提示改为通用场景 / 线索表达；训练调优字段保留为当前 Demo 内容。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`ascend-studio/src/combination-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。由于 CUA 浏览器桥接在本轮断开，未完成页面截图复核。
 - 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。
+
+### 2026-10-27 · 底部对话输入栏与语音入口
+
+- 用户提供的参考图用于底部输入栏的控件顺序与形态（H）：加号、权限、模型下拉、话筒、发送。底部默认态只显示宽向圆角输入栏；拖动布局时的底部预览同步显示该输入栏轮廓。发送后展开当前对话内容，便于查看回复；切换任务或布局时回到输入栏默认态。
+- 输入文字自动撑高文本区，限制最大高度；底部态输入框加宽并使用较大圆角。控件无常驻描边，保留黑色发送键。模型示例更新为 GLM-5.3、DeepSeek V4、Qwen3-Coder；顶部模型控件使用下拉菜单。
+- 话筒直接调用现有中文浏览器语音识别，识别中的文字会更新输入草稿；浏览器若要求麦克风权限，由用户在页面确认。没有接入语音服务端或真实模型。
+- 修改：`ascend-studio/src/App.jsx`、`VoiceCaptureButton.jsx`、`prototype-data.js`、`styles.css` 与 `ascstudio/` 构建产物。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 在本轮不可用，尚无新的视觉截图复核。提交、推送与 Pages 状态待补记。
