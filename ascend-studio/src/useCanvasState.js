@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 import { ADD_CUSTOM_CARD_POSITIONS, ADD_CUSTOM_LAYOUT_VERSION, positionNewAddCustomCard, reflowAddCustomCards } from "./addcustom-canvas-layout";
+import { MAX_CONTENT_CARD_HEIGHT } from "./shared/canvas/canvas-sizing.js";
 
 const MIN_ZOOM = 0.15;
 const MAX_ZOOM = 1.5;
@@ -103,7 +104,11 @@ const initialCards = (startEmpty = false, initialVisibleIds = []) => [
 });
 
 const initialState = (startEmpty = false, cardDefinitions, initialVisibleIds = []) => {
-  const cards = cardDefinitions ? cardDefinitions.map((card, index) => ({ x: 28 + (index % 2) * 450, y: 28 + Math.floor(index / 2) * 390, width: 420, height: 360, pinned: false, visible: false, selected: false, collapsed: false, opened: false, ...card })) : initialCards(startEmpty, initialVisibleIds);
+  const cards = (cardDefinitions ? cardDefinitions.map((card, index) => ({ x: 28 + (index % 2) * 450, y: 28 + Math.floor(index / 2) * 390, width: 420, height: 360, pinned: false, visible: false, selected: false, collapsed: false, opened: false, ...card })) : initialCards(startEmpty, initialVisibleIds)).map(card => ({
+    ...card,
+    sizeMode: card.sizeMode || (["note", "drawing"].includes(card.kind) ? "manual" : "content"),
+    baseHeight: isFiniteNumber(card.baseHeight) ? card.baseHeight : card.height,
+  }));
   const selectedCardId = cards.find((card) => card.visible)?.id || null;
   return {
   layoutVersion: ADD_CUSTOM_CANVAS_VERSION,
@@ -129,6 +134,24 @@ function restoreCanvasState(saved, startEmpty, cardDefinitions, initialVisibleId
     ];
     base = { ...base, cards };
   }
+  const savedById = new Map(saved.cards.map(card => [card.id, card]));
+  const defaultsById = new Map(defaults.cards.map(card => [card.id, card]));
+  base = { ...base, cards: base.cards.map(card => {
+    const stored = savedById.get(card.id);
+    const defaultCard = defaultsById.get(card.id);
+    const targetSize = isAddCustomStorageKey(storageKey) ? addCustomDefaultCardSize(card.id) : null;
+    const knownAddCustomSizes = [targetSize, ...(LEGACY_CARD_SIZES[card.id] || [])].filter(Boolean);
+    const matchesKnownSize = isAddCustomStorageKey(storageKey)
+      ? knownAddCustomSizes.some(([width, height]) => card.width === width && card.height === height) || isLegacyDynamicCardSize(card)
+      : Boolean(defaultCard && card.width === defaultCard.width && card.height === defaultCard.height);
+    const sizeMode = stored?.sizeMode || (["note", "drawing"].includes(card.kind) ? "manual" : matchesKnownSize ? "content" : "manual");
+    const defaultHeight = targetSize?.[1] || defaultCard?.height || card.height;
+    return {
+      ...card,
+      sizeMode,
+      baseHeight: isFiniteNumber(stored?.baseHeight) ? stored.baseHeight : sizeMode === "content" ? defaultHeight : card.height,
+    };
+  }) };
   if (!isAddCustomStorageKey(storageKey) || Number(saved.layoutVersion) >= ADD_CUSTOM_CANVAS_VERSION) return base;
   const cards = base.cards.map(card => {
     const target = addCustomDefaultCardSize(card.id);
@@ -261,6 +284,8 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
       opened: true,
       selected: false,
       collapsed: Boolean(definition.collapsed),
+      sizeMode: definition.sizeMode || (["note", "drawing"].includes(definition.kind) ? "manual" : "content"),
+      baseHeight: isFiniteNumber(definition.baseHeight) ? definition.baseHeight : Math.max(140, isFiniteNumber(definition.height) ? definition.height : 300),
     };
     if (isAddCustomStorageKey(storageKey)) Object.assign(card, clampAddCustomCardSize(id, card.width, card.height));
     update((previous) => ({ cards: [...previous.cards, card] }));
@@ -325,7 +350,17 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
     const card = current.current.cards.find((item) => item.id === id);
     if (!card || card.pinned) return;
     const size = isAddCustomStorageKey(storageKey) ? clampAddCustomCardSize(id, width, height) : { width: Math.max(220, width), height: Math.max(140, height) };
-    update((previous) => ({ cards: previous.cards.map((item) => item.id === id ? { ...item, ...size } : item) }));
+    update((previous) => ({ cards: previous.cards.map((item) => item.id === id ? { ...item, ...size, sizeMode: "manual" } : item) }));
+  };
+  const fitCardContent = (id, height) => {
+    if (!isFiniteNumber(height)) return;
+    const card = current.current.cards.find(item => item.id === id);
+    if (!card || card.sizeMode !== "content" || card.pinned || card.collapsed) return;
+    const limits = isAddCustomStorageKey(storageKey) ? addCustomCardLimits(id) : { maxHeight: MAX_CONTENT_CARD_HEIGHT };
+    const baseHeight = isFiniteNumber(card.baseHeight) ? card.baseHeight : card.height;
+    const nextHeight = Math.min(limits.maxHeight, Math.max(baseHeight, Math.ceil(height)));
+    if (Math.abs(nextHeight - card.height) < 3) return;
+    update(previous => ({ cards: previous.cards.map(item => item.id === id ? { ...item, height: nextHeight } : item) }));
   };
   const togglePin = (id) => {
     if (!current.current.cards.some((card) => card.id === id)) return;
@@ -428,7 +463,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
 
   return {
     state: current.current,
-    actions: { addCard, showCard, hideCard, deleteCard, selectCard, moveCard, resizeCard, updateCard, addDrawing, removeDrawing, togglePin, toggleCollapse, setViewport, setSurfaceSize, beginComparison, endComparison, reset, restore, fitCanvas, focusCanvas },
+    actions: { addCard, showCard, hideCard, deleteCard, selectCard, moveCard, resizeCard, fitCardContent, updateCard, addDrawing, removeDrawing, togglePin, toggleCollapse, setViewport, setSurfaceSize, beginComparison, endComparison, reset, restore, fitCanvas, focusCanvas },
   };
 }
 

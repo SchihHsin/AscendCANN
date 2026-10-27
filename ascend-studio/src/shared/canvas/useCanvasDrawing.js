@@ -4,6 +4,7 @@ export function useCanvasDrawing({ canvasContent, editing }) {
   const [drawingMode, setDrawingMode] = useState(false);
   const [targetCardId, setTargetCardId] = useState(null);
   const [draft, setDraft] = useState([]);
+  const [selectedLegacyDrawingId, setSelectedLegacyDrawingId] = useState(null);
   const stroke = useRef(null);
   const drawings = canvasContent?.state.drawings || [];
 
@@ -12,6 +13,7 @@ export function useCanvasDrawing({ canvasContent, editing }) {
       setDrawingMode(false);
       setTargetCardId(null);
       setDraft([]);
+      setSelectedLegacyDrawingId(null);
       const activeStroke = stroke.current;
       stroke.current = null;
       if (activeStroke?.surface?.hasPointerCapture(activeStroke.pointerId)) activeStroke.surface.releasePointerCapture(activeStroke.pointerId);
@@ -30,9 +32,29 @@ export function useCanvasDrawing({ canvasContent, editing }) {
 
   const start = cardId => {
     if (!editing || !cardId) return;
+    setSelectedLegacyDrawingId(null);
     setTargetCardId(cardId);
     setDrawingMode(true);
   };
+
+  const selectLegacyDrawing = id => {
+    if (!editing || drawingMode || !drawings.some(item => item.id === id && !item.cardId)) return;
+    setSelectedLegacyDrawingId(id);
+  };
+
+  const deleteLegacyDrawing = id => {
+    if (!editing || !drawings.some(item => item.id === id && !item.cardId)) return;
+    canvasContent?.actions.removeDrawing?.(id);
+    setSelectedLegacyDrawingId(current => current === id ? null : current);
+  };
+
+  const deleteSelectedLegacyDrawing = () => {
+    if (selectedLegacyDrawingId) deleteLegacyDrawing(selectedLegacyDrawingId);
+  };
+
+  useEffect(() => {
+    if (selectedLegacyDrawingId && !drawings.some(item => item.id === selectedLegacyDrawingId && !item.cardId)) setSelectedLegacyDrawingId(null);
+  }, [drawings, selectedLegacyDrawingId]);
 
   const stop = () => {
     setDrawingMode(false);
@@ -85,5 +107,5 @@ export function useCanvasDrawing({ canvasContent, editing }) {
     return true;
   };
 
-  return { drawingMode, targetCardId, drawings, draft, start, stop, begin, move, finish, cancel };
+  return { drawingMode, targetCardId, drawings, draft, selectedLegacyDrawingId, selectLegacyDrawing, deleteLegacyDrawing, deleteSelectedLegacyDrawing, start, stop, begin, move, finish, cancel };
 }

@@ -6958,6 +6958,8 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求基于「四角星在打开的书上方」草图做多种 Logo 方案。第一轮蓝紫玻璃方案被认为过于相似；第二轮金 / 珊瑚 / 绿等配色被反馈为奇怪。随后用户将方向收敛为黑色圆角底、白色打开的书、彩虹渐变发光的四角星，书与星需明确区分颜色和材质；并指定书参考另一张图中的乳白、圆润、半透明玻璃质感。这是待评审方向，不是最终定稿或项目内图标资产。
 - ImageGen 已迭代生成对照板。用户随后指定星星参考新图中的流动彩色分区与柔亮效果，同时保留四角星轮廓；书减少立体厚度。当前方案为黑色圆角底、白色低浮雕薄页书（仅保留轻微乳白透光和边缘高光）、带橙 / 粉 / 紫 / 蓝 / 青流动渐变的发光四角星。参考来自用户提供的原始书星草图、乳白玻璃材质图和彩色球体的光色风格图；不把球体轮廓用于星星。最新生成预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-474f1147-318a-4aec-acd2-5a91b5d03848.png`；未加入项目文件。
+- 用户进一步提出黑底 / 白底两种颜色模式（H）。首版白底方案曾将书改深灰，用户明确否定；最终要求黑底、白底两种模式都保留白书。
+- 最新并排对照中，两版使用同一白色低浮雕薄书和同一彩虹渐变星星。白底版仅以极浅冷灰蓝轮廓、书页折线和柔和贴近阴影显形，不改变书的白色。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-ecf55de7-07b6-4dd4-aefa-d5a7aacad20e.png`；未加入项目文件。
 - 未改变产品页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本轮没有代码改动或工程验证。待用户评审后再确定是否把某一方向转为正式图标资产。
 - 验证 / 发布：交接文档 `git diff --check` 通过后，仅提交 `AGENTS.md` 并推送 `main`；本地共享工作区既有暂存、未暂存及未跟踪改动未纳入。
 
@@ -7043,3 +7045,21 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - Tab 图标分别使用 `IconCards`、`IconHierarchy3`、`IconAffiliate`；辅助无障碍名称改为「首页交互方式」。标签字号由 11px 调至 12px，保留原选中态、交互与 `?home=classic|explore|combine` 路由。
 - 修改 `ascend-studio/src/NewTaskHome.jsx`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务可用。部署结果待补记。
 - 页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+
+### 2026-10-27 · 旧画布笔迹删除入口
+
+- 用户问如何删除此前画布上留下的笔迹。已有操作依赖先点线条选中，但删除按钮要选中后才出现，入口不明显。现在有旧画布级笔迹时，编辑工具栏始终显示“删除笔迹”，未选中时禁用并提示“先点击要删除的笔迹，再删除”；选中某条线后启用删除。任务画布、图像预处理学习画布、ResNet50 官方学习画布统一采用此行为，并同步改写画布内提示。
+- 新增手绘卡片仍在卡片内容区落笔；删除整张新增卡片时连带删除其关联笔迹。此更新只改进旧笔迹入口，不改变新卡片绘图与内容顺序。
+- 修改 `ascend-studio/src/LearningCanvasToolbar.jsx`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx` 和 `/ascstudio/` Pages 产物。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。用户截图、本地代码与构建为依据（H / M）。
+- 验证：`npm run build:pages`、产物 `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；Vite 有既存的主 bundle 大于 500 kB 提示，未运行自动化测试。已将本地预览在浏览器打开。
+- 发布记录待本轮 push 与 Pages 部署确认后回填；同步的主线包含 `ascstudio-mini/` 每周速览与知识供给蓝图更新，均保留。
+
+### 2026-10-27 · Ascend Studio 跨画布卡片内容与滚动规则
+
+- 用户重申统一规则：卡片内尽量不滚动，常规内容完整呈现；只有确实过长、超过合理尺寸或会破坏画布关系时才在卡片内滚动。规则已写入本机 `ascend-studio-interface-style` Skill 的“卡片尺寸与内部滚动”章节，并同步记录至 `ascend-studio/interaction-design.md`。
+- 共享 `TaskCanvas` 对默认内容尺寸的材料卡按画布逻辑像素测量正文，可在不碰撞相邻可见卡片时自动扩高；普通任务上限约 760px，AddCustom 继续遵循各内容类型的更低上限。用户手动调尺寸或固定后不自动改尺寸；便签、手绘不参与自动扩高。卡片正文承接唯一纵向滚动；代码 / Diff 不保留嵌套纵向滚动，预览摘要仍有放大到完整任务内容的入口；卡内滚动到边界后滚轮交给画布平移。
+- 实现涉及 `ascend-studio/src/TaskCanvas.jsx`、`useCanvasState.js`、`task-canvas.css`、`interaction-design.md`，并重建根目录 `ascstudio/` Pages 产物。自动尺寸使用 `offsetHeight` / `scrollHeight`，不把画布缩放比误计入卡片逻辑尺寸。
+- 独立学习层级画布的导航节点是短摘要，不当材料卡扩高或滚动。其材料卡普通态按内容自然排高，放大态保持单一卡片滚动并固定标题；此结构作为同一规则下的独立实现，不强行改成 TaskCanvas DOM。
+- 依据为用户明确的交互要求（H）；760px 上限和避让间距属于实现参数（L）。页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界均未改变；不代表真实代码、精度或 NPU 验证。
+- 验证：`npm run build:pages`、`node --check ascend-studio/src/useCanvasState.js`、`git diff --check` 通过；构建保留既有超过 500 kB 的 bundle 提示，未运行自动化测试。当前工具环境没有浏览器回放能力，因此未声称完成页面交互 / 视觉核验。
+- 发布回执：实现提交 `e6ccedd5` 已推送至 `origin/main`；GitHub Pages workflow `40494606292` 成功。线上 `/AscendCANN/ascstudio/`、`index-Q53nHexO.js` 与 `index-D_07DMqX.css` 均 HTTP 200，资源中可检索到卡片尺寸测量及单一滚动区规则。以下为发布后的交接记录补充；未改变页面序列或 API / Host / Application 边界。

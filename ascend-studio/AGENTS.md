@@ -1871,3 +1871,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户确认三个首页 Tab 使用「主动建议 / 多层探索 / 线索串联」，并同意按各自设计点替换图标。映射为卡片 `IconCards`、层级 `IconHierarchy3`、关系 `IconAffiliate`；Tab 组辅助名称为「首页交互方式」。
 - 标签字号由 11px 调至 12px；仅改名称、图标与可读性尺寸，保留现有方案行为、选中态和 `classic / explore / combine` 路由。
 - `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接不可用，未取得截图；本地 5206 预览服务已启动。发布结果待补记。
+
+### 2026-10-27 · 材料卡内容自适应与单一滚动区
+
+- 统一规则记录在本机 `ascend-studio-interface-style` Skill；卡片尽量展示完整常规内容，长内容、空间冲突、用户手动调尺寸或固定时才保留正文滚动。共享 `TaskCanvas` 测量画布逻辑尺寸，自动扩高有上限并避让邻卡；代码 / Diff 由卡片正文承接纵向滚动。便签、手绘不自动扩高。
+- ResNet50 / 图像学习的树节点是短导航摘要；材料卡自然排高，放大态使用单一卡片滚动容器和 sticky 标题，不将学习路径节点改造成长内容卡。
+- 构建与语法 / diff 检查已通过；未运行测试套件，未做浏览器视觉回放。实现提交 `e6ccedd5` 已推送至 `origin/main`；Pages workflow `40494606292` 成功，线上 `/ascstudio/` 与对应 JS / CSS 均 HTTP 200。页面序列与 API / Host / Application 边界不变。
