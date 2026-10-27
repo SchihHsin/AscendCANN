@@ -9,7 +9,7 @@ const errorMessage = (code) => {
   return "语音输入暂不可用";
 };
 
-export function VoiceCaptureButton({ label = "语音输入", activeLabel = "停止", className = "", onStart, onTranscript, onStop }) {
+export function VoiceCaptureButton({ label = "语音输入", activeLabel = "停止", className = "", onStart, onTranscript, onStop, iconOnly = false }) {
   const recognitionRef = useRef(null);
   const [listening, setListening] = useState(false);
   const [error, setError] = useState("");
@@ -61,9 +61,9 @@ export function VoiceCaptureButton({ label = "语音输入", activeLabel = "停�
   };
 
   return <>
-    <button className={`${className} voice-capture-button${listening ? " is-listening" : ""}`.trim()} type="button" aria-pressed={listening} onClick={listening ? stop : start} title={listening ? "停止语音识别" : label}>
+    <button className={`${className} voice-capture-button${listening ? " is-listening" : ""}`.trim()} type="button" aria-label={listening ? activeLabel : label} aria-pressed={listening} onClick={listening ? stop : start} title={listening ? "停止语音识别" : label}>
       {listening ? <IconMicrophoneOff size={ICON_SIZE.inline} /> : <IconMicrophone size={ICON_SIZE.inline} />}
-      {listening ? activeLabel : label}
+      {!iconOnly && (listening ? activeLabel : label)}
     </button>
     {error && <span className="voice-capture-hint" role="status">{error}</span>}
   </>;
