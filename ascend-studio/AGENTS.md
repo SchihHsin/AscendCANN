@@ -1855,7 +1855,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ### 2026-10-27 · 组合首页 Tab 名称
 
 - 将右上角首页方案 Tab 从“组合”改为“串联”，强调把字段线索连接成思路的交互。保留 Tab id、`?home=combine` 路由与连线行为。
-- `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接不可用，未取得视觉截图。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变；发布状态待核验。
+- `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接不可用，未取得视觉截图。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 发布：改名构建已随提交 `aa75d58c` 推送并进入 `origin/main`，随后主线文档更新 `7a01d7b4` 保留本次产物。Pages workflow `40493928347` 成功；公开 `/AscendCANN/ascstudio/?home=combine` HTML、`index-B7Jt65Gu.js`、`index-CmViAAB5.css` 均 HTTP 200，线上 JS 含“串联”。
 
 ### 2026-10-27 · 底部输入栏收紧与小地图动态避让
 

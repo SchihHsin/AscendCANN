@@ -6888,7 +6888,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户选定标题“从你的场景出发，连接线索，找到新的方向”。标题表达首页的探索方式，不把“训练与调优”演示字段主题当成产品首页主题；不加英文副标。字段仍从未选择、无连线的空状态开始。
 - 组合首页的区块无障碍名称、需求草稿占位提示和空需求提示改为通用场景 / 线索表达；训练调优字段保留为当前 Demo 内容。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`ascend-studio/src/combination-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。由于 CUA 浏览器桥接在本轮断开，未完成页面截图复核。
-- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。构建提交 `aa75d58c` 已推送并进入 `origin/main`；随后主线文档更新 `7a01d7b4` 保留本次产物。Pages workflow `40493928347` 成功。公开 `/AscendCANN/ascstudio/?home=combine` 返回 HTTP 200，引用 `index-B7Jt65Gu.js` 与 `index-CmViAAB5.css`，资源均 HTTP 200；线上 JS 确认包含“串联”和场景标题。
 
 ### 2026-10-27 · 底部对话输入栏与语音入口
 
@@ -6958,6 +6958,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求基于「四角星在打开的书上方」草图做多种 Logo 方案。第一轮蓝紫玻璃方案被认为过于相似；第二轮金 / 珊瑚 / 绿等配色被反馈为奇怪。随后用户将方向收敛为黑色圆角底、白色打开的书、彩虹渐变发光的四角星，书与星需明确区分颜色和材质；并指定书参考另一张图中的乳白、圆润、半透明玻璃质感。这是待评审方向，不是最终定稿或项目内图标资产。
 - ImageGen 已迭代生成对照板。用户随后指定星星参考新图中的流动彩色分区与柔亮效果，同时保留四角星轮廓；书减少立体厚度。当前方案为黑色圆角底、白色低浮雕薄页书（仅保留轻微乳白透光和边缘高光）、带橙 / 粉 / 紫 / 蓝 / 青流动渐变的发光四角星。参考来自用户提供的原始书星草图、乳白玻璃材质图和彩色球体的光色风格图；不把球体轮廓用于星星。最新生成预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-474f1147-318a-4aec-acd2-5a91b5d03848.png`；未加入项目文件。
+- 用户进一步提出黑底 / 白底两种颜色模式（H）。已生成并排对照：黑底配白书；白底先用深灰书保持识别度，属待评审的适配方案而非已确认要求；两者沿用相同彩虹渐变星星。预览：`/Users/hsin/.codex/generated_images/01a17c0b-1500-7482-97d1-12194eb853b9/exec-6d7de7b2-26f7-4fee-bda1-aa6c10974c61.png`；未加入项目文件。
 - 未改变产品页面、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；本轮没有代码改动或工程验证。待用户评审后再确定是否把某一方向转为正式图标资产。
 - 验证 / 发布：交接文档 `git diff --check` 通过后，仅提交 `AGENTS.md` 并推送 `main`；本地共享工作区既有暂存、未暂存及未跟踪改动未纳入。
 
@@ -7013,7 +7014,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出右上角“组合”不合适；此前讨论并推荐“串联”，本轮补齐这个未落地的改名。Tab 文案改为“串联”，其他首页方案名称、路由参数和连线行为不变。
 - 修改 `ascend-studio/src/NewTaskHome.jsx` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。浏览器截图复核仍受 CUA 桥接中断影响。
-- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。构建提交 `aa75d58c` 已推送并进入 `origin/main`；随后主线文档更新 `7a01d7b4` 保留本次产物。Pages workflow `40493928347` 成功。公开 `/AscendCANN/ascstudio/?home=combine` 返回 HTTP 200，引用 `index-B7Jt65Gu.js` 与 `index-CmViAAB5.css`，资源均 HTTP 200；线上 JS 确认包含“串联”和场景标题。
 
 ### 2026-10-27 · 底部对话输入框与小地图避让
 
@@ -7033,5 +7034,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户同意制作与小程序 Demo 分开的独立材料（H）。新增 `ascstudio-mini/knowledge-provider-map.html`，按「知识与学习资产 → 知识编译与注册 → Web / API / MCP / Skills 等场景交付 → 推荐体验与证据回流」说明服务供给；补充课程、路径、认证、知识点、活动等 Demo 入口的供给字段、Knowledge Unit 可用边界、来源 / 许可 / 版本 / Owner / 验证状态、P0–P2 顺序。`ascstudio-mini/README.md` 提供入口。
 - 资料规格是目标蓝图，不表示当前 Demo 已接真实后端、个性化推荐、Skill 或 MCP。`robots.txt`、`llms.txt`、Sitemap、Schema.org、OpenAPI、MCP、Agent Skills、A2A 各自职责和证据口径按页面链接的公开规范 / 提案表述；`llms.txt` 标为提案，robots 明确不承担鉴权，MCP 区分 Resources / Prompts / Tools。设计映射沿用已有机制研究中的 Knowledge Unit、Knowledge Compiler、Capability Registry 与 Evidence Feedback，不另造其为本 Demo 已有能力的事实。
 - 修复蓝图的响应式网格：平板四阶段改为两列，手机按顺序单列并保留阶段箭头。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 验证：HTMLParser 通过；Chrome 1440px 桌面、1024px 平板、390px 手机视口完成视觉检查，三视口均无横向溢出（body 宽度等于视口）。`git diff --check` 提交前复核；未运行自动化测试。
-- 提交与推送：本次仅提交本条记录、蓝图 HTML 与 README 入口；按仓库规则推送 `main`，随后确认远端提交及 Pages 页面可访问性。
+- 验证：HTMLParser 通过；Chrome 1440px 桌面、1024px 平板、390px 手机视口完成视觉检查，三视口 `body.scrollWidth` 均等于视口宽度。`git diff --check` 通过；未运行自动化测试。
+- 提交与推送：蓝图提交 `ff9acc33` 已推送至 `origin/main`，此前并行的每周速览与主线更新均保留，未强推。GitHub Pages workflow `40493561236` 成功；线上 `/AscendCANN/ascstudio-mini/knowledge-provider-map.html` 返回 HTTP 200，标题与蓝图内容匹配。
