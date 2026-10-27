@@ -7054,4 +7054,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 独立学习层级画布的导航节点是短摘要，不当材料卡扩高或滚动。其材料卡普通态按内容自然排高，放大态保持单一卡片滚动并固定标题；此结构作为同一规则下的独立实现，不强行改成 TaskCanvas DOM。
 - 依据为用户明确的交互要求（H）；760px 上限和避让间距属于实现参数（L）。页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界均未改变；不代表真实代码、精度或 NPU 验证。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/useCanvasState.js`、`git diff --check` 通过；构建保留既有超过 500 kB 的 bundle 提示，未运行自动化测试。当前工具环境没有浏览器回放能力，因此未声称完成页面交互 / 视觉核验。
-- 提交 / 推送及 Pages 部署状态：本轮仍待完成。
+- 发布回执：实现提交 `e6ccedd5` 已推送至 `origin/main`；GitHub Pages workflow `40494606292` 成功。线上 `/AscendCANN/ascstudio/`、`index-Q53nHexO.js` 与 `index-D_07DMqX.css` 均 HTTP 200，资源中可检索到卡片尺寸测量及单一滚动区规则。以下为发布后的交接记录补充；未改变页面序列或 API / Host / Application 边界。

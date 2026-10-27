@@ -1869,4 +1869,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 统一规则记录在本机 `ascend-studio-interface-style` Skill；卡片尽量展示完整常规内容，长内容、空间冲突、用户手动调尺寸或固定时才保留正文滚动。共享 `TaskCanvas` 测量画布逻辑尺寸，自动扩高有上限并避让邻卡；代码 / Diff 由卡片正文承接纵向滚动。便签、手绘不自动扩高。
 - ResNet50 / 图像学习的树节点是短导航摘要；材料卡自然排高，放大态使用单一卡片滚动容器和 sticky 标题，不将学习路径节点改造成长内容卡。
-- 构建与语法 / diff 检查已通过；未运行测试套件，未做浏览器视觉回放。页面序列与 API / Host / Application 边界不变；推送与 Pages 部署待完成。
+- 构建与语法 / diff 检查已通过；未运行测试套件，未做浏览器视觉回放。实现提交 `e6ccedd5` 已推送至 `origin/main`；Pages workflow `40494606292` 成功，线上 `/ascstudio/` 与对应 JS / CSS 均 HTTP 200。页面序列与 API / Host / Application 边界不变。
