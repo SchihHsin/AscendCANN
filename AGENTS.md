@@ -6889,3 +6889,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按协作规则先提供三个方向：A 口袋知识卡（短讲解、图解、理解题与收藏）、B 轻探索地图（触摸主题渐进发现）、C 任务随行助手（围绕电脑端任务推荐知识与下一步）。建议 A 为首页并加入 C 的任务关联；这是待选建议，尚非用户确认决策。训练与调优可用作首轮故事素材。
 - 当前仅追加本交接记录，产品源码、电脑端页面序列与 API / Protocol、Host / Harness、Application / Task 边界均无变化。方向选择已通过异步问题发出，等待用户选择；拟先交付可点击交互 Demo，小程序原生工程范围尚未确认。
 - 验证与发布：仅把本条追加到最新 `origin/main` 的 `AGENTS.md`，用独立临时索引核对单文件差异并执行 `git diff-tree --check`，随后推送 `main`（提交主题 `docs: record mini-program knowledge recommendation options`）；共享工作区内已有暂存、未暂存及未跟踪内容保持原样。
+
+### 2026-10-27 · 学习发现下方楼层与资源卡调整
+
+- 用户确认下方楼层用浅灰圆角分组底，并要求资源卡改为上图下字、横向排列，同时指出配图过淡。保留白卡和细描边，推荐与新上架改为桌面四列竖版卡，窄屏依次切三列 / 两列 / 单列；图片换用仓库已有主体更清楚的 v2 课程、路径、知识点、认证素材，保持浅亮底色。近期日程保留纵向时间轴。
+- 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css` 与 `/ascstudio/` 构建产物。依据为用户本轮明确需求（H）及仓库已有内容图素材；不改变页面序列或 API / Host / Application 边界。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。Pages 发布待确认。
