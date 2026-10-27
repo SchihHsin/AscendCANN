@@ -7120,6 +7120,15 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build:pages`、生成 JS `node --check`、资源哈希引用校验、`git diff --check` 通过。1440×900 桌面 Chromium 无运行时异常；composer 实测 636×72px，小地图维持右下角原位且与输入框相隔约 224px。线上 `/AscendCANN/ascstudio/` 已引用 `index-C5I0bdAh.js` / `index-COFjzgYO.css`，两资源 HTTP 200。
 - 推送：功能提交 `b93cbd29`、主线同步合并 `35587143`、构建产物 `a08fff7d` 已推至 `origin/main`；后续并行的 Pura X 与知识供给材料提交均保留。Pages workflow `40501184517` 成功。
 
+### 2026-10-28 · 口袋新知以核心学习为主线，微信推送作为回访
+
+- 用户确认先讲核心学习，再讲主动回访（H）。手机无路由时默认进入「发现」；桌面评审改为两章七点：核心学习 3 点（任务发现、知识卡微学习、任务接续），主动回访 4 点（微信消息列表、服务通知、每周速览、订阅设置）。推送保留为微信会话列表里的回访入口，不再承担整个小程序的叙事。
+- 延续用户已选的桌面评审壳控件（工具栏、右侧节点、总览、键盘与全屏），总览按两章分组；手机页面没有新增导航入口。直接链接 `?point=7#briefing` 打开订阅设置演示，确认后回到微信列表并显示未读消息。
+- 应用户指出的 iOS 观感，样机状态栏改为左侧时间、右侧 5G / 信号 / Wi-Fi / 电量百分比与电池图标。它是 HarmonyOS 常见信息编排的视觉示意，不是 Pura X View 实机截图或精确复刻。推送、周报素材和订阅授权仍是本地 Demo，不表示真实微信后台发送。
+- 变更文件：`ascstudio-mini/index.html`、`app.js`、`styles.css`、`README.md`、`qa.md`、`evidence/home-desktop.png`、`evidence/review-overview-desktop.png`。依据为用户确认的产品方向（H）与本地交互 / Chrome 截图观察（M）。小程序展示序列由 5 点改为 7 点；未修改电脑端 `/ascstudio/` 页面序列，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。Chrome 156、静态 HTTP 手动核验 1440×1000；七个概览 iframe 全部加载且没有嵌套，缩略预览未改写 localStorage；快捷键、弹层焦点循环、通知未读回流、搜索框快捷键隔离通过。320 / 390 / 430×844 手机视口无横向溢出，桌面控件与样机状态栏在移动端隐藏；未运行自动化测试。
+- 提交 / 推送：与主线同步到 `fa1edf4a` 后，功能提交 `88122d52` 已推送至 `origin/main`。Pages workflow `40540337498` 成功；缓存绕过的线上入口、JS、CSS均 HTTP 200，交付链接为 `https://schihhsin.github.io/AscendCANN/ascstudio-mini/?v=88122d52#discover`。本条交接记录随后单独提交推送。未决：状态栏仍为风格示意，真实微信定时推送尚未接入。
+
 ### 2026-10-27 · 底部输入框改为整体单行
 
 - 用户确认采用 A 方案：底部输入框初始整体为一行，文字与加号、权限、模型、语音和发送操作同排；多行输入时自动增高。新增 `.composer-entry` 作为底部专用布局行，浮窗初始最小高度由 72px 改为 54px，文本最大高度仍为 110px；左侧对话栏与已展开对话保留既有两层 composer 样式。
