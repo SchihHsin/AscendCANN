@@ -1822,4 +1822,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 线上 `/ascstudio/` 在桌面 Chrome 复现 `Cannot access 'hs' before initialization`。输入框高度同步 effect 的依赖数组提前读取了后续才解构的 `draft`。
 - 改用已存在的 `session.draft` 作为依赖；构建文件随源码同步更新。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
-- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地静态预览干净会话成功渲染，控制台无应用运行异常。线上部署待确认。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地与线上桌面 Chrome 干净会话均正常渲染。修复提交 `f597d6f8` 已推送至 `origin/main`，并包含在 Pages workflow `40461602297` 成功部署中。
