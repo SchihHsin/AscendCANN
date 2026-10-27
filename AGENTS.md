@@ -7044,3 +7044,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/LearningCanvasToolbar.jsx`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx` 和 `/ascstudio/` Pages 产物。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。用户截图、本地代码与构建为依据（H / M）。
 - 验证：`npm run build:pages`、产物 `node --check`、`git diff --cached --check` 与 `git diff --check` 通过；Vite 有既存的主 bundle 大于 500 kB 提示，未运行自动化测试。已将本地预览在浏览器打开。
 - 发布记录待本轮 push 与 Pages 部署确认后回填；同步的主线包含 `ascstudio-mini/` 每周速览与知识供给蓝图更新，均保留。
+
+### 2026-10-27 · Ascend Studio 跨画布卡片内容与滚动规则
+
+- 用户重申统一规则：卡片内尽量不滚动，常规内容完整呈现；只有确实过长、超过合理尺寸或会破坏画布关系时才在卡片内滚动。规则已写入本机 `ascend-studio-interface-style` Skill 的“卡片尺寸与内部滚动”章节，并同步记录至 `ascend-studio/interaction-design.md`。
+- 共享 `TaskCanvas` 对默认内容尺寸的材料卡按画布逻辑像素测量正文，可在不碰撞相邻可见卡片时自动扩高；普通任务上限约 760px，AddCustom 继续遵循各内容类型的更低上限。用户手动调尺寸或固定后不自动改尺寸；便签、手绘不参与自动扩高。卡片正文承接唯一纵向滚动；代码 / Diff 不保留嵌套纵向滚动，预览摘要仍有放大到完整任务内容的入口；卡内滚动到边界后滚轮交给画布平移。
+- 实现涉及 `ascend-studio/src/TaskCanvas.jsx`、`useCanvasState.js`、`task-canvas.css`、`interaction-design.md`，并重建根目录 `ascstudio/` Pages 产物。自动尺寸使用 `offsetHeight` / `scrollHeight`，不把画布缩放比误计入卡片逻辑尺寸。
+- 独立学习层级画布的导航节点是短摘要，不当材料卡扩高或滚动。其材料卡普通态按内容自然排高，放大态保持单一卡片滚动并固定标题；此结构作为同一规则下的独立实现，不强行改成 TaskCanvas DOM。
+- 依据为用户明确的交互要求（H）；760px 上限和避让间距属于实现参数（L）。页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界均未改变；不代表真实代码、精度或 NPU 验证。
+- 验证：`npm run build:pages`、`node --check ascend-studio/src/useCanvasState.js`、`git diff --check` 通过；构建保留既有超过 500 kB 的 bundle 提示，未运行自动化测试。当前工具环境没有浏览器回放能力，因此未声称完成页面交互 / 视觉核验。
+- 提交 / 推送及 Pages 部署状态：本轮仍待完成。

@@ -1864,3 +1864,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 底部浮窗输入框最小高度从 88px 降到 72px，textarea 的固定最小高度取消；沿用原有自动增高逻辑与 110px 上限。对话处于输入态时，用 ResizeObserver 按输入框和画布的实际位置 / 高度动态抬高小地图，保持 12px 间距；对话展开或区域选择隐藏输入框后，小地图恢复画布右下角位置。侧栏对话和展开对话样式不变。
 - 修改 `src/App.jsx`、`src/styles.css` 与 `/ascstudio/` Pages 构建产物。依据：用户截图及确认（H）；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check`、构建 HTML / JS / CSS 引用检查通过；本地 5178 返回 HTTP 200。未运行自动化测试，也未留存本轮的 UI 截图。Pages workflow `40473711359` 成功；线上 `/ascstudio/` HTML、`index-DHwhtWIz.js`、`index-CmViAAB5.css` 均 HTTP 200。实现提交 `971d7020`，整合并行更新的提交 `270c7324`、`7598593e` 已推送 `origin/main`。
+
+### 2026-10-27 · 材料卡内容自适应与单一滚动区
+
+- 统一规则记录在本机 `ascend-studio-interface-style` Skill；卡片尽量展示完整常规内容，长内容、空间冲突、用户手动调尺寸或固定时才保留正文滚动。共享 `TaskCanvas` 测量画布逻辑尺寸，自动扩高有上限并避让邻卡；代码 / Diff 由卡片正文承接纵向滚动。便签、手绘不自动扩高。
+- ResNet50 / 图像学习的树节点是短导航摘要；材料卡自然排高，放大态使用单一卡片滚动容器和 sticky 标题，不将学习路径节点改造成长内容卡。
+- 构建与语法 / diff 检查已通过；未运行测试套件，未做浏览器视觉回放。页面序列与 API / Host / Application 边界不变；推送与 Pages 部署待完成。
