@@ -1856,3 +1856,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 将右上角首页方案 Tab 从“组合”改为“串联”，强调把字段线索连接成思路的交互。保留 Tab id、`?home=combine` 路由与连线行为。
 - `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接不可用，未取得视觉截图。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变；发布状态待核验。
+
+### 2026-10-27 · 底部输入栏收紧与小地图动态避让
+
+- 用户指出底部输入框过高并遮挡小地图，确认默认显示一行，文字变多时随内容增高；小地图保持显示并上移留白。
+- 底部浮窗输入框最小高度从 88px 降到 72px，textarea 的固定最小高度取消；沿用原有自动增高逻辑与 110px 上限。对话处于输入态时，用 ResizeObserver 按输入框和画布的实际位置 / 高度动态抬高小地图，保持 12px 间距；对话展开或区域选择隐藏输入框后，小地图恢复画布右下角位置。侧栏对话和展开对话样式不变。
+- 修改 `src/App.jsx`、`src/styles.css` 与 `/ascstudio/` Pages 构建产物。依据：用户截图及确认（H）；不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check`、构建 HTML / JS / CSS 引用检查通过；本地 5178 返回 HTTP 200。未运行自动化测试，也未留存本轮的 UI 截图。Pages workflow `40473711359` 成功；线上 `/ascstudio/` HTML、`index-DHwhtWIz.js`、`index-CmViAAB5.css` 均 HTTP 200。实现提交 `971d7020`，整合并行更新的提交 `270c7324`、`7598593e` 已推送 `origin/main`。

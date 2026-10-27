@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f4f5">
+  <meta name="description" content="昇腾学习体验 Demo 的知识供给侧服务与资源蓝图。">
+  <title>昇腾知识供给服务图 · Ascend Studio</title>
+  <link rel="icon" type="image/svg+xml" href="./mark.svg">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #25252a; --muted: #737780; --line: #e3e4e6; --line-strong: #d6d8dc;
+      --canvas: #f4f4f5; --paper: #fff; --group: #f8f8f9; --black: #191a1b;
+      --blue: #2787e8; --blue-bg: #e9f2ff; --purple: #8257c5; --purple-bg: #f2ecfa;
+      --teal: #248e84; --teal-bg: #e8f5f2; --amber: #a46b13; --amber-bg: #fff5e3;
+      --rose: #b64f70; --rose-bg: #fcecf2;
+      --serif: "Songti SC", "STSong", "Noto Serif SC", serif;
+      --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-family: var(--sans); color: var(--ink); background: var(--canvas);
+      font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: var(--canvas); }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; border-radius: 4px; }
+    .sheet { width: min(100%, 1600px); margin: 0 auto; padding: 25px 34px 20px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 17px; }
+    .brand { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 650; letter-spacing: -.15px; }
+    .brand img { width: 25px; height: 25px; }
+    .brand small { color: var(--muted); font-size: 11px; font-weight: 450; }
+    .topbar-note { color: var(--muted); font-size: 11px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--ink); font-size: 11px; font-weight: 600; }
+    .back-link span { color: var(--purple); font-size: 15px; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, .8fr); align-items: center; gap: 30px; padding: 18px 22px 20px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(112deg, #fff 0%, #fff 64%, #f8f7fb 100%); }
+    .eyebrow, .section-kicker { color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: 1.25px; text-transform: uppercase; }
+    .eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .eyebrow i { width: 7px; height: 7px; border-radius: 50%; background: var(--purple); }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-family: var(--serif); font-size: clamp(25px, 2.25vw, 33px); font-weight: 500; letter-spacing: .15px; line-height: 1.22; }
+    .hero-copy > p { max-width: 790px; margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .thesis { padding: 13px 15px; border-left: 2px solid var(--purple); border-radius: 0 10px 10px 0; background: #f7f5fa; }
+    .thesis b { display: block; margin-bottom: 5px; color: #6c579d; font-size: 10px; letter-spacing: .5px; }
+    .thesis p { color: #42424a; font-size: 12px; line-height: 1.55; }
+    .thesis strong { color: var(--ink); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 17px 2px 9px; }
+    .section-head h2 { margin-top: 3px; font-size: 16px; font-weight: 680; letter-spacing: -.2px; }
+    .section-head p { color: var(--muted); font-size: 11px; }
+    .chain { display: grid; grid-template-columns: minmax(0, .96fr) 22px minmax(0, 1.1fr) 22px minmax(0, 1.33fr) 22px minmax(0, .96fr); align-items: stretch; gap: 8px; }
+    .stage { min-width: 0; min-height: 191px; padding: 12px 13px 11px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+    .stage-top { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .step-no { display: grid; width: 23px; height: 23px; place-items: center; border-radius: 7px; background: var(--group); color: var(--muted); font-size: 9px; font-weight: 700; }
+    .stage h3 { font-size: 13px; font-weight: 700; line-height: 1.25; }
+    .stage-sub { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; }
+    .stage p, .stage li { color: #555861; font-size: 10.5px; line-height: 1.45; }
+    .stage ul { display: grid; gap: 3px; margin: 6px 0 0; padding-left: 14px; }
+    .stage li::marker { color: var(--line-strong); }
+    .source-block { margin-top: 7px; padding-top: 6px; border-top: 1px solid #f0f0f1; }
+    .source-block:first-of-type { margin-top: 0; padding-top: 0; border-top: 0; }
+    .source-label { display: inline-flex; align-items: center; gap: 5px; margin-bottom: 2px; color: #4e5561; font-size: 10px; font-weight: 700; }
+    .source-label i { width: 6px; height: 6px; border-radius: 50%; background: var(--source-color, var(--blue)); }
+    .source-block p { color: var(--muted); }
+    .compiler-title { color: #6d57a0; font-size: 11px; font-weight: 700; }
+    .compiler-desc { margin-top: 5px; }
+    .contract-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+    .contract-pills span { padding: 3px 6px; border: 1px solid #ece8f3; border-radius: 5px; background: #faf9fc; color: #615a6c; font-size: 9px; white-space: nowrap; }
+    .gate-note { margin-top: 7px; padding: 6px 7px; border-radius: 6px; background: var(--amber-bg); color: #78531c; font-size: 9px; line-height: 1.35; }
+    .channel-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 7px; }
+    .channel-chip { min-width: 0; padding: 5px 6px; border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+    .channel-chip b { display: block; margin-bottom: 2px; color: var(--channel-ink, var(--ink)); font-size: 10px; }
+    .channel-chip span { display: block; color: var(--muted); font-size: 9px; line-height: 1.3; }
+    .channel-chip.optional { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 6px; background: var(--group); }
+    .channel-chip.optional b { display: inline; margin: 0; }
+    .channel-chip.optional span { display: inline; }
+    .stage-output-list { display: grid; gap: 5px; margin-top: 9px; }
+    .stage-output-list span { display: flex; align-items: center; gap: 7px; color: #4e525b; font-size: 10px; }
+    .stage-output-list i { width: 6px; height: 6px; flex: 0 0 auto; border-radius: 50%; background: var(--output-color, var(--teal)); }
+    .chain-arrow { display: grid; place-items: center; color: #aaabb1; font-size: 18px; }
+    .bottom-grid { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(0, 1.18fr); gap: 12px; margin-top: 12px; }
+    .panel { min-width: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+    .panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 7px; }
+    .panel-head h2 { font-size: 13px; font-weight: 700; }
+    .panel-head p { color: var(--muted); font-size: 9.5px; }
+    .unit-list { display: grid; gap: 5px; }
+    .unit-row { display: grid; grid-template-columns: 85px 1fr; gap: 8px; padding-bottom: 4px; border-bottom: 1px solid #f0f0f1; }
+    .unit-row:last-child { padding-bottom: 0; border-bottom: 0; }
+    .unit-row b { color: #545862; font-size: 10px; }
+    .unit-row span { color: var(--muted); font-size: 10px; line-height: 1.35; }
+    .publish-gate { display: flex; gap: 6px; margin-top: 8px; padding: 6px 8px; border-radius: 7px; background: #f5f5f7; color: #5b5d65; font-size: 9px; line-height: 1.4; }
+    .publish-gate b { color: var(--ink); white-space: nowrap; }
+    .interfaces { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 9px; }
+    .interface-row { display: grid; grid-template-columns: 112px 1fr; align-items: start; gap: 6px; min-height: 30px; padding-bottom: 5px; border-bottom: 1px solid #f0f0f1; }
+    .interface-row:nth-last-child(-n+2) { border-bottom: 0; }
+    .interface-name { color: #4d515a; font-size: 9.5px; font-weight: 700; }
+    .interface-desc { color: var(--muted); font-size: 9px; line-height: 1.35; }
+    .interface-desc strong { color: #555965; font-weight: 650; }
+    .lower-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr); gap: 10px; margin-top: 12px; }
+    .lower-card { min-height: 86px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+    .lower-card h3 { margin-bottom: 6px; font-size: 11px; font-weight: 700; }
+    .map-list { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; }
+    .map-list span { color: var(--muted); font-size: 9px; line-height: 1.35; }
+    .map-list b { color: #50535b; font-weight: 650; }
+    .trust-list { display: flex; flex-wrap: wrap; gap: 4px; }
+    .trust-list span { padding: 3px 6px; border-radius: 5px; background: #f4f5f6; color: #5c6068; font-size: 9px; }
+    .trust-list span:nth-child(3n+1) { background: var(--blue-bg); color: #386a9f; }
+    .trust-list span:nth-child(3n+2) { background: var(--purple-bg); color: #70599b; }
+    .trust-list span:nth-child(3n) { background: var(--teal-bg); color: #397e76; }
+    .roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .roadmap div { display: grid; grid-template-columns: 25px 1fr; align-items: center; gap: 5px; color: var(--muted); font-size: 9px; line-height: 1.3; }
+    .roadmap b { display: grid; width: 23px; height: 23px; place-items: center; border-radius: 7px; background: var(--black); color: #fff; font-size: 9px; }
+    .footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; padding: 8px 2px 0; border-top: 1px solid var(--line-strong); }
+    .boundary { max-width: 680px; color: var(--muted); font-size: 9px; line-height: 1.4; }
+    .boundary b { color: #5b5d64; }
+    .sources { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 9px; max-width: 640px; }
+    .sources a { color: #62657a; font-size: 9px; text-decoration: underline; text-decoration-color: #cccad5; text-underline-offset: 2px; }
+    /* Keep explanatory copy comfortably readable at presentation size. */
+    .stage-sub, .source-label, .channel-chip b, .stage-output-list span,
+    .panel-head p, .unit-row b, .unit-row span, .interface-name,
+    .interface-desc, .map-list span, .trust-list span, .roadmap div,
+    .boundary, .sources a { font-size: 10px; }
+    .stage p, .stage li, .channel-chip span { font-size: 11px; }
+    .contract-pills span, .gate-note, .publish-gate { font-size: 10px; }
+    @media (min-width: 1500px) and (min-height: 940px) {
+      .sheet { padding-top: 30px; }
+      .stage { min-height: 205px; padding: 14px 15px; }
+      .panel { padding: 14px 16px; }
+      .lower-card { min-height: 94px; }
+    }
+    @media (max-width: 1100px) {
+      .sheet { padding-inline: 22px; }
+      .chain { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .chain-arrow { display: none; }
+      .stage { min-height: 0; }
+      .bottom-grid { grid-template-columns: 1fr; }
+      .lower-grid { grid-template-columns: 1fr 1fr; }
+      .roadmap-card { grid-column: 1 / -1; }
+    }
+    @media (max-width: 700px) {
+      .sheet { padding: 16px 14px 22px; }
+      .topbar { margin-bottom: 12px; }
+      .topbar-note { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 13px; padding: 16px; }
+      h1 { font-size: 27px; }
+      .hero-copy > p { font-size: 12px; }
+      .section-head { align-items: start; flex-direction: column; gap: 4px; }
+      .chain { grid-template-columns: 1fr; gap: 6px; }
+      .chain-arrow { display: grid; height: 12px; transform: rotate(90deg); }
+      .stage { min-height: 0; padding: 13px; }
+      .stage p, .stage li { font-size: 11px; }
+      .channel-chip span { font-size: 10px; }
+      .bottom-grid { gap: 8px; }
+      .interfaces { grid-template-columns: 1fr; }
+      .interface-row { grid-template-columns: 116px 1fr; }
+      .interface-row:nth-last-child(-n+2) { border-bottom: 1px solid #f0f0f1; }
+      .interface-row:last-child { border-bottom: 0; }
+      .lower-grid { grid-template-columns: 1fr; }
+      .roadmap-card { grid-column: auto; }
+      .roadmap { grid-template-columns: 1fr; }
+      .footer { align-items: start; flex-direction: column; }
+      .sources { justify-content: start; }
+    }
+    @media print {
+      @page { size: A3 landscape; margin: 8mm; }
+      :root, body { background: #fff; }
+      .sheet { width: 100%; max-width: none; padding: 0; }
+      .topbar { margin-bottom: 10px; }
+      .hero { padding: 12px 16px; }
+      .section-head { margin-top: 11px; }
+      .stage { min-height: 170px; }
+      .bottom-grid, .lower-grid { margin-top: 8px; }
+      .footer { margin-top: 7px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <nav class="topbar" aria-label="材料导航">
+      <a class="brand" href="./index.html"><img src="./mark.svg" alt=""><span>Ascend Studio</span><small>· 知识供给侧</small></a>
+      <span class="topbar-note">面向学习推荐与开发任务的服务蓝图</span>
+      <a class="back-link" href="./index.html"><span aria-hidden="true">↗</span> 返回口袋新知 Demo</a>
+    </nav>
+    <header class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><i></i> KNOWLEDGE SUPPLY · TARGET BLUEPRINT</div>
+        <h1>让知识被找到、被调用，<br>也能被验证。</h1>
+        <p>课程、路径、认证、知识点和活动只是体验入口。供给侧需要把官方资料、学习资源与实践证据编成有版本、有边界、能被不同 AI 工具消费的服务。</p>
+      </div>
+      <aside class="thesis"><b>核心判断</b><p>不是多放几个 AI 文件，而是建立<strong>一个可信的知识内核，多种可发现、可调用的交付通道</strong>，再用使用和验证证据推动更新。</p></aside>
+    </header>
+
+    <section aria-labelledby="supply-chain-title">
+      <div class="section-head"><div><span class="section-kicker">01 / SUPPLY CHAIN</span><h2 id="supply-chain-title">从内容资产到学习服务的一条供给链</h2></div><p>所有渠道读取同一套知识目录与治理规则，避免各做一份、各自过期。</p></div>
+      <div class="chain">
+        <article class="stage">
+          <div class="stage-top"><span class="step-no">01</span><div><h3>知识与学习资产</h3><span class="stage-sub">事实、课程、过程、证据</span></div></div>
+          <div class="source-block"><span class="source-label" style="--source-color:var(--blue)"><i></i>学习目录</span><p>课程 · 学习路径 · 认证 · 知识点 · 活动 / Meetup</p></div>
+          <div class="source-block"><span class="source-label" style="--source-color:var(--amber)"><i></i>开发依据</span><p>官方文档 / API · 代码样例 · 版本兼容 · 错误与排障 · 已验证案例</p></div>
+          <ul><li>内容要能指回原文、代码或负责人</li><li>视频、课程可附章节、字幕与先修关系</li></ul>
+        </article>
+        <div class="chain-arrow" aria-hidden="true">›</div>
+        <article class="stage">
+          <div class="stage-top"><span class="step-no" style="background:var(--purple-bg);color:#70599b">02</span><div><h3>知识编译与注册</h3><span class="stage-sub">Knowledge Compiler + Capability Registry</span></div></div>
+          <p class="compiler-title">把原始资料编成最小可用单元</p><p class="compiler-desc">抽取、归一、去重、建立关系；保留来源锚点、版本与适用条件。Skill 和工具能力也进入同一个目录治理。</p>
+          <div class="contract-pills"><span>Stable ID</span><span>版本 / 芯片</span><span>适用范围</span><span>来源 / 许可</span><span>Owner / 更新</span><span>验证状态</span></div>
+          <div class="gate-note"><b>发布门槛：</b>Scope · Source · Owner · Expected Signal · Verification</div>
+        </article>
+        <div class="chain-arrow" aria-hidden="true">›</div>
+        <article class="stage">
+          <div class="stage-top"><span class="step-no" style="background:var(--teal-bg);color:#397e76">03</span><div><h3>按场景交付</h3><span class="stage-sub">网页发现 · 服务 API · Agent 接口</span></div></div>
+          <div class="channel-stack">
+            <div class="channel-chip" style="--channel-ink:#386a9f"><b>Web / Markdown</b><span>人读、爬取、引用</span></div>
+            <div class="channel-chip" style="--channel-ink:#8a641f"><b>REST / OpenAPI</b><span>应用稳定接入</span></div>
+            <div class="channel-chip" style="--channel-ink:#397e76"><b>MCP</b><span>资源、提示、工具</span></div>
+            <div class="channel-chip" style="--channel-ink:#70599b"><b>Agent Skills</b><span>任务方法与流程</span></div>
+            <div class="channel-chip optional"><b>A2A Agent Card · 可选</b><span>仅当供给方还要暴露独立 Agent 服务</span></div>
+          </div>
+          <p style="margin-top:6px;color:var(--muted)">各通道共享知识 ID、版本和权限，不另造事实副本。</p>
+        </article>
+        <div class="chain-arrow" aria-hidden="true">›</div>
+        <article class="stage">
+          <div class="stage-top"><span class="step-no" style="background:var(--rose-bg);color:#9b4f69">04</span><div><h3>体验与证据回流</h3><span class="stage-sub">让推荐能解释、结果能复用</span></div></div>
+          <div class="stage-output-list"><span><i style="--output-color:var(--blue)"></i>按目标与任务上下文检索 / 推荐</span><span><i style="--output-color:var(--purple)"></i>按芯片、版本、基础过滤不适用项</span><span><i style="--output-color:var(--amber)"></i>展示来源、适用范围与验证状态</span><span><i style="--output-color:var(--teal)"></i>收集收藏、完成、无结果与纠错</span></div>
+        </article>
+      </div>
+    </section>
+
+    <div class="bottom-grid">
+      <section class="panel" aria-labelledby="unit-title">
+        <div class="panel-head"><h2 id="unit-title">每份知识都要带上“可用边界”</h2><p>Knowledge Unit · 最小发布单元</p></div>
+        <div class="unit-list">
+          <div class="unit-row"><b>身份与类型</b><span>ID、标题、语言、资源类型（课程 / 概念 / API / 错误 / 案例）</span></div>
+          <div class="unit-row"><b>适用条件</b><span>CANN / 芯片 / OS / 框架版本、前置知识、适用 / 禁止触发条件</span></div>
+          <div class="unit-row"><b>方法与判断</b><span>结论、步骤、预期信号、停止条件、关联项与冲突 / 替代关系</span></div>
+          <div class="unit-row"><b>可信与维护</b><span>原文锚点、许可、Owner、最后验证、更新时间、失效版本与退役状态</span></div>
+        </div>
+        <div class="publish-gate"><b>无边界就不硬答</b><span>版本或环境不明时返回 unknown / 先补问；不要把整页切块就当成已验证知识。</span></div>
+      </section>
+      <section class="panel" aria-labelledby="channels-title">
+        <div class="panel-head"><h2 id="channels-title">接口各司其职，不互相替代</h2><p>发现 ≠ 内容 API ≠ 工作流 ≠ 执行动作</p></div>
+        <div class="interfaces">
+          <div class="interface-row"><span class="interface-name">robots.txt + sitemap</span><span class="interface-desc"><strong>爬虫规则与 URL 发现。</strong>robots 不是鉴权；受限内容仍要由服务端认证。</span></div>
+          <div class="interface-row"><span class="interface-name">llms.txt + Markdown</span><span class="interface-desc"><strong>给 Agent 的精选目录与干净正文。</strong>llms.txt 是提案，不保证每个模型读取。</span></div>
+          <div class="interface-row"><span class="interface-name">JSON-LD / Schema.org</span><span class="interface-desc"><strong>标明课程、活动等页面类型。</strong>帮助机器理解页面语义，不替代完整内容。</span></div>
+          <div class="interface-row"><span class="interface-name">REST + OpenAPI</span><span class="interface-desc"><strong>产品调用的稳定服务合同。</strong>检索、详情、兼容、推荐、进度可按需提供。</span></div>
+          <div class="interface-row"><span class="interface-name">MCP Server</span><span class="interface-desc"><strong>标准化连接。</strong>Resources 放内容，Prompts 给模板，Tools 调服务；先只读，写操作再做授权。</span></div>
+          <div class="interface-row"><span class="interface-name">Agent Skill</span><span class="interface-desc"><strong>可按任务加载的方法包。</strong>写清触发、输入、分支、停止、验证和产物；不复制整座知识库。</span></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="lower-grid">
+      <section class="lower-card"><h3>如何对应口袋新知 Demo</h3><div class="map-list"><span><b>推荐卡</b> ← 目录 + 任务 / 兴趣上下文</span><span><b>课程 / 路径</b> ← 章节、先修与进阶关系</span><span><b>认证 / 活动</b> ← 资格条件、时间地点与报名链接</span><span><b>知识点</b> ← 短讲解、图解、核对题与来源</span></div></section>
+      <section class="lower-card"><h3>贯穿全链路的治理</h3><div class="trust-list"><span>来源与许可</span><span>版本与时效</span><span>访问控制</span><span>检索质量</span><span>引用正确</span><span>Owner / SLA</span><span>成本与审计</span><span>纠错与退役</span></div></section>
+      <section class="lower-card roadmap-card"><h3>建议建设顺序</h3><div class="roadmap"><div><b>P0</b><span>统一资源 Schema、来源 / 版本 / 负责人和验证状态</span></div><div><b>P1</b><span>HTML / Markdown、Sitemap、搜索目录 API 与 OpenAPI</span></div><div><b>P2</b><span>任务型 Skill、只读 MCP；再按权限扩展执行与评测闭环</span></div></div></section>
+    </div>
+
+    <footer class="footer" id="sources">
+      <p class="boundary"><b>边界说明：</b>这是供给侧目标蓝图；当前 Demo 的推荐、知识和学习记录仍是本地示例，不代表真实后端、个性化模型或 MCP / Skill 已接入。</p>
+      <nav class="sources" aria-label="规范与来源">
+        <a href="https://www.rfc-editor.org/rfc/rfc9309.html" target="_blank" rel="noreferrer">RFC 9309 · Robots</a>
+        <a href="https://llmstxt.org/" target="_blank" rel="noreferrer">llms.txt proposal</a>
+        <a href="https://www.sitemaps.org/protocol.html" target="_blank" rel="noreferrer">Sitemaps</a>
+        <a href="https://modelcontextprotocol.io/specification/2025-11-25/server/index" target="_blank" rel="noreferrer">MCP</a>
+        <a href="https://agentskills.io/specification" target="_blank" rel="noreferrer">Agent Skills</a>
+        <a href="https://spec.openapis.org/oas/v3.1" target="_blank" rel="noreferrer">OpenAPI</a>
+        <a href="https://schema.org/Course" target="_blank" rel="noreferrer">Schema.org Course</a>
+        <a href="https://a2a-protocol.org/v1.0.1/specification/" target="_blank" rel="noreferrer">A2A Agent Card</a>
+      </nav>
+    </footer>
+  </main>
+</body>
+</html>
