@@ -6998,3 +6998,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css` 和 `ascstudio/` Pages 构建产物。不改变页面序列与 API / Protocol、Host / Harness、Application / Task 边界；草稿的示例验证说明仍照实呈现。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；本地 5232 浏览器完成 AddCustom「标记为已解决 → 生成草稿 → 查看全部发布渠道」回放，确认社区卡可访问四节并在正文区域滚动；未运行测试套件。Vite 仍提示主 bundle 大于 500 kB。
 - 发布：源码提交 `6ca48c2d` 与主线并行提交 `a70325e5` 合并后推送，主线提交 `dde1ee69`；GitHub Pages workflow `40471279379` 成功，线上 `/ascstudio/` 已引用新 JS / CSS 哈希资源，JS HEAD 返回 HTTP 200。
+
+### 2026-10-27 · 底部对话输入框与小地图避让
+
+- 按用户确认，底部浮窗输入区默认一行、内容变多时自动增高；最小高度 88px 收到 72px，保留自动增高和 110px 上限。小地图在输入态按实际框体位置动态上移并留 12px 间距，对话展开或指向区域时恢复原位。
+- 修改 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 与 `ascstudio/` Pages 产物。依据为用户提供的截图与明确选择（H）；不影响页面序列、API / Protocol、Host / Harness 或 Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --cached --check`、HTML 资源哈希引用检查通过；本地 5178 HTTP 200。未运行自动化测试，未留存新截图。实现提交 `971d7020`；并入主线同期画布 / 社区更新后，提交 `270c7324`、`7598593e` 已推送 `origin/main`。Pages workflow `40473711359` 成功，线上 HTML / JS / CSS 均 HTTP 200。
