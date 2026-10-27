@@ -6997,3 +6997,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出多渠道卡片内滚动后仍只见「一、问题现象」。原因是社区渠道预览组件只渲染了 `draft.problem`，没有把草稿其余字段接入；此前确认的卡片正文区独立滚动继续保留。现在按草稿字段显示问题现象、尝试与结果、环境信息、验证状态四节，标题及卡片底部渠道奖励 / 查看详情保持固定。
 - 修改 `ascend-studio/src/CommunityDraftPanel.jsx`、`ascend-studio/src/community-draft.css` 和 `ascstudio/` Pages 构建产物。不改变页面序列与 API / Protocol、Host / Harness、Application / Task 边界；草稿的示例验证说明仍照实呈现。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；本地浏览器完成 AddCustom「标记为已解决 → 生成草稿 → 查看全部发布渠道」回放，确认社区卡可访问四节并在正文区域滚动；未运行测试套件。Vite 仍提示主 bundle 大于 500 kB。提交、推送及 Pages 部署状态待本轮完成后补记。
+
+
+### 2026-10-27 · 每周昇腾开发速览与个性化知识卡
+
+- 用户确认的周报形态为「一条重点资讯 + 两张按关注或存疑补充的短知识卡」（H）。在 `ascstudio-mini/` 扩展现有可点击 Demo：知识卡增加「感兴趣 / 还没弄懂」双信号；新设「速览」底部入口；按昇腾开发、训练调优、算子实践、AI 应用主题切换静态示例焦点内容，并优先推荐用户标记的两张卡，无标记时回退到当前电脑端任务关联知识。主题、时间、兴趣信号、疑问信号及订阅开关写入当前浏览器 localStorage。
+- 订阅交互包括主题 / 周几 / 时间设置、微信授权样式弹窗、服务通知样式卡片、点击返回周报和关闭本地演示订阅；这些是前端本地模拟，不调用微信 API，也不读取真实资讯流。真实持续推送依赖微信小程序类目和可用长期订阅模板，依据此前核对的 [腾讯云订阅消息接入指南](https://cloud.tencent.cn/document/product/1301/103770) 与 [小程序消息通知说明](https://cloud.tencent.com/document/practice/269/79050)。周报示例引用 PyTorch DDP、CANN 文档与 Anthropic Tool Use 公开资料。
+- 变更文件：`ascstudio-mini/index.html`、`app.js`、`knowledge.js`、`styles.css`、`README.md`、`qa.md` 与 `evidence/` 三种视口 / 状态截图。产品判断来自用户确认（H）；业务文章为策划示例、链接为公开来源；浏览器呈现与宽度测量为本地观察（M）。没有修改电脑端 `/ascstudio/`、API / Protocol、Host / Harness、Application / Task 的机制边界；仅为小程序新增周报路由和一个底部导航项。
+- 验证：`node --check app.js`、`node --check knowledge.js` 与 `git diff --check` 通过；Chrome 本地视口截屏核对 320 / 430 / 1440px，三种宽度 `documentElement.scrollWidth` 与视口宽度相等。未进行完整端到端点击回归。
+- 提交 / 推送：本次仅计划提交上述小程序文件与本交接条目，从最新 `origin/main` 隔离提交并推送；共享工作区其它暂存、未暂存及未跟踪改动保持原样。推送结果待提交后补记。
