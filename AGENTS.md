@@ -7006,4 +7006,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 订阅交互包括主题 / 周几 / 时间设置、微信授权样式弹窗、服务通知样式卡片、点击返回周报和关闭本地演示订阅；这些是前端本地模拟，不调用微信 API，也不读取真实资讯流。真实持续推送依赖微信小程序类目和可用长期订阅模板，依据此前核对的 [腾讯云订阅消息接入指南](https://cloud.tencent.cn/document/product/1301/103770) 与 [小程序消息通知说明](https://cloud.tencent.com/document/practice/269/79050)。周报示例引用 PyTorch DDP、CANN 文档与 Anthropic Tool Use 公开资料。
 - 变更文件：`ascstudio-mini/index.html`、`app.js`、`knowledge.js`、`styles.css`、`README.md`、`qa.md` 与 `evidence/` 三种视口 / 状态截图。产品判断来自用户确认（H）；业务文章为策划示例、链接为公开来源；浏览器呈现与宽度测量为本地观察（M）。没有修改电脑端 `/ascstudio/`、API / Protocol、Host / Harness、Application / Task 的机制边界；仅为小程序新增周报路由和一个底部导航项。
 - 验证：`node --check app.js`、`node --check knowledge.js` 与 `git diff --check` 通过；Chrome 本地视口截屏核对 320 / 430 / 1440px，三种宽度 `documentElement.scrollWidth` 与视口宽度相等。未进行完整端到端点击回归。
-- 提交 / 推送：本次仅计划提交上述小程序文件与本交接条目，从最新 `origin/main` 隔离提交并推送；共享工作区其它暂存、未暂存及未跟踪改动保持原样。推送结果待提交后补记。
+- 提交 / 推送：小程序改动提交 `7c0df7dc` 已并入最新主线；合并提交 `311451ea` 已推送至 `origin/main`。推送期间两次同步远端并行提交，均保留；共享工作区其它暂存、未暂存及未跟踪改动未纳入。
