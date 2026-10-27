@@ -6881,3 +6881,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 组合首页的区块无障碍名称、需求草稿占位提示和空需求提示改为通用场景 / 线索表达；训练调优字段保留为当前 Demo 内容。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`ascend-studio/src/combination-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。由于 CUA 浏览器桥接在本轮断开，未完成页面截图复核。
 - 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5600a865` 已推送至 `origin/main`；Pages workflow `40436387761` build / deploy 成功。线上 `/ascstudio/` HTML 已引用新 JS / CSS 哈希资源；本地 5206 页面与源码模块返回 HTTP 200。
+
+
+### 2026-10-27 · 组合首页 Tab 更名为“串联”
+
+- 用户指出右上角“组合”不合适；此前讨论并推荐“串联”，本轮补齐这个未落地的改名。Tab 文案改为“串联”，其他首页方案名称、路由参数和连线行为不变。
+- 修改 `ascend-studio/src/NewTaskHome.jsx` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。浏览器截图复核仍受 CUA 桥接中断影响。
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。

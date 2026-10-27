@@ -1794,3 +1794,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户选定中文 Slogan“从你的场景出发，连接线索，找到新的方向”。这是通用关系探索首页标题，不突出当前演示所用的训练调优领域，也不添加英文副标。演示字段继续为空白起步，训练调优仅保留为样例数据。
 - 组合画布的无障碍名称、草稿占位和空需求提示去除对训练调优领域的固定依赖。
 - `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接中断，未完成截图复核。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。提交 `5600a865` 已推送至 `origin/main`；Pages workflow `40436387761` build / deploy 成功，线上 `/ascstudio/` HTML 已引用新 JS / CSS 哈希资源。
+
+
+### 2026-10-27 · 组合首页 Tab 名称
+
+- 将右上角首页方案 Tab 从“组合”改为“串联”，强调把字段线索连接成思路的交互。保留 Tab id、`?home=combine` 路由与连线行为。
+- `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接不可用，未取得视觉截图。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变；发布状态待核验。
