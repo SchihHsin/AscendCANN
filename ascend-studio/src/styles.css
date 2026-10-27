@@ -590,9 +590,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   border-radius: 8px;
   font-size: 12px;
 }
+.composer .model-brand-logo { display: block; width: 18px; height: 18px; flex: 0 0 18px; object-fit: contain; }
 .composer .model-button:hover,
 .composer .model-button[aria-expanded="true"] { background: #f4f4f2; color: #34353a; }
-.composer .model-button span { max-width: 120px; }
+.composer .model-button > span { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .composer-voice-slot { position: relative; display: inline-flex; flex: 0 0 auto; }
 .composer .composer-voice { display: grid; place-items: center; padding: 0; cursor: pointer; }
 .composer .composer-voice.is-listening { border: 0; background: #f1effa; color: #5f6091; }
@@ -634,8 +635,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 @container conversation (max-width: 440px) {
   .composer-toolbar { gap: 4px; }
   .composer-tools, .composer-submit { gap: 2px; }
-  .composer .model-button { max-width: 84px; padding-inline: 4px; }
-  .composer .model-button span { max-width: 48px; }
+  .composer .model-button { max-width: 84px; gap: 3px; padding-inline: 4px; }
+  .composer .model-button > span { max-width: 38px; }
 }
 @media (max-width: 480px) {
   .conversation-panel.is-composer-only .composer-entry { grid-template-columns: 30px minmax(0, 1fr) auto; gap: 5px; }
@@ -643,4 +644,5 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
   .conversation-panel.is-composer-only .composer-submit { gap: 2px; }
   .conversation-panel.is-composer-only .model-button { width: 30px; justify-content: center; padding: 0; }
   .conversation-panel.is-composer-only .model-button span { display: none; }
+  .conversation-panel.is-composer-only .model-menu-chevron { display: none; }
 }

@@ -41,13 +41,15 @@ import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
 import { CommunityDraftPanel } from "./CommunityDraftPanel";
 import { createCommunityDraft } from "./community-draft-data";
 import { buildLearningContentItems } from "./learning-content-catalog";
+import zaiModelLogo from "./assets/model-logos/zai.svg";
+import deepseekModelLogo from "./assets/model-logos/deepseek-color.svg";
+import qwenModelLogo from "./assets/model-logos/qwen-color.svg";
 import "./interaction.css";
 import "./visual-focus.css";
 import {
   IconAdjustmentsHorizontal,
   IconArrowRight,
   IconBell,
-  IconBolt,
   IconBook,
   IconBooks,
   IconChevronDown,
@@ -80,6 +82,11 @@ import {
   IconX,
 } from "@tabler/icons-react";
 
+const MODEL_PROVIDER_LOGOS = {
+  general: zaiModelLogo,
+  diagnostic: deepseekModelLogo,
+  reasoning: qwenModelLogo,
+};
 const OFFICIAL_STAGE_IDS = new Set(OFFICIAL_LEARNING_STAGES.map(stage => stage.id));
 const OFFICIAL_MATERIAL_STAGES = Object.fromEntries(OFFICIAL_LEARNING_STAGES.flatMap(stage => [[stage.id, [stage.id, stage.children[0].id]], ...stage.children.map(child => [child.id, [stage.id, child.id]])]));
 const PATH_REFINEMENT_DEMO_PROMPT = "我会 Python，也理解 HWC 到 CHW。每天只有 15 分钟，我想从理解概念转为能核对模型的图像输入。请把熟悉的部分改成快速回顾，增加预处理顺序判断和模型输入签名核对，并把 NCHW 检查放到练习之后。";
@@ -1564,7 +1571,7 @@ function App() {
                 </div>
                 <div className="composer-submit">
                   <button className="permission-button" type="button" aria-label={`权限设置，当前${permissionModeLabel}`} title={`权限：${permissionModeLabel}（演示）`} data-menu-trigger aria-expanded={wb.menu?.name === "permissions"} onClick={event => openMenu("permissions", event)}><IconShieldCheck size={ICON_SIZE.control} /></button>
-                  <button className="model-button" type="button" data-menu-trigger data-menu-align="left" aria-expanded={wb.menu?.name === "models"} onClick={event => openMenu("models", event)} title="选择模型"><IconBolt size={ICON_SIZE.inline} /><span>{wb.model.label}</span><IconChevronDown size={ICON_SIZE.inline} /></button>
+                  <button className="model-button" type="button" data-menu-trigger data-menu-align="left" aria-label={`选择模型，当前${wb.model.label}`} aria-expanded={wb.menu?.name === "models"} onClick={event => openMenu("models", event)} title="选择模型"><img className="model-brand-logo" src={MODEL_PROVIDER_LOGOS[wb.selectedModel]} alt="" aria-hidden="true" /><span>{wb.model.label}</span><IconChevronDown className="model-menu-chevron" size={ICON_SIZE.inline} /></button>
                   <span className="composer-voice-slot"><VoiceCaptureButton className="composer-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} iconOnly /></span>
                   <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying || (!draft.trim() && !session.attachments.length)}><IconSend size={ICON_SIZE.heading} /></button>
                 </div>
@@ -1591,7 +1598,7 @@ function App() {
         {wb.menu.name === "filter" && <><div className="menu-label">显示项目</div>{[{ id: "all", label: "全部项目" }, { id: "current", label: "当前项目" }].map((item) => <button key={item.id} type="button" className={wb.filterScope === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => wb.setFilterScope(item.id))}>{item.label}{wb.filterScope === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}<div className="menu-divider" /><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups(wb.groups.map((group) => group.id)))}>展开所有项目</button><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups([]))}>收起所有项目</button></>}
         {wb.menu.name === "chat" && <><div className="menu-label">当前任务对话</div><button type="button" onClick={() => closeMenuAnd(wb.startConversation)}>新对话<IconPlus size={ICON_SIZE.control} /></button><button type="button" onClick={() => openDialog("history")}>对话历史<span>{session.history.length}</span></button><button type="button" onClick={() => closeMenuAnd(() => wb.copyText(wb.conversationText()))}>复制当前对话<IconCopy size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button><div className="menu-divider" /><button type="button" onClick={resetCurrentTask}>恢复本题初始状态</button></>}
         {wb.menu.name === "input" && <><div className="menu-label">添加输入</div><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => navigateMainView("capabilities"))}>使用能力库<IconBooks size={ICON_SIZE.control} /></button></>}
-        {wb.menu.name === "models" && <><div className="menu-label">选择模型</div>{modelOptions.map(item => <button key={item.id} type="button" className={wb.selectedModel === item.id ? "is-active" : ""} aria-pressed={wb.selectedModel === item.id} onClick={() => closeMenuAnd(() => wb.chooseModel(item.id))}><span>{item.label}</span>{wb.selectedModel === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
+        {wb.menu.name === "models" && <><div className="menu-label">选择模型</div>{modelOptions.map(item => <button key={item.id} type="button" className={wb.selectedModel === item.id ? "is-active" : ""} aria-pressed={wb.selectedModel === item.id} onClick={() => closeMenuAnd(() => wb.chooseModel(item.id))}><span className="model-option-main"><img className="model-option-logo" src={MODEL_PROVIDER_LOGOS[item.id]} alt="" aria-hidden="true" /><span>{item.label}</span></span>{wb.selectedModel === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
         {wb.menu.name === "permissions" && <><div className="menu-label">当前任务权限 · 演示</div>{PERMISSION_OPTIONS.map(item => <button key={item.id} type="button" className={permissionMode === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => setPermissionModes(current => ({ ...current, [selectedTask]: item.id })))}><span>{item.label}</span>{permissionMode === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
         {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => openContent("review"))}>生成复核记录<IconFileText size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={ICON_SIZE.control} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button></>}
         {wb.menu.name === "notifications" && <><div className="menu-label">任务动态</div>{wb.notifications.length ? wb.notifications.map((entry) => <button className="notification-row" key={entry.id} type="button" onClick={() => selectExistingTask(entry.taskName)}><span><strong>{entry.text}</strong><small>{entry.taskName} · {entry.time}</small></span></button>) : <p className="menu-empty">尚无新动态。完成核对后会在这里留下记录。</p>}</>}
