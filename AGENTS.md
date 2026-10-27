@@ -7244,7 +7244,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `/ascstudio/` 浮动展开态收窄到最多 760px、高度最多 520px 且不超过 52dvh；composer 底边与外层圆角面板连体，以细分隔线区分并保持一行输入。隐藏浮动展开态的背景装饰图；窄屏保持视口内宽度，高度最多 480px / 52dvh。左侧对话与拖动吸附行为不变。
 - 修改 `ascend-studio/src/styles.css` 与 Pages 构建产物。依据为用户选择（H）；页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、输出 JS `node --check`、资源引用、展开面板与输入行 CSS 核对、`git diff --check` 通过；本地 5179 返回 HTTP 200。未运行自动化测试或截图回放。
-- 推送与 Pages 部署结果待补。
+- 发布：样式提交 `420dfe3c` 与合并并行主线更新的提交 `115879f4` 已推送至 `origin/main`；Pages workflow `40556756552` 成功。线上 HTML、`index-Cqckebzn.js`、`index-CTdhl43q.css` 均 HTTP 200；回读确认 760px / 52dvh 面板、连体 composer、单行输入和隐藏背景装饰均已发布。
 
 
 ### 2026-10-28 · Ascend Studio 设计汇报与用户划分讨论
