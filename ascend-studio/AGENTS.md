@@ -1897,3 +1897,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修改 `src/App.jsx` 和根仓 `ascstudio/` 构建产物。无视觉或页面顺序变化；不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；本地静态构建与线上 Pages 在 Chrome 实际打开均成功渲染，未见 JS 运行时错误。线上 HTML / 当前资源及历史缓存资源均 HTTP 200；未运行自动化测试。
 - 修复提交 `d76fd4b4` 已合并进主线；GitHub Pages workflow `40498003527` 成功，线上入口引用 `index-Bz81_Hog.js` / `index-BlUG8aw7.css`。
+
+### 2026-10-27 · 底部输入框收窄与小地图原位
+
+- 用户确认底部输入框收窄即可为右下角小地图留白；小地图保持原位。移除动态移动小地图的 `ResizeObserver` 逻辑，将 `.composer-stack` 宽度调整为 `min(720px, calc(100% - 324px))`。composer 默认单行、最小高度 72px，随输入自动增高且最多 110px。
+- 修复底部布局白屏：移除在 `areaInteractionActive` 初始化前读取该状态的 `liftMinimapForComposer` 派生表达式及地图移动 effect。
+- 验证：`npm run build:pages`、构建 JS `node --check`、资源引用及 `git diff --check` 通过。1440×900 桌面 Chromium 渲染无异常；composer 为 636×72px，小地图保持在右下角，间距约 224px。Pages workflow `40501184517` 成功，线上 HTML、JS、CSS 均 HTTP 200。
+- 本轮未改变页面导航、hash 或 API / Protocol、Host / Harness、Application / Task 边界。代码 `b93cbd29` / 构建 `a08fff7d` 已推送，后续主线并行改动保留。

@@ -7111,3 +7111,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 蓝图覆盖课程、路径、认证、知识点、活动；来源内容、Knowledge Unit 边界与证据；robots.txt / Sitemap、llms.txt、Schema.org、REST/OpenAPI、MCP、Agent Skill 与可选 A2A；权限、隐私、版本、Owner、审计、反馈与渐进治理。标准链接提供事实依据；llms.txt 明确为提案，robots.txt 不承担鉴权。目标设计与当前本地 Demo 能力分开表述，不声称已接入真实服务。未改变既有页面序列及 API / Protocol、Host / Harness、Application / Task 机制边界。
 - 验证：HTMLParser 解析通过，7 个页面标题唯一；内嵌 JS `node --check` 与 `git diff --check` 通过。Chrome 1600×900 逐页截图核对 7 页结构与布局（目录错位已修复）；默认滚动模式的无头截图会显示背景黑图，但 DOM 状态确认 `#2`、计数 `02 / 07` 与根滚动位置均已恢复到第 2 页；所有页以 `?t=cut` 模式完成视觉抽查。未运行自动化测试。
 - 提交与发布：页面提交 `75ba4a34` 已并入远端主线更新（合并提交 `989cc8f8`），README / AGENTS 记录提交 `430527c8` 已推送至 `origin/main`。Pages workflow `40500938226` 成功；线上 `/AscendCANN/ascstudio-mini/knowledge-provider-map.html` 返回 HTTP 200，标题、7 个页面段、路线图样式与页码恢复脚本均已核对。并行提交保留，未强推。
+
+### 2026-10-27 · 底部对话输入框收窄并修复白屏
+
+- 用户反馈把对话拖到底部后页面白屏，并确认避让右下角小地图只需收窄输入框，小地图保持原位。移除动态抬高小地图的状态与 `ResizeObserver`；底部单行 composer 最小高度仍为 72px，输入内容继续自动增高、上限 110px。`.composer-stack` 宽度设为 `min(720px, calc(100% - 324px))`，地图沿用原定位。
+- 白屏触发点是 `liftMinimapForComposer` 在 `areaInteractionActive` 初始化前求值，切换到底部布局时触发暂时性死区引用错误。删除该派生状态及相关地图移动 effect；布局本身不再重排小地图。
+- 修改 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 和 `ascstudio/` 构建产物。依据为用户的明确要求（H）、源码定位与本地浏览器回放（M）；页面序列、路由和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、生成 JS `node --check`、资源哈希引用校验、`git diff --check` 通过。1440×900 桌面 Chromium 无运行时异常；composer 实测 636×72px，小地图维持右下角原位且与输入框相隔约 224px。线上 `/AscendCANN/ascstudio/` 已引用 `index-C5I0bdAh.js` / `index-COFjzgYO.css`，两资源 HTTP 200。
+- 推送：功能提交 `b93cbd29`、主线同步合并 `35587143`、构建产物 `a08fff7d` 已推至 `origin/main`；后续并行的 Pura X 与知识供给材料提交均保留。Pages workflow `40501184517` 成功。
