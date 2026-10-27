@@ -1829,3 +1829,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 新增便签代码块编辑：只在画布编辑态提供插入、语言选择、编辑与删除操作；查看态显示保留换行的等宽代码内容。代码作为卡片数据保存，不运行代码。
 - 任务画布、图像预处理学习画布与 ResNet50 官方学习画布共享 `CanvasNoteContent` 及样式；旧便签继续展示原有文字，未带 `codeBlocks` 字段时按空列表兼容。
 - `npm run build:pages`、生成 JS `node --check` 与差异检查通过；未运行测试。提交 `42f66f44`、整合并行更新的 `c20b982d` 已推送，Pages workflow `40464537367` 成功。
+
+
+### 2026-10-27 · AddCustom 社区反馈入口改由图解触发
+
+- AddCustom 初始对话中移除社区反馈快捷入口；右侧“现场与判断”画布卡新增“标记为已解决”。点击后对话输入框上方才出现社区经验邀请，点击“生成草稿”在右侧打开社区草稿。若会话里有旧版演示邀请但尚未完成图解操作，则不显示该邀请。
+- 完成状态属于本地演示会话；原有实际精度确认路径保留。没有新增可信度卡，预设完成态不代表真实项目代码或 NPU 验证。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --cached --check` 通过；未运行自动化测试。提交 `ff18d786` 已推送；Pages workflow `40466117026` 成功，线上 `/ascstudio/` 的 HTML、JS、CSS 均已更新并可访问。页面序列和 API / Host / Application 边界未变。
