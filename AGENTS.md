@@ -7206,4 +7206,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认整页以冷白、蓝紫为基础，各类配图使用固定点缀色并跨楼层复用：课程偏粉、学习路径偏绿、知识点偏青、认证偏橙。颜色差异按配图内容表达，不复制 banner 波纹纹理；顶部 banner 与主视觉构图保留。
 - 推荐区与新上架区按上述映射替换资源卡配图；Meetup 保留线稿画法并使用蓝紫基底与轻彩点缀。学习发现页楼层背景改为白色、移除灰色分组底。新增图以 JPEG 90 质量落在 `ascend-studio/src/assets/learning-discovery/`，避免高体积 PNG。
 - 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css`、新生成配图及 `ascstudio/` Pages 产物。根据用户确认（H）及图像生成 / 浏览器页面观察（M）；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地桌面 1280×720 预览确认配图均加载，四类点缀色清楚、楼层无灰底。未运行自动化测试。提交、推送与 Pages 部署结果随后补记。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地桌面 1280×720 预览确认配图均加载，四类点缀色清楚、楼层无灰底。未运行自动化测试。功能提交 `d1652e6c` 连同同步主线的合并提交 `4615ac28` 已推送 `origin/main`；Pages workflow `40547405913` 成功。线上 `/AscendCANN/ascstudio/`、JS/CSS 和 8 张配图均 HTTP 200。
