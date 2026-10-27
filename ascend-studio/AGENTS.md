@@ -1870,3 +1870,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 统一规则记录在本机 `ascend-studio-interface-style` Skill；卡片尽量展示完整常规内容，长内容、空间冲突、用户手动调尺寸或固定时才保留正文滚动。共享 `TaskCanvas` 测量画布逻辑尺寸，自动扩高有上限并避让邻卡；代码 / Diff 由卡片正文承接纵向滚动。便签、手绘不自动扩高。
 - ResNet50 / 图像学习的树节点是短导航摘要；材料卡自然排高，放大态使用单一卡片滚动容器和 sticky 标题，不将学习路径节点改造成长内容卡。
 - 构建与语法 / diff 检查已通过；未运行测试套件，未做浏览器视觉回放。页面序列与 API / Host / Application 边界不变；推送与 Pages 部署待完成。
+
+
+### 2026-10-28 · 学习发现配图按内容类型统一点缀色
+
+- 用户确认整页以冷白、蓝紫为基础，各类配图使用固定点缀色并跨楼层复用：课程偏粉、学习路径偏绿、知识点偏青、认证偏橙。颜色差异按配图内容表达，不复制 banner 波纹纹理；顶部 banner 与主视觉构图保留。
+- 推荐区与新上架区按上述映射替换资源卡配图；Meetup 保留线稿画法并使用蓝紫基底与轻彩点缀。学习发现页楼层背景改为白色、移除灰色分组底。新增图以 JPEG 90 质量落在 `ascend-studio/src/assets/learning-discovery/`，避免高体积 PNG。
+- 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css`、新生成配图及 `ascstudio/` Pages 产物。根据用户确认（H）及图像生成 / 浏览器页面观察（M）；未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地桌面 1280×720 预览确认配图均加载，四类点缀色清楚、楼层无灰底。未运行自动化测试。提交、推送与 Pages 部署结果随后补记。
