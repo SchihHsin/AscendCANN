@@ -6983,3 +6983,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/shared/canvas/CanvasNoteContent.jsx`、`CanvasUserNote.jsx`、`canvas.css`、`task-canvas.css`、`TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`，并重建 `/ascstudio/` Pages 资源。没有新增代码运行或语法高亮承诺；页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、生成 JS `node --check`、`git diff --cached --check` 通过；未运行自动化测试。Vite 有既存的主 bundle 超过 500 kB 提示。线上 HTML 引用 `index-DgWSk1Op.js` 与 `index-nTBEh0K1.css`，均 HTTP 200；Pages workflow `40464537367` 成功。
 - 发布：源码提交 `42f66f44` 与整合并行微信学习记录的提交 `c20b982d` 已推送至 `origin/main`。合并时保留了 `a0daa62b`、`93a900f3` 对 `AGENTS.md` 的并行更新，未强推。
+
+
+### 2026-10-27 · AddCustom 社区经验入口由图解操作触发
+
+- 用户要求初始 AddCustom 对话不展示社区经验入口；先在右侧“现场与判断”图解卡完成一个简单操作，再显示入口。图解卡提供“标记为已解决”；完成后输入框上方出现社区经验邀请，点“生成草稿”在右侧打开草稿审阅。旧版本残留的演示邀请在入口未就绪时隐藏；实际精度流程确认完成仍可触发。
+- 完成操作写入本地任务会话状态，不连接真实设备验证；草稿沿用现有示例边界。未添加可信度卡。
+- 修改 `ascend-studio/src/App.jsx`、`CanvasMaterials.jsx`、`canvas-materials.css`、`community-draft.css` 和 `/ascstudio/` 构建产物。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。依据：用户明确要求（H）与源码实现（M）。
+- 验证：`npm run build:pages`、`node --check ascstudio/assets/index--kTdwENk.js`、`git diff --cached --check` 通过；构建产物已确认不含旧对话快捷入口和可信度卡文案，未运行自动化测试。提交 `ff18d786` 已推送 `origin/main`；Pages workflow `40466117026` 成功，线上 `/ascstudio/` HTML 已引用 `index--kTdwENk.js` 与 `index-Cugz80ir.css`，两资源 HEAD 均返回 HTTP 200。

@@ -288,6 +288,7 @@ function App() {
   const permissionModeLabel = PERMISSION_OPTIONS.find(item => item.id === permissionMode)?.label || "每次确认";
   const messages = session.messages.filter(message => {
     if (["learning", "official-learning"].includes(task.kind) && (message.communityInvite || message.communityDraftCard)) return false;
+    if (selectedTask === MAIN_TASK && message.communityInvite?.summaryId === "demo-addcustom-resolution-feedback") return false;
     return !message.communityDraftCard || Boolean(message.communityDraftId && session.communityDraft?.id === message.communityDraftId && session.communityDraft?.completionId);
   });
   const selectedRouteData = routes.find((route) => route.id === selectedRoute) || routes[0];
@@ -302,8 +303,7 @@ function App() {
   const communityInviteMessage = supportsCommunityDraft
     ? [...session.messages].reverse().find(message => message.communityInvite)
     : null;
-  const showCommunityInvite = Boolean(communityInviteMessage && communityInviteMessage.communityInvite.summaryId !== session.communityDraft?.completionId);
-  const hasAddCustomFeedbackInvite = selectedTask === MAIN_TASK && session.messages.some(message => message.communityInvite?.summary?.kind === "addcustom-precision-resolution");
+  const showCommunityInvite = Boolean(communityInviteMessage && (selectedTask !== MAIN_TASK || session.communityInviteReady) && communityInviteMessage.communityInvite.summaryId !== session.communityDraft?.completionId);
   const learningLaunchHandled = useRef(false);
   useEffect(() => {
     if (learningLaunchHandled.current) return;
@@ -994,7 +994,9 @@ function App() {
     if (id === "reference") return presentation === "canvas" ? <div className="cm-stack"><p className="cm-body-copy">Ascend C 官方文档</p><p className="cm-note">用于理解概念与使用范围，实际版本与根因仍需核对。</p><button className="cm-button" type="button" onClick={() => openContent("reference")}>打开参考网页<IconArrowRight size={ICON_SIZE.inline} /></button></div> : <ReferenceBrowser resetVersion={flow.state.resetVersion} />;
     if (presentation === "canvas" && (id === "precision" || id === "review")) return <div className="cm-stack"><p className="cm-body-copy">{id === "precision" ? "逐元素误差与容差依据" : "检查清单、观察与待补证据"}</p><p className="cm-note">{precisionContext ? `已保留 ${precisionContext.count ?? precisionContext.rows?.length ?? "本次"} 项误差核对依据。` : "尚未保存误差计算。真实项目根因待确认。"}</p><button className="cm-button" type="button" onClick={() => openContent(id)}>展开核对<IconArrowRight size={ICON_SIZE.inline} /></button></div>;
     if (id === "precision" || id === "review") return <ActionWorkspace key={flow.state.resetVersion} storageKey={`action-${MAIN_TASK}-${id}-${flow.state.resetVersion}`} embedded view={id} onChangeView={changeActionView} onBack={() => openContent("evidence")} onRecord={(record) => wb.addRecord(record, MAIN_TASK)} precisionContext={precisionContext} onPrecisionContext={setPrecisionContext} rangeContext={latestAttempt ? { total: latestAttempt.total, tile: latestAttempt.tileSize } : null} onTaskComplete={id === "precision" ? confirmAddCustomResolution : undefined} completionAlreadyOffered={mainSession.messages.some(message => message.communityInvite?.summary?.kind === "addcustom-precision-resolution")} />;
-    return <CanvasMaterial key={flow.state.resetVersion} id={id} presentation={presentation} flow={{ ...flow, codeAttachment: mainAttachment }} onShowCard={openContent} onAttachCode={() => openDialog("code")} explanation={explanation} onAsk={askExplanation} onCompare={compareExplanation} proactive={proactive} diagramRef={presentation === "content" ? diagnosisTargetRef : undefined} />;
+    return <CanvasMaterial key={flow.state.resetVersion} id={id} presentation={presentation} flow={{ ...flow, codeAttachment: mainAttachment }} onShowCard={openContent} onAttachCode={() => openDialog("code")} explanation={explanation} onAsk={askExplanation} onCompare={compareExplanation} proactive={proactive} diagramRef={presentation === "content" ? diagnosisTargetRef : undefined}
+      onCommunityExperienceReady={ownerId === MAIN_TASK && id === "evidence" ? completeAddCustomDiagramAction : undefined}
+      communityReady={ownerId === MAIN_TASK && Boolean(mainSession.communityInviteReady)} />;
   };
   const availableMaterials = isMainTask ? [
     ...Object.values(MATERIAL_DEFINITIONS).filter(item => item.id !== "canvas" && item.id !== "task-brief" && !item.id.startsWith("image-") && !item.id.startsWith("learning-")).map(item => ({
@@ -1213,14 +1215,19 @@ function App() {
 
   const offerCommunityExperience = (summary) => {
     if (!summary?.id) return;
-    if (summary.kind === "addcustom-precision-resolution" && session.messages.some(message => message.communityInvite?.summary?.kind === summary.kind)) return;
-    if (session.messages.some(message => message.communityInvite?.summaryId === summary.id)) return;
+    const isAddCustomResolution = summary.kind === "addcustom-precision-resolution";
+    if (isAddCustomResolution && session.communityInviteReady && session.messages.some(message => message.communityInvite?.summary?.kind === summary.kind)) return;
+    if (session.messages.some(message => message.communityInvite?.summaryId === summary.id)) {
+      if (isAddCustomResolution && !session.communityInviteReady) wb.patchSession({ communityInviteReady: true });
+      return;
+    }
     const dimensions = summary.dimensions?.join(", ") || "当前示例形状";
     const completionExchange = summary.demoFixture && summary.dimensions?.length ? [{
       id: crypto.randomUUID(), role: "user", isDemo: true,
       text: `我在示例副本中调整了图像输入，形状核对结果为 NCHW [${dimensions}]。`,
     }] : [];
-    wb.patchSession(old => old.messages.some(message => message.communityInvite?.summaryId === summary.id) ? {} : ({
+    wb.patchSession(old => old.messages.some(message => message.communityInvite?.summaryId === summary.id) ? (isAddCustomResolution ? { communityInviteReady: true } : {}) : ({
+      ...(isAddCustomResolution ? { communityInviteReady: true } : {}),
       messages: [...old.messages, ...completionExchange, {
         id: crypto.randomUUID(), role: "assistant", isDemo: true,
         communityInvite: { summaryId: summary.id, summary },
@@ -1238,14 +1245,14 @@ function App() {
       completionText: "你已确认 AddCustom 精度异常已在目标环境复测通过。可以把本次修复步骤、适用条件和验证证据整理为社区经验；当前 Demo 不会代替真实设备检查。",
     });
   };
-  const triggerAddCustomFeedbackDemo = () => {
-    if (selectedTask !== MAIN_TASK || hasAddCustomFeedbackInvite) return;
+  const completeAddCustomDiagramAction = () => {
+    if (selectedTask !== MAIN_TASK || session.communityInviteReady) return;
     offerCommunityExperience({
-      id: "demo-addcustom-resolution-feedback",
+      id: "demo-addcustom-diagram-resolution",
       kind: "addcustom-precision-resolution",
       demoFixture: true,
       precision: { count: 561, failed: 0, atol: "1e-5", rtol: "1e-4", isDemo: true },
-      completionText: "演示完成：预置流程展示了 AddCustom 精度异常从输入对照、尾块访问修正到复测回执的完整闭环。这个流程仅用于演示，不代表真实项目或 NPU 结果。",
+      completionText: "示例修复已完成，当前范围核对通过。可以把这次排查整理为社区经验草稿。",
     });
   };
   useEffect(() => {
@@ -1443,10 +1450,6 @@ function App() {
                     onPrimary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? changeActionView("code") : dispatchTaskIntent("explain", "tail"); }}
                     secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "查看实际代码"}
                     onSecondary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? dispatchTaskIntent("explain", "tail") : changeActionView("code"); }} />
-                  {!hasAddCustomFeedbackInvite && <div className="addcustom-feedback-shortcut">
-                    <button className="task-plain-button" type="button" onClick={triggerAddCustomFeedbackDemo}><IconSparkles size={14} />演示任务完成后的社区反馈<IconArrowRight size={13} /></button>
-                    <small>一键展示完成态，再生成右侧社区经验草稿</small>
-                  </div>}
                   <details className="chat-next-disclosure"><summary>比较其他排查方向</summary><div className="chat-next-actions" aria-label="可能的下一步方向">
                     <div className="chat-next-heading">可能的下一步方向</div>
                     {routes.map((route, index) => (

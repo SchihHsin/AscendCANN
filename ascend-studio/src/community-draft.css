@@ -77,10 +77,6 @@
 .community-draft-card-status.is-submitted { border-color: #dce7dd; color: #576d5e; background: #f5f8f5; }
 .community-draft-card > svg:last-child { flex: 0 0 auto; color: #81818a; }
 
-.addcustom-feedback-shortcut { display: grid; justify-items: start; gap: 2px; margin-top: 8px; }
-.addcustom-feedback-shortcut > button { display: inline-flex; align-items: center; gap: 5px; }
-.addcustom-feedback-shortcut > small { padding-left: 19px; color: #92949b; font-size: 10px; line-height: 1.45; }
-
 .community-draft-panel { height: 100%; min-height: 0; display: flex; flex-direction: column; overflow: hidden; color: #292a2f; background: #fff; }
 .community-draft-header { position: relative; z-index: 5; flex: 0 0 auto; min-height: 61px; display: flex; align-items: center; gap: 7px; padding: 0 12px; border-bottom: 1px solid #e8e7e4; background: #fff; }
 .community-draft-title { display: flex; align-items: center; min-width: 0; gap: 7px; }
