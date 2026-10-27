@@ -7193,6 +7193,14 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build:pages` 成功；源文件与 Pages 产物 `node --check`、`git diff --check` 通过。Vite 保留既有主 bundle 大于 500 kB 的提示；未运行自动化测试套件。
 - 提交 `63a329c89654ca5d91ce42795c06c9844a79426f` 已推送到 `origin/main`。首次 Pages deploy 被后续并行提交取消；包含本提交的后续 workflow `40543693742` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-l4oW5C5u.js`、`index-DM-Jd1s4.css`，入口及两个资源均 HTTP 200。未决事项：无。
 
+
+### 2026-10-28 · 模型品牌图标缩小
+
+- 用户指出模型选择按钮和菜单中的品牌图标偏大（H）。将输入框当前模型标识与下拉项标识从 18px 调至 14px；模型名称、选中勾选、切换行为不变，窄屏图标入口继续保留。
+- 更新 `ascend-studio/src/styles.css`、`src/interaction.css` 与 `/ascstudio/` 页面产物。构建基于已合并的主线，保留并行的学习画布内容完整阅读更新及小程序资源改动。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、输出 JS `node --check`、bundle 引用与 `git diff --check` 通过；线上入口 HTML 与新 JS / CSS 均 HTTP 200。未运行自动化测试或逐项视觉回放。
+- 发布：尺寸调整提交 `689b2b11` 与并行主线合并提交 `4cb77c74` 已推送至 `origin/main`。GitHub Pages workflow `40545134372` 成功。
+
 ### 2026-10-28 · 学习发现配图按内容类型统一点缀色
 
 - 用户确认整页以冷白、蓝紫为基础，各类配图使用固定点缀色并跨楼层复用：课程偏粉、学习路径偏绿、知识点偏青、认证偏橙。颜色差异按配图内容表达，不复制 banner 波纹纹理；顶部 banner 与主视觉构图保留。
