@@ -14,6 +14,7 @@
   --canvas-card-inner-radius: calc(var(--canvas-card-radius) - 1px);
   --canvas-card-shadow: 0 4px 15px rgb(28 29 30 / 8%);
   --canvas-active: #191a1b;
+  --canvas-max-content-card-height: 760px;
 }
 
 .canvas-surface {

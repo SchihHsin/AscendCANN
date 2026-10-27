@@ -2,6 +2,8 @@ import { ICON_SIZE } from "../../icon-system.js";
 import { forwardRef, useRef } from "react";
 import { IconArrowsMinimize, IconMinus, IconPlus } from "@tabler/icons-react";
 
+export { focusViewportForBounds } from "./focus-viewport.js";
+
 export const CanvasSurface = forwardRef(function CanvasSurface({ as: Element = "div", className = "", ...props }, ref) {
   return <Element {...props} ref={ref} className={`canvas-surface ${className}`.trim()} />;
 });

@@ -33,6 +33,7 @@ import { LearningHierarchyCanvas } from "./LearningHierarchyCanvas";
 import { stepsForStage } from "./learning-path-collaboration";
 import { useOfficialLearningPath } from "./useOfficialLearningPath";
 import { OfficialLearningPathCanvas } from "./OfficialLearningPathCanvas";
+import { OfficialLearningMaterial } from "./OfficialLearningMaterial";
 import { LearningJourneyMaterial } from "./LearningJourney";
 import { NewTaskHome } from "./NewTaskHome";
 import { LearningDiscoveryPage } from "./LearningDiscoveryPage";
@@ -605,6 +606,19 @@ function App() {
   const openCanvas = (options = {}) => {
     if (!isInteractiveTask) return;
     const requestedMode = options.mode || "overview";
+    if (isOfficialLearningTask) {
+      const selected = getOfficialLearningNode(options.focusId || officialLearning.state.selectedNodeId);
+      const step = selected?.kind === "course" ? selected.children[0] : selected;
+      if (step) {
+        officialLearning.actions.selectNode(step.id);
+        officialCanvasView.actions.openMaterial(step.id);
+        officialCanvasView.actions.revealObject(`${step.id}:diagram`);
+        officialCanvasView.actions.revealObject(`${step.id}:lesson`);
+      }
+      workspace.actions.openCanvas({ mode: "free", fit: Boolean(options.fit) });
+      setTaskContentsOpen(false);
+      return;
+    }
     // 图像推理任务的“全部内容”就是自由画布；不再切到另一张分组卡片总览。
     const mode = isImageTask && requestedMode === "overview" ? "free" : requestedMode;
     const fitOnEntry = Boolean(options.fit || isImageTask && requestedMode === "overview");
@@ -675,6 +689,16 @@ function App() {
     const indexed = getTaskItems(selectedTask).flatMap(item => [item, ...(item.children || [])]).find(item => item.id === id);
     if (saved?.parentId || indexed?.parentId) workspace.actions.markRead(saved?.parentId || indexed.parentId);
     openContent(id, { restore: true, ...((saved || indexed) ? { title: (saved || indexed).title, type: indexed?.parentId || saved ? "preview" : indexed.type } : {}) });
+  };
+  const openOfficialLearningContent = (id, canvasObjectId) => {
+    const selected = getOfficialLearningNode(id);
+    if (!selected) return;
+    const node = selected.kind === "course" ? selected.children[0] : selected;
+    officialLearning.actions.selectNode(node.id);
+    officialCanvasView.actions.openMaterial(node.id);
+    officialCanvasView.actions.requestFocus(canvasObjectId || `${node.id}:diagram`);
+    workspace.actions.open(node.id, { restore: true, title: node.title, type: "preview" });
+    setTaskContentsOpen(false);
   };
   const compareContent = id => {
     const item = getTaskItems(selectedTask).flatMap(entry => [entry, ...(entry.children || [])]).find(entry => entry.id === id);
@@ -953,7 +977,9 @@ function App() {
         const record = wb.getSession(ownerId).records.find(item => `record:${item.id}` === id);
         return record ? <article className="content-snapshot"><header><strong>{record.title}</strong><small>{record.time} · 学习记录</small></header><p>{record.summary}</p><p>资料与检查的本地快照；设备推理仍需在对应环境验证。</p></article> : null;
       }
-      return <button type="button" className="light-button" onClick={() => openContent(id)}>在学习画布中查看<IconArrowRight size={ICON_SIZE.inline} /></button>;
+      const selectedNode = getOfficialLearningNode(id);
+      const node = selectedNode?.kind === "course" ? selectedNode.children[0] : selectedNode;
+      return node ? <OfficialLearningMaterial node={node} journey={officialLearning} onAsk={askExplanation} onCopy={wb.copyText} onReturnToCanvas={() => { officialCanvasView.actions.requestFocus(officialCanvasView.state.pendingFocusId || `${node.id}:diagram`); openCanvas({ mode: "free", focusId: node.id }); }} /> : null;
     }
     if (wb.getTask(ownerId).kind === "learning") {
       if (ownerId !== selectedTask) return null;
@@ -1166,7 +1192,7 @@ function App() {
     }).filter(Boolean) : [];
     const showOverview = visible && !free && !ownerMain;
     if (ownerLearning && free) return <LearningHierarchyCanvas journey={learning} view={learningCanvasView} canvasContent={learningCanvas} visible={visible} agentAction={ownerId === selectedTask ? learningAgentAction : null} onAgentActionComplete={id => setLearningAgentAction(current => current?.id === id ? null : current)} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} />;
-    if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} canvasContent={learningCanvas} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
+    if (ownerOfficialLearning && free) return <OfficialLearningPathCanvas journey={officialLearning} view={officialCanvasView} canvasContent={learningCanvas} visible={visible} onAsk={askExplanation} onCopy={wb.copyText} onOpenContent={openOfficialLearningContent} onOpenPreprocessing={() => selectExistingTask(LEARNING_TASK)} />;
     const ownerCanvas = ownerLearning || ownerOfficialLearning ? learningCanvas : ownerImage ? imageCanvas : canvas;
     return <div className="tw-content-canvas">
       <div className="tw-canvas-body">

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   IconAlertTriangle,
   IconArrowLeft,
+  IconArrowUpRight,
   IconArrowsDiagonal,
   IconChevronDown,
   IconChevronRight,
@@ -13,7 +14,6 @@ import {
   IconLayoutBoard,
   IconLayoutColumns,
   IconLayoutList,
-  IconMaximize,
   IconNotes,
   IconPin,
   IconPencil,
@@ -21,7 +21,7 @@ import {
   IconRestore,
   IconTrash,
 } from "@tabler/icons-react";
-import { CanvasCardActions, CanvasCardButton, CanvasCardFrame, CanvasCardHeader, CanvasFitIcon, CanvasMiniMap, CanvasSurface, CanvasToolButton, CanvasToolbar, CanvasToolbarGroup, CanvasZoomGroup } from "./shared/canvas/index.jsx";
+import { CanvasCardActions, CanvasCardButton, CanvasCardFrame, CanvasCardHeader, CanvasFitIcon, CanvasMiniMap, CanvasSurface, CanvasToolButton, CanvasToolbar, CanvasToolbarGroup, CanvasZoomGroup, focusViewportForBounds } from "./shared/canvas/index.jsx";
 import CanvasDrawingSurface from "./shared/canvas/CanvasDrawingSurface.jsx";
 import CanvasNoteContent from "./shared/canvas/CanvasNoteContent.jsx";
 import CanvasLegacyDrawings from "./shared/canvas/CanvasLegacyDrawings.jsx";
@@ -283,11 +283,14 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
   const focusCard = (card) => {
     if (!card) return;
     actions.selectCard(card.id);
-    const current = stateRef.current.viewport;
     const height = isCollapsed(card) ? COLLAPSED_HEIGHT : card.height;
     const widthPadding = isAddCustom ? 24 : 72;
-    const zoom = clampZoom(Math.min(1.1, Math.max(1, stageSize.width - widthPadding) / card.width, Math.max(1, stageSize.height - 112) / height));
-    actions.setViewport({ zoom, x: stageSize.width / 2 - (card.x + card.width / 2) * zoom, y: stageSize.height / 2 - (card.y + height / 2) * zoom });
+    const focusedViewport = focusViewportForBounds(
+      { x: card.x, y: card.y, width: card.width, height },
+      { width: stageSize.width, height: stageSize.height },
+      { paddingX: widthPadding / 2, paddingTop: 56, paddingBottom: 56 },
+    );
+    if (focusedViewport) actions.setViewport({ zoom: focusedViewport.scale, x: focusedViewport.x, y: focusedViewport.y });
   };
 
   const toggleCollapsed = (id) => {
@@ -416,7 +419,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
           return <CanvasCardFrame key={card.id} className={`tc-card${collapsed ? " is-collapsed" : ""}`} selected={state.selectedCardId === card.id} pinned={card.pinned} collapsed={collapsed} hidden={!card.visible} aria-label={card.title} style={{ left: card.x, top: card.y, width: card.width, height: collapsed ? COLLAPSED_HEIGHT : card.height, zIndex: index + 2 }} onPointerDownCapture={(event) => { if (event.target instanceof Element && event.target.closest("button,a,input,textarea,select,label,summary")) return; if (!handMode && !spaceHeld && stateRef.current.selectedCardId !== card.id) actions.selectCard(card.id); }}>
             <CanvasCardHeader className="tc-card-header" data-card-id={card.id} onPointerDown={(event) => { if (!positionEditing || event.target instanceof Element && event.target.closest("button")) return; beginMove(event, card); }}>
               {positionEditing && <CanvasCardButton className="tc-move-handle" type="button" disabled={card.pinned} aria-label={`移动${card.title}；方向键微调，Shift 加快`} title={card.pinned ? "已固定位置" : "拖动标题移动；方向键微调"} onPointerDown={(event) => beginMove(event, card)} onKeyDown={(event) => keyboardMove(event, card)}><IconGripVertical size={ICON_SIZE.control} /></CanvasCardButton>}<div className="canvas-card-title"><h3 title={card.title}>{card.title}</h3></div>{collapsed && <small className="tc-collapse-summary">{cardSummary(card)}</small>}{card.pinned && <span className="tc-pin-label"><IconPin size={ICON_SIZE.micro} />已固定</span>}
-              <CanvasCardActions className="tc-card-actions"><CanvasCardButton type="button" aria-label={`聚焦到${card.title}`} title="聚焦到画布中的这个节点" onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><IconFocus2 size={ICON_SIZE.inline} /></CanvasCardButton>{onOpenContent && <CanvasCardButton type="button" aria-label={`放大${card.title}到右侧完整工作区`} title="放大到右侧完整工作区" onClick={() => onOpenContent(card.id)}><IconMaximize size={ICON_SIZE.inline} /></CanvasCardButton>}<CanvasCardButton type="button" active={card.pinned} aria-label={card.pinned ? `取消固定${card.title}` : `固定${card.title}`} title={card.pinned ? "取消固定" : "固定位置与尺寸"} onClick={() => actions.togglePin(card.id)}><IconPin size={ICON_SIZE.inline} /></CanvasCardButton>{positionEditing && ["note", "drawing"].includes(card.kind) && <CanvasCardButton className="is-destructive" type="button" aria-label={`删除${card.title}`} title="删除新增卡片" onClick={() => { if (drawing.targetCardId === card.id) drawing.stop(); actions.deleteCard(card.id); }}><IconTrash size={ICON_SIZE.inline} /></CanvasCardButton>}<CanvasCardButton type="button" aria-label={collapsed ? `展开${card.title}` : `折叠${card.title}`} title={collapsed ? "展开内容" : "折叠内容"} aria-expanded={!collapsed} onClick={() => toggleCollapsed(card.id)}>{collapsed ? <IconChevronRight size={ICON_SIZE.inline} /> : <IconChevronDown size={ICON_SIZE.inline} />}</CanvasCardButton></CanvasCardActions>
+              <CanvasCardActions className="tc-card-actions"><CanvasCardButton type="button" aria-label={`聚焦${card.title}并适当放大`} title="移到视野中心并适当放大；仍在画布内" onClick={() => { focusCard(card); onFocusContent?.(card.id); }}><IconFocus2 size={ICON_SIZE.inline} /></CanvasCardButton>{onOpenContent && <CanvasCardButton type="button" aria-label={`打开${card.title}完整内容`} title="打开完整内容；离开画布查看" onClick={() => onOpenContent(card.id)}><IconArrowUpRight size={ICON_SIZE.inline} /></CanvasCardButton>}<CanvasCardButton type="button" active={card.pinned} aria-label={card.pinned ? `取消固定${card.title}` : `固定${card.title}`} title={card.pinned ? "取消固定" : "固定位置与尺寸"} onClick={() => actions.togglePin(card.id)}><IconPin size={ICON_SIZE.inline} /></CanvasCardButton>{positionEditing && ["note", "drawing"].includes(card.kind) && <CanvasCardButton className="is-destructive" type="button" aria-label={`删除${card.title}`} title="删除新增卡片" onClick={() => { if (drawing.targetCardId === card.id) drawing.stop(); actions.deleteCard(card.id); }}><IconTrash size={ICON_SIZE.inline} /></CanvasCardButton>}<CanvasCardButton type="button" aria-label={collapsed ? `展开${card.title}` : `折叠${card.title}`} title={collapsed ? "展开内容" : "折叠内容"} aria-expanded={!collapsed} onClick={() => toggleCollapsed(card.id)}>{collapsed ? <IconChevronRight size={ICON_SIZE.inline} /> : <IconChevronDown size={ICON_SIZE.inline} />}</CanvasCardButton></CanvasCardActions>
             </CanvasCardHeader>
             <div className={`tc-card-content${card.kind === "drawing" ? " is-drawing-card" : card.kind === "note" ? " is-note-card" : ""}`} hidden={collapsed} role="region" aria-label={card.title + "内容；需要时可在卡片内滚动查看"} onWheel={(event) => {
               const content = event.currentTarget;
