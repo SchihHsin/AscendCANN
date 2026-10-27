@@ -1957,3 +1957,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 展开对话是独立于顶部布局切换的动作；自动发送后展开历史的行为保留。入口位于 `src/App.jsx`，样式位于 `src/styles.css`。
 - 此决定来自用户确认（H）。不改变页面顺序、hash、任务 / 对话数据或 API / Protocol、Host / Harness、Application / Task 边界。
 - 实现提交 `8c2a9f39` 已推送至 `origin/main`；Pages workflow `40550981417` 成功，线上 `/AscendCANN/ascstudio/` 及对应 JS / CSS 均 HTTP 200。
+
+### 2026-10-28 · 对话展开入口居中胶囊
+
+- 按用户反馈，将底部 composer 的对话展开箭头从右侧方形控件调整为上沿居中胶囊。既有显隐与切换行为保持不变。
+- 修改 `src/styles.css` 和 `/ascstudio/` Pages 构建产物；依据为用户明确反馈（H），不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。

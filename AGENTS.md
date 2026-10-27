@@ -7214,3 +7214,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现位于 `ascend-studio/src/App.jsx`、`src/styles.css` 与 `/ascstudio/` Pages 产物。依据为用户确认（H）；未改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、构建 JS `node --check`、HTML bundle 引用存在性、`git diff --check` 通过；本地 5179 预览返回 HTTP 200 并已打开。未运行自动化测试或截图回放。
 - 发布：提交 `8c2a9f39` 已推送至 `origin/main`；GitHub Pages workflow `40550981417` 成功。线上 `/AscendCANN/ascstudio/` 的 HTML、`index-clfwqhtg.js`、`index-CcgYN-dL.css` 均 HTTP 200；回读确认新展开 / 收起文案与样式已发布。
+
+### 2026-10-28 · 展开箭头改为输入框上方居中胶囊
+
+- 用户指出展开入口偏右且方形；改为水平居中、圆角胶囊形状，保留原有悬浮 / 聚焦 / 触屏显隐与展开、收起行为。
+- 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 构建产物。依据为用户明确反馈（H）；不改变布局行为、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、生成 JS `node --check`、HTML bundle 引用、胶囊居中样式核对及 `git diff --check` 通过；本地 5179 预览 HTTP 200。推送与 Pages 部署结果待补。
