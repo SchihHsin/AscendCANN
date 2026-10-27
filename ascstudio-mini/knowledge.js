@@ -5,6 +5,13 @@ export const TASKS = [
   { id: "inference", title: "跑通第一次模型推理", category: "模型推理", icon: "cube", tone: "mint", description: "从模型输入开始，把数据布局、精度和执行过程连接起来。", knowledge: ["layout", "precision"], question: "我想跑通昇腾模型推理。请先确认模型、硬件与软件版本，再指导我检查输入约定、运行最小样例和核对预期结果。" },
 ];
 const distributed = { title: "PyTorch · 分布式训练教程", url: "https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html" };
+export const WEEKLY_TOPICS = ["昇腾开发", "训练调优", "算子实践", "AI 应用"];
+export const WEEKLY_FEATURES = {
+  "昇腾开发": { category: "训练与调优", title: "多卡训练想提速，先对齐单卡基线和有效 Batch", summary: "对比单卡与多卡时，把模型、精度、有效 Batch 和统计口径一起记下来。再去看通信与数据等待，避免只凭卡数判断瓶颈。", points: ["先记录同口径的单卡吞吐", "把有效 Batch 和精度一起对齐", "再观察通信、数据加载与同步等待"], source: distributed },
+  "训练调优": { category: "训练与调优", title: "多卡训练想提速，先对齐单卡基线和有效 Batch", summary: "对比单卡与多卡时，把模型、精度、有效 Batch 和统计口径一起记下来。再去看通信与数据等待，避免只凭卡数判断瓶颈。", points: ["先记录同口径的单卡吞吐", "把有效 Batch 和精度一起对齐", "再观察通信、数据加载与同步等待"], source: distributed },
+  "算子实践": { category: "算子开发", title: "处理尾块时，别让越界元素混进计算", summary: "向量分块的最后一块可能不足一个完整块。先明确有效元素范围，再检查边界输入与结果，避免把补齐位置当作有效数据。", points: ["覆盖刚好整块与多出一个元素", "检查最后一块的有效范围", "对照预期结果核对边界行为"], source: { title: "昇腾 · CANN 文档", url: "https://www.hiascend.com/document" } },
+  "AI 应用": { category: "AI 应用开发", title: "模型提出工具调用后，应用还要执行并核对结果", summary: "工具调用描述的是模型希望执行的动作。应用需要校验参数、运行对应工具，再把结果回传给模型，才能继续处理任务。", points: ["解析工具名和参数", "由应用按权限执行工具", "回填结果后再判断下一步"], source: { title: "Anthropic · Implement Tool Use", url: "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use" } },
+};
 export const KNOWLEDGE = [
   {
     id: "scaling", title: "卡数翻倍，训练为什么没快一倍？", short: "先看懂扩展效率", category: "训练调优", tone: "purple", minutes: 3, visual: "scaling", tags: "扩展效率 吞吐 多卡 性能 并行",
