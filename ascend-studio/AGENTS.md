@@ -1919,3 +1919,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 实现位于 `src/App.jsx` 与 `src/styles.css`：外沿约 10px 响应拖动，交互控件及上下文芯片排除；沿用目标区域预览和吸附，只有移动到目标并在其上松手才切换布局。移动端不启用此桌面拖动。没有改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 构建与检查：`npm run build:pages`、产物 JS `node --check`、资源引用校验及 `git diff --check` 通过。桌面浏览器回放验证左侧 ↔ 底部双向拖动、边缘 cursor、控件点击不触发，以及目标预览 / 松手吸附；无把手和运行时异常。未运行自动化测试。
 - 发布：提交 `8e3633c5` 推送至 `origin/main`；Pages workflow `40538891007` 成功。线上 `/AscendCANN/ascstudio/` 与本轮 JS / CSS 资源均返回 HTTP 200。
+
+
+### 2026-10-28 · 模型下拉项使用品牌标识
+
+- 用户要求将模型切换处的小闪电替换成对应模型标识。GLM-5.3 映射 Z.ai，DeepSeek V4 映射 DeepSeek，Qwen3-Coder 映射 Qwen。输入框当前选择按钮与下拉选项都显示各自 logo；窄屏隐藏文字与下拉箭头时保留图标。
+- 实现：`src/App.jsx` 的模型按钮及菜单绑定品牌 SVG，`src/styles.css` / `src/interaction.css` 统一图标尺寸与紧凑布局。三个 SVG 来自 `@lobehub/icons-static-svg@1.101.0`，其 MIT 许可和来源说明随源码、Pages 输出一并保留。
+- 验证：`npm run build:pages`、生成 JS `node --check`、HTML 资源引用、license 文件检查及 `git diff --check` 通过；本地 `5178` 返回 HTTP 200。未运行自动化测试或桌面逐项交互回放。
+- 发布：提交 `c1adafe0` 已推送；Pages workflow `40541928644` 成功。线上 `/AscendCANN/ascstudio/` 入口、JS、CSS 及 attribution 文件均 HTTP 200。

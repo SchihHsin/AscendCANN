@@ -7153,3 +7153,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - `ascend-studio/src/App.jsx` 将 composer 外沿 10px 设为拖动命中区，交互控件与内容芯片不启动拖动；保留已有目标预览与吸附，并要求真实移动且在目标区域释放才切换。`ascend-studio/src/styles.css` 移除独立把手样式，加入外沿悬浮与拖动光标状态；同步更新 `ascstudio/` 静态构建产物。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages` 成功；生成 JS `node --check`、HTML 资源引用存在性与 `git diff --check` 通过。桌面交互回放确认两种布局均可从边缘拖动，输入区内悬浮与控件点击不启动拖动，双向目标预览及松手吸附正常，无把手、无运行时异常；本地 `5178` 返回 HTTP 200。未运行自动化测试。
 - 发布：实现提交 `8e3633c5` 已推送 `origin/main`；合并前先快进同步主线提交 `4d5b8333`，其独立星星 × 书本素材完整保留。GitHub Pages workflow `40538891007` 成功；线上 `/AscendCANN/ascstudio/` HTML、`index-Cqdi8RJO.js` 与 `index-D_LHgAek.css` 返回 HTTP 200，HTML 引用为本轮 bundle。
+
+
+### 2026-10-28 · 模型选择器显示对应品牌标识
+
+- 用户要求将输入框模型按钮上的闪电换成各模型对应的标识（H）。GLM-5.3 显示 Z.ai 标识，DeepSeek V4 显示 DeepSeek 标识，Qwen3-Coder 显示 Qwen 标识；当前选择按钮和模型下拉项都展示对应图标。窄屏输入框收拢为纯图标时仍保留品牌标识。
+- 修改 `ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css`，新增三份本地 SVG 到 `src/assets/model-logos/`。SVG 来源为 `@lobehub/icons-static-svg@1.101.0`（MIT）；随源文件与 `/ascstudio/` 产物附带 attribution 和许可证文本。品牌标识只用于识别模型 / 提供方，不表示背书。
+- 构建：`npm run build:pages`、生成 JS `node --check`、HTML bundle 引用、许可证产物存在性及 `git diff --check` 通过。Vite 本地 `5178` 返回 HTTP 200 并加载新组件源码；没有运行自动化测试或桌面逐项交互回放。未改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 发布：提交 `c1adafe0` 已推送至 `origin/main`，并保留已同步的独立小程序叙事更新 `0c253ca6`。Pages workflow `40541928644` 成功。线上 `/AscendCANN/ascstudio/` HTML、`index-DhHj9YWC.js`、`index-CfLqzuZx.css` 和模型图标 attribution 均返回 HTTP 200。
