@@ -6872,4 +6872,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 新增按任务保存于当前会话内存的权限演示状态：只读、每次确认、本任务内允许操作。此控制仅展示原型状态，不连接真实执行权限或 API / Host 能力，不改变 Application / Task 边界。
 - 修改：`ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css`、`src/useWorkbenchState.js` 与 `ascstudio/` Pages 产物。
 - 证据：用户本轮要求（H）；本地 5178 桌面预览（M）实际回放左栏→底部浮窗、浮窗→左栏双向吸附，两种布局的目标外落点均保持原布局；权限菜单与加号菜单可操作，浏览器无 error / warning。`npm run build:pages`、生成 JS `node --check`、`git diff --check` 均通过；未运行自动化测试。
-- 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。主线推送与 Pages 发布回执将在后续记录补齐。
+- 未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5317a869` 已推送到 `origin/main`；Pages workflow `40376808989` 成功。线上 `/ascstudio/` HTML、`index-C15Xr9Tu.js`、`index-CnqbLe8f.css` 均返回 HTTP 200。
