@@ -7064,3 +7064,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据为用户明确的交互要求（H）；760px 上限和避让间距属于实现参数（L）。页面序列 / hash、API / Protocol、Host / Harness、Application / Task 边界均未改变；不代表真实代码、精度或 NPU 验证。
 - 验证：`npm run build:pages`、`node --check ascend-studio/src/useCanvasState.js`、`git diff --check` 通过；构建保留既有超过 500 kB 的 bundle 提示，未运行自动化测试。当前工具环境没有浏览器回放能力，因此未声称完成页面交互 / 视觉核验。
 - 发布回执：实现提交 `e6ccedd5` 已推送至 `origin/main`；GitHub Pages workflow `40494606292` 成功。线上 `/AscendCANN/ascstudio/`、`index-Q53nHexO.js` 与 `index-D_07DMqX.css` 均 HTTP 200，资源中可检索到卡片尺寸测量及单一滚动区规则。以下为发布后的交接记录补充；未改变页面序列或 API / Host / Application 边界。
+
+### 2026-10-27 · 修复 GitHub Pages 缓存 HTML 指向已删除 bundle
+
+- 用户截图显示 `/AscendCANN/ascstudio/` 为空白。HTTP 复核发现 Pages 普通 URL 返回的缓存 HTML 引用 `index-2CZdRaiw.js` / `index-BMkz6m8g.css`，这两个资源已是 404；带查询参数绕过 CDN 缓存后返回新 HTML 与新资源。HTML 响应 `Cache-Control: max-age=600`，所以短时间内不同设备 / 浏览器会拿到不一致的 HTML。此前 `build:pages` 使用 `--emptyOutDir`，每次构建删掉旧哈希资源，造成缓存中的 HTML 无法加载脚本与样式。
+- `ascend-studio/package.json` 的 Pages 构建不再清空 `ascstudio/`。同时恢复最近 10 次索引版本中引用的哈希 JS / CSS 文件，确保已缓存的旧入口在缓存窗口内仍有可取资源；后续构建也会保留已有哈希资源。页面导航与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages` 成功；新 bundle 与缓存版本 bundle `node --check` 通过；新旧 JS / CSS 文件存在；`git diff --check` 通过。Firefox 原标签页在修复发布前仍显示空白，线上发布及资源状态待本轮确认。

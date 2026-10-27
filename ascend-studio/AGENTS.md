@@ -1883,3 +1883,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 在有旧画布级笔迹的编辑态，工具栏始终显示“删除笔迹”；未选中时禁用并指引先点线条，选中后删除目标笔迹。任务画布、图像输入学习画布与 ResNet50 官方学习画布保持同一交互。
 - 新手绘卡片依旧只在卡片内容区域绘制；删整张新卡时同时移除卡内笔迹。此规则针对存量的无卡片归属笔迹，不改变当前卡片绘制方式。
 - 本轮实现已进入 `origin/main`，并随 Pages workflow `40495064319` 成功发布；线上 JS 确认提供选中 / 删除文案。细节见根目录 `AGENTS.md` 同日记录。
+
+### 2026-10-27 · GitHub Pages 旧缓存兼容
+
+- 用户的 GitHub Pages 页面空白是缓存入口失效：Pages 对 HTML 返回 `max-age=600`，而构建脚本的 `--emptyOutDir` 每次构建删除旧哈希 JS / CSS。浏览器可能继续使用旧 HTML 并请求已删除的 bundle，形成整页白屏。
+- `build:pages` 改为保留输出目录；在当前 Pages 产物中补回最近版本 HTML 引用过的旧 JS / CSS。后续更新留下哈希资源，以便缓存中的旧 HTML 仍可加载。页面内容和交互未变。
+- 验证：`npm run build:pages`、新旧入口 bundle `node --check`、资源文件存在性和 `git diff --check` 通过；Pages 推送与部署回执待补。
