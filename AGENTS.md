@@ -7215,11 +7215,21 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：`npm run build:pages`、构建 JS `node --check`、HTML bundle 引用存在性、`git diff --check` 通过；本地 5179 预览返回 HTTP 200 并已打开。未运行自动化测试或截图回放。
 - 发布：提交 `8c2a9f39` 已推送至 `origin/main`；GitHub Pages workflow `40550981417` 成功。线上 `/AscendCANN/ascstudio/` 的 HTML、`index-clfwqhtg.js`、`index-CcgYN-dL.css` 均 HTTP 200；回读确认新展开 / 收起文案与样式已发布。
 
+### 2026-10-28 · 知识供给蓝图按内容图、流程图与图标重构
+
+- 用户认可用内容图呈现真实资源样貌，用流程图 / 结构图说明服务关系，用图标标注类别（H）。据此重排独立材料 `ascstudio-mini/knowledge-provider-map.html`：封面放知识供给主视觉；学习发现映射页只在路径、认证、课程与 Meetup 等具体内容处放图；供给编译、Demo 楼层服务映射、Knowledge Unit 字段、Web / API / MCP / Skills 通道与 P0–P2 路线图改用信息图表达，减少文字平铺与突兀装饰图。
+- 7 页序列保持不变。图片位于 `ascstudio-mini/assets/knowledge-resources/`：学习路径、认证、课程沿用各自资源图，封面与 Meetup 新图转为高质量 JPG；移除旧拼图 `knowledge-resource-atlas.png`。README 同步说明每类视觉承担的含义。所有图均作为概念内容示意，不表示推荐数据或服务后端已经接入。
+- 业务范围继续是目标服务方案，沿用原有标准 / 协议事实来源与 `llms.txt` 提案、`robots.txt` 不承担鉴权等边界；没有改变材料页序或 API / Protocol、Host / Harness、Application / Task 的责任边界。证据：用户确认方向（H）、本地页面资源及结构检查（M）。
+- 验证：lxml 解析确认 7 页；本地资源引用和图片 alt 检查通过；封面与 Meetup 图片分别为 152 KB / 301 KB；内嵌 JS `node --check` 与 `git diff --check` 通过。未做浏览器截图视觉核验，未运行自动化测试。
+- 推送：工作分支先快进同步远端主线提交 `8c2a9f39`、`baf65093`；因主线随后前进，又合入 `9d052474`。本轮材料提交 `78bd3842` 与主线合并提交 `e6de3afe` 已推送至 `origin/main`，其他工作区改动均保留。GitHub Pages 部署状态未核验。
+- 未决：无。
+
 ### 2026-10-28 · 展开箭头改为输入框上方居中胶囊
 
 - 用户指出展开入口偏右且方形；改为水平居中、圆角胶囊形状，保留原有悬浮 / 聚焦 / 触屏显隐与展开、收起行为。
 - 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 构建产物。依据为用户明确反馈（H）；不改变布局行为、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`npm run build:pages`、生成 JS `node --check`、HTML bundle 引用、胶囊居中样式核对及 `git diff --check` 通过；本地 5179 预览 HTTP 200。推送与 Pages 部署结果待补。
+- 验证：`npm run build:pages`、生成 JS `node --check`、HTML bundle 引用、胶囊居中样式核对及 `git diff --check` 通过；本地 5179 预览 HTTP 200。
+- 发布：样式提交 `9d052474` 已推送；其 Pages workflow `40552630444` 被之后的并行主线更新取消。快进同步并保留知识供给蓝图提交 `78bd3842`、`e6de3afe`、`ee1f6913` 后，最新 Pages workflow `40552923176` 成功。线上 HTML、`index-BbxiqbVp.js`、`index-Cd3-N-Gs.css` 均 HTTP 200；已回读确认展开入口居中胶囊样式和展开 / 收起文案。
 
 ### 2026-10-28 · 学习发现「更多推荐」配图小幅提亮
 
