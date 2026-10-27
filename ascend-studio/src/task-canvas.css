@@ -20,7 +20,7 @@
 .tc-stage { position: relative; flex: 1; min-width: 0; min-height: 0; overflow: clip; outline: none; touch-action: none; cursor: default; }
 .tc-stage.is-hand-mode { cursor: grab; }
 .tc-stage.is-panning { cursor: grabbing; }
-.tc-stage.is-drawing { cursor: crosshair; }
+.tc-stage.is-drawing { cursor: default; }
 .tc-stage.is-gesturing, .tc-stage.is-gesturing * { user-select: none; }
 .tc-world { position: absolute; inset: 0 auto auto 0; width: 1px; height: 1px; transform-origin: 0 0; }
 .tc-connections { position: absolute; z-index: 1; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; color: #aeb4c2; pointer-events: none; }
@@ -43,6 +43,7 @@
 .tc-move-handle:disabled { opacity: .4; cursor: default; }
 .tc-pin-label { display: inline-flex; align-items: center; gap: 3px; color: #8b8f9a; font-size: 10px; white-space: nowrap; }
 .tc-card-content { flex: 1; min-height: 0; min-width: 0; padding: 12px 13px 14px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #d7d8dc transparent; background: #fff; border-radius: 0 0 var(--canvas-card-inner-radius) var(--canvas-card-inner-radius); font-size: 12px; line-height: 1.75; touch-action: pan-y; }
+.tc-card-content.is-drawing-card { display: flex; padding: 0; overflow: hidden; touch-action: none; }
 .tc-card-content[hidden] { display: none; }
 .tc-card-content > * { min-width: 0; }
 .tc-note-editor { display: block; width: 100%; height: 100%; min-height: 180px; resize: none; padding: 2px; border: 0; outline: none; color: #4b4f50; background: transparent; font: inherit; line-height: 1.8; }

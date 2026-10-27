@@ -11,7 +11,7 @@ const ADD_CUSTOM_CANVAS_VERSION = ADD_CUSTOM_LAYOUT_VERSION;
 const ADD_CUSTOM_CARD_SIZES = {
   explanation: [700, 520], source: [780, 500], evidence: [700, 420], precision: [700, 500],
   review: [700, 520], draft: [700, 560], parameters: [700, 560], attempts: [700, 560],
-  diff: [840, 640], validation: [700, 560], reference: [700, 520], "task-brief": [700, 420], note: [600, 360],
+  diff: [840, 640], validation: [700, 560], reference: [700, 520], "task-brief": [700, 420], note: [600, 360], "drawing-card": [640, 420],
 };
 const ADD_CUSTOM_DYNAMIC_CARD_SIZES = {
   attempt: [680, 520], snapshot: [660, 480], record: [620, 420],
@@ -46,6 +46,7 @@ const LEGACY_CARD_POSITIONS = {
 };
 
 function addCustomCardLimits(id) {
+  if (id.startsWith("drawing-card:")) return ADD_CUSTOM_CARD_LIMITS.note;
   if (id.startsWith("note:")) return ADD_CUSTOM_CARD_LIMITS.note;
   if (id.startsWith("attempt:")) return ADD_CUSTOM_CARD_LIMITS.attempt;
   if (id.startsWith("snapshot:")) return ADD_CUSTOM_CARD_LIMITS.snapshot;
@@ -56,6 +57,7 @@ function addCustomCardLimits(id) {
 
 function addCustomDefaultCardSize(id) {
   if (ADD_CUSTOM_CARD_SIZES[id]) return ADD_CUSTOM_CARD_SIZES[id];
+  if (id.startsWith("drawing-card:")) return ADD_CUSTOM_CARD_SIZES["drawing-card"];
   if (id.startsWith("note:")) return ADD_CUSTOM_CARD_SIZES.note;
   if (id.startsWith("attempt:")) return ADD_CUSTOM_DYNAMIC_CARD_SIZES.attempt;
   if (id.startsWith("snapshot:")) return ADD_CUSTOM_DYNAMIC_CARD_SIZES.snapshot;
@@ -165,7 +167,7 @@ function freePosition(card, obstacles) {
 function fittedViewport(cards, width, height, ids = null, padding = FIT_PADDING, drawings = []) {
   const included = ids ? new Set(ids) : null;
   const visible = cards.filter((card) => card.visible && (!included || included.has(card.id)));
-  const points = included ? [] : drawings.flatMap((drawing) => drawing.points || []);
+  const points = included ? [] : drawings.filter(drawing => !drawing.cardId).flatMap((drawing) => drawing.points || []);
   if (!visible.length && !points.length) return { x: 0, y: 0, zoom: 1 };
   const left = Math.min(...visible.map((card) => card.x), ...points.map((point) => point.x));
   const top = Math.min(...visible.map((card) => card.y), ...points.map((point) => point.y));
@@ -274,15 +276,31 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
       lastHiddenId: id,
     }));
   };
+  const deleteCard = (id) => {
+    if (!current.current.cards.some(card => card.id === id)) return;
+    hiddenHistory.current = hiddenHistory.current.filter(item => item !== id);
+    placedCards.current.delete(id);
+    update(previous => {
+      const cards = previous.cards.filter(card => card.id !== id);
+      const selectedCardId = previous.selectedCardId === id ? cards.findLast(card => card.visible)?.id || null : previous.selectedCardId;
+      return {
+        cards,
+        drawings: (previous.drawings || []).filter(drawing => drawing.cardId !== id),
+        selectedCardId,
+        lastHiddenId: previous.lastHiddenId === id ? lastHidden(cards) : previous.lastHiddenId,
+      };
+    });
+  };
   const updateCard = (id, patch) => {
     if (!current.current.cards.some((card) => card.id === id) || !patch || typeof patch !== "object") return;
     update((previous) => ({ cards: previous.cards.map((card) => card.id === id ? { ...card, ...patch } : card) }));
   };
   const addDrawing = (drawing = {}) => {
     const points = Array.isArray(drawing.points) ? drawing.points.filter((point) => isFiniteNumber(point?.x) && isFiniteNumber(point?.y)) : [];
-    if (points.length < 2) return null;
+    const cardId = typeof drawing.cardId === "string" ? drawing.cardId : null;
+    if (points.length < 2 || !cardId || !current.current.cards.some(card => card.id === cardId && card.kind === "drawing")) return null;
     const id = `drawing:${Date.now().toString(36)}:${Math.random().toString(36).slice(2, 7)}`;
-    update((previous) => ({ drawings: [...(previous.drawings || []), { id, points, color: drawing.color || "#56585a", width: isFiniteNumber(drawing.width) ? drawing.width : 3 }] }));
+    update((previous) => ({ drawings: [...(previous.drawings || []), { id, cardId, points, color: drawing.color || "#56585a", width: isFiniteNumber(drawing.width) ? drawing.width : 3 }] }));
     return id;
   };
   const removeDrawing = (id) => {
@@ -410,7 +428,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
 
   return {
     state: current.current,
-    actions: { addCard, showCard, hideCard, selectCard, moveCard, resizeCard, updateCard, addDrawing, removeDrawing, togglePin, toggleCollapse, setViewport, setSurfaceSize, beginComparison, endComparison, reset, restore, fitCanvas, focusCanvas },
+    actions: { addCard, showCard, hideCard, deleteCard, selectCard, moveCard, resizeCard, updateCard, addDrawing, removeDrawing, togglePin, toggleCollapse, setViewport, setSurfaceSize, beginComparison, endComparison, reset, restore, fitCanvas, focusCanvas },
   };
 }
 

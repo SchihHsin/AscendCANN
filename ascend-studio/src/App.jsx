@@ -47,6 +47,7 @@ import {
   IconAdjustmentsHorizontal,
   IconArrowRight,
   IconBell,
+  IconBolt,
   IconBook,
   IconBooks,
   IconChevronDown,
@@ -77,7 +78,6 @@ import {
   IconSettingsAutomation,
   IconThumbDown,
   IconThumbUp,
-  IconBulb,
   IconX,
 } from "@tabler/icons-react";
 
@@ -211,6 +211,7 @@ function App() {
   useEffect(() => { writeSession("project-panel-open", projectPanelOpen); }, [projectPanelOpen]);
   const [conversationLayout, setConversationLayout] = useState(() => readSession("conversation-layout", "sidebar") === "floating" ? "floating" : "sidebar");
   useEffect(() => { writeSession("conversation-layout", conversationLayout); }, [conversationLayout]);
+  const [floatingConversationExpanded, setFloatingConversationExpanded] = useState(false);
   const [conversationDragging, setConversationDragging] = useState(false);
   const [conversationDockPreview, setConversationDockPreview] = useState(false);
   const [conversationFloatPreview, setConversationFloatPreview] = useState(false);
@@ -252,6 +253,7 @@ function App() {
     session, task, currentGroup, isMainTask,
     openDialog, openMenu, sendMessage, setDraft, toast,
   } = wb;
+  useEffect(() => { setFloatingConversationExpanded(false); }, [conversationLayout, selectedTask]);
   useEffect(() => {
     const clearRangeContext = () => setPointContext(null);
     window.addEventListener("ascstudio-point-range-clear", clearRangeContext);
@@ -264,6 +266,12 @@ function App() {
   useEffect(() => setPointContext(null), [selectedTask]);
   const onComposerVoiceStart = () => { composerVoiceDraftRef.current = wb.draftRef.current?.value ?? draft; };
   const onComposerVoiceTranscript = (transcript) => setDraft([composerVoiceDraftRef.current.trim(), transcript.trim()].filter(Boolean).join(" "));
+  useEffect(() => {
+    const textarea = wb.draftRef.current;
+    if (!textarea) return;
+    textarea.style.height = "auto";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 110)}px`;
+  }, [session.draft, mainView]);
   const clearPointContext = () => {
     setPointContext(null);
     window.dispatchEvent(new Event("ascstudio-point-range-consumed"));
@@ -1400,7 +1408,7 @@ function App() {
         </section> : showCapabilities ? <section className="management-page" aria-labelledby="capabilities-page-title">
           <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 工具与方法</span><h1 id="capabilities-page-title">能力库</h1><p>按类型查找可复用的检查能力，选择后会带入当前任务。</p></div><div className="management-page-summary"><strong>{capabilities.length}</strong><span>项可用能力</span><i /><strong>{new Set(capabilities.map(item => item.category).filter(Boolean)).size}</strong><span>个分类</span></div></header>
           <div className="management-page-content"><CapabilityList capabilities={capabilities} onUseCapability={useCapabilityFromPage} /></div>
-        </section> : <section ref={conversationPanelRef} className={`conversation-panel${conversationDragging ? " is-dragging" : ""}`} aria-label="任务对话">
+        </section> : <section ref={conversationPanelRef} className={`conversation-panel${conversationDragging ? " is-dragging" : ""}${conversationLayout === "floating" && !floatingConversationExpanded ? " is-composer-only" : ""}${conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : ""}`} aria-label="任务对话">
           <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <div className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
             <div className="conversation-flow">
@@ -1520,21 +1528,22 @@ function App() {
               <IconFileText size={ICON_SIZE.control} />生成草稿
             </button>
           </section>}
-          <form className={`composer${showCommunityInvite ? " composer--community" : ""}`} onSubmit={handleSendMessage}>
+          <form className={`composer${showCommunityInvite ? " composer--community" : ""}`} onSubmit={(event) => { if (conversationLayout === "floating" && !session.replying && (draft.trim() || session.attachments.length)) setFloatingConversationExpanded(true); handleSendMessage(event); }}>
             <button className="conversation-drag-handle" type="button" aria-label="拖动对话区域切换布局" title="拖动对话区域；靠近目标布局时会显示预览，松手后吸附。轻点或按回车可切换布局" disabled={areaInteractionActive} onKeyDown={event => { if (event.key === "Escape" && conversationDragRef.current) { event.preventDefault(); resetConversationDrag(); } else if (event.key === "Enter" || event.key === " " || conversationLayout === "floating" && event.key === "ArrowLeft" || conversationLayout === "sidebar" && event.key === "ArrowDown") { event.preventDefault(); setConversationLayout(current => current === "floating" ? "sidebar" : "floating"); } }} onPointerDown={startConversationDrag} onPointerMove={moveConversationDrag} onPointerUp={event => finishConversationDrag(event)} onPointerCancel={event => finishConversationDrag(event, true)} onLostPointerCapture={event => finishConversationDrag(event, true)}><IconGripHorizontal size={ICON_SIZE.inline} aria-hidden="true" /></button>
             {(session.attachments.length > 0 || session.capabilityIds.length > 0 || pointContext) && <div className="composer-context-chips">
               {pointContext && <span className="attachment-chip point-context-chip"><IconPointer2 size={ICON_SIZE.inline} /><span>{pointContext.type === "workspace-area" ? `工作区区域 · ${pointContext.label}` : `图解范围 · ${pointContext.label}`}</span><button type="button" aria-label="移除指向区域上下文" onClick={clearPointContext}><IconX size={ICON_SIZE.micro} /></button></span>}
               {session.attachments.map((file) => <span className="attachment-chip" key={file.id}><IconPaperclip size={ICON_SIZE.inline} /><span title={file.restorationNote || file.name}>{file.name}</span><button type="button" aria-label={"移除附件 " + file.name} onClick={() => wb.patchSession((old) => ({ attachments: old.attachments.filter((item) => item.id !== file.id) }))}><IconX size={ICON_SIZE.micro} /></button></span>)}
               {session.capabilityIds.map((id) => <span className="attachment-chip capability-chip" key={id}><IconBooks size={ICON_SIZE.inline} /><span>{capabilities.find((item) => item.id === id)?.name}</span><button type="button" aria-label="移除能力" onClick={() => wb.patchSession((old) => ({ capabilityIds: old.capabilityIds.filter((item) => item !== id) }))}><IconX size={ICON_SIZE.micro} /></button></span>)}
             </div>}
-            <textarea ref={wb.draftRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); handleSendMessage(event); } }} placeholder="继续提问，或描述你想进行的下一步…" aria-label="继续提问" rows={1} />
+            <textarea ref={wb.draftRef} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); event.currentTarget.form?.requestSubmit(); } }} placeholder="继续提问，或描述你想进行的下一步…" aria-label="继续提问" rows={1} />
             <div className="composer-toolbar">
               <div className="composer-tools">
                 <button className="icon-button composer-plus" type="button" aria-label="更多输入方式" data-menu-trigger data-menu-align="left" aria-expanded={wb.menu?.name === "input"} onClick={(event) => openMenu("input", event)}><IconPlus size={ICON_SIZE.heading} /></button>
               </div>
               <div className="composer-submit">
-                <button className="model-button" type="button" onClick={() => openDialog("models")} title="选择 AI（本地演示）"><IconBulb size={ICON_SIZE.inline} /><span>{wb.model.label}</span><IconChevronDown size={ICON_SIZE.inline} /></button>
                 <button className="permission-button" type="button" aria-label={`权限设置，当前${permissionModeLabel}`} title={`权限：${permissionModeLabel}（演示）`} data-menu-trigger aria-expanded={wb.menu?.name === "permissions"} onClick={event => openMenu("permissions", event)}><IconShieldCheck size={ICON_SIZE.control} /></button>
+                <button className="model-button" type="button" data-menu-trigger data-menu-align="left" aria-expanded={wb.menu?.name === "models"} onClick={event => openMenu("models", event)} title="选择模型"><IconBolt size={ICON_SIZE.inline} /><span>{wb.model.label}</span><IconChevronDown size={ICON_SIZE.inline} /></button>
+                <span className="composer-voice-slot"><VoiceCaptureButton className="composer-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} iconOnly /></span>
                 <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying || (!draft.trim() && !session.attachments.length)}><IconSend size={ICON_SIZE.heading} /></button>
               </div>
             </div>
@@ -1558,7 +1567,8 @@ function App() {
       {wb.menu && <div className={"workbench-menu workbench-menu-" + wb.menu.name} ref={wb.menuRef} style={{ left: wb.menu.left, ...(wb.menu.bottom !== null ? { bottom: wb.menu.bottom } : { top: wb.menu.top }) }}>
         {wb.menu.name === "filter" && <><div className="menu-label">显示项目</div>{[{ id: "all", label: "全部项目" }, { id: "current", label: "当前项目" }].map((item) => <button key={item.id} type="button" className={wb.filterScope === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => wb.setFilterScope(item.id))}>{item.label}{wb.filterScope === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}<div className="menu-divider" /><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups(wb.groups.map((group) => group.id)))}>展开所有项目</button><button type="button" onClick={() => closeMenuAnd(() => wb.setOpenedGroups([]))}>收起所有项目</button></>}
         {wb.menu.name === "chat" && <><div className="menu-label">当前任务对话</div><button type="button" onClick={() => closeMenuAnd(wb.startConversation)}>新对话<IconPlus size={ICON_SIZE.control} /></button><button type="button" onClick={() => openDialog("history")}>对话历史<span>{session.history.length}</span></button><button type="button" onClick={() => closeMenuAnd(() => wb.copyText(wb.conversationText()))}>复制当前对话<IconCopy size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button><div className="menu-divider" /><button type="button" onClick={resetCurrentTask}>恢复本题初始状态</button></>}
-        {wb.menu.name === "input" && <><div className="menu-label">添加输入</div><VoiceCaptureButton className="input-menu-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} /><div className="menu-divider" /><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => navigateMainView("capabilities"))}>使用能力库<IconBooks size={ICON_SIZE.control} /></button></>}
+        {wb.menu.name === "input" && <><div className="menu-label">添加输入</div><button type="button" onClick={() => openDialog("code")}>代码片段<IconCode size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.fileRef.current?.click())}>选择本地文件<IconPaperclip size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => wb.imageRef.current?.click())}>选择截图<IconPhoto size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => navigateMainView("capabilities"))}>使用能力库<IconBooks size={ICON_SIZE.control} /></button></>}
+        {wb.menu.name === "models" && <><div className="menu-label">选择模型</div>{modelOptions.map(item => <button key={item.id} type="button" className={wb.selectedModel === item.id ? "is-active" : ""} aria-pressed={wb.selectedModel === item.id} onClick={() => closeMenuAnd(() => wb.chooseModel(item.id))}><span>{item.label}</span>{wb.selectedModel === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
         {wb.menu.name === "permissions" && <><div className="menu-label">当前任务权限 · 演示</div>{PERMISSION_OPTIONS.map(item => <button key={item.id} type="button" className={permissionMode === item.id ? "is-active" : ""} onClick={() => closeMenuAnd(() => setPermissionModes(current => ({ ...current, [selectedTask]: item.id })))}><span>{item.label}</span>{permissionMode === item.id && <IconCircleCheck size={ICON_SIZE.control} />}</button>)}</>}
         {wb.menu.name === "diagnostic" && <><div className="menu-label">判断与核对</div>{isMainTask && <><button type="button" onClick={() => closeMenuAnd(() => openContent("review"))}>生成复核记录<IconFileText size={ICON_SIZE.control} /></button><button type="button" onClick={() => closeMenuAnd(() => setRationaleOpen((value) => !value))}>{rationaleOpen ? "收起判断依据" : "展开判断依据"}<IconBook size={ICON_SIZE.control} /></button></>}<button type="button" onClick={() => openDialog("attempts")}>已尝试的动作<IconAdjustmentsHorizontal size={ICON_SIZE.control} /></button><button type="button" onClick={wb.exportTask}>导出任务记录<IconFileText size={ICON_SIZE.control} /></button></>}
         {wb.menu.name === "notifications" && <><div className="menu-label">任务动态</div>{wb.notifications.length ? wb.notifications.map((entry) => <button className="notification-row" key={entry.id} type="button" onClick={() => selectExistingTask(entry.taskName)}><span><strong>{entry.text}</strong><small>{entry.taskName} · {entry.time}</small></span></button>) : <p className="menu-empty">尚无新动态。完成核对后会在这里留下记录。</p>}</>}

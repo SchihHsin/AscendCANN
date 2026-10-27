@@ -6889,3 +6889,82 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 组合首页的区块无障碍名称、需求草稿占位提示和空需求提示改为通用场景 / 线索表达；训练调优字段保留为当前 Demo 内容。
 - 修改 `ascend-studio/src/CombinationTaskHome.jsx`、`ascend-studio/src/combination-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。由于 CUA 浏览器桥接在本轮断开，未完成页面截图复核。
 - 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。发布结果待补记。
+
+### 2026-10-27 · 底部对话输入栏与语音入口
+
+- 用户提供的参考图用于底部输入栏的控件顺序与形态（H）：加号、权限、模型下拉、话筒、发送。底部默认态只显示宽向圆角输入栏；拖动布局时的底部预览同步显示该输入栏轮廓。发送后展开当前对话内容，便于查看回复；切换任务或布局时回到输入栏默认态。
+- 输入文字自动撑高文本区，限制最大高度；底部态输入框加宽并使用较大圆角。控件无常驻描边，保留黑色发送键。模型示例更新为 GLM-5.3、DeepSeek V4、Qwen3-Coder；顶部模型控件使用下拉菜单。
+- 话筒直接调用现有中文浏览器语音识别，识别中的文字会更新输入草稿；浏览器若要求麦克风权限，由用户在页面确认。没有接入语音服务端或真实模型。
+- 修改：`ascend-studio/src/App.jsx`、`VoiceCaptureButton.jsx`、`prototype-data.js`、`styles.css` 与 `ascstudio/` 构建产物。未改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：合并本任务与远端并行的学习发现资源卡改动后，重新运行 `npm run build:pages`、构建 JS `node --check`、`git diff --check`，均通过；未运行自动化测试。5178 本地预览返回 HTTP 200。当前工具环境没有 CUA，未取得新的视觉截图复核。
+- 发布：实现提交 `08648dbf`，保留并整合远端学习发现改动后，提交 `6b230f3a` 已推送至 `origin/main`。Pages workflow `40451889763` 成功；线上 `/ascstudio/` 引用 `index-B_eSiU84.js`、`index-Cb53yFSM.css`，HTML、JS 与 CSS 均 HTTP 200。
+
+- 不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。提交 `5600a865` 已推送至 `origin/main`；Pages workflow `40436387761` build / deploy 成功。线上 `/ascstudio/` HTML 已引用新 JS / CSS 哈希资源；本地 5206 页面与源码模块返回 HTTP 200。
+
+
+### 2026-10-27 · Ascend Studio 小程序知识推荐方向（待选择）
+
+- 用户要求基于线上 `/ascstudio/` 电脑端 Demo 新增小程序端，重点是便捷推荐知识点。已读取线上入口及其 JS 文本，并核对本地学习发现、任务推荐和探索主题数据；来源为用户需求与公开发布代码（H），尚未进行小程序页面实现或视觉核验。
+- 按协作规则先提供三个方向：A 口袋知识卡（短讲解、图解、理解题与收藏）、B 轻探索地图（触摸主题渐进发现）、C 任务随行助手（围绕电脑端任务推荐知识与下一步）。建议 A 为首页并加入 C 的任务关联；这是待选建议，尚非用户确认决策。训练与调优可用作首轮故事素材。
+- 当前仅追加本交接记录，产品源码、电脑端页面序列与 API / Protocol、Host / Harness、Application / Task 边界均无变化。方向选择已通过异步问题发出，等待用户选择；拟先交付可点击交互 Demo，小程序原生工程范围尚未确认。
+- 验证与发布：仅把本条追加到最新 `origin/main` 的 `AGENTS.md`，用独立临时索引核对单文件差异并执行 `git diff-tree --check`，随后推送 `main`（提交主题 `docs: record mini-program knowledge recommendation options`）；共享工作区内已有暂存、未暂存及未跟踪内容保持原样。
+
+### 2026-10-27 · 学习发现下方楼层与资源卡调整
+
+- 用户确认下方楼层用浅灰圆角分组底，并要求资源卡改为上图下字、横向排列，同时指出配图过淡。保留白卡和细描边，推荐与新上架改为桌面四列竖版卡，窄屏依次切三列 / 两列 / 单列；图片换用仓库已有主体更清楚的 v2 课程、路径、知识点、认证素材，保持浅亮底色。近期日程保留纵向时间轴。
+- 修改 `ascend-studio/src/LearningDiscoveryPage.jsx`、`ascend-studio/src/learning-discovery.css` 与 `/ascstudio/` 构建产物。依据为用户本轮明确需求（H）及仓库已有内容图素材；不改变页面序列或 API / Host / Application 边界。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。页面提交 `de01c247` 已推送到 `origin/main`；GitHub Pages workflow `40451131656` 成功，线上 `/ascstudio/` 已引用新 JS / CSS 哈希，二者均 HTTP 200。
+
+### 2026-10-27 · 画布编辑退出、卡片内绘图与新增卡片删除
+
+- 用户提出三项一致性要求：进入画布编辑态后能明确退出；绘图应发生在卡片内部；新增卡片应能删除。编辑工具在编辑态显示“完成编辑”，并支持 Esc 退出；切换抓手、结束绘图或隐藏画布时清理活动笔迹状态。
+- 绘图按钮创建或选中独立“手绘卡片”，指针笔迹限定在该卡片内容区域，落笔数据按 `cardId` 归属。保留已有无卡片归属笔迹的显示兼容，但新交互不再产生画布级笔迹。
+- 任务画布、图像预处理学习画布、ResNet50 官方学习画布共用同一手绘卡片组件；新增便签和手绘卡片在编辑态提供删除，删除时同时清除关联笔迹。原任务材料仍使用收起 / 恢复，不显示删除操作。
+- 修改 `ascend-studio/src/TaskCanvas.jsx`、`LearningHierarchyCanvas.jsx`、`OfficialLearningPathCanvas.jsx`、`LearningCanvasToolbar.jsx`、`shared/canvas/CanvasUserNote.jsx`、新增 `shared/canvas/CanvasDrawingSurface.jsx`、`shared/canvas/useCanvasDrawing.js`、`shared/canvas/canvas.css`、`task-canvas.css`、`useCanvasState.js`；Pages 产物在合并主线后重新生成。
+- 依据：用户本轮明确要求（H）；本地实现逻辑与生产构建（M）。`npm run build:pages`、源码辅助模块 `node --check`、生成 JS `node --check`、`git diff --check` 通过；未运行自动化测试。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 源码提交 `fe2002cc` 与主线合并提交 `f1fad356`、`ef0dec28`、`5e302f34` 已保留并推送至 `origin/main`；其间两次主线并行前进均通过合并同步，没有强推。GitHub Pages workflow `40452525868` build / deploy 成功；线上 `/ascstudio/` HTML 引用 `index-C55fWpDC.js` / `index-C85RrIPy.css`，两资源返回 HTTP 200，线上 JS 已核对“完成编辑”“新增手绘卡片”“在此卡片内拖动绘图”“删除卡片”等文案。并行首页与对话布局更新一并保留。
+
+
+### 2026-10-27 · Ascend Studio 口袋新知小程序交互 Demo
+
+- 用户已选择「A 为主 + C：知识卡推荐，关联电脑端任务」（H），覆盖本日此前的待选状态。新增独立静态原型 `ascstudio-mini/`，发布入口 `/AscendCANN/ascstudio-mini/`；手机全屏体验，桌面使用小程序窗口方便评审，沿用浅中性灰、黑色主操作、局部彩色图解与宋体主题标题。
+- 业务流程：发现（搜索 / 分类 / 换组推荐 / 当前任务上下文）→ 知识卡（交互图解 / 理解小题 / 收藏）→ 可编辑任务小结 → 在电脑端复制接续。「任务」页可切换推荐方向，查看知识进展与小结；「我的」保留收藏、已理解知识和小结。首轮默认沿「多卡收益不明显」展开，另有算子入门与模型推理两项示例任务。
+- 七张知识卡覆盖扩展效率、梯度同步、有效 Batch、混合精度、并行策略、尾块和输入布局；图解数值为原理示例。知识卡附公开延伸阅读，5个不同来源URL均HTTP 200（H）；本地交互与截图属于可复核浏览器观察（M），不宣称真实AI推荐、训练诊断或NPU验证。
+- 文件：`index.html`、`styles.css`、`app.js`、`knowledge.js`、`mark.svg`、`README.md`、`qa.md` 与 `evidence/` 下5张手机 / 桌面截图。收藏、理解进展与小结存储在当前浏览器；电脑端采用明确复制小结与问题，不冒充后台跨设备同步。原生微信工程及平台发布不在当前已选交互Demo范围内。
+- 验证：JS 两文件 `node --check` 通过；7张卡 / 3项任务的数据ID、关联、答案索引和HTTPS来源完整性检查通过；内置浏览器实际验证7种图解、搜索空结果与清空、换组、任务切换、错答 / 改答反馈、即时已理解、收藏 / 小结刷新恢复、剪贴板内容、弹窗背景inert与Escape关闭。320 / 390 / 430px手机与1440×1000桌面核验，320px控件无横向越界，页面console无error / warn；详见 `ascstudio-mini/qa.md`。
+- 发布：只将新增 `ascstudio-mini/` 与本条交接记录从最新 `origin/main` 隔离提交，`git diff-tree --check` 通过后推送至 `main`，提交主题为 `feat: add Ascend Studio pocket knowledge mini-program demo`。不纳入共享目录中已有的暂存、未暂存或未跟踪内容；电脑端源码、原有页面序列和API / Host / Application边界均无改动。待续事项是用户评审首版交互与内容取舍。
+
+### 2026-10-27 · 修复 Ascend Studio 线上白屏
+
+- 用户反馈 `/ascstudio/` 页面只显示空白。桌面 Chrome 无痕环境复现线上 JS 报错 `Cannot access 'hs' before initialization`，定位到 `App.jsx` 在 `draft` 声明前将其用于 `useEffect` 依赖，导致 React 启动中断。
+- 将输入框高度同步 effect 的依赖改为已提前取得的 `session.draft`。修改 `ascend-studio/src/App.jsx` 与 `/ascstudio/` 构建产物；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- `npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；本地静态预览与线上地址均用桌面 Chrome 干净会话确认 `#root` 正常渲染，无该前端运行异常。修复提交 `f597d6f8` 已推送至 `origin/main`；该提交已包含在 Pages workflow `40461602297` 的成功部署中，线上 `/ascstudio/` 引用 `index-C0JQkypv.js` / `index-C85RrIPy.css`，浏览器实测页面恢复。
+
+
+#### 2026-10-27 · 口袋新知发布回执
+
+- 产品与核验材料提交 `c2c6ba1b429e38da045320a3484e786f11b26ec4` 已推送 `origin/main`；GitHub Pages legacy build 返回 `built`、无构建错误。线上 `https://schihhsin.github.io/AscendCANN/ascstudio-mini/` 及 `app.js`、`styles.css`、`knowledge.js`、`mark.svg` 均HTTP 200，JS / CSS MIME类型正常。
+- 内置浏览器已完成本地交互与手机 / 桌面视觉核验；最后的线上浏览器回放遇到连接超时，未据此宣称线上交互已复测。浏览器打开请求已发出，交付以可直接访问的线上链接为准。共享工作区现有改动继续保留。
+
+
+### 2026-10-27 · 小程序任务页标题改为继续学习
+
+- 用户依据小程序截图明确要求，将页面主标题「接着你的任务」改为「继续学习」（H）。仅修改 `ascstudio-mini/app.js` 的任务列表页 H1；保留其余文案、导航、任务关联与学习交互。页面序列与 API / Host / Application 边界无变化。
+- 验证：本地和最新主线目标 JS 的 `node --check` 通过；隔离索引的 `git diff --cached --check` 通过。纯文案变更，无新增测试。
+- 发布：在最新 `origin/main` 的独立临时索引中，仅提交标题替换及本交接条目，推送 `main`，提交主题 `fix: rename mini-program task heading to continue learning`。共享工作区中其他暂存、未暂存和未跟踪内容保持原样。
+
+
+### 2026-10-27 · 微信订阅提醒交互方向（待选择）
+
+- 用户询问能否在微信里演示主动向小程序用户推送信息，作为现有口袋新知小程序 Demo 的后续方向。已核对订阅消息接入说明：用户需要在明确点击后调起订阅授权；发送需有对应授权，消息经微信服务通知呈现，点击可回到小程序相关页。依据：[腾讯云小程序订阅消息接入指南](https://cloud.tencent.cn/document/product/1301/103770) 所述微信 `wx.requestSubscribeMessage` 流程；平台边界属H级公开接口事实。面向学习内容先按用户逐条授权的一次性提醒设计；不预设持续、无授权推送。
+- 已提供的待选体验：A 在知识卡学完后订阅一次“下一节继续学习”提醒；B 从关联开发任务订阅一次具体的回电脑核查提醒。建议先体验A的完整微信链路：完成知识点→用户点击订阅→显示微信授权→模拟服务通知→点击通知回到知识卡。示例通知、服务通知卡片和授权结果用演示状态呈现，不宣称后台已接入微信。
+- 当前仅研究并讨论，没有修改UI、页面序列或 API / Protocol、Host / Harness、Application / Task 边界；待用户选择体验方向后再提供视觉方案并实现交互。
+- 验证 / 发布：本轮为来源核对与方向讨论，无运行时代码或页面测试。独立临时索引只提交本条 `AGENTS.md` 交接记录，执行 `git diff-tree --check` 并推送 `main`；共享工作区已有暂存、未暂存及未跟踪内容继续保留。
+
+
+#### 2026-10-27 · 微信推送触发改为知识点兴趣或存疑
+
+- 用户明确提出：开发者对某个知识点表示关心或存疑时，可向微信小程序送达适合手机阅读的内容（H）。这将上一条待选“学习结束后续学提醒 / 开发任务回电脑提醒”方向推进为知识点信号驱动的移动微学习：电脑端显式标记「感兴趣」或「还没弄懂」；用户订阅后，微信服务通知以一句话告知有新的知识内容；点击后在小程序打开手机内容。按触发信号匹配内容——兴趣看概念图解或应用例子，存疑看简短解释和一个理解核对。
+- 平台边界：推送通过小程序订阅消息；首次订阅应由用户点击触发微信授权，并限于其同意的对应订阅，不预设无授权连续推送。已查阅 [腾讯云小程序订阅消息接入指南](https://cloud.tencent.cn/document/product/1301/103770)。知识卡兴趣 / 存疑为明确用户交互，不伪装成读取心理状态的自动判断。
+- 本轮记录产品方向，尚未实施 UI、通知、服务器或微信平台接入；没有改变页面序列和 API / Protocol、Host / Harness、Application / Task 边界。后续交互 Demo 应呈现手机端短内容与从通知返回知识点的体验。
+- 验证与发布：研究讨论无代码验证。仅将本条追加至最新 `origin/main` 的 `AGENTS.md`，独立临时索引执行 `git diff-tree --check` 后推送至 `main`；共享目录原有未提交改动保持不动。

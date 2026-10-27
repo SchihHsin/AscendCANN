@@ -1802,3 +1802,32 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户选定中文 Slogan“从你的场景出发，连接线索，找到新的方向”。这是通用关系探索首页标题，不突出当前演示所用的训练调优领域，也不添加英文副标。演示字段继续为空白起步，训练调优仅保留为样例数据。
 - 组合画布的无障碍名称、草稿占位和空需求提示去除对训练调优领域的固定依赖。
 - `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接中断，未完成截图复核。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变；发布状态待核验。
+
+### 2026-10-27 · 底部对话输入栏与话筒
+
+- 底部布局初始只显示横向加宽的圆角输入栏；发送后展开当前对话内容。输入栏拖动到目标位置时，预览展示同样的短宽轮廓。
+- 操作顺序为加号、权限、模型下拉、话筒、发送；语音入口使用小型话筒图标，接入现有中文浏览器语音识别并把识别结果写入草稿。输入框按内容自动增高，不提供手动拖高。
+- 模型示例为 GLM-5.3、DeepSeek V4、Qwen3-Coder。话筒识别依赖浏览器支持及用户授予的麦克风权限；模型回复仍为本地原型内容。
+- 合并远端学习发现资源卡的并行实现后，`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。5178 本地预览返回 HTTP 200；本轮没有可用的 CUA 截图复核。
+- 实现提交 `08648dbf` 并整合提交 `6b230f3a` 已推送至 `origin/main`。Pages workflow `40451889763` 成功；线上 `index-B_eSiU84.js`、`index-Cb53yFSM.css` 均 HTTP 200。
+
+- `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 浏览器桥接中断，未完成截图复核。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。提交 `5600a865` 已推送至 `origin/main`；Pages workflow `40436387761` build / deploy 成功，线上 `/ascstudio/` HTML 已引用新 JS / CSS 哈希资源。
+
+### 2026-10-27 · 学习发现资源卡竖版与配图调整
+
+- 用户要求下方资源卡改成上图下字、横向排列，并指出原配图过淡。推荐与新上架卡片改为桌面四列，窄屏适配三列 / 两列 / 单列；采用仓库已有主体更清楚的 v2 资源图。楼层浅灰分组面、白卡细描边和活动日程纵向时间轴保留。
+- 修改 `src/LearningDiscoveryPage.jsx`、`src/learning-discovery.css` 与 Pages 构建产物。依据为用户明确需求和已有素材；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。页面提交 `de01c247` 已推送到 `origin/main`；GitHub Pages workflow `40451131656` 成功，线上 `/ascstudio/` 已引用新 JS / CSS 哈希，二者均 HTTP 200。
+
+### 2026-10-27 · 画布编辑与手绘卡片
+
+- 编辑态工具显示“完成编辑”，Esc 也可退出；结束编辑、切换抓手、隐藏画布时停止当前绘图并清理笔迹草稿。
+- 绘图入口添加独立手绘卡片，笔迹只画在卡片内容区并和卡片绑定；选中已有手绘卡片可继续绘制。便签与手绘卡片在编辑态可删除，关联笔迹随卡片删除；任务原材料仍只能收起 / 恢复。
+- 统一应用于通用任务画布、图像预处理学习画布和 ResNet50 官方学习画布。共享实现位于 `src/shared/canvas/CanvasDrawingSurface.jsx`、`CanvasUserNote.jsx` 与 `useCanvasDrawing.js`；通用卡片删除动作在 `src/useCanvasState.js`。
+- 构建及语法 / 差异检查通过，未运行测试套件。源码提交 `fe2002cc` 与主线合并提交 `f1fad356`、`ef0dec28`、`5e302f34` 已推送至 `origin/main`；Pages workflow `40452525868` 成功，线上 JS / CSS 均 HTTP 200，且 JS 已回读新交互文案。
+
+### 2026-10-27 · 修复页面启动时报错导致的白屏
+
+- 线上 `/ascstudio/` 在桌面 Chrome 复现 `Cannot access 'hs' before initialization`。输入框高度同步 effect 的依赖数组提前读取了后续才解构的 `draft`。
+- 改用已存在的 `session.draft` 作为依赖；构建文件随源码同步更新。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；本地与线上桌面 Chrome 干净会话均正常渲染。修复提交 `f597d6f8` 已推送至 `origin/main`，并包含在 Pages workflow `40461602297` 成功部署中。
