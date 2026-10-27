@@ -1956,3 +1956,4 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 底部浮窗默认仅显示输入框。鼠标悬浮或键盘聚焦时，在输入框上沿显示展开箭头；点击展开对话后改为收起箭头。触屏设备常显，已展开时常显。
 - 展开对话是独立于顶部布局切换的动作；自动发送后展开历史的行为保留。入口位于 `src/App.jsx`，样式位于 `src/styles.css`。
 - 此决定来自用户确认（H）。不改变页面顺序、hash、任务 / 对话数据或 API / Protocol、Host / Harness、Application / Task 边界。
+- 实现提交 `8c2a9f39` 已推送至 `origin/main`；Pages workflow `40550981417` 成功，线上 `/AscendCANN/ascstudio/` 及对应 JS / CSS 均 HTTP 200。

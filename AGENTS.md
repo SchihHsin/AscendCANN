@@ -7213,4 +7213,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认在底部输入框上沿提供展开箭头：默认只保留输入框，鼠标悬浮或键盘聚焦时出现；点击后展开历史对话，箭头改为收起方向。触屏设备常显入口，已展开时也保持可见。该动作只切换对话内容显隐，不与顶部的左右 / 底部布局切换混用；发送新消息自动展开的既有行为保留。
 - 实现位于 `ascend-studio/src/App.jsx`、`src/styles.css` 与 `/ascstudio/` Pages 产物。依据为用户确认（H）；未改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、构建 JS `node --check`、HTML bundle 引用存在性、`git diff --check` 通过；本地 5179 预览返回 HTTP 200 并已打开。未运行自动化测试或截图回放。
-- 推送与 Pages 部署结果待补。
+- 发布：提交 `8c2a9f39` 已推送至 `origin/main`；GitHub Pages workflow `40550981417` 成功。线上 `/AscendCANN/ascstudio/` 的 HTML、`index-clfwqhtg.js`、`index-CcgYN-dL.css` 均 HTTP 200；回读确认新展开 / 收起文案与样式已发布。
