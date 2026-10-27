@@ -6931,3 +6931,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈 `/ascstudio/` 页面只显示空白。桌面 Chrome 无痕环境复现线上 JS 报错 `Cannot access 'hs' before initialization`，定位到 `App.jsx` 在 `draft` 声明前将其用于 `useEffect` 依赖，导致 React 启动中断。
 - 将输入框高度同步 effect 的依赖改为已提前取得的 `session.draft`。修改 `ascend-studio/src/App.jsx` 与 `/ascstudio/` 构建产物；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - `npm run build:pages`、生成 JS `node --check`、`git diff --check` 通过；本地静态预览以桌面 Chrome 干净会话加载后，`#root` 有完整应用内容且无前端运行异常。线上修复部署待确认。
+
+
+#### 2026-10-27 · 口袋新知发布回执
+
+- 产品与核验材料提交 `c2c6ba1b429e38da045320a3484e786f11b26ec4` 已推送 `origin/main`；GitHub Pages legacy build 返回 `built`、无构建错误。线上 `https://schihhsin.github.io/AscendCANN/ascstudio-mini/` 及 `app.js`、`styles.css`、`knowledge.js`、`mark.svg` 均HTTP 200，JS / CSS MIME类型正常。
+- 内置浏览器已完成本地交互与手机 / 桌面视觉核验；最后的线上浏览器回放遇到连接超时，未据此宣称线上交互已复测。浏览器打开请求已发出，交付以可直接访问的线上链接为准。共享工作区现有改动继续保留。
