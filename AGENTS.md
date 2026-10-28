@@ -7306,3 +7306,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 当前 AddCustom 与图像推理映射基线：任务简报为目标；代码、文档、解释图解为材料；现象 / 日志为证据；参数试算、练习与待执行修改为操作；尝试、Diff、检查、复核记录为结果；用户新增内容为笔记。ResNet50 的官方阶段与学习动作是步骤，独立图解 / 讲解 / 视频 / 来源是材料，练习为操作、练习产出为结果；完整展开的“学习动作卡”仍是步骤。
 - 审查发现 `src/shared/canvas/node-semantics.js` 的 ResNet50 前缀映射 `learning-official-step-` 会命中 `${stepId}:diagram`、`${stepId}:lesson`、`${stepId}:practice`，并覆盖 `OfficialLearningPathCanvas.jsx` 为独立材料 / 操作卡传入的角色。因此截图中的图解显示“步骤”是当前映射缺陷，不是预期语义，也不能归因于旧页面；修正尚未实施。
 - 本轮只做代码 / 截图对照与语义梳理，未改源码、Pages 或报告序列；未运行构建 / 测试，未新增真实运行或 NPU 证据。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+
+
+### 2026-10-28 · 社区经验入口刷新复位与触发条件
+
+- 修复 GitHub Pages 在同一浏览器刷新后恢复旧聊天、旧社区邀请和已生成草稿的问题。启动时清空所有任务的聊天消息、历史、输入草稿、附件、能力选择、未读状态、社区邀请和社区草稿；保留任务定义及任务记录。页面刷新即重新开始，无需手工清理浏览器数据。
+- AddCustom 有两种入口条件：快捷演示是在「AddCustom 精度异常」的「现场与判断」卡片中点击「标记为已解决」；证据路径是在「逐元素误差」提交非演示数据、所有已提供元素均在容差内后，再明确确认目标环境复测通过。载入演示数据通过不会触发。
+- 图像推理调试初始仅提供正确示例参数，不自动出现入口。用户审阅当前修改、确认应用到隔离示例副本，再点击「复核示例形状并带回对话」；仅示例输出符合 NCHW `[1,3,224,224]` 时生成社区入口。入口是示例形状核对结果，不代表真实模型或 NPU 推理通过。打开任务不会触发；刷新会清空邀请与草稿。
+- 修改 `ascend-studio/src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 及 `/ascstudio/` Pages 构建产物。合并保留了并行的对话面板更新。此改动不改变任务页序或 API / Protocol、Host / Harness、Application / Task 边界；用户需求为 H，浏览器本地状态规则和示例触发结果为 M。
+- `npm run build:pages`、相关 JS `node --check`、`git diff --check` 通过。提交 `a8fcaf91` 实现刷新复位与触发门槛，集成并行主线的合并提交 `70ae9927` 已推送 `origin/main`。Pages workflow `40627139988` 成功；线上 `/AscendCANN/ascstudio/`、`index-CIxMdNO-.js` 和 `index-COIexaLu.css` 均 HTTP 200。未运行自动化测试。
