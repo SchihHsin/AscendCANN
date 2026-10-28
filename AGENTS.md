@@ -7509,4 +7509,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户明确要求右侧画布有可见底色、不要白色或过浅，也不要深色，并选择 `#E6E9EE`。仅将共享画布 `.canvas-surface` 底面改为 `--canvas-diagram-surface: #e6e9ee`；图卡仍为白色，左侧图标栏、中间列表和对话栏不变。依据为用户选择（H），本地 1280×720 画布截图核对为 M。
 - 修改 `ascend-studio/src/shared/canvas/canvas.css` 与根目录 `/ascstudio/` Pages 构建产物。页面序列、hash、任务数据及 API / Protocol、Host / Harness、Application / Task 边界均未改变。
-- `cd ascend-studio && npm run build:pages`、构建 JS `node --check`、发布 CSS 规则核验与 `git diff --check` 通过；未运行自动化测试。构建提示 outDir 不自动清空及既有大 bundle 体积警告，未阻断构建。源码提交已基于最新 `origin/main` 同步并保留并行更新；实现提交、推送与 Pages workflow 结果在本条记录最终更新后补齐。
+- `cd ascend-studio && npm run build:pages`、构建 JS `node --check`、发布 CSS 规则核验与 `git diff --check` 通过；未运行自动化测试。构建提示 outDir 不自动清空及既有大 bundle 体积警告，未阻断构建。源码提交 `4beaaf84` 与构建提交 `28aa1352` 已普通推送至 `origin/main`；Pages workflow `40683347384` 成功。线上 `/AscendCANN/ascstudio/`、`index-D6NS1cTF.js` 和 `index-CB4_sFnx.css` 均 HTTP 200，线上 CSS 确认包含 `#e6e9ee`。
