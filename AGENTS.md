@@ -7328,4 +7328,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求 Ascend Studio 中的模型 Logo 改为黑色。当前模型按钮和模型下拉选项的品牌图均通过 CSS `filter: brightness(0)` 统一为黑色；模型名称、切换方式与其他图标不变。
 - 源码位于 `ascend-studio/src/styles.css` 与 `ascend-studio/src/interaction.css`；Pages 入口和构建文件位于 `ascstudio/index.html`、`ascstudio/assets/`。依据为用户明确要求（H）；本地预览中模型入口与下拉项样式检查为（M）。未改变页面顺序、对话行为或 API / Protocol、Host / Harness、Application / Task 边界。
-- 合并最新 `origin/main`（`055ad594`，保留画布放大图标修正）后，`npm run build:pages`、构建 JS `node --check`、模型图标 CSS 规则核验和 `git diff --check` 通过；未运行自动化测试。提交、推送和线上 Pages 结果将在本轮发布后补记。
+- 合并最新 `origin/main`（`055ad594`，保留画布放大图标修正）后，`npm run build:pages`、构建 JS `node --check`、模型图标 CSS 规则核验和 `git diff --check` 通过；未运行自动化测试。实现提交 `f3649165` 已推送至 `origin/main`；Pages workflow `40630587340` 成功。线上入口及 JS / CSS 均 HTTP 200，线上 CSS 确认包含两处黑色滤镜规则。
