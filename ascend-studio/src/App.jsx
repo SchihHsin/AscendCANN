@@ -267,6 +267,7 @@ function App() {
   const flow = useTaskFlow({ onRecord: (title, summary, kind, isDemo) => wb.addRecord({ title, summary, kind, isDemo }, MAIN_TASK) });
   const diagnosisTargetRef = useRef(null);
   const proactive = useProactiveCues(`${MAIN_TASK}:${flow.state.resetVersion}`);
+  const diagnosisCue = proactive.forCue("diagnosis-tail");
   const canvas = useCanvasState({ startEmpty: true, initialVisibleIds: ["task-brief", "source", "evidence", "explanation"], storageKey: "canvas-addcustom-v3" });
   const imageCanvas = useCanvasState({ startEmpty: true, cardDefinitions: IMAGE_MATERIALS, storageKey: "canvas-image" });
   const [precisionContext, setPrecisionContext] = useState(() => readSession("precision-context", null));
@@ -1556,13 +1557,17 @@ function App() {
                   <p className="assistant-lead">尾块索引范围值得优先核对，根因尚未确认。</p>
                   <p>已知：<span className="chat-fact is-pass">[16,32] 通过</span>；<span className="chat-fact is-fail">[17,33] 失败</span>。修改编译参数后，错误位置未变。</p>
                   <p>还需：实际循环、两次运行条件与逐元素误差证据。</p>
-                  <button className="rationale-button" type="button" aria-expanded={rationaleOpen} onClick={() => setRationaleOpen((value) => !value)}>
-                    <IconBook size={ICON_SIZE.control} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={ICON_SIZE.control} />
-                  </button>
-                  {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => openContent("evidence")}>打开现场与判断<IconArrowRight size={ICON_SIZE.inline} /></button></div>}
-                  <ProactiveCue {...proactive.forCue("diagnosis-tail")} variant="knowledge" emphasisRef={diagnosisTargetRef}
+                  {diagnosisCue.collapsed && <>
+                    <button className="rationale-button" type="button" aria-expanded={rationaleOpen} onClick={() => setRationaleOpen((value) => !value)}>
+                      <IconBook size={ICON_SIZE.control} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={ICON_SIZE.control} />
+                    </button>
+                    {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => openContent("evidence")}>打开现场与判断<IconArrowRight size={ICON_SIZE.inline} /></button></div>}
+                  </>}
+                  <ProactiveCue {...diagnosisCue} variant="knowledge" emphasisRef={diagnosisTargetRef}
                     title="为什么 [17,33] 值得检查尾块？"
                     description="元素总数不是 tileSize 的整数倍时，尾块只有部分元素有效；访问时需按剩余数量做边界保护。"
+                    onDismiss={() => { diagnosisCue.onDismiss(); setRationaleOpen(false); }}
+                    onExpand={() => { diagnosisCue.onExpand(); setRationaleOpen(false); }}
                     primaryLabel={workspace.state.activeId === "explanation" ? "核对实际循环与来源" : "看尾块处理图解"}
                     onPrimary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? changeActionView("code") : dispatchTaskIntent("explain", "tail"); }}
                     secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "对照当前代码"}
