@@ -7329,3 +7329,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求 Ascend Studio 中的模型 Logo 改为黑色。当前模型按钮和模型下拉选项的品牌图均通过 CSS `filter: brightness(0)` 统一为黑色；模型名称、切换方式与其他图标不变。
 - 源码位于 `ascend-studio/src/styles.css` 与 `ascend-studio/src/interaction.css`；Pages 入口和构建文件位于 `ascstudio/index.html`、`ascstudio/assets/`。依据为用户明确要求（H）；本地预览中模型入口与下拉项样式检查为（M）。未改变页面顺序、对话行为或 API / Protocol、Host / Harness、Application / Task 边界。
 - 合并最新 `origin/main`（`055ad594`，保留画布放大图标修正）后，`npm run build:pages`、构建 JS `node --check`、模型图标 CSS 规则核验和 `git diff --check` 通过；未运行自动化测试。实现提交 `f3649165` 已推送至 `origin/main`；Pages workflow `40630587340` 成功。线上入口及 JS / CSS 均 HTTP 200，线上 CSS 确认包含两处黑色滤镜规则。
+
+### 2026-10-28 · 底部输入框恢复真正单行
+
+- 用户反馈底部输入框仍看起来像两行。原因是紧凑态 textarea 的自动高度从 44px 起步，虽然布局网格只有一行，文字却靠上、操作按钮靠下，形成两层视觉。
+- 紧凑的底部 composer 空输入现在按 20px 单行高度测量，输入文字后按内容自适应增长（最多 110px）；切换对话位置、展开 / 收起历史时重新测量。左侧对话布局原来的较高输入区保持不变。
+- 修改 `ascend-studio/src/App.jsx` 与 `/ascstudio/` 构建产物。用户此前明确要求单行后按内容增高（H）；本地 5177 预览实测空输入高度 20px、composer 54px，填入长文本后 textarea 增至 54px，清空恢复 20px；刷新后仍保持单行（M）。页面顺序、对话数据与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- `npm run build:pages`、输出 JS `node --check`、既有黑色模型 Logo 样式核验和 `git diff --check` 通过；未运行自动化测试。实现提交、推送和线上发布状态将在本轮发布后补记。

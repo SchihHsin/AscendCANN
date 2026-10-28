@@ -300,9 +300,13 @@ function App() {
   useLayoutEffect(() => {
     const textarea = wb.draftRef.current;
     if (!textarea) return;
+    const isCompactComposer = textarea.closest(".conversation-panel")?.matches(".is-composer-only, .is-conversation-expanded");
+    const minHeight = isCompactComposer ? 20 : 44;
+    textarea.style.height = `${minHeight}px`;
+    if (!textarea.value) return;
     textarea.style.height = "auto";
-    textarea.style.height = `${Math.min(textarea.scrollHeight, 110)}px`;
-  }, [session.draft, mainView]);
+    textarea.style.height = `${Math.max(minHeight, Math.min(textarea.scrollHeight, 110))}px`;
+  }, [session.draft, mainView, conversationLayout, floatingConversationExpanded]);
   const clearPointContext = () => {
     setPointContext(null);
     window.dispatchEvent(new Event("ascstudio-point-range-consumed"));
