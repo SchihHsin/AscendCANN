@@ -163,11 +163,13 @@ body.overview.ctrl #deck{width:auto}
 .r-copy-journey .cb-painpoint-label{grid-row:4}.r-copy-journey .cb-painpoint-label small{font-size:var(--fs-xs)}
 .r-copy-journey .cb-painpoint-rail{gap:.36vw}
 .r-copy-journey .cb-painpoint-rail{grid-row:4}
-.r-journey-breakpoint{appearance:none;width:100%;text-align:left;cursor:pointer;position:relative;padding:.55vh .58vw!important;display:flex;flex-direction:column;justify-content:center;gap:.35vh!important;border:1px solid #e8d5d8!important;border-radius:9px!important;background:linear-gradient(145deg,#fff9fa,#fff)!important;color:#4f4346!important;box-shadow:0 5px 14px #7b3b4c0b}
-.r-journey-breakpoint:hover{border-color:#d795a1!important;transform:translateY(-1px);box-shadow:0 8px 18px #7b3b4c18}
-.r-journey-breakpoint small{font-size:var(--fs-xs);font-weight:780;color:#9b5260;letter-spacing:.02em}
-.r-journey-breakpoint span{font-size:var(--cb-copy-size);line-height:1.18;color:#5d5256}
-.r-journey-breakpoint i{position:absolute;right:.48vw;top:.4vh;font-style:normal;font-size:var(--fs-sm);color:#a66b76}
+.r-journey-breakpoint{appearance:none;width:100%;text-align:left;cursor:pointer;position:relative;padding:.48vh .58vw!important;display:flex;flex-direction:column;justify-content:center;gap:.25vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;color:#4f4346!important;box-shadow:none!important}
+.r-journey-breakpoint:hover{border:0!important;transform:none;background:#ffe7e9!important;box-shadow:none!important}
+.r-journey-breakpoint small{padding-right:1.1vw;font-size:var(--fs-xs);font-weight:780;color:#9b5260;letter-spacing:.02em}
+.r-journey-breakpoint .r-breakpoint-issue{display:block;font-size:var(--cb-copy-size);line-height:1.12;color:#5d5256}
+.r-journey-breakpoint .r-breakpoint-issue b{font-weight:780;color:#a34f5d}
+.r-journey-breakpoint i{position:absolute;right:.48vw;top:.34vh;font-style:normal;font-size:var(--fs-sm);color:#a66b76}
+.r-journey-breakpoint:focus-visible{outline:2px solid #b85a68!important;outline-offset:2px}
 .r-copy-journey [hidden]{display:none!important}
 .r-sequence-role-label{grid-column:1;grid-row:3;position:relative;min-width:0;min-height:0;border-right:1px solid #dfe3eb}
 .r-sequence-plot{grid-column:2;grid-row:3;min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:12px;background:linear-gradient(180deg,#fffdfd 0%,#fff 100%);border:1px solid #e1e5ec}
@@ -282,11 +284,11 @@ CSS += r"""
 /* One continuous, stage-banded sequence diagram with editable icon cards. */
 .r-copy-journey .collab-blueprint{height:70.4vh;grid-template-rows:6.5vh 9vh 42vh 10vh;gap:.65vh .36vw}
 .r-copy-journey .cb-stage-rail{grid-template-columns:3fr 3fr 3fr 5fr 4fr;gap:.36vw}
-.r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr);padding:.42vh .58vw;background:color-mix(in srgb,var(--phase) 9%,#fff);border:1px solid color-mix(in srgb,var(--phase) 18%,#fff);border-radius:10px;box-shadow:0 5px 15px -13px rgba(36,50,79,.35)}
+.r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr) clamp(42px,3.8vw,52px);padding:.42vh .58vw;background:color-mix(in srgb,var(--phase) 9%,#fff);border:1px solid color-mix(in srgb,var(--phase) 18%,#fff);border-radius:10px;box-shadow:none}
 .r-copy-journey .cb-stage-copy{gap:.13vh}.r-copy-journey .cb-stage small{font:760 var(--fs-xs)/1.1 'JetBrains Mono';letter-spacing:.035em;color:color-mix(in srgb,var(--phase) 78%,#34415b)}
 .r-copy-journey .cb-stage b{font-size:var(--fs-h3);line-height:1.04;color:#29364a;white-space:normal}
 .r-copy-journey .cb-stage span{margin-top:.05vh;font-size:var(--fs-xs);line-height:1.08;color:#718096;white-space:normal}
-.r-copy-journey .cb-stage-visual{display:none}
+.r-copy-journey .cb-stage-visual{display:grid;width:clamp(42px,3.8vw,52px);height:clamp(42px,5.2vh,50px)}
 .r-copy-journey .cb-human-step{padding:.25vh .36vw;background:color-mix(in srgb,var(--phase) 4%,#fff);border:1px solid color-mix(in srgb,var(--phase) 12%,#fff);border-radius:9px}
 .r-copy-journey .cb-lane-cell:not(:last-child)::after{right:-.48vw;width:.36vw;border-color:#9aa5b5}
 .r-copy-journey .cb-lane-cell:not(:last-child)::before{right:-.51vw;border-left-color:#9aa5b5}
@@ -300,7 +302,7 @@ CSS += r"""
 .r-copy-journey .r-persona-row[data-avatar-ref="learn"] .r-persona-avatar{background:#f4f0fb}
 .r-copy-journey .r-sequence-plot{position:relative;overflow:hidden;background:transparent;border:0;border-radius:0}
 .r-copy-journey .r-sequence-plot>svg{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;preserveAspectRatio:none}
-.r-sequence-event{--event-tone:#5f68bd;position:absolute;z-index:2;left:var(--event-x);top:var(--event-y);transform:translate(-50%,-50%);width:clamp(82px,6vw,100px);min-height:3.3vh;display:flex;align-items:center;gap:.34vw;padding:.4vh .4vw;border:1px solid color-mix(in srgb,var(--event-tone) 18%,#e2e7ef);border-radius:9px;background:rgba(255,255,255,.97);box-shadow:0 5px 16px rgba(36,50,79,.12);color:#354052}
+.r-sequence-event{--event-tone:#5f68bd;position:absolute;z-index:2;left:var(--event-x);top:var(--event-y);transform:translate(-50%,-50%);width:clamp(82px,6vw,100px);min-height:3.3vh;display:flex;align-items:center;gap:.34vw;padding:.4vh .4vw;border:1px solid color-mix(in srgb,var(--event-tone) 18%,#e2e7ef);border-radius:9px;background:rgba(255,255,255,.97);box-shadow:none;color:#354052}
 .r-sequence-event i{display:grid;place-items:center;flex:0 0 auto;width:clamp(15px,1.2vw,19px);height:clamp(15px,1.2vw,19px);color:var(--event-tone)}
 .r-sequence-event i svg{display:block;width:100%;height:100%;stroke-width:1.85}
 .r-sequence-event b{display:block;min-width:0;font-size:clamp(9px,.72vw,12px);font-weight:730;line-height:1.18;white-space:normal}
@@ -310,16 +312,17 @@ CSS += r"""
 .r-copy-journey .r-sequence-role .role-mark{background:transparent}
 .r-copy-journey .r-sequence-role[data-role="task"] .role-mark,.r-copy-journey .r-sequence-role[data-role="learn"] .role-mark{background:#fff}
 .r-copy-journey .r-sequence-credit{position:absolute;right:.28vw;bottom:.18vh;z-index:3;font-size:var(--fs-xs);color:#8992a0}
-.r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border-radius:9px!important}
-.r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node span{font-size:var(--fs-xs);line-height:1.15}
+.r-copy-journey .cb-painpoint-rail{gap:.36vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;box-shadow:none!important}
+.r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node .r-breakpoint-issue{font-size:var(--cb-copy-size);line-height:1.12}
 """
 
 breakpoints = [
-    {"label":"表达目标", "title":"先发现问题、再组织 Prompt，本身就是一道门槛", "body":"任务导向用户要从现场提炼目标；学习导向用户可能先有兴趣或疑问。两者都可能是新手或有经验者，专业程度决定引导深度。", "response":"把推荐理由和相关线索摆出来，让用户从可判断的起点开始。", "targets":[("主动建议",3),("线索串联",4)]},
-    {"label":"学习起步", "title":"学习目标可以模糊，也可以明确", "body":"“我想系统入门昇腾”与“我想掌握某项能力”都是学习诉求：前者需要先探索方向，后者可以直接组织路径。它们是同一类学习用户的不同状态。", "response":"按意图生成路径，并允许用户补充目标、调整顺序和自定义节点。", "targets":[("意图路径",7),("共创调整",8)]},
-    {"label":"边做边懂", "title":"任务完成，不等于开发者已经理解", "body":"用户可能照着建议修好代码，却仍不清楚参数为什么要这样变化；如果解释离开当前错误，理解也难迁移到相似问题。", "response":"让错误现场、图解、参数和代码联动，再用操作后的结果检查理解。", "targets":[("开发中图解",5)]},
-    {"label":"经验回流", "title":"答案留在私人对话，社区难以复用", "body":"问题、尝试和修复过程随 AI 对话结束而分散。学习者自己的解释也可能只留在笔记里，难以再次找回。", "response":"调试后形成可审阅的社区草稿；个人笔记、图解和代码则整理为认知卡。", "targets":[("经验回流",6),("个人认知卡",9)]},
-    {"label":"移动续学", "title":"离开电脑后，疑问和学习线索容易中断", "body":"开发现场产生的关注和疑问未必能在电脑旁继续处理；零散资讯也难接回正在做的事。", "response":"以轻量通知和知识卡承接兴趣与存疑，并把学习小结带回电脑继续实践。", "targets":[("小程序续学",11),("兴趣与疑问信号",12)]},
+    {"label":"表达目标", "issues":[("任务","现场问题难提炼为可执行目标"),("学习","有兴趣，却不清楚从哪里开始")], "title":"先发现问题、再组织 Prompt，本身就是一道门槛", "body":"任务导向用户要从现场提炼目标；学习导向用户可能先有兴趣或疑问。两者都可能是新手或有经验者，专业程度决定引导深度。", "response":"把推荐理由和相关线索摆出来，让用户从可判断的起点开始。", "targets":[("主动建议",3),("线索串联",4)]},
+    {"label":"学习起步", "issues":[("任务","Prompt 依赖用户主动组织上下文"),("学习","资料分散，版本与适用条件难核对")], "title":"学习目标可以模糊，也可以明确", "body":"“我想系统入门昇腾”与“我想掌握某项能力”都是学习诉求：前者需要先探索方向，后者可以直接组织路径。它们是同一类学习用户的不同状态。", "response":"按意图生成路径，并允许用户补充目标、调整顺序和自定义节点。", "targets":[("意图路径",7),("共创调整",8)]},
+    {"label":"边做边懂", "issues":[("任务","方案依据难看懂，也不易追问调整"),("学习","目标、基础与路径不一定匹配")], "title":"任务完成，不等于开发者已经理解", "body":"用户可能照着建议修好代码，却仍不清楚参数为什么要这样变化；如果解释离开当前错误，理解也难迁移到相似问题。", "response":"让错误现场、图解、参数和代码联动，再用操作后的结果检查理解。", "targets":[("开发中图解",5)]},
+    {"label":"经验回流", "issues":[("任务","修复完成，仍可能不理解原因"),("学习","解释与练习脱节，难迁移到相似问题")], "title":"答案留在私人对话，社区难以复用", "body":"问题、尝试和修复过程随 AI 对话结束而分散。学习者自己的解释也可能只留在笔记里，难以再次找回。", "response":"调试后形成可审阅的社区草稿；个人笔记、图解和代码则整理为认知卡。", "targets":[("经验回流",6),("个人认知卡",9)]},
+    {"label":"移动续学", "issues":[("任务","问题与修复留在私聊，社区难以复用"),("学习","个人笔记零散，跨端后难接续实践")], "title":"离开电脑后，疑问和学习线索容易中断", "body":"开发现场产生的关注和疑问未必能在电脑旁继续处理；零散资讯也难接回正在做的事。", "response":"以轻量通知和知识卡承接兴趣与存疑，并把学习小结带回电脑继续实践。", "targets":[("小程序续学",11),("兴趣与疑问信号",12)]},
 ]
 bp_buttons = "".join(
     f'<button type="button" data-bp-open="{i}" aria-label="查看断点 {i+1}：{esc(item["label"])}">'
@@ -547,11 +550,11 @@ def sequence_diagram_markup():
     )
 
 JOURNEY_STAGES = [
-    ("01 · 起点", "认知起步", "任务 / 学习目标", "source"),
-    ("02 · 找线索", "寻源与推荐", "依据 / 版本 / 范围", "action"),
-    ("03 · 形成方向", "明确方向", "Prompt / 学习路径", "generate"),
-    ("04 · 实践验证", "边做边懂", "运行 / 图解 / 复测", "control"),
-    ("05 · 经验沉淀", "带入下一次", "认知卡 / 社区回流", "evidence"),
+    ("01 · 起点", "认知起步", "任务 / 学习目标", "source", "need-context.png"),
+    ("02 · 找线索", "寻源与推荐", "依据 / 版本 / 范围", "action", "search-fetch.png"),
+    ("03 · 形成方向", "明确方向", "Prompt / 学习路径", "generate", "generate.png"),
+    ("04 · 实践验证", "边做边懂", "运行 / 图解 / 复测", "control", "decide.png"),
+    ("05 · 经验沉淀", "带入下一次", "认知卡 / 社区回流", "evidence", "execute.png"),
 ]
 
 def build_journey():
@@ -573,10 +576,13 @@ def build_journey():
         '<div class="cb-row-label cb-human-label"><small>ENTRY POINTS</small><b>两种起点</b></div>', 1)
 
     stage_html = []
-    for kicker, title, desc, phase in JOURNEY_STAGES:
+    for kicker, title, desc, phase, illustration in JOURNEY_STAGES:
+        image_path = ROOT / "cann-dashboard/assets/agent-stage-3d" / illustration
+        image_data = "data:image/png;base64," + base64.b64encode(image_path.read_bytes()).decode()
         stage_html.append(
             f'<div class="cb-stage is-{phase}"><div class="cb-stage-copy">'
-            f'<small>{esc(kicker)}</small><b>{esc(title)}</b><span>{esc(desc)}</span></div></div>'
+            f'<small>{esc(kicker)}</small><b>{esc(title)}</b><span>{esc(desc)}</span></div>'
+            f'<div class="cb-stage-visual" aria-hidden="true"><img src="{image_data}" alt=""></div></div>'
         )
     section = replace_div_content(section, "cb-stage-rail", "".join(stage_html))
 
@@ -603,16 +609,11 @@ def build_journey():
 
     section = section.replace('<div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>',
         '<div class="cb-row-label cb-painpoint-label"><small>DESIGN BREAKS</small><b>设计断点</b></div>', 1)
-    breakpoint_summaries = [
-        "先提炼现场问题，再组织 Prompt",
-        "找到可靠依据，也找到学习方向",
-        "任务目标和学习目标都能形成路径",
-        "任务完成后，理解仍需要支持",
-        "私人经验要能回到社区与下次实践",
-    ]
     breakpoint_nodes = "".join(
-        f'<button type="button" class="cb-painpoint-node r-journey-breakpoint" data-bp-open="{i}" aria-label="查看断点 {i+1}：{esc(item["label"])}">'
-        f'<small>{i+1:02} · {esc(item["label"])}</small><span>{esc(breakpoint_summaries[i])}</span><i aria-hidden="true">↗</i></button>'
+        f'<button type="button" class="cb-painpoint-node r-journey-breakpoint" data-bp-open="{i}" aria-label="查看断点 {i+1}：{esc(item["label"])}；包含任务与学习两类用户痛点">'
+        f'<small>{i+1:02} · {esc(item["label"])}</small>'
+        + "".join(f'<span class="r-breakpoint-issue"><b>{esc(role)}</b> · {esc(issue)}</span>' for role, issue in item["issues"])
+        + '<i aria-hidden="true">↗</i></button>'
         for i, item in enumerate(breakpoints)
     )
     section = replace_div_content(section, "cb-painpoint-rail", breakpoint_nodes)

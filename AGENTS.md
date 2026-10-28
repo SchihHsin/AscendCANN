@@ -7635,3 +7635,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户截图，将已订阅状态下的按钮文案从「保存设置并模拟新消息」改为「保存设置」；仅调整可见文案，按钮仍保存速览偏好。首次订阅分支的「允许并模拟收到消息」不在本次截图指向范围内。
 - 修改 `ascstudio-mini/app.js`。依据为用户明确要求（H）；不改变订阅交互、页面序列、演示状态或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。提交 `b05b8383` 已推送；其 Pages 部署 `40745620795` 在队列中被后续更新取消。后续主线提交 `6d614b56` 包含此改动，Pages workflow `40746077926` 成功；线上评审入口与 `app.js` 均 HTTP 200，脚本显示「保存设置」且不含旧文案。
+
+### 2026-10-29 · Ascend Studio 旅程断点样式修订
+
+- 用户明确要求时序图节点去阴影、恢复旅程阶段插画，且五个设计断点改为无描边淡红卡片、卡间白色留缝，并允许每阶段展示多条痛点。断点现按任务导向 / 学习导向分别列出一条痛点；原点击详情继续保留。
+- 插画消失的直接原因是重建五阶段 DOM 时未写入图片节点，同时复制页 CSS 隐藏了 `.cb-stage-visual`；现从仓库原始 3D 阶段插画素材重新内嵌并启用。时序交接卡设为无阴影，痛点轨道恢复白色底，淡红色只在五个卡片内。
+- 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、重建 `cann-dashboard/ascend-studio-design-report.html`，更新该目录 `qa.md`。保留 16 页、5 阶段、18 个时序交接卡、原断点详情与报告导航；未修改电脑端 / 小程序原型或 API / Protocol、Host / Harness、Application / Task 边界。
+- 证据来源：本轮用户明确的样式要求（H）、报告原始阶段插画素材（H）与现有可编辑旅程 DOM。断点表述是设计推演，不是用户访谈或效果数据。构建和结构检查确认 5 张图、18 个无阴影交接卡、5 个断点各含 2 条痛点、16 页；两段内联 JS `node --check`、Python 编译与构建成功。
+- 浏览器视觉回放受限：CUA 拒绝本地 `file://` 页面，现有 HTTP 预览未运行；未另起本地服务器绕过策略，故不声称完成浏览器截图核验。
+- 提交 / 推送：随本轮报告与证据更新提交并推送至 `origin/main`；具体结果以本轮最终交接和 Git 历史为准。
