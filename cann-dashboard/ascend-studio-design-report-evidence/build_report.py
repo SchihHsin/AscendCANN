@@ -282,7 +282,7 @@ body.overview.ctrl #deck{width:auto}
 
 CSS += r"""
 /* One continuous, stage-banded sequence diagram with editable icon cards. */
-.r-copy-journey .collab-blueprint{height:70.4vh;grid-template-rows:6.5vh 9vh 42vh 10vh;gap:.65vh .36vw}
+.r-copy-journey .collab-blueprint{height:77vh;grid-template-rows:6.5vh 8.5vh 42vh 9vh 8vh;gap:.65vh .36vw}
 .r-copy-journey .cb-stage-rail{grid-template-columns:3fr 3fr 3fr 5fr 4fr;gap:.36vw}
 .r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr) clamp(42px,3.8vw,52px);padding:.42vh .58vw;background:color-mix(in srgb,var(--phase) 9%,#fff);border:1px solid color-mix(in srgb,var(--phase) 18%,#fff);border-radius:10px;box-shadow:none}
 .r-copy-journey .cb-stage-copy{gap:.13vh}.r-copy-journey .cb-stage small{font:760 var(--fs-xs)/1.1 'JetBrains Mono';letter-spacing:.035em;color:color-mix(in srgb,var(--phase) 78%,#34415b)}
@@ -315,14 +315,19 @@ CSS += r"""
 .r-copy-journey .cb-painpoint-rail{gap:.36vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;box-shadow:none!important}
 .r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node .r-breakpoint-issue{font-size:var(--cb-copy-size);line-height:1.12}
+.r-copy-journey .cb-opportunity-label{grid-row:5}
+.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:5;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.36vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-opportunity{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:.25vh;padding:.4vh .52vw;border:0;border-radius:9px;background:#eaf5ed;color:#476956}
+.r-copy-journey .cb-opportunity small{font-size:var(--fs-xs);font-weight:760;line-height:1.1;color:#397453}
+.r-copy-journey .cb-opportunity span{font-size:var(--cb-copy-size);line-height:1.12;color:#52705d}
 """
 
 breakpoints = [
-    {"label":"表达目标", "issues":[("任务","现场问题难提炼为可执行目标"),("学习","有兴趣，却不清楚从哪里开始")], "title":"先发现问题、再组织 Prompt，本身就是一道门槛", "body":"任务导向用户要从现场提炼目标；学习导向用户可能先有兴趣或疑问。两者都可能是新手或有经验者，专业程度决定引导深度。", "response":"把推荐理由和相关线索摆出来，让用户从可判断的起点开始。", "targets":[("主动建议",3),("线索串联",4)]},
-    {"label":"学习起步", "issues":[("任务","Prompt 依赖用户主动组织上下文"),("学习","资料分散，版本与适用条件难核对")], "title":"学习目标可以模糊，也可以明确", "body":"“我想系统入门昇腾”与“我想掌握某项能力”都是学习诉求：前者需要先探索方向，后者可以直接组织路径。它们是同一类学习用户的不同状态。", "response":"按意图生成路径，并允许用户补充目标、调整顺序和自定义节点。", "targets":[("意图路径",7),("共创调整",8)]},
-    {"label":"边做边懂", "issues":[("任务","方案依据难看懂，也不易追问调整"),("学习","目标、基础与路径不一定匹配")], "title":"任务完成，不等于开发者已经理解", "body":"用户可能照着建议修好代码，却仍不清楚参数为什么要这样变化；如果解释离开当前错误，理解也难迁移到相似问题。", "response":"让错误现场、图解、参数和代码联动，再用操作后的结果检查理解。", "targets":[("开发中图解",5)]},
-    {"label":"经验回流", "issues":[("任务","修复完成，仍可能不理解原因"),("学习","解释与练习脱节，难迁移到相似问题")], "title":"答案留在私人对话，社区难以复用", "body":"问题、尝试和修复过程随 AI 对话结束而分散。学习者自己的解释也可能只留在笔记里，难以再次找回。", "response":"调试后形成可审阅的社区草稿；个人笔记、图解和代码则整理为认知卡。", "targets":[("经验回流",6),("个人认知卡",9)]},
-    {"label":"移动续学", "issues":[("任务","问题与修复留在私聊，社区难以复用"),("学习","个人笔记零散，跨端后难接续实践")], "title":"离开电脑后，疑问和学习线索容易中断", "body":"开发现场产生的关注和疑问未必能在电脑旁继续处理；零散资讯也难接回正在做的事。", "response":"以轻量通知和知识卡承接兴趣与存疑，并把学习小结带回电脑继续实践。", "targets":[("小程序续学",11),("兴趣与疑问信号",12)]},
+    {"label":"表达目标", "issues":[("任务","现场问题难提炼为可执行目标"),("学习","有兴趣，却不清楚从哪里开始")], "opportunity_title":"主动建议 · 连线 Prompt", "opportunity_body":"把行为线索变成可编辑表达", "title":"先发现问题、再组织 Prompt，本身就是一道门槛", "body":"任务导向用户要从现场提炼目标；学习导向用户可能先有兴趣或疑问。两者都可能是新手或有经验者，专业程度决定引导深度。", "response":"把推荐理由和相关线索摆出来，让用户从可判断的起点开始。", "targets":[("主动建议",3),("线索串联",4)]},
+    {"label":"学习起步", "issues":[("任务","Prompt 依赖用户主动组织上下文"),("学习","资料分散，版本与适用条件难核对")], "opportunity_title":"意图路径 · 协同编辑", "opportunity_body":"按目标与基础生成，可自定义节点", "title":"学习目标可以模糊，也可以明确", "body":"“我想系统入门昇腾”与“我想掌握某项能力”都是学习诉求：前者需要先探索方向，后者可以直接组织路径。它们是同一类学习用户的不同状态。", "response":"按意图生成路径，并允许用户补充目标、调整顺序和自定义节点。", "targets":[("意图路径",7),("共创调整",8)]},
+    {"label":"边做边懂", "issues":[("任务","方案依据难看懂，也不易追问调整"),("学习","目标、基础与路径不一定匹配")], "opportunity_title":"开发中图解", "opportunity_body":"让错误、代码与调试结果联动", "title":"任务完成，不等于开发者已经理解", "body":"用户可能照着建议修好代码，却仍不清楚参数为什么要这样变化；如果解释离开当前错误，理解也难迁移到相似问题。", "response":"让错误现场、图解、参数和代码联动，再用操作后的结果检查理解。", "targets":[("开发中图解",5)]},
+    {"label":"经验回流", "issues":[("任务","修复完成，仍可能不理解原因"),("学习","解释与练习脱节，难迁移到相似问题")], "opportunity_title":"经验回流 · 个人认知卡", "opportunity_body":"调试结果可审阅，个人笔记可复用", "title":"答案留在私人对话，社区难以复用", "body":"问题、尝试和修复过程随 AI 对话结束而分散。学习者自己的解释也可能只留在笔记里，难以再次找回。", "response":"调试后形成可审阅的社区草稿；个人笔记、图解和代码则整理为认知卡。", "targets":[("经验回流",6),("个人认知卡",9)]},
+    {"label":"移动续学", "issues":[("任务","问题与修复留在私聊，社区难以复用"),("学习","个人笔记零散，跨端后难接续实践")], "opportunity_title":"小程序移动续学", "opportunity_body":"承接碎片学习，再带回桌面实践", "title":"离开电脑后，疑问和学习线索容易中断", "body":"开发现场产生的关注和疑问未必能在电脑旁继续处理；零散资讯也难接回正在做的事。", "response":"以轻量通知和知识卡承接兴趣与存疑，并把学习小结带回电脑继续实践。", "targets":[("小程序续学",11),("兴趣与疑问信号",12)]},
 ]
 bp_buttons = "".join(
     f'<button type="button" data-bp-open="{i}" aria-label="查看断点 {i+1}：{esc(item["label"])}">'
@@ -561,7 +566,7 @@ def build_journey():
     section = source_journey
     section = section.replace('class="slide s-gray task-rel-page"', 'class="slide s-gray task-rel-page r-copy-journey"', 1)
     section = re.sub(r'<div class="collab-blueprint"[^>]*>',
-        '<div class="collab-blueprint" role="group" aria-label="任务导向与学习导向共用的五阶段旅程；角色交接形成场景图解，底部对应五个设计断点">', section, count=1)
+        '<div class="collab-blueprint" role="group" aria-label="任务导向与学习导向共用的五阶段旅程；角色交接形成场景图解，底部依次对应设计断点与机会点">', section, count=1)
     section = section.replace('<div class="cb-axis"><small>STAGE</small><b>阶段</b></div>',
         '<div class="cb-axis"><small>TIME</small><b>旅程 →</b></div>', 1)
     section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="用户旅程：任务交付与目标学习"', 1)
@@ -620,11 +625,21 @@ def build_journey():
     section = re.sub(r'aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组[^\"]*"',
         'aria-label="五个旅程断点，可点击查看问题与对应设计响应"', section, count=1)
 
+    opportunity_label = '<div class="cb-row-label cb-opportunity-label"><small>OPPORTUNITY</small><b>机会点</b></div>'
+    opportunity_cards = "".join(
+        f'<article class="cb-opportunity"><small>{esc(item["opportunity_title"])}</small>'
+        f'<span>{esc(item["opportunity_body"])}</span></article>'
+        for item in breakpoints
+    )
+    opportunity_rail = '<div class="cb-opportunity-rail" aria-label="与后续五组设计点对应的机会点">' + opportunity_cards + '</div>'
+    _painpoint_start, painpoint_end = div_bounds(section, "cb-painpoint-rail")
+    section = section[:painpoint_end] + opportunity_label + opportunity_rail + section[painpoint_end:]
+
     middle_start = section.index('<div class="cb-row-label cb-handoff-label">')
     middle_end = section.index('<div class="cb-row-label cb-painpoint-label">', middle_start)
     diagram_markup = sequence_diagram_markup()
     section = section[:middle_start] + diagram_markup + section[middle_end:]
-    for rail_class in ("cb-stage-rail", "cb-human-lane", "cb-painpoint-rail"):
+    for rail_class in ("cb-stage-rail", "cb-human-lane", "cb-painpoint-rail", "cb-opportunity-rail"):
         section = re.sub(
             rf'(<div class="[^"]*\b{rail_class}\b[^"]*"[^>]*)(>)',
             lambda match: match.group(1) + f' style="{SEQUENCE_STAGE_RAIL_STYLE}"' + match.group(2),

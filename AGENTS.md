@@ -7653,3 +7653,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现与验证细节在 `ascend-studio/AGENTS.md`。本地 1280×720 预览已完成端到端回放：四步操作、经验入口、可编辑草稿和旧任务保留；`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过，未运行自动化测试。没有改页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 实现提交与推送结果：待本轮提交回填；Pages workflow：待推送后核对。
 
+### 2026-10-29 · Ascend Studio 旅程增加机会点行
+
+- 用户要求在五个设计断点下方增加绿色机会点，并与此前提出的设计点建立明确对应。第 2 页新增五列机会点：主动建议 / 连线 Prompt；意图学习路径 / 协同编辑 / 自定义节点；开发中图解；社区经验回流 / 个人认知卡；小程序移动续学。
+- 机会点卡使用浅绿色、无描边，轨道与间隔保持白色，五列沿用阶段 / 时序图的列宽。为机会行增加 8vh 高度；五条时序图高度保留 42vh，页面总数仍为 16。
+- 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、重建 `cann-dashboard/ascend-studio-design-report.html` 并追加 QA 记录。电脑端 / 小程序原型以及 API / Protocol、Host / Harness、Application / Task 边界未变。
+- 来源为用户本轮要求和既有已确认设计点（H）；机会点是方案归纳，不是体验成效或用户研究证据。构建和结构检查确认五项机会与五个阶段对齐、各断点有两项痛点；Python 编译、构建和两段内联脚本 `node --check` 通过。CUA 浏览器截图调用超时，本轮不声称完成页面截图核验。
+- 提交 / 推送：随本轮报告与交接更新提交并推送至 `origin/main`；SHA 见本轮最终交接。
