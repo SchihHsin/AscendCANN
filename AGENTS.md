@@ -7442,7 +7442,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认按当前学习步骤组织画布。图解、视频与章节控制、当前同步讲解是三张横向并列的 `material` 卡；动手练习和理解检查在下方操作行并分别作为 `action`。理解检查结果留在卡片内，官方来源只在同步讲解卡内折叠呈现，避免重复。
 - 实现位于 `ascend-studio/src/OfficialLearningActivities.jsx`、`OfficialLearningPathCanvas.jsx`、`official-learning-canvas.css` 与 `shared/canvas/node-semantics.js`。同步更新 `ascend-studio/interaction-design.md` 和个人共享规范 `~/.codex/skills/ascend-studio-interface-style/SKILL.md`。
 - 本地 5196 桌面预览（1280×720）：核对默认选中、适应全部的横向材料行/下方操作行、官方来源折叠去重、理解题提交后的就地反馈；当前代表性卡片无内容溢出或嵌套滚动。构建 `npm run build:pages`、共享语义模块 `node --check`、`git diff --check` 通过。未运行自动化测试；不改变页面顺序、hash、任务学习状态模型或 API / Protocol、Host / Harness、Application / Task 边界。
-- 源码提交 `7e8c8a99` 与 Pages 构建提交 `7882535e` 已普通推送到 `origin/main`。提交 `7882535e` 与随后并行主线提交 `3d01d4e3` 对应的 Pages 构建均为 `built`；线上入口与本次 JS / CSS 均 HTTP 200。主线之后又前进至 `0523f40d`，其最新 Pages 构建状态将在同步后补核。
+- 源码提交 `7e8c8a99` 与 Pages 构建提交 `7882535e` 已普通推送到 `origin/main`。提交 `7882535e` 与随后并行主线提交 `3d01d4e3` 对应的 Pages 构建均为 `built`；最新同步到的主线提交 `afb1a693` 的 Pages workflow `40648789533` 也已成功。线上 `/AscendCANN/ascstudio/` 入口与本轮 JS / CSS 均返回 HTTP 200。
 
 ### 2026-10-28 · Ascend Studio 黑色选中态与输入主操作
 
@@ -7457,6 +7457,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户明确方向（H）与 `report-ppt-skill/references/type-and-color.md` 色彩规范（H）；本地 1440×900 CUA 预览 #4、#5、#10，确认关系图与阶段页的灰底、蓝紫主线和暖色提醒层级（M）。没有改变 API / Protocol、Host / Harness、Application / Task 职责边界。
 - 验证：`git diff --check` 通过；本地浏览器截图检查交付关系、Knowledge Unit 和建设阶段页。实现提交 `3d01d4e3` 已普通推送至 `origin/main`；Pages workflow `40648195378` 成功。线上 HTML HTTP 200，194,054 字节；与本地文件 SHA-256 均为 `342f1f138e3b9c56647b6c866c54c15c8e7802386c7342154a74847bf8ccad37`。
 
+### 2026-10-28 · ResNet50 学习画布拆分方案主线复核
+
+- 用户确认执行已讨论的节点拆分与横向排布方案。本轮源码变更已在前序提交 `7e8c8a99` 完成，构建资源在 `7882535e` 发布；保留图解、视频与章节控制、当前同步讲解三张横向材料卡，练习与理解检查拆为下方操作卡，来源折叠在讲解卡内，答题反馈就地呈现。
+- 本轮将工作区快进同步至 `origin/main` 的 `afb1a693`，保留 AddCustom 并行提交；核对 GitHub Pages workflow `40648789533` 为成功，线上入口及引用的 JS/CSS 均返回 HTTP 200。入口引用 `index-JZ9Hb7Nf.js`、`index-COSDFY05.css`。CDN 对完整 JS 文件的读取较慢并在完整读回前超时，因此仅据 workflow 与 HTTP 响应确认发布，不声称完成线上 bundle 的完整字节级校验。
+- 本轮未重复修改产品源码；上述实现不改变页面顺序、任务状态模型或 API / Protocol、Host / Harness、Application / Task 边界。未运行自动化测试。交接记录随本轮普通提交推送 `origin/main`；同步保留的四个未跟踪构建文件没有暂存或纳入提交。
 ### 2026-10-28 · AddCustom 知识卡精简为 B 方案
 
 - 用户选择 B，并确认「根因待确认」是否需要显示。该词是说现有形状对照未证明尾块处理就是原因；它已在上方诊断答复中说明，知识卡不再重复。标题改为「为什么 [17,33] 值得检查尾块？」，正文缩为「元素总数不是 tileSize 的整数倍时，尾块只有部分元素有效；访问时需按剩余数量做边界保护。」
