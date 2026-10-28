@@ -88,3 +88,9 @@
 - 浏览器人工回放：1440×940 桌面样机验证收纳、信号切换、安排速览、立即送达；手机端验证微信未读行、通知详情、短读卡与「我看懂了」状态回写。390×844 手机视口中，微信列表与短读卡的 `scrollWidth` 均为 390px。已核对学习对话回答入口与学习内容工具栏入口。
 - 截图：`evidence/knowledge-pocket-desktop.png`、`evidence/wechat-notification-list.png`、`evidence/knowledge-pocket-phone-card.png`。周报示例资讯仍为静态策划素材。电脑与手机在同一浏览器中用同源 localStorage 演示共享；未实现不同设备账号同步、真实微信消息或后台定时推送。
 - rebase 到最新主线 `a6681665` 后重新构建：`cd ascend-studio && npm run build:pages` 成功，当前 `/ascstudio/` 引用 `index-SON5PQr8.js` 与 `index-e9TgRYmh.css`。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、新构建 bundle 语法检查及 `git diff --check` 通过；未运行自动化测试。
+
+## 2026-10-28 · 状态栏 Wi-Fi 图标
+
+- 按用户截图反馈，将手绘的三段曲线替换为 Tabler Icons v3.48.0 `IconWifi` SVG 路径。该路径沿用 24×24 坐标，三条弧线间距一致，并保留圆点；CSS 等比使用 15×15 尺寸与 2px 圆角描边。
+- 图标为内联静态 SVG，没有新增运行时依赖；项目已有 Tabler Icons MIT 许可，CSS 中注明来源。
+- 本地 HTTP 预览中核对 Pura X View 状态栏的 5G、信号、Wi-Fi 与电量排列；`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过。未运行自动化测试；页面序列与推送流程不变。

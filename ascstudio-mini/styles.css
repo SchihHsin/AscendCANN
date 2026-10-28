@@ -536,13 +536,15 @@ body.review-overview-open {
   stroke-width:2.1;
   stroke-linecap:round;
 }
+/* Tabler Icons v3.48.0 IconWifi geometry; MIT license is retained in assets/knowledge-resources/TABLER-ICONS-LICENSE.txt. */
 .system-wifi {
   width:15px;
-  height:12px;
+  height:15px;
   fill:none;
   stroke:currentColor;
-  stroke-width:1.7;
+  stroke-width:2;
   stroke-linecap:round;
+  stroke-linejoin:round;
 }
 .battery-percent {
   margin-left:1px;
