@@ -7359,3 +7359,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 领域归一化先识别明确内容后缀，再处理学习步骤 ID 前缀，避免子卡继承父学习步骤的角色。规则同步到 `ascend-studio/interaction-design.md` 与 `ascend-studio/AGENTS.md`。
 - `node --check ascend-studio/src/shared/canvas/node-semantics.js`、`npm run build:pages`、`git diff --check` 通过；本地 5192 浏览器 AX 回放确认 3.1 图解容器标为 material / 材料，3.2 的动手练习卡标为 action / 操作，返回 3.1 后现场保留。没有真实模型 / NPU 验证；未运行自动化测试。
 - 发布含共享语义映射和 `/ascstudio/` 构建产物；不改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。同步保留 `origin/main` 的三栏背景记录后，语义修复提交 `6d141971` 与构建提交 `7be079bf` 已推送至 `origin/main`；Pages workflow `40632860691` 成功。线上 `/AscendCANN/ascstudio/`、`index-BmfZLblv.js` 与 `index-DlbrpRmv.css` 均 HTTP 200。
+
+### 2026-10-28 · 知识供给蓝图按参考图深化关系与阶段可视化
+
+- 用户提供关系网络图与阶段推演图作为明确视觉参考（H），并要求继续完成。将 `ascstudio-mini/knowledge-provider-map.html` 第 3–7 页的供给链、学习发现服务映射、Knowledge Unit 字段、Web / API / MCP / Skills 交付通道及 P0–P2 路线改为 SVG 关系图、服务网络、对象关系图、并行泳道和阶段路径；具体资源图片仍只放在学习路径、认证、课程、Meetup 样例中。视觉表达重点是节点、连线、区域和阶段关系，不额外加入装饰插图。
+- 保持 7 页顺序、翻页与 `#页码` 恢复、原有服务内容及规范来源链接；`llms.txt` 仍标记为提案，`robots.txt` 不作为鉴权。修改属于知识供给服务蓝图目标方案示意，不表示接口或服务已真实接入，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 本地桌面预览检查第 3–7 页，确认关系图、楼层预览、交付泳道和路线图可完整呈现；结构检查确认 7 页、12 个内嵌 SVG、资源图均存在、ID 无重复，内嵌脚本 `node --check` 与 `git diff --check` 通过。未运行自动化测试。
+- 实现提交 `c51090ac` 已同步最新 `origin/main` 后普通推送；GitHub Pages workflow `40642246632` 成功。当前补记交接记录并推送至 `origin/main`；线上页面回读待本轮文档提交部署后复核。
