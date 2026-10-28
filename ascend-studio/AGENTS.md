@@ -2057,3 +2057,8 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 保留黑色「看尾块处理图解」主按钮；「对照当前代码」改为低强调文字操作。其他任务的提示样式和行为不变。
 - 修改 `src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css` 与 `../ascstudio/` 构建产物。依据为用户选择 B（H）；未声称真实根因、算子执行或 NPU 验证。页面顺序 / hash 及 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 隔离预览确认卡片文字更短、主次按钮层级清楚，点击图解后仍转灰。提交 `429b47bf` 已推送至 `origin/main`，并合并并行提交 `afb1a693`；Pages workflow `40648789533` 成功，线上入口和 JS / CSS HTTP 200。未运行自动化测试。
+
+
+### 2026-10-28 · AddCustom 右侧工作区默认状态
+
+打开 AddCustom 对话时先显示对话，右侧工作区默认收起；用户触发图解、内容或社区草稿入口后再展开。将此前自动打开画布的旧会话迁移为收起状态，并保留当前材料焦点；其他任务默认状态不变。发布与验证细节见仓库根 `AGENTS.md`。

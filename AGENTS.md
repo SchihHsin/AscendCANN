@@ -7468,3 +7468,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 移除重复的 `[16,32]` / `[17,33]` 现象行；因标题用「值得检查」而非断言失败原因，卡片不单列根因免责声明。保留黑色「看尾块处理图解」主按钮，将「对照当前代码」降为文字操作。
 - 修改 `ascend-studio/src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css` 与 `/ascstudio/` 构建产物。用户明确选择为 H；这是知识解释与排查入口，不代表已确认根因或真实 NPU 验证。页面序列和 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 1280×720 隔离预览确认短文案、单一主按钮、次级文字链接及点击后灰色状态。实现提交 `429b47bf` 与合入并行主线的 `afb1a693` 已推送到 `origin/main`；Pages workflow `40648789533` 成功，线上入口和本轮 JS / CSS HTTP 200。未运行自动化测试。
+
+
+### 2026-10-28 · AddCustom 对话默认收起右侧工作区
+
+- 用户确认打开 AddCustom 对话时右侧应默认关闭。此前初始状态把画布设为 active，且版本 4 迁移也会把旧会话切到画布；现改为初始仅显示对话并保留原材料焦点，右侧收起。用户触发图解、内容或草稿入口后仍按原操作展开；其他任务的默认状态不变。
+- 修改 `ascend-studio/src/useContentWorkspace.js` 和 `ascstudio/` Pages 构建包；将 AddCustom 工作区状态迁移版本提升到 5，升级旧会话时收起右侧，同时保留当前内容焦点。依据为用户明确要求（H）；无真实任务 / NPU 验证主张，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、新构建 JS `node --check`、`git diff --check` 通过；状态迁移逻辑与「打开内容」入口已通过构建和语法核对。视觉回放未完成：5232 端口被其他进程占用，隔离的 5233 预览未能连接 CUA。未运行自动化测试。源码提交 `16368e33` 经保留并行更新的合并提交 `f7a9a135` 推送到 `origin/main`；Pages workflow `40650280402` build / deploy 成功，线上 `/AscendCANN/ascstudio/`、`index-C2jWj7XD.js` 与 `index-COSDFY05.css` 均 HTTP 200。
