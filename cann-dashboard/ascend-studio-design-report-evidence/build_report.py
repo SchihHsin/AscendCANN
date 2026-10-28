@@ -28,6 +28,19 @@ def svg_data(name):
     p = HERE / name
     return "data:image/svg+xml;base64," + base64.b64encode(p.read_bytes()).decode()
 
+def lucide_svg(name):
+    icon_path = HERE / "node_modules/lucide-static/icons" / f"{name}.svg"
+    if not icon_path.exists():
+        raise FileNotFoundError(f"Lucide icon not found: {name}")
+    svg_ns = "http://www.w3.org/2000/svg"
+    ET.register_namespace("", svg_ns)
+    root = ET.parse(icon_path).getroot()
+    root.set("width", "100%")
+    root.set("height", "100%")
+    root.set("aria-hidden", "true")
+    root.set("focusable", "false")
+    return ET.tostring(root, encoding="unicode")
+
 def demo_button(kind="desktop", label=None):
     if kind == "mini":
         url, fallback, title = MINI_DEMO, MINI_DEMO_LOCAL, "口袋新知 · 小程序 Demo"
@@ -266,8 +279,9 @@ body.overview.ctrl #deck{width:auto}
 """
 
 CSS += r"""
-/* Storyboard sequence: five illustrated handoffs replace the empty lifeline field. */
+/* One continuous, stage-banded sequence diagram with editable icon cards. */
 .r-copy-journey .collab-blueprint{height:70.4vh;grid-template-rows:6.5vh 9vh 42vh 10vh;gap:.65vh .36vw}
+.r-copy-journey .cb-stage-rail{grid-template-columns:3fr 3fr 3fr 5fr 4fr;gap:.36vw}
 .r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr);padding:.42vh .58vw;background:color-mix(in srgb,var(--phase) 9%,#fff);border:1px solid color-mix(in srgb,var(--phase) 18%,#fff);border-radius:10px;box-shadow:0 5px 15px -13px rgba(36,50,79,.35)}
 .r-copy-journey .cb-stage-copy{gap:.13vh}.r-copy-journey .cb-stage small{font:760 var(--fs-xs)/1.1 'JetBrains Mono';letter-spacing:.035em;color:color-mix(in srgb,var(--phase) 78%,#34415b)}
 .r-copy-journey .cb-stage b{font-size:var(--fs-h3);line-height:1.04;color:#29364a;white-space:normal}
@@ -283,54 +297,18 @@ CSS += r"""
 .r-copy-journey .r-persona-bubble{position:relative;min-width:0;padding:.38vh .4vw;border:1px solid rgba(105,122,154,.14);border-radius:8px 8px 8px 3px;background:rgba(255,255,255,.9);color:#4e5d73;font-size:var(--fs-xs);font-weight:580;line-height:1.14}
 .r-copy-journey .r-persona-row[data-avatar-ref="task"] .r-persona-avatar{background:#eef5fb}
 .r-copy-journey .r-persona-row[data-avatar-ref="learn"] .r-persona-avatar{background:#f4f0fb}
-.r-story-role-rail{grid-column:1;grid-row:3;min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:space-around;gap:.22vh;padding:.35vh .35vw .25vh .08vw;border-right:1px solid #dfe3eb}
-.r-story-role-rail .r-sequence-role{position:static;transform:none;display:grid;grid-template-columns:clamp(22px,2.15vw,31px) minmax(0,1fr);align-items:center;gap:.32vw;min-height:0;padding:.34vh .32vw;border:0;border-radius:8px;background:transparent;box-shadow:none}
-.r-story-role-rail .r-sequence-role[data-role="task"],.r-story-role-rail .r-sequence-role[data-role="learn"]{border:1px solid color-mix(in srgb,var(--role-tone) 16%,#fff);background:color-mix(in srgb,var(--role-tone) 5%,#fff)}
-.r-story-role-rail .r-sequence-role[data-role="task"]{--role-tone:#4c82bd}.r-story-role-rail .r-sequence-role[data-role="learn"]{--role-tone:#8770bf}
-.r-story-role-rail .r-sequence-role .role-mark{display:grid;place-items:center;width:clamp(20px,1.85vw,27px);height:clamp(20px,1.85vw,27px);max-width:none;max-height:none;border-radius:50%;background:transparent;color:#5d6b83}
-.r-story-role-rail .r-sequence-role[data-role="task"] .role-mark,.r-story-role-rail .r-sequence-role[data-role="learn"] .role-mark{width:clamp(22px,2.15vw,31px);height:clamp(22px,2.15vw,31px);border:1px solid rgba(111,125,151,.16);background:#fff}
-.r-story-role-rail .r-sequence-role .role-mark svg{display:block;width:clamp(16px,1.3vw,20px);height:clamp(16px,1.3vw,20px);min-width:0;min-height:0;stroke-width:1.7}
-.r-story-role-rail .r-sequence-role img.role-mark{object-fit:cover}
-.r-story-role-rail .r-sequence-role b{font-size:var(--fs-xs);line-height:1.15;color:#384453;white-space:normal}
-.r-story-role-rail .r-sequence-role small{margin-top:.1vh;font-size:var(--fs-xs);line-height:1.12;color:#798493;white-space:normal}
-.r-story-scenes{grid-column:2;grid-row:3;min-width:0;min-height:0;overflow:visible;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;gap:.36vw;border:0;background:transparent}
-.r-story-scene{--scene:#6275bd;position:relative;min-width:0;min-height:0;display:grid;grid-template-rows:4.3vh minmax(0,1fr) 3.5vh;gap:.2vh;padding:.46vh .36vw .38vh;overflow:visible;border:1px solid color-mix(in srgb,var(--scene) 19%,#fff);border-radius:12px;background:linear-gradient(180deg,color-mix(in srgb,var(--scene) 7%,#fff),#fff 82%);box-shadow:0 7px 18px -15px rgba(30,45,74,.25)}
-.r-story-scene.is-source{--scene:#4c82bd}.r-story-scene.is-action{--scene:#8770bf}.r-story-scene.is-generate{--scene:#dc8055}.r-story-scene.is-control{--scene:#258e98}.r-story-scene.is-evidence{--scene:#438b69}
-.r-story-scene:not(:last-child)::after{content:"";position:absolute;z-index:3;top:50%;right:-.48vw;width:.43vw;border-top:1.5px solid #8e99aa}
-.r-story-scene:not(:last-child)::before{content:"";position:absolute;z-index:4;top:calc(50% - 3px);right:-.52vw;border-left:5px solid #8e99aa;border-top:3px solid transparent;border-bottom:3px solid transparent}
-.r-story-scene-head{display:flex;align-items:center;gap:.35vw;min-width:0;padding:0 .12vw}
-.r-story-scene-head img{display:block;width:clamp(28px,2.8vw,42px);height:100%;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(30,44,69,.12))}
-.r-story-scene-head span{min-width:0;font-size:var(--fs-xs);line-height:1.1;color:#667386}
-.r-story-flow{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;overflow:hidden;border-radius:8px;background:rgba(255,255,255,.56)}
-.r-story-flow{position:relative;display:block}
-.r-story-flow>svg{position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;max-width:none;max-height:none;overflow:visible}
-.r-story-flow>svg .edge{stroke:#8492a7!important;stroke-width:1.6!important;vector-effect:non-scaling-stroke}
-.r-story-node{--node-accent:var(--scene);position:absolute;z-index:2;left:var(--node-x);top:var(--node-y);transform:translate(-50%,-50%);width:max(var(--node-w),clamp(66px,5vw,96px));height:max(var(--node-h),clamp(38px,5.2vh,52px));min-width:0;min-height:0;padding:.42vh .42vw;display:flex;flex-direction:column;justify-content:center;gap:.24vh;overflow:hidden;border:1px solid color-mix(in srgb,var(--node-accent) 27%,#dce2ec);border-radius:10px;background:linear-gradient(145deg,#fff,#fbfcff);box-shadow:0 6px 14px -11px rgba(30,45,74,.4)}
-.r-story-node-head{display:flex;align-items:center;gap:.28vw;min-width:0}
-.r-story-node-head i{display:grid;place-items:center;flex:0 0 auto;width:clamp(17px,1.4vw,22px);height:clamp(17px,1.4vw,22px);color:var(--node-accent)}
-.r-story-node-head i svg{display:block;width:100%;height:100%;stroke-width:1.8}
-.r-story-node-head b{min-width:0;overflow:hidden;color:#344157;font-size:clamp(9.5px,.72vw,12px);font-weight:750;line-height:1.08;text-overflow:ellipsis;white-space:nowrap}
-.r-story-node-head em{margin-left:auto;flex:0 0 auto;padding:.15vh .23vw;border-radius:999px;background:color-mix(in srgb,var(--node-accent) 11%,#fff);color:color-mix(in srgb,var(--node-accent) 78%,#30394a);font-size:clamp(8px,.56vw,9.5px);font-style:normal;font-weight:720;line-height:1.15}
-.r-story-node p{margin:0;color:#667386;font-size:clamp(8.5px,.61vw,10.5px);line-height:1.15}
-.r-story-node .r-node-tags{display:flex;align-items:center;gap:.18vw;min-width:0;overflow:hidden}
-.r-story-node .r-node-tags span{padding:.13vh .22vw;border-radius:4px;background:#f0f2f6;color:#646d7b;font-size:clamp(7.5px,.5vw,8.5px);line-height:1.1;white-space:nowrap}
-.r-story-node.kind-studio{--node-accent:#6664ba;background:linear-gradient(145deg,#f4f3ff,#fff);border-color:#c8c7ef}
-.r-story-node.kind-agent{--node-accent:#399288;background:linear-gradient(145deg,#effaf8,#fff);border-color:#b9dfd9}
-.r-story-node.kind-task{--node-accent:#4c82bd;background:linear-gradient(145deg,#eff5ff,#fff)}
-.r-story-node.kind-learn{--node-accent:#8770bf;background:linear-gradient(145deg,#f5f1ff,#fff)}
-.r-story-node.kind-output{--node-accent:#71809a}
-.r-story-node.kind-source{--node-accent:#538f99}
-.r-story-node.kind-error{--node-accent:#d16d62;background:linear-gradient(145deg,#fff2ef,#fff);border-color:#edc7c0}
-.r-story-node.kind-success{--node-accent:#4b9a78;background:linear-gradient(145deg,#eef9f2,#fff);border-color:#c5e4d1}
-.r-story-node.kind-community{--node-accent:#548b68;background:linear-gradient(145deg,#eff8f0,#fff);border-color:#c7dfcb}
-.r-story-node.kind-compact{padding:.34vh .32vw;border-radius:9px}
-.r-story-node.kind-compact .r-story-node-head{gap:.2vw}.r-story-node.kind-compact .r-story-node-head i{width:clamp(14px,1.1vw,18px);height:clamp(14px,1.1vw,18px)}
-.r-story-node.kind-compact .r-story-node-head b{font-size:clamp(8.5px,.64vw,10.5px)}
-.r-story-node.kind-compact p{font-size:clamp(7.5px,.52vw,9px)}
-.r-story-handoff{display:flex;align-items:center;gap:.25vw;min-width:0;padding:.2vh .28vw;border-radius:7px;background:color-mix(in srgb,var(--scene) 8%,#fff)}
-.r-story-handoff small{flex:0 0 auto;font-size:var(--fs-xs);font-weight:700;color:color-mix(in srgb,var(--scene) 76%,#354052)}
-.r-story-handoff span{min-width:0;font-size:var(--fs-xs);line-height:1.08;color:#586477}
-.r-story-credit{position:absolute;right:.25vw;bottom:.14vh;font-size:7.5px;color:#a1a8b3}
+.r-copy-journey .r-sequence-plot{position:relative;overflow:hidden;background:transparent;border:0;border-radius:0}
+.r-copy-journey .r-sequence-plot>svg{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;preserveAspectRatio:none}
+.r-sequence-event{--event-tone:#5f68bd;position:absolute;z-index:2;left:var(--event-x);top:var(--event-y);transform:translate(-50%,-50%);width:clamp(82px,6vw,100px);min-height:3.3vh;display:flex;align-items:center;gap:.34vw;padding:.4vh .4vw;border:1px solid color-mix(in srgb,var(--event-tone) 18%,#e2e7ef);border-radius:9px;background:rgba(255,255,255,.97);box-shadow:0 5px 16px rgba(36,50,79,.12);color:#354052}
+.r-sequence-event i{display:grid;place-items:center;flex:0 0 auto;width:clamp(15px,1.2vw,19px);height:clamp(15px,1.2vw,19px);color:var(--event-tone)}
+.r-sequence-event i svg{display:block;width:100%;height:100%;stroke-width:1.85}
+.r-sequence-event b{display:block;min-width:0;font-size:clamp(9px,.72vw,12px);font-weight:730;line-height:1.18;white-space:normal}
+.r-sequence-event.tone-blue{--event-tone:#4c82bd}.r-sequence-event.tone-violet{--event-tone:#7770c5}.r-sequence-event.tone-teal{--event-tone:#32958e}.r-sequence-event.tone-red{--event-tone:#c86161}.r-sequence-event.tone-green{--event-tone:#45876a}
+.r-copy-journey .r-sequence-role[data-role="task"],.r-copy-journey .r-sequence-role[data-role="learn"]{border:1px solid color-mix(in srgb,var(--role-tone) 16%,#fff);background:color-mix(in srgb,var(--role-tone) 5%,#fff)}
+.r-copy-journey .r-sequence-role[data-role="studio"],.r-copy-journey .r-sequence-role[data-role="agent"],.r-copy-journey .r-sequence-role[data-role="environment"],.r-copy-journey .r-sequence-role[data-role="community"]{border:0;background:transparent;box-shadow:none}
+.r-copy-journey .r-sequence-role .role-mark{background:transparent}
+.r-copy-journey .r-sequence-role[data-role="task"] .role-mark,.r-copy-journey .r-sequence-role[data-role="learn"] .role-mark{background:#fff}
+.r-copy-journey .r-sequence-credit{position:absolute;right:.28vw;bottom:.18vh;z-index:3;font-size:var(--fs-xs);color:#8992a0}
 .r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border-radius:9px!important}
 .r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node span{font-size:var(--fs-xs);line-height:1.15}
 """
@@ -358,7 +336,29 @@ SEQUENCE_ROLES = [
     ("K", "community", "知识与社区", "提供依据、接收经验", "book-open"),
 ]
 
+SEQUENCE_EVENT_CARDS = {
+    "任务现场": ("clipboard-list", "任务现场", "tone-blue"),
+    "学习目标": ("graduation-cap", "学习目标", "tone-violet"),
+    "主动建议": ("sparkles", "主动建议", "tone-violet"),
+    "检索资料": ("search", "检索资料", "tone-teal"),
+    "版本范围": ("badge-check", "版本范围", "tone-green", 9),
+    "返回依据": ("book-open-check", "返回依据", "tone-teal"),
+    "连线Prompt": ("link-2", "连线 Prompt", "tone-blue"),
+    "生成路径": ("route", "生成路径", "tone-violet"),
+    "自定义节点": ("list-plus", "自定义节点", "tone-violet", 19),
+    "运行代码": ("play", "运行代码", "tone-teal"),
+    "路径练习": ("code-xml", "路径练习", "tone-teal"),
+    "错误日志": ("triangle-alert", "错误日志", "tone-red"),
+    "错误图解": ("network", "错误图解", "tone-red"),
+    "复测修正": ("refresh-cw", "复测修正", "tone-green"),
+    "验证证据": ("circle-check", "验证证据", "tone-green"),
+    "社区草稿": ("file-pen-line", "社区草稿", "tone-green"),
+    "认知卡片": ("notebook-pen", "认知卡片", "tone-violet"),
+    "分享复用": ("share-2", "分享复用", "tone-green"),
+}
+
 def sequence_diagram_markup():
+    global SEQUENCE_STAGE_RAIL_STYLE
     source = HERE / "journey-sequence.mmd"
     raw_path = HERE / "journey-sequence.svg"
     renderer = HERE / "render_journey_sequence.mjs"
@@ -433,18 +433,83 @@ def sequence_diagram_markup():
             count=1,
         )
 
-    for block in [node for node in geometry if node.get("class") == "block" and node.get("data-type") == "rect"]:
+    phase_fills = ["#f0f6ff", "#f5f2ff", "#f4f3ff", "#eff8fa", "#f0f7f1"]
+    phase_blocks = [node for node in geometry if node.get("class") == "block" and node.get("data-type") == "rect"]
+    phase_ranges = []
+    for phase_index, block in enumerate(phase_blocks):
         rects = block.findall(f"{{{svg_ns}}}rect")
         if rects:
-            rects[0].set("fill", "#f8f9fc")
-            rects[0].set("stroke", "#dce2eb")
-            rects[0].set("stroke-width", "1.2")
+            rect_y = float(rects[0].get("y", "0"))
+            rect_height = float(rects[0].get("height", "0"))
+            phase_ranges.append((rect_y, rect_y + rect_height))
+            rects[0].set("fill", phase_fills[phase_index % len(phase_fills)])
+            rects[0].set("stroke", "#e7ebf1")
+            rects[0].set("stroke-width", "1")
+            rects[0].set("rx", "12")
+            rects[0].set("ry", "12")
         if len(rects) > 1:
             block.remove(rects[1])
         for parent in block.iter():
             for child in list(parent):
                 if child.tag == f"{{{svg_ns}}}text":
                     parent.remove(child)
+    if phase_ranges:
+        phase_ranges.sort()
+        left_space = max(0, phase_ranges[0][0] - old_viewbox[1])
+        right_space = max(0, old_viewbox[1] + height - phase_ranges[-1][1])
+        gaps = [max(0, phase_ranges[i + 1][0] - phase_ranges[i][1]) for i in range(len(phase_ranges) - 1)]
+        stage_widths = [max(1, end - start) for start, end in phase_ranges]
+        SEQUENCE_STAGE_RAIL_STYLE = (
+            "grid-template-columns:" + " ".join(f"{value:.3f}fr" for value in stage_widths) + ";"
+            + f"column-gap:{(sum(gaps) / max(1, len(gaps)) / height * 100):.4f}%;"
+            + f"padding-left:{left_space / height * 100:.4f}%;padding-right:{right_space / height * 100:.4f}%"
+        )
+
+    event_cards = []
+    event_strokes = {
+        "tone-blue": "#5d83c4",
+        "tone-violet": "#766cc4",
+        "tone-teal": "#3c958e",
+        "tone-red": "#c86161",
+        "tone-green": "#4c936e",
+    }
+    for message in [node for node in geometry if node.get("class") == "message"]:
+        label = message.get("data-label", "")
+        event = SEQUENCE_EVENT_CARDS.get(label)
+        line = message.find(f"{{{svg_ns}}}line")
+        if not event or line is None:
+            continue
+        icon, title, tone, *offset_values = event
+        x1 = float(line.get("x1", "0"))
+        x2 = float(line.get("x2", "0"))
+        event_time = float(line.get("y1", "0"))
+        center_actor = (x1 + x2) / 2
+        left_pct = max(0, min(100, event_time / height * 100))
+        top_pct = max(0, min(100, (width - center_actor) / width * 100 + (offset_values[0] if offset_values else 0)))
+        event_cards.append(
+            f'<div class="r-sequence-event {tone}" style="--event-x:{left_pct:.4f}%;--event-y:{top_pct:.4f}%" '
+            f'aria-label="{esc(label)}"><i>{lucide_svg(icon)}</i><b>{esc(title)}</b></div>'
+        )
+        stroke = event_strokes[tone]
+        line.set("stroke", stroke)
+        line.set("stroke-width", "1.5")
+        marker_id = "seq-arrow-" + tone.replace("tone-", "")
+        line.set("marker-end", f"url(#{marker_id})")
+        label_node = message.find(f"{{{svg_ns}}}text")
+        if label_node is not None:
+            message.remove(label_node)
+
+    for defs in defs_nodes:
+        for tone, color in event_strokes.items():
+            marker_id = "seq-arrow-" + tone.replace("tone-", "")
+            marker = ET.SubElement(defs, f"{{{svg_ns}}}marker", {
+                "id": marker_id, "markerWidth": "8", "markerHeight": "5",
+                "refX": "8", "refY": "2.5", "orient": "auto",
+            })
+            ET.SubElement(marker, f"{{{svg_ns}}}polygon", {
+                "points": "0 0, 8 2.5, 0 5", "fill": color, "stroke": color,
+                "stroke-width": ".75", "stroke-linejoin": "round",
+            })
 
     rotated = ET.Element(f"{{{svg_ns}}}g", {"transform": f"translate(0 {width:g}) rotate(-90)"})
     for node in geometry:
@@ -462,8 +527,8 @@ def sequence_diagram_markup():
     if root_style:
         root.set("style", root_style)
     root.set("role", "img")
-    root.set("aria-label", "由 beautiful-mermaid 生成并旋转为横向时间推进的角色时序图")
-    root.set("preserveAspectRatio", "xMidYMid meet")
+    root.set("aria-label", "任务导向与学习导向开发者从起点到经验沉淀的横向时序图")
+    root.set("preserveAspectRatio", "none")
     for node in style_nodes + defs_nodes + [rotated]:
         root.append(node)
     diagram = ET.tostring(root, encoding="unicode")
@@ -475,7 +540,7 @@ def sequence_diagram_markup():
         lane_y = width - center_x
         lane_pct = max(0, min(100, lane_y / width * 100))
         mark = (f'<img class="role-mark" src="{avatars[actor_id]}" alt="">' if actor_id in avatars else
-                f'<span class="role-mark"><i data-lucide="{icon}" aria-hidden="true"></i></span>')
+                f'<span class="role-mark">{lucide_svg(icon)}</span>')
         role_rows.append(
             f'<div class="r-sequence-role" data-role="{role}" style="--lane-y:{lane_pct:.4f}%" '
             f'aria-label="{esc(name)}：{esc(desc)}">{mark}<span><b>{esc(name)}</b><small>{esc(desc)}</small></span></div>'
@@ -483,156 +548,18 @@ def sequence_diagram_markup():
 
     return (
         '<div class="r-sequence-role-label" aria-label="时序图参与角色">' + "".join(role_rows) + '</div>'
-        '<div class="r-sequence-plot" aria-label="时间从左向右；箭头表示角色间消息与结果回传">'
-        + diagram
-        + '<small class="r-sequence-credit">图表：beautiful-mermaid · MIT；人物插图：DiceBear Personas · CC BY 4.0</small></div>'
+        '<div class="r-sequence-plot" aria-label="角色交接与阶段推进；时间从左向右">'
+        + diagram + "".join(event_cards)
+        + '<small class="r-sequence-credit">连线布局：beautiful-mermaid · MIT　图标：Lucide · ISC</small></div>'
     )
 
 JOURNEY_STAGES = [
-    ("01 · 起点", "认知起步", "任务现场或成长目标", "source", "need-context.png", "目标、现场与验收点"),
-    ("02 · 寻源", "找依据与方向", "资料来源和学习目标", "action", "search-fetch.png", "来源、版本与适用范围"),
-    ("03 · 明确", "形成可行动路径", "Prompt 与学习路径", "generate", "generate.png", "可编辑 Prompt / 学习路径"),
-    ("04 · 实践", "边做边理解", "运行、解释与核验", "control", "decide.png", "错误图解 / 成功验证"),
-    ("05 · 应用", "带着收获继续", "复习、记录与回流", "evidence", "execute.png", "社区草稿 / 个人知识卡"),
+    ("01 · 起点", "认知起步", "任务 / 学习目标", "source"),
+    ("02 · 找线索", "寻源与推荐", "依据 / 版本 / 范围", "action"),
+    ("03 · 形成方向", "Prompt 与路径", "连接 / 共创 / 自定义", "generate"),
+    ("04 · 实践验证", "边做边懂", "运行 / 图解 / 复测", "control"),
+    ("05 · 经验沉淀", "带入下一次", "认知卡 / 社区回流", "evidence"),
 ]
-
-STORY_NODE_CONTENTS = {
-    "01": {
-        "task": ("kind-task kind-compact", "clipboard-list", "任务现场", "问题 / 目标 / 环境", ""),
-        "learn": ("kind-learn kind-compact", "compass", "学习目标", "入门方向 / 专项能力", ""),
-        "studio": ("kind-studio", "layout-dashboard", "Ascend Studio", "提炼目标与关键条件", "共创"),
-        "context": ("kind-output", "list-checks", "任务卡", "目标 · 环境 · 验收点", "已整理"),
-    },
-    "02": {
-        "need": ("kind-learn kind-compact", "search", "线索与目标", "现场 / 兴趣 / 版本", ""),
-        "agent": ("kind-agent", "bot", "智能体", "检索、筛选并标出来源", "取回"),
-        "official": ("kind-source kind-compact", "file-text", "官方文档", "接口与版本说明", "v8.0"),
-        "practice": ("kind-source kind-compact", "book-open-check", "最佳实践", "可复用步骤", "v2.1"),
-        "community": ("kind-community kind-compact", "users-round", "社区经验", "真实问题与解法", "v1.3"),
-        "scope": ("kind-output", "badge-check", "适用性核对", "依据 · 版本 · 适用范围", "可判断"),
-    },
-    "03": {
-        "intent": ("kind-task kind-compact", "messages-square", "任务线索 / 学习目标", "用户补写自己的条件", ""),
-        "studio": ("kind-studio", "workflow", "Studio 与用户一起梳理", "问题、范围与下一步", "共创"),
-        "prompt": ("kind-output", "send", "可编辑 Prompt", "", ""),
-        "path": ("kind-learn", "route", "协同学习路径", "", ""),
-    },
-    "04": {
-        "plan": ("kind-task kind-compact", "code-xml", "代码 / 学习节点", "明确当前要验证的内容", ""),
-        "env": ("kind-agent", "terminal", "开发环境", "运行 / 练习 / 返回现场", "RUN"),
-        "result": ("kind-output kind-compact", "circle-help", "运行结果", "错误或通过", ""),
-        "explain": ("kind-error", "network", "错误图解", "日志 × 参数 × 原因", "定位"),
-        "mastery": ("kind-success", "circle-check", "验证通过", "结果与原理检查", "通过"),
-        "retry": ("kind-error kind-compact", "rotate-ccw", "调整后再验证", "保留本次运行证据", ""),
-    },
-    "05": {
-        "task": ("kind-task kind-compact", "code-2", "任务实践", "整理真实现场", ""),
-        "learn": ("kind-learn kind-compact", "graduation-cap", "学习实践", "补上个人理解", ""),
-        "draft": ("kind-output", "file-pen-line", "社区经验草稿", "环境 · 问题 · 修复", "待审阅"),
-        "card": ("kind-output", "notebook-pen", "个人知识卡", "笔记 · 图解 · 代码", "自用"),
-        "knowledge": ("kind-community", "library", "知识与社区", "经验可检索、可复用", "回流"),
-        "next": ("kind-community kind-compact", "move-right", "下一次任务 / 学习", "从积累继续", ""),
-    },
-}
-
-STORY_NODE_TAGS = {
-    ("01", "context"): ("目标", "环境", "验收点"),
-    ("03", "prompt"): ("范围", "约束", "步骤"),
-    ("03", "path"): ("节点", "顺序", "验证"),
-    ("04", "env"): ("构建", "运行", "练习"),
-    ("04", "mastery"): ("结果", "理解", "复用"),
-    ("05", "draft"): ("来源", "版本", "修复"),
-    ("05", "card"): ("笔记", "图解", "代码"),
-}
-
-def story_node_html(scene_id, node_id, x, y, width, height):
-    kind, icon, title, detail, badge = STORY_NODE_CONTENTS[scene_id][node_id]
-    badge_html = f'<em>{esc(badge)}</em>' if badge else ""
-    detail_html = f'<p>{esc(detail)}</p>' if detail else ""
-    tags = STORY_NODE_TAGS.get((scene_id, node_id), ())
-    tags_html = '<div class="r-node-tags">' + "".join(f'<span>{esc(tag)}</span>' for tag in tags) + '</div>' if tags else ""
-    style = f"--node-x:{x:.4f}%;--node-y:{y:.4f}%;--node-w:{width:.4f}%;--node-h:{height:.4f}%"
-    return (
-        f'<div class="r-story-node {kind}" data-node="{esc(node_id)}" style="{style}">'
-        f'<div class="r-story-node-head"><i data-lucide="{esc(icon)}" aria-hidden="true"></i><b>{esc(title)}</b>{badge_html}</div>'
-        f'{detail_html}{tags_html}</div>'
-    )
-
-def journey_scene_markup():
-    specs_path = HERE / "journey-scenes.json"
-    renderer = HERE / "render_journey_sequence.mjs"
-    scenes = json.loads(specs_path.read_text())
-    newest_input = max(specs_path.stat().st_mtime, renderer.stat().st_mtime)
-    expected = [HERE / f"journey-scene-{scene['id']}.svg" for scene in scenes]
-    if any(not p.exists() or p.stat().st_mtime < newest_input for p in expected):
-        subprocess.run(["npm", "run", "render:journey-sequence", "--prefix", str(HERE)], check=True)
-
-    avatars = {"T": svg_data("persona-task.svg"), "L": svg_data("persona-learning.svg")}
-    role_rows = []
-    for actor_id, role, name, desc, icon in SEQUENCE_ROLES:
-        mark = (f'<img class="role-mark" src="{avatars[actor_id]}" alt="">' if actor_id in avatars else
-                f'<span class="role-mark"><i data-lucide="{icon}" aria-hidden="true"></i></span>')
-        role_rows.append(
-            f'<div class="r-sequence-role" data-role="{role}" aria-label="{esc(name)}：{esc(desc)}">'
-            f'{mark}<span><b>{esc(name)}</b><small>{esc(desc)}</small></span></div>'
-        )
-
-    ET.register_namespace("", "http://www.w3.org/2000/svg")
-    svg_ns = "http://www.w3.org/2000/svg"
-    stage_scenes = []
-    for scene, stage in zip(scenes, JOURNEY_STAGES):
-        _, _, _, phase, image_name, handoff = stage
-        svg_root = ET.parse(HERE / f"journey-scene-{scene['id']}.svg").getroot()
-        view = [float(value) for value in svg_root.get("viewBox", "0 0 0 0").split()]
-        view_x, view_y, view_width, view_height = view
-        nodes = []
-        for child in list(svg_root):
-            node_id = child.get("data-id") if child.tag.rsplit("}", 1)[-1] == "g" else None
-            if node_id:
-                rect = child.find(f"{{{svg_ns}}}rect")
-                if rect is not None:
-                    x, y = float(rect.get("x", 0)), float(rect.get("y", 0))
-                    width, height = float(rect.get("width", 0)), float(rect.get("height", 0))
-                else:
-                    shape = child.find(f"{{{svg_ns}}}polygon")
-                    points = re.findall(r"[-+]?\d*\.?\d+", shape.get("points", "")) if shape is not None else []
-                    coords = [float(value) for value in points]
-                    xs, ys = coords[0::2], coords[1::2]
-                    x, y = min(xs), min(ys)
-                    width, height = max(xs) - x, max(ys) - y
-                nodes.append(story_node_html(
-                    scene["id"], node_id,
-                    ((x + width / 2 - view_x) / view_width) * 100,
-                    ((y + height / 2 - view_y) / view_height) * 100,
-                    (width / view_width) * 100,
-                    (height / view_height) * 100,
-                ))
-                svg_root.remove(child)
-            elif child.get("class") == "edge-label":
-                svg_root.remove(child)
-        svg_root.set("class", "r-story-flow-svg")
-        svg_root.set("role", "img")
-        svg_root.set("aria-label", scene["label"] + "；连线由 beautiful-mermaid 布局")
-        svg_root.set("preserveAspectRatio", "none")
-        svg_root.set("width", "100%")
-        svg_root.set("height", "100%")
-        for style_node in svg_root.findall(f"{{{svg_ns}}}style"):
-            style_node.text = re.sub(r"@import[^;]+;\s*", "", style_node.text or "")
-        diagram = ET.tostring(svg_root, encoding="unicode")
-        image_path = ROOT / "cann-dashboard/assets/agent-stage-3d" / image_name
-        art = "data:image/png;base64," + base64.b64encode(image_path.read_bytes()).decode()
-        stage_scenes.append(
-            f'<article class="r-story-scene is-{phase}" aria-label="{esc(scene["label"])}">'
-            f'<header class="r-story-scene-head"><img src="{art}" alt=""><span>{esc(scene["label"])}</span></header>'
-            f'<div class="r-story-flow">{diagram}{"".join(nodes)}</div>'
-            f'<div class="r-story-handoff"><small>交接</small><span>{esc(handoff)}</span></div></article>'
-        )
-    credit = '<small class="r-story-credit">流程：beautiful-mermaid · MIT　图标：Lucide · ISC　人物：DiceBear Personas · CC BY 4.0</small>'
-    return (
-        '<div class="r-story-role-rail" aria-label="参与角色">' + "".join(role_rows) + '</div>'
-        '<div class="r-story-scenes" aria-label="按时间从左到右推进的五段角色交接场景">'
-        + "".join(stage_scenes) + credit + '</div>'
-    )
 
 def build_journey():
     section = source_journey
@@ -653,7 +580,7 @@ def build_journey():
         '<div class="cb-row-label cb-human-label"><small>ENTRY POINTS</small><b>两种起点</b></div>', 1)
 
     stage_html = []
-    for kicker, title, desc, phase, _image, _handoff in JOURNEY_STAGES:
+    for kicker, title, desc, phase in JOURNEY_STAGES:
         stage_html.append(
             f'<div class="cb-stage is-{phase}"><div class="cb-stage-copy">'
             f'<small>{esc(kicker)}</small><b>{esc(title)}</b><span>{esc(desc)}</span></div></div>'
@@ -701,7 +628,14 @@ def build_journey():
 
     middle_start = section.index('<div class="cb-row-label cb-handoff-label">')
     middle_end = section.index('<div class="cb-row-label cb-painpoint-label">', middle_start)
-    section = section[:middle_start] + journey_scene_markup() + section[middle_end:]
+    diagram_markup = sequence_diagram_markup()
+    section = section[:middle_start] + diagram_markup + section[middle_end:]
+    section = re.sub(
+        r'(<div class="cb-stage-rail"[^>]*)(>)',
+        lambda match: match.group(1) + f' style="{SEQUENCE_STAGE_RAIL_STYLE}"' + match.group(2),
+        section,
+        count=1,
+    )
     return section
 
 journey = build_journey()

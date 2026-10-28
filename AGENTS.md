@@ -7609,3 +7609,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 页数仍为 16；没有改变正式页面序列或 API / Protocol、Host / Harness、Application / Task 边界，也没有修改电脑端 / 小程序原型。
 - 验证：py_compile 与报告构建通过；静态结构核对为 5 个场景、26 个图解节点、6 个角色、5 个断点。浏览器拒绝本地 file:// 预览，本轮未绕过策略，故没有完成整页视觉回放；旧 report-02-journey.jpg 不代表当前图。
 - 提交 / 推送：本轮报告、构建证据和本交接按文件范围隔离提交，并推送到 main。
+
+### 2026-10-29 · Ascend Studio 旅程时序图按参考样式收尾
+
+- 用户选定参考图的连续交接表现：第 2 页中段保留为一张左到右、跨角色的时序图，五段浅色阶段背景中放置带图标的白色交接卡，并呈现错误解释、复测和经验回流；没有把参考图片嵌入汇报，也没有用 Tab 在旅程与时序之间切换。开发者头像只用于任务导向和学习导向两类起点，系统参与者以图标和名称呈现。
+- `beautiful-mermaid` 1.1.3 负责消息布局；时序 SVG 与 Lucide 卡片图标内嵌到单文件网页 PPT。两类用户按进入目的区分，不把任务开发者简单等同于专业级、学习开发者等同于小白；用户旅程和错误回路是设计表达，不是新访谈或行为实测。
+- 更新 `cann-dashboard/ascend-studio-design-report.html` 及 `cann-dashboard/ascend-studio-design-report-evidence/` 中的构建、时序源、依赖与 QA 记录；报告为 16 页。未修改 Ascend Studio 产品原型、原精简报告或正式页序，未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：时序 5 阶段、18 个消息节点、6 个角色、18 张图标卡；对 1280×720 和 1440×900 的卡片几何位置复核无重叠。`npm run render:journey-sequence`、`python3 build_report.py`、`python3 -m py_compile build_report.py`、`node --check render_journey_sequence.mjs`、`git diff --check` 通过。未完成浏览器整页回放，不将矢量或几何核对声称为浏览器视觉验证。
+- 提交与推送：使用基于最新 `origin/main` 的独立临时索引，只纳入本汇报的差异与本交接记录；推送结果见本轮交付回执。共享工作区的其它暂存、未暂存及未跟踪改动不纳入。
