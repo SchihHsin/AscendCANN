@@ -39,6 +39,24 @@ const svg = renderMermaidSVG(source, {
 });
 writeFileSync(resolve(here, 'journey-sequence.svg'), svg);
 
+const scenes = JSON.parse(readFileSync(resolve(here, 'journey-scenes.json'), 'utf8'));
+const sceneAccents = ['#6563b7', '#7a68bd', '#6563b7', '#45958e', '#648e72'];
+for (const [index, scene] of scenes.entries()) {
+  const sceneSvg = renderMermaidSVG(scene.source, {
+    bg: '#ffffff',
+    fg: '#354052',
+    line: '#8794a8',
+    accent: sceneAccents[index] || '#6563b7',
+    muted: '#657184',
+    surface: '#f7f8fb',
+    border: '#d9dee7',
+    font: 'Arial',
+    transparent: true,
+    padding: 18,
+  });
+  writeFileSync(resolve(here, `journey-scene-${scene.id}.svg`), sceneSvg);
+}
+
 const avatar = (seed, clothingColor) => createAvatar(personas, {
   seed,
   backgroundColor: ['e8edf7'],
@@ -52,4 +70,4 @@ const avatar = (seed, clothingColor) => createAvatar(personas, {
 writeFileSync(resolve(here, 'persona-task.svg'), avatar('ascend-task-developer', '4c82bd'));
 writeFileSync(resolve(here, 'persona-learning.svg'), avatar('ascend-learning-developer', '8872bd'));
 
-console.log(`Rendered ${svg.length.toLocaleString()} SVG characters from beautiful-mermaid.`);
+console.log(`Rendered one role sequence and ${scenes.length} stage flows from beautiful-mermaid.`);

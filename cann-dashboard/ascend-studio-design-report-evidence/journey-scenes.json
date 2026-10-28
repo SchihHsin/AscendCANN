@@ -1,0 +1,27 @@
+[
+  {
+    "id": "01",
+    "label": "认知起步：目标进入 Studio",
+    "source": "flowchart TB\n  task([任务：带着现场问题]) --> studio[Ascend Studio：提炼目标]\n  learn([学习：带着兴趣或目标]) --> studio\n  studio --> context[任务卡：目标 / 环境 / 验收点]\n  classDef intent fill:#f1f5ff,stroke:#8da4de,color:#293b5c,stroke-width:1.5px\n  classDef studio fill:#eeeefe,stroke:#7776c8,color:#34345e,stroke-width:1.8px\n  classDef output fill:#ffffff,stroke:#cdd7e5,color:#344256,stroke-width:1.5px\n  class task,learn intent\n  class studio studio\n  class context output"
+  },
+  {
+    "id": "02",
+    "label": "寻源：依据与学习目标",
+    "source": "flowchart TB\n  need[现场线索 / 学习目标] --> agent[智能体：检索与筛选]\n  agent --> official[官方文档 · v8.0]\n  agent --> practice[最佳实践 · v2.1]\n  agent --> community[社区经验 · v1.3]\n  official --> scope[依据 + 版本 + 适用范围]\n  practice --> scope\n  community --> scope\n  classDef context fill:#f6f1ff,stroke:#9a84d4,color:#42335f,stroke-width:1.5px\n  classDef agent fill:#eaf8f6,stroke:#69aaa2,color:#285d59,stroke-width:1.8px\n  classDef source fill:#ffffff,stroke:#d5ddeb,color:#39475b,stroke-width:1.35px\n  class need context\n  class agent agent\n  class official,practice,community,scope source"
+  },
+  {
+    "id": "03",
+    "label": "明确：目标成为可行动路径",
+    "source": "flowchart TB\n  intent[任务线索 / 学习目标] --> studio[Studio 与用户一起梳理]\n  studio --> prompt[可编辑 Prompt：范围 / 约束 / 步骤]\n  studio --> path[学习路径：节点 / 顺序 / 验证]\n  prompt <-->|补充与调整| path\n  classDef context fill:#f1f5ff,stroke:#8da4de,color:#293b5c,stroke-width:1.5px\n  classDef studio fill:#eeeefe,stroke:#7776c8,color:#34345e,stroke-width:1.8px\n  classDef output fill:#ffffff,stroke:#cdd7e5,color:#344256,stroke-width:1.5px\n  class intent context\n  class studio studio\n  class prompt,path output"
+  },
+  {
+    "id": "04",
+    "label": "实践：运行、解释与再验证",
+    "source": "flowchart TB\n  plan[代码 / 学习节点] --> env[开发环境：运行 / 练习]\n  env --> result{返回结果}\n  result -->|错误| explain[日志 + 图解：解释原因]\n  result -->|通过| mastery[运行结果：理解检查]\n  explain --> retry[调整参数：再次验证]\n  retry --> env\n  classDef context fill:#eef7fb,stroke:#7eaebe,color:#2d4a59,stroke-width:1.5px\n  classDef env fill:#e9f6f5,stroke:#5faaa2,color:#28564f,stroke-width:1.8px\n  classDef fail fill:#fff1ee,stroke:#d99688,color:#743f37,stroke-width:1.5px\n  classDef pass fill:#eef8f1,stroke:#7eaf8c,color:#315743,stroke-width:1.5px\n  class plan context\n  class env env\n  class explain,retry fail\n  class mastery pass"
+  },
+  {
+    "id": "05",
+    "label": "应用：把收获带入下一次实践",
+    "source": "flowchart TB\n  task[任务实践] --> draft[社区草稿：环境 / 问题 / 修复]\n  learn[学习实践] --> card[个人知识卡：笔记 / 图解 / 代码]\n  draft --> knowledge[知识与社区：可检索复用]\n  card --> knowledge\n  knowledge --> next[回到下一次任务 / 学习]\n  classDef task fill:#f1f5ff,stroke:#8da4de,color:#293b5c,stroke-width:1.5px\n  classDef learn fill:#f6f1ff,stroke:#9a84d4,color:#42335f,stroke-width:1.5px\n  classDef output fill:#ffffff,stroke:#d5ddeb,color:#39475b,stroke-width:1.35px\n  classDef community fill:#edf7f0,stroke:#83ad8f,color:#345542,stroke-width:1.8px\n  class task task\n  class learn learn\n  class draft,card output\n  class knowledge,next community"
+  }
+]

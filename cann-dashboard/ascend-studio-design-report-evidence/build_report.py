@@ -84,6 +84,12 @@ def div_bounds(markup, class_name):
             return match.start(), match.start() + tag.end()
     raise ValueError(f"unclosed div class: {class_name}")
 
+def replace_div_content(markup, class_name, content):
+    start, end = div_bounds(markup, class_name)
+    opening_end = markup.index(">", start) + 1
+    closing_start = markup.rfind("</div>", opening_end, end)
+    return markup[:opening_end] + content + markup[closing_start:]
+
 def gray(title, sub, content, active="用户旅程", note="", cls="", demo=None):
     body = (f'<div class="r-gray-demo"><div class="r-gray-demo-content">{content}</div>'
             f'{demo_button(demo)}</div>') if demo else content
@@ -259,6 +265,76 @@ body.overview.ctrl #deck{width:auto}
 @media print{html,body{height:auto;overflow:visible;background:#fff}#deck{width:100%}.slide{height:210mm;width:297mm;break-after:page;page-break-after:always}#controls,#navDots,#toggle,#panel,.r-enlarge{display:none!important}@page{size:A4 landscape;margin:0}}
 """
 
+CSS += r"""
+/* Storyboard sequence: five illustrated handoffs replace the empty lifeline field. */
+.r-copy-journey .collab-blueprint{height:70.4vh;grid-template-rows:6.5vh 9vh 42vh 10vh;gap:.65vh .36vw}
+.r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr);padding:.42vh .58vw;background:color-mix(in srgb,var(--phase) 9%,#fff);border:1px solid color-mix(in srgb,var(--phase) 18%,#fff);border-radius:10px;box-shadow:0 5px 15px -13px rgba(36,50,79,.35)}
+.r-copy-journey .cb-stage-copy{gap:.13vh}.r-copy-journey .cb-stage small{font:760 var(--fs-xs)/1.1 'JetBrains Mono';letter-spacing:.035em;color:color-mix(in srgb,var(--phase) 78%,#34415b)}
+.r-copy-journey .cb-stage b{font-size:var(--fs-h3);line-height:1.04;color:#29364a;white-space:normal}
+.r-copy-journey .cb-stage span{margin-top:.05vh;font-size:var(--fs-xs);line-height:1.08;color:#718096;white-space:normal}
+.r-copy-journey .cb-stage-visual{display:none}
+.r-copy-journey .cb-human-step{padding:.25vh .36vw;background:color-mix(in srgb,var(--phase) 4%,#fff);border:1px solid color-mix(in srgb,var(--phase) 12%,#fff);border-radius:9px}
+.r-copy-journey .cb-lane-cell:not(:last-child)::after{right:-.48vw;width:.36vw;border-color:#9aa5b5}
+.r-copy-journey .cb-lane-cell:not(:last-child)::before{right:-.51vw;border-left-color:#9aa5b5}
+.r-copy-journey .cb-human-lane .r-persona-row{display:grid;grid-template-columns:clamp(22px,2.15vw,31px) minmax(0,1fr);gap:.32vw;align-items:center;padding:.14vh 0}
+.r-copy-journey .cb-human-lane .r-persona-row+.r-persona-row{margin-top:.18vh;padding-top:.18vh;border-top:1px solid rgba(112,124,147,.12)}
+.r-copy-journey .r-persona-avatar{width:clamp(22px,2.15vw,31px);height:clamp(22px,2.15vw,31px);display:block;overflow:hidden;border:1px solid rgba(111,125,151,.18);border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(34,50,76,.08)}
+.r-copy-journey .r-persona-avatar img{display:block;width:100%;height:100%;object-fit:cover}
+.r-copy-journey .r-persona-bubble{position:relative;min-width:0;padding:.38vh .4vw;border:1px solid rgba(105,122,154,.14);border-radius:8px 8px 8px 3px;background:rgba(255,255,255,.9);color:#4e5d73;font-size:var(--fs-xs);font-weight:580;line-height:1.14}
+.r-copy-journey .r-persona-row[data-avatar-ref="task"] .r-persona-avatar{background:#eef5fb}
+.r-copy-journey .r-persona-row[data-avatar-ref="learn"] .r-persona-avatar{background:#f4f0fb}
+.r-story-role-rail{grid-column:1;grid-row:3;min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:space-around;gap:.22vh;padding:.35vh .35vw .25vh .08vw;border-right:1px solid #dfe3eb}
+.r-story-role-rail .r-sequence-role{position:static;transform:none;display:grid;grid-template-columns:clamp(22px,2.15vw,31px) minmax(0,1fr);align-items:center;gap:.32vw;min-height:0;padding:.34vh .32vw;border:0;border-radius:8px;background:transparent;box-shadow:none}
+.r-story-role-rail .r-sequence-role[data-role="task"],.r-story-role-rail .r-sequence-role[data-role="learn"]{border:1px solid color-mix(in srgb,var(--role-tone) 16%,#fff);background:color-mix(in srgb,var(--role-tone) 5%,#fff)}
+.r-story-role-rail .r-sequence-role[data-role="task"]{--role-tone:#4c82bd}.r-story-role-rail .r-sequence-role[data-role="learn"]{--role-tone:#8770bf}
+.r-story-role-rail .r-sequence-role .role-mark{display:grid;place-items:center;width:clamp(20px,1.85vw,27px);height:clamp(20px,1.85vw,27px);max-width:none;max-height:none;border-radius:50%;background:transparent;color:#5d6b83}
+.r-story-role-rail .r-sequence-role[data-role="task"] .role-mark,.r-story-role-rail .r-sequence-role[data-role="learn"] .role-mark{width:clamp(22px,2.15vw,31px);height:clamp(22px,2.15vw,31px);border:1px solid rgba(111,125,151,.16);background:#fff}
+.r-story-role-rail .r-sequence-role .role-mark svg{display:block;width:clamp(16px,1.3vw,20px);height:clamp(16px,1.3vw,20px);min-width:0;min-height:0;stroke-width:1.7}
+.r-story-role-rail .r-sequence-role img.role-mark{object-fit:cover}
+.r-story-role-rail .r-sequence-role b{font-size:var(--fs-xs);line-height:1.15;color:#384453;white-space:normal}
+.r-story-role-rail .r-sequence-role small{margin-top:.1vh;font-size:var(--fs-xs);line-height:1.12;color:#798493;white-space:normal}
+.r-story-scenes{grid-column:2;grid-row:3;min-width:0;min-height:0;overflow:visible;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;gap:.36vw;border:0;background:transparent}
+.r-story-scene{--scene:#6275bd;position:relative;min-width:0;min-height:0;display:grid;grid-template-rows:4.3vh minmax(0,1fr) 3.5vh;gap:.2vh;padding:.46vh .36vw .38vh;overflow:visible;border:1px solid color-mix(in srgb,var(--scene) 19%,#fff);border-radius:12px;background:linear-gradient(180deg,color-mix(in srgb,var(--scene) 7%,#fff),#fff 82%);box-shadow:0 7px 18px -15px rgba(30,45,74,.25)}
+.r-story-scene.is-source{--scene:#4c82bd}.r-story-scene.is-action{--scene:#8770bf}.r-story-scene.is-generate{--scene:#dc8055}.r-story-scene.is-control{--scene:#258e98}.r-story-scene.is-evidence{--scene:#438b69}
+.r-story-scene:not(:last-child)::after{content:"";position:absolute;z-index:3;top:50%;right:-.48vw;width:.43vw;border-top:1.5px solid #8e99aa}
+.r-story-scene:not(:last-child)::before{content:"";position:absolute;z-index:4;top:calc(50% - 3px);right:-.52vw;border-left:5px solid #8e99aa;border-top:3px solid transparent;border-bottom:3px solid transparent}
+.r-story-scene-head{display:flex;align-items:center;gap:.35vw;min-width:0;padding:0 .12vw}
+.r-story-scene-head img{display:block;width:clamp(28px,2.8vw,42px);height:100%;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(30,44,69,.12))}
+.r-story-scene-head span{min-width:0;font-size:var(--fs-xs);line-height:1.1;color:#667386}
+.r-story-flow{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;overflow:hidden;border-radius:8px;background:rgba(255,255,255,.56)}
+.r-story-flow{position:relative;display:block}
+.r-story-flow>svg{position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%;max-width:none;max-height:none;overflow:visible}
+.r-story-flow>svg .edge{stroke:#8492a7!important;stroke-width:1.6!important;vector-effect:non-scaling-stroke}
+.r-story-node{--node-accent:var(--scene);position:absolute;z-index:2;left:var(--node-x);top:var(--node-y);transform:translate(-50%,-50%);width:max(var(--node-w),clamp(66px,5vw,96px));height:max(var(--node-h),clamp(38px,5.2vh,52px));min-width:0;min-height:0;padding:.42vh .42vw;display:flex;flex-direction:column;justify-content:center;gap:.24vh;overflow:hidden;border:1px solid color-mix(in srgb,var(--node-accent) 27%,#dce2ec);border-radius:10px;background:linear-gradient(145deg,#fff,#fbfcff);box-shadow:0 6px 14px -11px rgba(30,45,74,.4)}
+.r-story-node-head{display:flex;align-items:center;gap:.28vw;min-width:0}
+.r-story-node-head i{display:grid;place-items:center;flex:0 0 auto;width:clamp(17px,1.4vw,22px);height:clamp(17px,1.4vw,22px);color:var(--node-accent)}
+.r-story-node-head i svg{display:block;width:100%;height:100%;stroke-width:1.8}
+.r-story-node-head b{min-width:0;overflow:hidden;color:#344157;font-size:clamp(9.5px,.72vw,12px);font-weight:750;line-height:1.08;text-overflow:ellipsis;white-space:nowrap}
+.r-story-node-head em{margin-left:auto;flex:0 0 auto;padding:.15vh .23vw;border-radius:999px;background:color-mix(in srgb,var(--node-accent) 11%,#fff);color:color-mix(in srgb,var(--node-accent) 78%,#30394a);font-size:clamp(8px,.56vw,9.5px);font-style:normal;font-weight:720;line-height:1.15}
+.r-story-node p{margin:0;color:#667386;font-size:clamp(8.5px,.61vw,10.5px);line-height:1.15}
+.r-story-node .r-node-tags{display:flex;align-items:center;gap:.18vw;min-width:0;overflow:hidden}
+.r-story-node .r-node-tags span{padding:.13vh .22vw;border-radius:4px;background:#f0f2f6;color:#646d7b;font-size:clamp(7.5px,.5vw,8.5px);line-height:1.1;white-space:nowrap}
+.r-story-node.kind-studio{--node-accent:#6664ba;background:linear-gradient(145deg,#f4f3ff,#fff);border-color:#c8c7ef}
+.r-story-node.kind-agent{--node-accent:#399288;background:linear-gradient(145deg,#effaf8,#fff);border-color:#b9dfd9}
+.r-story-node.kind-task{--node-accent:#4c82bd;background:linear-gradient(145deg,#eff5ff,#fff)}
+.r-story-node.kind-learn{--node-accent:#8770bf;background:linear-gradient(145deg,#f5f1ff,#fff)}
+.r-story-node.kind-output{--node-accent:#71809a}
+.r-story-node.kind-source{--node-accent:#538f99}
+.r-story-node.kind-error{--node-accent:#d16d62;background:linear-gradient(145deg,#fff2ef,#fff);border-color:#edc7c0}
+.r-story-node.kind-success{--node-accent:#4b9a78;background:linear-gradient(145deg,#eef9f2,#fff);border-color:#c5e4d1}
+.r-story-node.kind-community{--node-accent:#548b68;background:linear-gradient(145deg,#eff8f0,#fff);border-color:#c7dfcb}
+.r-story-node.kind-compact{padding:.34vh .32vw;border-radius:9px}
+.r-story-node.kind-compact .r-story-node-head{gap:.2vw}.r-story-node.kind-compact .r-story-node-head i{width:clamp(14px,1.1vw,18px);height:clamp(14px,1.1vw,18px)}
+.r-story-node.kind-compact .r-story-node-head b{font-size:clamp(8.5px,.64vw,10.5px)}
+.r-story-node.kind-compact p{font-size:clamp(7.5px,.52vw,9px)}
+.r-story-handoff{display:flex;align-items:center;gap:.25vw;min-width:0;padding:.2vh .28vw;border-radius:7px;background:color-mix(in srgb,var(--scene) 8%,#fff)}
+.r-story-handoff small{flex:0 0 auto;font-size:var(--fs-xs);font-weight:700;color:color-mix(in srgb,var(--scene) 76%,#354052)}
+.r-story-handoff span{min-width:0;font-size:var(--fs-xs);line-height:1.08;color:#586477}
+.r-story-credit{position:absolute;right:.25vw;bottom:.14vh;font-size:7.5px;color:#a1a8b3}
+.r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border-radius:9px!important}
+.r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node span{font-size:var(--fs-xs);line-height:1.15}
+"""
+
 breakpoints = [
     {"label":"表达目标", "title":"先发现问题、再组织 Prompt，本身就是一道门槛", "body":"任务导向用户要从现场提炼目标；学习导向用户可能先有兴趣或疑问。两者都可能是新手或有经验者，专业程度决定引导深度。", "response":"把推荐理由和相关线索摆出来，让用户从可判断的起点开始。", "targets":[("主动建议",3),("线索串联",4)]},
     {"label":"学习起步", "title":"学习目标可以模糊，也可以明确", "body":"“我想系统入门昇腾”与“我想掌握某项能力”都是学习诉求：前者需要先探索方向，后者可以直接组织路径。它们是同一类学习用户的不同状态。", "response":"按意图生成路径，并允许用户补充目标、调整顺序和自定义节点。", "targets":[("意图路径",7),("共创调整",8)]},
@@ -412,59 +488,220 @@ def sequence_diagram_markup():
         + '<small class="r-sequence-credit">图表：beautiful-mermaid · MIT；人物插图：DiceBear Personas · CC BY 4.0</small></div>'
     )
 
+JOURNEY_STAGES = [
+    ("01 · 起点", "认知起步", "任务现场或成长目标", "source", "need-context.png", "目标、现场与验收点"),
+    ("02 · 寻源", "找依据与方向", "资料来源和学习目标", "action", "search-fetch.png", "来源、版本与适用范围"),
+    ("03 · 明确", "形成可行动路径", "Prompt 与学习路径", "generate", "generate.png", "可编辑 Prompt / 学习路径"),
+    ("04 · 实践", "边做边理解", "运行、解释与核验", "control", "decide.png", "错误图解 / 成功验证"),
+    ("05 · 应用", "带着收获继续", "复习、记录与回流", "evidence", "execute.png", "社区草稿 / 个人知识卡"),
+]
+
+STORY_NODE_CONTENTS = {
+    "01": {
+        "task": ("kind-task kind-compact", "clipboard-list", "任务现场", "问题 / 目标 / 环境", ""),
+        "learn": ("kind-learn kind-compact", "compass", "学习目标", "入门方向 / 专项能力", ""),
+        "studio": ("kind-studio", "layout-dashboard", "Ascend Studio", "提炼目标与关键条件", "共创"),
+        "context": ("kind-output", "list-checks", "任务卡", "目标 · 环境 · 验收点", "已整理"),
+    },
+    "02": {
+        "need": ("kind-learn kind-compact", "search", "线索与目标", "现场 / 兴趣 / 版本", ""),
+        "agent": ("kind-agent", "bot", "智能体", "检索、筛选并标出来源", "取回"),
+        "official": ("kind-source kind-compact", "file-text", "官方文档", "接口与版本说明", "v8.0"),
+        "practice": ("kind-source kind-compact", "book-open-check", "最佳实践", "可复用步骤", "v2.1"),
+        "community": ("kind-community kind-compact", "users-round", "社区经验", "真实问题与解法", "v1.3"),
+        "scope": ("kind-output", "badge-check", "适用性核对", "依据 · 版本 · 适用范围", "可判断"),
+    },
+    "03": {
+        "intent": ("kind-task kind-compact", "messages-square", "任务线索 / 学习目标", "用户补写自己的条件", ""),
+        "studio": ("kind-studio", "workflow", "Studio 与用户一起梳理", "问题、范围与下一步", "共创"),
+        "prompt": ("kind-output", "send", "可编辑 Prompt", "", ""),
+        "path": ("kind-learn", "route", "协同学习路径", "", ""),
+    },
+    "04": {
+        "plan": ("kind-task kind-compact", "code-xml", "代码 / 学习节点", "明确当前要验证的内容", ""),
+        "env": ("kind-agent", "terminal", "开发环境", "运行 / 练习 / 返回现场", "RUN"),
+        "result": ("kind-output kind-compact", "circle-help", "运行结果", "错误或通过", ""),
+        "explain": ("kind-error", "network", "错误图解", "日志 × 参数 × 原因", "定位"),
+        "mastery": ("kind-success", "circle-check", "验证通过", "结果与原理检查", "通过"),
+        "retry": ("kind-error kind-compact", "rotate-ccw", "调整后再验证", "保留本次运行证据", ""),
+    },
+    "05": {
+        "task": ("kind-task kind-compact", "code-2", "任务实践", "整理真实现场", ""),
+        "learn": ("kind-learn kind-compact", "graduation-cap", "学习实践", "补上个人理解", ""),
+        "draft": ("kind-output", "file-pen-line", "社区经验草稿", "环境 · 问题 · 修复", "待审阅"),
+        "card": ("kind-output", "notebook-pen", "个人知识卡", "笔记 · 图解 · 代码", "自用"),
+        "knowledge": ("kind-community", "library", "知识与社区", "经验可检索、可复用", "回流"),
+        "next": ("kind-community kind-compact", "move-right", "下一次任务 / 学习", "从积累继续", ""),
+    },
+}
+
+STORY_NODE_TAGS = {
+    ("01", "context"): ("目标", "环境", "验收点"),
+    ("03", "prompt"): ("范围", "约束", "步骤"),
+    ("03", "path"): ("节点", "顺序", "验证"),
+    ("04", "env"): ("构建", "运行", "练习"),
+    ("04", "mastery"): ("结果", "理解", "复用"),
+    ("05", "draft"): ("来源", "版本", "修复"),
+    ("05", "card"): ("笔记", "图解", "代码"),
+}
+
+def story_node_html(scene_id, node_id, x, y, width, height):
+    kind, icon, title, detail, badge = STORY_NODE_CONTENTS[scene_id][node_id]
+    badge_html = f'<em>{esc(badge)}</em>' if badge else ""
+    detail_html = f'<p>{esc(detail)}</p>' if detail else ""
+    tags = STORY_NODE_TAGS.get((scene_id, node_id), ())
+    tags_html = '<div class="r-node-tags">' + "".join(f'<span>{esc(tag)}</span>' for tag in tags) + '</div>' if tags else ""
+    style = f"--node-x:{x:.4f}%;--node-y:{y:.4f}%;--node-w:{width:.4f}%;--node-h:{height:.4f}%"
+    return (
+        f'<div class="r-story-node {kind}" data-node="{esc(node_id)}" style="{style}">'
+        f'<div class="r-story-node-head"><i data-lucide="{esc(icon)}" aria-hidden="true"></i><b>{esc(title)}</b>{badge_html}</div>'
+        f'{detail_html}{tags_html}</div>'
+    )
+
+def journey_scene_markup():
+    specs_path = HERE / "journey-scenes.json"
+    renderer = HERE / "render_journey_sequence.mjs"
+    scenes = json.loads(specs_path.read_text())
+    newest_input = max(specs_path.stat().st_mtime, renderer.stat().st_mtime)
+    expected = [HERE / f"journey-scene-{scene['id']}.svg" for scene in scenes]
+    if any(not p.exists() or p.stat().st_mtime < newest_input for p in expected):
+        subprocess.run(["npm", "run", "render:journey-sequence", "--prefix", str(HERE)], check=True)
+
+    avatars = {"T": svg_data("persona-task.svg"), "L": svg_data("persona-learning.svg")}
+    role_rows = []
+    for actor_id, role, name, desc, icon in SEQUENCE_ROLES:
+        mark = (f'<img class="role-mark" src="{avatars[actor_id]}" alt="">' if actor_id in avatars else
+                f'<span class="role-mark"><i data-lucide="{icon}" aria-hidden="true"></i></span>')
+        role_rows.append(
+            f'<div class="r-sequence-role" data-role="{role}" aria-label="{esc(name)}：{esc(desc)}">'
+            f'{mark}<span><b>{esc(name)}</b><small>{esc(desc)}</small></span></div>'
+        )
+
+    ET.register_namespace("", "http://www.w3.org/2000/svg")
+    svg_ns = "http://www.w3.org/2000/svg"
+    stage_scenes = []
+    for scene, stage in zip(scenes, JOURNEY_STAGES):
+        _, _, _, phase, image_name, handoff = stage
+        svg_root = ET.parse(HERE / f"journey-scene-{scene['id']}.svg").getroot()
+        view = [float(value) for value in svg_root.get("viewBox", "0 0 0 0").split()]
+        view_x, view_y, view_width, view_height = view
+        nodes = []
+        for child in list(svg_root):
+            node_id = child.get("data-id") if child.tag.rsplit("}", 1)[-1] == "g" else None
+            if node_id:
+                rect = child.find(f"{{{svg_ns}}}rect")
+                if rect is not None:
+                    x, y = float(rect.get("x", 0)), float(rect.get("y", 0))
+                    width, height = float(rect.get("width", 0)), float(rect.get("height", 0))
+                else:
+                    shape = child.find(f"{{{svg_ns}}}polygon")
+                    points = re.findall(r"[-+]?\d*\.?\d+", shape.get("points", "")) if shape is not None else []
+                    coords = [float(value) for value in points]
+                    xs, ys = coords[0::2], coords[1::2]
+                    x, y = min(xs), min(ys)
+                    width, height = max(xs) - x, max(ys) - y
+                nodes.append(story_node_html(
+                    scene["id"], node_id,
+                    ((x + width / 2 - view_x) / view_width) * 100,
+                    ((y + height / 2 - view_y) / view_height) * 100,
+                    (width / view_width) * 100,
+                    (height / view_height) * 100,
+                ))
+                svg_root.remove(child)
+            elif child.get("class") == "edge-label":
+                svg_root.remove(child)
+        svg_root.set("class", "r-story-flow-svg")
+        svg_root.set("role", "img")
+        svg_root.set("aria-label", scene["label"] + "；连线由 beautiful-mermaid 布局")
+        svg_root.set("preserveAspectRatio", "none")
+        svg_root.set("width", "100%")
+        svg_root.set("height", "100%")
+        for style_node in svg_root.findall(f"{{{svg_ns}}}style"):
+            style_node.text = re.sub(r"@import[^;]+;\s*", "", style_node.text or "")
+        diagram = ET.tostring(svg_root, encoding="unicode")
+        image_path = ROOT / "cann-dashboard/assets/agent-stage-3d" / image_name
+        art = "data:image/png;base64," + base64.b64encode(image_path.read_bytes()).decode()
+        stage_scenes.append(
+            f'<article class="r-story-scene is-{phase}" aria-label="{esc(scene["label"])}">'
+            f'<header class="r-story-scene-head"><img src="{art}" alt=""><span>{esc(scene["label"])}</span></header>'
+            f'<div class="r-story-flow">{diagram}{"".join(nodes)}</div>'
+            f'<div class="r-story-handoff"><small>交接</small><span>{esc(handoff)}</span></div></article>'
+        )
+    credit = '<small class="r-story-credit">流程：beautiful-mermaid · MIT　图标：Lucide · ISC　人物：DiceBear Personas · CC BY 4.0</small>'
+    return (
+        '<div class="r-story-role-rail" aria-label="参与角色">' + "".join(role_rows) + '</div>'
+        '<div class="r-story-scenes" aria-label="按时间从左到右推进的五段角色交接场景">'
+        + "".join(stage_scenes) + credit + '</div>'
+    )
+
 def build_journey():
     section = source_journey
     section = section.replace('class="slide s-gray task-rel-page"', 'class="slide s-gray task-rel-page r-copy-journey"', 1)
     section = re.sub(r'<div class="collab-blueprint"[^>]*>',
-        '<div class="collab-blueprint" role="group" aria-label="五阶段开发者旅程与跨角色交接时序，底部对应五个设计断点">', section, count=1)
+        '<div class="collab-blueprint" role="group" aria-label="任务导向与学习导向共用的五阶段旅程；角色交接形成场景图解，底部对应五个设计断点">', section, count=1)
     section = section.replace('<div class="cb-axis"><small>STAGE</small><b>阶段</b></div>',
-        '<div class="cb-axis"><small>TIME</small><b>时间 →</b></div>', 1)
+        '<div class="cb-axis"><small>TIME</small><b>旅程 →</b></div>', 1)
     section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="用户旅程：任务交付与目标学习"', 1)
-    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '两种进入起点：带任务推进交付，或带目标主动学习；经验程度只改变引导深度', 1)
+    section = section.replace('<div class="ttl">AI协作开发者旅程图</div>', '<div class="ttl">任务交付与目标学习，共用一条协作旅程</div>', 1)
+    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '任务导向与学习导向是两种进入起点；经验程度影响引导深度，不定义用户类型', 1)
     section = section.replace('<div class="section-tabs"></div>',
         '<div class="r-journey-head-controls">' + tabs("用户旅程") + '</div>', 1)
-    section = section.replace('<div class="body-area" aria-label="AddCustom 开发协作示意：', '<div class="body-area r-journey-body" aria-label="AddCustom 开发协作示意：', 1)
+    section = section.replace('<div class="body-area"', '<div class="body-area r-journey-body"', 1)
+    section = re.sub(r'(<div class="body-area r-journey-body" aria-label=")[^"]*(")',
+        r'\1从任务现场或学习目标进入，经过寻源、路径明确、实践核验，最终把经验带入下一次任务与学习\2', section, count=1)
     section = section.replace('<div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>',
-        '<div class="cb-row-label cb-human-label"><small>USER TYPE</small><b>用户起点</b></div>', 1)
-    human_lanes = '<div class="cb-lane cb-human-lane" aria-label="任务导向开发者与学习导向开发者的五阶段行为">'
+        '<div class="cb-row-label cb-human-label"><small>ENTRY POINTS</small><b>两种起点</b></div>', 1)
+
+    stage_html = []
+    for kicker, title, desc, phase, _image, _handoff in JOURNEY_STAGES:
+        stage_html.append(
+            f'<div class="cb-stage is-{phase}"><div class="cb-stage-copy">'
+            f'<small>{esc(kicker)}</small><b>{esc(title)}</b><span>{esc(desc)}</span></div></div>'
+        )
+    section = replace_div_content(section, "cb-stage-rail", "".join(stage_html))
+
     human_actions = [
-        ("带任务来", "提交目标、问题与环境", "带目标来", "从兴趣或具体能力起步"),
-        ("交付导向", "确认资料来源与版本范围", "学习导向", "补充基础、时间与学习目标"),
-        ("复核候选", "理解方案依据，再决定是否执行", "选择路径", "确认学习顺序，继续追问原理"),
-        ("判断风险", "比较路径，保留决策依据", "调整学习", "增加节点、跳过已掌握内容"),
-        ("核验结果", "检查运行结果，决定经验是否分享", "留下收获", "复习、做笔记并继续实践"),
+        ("我有一个具体开发问题", "我想入门，或掌握一项能力"),
+        ("需要确认资料与版本", "想找到适合自己的学习目标"),
+        ("把现场线索变成可执行目标", "帮我把目标整理成学习路径"),
+        ("边运行边定位错误", "按路径实践并检查理解"),
+        ("整理可复用的开发经验", "把笔记带进下一次实践"),
     ]
-    for (_, task, _, learn), phase in zip(human_actions, ("source", "action", "generate", "control", "evidence")):
-        human_lanes += f'<article class="cb-lane-cell cb-human-step is-{phase}"><div class="r-persona-row"><b>任务用户</b><span>{esc(task)}</span></div><div class="r-persona-row"><b>学习用户</b><span>{esc(learn)}</span></div></article>'
-    human_lanes += '</div>\n\n      '
-    human_start = section.index('<div class="cb-lane cb-human-lane"')
-    human_end = section.index('<div class="cb-row-label cb-handoff-label">', human_start)
-    section = section[:human_start] + human_lanes + section[human_end:]
+    human_lanes = '<div class="cb-lane cb-human-lane" aria-label="两种开发者在五个阶段的表达">'
+    for (task, learn), stage in zip(human_actions, JOURNEY_STAGES):
+        phase = stage[3]
+        bubbles = []
+        for role, text in (("task", task), ("learn", learn)):
+            bubbles.append(
+                f'<div class="r-persona-row" data-avatar-ref="{role}">'
+                f'<span class="r-persona-avatar" data-avatar-ref="{role}"></span>'
+                f'<span class="r-persona-bubble">{esc(text)}</span></div>'
+            )
+        human_lanes += f'<article class="cb-lane-cell cb-human-step is-{phase}">{"".join(bubbles)}</article>'
+    human_lanes += '</div>'
+    section = replace_div_content(section, "cb-human-lane", "".join(human_lanes))
+
     section = section.replace('<div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>',
         '<div class="cb-row-label cb-painpoint-label"><small>DESIGN BREAKS</small><b>设计断点</b></div>', 1)
     breakpoint_summaries = [
         "先提炼现场问题，再组织 Prompt",
-        "目标模糊与明确，都能开始学习",
-        "任务完成后，理解仍需被支持",
-        "私人对话里的经验需要回流入口",
-        "离开电脑后，疑问与学习要接续",
+        "找到可靠依据，也找到学习方向",
+        "任务目标和学习目标都能形成路径",
+        "任务完成后，理解仍需要支持",
+        "私人经验要能回到社区与下次实践",
     ]
     breakpoint_nodes = "".join(
         f'<button type="button" class="cb-painpoint-node r-journey-breakpoint" data-bp-open="{i}" aria-label="查看断点 {i+1}：{esc(item["label"])}">'
         f'<small>{i+1:02} · {esc(item["label"])}</small><span>{esc(breakpoint_summaries[i])}</span><i aria-hidden="true">↗</i></button>'
         for i, item in enumerate(breakpoints)
     )
-    rail_start, rail_end = div_bounds(section, "cb-painpoint-rail")
-    rail = section[rail_start:rail_end]
-    rail_open = rail.index(">") + 1
-    rail_close = rail.rfind("</div>")
-    rail = rail[:rail_open] + breakpoint_nodes + rail[rail_close:]
-    rail = rail.replace('aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组，并对应后续任务定义、上下文适用性、能力选择、过程接管、验证、团队理解、能力增长、反馈回流和责任边界问题"',
-        'aria-label="五个旅程断点，可点击查看问题与对应设计响应"')
-    section = section[:rail_start] + rail + section[rail_end:]
+    section = replace_div_content(section, "cb-painpoint-rail", breakpoint_nodes)
+    section = re.sub(r'aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组[^\"]*"',
+        'aria-label="五个旅程断点，可点击查看问题与对应设计响应"', section, count=1)
+
     middle_start = section.index('<div class="cb-row-label cb-handoff-label">')
     middle_end = section.index('<div class="cb-row-label cb-painpoint-label">', middle_start)
-    section = section[:middle_start] + sequence_diagram_markup() + section[middle_end:]
+    section = section[:middle_start] + journey_scene_markup() + section[middle_end:]
     return section
 
 journey = build_journey()
@@ -582,7 +819,7 @@ evaluation='<p class="r-summary">让用户更容易开始，在实践中理解�
 slides.append(gray("设计价值回到旅程，用用户能做什么来验证", "验证方向 · 不以功能数量或内容浏览量替代体验成效",evaluation,note="以上为建议的后续验证问题与观察信号；当前没有对应的效果统计。"))
 
 sources='''<div class="r-source-grid"><article class="card"><h2>材料从哪里来</h2><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio/" target="_blank" rel="noopener">电脑端 Ascend Studio ↗</a><br>主动建议、线索串联、开发图解、社区草稿与学习路径共创。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/" target="_blank" rel="noopener">口袋新知小程序 Demo ↗</a><br>本轮界面来自本地 5217：服务通知、每周速览、知识卡与明确兴趣信号。</p><p><a href="ai-development-behavior-system-report-concise.html#5" target="_blank" rel="noopener">既有 AI 协作开发者旅程 #5 ↗</a><br>直接复制其 HTML 结构与样式并保持可编辑；两种开发者起点和角色时序在同页展开。</p><p><a href="https://schihhsin.github.io/AscendCANN/ascstudio-mini/knowledge-provider-map.html" target="_blank" rel="noopener">知识供给侧服务蓝图 ↗</a><br>参考其资源身份、适用范围、来源许可、核验状态与多入口服务关系，压缩为两页。</p></article><article class="card"><h2>如何理解这份设计提案</h2><ul><li>旅程、人群与问题是基于现有材料和本轮讨论的设计组织，尚非新一轮用户研究定稿。</li><li>界面截图来自现有原型；个人认知画布、知识供给图和角色时序为设计示意。</li><li>图解、推荐、AI 草稿和消息送达使用演示状态；不代表真实 AI、微信后台或 NPU 已接入。</li><li>未宣称任务完成率、学习收益或社区回流效果已被验证。</li></ul><p><a href="https://numpy.org/doc/stable/reference/generated/numpy.transpose.html" target="_blank" rel="noopener">知识例证：NumPy transpose ↗</a> · <a href="https://cloud.tencent.cn/document/product/1301/103770" target="_blank" rel="noopener">订阅消息接入参考 ↗</a></p></article></div>'''
-slides.append(gray("设计推演与现有原型，各有清楚的依据和边界", "来源与演示范围 · 支撑材料",sources,active="知识供给",note="2026.10.28 · 页面截图与状态记录见 ascend-studio-design-report-evidence/。"))
+slides.append(gray("设计推演与现有原型，各有清楚的依据和边界", "来源与演示范围 · 支撑材料",sources,active="知识供给",note="2026.10.29 · 页面截图与状态记录见 ascend-studio-design-report-evidence/。"))
 
 # Copy the whole template, replace only deck content; preserve controls and runtime.
 head = TEMPLATE[:TEMPLATE.index("<body>")]

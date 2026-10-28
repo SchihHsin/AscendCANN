@@ -7600,3 +7600,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/shared/canvas/canvas.css`、`learning-hierarchy-canvas.css`、`official-learning-canvas.css`，并在 `ascend-studio/AGENTS.md` 记录本轮视觉决策。依据为用户选择 B（H）；不改变画布布局、节点语义、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 本地 5296 预览确认 AddCustom 聚焦节点呈近黑标题区、白色标题字，关系线与小地图视野框更清楚；ResNet50 当前步骤采用近黑焦点样式，完整展开时当前材料卡标题区使用同一语义。构建与资源检查、`node --check`、`git diff --check` 通过；未运行自动化测试。
 - 实现、构建与交接记录按文件暂存并推送 `origin/main`；Pages run 与线上资源回执补在本条后续。
+
+### 2026-10-29 · Ascend Studio 旅程图改为场景交接
+
+- 用户指出此前的浅色泳道与其选定参考图不符。第 2 页中段改为五列场景交接图，依次呈现认知起步、寻源、明确路径、实践理解、应用沉淀；每格包含开发任务或学习意图，以及 Studio、智能体、知识资料、开发环境、运行状态和经验产物之间的关系。
+- 两类开发者继续按进入目的区分；两位开发者保留头像，四类系统角色只显示图标与名称。旅程下方五个可点开的断点仍在同页。场景内容是设计推演，不是新访谈或验证结论。
+- beautiful-mermaid 负责场景图的连线布局，自定义卡片按库的节点坐标叠放；图标用 Lucide，人物插画用 DiceBear Personas。更新汇报 HTML、build_report.py、journey-scenes.json、渲染脚本与说明记录。
+- 页数仍为 16；没有改变正式页面序列或 API / Protocol、Host / Harness、Application / Task 边界，也没有修改电脑端 / 小程序原型。
+- 验证：py_compile 与报告构建通过；静态结构核对为 5 个场景、26 个图解节点、6 个角色、5 个断点。浏览器拒绝本地 file:// 预览，本轮未绕过策略，故没有完成整页视觉回放；旧 report-02-journey.jpg 不代表当前图。
+- 提交 / 推送：本轮报告、构建证据和本交接按文件范围隔离提交，并推送到 main。
