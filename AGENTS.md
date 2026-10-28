@@ -7450,3 +7450,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出知识供给蓝图偏绿，要求改用 Report PPT Skill 的色彩。仅调整 `ascstudio-mini/knowledge-provider-map.html` 的色彩：冷灰背景与透白卡片承载内容，蓝紫 `#5B5BD6` 为主强调，蓝 `#4B8DFF` 与克制的暖橙 / 粉色区分语义；关系线、箭头、节点、阶段和内容状态都移除大面积青绿。内容图片、文案、页序与交互未改。
 - 依据：用户明确方向（H）与 `report-ppt-skill/references/type-and-color.md` 色彩规范（H）；本地 1440×900 CUA 预览 #4、#5、#10，确认关系图与阶段页的灰底、蓝紫主线和暖色提醒层级（M）。没有改变 API / Protocol、Host / Harness、Application / Task 职责边界。
 - 验证：`git diff --check` 通过；本地浏览器截图检查交付关系、Knowledge Unit 和建设阶段页。实现提交 `3d01d4e3` 已普通推送至 `origin/main`；Pages workflow `40648195378` 成功。线上 HTML HTTP 200，194,054 字节；与本地文件 SHA-256 均为 `342f1f138e3b9c56647b6c866c54c15c8e7802386c7342154a74847bf8ccad37`。
+
+### 2026-10-28 · AddCustom 知识卡精简为 B 方案
+
+- 用户选择 B，并确认「根因待确认」是否需要显示。该词是说现有形状对照未证明尾块处理就是原因；它已在上方诊断答复中说明，知识卡不再重复。标题改为「为什么 [17,33] 值得检查尾块？」，正文缩为「元素总数不是 tileSize 的整数倍时，尾块只有部分元素有效；访问时需按剩余数量做边界保护。」
+- 移除重复的 `[16,32]` / `[17,33]` 现象行；因标题用「值得检查」而非断言失败原因，卡片不单列根因免责声明。保留黑色「看尾块处理图解」主按钮，将「对照当前代码」降为文字操作。
+- 修改 `ascend-studio/src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css` 与 `/ascstudio/` 构建产物。用户明确选择为 H；这是知识解释与排查入口，不代表已确认根因或真实 NPU 验证。页面序列和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 1280×720 隔离预览确认短文案、单一主按钮、次级文字链接及点击后灰色状态。实现提交 `429b47bf` 与合入并行主线的 `afb1a693` 已推送到 `origin/main`；Pages workflow `40648789533` 成功，线上入口和本轮 JS / CSS HTTP 200。未运行自动化测试。
