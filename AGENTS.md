@@ -7593,3 +7593,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据为用户明确反馈（H）；页面序列和 `#3` / `#4` hash 导航未改变，API / Protocol、Host / Harness、Application / Task 边界未改变。
 - 验证：本地浏览器 1280×720、1440×900 回看；四页均与视口等高，三条交付流程完整。线上 HTML 返回 HTTP 200，回读全文确认 Owner 行、反馈明细、规范列表和接入说明均不存在；`git diff --check` 通过，未运行自动化测试。
 - HTML 提交 `4608b7d9` 已普通推送至 `origin/main`；Pages workflow `40689697151` 成功。AGENTS 交接记录随其后的文档提交推送。
+
+### 2026-10-29 · 画布黑色层级锚点（B 方案试用）
+
+- 用户选择 B：加深节点标题与关系线；当前选中 / 活跃节点使用近黑色标题区（学习路径的当前步骤使用近黑节点面）；小地图视野框加深。节点主体仍保持白色 / 浅灰，类别标记与成功、进行中、提醒等状态色保持原有语义。把规则落实在共享画布样式并用于 AddCustom、ResNet50 学习画布。
+- 修改 `ascend-studio/src/shared/canvas/canvas.css`、`learning-hierarchy-canvas.css`、`official-learning-canvas.css`，并在 `ascend-studio/AGENTS.md` 记录本轮视觉决策。依据为用户选择 B（H）；不改变画布布局、节点语义、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 本地 5296 预览确认 AddCustom 聚焦节点呈近黑标题区、白色标题字，关系线与小地图视野框更清楚；ResNet50 当前步骤采用近黑焦点样式，完整展开时当前材料卡标题区使用同一语义。构建与资源检查、`node --check`、`git diff --check` 通过；未运行自动化测试。
+- 实现、构建与交接记录按文件暂存并推送 `origin/main`；Pages run 与线上资源回执补在本条后续。

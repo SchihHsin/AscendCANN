@@ -60,7 +60,7 @@
 .og-all-node-card .lh-card-content > .og-sources { margin-top:0; }
 .og-all-practice { margin:4px 14px 14px; padding-top:10px; border-top:1px solid #eceff4; }
 .og-all-practice > h3 { margin:0 0 8px; color:#68718a; font-size:11px; font-weight:650; }
-.goal-learning-canvas.is-all-expanded .og-all-node-card.is-current { border-color:#b8a6df; box-shadow:0 0 0 2px #9b82d614,0 5px 20px #5b6f9e0b; }
+.goal-learning-canvas.is-all-expanded .og-all-node-card.is-current { border-color:var(--canvas-focus-ink, #191a1b); box-shadow:0 0 0 2px rgb(25 26 27 / 9%),0 5px 20px rgb(25 26 27 / 12%); }
 .goal-learning-canvas .lh-all-toggle { gap:5px; flex-basis:auto; width:auto; padding:0 8px; font-size:10px; white-space:nowrap; }
 
 .og-official-video { overflow:hidden; margin-bottom:8px; border:1px solid #e8eaf1; border-radius:7px; background:#fff; }

@@ -4,12 +4,14 @@
   --canvas-dot: #d9d9d9;
   --canvas-grid-size: 20px;
   --canvas-node-line: #c6c8ca;
+  --canvas-relation-line: #85888a;
   --canvas-control-ink: #4f5254;
   --canvas-control-line: #dedfe0;
   --canvas-control-shadow: 0 3px 12px rgb(24 25 26 / 8%);
   --canvas-control-radius: 10px;
   --canvas-card-line: #e0e1e2;
   --canvas-card-ink: #292b2c;
+  --canvas-focus-ink: #191a1b;
   --canvas-card-radius: 10px;
   --canvas-card-inner-radius: calc(var(--canvas-card-radius) - 1px);
   --canvas-card-shadow: 0 4px 15px rgb(28 29 30 / 8%);
@@ -107,9 +109,10 @@
   color: var(--canvas-card-ink);
   background: #fff;
 }
-.canvas-card-title { display: flex; align-items: center; gap: 8px; flex: 1 1 auto; min-width: 0; color: var(--canvas-card-ink); }
+.canvas-card-title { display: flex; align-items: center; gap: 8px; flex: 1 1 auto; min-width: 0; color: var(--canvas-focus-ink); }
 .canvas-card-title > strong,
-.canvas-card-title > h3 { min-width: 0; margin: 0; overflow: hidden; color: inherit; font-size: 12px; font-weight: 600; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
+.canvas-card-title > strong,
+.canvas-card-title > h3 { min-width: 0; margin: 0; overflow: hidden; color: inherit; font-size: 12px; font-weight: 650; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
 .canvas-card-title > svg { flex: 0 0 auto; width: 18px; height: 18px; padding: 5px; border-radius: 50%; color: #4c555a; background: #f1f2f1; }
 .canvas-node-type-marker { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 17px; padding: 1px 5px; border-radius: 5px; color: var(--canvas-node-marker, #777a83); background: var(--canvas-node-marker-surface, #f1f1f1); font-size: 9px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
 .canvas-node-type-marker + h3 { margin-left: 0; }
@@ -141,6 +144,20 @@
 .canvas-card-button[aria-pressed="true"] { color: #222324; background: #f1f1f0; }
 .canvas-card-actions .canvas-card-button { color: #777a7c; }
 .canvas-card-button.is-destructive:hover { color: #b3263e; background: #fcebed; }
+
+.canvas-card-frame:is(.is-selected, .is-current) > .canvas-card-header {
+  border-bottom-color: rgb(255 255 255 / 18%);
+  color: #fff;
+  background: var(--canvas-focus-ink);
+}
+.canvas-card-frame:is(.is-selected, .is-current) > .canvas-card-header .canvas-card-title { color: #fff; }
+.canvas-card-frame:is(.is-selected, .is-current) > .canvas-card-header .canvas-card-title > svg { color: #fff; background: rgb(255 255 255 / 14%); }
+.canvas-card-frame:is(.is-selected, .is-current) > .canvas-card-header .canvas-card-button { color: rgb(255 255 255 / 80%); }
+.canvas-card-frame:is(.is-selected, .is-current) > .canvas-card-header .canvas-card-button:hover,
+.canvas-card-frame:is(.is-selected, .is-current) > .canvas-card-header .canvas-card-button.is-active,
+.canvas-card-frame:is(.is-selected, .is-current) > .canvas-card-header .canvas-card-button[aria-pressed="true"] { color: #fff; background: rgb(255 255 255 / 15%); }
+.canvas-card-frame:is(.is-selected, .is-current) > .canvas-card-header .canvas-card-button.is-destructive:hover { color: #b3263e; background: #fcebed; }
+.canvas-card-frame:is(.is-selected, .is-current) > .canvas-card-header .canvas-card-button:focus-visible { outline-color: #fff; }
 
 .canvas-user-note { position: absolute; display: flex; flex-direction: column; overflow: hidden; }
 .canvas-user-note-header { justify-content: flex-start; flex: 0 0 auto; gap: 7px; min-height: 39px; padding: 5px 7px; color: #55585a; background: #fbfbfa; }
@@ -217,10 +234,10 @@
 .canvas-minimap .canvas-minimap-item.is-current,
 .canvas-minimap .canvas-minimap-item.is-selected { fill: #bfc1c2; stroke: #252728; stroke-width: 1.2; }
 .canvas-minimap .canvas-minimap-drawing { fill: none; stroke: #777a7c; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; pointer-events: none; }
-.canvas-minimap .canvas-minimap-viewport { fill: rgb(25 26 27 / 5%); stroke: #3d4041; stroke-width: 1.1; vector-effect: non-scaling-stroke; pointer-events: none; }
+.canvas-minimap .canvas-minimap-viewport { fill: rgb(25 26 27 / 9%); stroke: var(--canvas-focus-ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; pointer-events: none; }
 
 .canvas-surface .lh-material-lines > path,
-.canvas-surface .tc-connections path { fill: none; stroke: #b6b8ba; }
+.canvas-surface .tc-connections path { fill: none; stroke: var(--canvas-relation-line); }
 .canvas-surface .lh-material-lines circle { fill: #252728; }
 .canvas-surface .tc-connections text { fill: #686b6d; }
 

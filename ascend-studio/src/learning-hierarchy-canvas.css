@@ -31,14 +31,14 @@
 .path-editing-canvas .lh-step-wrap { position:absolute; z-index:2; }
 .lh-tree-grab { display:flex; align-items:center; gap:6px; position:absolute; top:-29px; left:2px; color:#9098ad; font-size:10px; cursor:grab; user-select:none; }
 .lh-tree-lines { position:absolute; left:0; top:0; overflow:visible; pointer-events:none; }
-.lh-tree-lines path { fill:none; stroke:#c3c5d7; stroke-width:1.5; }
-.lh-tree-lines marker path { fill:#b5b8cb; stroke:none; }
-.lh-tree-lines .lh-stage-line,.lh-tree-lines .lh-stage-spine { stroke:#b9b6d1; }
-.lh-tree-lines .lh-child-line { stroke:#c6c7d6; }
-.lh-tree-lines .lh-child-line.is-stage-branch { stroke:#b9b6d1; }
-.lh-tree-lines .lh-child-line.is-current { stroke:#9780f1; stroke-width:1.8; }
-.lh-tree-lines .lh-branch-dot { fill:#c6c7d6; }
-.lh-tree-lines .lh-branch-dot.is-current { fill:#9780f1; }
+.lh-tree-lines path { fill:none; stroke:var(--canvas-relation-line, #85888a); stroke-width:1.5; }
+.lh-tree-lines marker path { fill:var(--canvas-relation-line, #85888a); stroke:none; }
+.lh-tree-lines .lh-stage-line,.lh-tree-lines .lh-stage-spine { stroke:var(--canvas-relation-line, #85888a); }
+.lh-tree-lines .lh-child-line { stroke:var(--canvas-relation-line, #85888a); }
+.lh-tree-lines .lh-child-line.is-stage-branch { stroke:var(--canvas-relation-line, #85888a); }
+.lh-tree-lines .lh-child-line.is-current { stroke:var(--canvas-focus-ink, #191a1b); stroke-width:1.9; }
+.lh-tree-lines .lh-branch-dot { fill:var(--canvas-relation-line, #85888a); }
+.lh-tree-lines .lh-branch-dot.is-current { fill:var(--canvas-focus-ink, #191a1b); }
 .lh-tree-node { position:absolute; display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid #e0e5ee; border-radius:10px; color:#424966; background:rgba(255,255,255,.94); text-align:left; box-shadow:0 3px 9px #43588704; }
 .lh-hierarchy.is-position-editing .lh-tree-node { cursor:grab; touch-action:none; user-select:none; }
 .lh-hierarchy.is-position-editing .lh-tree-node:active { cursor:grabbing; }
@@ -61,6 +61,12 @@
 .lh-agent-flight.is-done { opacity:0; }
 @media (prefers-reduced-motion:reduce) { .lh-agent-flight,.lh-agent-flight > svg { transition:none; } .lh-tree-node.is-agent-target { animation:none; } }
 .lh-stage-node.is-selected .lh-node-icon { color:#8966ec; }
+.goal-learning-canvas .lh-step-node.is-selected { border-color:var(--canvas-focus-ink, #191a1b); color:#fff; background:var(--canvas-focus-ink, #191a1b); box-shadow:0 0 0 2px rgb(25 26 27 / 9%),0 5px 13px rgb(25 26 27 / 14%); }
+.goal-learning-canvas .lh-step-node.is-selected small,
+.goal-learning-canvas .lh-step-node.is-selected .lh-step-index { color:rgb(255 255 255 / 76%); }
+.goal-learning-canvas .lh-step-node.is-selected .lh-node-move-grip { color:rgb(255 255 255 / 78%); }
+.goal-learning-canvas .lh-stage-node.is-selected { border-color:var(--canvas-focus-ink, #191a1b); color:var(--canvas-focus-ink, #191a1b); background:#f1f1f0; box-shadow:0 2px 8px rgb(25 26 27 / 8%); }
+.goal-learning-canvas .lh-stage-node.is-selected .lh-node-icon { color:var(--canvas-focus-ink, #191a1b); }
 .lh-tree-node.is-skipped { color:#9aa0b3; border-style:dashed; background:#f6f7fae6; }
 .lh-tree-node.is-skipped em { position:absolute; right:5px; top:4px; border-radius:4px; padding:0 5px; background:#a0a7b7; color:#fff; font-size:9px; font-style:normal; }
 .path-editing-canvas .lh-step-node { position:relative; left:auto!important; top:auto!important; width:100%!important; height:100%!important; border-radius:8px; gap:8px; padding:7px 11px; touch-action:none; user-select:none; }
