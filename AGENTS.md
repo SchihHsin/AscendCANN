@@ -7557,6 +7557,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/index.html`、`app.js`、`styles.css`；新增本轮桌面 1440×900 / 1280×720 与移动 390×844 回放证据于 `ascstudio-mini/evidence/`，测试详情见 `ascstudio-mini/qa.md`。依据为用户明确要求（H）；不改变七点叙事、电脑到手机的概念演示状态流或 API / Protocol、Host / Harness、Application / Task 边界，也不把同源浏览器内的演示说成真实微信推送或跨设备同步。
 - 验证：Chrome 本地预览核对第 1 点与第 4 点只显示电脑 Demo，第 1 点 1280×720 与 1440×900 保持桌面比例，390×844 回到微信列表手机页面。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过，未运行自动化测试。提交 `824ddf9b` 已推送到 `origin/main`；Pages workflow `40688864250` 成功。线上 `/AscendCANN/ascstudio-mini/?rev=824ddf9b#review-pending`、`styles.css` 与 `app.js` 均 HTTP 200，已回读本轮 16:9 自适应代码与总览提示。
 
+### 2026-10-29 · 电脑 Demo 去掉外层卡片
+
+- 用户要求 Demo 外面不要再套容器。移除灰色圆角卡片、边框、阴影、内边距、重复标题和「单独打开」栏；电脑界面直接呈现在评审画面中。只保留用于 16:9 等比缩放与裁切的无装饰视口。
+- 修改 `ascstudio-mini/index.html`、`app.js`、`styles.css`，并刷新 `evidence/review-desktop-only-1440.png`、`review-desktop-only-1280.png`、`review-desktop-pocket-1440.png`。第 1 / 4 页仍只显示电脑 Demo，其他屏幕和手机端路径不变；不改变七点页序、状态流转或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：Chrome 本地预览核对 1440×900、1280×720、第 4 页知识口袋画面；确认 Demo 外无可见容器，仍保持桌面 16:9。`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过，未运行自动化测试。提交 / 推送及 Pages 回执待本轮发布后补记。
+
 
 ### 2026-10-28 · 主动建议卡片混合命名发布回执
 

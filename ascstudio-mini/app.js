@@ -141,7 +141,7 @@ function updateReviewPanel(route = currentRoute) {
     $("#review-visual").innerHTML = "";
     document.body.classList.remove("review-shows-desktop");
     $("#device-wrap").classList.remove("shows-desktop-demo");
-    $("#desktop-demo-panel").hidden = true;
+    $("#desktop-demo-window").hidden = true;
     $("#review-device-caption").textContent = "HUAWEI Pura X View · 阔直板 · 6.39″";
     $("#review-kicker").textContent = "自由体验";
     $("#review-title").textContent = "继续自由体验";
@@ -174,7 +174,7 @@ function updateReviewPanel(route = currentRoute) {
   const showDesktopDemo = !isReviewThumbnail && innerWidth > 620 && [0, 3].includes(index);
   document.body.classList.toggle("review-shows-desktop", showDesktopDemo);
   $("#device-wrap").classList.toggle("shows-desktop-demo", showDesktopDemo);
-  $("#desktop-demo-panel").hidden = !showDesktopDemo;
+  $("#desktop-demo-window").hidden = !showDesktopDemo;
   $("#review-device-caption").textContent = showDesktopDemo ? "Ascend Studio · 桌面 Demo" : "HUAWEI Pura X View · 阔直板 · 6.39″";
   if (showDesktopDemo) {
     const frame = $("#desktop-demo-frame");

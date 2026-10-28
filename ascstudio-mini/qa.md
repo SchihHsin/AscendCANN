@@ -118,3 +118,9 @@
 - Chrome 本地预览回放：1440×900、第 1 / 4 点；1280×720、第 1 点；390×844 手机微信列表。确认第 1 / 4 点均只呈现电脑画面、口袋视图完整、手机视口不出现电脑 Demo。
 - 截图：`evidence/review-desktop-only-1440.png`、`evidence/review-desktop-only-1280.png`、`evidence/review-desktop-pocket-1440.png`、`evidence/review-wechat-mobile-390.png`。
 - 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。仅调整评审壳呈现与缩放，不改变七点页序、状态流转或 API / Protocol、Host / Harness、Application / Task 边界。
+
+## 2026-10-29 · 去掉电脑 Demo 的外层卡片
+
+- 移除 Demo 外的灰色圆角容器、边框、阴影、内边距和重复标题 / 单独打开栏；电脑界面直接呈现在材料中。仅保留无装饰的 16:9 视口用于等比缩放与裁切。
+- Chrome 本地回放 1440×900、第 1 点与第 4 点，以及 1280×720、第 1 点；确认无可见外层容器，电脑任务与知识口袋界面仍完整。刷新桌面截图：`evidence/review-desktop-only-1440.png`、`evidence/review-desktop-only-1280.png`、`evidence/review-desktop-pocket-1440.png`。
+- `node --check ascstudio-mini/app.js`、`git diff --check` 通过；未运行自动化测试。逻辑视口仍为 1440×810，不改动手机页序或演示状态流。
