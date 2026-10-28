@@ -7436,7 +7436,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认按当前学习步骤组织画布。图解、视频与章节控制、当前同步讲解是三张横向并列的 `material` 卡；动手练习和理解检查在下方操作行并分别作为 `action`。理解检查结果留在卡片内，官方来源只在同步讲解卡内折叠呈现，避免重复。
 - 实现位于 `ascend-studio/src/OfficialLearningActivities.jsx`、`OfficialLearningPathCanvas.jsx`、`official-learning-canvas.css` 与 `shared/canvas/node-semantics.js`。同步更新 `ascend-studio/interaction-design.md` 和个人共享规范 `~/.codex/skills/ascend-studio-interface-style/SKILL.md`。
 - 本地 5196 桌面预览（1280×720）：核对默认选中、适应全部的横向材料行/下方操作行、官方来源折叠去重、理解题提交后的就地反馈；当前代表性卡片无内容溢出或嵌套滚动。构建 `npm run build:pages`、共享语义模块 `node --check`、`git diff --check` 通过。未运行自动化测试；不改变页面顺序、hash、任务学习状态模型或 API / Protocol、Host / Harness、Application / Task 边界。
-- 源码提交 `7e8c8a99` 与 Pages 构建提交 `7882535e` 已普通推送到 `origin/main`。GitHub Pages 最新构建对应 `7882535e`，状态 `built`；线上 `/AscendCANN/ascstudio/`、`index-D488RlXo.js` 与 `index-DWAZyo2d.css` 均 HTTP 200，JS 已包含三种卡片标题。
+- 源码提交 `7e8c8a99` 与 Pages 构建提交 `7882535e` 已普通推送到 `origin/main`。提交 `7882535e` 与随后并行主线提交 `3d01d4e3` 对应的 Pages 构建均为 `built`；线上入口与本次 JS / CSS 均 HTTP 200。主线之后又前进至 `0523f40d`，其最新 Pages 构建状态将在同步后补核。
 
 ### 2026-10-28 · Ascend Studio 黑色选中态与输入主操作
 
