@@ -7306,3 +7306,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 当前 AddCustom 与图像推理映射基线：任务简报为目标；代码、文档、解释图解为材料；现象 / 日志为证据；参数试算、练习与待执行修改为操作；尝试、Diff、检查、复核记录为结果；用户新增内容为笔记。ResNet50 的官方阶段与学习动作是步骤，独立图解 / 讲解 / 视频 / 来源是材料，练习为操作、练习产出为结果；完整展开的“学习动作卡”仍是步骤。
 - 审查发现 `src/shared/canvas/node-semantics.js` 的 ResNet50 前缀映射 `learning-official-step-` 会命中 `${stepId}:diagram`、`${stepId}:lesson`、`${stepId}:practice`，并覆盖 `OfficialLearningPathCanvas.jsx` 为独立材料 / 操作卡传入的角色。因此截图中的图解显示“步骤”是当前映射缺陷，不是预期语义，也不能归因于旧页面；修正尚未实施。
 - 本轮只做代码 / 截图对照与语义梳理，未改源码、Pages 或报告序列；未运行构建 / 测试，未新增真实运行或 NPU 证据。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
+
+
+### 2026-10-28 · 底部对话展开时收起小地图
+
+- 用户要求底部对话展开历史后收起右侧画布小地图，收起历史后恢复。工作区增加 `is-conversation-expanded` 状态类，CSS 在底部浮窗展开时隐藏 `.tc-mini-map`；小地图组件继续挂载，画布导航状态保留。左侧对话布局不受影响。
+- 实现见 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 与 `/ascstudio/` 静态产物。依据：用户明确要求（H）；本地 5179 浏览器回放确认展开时隐藏、收起后恢复（M）。页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、bundle 资源引用和规则存在性、`git diff --check` 通过；未运行自动化测试。线上 `/AscendCANN/ascstudio/`、`index-CIxMdNO-.js`、`index-COIexaLu.css` 均 HTTP 200，CSS 中含目标显隐规则。
+- 发布：实现提交 `833c2dc0`；同步保留并行主线更新后，Pages 产物提交 `4d1d9e8a` 已推送至 `origin/main`。Pages workflow `40626712443` 成功。

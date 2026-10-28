@@ -1990,3 +1990,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 静止画布不再显示常驻平移 / 缩放说明；编辑、绘图操作提示按状态显示，收纳数量仍可见。AddCustom 范围演算的重复通知隐藏，详细尝试结果与任务记录保留，并兼容隐藏旧会话中的同类提示。
 - 实现见 `src/TaskCanvas.jsx`、`src/useTaskFlow.js`；不改变节点语义、画布操作和学习路径。依据为用户截图（H）与既有 UI 状态（M）。
 - `npm run build:pages`、`node --check` 与 `git diff --check` 通过；未运行自动化测试或修改后截图回放，当前本地 5192 终端访问返回 502。实现提交 `c0c2859b` 已推送至 `origin/main`；Pages workflow `40619783484` 成功，线上入口和引用的 JS / CSS 均 HTTP 200，构建 JS 中两条指定可见文案均不存在。
+
+
+### 2026-10-28 · 底部对话展开时收起小地图
+
+- 底部浮窗展开对话历史时，工作区进入 `is-conversation-expanded` 状态并隐藏画布小地图；收起历史后，小地图回到原位。小地图组件保持挂载，因此画布导航状态不会重置；左侧对话布局不受影响。
+- 实现见 `src/App.jsx`、`src/styles.css` 与 `/ascstudio/` 构建产物。用户明确要求为依据（H）；本地 5179 预览回放确认展开隐藏、收起恢复（M）。不改变任务内容、页面顺序或 API / Host / Application 边界。
+- `npm run build:pages`、输出 JS 语法、资源引用、CSS 规则存在性与 `git diff --check` 通过；未运行自动化测试。线上构建与 Pages workflow `40626712443` 成功；实现提交 `833c2dc0`，最终发布提交 `4d1d9e8a` 已推送至 `origin/main`。
