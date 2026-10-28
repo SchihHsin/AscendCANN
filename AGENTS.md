@@ -7423,3 +7423,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 内容依据为公开规范链接与用户明确的供给侧需求（格式事实 H；服务端点、Skill 工作流和回执均为目标方案 / 待建设，不表示已接入）。扩展后全 deck 为 10 页，新增页位于交付总图之后，建设路线图章节编号改为 08；导航点和页码仍由 deck runtime 根据 section 数动态生成。没有改变 API / Protocol、Host / Harness、Application / Task 的职责边界。
 - 验证：本地桌面预览逐页检查 #6–#9，确认总图、文件示例、API 状态映射和 Agent 回执均可读且无裁切；`git diff --check` 通过；未运行自动化测试。
 - 发布：实现提交 `c88e51cd` 在吸收远端 `eff06d63` 后普通推送至 `origin/main`（未强推，其他并行工作保留）。随后将交接记录 `4e96d4b2` 接到最新 `origin/main`（保留 `5bbef462` 的工作区背景改动）并再次普通推送。线上页面 HTTP 200，完整 HTML 为 186,907 字节；与本地 `ascstudio-mini/knowledge-provider-map.html` 的 SHA-256 均为 `ccf4b5db796b3f785edc35b3ea9fb756b37dae71e30f15524c8cc1421a447279`，回读确认公开发现、产品 API 和 Agent 资产细化页均已发布。未获取 Pages workflow 状态。
+
+### 2026-10-28 · 移除工作区氛围背景图
+
+- 用户截图与明确要求（H）要求去掉之前加入工作区的背景图案。移除项目列表后的彩色档案叠片与对话区的浅彩交汇图；三栏仍为左侧白色、中间列表 `#F8F8F8`、对话白色，右侧画布点阵保留。两个 PNG 与其生成提示 / 视觉证据留作历史素材，但 `App.jsx` 不再引用。
+- 修改 `ascend-studio/src/App.jsx`、`src/styles.css`、`design-explorations/ambient-assets-20261009/README.md` 与 `/ascstudio/` 构建入口 / bundle。页面顺序 / hash、API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check HEAD^ HEAD` 通过；CUA 在 1280×720 的 AddCustom 工作区确认两处背景已消失，三栏底色与右侧点阵仍在。当前构建 JS / CSS 无氛围图引用；线上 `/AscendCANN/ascstudio/` 入口与 `index-DfZ30buz.js`、`index-BU2cBnKO.css` 均 HTTP 200。未运行自动化测试。
+- 实现提交 `5bbef462` 已随主线合并提交 `4cc2c64d` 到达 `origin/main`；Pages workflow `40646916687` build / deploy 均成功。本条记录随后随交接文档提交普通推送。
