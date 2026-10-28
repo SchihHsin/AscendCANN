@@ -7504,3 +7504,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 拖动对话框靠近屏幕底部时，位置预览改为复用最终单行输入框的宽度计算、水平中心和底边距：桌面宽度由工作区宽度推算，限制为输入框实际的 720px 上限并扣除相同布局留白；高度 54px、距底 22px。移除预览原先接近全宽 / 88px 高的外框及额外光晕。
 - 修改 `ascend-studio/src/styles.css` 与 `ascstudio/` 构建资源。用户截图和反馈为依据（H）；本地 1360×900 CUA 视口实测最终输入框 `636×54px`、水平居中且距工作区底 22px（M），预览尺寸公式与实测落位一致。页面序列和 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、发布 JS `node --check`、CSS 规则回读和 `git diff --check` 通过；CUA 检查落位后的输入框尺寸与预览目标公式。未运行自动化测试；推送和 Pages 发布结果完成后在后续交接记录补记。
+
+
+### 2026-10-28 · 画布底面改为柔和冷灰
+
+- 用户明确要求右侧画布有可见底色、不要白色或过浅，也不要深色，并选择 `#E6E9EE`。仅将共享画布 `.canvas-surface` 底面改为 `--canvas-diagram-surface: #e6e9ee`；图卡仍为白色，左侧图标栏、中间列表和对话栏不变。依据为用户选择（H），本地 1280×720 画布截图核对为 M。
+- 修改 `ascend-studio/src/shared/canvas/canvas.css` 与根目录 `/ascstudio/` Pages 构建产物。页面序列、hash、任务数据及 API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- `cd ascend-studio && npm run build:pages`、构建 JS `node --check`、发布 CSS 规则核验与 `git diff --check` 通过；未运行自动化测试。构建提示 outDir 不自动清空及既有大 bundle 体积警告，未阻断构建。源码提交已基于最新 `origin/main` 同步并保留并行更新；实现提交、推送与 Pages workflow 结果在本条记录最终更新后补齐。
