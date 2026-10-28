@@ -7402,3 +7402,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 该提示单独使用与“生成社区经验”相同的暖黄—淡紫渐变、向下淡出到白色的样式和书本图标；主操作为「看尾块处理图解」，次操作为「对照当前代码」。点击操作后卡片收起并转为中性灰，再展开仍保持灰色。其他任务的提示样式不变。
 - 修改 `ascend-studio/src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css`、`src/useProactiveCues.js` 与 `/ascstudio/` 构建产物。依据为用户确认文案结构与视觉方向（H）；内容是与当前错误相关的通用知识，不构成真实根因或 NPU 验证结论。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 在隔离的 1280×720 本地预览确认渐变初始态、点击后的灰色态及展开后的灰色态。实现提交 `99d9b8bb` 已推送至 `origin/main`；Pages workflow `40645430068` 成功，线上入口与本轮 JS / CSS 均 HTTP 200。未运行自动化测试。
+
+### 2026-10-28 · AddCustom 知识提示刷新后恢复渐变
+
+- 用户发现点击图解后变灰的 AddCustom 知识卡在刷新后仍是灰色。原因是上一轮把提示状态写入 `sessionStorage`。现改为仅在 React 页面会话内保存提示状态：切换材料时保持“已查看”的灰色；完整刷新重回初始渐变。
+- 变更仅涉及提示的查看 / 收起 / 已处理展示状态，不清除其他任务会话数据，也不影响图解、代码操作。更新 `ascend-studio/src/useProactiveCues.js` 和 `/ascstudio/` 构建入口 / bundle；页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；隔离本地预览回放“点击图解 → 灰色 → 刷新 → 渐变”，并检查截图。提交 `eff06d63` 已推送至 `origin/main`；Pages workflow `40646293092` 成功，线上入口与本轮 JS / CSS HTTP 200。未运行自动化测试。

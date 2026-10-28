@@ -2032,3 +2032,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 用户点击卡片操作后，`useProactiveCues` 记录该提示已处理；卡片收起并转为中性灰，重新展开仍保持灰色。变化仅对 `variant="knowledge"` 生效，不影响其他错误线索提示。没有声称真实项目、算子或 NPU 验证通过。
 - 修改 `src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css`、`src/useProactiveCues.js` 与 `../ascstudio/` 构建产物。页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 在隔离的 1280×720 本地预览核对渐变初始态，点击图解后呈灰色，重新展开仍为灰色。实现提交 `99d9b8bb` 已推送 `origin/main`；Pages workflow `40645430068` 成功，线上入口及 JS / CSS HTTP 200。未运行自动化测试。
+
+### 2026-10-28 · 知识提示刷新后恢复渐变
+
+- AddCustom 的知识提示“已查看”状态之前存入 `sessionStorage`，所以刷新后仍为灰色。现改成 React 内存状态：同一页面内切换材料会保留灰色；刷新页面后卡片恢复展开的渐变初始态。
+- 仅重置主动提示的查看、收起和处理状态；没有清空其他对话或任务数据。修改 `src/useProactiveCues.js` 与 `../ascstudio/` 构建产物，不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 隔离预览验证点击图解变灰，刷新后渐变恢复。实现提交 `eff06d63` 已推送 `origin/main`；Pages workflow `40646293092` 成功，线上 `/ascstudio/`、JS、CSS HTTP 200。未运行自动化测试。
