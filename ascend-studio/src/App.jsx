@@ -1554,9 +1554,9 @@ function App() {
               <div className="message-content">
                 <div className="message-meta">Ascend Studio</div>
                 <div className="assistant-response">
-                  <p className="assistant-lead">尾块索引范围值得优先核对，根因尚未确认。</p>
-                  <p>已知：<span className="chat-fact is-pass">[16,32] 通过</span>；<span className="chat-fact is-fail">[17,33] 失败</span>。修改编译参数后，错误位置未变。</p>
-                  <p>还需：实际循环、两次运行条件与逐元素误差证据。</p>
+                  <p className="assistant-lead">先检查 <code>custom_op.cpp:128</code> 的尾块读写边界。</p>
+                  <p><code>[17,33]</code> 共 561 个元素，块大小为 32 时，最后一块只有 17 个有效元素。</p>
+                  <p>将循环上限设为 <code>validCount = min(tileSize, total - baseIndex)</code>，确保读写不超出有效范围，再用 <code>[16,32]</code> 和 <code>[17,33]</code> 复测。</p>
                   {diagnosisCue.collapsed && <>
                     <button className="rationale-button" type="button" aria-expanded={rationaleOpen} onClick={() => setRationaleOpen((value) => !value)}>
                       <IconBook size={ICON_SIZE.control} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={ICON_SIZE.control} />
