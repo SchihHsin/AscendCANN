@@ -9,7 +9,7 @@ const cleanItem = item => ({
   sourceLabel: String(item?.sourceLabel || "Ascend Studio").slice(0, 160),
   sourceType: String(item?.sourceType || "学习内容").slice(0, 40),
   taskId: String(item?.taskId || "").slice(0, 120),
-  signal: ["interested", "question"].includes(item?.signal) ? item.signal : "interested",
+  signal: ["interested", "question"].includes(item?.signal) ? item.signal : "",
   status: ["saved", "scheduled", "sent", "read", "understood"].includes(item?.status) ? item.status : "saved",
   createdAt: Number.isFinite(item?.createdAt) ? item.createdAt : Date.now(),
   scheduledAt: Number.isFinite(item?.scheduledAt) ? item.scheduledAt : null,

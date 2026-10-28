@@ -225,6 +225,28 @@ function App() {
   const [knowledgePocket, setKnowledgePocket] = useState(readKnowledgePocket);
   const [selectedPocketId, setSelectedPocketId] = useState("");
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("pocket-demo") !== "1") return;
+    const now = Date.now();
+    const examples = [
+      { id: "pocket-demo-tail-index", sourceKey: "pocket-demo:tail-index", title: "排查线索：尾块索引范围", summary: "尾块索引范围值得优先核对；根因尚未确认。还需实际循环、两次运行条件与逐元素误差证据。", content: "尾块索引范围值得优先核对，根因尚未确认。\n\n已知：[16,32] 通过；[17,33] 失败。修改编译参数后，错误位置未变。\n\n还需：实际循环、两次运行条件与逐元素误差证据。", sourceLabel: "AddCustom 精度异常", sourceType: "Agent 回答", taskId: "AddCustom 精度异常", signal: "question", status: "saved", createdAt: now },
+      { id: "pocket-demo-input-layout", sourceKey: "pocket-demo:input-layout", title: "输入布局 HWC → NCHW：先核对模型约定", summary: "确认模型期望的轴顺序与 batch 维度，再决定是否转换输入。", content: "先确认模型输入约定。\n\n常见图像布局包括 HWC、CHW 与 NCHW；转换前核对通道顺序、数据类型与 batch 维度。", sourceLabel: "图像输入预处理", sourceType: "学习节点", taskId: "图像推理调试", signal: "interested", status: "saved", createdAt: now - 1000 },
+      { id: "pocket-demo-error-evidence", sourceKey: "pocket-demo:error-evidence", title: "精度差异：先保留运行条件与误差分布", summary: "比较前记录输入、运行条件和逐元素误差，避免只根据最终差值猜根因。", content: "复现精度差异时，先固定输入与运行条件，再保存逐元素误差分布。\n\n对照两次运行结果，定位首个偏差位置后再检查算子边界与数据类型。", sourceLabel: "算子精度排查", sourceType: "Agent 回答", taskId: "AddCustom 精度异常", signal: "", status: "saved", createdAt: now - 2000 },
+    ];
+    const current = readKnowledgePocket();
+    const items = [...current.items];
+    for (const example of examples) {
+      if (items.some(item => item.sourceKey === example.sourceKey || item.title === example.title)) continue;
+      items.push(example);
+    }
+    const primary = items.find(item => item.sourceKey === examples[0].sourceKey || item.title === examples[0].title);
+    if (primary) setSelectedPocketId(primary.id);
+    if (items.length === current.items.length) return;
+    const written = writeKnowledgePocket({ ...current, items });
+    if (!written) return;
+    setKnowledgePocket(written);
+    announceKnowledgePocketChange();
+  }, []);
+  useEffect(() => {
     const sync = event => {
       if (event?.key && event.key !== "ascstudio.knowledge-pocket.v1") return;
       setKnowledgePocket(readKnowledgePocket());
@@ -1381,6 +1403,16 @@ function App() {
     setMainView(view);
     setProjectPanelOpen(false);
   };
+  useEffect(() => {
+    if (window.parent === window) return undefined;
+    const handlePreviewMessage = event => {
+      if (event.source !== window.parent || event.origin !== window.location.origin) return;
+      if (event.data?.type !== "ascstudio-mini-demo-view") return;
+      navigateMainView(event.data.view === "pocket" ? "knowledge-pocket" : "task");
+    };
+    window.addEventListener("message", handlePreviewMessage);
+    return () => window.removeEventListener("message", handlePreviewMessage);
+  }, []);
   const updateKnowledgePocket = updater => {
     const current = readKnowledgePocket();
     const next = typeof updater === "function" ? updater(current) : updater;
@@ -1403,12 +1435,13 @@ function App() {
     const id = globalThis.crypto?.randomUUID?.() || `pocket-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     const saved = updateKnowledgePocket({
       ...current,
-      items: [...current.items, { ...entry, id, createdAt: Date.now(), status: "saved", signal: entry.signal || "interested" }],
+      items: [...current.items, { ...entry, id, createdAt: Date.now(), status: "saved", signal: entry.signal || "" }],
     });
     if (saved) wb.notify("已收进知识口袋；可从左侧口袋安排微信送达");
   };
   const schedulePocketItem = item => {
     updateKnowledgePocket(current => ({ ...current, items: current.items.map(entry => entry.id === item.id ? { ...entry, status: "scheduled", scheduledAt: Date.now() } : entry) }));
+    if (window.parent !== window) window.parent.postMessage({ type: "ascstudio-pocket-scheduled", itemId: item.id }, window.location.origin);
     wb.notify("已加入每周速览；手机端会优先展示这条内容");
   };
   const sendPocketItemNow = item => {
@@ -1419,13 +1452,21 @@ function App() {
       items: current.items.map(entry => entry.id === item.id ? { ...entry, status: "sent", sentAt } : entry),
     }));
     if (!updated) return;
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: "ascstudio-pocket-delivery", itemId: item.id }, window.location.origin);
+      wb.notify("已模拟送到右侧手机样机");
+      return;
+    }
     const miniUrl = new URL("../ascstudio-mini/", window.location.href);
     miniUrl.hash = "wechat";
     window.open(miniUrl.href, "_blank", "noopener,noreferrer");
     wb.notify("已模拟送到微信；新标签页会显示未读服务通知");
   };
   const setPocketSignal = (item, signal) => {
-    updateKnowledgePocket(current => ({ ...current, items: current.items.map(entry => entry.id === item.id ? { ...entry, signal } : entry) }));
+    const nextSignal = item.signal === signal ? "" : signal;
+    const updated = updateKnowledgePocket(current => ({ ...current, items: current.items.map(entry => entry.id === item.id ? { ...entry, signal: nextSignal } : entry) }));
+    if (updated && nextSignal) wb.notify(nextSignal === "interested" ? "已记录关注，后续速览会参考这一兴趣" : "已记录存疑，后续速览会优先补充这一知识");
+    else if (updated) wb.notify("已取消这条学习标记");
   };
   const removePocketItem = id => {
     updateKnowledgePocket(current => ({ ...current, items: current.items.filter(item => item.id !== id), lastNotificationId: current.lastNotificationId === id ? "" : current.lastNotificationId }));
