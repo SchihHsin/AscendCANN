@@ -7430,3 +7430,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`src/styles.css`、`design-explorations/ambient-assets-20261009/README.md` 与 `/ascstudio/` 构建入口 / bundle。页面顺序 / hash、API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check HEAD^ HEAD` 通过；CUA 在 1280×720 的 AddCustom 工作区确认两处背景已消失，三栏底色与右侧点阵仍在。当前构建 JS / CSS 无氛围图引用；线上 `/AscendCANN/ascstudio/` 入口与 `index-DfZ30buz.js`、`index-BU2cBnKO.css` 均 HTTP 200。未运行自动化测试。
 - 实现提交 `5bbef462` 已随主线合并提交 `4cc2c64d` 到达 `origin/main`；Pages workflow `40646916687` build / deploy 均成功。本条记录随后随交接文档提交普通推送。
+
+### 2026-10-28 · ResNet50 讲解画布拆分材料与操作
+
+- 用户确认按当前学习步骤组织画布。图解、视频与章节控制、当前同步讲解是三张横向并列的 `material` 卡；动手练习和理解检查在下方操作行并分别作为 `action`。理解检查结果留在卡片内，官方来源只在同步讲解卡内折叠呈现，避免重复。
+- 实现位于 `ascend-studio/src/OfficialLearningActivities.jsx`、`OfficialLearningPathCanvas.jsx`、`official-learning-canvas.css` 与 `shared/canvas/node-semantics.js`。同步更新 `ascend-studio/interaction-design.md` 和个人共享规范 `~/.codex/skills/ascend-studio-interface-style/SKILL.md`。
+- 本地 5196 桌面预览（1280×720）：核对默认选中、适应全部的横向材料行/下方操作行、官方来源折叠去重、理解题提交后的就地反馈；当前代表性卡片无内容溢出或嵌套滚动。构建 `npm run build:pages`、共享语义模块 `node --check`、`git diff --check` 通过。未运行自动化测试；不改变页面顺序、hash、任务学习状态模型或 API / Protocol、Host / Harness、Application / Task 边界。
+- 源码提交 `8ce11a7f` 已重放到最新 `origin/main` 之后；最终 Pages 构建及该提交的 push / Pages 结果将在本轮完成后补记。

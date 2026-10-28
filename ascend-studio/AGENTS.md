@@ -2038,3 +2038,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - AddCustom 的知识提示“已查看”状态之前存入 `sessionStorage`，所以刷新后仍为灰色。现改成 React 内存状态：同一页面内切换材料会保留灰色；刷新页面后卡片恢复展开的渐变初始态。
 - 仅重置主动提示的查看、收起和处理状态；没有清空其他对话或任务数据。修改 `src/useProactiveCues.js` 与 `../ascstudio/` 构建产物，不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 隔离预览验证点击图解变灰，刷新后渐变恢复。实现提交 `eff06d63` 已推送 `origin/main`；Pages workflow `40646293092` 成功，线上 `/ascstudio/`、JS、CSS HTTP 200。未运行自动化测试。
+
+### 2026-10-28 · ResNet50 学习材料行与操作行
+
+- 当前步骤继续作为关联锚点。普通画布将图解、视频与章节控制、当前同步讲解并列为三张独立 `material` 卡；动手练习和理解检查在下方各自作为 `action` 卡。资料来源只在同步讲解卡中折叠，避免视频卡与步骤卡重复。
+- 实现拆分 `OfficialVideoMaterial` / `OfficialLectureMaterial`，`node-semantics.js` 将 `:lesson` 映射为 `material / video`、`:explanation` 映射为 `material / lesson`、`:check` 映射为 `action / interactive`。`全部展开` 仍保留完整学习步骤内容。窄画布通过平移、缩放和小地图访问横向材料。
+- 依据用户确认（H）与本地原型内容（M）；共享滚动规则写于全局 `ascend-studio-interface-style` Skill。验收、构建和发布状态详见根目录 `AGENTS.md` 对应日期记录。
