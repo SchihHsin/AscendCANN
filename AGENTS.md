@@ -7323,3 +7323,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 图像推理调试初始仅提供正确示例参数，不自动出现入口。用户审阅当前修改、确认应用到隔离示例副本，再点击「复核示例形状并带回对话」；仅示例输出符合 NCHW `[1,3,224,224]` 时生成社区入口。入口是示例形状核对结果，不代表真实模型或 NPU 推理通过。打开任务不会触发；刷新会清空邀请与草稿。
 - 修改 `ascend-studio/src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 及 `/ascstudio/` Pages 构建产物。合并保留了并行的对话面板更新。此改动不改变任务页序或 API / Protocol、Host / Harness、Application / Task 边界；用户需求为 H，浏览器本地状态规则和示例触发结果为 M。
 - `npm run build:pages`、相关 JS `node --check`、`git diff --check` 通过。提交 `a8fcaf91` 实现刷新复位与触发门槛，集成并行主线的合并提交 `70ae9927` 已推送 `origin/main`。Pages workflow `40627139988` 成功；线上 `/AscendCANN/ascstudio/`、`index-CIxMdNO-.js` 和 `index-COIexaLu.css` 均 HTTP 200。未运行自动化测试。
+
+
+### 2026-10-28 · 画布完整内容按钮图标
+
+- 将共享画布卡片标题栏的“打开完整内容”斜向箭头替换为四角扩展 / 最大化图标 `IconMaximize`。按钮仍进入右侧任务内容区，标题提示与无障碍名称保持原有语义；焦点、固定、收起等操作不变。
+- 修改 `ascend-studio/src/shared/canvas/index.jsx` 与 `/ascstudio/` 构建产物。依据为用户截图及明确的全屏放大图标方向（H）；按 Ascend Studio 既有浅色、紧凑画布控件规范实施。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- `npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过。提交 `055ad594` 已推送 `origin/main`；Pages workflow `40630107437` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-C2z-gK3s.js` 和 `index-COIexaLu.css`，两者 HTTP 200。

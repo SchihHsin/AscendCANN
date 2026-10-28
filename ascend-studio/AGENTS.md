@@ -2006,3 +2006,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 图像推理调试：先审阅修改并应用到隔离示例副本，再点「复核示例形状并带回对话」；仅符合 NCHW `[1,3,224,224]` 时出现入口。初始打开不触发；该示例检查不代表真实模型或 NPU 推理通过。移除复核事件的重复邀请路径。
 - 变更位于 `src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 和 `/ascstudio/` 发布包。并行对话面板改动已合并并保留；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。用户要求为 H，原型状态为 M。
 - 构建 `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。实现提交 `a8fcaf91` 与合并提交 `70ae9927` 已推送 `origin/main`；Pages workflow `40627139988` 成功，线上入口、JS 和 CSS 均 HTTP 200。未运行自动化测试。
+
+
+### 2026-10-28 · 画布完整内容按钮图标
+
+- 共享画布卡片标题栏打开完整内容的按钮改用四角扩展 / 最大化图标 `IconMaximize`；点击仍在任务内容区阅读完整内容，提示、无障碍名称和其他卡片操作不变。
+- 修改 `src/shared/canvas/index.jsx` 与 `/ascstudio/` Pages 构建产物。用户截图和指定图标语义为 H；遵循 Ascend Studio 画布中性浅色及紧凑控件规范。不改页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 构建、发布 JS `node --check`、`git diff --check` 通过。提交 `055ad594` 已推送；Pages workflow `40630107437` 成功。线上入口引用 `index-C2z-gK3s.js` / `index-COIexaLu.css`，均 HTTP 200。
