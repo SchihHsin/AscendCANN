@@ -1,0 +1,43 @@
+.pocket-content { padding-bottom: 30px; }
+.pocket-empty { display: grid; justify-items: center; gap: 9px; padding: 64px 24px; border: 1px dashed #d9dbe2; border-radius: 12px; background: rgba(255,255,255,.72); text-align: center; }
+.pocket-empty-icon { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid #e4e5e8; border-radius: 12px; color: #5d6574; background: #fff; }
+.pocket-empty h2 { margin: 5px 0 0; color: #292a30; font-size: 16px; font-weight: 620; }
+.pocket-empty p { max-width: 420px; margin: 0; color: #777a83; font-size: 12px; line-height: 1.7; }
+.pocket-list { display: grid; gap: 8px; }
+.pocket-item { display: flex; align-items: stretch; min-width: 0; border: 1px solid #e4e5e8; border-radius: 10px; background: #fff; transition: border-color .15s, box-shadow .15s; }
+.pocket-item.is-selected { border-color: #bfc2cb; box-shadow: 0 0 0 2px rgba(65,70,85,.07); }
+.pocket-item-select { display: flex; flex: 1; align-items: center; gap: 11px; min-width: 0; padding: 13px 14px; border: 0; border-radius: 10px 0 0 10px; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.pocket-item-select:hover { background: #fafafa; }
+.pocket-item-icon { display: grid; place-items: center; flex: 0 0 32px; width: 32px; height: 32px; border: 1px solid #e3e4e7; border-radius: 8px; color: #4f5e75; background: #f8f9fb; }
+.pocket-item-copy { display: grid; gap: 4px; min-width: 0; flex: 1; }
+.pocket-item-copy strong { color: #292a30; font-size: 13px; font-weight: 600; }
+.pocket-item-copy > span { display: -webkit-box; overflow: hidden; color: #6e717a; font-size: 12px; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.pocket-item-copy small { color: #999ba2; font-size: 11px; }
+.pocket-status { flex: 0 0 auto; padding: 4px 7px; border-radius: 999px; color: #777a83; background: #f3f3f4; font-size: 10px; white-space: nowrap; }
+.pocket-status.is-scheduled { color: #4659a8; background: #eef1ff; }
+.pocket-status.is-sent { color: #4659a8; background: #eef1ff; }
+.pocket-status.is-understood { color: #21804a; background: #e8f5ec; }
+.pocket-item-remove { display: grid; place-items: center; flex: 0 0 38px; align-self: stretch; border: 0; border-left: 1px solid #f0f0f1; border-radius: 0 10px 10px 0; color: #92949b; background: transparent; cursor: pointer; }
+.pocket-item-remove:hover { color: #b3263e; background: #fdf7f8; }
+.pocket-delivery { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 14px; padding: 16px 18px; border: 1px solid #e1e3e8; border-radius: 12px; background: #fff; }
+.pocket-delivery-copy { min-width: 0; }
+.pocket-delivery-kicker { color: #92949b; font-size: 10px; }
+.pocket-delivery-copy h2 { margin: 4px 0 0; color: #292a30; font-size: 14px; font-weight: 620; }
+.pocket-delivery-copy p { margin: 5px 0 0; color: #777a83; font-size: 11px; }
+.pocket-signal { display: flex; align-items: center; gap: 6px; margin-top: 10px; color: #92949b; font-size: 10px; }
+.pocket-signal button { min-height: 26px; padding: 0 9px; border: 1px solid #e5e6e8; border-radius: 999px; color: #747780; background: #fff; font-size: 10px; cursor: pointer; }
+.pocket-signal button.is-active { border-color: #d8d9e3; color: #363944; background: #f4f5fa; }
+.pocket-delivery-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 8px; }
+.pocket-schedule-button,.pocket-send-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 36px; padding: 0 12px; border: 1px solid #dedfe4; border-radius: 8px; color: #4c4f58; background: #fff; font-size: 11px; cursor: pointer; white-space: nowrap; }
+.pocket-schedule-button:hover { background: #f6f6f7; }
+.pocket-send-button { border-color: #191a1b; color: #fff; background: #191a1b; }
+.pocket-send-button:hover { background: #303132; }
+.pocket-footer-note { margin: 10px 2px 0; color: #92949b; font-size: 11px; line-height: 1.5; }
+.pocket-content :is(button):focus-visible { outline: 2px solid #c1c3f2; outline-offset: 2px; }
+@media (max-width: 720px) {
+  .pocket-delivery { align-items: stretch; flex-direction: column; gap: 12px; }
+  .pocket-delivery-actions { flex-wrap: wrap; }
+  .pocket-delivery-actions > button { flex: 1 1 auto; }
+  .pocket-status { align-self: flex-start; }
+  .pocket-item-select { flex-wrap: wrap; }
+}
