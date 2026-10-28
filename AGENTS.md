@@ -7304,7 +7304,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 画布节点角色共七类：目标、步骤、材料、证据、操作、结果、笔记。`contentType` 表示代码 / 文档 / 图解 / 视频等内容形态，`status` 表示对象状态，连线的 `relationType` 表示对象间关系；三者不应混作节点分类。
 - 当前 AddCustom 与图像推理映射基线：任务简报为目标；代码、文档、解释图解为材料；现象 / 日志为证据；参数试算、练习与待执行修改为操作；尝试、Diff、检查、复核记录为结果；用户新增内容为笔记。ResNet50 的官方阶段与学习动作是步骤，独立图解 / 讲解 / 视频 / 来源是材料，练习为操作、练习产出为结果；完整展开的“学习动作卡”仍是步骤。
-- 审查发现 `src/shared/canvas/node-semantics.js` 的 ResNet50 前缀映射 `learning-official-step-` 会命中 `${stepId}:diagram`、`${stepId}:lesson`、`${stepId}:practice`，并覆盖 `OfficialLearningPathCanvas.jsx` 为独立材料 / 操作卡传入的角色。因此截图中的图解显示“步骤”是当前映射缺陷，不是预期语义，也不能归因于旧页面；修正尚未实施。
+- 审查发现 `src/shared/canvas/node-semantics.js` 的 ResNet50 前缀映射 `learning-official-step-` 会命中 `${stepId}:diagram`、`${stepId}:lesson`、`${stepId}:practice`，并覆盖 `OfficialLearningPathCanvas.jsx` 为独立材料 / 操作卡传入的角色。因此截图中的图解显示“步骤”是映射缺陷，不是预期语义，也不能归因于旧页面；随后修复见下方实施记录。
 - 本轮只做代码 / 截图对照与语义梳理，未改源码、Pages 或报告序列；未运行构建 / 测试，未新增真实运行或 NPU 证据。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 
 
@@ -7324,6 +7324,13 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 及 `/ascstudio/` Pages 构建产物。合并保留了并行的对话面板更新。此改动不改变任务页序或 API / Protocol、Host / Harness、Application / Task 边界；用户需求为 H，浏览器本地状态规则和示例触发结果为 M。
 - `npm run build:pages`、相关 JS `node --check`、`git diff --check` 通过。提交 `a8fcaf91` 实现刷新复位与触发门槛，集成并行主线的合并提交 `70ae9927` 已推送 `origin/main`。Pages workflow `40627139988` 成功；线上 `/AscendCANN/ascstudio/`、`index-CIxMdNO-.js` 和 `index-COIexaLu.css` 均 HTTP 200。未运行自动化测试。
 
+### 2026-10-28 · 画布完整内容按钮图标
+
+- 将共享画布卡片标题栏的“打开完整内容”斜向箭头替换为四角扩展 / 最大化图标 `IconMaximize`。按钮仍进入右侧任务内容区，标题提示与无障碍名称保持原有语义；焦点、固定、收起等操作不变。
+- 修改 `ascend-studio/src/shared/canvas/index.jsx` 与 `/ascstudio/` 构建产物。依据为用户截图及明确的全屏放大图标方向（H）；按 Ascend Studio 既有浅色、紧凑画布控件规范实施。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- `npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过。提交 `055ad594` 已推送 `origin/main`；Pages workflow `40630107437` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-C2z-gK3s.js` 和 `index-COIexaLu.css`，两者 HTTP 200。
+
+
 ### 2026-10-28 · 模型标识统一黑色
 
 - 用户要求 Ascend Studio 中的模型 Logo 改为黑色。当前模型按钮和模型下拉选项的品牌图均通过 CSS `filter: brightness(0)` 统一为黑色；模型名称、切换方式与其他图标不变。
@@ -7336,3 +7343,123 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 紧凑的底部 composer 空输入现在按 20px 单行高度测量，输入文字后按内容自适应增长（最多 110px）；切换对话位置、展开 / 收起历史时重新测量。左侧对话布局原来的较高输入区保持不变。
 - 修改 `ascend-studio/src/App.jsx` 与 `/ascstudio/` 构建产物。用户此前明确要求单行后按内容增高（H）；本地 5177 预览实测空输入高度 20px、composer 54px，填入长文本后 textarea 增至 54px，清空恢复 20px；刷新后仍保持单行（M）。页面顺序、对话数据与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - `npm run build:pages`、输出 JS `node --check`、既有黑色模型 Logo 样式核验和 `git diff --check` 通过；未运行自动化测试。实现提交、推送和线上发布状态将在本轮发布后补记。
+
+### 2026-10-28 · 小程序状态栏 Wi-Fi 图标修正
+
+- 用户指出样机状态栏 Wi-Fi 三条曲线间距不匀，并建议采用开源图标。将手绘 SVG 替换为 Tabler Icons v3.48.0 `IconWifi` 的标准 24×24 路径，弧线之间间隔均匀、保留中心圆点；`styles.css` 采用 15×15、2px 圆角描边。该图标为内联静态 SVG，无新增运行时依赖；现有 Tabler Icons MIT 许可继续保留。
+- 仅修改 `ascstudio-mini/index.html`、`ascstudio-mini/styles.css` 与本交接 / QA 记录。依据为用户截图和明确建议（H）；本地浏览器核对状态栏布局（M）。小程序 7 页序列、推送与跨端状态流程、API / Protocol、Host / Harness、Application / Task 边界均不变。
+- 验证：本地 HTTP 预览确认 Wi-Fi 符号替换并与 5G、信号、电量保持同列；`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过；未运行自动化测试。
+- 发布：实现提交 `f270deab` 已普通推送至 `origin/main`，未强推。GitHub Pages workflow `40631489423` 成功；公网 `/ascstudio-mini/` 的 24×24 Tabler 路径及 CSS 15×15 / 2px 样式均已回读确认。
+
+
+### 2026-10-28 · 三栏工作区背景层级
+
+- 按用户确认的配色层级，左侧图标栏使用白色 `--surface`，中间任务列表使用浅灰 `--surface-subtle`（`#F8F8F8`，比画布 `--canvas-surface` `#F5F5F5` 更浅），对话面板保持白色。保留既有淡彩氛围图；只调整面板承载面的颜色。
+- 修改 `ascend-studio/src/styles.css`、`ascstudio/index.html` 与对应 Pages 构建资源。依据为用户明确选择（H），颜色 token 遵循 Ascend Studio 界面规范。页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- `npm run build:pages`、构建 JS `node --check`、构建资源引用检查、`git diff --check` 通过；本地 8008 任务工作区预览确认三栏层级，未运行自动化测试。提交 `f90d9b10` 已推送至 `origin/main`；Pages workflow `40631220110` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-BdTuXrM9.js` 和 `index-DlbrpRmv.css`，两者 HTTP 200。
+
+
+### 2026-10-28 · ResNet50 画布节点分类修正
+
+- 按用户确认修复 ResNet50 独立内容卡角色：`:diagram` 与 `:lesson` 为材料，`:practice` 为操作；路径阶段、真实学习动作以及全部展开时代表完整学习动作的卡继续为步骤。练习 / 理解检查产出仍归结果，原始观察依据才归证据。
+- 领域归一化先识别明确内容后缀，再处理学习步骤 ID 前缀，避免子卡继承父学习步骤的角色。规则同步到 `ascend-studio/interaction-design.md` 与 `ascend-studio/AGENTS.md`。
+- `node --check ascend-studio/src/shared/canvas/node-semantics.js`、`npm run build:pages`、`git diff --check` 通过；本地 5192 浏览器 AX 回放确认 3.1 图解容器标为 material / 材料，3.2 的动手练习卡标为 action / 操作，返回 3.1 后现场保留。没有真实模型 / NPU 验证；未运行自动化测试。
+- 发布含共享语义映射和 `/ascstudio/` 构建产物；不改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。同步保留 `origin/main` 的三栏背景记录后，语义修复提交 `6d141971` 与构建提交 `7be079bf` 已推送至 `origin/main`；Pages workflow `40632860691` 成功。线上 `/AscendCANN/ascstudio/`、`index-BmfZLblv.js` 与 `index-DlbrpRmv.css` 均 HTTP 200。
+
+### 2026-10-28 · 知识供给蓝图按参考图深化关系与阶段可视化
+
+- 用户提供关系网络图与阶段推演图作为明确视觉参考（H），并要求继续完成。将 `ascstudio-mini/knowledge-provider-map.html` 第 3–7 页的供给链、学习发现服务映射、Knowledge Unit 字段、Web / API / MCP / Skills 交付通道及 P0–P2 路线改为 SVG 关系图、服务网络、对象关系图、并行泳道和阶段路径；具体资源图片仍只放在学习路径、认证、课程、Meetup 样例中。视觉表达重点是节点、连线、区域和阶段关系，不额外加入装饰插图。
+- 保持 7 页顺序、翻页与 `#页码` 恢复、原有服务内容及规范来源链接；`llms.txt` 仍标记为提案，`robots.txt` 不作为鉴权。修改属于知识供给服务蓝图目标方案示意，不表示接口或服务已真实接入，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 本地桌面预览检查第 3–7 页，确认关系图、楼层预览、交付泳道和路线图可完整呈现；结构检查确认 7 页、12 个内嵌 SVG、资源图均存在、ID 无重复，内嵌脚本 `node --check` 与 `git diff --check` 通过。未运行自动化测试。
+- 实现提交 `c51090ac` 已同步最新 `origin/main` 后普通推送；GitHub Pages workflow `40642246632` 成功。交接记录提交 `b9941329` 已推送至 `origin/main`；随后 Pages workflow `40642395703` 成功。线上知识供给蓝图返回 HTTP 200，回读确认供给关系、楼层服务网、交付通道和建设阶段图均已发布。
+
+### 2026-10-28 · 回答操作统一为图标与 Tooltip
+
+- 用户明确要求回答相关操作统一只显示图标，鼠标悬浮时再显示文字提示；知识口袋、复制、赞同和不赞同沿用同一尺寸与样式。tooltip 同时响应键盘聚焦，按钮保留 `aria-label`，让无障碍名称不依赖视觉提示。
+- 修改 `ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css` 及本交接。按钮功能和数据流不变；页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。依据为用户截图和明确要求（H）。
+- 验证：`npm run build:pages`、发布 JS `node --check` 与 `git diff --check` 通过；CUA 在 744×666 任务预览中确认知识口袋、复制、赞同和不赞同均无常驻文字，键盘聚焦时 tooltip 正常显示。未运行自动化测试。
+- 发布：实现提交 `fc41cb09` 已推送至 `origin/main`；Pages workflow `40642807299` 的 build / deploy 均成功。页面序列、API / Protocol、Host / Harness、Application / Task 边界未改变。
+
+
+### 2026-10-28 · 三栏背景改为由左至右渐亮
+
+- 按用户选择试做明度递增的三栏底色：图标栏 `#F5F5F5`、任务列表 `#FAFAFA`、对话 `#FFFFFF`。延续既有淡彩氛围图，只调整三栏承载面。依据为用户明确选择（H）。
+- 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 构建资源。构建 `npm run build:pages`、发布 JS `node --check`、资源引用核验和 `git diff --check` 通过；本地 8008 桌面任务页回放确认三档渐亮，未运行自动化测试。页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 实现提交 `1d49549c` 已推送 `origin/main`；Pages workflow `40643700403` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-B6WzOQ4r.js` 与 `index-BPSEyDRV.css`，两者 HTTP 200。
+
+### 2026-10-28 · Ascend Studio 用户旅程页修正
+
+- 用户指出用户旅程不能把整页直接做成一张图。现版第 2 页直接复制旧精简报告 #5 的旅程 HTML 网格结构与 CSS，并新增同页「旅程全景 / 角色时序」切换；旅程文字、行为格、交接、断点和六角色时序均为原生 HTML。只保留原旅程的 5 张阶段插画作为图片，没有把全页截图放入汇报，也未使用 iframe。
+- 修复「任务用户 / 学习用户」窄列换行，并将外部 hash 跳转改为立即定位当前页。学习用户同时包含模糊目标和明确目标；任务 / 学习表示进入目的，专业程度只影响引导深度，来自用户明确澄清（H）。
+- 汇报当前为 16 页：五个旅程断点留在旅程页中，不再额外占一页。修改 `cann-dashboard/ascend-studio-design-report.html`、其 `build_report.py`、`narrative.md`、`qa.md`、`page-map.json`、`page-visual-checks.json` 与提取运行脚本；未修改电脑端 / 小程序产品源码及既有精简报告。
+- 证据来源为旧精简报告 #5 与线上电脑端 / 本地小程序原型；人群旅程重组与痛点仍属设计推演，不冒充访谈结论。没有改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：汇报构建脚本、两段 `node --check`、`git diff --check` 通过；结构检查确认 16 页、旅程含 HTML 网格与时序视图、只有 5 张局部阶段插画。CUA 在 1280×720 检查全景 / 时序，并直接跳转 `#2 → #11 → #2`，可见页面与页码同步。未运行自动化测试。
+- 提交 / 推送：交接与材料通过独立临时索引相对最新 `origin/main` 提交，并推送到 `main`；本地工作区其他暂存、未暂存和未跟踪改动未纳入。
+
+### 2026-10-28 · 恢复工作区白灰白底色
+
+- 按用户要求恢复上一版配色：图标栏白色 `--surface`，列表浅灰 `--surface-subtle`（`#F8F8F8`），对话白色。继续保留淡彩氛围图。
+- 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 页面资源引用。`npm run build:pages`、发布 JS `node --check`、资源引用检查和 `git diff --check` 通过；本地 8008 任务页预览确认白灰白，未运行自动化测试。页面顺序 / hash 和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 实现提交 `5d04b35e` 已推送至 `origin/main`；Pages workflow `40644423331` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-Cf2J7xCF.js` 与 `index-BB1jQhKy.css`，两者 HTTP 200。
+
+### 2026-10-28 · AddCustom 错误后的尾块知识提示
+
+- 根据用户确认的方案 1，将 AddCustom 的尾块错误线索改为知识解释卡：说明输入元素数不是 `tileSize` 整数倍时，最后一块只有部分有效元素，算子内核需按剩余元素限制访问；关联 `[16,32]` 通过、`[17,33]` 失败及编译参数调整后错误位置不变的现象，同时明确根因仍待实际循环与逐元素误差证据确认。
+- 该提示单独使用与“生成社区经验”相同的暖黄—淡紫渐变、向下淡出到白色的样式和书本图标；主操作为「看尾块处理图解」，次操作为「对照当前代码」。点击操作后卡片收起并转为中性灰，再展开仍保持灰色。其他任务的提示样式不变。
+- 修改 `ascend-studio/src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css`、`src/useProactiveCues.js` 与 `/ascstudio/` 构建产物。依据为用户确认文案结构与视觉方向（H）；内容是与当前错误相关的通用知识，不构成真实根因或 NPU 验证结论。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 在隔离的 1280×720 本地预览确认渐变初始态、点击后的灰色态及展开后的灰色态。实现提交 `99d9b8bb` 已推送至 `origin/main`；Pages workflow `40645430068` 成功，线上入口与本轮 JS / CSS 均 HTTP 200。未运行自动化测试。
+
+### 2026-10-28 · AddCustom 知识提示刷新后恢复渐变
+
+- 用户发现点击图解后变灰的 AddCustom 知识卡在刷新后仍是灰色。原因是上一轮把提示状态写入 `sessionStorage`。现改为仅在 React 页面会话内保存提示状态：切换材料时保持“已查看”的灰色；完整刷新重回初始渐变。
+- 变更仅涉及提示的查看 / 收起 / 已处理展示状态，不清除其他任务会话数据，也不影响图解、代码操作。更新 `ascend-studio/src/useProactiveCues.js` 和 `/ascstudio/` 构建入口 / bundle；页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；隔离本地预览回放“点击图解 → 灰色 → 刷新 → 渐变”，并检查截图。提交 `eff06d63` 已推送至 `origin/main`；Pages workflow `40646293092` 成功，线上入口与本轮 JS / CSS HTTP 200。未运行自动化测试。
+### 2026-10-28 · 小程序评审材料补齐电脑端知识口袋入口
+
+- 用户确认主动回访章节应先讲电脑端入口。将评审序列扩为 8 点：核心学习 3 点之后，第 4 点展示电脑端从 Agent 回答 / 当前学习内容收纳到知识口袋，标记「感兴趣 / 还没弄懂」，再选择「发到微信，现在看」或「加入定期速览」；之后依次呈现微信即时通知、手机短读卡、每周重点资讯加两张个性化知识卡、主题与时间管理。知识口袋截图增加「模拟点按」动作，可从第 4 点直接转到微信新消息。
+- 总览面板在 1280×720 初始视口只容纳到主动回访前四点；为避免第 8 点看似被裁切，在标题下加入「共 8 个设计点 · 向下滚动查看」。七点版 `review-overview-desktop.png` 保留作历史图，并在 README 明确标注；新增第 4 点的电脑知识口袋截图裁切。
+- 修改 `ascstudio-mini/app.js`、`index.html`、`styles.css`、`README.md`、`qa.md` 与 `evidence/knowledge-pocket-entry-crop.png`。依据：叙事顺序与电脑端选择行为来自用户确认（H）；送达记录、未读消息与短读卡是在同一浏览器内的本地概念演示（M），不代表真实微信 API、跨设备同步或后台定时推送。页面序列从 7 点调整为 8 点；未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：本地 Chrome 1280×720 查看总览初始状态并滚动到第 8 点；点选第 4 点并触发「模拟点按」，确认进入 `?point=5#review-instant` 且微信列表显示带标题的未读服务通知。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
+- 发布：实现提交 `7230842a` 普通推送 `origin/main`；包含本轮文件的 Pages 构建 `1828931e` 状态 `built`。线上 `/AscendCANN/ascstudio-mini/`、`app.js`、`styles.css` 与新增截图均 HTTP 200；回读确认即时送达演示代码与总览滚动提示已发布。同步保留并行主线更新 `eff06d63`、`c88e51cd`、`1828931e` 与 `4e96d4b2`；本交接条目随后一并提交 / 推送。
+
+### 2026-10-28 · 知识供给蓝图补全资产建设与使用细节
+
+- 用户指出原交付图的层级设计不清，并要求不仅写 llms.txt，还要详细说明各类文件 / 接口 / Agent 资产“怎么建设、如何发挥作用”。因此在 `ascstudio-mini/knowledge-provider-map.html` 将原 04 交付图改为 Knowledge Unit 分流总图，并增加公开发现、产品 API、Agent 资产三页：分别呈现 robots.txt + sitemap.xml、HTML / Markdown + JSON-LD、llms.txt；OpenAPI 契约、资源 / 活动 / 兼容性 / signals 接口；MCP Resources / Tools、SKILL.md 方法说明与任务回执字段。
+- 每个例子都配建设方法、使用者 / 调用方式与产出；以代码片段、端点流程、状态映射和资源分流关系表达，避免把实施细节再压进小字连线图。llms.txt 标为社区提案；robots.txt 明示不承担鉴权；业务回执字段注明属于 Application 层建议，不冒充 MCP 标准。
+- 内容依据为公开规范链接与用户明确的供给侧需求（格式事实 H；服务端点、Skill 工作流和回执均为目标方案 / 待建设，不表示已接入）。扩展后全 deck 为 10 页，新增页位于交付总图之后，建设路线图章节编号改为 08；导航点和页码仍由 deck runtime 根据 section 数动态生成。没有改变 API / Protocol、Host / Harness、Application / Task 的职责边界。
+- 验证：本地桌面预览逐页检查 #6–#9，确认总图、文件示例、API 状态映射和 Agent 回执均可读且无裁切；`git diff --check` 通过；未运行自动化测试。
+- 发布：实现提交 `c88e51cd` 在吸收远端 `eff06d63` 后普通推送至 `origin/main`（未强推，其他并行工作保留）。随后将交接记录 `4e96d4b2` 接到最新 `origin/main`（保留 `5bbef462` 的工作区背景改动）并再次普通推送。线上页面 HTTP 200，完整 HTML 为 186,907 字节；与本地 `ascstudio-mini/knowledge-provider-map.html` 的 SHA-256 均为 `ccf4b5db796b3f785edc35b3ea9fb756b37dae71e30f15524c8cc1421a447279`，回读确认公开发现、产品 API 和 Agent 资产细化页均已发布。未获取 Pages workflow 状态。
+
+### 2026-10-28 · 移除工作区氛围背景图
+
+- 用户截图与明确要求（H）要求去掉之前加入工作区的背景图案。移除项目列表后的彩色档案叠片与对话区的浅彩交汇图；三栏仍为左侧白色、中间列表 `#F8F8F8`、对话白色，右侧画布点阵保留。两个 PNG 与其生成提示 / 视觉证据留作历史素材，但 `App.jsx` 不再引用。
+- 修改 `ascend-studio/src/App.jsx`、`src/styles.css`、`design-explorations/ambient-assets-20261009/README.md` 与 `/ascstudio/` 构建入口 / bundle。页面顺序 / hash、API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check HEAD^ HEAD` 通过；CUA 在 1280×720 的 AddCustom 工作区确认两处背景已消失，三栏底色与右侧点阵仍在。当前构建 JS / CSS 无氛围图引用；线上 `/AscendCANN/ascstudio/` 入口与 `index-DfZ30buz.js`、`index-BU2cBnKO.css` 均 HTTP 200。未运行自动化测试。
+- 实现提交 `5bbef462` 已随主线合并提交 `4cc2c64d` 到达 `origin/main`；Pages workflow `40646916687` build / deploy 均成功。本条记录随后随交接文档提交普通推送。
+
+### 2026-10-28 · ResNet50 讲解画布拆分材料与操作
+
+- 用户确认按当前学习步骤组织画布。图解、视频与章节控制、当前同步讲解是三张横向并列的 `material` 卡；动手练习和理解检查在下方操作行并分别作为 `action`。理解检查结果留在卡片内，官方来源只在同步讲解卡内折叠呈现，避免重复。
+- 实现位于 `ascend-studio/src/OfficialLearningActivities.jsx`、`OfficialLearningPathCanvas.jsx`、`official-learning-canvas.css` 与 `shared/canvas/node-semantics.js`。同步更新 `ascend-studio/interaction-design.md` 和个人共享规范 `~/.codex/skills/ascend-studio-interface-style/SKILL.md`。
+- 本地 5196 桌面预览（1280×720）：核对默认选中、适应全部的横向材料行/下方操作行、官方来源折叠去重、理解题提交后的就地反馈；当前代表性卡片无内容溢出或嵌套滚动。构建 `npm run build:pages`、共享语义模块 `node --check`、`git diff --check` 通过。未运行自动化测试；不改变页面顺序、hash、任务学习状态模型或 API / Protocol、Host / Harness、Application / Task 边界。
+- 源码提交 `7e8c8a99` 与 Pages 构建提交 `7882535e` 已普通推送到 `origin/main`。提交 `7882535e` 与随后并行主线提交 `3d01d4e3` 对应的 Pages 构建均为 `built`；线上入口与本次 JS / CSS 均 HTTP 200。主线之后又前进至 `0523f40d`，其最新 Pages 构建状态将在同步后补核。
+
+### 2026-10-28 · Ascend Studio 黑色选中态与输入主操作
+
+- 用户明确指定左侧主导航当前项、右上角对话布局切换当前项使用近黑底白图标；同时确认空输入时显示黑色波形语音输入按钮，有文字或附件后切换为发送按钮。语音识别进行中保留波形按钮，识别结束后再切换，避免半句识别时主操作跳变。
+- 修改 `ascend-studio/src/App.jsx`、`src/VoiceCaptureButton.jsx`、`src/styles.css` 与 Pages 构建产物 `ascstudio/index.html`、对应 JS / CSS bundle。沿用浏览器已有语音转文字能力，没有新增实时语音对话服务；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户截图与明确要求（H）。
+- 验证：`npm run build:pages`、构建 JS `node --check`、HTML bundle 引用存在性、输出 CSS 规则核对和 `git diff --check` 通过；未运行自动化测试。CUA 拒绝 `file://` 页面访问并明确禁止通过其它浏览器或间接方式绕过，本轮未作截图级视觉回放。
+- Commit / push：本次源码、Pages 产物与交接记录单独提交并推送至 `origin/main`；工作区其它暂存、未暂存与未跟踪文件保持原样。
+
+### 2026-10-28 · 知识供给蓝图采用 Report PPT 配色
+
+- 用户指出知识供给蓝图偏绿，要求改用 Report PPT Skill 的色彩。仅调整 `ascstudio-mini/knowledge-provider-map.html` 的色彩：冷灰背景与透白卡片承载内容，蓝紫 `#5B5BD6` 为主强调，蓝 `#4B8DFF` 与克制的暖橙 / 粉色区分语义；关系线、箭头、节点、阶段和内容状态都移除大面积青绿。内容图片、文案、页序与交互未改。
+- 依据：用户明确方向（H）与 `report-ppt-skill/references/type-and-color.md` 色彩规范（H）；本地 1440×900 CUA 预览 #4、#5、#10，确认关系图与阶段页的灰底、蓝紫主线和暖色提醒层级（M）。没有改变 API / Protocol、Host / Harness、Application / Task 职责边界。
+- 验证：`git diff --check` 通过；本地浏览器截图检查交付关系、Knowledge Unit 和建设阶段页。实现提交 `3d01d4e3` 已普通推送至 `origin/main`；Pages workflow `40648195378` 成功。线上 HTML HTTP 200，194,054 字节；与本地文件 SHA-256 均为 `342f1f138e3b9c56647b6c866c54c15c8e7802386c7342154a74847bf8ccad37`。
+
+### 2026-10-28 · AddCustom 知识卡精简为 B 方案
+
+- 用户选择 B，并确认「根因待确认」是否需要显示。该词是说现有形状对照未证明尾块处理就是原因；它已在上方诊断答复中说明，知识卡不再重复。标题改为「为什么 [17,33] 值得检查尾块？」，正文缩为「元素总数不是 tileSize 的整数倍时，尾块只有部分元素有效；访问时需按剩余数量做边界保护。」
+- 移除重复的 `[16,32]` / `[17,33]` 现象行；因标题用「值得检查」而非断言失败原因，卡片不单列根因免责声明。保留黑色「看尾块处理图解」主按钮，将「对照当前代码」降为文字操作。
+- 修改 `ascend-studio/src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css` 与 `/ascstudio/` 构建产物。用户明确选择为 H；这是知识解释与排查入口，不代表已确认根因或真实 NPU 验证。页面序列和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 1280×720 隔离预览确认短文案、单一主按钮、次级文字链接及点击后灰色状态。实现提交 `429b47bf` 与合入并行主线的 `afb1a693` 已推送到 `origin/main`；Pages workflow `40648789533` 成功，线上入口和本轮 JS / CSS HTTP 200。未运行自动化测试。

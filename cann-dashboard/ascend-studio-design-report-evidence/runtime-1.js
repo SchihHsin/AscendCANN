@@ -1,11 +1,13 @@
 
 const rModal=document.querySelector('.r-modal');
+const bpDialog=document.querySelector('.r-bp-dialog');
+const liveDialog=document.querySelector('.r-live-demo');
+const liveFrame=liveDialog.querySelector('iframe');
 let rFocus=null;
 function drawService(){
   if(document.body.classList.contains('overview'))return;
   const w=document.querySelector('.r-service'),svg=w.querySelector('svg'),wr=w.getBoundingClientRect();
   const box=e=>{const r=e.getBoundingClientRect();return {x:r.left-wr.left,y:r.top-wr.top,w:r.width,h:r.height};};
-  const left=[...w.querySelectorAll('.r-service-col:first-of-type .r-service-item')];
   const cols=w.querySelectorAll('.r-service-col');
   const inputs=[...cols[0].querySelectorAll('.r-service-item')],outputs=[...cols[1].querySelectorAll('.r-service-item')],core=box(w.querySelector('.r-service-core'));
   svg.setAttribute('viewBox','0 0 '+wr.width+' '+wr.height);
@@ -22,4 +24,41 @@ document.querySelectorAll('.r-enlarge').forEach(b=>b.addEventListener('click',()
 rModal.querySelector('button').addEventListener('click',closeFigure);
 rModal.addEventListener('click',e=>{if(e.target===rModal)closeFigure();});
 document.addEventListener('keydown',e=>{if(rModal.classList.contains('open')&&e.key==='Escape')closeFigure();if(rModal.classList.contains('open')&&e.key==='Tab'){e.preventDefault();rModal.querySelector('button').focus();}});
-document.querySelector('.r-send').addEventListener('click',()=>{const t=document.querySelector('.r-prompt-box textarea').value.trim();document.querySelector('.r-prompt-feedback').textContent=t?'已发送此页演示草稿；可以继续修改并再次体验。':'请先写下希望发送的目标。';});
+function selectBreakpoint(index){
+  bpDialog.querySelectorAll('[data-bp-tab]').forEach((tab,i)=>{tab.classList.toggle('active',i===index);tab.setAttribute('aria-selected',String(i===index));});
+  bpDialog.querySelectorAll('[data-bp-panel]').forEach((panel,i)=>{panel.hidden=i!==index;});
+}
+document.querySelectorAll('[data-bp-open]').forEach(button=>button.addEventListener('click',()=>{selectBreakpoint(Number(button.dataset.bpOpen));bpDialog.showModal();}));
+bpDialog.querySelectorAll('[data-bp-tab]').forEach((tab,i)=>tab.addEventListener('click',()=>selectBreakpoint(i)));
+bpDialog.querySelector('.r-bp-close').addEventListener('click',()=>bpDialog.close());
+bpDialog.querySelectorAll('.r-bp-panel a').forEach(a=>a.addEventListener('click',()=>bpDialog.close()));
+bpDialog.addEventListener('click',e=>{if(e.target===bpDialog)bpDialog.close();});
+const journeySection=document.querySelector('.r-copy-journey');
+if(journeySection){
+  const overview=journeySection.querySelector('.collab-blueprint'),sequence=journeySection.querySelector('.r-role-sequence');
+  journeySection.querySelectorAll('[data-journey-view]').forEach(button=>button.addEventListener('click',()=>{
+    const showSequence=button.dataset.journeyView==='sequence';
+    overview.hidden=showSequence;sequence.hidden=!showSequence;
+    journeySection.querySelectorAll('[data-journey-view]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+  }));
+}
+const phoneImage=document.querySelector('.r-phone-stage>img');
+const phoneCaption=document.querySelector('.r-phone-caption');
+const phoneSources=[...document.querySelectorAll('[data-phone-source]')];
+document.querySelectorAll('[data-phone-state]').forEach(button=>button.addEventListener('click',()=>{
+  const source=phoneSources[Number(button.dataset.phoneState)];
+  if(!source||!phoneImage)return;
+  phoneImage.src=source.src;phoneImage.alt=source.alt;
+  phoneCaption.textContent=source.dataset.phoneDescription||source.alt;
+  document.querySelectorAll('[data-phone-state]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+}));
+document.querySelectorAll('.r-demo-launch').forEach(button=>button.addEventListener('click',()=>{
+  const url=button.dataset.demoUrl, fallback=button.dataset.demoFallback;
+  liveDialog.querySelector('h1').textContent=button.dataset.demoTitle;
+  liveDialog.querySelector('#r-demo-new-window').href=url;
+  const local=liveDialog.querySelector('#r-demo-fallback');local.hidden=!fallback;if(fallback)local.href=fallback;
+  liveFrame.src=url;liveDialog.showModal();
+}));
+liveDialog.querySelector('.r-demo-close').addEventListener('click',()=>liveDialog.close());
+liveDialog.addEventListener('close',()=>{liveFrame.src='about:blank';});
+liveDialog.addEventListener('click',e=>{if(e.target===liveDialog)liveDialog.close();});

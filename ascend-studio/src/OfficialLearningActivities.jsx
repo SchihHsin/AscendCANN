@@ -8,19 +8,10 @@ const mmss = seconds => `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${
 const statusText = attempt => attempt ? attempt.passed ? "检查通过" : "需要调整" : "待检查";
 const sourceKind = type => ({ course: "官方视频课程", path: "成长路径", document: "官方文档", article: "官方文章" }[type] || "官方资料");
 
-function sourceForLesson(node) {
-  const preferred = OFFICIAL_LEARNING_SOURCES[node?.mediaId];
-  if (preferred?.type === "course") return preferred;
-  const fallback = (node?.sourceIds || []).map(id => OFFICIAL_LEARNING_SOURCES[id]).find(source => source?.type === "course");
-  return fallback || OFFICIAL_LEARNING_SOURCES.overview;
-}
-
-export function OfficialLesson({ node, journey, onAsk, onCopy }) {
+function OfficialLessonVideo({ node, journey, onAsk }) {
   const timeId = useId();
   if (!node || !journey?.state || !journey?.actions) return null;
   const { state, actions } = journey;
-  const source = sourceForLesson(node);
-  const taskVideo = OFFICIAL_LEARNING_SOURCES.resnet;
   const steps = OFFICIAL_VIDEO_CHAPTERS;
   const duration = OFFICIAL_VIDEO_DURATION;
   const segmentIndex = officialVideoChapterIndex(state.time);
@@ -28,11 +19,7 @@ export function OfficialLesson({ node, journey, onAsk, onCopy }) {
   const chapter = steps[segmentIndex];
   const focus = chapter.title;
   const point = chapter.summary;
-  const checkpoint = node.checkpoint;
-  const currentCheck = state.checks?.[node.id];
-  const answer = state.answers?.[node.id];
-  return <div className="lh-player og-lesson">
-    <section className="og-local-lesson" aria-label="ResNet50 图像推理视频"><header><div><strong>ResNet50 图像推理</strong><span>完整流程讲解 · 45 秒</span><a className="og-demo-official-link" href={taskVideo.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(taskVideo.id)}>官网课程↗</a></div><span>{mmss(state.time)} / 00:45</span></header>
+  return <section className="og-local-lesson" aria-label="ResNet50 图像推理视频"><header><div><strong>ResNet50 图像推理</strong><span>完整流程讲解 · 45 秒</span></div><span>{mmss(state.time)} / 00:45</span></header>
       <div className="og-demo-screen" style={{ "--og-demo-progress": `${(state.time / duration) * 100}%`, "--og-demo-cursor-x": `${[17, 43, 68, 86][demoStepIndex]}%`, "--og-demo-cursor-y": `${[39, 58, 40, 67][demoStepIndex]}%` }} aria-label={`视频画面：${focus}`}>
         <div className="og-demo-topbar"><span className="og-demo-dot"/><span className="og-demo-dot"/><span className="og-demo-dot"/><strong>resnet50_infer.cpp</strong><small>Ascend Studio · 推理工作台</small></div>
         <div className="og-demo-workspace">
@@ -58,11 +45,42 @@ export function OfficialLesson({ node, journey, onAsk, onCopy }) {
       <div className="og-flow-focus" aria-live="polite"><span>当前步骤 · {segmentIndex + 1}/{steps.length}</span><strong>{focus}</strong><p>{point}</p></div>
       <div className="og-chapters" role="group" aria-label="跳到讲解步骤">{steps.map((step, index) => <button className="lh-text-button" type="button" key={step.id} aria-pressed={segmentIndex === index} onClick={() => actions.seek(step.start)}><small>{mmss(step.start)}</small>{step.title}</button>)}</div>
       <button className="lh-text-button" type="button" onClick={() => onAsk?.({ nodeId: node.id, title: chapter.title, time: state.time, subtitle: point, focus })}>解释这段<IconArrowRight size={ICON_SIZE.inline} /></button>
-    </section>
-    <a className="og-official-course" href={source.url} target="_blank" rel="noreferrer" onClick={() => actions.visitSource(source.id)}><span><small>本节点关联资料</small><strong>{source.title}</strong></span><span>打开资料↗</span></a>
+    </section>;
+}
+
+function OfficialLessonText({ node, journey, onCopy }) {
+  if (!node || !journey?.state || !journey?.actions) return null;
+  const { state } = journey;
+  const chapter = OFFICIAL_VIDEO_CHAPTERS[officialVideoChapterIndex(state.time)];
+  return <>
     <section className="og-lesson-body" key={chapter.id} aria-label="当前视频同步讲解" aria-live="polite" aria-atomic="true" data-video-chapter={chapter.id}><h3>{chapter.title}</h3><p>{chapter.body}</p><ul>{chapter.points.map((item, index) => <li key={`${chapter.id}-${index}`}>{item}</li>)}</ul><details><summary>查看接口顺序示意</summary><pre><code>{chapter.code}</code></pre><button className="lh-text-button" type="button" onClick={() => onCopy?.(chapter.code)}>复制示意代码</button></details></section>
+    <OfficialSources node={node} journey={journey}/>
+  </>;
+}
+
+export function OfficialVideoMaterial({ node, journey, onAsk }) {
+  return <div className="lh-player og-lesson og-video-material"><OfficialLessonVideo node={node} journey={journey} onAsk={onAsk}/></div>;
+}
+
+export function OfficialLectureMaterial({ node, journey, onCopy }) {
+  return <div className="lh-player og-lesson og-explanation-material"><OfficialLessonText node={node} journey={journey} onCopy={onCopy}/></div>;
+}
+
+export function OfficialLesson({ node, journey, onAsk, onCopy }) {
+  return <div className="lh-player og-lesson"><OfficialLessonVideo node={node} journey={journey} onAsk={onAsk}/><OfficialLessonText node={node} journey={journey} onCopy={onCopy}/></div>;
+}
+
+export function OfficialComprehensionCheck({ node, journey, onContinue }) {
+  if (!node?.checkpoint || !journey?.state || !journey?.actions) return null;
+  const { state, actions } = journey;
+  const checkpoint = node.checkpoint;
+  const currentCheck = state.checks?.[node.id];
+  const answer = state.answers?.[node.id];
+  const currentAnswerWasChecked = currentCheck?.answer === answer;
+  return <div className="lh-player og-practice og-check-card">
     <button className="lh-button" type="button" aria-pressed={state.understood?.includes(node.id) || false} onClick={() => actions.understand(node.id)}>{state.understood?.includes(node.id) ? "已记录理解" : "我理解了本节点内容"}</button>
-    {checkpoint && <section className="og-checkpoint"><h3>检查本节点理解</h3><p>{node.title}</p><fieldset><legend>{checkpoint.question}</legend>{checkpoint.options.map(option => <label key={option.id}><input type="radio" name={`checkpoint-${node.id}`} value={option.id} checked={answer === option.id} onChange={() => actions.chooseAnswer(node.id, option.id)} />{option.label}</label>)}</fieldset><button className="lh-button" type="button" onClick={() => actions.checkAnswer(node.id)}>检查答案</button>{currentCheck && <div className={`lh-inline-result${currentCheck.passed && currentCheck.answer === answer ? " is-pass" : ""}`} role="status"><strong>{currentCheck.answer === answer ? currentCheck.passed ? "本次理解题通过" : "本次答案需调整" : "已选择新答案，请重新检查"}</strong><p>{currentCheck.answer === answer ? checkpoint.explanation : "检查结果只对应已提交的答案。"}</p></div>}</section>}
+    <section className="og-checkpoint" aria-label="检查本节点理解"><h3>检查本节点理解</h3><p>{node.title}</p><fieldset><legend>{checkpoint.question}</legend>{checkpoint.options.map(option => <label key={option.id}><input type="radio" name={`checkpoint-${node.id}`} value={option.id} checked={answer === option.id} onChange={() => actions.chooseAnswer(node.id, option.id)} />{option.label}</label>)}</fieldset><button className="lh-button" type="button" onClick={() => actions.checkAnswer(node.id)}>检查答案</button>{currentCheck && <div className={`lh-inline-result${currentAnswerWasChecked && currentCheck.passed ? " is-pass" : ""}`} role="status"><strong>{currentAnswerWasChecked ? currentCheck.passed ? "本次理解题通过" : "本次答案需调整" : "已选择新答案，请重新检查"}</strong><p>{currentAnswerWasChecked ? checkpoint.explanation : "检查结果只对应已提交的答案。"}</p></div>}</section>
+    {state.statuses?.[node.id] === "completed" && onContinue && <div className="og-next"><span><IconCheck size={ICON_SIZE.inline}/>当前学习动作已完成</span><button type="button" className="lh-button" onClick={onContinue}>继续下一步<IconArrowRight size={ICON_SIZE.inline}/></button></div>}
   </div>;
 }
 

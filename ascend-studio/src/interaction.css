@@ -22,7 +22,7 @@
 .attempt-row:hover { background: #f4f4f2; border-color: #dddcd9; }
 .message-paragraph { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 8px; }
 .message-feedback button[aria-pressed="true"] { color: #505869; background: #eeeef0; }
-.message-feedback .pocket-save-action { display:inline-flex; align-items:center; gap:5px; width:auto; padding:0 7px; color:#737784; font-size:10px; white-space:nowrap; }
+.message-feedback .pocket-save-action { display:grid; place-items:center; gap:0; width:23px; height:23px; padding:0; color:#737784; font-size:0; white-space:nowrap; }
 .message-feedback .pocket-save-action:hover { color:#343742; }
 .composer-context-chips, .message-attachments { display: flex; flex-wrap: wrap; gap: 5px; }
 .composer-context-chips { padding-bottom: 7px; }

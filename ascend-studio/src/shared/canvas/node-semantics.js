@@ -157,7 +157,13 @@ export const CANVAS_NODE_ADAPTERS = Object.freeze({
     "note:": { nodeType: "note", contentType: "note" },
     "drawing-card:": { nodeType: "note", contentType: "drawing" },
   }) }),
-  resnet50: Object.freeze({ nodeMap: RESNET50_NODE_MAP, prefixes: Object.freeze({
+  resnet50: Object.freeze({ nodeMap: RESNET50_NODE_MAP, suffixes: Object.freeze({
+    ":diagram": { nodeType: "material", contentType: "diagram" },
+    ":lesson": { nodeType: "material", contentType: "video" },
+    ":explanation": { nodeType: "material", contentType: "lesson" },
+    ":practice": { nodeType: "action", contentType: "interactive" },
+    ":check": { nodeType: "action", contentType: "interactive" },
+  }), prefixes: Object.freeze({
     "learning-official-step-": { nodeType: "step", contentType: "lesson" },
     "record:": { nodeType: "result", contentType: "summary" },
     "note:": { nodeType: "note", contentType: "note" },
@@ -189,6 +195,9 @@ function explicitMapping(node, domain) {
   const id = asText(node.id);
   if (adapter?.nodeMap?.[id]) return adapter.nodeMap[id];
   if (adapter) {
+    for (const [suffix, mapping] of Object.entries(adapter.suffixes || {})) {
+      if (id.endsWith(suffix)) return mapping;
+    }
     for (const [prefix, mapping] of Object.entries(adapter.prefixes || {})) {
       if (id.startsWith(prefix)) return mapping;
     }

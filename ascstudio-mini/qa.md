@@ -88,3 +88,18 @@
 - 浏览器人工回放：1440×940 桌面样机验证收纳、信号切换、安排速览、立即送达；手机端验证微信未读行、通知详情、短读卡与「我看懂了」状态回写。390×844 手机视口中，微信列表与短读卡的 `scrollWidth` 均为 390px。已核对学习对话回答入口与学习内容工具栏入口。
 - 截图：`evidence/knowledge-pocket-desktop.png`、`evidence/wechat-notification-list.png`、`evidence/knowledge-pocket-phone-card.png`。周报示例资讯仍为静态策划素材。电脑与手机在同一浏览器中用同源 localStorage 演示共享；未实现不同设备账号同步、真实微信消息或后台定时推送。
 - rebase 到最新主线 `a6681665` 后重新构建：`cd ascend-studio && npm run build:pages` 成功，当前 `/ascstudio/` 引用 `index-SON5PQr8.js` 与 `index-e9TgRYmh.css`。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、新构建 bundle 语法检查及 `git diff --check` 通过；未运行自动化测试。
+
+## 2026-10-28 · 八点叙事：电脑端知识口袋先触发
+
+- 按用户确认的叙事顺序，将电脑端知识口袋入口前置为第 4 点，再展示微信即时通知、手机短读卡、每周速览和订阅管理；主动回访章节现为第 4–8 点。第 4 点展示电脑端收纳与「感兴趣 / 还没弄懂」标记，以及「发到微信，现在看 / 加入定期速览」选择，并提供「模拟点按」进入即时送达。
+- 1280×720 桌面浏览器回放确认：总览顶部提示「共 8 个设计点 · 向下滚动查看」；滚动后第 8 点可见。点选第 4 点展示电脑知识口袋截图，点「模拟点按」后 URL 进入 `?point=5#review-instant`，微信列表可访问地显示带知识标题的未读服务通知。八个总览缩略页均有对应状态。
+- `evidence/review-overview-desktop.png` 保留为七点版历史截图，README 已明确标注，避免误作当前八点版。新的电脑端入口裁切为 `evidence/knowledge-pocket-entry-crop.png`。
+- 依据：页序与电脑端入口要求来自用户选择（H）；本地演示状态与同源浏览器内即时通知流程是概念验证（M）。本地存储样例用于同一浏览器内桌面 / 手机演示；未接入真实微信 API、不同设备账号同步或后台定时推送。
+- 页序由 7 点调整为 8 点；不涉及 API / Protocol、Host / Harness 或 Application / Task 机制边界。
+- 验证：Chrome 本地静态预览，桌面 1280×720；总览滚动及第 4→5 点即时消息链路已回放。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
+
+## 2026-10-28 · 状态栏 Wi-Fi 图标
+
+- 按用户截图反馈，将手绘的三段曲线替换为 Tabler Icons v3.48.0 `IconWifi` SVG 路径。该路径沿用 24×24 坐标，三条弧线间距一致，并保留圆点；CSS 等比使用 15×15 尺寸与 2px 圆角描边。
+- 图标为内联静态 SVG，没有新增运行时依赖；项目已有 Tabler Icons MIT 许可，CSS 中注明来源。
+- 本地 HTTP 预览中核对 Pura X View 状态栏的 5G、信号、Wi-Fi 与电量排列；`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过。未运行自动化测试；页面序列与推送流程不变。

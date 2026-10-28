@@ -278,6 +278,7 @@ function App() {
   const [pointContext, setPointContext] = useState(null);
   const [areaInteractionActive, setAreaInteractionActive] = useState(false);
   const composerVoiceDraftRef = useRef("");
+  const [composerPrimaryVoiceListening, setComposerPrimaryVoiceListening] = useState(false);
   const {
     query, setQuery, openedGroups, selectedTask, rationaleOpen, setRationaleOpen,
     visibleGroups, toggleGroup, selectTask, setSelectedRoute,
@@ -319,6 +320,7 @@ function App() {
   };
   const selectExistingTask = (name) => { selectTask(name); setMainView("task"); };
   const { selectedRoute, draft } = session;
+  const composerHasPayload = Boolean(draft.trim() || session.attachments.length);
   const permissionMode = permissionModes[selectedTask] || "confirm";
   const permissionModeLabel = PERMISSION_OPTIONS.find(item => item.id === permissionMode)?.label || "每次确认";
   const messages = session.messages.filter(message => {
@@ -1480,7 +1482,6 @@ function App() {
           </div>
         </aside>
         <aside id="project-sidebar" className="sidebar" aria-label="项目与任务" hidden={!projectPanelOpen}>
-          <img className="ambient-art ambient-art--archive" src={`${import.meta.env.BASE_URL}assets/project-archive-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <div className="primary-nav">
             <button className="new-task-button" type="button" onClick={() => { wb.setMenu(null); setMainView("home"); }}>
               <IconPlus size={ICON_SIZE.heading} /><span>新建任务</span>
@@ -1534,7 +1535,6 @@ function App() {
           <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 工具与方法</span><h1 id="capabilities-page-title">能力库</h1><p>按类型查找可复用的检查能力，选择后会带入当前任务。</p></div><div className="management-page-summary"><strong>{capabilities.length}</strong><span>项可用能力</span><i /><strong>{new Set(capabilities.map(item => item.category).filter(Boolean)).size}</strong><span>个分类</span></div></header>
           <div className="management-page-content"><CapabilityList capabilities={capabilities} onUseCapability={useCapabilityFromPage} /></div>
         </section> : <section ref={conversationPanelRef} className={`conversation-panel${conversationDragging ? " is-dragging" : ""}${conversationLayout === "floating" && !floatingConversationExpanded ? " is-composer-only" : ""}${conversationLayout === "floating" && floatingConversationExpanded ? " is-conversation-expanded" : ""}`} aria-label="任务对话">
-          <img className="ambient-art ambient-art--exchange" src={`${import.meta.env.BASE_URL}assets/dialog-exchange-ambient.png`} alt="" aria-hidden="true" draggable={false} />
           <div id="task-conversation-history" className="conversation-scroll" ref={wb.conversationRef} onScroll={wb.handleConversationScroll}>
             <div className="conversation-flow">
             {session.showIntro && isMainTask && <>
@@ -1560,13 +1560,12 @@ function App() {
                     <IconBook size={ICON_SIZE.control} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={ICON_SIZE.control} />
                   </button>
                   {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => openContent("evidence")}>打开现场与判断<IconArrowRight size={ICON_SIZE.inline} /></button></div>}
-                  <ProactiveCue {...proactive.forCue("diagnosis-tail")} emphasisRef={diagnosisTargetRef}
-                    title="先核对非整块输入的访问范围"
-                    evidence="两组输入结果不同，调整编译参数后错误位置未变"
-                    description="已把尾块差异带入右侧图解。可以直接调参观察，再核对实际循环；这条线索仍不能确认根因。"
-                    primaryLabel={workspace.state.activeId === "explanation" ? "核对实际循环与来源" : "查看关联图解"}
+                  <ProactiveCue {...proactive.forCue("diagnosis-tail")} variant="knowledge" emphasisRef={diagnosisTargetRef}
+                    title="为什么 [17,33] 值得检查尾块？"
+                    description="元素总数不是 tileSize 的整数倍时，尾块只有部分元素有效；访问时需按剩余数量做边界保护。"
+                    primaryLabel={workspace.state.activeId === "explanation" ? "核对实际循环与来源" : "看尾块处理图解"}
                     onPrimary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? changeActionView("code") : dispatchTaskIntent("explain", "tail"); }}
-                    secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "查看实际代码"}
+                    secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "对照当前代码"}
                     onSecondary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? dispatchTaskIntent("explain", "tail") : changeActionView("code"); }} />
                   <details className="chat-next-disclosure"><summary>比较其他排查方向</summary><div className="chat-next-actions" aria-label="可能的下一步方向">
                     <div className="chat-next-heading">可能的下一步方向</div>
@@ -1586,17 +1585,17 @@ function App() {
                   </div></details>
                 </div>
                 <div className="message-feedback">
-                  <button type="button" className="pocket-save-action" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-intro:${selectedTask}`, title: "排查线索：尾块索引范围", summary: "尾块索引范围值得优先核对；根因尚未确认。还需实际循环、两次运行条件与逐元素误差证据。", content: "尾块索引范围值得优先核对，根因尚未确认。\n\n已知：[16,32] 通过；[17,33] 失败。修改编译参数后，错误位置未变。\n\n还需：实际循环、两次运行条件与逐元素误差证据。", sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask, signal: "question" })}><IconBookmark size={ICON_SIZE.control} />收进知识口袋</button>
-                  <button type="button" aria-label="复制回答" onClick={() => wb.copyText(task.reply)}><IconCopy size={ICON_SIZE.control} /></button>
-                  <button type="button" aria-label="赞同" aria-pressed={session.feedback === "up"} onClick={() => feedback("up")}><IconThumbUp size={ICON_SIZE.control} /></button>
-                  <button type="button" aria-label="不赞同" aria-pressed={session.feedback === "down"} onClick={() => feedback("down")}><IconThumbDown size={ICON_SIZE.control} /></button>
+                  <button type="button" className="pocket-save-action" aria-label="收进知识口袋" data-tooltip="收进知识口袋" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-intro:${selectedTask}`, title: "排查线索：尾块索引范围", summary: "尾块索引范围值得优先核对；根因尚未确认。还需实际循环、两次运行条件与逐元素误差证据。", content: "尾块索引范围值得优先核对，根因尚未确认。\n\n已知：[16,32] 通过；[17,33] 失败。修改编译参数后，错误位置未变。\n\n还需：实际循环、两次运行条件与逐元素误差证据。", sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask, signal: "question" })}><IconBookmark size={ICON_SIZE.control} /></button>
+                  <button type="button" aria-label="复制回答" data-tooltip="复制回答" onClick={() => wb.copyText(task.reply)}><IconCopy size={ICON_SIZE.control} /></button>
+                  <button type="button" aria-label="赞同" data-tooltip="赞同" aria-pressed={session.feedback === "up"} onClick={() => feedback("up")}><IconThumbUp size={ICON_SIZE.control} /></button>
+                  <button type="button" aria-label="不赞同" data-tooltip="不赞同" aria-pressed={session.feedback === "down"} onClick={() => feedback("down")}><IconThumbDown size={ICON_SIZE.control} /></button>
                 </div>
               </div>
             </article>
             </>}
             {session.showIntro && !isMainTask && <>
               <article className="message-row user-message"><div className="message-content"><div className="message-meta">你</div><div className="user-bubble">{task.question}</div></div></article>
-              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response">{task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}{isStandardLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-goal")}>设置学习目标<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent(learning.state.summaries.length ? "learning-summary" : "learning-path")}>{learning.state.summaries.length ? "回看学习记录" : "查看学习路径"}</button>{isPathGenerationTask && <button className="task-plain-button" type="button" onClick={() => { setDraft(PATH_REFINEMENT_DEMO_PROMPT); wb.draftRef.current?.focus(); }}>填入共创演示需求</button>}</div>}{isOfficialLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-stage-chain")}>查看目标学习路径<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-step-image-classification")}>从图像推理链路开始</button></div>}{isImageTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => dispatchTaskIntent("explain", "layout")}>返回关联图解<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent("image-source")}>查看代码与来源</button></div>}</div><div className="message-feedback"><button type="button" className="pocket-save-action" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-intro:${selectedTask}`, title: task.reply.split(/[。\n]/)[0].slice(0, 52) || task.title, summary: task.reply.split("\n\n")[0], content: task.reply, sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask })}><IconBookmark size={ICON_SIZE.control} />收进知识口袋</button></div></div></article>
+              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response">{task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}{isStandardLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-goal")}>设置学习目标<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent(learning.state.summaries.length ? "learning-summary" : "learning-path")}>{learning.state.summaries.length ? "回看学习记录" : "查看学习路径"}</button>{isPathGenerationTask && <button className="task-plain-button" type="button" onClick={() => { setDraft(PATH_REFINEMENT_DEMO_PROMPT); wb.draftRef.current?.focus(); }}>填入共创演示需求</button>}</div>}{isOfficialLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-stage-chain")}>查看目标学习路径<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-step-image-classification")}>从图像推理链路开始</button></div>}{isImageTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => dispatchTaskIntent("explain", "layout")}>返回关联图解<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent("image-source")}>查看代码与来源</button></div>}</div><div className="message-feedback"><button type="button" className="pocket-save-action" aria-label="收进知识口袋" data-tooltip="收进知识口袋" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-intro:${selectedTask}`, title: task.reply.split(/[。\n]/)[0].slice(0, 52) || task.title, summary: task.reply.split("\n\n")[0], content: task.reply, sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask })}><IconBookmark size={ICON_SIZE.control} /></button></div></div></article>
             </>}
             {messages.map((message) => (
               <article className={"message-row " + (message.role === "user" ? "user-message" : "assistant-message")} key={message.id}>
@@ -1632,7 +1631,7 @@ function App() {
                     <span className={`community-draft-card-status${session.communityDraft.status === "submitted" ? " is-submitted" : " is-review"}`}>{session.communityDraft.status === "submitted" ? "已提交 · 演示" : "待你审阅"}</span>
                     <IconChevronRight size={ICON_SIZE.heading} />
                   </button>}
-                  {message.role === "assistant" && <div className="message-feedback"><button type="button" className="pocket-save-action" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-message:${selectedTask}:${message.id}`, title: message.text.split(/\n+/)[0].slice(0, 56) || "Agent 回答", summary: message.text.replace(/\s+/g, " ").slice(0, 220), content: message.text, sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask })}><IconBookmark size={ICON_SIZE.control} />收进知识口袋</button><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={ICON_SIZE.control} /></button></div>}
+                  {message.role === "assistant" && <div className="message-feedback"><button type="button" className="pocket-save-action" aria-label="收进知识口袋" data-tooltip="收进知识口袋" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-message:${selectedTask}:${message.id}`, title: message.text.split(/\n+/)[0].slice(0, 56) || "Agent 回答", summary: message.text.replace(/\s+/g, " ").slice(0, 220), content: message.text, sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask })}><IconBookmark size={ICON_SIZE.control} /></button><button type="button" aria-label="复制这条回答" data-tooltip="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={ICON_SIZE.control} /></button></div>}
                 </div>
               </article>
             ))}
@@ -1667,7 +1666,7 @@ function App() {
                   <button className="permission-button" type="button" aria-label={`权限设置，当前${permissionModeLabel}`} title={`权限：${permissionModeLabel}（演示）`} data-menu-trigger aria-expanded={wb.menu?.name === "permissions"} onClick={event => openMenu("permissions", event)}><IconShieldCheck size={ICON_SIZE.control} /></button>
                   <button className="model-button" type="button" data-menu-trigger data-menu-align="left" aria-label={`选择模型，当前${wb.model.label}`} aria-expanded={wb.menu?.name === "models"} onClick={event => openMenu("models", event)} title="选择模型"><img className="model-brand-logo" src={MODEL_PROVIDER_LOGOS[wb.selectedModel]} alt="" aria-hidden="true" /><span>{wb.model.label}</span><IconChevronDown className="model-menu-chevron" size={ICON_SIZE.inline} /></button>
                   <span className="composer-voice-slot"><VoiceCaptureButton className="composer-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} iconOnly /></span>
-                  <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying || (!draft.trim() && !session.attachments.length)}><IconSend size={ICON_SIZE.heading} /></button>
+                  {composerHasPayload && !composerPrimaryVoiceListening ? <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying}><IconSend size={ICON_SIZE.heading} /></button> : <span className="composer-voice-slot composer-primary-voice-slot"><VoiceCaptureButton className="composer-primary-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} onListeningChange={setComposerPrimaryVoiceListening} waveform iconOnly /></span>}
                 </div>
               </div>
             </div>

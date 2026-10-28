@@ -25,7 +25,7 @@
 .og-lesson-body ul { display:flex; flex-direction:column; gap:4px; margin:0; padding-left:17px; color:#7b8499; font-size:11px; line-height:1.55; }
 .og-lesson-body details { color:#798298; font-size:10px; }
 .og-lesson-body details > summary { cursor:pointer; }
-.og-lesson p,.og-local-lesson p,.og-official-course p,.og-checkpoint p,.og-practice p { margin:0; color:#707a91; font-size:12px; line-height:1.65; }
+.og-lesson p,.og-local-lesson p,.og-checkpoint p,.og-practice p { margin:0; color:#707a91; font-size:12px; line-height:1.65; }
 .og-flow-focus { display:flex; flex-direction:column; gap:4px; padding:8px 9px; border-left:2px solid #b8a6df; border-radius:0 5px 5px 0; background:#f8f6fc; }
 .og-flow-focus > span { color:#968bad; font-size:9px; }
 .og-flow-focus > strong { color:#5e5d78; font-size:12px; font-weight:600; }
@@ -50,8 +50,11 @@
 .og-checkpoint label { display:flex; align-items:flex-start; gap:7px; padding:6px 8px; border:1px solid #eceef3; border-radius:5px; background:#fff; color:#707990; font-size:11px; cursor:pointer; }
 .og-checkpoint input { margin:3px 0 0; accent-color:#9278cf; }
 .og-checkpoint button,.og-practice-actions button { align-self:flex-start; }
-.og-official-course { display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0; padding:8px 9px; border:1px solid #e8eaf1; border-radius:6px; background:#fff; color:#71689a; font-size:11px; text-decoration:none; }
-.og-official-course:hover { border-color:#d6cbed; background:#faf9fe; }
+.og-check-card { gap:10px; }
+.og-check-card .og-checkpoint { display:flex; flex-direction:column; gap:9px; }
+.og-check-card .og-checkpoint > p { color:#858b9b; font-size:11px; }
+.og-check-card .og-next { margin-top:0; }
+.og-all-check .og-check-card { margin:0; }
 .og-all-node-card .lh-card-content > .og-visual-body { border-bottom:1px solid #edf0f5; }
 .og-all-node-card .lh-card-content > .og-lesson { margin:0 14px; }
 .og-all-node-card .lh-card-content > .og-sources { margin-top:0; }
@@ -74,8 +77,6 @@
 .og-local-lesson > header > div { display:flex; flex-wrap:wrap; align-items:center; gap:3px 8px; min-width:0; }
 .og-local-lesson > header > div > strong { color:#656d85; font-size:11px; font-weight:600; }
 .og-local-lesson > header > div > span { color:#9aa2b3; font-size:9px; font-weight:450; }
-.og-demo-official-link { color:#8172a8; font-size:9px; font-weight:500; text-decoration:none; }
-.og-demo-official-link:hover { color:#66548e; text-decoration:underline; text-underline-offset:2px; }
 .og-demo-screen { position:relative; overflow:hidden; aspect-ratio:16/7.5; min-height:190px; border:1px solid #34374a; border-radius:6px; background:#171a25; color:#e7e8f0; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
 .og-demo-topbar { display:flex; align-items:center; gap:5px; height:27px; padding:0 9px; border-bottom:1px solid #2a2d3d; background:#202331; }
 .og-demo-dot { width:5px; height:5px; border-radius:50%; background:#e98e8b; }
@@ -118,8 +119,6 @@
 .og-demo-transport:hover { border-color:#b7a4e0; background:#3d3650; }
 .og-demo-controls input { flex:1; width:0; min-width:35px; height:4px; margin:0; accent-color:#aa91df; cursor:pointer; }
 .og-demo-controls > span { flex:none; color:#d2cfda; font:8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; font-variant-numeric:tabular-nums; }
-.og-official-course > span:first-child { display:flex; flex-direction:column; gap:2px; min-width:0; }
-.og-official-course > span:last-child { flex:none; color:#8b81a7; font-size:10px; }
 .og-sources { margin:11px 14px 13px; padding-top:8px; border-top:1px solid #eceff4; color:#7e879c; font-size:10px; }
 .og-sources > summary { display:flex; align-items:center; gap:5px; cursor:pointer; }
 .og-sources > a { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:7px 2px; border-bottom:1px solid #f0f1f5; color:#716b9d; text-decoration:none; }

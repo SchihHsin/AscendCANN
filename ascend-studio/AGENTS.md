@@ -1979,6 +1979,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 具体规范与实现映射见 `interaction-design.md`。依据为用户确认的统一语义方向（H）和原型已有任务状态 / 材料（M）；没有改变页面序列、路由、API / Protocol、Host / Harness 或 Application / Task 边界。
 - 合并后的 `npm run build:pages`、相关 JS `node --check`、静态资源引用核验与 Git 差异检查通过。本地 `5192` 返回 HTTP 200；未运行自动化测试或截图回放。合并提交 `14fa638a` 已推送至 `origin/main`；Pages workflow `40558335339` 成功，线上 `/AscendCANN/ascstudio/`、`index-4GI4qk_O.js` 与 `index-pVOvJPt0.css` 均 HTTP 200。
 
+### 2026-10-28 · ResNet50 内容卡节点角色
+
+- ResNet50 的树阶段和学习动作使用“步骤”；单独展开的图解、课程 / 视频与讲解材料使用“材料”；练习本身使用“操作”，其检查产出使用“结果”。“全部展开”中的整张官方学习动作卡仍代表一个步骤。
+- `node-semantics.js` 按 `:diagram`、`:lesson`、`:practice` 后缀优先归一化，再匹配父学习动作前缀，避免内容卡误继承“步骤”。同步修订 `interaction-design.md` 的任务映射表。
+- 本地 5192 回放确认图解为“材料”、练习为“操作”；`npm run build:pages` 与语法 / 差异检查通过。未运行自动化测试，也未做真实设备 / NPU 验证。
+
 ### 2026-10-28 · 学习发现「更多推荐」配图提亮
 
 - 用户选择将「更多推荐」楼层配图小幅提亮并略微降饱和，同时保留课程粉、学习路径绿、知识点青、认证橙的区分。只作用于该楼层图片；Banner、新上架配图和白色楼层底不变。
@@ -2007,6 +2013,13 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 变更位于 `src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 和 `/ascstudio/` 发布包。并行对话面板改动已合并并保留；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。用户要求为 H，原型状态为 M。
 - 构建 `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。实现提交 `a8fcaf91` 与合并提交 `70ae9927` 已推送 `origin/main`；Pages workflow `40627139988` 成功，线上入口、JS 和 CSS 均 HTTP 200。未运行自动化测试。
 
+### 2026-10-28 · 画布完整内容按钮图标
+
+- 共享画布卡片标题栏打开完整内容的按钮改用四角扩展 / 最大化图标 `IconMaximize`；点击仍在任务内容区阅读完整内容，提示、无障碍名称和其他卡片操作不变。
+- 修改 `src/shared/canvas/index.jsx` 与 `/ascstudio/` Pages 构建产物。用户截图和指定图标语义为 H；遵循 Ascend Studio 画布中性浅色及紧凑控件规范。不改页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
+- 构建、发布 JS `node --check`、`git diff --check` 通过。提交 `055ad594` 已推送；Pages workflow `40630107437` 成功。线上入口引用 `index-C2z-gK3s.js` / `index-COIexaLu.css`，均 HTTP 200。
+
+
 ### 2026-10-28 · 模型标识统一黑色
 
 - 将输入框当前模型按钮和模型下拉菜单中的各模型品牌 Logo 统一显示为黑色，沿用现有图像资源，仅由 `.composer .model-brand-logo` 与 `.workbench-menu-models .model-option-logo` 应用 `filter: brightness(0)`；模型文案、尺寸和选择交互保持原样。
@@ -2018,3 +2031,29 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 修正底部紧凑态输入框视觉上仍分两行的问题：44px 的空 textarea 让占一行的网格产生上方文字、下方按钮的错位。空输入改为 20px 单行；文字变多时自动扩高，最多 110px。展开历史和布局切换也会重新测量。左侧对话布局保持原有尺寸。
 - 实现位于 `src/App.jsx` 的 textarea 高度测量逻辑及 `/ascstudio/` 构建包。依据为此前用户确认的“单行、内容多时自动变高”（H）；本地 5177 预览测得空态 textarea 20px / composer 54px，较长文本 textarea 54px，清空与刷新都恢复 20px（M）。
 - `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行自动化测试。提交、推送和 Pages 发布结果将在本轮发布后补记。
+
+### 2026-10-28 · AddCustom 错误后的尾块知识提示
+
+- 方案 1 已落实到 AddCustom 的 `diagnosis-tail`：用渐变卡片解释非整块输入的尾块访问知识，并明确当前 `[16,32]` / `[17,33]` 对照只是线索，不能单独证明根因。卡片主操作为「看尾块处理图解」，次操作为「对照当前代码」；图解知识提示使用书本图标和「本次现象」证据标签。
+- 用户点击卡片操作后，`useProactiveCues` 记录该提示已处理；卡片收起并转为中性灰，重新展开仍保持灰色。变化仅对 `variant="knowledge"` 生效，不影响其他错误线索提示。没有声称真实项目、算子或 NPU 验证通过。
+- 修改 `src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css`、`src/useProactiveCues.js` 与 `../ascstudio/` 构建产物。页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 在隔离的 1280×720 本地预览核对渐变初始态，点击图解后呈灰色，重新展开仍为灰色。实现提交 `99d9b8bb` 已推送 `origin/main`；Pages workflow `40645430068` 成功，线上入口及 JS / CSS HTTP 200。未运行自动化测试。
+
+### 2026-10-28 · 知识提示刷新后恢复渐变
+
+- AddCustom 的知识提示“已查看”状态之前存入 `sessionStorage`，所以刷新后仍为灰色。现改成 React 内存状态：同一页面内切换材料会保留灰色；刷新页面后卡片恢复展开的渐变初始态。
+- 仅重置主动提示的查看、收起和处理状态；没有清空其他对话或任务数据。修改 `src/useProactiveCues.js` 与 `../ascstudio/` 构建产物，不改变页面顺序 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 隔离预览验证点击图解变灰，刷新后渐变恢复。实现提交 `eff06d63` 已推送 `origin/main`；Pages workflow `40646293092` 成功，线上 `/ascstudio/`、JS、CSS HTTP 200。未运行自动化测试。
+
+### 2026-10-28 · ResNet50 学习材料行与操作行
+
+- 当前步骤继续作为关联锚点。普通画布将图解、视频与章节控制、当前同步讲解并列为三张独立 `material` 卡；动手练习和理解检查在下方各自作为 `action` 卡。资料来源只在同步讲解卡中折叠，避免视频卡与步骤卡重复。
+- 实现拆分 `OfficialVideoMaterial` / `OfficialLectureMaterial`，`node-semantics.js` 将 `:lesson` 映射为 `material / video`、`:explanation` 映射为 `material / lesson`、`:check` 映射为 `action / interactive`。`全部展开` 仍保留完整学习步骤内容。窄画布通过平移、缩放和小地图访问横向材料。
+- 依据用户确认（H）与本地原型内容（M）；共享滚动规则写于全局 `ascend-studio-interface-style` Skill。验收、构建和发布状态详见根目录 `AGENTS.md` 对应日期记录。
+
+### 2026-10-28 · AddCustom 知识卡精简为 B 方案
+
+- 按用户选择，将 AddCustom 提示改为问题引导标题「为什么 [17,33] 值得检查尾块？」和一句知识解释；移除重复现象证据行及单列的「根因待确认」。上方答复仍保留根因尚未证实的边界，卡片用「值得检查」保持线索语气。
+- 保留黑色「看尾块处理图解」主按钮；「对照当前代码」改为低强调文字操作。其他任务的提示样式和行为不变。
+- 修改 `src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css` 与 `../ascstudio/` 构建产物。依据为用户选择 B（H）；未声称真实根因、算子执行或 NPU 验证。页面顺序 / hash 及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 隔离预览确认卡片文字更短、主次按钮层级清楚，点击图解后仍转灰。提交 `429b47bf` 已推送至 `origin/main`，并合并并行提交 `afb1a693`；Pages workflow `40648789533` 成功，线上入口和 JS / CSS HTTP 200。未运行自动化测试。

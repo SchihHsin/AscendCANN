@@ -66,32 +66,42 @@ const state = load();
 const initialReviewParams = new URLSearchParams(location.search);
 const isReviewThumbnail = initialReviewParams.get("thumb") === "1";
 const initialPoint = initialReviewParams.get("point");
-if (initialPoint === "7" && !location.hash) location.hash = "briefing";
+if (initialPoint === "8" && !location.hash) location.hash = "briefing";
 const openOverviewOnLoad = initialReviewParams.get("overview") === "1";
 let category = "为你推荐", query = "", group = 0, returnRoute = "discover", pocketReturnRoute = "wechat", currentRoute = "", toastTimer, reviewControlsTimer, overlayReturnFocus;
 const widgets = { cards: 4, batch: 4, devices: 4, accumulation: 2, sync: 0, precision: "mixed", parallel: "data", elements: 33, layout: "chw" };
+const REVIEW_SAMPLE_ID = "review";
+let reviewSampleRead = false, reviewSampleUnderstood = false;
+function reviewSampleItem() {
+  const k = knowledgeById("layout");
+  return { id: REVIEW_SAMPLE_ID, title: "图像输入 HWC → NCHW，先核对模型约定", summary: k.takeaway, content: `${k.takeaway}\n\n${k.explanation}\n\n${k.connection}`, taskId: "inference", signal: "question", sourceType: "知识卡", sourceLabel: "图像推理调试", status: reviewSampleUnderstood ? "understood" : reviewSampleRead ? "read" : "sent", sentAt: new Date().setHours(9, 12, 0, 0) };
+}
 const REVIEW_STEPS = [
-  { chapter: "核心学习", kicker: "01 / 07 · 核心学习", title: "从任务出发，发现下一点新知", description: "继续电脑端正在做的事，首页把任务背景和相关知识放在一起，方便挑一个点开始。", principle: "让知识推荐接上具体开发任务" },
-  { chapter: "核心学习", kicker: "02 / 07 · 核心学习", title: "用几分钟，把一个概念学懂", description: "图解、可操作的小练习和理解小题放在同一张知识卡里，也能标记感兴趣或还没弄懂。", principle: "从浏览知识，走到理解与反馈" },
-  { chapter: "核心学习", kicker: "03 / 07 · 核心学习", title: "把理解带回原来的任务", description: "看学习进展、整理任务小结，或复制问题与已理解内容，回电脑继续处理。", principle: "手机学习接得回电脑任务" },
-  { chapter: "主动回访", kicker: "04 / 07 · 主动回访", title: "每周速览主动送到微信", description: "当用户不在小程序里时，一条未读服务通知出现在熟悉的微信会话列表。", principle: "推送作为回到学习的入口" },
-  { chapter: "主动回访", kicker: "05 / 07 · 主动回访", title: "先看懂通知，再决定是否打开", description: "通知先说明本周主题和内容形态，再由用户进入完整速览。", principle: "先交代价值，再邀请打开" },
-  { chapter: "主动回访", kicker: "06 / 07 · 主动回访", title: "一条资讯，再补两张个性化卡", description: "重点资讯之外，再按用户关注或存疑的知识点补两张适合手机阅读的短卡。", principle: "把学习信号带进下一次推荐" },
-  { chapter: "主动回访", kicker: "07 / 07 · 主动回访", title: "自己选择主题与接收时间", description: "订阅由用户决定；确认后模拟新通知回到微信列表，接上下一轮学习。", principle: "可选择、可管理的主动回访", nextTitle: "回到继续学习" },
+  { chapter: "核心学习", kicker: "01 / 08 · 核心学习", title: "从任务出发，发现下一点新知", description: "继续电脑端正在做的事，首页把任务背景和相关知识放在一起，方便挑一个点开始。", principle: "让知识推荐接上具体开发任务" },
+  { chapter: "核心学习", kicker: "02 / 08 · 核心学习", title: "用几分钟，把一个概念学懂", description: "图解、可操作的小练习和理解小题放在同一张知识卡里，也能标记感兴趣或还没弄懂。", principle: "从浏览知识，走到理解与反馈" },
+  { chapter: "核心学习", kicker: "03 / 08 · 核心学习", title: "把理解带回原来的任务", description: "看学习进展、整理任务小结，或复制问题与已理解内容，回电脑继续处理。", principle: "手机学习接得回电脑任务" },
+  { chapter: "主动回访", kicker: "04 / 08 · 主动回访", title: "先在电脑端选内容，再决定怎么送到手机", description: "Agent 回答或当前学习内容可先收进知识口袋；标记「感兴趣 / 还没弄懂」后，选择「发到微信，现在看」或「加入定期速览」。", principle: "送达方式由用户在电脑端决定", nextTitle: "模拟即时送达" },
+  { chapter: "主动回访", kicker: "05 / 08 · 主动回访", title: "点选现在看，微信会话里出现新消息", description: "电脑端知识口袋发起即时送达后，微信列表出现带有知识标题的服务通知。", principle: "清楚标出消息来源与内容" },
+  { chapter: "主动回访", kicker: "06 / 08 · 主动回访", title: "打开短读卡，读懂后接回任务", description: "把知识点整理成适合手机阅读的内容；用户确认看懂后，可回到电脑继续原来的任务。", principle: "手机读得完，理解接得回" },
+  { chapter: "主动回访", kicker: "07 / 08 · 主动回访", title: "每周速览带来资讯和个性化卡片", description: "每期一条重点资讯，再按电脑端安排与用户关注或存疑的信号补两张知识卡。", principle: "定期回访延续个性化学习" },
+  { chapter: "主动回访", kicker: "08 / 08 · 主动回访", title: "主题与时间由用户掌控", description: "选择关注主题、接收星期和时间；订阅可随时管理。原型模拟微信授权与通知回流。", principle: "持续触达建立在清楚授权和可管理之上", nextTitle: "回到继续学习" },
 ];
 let weeklySettingsOpen = false;
-let openReviewSettingsAfterBriefing = initialPoint === "7" && (!location.hash || location.hash === "#briefing");
+let openReviewSettingsAfterBriefing = initialPoint === "8" && (!location.hash || location.hash === "#briefing");
 let reviewOverviewOpen = false, reviewOverviewReturnFocus = null;
 let reviewWheelDelta = 0, reviewWheelLocked = false, reviewWheelResetTimer;
 function reviewIndexForRoute(route = currentRoute) {
   if (weeklySettingsOpen) return REVIEW_STEPS.length - 1;
-  const page = route.split("/")[0];
+  const [page, id] = route.split("/");
   if (page === "discover") return 0;
-  if (page === "knowledge" || page === "pocket-message") return 1;
+  if (page === "knowledge") return 1;
   if (page === "task") return 2;
-  if (page === "wechat") return 3;
-  if (page === "wechat-notification") return 4;
-  if (page === "briefing") return 5;
+  if (page === "review-pending") return 3;
+  if (page === "review-instant" || page === "wechat") return 4;
+  if (page === "wechat-notification") return 5;
+  if (page === "pocket-message") return id === REVIEW_SAMPLE_ID || pocketReturnRoute.startsWith("wechat-notification/") ? 5 : ["briefing", "review-briefing"].includes(pocketReturnRoute) ? 6 : 1;
+  if (page === "review-briefing") return 6;
+  if (page === "briefing") return 6;
   return -1;
 }
 function setReviewLocation(index) {
@@ -108,10 +118,12 @@ function updateReviewPanel(route = currentRoute) {
     else dot.removeAttribute("aria-current");
   });
   if (index < 0) {
+    $("#review-visual").hidden = true;
+    $("#review-visual").innerHTML = "";
     $("#review-kicker").textContent = "自由体验";
     $("#review-title").textContent = "继续自由体验";
     $("#review-description").textContent = "手机界面仍可操作。想回到设计讲解，可从右侧节点或总览选择。";
-    $("#review-principle").textContent = "七个设计点随时可直达";
+    $("#review-principle").textContent = `${REVIEW_STEPS.length} 个设计点随时可直达`;
     $("#review-progress").textContent = `— / ${String(REVIEW_STEPS.length).padStart(2, "0")}`;
     $("#review-prev").disabled = true;
     $("#review-next").disabled = true;
@@ -123,7 +135,7 @@ function updateReviewPanel(route = currentRoute) {
   $("#review-title").textContent = step.title;
   $("#review-description").textContent = step.description;
   $("#review-principle").textContent = step.principle;
-  const journey = step.chapter === "核心学习" ? ["发现", "学懂", "接续"] : ["送达", "打开", "继续"];
+  const journey = index < 3 ? ["发现", "学懂", "接续"] : index === 3 ? ["电脑收纳", "选择送达", "手机回访"] : index < 6 ? ["微信消息", "手机短读", "回到任务"] : ["关注信号", "定期速览", "继续学习"];
   ["#review-journey-first", "#review-journey-middle", "#review-journey-last"].forEach((selector, journeyIndex) => { $(selector).textContent = journey[journeyIndex]; });
   $("#review-progress").textContent = `${String(index + 1).padStart(2, "0")} / ${String(REVIEW_STEPS.length).padStart(2, "0")}`;
   $("#review-prev").disabled = index === 0;
@@ -133,18 +145,26 @@ function updateReviewPanel(route = currentRoute) {
   const nextTitle = step.nextTitle || (index === 2 ? "看看微信回访" : "下一个设计点");
   $("#review-next").setAttribute("aria-label", nextTitle);
   $("#review-next").title = `${nextTitle}（→）`;
+  const visual = $("#review-visual");
+  visual.hidden = index !== 3;
+  visual.innerHTML = index === 3
+    ? `<figure class="review-visual-frame"><img src="./evidence/knowledge-pocket-entry-crop.png" alt="电脑端知识口袋：标记感兴趣或还没弄懂，并选择发到微信现在看或加入定期速览"><figcaption>电脑端知识口袋 · 先标记，再选择送达方式</figcaption></figure><button class="review-visual-action" type="button" data-review-jump="4">模拟点按「发到微信，现在看」${icon("arrow")}</button>`
+    : "";
   setReviewLocation(index);
 }
 function reviewRoute(index) {
   if (index === 0) return "discover";
   if (index === 1) return `knowledge/${activeTask().knowledge[0] || KNOWLEDGE[0].id}`;
   if (index === 2) return `task/${activeTask().id}`;
-  if (index === 3) return "wechat";
-  if (index === 4) return "wechat-notification";
+  if (index === 3) return "review-pending";
+  if (index === 4) return "review-instant";
+  if (index === 5) return `pocket-message/${REVIEW_SAMPLE_ID}`;
+  if (index === 6) return "review-briefing";
   return "briefing";
 }
 function goReviewRoute(index) {
   if (index === 0 && state.noticeRead) { state.noticeRead = false; persist(); }
+  if (index === 5) pocketReturnRoute = "review-instant";
   go(reviewRoute(index));
 }
 function jumpReviewStep(index) {
@@ -153,7 +173,7 @@ function jumpReviewStep(index) {
   if (target === REVIEW_STEPS.length - 1) {
     if (weeklySettingsOpen) return;
     openReviewSettingsAfterBriefing = true;
-    setReviewLocation(4);
+    setReviewLocation(REVIEW_STEPS.length - 2);
     if ($("#overlay").classList.contains("is-open") && !weeklySettingsOpen) closeOverlay(false);
     if (currentRoute === "briefing") {
       openReviewSettingsAfterBriefing = false;
@@ -217,7 +237,7 @@ function renderReviewControls() {
   $("#review-overview-grid").innerHTML = isReviewThumbnail ? "" : chapters.map(chapter => {
     const steps = REVIEW_STEPS.map((step, index) => ({ step, index })).filter(item => item.step.chapter === chapter);
     const range = `${String(steps[0].index + 1).padStart(2, "0")}–${String(steps.at(-1).index + 1).padStart(2, "0")}`;
-    const description = chapter === "核心学习" ? "任务关联 · 微学习 · 电脑接续" : "微信通知 · 个性化速览 · 用户掌控";
+    const description = chapter === "核心学习" ? "任务关联 · 微学习 · 电脑接续" : "电脑入口 · 即时短读 · 定期速览 · 用户掌控";
     return `<section class="review-overview-chapter"><header><h3>${esc(chapter)}</h3><span>${range}</span><p>${description}</p></header><div class="review-overview-cards">${steps.map(({ step, index }) => card(step, index)).join("")}</div></section>`;
   }).join("");
 }
@@ -336,18 +356,20 @@ function discoveryResults() {
 function wechatTabMarkup() {
   return [["message", "微信", true], ["contacts", "通讯录", false], ["compass", "发现", false], ["profile", "我", false]].map(([name, label, active]) => `<div class="wechat-tab ${active ? "is-active" : ""}">${icon(name)}<span>${label}</span>${active ? '<i></i>' : ""}</div>`).join("");
 }
-function wechatPage() {
+function wechatPage(mode = "default") {
   const feature = WEEKLY_FEATURES[state.weeklyTopics[0]] || WEEKLY_FEATURES["昇腾开发"];
-  const item = latestPocketNotification();
+  const item = mode === "instant" ? reviewSampleItem() : mode === "pending" ? null : latestPocketNotification();
   const unread = item ? item.status === "sent" : !state.noticeRead;
   const preview = item ? `Ascend Studio：给你送来「${item.title || "一张知识卡"}」` : state.noticeRead ? "Ascend Studio：每周开发速览" : "Ascend Studio：每周开发速览到了";
   const time = item?.sentAt ? new Intl.DateTimeFormat("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }).format(new Date(item.sentAt)) : "09:12";
   const route = item ? `wechat-notification/${encodeURIComponent(item.id)}` : "wechat-notification";
-  return `<div class="wechat-page"><div class="wechat-search-row">${icon("search")}<span>搜索</span><kbd>⌕</kbd></div><div class="wechat-chat-list"><button class="wechat-chat-row service-chat" data-route="${esc(route)}"><span class="wechat-avatar service-avatar">${icon("pocket")}</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>服务通知</strong><time>${esc(time)}</time></span><span class="wechat-chat-preview"><span>${esc(preview)}</span></span></span>${unread ? '<span class="wechat-unread-count">1</span>' : ""}</button><div class="wechat-chat-row"><span class="wechat-avatar file-avatar">传</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>文件传输助手</strong><time>08:52</time></span><span class="wechat-chat-preview">图片</span></span></div><div class="wechat-chat-row"><span class="wechat-avatar group-avatar">昇</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>昇腾开发交流群</strong><time>昨天</time></span><span class="wechat-chat-preview">CANN 版本适配讨论</span></span></div><div class="wechat-chat-row"><span class="wechat-avatar friend-avatar">林</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>林同学</strong><time>周一</time></span><span class="wechat-chat-preview">知识卡的推送形式挺方便</span></span></div></div><div class="wechat-inbox-foot">${item ? "电脑端刚送达 · 本地交互演示" : state.weeklySubscribed ? `每周${esc(state.weeklyDay)} ${esc(state.weeklyTime)} · 演示订阅已开启` : `示例消息 · ${esc(feature.category)}`}</div></div>`;
+  const serviceRow = mode === "pending" ? "" : `<button class="wechat-chat-row service-chat" data-route="${esc(route)}"><span class="wechat-avatar service-avatar">${icon("pocket")}</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>服务通知</strong><time>${esc(time)}</time></span><span class="wechat-chat-preview"><span>${esc(preview)}</span></span></span>${unread ? '<span class="wechat-unread-count">1</span>' : ""}</button>`;
+  const footer = mode === "pending" ? "电脑端点选后，新消息会出现在这里" : item ? "电脑端刚送达 · 本地演示内容" : state.weeklySubscribed ? `每周${esc(state.weeklyDay)} ${esc(state.weeklyTime)} · 演示订阅已开启` : `示例消息 · ${esc(feature.category)}`;
+  return `<div class="wechat-page"><div class="wechat-search-row">${icon("search")}<span>搜索</span><kbd>⌕</kbd></div><div class="wechat-chat-list">${serviceRow}<div class="wechat-chat-row"><span class="wechat-avatar file-avatar">传</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>文件传输助手</strong><time>08:52</time></span><span class="wechat-chat-preview">图片</span></span></div><div class="wechat-chat-row"><span class="wechat-avatar group-avatar">昇</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>昇腾开发交流群</strong><time>昨天</time></span><span class="wechat-chat-preview">CANN 版本适配讨论</span></span></div><div class="wechat-chat-row"><span class="wechat-avatar friend-avatar">林</span><span class="wechat-chat-content"><span class="wechat-chat-heading"><strong>林同学</strong><time>周一</time></span><span class="wechat-chat-preview">知识卡的推送形式挺方便</span></span></div></div><div class="wechat-inbox-foot">${footer}</div></div>`;
 }
 function wechatNotificationPage(itemId = "") {
   const pocket = readDesktopPocket();
-  const item = pocket.items.find(entry => entry.id === itemId) || latestPocketNotification();
+  const item = itemId === REVIEW_SAMPLE_ID ? reviewSampleItem() : pocket.items.find(entry => entry.id === itemId) || latestPocketNotification();
   if (item) {
     const time = item.sentAt ? new Intl.DateTimeFormat("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" }).format(new Date(item.sentAt)) : "刚刚";
     return `<div class="wechat-service-page"><div class="wechat-date-divider">今天 · ${esc(time)}</div><article class="wechat-push-card"><div class="push-source"><img src="./mark.svg" alt=""><span><strong>Ascend Studio</strong><small>小程序订阅消息 · 来自电脑端</small></span><time>${esc(time)}</time></div><h1>有一张知识卡，适合在手机上看</h1><p>你从电脑端知识口袋里选择了「现在看」。这条内容已整理成手机短读卡。</p><div class="push-preview"><span>${esc(item.sourceType || "学习内容")} · ${esc(item.sourceLabel || "Ascend Studio")}</span><strong>${esc(item.title || "未命名知识点")}</strong><p>${esc(item.summary || "打开后查看完整内容。")}</p></div><button class="primary-button" data-route="pocket-message/${encodeURIComponent(item.id)}">打开知识卡${icon("arrow")}</button></article><p class="wechat-service-hint">这里模拟微信服务通知列表中的新消息；真实发送需要接入小程序订阅消息能力。</p></div>`;
@@ -393,11 +415,11 @@ function quiz(k) {
   const answer = state.answers[k.id], chosen = Number.isInteger(answer) ? answer : -1, passed = chosen === k.quiz.correct;
   return `<section class="quiz-section" aria-label="理解小题"><div class="section-title"><h2>用一道小题，确认一下</h2><span>${icon("spark")}</span></div><p class="quiz-question">${esc(k.quiz.question)}</p><div class="quiz-options">${k.quiz.options.map((option, i) => `<button data-answer="${i}" data-knowledge="${k.id}" aria-pressed="${chosen === i}" class="${chosen === i ? passed ? "is-correct" : "is-wrong" : ""}"><span class="answer-letter">${String.fromCharCode(65 + i)}</span><span>${esc(option)}</span>${chosen === i ? icon(passed ? "check" : "close") : ""}</button>`).join("")}</div>${chosen >= 0 ? `<p class="quiz-feedback ${passed ? "is-correct" : "is-wrong"}" role="status">${icon(passed ? "check" : "spark")}${esc(passed ? k.quiz.right : k.quiz.wrong)}</p>` : ""}</section>`;
 }
-function weeklyCards() {
+function weeklyCards(includeReviewSample = false) {
   const cards = [];
-  const desktopItems = readDesktopPocket().items.filter(item => item.status === "scheduled").sort((a, b) => (b.scheduledAt || b.createdAt || 0) - (a.scheduledAt || a.createdAt || 0));
+  const desktopItems = [...(includeReviewSample ? [{ ...reviewSampleItem(), status: "scheduled", scheduledAt: Date.now() }] : []), ...readDesktopPocket().items].filter(item => item.status === "scheduled").sort((a, b) => (b.scheduledAt || b.createdAt || 0) - (a.scheduledAt || a.createdAt || 0));
   desktopItems.forEach(item => {
-    if (cards.length < 2) cards.push({ knowledge: { id: `desktop-${item.id}`, title: item.title, takeaway: item.summary, tone: "cyan", minutes: 2 }, label: item.signal === "question" ? "你标记了还没弄懂" : "你从电脑端安排", pocketItem: item });
+    if (cards.length < 2) cards.push({ knowledge: { id: item.id === REVIEW_SAMPLE_ID ? "layout" : `desktop-${item.id}`, title: item.title, takeaway: item.summary, tone: "cyan", minutes: 2 }, label: item.signal === "question" ? "你标记了还没弄懂" : "你从电脑端安排", pocketItem: item });
   });
   const add = (ids, signal, label) => {
     for (const id of ids.slice().reverse()) {
@@ -408,14 +430,14 @@ function weeklyCards() {
   };
   add(state.interested, "interested", "你标记了感兴趣");
   add(state.unsure, "unsure", "你还没弄懂");
-  add(activeTask().knowledge, "context", "关联当前任务");
+  add(includeReviewSample ? taskById("inference").knowledge : activeTask().knowledge, "context", includeReviewSample ? "关联模型推理任务" : "关联当前任务");
   add(KNOWLEDGE.map(item => item.id), "context", "继续补一点基础");
   return cards;
 }
-function weeklyDigest() {
-  const cards = weeklyCards();
-  const signals = state.interested.length + state.unsure.length;
-  const scheduled = readDesktopPocket().items.filter(item => item.status === "scheduled").length;
+function weeklyDigest(includeReviewSample = false) {
+  const cards = weeklyCards(includeReviewSample);
+  const signals = state.interested.length + state.unsure.length + Number(includeReviewSample);
+  const scheduled = readDesktopPocket().items.filter(item => item.status === "scheduled").length + Number(includeReviewSample);
   const date = new Intl.DateTimeFormat("zh-CN", { month: "long", day: "numeric", timeZone: "Asia/Shanghai" }).format(new Date());
   const topicLine = state.weeklyTopics.length ? state.weeklyTopics.join(" · ") : "昇腾开发";
   const feature = WEEKLY_FEATURES[state.weeklyTopics[0]] || WEEKLY_FEATURES["昇腾开发"];
@@ -461,35 +483,37 @@ function render() {
   let route; try { route = decodeURIComponent(location.hash.slice(1) || "discover"); } catch { route = "discover"; }
   const [page, id] = route.split("/");
   const k = page === "knowledge" ? knowledgeById(id) : null;
-  const valid = ["wechat", "wechat-notification", "pocket-message", "discover", "briefing", "tasks", "mine"].includes(page) || (page === "task" && TASKS.some(t => t.id === id)) || Boolean(k);
+  const valid = ["wechat", "wechat-notification", "pocket-message", "discover", "briefing", "tasks", "mine", "review-pending", "review-instant", "review-briefing"].includes(page) || (page === "task" && TASKS.some(t => t.id === id)) || Boolean(k);
   if (!valid) { go("discover"); return; }
   if (openReviewSettingsAfterBriefing && page !== "briefing") openReviewSettingsAfterBriefing = false;
-  if (page === "wechat-notification" && id) {
+  if (page === "wechat-notification" && id === REVIEW_SAMPLE_ID) reviewSampleRead = true;
+  else if (page === "wechat-notification" && id) {
     const pocketItem = readDesktopPocket().items.find(item => item.id === id);
     if (pocketItem?.status === "sent") updateDesktopPocketItem(id, { status: "read", readAt: Date.now() });
   } else if (page === "wechat-notification" && !state.noticeRead && !isReviewThumbnail) { state.noticeRead = true; persist(); }
   if (page === "knowledge" && !currentRoute.startsWith("knowledge/")) returnRoute = currentRoute || "discover";
   currentRoute = route;
-  const isWechat = page === "wechat" || page === "wechat-notification";
-  const nested = page === "knowledge" || page === "task" || page === "briefing" || page === "wechat-notification" || page === "pocket-message";
-  const pageName = page === "knowledge" || page === "pocket-message" ? "知识卡" : page === "task" ? "任务" : page === "briefing" ? "每周速览" : "";
-  if (page === "wechat") {
+  const isWechat = page === "wechat" || page === "wechat-notification" || page === "review-pending" || page === "review-instant";
+  const nested = page === "knowledge" || page === "task" || page === "briefing" || page === "review-briefing" || page === "wechat-notification" || page === "pocket-message";
+  const pageName = page === "knowledge" || page === "pocket-message" ? "知识卡" : page === "task" ? "任务" : page === "briefing" || page === "review-briefing" ? "每周速览" : "";
+  if (["wechat", "review-pending", "review-instant"].includes(page)) {
     $("#app-header").innerHTML = `<div class="wechat-header-title">微信<span class="wechat-title-mark"></span></div><div class="wechat-header-tools"><span>${icon("search")}</span><span class="wechat-plus">${icon("plus")}</span></div>`;
   } else if (page === "wechat-notification") {
     $("#app-header").innerHTML = `<div class="header-title"><button class="icon-button" data-route="wechat" aria-label="返回微信消息列表">${icon("back")}</button><span>服务通知</span></div><span class="wechat-notification-menu">${icon("more")}</span>`;
   } else {
-    const backRoute = page === "knowledge" ? esc(returnRoute) : page === "pocket-message" ? esc(pocketReturnRoute) : page === "briefing" ? "wechat-notification" : "tasks";
+    const backRoute = page === "knowledge" ? esc(returnRoute) : page === "pocket-message" ? esc(pocketReturnRoute) : page === "briefing" || page === "review-briefing" ? "wechat-notification" : "tasks";
     $("#app-header").innerHTML = `<div class="header-title">${nested ? `<button class="icon-button" data-route="${backRoute}" aria-label="返回">${icon("back")}</button><span>${pageName}</span>` : `<img src="./mark.svg" width="22" height="22" alt=""><span>Ascend Studio</span>`}</div><div class="mini-capsule"><button data-action="more" aria-label="更多选项">${icon("more")}</button><i></i><button data-route="discover" aria-label="回到发现首页">${icon("home")}</button></div>`;
   }
-  $("#screen").innerHTML = page === "wechat" ? wechatPage() : page === "wechat-notification" ? wechatNotificationPage(id) : page === "pocket-message" ? pocketMessagePage(readDesktopPocket().items.find(item => item.id === id)) : page === "discover" ? discover() : page === "briefing" ? weeklyDigest() : k ? detail(k) : page === "tasks" ? tasksPage() : page === "task" ? taskDetail(taskById(id)) : mine(id);
+  const pocketItem = id === REVIEW_SAMPLE_ID ? reviewSampleItem() : readDesktopPocket().items.find(item => item.id === id);
+  $("#screen").innerHTML = page === "wechat" ? wechatPage() : page === "review-pending" ? wechatPage("pending") : page === "review-instant" ? wechatPage("instant") : page === "wechat-notification" ? wechatNotificationPage(id) : page === "pocket-message" ? pocketMessagePage(pocketItem) : page === "discover" ? discover() : page === "review-briefing" ? weeklyDigest(true) : page === "briefing" ? weeklyDigest() : k ? detail(k) : page === "tasks" ? tasksPage() : page === "task" ? taskDetail(taskById(id)) : mine(id);
   $("#screen").scrollTop = 0;
   $("#device").classList.toggle("is-detail", Boolean(k));
   $("#device").classList.toggle("is-wechat", isWechat);
   $("#detail-action").innerHTML = k ? `<div class="detail-action"><button class="save-button ${state.saved.includes(k.id) ? "is-saved" : ""}" data-action="save" data-id="${k.id}" aria-pressed="${state.saved.includes(k.id)}" aria-label="${state.saved.includes(k.id) ? "取消收藏" : "收藏知识点"}">${icon("bookmark")}<span>${state.saved.includes(k.id) ? "已收藏" : "收藏"}</span></button><button class="primary-button" data-action="add-note" data-id="${k.id}">${icon("note")}加入任务小结${icon("arrow")}</button></div>` : "";
   const selectedTab = page === "task" || page === "tasks" ? "tasks" : page === "mine" ? "mine" : "discover";
-  $("#tab-bar").hidden = Boolean(k) || page === "pocket-message" || page === "briefing" || isWechat;
+  $("#tab-bar").hidden = Boolean(k) || page === "pocket-message" || page === "briefing" || page === "review-briefing" || isWechat;
   $("#tab-bar").innerHTML = [["discover", "compass", "发现"], ["tasks", "layers", "任务"], ["mine/saved", "pocket", "我的"]].map(([path, name, label]) => `<button data-route="${path}" ${selectedTab === path.split("/")[0] ? 'aria-current="page"' : ""}>${icon(name)}<span>${label}</span>${selectedTab === path.split("/")[0] ? '<i class="tab-dot"></i>' : ""}</button>`).join("");
-  $("#wechat-tab-bar").hidden = page !== "wechat";
+  $("#wechat-tab-bar").hidden = !["wechat", "review-pending", "review-instant"].includes(page);
   $("#wechat-tab-bar").innerHTML = wechatTabMarkup();
   updateReviewPanel(route);
   updateReviewOverviewSelection();
@@ -551,7 +575,7 @@ document.addEventListener("click", async event => {
   const button = event.target.closest("[data-route], [data-action], [data-category], [data-widget], [data-answer]");
   if (!button) return;
   if (button.dataset.route) {
-    if (button.dataset.route.startsWith("pocket-message/")) pocketReturnRoute = currentRoute.startsWith("mine/") || currentRoute === "briefing" ? currentRoute : `wechat-notification/${button.dataset.route.split("/")[1]}`;
+    if (button.dataset.route.startsWith("pocket-message/")) pocketReturnRoute = currentRoute.startsWith("mine/") || ["briefing", "review-briefing"].includes(currentRoute) ? currentRoute : `wechat-notification/${button.dataset.route.split("/")[1]}`;
     go(button.dataset.route); return;
   }
   if (button.dataset.category) { category = button.dataset.category; group = 0; const scroll = $("#screen").scrollTop; render(); $("#screen").scrollTop = scroll; return; }
@@ -605,8 +629,11 @@ document.addEventListener("click", async event => {
     const saved = state.saved.includes(id); button.classList.toggle("is-saved", saved); button.setAttribute("aria-pressed", String(saved)); button.setAttribute("aria-label", saved ? "取消收藏" : "收藏知识点"); button.innerHTML = `${icon("bookmark")}<span>${saved ? "已收藏" : "收藏"}</span>`; toast(saved ? "已装进口袋，下次从「我的」继续" : "已取消收藏");
   }
   else if (action === "pocket-understood") {
-    const updated = updateDesktopPocketItem(id, { status: "understood", understoodAt: Date.now() });
-    if (updated) { render(); toast("已记下这张卡的理解"); }
+    if (id === REVIEW_SAMPLE_ID) { reviewSampleUnderstood = true; render(); toast("已记下这张卡的理解"); }
+    else {
+      const updated = updateDesktopPocketItem(id, { status: "understood", understoodAt: Date.now() });
+      if (updated) { render(); toast("已记下这张卡的理解"); }
+    }
   }
   else if (action === "add-note") openNote(knowledgeById(id));
   else if (action === "new-note") openNote(null, taskById(id));
