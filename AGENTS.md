@@ -7555,7 +7555,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户要求不再并排嵌入电脑和手机，只保留电脑画面，并按正常桌面比例等比缩放到材料中。第 1、4 点在桌面评审壳内隐藏手机样机，只显示可交互电脑 Demo；其他设计点仍用手机样机，移动端也继续展示手机内容。
 - 电脑 iframe 使用 1440×810 逻辑视口，`ResizeObserver` 按实际可用的宽高等比适配。评审壳最大宽度 900px，布局第二列受视口可用宽度约束，避免窄桌面横向溢出；桌面比例保持 16:9。左下电脑说明缩短，避免窄列换行。
 - 修改 `ascstudio-mini/index.html`、`app.js`、`styles.css`；新增本轮桌面 1440×900 / 1280×720 与移动 390×844 回放证据于 `ascstudio-mini/evidence/`，测试详情见 `ascstudio-mini/qa.md`。依据为用户明确要求（H）；不改变七点叙事、电脑到手机的概念演示状态流或 API / Protocol、Host / Harness、Application / Task 边界，也不把同源浏览器内的演示说成真实微信推送或跨设备同步。
-- 验证：Chrome 本地预览核对第 1 点与第 4 点只显示电脑 Demo，第 1 点 1280×720 与 1440×900 保持桌面比例，390×844 回到微信列表手机页面。`node --check`、`git diff --check` 通过；提交 / 推送及 Pages 发布回执待本轮发布后补记。
+- 验证：Chrome 本地预览核对第 1 点与第 4 点只显示电脑 Demo，第 1 点 1280×720 与 1440×900 保持桌面比例，390×844 回到微信列表手机页面。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过，未运行自动化测试。提交 `824ddf9b` 已推送到 `origin/main`；Pages workflow `40688864250` 成功。线上 `/AscendCANN/ascstudio-mini/?rev=824ddf9b#review-pending`、`styles.css` 与 `app.js` 均 HTTP 200，已回读本轮 16:9 自适应代码与总览提示。
 
 
 ### 2026-10-28 · 主动建议卡片混合命名发布回执
