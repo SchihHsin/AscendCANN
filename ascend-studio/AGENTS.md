@@ -2007,9 +2007,15 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 变更位于 `src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 和 `/ascstudio/` 发布包。并行对话面板改动已合并并保留；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。用户要求为 H，原型状态为 M。
 - 构建 `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。实现提交 `a8fcaf91` 与合并提交 `70ae9927` 已推送 `origin/main`；Pages workflow `40627139988` 成功，线上入口、JS 和 CSS 均 HTTP 200。未运行自动化测试。
 
-
 ### 2026-10-28 · 画布完整内容按钮图标
 
 - 共享画布卡片标题栏打开完整内容的按钮改用四角扩展 / 最大化图标 `IconMaximize`；点击仍在任务内容区阅读完整内容，提示、无障碍名称和其他卡片操作不变。
 - 修改 `src/shared/canvas/index.jsx` 与 `/ascstudio/` Pages 构建产物。用户截图和指定图标语义为 H；遵循 Ascend Studio 画布中性浅色及紧凑控件规范。不改页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 构建、发布 JS `node --check`、`git diff --check` 通过。提交 `055ad594` 已推送；Pages workflow `40630107437` 成功。线上入口引用 `index-C2z-gK3s.js` / `index-COIexaLu.css`，均 HTTP 200。
+
+
+### 2026-10-28 · 模型标识统一黑色
+
+- 将输入框当前模型按钮和模型下拉菜单中的各模型品牌 Logo 统一显示为黑色，沿用现有图像资源，仅由 `.composer .model-brand-logo` 与 `.workbench-menu-models .model-option-logo` 应用 `filter: brightness(0)`；模型文案、尺寸和选择交互保持原样。
+- 用户明确要求为依据（H）；本地模型选择菜单预览为实现核验（M）。这是展示样式，不影响任务、消息或模型选择数据，也不改变页面路由与 API / Host / Application 边界。
+- `npm run build:pages`、构建 JS `node --check`、两处构建 CSS 规则核验和 `git diff --check` 通过；未运行自动化测试。实现提交 `f3649165` 已推送 `origin/main`；Pages workflow `40630587340` 成功，线上入口和 JS / CSS 均 HTTP 200，线上 CSS 已核对包含两处黑色滤镜规则。

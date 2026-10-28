@@ -7324,9 +7324,15 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 及 `/ascstudio/` Pages 构建产物。合并保留了并行的对话面板更新。此改动不改变任务页序或 API / Protocol、Host / Harness、Application / Task 边界；用户需求为 H，浏览器本地状态规则和示例触发结果为 M。
 - `npm run build:pages`、相关 JS `node --check`、`git diff --check` 通过。提交 `a8fcaf91` 实现刷新复位与触发门槛，集成并行主线的合并提交 `70ae9927` 已推送 `origin/main`。Pages workflow `40627139988` 成功；线上 `/AscendCANN/ascstudio/`、`index-CIxMdNO-.js` 和 `index-COIexaLu.css` 均 HTTP 200。未运行自动化测试。
 
-
 ### 2026-10-28 · 画布完整内容按钮图标
 
 - 将共享画布卡片标题栏的“打开完整内容”斜向箭头替换为四角扩展 / 最大化图标 `IconMaximize`。按钮仍进入右侧任务内容区，标题提示与无障碍名称保持原有语义；焦点、固定、收起等操作不变。
 - 修改 `ascend-studio/src/shared/canvas/index.jsx` 与 `/ascstudio/` 构建产物。依据为用户截图及明确的全屏放大图标方向（H）；按 Ascend Studio 既有浅色、紧凑画布控件规范实施。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - `npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过。提交 `055ad594` 已推送 `origin/main`；Pages workflow `40630107437` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-C2z-gK3s.js` 和 `index-COIexaLu.css`，两者 HTTP 200。
+
+
+### 2026-10-28 · 模型标识统一黑色
+
+- 用户要求 Ascend Studio 中的模型 Logo 改为黑色。当前模型按钮和模型下拉选项的品牌图均通过 CSS `filter: brightness(0)` 统一为黑色；模型名称、切换方式与其他图标不变。
+- 源码位于 `ascend-studio/src/styles.css` 与 `ascend-studio/src/interaction.css`；Pages 入口和构建文件位于 `ascstudio/index.html`、`ascstudio/assets/`。依据为用户明确要求（H）；本地预览中模型入口与下拉项样式检查为（M）。未改变页面顺序、对话行为或 API / Protocol、Host / Harness、Application / Task 边界。
+- 合并最新 `origin/main`（`055ad594`，保留画布放大图标修正）后，`npm run build:pages`、构建 JS `node --check`、模型图标 CSS 规则核验和 `git diff --check` 通过；未运行自动化测试。实现提交 `f3649165` 已推送至 `origin/main`；Pages workflow `40630587340` 成功。线上入口及 JS / CSS 均 HTTP 200，线上 CSS 确认包含两处黑色滤镜规则。
