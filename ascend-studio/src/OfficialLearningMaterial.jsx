@@ -1,12 +1,12 @@
 import { ICON_SIZE } from "./icon-system.js";
-import { IconArrowLeft, IconBook, IconCode, IconLayoutBoard, IconPhoto } from "@tabler/icons-react";
+import { IconArrowLeft, IconBook, IconBookmark, IconCheck, IconCode, IconLayoutBoard, IconPhoto } from "@tabler/icons-react";
 import OfficialLearningVisuals from "./OfficialLearningVisuals";
 import { OfficialLesson, OfficialPractice, OfficialSources } from "./OfficialLearningActivities";
 import "./official-learning-material.css";
 
 const hasPractice = node => ["preprocess", "contract", "execution", "summary"].includes(node?.visual);
 
-export function OfficialLearningMaterial({ node, journey, onAsk, onCopy, onReturnToCanvas }) {
+export function OfficialLearningMaterial({ node, journey, onAsk, onCopy, onReturnToCanvas, onSaveToPocket, pocketSaved = false }) {
   if (!node || node.kind !== "step") return null;
   return <article className="og-full-material" aria-label={`${node.title}完整内容`}>
     <header className="og-full-material-header">
@@ -15,9 +15,14 @@ export function OfficialLearningMaterial({ node, journey, onAsk, onCopy, onRetur
         <h2>{node.title}</h2>
         <p>{node.summary}</p>
       </div>
-      <button className="og-full-return" type="button" onClick={onReturnToCanvas}>
-        <IconArrowLeft size={ICON_SIZE.inline} />返回学习画布<IconLayoutBoard size={ICON_SIZE.inline} />
-      </button>
+      <div className="og-full-material-actions">
+        <button className="og-full-pocket-save" type="button" onClick={onSaveToPocket} aria-pressed={pocketSaved}>
+          {pocketSaved ? <IconCheck size={ICON_SIZE.inline} /> : <IconBookmark size={ICON_SIZE.inline} />}{pocketSaved ? "已收进口袋" : "收进知识口袋"}
+        </button>
+        <button className="og-full-return" type="button" onClick={onReturnToCanvas}>
+          <IconArrowLeft size={ICON_SIZE.inline} />返回学习画布<IconLayoutBoard size={ICON_SIZE.inline} />
+        </button>
+      </div>
     </header>
     <div className="og-full-material-sections">
       <section className="og-full-material-section" aria-label="节点图解">

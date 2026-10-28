@@ -7289,3 +7289,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - AddCustom 范围算例不再在画布状态栏重复弹出演算结果及免责声明；结果仍保留在尝试卡片和任务记录中。旧会话恢复的同类提示也隐藏。
 - 修改 `ascend-studio/src/TaskCanvas.jsx`、`ascend-studio/src/useTaskFlow.js` 与 `/ascstudio/` 构建产物。依据为用户截图（H）及现有画布交互结构（M）；不改页面序列、节点语义或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、`node --check`（useTaskFlow 和构建 JS）、`git diff --check` 通过。未运行自动化测试或修改后截图回放；终端对当前 5192 地址返回 502。实现提交 `c0c2859b` 已推送 `origin/main`，Pages workflow `40619783484` 成功；线上 `/AscendCANN/ascstudio/` 与 `index-BqZZP7sp.js`、`index-pVOvJPt0.css` 均 HTTP 200，构建 JS 中已核对两条指定可见文案均不存在。
+
+
+### 2026-10-28 · 知识口袋跨端送达收尾
+
+- 完成用户确认的电脑到微信路径：桌面端可从 Agent 回答和当前学习内容收进「知识口袋」，在口袋里标记感兴趣 / 还没弄懂，再选择现在送达微信或加入定期速览。手机端显示微信会话列表通知、通知详情与适合手机阅读的短卡；理解状态回写到口袋。
+- 原型使用同一浏览器、同源 `localStorage` 模拟共享，不表示不同设备账户同步、真实微信发送或后台周期推送。周报内容为静态策划示例。依据为用户确认及本地可见交互（H / M）；没有对 API / Protocol、Host / Harness、Application / Task 边界或小程序既有 7 页序列作改动。
+- 变更涉及 `ascend-studio/src/App.jsx`、知识口袋组件与存储模块、学习内容入口和样式，`ascstudio-mini/app.js`、样式、README、QA 与三张交互截图，以及 `/ascstudio/` 当前构建资源。
+- rebase 到最新主线 `a6681665` 后 `npm run build:pages` 成功；`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、构建 bundle 检查、`git diff --check` 与 `git diff --cached --check` 通过。桌面浏览器回放验证收纳 → 口袋标记 → 微信会话列表 → 服务通知 → 手机短读卡 → 理解回写；先前 1440×940 与 390×844 视口回放截图保存在 `ascstudio-mini/evidence/`。未运行自动化测试。
+- 本轮实现与交接记录随提交推送至 `origin/main`，未强推；Pages 部署状态在推送后核对。

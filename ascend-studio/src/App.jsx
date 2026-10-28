@@ -43,6 +43,8 @@ import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
 import { CommunityDraftPanel } from "./CommunityDraftPanel";
 import { createCommunityDraft } from "./community-draft-data";
 import { buildLearningContentItems } from "./learning-content-catalog";
+import { KnowledgePocketPage } from "./KnowledgePocket.jsx";
+import { announceKnowledgePocketChange, readKnowledgePocket, writeKnowledgePocket } from "./knowledge-pocket-storage.js";
 import zaiModelLogo from "./assets/model-logos/zai.svg";
 import deepseekModelLogo from "./assets/model-logos/deepseek-color.svg";
 import qwenModelLogo from "./assets/model-logos/qwen-color.svg";
@@ -51,6 +53,7 @@ import "./visual-focus.css";
 import {
   IconAdjustmentsHorizontal,
   IconArrowRight,
+  IconBookmark,
   IconBell,
   IconBook,
   IconBooks,
@@ -210,7 +213,7 @@ function App() {
     const launchTask = new URLSearchParams(window.location.search).get("task");
     if (["learning", "development"].includes(launchTask)) return "task";
     const savedView = readSession("main-view", null);
-    if (["home", "learning", "automations", "capabilities", "task"].includes(savedView)) return savedView;
+    if (["home", "learning", "automations", "capabilities", "knowledge-pocket", "task"].includes(savedView)) return savedView;
     // A home-variant query may remain in the URL after navigating into a task.
     // Use it only for a fresh session so it cannot override the saved task view on refresh.
     if (["classic", "explore", "combine"].includes(new URLSearchParams(window.location.search).get("home"))) return "home";
@@ -219,6 +222,20 @@ function App() {
     return readSession("workbench", null)?.selectedTask === LEARNING_PATH_GENERATION_TASK ? "task" : "home";
   });
   useEffect(() => { writeSession("main-view", mainView); }, [mainView]);
+  const [knowledgePocket, setKnowledgePocket] = useState(readKnowledgePocket);
+  const [selectedPocketId, setSelectedPocketId] = useState("");
+  useEffect(() => {
+    const sync = event => {
+      if (event?.key && event.key !== "ascstudio.knowledge-pocket.v1") return;
+      setKnowledgePocket(readKnowledgePocket());
+    };
+    window.addEventListener("storage", sync);
+    window.addEventListener("ascstudio-knowledge-pocket-change", sync);
+    return () => {
+      window.removeEventListener("storage", sync);
+      window.removeEventListener("ascstudio-knowledge-pocket-change", sync);
+    };
+  }, []);
   const [projectPanelOpen, setProjectPanelOpen] = useState(() => readSession("project-panel-open", false) === true);
   useEffect(() => { writeSession("project-panel-open", projectPanelOpen); }, [projectPanelOpen]);
   const [conversationLayout, setConversationLayout] = useState(() => readSession("conversation-layout", "sidebar") === "floating" ? "floating" : "sidebar");
@@ -235,6 +252,7 @@ function App() {
   const showLearningDiscovery = mainView === "learning";
   const showAutomations = mainView === "automations";
   const showCapabilities = mainView === "capabilities";
+  const showKnowledgePocket = mainView === "knowledge-pocket";
   const showTaskWorkspace = mainView === "task";
   const [pendingDiscoveryItem, setPendingDiscoveryItem] = useState(null);
   const [pendingRecommendationAction, setPendingRecommendationAction] = useState(null);
@@ -984,7 +1002,8 @@ function App() {
       }
       const selectedNode = getOfficialLearningNode(id);
       const node = selectedNode?.kind === "course" ? selectedNode.children[0] : selectedNode;
-      return node ? <OfficialLearningMaterial node={node} journey={officialLearning} onAsk={askExplanation} onCopy={wb.copyText} onReturnToCanvas={() => { officialCanvasView.actions.requestFocus(officialCanvasView.state.pendingFocusId || `${node.id}:diagram`); openCanvas({ mode: "free", focusId: node.id }); }} /> : null;
+      const sourceKey = node ? `learning-node:${ownerId}:${node.id}` : "";
+      return node ? <OfficialLearningMaterial node={node} journey={officialLearning} pocketSaved={knowledgePocket.items.some(item => item.sourceKey === sourceKey)} onSaveToPocket={() => saveToKnowledgePocket({ sourceKey, title: node.title, summary: node.summary, content: `${node.title}\n\n${node.summary}`, sourceLabel: wb.getTask(ownerId).name, sourceType: "当前学习节点", taskId: ownerId })} onAsk={askExplanation} onCopy={wb.copyText} onReturnToCanvas={() => { officialCanvasView.actions.requestFocus(officialCanvasView.state.pendingFocusId || `${node.id}:diagram`); openCanvas({ mode: "free", focusId: node.id }); }} /> : null;
     }
     if (wb.getTask(ownerId).kind === "learning") {
       if (ownerId !== selectedTask) return null;
@@ -996,7 +1015,15 @@ function App() {
         const record = wb.getSession(ownerId).records.find(item => `record:${item.id}` === id);
         return record ? <article className="content-snapshot"><header><strong>{record.title}</strong><small>{record.time} · 只读记录</small></header><p>{record.summary}</p>{record.data?.profile && <p>{record.data.profile.background} · 每天 {record.data.profile.dailyMinutes} 分钟</p>}</article> : null;
       }
-      return <LearningJourneyMaterial id={id} journey={learning} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} presentation={presentation} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} onTaskComplete={offerCommunityExperience} />;
+      const learningNodeTitles = { "learning-goal": "学习目标与已有基础", "learning-path": "图像预处理学习路径", "learning-lesson": "RGB、HWC 与 CHW：图像维度怎么排", "learning-practice": "把 HWC 转成 NCHW", "learning-check": "核对模型输入形状", "learning-summary": "图像预处理学习记录" };
+      const sourceKey = `learning-node:${ownerId}:${id}`;
+      const nodeTitle = learningNodeTitles[id] || "学习内容";
+      const nodeSummary = id === "learning-practice"
+        ? `当前 transpose(${learning.state.axes.join(",")}) · batch ${learning.state.batch ? "已增加" : "未增加"}。示例检查目标 NCHW [1, 3, 224, 224]。`
+        : id === "learning-check"
+          ? `当前示例输出为 ${learning.shape.valid ? `[${learning.shape.dimensions.join(", ")}]` : "轴顺序无效"}；输入签名仍需在真实模型中核对。`
+          : `${learning.state.profile.goal || "图像输入预处理"} · ${learning.state.profile.background || "RGB、HWC / CHW 与 batch"}`;
+      return <LearningJourneyMaterial id={id} journey={learning} pocketSaved={knowledgePocket.items.some(item => item.sourceKey === sourceKey)} onSaveToPocket={() => saveToKnowledgePocket({ sourceKey, title: nodeTitle, summary: nodeSummary, content: `${nodeTitle}\n\n${nodeSummary}`, sourceLabel: wb.getTask(ownerId).name, sourceType: "当前学习节点", taskId: ownerId })} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} presentation={presentation} onArchive={archiveLearning} onEnterDevelopment={enterLearningDevelopment} onTaskComplete={offerCommunityExperience} />;
     }
     if (id === "task-brief") return renderBrief(ownerId);
     if (id.startsWith("attempt:")) {
@@ -1355,6 +1382,55 @@ function App() {
     setMainView(view);
     setProjectPanelOpen(false);
   };
+  const updateKnowledgePocket = updater => {
+    const current = readKnowledgePocket();
+    const next = typeof updater === "function" ? updater(current) : updater;
+    const written = writeKnowledgePocket(next);
+    if (!written) {
+      wb.notify("知识口袋暂时无法保存，请检查浏览器存储设置");
+      return null;
+    }
+    setKnowledgePocket(written);
+    announceKnowledgePocketChange();
+    return written;
+  };
+  const saveToKnowledgePocket = entry => {
+    const sourceKey = String(entry.sourceKey || "");
+    const current = readKnowledgePocket();
+    if (sourceKey && current.items.some(item => item.sourceKey === sourceKey)) {
+      wb.notify("这条内容已在知识口袋里");
+      return;
+    }
+    const id = globalThis.crypto?.randomUUID?.() || `pocket-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const saved = updateKnowledgePocket({
+      ...current,
+      items: [...current.items, { ...entry, id, createdAt: Date.now(), status: "saved", signal: entry.signal || "interested" }],
+    });
+    if (saved) wb.notify("已收进知识口袋；可从左侧口袋安排微信送达");
+  };
+  const schedulePocketItem = item => {
+    updateKnowledgePocket(current => ({ ...current, items: current.items.map(entry => entry.id === item.id ? { ...entry, status: "scheduled", scheduledAt: Date.now() } : entry) }));
+    wb.notify("已加入每周速览；手机端会优先展示这条内容");
+  };
+  const sendPocketItemNow = item => {
+    const sentAt = Date.now();
+    const updated = updateKnowledgePocket(current => ({
+      ...current,
+      lastNotificationId: item.id,
+      items: current.items.map(entry => entry.id === item.id ? { ...entry, status: "sent", sentAt } : entry),
+    }));
+    if (!updated) return;
+    const miniUrl = new URL("../ascstudio-mini/", window.location.href);
+    miniUrl.hash = "wechat";
+    window.open(miniUrl.href, "_blank", "noopener,noreferrer");
+    wb.notify("已模拟送到微信；新标签页会显示未读服务通知");
+  };
+  const setPocketSignal = (item, signal) => {
+    updateKnowledgePocket(current => ({ ...current, items: current.items.map(entry => entry.id === item.id ? { ...entry, signal } : entry) }));
+  };
+  const removePocketItem = id => {
+    updateKnowledgePocket(current => ({ ...current, items: current.items.filter(item => item.id !== id), lastNotificationId: current.lastNotificationId === id ? "" : current.lastNotificationId }));
+  };
   const toggleProjectNavigation = () => {
     wb.setMenu(null);
     if (mainView === "task" || mainView === "home") setProjectPanelOpen((open) => !open);
@@ -1376,7 +1452,7 @@ function App() {
         </div>
         <div className="topbar-divider" />
         <nav className="breadcrumbs" aria-label="当前位置">
-          {showNewTaskHome ? <strong>新建任务</strong> : showLearningDiscovery ? <strong>学习发现</strong> : showAutomations ? <strong>自动化任务</strong> : showCapabilities ? <strong>能力库</strong> : <>
+          {showNewTaskHome ? <strong>新建任务</strong> : showLearningDiscovery ? <strong>学习发现</strong> : showAutomations ? <strong>自动化任务</strong> : showCapabilities ? <strong>能力库</strong> : showKnowledgePocket ? <strong>知识口袋</strong> : <>
           <span className="breadcrumb-project">{currentGroup?.name}</span><IconChevronRight className="breadcrumb-project" size={ICON_SIZE.inline} /><button className="task-title-button" type="button" title={selectedTask} aria-label="当前任务与对话操作" data-menu-trigger aria-expanded={wb.menu?.name === "chat"} onClick={event => openMenu("chat", event)}><strong>{selectedTask}</strong><IconChevronDown size={ICON_SIZE.inline} /></button>
           </>}
         </nav>
@@ -1397,13 +1473,14 @@ function App() {
         <button className="profile-button" type="button" aria-label="用户菜单" data-menu-trigger aria-expanded={wb.menu?.name === "profile"} onClick={(event) => openMenu("profile", event)}>D</button>
       </header>
 
-      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
+      <div className={"workspace-grid " + (showTaskWorkspace ? "is-task-workspace" : "is-standalone-view") + (showNewTaskHome ? " is-new-task-home" : "") + (showLearningDiscovery ? " is-learning-discovery" : "") + (showAutomations ? " is-automations-view" : "") + (showCapabilities ? " is-capabilities-view" : "") + (showKnowledgePocket ? " is-knowledge-pocket-view" : "") + (projectPanelOpen ? " is-project-panel-open" : "") + (layout.dragging ? " is-resizing" : "") + (showTaskWorkspace && workspace.state.collapsed ? " is-content-collapsed" : "") + (showTaskWorkspace && conversationLayout === "floating" ? " is-conversation-floating" : "") + (showTaskWorkspace && areaInteractionActive ? " is-area-interaction-active" : "") + (conversationDragging ? " is-conversation-dragging" : "") + (conversationDockPreview ? " has-conversation-dock-preview" : "") + (conversationFloatPreview ? " has-conversation-float-preview" : "")} ref={layout.workspaceRef} style={showTaskWorkspace ? layout.style : layout.standaloneStyle}>
         <aside className="icon-rail" aria-label="主导航">
           <div className="icon-rail-nav">
             <button className={"icon-rail-button" + ((showTaskWorkspace || showNewTaskHome) ? " is-current" : "")} type="button" aria-label="项目与任务" title={projectPanelOpen ? "收起项目与任务" : "项目与任务"} aria-current={(showTaskWorkspace || showNewTaskHome) ? "page" : undefined} aria-expanded={projectPanelOpen} aria-controls="project-sidebar" onClick={toggleProjectNavigation}><IconFolder size={ICON_SIZE.navigation} /></button>
             <button className={"icon-rail-button" + (showLearningDiscovery ? " is-current" : "")} type="button" aria-label="学习发现" title="学习发现" aria-current={showLearningDiscovery ? "page" : undefined} onClick={() => navigateMainView("learning")}><IconSparkles size={ICON_SIZE.navigation} /></button>
             <button className={"icon-rail-button" + (showAutomations ? " is-current" : "")} type="button" aria-label="自动化任务" title="自动化任务" aria-current={showAutomations ? "page" : undefined} onClick={() => navigateMainView("automations")}><IconSettingsAutomation size={ICON_SIZE.navigation} /></button>
             <button className={"icon-rail-button" + (showCapabilities ? " is-current" : "")} type="button" aria-label="能力库" title="能力库" aria-current={showCapabilities ? "page" : undefined} onClick={() => navigateMainView("capabilities")}><IconBooks size={ICON_SIZE.navigation} /></button>
+            <button className={"icon-rail-button" + (showKnowledgePocket ? " is-current" : "")} type="button" aria-label="知识口袋" title="知识口袋" aria-current={showKnowledgePocket ? "page" : undefined} onClick={() => navigateMainView("knowledge-pocket")}><IconBookmark size={ICON_SIZE.navigation} /></button>
           </div>
         </aside>
         <aside id="project-sidebar" className="sidebar" aria-label="项目与任务" hidden={!projectPanelOpen}>
@@ -1454,7 +1531,7 @@ function App() {
           const created = wb.createTask({ name: goal.slice(0, 60), groupId, goal, kind, attachments });
           if (created) { setMainView("task"); setProjectPanelOpen(false); }
           return created;
-        }} /> : showLearningDiscovery ? <LearningDiscoveryPage onOpenItem={openDiscoveryItem} /> : showAutomations ? <section className="management-page" aria-labelledby="automations-page-title">
+        }} /> : showLearningDiscovery ? <LearningDiscoveryPage onOpenItem={openDiscoveryItem} /> : showKnowledgePocket ? <KnowledgePocketPage items={knowledgePocket.items} selectedId={selectedPocketId} onSelect={setSelectedPocketId} onSendNow={sendPocketItemNow} onSchedule={schedulePocketItem} onSignal={setPocketSignal} onRemove={removePocketItem} /> : showAutomations ? <section className="management-page" aria-labelledby="automations-page-title">
           <header className="management-page-header"><div className="management-page-title"><span className="management-page-eyebrow">任务协作 · 自动化</span><h1 id="automations-page-title">自动化任务</h1><p>查看自动化状态，安排演示任务，或手动运行一次检查。</p></div><div className="management-page-summary"><strong>{wb.automations.filter(item => item.enabled).length}</strong><span>项已启用</span><i /><strong>{wb.automations.length}</strong><span>项任务</span></div></header>
           <div className="management-page-content"><AutomationList automations={wb.automations} onToggleAutomation={(id) => wb.setAutomations((items) => items.map((item) => item.id === id ? { ...item, enabled: !item.enabled } : item))} onRunAutomation={wb.runAutomation} onAddAutomation={(entry) => wb.setAutomations((items) => [...items, { ...entry, id: crypto.randomUUID(), enabled: true, lastRun: "" }])} /></div>
         </section> : showCapabilities ? <section className="management-page" aria-labelledby="capabilities-page-title">
@@ -1513,6 +1590,7 @@ function App() {
                   </div></details>
                 </div>
                 <div className="message-feedback">
+                  <button type="button" className="pocket-save-action" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-intro:${selectedTask}`, title: "排查线索：尾块索引范围", summary: "尾块索引范围值得优先核对；根因尚未确认。还需实际循环、两次运行条件与逐元素误差证据。", content: "尾块索引范围值得优先核对，根因尚未确认。\n\n已知：[16,32] 通过；[17,33] 失败。修改编译参数后，错误位置未变。\n\n还需：实际循环、两次运行条件与逐元素误差证据。", sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask, signal: "question" })}><IconBookmark size={ICON_SIZE.control} />收进知识口袋</button>
                   <button type="button" aria-label="复制回答" onClick={() => wb.copyText(task.reply)}><IconCopy size={ICON_SIZE.control} /></button>
                   <button type="button" aria-label="赞同" aria-pressed={session.feedback === "up"} onClick={() => feedback("up")}><IconThumbUp size={ICON_SIZE.control} /></button>
                   <button type="button" aria-label="不赞同" aria-pressed={session.feedback === "down"} onClick={() => feedback("down")}><IconThumbDown size={ICON_SIZE.control} /></button>
@@ -1522,7 +1600,7 @@ function App() {
             </>}
             {session.showIntro && !isMainTask && <>
               <article className="message-row user-message"><div className="message-content"><div className="message-meta">你</div><div className="user-bubble">{task.question}</div></div></article>
-              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response">{task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}{isStandardLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-goal")}>设置学习目标<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent(learning.state.summaries.length ? "learning-summary" : "learning-path")}>{learning.state.summaries.length ? "回看学习记录" : "查看学习路径"}</button>{isPathGenerationTask && <button className="task-plain-button" type="button" onClick={() => { setDraft(PATH_REFINEMENT_DEMO_PROMPT); wb.draftRef.current?.focus(); }}>填入共创演示需求</button>}</div>}{isOfficialLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-stage-chain")}>查看目标学习路径<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-step-image-classification")}>从图像推理链路开始</button></div>}{isImageTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => dispatchTaskIntent("explain", "layout")}>返回关联图解<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent("image-source")}>查看代码与来源</button></div>}</div></div></article>
+              <article className="message-row assistant-message"><div className="message-content"><div className="message-meta">Ascend Studio · 演示</div><div className="assistant-response">{task.reply.split("\n\n").map((text, index) => <p key={index}>{text}</p>)}{isStandardLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-goal")}>设置学习目标<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent(learning.state.summaries.length ? "learning-summary" : "learning-path")}>{learning.state.summaries.length ? "回看学习记录" : "查看学习路径"}</button>{isPathGenerationTask && <button className="task-plain-button" type="button" onClick={() => { setDraft(PATH_REFINEMENT_DEMO_PROMPT); wb.draftRef.current?.focus(); }}>填入共创演示需求</button>}</div>}{isOfficialLearningTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-stage-chain")}>查看目标学习路径<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent("learning-official-step-image-classification")}>从图像推理链路开始</button></div>}{isImageTask && <div className="task-suggestion-actions"><button className="task-plain-button" type="button" onClick={() => dispatchTaskIntent("explain", "layout")}>返回关联图解<IconArrowRight size={ICON_SIZE.inline} /></button><button className="task-plain-button" type="button" onClick={() => openContent("image-source")}>查看代码与来源</button></div>}</div><div className="message-feedback"><button type="button" className="pocket-save-action" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-intro:${selectedTask}`, title: task.reply.split(/[。\n]/)[0].slice(0, 52) || task.title, summary: task.reply.split("\n\n")[0], content: task.reply, sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask })}><IconBookmark size={ICON_SIZE.control} />收进知识口袋</button></div></div></article>
             </>}
             {messages.map((message) => (
               <article className={"message-row " + (message.role === "user" ? "user-message" : "assistant-message")} key={message.id}>
@@ -1558,7 +1636,7 @@ function App() {
                     <span className={`community-draft-card-status${session.communityDraft.status === "submitted" ? " is-submitted" : " is-review"}`}>{session.communityDraft.status === "submitted" ? "已提交 · 演示" : "待你审阅"}</span>
                     <IconChevronRight size={ICON_SIZE.heading} />
                   </button>}
-                  {message.role === "assistant" && <div className="message-feedback"><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={ICON_SIZE.control} /></button></div>}
+                  {message.role === "assistant" && <div className="message-feedback"><button type="button" className="pocket-save-action" onClick={() => saveToKnowledgePocket({ sourceKey: `agent-message:${selectedTask}:${message.id}`, title: message.text.split(/\n+/)[0].slice(0, 56) || "Agent 回答", summary: message.text.replace(/\s+/g, " ").slice(0, 220), content: message.text, sourceLabel: selectedTask, sourceType: "Agent 回答", taskId: selectedTask })}><IconBookmark size={ICON_SIZE.control} />收进知识口袋</button><button type="button" aria-label="复制这条回答" onClick={() => wb.copyText(message.text)}><IconCopy size={ICON_SIZE.control} /></button></div>}
                 </div>
               </article>
             ))}

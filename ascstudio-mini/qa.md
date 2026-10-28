@@ -81,3 +81,10 @@
 - 390×844 手机视口中，滚轮仍滚动手机正文；路由不因材料分页改变，`document.documentElement.scrollWidth` 为 390px。页面未捕获到 JS exception。
 - 截图：`evidence/review-wheel-desktop.png`。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
 - 主线提交 `8e8195c3` 已推送；GitHub Pages workflow `40543693742` 成功。线上 HTML 与 `app.js` 均 HTTP 200，已核对翻页提示与 wheel listener 已发布。
+
+## 2026-10-28 · 电脑端知识口袋与微信送达
+
+- 电脑端 Agent 回答与当前学习内容可收进统一知识口袋；用户在口袋里标记「感兴趣 / 还没弄懂」，再选择「发到微信，现在看」或「加入定期速览」。手机端收到同源 localStorage 中的条目，在微信消息列表显示未读服务通知；点开通知进入手机短读卡。已安排的条目优先补入每周速览；「我的」页增加「电脑端收来」列表。
+- 浏览器人工回放：1440×940 桌面样机验证收纳、信号切换、安排速览、立即送达；手机端验证微信未读行、通知详情、短读卡与「我看懂了」状态回写。390×844 手机视口中，微信列表与短读卡的 `scrollWidth` 均为 390px。已核对学习对话回答入口与学习内容工具栏入口。
+- 截图：`evidence/knowledge-pocket-desktop.png`、`evidence/wechat-notification-list.png`、`evidence/knowledge-pocket-phone-card.png`。周报示例资讯仍为静态策划素材。电脑与手机在同一浏览器中用同源 localStorage 演示共享；未实现不同设备账号同步、真实微信消息或后台定时推送。
+- rebase 到最新主线 `a6681665` 后重新构建：`cd ascend-studio && npm run build:pages` 成功，当前 `/ascstudio/` 引用 `index-SON5PQr8.js` 与 `index-e9TgRYmh.css`。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、新构建 bundle 语法检查及 `git diff --check` 通过；未运行自动化测试。
