@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import { readSession, writeSession } from "./session-storage";
+import { useState } from "react";
 
-// Saved cue state, keyed by task/reset and meaningful event, survives
-// material switches. A dismissed event never expands itself on a rerender.
+// Cue state survives material switches while the app remains mounted, but a
+// full page reload returns cues to their initial state. A dismissed event
+// never expands itself on a rerender.
 export function useProactiveCues(scope) {
-  const [events, setEvents] = useState(() => readSession("proactive-cues", {}));
-  useEffect(() => { writeSession("proactive-cues", events); }, [events]);
+  const [events, setEvents] = useState({});
   const keyFor = (id) => `${scope}:${id}`;
   const patch = (id, values) => setEvents(previous => ({ ...previous, [keyFor(id)]: { ...previous[keyFor(id)], ...values } }));
   return {
