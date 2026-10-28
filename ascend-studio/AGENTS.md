@@ -2006,3 +2006,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 图像推理调试：先审阅修改并应用到隔离示例副本，再点「复核示例形状并带回对话」；仅符合 NCHW `[1,3,224,224]` 时出现入口。初始打开不触发；该示例检查不代表真实模型或 NPU 推理通过。移除复核事件的重复邀请路径。
 - 变更位于 `src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 和 `/ascstudio/` 发布包。并行对话面板改动已合并并保留；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。用户要求为 H，原型状态为 M。
 - 构建 `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。实现提交 `a8fcaf91` 与合并提交 `70ae9927` 已推送 `origin/main`；Pages workflow `40627139988` 成功，线上入口、JS 和 CSS 均 HTTP 200。未运行自动化测试。
+
+### 2026-10-28 · 模型标识统一黑色
+
+- 将输入框当前模型按钮和模型下拉菜单中的各模型品牌 Logo 统一显示为黑色，沿用现有图像资源，仅由 `.composer .model-brand-logo` 与 `.workbench-menu-models .model-option-logo` 应用 `filter: brightness(0)`；模型文案、尺寸和选择交互保持原样。
+- 用户明确要求为依据（H）；本地模型选择菜单预览为实现核验（M）。这是展示样式，不影响任务、消息或模型选择数据，也不改变页面路由与 API / Host / Application 边界。
+- `npm run build:pages`、构建 JS `node --check`、两处构建 CSS 规则核验和 `git diff --check` 通过；未运行自动化测试。提交、推送和 Pages 发布结果将在本轮发布后补记。

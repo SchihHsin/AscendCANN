@@ -68,7 +68,7 @@ button.evidence-row > svg:last-child { margin-left: auto; color: #b0b1b7; }
 .workbench-menu > .input-menu-voice { justify-content: flex-start; gap: 9px; }
 .workbench-menu > button > span:last-child:not(:first-child) { color: #92949c; font-size: 10px; }
 .workbench-menu-models > button > .model-option-main { display: flex; align-items: center; justify-content: flex-start; gap: 9px; min-width: 0; flex: 1; color: inherit; font-size: 12px; }
-.workbench-menu-models .model-option-logo { display: block; width: 14px; height: 14px; flex: 0 0 14px; object-fit: contain; }
+.workbench-menu-models .model-option-logo { display: block; width: 14px; height: 14px; flex: 0 0 14px; object-fit: contain; filter: brightness(0); }
 .workbench-menu-models .model-option-main > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .menu-label { padding: 7px 9px 6px; color: #94959c; font-size: 10px; }
 .menu-divider { height: 1px; margin: 5px; background: #efefec; }

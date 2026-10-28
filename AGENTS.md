@@ -7323,3 +7323,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 图像推理调试初始仅提供正确示例参数，不自动出现入口。用户审阅当前修改、确认应用到隔离示例副本，再点击「复核示例形状并带回对话」；仅示例输出符合 NCHW `[1,3,224,224]` 时生成社区入口。入口是示例形状核对结果，不代表真实模型或 NPU 推理通过。打开任务不会触发；刷新会清空邀请与草稿。
 - 修改 `ascend-studio/src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 及 `/ascstudio/` Pages 构建产物。合并保留了并行的对话面板更新。此改动不改变任务页序或 API / Protocol、Host / Harness、Application / Task 边界；用户需求为 H，浏览器本地状态规则和示例触发结果为 M。
 - `npm run build:pages`、相关 JS `node --check`、`git diff --check` 通过。提交 `a8fcaf91` 实现刷新复位与触发门槛，集成并行主线的合并提交 `70ae9927` 已推送 `origin/main`。Pages workflow `40627139988` 成功；线上 `/AscendCANN/ascstudio/`、`index-CIxMdNO-.js` 和 `index-COIexaLu.css` 均 HTTP 200。未运行自动化测试。
+
+### 2026-10-28 · 模型标识统一黑色
+
+- 用户要求 Ascend Studio 中的模型 Logo 改为黑色。当前模型按钮和模型下拉选项的品牌图均通过 CSS `filter: brightness(0)` 统一为黑色；模型名称、切换方式与其他图标不变。
+- 源码位于 `ascend-studio/src/styles.css` 与 `ascend-studio/src/interaction.css`；Pages 入口和构建文件位于 `ascstudio/index.html`、`ascstudio/assets/`。依据为用户明确要求（H）；本地预览中模型入口与下拉项样式检查为（M）。未改变页面顺序、对话行为或 API / Protocol、Host / Harness、Application / Task 边界。
+- 合并最新 `origin/main`（`055ad594`，保留画布放大图标修正）后，`npm run build:pages`、构建 JS `node --check`、模型图标 CSS 规则核验和 `git diff --check` 通过；未运行自动化测试。提交、推送和线上 Pages 结果将在本轮发布后补记。
