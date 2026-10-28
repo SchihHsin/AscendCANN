@@ -7365,4 +7365,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户提供关系网络图与阶段推演图作为明确视觉参考（H），并要求继续完成。将 `ascstudio-mini/knowledge-provider-map.html` 第 3–7 页的供给链、学习发现服务映射、Knowledge Unit 字段、Web / API / MCP / Skills 交付通道及 P0–P2 路线改为 SVG 关系图、服务网络、对象关系图、并行泳道和阶段路径；具体资源图片仍只放在学习路径、认证、课程、Meetup 样例中。视觉表达重点是节点、连线、区域和阶段关系，不额外加入装饰插图。
 - 保持 7 页顺序、翻页与 `#页码` 恢复、原有服务内容及规范来源链接；`llms.txt` 仍标记为提案，`robots.txt` 不作为鉴权。修改属于知识供给服务蓝图目标方案示意，不表示接口或服务已真实接入，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 本地桌面预览检查第 3–7 页，确认关系图、楼层预览、交付泳道和路线图可完整呈现；结构检查确认 7 页、12 个内嵌 SVG、资源图均存在、ID 无重复，内嵌脚本 `node --check` 与 `git diff --check` 通过。未运行自动化测试。
-- 实现提交 `c51090ac` 已同步最新 `origin/main` 后普通推送；GitHub Pages workflow `40642246632` 成功。当前补记交接记录并推送至 `origin/main`；线上页面回读待本轮文档提交部署后复核。
+- 实现提交 `c51090ac` 已同步最新 `origin/main` 后普通推送；GitHub Pages workflow `40642246632` 成功。交接记录提交 `b9941329` 已推送至 `origin/main`；随后 Pages workflow `40642395703` 成功。线上知识供给蓝图返回 HTTP 200，回读确认供给关系、楼层服务网、交付通道和建设阶段图均已发布。
