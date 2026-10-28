@@ -7541,3 +7541,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 时序仍由 beautiful-mermaid（MIT）生成，消息数 25、阶段数 5；角色图标为 Lucide（ISC），人物插图为 DiceBear Personas（CC BY 4.0）。本次只修改 `cann-dashboard/ascend-studio-design-report.html`，没有改产品原型、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：结构检查确认 16 页、10 个开发者场景头像位、5 个时序阶段、25 条消息、ID 无重复；`node --check`、`git diff --check` 通过。浏览器没有完成视觉回放：本地 `file://` 页面被浏览器策略拦截，未通过其他入口绕过；未运行自动化测试。
 - 提交 / 推送：使用独立临时索引，仅提交本报告与本交接，不包含工作区其它暂存、未暂存或未跟踪改动；推送到 `main`。
+
+
+### 2026-10-28 · Ascend Studio 时序参与者样式微调
+
+- 按用户截图反馈，时序左侧保留任务导向 / 学习导向两位开发者的头像卡片；Ascend Studio、智能体、开发环境、知识与社区四个系统参与者去掉卡片底色、边框与图标圆底，仅保留前置图标和角色文字。
+- 只调整 `cann-dashboard/ascend-studio-design-report.html` 的角色标记样式；16 页序列、五阶段、25 条开源时序消息和五个设计断点均未改变。该样式偏好来自用户明确反馈（H），不改变研究结论、产品原型或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：静态结构确认 16 页、6 类角色、4 个角色图标和 ID 无重复；`node --check`、`git diff --check` 通过。未做浏览器视觉回放；本地 `file://` 预览此前被浏览器策略拦截，未尝试绕过；未运行自动化测试。
+- 提交 / 推送：通过独立临时索引，仅提交本报告和本交接，并推送到 `main`；工作区其他暂存、未暂存和未跟踪内容未纳入。

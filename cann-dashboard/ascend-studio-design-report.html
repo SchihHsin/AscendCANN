@@ -723,6 +723,16 @@ body.overview.ctrl #deck{width:auto}
 .r-sequence-role{box-shadow:0 3px 9px -8px rgba(24,37,62,.35)}
 .r-sequence-role .role-mark svg{display:block}
 .r-sequence-credit{font-size:9px;bottom:.38vh;right:.65vw;color:#9099a8}
+
+/* Keep portraits for the two developer personas; render the four service actors as icon-and-label rows. */
+.r-sequence-role[data-role="studio"],
+.r-sequence-role[data-role="agent"],
+.r-sequence-role[data-role="environment"],
+.r-sequence-role[data-role="community"]{border:0;background:transparent;box-shadow:none}
+.r-sequence-role[data-role="studio"] .role-mark,
+.r-sequence-role[data-role="agent"] .role-mark,
+.r-sequence-role[data-role="environment"] .role-mark,
+.r-sequence-role[data-role="community"] .role-mark{border:0;border-radius:0;background:transparent;box-shadow:none}
 </style>
 <defs>
   <marker id="seq-arrow" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto-start-reverse">
