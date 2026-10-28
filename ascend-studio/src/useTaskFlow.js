@@ -230,7 +230,7 @@ export function useTaskFlow({ onRecord } = {}) {
     schedule(() => {
       const attempt = { id: uid(), time: now(), snapshot, mode: snapshot.mode, code, ...rangeCheck(snapshot) };
       proposalAttempt.current = null;
-      update((previous) => ({ phase: "try", attempts: [...previous.attempts, attempt], selectedAttemptId: attempt.id, draftCode: previous.draftCode || code, proposedCode: null, busy: false, notice: `${attempt.result}。仅按输入参数与范围策略演算；未编译 C++，未验证精度或根因。` }));
+      update((previous) => ({ phase: "try", attempts: [...previous.attempts, attempt], selectedAttemptId: attempt.id, draftCode: previous.draftCode || code, proposedCode: null, busy: false, notice: "" }));
       record("示例索引范围检查", `[${snapshot.rows},${snapshot.columns}]，块大小 ${snapshot.tileSize}，${snapshot.bounds === "valid" ? "有效元素范围" : "完整块范围"}：${attempt.result}。仅浏览器算例，未验证真实项目或 NPU。`, "trial");
     });
   };

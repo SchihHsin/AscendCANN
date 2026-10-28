@@ -74,10 +74,17 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
   const visibleCards = state.cards.filter((card) => card.visible);
   const hiddenCards = state.cards.filter((card) => !card.visible && card.opened);
   const availableNodeCards = isAddCustom ? state.cards.filter((card) => !card.visible) : [];
+  const flowNotice = String(flow?.state?.notice || "");
+  const visibleFlowNotice = flowNotice.startsWith("浏览器范围检查") ? "" : flowNotice;
   const drawings = Array.isArray(state.drawings) ? state.drawings : [];
   const { x: panX, y: panY, zoom } = state.viewport;
   const drawing = useCanvasDrawing({ canvasContent: canvas, editing: positionEditing });
   const worldDrawings = drawings.filter(item => !item.cardId);
+  const canvasHint = drawing.drawingMode
+    ? "绘图中：在手绘卡片内拖动 · 点击笔形按钮或按 Esc 结束"
+    : positionEditing && worldDrawings.length
+      ? drawing.selectedLegacyDrawingId ? "已选中旧笔迹 · 点击工具栏“删除笔迹”移除" : "先点击要删除的笔迹，再点工具栏“删除笔迹”"
+      : positionEditing ? "编辑中：拖动卡片标题移动 · 完成编辑按钮或 Esc 退出" : "";
   const isCollapsed = (card) => card.collapsed ?? collapsedIds.includes(card.id);
 
   const minimapBounds = useMemo(() => {
@@ -449,9 +456,9 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
         {worldDrawings.map((drawing) => <polyline key={drawing.id} className="canvas-minimap-drawing" points={(drawing.points || []).map((point) => `${point.x},${point.y}`).join(" ")} />)}
       </CanvasMiniMap>
 
-      <div className="tc-canvas-hint">{drawing.drawingMode ? "绘图中：在手绘卡片内拖动 · 点击笔形按钮或按 Esc 结束" : positionEditing && worldDrawings.length ? drawing.selectedLegacyDrawingId ? "已选中旧笔迹 · 点击工具栏“删除笔迹”移除" : "先点击要删除的笔迹，再点工具栏“删除笔迹”" : positionEditing ? "编辑中：拖动卡片标题移动 · 完成编辑按钮或 Esc 退出" : "空白拖动平移 · ⌘ / Ctrl 滚轮缩放"}{hiddenCards.length ? ` · 已收纳 ${hiddenCards.length} 项` : ""}</div>
+      {(canvasHint || hiddenCards.length > 0) && <div className="tc-canvas-hint">{canvasHint}{canvasHint && hiddenCards.length ? " · " : ""}{hiddenCards.length ? `已收纳 ${hiddenCards.length} 项` : ""}</div>}
     </CanvasSurface>
-    {(flow?.state?.notice || flow?.state?.error) && <div className={"tc-flow-status" + (flow.state.error ? " is-error" : "")} role={flow.state.error ? "alert" : "status"} aria-live="polite">{flow.state.error ? <IconAlertTriangle size={ICON_SIZE.inline} /> : <IconLayoutBoard size={ICON_SIZE.inline} />}<span>{flow.state.error || flow.state.notice}</span></div>}
+    {(visibleFlowNotice || flow?.state?.error) && <div className={"tc-flow-status" + (flow.state.error ? " is-error" : "")} role={flow.state.error ? "alert" : "status"} aria-live="polite">{flow.state.error ? <IconAlertTriangle size={ICON_SIZE.inline} /> : <IconLayoutBoard size={ICON_SIZE.inline} />}<span>{flow.state.error || visibleFlowNotice}</span></div>}
   </aside>;
 }
 
