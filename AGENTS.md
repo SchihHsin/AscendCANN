@@ -7651,7 +7651,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户确认，保留原任务并新增「Add 算子异常：从日志到验证」，原任务列表名为「Add 算子精度差异排查」。新任务采用用户指定的 Format Lab 浅色模式方向，在现有工作台中走通日志线索 → 尾块图解 → 示例范围核对 → 社区经验草稿。
 - 为控制 Token 消耗，日志解析、固定范围运算和阶段交互由本地确定性规则驱动，标注「本地规则 · 0 tokens」；未增加真实模型调用。社区内容保持可编辑，不自动发布。预置形状与错误位置只用于演示，尾块仍是线索，不作为真实根因或 NPU 验证结论。
 - 实现与验证细节在 `ascend-studio/AGENTS.md`。本地 1280×720 预览已完成端到端回放：四步操作、经验入口、可编辑草稿和旧任务保留；`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过，未运行自动化测试。没有改页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。
-- 实现提交与推送结果：待本轮提交回填；Pages workflow：待推送后核对。
+- 发布回执：实现提交 `9c3fcd97`（`feat: add log-first Add diagnostic task`）已推送到 `origin/main`；Pages workflow `40748397022` 成功。线上 `/AscendCANN/ascstudio/`、构建 JS `index-FtOVT1nn.js` 与 CSS `index-BLPeqaaM.css` 均 HTTP 200；JS 回读包含新旧任务显示名与「本地规则 · 0 tokens」。本地预览通过四步交互与草稿编辑核对，未真实接入模型、社区或 NPU。
 
 ### 2026-10-29 · Ascend Studio 旅程增加机会点行
 

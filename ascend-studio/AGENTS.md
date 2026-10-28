@@ -2109,4 +2109,4 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 证据边界：`[16,32]` 通过、`[17,33]` 失败和 `custom_op.cpp:128` 是预置日志；17×33 / 32 的算例用于解释范围，不能确认真实根因、真实项目修改、C++ 编译、精度或 NPU 验证。草稿要求补充真实环境和验证证据。
 - 修改 `src/App.jsx`、`prototype-data.js`、`useWorkbenchState.js`、`workspace-materials.js`、`TaskWorkspace.jsx`、`community-draft-data.js`、`ChannelDraftContent.jsx`、`CommunityDraftPanel.jsx`，新增 `LogTriageWorkspace.jsx` 与 `log-triage-workspace.css`，同步 `../ascstudio/` Pages 构建产物。未更改报告页序、路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 本地 1280×720 浏览器已走通四步、核对范围结果、打开并编辑社区草稿；回流消息已修正为 Add 范围核对，未再串入图像输入文案。切回旧任务确认原名称和既有 AddCustom 内容仍在。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。
-- 实现提交、推送与 Pages workflow 回执见根 `AGENTS.md` 对应日期条目；尚未真实接入 AI、社区服务或 NPU。
+- 实现提交 `9c3fcd97` 已推送到 `origin/main`；Pages workflow `40748397022` 成功。线上 `/AscendCANN/ascstudio/`、`index-FtOVT1nn.js` 与 `index-BLPeqaaM.css` 均 HTTP 200；JS 已回读新旧任务名、0-token 标签和 Add 任务回流文案。尚未真实接入 AI、社区服务或 NPU。
