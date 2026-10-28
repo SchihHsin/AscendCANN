@@ -7561,7 +7561,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户要求 Demo 外面不要再套容器。移除灰色圆角卡片、边框、阴影、内边距、重复标题和「单独打开」栏；电脑界面直接呈现在评审画面中。只保留用于 16:9 等比缩放与裁切的无装饰视口。
 - 修改 `ascstudio-mini/index.html`、`app.js`、`styles.css`，并刷新 `evidence/review-desktop-only-1440.png`、`review-desktop-only-1280.png`、`review-desktop-pocket-1440.png`。第 1 / 4 页仍只显示电脑 Demo，其他屏幕和手机端路径不变；不改变七点页序、状态流转或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：Chrome 本地预览核对 1440×900、1280×720、第 4 页知识口袋画面；确认 Demo 外无可见容器，仍保持桌面 16:9。`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过，未运行自动化测试。提交 / 推送及 Pages 回执待本轮发布后补记。
+- 验证：Chrome 本地预览核对 1440×900、1280×720、第 4 页知识口袋画面与 390×844 手机视口；确认 Demo 外无可见容器，仍保持桌面 16:9。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js` 与 `git diff --check` 通过，未运行自动化测试。提交 `1fd6da4a` 已推送到 `origin/main`；Pages workflow `40729292768` 成功，线上评审入口、`styles.css` 与 `app.js` 均 HTTP 200，HTML 中只保留无装饰的 16:9 Demo 视口。
 
 
 ### 2026-10-28 · 主动建议卡片混合命名发布回执
