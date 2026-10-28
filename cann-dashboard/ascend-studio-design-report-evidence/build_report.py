@@ -281,27 +281,29 @@ body.overview.ctrl #deck{width:auto}
 """
 
 CSS += r"""
-/* One continuous, stage-banded sequence diagram with editable icon cards. */
-.r-copy-journey .collab-blueprint{height:77vh;grid-template-rows:6.5vh 8.5vh 42vh 9vh 8vh;gap:.65vh .36vw}
-.r-copy-journey .cb-stage-rail{grid-template-columns:3fr 3fr 3fr 5fr 4fr;gap:.36vw}
-.r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr) clamp(42px,3.8vw,52px);padding:.42vh .58vw;background:color-mix(in srgb,var(--phase) 9%,#fff);border:1px solid color-mix(in srgb,var(--phase) 18%,#fff);border-radius:10px;box-shadow:none}
+/* Standard journey grid: equal stages, two behavior lanes, shared interaction sequence. */
+.r-copy-journey .collab-blueprint{height:78vh;grid-template-rows:5.7vh 5.7vh 5.7vh 41.3vh 9.3vh 7.5vh;gap:.5vh .45vw}
+.r-copy-journey .cb-axis{grid-column:1;grid-row:1}
+.r-copy-journey .cb-stage-rail{grid-row:1;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw}
+.r-copy-journey .cb-stage{grid-template-columns:minmax(0,1fr) clamp(36px,3.1vw,46px);gap:.35vw;padding:.38vh .5vw;background:color-mix(in srgb,var(--phase) 8%,#fff);border:0;border-radius:9px;box-shadow:none}
 .r-copy-journey .cb-stage-copy{gap:.13vh}.r-copy-journey .cb-stage small{font:760 var(--fs-xs)/1.1 'JetBrains Mono';letter-spacing:.035em;color:color-mix(in srgb,var(--phase) 78%,#34415b)}
 .r-copy-journey .cb-stage b{font-size:var(--fs-h3);line-height:1.04;color:#29364a;white-space:normal}
 .r-copy-journey .cb-stage span{margin-top:.05vh;font-size:var(--fs-xs);line-height:1.08;color:#718096;white-space:normal}
-.r-copy-journey .cb-stage-visual{display:grid;width:clamp(42px,3.8vw,52px);height:clamp(42px,5.2vh,50px)}
-.r-copy-journey .cb-human-step{padding:.25vh .36vw;background:color-mix(in srgb,var(--phase) 4%,#fff);border:1px solid color-mix(in srgb,var(--phase) 12%,#fff);border-radius:9px}
-.r-copy-journey .cb-lane-cell:not(:last-child)::after{right:-.48vw;width:.36vw;border-color:#9aa5b5}
-.r-copy-journey .cb-lane-cell:not(:last-child)::before{right:-.51vw;border-left-color:#9aa5b5}
-.r-copy-journey .cb-human-lane .r-persona-row{display:grid;grid-template-columns:clamp(22px,2.15vw,31px) minmax(0,1fr);gap:.32vw;align-items:center;padding:.14vh 0}
-.r-copy-journey .cb-human-lane .r-persona-row+.r-persona-row{margin-top:.18vh;padding-top:.18vh;border-top:1px solid rgba(112,124,147,.12)}
-.r-copy-journey .r-persona-avatar{width:clamp(22px,2.15vw,31px);height:clamp(22px,2.15vw,31px);display:block;overflow:hidden;border:1px solid rgba(111,125,151,.18);border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(34,50,76,.08)}
-.r-copy-journey .r-persona-avatar img{display:block;width:100%;height:100%;object-fit:cover}
-.r-copy-journey .r-persona-bubble{position:relative;min-width:0;padding:.38vh .4vw;border:1px solid rgba(105,122,154,.14);border-radius:8px 8px 8px 3px;background:rgba(255,255,255,.9);color:#4e5d73;font-size:var(--fs-xs);font-weight:580;line-height:1.14}
-.r-copy-journey .cb-human-lane .cb-lane-cell:not(:last-child)::before,.r-copy-journey .cb-human-lane .cb-lane-cell:not(:last-child)::after{content:none!important}
-.r-copy-journey .r-persona-row[data-avatar-ref="task"] .r-persona-avatar{background:#eef5fb}
-.r-copy-journey .r-persona-row[data-avatar-ref="learn"] .r-persona-avatar{background:#f4f0fb}
+.r-copy-journey .cb-stage-visual{display:grid;width:clamp(36px,3.1vw,46px);height:clamp(36px,4.7vh,44px)}
+.r-copy-journey .r-persona-lane-label{grid-column:1;min-width:0;min-height:0;display:grid;grid-template-columns:clamp(26px,2.5vw,34px) minmax(0,1fr);align-items:center;gap:.48vw;padding:.25vh .38vw;border-radius:8px;background:#fff}
+.r-copy-journey .r-task-lane-label{grid-row:2}.r-copy-journey .r-learn-lane-label{grid-row:3}
+.r-copy-journey .r-persona-lane-label img{display:block;width:clamp(26px,2.5vw,34px);height:clamp(26px,2.5vw,34px);object-fit:cover;border-radius:50%}
+.r-copy-journey .r-persona-lane-label b{display:block;font-size:var(--fs-sm);line-height:1.15;color:#354052;white-space:nowrap}
+.r-copy-journey .r-persona-lane-label small{display:block;margin-top:.2vh;font-size:var(--fs-xs);line-height:1.12;color:#788293}
+.r-copy-journey .cb-human-lane{grid-column:2;grid-row:2/span 2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));align-items:stretch;gap:.36vh .45vw}
+.r-copy-journey .r-user-action{min-width:0;min-height:0;padding:.32vh .52vw;display:flex;align-items:center;justify-content:flex-start;border:0;border-radius:7px;background:color-mix(in srgb,var(--phase) 5%,#fff);color:#4d5b70;font-size:var(--fs-sm);font-weight:600;line-height:1.2}
+.r-copy-journey .r-user-action::before,.r-copy-journey .r-user-action::after{content:none!important}
+.r-copy-journey .r-user-action span{min-width:0}
 .r-copy-journey .r-sequence-plot{position:relative;overflow:hidden;background:transparent;border:0;border-radius:0}
 .r-copy-journey .r-sequence-plot>svg{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;preserveAspectRatio:none}
+.r-copy-journey .r-sequence-role-label{grid-row:4}
+.r-copy-journey .r-sequence-role-label::before{content:"协作角色";position:absolute;top:.12vh;left:.18vw;font-size:var(--fs-xs);font-weight:700;color:#788293}
+.r-copy-journey .r-sequence-plot{grid-row:4}
 .r-sequence-event{--event-tone:#5f68bd;position:absolute;z-index:2;left:var(--event-x);top:var(--event-y);transform:translate(-50%,-50%);width:clamp(82px,6vw,100px);min-height:3.3vh;display:flex;align-items:center;gap:.34vw;padding:.4vh .4vw;border:1px solid color-mix(in srgb,var(--event-tone) 18%,#e2e7ef);border-radius:9px;background:rgba(255,255,255,.97);box-shadow:none;color:#354052}
 .r-sequence-event i{display:grid;place-items:center;flex:0 0 auto;width:clamp(15px,1.2vw,19px);height:clamp(15px,1.2vw,19px);color:var(--event-tone)}
 .r-sequence-event i svg{display:block;width:100%;height:100%;stroke-width:1.85}
@@ -312,11 +314,11 @@ CSS += r"""
 .r-copy-journey .r-sequence-role .role-mark{background:transparent}
 .r-copy-journey .r-sequence-role[data-role="task"] .role-mark,.r-copy-journey .r-sequence-role[data-role="learn"] .role-mark{background:#fff}
 .r-copy-journey .r-sequence-credit{position:absolute;right:.28vw;bottom:.18vh;z-index:3;font-size:var(--fs-xs);color:#8992a0}
-.r-copy-journey .cb-painpoint-rail{gap:.36vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-painpoint-label{grid-row:5}.r-copy-journey .cb-painpoint-rail{grid-row:5;grid-template-columns:repeat(5,minmax(0,1fr));gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-painpoint-node{padding:.45vh .52vw!important;gap:.3vh!important;border:0!important;border-radius:9px!important;background:#fff0f1!important;box-shadow:none!important}
 .r-copy-journey .cb-painpoint-node small{font-size:var(--fs-xs)}.r-copy-journey .cb-painpoint-node .r-breakpoint-issue{font-size:var(--cb-copy-size);line-height:1.12}
-.r-copy-journey .cb-opportunity-label{grid-row:5}
-.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:5;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.36vw;background:#fff;border:0;border-radius:0;box-shadow:none}
+.r-copy-journey .cb-opportunity-label{grid-row:6}
+.r-copy-journey .cb-opportunity-rail{grid-column:2;grid-row:6;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;min-width:0;min-height:0;gap:.45vw;background:#fff;border:0;border-radius:0;box-shadow:none}
 .r-copy-journey .cb-opportunity{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:.25vh;padding:.4vh .52vw;border:0;border-radius:9px;background:#eaf5ed;color:#476956}
 .r-copy-journey .cb-opportunity small{font-size:var(--fs-xs);font-weight:760;line-height:1.1;color:#397453}
 .r-copy-journey .cb-opportunity span{font-size:var(--cb-copy-size);line-height:1.12;color:#52705d}
@@ -458,11 +460,62 @@ def sequence_diagram_markup():
         phase_ranges.sort()
         left_space = max(0, phase_ranges[0][0] - old_viewbox[1])
         right_space = max(0, old_viewbox[1] + height - phase_ranges[-1][1])
-        gaps = [max(0, phase_ranges[i + 1][0] - phase_ranges[i][1]) for i in range(len(phase_ranges) - 1)]
-        stage_widths = [max(1, end - start) for start, end in phase_ranges]
+        # The source renderer sizes each phase by its message count and leaves
+        # a generous gap between rect blocks. Warp only the time axis so the
+        # five journey stages, sequence bands, user actions, pain points and
+        # opportunities share equal columns with a restrained 0.55% gutter.
+        stage_gap = height * 0.0055
+        stage_width = max(1, (height - left_space - right_space - stage_gap * (len(phase_ranges) - 1)) / len(phase_ranges))
+        target_ranges = []
+        target_cursor = left_space
+        for _ in phase_ranges:
+            target_ranges.append((target_cursor, target_cursor + stage_width))
+            target_cursor += stage_width + stage_gap
+
+        def map_time(value):
+            if value <= phase_ranges[0][0]:
+                return value * (left_space / phase_ranges[0][0]) if phase_ranges[0][0] else value
+            for index, (start, end) in enumerate(phase_ranges):
+                target_start, target_end = target_ranges[index]
+                if start <= value <= end:
+                    ratio = (value - start) / max(1, end - start)
+                    return target_start + ratio * (target_end - target_start)
+                if index < len(phase_ranges) - 1:
+                    next_start = phase_ranges[index + 1][0]
+                    next_target_start = target_ranges[index + 1][0]
+                    if end < value < next_start:
+                        ratio = (value - end) / max(1, next_start - end)
+                        return target_end + ratio * (next_target_start - target_end)
+            last_end = phase_ranges[-1][1]
+            target_last_end = target_ranges[-1][1]
+            return target_last_end + (value - last_end) * (right_space / max(1, height - last_end))
+
+        number_pattern = r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?"
+        for node in geometry:
+            for rect in node.iter(f"{{{svg_ns}}}rect"):
+                old_y = float(rect.get("y", "0"))
+                old_end = old_y + float(rect.get("height", "0"))
+                new_y, new_end = map_time(old_y), map_time(old_end)
+                rect.set("y", f"{new_y:g}")
+                rect.set("height", f"{max(0, new_end - new_y):g}")
+            for line in node.iter(f"{{{svg_ns}}}line"):
+                for attr in ("y1", "y2"):
+                    if attr in line.attrib:
+                        line.set(attr, f"{map_time(float(line.get(attr))):g}")
+            for label in node.iter(f"{{{svg_ns}}}text"):
+                if "y" in label.attrib:
+                    label.set("y", f"{map_time(float(label.get('y'))):g}")
+            for polyline in node.iter(f"{{{svg_ns}}}polyline"):
+                values = re.findall(number_pattern, polyline.get("points", ""))
+                if len(values) >= 2 and len(values) % 2 == 0:
+                    points = []
+                    for offset in range(0, len(values), 2):
+                        points.append(f"{float(values[offset]):g},{map_time(float(values[offset + 1])):g}")
+                    polyline.set("points", " ".join(points))
+
         SEQUENCE_STAGE_RAIL_STYLE = (
-            "grid-template-columns:" + " ".join(f"{value:.3f}fr" for value in stage_widths) + ";"
-            + f"column-gap:{(sum(gaps) / max(1, len(gaps)) / height * 100):.4f}%;"
+            "grid-template-columns:repeat(5,minmax(0,1fr));"
+            + "column-gap:.45vw;"
             + f"padding-left:{left_space / height * 100:.4f}%;padding-right:{right_space / height * 100:.4f}%"
         )
 
@@ -566,19 +619,17 @@ def build_journey():
     section = source_journey
     section = section.replace('class="slide s-gray task-rel-page"', 'class="slide s-gray task-rel-page r-copy-journey"', 1)
     section = re.sub(r'<div class="collab-blueprint"[^>]*>',
-        '<div class="collab-blueprint" role="group" aria-label="任务导向与学习导向共用的五阶段旅程；角色交接形成场景图解，底部依次对应设计断点与机会点">', section, count=1)
+        '<div class="collab-blueprint" role="group" aria-label="任务导向与学习导向两条并列用户旅程，共享同一组协作角色；五阶段下方逐列对应断点与机会点">', section, count=1)
     section = section.replace('<div class="cb-axis"><small>STAGE</small><b>阶段</b></div>',
-        '<div class="cb-axis"><small>TIME</small><b>旅程 →</b></div>', 1)
+        '<div class="cb-axis"><small>USER JOURNEY</small><b>阶段</b></div>', 1)
     section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="用户旅程：任务交付与目标学习"', 1)
-    section = section.replace('<div class="ttl">AI协作开发者旅程图</div>', '<div class="ttl">任务交付与目标学习，共用一条协作旅程</div>', 1)
-    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '任务导向与学习导向是两种进入起点；经验程度影响引导深度，不定义用户类型', 1)
+    section = section.replace('<div class="ttl">AI协作开发者旅程图</div>', '<div class="ttl">同一服务，承接任务与学习两条旅程</div>', 1)
+    section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '按进入目标区分旅程；模糊兴趣与明确学习目标，都属于学习导向', 1)
     section = section.replace('<div class="section-tabs"></div>',
         '<div class="r-journey-head-controls">' + tabs("用户旅程") + '</div>', 1)
     section = section.replace('<div class="body-area"', '<div class="body-area r-journey-body"', 1)
     section = re.sub(r'(<div class="body-area r-journey-body" aria-label=")[^"]*(")',
-        r'\1从任务现场或学习目标进入，经过寻源、路径明确、实践核验，最终把经验带入下一次任务与学习\2', section, count=1)
-    section = section.replace('<div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>',
-        '<div class="cb-row-label cb-human-label"><small>ENTRY POINTS</small><b>两种起点</b></div>', 1)
+        r'\1两条用户行为泳道、共用人机协作时序，五阶段下方分别对应设计断点与机会点\2', section, count=1)
 
     stage_html = []
     for kicker, title, desc, phase, illustration in JOURNEY_STAGES:
@@ -589,28 +640,40 @@ def build_journey():
             f'<small>{esc(kicker)}</small><b>{esc(title)}</b><span>{esc(desc)}</span></div>'
             f'<div class="cb-stage-visual" aria-hidden="true"><img src="{image_data}" alt=""></div></div>'
         )
+    section = section.replace('aria-label="五个任务阶段：Need（提出目标并装配初始上下文）、Search / Fetch、Generate、Decide、Execute"',
+        'aria-label="五个旅程阶段：认知起步、寻源与推荐、明确方向、边做边懂、带入下一次"', 1)
     section = replace_div_content(section, "cb-stage-rail", "".join(stage_html))
 
-    human_actions = [
-        ("我有一个具体开发问题", "我想入门，或掌握一项能力"),
-        ("需要确认资料与版本", "想找到适合自己的学习目标"),
-        ("把现场线索变成可执行目标", "帮我把目标整理成学习路径"),
-        ("边运行边定位错误", "按路径实践并检查理解"),
-        ("整理可复用的开发经验", "把笔记带进下一次实践"),
-    ]
+    task_avatar = svg_data("persona-task.svg")
+    learn_avatar = svg_data("persona-learning.svg")
+    section = section.replace('<div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>',
+        f'<div class="r-persona-lane-label r-task-lane-label"><img src="{task_avatar}" alt=""><span><b>任务导向</b><small>带着问题推进交付</small></span></div>'
+        f'<div class="r-persona-lane-label r-learn-lane-label"><img src="{learn_avatar}" alt=""><span><b>学习导向</b><small>从兴趣或目标出发</small></span></div>', 1)
+    human_actions = {
+        "task": [
+            "明确现场问题与交付目标",
+            "查找资料，核对版本与环境",
+            "组织上下文，发起 Prompt",
+            "运行代码，定位并修正错误",
+            "整理验证结果，复用开发经验",
+        ],
+        "learn": [
+            "因兴趣或能力目标开始",
+            "寻找适合当前基础的内容",
+            "生成、调整自己的学习路径",
+            "边学边练，检查是否理解",
+            "记录认知，继续下一段学习",
+        ],
+    }
     human_lanes = []
-    for (task, learn), stage in zip(human_actions, JOURNEY_STAGES):
-        phase = stage[3]
-        bubbles = []
-        for role, text in (("task", task), ("learn", learn)):
-            bubbles.append(
-                f'<div class="r-persona-row" data-avatar-ref="{role}">'
-                f'<span class="r-persona-avatar" data-avatar-ref="{role}"></span>'
-                f'<span class="r-persona-bubble">{esc(text)}</span></div>'
+    for role, actions in human_actions.items():
+        for text, stage in zip(actions, JOURNEY_STAGES):
+            human_lanes.append(
+                f'<article class="cb-lane-cell cb-human-step r-user-action is-{stage[3]}" data-journey="{role}">'
+                f'<span>{esc(text)}</span></article>'
             )
-        human_lanes.append(f'<article class="cb-lane-cell cb-human-step is-{phase}">{"".join(bubbles)}</article>')
     section = replace_div_content(section, "cb-human-lane", "".join(human_lanes))
-    section = section.replace('aria-label="开发者泳道"', 'aria-label="两种开发者在五个阶段的表达"', 1)
+    section = section.replace('aria-label="开发者泳道"', 'aria-label="用户行为：任务导向与学习导向的并列旅程"', 1)
 
     section = section.replace('<div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>',
         '<div class="cb-row-label cb-painpoint-label"><small>DESIGN BREAKS</small><b>设计断点</b></div>', 1)

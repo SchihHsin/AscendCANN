@@ -7668,3 +7668,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据：用户确认复用现有任务（H）；任务回答、输入格式和口袋同步是本地演示内容（M），不代表真实模型或 NPU 验证。
 - 验证：`npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check` 通过；本地 1280×720 浏览器确认已选任务、回答、收纳按钮，点按后提示成功，知识口袋显示新卡与三条示例卡。未运行自动化测试。
 - 提交 `1d27dc34` 已推送到 `origin/main`；GitHub Pages workflow `40749416960` 成功。线上小程序入口 `?rev=1d27dc34` HTTP 200，回读到 `pocket-task=图像推理调试`；`/ascstudio/` HTML 引用 `index-B78vSO_a.js` 与 `index-BLPeqaaM.css`，两项资源均 HTTP 200。
+
+### 2026-10-29 · Ascend Studio 旅程页等宽阶段与双行为泳道
+
+- 按用户反馈修正汇报第 2 页：阶段之间的空隙过大、阶段宽度不均、单行混放两种进入起点不符合清晰的旅程结构。改成五列等宽阶段、任务导向 / 学习导向两条带画像的行为泳道、共享的协作角色时序、逐阶段对齐的设计断点和绿色机会点。
+- 用户区分依据是进入目标，不是专业级与小白；模糊兴趣和明确能力目标均属于学习导向。机会点继续一一关联主动建议 / 连线 Prompt、学习路径共创、开发中图解、经验回流 / 认知卡和小程序移动续学。
+- `beautiful-mermaid` 原阶段区间、消息时间点被重映射到等宽阶段范围，缩小阶段留白；恢复并保留 5 张阶段插画、2 类开发者头像、6 个协作角色与 18 张图标交接卡。更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、生成报告 HTML、`qa.md` 和本交接记录。
+- 验证：16 页，5 个等宽阶段、10 个行为节点、5 个断点、5 个机会点、6 类角色与 18 张交接卡；`python3 -m py_compile`、报告构建、`node --check`、`git diff --check` 均通过。CUA 本地 1280×720 视口检查通过。无用户研究新证据；本页仍是设计推演，不改变产品原型或 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 / 推送：报告 HTML、构建脚本、QA 与本交接记录按文件范围隔离，从最新 `origin/main` 创建提交并推送；其余暂存、未暂存及未跟踪内容未纳入。
