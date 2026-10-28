@@ -1,12 +1,12 @@
 import { ICON_SIZE } from "../../icon-system.js";
 import { forwardRef, useRef } from "react";
 import {
-  IconArrowUpRight,
   IconArrowsMinimize,
   IconChevronDown,
   IconChevronRight,
   IconFocus2,
   IconGripVertical,
+  IconMaximize,
   IconMinus,
   IconPin,
   IconPinnedOff,
@@ -112,7 +112,7 @@ export function CanvasNodeActions({ title, move, onFocus, onOpenContent, pin, co
       onKeyDown={move.onKeyDown}
     ><IconGripVertical size={ICON_SIZE.inline} /></CanvasCardButton>}
     {onFocus && <CanvasCardButton type="button" aria-label={`聚焦${title}`} title="聚焦到画布视野中心" onClick={onFocus}><IconFocus2 size={ICON_SIZE.inline} /></CanvasCardButton>}
-    {onOpenContent && <CanvasCardButton type="button" aria-label={`打开${title}完整内容`} title="在任务内容区打开完整内容" onClick={onOpenContent}><IconArrowUpRight size={ICON_SIZE.inline} /></CanvasCardButton>}
+    {onOpenContent && <CanvasCardButton type="button" aria-label={`打开${title}完整内容`} title="在任务内容区打开完整内容" onClick={onOpenContent}><IconMaximize size={ICON_SIZE.inline} /></CanvasCardButton>}
     {pin && <CanvasCardButton type="button" active={Boolean(pin.active)} aria-label={`${pin.active ? "取消固定" : "固定"}${title}${pinScope}`} title={pin.active ? `取消固定${pinScope}` : `固定${pinScope}`} onClick={pin.onToggle}>{pin.active ? <IconPinnedOff size={ICON_SIZE.inline} /> : <IconPin size={ICON_SIZE.inline} />}</CanvasCardButton>}
     {collapse && <CanvasCardButton type="button" aria-label={collapsed ? `展开${title}` : `收起${title}`} title={collapsed ? "展开卡片内容" : "收起卡片内容"} aria-expanded={!collapsed} onClick={collapse.onToggle}>{collapsed ? <IconChevronRight size={ICON_SIZE.inline} /> : <IconChevronDown size={ICON_SIZE.inline} />}</CanvasCardButton>}
     {children}
