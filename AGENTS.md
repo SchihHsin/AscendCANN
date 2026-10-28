@@ -7371,5 +7371,5 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户明确要求回答相关操作统一只显示图标，鼠标悬浮时再显示文字提示；知识口袋、复制、赞同和不赞同沿用同一尺寸与样式。tooltip 同时响应键盘聚焦，按钮保留 `aria-label`，让无障碍名称不依赖视觉提示。
 - 修改 `ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css` 及本交接。按钮功能和数据流不变；页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。依据为用户截图和明确要求（H）。
-- 验证：`npm run build` 与 `git diff --check` 通过；未运行自动化测试。当前 CUA 预览截图为白屏，视觉回放未完成。
-- 发布状态：实现提交推送后补记提交号与 Pages 状态。
+- 验证：`npm run build:pages`、发布 JS `node --check` 与 `git diff --check` 通过；CUA 在 744×666 任务预览中确认知识口袋、复制、赞同和不赞同均无常驻文字，键盘聚焦时 tooltip 正常显示。未运行自动化测试。
+- 发布：实现提交 `fc41cb09` 已推送至 `origin/main`；Pages workflow `40642807299` 的 build / deploy 均成功。页面序列、API / Protocol、Host / Harness、Application / Task 边界未改变。
