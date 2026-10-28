@@ -1979,6 +1979,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 具体规范与实现映射见 `interaction-design.md`。依据为用户确认的统一语义方向（H）和原型已有任务状态 / 材料（M）；没有改变页面序列、路由、API / Protocol、Host / Harness 或 Application / Task 边界。
 - 合并后的 `npm run build:pages`、相关 JS `node --check`、静态资源引用核验与 Git 差异检查通过。本地 `5192` 返回 HTTP 200；未运行自动化测试或截图回放。合并提交 `14fa638a` 已推送至 `origin/main`；Pages workflow `40558335339` 成功，线上 `/AscendCANN/ascstudio/`、`index-4GI4qk_O.js` 与 `index-pVOvJPt0.css` 均 HTTP 200。
 
+### 2026-10-28 · ResNet50 内容卡节点角色
+
+- ResNet50 的树阶段和学习动作使用“步骤”；单独展开的图解、课程 / 视频与讲解材料使用“材料”；练习本身使用“操作”，其检查产出使用“结果”。“全部展开”中的整张官方学习动作卡仍代表一个步骤。
+- `node-semantics.js` 按 `:diagram`、`:lesson`、`:practice` 后缀优先归一化，再匹配父学习动作前缀，避免内容卡误继承“步骤”。同步修订 `interaction-design.md` 的任务映射表。
+- 本地 5192 回放确认图解为“材料”、练习为“操作”；`npm run build:pages` 与语法 / 差异检查通过。未运行自动化测试，也未做真实设备 / NPU 验证。
+
 ### 2026-10-28 · 学习发现「更多推荐」配图提亮
 
 - 用户选择将「更多推荐」楼层配图小幅提亮并略微降饱和，同时保留课程粉、学习路径绿、知识点青、认证橙的区分。只作用于该楼层图片；Banner、新上架配图和白色楼层底不变。

@@ -7304,7 +7304,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 画布节点角色共七类：目标、步骤、材料、证据、操作、结果、笔记。`contentType` 表示代码 / 文档 / 图解 / 视频等内容形态，`status` 表示对象状态，连线的 `relationType` 表示对象间关系；三者不应混作节点分类。
 - 当前 AddCustom 与图像推理映射基线：任务简报为目标；代码、文档、解释图解为材料；现象 / 日志为证据；参数试算、练习与待执行修改为操作；尝试、Diff、检查、复核记录为结果；用户新增内容为笔记。ResNet50 的官方阶段与学习动作是步骤，独立图解 / 讲解 / 视频 / 来源是材料，练习为操作、练习产出为结果；完整展开的“学习动作卡”仍是步骤。
-- 审查发现 `src/shared/canvas/node-semantics.js` 的 ResNet50 前缀映射 `learning-official-step-` 会命中 `${stepId}:diagram`、`${stepId}:lesson`、`${stepId}:practice`，并覆盖 `OfficialLearningPathCanvas.jsx` 为独立材料 / 操作卡传入的角色。因此截图中的图解显示“步骤”是当前映射缺陷，不是预期语义，也不能归因于旧页面；修正尚未实施。
+- 审查发现 `src/shared/canvas/node-semantics.js` 的 ResNet50 前缀映射 `learning-official-step-` 会命中 `${stepId}:diagram`、`${stepId}:lesson`、`${stepId}:practice`，并覆盖 `OfficialLearningPathCanvas.jsx` 为独立材料 / 操作卡传入的角色。因此截图中的图解显示“步骤”是映射缺陷，不是预期语义，也不能归因于旧页面；随后修复见下方实施记录。
 - 本轮只做代码 / 截图对照与语义梳理，未改源码、Pages 或报告序列；未运行构建 / 测试，未新增真实运行或 NPU 证据。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
 
 
@@ -7351,3 +7351,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户确认的配色层级，左侧图标栏使用白色 `--surface`，中间任务列表使用浅灰 `--surface-subtle`（`#F8F8F8`，比画布 `--canvas-surface` `#F5F5F5` 更浅），对话面板保持白色。保留既有淡彩氛围图；只调整面板承载面的颜色。
 - 修改 `ascend-studio/src/styles.css`、`ascstudio/index.html` 与对应 Pages 构建资源。依据为用户明确选择（H），颜色 token 遵循 Ascend Studio 界面规范。页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - `npm run build:pages`、构建 JS `node --check`、构建资源引用检查、`git diff --check` 通过；本地 8008 任务工作区预览确认三栏层级，未运行自动化测试。提交 `f90d9b10` 已推送至 `origin/main`；Pages workflow `40631220110` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-BdTuXrM9.js` 和 `index-DlbrpRmv.css`，两者 HTTP 200。
+
+
+### 2026-10-28 · ResNet50 画布节点分类修正
+
+- 按用户确认修复 ResNet50 独立内容卡角色：`:diagram` 与 `:lesson` 为材料，`:practice` 为操作；路径阶段、真实学习动作以及全部展开时代表完整学习动作的卡继续为步骤。练习 / 理解检查产出仍归结果，原始观察依据才归证据。
+- 领域归一化先识别明确内容后缀，再处理学习步骤 ID 前缀，避免子卡继承父学习步骤的角色。规则同步到 `ascend-studio/interaction-design.md` 与 `ascend-studio/AGENTS.md`。
+- `node --check ascend-studio/src/shared/canvas/node-semantics.js`、`npm run build:pages`、`git diff --check` 通过；本地 5192 浏览器 AX 回放确认 3.1 图解容器标为 material / 材料，3.2 的动手练习卡标为 action / 操作，返回 3.1 后现场保留。没有真实模型 / NPU 验证；未运行自动化测试。
+- 发布含共享语义映射和 `/ascstudio/` 构建产物；不改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。推送及 Pages 结果见本记录提交回执。

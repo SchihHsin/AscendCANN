@@ -463,7 +463,7 @@
 | --- | --- | --- |
 | AddCustom 精度异常 | 问题现场为 `goal`；输入代码、日志、文档为 `material` / `evidence`；线索解释为 `material`，参数与范围操作为 `action`，尝试、Diff、范围 / 误差检查与复核记录为 `result`。使用显式的依据、生成自、检查和版本替代关系。 | 尾块越界只是待验证线索；尝试、代码快照、Diff 和验证严格按版本与输入条件关联；示例范围通过不代表真实精度 / 根因 / NPU 通过。 |
 | 图像推理开发 / 学习 | 任务目标、图像 / 张量 / 预处理说明、练习动作、输出结果和核对材料使用公共节点字段；图像数据流与课程步骤通过显式 `precedes`、`supports`、`checks` 表达。 | HWC / CHW、通道、数据类型、预处理约定以选定示例 / 来源为准；本地计算结果不冒充真实模型或 NPU 运行。 |
-| ResNet50 学习 | 学习目标 `goal` → 五个官方主题阶段（`step`，带真实层级）→ 阶段内学习动作（`step`）；图解 / 视频 / 课程 / 代码是 `material`，练习和理解结果是 `result` / `evidence`。阶段父子与学习顺序显式映射。 | 15 个学习动作的目标、visual、flow、concepts、source、media、lesson、checkpoint 继续保留；阶段状态按子步骤学习状态汇总，不套用 AddCustom 诊断状态。学习完成不意味着设备实测。 |
+| ResNet50 学习 | 学习目标 `goal` → 五个官方主题阶段（`step`，带真实层级）→ 阶段内学习动作（`step`）；独立图解 / 视频 / 课程 / 代码材料为 `material`；练习本身为 `action`，理解检查或练习产出为 `result`，原始观察事实才用 `evidence`。完整展开、代表一个官方学习动作的内容卡仍为 `step`。阶段父子与学习顺序显式映射。 | 15 个学习动作的目标、visual、flow、concepts、source、media、lesson、checkpoint 继续保留；阶段状态按子步骤学习状态汇总，不套用 AddCustom 诊断状态。学习完成不意味着设备实测。 |
 
 ### 改造次序与验收清单
 
