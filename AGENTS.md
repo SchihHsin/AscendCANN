@@ -7389,3 +7389,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据来源为旧精简报告 #5 与线上电脑端 / 本地小程序原型；人群旅程重组与痛点仍属设计推演，不冒充访谈结论。没有改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：汇报构建脚本、两段 `node --check`、`git diff --check` 通过；结构检查确认 16 页、旅程含 HTML 网格与时序视图、只有 5 张局部阶段插画。CUA 在 1280×720 检查全景 / 时序，并直接跳转 `#2 → #11 → #2`，可见页面与页码同步。未运行自动化测试。
 - 提交 / 推送：交接与材料通过独立临时索引相对最新 `origin/main` 提交，并推送到 `main`；本地工作区其他暂存、未暂存和未跟踪改动未纳入。
+
+### 2026-10-28 · 恢复工作区白灰白底色
+
+- 按用户要求恢复上一版配色：图标栏白色 `--surface`，列表浅灰 `--surface-subtle`（`#F8F8F8`），对话白色。继续保留淡彩氛围图。
+- 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 页面资源引用。`npm run build:pages`、发布 JS `node --check`、资源引用检查和 `git diff --check` 通过；本地 8008 任务页预览确认白灰白，未运行自动化测试。页面顺序 / hash 和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 实现提交 `5d04b35e` 已推送至 `origin/main`；Pages workflow `40644423331` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-Cf2J7xCF.js` 与 `index-BB1jQhKy.css`，两者 HTTP 200。
