@@ -1,0 +1,47 @@
+sequenceDiagram
+    participant K as 社区
+    participant E as 环境
+    participant A as Agent
+    participant S as Studio
+    actor L as 学习者
+    actor T as 任务者
+
+    rect 01 目标与现场
+      T->>S: 任务
+      L->>S: 目标
+      S->>A: 整理
+      S-->>L: 补充
+      T-->>S: 环境
+    end
+
+    rect 02 搜索与取回
+      A->>K: 检索
+      K-->>A: 版本
+      A-->>S: 依据
+      S-->>T: 范围
+      T->>S: 补充
+    end
+
+    rect 03 生成可行动起点
+      S-->>T: 推荐
+      T->>S: 连线
+      S-->>L: 生成
+      L->>S: 调整
+      L-->>S: 节点
+    end
+
+    rect 04 判断与理解
+      T->>E: 运行
+      L->>E: 练习
+      E-->>A: 日志
+      A-->>S: 图解
+      S-->>L: 说明
+    end
+
+    rect 05 执行与留存
+      T->>E: 复测
+      E-->>S: 证据
+      S-->>T: 草稿
+      T->>K: 分享
+      L->>S: 卡片
+    end

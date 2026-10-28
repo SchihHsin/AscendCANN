@@ -864,6 +864,19 @@ body.overview #panel,body.overview #toggle{display:none!important}
 @media(max-width:760px){.delivery-overview,.api-blueprint,.agent-blueprint{height:auto}.delivery-core{flex-wrap:wrap;text-align:center}.delivery-core:after,.delivery-columns:before,.delivery-column:before{display:none}.delivery-columns{grid-template-columns:1fr;padding-top:0}.delivery-column{min-height:250px}.asset-deck,.api-flow,.api-main,.agent-flow,.agent-assets{grid-template-columns:1fr;height:auto}.asset-card{min-height:430px}.api-flow article:not(:last-child):after{content:"↓";top:auto;right:auto;bottom:-14px;left:50%;transform:none}.api-panel{min-height:180px}.agent-card{min-height:320px}.api-contract,.agent-boundary{align-items:flex-start;flex-direction:column}}
 @media(max-width:1180px) and (min-width:761px){.service-flow-chart{grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,.9fr);gap:.25vw}.flow-stage{padding:1vh .6vw}.source-type{gap:6px;padding:7px 5px}.source-type small{font-size:10px}.experience-map{grid-template-columns:minmax(0,1.15fr) 24px minmax(0,.95fr)}.floor-service-row{grid-template-columns:minmax(72px,.72fr) 14px minmax(0,1.28fr);padding:5px}.service-definition small{font-size:10px}.unit-model{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}.channel-route{padding:1vh .65vw}.channel-steps{gap:2px}.channel-steps>div{padding:5px 3px}.ownership-band{grid-template-columns:1fr 1fr 1fr 1fr}.ownership-band>b{grid-column:1/-1}}
 @media(max-width:760px){.kp-cover .cv-content{height:auto;min-height:100svh;padding:22px 17px}.kp-cover .cv-center{grid-template-columns:1fr;gap:12px;padding:16px 0}.kp-cover .cover-cann-logo{width:92px}.kp-cover h1{font-size:clamp(36px,10vw,48px)}.kp-cover .knowledge-cover-hero{height:100%;object-fit:contain}.kp-cover-figure{height:280px}.kp-cover .cv-meta{display:none}.service-flow-chart{grid-template-columns:1fr;gap:6px}.flow-transition{height:22px;transform:rotate(90deg)}.flow-transition small{display:none}.flow-stage{min-height:180px;padding:12px}.feedback-ribbon{flex-wrap:wrap;justify-content:center}.experience-map{grid-template-columns:1fr;gap:6px}.experience-connector{height:22px;flex-direction:row}.experience-connector>small{writing-mode:horizontal-tb}.discovery-preview,.floor-service-map{padding:10px}.demo-resource-card>img{height:94px}.floor-service-row{min-height:58px}.unit-model{grid-template-columns:1fr}.unit-object-card{padding:12px}.unit-field-map{grid-template-columns:1fr 1fr}.unit-field{min-height:110px;padding:10px}.channel-branches{grid-template-columns:1fr;gap:8px;padding-top:12px}.channel-branches:before{left:50%;right:auto;height:100%;border-top:0;border-right:0;border-radius:0}.channel-route{min-height:190px;padding:12px}.channel-route:before{height:12px}.channel-steps{min-height:72px}.phase-columns{grid-template-columns:1fr}.phase-card{min-height:210px;padding:12px}.timeline-track{grid-template-columns:1fr 20px 1fr 20px 1fr;margin:0 0 8px}.ownership-band{grid-template-columns:1fr}.ownership-band>b{grid-column:auto}.quality-signals{flex-wrap:wrap}.kp-visual-clean .kp-body{overflow:auto}}
+.detail-flow-map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.05vw;align-items:stretch;width:100%;height:100%;min-height:0}
+.detail-flow-stage{--flow:#5B5BD6;--flow-soft:#ECECFB;position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;padding:0 .25vw}
+.detail-flow-stage.blue{--flow:#4B8DFF;--flow-soft:#EDF3FF}.detail-flow-stage.orange{--flow:#F47A4B;--flow-soft:#FFF1E9}.detail-flow-stage.neutral{--flow:#8792A2;--flow-soft:#F1F3F6}
+.detail-flow-stage:not(:last-of-type)::after{content:"→";position:absolute;top:clamp(96px,13vh,126px);right:-1.12vw;z-index:2;color:#9DA7B5;font:400 24px Inter,sans-serif}
+.detail-flow-kicker{display:flex;align-items:baseline;gap:9px;min-height:31px;color:#626b78}.detail-flow-kicker b{font:700 16px Inter,sans-serif;letter-spacing:.06em}.detail-flow-kicker span{font-size:var(--fs-xs);font-weight:650;letter-spacing:.04em}
+.detail-flow-node{display:flex;flex-direction:column;align-items:center;justify-content:center;align-self:center;flex:none;width:clamp(132px,11.2vw,160px);height:clamp(132px,11.2vw,160px);margin:.8vh auto 1.2vh;border:2px solid color-mix(in srgb,var(--flow) 52%,#d4d8df);border-radius:50%;background:radial-gradient(circle at 50% 42%,#fff 0,var(--flow-soft) 76%);box-shadow:0 12px 28px -24px color-mix(in srgb,var(--flow) 52%,transparent);text-align:center;color:#303946}
+.detail-flow-node b{max-width:92%;font-size:var(--fs-h3);line-height:1.24}.detail-flow-node small{display:block;margin-top:6px;color:#69717d;font-size:var(--fs-xs);line-height:1.35}
+.detail-flow-code{flex:none;min-height:72px;margin:0 0 .7vh;padding:8px 9px;border-left:2px solid color-mix(in srgb,var(--flow) 72%,#d4d8df);border-radius:0 8px 8px 0;background:rgba(255,255,255,.56);color:#4e5968;white-space:pre-wrap;overflow-wrap:anywhere;font:500 clamp(10px,.75vw,12px)/1.45 'SFMono-Regular',Consolas,monospace}
+.detail-flow-copy{display:grid;gap:.65vh;align-content:start;color:#657080;font-size:var(--fs-body);line-height:1.42}.detail-flow-copy p{margin:0}.detail-flow-copy b{color:#303946;font-weight:700}
+.detail-flow-bottom{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:9px;min-height:36px;margin-top:auto;padding:7px 12px;border-top:1px dashed #cbd1da;color:#737e8b;font-size:var(--fs-xs);line-height:1.4;text-align:center}
+.detail-flow-bottom b{color:#4e5968;font-size:var(--fs-sm)}.detail-flow-bottom .flow-em{color:#5B5BD6;font-weight:700}.detail-flow-bottom .flow-warm{color:#B66C4B;font-weight:700}
+@media(max-width:1180px) and (min-width:761px){.detail-flow-map{gap:.8vw}.detail-flow-node{width:clamp(118px,10.5vw,142px);height:clamp(118px,10.5vw,142px)}.detail-flow-stage:not(:last-of-type)::after{right:-.9vw;font-size:20px}.detail-flow-code{font-size:10px;padding:7px}}
+@media(max-width:760px){.detail-flow-map{grid-template-columns:1fr;gap:22px;height:auto}.detail-flow-stage{padding:0 2px}.detail-flow-stage:not(:last-of-type)::after{content:"↓";top:auto;right:50%;bottom:-23px;transform:translateX(50%);font-size:20px}.detail-flow-node{width:122px;height:122px;margin:5px auto 10px}.detail-flow-code{min-height:0;font-size:11px}.detail-flow-bottom{grid-column:auto;flex-wrap:wrap}.kp-visual-clean .kp-body{overflow:auto}}
 </style>
 <style id="report-ppt-color-alignment">
 /* Report PPT 色彩收束：冷灰与透白为底，蓝紫为主，蓝色和暖橙只作少量语义强调。 */
@@ -984,7 +997,7 @@ body.overview #panel,body.overview #toggle{display:none!important}
       <g class="viz-step"><circle cx="625" cy="112" r="42"/><text class="viz-small-label" x="625" y="118" text-anchor="middle">采集</text></g><g class="viz-step viz-step-green"><circle cx="782" cy="286" r="42"/><text class="viz-small-label" x="782" y="292" text-anchor="middle">拆关系</text></g><g class="viz-step viz-step-orange"><circle cx="625" cy="460" r="42"/><text class="viz-small-label" x="625" y="466" text-anchor="middle">核版本</text></g><g class="viz-step viz-step-violet"><circle cx="468" cy="286" r="42"/><text class="viz-small-label" x="468" y="292" text-anchor="middle">登记发布</text></g>
       <g class="viz-unit"><circle class="viz-unit-ring" cx="1000" cy="286" r="146"/><circle class="viz-unit-core" cx="1000" cy="286" r="93"/><text class="viz-unit-title" x="1000" y="279" text-anchor="middle">Knowledge Unit</text><text class="viz-unit-note" x="1000" y="310" text-anchor="middle">可检索 · 可引用 · 可更新</text></g>
       <g class="viz-satellite"><circle cx="925" cy="132" r="40"/><text class="viz-sat-label" x="925" y="137" text-anchor="middle">稳定 ID</text></g><g class="viz-satellite viz-green"><circle cx="1078" cy="132" r="40"/><text class="viz-sat-label" x="1078" y="137" text-anchor="middle">适用范围</text></g><g class="viz-satellite viz-violet"><circle cx="925" cy="440" r="40"/><text class="viz-sat-label" x="925" y="445" text-anchor="middle">来源许可</text></g><g class="viz-satellite viz-orange"><circle cx="1078" cy="440" r="40"/><text class="viz-sat-label" x="1078" y="445" text-anchor="middle">Owner · 核验</text></g>
-      <g class="viz-delivery"><circle cx="1375" cy="160" r="48"/><text class="viz-label" x="1375" y="157" text-anchor="middle">网页</text><text class="viz-note" x="1375" y="181" text-anchor="middle">阅读 · 搜索</text></g><g class="viz-delivery viz-green"><circle cx="1375" cy="286" r="48"/><text class="viz-label" x="1375" y="283" text-anchor="middle">产品 API</text><text class="viz-note" x="1375" y="307" text-anchor="middle">目录 · 推荐</text></g><g class="viz-delivery viz-orange"><circle cx="1375" cy="412" r="48"/><text class="viz-label" x="1375" y="409" text-anchor="middle">Agent</text><text class="viz-note" x="1375" y="433" text-anchor="middle">MCP · Skill</text></g>
+      <g class="viz-delivery"><circle cx="1375" cy="160" r="48"/><text class="viz-label" x="1375" y="157" text-anchor="middle">网页</text><text class="viz-note" x="1375" y="181" text-anchor="middle">HTML · llms.txt</text></g><g class="viz-delivery viz-green"><circle cx="1375" cy="286" r="48"/><text class="viz-label" x="1375" y="283" text-anchor="middle">产品 API</text><text class="viz-note" x="1375" y="307" text-anchor="middle">目录 · 推荐</text></g><g class="viz-delivery viz-orange"><circle cx="1375" cy="412" r="48"/><text class="viz-label" x="1375" y="409" text-anchor="middle">Agent</text><text class="viz-note" x="1375" y="433" text-anchor="middle">MCP · Skill</text></g>
     </svg>
   </div></div>
   <div class="kp-foot"><span>治理：来源许可 · 版本兼容 · 权限审计 · 资源退役</span><span>目标服务示意，不代表后端已接入</span></div>
@@ -1077,169 +1090,142 @@ body.overview #panel,body.overview #toggle{display:none!important}
 </section>
 <section class="slide s-gray kp-slide kp-visual-clean" data-component="公开发现资产落地" data-title="公开页面要做到可发现、可理解、可引用">
   <div class="head"><div class="head-l"><div class="brand"><span class="ttl">公开页面要做到可发现、可理解、可引用</span></div><div class="subttl">05 · PUBLIC DISCOVERY　站点文件与正文分别承担不同工作</div></div></div>
-  <div class="body-area kp-body"><div class="map-stage"><div class="asset-deck">
-    <article class="asset-card">
-      <header class="asset-card-head"><span class="asset-index">01</span><div><small>站点根目录 · 抓取入口</small><h3>robots.txt + sitemap.xml</h3></div></header>
-      <div class="asset-code-label"><b>根目录的两份配置</b><span>配置公开范围与规范 URL</span></div>
-      <div class="asset-snippets">
-        <section><label>/robots.txt</label><pre class="asset-code">User-agent: *
+  <div class="body-area kp-body"><div class="map-stage"><div class="detail-flow-map">
+    <article class="detail-flow-stage neutral">
+      <div class="detail-flow-kicker"><b>01</b><span>站点抓取入口</span></div>
+      <div class="detail-flow-node"><b>robots.txt<br>+ sitemap.xml</b><small>公开路径 · 规范 URL</small></div>
+      <pre class="detail-flow-code">/robots.txt
 Allow: /docs/
 Disallow: /preview/
-Sitemap: https://docs.example/sitemap.xml</pre></section>
-        <section><label>/sitemap.xml · 单条记录示例</label><pre class="asset-code">&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
-&lt;url&gt;&lt;loc&gt;https://docs.example/c&lt;/loc&gt;
-&lt;lastmod&gt;2026-10-20&lt;/lastmod&gt;&lt;/url&gt;
-&lt;/urlset&gt;</pre></section>
-      </div>
-      <div class="asset-explain">
-        <div><b>怎么建设</b><p>robots 只写允许或排除的公开路径；sitemap 只列规范页 URL，并随正式发布更新 lastmod。</p></div>
-        <div><b>怎么发挥作用</b><p>遵循规则的爬虫据此判断抓取范围、发现新页面和内容更新；robots 不是登录或权限控制。</p></div>
-      </div>
-      <div class="asset-outcome"><b>得到</b><span>爬虫能发现正式页面；站点也不会主动提交草稿或重复地址。</span></div>
-    </article>
-    <article class="asset-card">
-      <header class="asset-card-head"><span class="asset-index">02</span><div><small>每个资源页 · 正文与类型</small><h3>HTML / Markdown + JSON-LD</h3></div></header>
-      <div class="asset-code-label"><b>页面组织示例</b><span>正文是事实来源，元数据描述正文</span></div>
-      <pre class="asset-code">HTML: stable title / headings / anchors
-MD:   same steps / code / version scope
+Sitemap: /sitemap.xml
 
-&lt;script type="application/ld+json"&gt;
-{
-  "@context": "https://schema.org",
+&lt;url&gt;/docs/course&lt;/url&gt;
+&lt;lastmod&gt;2026-10-20</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> robots 写公开路径规则；sitemap 列规范页 URL，并在正式发布时更新日期。</p><p><b>使用</b> 遵循规则的爬虫判断抓取范围、发现新页面和内容更新。robots 不负责登录或鉴权。</p></div>
+    </article>
+    <article class="detail-flow-stage blue">
+      <div class="detail-flow-kicker"><b>02</b><span>可读正文</span></div>
+      <div class="detail-flow-node"><b>HTML<br>+ Markdown</b><small>同一内容源 · 稳定锚点</small></div>
+      <pre class="detail-flow-code">HTML: title / headings / anchors
+MD:   same steps / code / version
+/docs/ascendc-course#build</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> 正文给稳定标题、章节锚点、代码和适用版本；HTML 与 Markdown 由同一来源发布。</p><p><b>使用</b> 人阅读 HTML；检索器定位章节和代码，再把回答引用回规范原文。</p></div>
+    </article>
+    <article class="detail-flow-stage">
+      <div class="detail-flow-kicker"><b>03</b><span>语义描述</span></div>
+      <div class="detail-flow-node"><b>JSON-LD</b><small>Course · name · URL</small></div>
+      <pre class="detail-flow-code">{
   "@type": "Course",
   "name": "Ascend C 算子开发入门",
-  "url": "https://docs.example/docs/ascendc-course/"
-}
-&lt;/script&gt;</pre>
-      <div class="asset-explain">
-        <div><b>怎么建设</b><p>给正文稳定标题、章节锚点、代码和适用版本；HTML 与 Markdown 从同一来源发布，避免内容漂移。</p></div>
-        <div><b>怎么发挥作用</b><p>人阅读 HTML；检索器读取章节与机器可读字段，理解这是课程及其主题，再引用回规范原文。</p></div>
-      </div>
-      <div class="asset-outcome"><b>得到</b><span>可读、可定位、类型清楚的课程与知识页面。</span></div>
+  "url": "/docs/ascendc-course/"
+}</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> 在资源页嵌入 Schema.org 类型和关键字段，字段值与正文保持一致。</p><p><b>使用</b> 搜索与检索系统据此识别页面是课程及其主题；正文仍是内容事实来源。</p></div>
     </article>
-    <article class="asset-card">
-      <header class="asset-card-head"><span class="asset-index">03</span><div><small>站点根目录 · AI 导航提案</small><h3>llms.txt</h3></div></header>
-      <div class="asset-code-label"><b>精简目录示例</b><span>链接到原文，不复制整套文档</span></div>
-      <pre class="asset-code"># 昇腾开发学习入口
-
+    <article class="detail-flow-stage orange">
+      <div class="detail-flow-kicker"><b>04</b><span>AI 导航入口</span></div>
+      <div class="detail-flow-node"><b>llms.txt</b><small>根目录 · 社区提案</small></div>
+      <pre class="detail-flow-code"># 昇腾开发学习入口
 ## 快速开始
 - [Ascend C 入门](/learn/ascendc)
-  环境准备、首个算子与验证步骤
-
+  环境准备与首个算子
 ## 排查问题
-- [常见错误码](/docs/errors)
-  按错误码定位原因与恢复步骤</pre>
-      <div class="asset-explain">
-        <div><b>怎么建设</b><p>在根目录按任务整理少量权威、稳定的 URL；每项写清用途、适用范围，随原文更新。</p></div>
-        <div><b>怎么发挥作用</b><p>支持它的模型或客户端可把它作为导航线索，继续读取原文；它不控制抓取、不替代正文，也不保证模型采用。</p></div>
-      </div>
-      <div class="asset-outcome"><b>边界</b><span>llms.txt 是社区提案，需作为补充入口评估，不是已普及的强制标准。</span></div>
+- [常见错误码](/docs/errors)</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> 按任务列出少量权威、稳定 URL，附用途和适用范围，并随原文更新。</p><p><b>使用</b> 支持它的模型或客户端可从目录继续读取原文；它不控制抓取、不替代正文，也不保证会被采用。</p></div>
     </article>
+    <div class="detail-flow-bottom"><b>公开发现闭环</b><span>页面可发现</span><span>→</span><span>正文可阅读和定位</span><span>→</span><span>内容类型可识别</span><span>→</span><span class="flow-em">llms.txt 为支持它的客户端提供补充导航</span></div>
   </div></div></div>
   <div class="kp-foot kp-sources"><span><b>规范与提案</b>　<a href="https://www.rfc-editor.org/rfc/rfc9309.html" target="_blank" rel="noreferrer">Robots RFC 9309</a>　<a href="https://www.sitemaps.org/protocol.html" target="_blank" rel="noreferrer">Sitemaps</a>　<a href="https://schema.org/Course" target="_blank" rel="noreferrer">Schema.org Course</a></span><span><a href="https://llmstxt.org/" target="_blank" rel="noreferrer">llms.txt 提案</a></span></div>
 </section>
 <section class="slide s-gray kp-slide kp-visual-clean" data-component="产品服务API契约" data-title="产品 API 将资源转成动态学习内容">
   <div class="head"><div class="head-l"><div class="brand"><span class="ttl">产品 API 将资源转成动态学习内容</span></div><div class="subttl">06 · PRODUCT API　把学习目标、资源条件与更新状态接起来</div></div></div>
-  <div class="body-area kp-body"><div class="map-stage"><div class="api-blueprint">
-    <div class="api-flow">
-      <article><small>学习页输入</small><b>目标 + 环境</b><span>主题 / CANN / 芯片 / 日期</span></article>
-      <article><small>服务契约</small><b>OpenAPI + Schema</b><span>路径、参数、响应、错误约定</span></article>
-      <article><small>读取与筛选</small><b>Resources / Events / Compatibility</b><span>服务端按条件返回匹配项</span></article>
-      <article><small>产品呈现</small><b>课程、路径、日程</b><span>标注适用范围与核验状态</span></article>
-    </div>
-    <div class="api-main">
-      <article class="api-panel">
-        <h3>先把接口契约写清楚</h3>
-        <p>将 OpenAPI 文件作为接口与文档的共同来源；鉴权、分页、参数、字段、错误结构和版本策略都在这里定义。</p>
-        <div class="api-endpoints">
-          <div class="api-endpoint"><code>GET</code><div><b>/v1/resources</b><small>按 type、CANN、芯片筛课程 / 路径 / 认证，返回规范资源 URL。</small></div></div>
-          <div class="api-endpoint"><code>GET</code><div><b>/v1/events</b><small>按开始 / 结束日期返回直播、Meetup 与报名地址。</small></div></div>
-          <div class="api-endpoint"><code>GET</code><div><b>/v1/compatibility</b><small>查询资源与当前软件、芯片组合是否匹配，并返回判定依据。</small></div></div>
-          <div class="api-endpoint"><code>POST</code><div><b>/v1/signals</b><small>仅在用户授权后接收收藏、完成或困惑等必要反馈。</small></div></div>
-        </div>
-      </article>
-      <article class="api-panel">
-        <h3>每条响应都能说明“为什么可用”</h3>
-        <p>资源响应建议统一携带稳定身份、适用条件、原文与核验状态。</p>
-        <pre class="api-response">{
+  <div class="body-area kp-body"><div class="map-stage"><div class="detail-flow-map">
+    <article class="detail-flow-stage neutral">
+      <div class="detail-flow-kicker"><b>01</b><span>学习页给出条件</span></div>
+      <div class="detail-flow-node"><b>目标<br>+ 环境</b><small>主题 · CANN · 芯片</small></div>
+      <pre class="detail-flow-code">goal: 首次跑通 Ascend C
+cann: 8.2
+chip: 910B
+date: 2026-10</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> 学习发现页整理目标和已知环境字段，缺失项保持为空，不猜测兼容条件。</p><p><b>使用</b> 查询时把条件传给资源目录与兼容性服务，筛出适用课程、路径、认证和活动。</p></div>
+    </article>
+    <article class="detail-flow-stage">
+      <div class="detail-flow-kicker"><b>02</b><span>先定义服务契约</span></div>
+      <div class="detail-flow-node"><b>OpenAPI</b><small>Schema · 参数 · 错误</small></div>
+      <pre class="detail-flow-code">GET /v1/resources
+?type=course&amp;cann=8.2&amp;chip=910B
+
+responses: data / page / error</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> 用一份 OpenAPI 定义鉴权、分页、字段、错误结构和版本策略，并描述资源 Schema。</p><p><b>使用</b> 由契约生成接口文档与客户端，再用契约测试核对实现，减少页面和服务定义漂移。</p></div>
+    </article>
+    <article class="detail-flow-stage blue">
+      <div class="detail-flow-kicker"><b>03</b><span>按需读取与反馈</span></div>
+      <div class="detail-flow-node"><b>资源服务</b><small>查询与写入分开</small></div>
+      <pre class="detail-flow-code">GET  /v1/resources
+GET  /v1/events
+GET  /v1/compatibility
+POST /v1/signals  [需授权]</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> resources 按类型 / 版本 / 芯片筛选；events 按日期查询；compatibility 返回匹配原因。</p><p><b>使用</b> 收藏、完成、困惑等 signals 仅在同意后写入，并定义用途、保留期限和撤回方式。</p></div>
+    </article>
+    <article class="detail-flow-stage orange">
+      <div class="detail-flow-kicker"><b>04</b><span>带依据呈现结果</span></div>
+      <div class="detail-flow-node"><b>学习发现</b><small>课程 · 路径 · 日程</small></div>
+      <pre class="detail-flow-code">{
   "id": "course.ascendc.intro",
-  "type": "course",
-  "applies_to": {"cann": ["8.2"],
-                  "chip": ["910B"]},
+  "applies_to": {"cann":"8.2", "chip":"910B"},
   "source_url": "/docs/ascendc-course",
   "status": "verified",
   "checked_at": "2026-10-20"
 }</pre>
-        <div class="api-guard"><b>反馈保护：</b>signals 写入用途、同意状态、保留期限与撤回方式；不要把个人学习进度默认混入公开资源目录。</div>
-        <div class="api-status-map"><div><b class="status-ok">verified · 可推荐</b><small>展示适用条件与原文链接</small></div><div><b class="status-check">unknown · 待核验</b><small>显示缺失的版本条件</small></div><div><b class="status-no">incompatible · 不匹配</b><small>说明冲突项与核验依据</small></div></div>
-      </article>
-    </div>
-    <div class="api-contract"><b>建设与使用闭环</b><span>按契约生成接口文档 / 客户端 → 用契约测试校验实现 → 页面带入版本条件查询 → 展示资源、来源和状态；未知或过期项标为待核验，不静默当作兼容。</span></div>
+      <div class="detail-flow-copy"><p><b>使用</b> 页面显示适用范围、来源与状态：verified 可推荐；unknown 待核验；incompatible 说明冲突依据。</p><p><b>边界</b> 未知或过期项不能静默当作兼容；公开资源目录也不默认收集个人学习进度。</p></div>
+    </article>
+    <div class="detail-flow-bottom"><b>建设闭环</b><span>OpenAPI 生成文档 / 客户端</span><span>→</span><span>契约测试</span><span>→</span><span>页面带入环境查询</span><span>→</span><span class="flow-em">依据来源与状态展示结果</span></div>
   </div></div></div>
   <div class="kp-foot kp-sources"><span><b>规范参考</b>　<a href="https://spec.openapis.org/oas/v3.1" target="_blank" rel="noreferrer">OpenAPI 3.1</a></span><span>端点和字段是建议契约，不代表当前已有 API</span></div>
 </section>
 <section class="slide s-gray kp-slide kp-visual-clean" data-component="Agent资源与验证契约" data-title="Agent 需要知识、方法与可核验回执">
   <div class="head"><div class="head-l"><div class="brand"><span class="ttl">Agent 需要知识、方法与可核验回执</span></div><div class="subttl">07 · AGENT SUPPLY　MCP 提供连接能力，Skill 说明过程，应用层负责验收</div></div></div>
-  <div class="body-area kp-body"><div class="map-stage"><div class="agent-blueprint">
-    <div class="agent-flow">
-      <article><span>01</span><div><b>用户任务</b><small>目标、版本、芯片、错误信息</small></div></article>
-      <article><span>02</span><div><b>Skill 选方法</b><small>触发条件、输入、步骤与停止点</small></div></article>
-      <article><span>03</span><div><b>MCP 取证或操作</b><small>只读查询与授权动作分开</small></div></article>
-      <article><span>04</span><div><b>回执供核验</b><small>状态、原文依据、日志、下一步</small></div></article>
-    </div>
-    <div class="agent-assets">
-      <article class="agent-card">
-        <header><span>MCP</span><h3>Resources 与 Tools</h3></header>
-        <p>把静态知识和实时查询分开暴露；服务端定义 URI 与工具参数，并在结果里携带版本和出处。</p>
-        <div class="agent-role-map"><div><b>Resource</b><small>读取稳定的文档与版本内容</small></div><div><b>Tool</b><small>用明确参数查询或执行动作</small></div></div>
-        <div class="agent-label">资源读取与工具输入示例</div>
-        <pre>Resource URI
-cann://docs/{id}/{version}
-返回：正文 + source_url + applies_to
-版本元数据：version / updated_at
+  <div class="body-area kp-body"><div class="map-stage"><div class="detail-flow-map">
+    <article class="detail-flow-stage neutral">
+      <div class="detail-flow-kicker"><b>01</b><span>任务上下文</span></div>
+      <div class="detail-flow-node"><b>用户目标</b><small>目标 · 环境 · 错误</small></div>
+      <pre class="detail-flow-code">task: 首次构建 Ascend C
+cann: 8.2 · chip: 910B
+OS / framework / error: 可选</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> 任务入口约定 Agent 所需的最小上下文：目标、版本、芯片、系统和已有错误信息。</p><p><b>使用</b> Skill 据此判断是否适用；关键环境字段不全时先补齐或停止，不臆测。</p></div>
+    </article>
+    <article class="detail-flow-stage">
+      <div class="detail-flow-kicker"><b>02</b><span>Skill 组织方法</span></div>
+      <div class="detail-flow-node"><b>SKILL.md</b><small>触发 · 输入 · 核验</small></div>
+      <pre class="detail-flow-code">name: cann-first-run
+Use when: 首次构建样例
+Inputs: CANN / chip / OS
+Steps: 查兼容 → 准备样例 → 验输出
+Stop: 版本不明或前置条件不满足</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> 每个 Skill 聚焦一种任务，注明适用版本、预期信号、失败分支和停止条件。</p><p><b>使用</b> Host 在任务匹配时加载步骤；Skill 说明何时查、按什么顺序做，不承载实时资源数据。</p></div>
+    </article>
+    <article class="detail-flow-stage blue">
+      <div class="detail-flow-kicker"><b>03</b><span>MCP 连接知识与工具</span></div>
+      <div class="detail-flow-node"><b>Resources<br>+ Tools</b><small>静态知识 · 实时查询</small></div>
+      <pre class="detail-flow-code">Resource: cann://docs/{id}/{version}
+返回正文 + source_url + applies_to
 
-Read-only Tools
 search_resources(query, version)
-get_compatibility(cann, chip)
-结果：匹配状态 + 原因 + 引用</pre>
-        <p>Agent 先发现并读取指定版本资源，或带环境参数查询兼容性；返回结果可引用来源和适用边界。</p>
-        <div class="agent-result"><b>动作边界：</b>预检、构建等会改变环境的 Tool 要单独授权，记录调用者与执行结果。</div>
-      </article>
-      <article class="agent-card">
-        <header><span>SKILL</span><h3>把专家方法写成可复用步骤</h3></header>
-        <p>每个 Skill 聚焦一种任务，例如“首次构建 Ascend C 样例”。</p>
-        <div class="agent-label">SKILL.md 结构示例</div>
-        <pre>---
-name: cann-first-run
-description: Check the environment
-  before running a CANN sample.
----
-## Use when / Inputs
-CANN, chip, OS, framework
-## Steps / Success
-查兼容性 → 准备样例 → 核验输出
-## Stop when
-版本不明或前置条件不满足</pre>
-        <p>Host 在匹配任务时加载 Skill；它告诉 Agent 何时查、需要什么输入、按什么顺序核验，不替代 MCP 数据接口。</p>
-        <div class="agent-result"><b>交付要点：</b>注明适用版本、引用来源、预期信号、失败分支与何时停止。</div>
-      </article>
-      <article class="agent-card">
-        <header><span>RESULT</span><h3>把运行结果写成任务回执</h3></header>
-        <p>回执字段属于应用层服务设计，用来支持核查、恢复和人工接手。</p>
-        <div class="agent-label">建议回执字段</div>
-        <pre>status: passed | failed | not_run
+get_compatibility(cann, chip)</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> Resources 提供稳定文档与版本；只读 Tools 负责检索 / 兼容查询，并返回来源和适用范围。</p><p><b>授权</b> 预检、构建等会改变环境的 Tool 单独授权，并记录调用者和执行结果。</p></div>
+    </article>
+    <article class="detail-flow-stage orange">
+      <div class="detail-flow-kicker"><b>04</b><span>结果形成应用回执</span></div>
+      <div class="detail-flow-node"><b>Evidence<br>Receipt</b><small>验收 · 恢复 · 接手</small></div>
+      <pre class="detail-flow-code">status: passed | failed | not_run
 version: CANN 8.2 · 910B
 source_refs: [原文 URL / 锚点]
 error_code: 可选
 log_excerpt: 关键片段
-artifact_url: 构建产物或报告
-next_action: 复查版本 / 修复后重跑</pre>
-        <div class="receipt-states"><div><b>not_run</b><small>没有执行或缺验证</small></div><div><b>failed</b><small>执行失败或结果不符</small></div><div><b>passed</b><small>预期信号与产物齐全</small></div></div>
-        <p>只有拿到预期输出或可打开的产物，状态才能标记 passed；否则保留 not_run / failed，供用户继续、重试或升级。</p>
-        <div class="agent-result"><b>不要混淆：</b>MCP 返回结果结构由协议定义；业务验收状态和回执字段需由应用服务约定。</div>
-      </article>
-    </div>
-    <div class="agent-boundary"><b>建设顺序</b><span>先发布带来源和版本的只读 Resources / 查询 Tools；任务 Skill 有明确成功与停止条件后，再逐项开放需授权的执行动作和回执。</span></div>
+artifact_url: 报告 / 产物
+next_action: 复查版本 / 重跑</pre>
+      <div class="detail-flow-copy"><p><b>建设</b> 回执携带状态、引用、日志、产物和下一步；应用服务定义验收字段。</p><p><b>判定</b> not_run 表示未执行 / 缺验证；failed 表示执行失败 / 结果不符；预期信号与产物齐全才标 passed。</p><p><b>边界</b> MCP 返回结构与业务验收回执分开，回执字段属于应用层设计。</p></div>
+    </article>
+    <div class="detail-flow-bottom"><b>开放顺序</b><span>先发布带版本的只读 Resources / 查询 Tools</span><span>→</span><span>明确 Skill 成功与停止条件</span><span>→</span><span class="flow-em">再逐项开放需授权的执行动作</span><span class="flow-warm">not_run / failed / passed 属于应用层状态设计</span></div>
   </div></div></div>
   <div class="kp-foot kp-sources"><span><b>规范参考</b>　<a href="https://modelcontextprotocol.io/specification/2025-11-25/server/index" target="_blank" rel="noreferrer">MCP Server</a>　<a href="https://agentskills.io/specification" target="_blank" rel="noreferrer">Agent Skills</a></span><span>URI、示例 Tool 与回执字段为建设建议</span></div>
 </section>
