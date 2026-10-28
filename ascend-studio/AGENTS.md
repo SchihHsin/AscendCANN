@@ -1983,3 +1983,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 用户选择将「更多推荐」楼层配图小幅提亮并略微降饱和，同时保留课程粉、学习路径绿、知识点青、认证橙的区分。只作用于该楼层图片；Banner、新上架配图和白色楼层底不变。
 - 实现于 `src/learning-discovery.css` 的 `.ld-floor-recommended .ld-card-media img`：`brightness(1.06) saturate(.8) contrast(.96)`。依据为用户明确选择（H）与本地 1280×720 楼层预览（M）；页面序列 / hash 及 API / Protocol、Host / Harness、Application / Task 边界不变。构建验证已通过；源码提交 `001da5d2` 与 Pages 构建提交 `daed9aa5` 已推送，主线合并提交 `6f40f5db` 已更新 `origin/main`。Pages workflow `40554198989` 成功，线上入口与新 JS / CSS 均 HTTP 200，CSS 中已确认目标滤镜。
+
+
+### 2026-10-28 · 画布提示文案精简
+
+- 静止画布不再显示常驻平移 / 缩放说明；编辑、绘图操作提示按状态显示，收纳数量仍可见。AddCustom 范围演算的重复通知隐藏，详细尝试结果与任务记录保留，并兼容隐藏旧会话中的同类提示。
+- 实现见 `src/TaskCanvas.jsx`、`src/useTaskFlow.js`；不改变节点语义、画布操作和学习路径。依据为用户截图（H）与既有 UI 状态（M）。
+- `npm run build:pages`、`node --check` 与 `git diff --check` 通过；未运行自动化测试或修改后截图回放，当前本地 5192 终端访问返回 502。实现提交 `c0c2859b` 已推送至 `origin/main`；Pages workflow `40619783484` 成功，线上入口和引用的 JS / CSS 均 HTTP 200，构建 JS 中两条指定可见文案均不存在。

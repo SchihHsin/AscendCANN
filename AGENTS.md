@@ -7281,3 +7281,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 验证：两段JS均node --check通过；17页HTML关键节点齐全且ID无重复；内置浏览器1440×810与1280×720核对全部主要容器无溢出、图片加载正常、console无error。实际验证默认翻页、ArrowRight、#2刷新恢复、三列概览跳转、全屏进入/退出、截图放大/Esc、Prompt编辑反馈和认知笔记编辑。修复继承模板的概览宽度、页码同步及默认模式滚动监听竞争；供给图按真实节点边界计算连线。
 - 发布：通过独立临时索引相对最新origin/main仅提交本次文件与本交接，执行git diff --cached --check后推送main，提交主题 feat: add Ascend Studio experience design report。共享目录已有暂存、未暂存与未跟踪改动未纳入；发布commit和Pages结果见本任务最终回执。
 - 待续：由用户评审叙事、旅程和设计重点；实际学习迁移收益、推荐相关性与社区经验复用仍需后续用户验证，不影响本次概念材料交付。
+
+
+### 2026-10-28 · 移除画布常驻操作提示和范围演算通知
+
+- 根据用户截图，移除画布静止状态下的“空白拖动平移 / 滚轮缩放”可见提示；编辑、绘图时的上下文操作说明仍在需要时出现，已收纳数量仍保留。无障碍标签继续描述平移和缩放操作。
+- AddCustom 范围算例不再在画布状态栏重复弹出演算结果及免责声明；结果仍保留在尝试卡片和任务记录中。旧会话恢复的同类提示也隐藏。
+- 修改 `ascend-studio/src/TaskCanvas.jsx`、`ascend-studio/src/useTaskFlow.js` 与 `/ascstudio/` 构建产物。依据为用户截图（H）及现有画布交互结构（M）；不改页面序列、节点语义或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、`node --check`（useTaskFlow 和构建 JS）、`git diff --check` 通过。未运行自动化测试或修改后截图回放；终端对当前 5192 地址返回 502。实现提交 `c0c2859b` 已推送 `origin/main`，Pages workflow `40619783484` 成功；线上 `/AscendCANN/ascstudio/` 与 `index-BqZZP7sp.js`、`index-pVOvJPt0.css` 均 HTTP 200，构建 JS 中已核对两条指定可见文案均不存在。
