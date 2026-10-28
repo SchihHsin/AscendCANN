@@ -7437,3 +7437,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现位于 `ascend-studio/src/OfficialLearningActivities.jsx`、`OfficialLearningPathCanvas.jsx`、`official-learning-canvas.css` 与 `shared/canvas/node-semantics.js`。同步更新 `ascend-studio/interaction-design.md` 和个人共享规范 `~/.codex/skills/ascend-studio-interface-style/SKILL.md`。
 - 本地 5196 桌面预览（1280×720）：核对默认选中、适应全部的横向材料行/下方操作行、官方来源折叠去重、理解题提交后的就地反馈；当前代表性卡片无内容溢出或嵌套滚动。构建 `npm run build:pages`、共享语义模块 `node --check`、`git diff --check` 通过。未运行自动化测试；不改变页面顺序、hash、任务学习状态模型或 API / Protocol、Host / Harness、Application / Task 边界。
 - 源码提交 `7e8c8a99` 与 Pages 构建提交 `7882535e` 已普通推送到 `origin/main`。GitHub Pages 最新构建对应 `7882535e`，状态 `built`；线上 `/AscendCANN/ascstudio/`、`index-D488RlXo.js` 与 `index-DWAZyo2d.css` 均 HTTP 200，JS 已包含三种卡片标题。
+
+
+### 2026-10-28 · Ascend Studio 黑色选中态与输入主操作
+
+- 用户明确指定左侧主导航当前项、右上角对话布局切换当前项使用近黑底白图标；同时确认空输入时显示黑色波形语音输入按钮，有文字或附件后切换为发送按钮。语音识别进行中保留波形按钮，识别结束后再切换，避免半句识别时主操作跳变。
+- 修改 `ascend-studio/src/App.jsx`、`src/VoiceCaptureButton.jsx`、`src/styles.css` 与 Pages 构建产物 `ascstudio/index.html`、对应 JS / CSS bundle。沿用浏览器已有语音转文字能力，没有新增实时语音对话服务；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户截图与明确要求（H）。
+- 验证：`npm run build:pages`、构建 JS `node --check`、HTML bundle 引用存在性、输出 CSS 规则核对和 `git diff --check` 通过；未运行自动化测试。CUA 拒绝 `file://` 页面访问并明确禁止通过其它浏览器或间接方式绕过，本轮未作截图级视觉回放。
+- Commit / push：本次源码、Pages 产物与交接记录单独提交并推送至 `origin/main`；工作区其它暂存、未暂存与未跟踪文件保持原样。

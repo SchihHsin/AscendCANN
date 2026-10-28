@@ -278,6 +278,7 @@ function App() {
   const [pointContext, setPointContext] = useState(null);
   const [areaInteractionActive, setAreaInteractionActive] = useState(false);
   const composerVoiceDraftRef = useRef("");
+  const [composerPrimaryVoiceListening, setComposerPrimaryVoiceListening] = useState(false);
   const {
     query, setQuery, openedGroups, selectedTask, rationaleOpen, setRationaleOpen,
     visibleGroups, toggleGroup, selectTask, setSelectedRoute,
@@ -315,6 +316,7 @@ function App() {
   };
   const selectExistingTask = (name) => { selectTask(name); setMainView("task"); };
   const { selectedRoute, draft } = session;
+  const composerHasPayload = Boolean(draft.trim() || session.attachments.length);
   const permissionMode = permissionModes[selectedTask] || "confirm";
   const permissionModeLabel = PERMISSION_OPTIONS.find(item => item.id === permissionMode)?.label || "每次确认";
   const messages = session.messages.filter(message => {
@@ -1661,7 +1663,7 @@ function App() {
                   <button className="permission-button" type="button" aria-label={`权限设置，当前${permissionModeLabel}`} title={`权限：${permissionModeLabel}（演示）`} data-menu-trigger aria-expanded={wb.menu?.name === "permissions"} onClick={event => openMenu("permissions", event)}><IconShieldCheck size={ICON_SIZE.control} /></button>
                   <button className="model-button" type="button" data-menu-trigger data-menu-align="left" aria-label={`选择模型，当前${wb.model.label}`} aria-expanded={wb.menu?.name === "models"} onClick={event => openMenu("models", event)} title="选择模型"><img className="model-brand-logo" src={MODEL_PROVIDER_LOGOS[wb.selectedModel]} alt="" aria-hidden="true" /><span>{wb.model.label}</span><IconChevronDown className="model-menu-chevron" size={ICON_SIZE.inline} /></button>
                   <span className="composer-voice-slot"><VoiceCaptureButton className="composer-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} iconOnly /></span>
-                  <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying || (!draft.trim() && !session.attachments.length)}><IconSend size={ICON_SIZE.heading} /></button>
+                  {composerHasPayload && !composerPrimaryVoiceListening ? <button className="send-button" type="submit" aria-label="发送消息" disabled={session.replying}><IconSend size={ICON_SIZE.heading} /></button> : <span className="composer-voice-slot composer-primary-voice-slot"><VoiceCaptureButton className="composer-primary-voice" label="语音输入" activeLabel="停止语音输入" onStart={onComposerVoiceStart} onTranscript={onComposerVoiceTranscript} onListeningChange={setComposerPrimaryVoiceListening} waveform iconOnly /></span>}
                 </div>
               </div>
             </div>
