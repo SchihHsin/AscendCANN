@@ -4,7 +4,7 @@ import { getMaterialMeta } from "./workspace-materials";
 import { LEARNING_PATH_GENERATION_TASK } from "./learning-data";
 
 const ADD_CUSTOM_TASK_ID = "AddCustom 精度异常";
-const ADD_CUSTOM_CANVAS_VERSION = 4;
+const ADD_CUSTOM_CANVAS_VERSION = 5;
 
 function initialState(isMainTask, taskId, initialMaterialId) {
   const initial = { ...getMaterialMeta(initialMaterialId || (taskId === "学会图像输入预处理" ? "learning-goal" : taskId === "图像推理调试" ? "image-explanation" : isMainTask ? "explanation" : "task-brief")), unread: false };
@@ -13,7 +13,7 @@ function initialState(isMainTask, taskId, initialMaterialId) {
   return {
     tabs: addCustom ? [initial, canvas] : [initial],
     visitedTabs: addCustom ? [initial, canvas] : [initial],
-    activeId: addCustom ? "canvas" : initial.id,
+    activeId: initial.id,
     splitId: null,
     referenceId: null,
     referenceReturnId: null,
@@ -25,7 +25,7 @@ function initialState(isMainTask, taskId, initialMaterialId) {
     canvasMode: addCustom ? "focus" : "overview",
     overview: { query: "", category: "all", collapsedGroups: [], compactIds: [], mapLevel: 2, mapInitialized: false, ...(addCustom ? { focusId: initial.id } : {}) },
     snapshots: [],
-    collapsed: false,
+    collapsed: addCustom,
     returnPoint: null,
     positions: {},
     ...(addCustom ? { addCustomCanvasVersion: ADD_CUSTOM_CANVAS_VERSION } : {}),
@@ -118,7 +118,7 @@ export function useContentWorkspace({ taskId, isMainTask, initialMaterialId, def
       ...previous,
       tabs,
       visitedTabs,
-      activeId: "canvas",
+      activeId: focusId,
       splitId: null,
       referenceId: null,
       referenceReturnId: null,
@@ -129,6 +129,7 @@ export function useContentWorkspace({ taskId, isMainTask, initialMaterialId, def
       lastSplitId: null,
       canvasMode: "focus",
       overview: { ...initialState(true, taskId).overview, ...previous.overview, focusId },
+      collapsed: true,
       returnPoint: null,
       addCustomCanvasVersion: ADD_CUSTOM_CANVAS_VERSION,
     });
