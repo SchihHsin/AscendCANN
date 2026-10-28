@@ -21,6 +21,7 @@ const evidence = (id, title, summary, time) => ({ id, title, summary, ...(time ?
 const HOME_ERROR_LEARNING_PATTERNS = [
   {
     id: "kernel-parameter-validation",
+    pathTitle: "算子启动流程",
     topic: "编译参数校验",
     count: 3,
     recommendationReason: "近 7 天的记录集中在启动参数对齐。",
@@ -40,6 +41,7 @@ const HOME_ERROR_LEARNING_PATTERNS = [
   },
   {
     id: "input-dimensions-shape",
+    pathTitle: "输入 Shape 对齐练习",
     topic: "输入维度与Shape",
     count: 2,
     recommendationReason: "两条记录都指向输入、输出维度未对齐。",
@@ -59,6 +61,7 @@ const HOME_ERROR_LEARNING_PATTERNS = [
   },
   {
     id: "image-preprocessing",
+    pathTitle: "图像预处理实战",
     topic: "图像数据预处理",
     count: 2,
     recommendationReason: "近期记录涉及格式转换和归一化。",
@@ -88,7 +91,7 @@ function errorLearningSuggestions(tasks) {
         task,
         mode: "learning",
         type: `error-learning-${pattern.id}`,
-        title: pattern.topic,
+        title: pattern.pathTitle,
         reason: pattern.recommendationReason,
         activity: `近 7 天出错 ${pattern.count} 次`,
         evidence: facts,

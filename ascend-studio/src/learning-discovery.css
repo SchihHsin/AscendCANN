@@ -382,3 +382,9 @@
   .ld-card { min-height:0; }
   .ld-card-media { aspect-ratio:1.55; }
 }
+
+/* Card illustrations have near-white backgrounds baked into the JPGs; blend them into a cool-gray media surface. */
+.ld-card-media,
+.ld-event-media.has-image { background:#e6e9ee; isolation:isolate; }
+.ld-card-media > img,
+.ld-event-media.has-image > img { mix-blend-mode:multiply; }
