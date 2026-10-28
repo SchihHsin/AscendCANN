@@ -7634,4 +7634,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 按用户截图，将已订阅状态下的按钮文案从「保存设置并模拟新消息」改为「保存设置」；仅调整可见文案，按钮仍保存速览偏好。首次订阅分支的「允许并模拟收到消息」不在本次截图指向范围内。
 - 修改 `ascstudio-mini/app.js`。依据为用户明确要求（H）；不改变订阅交互、页面序列、演示状态或 API / Protocol、Host / Harness、Application / Task 边界。
-- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。提交 / 推送与 Pages 回执待本轮发布后补记。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。提交 `b05b8383` 已推送；其 Pages 部署 `40745620795` 在队列中被后续更新取消。后续主线提交 `6d614b56` 包含此改动，Pages workflow `40746077926` 成功；线上评审入口与 `app.js` 均 HTTP 200，脚本显示「保存设置」且不含旧文案。
