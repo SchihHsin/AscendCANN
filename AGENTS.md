@@ -7483,3 +7483,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建包。依据为用户截图与明确交互要求（H）；不改变判断依据文案、知识提示文案、任务流程或 API / Protocol、Host / Harness、Application / Task 边界。
 - 同轮讨论中用户反馈初始回答像证据摘要而非错误解决方案；暂未改写该回答，建议的解决方案文案等待用户确认。
 - 验证：`npm run build:pages`、新构建 JS `node --check`、`git diff --check` 通过。视觉回放未完成：隔离预览连接 CUA 超时。提交 `3994c2f7` 已推送至 `origin/main`；Pages workflow `40681919352` build / deploy 成功，线上 `/AscendCANN/ascstudio/`、`index-DVb6EiLs.js`、`index-COSDFY05.css` 均 HTTP 200。未运行自动化测试。
+
+### 2026-10-28 · 底部对话位置预览与输入框对齐
+
+- 拖动对话框靠近屏幕底部时，位置预览改为复用最终单行输入框的宽度计算、水平中心和底边距：桌面宽度由工作区宽度推算，限制为输入框实际的 720px 上限并扣除相同布局留白；高度 54px、距底 22px。移除预览原先接近全宽 / 88px 高的外框及额外光晕。
+- 修改 `ascend-studio/src/styles.css` 与 `ascstudio/` 构建资源。用户截图和反馈为依据（H）；本地 1360×900 CUA 视口实测最终输入框 `636×54px`、水平居中且距工作区底 22px（M），预览尺寸公式与实测落位一致。页面序列和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、发布 JS `node --check`、CSS 规则回读和 `git diff --check` 通过；CUA 检查落位后的输入框尺寸与预览目标公式。未运行自动化测试；推送和 Pages 发布结果完成后在后续交接记录补记。
