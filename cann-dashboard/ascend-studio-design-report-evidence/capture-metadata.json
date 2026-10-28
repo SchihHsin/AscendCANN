@@ -1,0 +1,178 @@
+[
+  {
+    "file": "01-development-diagram.jpg",
+    "imageSize": [
+      1440,
+      900
+    ],
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "url": "https://schihhsin.github.io/AscendCANN/ascstudio/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "02-community-draft.jpg",
+    "imageSize": [
+      1440,
+      900
+    ],
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "url": "https://schihhsin.github.io/AscendCANN/ascstudio/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "03-proactive-card.jpg",
+    "imageSize": [
+      1440,
+      900
+    ],
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "url": "https://schihhsin.github.io/AscendCANN/ascstudio/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "04-connected-prompt.jpg",
+    "imageSize": [
+      1440,
+      900
+    ],
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "url": "https://schihhsin.github.io/AscendCANN/ascstudio/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "05-learning-collaboration.jpg",
+    "imageSize": [
+      1440,
+      900
+    ],
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "url": "https://schihhsin.github.io/AscendCANN/ascstudio/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "06-learning-intent.jpg",
+    "imageSize": [
+      1440,
+      900
+    ],
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "url": "https://schihhsin.github.io/AscendCANN/ascstudio/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "07-learning-practice.jpg",
+    "imageSize": [
+      1440,
+      900
+    ],
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "url": "https://schihhsin.github.io/AscendCANN/ascstudio/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "08-mini-desktop.jpg",
+    "imageSize": [
+      1280,
+      720
+    ],
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "url": "http://127.0.0.1:5217/ascstudio-mini/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "09-mini-notification.jpg",
+    "imageSize": [
+      390,
+      844
+    ],
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "url": "http://127.0.0.1:5217/ascstudio-mini/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "10-mini-briefing.jpg",
+    "imageSize": [
+      390,
+      844
+    ],
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "url": "http://127.0.0.1:5217/ascstudio-mini/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  },
+  {
+    "file": "11-mini-knowledge.jpg",
+    "imageSize": [
+      390,
+      844
+    ],
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "url": "http://127.0.0.1:5217/ascstudio-mini/",
+    "capturedAt": "2026-10-28",
+    "capture": "fullPage API; app uses internal scroll/pan areas",
+    "stateNote": "Existing browser demo state; no external submission. Phone captures show current viewport of internal main scroll region.",
+    "visibleCookieText": false
+  }
+]
