@@ -7503,7 +7503,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 拖动对话框靠近屏幕底部时，位置预览改为复用最终单行输入框的宽度计算、水平中心和底边距：桌面宽度由工作区宽度推算，限制为输入框实际的 720px 上限并扣除相同布局留白；高度 54px、距底 22px。移除预览原先接近全宽 / 88px 高的外框及额外光晕。
 - 修改 `ascend-studio/src/styles.css` 与 `ascstudio/` 构建资源。用户截图和反馈为依据（H）；本地 1360×900 CUA 视口实测最终输入框 `636×54px`、水平居中且距工作区底 22px（M），预览尺寸公式与实测落位一致。页面序列和 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 验证：`npm run build:pages`、发布 JS `node --check`、CSS 规则回读和 `git diff --check` 通过；CUA 在 1360×900 视口实测落位输入框为 `636×54px`、中心 / 底边距与预览公式一致。未运行自动化测试。实现提交 `20485f47` 与合并提交 `6895ab6e` 已推送至 `origin/main`；Pages workflow `40682851279` 成功，之后合并的画布底色更新仍保留此预览规则，workflow `40683347384` 成功。最新线上 `/AscendCANN/ascstudio/`、`index-D6NS1cTF.js`、`index-CB4_sFnx.css` 均 HTTP 200，CSS 字节范围回读确认预览宽度上限、54px 高和 22px 底距。
+- 验证：`npm run build:pages`、发布 JS `node --check`、CSS 规则回读和 `git diff --check` 通过；CUA 在 1360×900 视口实测落位输入框为 `636×54px`、中心 / 底边距与预览公式一致。未运行自动化测试。实现提交 `20485f47` 与合并提交 `6895ab6e` 已推送至 `origin/main`；Pages workflow `40682851279`、后续合并画布底色 / 对话更新后的 `40683347384`、`40684134342` 均成功。最新线上 `/AscendCANN/ascstudio/`、`index-CPJDvYbn.js`、`index-CB4_sFnx.css` 均 HTTP 200，CSS 字节范围回读确认预览宽度上限、54px 高和 22px 底距。
 
 ### 2026-10-28 · 画布底面改为柔和冷灰
 
