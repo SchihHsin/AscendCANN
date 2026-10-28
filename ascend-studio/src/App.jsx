@@ -2,7 +2,7 @@ import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { readSession, writeSession, sessionSaveAvailable } from "./session-storage";
 import { useWorkbenchState, MAIN_TASK } from "./useWorkbenchState";
-import { capabilities, modelOptions } from "./prototype-data";
+import { capabilities, modelOptions, LOG_DIAGNOSTIC_TASK, displayTaskName } from "./prototype-data";
 import { WorkbenchDialogs } from "./WorkbenchDialogs";
 import { ActionWorkspace } from "./ActionWorkspace";
 import { useTaskFlow } from "./useTaskFlow";
@@ -42,6 +42,7 @@ import { buildHomeSuggestions } from "./home-recommendations";
 import { AutomationList, CapabilityList } from "./WorkbenchDialogs";
 import { CommunityDraftPanel } from "./CommunityDraftPanel";
 import { createCommunityDraft } from "./community-draft-data";
+import { INITIAL_LOG_TRIAGE_STATE, LogTriageWorkspace } from "./LogTriageWorkspace.jsx";
 import { buildLearningContentItems } from "./learning-content-catalog";
 import { KnowledgePocketPage } from "./KnowledgePocket.jsx";
 import { announceKnowledgePocketChange, readKnowledgePocket, writeKnowledgePocket } from "./knowledge-pocket-storage.js";
@@ -161,7 +162,7 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
   const matchesProject = normalizedQuery && group.name.toLowerCase().includes(normalizedQuery);
   const filteredTasks = matchesProject
     ? group.tasks
-    : group.tasks.filter((task) => task.toLowerCase().includes(normalizedQuery));
+    : group.tasks.filter((task) => task.toLowerCase().includes(normalizedQuery) || displayTaskName(task).toLowerCase().includes(normalizedQuery));
   if (normalizedQuery && filteredTasks.length === 0) return null;
   return (
     <section className="project-section">
@@ -189,7 +190,7 @@ function ProjectSection({ group, opened, query, selectedTask, onToggle, onSelect
               onClick={() => onSelect(task)}
             >
               <IconFileText className="task-file" size={ICON_SIZE.heading} />
-              <span className="task-row-label">{task}</span>
+              <span className="task-row-label">{displayTaskName(task)}</span>
               {status && <small className={`task-status is-${status.tone}`}>{status.label}</small>}
             </button>;
           })}
@@ -293,6 +294,8 @@ function App() {
   const canvas = useCanvasState({ startEmpty: true, initialVisibleIds: ["task-brief", "source", "evidence", "explanation"], storageKey: "canvas-addcustom-v3" });
   const imageCanvas = useCanvasState({ startEmpty: true, cardDefinitions: IMAGE_MATERIALS, storageKey: "canvas-image", semanticDomain: "image-inference" });
   const [precisionContext, setPrecisionContext] = useState(() => readSession("precision-context", null));
+  const [logTriageState, setLogTriageState] = useState(INITIAL_LOG_TRIAGE_STATE);
+  const [logTriageResetVersion, setLogTriageResetVersion] = useState(0);
   useEffect(() => { writeSession("precision-context", precisionContext); }, [precisionContext]);
   const previousImage = useRef(null);
   const previousPrecision = useRef(precisionContext);
@@ -355,7 +358,8 @@ function App() {
   const feedback = (value) => wb.patchSession({ feedback: session.feedback === value ? null : value });
   const closeMenuAnd = (action) => { wb.setMenu(null); action(); };
   const isImageTask = selectedTask === IMAGE_TASK;
-  const supportsCommunityDraft = selectedTask === IMAGE_TASK || selectedTask === MAIN_TASK;
+  const isLogDiagnosticTask = selectedTask === LOG_DIAGNOSTIC_TASK;
+  const supportsCommunityDraft = selectedTask === IMAGE_TASK || selectedTask === MAIN_TASK || isLogDiagnosticTask;
   const isStandardLearningTask = task.kind === "learning";
   const isPathGenerationTask = selectedTask === LEARNING_PATH_GENERATION_TASK;
   const isOfficialLearningTask = task.kind === "official-learning";
@@ -380,8 +384,8 @@ function App() {
       window.history.replaceState(null, "", address.pathname + address.search + address.hash);
     }
   }, []);
-  const isInteractiveTask = isMainTask || isImageTask || isLearningTask;
-  const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask, initialMaterialId: isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS[0]?.id : isLearningTask ? "learning-goal" : undefined, defaultToLearningCanvas: isLearningTask });
+  const isInteractiveTask = isMainTask || isImageTask || isLogDiagnosticTask || isLearningTask;
+  const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask, initialMaterialId: isLogDiagnosticTask ? "log-diagnosis" : isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS[0]?.id : isLearningTask ? "learning-goal" : undefined, defaultToLearningCanvas: isLearningTask });
   const communityDraftFocus = showTaskWorkspace && supportsCommunityDraft && Boolean(session.communityDraft?.open && session.communityDraft?.completionId);
   const layout = useWorkbenchLayout({ projectPanelOpen, contentCollapsed: showTaskWorkspace && workspace.state.collapsed, learningLayout: isLearningTask, communityDraftFocus });
   const resetConversationDrag = () => {
@@ -1019,11 +1023,12 @@ function App() {
   };
   const latestAttempt = flow.state.attempts.find(attempt => attempt.id === flow.state.selectedAttemptId) || flow.state.attempts.at(-1);
   const renderBrief = (ownerId) => <div className="diagnostic-scroll">
-    <section className="task-brief-section"><div className="section-title"><IconFileText size={ICON_SIZE.heading} /><h3>任务简报</h3></div><div className="task-brief-card"><strong>{ownerId}</strong><p>{wb.getTask(ownerId).goal}</p><span>待补充证据</span></div></section>
+    <section className="task-brief-section"><div className="section-title"><IconFileText size={ICON_SIZE.heading} /><h3>任务简报</h3></div><div className="task-brief-card"><strong>{displayTaskName(ownerId)}</strong><p>{wb.getTask(ownerId).goal}</p><span>待补充证据</span></div></section>
     <section className="task-brief-section"><div className="section-title"><IconDatabase size={ICON_SIZE.heading} /><h3>上下文与材料</h3></div><div className="task-brief-card"><p>补充代码、日志与运行条件后，再确定检查方向。</p><button type="button" className="light-button" onClick={() => openDialog("code")}><IconCode size={ICON_SIZE.control} />补充代码片段</button><button type="button" className="light-button" onClick={() => { setDraft("请帮我整理当前任务的环境条件、需要补充的证据和下一步检查清单。"); wb.draftRef.current?.focus(); }}><IconMessageCircle size={ICON_SIZE.control} />整理检查清单</button></div></section>
     <p className="action-footnote">任务内容仅用于本地交互演示，尚未接入 AI 或硬件服务。</p>
   </div>;
   const archiveLearning = () => { openContent("learning-summary", { restore: true }); workspace.actions.setCollapsed(true); };
+  const renderLogDiagnosticWorkspace = () => <LogTriageWorkspace key={logTriageResetVersion} state={logTriageState} onStateChange={setLogTriageState} communityReady={Boolean(communityInviteMessage)} onCommunityExperienceReady={completeLogDiagnostic} />;
   const enterLearningDevelopment = () => { const saved = learning.currentSummary; wb.addExchange("把学过的方法用于图像推理。", "学习记录保留在原任务；接下来核对开发任务的真实输入约定，继续修改审阅与项目验证。"); if (saved) wb.addExchange("带入已保存的学习记录，继续图像推理开发。", { text: `学习参考：${saved.profile.goal}\n\n示例已核对 NCHW [${saved.dimensions.join(",")}]；真实模型签名、预处理及推理仍需在本任务验证。`, learningReference: { taskId: selectedTask, summaryId: saved.id } }, IMAGE_TASK); selectExistingTask(IMAGE_TASK); };
   const renderMaterial = (id, presentation = "canvas", ownerId = MAIN_TASK) => {
     if (wb.getTask(ownerId).kind === "official-learning") {
@@ -1102,6 +1107,7 @@ function App() {
       }
       return <ImageInferenceMaterial key={inference.state.resetVersion} id={id} inference={inference} onOpen={openContent} onAsk={askExplanation} onCopy={wb.copyText} presentation={presentation} codeAttachment={imageAttachment} />;
     }
+    if (ownerId === LOG_DIAGNOSTIC_TASK) return ownerId === selectedTask && id === "log-diagnosis" ? renderLogDiagnosticWorkspace() : null;
     if (ownerId !== MAIN_TASK) return null;
     if (id.startsWith("record:")) {
       const record = mainSession.records.find(item => "record:" + item.id === id);
@@ -1114,7 +1120,7 @@ function App() {
       onCommunityExperienceReady={ownerId === MAIN_TASK && id === "evidence" ? completeAddCustomDiagramAction : undefined}
       communityReady={ownerId === MAIN_TASK && Boolean(mainSession.communityInviteReady)} />;
   };
-  const availableMaterials = isMainTask ? [
+  const availableMaterials = isLogDiagnosticTask ? [getMaterialMeta("log-diagnosis")] : isMainTask ? [
     ...Object.values(MATERIAL_DEFINITIONS).filter(item => item.id !== "canvas" && item.id !== "task-brief" && !item.id.startsWith("image-") && !item.id.startsWith("learning-")).map(item => ({
       ...item,
       available: item.id === "attempts" || item.id === "diff" ? flow.state.attempts.length > 0 : item.id === "validation" ? Boolean(flow.state.appliedCode) : true,
@@ -1126,6 +1132,10 @@ function App() {
     const ownerKind = wb.getTask(ownerId).kind;
     if (ownerKind === "learning") return ownerId === selectedTask ? normalizeCanvasNodes(buildLearningContentItems({ journey: learning, workspaceState: workspace.getTaskState(ownerId), records: wb.getSession(ownerId).records }), "learning") : [];
     if (ownerKind === "official-learning") return ownerId === selectedTask ? normalizeCanvasNodes(buildOfficialLearningContentItems({ state: officialLearning.state, workspaceState: workspace.getTaskState(ownerId), records: wb.getSession(ownerId).records }), "resnet50") : [];
+    if (ownerId === LOG_DIAGNOSTIC_TASK) {
+      const stateLabel = logTriageState.verified ? "示例范围已核对" : logTriageState.exampleApplied ? "待运行示例核对" : "日志线索待核查";
+      return [{ ...MATERIAL_DEFINITIONS["log-diagnosis"], statusLabel: stateLabel, category: "explain", groupId: "content", available: true, relations: [], provenance: [], summary: "从运行日志对照输入差异，通过尾块图解理解范围，再在浏览器示例中核对有效元素边界。" }];
+    }
     if (![MAIN_TASK, IMAGE_TASK].includes(ownerId)) return [];
     const ownerImage = ownerId === IMAGE_TASK;
     const ownerMain = ownerId === MAIN_TASK;
@@ -1234,6 +1244,7 @@ function App() {
     }
   };
   const renderContentCanvas = (visible, ownerId) => {
+    if (ownerId === LOG_DIAGNOSTIC_TASK) return ownerId === selectedTask ? renderLogDiagnosticWorkspace() : null;
     const ownerLearning = wb.getTask(ownerId).kind === "learning";
     const ownerOfficialLearning = wb.getTask(ownerId).kind === "official-learning";
     if ((ownerLearning || ownerOfficialLearning) && ownerId !== selectedTask) return null;
@@ -1271,6 +1282,7 @@ function App() {
   const resetCurrentTask = () => {
     if (isMainTask) { flow.actions.reset(); canvas.actions.reset(); setPrecisionContext(null); }
     if (isImageTask) { inference.actions.reset(); imageCanvas.actions.reset(); }
+    if (isLogDiagnosticTask) { setLogTriageState(INITIAL_LOG_TRIAGE_STATE); setLogTriageResetVersion(version => version + 1); }
     if (isStandardLearningTask) { learning.actions.reset(); learningCanvas.actions.reset(); learningCanvasView.actions.reset(); }
     if (isOfficialLearningTask) { officialLearning.actions.reset(); officialCanvasView.actions.reset(); learningCanvas.actions.reset(); }
     workspace.actions.reset();
@@ -1320,13 +1332,17 @@ function App() {
   const offerCommunityExperience = (summary) => {
     if (!summary?.id) return;
     const isAddCustomResolution = summary.kind === "addcustom-precision-resolution";
+    const isLogDiagnosticResolution = summary.kind === "addcustom-log-diagnostic-resolution";
     if (isAddCustomResolution && session.communityInviteReady && session.messages.some(message => message.communityInvite?.summary?.kind === summary.kind)) return;
     if (session.messages.some(message => message.communityInvite?.summaryId === summary.id)) {
       if (isAddCustomResolution && !session.communityInviteReady) wb.patchSession({ communityInviteReady: true });
       return;
     }
     const dimensions = summary.dimensions?.join(", ") || "当前示例形状";
-    const completionExchange = summary.demoFixture && summary.dimensions?.length ? [{
+    const completionExchange = isLogDiagnosticResolution ? [{
+      id: crypto.randomUUID(), role: "user", isDemo: true,
+      text: "我在浏览器示例中核对了 17×33 输入、每块 32 个元素的范围，末块有 17 个有效元素，范围外索引为 0。",
+    }] : summary.demoFixture && summary.dimensions?.length ? [{
       id: crypto.randomUUID(), role: "user", isDemo: true,
       text: `我在示例副本中调整了图像输入，形状核对结果为 NCHW [${dimensions}]。`,
     }] : [];
@@ -1335,7 +1351,9 @@ function App() {
       messages: [...old.messages, ...completionExchange, {
         id: crypto.randomUUID(), role: "assistant", isDemo: true,
         communityInvite: { summaryId: summary.id, summary },
-        text: summary.completionText || `${summary.demoFixture ? "示例形状核对已通过" : "示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`,
+        text: summary.completionText || (isLogDiagnosticResolution
+          ? "浏览器范围算例已核对。真实代码、算子精度与 NPU 结果仍待在目标环境验证。"
+          : `${summary.demoFixture ? "示例形状核对已通过" : "示例修改已应用，输入形状核对通过"}：NCHW [${dimensions}]。\n\n这里核对的是浏览器中的示例形状规则，真实模型推理仍需在对应环境验证。`),
       }],
     }));
     window.setTimeout(() => wb.conversationRef.current?.scrollTo({ top: wb.conversationRef.current.scrollHeight, behavior: "smooth" }), 0);
@@ -1357,6 +1375,17 @@ function App() {
       demoFixture: true,
       precision: { count: 561, failed: 0, atol: "1e-5", rtol: "1e-4", isDemo: true },
       completionText: "示例修复已完成，当前范围核对通过。可以把这次排查整理为社区经验草稿。",
+    });
+  };
+  const completeLogDiagnostic = (result) => {
+    if (selectedTask !== LOG_DIAGNOSTIC_TASK || result?.kind !== "addcustom-log-diagnostic-resolution") return;
+    offerCommunityExperience({
+      id: result.id || "demo-addcustom-log-diagnostic-resolution",
+      kind: result.kind,
+      demoFixture: true,
+      dimensions: [result.rows || 17, result.columns || 33],
+      tileSize: result.tileSize || 32,
+      completionText: result.completionText || "示例范围核对已通过。可以把本次排查过程整理成社区经验；真实根因与目标环境结果仍待确认。",
     });
   };
   const generateCommunityExperience = (completion) => {
@@ -1493,7 +1522,7 @@ function App() {
         <div className="topbar-divider" />
         <nav className="breadcrumbs" aria-label="当前位置">
           {showNewTaskHome ? <strong>新建任务</strong> : showLearningDiscovery ? <strong>学习发现</strong> : showAutomations ? <strong>自动化任务</strong> : showCapabilities ? <strong>能力库</strong> : showKnowledgePocket ? <strong>知识口袋</strong> : <>
-          <span className="breadcrumb-project">{currentGroup?.name}</span><IconChevronRight className="breadcrumb-project" size={ICON_SIZE.inline} /><button className="task-title-button" type="button" title={selectedTask} aria-label="当前任务与对话操作" data-menu-trigger aria-expanded={wb.menu?.name === "chat"} onClick={event => openMenu("chat", event)}><strong>{selectedTask}</strong><IconChevronDown size={ICON_SIZE.inline} /></button>
+          <span className="breadcrumb-project">{currentGroup?.name}</span><IconChevronRight className="breadcrumb-project" size={ICON_SIZE.inline} /><button className="task-title-button" type="button" title={displayTaskName(selectedTask)} aria-label="当前任务与对话操作" data-menu-trigger aria-expanded={wb.menu?.name === "chat"} onClick={event => openMenu("chat", event)}><strong>{displayTaskName(selectedTask)}</strong><IconChevronDown size={ICON_SIZE.inline} /></button>
           </>}
         </nav>
         {showTaskWorkspace && session.unreadReply && <button className="light-button new-reply-button" type="button" onClick={wb.showLatestReply}><IconChevronDown size={ICON_SIZE.inline} />有新回复</button>}
@@ -1673,7 +1702,7 @@ function App() {
                     : message.role === "assistant" && message.interaction && <div className="message-source-links"><button type="button" onClick={() => dispatchTaskIntent("explain", message.interaction.focus)}><IconBook size={ICON_SIZE.inline} />{message.interaction.intent === "diagnose" ? "解释这条线索" : "查看关联图解"}</button></div>}
                   {message.communityDraftCard && message.communityDraftId === session.communityDraft?.id && session.communityDraft?.completionId && <button type="button" className="community-draft-card" onClick={openCommunityDraft} aria-label="打开社区经验草稿审阅">
                     <span className="community-draft-card-icon"><IconFileText size={ICON_SIZE.navigation} /></span>
-                    <span className="community-draft-card-copy"><strong>社区经验草稿已生成</strong><small>AI 根据本次对话整理 · 演示</small></span>
+                    <span className="community-draft-card-copy"><strong>社区经验草稿已生成</strong><small>{isLogDiagnosticTask ? "本地排查步骤整理 · 演示" : "AI 根据本次对话整理 · 演示"}</small></span>
                     <span className={`community-draft-card-status${session.communityDraft.status === "submitted" ? " is-submitted" : " is-review"}`}>{session.communityDraft.status === "submitted" ? "已提交 · 演示" : "待你审阅"}</span>
                     <IconChevronRight size={ICON_SIZE.heading} />
                   </button>}
@@ -1689,7 +1718,7 @@ function App() {
             <span className="community-success-invite-icon"><IconSparkles size={ICON_SIZE.navigation} aria-hidden="true" /></span>
             <div className="community-success-invite-copy">
               <strong>把本次任务整理为社区经验？</strong>
-              <p>AI 根据当前对话生成草稿，可在右侧审阅</p>
+              <p>{isLogDiagnosticTask ? "本地排查步骤整理成可编辑草稿" : "AI 根据当前对话生成草稿，可在右侧审阅"}</p>
             </div>
             <button type="button" className="community-entry-button" onClick={() => generateCommunityExperience(communityInviteMessage.communityInvite.summary)}>
               <IconFileText size={ICON_SIZE.control} />生成草稿

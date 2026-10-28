@@ -7628,6 +7628,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户提供的线上截图显示第 2 页“开发者起点”行被重复包成 `.cb-human-lane`，五列内容被嵌套网格压窄，形成竖排文字和圆点。修复 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`：只向原五列网格填入五个阶段单元，并让阶段标题、用户表达和底部断点沿用同一组阶段边界；删除开发者表达行中重复的阶段小箭头。第 3 阶段标题缩为“明确方向”；弱化非重点时序线，避免所有消息线一律彩色、加粗。
 - 重建 `cann-dashboard/ascend-studio-design-report.html` 并更新 `ascend-studio-design-report-evidence/qa.md`。电脑端 / 小程序产品源码、其他汇报页和 API / Protocol、Host / Harness、Application / Task 边界未改。
+
 - 本地结构核对：16 页、1 个开发者泳道、5 个阶段单元、10 条开发者表达、18 张交接卡，无旧场景卡。Pages 发布后已通过线上 HTML 回读确认结构；尝试浏览器视觉回放时 CUA `getTab` 连续超时，因此不声称完成截图回放。`py_compile`、`node --check` 与暂存差异 `git diff --check` 通过。
 
 ### 2026-10-29 · 订阅设置按钮去掉“并模拟新消息”
@@ -7644,3 +7645,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 证据来源：本轮用户明确的样式要求（H）、报告原始阶段插画素材（H）与现有可编辑旅程 DOM。断点表述是设计推演，不是用户访谈或效果数据。构建和结构检查确认 5 张图、18 个无阴影交接卡、5 个断点各含 2 条痛点、16 页；两段内联 JS `node --check`、Python 编译与构建成功。
 - 浏览器视觉回放受限：CUA 拒绝本地 `file://` 页面，现有 HTTP 预览未运行；未另起本地服务器绕过策略，故不声称完成浏览器截图核验。
 - 提交 / 推送：随本轮报告与证据更新提交并推送至 `origin/main`；具体结果以本轮最终交接和 Git 历史为准。
+
+### 2026-10-29 · Add 算子日志排查与社区经验回流
+
+- 按用户确认，保留原任务并新增「Add 算子异常：从日志到验证」，原任务列表名为「Add 算子精度差异排查」。新任务采用用户指定的 Format Lab 浅色模式方向，在现有工作台中走通日志线索 → 尾块图解 → 示例范围核对 → 社区经验草稿。
+- 为控制 Token 消耗，日志解析、固定范围运算和阶段交互由本地确定性规则驱动，标注「本地规则 · 0 tokens」；未增加真实模型调用。社区内容保持可编辑，不自动发布。预置形状与错误位置只用于演示，尾块仍是线索，不作为真实根因或 NPU 验证结论。
+- 实现与验证细节在 `ascend-studio/AGENTS.md`。本地 1280×720 预览已完成端到端回放：四步操作、经验入口、可编辑草稿和旧任务保留；`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过，未运行自动化测试。没有改页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。
+- 实现提交与推送结果：待本轮提交回填；Pages workflow：待推送后核对。
+

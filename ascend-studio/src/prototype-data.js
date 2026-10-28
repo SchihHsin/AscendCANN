@@ -1,11 +1,17 @@
 import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK, LEARNING_PATH_GENERATION_PROFILE } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
 
+export const LOG_DIAGNOSTIC_TASK = "Add 算子异常：从日志到验证";
+export const TASK_DISPLAY_NAMES = Object.freeze({
+  "AddCustom 精度异常": "Add 算子精度差异排查",
+});
+export const displayTaskName = (taskName) => TASK_DISPLAY_NAMES[taskName] || taskName;
+
 export const initialGroups = [
   {
     id: "operator",
     name: "CANN 自定义算子",
-    tasks: ["AddCustom 精度异常", "Add batch dimension"],
+    tasks: ["AddCustom 精度异常", LOG_DIAGNOSTIC_TASK, "Add batch dimension"],
   },
   {
     id: "inference",
@@ -59,6 +65,14 @@ export const taskDetails = {
     goal: "定位不同输入形状下的精度差异，保留判断依据并选择下一步检查。",
     question: "为什么 [16,32] 通过，[17,33] 失败？我改过编译参数，还是在 custom_op.cpp:128 报错。",
     reply: "目前确认：[16,32] 可以通过，[17,33] 失败；报错为 precision mismatch，位置在 custom_op.cpp:128。修改编译参数后，错误仍出现在同一位置。\n\n现有信息只能说明失败与非整块输入同时出现。尾块边界是值得核对的线索，但还不能据此认定根因；也可能与索引范围或精度计算有关。\n\n编译参数的调整没有带来新的定位信号。下一步应从重复尝试配置转向核对代码路径和误差证据；尾块判断目前只决定排查顺序，不能当作结论。\n\n还需要核对两次运行除输入形状外的条件是否一致，并查看失败元素的逐项误差。当前没有这些记录，所以判断暂时停在“优先核查尾块路径”，不归因到具体实现。\n\n建议先只读检查对应循环的索引范围和有效元素数；如果没有发现边界异常，再补充逐元素误差证据。当前还没有真实 NPU 验证结果。",
+    status: "active",
+  },
+  [LOG_DIAGNOSTIC_TASK]: {
+    project: "CANN 自定义算子",
+    kind: "log-diagnostic",
+    goal: "从 AddCustom 运行日志中识别排查线索，用图解理解尾块范围，再核对示例修正并沉淀经验。",
+    question: "AddCustom 日志显示 [16,32] 通过、[17,33] 出现 precision mismatch（custom_op.cpp:128）。能不能从日志开始，带我理解并验证可能的排查方向？",
+    reply: "我先把日志里的输入形状、错误位置和前一次尝试整理出来。形状差异提示可以优先核对尾块访问；这只是排查线索，不是已确认根因。\n\n右侧会用浅色范围图解展开 [17,33] 的 561 个元素如何落到 32 元素分块，再在浏览器中的示例副本里核对有效元素范围。整个流程由本地预置日志和确定性规则驱动，不调用模型；通过后可以把排查过程编辑成社区经验草稿。",
     status: "active",
   },
   "Add batch dimension": {

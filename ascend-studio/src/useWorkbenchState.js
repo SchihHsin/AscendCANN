@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply } from "./prototype-data";
+import { initialGroups, taskDetails, capabilities, initialAutomations, modelOptions, buildAssistantReply, LOG_DIAGNOSTIC_TASK } from "./prototype-data";
 import { readSession, writeSession } from "./session-storage";
 import { LEARNING_PATH_GENERATION_TASK, LEARNING_TASK } from "./learning-data";
 import { OFFICIAL_LEARNING_TASK } from "./official-learning-data";
@@ -66,6 +66,12 @@ function restoreWorkbench() {
     const inferenceGroup = groups.find(group => group.id === "inference");
     if (inferenceGroup) inferenceGroup.tasks = [...inferenceGroup.tasks, taskName];
     else groups.push({ id: "inference", name: "模型推理", tasks: [taskName] });
+  }
+  for (const taskName of [MAIN_TASK, LOG_DIAGNOSTIC_TASK]) {
+    if (groups.some(group => group.tasks.includes(taskName))) continue;
+    const operatorGroup = groups.find(group => group.id === "operator");
+    if (operatorGroup) operatorGroup.tasks = [...operatorGroup.tasks, taskName];
+    else groups.unshift({ id: "operator", name: "CANN 自定义算子", tasks: [MAIN_TASK, LOG_DIAGNOSTIC_TASK] });
   }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};

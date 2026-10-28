@@ -20,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 import "./community-draft.css";
 import { ChannelDraftContent, getCommunityDraftTopic } from "./ChannelDraftContent.jsx";
+import { LOG_DIAGNOSTIC_TASK } from "./prototype-data.js";
 import "./channel-draft.css";
 import { PublishedChannelPreview } from "./PublishedChannelPreview.jsx";
 import ascendCommunityMark from "./assets/channel-marks/ascend-community.svg";
@@ -81,7 +82,7 @@ function ChannelMark({ channel }) {
 
 function ChannelCardPreview({ channelId, draft }) {
   const topic = getCommunityDraftTopic(draft);
-  const isAddCustom = topic === "AddCustom 精度异常";
+  const isAddCustom = topic === "AddCustom 精度异常" || topic === LOG_DIAGNOSTIC_TASK;
   const previewLines = isAddCustom
     ? ["input = [17, 33]", "precision mismatch", "custom_op.cpp:128"]
     : ["img = img.transpose(2, 0, 1)", "img = img[None, ...]", "shape = [1, 3, 224, 224]"];
