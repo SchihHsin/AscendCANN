@@ -7509,7 +7509,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户澄清所说的“图底色”是学习发现页各卡片内部的配图，不是画布。撤销上一轮对 `.canvas-surface` 的误改，画布恢复为原有 `#F5F5F5`；将内容卡缩略图 `.ld-card-media` 与带图的活动缩略图 `.ld-event-media.has-image` 设为 `#E6E9EE`。配图 JPG 的近白背景已烘焙进文件，因此让缩略图使用 `mix-blend-mode: multiply`，使白底与冷灰面融合，同时保留图中蓝紫、绿、橙等点缀色；不改卡片正文或三栏面板底色。
 - 修改 `ascend-studio/src/learning-discovery.css`、`src/shared/canvas/canvas.css` 与根目录 `/ascstudio/` Pages 构建产物。依据为用户明确选色与纠正目标（H）；本地学习发现卡片预览截图（491×667）确认图面是冷灰而不是白底（M）。不改变页面序列、hash、任务数据或 API / Protocol、Host / Harness、Application / Task 边界。
-- `cd ascend-studio && npm run build:pages`、构建 JS `node --check`、构建 CSS 对 `#e6e9ee` / `mix-blend-mode:multiply` / `var(--canvas-surface)` 的规则核验与 `git diff --check` 通过；未运行自动化测试。构建提示 outDir 不自动清空及既有大 bundle 体积警告，不影响构建。实现提交、推送与 Pages 发布状态待本轮完成后补齐。
+- `cd ascend-studio && npm run build:pages`、构建 JS `node --check`、构建 CSS 对 `#e6e9ee` / `mix-blend-mode:multiply` / `var(--canvas-surface)` 的规则核验与 `git diff --check` 通过；未运行自动化测试。构建提示 outDir 不自动清空及既有大 bundle 体积警告，不影响构建。源码提交 `d7e7d569` 与构建提交 `29ea4a09` 已普通推送至 `origin/main`；Pages workflow `40685452572` 成功。线上 `/AscendCANN/ascstudio/`、`index-BUO0SNCm.js`、`index-12ek8Ftv.css` 均 HTTP 200，线上 CSS 确认含 `#e6e9ee` 与 `mix-blend-mode:multiply`。
 
 ### 2026-10-28 · AddCustom 初始答复给出尾块处理步骤
 
