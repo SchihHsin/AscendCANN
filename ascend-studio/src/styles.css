@@ -520,6 +520,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .conversation-panel.is-composer-only > .ambient-art,
 .conversation-panel.is-composer-only > .conversation-scroll { display: none; }
 .conversation-panel.is-conversation-expanded > .ambient-art { display: none; }
+.workspace-grid.is-task-workspace.is-conversation-floating.is-conversation-expanded .tc-mini-map { display: none; }
 .conversation-panel.is-composer-only > .composer-stack {
   width: min(720px, calc(100% - 324px));
   max-width: none;
