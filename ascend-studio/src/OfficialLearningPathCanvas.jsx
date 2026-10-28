@@ -11,7 +11,7 @@ import { normalizeCanvasStatus } from "./shared/canvas/node-semantics.js";
 import { useCanvasDrawing } from "./shared/canvas/useCanvasDrawing.js";
 import { MAX_CONTENT_CARD_HEIGHT } from "./shared/canvas/canvas-sizing.js";
 import OfficialLearningVisuals from "./OfficialLearningVisuals";
-import { OfficialLesson, OfficialPractice, OfficialSources } from "./OfficialLearningActivities";
+import { OfficialComprehensionCheck, OfficialLectureMaterial, OfficialLesson, OfficialPractice, OfficialVideoMaterial } from "./OfficialLearningActivities";
 import { canvasNodeKey, nodeConnector, positionTreeNodes, stageSpineConnectors, hierarchySpineConnectors } from "./canvas-node-position";
 import "./learning-hierarchy-canvas.css";
 import "./official-learning-canvas.css";
@@ -139,14 +139,14 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const step = stage.children.find(item => item.id === node.id) || stage.children[0];
   const horizontal = canvas.layout === "horizontal";
   const treePoint = canvas.positions.hierarchy || {x:42,y:100};
-  const diagramWidth = 780, lessonWidth = 700;
-  const baseY = horizontal ? treePoint.y + stage.rect.y : treePoint.y + tree.height + 75;
+  const diagramWidth = 780, lessonWidth = 700, explanationWidth = 520, practiceWidth = 700, checkWidth = 520;
+  const cardGap = 28;
+  const baseY = horizontal ? treePoint.y + step.rect.y - 18 : treePoint.y + tree.height + 75;
   const contentX = horizontal ? treePoint.x + 308 : Math.max(45,Math.min(treePoint.x + stage.rect.x,treePoint.x + tree.width - diagramWidth));
+  const secondColumnX = contentX + diagramWidth + cardGap;
+  const thirdColumnX = secondColumnX + lessonWidth + cardGap;
+  const operationSecondColumnX = contentX + practiceWidth + cardGap;
   const keyFor = kind => `${node.id}:${kind}`;
-  const diagramHeight = heights[`${node.id}:diagram`] || 370;
-  const practiceHeight = heights[`${node.id}:practice`] || 460;
-  const defaultPoint = kind => ({x:contentX,y:baseY + (kind === "diagram" ? 0 : kind === "practice" ? diagramHeight + 28 : diagramHeight + 28 + (["preprocess","contract","execution","summary"].includes(node.visual) ? practiceHeight + 28 : 0))});
-  const position = kind => canvas.positions[keyFor(kind)] || defaultPoint(kind);
   const viewport = canvas.viewport;
   const userNotes = (canvasContent?.state.cards || []).filter(card => ["note", "drawing"].includes(card.kind) && card.visible);
   const hiddenUserNotes = (canvasContent?.state.cards || []).filter(card => ["note", "drawing"].includes(card.kind) && !card.visible);
@@ -155,6 +155,27 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const hidden = kind => !expanded || canvas.hidden.includes(keyFor(kind));
   const collapsed = id => Boolean(canvas.collapsed?.includes(id));
   const practice = ["preprocess","contract","execution","summary"].includes(node.visual);
+  const hasCheck = Boolean(node.checkpoint);
+  const cardHeight = kind => hidden(kind) || collapsed(keyFor(kind)) ? 44 : Math.min(MAX_CONTENT_CARD_HEIGHT, heights[keyFor(kind)] || ({ diagram: 370, lesson: 560, explanation: 420, practice: 460, check: 430 }[kind] || 460));
+  const materialRowHeight = Math.max(cardHeight("diagram"), cardHeight("lesson"), cardHeight("explanation"));
+  const actionRowY = baseY + materialRowHeight + cardGap;
+  const defaultPoint = kind => {
+    if (kind === "diagram") return { x: contentX, y: baseY };
+    if (kind === "lesson") return { x: secondColumnX, y: baseY };
+    if (kind === "explanation") return { x: thirdColumnX, y: baseY };
+    if (kind === "practice") return { x: contentX, y: actionRowY };
+    if (kind === "check") return { x: practice ? operationSecondColumnX : contentX, y: actionRowY };
+    return { x: contentX, y: baseY };
+  };
+  const position = kind => canvas.positions[keyFor(kind)] || defaultPoint(kind);
+  const normalKinds = ["diagram", "lesson", "explanation", ...(practice ? ["practice"] : []), ...(hasCheck ? ["check"] : [])];
+  const normalCards = normalKinds.map(kind => ({
+    id: keyFor(kind), kind, nodeId: node.id, point: position(kind),
+    width: { diagram: diagramWidth, lesson: lessonWidth, explanation: explanationWidth, practice: practiceWidth, check: checkWidth }[kind],
+    height: cardHeight(kind),
+  }));
+  const clusterRight = Math.max(...normalCards.map(card => card.point.x + card.width));
+  const clusterBottom = Math.max(...normalCards.map(card => card.point.y + card.height));
   const allCardWidth = 700;
   const allCardPoint = (group, child) => canvas.positions[`all:${child.id}`] || (horizontal ? {x:treePoint.x + 308,y:treePoint.y + child.rect.y - 1} : {x:treePoint.x + group.rect.x + 310,y:treePoint.y + child.rect.y - 1});
   const expandedCards = allExpanded ? tree.groups.flatMap(group => group.children.map(child => ({child,group,point:allCardPoint(group,child),height:collapsed(`all:${child.id}`) ? 44 : Math.min(MAX_CONTENT_CARD_HEIGHT, heights[`all:${child.id}`] || MAX_CONTENT_CARD_HEIGHT)}))) : [];
@@ -162,7 +183,7 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const noteBottom = userNotes.length ? Math.max(...userNotes.map(card => card.y + card.height)) : 0;
   const drawingRight = drawingPoints.length ? Math.max(...drawingPoints.map(point => point.x)) : 0;
   const drawingBottom = drawingPoints.length ? Math.max(...drawingPoints.map(point => point.y)) : 0;
-  const world = {width:Math.max(1500,tree.width + 100,contentX + 870,...expandedCards.map(card=>card.point.x+allCardWidth+40),noteRight+80,drawingRight+80),height:Math.max(tree.height + 200,baseY + 1750,...expandedCards.map(card=>card.point.y+card.height+40),noteBottom+90,drawingBottom+90)};
+  const world = {width:Math.max(1500,tree.width + 100,clusterRight+40,...expandedCards.map(card=>card.point.x+allCardWidth+40),noteRight+80,drawingRight+80),height:Math.max(tree.height + 200,clusterBottom+80,...expandedCards.map(card=>card.point.y+card.height+40),noteBottom+90,drawingBottom+90)};
   const done = Object.values(state.statuses).filter(value => value === "completed").length;
   const total = OFFICIAL_LEARNING_STAGES.reduce((sum,item) => sum + item.children.length,0);
   const fitBounds = (bounds, padding = 28, min = allExpanded ? .04 : .35) => {
@@ -173,8 +194,19 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const fitContext = () => {
     const p=position("diagram");
     if (horizontal) {
-      const narrow=size.width<720;
-      fitBounds({x:narrow?p.x-82:Math.min(treePoint.x,p.x),y:p.y-8,width:narrow?diagramWidth+100:p.x+diagramWidth-treePoint.x+15,height:660},24,narrow?.55:.45);
+      const narrow=size.width<960;
+      const materialCards=normalCards.filter(card=>["diagram","lesson","explanation"].includes(card.kind)&&!hidden(card.kind));
+      if(!narrow&&materialCards.length){
+        const left=Math.min(treePoint.x,selectedStepRect.x),top=Math.min(treePoint.y+step.rect.y-8,...materialCards.map(card=>card.point.y-8));
+        const right=Math.max(treePoint.x+tree.width,...materialCards.map(card=>card.point.x+card.width));
+        const bottom=Math.max(selectedStepRect.y+selectedStepRect.height,...materialCards.map(card=>card.point.y+card.height));
+        fitBounds({x:left-8,y:top,width:right-left+20,height:bottom-top+16},24,.34);
+      }else if(narrow){
+        const left=Math.min(selectedStepRect.x,p.x-14),top=Math.min(selectedStepRect.y,p.y-8);
+        const right=Math.max(selectedStepRect.x+selectedStepRect.width,p.x+diagramWidth);
+        const bottom=Math.max(selectedStepRect.y+selectedStepRect.height,p.y+cardHeight("diagram"));
+        fitBounds({x:left-8,y:top,width:right-left+20,height:bottom-top+16},24,.52);
+      }else fitBounds({x:Math.min(treePoint.x,p.x),y:p.y-8,width:Math.max(diagramWidth+100,p.x+diagramWidth-treePoint.x+15),height:660},24,.4);
     } else fitBounds({x:Math.max(15,contentX-90),y:treePoint.y-18,width:diagramWidth+190,height:tree.height+520},24,.4);
   };
   const fitPath = () => {
@@ -270,7 +302,7 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const addUserNote=()=>{
     if(!canvasContent?.actions.addCard)return;
     const count=(canvasContent.state.cards||[]).filter(card=>card.kind==="note").length+1;
-    const rightmost=Math.max(treePoint.x+tree.width,contentX+diagramWidth,contentX+lessonWidth,...expandedCards.map(card=>card.point.x+allCardWidth),...userNotes.map(card=>card.x+card.width),...drawingPoints.map(point=>point.x));
+    const rightmost=Math.max(treePoint.x+tree.width,clusterRight,...expandedCards.map(card=>card.point.x+allCardWidth),...userNotes.map(card=>card.x+card.width),...drawingPoints.map(point=>point.x));
     const x=rightmost+24,y=position("diagram").y;
     canvasContent.actions.addCard({id:`learning-note:${Date.now().toString(36)}`,kind:"note",title:`笔记 ${count}`,noteText:"",codeBlocks:[],x,y,width:350,height:220},{focus:false});
     canvasActions.setViewport({x:size.width/2-(x+175)*viewport.scale,y:size.height/2-(y+110)*viewport.scale});
@@ -279,7 +311,7 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
     if(!canvasContent?.actions.addCard)return null;
     const count=(canvasContent.state.cards||[]).filter(card=>card.kind==="drawing").length+1;
     const id=`learning-drawing:${Date.now().toString(36)}:${Math.random().toString(36).slice(2,6)}`;
-    const rightmost=Math.max(treePoint.x+tree.width,contentX+diagramWidth,contentX+lessonWidth,...expandedCards.map(card=>card.point.x+allCardWidth),...userNotes.map(card=>card.x+card.width),...drawingPoints.map(point=>point.x));
+    const rightmost=Math.max(treePoint.x+tree.width,clusterRight,...expandedCards.map(card=>card.point.x+allCardWidth),...userNotes.map(card=>card.x+card.width),...drawingPoints.map(point=>point.x));
     const x=rightmost+24,y=position("diagram").y;
     canvasContent.actions.addCard({id,kind:"drawing",title:`手绘卡片 ${count}`,x,y,width:420,height:300},{focus:false});
     canvasActions.setViewport({x:size.width/2-(x+210)*viewport.scale,y:size.height/2-(y+150)*viewport.scale});
@@ -313,26 +345,29 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
     host.current.setPointerCapture(event.pointerId);
   };
   const canvasPanBlocked="button,input,textarea,select,summary,a,.lh-card,.lh-tree-node,.canvas-user-note,.canvas-legacy-drawing-hit-target";
-  const select=id=>{const selectedNode=getOfficialLearningNode(id);if(!selectedNode)return;actions.selectNode(id);canvasActions.select(selectedNode.courseId,selectedNode.id);canvasActions.revealObject(`${selectedNode.id}:diagram`);canvasActions.revealObject(`${selectedNode.id}:lesson`);};
+  const select=id=>{const selectedNode=getOfficialLearningNode(id);if(!selectedNode)return;actions.selectNode(id);canvasActions.select(selectedNode.courseId,selectedNode.id);canvasActions.revealObject(`${selectedNode.id}:diagram`);canvasActions.revealObject(`${selectedNode.id}:lesson`);canvasActions.revealObject(`${selectedNode.id}:explanation`);canvasActions.revealObject(`${selectedNode.id}:practice`);canvasActions.revealObject(`${selectedNode.id}:check`);};
+  const continueStep=id=>{const all=personalPlan?.status==="confirmed"?tree.groups.flatMap(item=>item.children):OFFICIAL_LEARNING_STAGES.flatMap(item=>item.children);const next=all[all.findIndex(item=>item.id===id)+1];if(next)select(next.id);else select("learning-official-step-save-summary");};
+  const continueNextStep=()=>continueStep(node.id);
   const beginObjectDrag=(event,id,point)=>{
     if(canvas.pinned.includes(id))return;
     if(!event){canvasActions.moveObject(id,point);return;}
     if(event.button!==0)return;event.preventDefault();event.stopPropagation();gesture.current={id,startX:event.clientX,startY:event.clientY,original:point};host.current.setPointerCapture(event.pointerId);
   };
-  const cardProps=kind=>({id:keyFor(kind),point:position(kind),width:kind==="diagram"?diagramWidth:lessonWidth,pinned:canvas.pinned.includes(keyFor(kind)),collapsed:collapsed(keyFor(kind)),summary:node.summary,nodeType:kind==="practice"?"action":"material",contentType:kind==="diagram"?"diagram":kind==="practice"?"interactive":"lesson",status:state.statuses[node.id],statusLabel:officialStatusLabel(state.statuses[node.id]),domain:"resnet50",onDrag:positionEditing&&!canvas.pinned.includes(keyFor(kind))?beginObjectDrag:undefined,onFocus:focusObject,onOpenContent:()=>onOpenContent?.(node.id,keyFor(kind)),onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,position(kind));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.toggleCollapsed(keyFor(kind))});
+  const cardProps=kind=>({id:keyFor(kind),point:position(kind),width:{diagram:diagramWidth,lesson:lessonWidth,explanation:explanationWidth,practice:practiceWidth,check:checkWidth}[kind],pinned:canvas.pinned.includes(keyFor(kind)),collapsed:collapsed(keyFor(kind)),summary:node.summary,nodeType:["practice","check"].includes(kind)?"action":"material",contentType:kind==="diagram"?"diagram":kind==="lesson"?"video":kind==="explanation"?"lesson":["practice","check"].includes(kind)?"interactive":"lesson",status:state.statuses[node.id],statusLabel:officialStatusLabel(state.statuses[node.id]),domain:"resnet50",onDrag:positionEditing&&!canvas.pinned.includes(keyFor(kind))?beginObjectDrag:undefined,onFocus:focusObject,onOpenContent:()=>onOpenContent?.(node.id,keyFor(kind)),onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,position(kind));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.toggleCollapsed(keyFor(kind))});
   const allCardProps=(group,child)=>({id:`all:${child.id}`,point:allCardPoint(group,child),width:allCardWidth,pinned:canvas.pinned.includes(`all:${child.id}`),collapsed:collapsed(`all:${child.id}`),summary:child.summary,nodeType:"step",contentType:"lesson",status:state.statuses[child.id],statusLabel:officialStatusLabel(state.statuses[child.id]),domain:"resnet50",onDrag:positionEditing&&!canvas.pinned.includes(`all:${child.id}`)?beginObjectDrag:undefined,onFocus:focusObject,onOpenContent:()=>onOpenContent?.(child.id,`all:${child.id}`),onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,allCardPoint(group,child));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.toggleCollapsed(`all:${child.id}`)});
   const minimapCards = allExpanded
     ? expandedCards.map(card => ({ id: `all:${card.child.id}`, nodeId: card.child.id, point: card.point, width: allCardWidth, height: card.height }))
-    : expanded ? [
-      { id: keyFor("diagram"), nodeId: node.id, point: position("diagram"), width: diagramWidth, height: collapsed(keyFor("diagram")) ? 44 : diagramHeight },
-      ...(practice ? [{ id: keyFor("practice"), nodeId: node.id, point: position("practice"), width: lessonWidth, height: collapsed(keyFor("practice")) ? 44 : practiceHeight }] : []),
-      { id: keyFor("lesson"), nodeId: node.id, point: position("lesson"), width: lessonWidth, height: collapsed(keyFor("lesson")) ? 44 : Math.min(MAX_CONTENT_CARD_HEIGHT, heights[keyFor("lesson")] || MAX_CONTENT_CARD_HEIGHT) },
-    ].filter(card => !canvas.hidden.includes(card.id))
+    : expanded ? normalCards.filter(card=>!hidden(card.kind))
     : [];
-  const restorePill=(kind,title)=><button type="button" className="lh-restore-material" style={{left:position(kind).x,top:position(kind).y}} onClick={()=>{canvasActions.setExpanded(true);canvasActions.revealObject(keyFor(kind));}}><IconBook size={ICON_SIZE.heading}/><span>材料已收起<strong>恢复{title}</strong></span><IconChevronDown size={ICON_SIZE.control}/></button>;
-  const start={x:treePoint.x+step.rect.x+step.rect.width,y:treePoint.y+step.rect.y+step.rect.height/2};
-  const p=position("diagram");
-  const connection=horizontal?`M${start.x},${start.y} H${treePoint.x+tree.width+22} V${p.y+26} H${p.x}`:`M${start.x},${start.y} H${treePoint.x+stage.rect.x+stage.rect.width+14} V${treePoint.y+tree.height+32} H${p.x+60} V${p.y}`;
+  const restorePill=(kind,title)=><button type="button" className="lh-restore-material" style={{left:position(kind).x,top:position(kind).y}} onClick={()=>{canvasActions.setExpanded(true);canvasActions.revealObject(keyFor(kind));}}>{["practice","check"].includes(kind)?<IconCheck size={ICON_SIZE.heading}/>:<IconBook size={ICON_SIZE.heading}/>}<span>{["practice","check"].includes(kind)?"操作已收起":"材料已收起"}<strong>恢复{title}</strong></span><IconChevronDown size={ICON_SIZE.control}/></button>;
+  const selectedStepRect={x:treePoint.x+step.rect.x,y:treePoint.y+step.rect.y,width:step.rect.width,height:step.rect.height};
+  const visibleContentCards=normalCards.filter(card=>!hidden(card.kind));
+  const relationSpineX=horizontal?treePoint.x+tree.width+18:treePoint.x+stage.rect.x+stage.rect.width+14;
+  const relationSource={x:selectedStepRect.x+selectedStepRect.width,y:selectedStepRect.y+selectedStepRect.height/2};
+  const relationCenters=visibleContentCards.map(card=>({id:card.id,x:horizontal?card.point.x:card.point.x+card.width/2,y:horizontal?card.point.y+card.height/2:card.point.y}));
+  const relationTop=Math.min(relationSource.y,...relationCenters.map(item=>item.y));
+  const relationBottom=Math.max(relationSource.y,...relationCenters.map(item=>item.y));
+  const relationExitY=treePoint.y+tree.height+32;
   return <CanvasSurface as="div" ref={host} className={`learning-hierarchy-canvas goal-learning-canvas${hand?" is-hand":""}${positionEditing?" is-position-editing":""}${drawing.drawingMode?" is-drawing":""}`} style={{backgroundSize:`${Math.max(12,20*viewport.scale)}px ${Math.max(12,20*viewport.scale)}px`,backgroundPosition:`${viewport.x}px ${viewport.y}px`}} aria-label="可移动的 ResNet50 学习层级与内容画布" onPointerDown={event=>{
     if(drawing.drawingMode)return;
     if(event.button!==0||event.target.closest(canvasPanBlocked))return;
@@ -342,11 +377,13 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
     <LearningCanvasToolbar layout={canvas.layout} scale={viewport.scale} hand={hand} positionEditing={positionEditing} drawingMode={drawing.drawingMode} hasHiddenContent={hiddenUserNotes.length>0} hasLegacyDrawings={drawing.drawings.some(item=>!item.cardId)} canDeleteSelectedDrawing={Boolean(drawing.selectedLegacyDrawingId)} allExpanded={allExpanded} onToggleAllExpanded={()=>setAllExpanded(value=>!value)} onTogglePositionEditing={togglePositionEditing} onLayout={next=>{if(canvas.focused)canvasActions.setFocused(false);canvasActions.setLayout(next);}} onZoom={zoom} onResetZoom={()=>canvasActions.setViewport({scale:1})} onHand={()=>{setHand(value=>!value);setPositionEditing(false);drawing.stop();}} onFit={fitPath} onAddNode={canvasContent?addUserNote:undefined} onToggleDrawing={canvasContent?toggleDrawing:undefined} onDeleteSelectedDrawing={drawing.deleteSelectedLegacyDrawing} onRestoreContent={canvasContent?()=>canvasContent.actions.restore(hiddenUserNotes.at(-1)?.id):undefined}/>
     <div className="lh-world" style={{width:world.width,height:world.height,transform:`translate(${viewport.x}px,${viewport.y}px) scale(${viewport.scale})`}}>
       <CanvasLegacyDrawings className="canvas-user-drawings" width={world.width} height={world.height} drawings={drawing.drawings.filter(item=>!item.cardId)} editable={positionEditing} selectedId={drawing.selectedLegacyDrawingId} onSelect={drawing.selectLegacyDrawing} onDelete={drawing.deleteLegacyDrawing}/>
-      {allExpanded ? <svg className="lh-material-lines og-all-material-lines" width={world.width} height={world.height} aria-label="学习动作与其材料的包含关系">{expandedCards.map(({child,group,point})=>{const source={x:treePoint.x+child.rect.x,y:treePoint.y+child.rect.y,width:child.rect.width,height:child.rect.height};return <path key={child.id} data-relation-type="contains" d={nodeConnector(source,{x:point.x,y:point.y,width:allCardWidth,height:47})}/>;})}</svg> : !hidden("diagram")&&<svg className="lh-material-lines" width={world.width} height={world.height} aria-label="当前学习动作与图解材料的关系"><path data-relation-type="contains" d={connection}/><circle cx={start.x} cy={start.y} r="4"/></svg>}
+      {allExpanded ? <svg className="lh-material-lines og-all-material-lines" width={world.width} height={world.height} aria-label="学习动作与其材料的包含关系">{expandedCards.map(({child,group,point})=>{const source={x:treePoint.x+child.rect.x,y:treePoint.y+child.rect.y,width:child.rect.width,height:child.rect.height};return <path key={child.id} data-relation-type="contains" d={nodeConnector(source,{x:point.x,y:point.y,width:allCardWidth,height:47})}/>;})}</svg> : visibleContentCards.length>0&&<svg className="lh-material-lines" width={world.width} height={world.height} aria-label="当前学习步骤与图解、视频、同步讲解及操作卡片的关联关系">{horizontal?<><path data-relation-type="contains" d={`M${relationSource.x},${relationSource.y} H${relationSpineX}`}/>{relationCenters.length>1&&<path data-relation-type="contains" d={`M${relationSpineX},${relationTop} V${relationBottom}`}/>} {relationCenters.map(item=>{const card=visibleContentCards.find(entry=>entry.id===item.id);return <g key={item.id}><path data-relation-type="contains" d={`M${relationSpineX},${item.y} H${card.point.x}`}/><circle cx={card.point.x} cy={item.y} r="2.5"/></g>;})}</>:<><path data-relation-type="contains" d={`M${relationSource.x},${relationSource.y} H${relationSpineX} V${relationExitY}`}/>{relationCenters.map(item=><g key={item.id}><path data-relation-type="contains" d={`M${relationSpineX},${relationExitY} H${item.x} V${item.y}`}/><circle cx={item.x} cy={item.y} r="2.5"/></g>)}</>}<circle cx={relationSource.x} cy={relationSource.y} r="4"/></svg>}
       <div className="lh-tree-position" style={{left:treePoint.x,top:treePoint.y}}><Hierarchy tree={tree} layout={canvas.layout} node={node} statuses={state.statuses} onSelect={select} editing={positionEditing} scale={viewport.scale} minX={8} minY={8} onMoveNode={(id,point)=>canvasActions.moveObject(id,point)} onDrag={positionEditing&&!canvas.pinned.includes("hierarchy")?(event,delta)=>beginObjectDrag(event,"hierarchy",delta?{x:treePoint.x+delta[0],y:treePoint.y+delta[1]}:treePoint):undefined}/></div>
-      {allExpanded ? <>{tree.groups.flatMap(group=>group.children.map(child=><LearningCanvasCard key={child.id} {...allCardProps(group,child)} className={`og-all-node-card${child.id===node.id?" is-current":""}`} title={child.title} icon={child.visual==="image"?IconPhoto:IconCube}><OfficialLearningVisuals key={`visual:${child.id}`} node={child} journey={journey}/>{["image","preprocess","contract"].includes(child.visual)&&<div className="og-related"><button type="button" className="lh-text-button" onClick={onOpenPreprocessing}>回看已有的图像输入预处理图解<IconArrowRight size={ICON_SIZE.inline}/></button></div>}<OfficialLesson node={child} journey={journey} onAsk={onAsk} onCopy={onCopy}/><OfficialSources node={child} journey={journey}/>{["preprocess","contract","execution","summary"].includes(child.visual)&&<section className="og-all-practice"><h3>{child.visual==="summary"?"学习记录与成果":"动手练习与本次检查"}</h3><OfficialPractice node={child} journey={journey} onCopy={onCopy}/></section>}</LearningCanvasCard>))}</> : <>{!hidden("diagram")?<LearningCanvasCard {...cardProps("diagram")} title={node.title} icon={node.visual==="image"?IconPhoto:IconCube}><OfficialLearningVisuals key={node.id} node={node} journey={journey}/>{["image","preprocess","contract"].includes(node.visual)&&<div className="og-related"><button type="button" className="lh-text-button" onClick={onOpenPreprocessing}>回看已有的图像输入预处理图解<IconArrowRight size={ICON_SIZE.inline}/></button></div>}</LearningCanvasCard>:restorePill("diagram","图解")}
-      {practice&&(!hidden("practice")?<LearningCanvasCard {...cardProps("practice")} title={node.visual==="summary"?"学习记录与成果":"动手练习与本次检查"} icon={IconCode}><OfficialPractice node={node} journey={journey} onCopy={onCopy}/></LearningCanvasCard>:restorePill("practice","练习"))}
-      {!hidden("lesson")?<LearningCanvasCard {...cardProps("lesson")} title="讲解、视频与理解检查" icon={IconBook}><OfficialLesson node={node} journey={journey} onAsk={onAsk} onCopy={onCopy}/><OfficialSources node={node} journey={journey}/>{state.statuses[node.id]==="completed"&&<div className="og-next"><span><IconCheck size={ICON_SIZE.inline}/>当前学习动作已完成</span><button type="button" className="lh-button" onClick={()=>{const all=personalPlan?.status==="confirmed"?tree.groups.flatMap(item=>item.children):OFFICIAL_LEARNING_STAGES.flatMap(item=>item.children);const next=all[all.findIndex(item=>item.id===node.id)+1];if(next)select(next.id);else select("learning-official-step-save-summary");}}>继续下一步<IconArrowRight size={ICON_SIZE.inline}/></button></div>}</LearningCanvasCard>:restorePill("lesson","视频与讲解")}</>}
+      {allExpanded ? <>{tree.groups.flatMap(group=>group.children.map(child=><LearningCanvasCard key={child.id} {...allCardProps(group,child)} className={`og-all-node-card${child.id===node.id?" is-current":""}`} title={child.title} icon={child.visual==="image"?IconPhoto:IconCube}><OfficialLearningVisuals key={`visual:${child.id}`} node={child} journey={journey}/>{["image","preprocess","contract"].includes(child.visual)&&<div className="og-related"><button type="button" className="lh-text-button" onClick={onOpenPreprocessing}>回看已有的图像输入预处理图解<IconArrowRight size={ICON_SIZE.inline}/></button></div>}<OfficialLesson node={child} journey={journey} onAsk={onAsk} onCopy={onCopy}/>{["preprocess","contract","execution","summary"].includes(child.visual)&&<section className="og-all-practice"><h3>{child.visual==="summary"?"学习记录与成果":"动手练习"}</h3><OfficialPractice node={child} journey={journey} onCopy={onCopy}/></section>}{child.checkpoint&&<section className="og-all-practice og-all-check"><h3>理解检查</h3><OfficialComprehensionCheck node={child} journey={journey} onContinue={()=>continueStep(child.id)}/></section>}</LearningCanvasCard>))}</> : <>{!hidden("diagram")?<LearningCanvasCard {...cardProps("diagram")} title={node.title} icon={node.visual==="image"?IconPhoto:IconCube}><OfficialLearningVisuals key={node.id} node={node} journey={journey}/>{["image","preprocess","contract"].includes(node.visual)&&<div className="og-related"><button type="button" className="lh-text-button" onClick={onOpenPreprocessing}>回看已有的图像输入预处理图解<IconArrowRight size={ICON_SIZE.inline}/></button></div>}</LearningCanvasCard>:restorePill("diagram","图解")}
+      {practice&&(!hidden("practice")?<LearningCanvasCard {...cardProps("practice")} title={node.visual==="summary"?"学习记录与成果":"动手练习"} icon={IconCode}><OfficialPractice node={node} journey={journey} onCopy={onCopy}/></LearningCanvasCard>:restorePill("practice","动手练习"))}
+      {!hidden("lesson")?<LearningCanvasCard {...cardProps("lesson")} title="视频与章节控制" icon={IconDeviceDesktop}><OfficialVideoMaterial node={node} journey={journey} onAsk={onAsk}/></LearningCanvasCard>:restorePill("lesson","视频与章节")}
+      {!hidden("explanation")?<LearningCanvasCard {...cardProps("explanation")} title="当前同步讲解" icon={IconBook}><OfficialLectureMaterial node={node} journey={journey} onCopy={onCopy}/></LearningCanvasCard>:restorePill("explanation","同步讲解")}
+      {hasCheck&&(!hidden("check")?<LearningCanvasCard {...cardProps("check")} title="理解检查" icon={IconCheck}><OfficialComprehensionCheck node={node} journey={journey} onContinue={continueNextStep}/></LearningCanvasCard>:restorePill("check","理解检查"))}</>}
       {userNotes.map(card=><CanvasUserNote key={card.id} card={card} selected={canvasContent?.state.selectedCardId===card.id} editing={positionEditing} onMoveStart={beginUserNoteDrag} onUpdate={(id,patch)=>canvasContent?.actions.updateCard(id,patch)} onHide={id=>canvasContent?.actions.hideCard(id)} {...drawingCardProps(card)}/>)}
     </div>
     {editingPersonalPlan && <div className="lh-draft-controls og-personal-plan-controls" aria-label="个人学习计划操作"><span className="og-personal-plan-status"><i />个人计划草案 · 不改变官方路径</span><button type="button" className="lh-button og-plan-confirm" onClick={actions.confirmPersonalPlan}>确认个人计划</button><button type="button" className="lh-button" disabled={!state.personalPlanUndo?.length} onClick={actions.undoPersonalPlanStep}>撤销</button><button type="button" className="lh-button" onClick={actions.cancelPersonalPlanEdit}>取消</button></div>}
@@ -354,7 +391,7 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
     <CanvasMiniMap className="lh-minimap" viewBox={{x:0,y:0,width:world.width,height:world.height}} viewport={{x:-viewport.x/viewport.scale,y:-viewport.y/viewport.scale,width:size.width/viewport.scale,height:size.height/viewport.scale}} onNavigate={({x,y})=>canvasActions.setViewport({x:size.width/2-x*viewport.scale,y:size.height/2-y*viewport.scale})} onFit={fitPath}>
       {tree.groups.map(item=><rect className={`canvas-minimap-item${item.id===node.courseId?" is-current":""}`} key={item.id} x={treePoint.x+item.rect.x} y={treePoint.y+item.rect.y} width={item.rect.width} height={item.rect.height} rx="8"/>)}
       {tree.groups.flatMap(group=>group.children.map(child=><rect className={`canvas-minimap-item${child.id===node.id?" is-selected":""}`} key={`step:${child.id}`} x={treePoint.x+child.rect.x} y={treePoint.y+child.rect.y} width={child.rect.width} height={child.rect.height} rx="5"/>))}
-      {minimapCards.map(card=><rect className={`canvas-minimap-item is-material${card.nodeId===node.id?" is-selected":""}${collapsed(card.id)?" is-collapsed":""}`} key={`material:${card.id}`} x={card.point.x} y={card.point.y} width={card.width} height={card.height} rx="8"/>)}
+      {minimapCards.map(card=><rect className={`canvas-minimap-item${["practice","check"].some(kind=>card.id.endsWith(`:${kind}`))?" is-action":" is-material"}${card.nodeId===node.id?" is-selected":""}${collapsed(card.id)?" is-collapsed":""}`} key={`material:${card.id}`} x={card.point.x} y={card.point.y} width={card.width} height={card.height} rx="8"/>)}
       {userNotes.map(card=><rect className={`canvas-minimap-item${canvasContent?.state.selectedCardId===card.id?" is-selected":""}`} key={card.id} x={card.x} y={card.y} width={card.width} height={card.height} rx="7"/>)}
       {drawing.drawings.filter(item=>!item.cardId).map(item=><polyline key={item.id} className="canvas-minimap-drawing" points={item.points.map(point=>`${point.x},${point.y}`).join(" ")}/>)}
     </CanvasMiniMap>

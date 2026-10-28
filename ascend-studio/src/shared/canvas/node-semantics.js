@@ -159,8 +159,10 @@ export const CANVAS_NODE_ADAPTERS = Object.freeze({
   }) }),
   resnet50: Object.freeze({ nodeMap: RESNET50_NODE_MAP, suffixes: Object.freeze({
     ":diagram": { nodeType: "material", contentType: "diagram" },
-    ":lesson": { nodeType: "material", contentType: "lesson" },
+    ":lesson": { nodeType: "material", contentType: "video" },
+    ":explanation": { nodeType: "material", contentType: "lesson" },
     ":practice": { nodeType: "action", contentType: "interactive" },
+    ":check": { nodeType: "action", contentType: "interactive" },
   }), prefixes: Object.freeze({
     "learning-official-step-": { nodeType: "step", contentType: "lesson" },
     "record:": { nodeType: "result", contentType: "summary" },
