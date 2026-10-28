@@ -7490,3 +7490,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更：`cann-dashboard/ascend-studio-design-report.html`、`cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`render_journey_sequence.mjs`、`journey-sequence.mmd`、原旅程模板 HTML / CSS 快照、相关 `narrative.md` / `qa.md` 与依赖锁文件。证据及演示边界见 evidence 目录；时序关系是概念表达，不是实测旅程或访谈结果。
 - 页面仍为 16 页，API / Protocol、Host / Harness、Application / Task 边界和既有产品源码均未改变。
 - 验证：网页 PPT 重建成功；`node --check render_journey_sequence.mjs` 通过；结构检查确认 16 页、ID 唯一、6 个角色、5 个断点、5 个等宽时序阶段、25 条消息、颜色已落为静态 SVG 值。独立 SVG 渲染预览检查字样、箭头和泳道；最新 `main` 干净 worktree 中 `npm ci` 与构建输出 SHA-256 与交付文件一致。本轮没有重新进行浏览器视觉回放，也未运行自动化测试。发布：提交 `07d5f130` 已推送到 `origin/main`。
+
+### 2026-10-28 · 知识供给蓝图按方案 2 增补流程细节
+
+- 用户确认方案 2：保留原供给总图，并让公开发现、产品 API、Agent 三页沿用节点与连线流程；每个节点旁补充建设方式、使用方式和示例。总图的“网页”节点补为“HTML · llms.txt”，让 llms.txt 在总图中可见。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`：公开发现页呈现 robots.txt / sitemap.xml → HTML / Markdown → JSON-LD → llms.txt；API 页呈现目标与环境 → OpenAPI → 资源服务 → 学习发现；Agent 页呈现任务上下文 → SKILL.md → MCP Resources / Tools → Evidence Receipt。保留示例代码、建设 / 使用说明、授权与应用层验收边界。解释段落调整为正文级字号以提高可读性。
+- 依据：用户选定的方案（H）；`report-ppt-skill` 的冷灰底、蓝紫主强调与少量蓝 / 暖橙配色约束（H）；规范链接分别指向 Robots RFC 9309、Sitemaps、Schema.org Course、llms.txt 提案、OpenAPI 3.1、MCP Server 与 Agent Skills。示例端点、llms.txt 实施方式与回执字段均为建设建议，不表示当前服务已接入。
+- 本轮不改变页面顺序、导航 hash、资源状态模型或 API / Protocol、Host / Harness、Application / Task 边界。验证为本地 1280×720 浏览器回看总图 #3、公开发现 #7、API #8、Agent #9，确认流程与内容完整、文字不溢出；`git diff --check` 通过；未运行自动化测试。
+- 发布：本轮只提交该 HTML 与本交接记录；提交和普通 push 至 `origin/main` 后，在此记录实际结果。
