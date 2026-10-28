@@ -7408,11 +7408,18 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户发现点击图解后变灰的 AddCustom 知识卡在刷新后仍是灰色。原因是上一轮把提示状态写入 `sessionStorage`。现改为仅在 React 页面会话内保存提示状态：切换材料时保持“已查看”的灰色；完整刷新重回初始渐变。
 - 变更仅涉及提示的查看 / 收起 / 已处理展示状态，不清除其他任务会话数据，也不影响图解、代码操作。更新 `ascend-studio/src/useProactiveCues.js` 和 `/ascstudio/` 构建入口 / bundle；页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；隔离本地预览回放“点击图解 → 灰色 → 刷新 → 渐变”，并检查截图。提交 `eff06d63` 已推送至 `origin/main`；Pages workflow `40646293092` 成功，线上入口与本轮 JS / CSS HTTP 200。未运行自动化测试。
-
 ### 2026-10-28 · 小程序评审材料补齐电脑端知识口袋入口
 
 - 用户确认主动回访章节应先讲电脑端入口。将评审序列扩为 8 点：核心学习 3 点之后，第 4 点展示电脑端从 Agent 回答 / 当前学习内容收纳到知识口袋，标记「感兴趣 / 还没弄懂」，再选择「发到微信，现在看」或「加入定期速览」；之后依次呈现微信即时通知、手机短读卡、每周重点资讯加两张个性化知识卡、主题与时间管理。知识口袋截图增加「模拟点按」动作，可从第 4 点直接转到微信新消息。
 - 总览面板在 1280×720 初始视口只容纳到主动回访前四点；为避免第 8 点看似被裁切，在标题下加入「共 8 个设计点 · 向下滚动查看」。七点版 `review-overview-desktop.png` 保留作历史图，并在 README 明确标注；新增第 4 点的电脑知识口袋截图裁切。
 - 修改 `ascstudio-mini/app.js`、`index.html`、`styles.css`、`README.md`、`qa.md` 与 `evidence/knowledge-pocket-entry-crop.png`。依据：叙事顺序与电脑端选择行为来自用户确认（H）；送达记录、未读消息与短读卡是在同一浏览器内的本地概念演示（M），不代表真实微信 API、跨设备同步或后台定时推送。页面序列从 7 点调整为 8 点；未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：本地 Chrome 1280×720 查看总览初始状态并滚动到第 8 点；点选第 4 点并触发「模拟点按」，确认进入 `?point=5#review-instant` 且微信列表显示带标题的未读服务通知。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。
-- 发布：实现提交 `7230842a` 普通推送 `origin/main`；包含本轮文件的 Pages 构建 `1828931e` 状态 `built`。线上 `/AscendCANN/ascstudio-mini/`、`app.js`、`styles.css` 与新增截图均 HTTP 200；回读确认即时送达演示代码与总览滚动提示已发布。同步保留并行主线更新 `eff06d63`、`c88e51cd` 与 `1828931e`；本交接条目随后一并提交 / 推送。
+- 发布：实现提交 `7230842a` 普通推送 `origin/main`；包含本轮文件的 Pages 构建 `1828931e` 状态 `built`。线上 `/AscendCANN/ascstudio-mini/`、`app.js`、`styles.css` 与新增截图均 HTTP 200；回读确认即时送达演示代码与总览滚动提示已发布。同步保留并行主线更新 `eff06d63`、`c88e51cd`、`1828931e` 与 `4e96d4b2`；本交接条目随后一并提交 / 推送。
+
+### 2026-10-28 · 知识供给蓝图补全资产建设与使用细节
+
+- 用户指出原交付图的层级设计不清，并要求不仅写 llms.txt，还要详细说明各类文件 / 接口 / Agent 资产“怎么建设、如何发挥作用”。因此在 `ascstudio-mini/knowledge-provider-map.html` 将原 04 交付图改为 Knowledge Unit 分流总图，并增加公开发现、产品 API、Agent 资产三页：分别呈现 robots.txt + sitemap.xml、HTML / Markdown + JSON-LD、llms.txt；OpenAPI 契约、资源 / 活动 / 兼容性 / signals 接口；MCP Resources / Tools、SKILL.md 方法说明与任务回执字段。
+- 每个例子都配建设方法、使用者 / 调用方式与产出；以代码片段、端点流程、状态映射和资源分流关系表达，避免把实施细节再压进小字连线图。llms.txt 标为社区提案；robots.txt 明示不承担鉴权；业务回执字段注明属于 Application 层建议，不冒充 MCP 标准。
+- 内容依据为公开规范链接与用户明确的供给侧需求（格式事实 H；服务端点、Skill 工作流和回执均为目标方案 / 待建设，不表示已接入）。扩展后全 deck 为 10 页，新增页位于交付总图之后，建设路线图章节编号改为 08；导航点和页码仍由 deck runtime 根据 section 数动态生成。没有改变 API / Protocol、Host / Harness、Application / Task 的职责边界。
+- 验证：本地桌面预览逐页检查 #6–#9，确认总图、文件示例、API 状态映射和 Agent 回执均可读且无裁切；`git diff --check` 通过；未运行自动化测试。
+- 发布：实现提交 `c88e51cd` 在吸收远端 `eff06d63` 后普通推送至 `origin/main`（未强推，其他并行工作保留）。Pages 部署状态待线上回读确认。
