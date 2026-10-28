@@ -7523,7 +7523,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户接受按卡片学习方式混合命名：学习过程「算子启动流程」、动手练习「输入 Shape 对齐练习」、专项实践「图像预处理实战」。卡片标题保持简短，近期错误记录和推荐理由继续提供具体上下文。
 - 第一轮预览发现「算子启动流程与参数配置」在卡片宽度内被截断，随后收短为「算子启动流程」。窄视口还将首页交互 Tab 上移，消除其与页面标题的重叠；三个名称及原有卡片点击行为保留。
-- 修改 `ascend-studio/src/home-recommendations.js`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 在本地 5206 窄视口确认三张卡标题完整、Tab 与标题分开显示。发布状态待补记。
+- 修改 `ascend-studio/src/home-recommendations.js`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 在本地 5206 窄视口确认三张卡标题完整、Tab 与标题分开显示。发布回执见本文件末尾“主动建议卡片混合命名发布回执”。
 - 页面序列 / 路由与 API / Protocol、Host / Harness、Application / Task 边界不变。
 ### 2026-10-28 · 知识口袋连续列表与即时回访闭环
 
@@ -7549,3 +7549,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 只调整 `cann-dashboard/ascend-studio-design-report.html` 的角色标记样式；16 页序列、五阶段、25 条开源时序消息和五个设计断点均未改变。该样式偏好来自用户明确反馈（H），不改变研究结论、产品原型或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：静态结构确认 16 页、6 类角色、4 个角色图标和 ID 无重复；`node --check`、`git diff --check` 通过。未做浏览器视觉回放；本地 `file://` 预览此前被浏览器策略拦截，未尝试绕过；未运行自动化测试。
 - 提交 / 推送：通过独立临时索引，仅提交本报告和本交接，并推送到 `main`；工作区其他暂存、未暂存和未跟踪内容未纳入。
+
+
+### 2026-10-28 · 主动建议卡片混合命名发布回执
+
+- 本轮用户回复「ok」，确认上一节的混合命名方案：学习过程「算子启动流程」、动手练习「输入 Shape 对齐练习」、专项实践「图像预处理实战」。卡片标题、推荐理由和原有跳转保持一致。
+- 功能提交 `c502427d` 与合并提交已普通推送到 `origin/main`（实现发布提交 `bd75d1c7`）；其后主线 `a8c7fec0` 保留该实现。Pages workflow `40687200509` 成功。线上 `/AscendCANN/ascstudio/` 返回 HTTP 200，引用的 `index-CDBd7StL.js` 与 `index-DYgF_4lb.css` 均 HTTP 200；JS 含三项标题，CSS 含窄屏 Tab 避让规则。
+- 本地 `npm run build:pages`、`node --check`、`git diff --check` 通过；线上资源回读确认发布内容。未运行自动化测试。未改变页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。

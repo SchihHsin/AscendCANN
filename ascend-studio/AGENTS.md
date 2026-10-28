@@ -2083,4 +2083,9 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 
 - 用户接受混合式命名：`算子启动流程`（学习过程）、`输入 Shape 对齐练习`（动手练习）、`图像预处理实战`（专项实践）。推荐理由、近期记录、提示词主题和跳转逻辑保留。
 - 预览中发现较长的第一版标题会截断，已收短为「算子启动流程」；新增窄视口 Tab 上移规则，避免首页交互 Tab 与页面标题重叠。
-- 修改 `src/home-recommendations.js`、`src/explore-task-home.css` 与 Pages 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 本地预览确认三张标题完整显示且无重叠。未运行测试套件。发布回执待补记。
+- 修改 `src/home-recommendations.js`、`src/explore-task-home.css` 与 Pages 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 本地预览确认三张标题完整显示且无重叠。未运行测试套件。发布回执见下方“主动建议卡片混合命名发布回执”。
+
+
+### 2026-10-28 · 主动建议卡片混合命名发布回执
+
+用户确认混合式路径命名后，三张卡片现显示「算子启动流程」「输入 Shape 对齐练习」「图像预处理实战」。实现已推送至 `origin/main`；Pages workflow `40687200509` 成功。线上 `/AscendCANN/ascstudio/`、`index-CDBd7StL.js` 与 `index-DYgF_4lb.css` 均 HTTP 200，JS 含三项卡片标题，CSS 含窄屏 Tab 避让规则。构建、JS 语法检查和 `git diff --check` 通过；未运行自动化测试。
