@@ -103,3 +103,10 @@
 - 按用户截图反馈，将手绘的三段曲线替换为 Tabler Icons v3.48.0 `IconWifi` SVG 路径。该路径沿用 24×24 坐标，三条弧线间距一致，并保留圆点；CSS 等比使用 15×15 尺寸与 2px 圆角描边。
 - 图标为内联静态 SVG，没有新增运行时依赖；项目已有 Tabler Icons MIT 许可，CSS 中注明来源。
 - 本地 HTTP 预览中核对 Pura X View 状态栏的 5G、信号、Wi-Fi 与电量排列；`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过。未运行自动化测试；页面序列与推送流程不变。
+
+## 2026-10-28 · 知识口袋条目分组与送达操作
+
+- 知识口袋提供三条策划示例，列表统一包在连续容器中，以细分隔线连接条目；当前展开项用浅灰底区分正文与操作区。一次展开一条，方便看出“列表 → 展开内容”的层级。
+- 「加入定期速览」与「发到微信，现在看」保持上下排列，两个按钮统一为 40px 高；「感兴趣 / 还没弄懂」是可取消的学习标记，不直接发送消息。
+- 1280×720 本地浏览器回放：展开不同知识条目后，旧条目自动收起；再次点击即时送达，微信列表出现同标题通知，打开短读卡并点「我看懂了」，回到电脑端知识口袋后同一条内容显示「已理解」。这是同一浏览器内 localStorage / postMessage 的交互演示，不代表真实微信推送或跨设备同步。
+- `cd ascend-studio && npm run build:pages`、`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、当前构建 JS `node --check`、`git diff --check` 与 `git diff --cached --check` 通过；未运行自动化测试。
