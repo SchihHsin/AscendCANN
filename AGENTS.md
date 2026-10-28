@@ -7556,3 +7556,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 本轮用户回复「ok」，确认上一节的混合命名方案：学习过程「算子启动流程」、动手练习「输入 Shape 对齐练习」、专项实践「图像预处理实战」。卡片标题、推荐理由和原有跳转保持一致。
 - 功能提交 `c502427d` 与合并提交已普通推送到 `origin/main`（实现发布提交 `bd75d1c7`）；其后主线 `a8c7fec0` 保留该实现。Pages workflow `40687200509` 成功。线上 `/AscendCANN/ascstudio/` 返回 HTTP 200，引用的 `index-CDBd7StL.js` 与 `index-DYgF_4lb.css` 均 HTTP 200；JS 含三项标题，CSS 含窄屏 Tab 避让规则。
 - 本地 `npm run build:pages`、`node --check`、`git diff --check` 通过；线上资源回读确认发布内容。未运行自动化测试。未改变页面序列 / 路由或 API / Protocol、Host / Harness、Application / Task 边界。
+
+
+### 2026-10-28 · 知识供给关系收敛为单页总图
+
+- 用户指出材料拆成多张图会打散关系，要求在一页里用节点、连线和区域看清阶段与变化路径。供给总图 `#3` 现按「内容来源 → 编译与治理 → Knowledge Unit → 三类交付 → P0/P1/P2 建设 → 使用反馈回流」组织；一个 Knowledge Unit 通过分叉总线进入公开发现、产品 API、Agent 三列，每列各有四个可读步骤。保留 Demo 服务映射为 `#4`，目录同步收敛为「知识如何变成服务 / 服务怎样落到体验」；整份材料为封面、目录、单页总图、Demo 映射四页。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。用户明确要求为依据（H）；流程关系是服务建设方案，不代表后端已接入。保留 `llms.txt` 社区提案边界、`robots.txt` 不承担鉴权、反馈信号需用户授权，以及 MCP 回执不等于应用层任务验收等边界。总图页的规范链接仍指向 Robots RFC 9309、Sitemaps、Schema.org Course、llms.txt、OpenAPI 3.1、MCP Server 与 Agent Skills。
+- 未改变 API / Protocol、Host / Harness、Application / Task 的责任边界；哈希导航仍按实际页序工作，`#3` 是总图、`#4` 是 Demo 映射。
+- 验证：本地浏览器 1440×900、1280×720、1024×768 回看；三条流程的节点与分叉线可见，所有幻灯片与视口等高，节点正文无溢出；目录页 1440×900 回看。`git diff --check` 通过，未运行自动化测试。
+- HTML 提交 `92b0eef2` 已普通推送 `origin/main`；GitHub Pages workflow `40687458224` 成功，线上 `knowledge-provider-map.html?rev=92b0eef2#3` 返回 HTTP 200，回读到新的一页总图内容。AGENTS 交接更新随本次文档提交推送。
