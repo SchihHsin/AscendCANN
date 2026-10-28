@@ -7298,3 +7298,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更涉及 `ascend-studio/src/App.jsx`、知识口袋组件与存储模块、学习内容入口和样式，`ascstudio-mini/app.js`、样式、README、QA 与三张交互截图，以及 `/ascstudio/` 当前构建资源。
 - rebase 到最新主线 `a6681665` 后 `npm run build:pages` 成功；`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、构建 bundle 检查、`git diff --check` 与 `git diff --cached --check` 通过。桌面浏览器回放验证收纳 → 口袋标记 → 微信会话列表 → 服务通知 → 手机短读卡 → 理解回写；先前 1440×940 与 390×844 视口回放截图保存在 `ascstudio-mini/evidence/`。未运行自动化测试。
 - 推送：实现提交 `1c799daf` 已推送至 `origin/main`。首轮 push 遇到主线前进而被拒，rebase 到 `a6681665` 后普通 push 成功，未强推。GitHub Pages workflow `40623024456` 成功；公网 `/ascstudio/`、本次 JS/CSS、`/ascstudio-mini/` 与其 `app.js` 均已核对可访问。
+
+
+### 2026-10-28 · 画布节点分类审查
+
+- 画布节点角色共七类：目标、步骤、材料、证据、操作、结果、笔记。`contentType` 表示代码 / 文档 / 图解 / 视频等内容形态，`status` 表示对象状态，连线的 `relationType` 表示对象间关系；三者不应混作节点分类。
+- 当前 AddCustom 与图像推理映射基线：任务简报为目标；代码、文档、解释图解为材料；现象 / 日志为证据；参数试算、练习与待执行修改为操作；尝试、Diff、检查、复核记录为结果；用户新增内容为笔记。ResNet50 的官方阶段与学习动作是步骤，独立图解 / 讲解 / 视频 / 来源是材料，练习为操作、练习产出为结果；完整展开的“学习动作卡”仍是步骤。
+- 审查发现 `src/shared/canvas/node-semantics.js` 的 ResNet50 前缀映射 `learning-official-step-` 会命中 `${stepId}:diagram`、`${stepId}:lesson`、`${stepId}:practice`，并覆盖 `OfficialLearningPathCanvas.jsx` 为独立材料 / 操作卡传入的角色。因此截图中的图解显示“步骤”是当前映射缺陷，不是预期语义，也不能归因于旧页面；修正尚未实施。
+- 本轮只做代码 / 截图对照与语义梳理，未改源码、Pages 或报告序列；未运行构建 / 测试，未新增真实运行或 NPU 证据。页面序列及 API / Protocol、Host / Harness、Application / Task 边界不变。
