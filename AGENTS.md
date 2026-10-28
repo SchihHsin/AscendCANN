@@ -7510,3 +7510,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户明确要求右侧画布有可见底色、不要白色或过浅，也不要深色，并选择 `#E6E9EE`。仅将共享画布 `.canvas-surface` 底面改为 `--canvas-diagram-surface: #e6e9ee`；图卡仍为白色，左侧图标栏、中间列表和对话栏不变。依据为用户选择（H），本地 1280×720 画布截图核对为 M。
 - 修改 `ascend-studio/src/shared/canvas/canvas.css` 与根目录 `/ascstudio/` Pages 构建产物。页面序列、hash、任务数据及 API / Protocol、Host / Harness、Application / Task 边界均未改变。
 - `cd ascend-studio && npm run build:pages`、构建 JS `node --check`、发布 CSS 规则核验与 `git diff --check` 通过；未运行自动化测试。构建提示 outDir 不自动清空及既有大 bundle 体积警告，未阻断构建。源码提交 `4beaaf84` 与构建提交 `28aa1352` 已普通推送至 `origin/main`；Pages workflow `40683347384` 成功。线上 `/AscendCANN/ascstudio/`、`index-D6NS1cTF.js` 和 `index-CB4_sFnx.css` 均 HTTP 200，线上 CSS 确认包含 `#e6e9ee`。
+
+
+### 2026-10-28 · AddCustom 初始答复给出尾块处理步骤
+
+- 用户同意将初始回答从“已知 / 还需”的证据摘要，改为针对报错的可执行处理建议。现在先检查 `custom_op.cpp:128` 尾块读写边界，说明演示参数 `[17,33]` 共 561 个元素、每块 32 个时尾块有 17 个有效元素，建议按 `validCount = min(tileSize, total - baseIndex)` 限制读写，再对 `[16,32]` 与 `[17,33]` 复测。
+- “不能仅据此确认根因”的边界保留在「查看判断依据」中；不把演示算例说成真实源码或 NPU 已验证。彩色知识提示继续负责解释尾块知识；与判断依据按钮互斥行为保持不变。
+- 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建包。依据为用户确认的处理方向（H）；算术与示例参数来自本地 Demo（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`npm run build:pages`、当前构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试或浏览器视觉回放。实现提交 `5c353725` 已推送 `origin/main`；Pages workflow `40684134342` build / deploy 成功，线上入口、`index-CPJDvYbn.js` 与 `index-CB4_sFnx.css` 均 HTTP 200。
