@@ -7517,3 +7517,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - “不能仅据此确认根因”的边界保留在「查看判断依据」中；不把演示算例说成真实源码或 NPU 已验证。彩色知识提示继续负责解释尾块知识；与判断依据按钮互斥行为保持不变。
 - 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建包。依据为用户确认的处理方向（H）；算术与示例参数来自本地 Demo（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、当前构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试或浏览器视觉回放。实现提交 `5c353725` 已推送 `origin/main`；Pages workflow `40684134342` build / deploy 成功，线上入口、`index-CPJDvYbn.js` 与 `index-CB4_sFnx.css` 均 HTTP 200。
+
+### 2026-10-28 · 知识口袋连续列表与即时回访闭环
+
+- 用户要求送达按钮尺寸一致并纵向排列；同时将多条示例知识放入口袋，展开其中一条，并让条目视觉上关联成组。知识口袋现在用一个外框承载连续条目，以细分隔线连接；当前展开条目的标题区与内容区用浅灰层次区分。桌面 Demo 查询参数 `pocket-demo=1` 时展示三条策划样例，普通数据不注入这些样例。展开项内的「加入定期速览」和「发到微信，现在看」始终上下排列，统一 40px 高。
+- 小程序评审材料采用 7 页连续顺序：电脑端口袋入口 → 微信通知 → 手机短读卡 → 理解状态回到电脑端 → 定期回访设置 → 每周速览 → 自主发现。原有核心学习内容仍由第 7 页发现入口承接；不是把知识推送当成小程序唯一功能。
+- 修改 `ascend-studio/src/App.jsx`、`KnowledgePocket.jsx`、`knowledge-pocket-storage.js`、`knowledge-pocket.css`，`ascstudio-mini/app.js`、`index.html`、`styles.css`、`README.md`、`qa.md`，以及 `/ascstudio/` 静态构建入口与对应 JS / CSS。依据：用户明确的按钮和分组要求（H）；知识内容、状态同步及通知是同一浏览器 localStorage / postMessage 的本地交互演示（M），不表示真实微信订阅消息、跨设备账号同步或后台推送。
+- 本地 CUA 1280×720 回放确认三条示例、单条展开与新背景分层；即时送达后在同一条手机短读卡点「我看懂了」，返回电脑口袋显示对应条目「已理解」。`npm run build:pages`、`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、最新构建 JS `node --check`、`git diff --check` 与 `git diff --cached --check` 通过；未运行自动化测试。未改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 提交 `ff9d406b` 已普通推送 `origin/main`。GitHub Pages workflow `40685953343` 的 build、状态汇报与 deploy 均成功；线上 `/AscendCANN/ascstudio-mini/`、`app.js`、`/AscendCANN/ascstudio/` 及其 `index-fz50fAHP.js` / `index-DTViwF7l.css` 均 HTTP 200。
