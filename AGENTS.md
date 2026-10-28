@@ -7497,7 +7497,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`：公开发现页呈现 robots.txt / sitemap.xml → HTML / Markdown → JSON-LD → llms.txt；API 页呈现目标与环境 → OpenAPI → 资源服务 → 学习发现；Agent 页呈现任务上下文 → SKILL.md → MCP Resources / Tools → Evidence Receipt。保留示例代码、建设 / 使用说明、授权与应用层验收边界。解释段落调整为正文级字号以提高可读性。
 - 依据：用户选定的方案（H）；`report-ppt-skill` 的冷灰底、蓝紫主强调与少量蓝 / 暖橙配色约束（H）；规范链接分别指向 Robots RFC 9309、Sitemaps、Schema.org Course、llms.txt 提案、OpenAPI 3.1、MCP Server 与 Agent Skills。示例端点、llms.txt 实施方式与回执字段均为建设建议，不表示当前服务已接入。
 - 本轮不改变页面顺序、导航 hash、资源状态模型或 API / Protocol、Host / Harness、Application / Task 边界。验证为本地 1280×720 浏览器回看总图 #3、公开发现 #7、API #8、Agent #9，确认流程与内容完整、文字不溢出；`git diff --check` 通过；未运行自动化测试。
-- 发布：本轮只提交该 HTML 与本交接记录；提交和普通 push 至 `origin/main` 后，在此记录实际结果。
+- 发布：HTML 与本交接记录提交 `c577b57f` 已普通推送至 `origin/main`；GitHub Pages workflow `40682442290` 成功，线上页面返回 HTTP 200。
 
 ### 2026-10-28 · 底部对话位置预览与输入框对齐
 
