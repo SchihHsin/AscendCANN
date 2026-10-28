@@ -7475,3 +7475,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认打开 AddCustom 对话时右侧应默认关闭。此前初始状态把画布设为 active，且版本 4 迁移也会把旧会话切到画布；现改为初始仅显示对话并保留原材料焦点，右侧收起。用户触发图解、内容或草稿入口后仍按原操作展开；其他任务的默认状态不变。
 - 修改 `ascend-studio/src/useContentWorkspace.js` 和 `ascstudio/` Pages 构建包；将 AddCustom 工作区状态迁移版本提升到 5，升级旧会话时收起右侧，同时保留当前内容焦点。依据为用户明确要求（H）；无真实任务 / NPU 验证主张，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、新构建 JS `node --check`、`git diff --check` 通过；状态迁移逻辑与「打开内容」入口已通过构建和语法核对。视觉回放未完成：5232 端口被其他进程占用，隔离的 5233 预览未能连接 CUA。未运行自动化测试。源码提交 `16368e33` 经保留并行更新的合并提交 `f7a9a135` 推送到 `origin/main`；Pages workflow `40650280402` build / deploy 成功，线上 `/AscendCANN/ascstudio/`、`index-C2jWj7XD.js` 与 `index-COSDFY05.css` 均 HTTP 200。
+
+
+### 2026-10-28 · AddCustom 判断依据与知识提示互斥
+
+- 用户指出「查看判断依据」与下方展开的彩色知识提示重复，要求彩色提示打开时隐藏判断依据按钮，收起后再出现。现通过 `diagnosis-tail` 提示状态控制：提示展开时隐藏按钮和判断依据详情；提示收起时显示按钮；重新展开提示会重置此前打开的详情，避免两份说明同时出现。
+- 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建包。依据为用户截图与明确交互要求（H）；不改变判断依据文案、知识提示文案、任务流程或 API / Protocol、Host / Harness、Application / Task 边界。
+- 同轮讨论中用户反馈初始回答像证据摘要而非错误解决方案；暂未改写该回答，建议的解决方案文案等待用户确认。
+- 验证：`npm run build:pages`、新构建 JS `node --check`、`git diff --check` 通过。视觉回放未完成：隔离预览连接 CUA 超时。提交 `3994c2f7` 已推送至 `origin/main`；Pages workflow `40681919352` build / deploy 成功，线上 `/AscendCANN/ascstudio/`、`index-DVb6EiLs.js`、`index-COSDFY05.css` 均 HTTP 200。未运行自动化测试。
