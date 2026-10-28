@@ -7563,6 +7563,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/index.html`、`app.js`、`styles.css`，并刷新 `evidence/review-desktop-only-1440.png`、`review-desktop-only-1280.png`、`review-desktop-pocket-1440.png`。第 1 / 4 页仍只显示电脑 Demo，其他屏幕和手机端路径不变；不改变七点页序、状态流转或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：Chrome 本地预览核对 1440×900、1280×720、第 4 页知识口袋画面与 390×844 手机视口；确认 Demo 外无可见容器，仍保持桌面 16:9。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js` 与 `git diff --check` 通过，未运行自动化测试。提交 `1fd6da4a` 已推送到 `origin/main`；Pages workflow `40729292768` 成功，线上评审入口、`styles.css` 与 `app.js` 均 HTTP 200，HTML 中只保留无装饰的 16:9 Demo 视口。
 
+### 2026-10-29 · 电脑端即时送达后切换到微信消息列表
+
+- 用户指出点击「发到微信，现在看」后材料会乱跳，应该切到手机 Demo。原 iframe 消息处理只在原页刷新并弹提示，没有切换路由。现收到 `ascstudio-pocket-delivery` 后统一进入 `review-instant`（第 2 页），让手机微信列表显示刚发送的未读服务通知；从第 1 或第 4 页触发都落到同一手机状态。
+- 修改 `ascstudio-mini/app.js`；交互证据 `ascstudio-mini/evidence/review-delivery-transition-1440.png`。这是同源浏览器内的概念同步，不代表真实微信发送或设备间账号同步；七点顺序和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：在本地 Demo 第 4 页真实点按「发到微信，现在看」，路由从 `#review-handoff/review` 切到 `#review-instant`；页面显示 `02 / 07`、手机样机、已送达知识标题和未读标记。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；推送与 Pages 回执待本轮发布后补记。
+
 
 ### 2026-10-28 · 主动建议卡片混合命名发布回执
 

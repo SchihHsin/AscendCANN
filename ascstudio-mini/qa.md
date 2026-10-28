@@ -124,3 +124,9 @@
 - 移除 Demo 外的灰色圆角容器、边框、阴影、内边距和重复标题 / 单独打开栏；电脑界面直接呈现在材料中。仅保留无装饰的 16:9 视口用于等比缩放与裁切。
 - Chrome 本地回放 1440×900、第 1 点与第 4 点，以及 1280×720、第 1 点；确认无可见外层容器，电脑任务与知识口袋界面仍完整。刷新桌面截图：`evidence/review-desktop-only-1440.png`、`evidence/review-desktop-only-1280.png`、`evidence/review-desktop-pocket-1440.png`。
 - `node --check ascstudio-mini/app.js`、`git diff --check` 通过；未运行自动化测试。逻辑视口仍为 1440×810，不改动手机页序或演示状态流。
+
+## 2026-10-29 · 电脑即时送达切换到手机 Demo
+
+- 修正电脑 iframe 的 `ascstudio-pocket-delivery` 消息处理：点击「发到微信，现在看」后进入 `review-instant`，手机微信列表显示刚送达的通知，不再留在电脑屏或刷新当前步骤。第 1、4 页触发时均切到第 2 页手机状态。
+- 本地实际点按回放：从 `#review-handoff/review` 触发后，hash 变为 `#review-instant`，页码为 02 / 07，手机样机可见；微信列表展示「排查线索：尾块索引范围」并带未读标记。截图：`evidence/review-delivery-transition-1440.png`。
+- `node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。该流程仍为同一浏览器内演示状态，不是实际微信推送或跨设备同步。

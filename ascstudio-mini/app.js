@@ -754,8 +754,8 @@ window.addEventListener("storage", event => {
 window.addEventListener("message", event => {
   if (event.origin !== location.origin || event.source !== $("#desktop-demo-frame")?.contentWindow) return;
   if (event.data?.type === "ascstudio-pocket-delivery") {
-    if (currentRoute === "review-pending") render();
-    toast("电脑端已送达，右侧微信列表已更新");
+    go("review-instant");
+    toast("已送达，手机微信列表已打开");
   } else if (event.data?.type === "ascstudio-pocket-scheduled") {
     openWeeklySettingsOnNextRender = true;
     setReviewLocation(4);
