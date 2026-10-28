@@ -130,3 +130,8 @@
 - 修正电脑 iframe 的 `ascstudio-pocket-delivery` 消息处理：点击「发到微信，现在看」后进入 `review-instant`，手机微信列表显示刚送达的通知，不再留在电脑屏或刷新当前步骤。第 1、4 页触发时均切到第 2 页手机状态。
 - 本地实际点按回放：从 `#review-handoff/review` 触发后，hash 变为 `#review-instant`，页码为 02 / 07，手机样机可见；微信列表展示「排查线索：尾块索引范围」并带未读标记。截图：`evidence/review-delivery-transition-1440.png`。
 - `node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。该流程仍为同一浏览器内演示状态，不是实际微信推送或跨设备同步。
+
+## 2026-10-29 · 订阅设置按钮文案
+
+- 已订阅状态下，主按钮从「保存设置并模拟新消息」改为「保存设置」。点击行为保持不变；首次订阅按钮文案不变。
+- `node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。

@@ -7629,3 +7629,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户提供的线上截图显示第 2 页“开发者起点”行被重复包成 `.cb-human-lane`，五列内容被嵌套网格压窄，形成竖排文字和圆点。修复 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`：只向原五列网格填入五个阶段单元，并让阶段标题、用户表达和底部断点沿用同一组阶段边界；删除开发者表达行中重复的阶段小箭头。第 3 阶段标题缩为“明确方向”；弱化非重点时序线，避免所有消息线一律彩色、加粗。
 - 重建 `cann-dashboard/ascend-studio-design-report.html` 并更新 `ascend-studio-design-report-evidence/qa.md`。电脑端 / 小程序产品源码、其他汇报页和 API / Protocol、Host / Harness、Application / Task 边界未改。
 - 本地结构核对：16 页、1 个开发者泳道、5 个阶段单元、10 条开发者表达、18 张交接卡，无旧场景卡。浏览器核验待 Pages 部署后完成；通过 `py_compile`、`node --check` 与暂存差异 `git diff --check`。
+
+### 2026-10-29 · 订阅设置按钮去掉“并模拟新消息”
+
+- 按用户截图，将已订阅状态下的按钮文案从「保存设置并模拟新消息」改为「保存设置」；仅调整可见文案，按钮仍保存速览偏好。首次订阅分支的「允许并模拟收到消息」不在本次截图指向范围内。
+- 修改 `ascstudio-mini/app.js`。依据为用户明确要求（H）；不改变订阅交互、页面序列、演示状态或 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。提交 / 推送与 Pages 回执待本轮发布后补记。
