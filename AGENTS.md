@@ -7342,7 +7342,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户反馈底部输入框仍看起来像两行。原因是紧凑态 textarea 的自动高度从 44px 起步，虽然布局网格只有一行，文字却靠上、操作按钮靠下，形成两层视觉。
 - 紧凑的底部 composer 空输入现在按 20px 单行高度测量，输入文字后按内容自适应增长（最多 110px）；切换对话位置、展开 / 收起历史时重新测量。左侧对话布局原来的较高输入区保持不变。
 - 修改 `ascend-studio/src/App.jsx` 与 `/ascstudio/` 构建产物。用户此前明确要求单行后按内容增高（H）；本地 5177 预览实测空输入高度 20px、composer 54px，填入长文本后 textarea 增至 54px，清空恢复 20px；刷新后仍保持单行（M）。页面顺序、对话数据与 API / Protocol、Host / Harness、Application / Task 边界不变。
-- `npm run build:pages`、输出 JS `node --check`、既有黑色模型 Logo 样式核验和 `git diff --check` 通过；未运行自动化测试。实现提交、推送和线上发布状态将在本轮发布后补记。
+- `npm run build:pages`、输出 JS `node --check`、既有黑色模型 Logo 样式核验和 `git diff --check` 通过；未运行自动化测试。用户首次实现提交 `928783e1` 与保留主线并行更新的合并提交 `b94ac9df` 已推送至 `origin/main`；Pages workflow `40649715696` 成功。线上入口引用 `index-BGAEIe_q.js` / `index-COSDFY05.css`，均 HTTP 200；本地 5177 预览确认单行对齐、自动增高与刷新恢复。
 
 ### 2026-10-28 · 小程序状态栏 Wi-Fi 图标修正
 

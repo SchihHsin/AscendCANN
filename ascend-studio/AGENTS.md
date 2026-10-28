@@ -2030,7 +2030,7 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 
 - 修正底部紧凑态输入框视觉上仍分两行的问题：44px 的空 textarea 让占一行的网格产生上方文字、下方按钮的错位。空输入改为 20px 单行；文字变多时自动扩高，最多 110px。展开历史和布局切换也会重新测量。左侧对话布局保持原有尺寸。
 - 实现位于 `src/App.jsx` 的 textarea 高度测量逻辑及 `/ascstudio/` 构建包。依据为此前用户确认的“单行、内容多时自动变高”（H）；本地 5177 预览测得空态 textarea 20px / composer 54px，较长文本 textarea 54px，清空与刷新都恢复 20px（M）。
-- `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行自动化测试。提交、推送和 Pages 发布结果将在本轮发布后补记。
+- `npm run build:pages`、输出 JS `node --check`、`git diff --check` 通过；未运行自动化测试。实现提交 `928783e1` 与同步保留并行主线改动的合并提交 `b94ac9df` 已推送至 `origin/main`；Pages workflow `40649715696` 成功，线上入口、`index-BGAEIe_q.js`、`index-COSDFY05.css` 均 HTTP 200。本地预览确认单行、自动增高及刷新恢复。
 
 ### 2026-10-28 · AddCustom 错误后的尾块知识提示
 
