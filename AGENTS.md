@@ -7567,7 +7567,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 - 用户指出点击「发到微信，现在看」后材料会乱跳，应该切到手机 Demo。原 iframe 消息处理只在原页刷新并弹提示，没有切换路由。现收到 `ascstudio-pocket-delivery` 后统一进入 `review-instant`（第 2 页），让手机微信列表显示刚发送的未读服务通知；从第 1 或第 4 页触发都落到同一手机状态。
 - 修改 `ascstudio-mini/app.js`；交互证据 `ascstudio-mini/evidence/review-delivery-transition-1440.png`。这是同源浏览器内的概念同步，不代表真实微信发送或设备间账号同步；七点顺序和 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 验证：在本地 Demo 第 4 页真实点按「发到微信，现在看」，路由从 `#review-handoff/review` 切到 `#review-instant`；页面显示 `02 / 07`、手机样机、已送达知识标题和未读标记。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；推送与 Pages 回执待本轮发布后补记。
+- 验证：在本地 Demo 第 4 页真实点按「发到微信，现在看」，路由从 `#review-handoff/review` 切到 `#review-instant`；页面显示 `02 / 07`、手机样机、已送达知识标题和未读标记。`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。提交 `83db25a7` 已推送到 `origin/main`；Pages workflow `40743770988` 成功，线上评审入口 HTTP 200，`app.js` HTTP 200 且含有跳转到 `review-instant` 的处理。
 
 
 ### 2026-10-28 · 主动建议卡片混合命名发布回执
