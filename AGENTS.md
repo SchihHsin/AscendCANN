@@ -7366,3 +7366,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 保持 7 页顺序、翻页与 `#页码` 恢复、原有服务内容及规范来源链接；`llms.txt` 仍标记为提案，`robots.txt` 不作为鉴权。修改属于知识供给服务蓝图目标方案示意，不表示接口或服务已真实接入，也未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 本地桌面预览检查第 3–7 页，确认关系图、楼层预览、交付泳道和路线图可完整呈现；结构检查确认 7 页、12 个内嵌 SVG、资源图均存在、ID 无重复，内嵌脚本 `node --check` 与 `git diff --check` 通过。未运行自动化测试。
 - 实现提交 `c51090ac` 已同步最新 `origin/main` 后普通推送；GitHub Pages workflow `40642246632` 成功。交接记录提交 `b9941329` 已推送至 `origin/main`；随后 Pages workflow `40642395703` 成功。线上知识供给蓝图返回 HTTP 200，回读确认供给关系、楼层服务网、交付通道和建设阶段图均已发布。
+
+### 2026-10-28 · 回答操作统一为图标与 Tooltip
+
+- 用户明确要求回答相关操作统一只显示图标，鼠标悬浮时再显示文字提示；知识口袋、复制、赞同和不赞同沿用同一尺寸与样式。tooltip 同时响应键盘聚焦，按钮保留 `aria-label`，让无障碍名称不依赖视觉提示。
+- 修改 `ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css` 及本交接。按钮功能和数据流不变；页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。依据为用户截图和明确要求（H）。
+- 验证：`npm run build` 与 `git diff --check` 通过；未运行自动化测试。当前 CUA 预览截图为白屏，视觉回放未完成。
+- 发布状态：实现提交推送后补记提交号与 Pages 状态。
