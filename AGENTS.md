@@ -7579,3 +7579,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 公共策略位于 `ascend-studio/src/shared/canvas/canvas-sizing.js`；AddCustom / 图像推理 / 普通学习复用 `TaskCanvas` 和 `useCanvasState`；ResNet50 独立路径材料从同一档位取尺寸，并按测得的完整内容重新排布下方操作卡与展开路径节点。
 - 迁移覆盖旧 AddCustom 默认档位和旧材料画布 420×360 双列默认尺寸 / 位置；用户实际手调尺寸或移动位置仍按持久化标记保留。规则同步到 `ascend-studio/interaction-design.md`、`ascend-studio/AGENTS.md` 与共享界面规范 Skill。
 - 验证：本地 5197 合并后源码回放中，AddCustom 5 张已显示卡片正文均为 `scrollHeight === clientHeight`；“适应全部”后节点无重叠。ResNet50 普通步骤中图解、讲解、理解检查均为 380px 高，视频卡为 760×705px；视频正文 `scrollHeight === clientHeight === 656px`，无 1px 边缘滚动。修复测量时未计入上下边框的 1px。ResNet50“全部展开”15 张步骤卡均遵守 760px 上限，超限正文实际高出 694–1245px；卡片内滚轮将 `scrollTop` 从 0 移至 177.5，确认长内容能滚动。已将当时远端新增的 34 个 `origin/main` 提交合入并保留双方内容。合并后 `npm run build:pages`、相关 `.js` 源文件与构建 JS `index-Ch6NJIC_.js` 的 `node --check`、`git diff --check` 通过；构建有既有 1.1MB chunk 提醒，未运行自动化测试。产物入口引用 `index-Ch6NJIC_.js` 与 `index-DYgF_4lb.css`。页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。源码提交 `19568b07` 已创建；合并提交、推送与 Pages workflow 状态待完成。
+
+
+### 2026-10-29 · 移除知识供给总图底部辅助小字
+
+- 用户要求去掉底部的 Owner 责任行、使用结果与反馈明细，以及规范 / 提案链接和“服务未接入”说明。总图 `#3` 已删除这些文字区块，并移除其占位行；标题副标改为简短说明统一治理后分别服务 Web、产品 API 与 Agent。内容来源、治理、Knowledge Unit、三条四步路径及 P0 → P2 阶段保持可见。
+- 修改 `ascstudio-mini/knowledge-provider-map.html`。依据为用户明确反馈（H）；页面序列和 `#3` / `#4` hash 导航未改变，API / Protocol、Host / Harness、Application / Task 边界未改变。
+- 验证：本地浏览器 1280×720、1440×900 回看；四页均与视口等高，三条交付流程完整。线上 HTML 返回 HTTP 200，回读全文确认 Owner 行、反馈明细、规范列表和接入说明均不存在；`git diff --check` 通过，未运行自动化测试。
+- HTML 提交 `4608b7d9` 已普通推送至 `origin/main`；Pages workflow `40689697151` 成功。AGENTS 交接记录随其后的文档提交推送。
