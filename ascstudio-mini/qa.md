@@ -135,3 +135,10 @@
 
 - 已订阅状态下，主按钮从「保存设置并模拟新消息」改为「保存设置」。点击行为保持不变；首次订阅按钮文案不变。
 - `node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过。
+
+## 2026-10-29 · 电脑端入口默认打开现有图像推理任务
+
+- 用户确认不新增任务，而是打开合适的现有任务。评审第 1 点从「图像输入预处理路径共创」切换为现有「图像推理调试」开发任务；其预置 Agent 回答解释模型要求 NCHW、当前输入为 NHWC，回答旁可直接「收进知识口袋」。
+- `ascstudio-mini/index.html` 通过 `pocket-task` 指定默认任务；`ascend-studio/src/useWorkbenchState.js` 只在 `pocket-demo=1` 时采用该参数，且只接受已存在于任务列表中的任务，普通 Ascend Studio 会话仍沿用原选择。没有新建任务或任务入口。
+- 本地 1280×720 浏览器回放确认：电脑 Demo 默认显示「图像推理调试」、现有 Agent 回答与收纳按钮；点按后提示已收纳，打开知识口袋可见新卡及原有三条示例卡。页面序列保持七点不变，不改变 API / Protocol、Host / Harness、Application / Task 边界。内容是策划示例，不代表真实模型或设备验证。
+- `cd ascend-studio && npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check` 通过；未运行自动化测试。

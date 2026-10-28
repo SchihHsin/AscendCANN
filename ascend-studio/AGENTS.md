@@ -2110,3 +2110,8 @@ AddCustom 初始答复要优先给针对错误的具体处理动作和复测方�
 - 修改 `src/App.jsx`、`prototype-data.js`、`useWorkbenchState.js`、`workspace-materials.js`、`TaskWorkspace.jsx`、`community-draft-data.js`、`ChannelDraftContent.jsx`、`CommunityDraftPanel.jsx`，新增 `LogTriageWorkspace.jsx` 与 `log-triage-workspace.css`，同步 `../ascstudio/` Pages 构建产物。未更改报告页序、路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 本地 1280×720 浏览器已走通四步、核对范围结果、打开并编辑社区草稿；回流消息已修正为 Add 范围核对，未再串入图像输入文案。切回旧任务确认原名称和既有 AddCustom 内容仍在。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试。
 - 实现提交 `9c3fcd97` 已推送到 `origin/main`；Pages workflow `40748397022` 成功。线上 `/AscendCANN/ascstudio/`、`index-FtOVT1nn.js` 与 `index-BLPeqaaM.css` 均 HTTP 200；JS 已回读新旧任务名、0-token 标签和 Add 任务回流文案。尚未真实接入 AI、社区服务或 NPU。
+
+### 2026-10-29 · 知识口袋评审默认打开图像推理任务
+
+- 小程序评审 iframe 使用 `pocket-task=图像推理调试`，从现有开发任务的 Agent 回答开始演示知识收纳；避免从尚在共创中的学习路径草案开始。该查询仅在 `pocket-demo=1` 时生效，并且不会向普通任务列表新增任务。
+- 现有回答和 HWC / NCHW 示意是策划的交互样例，不构成真实模型签名或 NPU 验证。

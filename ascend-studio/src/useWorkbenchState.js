@@ -74,6 +74,9 @@ function restoreWorkbench() {
     else groups.unshift({ id: "operator", name: "CANN 自定义算子", tasks: [MAIN_TASK, LOG_DIAGNOSTIC_TASK] });
   }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
+  const launchParams = new URLSearchParams(window.location.search);
+  // Embedded knowledge-pocket reviews should open the chosen existing task even when this browser has another saved selection.
+  const pocketDemoTask = launchParams.get("pocket-demo") === "1" ? launchParams.get("pocket-task") : null;
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
   // Conversation exchanges and community feedback are page-session state.
   // A reload starts every task conversation fresh while task records remain available.
@@ -116,7 +119,7 @@ function restoreWorkbench() {
     query: typeof value.query === "string" ? value.query : "",
     filterScope: ["all", "current"].includes(value.filterScope) ? value.filterScope : "all",
     openedGroups: Array.isArray(value.openedGroups) ? value.openedGroups.filter(id => groups.some(group => group.id === id)) : ["operator", "inference"],
-    selectedTask: taskNames.has(value.selectedTask) ? value.selectedTask : MAIN_TASK,
+    selectedTask: taskNames.has(pocketDemoTask) ? pocketDemoTask : taskNames.has(value.selectedTask) ? value.selectedTask : MAIN_TASK,
     rationaleOpen: Boolean(value.rationaleOpen),
     selectedModel: modelOptions.some(model => model.id === value.selectedModel) ? value.selectedModel : "general",
     automations: Array.isArray(value.automations) ? objects(value.automations).map(entry => ({ ...entry, running: false })) : initialAutomations,

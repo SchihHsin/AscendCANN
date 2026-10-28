@@ -7660,3 +7660,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、重建 `cann-dashboard/ascend-studio-design-report.html` 并追加 QA 记录。电脑端 / 小程序原型以及 API / Protocol、Host / Harness、Application / Task 边界未变。
 - 来源为用户本轮要求和既有已确认设计点（H）；机会点是方案归纳，不是体验成效或用户研究证据。构建和结构检查确认五项机会与五个阶段对齐、各断点有两项痛点；Python 编译、构建和两段内联脚本 `node --check` 通过。CUA 浏览器截图调用超时，本轮不声称完成页面截图核验。
 - 提交 / 推送：随本轮报告与交接更新提交并推送至 `origin/main`；SHA 见本轮最终交接。
+
+### 2026-10-29 · 小程序评审从图像推理任务收取知识
+
+- 用户确认复用电脑端现有任务，不新增任务入口。小程序评审第 1 点默认打开「图像推理调试」：Agent 已解释模型要求 NCHW、当前输入为 NHWC，回答旁可直接收进知识口袋。此前的「图像输入预处理路径共创」草案仍保留在任务列表中，但不再作为此评审的默认任务。
+- 修改 `ascstudio-mini/index.html`、`ascstudio-mini/README.md`、`ascstudio-mini/qa.md`，以及 `ascend-studio/src/useWorkbenchState.js` 和 `ascstudio/` Pages 构建产物。新增的 `pocket-task` 参数只在 `pocket-demo=1` 时生效，且校验任务已存在；不创建任务或修改日常工作台选择。页面仍为七点，不改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户确认复用现有任务（H）；任务回答、输入格式和口袋同步是本地演示内容（M），不代表真实模型或 NPU 验证。
+- 验证：`npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check` 通过；本地 1280×720 浏览器确认已选任务、回答、收纳按钮，点按后提示成功，知识口袋显示新卡与三条示例卡。未运行自动化测试。
+- 提交 / push 与 Pages 发布回执将在交付后补记。
