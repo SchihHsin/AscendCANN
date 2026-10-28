@@ -7314,3 +7314,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 实现见 `ascend-studio/src/App.jsx`、`ascend-studio/src/styles.css` 与 `/ascstudio/` 静态产物。依据：用户明确要求（H）；本地 5179 浏览器回放确认展开时隐藏、收起后恢复（M）。页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 验证：`npm run build:pages`、构建 JS `node --check`、bundle 资源引用和规则存在性、`git diff --check` 通过；未运行自动化测试。线上 `/AscendCANN/ascstudio/`、`index-CIxMdNO-.js`、`index-COIexaLu.css` 均 HTTP 200，CSS 中含目标显隐规则。
 - 发布：实现提交 `833c2dc0`；同步保留并行主线更新后，Pages 产物提交 `4d1d9e8a` 已推送至 `origin/main`。Pages workflow `40626712443` 成功。
+
+
+### 2026-10-28 · 社区经验入口刷新复位与触发条件
+
+- 修复 GitHub Pages 在同一浏览器刷新后恢复旧聊天、旧社区邀请和已生成草稿的问题。启动时清空所有任务的聊天消息、历史、输入草稿、附件、能力选择、未读状态、社区邀请和社区草稿；保留任务定义及任务记录。页面刷新即重新开始，无需手工清理浏览器数据。
+- AddCustom 有两种入口条件：快捷演示是在「AddCustom 精度异常」的「现场与判断」卡片中点击「标记为已解决」；证据路径是在「逐元素误差」提交非演示数据、所有已提供元素均在容差内后，再明确确认目标环境复测通过。载入演示数据通过不会触发。
+- 图像推理调试初始仅提供正确示例参数，不自动出现入口。用户审阅当前修改、确认应用到隔离示例副本，再点击「复核示例形状并带回对话」；仅示例输出符合 NCHW `[1,3,224,224]` 时生成社区入口。入口是示例形状核对结果，不代表真实模型或 NPU 推理通过。打开任务不会触发；刷新会清空邀请与草稿。
+- 修改 `ascend-studio/src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 及 `/ascstudio/` Pages 构建产物。合并保留了并行的对话面板更新。此改动不改变任务页序或 API / Protocol、Host / Harness、Application / Task 边界；用户需求为 H，浏览器本地状态规则和示例触发结果为 M。
+- `npm run build:pages`、相关 JS `node --check`、`git diff --check` 通过。提交 `a8fcaf91` 实现刷新复位与触发门槛，集成并行主线的合并提交 `70ae9927` 已推送 `origin/main`。Pages workflow `40627139988` 成功；线上 `/AscendCANN/ascstudio/`、`index-CIxMdNO-.js` 和 `index-COIexaLu.css` 均 HTTP 200。未运行自动化测试。

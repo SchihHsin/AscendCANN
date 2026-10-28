@@ -1997,3 +1997,12 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 底部浮窗展开对话历史时，工作区进入 `is-conversation-expanded` 状态并隐藏画布小地图；收起历史后，小地图回到原位。小地图组件保持挂载，因此画布导航状态不会重置；左侧对话布局不受影响。
 - 实现见 `src/App.jsx`、`src/styles.css` 与 `/ascstudio/` 构建产物。用户明确要求为依据（H）；本地 5179 预览回放确认展开隐藏、收起恢复（M）。不改变任务内容、页面顺序或 API / Host / Application 边界。
 - `npm run build:pages`、输出 JS 语法、资源引用、CSS 规则存在性与 `git diff --check` 通过；未运行自动化测试。线上构建与 Pages workflow `40626712443` 成功；实现提交 `833c2dc0`，最终发布提交 `4d1d9e8a` 已推送至 `origin/main`。
+
+
+### 2026-10-28 · 社区经验入口刷新复位与触发条件
+
+- GitHub Pages 刷新时，现在重置所有任务的对话消息、历史、输入草稿、附件、能力选择、未读状态、社区邀请和社区草稿；任务定义及任务记录仍保留。旧 localStorage 状态不会再让社区经验入口默认出现。
+- AddCustom 快捷演示：在「现场与判断」卡片点击「标记为已解决」；证据路径：在「逐元素误差」提交非演示数据、所有已提供元素均在容差内后，确认目标环境复测通过。演示数据通过不会触发。
+- 图像推理调试：先审阅修改并应用到隔离示例副本，再点「复核示例形状并带回对话」；仅符合 NCHW `[1,3,224,224]` 时出现入口。初始打开不触发；该示例检查不代表真实模型或 NPU 推理通过。移除复核事件的重复邀请路径。
+- 变更位于 `src/useWorkbenchState.js`、`src/App.jsx`、`src/useImageInference.js` 和 `/ascstudio/` 发布包。并行对话面板改动已合并并保留；不改变页面序列或 API / Protocol、Host / Harness、Application / Task 边界。用户要求为 H，原型状态为 M。
+- 构建 `npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过。实现提交 `a8fcaf91` 与合并提交 `70ae9927` 已推送 `origin/main`；Pages workflow `40627139988` 成功，线上入口、JS 和 CSS 均 HTTP 200。未运行自动化测试。

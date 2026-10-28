@@ -482,10 +482,13 @@ function App() {
     wb.addRecord(record, IMAGE_TASK);
     if (record.kind === "image-validation" && record.data?.passed) {
       offerCommunityExperience({
-        id: record.data.attemptId,
+        id: `image-shape-check-${record.data.attemptId}`,
+        kind: "image-shape-check",
         dimensions: record.data.dimensions,
         snapshot: record.data.snapshot,
-        attemptCount: 1,
+        attemptCount: inference.state.attempts.length,
+        demoFixture: true,
+        completionText: `隔离示例副本的形状复核通过：NCHW [${record.data.dimensions.join(", ")}]。可以把本次处理整理为社区经验；真实项目推理仍需在目标环境验证。`,
       });
     }
   } });
@@ -1327,17 +1330,6 @@ function App() {
       completionText: "示例修复已完成，当前范围核对通过。可以把这次排查整理为社区经验草稿。",
     });
   };
-  useEffect(() => {
-    if (selectedTask !== IMAGE_TASK) return;
-    if (session.messages.some(message => message.communityInvite)) return;
-    offerCommunityExperience({
-      id: "demo-image-shape-check",
-      dimensions: [1, 3, 224, 224],
-      snapshot: { axes: [2, 0, 1], batch: true },
-      attemptCount: 2,
-      demoFixture: true,
-    });
-  }, [selectedTask]);
   const generateCommunityExperience = (completion) => {
     if (!completion?.id) return;
     if (session.communityDraft?.completionId === completion.id) {
