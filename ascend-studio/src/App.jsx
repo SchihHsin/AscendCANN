@@ -1556,10 +1556,9 @@ function App() {
                     <IconBook size={ICON_SIZE.control} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={ICON_SIZE.control} />
                   </button>
                   {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => openContent("evidence")}>打开现场与判断<IconArrowRight size={ICON_SIZE.inline} /></button></div>}
-                  <ProactiveCue {...proactive.forCue("diagnosis-tail")} variant="knowledge" evidenceLabel="本次现象" emphasisRef={diagnosisTargetRef}
-                    title="输入长度不是整块时，尾块需要单独处理"
-                    evidence="[16,32] 通过；[17,33] 失败，调整编译参数后错误位置未变"
-                    description="当输入元素总数不是 tileSize 的整数倍，最后一块只会有部分有效元素。算子内核需按剩余元素数限制访问范围；若仍按整块读写，可能访问有效范围外的数据并造成结果偏差。这与当前现象相关，但还需结合实际循环和逐元素误差确认根因。"
+                  <ProactiveCue {...proactive.forCue("diagnosis-tail")} variant="knowledge" emphasisRef={diagnosisTargetRef}
+                    title="为什么 [17,33] 值得检查尾块？"
+                    description="元素总数不是 tileSize 的整数倍时，尾块只有部分元素有效；访问时需按剩余数量做边界保护。"
                     primaryLabel={workspace.state.activeId === "explanation" ? "核对实际循环与来源" : "看尾块处理图解"}
                     onPrimary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? changeActionView("code") : dispatchTaskIntent("explain", "tail"); }}
                     secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "对照当前代码"}

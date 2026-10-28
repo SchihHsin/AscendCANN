@@ -18,7 +18,6 @@ export default function ProactiveCue({
   title,
   description,
   evidence,
-  evidenceLabel = "依据",
   variant = "default",
   resolved = false,
   primaryLabel,
@@ -83,7 +82,7 @@ export default function ProactiveCue({
         </span>
         <div className="proactive-cue-heading-copy">
           <h3 id={`${contentId}-title`}>{title}</h3>
-          {evidence && <p className="proactive-cue-evidence"><span>{evidenceLabel}</span>{evidence}</p>}
+          {evidence && <p className="proactive-cue-evidence"><span>依据</span>{evidence}</p>}
         </div>
         <div className="proactive-cue-heading-actions">
           {isCollapsed && (
