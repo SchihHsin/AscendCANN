@@ -7344,3 +7344,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 仅修改 `ascstudio-mini/index.html`、`ascstudio-mini/styles.css` 与本交接 / QA 记录。依据为用户截图和明确建议（H）；本地浏览器核对状态栏布局（M）。小程序 7 页序列、推送与跨端状态流程、API / Protocol、Host / Harness、Application / Task 边界均不变。
 - 验证：本地 HTTP 预览确认 Wi-Fi 符号替换并与 5G、信号、电量保持同列；`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过；未运行自动化测试。
 - 提交后推送至 `origin/main`，不强推；发布结果在推送后核对。
+
+
+### 2026-10-28 · 三栏工作区背景层级
+
+- 按用户确认的配色层级，左侧图标栏使用白色 `--surface`，中间任务列表使用浅灰 `--surface-subtle`（`#F8F8F8`，比画布 `--canvas-surface` `#F5F5F5` 更浅），对话面板保持白色。保留既有淡彩氛围图；只调整面板承载面的颜色。
+- 修改 `ascend-studio/src/styles.css`、`ascstudio/index.html` 与对应 Pages 构建资源。依据为用户明确选择（H），颜色 token 遵循 Ascend Studio 界面规范。页面序列 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- `npm run build:pages`、构建 JS `node --check`、构建资源引用检查、`git diff --check` 通过；本地 8008 任务工作区预览确认三栏层级，未运行自动化测试。提交 `f90d9b10` 已推送至 `origin/main`；Pages workflow `40631220110` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-BdTuXrM9.js` 和 `index-DlbrpRmv.css`，两者 HTTP 200。
