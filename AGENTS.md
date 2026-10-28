@@ -7599,7 +7599,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户选择 B：加深节点标题与关系线；当前选中 / 活跃节点使用近黑色标题区（学习路径的当前步骤使用近黑节点面）；小地图视野框加深。节点主体仍保持白色 / 浅灰，类别标记与成功、进行中、提醒等状态色保持原有语义。把规则落实在共享画布样式并用于 AddCustom、ResNet50 学习画布。
 - 修改 `ascend-studio/src/shared/canvas/canvas.css`、`learning-hierarchy-canvas.css`、`official-learning-canvas.css`，并在 `ascend-studio/AGENTS.md` 记录本轮视觉决策。依据为用户选择 B（H）；不改变画布布局、节点语义、页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 本地 5296 预览确认 AddCustom 聚焦节点呈近黑标题区、白色标题字，关系线与小地图视野框更清楚；ResNet50 当前步骤采用近黑焦点样式，完整展开时当前材料卡标题区使用同一语义。构建与资源检查、`node --check`、`git diff --check` 通过；未运行自动化测试。
-- 实现、构建与交接记录按文件暂存并推送 `origin/main`；Pages run 与线上资源回执补在本条后续。
+- 源码提交 `54a9792e` 与合并最新 `origin/main` 的提交 `605a19a3` 已推送至 `origin/main`；GitHub Pages workflow `40736475297` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-BshQrJuL.js` / `index-DDaA1HkN.css`；入口、JS、CSS 均可访问，线上 CSS 已回读确认含近黑焦点色 `#191a1b`、关系线色 `#85888a` 和选中标题规则。
 
 ### 2026-10-29 · Ascend Studio 旅程图改为场景交接
 
