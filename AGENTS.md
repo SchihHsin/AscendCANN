@@ -7617,3 +7617,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 更新 `cann-dashboard/ascend-studio-design-report.html` 及 `cann-dashboard/ascend-studio-design-report-evidence/` 中的构建、时序源、依赖与 QA 记录；报告为 16 页。未修改 Ascend Studio 产品原型、原精简报告或正式页序，未改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：时序 5 阶段、18 个消息节点、6 个角色、18 张图标卡；对 1280×720 和 1440×900 的卡片几何位置复核无重叠。`npm run render:journey-sequence`、`python3 build_report.py`、`python3 -m py_compile build_report.py`、`node --check render_journey_sequence.mjs`、`git diff --check` 通过。未完成浏览器整页回放，不将矢量或几何核对声称为浏览器视觉验证。
 - 提交与推送：使用基于最新 `origin/main` 的独立临时索引，只纳入本汇报的差异与本交接记录；推送结果见本轮交付回执。共享工作区的其它暂存、未暂存及未跟踪改动不纳入。
+
+### 2026-10-29 · 修复 Ascend Studio 旅程页重复泳道
+
+- 用户提供的线上截图显示第 2 页“开发者起点”行被重复包成 `.cb-human-lane`，五列内容被嵌套网格压窄，形成竖排文字和圆点。修复 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`：只向原五列网格填入五个阶段单元；第 3 阶段标题缩为“明确方向”；弱化非重点时序线，避免所有消息线一律彩色、加粗。
+- 重建 `cann-dashboard/ascend-studio-design-report.html` 并更新 `ascend-studio-design-report-evidence/qa.md`。电脑端 / 小程序产品源码、其他汇报页和 API / Protocol、Host / Harness、Application / Task 边界未改。
+- 本地结构核对：16 页、1 个开发者泳道、5 个阶段单元、10 条开发者表达、18 张交接卡，无旧场景卡。浏览器核验待 Pages 部署后完成；通过 `py_compile`、`node --check` 与暂存差异 `git diff --check`。

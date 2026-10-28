@@ -409,21 +409,13 @@ def sequence_diagram_markup():
         "var(--_text-muted)": "#455267",
         "var(--_text-sec)": "#657184",
         "var(--bg)": "#ffffff",
-        "var(--_line)": "#718096",
+        "var(--_line)": "#d3dae4",
     }
     for node in root.iter():
         for attr in ("fill", "stroke"):
             value = node.get(attr)
             if value in color_vars:
                 node.set(attr, color_vars[value])
-        if node.tag.rsplit("}", 1)[-1] in ("line", "polyline"):
-            try:
-                stroke_width = float(node.get("stroke-width", "0"))
-            except ValueError:
-                stroke_width = 0
-            if 0 < stroke_width < 1.4:
-                node.set("stroke-width", "1.4")
-
     for style in style_nodes:
         style.text = re.sub(r"@import[^;]+;\s*", "", style.text or "")
         style.text = re.sub(
@@ -467,9 +459,9 @@ def sequence_diagram_markup():
 
     event_cards = []
     event_strokes = {
-        "tone-blue": "#5d83c4",
-        "tone-violet": "#766cc4",
-        "tone-teal": "#3c958e",
+        "tone-blue": "#9ba7b6",
+        "tone-violet": "#9ba7b6",
+        "tone-teal": "#9ba7b6",
         "tone-red": "#c86161",
         "tone-green": "#4c936e",
     }
@@ -556,7 +548,7 @@ def sequence_diagram_markup():
 JOURNEY_STAGES = [
     ("01 · 起点", "认知起步", "任务 / 学习目标", "source"),
     ("02 · 找线索", "寻源与推荐", "依据 / 版本 / 范围", "action"),
-    ("03 · 形成方向", "Prompt 与路径", "连接 / 共创 / 自定义", "generate"),
+    ("03 · 形成方向", "明确方向", "Prompt / 学习路径", "generate"),
     ("04 · 实践验证", "边做边懂", "运行 / 图解 / 复测", "control"),
     ("05 · 经验沉淀", "带入下一次", "认知卡 / 社区回流", "evidence"),
 ]
@@ -594,7 +586,7 @@ def build_journey():
         ("边运行边定位错误", "按路径实践并检查理解"),
         ("整理可复用的开发经验", "把笔记带进下一次实践"),
     ]
-    human_lanes = '<div class="cb-lane cb-human-lane" aria-label="两种开发者在五个阶段的表达">'
+    human_lanes = []
     for (task, learn), stage in zip(human_actions, JOURNEY_STAGES):
         phase = stage[3]
         bubbles = []
@@ -604,9 +596,9 @@ def build_journey():
                 f'<span class="r-persona-avatar" data-avatar-ref="{role}"></span>'
                 f'<span class="r-persona-bubble">{esc(text)}</span></div>'
             )
-        human_lanes += f'<article class="cb-lane-cell cb-human-step is-{phase}">{"".join(bubbles)}</article>'
-    human_lanes += '</div>'
+        human_lanes.append(f'<article class="cb-lane-cell cb-human-step is-{phase}">{"".join(bubbles)}</article>')
     section = replace_div_content(section, "cb-human-lane", "".join(human_lanes))
+    section = section.replace('aria-label="开发者泳道"', 'aria-label="两种开发者在五个阶段的表达"', 1)
 
     section = section.replace('<div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>',
         '<div class="cb-row-label cb-painpoint-label"><small>DESIGN BREAKS</small><b>设计断点</b></div>', 1)
