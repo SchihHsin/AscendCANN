@@ -115,7 +115,7 @@ if(CTRL){
 }
 
 document.addEventListener('keydown',e=>{
-  if(e.target.closest('input,textarea,select,[contenteditable=true]')||document.querySelector('.r-modal.open'))return;
+  if(e.target.closest('input,textarea,select,[contenteditable=true]')||document.querySelector('.r-modal.open,dialog[open]'))return;
   if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
   else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
   else if(e.key==='Home'){e.preventDefault();go(0);}
@@ -178,5 +178,5 @@ slides.forEach(paintSlide);
 updateCurrent(initialPage);
 if(CTRL) setActive(initialPage);
 else requestAnimationFrame(()=>slides[initialPage].scrollIntoView({block:'start',behavior:'instant'}));
-addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(n>=1&&n<=slides.length)go(n-1);});
+addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(n<1||n>slides.length)return;const destination=n-1;if(CTRL){go(destination);return;}rOverviewTransition=true;slides[destination].scrollIntoView({block:'start',behavior:'instant'});updateCurrent(destination);requestAnimationFrame(()=>{rOverviewTransition=false;});});
 document.fonts.ready.then(()=>{balanceHeads();reanchor();});

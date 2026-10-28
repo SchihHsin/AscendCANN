@@ -7380,3 +7380,12 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户选择试做明度递增的三栏底色：图标栏 `#F5F5F5`、任务列表 `#FAFAFA`、对话 `#FFFFFF`。延续既有淡彩氛围图，只调整三栏承载面。依据为用户明确选择（H）。
 - 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 构建资源。构建 `npm run build:pages`、发布 JS `node --check`、资源引用核验和 `git diff --check` 通过；本地 8008 桌面任务页回放确认三档渐亮，未运行自动化测试。页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 实现提交 `1d49549c` 已推送 `origin/main`；Pages workflow `40643700403` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-B6WzOQ4r.js` 与 `index-BPSEyDRV.css`，两者 HTTP 200。
+
+### 2026-10-28 · Ascend Studio 用户旅程页修正
+
+- 用户指出用户旅程不能把整页直接做成一张图。现版第 2 页直接复制旧精简报告 #5 的旅程 HTML 网格结构与 CSS，并新增同页「旅程全景 / 角色时序」切换；旅程文字、行为格、交接、断点和六角色时序均为原生 HTML。只保留原旅程的 5 张阶段插画作为图片，没有把全页截图放入汇报，也未使用 iframe。
+- 修复「任务用户 / 学习用户」窄列换行，并将外部 hash 跳转改为立即定位当前页。学习用户同时包含模糊目标和明确目标；任务 / 学习表示进入目的，专业程度只影响引导深度，来自用户明确澄清（H）。
+- 汇报当前为 16 页：五个旅程断点留在旅程页中，不再额外占一页。修改 `cann-dashboard/ascend-studio-design-report.html`、其 `build_report.py`、`narrative.md`、`qa.md`、`page-map.json`、`page-visual-checks.json` 与提取运行脚本；未修改电脑端 / 小程序产品源码及既有精简报告。
+- 证据来源为旧精简报告 #5 与线上电脑端 / 本地小程序原型；人群旅程重组与痛点仍属设计推演，不冒充访谈结论。没有改变 API / Protocol、Host / Harness、Application / Task 边界。
+- 验证：汇报构建脚本、两段 `node --check`、`git diff --check` 通过；结构检查确认 16 页、旅程含 HTML 网格与时序视图、只有 5 张局部阶段插画。CUA 在 1280×720 检查全景 / 时序，并直接跳转 `#2 → #11 → #2`，可见页面与页码同步。未运行自动化测试。
+- 提交 / 推送：交接与材料通过独立临时索引相对最新 `origin/main` 提交，并推送到 `main`；本地工作区其他暂存、未暂存和未跟踪改动未纳入。
