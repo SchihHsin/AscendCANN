@@ -110,3 +110,11 @@
 - 「加入定期速览」与「发到微信，现在看」保持上下排列，两个按钮统一为 40px 高；「感兴趣 / 还没弄懂」是可取消的学习标记，不直接发送消息。
 - 1280×720 本地浏览器回放：展开不同知识条目后，旧条目自动收起；再次点击即时送达，微信列表出现同标题通知，打开短读卡并点「我看懂了」，回到电脑端知识口袋后同一条内容显示「已理解」。这是同一浏览器内 localStorage / postMessage 的交互演示，不代表真实微信推送或跨设备同步。
 - `cd ascend-studio && npm run build:pages`、`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、当前构建 JS `node --check`、`git diff --check` 与 `git diff --cached --check` 通过；未运行自动化测试。
+
+## 2026-10-28 · 评审页电脑 Demo 单屏与 16:9 比例
+
+- 第 1、4 个设计点在桌面评审壳中只展示电脑端 Demo，隐藏旁边的手机样机；其他设计点继续使用 Pura X View 手机样机，手机宽度视口也保留原有小程序页面。
+- 电脑端以 1440×810 为逻辑视口，按可用宽高等比缩放，保持 16:9；材料中的最大宽度为 900px，较窄桌面屏幕按剩余列宽自适应。
+- Chrome 本地预览回放：1440×900、第 1 / 4 点；1280×720、第 1 点；390×844 手机微信列表。确认第 1 / 4 点均只呈现电脑画面、口袋视图完整、手机视口不出现电脑 Demo。
+- 截图：`evidence/review-desktop-only-1440.png`、`evidence/review-desktop-only-1280.png`、`evidence/review-desktop-pocket-1440.png`、`evidence/review-wechat-mobile-390.png`。
+- 验证：`node --check ascstudio-mini/app.js`、`node --check ascstudio-mini/knowledge.js`、`git diff --check` 通过；未运行自动化测试。仅调整评审壳呈现与缩放，不改变七点页序、状态流转或 API / Protocol、Host / Harness、Application / Task 边界。

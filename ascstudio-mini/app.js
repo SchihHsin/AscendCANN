@@ -97,6 +97,14 @@ let weeklySettingsOpen = false;
 let reviewOverviewOpen = false, reviewOverviewReturnFocus = null;
 let requestedDesktopView = "task";
 let reviewWheelDelta = 0, reviewWheelLocked = false, reviewWheelResetTimer;
+const DESKTOP_DEMO_VIEWPORT = { width: 1440, height: 810 };
+function fitDesktopDemoViewport() {
+  const viewport = $("#desktop-demo-window");
+  const frame = $("#desktop-demo-frame");
+  if (!viewport || !frame || !viewport.clientWidth || !viewport.clientHeight) return;
+  const scale = Math.min(viewport.clientWidth / DESKTOP_DEMO_VIEWPORT.width, viewport.clientHeight / DESKTOP_DEMO_VIEWPORT.height);
+  if (Number.isFinite(scale) && scale > 0) frame.style.setProperty("--desktop-demo-scale", String(scale));
+}
 function syncDesktopDemoView(view) {
   requestedDesktopView = view;
   const frame = $("#desktop-demo-frame");
@@ -131,8 +139,10 @@ function updateReviewPanel(route = currentRoute) {
   if (index < 0) {
     $("#review-visual").hidden = true;
     $("#review-visual").innerHTML = "";
+    document.body.classList.remove("review-shows-desktop");
     $("#device-wrap").classList.remove("shows-desktop-demo");
     $("#desktop-demo-panel").hidden = true;
+    $("#review-device-caption").textContent = "HUAWEI Pura X View · 阔直板 · 6.39″";
     $("#review-kicker").textContent = "自由体验";
     $("#review-title").textContent = "继续自由体验";
     $("#review-description").textContent = "手机界面仍可操作。想回到设计讲解，可从右侧节点或总览选择。";
@@ -162,11 +172,14 @@ function updateReviewPanel(route = currentRoute) {
   visual.hidden = true;
   visual.innerHTML = "";
   const showDesktopDemo = !isReviewThumbnail && innerWidth > 620 && [0, 3].includes(index);
+  document.body.classList.toggle("review-shows-desktop", showDesktopDemo);
   $("#device-wrap").classList.toggle("shows-desktop-demo", showDesktopDemo);
   $("#desktop-demo-panel").hidden = !showDesktopDemo;
+  $("#review-device-caption").textContent = showDesktopDemo ? "Ascend Studio · 桌面 Demo" : "HUAWEI Pura X View · 阔直板 · 6.39″";
   if (showDesktopDemo) {
     const frame = $("#desktop-demo-frame");
     if (!frame.getAttribute("src")) frame.src = frame.dataset.src;
+    requestAnimationFrame(fitDesktopDemoViewport);
     syncDesktopDemoView(index === 3 ? "pocket" : "task");
   }
   setReviewLocation(index);
@@ -751,6 +764,8 @@ window.addEventListener("message", event => {
   }
 });
 $("#desktop-demo-frame").addEventListener("load", () => syncDesktopDemoView(requestedDesktopView));
+if ("ResizeObserver" in window) new ResizeObserver(fitDesktopDemoViewport).observe($("#desktop-demo-window"));
+else window.addEventListener("resize", fitDesktopDemoViewport, { passive: true });
 renderReviewControls();
 render();
 if (openOverviewOnLoad && !isReviewThumbnail) openReviewOverview();
