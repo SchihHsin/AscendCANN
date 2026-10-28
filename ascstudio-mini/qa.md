@@ -142,3 +142,4 @@
 - `ascstudio-mini/index.html` 通过 `pocket-task` 指定默认任务；`ascend-studio/src/useWorkbenchState.js` 只在 `pocket-demo=1` 时采用该参数，且只接受已存在于任务列表中的任务，普通 Ascend Studio 会话仍沿用原选择。没有新建任务或任务入口。
 - 本地 1280×720 浏览器回放确认：电脑 Demo 默认显示「图像推理调试」、现有 Agent 回答与收纳按钮；点按后提示已收纳，打开知识口袋可见新卡及原有三条示例卡。页面序列保持七点不变，不改变 API / Protocol、Host / Harness、Application / Task 边界。内容是策划示例，不代表真实模型或设备验证。
 - `cd ascend-studio && npm run build:pages`、`node --check ascend-studio/src/useWorkbenchState.js`、`git diff --check` 通过；未运行自动化测试。
+- 提交 `1d27dc34` 已推送至 `origin/main`；Pages workflow `40749416960` 成功。线上评审入口 HTTP 200，含 `pocket-task=图像推理调试`；电脑端 HTML 引用的新 JS / CSS 及 JS 资源均 HTTP 200。

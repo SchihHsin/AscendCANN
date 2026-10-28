@@ -7667,4 +7667,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/index.html`、`ascstudio-mini/README.md`、`ascstudio-mini/qa.md`，以及 `ascend-studio/src/useWorkbenchState.js` 和 `ascstudio/` Pages 构建产物。新增的 `pocket-task` 参数只在 `pocket-demo=1` 时生效，且校验任务已存在；不创建任务或修改日常工作台选择。页面仍为七点，不改变 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据：用户确认复用现有任务（H）；任务回答、输入格式和口袋同步是本地演示内容（M），不代表真实模型或 NPU 验证。
 - 验证：`npm run build:pages`、`node --check src/useWorkbenchState.js`、`git diff --check` 通过；本地 1280×720 浏览器确认已选任务、回答、收纳按钮，点按后提示成功，知识口袋显示新卡与三条示例卡。未运行自动化测试。
-- 提交 / push 与 Pages 发布回执将在交付后补记。
+- 提交 `1d27dc34` 已推送到 `origin/main`；GitHub Pages workflow `40749416960` 成功。线上小程序入口 `?rev=1d27dc34` HTTP 200，回读到 `pocket-task=图像推理调试`；`/ascstudio/` HTML 引用 `index-B78vSO_a.js` 与 `index-BLPeqaaM.css`，两项资源均 HTTP 200。
