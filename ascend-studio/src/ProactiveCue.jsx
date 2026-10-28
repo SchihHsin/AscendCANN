@@ -2,6 +2,7 @@ import { ICON_SIZE } from "./icon-system.js";
 import { useEffect, useId, useRef, useState } from "react";
 import {
   IconArrowRight,
+  IconBook,
   IconChevronDown,
   IconInfoCircle,
   IconX,
@@ -17,6 +18,9 @@ export default function ProactiveCue({
   title,
   description,
   evidence,
+  evidenceLabel = "依据",
+  variant = "default",
+  resolved = false,
   primaryLabel,
   onPrimary,
   secondaryLabel,
@@ -64,7 +68,7 @@ export default function ProactiveCue({
   return (
     <section
       ref={root}
-      className={`proactive-cue${isCollapsed ? " is-collapsed" : ""}${entering ? " is-entering" : ""}`}
+      className={`proactive-cue${variant === "knowledge" ? " is-knowledge" : ""}${isCollapsed ? " is-collapsed" : ""}${resolved ? " is-settled" : ""}${entering ? " is-entering" : ""}`}
       onAnimationEnd={event => {
         if (event.target !== event.currentTarget) return;
         setEntering(false);
@@ -75,11 +79,11 @@ export default function ProactiveCue({
     >
       <div className="proactive-cue-heading">
         <span className="proactive-cue-icon" aria-hidden="true">
-          <IconInfoCircle size={ICON_SIZE.heading} />
+          {variant === "knowledge" ? <IconBook size={ICON_SIZE.heading} /> : <IconInfoCircle size={ICON_SIZE.heading} />}
         </span>
         <div className="proactive-cue-heading-copy">
           <h3 id={`${contentId}-title`}>{title}</h3>
-          {evidence && <p className="proactive-cue-evidence"><span>依据</span>{evidence}</p>}
+          {evidence && <p className="proactive-cue-evidence"><span>{evidenceLabel}</span>{evidence}</p>}
         </div>
         <div className="proactive-cue-heading-actions">
           {isCollapsed && (

@@ -1556,13 +1556,13 @@ function App() {
                     <IconBook size={ICON_SIZE.control} />{rationaleOpen ? "收起判断依据" : "查看判断依据"}<IconArrowRight className="rationale-arrow" size={ICON_SIZE.control} />
                   </button>
                   {rationaleOpen && <div className="rationale-detail"><p>[16,32] 与 [17,33] 的差异让末尾元素处理值得检查，仍需对照实际循环与误差证据，不能单独证明越界。</p><button type="button" className="task-plain-button" onClick={() => openContent("evidence")}>打开现场与判断<IconArrowRight size={ICON_SIZE.inline} /></button></div>}
-                  <ProactiveCue {...proactive.forCue("diagnosis-tail")} emphasisRef={diagnosisTargetRef}
-                    title="先核对非整块输入的访问范围"
-                    evidence="两组输入结果不同，调整编译参数后错误位置未变"
-                    description="已把尾块差异带入右侧图解。可以直接调参观察，再核对实际循环；这条线索仍不能确认根因。"
-                    primaryLabel={workspace.state.activeId === "explanation" ? "核对实际循环与来源" : "查看关联图解"}
+                  <ProactiveCue {...proactive.forCue("diagnosis-tail")} variant="knowledge" evidenceLabel="本次现象" emphasisRef={diagnosisTargetRef}
+                    title="输入长度不是整块时，尾块需要单独处理"
+                    evidence="[16,32] 通过；[17,33] 失败，调整编译参数后错误位置未变"
+                    description="当输入元素总数不是 tileSize 的整数倍，最后一块只会有部分有效元素。算子内核需按剩余元素数限制访问范围；若仍按整块读写，可能访问有效范围外的数据并造成结果偏差。这与当前现象相关，但还需结合实际循环和逐元素误差确认根因。"
+                    primaryLabel={workspace.state.activeId === "explanation" ? "核对实际循环与来源" : "看尾块处理图解"}
                     onPrimary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? changeActionView("code") : dispatchTaskIntent("explain", "tail"); }}
-                    secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "查看实际代码"}
+                    secondaryLabel={workspace.state.activeId === "explanation" ? "定位尾块图解" : "对照当前代码"}
                     onSecondary={() => { proactive.settle("diagnosis-tail"); workspace.state.activeId === "explanation" ? dispatchTaskIntent("explain", "tail") : changeActionView("code"); }} />
                   <details className="chat-next-disclosure"><summary>比较其他排查方向</summary><div className="chat-next-actions" aria-label="可能的下一步方向">
                     <div className="chat-next-heading">可能的下一步方向</div>

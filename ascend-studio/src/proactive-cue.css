@@ -14,6 +14,35 @@
   background: var(--cue-surface);
 }
 
+.proactive-cue.is-knowledge {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-color: #eee9e6;
+  background: #fff;
+}
+.proactive-cue.is-knowledge::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(108deg, #fff2d8 0%, #f5eafa 54%, #fff0e5 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.82) 42%, transparent 100%);
+  transition: opacity 180ms ease;
+}
+.proactive-cue.is-knowledge > * { position: relative; z-index: 1; }
+.proactive-cue.is-knowledge .proactive-cue-icon { color: #24252a; }
+.proactive-cue.is-knowledge .proactive-cue-evidence span { color: #6a6670; }
+.proactive-cue.is-knowledge.is-settled {
+  border-color: #e1e2e5;
+  color: #555760;
+  background: #f2f3f5;
+}
+.proactive-cue.is-knowledge.is-settled::before { opacity: 0; }
+.proactive-cue.is-knowledge.is-settled .proactive-cue-icon,
+.proactive-cue.is-knowledge.is-settled .proactive-cue-heading h3 { color: #555760; }
+
 .proactive-cue *,
 .proactive-cue *::before,
 .proactive-cue *::after { box-sizing: border-box; }
