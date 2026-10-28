@@ -865,6 +865,92 @@ body.overview #panel,body.overview #toggle{display:none!important}
 @media(max-width:1180px) and (min-width:761px){.service-flow-chart{grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,.9fr);gap:.25vw}.flow-stage{padding:1vh .6vw}.source-type{gap:6px;padding:7px 5px}.source-type small{font-size:10px}.experience-map{grid-template-columns:minmax(0,1.15fr) 24px minmax(0,.95fr)}.floor-service-row{grid-template-columns:minmax(72px,.72fr) 14px minmax(0,1.28fr);padding:5px}.service-definition small{font-size:10px}.unit-model{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}.channel-route{padding:1vh .65vw}.channel-steps{gap:2px}.channel-steps>div{padding:5px 3px}.ownership-band{grid-template-columns:1fr 1fr 1fr 1fr}.ownership-band>b{grid-column:1/-1}}
 @media(max-width:760px){.kp-cover .cv-content{height:auto;min-height:100svh;padding:22px 17px}.kp-cover .cv-center{grid-template-columns:1fr;gap:12px;padding:16px 0}.kp-cover .cover-cann-logo{width:92px}.kp-cover h1{font-size:clamp(36px,10vw,48px)}.kp-cover .knowledge-cover-hero{height:100%;object-fit:contain}.kp-cover-figure{height:280px}.kp-cover .cv-meta{display:none}.service-flow-chart{grid-template-columns:1fr;gap:6px}.flow-transition{height:22px;transform:rotate(90deg)}.flow-transition small{display:none}.flow-stage{min-height:180px;padding:12px}.feedback-ribbon{flex-wrap:wrap;justify-content:center}.experience-map{grid-template-columns:1fr;gap:6px}.experience-connector{height:22px;flex-direction:row}.experience-connector>small{writing-mode:horizontal-tb}.discovery-preview,.floor-service-map{padding:10px}.demo-resource-card>img{height:94px}.floor-service-row{min-height:58px}.unit-model{grid-template-columns:1fr}.unit-object-card{padding:12px}.unit-field-map{grid-template-columns:1fr 1fr}.unit-field{min-height:110px;padding:10px}.channel-branches{grid-template-columns:1fr;gap:8px;padding-top:12px}.channel-branches:before{left:50%;right:auto;height:100%;border-top:0;border-right:0;border-radius:0}.channel-route{min-height:190px;padding:12px}.channel-route:before{height:12px}.channel-steps{min-height:72px}.phase-columns{grid-template-columns:1fr}.phase-card{min-height:210px;padding:12px}.timeline-track{grid-template-columns:1fr 20px 1fr 20px 1fr;margin:0 0 8px}.ownership-band{grid-template-columns:1fr}.ownership-band>b{grid-column:auto}.quality-signals{flex-wrap:wrap}.kp-visual-clean .kp-body{overflow:auto}}
 </style>
+<style id="report-ppt-color-alignment">
+/* Report PPT 色彩收束：冷灰与透白为底，蓝紫为主，蓝色和暖橙只作少量语义强调。 */
+:root{
+  --c-teal:#4B8DFF; --c-mint:#7488E2; --c-green:#5B5BD6;
+  --g-teal:linear-gradient(120deg,#6FA4FF,#4B8DFF);
+  --g-mint:linear-gradient(120deg,#9299EA,#5B5BD6);
+  --g-green:linear-gradient(120deg,#7A82E4,#5B5BD6);
+}
+.directory-card.persona{--dir:var(--c-blue)}
+
+/* 关系图：中性灰承载结构，靛蓝 / 蓝紫标出主干；橙色只保留给校验提醒。 */
+.viz-eyebrow{fill:#626b78}.viz-label{fill:#22262f}.viz-small-label{fill:#3c4552}
+.viz-note{fill:#69717d}.viz-footnote{fill:#7b8491}
+.viz-edge{stroke:#b9c1cc}.viz-edge-strong{stroke:#7375d0}.viz-edge-warm{stroke:#e59a70}
+#supply-arrow path,#floor-arrow path,#unit-arrow path,#roadmap-arrow path{fill:#7375d0}
+#supply-arrow-warm path{fill:#e59a70}
+.viz-orbit{stroke:#d4d8df}.viz-hub{fill:#22262f;stroke:#f7f8fa}.viz-hub-note{fill:#e1e4eb}
+.viz-resource rect,.viz-network-node circle,.viz-field circle{fill:#f7f8fa;stroke:#cbd2dd}
+.viz-resource circle,.viz-small-dot{fill:#5b5bd6}
+.viz-resource.viz-green rect,.viz-network-node.viz-green circle,.viz-field.viz-green circle{fill:#ececfb;stroke:#b9b8e6}
+.viz-resource.viz-violet rect,.viz-network-node.viz-violet circle,.viz-field.viz-violet circle{fill:#edf3ff;stroke:#b6c8eb}
+.viz-resource.viz-orange rect,.viz-network-node.viz-orange circle,.viz-field.viz-orange circle{fill:#fff1e9;stroke:#e7b99d}
+.viz-warm-text,.viz-orange-text{fill:#b66c4b}.viz-green-text{fill:#5b5bd6}
+.viz-step circle{fill:#f1f3f6;stroke:#aeb8c7}.viz-step-green circle{fill:#ececfb;stroke:#8988dc}
+.viz-step-orange circle{fill:#fff1e9;stroke:#e0ae91}.viz-step-violet circle{fill:#edf3ff;stroke:#9fb7e6}
+.viz-unit-ring{stroke:#bfc2e8}.viz-unit-core{fill:#ececfb;stroke:#8583d5}.viz-unit-title{fill:#464783}.viz-unit-note{fill:#687184}
+.viz-satellite circle{fill:#f4f6f8;stroke:#c5ccd7}.viz-satellite.viz-green circle{fill:#ececfb;stroke:#b2b1e3}
+.viz-satellite.viz-violet circle{fill:#edf3ff;stroke:#b1c2e7}.viz-satellite.viz-orange circle{fill:#fff1e9;stroke:#dfb397}
+.viz-sat-label{fill:#46505e}.viz-delivery circle{fill:#f3f5f8;stroke:#b5bfce}
+.viz-delivery.viz-green circle{fill:#ececfb;stroke:#a8a7df}.viz-delivery.viz-orange circle{fill:#fff1e9;stroke:#dfb397}
+.viz-node-number{fill:#8791a0}.viz-phase-orbit{stroke:#c7cadd}.viz-phase-core{fill:#f1f2fb;stroke:#afb1dc}
+.viz-phase-no{fill:#5b5bd6}.viz-phase-title{fill:#22262f}.viz-phase-note{fill:#69717d}
+.viz-phase-dot{fill:#fff;stroke:#b8bfd0}.viz-phase-tag{fill:#4b5564}.viz-phase-deliverable{fill:#344252}
+.viz-phase.viz-green .viz-phase-core{fill:#ececfb;stroke:#9c9bdb}.viz-phase.viz-green .viz-phase-orbit{stroke:#cbc9ef}
+.viz-phase.viz-green .viz-phase-no,.viz-phase.viz-green .viz-phase-tag{fill:#5b5bd6}.viz-phase.viz-green .viz-phase-dot{stroke:#aaa9df}
+.viz-phase.viz-violet .viz-phase-core{fill:#edf3ff;stroke:#aebfe4}.viz-phase.viz-violet .viz-phase-orbit{stroke:#c8d4ee}
+.viz-phase.viz-violet .viz-phase-no,.viz-phase.viz-violet .viz-phase-tag{fill:#4b75c8}.viz-phase.viz-violet .viz-phase-dot{stroke:#afc2e9}
+.viz-phase.viz-orange .viz-phase-core{fill:#fff1e9;stroke:#dfb397}.viz-phase.viz-orange .viz-phase-orbit{stroke:#ecd0bd}
+.viz-phase.viz-orange .viz-phase-no,.viz-phase.viz-orange .viz-phase-tag{fill:#ad6c4e}.viz-phase.viz-orange .viz-phase-dot{stroke:#dfb397}
+.viz-road-path{stroke:#7276d0}.viz-road-path-dash{stroke:#f5f6fa}
+.viz-gate path{fill:#f2f4fa;stroke:#b6bfd0}.viz-gate-orange path{fill:#fff1e9;stroke:#dfb397}
+.viz-gate-text{fill:#4d5867}.viz-gate-note{fill:#747f8d}.viz-governance{stroke:#c1c8d2}
+.viz-owner-dot{fill:#9ba5b4}.viz-owner-dot.viz-owner-violet{fill:#8d63d8}.viz-owner-dot.viz-owner-orange{fill:#f47a4b}
+.viz-owner{fill:#46505e}.viz-lane-title{fill:#303946}.viz-lane-note{fill:#75808e}
+.viz-lane-line{stroke:#b8c2d0}.viz-lane-line.viz-lane-green{stroke:#777bd1}.viz-lane-line.viz-lane-orange{stroke:#dfaa88}
+.viz-lane-node circle,.viz-lane-node rect{fill:#f5f6f9;stroke:#b8c2d0}
+.viz-lane-node.viz-green circle,.viz-lane-node.viz-green rect{fill:#ececfb;stroke:#aaa9df}
+.viz-lane-node.viz-violet circle{fill:#edf3ff;stroke:#afc1e8}.viz-lane-node.viz-orange circle{fill:#fff1e9;stroke:#dfb397}
+.viz-lane-end{fill:#536071}.viz-large-plus{fill:#8a94a2}.viz-join{fill:#c68a6b}
+.service-network-graphic{border-left-color:rgba(100,112,132,.18)}
+
+/* 内容组件：撤掉大面积青绿，保留蓝紫重点与必要的暖色提醒。 */
+.kp-slide .stage header>b.t{background:#edf3ff;color:#4b75c8}
+.kp-slide .stage header>b.g{background:#ececfb;color:#5b5bd6}
+.kp-slide .asset-grid .teal{background:#4b8dff}
+.kp-slide .process .done{background:#f0f1fb;border:1px solid #dedff3}
+.kp-slide .channels>div:nth-child(3) strong{background:#edf3ff;color:#4b75c8}
+.kp-slide .mini-card:nth-child(3) label{color:#4b75c8}
+.kp-slide .event-row>label{color:#5b5bd6}
+.kp-slide .teal-bg{background:#edf3ff;color:#4b75c8}
+.flow-index.teal{background:#edf3ff;color:#4b75c8}.flow-index.green{background:#ececfb;color:#5b5bd6}
+.source-type:nth-child(3){color:#4b8dff}.compile-track>div:nth-child(3){color:#4b8dff}.compile-track>div:nth-child(4){color:#d95f9d}
+.asset-card:nth-child(2) .asset-index,.agent-card:nth-child(2) header>span{background:#edf3ff;color:#4b75c8}
+.asset-card:nth-child(2) .asset-code,.agent-card:nth-child(2) pre{background:#f4f6f8}
+.agent-card:nth-child(2) .agent-result,.receipt-states>div:nth-child(3){background:#edf3ff;color:#4b75c8}
+.receipt-states>div:nth-child(3) b{color:#4b75c8}
+.delivery-step{border-color:#e7eaf0}.delivery-step:not(:last-child):after{color:#a2aabb}
+.delivery-step>span{background:#edf0f7;color:#687a9d}.delivery-column-foot{background:#f1f3f7;color:#667285}
+.delivery-column-foot b{color:#50627d}.delivery-shared{color:#667285}.delivery-shared b{color:#46566d}
+.asset-card:nth-child(2) .asset-code{background:#f4f6f8}.agent-card:nth-child(2) .agent-result{background:#edf3ff;color:#4b75c8}
+.scope-field{color:#7e72ad}.learning-field{color:#4b8dff}.provenance-field{color:#b3825d}
+.phase-p2 .phase-kicker{color:#4b75c8}.phase-p2 .phase-kicker>span{background:#edf3ff;color:#4b75c8}
+.phase-p2 .phase-visual>b{color:#4b75c8}.phase-p2 .phase-visual{background:#f1f3f8}
+.agent-route .channel-proposal{background:#f1f3f7;color:#687589}
+.api-status-map .status-ok{color:#4b75c8}
+.meetup-sample>span{background:#edf0f7;color:#66758f}
+.delivery-core{border-color:#dfe3eb;color:#5b5bd6}.delivery-core:after{border-color:#c2c9d4}
+.delivery-core small,.delivery-core em{color:#858d99}.delivery-core strong{color:#22262f}
+.delivery-columns:before,.delivery-column:before{border-color:#c2c9d4}
+.delivery-column-head>span{background:#edf1f7;color:#60759a}
+.delivery-column-head strong{color:#303946}.delivery-column-head small{color:#858d99}
+.delivery-steps .delivery-step{border-color:#e7eaf0}.delivery-step:not(:last-child):after{color:#a2aabb}
+.delivery-step>span{background:#f0f2f6;color:#738098}.delivery-step b{color:#384351}.delivery-step small{color:#808a98}
+.delivery-shared{color:#667285}.delivery-shared b{color:#46566d}
+.phase-p2 .phase-visual>b{color:#4b75c8}
+</style>
 </head>
 <body>
 <div id="deck">
