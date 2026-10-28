@@ -1,0 +1,148 @@
+<section class="slide s-gray task-rel-page" data-title="AI协作开发者旅程图"><div class="slide-inner">
+  <header class="head"><div class="head-l"><div class="subttl">以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点</div><div class="ttl">AI协作开发者旅程图</div></div><div class="section-tabs"></div></header>
+  <div class="body-area" aria-label="AddCustom 开发协作示意：Need 准备目标与能力、Search 检索、Generate 生成与理解、Decide 判断并留存依据、Execute 执行验证与整理经验">
+    <div class="collab-blueprint" role="group" aria-label="六个研究问题按主要发生或承接位置映射到五类任务动作，不表示阶段独占或同一次任务的实测结论；能力增长贯穿检索、理解与实践，决策依据和执行经验延伸到团队交接与授权回流">
+      <div class="cb-axis"><small>STAGE</small><b>阶段</b></div>
+      <div class="cb-stage-rail" aria-label="五个任务阶段：Need（提出目标并装配初始上下文）、Search / Fetch、Generate、Decide、Execute">
+        <div class="cb-stage is-source"><div class="cb-stage-copy"><small>01 · NEED + CONTEXT</small><b>提出目标与上下文</b><span>装配环境、约束与工作区现场</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/need-context.png" alt=""></div></div>
+        <div class="cb-stage is-action"><div class="cb-stage-copy"><small>02 · SEARCH / FETCH</small><b>检索与取回</b><span>发现并取得相关信息</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/search-fetch.png" alt=""></div></div>
+        <div class="cb-stage is-generate"><div class="cb-stage-copy"><small>03 · GENERATE</small><b>生成候选方案</b><span>整理路径、参数与工程草稿</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/generate.png" alt=""></div></div>
+        <div class="cb-stage is-control"><div class="cb-stage-copy"><small>04 · DECIDE</small><b>判断方案</b><span>核验条件并选择路径</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/decide.png" alt=""></div></div>
+        <div class="cb-stage is-evidence"><div class="cb-stage-copy"><small>05 · EXECUTE</small><b>执行任务</b><span>行动、状态与结果回传</span></div><div class="cb-stage-visual" aria-hidden="true"><img src="assets/agent-stage-3d/execute.png" alt=""></div></div>
+      </div>
+
+      <div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>
+      <div class="cb-lane cb-human-lane" aria-label="开发者泳道">
+        <article class="cb-lane-cell cb-human-step is-source"><b><i data-lucide="book-open-check"></i><span>明确目标并选配能力</span></b><p>明确 AddCustom 接入目标、芯片 / 版本与仓库；按任务选配规则、知识库、Skill、MCP 等。</p></article>
+        <article class="cb-lane-cell cb-human-step is-action"><b><i data-lucide="workflow"></i><span>确认教程与来源缺口</span></b><p>官方自定义算子教程正文未取回时，判断是否转查社区 / 第三方资料，并保留来源和版本。</p></article>
+        <article class="cb-lane-cell cb-human-step is-generate"><b><i data-lucide="sparkles"></i><span>理解原理并复核草案</span></b><p>复核接口、参数与适用条件；解释关键设计依据，通过修改和验证形成自己的判断。</p></article>
+        <article class="cb-lane-cell cb-human-step is-control"><b><i data-lucide="shield-check"></i><span>选择路径并留存依据</span></b><p>结合日志判断排查方向；记录选择理由、失败尝试与未决风险，供团队评审和接手。</p></article>
+        <article class="cb-lane-cell cb-human-step is-evidence"><b><i data-lucide="receipt-text"></i><span>核验结果并整理经验</span></b><p>核对运行与测试证据；整理环境、失败与修复过程，确认可交接或授权分享的经验。</p></article>
+      </div>
+
+      <div class="cb-row-label cb-handoff-label"><small>HANDOFF</small><b>交接物</b></div>
+      <div class="cb-handoff-rail" aria-label="五步任务之间的人机交接">
+        <div class="cb-handoff down is-source"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>目标 / 环境 + 能力配置</span></div>
+        <div class="cb-handoff down is-action"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>教程取回状态 + 来源</span></div>
+        <div class="cb-handoff down is-generate"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1v14M3 10l5 5 5-5"/></svg><span>候选方案 + 原理 / 边界</span></div>
+        <div class="cb-handoff is-control"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M5 2v13M2 5l3-3 3 3M11 16V3M8 6l3-3 3 3"/></svg><span>选定路径 + 决策依据</span></div>
+        <div class="cb-handoff up is-evidence"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 17V3M3 8l5-5 5 5"/></svg><span>执行证据 + 复用线索</span></div>
+      </div>
+
+      <div class="cb-row-label cb-agent-label"><small>AGENT</small><b>智能体</b></div>
+      <div class="cb-lane cb-agent-lane" aria-label="Agent 泳道">
+        <article class="cb-lane-cell cb-agent-step is-source">
+          <div class="cb-source-flow">
+            <div class="cb-source-nodes"><span>AddCustom → PyTorch</span><span>芯片 / 版本 / 工作区</span><span>所选能力与配置</span></div>
+            <div class="cb-source-merge"><span>目标、现场与能力配置汇入</span></div>
+            <div class="cb-trust-gate"><b>缺失字段标记待补</b><span>不推断芯片或软件版本</span></div>
+            <div class="cb-context-result">初始 Context + 能力配置</div>
+          </div>
+        </article>
+        <article class="cb-lane-cell cb-agent-step is-action">
+          <div class="cb-vertical-flow"><span>Search：查官方算子教程</span><i>↓</i><span>Fetch：取回正文与示例</span><i>↓</i><span class="cb-agent-callout">正文未取回 → 转查外部资料</span></div>
+        </article>
+        <article class="cb-lane-cell cb-agent-step is-generate">
+          <div class="cb-preview-stack">
+            <div class="cb-preview"><small>GENERATE · 候选方案草拟</small><b>结合任务条件生成方案与解释</b><ul><li>接口选择与原理</li><li>版本 / 芯片适用条件</li><li>msopgen 参数与工程草稿</li><li>待验证假设与检查点</li></ul></div>
+            <div class="cb-wait-gate"><i data-lucide="sparkles"></i>草稿带来源与未决项 · 尚未执行</div>
+          </div>
+        </article>
+        <article class="cb-lane-cell cb-agent-step is-control">
+          <div class="cb-preview-stack">
+            <div class="cb-preview"><small>DECIDE · 路径与依据</small><b>结合资料与日志比较候选路径</b><ul><li>事实证据与缺失信息</li><li>候选路径的依据与风险</li><li>已尝试方案 / 未决项</li><li>待确认范围与权限</li></ul></div>
+            <div class="cb-wait-gate"><i data-lucide="pause-circle"></i>留存判断依据 · 确认范围再执行</div>
+          </div>
+        </article>
+        <article class="cb-lane-cell cb-agent-step is-evidence">
+          <div class="cb-proof-flow">
+            <div class="cb-proof-signal">执行工程动作，回传结果与现场</div>
+            <div class="cb-proof-items"><span>msopgen 工程与改动</span><span>版本 / 芯片 / 依赖</span><span>测试覆盖 / 失败条件</span><span>命令 / 返回码 / 日志</span></div>
+            <div class="cb-proof-result">状态回执 · 成功 / 失败 / 待验证</div>
+            <div class="cb-recovery-inline" aria-label="AddCustom 工程生成失败或 soc_version、版本信息缺失时，核对版本、补充环境、换用可追溯资料或升级处理，并保留工程现场继续">
+              <div><b>生成失败 / 缺环境字段</b><span>触发条件</span></div><i>→</i>
+              <div><b>可选恢复</b><span>核版本 · 补环境 · 换来源 · 升级处理</span></div><i>↶</i>
+              <div><b>回到工程起步</b><span>保留任务现场继续</span></div>
+            </div>
+            <div class="cb-recovery-foot">结果与复现线索留在任务现场</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="cb-row-label cb-mech-label"><small>MECHANISM</small><b>机制与装配</b></div>
+      <div class="cb-mechanism-rail" aria-label="阶段能力节点通过箭头指向上方对应的 Agent 动作；Plugin / Extension 与 Agent Loop 是独立跨阶段能力，不归到单一阶段">
+        <div class="cb-mechanism-stages" aria-label="机制在 Need、Search、Generate、Decide、Execute 五阶段中的可能作用；平台供给因产品而异">
+          <div class="cb-mechanism-stage few is-source">
+            <div class="cb-mech-node"><b>Rules</b><span>LOAD · 带入算子工程约束</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node"><b>Project Context</b><span>读取仓库规范</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+          </div>
+          <div class="cb-mechanism-stage dense six is-action">
+            <div class="cb-mech-node"><b>Knowledge Base</b><span>检索 API / 版本</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-teal"><b>MCP Resources</b><span>取教程 / 版本表</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node"><b>Built-in Tools</b><span>搜索并打开教程</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-teal"><b>MCP Connector</b><span>读取正文 / 版本</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node"><b>Skill</b><span>编排 Search → Fetch</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-blue"><b>Subagent</b><span>并行核对教程 / 样例</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+          </div>
+          <div class="cb-mechanism-stage few is-generate">
+            <div class="cb-mech-node"><b>Skill</b><span>生成带来源的候选步骤</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node"><b>Template</b><span>组织工程路径 / 参数草稿</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+          </div>
+          <div class="cb-mechanism-stage few is-control">
+            <div class="cb-mech-node cap-amber"><b>Sandbox</b><span>限制网络 / 文件读写</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-amber"><b>Hook</b><span>PreTool · 读取前校验</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+          </div>
+          <div class="cb-mechanism-stage dense six is-evidence">
+            <div class="cb-mech-node"><b>Skill</b><span>核对 soc_version</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-blue"><b>Build / Test</b><span>记录生成 / 编译状态</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-amber"><b>Hook</b><span>PostTool · 回填命令 / 日志</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-amber"><b>Hook</b><span>Stop · 阻止虚报已生成</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-green"><b>Evidence Receipt</b><span>汇总来源 / 状态</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+            <div class="cb-mech-node cap-neutral"><b>Checkpoint</b><span>保存工程 / 检索现场</span><i class="cb-mech-dot" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <div class="cb-mechanism-meta" aria-label="跨阶段能力卡片，与阶段能力卡采用相同的名称和用途形式">
+          <div class="cb-mech-node" aria-label="Agent Loop：工具调用结果回填后继续判断或停止，不代表定时循环">
+            <b>Agent Loop</b><span>工具调用结果回填后继续判断 / 停止</span><i class="cb-mech-dot" aria-hidden="true"></i>
+          </div>
+          <div class="cb-mech-node cap-blue" aria-label="Plugin / Extension：独立扩展机制，本任务片段未见实际调用">
+            <b>Plugin / Extension</b><span>安装 / 启用扩展入口 · 本任务未见调用</span><i class="cb-mech-dot" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="cb-row-label cb-measure-label"><small>OBSERVATION</small><b>体验观察</b></div>
+      <div class="cb-measure-rail" aria-label="AddCustom Need、Search、Generate、Decide、Execute 五阶段对应的研究记录与待验证体验指标">
+        <div class="cb-measure proposed is-source"><small>桌面与用户研究</small><span>目标、芯片 / 版本与工程现场是否齐全</span></div>
+        <div class="cb-measure completed is-action"><small>AI可用性研究 <b>✓ 已完成</b></small><span>官方正文取回 · 补充来源成本</span></div>
+        <div class="cb-measure proposed is-generate"><small>桌面与用户研究</small><span>生成草案是否附来源并标出未决项</span></div>
+        <div class="cb-measure proposed is-control"><small>桌面与用户研究</small><span>来源版本适用性 · 工程路径依据</span></div>
+        <div class="cb-measure proposed is-evidence"><small>桌面与用户研究</small><span>引用与版本一致性 · 工程起步支撑</span></div>
+      </div>
+      <div class="cb-row-label cb-painpoint-label"><small>PAIN POINT</small><b>痛点</b></div>
+      <div class="cb-painpoint-rail" aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组，并对应后续任务定义、上下文适用性、能力选择、过程接管、验证、团队理解、能力增长、反馈回流和责任边界问题">
+        <div class="cb-painpoint-node" aria-label="Need 阶段，对应后续任务定义、上下文适用性与责任边界">
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span><b>目标</b>和<b>完成条件</b>不清，任务开始前反复补充。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="智能体痛点"><i class="cb-actor-icon is-agent" data-lucide="bot" aria-hidden="true"></i><span><b>上下文</b>不足，难判断该追问什么、哪些动作可做。</span></div>
+        </div>
+        <div class="cb-painpoint-node" aria-label="Search / Fetch 阶段，对应后续上下文适用性">
+          <div class="cb-painpoint-item" role="group" aria-label="智能体痛点"><i class="cb-actor-icon is-agent" data-lucide="bot" aria-hidden="true"></i><span><b>来源</b>分散或<b>检索</b>不全，难形成可信依据。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span>要<b>跨入口</b>查找，并核对信息是否适用。</span></div>
+        </div>
+        <div class="cb-painpoint-node" aria-label="Generate 阶段，对应后续能力选择与组合、验证和开发者能力增长">
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span><b>能力选择</b>与<b>配置</b>更费力，任务完成也未必学会迁移。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="智能体痛点"><i class="cb-actor-icon is-agent" data-lucide="bot" aria-hidden="true"></i><span>能力如何<b>组合</b>、生成<b>依据</b>与<b>不确定项</b>难说明。</span></div>
+        </div>
+        <div class="cb-painpoint-node" aria-label="Decide 阶段，对应后续团队共同理解和责任边界">
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span>建议、执行、批准和<b>责任边界</b>不清，关键动作仍要兜底。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="团队痛点"><i class="cb-actor-icon is-team" data-lucide="users-round" aria-hidden="true"></i><span><b>决策理由</b>和<b>失败尝试</b>留在会话，评审要重建背景。</span></div>
+        </div>
+        <div class="cb-painpoint-node" aria-label="Execute 阶段，对应后续过程状态与接管、结果验证和反馈回流">
+          <div class="cb-painpoint-item" role="group" aria-label="开发者痛点"><i class="cb-actor-icon is-developer" data-lucide="user-round" aria-hidden="true"></i><span><b>进度</b>和<b>验证状态</b>不清，异常时难接管、确认完成。</span></div>
+          <div class="cb-painpoint-item" role="group" aria-label="智能体与平台痛点"><span class="cb-actor-group" aria-hidden="true"><i class="cb-actor-icon is-agent" data-lucide="bot"></i><i class="cb-actor-icon is-platform" data-lucide="server"></i></span><span>结果与<b>失败经验</b>难经<b>授权回流</b>，后续不易复用。</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div></section>

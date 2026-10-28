@@ -1,0 +1,13 @@
+{
+  "name": "ascend-studio-design-report-diagrams",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render:journey-sequence": "node render_journey_sequence.mjs"
+  },
+  "dependencies": {
+    "@dicebear/collection": "9.4.2",
+    "@dicebear/core": "9.4.2",
+    "beautiful-mermaid": "1.1.3"
+  }
+}

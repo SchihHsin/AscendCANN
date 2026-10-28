@@ -33,15 +33,6 @@ bpDialog.querySelectorAll('[data-bp-tab]').forEach((tab,i)=>tab.addEventListener
 bpDialog.querySelector('.r-bp-close').addEventListener('click',()=>bpDialog.close());
 bpDialog.querySelectorAll('.r-bp-panel a').forEach(a=>a.addEventListener('click',()=>bpDialog.close()));
 bpDialog.addEventListener('click',e=>{if(e.target===bpDialog)bpDialog.close();});
-const journeySection=document.querySelector('.r-copy-journey');
-if(journeySection){
-  const overview=journeySection.querySelector('.collab-blueprint'),sequence=journeySection.querySelector('.r-role-sequence');
-  journeySection.querySelectorAll('[data-journey-view]').forEach(button=>button.addEventListener('click',()=>{
-    const showSequence=button.dataset.journeyView==='sequence';
-    overview.hidden=showSequence;sequence.hidden=!showSequence;
-    journeySection.querySelectorAll('[data-journey-view]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
-  }));
-}
 const phoneImage=document.querySelector('.r-phone-stage>img');
 const phoneCaption=document.querySelector('.r-phone-caption');
 const phoneSources=[...document.querySelectorAll('[data-phone-source]')];

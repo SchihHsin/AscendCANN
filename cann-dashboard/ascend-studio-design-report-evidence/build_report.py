@@ -5,6 +5,8 @@ import base64
 import html
 import json
 import re
+import subprocess
+import xml.etree.ElementTree as ET
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -21,6 +23,10 @@ def esc(s):
 def asset(name):
     p = HERE / name
     return "data:image/jpeg;base64," + base64.b64encode(p.read_bytes()).decode()
+
+def svg_data(name):
+    p = HERE / name
+    return "data:image/svg+xml;base64," + base64.b64encode(p.read_bytes()).decode()
 
 def demo_button(kind="desktop", label=None):
     if kind == "mini":
@@ -44,16 +50,22 @@ def tabs(active):
 
 def copy_editable_journey_markup_and_css():
     """Reuse concise report #5's editable DOM/grid and CSS, never its full-page screenshot."""
-    source = (ROOT / "cann-dashboard/ai-development-behavior-system-report-concise.html").read_text()
-    start = source.index('<section class="slide s-gray task-rel-page"')
-    end = source.index("</section>", start) + len("</section>")
-    section = source[start:end]
-    style_start = source.index("<style>") + len("<style>")
-    style_end = source.index("</style>", style_start)
-    source_style = source[style_start:style_end]
-    css_start = source_style.index(".task-rel-page{")
-    css_end = source_style.index(".body-area.task-flow-page", css_start)
-    journey_css = source_style[css_start:css_end]
+    template_html = HERE / "journey-template.html"
+    template_css = HERE / "journey-template.css"
+    if template_html.exists() and template_css.exists():
+        section = template_html.read_text()
+        journey_css = template_css.read_text()
+    else:
+        source = (ROOT / "cann-dashboard/ai-development-behavior-system-report-concise.html").read_text()
+        start = source.index('<section class="slide s-gray task-rel-page"')
+        end = source.index("</section>", start) + len("</section>")
+        section = source[start:end]
+        style_start = source.index("<style>") + len("<style>")
+        style_end = source.index("</style>", style_start)
+        source_style = source[style_start:style_end]
+        css_start = source_style.index(".task-rel-page{")
+        css_end = source_style.index(".body-area.task-flow-page", css_start)
+        journey_css = source_style[css_start:css_end]
     for name in ("need-context.png", "search-fetch.png", "generate.png", "decide.png", "execute.png"):
         image_path = ROOT / "cann-dashboard/assets/agent-stage-3d" / name
         data_url = "data:image/png;base64," + base64.b64encode(image_path.read_bytes()).decode()
@@ -121,41 +133,34 @@ body.overview.ctrl #deck{width:auto}
 .r-copy-journey .head{gap:1.4vw;margin-bottom:1vh;align-items:center}.r-copy-journey .head-l{min-width:0}
 .r-copy-journey .head-l .ttl{font-size:var(--fs-h1);line-height:1.18}.r-copy-journey .subttl{line-height:1.35}
 .r-journey-head-controls{display:flex;align-items:center;gap:.6vw;flex:0 0 auto}
-.r-journey-mode-switch{display:flex;gap:2px;padding:3px;border:1px solid #d7dbe3;border-radius:999px;background:#ffffff9c}
-.r-journey-mode-switch button{border:0;border-radius:999px;padding:.48vh .62vw;background:transparent;color:#687180;font:650 var(--fs-sm)/1.1 'HarmonyOS Sans SC','Noto Sans SC',sans-serif;white-space:nowrap;cursor:pointer}
-.r-journey-mode-switch button[aria-pressed="true"]{background:#22262f;color:#fff;box-shadow:0 2px 8px #14171c24}
 .r-copy-journey .body-area{flex:1;min-height:0;margin:0;display:flex;flex-direction:column;justify-content:center;align-items:stretch;padding:0}
-.r-copy-journey .collab-blueprint{height:68vh;grid-template-rows:6.4vh 8.6vh 2.4vh 14.6vh 14.2vh 4.8vh 10.8vh;gap:.8vh .36vw}
+.r-copy-journey .collab-blueprint{height:71vh;grid-template-columns:12.6vw minmax(0,1fr);grid-template-rows:6vh 8.5vh 44vh 10vh;gap:.8vh .36vw}
 .r-copy-journey .cb-row-label{padding-left:.18vw}.r-copy-journey .cb-human-label b{font-size:var(--fs-xs)}
 .r-persona-row{display:grid;grid-template-columns:5.2vw minmax(0,1fr);gap:.28vw;align-items:start;padding:.18vh 0}
 .r-persona-row+.r-persona-row{border-top:1px solid #dfe4ec;margin-top:.35vh;padding-top:.35vh}
 .r-persona-row b{font-size:var(--fs-xs);line-height:1.12;color:#4e5e78;white-space:nowrap}
 .r-persona-row span{font-size:var(--cb-copy-size);line-height:1.2;color:#536174}
-.r-copy-journey .cb-painpoint-label small{font-size:var(--fs-xs)}
+.r-copy-journey .cb-human-label{grid-row:2}.r-copy-journey .cb-human-lane{grid-row:2}
+.r-copy-journey .cb-painpoint-label{grid-row:4}.r-copy-journey .cb-painpoint-label small{font-size:var(--fs-xs)}
 .r-copy-journey .cb-painpoint-rail{gap:.36vw}
+.r-copy-journey .cb-painpoint-rail{grid-row:4}
 .r-journey-breakpoint{appearance:none;width:100%;text-align:left;cursor:pointer;position:relative;padding:.55vh .58vw!important;display:flex;flex-direction:column;justify-content:center;gap:.35vh!important;border:1px solid #e8d5d8!important;border-radius:9px!important;background:linear-gradient(145deg,#fff9fa,#fff)!important;color:#4f4346!important;box-shadow:0 5px 14px #7b3b4c0b}
 .r-journey-breakpoint:hover{border-color:#d795a1!important;transform:translateY(-1px);box-shadow:0 8px 18px #7b3b4c18}
 .r-journey-breakpoint small{font-size:var(--fs-xs);font-weight:780;color:#9b5260;letter-spacing:.02em}
 .r-journey-breakpoint span{font-size:var(--cb-copy-size);line-height:1.18;color:#5d5256}
 .r-journey-breakpoint i{position:absolute;right:.48vw;top:.4vh;font-style:normal;font-size:var(--fs-sm);color:#a66b76}
 .r-copy-journey [hidden]{display:none!important}
-.r-role-sequence{width:100%;height:68vh;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);gap:1.2vh}
-.r-sequence-head{display:flex;align-items:baseline;justify-content:space-between;gap:1vw;padding:0 .2vw}
-.r-sequence-head h2{font-size:var(--fs-h2);line-height:1.2;color:#303744}.r-sequence-head span{font-size:var(--fs-sm);color:#77818e}
-.r-sequence-grid{min-height:0;display:grid;grid-template-columns:9.2vw repeat(4,minmax(0,1fr));grid-template-rows:5.7vh repeat(6,minmax(0,1fr)) 5.7vh;gap:.42vw .48vw;}
-.r-sequence-corner,.r-sequence-phase,.r-sequence-role,.r-sequence-cell,.r-sequence-handoff{min-width:0;min-height:0;border-radius:9px}
-.r-sequence-corner{display:flex;align-items:center;padding:.5vh .55vw;color:#68717d;font-size:var(--fs-sm);font-weight:700}
-.r-sequence-phase{display:flex;flex-direction:column;justify-content:center;padding:.45vh .65vw;border:1px solid #fff;background:linear-gradient(130deg,#293444,color-mix(in srgb,var(--phase) 35%,#253041));color:#fff}
-.r-sequence-phase small{font:740 var(--fs-xs)/1 'JetBrains Mono';color:color-mix(in srgb,var(--phase) 55%,#fff);letter-spacing:.025em}
-.r-sequence-phase b{margin-top:.25vh;font-size:var(--fs-sm);line-height:1.12}
-.r-sequence-role{display:flex;flex-direction:column;justify-content:center;padding:.5vh .62vw;border:1px solid #e1e5eb;background:#f6f7f9}
-.r-sequence-role b{font-size:var(--fs-sm);line-height:1.16;color:#343c48}.r-sequence-role small{margin-top:.22vh;font-size:var(--fs-xs);line-height:1.1;color:#7c8591}
-.r-sequence-cell{display:flex;align-items:center;padding:.54vh .62vw;border:1px solid color-mix(in srgb,var(--tone) 15%,#fff);background:color-mix(in srgb,var(--tone) 6%,#fff);font-size:var(--fs-sm);line-height:1.25;color:#4e5866}
-.r-sequence-cell:not(:last-child){position:relative}
-.r-sequence-role[data-role="task"]{--tone:#4c82bd}.r-sequence-role[data-role="learn"]{--tone:#8770bf}.r-sequence-role[data-role="studio"]{--tone:#5b67bd}.r-sequence-role[data-role="agent"]{--tone:#348b83}.r-sequence-role[data-role="environment"]{--tone:#538a9b}.r-sequence-role[data-role="community"]{--tone:#668967}
-.r-sequence-handoff{grid-column:2 / 6;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.48vw;align-items:center}
-.r-sequence-handoff span{display:flex;align-items:center;gap:.35vw;min-width:0;padding:.5vh .55vw;border-radius:7px;background:#fff;border:1px solid #e3e5eb;font-size:var(--fs-xs);line-height:1.1;color:#5e6877}
-.r-sequence-handoff b{color:#5d5ca9;white-space:nowrap;font-size:var(--fs-xs)}
+.r-sequence-role-label{grid-column:1;grid-row:3;position:relative;min-width:0;min-height:0;border-right:1px solid #dfe3eb}
+.r-sequence-plot{grid-column:2;grid-row:3;min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:12px;background:linear-gradient(180deg,#fffdfd 0%,#fff 100%);border:1px solid #e1e5ec}
+.r-sequence-plot svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%;overflow:visible}
+.r-sequence-role{--role-tone:#596b83;position:absolute;top:var(--lane-y);left:.08vw;right:.2vw;transform:translateY(-50%);display:grid;grid-template-columns:2.3vw minmax(0,1fr);align-items:center;gap:.35vw;min-height:4.4vh;padding:.25vh .3vw;border:1px solid color-mix(in srgb,var(--role-tone) 16%,#fff);border-radius:8px;background:color-mix(in srgb,var(--role-tone) 5%,#fff)}
+.r-sequence-role[data-role="task"]{--role-tone:#4c82bd}.r-sequence-role[data-role="learn"]{--role-tone:#8770bf}.r-sequence-role[data-role="studio"]{--role-tone:#5b67bd}.r-sequence-role[data-role="agent"]{--role-tone:#348b83}.r-sequence-role[data-role="environment"]{--role-tone:#538a9b}.r-sequence-role[data-role="community"]{--role-tone:#668967}
+.r-sequence-role .role-mark{display:grid;place-items:center;width:2vw;height:2vw;max-width:32px;max-height:32px;border-radius:50%;background:color-mix(in srgb,var(--role-tone) 13%,#fff);color:var(--role-tone)}
+.r-sequence-role .role-mark svg{width:1.1vw;height:1.1vw;min-width:15px;min-height:15px;stroke-width:1.8}
+.r-sequence-role img.role-mark{display:block;object-fit:cover;border:1px solid color-mix(in srgb,var(--role-tone) 18%,#fff)}
+.r-sequence-role b{display:block;font-size:var(--fs-xs);line-height:1.1;color:#384453;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-sequence-role small{display:block;margin-top:.16vh;font-size:var(--fs-xs);line-height:1.08;color:#798493;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-sequence-credit{position:absolute;right:.55vw;bottom:.35vh;font-size:8.5px;line-height:1;color:#a2a8b2}
 .r-bp-dialog,.r-live-demo{border:1px solid #ffffff;border-radius:18px;background:#f5f5f8;color:#242631;box-shadow:0 30px 100px #0005}
 .r-bp-dialog{width:min(720px,88vw);max-width:none;max-height:84vh;margin:auto;padding:0;overflow:auto}
 .r-bp-dialog::backdrop,.r-live-demo::backdrop{background:#080a13d9;backdrop-filter:blur(5px)}
@@ -268,55 +273,156 @@ bp_buttons = "".join(
 )
 source_journey, SOURCE_JOURNEY_CSS = copy_editable_journey_markup_and_css()
 
-sequence_phases = [
-    ("01", "带着目标进入", "#4c82bd"),
-    ("02", "组织可行动起点", "#7668b4"),
-    ("03", "协作执行与学习", "#398b88"),
-    ("04", "验证并留下经验", "#608b71"),
+SEQUENCE_ROLES = [
+    ("T", "task", "任务导向开发者", "带任务推进交付", None),
+    ("L", "learn", "学习导向开发者", "从兴趣或目标起步", None),
+    ("S", "studio", "Ascend Studio", "承接任务与学习上下文", "layout-dashboard"),
+    ("A", "agent", "智能体", "检索、解释并行动", "bot"),
+    ("E", "environment", "开发环境", "运行并返回结果", "terminal"),
+    ("K", "community", "知识与社区", "提供依据、接收经验", "book-open"),
 ]
-sequence_roles = [
-    ("task", "任务导向开发者", "带任务推进交付", ["描述目标、问题与环境", "确认建议来源与执行边界", "运行任务，按结果调整", "核验结果；决定是否分享"]),
-    ("learn", "学习导向开发者", "带目标主动学习", ["从兴趣或明确目标起步", "补充基础、时间与目标", "练习、追问并做笔记", "复习、调整路径或继续任务"]),
-    ("studio", "Ascend Studio", "承接现场与学习上下文", ["识别任务现场或学习意图", "呈现建议卡、Prompt 或学习路径", "并列解释、练习与任务现场", "整理个人认知卡或社区草稿"]),
-    ("agent", "智能体", "检索、解释并协助行动", ["识别目标并指出待补信息", "检索知识并说明适用范围", "提出步骤，边做边解释", "总结依据、状态与下一步"]),
-    ("environment", "开发环境 / 工具", "提供现场并返回验证状态", ["提供代码、版本、日志", "提供可调用的构建与分析入口", "运行、编译、测试或练习", "回传通过、失败或待核对"]),
-    ("community", "知识与社区", "提供可用依据并接收回流", ["提供文档、样例与经验", "标明版本、芯片及适用范围", "被任务引用并在现场核验", "经用户确认后接收经验草稿"]),
-]
-sequence_header = '<div class="r-sequence-corner">角色 / 时间 →</div>' + "".join(
-    f'<div class="r-sequence-phase" style="--phase:{tone}"><small>{number} · FLOW</small><b>{esc(title)}</b></div>'
-    for number, title, tone in sequence_phases
-)
-sequence_rows = "".join(
-    f'<div class="r-sequence-role" data-role="{role}"><b>{esc(name)}</b><small>{esc(desc)}</small></div>' + "".join(
-        f'<div class="r-sequence-cell" style="--tone:{sequence_phases[j][2]}">{esc(action)}</div>'
-        for j, action in enumerate(actions)
+
+def sequence_diagram_markup():
+    source = HERE / "journey-sequence.mmd"
+    raw_path = HERE / "journey-sequence.svg"
+    renderer = HERE / "render_journey_sequence.mjs"
+    if not raw_path.exists() or raw_path.stat().st_mtime < max(source.stat().st_mtime, renderer.stat().st_mtime):
+        subprocess.run(["npm", "run", "render:journey-sequence", "--prefix", str(HERE)], check=True)
+
+    svg_ns = "http://www.w3.org/2000/svg"
+    ET.register_namespace("", svg_ns)
+    root = ET.parse(raw_path).getroot()
+    old_viewbox = [float(x) for x in root.get("viewBox", "0 0 0 0").split()]
+    width, height = old_viewbox[2], old_viewbox[3]
+    root_style = root.get("style", "")
+    actor_positions = {}
+    for actor in root.findall(f"{{{svg_ns}}}g"):
+        if actor.get("class") != "actor":
+            continue
+        actor_id = actor.get("data-id")
+        rect = actor.find(f"{{{svg_ns}}}rect")
+        label = actor.find(f"{{{svg_ns}}}text")
+        if not actor_id or (rect is None and label is None):
+            continue
+        if rect is not None:
+            top = float(rect.get("y", "0"))
+            center = float(rect.get("x", "0")) + float(rect.get("width", "0")) / 2
+        else:
+            top = float(label.get("y", "0")) - 20
+            center = float(label.get("x", "0"))
+        if actor_id not in actor_positions or top < actor_positions[actor_id][0]:
+            actor_positions[actor_id] = (top, center)
+
+    style_nodes, defs_nodes = [], []
+    geometry = []
+    for child in list(root):
+        if child.tag == f"{{{svg_ns}}}style":
+            style_nodes.append(child)
+        elif child.tag == f"{{{svg_ns}}}defs":
+            defs_nodes.append(child)
+        elif child.get("class") != "actor":
+            geometry.append(child)
+
+    color_vars = {
+        "var(--_arrow)": "#6563b7",
+        "var(--_group-hdr)": "#f6f7f9",
+        "var(--_inner-stroke)": "#e7e9ec",
+        "var(--_node-fill)": "#f7f8fb",
+        "var(--_node-stroke)": "#d9dee7",
+        "var(--_text)": "#354052",
+        "var(--_text-muted)": "#455267",
+        "var(--_text-sec)": "#657184",
+        "var(--bg)": "#ffffff",
+        "var(--_line)": "#718096",
+    }
+    for node in root.iter():
+        for attr in ("fill", "stroke"):
+            value = node.get(attr)
+            if value in color_vars:
+                node.set(attr, color_vars[value])
+        if node.tag.rsplit("}", 1)[-1] in ("line", "polyline"):
+            try:
+                stroke_width = float(node.get("stroke-width", "0"))
+            except ValueError:
+                stroke_width = 0
+            if 0 < stroke_width < 1.4:
+                node.set("stroke-width", "1.4")
+
+    for style in style_nodes:
+        style.text = re.sub(r"@import[^;]+;\s*", "", style.text or "")
+        style.text = re.sub(
+            r"text\s*\{[^}]*\}",
+            "text { font-family: 'HarmonyOS Sans SC','Noto Sans SC',sans-serif; }",
+            style.text,
+            count=1,
+        )
+
+    for block in [node for node in geometry if node.get("class") == "block" and node.get("data-type") == "rect"]:
+        rects = block.findall(f"{{{svg_ns}}}rect")
+        if rects:
+            rects[0].set("fill", "#f8f9fc")
+            rects[0].set("stroke", "#dce2eb")
+            rects[0].set("stroke-width", "1.2")
+        if len(rects) > 1:
+            block.remove(rects[1])
+        for parent in block.iter():
+            for child in list(parent):
+                if child.tag == f"{{{svg_ns}}}text":
+                    parent.remove(child)
+
+    rotated = ET.Element(f"{{{svg_ns}}}g", {"transform": f"translate(0 {width:g}) rotate(-90)"})
+    for node in geometry:
+        for label in node.iter(f"{{{svg_ns}}}text"):
+            x = float((label.get("x") or "0").split()[0])
+            y = float((label.get("y") or "0").split()[0])
+            previous = label.get("transform", "")
+            label.set("transform", (previous + " " if previous else "") + f"rotate(90 {x:g} {y:g})")
+        rotated.append(node)
+
+    root.clear()
+    root.set("viewBox", f"0 0 {height:g} {width:g}")
+    root.set("width", f"{height:g}")
+    root.set("height", f"{width:g}")
+    if root_style:
+        root.set("style", root_style)
+    root.set("role", "img")
+    root.set("aria-label", "由 beautiful-mermaid 生成并旋转为横向时间推进的角色时序图")
+    root.set("preserveAspectRatio", "xMidYMid meet")
+    for node in style_nodes + defs_nodes + [rotated]:
+        root.append(node)
+    diagram = ET.tostring(root, encoding="unicode")
+
+    role_rows = []
+    avatars = {"T": svg_data("persona-task.svg"), "L": svg_data("persona-learning.svg")}
+    for actor_id, role, name, desc, icon in SEQUENCE_ROLES:
+        _actor_top, center_x = actor_positions[actor_id]
+        lane_y = width - center_x
+        lane_pct = max(0, min(100, lane_y / width * 100))
+        mark = (f'<img class="role-mark" src="{avatars[actor_id]}" alt="">' if actor_id in avatars else
+                f'<span class="role-mark"><i data-lucide="{icon}" aria-hidden="true"></i></span>')
+        role_rows.append(
+            f'<div class="r-sequence-role" data-role="{role}" style="--lane-y:{lane_pct:.4f}%" '
+            f'aria-label="{esc(name)}：{esc(desc)}">{mark}<span><b>{esc(name)}</b><small>{esc(desc)}</small></span></div>'
+        )
+
+    return (
+        '<div class="r-sequence-role-label" aria-label="时序图参与角色">' + "".join(role_rows) + '</div>'
+        '<div class="r-sequence-plot" aria-label="时间从左向右；箭头表示角色间消息与结果回传">'
+        + diagram
+        + '<small class="r-sequence-credit">图表：beautiful-mermaid · MIT；人物插图：DiceBear Personas · CC BY 4.0</small></div>'
     )
-    for role, name, desc, actions in sequence_roles
-)
-handoffs = [
-    ("开发者 → Studio", "任务现场 / 学习目标"),
-    ("Studio → 智能体", "可编辑 Prompt / 路径"),
-    ("智能体 ↔ 环境与知识", "检索、动作与结果"),
-    ("Studio → 用户 / 社区", "个人留存；分享前确认"),
-]
-sequence_handoffs = "".join(
-    f'<span><b>{esc(a)}</b>{esc(b)}</span>' for a, b in handoffs
-)
-sequence = f'''<div class="r-role-sequence" hidden aria-label="任务用户与学习用户在同一开发现场的角色交接时序">
-  <div class="r-sequence-head"><h2>同一旅程里的角色交接</h2><span>时间从左向右；学习目标可以模糊，也可以明确</span></div>
-  <div class="r-sequence-grid">{sequence_header}{sequence_rows}<div class="r-sequence-corner">关键交接</div><div class="r-sequence-handoff">{sequence_handoffs}</div></div>
-</div>'''
 
 def build_journey():
     section = source_journey
     section = section.replace('class="slide s-gray task-rel-page"', 'class="slide s-gray task-rel-page r-copy-journey"', 1)
+    section = re.sub(r'<div class="collab-blueprint"[^>]*>',
+        '<div class="collab-blueprint" role="group" aria-label="五阶段开发者旅程与跨角色交接时序，底部对应五个设计断点">', section, count=1)
+    section = section.replace('<div class="cb-axis"><small>STAGE</small><b>阶段</b></div>',
+        '<div class="cb-axis"><small>TIME</small><b>时间 →</b></div>', 1)
     section = section.replace('data-title="AI协作开发者旅程图"', 'data-title="用户旅程：任务交付与目标学习"', 1)
     section = section.replace('以 AddCustom 开发为例，呈现各阶段的人机行为与关键痛点', '两种进入起点：带任务推进交付，或带目标主动学习；经验程度只改变引导深度', 1)
     section = section.replace('<div class="section-tabs"></div>',
-        '<div class="r-journey-head-controls"><div class="r-journey-mode-switch" role="tablist" aria-label="旅程呈现方式">'
-        '<button type="button" data-journey-view="overview" aria-pressed="true">旅程全景</button>'
-        '<button type="button" data-journey-view="sequence" aria-pressed="false">角色时序</button>'
-        '</div>' + tabs("用户旅程") + '</div>', 1)
+        '<div class="r-journey-head-controls">' + tabs("用户旅程") + '</div>', 1)
     section = section.replace('<div class="body-area" aria-label="AddCustom 开发协作示意：', '<div class="body-area r-journey-body" aria-label="AddCustom 开发协作示意：', 1)
     section = section.replace('<div class="cb-row-label cb-human-label"><small>DEVELOPER</small><b>开发者</b></div>',
         '<div class="cb-row-label cb-human-label"><small>USER TYPE</small><b>用户起点</b></div>', 1)
@@ -356,8 +462,9 @@ def build_journey():
     rail = rail.replace('aria-label="按 Need、Search、Generate、Decide、Execute 阶段归组，并对应后续任务定义、上下文适用性、能力选择、过程接管、验证、团队理解、能力增长、反馈回流和责任边界问题"',
         'aria-label="五个旅程断点，可点击查看问题与对应设计响应"')
     section = section[:rail_start] + rail + section[rail_end:]
-    blueprint_start, blueprint_end = div_bounds(section, "collab-blueprint")
-    section = section[:blueprint_end] + "\n      " + sequence + section[blueprint_end:]
+    middle_start = section.index('<div class="cb-row-label cb-handoff-label">')
+    middle_end = section.index('<div class="cb-row-label cb-painpoint-label">', middle_start)
+    section = section[:middle_start] + sequence_diagram_markup() + section[middle_end:]
     return section
 
 journey = build_journey()
@@ -544,15 +651,6 @@ bpDialog.querySelectorAll('[data-bp-tab]').forEach((tab,i)=>tab.addEventListener
 bpDialog.querySelector('.r-bp-close').addEventListener('click',()=>bpDialog.close());
 bpDialog.querySelectorAll('.r-bp-panel a').forEach(a=>a.addEventListener('click',()=>bpDialog.close()));
 bpDialog.addEventListener('click',e=>{if(e.target===bpDialog)bpDialog.close();});
-const journeySection=document.querySelector('.r-copy-journey');
-if(journeySection){
-  const overview=journeySection.querySelector('.collab-blueprint'),sequence=journeySection.querySelector('.r-role-sequence');
-  journeySection.querySelectorAll('[data-journey-view]').forEach(button=>button.addEventListener('click',()=>{
-    const showSequence=button.dataset.journeyView==='sequence';
-    overview.hidden=showSequence;sequence.hidden=!showSequence;
-    journeySection.querySelectorAll('[data-journey-view]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
-  }));
-}
 const phoneImage=document.querySelector('.r-phone-stage>img');
 const phoneCaption=document.querySelector('.r-phone-caption');
 const phoneSources=[...document.querySelectorAll('[data-phone-source]')];

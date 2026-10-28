@@ -7483,3 +7483,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建包。依据为用户截图与明确交互要求（H）；不改变判断依据文案、知识提示文案、任务流程或 API / Protocol、Host / Harness、Application / Task 边界。
 - 同轮讨论中用户反馈初始回答像证据摘要而非错误解决方案；暂未改写该回答，建议的解决方案文案等待用户确认。
 - 验证：`npm run build:pages`、新构建 JS `node --check`、`git diff --check` 通过。视觉回放未完成：隔离预览连接 CUA 超时。提交 `3994c2f7` 已推送至 `origin/main`；Pages workflow `40681919352` build / deploy 成功，线上 `/AscendCANN/ascstudio/`、`index-DVb6EiLs.js`、`index-COSDFY05.css` 均 HTTP 200。未运行自动化测试。
+### 2026-10-28 · Ascend Studio 用户旅程中的开源时序图
+
+- 用户要求时序图尽量直接使用开源库。旅程页保留从精简报告 #5 复制的可编辑 HTML / CSS 阶段网格，并将原中间交接 / Agent 区替换为同页横向角色时序；不使用图片、iframe 或旅程 / 时序 Tab。
+- 时序由 `beautiful-mermaid` 1.1.3（MIT）生成，五个阶段各含五条消息并等宽；转换为时间左→右、角色横向分泳道。任务用户和学习用户使用 DiceBear Personas（CC BY 4.0），Studio、智能体、开发环境、知识与社区配 Lucide 图标。角色按进入目的区分，学习起点可模糊或明确，专业程度不等同于用户类型。
+- 变更：`cann-dashboard/ascend-studio-design-report.html`、`cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`render_journey_sequence.mjs`、`journey-sequence.mmd`、原旅程模板 HTML / CSS 快照、相关 `narrative.md` / `qa.md` 与依赖锁文件。证据及演示边界见 evidence 目录；时序关系是概念表达，不是实测旅程或访谈结果。
+- 页面仍为 16 页，API / Protocol、Host / Harness、Application / Task 边界和既有产品源码均未改变。
+- 验证：网页 PPT 重建成功；`node --check render_journey_sequence.mjs` 通过；结构检查确认 16 页、ID 唯一、6 个角色、5 个断点、5 个等宽时序阶段、25 条消息、颜色已落为静态 SVG 值。独立 SVG 渲染预览检查字样、箭头和泳道；最新 `main` 干净 worktree 中 `npm ci` 与构建输出 SHA-256 与交付文件一致。本轮没有重新进行浏览器视觉回放，也未运行自动化测试。推送状态待本条交接完成后补记。
