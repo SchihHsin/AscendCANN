@@ -7343,7 +7343,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户指出样机状态栏 Wi-Fi 三条曲线间距不匀，并建议采用开源图标。将手绘 SVG 替换为 Tabler Icons v3.48.0 `IconWifi` 的标准 24×24 路径，弧线之间间隔均匀、保留中心圆点；`styles.css` 采用 15×15、2px 圆角描边。该图标为内联静态 SVG，无新增运行时依赖；现有 Tabler Icons MIT 许可继续保留。
 - 仅修改 `ascstudio-mini/index.html`、`ascstudio-mini/styles.css` 与本交接 / QA 记录。依据为用户截图和明确建议（H）；本地浏览器核对状态栏布局（M）。小程序 7 页序列、推送与跨端状态流程、API / Protocol、Host / Harness、Application / Task 边界均不变。
 - 验证：本地 HTTP 预览确认 Wi-Fi 符号替换并与 5G、信号、电量保持同列；`node --check ascstudio-mini/app.js` 与 `git diff --check` 通过；未运行自动化测试。
-- 提交后推送至 `origin/main`，不强推；发布结果在推送后核对。
+- 发布：实现提交 `f270deab` 已普通推送至 `origin/main`，未强推。GitHub Pages workflow `40631489423` 成功；公网 `/ascstudio-mini/` 的 24×24 Tabler 路径及 CSS 15×15 / 2px 样式均已回读确认。
 
 
 ### 2026-10-28 · 三栏工作区背景层级
