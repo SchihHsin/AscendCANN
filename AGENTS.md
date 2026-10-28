@@ -7456,3 +7456,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认执行已讨论的节点拆分与横向排布方案。本轮源码变更已在前序提交 `7e8c8a99` 完成，构建资源在 `7882535e` 发布；保留图解、视频与章节控制、当前同步讲解三张横向材料卡，练习与理解检查拆为下方操作卡，来源折叠在讲解卡内，答题反馈就地呈现。
 - 本轮将工作区快进同步至 `origin/main` 的 `afb1a693`，保留 AddCustom 并行提交；核对 GitHub Pages workflow `40648789533` 为成功，线上入口及引用的 JS/CSS 均返回 HTTP 200。入口引用 `index-JZ9Hb7Nf.js`、`index-COSDFY05.css`。CDN 对完整 JS 文件的读取较慢并在完整读回前超时，因此仅据 workflow 与 HTTP 响应确认发布，不声称完成线上 bundle 的完整字节级校验。
 - 本轮未重复修改产品源码；上述实现不改变页面顺序、任务状态模型或 API / Protocol、Host / Harness、Application / Task 边界。未运行自动化测试。交接记录随本轮普通提交推送 `origin/main`；同步保留的四个未跟踪构建文件没有暂存或纳入提交。
+### 2026-10-28 · AddCustom 知识卡精简为 B 方案
+
+- 用户选择 B，并确认「根因待确认」是否需要显示。该词是说现有形状对照未证明尾块处理就是原因；它已在上方诊断答复中说明，知识卡不再重复。标题改为「为什么 [17,33] 值得检查尾块？」，正文缩为「元素总数不是 tileSize 的整数倍时，尾块只有部分元素有效；访问时需按剩余数量做边界保护。」
+- 移除重复的 `[16,32]` / `[17,33]` 现象行；因标题用「值得检查」而非断言失败原因，卡片不单列根因免责声明。保留黑色「看尾块处理图解」主按钮，将「对照当前代码」降为文字操作。
+- 修改 `ascend-studio/src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css` 与 `/ascstudio/` 构建产物。用户明确选择为 H；这是知识解释与排查入口，不代表已确认根因或真实 NPU 验证。页面序列和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 1280×720 隔离预览确认短文案、单一主按钮、次级文字链接及点击后灰色状态。实现提交 `429b47bf` 与合入并行主线的 `afb1a693` 已推送到 `origin/main`；Pages workflow `40648789533` 成功，线上入口和本轮 JS / CSS HTTP 200。未运行自动化测试。

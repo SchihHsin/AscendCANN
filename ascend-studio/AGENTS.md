@@ -2044,3 +2044,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 当前步骤继续作为关联锚点。普通画布将图解、视频与章节控制、当前同步讲解并列为三张独立 `material` 卡；动手练习和理解检查在下方各自作为 `action` 卡。资料来源只在同步讲解卡中折叠，避免视频卡与步骤卡重复。
 - 实现拆分 `OfficialVideoMaterial` / `OfficialLectureMaterial`，`node-semantics.js` 将 `:lesson` 映射为 `material / video`、`:explanation` 映射为 `material / lesson`、`:check` 映射为 `action / interactive`。`全部展开` 仍保留完整学习步骤内容。窄画布通过平移、缩放和小地图访问横向材料。
 - 依据用户确认（H）与本地原型内容（M）；共享滚动规则写于全局 `ascend-studio-interface-style` Skill。验收、构建和发布状态详见根目录 `AGENTS.md` 对应日期记录。
+
+### 2026-10-28 · AddCustom 知识卡精简为 B 方案
+
+- 按用户选择，将 AddCustom 提示改为问题引导标题「为什么 [17,33] 值得检查尾块？」和一句知识解释；移除重复现象证据行及单列的「根因待确认」。上方答复仍保留根因尚未证实的边界，卡片用「值得检查」保持线索语气。
+- 保留黑色「看尾块处理图解」主按钮；「对照当前代码」改为低强调文字操作。其他任务的提示样式和行为不变。
+- 修改 `src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css` 与 `../ascstudio/` 构建产物。依据为用户选择 B（H）；未声称真实根因、算子执行或 NPU 验证。页面顺序 / hash 及 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、发布 JS `node --check`、`git diff --check` 通过；CUA 隔离预览确认卡片文字更短、主次按钮层级清楚，点击图解后仍转灰。提交 `429b47bf` 已推送至 `origin/main`，并合并并行提交 `afb1a693`；Pages workflow `40648789533` 成功，线上入口和 JS / CSS HTTP 200。未运行自动化测试。
