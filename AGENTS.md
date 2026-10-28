@@ -7497,10 +7497,16 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`：公开发现页呈现 robots.txt / sitemap.xml → HTML / Markdown → JSON-LD → llms.txt；API 页呈现目标与环境 → OpenAPI → 资源服务 → 学习发现；Agent 页呈现任务上下文 → SKILL.md → MCP Resources / Tools → Evidence Receipt。保留示例代码、建设 / 使用说明、授权与应用层验收边界。解释段落调整为正文级字号以提高可读性。
 - 依据：用户选定的方案（H）；`report-ppt-skill` 的冷灰底、蓝紫主强调与少量蓝 / 暖橙配色约束（H）；规范链接分别指向 Robots RFC 9309、Sitemaps、Schema.org Course、llms.txt 提案、OpenAPI 3.1、MCP Server 与 Agent Skills。示例端点、llms.txt 实施方式与回执字段均为建设建议，不表示当前服务已接入。
 - 本轮不改变页面顺序、导航 hash、资源状态模型或 API / Protocol、Host / Harness、Application / Task 边界。验证为本地 1280×720 浏览器回看总图 #3、公开发现 #7、API #8、Agent #9，确认流程与内容完整、文字不溢出；`git diff --check` 通过；未运行自动化测试。
-- 发布：本轮只提交该 HTML 与本交接记录；提交和普通 push 至 `origin/main` 后，在此记录实际结果。
+- 发布：HTML 与本交接记录提交 `c577b57f` 已普通推送至 `origin/main`；GitHub Pages workflow `40682442290` 成功，线上页面返回 HTTP 200。
 
 ### 2026-10-28 · 底部对话位置预览与输入框对齐
 
 - 拖动对话框靠近屏幕底部时，位置预览改为复用最终单行输入框的宽度计算、水平中心和底边距：桌面宽度由工作区宽度推算，限制为输入框实际的 720px 上限并扣除相同布局留白；高度 54px、距底 22px。移除预览原先接近全宽 / 88px 高的外框及额外光晕。
 - 修改 `ascend-studio/src/styles.css` 与 `ascstudio/` 构建资源。用户截图和反馈为依据（H）；本地 1360×900 CUA 视口实测最终输入框 `636×54px`、水平居中且距工作区底 22px（M），预览尺寸公式与实测落位一致。页面序列和 API / Protocol、Host / Harness、Application / Task 边界不变。
-- 验证：`npm run build:pages`、发布 JS `node --check`、CSS 规则回读和 `git diff --check` 通过；CUA 在 1360×900 视口实测落位输入框为 `636×54px`、中心 / 底边距与预览公式一致。未运行自动化测试。实现提交 `20485f47` 与保留并行主线更新的合并提交 `6895ab6e` 已推送至 `origin/main`；Pages workflow `40682851279` build / deploy 成功，线上 `/AscendCANN/ascstudio/`、`index-jPzHL06k.js`、`index-C3lSVDG2.css` 均 HTTP 200，CSS 中预览宽高与定位规则已回读确认。
+- 验证：`npm run build:pages`、发布 JS `node --check`、CSS 规则回读和 `git diff --check` 通过；CUA 在 1360×900 视口实测落位输入框为 `636×54px`、中心 / 底边距与预览公式一致。未运行自动化测试。实现提交 `20485f47` 与合并提交 `6895ab6e` 已推送至 `origin/main`；Pages workflow `40682851279` 成功，之后合并的画布底色更新仍保留此预览规则，workflow `40683347384` 成功。最新线上 `/AscendCANN/ascstudio/`、`index-D6NS1cTF.js`、`index-CB4_sFnx.css` 均 HTTP 200，CSS 字节范围回读确认预览宽度上限、54px 高和 22px 底距。
+
+### 2026-10-28 · 画布底面改为柔和冷灰
+
+- 用户明确要求右侧画布有可见底色、不要白色或过浅，也不要深色，并选择 `#E6E9EE`。仅将共享画布 `.canvas-surface` 底面改为 `--canvas-diagram-surface: #e6e9ee`；图卡仍为白色，左侧图标栏、中间列表和对话栏不变。依据为用户选择（H），本地 1280×720 画布截图核对为 M。
+- 修改 `ascend-studio/src/shared/canvas/canvas.css` 与根目录 `/ascstudio/` Pages 构建产物。页面序列、hash、任务数据及 API / Protocol、Host / Harness、Application / Task 边界均未改变。
+- `cd ascend-studio && npm run build:pages`、构建 JS `node --check`、发布 CSS 规则核验与 `git diff --check` 通过；未运行自动化测试。构建提示 outDir 不自动清空及既有大 bundle 体积警告，未阻断构建。源码提交已基于最新 `origin/main` 同步并保留并行更新；实现提交、推送与 Pages workflow 结果在本条记录最终更新后补齐。
