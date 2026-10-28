@@ -7395,3 +7395,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户要求恢复上一版配色：图标栏白色 `--surface`，列表浅灰 `--surface-subtle`（`#F8F8F8`），对话白色。继续保留淡彩氛围图。
 - 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 页面资源引用。`npm run build:pages`、发布 JS `node --check`、资源引用检查和 `git diff --check` 通过；本地 8008 任务页预览确认白灰白，未运行自动化测试。页面顺序 / hash 和 API / Protocol、Host / Harness、Application / Task 边界不变。
 - 实现提交 `5d04b35e` 已推送至 `origin/main`；Pages workflow `40644423331` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-Cf2J7xCF.js` 与 `index-BB1jQhKy.css`，两者 HTTP 200。
+
+### 2026-10-28 · AddCustom 错误后的尾块知识提示
+
+- 根据用户确认的方案 1，将 AddCustom 的尾块错误线索改为知识解释卡：说明输入元素数不是 `tileSize` 整数倍时，最后一块只有部分有效元素，算子内核需按剩余元素限制访问；关联 `[16,32]` 通过、`[17,33]` 失败及编译参数调整后错误位置不变的现象，同时明确根因仍待实际循环与逐元素误差证据确认。
+- 该提示单独使用与“生成社区经验”相同的暖黄—淡紫渐变、向下淡出到白色的样式和书本图标；主操作为「看尾块处理图解」，次操作为「对照当前代码」。点击操作后卡片收起并转为中性灰，再展开仍保持灰色。其他任务的提示样式不变。
+- 修改 `ascend-studio/src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css`、`src/useProactiveCues.js` 与 `/ascstudio/` 构建产物。依据为用户确认文案结构与视觉方向（H）；内容是与当前错误相关的通用知识，不构成真实根因或 NPU 验证结论。页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 在隔离的 1280×720 本地预览确认渐变初始态、点击后的灰色态及展开后的灰色态。实现提交 `99d9b8bb` 已推送至 `origin/main`；Pages workflow `40645430068` 成功，线上入口与本轮 JS / CSS 均 HTTP 200。未运行自动化测试。

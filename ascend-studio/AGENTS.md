@@ -2025,3 +2025,10 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - 将输入框当前模型按钮和模型下拉菜单中的各模型品牌 Logo 统一显示为黑色，沿用现有图像资源，仅由 `.composer .model-brand-logo` 与 `.workbench-menu-models .model-option-logo` 应用 `filter: brightness(0)`；模型文案、尺寸和选择交互保持原样。
 - 用户明确要求为依据（H）；本地模型选择菜单预览为实现核验（M）。这是展示样式，不影响任务、消息或模型选择数据，也不改变页面路由与 API / Host / Application 边界。
 - `npm run build:pages`、构建 JS `node --check`、两处构建 CSS 规则核验和 `git diff --check` 通过；未运行自动化测试。实现提交 `f3649165` 已推送 `origin/main`；Pages workflow `40630587340` 成功，线上入口和 JS / CSS 均 HTTP 200，线上 CSS 已核对包含两处黑色滤镜规则。
+
+### 2026-10-28 · AddCustom 错误后的尾块知识提示
+
+- 方案 1 已落实到 AddCustom 的 `diagnosis-tail`：用渐变卡片解释非整块输入的尾块访问知识，并明确当前 `[16,32]` / `[17,33]` 对照只是线索，不能单独证明根因。卡片主操作为「看尾块处理图解」，次操作为「对照当前代码」；图解知识提示使用书本图标和「本次现象」证据标签。
+- 用户点击卡片操作后，`useProactiveCues` 记录该提示已处理；卡片收起并转为中性灰，重新展开仍保持灰色。变化仅对 `variant="knowledge"` 生效，不影响其他错误线索提示。没有声称真实项目、算子或 NPU 验证通过。
+- 修改 `src/App.jsx`、`src/ProactiveCue.jsx`、`src/proactive-cue.css`、`src/useProactiveCues.js` 与 `../ascstudio/` 构建产物。页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 验证：`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；CUA 在隔离的 1280×720 本地预览核对渐变初始态，点击图解后呈灰色，重新展开仍为灰色。实现提交 `99d9b8bb` 已推送 `origin/main`；Pages workflow `40645430068` 成功，线上入口及 JS / CSS HTTP 200。未运行自动化测试。
