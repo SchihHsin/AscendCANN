@@ -1,6 +1,7 @@
 /* Shared visual and interaction primitives for every task and learning canvas. */
 :root {
   --canvas-surface: #f5f5f5;
+  --canvas-diagram-surface: #e6e9ee;
   --canvas-dot: #d9d9d9;
   --canvas-grid-size: 20px;
   --canvas-node-line: #c6c8ca;
@@ -18,7 +19,7 @@
 }
 
 .canvas-surface {
-  background-color: var(--canvas-surface);
+  background-color: var(--canvas-diagram-surface);
   background-image: radial-gradient(circle, var(--canvas-dot) .7px, transparent .8px);
   background-size: var(--canvas-grid-size) var(--canvas-grid-size);
   background-repeat: repeat;
