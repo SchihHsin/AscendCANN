@@ -69,11 +69,19 @@ function restoreWorkbench() {
   }
   const taskNames = new Set(groups.flatMap(group => group.tasks));
   const sessions = isObject(value.sessions) ? Object.fromEntries(Object.entries(value.sessions).filter(([name]) => taskNames.has(name)).map(([name, session]) => [name, storedTaskSession(session)])) : {};
-  // Community feedback returns to the completion invite after refresh. The
-  // generated review panel and its demo submit receipt are temporary states.
+  // Conversation exchanges and community feedback are page-session state.
+  // A reload starts every task conversation fresh while task records remain available.
   for (const session of Object.values(sessions)) {
+    session.showIntro = true;
+    session.messages = [];
+    session.history = [];
+    session.draft = "";
+    session.attachments = [];
+    session.capabilityIds = [];
+    session.feedback = null;
+    session.unreadReply = false;
+    delete session.communityInviteReady;
     delete session.communityDraft;
-    session.messages = session.messages.filter(message => !message.communityDraftCard && !message.communitySubmission);
   }
   if (!sessions[MAIN_TASK]) sessions[MAIN_TASK] = blank();
   // The path co-creation task is a repeatable demo: restore its starter
@@ -94,7 +102,7 @@ function restoreWorkbench() {
       };
     }
   }
-  // Refresh only the built-in scenario brief; saved conversations, records and custom tasks stay intact.
+  // Keep built-in task briefs current; task records and custom task definitions remain available after reload.
   if (meta[OFFICIAL_LEARNING_TASK]?.kind === "official-learning") meta[OFFICIAL_LEARNING_TASK] = { ...meta[OFFICIAL_LEARNING_TASK], ...taskDetails[OFFICIAL_LEARNING_TASK] };
   if (meta["图像推理调试"]) meta["图像推理调试"] = { ...meta["图像推理调试"], ...taskDetails["图像推理调试"] };
   return {
@@ -111,9 +119,7 @@ function restoreWorkbench() {
   };
 }
 function restoreConversationScroll() {
-  const saved = readSession("conversation-scroll", null);
-  const entries = value => Array.isArray(value) ? value.filter(entry => Array.isArray(entry) && entry.length === 2 && typeof entry[0] === "string") : [];
-  return { positions: new Map(entries(saved?.positions).filter(([, position]) => Number.isFinite(position) && position >= 0)), following: new Map(entries(saved?.following).filter(([, following]) => typeof following === "boolean")) };
+  return { positions: new Map(), following: new Map() };
 }
 
 export function useWorkbenchState() {
