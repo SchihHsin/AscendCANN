@@ -7373,3 +7373,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/App.jsx`、`src/styles.css`、`src/interaction.css` 及本交接。按钮功能和数据流不变；页面序列与 API / Protocol、Host / Harness、Application / Task 边界不变。依据为用户截图和明确要求（H）。
 - 验证：`npm run build:pages`、发布 JS `node --check` 与 `git diff --check` 通过；CUA 在 744×666 任务预览中确认知识口袋、复制、赞同和不赞同均无常驻文字，键盘聚焦时 tooltip 正常显示。未运行自动化测试。
 - 发布：实现提交 `fc41cb09` 已推送至 `origin/main`；Pages workflow `40642807299` 的 build / deploy 均成功。页面序列、API / Protocol、Host / Harness、Application / Task 边界未改变。
+
+
+### 2026-10-28 · 三栏背景改为由左至右渐亮
+
+- 按用户选择试做明度递增的三栏底色：图标栏 `#F5F5F5`、任务列表 `#FAFAFA`、对话 `#FFFFFF`。延续既有淡彩氛围图，只调整三栏承载面。依据为用户明确选择（H）。
+- 修改 `ascend-studio/src/styles.css` 与 `/ascstudio/` 构建资源。构建 `npm run build:pages`、发布 JS `node --check`、资源引用核验和 `git diff --check` 通过；本地 8008 桌面任务页回放确认三档渐亮，未运行自动化测试。页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 实现提交 `1d49549c` 已推送 `origin/main`；Pages workflow `40643700403` 成功。线上 `/AscendCANN/ascstudio/` 引用 `index-B6WzOQ4r.js` 与 `index-BPSEyDRV.css`，两者 HTTP 200。
