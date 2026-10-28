@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 474.411 588.63" width="474.411" height="588.63" style="--bg:#ffffff;--fg:#354052;--line:#8794a8;--accent:#45958e;--muted:#657184;--surface:#f7f8fb;--border:#d9dee7">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Arial:wght@400;500;600;700&amp;display=swap');
+  text { font-family: 'Arial', system-ui, sans-serif; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="5" refX="7" refY="2.5" orient="auto">
+    <polygon points="0 0, 8 2.5, 0 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+  <marker id="arrowhead-start" markerWidth="8" markerHeight="5" refX="1" refY="2.5" orient="auto-start-reverse">
+    <polygon points="8 0, 0 2.5, 8 5" fill="var(--_arrow)" stroke="var(--_arrow)" stroke-width="0.75" stroke-linejoin="round" />
+  </marker>
+</defs>
+<polyline class="edge" data-from="plan" data-to="env" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="183.5705,139.8 183.5705,163.8 276.15825,163.8 276.15825,187.8" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="env" data-to="result" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="276.15825,224.70000000000002 276.15825,260.70000000000005 216.20458333333335,260.70000000000005 216.20458333333335,293.5716666666667" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="result" data-to="explain" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="错误" points="174.46125,293.5716666666667 174.46125,260.70000000000005 52.5,260.70000000000005 52.5,90.9 179.42533333333336,90.9 179.42533333333336,54.900000000000006" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="result" data-to="mastery" data-style="solid" data-arrow-start="false" data-arrow-end="true" data-label="通过" points="195.33291666666668,397.93000000000006 195.33291666666668,533.73" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="explain" data-to="retry" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="241.82066666666668,54.900000000000006 241.82066666666668,90.9 368.746,90.9 368.746,102.9" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<polyline class="edge" data-from="retry" data-to="env" data-style="solid" data-arrow-start="false" data-arrow-end="true" points="368.746,139.8 368.746,163.8 276.15825,163.8 276.15825,187.8" fill="none" stroke="var(--_line)" stroke-width="1" marker-end="url(#arrowhead)" />
+<g class="edge-label" data-from="result" data-to="explain" data-label="错误">
+  <rect x="14" y="203.9" width="76.06" height="49.800000000000004" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="52.03" y="228.8" text-anchor="middle" font-size="26" font-weight="400" fill="var(--_text-sec)" dy="9.1">错误</text>
+</g>
+<g class="edge-label" data-from="result" data-to="mastery" data-label="通过">
+  <rect x="156.83291666666668" y="440.93" width="76.06" height="49.800000000000004" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="1" />
+  <text x="194.86291666666668" y="465.83" text-anchor="middle" font-size="26" font-weight="400" fill="var(--_text-sec)" dy="9.1">通过</text>
+</g>
+<g class="node" data-id="plan" data-label="代码 / 学习节点" data-shape="rectangle">
+  <rect x="114.06000000000002" y="102.9" width="139.021" height="36.900000000000006" rx="0" ry="0" fill="#eef7fb" stroke="#7eaebe" stroke-width="1.5px" />
+  <text x="183.5705" y="121.35000000000001" text-anchor="middle" font-size="13" font-weight="500" fill="#2d4a59" dy="4.55">代码 / 学习节点</text>
+</g>
+<g class="node" data-id="env" data-label="开发环境：运行 / 练习" data-shape="rectangle">
+  <rect x="184.41775" y="187.8" width="183.481" height="36.900000000000006" rx="0" ry="0" fill="#e9f6f5" stroke="#5faaa2" stroke-width="1.8px" />
+  <text x="276.15825" y="206.25" text-anchor="middle" font-size="13" font-weight="500" fill="#28564f" dy="4.55">开发环境：运行 / 练习</text>
+</g>
+<g class="node" data-id="result" data-label="返回结果" data-shape="diamond">
+  <polygon points="195.33291666666668,272.70000000000005 257.9479166666667,335.31500000000005 195.33291666666668,397.93000000000006 132.71791666666667,335.31500000000005" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="195.33291666666668" y="335.31500000000005" text-anchor="middle" font-size="13" font-weight="500" fill="var(--_text)" dy="4.55">返回结果</text>
+</g>
+<g class="node" data-id="explain" data-label="日志 + 图解：解释原因" data-shape="rectangle">
+  <rect x="117.03000000000002" y="18" width="187.18599999999998" height="36.900000000000006" rx="0" ry="0" fill="#fff1ee" stroke="#d99688" stroke-width="1.5px" />
+  <text x="210.623" y="36.45" text-anchor="middle" font-size="13" font-weight="500" fill="#743f37" dy="4.55">日志 + 图解：解释原因</text>
+</g>
+<g class="node" data-id="mastery" data-label="运行结果：理解检查" data-shape="rectangle">
+  <rect x="107.66791666666668" y="533.73" width="175.32999999999998" height="36.900000000000006" rx="0" ry="0" fill="#eef8f1" stroke="#7eaf8c" stroke-width="1.5px" />
+  <text x="195.33291666666668" y="552.1800000000001" text-anchor="middle" font-size="13" font-weight="500" fill="#315743" dy="4.55">运行结果：理解检查</text>
+</g>
+<g class="node" data-id="retry" data-label="调整参数：再次验证" data-shape="rectangle">
+  <rect x="281.081" y="102.9" width="175.32999999999998" height="36.900000000000006" rx="0" ry="0" fill="#fff1ee" stroke="#d99688" stroke-width="1.5px" />
+  <text x="368.746" y="121.35000000000001" text-anchor="middle" font-size="13" font-weight="500" fill="#743f37" dy="4.55">调整参数：再次验证</text>
+</g>
+</svg>
