@@ -7626,6 +7626,6 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 
 ### 2026-10-29 · 修复 Ascend Studio 旅程页重复泳道
 
-- 用户提供的线上截图显示第 2 页“开发者起点”行被重复包成 `.cb-human-lane`，五列内容被嵌套网格压窄，形成竖排文字和圆点。修复 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`：只向原五列网格填入五个阶段单元；第 3 阶段标题缩为“明确方向”；弱化非重点时序线，避免所有消息线一律彩色、加粗。
+- 用户提供的线上截图显示第 2 页“开发者起点”行被重复包成 `.cb-human-lane`，五列内容被嵌套网格压窄，形成竖排文字和圆点。修复 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`：只向原五列网格填入五个阶段单元，并让阶段标题、用户表达和底部断点沿用同一组阶段边界；删除开发者表达行中重复的阶段小箭头。第 3 阶段标题缩为“明确方向”；弱化非重点时序线，避免所有消息线一律彩色、加粗。
 - 重建 `cann-dashboard/ascend-studio-design-report.html` 并更新 `ascend-studio-design-report-evidence/qa.md`。电脑端 / 小程序产品源码、其他汇报页和 API / Protocol、Host / Harness、Application / Task 边界未改。
 - 本地结构核对：16 页、1 个开发者泳道、5 个阶段单元、10 条开发者表达、18 张交接卡，无旧场景卡。浏览器核验待 Pages 部署后完成；通过 `py_compile`、`node --check` 与暂存差异 `git diff --check`。

@@ -295,6 +295,7 @@ CSS += r"""
 .r-copy-journey .r-persona-avatar{width:clamp(22px,2.15vw,31px);height:clamp(22px,2.15vw,31px);display:block;overflow:hidden;border:1px solid rgba(111,125,151,.18);border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(34,50,76,.08)}
 .r-copy-journey .r-persona-avatar img{display:block;width:100%;height:100%;object-fit:cover}
 .r-copy-journey .r-persona-bubble{position:relative;min-width:0;padding:.38vh .4vw;border:1px solid rgba(105,122,154,.14);border-radius:8px 8px 8px 3px;background:rgba(255,255,255,.9);color:#4e5d73;font-size:var(--fs-xs);font-weight:580;line-height:1.14}
+.r-copy-journey .cb-human-lane .cb-lane-cell:not(:last-child)::before,.r-copy-journey .cb-human-lane .cb-lane-cell:not(:last-child)::after{content:none!important}
 .r-copy-journey .r-persona-row[data-avatar-ref="task"] .r-persona-avatar{background:#eef5fb}
 .r-copy-journey .r-persona-row[data-avatar-ref="learn"] .r-persona-avatar{background:#f4f0fb}
 .r-copy-journey .r-sequence-plot{position:relative;overflow:hidden;background:transparent;border:0;border-radius:0}
@@ -622,12 +623,13 @@ def build_journey():
     middle_end = section.index('<div class="cb-row-label cb-painpoint-label">', middle_start)
     diagram_markup = sequence_diagram_markup()
     section = section[:middle_start] + diagram_markup + section[middle_end:]
-    section = re.sub(
-        r'(<div class="cb-stage-rail"[^>]*)(>)',
-        lambda match: match.group(1) + f' style="{SEQUENCE_STAGE_RAIL_STYLE}"' + match.group(2),
-        section,
-        count=1,
-    )
+    for rail_class in ("cb-stage-rail", "cb-human-lane", "cb-painpoint-rail"):
+        section = re.sub(
+            rf'(<div class="[^"]*\b{rail_class}\b[^"]*"[^>]*)(>)',
+            lambda match: match.group(1) + f' style="{SEQUENCE_STAGE_RAIL_STYLE}"' + match.group(2),
+            section,
+            count=1,
+        )
     return section
 
 journey = build_journey()
