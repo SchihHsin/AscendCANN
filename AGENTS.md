@@ -7422,4 +7422,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 每个例子都配建设方法、使用者 / 调用方式与产出；以代码片段、端点流程、状态映射和资源分流关系表达，避免把实施细节再压进小字连线图。llms.txt 标为社区提案；robots.txt 明示不承担鉴权；业务回执字段注明属于 Application 层建议，不冒充 MCP 标准。
 - 内容依据为公开规范链接与用户明确的供给侧需求（格式事实 H；服务端点、Skill 工作流和回执均为目标方案 / 待建设，不表示已接入）。扩展后全 deck 为 10 页，新增页位于交付总图之后，建设路线图章节编号改为 08；导航点和页码仍由 deck runtime 根据 section 数动态生成。没有改变 API / Protocol、Host / Harness、Application / Task 的职责边界。
 - 验证：本地桌面预览逐页检查 #6–#9，确认总图、文件示例、API 状态映射和 Agent 回执均可读且无裁切；`git diff --check` 通过；未运行自动化测试。
-- 发布：实现提交 `c88e51cd` 在吸收远端 `eff06d63` 后普通推送至 `origin/main`（未强推，其他并行工作保留）。Pages 部署状态待线上回读确认。
+- 发布：实现提交 `c88e51cd` 在吸收远端 `eff06d63` 后普通推送至 `origin/main`（未强推，其他并行工作保留）。随后将交接记录 `4e96d4b2` 接到最新 `origin/main`（保留 `5bbef462` 的工作区背景改动）并再次普通推送。线上页面 HTTP 200，完整 HTML 为 186,907 字节；与本地 `ascstudio-mini/knowledge-provider-map.html` 的 SHA-256 均为 `ccf4b5db796b3f785edc35b3ea9fb756b37dae71e30f15524c8cc1421a447279`，回读确认公开发现、产品 API 和 Agent 资产细化页均已发布。未获取 Pages workflow 状态。
