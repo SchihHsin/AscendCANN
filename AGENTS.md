@@ -7358,4 +7358,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户确认修复 ResNet50 独立内容卡角色：`:diagram` 与 `:lesson` 为材料，`:practice` 为操作；路径阶段、真实学习动作以及全部展开时代表完整学习动作的卡继续为步骤。练习 / 理解检查产出仍归结果，原始观察依据才归证据。
 - 领域归一化先识别明确内容后缀，再处理学习步骤 ID 前缀，避免子卡继承父学习步骤的角色。规则同步到 `ascend-studio/interaction-design.md` 与 `ascend-studio/AGENTS.md`。
 - `node --check ascend-studio/src/shared/canvas/node-semantics.js`、`npm run build:pages`、`git diff --check` 通过；本地 5192 浏览器 AX 回放确认 3.1 图解容器标为 material / 材料，3.2 的动手练习卡标为 action / 操作，返回 3.1 后现场保留。没有真实模型 / NPU 验证；未运行自动化测试。
-- 发布含共享语义映射和 `/ascstudio/` 构建产物；不改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。推送及 Pages 结果见本记录提交回执。
+- 发布含共享语义映射和 `/ascstudio/` 构建产物；不改变页面序列、hash 或 API / Protocol、Host / Harness、Application / Task 边界。同步保留 `origin/main` 的三栏背景记录后，语义修复提交 `6d141971` 与构建提交 `7be079bf` 已推送至 `origin/main`；Pages workflow `40632860691` 成功。线上 `/AscendCANN/ascstudio/`、`index-BmfZLblv.js` 与 `index-DlbrpRmv.css` 均 HTTP 200。
