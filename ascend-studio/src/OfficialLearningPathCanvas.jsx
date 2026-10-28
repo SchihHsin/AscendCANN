@@ -9,7 +9,7 @@ import CanvasLegacyDrawings from "./shared/canvas/CanvasLegacyDrawings.jsx";
 import { CanvasMiniMap, CanvasSurface, focusViewportForBounds } from "./shared/canvas/index.jsx";
 import { normalizeCanvasStatus } from "./shared/canvas/node-semantics.js";
 import { useCanvasDrawing } from "./shared/canvas/useCanvasDrawing.js";
-import { MAX_CONTENT_CARD_HEIGHT } from "./shared/canvas/canvas-sizing.js";
+import { canvasCardContentHeight, canvasCardProfile } from "./shared/canvas/canvas-sizing.js";
 import OfficialLearningVisuals from "./OfficialLearningVisuals";
 import { OfficialComprehensionCheck, OfficialLectureMaterial, OfficialLesson, OfficialPractice, OfficialVideoMaterial } from "./OfficialLearningActivities";
 import { canvasNodeKey, nodeConnector, positionTreeNodes, stageSpineConnectors, hierarchySpineConnectors } from "./canvas-node-position";
@@ -32,14 +32,14 @@ function makeTree(layout, personalPlan, positions = {}, allExpanded = false, hei
     let rowOffset = 0;
     const children = orderedChildren.map(child => {
       const rect = horizontal ? { x: 32, y: offset + 82 + rowOffset, width: 226, height: 47 } : { x: i * columnWidth + 20, y: 88 + rowOffset, width: 272, height: 47 };
-      rowOffset += allExpanded ? (heights[child.id] || MAX_CONTENT_CARD_HEIGHT) + 34 : 55;
+      rowOffset += allExpanded ? canvasCardContentHeight({ id: child.id, nodeType: "step", contentType: "summary" }, heights[child.id], "resnet50") + 34 : 55;
       return { ...child, rect };
     });
-    const rowsHeight = children.reduce((sum, child) => sum + (allExpanded ? (heights[child.id] || MAX_CONTENT_CARD_HEIGHT) + 34 : 55), 0);
+    const rowsHeight = children.reduce((sum, child) => sum + (allExpanded ? canvasCardContentHeight({ id: child.id, nodeType: "step", contentType: "summary" }, heights[child.id], "resnet50") + 34 : 55), 0);
     offset += allExpanded ? 82 + rowsHeight + 82 : 95 + children.length * 55;
     return { ...stage, index: i, rect, children };
   });
-  const rowsHeight = Math.max(0, ...groups.map(group => { const last = group.children.at(-1); return last ? last.rect.y + (allExpanded ? (heights[last.id] || MAX_CONTENT_CARD_HEIGHT) + 34 : 55) : 0; }));
+  const rowsHeight = Math.max(0, ...groups.map(group => { const last = group.children.at(-1); return last ? last.rect.y + (allExpanded ? canvasCardContentHeight({ id: last.id, nodeType: "step", contentType: "summary" }, heights[last.id], "resnet50") + 34 : 55) : 0; }));
   return positionTreeNodes({ groups, width: horizontal ? 258 : groups.length * (allExpanded ? 1050 : 320) - 28, height: horizontal ? offset - 20 : allExpanded ? rowsHeight + 20 : 310 }, positions, "groups", "children");
 }
 
@@ -130,7 +130,7 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const editingPersonalPlan = personalPlan?.status === "draft";
   const expandedHeights = useMemo(() => Object.fromEntries(OFFICIAL_LEARNING_STAGES.flatMap(stage => stage.children.map(child => {
     const id = `all:${child.id}`;
-    return [child.id, canvas.collapsed?.includes(id) ? 44 : Math.min(MAX_CONTENT_CARD_HEIGHT, heights[id] || MAX_CONTENT_CARD_HEIGHT)];
+    return [child.id, canvas.collapsed?.includes(id) ? 44 : canvasCardContentHeight({ id: child.id, nodeType: "step", contentType: "summary" }, heights[id], "resnet50")];
   }))), [canvas.collapsed, heights]);
   const tree = useMemo(() => makeTree(canvas.layout, personalPlan, allExpanded ? {} : canvas.positions, allExpanded, expandedHeights), [canvas.layout, personalPlan, canvas.positions, allExpanded, expandedHeights]);
   const selected = getOfficialLearningNode(state.selectedNodeId);
@@ -139,7 +139,11 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const step = stage.children.find(item => item.id === node.id) || stage.children[0];
   const horizontal = canvas.layout === "horizontal";
   const treePoint = canvas.positions.hierarchy || {x:42,y:100};
-  const diagramWidth = 780, lessonWidth = 700, explanationWidth = 520, practiceWidth = 700, checkWidth = 520;
+  const diagramWidth = canvasCardProfile({ id: `${node.id}:diagram`, nodeType: "material", contentType: "diagram" }, "resnet50").width;
+  const lessonWidth = canvasCardProfile({ id: `${node.id}:lesson`, nodeType: "material", contentType: "video" }, "resnet50").width;
+  const explanationWidth = canvasCardProfile({ id: `${node.id}:explanation`, nodeType: "material", contentType: "lesson" }, "resnet50").width;
+  const practiceWidth = canvasCardProfile({ id: `${node.id}:practice`, nodeType: "action", contentType: "interactive" }, "resnet50").width;
+  const checkWidth = canvasCardProfile({ id: `${node.id}:check`, nodeType: "action", contentType: "interactive" }, "resnet50").width;
   const cardGap = 28;
   const baseY = horizontal ? treePoint.y + step.rect.y - 18 : treePoint.y + tree.height + 75;
   const contentX = horizontal ? treePoint.x + 308 : Math.max(45,Math.min(treePoint.x + stage.rect.x,treePoint.x + tree.width - diagramWidth));
@@ -156,7 +160,11 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   const collapsed = id => Boolean(canvas.collapsed?.includes(id));
   const practice = ["preprocess","contract","execution","summary"].includes(node.visual);
   const hasCheck = Boolean(node.checkpoint);
-  const cardHeight = kind => hidden(kind) || collapsed(keyFor(kind)) ? 44 : Math.min(MAX_CONTENT_CARD_HEIGHT, heights[keyFor(kind)] || ({ diagram: 370, lesson: 560, explanation: 420, practice: 460, check: 430 }[kind] || 460));
+  const cardHeight = kind => {
+    if (hidden(kind) || collapsed(keyFor(kind))) return 44;
+    const contentType = ({ diagram: "diagram", lesson: "video", explanation: "lesson", practice: "interactive", check: "interactive" })[kind] || "summary";
+    return canvasCardContentHeight({ id: keyFor(kind), contentType }, heights[keyFor(kind)], "resnet50");
+  };
   const materialRowHeight = Math.max(cardHeight("diagram"), cardHeight("lesson"), cardHeight("explanation"));
   const actionRowY = baseY + materialRowHeight + cardGap;
   const defaultPoint = kind => {
@@ -176,9 +184,9 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   }));
   const clusterRight = Math.max(...normalCards.map(card => card.point.x + card.width));
   const clusterBottom = Math.max(...normalCards.map(card => card.point.y + card.height));
-  const allCardWidth = 700;
+  const allCardWidth = canvasCardProfile({ id: "learning-official-step", nodeType: "step", contentType: "summary" }, "resnet50").width;
   const allCardPoint = (group, child) => canvas.positions[`all:${child.id}`] || (horizontal ? {x:treePoint.x + 308,y:treePoint.y + child.rect.y - 1} : {x:treePoint.x + group.rect.x + 310,y:treePoint.y + child.rect.y - 1});
-  const expandedCards = allExpanded ? tree.groups.flatMap(group => group.children.map(child => ({child,group,point:allCardPoint(group,child),height:collapsed(`all:${child.id}`) ? 44 : Math.min(MAX_CONTENT_CARD_HEIGHT, heights[`all:${child.id}`] || MAX_CONTENT_CARD_HEIGHT)}))) : [];
+  const expandedCards = allExpanded ? tree.groups.flatMap(group => group.children.map(child => ({child,group,point:allCardPoint(group,child),height:collapsed(`all:${child.id}`) ? 44 : canvasCardContentHeight({ id: child.id, nodeType: "step", contentType: "summary" }, heights[`all:${child.id}`], "resnet50")}))) : [];
   const noteRight = userNotes.length ? Math.max(...userNotes.map(card => card.x + card.width)) : 0;
   const noteBottom = userNotes.length ? Math.max(...userNotes.map(card => card.y + card.height)) : 0;
   const drawingRight = drawingPoints.length ? Math.max(...drawingPoints.map(point => point.x)) : 0;
@@ -264,14 +272,45 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
   },[]);
   useEffect(()=>{if(!allExpanded||size.width<50)return;requestAnimationFrame(()=>requestAnimationFrame(fitPath));},[allExpanded,size.width,size.height]);
   useEffect(()=>{
-    const cards=host.current?.querySelectorAll(".lh-card");
-    if(!cards?.length)return;
-    const observer=new ResizeObserver(entries=>setHeights(previous=>{
-      const next={...previous};let changed=false;
-      for(const entry of entries){const id=entry.target.dataset.objectId;const height=entry.borderBoxSize?.[0]?.blockSize || entry.target.offsetHeight;if(id&&Math.abs((previous[id]||0)-height)>.5){next[id]=height;changed=true;}}
-      return changed?next:previous;
-    }));cards.forEach(card=>observer.observe(card));return()=>observer.disconnect();
-  },[node.id,canvas.hidden,canvas.expanded,allExpanded]);
+    const cards=[...(host.current?.querySelectorAll(".lh-card") || [])];
+    if(!cards.length)return;
+    let frame=0;
+    const measure=()=>{
+      if(frame)cancelAnimationFrame(frame);
+      frame=requestAnimationFrame(()=>{
+        frame=0;
+        const measured=[];
+        for(const card of cards){
+          if(card.classList.contains("is-collapsed"))continue;
+          const header=card.querySelector(".lh-card-header");
+          const content=card.querySelector(".lh-card-content");
+          if(!header||!content||content.hidden)continue;
+          const required=header.offsetHeight+content.scrollHeight+2;
+          measured.push([card.dataset.objectId,canvasCardContentHeight({id:card.dataset.objectId,contentType:card.dataset.contentType},required,"resnet50")]);
+        }
+        if(!measured.length)return;
+        setHeights(previous=>{
+          const next={...previous};let changed=false;
+          for(const [id,height] of measured){if(id&&Math.abs((previous[id]||0)-height)>.5){next[id]=height;changed=true;}}
+          return changed?next:previous;
+        });
+      });
+    };
+    const resizeObserver=new ResizeObserver(measure);
+    const mutationObserver=new MutationObserver(measure);
+    for(const card of cards){
+      const header=card.querySelector(".lh-card-header");
+      const content=card.querySelector(".lh-card-content");
+      if(header)resizeObserver.observe(header);
+      if(content){
+        resizeObserver.observe(content);
+        for(const child of content.children)resizeObserver.observe(child);
+        mutationObserver.observe(content,{subtree:true,childList:true,characterData:true,attributes:true});
+      }
+    }
+    measure();
+    return()=>{if(frame)cancelAnimationFrame(frame);resizeObserver.disconnect();mutationObserver.disconnect();};
+  },[node.id,canvas.hidden,canvas.expanded,canvas.collapsed,allExpanded]);
   useEffect(()=>{
     if(!visible||size.width<50)return;
     if(!canvas.initialized||previousNode.current!==node.id||!canvas.canvasSize||Math.abs(size.width-canvas.canvasSize.width)>40||Math.abs(size.height-canvas.canvasSize.height)>80){
@@ -353,8 +392,8 @@ export function OfficialLearningPathCanvas({ journey, view, canvasContent, visib
     if(!event){canvasActions.moveObject(id,point);return;}
     if(event.button!==0)return;event.preventDefault();event.stopPropagation();gesture.current={id,startX:event.clientX,startY:event.clientY,original:point};host.current.setPointerCapture(event.pointerId);
   };
-  const cardProps=kind=>({id:keyFor(kind),point:position(kind),width:{diagram:diagramWidth,lesson:lessonWidth,explanation:explanationWidth,practice:practiceWidth,check:checkWidth}[kind],pinned:canvas.pinned.includes(keyFor(kind)),collapsed:collapsed(keyFor(kind)),summary:node.summary,nodeType:["practice","check"].includes(kind)?"action":"material",contentType:kind==="diagram"?"diagram":kind==="lesson"?"video":kind==="explanation"?"lesson":["practice","check"].includes(kind)?"interactive":"lesson",status:state.statuses[node.id],statusLabel:officialStatusLabel(state.statuses[node.id]),domain:"resnet50",onDrag:positionEditing&&!canvas.pinned.includes(keyFor(kind))?beginObjectDrag:undefined,onFocus:focusObject,onOpenContent:()=>onOpenContent?.(node.id,keyFor(kind)),onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,position(kind));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.toggleCollapsed(keyFor(kind))});
-  const allCardProps=(group,child)=>({id:`all:${child.id}`,point:allCardPoint(group,child),width:allCardWidth,pinned:canvas.pinned.includes(`all:${child.id}`),collapsed:collapsed(`all:${child.id}`),summary:child.summary,nodeType:"step",contentType:"lesson",status:state.statuses[child.id],statusLabel:officialStatusLabel(state.statuses[child.id]),domain:"resnet50",onDrag:positionEditing&&!canvas.pinned.includes(`all:${child.id}`)?beginObjectDrag:undefined,onFocus:focusObject,onOpenContent:()=>onOpenContent?.(child.id,`all:${child.id}`),onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,allCardPoint(group,child));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.toggleCollapsed(`all:${child.id}`)});
+  const cardProps=kind=>({id:keyFor(kind),point:position(kind),width:{diagram:diagramWidth,lesson:lessonWidth,explanation:explanationWidth,practice:practiceWidth,check:checkWidth}[kind],height:cardHeight(kind),pinned:canvas.pinned.includes(keyFor(kind)),collapsed:collapsed(keyFor(kind)),summary:node.summary,nodeType:["practice","check"].includes(kind)?"action":"material",contentType:kind==="diagram"?"diagram":kind==="lesson"?"video":kind==="explanation"?"lesson":["practice","check"].includes(kind)?"interactive":"lesson",status:state.statuses[node.id],statusLabel:officialStatusLabel(state.statuses[node.id]),domain:"resnet50",onDrag:positionEditing&&!canvas.pinned.includes(keyFor(kind))?beginObjectDrag:undefined,onFocus:focusObject,onOpenContent:()=>onOpenContent?.(node.id,keyFor(kind)),onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,position(kind));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.toggleCollapsed(keyFor(kind))});
+  const allCardProps=(group,child)=>({id:`all:${child.id}`,point:allCardPoint(group,child),width:allCardWidth,height:expandedHeights[child.id],pinned:canvas.pinned.includes(`all:${child.id}`),collapsed:collapsed(`all:${child.id}`),summary:child.summary,nodeType:"step",contentType:"summary",status:state.statuses[child.id],statusLabel:officialStatusLabel(state.statuses[child.id]),domain:"resnet50",onDrag:positionEditing&&!canvas.pinned.includes(`all:${child.id}`)?beginObjectDrag:undefined,onFocus:focusObject,onOpenContent:()=>onOpenContent?.(child.id,`all:${child.id}`),onTogglePin:id=>{if(!canvas.pinned.includes(id))canvasActions.moveObject(id,allCardPoint(group,child));canvasActions.togglePin(id);},onCollapse:()=>canvasActions.toggleCollapsed(`all:${child.id}`)});
   const minimapCards = allExpanded
     ? expandedCards.map(card => ({ id: `all:${card.child.id}`, nodeId: card.child.id, point: card.point, width: allCardWidth, height: card.height }))
     : expanded ? normalCards.filter(card=>!hidden(card.kind))

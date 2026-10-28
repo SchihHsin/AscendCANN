@@ -1,44 +1,32 @@
 import { useRef, useState } from "react";
 import { readSession, writeSession } from "./session-storage";
 import { ADD_CUSTOM_CARD_POSITIONS, ADD_CUSTOM_LAYOUT_VERSION, positionNewAddCustomCard, reflowAddCustomCards } from "./addcustom-canvas-layout";
-import { MAX_CONTENT_CARD_HEIGHT } from "./shared/canvas/canvas-sizing.js";
+import { CANVAS_CARD_GAP_X, CANVAS_CARD_GAP_Y, canvasCardDefaultSize, canvasCardIsResizableContent, canvasCardProfile, reflowContentCards } from "./shared/canvas/canvas-sizing.js";
 
 const MIN_ZOOM = 0.15;
 const MAX_ZOOM = 1.5;
 const FIT_PADDING = 28;
 const ADD_CUSTOM_FIT_PADDING = 36;
 
-const ADD_CUSTOM_CANVAS_VERSION = ADD_CUSTOM_LAYOUT_VERSION;
-const ADD_CUSTOM_CARD_SIZES = {
-  explanation: [700, 520], source: [780, 500], evidence: [700, 420], precision: [700, 500],
-  review: [700, 520], draft: [700, 560], parameters: [700, 560], attempts: [700, 560],
-  diff: [840, 640], validation: [700, 560], reference: [700, 520], "task-brief": [700, 420], note: [600, 360], "drawing-card": [640, 420],
-};
-const ADD_CUSTOM_DYNAMIC_CARD_SIZES = {
-  attempt: [680, 520], snapshot: [660, 480], record: [620, 420],
-};
+const CANVAS_LAYOUT_VERSION = ADD_CUSTOM_LAYOUT_VERSION;
 const addCustomPosition = (id) => {
   const [x, y] = ADD_CUSTOM_CARD_POSITIONS[id] || [32, 64];
   return { x, y };
 };
-const ADD_CUSTOM_CARD_LIMITS = {
-  note: { minWidth: 480, maxWidth: 800, minHeight: 240, maxHeight: 560 },
-  explanation: { minWidth: 520, maxWidth: 840, minHeight: 320, maxHeight: 680 },
-  code: { minWidth: 560, maxWidth: 880, minHeight: 500, maxHeight: 760 },
-  result: { minWidth: 520, maxWidth: 840, minHeight: 300, maxHeight: 680 },
-  diff: { minWidth: 620, maxWidth: 960, minHeight: 400, maxHeight: 760 },
-  attempt: { minWidth: 600, maxWidth: 840, minHeight: 400, maxHeight: 680 },
-  snapshot: { minWidth: 560, maxWidth: 840, minHeight: 320, maxHeight: 640 },
-};
-const ADD_CUSTOM_CARD_CATEGORY = {
-  explanation: "explanation", source: "code", evidence: "note", precision: "result", review: "result",
-  draft: "code", parameters: "explanation", attempts: "result", diff: "diff", validation: "result", note: "note",
-};
 const isAddCustomStorageKey = (key) => typeof key === "string" && /^canvas-addcustom(?:-|$)/.test(key);
 const LEGACY_CARD_SIZES = {
-  explanation: [[300, 450], [360, 340], [560, 520], [620, 520]], source: [[230, 390], [440, 350], [620, 610], [620, 460], [720, 460], [780, 460]], evidence: [[395, 270], [560, 390], [560, 420], [620, 420]],
-  precision: [[430, 390], [560, 500], [640, 500]], review: [[430, 340], [600, 520], [640, 520]], draft: [[430, 440], [560, 560], [640, 560]], parameters: [[340, 310], [560, 560], [640, 560]],
-  attempts: [[340, 350], [560, 560], [640, 560]], diff: [[500, 550], [680, 640], [760, 640]], validation: [[500, 390], [560, 560], [640, 560]],
+  "task-brief": [[700, 420]],
+  source: [[780, 500], [230, 390], [440, 350], [620, 610], [620, 460], [720, 460], [780, 460]],
+  evidence: [[700, 420], [395, 270], [560, 390], [560, 420], [620, 420]],
+  reference: [[700, 520]],
+  explanation: [[700, 520], [300, 450], [360, 340], [560, 520], [620, 520]],
+  parameters: [[700, 560], [340, 310], [560, 560], [640, 560]],
+  attempts: [[700, 560], [340, 350], [560, 560], [640, 560]],
+  draft: [[700, 560], [430, 440], [560, 560], [640, 560]],
+  diff: [[840, 640], [500, 550], [680, 640], [760, 640]],
+  validation: [[700, 560], [500, 390], [560, 560], [640, 560]],
+  precision: [[700, 500], [430, 390], [560, 500], [640, 500]],
+  review: [[700, 520], [430, 340], [600, 520], [640, 520]],
 };
 const LEGACY_CARD_POSITIONS = {
   explanation: [[660, 28], [772, 28]], source: [[28, 28]], evidence: [[52, 448], [72, 408], [28, 670], [28, 548]],
@@ -46,39 +34,31 @@ const LEGACY_CARD_POSITIONS = {
   attempts: [[660, 1680], [772, 1680]], diff: [[28, 2230], [28, 2120]], validation: [[740, 2280], [812, 2264]],
 };
 
-function addCustomCardLimits(id) {
-  if (id.startsWith("drawing-card:")) return ADD_CUSTOM_CARD_LIMITS.note;
-  if (id.startsWith("note:")) return ADD_CUSTOM_CARD_LIMITS.note;
-  if (id.startsWith("attempt:")) return ADD_CUSTOM_CARD_LIMITS.attempt;
-  if (id.startsWith("snapshot:")) return ADD_CUSTOM_CARD_LIMITS.snapshot;
-  const category = ADD_CUSTOM_CARD_CATEGORY[id]
-    || (id.startsWith("record:") ? "note" : "result");
-  return ADD_CUSTOM_CARD_LIMITS[category];
-}
+const LEGACY_LAYOUT_12_POSITIONS = {
+  "task-brief": [32, 64], source: [32, 532], evidence: [32, 1080], reference: [32, 1548],
+  explanation: [900, 64], parameters: [900, 632], attempts: [900, 1240], draft: [1688, 64],
+  diff: [1688, 672], validation: [1688, 1360], precision: [2616, 64], review: [2616, 612],
+};
+const LEGACY_LAYOUT_13_POSITIONS = {
+  "task-brief": [32, 64], source: [32, 468], evidence: [32, 928], reference: [32, 1320],
+  explanation: [840, 64], parameters: [840, 456], attempts: [1648, 64], draft: [1648, 456],
+  diff: [2456, 64], validation: [2456, 528], precision: [2456, 1000], review: [2456, 1392],
+};
 
-function addCustomDefaultCardSize(id) {
-  if (ADD_CUSTOM_CARD_SIZES[id]) return ADD_CUSTOM_CARD_SIZES[id];
-  if (id.startsWith("drawing-card:")) return ADD_CUSTOM_CARD_SIZES["drawing-card"];
-  if (id.startsWith("note:")) return ADD_CUSTOM_CARD_SIZES.note;
-  if (id.startsWith("attempt:")) return ADD_CUSTOM_DYNAMIC_CARD_SIZES.attempt;
-  if (id.startsWith("snapshot:")) return ADD_CUSTOM_DYNAMIC_CARD_SIZES.snapshot;
-  if (id.startsWith("record:")) return ADD_CUSTOM_DYNAMIC_CARD_SIZES.record;
-  return null;
+function cardDefaultSize(id, card = {}, semanticDomain = "addcustom") {
+  return canvasCardDefaultSize({ ...card, id }, semanticDomain);
 }
 
 function isLegacyDynamicCardSize(card) {
   if (["reference", "task-brief"].includes(card.id)) return card.width === 520 && card.height === 300;
-  const isAttempt = card.id.startsWith("attempt:");
-  const isSnapshot = card.id.startsWith("snapshot:");
-  const isRecord = card.id.startsWith("record:");
-  if (isAttempt) return card.width === 520 && [320, 340, 390].includes(card.height);
-  if (isSnapshot) return card.width === 520 && [320, 340, 390].includes(card.height);
-  if (isRecord) return card.width === 480 && [300, 320, 340].includes(card.height);
+  if (card.id.startsWith("attempt:")) return [[520, 320], [520, 340], [520, 390], [680, 520]].some(([width, height]) => card.width === width && card.height === height);
+  if (card.id.startsWith("snapshot:")) return [[520, 320], [520, 340], [520, 390], [660, 480]].some(([width, height]) => card.width === width && card.height === height);
+  if (card.id.startsWith("record:")) return [[480, 300], [480, 320], [480, 340], [620, 420]].some(([width, height]) => card.width === width && card.height === height);
   return false;
 }
 
-function clampAddCustomCardSize(id, width, height) {
-  const limits = addCustomCardLimits(id);
+function clampCardSize(id, width, height, card = {}, semanticDomain = "addcustom") {
+  const limits = canvasCardProfile({ ...card, id }, semanticDomain);
   return {
     width: Math.min(limits.maxWidth, Math.max(limits.minWidth, width)),
     height: Math.min(limits.maxHeight, Math.max(limits.minHeight, height)),
@@ -86,33 +66,68 @@ function clampAddCustomCardSize(id, width, height) {
 }
 
 const initialCards = (startEmpty = false, initialVisibleIds = []) => [
-  { id: "task-brief", title: "问题现场", ...addCustomPosition("task-brief"), width: 700, height: 420, pinned: false, visible: false, selected: false },
-  { id: "source", title: "索引范围示例", ...addCustomPosition("source"), width: 780, height: 500, pinned: false, visible: true, selected: false },
-  { id: "evidence", title: "现场与判断", ...addCustomPosition("evidence"), width: 700, height: 420, pinned: false, visible: true, selected: false },
-  { id: "reference", title: "Ascend C 文档", ...addCustomPosition("reference"), width: 700, height: 520, pinned: false, visible: false, selected: false },
-  { id: "explanation", title: "线索解释", ...addCustomPosition("explanation"), width: 700, height: 520, pinned: false, visible: false, selected: false },
-  { id: "parameters", title: "参数与范围策略", ...addCustomPosition("parameters"), width: 700, height: 560, pinned: false, visible: false, selected: false },
-  { id: "attempts", title: "尝试记录", ...addCustomPosition("attempts"), width: 700, height: 560, pinned: false, visible: false, selected: false },
-  { id: "draft", title: "示例工作副本", ...addCustomPosition("draft"), width: 700, height: 560, pinned: false, visible: false, selected: false },
-  { id: "diff", title: "示例修改预览", ...addCustomPosition("diff"), width: 840, height: 640, pinned: false, visible: false, selected: false },
-  { id: "validation", title: "示例范围复核", ...addCustomPosition("validation"), width: 700, height: 560, pinned: false, visible: false, selected: false },
-  { id: "precision", title: "误差核对", ...addCustomPosition("precision"), width: 700, height: 500, pinned: false, visible: false, selected: false },
-  { id: "review", title: "复核记录", ...addCustomPosition("review"), width: 700, height: 520, pinned: false, visible: false, selected: false },
+  { id: "task-brief", title: "问题现场", ...addCustomPosition("task-brief"), pinned: false, visible: false, selected: false },
+  { id: "source", title: "索引范围示例", ...addCustomPosition("source"), pinned: false, visible: true, selected: false },
+  { id: "evidence", title: "现场与判断", ...addCustomPosition("evidence"), pinned: false, visible: true, selected: false },
+  { id: "reference", title: "Ascend C 文档", ...addCustomPosition("reference"), pinned: false, visible: false, selected: false },
+  { id: "explanation", title: "线索解释", ...addCustomPosition("explanation"), pinned: false, visible: false, selected: false },
+  { id: "parameters", title: "参数与范围策略", ...addCustomPosition("parameters"), pinned: false, visible: false, selected: false },
+  { id: "attempts", title: "尝试记录", ...addCustomPosition("attempts"), pinned: false, visible: false, selected: false },
+  { id: "draft", title: "示例工作副本", ...addCustomPosition("draft"), pinned: false, visible: false, selected: false },
+  { id: "diff", title: "示例修改预览", ...addCustomPosition("diff"), pinned: false, visible: false, selected: false },
+  { id: "validation", title: "示例范围复核", ...addCustomPosition("validation"), pinned: false, visible: false, selected: false },
+  { id: "precision", title: "误差核对", ...addCustomPosition("precision"), pinned: false, visible: false, selected: false },
+  { id: "review", title: "复核记录", ...addCustomPosition("review"), pinned: false, visible: false, selected: false },
 ].map((card) => {
   const visible = startEmpty ? initialVisibleIds.includes(card.id) : card.visible;
   return { ...card, visible, selected: visible && card.id === initialVisibleIds[0], collapsed: false, opened: visible };
 });
 
-const initialState = (startEmpty = false, cardDefinitions, initialVisibleIds = []) => {
-  const cards = (cardDefinitions ? cardDefinitions.map((card, index) => ({ x: 28 + (index % 2) * 450, y: 28 + Math.floor(index / 2) * 390, width: 420, height: 360, pinned: false, visible: false, selected: false, collapsed: false, opened: false, ...card })) : initialCards(startEmpty, initialVisibleIds)).map(card => ({
-    ...card,
-    sizeMode: card.sizeMode || (["note", "drawing"].includes(card.kind) ? "manual" : "content"),
-    baseHeight: isFiniteNumber(card.baseHeight) ? card.baseHeight : card.height,
-  }));
+const initialState = (startEmpty = false, cardDefinitions, initialVisibleIds = [], semanticDomain = "addcustom") => {
+  const positionedDefinitions = [];
+  if (cardDefinitions) {
+    let rowY = 28;
+    for (let index = 0; index < cardDefinitions.length; index += 2) {
+      const row = cardDefinitions.slice(index, index + 2);
+      const rowProfiles = row.map(card => canvasCardProfile(card, semanticDomain));
+      row.forEach((card, column) => positionedDefinitions.push({
+        ...card,
+        x: isFiniteNumber(card.x) ? card.x : 28 + column * (800 + CANVAS_CARD_GAP_X),
+        y: isFiniteNumber(card.y) ? card.y : rowY,
+        pinned: false,
+        visible: false,
+        selected: false,
+        collapsed: false,
+        opened: false,
+      }));
+      rowY += Math.max(...rowProfiles.map(profile => profile.height), 360) + CANVAS_CARD_GAP_Y;
+    }
+  }
+  const sourceCards = cardDefinitions ? positionedDefinitions : initialCards(startEmpty, initialVisibleIds);
+  const cards = sourceCards.map(card => {
+    const semantic = canvasCardProfile(card, semanticDomain);
+    const sizeMode = card.sizeMode || (canvasCardIsResizableContent(card, semanticDomain) ? "content" : "manual");
+    const width = sizeMode === "content" ? semantic.width : card.width;
+    const height = sizeMode === "content" ? semantic.height : card.height;
+    const x = isFiniteNumber(card.x) ? card.x : 28;
+    const y = isFiniteNumber(card.y) ? card.y : 28;
+    return {
+      ...card,
+      x,
+      y,
+      width,
+      height,
+      sizeMode,
+      baseHeight: isFiniteNumber(card.baseHeight) ? card.baseHeight : semantic.height,
+      positionMode: card.positionMode || "auto",
+      layoutOriginX: isFiniteNumber(card.layoutOriginX) ? card.layoutOriginX : x,
+      layoutOriginY: isFiniteNumber(card.layoutOriginY) ? card.layoutOriginY : y,
+    };
+  });
   const selectedCardId = cards.find((card) => card.visible)?.id || null;
   return {
-  layoutVersion: ADD_CUSTOM_CANVAS_VERSION,
-  cards,
+  layoutVersion: CANVAS_LAYOUT_VERSION,
+  cards: reflowContentCards(cards),
   drawings: [],
   selectedCardId,
   lastHiddenId: null,
@@ -121,9 +136,10 @@ const initialState = (startEmpty = false, cardDefinitions, initialVisibleIds = [
   };
 };
 
-function restoreCanvasState(saved, startEmpty, cardDefinitions, initialVisibleIds, storageKey) {
-  if (!saved || !Array.isArray(saved.cards) || !saved.viewport) return initialState(startEmpty, cardDefinitions, initialVisibleIds);
-  const defaults = initialState(startEmpty, cardDefinitions, initialVisibleIds);
+function restoreCanvasState(saved, startEmpty, cardDefinitions, initialVisibleIds, storageKey, semanticDomain) {
+  if (!saved || !Array.isArray(saved.cards) || !saved.viewport) return initialState(startEmpty, cardDefinitions, initialVisibleIds, semanticDomain);
+  const defaults = initialState(startEmpty, cardDefinitions, initialVisibleIds, semanticDomain);
+  const oldLayout = Number(saved.layoutVersion) < CANVAS_LAYOUT_VERSION;
   let base = { ...defaults, ...saved };
   if (isAddCustomStorageKey(storageKey)) {
     const defaultIds = new Set(defaults.cards.map((card) => card.id));
@@ -136,38 +152,58 @@ function restoreCanvasState(saved, startEmpty, cardDefinitions, initialVisibleId
   }
   const savedById = new Map(saved.cards.map(card => [card.id, card]));
   const defaultsById = new Map(defaults.cards.map(card => [card.id, card]));
-  base = { ...base, cards: base.cards.map(card => {
+  const cards = base.cards.map(card => {
     const stored = savedById.get(card.id);
     const defaultCard = defaultsById.get(card.id);
-    const targetSize = isAddCustomStorageKey(storageKey) ? addCustomDefaultCardSize(card.id) : null;
+    const targetSize = cardDefaultSize(card.id, card, semanticDomain);
     const knownAddCustomSizes = [targetSize, ...(LEGACY_CARD_SIZES[card.id] || [])].filter(Boolean);
     const matchesKnownSize = isAddCustomStorageKey(storageKey)
       ? knownAddCustomSizes.some(([width, height]) => card.width === width && card.height === height) || isLegacyDynamicCardSize(card)
-      : Boolean(defaultCard && card.width === defaultCard.width && card.height === defaultCard.height);
+      : Boolean(defaultCard && ((stored?.sizeMode === "content") || (card.width === defaultCard.width && card.height === defaultCard.height) || (card.width === 420 && card.height === 360)));
     const sizeMode = stored?.sizeMode || (["note", "drawing"].includes(card.kind) ? "manual" : matchesKnownSize ? "content" : "manual");
-    const defaultHeight = targetSize?.[1] || defaultCard?.height || card.height;
+    const legacyPositions = [...(LEGACY_CARD_POSITIONS[card.id] || [])];
+    if (LEGACY_LAYOUT_12_POSITIONS[card.id]) legacyPositions.push(LEGACY_LAYOUT_12_POSITIONS[card.id]);
+    if (LEGACY_LAYOUT_13_POSITIONS[card.id]) legacyPositions.push(LEGACY_LAYOUT_13_POSITIONS[card.id]);
+    const targetPosition = isAddCustomStorageKey(storageKey) ? ADD_CUSTOM_CARD_POSITIONS[card.id] : null;
+    const matchesOldPosition = legacyPositions.some(([x, y]) => card.x === x && card.y === y);
+    const definitionIndex = defaultCard ? defaults.cards.findIndex(item => item.id === defaultCard.id) : -1;
+    const definitionHasExplicitPosition = definitionIndex >= 0 && cardDefinitions
+      && (isFiniteNumber(cardDefinitions[definitionIndex]?.x) || isFiniteNumber(cardDefinitions[definitionIndex]?.y));
+    const legacyGridPosition = !isAddCustomStorageKey(storageKey) && defaultCard && !definitionHasExplicitPosition
+      ? { x: 28 + (definitionIndex % 2) * 450, y: 28 + Math.floor(definitionIndex / 2) * 390 }
+      : null;
+    const matchesLegacyGridPosition = Boolean(legacyGridPosition && card.x === legacyGridPosition.x && card.y === legacyGridPosition.y);
+    const matchesCurrentPosition = Boolean(defaultCard && card.x === defaultCard.x && card.y === defaultCard.y)
+      || Boolean(targetPosition && card.x === targetPosition[0] && card.y === targetPosition[1])
+      || matchesLegacyGridPosition;
+    const predictedDynamicPosition = isAddCustomStorageKey(storageKey) && /^(attempt|snapshot|record):/.test(card.id)
+      ? positionNewAddCustomCard(card, base.cards.filter(item => item.id !== card.id))
+      : null;
+    const matchesDynamicPosition = predictedDynamicPosition && Math.abs(card.x - predictedDynamicPosition.x) < 1 && Math.abs(card.y - predictedDynamicPosition.y) < 1;
+    const inferredPositionMode = matchesOldPosition || matchesCurrentPosition || matchesDynamicPosition ? "auto" : "manual";
+    const positionMode = stored?.positionMode || inferredPositionMode;
+    const migrateDefaultSize = oldLayout && sizeMode === "content" && !card.pinned;
+    const width = migrateDefaultSize ? targetSize[0] : card.width;
+    const height = migrateDefaultSize ? targetSize[1] : card.height;
+    const defaultHeight = migrateDefaultSize ? targetSize[1] : defaultCard?.height || card.height;
+    const migrateDefaultPosition = oldLayout && positionMode === "auto" && (matchesOldPosition || matchesCurrentPosition);
+    const x = migrateDefaultPosition ? (targetPosition?.[0] ?? defaultCard?.x ?? card.x) : card.x;
+    const y = migrateDefaultPosition ? (targetPosition?.[1] ?? defaultCard?.y ?? card.y) : card.y;
     return {
       ...card,
       sizeMode,
-      baseHeight: isFiniteNumber(stored?.baseHeight) ? stored.baseHeight : sizeMode === "content" ? defaultHeight : card.height,
-    };
-  }) };
-  if (!isAddCustomStorageKey(storageKey) || Number(saved.layoutVersion) >= ADD_CUSTOM_CANVAS_VERSION) return base;
-  const cards = base.cards.map(card => {
-    const target = addCustomDefaultCardSize(card.id);
-    const legacySizes = LEGACY_CARD_SIZES[card.id] || [];
-    const legacyPositions = LEGACY_CARD_POSITIONS[card.id] || [];
-    const targetPosition = ADD_CUSTOM_CARD_POSITIONS[card.id];
-    const matchesOldDefault = legacySizes.some(([width, height]) => card.width === width && card.height === height);
-    const matchesLegacyDynamicDefault = isLegacyDynamicCardSize(card);
-    const matchesOldPosition = legacyPositions.some(([x, y]) => card.x === x && card.y === y);
-    return {
-      ...card,
-      ...(target && (matchesOldDefault || matchesLegacyDynamicDefault) && !card.pinned ? { width: target[0], height: target[1] } : {}),
-      ...(targetPosition && matchesOldPosition && !card.pinned ? { x: targetPosition[0], y: targetPosition[1] } : {}),
+      width,
+      height,
+      x,
+      y,
+      positionMode,
+      layoutOriginX: positionMode === "auto" && oldLayout ? x : isFiniteNumber(stored?.layoutOriginX) ? stored.layoutOriginX : x,
+      layoutOriginY: positionMode === "auto" && oldLayout ? y : isFiniteNumber(stored?.layoutOriginY) ? stored.layoutOriginY : y,
+      baseHeight: migrateDefaultSize ? defaultHeight : isFiniteNumber(stored?.baseHeight) ? stored.baseHeight : sizeMode === "content" ? defaultHeight : height,
     };
   });
-  return { ...base, layoutVersion: ADD_CUSTOM_CANVAS_VERSION, cards: reflowAddCustomCards(cards) };
+  const migratedCards = isAddCustomStorageKey(storageKey) ? reflowAddCustomCards(cards) : cards;
+  return { ...base, layoutVersion: CANVAS_LAYOUT_VERSION, cards: reflowContentCards(migratedCards) };
 }
 
 const clampZoom = (value) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, value));
@@ -176,15 +212,15 @@ const visibleHeight = (card) => card.collapsed ? 48 : card.height;
 
 function freePosition(card, obstacles) {
   for (let index = 0; index < 240; index += 1) {
-    const x = card.x + (index % 6) * (card.width + 24);
-    const y = card.y + Math.floor(index / 6) * (visibleHeight(card) + 24);
+    const x = card.x + (index % 6) * (card.width + CANVAS_CARD_GAP_X);
+    const y = card.y + Math.floor(index / 6) * (visibleHeight(card) + CANVAS_CARD_GAP_Y);
     const collides = obstacles.some((other) => other.visible && other.id !== card.id &&
-      x < other.x + other.width + 16 && x + card.width + 16 > other.x &&
-      y < other.y + visibleHeight(other) + 16 && y + visibleHeight(card) + 16 > other.y);
+      x < other.x + other.width + CANVAS_CARD_GAP_X && x + card.width + CANVAS_CARD_GAP_X > other.x &&
+      y < other.y + visibleHeight(other) + CANVAS_CARD_GAP_Y && y + visibleHeight(card) + CANVAS_CARD_GAP_Y > other.y);
     if (!collides) return { x, y };
   }
   const right = Math.max(card.x, ...obstacles.filter((other) => other.visible).map((other) => other.x + other.width));
-  return { x: right + 24, y: card.y };
+  return { x: right + CANVAS_CARD_GAP_X, y: card.y };
 }
 
 function fittedViewport(cards, width, height, ids = null, padding = FIT_PADDING, drawings = []) {
@@ -215,8 +251,8 @@ function bringToFront(cards, id) {
   return [...cards.filter((card) => card.id !== id).map((card) => ({ ...card, selected: false })), { ...selected, selected: true }];
 }
 
-export function useCanvasState({ startEmpty = false, cardDefinitions, initialVisibleIds = [], storageKey = "canvas" } = {}) {
-  const [state, setState] = useState(() => ({ ...restoreCanvasState(readSession(storageKey, null), startEmpty, cardDefinitions, initialVisibleIds, storageKey), comparing: false }));
+export function useCanvasState({ startEmpty = false, cardDefinitions, initialVisibleIds = [], storageKey = "canvas", semanticDomain = "addcustom" } = {}) {
+  const [state, setState] = useState(() => ({ ...restoreCanvasState(readSession(storageKey, null), startEmpty, cardDefinitions, initialVisibleIds, storageKey, semanticDomain), comparing: false }));
   const current = useRef(state);
   const surfaceSize = useRef(null);
   const hiddenHistory = useRef([]);
@@ -228,7 +264,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
     taskContexts.current.set(activeStorageKey.current, { state: current.current, hidden: hiddenHistory.current, placed: placedCards.current, comparison: comparisonSnapshot.current });
     const cached = taskContexts.current.get(storageKey);
     const saved = readSession(storageKey, null);
-    current.current = cached?.state || { ...restoreCanvasState(saved, startEmpty, cardDefinitions, initialVisibleIds, storageKey), comparing: false };
+    current.current = cached?.state || { ...restoreCanvasState(saved, startEmpty, cardDefinitions, initialVisibleIds, storageKey, semanticDomain), comparing: false };
     hiddenHistory.current = cached?.hidden || [];
     placedCards.current = cached?.placed || new Set(current.current.cards.filter(card => card.opened).map(card => card.id));
     comparisonSnapshot.current = cached?.comparison || null;
@@ -251,11 +287,11 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
       const position = isAddCustomStorageKey(storageKey)
         ? positionNewAddCustomCard(card, current.current.cards)
         : freePosition(card, current.current.cards);
-      card = { ...card, ...position };
+      card = { ...card, ...position, layoutOriginX: position.x, layoutOriginY: position.y, positionMode: "auto" };
     }
     placedCards.current.add(id);
     hiddenHistory.current = hiddenHistory.current.filter((item) => item !== id);
-    const cards = bringToFront(current.current.cards.map((item) => item.id === id ? { ...card, visible: true, opened: true, collapsed: typeof options.collapsed === "boolean" ? options.collapsed : card.collapsed } : item), id);
+    const cards = reflowContentCards(bringToFront(current.current.cards.map((item) => item.id === id ? { ...card, visible: true, opened: true, collapsed: typeof options.collapsed === "boolean" ? options.collapsed : card.collapsed } : item), id));
     const size = surfaceSize.current;
     const focusZoom = size ? clampZoom(Math.min(1, Math.max(1, size.width - 40) / card.width, Math.max(1, size.height - 110) / visibleHeight(card))) : current.current.viewport.zoom;
     const viewport = size && options.focus !== false ? {
@@ -270,24 +306,28 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
     if (!id) return;
     if (current.current.cards.some((card) => card.id === id)) { showCard(id, options); return; }
     const anchor = current.current.cards.find((card) => card.id === current.current.selectedCardId) || current.current.cards.filter((card) => card.visible).at(-1);
+    const profile = canvasCardProfile(definition, semanticDomain);
+    const sizeMode = definition.sizeMode || (canvasCardIsResizableContent({ ...definition, id }, semanticDomain) ? "content" : "manual");
     const card = {
       ...definition,
       id,
       title: typeof definition.title === "string" && definition.title.trim() ? definition.title.trim() : "任务内容",
       x: isFiniteNumber(definition.x) ? definition.x : anchor ? anchor.x + anchor.width + 24 : 28,
       y: isFiniteNumber(definition.y) ? definition.y : anchor ? anchor.y + 24 : 28,
-      width: Math.max(220, isFiniteNumber(definition.width) ? definition.width : 420),
-      height: Math.max(140, isFiniteNumber(definition.height) ? definition.height : 300),
-      ...(isAddCustomStorageKey(storageKey) && addCustomDefaultCardSize(id) ? { width: addCustomDefaultCardSize(id)[0], height: addCustomDefaultCardSize(id)[1] } : {}),
+      width: sizeMode === "content" ? profile.width : Math.max(220, isFiniteNumber(definition.width) ? definition.width : profile.width),
+      height: sizeMode === "content" ? profile.height : Math.max(140, isFiniteNumber(definition.height) ? definition.height : profile.height),
       pinned: Boolean(definition.pinned),
       visible: true,
       opened: true,
       selected: false,
       collapsed: Boolean(definition.collapsed),
-      sizeMode: definition.sizeMode || (["note", "drawing"].includes(definition.kind) ? "manual" : "content"),
-      baseHeight: isFiniteNumber(definition.baseHeight) ? definition.baseHeight : Math.max(140, isFiniteNumber(definition.height) ? definition.height : 300),
+      sizeMode,
+      baseHeight: isFiniteNumber(definition.baseHeight) ? definition.baseHeight : profile.height,
+      positionMode: "auto",
+      layoutOriginX: isFiniteNumber(definition.x) ? definition.x : anchor ? anchor.x + anchor.width + 24 : 28,
+      layoutOriginY: isFiniteNumber(definition.y) ? definition.y : anchor ? anchor.y + 24 : 28,
     };
-    if (isAddCustomStorageKey(storageKey)) Object.assign(card, clampAddCustomCardSize(id, card.width, card.height));
+    if (isAddCustomStorageKey(storageKey)) Object.assign(card, clampCardSize(id, card.width, card.height, card, semanticDomain));
     update((previous) => ({ cards: [...previous.cards, card] }));
     showCard(id, options);
   };
@@ -343,24 +383,25 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
     if (!isFiniteNumber(x) || !isFiniteNumber(y)) return;
     const card = current.current.cards.find((item) => item.id === id);
     if (!card || card.pinned) return;
-    update((previous) => ({ cards: previous.cards.map((item) => item.id === id ? { ...item, x, y } : item) }));
+    update((previous) => ({ cards: previous.cards.map((item) => item.id === id ? { ...item, x, y, positionMode: "manual", layoutOriginX: x, layoutOriginY: y } : item) }));
   };
   const resizeCard = (id, width, height) => {
     if (!isFiniteNumber(width) || !isFiniteNumber(height)) return;
     const card = current.current.cards.find((item) => item.id === id);
     if (!card || card.pinned) return;
-    const size = isAddCustomStorageKey(storageKey) ? clampAddCustomCardSize(id, width, height) : { width: Math.max(220, width), height: Math.max(140, height) };
-    update((previous) => ({ cards: previous.cards.map((item) => item.id === id ? { ...item, ...size, sizeMode: "manual" } : item) }));
+    const size = clampCardSize(id, width, height, card, semanticDomain);
+    update((previous) => ({ cards: previous.cards.map((item) => item.id === id ? { ...item, ...size, sizeMode: "manual", positionMode: "manual", layoutOriginX: item.x, layoutOriginY: item.y } : item) }));
   };
   const fitCardContent = (id, height) => {
     if (!isFiniteNumber(height)) return;
     const card = current.current.cards.find(item => item.id === id);
     if (!card || card.sizeMode !== "content" || card.pinned || card.collapsed) return;
-    const limits = isAddCustomStorageKey(storageKey) ? addCustomCardLimits(id) : { maxHeight: MAX_CONTENT_CARD_HEIGHT };
+    const limits = canvasCardProfile(card, semanticDomain);
     const baseHeight = isFiniteNumber(card.baseHeight) ? card.baseHeight : card.height;
     const nextHeight = Math.min(limits.maxHeight, Math.max(baseHeight, Math.ceil(height)));
     if (Math.abs(nextHeight - card.height) < 3) return;
-    update(previous => ({ cards: previous.cards.map(item => item.id === id ? { ...item, height: nextHeight } : item) }));
+    const cards = current.current.cards.map(item => item.id === id ? { ...item, height: nextHeight } : item);
+    update({ cards: reflowContentCards(cards) });
   };
   const togglePin = (id) => {
     if (!current.current.cards.some((card) => card.id === id)) return;
@@ -458,7 +499,7 @@ export function useCanvasState({ startEmpty = false, cardDefinitions, initialVis
     hiddenHistory.current = [];
     placedCards.current = new Set(startEmpty ? [] : ["source", "evidence"]);
     comparisonSnapshot.current = null;
-    update(initialState(startEmpty, cardDefinitions, initialVisibleIds));
+    update(initialState(startEmpty, cardDefinitions, initialVisibleIds, semanticDomain));
   };
 
   return {

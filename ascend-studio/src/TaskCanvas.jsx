@@ -21,7 +21,6 @@ import { normalizeCanvasNode } from "./shared/canvas/node-semantics.js";
 import CanvasDrawingSurface from "./shared/canvas/CanvasDrawingSurface.jsx";
 import CanvasNoteContent from "./shared/canvas/CanvasNoteContent.jsx";
 import CanvasLegacyDrawings from "./shared/canvas/CanvasLegacyDrawings.jsx";
-import { MAX_CONTENT_CARD_HEIGHT } from "./shared/canvas/canvas-sizing.js";
 import { useCanvasDrawing } from "./shared/canvas/useCanvasDrawing.js";
 import "./task-canvas.css";
 
@@ -143,20 +142,10 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
           // offsetHeight / scrollHeight are canvas-layout pixels; getBoundingClientRect
           // would include the current canvas zoom and make card sizes drift with zoom.
           const bodyHeight = body ? Math.max(body.offsetHeight, body.scrollHeight) : 0;
-          const requiredHeight = Math.min(MAX_CONTENT_CARD_HEIGHT, Math.ceil(header.offsetHeight + bodyHeight + padding + 2));
+          const requiredHeight = Math.ceil(header.offsetHeight + bodyHeight + padding + 2);
           const baseHeight = Number.isFinite(card.baseHeight) ? card.baseHeight : card.height;
           const nextHeight = Math.max(baseHeight, requiredHeight);
           if (Math.abs(nextHeight - card.height) < 3) continue;
-          if (nextHeight > card.height) {
-            const overlaps = cards.some(other => {
-              if (!other.visible || other.id === card.id || isCollapsed(other)) return false;
-              const horizontalOverlap = card.x < other.x + other.width + 16 && card.x + card.width + 16 > other.x;
-              const otherHeight = isCollapsed(other) ? COLLAPSED_HEIGHT : other.height;
-              const verticalOverlap = card.y < other.y + otherHeight + 16 && card.y + nextHeight + 16 > other.y;
-              return horizontalOverlap && verticalOverlap;
-            });
-            if (overlaps) continue;
-          }
           actionsRef.current.fitCardContent?.(card.id, nextHeight);
         }
       });
@@ -437,7 +426,7 @@ export function TaskCanvas({ visible = true, embedded = false, isAddCustom = fal
                 {positionEditing && ["note", "drawing"].includes(card.kind) && <CanvasCardButton className="is-destructive" type="button" aria-label={`删除${card.title}`} title="删除新增卡片" onClick={() => { if (drawing.targetCardId === card.id) drawing.stop(); actions.deleteCard(card.id); }}><IconTrash size={ICON_SIZE.inline} /></CanvasCardButton>}
               </CanvasNodeActions>
             </CanvasCardHeader>
-            <div className={`tc-card-content${card.kind === "drawing" ? " is-drawing-card" : card.kind === "note" ? " is-note-card" : ""}`} hidden={collapsed} role="region" aria-label={card.title + "内容；需要时可在卡片内滚动查看"} onWheel={(event) => {
+            <div className={`tc-card-content${card.kind === "drawing" ? " is-drawing-card" : card.kind === "note" ? " is-note-card" : ""}`} hidden={collapsed} role="region" aria-label={card.title + "内容；通常完整显示，内容较长时可在卡片内滚动查看"} onWheel={(event) => {
               const content = event.currentTarget;
               const canScrollUp = event.deltaY < 0 && content.scrollTop > 0;
               const canScrollDown = event.deltaY > 0 && content.scrollTop + content.clientHeight < content.scrollHeight - 1;

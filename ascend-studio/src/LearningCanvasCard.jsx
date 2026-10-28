@@ -2,9 +2,11 @@ import { ICON_SIZE } from "./icon-system.js";
 import { IconBook } from "@tabler/icons-react";
 import { CanvasCardFrame, CanvasCardHeader, CanvasNodeActions, CanvasNodeMarker, CanvasNodeStatus } from "./shared/canvas/index.jsx";
 import { normalizeCanvasNode } from "./shared/canvas/node-semantics.js";
+import { canvasCardProfile } from "./shared/canvas/canvas-sizing.js";
 
-export default function LearningCanvasCard({ id, title, summary, icon: Icon = IconBook, point, width, pinned, collapsed = false, children, onDrag, onFocus, onOpenContent, onTogglePin, onCollapse, nodeType = "material", contentType = "lesson", status, statusLabel, domain = "learning", className = "" }) {
-  const frameStyle = { left: point.x, top: point.y, width, ...(collapsed ? { height: 44 } : {}) };
+export default function LearningCanvasCard({ id, title, summary, icon: Icon = IconBook, point, width, height, pinned, collapsed = false, children, onDrag, onFocus, onOpenContent, onTogglePin, onCollapse, nodeType = "material", contentType = "lesson", status, statusLabel, domain = "learning", className = "" }) {
+  const profile = canvasCardProfile({ id, nodeType, contentType }, domain);
+  const frameStyle = { left: point.x, top: point.y, width, ...(!collapsed && Number.isFinite(height) ? { height: Math.min(profile.maxHeight, Math.max(profile.height, height)) } : {}), ...(collapsed ? { height: 44 } : {}) };
   const semantics = normalizeCanvasNode({ id, title, summary, nodeType, contentType, status, statusLabel }, domain);
   const keyboardMove = event => {
     const vectors = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] };
@@ -28,6 +30,6 @@ export default function LearningCanvasCard({ id, title, summary, icon: Icon = Ic
         collapse={onCollapse ? { collapsed, onToggle: () => onCollapse(id) } : null}
       />
     </CanvasCardHeader>
-    <div className="lh-card-content" hidden={collapsed} role="region" aria-label={`${title}内容；需要时可在卡片内滚动查看`} tabIndex={0}>{children}</div>
+    <div className="lh-card-content" hidden={collapsed} role="region" aria-label={`${title}内容；通常完整显示，内容超过卡片上限时可在卡片内滚动查看`} tabIndex={0}>{children}</div>
   </CanvasCardFrame>;
 }

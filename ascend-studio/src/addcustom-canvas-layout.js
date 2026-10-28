@@ -1,25 +1,25 @@
 const CARD_POSITIONS = {
   "task-brief": [32, 64],
-  source: [32, 532],
-  evidence: [32, 1080],
-  reference: [32, 1548],
-  explanation: [900, 64],
-  parameters: [900, 632],
-  attempts: [900, 1240],
-  draft: [1688, 64],
-  diff: [1688, 672],
-  validation: [1688, 1360],
-  precision: [2616, 64],
-  review: [2616, 612],
+  source: [32, 456],
+  evidence: [32, 908],
+  reference: [32, 1300],
+  explanation: [840, 64],
+  parameters: [840, 476],
+  attempts: [1572, 64],
+  draft: [1572, 456],
+  diff: [2364, 64],
+  validation: [2364, 536],
+  precision: [2364, 948],
+  review: [2364, 1360],
 };
 
 const CARD_ORDER = Object.keys(CARD_POSITIONS);
 const DYNAMIC_PARENT = { attempt: "attempts", snapshot: "diff" };
 
 export const ADD_CUSTOM_CARD_POSITIONS = CARD_POSITIONS;
-export const ADD_CUSTOM_LAYOUT_VERSION = 12;
-export const ADD_CUSTOM_LAYOUT_GAP_X = 88;
-export const ADD_CUSTOM_LAYOUT_GAP_Y = 48;
+export const ADD_CUSTOM_LAYOUT_VERSION = 14;
+export const ADD_CUSTOM_LAYOUT_GAP_X = 32;
+export const ADD_CUSTOM_LAYOUT_GAP_Y = 32;
 
 function cardHeight(card) {
   return card?.collapsed ? 44 : Math.max(140, Number(card?.height) || 340);
@@ -35,11 +35,12 @@ function overlaps(candidate, other) {
 }
 
 function freeSpot(card, start, obstacles = []) {
-  const step = cardHeight(card) + ADD_CUSTOM_LAYOUT_GAP_Y;
+  const point = { x: start.x, y: start.y };
   for (let index = 0; index < 180; index += 1) {
-    const point = { x: start.x, y: start.y + step * index };
     const candidate = { ...card, ...point };
-    if (!obstacles.some((other) => other.id !== card.id && overlaps(candidate, other))) return point;
+    const collisions = obstacles.filter((other) => other.id !== card.id && overlaps(candidate, other));
+    if (!collisions.length) return point;
+    point.y = Math.max(...collisions.map(other => other.y + cardHeight(other) + ADD_CUSTOM_LAYOUT_GAP_Y));
   }
   const right = Math.max(start.x, ...obstacles.map((other) => other.x + other.width + ADD_CUSTOM_LAYOUT_GAP_X));
   return { x: right, y: start.y };

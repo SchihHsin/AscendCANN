@@ -7475,3 +7475,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户确认打开 AddCustom 对话时右侧应默认关闭。此前初始状态把画布设为 active，且版本 4 迁移也会把旧会话切到画布；现改为初始仅显示对话并保留原材料焦点，右侧收起。用户触发图解、内容或草稿入口后仍按原操作展开；其他任务的默认状态不变。
 - 修改 `ascend-studio/src/useContentWorkspace.js` 和 `ascstudio/` Pages 构建包；将 AddCustom 工作区状态迁移版本提升到 5，升级旧会话时收起右侧，同时保留当前内容焦点。依据为用户明确要求（H）；无真实任务 / NPU 验证主张，不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、新构建 JS `node --check`、`git diff --check` 通过；状态迁移逻辑与「打开内容」入口已通过构建和语法核对。视觉回放未完成：5232 端口被其他进程占用，隔离的 5233 预览未能连接 CUA。未运行自动化测试。源码提交 `16368e33` 经保留并行更新的合并提交 `f7a9a135` 推送到 `origin/main`；Pages workflow `40650280402` build / deploy 成功，线上 `/AscendCANN/ascstudio/`、`index-C2jWj7XD.js` 与 `index-COSDFY05.css` 均 HTTP 200。
+
+
+### 2026-10-28 · 画布卡片尺寸与滚动统一修订
+
+- 用户指出不能以旧卡片尺寸为正确参照：不同任务中的卡片宽高差异过大，普通内容出现内部滚动。共享规则改为按内容语义使用尺寸档位，基准尺寸是下限，自动测量正文后扩高；自动卡片至少留 32px 逻辑间距并在扩高、新增、恢复时避让。长内容仅在超过 760px 高度上限、用户主动缩小尺寸或卡片位置被用户固定而无法避让时滚动。手动尺寸 / 位置保留。
+- 公共策略位于 `ascend-studio/src/shared/canvas/canvas-sizing.js`；AddCustom / 图像推理 / 普通学习复用 `TaskCanvas` 和 `useCanvasState`；ResNet50 独立路径材料从同一档位取尺寸，并按测得的完整内容重新排布下方操作卡与展开路径节点。
+- 迁移覆盖旧 AddCustom 默认档位和旧材料画布 420×360 双列默认尺寸 / 位置；用户实际手调尺寸或移动位置仍按持久化标记保留。规则同步到 `ascend-studio/interaction-design.md`、`ascend-studio/AGENTS.md` 与共享界面规范 Skill。
+- 验证：本地 5197 当前源码回放中，AddCustom 5 张已显示卡片正文均为 `scrollHeight === clientHeight`；“适应全部”后节点无重叠。ResNet50 普通步骤中图解、讲解、理解检查均为 380px 高，视频卡为 760×705px；视频正文 `scrollHeight === clientHeight === 656px`，无 1px 边缘滚动。修复测量时未计入上下边框的 1px。ResNet50“全部展开”15 张步骤卡均遵守 760px 上限，超限正文实际高出 694–1245px；卡片内滚轮将 `scrollTop` 从 0 移至 177.5，确认长内容能滚动。`npm run build:pages`、相关 `.js` 源文件与构建 JS 的 `node --check`、`git diff --check` 通过；构建有既有 1.1MB chunk 提醒，未运行自动化测试。页面顺序 / hash 与 API / Protocol、Host / Harness、Application / Task 边界不变。提交、推送与 Pages workflow 状态待完成。
