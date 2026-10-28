@@ -44,6 +44,9 @@
 .home-variants__panel[hidden] { display: none; }
 .home-variants__panel > .new-task-home { height: 100%; }
 .home-variants button:focus-visible, .home-variants select:focus-visible { outline: 2px solid #8274c2; outline-offset: 4px; }
+@container (max-width: 680px) {
+  .home-variants__tabs { top: 4px; right: 12px; }
+}
 
 .explore-home {
   --explore-ink: #1d2430;

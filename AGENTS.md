@@ -7519,3 +7519,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - “不能仅据此确认根因”的边界保留在「查看判断依据」中；不把演示算例说成真实源码或 NPU 已验证。彩色知识提示继续负责解释尾块知识；与判断依据按钮互斥行为保持不变。
 - 修改 `ascend-studio/src/App.jsx` 与 `ascstudio/` Pages 构建包。依据为用户确认的处理方向（H）；算术与示例参数来自本地 Demo（M）。不改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、当前构建 JS `node --check`、`git diff --check` 通过；未运行自动化测试或浏览器视觉回放。实现提交 `5c353725` 已推送 `origin/main`；Pages workflow `40684134342` build / deploy 成功，线上入口、`index-CPJDvYbn.js` 与 `index-CB4_sFnx.css` 均 HTTP 200。
+
+
+### 2026-10-28 · 主动建议卡片采用混合式路径命名
+
+- 用户接受按卡片学习方式混合命名：学习过程「算子启动流程」、动手练习「输入 Shape 对齐练习」、专项实践「图像预处理实战」。卡片标题保持简短，近期错误记录和推荐理由继续提供具体上下文。
+- 第一轮预览发现「算子启动流程与参数配置」在卡片宽度内被截断，随后收短为「算子启动流程」。窄视口还将首页交互 Tab 上移，消除其与页面标题的重叠；三个名称及原有卡片点击行为保留。
+- 修改 `ascend-studio/src/home-recommendations.js`、`ascend-studio/src/explore-task-home.css` 与 `ascstudio/` 构建产物。`npm run build:pages`、构建 JS `node --check`、`git diff --check` 通过；未运行测试套件。CUA 在本地 5206 窄视口确认三张卡标题完整、Tab 与标题分开显示。发布状态待补记。
+- 页面序列 / 路由与 API / Protocol、Host / Harness、Application / Task 边界不变。
