@@ -7894,4 +7894,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 按用户要求让图本身承载逻辑：以区域分阶段，以节点表达入口 / 服务 / 引擎，以有向连线呈现共用服务、三路分流、任务引擎分派和质量回流；没有加入装饰图。能力架构属于拟建设计示意，不代表现有系统已接入；不改变既有 API / Protocol、Host / Harness、Application / Task 的定义边界。
 - 依据：用户确认的两页内容方向与“图本身承载逻辑”要求（H）；具体能力组织、接口和建设顺序为方案设计（M），需结合社区现有系统评估。
 - 验证：`git diff --check` 通过；Chrome 无头截图检查 1440×900、1280×720 下的第 5、6 页，确认主链路、连线与页脚完整；线上 `knowledge-provider-map.html?rev=46a69dd1` HTTP 200，回读内容与本地文件一致。未运行自动化测试。
-- 页面提交 `46a69dd1` 已 rebase 到并行主线提交后推送至 `origin/main`；GitHub Pages workflow `40848848215` build / deploy 成功。交接记录本身待本次提交后推送。无未决事项。
+- 页面提交 `46a69dd1` 已 rebase 到并行主线提交后推送至 `origin/main`；GitHub Pages workflow `40848848215` build / deploy 成功。交接记录随后单独提交并推送至 `origin/main`。无未决事项。
