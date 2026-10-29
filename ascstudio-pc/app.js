@@ -217,18 +217,23 @@ function previousPoint() {
   else if (currentChapter > 0) showChapterCover(currentChapter - 1);
 }
 
+function openPointMenu() {
+  menuOpen = true;
+  renderPointMenu();
+}
+
 const designNote = $("#design-note");
-const noteDragHandle = $("#note-drag-handle");
+const noteCard = $("#note-card");
 let noteDrag = null;
 
-noteDragHandle.addEventListener("pointerdown", event => {
+noteCard.addEventListener("pointerdown", event => {
   if (event.button !== 0 || designNote.hidden || showcase.classList.contains("is-mobile")) return;
   const rect = designNote.getBoundingClientRect();
   noteDrag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top, moved: false, rect };
-  noteDragHandle.setPointerCapture(event.pointerId);
+  noteCard.setPointerCapture(event.pointerId);
 });
 
-noteDragHandle.addEventListener("pointermove", event => {
+noteCard.addEventListener("pointermove", event => {
   if (!noteDrag || event.pointerId !== noteDrag.pointerId) return;
   if (!noteDrag.moved && Math.hypot(event.clientX - noteDrag.startX, event.clientY - noteDrag.startY) < 5) return;
   if (!noteDrag.moved) {
@@ -249,20 +254,24 @@ noteDragHandle.addEventListener("pointermove", event => {
 
 function finishNoteDrag(event) {
   if (!noteDrag || event.pointerId !== noteDrag.pointerId) return;
+  const shouldOpenMenu = !noteDrag.moved && event.type === "pointerup";
   noteDrag = null;
   designNote.classList.remove("is-dragging");
-  if (noteDragHandle.hasPointerCapture(event.pointerId)) noteDragHandle.releasePointerCapture(event.pointerId);
+  if (noteCard.hasPointerCapture(event.pointerId)) noteCard.releasePointerCapture(event.pointerId);
+  if (shouldOpenMenu) openPointMenu();
 }
 
-noteDragHandle.addEventListener("pointerup", finishNoteDrag);
-noteDragHandle.addEventListener("pointercancel", finishNoteDrag);
-noteDragHandle.addEventListener("lostpointercapture", finishNoteDrag);
+noteCard.addEventListener("pointerup", finishNoteDrag);
+noteCard.addEventListener("pointercancel", finishNoteDrag);
+noteCard.addEventListener("lostpointercapture", finishNoteDrag);
+noteCard.addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openPointMenu(); }
+});
 
 $("#cover-enter").addEventListener("click", () => loadPoint(currentChapter, 0));
-$("#cover-index").addEventListener("click", () => { menuOpen = true; renderPointMenu(); });
+$("#cover-index").addEventListener("click", openPointMenu);
 $("#note-next").addEventListener("click", nextPoint);
 $("#note-prev").addEventListener("click", previousPoint);
-$("#note-index").addEventListener("click", () => { menuOpen = !menuOpen; renderPointMenu(); });
 $("#menu-close").addEventListener("click", () => { menuOpen = false; renderPointMenu(); });
 $("#mobile-return").addEventListener("click", () => showChapterCover(4));
 $("#fullscreen-button").addEventListener("click", async () => {
