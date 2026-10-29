@@ -136,6 +136,13 @@ function findLearningPathMove(text, path) {
   return { ...source, targetId: target.stepId, targetTitle: target.title, direction: /前/.test(match[3]) ? "before" : "after" };
 }
 
+const TASK_LAUNCH_ALIASES = { learning: LEARNING_TASK, development: IMAGE_TASK };
+
+function resolveTaskLaunch(value, groups) {
+  if (TASK_LAUNCH_ALIASES[value]) return TASK_LAUNCH_ALIASES[value];
+  return groups.flatMap(group => group.tasks).find(name => name === value) || null;
+}
+
 const routes = [
   {
     id: "tail",
@@ -212,7 +219,7 @@ function App() {
   }, [visualTheme]);
   const [mainView, setMainView] = useState(() => {
     const launchTask = new URLSearchParams(window.location.search).get("task");
-    if (["learning", "development"].includes(launchTask)) return "task";
+    if (resolveTaskLaunch(launchTask, wb.groups)) return "task";
     const savedView = readSession("main-view", null);
     if (["home", "learning", "automations", "capabilities", "knowledge-pocket", "task"].includes(savedView)) return savedView;
     // A home-variant query may remain in the URL after navigating into a task.
@@ -373,16 +380,17 @@ function App() {
     if (learningLaunchHandled.current) return;
     learningLaunchHandled.current = true;
     const launchTask = new URLSearchParams(window.location.search).get("task");
-    if (launchTask === "learning" || launchTask === "development") {
-      setMainView("task");
-      wb.selectTask(launchTask === "learning" ? LEARNING_TASK : IMAGE_TASK);
-      wb.setQuery("");
-      wb.setFilterScope("all");
-      wb.setOpenedGroups(groups => groups.includes("inference") ? groups : [...groups, "inference"]);
-      const address = new URL(window.location.href);
-      address.searchParams.delete("task");
-      window.history.replaceState(null, "", address.pathname + address.search + address.hash);
-    }
+    const taskName = resolveTaskLaunch(launchTask, wb.groups);
+    if (!taskName) return;
+    setMainView("task");
+    wb.selectTask(taskName);
+    wb.setQuery("");
+    wb.setFilterScope("all");
+    const groupId = wb.groups.find(group => group.tasks.includes(taskName))?.id;
+    if (groupId) wb.setOpenedGroups(groups => groups.includes(groupId) ? groups : [...groups, groupId]);
+    const address = new URL(window.location.href);
+    address.searchParams.delete("task");
+    window.history.replaceState(null, "", address.pathname + address.search + address.hash);
   }, []);
   const isInteractiveTask = isMainTask || isImageTask || isLogDiagnosticTask || isLearningTask;
   const workspace = useContentWorkspace({ taskId: selectedTask, isMainTask: isInteractiveTask, initialMaterialId: isLogDiagnosticTask ? "log-diagnosis" : isOfficialLearningTask ? OFFICIAL_LEARNING_MATERIALS[0]?.id : isLearningTask ? "learning-goal" : undefined, defaultToLearningCanvas: isLearningTask });
