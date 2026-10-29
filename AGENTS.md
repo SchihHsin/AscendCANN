@@ -7834,3 +7834,11 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascend-studio/src/task-url.js`、`useWorkbenchState.js`、`App.jsx` 和 `ascstudio/` Pages 构建产物。依据为用户明确要求（H）；没有改变页面序列 / hash 或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`npm run build:pages`、`node --check` 检查任务路由 helper、workbench 状态模块及构建 JS、`git diff --check` 通过；未运行自动化测试。旧的 8 个未跟踪 bundle 未暂存或清理。自定义任务路由依赖本浏览器已保存该任务；URL 不携带任务数据，不能跨设备共享本地自定义任务。
 - 实现提交 `b3af7cd5` 与保留最新主线的合并提交 `21ec1d9e` 已推送至 `origin/main`。主线随后前进到 `1d10ca81`；最新 Pages workflow `40837763028`（head `96634fe5`，包含本实现）成功。线上 `/AscendCANN/ascstudio/?task=addcustom` 返回工作台入口，引用 `index-Boe-x0YL.js` 与 `index-DzNzaxmV.css`；JS HTTP 200，且含 `addcustom`、`resnet50`、`log-triage` 与历史路由状态处理逻辑。
+
+
+### 2026-10-29 · 桌面端讲解卡统一为单句
+
+- 按用户截图与要求，将桌面端全部 16 个设计点讲解由标题 + 正文改为单句；讲解卡只显示一句概括，章节封面和设计点目录仍使用原有标题。每条文案合并关键设计意图与交互价值，避免只针对当前显示的社区经验页。
+- 修改 `ascstudio-pc/app.js`、`ascstudio-pc/index.html`、`ascstudio-pc/styles.css`；资源缓存版本为 `20261029-note-one-sentence`。只调整讲解文案与排版，不改章节 / 设计点顺序、任务起点映射、导航、收起 / 拖动行为、小程序页面及 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户明确要求与截图（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；脚本核对 16 条单句文案；CUA 本地打开社区经验设计点确认卡片仅显示一句话（M）。线上 HTML、JS、CSS 均 HTTP 200，页面引用新版本，JS 含 16 条 `note` 文案并读取 `activePoint.note`；未运行自动化测试。
+- 实现提交 `1827ece5` 已推送至 `origin/main`（先 rebase 到并行到达的远端提交 `dacc0849`）。GitHub Pages workflow `40838952056` build / deploy 成功。无未决事项。
