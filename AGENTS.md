@@ -8036,3 +8036,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`。依据为用户确认的三层方向和对节点详实度的要求（H）；具体接口、Owner、数据连接与 Agent 能力是建设示意（M），不表示线上服务已接入。未改变汇报页序或 API / Protocol、Host / Harness、Application / Task 的机制边界。
 - 验证：`git diff --check` 通过；CUA 在 1280×720 本地预览第 05、06 页，核对层级顺序、上行检索、结果返回和反馈回路，没有发现文字与节点重叠；未运行自动化测试。
 - 页面提交 `1df16b53` 已直接推送到 `origin/main`；GitHub Pages workflow `40895594229` 已完成且成功。线上页面 HEAD 返回 HTTP 200；回读 HTML 可见第 06 页新标题、版本治理、项目客户端与授权反馈节点。线上浏览器截图请求超时，视觉复核以本地 CUA 1280×720 截图为准；没有把超时记为视觉回读成功。
+### 2026-10-29 · 桌面章节封面插图放大
+
+- 用户反馈封面插图偏小，并选择放大约 30%。将右侧插图宽度改为所在栏的 130%，上限约 680px；使用网格居中，让插图向栏间留白适度延伸，左侧文字列与内容不变。
+- 修改 `ascstudio-pc/styles.css` 并更新 `index.html` 的 CSS / JS 缓存版本。未改变插图、章节内容、页面顺序或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户对尺寸的明确选择（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；本地 8765 打开第三章放大预览，确认标题、摘要、章节导航和插图仍存在。未运行自动化测试。
+- 提交 / 推送：待本次实现推送后补充。

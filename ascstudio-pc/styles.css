@@ -47,7 +47,7 @@ button:focus-visible, [role="button"]:focus-visible { outline: 2px solid #5366c8
 .primary-button:hover { background: #303132; transform: translateY(-1px); }
 .text-button { padding: 8px 0; background: transparent; color: #626671; font-size: 13px; }
 .text-button:hover { color: var(--ink); }
-.cover-art-stage { display: grid; place-items: center; width: min(100%,520px); min-width: 0; aspect-ratio: 3 / 2; }
+.cover-art-stage { display: grid; place-items: center; justify-self: center; width: min(130%,680px); min-width: 0; aspect-ratio: 3 / 2; }
 .cover-art-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .cover-footer { display: flex; justify-content: space-between; gap: 20px; color: #90929a; font-size: 11px; letter-spacing: .02em; }
 
