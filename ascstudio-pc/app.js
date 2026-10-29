@@ -5,7 +5,7 @@ const chapters = [
   {
     id: "expression", title: "开始一个开发任务", cover: "用户不是从空白开始", summary: "从任务现场或学习意图出发，让可讨论的线索先出现，再由用户组织并确认自己的 Prompt。",
     points: [
-      { id: "recommend", title: "主动建议先摆出依据", note: "根据当前任务线索给出下一步建议并说明理由，是否采用由开发者决定。", emphasis: "下一步建议并说明理由", description: "结合已有任务线索给出可判断的下一步。建议是起点，开发者仍决定是否采用。", entry: "新建任务首页 · 开发模式建议卡", mode: "开发" },
+      { id: "recommend", title: "主动建议先摆出依据", note: "根据当前任务线索给出下一步建议并说明理由，是否采用由开发者决定。", emphasis: "下一步建议并说明理由", description: "结合已有任务线索给出可判断的下一步。建议是起点，开发者仍决定是否采用。", entry: "新建任务首页 · 学习模式建议卡", mode: "学习" },
       { id: "connect", title: "把线索连起来，Prompt 逐步成形", note: "把选定的目标、关注点和限制条件整理成可编辑的 Prompt，确认后再发送。", emphasis: "可编辑的 Prompt", description: "从训练目标、关注方向和约束出发，关系选择逐步写入可编辑 Prompt，再由用户明确发送。", entry: "新建任务首页 · 探索画布与 Prompt", home: "explore" },
       { id: "micro", title: "从当前内容取上下文", note: "划选内容、指向页面或调整输入框时，都能顺手把当前内容带入提问。", emphasis: "把当前内容带入提问", description: "划词、指向工作区和调整输入区位置，都从用户眼前的内容开始；微交互跟随任务发生。", entry: "任务工作区 · 对话内容与输入区", task: "图像推理调试" },
     ],

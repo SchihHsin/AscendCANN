@@ -7910,3 +7910,9 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/app.js` 的章节 `title`、设计点 `note` / `emphasis`，并更新 `ascstudio-pc/index.html` 中脚本缓存版本为 `20261029-journey-copy`。未改章节摘要、目录中的设计点名称、章节顺序、任务 Demo 起点、页面路由、卡片样式或小程序页面；不影响 API / Protocol、Host / Harness、Application / Task 边界。
 - 依据为用户确认的文案方案（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；脚本校验确认 5 个章节标题、16 条单句说明、16 个强调词均有效。CUA 浏览器接口返回 `browser.user is unavailable`，未能做浏览器预览；本次未修改样式或布局。
 - 实现提交 `411f4ead` 已推送至 `origin/main`；推送时保留并行提交 `e3fe0a7c` 的交接内容。无未决事项。
+
+### 2026-10-29 · 设计点 1.1 起点切换为学习模式
+
+- 按用户明确要求，将设计点 1.1（`recommend`）的 `mode` 从「开发」改为「学习」，起点说明同步改为「新建任务首页 · 学习模式建议卡」。其他设计点文案、任务映射和页面路由不变。
+- 修改 `ascstudio-pc/app.js`；不改变章节顺序、卡片样式、小程序页面或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户明确指定的模式（H）。`node --check ascstudio-pc/app.js` 与 `git diff --check` 通过；静态核对确认 1.1 配置为 `mode: "学习"`，并且不再包含开发模式入口。推送结果随后补记。
