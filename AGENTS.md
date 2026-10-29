@@ -7967,3 +7967,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-mini/knowledge-provider-map.html`；仅补充语义区域底色与节点色，不改图中能力内容、连线逻辑、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。图仍为建设示意，不代表服务已经接入。
 - 依据为用户对配色方案的明确选择（H），具体色值为设计表达（M）。验证：`git diff --check` 通过；CUA 本地 1280×720 查看第 03、04 页，确认入口、知识服务、任务类型与回流区域能由浅色块区分，主流程和图中文字仍可读。未运行自动化测试。
 - 提交与推送：实现提交 `2438eab5` 已推送到 `origin/main`；GitHub Pages workflow `40882045269` build / deploy 成功。线上 `/ascstudio-mini/knowledge-provider-map.html?rev=2438eab5` 已回读，含语义色块与节点样式。无未决事项。
+
+### 2026-10-29 · 桌面旅程按开发者、学习者与手机支线重排
+
+- 用户确认按两类角色串联主线，并在两条主线后呈现支线。章节改为 03 章、17 个设计点：开发场景「Add 算子精度排查」5 点（进入任务、带上下文提问、看错误图解、核对修改结果、整理社区经验）；学习场景 7 点（学习建议、目标、图像输入预处理路径共创、自定义节点、练习、认知卡、迁移到相关任务）；手机学习支线 5 点。社区经验回流并入开发主线收尾，划词、页面指向与输入框拖动留在相关任务步骤中。
+- 桌面开发点统一映射到 Studio 现有任务键 `AddCustom 精度异常`，界面显示名为「Add 算子精度差异排查」，项目为「CANN 自定义算子」。学习点沿用 Demo 已有的「图像输入预处理」学习路径与相关图像推理任务，避免把图像学习材料误写为 Add 课程。学习建议点放在学习章节，保持 `mode: "学习"`。
+- 同一嵌入 Demo 路由下切换设计点时复用已加载页面，不重新载入，以保留任务状态；任务目标变化时仍重新载入。更新 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html`，脚本版本为 `20261029-role-journeys`。未改卡片样式、小程序页面或 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据为用户确认的角色与支线结构（H）；Add 任务显示别名、学习任务名和项目来自桌面 Demo 已有资源（H）。验证：`node --check ascstudio-pc/app.js`、`git diff --check` 通过；静态核对确认 3 章 / 17 个唯一点、重点加粗匹配、Add 任务路由和学习模式映射有效。本地 8765 返回的 HTML、JS、CSS 与工作区文件一致。保留并行主线 `e01d3197`；推送结果随后补记。
