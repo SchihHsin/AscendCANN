@@ -7804,3 +7804,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 变更 `cann-dashboard/ascend-studio-design-report-evidence/compose_entry_perspective.py`、两张透视合成 JPG、截图与元数据、`build_report.py`、`narrative.md`、`qa.md`、放映截图及 `cann-dashboard/ascend-studio-design-report.html`。
 - 页面顺序仍为 17 页，开发入口第 2 页、用户旅程第 3 页；不改变设计判断与 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：报告构建 17 页 / 8,584,034 bytes；Chrome 1440×900 打开 `#2`，两张图均加载；2 个 Python 文件编译、2 段内联 JavaScript `node --check`、`git diff --check` 通过。截图与来源元数据保留在 `cann-dashboard/ascend-studio-design-report-evidence/`。实现提交 `d2722d64` 已推送至 `origin/main`。无未决事项。
+
+### 2026-10-29 · 桌面讲解卡导航改为紧凑 IconButton
+
+- 按用户要求将左下角讲解卡底部的「上一个 / 章节目录 / 下一个」改为右对齐 IconButton；三个按钮使用 24×24px 图标，卡片操作区随内容收缩，视觉高度更紧凑。前进按钮的辅助标签和 title 会随设计点、章节封面目标更新。
+- 修改 `ascstudio-pc/index.html`、`ascstudio-pc/styles.css`、`ascstudio-pc/app.js`；资源缓存版本更新为 `20261029-note-icon-controls`。保留黑色 80% 不透明度、2px 背景模糊、卡片拖动和小程序样式；章节、设计点顺序及起点映射不变，也未改 API / Protocol、Host / Harness、Application / Task 边界。
+- 依据：用户明确的控件样式与位置要求（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地桌面预览确认目录可打开、前后设计点切换正常、图标尺寸为 24×24px 并靠右排列；线上 HTML、CSS、JS 已回读到本次版本。
+- 提交 `8cfa010f` 已推送到 `origin/main`；GitHub Pages workflow `40830839506` 的 build / deploy 均成功。无未决事项。
