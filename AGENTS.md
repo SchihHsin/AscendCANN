@@ -8079,3 +8079,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html` 缓存版本。依据为用户明确纠正（H）；未改章节顺序、其他设计点路由或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 和静态断言通过；确认第一点包含 `home: "classic"`、`mode: "学习"`，不再包含已有任务路由或 Prompt 字样。GitHub Pages workflow `40907770802` 成功；桌面端入口和脚本 HTTP 200，线上脚本 SHA-256 与本地一致，并回读核对新文案。
 - 实现提交 `e0a44ae8` 已推送到 `origin/main`；本条交接记录由后续文档提交同步推送。
+
+### 2026-10-30 · 设计点 1.1 突出主动呈现
+
+- 用户要求进一步突出主动交互。将 1.1 标题改为「主动呈现任务建议卡」，讲解强调系统在新建任务页主动呈现卡片，用户再从已有线索中选择起点；新建任务首页、「主动建议」入口和「学习」模式保持不变。
+- 修改 `ascstudio-pc/app.js` 与 `ascstudio-pc/index.html` 缓存版本；不改变其他设计点路由或 API / Protocol、Host / Harness、Application / Task 边界。依据为用户明确反馈（H）。
+- 验证：`node --check ascstudio-pc/app.js`、`git diff --check` 和路由 / 文案静态断言通过。GitHub Pages workflow `40908526700` 成功；线上入口与脚本 HTTP 200，脚本 SHA-256 与本地一致，并回读确认新标题和讲解句。
+- 实现提交 `ff54701d` 已推送到 `origin/main`；本条交接记录由后续文档提交同步推送。
