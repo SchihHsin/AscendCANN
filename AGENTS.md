@@ -7966,4 +7966,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户选择方案 2：按能力类型区分色彩，并希望图中有更多颜色与色块。第 03「入口演进」页用浅蓝表示社区 Web / 学习发现、浅绿表示项目客户端 / 项目任务、浅紫表示共享知识服务；第 04「技术实现」页用浅蓝表示内容来源与 API、浅紫表示知识底座、浅绿表示 Agent 与验证回流，并用浅蓝、浅紫、浅绿、浅珊瑚区分学习路径、技术图解、资源推荐、活动上新四类任务。橙色继续承载主连接线与阶段标记，整体沿用浅灰画布和参考图式节点关系。
 - 修改 `ascstudio-mini/knowledge-provider-map.html`；仅补充语义区域底色与节点色，不改图中能力内容、连线逻辑、页面序列或 API / Protocol、Host / Harness、Application / Task 边界。图仍为建设示意，不代表服务已经接入。
 - 依据为用户对配色方案的明确选择（H），具体色值为设计表达（M）。验证：`git diff --check` 通过；CUA 本地 1280×720 查看第 03、04 页，确认入口、知识服务、任务类型与回流区域能由浅色块区分，主流程和图中文字仍可读。未运行自动化测试。
-- 提交与推送：待完成。
+- 提交与推送：实现提交 `2438eab5` 已推送到 `origin/main`；GitHub Pages workflow `40882045269` build / deploy 成功。线上 `/ascstudio-mini/knowledge-provider-map.html?rev=2438eab5` 已回读，含语义色块与节点样式。无未决事项。
