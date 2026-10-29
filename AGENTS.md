@@ -7931,7 +7931,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 嵌入页以用户提供的 Format Lab 浅色版为来源（H），本地页面通过 `ascend-format-lab-interaction` 事件通知一次有效操作；交互完成后显示本地演示邀请。刷新回到初始嵌入状态，不保留旧缓存中的邀请或草稿。
 - `src/LogTriageWorkspace.jsx` 使用 `./format-lab/index.html?theme=light`；入口和草稿流程位于 `src/App.jsx`。草稿由演示数据生成，不调用模型或社区服务，成本为 0 tokens；图解和示例不能证明真实算子根因、编译、精度或 NPU 验证。
 - 未改变页面序列、任务 URL 或 API / Protocol、Host / Harness、Application / Task 边界。实现提交 `a54698a3` 已合并进主线历史；后续交接 / 主线同步提交 `5a7e533d`、`1339a7d5` 已在本次记录前同步至 `origin/main`。
-- 验证：`npm run build:pages` 已通过；本轮对发布 JS `ascstudio/assets/index-BZfnvKFm.js` 执行 `node --check`，并通过 `git diff --check`。本地 CUA 选择 Format Lab 参数后确认入口出现且工作区保持打开；线上 `/AscendCANN/ascstudio/` 与 JS 均 HTTP 200，JS 含浅色嵌入与「生成草稿」，不含四阶段标题或视频操作条。未运行自动化测试。Pages workflow `40854710406` build / deploy 成功。
+- 验证：`npm run build:pages` 已通过；本轮对发布 JS `ascstudio/assets/index-BZfnvKFm.js` 执行 `node --check`，并通过 `git diff --check`。本地 CUA 选择 Format Lab 参数后确认入口出现且工作区保持打开；线上 `/AscendCANN/ascstudio/` 与 JS 均 HTTP 200，JS 含浅色嵌入与「生成草稿」，不含四阶段标题或视频操作条。未运行自动化测试。初始页面部署 `40854710406` 成功；本轮交接提交 `b2755d03` 与并行主线更新合并为 `3a60131a`，已推送至 `origin/main`，Pages workflow `40856303638` build / deploy 成功。
 
 
 ### 2026-10-29 · 入口演进页改为双泳道可视化流程
