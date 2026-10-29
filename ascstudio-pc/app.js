@@ -75,10 +75,9 @@ function buildCover() {
   $("#journey-rail").innerHTML = chapters.map((_, index) => `<span class="${index === currentChapter ? "is-current" : ""}"></span>`).join("");
   $("#cover-enter").textContent = currentChapter === chapters.length - 1 ? "进入小程序演示" : "进入本章";
   showcase.dataset.view = "cover";
-  showcase.classList.remove("is-mobile", "is-note-collapsed");
+  showcase.classList.remove("is-mobile");
   $("#mobile-return").hidden = true;
   $("#design-note").hidden = true;
-  $("#note-dock").hidden = true;
   $("#chapter-menu").hidden = !menuOpen;
   updateAddress("cover");
 }
@@ -154,13 +153,9 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
   renderPointMenu();
   showcase.dataset.view = "loading";
   showcase.classList.toggle("is-mobile", Boolean(activePoint.mobile));
-  showcase.classList.remove("is-note-collapsed");
   $("#design-note").hidden = Boolean(activePoint.mobile);
-  $("#note-dock").hidden = true;
   $("#mobile-return").hidden = !activePoint.mobile;
   $("#loading-state").hidden = false;
-  $("#note-body-toggle").setAttribute("aria-expanded", "true");
-  $("#note-dock").setAttribute("aria-expanded", "false");
   const noteText = $("#note-text");
   const emphasis = activePoint.emphasis || "";
   const emphasisStart = activePoint.note.indexOf(emphasis);
@@ -175,7 +170,6 @@ function loadPoint(chapterIndex = currentChapter, pointIndex = currentPoint) {
       document.createTextNode(activePoint.note.slice(emphasisEnd)),
     );
   }
-  $("#dock-label").textContent = `${String(currentChapter + 1).padStart(2, "0")} · ${activePoint.title}`;
   $("#note-prev").disabled = currentPoint === 0 && currentChapter === 0;
   const nextLabel = currentPoint < chapters[currentChapter].points.length - 1 ? "下一个设计点" : currentChapter < chapters.length - 1 ? "进入下一章封面" : "回到第一章封面";
   $("#note-next").setAttribute("aria-label", nextLabel);
@@ -224,27 +218,8 @@ function previousPoint() {
 }
 
 const designNote = $("#design-note");
-const noteToggle = $("#note-body-toggle");
-const noteDock = $("#note-dock");
-const noteDragHandle = noteToggle;
+const noteDragHandle = $("#note-drag-handle");
 let noteDrag = null;
-let ignoreNoteToggleUntil = 0;
-
-function collapseNote() {
-  showcase.classList.add("is-note-collapsed");
-  designNote.hidden = true;
-  noteDock.hidden = false;
-  noteToggle.setAttribute("aria-expanded", "false");
-  noteDock.setAttribute("aria-expanded", "false");
-}
-
-function expandNote() {
-  showcase.classList.remove("is-note-collapsed");
-  designNote.hidden = false;
-  noteDock.hidden = true;
-  noteToggle.setAttribute("aria-expanded", "true");
-  noteDock.setAttribute("aria-expanded", "true");
-}
 
 noteDragHandle.addEventListener("pointerdown", event => {
   if (event.button !== 0 || designNote.hidden || showcase.classList.contains("is-mobile")) return;
@@ -274,10 +249,8 @@ noteDragHandle.addEventListener("pointermove", event => {
 
 function finishNoteDrag(event) {
   if (!noteDrag || event.pointerId !== noteDrag.pointerId) return;
-  const moved = noteDrag.moved;
   noteDrag = null;
   designNote.classList.remove("is-dragging");
-  if (moved) ignoreNoteToggleUntil = performance.now() + 400;
   if (noteDragHandle.hasPointerCapture(event.pointerId)) noteDragHandle.releasePointerCapture(event.pointerId);
 }
 
@@ -291,14 +264,6 @@ $("#note-next").addEventListener("click", nextPoint);
 $("#note-prev").addEventListener("click", previousPoint);
 $("#note-index").addEventListener("click", () => { menuOpen = !menuOpen; renderPointMenu(); });
 $("#menu-close").addEventListener("click", () => { menuOpen = false; renderPointMenu(); });
-noteToggle.addEventListener("click", event => {
-  if (performance.now() < ignoreNoteToggleUntil) { event.preventDefault(); return; }
-  collapseNote();
-});
-noteToggle.addEventListener("keydown", event => {
-  if (event.key === "Enter" || event.key === " ") { event.preventDefault(); collapseNote(); }
-});
-noteDock.addEventListener("click", expandNote);
 $("#mobile-return").addEventListener("click", () => showChapterCover(4));
 $("#fullscreen-button").addEventListener("click", async () => {
   try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch { /* Fullscreen may be unavailable in the embedded preview. */ }

@@ -7,8 +7,8 @@
   <meta name="description" content="Ascend Studio 桌面端设计点演示：从表达目标到理解、实践与经验回流。">
   <title>Ascend Studio · 桌面端设计点</title>
   <link rel="icon" type="image/svg+xml" href="../ascstudio-mini/mark.svg">
-  <link rel="stylesheet" href="./styles.css?rev=20261029-note-selective-emphasis">
-  <script type="module" src="./app.js?rev=20261029-note-selective-emphasis"></script>
+  <link rel="stylesheet" href="./styles.css?rev=20261029-note-always-visible">
+  <script type="module" src="./app.js?rev=20261029-note-always-visible"></script>
 </head>
 <body>
   <main class="showcase" id="showcase" data-view="cover">
@@ -38,7 +38,7 @@
 
     <aside class="design-note" id="design-note" aria-live="polite" aria-label="当前设计点讲解">
       <div class="note-card">
-        <div class="note-body-toggle" id="note-body-toggle" role="button" tabindex="0" aria-label="收起设计点讲解" aria-expanded="true" title="点击收起讲解；拖动移动卡片">
+        <div class="note-drag-handle" id="note-drag-handle" title="拖动移动讲解卡">
           <p id="note-text"></p>
         </div>
       </div>
@@ -48,10 +48,6 @@
         <button class="icon-button" id="note-next" type="button" aria-label="下一个设计点" title="下一个设计点"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
       </div>
     </aside>
-    <button class="note-dock" id="note-dock" type="button" hidden aria-label="展开设计点讲解" aria-expanded="false">
-      <span class="dock-dot"></span><span id="dock-label">01 · 先把目标说清</span><span aria-hidden="true">↑</span>
-    </button>
-
     <nav class="chapter-menu" id="chapter-menu" aria-label="章节与设计点" hidden>
       <div class="menu-heading"><strong>选择章节与设计点</strong><button class="icon-button" id="menu-close" type="button" aria-label="关闭章节目录">×</button></div>
       <div id="menu-content"></div>
