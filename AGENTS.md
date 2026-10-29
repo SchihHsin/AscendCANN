@@ -7738,7 +7738,7 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 用户截图确认 `.48` 黑底仍然挡住下层内容。将讲解卡和收起提示条的不透明度降至 26%，取消背景模糊，强化白字阴影；样式链接改为 `20261029-translucent-note-26`，避免浏览器复用旧 CSS。
 - 依据：用户反馈和所附画面（H）。CUA 在本地 1280×720 截图确认输入栏与控件可从半透明黑卡下方辨认，白色讲解文字仍可读（M）。`git diff --check` 通过；静态 CSS 无需构建，未运行自动化测试。
 - 只改 `ascstudio-pc/styles.css`、`ascstudio-pc/index.html` 和本交接记录；章节、起点任务、Demo 与小程序未变，不涉及 API / Protocol、Host / Harness 或 Application / Task 边界。
-- 提交与 Pages 部署结果在本轮推送后补记。
+- 代码提交 `27b584ce` 已推送到 `origin/main`；Pages workflow `40803820250` build / deploy 均成功。线上 HTML 已引用 `20261029-translucent-note-26`，入口与 CSS 均 HTTP 200，样式响应确认 26% 黑底且无背景模糊。交接记录随后单独提交并推送。
 
 ### 2026-10-29 · 日志排查时保留对话与持续入口
 
