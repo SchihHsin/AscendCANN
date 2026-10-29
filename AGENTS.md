@@ -8064,4 +8064,4 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 学习用户不按“专业 / 小白”划成固定人群；模糊兴趣和明确学习目标是同一学习旅程的两种起点，呈现在 Thinking 行。仍描述使用 Ascend Studio 之前的过程，不把 Studio 功能混入旅程。
 - 修改 `cann-dashboard/ascend-studio-design-report-evidence/build_report.py`、`narrative.md`、`qa.md` 和生成页 `cann-dashboard/ascend-studio-design-report.html`。依据为用户提供的结构参考与明确反馈（H）；体验曲线是定性推演，不是测量结果。未改变汇报页序或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：报告构建、`python3 -m py_compile`、Mermaid 渲染脚本与页面运行脚本语法检查、`git diff --check`；CUA 本地 1352×778 桌面预览第 3 页，核对 5 阶段、Thinking / Doing / Feeling、16 个时序事件、痛点与机会点的对齐，无独立重复行为行。
-- 提交 / 推送与 Pages 发布状态：本记录待实现提交后补齐。
+- 提交 `94f162e1` 已推送至 `origin/main`；GitHub Pages workflow `40904592008` 对该提交部署成功。线上报告返回 HTTP 200，但本轮 40 秒回读下载到 582,208 / 8,076,556 字节后超时，未完成全量线上内容核对；结构与视觉以本地完整报告和桌面预览为准。
