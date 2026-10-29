@@ -7850,3 +7850,10 @@ node node_modules/vitepress/bin/vitepress.js dev --port 5300
 - 依据为用户明确提出的表达原则（H）。仅更新汇报材料制作方法，不改 Ascend Studio 页面序列、实现或 API / Protocol、Host / Harness、Application / Task 边界。
 - 验证：`git diff --check` 通过。`report-ppt-skill` 提交 `7841dd2` 已推送 `origin/main`；AscendCANN 本仓交接记录随后单独推送。
 - 无未决事项。
+
+### 2026-10-29 · 设计点导航按钮移到讲解卡外侧
+
+- 按用户确认的方向，把上一点 / 目录 / 下一点按钮从黑色讲解卡中移出，放到卡片右侧纵排；静止时图标背景透明并加白色阴影，悬停或按下时出现 48% 黑底与 4px 背景模糊。卡片本体仍为 80% 黑底和 2px 模糊，因此其高度由单句讲解决定。
+- 将卡片与按钮组纳入同一个可移动容器，拖动卡片文字会连同按钮一起移动；收起时按钮组随整个容器隐藏。修改 `ascstudio-pc/index.html`、`ascstudio-pc/styles.css`，缓存版本更新为 `20261029-note-controls-outside`。章节、设计点、任务起点映射和 API / Protocol、Host / Harness、Application / Task 边界不变。
+- 用户确认设计方向（H）。`node --check ascstudio-pc/app.js`、`git diff --check` 通过；CUA 本地确认下一点导航有效、收起时按钮组隐藏、拖动时卡片与按钮组同步移动（M）。线上 HTML、CSS、JS 均 HTTP 200，HTML 引用新版本，DOM 为卡片与导航同级；未运行自动化测试。
+- 实现提交 `7e20581a` 已推送至 `origin/main`；GitHub Pages workflow `40842186838` build / deploy 成功。无未决事项。
