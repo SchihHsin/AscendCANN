@@ -1081,11 +1081,71 @@ body.overview #panel,body.overview #toggle{display:none!important}
 .map-node-label{fill:#373f4a;font-size:15px;font-weight:650;text-anchor:middle}
 .map-road-title{fill:#39424e;font-size:15px;font-weight:700;text-anchor:middle}
 .map-road-note{fill:#707a87;font-size:13px;text-anchor:middle}
+.entry-evolution-map svg{height:min(83vh,620px)}
+.stack-band{stroke:#d7dce3;stroke-width:1.1}
+.stack-band.experience{fill:#f3f6f9}.stack-band.service{fill:#f5f3f8}.stack-band.governance{fill:#f3f6f4}
+.stack-layer-title{fill:#596574;font-size:20px;font-weight:760}
+.stack-layer-title.api{fill:#6f91b2}.stack-layer-title.agent{fill:#718f78}.stack-layer-title.governance{fill:#8171a2}
+.stack-layer-sub{fill:#7c8793;font-size:13px}
+.stack-node{stroke:#d7dde4;stroke-width:1.1;rx:13}
+.stack-node.web,.stack-node.api,.stack-node.task-path{fill:#edf4fa;stroke:#b5c9dc}
+.stack-node.client,.stack-node.agent,.stack-node.task-recommend{fill:#eef5ef;stroke:#b3c8b6}
+.stack-node.skill,.stack-node.task-diagram{fill:#f3eff8;stroke:#c7bad8}
+.stack-node.mcp,.stack-node.task-event{fill:#f8f0f3;stroke:#d5bdc6}
+.stack-node.governance{fill:#f7f9f8;stroke:#cbd5ce}
+.stack-node-title{fill:#27313d;font-size:16px;font-weight:750}
+.stack-node-copy{fill:#697481;font-size:12.5px}
+.stack-node-result{fill:#475463;font-size:12.5px;font-weight:650}
+.stack-arrow{fill:none;stroke:#8995a2;stroke-width:1.6;marker-end:url(#stack-arrow)}
+.stack-arrow.api,.stack-arrow.task-path{stroke:#7e9dbc}
+.stack-arrow.agent,.stack-arrow.task-recommend{stroke:#7fa38b}
+.stack-arrow.skill,.stack-arrow.task-diagram{stroke:#927fb5}
+.stack-arrow.task-event{stroke:#b78495}
+.stack-arrow.feedback{stroke:#7fa38b;stroke-dasharray:5 5;marker-end:url(#stack-feedback-arrow)}
+.stack-bus{fill:none;stroke:#a7b0ba;stroke-width:1.3}
+.stack-check{fill:#e8eee9;stroke:#b6c8b9;stroke-width:1}
+.stack-check-title{fill:#4e6854;font-size:14px;font-weight:730}
+.stack-outcome{fill:#677380;font-size:12.5px;text-anchor:middle}
+.stack-road{fill:none;stroke:#b0b7c0;stroke-width:1.5}
+.stack-road-dot{stroke:#f3f5f7;stroke-width:2}
+.stack-road-dot.p0,.stack-road-dot.p1{fill:#7e9dbc}.stack-road-dot.p2{fill:#7fa38b}
+.stack-road-title{fill:#39424e;font-size:14px;font-weight:720;text-anchor:middle}
+.stack-road-note{fill:#707a87;font-size:11.5px;text-anchor:middle}
+@media(max-width:1180px) and (min-width:761px){.entry-evolution-map svg{height:min(78vh,580px)}}
+
+.stack-arrow.knowledge{stroke:#8171a2}
+.cap-zones{stroke:#d7dce3;stroke-width:1.1}
+.cap-zone.experience{fill:#f3f6f9}.cap-zone.runtime{fill:#f5f3f8}.cap-zone.foundation{fill:#f3f6f4}
+.cap-layer{fill:#596574;font-size:20px;font-weight:760}
+.cap-layer.experience{fill:#6f91b2}.cap-layer.runtime{fill:#718f78}.cap-layer.foundation{fill:#8171a2}
+.cap-layer-sub{fill:#7c8793;font-size:12.5px;letter-spacing:.04em}
+.cap-box{stroke:#d7dde4;stroke-width:1.1;rx:12}
+.cap-box.web,.cap-box.openapi,.cap-box.path{fill:#edf4fa;stroke:#b5c9dc}
+.cap-box.client,.cap-box.host,.cap-box.recommend{fill:#eef5ef;stroke:#b3c8b6}
+.cap-box.skill,.cap-box.diagram{fill:#f3eff8;stroke:#c7bad8}
+.cap-box.mcp,.cap-box.event{fill:#f8f0f3;stroke:#d5bdc6}
+.cap-box.governance{fill:#f8faf9;stroke:#cbd5ce}
+.cap-title{fill:#27313d;font-size:16px;font-weight:750}
+.cap-copy{fill:#697481;font-size:13.5px}
+.cap-result{fill:#475463;font-size:13.5px;font-weight:650}
+.cap-center{text-anchor:middle}
+.cap-edge{fill:none;stroke:#8995a2;stroke-width:1.5;marker-end:url(#cap-arrow)}
+.cap-edge.api{stroke:#7e9dbc}.cap-edge.agent,.cap-edge.feedback{stroke:#7fa38b}.cap-edge.skill{stroke:#927fb5}.cap-edge.task-event{stroke:#b78495}
+.cap-edge.data{stroke:#8171a2;stroke-width:1.6}
+.cap-return{fill:none;stroke:#7e9dbc;stroke-width:1.35;opacity:.84;marker-end:url(#cap-arrow)}
+.cap-feedback{fill:none;stroke:#7fa38b;stroke-width:1.5;stroke-dasharray:5 5;marker-end:url(#cap-feedback-arrow)}
+.cap-bus{fill:none;stroke:#a7b0ba;stroke-width:1.2}
+.cap-road{fill:none;stroke:#b0b7c0;stroke-width:1.4}
+.cap-road-dot{stroke:#f3f5f7;stroke-width:2}.cap-road-dot.p0,.cap-road-dot.p1{fill:#7e9dbc}.cap-road-dot.p2{fill:#927fb5}.cap-road-dot.p3{fill:#7fa38b}
+.cap-road-label{fill:#39424e;font-size:12.5px;font-weight:720;text-anchor:middle}
+.cap-road-note{fill:#707a87;font-size:11.5px;text-anchor:middle}
+.cap-feedback-label{fill:#607568;font-size:12px;font-weight:650;text-anchor:middle}
+
 .capability-map .map-stage-name{font-size:23px}
 .capability-map .map-node-title{font-size:20px}
 .capability-map .map-node-note{font-size:16px}
 .capability-map .map-core-title{font-size:21px}
-.capability-map svg{height:min(78vh,660px)}
+.capability-map svg{height:min(82vh,680px)}
 .capability-map .map-path{marker-end:url(#cap-arrow)}
 .capability-map .map-path.future{marker-end:url(#cap-arrow-future)}
 .capability-map .map-road-title{font-size:19px}
@@ -1215,115 +1275,201 @@ body.overview #panel,body.overview #toggle{display:none!important}
 <section class="slide s-gray kp-slide kp-visual-clean feasibility-slide entry-evolution" data-component="入口演进图" data-title="入口先从社区 Web 开始，后续接入本地项目客户端">
   <div class="head"><div class="head-l"><div class="brand"><span class="ttl">入口先从社区 Web 开始，后续接入本地项目客户端</span></div><div class="subttl">03 · ENTRY EVOLUTION　先验证发现服务，再引入项目上下文</div></div></div>
   <div class="body-area kp-body"><div class="feasibility-map entry-evolution-map">
-    <svg class="entry-system-map" role="img" aria-labelledby="entry-map-title entry-map-desc" viewBox="0 0 1400 620" preserveAspectRatio="xMidYMid meet">
-      <title id="entry-map-title">社区 Web 与项目客户端共用知识服务的阶段关系图</title>
-      <desc id="entry-map-desc">顶部入口层并列社区 Web 和后续项目客户端。两者分别提供学习目标主题和已学节点、或经授权筛选的项目类型版本与选定日志；中间进入共享知识服务，依托可信资源目录、知识关系、适用范围与检索 API；底部关联学习发现与项目任务，建设顺序为静态 Demo、社区 Web、项目客户端。</desc>
+    <svg class="entry-system-map" role="img" aria-labelledby="entry-map-title entry-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
+      <title id="entry-map-title">用户体验、服务与 Agent、内容治理底座三层关系图</title>
+      <desc id="entry-map-desc">顶层社区 Web 接收学习目标和进度，项目客户端接收经授权的项目版本与选定日志，并分别返回学习资源或项目任务结果。中层 OpenAPI 服务 Web 和客户端检索，Agent Host 组装授权上下文并路由 Skill 与 MCP，任务能力分别生成有依据的学习路径、技术图解、资源推荐和活动匹配；结果经来源、版本、适用范围和权限校验后返回。底层内容治理将官方文档、API、课程、样例、Issue 和活动采集、解析、核验并生成带来源的 Knowledge Unit、关系图和搜索索引；知识索引向上供 API 与 MCP 查询，授权反馈经 Owner 复核后更新资产。P0 到 P2 是独立建设时间线。</desc>
       <defs>
-        <marker id="entry-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
-        <marker id="entry-arrow-future" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
+        <marker id="stack-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8995a2"/></marker>
+        <marker id="stack-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
       </defs>
-      <ellipse class="map-fill api" cx="430" cy="118" rx="215" ry="46"/><ellipse class="map-fill agent" cx="970" cy="118" rx="215" ry="46"/>
-      <ellipse class="map-fill knowledge" cx="700" cy="302" rx="450" ry="88"/><ellipse class="map-fill knowledge-inner" cx="700" cy="302" rx="235" ry="43"/>
-      <ellipse class="map-fill api" cx="430" cy="475" rx="225" ry="51"/><ellipse class="map-fill agent" cx="970" cy="475" rx="225" ry="51"/>
-      <path class="map-axis" d="M700 12V556"/>
-      <path class="map-stage-rule" d="M20 190H1380 M20 402H1380 M20 540H1380"/>
+      <rect class="stack-band experience" x="230" y="28" width="1140" height="128" rx="20"/>
+      <rect class="stack-band service" x="230" y="168" width="1140" height="274" rx="20"/>
+      <rect class="stack-band governance" x="230" y="454" width="1140" height="164" rx="20"/>
+      <text class="stack-layer-title api" x="28" y="76">用户体验</text><text class="stack-layer-sub" x="28" y="99">USER EXPERIENCE</text>
+      <text class="stack-layer-title agent" x="28" y="214">服务与 Agent</text><text class="stack-layer-sub" x="28" y="237">SERVICE LAYER</text>
+      <text class="stack-layer-title governance" x="28" y="500">内容治理底座</text><text class="stack-layer-sub" x="28" y="523">KNOWLEDGE FOUNDATION</text>
 
-      <text class="map-stage-name source" x="28" y="73">ENTRY</text><text class="map-stage-sub" x="28" y="98">入口演进</text><text class="map-layer-code" x="1370" y="74" text-anchor="end">LAYER 01</text>
-      <ellipse class="map-orbit" cx="700" cy="118" rx="470" ry="58"/>
-      <path class="map-path api" d="M430 142C475 177 558 193 644 232"/>
-      <path class="map-path future agent" d="M970 142C925 177 842 193 756 232"/>
-      <text class="map-node-title" x="430" y="85">社区 Web · P1</text><text class="map-node-note" x="430" y="111">目标 · 主题 · 已学节点</text><circle class="map-node-dot api" cx="430" cy="137" r="8"/>
-      <text class="map-node-title" x="970" y="85">项目客户端 · P2</text><text class="map-node-note" x="970" y="111">项目 · 版本 · 选定日志</text><circle class="map-node-dot future agent" cx="970" cy="137" r="8"/>
+      <rect class="stack-node web" x="258" y="48" width="500" height="88" rx="14"/>
+      <text class="stack-node-title" x="280" y="72">社区 Web · P1</text>
+      <text class="stack-node-copy" x="280" y="96">输入：目标 / 主题 / 已学节点</text>
+      <text class="stack-node-result" x="280" y="119">得到：路径 · 课程 · 认证 · 活动及推荐理由</text>
+      <rect class="stack-node client" x="782" y="48" width="560" height="88" rx="14"/>
+      <text class="stack-node-title" x="804" y="72">项目客户端 · P2</text>
+      <text class="stack-node-copy" x="804" y="96">授权输入：项目类型 / CANN 版本 / 选定日志</text>
+      <text class="stack-node-result" x="804" y="119">得到：兼容建议 · 问题图解 · 下一步操作</text>
 
-      <text class="map-stage-name knowledge" x="28" y="282">KNOWLEDGE CORE</text><text class="map-stage-sub" x="28" y="307">共享知识服务</text><text class="map-layer-code" x="1370" y="282" text-anchor="end">LAYER 02</text>
-      <ellipse class="map-orbit knowledge" cx="700" cy="302" rx="450" ry="88"/><ellipse class="map-orbit knowledge dash" cx="700" cy="302" rx="340" ry="66"/><ellipse class="map-orbit knowledge dot" cx="700" cy="302" rx="235" ry="43"/>
-      <circle class="map-node-dot knowledge" cx="700" cy="220" r="6"/><text class="map-node-label text-start" x="720" y="225">可信资源目录</text>
-      <circle class="map-node-dot knowledge" cx="400" cy="302" r="6"/><text class="map-node-label" x="400" y="278">知识关系 · 前置知识</text>
-      <circle class="map-node-dot knowledge" cx="1000" cy="302" r="6"/><text class="map-node-label" x="1000" y="278">版本 · 芯片 · 适用范围</text>
-      <circle class="map-core knowledge" cx="700" cy="302" r="57"/><text class="map-core-title" x="700" y="298">知识服务</text><text class="map-core-note" x="700" y="319">全文 / 语义 · API</text>
+      <rect class="stack-node api" x="258" y="186" width="252" height="70" rx="12"/>
+      <text class="stack-node-title" x="384" y="210" text-anchor="middle">OpenAPI · Web / 客户端</text>
+      <text class="stack-node-copy" x="384" y="231" text-anchor="middle">检索 · 版本过滤 · 返回原文引用</text>
+      <rect class="stack-node agent" x="524" y="186" width="252" height="70" rx="12"/>
+      <text class="stack-node-title" x="650" y="210" text-anchor="middle">Agent Host</text>
+      <text class="stack-node-copy" x="650" y="231" text-anchor="middle">组装目标 / 授权上下文 · 权限路由</text>
+      <rect class="stack-node skill" x="790" y="186" width="252" height="70" rx="12"/>
+      <text class="stack-node-title" x="916" y="210" text-anchor="middle">Skill · 任务流程</text>
+      <text class="stack-node-copy" x="916" y="231" text-anchor="middle">路径规划 · 图解 · 排障 · 推荐</text>
+      <rect class="stack-node mcp" x="1056" y="186" width="286" height="70" rx="12"/>
+      <text class="stack-node-title" x="1199" y="210" text-anchor="middle">MCP · 知识与工具</text>
+      <text class="stack-node-copy" x="1199" y="231" text-anchor="middle">资源 · 前置 · 兼容 · 样例 · 活动</text>
+      <path class="stack-arrow api" d="M500 221H518"/><path class="stack-arrow agent" d="M766 221H784"/><path class="stack-arrow skill" d="M1032 221H1050"/>
+      <path class="stack-arrow api" d="M508 136C508 155 384 160 384 181"/>
+      <path class="stack-arrow agent" d="M1058 136C1058 157 650 158 650 181"/>
 
-      <text class="map-stage-name" x="28" y="466">SCENARIOS</text><text class="map-stage-sub" x="28" y="491">开发者任务</text><text class="map-layer-code" x="1370" y="466" text-anchor="end">LAYER 03</text>
-      <path class="map-path task-path" d="M656 352C610 389 530 416 445 431"/><path class="map-path agent" d="M744 352C790 389 870 416 955 431"/>
-      <ellipse class="map-orbit api dash" cx="430" cy="475" rx="225" ry="51"/><ellipse class="map-orbit agent dash" cx="970" cy="475" rx="225" ry="51"/>
-      <circle class="map-node-dot api" cx="430" cy="438" r="7"/><text class="map-node-title" x="430" y="464">学习发现</text><text class="map-node-note" x="430" y="492">路径 · 课程 · 认证 · 活动</text>
-      <circle class="map-node-dot agent" cx="970" cy="438" r="7"/><text class="map-node-title" x="970" y="464">项目任务</text><text class="map-node-note" x="970" y="492">技术图解 · 问题分析 · 下一步实践</text>
+      <path class="stack-bus" d="M384 259V272H1199 M650 259V272 M916 259V272 M1199 259V272"/>
+      <path class="stack-arrow task-path" d="M388 272V286"/><path class="stack-arrow task-diagram" d="M654 272V286"/><path class="stack-arrow task-recommend" d="M920 272V286"/><path class="stack-arrow task-event" d="M1186 272V286"/>
+      <rect class="stack-node task-path" x="258" y="290" width="252" height="82" rx="12"/>
+      <text class="stack-node-title" x="384" y="313" text-anchor="middle">学习路径规划</text>
+      <text class="stack-node-copy" x="384" y="334" text-anchor="middle">查前置 · 排依赖 · 过滤版本</text>
+      <text class="stack-node-result" x="384" y="355" text-anchor="middle">产物：阶段 / 练习 / 推荐依据</text>
+      <rect class="stack-node task-diagram" x="524" y="290" width="252" height="82" rx="12"/>
+      <text class="stack-node-title" x="650" y="313" text-anchor="middle">技术图解</text>
+      <text class="stack-node-copy" x="650" y="334" text-anchor="middle">提取事实 · 组装节点与关系</text>
+      <text class="stack-node-result" x="650" y="355" text-anchor="middle">产物：带出处 SVG / HTML 图</text>
+      <rect class="stack-node task-recommend" x="790" y="290" width="252" height="82" rx="12"/>
+      <text class="stack-node-title" x="916" y="313" text-anchor="middle">资源推荐</text>
+      <text class="stack-node-copy" x="916" y="334" text-anchor="middle">硬条件过滤 · 目标 / 难度排序</text>
+      <text class="stack-node-result" x="916" y="355" text-anchor="middle">产物：课程 / 认证及推荐理由</text>
+      <rect class="stack-node task-event" x="1056" y="290" width="286" height="82" rx="12"/>
+      <text class="stack-node-title" x="1199" y="313" text-anchor="middle">活动与上新匹配</text>
+      <text class="stack-node-copy" x="1199" y="334" text-anchor="middle">核日期 · 对象 · 报名状态</text>
+      <text class="stack-node-result" x="1199" y="355" text-anchor="middle">产物：适用活动与有效状态</text>
+      <path class="stack-bus" d="M384 373V382H1199 M650 373V382 M916 373V382 M1199 373V382"/>
+      <path class="stack-arrow" d="M791 382V389"/>
+      <rect class="stack-check" x="430" y="391" width="722" height="34" rx="17"/>
+      <text class="stack-check-title" x="791" y="413" text-anchor="middle">结果校验：来源 · 版本 · 适用范围 · 权限 → 返回可追溯结果</text>
+      <path class="stack-arrow feedback" d="M1155 408C1318 430 1360 440 1360 474V572H1303"/>
 
-      <path class="map-road" d="M350 580H1050"/><circle class="map-road-dot source" cx="350" cy="580" r="6"/><circle class="map-road-dot api" cx="700" cy="580" r="7"/><circle class="map-road-dot agent" cx="1050" cy="580" r="6"/>
-      <text class="map-road-title" x="350" y="565">P0 · 静态 Demo</text><text class="map-road-note" x="350" y="605">验证入口与内容结构</text>
-      <text class="map-road-title" x="700" y="565">P1 · 社区 Web</text><text class="map-road-note" x="700" y="605">目录 · 搜索 · 活动数据</text>
-      <text class="map-road-title" x="1050" y="565">P2 · 项目客户端</text><text class="map-road-note" x="1050" y="605">授权接入本地工程上下文</text>
+      <rect class="stack-node governance" x="258" y="474" width="205" height="82" rx="12"/>
+      <text class="stack-node-title" x="360" y="497" text-anchor="middle">多源内容接入</text>
+      <text class="stack-node-copy" x="360" y="519" text-anchor="middle">文档 / API / 课程</text>
+      <text class="stack-node-copy" x="360" y="539" text-anchor="middle">样例 / Issue / 活动</text>
+      <rect class="stack-node governance" x="478" y="474" width="205" height="82" rx="12"/>
+      <text class="stack-node-title" x="580" y="497" text-anchor="middle">解析与归一</text>
+      <text class="stack-node-copy" x="580" y="519" text-anchor="middle">采集正文 / 代码</text>
+      <text class="stack-node-copy" x="580" y="539" text-anchor="middle">切分 · 去重 · 分类</text>
+      <rect class="stack-node governance" x="698" y="474" width="205" height="82" rx="12"/>
+      <text class="stack-node-title" x="800" y="497" text-anchor="middle">版本与许可核验</text>
+      <text class="stack-node-copy" x="800" y="519" text-anchor="middle">芯片 / OS / 框架范围</text>
+      <text class="stack-node-copy" x="800" y="539" text-anchor="middle">Owner · 失效检测</text>
+      <rect class="stack-node governance" x="918" y="474" width="205" height="82" rx="12"/>
+      <text class="stack-node-title" x="1020" y="497" text-anchor="middle">知识单元 KU</text>
+      <text class="stack-node-copy" x="1020" y="519" text-anchor="middle">原文锚点 · 适用范围</text>
+      <text class="stack-node-copy" x="1020" y="539" text-anchor="middle">版本 · 前置 · 状态</text>
+      <rect class="stack-node governance" x="1138" y="474" width="204" height="82" rx="12"/>
+      <text class="stack-node-title" x="1240" y="497" text-anchor="middle">关系图与搜索索引</text>
+      <text class="stack-node-copy" x="1240" y="519" text-anchor="middle">前置 / 兼容 / 解决关系</text>
+      <text class="stack-node-copy" x="1240" y="539" text-anchor="middle">全文 / 语义检索 · 可回查</text>
+      <path class="stack-arrow" d="M463 515H472"/><path class="stack-arrow" d="M683 515H692"/><path class="stack-arrow" d="M903 515H912"/><path class="stack-arrow" d="M1123 515H1132"/>
+      <path class="stack-arrow knowledge" d="M1342 515H1357V221H1347"/>
+      <text class="stack-outcome" x="800" y="580">治理效果：检索返回匹配版本、原文依据与前置关系；过期内容可复核并触发索引更新</text>
+
+      <path class="stack-road" d="M360 654H1240"/><circle class="stack-road-dot p0" cx="360" cy="654" r="7"/><circle class="stack-road-dot p1" cx="800" cy="654" r="7"/><circle class="stack-road-dot p2" cx="1240" cy="654" r="7"/>
+      <text class="stack-road-title" x="360" y="640">P0 · 静态 Demo</text><text class="stack-road-note" x="360" y="677">验证入口与内容结构</text>
+      <text class="stack-road-title" x="800" y="640">P1 · 社区 Web</text><text class="stack-road-note" x="800" y="677">接目录 · 搜索 · 活动数据</text>
+      <text class="stack-road-title" x="1240" y="640">P2 · 项目客户端</text><text class="stack-road-note" x="1240" y="677">授权接入项目上下文</text>
     </svg>
   </div></div>
   <div class="kp-foot"><span>入口演进示意；当前 GitHub Pages 页面仍是静态原型</span><span>Web 与客户端共用知识目录和服务接口</span></div>
 </section>
 
-<section class="slide s-gray kp-slide kp-visual-clean feasibility-slide capability-feasibility" data-component="技术实现能力架构图" data-title="知识底座、Agent 工作流与任务引擎共同生成可信结果">
-  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">知识底座、Agent 工作流与任务引擎共同生成可信结果</span></div><div class="subttl">04 · CAPABILITY ARCHITECTURE　从内容接入、能力调用到可信结果回流</div></div></div>
+<section class="slide s-gray kp-slide kp-visual-clean feasibility-slide capability-feasibility" data-component="技术实现能力架构图" data-title="内容治理沉淀可信知识，Agent 再生成可追溯结果">
+  <div class="head"><div class="head-l"><div class="brand"><span class="ttl">内容治理沉淀可信知识，Agent 再生成可追溯结果</span></div><div class="subttl">04 · CAPABILITY ARCHITECTURE　自底座向体验供给能力</div></div></div>
   <div class="body-area kp-body"><div class="feasibility-map capability-map">
-    <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid meet">
-      <title id="cap-map-title">昇腾知识服务技术实现关系图</title>
-      <desc id="cap-map-desc">第一阶段将官方文档、API、样例、课程、认证、案例、错误和活动经文档站、CMS、代码仓和日历连接器采集，解析、归一、核验许可及版本后生成有原文引用、适用范围、许可、版本和 Owner 的 Knowledge Unit。第二阶段建设含知识关系图和全文语义索引的共享知识底座，并开放 robots、sitemap、Schema.org、llms.txt 等公开发现文件、Web 和客户端 OpenAPI，以及由 Agent Host 组装目标和授权项目上下文、加载 Skill 并通过 MCP 查询资源、前置、兼容和活动的 Agent 通道。第三阶段把请求经意图结构化、关系检索和版本过滤后交给学习路径、技术图解、资源推荐、活动匹配四种任务能力；结果经过来源版本依赖关系权限和评测校验，授权反馈回流更新知识单元和索引。底部展示 P0 到 P3 建设顺序。</desc>
+    <svg class="capability-system-map" role="img" aria-labelledby="cap-map-title cap-map-desc" viewBox="0 0 1400 720" preserveAspectRatio="xMidYMid meet">
+      <title id="cap-map-title">内容治理、服务与 Agent、开发者体验的自底向上关系图</title>
+      <desc id="cap-map-desc">最底层通过文档、API、课程、代码仓和活动日历连接器接入内容，解析并归一，核验版本、适用范围、许可和 Owner，形成带原文锚点的可信知识单元、关系图与全文语义索引；公开内容通过 robots、sitemap、Schema.org、llms.txt 提升发现能力。中间层由 OpenAPI 服务 Web 和客户端查询，Agent Host 组装用户目标、项目版本和经授权的日志上下文，执行权限检查、模型调用和工具路由；Skill 定义路径规划、技术图解、排障与推荐的流程和验收条件，MCP 提供知识检索、兼容查询、样例、Issue、活动及受限的项目工具。四类任务能力分别产出带前置依据的学习路径、带来源的技术图解、带推荐理由的资源清单、日期与状态有效的活动匹配。结果经过来源、版本、范围、权限和任务质量校验后回到 Web 或客户端；经授权的完成与纠错信号由 Owner 复核并更新知识单元和索引。P0 到 P3 建设节奏独立显示在底部。</desc>
       <defs>
-        <marker id="cap-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
-        <marker id="cap-arrow-future" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8793a1"/></marker>
+        <marker id="cap-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8995a2"/></marker>
+        <marker id="cap-feedback-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7fa38b"/></marker>
       </defs>
-      <ellipse class="map-fill source" cx="330" cy="120" rx="250" ry="62"/>
-      <ellipse class="map-fill knowledge" cx="700" cy="290" rx="445" ry="68"/><ellipse class="map-fill knowledge-inner" cx="700" cy="290" rx="330" ry="48"/>
-      <ellipse class="map-fill api" cx="255" cy="390" rx="220" ry="43"/><ellipse class="map-fill api" cx="700" cy="390" rx="220" ry="43"/><ellipse class="map-fill agent" cx="1130" cy="402" rx="230" ry="36"/>
-      <ellipse class="map-fill task-path" cx="300" cy="533" rx="125" ry="42"/><ellipse class="map-fill task-diagram" cx="570" cy="533" rx="125" ry="42"/><ellipse class="map-fill task-recommend" cx="840" cy="533" rx="125" ry="42"/><ellipse class="map-fill task-event" cx="1110" cy="533" rx="125" ry="42"/>
-      <ellipse class="map-fill validation" cx="700" cy="610" rx="500" ry="33"/>
-      <path class="map-axis" d="M700 12V603"/><path class="map-stage-rule" d="M20 200H1380 M20 438H1380 M20 580H1380"/>
-      <path class="map-path source" d="M590 120H624 M1010 120H1130"/>
-      <path class="map-path knowledge" d="M700 164V211"/>
-      <path class="map-path api" d="M662 332C560 345 410 357 255 362"/><path class="map-path api" d="M700 337V362"/><path class="map-path agent" d="M738 332C840 345 990 357 1130 362"/>
-      <path class="map-path knowledge" d="M700 425V465"/><path class="map-path future agent" d="M1300 432C1300 444 1260 457 1180 474"/>
-      <path class="map-path task-path" d="M300 474V491"/><path class="map-path task-diagram" d="M570 474V491"/><path class="map-path task-recommend" d="M840 474V491"/><path class="map-path task-event" d="M1110 474V491"/>
-      <path class="map-path validation" d="M700 580V586"/>
-      <path class="map-path future validation return-loop" d="M1160 610C1280 610 1385 597 1385 541V172C1385 140 1320 120 1235 120"/>
+      <rect class="cap-zones cap-zone experience" x="220" y="24" width="1155" height="118" rx="18"/>
+      <rect class="cap-zones cap-zone runtime" x="220" y="154" width="1155" height="312" rx="18"/>
+      <rect class="cap-zones cap-zone foundation" x="220" y="478" width="1155" height="142" rx="18"/>
+      <text class="cap-layer experience" x="26" y="67">开发者体验</text><text class="cap-layer-sub" x="26" y="90">USER EXPERIENCE</text>
+      <text class="cap-layer runtime" x="26" y="194">服务与 Agent</text><text class="cap-layer-sub" x="26" y="217">SERVICE + AGENT</text>
+      <text class="cap-layer foundation" x="26" y="518">内容治理底座</text><text class="cap-layer-sub" x="26" y="541">KNOWLEDGE FOUNDATION</text>
 
-      <text class="map-stage-name source" x="28" y="66">SUPPLY</text><text class="map-stage-sub" x="28" y="91">内容治理</text><text class="map-step-code" x="28" y="116">01</text><text class="map-step-code" x="1370" y="66" text-anchor="end">STEP 01</text>
-      <ellipse class="map-orbit source dash" cx="330" cy="120" rx="250" ry="62"/>
-      <circle class="map-node-dot source" cx="137" cy="92" r="5"/><text class="map-node-label text-start" x="157" y="98">文档 · API · 样例</text>
-      <circle class="map-node-dot source" cx="366" cy="92" r="5"/><text class="map-node-label text-start" x="386" y="98">课程 · 路径 · 认证</text>
-      <circle class="map-node-dot source" cx="137" cy="145" r="5"/><text class="map-node-label text-start" x="157" y="151">案例 · 错误 · Issue</text>
-      <circle class="map-node-dot source" cx="366" cy="145" r="5"/><text class="map-node-label text-start" x="386" y="151">活动 · Meetup · 赛事</text>
-      <text class="map-node-note" x="330" y="187">文档站 · CMS · 代码仓 · 活动日历</text>
+      <!-- 顶层：两种入口接收不同上下文，返回同一知识服务的结果 -->
+      <rect class="cap-box web" x="250" y="42" width="520" height="82" rx="13"/>
+      <text class="cap-title" x="272" y="65">社区 Web · 学习发现</text>
+      <text class="cap-copy" x="272" y="87">输入：目标 / 主题 / 已学节点</text>
+      <text class="cap-result" x="272" y="109">返回：路径 · 课程 · 认证 · 活动与推荐依据</text>
+      <rect class="cap-box client" x="790" y="42" width="555" height="82" rx="13"/>
+      <text class="cap-title" x="812" y="65">项目客户端 · 开发任务</text>
+      <text class="cap-copy" x="812" y="87">授权输入：项目类型 / CANN 版本 / 选定日志</text>
+      <text class="cap-result" x="812" y="109">返回：兼容建议 · 技术图解 · 下一步操作</text>
 
-      <path class="map-orbit" d="M625 120H1010"/><circle class="map-node-dot source" cx="635" cy="120" r="6"/><circle class="map-node-dot source" cx="800" cy="120" r="6"/><circle class="map-node-dot source" cx="965" cy="120" r="6"/>
-      <text class="map-node-title" x="635" y="88">解析</text><text class="map-node-note" x="635" y="151">正文 · 代码</text>
-      <text class="map-node-title" x="800" y="88">归一</text><text class="map-node-note" x="800" y="151">切分 · 去重 · 分类</text>
-      <text class="map-node-title" x="965" y="88">核验与发布</text><text class="map-node-note" x="965" y="151">版本 · 许可 · Owner</text><text class="map-node-note" x="965" y="173">失效检测 · 增量更新</text>
-      <circle class="map-core knowledge" cx="1180" cy="120" r="35"/><text class="map-core-title" x="1180" y="126">KU</text>
-      <text class="map-node-title" x="1180" y="73">可信知识单元</text><text class="map-node-note" x="1180" y="166">原文 · 范围 · 版本 · 许可 · Owner</text><text class="map-node-note" x="1180" y="184">能力目标 · 难度 · 时长 · 状态</text>
+      <!-- 入口请求进入服务；公开 Web 与项目任务在授权边界内分流 -->
+      <path class="cap-edge api" d="M510 124C510 150 359 151 359 179"/>
+      <path class="cap-edge agent" d="M1065 124C1065 149 629 151 629 179"/>
 
-      <text class="map-stage-name knowledge" x="28" y="252">KNOWLEDGE</text><text class="map-stage-sub" x="28" y="277">统一知识底座</text><text class="map-step-code" x="28" y="302">02</text><text class="map-step-code" x="1370" y="252" text-anchor="end">STEP 02</text>
-      <ellipse class="map-orbit knowledge" cx="700" cy="290" rx="445" ry="68"/><ellipse class="map-orbit knowledge dot" cx="700" cy="290" rx="330" ry="48"/>
-      <circle class="map-node-dot knowledge" cx="700" cy="215" r="6"/><text class="map-node-label text-start" x="742" y="222">CANN · 芯片 · OS · 框架范围</text>
-      <circle class="map-node-dot knowledge" cx="365" cy="290" r="6"/><text class="map-node-label" x="365" y="267">前置 · 解决 · 适用关系</text>
-      <circle class="map-node-dot knowledge" cx="1035" cy="290" r="6"/><text class="map-node-label" x="1035" y="267">来源 · 原文引用 · 许可</text>
-      <circle class="map-core knowledge" cx="700" cy="290" r="47"/><text class="map-core-title" x="700" y="286">知识底座</text><text class="map-core-note" x="700" y="307">关系图 · 全文 / 语义索引</text>
-      <circle class="map-node-dot api" cx="255" cy="362" r="6"/><text class="map-node-title" x="255" y="385">公开发现文件</text><text class="map-node-note" x="255" y="407">robots · sitemap · Schema.org · llms.txt</text>
-      <circle class="map-node-dot api" cx="700" cy="362" r="6"/><text class="map-node-title" x="700" y="385">Web / 客户端 OpenAPI</text><text class="map-node-note" x="700" y="407">搜索 · 资源 · 路径 · 活动 · 兼容 · 反馈</text>
-      <circle class="map-node-dot agent" cx="1130" cy="362" r="6"/><text class="map-node-title" x="1130" y="385">Agent Host</text><text class="map-node-note agent-note" x="1130" y="402">上下文 · 模型 · 权限 · 工具路由</text><text class="map-node-note agent-note" x="1130" y="416">Skill：路径 / 图解 / 排障 · MCP：资源 / 前置 / 兼容 / 活动</text><text class="map-node-note agent-note" x="1130" y="430">授权上下文：项目类型 · 版本 · 选定日志</text>
+      <!-- 中层：查询服务与 Agent 执行机制各司其职 -->
+      <rect class="cap-box openapi" x="258" y="183" width="202" height="70" rx="11"/>
+      <text class="cap-title cap-center" x="359" y="206">OpenAPI · 查询服务</text>
+      <text class="cap-copy cap-center" x="359" y="227">检索 / 版本过滤 / 引用</text><text class="cap-copy cap-center" x="359" y="244">供 Web 与客户端调用</text>
+      <rect class="cap-box host" x="478" y="183" width="202" height="70" rx="11"/>
+      <text class="cap-title cap-center" x="579" y="206">Agent Host</text>
+      <text class="cap-copy cap-center" x="579" y="227">组装目标 / 环境 / 授权上下文</text><text class="cap-copy cap-center" x="579" y="244">权限检查 · 模型调用 · 工具路由</text>
+      <rect class="cap-box skill" x="698" y="183" width="202" height="70" rx="11"/>
+      <text class="cap-title cap-center" x="799" y="206">Skill · 任务流程</text>
+      <text class="cap-copy cap-center" x="799" y="227">步骤 / 输入输出 / 验收条件</text><text class="cap-copy cap-center" x="799" y="244">可复用路径 · 图解 · 排障规程</text>
+      <rect class="cap-box mcp" x="918" y="183" width="202" height="70" rx="11"/>
+      <text class="cap-title cap-center" x="1019" y="206">MCP · 知识与工具</text>
+      <text class="cap-copy cap-center" x="1019" y="227">查询资源 / 前置 / 兼容 / Issue</text><text class="cap-copy cap-center" x="1019" y="244">样例 / 活动 · 受限项目工具</text>
+      <path class="cap-edge api" d="M460 218H474"/><path class="cap-edge skill" d="M680 218H694"/><path class="cap-edge skill" d="M900 218H914"/>
+      <text class="cap-copy cap-center" x="468" y="174">复杂任务</text>
 
-      <text class="map-stage-name" x="28" y="454">TASK ENGINE</text><text class="map-stage-sub" x="28" y="480">生成与校验</text><text class="map-step-code" x="28" y="504">03</text><text class="map-step-code" x="1370" y="454" text-anchor="end">STEP 03</text>
-      <path class="map-orbit" d="M220 474H1180"/><circle class="map-node-dot task-path" cx="300" cy="474" r="5"/><circle class="map-node-dot knowledge" cx="700" cy="474" r="6"/><circle class="map-node-dot task-event" cx="1100" cy="474" r="5"/>
-      <text class="map-node-title text-end" x="674" y="454">目标 + 授权上下文</text><text class="map-node-title text-start" x="726" y="454">意图结构化 → 关系检索 → 版本过滤</text>
-      <ellipse class="map-orbit task-path dash" cx="300" cy="533" rx="125" ry="42"/><ellipse class="map-orbit task-diagram dash" cx="570" cy="533" rx="125" ry="42"/><ellipse class="map-orbit task-recommend dash" cx="840" cy="533" rx="125" ry="42"/><ellipse class="map-orbit task-event dash" cx="1110" cy="533" rx="125" ry="42"/>
-      <circle class="map-node-dot task-path" cx="300" cy="495" r="5"/><text class="map-node-title" x="300" y="518">学习路径规划</text><text class="map-node-note" x="300" y="540">前置关系 → 依赖排序 → 版本校验</text><text class="map-node-note" x="300" y="559">阶段 · 课程 · 练习 · 推荐理由</text>
-      <circle class="map-node-dot task-diagram" cx="570" cy="495" r="5"/><text class="map-node-title" x="570" y="518">技术图解生成</text><text class="map-node-note" x="570" y="540">原文事实 → 节点 / 连线结构</text><text class="map-node-note" x="570" y="559">SVG / HTML · 来源可回查</text>
-      <circle class="map-node-dot task-recommend" cx="840" cy="495" r="5"/><text class="map-node-title" x="840" y="518">资源推荐排序</text><text class="map-node-note" x="840" y="540">硬条件 → 目标 / 难度 / 新鲜度</text><text class="map-node-note" x="840" y="559">课程 · 认证 · 知识点及理由</text>
-      <circle class="map-node-dot task-event" cx="1110" cy="495" r="5"/><text class="map-node-title" x="1110" y="518">活动与上新</text><text class="map-node-note" x="1110" y="540">日历 / CMS → 日期 · 状态核验</text><text class="map-node-note" x="1110" y="559">LLM 可摘要 · 时间以来源为准</text>
+      <!-- 知识索引被 API 与 MCP 复用；上行箭头表示由底座供给服务层 -->
+      <path class="cap-bus" d="M359 263H1019"/>
+      <path class="cap-edge data" d="M1240 505H1358V263H1019"/>
+      <path class="cap-edge data" d="M359 263V257"/><path class="cap-edge data" d="M1019 263V257"/>
 
-      <path class="map-road validation" d="M290 610H1110"/><circle class="map-road-dot validation" cx="360" cy="610" r="6"/><circle class="map-road-dot validation" cx="700" cy="610" r="6"/><circle class="map-road-dot validation" cx="1040" cy="610" r="6"/>
-      <text class="map-road-title" x="360" y="594">结果校验</text><text class="map-road-note" x="360" y="635">来源 · 版本 · 依赖 · 关系 · 权限</text>
-      <text class="map-road-title" x="700" y="594">运营评测</text><text class="map-road-note" x="700" y="635">任务集 · 专家复核 · 可执行性 · 证据覆盖</text>
-      <text class="map-road-title" x="1040" y="594">授权反馈回流</text><text class="map-road-note" x="1040" y="635">完成 / 收藏 / 纠错 → Owner 复核 → 更新索引</text>
-      <path class="map-road" d="M230 672H1170"/><circle class="map-road-dot source" cx="230" cy="672" r="5"/><circle class="map-road-dot api" cx="540" cy="672" r="5"/><circle class="map-road-dot agent" cx="850" cy="672" r="5"/><circle class="map-road-dot validation" cx="1170" cy="672" r="5"/>
-      <text class="map-road-note" x="230" y="655">P0 · 目录与元数据</text><text class="map-road-note" x="540" y="655">P1 · 检索 / API / 生成器</text><text class="map-road-note" x="850" y="655">P2 · Host / Skill / MCP / 本地项目</text><text class="map-road-note" x="1170" y="655">P3 · 评测与内容运营</text>
+      <!-- 任务能力：每种能力将检索到的知识转换为不同的开发者结果 -->
+      <path class="cap-bus" d="M799 253V276H384 M1019 253V276H1194"/>
+      <path class="cap-bus" d="M654 276H924"/>
+      <path class="cap-edge" d="M384 276V282"/><path class="cap-edge" d="M654 276V282"/><path class="cap-edge" d="M924 276V282"/><path class="cap-edge" d="M1194 276V282"/>
+      <rect class="cap-box path" x="258" y="286" width="252" height="80" rx="11"/>
+      <text class="cap-title cap-center" x="384" y="308">学习路径规划</text><text class="cap-copy cap-center" x="384" y="329">查目标 / 前置图 · 排依赖 · 过滤版本</text><text class="cap-result cap-center" x="384" y="350">产物：阶段 · 练习 · 依据</text>
+      <rect class="cap-box diagram" x="528" y="286" width="252" height="80" rx="11"/>
+      <text class="cap-title cap-center" x="654" y="308">技术图解</text><text class="cap-copy cap-center" x="654" y="329">核事实与出处 · 组装节点和关系</text><text class="cap-result cap-center" x="654" y="350">产物：可回查的 SVG / HTML 图</text>
+      <rect class="cap-box recommend" x="798" y="286" width="252" height="80" rx="11"/>
+      <text class="cap-title cap-center" x="924" y="308">资源推荐</text><text class="cap-copy cap-center" x="924" y="329">先过滤版本 / 对象 · 再按目标排序</text><text class="cap-result cap-center" x="924" y="350">产物：课程 · 认证 · 知识点及理由</text>
+      <rect class="cap-box event" x="1068" y="286" width="252" height="80" rx="11"/>
+      <text class="cap-title cap-center" x="1194" y="308">活动与内容上新</text><text class="cap-copy cap-center" x="1194" y="329">核日期 / 受众 / 发布与报名状态</text><text class="cap-result cap-center" x="1194" y="350">产物：匹配内容与有效日程</text>
+
+      <!-- 质量门：先核证据，再评任务结果，授权信号才回流 -->
+      <path class="cap-bus" d="M384 366V378H424 M654 366V378 M924 366V378 M1194 366V378H424"/>
+      <path class="cap-edge" d="M424 378V388"/>
+      <rect class="cap-box governance" x="258" y="392" width="332" height="54" rx="10"/>
+      <text class="cap-title cap-center" x="424" y="414">① 结果校验</text><text class="cap-copy cap-center" x="424" y="434">来源 · 版本 · 范围 · 权限；不适用则拦截</text>
+      <rect class="cap-box governance" x="610" y="392" width="332" height="54" rx="10"/>
+      <text class="cap-title cap-center" x="776" y="414">② 任务评测</text><text class="cap-copy cap-center" x="776" y="434">路径依赖正确 · 图解可回查 · 建议可执行</text>
+      <rect class="cap-box governance" x="962" y="392" width="380" height="54" rx="10"/>
+      <text class="cap-title cap-center" x="1152" y="414">③ 授权反馈与内容复核</text><text class="cap-copy cap-center" x="1152" y="434">完成 / 纠错 → Owner 复核 → 更新知识单元与索引</text>
+      <path class="cap-edge" d="M590 419H606"/><path class="cap-edge feedback" d="M942 419H958"/>
+      <path class="cap-return" d="M776 446V458H230V142H535V126"/>
+      <path class="cap-return" d="M776 446V458H1360V142H1088V126"/>
+
+      <!-- 底层：治理内容，不是单纯搬运；每次加工都留下版本和证据 -->
+      <rect class="cap-box governance" x="258" y="500" width="202" height="96" rx="11"/>
+      <text class="cap-title cap-center" x="359" y="523">多源内容接入</text><text class="cap-copy cap-center" x="359" y="545">官方文档 / API / 课程</text><text class="cap-copy cap-center" x="359" y="563">代码 / Issue / 活动日历</text><text class="cap-copy cap-center" x="359" y="581">文档站 · CMS · 仓库连接器</text>
+      <rect class="cap-box governance" x="478" y="500" width="202" height="96" rx="11"/>
+      <text class="cap-title cap-center" x="579" y="523">解析与归一</text><text class="cap-copy cap-center" x="579" y="545">提取正文 / 代码 / 表格</text><text class="cap-copy cap-center" x="579" y="563">切分 · 去重 · 统一字段</text><text class="cap-copy cap-center" x="579" y="581">形成可检索的知识片段</text>
+      <rect class="cap-box governance" x="698" y="500" width="202" height="96" rx="11"/>
+      <text class="cap-title cap-center" x="799" y="523">版本与许可治理</text><text class="cap-copy cap-center" x="799" y="545">CANN / 芯片 / OS / 框架</text><text class="cap-copy cap-center" x="799" y="563">适用范围 · 许可 · Owner</text><text class="cap-copy cap-center" x="799" y="581">过期 / 冲突 → 复核或下架</text>
+      <rect class="cap-box governance" x="918" y="500" width="202" height="96" rx="11"/>
+      <text class="cap-title cap-center" x="1019" y="523">可信 Knowledge Unit</text><text class="cap-copy cap-center" x="1019" y="545">原文锚点 · 版本 · 适用范围</text><text class="cap-copy cap-center" x="1019" y="563">前置 · 兼容 · 解决关系</text><text class="cap-copy cap-center" x="1019" y="581">证据 / 状态 / Owner 可追溯</text>
+      <rect class="cap-box governance" x="1138" y="500" width="202" height="96" rx="11"/>
+      <text class="cap-title cap-center" x="1239" y="523">关系图与检索索引</text><text class="cap-copy cap-center" x="1239" y="541">全文 / 语义 / 关系检索</text><text class="cap-copy cap-center" x="1239" y="557">增量更新 · 失效检测</text><text class="cap-copy cap-center" x="1239" y="573">公开发现：robots / sitemap</text><text class="cap-copy cap-center" x="1239" y="589">Schema.org / llms.txt</text>
+      <path class="cap-edge" d="M460 548H474"/><path class="cap-edge" d="M680 548H694"/><path class="cap-edge" d="M900 548H914"/><path class="cap-edge" d="M1120 548H1134"/>
+
+
+      <!-- 授权纠错沿治理责任回到内容单元；建设节奏与架构层分开显示 -->
+      <path class="cap-feedback" d="M1152 446V462H1019V496"/>
+      <path class="cap-road" d="M320 678H1280"/><circle class="cap-road-dot p0" cx="360" cy="678" r="6"/><circle class="cap-road-dot p1" cx="665" cy="678" r="6"/><circle class="cap-road-dot p2" cx="970" cy="678" r="6"/><circle class="cap-road-dot p3" cx="1275" cy="678" r="6"/>
+      <text class="cap-road-label" x="360" y="663">P0 · 目录与版本治理</text><text class="cap-road-label" x="665" y="663">P1 · 检索与 API</text><text class="cap-road-label" x="970" y="663">P2 · Host / Skill / MCP</text><text class="cap-road-label" x="1275" y="663">P3 · 评测与运营</text>
     </svg>
   </div></div>
-  <div class="kp-foot"><span>技术能力架构示意；具体系统、Owner 与接口需按现有社区基础设施评估</span><span>模型负责理解与组织，知识关系、规则和来源负责约束</span></div>
+  <div class="kp-foot"><span>能力架构示意；系统、Owner 与接口需依据社区现有基础设施评估</span><span>规则、版本与来源约束结果；模型负责理解与组织</span></div>
 </section>
 
 <div id="panel" style="display:none">
